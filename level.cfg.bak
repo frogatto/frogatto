@@ -1,0 +1,698 @@
+[level]
+height="2000"
+width="5300"
+xscale="100"
+yscale="100"
+	[tile_map]
+	tiles="
+,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,rht,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,sgn,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,rht,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,sup,,sup,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,rht,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,sup,,sup,,,,,,,,,,,,,,,,,slb,slb,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,rht,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,sup,,sup,,,,,,,,,,,,,,,slb,slb,slb,slb,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,sup,,sup,,,,,,,,,,,,,,,slb,slb,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,slb,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,ght,rht,,,,,,,,,,,,,,,,,,,,,slb,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,ght,,,,,,rht,,,,,,ght,rht,,,,,,,,,,,,,,,,,,,,,slb,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,ght,,,,rht,,rht,,,,,,ght,rht,,,,,,,,,,,,,,,,,,,,,slb,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,ght,,,,rht,,rht,,,,,,,,,,,,,,,,,,,,,,,,,,,ght,slb,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,sup,sup
+,ght,,,,rht,,rht,,,,,,,,,,,,,,,,,,,,,,,,,,,ght,slb,,,,,,,,,,,ght,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,sup,sup
+,,,,,rht,,rht,,,,,,,,,,,,,,,,,,fnc,fnc,fnc,sgn,fnc,,,,,ght,slb,,,,,,,,,,,ght,,,,rht,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,sup,sup
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,ght,,,,,,,,,,,,ght,,,rht,rht,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,sup,sup
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,rht,rht,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,sup,sup
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,rht,rht,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,sup,sup
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,rht,rht,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,sup,sup
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,sup,sup
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,sup,sup
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,sup,sup
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,sup,sup
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,sup,sup
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,sup
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,fnc,fnc,fnc,fnc,fnc,fnc,fnc"
+	x="0"
+	y="0"
+	zorder="-1"
+	[/tile_map]
+	[tile_map]
+	tiles="
+,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,
+,
+,
+,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,fnf,fnf,fnf,fnf
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,fnf,fnf,fnf,fnf,fnf,fnf"
+	x="0"
+	y="0"
+	zorder="0"
+	[/tile_map]
+	[tile_map]
+	tiles="
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g
+,,,,,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g
+,,,,,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g
+,,,,,g,g,,,,,,,,,,,,,,,,,,,,,,,g,g,g,,,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g
+,,,,,g,g,,,,,,,,,,,,,,,,,,,,,,,g,g,g,,,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,,,,,,,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,g,g,,,,,,,,,,,,,,,,,,,,,,,g,g,g,,,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,,,,,,g,g,g,g,brg,brg,brg,brg,brg,brg,brg,brg,brg,brg,brg,brg,brg,brg,g,g,g,g,g,g,g,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,g,g,,,,,,,,,,,,,,,,,,g,g,g,,,g,g,g,,,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,,,,,g,g,g,g,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,g,g,g,,,,,,,,,,,,,,,,,,g,g,g,,,g,g,g,,,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,g,g,g,,,,,,,,,,,,,,,,g,g,g,g,g,,,g,g,g,,,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+g,g,g,,g,g,g,,,,,,,,,,,,,,,,g,g,g,g,g,,,g,g,g,,,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+g,g,g,,g,g,g,,,,,,,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,,,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+g,g,g,,g,g,g,,,,,,,,,,,,,g,g,g,g,g,g,g,g,,,,,,,,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,g,g,g,g,,,,,,g,g,g,g,g,g,g,g,g
+g,g,g,g,g,g,g,,,,,,,,,,,,,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,
+g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,g,g,g,g,g,g,g
+g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,g,g,g,g,g,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,g,g,g,,g,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,g,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,g,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g
+,,,,,,g,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g
+,,,,,,g,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,d,d,d,d,d,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g
+,,,,,,g,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,d,d,d,d,d,d,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g
+,,,,,,g,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,d,d,d,d,d,d,d,d,d,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g
+,,,,,,g,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,d,d,d,d,d,d,,d,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,g,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,d,d,d,d,d,d,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,g,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,d,d,d,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,g,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,d,d,d,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,g,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,g,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,brg,brg,brg,brg,brg,brg,brg,brg,brg,brg,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,g,g,g,g,g,g,g,g,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,g,g,g,g,g,g,g,g,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,g,g,g,g,g,g,g,g,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,g,g,g,g,g,g,g,g,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g"
+	x="-224"
+	y="0"
+	zorder="1"
+	[/tile_map]
+	[tile_map]
+	tiles="
+,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,sld,sld,sld,sld,sld,sld,sld,sld,sld,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,fht,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,fht,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,fht,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,fht,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,"
+	x="0"
+	y="0"
+	zorder="2"
+	[/tile_map]
+	[tile_map]
+	tiles="
+,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,spk,spk,spk,spk,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,spk,spk,spk,spk,spk,spk"
+	x="0"
+	y="0"
+	zorder="3"
+	[/tile_map]
+	[character]
+	face_right="false"
+	formula_test_frequency="10"
+	is_human="true"
+	type="frogatto"
+	velocity_x="0"
+	velocity_y="0"
+	x="100"
+	y="540"
+	[/character]
+	[character]
+	face_right="false"
+	formula_test_frequency="1"
+	type="walkinghead"
+	velocity_x="0"
+	velocity_y="0"
+	walk_formula="facing*if(collided, -1, 1)"
+	x="1209"
+	y="547"
+	[/character]
+	[character]
+	face_right="false"
+	formula_test_frequency="10"
+	type="woodplatform"
+	velocity_x="0"
+	velocity_y="0"
+	x="1802"
+	y="708"
+	ypos_formula="708+wave(cycle*5)/5"
+	[/character]
+	[character]
+	face_right="false"
+	formula_test_frequency="10"
+	type="woodplatform"
+	velocity_x="0"
+	velocity_y="0"
+	x="1999"
+	y="621"
+	ypos_formula="621+wave(cycle*4)/5"
+	[/character]
+	[character]
+	face_right="false"
+	formula_test_frequency="10"
+	type="woodplatform"
+	velocity_x="0"
+	velocity_y="0"
+	x="2186"
+	xpos_formula="2186 + (wave(cycle*5)+1000)/5"
+	y="415"
+	[/character]
+	[character]
+	face_right="false"
+	formula_test_frequency="1"
+	type="walkinghead"
+	velocity_x="0"
+	velocity_y="0"
+	walk_formula="facing*if(collided, -1, 1)"
+	x="3023"
+	y="343"
+	[/character]
+	[character]
+	face_right="false"
+	formula_test_frequency="1"
+	type="walkinghead"
+	velocity_x="0"
+	velocity_y="0"
+	walk_formula="facing*if(collided, -1, 1)"
+	x="4050"
+	y="365"
+	[/character]
+	[character]
+	face_right="false"
+	formula_test_frequency="1"
+	type="walkinghead"
+	velocity_x="0"
+	velocity_y="0"
+	walk_formula="facing*if(collided, -1, 1)"
+	x="3958"
+	y="329"
+	[/character]
+	[character]
+	face_right="false"
+	formula_test_frequency="1"
+	type="walkinghead"
+	velocity_x="0"
+	velocity_y="0"
+	walk_formula="facing*if(collided, -1, 1)"
+	x="2294"
+	y="1712"
+	[/character]
+	[character]
+	face_right="false"
+	formula_test_frequency="1"
+	type="walkinghead"
+	velocity_x="0"
+	velocity_y="0"
+	walk_formula="facing*if(collided, -1, 1)"
+	x="2362"
+	y="1707"
+	[/character]
+	[character]
+	face_right="false"
+	formula_test_frequency="1"
+	type="platformwalkinghead"
+	velocity_x="0"
+	velocity_y="0"
+	walk_formula="facing*if(collided, -1, 1)"
+	x="3868"
+	y="1470"
+	[/character]
+	[character]
+	face_right="false"
+	formula_test_frequency="1"
+	type="platformwalkinghead"
+	velocity_x="0"
+	velocity_y="0"
+	walk_formula="facing*if(collided, -1, 1)"
+	x="4175"
+	y="1459"
+	[/character]
+	[character]
+	face_right="false"
+	formula_test_frequency="1"
+	type="redwalkinghead"
+	velocity_x="0"
+	velocity_y="0"
+	walk_formula="facing*if(collided, -1, 1)"
+	x="3476"
+	y="1400"
+	[/character]
+	[character]
+	face_right="false"
+	formula_test_frequency="1"
+	type="redwalkinghead"
+	velocity_x="0"
+	velocity_y="0"
+	walk_formula="facing*if(collided, -1, 1)"
+	x="3017"
+	y="1521"
+	[/character]
+	[character]
+	face_right="false"
+	formula_test_frequency="1"
+	type="redwalkinghead"
+	velocity_x="0"
+	velocity_y="0"
+	walk_formula="facing*if(collided, -1, 1)"
+	x="3697"
+	y="1400"
+	[/character]
+	[character]
+	face_right="false"
+	formula_test_frequency="1"
+	type="redwalkinghead"
+	velocity_x="0"
+	velocity_y="0"
+	walk_formula="facing*if(collided, -1, 1)"
+	x="5041"
+	y="795"
+	[/character]
+	[character]
+	face_right="false"
+	formula_test_frequency="10"
+	type="woodplatform"
+	velocity_x="0"
+	velocity_y="0"
+	x="4891"
+	y="562"
+	[/character]
+	[character]
+	face_right="false"
+	formula_test_frequency="1"
+	type="redwalkinghead"
+	velocity_x="0"
+	velocity_y="0"
+	walk_formula="facing*if(collided, -1, 1)"
+	x="1633"
+	y="713"
+	[/character]
+	[character]
+	face_right="false"
+	formula_test_frequency="10"
+	type="woodplatform"
+	velocity_x="0"
+	velocity_y="0"
+	x="547"
+	y="298"
+	[/character]
+	[character]
+	face_right="false"
+	formula_test_frequency="1"
+	type="redwalkinghead"
+	velocity_x="0"
+	velocity_y="0"
+	walk_formula="facing*if(collided, -1, 1)"
+	x="4545"
+	y="73"
+	[/character]
+	[character]
+	face_right="false"
+	fly_formula="0"
+	formula_test_frequency="100"
+	type="mosquito"
+	velocity_x="0"
+	velocity_y="0"
+	walk_formula="facing"
+	x="2412"
+	y="251"
+	[/character]
+	[character]
+	face_right="false"
+	fly_formula="0"
+	formula_test_frequency="100"
+	type="mosquito"
+	velocity_x="0"
+	velocity_y="0"
+	walk_formula="facing"
+	x="2830"
+	y="1519"
+	[/character]
+	[character]
+	face_right="false"
+	fly_formula="0"
+	formula_test_frequency="100"
+	type="mosquito"
+	velocity_x="0"
+	velocity_y="0"
+	walk_formula="facing"
+	x="3820"
+	y="1358"
+	[/character]
+	[character]
+	face_right="false"
+	fly_formula="0"
+	formula_test_frequency="100"
+	type="mosquito"
+	velocity_x="0"
+	velocity_y="0"
+	walk_formula="facing"
+	x="311"
+	y="177"
+	[/character]
+	[item]
+	type="coin"
+	x="200"
+	y="504"
+	[/item]
+	[item]
+	type="coin"
+	x="282"
+	y="506"
+	[/item]
+	[item]
+	type="coin"
+	x="387"
+	y="468"
+	[/item]
+	[item]
+	type="coin"
+	x="1283"
+	y="583"
+	[/item]
+	[item]
+	type="coin"
+	x="1375"
+	y="576"
+	[/item]
+	[item]
+	type="coin"
+	x="1836"
+	y="628"
+	[/item]
+	[item]
+	type="coin"
+	x="1833"
+	y="539"
+	[/item]
+	[item]
+	type="coin"
+	x="1838"
+	y="457"
+	[/item]
+	[item]
+	type="coin"
+	x="1840"
+	y="374"
+	[/item]
+	[item]
+	type="coin"
+	x="1845"
+	y="755"
+	[/item]
+	[item]
+	type="coin"
+	x="2239"
+	y="249"
+	[/item]
+	[item]
+	type="coin"
+	x="2507"
+	y="249"
+	[/item]
+	[item]
+	type="coin"
+	x="2968"
+	y="402"
+	[/item]
+	[item]
+	type="coin"
+	x="3090"
+	y="236"
+	[/item]
+	[item]
+	type="coin"
+	x="3673"
+	y="331"
+	[/item]
+	[item]
+	type="coin"
+	x="3737"
+	y="322"
+	[/item]
+	[item]
+	type="coin"
+	x="3812"
+	y="329"
+	[/item]
+	[item]
+	type="coin"
+	x="2325"
+	y="1575"
+	[/item]
+	[item]
+	type="coin"
+	x="1764"
+	y="1537"
+	[/item]
+	[item]
+	type="coin"
+	x="3037"
+	y="1540"
+	[/item]
+	[item]
+	type="coin"
+	x="3222"
+	y="1535"
+	[/item]
+	[item]
+	type="savepoint"
+	x="4392"
+	y="130"
+	[/item]
+	[item]
+	type="coin"
+	x="971"
+	y="596"
+	[/item]
+	[item]
+	type="coin"
+	x="727"
+	y="570"
+	[/item]
+	[item]
+	type="coin"
+	x="559"
+	y="149"
+	[/item]
+	[item]
+	type="heart"
+	x="1155"
+	y="564"
+	[/item]
+	[item]
+	type="bigtree"
+	x="864"
+	y="96"
+	[/item]
+	[portal]
+	dest="20,0"
+	level="level2.cfg"
+	rect="5300,0,1000,10000"
+	[/portal]
+	[background]
+	bottom="64b0ad"
+	height="1200"
+	top="64b0ad"
+	width="10000"
+		[layer]
+		image="treeline1.png"
+		xscale="25"
+		yoffset="0"
+		yscale="12"
+		[/layer]
+		[layer]
+		image="treeline2.png"
+		xscale="50"
+		yoffset="1200"
+		yscale="20"
+		[/layer]
+	[/background]
+[/level]

@@ -1,0 +1,1 @@
+/cygdrive/c/mingw/bin/g++ -g -O2 -s -mwindows -L../SDL_mixer-1.2.8/lib -L../silvertree-sdk/SDK/lib -I../SDL_mixer-1.2.8/include -I../silvertree-sdk/SDK/include/SDL -I../silvertree-sdk/SDK/include -I../silvertree-sdk/SDK *.o -lmingw32 -lopengl32 -lglu32 -lboost_regex-mgw34-mt-1_34_1 -lSDLmain -lSDL -lSDL_image -lSDL_ttf -lSDL_mixer -o neorice.exe

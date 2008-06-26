@@ -1,0 +1,3412 @@
+JOYSTICKS: 1
+initialized ttf
+initialized 1 joysticks
+load character type 'frogatto'
+loading image './images/frogattospritesheet1.png'
+OpenGL version: 2.0.1
+OpenGL vendor: NVIDIA Corporation
+OpenGL extensions: GL_ARB_color_buffer_float GL_ARB_depth_texture GL_ARB_draw_buffers GL_ARB_fragment_program GL_ARB_fragment_program_shadow GL_ARB_fragment_shader GL_ARB_half_float_pixel GL_ARB_imaging GL_ARB_multisample GL_ARB_multitexture GL_ARB_occlusion_query GL_ARB_pixel_buffer_object GL_ARB_point_parameters GL_ARB_point_sprite GL_ARB_shadow GL_ARB_shader_objects GL_ARB_shading_language_100 GL_ARB_texture_border_clamp GL_ARB_texture_compression GL_ARB_texture_cube_map GL_ARB_texture_env_add GL_ARB_texture_env_combine GL_ARB_texture_env_dot3 GL_ARB_texture_float GL_ARB_texture_mirrored_repeat GL_ARB_texture_non_power_of_two GL_ARB_texture_rectangle GL_ARB_transpose_matrix GL_ARB_vertex_buffer_object GL_ARB_vertex_program GL_ARB_vertex_shader GL_ARB_window_pos GL_ATI_draw_buffers GL_ATI_texture_float GL_ATI_texture_mirror_once GL_S3_s3tc GL_EXT_texture_env_add GL_EXT_abgr GL_EXT_bgra GL_EXT_blend_color GL_EXT_blend_equation_separate GL_EXT_blend_func_separate GL_EXT_blend_minmax GL_EXT_blend_subtract GL_EXT_compiled_vertex_array GL_EXT_Cg_shader GL_EXT_depth_bounds_test GL_EXT_draw_range_elements GL_EXT_fog_coord GL_EXT_framebuffer_object GL_EXT_multi_draw_arrays GL_EXT_packed_depth_stencil GL_EXT_packed_pixels GL_EXT_pixel_buffer_object GL_EXT_point_parameters GL_EXT_rescale_normal GL_EXT_secondary_color GL_EXT_separate_specular_color GL_EXT_shadow_funcs GL_EXT_stencil_two_side GL_EXT_stencil_wrap GL_EXT_texture3D GL_EXT_texture_compression_s3tc GL_EXT_texture_cube_map GL_EXT_texture_edge_clamp GL_EXT_texture_env_combine GL_EXT_texture_env_dot3 GL_EXT_texture_filter_anisotropic GL_EXT_texture_lod GL_EXT_texture_lod_bias GL_EXT_texture_mirror_clamp GL_EXT_texture_object GL_EXT_texture_sRGB GL_EXT_timer_query GL_EXT_vertex_array GL_HP_occlusion_test GL_IBM_rasterpos_clip GL_IBM_texture_mirrored_repeat GL_KTX_buffer_region GL_NV_blend_square GL_NV_copy_depth_to_color GL_NV_depth_clamp GL_NV_fence GL_NV_float_buffer GL_NV_fog_distance GL_NV_fragment_program GL_NV_fragment_program_option GL_NV_fragment_program2 GL_NV_half_float GL_NV_light_max_exponent GL_NV_multisample_filter_hint GL_NV_occlusion_query GL_NV_packed_depth_stencil GL_NV_pixel_data_range GL_NV_point_sprite GL_NV_primitive_restart GL_NV_register_combiners GL_NV_register_combiners2 GL_NV_texgen_reflection GL_NV_texture_compression_vtc GL_NV_texture_env_combine4 GL_NV_texture_expand_normal GL_NV_texture_rectangle GL_NV_texture_shader GL_NV_texture_shader2 GL_NV_texture_shader3 GL_NV_vertex_array_range GL_NV_vertex_array_range2 GL_NV_vertex_program GL_NV_vertex_program1_1 GL_NV_vertex_program2 GL_NV_vertex_program2_option GL_NV_vertex_program3 GL_NVX_conditional_render GL_SGIS_generate_mipmap GL_SGIS_texture_lod GL_SGIX_depth_texture GL_SGIX_shadow GL_SUN_slice_accum GL_WIN_swap_hint WGL_EXT_swap_control 
+load character type 'red_ant'
+loading image './images/ants.png'
+loading image './images/die-cloud.png'
+load character type 'black_ant'
+load character type 'spear_kitten'
+loading image './images/kitten-spear.png'
+load character type 'woodplatform'
+loading image './images/dirt-tiles.png'
+loading image './images/cannon.png'
+FN: 'if' 2
+FN: 'if' 2
+FN: 'if' 2
+loading image './images/aiming-cannon.png'
+FN: 'if' 2
+FN: 'if' 2
+FN: 'if' 2
+FN: 'if' 2
+FN: 'if' 2
+FN: 'if' 2
+FN: 'switch' 6
+FN: 'if' 2
+FN: 'switch' 6
+FN: 'if' 2
+FN: 'switch' 6
+FN: 'if' 2
+FN: 'switch' 6
+FN: 'if' 2
+FN: 'if' 2
+loading image './images/mosquito.png'
+FN: 'if' 2
+FN: 'null' 4
+FN: 'if' 2
+loading image './images/mosquito-red.png'
+FN: 'if' 2
+FN: 'abs' 3
+FN: 'if' 2
+FN: 'abs' 3
+FN: 'null' 4
+FN: 'if' 2
+FN: 'if' 2
+FN: 'abs' 3
+FN: 'abs' 3
+FN: 'null' 4
+FN: 'if' 2
+FN: 'if' 2
+FN: 'min' 3
+FN: 'max' 3
+FN: 'if' 2
+FN: 'null' 4
+FN: 'if' 2
+FN: 'if' 2
+FN: 'if' 2
+FN: 'if' 2
+FN: 'if' 2
+loading image './images/items.png'
+FN: 'map' 3
+FN: 'if' 2
+FN: 'wave' 4
+FN: 'wave' 4
+FN: 'wave' 4
+FN: 'wave' 4
+FN: 'wave' 4
+loading image './images/testtilesstuff.png'
+tile pattern: {{{.*, .*, .*,
+   ,flw,flw,
+   ,flw,flw}}}
+tile pattern: {{{,flw,flw,
+   ,flw,flw,
+ .*, .*,.*}}}
+tile pattern: {{{.*, .*, .*,
+flw,flw,flw,
+flw,flw,flw}}}
+tile pattern: {{{flw,flw,flw,
+flw,flw,flw,
+ .*, .*,.*}}}
+tile pattern: {{{.*, .*, .*,
+flw,flw,   ,
+flw,flw,}}}
+tile pattern: {{{flw,flw,   ,
+flw,flw,   ,
+ .*, .*,.*}}}
+tile pattern: {{{.*, .*, .*,
+   ,   ,bsh,
+ .*, .*, .*}}}
+tile pattern: {{{.*, .*, .*,
+   ,bsh,bsh,
+ .*, .*, .*}}}
+tile pattern: {{{.*, .*,.*,
+.*,bsh,.*,
+.*, .*,.*}}}
+tile pattern: {{{.*, .*,.*,
+  ,spk,  ,
+.*, .*,.*}}}
+tile pattern: {{{.*, .*, .*,
+spk,spk,   ,
+ .*, .*, .*}}}
+tile pattern: {{{.*, .*, .*,
+  ,spk,spk,
+.*, .*, .*}}}
+tile pattern: {{{.*, .*,.*,
+.*,spk,.*,
+.*, .*,.*}}}
+tile pattern: {{{.*, .*,.*,
+  ,spu,  ,
+.*, .*,.*}}}
+tile pattern: {{{.*, .*, .*,
+spu,spu,   ,
+ .*, .*, .*}}}
+tile pattern: {{{.*, .*, .*,
+  ,spu,spu,
+.*, .*, .*}}}
+tile pattern: {{{.*, .*,.*,
+.*,spu,.*,
+.*, .*,.*}}}
+tile pattern: {{{.*,   ,.*,
+.*,spl,.*,
+.*,   ,.*}}}
+tile pattern: {{{.*,   , .*,
+ .*,spl, .*,
+ .*,spl, .*}}}
+tile pattern: {{{.*,spl, .*,
+.*,spl, .*,
+.*,   , .*}}}
+tile pattern: {{{.*, .*,.*,
+.*,spl,.*,
+.*, .*,.*}}}
+tile pattern: {{{.*,   ,.*,
+.*,spr,.*,
+.*,   ,.*}}}
+tile pattern: {{{.*,   , .*,
+ .*,spr, .*,
+ .*,spr, .*}}}
+tile pattern: {{{.*,spr, .*,
+.*,spr, .*,
+.*,   , .*}}}
+tile pattern: {{{.*, .*,.*,
+.*,spr,.*,
+.*, .*,.*}}}
+tile pattern: {{{,  ,  ,
+pl,pl,pl,
+.*,.*,.*}}}
+tile pattern: {{{,  ,  ,
+  ,pl,pl,
+.*,.*,.*}}}
+tile pattern: {{{,  ,  ,
+pl,pl,  ,
+.*,.*,.*}}}
+tile pattern: {{{.*, .*, .*,
+ .*,brg, .*,
+ .*, .*, .*}}}
+tile pattern: {{{.*, .*, .*,
+ .*,sld, .*,
+ .*, .*, .*}}}
+tile pattern: {{{.*, .*, .*,
+ .*,slb, .*,
+ .*, .*, .*}}}
+tile pattern: {{{sgn}}}
+tile pattern: {{{,fnc,fnc}}}
+tile pattern: {{{fnc}}}
+tile pattern: {{{.*,fnf,fnf}}}
+tile pattern: {{{fnf}}}
+tile pattern: {{{.*,   , .*,
+ .*,rht, .*,
+ .*, .*, .*}}}
+tile pattern: {{{.*,rht, .*,
+ .*,rht, .*,
+ .*, .*, .*}}}
+tile pattern: {{{.*,   , .*,
+ .*,ght, .*,
+ .*, .*, .*}}}
+tile pattern: {{{.*,ght, .*,
+ .*,ght, .*,
+ .*, .*, .*}}}
+tile pattern: {{{.*,   , .*,
+ .*,fht, .*,
+ .*, .*, .*}}}
+tile pattern: {{{.*,fht, .*,
+ .*,fht, .*,
+ .*, .*, .*}}}
+tile pattern: {{{.*  ,  ,.*  ,
+[gd],d ,[gd],
+.*  ,  ,.*}}}
+tile pattern: {{{.*  ,    ,.*  ,
+[gd],  g ,[gd],
+    ,[gd],}}}
+tile pattern: {{{.*  ,    ,.*  ,
+[gd],  d ,[gd],
+    ,[gd],}}}
+tile pattern: {{{,[gd],    ,
+[gd],[gd],[gd],
+.*  ,    ,.*}}}
+tile pattern: {{{.*,  ,.*  ,
+  ,d ,[dg],
+.*,  ,.*}}}
+tile pattern: {{{,    ,[gd]?,
+    , g  ,[gd] ,
+[gd],[gd],[gd]}}}
+tile pattern: {{{,    ,[gd]?,
+    ,  d ,[gd] ,
+[gd],[gd],[gd]}}}
+tile pattern: {{{.*,  ,.*,
+  , g,  ,
+.*,  ,.*}}}
+tile pattern: {{{.*,  ,.*,
+  , d,  ,
+.*,  ,.*}}}
+tile pattern: {{{.*  ,    , .*  ,
+     , g  ,     ,
+[gd]?,[gd],[gd]?}}}
+tile pattern: {{{.*  ,    , .*  ,
+     ,  d ,     ,
+[gd]?,[gd],[gd]?}}}
+tile pattern: {{{[gd]?   ,[gd]?, [gd]?  ,
+        ,     ,        ,
+(brg)?  , g   ,(brg)?}}}
+tile pattern: {{{[gd]?,[gd],[gd]?,
+     ,[gd],     ,
+[gd]?,[gd],[gd]?}}}
+tile pattern: {{{[gd]?,[gd],[gd]?,
+     ,[gd],     ,
+.*   ,    ,.*}}}
+tile pattern: {{{.*    ,    ,[gd]?,
+(brg)?, g  ,[gd],
+[gd]? ,[gd],[gd]}}}
+tile pattern: {{{.*    ,    ,[gd]?,
+(brg)?,  d ,[gd] ,
+[gd]? ,[gd],[gd]}}}
+tile pattern: {{{.*   ,    ,[gd]?,
+(brg)?,  g ,[gd] ,
+[gd]? ,[gd],}}}
+tile pattern: {{{.*   ,    ,[gd]?,
+(brg)?,  d ,[gd] ,
+[gd]? ,[gd],}}}
+tile pattern: {{{,[gd],    ,
+[gd],[gd],[gd],
+    ,[gd],}}}
+tile pattern: {{{[gd],[gd],    ,
+[gd],[gd],[gd],
+    ,[gd],[gd]}}}
+tile pattern: {{{,[gd],    ,
+[gd],[gd],[gd],
+[gd],[gd],[gd]}}}
+tile pattern: {{{[gd],[gd],[gd],
+[gd],[gd],[gd],
+    ,[gd],}}}
+tile pattern: {{{,[gd],[gd],
+[gd],[gd],[gd],
+    ,[gd],[gd]}}}
+tile pattern: {{{[gd],[gd],[gd],
+[gd],[gd],[gd],
+    ,[gd],[gd]}}}
+tile pattern: {{{,[gd],[gd],
+[gd],[gd],[gd],
+[gd],[gd],[gd]}}}
+tile pattern: {{{,[gd],[gd],
+[gd],[gd],[gd],
+    ,[gd],}}}
+tile pattern: {{{,[gd],    ,
+[gd],[gd],[gd],
+    ,[gd],[gd]}}}
+tile pattern: {{{,[gd], [gd],
+ [gd],[gd], [gd],
+   .*,    , .*}}}
+tile pattern: {{{.*,[gd], .*  ,
+ [gd],[gd], [gd],
+   .*,    , .*}}}
+tile pattern: {{{[gd]?, [gd], [gd],
+     , [gd], [gd],
+.*   ,     , .*}}}
+tile pattern: {{{[gd]?, [gd],     ,
+     , [gd], [gd],
+ .*  ,     , .*}}}
+tile pattern: {{{[gd],[gd],[gd],
+[gd],[gd],[gd],
+[gd],[gd],[gd]}}}
+tile pattern: {{{[gd],[gd],.*   ,
+[gd],[gd],     ,
+    ,[gd],.*}}}
+tile pattern: {{{,[gd],.*   ,
+[gd],[gd],     ,
+[gd],[gd],.*}}}
+tile pattern: {{{,[gd],.*,
+[gd],[gd],  ,
+    ,[gd],.*}}}
+tile pattern: {{{.*,[gd],.*  ,
+   ,[gd],[gd],
+ .*,[gd],.*}}}
+tile pattern: {{{[gd]?,  , [gd]?,
+[gd] , g, [gd] ,
+[gd]?,  , [gd]?}}}
+tile pattern: {{{.*,  ,[gd]?,
+  , g,[gd] ,
+.*,  ,[gd]?}}}
+tile pattern: {{{[gd]?,[gd]?,[gd]?,
+[gd]?,     ,[gd]?,
+[gd] , g   ,[gd]}}}
+tile pattern: {{{[gd]?,[gd]?,[gd]? ,
+[gd]?,     ,[gd]? ,
+[gd] , g   ,(brg)?,
+[gd]?,[gd]?,}}}
+tile pattern: {{{[gd]?,[gd]?,[gd]? ,
+[gd]?,     ,[gd]? ,
+[gd] , g   ,(brg)?,
+     ,[gd]?,[gd]}}}
+tile pattern: {{{[gd]?,[gd]?,[gd]? ,
+[gd]?,     ,[gd]? ,
+[gd] , g   ,(brg)?,
+[gd]?,     ,[gd]}}}
+tile pattern: {{{.*  ,    , .* ,
+[gd],  g ,[gd],
+    ,[gd],[gd]}}}
+tile pattern: {{{[gd]?,     ,[gd]?,
+[gd] , g   ,[gd] ,
+[gd]?,[gd]?,[gd]?}}}
+tile pattern: {{{.*  ,    , .* ,
+[gd],  d ,[gd],
+    ,[gd],[gd]}}}
+tile pattern: {{{[gd]?,     ,[gd]?,
+[gd] ,  d  ,[gd] ,
+[gd]?,[gd]?,[gd]?}}}
+tile pattern: {{{.*, .*, .*,
+ .*,  g, .*,
+ .*, .*, .*}}}
+tile pattern: {{{.* ,   ,.*  ,
+(cv),(cv),(cv),
+.* ,   ,.*}}}
+tile pattern: {{{.* ,   ,.*  ,
+(cv),(cv),(cv),
+   ,(cv),}}}
+tile pattern: {{{.* ,   ,.*  ,
+(cv),(cv),(cv),
+   ,(cv),}}}
+tile pattern: {{{.* ,   ,.*  ,
+   ,(cv),(cv),
+.* ,   ,.*}}}
+tile pattern: {{{,    ,(cv)?,
+   ,(cv),(cv),
+(cv),(cv),(cv)}}}
+tile pattern: {{{.*,   , .*,
+   ,(cv),   ,
+ .*,   , .*}}}
+tile pattern: {{{.*,   , .*,
+   ,(cv),   ,
+ .*,(cv), .*}}}
+tile pattern: {{{.*,(cv), .*,
+   ,(cv),   ,
+ .*,(cv), .*}}}
+tile pattern: {{{.*,(cv), .*,
+   ,(cv),   ,
+ .*,   , .*}}}
+tile pattern: {{{.*,   ,(cv)?,
+    ,(cv),(cv) ,
+(cv)?,(cv),(cv)}}}
+tile pattern: {{{.*,   ,(cv)?,
+    ,(cv),(cv) ,
+(cv)?,(cv),}}}
+tile pattern: {{{,(cv),   ,
+(cv),(cv),(cv) ,
+   ,(cv),}}}
+tile pattern: {{{(cv),(cv),   ,
+(cv),(cv),(cv),
+   ,(cv),(cv)}}}
+tile pattern: {{{,(cv),   ,
+(cv),(cv),(cv),
+(cv),(cv),(cv)}}}
+tile pattern: {{{(cv),(cv),(cv),
+(cv),(cv),(cv),
+   ,(cv),}}}
+tile pattern: {{{,(cv),(cv),
+(cv),(cv),(cv),
+   ,(cv),(cv)}}}
+tile pattern: {{{(cv),(cv),(cv),
+(cv),(cv),(cv),
+   ,(cv),(cv)}}}
+tile pattern: {{{,(cv),(cv),
+(cv),(cv),(cv),
+(cv),(cv),(cv)}}}
+tile pattern: {{{,(cv),(cv),
+(cv),(cv),(cv),
+   ,(cv),}}}
+tile pattern: {{{,(cv),   ,
+(cv),(cv),(cv),
+   ,(cv),(cv)}}}
+tile pattern: {{{,(cv),(cv),
+(cv),(cv),(cv),
+ .*,(cv), .*}}}
+tile pattern: {{{.* ,(cv), .*,
+(cv),(cv),(cv),
+ .*,   , .*}}}
+tile pattern: {{{(cv)?,(cv),(cv),
+    ,(cv),(cv),
+.*  ,   , .*}}}
+tile pattern: {{{(cv)?,(cv),   ,
+    ,(cv),(cv),
+.*  ,   , .*}}}
+tile pattern: {{{(cv),(cv),(cv),
+(cv),(cv),(cv),
+(cv),(cv),(cv)}}}
+tile pattern: {{{(cv),(cv),.* ,
+(cv),(cv),   ,
+   ,(cv),.*}}}
+tile pattern: {{{,(cv),.* ,
+(cv),(cv),   ,
+(cv),(cv),.*}}}
+tile pattern: {{{,(cv),.* ,
+(cv),(cv),   ,
+   ,(cv),.*}}}
+tile pattern: {{{.* ,(cv),.* ,
+   ,(cv),(cv),
+.* ,(cv),.*}}}
+tile pattern: {{{.* ,   ,.* ,
+(cv),(cv),(cv),
+   ,(cv),(cv)}}}
+tile pattern: {{{(cv)?,    ,(cv)?,
+(cv) ,(cv) ,(cv) ,
+(cv)?,(cv)?,(cv)?}}}
+tile pattern: {{{.*,sup, .*,
+sup,sup,sup,
+ .*,sup, .*}}}
+tile pattern: {{{.*,sup, .*,
+sup,sup,   ,
+ .*,   , .*}}}
+tile pattern: {{{.*,   , .*,
+sup,sup,   ,
+ .*,sup, .*}}}
+tile pattern: {{{.*,   , .*,
+sup,sup,sup,
+ .*,sup, .*}}}
+tile pattern: {{{.*,sup, .*,
+sup,sup,sup,
+ .*,   , .*}}}
+tile pattern: {{{.*,   , .*,
+ .*,sup,sup,
+ .*,   , .*}}}
+tile pattern: {{{.*,   , .*,
+sup,sup, .*,
+ .*,   , .*}}}
+tile pattern: {{{.*, .*, .*,
+ .*,sup, .*,
+ .*, .*, .*}}}
+tile pattern: {{{.* ,   ,.*  ,
+(cst),(cst),(cst),
+.* ,   ,.*}}}
+tile pattern: {{{.* ,   ,.*  ,
+(cst),(cst),(cst),
+   ,(cst),}}}
+tile pattern: {{{.* ,   ,.*  ,
+(cst),(cst),(cst),
+   ,(cst),}}}
+tile pattern: {{{.* ,   ,.*  ,
+   ,(cst),(cst),
+.* ,   ,.*}}}
+tile pattern: {{{,    ,(cst)?,
+   ,(cst),(cst),
+(cst),(cst),(cst)}}}
+tile pattern: {{{.*,   , .*,
+   ,(cst),   ,
+ .*,   , .*}}}
+tile pattern: {{{.*,   , .*,
+   ,(cst),   ,
+ .*,(cst), .*}}}
+tile pattern: {{{.*,(cst), .*,
+   ,(cst),   ,
+ .*,(cst), .*}}}
+tile pattern: {{{.*,(cst), .*,
+   ,(cst),   ,
+ .*,   , .*}}}
+tile pattern: {{{.*,   ,(cst)?,
+    ,(cst),(cst) ,
+(cst)?,(cst),(cst)}}}
+tile pattern: {{{.*,   ,(cst)?,
+    ,(cst),(cst) ,
+(cst)?,(cst),}}}
+tile pattern: {{{,(cst),   ,
+(cst),(cst),(cst) ,
+   ,(cst),}}}
+tile pattern: {{{(cst),(cst),   ,
+(cst),(cst),(cst),
+   ,(cst),(cst)}}}
+tile pattern: {{{,(cst),   ,
+(cst),(cst),(cst),
+(cst),(cst),(cst)}}}
+tile pattern: {{{(cst),(cst),(cst),
+(cst),(cst),(cst),
+   ,(cst),}}}
+tile pattern: {{{,(cst),(cst),
+(cst),(cst),(cst),
+   ,(cst),(cst)}}}
+tile pattern: {{{(cst),(cst),(cst),
+(cst),(cst),(cst),
+   ,(cst),(cst)}}}
+tile pattern: {{{,(cst),(cst),
+(cst),(cst),(cst),
+(cst),(cst),(cst)}}}
+tile pattern: {{{,(cst),(cst),
+(cst),(cst),(cst),
+   ,(cst),}}}
+tile pattern: {{{,(cst),   ,
+(cst),(cst),(cst),
+   ,(cst),(cst)}}}
+tile pattern: {{{,(cst),(cst),
+(cst),(cst),(cst),
+ .*,(cst), .*}}}
+tile pattern: {{{.* ,(cst), .*,
+(cst),(cst),(cst),
+ .*,   , .*}}}
+tile pattern: {{{(cst)?,(cst),(cst),
+    ,(cst),(cst),
+.*  ,   , .*}}}
+tile pattern: {{{(cst)?,(cst),   ,
+    ,(cst),(cst),
+.*  ,   , .*}}}
+tile pattern: {{{(cst),(cst),(cst),
+(cst),(cst),(cst),
+(cst),(cst),(cst)}}}
+tile pattern: {{{(cst),(cst),.* ,
+(cst),(cst),   ,
+   ,(cst),.*}}}
+tile pattern: {{{,(cst),.* ,
+(cst),(cst),   ,
+(cst),(cst),.*}}}
+tile pattern: {{{,(cst),.* ,
+(cst),(cst),   ,
+   ,(cst),.*}}}
+tile pattern: {{{.* ,(cst),.* ,
+   ,(cst),(cst),
+.* ,(cst),.*}}}
+tile pattern: {{{.* ,   ,.* ,
+(cst),(cst),(cst),
+   ,(cst),(cst)}}}
+tile pattern: {{{(cst)?,    ,(cst)?,
+(cst) ,(cst) ,(cst) ,
+(cst)?,(cst)?,(cst)?}}}
+tile pattern: {{{.* ,   ,.*  ,
+(lme),(lme),(lme),
+.* ,   ,.*}}}
+tile pattern: {{{.* ,   ,.*  ,
+(lme),(lme),(lme),
+   ,(lme),}}}
+tile pattern: {{{.* ,   ,.*  ,
+(lme),(lme),(lme),
+   ,(lme),}}}
+tile pattern: {{{.* ,   ,.*  ,
+   ,(lme),(lme),
+.* ,   ,.*}}}
+tile pattern: {{{,    ,(lme)?,
+   ,(lme),(lme),
+(lme),(lme),(lme)}}}
+tile pattern: {{{.*,   , .*,
+   ,(lme),   ,
+ .*,   , .*}}}
+tile pattern: {{{.*,   , .*,
+   ,(lme),   ,
+ .*,(lme), .*}}}
+tile pattern: {{{.*,(lme), .*,
+   ,(lme),   ,
+ .*,(lme), .*}}}
+tile pattern: {{{.*,(lme), .*,
+   ,(lme),   ,
+ .*,   , .*}}}
+tile pattern: {{{.*,   ,(lme)?,
+    ,(lme),(lme) ,
+(lme)?,(lme),(lme)}}}
+tile pattern: {{{.*,   ,(lme)?,
+    ,(lme),(lme) ,
+(lme)?,(lme),}}}
+tile pattern: {{{,(lme),   ,
+(lme),(lme),(lme) ,
+   ,(lme),}}}
+tile pattern: {{{(lme),(lme),   ,
+(lme),(lme),(lme),
+   ,(lme),(lme)}}}
+tile pattern: {{{,(lme),   ,
+(lme),(lme),(lme),
+(lme),(lme),(lme)}}}
+tile pattern: {{{(lme),(lme),(lme),
+(lme),(lme),(lme),
+   ,(lme),}}}
+tile pattern: {{{,(lme),(lme),
+(lme),(lme),(lme),
+   ,(lme),(lme)}}}
+tile pattern: {{{(lme),(lme),(lme),
+(lme),(lme),(lme),
+   ,(lme),(lme)}}}
+tile pattern: {{{,(lme),(lme),
+(lme),(lme),(lme),
+(lme),(lme),(lme)}}}
+tile pattern: {{{,(lme),(lme),
+(lme),(lme),(lme),
+   ,(lme),}}}
+tile pattern: {{{,(lme),   ,
+(lme),(lme),(lme),
+   ,(lme),(lme)}}}
+tile pattern: {{{,(lme),(lme),
+(lme),(lme),(lme),
+ .*,(lme), .*}}}
+tile pattern: {{{.* ,(lme), .*,
+(lme),(lme),(lme),
+ .*,   , .*}}}
+tile pattern: {{{(lme)?,(lme),(lme),
+    ,(lme),(lme),
+.*  ,   , .*}}}
+tile pattern: {{{(lme)?,(lme),   ,
+    ,(lme),(lme),
+.*  ,   , .*}}}
+tile pattern: {{{(lme),(lme),(lme),
+(lme),(lme),(lme),
+(lme),(lme),(lme)}}}
+tile pattern: {{{(lme),(lme),.* ,
+(lme),(lme),   ,
+   ,(lme),.*}}}
+tile pattern: {{{,(lme),.* ,
+(lme),(lme),   ,
+(lme),(lme),.*}}}
+tile pattern: {{{,(lme),.* ,
+(lme),(lme),   ,
+   ,(lme),.*}}}
+tile pattern: {{{.* ,(lme),.* ,
+   ,(lme),(lme),
+.* ,(lme),.*}}}
+tile pattern: {{{.* ,   ,.* ,
+(lme),(lme),(lme),
+   ,(lme),(lme)}}}
+tile pattern: {{{(lme)?,    ,(lme)?,
+(lme) ,(lme) ,(lme) ,
+(lme)?,(lme)?,(lme)?}}}
+tile pattern: {{{.* ,   ,.*  ,
+(lmb),(lmb),(lmb),
+.* ,   ,.*}}}
+tile pattern: {{{.* ,   ,.*  ,
+(lmb),(lmb),(lmb),
+   ,(lmb),}}}
+tile pattern: {{{.* ,   ,.*  ,
+(lmb),(lmb),(lmb),
+   ,(lmb),}}}
+tile pattern: {{{.* ,   ,.*  ,
+   ,(lmb),(lmb),
+.* ,   ,.*}}}
+tile pattern: {{{,    ,(lmb)?,
+   ,(lmb),(lmb),
+(lmb),(lmb),(lmb)}}}
+tile pattern: {{{.*,   , .*,
+   ,(lmb),   ,
+ .*,   , .*}}}
+tile pattern: {{{.*,   , .*,
+   ,(lmb),   ,
+ .*,(lmb), .*}}}
+tile pattern: {{{.*,(lmb), .*,
+   ,(lmb),   ,
+ .*,(lmb), .*}}}
+tile pattern: {{{.*,(lmb), .*,
+   ,(lmb),   ,
+ .*,   , .*}}}
+tile pattern: {{{.*,   ,(lmb)?,
+    ,(lmb),(lmb) ,
+(lmb)?,(lmb),(lmb)}}}
+tile pattern: {{{.*,   ,(lmb)?,
+    ,(lmb),(lmb) ,
+(lmb)?,(lmb),}}}
+tile pattern: {{{,(lmb),   ,
+(lmb),(lmb),(lmb) ,
+   ,(lmb),}}}
+tile pattern: {{{(lmb),(lmb),   ,
+(lmb),(lmb),(lmb),
+   ,(lmb),(lmb)}}}
+tile pattern: {{{,(lmb),   ,
+(lmb),(lmb),(lmb),
+(lmb),(lmb),(lmb)}}}
+tile pattern: {{{(lmb),(lmb),(lmb),
+(lmb),(lmb),(lmb),
+   ,(lmb),}}}
+tile pattern: {{{,(lmb),(lmb),
+(lmb),(lmb),(lmb),
+   ,(lmb),(lmb)}}}
+tile pattern: {{{(lmb),(lmb),(lmb),
+(lmb),(lmb),(lmb),
+   ,(lmb),(lmb)}}}
+tile pattern: {{{,(lmb),(lmb),
+(lmb),(lmb),(lmb),
+(lmb),(lmb),(lmb)}}}
+tile pattern: {{{,(lmb),(lmb),
+(lmb),(lmb),(lmb),
+   ,(lmb),}}}
+tile pattern: {{{,(lmb),   ,
+(lmb),(lmb),(lmb),
+   ,(lmb),(lmb)}}}
+tile pattern: {{{,(lmb),(lmb),
+(lmb),(lmb),(lmb),
+ .*,(lmb), .*}}}
+tile pattern: {{{.* ,(lmb), .*,
+(lmb),(lmb),(lmb),
+ .*,   , .*}}}
+tile pattern: {{{(lmb)?,(lmb),(lmb),
+    ,(lmb),(lmb),
+.*  ,   , .*}}}
+tile pattern: {{{(lmb)?,(lmb),   ,
+    ,(lmb),(lmb),
+.*  ,   , .*}}}
+tile pattern: {{{(lmb),(lmb),(lmb),
+(lmb),(lmb),(lmb),
+(lmb),(lmb),(lmb)}}}
+tile pattern: {{{(lmb),(lmb),.* ,
+(lmb),(lmb),   ,
+   ,(lmb),.*}}}
+tile pattern: {{{,(lmb),.* ,
+(lmb),(lmb),   ,
+(lmb),(lmb),.*}}}
+tile pattern: {{{,(lmb),.* ,
+(lmb),(lmb),   ,
+   ,(lmb),.*}}}
+tile pattern: {{{.* ,(lmb),.* ,
+   ,(lmb),(lmb),
+.* ,(lmb),.*}}}
+tile pattern: {{{.* ,   ,.* ,
+(lmb),(lmb),(lmb),
+   ,(lmb),(lmb)}}}
+tile pattern: {{{(lmb)?,    ,(lmb)?,
+(lmb) ,(lmb) ,(lmb) ,
+(lmb)?,(lmb)?,(lmb)?}}}
+building...712
+done building...712
+build tiles...
+done build tiles: 3608 62
+LAYER -12 BUILT 16 tiles
+build tiles...
+done build tiles: 4914 118
+LAYER -3 BUILT 337 tiles
+build tiles...
+done build tiles: 7440 123
+LAYER -2 BUILT 3 tiles
+build tiles...
+done build tiles: 10230 172
+LAYER -1 BUILT 232 tiles
+build tiles...
+done build tiles: 11352 507
+LAYER 1 BUILT 3762 tiles
+build tiles...
+done build tiles: 6279 105
+LAYER 2 BUILT 3 tiles
+build tiles...
+done build tiles: 9796 162
+LAYER 3 BUILT 37 tiles
+FN: 'if' 2
+FN: 'if' 2
+FN: 'if' 2
+FN: 'if' 2
+FN: 'if' 2
+FN: 'if' 2
+FN: 'if' 2
+FN: 'if' 2
+FN: 'if' 2
+FN: 'if' 2
+FN: 'if' 2
+FN: 'if' 2
+FN: 'if' 2
+FN: 'if' 2
+FN: 'if' 2
+FN: 'null' 4
+FN: 'if' 2
+FN: 'null' 4
+FN: 'if' 2
+FN: 'null' 4
+FN: 'if' 2
+FN: 'null' 4
+FN: 'if' 2
+FN: 'null' 4
+FN: 'if' 2
+FN: 'null' 4
+FN: 'if' 2
+loading image './images/treeline1.png'
+loading image './images/treeline2.png'
+active: 21/64
+execute command..
+process: 1
+loading image './images/statusbar.png'
+wait: 11
+active: 21/64
+execute command..
+process: 0
+wait: 20
+active: 21/64
+execute command..
+process: 0
+wait: 20
+active: 21/64
+execute command..
+process: 0
+wait: 20
+active: 21/64
+execute command..
+process: 0
+wait: 20
+active: 21/64
+execute command..
+process: 0
+wait: 20
+active: 21/64
+execute command..
+process: 0
+wait: 20
+active: 21/64
+execute command..
+process: 0
+wait: 20
+active: 21/64
+execute command..
+process: 0
+wait: 20
+active: 21/64
+execute command..
+process: 0
+wait: 20
+active: 21/64
+execute command..
+process: 0
+wait: 20
+active: 21/64
+execute command..
+execute command..
+executing!
+execute command..
+process: 1
+wait: 19
+active: 21/64
+execute command..
+process: 0
+wait: 20
+active: 21/64
+execute command..
+process: 0
+wait: 20
+active: 21/64
+execute command..
+process: 0
+wait: 20
+active: 21/64
+execute command..
+process: 0
+wait: 20
+active: 21/64
+execute command..
+process: 0
+wait: 20
+active: 21/64
+execute command..
+process: 0
+wait: 20
+active: 21/64
+execute command..
+process: 0
+wait: 20
+active: 21/64
+execute command..
+process: 0
+wait: 20
+active: 21/64
+execute command..
+process: 0
+wait: 19
+active: 21/64
+execute command..
+process: 0
+wait: 19
+active: 21/64
+execute command..
+process: 0
+wait: 19
+active: 21/64
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 19
+active: 20/64
+execute command..
+process: 0
+wait: 19
+active: 20/64
+execute command..
+process: 0
+wait: 19
+active: 20/64
+execute command..
+process: 0
+wait: 19
+active: 20/64
+execute command..
+process: 0
+wait: 19
+active: 20/64
+execute command..
+process: 0
+wait: 19
+active: 20/64
+execute command..
+process: 0
+wait: 19
+active: 20/64
+execute command..
+process: 0
+wait: 20
+active: 20/64
+execute command..
+process: 0
+wait: 19
+active: 20/64
+execute command..
+process: 0
+wait: 19
+active: 20/64
+execute command..
+process: 5
+wait: 15
+active: 20/64
+execute command..
+process: 0
+wait: 20
+active: 20/64
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 20/64
+execute command..
+process: 0
+wait: 20
+active: 20/64
+execute command..
+process: 0
+wait: 20
+active: 20/64
+execute command..
+process: 0
+wait: 19
+active: 20/64
+execute command..
+process: 0
+wait: 19
+active: 20/64
+execute command..
+process: 0
+wait: 19
+active: 20/64
+execute command..
+process: 0
+wait: 19
+active: 20/64
+execute command..
+process: 0
+wait: 19
+active: 20/64
+execute command..
+process: 0
+wait: 19
+active: 20/64
+execute command..
+process: 0
+wait: 19
+active: 20/64
+execute command..
+process: 0
+wait: 19
+active: 20/64
+execute command..
+process: 0
+wait: 19
+active: 21/64
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 23/64
+execute command..
+process: 0
+wait: 19
+active: 23/64
+execute command..
+process: 0
+wait: 20
+active: 23/64
+execute command..
+process: 0
+wait: 19
+active: 23/64
+execute command..
+process: 0
+wait: 19
+active: 23/64
+execute command..
+process: 0
+wait: 19
+active: 23/64
+execute command..
+process: 0
+wait: 20
+active: 23/64
+execute command..
+process: 0
+wait: 19
+active: 23/64
+execute command..
+process: 0
+wait: 20
+active: 23/64
+execute command..
+process: 0
+wait: 19
+active: 23/64
+execute command..
+process: 0
+wait: 19
+active: 23/64
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 1
+wait: 18
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+executing!
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+executing!
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 23/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 23/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 23/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 23/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 18
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 14
+active: 24/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 3
+wait: 17
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+PLAY SOUND: 'punch.ogg'
+process: 10
+wait: 9
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 23/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 23/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 19
+active: 23/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 23/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 23/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 23/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 18
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 24/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 24/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+executing!
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+PUSH_BACK!
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+PUSH_BACK!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+PLAY SOUND: 'frogatto-jump.wav'
+process: 1
+wait: 18
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 18
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 1
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 1
+wait: 19
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 18
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 18
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 1
+wait: 18
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 18
+active: 25/64
+execute command..
+execute command..
+process: 1
+wait: 17
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 18
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+executing!
+execute command..
+process: 0
+wait: 18
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 2
+wait: 16
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 18
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 1
+wait: 17
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 1
+wait: 18
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 17
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+executing!
+process: 0
+wait: 18
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 18
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 1
+wait: 17
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 18
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+execute command..
+executing!
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+executing!
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 19
+active: 25/64
+execute command..
+execute command..
+process: 0
+wait: 20
+quitting...
+quit called...

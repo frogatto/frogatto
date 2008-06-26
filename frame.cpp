@@ -1,0 +1,143 @@
+#include <iostream>
+
+#include <boost/lexical_cast.hpp>
+
+#include "foreach.hpp"
+#include "frame.hpp"
+#include "raster.hpp"
+#include "sound.hpp"
+#include "string_utils.hpp"
+#include "texture.hpp"
+#include "wml_node.hpp"
+#include "wml_utils.hpp"
+
+frame::frame(wml::const_node_ptr node)
+   : texture_(graphics::texture::get(node->attr("image"), node->attr("image_formula"))),
+     collide_rect_(node->has_attr("collide") ? rect(node->attr("collide")) :
+	               rect(wml::get_int(node, "collide_x"),
+                        wml::get_int(node, "collide_y"),
+                        wml::get_int(node, "collide_w"),
+                        wml::get_int(node, "collide_h"))),
+	 hit_rect_(node->has_attr("hit") ? rect(node->attr("hit")) :
+	               rect(wml::get_int(node, "hit_x"),
+				        wml::get_int(node, "hit_y"),
+				        wml::get_int(node, "hit_w"),
+				        wml::get_int(node, "hit_h"))),
+	 platform_rect_(node->has_attr("platform") ? rect(node->attr("platform")) :
+	                rect(wml::get_int(node, "platform_x"),
+	                     wml::get_int(node, "platform_y"),
+	                     wml::get_int(node, "platform_w"), 1)),
+	 img_rect_(node->has_attr("rect") ? rect(node->attr("rect")) :
+	           rect(wml::get_int(node, "x"),
+	                wml::get_int(node, "y"),
+	                wml::get_int(node, "w", texture_.width()),
+	                wml::get_int(node, "h", texture_.height()))),
+	 feet_x_(wml::get_int(node, "feet_x")),
+	 feet_y_(wml::get_int(node, "feet_y")),
+	 accel_x_(wml::get_int(node, "accel_x")),
+	 accel_y_(wml::get_int(node, "accel_y")),
+	 velocity_x_(wml::get_int(node, "velocity_x")),
+	 velocity_y_(wml::get_int(node, "velocity_y")),
+	 nframes_(wml::get_int(node, "frames", 1)),
+	 frame_time_(wml::get_int(node, "duration", -1)),
+	 reverse_frame_(wml::get_bool(node, "reverse")),
+	 scale_(wml::get_int(node, "scale", 2)),
+	 pad_(wml::get_int(node, "pad")),
+	 rotate_(wml::get_int(node, "rotate")),
+	 blur_(wml::get_int(node, "blur")),
+	 rotate_on_slope_(wml::get_bool(node, "rotate_on_slope")),
+	 sound_(node->attr("sound"))
+{
+	std::vector<std::string> hit_frames = util::split((*node)["hit_frames"]);
+	foreach(const std::string& f, hit_frames) {
+		hit_frames_.push_back(boost::lexical_cast<int>(f));
+	}
+
+	const std::string& events = node->attr("events");
+	if(!events.empty()) {
+		std::vector<std::string> event_vector = util::split(events);
+		std::map<int, std::string> event_map;
+		foreach(const std::string& e, event_vector) {
+			std::vector<std::string> time_event = util::split(events, ':');
+			if(time_event.size() != 2) {
+				continue;
+			}
+
+			const int time = atoi(time_event.front().c_str());
+			const std::string& event = time_event.back();
+			event_map[time] = event;
+		}
+
+		typedef std::pair<int,std::string> event_pair;
+		foreach(const event_pair& p, event_map) {
+			event_frames_.push_back(p.first);
+			event_names_.push_back(p.second);
+		}
+	}
+}
+
+void frame::play_sound() const
+{
+	if(sound_.empty() == false) {
+		std::cerr << "PLAY SOUND: '" << sound_ << "'\n";
+		sound::play(sound_);
+	}
+}
+
+void frame::draw(int x, int y, bool face_right, int time, int rotate) const
+{
+	const int frame_num = frame_number(time);
+
+	graphics::blit_texture(texture_, x, y, width()*(face_right ? 1 : -1), height(), rotate + (face_right ? rotate_ : -rotate_),
+	  GLfloat(img_rect_.x() + frame_num*(img_rect_.w()+pad_))/GLfloat(texture_.width()),
+	  GLfloat(img_rect_.y())/GLfloat(texture_.height()),
+	  GLfloat(img_rect_.x() + frame_num*(img_rect_.w()+pad_) + img_rect_.w())/GLfloat(texture_.width()),
+	  GLfloat(img_rect_.y() + img_rect_.h())/GLfloat(texture_.height()));
+}
+
+int frame::duration() const
+{
+	return (nframes_ + (reverse_frame_ ? nframes_ : 0))*frame_time_;
+}
+
+bool frame::hit(int time_in_frame) const
+{
+	if(hit_frames_.empty()) {
+		return false;
+	}
+
+	return std::find(hit_frames_.begin(), hit_frames_.end(), frame_number(time_in_frame)) != hit_frames_.end();
+}
+
+int frame::frame_number(int time) const
+{
+	int frame_num = 0;
+	if(frame_time_ > 0 && nframes_ >= 1) {
+		if(time >= duration()) {
+			frame_num = nframes_-1;
+		} else {
+			frame_num = time/frame_time_;
+		}
+
+		//if we are in reverse now
+		if(frame_num >= nframes_) {
+			frame_num = nframes_ - 1 - (frame_num - nframes_);
+		}
+	}
+
+	return frame_num;
+}
+
+const std::string* frame::get_event(int time_in_frame) const
+{
+	if(event_frames_.empty()) {
+		return NULL;
+	}
+
+	std::vector<int>::const_iterator i = std::find(event_frames_.begin(), event_frames_.end(), time_in_frame);
+	if(i == event_frames_.end()) {
+		return NULL;
+	}
+
+	return &event_names_[i - event_frames_.begin()];
+}

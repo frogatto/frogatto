@@ -1,0 +1,906 @@
+#include <algorithm>
+#include <iostream>
+
+#include "draw_tile.hpp"
+#include "entity.hpp"
+#include "filesystem.hpp"
+#include "foreach.hpp"
+#include "formatter.hpp"
+#include "level.hpp"
+#include "level_object.hpp"
+#include "raster.hpp"
+#include "tile_map.hpp"
+#include "wml_node.hpp"
+#include "wml_parser.hpp"
+#include "wml_utils.hpp"
+
+level::level(const std::string& level_cfg)
+	: id_(level_cfg), save_point_x_(-1), save_point_y_(-1),
+	  editor_(false), air_resistance_(5), end_game_(false)
+{
+	wml::const_node_ptr node(wml::parse_wml(sys::read_file(level_cfg)));
+	cycle_ = wml::get_int(node, "cycle");
+	title_ = node->attr("title");
+	boundaries_ = rect(0, 0, wml::get_int(node, "width"), wml::get_int(node, "height"));
+	xscale_ = wml::get_int(node, "xscale", 100);
+	yscale_ = wml::get_int(node, "yscale", 100);
+	auto_move_camera_ = point(node->attr("auto_move_camera"));
+	air_resistance_ = wml::get_int(node, "air_resistance", 5);
+
+	camera_rotation_ = game_logic::formula::create_optional_formula(node->attr("camera_rotation"));
+
+	turn_reference_counting_off();
+
+	wml::node::const_child_iterator r1 = node->begin_child("solid_rect");
+	wml::node::const_child_iterator r2 = node->end_child("solid_rect");
+	for(; r1 != r2; ++r1) {
+		solid_rect r;
+		r.r = rect(r1->second->attr("rect"));
+		r.friction = wml::get_int(r1->second, "friction", 20);
+		r.damage = wml::get_int(r1->second, "damage");
+		solid_rects_.push_back(r);
+		add_solid_rect(r.r.x(), r.r.y(), r.r.x2(), r.r.y2(), r.friction, r.damage);
+	}
+
+	std::cerr << "building..." << SDL_GetTicks() << "\n";
+	wml::node::const_child_iterator t1 = node->begin_child("tile");
+	wml::node::const_child_iterator t2 = node->end_child("tile");
+	widest_tile_ = 0;
+	highest_tile_ = 0;
+	for(; t1 != t2; ++t1) {
+		const level_tile t = level_object::build_tile(t1->second);
+		tiles_.push_back(t);
+		layers_.insert(t.zorder);
+		add_tile_solid(t);
+	}
+	std::cerr << "done building..." << SDL_GetTicks() << "\n";
+
+	t1 = node->begin_child("tile_map");
+	t2 = node->end_child("tile_map");
+	int begin_tile_index = tiles_.size();
+	for(; t1 != t2; ++t1) {
+		tile_map m(t1->second);
+		tile_maps_[m.zorder()] = m;
+		const int before = tiles_.size();
+		tile_maps_[m.zorder()].build_tiles(&tiles_);
+		std::cerr << "LAYER " << m.zorder() << " BUILT " << (tiles_.size() - before) << " tiles\n";
+	}
+
+	for(int i = begin_tile_index; i != tiles_.size(); ++i) {
+		add_tile_solid(tiles_[i]);
+		layers_.insert(tiles_[i].zorder);
+	}
+
+	std::sort(tiles_.begin(), tiles_.end(), level_tile_zorder_pos_comparer());
+
+	wml::node::const_child_iterator c1 = node->begin_child("character");
+	wml::node::const_child_iterator c2 = node->end_child("character");
+	for(; c1 != c2; ++c1) {
+		chars_.push_back(entity::build(c1->second));
+		if(chars_.back()->is_human()) {
+			player_ = chars_.back()->is_human();
+		}
+
+		const int group = chars_.back()->group();
+		if(group >= 0) {
+			if(group >= groups_.size()) {
+				groups_.resize(group + 1);
+			}
+
+			groups_[group].push_back(chars_.back());
+		}
+	}
+
+	wml::node::const_child_iterator i1 = node->begin_child("item");
+	wml::node::const_child_iterator i2 = node->end_child("item");
+	for(; i1 != i2; ++i1) {
+		items_.push_back(item_ptr(new item(i1->second)));
+	}
+
+	wml::node::const_child_iterator p1 = node->begin_child("portal");
+	wml::node::const_child_iterator p2 = node->end_child("portal");
+	for(; p1 != p2; ++p1) {
+		portal p;
+		p.area = rect(p1->second->attr("rect"));
+		p.level_dest = p1->second->attr("level");
+		p.dest = point(p1->second->attr("dest"));
+		p.dest_starting_pos = false;
+		p.automatic = wml::get_bool(p1->second, "automatic", true);
+		portals_.push_back(p);
+	}
+
+	if(node->has_attr("next_level")) {
+		portal p;
+		p.area = rect(boundaries_.x2(), 0, 1000, boundaries_.h());
+		p.level_dest = node->attr("next_level");
+		p.dest_starting_pos = true;
+		p.automatic = true;
+		portals_.push_back(p);
+	}
+
+	wml::const_node_ptr bg = node->get_child("background");
+	if(bg) {
+		background_.reset(new background(bg));
+	}
+}
+
+void level::load_save_point(const level& lvl)
+{
+	if(lvl.save_point_x_ < 0) {
+		return;
+	}
+
+	save_point_x_ = lvl.save_point_x_;
+	save_point_y_ = lvl.save_point_y_;
+	if(player_) {
+		player_->set_pos(save_point_x_, save_point_y_);
+	}
+}
+
+void level::rebuild_tiles()
+{
+	std::cerr << "rebuild tiles...\n";
+	solid_.clear();
+	standable_.clear();
+	tiles_.clear();
+	for(std::map<int, tile_map>::const_iterator i = tile_maps_.begin(); i != tile_maps_.end(); ++i) {
+		std::cerr << "build tiles...\n";
+		i->second.build_tiles(&tiles_);
+	}
+
+	std::cerr << "adding solids...\n";
+
+	foreach(level_tile& t, tiles_) {
+		add_tile_solid(t);
+		layers_.insert(t.zorder);
+	}
+
+	std::cerr << "sorting...\n";
+
+	std::sort(tiles_.begin(), tiles_.end(), level_tile_zorder_pos_comparer());
+}
+
+int level::variations(int xtile, int ytile) const
+{
+	for(std::map<int, tile_map>::const_iterator i = tile_maps_.begin();
+	    i != tile_maps_.end(); ++i) {
+		const int var = i->second.get_variations(xtile, ytile);
+		if(var > 1) {
+			return var;
+		}
+	}
+
+	return 1;
+}
+
+void level::flip_variations(int xtile, int ytile)
+{
+	for(std::map<int, tile_map>::iterator i = tile_maps_.begin();
+	    i != tile_maps_.end(); ++i) {
+		std::cerr << "get_variations zorder: " << i->first << "\n";
+		if(i->second.get_variations(xtile, ytile) > 1) {
+			i->second.flip_variation(xtile, ytile);
+		}
+	}
+
+	rebuild_tiles_rect(rect(xtile*TileSize, ytile*TileSize, TileSize, TileSize));
+}
+
+namespace {
+struct TileInRect {
+	explicit TileInRect(const rect& r) : rect_(r)
+	{}
+
+	bool operator()(const level_tile& t) const {
+		return point_in_rect(point(t.x, t.y), rect_);
+	}
+
+	rect rect_;
+};
+}
+
+void level::rebuild_tiles_rect(const rect& r)
+{
+	for(int x = r.x(); x < r.x2(); x += TileSize) {
+		for(int y = r.y(); y < r.y2(); y += TileSize) {
+			tile_pos pos(x/TileSize, y/TileSize);
+			solid_.erase(pos);
+			standable_.erase(pos);
+		}
+	}
+
+	tiles_.erase(std::remove_if(tiles_.begin(), tiles_.end(), TileInRect(r)), tiles_.end());
+
+	std::vector<level_tile> tiles;
+	for(std::map<int, tile_map>::const_iterator i = tile_maps_.begin(); i != tile_maps_.end(); ++i) {
+		i->second.build_tiles(&tiles, &r);
+	}
+	
+	foreach(level_tile& t, tiles) {
+		add_tile_solid(t);
+		tiles_.push_back(t);
+		layers_.insert(t.zorder);
+	}
+
+	std::sort(tiles_.begin(), tiles_.end(), level_tile_zorder_pos_comparer());
+}
+
+wml::const_node_ptr level::write() const
+{
+	wml::node_ptr res(new wml::node("level"));
+	res->set_attr("title", title_);
+	if(cycle_) {
+		res->set_attr("cycle", formatter() << cycle_);
+	}
+	res->set_attr("width", formatter() << boundaries().w());
+	res->set_attr("height", formatter() << boundaries().h());
+
+	res->set_attr("xscale", formatter() << xscale_);
+	res->set_attr("yscale", formatter() << yscale_);
+	res->set_attr("auto_move_camera", auto_move_camera_.to_string());
+	res->set_attr("air_resistance", formatter() << air_resistance_);
+
+	if(camera_rotation_) {
+		res->set_attr("camera_rotation", camera_rotation_->str());
+	}
+
+	foreach(const solid_rect& r, solid_rects_) {
+		wml::node_ptr node(new wml::node("solid_rect"));
+		node->set_attr("rect", r.r.to_string());
+		node->set_attr("friction", formatter() << r.friction);
+		node->set_attr("damage", formatter() << r.damage);
+		res->add_child(node);
+	}
+
+	for(std::map<int, tile_map>::const_iterator i = tile_maps_.begin(); i != tile_maps_.end(); ++i) {
+		res->add_child(i->second.write());
+	}
+/*
+	foreach(const level_tile& tile, tiles_) {
+		wml::node_ptr t(new wml::node("tile"));
+		t->set_attr("x", formatter() << tile.x);
+		t->set_attr("y", formatter() << tile.y);
+		t->set_attr("zorder", formatter() << tile.zorder);
+		t->set_attr("tile", formatter() << tile.object->id());
+		t->set_attr("face_right", tile.face_right ? "true" : "false");
+		res->add_child(t);
+	}
+	*/
+
+	foreach(entity_ptr ch, chars_) {
+		res->add_child(ch->write());
+	}
+
+	foreach(item_ptr it, items_) {
+		if(it) {
+			res->add_child(it->write());
+		}
+	}
+
+	foreach(const portal& p, portals_) {
+		if(p.dest_starting_pos) {
+			res->set_attr("next_level", p.level_dest);
+			continue;
+		}
+		wml::node_ptr node(new wml::node("portal"));
+		node->set_attr("rect", p.area.to_string());
+		node->set_attr("level", p.level_dest);
+		node->set_attr("dest", p.dest.to_string());
+		node->set_attr("automatic", p.automatic ? "yes" : "no");
+		res->add_child(node);
+	}
+
+	if(background_) {
+		res->add_child(background_->write());
+	}
+
+	return res;
+}
+
+void level::draw_layer(int layer, int x, int y, int w, int h) const
+{
+	typedef std::vector<level_tile>::const_iterator itor;
+	std::pair<itor,itor> range = std::equal_range(tiles_.begin(), tiles_.end(), layer, level_tile_zorder_comparer());
+	itor t = std::lower_bound(range.first, range.second, x,
+	                          level_tile_x_pos_comparer());
+	int count = 0, total = 0;
+	while(t != tiles_.end() && t->zorder == layer && t->x < x + w) {
+		if(t->y > y && t->y < y + h) {
+			++count;
+			draw_tile(*t);
+		}
+		++t;
+		++total;
+	}
+}
+
+void level::draw(int x, int y, int w, int h) const
+{
+	const int ticks = SDL_GetTicks();
+	x -= widest_tile_;
+	y -= highest_tile_;
+	w += widest_tile_;
+	h += highest_tile_;
+
+	std::set<int>::const_iterator layer = layers_.begin();
+
+	for(; layer != layers_.end() && *layer < 0; ++layer) {
+		draw_layer(*layer, x, y, w, h);
+	}
+
+	foreach(item_ptr it, items_) {
+		if(it) {
+			it->draw();
+		}
+	}
+
+	foreach(entity_ptr c, chars_) {
+		if(!c->is_human()) {
+			c->draw();
+
+			if(editor_) {
+				c->draw_group();
+			}
+		}
+	}
+
+	if(player_) {
+		player_->draw();
+	}
+
+	for(; layer != layers_.end(); ++layer) {
+		draw_layer(*layer, x, y, w, h);
+	}
+}
+
+void level::draw_background(double x, double y) const
+{
+	if(background_) {
+		background_->draw(x, y);
+	}
+}
+
+void level::process()
+{
+	++cycle_;
+	const int ticks = SDL_GetTicks();
+	active_chars_.clear();
+	active_items_.clear();
+
+	if(!player_) {
+		return;
+	}
+
+	foreach(const entity_ptr& c, chars_) {
+		int distance_x = 0, distance_y = 0;
+		c->activation_distance(&distance_x, &distance_y);
+		if(std::abs(player_->x() - c->x()) < distance_x &&
+		   std::abs(player_->y() - c->y()) < distance_y) {
+			if(c->group() >= 0) {
+				assert(c->group() < groups_.size());
+				const entity_group& group = groups_[c->group()];
+				active_chars_.insert(active_chars_.end(), group.begin(), group.end());
+			} else {
+				active_chars_.push_back(c);
+			}
+		}
+	}
+
+	std::sort(active_chars_.begin(), active_chars_.end());
+	active_chars_.erase(std::unique(active_chars_.begin(), active_chars_.end()), active_chars_.end());
+
+	std::cerr << "active: " << active_chars_.size() << "/" << chars_.size() << "\n";
+
+	const int ActivationDistance = 700;
+	for(int n = 0; n != items_.size(); ++n) {
+		item_ptr& i = items_[n];
+		if(!i) {
+			continue;
+		}
+
+		if(i->destroyed()) {
+			i = NULL;
+			if(player_) {
+				assert(dynamic_cast<pc_character*>(player_.get()));
+				static_cast<pc_character*>(player_.get())->item_destroyed(id(), n);
+			}
+			continue;
+		}
+
+		if(std::abs(player_->x() - i->x()) < ActivationDistance) {
+			active_items_.push_back(i);
+		}
+	}
+
+	foreach(entity_ptr c, active_chars_) {
+		c->process(*this);
+		if(c->destroyed() && c != player_) {
+			chars_.erase(std::remove(chars_.begin(), chars_.end(), c), chars_.end());
+			if(c->group() >= 0) {
+				assert(c->group() < groups_.size());
+				entity_group& group = groups_[c->group()];
+				group.erase(std::remove(group.begin(), group.end(), c), group.end());
+			}
+		}
+	}
+
+	foreach(item_ptr i, active_items_) {
+		i->process(*this);
+	}
+	std::cerr << "process: " << (SDL_GetTicks() - ticks) << "\n";
+}
+
+bool level::is_solid(const solid_map& map, int x, int y, int* friction, int* damage) const
+{
+	tile_pos pos(x/TileSize, y/TileSize);
+	x = x%TileSize;
+	y = y%TileSize;
+	if(x < 0) {
+		pos.first--;
+		x += 32;
+	}
+
+	if(y < 0) {
+		pos.second--;
+		y += 32;
+	}
+
+	std::map<tile_pos, solid_info>::const_iterator i = map.find(pos);
+	if(i != map.end()) {
+		if(i->second.all_solid) {
+			if(friction) {
+				*friction = i->second.friction;
+			}
+
+			if(damage) {
+				*damage = i->second.damage;
+			}
+			return true;
+		}
+		
+		const int index = y*TileSize + x;
+		if(i->second.bitmap.test(index)) {
+			if(friction) {
+				*friction = i->second.friction;
+			}
+
+			if(damage) {
+				*damage = i->second.damage;
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	return false;
+}
+
+bool level::standable(int x, int y, int* friction, int* damage, int* adjust_y, entity_ptr* ch, const entity* exclude) const
+{
+	if(is_solid(solid_, x, y, friction, damage) ||
+	   is_solid(standable_, x, y, friction, damage)) {
+	   return true;
+	}
+
+	for(std::vector<entity_ptr>::const_iterator i = active_chars_.begin();
+	    i != active_chars_.end(); ++i) {
+		const entity_ptr& c = *i;
+		if(c != exclude && c->is_standable(x, y, friction, adjust_y)) {
+			if(ch) {
+				*ch = c;
+			}
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool level::solid(int x, int y, int* friction, int* damage) const
+{
+	return is_solid(solid_, x, y, friction, damage);
+}
+
+bool level::solid(const rect& r, int* friction, int* damage) const
+{
+	//TODO: consider optimizing this function.
+	const int ybegin = r.y();
+	const int yend = r.y2();
+	const int xbegin = r.x();
+	const int xend = r.x2();
+
+	for(int y = ybegin; y != yend; ++y) {
+		for(int x = xbegin; x != xend; ++x) {
+			if(solid(x, y, friction, damage)) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+entity_ptr level::collide(int x, int y, const entity* exclude) const
+{
+	entity_ptr res;
+	for(std::vector<entity_ptr>::const_iterator i = active_chars_.begin();
+	    i != active_chars_.end(); ++i) {
+		const entity_ptr& c = *i;
+		if(c.get() != exclude && c != player_ && !c->body_passthrough() &&
+		   c->point_collides(x,y)) {
+			res = c;
+			if(res->body_harmful()) {
+				return res;
+			}
+		}
+	}
+
+	return res;
+}
+
+entity_ptr level::collide(const rect& r, const entity* exclude) const
+{
+	for(std::vector<entity_ptr>::const_iterator i = active_chars_.begin();
+	    i != active_chars_.end(); ++i) {
+		const entity_ptr& c = *i;
+		if(c.get() != exclude && c != player_ && !c->body_passthrough() &&
+		   rects_intersect(r, c->body_rect())) {
+			return c;
+		}
+	}
+
+	return entity_ptr();
+}
+
+character_ptr level::hit_by_player(const rect& r) const
+{
+	if(!player_) {
+		return character_ptr();
+	}
+	
+	if(rects_intersect(r, player_->hit_rect())) {
+		return player_;
+	}
+
+	return character_ptr();
+}
+
+void level::add_tile(const level_tile& t)
+{
+	std::vector<level_tile>::iterator itor = std::lower_bound(tiles_.begin(), tiles_.end(), t, level_tile_zorder_comparer());
+	tiles_.insert(itor, t);
+	add_tile_solid(t);
+	layers_.insert(t.zorder);
+}
+
+void level::add_tile_rect(int zorder, int x1, int y1, int x2, int y2, const std::string& str)
+{
+	if(x1 > x2) {
+		std::swap(x1, x2);
+	}
+
+	if(y1 > y2) {
+		std::swap(y1, y2);
+	}
+
+	x1 = x1 - x1%32;
+	y1 = y1 - y1%32;
+	x2 = x2 - x2%32 + 32;
+	y2 = y2 - y2%32 + 32;
+
+	tile_map& m = tile_maps_[zorder];
+	m.set_zorder(zorder);
+	std::cerr << "add tile rect: " << x1 << "," << x2 << "," << y1 << "," << y2 << "\n";
+
+	bool changed = false;
+
+	for(int x = x1; x < x2; x += 32) {
+		std::cerr << "x: " << x << "\n";
+		for(int y = y1; y < y2; y += 32) {
+			std::cerr << "adding tile: " << x << "," << y << "\n";
+			changed = m.set_tile(x, y, str) || changed;
+		}
+	}
+
+	if(changed) {
+		rebuild_tiles_rect(rect(x1-32, y1-64, (x2 - x1) + 64, (y2 - y1) + 128));
+	}
+}
+
+void level::clear_tile_rect(int x1, int y1, int x2, int y2)
+{
+	for(std::set<int>::const_iterator i = layers_.begin(); i != layers_.end(); ++i) {
+		add_tile_rect(*i, x1, y1, x2, y2, "");
+	}
+}
+
+void level::add_tile_solid(const level_tile& t)
+{
+	if(t.object->width() > widest_tile_) {
+		widest_tile_ = t.object->width();
+	}
+
+	if(t.object->height() > highest_tile_) {
+		highest_tile_ = t.object->height();
+	}
+
+	const const_level_object_ptr& obj = t.object;
+	if(obj->all_solid()) {
+		add_solid_rect(t.x, t.y, t.x + obj->width(), t.y + obj->height(), obj->friction(), obj->damage());
+		return;
+	}
+
+	if(obj->has_solid()) {
+		for(int y = 0; y != obj->height(); ++y) {
+			for(int x = 0; x != obj->width(); ++x) {
+				int xpos = x;
+				if(!t.face_right) {
+					xpos = obj->width() - x - 1;
+				}
+				if(obj->is_solid(xpos, y)) {
+					if(obj->is_passthrough()) {
+						add_standable(t.x + x, t.y + y, obj->friction(), obj->damage());
+					} else {
+						add_solid(t.x + x, t.y + y, obj->friction(), obj->damage());
+					}
+				}
+			}
+		}
+	}
+}
+
+struct tile_on_point {
+	int x_, y_;
+	tile_on_point(int x, int y) : x_(x), y_(y)
+	{}
+
+	bool operator()(const level_tile& t) const {
+		return x_ >= t.x && y_ >= t.y && x_ < t.x + t.object->width() && y_ < t.y + t.object->height();
+	}
+};
+
+void level::remove_tiles_at(int x, int y)
+{
+	tiles_.erase(std::remove_if(tiles_.begin(), tiles_.end(), tile_on_point(x,y)), tiles_.end());
+}
+
+const level_tile* level::get_tile_at(int x, int y) const
+{
+	std::vector<level_tile>::const_iterator i = std::find_if(tiles_.begin(), tiles_.end(), tile_on_point(x,y));
+	if(i != tiles_.end()) {
+		return &*i;
+	} else {
+		return NULL;
+	}
+}
+
+void level::remove_characters_in_rect(int x1, int y1, int x2, int y2)
+{
+	rect r = rect::from_coordinates(x1, y1, x2, y2);
+	std::vector<entity_ptr>::iterator c = chars_.begin();
+	while(c != chars_.end()) {
+		if(point_in_rect(point((*c)->x(), (*c)->y()), r)) {
+			if(*c == player_) {
+				player_ = NULL;
+			}
+			c = chars_.erase(c);
+		} else {
+			++c;
+		}
+	}
+
+	std::vector<item_ptr>::iterator i = items_.begin();
+	while(i != items_.end()) {
+		if(*i && point_in_rect(point((*i)->x(), (*i)->y()), r)) {
+			i = items_.erase(i);
+		} else {
+			++i;
+		}
+	}
+}
+
+std::vector<entity_ptr> level::get_characters_in_rect(const rect& r) const
+{
+	std::vector<entity_ptr> res;
+	foreach(entity_ptr c, chars_) {
+		if(point_in_rect(point(c->x(), c->y()), r)) {
+			res.push_back(c);
+		}
+	}
+
+	return res;
+}
+
+void level::add_solid_rect(int x1, int y1, int x2, int y2, int friction, int damage)
+{
+	if((x1%TileSize) != 0 || (y1%TileSize) != 0 ||
+	   (x2%TileSize) != 0 || (y2%TileSize) != 0) {
+		for(int y = y1; y < y2; ++y) {
+			for(int x = x1; x < x2; ++x) {
+				add_solid(x, y, friction, damage);
+			}
+		}
+
+		return;
+	}
+
+	for(int y = y1; y < y2; y += TileSize) {
+		for(int x = x1; x < x2; x += TileSize) {
+			tile_pos pos(x/TileSize, y/TileSize);
+			solid_info& s = solid_[pos];
+			s.all_solid = true;
+			s.friction = friction;
+			s.damage = damage;
+		}
+	}
+}
+
+void level::add_solid(int x, int y, int friction, int damage)
+{
+	set_solid(solid_, x, y, friction, damage);
+}
+
+void level::add_standable(int x, int y, int friction, int damage)
+{
+	set_solid(standable_, x, y, friction, damage);
+}
+
+void level::set_solid(solid_map& map, int x, int y, int friction, int damage)
+{
+	tile_pos pos(x/TileSize, y/TileSize);
+	x = x%TileSize;
+	y = y%TileSize;
+	if(x < 0) {
+		pos.first--;
+		x += 32;
+	}
+
+	if(y < 0) {
+		pos.second--;
+		y += 32;
+	}
+	const int index = y*TileSize + x;
+	solid_info& info = map[pos];
+	info.friction = friction;
+	info.damage = damage;
+	info.bitmap.set(index);
+}
+
+void level::add_player(entity_ptr p)
+{
+	chars_.erase(std::remove(chars_.begin(), chars_.end(), player()), chars_.end());
+	player_ = p->is_human();
+	assert(player_);
+	chars_.push_back(p);
+
+	//remove items the player has already taken
+	assert(dynamic_cast<pc_character*>(player_.get()));
+	const std::vector<int>& destroyed = static_cast<pc_character*>(player_.get())->get_items_destroyed(id());
+	for(int n = 0; n != items_.size(); ++n) {
+		if(std::binary_search(destroyed.begin(), destroyed.end(), n)) {
+			items_[n] = NULL;
+		}
+	}
+}
+
+void level::add_character(entity_ptr p)
+{
+	if(p->is_human()) {
+		add_player(p);
+	} else {
+		chars_.push_back(p);
+	}
+}
+
+void level::add_item(item_ptr p)
+{
+	items_.push_back(p);
+}
+
+const level::portal* level::get_portal() const
+{
+	if(!player_) {
+		return NULL;
+	}
+
+	const rect& r = player_->body_rect();
+	foreach(const portal& p, portals_) {
+		if(rects_intersect(r, p.area) && (p.automatic || player_->enter())) {
+			return &p;
+		}
+	}
+
+	return NULL;
+}
+
+void level::debug_dump_solid_map() const
+{
+	int min_x = 1000000, max_x = -1000000, min_y = 1000000, max_y = -1000000;
+	for(solid_map::const_iterator i = solid_.begin(); i != solid_.end(); ++i) {
+		if(i->first.first < min_x) {
+			min_x = i->first.first;
+		}
+
+		if(i->first.first > max_x) {
+			max_x = i->first.first;
+			std::cerr << "max_x: " << max_x << "\n";
+		}
+
+		if(i->first.second < min_y) {
+			min_y = i->first.second;
+		}
+
+		if(i->first.second > max_y) {
+			max_y = i->first.second;
+			std::cerr << "max_y: " << max_x << "\n";
+		}
+	}
+
+	std::cerr << "SOLID MAP: " << min_x << "-" << max_x << "\n";
+	std::cerr << "SOLID MAP: " << min_y << "-" << max_y << "\n";
+
+	for(int y = min_y*32; y < (max_y+1)*32; ++y) {
+		for(int x = min_x*32; x < (max_x+1)*32; ++x) {
+			std::cerr << (solid(x, y) ? "1" : "0");
+		}
+		std::cerr << "\n";
+	}
+}
+
+int level::group_size(int group) const
+{
+	int res = 0;
+	foreach(const entity_ptr& c, active_chars_) {
+		if(c->group() == group) {
+			++res;
+		}
+	}
+
+	return res;
+}
+
+void level::set_character_group(entity_ptr c, int group_num)
+{
+	assert(group_num >= 0 && group_num < groups_.size());
+
+	//remove any current grouping
+	if(c->group() >= 0) {
+		assert(c->group() < groups_.size());
+		entity_group& group = groups_[c->group()];
+		group.erase(std::remove(group.begin(), group.end(), c), group.end());
+	}
+
+	c->set_group(group_num);
+
+	entity_group& group = groups_[group_num];
+	group.push_back(c);
+}
+
+int level::add_group()
+{
+	groups_.resize(groups_.size() + 1);
+	return groups_.size() - 1;
+}
+
+variant level::get_value(const std::string& key) const
+{
+	if(key == "cycle") {
+		return variant(cycle_);
+	} else if(key == "player") {
+		return variant(player_.get());
+	} else if(key == "num_active") {
+		return variant(active_chars_.size());
+	} else {
+		return variant();
+	}
+}
+
+int level::camera_rotation() const
+{
+	if(!camera_rotation_) {
+		return 0;
+	}
+
+	return camera_rotation_->execute(*this).as_int();
+}
