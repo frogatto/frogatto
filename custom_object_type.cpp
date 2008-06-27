@@ -50,7 +50,13 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	wml::node::const_child_iterator a2 = node->end_child("animation");
 	for(; a1 != a2; ++a1) {
 		boost::shared_ptr<frame> f(new frame(a1->second));
-		frames_[a1->second->attr("id")] = f;
+		frames_[a1->second->attr("id")].push_back(f);
+		const int duplicates = atoi(a1->second->attr("duplicates").c_str());
+		if(duplicates > 1) {
+			for(int n = 1; n != duplicates; ++n) {
+				frames_[a1->second->attr("id")].push_back(f);
+			}
+		}
 		if(!default_frame_) {
 			default_frame_ = f;
 		}
@@ -79,10 +85,14 @@ const frame& custom_object_type::default_frame() const
 const frame& custom_object_type::get_frame(const std::string& key) const
 {
 	frame_map::const_iterator itor = frames_.find(key);
-	if(itor == frames_.end()) {
+	if(itor == frames_.end() || itor->second.empty()) {
 		return default_frame();
 	} else {
-		return *itor->second.get();
+		if(itor->second.size() == 1) {
+			return *itor->second.front().get();
+		} else {
+			return *itor->second[rand()%itor->second.size()].get();
+		}
 	}
 }
 

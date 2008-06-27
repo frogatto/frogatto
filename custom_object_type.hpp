@@ -61,7 +61,7 @@ private:
 	std::string id_;
 	int hitpoints_;
 
-	typedef std::map<std::string, boost::shared_ptr<frame> > frame_map;
+	typedef std::map<std::string, std::vector<boost::shared_ptr<frame> > > frame_map;
 	frame_map frames_;
 
 	boost::shared_ptr<frame> default_frame_;
