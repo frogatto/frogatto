@@ -87,6 +87,10 @@ void item::draw() const
 	const frame* f = NULL;
 	if(touched_) {
 		f = type_->touched_frame();
+
+		if(f && time_in_frame_ == 0) {
+			f->play_sound();
+		}
 	}
 	
 	if(!f) {

@@ -174,6 +174,7 @@ extern "C" int main(int argc, char** argv)
 	level_object::init(wml::parse_wml(sys::read_file("tiles.cfg")));
 	tile_map::init(wml::parse_wml(sys::read_file("tiles.cfg")));
 	boost::scoped_ptr<level> lvl(new level(level_cfg));
+	sound::play_music(lvl->music());
 	if(lvl->player()) {
 		lvl->player()->set_current_level(level_cfg);
 		lvl->player()->save_game();
@@ -195,10 +196,11 @@ extern "C" int main(int argc, char** argv)
 		if(lvl->player() && lvl->player()->hitpoints() <= 0) {
 			fade_scene(*lvl, last_draw_position());
 			boost::intrusive_ptr<pc_character> save = lvl->player()->save_condition();
+			level* new_level = new level(save->current_level());
+			sound::play_music(new_level->music());
 			if(!save) {
 				return 0;
 			}
-			level* new_level = new level(save->current_level());
 			set_scene_title(new_level->title());
 			new_level->add_player(save);
 			save->save_game();
@@ -211,6 +213,7 @@ extern "C" int main(int argc, char** argv)
 			fade_scene(*lvl, last_draw_position());
 			level_cfg = portal->level_dest;
 			level* new_level = new level(level_cfg);
+			sound::play_music(new_level->music());
 			set_scene_title(new_level->title());
 			point dest = portal->dest;
 			if(portal->dest_starting_pos) {

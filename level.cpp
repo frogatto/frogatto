@@ -19,6 +19,7 @@ level::level(const std::string& level_cfg)
 	  editor_(false), air_resistance_(5), end_game_(false)
 {
 	wml::const_node_ptr node(wml::parse_wml(sys::read_file(level_cfg)));
+	music_ = node->attr("music");
 	cycle_ = wml::get_int(node, "cycle");
 	title_ = node->attr("title");
 	boundaries_ = rect(0, 0, wml::get_int(node, "width"), wml::get_int(node, "height"));
@@ -229,6 +230,7 @@ wml::const_node_ptr level::write() const
 {
 	wml::node_ptr res(new wml::node("level"));
 	res->set_attr("title", title_);
+	res->set_attr("music", music_);
 	if(cycle_) {
 		res->set_attr("cycle", formatter() << cycle_);
 	}

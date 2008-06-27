@@ -13,6 +13,7 @@ struct manager {
 bool ok();
 
 void play(const std::string& file);
+void play_music(const std::string& file);
 
 }
 

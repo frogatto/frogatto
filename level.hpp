@@ -30,6 +30,7 @@ public:
 	void set_save_point(int x, int y) { save_point_x_ = x; save_point_y_ = y; }
 
 	const std::string& id() const { return id_; }
+	const std::string& music() const { return music_; }
 
 	wml::const_node_ptr write() const;
 	void draw(int x, int y, int w, int h) const;
@@ -114,6 +115,7 @@ private:
 	};
 
 	std::string id_;
+	std::string music_;
 	int cycle_;
 
 	typedef std::map<tile_pos, solid_info> solid_map;
