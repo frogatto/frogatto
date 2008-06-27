@@ -1079,7 +1079,11 @@ const std::vector<int>& pc_character::get_items_destroyed(const std::string& lev
 
 void pc_character::control(const level& lvl)
 {
-	current_level_ = lvl.id();
+	if(current_level_ != lvl.id()) {
+		key_.RequireRelease();
+		current_level_ = lvl.id();
+	}
+
 	if(&current_frame() == type().attack_frame() || &current_frame() == type().jump_attack_frame()) {
 		running_ = false;
 		return;

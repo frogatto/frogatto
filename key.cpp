@@ -12,20 +12,34 @@
    See the COPYING file for more details.
 */
 
+#include <algorithm>
+
 #include "key.hpp"
 
-CKey::CKey() : is_enabled(true)
+CKey::CKey() : is_enabled(true), require_key_release(false), num_keys(300)
 {
-	static int num_keys = 300;
 	key_list = SDL_GetKeyState( &num_keys );
 }
 
 int CKey::operator[]( int code ) const
 {
+	if(require_key_release) {
+		if(std::count(key_list, key_list + num_keys, 0) == num_keys) {
+			require_key_release = false;
+		}
+
+		return 0;
+	}
+
 	return (code == SDLK_ESCAPE || is_enabled) && int(key_list[code]);
 }
 
 void CKey::SetEnabled( bool enable )
 {
 	is_enabled = enable;
+}
+
+void CKey::RequireRelease()
+{
+	require_key_release = true;
 }

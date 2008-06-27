@@ -28,9 +28,12 @@ public:
 
 	int operator[](int) const;
 	void SetEnabled(bool enable);
+	void RequireRelease();
 private:
 	Uint8 *key_list;
 	bool is_enabled;
+	mutable bool require_key_release;
+	int num_keys;
 };
 
 #endif
