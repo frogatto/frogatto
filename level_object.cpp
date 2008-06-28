@@ -36,7 +36,9 @@ level_tile level_object::build_tile(wml::const_node_ptr node)
 	res.x = wml::get_int(node, "x");
 	res.y = wml::get_int(node, "y");
 	res.zorder = wml::get_int(node, "zorder");
-	res.object = tiles_cache[node->attr("tile")];
+	if(tiles_cache.count(node->attr("tile"))) {
+		res.object = tiles_cache[node->attr("tile")];
+	}
 	res.face_right = wml::get_bool(node, "face_right");
 	res.rotate = wml::get_int(node, "rotate", 0);
 	return res;

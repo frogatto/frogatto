@@ -359,6 +359,8 @@ extern "C" int main(int argc, char** argv)
 
 	std::cerr << "JOYSTICKS: " << SDL_NumJoysticks() << "\n";
 
+	const load_level_manager load_manager;
+
 	{ //manager scope
 	const font::manager font_manager;
 	const sound::manager sound_manager;
