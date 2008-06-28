@@ -15,6 +15,7 @@
 #include <algorithm>
 
 #include "key.hpp"
+#include "string_utils.hpp"
 
 CKey::CKey() : is_enabled(true), require_key_release(false), num_keys(300)
 {
@@ -42,4 +43,36 @@ void CKey::SetEnabled( bool enable )
 void CKey::RequireRelease()
 {
 	require_key_release = true;
+}
+
+void CKey::Write(std::string* output)
+{
+	char buf[128];
+	for(int n = 0; n != num_keys; ++n) {
+		if(key_list[n]) {
+			sprintf(buf, "%d", n);
+			if(output->empty() == false) {
+				*output += ",";
+			}
+			*output += buf;
+		}
+	}
+}
+
+void CKey::Read(const std::string& input)
+{
+	key_list = custom_key_list;
+	if(num_keys > sizeof(custom_key_list)) {
+		num_keys = sizeof(custom_key_list);
+	}
+
+	memset(custom_key_list, 0, sizeof(custom_key_list));
+
+	std::vector<std::string> keys = util::split(input);
+	for(int n = 0; n != keys.size(); ++n) {
+		const int nkey = atoi(keys[n].c_str());
+		if(nkey >= 0 && nkey < num_keys) {
+			key_list[nkey] = 1;
+		}
+	}
 }

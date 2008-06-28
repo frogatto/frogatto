@@ -17,6 +17,8 @@
 
 #include "SDL.h"
 
+#include <string>
+
 //object which keeps track of all the keys on the keyboard, and
 //whether any key is pressed or not can be found by using its
 //operator[]. Note though that it is generally better to use
@@ -29,8 +31,12 @@ public:
 	int operator[](int) const;
 	void SetEnabled(bool enable);
 	void RequireRelease();
+
+	void Write(std::string* output);
+	void Read(const std::string& input);
 private:
 	Uint8 *key_list;
+	Uint8 custom_key_list[512];
 	bool is_enabled;
 	mutable bool require_key_release;
 	int num_keys;

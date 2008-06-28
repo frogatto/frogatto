@@ -174,6 +174,8 @@ public:
 	boost::intrusive_ptr<pc_character> save_condition() const { return save_condition_; }
 	const std::string& current_level() const { return current_level_; }
 	void set_current_level(const std::string& lvl) { current_level_ = lvl; }
+
+	void set_key_state(const std::string& keys) { key_.Read(keys); }
 private:
 	virtual void set_value(const std::string& key, const variant& value);
 	virtual int invincibility_duration() const { return 150; }

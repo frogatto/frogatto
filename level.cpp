@@ -20,6 +20,7 @@ level::level(const std::string& level_cfg)
 {
 	wml::const_node_ptr node(wml::parse_wml(sys::read_file(level_cfg)));
 	music_ = node->attr("music");
+	replay_data_ = node->attr("replay_data");
 	cycle_ = wml::get_int(node, "cycle");
 	title_ = node->attr("title");
 	boundaries_ = rect(0, 0, wml::get_int(node, "width"), wml::get_int(node, "height"));

@@ -21,7 +21,7 @@ background::background(const wml::const_node_ptr& node)
 	for(; i1 != i2; ++i1) {
 		layer bg;
 		bg.image = (*i1->second)["image"];
-		bg.texture = graphics::texture::get(bg.image, i1->second->attr("image_formula"));
+		bg.image_formula = i1->second->attr("image_formula");
 		bg.xscale = wml::get_int(i1->second, "xscale", 100);
 		bg.yscale = wml::get_int(i1->second, "yscale", 100);
 		bg.yoffset = wml::get_int(i1->second, "yoffset", 0);
@@ -100,6 +100,10 @@ void background::draw(double xpos, double ypos) const
 
 void background::draw_layer(int x, int y, const background::layer& bg) const
 {
+	if(!bg.texture.valid()) {
+		bg.texture = graphics::texture::get(bg.image, bg.image_formula);
+	}
+
 	const double scaling_factor = 1.0/double(bg.scale);
 	const double xscale = double(bg.xscale)/100.0;
 	const double xpos = (double(x)*xscale)/double(graphics::screen_width());

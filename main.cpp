@@ -13,18 +13,23 @@
 #include "draw_scene.hpp"
 #include "filesystem.hpp"
 #include "font.hpp"
+#include "foreach.hpp"
 #include "item.hpp"
 #include "joystick.hpp"
 #include "key.hpp"
 #include "level.hpp"
 #include "level_object.hpp"
+#include "load_level.hpp"
 #include "message_dialog.hpp"
 #include "raster.hpp"
 #include "sound.hpp"
+#include "string_utils.hpp"
 #include "texture.hpp"
 #include "tile_map.hpp"
 #include "wml_node.hpp"
 #include "wml_parser.hpp"
+#include "wml_utils.hpp"
+#include "wml_writer.hpp"
 
 void edit_level(const char* level_cfg);
 
@@ -47,11 +52,23 @@ void fade_scene(level& lvl, screen_position& screen_pos) {
 	SDL_GL_SwapBuffers();
 }
 
-bool show_title_screen()
+bool show_title_screen(std::string& level_cfg)
 {
+	preload_level(level_cfg);
+
+	const int CyclesUntilPreloadReplay = 15*20;
+	const int CyclesUntilShowReplay = 18*20;
+
 	graphics::texture img(graphics::texture::get("titlescreen.png"));
 
-	for(;;) {
+	for(int cycle = 0; ; ++cycle) {
+		if(cycle == CyclesUntilPreloadReplay) {
+			preload_level("replay.cfg");
+		} else if(cycle == CyclesUntilShowReplay) {
+			level_cfg = "replay.cfg";
+			return false;
+		}
+
 		graphics::prepare_raster();
 		graphics::blit_texture(img, 0, 0, graphics::screen_width(), graphics::screen_height());
 		SDL_GL_SwapBuffers();
@@ -117,10 +134,196 @@ void show_end_game()
 	}
 }
 
+struct key_frames {
+	int frame;
+	std::string keys;
+};
+
+std::vector<key_frames> key_record;
+int key_record_pos = 0;
+
+void read_key_frames(const std::string& s) {
+	std::vector<std::string> frames = util::split(s, ';');
+	foreach(const std::string& f, frames) {
+		std::vector<std::string> items = util::split(f, ':', 0);
+		if(items.size() == 2) {
+			key_frames frame;
+			frame.frame = atoi(items.front().c_str());
+			frame.keys = items.back();
+			key_record.push_back(frame);
+		}
+	}
+}
+
+std::string write_key_frames() {
+	std::ostringstream s;
+	foreach(const key_frames& f, key_record) {
+		s << f.frame << ":" << f.keys << ";";
+	}
+
+	return s.str();
+}
+
+void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool record_replay)
+{
+	boost::scoped_ptr<level> start_lvl;
+	if(record_replay) {
+		start_lvl.reset(load_level(level_cfg));
+	}
+
+	CKey key;
+
+	int cycle = 0;
+	bool done = false;
+	while(!done) {
+		const int desired_end_time = SDL_GetTicks() + 20;
+		if(lvl->player() && lvl->player()->hitpoints() <= 0) {
+			boost::intrusive_ptr<pc_character> save = lvl->player()->save_condition();
+			preload_level(save->current_level());
+			fade_scene(*lvl, last_draw_position());
+			level* new_level = load_level(save->current_level());
+			sound::play_music(new_level->music());
+			if(!save) {
+				return;
+			}
+			set_scene_title(new_level->title());
+			new_level->add_player(save);
+			save->save_game();
+			lvl.reset(new_level);
+			last_draw_position() = screen_position();
+		}
+
+		const level::portal* portal = lvl->get_portal();
+		if(portal) {
+			level_cfg = portal->level_dest;
+			preload_level(level_cfg);
+			fade_scene(*lvl, last_draw_position());
+			level* new_level = load_level(level_cfg);
+			sound::play_music(new_level->music());
+			set_scene_title(new_level->title());
+			point dest = portal->dest;
+			if(portal->dest_starting_pos) {
+				character_ptr new_player = new_level->player();
+				if(new_player) {
+					dest = point(new_player->x(), new_player->y());
+				}
+			}
+
+			character_ptr player = lvl->player();
+			if(player) {
+				player->set_pos(dest);
+				new_level->add_player(player);
+				player->move_to_standing(*new_level);
+			}
+
+			lvl.reset(new_level);
+			last_draw_position() = screen_position();
+		}
+
+		joystick::update();
+		//if we're in a replay any joystick motion will exit it.
+		if(!record_replay && key_record.empty() == false) {
+			if(joystick::left() || joystick::right() || joystick::up() || joystick::down() || joystick::button(0) || joystick::button(1) || joystick::button(2) || joystick::button(3)) {
+				done = true;
+			}
+		}
+
+		if(message_dialog::get() == NULL) {
+			SDL_Event event;
+			while(SDL_PollEvent(&event)) {
+				switch(event.type) {
+				case SDL_QUIT:
+					done = true;
+					break;
+				case SDL_KEYDOWN: {
+					//if we're in a replay any keypress will exit it.
+					if(!record_replay && key_record.empty() == false) {
+						done = true;
+						break;
+					}
+
+					const SDLMod mod = SDL_GetModState();
+					if(event.key.keysym.sym == SDLK_ESCAPE) {
+						done = true;
+						break;
+					} else if(event.key.keysym.sym == SDLK_e && (mod&KMOD_CTRL)) {
+						std::cerr << "editor...\n";
+						edit_level(level_cfg.c_str());
+						lvl.reset(load_level(level_cfg));
+					} else if(event.key.keysym.sym == SDLK_s && (mod&KMOD_CTRL)) {
+						std::string data;
+
+						wml::node_ptr lvl_node = wml::deep_copy(lvl->write());
+						if(record_replay) {
+							lvl_node = wml::deep_copy(start_lvl->write());
+							lvl_node->set_attr("replay_data", write_key_frames());
+						}
+						wml::write(lvl_node, data);
+						sys::write_file("save.cfg", data);
+					}
+					break;
+				}
+				default:
+					break;
+				}
+			}
+		}
+
+		if(record_replay) {
+			std::string data;
+			key.Write(&data);
+			if(key_record.empty() || key_record.back().keys != data) {
+				key_frames f;
+				f.frame = cycle;
+				f.keys = data;
+				key_record.push_back(f);
+			}
+		}
+
+		if(!record_replay && key_record.empty() == false) {
+			if(key_record_pos < key_record.size() && key_record[key_record_pos].frame == cycle) {
+				if(lvl->player()) {
+					lvl->player()->set_key_state(key_record[key_record_pos].keys);
+				}
+				++key_record_pos;
+
+				std::cerr << "SHOW_FRAME: " << key_record_pos << "/" << key_record.size() << "\n";
+
+				if(key_record_pos == key_record.size()) {
+					fade_scene(*lvl, last_draw_position());
+					return;
+				}
+			}
+		}
+
+		if(message_dialog::get()) {
+			message_dialog::get()->process();
+		} else {
+			lvl->process();
+		}
+
+		if(lvl->end_game()) {
+			fade_scene(*lvl, last_draw_position());
+			show_end_game();
+			done = true;
+			break;
+		}
+
+		draw_scene(*lvl, last_draw_position());
+		SDL_GL_SwapBuffers();
+
+		const int wait_time = std::max<int>(1, desired_end_time - SDL_GetTicks());
+		SDL_Delay(wait_time);
+
+		++cycle;
+	}
+}
+
 }
 
 extern "C" int main(int argc, char** argv)
 {
+	bool record_replay = false;
 	bool fullscreen = false;
 	int width = 800, height = 600;
 	std::string level_cfg = "level0.cfg";
@@ -136,6 +339,8 @@ extern "C" int main(int argc, char** argv)
 			height = boost::lexical_cast<int>(h);
 		} else if(arg == "--level" && n+1 < argc) {
 			level_cfg = argv[++n];
+		} else if(arg == "--record_replay") {
+			record_replay = true;
 		} else {
 			std::cerr << "unrecognized arg: '" << arg << "'\n";
 			return 0;
@@ -173,113 +378,34 @@ extern "C" int main(int argc, char** argv)
 	item_type::init(wml::parse_wml(sys::read_file("items.cfg")));
 	level_object::init(wml::parse_wml(sys::read_file("tiles.cfg")));
 	tile_map::init(wml::parse_wml(sys::read_file("tiles.cfg")));
-	boost::scoped_ptr<level> lvl(new level(level_cfg));
-	sound::play_music(lvl->music());
-	if(lvl->player()) {
-		lvl->player()->set_current_level(level_cfg);
-		lvl->player()->save_game();
-	}
-	set_scene_title(lvl->title());
 
 	glEnable(GL_SMOOTH);
 	glEnable(GL_BLEND);
 	glEnable(GL_TEXTURE_2D);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	CKey key;
+	while(!show_title_screen(level_cfg)) {
+		last_draw_position() = screen_position();
 
-	std::cerr << "FONT SIZE: " << font::char_width(14) << "," << font::char_height(14) << "\n";
+		boost::scoped_ptr<level> lvl(load_level(level_cfg));
+		assert(lvl.get());
+		sound::play_music(lvl->music());
+		if(lvl->player()) {
+			lvl->player()->set_current_level(level_cfg);
+			lvl->player()->save_game();
+		}
+		set_scene_title(lvl->title());
 
-	bool done = show_title_screen();
-	while(!done) {
-		const int desired_end_time = SDL_GetTicks() + 20;
-		if(lvl->player() && lvl->player()->hitpoints() <= 0) {
-			fade_scene(*lvl, last_draw_position());
-			boost::intrusive_ptr<pc_character> save = lvl->player()->save_condition();
-			level* new_level = new level(save->current_level());
-			sound::play_music(new_level->music());
-			if(!save) {
-				return 0;
-			}
-			set_scene_title(new_level->title());
-			new_level->add_player(save);
-			save->save_game();
-			lvl.reset(new_level);
-			last_draw_position() = screen_position();
+		if(lvl->replay_data().empty() == false) {
+			read_key_frames(lvl->replay_data());
+			key_record_pos = 0;
 		}
 
-		const level::portal* portal = lvl->get_portal();
-		if(portal) {
-			fade_scene(*lvl, last_draw_position());
-			level_cfg = portal->level_dest;
-			level* new_level = new level(level_cfg);
-			sound::play_music(new_level->music());
-			set_scene_title(new_level->title());
-			point dest = portal->dest;
-			if(portal->dest_starting_pos) {
-				character_ptr new_player = new_level->player();
-				if(new_player) {
-					dest = point(new_player->x(), new_player->y());
-				}
-			}
+		play_level(lvl, level_cfg, record_replay);
+		level_cfg = "level0.cfg";
 
-			character_ptr player = lvl->player();
-			if(player) {
-				player->set_pos(dest);
-				new_level->add_player(player);
-				player->move_to_standing(*new_level);
-			}
-
-			lvl.reset(new_level);
-			last_draw_position() = screen_position();
-		}
-
-		joystick::update();
-
-		if(message_dialog::get() == NULL) {
-			SDL_Event event;
-			while(SDL_PollEvent(&event)) {
-				switch(event.type) {
-				case SDL_QUIT:
-					done = true;
-					break;
-				case SDL_KEYDOWN: {
-					const SDLMod mod = SDL_GetModState();
-					if(event.key.keysym.sym == SDLK_ESCAPE) {
-						done = true;
-						break;
-					} else if(event.key.keysym.sym == SDLK_e && (mod&KMOD_CTRL)) {
-						std::cerr << "editor...\n";
-						edit_level(level_cfg.c_str());
-						lvl.reset(new level(level_cfg));
-					}
-					break;
-				}
-				default:
-					break;
-				}
-			}
-		}
-
-		if(message_dialog::get()) {
-			message_dialog::get()->process();
-		} else {
-			lvl->process();
-		}
-
-		if(lvl->end_game()) {
-			fade_scene(*lvl, last_draw_position());
-			show_end_game();
-			done = true;
-			break;
-		}
-
-		draw_scene(*lvl, last_draw_position());
-		SDL_GL_SwapBuffers();
-
-		const int wait_time = std::max<int>(1, desired_end_time - SDL_GetTicks());
-		std::cerr << "wait: " << wait_time << "\n";
-		SDL_Delay(wait_time);
+		key_record.clear();
+		key_record_pos = 0;
 	}
 
 	} //end manager scope, make managers destruct before calling SDL_Quit

@@ -24,7 +24,8 @@ private:
 
 	struct layer {
 		std::string image;
-		graphics::texture texture;
+		std::string image_formula;
+		mutable graphics::texture texture;
 		int xscale, yscale;
 		int scale;
 		int yoffset;

@@ -26,6 +26,7 @@ class level : public game_logic::formula_callable
 public:
 	static const int TileSize = 32;
 	explicit level(const std::string& level_cfg);
+	const std::string& replay_data() const { return replay_data_; }
 	void load_save_point(const level& lvl);
 	void set_save_point(int x, int y) { save_point_x_ = x; save_point_y_ = y; }
 
@@ -116,6 +117,7 @@ private:
 
 	std::string id_;
 	std::string music_;
+	std::string replay_data_;
 	int cycle_;
 
 	typedef std::map<tile_pos, solid_info> solid_map;
