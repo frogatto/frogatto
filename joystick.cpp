@@ -11,7 +11,7 @@ namespace joystick {
 namespace {
 std::vector<SDL_Joystick*> joysticks;
 
-const int threshold = 20000;
+const int threshold = 32700;
 }
 
 manager::manager() {
@@ -43,6 +43,18 @@ bool up() {
 		   SDL_JoystickGetAxis(j, 5) < -threshold) {
 			return true;
 		}
+
+		const int nhats = SDL_JoystickNumHats(j);
+		for(int n = 0; n != nhats; ++n) {
+			const Uint8 state = SDL_JoystickGetHat(j, n);
+			switch(state) {
+			case SDL_HAT_UP:
+			case SDL_HAT_RIGHTUP:
+			case SDL_HAT_LEFTUP:
+					return true;
+			}
+		}
+
 	}
 
 	return false;
@@ -55,6 +67,18 @@ bool down() {
 		   SDL_JoystickGetAxis(j, 5) > threshold) {
 			return true;
 		}
+
+		const int nhats = SDL_JoystickNumHats(j);
+		for(int n = 0; n != nhats; ++n) {
+			const Uint8 state = SDL_JoystickGetHat(j, n);
+			switch(state) {
+			case SDL_HAT_DOWN:
+			case SDL_HAT_RIGHTDOWN:
+			case SDL_HAT_LEFTDOWN:
+					return true;
+			}
+		}
+
 	}
 
 	return false;
@@ -67,6 +91,18 @@ bool left() {
 		   SDL_JoystickGetAxis(j, 4) < -threshold) {
 			return true;
 		}
+
+		const int nhats = SDL_JoystickNumHats(j);
+		for(int n = 0; n != nhats; ++n) {
+			const Uint8 state = SDL_JoystickGetHat(j, n);
+			switch(state) {
+			case SDL_HAT_LEFT:
+			case SDL_HAT_LEFTDOWN:
+			case SDL_HAT_LEFTUP:
+					return true;
+			}
+		}
+
 	}
 
 	return false;
@@ -78,6 +114,17 @@ bool right() {
 		   SDL_JoystickGetAxis(j, 2) > threshold ||
 		   SDL_JoystickGetAxis(j, 4) > threshold) {
 			return true;
+		}
+
+		const int nhats = SDL_JoystickNumHats(j);
+		for(int n = 0; n != nhats; ++n) {
+			const Uint8 state = SDL_JoystickGetHat(j, n);
+			switch(state) {
+			case SDL_HAT_RIGHT:
+			case SDL_HAT_RIGHTDOWN:
+			case SDL_HAT_RIGHTUP:
+					return true;
+			}
 		}
 	}
 
