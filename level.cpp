@@ -8,7 +8,9 @@
 #include "formatter.hpp"
 #include "level.hpp"
 #include "level_object.hpp"
+#include "load_level.hpp"
 #include "raster.hpp"
+#include "string_utils.hpp"
 #include "tile_map.hpp"
 #include "wml_node.hpp"
 #include "wml_parser.hpp"
@@ -18,6 +20,8 @@ level::level(const std::string& level_cfg)
 	: id_(level_cfg), save_point_x_(-1), save_point_y_(-1),
 	  editor_(false), air_resistance_(5), end_game_(false)
 {
+	turn_reference_counting_off();
+
 	wml::const_node_ptr node(wml::parse_wml(sys::read_file(level_cfg)));
 	music_ = node->attr("music");
 	replay_data_ = node->attr("replay_data");
@@ -31,7 +35,7 @@ level::level(const std::string& level_cfg)
 
 	camera_rotation_ = game_logic::formula::create_optional_formula(node->attr("camera_rotation"));
 
-	turn_reference_counting_off();
+	preloads_ = util::split(node->attr("preloads"));
 
 	wml::node::const_child_iterator r1 = node->begin_child("solid_rect");
 	wml::node::const_child_iterator r2 = node->end_child("solid_rect");
@@ -106,7 +110,7 @@ level::level(const std::string& level_cfg)
 		p.area = rect(p1->second->attr("rect"));
 		p.level_dest = p1->second->attr("level");
 		p.dest = point(p1->second->attr("dest"));
-		p.dest_starting_pos = false;
+		p.dest_starting_pos = p1->second->attr("dest_starting_pos") == "yes";
 		p.automatic = wml::get_bool(p1->second, "automatic", true);
 		portals_.push_back(p);
 	}
@@ -243,6 +247,8 @@ wml::const_node_ptr level::write() const
 	res->set_attr("auto_move_camera", auto_move_camera_.to_string());
 	res->set_attr("air_resistance", formatter() << air_resistance_);
 
+	res->set_attr("preloads", util::join(preloads_));
+
 	if(camera_rotation_) {
 		res->set_attr("camera_rotation", camera_rotation_->str());
 	}
@@ -281,13 +287,10 @@ wml::const_node_ptr level::write() const
 	}
 
 	foreach(const portal& p, portals_) {
-		if(p.dest_starting_pos) {
-			res->set_attr("next_level", p.level_dest);
-			continue;
-		}
 		wml::node_ptr node(new wml::node("portal"));
 		node->set_attr("rect", p.area.to_string());
 		node->set_attr("level", p.level_dest);
+		node->set_attr("dest_starting_pos", p.dest_starting_pos ? "yes" : "no");
 		node->set_attr("dest", p.dest.to_string());
 		node->set_attr("automatic", p.automatic ? "yes" : "no");
 		res->add_child(node);
@@ -365,6 +368,15 @@ void level::draw_background(double x, double y) const
 
 void level::process()
 {
+	const int LevelPreloadFrequency = 500; //10 seconds
+	//see if we have levels to pre-load. Load one periodically.
+	if((cycle_%LevelPreloadFrequency) == 0) {
+		const int index = cycle_/LevelPreloadFrequency;
+		if(index < preloads_.size()) {
+			preload_level(preloads_[index]);
+		}
+	}
+
 	++cycle_;
 	const int ticks = SDL_GetTicks();
 	active_chars_.clear();

@@ -106,6 +106,20 @@ std::vector< std::string > split(std::string const &val, char c, int flags)
 	return res;
 }
 
+std::string join(const std::vector<std::string>& v, char j)
+{
+	std::string res;
+	for(int n = 0; n != v.size(); ++n) {
+		if(n != 0) {
+			res.push_back(j);
+		}
+
+		res += v[n];
+	}
+
+	return res;
+}
+
 bool string_starts_with(const std::string& target, const std::string& prefix) {
 	if(target.length() < prefix.length()) {
 		return false;

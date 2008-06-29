@@ -166,6 +166,8 @@ private:
 
 	game_logic::const_formula_ptr camera_rotation_;
 	bool end_game_;
+
+	std::vector<std::string> preloads_; //future levels to preload
 };
 
 #endif
