@@ -333,7 +333,7 @@ void character::process(level& lvl)
 		//bounce off someone's head
 		if(entity_ptr c = lvl.collide(feet_x(), feet_y(), this)) {
 			if(c->springiness() > 0) {
-				velocity_y_ = std::min<int>(((velocity_y_)*-c->springiness())/100, -1000);
+				velocity_y_ = -c->springiness()*13;
 				if(c->velocity_y() < 0) {
 					velocity_y_ += c->velocity_y();
 				}
