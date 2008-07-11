@@ -26,6 +26,11 @@ class level : public game_logic::formula_callable
 public:
 	static const int TileSize = 32;
 	explicit level(const std::string& level_cfg);
+
+	//function to do anything which loads the level and must be done
+	//in the main thread.
+	void finish_loading();
+
 	const std::string& replay_data() const { return replay_data_; }
 	void load_save_point(const level& lvl);
 	void set_save_point(int x, int y) { save_point_x_ = x; save_point_y_ = y; }
@@ -144,6 +149,12 @@ private:
 	std::vector<entity_ptr> chars_;
 	std::vector<entity_ptr> active_chars_;
 	pc_character_ptr player_;
+
+	//characters stored in wml format; they can't be loaded in a separate thread
+	//they will be loaded when complete_load_level() is called.
+	std::vector<wml::const_node_ptr> wml_chars_;
+
+	void load_character(wml::const_node_ptr c);
 
 	typedef std::vector<entity_ptr> entity_group;
 	std::vector<entity_group> groups_;

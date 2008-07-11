@@ -122,6 +122,7 @@ void edit_level(const char* level_cfg)
 
 	assert(!tilesets.empty());
 	level lvl(level_cfg);
+	lvl.finish_loading();
 	lvl.set_editor();
 
 	glEnable(GL_SMOOTH);

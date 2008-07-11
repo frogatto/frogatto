@@ -52,13 +52,16 @@ level* load_level(const std::string& lvl)
 		boost::mutex::scoped_lock lck(levels_loading_mutex);
 		itor = levels_loading.find(lvl);
 		if(itor == levels_loading.end()) {
-			return new level(lvl);
+			level* res = new level(lvl);
+			res->finish_loading();
+			return res;
 		}
 	}
 
 	itor->second.first->join();
 	delete itor->second.first;
 	level* res = itor->second.second;
+	res->finish_loading();
 	levels_loading.erase(itor);
 	return res;
 }

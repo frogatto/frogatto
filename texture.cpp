@@ -252,11 +252,13 @@ texture texture::get_frame_buffer()
 
 texture texture::get(const std::string& str, options_type options)
 {
+	std::cerr << "texture get: '" << str << "'\n";
 	return get(surface_cache::get(str), options);
 }
 
 texture texture::get(const std::string& str, const std::string& algorithm, options_type options)
 {
+	std::cerr << "texture get: '" << str << "'\n";
 	return get(get_surface_formula(surface_cache::get(str), algorithm), options);
 }
 

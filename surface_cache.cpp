@@ -41,6 +41,7 @@ surface get(const std::string& key)
 		std::cerr << "loading image '" << fname << "'\n";
 		if(surf.get() == false) {
 			std::cerr << "failed to load image '" << key << "'\n";
+			return surface();
 		}
 
 		cache.insert(std::pair<std::string,surface>(key,surf));

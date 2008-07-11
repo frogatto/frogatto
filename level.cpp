@@ -82,19 +82,12 @@ level::level(const std::string& level_cfg)
 	wml::node::const_child_iterator c1 = node->begin_child("character");
 	wml::node::const_child_iterator c2 = node->end_child("character");
 	for(; c1 != c2; ++c1) {
-		chars_.push_back(entity::build(c1->second));
-		if(chars_.back()->is_human()) {
-			player_ = chars_.back()->is_human();
+		if(c1->second->get_child("type")) {
+			wml_chars_.push_back(c1->second);
+			continue;
 		}
 
-		const int group = chars_.back()->group();
-		if(group >= 0) {
-			if(group >= groups_.size()) {
-				groups_.resize(group + 1);
-			}
-
-			groups_[group].push_back(chars_.back());
-		}
+		load_character(c1->second);
 	}
 
 	wml::node::const_child_iterator i1 = node->begin_child("item");
@@ -128,6 +121,32 @@ level::level(const std::string& level_cfg)
 	if(bg) {
 		background_.reset(new background(bg));
 	}
+}
+
+void level::load_character(wml::const_node_ptr c)
+{
+	chars_.push_back(entity::build(c));
+	if(chars_.back()->is_human()) {
+		player_ = chars_.back()->is_human();
+	}
+
+	const int group = chars_.back()->group();
+	if(group >= 0) {
+		if(group >= groups_.size()) {
+			groups_.resize(group + 1);
+		}
+
+		groups_[group].push_back(chars_.back());
+	}
+}
+
+void level::finish_loading()
+{
+	foreach(wml::const_node_ptr node, wml_chars_) {
+		load_character(node);
+	}
+
+	wml_chars_.clear();
 }
 
 void level::load_save_point(const level& lvl)
