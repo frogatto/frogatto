@@ -105,6 +105,7 @@ level::level(const std::string& level_cfg)
 		p.dest = point(p1->second->attr("dest"));
 		p.dest_starting_pos = p1->second->attr("dest_starting_pos") == "yes";
 		p.automatic = wml::get_bool(p1->second, "automatic", true);
+		p.transition = p1->second->attr("transition");
 		portals_.push_back(p);
 	}
 
@@ -114,6 +115,7 @@ level::level(const std::string& level_cfg)
 		p.level_dest = node->attr("next_level");
 		p.dest_starting_pos = true;
 		p.automatic = true;
+		p.transition = "fade";
 		portals_.push_back(p);
 	}
 
@@ -312,6 +314,7 @@ wml::const_node_ptr level::write() const
 		node->set_attr("dest_starting_pos", p.dest_starting_pos ? "yes" : "no");
 		node->set_attr("dest", p.dest.to_string());
 		node->set_attr("automatic", p.automatic ? "yes" : "no");
+		node->set_attr("transition", p.transition);
 		res->add_child(node);
 	}
 

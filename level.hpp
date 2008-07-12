@@ -69,6 +69,7 @@ public:
 		point dest;
 		bool dest_starting_pos;
 		bool automatic;
+		std::string transition;
 	};
 
 	const portal* get_portal() const;

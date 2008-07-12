@@ -52,6 +52,22 @@ void fade_scene(level& lvl, screen_position& screen_pos) {
 	SDL_GL_SwapBuffers();
 }
 
+void flip_scene(level& lvl, screen_position& screen_pos, bool flip_out) {
+	if(!flip_out) {
+		screen_pos.flip_rotate = 1000;
+	}
+	for(int n = 0; n != 20; ++n) {
+		screen_pos.flip_rotate += 50 * (flip_out ? 1 : -1);
+		lvl.process();
+		draw_scene(lvl, screen_pos);
+
+		SDL_GL_SwapBuffers();
+		SDL_Delay(20);
+	}
+
+	screen_pos.flip_rotate = 0;
+}
+
 bool show_title_screen(std::string& level_cfg)
 {
 	preload_level(level_cfg);
@@ -197,7 +213,14 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 		if(portal) {
 			level_cfg = portal->level_dest;
 			preload_level(level_cfg);
-			fade_scene(*lvl, last_draw_position());
+
+			const std::string transition = portal->transition;
+			if(transition.empty() || transition == "fade") {
+				fade_scene(*lvl, last_draw_position());
+			} else if(transition == "flip") {
+				flip_scene(*lvl, last_draw_position(), true);
+			}
+
 			level* new_level = load_level(level_cfg);
 			sound::play_music(new_level->music());
 			set_scene_title(new_level->title());
@@ -218,6 +241,10 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 
 			lvl.reset(new_level);
 			last_draw_position() = screen_position();
+
+			if(transition == "flip") {
+				flip_scene(*lvl, last_draw_position(), false);
+			}
 		}
 
 		joystick::update();

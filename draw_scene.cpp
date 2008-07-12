@@ -56,6 +56,15 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 		GLfloat rotate = GLfloat(camera_rotation)/1000.0;
 		glRotatef(rotate, 0.0, 0.0, 1.0);
 	}
+
+	if(pos.flip_rotate) {
+		const SDL_Surface* fb = SDL_GetVideoSurface();
+		const double angle = sin(0.5*3.141592653589*GLfloat(pos.flip_rotate)/1000.0);
+		const int pixels = (fb->w/2)*angle;
+
+		glViewport(pixels, 0, fb->w - pixels*2, fb->h);
+	}
+
 	if(lvl.player()) {
 		pos.x += lvl.auto_move_camera_x()*100;
 		pos.y += lvl.auto_move_camera_y()*100;
