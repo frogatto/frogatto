@@ -121,7 +121,7 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 			pos.x += xdiff;
 			pos.y += ydiff;
 		}
-		lvl.draw_background(pos.x/100, pos.y/100);
+		lvl.draw_background(pos.x/100, pos.y/100, camera_rotation);
 
 		glTranslatef(-pos.x/100, -pos.y/100, 0);
 	}

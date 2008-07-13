@@ -381,10 +381,10 @@ void level::draw(int x, int y, int w, int h) const
 	}
 }
 
-void level::draw_background(double x, double y) const
+void level::draw_background(double x, double y, int rotation) const
 {
 	if(background_) {
-		background_->draw(x, y);
+		background_->draw(x, y, rotation);
 	}
 }
 

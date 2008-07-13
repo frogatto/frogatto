@@ -834,6 +834,17 @@ void character::move_to_standing(level& lvl)
 	lvl_ = &lvl;
 	for(int n = 0; n != 1000; ++n) {
 		if(is_standing(lvl)) {
+
+			if(n == 0) {
+				for(int n = 0; n != 1000; ++n) {
+					set_pos(x(), y() - 1);
+					if(!is_standing(lvl)) {
+						set_pos(x(), y() + 1);
+						return;
+					}
+				}
+				return;
+			}
 			return;
 		}
 

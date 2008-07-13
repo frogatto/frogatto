@@ -56,7 +56,7 @@ wml::node_ptr background::write() const
 	return res;
 }
 
-void background::draw(double xpos, double ypos) const
+void background::draw(double xpos, double ypos, int rotation) const
 {
 	const int max_x = width_ - graphics::screen_width();
 	const int max_y = height_ - graphics::screen_height();
@@ -88,29 +88,52 @@ void background::draw(double xpos, double ypos) const
 	glVertex3i(0, height_, 0);
 
 	glEnd();
+
+	if(rotation) {
+		const int border = 100;
+		glBegin(GL_POLYGON);
+		glColor3fv(top_col);
+		glVertex3i(-border, -border, 0);
+		glVertex3i(graphics::screen_width() + border, -border, 0);
+		glVertex3i(graphics::screen_width() + border, 0, 0);
+		glVertex3i(-border, 0, 0);
+		glEnd();
+
+		glBegin(GL_POLYGON);
+		glColor3fv(top_col);
+		glVertex3i(-border, 0, 0);
+		glVertex3i(graphics::screen_width() + border, 0, 0);
+		glColor3fv(bot_col);
+		glVertex3i(graphics::screen_width() + border, height_, 0);
+		glVertex3i(-border, height_, 0);
+		glEnd();
+	}
+
 	glColor3f(1.0,1.0,1.0);
 	glPopMatrix();
 	glEnable(GL_TEXTURE_2D);
 	glShadeModel(GL_FLAT);
 
 	foreach(const layer& bg, layers_) {
-		draw_layer(xpos, ypos, bg);
+		draw_layer(xpos, ypos, rotation, bg);
 	}
 }
 
-void background::draw_layer(int x, int y, const background::layer& bg) const
+void background::draw_layer(int x, int y, int rotation, const background::layer& bg) const
 {
 	if(!bg.texture.valid()) {
 		bg.texture = graphics::texture::get(bg.image, bg.image_formula);
 	}
 
+	const int border = rotation ? 100 : 0;
+
 	const double scaling_factor = 1.0/double(bg.scale);
 	const double xscale = double(bg.xscale)/100.0;
-	const double xpos = (double(x)*xscale)/double(graphics::screen_width());
-	const double xpos2 = xpos + scaling_factor;
+	const double xpos = (double(x - border)*xscale)/double(graphics::screen_width());
+	const double xpos2 = xpos + scaling_factor * (1.0 + double(border*2)/double(graphics::screen_width()));
 	const double yscale = double(bg.yscale)/100.0;
-	double ypos = (double(y - bg.yoffset)*yscale)/double(graphics::screen_height());
-	double ypos2 = ypos + scaling_factor;
+	double ypos = (double(y - bg.yoffset - border)*yscale)/double(graphics::screen_height());
+	double ypos2 = ypos + scaling_factor * (1.0 + double(border*2)/double(graphics::screen_height()));
 
 	if(ypos >= 1.0) {
 		return;
@@ -120,9 +143,11 @@ void background::draw_layer(int x, int y, const background::layer& bg) const
 		return;
 	}
 
-	int ydst = 0, height = graphics::screen_height();
+	int ydst = -border, height = graphics::screen_height() + border*2;
 	if(ypos < 0.0) {
-		ydst = -graphics::screen_height()*ypos;
+		double ratio_cut = -ypos/(ypos2 - ypos);
+		ydst += height*ratio_cut;
+		height -= height*ratio_cut;
 		ypos = 0.0;
 	}
 
@@ -131,15 +156,8 @@ void background::draw_layer(int x, int y, const background::layer& bg) const
 		ypos2 = 1.0;
 	}
 
-//	glMatrixMode(GL_PROJECTION);
-//	glViewport(0,0,width,height);
-//	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
-	//glTranslatef(-xpos, -ypos, 0);
 	glColor4f(1.0,1.0,1.0,1.0);
-	graphics::blit_texture(bg.texture, 0, ydst, graphics::screen_width(), height, 0.0, xpos, ypos, xpos2, ypos2);
+	graphics::blit_texture(bg.texture, -border, ydst, graphics::screen_width() + border*2, height, 0.0, xpos, ypos, xpos2, ypos2);
 	glPopMatrix();
-//	glMatrixMode(GL_PROJECTION);
-//	glViewport(0,0,graphics::screen_width(), graphics::screen_height());
-//	glMatrixMode(GL_MODELVIEW);
 }

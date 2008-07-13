@@ -17,7 +17,7 @@ class background
 public:
 	explicit background(const wml::const_node_ptr& node);
 	wml::node_ptr write() const;
-	void draw(double x, double y) const;
+	void draw(double x, double y, int rotation) const;
 private:
 	SDL_Color top_, bot_;
 	int width_, height_;
@@ -31,7 +31,7 @@ private:
 		int yoffset;
 	};
 
-	void draw_layer(int x, int y, const layer& bg) const;
+	void draw_layer(int x, int y, int rotation, const layer& bg) const;
 
 	std::vector<layer> layers_;
 };

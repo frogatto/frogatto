@@ -405,7 +405,7 @@ void edit_level(const char* level_cfg)
 		}
 
 		graphics::prepare_raster();
-		lvl.draw_background(0,0);
+		lvl.draw_background(0,0,0);
 		glPushMatrix();
 		glTranslatef(-xpos,-ypos,0);
 
