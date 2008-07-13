@@ -4,6 +4,7 @@
 #include "formatter.hpp"
 #include "item.hpp"
 #include "level.hpp"
+#include "sound.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
 
@@ -43,6 +44,10 @@ void item::process(level& lvl)
 			   (!type_->touch_condition() || type_->touch_condition()->execute(*player).as_bool())) {
 				time_in_frame_ = 0;
 				touched_ = true;
+
+				if(type_->on_touch_music().empty() == false) {
+					sound::play_music_interrupt(type_->on_touch_music());
+				}
 
 				for(int n = 0; n != type_->num_on_touch_particles(); ++n) {
 					const_custom_object_type_ptr particle_type = custom_object_type::get(type_->on_touch_particles());

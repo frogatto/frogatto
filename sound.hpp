@@ -14,6 +14,7 @@ bool ok();
 
 void play(const std::string& file);
 void play_music(const std::string& file);
+void play_music_interrupt(const std::string& file);
 
 }
 

@@ -25,6 +25,7 @@ typedef std::map<std::string, Mix_Chunk*> cache_map;
 cache_map cache;
 
 Mix_Music* current_music = NULL;
+std::string current_music_name;
 std::string next_music;
 
 //function which gets called when music finishes playing. It starts playing
@@ -34,7 +35,9 @@ void on_music_finished()
 	std::cerr << "music finished...\n";
 	Mix_FreeMusic(current_music);
 	current_music = NULL;
-	play_music(next_music);
+	if(next_music.empty() == false) {
+		play_music(next_music);
+	}
 	next_music.clear();
 }
 
@@ -102,6 +105,7 @@ void play_music(const std::string& file)
 		return;
 	}
 
+	current_music_name = file;
 	current_music = Mix_LoadMUS(("music/" + file).c_str());
 	if(!current_music) {
 		std::cerr << "Mix_LaadMUS ERROR loading " << file << ": " << Mix_GetError() << "\n";
@@ -111,6 +115,26 @@ void play_music(const std::string& file)
 	std::cerr << "playing music: " << file << "\n";
 
 	Mix_FadeInMusic(current_music, -1, 1000);
+}
+
+void play_music_interrupt(const std::string& file)
+{
+	if(next_music.empty() == false) {
+		current_music_name = next_music;
+		next_music.clear();
+	}
+
+	Mix_HaltMusic();
+
+	next_music = current_music_name;
+
+	current_music = Mix_LoadMUS(("music/" + file).c_str());
+	if(!current_music) {
+		std::cerr << "Mix_LaadMUS ERROR loading " << file << ": " << Mix_GetError() << "\n";
+		return;
+	}
+
+	Mix_PlayMusic(current_music, 1);
 }
 
 }

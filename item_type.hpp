@@ -33,6 +33,7 @@ public:
 
 	const std::string& on_touch_particles() const { return on_touch_particles_; }
 	int num_on_touch_particles() const { return num_on_touch_particles_; }
+	const std::string& on_touch_music() const { return on_touch_music_; }
 
 private:
 	std::string id_;
@@ -40,6 +41,7 @@ private:
 	boost::shared_ptr<frame> touched_frame_;
 	bool destroy_on_touch_;
 	bool automatic_touch_;
+	std::string on_touch_music_;
 	std::map<std::string, game_logic::const_formula_ptr> on_touch_;
 	game_logic::const_formula_ptr touch_condition_;
 	std::string on_touch_particles_;
