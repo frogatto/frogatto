@@ -114,6 +114,14 @@ level_object::level_object(wml::const_node_ptr node)
 				solid_[index] = (y >= x);
 			}
 		}
+	} else if(node->attr("solid") == "reverse_diagonal") {
+		solid_.resize(width()*height());
+		for(int x = 0; x < width(); ++x) {
+			for(int y = 0; y < height(); ++y) {
+				const int index = y*width() + x;
+				solid_[index] = ((height() - y) >= x);
+			}
+		}
 	}
 
 	wml::node::const_child_iterator r1 = node->begin_child("rect");
