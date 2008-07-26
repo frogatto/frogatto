@@ -1091,7 +1091,7 @@ const std::vector<int>& pc_character::get_items_destroyed(const std::string& lev
 void pc_character::control(const level& lvl)
 {
 	if(current_level_ != lvl.id()) {
-		key_.RequireRelease();
+		//key_.RequireRelease();
 		current_level_ = lvl.id();
 	}
 
