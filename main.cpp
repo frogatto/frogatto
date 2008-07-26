@@ -21,6 +21,7 @@
 #include "level_object.hpp"
 #include "load_level.hpp"
 #include "message_dialog.hpp"
+#include "prop.hpp"
 #include "raster.hpp"
 #include "sound.hpp"
 #include "string_utils.hpp"
@@ -353,7 +354,7 @@ extern "C" int main(int argc, char** argv)
 	bool record_replay = false;
 	bool fullscreen = false;
 	int width = 800, height = 600;
-	std::string level_cfg = "level0.cfg";
+	std::string level_cfg = "frogatto-house.cfg";
 	for(int n = 1; n < argc; ++n) {
 		std::string arg(argv[n]);
 		if(arg == "--fullscreen") {
@@ -407,6 +408,7 @@ extern "C" int main(int argc, char** argv)
 	item_type::init(wml::parse_wml(sys::read_file("items.cfg")));
 	level_object::init(wml::parse_wml(sys::read_file("tiles.cfg")));
 	tile_map::init(wml::parse_wml(sys::read_file("tiles.cfg")));
+	prop::init(wml::parse_wml(sys::read_file("prop.cfg")));
 
 	glEnable(GL_SMOOTH);
 	glEnable(GL_BLEND);

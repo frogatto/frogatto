@@ -18,6 +18,7 @@
 #include "key.hpp"
 #include "level.hpp"
 #include "level_object.hpp"
+#include "prop.hpp"
 #include "raster.hpp"
 #include "texture.hpp"
 #include "tile_map.hpp"
@@ -107,6 +108,8 @@ placeable_item::placeable_item(wml::const_node_ptr node)
 entity_ptr selected_entity;
 int selected_property = 0;
 
+std::vector<const_prop_ptr> all_props;
+
 }
 
 void edit_level(const char* level_cfg)
@@ -117,6 +120,7 @@ void edit_level(const char* level_cfg)
 		tileset::init(editor_cfg);
 		enemy_type::init(editor_cfg);
 		placeable_item::init(editor_cfg);
+		all_props = prop::all_props();
 		first_time = false;
 	}
 
@@ -137,13 +141,12 @@ void edit_level(const char* level_cfg)
 	int selected_tile = 0;
 	bool face_right = true;
 
-	enum EDIT_MODE { EDIT_TILES, EDIT_CHARS, EDIT_ITEMS, EDIT_GROUPS, EDIT_PROPERTIES, EDIT_VARIATIONS };
+	enum EDIT_MODE { EDIT_TILES, EDIT_CHARS, EDIT_ITEMS, EDIT_GROUPS, EDIT_PROPERTIES, EDIT_VARIATIONS, EDIT_PROPS };
 	EDIT_MODE mode = EDIT_TILES; 
 
 	CKey key;
 	bool done = false;
 	int xpos = 0, ypos = 0;
-	int zorder = 0;
 	int anchorx = 0, anchory = 0;
 	while(!done) {
 		if(tileset_preview.empty()) {
@@ -279,6 +282,11 @@ void edit_level(const char* level_cfg)
 					mode = EDIT_PROPERTIES;
 				}
 
+				if(event.key.keysym.sym == SDLK_o && !all_props.empty()) {
+					mode = EDIT_PROPS;
+					cur_item = 0;
+				}
+
 				if(event.key.keysym.sym == SDLK_r &&
 				   (event.key.keysym.mod&KMOD_CTRL)) {
 					tile_map::init(wml::parse_wml(sys::read_file("tiles.cfg")));
@@ -305,6 +313,13 @@ void edit_level(const char* level_cfg)
 						if(cur_item < 0) {
 							cur_item = placeable_items.size()-1;
 						}
+						break;
+					case EDIT_PROPS:
+						--cur_item;
+						if(cur_item < 0) {
+							cur_item = all_props.size()-1;
+						}
+						break;
 					}
 				}
 
@@ -327,6 +342,12 @@ void edit_level(const char* level_cfg)
 					case EDIT_ITEMS:
 						++cur_item;
 						if(cur_item == placeable_items.size()) {
+							cur_item = 0;
+						}
+						break;
+					case EDIT_PROPS:
+						++cur_item;
+						if(cur_item == all_props.size()) {
 							cur_item = 0;
 						}
 						break;
@@ -397,6 +418,14 @@ void edit_level(const char* level_cfg)
 					const int xtile = (xpos + mousex)/TileSize;
 					const int ytile = (ypos + mousey)/TileSize;
 					lvl.flip_variations(xtile, ytile);
+				} else if(mode == EDIT_PROPS) {
+					if(event.button.button == SDL_BUTTON_RIGHT) {
+						lvl.remove_props_in_rect(anchorx, anchory, xpos + mousex, ypos + mousey);
+					} else {
+						const int xtile = (xpos + mousex)/TileSize;
+						const int ytile = (ypos + mousey)/TileSize;
+						lvl.add_prop(prop_object(xtile*TileSize, ytile*TileSize, all_props[cur_item]->id()));
+					}
 				}
 				break;
 			default:
@@ -409,12 +438,14 @@ void edit_level(const char* level_cfg)
 		glPushMatrix();
 		glTranslatef(-xpos,-ypos,0);
 
-		if(zorder >= 0) {
-			lvl.draw(xpos, ypos, graphics::screen_width(), graphics::screen_height());
-		}
+		lvl.draw(xpos, ypos, graphics::screen_width(), graphics::screen_height());
 
-		if(zorder < 0) {
-			lvl.draw(xpos, ypos, graphics::screen_width(), graphics::screen_height());
+		if(mode == EDIT_PROPS) {
+			const int x = ((xpos + mousex)/TileSize)*TileSize;
+			const int y = ((ypos + mousey)/TileSize)*TileSize;
+			glColor4f(1.0, 1.0, 1.0, 0.5);
+			all_props[cur_item]->get_frame().draw(x, y, true);
+			glColor4f(1.0, 1.0, 1.0, 1.0);
 		}
 
 		if(buttons) {
@@ -485,6 +516,9 @@ void edit_level(const char* level_cfg)
 				const frame& f = type->get_frame();
 				f.draw(700, 10, true);
 			}
+		} else if(mode == EDIT_PROPS) {
+			const frame& f = all_props[cur_item]->get_frame();
+			f.draw(700, 10, true);
 		} else if(mode == EDIT_PROPERTIES && selected_entity) {
 			game_logic::formula_callable* vars = selected_entity->vars();
 			if(vars) {

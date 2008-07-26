@@ -75,6 +75,17 @@ struct tile_pattern {
 			variations.push_back(level_object_ptr(new level_object(i1->second)));
 			++i1;
 		}
+
+		i1 = node->begin_child("tile");
+		i2 = node->end_child("tile");
+		while(i1 != i2) {
+			std::cerr << "added object...\n";
+			added_tile t;
+			t.object = level_object_ptr(new level_object(i1->second));
+			t.zorder = wml::get_int(i1->second, "zorder");
+			added_tiles.push_back(t);
+			++i1;
+		}
 	}
 	boost::regex pattern[12];
 	std::string pattern_str;
@@ -84,6 +95,13 @@ struct tile_pattern {
 	bool empty;
 	bool extended_downwards; //if we use all 12 patterns
 	int rotate;
+
+	struct added_tile {
+		level_object_ptr object;
+		int zorder;
+	};
+
+	std::vector<added_tile> added_tiles;
 
 	game_logic::const_formula_ptr filter_formula;
 };
@@ -370,6 +388,25 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles,
 			}
 			t.rotate = p->rotate;
 			tiles->push_back(t);
+
+			foreach(const tile_pattern::added_tile& a, p->added_tiles) {
+				std::cerr << "added_tile\n";
+				level_tile t;
+				t.x = xpos;
+				t.y = ypos;
+				t.zorder = zorder_;
+				if(a.zorder) {
+					t.zorder = a.zorder;
+				}
+				t.object = a.object;
+				t.face_right = face_right;
+				if(t.object->flipped()) {
+					t.face_right = !t.face_right;
+				}
+
+				t.rotate = p->rotate;
+				tiles->push_back(t);
+			}
 		}
 	}
 	std::cerr << "done build tiles: " << ntiles << " " << (SDL_GetTicks() - begin_time) << "\n";

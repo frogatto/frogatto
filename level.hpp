@@ -18,6 +18,7 @@
 #include "geometry.hpp"
 #include "item.hpp"
 #include "level_object.hpp"
+#include "prop.hpp"
 #include "tile_map.hpp"
 #include "wml_node_fwd.hpp"
 
@@ -62,6 +63,8 @@ public:
 	void add_player(entity_ptr p);
 	void add_character(entity_ptr p);
 	void add_item(item_ptr p);
+	void add_prop(const prop_object& new_prop);
+	void remove_props_in_rect(int x1, int y1, int x2, int y2);
 
 	struct portal {
 		rect area;
@@ -162,6 +165,8 @@ private:
 
 	std::vector<item_ptr> items_;
 	std::vector<item_ptr> active_items_;
+
+	std::vector<prop_object> props_;
 
 	std::vector<portal> portals_;
 	boost::scoped_ptr<background> background_;

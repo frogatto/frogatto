@@ -96,6 +96,15 @@ level::level(const std::string& level_cfg)
 		items_.push_back(item_ptr(new item(i1->second)));
 	}
 
+	i1 = node->begin_child("prop");
+	i2 = node->end_child("prop");
+	for(; i1 != i2; ++i1) {
+		props_.push_back(prop_object(i1->second));
+		layers_.insert(props_.back().zorder());
+	}
+
+	std::sort(props_.begin(), props_.end());
+
 	wml::node::const_child_iterator p1 = node->begin_child("portal");
 	wml::node::const_child_iterator p2 = node->end_child("portal");
 	for(; p1 != p2; ++p1) {
@@ -111,7 +120,7 @@ level::level(const std::string& level_cfg)
 
 	if(node->has_attr("next_level")) {
 		portal p;
-		p.area = rect(boundaries_.x2(), 0, 1000, boundaries_.h());
+		p.area = rect(boundaries_.x2(), 0, 10000, boundaries_.h());
 		p.level_dest = node->attr("next_level");
 		p.dest_starting_pos = true;
 		p.automatic = true;
@@ -301,6 +310,10 @@ wml::const_node_ptr level::write() const
 		res->add_child(ch->write());
 	}
 
+	foreach(const prop_object& p, props_) {
+		res->add_child(p.write());
+	}
+
 	foreach(item_ptr it, items_) {
 		if(it) {
 			res->add_child(it->write());
@@ -327,6 +340,16 @@ wml::const_node_ptr level::write() const
 
 void level::draw_layer(int layer, int x, int y, int w, int h) const
 {
+	typedef std::vector<prop_object>::const_iterator prop_itor;
+	std::pair<prop_itor,prop_itor> prop_range = std::equal_range(props_.begin(), props_.end(), layer);
+	while(prop_range.first != prop_range.second) {
+		const rect& area = prop_range.first->area();
+		if(! (area.x() > x + w || area.x2() < x || area.y() > y + h || area.y2() < y)) {
+			prop_range.first->draw();
+		}
+		++prop_range.first;
+	}
+
 	typedef std::vector<level_tile>::const_iterator itor;
 	std::pair<itor,itor> range = std::equal_range(tiles_.begin(), tiles_.end(), layer, level_tile_zorder_comparer());
 	itor t = std::lower_bound(range.first, range.second, x,
@@ -833,6 +856,32 @@ void level::add_character(entity_ptr p)
 void level::add_item(item_ptr p)
 {
 	items_.push_back(p);
+}
+
+void level::add_prop(const prop_object& new_prop)
+{
+	props_.insert(std::lower_bound(props_.begin(), props_.end(), new_prop), new_prop);
+	layers_.insert(new_prop.zorder());
+}
+
+namespace {
+struct prop_object_in_rect
+{
+	prop_object_in_rect(int x1, int y1, int x2, int y2)
+	  : x1(x1), y1(y1), x2(x2), y2(y2)
+	{}
+
+	bool operator()(const prop_object& o) {
+		return x1 < o.area().x() && x2 > o.area().x2() &&
+		       y1 < o.area().y() && y2 > o.area().y2();
+	}
+	int x1, y1, x2, y2;
+};
+}
+
+void level::remove_props_in_rect(int x1, int y1, int x2, int y2)
+{
+	props_.erase(std::remove_if(props_.begin(), props_.end(), prop_object_in_rect(x1, y1, x2, y2)), props_.end());
 }
 
 const level::portal* level::get_portal() const
