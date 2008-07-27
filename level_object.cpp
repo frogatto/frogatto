@@ -122,6 +122,22 @@ level_object::level_object(wml::const_node_ptr node)
 				solid_[index] = ((height() - y) >= x);
 			}
 		}
+	} else if(node->has_attr("solid_heights")) {
+		//this is a csv list of heights which represent the solids
+		std::vector<std::string> heights = util::split(node->attr("solid_heights"));
+		if(!heights.empty()) {
+			solid_.resize(width()*height());
+			for(int x = 0; x < width(); ++x) {
+				const int heights_index = (heights.size()*x)/width();
+				assert(heights_index >= 0 && heights_index < heights.size());
+				const std::string& height_str = heights[heights_index];
+				const int h = atoi(height_str.c_str());
+				for(int y = height() - h; y < height(); ++y) {
+					const int index = y*width() + x;
+					solid_[index] = true;
+				}
+			}
+		}
 	}
 
 	wml::node::const_child_iterator r1 = node->begin_child("rect");

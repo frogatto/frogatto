@@ -433,7 +433,7 @@ extern "C" int main(int argc, char** argv)
 		}
 
 		play_level(lvl, level_cfg, record_replay);
-		level_cfg = "level0.cfg";
+		level_cfg = "frogatto-house.cfg";
 
 		key_record.clear();
 		key_record_pos = 0;

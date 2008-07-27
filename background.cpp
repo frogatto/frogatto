@@ -125,16 +125,17 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 		bg.texture = graphics::texture::get(bg.image, bg.image_formula);
 	}
 
-	const int border = rotation ? 100 : 0;
+	const double ScaleImage = 2.0;
 
-	const double scaling_factor = 1.0/double(bg.scale);
 	const double xscale = double(bg.xscale)/100.0;
-	const double xpos = int(double(x - border)*xscale)/double(graphics::screen_width());
-	const double xpos2 = xpos + scaling_factor * (1.0 + double(border*2)/double(graphics::screen_width()));
+	const double xpos = int(double(x)*xscale)/double(graphics::screen_width());
+	const double xpos2 = xpos + double(graphics::screen_width())/(bg.texture.width()*ScaleImage);
 	const double yscale = double(bg.yscale)/100.0;
-	double ypos = int(double(y - bg.yoffset - border)*yscale)/double(graphics::screen_height());
-	double ypos2 = ypos + scaling_factor * (1.0 + double(border*2)/double(graphics::screen_height()));
+	double ypos = double(-bg.yoffset)/double(graphics::screen_height()) + int(double(y)*yscale)/double(graphics::screen_height());
 
+	double ypos2 = ypos + double(graphics::screen_height())/(bg.texture.height()*ScaleImage);
+
+	std::cerr << "ypos: " << ypos << " " << ypos2 << "\n";
 	if(ypos >= 1.0) {
 		return;
 	}
@@ -143,7 +144,7 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 		return;
 	}
 
-	int ydst = -border, height = graphics::screen_height() + border*2;
+	int ydst = 0, height = graphics::screen_height();
 	if(ypos < 0.0) {
 		double ratio_cut = -ypos/(ypos2 - ypos);
 		ydst += height*ratio_cut;
@@ -152,12 +153,19 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 	}
 
 	if(ypos2 > 1.0) {
-		height -= graphics::screen_height()*((ypos2 - 1.0)/scaling_factor);
+		height -= graphics::screen_height()*((ypos2 - 1.0)/(ypos2 - ypos));
 		ypos2 = 1.0;
 	}
 
 	glPushMatrix();
 	glColor4f(1.0,1.0,1.0,1.0);
-	graphics::blit_texture(bg.texture, -border, ydst, graphics::screen_width() + border*2, height, 0.0, xpos, ypos, xpos2, ypos2);
+	graphics::blit_texture(bg.texture, 0, ydst, graphics::screen_width(), height, 0.0, xpos, ypos, xpos2, ypos2);
+
+	//stretch the low bit of the background over any remaining screen area
+	const int height_below = graphics::screen_height() - (ydst + height);
+	std::cerr << "height below: " << height_below << "\n";
+	if(height_below > 0) {
+		graphics::blit_texture(bg.texture, 0, ydst + height - 1, graphics::screen_width(), height_below, 0.0, xpos, 0.98, xpos2, 1.0);
+	}
 	glPopMatrix();
 }
