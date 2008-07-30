@@ -10,13 +10,14 @@ entity::entity(wml::const_node_ptr node)
   : x_(wml::get_int(node, "x")),
     y_(wml::get_int(node, "y")),
 	face_right_(wml::get_bool(node, "face_right")),
-	group_(wml::get_int(node, "group", -1))
+	group_(wml::get_int(node, "group", -1)),
+    id_(-1), respawn_(wml::get_bool(node, "respawn", true))
 {
 	std::cerr << "entity\n";
 }
 
 entity::entity(int x, int y, bool face_right)
-  : x_(x), y_(y), face_right_(face_right), group_(-1)
+  : x_(x), y_(y), face_right_(face_right), group_(-1), id_(-1)
 {
 }
 

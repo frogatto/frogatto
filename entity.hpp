@@ -83,6 +83,11 @@ public:
 	virtual bool look_up() const { return false; }
 	virtual bool look_down() const { return false; }
 
+	void set_id(int id) { id_ = id; }
+	int get_id() const { return id_; }
+
+	bool respawn() const { return respawn_; }
+
 private:
 	virtual void control(const level& lvl) = 0;
 
@@ -92,6 +97,10 @@ private:
 
 	//the entity group the entity is in.
 	int group_;
+
+	int id_;
+
+	bool respawn_;
 };
 
 #endif

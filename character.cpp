@@ -1088,6 +1088,18 @@ const std::vector<int>& pc_character::get_items_destroyed(const std::string& lev
 	return v;
 }
 
+void pc_character::object_destroyed(const std::string& level_id, int object)
+{
+	objects_destroyed_[level_id].push_back(object);
+}
+
+const std::vector<int>& pc_character::get_objects_destroyed(const std::string& level_id) const
+{
+	std::vector<int>& v = objects_destroyed_[level_id];
+	std::sort(v.begin(), v.end());
+	return v;
+}
+
 void pc_character::control(const level& lvl)
 {
 	if(current_level_ != lvl.id()) {

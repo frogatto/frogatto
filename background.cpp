@@ -128,10 +128,10 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 	const double ScaleImage = 2.0;
 
 	const double xscale = double(bg.xscale)/100.0;
-	const double xpos = int(double(x)*xscale)/double(graphics::screen_width());
+	const double xpos = int(double(x)*xscale)/double(bg.texture.width()*ScaleImage);
 	const double xpos2 = xpos + double(graphics::screen_width())/(bg.texture.width()*ScaleImage);
 	const double yscale = double(bg.yscale)/100.0;
-	double ypos = double(-bg.yoffset)/double(graphics::screen_height()) + int(double(y)*yscale)/double(graphics::screen_height());
+	double ypos = double(-bg.yoffset)/double(graphics::screen_height()) + int(double(y)*yscale)/double(bg.texture.height()*ScaleImage);
 
 	double ypos2 = ypos + double(graphics::screen_height())/(bg.texture.height()*ScaleImage);
 

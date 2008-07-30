@@ -137,6 +137,9 @@ level::level(const std::string& level_cfg)
 void level::load_character(wml::const_node_ptr c)
 {
 	chars_.push_back(entity::build(c));
+	if(!chars_.back()->is_human()) {
+		chars_.back()->set_id(chars_.size());
+	}
 	if(chars_.back()->is_human()) {
 		player_ = chars_.back()->is_human();
 	}
@@ -475,6 +478,9 @@ void level::process()
 	foreach(entity_ptr c, active_chars_) {
 		c->process(*this);
 		if(c->destroyed() && c != player_) {
+			if(player_ && c->get_id() != -1) {
+				player_->object_destroyed(id(), c->get_id());
+			}
 			chars_.erase(std::remove(chars_.begin(), chars_.end(), c), chars_.end());
 			if(c->group() >= 0) {
 				assert(c->group() < groups_.size());
@@ -842,6 +848,17 @@ void level::add_player(entity_ptr p)
 			items_[n] = NULL;
 		}
 	}
+
+	//remove objects that have already been destroyed
+	const std::vector<int>& destroyed_objects = static_cast<pc_character*>(player_.get())->get_objects_destroyed(id());
+	for(int n = 0; n != chars_.size(); ++n) {
+		if(chars_[n]->respawn() == false && std::binary_search(destroyed_objects.begin(), destroyed_objects.end(), chars_[n]->get_id())) {
+			std::cerr << "removing character: " << n << ": " << chars_[n]->get_id() << "\n";
+			chars_[n] = entity_ptr();
+		}
+	}
+
+	chars_.erase(std::remove(chars_.begin(), chars_.end(), entity_ptr()), chars_.end());
 }
 
 void level::add_character(entity_ptr p)

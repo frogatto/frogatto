@@ -518,6 +518,20 @@ private:
 	}
 };
 
+class str_function : public function_expression {
+public:
+	explicit str_function(const args_list& args)
+	    : function_expression("str", args, 1, 1)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		const variant item = args()[0]->evaluate(variables);
+		std::string str;
+		item.serialize_to_string(str);
+		return variant(str);
+	}
+};
+
 class null_function : public function_expression {
 public:
 	explicit null_function(const args_list& args)

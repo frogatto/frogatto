@@ -196,13 +196,13 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 		const int desired_end_time = SDL_GetTicks() + 20;
 		if(lvl->player() && lvl->player()->hitpoints() <= 0) {
 			boost::intrusive_ptr<pc_character> save = lvl->player()->save_condition();
+			if(!save) {
+				return;
+			}
 			preload_level(save->current_level());
 			fade_scene(*lvl, last_draw_position());
 			level* new_level = load_level(save->current_level());
 			sound::play_music(new_level->music());
-			if(!save) {
-				return;
-			}
 			set_scene_title(new_level->title());
 			new_level->add_player(save);
 			save->save_game();

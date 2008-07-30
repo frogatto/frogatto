@@ -348,6 +348,16 @@ variant variant::operator+(const variant& v) const
 		}
 	}
 
+	if(type_ == TYPE_STRING) {
+		if(v.type_ == TYPE_MAP) {
+			return variant(as_string() + v.as_string());
+		}
+
+		std::string s;
+		v.serialize_to_string(s);
+		return variant(as_string() + s);
+	}
+
 	return variant(as_int() + v.as_int());
 }
 
