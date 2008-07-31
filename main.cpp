@@ -104,8 +104,12 @@ bool show_title_screen(std::string& level_cfg)
 				if(event.key.keysym.sym == SDLK_ESCAPE) {
 					return true;
 				}
-
-				return false;
+				
+				//These ifs make the game not start if you're trying to do a command, on Mac
+				if(event.key.keysym.sym != SDLK_LMETA && !(event.key.keysym.mod & KMOD_LMETA) &&
+					event.key.keysym.sym != SDLK_RMETA && !(event.key.keysym.mod & KMOD_RMETA)){
+					return false;
+				}
 			}
 		}
 
