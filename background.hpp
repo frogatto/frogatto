@@ -29,6 +29,7 @@ private:
 		int xscale, yscale;
 		int scale;
 		int yoffset;
+		GLfloat color[4];
 	};
 
 	void draw_layer(int x, int y, int rotation, const layer& bg) const;

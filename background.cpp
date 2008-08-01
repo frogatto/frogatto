@@ -29,6 +29,12 @@ background::background(const wml::const_node_ptr& node)
 		if(bg.scale < 1) {
 			bg.scale = 1;
 		}
+
+		std::fill(bg.color, bg.color + 4, 0.0);
+		bg.color[0] = wml::get_attr<GLfloat>(i1->second, "red", 1.0);
+		bg.color[1] = wml::get_attr<GLfloat>(i1->second, "green", 1.0);
+		bg.color[2] = wml::get_attr<GLfloat>(i1->second, "blue", 1.0);
+		bg.color[3] = wml::get_attr<GLfloat>(i1->second, "alpha", 1.0);
 		layers_.push_back(bg);
 	}
 }
@@ -158,7 +164,7 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 	}
 
 	glPushMatrix();
-	glColor4f(1.0,1.0,1.0,1.0);
+	glColor4fv(bg.color);
 	graphics::blit_texture(bg.texture, 0, ydst, graphics::screen_width(), height, 0.0, xpos, ypos, xpos2, ypos2);
 
 	//stretch the low bit of the background over any remaining screen area
@@ -167,5 +173,6 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 	if(height_below > 0) {
 		graphics::blit_texture(bg.texture, 0, ydst + height - 1, graphics::screen_width(), height_below, 0.0, xpos, 0.98, xpos2, 1.0);
 	}
+	glColor4f(1.0,1.0,1.0,1.0);
 	glPopMatrix();
 }
