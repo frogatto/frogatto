@@ -331,7 +331,12 @@ void character::process(level& lvl)
 		}
 
 		//bounce off someone's head
-		if(entity_ptr c = lvl.collide(feet_x(), feet_y(), this)) {
+		entity_ptr c = lvl.collide(feet_x() - FeetWidth, feet_y(), this);
+		if(!c) {
+			c = lvl.collide(feet_x() + FeetWidth, feet_y(), this);
+		}
+
+		if(c) {
 			if(c->springiness() > 0) {
 				velocity_y_ = -c->springiness()*13;
 				if(c->velocity_y() < 0) {
