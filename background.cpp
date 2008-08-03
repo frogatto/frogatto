@@ -57,6 +57,10 @@ wml::node_ptr background::write() const
 		node->set_attr("yscale", formatter() << bg.yscale);
 		node->set_attr("yoffset", formatter() << bg.yoffset);
 		node->set_attr("scale", formatter() << bg.scale);
+		node->set_attr("red", formatter() << bg.color[0]);
+		node->set_attr("green", formatter() << bg.color[1]);
+		node->set_attr("blue", formatter() << bg.color[2]);
+		node->set_attr("alpha", formatter() << bg.color[3]);
 		res->add_child(node);
 	}
 	return res;

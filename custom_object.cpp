@@ -120,6 +120,7 @@ void custom_object::draw_group() const
 
 void custom_object::process(level& lvl)
 {
+	const bool started_standing = is_standing(lvl);
 	previous_y_ = y();
 	const int start_x = x();
 	++cycle_;
@@ -139,6 +140,7 @@ void custom_object::process(level& lvl)
 			set_frame(var.as_string());
 		}
 
+		handle_event("end_" + frame_name_ + "_anim");
 		handle_event("end_anim");
 	}
 
@@ -161,7 +163,7 @@ void custom_object::process(level& lvl)
 		set_pos(x() + velocity_x_/100, y() + velocity_y_/100);
 	}
 
-	for(int n = 0; n != std::abs(velocity_x_/100) && !collide && !type_->ignore_collide(); ++n) {
+	for(int n = 0; n <= std::abs(velocity_x_/100) && !collide && !type_->ignore_collide(); ++n) {
 		const int dir = velocity_x_/100 > 0 ? 1 : -1;
 		int xpos = dir < 0 ? body_rect().x() : (body_rect().x2() - 1);
 
@@ -175,15 +177,24 @@ void custom_object::process(level& lvl)
 			}
 		}
 
-		if(!collide && lvl.collide(rect(xpos, ybegin, 1, yend - ybegin), this)) {
+		if(!collide && !body_passthrough() && lvl.collide(rect(xpos, ybegin, 1, yend - ybegin), this)) {
 			collide = true;
 		}
 
 		if(collide) {
+			//undo the move to cancel out the collision
+			if(n != 0) {
+				set_pos(x() - dir, y());
+			}
 			break;
 		}
 
-		set_pos(x() + dir, y());
+		//we don't adjust the position on the last time through, since it's only
+		//used to see if there was a collision after the last movement, and
+		//doesn't actually execute a movement.
+		if(n < std::abs(velocity_x_/100)) {
+			set_pos(x() + dir, y());
+		}
 	}
 
 	if(collide) {
@@ -191,7 +202,7 @@ void custom_object::process(level& lvl)
 	}
 
 	collide = false;
-	for(int n = 0; n != std::abs(velocity_y_/100) && !collide && !type_->ignore_collide(); ++n) {
+	for(int n = 0; n <= std::abs(velocity_y_/100) && !collide && !type_->ignore_collide(); ++n) {
 		const int dir = velocity_y_/100 > 0 ? 1 : -1;
 		int ypos = dir < 0 ? body_rect().y() : (body_rect().y2() - 1);
 
@@ -205,7 +216,11 @@ void custom_object::process(level& lvl)
 			}
 		}
 
-		if(!collide && lvl.collide(rect(xbegin, ypos, xend - xbegin, 1), this)) {
+		if(!collide && velocity_y_ > 0 && is_standing(lvl)) {
+			collide = true;
+		}
+
+		if(!collide && !body_passthrough() && lvl.collide(rect(xbegin, ypos, xend - xbegin, 1), this)) {
 			collide = true;
 		}
 
@@ -213,11 +228,18 @@ void custom_object::process(level& lvl)
 			break;
 		}
 
-		set_pos(x(), y() + dir);
+		//we don't adjust the position on the last time through, since it's only
+		//used to see if there was a collision after the last movement, and
+		//doesn't actually execute a movement.
+		if(n < std::abs(velocity_y_/100)) {
+			set_pos(x(), y() + dir);
+		}
 	}
 
 	if(collide) {
-		handle_event(velocity_y_ < 0 ? "collide_head" : "collide_feet");
+		if(velocity_y_ < 0 || !started_standing) {
+			handle_event(velocity_y_ < 0 ? "collide_head" : "collide_feet");
+		}
 	}
 
 	character_ptr player = lvl.hit_by_player(body_rect());
@@ -319,6 +341,11 @@ bool custom_object::point_collides(int xpos, int ypos) const
 
 void custom_object::control(const level& lvl)
 {
+}
+
+bool custom_object::is_standing(const level& lvl)
+{
+	return lvl.standable(feet_x(), feet_y());
 }
 
 variant custom_object::get_value(const std::string& key) const
@@ -424,6 +451,26 @@ void custom_object::set_frame(const std::string& name)
 	const int diff_y = feet_y() - start_y;
 
 	set_pos(x() - diff_x, y() - diff_y);
+
+	//try to resolve collision by adjusting position
+	if(lvl_ && !type_->ignore_collide()) {
+		const int MaxAdjust = 10;
+		rect body = body_rect();
+		const int middle = (body.y() + body.y2())/2;
+		int n = 0;
+		while(n != MaxAdjust && lvl_->solid(body.x() + n, middle)) {
+			++n;
+		}
+
+		set_pos(x() + n, y());
+
+		n = 0;
+		while(n != MaxAdjust && lvl_->solid(body.x2() - n, middle)) {
+			++n;
+		}
+
+		set_pos(x() - n, y());
+	}
 
 	frame_name_ = name;
 	time_in_frame_ = 0;

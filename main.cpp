@@ -358,7 +358,7 @@ extern "C" int main(int argc, char** argv)
 	bool record_replay = false;
 	bool fullscreen = false;
 	int width = 800, height = 600;
-	std::string level_cfg = "frogatto-house.cfg";
+	std::string level_cfg = "pineapple-field.cfg";
 	for(int n = 1; n < argc; ++n) {
 		std::string arg(argv[n]);
 		if(arg == "--fullscreen") {
@@ -437,7 +437,7 @@ extern "C" int main(int argc, char** argv)
 		}
 
 		play_level(lvl, level_cfg, record_replay);
-		level_cfg = "frogatto-house.cfg";
+		level_cfg = "pineapple-field.cfg";
 
 		key_record.clear();
 		key_record_pos = 0;

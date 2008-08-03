@@ -119,7 +119,7 @@ level_object::level_object(wml::const_node_ptr node)
 		for(int x = 0; x < width(); ++x) {
 			for(int y = 0; y < height(); ++y) {
 				const int index = y*width() + x;
-				solid_[index] = ((height() - y) >= x);
+				solid_[index] = (y >= (width() - x));
 			}
 		}
 	} else if(node->has_attr("solid_heights")) {

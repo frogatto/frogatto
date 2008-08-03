@@ -58,6 +58,8 @@ public:
 private:
 	virtual void control(const level& lvl);
 
+	bool is_standing(const level& lvl);
+
 	variant get_value(const std::string& key) const;
 	void get_inputs(std::vector<game_logic::formula_input>* inputs) const;
 	void set_value(const std::string& key, const variant& value);
