@@ -18,7 +18,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 	      const_custom_object_type_ptr(new custom_object_type(custom_type_)) :
 		  custom_object_type::get(node->attr("type"))),
     frame_(&type_->default_frame()),
-	frame_name_(node->attr("current_frame")),
+	frame_name_(wml::get_str(node, "current_frame", "normal")),
 	time_in_frame_(wml::get_int(node, "time_in_frame")),
 	velocity_x_(0), velocity_y_(0),
 	rotate_(0),
@@ -45,6 +45,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
     previous_y_(y),
     type_(custom_object_type::get(type)),
 	frame_(&type_->default_frame()),
+    frame_name_("normal"),
 	time_in_frame_(0),
 	velocity_x_(0), velocity_y_(0),
 	rotate_(0),

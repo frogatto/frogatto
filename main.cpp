@@ -346,6 +346,7 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 
 		const int wait_time = std::max<int>(1, desired_end_time - SDL_GetTicks());
 		SDL_Delay(wait_time);
+		std::cerr << "delay: " << wait_time << "\n";
 
 		++cycle;
 	}
