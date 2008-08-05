@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cmath>
 #include <iostream>
+#include <cstdio>
 
 #include <boost/lexical_cast.hpp>
 #include <boost/scoped_ptr.hpp>
@@ -356,6 +357,10 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 
 extern "C" int main(int argc, char** argv)
 {
+	#ifdef NO_STDERR
+	std::freopen("/dev/null", "w", stderr);
+	std::cerr.sync_with_stdio(true);
+	#endif
 	bool record_replay = false;
 	bool fullscreen = false;
 	int width = 800, height = 600;
