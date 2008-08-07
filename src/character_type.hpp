@@ -36,6 +36,8 @@ public:
 	const frame* gethit_frame() const { return gethit_frame_.get(); }
 	const frame* attack_frame() const { return attack_frame_.get(); }
 	const frame* jump_attack_frame() const { return jump_attack_frame_.get(); }
+	const frame* up_attack_frame() const { return up_attack_frame_.get(); }
+	const frame* run_attack_frame() const { return run_attack_frame_.get(); }
 	const frame* die_frame() const { return die_frame_.get(); }
 	const frame* fly_frame() const { return fly_frame_.get(); }
 	const frame* slide_frame() const { return slide_frame_.get(); }
@@ -56,6 +58,7 @@ private:
 	          turn_frame_, walk_frame_, run_frame_, jump_frame_, fall_frame_,
 	          crouch_frame_, lookup_frame_, gethit_frame_,
 			  attack_frame_, jump_attack_frame_,
+			  up_attack_frame_, run_attack_frame_,
 			  die_frame_, fly_frame_, slide_frame_, spring_frame_;
 	int walk_;
 	int jump_;

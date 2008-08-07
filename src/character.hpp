@@ -52,6 +52,7 @@ public:
 
 	int velocity_x() const { return velocity_x_; }
 	int velocity_y() const { return velocity_y_; }
+	void set_velocity(int x, int y) { velocity_x_ = x; velocity_y_ = y; }
 
 	bool point_collides(int x, int y) const;
 	void move_to_standing(level& lvl);

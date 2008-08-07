@@ -88,6 +88,14 @@ character_type::character_type(wml::const_node_ptr node)
 		jump_attack_frame_.reset(new frame(node->get_child("jump_attack")));
 	}
 
+	if(node->get_child("up_attack")) {
+		up_attack_frame_.reset(new frame(node->get_child("up_attack")));
+	}
+
+	if(node->get_child("run_attack")) {
+		run_attack_frame_.reset(new frame(node->get_child("run_attack")));
+	}
+
 	if(node->get_child("die")) {
 		die_frame_.reset(new frame(node->get_child("die")));
 	}

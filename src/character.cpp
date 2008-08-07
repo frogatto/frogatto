@@ -218,7 +218,10 @@ void character::process(level& lvl)
 		} else if(current_frame_ == type_->crouch_frame() ||
 		          current_frame_ == type_->lookup_frame()) {
 			change_to_stand_frame();
-		} else if(current_frame_ == type_->attack_frame()) {
+		} else if(current_frame_ == type_->attack_frame() ||
+		          current_frame_ == type_->up_attack_frame()) {
+			change_to_stand_frame();
+		} else if(current_frame_ == type_->run_attack_frame()) {
 			change_to_stand_frame();
 		} else if(current_frame_ == type_->slide_frame()) {
 			change_frame(type_->fall_frame());
@@ -702,7 +705,13 @@ void character::unlookup(const level& lvl)
 void character::attack(const level& lvl)
 {
 	if(is_standing(lvl)) {
-		change_frame(type_->attack_frame());
+		if(type_->run_attack_frame() && current_frame_ == type_->run_frame()) {
+			change_frame(type_->run_attack_frame());
+		} else if(type_->up_attack_frame() && look_up()) {
+			change_frame(type_->up_attack_frame());
+		} else {
+			change_frame(type_->attack_frame());
+		}
 	} else if(current_frame_ == type_->jump_frame() || current_frame_ == type_->fall_frame()) {
 		change_frame(type_->jump_attack_frame());
 	}
@@ -1112,7 +1121,17 @@ void pc_character::control(const level& lvl)
 		current_level_ = lvl.id();
 	}
 
-	if(&current_frame() == type().attack_frame() || &current_frame() == type().jump_attack_frame()) {
+	if(&current_frame() == type().attack_frame() ||
+	   &current_frame() == type().jump_attack_frame() ||
+	   &current_frame() == type().up_attack_frame() ||
+	   &current_frame() == type().run_attack_frame()) {
+		if(&current_frame() == type().run_attack_frame()) {
+			set_velocity(velocity_x() + current_frame().accel_x() * (face_right() ? 1 : -1),
+			             velocity_y() + current_frame().accel_y());
+			running_ = false;
+			return;
+		}
+
 		running_ = false;
 		return;
 	}
@@ -1141,7 +1160,6 @@ void pc_character::control(const level& lvl)
 
 	if(key_[SDLK_UP] || joystick::up()) {
 		lookup(lvl);
-		return;
 	} else if(&current_frame() == type().lookup_frame()) {
 		unlookup(lvl);
 	}
