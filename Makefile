@@ -2,7 +2,7 @@ objects = background.o character.o character_type.o color_utils.o custom_object.
 
 formula_test_objects = filesystem.o formula_function.o formula_tokenizer.o string_utils.o variant.o wml_node.o wml_parser.o wml_utils.o wml_writer.o
 
-%.o : %.cpp
+%.o : src/%.cpp
 	g++ -g -O2 -I/usr/local/include/boost-1_34 -I/sw/include/SDL -I/usr/X11R6/include -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -fthreadsafe-statics -c $<
 
 game: $(objects)
