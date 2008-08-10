@@ -11,6 +11,7 @@ std::string preprocess(const std::string& input){
 	std::string::const_iterator i = input.begin();
 	
 	while(i != input.end()){
+		//std::cerr << "test";
 		if(*i == '@'){
 
 
@@ -24,22 +25,25 @@ std::string preprocess(const std::string& input){
 					//test for an argument to @include - e.g. "filename.cfg".  First the open quote:
 					std::string::const_iterator quote = std::find(i, input.end(), '"');
 					if(quote == input.end()) {
-						// we didn't find a quote. Syntax error.
+						std::cerr << "we didn't find a opening quote. Syntax error." << std::endl;
 					}
-					++i; //we've found a quote, advance past it
 					if(std::count_if(i, quote, isspace) != quote - i) {
 					// # of whitespaces != number of intervening chars => something else was present.  Syntax Error. 
+						std::cerr << "# of whitespaces != number of intervening chars." << std::endl;
 					}
+					i = quote + 1; //we've found a quote, advance past it
 					//now the closing quote, and use it to find what's inbetween:
 					std::string::const_iterator endQuote = std::find(i, input.end(), '"');
 					if(endQuote == input.end()) {
-						// we didn't find a quote. Syntax error.
+						std::cerr << "we didn't find a closing quote. Syntax error." << std::endl;
 					}
 					
 					
 					filename_string = std::string(i, endQuote);
-						
 					
+					i = endQuote + 1;
+					
+															
 					output_string += preprocess(sys::read_file(filename_string));
 			}
 		} else {
