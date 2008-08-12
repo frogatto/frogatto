@@ -552,7 +552,7 @@ bool level::standable(int x, int y, int* friction, int* damage, int* adjust_y, e
 	for(std::vector<entity_ptr>::const_iterator i = active_chars_.begin();
 	    i != active_chars_.end(); ++i) {
 		const entity_ptr& c = *i;
-		if(c != exclude && c->is_standable(x, y, friction, adjust_y)) {
+		if(c.get() != exclude && c->is_standable(x, y, friction, adjust_y)) {
 			if(ch) {
 				*ch = c;
 			}
