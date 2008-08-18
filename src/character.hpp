@@ -85,6 +85,9 @@ public:
 
 	int current_animation_id() const { return frame_id_; }
 
+	void boarded(level& lvl, character_ptr player);
+	void unboarded(level& lvl);
+
 protected:
 	const frame& current_frame() const;
 	const character_type& type() const { return *type_; }
@@ -92,7 +95,14 @@ protected:
 
 	int cycle() const { return cycle_num_; }
 	virtual void set_value(const std::string& key, const variant& value);
+
+	virtual bool body_passthrough() const;
+	virtual bool body_harmful() const;
+
+	virtual bool boardable_vehicle() const;
 private:
+	void set_driver_position();
+
 	void try_to_make_standing();
 	int slope_standing_on(int range=1) const;
 
@@ -131,6 +141,8 @@ private:
 
 	std::map<std::string, variant> vars_;
 
+	character_ptr driver_;
+
 	bool last_jump_;
 
 	//ID incremented every time we make a new move. This is mostly used
@@ -157,6 +169,9 @@ public:
 	explicit pc_character(wml::const_node_ptr node)
 	  : character(node), prev_left_(true), prev_right_(true),
 	    last_left_(-1000), last_right_(-1000)
+	{}
+
+	explicit pc_character(character& c) : character(c)
 	{}
 
 	virtual ~pc_character() {}

@@ -623,6 +623,19 @@ entity_ptr level::collide(const rect& r, const entity* exclude) const
 	return entity_ptr();
 }
 
+entity_ptr level::board(int x, int y) const
+{
+	for(std::vector<entity_ptr>::const_iterator i = active_chars_.begin();
+	    i != active_chars_.end(); ++i) {
+		const entity_ptr& c = *i;
+		if(c->boardable_vehicle() && c->point_collides(x, y)) {
+			return c;
+		}
+	}
+
+	return entity_ptr();
+}
+
 character_ptr level::hit_by_player(const rect& r) const
 {
 	if(!player_) {

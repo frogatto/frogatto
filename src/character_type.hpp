@@ -50,6 +50,10 @@ public:
 	int hitpoints() const { return hitpoints_; }
 	int springiness() const { return springiness_; }
 	int friction() const { return friction_; }
+	int traction() const { return traction_; }
+	bool is_vehicle() const { return is_vehicle_; }
+	int passenger_x() const { return passenger_x_; }
+	int passenger_y() const { return passenger_y_; }
 private:
 	std::string id_;
 	frame stand_;
@@ -68,6 +72,9 @@ private:
 	int hitpoints_;
 	int springiness_;
 	int friction_;
+	int traction_;
+	bool is_vehicle_;
+	int passenger_x_, passenger_y_;
 };
 
 #endif

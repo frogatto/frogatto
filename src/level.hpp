@@ -48,6 +48,7 @@ public:
 	bool solid(const rect& r, int* friction=NULL, int* damage=NULL) const;
 	entity_ptr collide(int x, int y, const entity* exclude=NULL) const;
 	entity_ptr collide(const rect& r, const entity* exclude=NULL) const;
+	entity_ptr board(int x, int y) const;
 	character_ptr hit_by_player(const rect& r) const;
 	const rect& boundaries() const { return boundaries_; }
 	void set_boundaries(const rect& bounds) { boundaries_ = bounds; }

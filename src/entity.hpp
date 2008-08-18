@@ -17,6 +17,7 @@ class pc_character;
 
 typedef boost::intrusive_ptr<entity> entity_ptr;
 typedef boost::intrusive_ptr<const entity> const_entity_ptr;
+typedef boost::intrusive_ptr<character> character_ptr;
 
 class entity : public game_logic::formula_callable
 {
@@ -88,6 +89,8 @@ public:
 
 	bool respawn() const { return respawn_; }
 
+	virtual bool boardable_vehicle() const { return false; }
+	virtual void boarded(level& lvl, character_ptr player) {}
 private:
 	virtual void control(const level& lvl) = 0;
 

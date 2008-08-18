@@ -127,6 +127,9 @@ wml::node_ptr character::write() const
 
 void character::draw() const
 {
+	if(driver_) {
+		driver_->draw();
+	}
 	const int slope = current_frame().rotate_on_slope() ? -slope_standing_on(5)*face_dir() : 0;
 	current_frame().draw(x(), y(), face_right(), time_in_frame_, slope);
 
@@ -357,6 +360,15 @@ void character::process(level& lvl)
 			c->spring_off_head(*this);
 		}
 
+		//see if we're boarding a vehicle
+		if(!type_->is_vehicle()) {
+			c = lvl.board(feet_x(), feet_y());
+			if(c) {
+				c->boarded(lvl, this);
+				return;
+			}
+		}
+
 		set_pos(x(), y() + 1);
 	}
 
@@ -485,6 +497,7 @@ void character::process(level& lvl)
 	entity_ptr standing_on;
 	const bool standing = is_standing(lvl, &friction, &damage, NULL, &standing_on);
 	friction += lvl.air_resistance();
+	friction = (friction * type_->traction())/100;
 	velocity_x_ = (velocity_x_*(100-friction))/100;
 	if(damage && !invincible()) {
 		get_hit();
@@ -522,6 +535,29 @@ void character::process(level& lvl)
 	}
 
 	standing_on_.clear();
+
+	set_driver_position();
+}
+
+void character::set_driver_position()
+{
+	if(driver_) {
+		const int pos_right = x() + type_->passenger_x();
+		const int pos_left = x() + current_frame().width() - driver_->current_frame().width() - type_->passenger_x();
+		driver_->set_face_right(face_right());
+
+		if(current_frame_ == type_->turn_frame()) {
+			int weight_left = time_in_frame_;
+			int weight_right = current_frame_->duration() - time_in_frame_;
+			if(face_right()) {
+				std::swap(weight_left, weight_right);
+			}
+			const int pos = (pos_right*weight_right + pos_left*weight_left)/current_frame_->duration();
+			driver_->set_pos(pos, y() + type_->passenger_y());
+		} else {
+			driver_->set_pos(face_right() ? pos_right : pos_left, y() + type_->passenger_y());
+		}
+	}
 }
 
 void character::try_to_make_standing()
@@ -586,6 +622,24 @@ void character::spring_off_head(const entity& jumped_on_by)
 		change_frame(type_->spring_frame());
 		std::cerr << "set to spring frame\n";
 	}
+}
+
+void character::boarded(level& lvl, character_ptr player)
+{
+	player->current_frame_ = &player->type_->get_frame();
+	character_ptr new_player(new pc_character(*this));
+	new_player->driver_ = player;
+	lvl.add_player(new_player);
+	hitpoints_ = 0;
+}
+
+void character::unboarded(level& lvl)
+{
+	character_ptr vehicle(new character(*this));
+	vehicle->driver_ = character_ptr();
+	lvl.add_character(vehicle);
+	lvl.add_player(driver_);
+	driver_->set_velocity(600 * (face_right() ? 1 : -1), -600);
 }
 
 int character::collide_left() const
@@ -666,6 +720,10 @@ void character::jump(const level& lvl)
 
 void character::jump_down(const level& lvl)
 {
+	if(driver_) {
+		unboarded(*lvl_);
+	}
+
 	if(is_standing(lvl)) {
 		set_pos(x(), y() + 1);
 		if(is_standing(lvl)) {
@@ -1031,9 +1089,28 @@ void pc_character::set_value(const std::string& key, const variant& value)
 	}
 }
 
+bool character::body_passthrough() const
+{
+	return type_->is_vehicle() && driver_.get() == NULL;
+}
+
+bool character::body_harmful() const
+{
+	return !type_->is_vehicle() || driver_.get() != NULL;
+}
+
+bool character::boardable_vehicle() const
+{
+	return type_->is_vehicle() && driver_.get() == NULL;
+}
+
 void character::control(const level& lvl)
 {
 	if(current_frame_ == type_->die_frame()) {
+		return;
+	}
+
+	if(type_->is_vehicle() && driver_.get() == NULL) {
 		return;
 	}
 
