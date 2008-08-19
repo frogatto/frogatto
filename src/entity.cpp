@@ -55,7 +55,7 @@ void entity::set_face_right(bool facing)
 
 void entity::activation_distance(int* x, int* y)
 {
-	*x = 700;
+	*x = 900;
 	*y = 500;
 }
 
