@@ -71,6 +71,9 @@ character::character(const std::string& type, int x, int y, bool face_right)
 void character::set_level(level* lvl)
 {
 	lvl_ = lvl;
+	if(driver_) {
+		driver_->set_level(lvl);
+	}
 }
 
 wml::node_ptr character::write() const
