@@ -53,6 +53,7 @@ prop_object::prop_object(int x, int y, const std::string& id)
   : type_(prop::get(id))
 {
 	if(!type_) {
+		std::cerr << "could not find prop '" << id << "'\n";
 		throw prop::error();
 	}
 
@@ -63,6 +64,7 @@ prop_object::prop_object(wml::const_node_ptr node)
   : type_(prop::get(node->attr("id")))
 {
 	if(!type_) {
+		std::cerr << "could not find prop '" << node->attr("id") << "'\n";
 		throw prop::error();
 	}
 

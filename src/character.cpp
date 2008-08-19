@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "character.hpp"
+#include "custom_object.hpp"
 #include "font.hpp"
 #include "formatter.hpp"
 #include "formula.hpp"
@@ -408,7 +409,7 @@ void character::process(level& lvl)
 			break;
 		}
 
-		if(!is_human() && !invincible_) {
+		if(!is_human() && !invincible_ && !boardable_vehicle()) {
 			character_ptr player = lvl.hit_by_player(body_rect());
 			if(player) {
 				set_face_right(!player->face_right());
@@ -476,7 +477,7 @@ void character::process(level& lvl)
 		}
 	}
 
-	if(!is_human() && !invincible_) {
+	if(!is_human() && !invincible_ && !boardable_vehicle()) {
 		character_ptr player = lvl.hit_by_player(body_rect());
 		if(player) {
 			set_face_right(!player->face_right());
@@ -967,6 +968,15 @@ void character::get_hit()
 	}
 
 	--hitpoints_;
+	if(hitpoints_ == 0 && driver_) {
+		unboarded(*lvl_);
+		if(type_->vehicle_die_object().empty() == false) {
+			entity_ptr ep(new custom_object(type_->vehicle_die_object(), x(), y(), face_right()));
+			lvl_->add_character(ep);
+		}
+		return;
+	}
+
 	invincible_ = invincibility_duration();
 
 	if(hitpoints_ <= 0 && type_->die_frame()) {

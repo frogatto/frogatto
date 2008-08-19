@@ -4,6 +4,7 @@
 #include "draw_tile.hpp"
 #include "entity.hpp"
 #include "filesystem.hpp"
+#include "fluid.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "level.hpp"
@@ -131,6 +132,12 @@ level::level(const std::string& level_cfg)
 	wml::const_node_ptr bg = node->get_child("background");
 	if(bg) {
 		background_.reset(new background(bg));
+	}
+
+	wml::const_node_ptr fluid_node = node->get_child("fluid");
+	if(fluid_node) {
+		fluid_.reset(new fluid(boundaries().w(), boundaries().h()));
+		fluid_->read(fluid_node);
 	}
 }
 
@@ -282,6 +289,10 @@ wml::const_node_ptr level::write() const
 
 	res->set_attr("preloads", util::join(preloads_));
 
+	if(fluid_) {
+		res->add_child(fluid_->write());
+	}
+
 	if(camera_rotation_) {
 		res->set_attr("camera_rotation", camera_rotation_->str());
 	}
@@ -402,9 +413,14 @@ void level::draw(int x, int y, int w, int h) const
 		player_->draw();
 	}
 
+	if(fluid_) {
+		fluid_->draw(x, y, w, h);
+	}
+
 	for(; layer != layers_.end(); ++layer) {
 		draw_layer(*layer, x, y, w, h);
 	}
+
 }
 
 void level::draw_background(double x, double y, int rotation) const
@@ -494,6 +510,10 @@ void level::process()
 		i->process(*this);
 	}
 	std::cerr << "process: " << (SDL_GetTicks() - ticks) << "\n";
+
+	if(fluid_) {
+		fluid_->process(*this);
+	}
 }
 
 bool level::is_solid(const solid_map& map, int x, int y, int* friction, int* damage) const

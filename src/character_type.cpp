@@ -38,7 +38,8 @@ character_type::character_type(wml::const_node_ptr node)
 	traction_(wml::get_int(node, "traction", 100)),
 	is_vehicle_(wml::get_bool(node, "vehicle", false)),
 	passenger_x_(wml::get_int(node, "passenger_x")),
-	passenger_y_(wml::get_int(node, "passenger_y"))
+	passenger_y_(wml::get_int(node, "passenger_y")),
+	vehicle_die_object_(wml::get_str(node, "vehicle_die_object"))
 {
 	if(node->get_child("stand_up_slope")) {
 		stand_up_slope_frame_.reset(new frame(node->get_child("stand_up_slope")));

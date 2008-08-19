@@ -13,6 +13,7 @@
 #include "background.hpp"
 #include "character.hpp"
 #include "entity.hpp"
+#include "fluid.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
 #include "geometry.hpp"
@@ -186,6 +187,8 @@ private:
 	bool end_game_;
 
 	std::vector<std::string> preloads_; //future levels to preload
+
+	boost::scoped_ptr<fluid> fluid_;
 };
 
 #endif

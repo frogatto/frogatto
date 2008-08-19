@@ -28,7 +28,6 @@ custom_object::custom_object(wml::const_node_ptr node)
 	last_hit_by_anim_(0),
 	cycle_(0)
 {
-	std::cerr << "custom_object a\n";
 	memset(draw_color_, 0xFF, sizeof(draw_color_));
 
 	assert(type_.get());
@@ -428,7 +427,6 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		velocity_y_ = value.as_int();
 	} else if(key == "rotate") {
 		rotate_ = value.as_int();
-		std::cerr << "set rotate to " << rotate_ << "\n";
 	} else if(key == "red") {
 		draw_color_[0] = value.as_int();
 	} else if(key == "green") {

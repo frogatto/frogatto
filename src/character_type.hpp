@@ -54,6 +54,7 @@ public:
 	bool is_vehicle() const { return is_vehicle_; }
 	int passenger_x() const { return passenger_x_; }
 	int passenger_y() const { return passenger_y_; }
+	const std::string& vehicle_die_object() const { return vehicle_die_object_; }
 private:
 	std::string id_;
 	frame stand_;
@@ -75,6 +76,7 @@ private:
 	int traction_;
 	bool is_vehicle_;
 	int passenger_x_, passenger_y_;
+	std::string vehicle_die_object_;
 };
 
 #endif
