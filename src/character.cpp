@@ -630,6 +630,7 @@ void character::spring_off_head(const entity& jumped_on_by)
 
 void character::boarded(level& lvl, character_ptr player)
 {
+	player->invincible_ = 0;
 	player->current_frame_ = &player->type_->get_frame();
 	character_ptr new_player(new pc_character(*this));
 	new_player->driver_ = player;
