@@ -49,6 +49,8 @@ public:
 	//amount of friction we experience.
 	int friction() const { return friction_; }
 
+	bool on_players_side() const { return on_players_side_; }
+
 	wml::const_node_ptr get_child(const std::string& key) const {
 		if(children_.count(key)) {
 			return children_.find(key)->second;
@@ -77,6 +79,8 @@ private:
 	int springiness_;
 	int surface_friction_;
 	int friction_;
+
+	bool on_players_side_;
 
 	std::map<std::string, wml::const_node_ptr> children_;
 

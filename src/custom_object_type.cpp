@@ -44,7 +44,8 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
     ignore_collide_(wml::get_bool(node, "ignore_collide", false)),
     springiness_(wml::get_int(node, "springiness")),
 	surface_friction_(wml::get_int(node, "surface_friction", 20)),
-	friction_(wml::get_int(node, "friction"))
+	friction_(wml::get_int(node, "friction")),
+	on_players_side_(wml::get_bool(node, "on_players_side", false))
 {
 	wml::node::const_child_iterator a1 = node->begin_child("animation");
 	wml::node::const_child_iterator a2 = node->end_child("animation");

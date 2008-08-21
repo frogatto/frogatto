@@ -32,12 +32,15 @@ public:
 	virtual bool destroyed() const;
 	virtual bool point_collides(int x, int y) const;
 
+	virtual bool on_players_side() const;
+
 	virtual const frame& current_frame() const { return *frame_; }
 
 	void set_frame(const std::string& name);
 	void die();
 
 	void hit_player();
+	void hit_by(entity& e);
 
 	bool body_harmful() const;
 	bool body_passthrough() const;

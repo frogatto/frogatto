@@ -1,6 +1,8 @@
 #include <iostream>
 
 #include "character_type.hpp"
+#include "custom_object_functions.hpp"
+#include "formula.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
 
@@ -36,10 +38,13 @@ character_type::character_type(wml::const_node_ptr node)
 	springiness_(wml::get_int(node, "springiness")),
 	friction_(wml::get_int(node, "friction", 10)),
 	traction_(wml::get_int(node, "traction", 100)),
+	feet_width_(wml::get_int(node, "feet_width", 5)),
 	is_vehicle_(wml::get_bool(node, "vehicle", false)),
 	passenger_x_(wml::get_int(node, "passenger_x")),
 	passenger_y_(wml::get_int(node, "passenger_y")),
-	vehicle_die_object_(wml::get_str(node, "vehicle_die_object"))
+	vehicle_die_object_(wml::get_str(node, "vehicle_die_object")),
+	on_attack_formula_(game_logic::formula::create_optional_formula(wml::get_str(node, "on_attack"), &get_custom_object_functions_symbol_table())),
+	on_process_formula_(game_logic::formula::create_optional_formula(wml::get_str(node, "on_process"), &get_custom_object_functions_symbol_table()))
 {
 	if(node->get_child("stand_up_slope")) {
 		stand_up_slope_frame_.reset(new frame(node->get_child("stand_up_slope")));

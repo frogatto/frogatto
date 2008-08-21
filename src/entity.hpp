@@ -31,6 +31,7 @@ public:
 	virtual void draw_group() const = 0;
 	virtual const pc_character* is_human() const { return NULL; }
 	virtual pc_character* is_human() { return NULL; }
+	virtual bool on_players_side() const { return false; }
 	virtual void process(level& lvl) = 0;
 
 	void set_pos(const point& p) { x_ = p.x; y_ = p.y; }
@@ -56,6 +57,7 @@ public:
 	rect hit_rect() const;
 
 	virtual void hit_player() {}
+	virtual void hit_by(entity& e) {}
 
 	virtual const frame& current_frame() const = 0;
 

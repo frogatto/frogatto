@@ -2,6 +2,7 @@
 
 #include "character.hpp"
 #include "custom_object.hpp"
+#include "custom_object_functions.hpp"
 #include "font.hpp"
 #include "formatter.hpp"
 #include "formula.hpp"
@@ -185,6 +186,8 @@ void pc_character::draw() const
 
 void character::process(level& lvl)
 {
+	execute_formula(type_->on_process_formula());
+
 	set_level(&lvl);
 	if(y() > lvl.boundaries().y2()) {
 		--hitpoints_;
@@ -341,9 +344,9 @@ void character::process(level& lvl)
 		}
 
 		//bounce off someone's head
-		entity_ptr c = lvl.collide(feet_x() - FeetWidth, feet_y(), this);
+		entity_ptr c = lvl.collide(feet_x() - type_->feet_width(), feet_y(), this);
 		if(!c) {
-			c = lvl.collide(feet_x() + FeetWidth, feet_y(), this);
+			c = lvl.collide(feet_x() + type_->feet_width(), feet_y(), this);
 		}
 
 		if(c) {
@@ -589,8 +592,8 @@ void character::try_to_make_standing()
 
 bool character::is_standing(const level& lvl, int* friction, int* damage, int* adjust_y, entity_ptr* standing_on) const
 {
-	return lvl.standable(feet_x()-FeetWidth, feet_y(), friction, damage, adjust_y, standing_on, this) ||
-	       lvl.standable(feet_x()+FeetWidth, feet_y(), friction, damage, adjust_y, standing_on, this);
+	return lvl.standable(feet_x()-type_->feet_width(), feet_y(), friction, damage, adjust_y, standing_on, this) ||
+	       lvl.standable(feet_x()+type_->feet_width(), feet_y(), friction, damage, adjust_y, standing_on, this);
 }
 
 bool character::destroyed() const
@@ -636,6 +639,7 @@ void character::boarded(level& lvl, character_ptr player)
 	new_player->driver_ = player;
 	lvl.add_player(new_player);
 	hitpoints_ = 0;
+	new_player->vars_ = player->vars_;
 }
 
 void character::unboarded(level& lvl)
@@ -645,6 +649,7 @@ void character::unboarded(level& lvl)
 	lvl.add_character(vehicle);
 	lvl.add_player(driver_);
 	driver_->set_velocity(600 * (face_right() ? 1 : -1), -600);
+	driver_->vars_ = vars_;
 }
 
 int character::collide_left() const
@@ -668,6 +673,10 @@ int character::collide_right() const
 void character::walk(const level& lvl, bool move_right)
 {
 	if(current_frame_ == type_->slide_frame() || current_frame_ == type_->spring_frame() || current_frame_ == type_->die_frame() || current_frame_ == type_->turn_frame() || current_frame_ == type_->gethit_frame()) {
+		return;
+	}
+
+	if(look_up() || look_down()) {
 		return;
 	}
 
@@ -767,6 +776,7 @@ void character::unlookup(const level& lvl)
 
 void character::attack(const level& lvl)
 {
+	execute_formula(type_->on_attack_formula());
 	if(is_standing(lvl)) {
 		if(type_->run_attack_frame() && current_frame_ == type_->run_frame()) {
 			change_frame(type_->run_attack_frame());
@@ -900,9 +910,40 @@ void character::change_frame(const frame* new_frame)
 	new_frame->play_sound();
 }
 
+void character::execute_formula(const game_logic::const_formula_ptr& f)
+{
+	if(f.get() == NULL) {
+		return;
+	}
+
+	std::cerr << "execute command...\n";
+
+	execute_command(f->execute(*this));
+}
+
+void character::execute_command(const variant& var)
+{
+	if(var.is_list()) {
+		for(int n = 0; n != var.num_elements(); ++n) {
+			execute_command(var[n]);
+		}
+	} else {
+		entity_command_callable* cmd = var.try_convert<entity_command_callable>();
+		if(cmd != NULL) {
+			std::cerr << "running!\n";
+			cmd->execute(*lvl_, *this);
+		}
+	}
+}
+
 bool character::point_collides(int xpos, int ypos) const
 {
 	return point_in_rect(point(xpos, ypos), body_rect());
+}
+
+void character::hit_by(entity& e)
+{
+	get_hit();
 }
 
 void character::move_to_standing(level& lvl)

@@ -609,13 +609,16 @@ bool level::solid(const rect& r, int* friction, int* damage) const
 
 entity_ptr level::collide(int x, int y, const entity* exclude) const
 {
-	const bool is_human = exclude && exclude->is_human();
+	const bool is_players_side = exclude && (exclude->on_players_side() || exclude->is_human());
 	entity_ptr res;
 	for(std::vector<entity_ptr>::const_iterator i = active_chars_.begin();
 	    i != active_chars_.end(); ++i) {
 		const entity_ptr& c = *i;
+		if(is_players_side && c->on_players_side()) {
+			continue;
+		}
 		if(c.get() != exclude && c != player_ &&
-		   (!c->body_passthrough() || is_human && c->body_harmful()) &&
+		   (!c->body_passthrough() || is_players_side && c->body_harmful()) &&
 		   c->point_collides(x,y)) {
 			res = c;
 			if(res->body_harmful()) {
@@ -629,12 +632,15 @@ entity_ptr level::collide(int x, int y, const entity* exclude) const
 
 entity_ptr level::collide(const rect& r, const entity* exclude) const
 {
-	const bool is_human = exclude && exclude->is_human();
+	const bool is_players_side = exclude && (exclude->on_players_side() || exclude->is_human());
 	for(std::vector<entity_ptr>::const_iterator i = active_chars_.begin();
 	    i != active_chars_.end(); ++i) {
 		const entity_ptr& c = *i;
+		if(is_players_side && c->on_players_side()) {
+			continue;
+		}
 		if(c.get() != exclude && c != player_ &&
-		   (!c->body_passthrough() || is_human && c->body_harmful()) &&
+		   (!c->body_passthrough() || is_players_side && c->body_harmful()) &&
 		   rects_intersect(r, c->body_rect())) {
 			return c;
 		}

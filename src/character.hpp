@@ -55,6 +55,7 @@ public:
 	void set_velocity(int x, int y) { velocity_x_ = x; velocity_y_ = y; }
 
 	bool point_collides(int x, int y) const;
+	void hit_by(entity& e);
 	void move_to_standing(level& lvl);
 	int hitpoints() const;
 	int max_hitpoints() const;
@@ -115,6 +116,9 @@ private:
 	void get_inputs(std::vector<game_logic::formula_input>* inputs) const;
 	virtual void control(const level& lvl);
 	void change_frame(const frame* new_frame);
+
+	void execute_formula(const game_logic::const_formula_ptr& f);
+	void execute_command(const variant& var);
 	const_character_type_ptr type_;
 	int previous_y_;
 	int velocity_x_;

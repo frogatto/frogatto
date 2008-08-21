@@ -6,6 +6,7 @@
 #include "boost/scoped_ptr.hpp"
 #include "boost/shared_ptr.hpp"
 
+#include "formula_fwd.hpp"
 #include "frame.hpp"
 #include "wml_node.hpp"
 
@@ -51,10 +52,14 @@ public:
 	int springiness() const { return springiness_; }
 	int friction() const { return friction_; }
 	int traction() const { return traction_; }
+	int feet_width() const { return feet_width_; }
 	bool is_vehicle() const { return is_vehicle_; }
 	int passenger_x() const { return passenger_x_; }
 	int passenger_y() const { return passenger_y_; }
 	const std::string& vehicle_die_object() const { return vehicle_die_object_; }
+
+	const game_logic::const_formula_ptr& on_attack_formula() const { return on_attack_formula_; }
+	const game_logic::const_formula_ptr& on_process_formula() const { return on_process_formula_; }
 private:
 	std::string id_;
 	frame stand_;
@@ -74,9 +79,11 @@ private:
 	int springiness_;
 	int friction_;
 	int traction_;
+	int feet_width_;
 	bool is_vehicle_;
 	int passenger_x_, passenger_y_;
 	std::string vehicle_die_object_;
+	game_logic::const_formula_ptr on_attack_formula_, on_process_formula_;
 };
 
 #endif

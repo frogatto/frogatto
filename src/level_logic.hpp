@@ -3,8 +3,6 @@
 
 class level;
 
-static const int FeetWidth = 5;
-
 // find out if [xpos + deltax, ypos] is over a drop-off from [xpos, ypos].
 // [xpos, ypos] must be on the ground. deltax must not be greater than
 // the tile size.

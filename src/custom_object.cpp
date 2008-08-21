@@ -118,6 +118,21 @@ void custom_object::draw_group() const
 	}
 }
 
+namespace {
+class collide_with_callable : public game_logic::formula_callable {
+	entity* e_;
+public:
+	explicit collide_with_callable(entity* e) : e_(e) {}
+	variant get_value(const std::string& key) const {
+		if(key == "collide_with") {
+			return variant(e_);
+		} else {
+			return variant();
+		}
+	}
+};
+}
+
 void custom_object::process(level& lvl)
 {
 	const bool started_standing = is_standing(lvl);
@@ -177,8 +192,14 @@ void custom_object::process(level& lvl)
 			}
 		}
 
-		if(!collide && !body_passthrough() && lvl.collide(rect(xpos, ybegin, 1, yend - ybegin), this)) {
-			collide = true;
+		if(!collide && !body_passthrough()) {
+			entity_ptr collide_with = lvl.collide(rect(xpos, ybegin, 1, yend - ybegin), this);
+			if(collide_with.get() != NULL) {
+				collide_with_callable callable(collide_with.get());
+				std::cerr << "collide_with\n";
+				handle_event("collide_with", &callable);
+				collide = true;
+			}
 		}
 
 		if(collide) {
@@ -201,6 +222,7 @@ void custom_object::process(level& lvl)
 		handle_event("collide");
 	}
 
+	std::cerr << "velocity_y: " << velocity_y_ << "\n";
 	collide = false;
 	for(int n = 0; n <= std::abs(velocity_y_/100) && !collide && !type_->ignore_collide(); ++n) {
 		const int dir = velocity_y_/100 > 0 ? 1 : -1;
@@ -209,22 +231,20 @@ void custom_object::process(level& lvl)
 		const int xbegin = body_rect().x();
 		const int xend = body_rect().x2();
 		int damage = 0;
-		for(int xpos = xbegin; xpos != xend; ++xpos) {
-			if(lvl.solid(xpos, ypos, NULL, &damage)) {
-				collide = true;
-				break;
-			}
-		}
+// TODO: at the moment we don't consider it a collision if we 
+//		for(int xpos = xbegin; xpos != xend; ++xpos) {
+//			if(lvl.solid(xpos, ypos, NULL, &damage)) {
+//				collide = true;
+//				break;
+//			}
+//		}
 
 		if(!collide && velocity_y_ > 0 && is_standing(lvl)) {
 			collide = true;
 		}
 
-		if(!collide && !body_passthrough() && lvl.collide(rect(xbegin, ypos, xend - xbegin, 1), this)) {
-			collide = true;
-		}
-
 		if(collide) {
+			std::cerr << "collide y!\n";
 			break;
 		}
 
@@ -242,11 +262,13 @@ void custom_object::process(level& lvl)
 		}
 	}
 
-	character_ptr player = lvl.hit_by_player(body_rect());
-	if(player && (last_hit_by_ != player || last_hit_by_anim_ != player->current_animation_id())) {
-		handle_event("hit_by_player");
-		last_hit_by_ = player;
-		last_hit_by_anim_ = player->current_animation_id();
+	if(!type_->on_players_side()) {
+		character_ptr player = lvl.hit_by_player(body_rect());
+		if(player && (last_hit_by_ != player || last_hit_by_anim_ != player->current_animation_id())) {
+			last_hit_by_ = player;
+			last_hit_by_anim_ = player->current_animation_id();
+			handle_event("hit_by_player");
+		}
 	}
 
 	if(lvl.player() && lvl.player()->enter() && rects_intersect(body_rect(), lvl.player()->body_rect())) {
@@ -337,6 +359,11 @@ bool custom_object::destroyed() const
 bool custom_object::point_collides(int xpos, int ypos) const
 {
 	return point_in_rect(point(xpos, ypos), body_rect());
+}
+
+bool custom_object::on_players_side() const
+{
+	return type_->on_players_side();
 }
 
 void custom_object::control(const level& lvl)
@@ -496,6 +523,12 @@ void custom_object::hit_player()
 	handle_event("hit_player");
 }
 
+void custom_object::hit_by(entity& e)
+{
+	std::cerr << "hit_by!\n";
+	handle_event("hit_by_player");
+}
+
 bool custom_object::body_harmful() const
 {
 	return type_->body_harmful();
@@ -552,6 +585,11 @@ void custom_object::execute_command(const variant& var)
 		if(cmd != NULL) {
 			std::cerr << "executing!\n";
 			cmd->execute(*lvl_, *this);
+		} else {
+			entity_command_callable* cmd = var.try_convert<entity_command_callable>();
+			if(cmd != NULL) {
+				cmd->execute(*lvl_, *this);
+			}
 		}
 	}
 }

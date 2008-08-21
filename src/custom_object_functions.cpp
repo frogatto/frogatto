@@ -13,13 +13,13 @@ using namespace game_logic;
 
 namespace {
 
-class spawn_command : public custom_object_command_callable
+class spawn_command : public entity_command_callable
 {
 public:
 	spawn_command(const std::string& type, int x, int y, bool face_right, bool custom)
 	  : type_(type), x_(x), y_(y), face_right_(face_right), custom_(custom)
 	{}
-	virtual void execute(level& lvl, custom_object& ob) const {
+	virtual void execute(level& lvl, entity& ob) const {
 		if(custom_) {
 			entity_ptr e(new custom_object(type_, x_, y_, face_right_));
 			lvl.add_character(e);
@@ -87,6 +87,38 @@ private:
 		                  args()[0]->evaluate(variables).as_string(),
 		  args().size() >= 2 ? args()[1]->evaluate(variables).as_int() : 0,
 		  args().size() >= 3 ? args()[2]->evaluate(variables).as_int() : 0));
+	}
+};
+
+class hit_command : public entity_command_callable
+{
+public:
+	explicit hit_command(entity_ptr e) : e_(e)
+	{}
+
+private:
+	void execute(level& lvl, entity& ob) const {
+		e_->hit_by(ob);
+	}
+	entity_ptr e_;
+};
+
+class hit_function : public function_expression {
+public:
+	explicit hit_function(const args_list& args)
+	  : function_expression("hit", args, 1, 1) {
+	}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		variant var(args()[0]->evaluate(variables));
+		entity_ptr e(var.try_convert<entity>());
+		if(e.get()) {
+			return variant(new hit_command(e));
+		} else {
+			std::cerr << "ERROR: hit function given bad argument\n";
+			return variant();
+		}
 	}
 };
 
@@ -185,13 +217,13 @@ private:
 	}
 };
 
-class set_command : public custom_object_command_callable
+class set_command : public entity_command_callable
 {
 public:
 	explicit set_command(entity_ptr target, const std::string& attr, variant val)
 	  : target_(target), attr_(attr), val_(val)
 	{}
-	virtual void execute(level& lvl, custom_object& ob) const {
+	virtual void execute(level& lvl, entity& ob) const {
 		if(target_) {
 			target_->mutate_value(attr_, val_);
 		} else {
@@ -434,6 +466,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new spawn_function(args, false));
 	} else if(fn == "child") {
 		return expression_ptr(new child_function(args));
+	} else if(fn == "hit") {
+		return expression_ptr(new hit_function(args));
 	} else if(fn == "animation") {
 		return expression_ptr(new animation_function(args));
 	} else if(fn == "die") {

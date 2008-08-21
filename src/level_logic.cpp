@@ -5,6 +5,7 @@
 
 bool cliff_edge_within(const level& lvl, int xpos, int ypos, int deltax)
 {
+	const int FeetWidth = 5;
 	return !lvl.standable(xpos + deltax, ypos) &&
 	       !lvl.standable(xpos + deltax, ypos + std::abs(deltax) + FeetWidth);
 }
