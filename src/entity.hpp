@@ -74,7 +74,7 @@ public:
 	virtual int time_in_frame() const = 0;
 
 	virtual int springiness() const = 0;
-	virtual void spring_off_head(const entity& landed_on_by) {}
+	virtual bool spring_off_head(const entity& landed_on_by) { return true; }
 
 	virtual void activation_distance(int* x, int* y);
 
@@ -93,6 +93,8 @@ public:
 
 	virtual bool boardable_vehicle() const { return false; }
 	virtual void boarded(level& lvl, character_ptr player) {}
+
+	virtual int weight() const { return 1; }
 private:
 	virtual void control(const level& lvl) = 0;
 

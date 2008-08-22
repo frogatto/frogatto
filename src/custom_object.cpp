@@ -544,9 +544,10 @@ int custom_object::springiness() const
 	return type_->springiness();
 }
 
-void custom_object::spring_off_head(const entity& landed_on_by)
+bool custom_object::spring_off_head(const entity& landed_on_by)
 {
 	handle_event("jumped_on");
+	return true;
 }
 
 void custom_object::handle_event(const std::string& event, const formula_callable* context)

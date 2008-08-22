@@ -82,12 +82,14 @@ public:
 	int time_in_frame() const { return time_in_frame_; }
 
 	int springiness() const;
-	void spring_off_head(const entity& jumped_on_by);
+	bool spring_off_head(const entity& jumped_on_by);
 
 	int current_animation_id() const { return frame_id_; }
 
 	void boarded(level& lvl, character_ptr player);
 	void unboarded(level& lvl);
+
+	virtual int weight() const;
 
 protected:
 	const frame& current_frame() const;

@@ -349,7 +349,7 @@ void character::process(level& lvl)
 			c = lvl.collide(feet_x() + type_->feet_width(), feet_y(), this);
 		}
 
-		if(c) {
+		if(c && c->spring_off_head(*this)) {
 			if(c->springiness() > 0) {
 				velocity_y_ = -c->springiness()*13;
 				if(c->velocity_y() < 0) {
@@ -363,8 +363,6 @@ void character::process(level& lvl)
 			if(current_frame_ == type_->gethit_frame()) {
 				change_frame(type_->jump_frame());
 			}
-
-			c->spring_off_head(*this);
 		}
 
 		//see if we're boarding a vehicle
@@ -622,13 +620,21 @@ int character::springiness() const
 	return type_->springiness();
 }
 
-void character::spring_off_head(const entity& jumped_on_by)
+bool character::spring_off_head(const entity& jumped_on_by)
 {
-	std::cerr << "sprung off head!\n";
+	const int weight = jumped_on_by.weight();
+	if(weight > 1) {
+		hitpoints_  -= (weight - 1);
+	}
 	if(type_->spring_frame()) {
 		change_frame(type_->spring_frame());
-		std::cerr << "set to spring frame\n";
 	}
+
+	if(hitpoints_ <= 0) {
+		lvl_->add_character(entity_ptr(new custom_object("dust_cloud", x(), y(), true)));
+	}
+
+	return hitpoints_ > 0;
 }
 
 void character::boarded(level& lvl, character_ptr player)
@@ -650,6 +656,11 @@ void character::unboarded(level& lvl)
 	lvl.add_player(driver_);
 	driver_->set_velocity(600 * (face_right() ? 1 : -1), -600);
 	driver_->vars_ = vars_;
+}
+
+int character::weight() const
+{
+	return type_->weight();
 }
 
 int character::collide_left() const

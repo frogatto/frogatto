@@ -38,6 +38,7 @@ character_type::character_type(wml::const_node_ptr node)
 	springiness_(wml::get_int(node, "springiness")),
 	friction_(wml::get_int(node, "friction", 10)),
 	traction_(wml::get_int(node, "traction", 100)),
+	weight_(wml::get_int(node, "weight", 1)),
 	feet_width_(wml::get_int(node, "feet_width", 5)),
 	is_vehicle_(wml::get_bool(node, "vehicle", false)),
 	passenger_x_(wml::get_int(node, "passenger_x")),

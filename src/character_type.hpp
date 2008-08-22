@@ -52,6 +52,7 @@ public:
 	int springiness() const { return springiness_; }
 	int friction() const { return friction_; }
 	int traction() const { return traction_; }
+	int weight() const { return weight_; }
 	int feet_width() const { return feet_width_; }
 	bool is_vehicle() const { return is_vehicle_; }
 	int passenger_x() const { return passenger_x_; }
@@ -79,6 +80,7 @@ private:
 	int springiness_;
 	int friction_;
 	int traction_;
+	int weight_;
 	int feet_width_;
 	bool is_vehicle_;
 	int passenger_x_, passenger_y_;

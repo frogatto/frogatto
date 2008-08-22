@@ -614,6 +614,9 @@ entity_ptr level::collide(int x, int y, const entity* exclude) const
 	for(std::vector<entity_ptr>::const_iterator i = active_chars_.begin();
 	    i != active_chars_.end(); ++i) {
 		const entity_ptr& c = *i;
+		if(c->destroyed()) {
+			continue;
+		}
 		if(is_players_side && c->on_players_side()) {
 			continue;
 		}
@@ -636,6 +639,9 @@ entity_ptr level::collide(const rect& r, const entity* exclude) const
 	for(std::vector<entity_ptr>::const_iterator i = active_chars_.begin();
 	    i != active_chars_.end(); ++i) {
 		const entity_ptr& c = *i;
+		if(c->destroyed()) {
+			continue;
+		}
 		if(is_players_side && c->on_players_side()) {
 			continue;
 		}

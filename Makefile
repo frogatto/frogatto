@@ -9,7 +9,7 @@ game: $(objects)
 	g++ -g -O2 -L/sw/lib -framework OpenGL -L/usr/X11R6/lib -lX11 -framework Cocoa -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -L/usr/lib -lSDLmain -lSDL -lGL -lGLU -lSDL_image -lSDL_ttf -lSDL_mixer -lboost_regex -lboost_thread-mt -fthreadsafe-statics *.o -o game
 
 formula_test: $(formula_test_objects)
-	g++ -O2 -g -I/usr/include/SDL -D_GNU_SOURCE=1 -D_REENTRANT -DUNIT_TEST_FORMULA -Wnon-virtual-dtor -Wreturn-type -L/usr/lib -lSDL -lGL -lGLU -lSDL_image -lSDL_ttf -lSDL_mixer -lboost_regex formula.cpp $(formula_test_objects) -o test
+	g++ -O2 -g -I/usr/include/SDL -D_GNU_SOURCE=1 -D_REENTRANT -DUNIT_TEST_FORMULA -Wnon-virtual-dtor -Wreturn-type -L/usr/lib -lSDL -lGL -lGLU -lSDL_image -lSDL_ttf -lSDL_mixer -lboost_regex src/formula.cpp $(formula_test_objects) -o test
 
 clean:
 	rm *.o game
