@@ -28,6 +28,8 @@ public:
 	bool destroy_on_touch() const { return destroy_on_touch_; }
 	bool automatic_touch() const { return automatic_touch_; }
 
+	const game_logic::const_formula_ptr& target() const { return target_; }
+
 	const std::map<std::string, game_logic::const_formula_ptr>& on_touch() const { return on_touch_; }
 	game_logic::const_formula_ptr touch_condition() const { return touch_condition_; }
 
@@ -42,6 +44,7 @@ private:
 	bool destroy_on_touch_;
 	bool automatic_touch_;
 	std::string on_touch_music_;
+	game_logic::const_formula_ptr target_;
 	std::map<std::string, game_logic::const_formula_ptr> on_touch_;
 	game_logic::const_formula_ptr touch_condition_;
 	std::string on_touch_particles_;

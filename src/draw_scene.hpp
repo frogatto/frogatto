@@ -8,12 +8,13 @@ class level;
 
 struct screen_position {
 	screen_position() : init(false), x(0), y(0), vertical_look(0),
-	                    flip_rotate(0)
+	                    flip_rotate(0), coins(-1)
 	{}
 	bool init;
 	int x, y;
 	int vertical_look;
 	int flip_rotate;
+	int coins;
 };
 
 screen_position& last_draw_position();

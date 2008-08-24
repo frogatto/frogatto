@@ -91,6 +91,10 @@ public:
 
 	virtual int weight() const;
 
+	const_character_ptr driver() const { return driver_; }
+
+	const frame& icon_frame() const;
+
 protected:
 	const frame& current_frame() const;
 	const character_type& type() const { return *type_; }

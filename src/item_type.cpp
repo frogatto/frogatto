@@ -33,6 +33,7 @@ item_type::item_type(wml::const_node_ptr node)
 	automatic_touch_(wml::get_bool(node, "automatic_touch", true)),
 	on_touch_music_(node->attr("on_touch_music")),
 	touch_condition_(game_logic::formula::create_optional_formula(node->attr("touch_condition"))),
+	target_(game_logic::formula::create_optional_formula(node->attr("target"))),
 	on_touch_particles_(node->attr("on_touch_particles")),
 	num_on_touch_particles_(wml::get_int(node, "num_particles"))
 {

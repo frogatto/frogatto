@@ -550,6 +550,11 @@ bool custom_object::spring_off_head(const entity& landed_on_by)
 	return true;
 }
 
+const frame& custom_object::icon_frame() const
+{
+	return type_->default_frame();
+}
+
 void custom_object::handle_event(const std::string& event, const formula_callable* context)
 {
 	game_logic::const_formula_ptr handler;

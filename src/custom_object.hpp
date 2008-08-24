@@ -58,6 +58,8 @@ public:
 		return type_->get_child(key);
 	}
 
+	const frame& icon_frame() const;
+
 private:
 	virtual void control(const level& lvl);
 

@@ -645,7 +645,6 @@ void character::boarded(level& lvl, character_ptr player)
 	new_player->driver_ = player;
 	lvl.add_player(new_player);
 	hitpoints_ = 0;
-	new_player->vars_ = player->vars_;
 }
 
 void character::unboarded(level& lvl)
@@ -655,7 +654,6 @@ void character::unboarded(level& lvl)
 	lvl.add_character(vehicle);
 	lvl.add_player(driver_);
 	driver_->set_velocity(600 * (face_right() ? 1 : -1), -600);
-	driver_->vars_ = vars_;
 }
 
 int character::weight() const
@@ -799,6 +797,11 @@ void character::attack(const level& lvl)
 	} else if(current_frame_ == type_->jump_frame() || current_frame_ == type_->fall_frame()) {
 		change_frame(type_->jump_attack_frame());
 	}
+}
+
+const frame& character::icon_frame() const
+{
+	return type_->icon_frame();
 }
 
 const frame& character::current_frame() const
@@ -1094,6 +1097,18 @@ variant character::get_value(const std::string& key) const
 			return variant(lvl_->player().get());
 		} else {
 			return variant();
+		}
+	} else if(key == "vehicle") {
+		if(driver_) {
+			return variant(this);
+		} else {
+			return variant();
+		}
+	} else if(key == "driver") {
+		if(driver_) {
+			return variant(driver_.get());
+		} else {
+			return variant(this);
 		}
 	} else if(key == "collided") {
 		return variant(collided_since_last_frame_);

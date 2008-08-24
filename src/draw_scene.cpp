@@ -8,6 +8,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/scoped_ptr.hpp>
 
+#include "draw_number.hpp"
 #include "draw_scene.hpp"
 #include "font.hpp"
 #include "level.hpp"
@@ -128,28 +129,79 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 	lvl.draw(pos.x/100, pos.y/100, graphics::screen_width(), drawable_height());
 	glPopMatrix();
 
-	if(lvl.player()) {
-		graphics::texture statusbar(graphics::texture::get("statusbar.png"));
-		graphics::blit_texture(statusbar, 0, 600 - 124, 800, 124,
-		                       0.0, 0.0, 0.38, 1.0, 1.0);
-		graphics::blit_texture(statusbar, 16, 600 - 124 + 16, 47, 71,
-		                       0.0, 0.0, 1.0/100.0, 24.0/400.0, 37.0/100.0);
-		for(int hp = 0; hp < lvl.player()->max_hitpoints(); ++hp) {
-			const GLfloat is_red = hp >= lvl.player()->hitpoints() ? 15.0 : 0.0;
-			graphics::blit_texture(statusbar, 78 + 30*hp, 600 - 124 + 16, 28, 71,
-			                       0.0, (69.0 + is_red)/400.0, 1.0/100.0, (83.0 + is_red)/400.0, 37.0/100.0);
+	graphics::texture statusbar(graphics::texture::get("statusbar.png"));
+
+	const_character_ptr player = lvl.player();
+	if(player) {
+		if(player->driver()) {
+			player = player->driver();
 		}
 
-		variant coins = lvl.player()->query_value("coins");
+		graphics::blit_texture(statusbar, 0, 600 - 124, 800, 124,
+		                       0.0, 0.0, 0.0, 1.0, 62.0/104.0);
+
+		player->icon_frame().draw(210, 600 - 124 + 14, true);
+		for(int hp = 0; hp < player->max_hitpoints(); ++hp) {
+			const GLfloat is_red = hp >= player->hitpoints() ? 30.0 : 0.0;
+			graphics::blit_texture(statusbar, 278 + 30*hp, 600 - 124 + 16, 30, 74,
+			                       0.0, (99.0 + is_red)/400.0, 62.0/103.0, (114.0 + is_red)/400.0, 99.0/103.0);
+		}
+
+		variant coins = player->query_value("coins");
 		if(!coins.as_bool()) {
 			coins = variant(0);
 		}
-		const_item_type_ptr coin_type = item_type::get("coin");
-		if(coin_type) {
-			coin_type->get_frame().draw(285, 510, true);
+
+		const int wanted_coins = coins.as_int()*100;
+		if(pos.coins < 0) {
+			pos.coins = wanted_coins;
 		}
 
-		graphics::blit_texture(font::render_text("x " + coins.string_cast(), graphics::color_black(), 18), 320, 516);
+		if(pos.coins > wanted_coins) {
+			pos.coins = wanted_coins;
+		}
+
+		if(pos.coins < wanted_coins) {
+			const int delta = (wanted_coins - pos.coins)/20;
+			pos.coins += delta;
+			if(delta == 0) {
+				++pos.coins;
+			}
+		}
+
+		draw_number(pos.coins, 3, 267*2, 600 - 124 + 11*2);
+	}
+
+	if(lvl.player() && lvl.player()->driver()) {
+		const_character_ptr vehicle = lvl.player();
+		vehicle->icon_frame().draw(18, 600 - 124 + 22, true);
+		for(int hp = 0; hp < vehicle->max_hitpoints(); ++hp) {
+			const GLfloat is_red = hp >= vehicle->hitpoints() ? 11.0 : 0.0;
+			graphics::blit_texture(statusbar, 90 + 22*hp, 600 - 124 + 22, 20, 28,
+			                       0.0, (375.0 + is_red)/400.0, 68.0/103.0, (385.0 + is_red)/400.0, 82.0/103.0);
+		}
+		
+		// draw the vehicle's level and experience.
+		variant xp_num = vehicle->query_value("experience");
+		if(!xp_num.as_bool()) {
+			xp_num = variant(0);
+		}
+
+		const int xp_needed = 7;
+		int xp = xp_num.as_int();
+		const int xp_level = xp/xp_needed;
+		xp %= xp_needed;
+
+		graphics::blit_texture(statusbar, 73*2, 600 - 124 + 46*2, 14*2, 8*2,
+		                       0.0, 9.0/400.0, (80.0 - 9.0*(xp_level))/103.0,
+		                       23.0/400.0, (88.0 - 9.0*(xp_level))/103.0);
+
+		for(int n = 0; n != xp_needed - 1; ++n) {
+			const double has_xp = (n < xp) ? 0.0 : 9.0;
+			graphics::blit_texture(statusbar, 14*2 + 10*2*n, 600 - 124 + 46*2 + 1, 8*2, 8*2, 0.0,
+			                       (49.0 + has_xp)/400.0, 81.0/103.0,
+								   (57.0 + has_xp)/400.0, 89.0/103.0);
+		}
 	}
 
 	if(title_display_remaining > 0) {

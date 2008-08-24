@@ -59,6 +59,7 @@ public:
 	virtual void hit_player() {}
 	virtual void hit_by(entity& e) {}
 
+	virtual const frame& icon_frame() const = 0;
 	virtual const frame& current_frame() const = 0;
 
 	int feet_x() const;

@@ -66,12 +66,19 @@ void item::process(level& lvl)
 					lvl.add_character(particle);
 				}
 
-				for(std::map<std::string, game_logic::const_formula_ptr>::const_iterator i = type_->on_touch().begin(); i != type_->on_touch().end(); ++i) {
-					if(!i->second) {
-						continue;
-					}
+				if(type_->target()) {
+					variant var = type_->target()->execute(*player);
+					player = character_ptr(var.convert_to<character>());
+				}
 
-					player->mutate_value(i->first, i->second->execute(*player));
+				if(player) {
+					for(std::map<std::string, game_logic::const_formula_ptr>::const_iterator i = type_->on_touch().begin(); i != type_->on_touch().end(); ++i) {
+						if(!i->second) {
+							continue;
+						}
+
+						player->mutate_value(i->first, i->second->execute(*player));
+					}
 				}
 			}
 		}
