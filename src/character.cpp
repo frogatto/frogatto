@@ -639,21 +639,32 @@ bool character::spring_off_head(const entity& jumped_on_by)
 
 void character::boarded(level& lvl, character_ptr player)
 {
+	pc_character* pc_player = dynamic_cast<pc_character*>(player.get());
+	if(pc_player == NULL) {
+		return;
+	}
+
 	player->invincible_ = 0;
 	player->current_frame_ = &player->type_->get_frame();
-	character_ptr new_player(new pc_character(*this));
-	new_player->driver_ = player;
+	pc_character_ptr new_player(new pc_character(*this));
+	new_player->driver_ = pc_player;
 	lvl.add_player(new_player);
 	hitpoints_ = 0;
+
+	new_player->swap_player_state(*pc_player);
 }
 
 void character::unboarded(level& lvl)
 {
 	character_ptr vehicle(new character(*this));
-	vehicle->driver_ = character_ptr();
+	vehicle->driver_ = pc_character_ptr();
 	lvl.add_character(vehicle);
 	lvl.add_player(driver_);
 	driver_->set_velocity(600 * (face_right() ? 1 : -1), -600);
+
+	if(pc_character* pc = dynamic_cast<pc_character*>(this)) {
+		driver_->swap_player_state(*pc);
+	}
 }
 
 int character::weight() const

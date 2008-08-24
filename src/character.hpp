@@ -107,6 +107,7 @@ protected:
 	virtual bool body_harmful() const;
 
 	virtual bool boardable_vehicle() const;
+	virtual void swap_player_state(pc_character& player) {}
 private:
 	void set_driver_position();
 
@@ -151,7 +152,7 @@ private:
 
 	std::map<std::string, variant> vars_;
 
-	character_ptr driver_;
+	pc_character_ptr driver_;
 
 	bool last_jump_;
 
@@ -205,7 +206,12 @@ public:
 	void set_current_level(const std::string& lvl) { current_level_ = lvl; }
 
 	void set_key_state(const std::string& keys) { key_.Read(keys); }
+	virtual void swap_player_state(pc_character& player) {
+		items_destroyed_.swap(player.items_destroyed_);
+		objects_destroyed_.swap(player.objects_destroyed_);
+	}
 private:
+
 	virtual void set_value(const std::string& key, const variant& value);
 	virtual int invincibility_duration() const { return 150; }
 	virtual void control(const level& lvl);
