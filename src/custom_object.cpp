@@ -426,7 +426,8 @@ variant custom_object::get_value(const std::string& key) const
 	} else if(key == "alpha") {
 		return variant(draw_color_[3]);
 	}
-	return variant();
+
+	return vars_->query_value(key);
 }
 
 void custom_object::get_inputs(std::vector<game_logic::formula_input>* inputs) const
@@ -463,6 +464,7 @@ void custom_object::set_value(const std::string& key, const variant& value)
 	} else if(key == "alpha") {
 		draw_color_[3] = value.as_int();
 	} else {
+		vars_->add(key, value);
 	}
 }
 
