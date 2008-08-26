@@ -39,6 +39,7 @@ void custom_object_type::init_event_handlers(wml::const_node_ptr node,
 custom_object_type::custom_object_type(wml::const_node_ptr node)
   : id_(node->attr("id")),
 	hitpoints_(wml::get_int(node, "hitpoints", 1)),
+	zorder_(wml::get_int(node, "zorder")),
     body_harmful_(wml::get_bool(node, "body_harmful", true)),
     body_passthrough_(wml::get_bool(node, "body_passthrough", false)),
     ignore_collide_(wml::get_bool(node, "ignore_collide", false)),

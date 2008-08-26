@@ -54,6 +54,7 @@ level::level(const std::string& level_cfg)
 	wml::node::const_child_iterator t2 = node->end_child("tile");
 	widest_tile_ = 0;
 	highest_tile_ = 0;
+	layers_.insert(0);
 	for(; t1 != t2; ++t1) {
 		const level_tile t = level_object::build_tile(t1->second);
 		tiles_.push_back(t);
@@ -387,25 +388,28 @@ void level::draw(int x, int y, int w, int h) const
 	w += widest_tile_;
 	h += highest_tile_;
 
+	std::vector<entity_ptr>::const_iterator entity_itor = active_chars_.begin();
+
 	std::set<int>::const_iterator layer = layers_.begin();
 
 	for(; layer != layers_.end() && *layer < 0; ++layer) {
+
+		while(entity_itor != active_chars_.end() && (*entity_itor)->zorder() <= *layer) {
+			if(!(*entity_itor)->is_human()) {
+				(*entity_itor)->draw();
+				if(editor_) {
+					(*entity_itor)->draw_group();
+				}
+			}
+			++entity_itor;
+		}
+
 		draw_layer(*layer, x, y, w, h);
 	}
 
 	foreach(item_ptr it, items_) {
 		if(it) {
 			it->draw();
-		}
-	}
-
-	foreach(entity_ptr c, chars_) {
-		if(!c->is_human()) {
-			c->draw();
-
-			if(editor_) {
-				c->draw_group();
-			}
 		}
 	}
 
@@ -418,9 +422,28 @@ void level::draw(int x, int y, int w, int h) const
 	}
 
 	for(; layer != layers_.end(); ++layer) {
+		while(entity_itor != active_chars_.end() && (*entity_itor)->zorder() <= *layer) {
+			if(!(*entity_itor)->is_human()) {
+				(*entity_itor)->draw();
+				if(editor_) {
+					(*entity_itor)->draw_group();
+				}
+			}
+			++entity_itor;
+		}
+
 		draw_layer(*layer, x, y, w, h);
 	}
 
+	while(entity_itor != active_chars_.end()) {
+		if(!(*entity_itor)->is_human()) {
+			(*entity_itor)->draw();
+			if(editor_) {
+				(*entity_itor)->draw_group();
+			}
+		}
+		++entity_itor;
+	}
 }
 
 void level::draw_background(double x, double y, int rotation) const
@@ -428,6 +451,15 @@ void level::draw_background(double x, double y, int rotation) const
 	if(background_) {
 		background_->draw(x, y, rotation);
 	}
+}
+
+namespace {
+bool sort_entity_drawing_pos(const entity_ptr& a, const entity_ptr& b) {
+	return a->zorder() < b->zorder() ||
+	       a->zorder() == b->zorder() && a->y() < b->y() ||
+		   a->zorder() == b->zorder() && a->y() < b->y() ||
+		   a->zorder() == b->zorder() && a->y() == b->y() && a->x() < b->x();
+}
 }
 
 void level::process()
@@ -467,6 +499,7 @@ void level::process()
 
 	std::sort(active_chars_.begin(), active_chars_.end());
 	active_chars_.erase(std::unique(active_chars_.begin(), active_chars_.end()), active_chars_.end());
+	std::sort(active_chars_.begin(), active_chars_.end(), sort_entity_drawing_pos);
 
 	std::cerr << "active: " << active_chars_.size() << "/" << chars_.size() << "\n";
 

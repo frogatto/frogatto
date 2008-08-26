@@ -39,6 +39,7 @@ public:
 
 	int x() const { return x_; }
 	int y() const { return y_; }
+	virtual int zorder() const { return 0; }
 
 	virtual int velocity_x() const { return 0; }
 	virtual int velocity_y() const { return 0; }

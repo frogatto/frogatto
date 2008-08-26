@@ -39,6 +39,7 @@ public:
 
 	game_logic::const_formula_ptr get_event_handler(const std::string& event) const;
 
+	int zorder() const { return zorder_; }
 	bool body_harmful() const { return body_harmful_; }
 	bool body_passthrough() const { return body_passthrough_; }
 	bool ignore_collide() const { return ignore_collide_; }
@@ -71,6 +72,8 @@ private:
 	game_logic::const_formula_ptr next_animation_formula_;
 
 	event_handler_map event_handlers_;
+
+	int zorder_;
 
 	bool body_harmful_;
 	bool body_passthrough_;

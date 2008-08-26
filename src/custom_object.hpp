@@ -23,6 +23,8 @@ public:
 	virtual void draw_group() const;
 	virtual void process(level& lvl);
 
+	virtual int zorder() const;
+
 	virtual int velocity_x() const;
 	virtual int velocity_y() const;
 

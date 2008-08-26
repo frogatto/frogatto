@@ -290,6 +290,11 @@ void custom_object::process(level& lvl)
 	}
 }
 
+int custom_object::zorder() const
+{
+	return type_->zorder();
+}
+
 int custom_object::velocity_x() const
 {
 	return velocity_x_;
@@ -372,7 +377,8 @@ void custom_object::control(const level& lvl)
 
 bool custom_object::is_standing(const level& lvl)
 {
-	return lvl.standable(feet_x(), feet_y());
+	return (current_frame().feet_x() || current_frame().feet_y()) &&
+	       lvl.standable(feet_x(), feet_y());
 }
 
 variant custom_object::get_value(const std::string& key) const
