@@ -147,7 +147,10 @@ variant::variant(int n) : type_(TYPE_INT), int_value_(n)
 variant::variant(const game_logic::formula_callable* callable)
 	: type_(TYPE_CALLABLE), callable_(callable)
 {
-	assert(callable_);
+	if(callable == NULL) {
+		type_ = TYPE_NULL;
+		return;
+	}
 	increment_refcount();
 }
 

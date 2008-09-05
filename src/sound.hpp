@@ -13,6 +13,13 @@ struct manager {
 bool ok();
 
 void play(const std::string& file);
+
+// function to play a sound effect over and over in a loop. Will return
+// a handle to the sound effect. Will keep playing until cancel_looped()
+// is called with the handle.
+int play_looped(const std::string& file);
+void cancel_looped(int handle);
+
 void play_music(const std::string& file);
 void play_music_interrupt(const std::string& file);
 

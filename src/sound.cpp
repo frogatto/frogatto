@@ -75,21 +75,39 @@ manager::~manager()
 
 bool ok() { return sound_ok; }
 
-void play(const std::string& file)
+namespace {
+int play_internal(const std::string& file, int loops)
 {
 	if(!sound_ok) {
-		return;
+		return -1;
 	}
 
 	Mix_Chunk*& chunk = cache[file];
 	if(chunk == NULL) {
 		chunk = Mix_LoadWAV(("sounds/" + file).c_str());
 		if(chunk == NULL) {
-			return;
+			return -1;
 		}
 	}
 
-	Mix_PlayChannel(-1, chunk, 0);
+	return Mix_PlayChannel(-1, chunk, loops);
+}
+
+}
+
+void play(const std::string& file)
+{
+	play_internal(file, 0);
+}
+
+int play_looped(const std::string& file)
+{
+	return play_internal(file, -1);
+}
+
+void cancel_looped(int handle)
+{
+	Mix_HaltChannel(handle);
 }
 
 void play_music(const std::string& file)

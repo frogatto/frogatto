@@ -453,7 +453,7 @@ void character::process(level& lvl)
 
 		const int ypos = y() + current_frame().collide_y() + current_frame().collide_h();
 		const bool standing = is_standing(*lvl_);
-		if(lvl.solid(x1,ypos) || lvl.collide(x1, ypos)) {
+		if(lvl.solid(x1,ypos) || !boardable_vehicle() && lvl.collide(x1, ypos)) {
 			std::cerr << "PUSH_BACK!\n";
 			set_pos(x() + 1, y());
 			if(started_standing) {
@@ -461,7 +461,7 @@ void character::process(level& lvl)
 			}
 		}
 
-		if(lvl.solid(x2,ypos) || lvl.collide(x2, ypos)) {
+		if(lvl.solid(x2,ypos) || !boardable_vehicle() && lvl.collide(x2, ypos)) {
 			std::cerr << "PUSH_BACK!\n";
 			set_pos(x() - 1, y());
 			if(started_standing) {
@@ -1140,6 +1140,8 @@ variant character::get_value(const std::string& key) const
 		return variant(jump_power());
 	} else if(key == "glide_speed") {
 		return variant(glide_speed());
+	} else if(key == "damage") {
+		return variant(current_frame().damage());
 	} else {
 		std::map<std::string, variant>::const_iterator i = vars_.find(key);
 		if(i != vars_.end()) {

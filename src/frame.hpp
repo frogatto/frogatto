@@ -38,6 +38,7 @@ public:
 	const graphics::texture& img() const { return texture_; }
 	int blur() const { return blur_; }
 	bool rotate_on_slope() const { return rotate_on_slope_; }
+	int damage() const { return damage_; }
 
 	const std::string* get_event(int time_in_frame) const;
 private:
@@ -60,6 +61,7 @@ private:
 	int rotate_;
 	int blur_;
 	bool rotate_on_slope_;
+	int damage_;
 
 	std::vector<int> event_frames_;
 	std::vector<std::string> event_names_;

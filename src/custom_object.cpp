@@ -431,6 +431,10 @@ variant custom_object::get_value(const std::string& key) const
 		return variant(draw_color_[2]);
 	} else if(key == "alpha") {
 		return variant(draw_color_[3]);
+	} else if(key == "damage") {
+		return variant(current_frame().damage());
+	} else if(key == "hit_by") {
+		return variant(last_hit_by_.get());
 	}
 
 	return vars_->query_value(key);
@@ -534,6 +538,7 @@ void custom_object::hit_player()
 void custom_object::hit_by(entity& e)
 {
 	std::cerr << "hit_by!\n";
+	last_hit_by_ = &e;
 	handle_event("hit_by_player");
 }
 

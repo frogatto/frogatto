@@ -46,6 +46,7 @@ frame::frame(wml::const_node_ptr node)
 	 rotate_(wml::get_int(node, "rotate")),
 	 blur_(wml::get_int(node, "blur")),
 	 rotate_on_slope_(wml::get_bool(node, "rotate_on_slope")),
+	 damage_(wml::get_int(node, "damage")),
 	 sound_(node->attr("sound"))
 {
 	std::vector<std::string> hit_frames = util::split((*node)["hit_frames"]);

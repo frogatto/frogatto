@@ -145,6 +145,7 @@ level::level(const std::string& level_cfg)
 void level::load_character(wml::const_node_ptr c)
 {
 	chars_.push_back(entity::build(c));
+	layers_.insert(chars_.back()->zorder());
 	if(!chars_.back()->is_human()) {
 		chars_.back()->set_id(chars_.size());
 	}
@@ -388,13 +389,15 @@ void level::draw(int x, int y, int w, int h) const
 	w += widest_tile_;
 	h += highest_tile_;
 
-	std::vector<entity_ptr>::const_iterator entity_itor = active_chars_.begin();
+	const std::vector<entity_ptr>& chars = (editor_ ? chars_ : active_chars_);
+
+	std::vector<entity_ptr>::const_iterator entity_itor = chars.begin();
 
 	std::set<int>::const_iterator layer = layers_.begin();
 
 	for(; layer != layers_.end() && *layer < 0; ++layer) {
 
-		while(entity_itor != active_chars_.end() && (*entity_itor)->zorder() <= *layer) {
+		while(entity_itor != chars.end() && (*entity_itor)->zorder() <= *layer) {
 			if(!(*entity_itor)->is_human()) {
 				(*entity_itor)->draw();
 				if(editor_) {
@@ -422,7 +425,7 @@ void level::draw(int x, int y, int w, int h) const
 	}
 
 	for(; layer != layers_.end(); ++layer) {
-		while(entity_itor != active_chars_.end() && (*entity_itor)->zorder() <= *layer) {
+		while(entity_itor != chars.end() && (*entity_itor)->zorder() <= *layer) {
 			if(!(*entity_itor)->is_human()) {
 				(*entity_itor)->draw();
 				if(editor_) {
@@ -435,7 +438,7 @@ void level::draw(int x, int y, int w, int h) const
 		draw_layer(*layer, x, y, w, h);
 	}
 
-	while(entity_itor != active_chars_.end()) {
+	while(entity_itor != chars.end()) {
 		if(!(*entity_itor)->is_human()) {
 			(*entity_itor)->draw();
 			if(editor_) {
@@ -950,6 +953,8 @@ void level::add_character(entity_ptr p)
 	} else {
 		chars_.push_back(p);
 	}
+
+	layers_.insert(p->zorder());
 }
 
 void level::add_item(item_ptr p)
