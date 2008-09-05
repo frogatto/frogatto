@@ -161,6 +161,8 @@ private:
 	//a single animation.
 	int frame_id_;
 
+	int loop_sound_;
+
 	//blur information
 	struct previous_draw {
 		const frame* frame_drawn;

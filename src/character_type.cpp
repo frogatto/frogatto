@@ -44,6 +44,7 @@ character_type::character_type(wml::const_node_ptr node)
 	passenger_x_(wml::get_int(node, "passenger_x")),
 	passenger_y_(wml::get_int(node, "passenger_y")),
 	vehicle_die_object_(wml::get_str(node, "vehicle_die_object")),
+	loop_sound_(wml::get_str(node, "loop_sound")),
 	on_attack_formula_(game_logic::formula::create_optional_formula(wml::get_str(node, "on_attack"), &get_custom_object_functions_symbol_table())),
 	on_process_formula_(game_logic::formula::create_optional_formula(wml::get_str(node, "on_process"), &get_custom_object_functions_symbol_table()))
 {

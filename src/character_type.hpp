@@ -59,6 +59,7 @@ public:
 	int passenger_x() const { return passenger_x_; }
 	int passenger_y() const { return passenger_y_; }
 	const std::string& vehicle_die_object() const { return vehicle_die_object_; }
+	const std::string& loop_sound() const { return loop_sound_; }
 
 	const game_logic::const_formula_ptr& on_attack_formula() const { return on_attack_formula_; }
 	const game_logic::const_formula_ptr& on_process_formula() const { return on_process_formula_; }
@@ -86,6 +87,7 @@ private:
 	bool is_vehicle_;
 	int passenger_x_, passenger_y_;
 	std::string vehicle_die_object_;
+	std::string loop_sound_;
 	game_logic::const_formula_ptr on_attack_formula_, on_process_formula_;
 };
 

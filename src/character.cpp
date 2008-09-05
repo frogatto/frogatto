@@ -38,7 +38,7 @@ character::character(wml::const_node_ptr node)
 	jump_power_(wml::get_int(node, "jump_power", type_->jump())),
 	boost_power_(wml::get_int(node, "boost_power", type_->boost())),
 	glide_speed_(wml::get_int(node, "glide_speed", type_->glide())),
-	cycle_num_(0), last_jump_(false), frame_id_(0)
+	cycle_num_(0), last_jump_(false), frame_id_(0), loop_sound_(-1)
 {
 	current_frame_ = &type_->get_frame();
 	assert(type_);
@@ -63,7 +63,7 @@ character::character(const std::string& type, int x, int y, bool face_right)
 	jump_power_(type_->jump()),
 	boost_power_(type_->boost()),
 	glide_speed_(type_->glide()),
-	cycle_num_(0), last_jump_(false), frame_id_(0)
+	cycle_num_(0), last_jump_(false), frame_id_(0), loop_sound_(-1)
 {
 	current_frame_ = &type_->get_frame();
 	assert(type_);
@@ -648,6 +648,10 @@ void character::boarded(level& lvl, character_ptr player)
 	player->current_frame_ = &player->type_->get_frame();
 	pc_character_ptr new_player(new pc_character(*this));
 	new_player->driver_ = pc_player;
+
+	if(type_->loop_sound().empty() == false) {
+		new_player->loop_sound_ = sound::play_looped(type_->loop_sound());
+	}
 	lvl.add_player(new_player);
 	hitpoints_ = 0;
 
@@ -656,11 +660,21 @@ void character::boarded(level& lvl, character_ptr player)
 
 void character::unboarded(level& lvl)
 {
+	if(loop_sound_ >= 0) {
+		sound::cancel_looped(loop_sound_);
+		loop_sound_ = -1;
+	}
 	character_ptr vehicle(new character(*this));
 	vehicle->driver_ = pc_character_ptr();
 	lvl.add_character(vehicle);
 	lvl.add_player(driver_);
-	driver_->set_velocity(600 * (face_right() ? 1 : -1), -600);
+	if(vehicle->velocity_x() > 100) {
+		driver_->set_face_right(false);
+	}
+	if(vehicle->velocity_x() < -100) {
+		driver_->set_face_right(true);
+	}
+	driver_->set_velocity(600 * (driver_->face_right() ? 1 : -1), -600);
 
 	if(pc_character* pc = dynamic_cast<pc_character*>(this)) {
 		driver_->swap_player_state(*pc);
