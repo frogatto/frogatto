@@ -76,7 +76,9 @@ level_object::level_object(wml::const_node_ptr node)
 
 			foreach(const std::string& item, items) {
 				try {
-					const int base = t_.width()/16;
+					const int width = std::max<int>(t_.width(), t_.height());
+					assert(width%16 == 0);
+					const int base = width/16;
 					tiles_.back().push_back(strtol(item.c_str(), NULL, base));
 				} catch(boost::bad_lexical_cast&) {
 					tiles_.back().push_back(-1);

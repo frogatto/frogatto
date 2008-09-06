@@ -225,6 +225,8 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 				fade_scene(*lvl, last_draw_position());
 			} else if(transition == "flip") {
 				flip_scene(*lvl, last_draw_position(), true);
+			} else if(transition == "instant") {
+				//do nothing.
 			}
 
 			level* new_level = load_level(level_cfg);

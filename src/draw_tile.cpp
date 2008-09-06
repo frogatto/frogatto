@@ -15,8 +15,9 @@ void draw_from_tilesheet(const graphics::texture& t, int tile_num, int x, int y,
 		return;
 	}
 
-	const int xpos = 16*(tile_num%(t.width()/16));
-	const int ypos = 16*(tile_num/(t.width()/16));
+	const int width = std::max<int>(t.width(), t.height());
+	const int xpos = 16*(tile_num%(width/16));
+	const int ypos = 16*(tile_num/(width/16));
 
 	GLfloat x1 = GLfloat(xpos)/GLfloat(t.width());
 	GLfloat x2 = GLfloat(xpos+16)/GLfloat(t.width());
