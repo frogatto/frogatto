@@ -145,7 +145,6 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 
 	double ypos2 = ypos + double(graphics::screen_height())/(bg.texture.height()*ScaleImage);
 
-	std::cerr << "ypos: " << ypos << " " << ypos2 << "\n";
 	if(ypos >= 1.0) {
 		return;
 	}
@@ -163,9 +162,12 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 	}
 
 	if(ypos2 > 1.0) {
-		height -= graphics::screen_height()*((ypos2 - 1.0)/(ypos2 - ypos));
+		double ratio_cut = (ypos2 - 1.0)/(ypos2 - ypos);
+		height -= height*ratio_cut;
 		ypos2 = 1.0;
 	}
+
+	std::cerr << "ypos: " << ypos << " " << ypos2 << " -- " << height << "\n";
 
 	glPushMatrix();
 	glColor4fv(bg.color);

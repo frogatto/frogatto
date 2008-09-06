@@ -163,9 +163,11 @@ texture::texture(const key& surfs, options_type options)
 	unsigned int surf_width = width_;
 	unsigned int surf_height = height_;
 	if(!npot_allowed) {
-		surf_width = surf_height =
-		   std::max(next_power_of_2(surf_width),
-		            next_power_of_2(surf_height));
+		surf_width = next_power_of_2(surf_width);
+		surf_height = next_power_of_2(surf_height);
+//		surf_width = surf_height =
+//		   std::max(next_power_of_2(surf_width),
+//		            next_power_of_2(surf_height));
 		ratio_w_ = GLfloat(width_)/GLfloat(surf_width);
 		ratio_h_ = GLfloat(height_)/GLfloat(surf_height);
 	}
