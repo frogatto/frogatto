@@ -586,5 +586,10 @@ bool tile_map::set_tile(int xpos, int ypos, const std::string& str)
 
 	row[x] = empty_tile;
 	std::copy(str.begin(), end, row[x].begin());
+
+	// clear out variations info
+	if (y < variations_.size() && x < variations_[y].size()) {
+		variations_[y][x] = 0;
+	}
 	return true;
 }
