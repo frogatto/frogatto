@@ -69,6 +69,14 @@ character::character(const std::string& type, int x, int y, bool face_right)
 	assert(type_);
 }
 
+character::~character()
+{
+	if(loop_sound_ >= 0) {
+		sound::cancel_looped(loop_sound_);
+		loop_sound_ = -1;
+	}
+}
+
 void character::set_level(level* lvl)
 {
 	lvl_ = lvl;
@@ -1052,7 +1060,7 @@ void character::get_hit()
 	}
 
 	--hitpoints_;
-	if(hitpoints_ == 0 && driver_) {
+	if(hitpoints_ <= 0 && driver_) {
 		unboarded(*lvl_);
 		if(type_->vehicle_die_object().empty() == false) {
 			entity_ptr ep(new custom_object(type_->vehicle_die_object(), x(), y(), face_right()));

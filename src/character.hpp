@@ -29,7 +29,7 @@ class character : public entity
 public:
 	explicit character(wml::const_node_ptr node);
 	character(const std::string& type, int x, int y, bool face_right);
-	virtual ~character() {}
+	virtual ~character();
 	void set_level(level* lvl);
 	virtual wml::node_ptr write() const;
 	virtual void draw() const;
