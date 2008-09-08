@@ -18,6 +18,7 @@
 #include "key.hpp"
 #include "level.hpp"
 #include "level_object.hpp"
+#include "load_level.hpp"
 #include "prop.hpp"
 #include "raster.hpp"
 #include "texture.hpp"
@@ -148,6 +149,7 @@ void edit_level(const char* level_cfg)
 	bool done = false;
 	int xpos = 0, ypos = 0;
 	int anchorx = 0, anchory = 0;
+	bool select_previous_level = false, select_next_level = false;
 	while(!done) {
 		if(tileset_preview.empty()) {
 			assert(cur_tileset < tilesets.size());
@@ -247,9 +249,32 @@ void edit_level(const char* level_cfg)
 				}
 
 				if(event.key.keysym.sym == SDLK_s) {
+					const std::string path = "data/level/";
 					std::string data;
 					wml::write(lvl.write(), data);
-					sys::write_file(level_cfg, data);
+					sys::write_file(path + level_cfg, data);
+
+					//see if we should write the next/previous levels also
+					//based on them having changed.
+					if(lvl.previous_level().empty() == false) {
+						level prev(lvl.previous_level());
+						if(prev.next_level() != lvl.id()) {
+							prev.set_next_level(lvl.id());
+							std::string data;
+							wml::write(prev.write(), data);
+							sys::write_file(path + prev.id(), data);
+						}
+					}
+
+					if(lvl.next_level().empty() == false) {
+						level next(lvl.next_level());
+						if(next.previous_level() != lvl.id()) {
+							next.set_previous_level(lvl.id());
+							std::string data;
+							wml::write(next.write(), data);
+							sys::write_file(path + next.id(), data);
+						}
+					}
 				}
 
 				if(event.key.keysym.sym == SDLK_f) {
@@ -359,7 +384,33 @@ void edit_level(const char* level_cfg)
 				anchorx = xpos + mousex;
 				anchory = ypos + mousey;
 
-				if(mode == EDIT_CHARS && event.button.button == SDL_BUTTON_LEFT) {
+				if(select_previous_level) {
+
+					std::vector<std::string> levels = get_known_levels();
+					assert(!levels.empty());
+					levels.push_back("");
+					int index = std::find(levels.begin(), levels.end(), lvl.previous_level()) - levels.begin();
+					index = (index + 1)%levels.size();
+					if(levels[index] == lvl.id()) {
+						index = (index + 1)%levels.size();
+					}
+
+					lvl.set_previous_level(levels[index]);
+
+				} else if(select_next_level) {
+
+					std::vector<std::string> levels = get_known_levels();
+					assert(!levels.empty());
+					levels.push_back("");
+					int index = std::find(levels.begin(), levels.end(), lvl.next_level()) - levels.begin();
+					index = (index + 1)%levels.size();
+					if(levels[index] == lvl.id()) {
+						index = (index + 1)%levels.size();
+					}
+
+					lvl.set_next_level(levels[index]);
+
+				} else if(mode == EDIT_CHARS && event.button.button == SDL_BUTTON_LEFT) {
 					wml::node_ptr node(wml::deep_copy(enemy_types[cur_enemy_type].node));
 					node->set_attr("x", formatter() << (anchorx - anchorx%TileSize));
 					node->set_attr("y", formatter() << (anchory - anchory%TileSize));
@@ -439,6 +490,39 @@ void edit_level(const char* level_cfg)
 		glTranslatef(-xpos,-ypos,0);
 
 		lvl.draw(xpos, ypos, graphics::screen_width(), graphics::screen_height());
+
+
+		{
+		std::string next_level = "To " + lvl.next_level();
+		std::string previous_level = "To " + lvl.previous_level();
+		if(lvl.next_level().empty()) {
+			next_level = "(no next level)";
+		}
+		if(lvl.previous_level().empty()) {
+			previous_level = "(no previous level)";
+		}
+		graphics::texture t = font::render_text(previous_level, graphics::color_black(), 24);
+		int x = -t.width();
+		int y = ypos + graphics::screen_height()/2;
+
+		select_next_level = select_previous_level = false;
+
+		const int selectx = xpos + mousex;
+		const int selecty = ypos + mousey;
+		if(selectx > x && selectx < 0 && selecty > y && selecty < y + t.height()) {
+			t = font::render_text(previous_level, graphics::color_yellow(), 24);
+			select_previous_level = true;
+		}
+
+		graphics::blit_texture(t, x, y);
+		t = font::render_text(next_level, graphics::color_black(), 24);
+		x = lvl.boundaries().x2();
+		if(selectx > x && selectx < x + t.width() && selecty > y && selecty < y + t.height()) {
+			t = font::render_text(next_level, graphics::color_yellow(), 24);
+			select_next_level = true;
+		}
+		graphics::blit_texture(t, x, y);
+		}
 
 		if(mode == EDIT_PROPS) {
 			const int x = ((xpos + mousex)/TileSize)*TileSize;

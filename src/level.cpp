@@ -121,13 +121,17 @@ level::level(const std::string& level_cfg)
 	}
 
 	if(node->has_attr("next_level")) {
-		portal p;
-		p.area = rect(boundaries_.x2(), 0, 10000, boundaries_.h());
-		p.level_dest = node->attr("next_level");
-		p.dest_starting_pos = true;
-		p.automatic = true;
-		p.transition = "fade";
-		portals_.push_back(p);
+		right_portal_.level_dest = node->attr("next_level");
+		right_portal_.dest_str = "left";
+		right_portal_.dest_starting_pos = false;
+		right_portal_.automatic = true;
+	}
+
+	if(node->has_attr("previous_level")) {
+		left_portal_.level_dest = node->attr("previous_level");
+		left_portal_.dest_str = "right";
+		left_portal_.dest_starting_pos = false;
+		left_portal_.automatic = true;
 	}
 
 	wml::const_node_ptr bg = node->get_child("background");
@@ -347,11 +351,57 @@ wml::const_node_ptr level::write() const
 		res->add_child(node);
 	}
 
+	if(right_portal_.level_dest.empty() == false) {
+		res->set_attr("next_level", right_portal_.level_dest);
+	}
+
+	std::cerr << "PREVIOUS LEVEL: " << left_portal_.level_dest << "\n";
+	if(left_portal_.level_dest.empty() == false) {
+		res->set_attr("previous_level", left_portal_.level_dest);
+	}
+
 	if(background_) {
 		res->add_child(background_->write());
 	}
 
 	return res;
+}
+
+point level::get_dest_from_str(const std::string& key) const
+{
+	if(key == "left") {
+		return point(32, 0);
+	} else if(key == "right") {
+		return boundaries().x2() - 128;
+	} else {
+		return point();
+	}
+}
+
+const std::string& level::previous_level() const
+{
+	return left_portal_.level_dest;
+}
+
+const std::string& level::next_level() const
+{
+	return right_portal_.level_dest;
+}
+
+void level::set_previous_level(const std::string& name)
+{
+	left_portal_.level_dest = name;
+	left_portal_.dest_str = "right";
+	left_portal_.dest_starting_pos = false;
+	left_portal_.automatic = true;
+}
+
+void level::set_next_level(const std::string& name)
+{
+	right_portal_.level_dest = name;
+	right_portal_.dest_str = "left";
+	right_portal_.dest_starting_pos = false;
+	right_portal_.automatic = true;
 }
 
 void level::draw_layer(int layer, int x, int y, int w, int h) const
@@ -995,6 +1045,13 @@ const level::portal* level::get_portal() const
 	}
 
 	const rect& r = player_->body_rect();
+	if(r.x() < 0 && left_portal_.level_dest.empty() == false) {
+		return &left_portal_;
+	}
+
+	if(r.x2() > boundaries().x2() && right_portal_.level_dest.empty() == false) {
+		return &right_portal_;
+	}
 	foreach(const portal& p, portals_) {
 		if(rects_intersect(r, p.area) && (p.automatic || player_->enter())) {
 			return &p;

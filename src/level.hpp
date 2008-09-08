@@ -71,6 +71,7 @@ public:
 	struct portal {
 		rect area;
 		std::string level_dest;
+		std::string dest_str;
 		point dest;
 		bool dest_starting_pos;
 		bool automatic;
@@ -105,6 +106,18 @@ public:
 
 	void set_end_game() { end_game_ = true; }
 	bool end_game() const { return end_game_; }
+
+	//Function used when the player is entering the level at a certain point.
+	//Will take the name of a destination within a level and return the point
+	//at that location. For now only takes "left" and "right".
+	point get_dest_from_str(const std::string& key) const;
+
+	//levels ended up at by exiting this level to the left or right.
+	const std::string& previous_level() const;
+	const std::string& next_level() const;
+
+	void set_previous_level(const std::string& name);
+	void set_next_level(const std::string& name);
 
 private:
 	void draw_layer(int layer, int x, int y, int w, int h) const;
@@ -170,6 +183,7 @@ private:
 
 	std::vector<prop_object> props_;
 
+	portal left_portal_, right_portal_;
 	std::vector<portal> portals_;
 	boost::scoped_ptr<background> background_;
 	int widest_tile_, highest_tile_;

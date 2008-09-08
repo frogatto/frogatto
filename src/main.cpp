@@ -233,7 +233,9 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 			sound::play_music(new_level->music());
 			set_scene_title(new_level->title());
 			point dest = portal->dest;
-			if(portal->dest_starting_pos) {
+			if(portal->dest_str.empty() == false) {
+				dest = new_level->get_dest_from_str(portal->dest_str);
+			} else if(portal->dest_starting_pos) {
 				character_ptr new_player = new_level->player();
 				if(new_player) {
 					dest = point(new_player->x(), new_player->y());
@@ -282,9 +284,8 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 						done = true;
 						break;
 					} else if(event.key.keysym.sym == SDLK_e && (mod&KMOD_CTRL)) {
-						std::cerr << "editor...\n";
-						edit_level(level_cfg.c_str());
-						lvl.reset(load_level(level_cfg));
+						edit_level(lvl->id().c_str());
+						lvl.reset(load_level(lvl->id().c_str()));
 					} else if(event.key.keysym.sym == SDLK_s && (mod&KMOD_CTRL)) {
 						std::string data;
 
