@@ -295,6 +295,16 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 						}
 						wml::write(lvl_node, data);
 						sys::write_file("save.cfg", data);
+					} else if(event.key.keysym.sym == SDLK_w && (mod&KMOD_CTRL)) {
+						//warp to another level.
+						std::vector<std::string> levels = get_known_levels();
+						assert(!levels.empty());
+						int index = std::find(levels.begin(), levels.end(), lvl->id()) - levels.begin();
+						index = (index+1)%levels.size();
+						level* new_level = load_level(levels[index]);
+						sound::play_music(new_level->music());
+						set_scene_title(new_level->title());
+						lvl.reset(new_level);
 					}
 					break;
 				}

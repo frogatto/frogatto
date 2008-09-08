@@ -1,5 +1,6 @@
 #include <assert.h>
 
+#include "filesystem.hpp"
 #include "level.hpp"
 #include "load_level.hpp"
 
@@ -64,4 +65,11 @@ level* load_level(const std::string& lvl)
 	res->finish_loading();
 	levels_loading.erase(itor);
 	return res;
+}
+
+std::vector<std::string> get_known_levels()
+{
+	std::vector<std::string> files;
+	sys::get_files_in_dir("data/level/", &files);
+	return files;
 }
