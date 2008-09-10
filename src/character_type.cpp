@@ -88,6 +88,10 @@ character_type::character_type(wml::const_node_ptr node)
 		crouch_frame_.reset(new frame(node->get_child("crouch")));
 	}
 
+	if(node->get_child("roll")) {
+		roll_frame_.reset(new frame(node->get_child("roll")));
+	}
+
 	if(node->get_child("lookup")) {
 		lookup_frame_.reset(new frame(node->get_child("lookup")));
 	}

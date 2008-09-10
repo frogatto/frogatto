@@ -49,6 +49,7 @@ public:
 	void lookup(const level& lvl);
 	void unlookup(const level& lvl);
 	void attack(const level& lvl);
+	void roll(const level& lvl);
 
 	int velocity_x() const { return velocity_x_; }
 	int velocity_y() const { return velocity_y_; }

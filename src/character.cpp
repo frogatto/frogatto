@@ -226,6 +226,7 @@ void character::process(level& lvl)
 	   --time_in_frame_;
 	}
 
+	//executed when an animation ends, generally acts by switching to a new animation
 	if(time_in_frame_ == current_frame_->duration() && current_frame_ != type_->jump_frame() && current_frame_ != type_->fall_frame() && current_frame_ != type_->gethit_frame() && current_frame_ != type_->die_frame()) {
 		if(current_frame_ == &type_->get_frame()) {
 			change_frame((rand()%5) == 0 ? type_->idle_frame() : &type_->get_frame());
@@ -825,6 +826,11 @@ void character::unlookup(const level& lvl)
 	}
 }
 
+void character::roll(const level& lvl)
+{
+	change_frame(type_->roll_frame());
+}
+
 void character::attack(const level& lvl)
 {
 	execute_formula(type_->on_attack_formula());
@@ -1367,8 +1373,13 @@ void pc_character::control(const level& lvl)
 	}
 
 	if(key_[SDLK_s] || joystick::button(0) || joystick::button(2)) {
-		attack(lvl);
-		return;
+		if(&current_frame() == type().crouch_frame()){
+			roll(lvl);
+			return;
+		} else {
+			attack(lvl);
+			return;
+		}
 	}
 
 	const int double_tap_cycles = 10;

@@ -34,6 +34,7 @@ public:
 	const frame* jump_frame() const { return jump_frame_.get(); }
 	const frame* fall_frame() const { return fall_frame_.get(); }
 	const frame* crouch_frame() const { return crouch_frame_.get(); }
+	const frame* roll_frame() const { return roll_frame_.get(); }
 	const frame* lookup_frame() const { return lookup_frame_.get(); }
 	const frame* gethit_frame() const { return gethit_frame_.get(); }
 	const frame* attack_frame() const { return attack_frame_.get(); }
@@ -69,7 +70,7 @@ private:
 	typedef boost::scoped_ptr<frame> frame_ptr;
 	frame_ptr icon_frame_, stand_up_slope_frame_, stand_down_slope_frame_, idle_frame_,
 	          turn_frame_, walk_frame_, run_frame_, jump_frame_, fall_frame_,
-	          crouch_frame_, lookup_frame_, gethit_frame_,
+	          crouch_frame_, roll_frame_, lookup_frame_, gethit_frame_,
 			  attack_frame_, jump_attack_frame_,
 			  up_attack_frame_, run_attack_frame_,
 			  die_frame_, fly_frame_, slide_frame_, spring_frame_;
