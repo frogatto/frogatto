@@ -1360,8 +1360,11 @@ void pc_character::control(const level& lvl)
 	}
 
 	if(key_[SDLK_DOWN] || joystick::down()) {
-		crouch(lvl);
-		return;
+		if (&current_frame() != type().crouch_frame() && &current_frame() != type().roll_frame())
+		{
+			crouch(lvl);
+			return;
+		}
 	} else if(&current_frame() == type().crouch_frame()) {
 		uncrouch(lvl);
 	}
@@ -1376,7 +1379,7 @@ void pc_character::control(const level& lvl)
 		if(&current_frame() == type().crouch_frame()){
 			roll(lvl);
 			return;
-		} else {
+		} else if (&current_frame() != type().roll_frame()) {
 			attack(lvl);
 			return;
 		}
