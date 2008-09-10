@@ -42,6 +42,11 @@ character::character(wml::const_node_ptr node)
 {
 	current_frame_ = &type_->get_frame();
 	assert(type_);
+
+	wml::const_node_ptr driver = node->get_child("character");
+	if(driver) {
+		driver_ = new pc_character(driver);
+	}
 }
 
 character::character(const std::string& type, int x, int y, bool face_right)
@@ -134,6 +139,10 @@ wml::node_ptr character::write() const
 
 	if(group() >= 0) {
 		res->set_attr("group", formatter() << group());
+	}
+
+	if(driver_) {
+		res->add_child(driver_->write());
 	}
 	return res;
 }
@@ -1397,6 +1406,13 @@ void pc_character::control(const level& lvl)
 
 void pc_character::save_game()
 {
-		save_condition_ = NULL;
-		save_condition_ = new pc_character(*this);
+	save_condition_ = NULL;
+	save_condition_ = new pc_character(*this);
+
+	// If we're in a vehicle with a driver we have to set the save condition
+	// for the driver as well, and make a deep copy of the driver.
+	if(driver()) {
+		save_condition_->driver() = new pc_character(*driver());
+		driver()->save_condition_ = save_condition_;
+	}
 }

@@ -91,7 +91,8 @@ public:
 
 	virtual int weight() const;
 
-	const_character_ptr driver() const { return driver_; }
+	pc_character_ptr& driver() { return driver_; }
+	const_pc_character_ptr driver() const { return driver_; }
 
 	const frame& icon_frame() const;
 
