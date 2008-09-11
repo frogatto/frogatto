@@ -97,6 +97,8 @@ public:
 	virtual void boarded(level& lvl, character_ptr player) {}
 
 	virtual int weight() const { return 1; }
+
+	void draw_debug_rects() const;
 private:
 	virtual void control(const level& lvl) = 0;
 

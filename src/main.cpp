@@ -22,6 +22,7 @@
 #include "level_object.hpp"
 #include "load_level.hpp"
 #include "message_dialog.hpp"
+#include "preferences.hpp"
 #include "prop.hpp"
 #include "raster.hpp"
 #include "sound.hpp"
@@ -393,8 +394,11 @@ extern "C" int main(int argc, char** argv)
 		} else if(arg == "--record_replay") {
 			record_replay = true;
 		} else {
-			std::cerr << "unrecognized arg: '" << arg << "'\n";
-			return 0;
+			const bool res = preferences::parse_arg(argv[n]);
+			if(!res) {
+				std::cerr << "unrecognized arg: '" << arg << "'\n";
+				return 0;
+			}
 		}
 	}
 

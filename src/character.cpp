@@ -9,6 +9,7 @@
 #include "joystick.hpp"
 #include "level.hpp"
 #include "level_logic.hpp"
+#include "preferences.hpp"
 #include "raster.hpp"
 #include "sound.hpp"
 #include "wml_node.hpp"
@@ -183,6 +184,8 @@ void character::draw() const
 			++p;
 		}
 	}
+
+	draw_debug_rects();
 }
 
 void character::draw_group() const
@@ -263,6 +266,10 @@ void character::process(level& lvl)
 		} else if(current_frame_ == type_->run_frame()) {
 			time_in_frame_ = 0;
 			current_frame_ = type_->run_frame();
+		} else if(current_frame_ == type_->roll_frame()) {
+			//set to half way through crouching.
+			current_frame_ = type_->crouch_frame();
+			time_in_frame_ = current_frame_->duration()/2 - 1;
 		}
 	}
 

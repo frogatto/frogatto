@@ -10,6 +10,7 @@
 #include "level.hpp"
 #include "level_object.hpp"
 #include "load_level.hpp"
+#include "preferences.hpp"
 #include "raster.hpp"
 #include "string_utils.hpp"
 #include "tile_map.hpp"
@@ -496,6 +497,39 @@ void level::draw(int x, int y, int w, int h) const
 			}
 		}
 		++entity_itor;
+	}
+
+	draw_debug_solid(x, y, w, h);
+}
+
+void level::draw_debug_solid(int x, int y, int w, int h) const
+{
+	if(preferences::show_debug_hitboxes() == false) {
+		return;
+	}
+
+	for(solid_map::const_iterator i = solid_.begin(); i != solid_.end(); ++i) {
+		const int xpos = i->first.first*TileSize;
+		const int ypos = i->first.second*TileSize;
+
+		if(xpos < x || ypos < y || xpos > x + w || ypos > y + h) {
+			continue;
+		}
+
+		const solid_info& info = i->second;
+		if(info.all_solid) {
+			const SDL_Rect rect = {xpos, ypos, TileSize, TileSize};
+			graphics::draw_rect(rect, graphics::color_black(), 0x99);
+		} else {
+			for(int yi = 0; yi != TileSize; ++yi) {
+				for(int xi = 0; xi != TileSize; ++xi) {
+					if(info.bitmap[yi*TileSize + xi]) {
+						const SDL_Rect rect = {xpos + xi, ypos + yi, 1, 1};
+						graphics::draw_rect(rect, graphics::color_black(), 0x99);
+					}
+				}
+			}
+		}
 	}
 }
 

@@ -42,6 +42,7 @@ public:
 
 	wml::const_node_ptr write() const;
 	void draw(int x, int y, int w, int h) const;
+	void draw_debug_solid(int x, int y, int w, int h) const;
 	void draw_background(double x, double y, int rotation) const;
 	void process();
 	bool standable(int x, int y, int* friction=NULL, int* damage=NULL, int* adjust_y=NULL, entity_ptr* ch=NULL, const entity* exclude=NULL) const;

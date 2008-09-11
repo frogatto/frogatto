@@ -109,6 +109,8 @@ void custom_object::draw() const
 		static const uint8_t AllWhite[4] = {0xFF, 0xFF, 0xFF, 0xFF};
 		glColor4ubv(AllWhite);
 	}
+
+	draw_debug_rects();
 }
 
 void custom_object::draw_group() const

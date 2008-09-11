@@ -3,6 +3,8 @@
 #include "character.hpp"
 #include "custom_object.hpp"
 #include "entity.hpp"
+#include "preferences.hpp"
+#include "raster.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
 
@@ -73,4 +75,26 @@ rect entity::hit_rect() const
 	} else {
 		return rect();
 	}
+}
+
+void entity::draw_debug_rects() const
+{
+	if(preferences::show_debug_hitboxes() == false) {
+		return;
+	}
+
+	const rect& body = body_rect();
+	if(body.w() > 0 && body.h() > 0) {
+		const SDL_Rect rect = { body.x(), body.y(), body.w(), body.h() };
+		graphics::draw_rect(rect, graphics::color_black(), 0xAA);
+	}
+
+	const rect& hit = hit_rect();
+	if(hit.w() > 0 && hit.h() > 0) {
+		const SDL_Rect rect = { hit.x(), hit.y(), hit.w(), hit.h() };
+		graphics::draw_rect(rect, graphics::color_red(), 0xAA);
+	}
+
+	const SDL_Rect rect = { feet_x() - 1, feet_y() - 1, 3, 3 };
+	graphics::draw_rect(rect, graphics::color_white(), 0xFF);
 }
