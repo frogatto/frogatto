@@ -112,7 +112,7 @@ void cancel_looped(int handle)
 
 void play_music(const std::string& file)
 {
-	if(file.empty()) {
+	if(file.empty() || file == current_music_name) {
 		return;
 	}
 
@@ -145,7 +145,8 @@ void play_music_interrupt(const std::string& file)
 	Mix_HaltMusic();
 
 	next_music = current_music_name;
-
+	
+	current_music_name = file;
 	current_music = Mix_LoadMUS(("music/" + file).c_str());
 	if(!current_music) {
 		std::cerr << "Mix_LaadMUS ERROR loading " << file << ": " << Mix_GetError() << "\n";
