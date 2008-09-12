@@ -208,7 +208,7 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 			preload_level(save->current_level());
 			fade_scene(*lvl, last_draw_position());
 			level* new_level = load_level(save->current_level());
-			sound::play_music(new_level->music());
+			if (lvl->music() != new_level->music()) sound::play_music(new_level->music());
 			set_scene_title(new_level->title());
 			new_level->add_player(save);
 			save->save_game();
@@ -231,7 +231,7 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 			}
 
 			level* new_level = load_level(level_cfg);
-			sound::play_music(new_level->music());
+			if (lvl->music() != new_level->music()) sound::play_music(new_level->music());
 			set_scene_title(new_level->title());
 			point dest = portal->dest;
 			if(portal->dest_str.empty() == false) {
