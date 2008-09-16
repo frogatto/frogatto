@@ -12,6 +12,7 @@
 */
 #include "string_utils.hpp"
 
+#include <algorithm>
 #include <cctype>
 
 namespace util

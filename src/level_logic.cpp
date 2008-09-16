@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <limits.h>
 
 #include "level.hpp"
 #include "level_logic.hpp"

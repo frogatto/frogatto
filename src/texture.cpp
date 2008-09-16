@@ -18,6 +18,7 @@
 #include <GL/glu.h>
 #include <map>
 #include <iostream>
+#include <cstring>
 
 namespace graphics
 {
