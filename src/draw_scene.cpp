@@ -67,22 +67,44 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 	}
 
 	if(lvl.player()) {
+		// If the camera is automatically moved along by the level (e.g. a 
+		// hurtling through the sky level) do that here.
 		pos.x += lvl.auto_move_camera_x()*100;
 		pos.y += lvl.auto_move_camera_y()*100;
-		std::cerr << "auto move: " << lvl.auto_move_camera_x() << "\n";
+
+		//constants for the maximum that looking up or down can adjust the
+		//screen by, and the speed which the target position moves when
+		//the player looks up or down.
 		const int max_vertical_look = (drawable_height()/3)*(drawable_height()/3);
 		const int vertical_look_speed = 300;
 
+		//find the boundary values for the camera position based on the size
+		//of the level. These boundaries keep the camera from ever going out
+		//of the bounds of the level.
 		const int min_x = lvl.boundaries().x() + graphics::screen_width()/2;
 		const int max_x = lvl.boundaries().x2() - graphics::screen_width()/2;
 		const int min_y = lvl.boundaries().y() + drawable_height()/2;
 		const int max_y = lvl.boundaries().y2() - drawable_height()/2;
-		const int x = std::min(std::max(focus->feet_x(), min_x), max_x);
-		const int vertical_look = std::sqrt(std::abs(pos.vertical_look)) * (pos.vertical_look > 0 ? 1 : -1);
-		const int y = std::min(std::max(focus->feet_y() - drawable_height()/5 + vertical_look, min_y), max_y);
-		const int target_xpos = 100*(x - graphics::screen_width()/2);
 
-		const int target_ypos = (y - drawable_height()/2)*100;
+		//find the point we want the camera to converge toward. It will be the
+		//feet of the player, but inside the boundaries we calculated above.
+		const int x = std::min(std::max(focus->feet_x(), min_x), max_x);
+
+		//calculate the adjustment to the camera's target position based on
+		//our vertical look. This is calculated as the square root of the
+		//vertical look, to make the movement slowly converge.
+		const int vertical_look = std::sqrt(std::abs(pos.vertical_look)) * (pos.vertical_look > 0 ? 1 : -1);
+
+		//find the y point for the camera to converge toward
+		const int y = std::min(std::max(focus->feet_y() - drawable_height()/5 + vertical_look, min_y), max_y);
+
+		//find the target x,y position of the camera in centi-pixels. Note that
+		//(x,y) represents the position the camera should center on, while
+		//now we're calculating the top-left point.
+		//
+		//the actual camera position will converge toward this point
+		const int target_xpos = 100*(x - graphics::screen_width()/2);
+		const int target_ypos = 100*(y - drawable_height()/2);
 
 		//adjust the vertical look according to if the focus is looking up/down
 		if(message_dialog::get() == NULL && focus->look_up()) {
@@ -114,6 +136,10 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 			pos.y = target_ypos;
 			pos.init = true;
 		} else {
+			//Make (pos.x, pos.y) converge toward (target_xpos,target_ypos).
+			//We do this by moving asymptotically toward the target, which
+			//makes the camera have a nice acceleratoin/decceleration effect
+			//as the target position moves.
 			const int horizontal_move_speed = 30;
 			const int vertical_move_speed = 10;
 			int xdiff = (target_xpos - pos.x)/horizontal_move_speed;
