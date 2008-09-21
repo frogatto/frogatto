@@ -130,6 +130,9 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 				}
 			}
 		}
+		
+		
+		
 
 		if(pos.init == false) {
 			pos.x = target_xpos;
@@ -138,7 +141,7 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 		} else {
 			//Make (pos.x, pos.y) converge toward (target_xpos,target_ypos).
 			//We do this by moving asymptotically toward the target, which
-			//makes the camera have a nice acceleratoin/decceleration effect
+			//makes the camera have a nice acceleration/decceleration effect
 			//as the target position moves.
 			const int horizontal_move_speed = 30;
 			const int vertical_move_speed = 10;
@@ -148,6 +151,45 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 			pos.x += xdiff;
 			pos.y += ydiff;
 		}
+		
+		
+		//shake decay is handled automatically; just by giving it an offset and velocity,
+		//it will automatically return to equilibrium
+		
+		//shake speed		
+		pos.x += (pos.shake_x_offset);
+		pos.y += (pos.shake_y_offset);
+		
+		//shake velocity
+		pos.shake_x_offset += pos.shake_x_vel;
+		pos.shake_y_offset += pos.shake_y_vel;
+			
+		//shake acceleration
+		if ((std::abs(pos.shake_x_vel) < 50) && (std::abs(pos.shake_x_offset) < 50)){
+			//prematurely end the oscillation if it's in the asymptote
+			pos.shake_x_offset = 0;
+			pos.shake_x_vel = 0;
+		}else{
+			if (pos.shake_x_offset > 0){
+				pos.shake_x_vel -= (1 * pos.shake_x_offset/3 + pos.shake_x_vel/15);
+			}else if(pos.shake_x_offset < 0) {
+				pos.shake_x_vel += (-1 * pos.shake_x_offset/3 - pos.shake_x_vel/15);
+			}
+		}
+		if ((std::abs(pos.shake_y_vel) < 50) && (std::abs(pos.shake_y_offset) < 50)){
+			//prematurely end the oscillation if it's in the asymptote
+			pos.shake_y_offset = 0;
+			pos.shake_y_vel = 0;
+		}else{
+			if (pos.shake_y_offset > 0){
+				pos.shake_y_vel -= (1 * pos.shake_y_offset/3 + pos.shake_y_vel/15);
+			}else if(pos.shake_y_offset < 0) {
+				pos.shake_y_vel += (-1 * pos.shake_y_offset/3 - pos.shake_y_vel/15);
+			}
+		}
+
+		
+		
 		lvl.draw_background(pos.x/100, pos.y/100, camera_rotation);
 
 		glTranslatef(-pos.x/100, -pos.y/100, 0);

@@ -8,10 +8,13 @@ class level;
 
 struct screen_position {
 	screen_position() : init(false), x(0), y(0), vertical_look(0),
-	                    flip_rotate(0), coins(-1)
+	                    flip_rotate(0), coins(-1),
+						shake_x_offset(100),shake_y_offset(100),shake_x_vel(200),shake_y_vel(-500)
 	{}
 	bool init;
 	int x, y;
+	int	shake_x_offset,shake_y_offset;
+	int shake_x_vel,shake_y_vel;
 	int vertical_look;
 	int flip_rotate;
 	int coins;
