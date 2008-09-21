@@ -377,9 +377,10 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles,
 			t.y = ypos;
 			t.zorder = zorder_;
 
-			const int variation_num = variation(x, y);
-			std::cerr << variation_num << "/" << p->variations.size() << "\n";
-			assert(variation_num < p->variations.size());
+			int variation_num = variation(x, y);
+			if(variation_num >= p->variations.size()) {
+				variation_num = 0;
+			}
 			assert(p->variations[variation_num]);
 			t.object = p->variations[variation_num];
 			t.face_right = face_right;
