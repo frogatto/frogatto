@@ -170,6 +170,12 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 			pos.shake_x_offset = 0;
 			pos.shake_x_vel = 0;
 		}else{
+			//extraneous signs kept for consistency with conventional spring physics, also
+			//the value that "offset" is divided by, is (the inverse of) 'k', aka "spring stiffness"
+			//the value that "velocity" is divided by, is (the inverse of) 'b', aka "oscillation damping",
+			//which causes the spring to come to rest.
+			//These values are very sensitive, and tweaking them wrongly will cause the spring to 'explode',
+			//and increase its motion out of game-bounds. 
 			if (pos.shake_x_offset > 0){
 				pos.shake_x_vel -= (1 * pos.shake_x_offset/3 + pos.shake_x_vel/15);
 			}else if(pos.shake_x_offset < 0) {
