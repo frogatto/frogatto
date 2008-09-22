@@ -219,42 +219,52 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 		const level::portal* portal = lvl->get_portal();
 		if(portal) {
 			level_cfg = portal->level_dest;
-			preload_level(level_cfg);
-
-			const std::string transition = portal->transition;
-			if(transition.empty() || transition == "fade") {
-				fade_scene(*lvl, last_draw_position());
-			} else if(transition == "flip") {
-				flip_scene(*lvl, last_draw_position(), true);
-			} else if(transition == "instant") {
-				//do nothing.
-			}
-
-			level* new_level = load_level(level_cfg);
-			sound::play_music(new_level->music());
-			set_scene_title(new_level->title());
-			point dest = portal->dest;
-			if(portal->dest_str.empty() == false) {
-				dest = new_level->get_dest_from_str(portal->dest_str);
-			} else if(portal->dest_starting_pos) {
-				character_ptr new_player = new_level->player();
-				if(new_player) {
-					dest = point(new_player->x(), new_player->y());
+			if(level_cfg.empty()) {
+				//the portal is within the same level
+				last_draw_position() = screen_position();
+				character_ptr player = lvl->player();
+				if(player) {
+					player->set_pos(portal->dest);
 				}
-			}
+			} else {
+				//the portal is to another level
+				preload_level(level_cfg);
 
-			character_ptr player = lvl->player();
-			if(player) {
-				player->set_pos(dest);
-				new_level->add_player(player);
-				player->move_to_standing(*new_level);
-			}
+				const std::string transition = portal->transition;
+				if(transition.empty() || transition == "fade") {
+					fade_scene(*lvl, last_draw_position());
+				} else if(transition == "flip") {
+					flip_scene(*lvl, last_draw_position(), true);
+				} else if(transition == "instant") {
+					//do nothing.
+				}
 
-			lvl.reset(new_level);
-			last_draw_position() = screen_position();
+				level* new_level = load_level(level_cfg);
+				sound::play_music(new_level->music());
+				set_scene_title(new_level->title());
+				point dest = portal->dest;
+				if(portal->dest_str.empty() == false) {
+					dest = new_level->get_dest_from_str(portal->dest_str);
+				} else if(portal->dest_starting_pos) {
+					character_ptr new_player = new_level->player();
+					if(new_player) {
+						dest = point(new_player->x(), new_player->y());
+					}
+				}
 
-			if(transition == "flip") {
-				flip_scene(*lvl, last_draw_position(), false);
+				character_ptr player = lvl->player();
+				if(player) {
+					player->set_pos(dest);
+					new_level->add_player(player);
+					player->move_to_standing(*new_level);
+				}
+
+				lvl.reset(new_level);
+				last_draw_position() = screen_position();
+
+				if(transition == "flip") {
+					flip_scene(*lvl, last_draw_position(), false);
+				}
 			}
 		}
 

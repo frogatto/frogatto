@@ -104,6 +104,16 @@ level::level(const std::string& level_cfg)
 	for(; i1 != i2; ++i1) {
 		props_.push_back(prop_object(i1->second));
 		layers_.insert(props_.back().zorder());
+		foreach(const rect& r, props_.back().solid_rects()) {
+			std::cerr << "rect height: " << r.h() << "\n";
+			if(r.h() > 1) {
+				add_solid_rect(r.x(), r.y(), r.x2(), r.y2(), 20, 0);
+			} else {
+				for(int x = r.x(); x <= r.x2(); ++x) {
+					add_standable(x, r.y(), 20, 0);
+				}
+			}
+		}
 	}
 
 	std::sort(props_.begin(), props_.end());

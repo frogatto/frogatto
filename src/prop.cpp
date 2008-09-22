@@ -47,6 +47,11 @@ const_prop_ptr prop::get(const std::string& id)
 prop::prop(wml::const_node_ptr node)
   : id_(node->attr("id")), zorder_(wml::get_int(node, "zorder")), frame_(node)
 {
+	wml::node::const_child_iterator r1 = node->begin_child("solid_rect");
+	wml::node::const_child_iterator r2 = node->end_child("solid_rect");
+	for(; r1 != r2; ++r1) {
+		solid_rects_.push_back(rect(r1->second->attr("rect")));
+	}
 }
 
 prop_object::prop_object(int x, int y, const std::string& id)
@@ -58,6 +63,7 @@ prop_object::prop_object(int x, int y, const std::string& id)
 	}
 
 	area_ = rect(x, y, type_->get_frame().width(), type_->get_frame().height());
+	calculate_solid_rects();
 }
 
 prop_object::prop_object(wml::const_node_ptr node)
@@ -70,6 +76,7 @@ prop_object::prop_object(wml::const_node_ptr node)
 
 	area_ = rect(wml::get_int(node, "x"), wml::get_int(node, "y"),
 	             type_->get_frame().width(), type_->get_frame().height());
+	calculate_solid_rects();
 }
 
 void prop_object::draw() const
@@ -89,6 +96,14 @@ wml::node_ptr prop_object::write() const
 	node->set_attr("x", formatter() << area_.x());
 	node->set_attr("y", formatter() << area_.y());
 	return node;
+}
+
+void prop_object::calculate_solid_rects()
+{
+	solid_rects_.clear();
+	foreach(const rect& r, type_->solid_rects()) {
+		solid_rects_.push_back(rect(area_.x() + r.x(), area_.y() + r.y(), r.w(), r.h()));
+	}
 }
 
 bool operator<(int zorder, const prop_object& o)

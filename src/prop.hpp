@@ -22,6 +22,7 @@ public:
 	const std::string& id() const { return id_; }
 	int zorder() const { return zorder_; }
 	const frame& get_frame() const { return frame_; }
+	const std::vector<rect>& solid_rects() const { return solid_rects_; }
 
 	struct error {
 	};
@@ -30,6 +31,7 @@ private:
 	std::string id_;
 	int zorder_;
 	frame frame_;
+	std::vector<rect> solid_rects_;
 };
 
 class prop_object
@@ -44,9 +46,13 @@ public:
 	wml::node_ptr write() const;
 
 	int zorder() const { return type_->zorder(); }
+	const std::vector<rect>& solid_rects() const { return solid_rects_; }
 private:
 	const_prop_ptr type_;
 	rect area_;
+
+	void calculate_solid_rects();
+	std::vector<rect> solid_rects_;
 };
 
 bool operator<(int zorder, const prop_object& o);
