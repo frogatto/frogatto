@@ -9,6 +9,8 @@
 #include "texture.hpp"
 #include "message_dialog.hpp"
 #include "sound.hpp"
+#include "draw_scene.hpp"
+
 
 using namespace game_logic;
 
@@ -39,6 +41,39 @@ private:
 	}
 };
 
+class shake_screen_command : public entity_command_callable
+	{
+	public:
+		explicit shake_screen_command(int x_offset, int y_offset, int x_velocity, int y_velocity)
+		: x_offset_(x_offset), y_offset_(y_offset), x_velocity_(x_velocity), y_velocity_(y_velocity)
+		{}
+		virtual void execute(level& lvl, entity& ob) const {
+			screen_position& screen_pos = last_draw_position();
+			
+			screen_pos.shake_x_offset = x_offset_;
+			screen_pos.shake_y_offset = y_offset_;
+			screen_pos.shake_x_vel = x_velocity_;
+			screen_pos.shake_y_vel = y_velocity_;
+		}
+	private:
+		int x_offset_,y_offset_,x_velocity_,y_velocity_;
+	};
+
+class shake_screen_function : public function_expression {
+public:
+	explicit shake_screen_function(const args_list& args)
+	: function_expression("shake_screen",args,4,4)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new shake_screen_command(
+										args()[0]->evaluate(variables).as_int(),
+										args()[1]->evaluate(variables).as_int(),
+										args()[2]->evaluate(variables).as_int(),
+										args()[3]->evaluate(variables).as_int() ));
+	}
+};
+	
 
 class spawn_command : public entity_command_callable
 {
@@ -493,6 +528,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new spawn_function(args, false));
 	} else if(fn == "sound") {
 		return expression_ptr(new sound_function(args));
+	} else if(fn == "shake_screen") {
+		return expression_ptr(new shake_screen_function(args));
 	} else if(fn == "child") {
 		return expression_ptr(new child_function(args));
 	} else if(fn == "hit") {
