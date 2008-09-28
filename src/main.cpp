@@ -10,6 +10,7 @@
 #include <boost/scoped_ptr.hpp>
 
 #include "character_type.hpp"
+#include "custom_object_functions.hpp"
 #include "custom_object_type.hpp"
 #include "draw_scene.hpp"
 #include "filesystem.hpp"
@@ -446,6 +447,7 @@ extern "C" int main(int argc, char** argv)
 	level_object::init(wml::parse_wml(sys::read_file("tiles.cfg")));
 	tile_map::init(wml::parse_wml(sys::read_file("tiles.cfg")));
 	prop::init(wml::parse_wml(sys::read_file("prop.cfg")));
+	init_custom_object_functions(wml::parse_wml(sys::read_file("functions.cfg")));
 
 	glEnable(GL_SMOOTH);
 	glEnable(GL_BLEND);

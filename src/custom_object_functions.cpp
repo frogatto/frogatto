@@ -9,7 +9,9 @@
 #include "texture.hpp"
 #include "message_dialog.hpp"
 #include "sound.hpp"
-#include "draw_scene.hpp"
+#include "string_utils.hpp"
+#include "wml_node.hpp"
+#include "wml_utils.hpp"
 
 
 using namespace game_logic;
@@ -566,4 +568,18 @@ function_symbol_table& get_custom_object_functions_symbol_table()
 {
 	static custom_object_function_symbol_table table;
 	return table;
+}
+
+void init_custom_object_functions(wml::const_node_ptr node)
+{
+	wml::node::const_child_iterator i1 = node->begin_child("function");
+	wml::node::const_child_iterator i2 = node->end_child("function");
+	for(; i1 != i2; ++i1) {
+		get_custom_object_functions_symbol_table().add_formula_function(
+		    i1->second->attr("name"),
+			const_formula_ptr(new formula(i1->second->attr("formula"),
+			                    &get_custom_object_functions_symbol_table())),
+			const_formula_ptr(),
+		    util::split(i1->second->attr("args")));
+	}
 }
