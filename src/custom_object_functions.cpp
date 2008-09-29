@@ -581,5 +581,7 @@ void init_custom_object_functions(wml::const_node_ptr node)
 			                    &get_custom_object_functions_symbol_table())),
 			const_formula_ptr(),
 		    util::split(i1->second->attr("args")));
+		std::vector<std::string> names = get_custom_object_functions_symbol_table().get_function_names();
+		assert(std::count(names.begin(), names.end(), i1->second->attr("name")));
 	}
 }

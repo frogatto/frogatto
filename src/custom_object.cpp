@@ -273,8 +273,8 @@ void custom_object::process(level& lvl)
 		}
 	}
 
-	if(lvl.player() && lvl.player()->enter() && rects_intersect(body_rect(), lvl.player()->body_rect())) {
-		handle_event("touch");
+	if(lvl.player() && rects_intersect(body_rect(), lvl.player()->body_rect())) {
+		handle_event(lvl.player()->enter() ? "interact" : "touch");
 	}
 
 	static const std::string ProcessStr = "process";
