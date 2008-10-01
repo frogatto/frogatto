@@ -24,6 +24,7 @@
 #include "load_level.hpp"
 #include "message_dialog.hpp"
 #include "preferences.hpp"
+#include "preprocessor.hpp"
 #include "prop.hpp"
 #include "raster.hpp"
 #include "sound.hpp"

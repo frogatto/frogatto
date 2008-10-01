@@ -3,6 +3,7 @@
 #include "filesystem.hpp"
 #include "level.hpp"
 #include "load_level.hpp"
+#include "preprocessor.hpp"
 
 #include <boost/thread.hpp>
 

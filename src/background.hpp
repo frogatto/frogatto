@@ -30,6 +30,9 @@ private:
 		int scale;
 		int yoffset;
 		GLfloat color[4];
+
+		// Top and bottom edges of the background.
+		mutable int y1, y2;
 	};
 
 	void draw_layer(int x, int y, int rotation, const layer& bg) const;
