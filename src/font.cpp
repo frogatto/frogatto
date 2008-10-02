@@ -84,7 +84,7 @@ int char_width(int size)
 	if(width) {
 		return width;
 	}
-	SDL_Color color;
+	SDL_Color color = {0, 0, 0, 0};
 	graphics::texture t(render_text("ABCDEFABCDEF", color, size));
 	width = t.width()/12;
 	return width;
@@ -97,7 +97,7 @@ int char_height(int size)
 	if(height) {
 		return height;
 	}
-	SDL_Color color;
+	SDL_Color color = {0, 0, 0, 0};
 	graphics::texture t(render_text("A", color, size));
 	height = t.height();
 	return height;
