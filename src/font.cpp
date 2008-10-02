@@ -4,6 +4,9 @@
 #include "font.hpp"
 #include "surface.hpp"
 
+/*  This manages the TTF loading library, and allows you to use fonts.
+	The only thing one will normally need to use is render_text(), and possibly char_width(), char_height() if you need to know the size of the resulting text. */
+
 namespace font {
 
 namespace {
