@@ -815,6 +815,21 @@ void character::crouch(const level& lvl)
 void character::uncrouch(const level& lvl)
 {
 	if(time_in_frame_ == current_frame_->duration()/2 - 1) {
+		// See if we can stand up without colliding with terrain. If we can't,
+		// then don't let us stand.
+
+		current_frame_ = &type().get_frame();
+
+		int damage = 0;
+		if(lvl.solid(body_rect(), NULL, &damage) && damage == 0) {
+			// Looks like this will make us collide, so don't let us
+			// uncrouch.
+			current_frame_ = type().crouch_frame();
+			return;
+		}
+
+		current_frame_ = type().crouch_frame();
+
 		++time_in_frame_;
 	}
 }
