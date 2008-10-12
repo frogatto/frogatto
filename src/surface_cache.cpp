@@ -49,6 +49,11 @@ surface get(const std::string& key)
 	}
 }
 
+void clear()
+{
+	cache.clear();
+}
+
 }
 
 }

@@ -10,6 +10,7 @@
 
    See the COPYING file for more details.
 */
+#include "preferences.hpp"
 #include "raster.hpp"
 #include "surface_cache.hpp"
 #include "surface_formula.hpp"
@@ -22,6 +23,8 @@
 
 namespace graphics
 {
+
+surface scale_surface(surface input);
 
 namespace {
 	typedef std::map<texture::key,graphics::texture> texture_map;
@@ -176,7 +179,7 @@ texture::texture(const key& surfs, options_type options)
 
 	surface s(SDL_CreateRGBSurface(SDL_SWSURFACE,surf_width,surf_height,32,SURFACE_MASK));
 
-	for(key::const_iterator i = surfs.begin(); i != surfs.end(); ++i){
+	for(key::const_iterator i = surfs.begin(); i != surfs.end(); ++i) {
 		if(i == surfs.begin()) {
 			SDL_SetAlpha(i->get(), 0, SDL_ALPHA_OPAQUE);
 		} else {
@@ -193,6 +196,10 @@ texture::texture(const key& surfs, options_type options)
 		if(pixel[0] == AlphaPixel[0] && pixel[1] == AlphaPixel[1] && pixel[2] == AlphaPixel[2]) {
 			pixel[3] = 0;
 		}
+	}
+
+	if(preferences::use_pretty_scaling()) {
+		s = scale_surface(s);
 	}
 
 	id_.reset(new ID(get_texture_id()));
@@ -307,6 +314,11 @@ void texture::set_coord(GLfloat x, GLfloat y)
 	} else {
 		glTexCoord2f(x*width_multiplier,y*height_multiplier);
 	}
+}
+
+void texture::clear_cache()
+{
+	texture_cache.clear();
 }
 
 texture::ID::~ID()

@@ -35,7 +35,7 @@ public:
 		~manager();
 	};
 
-	enum OPTION { NO_MIPMAP, NUM_OPTIONS };
+	enum OPTION { NO_MIPMAP, PRETTY_SCALING, NUM_OPTIONS };
 	typedef std::bitset<NUM_OPTIONS> options_type;
 	static void clear_textures();
 
@@ -55,6 +55,7 @@ public:
 	static texture get_no_cache(const surface& surf, options_type options=options_type());
 	static void set_current_texture(const key& k);
 	static void set_coord(GLfloat x, GLfloat y);
+	static void clear_cache();
 
 	unsigned int width() const { return width_; }
 	unsigned int height() const { return height_; }

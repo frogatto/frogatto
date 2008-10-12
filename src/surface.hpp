@@ -57,6 +57,8 @@ public:
 		sdl_add_ref(surface_.get());
 	}
 
+	static surface create(int w, int h);
+
 	void assign(const surface& o)
 	{
 		SDL_Surface *surf = o.surface_.get();

@@ -29,6 +29,7 @@
 #include "raster.hpp"
 #include "sound.hpp"
 #include "string_utils.hpp"
+#include "surface_cache.hpp"
 #include "texture.hpp"
 #include "tile_map.hpp"
 #include "wml_node.hpp"
@@ -319,6 +320,10 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 						sound::play_music(new_level->music());
 						set_scene_title(new_level->title());
 						lvl.reset(new_level);
+					} else if(event.key.keysym.sym == SDLK_l && (mod&KMOD_CTRL)) {
+						preferences::set_use_pretty_scaling(!preferences::use_pretty_scaling());
+						graphics::surface_cache::clear();
+						graphics::texture::clear_cache();
 					}
 					break;
 				}

@@ -45,4 +45,9 @@ surface surface::clone() const
 	                          SDL_SWSURFACE);
 }
 
+surface surface::create(int w, int h)
+{
+	return surface(SDL_CreateRGBSurface(SDL_SWSURFACE,w,h,32,0xFF0000,0xFF00,0xFF,0xFF000000));
+}
+
 }
