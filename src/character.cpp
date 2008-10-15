@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits.h>
 
 #include "character.hpp"
 #include "custom_object.hpp"
