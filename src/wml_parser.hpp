@@ -29,6 +29,8 @@ struct parse_error {
 
 node_ptr parse_wml(const std::string& doc, bool must_have_doc=true, const schema* schema=NULL);
 
+node_ptr parse_wml_from_file(const std::string& fname, const schema* schema=NULL, bool must_have_doc=true);
+
 }
 
 #endif

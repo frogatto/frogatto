@@ -448,14 +448,19 @@ extern "C" int main(int argc, char** argv)
 
 	graphics::texture::manager texture_manager;
 
-	init_custom_object_functions(wml::parse_wml(sys::read_file("functions.cfg")));
-	wml::schema::init(wml::parse_wml(sys::read_file("schema.cfg")));
-	character_type::init(wml::parse_wml(sys::read_file("characters.cfg"), true, wml::schema::get("characters")));
-	custom_object_type::init(wml::parse_wml(sys::read_file("objects.cfg")));
-	item_type::init(wml::parse_wml(sys::read_file("items.cfg")));
-	level_object::init(wml::parse_wml(sys::read_file("tiles.cfg")));
-	tile_map::init(wml::parse_wml(sys::read_file("tiles.cfg")));
-	prop::init(wml::parse_wml(sys::read_file("prop.cfg")));
+	try {
+		init_custom_object_functions(wml::parse_wml(sys::read_file("functions.cfg")));
+		wml::schema::init(wml::parse_wml(sys::read_file("schema.cfg")));
+		character_type::init(wml::parse_wml_from_file("characters.cfg",
+		                     wml::schema::get("characters")));
+		custom_object_type::init(wml::parse_wml(sys::read_file("objects.cfg")));
+		item_type::init(wml::parse_wml(sys::read_file("items.cfg")));
+		level_object::init(wml::parse_wml(sys::read_file("tiles.cfg")));
+		tile_map::init(wml::parse_wml(sys::read_file("tiles.cfg")));
+		prop::init(wml::parse_wml(sys::read_file("prop.cfg")));
+	} catch(const wml::parse_error& e) {
+		return 0;
+	}
 
 	glEnable(GL_SMOOTH);
 	glEnable(GL_BLEND);

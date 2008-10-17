@@ -228,16 +228,22 @@ void skip_comment(std::string::const_iterator& i1,
 	}
 }
 
+int get_line_number(const std::string& doc, std::string::const_iterator i)
+{
+	return std::count(doc.begin(), i, '\n') + 1;
 }
 
-node_ptr parse_wml(const std::string& doc, bool must_have_doc, const schema* current_schema)
+node_ptr parse_wml_internal(const std::string& error_context, const std::string& doc, bool must_have_doc, const schema* current_schema)
 {
+#define PARSE_ERROR(msg) throw parse_error(formatter() << error_context << " line " << get_line_number(doc, i) << ": " << msg);
 	node_ptr res;
 	std::stack<node_ptr> nodes;
 	std::stack<const schema*> schemas;
 	schemas.push(NULL);
 	std::string::const_iterator i = doc.begin();
 	std::string current_comment;
+
+	try {
 	while(i != doc.end()) {
 		if(isspace(*i) || util::isnewline(*i)) {
 			++i;
@@ -246,9 +252,9 @@ node_ptr parse_wml(const std::string& doc, bool must_have_doc, const schema* cur
 			if(element[0] == '/') {
 				const std::string close_element(element.begin()+1,element.end());
 				if(nodes.empty()) {
-					throw parse_error("close element found when there are no elements");
+					PARSE_ERROR("close element found when there are no elements");
 				} else if(nodes.top()->name() != close_element) {
-					throw parse_error(formatter() << "mismatch between open and close elements: '" << nodes.top()->name() << "' vs '" << close_element << "'");
+					PARSE_ERROR("mismatch between open and close elements: '" << nodes.top()->name() << "' vs '" << close_element << "'");
 				}
 
 				if(schemas.top()) {
@@ -259,7 +265,7 @@ node_ptr parse_wml(const std::string& doc, bool must_have_doc, const schema* cur
 				nodes.pop();
 			} else {
 				if(nodes.empty() && res) {
-					throw parse_error("multiple root elements found");
+					PARSE_ERROR("multiple root elements found");
 				}
 
 				if(nodes.empty()) {
@@ -297,7 +303,7 @@ node_ptr parse_wml(const std::string& doc, bool must_have_doc, const schema* cur
 					const wml_template_map::const_iterator t =
 					           wml_templates.find(element);
 					if(t == wml_templates.end()) {
-						throw parse_error(formatter() << "unrecognized template call: '" << element << "'\n");
+						PARSE_ERROR("unrecognized template call: '" << element << "'\n");
 					}
 
 					const wml::node_ptr el = t->second->call(args);
@@ -328,7 +334,7 @@ node_ptr parse_wml(const std::string& doc, bool must_have_doc, const schema* cur
 					std::string::iterator template_name =
 					   std::find(element.begin(),element.end(),' ');
 					if(template_name == element.end()) {
-						throw parse_error(formatter() << "no template name found for template '" << element << "'");
+						PARSE_ERROR("no template name found for template '" << element << "'");
 					}
 
 					el.reset(new node(std::string(element.begin(),template_name)));
@@ -342,7 +348,7 @@ node_ptr parse_wml(const std::string& doc, bool must_have_doc, const schema* cur
 					std::string::iterator end_args =
 					   std::find(template_name,element.end(),')');
 					if(beg_args == element.end() || end_args == element.end()) {
-						throw parse_error(formatter() << "no arg list found for template '" << element << "'");
+						PARSE_ERROR("no arg list found for template '" << element << "'");
 					}
 
 					wml_template_ptr t(new wml_template(el));
@@ -360,7 +366,7 @@ node_ptr parse_wml(const std::string& doc, bool must_have_doc, const schema* cur
 					util::strip(template_name_str);
 					wml_templates[template_name_str] = t;
 				} else if(prefix != "") {
-					throw parse_error("unrecognized element prefix");
+					PARSE_ERROR("unrecognized element prefix");
 				} else if(nodes.empty()) {
 					res = el;
 				} else {
@@ -371,7 +377,7 @@ node_ptr parse_wml(const std::string& doc, bool must_have_doc, const schema* cur
 			}
 		} else if(isalnum(*i) || *i == '_') {
 			if(nodes.empty()) {
-				throw parse_error("attributes found at root");
+				PARSE_ERROR("attributes found at root");
 			}
 
 			const std::string name = parse_name(i,doc.end());
@@ -397,7 +403,7 @@ node_ptr parse_wml(const std::string& doc, bool must_have_doc, const schema* cur
 			std::string name(begin,i);
 			if(name == "import" || name == "include") {
 				if(i == doc.end()) {
-					throw parse_error(formatter() << "unexpected document end while importing");
+					PARSE_ERROR("unexpected document end while importing");
 				}
 
 				++i;
@@ -408,15 +414,15 @@ node_ptr parse_wml(const std::string& doc, bool must_have_doc, const schema* cur
 
 				const std::string filename(begin,i);
 				if(nodes.empty() && name == "import") {
-					throw parse_error(formatter() << "@import statement at top level");
+					PARSE_ERROR("@import statement at top level");
 				}
-				wml::node_ptr node(parse_wml(sys::read_file("data/" + filename), name == "import"));
+				wml::node_ptr node(parse_wml_from_file("data/" + filename, NULL, name == "import"));
 				if(node) {
 					nodes.top()->add_child(node);
 				}
 
 			} else {
-				throw parse_error(formatter() << "unrecognized @ instruction: '" << name << "'");
+				PARSE_ERROR("unrecognized @ instruction: '" << name << "'");
 			}
 		} else if(*i == '#') {
 			std::string::const_iterator begin_comment = i;
@@ -424,24 +430,40 @@ node_ptr parse_wml(const std::string& doc, bool must_have_doc, const schema* cur
 			current_comment.insert(current_comment.end(), begin_comment, i);
 		} else {
 			std::cerr << "unexpected chars: {{{" << &*i << "}}}\n";
-			throw parse_error("unexpected characters in wml document");
+			PARSE_ERROR("unexpected characters in wml document");
 		}
+	} // while(i != doc.end())
+	} catch(const schema_error& e) {
+		PARSE_ERROR(e.message);
 	}
 
 	if(must_have_doc && !res) {
-		throw parse_error("empty wml document");
+		PARSE_ERROR("empty wml document");
 	}
 
 	if(nodes.empty() == false) {
-		throw parse_error("unexpected end of wml document");
+		PARSE_ERROR("unexpected end of wml document");
 	}
 
 	return res;
+#undef PARSE_ERROR
+}
+
+}  // namespace
+
+node_ptr parse_wml(const std::string& doc, bool must_have_doc, const schema* schema)
+{
+	return parse_wml_internal("", doc, must_have_doc, schema);
+}
+
+node_ptr parse_wml_from_file(const std::string& fname, const schema* schema, bool must_have_doc)
+{
+	return parse_wml_internal(fname, sys::read_file(fname), must_have_doc, schema);
 }
 
 parse_error::parse_error(const std::string& msg) : message(msg)
 {
-	std::cerr << "wml parse error: '" << msg << "'\n";
+	std::cerr << "wml parse error: " << msg << "\n";
 }
 
 }

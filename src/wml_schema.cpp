@@ -2,7 +2,9 @@
 #include <iostream>
 #include <map>
 
+#include "foreach.hpp"
 #include "formatter.hpp"
+#include "string_utils.hpp"
 #include "wml_node.hpp"
 #include "wml_schema.hpp"
 
@@ -10,10 +12,15 @@ namespace wml {
 
 namespace {
 std::map<std::string, schema> schemas;
+std::map<std::string, std::string> data_types;
 }
 
 void schema::init(wml::const_node_ptr node)
 {
+	for(wml::node::const_attr_iterator i = node->begin_attr(); i != node->end_attr(); ++i) {
+		data_types[i->first] = i->second;
+	}
+
 	wml::node::const_all_child_iterator i1 = node->begin_children();
 	wml::node::const_all_child_iterator i2 = node->end_children();
 	while(i1 != i2) {
@@ -33,33 +40,58 @@ const schema* schema::get(const std::string& id)
 }
 
 namespace {
+
+void parse_type_info(const std::string& type, schema::attribute_info& info, int depth=0)
+{
+	if(depth == 10) {
+		std::cerr << "SCHEMA ERROR: self-referent types recurse too deeply in schema!\n";
+		return;
+	}
+
+	static const boost::regex re_pattern("re +(.*)");
+	static const boost::regex list_sized_pattern("list *\\[([0-9]+)\\] *(.*)");
+	static const boost::regex list_pattern("list +(.*)");
+	boost::smatch match;
+	info.list_size = -1;
+	if(type == "integer") {
+		info.type = schema::ATTR_INT;
+	} else if(type == "boolean") {
+		info.type = schema::ATTR_BOOL;
+	} else if(type == "string") {
+		info.type = schema::ATTR_STRING;
+	} else if(type == "formula") {
+		info.type = schema::ATTR_FORMULA;
+	} else if(boost::regex_match(type, match, re_pattern)) {
+		info.type = schema::ATTR_REGEX;
+		info.re.reset(new boost::regex(std::string(match[1].first, match[1].second)));
+	} else if(boost::regex_match(type, match, list_sized_pattern)) {
+		info.type = schema::ATTR_LIST;
+		info.list_size = atoi(std::string(match[1].first, match[1].second).c_str());
+		info.elements.reset(new schema::attribute_info);
+		parse_type_info(std::string(match[2].first, match[2].second), *info.elements);
+	} else if(boost::regex_match(type, match, list_pattern)) {
+		info.type = schema::ATTR_LIST;
+		info.elements.reset(new schema::attribute_info);
+		parse_type_info(std::string(match[1].first, match[1].second), *info.elements);
+	} else {
+		std::map<std::string, std::string>::const_iterator itor = data_types.find(type);
+		if(itor != data_types.end()) {
+			parse_type_info(itor->second, info, depth+1);
+		} else {
+			std::cerr << "ILLEGAL SCHEMA TYPE: '" << type << "'\n";
+		}
+	}
+}
+
 schema::attribute_info parse_attribute_info(const std::string& str)
 {
 	schema::attribute_info info;
-	static const boost::regex pattern("(required|optional) (.*)");
+	static const boost::regex pattern("(required|optional) +(.*)");
 	boost::smatch match;
 	if(boost::regex_match(str, match, pattern)) {
 		info.optional = (std::string(match[1].first, match[1].second) == "optional");
 		std::string type(match[2].first, match[2].second);
-		if(type == "integer") {
-			info.type = schema::ATTR_INT;
-		} else if(type == "boolean") {
-			info.type = schema::ATTR_BOOL;
-		} else if(type == "string") {
-			info.type = schema::ATTR_STRING;
-		} else if(type == "formula") {
-			info.type = schema::ATTR_FORMULA;
-		} else {
-			static const boost::regex pattern("re (.*)");
-			boost::smatch match;
-			if(!boost::regex_match(type, match, pattern)) {
-				std::cerr << "ILLEGAL SCHEMA ATTR: '" << str << "'\n";
-				assert(false);
-			}
-
-			info.type = schema::ATTR_REGEX;
-			info.re.reset(new boost::regex(std::string(match[1].first, match[1].second)));
-		}
+		parse_type_info(type, info);
 	} else {
 		std::cerr << "ILLEGAL SCHEMA ATTR: '" << str << "'\n";
 		assert(false);
@@ -97,26 +129,15 @@ schema::schema(wml::const_node_ptr node)
 			}
 
 			elements_[element] = info;
-			std::cerr << "ADD ELEMENT: '" << i->first << "'\n";
 		} else {
 			attributes_[i->first] = parse_attribute_info(i->second);
 		}
 	}
 }
 
-void schema::validate_attribute(const std::string& name, const std::string& value) const
+void schema::attribute_info::validate(const std::string& name, const std::string& value) const
 {
-	attribute_map::const_iterator itor = attributes_.find(name);
-	if(itor == attributes_.end()) {
-		static const std::string DefaultStr = "default";
-		itor = attributes_.find(DefaultStr);
-	}
-
-	if(itor == attributes_.end()) {
-		generate_error(formatter() << "Unknown attribute: " << name);
-	}
-
-	switch(itor->second.type) {
+	switch(type) {
 	case ATTR_INT: {
 		static const boost::regex pattern("-?[0-9]+");
 		boost::smatch match;
@@ -145,19 +166,47 @@ void schema::validate_attribute(const std::string& name, const std::string& valu
 	}
 	
 	case ATTR_REGEX: {
-		if(itor->second.re) {
+		if(re) {
 			boost::smatch match;
-			if(!boost::regex_match(value, match, *itor->second.re)) {
-				generate_error(formatter() << "Value for attribute " << name << " is " << value << " which does not match the required pattern");
+			if(!boost::regex_match(value, match, *re)) {
+				generate_error(formatter() << "Value for attribute " << name << " is " << value << " which is not in the correct format");
 			}
 		}
 
 		break;
 	}
 
+	case ATTR_LIST: {
+		if(elements) {
+			std::vector<std::string> items = util::split(value);
+			if(list_size != -1 && list_size != items.size()) {
+				generate_error(formatter() << "Expected " << list_size << " items in list, but found " << items.size());
+			}
+			foreach(const std::string& item, items) {
+				elements->validate(name, item);
+			}
+		}
+		break;
+	}
+
 	default:
 		assert(false);
 	}
+}
+
+void schema::validate_attribute(const std::string& name, const std::string& value) const
+{
+	attribute_map::const_iterator itor = attributes_.find(name);
+	if(itor == attributes_.end()) {
+		static const std::string DefaultStr = "default";
+		itor = attributes_.find(DefaultStr);
+	}
+
+	if(itor == attributes_.end()) {
+		generate_error(formatter() << "Unknown attribute: " << name);
+	}
+
+	itor->second.validate(name, value);
 }
 
 const schema* schema::validate_element(const std::string& name) const
@@ -207,7 +256,6 @@ void schema::validate_node(wml::const_node_ptr node) const
 
 void schema::generate_error(const std::string& msg)
 {
-	std::cerr << "ERROR: " << msg << "\n";
 	throw schema_error(msg);
 }
 
