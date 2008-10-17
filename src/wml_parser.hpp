@@ -20,12 +20,14 @@
 namespace wml
 {
 
+class schema;
+
 struct parse_error {
 	parse_error(const std::string& msg);
 	std::string message;
 };
 
-node_ptr parse_wml(const std::string& doc, bool must_have_doc=true);
+node_ptr parse_wml(const std::string& doc, bool must_have_doc=true, const schema* schema=NULL);
 
 }
 

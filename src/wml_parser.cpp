@@ -26,6 +26,7 @@
 #include "formatter.hpp"
 #include "string_utils.hpp"
 #include "wml_parser.hpp"
+#include "wml_schema.hpp"
 #include "wml_utils.hpp"
 
 namespace wml
@@ -229,10 +230,12 @@ void skip_comment(std::string::const_iterator& i1,
 
 }
 
-node_ptr parse_wml(const std::string& doc, bool must_have_doc)
+node_ptr parse_wml(const std::string& doc, bool must_have_doc, const schema* current_schema)
 {
 	node_ptr res;
 	std::stack<node_ptr> nodes;
+	std::stack<const schema*> schemas;
+	schemas.push(NULL);
 	std::string::const_iterator i = doc.begin();
 	std::string current_comment;
 	while(i != doc.end()) {
@@ -248,10 +251,26 @@ node_ptr parse_wml(const std::string& doc, bool must_have_doc)
 					throw parse_error(formatter() << "mismatch between open and close elements: '" << nodes.top()->name() << "' vs '" << close_element << "'");
 				}
 
+				if(schemas.top()) {
+					schemas.top()->validate_node(nodes.top());
+				}
+
+				schemas.pop();
 				nodes.pop();
 			} else {
 				if(nodes.empty() && res) {
 					throw parse_error("multiple root elements found");
+				}
+
+				if(nodes.empty()) {
+					schemas.push(current_schema);
+				} else {
+					const schema* new_schema = NULL;
+					if(schemas.top()) {
+						new_schema = schemas.top()->validate_element(element);
+					}
+
+					schemas.push(new_schema);
 				}
 
 				std::string prefix;
@@ -358,6 +377,10 @@ node_ptr parse_wml(const std::string& doc, bool must_have_doc)
 			const std::string name = parse_name(i,doc.end());
 			++i;
 			const std::string value = parse_value(i,doc.end());
+
+			if(schemas.top()) {
+				schemas.top()->validate_attribute(name, value);
+			}
 			nodes.top()->set_attr(name, value);
 
 			if(current_comment.empty() == false) {
