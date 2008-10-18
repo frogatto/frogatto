@@ -453,11 +453,16 @@ extern "C" int main(int argc, char** argv)
 		wml::schema::init(wml::parse_wml(sys::read_file("schema.cfg")));
 		character_type::init(wml::parse_wml_from_file("characters.cfg",
 		                     wml::schema::get("characters")));
-		custom_object_type::init(wml::parse_wml(sys::read_file("objects.cfg")));
-		item_type::init(wml::parse_wml(sys::read_file("items.cfg")));
-		level_object::init(wml::parse_wml(sys::read_file("tiles.cfg")));
-		tile_map::init(wml::parse_wml(sys::read_file("tiles.cfg")));
-		prop::init(wml::parse_wml(sys::read_file("prop.cfg")));
+		custom_object_type::init(wml::parse_wml_from_file("objects.cfg",
+								 wml::schema::get("objects")));
+		item_type::init(wml::parse_wml_from_file("items.cfg",
+		                wml::schema::get("items")));
+		level_object::init(wml::parse_wml_from_file("tiles.cfg",
+		                   wml::schema::get("tiles")));
+		tile_map::init(wml::parse_wml_from_file("tiles.cfg",
+		               wml::schema::get("tiles")));
+		prop::init(wml::parse_wml_from_file("prop.cfg",
+		           wml::schema::get("props")));
 	} catch(const wml::parse_error& e) {
 		return 0;
 	}

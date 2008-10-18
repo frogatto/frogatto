@@ -23,10 +23,12 @@
 namespace wml
 {
 
+class schema;
+
 class node
 {
 public:
-	explicit node(const std::string& name) : name_(name)
+	explicit node(const std::string& name) : name_(name), schema_(NULL)
 	{}
 
 	const std::string& name() const { return name_; }
@@ -87,11 +89,16 @@ public:
 	void set_attr_comment(const std::string& name, const std::string& comment);
 	const std::string& get_attr_comment(const std::string& name) const;
 
+	const schema* get_schema() const { return schema_; }
+	void set_schema(const schema* s) { schema_ = s; }
+
 private:
 	std::string name_;
 	attr_map attr_;
 	std::multimap<std::string,boost::shared_ptr<node> > childmap_;
 	std::vector<boost::shared_ptr<node> > children_;
+
+	const schema* schema_;
 
 	//comment data
 	std::string comment_;

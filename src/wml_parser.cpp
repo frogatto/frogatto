@@ -322,6 +322,7 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 				}
 
 				node_ptr el(new node(element));
+				el->set_schema(schemas.top());
 				foreach(const wml::node_ptr& parent, parents) {
 					wml::merge_over(parent, el);
 				}

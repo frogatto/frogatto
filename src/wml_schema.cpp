@@ -254,6 +254,52 @@ void schema::validate_node(wml::const_node_ptr node) const
 	}
 }
 
+namespace {
+variant convert_attribute_to_variant(const schema::attribute_info& info, const std::string& value) {
+	switch(info.type) {
+	case schema::ATTR_INT:
+		return variant(atoi(value.c_str()));
+	case schema::ATTR_BOOL:
+		return variant((value == "yes" || value == "true") ? 1 : 0);
+	case schema::ATTR_LIST: {
+		std::vector<variant> v;
+		std::vector<std::string> items = util::split(value);
+		foreach(const std::string& item, items) {
+			v.push_back(convert_attribute_to_variant(*info.elements, item));
+		}
+
+		return variant(&v);
+	}
+	case schema::ATTR_STRING:
+	case schema::ATTR_FORMULA:
+	case schema::ATTR_REGEX:
+		return variant(value);
+	default:
+		assert(false);
+	}
+}
+}
+
+variant schema::attribute_to_variant(const std::string& name, const std::string& value) const
+{
+	attribute_map::const_iterator itor = attributes_.find(name);
+	if(itor == attributes_.end()) {
+		return variant(value);
+	}
+
+	return convert_attribute_to_variant(itor->second, value);
+}
+
+bool schema::is_element_repeated(const std::string& name) const
+{
+	element_map::const_iterator itor = elements_.find(name);
+	if(itor != elements_.end()) {
+		return itor->second.cardinality == ELEMENT_REPEATED;
+	} else {
+		return true;
+	}
+}
+
 void schema::generate_error(const std::string& msg)
 {
 	throw schema_error(msg);
