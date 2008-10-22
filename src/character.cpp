@@ -887,6 +887,7 @@ void character::get_powerup(const std::string& id)
 {
 	const_powerup_ptr p = powerup::get(id);
 	if(p) {
+		blur_.clear();
 		powerups_.push_back(p);
 		old_types_.push_back(type_);
 		type_ = base_type_->get_modified(p->modifier());
@@ -897,6 +898,7 @@ void character::get_powerup(const std::string& id)
 void character::remove_powerup()
 {
 	if(powerups_.empty() == false) {
+		blur_.clear();
 		powerups_.pop_back();
 		old_types_.push_back(type_);
 		if(powerups_.empty()) {
