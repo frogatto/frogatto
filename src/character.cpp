@@ -890,6 +890,7 @@ void character::get_powerup(const std::string& id)
 		powerups_.push_back(p);
 		old_types_.push_back(type_);
 		type_ = base_type_->get_modified(p->modifier());
+		change_to_stand_frame();
 	}
 }
 
@@ -903,6 +904,7 @@ void character::remove_powerup()
 		} else {
 			type_ = base_type_->get_modified(powerups_.back()->modifier());
 		}
+		change_to_stand_frame();
 	}
 }
 
