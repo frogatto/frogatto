@@ -13,6 +13,7 @@
 #include "formula_fwd.hpp"
 #include "geometry.hpp"
 #include "key.hpp"
+#include "powerup_fwd.hpp"
 #include "wml_node_fwd.hpp"
 
 class level;
@@ -97,6 +98,10 @@ public:
 
 	const frame& icon_frame() const;
 
+	int num_powerups() const;
+	virtual void get_powerup(const std::string& id);
+	virtual void remove_powerup();
+
 protected:
 	const frame& current_frame() const;
 	const character_type& type() const { return *type_; }
@@ -129,6 +134,11 @@ private:
 	void execute_formula(const game_logic::const_formula_ptr& f);
 	void execute_command(const variant& var);
 	const_character_type_ptr type_;
+	const_character_type_ptr base_type_;
+
+	//types that we are keeping around until the next frame, to make sure
+	//they don't get collected, because we might still be using their members.
+	std::vector<const_character_type_ptr> old_types_;
 	int previous_y_;
 	int velocity_x_;
 	int velocity_y_;
@@ -177,6 +187,8 @@ private:
 	};
 
 	mutable std::vector<previous_draw> blur_;
+
+	std::vector<const_powerup_ptr> powerups_;
 };
 
 class pc_character : public character {

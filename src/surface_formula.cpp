@@ -95,13 +95,22 @@ void run_formula(surface surf, const std::string& algo)
 		}
 	}
 
+	std::map<Uint32, Uint32> pixel_map;
+
 	Uint32* pixels = reinterpret_cast<Uint32*>(surf->pixels);
 	Uint32* end_pixels = pixels + surf->w*surf->h;
 
 	while(pixels != end_pixels) {
 		pixel_callable p(surf, *pixels);
 		if(p.is_alpha() == false) {
-			*pixels = f.execute(p).as_int();
+			std::map<Uint32, Uint32>::const_iterator itor = pixel_map.find(*pixels);
+			if(itor == pixel_map.end()) {
+				Uint32 result = f.execute(p).as_int();
+				pixel_map[*pixels] = result;
+				*pixels = result;
+			} else {
+				*pixels = itor->second;
+			}
 		}
 		++pixels;
 	}

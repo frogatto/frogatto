@@ -24,6 +24,9 @@ public:
 	static const schema* get(const std::string& id);
 	explicit schema(wml::const_node_ptr node);
 
+	const std::string& id() const { return id_; }
+
+	bool has_attribute(const std::string& name) const;
 	void validate_attribute(const std::string& name, const std::string& value) const;
 	const schema* validate_element(const std::string& name) const;
 	void validate_node(wml::const_node_ptr node) const;
@@ -49,6 +52,8 @@ public:
 
 private:
 	static void generate_error(const std::string& msg);
+	std::string id_;
+
 	typedef std::map<std::string, attribute_info> attribute_map;
 	attribute_map attributes_;
 

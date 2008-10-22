@@ -5,6 +5,7 @@ namespace wml {
 node_ptr deep_copy(const_node_ptr ptr, const std::string& name)
 {
 	node_ptr res(new node(name));
+	res->set_schema(ptr->get_schema());
 	res->set_comment(ptr->get_comment());
 	for(node::const_attr_iterator i = ptr->begin_attr();
 	    i != ptr->end_attr(); ++i) {

@@ -1,6 +1,8 @@
 #ifndef ENTITY_HPP_INCLUDED
 #define ENTITY_HPP_INCLUDED
 
+#include <string>
+
 #include "boost/intrusive_ptr.hpp"
 
 #include "formula_callable.hpp"
@@ -97,6 +99,8 @@ public:
 	virtual void boarded(level& lvl, character_ptr player) {}
 
 	virtual int weight() const { return 1; }
+
+	virtual void get_powerup(const std::string& id) {}
 
 	void draw_debug_rects() const;
 private:

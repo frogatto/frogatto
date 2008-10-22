@@ -15,12 +15,18 @@ class character_type;
 typedef boost::shared_ptr<character_type> character_type_ptr;
 typedef boost::shared_ptr<const character_type> const_character_type_ptr;
 
+namespace wml {
+class modifier;
+}
+
 class character_type
 {
 public:
 	static void init(wml::const_node_ptr node);
 	static const_character_type_ptr get(const std::string& id);
 	explicit character_type(wml::const_node_ptr node);
+
+	const_character_type_ptr get_modified(const wml::modifier& modifier) const;
 
 	const std::string& id() const { return id_; }
 	const frame& get_frame() const { return stand_; }
@@ -65,6 +71,8 @@ public:
 	const game_logic::const_formula_ptr& on_attack_formula() const { return on_attack_formula_; }
 	const game_logic::const_formula_ptr& on_process_formula() const { return on_process_formula_; }
 private:
+	wml::const_node_ptr wml_;
+
 	std::string id_;
 	frame stand_;
 	typedef boost::scoped_ptr<frame> frame_ptr;

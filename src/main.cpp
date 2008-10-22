@@ -23,6 +23,7 @@
 #include "level_object.hpp"
 #include "load_level.hpp"
 #include "message_dialog.hpp"
+#include "powerup.hpp"
 #include "preferences.hpp"
 #include "preprocessor.hpp"
 #include "prop.hpp"
@@ -463,6 +464,8 @@ extern "C" int main(int argc, char** argv)
 		               wml::schema::get("tiles")));
 		prop::init(wml::parse_wml_from_file("prop.cfg",
 		           wml::schema::get("props")));
+		powerup::init(wml::parse_wml_from_file("powerups.cfg",
+		              wml::schema::get("powerups")));
 	} catch(const wml::parse_error& e) {
 		return 0;
 	}

@@ -3,7 +3,9 @@
 #include "character_type.hpp"
 #include "custom_object_functions.hpp"
 #include "formula.hpp"
+#include "wml_modify.hpp"
 #include "wml_node.hpp"
+#include "wml_writer.hpp"
 #include "wml_utils.hpp"
 
 namespace {
@@ -27,7 +29,8 @@ const_character_type_ptr character_type::get(const std::string& id)
 }
 
 character_type::character_type(wml::const_node_ptr node)
-  : id_(node->attr("id")),
+  : wml_(node),
+    id_(node->attr("id")),
     stand_(node->get_child("stand") ? node->get_child("stand") : node->get_child("walk")),
     walk_(wml::get_int(node, "walk")),
 	jump_(wml::get_int(node, "jump")),
@@ -131,4 +134,13 @@ character_type::character_type(wml::const_node_ptr node)
 	if(node->get_child("spring")) {
 		spring_frame_.reset(new frame(node->get_child("spring")));
 	}
+}
+
+const_character_type_ptr character_type::get_modified(const wml::modifier& modifier) const
+{
+	wml::node_ptr node = wml::deep_copy(wml_);
+	std::cerr << "BEFORE: {{{" << wml::output(node) << "}}}\n";
+	modifier.modify(node);
+	std::cerr << "AFTER: {{{" << wml::output(node) << "}}}\n";
+	return const_character_type_ptr(new character_type(node));
 }

@@ -163,6 +163,9 @@ private:
 	const formula_callable* fallback_;
 };
 
+typedef boost::intrusive_ptr<formula_callable> formula_callable_ptr;
+typedef boost::intrusive_ptr<const formula_callable> const_formula_callable_ptr;
+
 typedef boost::intrusive_ptr<map_formula_callable> map_formula_callable_ptr;
 typedef boost::intrusive_ptr<const map_formula_callable> const_map_formula_callable_ptr;
 

@@ -224,6 +224,16 @@ void custom_object::process(level& lvl)
 		handle_event("collide");
 	}
 
+	if(!body_passthrough()) {
+		entity_ptr collide_with = lvl.collide(body_rect(), this);
+		if(collide_with.get() != NULL) {
+			collide_with_callable callable(collide_with.get());
+			std::cerr << "collide_with\n";
+			handle_event("collide_with", &callable);
+			collide = true;
+		}
+	}
+
 	std::cerr << "velocity_y: " << velocity_y_ << "\n";
 	collide = false;
 	for(int n = 0; n <= std::abs(velocity_y_/100) && !collide && !type_->ignore_collide(); ++n) {

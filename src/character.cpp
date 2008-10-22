@@ -10,6 +10,7 @@
 #include "joystick.hpp"
 #include "level.hpp"
 #include "level_logic.hpp"
+#include "powerup.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "sound.hpp"
@@ -19,6 +20,7 @@
 character::character(wml::const_node_ptr node)
   : entity(node),
     type_(character_type::get(node->attr("type"))),
+	base_type_(type_),
 	previous_y_(y()),
 	velocity_x_(wml::get_int(node, "velocity_x")),
 	velocity_y_(wml::get_int(node, "velocity_y")),
@@ -54,6 +56,7 @@ character::character(wml::const_node_ptr node)
 character::character(const std::string& type, int x, int y, bool face_right)
   : entity(x, y, face_right),
     type_(character_type::get(type)),
+	base_type_(type_),
 	previous_y_(y),
 	velocity_x_(0),
 	velocity_y_(0),
@@ -875,6 +878,34 @@ const frame& character::icon_frame() const
 	return type_->icon_frame();
 }
 
+int character::num_powerups() const
+{
+	return powerups_.size();
+}
+
+void character::get_powerup(const std::string& id)
+{
+	const_powerup_ptr p = powerup::get(id);
+	if(p) {
+		powerups_.push_back(p);
+		old_types_.push_back(type_);
+		type_ = base_type_->get_modified(p->modifier());
+	}
+}
+
+void character::remove_powerup()
+{
+	if(powerups_.empty() == false) {
+		powerups_.pop_back();
+		old_types_.push_back(type_);
+		if(powerups_.empty()) {
+			type_ = base_type_;
+		} else {
+			type_ = base_type_->get_modified(powerups_.back()->modifier());
+		}
+	}
+}
+
 const frame& character::current_frame() const
 {
 	return *current_frame_;
@@ -993,6 +1024,8 @@ void character::change_frame(const frame* new_frame)
 	}
 
 	new_frame->play_sound();
+
+	old_types_.clear();
 }
 
 void character::execute_formula(const game_logic::const_formula_ptr& f)
@@ -1090,6 +1123,7 @@ int character::glide_speed() const
 void character::get_hit()
 {
 	assert(!invincible_);
+	remove_powerup();
 	if(is_human()) {
 		entity_ptr hitby = lvl_->collide(body_rect(), this);
 		if(hitby) {
@@ -1098,6 +1132,7 @@ void character::get_hit()
 	}
 
 	--hitpoints_;
+	std::cerr << "GET HIT: " << hitpoints_ << "\n";
 	if(hitpoints_ <= 0 && driver_) {
 		unboarded(*lvl_);
 		if(type_->vehicle_die_object().empty() == false) {
@@ -1159,6 +1194,10 @@ variant character::get_value(const std::string& key) const
 		return variant(body_rect().x2());
 	} else if(key == "y2") {
 		return variant(body_rect().y2());
+	} else if(key == "velocity_x") {
+		return variant(velocity_x());
+	} else if(key == "velocity_y") {
+		return variant(velocity_y());
 	} else if(key == "facing") {
 		return variant(face_right() ? 1 : -1);
 	} else if(key == "cycle") {

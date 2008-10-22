@@ -46,4 +46,12 @@ void write(const wml::const_node_ptr& node, std::string& res,
 	res += indent + "[/" + node->name() + "]\n";
 }
 
+std::string output(const wml::const_node_ptr& node)
+{
+	std::string res;
+	write(node, res);
+	return res;
+}
+
+
 }

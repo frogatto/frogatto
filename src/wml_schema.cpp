@@ -101,7 +101,7 @@ schema::attribute_info parse_attribute_info(const std::string& str)
 }
 }
 
-schema::schema(wml::const_node_ptr node)
+schema::schema(wml::const_node_ptr node) : id_(node->attr("id"))
 {
 	for(wml::node::const_attr_iterator i = node->begin_attr();
 	    i != node->end_attr(); ++i) {
@@ -192,6 +192,11 @@ void schema::attribute_info::validate(const std::string& name, const std::string
 	default:
 		assert(false);
 	}
+}
+
+bool schema::has_attribute(const std::string& name) const
+{
+	return attributes_.count(name) != 0;
 }
 
 void schema::validate_attribute(const std::string& name, const std::string& value) const

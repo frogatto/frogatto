@@ -10,6 +10,7 @@ namespace wml
 void write(const wml::const_node_ptr& node, std::string& res);
 void write(const wml::const_node_ptr& node, std::string& res,
            std::string& indent);
+std::string output(const wml::const_node_ptr& node);
 }
 
 #endif

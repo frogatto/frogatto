@@ -19,9 +19,9 @@ private:
 class node_callable : public game_logic::formula_callable
 {
 public:
-	explicit node_callable(node_ptr n) : mutable_node_(n), node_(n)
+	explicit node_callable(node_ptr n) : mutable_node_(n), node_(n), node_callable_(n)
 	{}
-	explicit node_callable(const_node_ptr n) : node_(n)
+	explicit node_callable(const_node_ptr n) : node_(n), node_callable_(n)
 	{}
 private:
 	variant get_value(const std::string& key) const;
@@ -29,6 +29,7 @@ private:
 	node_ptr mutable_node_;
 	const_node_ptr node_;
 	mutable variant elements_;
+	node_elements_callable node_callable_;
 };
 
 }

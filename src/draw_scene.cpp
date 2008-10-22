@@ -42,6 +42,8 @@ void set_scene_title(const std::string& msg) {
 
 GLfloat hp_ratio = -1.0;
 void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
+	static int frame_num = 0;
+	++frame_num;
 	if(focus == NULL) {
 		focus = lvl.player().get();
 	}
@@ -216,9 +218,21 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 
 		player->icon_frame().draw(210, 600 - 124 + 14, true);
 		for(int hp = 0; hp < player->max_hitpoints(); ++hp) {
-			const GLfloat is_red = hp >= player->hitpoints() ? 30.0 : 0.0;
+			GLfloat shift = 0.0; // default to green
+			if(hp >= player->hitpoints()) {
+				//missing hitpoints, display as red
+				shift = 30.0;
+			} else if(player->hitpoints() - hp <= player->num_powerups()) {
+				//powerup, display as yellow
+				shift = 15.0;
+
+				//make the red component fade in and out in a wave pattern
+				const GLfloat frame = frame_num/10.0;
+				glColor4f(sin(frame), 1.0, 0.0, 1.0);
+			}
 			graphics::blit_texture(statusbar, 278 + 30*hp, 600 - 124 + 16, 30, 74,
-			                       0.0, (99.0 + is_red)/400.0, 62.0/103.0, (114.0 + is_red)/400.0, 99.0/103.0);
+			                       0.0, (99.0 + shift)/400.0, 62.0/103.0, (114.0 + shift)/400.0, 99.0/103.0);
+			glColor4f(1.0, 1.0, 1.0, 1.0);
 		}
 
 		variant coins = player->query_value("coins");
