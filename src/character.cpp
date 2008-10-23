@@ -1065,7 +1065,12 @@ bool character::point_collides(int xpos, int ypos) const
 
 void character::hit_by(entity& e)
 {
-	get_hit();
+	if(!invincible_) {
+		std::cerr << "GET HIT!!!!\n";
+		get_hit();
+	} else {
+		std::cerr << "INVNCIBLE!\n";
+	}
 }
 
 void character::move_to_standing(level& lvl)
