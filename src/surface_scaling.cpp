@@ -17,7 +17,7 @@ surface scale_surface(surface input) {
 			out[(y*2 + 1)*result->w + x*2 + 1] = in[y*input->w + x];
 			out[(y*2)*result->w + x*2 + 1] = in[y*input->w + x];
 			
-			/*if ((y > 0) && (y < input->h) && (x > 0) && (x < input->w)){
+			if ((y > 0) && (y < input->h) && (x > 0) && (x < input->w)){
 			//do additional eagle interpolation
 			//   first:        |Then 
 			//   . . . --\ CC  |S T U  --\ 1 2
@@ -28,27 +28,27 @@ surface scale_surface(surface input) {
 			//                 | IF V==X==Y => 3=X
 			//                 | IF W==Z==Y => 4=Z
 						
-						if ( (in[y*input->w + x - input->w - 1] == in[y*input->w + x - input->w]) && 
+						/*if ( (in[y*input->w + x - input->w - 1] == in[y*input->w + x - input->w]) && 
 									(in[y*input->w + x - input->w - 1] == in[y*input->w + x - 1]) ) {
 						  //IF V==S==T => 1=S
-								out[(y*2)*result->w + x*2] = in[y*input->w + x + 1];
+								out[(y*2)*result->w + x*2] = in[y*input->w + x - input->w - 1];
 						}
 						if ( (in[y*input->w + x - input->w + 1] == in[y*input->w + x - input->w]) && 
 									(in[y*input->w + x - input->w + 1] == in[y*input->w + x + 1]) ) {
 						  //IF T==U==W => 2=U
-								out[(y*2)*result->w + x*2 + 1] = in[y*input->w + x + 1];
-						}
+								out[(y*2)*result->w + x*2 + 1] = in[y*input->w + x - input->w + 1];
+						}*/
 						if ( (in[y*input->w + x + input->w - 1] == in[y*input->w + x + input->w]) && 
 									(in[y*input->w + x + input->w - 1] == in[y*input->w + x - 1]) ) {
 						  //IF V==X==Y => 3=X
-								out[(y*2)*result->w + x*2 + 1] = in[y*input->w + x + 1];
+								out[(y*2)*result->w + x*2 + 1] = in[y*input->w + x + input->w - 1];
 						}
-						if ( (in[y*input->w + x + input->w + 1] == in[y*input->w + x + input->w]) && 
+						/*if ( (in[y*input->w + x + input->w + 1] == in[y*input->w + x + input->w]) && 
 									(in[y*input->w + x + input->w + 1] == in[y*input->w + x + 1]) ) {
 						  //IF W==Z==Y => 4=Z
 								out[(y*2)*result->w + x*2 + 1] = in[y*input->w + x + 1];
-						}
-			}*/
+						}*/
+			}
 		}
 	}
 
