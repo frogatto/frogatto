@@ -1,5 +1,7 @@
 #include <inttypes.h>
 #include <iostream>
+#include <cassert>
+
 #include "surface.hpp"
 
 namespace graphics {
