@@ -24,7 +24,7 @@ surface scale_surface(surface input) {
 				
 			// Then, to smooth things out, it conditionally alters each of these four pixels.  Each of the four destination pixels represents a quadrant of the source pixel, and likewise a direction pointing away from the center of the source pixel.  To choose if it 'smoothes an edge" in a given direction, it checks additional, adjacent source pixels in the direction represented by the quadrant.  If they're all the same color, it represents a diagonal slope of pixels, and the given quadrant pixel is filled in with the same color to smooth out the diagonal.
 				
-			// The following diagram illustrates first the scaling of a single input pixel into 4 output pixels (left side of diagram), and then the choices made to choose which color the output pixels are given (right side of diagram).
+			// The following diagram illustrates first the scaling of a single input pixel into 4 output pixels (left side of diagram), and then the choices made to choose which color the output pixels are given (right side of diagram)
 				
 			//   first:        |Then 
 			//   . . . --\ CC  |S T U  --\ 1 2
@@ -44,6 +44,10 @@ surface scale_surface(surface input) {
 						const int index_down_left = y*input->w + x + input->w - 1;
 						const int index_left = y*input->w + x - 1;
 						const int max_index = input->w*input->h;
+						
+						assert(index_down_left < max_index);
+						assert(index_down_right < max_index);
+						assert(index_down < max_index);
 				
 						if ( (in[index_up_left] == in[index_up]) && (in[index_up_left] == in[index_left]) ) {
 								out[(y*2)*result->w + x*2] = in[index_up_left];
