@@ -149,14 +149,37 @@ surface scale_surface(surface input) {
 						assert(index_14 < max_index);
 						assert(index_15 < max_index);
 
-						//the first check we do, before testing more complex patterns, is for diagonal lines
-						if ( (in[index_9] == in[index_6]) && (in[index_5] != in[index_10]) ) {
-							out[out_index_lower_right] = in[index_9];
-							out[out_index_upper_right] = out[out_index_lower_right];
-						} else if ( (in[index_9] != in[index_6]) && (in[index_5] == in[index_10]) ){
+						if ( (in[index_5] == in[index_10]) && (in[index_6] != in[index_9]) ) {
+							if ( ((in[index_5] == in[index_1]) && (in[index_6] == in[index_11])) || ((in[index_5] == in[index_9]) && (in[index_5] == in[index_2]) && (in[index_6] != in[index_1]) && (in[index_6] == in[index_3]))){
+								out[out_index_upper_right] = in[index_5];
+							}else{
+								if( ! ((in[index_5] == in[index_1])) ){
+									out[out_index_upper_right] = interpolate_pixels(in[index_5],in[index_6]);
+								}
+							}
+							
+							if ( ((in[index_5] == in[index_4]) && (in[index_9] == in[index_14])) || ((in[index_5] == in[index_6]) && (in[index_5] == in[index_8]) && (in[index_4] != in[index_9]) && (in[index_9] == in[index_12]))){
+								out[out_index_lower_left] = in[index_5];
+							}else{
+								if( ! ((in[index_5] == in[index_4])) ){
+									out[out_index_lower_left] = interpolate_pixels(in[index_5],in[index_9]);
+								}
+							}
 							out[out_index_lower_right] = in[index_5];
-							out[out_index_upper_right] = out[out_index_lower_right];
-						} else if ( (in[index_9] == in[index_6]) && (in[index_5] == in[index_10]) ){
+						} else if ( (in[index_6] == in[index_9]) && (in[index_5] != in[index_10]) ) {
+							if ( ((in[index_6] == in[index_2]) && (in[index_5] == in[index_8])) || ((in[index_6] == in[index_1]) && (in[index_6] == in[index_10]) && (in[index_6] != in[index_2]) && (in[index_5] == in[index_0]))){
+								out[out_index_upper_right] = in[index_6];
+							}else{
+								out[out_index_upper_right] = interpolate_pixels(in[index_5],in[index_6]);
+							}
+							
+							if ( ((in[index_9] == in[index_8]) && (in[index_5] == in[index_2])) || ((in[index_9] == in[index_4]) && (in[index_9] == in[index_10]) && (in[index_5] != in[index_8]) && (in[index_5] == in[index_0]))){
+								out[out_index_lower_left] = in[index_9];
+							}else{
+								out[out_index_lower_left] = interpolate_pixels(in[index_5],in[index_9]);
+							}
+							out[out_index_lower_right] = in[index_6];
+						}else if ( (in[index_5] == in[index_10]) && (in[index_6] == in[index_9]) ) {
 							// these are crossed diagonal pairs of pixels in the inner, center set of four.
 							// if they're the same, then we weight them against a surrounding ring of pixels, and see which
 							// pair is more different from the ring.  The ring is this asterisked set of pixels:
@@ -164,70 +187,57 @@ surface scale_surface(surface input) {
 							//  * X X *
 							//  * X X *
 							//  X * * X
-							int difference_direction = 0;
-							difference_direction += calculate_difference(in[index_6],in[index_5],in[index_8],in[index_13]);
-							difference_direction += calculate_difference(in[index_6],in[index_5],in[index_4],in[index_1]);
-							difference_direction += calculate_difference(in[index_6],in[index_5],in[index_14],in[index_11]);
-							difference_direction += calculate_difference(in[index_6],in[index_5],in[index_2],in[index_7]);
-								
-							if (difference_direction > 0){
-								out[out_index_upper_right] = in[index_6];
-							}else if(difference_direction < 0){
+							if (in[index_5] == in[index_6]){
+								out[out_index_lower_right] = in[index_5];
+								out[out_index_lower_left] = in[index_5];
 								out[out_index_upper_right] = in[index_5];
-							}else{
-								out[out_index_upper_right] = interpolate_pixels(in[index_5],in[index_6]);
-							}
-							out[out_index_lower_right] = out[out_index_upper_right]; 
-						} else {
-							//now test for more complex patterns
-							
-							//calculate lower-right output pixel
-							if( in[index_6] == in[index_10] && in[index_10] == in[index_13] && in[index_9] != in[index_14] && in[index_10] != in[index_12] ){
-								//weight 10's color more heavily
-								out[out_index_lower_right] = interpolate_pixels(in[index_10],in[index_10],in[index_10],in[index_9]);
-							}else if( in[index_5] == in[index_9] && in[index_9] == in[index_14] && in[index_13] != in[index_10] && in[index_9] != in[index_15]){
-								//weight 9's color more heavily
-								out[out_index_lower_right] = interpolate_pixels(in[index_9],in[index_9],in[index_9],in[index_10]);
-							}else{
-								//mix 9 and 10 evenly
-								out[out_index_lower_right] = interpolate_pixels(in[index_9],in[index_10]);
-							}
-							
-							//calculate upper-right output pixel
-							if( in[index_6] == in[index_10] && in[index_6] == in[index_1] && in[index_5] != in[index_2] && in[index_6] != in[index_0] ){
-								//weight 6's color more heavily
-								out[out_index_upper_right] = interpolate_pixels(in[index_6],in[index_6],in[index_6],in[index_5]);
-							}else if( in[index_5] == in[index_9] && in[index_5] == in[index_2] && in[index_1] != in[index_6] && in[index_5] != in[index_3]){
-								//weight 5's color more heavily
-								out[out_index_upper_right] = interpolate_pixels(in[index_5],in[index_5],in[index_5],in[index_6]);
-							}else{
-								//mix 6 and 5 evenly
-								out[out_index_upper_right] = interpolate_pixels(in[index_5],in[index_6]);
-							}
-							
-							//calculate lower-left output pixel
-							if( in[index_5] == in[index_10] && in[index_4] == in[index_5] && in[index_9] != in[index_6] && in[index_5] != in[index_14] ){
-								// ?
-								out[out_index_lower_left] = interpolate_pixels(in[index_9],in[index_5]);
-							}else if( in[index_5] == in[index_8] && in[index_6] == in[index_5] && in[index_4] != in[index_9] && in[index_5] != in[index_12]){
-								// ?
-								out[out_index_lower_left] = interpolate_pixels(in[index_9],in[index_5]);
-							}else{
-								out[out_index_lower_left] = in[index_9];
-							}
-							
-							//calculate upper-left output pixel
-							if( in[index_9] == in[index_6] && in[index_5] != in[index_10] && in[index_8] == in[index_9] && in[index_9] != in[index_2] ){
-								// ?
-								out[out_index_upper_left] = interpolate_pixels(in[index_9],in[index_5]);
-							}else if( in[index_4] == in[index_9] && in[index_10] == in[index_9] && in[index_8] != in[index_5] && in[index_9] != in[index_0]){
-								// ?
-								out[out_index_upper_left] = interpolate_pixels(in[index_9],in[index_5]);
-							}else{
 								out[out_index_upper_left] = in[index_5];
+
+							} else {
+
+								int difference_direction = 0;
+								out[out_index_upper_right] = interpolate_pixels(in[index_5],in[index_6]);
+								out[out_index_lower_left] = interpolate_pixels(in[index_5],in[index_9]);
+								
+								difference_direction += calculate_difference(in[index_6],in[index_5],in[index_1],in[index_4]);
+								difference_direction += calculate_difference(in[index_6],in[index_5],in[index_2],in[index_7]);
+								difference_direction += calculate_difference(in[index_6],in[index_5],in[index_14],in[index_11]);
+								difference_direction += calculate_difference(in[index_6],in[index_5],in[index_8],in[index_13]);
+								
+								if (difference_direction > 0){
+									out[out_index_lower_right] = interpolate_pixels(in[index_5],in[index_6],in[index_6],in[index_6]);
+									out[out_index_upper_right] = interpolate_pixels(in[index_5],in[index_6],in[index_6],in[index_6]);
+								}else if(difference_direction < 0){
+									out[out_index_lower_right] = interpolate_pixels(in[index_5],in[index_5],in[index_5],in[index_6]);
+									out[out_index_upper_right] = interpolate_pixels(in[index_5],in[index_5],in[index_5],in[index_6]);
+								}else{
+									out[out_index_lower_right] = interpolate_pixels(in[index_5],in[index_6],in[index_9],in[index_10]);
+									out[out_index_upper_right] = interpolate_pixels(in[index_5],in[index_6],in[index_9],in[index_10]);
+								}								
+								
+							}
+						} else {
+							if ( (in[index_5] == in[index_9]) && (in[index_5] == in[index_2]) && (in[index_6] != in[index_1]) && (in[index_6] == in[index_3]) ){
+								out[out_index_upper_right] = in[index_5];
+							} else if ( (in[index_6] == in[index_1]) && (in[index_6] == in[index_10]) && (in[index_5] != in[index_2]) && (in[index_5] == in[index_0]) ){
+								out[out_index_upper_right] = in[index_6];
+							} else {
+								//out[out_index_upper_right] = interpolate_pixels(in[index_5],in[index_6]);
+								//out[out_index_lower_right] = interpolate_pixels(in[index_5],in[index_6]);
 							}
 							
+							if ( (in[index_5] == in[index_6]) && (in[index_5] == in[index_8]) && (in[index_4] != in[index_9]) && (in[index_9] == in[index_12]) ){
+								out[out_index_lower_left] = in[index_5];
+							} else if ( (in[index_9] == in[index_4]) && (in[index_9] == in[index_10]) && (in[index_5] != in[index_8]) && (in[index_5] == in[index_0]) ){
+								out[out_index_lower_left] = in[index_9];
+							} else {
+								//out[out_index_lower_right] = interpolate_pixels(in[index_5],in[index_9]);
+								//out[out_index_lower_left] = interpolate_pixels(in[index_5],in[index_9]);
+							}
+							//out[out_index_lower_right] = interpolate_pixels(in[index_5],in[index_6],in[index_9],in[index_10]);
+							//out[out_index_upper_right] = interpolate_pixels(in[index_5],in[index_6],in[index_9],in[index_10]);
 						}
+							
 			}
 		}
 	}
