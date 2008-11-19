@@ -217,6 +217,24 @@ surface scale_surface(surface input) {
 								
 							}
 						} else {
+							if ( ( (in[index_5] != in[index_9]) || (in[index_5] != in[index_1]) ) && ( (in[index_2] == in[index_6]) && (in[index_6] == in[index_10]) ) ){
+								out[out_index_upper_right] = interpolate_pixels(in[index_5],in[index_5],in[index_5],in[index_6]);
+								out[out_index_lower_right] = interpolate_pixels(in[index_5],in[index_5],in[index_5],in[index_6]);
+							}
+							
+							if ( ( (in[index_2] == in[index_5]) || (in[index_5] == in[index_8]) ) && ( (in[index_5] != in[index_9]) && (in[index_5] != in[index_6])) ){
+								out[out_index_upper_right] = interpolate_pixels(in[index_5],in[index_5],in[index_5],in[index_6]);
+								out[out_index_lower_left] = interpolate_pixels(in[index_5],in[index_5],in[index_5],in[index_9]);
+								out[out_index_lower_right] = interpolate_pixels(in[index_5],in[index_6],in[index_5],in[index_9]);
+							}
+							
+							if ( ((in[index_5] == in[index_0]) && (in[index_5] == in[index_6])) && ( (in[index_5] != in[index_4]) && (in[index_5] != in[index_9]) ) ){
+								out[out_index_upper_left] = interpolate_pixels(in[index_5],in[index_5],in[index_5],in[index_4]);
+								out[out_index_lower_right] = interpolate_pixels(in[index_5],in[index_5],in[index_5],in[index_9]);
+								out[out_index_lower_left] = interpolate_pixels(in[index_4],in[index_9]);
+							}
+							
+							
 							if ( (in[index_5] == in[index_9]) && (in[index_5] == in[index_2]) && (in[index_6] != in[index_1]) && (in[index_6] == in[index_3]) ){
 								out[out_index_upper_right] = in[index_5];
 							} else if ( (in[index_6] == in[index_1]) && (in[index_6] == in[index_10]) && (in[index_5] != in[index_2]) && (in[index_5] == in[index_0]) ){
