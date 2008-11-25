@@ -191,9 +191,14 @@ texture::texture(const key& surfs, options_type options)
 
 	const int npixels = surf_width*surf_height;
 	for(int n = 0; n != npixels; ++n) {
-		static const unsigned char AlphaPixel[] = {0x6f, 0x6d, 0x51};
+		//we use a color in our sprite sheets to indicate transparency, rather than an alpha channel
+		static const unsigned char AlphaPixel[] = {0x6f, 0x6d, 0x51}; //the background color, brown
+		static const unsigned char AlphaPixel2[] = {0xf9, 0x30, 0x3d}; //the border color, red
 		unsigned char* pixel = reinterpret_cast<unsigned char*>(s->pixels) + n*4;
 		if(pixel[0] == AlphaPixel[0] && pixel[1] == AlphaPixel[1] && pixel[2] == AlphaPixel[2]) {
+			pixel[3] = 0;
+		}
+		if(pixel[0] == AlphaPixel2[0] && pixel[1] == AlphaPixel2[1] && pixel[2] == AlphaPixel2[2]) {
 			pixel[3] = 0;
 		}
 	}
