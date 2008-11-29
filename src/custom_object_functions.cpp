@@ -114,7 +114,7 @@ private:
 		                 args()[1]->evaluate(variables).as_int(),
 		                 args()[2]->evaluate(variables).as_int(),
 		                 args()[3]->evaluate(variables).as_int() > 0,
-						 args()[4]->evaluate(variables),
+						 args().size() > 4 ? args()[4]->evaluate(variables) : variant(),
 						 custom_));
 	}
 

@@ -1045,6 +1045,7 @@ void character::execute_formula(const game_logic::const_formula_ptr& f)
 
 void character::execute_command(const variant& var)
 {
+	if(var.is_null()) { return; }
 	if(var.is_list()) {
 		for(int n = 0; n != var.num_elements(); ++n) {
 			execute_command(var[n]);

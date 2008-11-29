@@ -606,6 +606,7 @@ void custom_object::handle_event(const std::string& event, const formula_callabl
 
 void custom_object::execute_command(const variant& var)
 {
+	if(var.is_null()) { return; }
 	std::cerr << "execute command..\n";
 	if(var.is_list()) {
 		for(int n = 0; n != var.num_elements(); ++n) {
