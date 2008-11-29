@@ -62,8 +62,7 @@ surface scale_surface_eagle(surface input) {
 			out[(y*2 + 1)*result->w + x*2 + 1] = in[y*input->w + x];
 			out[(y*2)*result->w + x*2 + 1] = in[y*input->w + x];
 			
-			//if ((y > 0) && (y < input->h - 1) && (x > 0) && (x < input->w - 1)){
-			if ((y > 0) && (y < input->h - 2) && (x > 0) && (x < input->w - 2)){
+			if ((y > 0) && (y < input->h - 1) && (x > 0) && (x < input->w - 1)){
 				//do additional eagle interpolation
 				
 				// Eagle is a pixel art scaling algorithm designed to smooth rough edges.  It works as follows:  First, it doubles the scale of the art, turning every source pixel into four destination pixels, just like nearest neighbor scaling would.
@@ -129,8 +128,9 @@ surface scale_surface(surface input) {
 			out[(y*2 + 1)*result->w + x*2 + 1] = in[y*input->w + x];
 			out[(y*2)*result->w + x*2 + 1] = in[y*input->w + x];
 			
-			//if ((y > 0) && (y < input->h - 1) && (x > 0) && (x < input->w - 1)){
 			if ((y > 0) && (y < input->h - 2) && (x > 0) && (x < input->w - 2)){
+				
+				
 			//do additional 2xSaI interpolation
 				
 			//  2xSai works on a square group of sixteen pixels, rather than the square group of nine that Eagle works on.  In Eagle, the current pixel being upsized is the one in the middle of this square of nine; in 2xSai, the current pixel is the one in the upper-left of the middle four.  The other pixels in this group are all input pixels that are being examined to determine if we have an edge to smooth out.
@@ -208,6 +208,7 @@ surface scale_surface(surface input) {
 								out[out_index_lower_left] = interpolate_pixels(in[px[1][1]],in[px[2][1]]);
 							}
 							out[out_index_lower_right] = in[px[1][2]];
+							
 						}else if ( (in[px[1][1]] == in[px[2][2]]) && (in[px[1][2]] == in[px[2][1]]) ) {
 							// these are crossed diagonal pairs of pixels in the inner, center set of four.
 							// if they're the same, then we weight them against a surrounding ring of pixels, and see which
@@ -223,7 +224,7 @@ surface scale_surface(surface input) {
 								out[out_index_upper_left] = in[px[1][1]];
 
 							} else {
-
+								
 								int difference_direction = 0;
 								out[out_index_upper_right] = interpolate_pixels(in[px[1][1]],in[px[1][2]]);
 								out[out_index_lower_left] = interpolate_pixels(in[px[1][1]],in[px[2][1]]);
@@ -265,9 +266,9 @@ surface scale_surface(surface input) {
 							
 							
 							if ( (in[px[1][1]] == in[px[2][1]]) && (in[px[1][1]] == in[px[0][2]]) && (in[px[1][2]] != in[px[0][1]]) && (in[px[1][2]] == in[px[0][3]]) ){
-								out[out_index_upper_right] = in[px[1][1]];
+								 out[out_index_upper_right] = in[px[1][1]];
 							} else if ( (in[px[1][2]] == in[px[0][1]]) && (in[px[1][2]] == in[px[2][2]]) && (in[px[1][1]] != in[px[0][2]]) && (in[px[1][1]] == in[px[0][0]]) ){
-								out[out_index_upper_right] = in[px[1][2]];
+								 out[out_index_upper_right] = in[px[1][2]];
 							} else {
 								//out[out_index_upper_right] = interpolate_pixels(in[px[1][1]],in[px[1][2]]);
 								//out[out_index_lower_right] = interpolate_pixels(in[px[1][1]],in[px[1][2]]);

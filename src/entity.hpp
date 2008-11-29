@@ -35,7 +35,8 @@ public:
 	virtual pc_character* is_human() { return NULL; }
 	virtual bool on_players_side() const { return false; }
 	virtual void process(level& lvl) = 0;
-
+	virtual void execute_command(const variant& var) = 0;
+	
 	void set_pos(const point& p) { x_ = p.x; y_ = p.y; }
 	void set_pos(int x, int y) { x_ = x; y_ = y; }
 

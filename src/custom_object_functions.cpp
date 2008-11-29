@@ -80,21 +80,23 @@ private:
 class spawn_command : public entity_command_callable
 {
 public:
-	spawn_command(const std::string& type, int x, int y, bool face_right, bool custom)
-	  : type_(type), x_(x), y_(y), face_right_(face_right), custom_(custom)
+	spawn_command(const std::string& type, int x, int y, bool face_right, variant instantiation_commands, bool custom)
+	  : type_(type), x_(x), y_(y), face_right_(face_right), instantiation_commands_(instantiation_commands), custom_(custom)
 	{}
 	virtual void execute(level& lvl, entity& ob) const {
+		entity_ptr e;
 		if(custom_) {
-			entity_ptr e(new custom_object(type_, x_, y_, face_right_));
-			lvl.add_character(e);
+			e.reset(new custom_object(type_, x_, y_, face_right_));
 		} else {
-			entity_ptr e(new character(type_, x_, y_, face_right_));
-			lvl.add_character(e);
+			e.reset(new character(type_, x_, y_, face_right_));
 		}
+		lvl.add_character(e);
+		e->execute_command(instantiation_commands_);
 	}
 private:
 	std::string type_;
 	int x_, y_;
+	variant instantiation_commands_;
 	bool face_right_;
 	bool custom_;
 };
@@ -102,7 +104,7 @@ private:
 class spawn_function : public function_expression {
 public:
 	spawn_function(const args_list& args, bool custom)
-	  : function_expression("spawn", args, 4), custom_(custom) {
+	  : function_expression("spawn", args, 4, 5), custom_(custom) {
 	}
 
 private:
@@ -112,6 +114,7 @@ private:
 		                 args()[1]->evaluate(variables).as_int(),
 		                 args()[2]->evaluate(variables).as_int(),
 		                 args()[3]->evaluate(variables).as_int() > 0,
+						 args()[4]->evaluate(variables),
 						 custom_));
 	}
 
