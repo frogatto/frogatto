@@ -16,6 +16,8 @@
 #include "filesystem.hpp"
 #include "font.hpp"
 #include "foreach.hpp"
+#include "gui.hpp"
+#include "inventory.hpp"
 #include "item.hpp"
 #include "joystick.hpp"
 #include "key.hpp"
@@ -326,6 +328,8 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 						preferences::set_use_pretty_scaling(!preferences::use_pretty_scaling());
 						graphics::surface_cache::clear();
 						graphics::texture::clear_cache();
+					} else if(event.key.keysym.sym == SDLK_i && lvl->player()) {
+						show_inventory(*lvl->player());
 					}
 					break;
 				}
@@ -466,6 +470,8 @@ extern "C" int main(int argc, char** argv)
 		           wml::schema::get("props")));
 		powerup::init(wml::parse_wml_from_file("powerups.cfg",
 		              wml::schema::get("powerups")));
+		init_gui_frames(wml::parse_wml_from_file("frames.cfg",
+		                wml::schema::get("frames")));
 	} catch(const wml::parse_error& e) {
 		return 0;
 	}

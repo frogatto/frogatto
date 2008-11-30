@@ -1,6 +1,7 @@
 #include <iostream>
 #include <map>
 
+#include "preferences.hpp"
 #include "SDL.h"
 #include "SDL_mixer.h"
 
@@ -45,6 +46,10 @@ void on_music_finished()
 
 manager::manager()
 {
+	if(preferences::no_music()) {
+		return;
+	}
+
 	if(SDL_WasInit(SDL_INIT_AUDIO) == 0) {
 		if(SDL_InitSubSystem(SDL_INIT_AUDIO) == -1) {
 			sound_ok = false;
@@ -68,6 +73,10 @@ manager::manager()
 
 manager::~manager()
 {
+	if(preferences::no_music()) {
+		return;
+	}
+
 	Mix_HookMusicFinished(NULL);
 	next_music.clear();
 	Mix_CloseAudio();
@@ -97,11 +106,19 @@ int play_internal(const std::string& file, int loops)
 
 void play(const std::string& file)
 {
+	if(preferences::no_music()) {
+		return;
+	}
+
 	play_internal(file, 0);
 }
 
 int play_looped(const std::string& file)
 {
+	if(preferences::no_music()) {
+		return -1;
+	}
+
 	return play_internal(file, -1);
 }
 
@@ -112,6 +129,10 @@ void cancel_looped(int handle)
 
 void play_music(const std::string& file)
 {
+	if(preferences::no_music()) {
+		return;
+	}
+
 	if(file.empty() || file == current_music_name) {
 		return;
 	}
@@ -137,6 +158,10 @@ void play_music(const std::string& file)
 
 void play_music_interrupt(const std::string& file)
 {
+	if(preferences::no_music()) {
+		return;
+	}
+
 	if(next_music.empty() == false) {
 		current_music_name = next_music;
 		next_music.clear();

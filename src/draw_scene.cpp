@@ -205,6 +205,14 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 	lvl.draw(pos.x/100, pos.y/100, graphics::screen_width(), drawable_height());
 	glPopMatrix();
 
+	draw_statusbar(lvl, pos, focus);
+}
+
+void draw_statusbar(const level& lvl, screen_position& pos, const entity* focus)
+{
+	static int frame_num = 0;
+	frame_num++;
+
 	graphics::texture statusbar(graphics::texture::get("statusbar.png"));
 
 	const_character_ptr player = lvl.player();

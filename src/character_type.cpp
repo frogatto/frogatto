@@ -59,6 +59,14 @@ character_type::character_type(wml::const_node_ptr node)
 		stand_down_slope_frame_.reset(new frame(node->get_child("stand_down_slope")));
 	}
 
+	if(node->get_child("portrait")) {
+		portrait_frame_.reset(new frame(node->get_child("portrait")));
+	}
+
+	if(node->get_child("name")) {
+		name_frame_.reset(new frame(node->get_child("name")));
+	}
+
 	if(node->get_child("icon")) {
 		icon_frame_.reset(new frame(node->get_child("icon")));
 	}

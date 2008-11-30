@@ -873,6 +873,16 @@ void character::attack(const level& lvl)
 	}
 }
 
+const frame& character::portrait_frame() const
+{
+	return type_->portrait_frame();
+}
+
+const frame& character::name_frame() const
+{
+	return type_->name_frame();
+}
+
 const frame& character::icon_frame() const
 {
 	return type_->icon_frame();
@@ -887,12 +897,25 @@ void character::get_powerup(const std::string& id)
 {
 	const_powerup_ptr p = powerup::get(id);
 	if(p) {
-		blur_.clear();
-		powerups_.push_back(p);
-		old_types_.push_back(type_);
-		type_ = base_type_->get_modified(p->modifier());
-		change_to_stand_frame();
+		get_powerup(p);
 	}
+}
+
+void character::get_powerup(const_powerup_ptr p)
+{
+	//if we already have this kind of power up, then add it next
+	//to the existing powerup
+	std::vector<const_powerup_ptr>::iterator itor = std::find(powerups_.begin(), powerups_.end(), p);
+	if(itor != powerups_.end()) {
+		powerups_.insert(itor, p);
+		return;
+	}
+
+	blur_.clear();
+	powerups_.push_back(p);
+	old_types_.push_back(type_);
+	type_ = base_type_->get_modified(p->modifier());
+	change_to_stand_frame();
 }
 
 void character::remove_powerup()
@@ -908,6 +931,21 @@ void character::remove_powerup()
 		}
 		change_to_stand_frame();
 	}
+}
+
+int character::remove_powerup(const_powerup_ptr powerup)
+{
+	const int result = std::count(powerups_.begin(), powerups_.end(), powerup);
+	powerups_.erase(std::remove(powerups_.begin(), powerups_.end(), powerup), powerups_.end());
+
+	//set the new current powerup
+	if(powerups_.empty()) {
+		type_ = base_type_;
+	} else {
+		type_ = base_type_->get_modified(powerups_.back()->modifier());
+	}
+	change_to_stand_frame();
+	return result;
 }
 
 const frame& character::current_frame() const

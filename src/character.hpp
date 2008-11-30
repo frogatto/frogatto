@@ -31,10 +31,12 @@ public:
 	explicit character(wml::const_node_ptr node);
 	character(const std::string& type, int x, int y, bool face_right);
 	virtual ~character();
+	level* get_level() { return lvl_; }
 	void set_level(level* lvl);
 	virtual wml::node_ptr write() const;
 	virtual void draw() const;
 	void draw_group() const;
+	void draw_portrait(int x, int y) const;
 	void process(level& lvl);
 	bool is_standing(const level& lvl, int* friction=NULL, int* damage=NULL, int* adjust_y=NULL, entity_ptr* standing_on=NULL) const;
 	int collide_left() const;
@@ -96,11 +98,16 @@ public:
 	pc_character_ptr& driver() { return driver_; }
 	const_pc_character_ptr driver() const { return driver_; }
 
+	const frame& portrait_frame() const;
+	const frame& name_frame() const;
 	const frame& icon_frame() const;
 
 	int num_powerups() const;
 	virtual void get_powerup(const std::string& id);
+	virtual void get_powerup(const_powerup_ptr powerup);
 	virtual void remove_powerup();
+	virtual int remove_powerup(const_powerup_ptr powerup);
+	const std::vector<const_powerup_ptr>& powerups() const { return powerups_; }
 
 protected:
 	const frame& current_frame() const;

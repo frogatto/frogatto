@@ -31,6 +31,8 @@ public:
 	const std::string& id() const { return id_; }
 	const frame& get_frame() const { return stand_; }
 	const frame& icon_frame() const { return icon_frame_.get() ? *icon_frame_ : get_frame(); }
+	const frame& portrait_frame() const { return portrait_frame_.get() ? *portrait_frame_ : get_frame(); }
+	const frame& name_frame() const { return name_frame_.get() ? *name_frame_ : get_frame(); }
 	const frame* stand_up_slope_frame() const { return stand_up_slope_frame_.get(); }
 	const frame* stand_down_slope_frame() const { return stand_down_slope_frame_.get(); }
 	const frame* idle_frame() const { return idle_frame_.get(); }
@@ -74,9 +76,11 @@ private:
 	wml::const_node_ptr wml_;
 
 	std::string id_;
+	graphics::texture portrait_;
 	frame stand_;
 	typedef boost::scoped_ptr<frame> frame_ptr;
-	frame_ptr icon_frame_, stand_up_slope_frame_, stand_down_slope_frame_, idle_frame_,
+	frame_ptr portrait_frame_, name_frame_, icon_frame_,
+	          stand_up_slope_frame_, stand_down_slope_frame_, idle_frame_,
 	          turn_frame_, walk_frame_, run_frame_, jump_frame_, fall_frame_,
 	          crouch_frame_, roll_frame_, lookup_frame_, gethit_frame_,
 			  attack_frame_, jump_attack_frame_,

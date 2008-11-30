@@ -4,8 +4,13 @@
 
 namespace preferences {
 namespace {
+bool no_music_ = false;
 bool show_debug_hitboxes_ = false;
 bool use_pretty_scaling_ = false;
+}
+
+bool no_music() {
+	return no_music_;
 }
 
 bool show_debug_hitboxes() {
@@ -26,6 +31,8 @@ bool parse_arg(const char* arg) {
 		show_debug_hitboxes_ = true;
 	} else if(s == "--scale") {
 		set_use_pretty_scaling(true);
+	} else if(s == "--nomusic") {
+		no_music_ = true;
 	} else {
 		return false;
 	}

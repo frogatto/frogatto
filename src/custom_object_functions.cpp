@@ -86,9 +86,9 @@ public:
 	virtual void execute(level& lvl, entity& ob) const {
 		entity_ptr e;
 		if(custom_) {
-			e.reset(new custom_object(type_, x_, y_, face_right_));
+			e = new custom_object(type_, x_, y_, face_right_);
 		} else {
-			e.reset(new character(type_, x_, y_, face_right_));
+			e = new character(type_, x_, y_, face_right_);
 		}
 		lvl.add_character(e);
 		e->execute_command(instantiation_commands_);

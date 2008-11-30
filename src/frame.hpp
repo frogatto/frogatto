@@ -12,7 +12,7 @@ class frame
 public:
 	explicit frame(wml::const_node_ptr node);
 	void play_sound() const;
-	void draw(int x, int y, bool face_right, int time=0, int rotate=0) const;
+	void draw(int x, int y, bool face_right=true, int time=0, int rotate=0) const;
 	int collide_x() const { return collide_rect_.x()*scale_; }
 	int collide_y() const { return collide_rect_.y()*scale_; }
 	int collide_w() const { return collide_rect_.w()*scale_; }

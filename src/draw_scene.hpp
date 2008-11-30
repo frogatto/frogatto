@@ -23,5 +23,6 @@ struct screen_position {
 screen_position& last_draw_position();
 void set_scene_title(const std::string& msg);
 void draw_scene(const level& lvl, screen_position& pos, const entity* focus=NULL);
+void draw_statusbar(const level& lvl, screen_position& pos, const entity* focus=NULL);
 
 #endif
