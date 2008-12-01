@@ -64,10 +64,12 @@ prop_object::prop_object(int x, int y, const std::string& id)
 
 	area_ = rect(x, y, type_->get_frame().width(), type_->get_frame().height());
 	calculate_solid_rects();
+	zorder_ = type_->zorder();
 }
 
 prop_object::prop_object(wml::const_node_ptr node)
-  : type_(prop::get(node->attr("id")))
+  : type_(prop::get(node->attr("id"))),
+    zorder_(wml::get_int(node, "zorder", type_->zorder()))
 {
 	if(!type_) {
 		std::cerr << "could not find prop '" << node->attr("id") << "'\n";
@@ -95,6 +97,9 @@ wml::node_ptr prop_object::write() const
 	node->set_attr("id", type_->id());
 	node->set_attr("x", formatter() << area_.x());
 	node->set_attr("y", formatter() << area_.y());
+	if(zorder_ != type_->zorder()) {
+		node->set_attr("zorder", formatter() << zorder_);
+	}
 	return node;
 }
 

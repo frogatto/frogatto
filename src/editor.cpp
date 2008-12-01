@@ -111,6 +111,11 @@ int selected_property = 0;
 
 std::vector<const_prop_ptr> all_props;
 
+bool foreground_mode = false;
+int foreground_zorder_change() {
+	return foreground_mode ? 1500 : 0;
+}
+
 }
 
 void edit_level(const char* level_cfg)
@@ -277,7 +282,11 @@ void edit_level(const char* level_cfg)
 					}
 				}
 
-				if(event.key.keysym.sym == SDLK_f) {
+				if(event.key.keysym.sym == SDLK_f &&
+				   (event.key.keysym.mod&KMOD_CTRL)) {
+					//set to edit foregrounds.
+					foreground_mode = !foreground_mode;
+				} else if(event.key.keysym.sym == SDLK_f) {
 					face_right = !face_right;
 				}
 
@@ -446,7 +455,7 @@ void edit_level(const char* level_cfg)
 			case SDL_MOUSEBUTTONUP:
 				if(mode == EDIT_TILES) {
 					if(event.button.button == SDL_BUTTON_LEFT) {
-						lvl.add_tile_rect(tilesets[cur_tileset].zorder, anchorx, anchory, xpos + mousex, ypos + mousey, tilesets[cur_tileset].type);
+						lvl.add_tile_rect(tilesets[cur_tileset].zorder + foreground_zorder_change(), anchorx, anchory, xpos + mousex, ypos + mousey, tilesets[cur_tileset].type);
 					} else if(event.button.button == SDL_BUTTON_RIGHT) {
 						lvl.clear_tile_rect(anchorx, anchory, xpos + mousex, ypos + mousey);
 					}
@@ -475,7 +484,9 @@ void edit_level(const char* level_cfg)
 					} else {
 						const int xtile = (xpos + mousex)/TileSize;
 						const int ytile = (ypos + mousey)/TileSize;
-						lvl.add_prop(prop_object(xtile*TileSize, ytile*TileSize, all_props[cur_item]->id()));
+						prop_object obj(xtile*TileSize, ytile*TileSize, all_props[cur_item]->id());
+						obj.set_zorder(obj.zorder() + foreground_zorder_change());
+						lvl.add_prop(obj);
 					}
 				}
 				break;
@@ -649,6 +660,10 @@ void edit_level(const char* level_cfg)
 		char loc_buf[256];
 		sprintf(loc_buf, "%d,%d", xpos + mousex, ypos + mousey);
 		graphics::blit_texture(font::render_text(loc_buf, graphics::color_yellow(), 14), 10, 10);
+
+		if(foreground_mode) {
+			graphics::blit_texture(font::render_text("(Foreground mode)", graphics::color_yellow(), 14), 10, 26);
+		}
 
 		SDL_GL_SwapBuffers();
 		SDL_Delay(20);

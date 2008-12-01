@@ -45,7 +45,8 @@ public:
 
 	wml::node_ptr write() const;
 
-	int zorder() const { return type_->zorder(); }
+	int zorder() const { return zorder_; }
+	void set_zorder(int zorder) { zorder_ = zorder; }
 	const std::vector<rect>& solid_rects() const { return solid_rects_; }
 private:
 	const_prop_ptr type_;
@@ -53,6 +54,7 @@ private:
 
 	void calculate_solid_rects();
 	std::vector<rect> solid_rects_;
+	int zorder_;
 };
 
 bool operator<(int zorder, const prop_object& o);

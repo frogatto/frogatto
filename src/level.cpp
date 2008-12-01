@@ -418,6 +418,17 @@ void level::set_next_level(const std::string& name)
 
 void level::draw_layer(int layer, int x, int y, int w, int h) const
 {
+	glPushMatrix();
+
+	//basic implementation of the foreground layer: z values >= 1000 are
+	//considered in the foreground, and thus have x scaling increased.
+	//TODO: a more comprehensive and configurable implementation of this.
+	if(layer >= 1000 && editor_ == false) {
+		const int dx = x/5;
+		glTranslatef(-dx, 0.0, 0.0);
+		x += dx;
+	}
+
 	typedef std::vector<prop_object>::const_iterator prop_itor;
 	std::pair<prop_itor,prop_itor> prop_range = std::equal_range(props_.begin(), props_.end(), layer);
 	while(prop_range.first != prop_range.second) {
@@ -441,6 +452,8 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 		++t;
 		++total;
 	}
+
+	glPopMatrix();
 }
 
 void level::draw(int x, int y, int w, int h) const
@@ -863,6 +876,12 @@ void level::clear_tile_rect(int x1, int y1, int x2, int y2)
 
 void level::add_tile_solid(const level_tile& t)
 {
+	//zorders greater than 1000 are considered in the foreground and so
+	//have no solids.
+	if(t.zorder >= 1000) {
+		return;
+	}
+
 	if(t.object->width() > widest_tile_) {
 		widest_tile_ = t.object->width();
 	}
