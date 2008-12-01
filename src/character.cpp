@@ -79,6 +79,12 @@ character::character(const std::string& type, int x, int y, bool face_right)
 	assert(type_);
 }
 
+pc_character::pc_character(wml::const_node_ptr node)
+	  : character(node), prev_left_(true), prev_right_(true),
+	    last_left_(-1000), last_right_(-1000), score_(wml::get_int(node, "score"))
+	{}
+
+
 character::~character()
 {
 	if(loop_sound_ >= 0) {
@@ -150,6 +156,13 @@ wml::node_ptr character::write() const
 		res->add_child(driver_->write());
 	}
 	return res;
+}
+
+wml::node_ptr pc_character::write() const
+{
+	wml::node_ptr result = character::write();
+	result->set_attr("score", formatter() << score_);
+	return result;
 }
 
 void character::draw() const
@@ -1193,6 +1206,7 @@ void character::get_hit()
 	invincible_ = invincibility_duration();
 
 	if(hitpoints_ <= 0 && type_->die_frame()) {
+		execute_formula(type_->on_die_formula());
 		change_frame(type_->die_frame());
 	} else if(type_->gethit_frame()) {
 		change_frame(type_->gethit_frame());

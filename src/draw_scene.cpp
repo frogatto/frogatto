@@ -215,7 +215,7 @@ void draw_statusbar(const level& lvl, screen_position& pos, const entity* focus)
 
 	graphics::texture statusbar(graphics::texture::get("statusbar.png"));
 
-	const_character_ptr player = lvl.player();
+	const_pc_character_ptr player = lvl.player();
 	if(player) {
 		if(player->driver()) {
 			player = player->driver();
@@ -249,11 +249,7 @@ void draw_statusbar(const level& lvl, screen_position& pos, const entity* focus)
 		}
 
 		const int wanted_coins = coins.as_int()*100;
-		if(pos.coins < 0) {
-			pos.coins = wanted_coins;
-		}
-
-		if(pos.coins > wanted_coins) {
+		if(pos.coins < 0 || pos.coins > wanted_coins) {
 			pos.coins = wanted_coins;
 		}
 
@@ -266,6 +262,23 @@ void draw_statusbar(const level& lvl, screen_position& pos, const entity* focus)
 		}
 
 		draw_number(pos.coins, 3, 267*2, 600 - 124 + 11*2);
+
+		const int score = player->score();
+
+		const int wanted_score = player->score()*100;
+		if(pos.score < 0 || pos.score > wanted_score) {
+			pos.score = wanted_score;
+		}
+
+		if(pos.score < wanted_score) {
+			const int delta = (wanted_score - pos.score)/20;
+			pos.score += delta;
+			if(delta == 0) {
+				++pos.score;
+			}
+		}
+
+		draw_number(pos.score, 7, 232*2, 600 - 124 + 49*2);
 	}
 
 	if(lvl.player() && lvl.player()->driver()) {

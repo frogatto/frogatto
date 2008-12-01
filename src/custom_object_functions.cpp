@@ -546,6 +546,32 @@ private:
 	}
 };
 
+class score_command : public entity_command_callable
+{
+public:
+	explicit score_command(int score) : score_(score)
+	{}
+	virtual void execute(level& lvl, entity& ob) const {
+		if(lvl.player()) {
+			lvl.player()->score(score_);
+		}
+	}
+	
+private:
+	int score_;
+};
+
+class score_function : public function_expression {
+public:
+	explicit score_function(const args_list& args)
+	  : function_expression("score", args, 1) {
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new score_command(args()[0]->evaluate(variables).as_int()));
+	}
+};
+
 class custom_object_function_symbol_table : public function_symbol_table
 {
 public:
@@ -594,6 +620,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new end_game_function(args));
 	} else if(fn == "debug") {
 		return expression_ptr(new debug_function(args));
+	} else if(fn == "score") {
+		return expression_ptr(new score_function(args));
 	}
 	return function_symbol_table::create_function(fn, args);
 }

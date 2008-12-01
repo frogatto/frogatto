@@ -200,15 +200,14 @@ private:
 
 class pc_character : public character {
 public:
-	explicit pc_character(wml::const_node_ptr node)
-	  : character(node), prev_left_(true), prev_right_(true),
-	    last_left_(-1000), last_right_(-1000)
-	{}
+	explicit pc_character(wml::const_node_ptr node);
 
-	explicit pc_character(character& c) : character(c)
+	explicit pc_character(character& c) : character(c), score_(0)
 	{}
 
 	virtual ~pc_character() {}
+
+	virtual wml::node_ptr write() const;
 
 	virtual void draw() const;
 	virtual pc_character* is_human() { return this; }
@@ -233,6 +232,9 @@ public:
 		items_destroyed_.swap(player.items_destroyed_);
 		objects_destroyed_.swap(player.objects_destroyed_);
 	}
+
+	int score(int points) { score_ += points; return score_; }
+	int score() const { return score_; }
 private:
 
 	virtual void set_value(const std::string& key, const variant& value);
@@ -249,6 +251,8 @@ private:
 
 	boost::intrusive_ptr<pc_character> save_condition_;
 	std::string current_level_;
+
+	int score_;
 };
 
 #endif

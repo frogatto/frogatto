@@ -72,6 +72,7 @@ public:
 
 	const game_logic::const_formula_ptr& on_attack_formula() const { return on_attack_formula_; }
 	const game_logic::const_formula_ptr& on_process_formula() const { return on_process_formula_; }
+	const game_logic::const_formula_ptr& on_die_formula() const { return on_die_formula_; }
 private:
 	wml::const_node_ptr wml_;
 
@@ -101,7 +102,8 @@ private:
 	int passenger_x_, passenger_y_;
 	std::string vehicle_die_object_;
 	std::string loop_sound_;
-	game_logic::const_formula_ptr on_attack_formula_, on_process_formula_;
+	game_logic::const_formula_ptr on_attack_formula_, on_process_formula_,
+	                              on_die_formula_;
 };
 
 #endif
