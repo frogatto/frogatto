@@ -39,6 +39,7 @@ frame::frame(wml::const_node_ptr node)
 	 velocity_x_(wml::get_int(node, "velocity_x")),
 	 velocity_y_(wml::get_int(node, "velocity_y")),
 	 nframes_(wml::get_int(node, "frames", 1)),
+	 nframes_per_row_(wml::get_int(node, "frames_per_row", -1)),
 	 frame_time_(wml::get_int(node, "duration", -1)),
 	 reverse_frame_(wml::get_bool(node, "reverse")),
 	 scale_(wml::get_int(node, "scale", 2)),
@@ -87,13 +88,16 @@ void frame::play_sound() const
 
 void frame::draw(int x, int y, bool face_right, int time, int rotate) const
 {
-	const int frame_num = frame_number(time);
-
+	//picks out a single frame to draw from a whole animation, based on time
+	const int current_col = (nframes_per_row_ > 0) ? (frame_number(time) % nframes_per_row_) : frame_number(time) ;
+	const int current_row = (nframes_per_row_ > 0) ? (frame_number(time)/nframes_per_row_) : 0 ;
+	
+	//the last 4 params are the rectangle of the single, specific frame
 	graphics::blit_texture(texture_, x, y, width()*(face_right ? 1 : -1), height(), rotate + (face_right ? rotate_ : -rotate_),
-	  GLfloat(img_rect_.x() + frame_num*(img_rect_.w()+pad_))/GLfloat(texture_.width()),
-	  GLfloat(img_rect_.y())/GLfloat(texture_.height()),
-	  GLfloat(img_rect_.x() + frame_num*(img_rect_.w()+pad_) + img_rect_.w())/GLfloat(texture_.width()),
-	  GLfloat(img_rect_.y() + img_rect_.h())/GLfloat(texture_.height()));
+	  GLfloat(img_rect_.x() + current_col*(img_rect_.w()+pad_))/GLfloat(texture_.width()),
+	  GLfloat(img_rect_.y() + ((img_rect_.h()+pad_) * current_row)) / GLfloat(texture_.height()),
+	  GLfloat(img_rect_.x() + current_col*(img_rect_.w()+pad_) + img_rect_.w())/GLfloat(texture_.width()),
+	  GLfloat(img_rect_.y() + ((img_rect_.h()+pad_) * current_row) + img_rect_.h())/GLfloat(texture_.height()));
 }
 
 int frame::duration() const

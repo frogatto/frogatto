@@ -54,6 +54,7 @@ private:
 	int accel_x_, accel_y_;
 	int velocity_x_, velocity_y_;
 	int nframes_;
+	int nframes_per_row_;
 	int frame_time_;
 	bool reverse_frame_;
 	int scale_;
