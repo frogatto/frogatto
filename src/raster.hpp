@@ -22,6 +22,15 @@ namespace graphics
 
 void prepare_raster();
 void blit_texture(const texture& tex, int x=0, int y=0, GLfloat rotate=0.0);
+
+//Function to blit a texture to the screen. Parameters:
+//x, y: target on-screen location.
+//w, h: dimensions of the blit
+//rotate: the number of degrees to rotate by when blitting
+//x1, y1, x2, y2: the area of the texture to blit onto the screen. The
+//defaults are to blit the entire texture. Note that these values can be
+// < 0.0 or > 1.0 and the texture will wrap, but *only* if the texture's
+//dimensions are powers of two. Otherwise they must be in the range [0,1]
 void blit_texture(const texture& tex, int x, int y, int w, int h, GLfloat rotate=0.0, GLfloat x1=0.0, GLfloat y1=0.0, GLfloat x2=1.0, GLfloat y2=1.0);
 void draw_rect(const SDL_Rect& rect, const SDL_Color& color,
                unsigned char alpha=0xFF);
