@@ -25,7 +25,8 @@ void blit_texture(const texture& tex, int x=0, int y=0, GLfloat rotate=0.0);
 
 //Function to blit a texture to the screen. Parameters:
 //x, y: target on-screen location.
-//w, h: dimensions of the blit
+//w, h: dimensions of the on-screen area that will be filled by the
+//blit.
 //rotate: the number of degrees to rotate by when blitting
 //x1, y1, x2, y2: the area of the texture to blit onto the screen. The
 //defaults are to blit the entire texture. Note that these values can be
