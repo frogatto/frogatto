@@ -13,6 +13,7 @@
 #include "custom_object_functions.hpp"
 #include "custom_object_type.hpp"
 #include "draw_scene.hpp"
+#include "editor.hpp"
 #include "filesystem.hpp"
 #include "font.hpp"
 #include "foreach.hpp"
@@ -40,8 +41,6 @@
 #include "wml_schema.hpp"
 #include "wml_utils.hpp"
 #include "wml_writer.hpp"
-
-void edit_level(const char* level_cfg);
 
 namespace {
 
@@ -302,7 +301,7 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 						done = true;
 						break;
 					} else if(event.key.keysym.sym == SDLK_e && (mod&KMOD_CTRL)) {
-						edit_level(lvl->id().c_str());
+						editor(lvl->id().c_str()).edit_level();
 						lvl.reset(load_level(lvl->id().c_str()));
 					} else if(event.key.keysym.sym == SDLK_s && (mod&KMOD_CTRL)) {
 						std::string data;
