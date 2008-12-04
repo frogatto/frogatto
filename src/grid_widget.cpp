@@ -98,6 +98,11 @@ void grid::register_selection_callback(grid::callback_type ptr)
 	on_select_ = ptr;
 }
 
+void grid::register_row_selection_callback(boost::function<void()> ptr)
+{
+	row_callbacks_.push_back(ptr);
+}
+
 int grid::row_at(int xpos, int ypos) const
 {
 	if(xpos > x() && xpos < x() + width() &&
@@ -186,8 +191,14 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 			}
 		} else if(event.type == SDL_MOUSEBUTTONDOWN) {
 			const SDL_MouseButtonEvent& e = event.button;
+			const int row_index = row_at(e.x, e.y);
+			if(row_index >= 0 && row_index < row_callbacks_.size() &&
+			   row_callbacks_[row_index]) {
+				row_callbacks_[row_index]();
+			}
+
 			if(on_select_) {
-				on_select_(row_at(e.x,e.y));
+				on_select_(row_index);
 			}
 		}
 	}

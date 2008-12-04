@@ -49,6 +49,7 @@ public:
 	int selection() const { return selected_row_; }
 	void register_mouseover_callback(callback_type cb);
 	void register_selection_callback(callback_type cb);
+	void register_row_selection_callback(boost::function<void()> cb);
 private:
 	int row_at(int x, int y) const;
 	void recalculate_dimensions();
@@ -66,6 +67,7 @@ private:
 	bool must_select_;
 
 	std::vector<widget_ptr> new_row_;
+	std::vector<boost::function<void()> > row_callbacks_;
 	callback_type on_mouseover_;
 	callback_type on_select_;
 	int hpad_;

@@ -27,6 +27,7 @@ public:
 	struct tileset {
 		static void init(wml::const_node_ptr node);
 		explicit tileset(wml::const_node_ptr node);
+		std::string category;
 		std::string type;
 		int zorder;
 		boost::shared_ptr<tile_map> preview;

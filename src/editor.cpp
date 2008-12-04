@@ -105,7 +105,9 @@ void editor::tileset::init(wml::const_node_ptr node)
 	}
 }
 
-editor::tileset::tileset(wml::const_node_ptr node) : type(node->attr("type")), zorder(wml::get_int(node, "zorder")), sloped(wml::get_bool(node, "sloped"))
+editor::tileset::tileset(wml::const_node_ptr node)
+  : category(node->attr("category")), type(node->attr("type")),
+    zorder(wml::get_int(node, "zorder")), sloped(wml::get_bool(node, "sloped"))
 {
 	if(node->get_child("preview")) {
 		preview.reset(new tile_map(node->get_child("preview")));
