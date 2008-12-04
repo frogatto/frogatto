@@ -16,7 +16,7 @@ namespace editor_dialogs
 {
 
 tileset_editor_dialog::tileset_editor_dialog(editor& e)
-  : dialog(640, 0, 160, 600), editor_(e)
+  : dialog(640, 40, 160, 560), editor_(e)
 {
 	if(editor_.all_tilesets().empty() == false) {
 		category_ = editor_.all_tilesets().front().category;

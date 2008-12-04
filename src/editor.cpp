@@ -3,8 +3,10 @@
 #include <SDL/SDL.h>
 #include <iostream>
 
+#include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
 
+#include "button.hpp"
 #include "character.hpp"
 #include "character_type.hpp"
 #include "draw_tile.hpp"
@@ -15,8 +17,10 @@
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "frame.hpp"
+#include "grid_widget.hpp"
 #include "item.hpp"
 #include "key.hpp"
+#include "label.hpp"
 #include "level.hpp"
 #include "level_object.hpp"
 #include "load_level.hpp"
@@ -29,6 +33,63 @@
 #include "wml_parser.hpp"
 #include "wml_utils.hpp"
 #include "wml_writer.hpp"
+
+namespace {
+const char* ModeStrings[] = {"Tiles", "Characters", "Items", "Groups", "Properties", "Variations", "Props"};
+}
+
+class editor_mode_dialog : public gui::dialog
+{
+	editor& editor_;
+	gui::widget_ptr context_menu_;
+
+	void select_mode(int mode)
+	{
+		if(mode >= 0 && mode < editor::NUM_MODES) {
+			editor_.change_mode(mode);
+		}
+
+		remove_widget(context_menu_);
+		context_menu_.reset();
+		init();
+	}
+
+	void show_menu()
+	{
+		using namespace gui;
+		gui::grid* grid = new gui::grid(1);
+		grid->set_show_background(true);
+		grid->allow_selection();
+		grid->register_selection_callback(boost::bind(&editor_mode_dialog::select_mode, this, _1));
+		for(int n = 0; n != editor::NUM_MODES; ++n) {
+			grid->add_col(widget_ptr(new label(ModeStrings[n], graphics::color_white())));
+		}
+
+		int mousex, mousey;
+		SDL_GetMouseState(&mousex, &mousey);
+
+		mousex -= x();
+		mousey -= y();
+
+		remove_widget(context_menu_);
+		context_menu_.reset(grid);
+		add_widget(context_menu_, mousex, mousey);
+	}
+public:
+	explicit editor_mode_dialog(editor& e)
+	  : gui::dialog(640, 0, 160, 40), editor_(e)
+	{
+		init();
+	}
+
+	void init()
+	{
+		clear();
+		using namespace gui;
+		button* b = new button(widget_ptr(new label(ModeStrings[editor_.mode()], graphics::color_white())), boost::bind(&editor_mode_dialog::show_menu, this));
+		add_widget(widget_ptr(b), 5, 5);
+	}
+};
 
 namespace {
 
@@ -120,6 +181,8 @@ editor::editor(const char* level_cfg)
     cur_tileset_(0),
     current_dialog_(NULL)
 {
+	editor_mode_dialog_.reset(new editor_mode_dialog(*this));
+
 	static bool first_time = true;
 	if(first_time) {
 		wml::const_node_ptr editor_cfg = wml::parse_wml(sys::read_file("editor.cfg"));
@@ -204,6 +267,10 @@ void editor::edit_level()
 
 		SDL_Event event;
 		while(SDL_PollEvent(&event)) {
+			if(editor_mode_dialog_->process_event(event, false)) {
+				continue;
+			}
+
 			if(current_dialog_ && current_dialog_->process_event(event, false)) {
 				continue;
 			}
@@ -288,35 +355,32 @@ void editor::edit_level()
 
 				if(event.key.keysym.sym == SDLK_c &&
 				   enemy_types.empty() == false) {
-					mode_ = EDIT_CHARS;
+					change_mode(EDIT_CHARS);
 				}
 
 				if(event.key.keysym.sym == SDLK_t) {
-					mode_ = EDIT_TILES;
-					tileset_dialog_.reset(new editor_dialogs::tileset_editor_dialog(*this));
-					current_dialog_ = tileset_dialog_.get();
+					change_mode(EDIT_TILES);
 				}
 
 				if(event.key.keysym.sym == SDLK_v) {
-					mode_ = EDIT_VARIATIONS;
+					change_mode(EDIT_VARIATIONS);
 				}
 
 				if(event.key.keysym.sym == SDLK_i &&
 				   placeable_items.empty() == false) {
-					mode_ = EDIT_ITEMS;
+					change_mode(EDIT_ITEMS);
 				}
 
 				if(event.key.keysym.sym == SDLK_g) {
-					mode_ = EDIT_GROUPS;
+					change_mode(EDIT_GROUPS);
 				}
 
 				if(event.key.keysym.sym == SDLK_p) {
-					mode_ = EDIT_PROPERTIES;
+					change_mode(EDIT_PROPERTIES);
 				}
 
 				if(event.key.keysym.sym == SDLK_o && !all_props.empty()) {
-					mode_ = EDIT_PROPS;
-					cur_item = 0;
+					change_mode(EDIT_PROPS);
 				}
 
 				if(event.key.keysym.sym == SDLK_r &&
@@ -503,6 +567,30 @@ void editor::set_tileset(int index)
 	}
 }
 
+void editor::change_mode(int nmode)
+{
+	mode_ = static_cast<EDIT_MODE>(nmode);
+	switch(mode_) {
+	case EDIT_TILES:
+		tileset_dialog_.reset(new editor_dialogs::tileset_editor_dialog(*this));
+		current_dialog_ = tileset_dialog_.get();
+		break;
+	case EDIT_CHARS:
+		break;
+	case EDIT_ITEMS:
+		break;
+	case EDIT_GROUPS:
+		break;
+	case EDIT_PROPERTIES:
+		break;
+	case EDIT_VARIATIONS:
+		break;
+	case EDIT_PROPS:
+		cur_item = 0;
+		break;
+	}
+}
+
 void editor::draw() const
 {
 	int mousex, mousey;
@@ -678,6 +766,8 @@ void editor::draw() const
 	if(current_dialog_) {
 		current_dialog_->draw();
 	}
+
+	editor_mode_dialog_->draw();
 
 	SDL_GL_SwapBuffers();
 	SDL_Delay(20);
