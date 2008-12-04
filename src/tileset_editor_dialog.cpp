@@ -49,11 +49,11 @@ void tileset_editor_dialog::init()
 			tileset_button->set_dim(68, 68);
 			grid->add_col(tileset_button);
 		}
+
 		++index;
 	}
 
 	grid->finish_row();
-
 	add_widget(grid);
 }
 

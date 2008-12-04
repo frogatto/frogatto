@@ -20,6 +20,8 @@ public:
 	explicit prop(wml::const_node_ptr node);
 
 	const std::string& id() const { return id_; }
+	const std::string& category() const { return category_; }
+
 	int zorder() const { return zorder_; }
 	const frame& get_frame() const { return frame_; }
 	const std::vector<rect>& solid_rects() const { return solid_rects_; }
@@ -29,6 +31,7 @@ public:
 
 private:
 	std::string id_;
+	std::string category_;
 	int zorder_;
 	frame frame_;
 	std::vector<rect> solid_rects_;

@@ -36,6 +36,7 @@ public:
 	int duration() const;
 	bool hit(int time_in_frame) const;
 	const graphics::texture& img() const { return texture_; }
+	const rect& area() const { return img_rect_; }
 	int blur() const { return blur_; }
 	bool rotate_on_slope() const { return rotate_on_slope_; }
 	int damage() const { return damage_; }

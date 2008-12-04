@@ -8,12 +8,14 @@
 #include "key.hpp"
 #include "level.hpp"
 #include "level_object.hpp"
+#include "prop.hpp"
 
 namespace gui {
 class dialog;
 }
 
 namespace editor_dialogs {
+class prop_editor_dialog;
 class tileset_editor_dialog;
 }
 
@@ -40,6 +42,11 @@ public:
 	int get_tileset() const { return cur_tileset_; }
 	void set_tileset(int index);
 
+	int get_item() const { return cur_item_; }
+	void set_item(int index);
+
+	const std::vector<const_prop_ptr>& get_props() const;
+
 	enum EDIT_MODE { EDIT_TILES, EDIT_CHARS, EDIT_ITEMS, EDIT_GROUPS, EDIT_PROPERTIES, EDIT_VARIATIONS, EDIT_PROPS, NUM_MODES };
 	EDIT_MODE mode() const { return mode_; }
 	void change_mode(int nmode);
@@ -59,7 +66,10 @@ private:
 	bool face_right_;
 	int cur_tileset_;
 
+	int cur_item_;
+
 	boost::scoped_ptr<editor_mode_dialog> editor_mode_dialog_;
+	boost::scoped_ptr<editor_dialogs::prop_editor_dialog> prop_dialog_;
 	boost::scoped_ptr<editor_dialogs::tileset_editor_dialog> tileset_dialog_;
 
 	gui::dialog* current_dialog_;

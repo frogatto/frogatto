@@ -45,7 +45,8 @@ const_prop_ptr prop::get(const std::string& id)
 }
 
 prop::prop(wml::const_node_ptr node)
-  : id_(node->attr("id")), zorder_(wml::get_int(node, "zorder")), frame_(node)
+  : id_(node->attr("id")), category_(node->attr("category")),
+    zorder_(wml::get_int(node, "zorder")), frame_(node)
 {
 	wml::node::const_child_iterator r1 = node->begin_child("solid_rect");
 	wml::node::const_child_iterator r2 = node->end_child("solid_rect");

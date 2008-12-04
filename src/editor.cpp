@@ -25,6 +25,7 @@
 #include "level_object.hpp"
 #include "load_level.hpp"
 #include "prop.hpp"
+#include "prop_editor_dialog.hpp"
 #include "raster.hpp"
 #include "texture.hpp"
 #include "tile_map.hpp"
@@ -128,7 +129,6 @@ struct placeable_item {
 };
 
 std::vector<placeable_item> placeable_items;
-int cur_item = 0;
 
 void placeable_item::init(wml::const_node_ptr node)
 {
@@ -179,6 +179,7 @@ editor::editor(const char* level_cfg)
   : xpos_(0), ypos_(0), anchorx_(0), anchory_(0),
     filename_(level_cfg), mode_(EDIT_TILES), done_(false), face_right_(true),
     cur_tileset_(0),
+    cur_item_(0),
     current_dialog_(NULL)
 {
 	editor_mode_dialog_.reset(new editor_mode_dialog(*this));
@@ -401,15 +402,15 @@ void editor::edit_level()
 						}
 						break;
 					case EDIT_ITEMS:
-						--cur_item;
-						if(cur_item < 0) {
-							cur_item = placeable_items.size()-1;
+						--cur_item_;
+						if(cur_item_ < 0) {
+							cur_item_ = placeable_items.size()-1;
 						}
 						break;
 					case EDIT_PROPS:
-						--cur_item;
-						if(cur_item < 0) {
-							cur_item = all_props.size()-1;
+						--cur_item_;
+						if(cur_item_ < 0) {
+							cur_item_ = all_props.size()-1;
 						}
 						break;
 					}
@@ -427,15 +428,15 @@ void editor::edit_level()
 						}
 						break;
 					case EDIT_ITEMS:
-						++cur_item;
-						if(cur_item == placeable_items.size()) {
-							cur_item = 0;
+						++cur_item_;
+						if(cur_item_ == placeable_items.size()) {
+							cur_item_ = 0;
 						}
 						break;
 					case EDIT_PROPS:
-						++cur_item;
-						if(cur_item == all_props.size()) {
-							cur_item = 0;
+						++cur_item_;
+						if(cur_item_ == all_props.size()) {
+							cur_item_ = 0;
 						}
 						break;
 					}
@@ -498,7 +499,7 @@ void editor::edit_level()
 					}
 					lvl_->add_character(c);
 				} else if(mode_ == EDIT_ITEMS && event.button.button == SDL_BUTTON_LEFT) {
-					wml::node_ptr node(wml::deep_copy(placeable_items[cur_item].node));
+					wml::node_ptr node(wml::deep_copy(placeable_items[cur_item_].node));
 					node->set_attr("x", formatter() << (anchorx_ - anchorx_%TileSize));
 					node->set_attr("y", formatter() << (anchory_ - anchory_%TileSize));
 					item_ptr i(new item(node));
@@ -537,7 +538,7 @@ void editor::edit_level()
 					} else {
 						const int xtile = (xpos_ + mousex)/TileSize;
 						const int ytile = (ypos_ + mousey)/TileSize;
-						prop_object obj(xtile*TileSize, ytile*TileSize, all_props[cur_item]->id());
+						prop_object obj(xtile*TileSize, ytile*TileSize, all_props[cur_item_]->id());
 						obj.set_zorder(obj.zorder() + foreground_zorder_change());
 						lvl_->add_prop(obj);
 					}
@@ -557,6 +558,11 @@ const std::vector<editor::tileset>& editor::all_tilesets() const
 	return tilesets;
 }
 
+const std::vector<const_prop_ptr>& editor::get_props() const
+{
+	return all_props;
+}
+
 void editor::set_tileset(int index)
 {
 	cur_tileset_ = index;
@@ -565,6 +571,39 @@ void editor::set_tileset(int index)
 	} else if(cur_tileset_ >= tilesets.size()) {
 		cur_tileset_ = 0;
 	}
+}
+
+void editor::set_item(int index)
+{
+	int max = 0;
+	switch(mode_) {
+	case EDIT_TILES:
+		max = all_tilesets().size();
+		break;
+	case EDIT_CHARS:
+		max = enemy_types.size();
+		break;
+	case EDIT_ITEMS:
+		max = placeable_items.size();
+		break;
+	case EDIT_GROUPS:
+		break;
+	case EDIT_PROPERTIES:
+		break;
+	case EDIT_VARIATIONS:
+		break;
+	case EDIT_PROPS:
+		max = all_props.size();
+		break;
+	}
+
+	if(index < 0) {
+		index = max - 1;
+	} else if(index >= max) {
+		index = 0;
+	}
+
+	cur_item_ = index;
 }
 
 void editor::change_mode(int nmode)
@@ -586,7 +625,9 @@ void editor::change_mode(int nmode)
 	case EDIT_VARIATIONS:
 		break;
 	case EDIT_PROPS:
-		cur_item = 0;
+		prop_dialog_.reset(new editor_dialogs::prop_editor_dialog(*this));
+		current_dialog_ = prop_dialog_.get();
+		cur_item_ = 0;
 		break;
 	}
 }
@@ -640,7 +681,7 @@ void editor::draw() const
 		const int x = ((xpos_ + mousex)/TileSize)*TileSize;
 		const int y = ((ypos_ + mousey)/TileSize)*TileSize;
 		glColor4f(1.0, 1.0, 1.0, 0.5);
-		all_props[cur_item]->get_frame().draw(x, y, true);
+		all_props[cur_item_]->get_frame().draw(x, y, true);
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 	}
 
@@ -704,13 +745,13 @@ void editor::draw() const
 	} else if(mode_ == EDIT_CHARS) {
 		enemy_types[cur_enemy_type].preview_frame->draw(700, 10, face_right_);
 	} else if(mode_ == EDIT_ITEMS) {
-		const_item_type_ptr type = placeable_items[cur_item].type;
+		const_item_type_ptr type = placeable_items[cur_item_].type;
 		if(type) {
 			const frame& f = type->get_frame();
 			f.draw(700, 10, true);
 		}
 	} else if(mode_ == EDIT_PROPS) {
-		const frame& f = all_props[cur_item]->get_frame();
+		const frame& f = all_props[cur_item_]->get_frame();
 		f.draw(700, 10, true);
 	} else if(mode_ == EDIT_PROPERTIES && selected_entity) {
 		game_logic::formula_callable* vars = selected_entity->vars();
