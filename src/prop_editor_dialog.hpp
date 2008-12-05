@@ -18,8 +18,12 @@ public:
 private:
 	void show_category_menu();
 	void set_prop(int index);
+
+	void close_context_menu(int index);
+	void select_category(const std::string& str);
 	editor& editor_;
 	std::string category_;
+	gui::widget_ptr context_menu_;
 };
 
 }

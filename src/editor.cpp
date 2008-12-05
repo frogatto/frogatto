@@ -76,6 +76,34 @@ class editor_mode_dialog : public gui::dialog
 		context_menu_.reset(grid);
 		add_widget(context_menu_, mousex, mousey);
 	}
+
+	bool handle_event(const SDL_Event& event, bool claimed)
+	{
+		if(!claimed) {
+			switch(event.type) {
+			case SDL_KEYDOWN: {
+				editor::EDIT_MODE mode = editor::NUM_MODES;
+				switch(event.key.keysym.sym) {
+				case SDLK_t:
+					mode = editor::EDIT_TILES;
+					break;
+				case SDLK_o:
+					mode = editor::EDIT_PROPS;
+					break;
+				}
+
+				if(mode < editor::NUM_MODES) {
+					editor_.change_mode(mode);
+					init();
+					claimed = true;
+				}
+				break;
+			}
+			}
+		}
+
+		return claimed || dialog::handle_event(event, claimed);
+	}
 public:
 	explicit editor_mode_dialog(editor& e)
 	  : gui::dialog(640, 0, 160, 40), editor_(e)
@@ -359,10 +387,6 @@ void editor::edit_level()
 					change_mode(EDIT_CHARS);
 				}
 
-				if(event.key.keysym.sym == SDLK_t) {
-					change_mode(EDIT_TILES);
-				}
-
 				if(event.key.keysym.sym == SDLK_v) {
 					change_mode(EDIT_VARIATIONS);
 				}
@@ -378,10 +402,6 @@ void editor::edit_level()
 
 				if(event.key.keysym.sym == SDLK_p) {
 					change_mode(EDIT_PROPERTIES);
-				}
-
-				if(event.key.keysym.sym == SDLK_o && !all_props.empty()) {
-					change_mode(EDIT_PROPS);
 				}
 
 				if(event.key.keysym.sym == SDLK_r &&

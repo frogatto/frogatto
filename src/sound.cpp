@@ -129,7 +129,7 @@ void cancel_looped(int handle)
 
 void play_music(const std::string& file)
 {
-	if(preferences::no_music()) {
+	if(preferences::no_music() || !sound_ok) {
 		return;
 	}
 
