@@ -8,6 +8,7 @@
 
 #include "button.hpp"
 #include "character.hpp"
+#include "character_editor_dialog.hpp"
 #include "character_type.hpp"
 #include "draw_tile.hpp"
 #include "editor.hpp"
@@ -36,7 +37,7 @@
 #include "wml_writer.hpp"
 
 namespace {
-const char* ModeStrings[] = {"Tiles", "Characters", "Items", "Groups", "Properties", "Variations", "Props"};
+const char* ModeStrings[] = {"Tiles", "Objects", "Items", "Groups", "Properties", "Variations", "Props"};
 }
 
 class editor_mode_dialog : public gui::dialog
@@ -90,6 +91,12 @@ class editor_mode_dialog : public gui::dialog
 				case SDLK_o:
 					mode = editor::EDIT_PROPS;
 					break;
+				case SDLK_v:
+					mode = editor::EDIT_VARIATIONS;
+					break;
+				case SDLK_c:
+					mode = editor::EDIT_CHARS;
+					break;
 				}
 
 				if(mode < editor::NUM_MODES) {
@@ -126,28 +133,7 @@ const int TileSize = 32;
 
 std::vector<editor::tileset> tilesets;
 
-struct enemy_type {
-	static void init(wml::const_node_ptr node);
-	explicit enemy_type(wml::const_node_ptr node);
-	wml::const_node_ptr node;
-	const frame* preview_frame;
-};
-
-std::vector<enemy_type> enemy_types;
-int cur_enemy_type = 0;
-
-void enemy_type::init(wml::const_node_ptr node)
-{
-	wml::node::const_child_iterator i1 = node->begin_child("character");
-	wml::node::const_child_iterator i2 = node->end_child("character");
-	for(; i1 != i2; ++i1) {
-		enemy_types.push_back(enemy_type(i1->second));
-	}
-}
-
-enemy_type::enemy_type(wml::const_node_ptr node)
-  : node(node), preview_frame(&entity::build(node)->current_frame())
-{}
+std::vector<editor::enemy_type> enemy_types;
 
 struct placeable_item {
 	static void init(wml::const_node_ptr node);
@@ -184,6 +170,20 @@ int foreground_zorder_change() {
 }
 
 }
+
+void editor::enemy_type::init(wml::const_node_ptr node)
+{
+	wml::node::const_child_iterator i1 = node->begin_child("character");
+	wml::node::const_child_iterator i2 = node->end_child("character");
+	for(; i1 != i2; ++i1) {
+		enemy_types.push_back(editor::enemy_type(i1->second));
+	}
+}
+
+editor::enemy_type::enemy_type(wml::const_node_ptr node)
+  : node(node), category(node->attr("category")),
+    preview_frame(&entity::build(node)->current_frame())
+{}
 
 void editor::tileset::init(wml::const_node_ptr node)
 {
@@ -382,15 +382,6 @@ void editor::edit_level()
 					face_right_ = !face_right_;
 				}
 
-				if(event.key.keysym.sym == SDLK_c &&
-				   enemy_types.empty() == false) {
-					change_mode(EDIT_CHARS);
-				}
-
-				if(event.key.keysym.sym == SDLK_v) {
-					change_mode(EDIT_VARIATIONS);
-				}
-
 				if(event.key.keysym.sym == SDLK_i &&
 				   placeable_items.empty() == false) {
 					change_mode(EDIT_ITEMS);
@@ -416,9 +407,9 @@ void editor::edit_level()
 						set_tileset(cur_tileset_-1);
 						break;
 					case EDIT_CHARS:
-						--cur_enemy_type;
-						if(cur_enemy_type < 0) {
-							cur_enemy_type = enemy_types.size()-1;
+						--cur_item_;
+						if(cur_item_ < 0) {
+							cur_item_ = enemy_types.size()-1;
 						}
 						break;
 					case EDIT_ITEMS:
@@ -442,9 +433,9 @@ void editor::edit_level()
 						set_tileset(cur_tileset_+1);
 						break;
 					case EDIT_CHARS:
-						++cur_enemy_type;
-						if(cur_enemy_type == enemy_types.size()) {
-							cur_enemy_type = 0;
+						++cur_item_;
+						if(cur_item_ == enemy_types.size()) {
+							cur_item_ = 0;
 						}
 						break;
 					case EDIT_ITEMS:
@@ -494,7 +485,7 @@ void editor::edit_level()
 					lvl_->set_next_level(levels[index]);
 
 				} else if(mode_ == EDIT_CHARS && event.button.button == SDL_BUTTON_LEFT) {
-					wml::node_ptr node(wml::deep_copy(enemy_types[cur_enemy_type].node));
+					wml::node_ptr node(wml::deep_copy(enemy_types[cur_item_].node));
 					node->set_attr("x", formatter() << (anchorx_ - anchorx_%TileSize));
 					node->set_attr("y", formatter() << (anchory_ - anchory_%TileSize));
 					node->set_attr("face_right", face_right_ ? "yes" : "no");
@@ -578,6 +569,11 @@ const std::vector<editor::tileset>& editor::all_tilesets() const
 	return tilesets;
 }
 
+const std::vector<editor::enemy_type>& editor::all_characters() const
+{
+	return enemy_types;
+}
+
 const std::vector<const_prop_ptr>& editor::get_props() const
 {
 	return all_props;
@@ -635,6 +631,9 @@ void editor::change_mode(int nmode)
 		current_dialog_ = tileset_dialog_.get();
 		break;
 	case EDIT_CHARS:
+		character_dialog_.reset(new editor_dialogs::character_editor_dialog(*this));
+		current_dialog_ = character_dialog_.get();
+		cur_item_ = 0;
 		break;
 	case EDIT_ITEMS:
 		break;
@@ -763,7 +762,7 @@ void editor::draw() const
 
 	if(mode_ == EDIT_TILES) {
 	} else if(mode_ == EDIT_CHARS) {
-		enemy_types[cur_enemy_type].preview_frame->draw(700, 10, face_right_);
+		enemy_types[cur_item_].preview_frame->draw(700, 10, face_right_);
 	} else if(mode_ == EDIT_ITEMS) {
 		const_item_type_ptr type = placeable_items[cur_item_].type;
 		if(type) {

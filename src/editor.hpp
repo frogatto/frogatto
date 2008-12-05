@@ -15,6 +15,7 @@ class dialog;
 }
 
 namespace editor_dialogs {
+class character_editor_dialog;
 class prop_editor_dialog;
 class tileset_editor_dialog;
 }
@@ -38,9 +39,19 @@ public:
 		bool sloped;
 	};
 
+	struct enemy_type {
+		static void init(wml::const_node_ptr node);
+		explicit enemy_type(wml::const_node_ptr node);
+		wml::const_node_ptr node;
+		std::string category;
+		const frame* preview_frame;
+	};
+
 	const std::vector<tileset>& all_tilesets() const;
 	int get_tileset() const { return cur_tileset_; }
 	void set_tileset(int index);
+
+	const std::vector<enemy_type>& all_characters() const;
 
 	int get_item() const { return cur_item_; }
 	void set_item(int index);
@@ -69,6 +80,7 @@ private:
 	int cur_item_;
 
 	boost::scoped_ptr<editor_mode_dialog> editor_mode_dialog_;
+	boost::scoped_ptr<editor_dialogs::character_editor_dialog> character_dialog_;
 	boost::scoped_ptr<editor_dialogs::prop_editor_dialog> prop_dialog_;
 	boost::scoped_ptr<editor_dialogs::tileset_editor_dialog> tileset_dialog_;
 
