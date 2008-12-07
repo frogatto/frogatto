@@ -1,7 +1,7 @@
-/*
- *  assert.h
- *
- */
+#ifndef ASSERTS_HPP_INCLUDED
+#define ASSERTS_HPP_INCLUDED
+
+#include <iostream>
 
 //various asserts of standard "equality" tests, such as "equals", "not equals", "greater than", etc.  Example usage:
 //assert_ne(x, y);
@@ -20,3 +20,6 @@
 //for custom logging.  Example usage:
 //assert_log(x != y, "x not equal to y. Value of x: " << x << ", y: " << y);
 #define assert_log(a,b) if( !(a) ) { std::cerr << __FILE__ << ":" << __LINE__ << " ASSSERTION FAILED: " << (b) << "\n"; abort(); }
+
+
+#endif
