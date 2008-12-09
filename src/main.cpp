@@ -36,6 +36,7 @@
 #include "surface_cache.hpp"
 #include "texture.hpp"
 #include "tile_map.hpp"
+#include "unit_test.hpp"
 #include "wml_node.hpp"
 #include "wml_parser.hpp"
 #include "wml_schema.hpp"
@@ -401,9 +402,17 @@ extern "C" int main(int argc, char** argv)
 	bool fullscreen = false;
 	int width = 800, height = 600;
 	std::string level_cfg = "pineapple-field.cfg";
+	bool unit_tests_only = false, skip_tests = false;;
+	bool run_benchmarks = false;
 	for(int n = 1; n < argc; ++n) {
 		std::string arg(argv[n]);
-		if(arg == "--fullscreen") {
+		if(arg == "--benchmarks") {
+			run_benchmarks = true;
+		} else if(arg == "--tests") {
+			unit_tests_only = true;
+		} else if(arg == "--notests") {
+			skip_tests = true;
+		} else if(arg == "--fullscreen") {
 			fullscreen = true;
 		} else if(arg == "--width") {
 			std::string w(argv[++n]);
@@ -422,6 +431,19 @@ extern "C" int main(int argc, char** argv)
 				return 0;
 			}
 		}
+	}
+
+	if(!skip_tests && !test::run_tests()) {
+		return -1;
+	}
+
+	if(run_benchmarks) {
+		test::run_benchmarks();
+		return 0;
+	}
+
+	if(unit_tests_only) {
+		return 0;
 	}
 
 	if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_JOYSTICK) < 0) {
