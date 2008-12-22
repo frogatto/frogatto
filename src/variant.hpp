@@ -127,8 +127,8 @@ private:
 		variant_map* map_;
 	};
 
-	void increment_refcount();
-	void release();
+	inline void increment_refcount();
+	inline void release();
 };
 
 template<typename T>

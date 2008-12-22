@@ -404,10 +404,10 @@ public:
 	{}
 private:
 	variant execute(const formula_callable& /*variables*/) const {
-		return variant(i_);
+		return i_;
 	}
 
-	int i_;
+	variant i_;
 };
 
 class string_expression : public formula_expression {

@@ -102,3 +102,21 @@ UNIT_TEST(formula)
 		std::cerr << "parse error\n";
 	}
 }
+
+BENCHMARK_ARG(formula, const std::string& fm)
+{
+	static mock_party p;
+	formula f(fm);
+	BENCHMARK_LOOP {
+		f.execute(p);
+	}
+}
+
+BENCHMARK_ARG_CALL(formula, integer, "0");
+BENCHMARK_ARG_CALL(formula, where, "x where x = 5");
+BENCHMARK_ARG_CALL(formula, add, "5 + 4");
+BENCHMARK_ARG_CALL(formula, arithmetic, "(5 + 4)*17 + 12*9 - 5/2");
+BENCHMARK_ARG_CALL(formula, read_input, "char");
+BENCHMARK_ARG_CALL(formula, read_input_sub, "char.strength");
+BENCHMARK_ARG_CALL(formula, array, "[4, 5, 8, 12, 17, 0, 19]");
+BENCHMARK_ARG_CALL(formula, string, "'blah'");

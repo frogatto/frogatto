@@ -63,13 +63,20 @@ bool run_tests(const std::vector<std::string>* tests)
 	}
 }
 
+int register_benchmark(const std::string& name, BenchmarkTest test)
+{
+	get_benchmark_map()[name] = test;
+	return 0;
+}
+
 namespace {
 void run_benchmark(const std::string& name, BenchmarkTest fn)
 {
 	//run it once without counting it to let any initialization code be run.
 	fn(1);
 
-	const int MinTicks = 2000;
+	std::cerr << "RUNNING BENCHMARK " << name << "...\n";
+	const int MinTicks = 200;
 	for(int nruns = 10; ; nruns *= 10) {
 		const int start_time = SDL_GetTicks();
 		fn(nruns);

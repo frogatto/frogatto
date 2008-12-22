@@ -45,6 +45,13 @@ void run_benchmarks(const std::vector<std::string>* benchmarks=NULL);
 
 #define BENCHMARK_LOOP while(benchmark_iterations--)
 
-#define BENCHMARK_
+#define BENCHMARK_ARG(name, arg) \
+	void BENCHMARK_ARG_##name(int benchmark_iterations, arg)
+
+#define BENCHMARK_ARG_CALL(name, id, arg) \
+	void BENCHMARK_ARG_CALL_##name_##id(int benchmark_iterations) { \
+		BENCHMARK_ARG_##name(benchmark_iterations, arg); \
+	} \
+	static int BENCHMARK_ARG_VAR_##name_##id = test::register_benchmark(#name " " #id, BENCHMARK_ARG_CALL_##name_##id);
 
 #endif
