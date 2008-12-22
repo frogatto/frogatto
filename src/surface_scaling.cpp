@@ -2,7 +2,9 @@
 #include <iostream>
 #include <cassert>
 
+#include "surface_cache.hpp"
 #include "surface.hpp"
+#include "unit_test.hpp"
 
 namespace graphics {
 
@@ -291,6 +293,15 @@ surface scale_surface(surface input) {
 	}
 
 	return result;
+}
+
+BENCHMARK(surface_scaling)
+{
+	surface s(graphics::surface_cache::get("frogattospritesheet1.png"));
+	assert(s.get());
+	BENCHMARK_LOOP {
+		scale_surface(s);
+	}
 }
 
 }
