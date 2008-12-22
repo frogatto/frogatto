@@ -186,11 +186,6 @@ variant::variant(const variant& v)
 	increment_refcount();
 }
 
-variant::~variant()
-{
-	release();
-}
-
 const variant& variant::operator=(const variant& v)
 {
 	if(&v != this) {

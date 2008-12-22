@@ -103,6 +103,13 @@ UNIT_TEST(formula)
 	}
 }
 
+BENCHMARK(construct_int_variant)
+{
+	BENCHMARK_LOOP {
+		variant v(0);
+	}
+}
+
 BENCHMARK_ARG(formula, const std::string& fm)
 {
 	static mock_party p;
@@ -120,3 +127,5 @@ BENCHMARK_ARG_CALL(formula, read_input, "char");
 BENCHMARK_ARG_CALL(formula, read_input_sub, "char.strength");
 BENCHMARK_ARG_CALL(formula, array, "[4, 5, 8, 12, 17, 0, 19]");
 BENCHMARK_ARG_CALL(formula, string, "'blah'");
+BENCHMARK_ARG_CALL(formula, null_function, "null()");
+BENCHMARK_ARG_CALL(formula, if_function, "if(4 > 5, 7, 8)");

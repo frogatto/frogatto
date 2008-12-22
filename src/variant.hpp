@@ -41,7 +41,7 @@ public:
 	explicit variant(std::vector<variant>* array);
 	explicit variant(const std::string& str);
 	explicit variant(std::map<variant,variant>* map);
-	~variant();
+	~variant() { release(); }
 
 	variant(const variant& v);
 	const variant& operator=(const variant& v);
@@ -127,8 +127,8 @@ private:
 		variant_map* map_;
 	};
 
-	inline void increment_refcount();
-	inline void release();
+	void increment_refcount();
+	void release();
 };
 
 template<typename T>
