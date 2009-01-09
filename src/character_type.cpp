@@ -119,7 +119,11 @@ character_type::character_type(wml::const_node_ptr node)
 	if(node->get_child("jump_attack")) {
 		jump_attack_frame_.reset(new frame(node->get_child("jump_attack")));
 	}
-
+	
+	if(node->get_child("fall_spin_attack")) {
+		fall_spin_attack_frame_.reset(new frame(node->get_child("fall_spin_attack")));
+	}
+	
 	if(node->get_child("up_attack")) {
 		up_attack_frame_.reset(new frame(node->get_child("up_attack")));
 	}

@@ -247,7 +247,7 @@ void character::process(level& lvl)
 	}
 
 	//executed when an animation ends, generally acts by switching to a new animation
-	if(time_in_frame_ == current_frame_->duration() && current_frame_ != type_->jump_frame() && current_frame_ != type_->fall_frame() && current_frame_ != type_->gethit_frame() && current_frame_ != type_->die_frame()) {
+	if(time_in_frame_ == current_frame_->duration() && current_frame_ != type_->jump_frame() && current_frame_ != type_->fall_frame() && current_frame_ != type_->fall_spin_attack_frame() && current_frame_ != type_->gethit_frame() && current_frame_ != type_->die_frame()) {
 		if(current_frame_ == &type_->get_frame()) {
 			change_frame((rand()%5) == 0 ? type_->idle_frame() : &type_->get_frame());
 		} else if(current_frame_ == type_->stand_up_slope_frame()) {
@@ -553,7 +553,7 @@ void character::process(level& lvl)
 			standing_on->stood_on_by(this);
 		}
 
-		if(current_frame_ == type_->jump_frame() || current_frame_ == type_->fall_frame() || current_frame_ == type_->gethit_frame() || current_frame_ == type_->slide_frame() || current_frame_ == type_->jump_attack_frame()) {
+		if(current_frame_ == type_->jump_frame() || current_frame_ == type_->fall_frame() || current_frame_ == type_->fall_spin_attack_frame() || current_frame_ == type_->gethit_frame() || current_frame_ == type_->slide_frame() || current_frame_ == type_->jump_attack_frame()) {
 			change_to_stand_frame();
 		}
 	} else if(in_stand_frame() || current_frame_ == type_->walk_frame() ||
@@ -562,6 +562,7 @@ void character::process(level& lvl)
 			  velocity_y_ + current_frame().accel_y() > 0 &&
 			  current_frame_ != type_->jump_attack_frame() &&
 			  current_frame_ != type_->fall_frame() &&
+			  current_frame_ != type_->fall_spin_attack_frame() &&
 			  current_frame_ != type_->gethit_frame() &&
 			  current_frame_ != type_->fly_frame() &&
 			  (current_frame_ != type_->slide_frame() ||
@@ -885,6 +886,12 @@ void character::attack(const level& lvl)
 		change_frame(type_->jump_attack_frame());
 	}
 }
+
+void character::fall_spin_attack(const level& lvl)
+{
+	change_frame(type_->fall_spin_attack_frame());
+}
+
 
 const frame& character::portrait_frame() const
 {
@@ -1474,7 +1481,11 @@ void pc_character::control(const level& lvl)
 
 	if(key_[SDLK_a] || joystick::button(1) || joystick::button(3)) {
 		if(key_[SDLK_DOWN] || joystick::down()) {
-			jump_down(lvl);
+			if(&current_frame() == type().jump_frame() || &current_frame() == type().fall_frame()){
+				fall_spin_attack(lvl);
+			}else{
+				jump_down(lvl);
+			}
 		} else {
 			jump(lvl);
 		}
