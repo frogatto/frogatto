@@ -247,7 +247,7 @@ void character::process(level& lvl)
 	}
 
 	//executed when an animation ends, generally acts by switching to a new animation
-	if(time_in_frame_ == current_frame_->duration() && current_frame_ != type_->jump_frame() && current_frame_ != type_->fall_frame() && current_frame_ != type_->fall_spin_attack_frame() && current_frame_ != type_->gethit_frame() && current_frame_ != type_->die_frame()) {
+	if(time_in_frame_ == current_frame_->duration() && current_frame_ != type_->jump_frame() && current_frame_ != type_->fall_frame() && current_frame_ != type_->gethit_frame() && current_frame_ != type_->die_frame()) {
 		if(current_frame_ == &type_->get_frame()) {
 			change_frame((rand()%5) == 0 ? type_->idle_frame() : &type_->get_frame());
 		} else if(current_frame_ == type_->stand_up_slope_frame()) {
@@ -271,6 +271,8 @@ void character::process(level& lvl)
 			change_to_stand_frame();
 		} else if(current_frame_ == type_->run_attack_frame()) {
 			change_to_stand_frame();
+		} else if(current_frame_ == type_->fall_spin_attack_frame()) {
+			time_in_frame_ = 0;
 		} else if(current_frame_ == type_->slide_frame()) {
 			change_frame(type_->fall_frame());
 		} else if(current_frame_ == type_->jump_attack_frame()) {
@@ -871,7 +873,7 @@ void character::roll(const level& lvl)
 	change_frame(type_->roll_frame());
 }
 
-void character::attack(const level& lvl)
+void character::attack(const level& lvl, bool down_key_pressed)
 {
 	execute_formula(type_->on_attack_formula());
 	if(is_standing(lvl)) {
@@ -883,15 +885,13 @@ void character::attack(const level& lvl)
 			change_frame(type_->attack_frame());
 		}
 	} else if(current_frame_ == type_->jump_frame() || current_frame_ == type_->fall_frame()) {
-		change_frame(type_->jump_attack_frame());
+		if( type_->fall_spin_attack_frame() && down_key_pressed){
+			change_frame(type_->fall_spin_attack_frame());
+		} else {
+			change_frame(type_->jump_attack_frame());
+		}
 	}
 }
-
-void character::fall_spin_attack(const level& lvl)
-{
-	change_frame(type_->fall_spin_attack_frame());
-}
-
 
 const frame& character::portrait_frame() const
 {
@@ -1481,11 +1481,7 @@ void pc_character::control(const level& lvl)
 
 	if(key_[SDLK_a] || joystick::button(1) || joystick::button(3)) {
 		if(key_[SDLK_DOWN] || joystick::down()) {
-			if(&current_frame() == type().jump_frame() || &current_frame() == type().fall_frame()){
-				fall_spin_attack(lvl);
-			}else{
-				jump_down(lvl);
-			}
+			jump_down(lvl);
 		} else {
 			jump(lvl);
 		}
@@ -1498,7 +1494,6 @@ void pc_character::control(const level& lvl)
 		if (&current_frame() != type().crouch_frame() && &current_frame() != type().roll_frame())
 		{
 			crouch(lvl);
-			return;
 		}
 	} else if(&current_frame() == type().crouch_frame()) {
 		uncrouch(lvl);
@@ -1515,9 +1510,9 @@ void pc_character::control(const level& lvl)
 			roll(lvl);
 			return;
 		} else if (&current_frame() != type().roll_frame()) {
-			attack(lvl);
+			attack(lvl,key_[SDLK_DOWN] || joystick::down());
 			return;
-		}
+		}		   
 	}
 
 	const int double_tap_cycles = 10;
