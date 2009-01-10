@@ -21,6 +21,7 @@ const size_t BufferSize = 1024;
 #endif
 
 bool sound_ok = false;
+bool mute_ = false;
 
 typedef std::map<std::string, Mix_Chunk*> cache_map;
 cache_map cache;
@@ -46,7 +47,7 @@ void on_music_finished()
 
 manager::manager()
 {
-	if(preferences::no_music()) {
+	if(preferences::no_sound()) {
 		return;
 	}
 
@@ -73,7 +74,7 @@ manager::manager()
 
 manager::~manager()
 {
-	if(preferences::no_music()) {
+	if(preferences::no_sound()) {
 		return;
 	}
 
@@ -83,6 +84,13 @@ manager::~manager()
 }
 
 bool ok() { return sound_ok; }
+bool muted() { return mute_; }
+
+void mute (bool flag)
+{
+	mute_ = flag;
+	Mix_VolumeMusic(MIX_MAX_VOLUME*(!flag));
+}
 
 namespace {
 int play_internal(const std::string& file, int loops)
@@ -106,7 +114,7 @@ int play_internal(const std::string& file, int loops)
 
 void play(const std::string& file)
 {
-	if(preferences::no_music()) {
+	if(preferences::no_sound() || mute_) {
 		return;
 	}
 
@@ -115,7 +123,7 @@ void play(const std::string& file)
 
 int play_looped(const std::string& file)
 {
-	if(preferences::no_music()) {
+	if(preferences::no_sound() || mute_) {
 		return -1;
 	}
 
@@ -129,7 +137,7 @@ void cancel_looped(int handle)
 
 void play_music(const std::string& file)
 {
-	if(preferences::no_music() || !sound_ok) {
+	if(preferences::no_sound() || !sound_ok) {
 		return;
 	}
 
@@ -158,7 +166,7 @@ void play_music(const std::string& file)
 
 void play_music_interrupt(const std::string& file)
 {
-	if(preferences::no_music()) {
+	if(preferences::no_sound()) {
 		return;
 	}
 

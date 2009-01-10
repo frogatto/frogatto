@@ -11,6 +11,8 @@ struct manager {
 };
 
 bool ok();
+bool muted();
+void mute(bool flag);
 
 void play(const std::string& file);
 

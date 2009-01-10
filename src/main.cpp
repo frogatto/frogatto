@@ -298,15 +298,16 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 					}
 
 					const SDLMod mod = SDL_GetModState();
-					if(event.key.keysym.sym == SDLK_ESCAPE) {
+					const SDLKey key = event.key.keysym.sym;
+					if(key == SDLK_ESCAPE) {
 						done = true;
 						break;
-					} else if(event.key.keysym.sym == SDLK_e && (mod&KMOD_CTRL)) {
+					} else if(key == SDLK_e && (mod&KMOD_CTRL)) {
 						editor(lvl->id().c_str()).edit_level();
 						lvl.reset(load_level(lvl->id().c_str()));
-					} else if(event.key.keysym.sym == SDLK_s && (mod&KMOD_CTRL)) {
+					} else if(key == SDLK_s && (mod&KMOD_CTRL)) {
 						std::string data;
-
+						
 						wml::node_ptr lvl_node = wml::deep_copy(lvl->write());
 						if(record_replay) {
 							lvl_node = wml::deep_copy(start_lvl->write());
@@ -314,7 +315,7 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 						}
 						wml::write(lvl_node, data);
 						sys::write_file("save.cfg", data);
-					} else if(event.key.keysym.sym == SDLK_w && (mod&KMOD_CTRL)) {
+					} else if(key == SDLK_w && (mod&KMOD_CTRL)) {
 						//warp to another level.
 						std::vector<std::string> levels = get_known_levels();
 						assert(!levels.empty());
@@ -324,12 +325,14 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 						sound::play_music(new_level->music());
 						set_scene_title(new_level->title());
 						lvl.reset(new_level);
-					} else if(event.key.keysym.sym == SDLK_l && (mod&KMOD_CTRL)) {
+					} else if(key == SDLK_l && (mod&KMOD_CTRL)) {
 						preferences::set_use_pretty_scaling(!preferences::use_pretty_scaling());
 						graphics::surface_cache::clear();
 						graphics::texture::clear_cache();
-					} else if(event.key.keysym.sym == SDLK_i && lvl->player()) {
+					} else if(key == SDLK_i && lvl->player()) {
 						show_inventory(*lvl->player());
+					} else if(key == SDLK_m && mod & KMOD_CTRL) {
+						sound::mute(!sound::muted()); //toggle sound
 					}
 					break;
 				}
