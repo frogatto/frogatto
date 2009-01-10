@@ -123,6 +123,7 @@ protected:
 	virtual bool boardable_vehicle() const;
 	virtual void swap_player_state(pc_character& player) {}
 private:
+
 	void set_driver_position();
 
 	void try_to_make_standing();
@@ -138,6 +139,7 @@ private:
 	virtual void control(const level& lvl);
 	void change_frame(const frame* new_frame);
 
+	void handle_event(const std::string& event_id);
 	void execute_formula(const game_logic::const_formula_ptr& f);
 	void execute_command(const variant& var);
 	const_character_type_ptr type_;

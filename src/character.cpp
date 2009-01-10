@@ -223,7 +223,8 @@ void pc_character::draw() const
 
 void character::process(level& lvl)
 {
-	execute_formula(type_->on_process_formula());
+	static const std::string ProcessStr = "process";
+	handle_event(ProcessStr);
 
 	set_level(&lvl);
 	if(y() > lvl.boundaries().y2()) {
@@ -237,6 +238,11 @@ void character::process(level& lvl)
 	const int start_y = y();
 
 	++time_in_frame_;
+
+	const std::string* event = current_frame_->get_event(time_in_frame_);
+	if(event) {
+		handle_event(*event);
+	}
 
 	//check if we're half way through our crouch in which case we lock
 	//the frame in place until uncrouch() is called.
@@ -875,7 +881,6 @@ void character::roll(const level& lvl)
 
 void character::attack(const level& lvl, bool down_key_pressed)
 {
-	execute_formula(type_->on_attack_formula());
 	if(is_standing(lvl)) {
 		if(type_->run_attack_frame() && current_frame_ == type_->run_frame()) {
 			change_frame(type_->run_attack_frame());
@@ -1087,10 +1092,15 @@ void character::change_frame(const frame* new_frame)
 
 	new_frame->play_sound();
 
-	game_logic::const_formula_ptr event = type_->on_start_frame_formula(new_frame->id());
-	execute_formula(event);
+	handle_event(new_frame->id());
 
 	old_types_.clear();
+}
+
+void character::handle_event(const std::string& event_id)
+{
+	game_logic::const_formula_ptr event = type_->get_event_handler(event_id);
+	execute_formula(event);
 }
 
 void character::execute_formula(const game_logic::const_formula_ptr& f)
@@ -1216,7 +1226,6 @@ void character::get_hit()
 	invincible_ = invincibility_duration();
 
 	if(hitpoints_ <= 0 && type_->die_frame()) {
-		execute_formula(type_->on_die_formula());
 		change_frame(type_->die_frame());
 	} else if(type_->gethit_frame()) {
 		change_frame(type_->gethit_frame());

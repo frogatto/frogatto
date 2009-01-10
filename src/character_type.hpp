@@ -71,10 +71,7 @@ public:
 	const std::string& vehicle_die_object() const { return vehicle_die_object_; }
 	const std::string& loop_sound() const { return loop_sound_; }
 
-	const game_logic::const_formula_ptr& on_attack_formula() const { return on_attack_formula_; }
-	const game_logic::const_formula_ptr& on_process_formula() const { return on_process_formula_; }
-	const game_logic::const_formula_ptr& on_die_formula() const { return on_die_formula_; }
-	game_logic::const_formula_ptr on_start_frame_formula(const std::string& frame_id) const;
+	game_logic::const_formula_ptr get_event_handler(const std::string& frame_id) const;
 private:
 	wml::const_node_ptr wml_;
 
@@ -104,12 +101,10 @@ private:
 	int passenger_x_, passenger_y_;
 	std::string vehicle_die_object_;
 	std::string loop_sound_;
-	game_logic::const_formula_ptr on_attack_formula_, on_process_formula_,
-	                              on_die_formula_;
 
 	//formulas that are executed when a frame with the corresponding ID
 	//is started.
-	std::map<std::string, game_logic::const_formula_ptr> on_start_frame_formula_;
+	std::map<std::string, game_logic::const_formula_ptr> event_handlers_;
 };
 
 #endif

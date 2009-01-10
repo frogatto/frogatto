@@ -47,17 +47,14 @@ character_type::character_type(wml::const_node_ptr node)
 	passenger_x_(wml::get_int(node, "passenger_x")),
 	passenger_y_(wml::get_int(node, "passenger_y")),
 	vehicle_die_object_(wml::get_str(node, "vehicle_die_object")),
-	loop_sound_(wml::get_str(node, "loop_sound")),
-	on_attack_formula_(game_logic::formula::create_optional_formula(wml::get_str(node, "on_attack"), &get_custom_object_functions_symbol_table())),
-	on_process_formula_(game_logic::formula::create_optional_formula(wml::get_str(node, "on_process"), &get_custom_object_functions_symbol_table())),
-	on_die_formula_(game_logic::formula::create_optional_formula(wml::get_str(node, "on_die"), &get_custom_object_functions_symbol_table()))
+	loop_sound_(wml::get_str(node, "loop_sound"))
 {
 	for(wml::node::const_attr_iterator attr = node->begin_attr(); attr != node->end_attr(); ++attr) {
-		static const std::string on_start = "on_start_";
+		static const std::string on_start = "on_";
 		const std::string& name = attr->first;
 		if(name.size() > on_start.size() && std::equal(on_start.begin(), on_start.end(), name.begin())) {
 			std::string frame_id = std::string(name.begin() + on_start.size(), name.end());
-			on_start_frame_formula_[frame_id] = game_logic::formula::create_optional_formula(attr->second, &get_custom_object_functions_symbol_table());
+			event_handlers_[frame_id] = game_logic::formula::create_optional_formula(attr->second, &get_custom_object_functions_symbol_table());
 			std::cerr << "PARSE ON_START FOR " << frame_id << "\n";
 		}
 	}
@@ -168,10 +165,10 @@ const_character_type_ptr character_type::get_modified(const wml::modifier& modif
 	return const_character_type_ptr(new character_type(node));
 }
 
-game_logic::const_formula_ptr character_type::on_start_frame_formula(const std::string& frame_id) const
+game_logic::const_formula_ptr character_type::get_event_handler(const std::string& event_id) const
 {
-	std::map<std::string, game_logic::const_formula_ptr>::const_iterator itor = on_start_frame_formula_.find(frame_id);
-	if(itor != on_start_frame_formula_.end()) {
+	std::map<std::string, game_logic::const_formula_ptr>::const_iterator itor = event_handlers_.find(event_id);
+	if(itor != event_handlers_.end()) {
 		return itor->second;
 	}
 
