@@ -58,17 +58,21 @@ frame::frame(wml::const_node_ptr node)
 
 	const std::string& events = node->attr("events");
 	if(!events.empty()) {
+		//events are in the format time0:time1:...:timen:event0,time0:time1:...:timen:event1,...
 		std::vector<std::string> event_vector = util::split(events);
 		std::map<int, std::string> event_map;
 		foreach(const std::string& e, event_vector) {
 			std::vector<std::string> time_event = util::split(events, ':');
-			if(time_event.size() != 2) {
+			if(time_event.size() < 2) {
 				continue;
 			}
 
-			const int time = atoi(time_event.front().c_str());
 			const std::string& event = time_event.back();
-			event_map[time] = event;
+
+			for(unsigned int n = 0; n < time_event.size() - 1; ++n) {
+				const int time = atoi(time_event[n].c_str());
+				event_map[time] = event;
+			}
 		}
 
 		typedef std::pair<int,std::string> event_pair;
