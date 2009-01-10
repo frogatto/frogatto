@@ -881,6 +881,8 @@ void character::roll(const level& lvl)
 
 void character::attack(const level& lvl, bool down_key_pressed)
 {
+	static const std::string Event = "attack_pressed";
+	handle_event(Event);
 	if(is_standing(lvl)) {
 		if(type_->run_attack_frame() && current_frame_ == type_->run_frame()) {
 			change_frame(type_->run_attack_frame());
