@@ -204,6 +204,7 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 	CKey key;
 
 	int cycle = 0;
+	bool paused = false;
 	bool done = false;
 	while(!done) {
 		const int desired_end_time = SDL_GetTicks() + 20;
@@ -333,6 +334,8 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 						show_inventory(*lvl->player());
 					} else if(key == SDLK_m && mod & KMOD_CTRL) {
 						sound::mute(!sound::muted()); //toggle sound
+					} else if(key == SDLK_p && mod & KMOD_CTRL) {
+						paused = !paused;
 					}
 					break;
 				}
@@ -372,7 +375,7 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 		if(message_dialog::get()) {
 			message_dialog::get()->process();
 		} else {
-			lvl->process();
+			if (!paused) lvl->process();
 		}
 
 		if(lvl->end_game()) {
@@ -389,7 +392,7 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 		SDL_Delay(wait_time);
 		std::cerr << "delay: " << wait_time << "\n";
 
-		++cycle;
+		if (!paused) ++cycle;
 	}
 }
 
