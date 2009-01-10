@@ -682,7 +682,7 @@ bool character::spring_off_head(const entity& jumped_on_by)
 	}
 
 	if(hitpoints_ <= 0) {
-		lvl_->add_character(entity_ptr(new custom_object("dust_cloud", x()-50, y()-14, true)));
+		lvl_->add_character(entity_ptr(new custom_object("dust_cloud", x()-50, feet_y()-54, true)));
 	}
 
 	return hitpoints_ > 0;
