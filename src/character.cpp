@@ -1279,6 +1279,10 @@ variant character::get_value(const std::string& key) const
 		return variant(velocity_x());
 	} else if(key == "velocity_y") {
 		return variant(velocity_y());
+	} else if(key == "hit_x") {
+		return variant(hit_rect().x());
+	} else if(key == "hit_y") {
+		return variant(hit_rect().y());
 	} else if(key == "facing") {
 		return variant(face_right() ? 1 : -1);
 	} else if(key == "cycle") {
