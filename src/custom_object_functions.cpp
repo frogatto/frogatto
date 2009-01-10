@@ -523,12 +523,12 @@ private:
 	}
 };
 
-class debug_command : public custom_object_command_callable
+class debug_command : public entity_command_callable
 {
 public:
 	explicit debug_command(std::string str) : str_(str)
 	{}
-	virtual void execute(level& lvl, custom_object& ob) const {
+	virtual void execute(level& lvl, entity& ob) const {
 		std::cerr << "CUSTOM DEBUG: '" << str_ << "'\n";
 	}
 private:

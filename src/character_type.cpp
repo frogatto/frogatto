@@ -52,6 +52,16 @@ character_type::character_type(wml::const_node_ptr node)
 	on_process_formula_(game_logic::formula::create_optional_formula(wml::get_str(node, "on_process"), &get_custom_object_functions_symbol_table())),
 	on_die_formula_(game_logic::formula::create_optional_formula(wml::get_str(node, "on_die"), &get_custom_object_functions_symbol_table()))
 {
+	for(wml::node::const_attr_iterator attr = node->begin_attr(); attr != node->end_attr(); ++attr) {
+		static const std::string on_start = "on_start_";
+		const std::string& name = attr->first;
+		if(name.size() > on_start.size() && std::equal(on_start.begin(), on_start.end(), name.begin())) {
+			std::string frame_id = std::string(name.begin() + on_start.size(), name.end());
+			on_start_frame_formula_[frame_id] = game_logic::formula::create_optional_formula(attr->second, &get_custom_object_functions_symbol_table());
+			std::cerr << "PARSE ON_START FOR " << frame_id << "\n";
+		}
+	}
+
 	if(node->get_child("stand_up_slope")) {
 		stand_up_slope_frame_.reset(new frame(node->get_child("stand_up_slope")));
 	}
@@ -156,4 +166,14 @@ const_character_type_ptr character_type::get_modified(const wml::modifier& modif
 	modifier.modify(node);
 	std::cerr << "AFTER: {{{" << wml::output(node) << "}}}\n";
 	return const_character_type_ptr(new character_type(node));
+}
+
+game_logic::const_formula_ptr character_type::on_start_frame_formula(const std::string& frame_id) const
+{
+	std::map<std::string, game_logic::const_formula_ptr>::const_iterator itor = on_start_frame_formula_.find(frame_id);
+	if(itor != on_start_frame_formula_.end()) {
+		return itor->second;
+	}
+
+	return game_logic::const_formula_ptr();
 }

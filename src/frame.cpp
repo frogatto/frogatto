@@ -12,7 +12,8 @@
 #include "wml_utils.hpp"
 
 frame::frame(wml::const_node_ptr node)
-   : texture_(graphics::texture::get(node->attr("image"), node->attr("image_formula"))),
+   : id_(node->name()),
+     texture_(graphics::texture::get(node->attr("image"), node->attr("image_formula"))),
      collide_rect_(node->has_attr("collide") ? rect(node->attr("collide")) :
 	               rect(wml::get_int(node, "collide_x"),
                         wml::get_int(node, "collide_y"),

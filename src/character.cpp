@@ -1087,6 +1087,9 @@ void character::change_frame(const frame* new_frame)
 
 	new_frame->play_sound();
 
+	game_logic::const_formula_ptr event = type_->on_start_frame_formula(new_frame->id());
+	execute_formula(event);
+
 	old_types_.clear();
 }
 
