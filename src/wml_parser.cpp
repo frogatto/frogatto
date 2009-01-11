@@ -62,7 +62,7 @@ bool substitute_single_attr(const std::string& arg_name,
 							const std::string& arg_value,
 							std::string* str)
 {
-	if(char* pos = strstr(str->c_str(),arg_name.c_str())) {
+	if(const char* pos = strstr(str->c_str(),arg_name.c_str())) {
 		str->replace(pos-str->c_str(), arg_name.size(), arg_value);
 		return true;
 	}
