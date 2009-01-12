@@ -299,8 +299,11 @@ BENCHMARK(surface_scaling)
 {
 	surface s(graphics::surface_cache::get("frogattospritesheet1.png"));
 	assert(s.get());
+
+	surface target(SDL_CreateRGBSurface(SDL_SWSURFACE,s->w,s->h,32,SURFACE_MASK));
+	SDL_BlitSurface(s.get(), NULL, target.get(), NULL);
 	BENCHMARK_LOOP {
-		scale_surface(s);
+		scale_surface(target);
 	}
 }
 
