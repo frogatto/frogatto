@@ -2,6 +2,17 @@ use strict;
 
 die "usage: $0 <tilename> <base> <image>" if @ARGV < 3;
 
+open DATE, "date |" or die;
+my $date = '';
+while(my $line = <DATE>) {
+	chomp $line;
+	$date .= $line;
+}
+close DATE;
+
+my $command_line = "$0 " . (join ' ', @ARGV);
+print "# Generated on $date using:\n#  $command_line\n";
+
 my $tilename = shift @ARGV;
 my $base = shift @ARGV;
 my $image = shift @ARGV;
