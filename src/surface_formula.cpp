@@ -5,7 +5,9 @@
 #include "formula_callable.hpp"
 #include "formula_function.hpp"
 #include "surface.hpp"
+#include "surface_cache.hpp"
 #include "surface_formula.hpp"
+#include "unit_test.hpp"
 
 using namespace graphics;
 using namespace game_logic;
@@ -138,4 +140,18 @@ surface get_surface_formula(surface input, const std::string& algo)
 	}
 
 	return surf;
+}
+
+BENCHMARK(surface_formula)
+{
+	surface s(graphics::surface_cache::get("frogattospritesheet1.png"));
+	assert(s.get());
+
+	surface target(SDL_CreateRGBSurface(SDL_SWSURFACE,s->w,s->h,32,SURFACE_MASK));
+	SDL_BlitSurface(s.get(), NULL, target.get(), NULL);
+
+	const std::string algo("rgba(b,r,g,a)");
+	BENCHMARK_LOOP {
+		run_formula(target, algo);
+	}
 }

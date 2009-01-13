@@ -85,6 +85,9 @@ private:
 	boost::scoped_ptr<editor_dialogs::tileset_editor_dialog> tileset_dialog_;
 
 	gui::dialog* current_dialog_;
+
+	//if the mouse is currently down, drawing a rect.
+	bool drawing_rect_;
 };
 
 #endif

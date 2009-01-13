@@ -175,6 +175,23 @@ bool dialog::handle_event(const SDL_Event& event, bool claimed)
         }
     }
     claimed |= handle_event_children(event, claimed);
+
+	if(!claimed) {
+		switch(event.type) {
+		//if it's a mouse button up or down and it's within the dialog area,
+		//then we claim it because nobody else should get it.
+		case SDL_MOUSEBUTTONDOWN:
+		case SDL_MOUSEBUTTONUP: {
+			int mousex, mousey;
+			SDL_GetMouseState(&mousex, &mousey);
+			if(mousex >= x() && mousex < x() + width() &&
+			   mousey >= y() && mousey < y() + height()) {
+				claimed = true;
+			}
+			break;
+		}
+		}
+	}
 	return claimed;
 }
 

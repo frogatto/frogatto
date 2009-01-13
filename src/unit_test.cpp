@@ -77,13 +77,13 @@ void run_benchmark(const std::string& name, BenchmarkTest fn)
 
 	std::cerr << "RUNNING BENCHMARK " << name << "...\n";
 	const int MinTicks = 200;
-	for(int nruns = 10; ; nruns *= 10) {
+	for(int64_t nruns = 10; ; nruns *= 10) {
 		const int start_time = SDL_GetTicks();
 		fn(nruns);
-		const int time_taken = SDL_GetTicks() - start_time;
+		const int64_t time_taken = SDL_GetTicks() - start_time;
 		if(time_taken >= MinTicks) {
-			const int ns = time_taken*1000000;
-			const int ns_per_iter = ns/nruns;
+			const int64_t ns = time_taken*1000000LL;
+			const int64_t ns_per_iter = ns/nruns;
 			std::cerr << "BENCH " << name << ": " << nruns << " iterations, " << ns_per_iter << "ns/iteration; total, " << ns << "ns\n";
 			return;
 		}

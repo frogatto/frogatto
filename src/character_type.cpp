@@ -159,9 +159,9 @@ character_type::character_type(wml::const_node_ptr node)
 const_character_type_ptr character_type::get_modified(const wml::modifier& modifier) const
 {
 	wml::node_ptr node = wml::deep_copy(wml_);
-	std::cerr << "BEFORE: {{{" << wml::output(node) << "}}}\n";
+//	std::cerr << "BEFORE: {{{" << wml::output(node) << "}}}\n";
 	modifier.modify(node);
-	std::cerr << "AFTER: {{{" << wml::output(node) << "}}}\n";
+//	std::cerr << "AFTER: {{{" << wml::output(node) << "}}}\n";
 	return const_character_type_ptr(new character_type(node));
 }
 

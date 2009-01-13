@@ -208,7 +208,8 @@ editor::editor(const char* level_cfg)
     filename_(level_cfg), mode_(EDIT_TILES), done_(false), face_right_(true),
     cur_tileset_(0),
     cur_item_(0),
-    current_dialog_(NULL)
+    current_dialog_(NULL),
+	drawing_rect_(false)
 {
 	editor_mode_dialog_.reset(new editor_mode_dialog(*this));
 
@@ -249,6 +250,10 @@ void editor::edit_level()
 	while(!done_) {
 		int mousex, mousey;
 		const unsigned int buttons = SDL_GetMouseState(&mousex, &mousey);
+
+		if(buttons == 0) {
+			drawing_rect_ = false;
+		}
 
 		const int selectx = (xpos_ + mousex)/TileSize;
 		const int selecty = (ypos_ + mousey)/TileSize;
@@ -457,6 +462,7 @@ void editor::edit_level()
 			case SDL_MOUSEBUTTONDOWN:
 				anchorx_ = xpos_ + mousex;
 				anchory_ = ypos_ + mousey;
+				drawing_rect_ = true;
 
 				if(select_previous_level_) {
 
@@ -519,7 +525,9 @@ void editor::edit_level()
 				break;
 			case SDL_MOUSEBUTTONUP:
 				if(mode_ == EDIT_TILES) {
-					if(event.button.button == SDL_BUTTON_LEFT) {
+					if(!drawing_rect_) {
+						//wasn't drawing a rect; ignore.
+					} else if(event.button.button == SDL_BUTTON_LEFT) {
 						lvl_->add_tile_rect(tilesets[cur_tileset_].zorder + foreground_zorder_change(), anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey, tilesets[cur_tileset_].type);
 					} else if(event.button.button == SDL_BUTTON_RIGHT) {
 						lvl_->clear_tile_rect(anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey);
@@ -528,13 +536,13 @@ void editor::edit_level()
 					if(event.button.button == SDL_BUTTON_RIGHT) {
 						lvl_->remove_characters_in_rect(anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey);
 					}
-				} else if(mode_ == EDIT_GROUPS) {
+				} else if(mode_ == EDIT_GROUPS && drawing_rect_) {
 					std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey));
 					const int group = lvl_->add_group();
 					foreach(entity_ptr c, chars) {
 						lvl_->set_character_group(c, group);
 					}
-				} else if(mode_ == EDIT_PROPERTIES) {
+				} else if(mode_ == EDIT_PROPERTIES && drawing_rect_) {
 					std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey));
 					if(chars.empty() == false) {
 						selected_entity = chars.front();
@@ -544,9 +552,9 @@ void editor::edit_level()
 					const int ytile = (ypos_ + mousey)/TileSize;
 					lvl_->flip_variations(xtile, ytile);
 				} else if(mode_ == EDIT_PROPS) {
-					if(event.button.button == SDL_BUTTON_RIGHT) {
+					if(event.button.button == SDL_BUTTON_RIGHT && drawing_rect_) {
 						lvl_->remove_props_in_rect(anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey);
-					} else {
+					} else if(event.button.button == SDL_BUTTON_LEFT) {
 						const int xtile = (xpos_ + mousex)/TileSize;
 						const int ytile = (ypos_ + mousey)/TileSize;
 						prop_object obj(xtile*TileSize, ytile*TileSize, all_props[cur_item_]->id());
@@ -554,6 +562,8 @@ void editor::edit_level()
 						lvl_->add_prop(obj);
 					}
 				}
+
+				drawing_rect_ = false;
 				break;
 			default:
 				break;
@@ -654,7 +664,7 @@ void editor::change_mode(int nmode)
 void editor::draw() const
 {
 	int mousex, mousey;
-	const unsigned int buttons = SDL_GetMouseState(&mousex, &mousey);
+	SDL_GetMouseState(&mousex, &mousey);
 
 	graphics::prepare_raster();
 	lvl_->draw_background(0,0,0);
@@ -704,7 +714,7 @@ void editor::draw() const
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 	}
 
-	if(buttons) {
+	if(drawing_rect_) {
 		int x1 = anchorx_;
 		int x2 = xpos_ + mousex;
 		if(x1 > x2) {

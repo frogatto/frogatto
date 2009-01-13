@@ -44,9 +44,7 @@ modifier::modifier(wml::const_node_ptr node)
 
 namespace {
 void modify_target(variant target, const std::map<std::string, game_logic::const_formula_ptr>& mods) {
-	std::cerr << "MODIFY\n";
 	if(target.is_list()) {
-		std::cerr << "MODIFY LIST: " << target.num_elements() << "\n";
 		for(int n = 0; n != target.num_elements(); ++n) {
 			modify_target(target[n], mods);
 		}
@@ -55,7 +53,6 @@ void modify_target(variant target, const std::map<std::string, game_logic::const
 	}
 
 	if(target.is_callable()) {
-		std::cerr << "MODIFY CALLABLE\n";
 		for(std::map<std::string, game_logic::const_formula_ptr>::const_iterator i = mods.begin(); i != mods.end(); ++i) {
 			variant value = i->second->execute(*target.as_callable());
 			target.mutable_callable()->mutate_value(i->first, value);
