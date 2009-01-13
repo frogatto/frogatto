@@ -24,6 +24,7 @@
 #include "filesystem.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
+#include "preprocessor.hpp"
 #include "string_utils.hpp"
 #include "wml_parser.hpp"
 #include "wml_schema.hpp"
@@ -459,7 +460,7 @@ node_ptr parse_wml(const std::string& doc, bool must_have_doc, const schema* sch
 
 node_ptr parse_wml_from_file(const std::string& fname, const schema* schema, bool must_have_doc)
 {
-	return parse_wml_internal(fname, sys::read_file(fname), must_have_doc, schema);
+	return parse_wml_internal(fname, preprocess(sys::read_file(fname)), must_have_doc, schema);
 }
 
 parse_error::parse_error(const std::string& msg) : message(msg)
