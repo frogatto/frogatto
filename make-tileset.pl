@@ -17,6 +17,8 @@ my $tilename = shift @ARGV;
 my $base = shift @ARGV;
 my $image = shift @ARGV;
 
+$tilename = "($tilename)" if $tilename =~ /[a-zA-Z0-9]+/;
+
 my $solid = '';
 my $grass = '';
 my $friend = $tilename;
