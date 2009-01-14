@@ -22,6 +22,7 @@ $tilename = "($tilename)" if $tilename =~ /[a-zA-Z0-9]+/;
 my $solid = '';
 my $grass = '';
 my $friend = $tilename;
+my $noslopes = 0;
 
 while(my $arg = shift @ARGV) {
 	if($arg eq '--grass') {
@@ -30,8 +31,10 @@ while(my $arg = shift @ARGV) {
 		$solid = "solid=" . (shift @ARGV);
 	} elsif($arg eq '--friend') {
 		$friend = shift @ARGV;
+	} elsif($arg eq '--noslopes') {
+		$noslopes = 1;
 	} else {
-		die $arg;
+		die "Unrecognized argument: $arg";
 	}
 }
 
@@ -616,7 +619,7 @@ pattern="
    ,$tilename,$friend,
 $friend,$friend,$friend"
 [/tile_pattern]
-~, &coord($base, 0, 7);
+~, &coord($base, 0, $noslopes ? 0 : 7);
 
 printf qq~
 #sloped - reversed
@@ -630,7 +633,7 @@ $friend?,    ,   ,
 $friend,$tilename,   ,
 $friend,$friend,$friend"
 [/tile_pattern]
-~, &coord($base, 0, 8);
+~, &coord($base, 0, $noslopes ? 2 : 8);
 
 printf qq~
 #single tile by itself
