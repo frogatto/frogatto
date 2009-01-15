@@ -613,13 +613,13 @@ printf qq~
 image=$image
 reverse=no
 tiles=%s
-$solid
+%s
 pattern="
    ,    ,$friend?,
    ,$tilename,$friend,
 $friend,$friend,$friend"
 [/tile_pattern]
-~, &coord($base, 0, $noslopes ? 0 : 7);
+~, &coord($base, 0, $noslopes ? 0 : 7), (($solid eq 'solid=yes' and not $noslopes) ? 'solid=diagonal' : $solid);
 
 printf qq~
 #sloped - reversed
@@ -627,13 +627,13 @@ printf qq~
 image=$image
 reverse=no
 tiles=%s
-$solid
+%s
 pattern="
 $friend?,    ,   ,
 $friend,$tilename,   ,
 $friend,$friend,$friend"
 [/tile_pattern]
-~, &coord($base, 0, $noslopes ? 2 : 8);
+~, &coord($base, 0, $noslopes ? 2 : 8), (($solid eq 'solid=yes' and not $noslopes) ? 'solid=reverse_diagonal' : $solid);
 
 printf qq~
 #single tile by itself
