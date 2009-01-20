@@ -924,7 +924,9 @@ void character::get_powerup(const std::string& id)
 {
 	const_powerup_ptr p = powerup::get(id);
 	if(p) {
+		int ticks = SDL_GetTicks();
 		get_powerup(p);
+		std::cerr << "POWERUP: " << (SDL_GetTicks() - ticks) << "\n";
 	}
 }
 

@@ -6,6 +6,7 @@
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
 
+#include "asserts.hpp"
 #include "button.hpp"
 #include "character.hpp"
 #include "character_editor_dialog.hpp"
@@ -634,6 +635,7 @@ void editor::set_item(int index)
 
 void editor::change_mode(int nmode)
 {
+	cur_item_ = 0;
 	mode_ = static_cast<EDIT_MODE>(nmode);
 	switch(mode_) {
 	case EDIT_TILES:
@@ -772,14 +774,17 @@ void editor::draw() const
 
 	if(mode_ == EDIT_TILES) {
 	} else if(mode_ == EDIT_CHARS) {
+		ASSERT_INDEX_INTO_VECTOR(cur_item_, enemy_types);
 		enemy_types[cur_item_].preview_frame->draw(700, 10, face_right_);
 	} else if(mode_ == EDIT_ITEMS) {
+		ASSERT_INDEX_INTO_VECTOR(cur_item_, placeable_items);
 		const_item_type_ptr type = placeable_items[cur_item_].type;
 		if(type) {
 			const frame& f = type->get_frame();
 			f.draw(700, 10, true);
 		}
 	} else if(mode_ == EDIT_PROPS) {
+		ASSERT_INDEX_INTO_VECTOR(cur_item_, all_props);
 		const frame& f = all_props[cur_item_]->get_frame();
 		f.draw(700, 10, true);
 	} else if(mode_ == EDIT_PROPERTIES && selected_entity) {

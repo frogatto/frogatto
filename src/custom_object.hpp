@@ -60,6 +60,7 @@ public:
 		return type_->get_child(key);
 	}
 
+	const frame& portrait_frame() const;
 	const frame& icon_frame() const;
 
 private:

@@ -5,7 +5,7 @@
 
 #include "character.hpp"
 #include "draw_scene.hpp"
-#include "gui.hpp"
+#include "gui_section.hpp"
 #include "inventory.hpp"
 #include "powerup.hpp"
 #include "raster.hpp"
@@ -13,8 +13,8 @@
 
 void show_inventory(pc_character& c)
 {
-	const frame* selector = get_gui_frame("powerup_selector");
-	if(selector == NULL) {
+	const_gui_section_ptr selector = gui_section::get("powerup_selector");
+	if(!selector) {
 		std::cerr << "ERROR: selector frame not found\n";
 		return;
 	}
@@ -102,7 +102,7 @@ void show_inventory(pc_character& c)
 			const int ypos = 36 + (n/3)*66;
 
 			if(selected_powerup == n) {
-				selector->draw(xpos - 2, ypos - 1);
+				selector->blit(xpos - 2, ypos - 1);
 			}
 
 			powerups[n]->icon().draw(xpos, ypos);

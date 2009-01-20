@@ -9,6 +9,7 @@
 #include "texture.hpp"
 #include "message_dialog.hpp"
 #include "sound.hpp"
+#include "speech_dialog.hpp"
 #include "string_utils.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
@@ -437,44 +438,75 @@ int show_msg_dialog(const std::string& msg, const std::vector<std::string>& opti
 
 }
 
-class speech_dialog_function : public function_expression {
+class speech_dialog_command : public entity_command_callable {
 public:
-	explicit speech_dialog_function(const args_list& args)
-	  : function_expression("speech_dialog", args, 3, -1) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		entity_ptr focus(args()[0]->evaluate(variables).try_convert<entity>());
-		variant lvl_var(args()[1]->evaluate(variables));
-		const level* lvl = lvl_var.try_convert<level>();
-		if(focus && lvl) {
-			for(int n = 0; n != 50; ++n) {
-				draw_scene(*lvl, last_draw_position(), focus.get());
-				SDL_GL_SwapBuffers();
-				SDL_Delay(20);
+	explicit speech_dialog_command(const std::vector<variant>& args)
+	  : args_(args)
+	{}
+	virtual void execute(level& lvl, entity& ob) const {
 
-				SDL_Event event;
-				while(SDL_PollEvent(&event)) {
+		foreach(variant var, args_) {
+			if(var.is_callable()) {
+				const_entity_ptr e = var.try_convert<entity>();
+				if(e) {
+					std::cerr << "set speaker...\n";
+					dialog_.set_speaker_and_flip_side(e);
+				}
+			}
+
+			if(var.is_list()) {
+				std::vector<std::string> message;
+				for(int n = 0; n != var.num_elements(); ++n) {
+					message.push_back(var[n].as_string());
+				}
+
+				dialog_.set_text(message);
+
+				bool done = false;
+				while(!done) {
+					SDL_Event event;
+					while(SDL_PollEvent(&event)) {
+						switch(event.type) {
+						case SDL_KEYDOWN:
+							done = dialog_.key_press();
+							break;
+						}
+					}
+
+					dialog_.process();
+					draw(lvl);
 				}
 			}
 		}
+	}
+private:
+	void draw(const level& lvl) const {
+		draw_scene(lvl, last_draw_position(), lvl.player().get());
 
-		const std::string msg = args()[2]->evaluate(variables).as_string();
-		std::vector<std::string> options;
-		for(int n = 3; n < args().size(); n += 2) {
-			options.push_back(args()[n]->evaluate(variables).as_string());
+		dialog_.draw();
+
+		SDL_GL_SwapBuffers();
+		SDL_Delay(20);
+	}
+
+	std::vector<variant> args_;
+
+	mutable speech_dialog dialog_;
+};
+
+class speech_dialog_function : public function_expression {
+public:
+	explicit speech_dialog_function(const args_list& args)
+	  : function_expression("speech_dialog", args, 1, -1) {
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		std::vector<variant> v;
+		for(int n = 0; n != args().size(); ++n) {
+			v.push_back(args()[n]->evaluate(variables));
 		}
 
-		const int selected_option = show_msg_dialog(msg, options);
-
-		if(selected_option >= 0) {
-			const int command_index = 2 + selected_option*2;
-			if(command_index < args().size()) {
-				return args()[command_index]->evaluate(variables);
-			}
-		}
-
-		return variant();
+		return variant(new speech_dialog_command(v));
 	}
 };
 

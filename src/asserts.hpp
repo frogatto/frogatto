@@ -17,6 +17,8 @@
 
 #define ASSERT_LT(a,b) if((a) >= (b)) { std::cerr << __FILE__ << ":" << __LINE__ << " ASSERT LT FAILED: " << #a << " >= " << #b << ": " << (a) << " >= " << (b) << "\n"; abort(); }
 
+#define ASSERT_INDEX_INTO_VECTOR(a,b) if((a) < 0 || (a) >= (b).size()) { std::cerr << __FILE__ << ":" << __LINE__ << " ASSERT INDEX INTO VECTOR FAILED: " << #a << " indexes " << #b << ": " << (a) << " indexes " << (b).size(); abort(); }
+
 //for custom logging.  Example usage:
 //ASSERT_LOG(x != y, "x not equal to y. Value of x: " << x << ", y: " << y);
 #define ASSERT_LOG(a,b) if( !(a) ) { std::cerr << __FILE__ << ":" << __LINE__ << " ASSSERTION FAILED: " << b << "\n"; abort(); }

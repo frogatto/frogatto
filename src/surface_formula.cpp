@@ -102,17 +102,22 @@ void run_formula(surface surf, const std::string& algo)
 	Uint32* pixels = reinterpret_cast<Uint32*>(surf->pixels);
 	Uint32* end_pixels = pixels + surf->w*surf->h;
 
+	Uint32 AlphaPixel = SDL_MapRGBA(surf->format, 0x6f, 0x6d, 0x51, 0x0);
+
+	int skip = 0;
 	while(pixels != end_pixels) {
-		pixel_callable p(surf, *pixels);
-		if(p.is_alpha() == false) {
-			std::map<Uint32, Uint32>::const_iterator itor = pixel_map.find(*pixels);
-			if(itor == pixel_map.end()) {
-				Uint32 result = f.execute(p).as_int();
-				pixel_map[*pixels] = result;
-				*pixels = result;
-			} else {
-				*pixels = itor->second;
-			}
+		if(((*pixels)&(~surf->format->Amask)) == AlphaPixel) {
+			++pixels;
+			continue;
+		}
+		std::map<Uint32, Uint32>::const_iterator itor = pixel_map.find(*pixels);
+		if(itor == pixel_map.end()) {
+			pixel_callable p(surf, *pixels);
+			Uint32 result = f.execute(p).as_int();
+			pixel_map[*pixels] = result;
+			*pixels = result;
+		} else {
+			*pixels = itor->second;
 		}
 		++pixels;
 	}

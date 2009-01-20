@@ -55,7 +55,7 @@ inline const std::string& get_str(const_node_ptr ptr,
 	return (*ptr)[key];
 }
 
-inline std::string get_str(const_node_ptr ptr,
+inline const std::string& get_str(const_node_ptr ptr,
                            const std::string& key,
 						   const std::string& default_val)
 {

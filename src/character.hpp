@@ -36,7 +36,6 @@ public:
 	virtual wml::node_ptr write() const;
 	virtual void draw() const;
 	void draw_group() const;
-	void draw_portrait(int x, int y) const;
 	void process(level& lvl);
 	bool is_standing(const level& lvl, int* friction=NULL, int* damage=NULL, int* adjust_y=NULL, entity_ptr* standing_on=NULL) const;
 	int collide_left() const;

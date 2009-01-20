@@ -63,6 +63,7 @@ public:
 	virtual void hit_player() {}
 	virtual void hit_by(entity& e) {}
 
+	virtual const frame& portrait_frame() const = 0;
 	virtual const frame& icon_frame() const = 0;
 	virtual const frame& current_frame() const = 0;
 
@@ -104,6 +105,7 @@ public:
 	virtual void get_powerup(const std::string& id) {}
 
 	void draw_debug_rects() const;
+
 private:
 	virtual void control(const level& lvl) = 0;
 

@@ -17,7 +17,8 @@
 #include "filesystem.hpp"
 #include "font.hpp"
 #include "foreach.hpp"
-#include "gui.hpp"
+#include "graphical_font.hpp"
+#include "gui_section.hpp"
 #include "inventory.hpp"
 #include "item.hpp"
 #include "joystick.hpp"
@@ -97,6 +98,7 @@ bool show_title_screen(std::string& level_cfg)
 
 		graphics::prepare_raster();
 		graphics::blit_texture(img, 0, 0, graphics::screen_width(), graphics::screen_height());
+		graphical_font::get("default")->draw(100, 100, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-+=!?.;");
 		SDL_GL_SwapBuffers();
 		joystick::update();
 		for(int n = 0; n != 6; ++n) {
@@ -497,8 +499,8 @@ extern "C" int main(int argc, char** argv)
 		           wml::schema::get("props")));
 		powerup::init(wml::parse_wml_from_file("powerups.cfg",
 		              wml::schema::get("powerups")));
-		init_gui_frames(wml::parse_wml_from_file("frames.cfg",
-		                wml::schema::get("frames")));
+		gui_section::init(wml::parse_wml_from_file("gui.cfg"));
+		graphical_font::init(wml::parse_wml_from_file("fonts.cfg"));
 	} catch(const wml::parse_error& e) {
 		return 0;
 	}
