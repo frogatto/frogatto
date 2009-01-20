@@ -89,7 +89,10 @@ void speech_dialog::draw() const
 	for(int n = 0; n < 2 && n < text_.size() && nchars > 0; ++n) {
 		std::string str(text_[n].begin(), text_[n].begin() +
 		                  std::min<int>(nchars, text_[n].size()));
+		//currently the color of speech is hard coded.
+		glColor3ub(255, 187, 10);
 		rect area = font->draw(text_left_align, ypos, str);
+		glColor4f(1.0, 1.0, 1.0, 1.0);
 		ypos = area.y2();
 		nchars -= text_[n].size();
 	}
