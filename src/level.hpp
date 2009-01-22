@@ -21,6 +21,7 @@
 #include "level_object.hpp"
 #include "prop.hpp"
 #include "tile_map.hpp"
+#include "water.hpp"
 #include "wml_node_fwd.hpp"
 
 class level : public game_logic::formula_callable
@@ -204,6 +205,8 @@ private:
 	std::vector<std::string> preloads_; //future levels to preload
 
 	boost::scoped_ptr<fluid> fluid_;
+
+	boost::scoped_ptr<water> water_;
 };
 
 #endif

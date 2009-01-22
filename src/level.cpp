@@ -156,6 +156,11 @@ level::level(const std::string& level_cfg)
 		fluid_.reset(new fluid(boundaries().w(), boundaries().h()));
 		fluid_->read(fluid_node);
 	}
+
+	wml::const_node_ptr water_node = node->get_child("water");
+	if(water_node) {
+		water_.reset(new water(water_node));
+	}
 }
 
 void level::load_character(wml::const_node_ptr c)
@@ -309,6 +314,10 @@ wml::const_node_ptr level::write() const
 
 	if(fluid_) {
 		res->add_child(fluid_->write());
+	}
+
+	if(water_) {
+		res->add_child(water_->write());
 	}
 
 	if(camera_rotation_) {
@@ -468,9 +477,19 @@ void level::draw(int x, int y, int w, int h) const
 
 	std::vector<entity_ptr>::const_iterator entity_itor = chars.begin();
 
+	int water_layer = 0;
+	if(water_) {
+		water_layer = water_->min_zorder();
+	}
+
 	std::set<int>::const_iterator layer = layers_.begin();
 
 	for(; layer != layers_.end() && *layer < 0; ++layer) {
+
+		if(water_) {
+			water_->draw(water_layer, *layer, x, y, w, h);
+			water_layer = *layer;
+		}
 
 		while(entity_itor != chars.end() && (*entity_itor)->zorder() <= *layer) {
 			if(!(*entity_itor)->is_human()) {
@@ -483,6 +502,11 @@ void level::draw(int x, int y, int w, int h) const
 		}
 
 		draw_layer(*layer, x, y, w, h);
+	}
+
+	if(water_) {
+		water_->draw(water_layer, 0, x, y, w, h);
+		water_layer = 0;
 	}
 
 	foreach(item_ptr it, items_) {
@@ -500,6 +524,11 @@ void level::draw(int x, int y, int w, int h) const
 	}
 
 	for(; layer != layers_.end(); ++layer) {
+		if(water_) {
+			water_->draw(water_layer, *layer, x, y, w, h);
+			water_layer = *layer;
+		}
+
 		while(entity_itor != chars.end() && (*entity_itor)->zorder() <= *layer) {
 			if(!(*entity_itor)->is_human()) {
 				(*entity_itor)->draw();
@@ -511,6 +540,11 @@ void level::draw(int x, int y, int w, int h) const
 		}
 
 		draw_layer(*layer, x, y, w, h);
+	}
+
+	if(water_) {
+		water_->draw(water_layer, water_->max_zorder(), x, y, w, h);
+		water_layer = water_->max_zorder();
 	}
 
 	while(entity_itor != chars.end()) {
