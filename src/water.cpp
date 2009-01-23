@@ -18,7 +18,8 @@ water::water(wml::const_node_ptr node) : level_(wml::get_int(node, "level"))
 		pos.zorder = wml::get_int(i1->second, "zorder");
 		pos.offset = wml::get_int(i1->second, "offset");
 		pos.color = string_to_color(node->attr("color"));
-
+		std::cerr << "MY_COLOR: " << node->attr("color") << "\n";
+		
 		positions_.push_back(pos);
 	}
 }
