@@ -477,9 +477,9 @@ void level::draw(int x, int y, int w, int h) const
 
 	std::vector<entity_ptr>::const_iterator entity_itor = chars.begin();
 
-	int water_layer = 0;
+	int water_zorder = 0;
 	if(water_) {
-		water_layer = water_->min_zorder();
+		water_zorder = water_->min_zorder();
 	}
 
 	std::set<int>::const_iterator layer = layers_.begin();
@@ -487,8 +487,8 @@ void level::draw(int x, int y, int w, int h) const
 	for(; layer != layers_.end() && *layer < 0; ++layer) {
 
 		if(water_) {
-			water_->draw(water_layer, *layer, x, y, w, h);
-			water_layer = *layer;
+			water_->draw(water_zorder, *layer, x, y, w, h);
+			water_zorder = *layer;
 		}
 
 		while(entity_itor != chars.end() && (*entity_itor)->zorder() <= *layer) {
@@ -505,8 +505,8 @@ void level::draw(int x, int y, int w, int h) const
 	}
 
 	if(water_) {
-		water_->draw(water_layer, 0, x, y, w, h);
-		water_layer = 0;
+		water_->draw(water_zorder, 0, x, y, w, h);
+		water_zorder = 0;
 	}
 
 	foreach(item_ptr it, items_) {
@@ -525,8 +525,8 @@ void level::draw(int x, int y, int w, int h) const
 
 	for(; layer != layers_.end(); ++layer) {
 		if(water_) {
-			water_->draw(water_layer, *layer, x, y, w, h);
-			water_layer = *layer;
+			water_->draw(water_zorder, *layer, x, y, w, h);
+			water_zorder = *layer;
 		}
 
 		while(entity_itor != chars.end() && (*entity_itor)->zorder() <= *layer) {
@@ -543,8 +543,8 @@ void level::draw(int x, int y, int w, int h) const
 	}
 
 	if(water_) {
-		water_->draw(water_layer, water_->max_zorder(), x, y, w, h);
-		water_layer = water_->max_zorder();
+		water_->draw(water_zorder, water_->max_zorder(), x, y, w, h);
+		water_zorder = water_->max_zorder();
 	}
 
 	while(entity_itor != chars.end()) {

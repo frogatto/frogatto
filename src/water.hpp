@@ -15,20 +15,26 @@ public:
 
 	int min_zorder() const;
 	int max_zorder() const;
+	int min_offset() const;
+	int max_offset() const;
 	
 private:
 
 	int level_;
-
+	int min_zorder_;
+	int max_zorder_;
+	
 	struct zorder_pos {
 		int zorder;
 		int offset;
+		SDL_Color color;
 	};
 
 	std::vector<zorder_pos> positions_;
 
 	enum { BadOffset = -100000 };
 	int get_offset(int zorder) const;
+	SDL_Color get_color(int offset) const;
 };
 
 #endif
