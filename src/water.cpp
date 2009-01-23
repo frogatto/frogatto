@@ -149,12 +149,6 @@ int water::max_offset() const
 	if(positions_.empty()) {
 		return BadOffset;
 	}
-	
-	return positions_.back().offset;
-}
-()) {
-		return BadOffset;
-	}
 
 	return positions_.back().offset;
 }
