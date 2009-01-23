@@ -116,6 +116,33 @@ node_ptr write_attribute_map(const std::string& name, const std::map<std::string
 	return res;
 }
 
+class child_sequence_iterator {
+public:
+	child_sequence_iterator(wml::const_node_ptr node, const std::string& child_name);
+	void next();
+	bool at_end() const;
+	operator wml::const_node_ptr() const {
+		return i1_->second;
+	}
+
+	wml::const_node_ptr operator->() const {
+		return i1_->second;
+	}
+
+	const wml::node& operator*() const {
+		return *get();
+	}
+
+	wml::const_node_ptr get() const {
+		return i1_->second;
+	}
+private:
+	wml::node::const_child_iterator i1_, i2_;
+};
+
 }
+
+#define FOREACH_WML_CHILD(item, node, element_name) \
+  for(wml::child_sequence_iterator item(node, element_name); !item.at_end(); item.next())
 
 #endif

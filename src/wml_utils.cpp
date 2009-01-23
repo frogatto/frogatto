@@ -91,4 +91,18 @@ std::vector<node_ptr> child_nodes(const node_ptr& ptr,
 	return res;
 }
 
+child_sequence_iterator::child_sequence_iterator(wml::const_node_ptr node, const std::string& child_name)
+  : i1_(node->begin_child(child_name)), i2_(node->end_child(child_name))
+{}
+
+void child_sequence_iterator::next()
+{
+	++i1_;
+}
+
+bool child_sequence_iterator::at_end() const
+{
+	return i1_ == i2_;
+}
+
 }
