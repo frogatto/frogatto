@@ -9,16 +9,17 @@
 #include "color_utils.hpp"
 
 
-water::water(wml::const_node_ptr node) : level_(wml::get_int(node, "level"))
+water::water(wml::const_node_ptr water_node) : level_(wml::get_int(water_node, "level"))
 {
-	wml::node::const_child_iterator i1 = node->begin_child("layer");
-	wml::node::const_child_iterator i2 = node->end_child("layer");
+	wml::node::const_child_iterator i1 = water_node->begin_child("layer");
+	wml::node::const_child_iterator i2 = water_node->end_child("layer");
 	for(; i1 != i2; ++i1) {
+		wml::const_node_ptr layer_node = i1->second;
 		zorder_pos pos;
-		pos.zorder = wml::get_int(i1->second, "zorder");
-		pos.offset = wml::get_int(i1->second, "offset");
-		pos.color = string_to_color(node->attr("color"));
-		std::cerr << "MY_COLOR: " << node->attr("color") << "\n";
+		pos.zorder = wml::get_int(layer_node, "zorder");
+		pos.offset = wml::get_int(layer_node, "offset");
+		pos.color = string_to_color(layer_node->attr("color"));
+		std::cerr << "MY_COLOR: " << layer_node->attr("color") << "\n";
 		
 		positions_.push_back(pos);
 	}
