@@ -13,8 +13,11 @@
 #ifndef RASTER_HPP_INCLUDED
 #define RASTER_HPP_INCLUDED
 
+#include <vector>
+
 #include "SDL.h"
 
+#include "geometry.hpp"
 #include "texture.hpp"
 
 namespace graphics
@@ -33,6 +36,15 @@ void blit_texture(const texture& tex, int x=0, int y=0, GLfloat rotate=0.0);
 // < 0.0 or > 1.0 and the texture will wrap, but *only* if the texture's
 //dimensions are powers of two. Otherwise they must be in the range [0,1]
 void blit_texture(const texture& tex, int x, int y, int w, int h, GLfloat rotate=0.0, GLfloat x1=0.0, GLfloat y1=0.0, GLfloat x2=1.0, GLfloat y2=1.0);
+
+//function which sets a rectangle where we want to detect if pixels are written.
+//buf must point to a buffer with a size of rect.w*rect.h. Whenever a pixel
+//is blitted within rect, the corresponding pixel in buf will be set. buf
+//must remain valid until another call to set_draw_detection_rect() or a
+//call to clear_draw_detection_rect().
+void set_draw_detection_rect(const rect& rect, char* buf);
+void clear_draw_detection_rect();
+
 void draw_rect(const SDL_Rect& rect, const SDL_Color& color,
                unsigned char alpha=0xFF);
 void draw_hollow_rect(const SDL_Rect& rect, const SDL_Color& color,

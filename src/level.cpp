@@ -477,9 +477,12 @@ void level::draw(int x, int y, int w, int h) const
 
 	std::vector<entity_ptr>::const_iterator entity_itor = chars.begin();
 
+	char water_line_solid_buffer[w];
 	int water_zorder = 0;
 	if(water_) {
 		water_zorder = water_->min_zorder();
+		memset(water_line_solid_buffer, 0, sizeof(water_line_solid_buffer));
+		graphics::set_draw_detection_rect(rect(x, water_->get_water_level(water_zorder), w, 1), water_line_solid_buffer);
 	}
 
 	std::set<int>::const_iterator layer = layers_.begin();
@@ -487,8 +490,11 @@ void level::draw(int x, int y, int w, int h) const
 	for(; layer != layers_.end() && *layer < 0; ++layer) {
 
 		if(water_) {
-			water_->draw(water_zorder, *layer, x, y, w, h);
+			if(water_->draw(water_zorder, *layer, x, y, w, h, water_line_solid_buffer)) {
+				memset(water_line_solid_buffer, 0, sizeof(water_line_solid_buffer));
+			}
 			water_zorder = *layer;
+			graphics::set_draw_detection_rect(rect(x, water_->get_water_level(water_zorder), w, 1), water_line_solid_buffer);
 		}
 
 		while(entity_itor != chars.end() && (*entity_itor)->zorder() <= *layer) {
@@ -505,8 +511,11 @@ void level::draw(int x, int y, int w, int h) const
 	}
 
 	if(water_) {
-		water_->draw(water_zorder, 0, x, y, w, h);
+		if(water_->draw(water_zorder, 0, x, y, w, h, water_line_solid_buffer)) {
+			memset(water_line_solid_buffer, 0, sizeof(water_line_solid_buffer));
+		}
 		water_zorder = 0;
+		graphics::set_draw_detection_rect(rect(x, water_->get_water_level(water_zorder), w, 1), water_line_solid_buffer);
 	}
 
 	foreach(item_ptr it, items_) {
@@ -525,8 +534,11 @@ void level::draw(int x, int y, int w, int h) const
 
 	for(; layer != layers_.end(); ++layer) {
 		if(water_) {
-			water_->draw(water_zorder, *layer, x, y, w, h);
+			if(water_->draw(water_zorder, *layer, x, y, w, h, water_line_solid_buffer)) {
+				memset(water_line_solid_buffer, 0, sizeof(water_line_solid_buffer));
+			}
 			water_zorder = *layer;
+			graphics::set_draw_detection_rect(rect(x, water_->get_water_level(water_zorder), w, 1), water_line_solid_buffer);
 		}
 
 		while(entity_itor != chars.end() && (*entity_itor)->zorder() <= *layer) {
@@ -543,8 +555,9 @@ void level::draw(int x, int y, int w, int h) const
 	}
 
 	if(water_) {
-		water_->draw(water_zorder, water_->max_zorder(), x, y, w, h);
+		water_->draw(water_zorder, water_->max_zorder(), x, y, w, h, water_line_solid_buffer);
 		water_zorder = water_->max_zorder();
+		graphics::clear_draw_detection_rect();
 	}
 
 	while(entity_itor != chars.end()) {
@@ -691,6 +704,10 @@ void level::process()
 
 	if(fluid_) {
 		fluid_->process(*this);
+	}
+
+	if(water_) {
+		water_->process(*this);
 	}
 }
 

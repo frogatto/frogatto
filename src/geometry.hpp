@@ -3,6 +3,7 @@
 
 #include "SDL.h"
 
+#include <iostream>
 #include <string>
 
 struct point {
@@ -36,5 +37,8 @@ private:
 
 bool point_in_rect(const point& p, const rect& r);
 bool rects_intersect(const rect& a, const rect& b);
+rect intersection_rect(const rect& a, const rect& b);
+
+std::ostream& operator<<(std::ostream& s, const rect& r);
 
 #endif

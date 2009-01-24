@@ -2,13 +2,15 @@
 
 #include "foreach.hpp"
 #include "formatter.hpp"
+#include "formula.hpp"
+#include "level.hpp"
 #include "raster.hpp"
 #include "water.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
 #include "color_utils.hpp"
 
-water::water(wml::const_node_ptr water_node) : level_(wml::get_int(water_node, "level"))
+water::water(wml::const_node_ptr water_node) : level_(wml::get_int(water_node, "level")), water_level_formula_(game_logic::formula::create_optional_formula(water_node->attr("water_level_formula")))
 {
 	FOREACH_WML_CHILD(layer_node, water_node, "layer") {
 		zorder_pos pos;
@@ -37,7 +39,7 @@ wml::node_ptr water::write() const
 	return result;
 }
 
-void water::draw(int begin_layer, int end_layer, int x, int y, int w, int h) const
+bool water::draw(int begin_layer, int end_layer, int x, int y, int w, int h, const char* solid_buf) const
 {
 	if(begin_layer < min_zorder()) {
 		begin_layer = min_zorder();
@@ -47,26 +49,62 @@ void water::draw(int begin_layer, int end_layer, int x, int y, int w, int h) con
 		end_layer = max_zorder();
 	}
 	
-	if(begin_layer >= end_layer) {
-		return;
+	if(begin_layer > end_layer) {
+		return false;
 	}
-	
+
+	const SDL_Color waterline_color = {250, 240, 205, 255};
+
 	const int offset1 = get_offset(begin_layer);
 	const int offset2 = get_offset(end_layer);
+	if(offset2 <= offset1) {
+		return false;
+	}
 	
 	const SDL_Rect r = {x, level_ + offset1, w, offset2 - offset1};
 	const SDL_Color water_color = get_color(offset1);
 	graphics::draw_rect(r, water_color, 200);
-	
+
+	if(begin_layer == min_zorder()) {
+		const SDL_Rect water_surface_rect = {x, level_ + offset1-2, w, 2};
+		graphics::draw_rect(water_surface_rect, waterline_color, 255);
+	}
+
 	// draw the water edge and the deep, bottom-half-of-the-screen-filling underwater layer
 	const int surface = level_ + offset2;
 	if(end_layer == max_zorder() && y + w >= surface) {
 		const SDL_Rect r = {x, std::max(surface, y), w, h};
 		const SDL_Color deepwater_color = {91, 169, 143, 153};
 		graphics::draw_rect(r, deepwater_color, 192);
-		const SDL_Color waterLine_color = {250, 240, 205, 255};
 		const SDL_Rect water_surface_rect = {x, surface, w, 2};
-		graphics::draw_rect(water_surface_rect, waterLine_color, 255);
+		graphics::draw_rect(water_surface_rect, waterline_color, 255);
+	}
+
+	glDisable(GL_TEXTURE_2D);
+	glLineWidth(3);
+	glColor3ub(waterline_color.r, waterline_color.g, waterline_color.b);
+	int start_line = -1;
+	for(int n = 0; n != w; ++n) {
+		if(solid_buf[n] && start_line == -1) {
+			start_line = n;
+		} else if((!solid_buf[n] || n == w-1) && start_line != -1) {
+			glBegin(GL_LINES);
+			glVertex3f(x + start_line, level_ + offset1, 0.0);
+			glVertex3f(x + n + (solid_buf[n] ? 1 : 0), level_ + offset1, 0.0);
+			glEnd();
+			start_line = -1;
+		}
+	}
+	glColor4f(1.0, 1.0, 1.0, 1.0);
+	glEnable(GL_TEXTURE_2D);
+
+	return true;
+}
+
+void water::process(const level& lvl)
+{
+	if(water_level_formula_) {
+		level_ = water_level_formula_->execute(lvl).as_int();
 	}
 }
 

@@ -14,6 +14,7 @@
 #include <GL/glu.h>
 #include <SDL.h>
 
+#include "asserts.hpp"
 #include "raster.hpp"
 
 #include <boost/shared_array.hpp>
@@ -48,6 +49,11 @@ void prepare_raster()
 	glDisable(GL_LIGHT0);
 
 	glColor4f(1.0, 1.0, 1.0, 1.0);
+}
+
+namespace {
+rect draw_detection_rect_;
+char* draw_detection_buf_;
 }
 
 void blit_texture(const texture& tex, int x, int y, GLfloat rotate)
@@ -90,6 +96,9 @@ void blit_texture(const texture& tex, int x, int y, int w, int h, GLfloat rotate
 		return;
 	}
 
+	const int orig_w = w;
+	const int orig_h = h;
+
 	const int w_odd = w % 2;
 	const int h_odd = h % 2;
 
@@ -110,6 +119,47 @@ void blit_texture(const texture& tex, int x, int y, int w, int h, GLfloat rotate
 	glVertex3i(w+w_odd,-h,0);
 	glEnd();
 	glPopMatrix();
+
+	if(draw_detection_buf_) {
+		rect draw_rect(x, y, std::abs(orig_w), std::abs(orig_h));
+		if(rects_intersect(draw_rect, draw_detection_rect_)) {
+			rect r = intersection_rect(draw_rect, draw_detection_rect_);
+			for(int ypos = r.y(); ypos != r.y2(); ++ypos) {
+				for(int xpos = r.x(); xpos != r.x2(); ++xpos) {
+					const GLfloat u = (GLfloat(draw_rect.x2() - xpos)*x1 + GLfloat(xpos - draw_rect.x())*x2)/GLfloat(draw_rect.w());
+					const GLfloat v = (GLfloat(draw_rect.y2() - ypos)*y1 + GLfloat(ypos - draw_rect.y())*y2)/GLfloat(draw_rect.h());
+					const int texture_x = u*tex.width();
+					const int texture_y = v*tex.height();
+					ASSERT_GE(texture_x, 0);
+					ASSERT_GE(texture_y, 0);
+					ASSERT_LOG(texture_x < tex.width(), texture_x << " < " << tex.width() << " " << r.x() << " " << r.x2() << " " << xpos << " x: " << x1 << " x2: " << x2 << " u: " << u << "\n");
+					ASSERT_LT(texture_x, tex.width());
+					ASSERT_LT(texture_y, tex.height());
+					const bool alpha = tex.is_alpha(texture_x, texture_y);
+					if(!alpha) {
+						const int buf_x = xpos - draw_detection_rect_.x();
+						const int buf_y = ypos - draw_detection_rect_.y();
+						const int buf_index = buf_y*draw_detection_rect_.w() + buf_x;
+						ASSERT_LOG(buf_index >= 0, xpos << ", " << ypos << " -> " << buf_x << ", " << buf_y << " -> " << buf_index << " in " << draw_detection_rect_ << "\n");
+						ASSERT_GE(buf_index, 0);
+						ASSERT_LT(buf_index, draw_detection_rect_.w()*draw_detection_rect_.h());
+						draw_detection_buf_[buf_index] = true;
+					}
+				}
+			}
+		}
+	}
+}
+
+void set_draw_detection_rect(const rect& rect, char* buf)
+{
+	draw_detection_rect_ = rect;
+	draw_detection_buf_ = buf;
+}
+
+void clear_draw_detection_rect()
+{
+	draw_detection_buf_ = NULL;
 }
 
 void draw_rect(const SDL_Rect& r, const SDL_Color& color,

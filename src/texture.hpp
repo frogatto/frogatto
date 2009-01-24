@@ -60,6 +60,8 @@ public:
 	unsigned int width() const { return width_; }
 	unsigned int height() const { return height_; }
 
+	bool is_alpha(int x, int y) const { return alpha_map_[y*width_ + x]; }
+
 	friend bool operator==(const texture&, const texture&);
 	friend bool operator<(const texture&, const texture&);
 
@@ -77,6 +79,9 @@ private:
 	boost::shared_ptr<ID> id_;
 	unsigned int width_, height_;
 	GLfloat ratio_w_, ratio_h_;
+
+	key key_;
+	std::vector<bool> alpha_map_;
 };
 
 inline bool operator==(const texture& a, const texture& b)

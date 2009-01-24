@@ -66,7 +66,8 @@ rect::rect(const std::string& str)
 }
 
 rect::rect(int x, int y, int w, int h)
-  : top_left_(x, y), bottom_right_(x + w, y + h)
+  : top_left_(std::min(x, x+w), std::min(y, y+h)),
+    bottom_right_(std::max(x, x+w), std::max(y, y+h))
 {
 }
 
@@ -120,4 +121,19 @@ bool rects_intersect(const rect& a, const rect& b)
 	}
 	
 	return true;
+}
+
+rect intersection_rect(const rect& a, const rect& b)
+{
+	const int x = std::max(a.x(), b.x());
+	const int y = std::max(a.y(), b.y());
+	const int w = std::min(a.x2(), b.x2()) - x;
+	const int h = std::min(a.y2(), b.y2()) - y;
+	return rect(x, y, w, h);
+}
+
+std::ostream& operator<<(std::ostream& s, const rect& r)
+{
+	s << "rect(" << r.x() << ", " << r.y() << ", " << r.x2() << ", " << r.y2() << ")";
+	return s;
 }

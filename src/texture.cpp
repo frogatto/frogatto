@@ -151,7 +151,7 @@ void texture::clear_textures()
 }
 
 texture::texture(const key& surfs, options_type options)
-   : width_(0), height_(0), ratio_w_(1.0), ratio_h_(1.0)
+   : width_(0), height_(0), ratio_w_(1.0), ratio_h_(1.0), key_(surfs)
 {
 	assert(graphics_initialized);
 	if(surfs.empty() ||
@@ -163,6 +163,7 @@ texture::texture(const key& surfs, options_type options)
 
 	width_ = surfs.front()->w;
 	height_ = surfs.front()->h;
+	alpha_map_.resize(width_*height_);
 
 	unsigned int surf_width = width_;
 	unsigned int surf_height = height_;
@@ -195,11 +196,16 @@ texture::texture(const key& surfs, options_type options)
 		static const unsigned char AlphaPixel[] = {0x6f, 0x6d, 0x51}; //the background color, brown
 		static const unsigned char AlphaPixel2[] = {0xf9, 0x30, 0x3d}; //the border color, red
 		unsigned char* pixel = reinterpret_cast<unsigned char*>(s->pixels) + n*4;
-		if(pixel[0] == AlphaPixel[0] && pixel[1] == AlphaPixel[1] && pixel[2] == AlphaPixel[2]) {
+
+		if(pixel[0] == AlphaPixel[0] && pixel[1] == AlphaPixel[1] && pixel[2] == AlphaPixel[2] ||
+		   pixel[0] == AlphaPixel2[0] && pixel[1] == AlphaPixel2[1] && pixel[2] == AlphaPixel2[2]) {
 			pixel[3] = 0;
-		}
-		if(pixel[0] == AlphaPixel2[0] && pixel[1] == AlphaPixel2[1] && pixel[2] == AlphaPixel2[2]) {
-			pixel[3] = 0;
+
+			const int x = n%surf_width;
+			const int y = n/surf_width;
+			if(x < width_ && y < height_) {
+				alpha_map_[y*width_ + x] = true;
+			}
 		}
 	}
 
