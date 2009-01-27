@@ -234,7 +234,7 @@ void custom_object::process(level& lvl)
 		}
 	}
 
-	std::cerr << "velocity_y: " << velocity_y_ << "\n";
+	//std::cerr << "velocity_y: " << velocity_y_ << "\n";
 	collide = false;
 	for(int n = 0; n <= std::abs(velocity_y_/100) && !collide && !type_->ignore_collide(); ++n) {
 		const int dir = velocity_y_/100 > 0 ? 1 : -1;
