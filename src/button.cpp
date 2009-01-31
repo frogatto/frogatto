@@ -30,7 +30,9 @@ button::button(widget_ptr label, boost::function<void ()> onclick)
 	focus_texture_(graphics::texture::get("button-active.png")),
 	depressed_texture_(graphics::texture::get("button-pressed.png")),
 	current_texture_(&normal_texture_),
-	button_image_set_(new framed_gui_element())
+	//button_image_set_(new framed_gui_element())
+	button_image_set_(framed_gui_element::get("regular_button"))
+
 {
 	set_dim(label_->width()+hpadding*2,label_->height()+vpadding*2);
 }

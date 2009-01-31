@@ -17,6 +17,7 @@
 #include "filesystem.hpp"
 #include "font.hpp"
 #include "foreach.hpp"
+#include "framed_gui_element.hpp"
 #include "graphical_font.hpp"
 #include "gui_section.hpp"
 #include "inventory.hpp"
@@ -500,6 +501,7 @@ extern "C" int main(int argc, char** argv)
 		powerup::init(wml::parse_wml_from_file("powerups.cfg",
 		              wml::schema::get("powerups")));
 		gui_section::init(wml::parse_wml_from_file("gui.cfg"));
+		framed_gui_element::init(wml::parse_wml_from_file("gui.cfg"));
 		graphical_font::init(wml::parse_wml_from_file("fonts.cfg"));
 	} catch(const wml::parse_error& e) {
 		return 0;

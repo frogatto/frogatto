@@ -1,15 +1,42 @@
 #include <iostream>
 
 #include "framed_gui_element.hpp"
-#include "gui_section.hpp"
 #include "geometry.hpp"
 #include "raster.hpp"
+#include "wml_node.hpp"
+#include "wml_utils.hpp"
+
+namespace {
+	typedef std::map<std::string, const_framed_gui_element_ptr> cache_map;
+	cache_map cache;
+}
+
+void framed_gui_element::init(wml::const_node_ptr node)
+{
+	wml::node::const_child_iterator i1 = node->begin_child("framed_gui_element");
+	wml::node::const_child_iterator i2 = node->end_child("framed_gui_element");
+	for(; i1 != i2; ++i1) {
+		const std::string& id = i1->second->attr("id");
+		cache[id].reset(new framed_gui_element(i1->second));
+	}
+}
+
+const_framed_gui_element_ptr framed_gui_element::get(const std::string& key)
+{
+	cache_map::const_iterator itor = cache.find(key);
+	if(itor == cache.end()) {
+		assert(false); //TODO: replace with an exception.
+		return const_framed_gui_element_ptr();
+	}
+	
+	return itor->second;
+}
 
 
-
-framed_gui_element::framed_gui_element()
-: area_(rect("4,44,29,69")),corner_height_(8),
-texture_(graphics::texture::get("gui/buttons-and-windows.png"))
+framed_gui_element::framed_gui_element(wml::const_node_ptr node)
+: area_(node->attr("rect")),
+corner_height_(get_int(node,"corner_height")),
+texture_(graphics::texture::get(node->attr("image")))
 {
 
 	

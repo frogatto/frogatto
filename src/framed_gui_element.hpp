@@ -1,13 +1,11 @@
 #ifndef FRAMED_GUI_ELEMENT_HPP_INCLUDED
 #define FRAMED_GUI_ELEMENT_HPP_INCLUDED
 
-#include "gui_section.hpp"
-
 
 #include <boost/shared_ptr.hpp>
 #include "geometry.hpp"
 #include "texture.hpp"
-
+#include "wml_node_fwd.hpp"
 
 
 class framed_gui_element;
@@ -17,12 +15,15 @@ typedef boost::shared_ptr<const framed_gui_element> const_framed_gui_element_ptr
 class framed_gui_element
 {
 public:
+	static void init(wml::const_node_ptr node);
+	static const_framed_gui_element_ptr get(const std::string& key);
+
 	void blit(int x, int y, int w, int h) const;
-	framed_gui_element();
+	explicit framed_gui_element(wml::const_node_ptr node);
 
 	
 private:
-	void framed_gui_element::blit_subsection(rect subsection, int x, int y, int w, int h) const;
+	void blit_subsection(rect subsection, int x, int y, int w, int h) const;
 	
 	const rect area_;
 	const int corner_height_;
@@ -39,7 +40,7 @@ private:
 	rect  right_border_;
 	
 	
-	rect interior_fill_;  //later on, we might want to do this as a proper pattern.  For now, we're gonna imp this as a stretch-to-fill because it doesn't matter with our current graphics (since they're just a solid color).
+	rect interior_fill_;  //later on, we might want to do this as a proper pattern.  For now, we've imped this as a stretch-to-fill because it doesn't matter with our current graphics (since they're just a solid color).  If we never get anything but solid colors, no need to waste the effort.
 
 };
 
