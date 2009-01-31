@@ -5,6 +5,8 @@
 
 
 #include <boost/shared_ptr.hpp>
+#include "geometry.hpp"
+#include "texture.hpp"
 
 
 
@@ -20,17 +22,24 @@ public:
 
 	
 private:
-	const_gui_section_ptr  top_border_;
-	const_gui_section_ptr  bottom_border_;
-	const_gui_section_ptr  left_border_;
-	const_gui_section_ptr  right_border_;
+	void framed_gui_element::blit_subsection(rect subsection, int x, int y, int w, int h) const;
 	
-	const_gui_section_ptr  top_right_corner_;
-	const_gui_section_ptr  top_left_corner_;
-	const_gui_section_ptr  bottom_right_corner_;
-	const_gui_section_ptr  bottom_left_corner_;
+	const rect area_;
+	const int corner_height_;
+	graphics::texture texture_;
 	
-	const_gui_section_ptr interior_fill_;  //later on, we might want to do this as a proper pattern.  For now, we're gonna imp this as a stretch-to-fill because it doesn't matter with our current graphics (since they're just a solid color).
+	rect  top_right_corner_;
+	rect  top_left_corner_;
+	rect  bottom_right_corner_;
+	rect  bottom_left_corner_;
+	
+	rect  top_border_;
+	rect  bottom_border_;
+	rect  left_border_;
+	rect  right_border_;
+	
+	
+	rect interior_fill_;  //later on, we might want to do this as a proper pattern.  For now, we're gonna imp this as a stretch-to-fill because it doesn't matter with our current graphics (since they're just a solid color).
 
 };
 
