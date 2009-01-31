@@ -13,6 +13,7 @@
 #include "button.hpp"
 #include "raster.hpp"
 #include "surface_cache.hpp"
+#include "framed_gui_element.hpp"
 
 namespace gui {
 
@@ -28,7 +29,8 @@ button::button(widget_ptr label, boost::function<void ()> onclick)
     normal_texture_(graphics::texture::get("button.png")),
 	focus_texture_(graphics::texture::get("button-active.png")),
 	depressed_texture_(graphics::texture::get("button-pressed.png")),
-	current_texture_(&normal_texture_)
+	current_texture_(&normal_texture_),
+	button_image_set_(new framed_gui_element())
 {
 	set_dim(label_->width()+hpadding*2,label_->height()+vpadding*2);
 }
@@ -42,7 +44,8 @@ bool button::in_button(int xloc, int yloc) const
 void button::handle_draw() const
 {
 	label_->set_loc(x()+hpadding,y()+vpadding);
-	graphics::blit_texture(*current_texture_,x(),y(),width(),height());
+	//graphics::blit_texture(*current_texture_,x(),y(),width(),height());
+	button_image_set_->blit(x(),y(),width(),height());
 	label_->draw();
 }
 

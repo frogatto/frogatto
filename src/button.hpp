@@ -17,6 +17,8 @@
 
 #include "texture.hpp"
 #include "widget.hpp"
+#include "framed_gui_element.hpp"
+
 
 namespace gui {
 
@@ -35,6 +37,7 @@ private:
 	graphics::texture normal_texture_, focus_texture_,
 	                  depressed_texture_;
 	graphics::texture* current_texture_;
+	const_framed_gui_element_ptr button_image_set_;
 };
 
 typedef boost::shared_ptr<button> button_ptr;
