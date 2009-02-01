@@ -34,10 +34,8 @@ private:
 
 	widget_ptr label_;
 	boost::function<void ()> onclick_;
-	graphics::texture normal_texture_, focus_texture_,
-	                  depressed_texture_;
-	graphics::texture* current_texture_;
-	const_framed_gui_element_ptr button_image_set_;
+	
+	const_framed_gui_element_ptr normal_button_image_set_,depressed_button_image_set_,focus_button_image_set_,current_button_image_set_;
 };
 
 typedef boost::shared_ptr<button> button_ptr;
