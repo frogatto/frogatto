@@ -96,11 +96,11 @@ void background::draw(double xpos, double ypos, int rotation) const
 	glBegin(GL_POLYGON);
 
 	glColor3fv(top_col);
-	glVertex3i(0, 0, 0);
-	glVertex3i(graphics::screen_width(), 0, 0);
+	glVertex3i(xpos, ypos, 0);
+	glVertex3i(xpos + graphics::screen_width(), ypos, 0);
 	glColor3fv(bot_col);
-	glVertex3i(graphics::screen_width(), height_, 0);
-	glVertex3i(0, height_, 0);
+	glVertex3i(xpos + graphics::screen_width(), ypos + height_, 0);
+	glVertex3i(xpos, ypos + height_, 0);
 
 	glEnd();
 
@@ -150,7 +150,7 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 	
 	glPushMatrix();
 	glColor4fv(bg.color);
-	graphics::blit_texture(bg.texture, 0, bg.yoffset*ScaleImage - (y*bg.yscale)/100,
+	graphics::blit_texture(bg.texture, x, y + bg.yoffset*ScaleImage - (y*bg.yscale)/100,
 	                       graphics::screen_width(),
 					       (bg.y2 - bg.y1)*ScaleImage, 0.0, xpos,
 						   double(bg.y1)/double(bg.texture.height()),

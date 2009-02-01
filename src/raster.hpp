@@ -45,6 +45,10 @@ void blit_texture(const texture& tex, int x, int y, int w, int h, GLfloat rotate
 void set_draw_detection_rect(const rect& rect, char* buf);
 void clear_draw_detection_rect();
 
+class raster_distortion;
+void add_raster_distortion(const raster_distortion* distortion);
+void remove_raster_distortion(const raster_distortion* distortion);
+
 void draw_rect(const SDL_Rect& rect, const SDL_Color& color,
                unsigned char alpha=0xFF);
 void draw_hollow_rect(const SDL_Rect& rect, const SDL_Color& color,

@@ -10,7 +10,11 @@
 #include "wml_utils.hpp"
 #include "color_utils.hpp"
 
-water::water(wml::const_node_ptr water_node) : level_(wml::get_int(water_node, "level")), water_level_formula_(game_logic::formula::create_optional_formula(water_node->attr("water_level_formula")))
+water::water(wml::const_node_ptr water_node) :
+  level_(wml::get_int(water_node, "level")), wave_offset_(0),
+  water_level_formula_(game_logic::formula::create_optional_formula(water_node->attr("water_level_formula"))),
+  wave_distortion_formula_(game_logic::formula::create_optional_formula(water_node->attr("water_distortion_formula"))),
+  distortion_(0, rect(0,0,0,0))
 {
 	FOREACH_WML_CHILD(layer_node, water_node, "layer") {
 		zorder_pos pos;
@@ -37,6 +41,17 @@ wml::node_ptr water::write() const
 		result->add_child(node);
 	}
 	return result;
+}
+
+void water::begin_drawing()
+{
+	distortion_ = graphics::water_distortion(wave_offset_, rect(0, level_, 10000000, 10000000));
+	graphics::add_raster_distortion(&distortion_);
+}
+
+void water::end_drawing()
+{
+	graphics::remove_raster_distortion(&distortion_);
 }
 
 bool water::draw(int begin_layer, int end_layer, int x, int y, int w, int h, const char* solid_buf) const
@@ -105,6 +120,10 @@ void water::process(const level& lvl)
 {
 	if(water_level_formula_) {
 		level_ = water_level_formula_->execute(lvl).as_int();
+	}
+
+	if(wave_distortion_formula_) {
+		wave_offset_ = wave_distortion_formula_->execute(lvl).as_int();
 	}
 }
 

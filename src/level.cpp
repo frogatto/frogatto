@@ -532,10 +532,15 @@ void level::draw(int x, int y, int w, int h) const
 		fluid_->draw(x, y, w, h);
 	}
 
+	bool finished_water = !water_;
+
 	for(; layer != layers_.end(); ++layer) {
 		if(water_) {
 			if(water_->draw(water_zorder, *layer, x, y, w, h, water_line_solid_buffer)) {
 				memset(water_line_solid_buffer, 0, sizeof(water_line_solid_buffer));
+			} else if(!finished_water) {
+				finished_water = true;
+				water_->end_drawing();
 			}
 			water_zorder = *layer;
 			graphics::set_draw_detection_rect(rect(x, water_->get_water_level(water_zorder), w, 1), water_line_solid_buffer);
@@ -558,6 +563,11 @@ void level::draw(int x, int y, int w, int h) const
 		water_->draw(water_zorder, water_->max_zorder(), x, y, w, h, water_line_solid_buffer);
 		water_zorder = water_->max_zorder();
 		graphics::clear_draw_detection_rect();
+
+		if(!finished_water) {
+			finished_water = true;
+			water_->end_drawing();
+		}
 	}
 
 	while(entity_itor != chars.end()) {
@@ -606,6 +616,10 @@ void level::draw_debug_solid(int x, int y, int w, int h) const
 
 void level::draw_background(double x, double y, int rotation) const
 {
+	if(water_) {
+		water_->begin_drawing();
+	}
+
 	if(background_) {
 		background_->draw(x, y, rotation);
 	}

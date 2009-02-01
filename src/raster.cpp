@@ -16,9 +16,11 @@
 
 #include "asserts.hpp"
 #include "raster.hpp"
+#include "raster_distortion.hpp"
 
 #include <boost/shared_array.hpp>
 #include <iostream>
+#include <cmath>
 
 namespace graphics
 {
@@ -54,6 +56,8 @@ void prepare_raster()
 namespace {
 rect draw_detection_rect_;
 char* draw_detection_buf_;
+
+std::vector<const raster_distortion*> distortions_;
 }
 
 void blit_texture(const texture& tex, int x, int y, GLfloat rotate)
@@ -90,7 +94,8 @@ void blit_texture(const texture& tex, int x, int y, GLfloat rotate)
 	glPopMatrix();
 }
 
-void blit_texture(const texture& tex, int x, int y, int w, int h, GLfloat rotate, GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2)
+namespace {
+void blit_texture_internal(const texture& tex, int x, int y, int w, int h, GLfloat rotate, GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2)
 {
 	if(!tex.valid()) {
 		return;
@@ -151,6 +156,78 @@ void blit_texture(const texture& tex, int x, int y, int w, int h, GLfloat rotate
 	}
 }
 
+void blit_texture_with_distortion(const texture& tex, int x, int y, int w, int h, GLfloat rotate, GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2, const raster_distortion& distort)
+{
+	const rect& area = distort.area();
+	if(x < area.x()) {
+		const int new_x = area.x();
+		x1 = (x1*(x + w - new_x) + x2*(new_x - x))/w;
+		w -= new_x - x;
+		x = new_x;
+	}
+
+	if(y < area.y()) {
+		const int new_y = area.y();
+		const GLfloat new_y1 = (y1*(y + h - new_y) + y2*(new_y - y))/h;
+
+		blit_texture_internal(tex, x, y, w, new_y - y, rotate, x1, y1, x2, new_y1);
+
+		y1 = new_y1;
+		h -= new_y - y;
+		y = new_y;
+	}
+
+	const int xdiff = distort.granularity_x();
+	const int ydiff = distort.granularity_y();
+	for(int xpos = 0; xpos < w; xpos += xdiff) {
+		const int xbegin = x + xpos;
+		const int xend = std::min<int>(x + w, xbegin + xdiff);
+
+		const GLfloat u1 = (x1*(x+w - xbegin) + x2*(xbegin - x))/w;
+		const GLfloat u2 = (x1*(x+w - xend) + x2*(xend - x))/w;
+		for(int ypos = 0; ypos < h; ypos += ydiff) {
+			const int ybegin = y + ypos;
+			const int yend = std::min<int>(y + h, ybegin + ydiff);
+
+			const GLfloat v1 = (y1*(y+h - ybegin) + y2*(ybegin - y))/h;
+			const GLfloat v2 = (y1*(y+h - yend) + y2*(yend - y))/h;
+
+			const int xbegin_distort = distort.map_x(xbegin);
+			const int ybegin_distort = distort.map_y(ybegin);
+			const int xend_distort = distort.map_x(xend);
+			const int yend_distort = distort.map_y(yend);
+			blit_texture_internal(tex, xbegin_distort, ybegin_distort,
+			                           xend_distort - xbegin_distort,
+			                           yend_distort - ybegin_distort,
+			                           rotate, u1, v1, u2, v2);
+		}
+	}
+}
+
+}  // namespace
+
+void blit_texture(const texture& tex, int x, int y, int w, int h, GLfloat rotate, GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2)
+{
+	if(w < 0) {
+		std::swap(x1, x2);
+		w *= -1;
+	}
+
+	if(h < 0) {
+		std::swap(y1, y2);
+		h *= -1;
+	}
+
+	for(std::vector<const raster_distortion*>::const_iterator i = distortions_.begin(); i != distortions_.end(); ++i) {
+		const raster_distortion& distort = **i;
+		if(rects_intersect(rect(x, y, w, h), distort.area())) {
+			blit_texture_with_distortion(tex, x, y, w, h, rotate, x1, y1, x2, y2, distort);
+			return;
+		}
+	}
+	blit_texture_internal(tex, x, y, w, h, rotate, x1, y1, x2, y2);
+}
+
 void set_draw_detection_rect(const rect& rect, char* buf)
 {
 	draw_detection_rect_ = rect;
@@ -160,6 +237,16 @@ void set_draw_detection_rect(const rect& rect, char* buf)
 void clear_draw_detection_rect()
 {
 	draw_detection_buf_ = NULL;
+}
+
+void add_raster_distortion(const raster_distortion* distortion)
+{
+	distortions_.push_back(distortion);
+}
+
+void remove_raster_distortion(const raster_distortion* distortion)
+{
+	distortions_.erase(std::remove(distortions_.begin(), distortions_.end(), distortion), distortions_.end());
 }
 
 void draw_rect(const SDL_Rect& r, const SDL_Color& color,

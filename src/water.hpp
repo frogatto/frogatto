@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "formula_fwd.hpp"
+#include "raster_distortion.hpp"
 #include "wml_node_fwd.hpp"
 
 class level;
@@ -14,6 +15,8 @@ public:
 	explicit water(wml::const_node_ptr node);
 
 	wml::node_ptr write() const;
+	void begin_drawing();
+	void end_drawing();
 	bool draw(int begin_layer, int end_layer, int x, int y, int w, int h, const char* solid_buf) const;
 	void process(const level& lvl);
 
@@ -27,8 +30,7 @@ public:
 private:
 
 	int level_;
-	int min_zorder_;
-	int max_zorder_;
+	int wave_offset_;
 	
 	struct zorder_pos {
 		int zorder;
@@ -43,6 +45,9 @@ private:
 	SDL_Color get_color(int offset) const;
 
 	game_logic::const_formula_ptr water_level_formula_;
+	game_logic::const_formula_ptr wave_distortion_formula_;
+
+	graphics::water_distortion distortion_;
 };
 
 #endif

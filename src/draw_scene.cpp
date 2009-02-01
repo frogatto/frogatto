@@ -196,11 +196,8 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 			}
 		}
 
-		
-		
-		lvl.draw_background(pos.x/100, pos.y/100, camera_rotation);
-
 		glTranslatef(-pos.x/100, -pos.y/100, 0);
+		lvl.draw_background(pos.x/100, pos.y/100, camera_rotation);
 	}
 	lvl.draw(pos.x/100, pos.y/100, graphics::screen_width(), drawable_height());
 	glPopMatrix();
