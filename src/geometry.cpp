@@ -108,11 +108,11 @@ bool point_in_rect(const point& p, const rect& r)
 
 bool rects_intersect(const rect& a, const rect& b)
 {
-	if(a.x2() < b.x() || b.x2() < a.x()) {
+	if(a.x2() <= b.x() || b.x2() <= a.x()) {
 		return false;
 	}
 
-	if(a.y2() < b.y() || b.y2() < a.y()) {
+	if(a.y2() <= b.y() || b.y2() <= a.y()) {
 		return false;
 	}
 

@@ -121,6 +121,8 @@ public:
 	void set_previous_level(const std::string& name);
 	void set_next_level(const std::string& name);
 
+	int cycle() const { return cycle_; }
+
 private:
 	void draw_layer(int layer, int x, int y, int w, int h) const;
 

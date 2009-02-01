@@ -30,7 +30,6 @@ public:
 private:
 
 	int level_;
-	int wave_offset_;
 	
 	struct zorder_pos {
 		int zorder;
@@ -45,7 +44,6 @@ private:
 	SDL_Color get_color(int offset) const;
 
 	game_logic::const_formula_ptr water_level_formula_;
-	game_logic::const_formula_ptr wave_distortion_formula_;
 
 	graphics::water_distortion distortion_;
 };

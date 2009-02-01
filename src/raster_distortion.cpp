@@ -16,19 +16,14 @@ raster_distortion::~raster_distortion()
 water_distortion::water_distortion(int offset, const rect& r) : raster_distortion(r), offset_(offset)
 {}
 
-int water_distortion::map_x(int src_x) const
+void water_distortion::distort_point(int* x, int* y) const
 {
-	return src_x + 8.0*sin((offset_ + src_x)/GLfloat(20.0));
-}
-
-int water_distortion::map_y(int src_y) const
-{
-	return src_y;
+	*x = *x + 8.0*sin((offset_ + *x)/GLfloat(20.0));
 }
 
 int water_distortion::granularity_x() const
 {
-	return 5;
+	return 20;
 }
 
 int water_distortion::granularity_y() const

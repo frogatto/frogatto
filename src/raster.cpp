@@ -161,7 +161,11 @@ void blit_texture_with_distortion(const texture& tex, int x, int y, int w, int h
 	const rect& area = distort.area();
 	if(x < area.x()) {
 		const int new_x = area.x();
-		x1 = (x1*(x + w - new_x) + x2*(new_x - x))/w;
+		const GLfloat new_x1 = (x1*(x + w - new_x) + x2*(new_x - x))/w;
+
+		blit_texture(tex, x, y, new_x - x, h, rotate, x1, y1, new_x1, y2);
+
+		x1 = new_x1;
 		w -= new_x - x;
 		x = new_x;
 	}
@@ -170,11 +174,33 @@ void blit_texture_with_distortion(const texture& tex, int x, int y, int w, int h
 		const int new_y = area.y();
 		const GLfloat new_y1 = (y1*(y + h - new_y) + y2*(new_y - y))/h;
 
-		blit_texture_internal(tex, x, y, w, new_y - y, rotate, x1, y1, x2, new_y1);
+		blit_texture(tex, x, y, w, new_y - y, rotate, x1, y1, x2, new_y1);
 
 		y1 = new_y1;
 		h -= new_y - y;
 		y = new_y;
+	}
+
+	if(x + w > area.x2()) {
+		const int new_w = area.x2() - x;
+		const int new_xpos = x + new_w;
+		const GLfloat new_x2 = (x1*(x + w - new_xpos) + x2*(new_xpos - x))/w;
+
+		blit_texture(tex, new_xpos, y, x + w - new_xpos, h, rotate, new_x2, y1, x2, y2);
+
+		x2 = new_x2;
+		w = new_w;
+	}
+
+	if(y + h > area.y2()) {
+		const int new_h = area.y2() - y;
+		const int new_ypos = y + new_h;
+		const GLfloat new_y2 = (y1*(y + h - new_ypos) + y2*(new_ypos - y))/h;
+
+		blit_texture(tex, x, new_ypos, w, y + h - new_ypos, rotate, x1, new_y2, x2, y2);
+
+		y2 = new_y2;
+		h = new_h;
 	}
 
 	const int xdiff = distort.granularity_x();
@@ -192,10 +218,12 @@ void blit_texture_with_distortion(const texture& tex, int x, int y, int w, int h
 			const GLfloat v1 = (y1*(y+h - ybegin) + y2*(ybegin - y))/h;
 			const GLfloat v2 = (y1*(y+h - yend) + y2*(yend - y))/h;
 
-			const int xbegin_distort = distort.map_x(xbegin);
-			const int ybegin_distort = distort.map_y(ybegin);
-			const int xend_distort = distort.map_x(xend);
-			const int yend_distort = distort.map_y(yend);
+			int xbegin_distort = xbegin;
+			int ybegin_distort = ybegin;
+			int xend_distort = xend;
+			int yend_distort = yend;
+			distort.distort_point(&xbegin_distort, &ybegin_distort);
+			distort.distort_point(&xend_distort, &yend_distort);
 			blit_texture_internal(tex, xbegin_distort, ybegin_distort,
 			                           xend_distort - xbegin_distort,
 			                           yend_distort - ybegin_distort,
