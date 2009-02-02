@@ -200,6 +200,7 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 		lvl.draw_background(pos.x/100, pos.y/100, camera_rotation);
 	}
 	lvl.draw(pos.x/100, pos.y/100, graphics::screen_width(), drawable_height());
+	graphics::clear_raster_distortion();
 	glPopMatrix();
 
 	draw_statusbar(lvl, pos, focus);

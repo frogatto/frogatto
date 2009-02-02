@@ -93,6 +93,13 @@ wml::node_ptr custom_object::write() const
 	return res;
 }
 
+void custom_object::setup_drawing() const
+{
+	if(distortion_) {
+		graphics::add_raster_distortion(distortion_.get());
+	}
+}
+
 void custom_object::draw() const
 {
 	if(frame_ == NULL) {
@@ -447,6 +454,8 @@ variant custom_object::get_value(const std::string& key) const
 		return variant(current_frame().damage());
 	} else if(key == "hit_by") {
 		return variant(last_hit_by_.get());
+	} else if(key == "distortion") {
+		return variant(distortion_.get());
 	}
 
 	return vars_->query_value(key);
@@ -485,6 +494,8 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		draw_color_[2] = value.as_int();
 	} else if(key == "alpha") {
 		draw_color_[3] = value.as_int();
+	} else if(key == "distortion") {
+		distortion_ = value.try_convert<graphics::raster_distortion>();
 	} else {
 		vars_->add(key, value);
 	}

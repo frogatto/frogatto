@@ -7,6 +7,7 @@
 #include "entity.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
+#include "raster_distortion.hpp"
 #include "variant.hpp"
 #include "wml_node_fwd.hpp"
 
@@ -19,6 +20,7 @@ public:
 	custom_object(const std::string& type, int x, int y, bool face_right);
 	virtual ~custom_object() {}
 	virtual wml::node_ptr write() const;
+	virtual void setup_drawing() const;
 	virtual void draw() const;
 	virtual void draw_group() const;
 	virtual void process(level& lvl);
@@ -102,6 +104,8 @@ private:
 	std::map<std::string, game_logic::const_formula_ptr> event_handlers_;
 
 	std::vector<entity_ptr> stood_on_by_;
+
+	graphics::const_raster_distortion_ptr distortion_;
 
 	union {
 	uint8_t draw_color_[4];

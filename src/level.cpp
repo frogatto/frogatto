@@ -620,6 +620,10 @@ void level::draw_background(double x, double y, int rotation) const
 		water_->begin_drawing();
 	}
 
+	foreach(const entity_ptr& c, active_chars_) {
+		c->setup_drawing();
+	}
+
 	if(background_) {
 		background_->draw(x, y, rotation);
 	}

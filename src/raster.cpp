@@ -203,6 +203,9 @@ void blit_texture_with_distortion(const texture& tex, int x, int y, int w, int h
 		h = new_h;
 	}
 
+	tex.set_as_current_texture();
+	glBegin(GL_QUADS);
+
 	const int xdiff = distort.granularity_x();
 	const int ydiff = distort.granularity_y();
 	for(int xpos = 0; xpos < w; xpos += xdiff) {
@@ -218,18 +221,18 @@ void blit_texture_with_distortion(const texture& tex, int x, int y, int w, int h
 			const GLfloat v1 = (y1*(y+h - ybegin) + y2*(ybegin - y))/h;
 			const GLfloat v2 = (y1*(y+h - yend) + y2*(yend - y))/h;
 
-			int xbegin_distort = xbegin;
-			int ybegin_distort = ybegin;
-			int xend_distort = xend;
-			int yend_distort = yend;
-			distort.distort_point(&xbegin_distort, &ybegin_distort);
-			distort.distort_point(&xend_distort, &yend_distort);
-			blit_texture_internal(tex, xbegin_distort, ybegin_distort,
-			                           xend_distort - xbegin_distort,
-			                           yend_distort - ybegin_distort,
-			                           rotate, u1, v1, u2, v2);
+			GLfloat points[8] = { xbegin, ybegin, xend, ybegin, xend, yend, xbegin, yend };
+			GLfloat uv[8] = { u1, v1, u2, v1, u2, v2, u1, v2 };
+
+			for(int n = 0; n != 4; ++n) {
+				distort.distort_point(&points[n*2], &points[n*2 + 1]);
+				graphics::texture::set_coord(uv[n*2], uv[n*2 + 1]);
+				glVertex3f(points[n*2], points[n*2 + 1], 0.0);
+			}
 		}
 	}
+
+	glEnd();
 }
 
 }  // namespace
@@ -246,7 +249,7 @@ void blit_texture(const texture& tex, int x, int y, int w, int h, GLfloat rotate
 		h *= -1;
 	}
 
-	for(std::vector<const raster_distortion*>::const_iterator i = distortions_.begin(); i != distortions_.end(); ++i) {
+	for(std::vector<const raster_distortion*>::const_iterator i = distortions_.begin(); i != distortions_.end() && rotate == 0.0; ++i) {
 		const raster_distortion& distort = **i;
 		if(rects_intersect(rect(x, y, w, h), distort.area())) {
 			blit_texture_with_distortion(tex, x, y, w, h, rotate, x1, y1, x2, y2, distort);
@@ -269,12 +272,18 @@ void clear_draw_detection_rect()
 
 void add_raster_distortion(const raster_distortion* distortion)
 {
+	distortion->next_cycle();
 	distortions_.push_back(distortion);
 }
 
 void remove_raster_distortion(const raster_distortion* distortion)
 {
 	distortions_.erase(std::remove(distortions_.begin(), distortions_.end(), distortion), distortions_.end());
+}
+
+void clear_raster_distortion()
+{
+	distortions_.clear();
 }
 
 void draw_rect(const SDL_Rect& r, const SDL_Color& color,

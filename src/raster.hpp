@@ -48,6 +48,7 @@ void clear_draw_detection_rect();
 class raster_distortion;
 void add_raster_distortion(const raster_distortion* distortion);
 void remove_raster_distortion(const raster_distortion* distortion);
+void clear_raster_distortion();
 
 void draw_rect(const SDL_Rect& rect, const SDL_Color& color,
                unsigned char alpha=0xFF);

@@ -8,6 +8,7 @@
 #include "raster.hpp"
 #include "texture.hpp"
 #include "message_dialog.hpp"
+#include "raster_distortion.hpp"
 #include "sound.hpp"
 #include "speech_dialog.hpp"
 #include "string_utils.hpp"
@@ -289,18 +290,18 @@ private:
 class set_command : public entity_command_callable
 {
 public:
-	explicit set_command(entity_ptr target, const std::string& attr, variant val)
+	explicit set_command(variant target, const std::string& attr, variant val)
 	  : target_(target), attr_(attr), val_(val)
 	{}
 	virtual void execute(level& lvl, entity& ob) const {
-		if(target_) {
-			target_->mutate_value(attr_, val_);
+		if(target_.is_callable()) {
+			target_.mutable_callable()->mutate_value(attr_, val_);
 		} else {
 			ob.mutate_value(attr_, val_);
 		}
 	}
 private:
-	entity_ptr target_;
+	variant target_;
 	std::string attr_;
 	variant val_;
 };
@@ -312,7 +313,10 @@ public:
 	}
 private:
 	variant execute(const formula_callable& variables) const {
-		entity_ptr target(args().size() == 3 ? args()[0]->evaluate(variables).convert_to<entity>() : NULL);
+		variant target;
+		if(args().size() == 3) {
+			target = args()[0]->evaluate(variables);
+		}
 		const int begin_index = args().size() == 2 ? 0 : 1;
 		return variant(new set_command(
 		    target,
@@ -604,6 +608,20 @@ private:
 	}
 };
 
+class distortion_function : public function_expression {
+public:
+	explicit distortion_function(const args_list& args)
+	  : function_expression("distortion", args, 3) {
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new graphics::radial_distortion(
+		                       args()[0]->evaluate(variables).as_int(),
+		                       args()[1]->evaluate(variables).as_int(),
+		                       args()[2]->evaluate(variables).as_int()));
+	}
+};
+
 class custom_object_function_symbol_table : public function_symbol_table
 {
 public:
@@ -654,6 +672,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new debug_function(args));
 	} else if(fn == "score") {
 		return expression_ptr(new score_function(args));
+	} else if(fn == "distortion") {
+		return expression_ptr(new distortion_function(args));
 	}
 	return function_symbol_table::create_function(fn, args);
 }

@@ -29,6 +29,7 @@ public:
 	entity(int x, int y, bool face_right);
 	virtual ~entity() {}
 	virtual wml::node_ptr write() const = 0;
+	virtual void setup_drawing() const {}
 	virtual void draw() const = 0;
 	virtual void draw_group() const = 0;
 	virtual const pc_character* is_human() const { return NULL; }
