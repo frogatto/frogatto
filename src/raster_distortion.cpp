@@ -65,12 +65,12 @@ void radial_distortion::distort_point(GLfloat* x, GLfloat* y) const
 
 int radial_distortion::granularity_x() const
 {
-	return 5;
+	return 10;
 }
 
 int radial_distortion::granularity_y() const
 {
-	return 5;
+	return 10;
 }
 
 variant radial_distortion::get_value(const std::string& key) const
