@@ -394,7 +394,7 @@ void custom_object::control(const level& lvl)
 {
 }
 
-bool custom_object::is_standing(const level& lvl)
+bool custom_object::is_standing(const level& lvl) const
 {
 	return (current_frame().feet_x() || current_frame().feet_y()) &&
 	       lvl.standable(feet_x(), feet_y());
@@ -456,6 +456,11 @@ variant custom_object::get_value(const std::string& key) const
 		return variant(last_hit_by_.get());
 	} else if(key == "distortion") {
 		return variant(distortion_.get());
+	} else if(key == "is_standing") {
+		if(!lvl_) {
+			return variant();
+		}
+		return variant(is_standing(*lvl_));
 	}
 
 	return vars_->query_value(key);
