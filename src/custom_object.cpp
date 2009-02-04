@@ -6,6 +6,7 @@
 #include "font.hpp"
 #include "formatter.hpp"
 #include "level.hpp"
+#include "level_logic.hpp"
 #include "raster.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
@@ -461,6 +462,9 @@ variant custom_object::get_value(const std::string& key) const
 			return variant();
 		}
 		return variant(is_standing(*lvl_));
+	} else if(key == "near_cliff_edge") {
+		return variant(is_standing(*lvl_) &&
+		               cliff_edge_within(*lvl_, feet_x(), feet_y(), face_dir()*15));
 	}
 
 	return vars_->query_value(key);
