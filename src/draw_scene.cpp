@@ -8,6 +8,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/scoped_ptr.hpp>
 
+#include "debug_console.hpp"
 #include "draw_number.hpp"
 #include "draw_scene.hpp"
 #include "font.hpp"
@@ -202,6 +203,8 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 	lvl.draw(pos.x/100, pos.y/100, graphics::screen_width(), drawable_height());
 	graphics::clear_raster_distortion();
 	glPopMatrix();
+
+	debug_console::draw();
 
 	draw_statusbar(lvl, pos, focus);
 }

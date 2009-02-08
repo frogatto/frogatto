@@ -2,6 +2,7 @@
 
 #include "custom_object_functions.hpp"
 #include "custom_object.hpp"
+#include "debug_console.hpp"
 #include "draw_scene.hpp"
 #include "entity.hpp"
 #include "level.hpp"
@@ -562,10 +563,11 @@ private:
 class debug_command : public entity_command_callable
 {
 public:
-	explicit debug_command(std::string str) : str_(str)
+	explicit debug_command(const std::string& str) : str_(str)
 	{}
 	virtual void execute(level& lvl, entity& ob) const {
 		std::cerr << "CUSTOM DEBUG: '" << str_ << "'\n";
+		debug_console::add_message(str_);
 	}
 private:
 	std::string str_;
@@ -574,11 +576,16 @@ private:
 class debug_function : public function_expression {
 public:
 	explicit debug_function(const args_list& args)
-	  : function_expression("debug", args, 1) {
+	  : function_expression("debug", args, 1, -1) {
 	}
 private:
 	variant execute(const formula_callable& variables) const {
-		return variant(new debug_command(args()[0]->evaluate(variables).to_debug_string()));
+		std::string str;
+		for(int n = 0; n != args().size(); ++n) {
+			str += args()[n]->evaluate(variables).to_debug_string();
+		}
+
+		return variant(new debug_command(str));
 	}
 };
 
