@@ -841,6 +841,17 @@ entity_ptr level::collide(int x, int y, const entity* exclude) const
 				return res;
 			}
 		}
+
+		if(c.get() != exclude && c != player_) {
+			if((!c->body_passthrough() || is_players_side && c->body_harmful()) &&
+			   c->point_collides(x,y)) {
+				return c;
+			}
+
+			if(point_in_rect(point(x,y), c->hit_rect())) {
+				return c;
+			}
+		}
 	}
 
 	return res;
@@ -858,10 +869,16 @@ entity_ptr level::collide(const rect& r, const entity* exclude) const
 		if(is_players_side && c->on_players_side()) {
 			continue;
 		}
-		if(c.get() != exclude && c != player_ &&
-		   (!c->body_passthrough() || is_players_side && c->body_harmful()) &&
-		   rects_intersect(r, c->body_rect())) {
-			return c;
+
+		if(c.get() != exclude && c != player_) {
+			if((!c->body_passthrough() || is_players_side && c->body_harmful()) &&
+			   rects_intersect(r, c->body_rect())) {
+				return c;
+			}
+
+			if(rects_intersect(r, c->hit_rect())) {
+				return c;
+			}
 		}
 	}
 
