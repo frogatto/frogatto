@@ -197,6 +197,9 @@ std::string parse_value(std::string::const_iterator& i1,
 		if(*i1 == '"') {
 			++i1;
 			while(i1 != i2 && *i1 != '"') {
+				if(*i1 == '\\' && i1+1 != i2) {
+					++i1;
+				}
 				res.push_back(*i1);
 				++i1;
 			}
