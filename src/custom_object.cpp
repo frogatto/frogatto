@@ -472,6 +472,10 @@ variant custom_object::get_value(const std::string& key) const
 
 void custom_object::get_inputs(std::vector<game_logic::formula_input>* inputs) const
 {
+	inputs->push_back(game_logic::formula_input("time_in_animation", game_logic::FORMULA_READ_WRITE));
+	inputs->push_back(game_logic::formula_input("level", game_logic::FORMULA_READ_ONLY));
+	inputs->push_back(game_logic::formula_input("animation", game_logic::FORMULA_READ_ONLY));
+	inputs->push_back(game_logic::formula_input("hitpoints", game_logic::FORMULA_READ_WRITE));
 }
 
 void custom_object::set_value(const std::string& key, const variant& value)

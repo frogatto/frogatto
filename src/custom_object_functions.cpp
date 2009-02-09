@@ -13,6 +13,7 @@
 #include "sound.hpp"
 #include "speech_dialog.hpp"
 #include "string_utils.hpp"
+#include "text_entry_widget.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
 
@@ -589,6 +590,70 @@ private:
 	}
 };
 
+class debug_console_command : public entity_command_callable
+{
+public:
+	explicit debug_console_command(const formula_callable& callable)
+	  : callable_(callable) {
+		entry_.set_loc(10, 300);
+		entry_.set_dim(300, 20);
+	}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		bool done = false;
+		while(!done) {
+			SDL_Event event;
+			while(SDL_PollEvent(&event)) {
+				switch(event.type) {
+				case SDL_KEYDOWN:
+					done = event.key.keysym.sym == SDLK_ESCAPE;
+
+					if(event.key.keysym.sym == SDLK_RETURN) {
+						try {
+							game_logic::formula f(entry_.text(), &get_custom_object_functions_symbol_table());
+							variant v = f.execute(callable_);
+							debug_console::add_message(v.to_debug_string());
+							entry_.set_text("");
+						} catch(game_logic::formula_error&) {
+							debug_console::add_message("error parsing formula");
+						} catch(...) {
+							debug_console::add_message("unknown error parsing formula");
+						}
+					}
+					break;
+				}
+
+				entry_.process_event(event, false);
+			}
+
+			draw(lvl);
+			SDL_Delay(20);
+		}
+	}
+private:
+	void draw(const level& lvl) const {
+		draw_scene(lvl, last_draw_position(), lvl.player().get());
+
+		entry_.draw();
+
+		SDL_GL_SwapBuffers();
+	}
+
+	const formula_callable& callable_;
+	mutable gui::text_entry_widget entry_;
+};
+
+class debug_console_function : public function_expression {
+public:
+	explicit debug_console_function(const args_list& args)
+	  : function_expression("debug_console", args, 0, 0) {
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new debug_console_command(variables));
+	}
+};
+
 class score_command : public entity_command_callable
 {
 public:
@@ -677,6 +742,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new end_game_function(args));
 	} else if(fn == "debug") {
 		return expression_ptr(new debug_function(args));
+	} else if(fn == "debug_console") {
+		return expression_ptr(new debug_console_function(args));
 	} else if(fn == "score") {
 		return expression_ptr(new score_function(args));
 	} else if(fn == "distortion") {
