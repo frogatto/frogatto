@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "asserts.hpp"
 #include "custom_object_functions.hpp"
 #include "custom_object.hpp"
 #include "debug_console.hpp"
@@ -594,12 +595,15 @@ class debug_console_command : public entity_command_callable
 {
 public:
 	explicit debug_console_command(const formula_callable& callable)
-	  : callable_(callable) {
+	  : callable_(callable), history_pos_(0) {
 		entry_.set_loc(10, 300);
 		entry_.set_dim(300, 20);
 	}
 
 	virtual void execute(level& lvl, entity& ob) const {
+		history_.clear();
+		history_pos_ = 0;
+
 		bool done = false;
 		while(!done) {
 			SDL_Event event;
@@ -610,15 +614,32 @@ public:
 
 					if(event.key.keysym.sym == SDLK_RETURN) {
 						try {
-							game_logic::formula f(entry_.text(), &get_custom_object_functions_symbol_table());
+							const std::string text = entry_.text();
+							history_.push_back(entry_.text());
+							history_pos_ = history_.size();
+							entry_.set_text("");
+							game_logic::formula f(text, &get_custom_object_functions_symbol_table());
 							variant v = f.execute(callable_);
 							ob.execute_command(v);
 							debug_console::add_message(v.to_debug_string());
-							entry_.set_text("");
 						} catch(game_logic::formula_error&) {
 							debug_console::add_message("error parsing formula");
 						} catch(...) {
 							debug_console::add_message("unknown error parsing formula");
+						}
+					} else if(event.key.keysym.sym == SDLK_UP) {
+						if(history_pos_ > 0) {
+							--history_pos_;
+							ASSERT_LT(history_pos_, history_.size());
+							entry_.set_text(history_[history_pos_]);
+						}
+					} else if(event.key.keysym.sym == SDLK_DOWN) {
+						if(history_pos_ < history_.size() - 1) {
+							++history_pos_;
+							entry_.set_text(history_[history_pos_]);
+						} else {
+							history_pos_ = history_.size();
+							entry_.set_text("");
 						}
 					}
 					break;
@@ -642,6 +663,8 @@ private:
 
 	const formula_callable& callable_;
 	mutable gui::text_entry_widget entry_;
+	mutable std::vector<std::string> history_;
+	mutable int history_pos_;
 };
 
 class debug_console_function : public function_expression {
