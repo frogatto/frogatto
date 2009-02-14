@@ -775,18 +775,10 @@ void editor::draw() const
 	if(mode_ == EDIT_TILES) {
 	} else if(mode_ == EDIT_CHARS) {
 		ASSERT_INDEX_INTO_VECTOR(cur_item_, enemy_types);
-		enemy_types[cur_item_].preview_frame->draw(700, 10, face_right_);
 	} else if(mode_ == EDIT_ITEMS) {
-		ASSERT_INDEX_INTO_VECTOR(cur_item_, placeable_items);
-		const_item_type_ptr type = placeable_items[cur_item_].type;
-		if(type) {
-			const frame& f = type->get_frame();
-			f.draw(700, 10, true);
-		}
+
 	} else if(mode_ == EDIT_PROPS) {
-		ASSERT_INDEX_INTO_VECTOR(cur_item_, all_props);
-		const frame& f = all_props[cur_item_]->get_frame();
-		f.draw(700, 10, true);
+
 	} else if(mode_ == EDIT_PROPERTIES && selected_entity) {
 		game_logic::formula_callable* vars = selected_entity->vars();
 		if(vars) {
