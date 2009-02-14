@@ -27,6 +27,7 @@
 #include "level_object.hpp"
 #include "load_level.hpp"
 #include "prop.hpp"
+#include "property_editor_dialog.hpp"
 #include "prop_editor_dialog.hpp"
 #include "raster.hpp"
 #include "texture.hpp"
@@ -480,6 +481,8 @@ void editor::edit_level()
 
 				if(mode_ != EDIT_PROPERTIES) {
 					drawing_rect_ = true;
+				} else if(property_dialog_) {
+					property_dialog_->set_entity(lvl_->editor_selection());
 				}
 
 				if(lvl_->editor_selection()) {
@@ -674,6 +677,9 @@ void editor::change_mode(int nmode)
 	case EDIT_GROUPS:
 		break;
 	case EDIT_PROPERTIES:
+		property_dialog_.reset(new editor_dialogs::property_editor_dialog(*this));
+		current_dialog_ = property_dialog_.get();
+		cur_item_ = 0;
 		break;
 	case EDIT_VARIATIONS:
 		break;
