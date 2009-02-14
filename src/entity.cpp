@@ -77,6 +77,11 @@ rect entity::hit_rect() const
 	}
 }
 
+bool entity::is_alpha(int xpos, int ypos) const
+{
+	return current_frame().is_alpha(xpos - x(), ypos - y(), time_in_frame(), face_right());
+}
+
 void entity::draw_debug_rects() const
 {
 	if(preferences::show_debug_hitboxes() == false) {

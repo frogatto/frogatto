@@ -69,6 +69,10 @@ private:
 	boost::scoped_ptr<level> lvl_;
 	int xpos_, ypos_;
 	int anchorx_, anchory_;
+
+	//if we are dragging an entity around, this marks the position from
+	//which the entity started the drag.
+	int selected_entity_startx_, selected_entity_starty_;
 	std::string filename_;
 
 	EDIT_MODE mode_;

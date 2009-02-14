@@ -2,6 +2,7 @@
 
 #include <boost/lexical_cast.hpp>
 
+#include "asserts.hpp"
 #include "foreach.hpp"
 #include "frame.hpp"
 #include "raster.hpp"
@@ -91,18 +92,52 @@ void frame::play_sound() const
 	}
 }
 
+bool frame::is_alpha(int x, int y, int time, bool face_right) const
+{
+	if(x < 0 || y < 0 || x >= width() || y >= height()) {
+		return true;
+	}
+
+	GLfloat rect[4];
+	get_rect_in_texture(time, face_right, &rect[0]);
+	
+	const GLfloat xratio1 = GLfloat(width() - x)/width();
+	const GLfloat xratio2 = GLfloat(x)/width();
+	const GLfloat yratio1 = GLfloat(height() - y)/height();
+	const GLfloat yratio2 = GLfloat(y)/height();
+
+	const GLfloat u = xratio1*rect[0] + xratio2*rect[2];
+	const GLfloat v = yratio1*rect[1] + yratio2*rect[3];
+
+	ASSERT_GE(u, 0.0);
+	ASSERT_GE(v, 0.0);
+	ASSERT_LE(u, 1.0);
+	ASSERT_LE(v, 1.0);
+
+	return texture_.is_alpha((texture_.width()-1)*u, (texture_.height()-1)*v);
+}
+
 void frame::draw(int x, int y, bool face_right, int time, int rotate) const
+{
+	GLfloat rect[4];
+	get_rect_in_texture(time, face_right, &rect[0]);
+	
+	//the last 4 params are the rectangle of the single, specific frame
+	graphics::blit_texture(texture_, x, y, width()*(face_right ? 1 : -1), height(), rotate + (face_right ? rotate_ : -rotate_),
+	                       rect[0], rect[1], rect[2], rect[3]);
+
+}
+
+void frame::get_rect_in_texture(int time, bool face_right, GLfloat* output_rect) const
 {
 	//picks out a single frame to draw from a whole animation, based on time
 	const int current_col = (nframes_per_row_ > 0) ? (frame_number(time) % nframes_per_row_) : frame_number(time) ;
 	const int current_row = (nframes_per_row_ > 0) ? (frame_number(time)/nframes_per_row_) : 0 ;
-	
-	//the last 4 params are the rectangle of the single, specific frame
-	graphics::blit_texture(texture_, x, y, width()*(face_right ? 1 : -1), height(), rotate + (face_right ? rotate_ : -rotate_),
-	  GLfloat(img_rect_.x() + current_col*(img_rect_.w()+pad_))/GLfloat(texture_.width()),
-	  GLfloat(img_rect_.y() + ((img_rect_.h()+pad_) * current_row)) / GLfloat(texture_.height()),
-	  GLfloat(img_rect_.x() + current_col*(img_rect_.w()+pad_) + img_rect_.w())/GLfloat(texture_.width()),
-	  GLfloat(img_rect_.y() + ((img_rect_.h()+pad_) * current_row) + img_rect_.h())/GLfloat(texture_.height()));
+
+	output_rect[0] = GLfloat(img_rect_.x() + current_col*(img_rect_.w()+pad_))/GLfloat(texture_.width());
+	output_rect[1] = GLfloat(img_rect_.y() + ((img_rect_.h()+pad_) * current_row)) / GLfloat(texture_.height());
+	output_rect[2] = GLfloat(img_rect_.x() + current_col*(img_rect_.w()+pad_) + img_rect_.w())/GLfloat(texture_.width());
+	output_rect[3] = GLfloat(img_rect_.y() + ((img_rect_.h()+pad_) * current_row) + img_rect_.h())/GLfloat(texture_.height());
 }
 
 int frame::duration() const

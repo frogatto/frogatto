@@ -414,8 +414,12 @@ variant custom_object::get_value(const std::string& key) const
 	} else if(key == "max_hitpoints") {
 		return variant(type_->hitpoints());
 	} else if(key == "x") {
-		return variant(body_rect().x());
+		return variant(x());
 	} else if(key == "y") {
+		return variant(y());
+	} else if(key == "x1") {
+		return variant(body_rect().x());
+	} else if(key == "y1") {
 		return variant(body_rect().y());
 	} else if(key == "x2") {
 		return variant(body_rect().x2());

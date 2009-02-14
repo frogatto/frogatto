@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <iostream>
+#include <math.h>
 
 #include "draw_tile.hpp"
 #include "entity.hpp"
@@ -580,6 +581,17 @@ void level::draw(int x, int y, int w, int h) const
 		++entity_itor;
 	}
 
+	if(editor_selection_) {
+		static int selection = 0;
+		++selection;
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+		const GLfloat alpha = 0.5 + sin(selection/5.0)*0.5;
+		glColor4f(1.0, 1.0, 1.0, alpha);
+		editor_selection_->draw();
+		glColor4f(1.0, 1.0, 1.0, 1.0);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
+
 	draw_debug_solid(x, y, w, h);
 }
 
@@ -1061,6 +1073,19 @@ std::vector<entity_ptr> level::get_characters_in_rect(const rect& r) const
 	}
 
 	return res;
+}
+
+entity_ptr level::get_character_at_point(int x, int y) const
+{
+	foreach(entity_ptr c, chars_) {
+		const int xpos = x - c->x();
+		const int ypos = y - c->y();
+		if(!c->is_alpha(x, y)) {
+			return c;
+		}
+	}
+	
+	return entity_ptr();
 }
 
 void level::add_solid_rect(int x1, int y1, int x2, int y2, int friction, int damage)

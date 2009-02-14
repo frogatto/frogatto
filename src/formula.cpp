@@ -503,7 +503,7 @@ void parse_function_args(const token* &i1, const token* i2,
 		throw formula_error();
 	}
 
-	while((i1-> type != TOKEN_RPARENS) && (i1 != i2)) {
+	while((i1->type != TOKEN_RPARENS) && (i1 != i2)) {
 		if(i1->type == TOKEN_IDENTIFIER) {
 			if(std::string((i1+1)->begin, (i1+1)->end) == "*") {
 				res->push_back(std::string(i1->begin, i1->end) + std::string("*"));

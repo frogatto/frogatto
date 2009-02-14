@@ -62,6 +62,7 @@ public:
 	const level_tile* get_tile_at(int x, int y) const;
 	void remove_characters_in_rect(int x1, int y1, int x2, int y2);
 	std::vector<entity_ptr> get_characters_in_rect(const rect& r) const;
+	entity_ptr get_character_at_point(int x, int y) const;
 	const_pc_character_ptr player() const { return player_; }
 	pc_character_ptr player() { return player_; }
 	void add_player(entity_ptr p);
@@ -91,6 +92,8 @@ public:
 	int add_group();
 
 	void set_editor() { editor_ = true; }
+	void set_editor_selection(entity_ptr c) { editor_selection_ = c; }
+	entity_ptr editor_selection() const { return editor_selection_; }
 
 	void rebuild_tiles();
 
@@ -197,6 +200,7 @@ private:
 
 	int save_point_x_, save_point_y_;
 	bool editor_;
+	entity_ptr editor_selection_;
 
 	point auto_move_camera_;
 	int air_resistance_;

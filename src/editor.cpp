@@ -206,6 +206,7 @@ editor::tileset::tileset(wml::const_node_ptr node)
 
 editor::editor(const char* level_cfg)
   : xpos_(0), ypos_(0), anchorx_(0), anchory_(0),
+    selected_entity_startx_(0), selected_entity_starty_(0),
     filename_(level_cfg), mode_(EDIT_TILES), done_(false), face_right_(true),
     cur_tileset_(0),
     cur_item_(0),
@@ -258,6 +259,19 @@ void editor::edit_level()
 
 		const int selectx = (xpos_ + mousex)/TileSize;
 		const int selecty = (ypos_ + mousey)/TileSize;
+
+		if(mode_ == EDIT_PROPERTIES && !buttons) {
+			lvl_->set_editor_selection(lvl_->get_character_at_point(xpos_ + mousex, ypos_ + mousey));
+		} else if(mode_ != EDIT_PROPERTIES) {
+			lvl_->set_editor_selection(entity_ptr());
+		} else if(lvl_->editor_selection()) {
+			const int dx = xpos_ + mousex - anchorx_;
+			const int dy = ypos_ + mousey - anchory_;
+			const int xpos = selected_entity_startx_ + dx;
+			const int ypos = selected_entity_starty_ + dy;
+
+			lvl_->editor_selection()->set_pos(xpos - xpos%TileSize, ypos - ypos%TileSize);
+		}
 
 		const int ScrollSpeed = 8;
 
@@ -463,7 +477,15 @@ void editor::edit_level()
 			case SDL_MOUSEBUTTONDOWN:
 				anchorx_ = xpos_ + mousex;
 				anchory_ = ypos_ + mousey;
-				drawing_rect_ = true;
+
+				if(mode_ != EDIT_PROPERTIES) {
+					drawing_rect_ = true;
+				}
+
+				if(lvl_->editor_selection()) {
+					selected_entity_startx_ = lvl_->editor_selection()->x();
+					selected_entity_starty_ = lvl_->editor_selection()->y();
+				}
 
 				if(select_previous_level_) {
 

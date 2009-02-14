@@ -68,6 +68,8 @@ public:
 	virtual const frame& icon_frame() const = 0;
 	virtual const frame& current_frame() const = 0;
 
+	bool is_alpha(int xpos, int ypos) const;
+
 	int feet_x() const;
 	int feet_y() const;
 
