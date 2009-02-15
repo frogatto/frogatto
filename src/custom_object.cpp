@@ -425,6 +425,14 @@ variant custom_object::get_value(const std::string& key) const
 		return variant(body_rect().x2());
 	} else if(key == "y2") {
 		return variant(body_rect().y2());
+	} else if(key == "w") {
+		return variant(body_rect().w());
+	} else if(key == "h") {
+		return variant(body_rect().h());
+	} else if(key == "midpoint_x") {
+		return variant(body_rect().x() + body_rect().w()/2);
+	} else if(key == "midpoint_y") {
+		return variant(body_rect().y() + body_rect().h()/2);
 	} else if(key == "front") {
 		return variant(face_right() ? body_rect().x2() : body_rect().x());
 	} else if(key == "back") {
