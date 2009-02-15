@@ -97,6 +97,10 @@ public:
 		}
 		lvl.add_character(e);
 		e->execute_command(instantiation_commands_);
+		
+		//spawn with the spawned object's midpoint (rather than its upper-left corner) at x_, y_.
+		//This means objects are centered on the point they're spawned on, which is a lot more intuitive for scripting.
+		e->set_pos(e->x() - e->current_frame().width() / 2 , e->y() - e->current_frame().height() / 2);
 	}
 private:
 	std::string type_;
