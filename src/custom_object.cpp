@@ -590,6 +590,11 @@ void custom_object::hit_by(entity& e)
 	handle_event("hit_by_player");
 }
 
+bool custom_object::dies_on_inactive() const
+{
+	return type_->dies_on_inactive();
+}
+
 bool custom_object::body_harmful() const
 {
 	return type_->body_harmful();

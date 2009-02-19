@@ -40,6 +40,7 @@ public:
 	game_logic::const_formula_ptr get_event_handler(const std::string& event) const;
 
 	int zorder() const { return zorder_; }
+	bool dies_on_inactive() const { return dies_on_inactive_;}
 	bool body_harmful() const { return body_harmful_; }
 	bool body_passthrough() const { return body_passthrough_; }
 	bool ignore_collide() const { return ignore_collide_; }
@@ -75,6 +76,7 @@ private:
 
 	int zorder_;
 
+	bool dies_on_inactive_;
 	bool body_harmful_;
 	bool body_passthrough_;
 	bool ignore_collide_;

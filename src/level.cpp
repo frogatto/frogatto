@@ -682,6 +682,11 @@ void level::process()
 			} else {
 				active_chars_.push_back(c);
 			}
+		} else { //char is inactive
+			if( c->dies_on_inactive() ){
+				
+				chars_.erase(std::remove(chars_.begin(), chars_.end(), c), chars_.end());
+			}
 		}
 	}
 
