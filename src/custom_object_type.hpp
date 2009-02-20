@@ -32,6 +32,8 @@ public:
 	const std::string& id() const { return id_; }
 	int hitpoints() const { return hitpoints_; }
 
+	int timer_frequency() const { return timer_frequency_; }
+
 	const frame& default_frame() const;
 	const frame& get_frame(const std::string& key) const;
 
@@ -64,6 +66,8 @@ public:
 private:
 	std::string id_;
 	int hitpoints_;
+
+	int timer_frequency_;
 
 	typedef std::map<std::string, std::vector<boost::shared_ptr<frame> > > frame_map;
 	frame_map frames_;

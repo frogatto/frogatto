@@ -59,7 +59,7 @@ public:
 
 	const std::vector<const_prop_ptr>& get_props() const;
 
-	enum EDIT_MODE { EDIT_TILES, EDIT_CHARS, EDIT_ITEMS, EDIT_GROUPS, EDIT_PROPERTIES, EDIT_VARIATIONS, EDIT_PROPS, NUM_MODES };
+	enum EDIT_MODE { EDIT_TILES, EDIT_CHARS, EDIT_ITEMS, EDIT_GROUPS, EDIT_PROPERTIES, EDIT_VARIATIONS, EDIT_PROPS, EDIT_PORTALS, NUM_MODES };
 	EDIT_MODE mode() const { return mode_; }
 	void change_mode(int nmode);
 private:

@@ -298,6 +298,11 @@ void custom_object::process(level& lvl)
 	static const std::string ProcessStr = "process";
 	handle_event(ProcessStr);
 
+	if(type_->timer_frequency() > 0 && (cycle_%type_->timer_frequency()) == 0) {
+		static const std::string TimerStr = "timer";
+		handle_event(TimerStr);
+	}
+
 	//adjust anyone who is standing on us by the amount we've moved.
 	if(stood_on_by_.empty() == false) {
 		const int dx = x() - start_x;

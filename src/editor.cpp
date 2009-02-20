@@ -39,7 +39,7 @@
 #include "wml_writer.hpp"
 
 namespace {
-const char* ModeStrings[] = {"Tiles", "Objects", "Items", "Groups", "Properties", "Variations", "Props"};
+const char* ModeStrings[] = {"Tiles", "Objects", "Items", "Groups", "Properties", "Variations", "Props", "Portals"};
 }
 
 class editor_mode_dialog : public gui::dialog
