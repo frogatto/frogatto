@@ -54,6 +54,12 @@ public:
 	const frame* fly_frame() const { return fly_frame_.get(); }
 	const frame* slide_frame() const { return slide_frame_.get(); }
 	const frame* spring_frame() const { return spring_frame_.get(); }
+	const frame* swim_side_idle_frame() const { return swim_side_idle_frame_.get(); }
+	const frame* swim_down_idle_frame() const { return swim_down_idle_frame_.get(); }
+	const frame* swim_up_idle_frame() const { return swim_up_idle_frame_.get(); }
+	const frame* swim_side_frame() const { return swim_side_frame_.get(); }
+	const frame* swim_down_frame() const { return swim_down_frame_.get(); }
+	const frame* swim_up_frame() const { return swim_up_frame_.get(); }
 	int walk() const { return walk_; }
 	int jump() const { return jump_; }
 	int boost() const { return boost_; }
@@ -85,7 +91,9 @@ private:
 	          crouch_frame_, roll_frame_, lookup_frame_, gethit_frame_,
 			  attack_frame_, jump_attack_frame_, fall_spin_attack_frame_,
 			  up_attack_frame_, run_attack_frame_,
-			  die_frame_, fly_frame_, slide_frame_, spring_frame_;
+			  die_frame_, fly_frame_, slide_frame_, spring_frame_,
+			  swim_side_idle_frame_,swim_down_idle_frame_,swim_up_idle_frame_,
+			  swim_side_frame_,swim_down_frame_,swim_up_frame_;
 	int walk_;
 	int jump_;
 	int boost_;
