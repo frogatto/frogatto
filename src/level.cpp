@@ -1332,3 +1332,12 @@ int level::camera_rotation() const
 
 	return camera_rotation_->execute(*this).as_int();
 }
+
+bool level::is_underwater(const rect& r) const
+{
+	if (water_){
+		return r.y() > water_->get_water_level(0);
+	}
+	return false;
+}
+

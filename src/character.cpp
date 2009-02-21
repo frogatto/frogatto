@@ -296,6 +296,11 @@ void character::process(level& lvl)
 			current_frame_ = type_->crouch_frame();
 			time_in_frame_ = current_frame_->duration()/2 - 1;
 		}
+		
+		/*if( lvl.is_underwater(body_rect()) ) {
+			current_frame_ = type_->swim_side_idle_frame();
+			time_in_frame_ = 0;
+		}*/
 	}
 
 	if((current_frame_ == type_->walk_frame() || current_frame_ == type_->run_frame()) && velocity_x_/100 == 0) {

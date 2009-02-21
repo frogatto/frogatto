@@ -125,6 +125,7 @@ public:
 	void set_next_level(const std::string& name);
 
 	int cycle() const { return cycle_; }
+	bool is_underwater(const rect& r) const;
 
 private:
 	void draw_layer(int layer, int x, int y, int w, int h) const;
@@ -213,6 +214,7 @@ private:
 	boost::scoped_ptr<fluid> fluid_;
 
 	boost::scoped_ptr<water> water_;
+	
 };
 
 #endif
