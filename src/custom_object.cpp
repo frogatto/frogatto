@@ -600,6 +600,11 @@ bool custom_object::dies_on_inactive() const
 	return type_->dies_on_inactive();
 }
 
+bool custom_object::always_active() const
+{
+	return type_->always_active();
+}
+
 bool custom_object::body_harmful() const
 {
 	return type_->body_harmful();

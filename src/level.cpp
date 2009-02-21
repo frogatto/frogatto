@@ -674,7 +674,8 @@ void level::process()
 		int distance_x = 0, distance_y = 0;
 		c->activation_distance(&distance_x, &distance_y);
 		if(std::abs(player_->x() - c->x()) < distance_x &&
-		   std::abs(player_->y() - c->y()) < distance_y) {
+		   std::abs(player_->y() - c->y()) < distance_y ||
+		   c->always_active()) {
 			if(c->group() >= 0) {
 				assert(c->group() < groups_.size());
 				const entity_group& group = groups_[c->group()];

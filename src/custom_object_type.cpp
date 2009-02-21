@@ -42,6 +42,7 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	timer_frequency_(wml::get_int(node, "timer_frequency", -1)),
 	zorder_(wml::get_int(node, "zorder")),
 	dies_on_inactive_(wml::get_bool(node, "dies_on_inactive", false)),
+	always_active_(wml::get_bool(node, "always_active", false)),
     body_harmful_(wml::get_bool(node, "body_harmful", true)),
     body_passthrough_(wml::get_bool(node, "body_passthrough", false)),
     ignore_collide_(wml::get_bool(node, "ignore_collide", false)),

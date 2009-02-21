@@ -43,6 +43,7 @@ public:
 
 	int zorder() const { return zorder_; }
 	bool dies_on_inactive() const { return dies_on_inactive_;}
+	bool always_active() const { return always_active_;}
 	bool body_harmful() const { return body_harmful_; }
 	bool body_passthrough() const { return body_passthrough_; }
 	bool ignore_collide() const { return ignore_collide_; }
@@ -81,6 +82,7 @@ private:
 	int zorder_;
 
 	bool dies_on_inactive_;
+	bool always_active_;
 	bool body_harmful_;
 	bool body_passthrough_;
 	bool ignore_collide_;

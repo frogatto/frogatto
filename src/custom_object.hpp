@@ -43,7 +43,7 @@ public:
 	void set_frame(const std::string& name);
 	void die();
 	bool dies_on_inactive() const;
-
+	bool always_active() const;
 	void hit_player();
 	void hit_by(entity& e);
 

@@ -87,6 +87,7 @@ public:
 
 	virtual void activation_distance(int* x, int* y);
 	virtual bool dies_on_inactive() const { return false; } 
+	virtual bool always_active() const { return false; } 
 	
 	virtual formula_callable* vars() { return NULL; }
 	virtual const formula_callable* vars() const { return NULL; }
