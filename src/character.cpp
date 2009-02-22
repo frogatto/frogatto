@@ -799,7 +799,7 @@ void character::walk(const level& lvl, bool move_right)
 		return;
 	}
 
-	if(look_up() || look_down()) {
+	if((look_up() || look_down()) && is_standing(lvl)) {
 		return;
 	}
 
@@ -1543,16 +1543,6 @@ void pc_character::control(const level& lvl)
 		running_ = false;
 	}
 
-	if(key_[SDLK_a] || joystick::button(1) || joystick::button(3)) {
-		if(key_[SDLK_DOWN] || joystick::down()) {
-			jump_down(lvl);
-		} else {
-			jump(lvl);
-		}
-		set_last_jump(true);
-	} else {
-		set_last_jump(false);
-	}
 
 	if(key_[SDLK_DOWN] || joystick::down()) {
 		if (&current_frame() != type().crouch_frame() && &current_frame() != type().roll_frame())
@@ -1568,7 +1558,18 @@ void pc_character::control(const level& lvl)
 	} else if(&current_frame() == type().lookup_frame()) {
 		unlookup(lvl);
 	}
-
+	
+	if(key_[SDLK_a] || joystick::button(1) || joystick::button(3)) {
+		if(key_[SDLK_DOWN] || joystick::down()) {
+			jump_down(lvl);
+		} else {
+			jump(lvl);
+		}
+		set_last_jump(true);
+	} else {
+		set_last_jump(false);
+	}
+	
 	if(key_[SDLK_s] || joystick::button(0) || joystick::button(2)) {
 		if(&current_frame() == type().crouch_frame()){
 			roll(lvl);
