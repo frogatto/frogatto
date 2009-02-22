@@ -310,7 +310,6 @@ void character::process(level& lvl)
 		}
 		
 		if( lvl.is_underwater(body_rect()) && type_->swim_side_idle_frame() ) {
-			current_frame_ = type_->swim_side_idle_frame();
 			time_in_frame_ = 0;
 		}
 	}
