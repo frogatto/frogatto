@@ -60,6 +60,9 @@ public:
 	const frame* swim_side_frame() const { return swim_side_frame_.get(); }
 	const frame* swim_down_frame() const { return swim_down_frame_.get(); }
 	const frame* swim_up_frame() const { return swim_up_frame_.get(); }
+
+	bool has_swim_frames() const { return swim_side_frame(); }
+
 	int walk() const { return walk_; }
 	int jump() const { return jump_; }
 	int boost() const { return boost_; }

@@ -166,14 +166,29 @@ character_type::character_type(wml::const_node_ptr node)
 	}
 	if(node->get_child("swim_side")) {
 		swim_side_frame_.reset(new frame(node->get_child("swim_side")));
+		if(!swim_side_idle_frame_) {
+			swim_side_idle_frame_.reset(new frame(*swim_side_frame_));
+		}
 	}
 	if(node->get_child("swim_down")) {
 		swim_down_frame_.reset(new frame(node->get_child("swim_down")));
+		if(!swim_down_idle_frame_) {
+			swim_down_idle_frame_.reset(new frame(*swim_down_frame_));
+		}
 	}
 	if(node->get_child("swim_up")) {
 		swim_up_frame_.reset(new frame(node->get_child("swim_up")));
+		if(!swim_up_idle_frame_) {
+			swim_up_idle_frame_.reset(new frame(*swim_up_frame_));
+		}
 	}
 	
+	//if we have one swim frame we must have them all
+	if(!swim_up_frame_ || !swim_down_frame_ || !swim_side_frame_) {
+		swim_up_frame_.reset();
+		swim_down_frame_.reset();
+		swim_side_frame_.reset();
+	}
 }
 
 const_character_type_ptr character_type::get_modified(const wml::modifier& modifier) const

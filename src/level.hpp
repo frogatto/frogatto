@@ -106,6 +106,7 @@ public:
 	int auto_move_camera_y() const { return auto_move_camera_.y; }
 
 	int air_resistance() const { return air_resistance_; }
+	int water_resistance() const { return water_resistance_; }
 
 	int camera_rotation() const;
 
@@ -205,6 +206,7 @@ private:
 
 	point auto_move_camera_;
 	int air_resistance_;
+	int water_resistance_;
 
 	game_logic::const_formula_ptr camera_rotation_;
 	bool end_game_;

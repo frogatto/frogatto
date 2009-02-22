@@ -22,7 +22,7 @@
 
 level::level(const std::string& level_cfg)
 	: id_(level_cfg), save_point_x_(-1), save_point_y_(-1),
-	  editor_(false), air_resistance_(5), end_game_(false)
+	  editor_(false), air_resistance_(5), water_resistance_(7), end_game_(false)
 {
 	turn_reference_counting_off();
 
@@ -36,6 +36,7 @@ level::level(const std::string& level_cfg)
 	yscale_ = wml::get_int(node, "yscale", 100);
 	auto_move_camera_ = point(node->attr("auto_move_camera"));
 	air_resistance_ = wml::get_int(node, "air_resistance", 5);
+	water_resistance_ = wml::get_int(node, "water_resistance", 10);
 
 	camera_rotation_ = game_logic::formula::create_optional_formula(node->attr("camera_rotation"));
 
@@ -310,6 +311,7 @@ wml::const_node_ptr level::write() const
 	res->set_attr("yscale", formatter() << yscale_);
 	res->set_attr("auto_move_camera", auto_move_camera_.to_string());
 	res->set_attr("air_resistance", formatter() << air_resistance_);
+	res->set_attr("water_resistance", formatter() << water_resistance_);
 
 	res->set_attr("preloads", util::join(preloads_));
 

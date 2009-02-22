@@ -25,6 +25,7 @@ character::character(wml::const_node_ptr node)
 	velocity_x_(wml::get_int(node, "velocity_x")),
 	velocity_y_(wml::get_int(node, "velocity_y")),
 	invincible_(0),
+	rotate_(0),
 	lvl_(NULL),
 	walk_formula_(game_logic::formula::create_optional_formula(node->attr("walk_formula"))),
 	jump_formula_(game_logic::formula::create_optional_formula(node->attr("jump_formula"))),
@@ -60,7 +61,7 @@ character::character(const std::string& type, int x, int y, bool face_right)
 	previous_y_(y),
 	velocity_x_(0),
 	velocity_y_(0),
-	invincible_(0),
+	rotate_(0),
 	lvl_(NULL),
 	formula_test_frequency_(1),
 	time_since_last_formula_(0),
@@ -170,7 +171,7 @@ void character::draw() const
 	if(driver_) {
 		driver_->draw();
 	}
-	const int slope = current_frame().rotate_on_slope() ? -slope_standing_on(5)*face_dir() : 0;
+	const int slope = rotate_ + (current_frame().rotate_on_slope() ? -slope_standing_on(5)*face_dir() : 0);
 	current_frame().draw(x(), y(), face_right(), time_in_frame_, slope);
 
 	//if we blur then back up information about the frame here
@@ -250,6 +251,17 @@ void character::process(level& lvl)
 	   (current_frame_ == type_->crouch_frame() ||
 	    current_frame_ == type_->lookup_frame())) {
 	   --time_in_frame_;
+	}
+
+	//see if we're under water.
+	const bool is_underwater = lvl.is_underwater(body_rect());
+	bool is_swimming = is_in_swimming_frame();
+	if(is_swimming && !is_underwater) {
+		change_frame(type_->fall_frame());
+		is_swimming = false;
+	} else if(type().has_swim_frames() && !is_swimming && is_underwater) {
+		change_frame(type_->swim_side_idle_frame());
+		is_swimming = true;
 	}
 
 	//executed when an animation ends, generally acts by switching to a new animation
@@ -551,13 +563,18 @@ void character::process(level& lvl)
 
 	velocity_x_ += accel_x;
 
-	const int AirResistance = 5;
 	int friction = 0;
 	int damage = 0;
 	entity_ptr standing_on;
 	const bool standing = is_standing(lvl, &friction, &damage, NULL, &standing_on);
-	friction += lvl.air_resistance();
-	friction = (friction * type_->traction())/100;
+	if(is_underwater) {
+		friction += lvl.water_resistance();
+		velocity_y_ = (velocity_y_*(100-friction))/100;
+	} else {
+		friction += lvl.air_resistance();
+		friction = (friction * type_->traction())/100;
+	}
+
 	velocity_x_ = (velocity_x_*(100-friction))/100;
 	if(damage && !invincible()) {
 		get_hit();
@@ -573,6 +590,7 @@ void character::process(level& lvl)
 	          current_frame_ == type_->run_frame() ||
 			  current_frame_ == type_->idle_frame() ||
 			  velocity_y_ + current_frame().accel_y() > 0 &&
+			  !is_swimming &&
 			  current_frame_ != type_->jump_attack_frame() &&
 			  current_frame_ != type_->fall_frame() &&
 			  current_frame_ != type_->fall_spin_attack_frame() &&
@@ -598,6 +616,21 @@ void character::process(level& lvl)
 	standing_on_.clear();
 
 	set_driver_position();
+}
+
+bool character::is_in_swimming_frame() const
+{
+	if(!type().has_swim_frames()) {
+		return false;
+	}
+
+	const frame* swim_frames[] = {type().swim_side_idle_frame(),
+	                              type().swim_up_idle_frame(),
+	                              type().swim_down_idle_frame(),
+	                              type().swim_side_frame(),
+	                              type().swim_up_frame(),
+	                              type().swim_down_frame()};
+	return std::count(swim_frames, swim_frames + sizeof(swim_frames)/sizeof(swim_frames[0]), &current_frame());
 }
 
 void character::set_driver_position()
@@ -1076,6 +1109,7 @@ void character::change_frame(const frame* new_frame)
 		return;
 	}
 
+	rotate_ = 0;
 
 	++frame_id_;
 
@@ -1485,6 +1519,11 @@ void pc_character::control(const level& lvl)
 		current_level_ = lvl.id();
 	}
 
+	if(is_in_swimming_frame()) {
+		swimming_control(lvl);
+		return;
+	}
+
 	if(&current_frame() == type().attack_frame() ||
 	   &current_frame() == type().jump_attack_frame() ||
 	   &current_frame() == type().up_attack_frame() ||
@@ -1570,6 +1609,65 @@ void pc_character::control(const level& lvl)
 		prev_right_ = true;
 	} else {
 		prev_right_ = false;
+	}
+}
+
+void pc_character::swimming_control(const level& lvl)
+{
+	bool idle = true;
+
+	if(key_[SDLK_LEFT] || joystick::left()) {
+		set_face_right(false);
+		if(&current_frame() != type().swim_side_frame()) {
+			change_frame(type().swim_side_frame());
+		}
+
+		if(look_up()) {
+			set_rotate(45);
+			set_velocity(velocity_x(), velocity_y() - current_frame().accel_x());
+		} else if(look_down()) {
+			set_rotate(-45);
+			set_velocity(velocity_x(), velocity_y() + current_frame().accel_x());
+		}
+
+		idle = false;
+	} else if(key_[SDLK_RIGHT] || joystick::right()) {
+		set_face_right(true);
+		if(&current_frame() != type().swim_side_frame()) {
+			change_frame(type().swim_side_frame());
+		}
+
+		if(look_up()) {
+			set_rotate(-45);
+			set_velocity(velocity_x(), velocity_y() - current_frame().accel_x());
+		} else if(look_down()) {
+			set_rotate(45);
+			set_velocity(velocity_x(), velocity_y() + current_frame().accel_x());
+		}
+
+		idle = false;
+	} else if(key_[SDLK_UP] || joystick::up()) {
+		if(&current_frame() != type().swim_up_frame()) {
+			change_frame(type().swim_up_frame());
+		}
+
+		idle = false;
+	} else if(key_[SDLK_DOWN] || joystick::down()) {
+		if(&current_frame() != type().swim_down_frame()) {
+			change_frame(type().swim_down_frame());
+		}
+
+		idle = false;
+	}
+
+	if(idle) {
+		if(&current_frame() == type().swim_side_frame()) {
+			change_frame(type().swim_side_idle_frame());
+		} else if(&current_frame() == type().swim_up_frame()) {
+			change_frame(type().swim_up_idle_frame());
+		} else if(&current_frame() == type().swim_down_frame()) {
+			change_frame(type().swim_down_idle_frame());
+		}
 	}
 }
 

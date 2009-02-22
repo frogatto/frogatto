@@ -121,6 +121,13 @@ protected:
 
 	virtual bool boardable_vehicle() const;
 	virtual void swap_player_state(pc_character& player) {}
+
+protected:
+	bool is_in_swimming_frame() const;
+	void change_frame(const frame* new_frame);
+
+	int rotate() const { return rotate_; }
+	void set_rotate(int rotate) { rotate_ = rotate; }
 private:
 
 	void set_driver_position();
@@ -136,7 +143,6 @@ private:
 	variant get_value(const std::string& key) const;
 	void get_inputs(std::vector<game_logic::formula_input>* inputs) const;
 	virtual void control(const level& lvl);
-	void change_frame(const frame* new_frame);
 
 	void handle_event(const std::string& event_id);
 	void execute_formula(const game_logic::const_formula_ptr& f);
@@ -151,6 +157,7 @@ private:
 	int velocity_x_;
 	int velocity_y_;
 	int invincible_;
+	int rotate_;
 	level* lvl_;
 	game_logic::const_formula_ptr walk_formula_, jump_formula_, fly_formula_;
 	game_logic::const_formula_ptr xpos_formula_, ypos_formula_;
@@ -241,6 +248,7 @@ private:
 	virtual void set_value(const std::string& key, const variant& value);
 	virtual int invincibility_duration() const { return 150; }
 	virtual void control(const level& lvl);
+	void swimming_control(const level& lvl);
 	CKey key_;
 
 	bool prev_left_, prev_right_;
