@@ -257,7 +257,12 @@ void character::process(level& lvl)
 	const bool is_underwater = lvl.is_underwater(body_rect());
 	bool is_swimming = is_in_swimming_frame();
 	if(is_swimming && !is_underwater) {
-		change_frame(type_->fall_frame());
+		change_frame(type_->jump_frame());
+
+		//give a little boost to our vertical velocity as we emerge from
+		//the water by increasing it by 50%. This allows us to jump out
+		//of water in a reasonable way.
+		velocity_y_ += velocity_y_/2;
 		is_swimming = false;
 	} else if(type().has_swim_frames() && !is_swimming && is_underwater) {
 		change_frame(type_->swim_side_idle_frame());
@@ -1628,6 +1633,8 @@ void pc_character::swimming_control(const level& lvl)
 		} else if(look_down()) {
 			set_rotate(-45);
 			set_velocity(velocity_x(), velocity_y() + current_frame().accel_x());
+		} else {
+			set_rotate(0);
 		}
 
 		idle = false;
@@ -1643,6 +1650,8 @@ void pc_character::swimming_control(const level& lvl)
 		} else if(look_down()) {
 			set_rotate(45);
 			set_velocity(velocity_x(), velocity_y() + current_frame().accel_x());
+		} else {
+			set_rotate(0);
 		}
 
 		idle = false;
