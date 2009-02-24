@@ -366,6 +366,20 @@ variant variant::operator-(const variant& v) const
 
 variant variant::operator*(const variant& v) const
 {
+	if(type_ == TYPE_LIST) {
+		const int ncopies = v.as_int();
+		const std::vector<variant>& items = list_->elements;
+		std::vector<variant> res;
+		res.reserve(items.size()*ncopies);
+		for(int n = 0; n != ncopies; ++n) {
+			for(int m = 0; m != items.size(); ++m) {
+				res.push_back(items[m]);
+			}
+		}
+
+		return variant(&res);
+	}
+	
 	return variant(as_int() * v.as_int());
 }
 
