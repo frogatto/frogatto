@@ -267,6 +267,9 @@ void character::process(level& lvl)
 	} else if(type().has_swim_frames() && !is_swimming && is_underwater) {
 		change_frame(type_->swim_side_idle_frame());
 		is_swimming = true;
+
+		const static std::string EnterWaterStr = "enter_water";
+		handle_event(EnterWaterStr);
 	}
 
 	lvl.get_current(*this, &velocity_x_, &velocity_y_);

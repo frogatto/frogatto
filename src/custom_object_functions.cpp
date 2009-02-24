@@ -638,7 +638,7 @@ public:
 							entry_.set_text(history_[history_pos_]);
 						}
 					} else if(event.key.keysym.sym == SDLK_DOWN) {
-						if(history_pos_ < history_.size() - 1) {
+						if(!history_.empty() && history_pos_ < history_.size() - 1) {
 							++history_pos_;
 							entry_.set_text(history_[history_pos_]);
 						} else {

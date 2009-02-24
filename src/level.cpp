@@ -1321,6 +1321,8 @@ variant level::get_value(const std::string& key) const
 		return variant(player_.get());
 	} else if(key == "num_active") {
 		return variant(active_chars_.size());
+	} else if(key == "water_level") {
+		return water_ ? variant(water_->get_water_level(0)) : variant();
 	} else {
 		return variant();
 	}
