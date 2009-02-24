@@ -672,7 +672,7 @@ void level::process()
 		return;
 	}
 
-	foreach(const entity_ptr& c, chars_) {
+	foreach(entity_ptr& c, chars_) {
 		int distance_x = 0, distance_y = 0;
 		c->activation_distance(&distance_x, &distance_y);
 		if(std::abs(player_->x() - c->x()) < distance_x &&
@@ -688,10 +688,13 @@ void level::process()
 		} else { //char is inactive
 			if( c->dies_on_inactive() ){
 				
-				chars_.erase(std::remove(chars_.begin(), chars_.end(), c), chars_.end());
+				//chars_.erase(std::remove(chars_.begin(), chars_.end(), c), chars_.end());
+				c = entity_ptr(); //can't delete it while iterating over the container, so we null it for later removal
 			}
 		}
 	}
+	
+	chars_.erase(std::remove(chars_.begin(), chars_.end(), entity_ptr()), chars_.end());
 
 	std::sort(active_chars_.begin(), active_chars_.end());
 	active_chars_.erase(std::unique(active_chars_.begin(), active_chars_.end()), active_chars_.end());
