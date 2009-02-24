@@ -269,6 +269,8 @@ void character::process(level& lvl)
 		is_swimming = true;
 	}
 
+	lvl.get_current(*this, &velocity_x_, &velocity_y_);
+
 	//executed when an animation ends, generally acts by switching to a new animation
 	if(time_in_frame_ == current_frame_->duration() && current_frame_ != type_->jump_frame() && current_frame_ != type_->fall_frame() && current_frame_ != type_->gethit_frame() && current_frame_ != type_->die_frame()) {
 		if(current_frame_ == &type_->get_frame()) {
@@ -525,7 +527,6 @@ void character::process(level& lvl)
 		const int ypos = y() + current_frame().collide_y() + current_frame().collide_h();
 		const bool standing = is_standing(*lvl_);
 		if(lvl.solid(x1,ypos) || !boardable_vehicle() && lvl.collide(x1, ypos)) {
-			std::cerr << "PUSH_BACK!\n";
 			set_pos(x() + 1, y());
 			if(started_standing) {
 				try_to_make_standing();
@@ -533,7 +534,6 @@ void character::process(level& lvl)
 		}
 
 		if(lvl.solid(x2,ypos) || !boardable_vehicle() && lvl.collide(x2, ypos)) {
-			std::cerr << "PUSH_BACK!\n";
 			set_pos(x() - 1, y());
 			if(started_standing) {
 				try_to_make_standing();
@@ -1373,6 +1373,8 @@ variant character::get_value(const std::string& key) const
 		return variant(glide_speed());
 	} else if(key == "damage") {
 		return variant(current_frame().damage());
+	} else if(key == "level") {
+		return variant(lvl_);
 	} else {
 		std::map<std::string, variant>::const_iterator i = vars_.find(key);
 		if(i != vars_.end()) {

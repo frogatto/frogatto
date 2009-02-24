@@ -7,6 +7,7 @@
 #include "raster_distortion.hpp"
 #include "wml_node_fwd.hpp"
 
+class entity;
 class level;
 
 class water
@@ -26,10 +27,12 @@ public:
 	int max_offset() const;
 
 	int get_water_level(int zorder) const { return level_ + get_offset(zorder); }
+
+	void get_current(const entity& e, int* velocity_x, int* velocity_y) const;
 	
 private:
 
-	int level_;
+	int level_, previous_level_;
 	
 	struct zorder_pos {
 		int zorder;
@@ -44,6 +47,8 @@ private:
 	SDL_Color get_color(int offset) const;
 
 	game_logic::const_formula_ptr water_level_formula_;
+
+	game_logic::const_formula_ptr current_x_formula_, current_y_formula_;
 
 	graphics::water_distortion distortion_;
 };

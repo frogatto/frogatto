@@ -1343,3 +1343,9 @@ bool level::is_underwater(const rect& r) const
 	return false;
 }
 
+void level::get_current(const entity& e, int* velocity_x, int* velocity_y) const
+{
+	if(is_underwater(e.body_rect())) {
+		water_->get_current(e, velocity_x, velocity_y);
+	}
+}

@@ -12,7 +12,10 @@
 
 water::water(wml::const_node_ptr water_node) :
   level_(wml::get_int(water_node, "level")),
+  previous_level_(level_),
   water_level_formula_(game_logic::formula::create_optional_formula(water_node->attr("water_level_formula"))),
+  current_x_formula_(game_logic::formula::create_optional_formula(water_node->attr("current_x_formula"))),
+  current_y_formula_(game_logic::formula::create_optional_formula(water_node->attr("current_y_formula"))),
   distortion_(0, rect(0,0,0,0))
 {
 	FOREACH_WML_CHILD(layer_node, water_node, "layer") {
@@ -119,6 +122,7 @@ bool water::draw(int begin_layer, int end_layer, int x, int y, int w, int h, con
 
 void water::process(const level& lvl)
 {
+	previous_level_ = level_;
 	if(water_level_formula_) {
 		level_ = water_level_formula_->execute(lvl).as_int();
 	}
@@ -203,4 +207,15 @@ int water::max_offset() const
 	}
 
 	return positions_.back().offset;
+}
+
+void water::get_current(const entity& e, int* velocity_x, int* velocity_y) const
+{
+	if(velocity_x && current_x_formula_) {
+		*velocity_x += current_x_formula_->execute(e).as_int();
+	}
+
+	if(velocity_y && current_y_formula_) {
+		*velocity_y += current_y_formula_->execute(e).as_int();
+	}
 }

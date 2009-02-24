@@ -128,6 +128,8 @@ public:
 	int cycle() const { return cycle_; }
 	bool is_underwater(const rect& r) const;
 
+	void get_current(const entity& e, int* velocity_x, int* velocity_y) const;
+
 private:
 	void draw_layer(int layer, int x, int y, int w, int h) const;
 
