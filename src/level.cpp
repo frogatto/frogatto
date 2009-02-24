@@ -688,7 +688,6 @@ void level::process()
 		} else { //char is inactive
 			if( c->dies_on_inactive() ){
 				
-				//chars_.erase(std::remove(chars_.begin(), chars_.end(), c), chars_.end());
 				c = entity_ptr(); //can't delete it while iterating over the container, so we null it for later removal
 			}
 		}
