@@ -592,7 +592,7 @@ void custom_object::set_frame(const std::string& name)
 		velocity_y_ = frame_->velocity_y();
 	}
 
-	frame_->play_sound();
+	frame_->play_sound(this);
 }
 
 void custom_object::die()

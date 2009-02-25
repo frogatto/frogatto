@@ -84,13 +84,13 @@ frame::frame(wml::const_node_ptr node)
 	}
 }
 
-void frame::play_sound() const
+void frame::play_sound(const void* object) const
 {
 	int randomNum = rand()%sounds_.size();  //like a 1d-size die
 	if (sounds_.empty() == false){
 		if(sounds_[randomNum].empty() == false) {
 			std::cerr << "PLAY SOUND: '" << sounds_[randomNum] << "'\n";
-			sound::play(sounds_[randomNum]);
+			sound::play(sounds_[randomNum], object);
 		}
 	}
 }

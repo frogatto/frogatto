@@ -1148,7 +1148,7 @@ void character::change_frame(const frame* new_frame)
 		velocity_y_ = new_frame->velocity_y();
 	}
 
-	new_frame->play_sound();
+	new_frame->play_sound(this);
 
 	handle_event(new_frame->id());
 
