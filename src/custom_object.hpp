@@ -90,6 +90,7 @@ private:
 	int rotate_;
 
 	int hitpoints_;
+	bool was_underwater_;
 
 	game_logic::const_formula_ptr next_animation_formula_;
 

@@ -313,6 +313,19 @@ void custom_object::process(level& lvl)
 		}
 		stood_on_by_.clear();
 	}
+	
+	const bool is_underwater = lvl.is_underwater(body_rect());
+	if( is_underwater && !was_underwater_){
+		//event on_enter_water
+		const static std::string EnterWaterStr = "enter_water";
+		handle_event(EnterWaterStr);
+		was_underwater_ = true;
+	}else if ( !is_underwater && was_underwater_ ){
+		//event on_exit_water
+		const static std::string ExitWaterStr = "exit_water";
+		handle_event(ExitWaterStr);
+		was_underwater_ = false;
+	}
 }
 
 int custom_object::zorder() const
