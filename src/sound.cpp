@@ -97,10 +97,14 @@ namespace {
 
 //record which channels sounds are playing on, in case we
 //want to cancel a sound.
-std::vector<std::string> channels_to_sounds_playing;
-std::map<std::string, int> sounds_to_channels_playing;
+struct sound_playing {
+	std::string file;
+	const void* object;
+};
 
-int play_internal(const std::string& file, int loops)
+std::vector<sound_playing> channels_to_sounds_playing;
+
+int play_internal(const std::string& file, int loops, const void* object)
 {
 	if(!sound_ok) {
 		return -1;
@@ -120,8 +124,8 @@ int play_internal(const std::string& file, int loops)
 	if(result >= 0) {
 		if(channels_to_sounds_playing.size() <= result) {
 			channels_to_sounds_playing.resize(result + 1);
-			channels_to_sounds_playing[result] = file;
-			sounds_to_channels_playing[file] = result;
+			channels_to_sounds_playing[result].file = file;
+			channels_to_sounds_playing[result].object = object;
 		}
 	}
 
@@ -130,25 +134,23 @@ int play_internal(const std::string& file, int loops)
 
 }
 
-void play(const std::string& file)
+void play(const std::string& file, const void* object)
 {
 	if(preferences::no_sound() || mute_) {
 		return;
 	}
 
-	play_internal(file, 0);
+	play_internal(file, 0, object);
 }
 
-void stop_sound(const std::string& file)
+void stop_sound(const std::string& file, const void* object)
 {
-	std::map<std::string, int>::const_iterator itor = sounds_to_channels_playing.find(file);
-	if(itor == sounds_to_channels_playing.end() ||
-	   itor->second >= channels_to_sounds_playing.size() ||
-	   channels_to_sounds_playing[itor->second] != file) {
-		return;
+	for(int n = 0; n != channels_to_sounds_playing.size(); ++n) {
+		if(channels_to_sounds_playing[n].object == object &&
+		   channels_to_sounds_playing[n].file == file) {
+			Mix_HaltChannel(n);
+		}
 	}
-
-	Mix_HaltChannel(itor->second);
 }
 
 int play_looped(const std::string& file)
@@ -157,7 +159,7 @@ int play_looped(const std::string& file)
 		return -1;
 	}
 
-	return play_internal(file, -1);
+	return play_internal(file, -1, NULL);
 }
 
 void cancel_looped(int handle)

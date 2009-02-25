@@ -30,7 +30,7 @@ public:
 	  : name_(name)
 	{}
 	virtual void execute(level& lvl, entity& ob) const {
-		sound::play(name_);
+		sound::play(name_, &ob);
 	}
 private:
 	std::string name_;
@@ -55,7 +55,7 @@ public:
 	  : name_(name)
 	{}
 	virtual void execute(level& lvl, entity& ob) const {
-		sound::stop_sound(name_);
+		sound::stop_sound(name_, &ob);
 	}
 private:
 	std::string name_;
