@@ -1120,7 +1120,9 @@ void character::change_frame(const frame* new_frame)
 		return;
 	}
 
-	handle_event("leave_" + new_frame->id() + "_anim");
+	if(current_frame_) {
+		handle_event("leave_" + current_frame_->id() + "_anim");
+	}
 
 	rotate_ = 0;
 
