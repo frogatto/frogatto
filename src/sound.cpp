@@ -1,5 +1,6 @@
 #include <iostream>
 #include <map>
+#include <vector>
 
 #include "preferences.hpp"
 #include "SDL.h"
@@ -93,6 +94,12 @@ void mute (bool flag)
 }
 
 namespace {
+
+//record which channels sounds are playing on, in case we
+//want to cancel a sound.
+std::vector<std::string> channels_to_sounds_playing;
+std::map<std::string, int> sounds_to_channels_playing;
+
 int play_internal(const std::string& file, int loops)
 {
 	if(!sound_ok) {
@@ -107,7 +114,18 @@ int play_internal(const std::string& file, int loops)
 		}
 	}
 
-	return Mix_PlayChannel(-1, chunk, loops);
+	int result = Mix_PlayChannel(-1, chunk, loops);
+
+	//record which channel the sound is playing on.
+	if(result >= 0) {
+		if(channels_to_sounds_playing.size() <= result) {
+			channels_to_sounds_playing.resize(result + 1);
+			channels_to_sounds_playing[result] = file;
+			sounds_to_channels_playing[file] = result;
+		}
+	}
+
+	return result;
 }
 
 }
@@ -119,6 +137,18 @@ void play(const std::string& file)
 	}
 
 	play_internal(file, 0);
+}
+
+void stop_sound(const std::string& file)
+{
+	std::map<std::string, int>::const_iterator itor = sounds_to_channels_playing.find(file);
+	if(itor == sounds_to_channels_playing.end() ||
+	   itor->second >= channels_to_sounds_playing.size() ||
+	   channels_to_sounds_playing[itor->second] != file) {
+		return;
+	}
+
+	Mix_HaltChannel(itor->second);
 }
 
 int play_looped(const std::string& file)

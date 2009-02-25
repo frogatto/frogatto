@@ -48,6 +48,31 @@ private:
 	}
 };
 
+class stop_sound_command : public entity_command_callable
+{
+public:
+	explicit stop_sound_command(const std::string& name)
+	  : name_(name)
+	{}
+	virtual void execute(level& lvl, entity& ob) const {
+		sound::stop_sound(name_);
+	}
+private:
+	std::string name_;
+};
+
+class stop_sound_function : public function_expression {
+public:
+	explicit stop_sound_function(const args_list& args)
+	  : function_expression("stop_sound",args,1,1)
+	  {}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new stop_sound_command(
+						args()[0]->evaluate(variables).as_string()));
+	}
+};
+
 class shake_screen_command : public entity_command_callable
 	{
 	public:
@@ -740,6 +765,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new spawn_function(args, false));
 	} else if(fn == "sound") {
 		return expression_ptr(new sound_function(args));
+	} else if(fn == "stop_sound") {
+		return expression_ptr(new stop_sound_function(args));
 	} else if(fn == "shake_screen") {
 		return expression_ptr(new shake_screen_function(args));
 	} else if(fn == "child") {

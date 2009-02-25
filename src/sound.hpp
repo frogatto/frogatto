@@ -16,6 +16,8 @@ void mute(bool flag);
 
 void play(const std::string& file);
 
+void stop_sound(const std::string& file);
+
 // function to play a sound effect over and over in a loop. Will return
 // a handle to the sound effect. Will keep playing until cancel_looped()
 // is called with the handle.
