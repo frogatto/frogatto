@@ -276,6 +276,10 @@ void character::process(level& lvl)
 
 	//executed when an animation ends, generally acts by switching to a new animation
 	if(time_in_frame_ == current_frame_->duration() && current_frame_ != type_->jump_frame() && current_frame_ != type_->fall_frame() && current_frame_ != type_->gethit_frame() && current_frame_ != type_->die_frame()) {
+
+		//fire an event to signal the end of this animation.
+		handle_event("end_" + current_frame_->id() + "_anim");
+
 		if(current_frame_ == &type_->get_frame()) {
 			change_frame((rand()%5) == 0 ? type_->idle_frame() : &type_->get_frame());
 		} else if(current_frame_ == type_->stand_up_slope_frame()) {
