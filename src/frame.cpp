@@ -50,7 +50,7 @@ frame::frame(wml::const_node_ptr node)
 	 blur_(wml::get_int(node, "blur")),
 	 rotate_on_slope_(wml::get_bool(node, "rotate_on_slope")),
 	 damage_(wml::get_int(node, "damage")),
-	 sound_(node->attr("sound"))
+	 sounds_(util::split(node->attr("sound")))
 {
 	std::vector<std::string> hit_frames = util::split((*node)["hit_frames"]);
 	foreach(const std::string& f, hit_frames) {
@@ -86,9 +86,12 @@ frame::frame(wml::const_node_ptr node)
 
 void frame::play_sound() const
 {
-	if(sound_.empty() == false) {
-		std::cerr << "PLAY SOUND: '" << sound_ << "'\n";
-		sound::play(sound_);
+	int randomNum = rand()%sounds_.size();  //like a 1d-size die
+	if (sounds_.empty() == false){
+		if(sounds_[randomNum].empty() == false) {
+			std::cerr << "PLAY SOUND: '" << sounds_[randomNum] << "'\n";
+			sound::play(sounds_[randomNum]);
+		}
 	}
 }
 

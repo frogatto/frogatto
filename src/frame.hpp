@@ -75,7 +75,7 @@ private:
 
 	std::vector<int> event_frames_;
 	std::vector<std::string> event_names_;
-	std::string sound_;
+	std::vector <std::string> sounds_;
 };
 
 #endif
