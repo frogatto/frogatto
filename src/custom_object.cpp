@@ -546,6 +546,11 @@ void custom_object::set_value(const std::string& key, const variant& value)
 
 void custom_object::set_frame(const std::string& name)
 {
+	//fire an event to say that we're leaving the current frame.
+	if(frame_) {
+		handle_event("leave_" + frame_name_ + "_anim");
+	}
+
 	const int start_x = feet_x();
 	const int start_y = feet_y();
 
