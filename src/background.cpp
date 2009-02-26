@@ -38,6 +38,8 @@ background::background(const wml::const_node_ptr& node)
 
 		bg.y1 = wml::get_attr<int>(i1->second, "y1");
 		bg.y2 = wml::get_attr<int>(i1->second, "y2");
+
+		bg.foreground = wml::get_bool(i1->second, "foreground", false);
 		layers_.push_back(bg);
 	}
 }
@@ -66,6 +68,11 @@ wml::node_ptr background::write() const
 		node->set_attr("green", formatter() << bg.color[1]);
 		node->set_attr("blue", formatter() << bg.color[2]);
 		node->set_attr("alpha", formatter() << bg.color[3]);
+
+		if(bg.foreground) {
+			node->set_attr("foreground", "true");
+		}
+
 		res->add_child(node);
 	}
 	return res;
@@ -130,7 +137,18 @@ void background::draw(double xpos, double ypos, int rotation) const
 	glShadeModel(GL_FLAT);
 
 	foreach(const layer& bg, layers_) {
-		draw_layer(xpos, ypos, rotation, bg);
+		if(bg.foreground == false) {
+			draw_layer(xpos, ypos, rotation, bg);
+		}
+	}
+}
+
+void background::draw_foreground(double xpos, double ypos, int rotation) const
+{
+	foreach(const layer& bg, layers_) {
+		if(bg.foreground) {
+			draw_layer(xpos, ypos, rotation, bg);
+		}
 	}
 }
 

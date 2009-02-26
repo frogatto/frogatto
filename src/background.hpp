@@ -18,6 +18,7 @@ public:
 	explicit background(const wml::const_node_ptr& node);
 	wml::node_ptr write() const;
 	void draw(double x, double y, int rotation) const;
+	void draw_foreground(double x, double y, int rotation) const;
 private:
 	SDL_Color top_, bot_;
 	int width_, height_;
@@ -33,6 +34,9 @@ private:
 
 		// Top and bottom edges of the background.
 		mutable int y1, y2;
+
+		//if true, this layer is actually drawn in the foreground.
+		bool foreground;
 	};
 
 	void draw_layer(int x, int y, int rotation, const layer& bg) const;

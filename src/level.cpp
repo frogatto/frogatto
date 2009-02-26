@@ -470,6 +470,9 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 
 void level::draw(int x, int y, int w, int h) const
 {
+	const int start_x = x;
+	const int start_y = x;
+
 	const int ticks = SDL_GetTicks();
 	x -= widest_tile_;
 	y -= highest_tile_;
@@ -595,6 +598,10 @@ void level::draw(int x, int y, int w, int h) const
 	}
 
 	draw_debug_solid(x, y, w, h);
+
+	if(background_) {
+		background_->draw_foreground(start_x, start_y, 0.0);
+	}
 }
 
 void level::draw_debug_solid(int x, int y, int w, int h) const
