@@ -471,7 +471,7 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 void level::draw(int x, int y, int w, int h) const
 {
 	const int start_x = x;
-	const int start_y = x;
+	const int start_y = y;
 
 	const int ticks = SDL_GetTicks();
 	x -= widest_tile_;
