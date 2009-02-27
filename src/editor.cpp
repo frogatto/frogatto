@@ -251,6 +251,7 @@ void editor::edit_level()
 	select_previous_level_ = false;
 	select_next_level_ = false;
 	while(!done_) {
+		const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
 		int mousex, mousey;
 		const unsigned int buttons = SDL_GetMouseState(&mousex, &mousey);
 
@@ -271,7 +272,7 @@ void editor::edit_level()
 			const int xpos = selected_entity_startx_ + dx;
 			const int ypos = selected_entity_starty_ + dy;
 
-			lvl_->editor_selection()->set_pos(xpos - xpos%TileSize, ypos - ypos%TileSize);
+			lvl_->editor_selection()->set_pos(xpos - (ctrl_pressed ? 0 : (xpos%TileSize)), ypos - (ctrl_pressed ? 0 : (ypos%TileSize)));
 		}
 
 		const int ScrollSpeed = 8;
@@ -518,8 +519,8 @@ void editor::edit_level()
 
 				} else if(mode_ == EDIT_CHARS && event.button.button == SDL_BUTTON_LEFT) {
 					wml::node_ptr node(wml::deep_copy(enemy_types[cur_item_].node));
-					node->set_attr("x", formatter() << (anchorx_ - anchorx_%TileSize));
-					node->set_attr("y", formatter() << (anchory_ - anchory_%TileSize));
+					node->set_attr("x", formatter() << (anchorx_ - (ctrl_pressed ? 0 : (anchorx_%TileSize))));
+					node->set_attr("y", formatter() << (anchory_ - (ctrl_pressed ? 0 : (anchory_%TileSize))));
 					node->set_attr("face_right", face_right_ ? "yes" : "no");
 
 					wml::node_ptr vars = node->get_child("vars");
@@ -581,9 +582,14 @@ void editor::edit_level()
 					if(event.button.button == SDL_BUTTON_RIGHT && drawing_rect_) {
 						lvl_->remove_props_in_rect(anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey);
 					} else if(event.button.button == SDL_BUTTON_LEFT) {
-						const int xtile = (xpos_ + mousex)/TileSize;
-						const int ytile = (ypos_ + mousey)/TileSize;
-						prop_object obj(xtile*TileSize, ytile*TileSize, all_props[cur_item_]->id());
+						int xtile = ((xpos_ + mousex)/TileSize)*TileSize;
+						int ytile = ((ypos_ + mousey)/TileSize)*TileSize;
+						if(ctrl_pressed) {
+							//allow pixel perfect placement if ctrl is pressed
+							xtile = xpos_ + mousex;
+							ytile = ypos_ + mousey;
+						}
+						prop_object obj(xtile, ytile, all_props[cur_item_]->id());
 						obj.set_zorder(obj.zorder() + foreground_zorder_change());
 						lvl_->add_prop(obj);
 					}
@@ -693,6 +699,8 @@ void editor::change_mode(int nmode)
 
 void editor::draw() const
 {
+	const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
+
 	int mousex, mousey;
 	SDL_GetMouseState(&mousex, &mousey);
 
@@ -737,8 +745,13 @@ void editor::draw() const
 	}
 
 	if(mode_ == EDIT_PROPS) {
-		const int x = ((xpos_ + mousex)/TileSize)*TileSize;
-		const int y = ((ypos_ + mousey)/TileSize)*TileSize;
+		int x = ((xpos_ + mousex)/TileSize)*TileSize;
+		int y = ((ypos_ + mousey)/TileSize)*TileSize;
+		if(ctrl_pressed) {
+			x = xpos_ + mousex;
+			y = ypos_ + mousey;
+		}
+
 		glColor4f(1.0, 1.0, 1.0, 0.5);
 		all_props[cur_item_]->get_frame().draw(x, y, true);
 		glColor4f(1.0, 1.0, 1.0, 1.0);
