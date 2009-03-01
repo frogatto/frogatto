@@ -4,13 +4,12 @@
 #include "level.hpp"
 #include "load_level.hpp"
 #include "preprocessor.hpp"
-
-#include <boost/thread.hpp>
+#include "thread.hpp"
 
 namespace {
-typedef std::map<std::string, std::pair<boost::thread*, level*> > level_map;
+typedef std::map<std::string, std::pair<threading::thread*, level*> > level_map;
 level_map levels_loading;
-boost::mutex levels_loading_mutex;
+threading::mutex levels_loading_mutex;
 
 class level_loader {
 	std::string lvl_;
@@ -19,7 +18,7 @@ public:
 	{}
 	void operator()() {
 		level* lvl = new level(lvl_);
-		boost::mutex::scoped_lock lck(levels_loading_mutex);
+		threading::lock lck(levels_loading_mutex);
 		levels_loading[lvl_].second = lvl;
 	}
 };
@@ -41,9 +40,9 @@ load_level_manager::~load_level_manager()
 
 void preload_level(const std::string& lvl)
 {
-	boost::mutex::scoped_lock lck(levels_loading_mutex);
+	threading::lock lck(levels_loading_mutex);
 	if(levels_loading.count(lvl) == 0) {
-		levels_loading[lvl].first = new boost::thread(level_loader(lvl));
+		levels_loading[lvl].first = new threading::thread(level_loader(lvl));
 	}
 }
 
@@ -51,7 +50,7 @@ level* load_level(const std::string& lvl)
 {
 	level_map::iterator itor;
 	{
-		boost::mutex::scoped_lock lck(levels_loading_mutex);
+		threading::lock lck(levels_loading_mutex);
 		itor = levels_loading.find(lvl);
 		if(itor == levels_loading.end()) {
 			level* res = new level(lvl);
