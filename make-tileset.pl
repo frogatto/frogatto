@@ -632,7 +632,7 @@ pattern="
 .*,   ,    ,$friend?,.*,
 .*,   ,$friend,$friend,.*,
 .*,$friend,$tilename,$friend,.*,
-.*,$friend?,$friend,$friend?,.*,
+.*,$friend,$friend,$friend,.*,
 .*,.*,.*,.*,.*"
 [/tile_pattern]
 ~, &coord($base, $noslopes ? 5 : 1, $noslopes ? 1 : 7), (($solid eq 'solid=yes' and not $noslopes) ? 'solid_heights="32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,31,30,29,28,27,26,25"' : $solid);
@@ -663,7 +663,7 @@ pattern="
 .*,$friend?,   ,    ,.*,
 .*,$friend,$friend,   ,.*,
 .*,$friend,$tilename,$friend,.*,
-.*,$friend?,$friend,$friend?,.*,
+.*,$friend,$friend,$friend,.*,
 .*,.*,.*,.*,.*"
 [/tile_pattern]
 ~, &coord($base, $noslopes ? 5 : 1, $noslopes ? 0 : 8), (($solid eq 'solid=yes' and not $noslopes) ? 'solid_heights="25,26,27,28,29,30,31,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32"' : $solid);
