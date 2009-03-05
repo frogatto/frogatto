@@ -18,7 +18,7 @@ water_distortion::water_distortion(int offset, const rect& r) : raster_distortio
 
 void water_distortion::distort_point(GLfloat* x, GLfloat* y) const
 {
-	*x = *x + 8.0*sin((offset_ + *x)/GLfloat(20.0));
+	*x = *x + 8.0*sin((offset_ + *x)/GLfloat(20.0)) - 5.0*sin((offset_/4 + *x * 3)/GLfloat(20.0));
 }
 
 int water_distortion::granularity_x() const

@@ -1,5 +1,6 @@
 #include <boost/regex.hpp>
 #include <iostream>
+#include <math.h>
 #include <sstream>
 
 #include "foreach.hpp"
@@ -24,7 +25,6 @@ struct tile_pattern {
 	explicit tile_pattern(wml::const_node_ptr node)
 	  : tile(new level_object(node)), reverse(node->attr("reverse") != "no"),
 	    empty(node->attr("empty") == "yes"),
-		extended_downwards(false),
 		rotate(wml::get_int(node, "rotate", 0)),
 		filter_formula(game_logic::formula::create_optional_formula(node->attr("filter")))
 	{
@@ -35,38 +35,38 @@ struct tile_pattern {
 		std::string pattern_str = node->attr("pattern");
 		pattern_str.erase(std::remove_if(pattern_str.begin(), pattern_str.end(), is_whitespace()), pattern_str.end());
 		std::vector<std::string> patterns = util::split(pattern_str, ',', 0);
-		for(int i = 0; i != 12; ++i) {
-			pattern[i] = boost::regex(".*");
-		}
-		switch(patterns.size()) {
-		case 1: {
-			pattern[4] = boost::regex(patterns[0]);
-			break;
-		}
-		case 3: {
-			for(int i = 0; i != 3; ++i) {
-				if(patterns[i].empty()) {
-					patterns[i] = "^$";
-				}
-				pattern[3 + i] = boost::regex(patterns[i]);
-			}
-			break;
-		}
-		case 12:
-			extended_downwards = true;
-		case 9: {
-			for(int i = 0; i != patterns.size(); ++i) {
-				if(patterns[i].empty()) {
-					patterns[i] = "^$";
-				}
-				pattern[i] = boost::regex(patterns[i]);
-			}
-			break;
+
+		assert(!patterns.empty());
+
+		//the main pattern is always the very middle one.
+		int main_tile = patterns.size()/2;
+
+
+		int width = wml::get_int(node, "pattern_width", sqrt(patterns.size()));
+		int height = patterns.size()/width;
+
+		int top = -height/2;
+		int left = -width/2;
+
+		//pattern with size 12 is a special case
+		if(patterns.size() == 12 && !node->has_attr("pattern_width")) {
+			width = 3;
+			height = 4;
+			top = -1;
+			left = -1;
+			main_tile = 4;
 		}
 
-		default:
-			std::cerr << "Illegal tile pattern: (((" << node->attr("pattern") << ")))\n";
-			assert(false);
+		current_tile_pattern = boost::regex(patterns[main_tile].empty() ? "^$" : patterns[main_tile]);
+
+		for(int n = 0; n != patterns.size(); ++n) {
+			if(n == main_tile) {
+				continue;
+			}
+
+			const int x = left + n%width;
+			const int y = top + n/width;
+			surrounding_tiles.push_back(surrounding_tile(x, y, patterns[n]));
 		}
 
 		wml::node::const_child_iterator i1 = node->begin_child("variation");
@@ -87,13 +87,25 @@ struct tile_pattern {
 			++i1;
 		}
 	}
-	boost::regex pattern[12];
+
+	boost::regex current_tile_pattern;
+
+	struct surrounding_tile {
+		surrounding_tile(int x, int y, const std::string& s)
+		  : xoffset(x), yoffset(y), pattern(s.empty() ? "^$" : s)
+		{}
+		int xoffset;
+		int yoffset;
+		boost::regex pattern;
+	};
+
+	std::vector<surrounding_tile> surrounding_tiles;
+
 	std::string pattern_str;
 	level_object_ptr tile;
 	std::vector<level_object_ptr> variations;
 	bool reverse;
 	bool empty;
-	bool extended_downwards; //if we use all 12 patterns
 	int rotate;
 
 	struct added_tile {
@@ -428,16 +440,15 @@ const tile_pattern* tile_map::get_matching_pattern(int x, int y, tile_pattern_ca
 
 	filter_callable callable(*this, x, y);
 
-	const char* pattern[9] = {
-	  get_tile(y-1,x-1), get_tile(y-1,x), get_tile(y-1,x+1),
-	  get_tile(y-0,x-1), get_tile(y-0,x), get_tile(y-0,x+1),
-	  get_tile(y+1,x-1), get_tile(y+1,x), get_tile(y+1,x+1)};
+	const char* current_tile = get_tile(y,x);
 
-	tile_pattern_cache_map::iterator itor = cache.cache.find(pattern[4]);
+	//we build a cache of all of the patterns which have some chance of
+	//matching the current tile.
+	tile_pattern_cache_map::iterator itor = cache.cache.find(current_tile);
 	if(itor == cache.cache.end()) {
-		itor = cache.cache.insert(std::pair<const char*,std::vector<tile_pattern> >(pattern[4], std::vector<tile_pattern>())).first;
+		itor = cache.cache.insert(std::pair<const char*,std::vector<tile_pattern> >(current_tile, std::vector<tile_pattern>())).first;
 		foreach(const tile_pattern& p, patterns) {
-			if(!p.pattern[4].empty() && !boost::regex_match(pattern[4], pattern[4] + strlen(pattern[4]), p.pattern[4])) {
+			if(!p.current_tile_pattern.empty() && !boost::regex_match(current_tile, current_tile + strlen(current_tile), p.current_tile_pattern)) {
 				continue;
 			}
 
@@ -447,47 +458,17 @@ const tile_pattern* tile_map::get_matching_pattern(int x, int y, tile_pattern_ca
 
 	const std::vector<tile_pattern>& matching_patterns = itor->second;
 
-	static const int reverse_indexes[9] = {
-	  2, 1, 0,
-	  5, 4, 3,
-	  8, 7, 6,
-	};
-	/*
-	std::string reverse_pattern[9] = {
-	  get_tile(y-1,x+1), get_tile(y-1,x), get_tile(y-1,x-1),
-	  get_tile(y-0,x+1), get_tile(y-0,x), get_tile(y-0,x-1),
-	  get_tile(y+1,x+1), get_tile(y+1,x), get_tile(y+1,x-1)};
-	  */
-
 	foreach(const tile_pattern& p, matching_patterns) {
 		if(p.filter_formula && p.filter_formula->execute(callable).as_bool() == false) {
 			continue;
 		}
 
-		if(!p.pattern[7].empty() && !boost::regex_match(pattern[7], pattern[7] + strlen(pattern[7]), p.pattern[7])) {
-			continue;
-		}
-
 		bool match = true;
-
-		for(int i = 0; i != 9; ++i) {
-			if(i == 4 || i == 7) {
-				continue;
-			}
-			if(!boost::regex_match(pattern[i], pattern[i] + strlen(pattern[i]), p.pattern[i])) {
+		foreach(const tile_pattern::surrounding_tile& t, p.surrounding_tiles) {
+			const char* str = get_tile(y + t.yoffset, x + t.xoffset);
+			if(!boost::regex_match(str, str + strlen(str), t.pattern)) {
 				match = false;
 				break;
-			}
-		}
-
-		if(match && p.extended_downwards) {
-			const char* pattern[3] = {
-			 get_tile(y+2,x-1), get_tile(y+2,x), get_tile(y+2,x+1)};
-			for(int i = 0; i != 3; ++i) {
-				if(!boost::regex_match(pattern[i], pattern[i] + strlen(pattern[i]), p.pattern[9 + i])) {
-					match = false;
-					break;
-				}
 			}
 		}
 
@@ -503,23 +484,9 @@ const tile_pattern* tile_map::get_matching_pattern(int x, int y, tile_pattern_ca
 		if(p.reverse) {
 			match = true;
 
-			for(int i = 0; i != 9; ++i) {
-				if(i == 4) {
-					continue;
-				}
-				const int index = reverse_indexes[i];
-				if(!p.pattern[4].empty() && !boost::regex_match(pattern[index], pattern[index] + strlen(pattern[index]), p.pattern[i])) {
-					match = false;
-					break;
-				}
-			}
-		}
-
-		if(match && p.extended_downwards) {
-			const char* pattern[3] = {
-			 get_tile(y+2,x+1), get_tile(y+2,x), get_tile(y+2,x-1)};
-			for(int i = 0; i != 3; ++i) {
-				if(!boost::regex_match(pattern[i], pattern[i] + strlen(pattern[i]), p.pattern[9 + i])) {
+			foreach(const tile_pattern::surrounding_tile& t, p.surrounding_tiles) {
+				const char* str = get_tile(y + t.yoffset, x - t.xoffset);
+				if(!boost::regex_match(str, str + strlen(str), t.pattern)) {
 					match = false;
 					break;
 				}
