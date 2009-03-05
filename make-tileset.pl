@@ -619,7 +619,24 @@ pattern="
    ,$tilename,$friend,
 $friend,$friend,$friend"
 [/tile_pattern]
-~, &coord($base, 0, $noslopes ? 0 : 7), (($solid eq 'solid=yes' and not $noslopes) ? 'solid_heights="25,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0,0,0,0,0,0,0"' : (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid ));
+~, &coord($base, 0, $noslopes ? 0 : 7), (($solid eq 'solid=yes' and not $noslopes) ? 'solid_heights="24,23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0,0,0,0,0,0,0,0"' : (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid ));
+
+printf qq~
+#sloped - tile immediately beneath
+[tile_pattern]
+image=$image
+reverse=no
+tiles=%s
+%s
+pattern="
+.*,   ,    ,$friend?,.*,
+.*,   ,$friend,$friend,.*,
+.*,$friend,$tilename,$friend,.*,
+.*,$friend?,$friend,$friend?,.*,
+.*,.*,.*,.*,.*"
+[/tile_pattern]
+~, &coord($base, $noslopes ? 5 : 1, $noslopes ? 1 : 7), (($solid eq 'solid=yes' and not $noslopes) ? 'solid_heights="32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,31,30,29,28,27,26,25"' : $solid);
+
 
 printf qq~
 #sloped - reversed
@@ -633,7 +650,24 @@ $friend?,    ,   ,
 $friend,$tilename,   ,
 $friend,$friend,$friend"
 [/tile_pattern]
-~, &coord($base, 0, $noslopes ? 2 : 8), (($solid eq 'solid=yes' and not $noslopes) ? 'solid_heights="0,0,0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25"' : (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid ));
+~, &coord($base, 0, $noslopes ? 2 : 8), (($solid eq 'solid=yes' and not $noslopes) ? 'solid_heights="0,0,0,0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24"' : (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid ));
+
+printf qq~
+#sloped - reversed - tile immediately beneath
+[tile_pattern]
+image=$image
+reverse=no
+tiles=%s
+%s
+pattern="
+.*,$friend?,   ,    ,.*,
+.*,$friend,$friend,   ,.*,
+.*,$friend,$tilename,$friend,.*,
+.*,$friend?,$friend,$friend?,.*,
+.*,.*,.*,.*,.*"
+[/tile_pattern]
+~, &coord($base, $noslopes ? 5 : 1, $noslopes ? 0 : 8), (($solid eq 'solid=yes' and not $noslopes) ? 'solid_heights="25,26,27,28,29,30,31,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32"' : $solid);
+
 
 printf qq~
 #single tile by itself
