@@ -23,6 +23,25 @@ using namespace game_logic;
 
 namespace {
 
+class save_game_command : public entity_command_callable
+	{
+	public:
+		virtual void execute(level& lvl, entity& ob) const {
+			lvl.player()->save_game();
+		}
+	};
+
+class save_game_function : public function_expression {
+public:
+	explicit save_game_function(const args_list& args)
+	: function_expression("save_game",args,0)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new save_game_command());
+	}
+};
+	
 class music_command : public entity_command_callable
 	{
 	public:
@@ -789,6 +808,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new spawn_function(args, true));
 	} else if(fn == "char") {
 		return expression_ptr(new spawn_function(args, false));
+	} else if(fn == "save_game") {
+		return expression_ptr(new save_game_function(args));
 	} else if(fn == "sound") {
 		return expression_ptr(new sound_function(args));
 	} else if(fn == "music") {
