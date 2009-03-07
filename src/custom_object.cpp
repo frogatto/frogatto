@@ -29,6 +29,10 @@ custom_object::custom_object(wml::const_node_ptr node)
 	last_hit_by_anim_(0),
 	cycle_(0)
 {
+	if(!type_->respawns()) {
+		set_respawn(false);
+	}
+
 	memset(draw_color_, 0xFF, sizeof(draw_color_));
 
 	assert(type_.get());

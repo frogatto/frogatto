@@ -111,6 +111,9 @@ public:
 
 	void draw_debug_rects() const;
 
+protected:
+	void set_respawn(bool value) { respawn_ = value; }
+
 private:
 	virtual void control(const level& lvl) = 0;
 

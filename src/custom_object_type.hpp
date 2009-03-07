@@ -55,6 +55,7 @@ public:
 	int friction() const { return friction_; }
 
 	bool on_players_side() const { return on_players_side_; }
+	bool respawns() const { return respawns_; }
 
 	wml::const_node_ptr get_child(const std::string& key) const {
 		if(children_.count(key)) {
@@ -92,6 +93,7 @@ private:
 	int friction_;
 
 	bool on_players_side_;
+	bool respawns_;
 
 	std::map<std::string, wml::const_node_ptr> children_;
 
