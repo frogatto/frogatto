@@ -19,7 +19,6 @@ typedef boost::shared_ptr<const custom_object_type> const_custom_object_type_ptr
 class custom_object_type
 {
 public:
-	static void init(wml::const_node_ptr node);
 	static const_custom_object_type_ptr get(const std::string& id);
 
 	typedef std::map<std::string, game_logic::const_formula_ptr> event_handler_map;

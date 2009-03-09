@@ -368,6 +368,27 @@ void get_files_in_dir(const std::string& directory,
 		std::sort(dirs->begin(),dirs->end());
 }
 
+void get_unique_filenames_under_dir(const std::string& dir,
+                                    std::map<std::string, std::string>* file_map)
+{
+	if(dir.size() > 1024) {
+		return;
+	}
+
+	std::vector<std::string> files;
+	std::vector<std::string> dirs;
+	get_files_in_dir(dir, &files, &dirs);
+	for(std::vector<std::string>::const_iterator i = files.begin();
+	    i != files.end(); ++i) {
+		(*file_map)[*i] = dir + "/" + *i;
+	}
+
+	for(std::vector<std::string>::const_iterator i = dirs.begin();
+	    i != dirs.end(); ++i) {
+		get_unique_filenames_under_dir(dir + "/" + *i, file_map);
+	}
+}
+
 std::string get_dir(const std::string& dir_path)
 {
 	DIR* dir = opendir(dir_path.c_str());

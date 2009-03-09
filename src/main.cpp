@@ -488,8 +488,8 @@ extern "C" int main(int argc, char** argv)
 		wml::schema::init(wml::parse_wml(sys::read_file("schema.cfg")));
 		character_type::init(wml::parse_wml_from_file("characters.cfg",
 		                     wml::schema::get("characters")));
-		custom_object_type::init(wml::parse_wml_from_file("objects.cfg",
-								 wml::schema::get("objects")));
+//		custom_object_type::init(wml::parse_wml_from_file("objects.cfg",
+//								 wml::schema::get("objects")));
 		item_type::init(wml::parse_wml_from_file("items.cfg",
 		                wml::schema::get("items")));
 		level_object::init(wml::parse_wml_from_file("tiles.cfg",

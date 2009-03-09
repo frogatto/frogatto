@@ -213,13 +213,9 @@ texture::texture(const key& surfs, options_type options)
 		s = scale_surface(s);
 	}
 
-	id_.reset(new ID(get_texture_id()));
+	id_.reset(new ID);
+	id_->s = s;
 
-	glBindTexture(GL_TEXTURE_2D,id_->id);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexImage2D(GL_TEXTURE_2D,0,4,s->w,s->h,0,GL_RGBA,
-			     GL_UNSIGNED_BYTE,s->pixels);
 	current_texture = 0;
 }
 
@@ -229,6 +225,18 @@ void texture::set_as_current_texture() const
 		glBindTexture(GL_TEXTURE_2D,0);
 		current_texture = 0;
 		return;
+	}
+
+	if(id_->init() == false) {
+		id_->id = get_texture_id();
+		glBindTexture(GL_TEXTURE_2D,id_->id);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			glTexImage2D(GL_TEXTURE_2D,0,4,id_->s->w,id_->s->h,0,GL_RGBA,
+				     GL_UNSIGNED_BYTE,id_->s->pixels);
+
+		//free the surface.
+		id_->s = surface();
 	}
 
 	if(current_texture == id_->id) {
@@ -334,7 +342,7 @@ void texture::clear_cache()
 
 texture::ID::~ID()
 {
-	if(graphics_initialized) {
+	if(graphics_initialized && init()) {
 		avail_textures.push_back(id);
 	}
 }

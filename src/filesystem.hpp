@@ -13,6 +13,7 @@
 #ifndef FILESYSTEM_HPP_INCLUDED
 #define FILESYSTEM_HPP_INCLUDED
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -30,6 +31,12 @@ void get_files_in_dir(const std::string& dir,
                       std::vector<std::string>* files,
                       std::vector<std::string>* dirs=NULL,
                       FILE_NAME_MODE mode=FILE_NAME_ONLY);
+
+//Function which given a directory, will recurse through all sub-directories,
+//and find each distinct filename. It will fill the files map such that the
+//keys are filenames and the values are the full path to the file.
+void get_unique_filenames_under_dir(const std::string& dir,
+                                    std::map<std::string, std::string>* file_map);
 
 //creates a dir if it doesn't exist and returns the path
 std::string get_dir(const std::string& dir);

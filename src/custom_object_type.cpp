@@ -1,28 +1,41 @@
 #include <cassert>
 #include <iostream>
 
+#include "asserts.hpp"
 #include "custom_object_functions.hpp"
 #include "custom_object_type.hpp"
+#include "filesystem.hpp"
 #include "wml_node.hpp"
+#include "wml_parser.hpp"
 #include "wml_utils.hpp"
 
 namespace {
+std::map<std::string, std::string> object_file_paths;
+
 typedef std::map<std::string, const_custom_object_type_ptr> object_map;
 object_map cache;
 }
 
-void custom_object_type::init(wml::const_node_ptr node)
-{
-	wml::node::const_child_iterator c1 = node->begin_child("object_type");
-	wml::node::const_child_iterator c2 = node->end_child("object_type");
-	for(; c1 != c2; ++c1) {
-		cache[c1->second->attr("id")].reset(new custom_object_type(c1->second));
-	}
-}
-
 const_custom_object_type_ptr custom_object_type::get(const std::string& id)
 {
-	return cache[id];
+	object_map::const_iterator itor = cache.find(id);
+	if(itor != cache.end()) {
+		return itor->second;
+	}
+
+	if(object_file_paths.empty()) {
+		//find out the paths to all our files
+		sys::get_unique_filenames_under_dir("data/objects", &object_file_paths);
+	}
+
+	//find the file for the object we are loading.
+	std::map<std::string, std::string>::const_iterator path_itor = object_file_paths.find(id + ".cfg");
+	ASSERT_LOG(path_itor != object_file_paths.end(), "Could not find file for object '" << id << "'");
+
+	//create the object and add it to our cache.
+	custom_object_type_ptr result(new custom_object_type(wml::parse_wml(sys::read_file(path_itor->second))));
+	cache[id] = result;
+	return result;
 }
 
 void custom_object_type::init_event_handlers(wml::const_node_ptr node,

@@ -69,14 +69,23 @@ private:
 	explicit texture(const key& surfs, options_type options=options_type());
 
 	struct ID {
+		ID() : id(GLuint(-1)) {
+		}
+
 		explicit ID(GLuint id) : id(id) {
 		}
 
 		~ID();
 
+		bool init() const { return id != GLuint(-1); }
+
 		GLuint id;
+
+		//before we've constructed the ID, we can store the
+		//surface in here.
+		surface s;
 	};
-	boost::shared_ptr<ID> id_;
+	mutable boost::shared_ptr<ID> id_;
 	unsigned int width_, height_;
 	GLfloat ratio_w_, ratio_h_;
 
