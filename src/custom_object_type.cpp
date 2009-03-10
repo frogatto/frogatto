@@ -32,10 +32,16 @@ const_custom_object_type_ptr custom_object_type::get(const std::string& id)
 	std::map<std::string, std::string>::const_iterator path_itor = object_file_paths.find(id + ".cfg");
 	ASSERT_LOG(path_itor != object_file_paths.end(), "Could not find file for object '" << id << "'");
 
-	//create the object and add it to our cache.
-	custom_object_type_ptr result(new custom_object_type(wml::parse_wml(sys::read_file(path_itor->second))));
-	cache[id] = result;
-	return result;
+	try {
+		//create the object and add it to our cache.
+		custom_object_type_ptr result(new custom_object_type(wml::parse_wml(sys::read_file(path_itor->second))));
+		cache[id] = result;
+		return result;
+	} catch(wml::parse_error& e) {
+		ASSERT_LOG(false, "Error parsing WML for custom object in " << path_itor->second << ": " << e.message);
+	} catch(...) {
+		ASSERT_LOG(false, "Unknown error loading custom object in " << path_itor->second);
+	}
 }
 
 void custom_object_type::init_event_handlers(wml::const_node_ptr node,
