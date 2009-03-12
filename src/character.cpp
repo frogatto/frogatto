@@ -43,7 +43,8 @@ character::character(wml::const_node_ptr node)
 	jump_power_(wml::get_int(node, "jump_power", type_->jump())),
 	boost_power_(wml::get_int(node, "boost_power", type_->boost())),
 	glide_speed_(wml::get_int(node, "glide_speed", type_->glide())),
-	cycle_num_(0), last_jump_(false), frame_id_(0), loop_sound_(-1)
+	cycle_num_(0), last_jump_(false), last_walk_(0),
+    frame_id_(0), loop_sound_(-1)
 {
 	current_frame_ = &type_->get_frame();
 	assert(type_);
@@ -74,7 +75,8 @@ character::character(const std::string& type, int x, int y, bool face_right)
 	jump_power_(type_->jump()),
 	boost_power_(type_->boost()),
 	glide_speed_(type_->glide()),
-	cycle_num_(0), last_jump_(false), frame_id_(0), loop_sound_(-1)
+	cycle_num_(0), last_jump_(false), last_walk_(0),
+    frame_id_(0), loop_sound_(-1)
 {
 	current_frame_ = &type_->get_frame();
 	assert(type_);
@@ -245,6 +247,12 @@ void character::process(level& lvl)
 		handle_event(*event);
 	}
 
+	//check if we're pushing but not pressing left or right, in which case
+	//we stop pushing.
+	if(last_walk_ == 0 && current_frame_ == type_->push_frame()) {
+		change_to_stand_frame();
+	}
+
 	//check if we're half way through our crouch in which case we lock
 	//the frame in place until uncrouch() is called.
 	if(time_in_frame_ == current_frame_->duration()/2 &&
@@ -293,6 +301,8 @@ void character::process(level& lvl)
 			if(velocity_x_/100 == 0) {
 				change_to_stand_frame();
 			}
+		} else if(current_frame_ == type_->push_frame()) {
+			time_in_frame_ = 0;
 		} else if(current_frame_ == type_->fly_frame()) {
 			time_in_frame_ = 0;
 		} else if(current_frame_ == type_->crouch_frame() ||
@@ -336,6 +346,7 @@ void character::process(level& lvl)
 		change_to_stand_frame();
 	}
 	
+	last_walk_ = 0;
 	control(lvl);
 
 	collided_since_last_frame_ = false;
@@ -398,7 +409,11 @@ void character::process(level& lvl)
 			if((current_frame_ == type_->fall_frame() || current_frame_ == type_->jump_frame()) && type_->slide_frame() && velocity_y_ <= 100 && (velocity_x_ > 0) == face_right() && std::abs(velocity_x_) > 300) {
 				change_frame(type_->slide_frame());
 				velocity_y_ = 0;
+			} else if(current_frame_ == type_->walk_frame() && type_->push_frame()) {
+				std::cerr << "PUSH\n";
+				change_frame(type_->push_frame());
 			}
+
 			velocity_x_ = 0;
 			collided_since_last_frame_ = true;
 			break;
@@ -810,6 +825,8 @@ int character::collide_right() const
 
 void character::walk(const level& lvl, bool move_right)
 {
+	last_walk_ = move_right ? 1 : -1;
+
 	if(current_frame_ == type_->slide_frame() || current_frame_ == type_->spring_frame() || current_frame_ == type_->die_frame() || current_frame_ == type_->turn_frame() || current_frame_ == type_->gethit_frame()) {
 		return;
 	}
@@ -823,7 +840,28 @@ void character::walk(const level& lvl, bool move_right)
 	const int run_bonus = current_frame_ == type_->run_frame() ? 2 : 1;
 	velocity_x_ += (standing ? walk_speed()*run_bonus : glide_speed())*(move_right ? 1 : -1);
 	if(standing && current_frame_ != type_->walk_frame() && type_->walk_frame() && current_frame_ != type_->jump_frame() && current_frame_ != type_->turn_frame() && current_frame_ != type_->run_frame()) {
-		change_frame(type_->walk_frame());
+
+		//see if we are pushing into something, in which case we go into a
+		//pushing frame.
+		const rect& body = body_rect();
+		const int x = move_right ? (body.x2() + 1) : (body.x() - 1);
+		const int y = (body.y() + body.y2())/2;
+
+		bool collide_entity = false;
+		if(is_human()) {
+			entity_ptr e = lvl.collide(x, y, this);
+			collide_entity = e && !e->body_harmful();
+		}
+
+		int damage;
+		if(type_->push_frame() && (collide_entity || lvl.solid(x, y, NULL, &damage) && damage == 0)) {
+			if(current_frame_ != type_->push_frame()) {
+				change_frame(type_->push_frame());
+			}
+		} else {
+			//we're not pushing, so enter the walking frame.
+			change_frame(type_->walk_frame());
+		}
 	}
 
 }

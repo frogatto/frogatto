@@ -189,6 +189,10 @@ character_type::character_type(wml::const_node_ptr node)
 		swim_down_frame_.reset();
 		swim_side_frame_.reset();
 	}
+
+	if(node->get_child("push")) {
+		push_frame_.reset(new frame(node->get_child("push")));
+	}
 }
 
 const_character_type_ptr character_type::get_modified(const wml::modifier& modifier) const

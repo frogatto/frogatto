@@ -182,6 +182,7 @@ private:
 	pc_character_ptr driver_;
 
 	bool last_jump_;
+	int last_walk_;
 
 	//ID incremented every time we make a new move. This is mostly used
 	//so that we can make sure an enemy isn't hit multiple times in
