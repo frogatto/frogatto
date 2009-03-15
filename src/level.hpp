@@ -61,6 +61,7 @@ public:
 	void remove_tiles_at(int x, int y);
 	const level_tile* get_tile_at(int x, int y) const;
 	void remove_characters_in_rect(int x1, int y1, int x2, int y2);
+	void remove_character(entity_ptr e);
 	std::vector<entity_ptr> get_characters_in_rect(const rect& r) const;
 	entity_ptr get_character_at_point(int x, int y) const;
 	const_pc_character_ptr player() const { return player_; }

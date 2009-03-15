@@ -99,7 +99,6 @@ bool show_title_screen(std::string& level_cfg)
 
 		graphics::prepare_raster();
 		graphics::blit_texture(img, 0, 0, graphics::screen_width(), graphics::screen_height());
-		graphical_font::get("default")->draw(100, 100, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-+=!?.;");
 		SDL_GL_SwapBuffers();
 		joystick::update();
 		for(int n = 0; n != 6; ++n) {

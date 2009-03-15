@@ -22,7 +22,7 @@
 
 level::level(const std::string& level_cfg)
 	: id_(level_cfg), save_point_x_(-1), save_point_y_(-1),
-	  editor_(false), air_resistance_(5), water_resistance_(7), end_game_(false)
+	  editor_(false), air_resistance_(0), water_resistance_(7), end_game_(false)
 {
 	turn_reference_counting_off();
 
@@ -1080,6 +1080,11 @@ void level::remove_characters_in_rect(int x1, int y1, int x2, int y2)
 			++i;
 		}
 	}
+}
+
+void level::remove_character(entity_ptr e)
+{
+	chars_.erase(std::remove(chars_.begin(), chars_.end(), e), chars_.end());
 }
 
 std::vector<entity_ptr> level::get_characters_in_rect(const rect& r) const

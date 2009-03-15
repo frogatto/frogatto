@@ -262,9 +262,11 @@ void editor::edit_level()
 		const int selectx = (xpos_ + mousex)/TileSize;
 		const int selecty = (ypos_ + mousey)/TileSize;
 
-		if(mode_ == EDIT_PROPERTIES && !buttons) {
+		const bool object_mode = (mode_ == EDIT_PROPERTIES || mode_ == EDIT_CHARS);
+
+		if(object_mode && !buttons) {
 			lvl_->set_editor_selection(lvl_->get_character_at_point(xpos_ + mousex, ypos_ + mousey));
-		} else if(mode_ != EDIT_PROPERTIES) {
+		} else if(!object_mode) {
 			lvl_->set_editor_selection(entity_ptr());
 		} else if(lvl_->editor_selection()) {
 			const int dx = xpos_ + mousex - anchorx_;
@@ -334,6 +336,10 @@ void editor::edit_level()
 				std::cerr << "keydown " << (int)event.key.keysym.sym << " vs " << (int)SDLK_LEFT << "\n";
 				if(event.key.keysym.sym == SDLK_ESCAPE) {
 					return;
+				}
+
+				if((mode_ == EDIT_PROPERTIES || mode_ == EDIT_CHARS) && event.key.keysym.sym == SDLK_DELETE) {
+					lvl_->remove_character(lvl_->editor_selection());
 				}
 
 				if(mode_ == EDIT_PROPERTIES &&
@@ -480,7 +486,7 @@ void editor::edit_level()
 				anchorx_ = xpos_ + mousex;
 				anchory_ = ypos_ + mousey;
 
-				if(mode_ != EDIT_PROPERTIES) {
+				if(mode_ != EDIT_PROPERTIES && mode_ != EDIT_CHARS) {
 					drawing_rect_ = true;
 				} else if(property_dialog_) {
 					property_dialog_->set_entity(lvl_->editor_selection());
@@ -517,7 +523,7 @@ void editor::edit_level()
 
 					lvl_->set_next_level(levels[index]);
 
-				} else if(mode_ == EDIT_CHARS && event.button.button == SDL_BUTTON_LEFT) {
+				} else if(mode_ == EDIT_CHARS && event.button.button == SDL_BUTTON_LEFT && !lvl_->editor_selection()) {
 					wml::node_ptr node(wml::deep_copy(enemy_types[cur_item_].node));
 					node->set_attr("x", formatter() << (anchorx_ - (ctrl_pressed ? 0 : (anchorx_%TileSize))));
 					node->set_attr("y", formatter() << (anchory_ - (ctrl_pressed ? 0 : (anchory_%TileSize))));
