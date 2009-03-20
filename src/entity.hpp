@@ -38,11 +38,11 @@ public:
 	virtual void process(level& lvl) = 0;
 	virtual void execute_command(const variant& var) = 0;
 	
-	void set_pos(const point& p) { x_ = p.x; y_ = p.y; }
-	void set_pos(int x, int y) { x_ = x; y_ = y; }
+	void set_pos(const point& p) { x_ = p.x*100; y_ = p.y*100; }
+	void set_pos(int x, int y) { x_ = x*100; y_ = y*100; }
 
-	int x() const { return x_; }
-	int y() const { return y_; }
+	int x() const { return x_/100; }
+	int y() const { return y_/100; }
 	virtual int zorder() const { return 0; }
 
 	virtual int velocity_x() const { return 0; }
@@ -113,6 +113,9 @@ public:
 
 protected:
 	void set_respawn(bool value) { respawn_ = value; }
+
+	//move the entity by a number of centi pixels.
+	void move_centipixels(int x, int y) { x_ += x; y_ += y; }
 
 private:
 	virtual void control(const level& lvl) = 0;

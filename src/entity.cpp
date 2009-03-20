@@ -9,8 +9,8 @@
 #include "wml_utils.hpp"
 
 entity::entity(wml::const_node_ptr node)
-  : x_(wml::get_int(node, "x")),
-    y_(wml::get_int(node, "y")),
+  : x_(wml::get_int(node, "x")*100),
+    y_(wml::get_int(node, "y")*100),
 	face_right_(wml::get_bool(node, "face_right")),
 	group_(wml::get_int(node, "group", -1)),
     id_(-1), respawn_(wml::get_bool(node, "respawn", true))
@@ -19,7 +19,7 @@ entity::entity(wml::const_node_ptr node)
 }
 
 entity::entity(int x, int y, bool face_right)
-  : x_(x), y_(y), face_right_(face_right), group_(-1), id_(-1)
+  : x_(x*100), y_(y*100), face_right_(face_right), group_(-1), id_(-1)
 {
 }
 
@@ -52,7 +52,7 @@ void entity::set_face_right(bool facing)
 	const int start_x = feet_x();
 	face_right_ = facing;
 	const int delta_x = feet_x() - start_x;
-	x_ += delta_x;
+	x_ += delta_x*100;
 }
 
 void entity::activation_distance(int* x, int* y)

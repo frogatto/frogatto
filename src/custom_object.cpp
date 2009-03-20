@@ -189,7 +189,7 @@ void custom_object::process(level& lvl)
 	bool collide = false;
 
 	if(type_->ignore_collide()) {
-		set_pos(x() + velocity_x_/100, y() + velocity_y_/100);
+		move_centipixels(velocity_x_, velocity_y_);
 	}
 
 	for(int n = 0; n <= std::abs(velocity_x_/100) && !collide && !type_->ignore_collide(); ++n) {
