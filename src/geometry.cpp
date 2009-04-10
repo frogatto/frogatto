@@ -1,5 +1,6 @@
 #include <vector>
 
+#include <algorithm>
 #include "formatter.hpp"
 #include "geometry.hpp"
 #include "string_utils.hpp"
@@ -130,6 +131,36 @@ rect intersection_rect(const rect& a, const rect& b)
 	const int w = std::min(a.x2(), b.x2()) - x;
 	const int h = std::min(a.y2(), b.y2()) - y;
 	return rect(x, y, w, h);
+}
+
+void rect_difference(const rect& a, const rect& b, std::vector<rect>* output)
+{
+	if (rects_intersect(a,b) == false){  //return empty if there's no intersection
+		return; }
+		
+	/* returning 4 rectangles in this orientation:
+	 _________
+	 | |___| |
+	 | |   | |
+	 | |___| |
+	 |_|___|_|  */
+	
+	if( a.x() != b.x() ){ //left
+		output->push_back(rect::from_coordinates( std::min(a.x(),b.x()), std::min(a.y(),b.y()), std::max(a.x(),b.x()), std::max(a.y2(),b.y2()) ));
+	}
+	
+	if( a.x2() != b.x2() ){ //right
+		output->push_back(rect::from_coordinates( std::min(a.x2(),b.x2()), std::min(a.y(),b.y()), std::max(a.x2(),b.x2()), std::max(a.y2(),b.y2()) ));
+	}
+
+	if( a.y() != b.y() ){ //top
+		output->push_back(rect::from_coordinates( std::max(a.x(),b.x()), std::min(a.y(),b.y()), std::min(a.x2(),b.x2()), std::max(a.y(),b.y()) ));
+	}
+
+	if( a.y2() != b.y2() ){ //bottom
+		output->push_back(rect::from_coordinates( std::max(a.x(),b.x()), std::min(a.y2(),b.y2()), std::min(a.x2(),b.x2()), std::max(a.y2(),b.y2()) ));
+	}
+	
 }
 
 std::ostream& operator<<(std::ostream& s, const rect& r)
