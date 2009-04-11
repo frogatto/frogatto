@@ -10,6 +10,7 @@
 
    See the COPYING file for more details.
 */
+#include <cassert>
 #include <cctype>
 #include <iostream>
 #include <map>
@@ -21,6 +22,7 @@
 
 #include <boost/shared_ptr.hpp>
 
+#include "asserts.hpp"
 #include "filesystem.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
@@ -443,7 +445,7 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 	}
 
 	if(must_have_doc && !res) {
-		PARSE_ERROR("empty wml document");
+		PARSE_ERROR("empty wml document for filename '" << doc <<"'");
 	}
 
 	if(nodes.empty() == false) {
@@ -463,7 +465,13 @@ node_ptr parse_wml(const std::string& doc, bool must_have_doc, const schema* sch
 
 node_ptr parse_wml_from_file(const std::string& fname, const schema* schema, bool must_have_doc)
 {
-	return parse_wml_internal(fname, preprocess(sys::read_file(fname)), must_have_doc, schema);
+	try{
+		return parse_wml_internal(fname, preprocess(sys::read_file(fname)), must_have_doc, schema);
+	} catch(wml::parse_error& e) {
+		ASSERT_LOG(false, "Error parsing WML in " << fname << ": " << e.message);
+	} catch(...) {
+		ASSERT_LOG(false, "Unknown error loading WML in " << fname);
+	}
 }
 
 parse_error::parse_error(const std::string& msg) : message(msg)
