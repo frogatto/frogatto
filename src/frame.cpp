@@ -63,7 +63,7 @@ frame::frame(wml::const_node_ptr node)
 		std::vector<std::string> event_vector = util::split(events);
 		std::map<int, std::string> event_map;
 		foreach(const std::string& e, event_vector) {
-			std::vector<std::string> time_event = util::split(events, ':');
+			std::vector<std::string> time_event = util::split(e, ':');
 			if(time_event.size() < 2) {
 				continue;
 			}
