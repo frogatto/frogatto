@@ -1449,7 +1449,13 @@ variant character::get_value(const std::string& key) const
 	} else if(key == "level") {
 		return variant(lvl_);
 	} else {
-		std::map<std::string, variant>::const_iterator i = vars_.find(key);
+		
+		std::map<std::string, variant>::const_iterator i = type_->variables().find(key);
+		if(i != type_->variables().end()) {
+			return i->second;
+		}
+
+		i = vars_.find(key);
 		if(i != vars_.end()) {
 			return i->second;
 		}

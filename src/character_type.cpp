@@ -70,6 +70,15 @@ character_type::character_type(wml::const_node_ptr node)
 		}
 	}
 
+	wml::const_node_ptr vars = node->get_child("vars");
+	if(vars) {
+		for(wml::node::const_attr_iterator v = vars->begin_attr(); v != vars->end_attr(); ++v) {
+			variant var;
+			var.serialize_from_string(v->second);
+			variables_[v->first] = var;
+		}
+	}
+
 	stand_up_slope_frame_.reset(create_frame(node, "stand_up_slope"));
 	stand_down_slope_frame_.reset(create_frame(node, "stand_down_slope"));
 	portrait_frame_.reset(create_frame(node, "portrait"));

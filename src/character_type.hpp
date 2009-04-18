@@ -8,6 +8,7 @@
 
 #include "formula_fwd.hpp"
 #include "frame.hpp"
+#include "variant.hpp"
 #include "wml_node.hpp"
 
 class character_type;
@@ -82,6 +83,8 @@ public:
 	const std::string& loop_sound() const { return loop_sound_; }
 
 	game_logic::const_formula_ptr get_event_handler(const std::string& frame_id) const;
+
+	const std::map<std::string, variant>& variables() const { return variables_; }
 private:
 	wml::const_node_ptr wml_;
 
@@ -118,6 +121,8 @@ private:
 	//formulas that are executed when a frame with the corresponding ID
 	//is started.
 	std::map<std::string, game_logic::const_formula_ptr> event_handlers_;
+
+	std::map<std::string, variant> variables_;
 };
 
 #endif

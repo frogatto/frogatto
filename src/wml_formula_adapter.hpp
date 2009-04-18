@@ -23,6 +23,8 @@ public:
 	{}
 	explicit node_callable(const_node_ptr n) : mutable_node_(const_cast<node*>(n.get())), node_(n), node_callable_(n)
 	{}
+
+	wml::node* raw_node() { return mutable_node_; }
 private:
 	variant get_value(const std::string& key) const;
 	void set_value(const std::string& key, const variant& value);
