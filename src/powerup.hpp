@@ -22,11 +22,13 @@ public:
 	const wml::modifier& modifier() const { return modifier_; }
 	const frame& icon() const { return *icon_; }
 	int duration() const { return duration_; }
+	bool is_permanent() const { return permanent_; }
 
 private:
 	wml::modifier modifier_;
 	boost::scoped_ptr<frame> icon_;
 	int duration_;
+	bool permanent_;
 };
 
 #endif

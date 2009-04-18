@@ -15,6 +15,7 @@
 #include <SDL.h>
 
 #include "asserts.hpp"
+#include "foreach.hpp"
 #include "raster.hpp"
 #include "raster_distortion.hpp"
 
@@ -54,6 +55,12 @@ void prepare_raster()
 }
 
 namespace {
+struct draw_detection_rect {
+	rect area;
+	char* buf;
+};
+
+std::vector<draw_detection_rect> draw_detection_rects_;
 rect draw_detection_rect_;
 char* draw_detection_buf_;
 
@@ -99,33 +106,36 @@ namespace {
 //function which marks the draw detection buffer with pixels drawn.
 void detect_draw(const texture& tex, int x, int y, int orig_w, int orig_h, GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2)
 {
-	if(!draw_detection_buf_) {
+	if(draw_detection_rects_.empty()) {
 		return;
 	}
 
 	rect draw_rect(x, y, std::abs(orig_w), std::abs(orig_h));
-	if(rects_intersect(draw_rect, draw_detection_rect_)) {
-		rect r = intersection_rect(draw_rect, draw_detection_rect_);
-		for(int ypos = r.y(); ypos != r.y2(); ++ypos) {
-			for(int xpos = r.x(); xpos != r.x2(); ++xpos) {
-				const GLfloat u = (GLfloat(draw_rect.x2() - xpos)*x1 + GLfloat(xpos - draw_rect.x())*x2)/GLfloat(draw_rect.w());
-				const GLfloat v = (GLfloat(draw_rect.y2() - ypos)*y1 + GLfloat(ypos - draw_rect.y())*y2)/GLfloat(draw_rect.h());
-				const int texture_x = u*tex.width();
-				const int texture_y = v*tex.height();
-				ASSERT_GE(texture_x, 0);
-				ASSERT_GE(texture_y, 0);
-				ASSERT_LOG(texture_x < tex.width(), texture_x << " < " << tex.width() << " " << r.x() << " " << r.x2() << " " << xpos << " x: " << x1 << " x2: " << x2 << " u: " << u << "\n");
-				ASSERT_LT(texture_x, tex.width());
-				ASSERT_LT(texture_y, tex.height());
-				const bool alpha = tex.is_alpha(texture_x, texture_y);
-				if(!alpha) {
-					const int buf_x = xpos - draw_detection_rect_.x();
-					const int buf_y = ypos - draw_detection_rect_.y();
-					const int buf_index = buf_y*draw_detection_rect_.w() + buf_x;
-					ASSERT_LOG(buf_index >= 0, xpos << ", " << ypos << " -> " << buf_x << ", " << buf_y << " -> " << buf_index << " in " << draw_detection_rect_ << "\n");
-					ASSERT_GE(buf_index, 0);
-					ASSERT_LT(buf_index, draw_detection_rect_.w()*draw_detection_rect_.h());
-					draw_detection_buf_[buf_index] = true;
+
+	foreach(const draw_detection_rect& detect, draw_detection_rects_) {
+		if(rects_intersect(draw_rect, detect.area)) {
+			rect r = intersection_rect(draw_rect, detect.area);
+			for(int ypos = r.y(); ypos != r.y2(); ++ypos) {
+				for(int xpos = r.x(); xpos != r.x2(); ++xpos) {
+					const GLfloat u = (GLfloat(draw_rect.x2() - xpos)*x1 + GLfloat(xpos - draw_rect.x())*x2)/GLfloat(draw_rect.w());
+					const GLfloat v = (GLfloat(draw_rect.y2() - ypos)*y1 + GLfloat(ypos - draw_rect.y())*y2)/GLfloat(draw_rect.h());
+					const int texture_x = u*tex.width();
+					const int texture_y = v*tex.height();
+					ASSERT_GE(texture_x, 0);
+					ASSERT_GE(texture_y, 0);
+					ASSERT_LOG(texture_x < tex.width(), texture_x << " < " << tex.width() << " " << r.x() << " " << r.x2() << " " << xpos << " x: " << x1 << " x2: " << x2 << " u: " << u << "\n");
+					ASSERT_LT(texture_x, tex.width());
+					ASSERT_LT(texture_y, tex.height());
+					const bool alpha = tex.is_alpha(texture_x, texture_y);
+					if(!alpha) {
+						const int buf_x = xpos - detect.area.x();
+						const int buf_y = ypos - detect.area.y();
+						const int buf_index = buf_y*detect.area.w() + buf_x;
+						ASSERT_LOG(buf_index >= 0, xpos << ", " << ypos << " -> " << buf_x << ", " << buf_y << " -> " << buf_index << " in " << detect.area << "\n");
+						ASSERT_GE(buf_index, 0);
+						ASSERT_LT(buf_index, detect.area.w()*detect.area.h());
+						detect.buf[buf_index] = true;
+					}
 				}
 			}
 		}
@@ -267,13 +277,13 @@ void blit_texture(const texture& tex, int x, int y, int w, int h, GLfloat rotate
 
 void set_draw_detection_rect(const rect& rect, char* buf)
 {
-	draw_detection_rect_ = rect;
-	draw_detection_buf_ = buf;
+	draw_detection_rect new_rect = { rect, buf };
+	draw_detection_rects_.push_back(new_rect);
 }
 
 void clear_draw_detection_rect()
 {
-	draw_detection_buf_ = NULL;
+	draw_detection_rects_.clear();
 }
 
 void add_raster_distortion(const raster_distortion* distortion)

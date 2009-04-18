@@ -12,7 +12,8 @@ powerup_map cache;
 powerup::powerup(wml::const_node_ptr node)
   : modifier_(node),
     icon_(new frame(node->get_child("icon"))),
-	duration_(wml::get_int(node, "duration", -1))
+	duration_(wml::get_int(node, "duration", -1)),
+	permanent_(wml::get_bool(node, "permanent"))
 {
 }
 

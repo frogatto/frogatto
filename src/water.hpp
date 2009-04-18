@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "formula_fwd.hpp"
+#include "geometry.hpp"
 #include "raster_distortion.hpp"
 #include "wml_node_fwd.hpp"
 
@@ -18,7 +19,8 @@ public:
 	wml::node_ptr write() const;
 	void begin_drawing();
 	void end_drawing();
-	bool draw(int begin_layer, int end_layer, int x, int y, int w, int h, const char* solid_buf) const;
+	void set_surface_detection_rects(int zorder);
+	bool draw(int begin_layer, int end_layer, int x, int y, int w, int h) const;
 	void process(const level& lvl);
 
 	int min_zorder() const;
@@ -26,14 +28,22 @@ public:
 	int min_offset() const;
 	int max_offset() const;
 
-	int get_water_level(int zorder) const { return level_ + get_offset(zorder); }
-
 	void get_current(const entity& e, int* velocity_x, int* velocity_y) const;
 	
 private:
 
-	int level_, previous_level_;
-	
+	struct area {
+		explicit area(const rect& r) : rect_(r), distortion_(0, rect(0,0,0,0))
+		{}
+		rect rect_;
+		graphics::water_distortion distortion_;
+		std::vector<char> draw_detection_buf_;
+	};
+
+	std::vector<area> areas_;
+
+	bool draw_area(const area& a, int begin_layer, int end_layer, int x, int y, int w, int h) const;
+
 	struct zorder_pos {
 		int zorder;
 		int offset;
@@ -46,11 +56,7 @@ private:
 	int get_offset(int zorder) const;
 	SDL_Color get_color(int offset) const;
 
-	game_logic::const_formula_ptr water_level_formula_;
-
 	game_logic::const_formula_ptr current_x_formula_, current_y_formula_;
-
-	graphics::water_distortion distortion_;
 };
 
 #endif

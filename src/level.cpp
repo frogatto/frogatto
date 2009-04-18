@@ -483,12 +483,10 @@ void level::draw(int x, int y, int w, int h) const
 
 	std::vector<entity_ptr>::const_iterator entity_itor = chars.begin();
 
-	char water_line_solid_buffer[w];
 	int water_zorder = 0;
 	if(water_) {
 		water_zorder = water_->min_zorder();
-		memset(water_line_solid_buffer, 0, sizeof(water_line_solid_buffer));
-		graphics::set_draw_detection_rect(rect(x, water_->get_water_level(water_zorder), w, 1), water_line_solid_buffer);
+		water_->set_surface_detection_rects(water_zorder);
 	}
 
 	std::set<int>::const_iterator layer = layers_.begin();
@@ -496,11 +494,9 @@ void level::draw(int x, int y, int w, int h) const
 	for(; layer != layers_.end() && *layer < 0; ++layer) {
 
 		if(water_) {
-			if(water_->draw(water_zorder, *layer, x, y, w, h, water_line_solid_buffer)) {
-				memset(water_line_solid_buffer, 0, sizeof(water_line_solid_buffer));
-			}
+			water_->draw(water_zorder, *layer, x, y, w, h);
 			water_zorder = *layer;
-			graphics::set_draw_detection_rect(rect(x, water_->get_water_level(water_zorder), w, 1), water_line_solid_buffer);
+			water_->set_surface_detection_rects(water_zorder);
 		}
 
 		while(entity_itor != chars.end() && (*entity_itor)->zorder() <= *layer) {
@@ -517,11 +513,9 @@ void level::draw(int x, int y, int w, int h) const
 	}
 
 	if(water_) {
-		if(water_->draw(water_zorder, 0, x, y, w, h, water_line_solid_buffer)) {
-			memset(water_line_solid_buffer, 0, sizeof(water_line_solid_buffer));
-		}
+		water_->draw(water_zorder, 0, x, y, w, h);
 		water_zorder = 0;
-		graphics::set_draw_detection_rect(rect(x, water_->get_water_level(water_zorder), w, 1), water_line_solid_buffer);
+		water_->set_surface_detection_rects(water_zorder);
 	}
 
 	foreach(item_ptr it, items_) {
@@ -542,14 +536,14 @@ void level::draw(int x, int y, int w, int h) const
 
 	for(; layer != layers_.end(); ++layer) {
 		if(water_) {
-			if(water_->draw(water_zorder, *layer, x, y, w, h, water_line_solid_buffer)) {
-				memset(water_line_solid_buffer, 0, sizeof(water_line_solid_buffer));
+			if(water_->draw(water_zorder, *layer, x, y, w, h)) {
+				//pass
 			} else if(!finished_water) {
 				finished_water = true;
 				water_->end_drawing();
 			}
 			water_zorder = *layer;
-			graphics::set_draw_detection_rect(rect(x, water_->get_water_level(water_zorder), w, 1), water_line_solid_buffer);
+			water_->set_surface_detection_rects(water_zorder);
 		}
 
 		while(entity_itor != chars.end() && (*entity_itor)->zorder() <= *layer) {
@@ -566,7 +560,7 @@ void level::draw(int x, int y, int w, int h) const
 	}
 
 	if(water_) {
-		water_->draw(water_zorder, water_->max_zorder(), x, y, w, h, water_line_solid_buffer);
+		water_->draw(water_zorder, water_->max_zorder(), x, y, w, h);
 		water_zorder = water_->max_zorder();
 		graphics::clear_draw_detection_rect();
 
@@ -1337,8 +1331,6 @@ variant level::get_value(const std::string& key) const
 		return variant(player_.get());
 	} else if(key == "num_active") {
 		return variant(active_chars_.size());
-	} else if(key == "water_level") {
-		return water_ ? variant(water_->get_water_level(0)) : variant();
 	} else {
 		return variant();
 	}
@@ -1356,7 +1348,8 @@ int level::camera_rotation() const
 bool level::is_underwater(const rect& r) const
 {
 	if (water_){
-		return r.y() > water_->get_water_level(0);
+		//TODO: new in water calculation
+		//return r.y() > water_->get_water_level(0);
 	}
 	return false;
 }

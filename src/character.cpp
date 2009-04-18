@@ -1023,6 +1023,14 @@ void character::get_powerup(const std::string& id)
 
 void character::get_powerup(const_powerup_ptr p)
 {
+	if(p->is_permanent()) {
+		old_types_.push_back(type_);
+		old_types_.push_back(base_type_);
+		type_ = type_->get_modified(p->modifier());
+		base_type_ = base_type_->get_modified(p->modifier());
+		return;
+	}
+
 	//if we already have this kind of power up, then add it next
 	//to the existing powerup
 	std::vector<const_powerup_ptr>::iterator itor = std::find(powerups_.begin(), powerups_.end(), p);

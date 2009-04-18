@@ -28,6 +28,17 @@ const_character_type_ptr character_type::get(const std::string& id)
 	return cache[id];
 }
 
+namespace {
+frame* create_frame(wml::const_node_ptr node, const std::string& node_name) {
+	wml::const_node_ptr child = node->get_child(node_name);
+	if(child && !wml::get_bool(child, "disabled")) {
+		return new frame(child);
+	}
+
+	return NULL;
+}
+}
+
 character_type::character_type(wml::const_node_ptr node)
   : wml_(node),
     id_(node->attr("id")),
@@ -59,139 +70,44 @@ character_type::character_type(wml::const_node_ptr node)
 		}
 	}
 
-	if(node->get_child("stand_up_slope")) {
-		stand_up_slope_frame_.reset(new frame(node->get_child("stand_up_slope")));
-	}
+	stand_up_slope_frame_.reset(create_frame(node, "stand_up_slope"));
+	stand_down_slope_frame_.reset(create_frame(node, "stand_down_slope"));
+	portrait_frame_.reset(create_frame(node, "portrait"));
+	name_frame_.reset(create_frame(node, "name"));
+	icon_frame_.reset(create_frame(node, "icon"));
+	idle_frame_.reset(create_frame(node, "idle"));
+	turn_frame_.reset(create_frame(node, "turn"));
+	walk_frame_.reset(create_frame(node, "walk"));
+	run_frame_.reset(create_frame(node, "run"));
+	jump_frame_.reset(create_frame(node, "jump"));
+	fall_frame_.reset(create_frame(node, "fall"));
+	crouch_frame_.reset(create_frame(node, "crouch"));
+	roll_frame_.reset(create_frame(node, "roll"));
+	lookup_frame_.reset(create_frame(node, "lookup"));
+	gethit_frame_.reset(create_frame(node, "gethit"));
+	attack_frame_.reset(create_frame(node, "attack"));
+	jump_attack_frame_.reset(create_frame(node, "jump_attack"));
+	fall_spin_attack_frame_.reset(create_frame(node, "fall_spin_attack"));
+	up_attack_frame_.reset(create_frame(node, "up_attack"));
+	run_attack_frame_.reset(create_frame(node, "run_attack"));
+	die_frame_.reset(create_frame(node, "die"));
+	fly_frame_.reset(create_frame(node, "fly"));
+	slide_frame_.reset(create_frame(node, "slide"));
+	spring_frame_.reset(create_frame(node, "spring"));
+	push_frame_.reset(create_frame(node, "push"));
+	swim_side_idle_frame_.reset(create_frame(node, "swim_side_idle"));
+	swim_up_idle_frame_.reset(create_frame(node, "swim_up_idle"));
+	swim_down_idle_frame_.reset(create_frame(node, "swim_down_idle"));
+	swim_side_frame_.reset(create_frame(node, "swim_side"));
+	swim_up_frame_.reset(create_frame(node, "swim_up"));
+	swim_down_frame_.reset(create_frame(node, "swim_down"));
 
-	if(node->get_child("stand_down_slope")) {
-		stand_down_slope_frame_.reset(new frame(node->get_child("stand_down_slope")));
-	}
 
-	if(node->get_child("portrait")) {
-		portrait_frame_.reset(new frame(node->get_child("portrait")));
-	}
-
-	if(node->get_child("name")) {
-		name_frame_.reset(new frame(node->get_child("name")));
-	}
-
-	if(node->get_child("icon")) {
-		icon_frame_.reset(new frame(node->get_child("icon")));
-	}
-
-	if(node->get_child("idle")) {
-		idle_frame_.reset(new frame(node->get_child("idle")));
-	}
-
-	if(node->get_child("turn")) {
-		turn_frame_.reset(new frame(node->get_child("turn")));
-	}
-
-	if(node->get_child("walk")) {
-		walk_frame_.reset(new frame(node->get_child("walk")));
-	}
-
-	if(node->get_child("run")) {
-		run_frame_.reset(new frame(node->get_child("run")));
-	}
-
-	if(node->get_child("jump")) {
-		jump_frame_.reset(new frame(node->get_child("jump")));
-	}
-
-	if(node->get_child("fall")) {
-		fall_frame_.reset(new frame(node->get_child("fall")));
-	}
-
-	if(node->get_child("crouch")) {
-		crouch_frame_.reset(new frame(node->get_child("crouch")));
-	}
-
-	if(node->get_child("roll")) {
-		roll_frame_.reset(new frame(node->get_child("roll")));
-	}
-
-	if(node->get_child("lookup")) {
-		lookup_frame_.reset(new frame(node->get_child("lookup")));
-	}
-
-	if(node->get_child("gethit")) {
-		gethit_frame_.reset(new frame(node->get_child("gethit")));
-	}
-
-	if(node->get_child("attack")) {
-		attack_frame_.reset(new frame(node->get_child("attack")));
-	}
-
-	if(node->get_child("jump_attack")) {
-		jump_attack_frame_.reset(new frame(node->get_child("jump_attack")));
-	}
-	
-	if(node->get_child("fall_spin_attack")) {
-		fall_spin_attack_frame_.reset(new frame(node->get_child("fall_spin_attack")));
-	}
-	
-	if(node->get_child("up_attack")) {
-		up_attack_frame_.reset(new frame(node->get_child("up_attack")));
-	}
-
-	if(node->get_child("run_attack")) {
-		run_attack_frame_.reset(new frame(node->get_child("run_attack")));
-	}
-
-	if(node->get_child("die")) {
-		die_frame_.reset(new frame(node->get_child("die")));
-	}
-
-	if(node->get_child("fly")) {
-		fly_frame_.reset(new frame(node->get_child("fly")));
-	}
-
-	if(node->get_child("slide")) {
-		slide_frame_.reset(new frame(node->get_child("slide")));
-	}
-
-	if(node->get_child("spring")) {
-		spring_frame_.reset(new frame(node->get_child("spring")));
-	}
-	
-	if(node->get_child("swim_side_idle")) {
-		swim_side_idle_frame_.reset(new frame(node->get_child("swim_side_idle")));
-	}
-	if(node->get_child("swim_down_idle")) {
-		swim_down_idle_frame_.reset(new frame(node->get_child("swim_down_idle")));
-	}
-	if(node->get_child("swim_up_idle")) {
-		swim_up_idle_frame_.reset(new frame(node->get_child("swim_up_idle")));
-	}
-	if(node->get_child("swim_side")) {
-		swim_side_frame_.reset(new frame(node->get_child("swim_side")));
-		if(!swim_side_idle_frame_) {
-			swim_side_idle_frame_.reset(new frame(*swim_side_frame_));
-		}
-	}
-	if(node->get_child("swim_down")) {
-		swim_down_frame_.reset(new frame(node->get_child("swim_down")));
-		if(!swim_down_idle_frame_) {
-			swim_down_idle_frame_.reset(new frame(*swim_down_frame_));
-		}
-	}
-	if(node->get_child("swim_up")) {
-		swim_up_frame_.reset(new frame(node->get_child("swim_up")));
-		if(!swim_up_idle_frame_) {
-			swim_up_idle_frame_.reset(new frame(*swim_up_frame_));
-		}
-	}
-	
 	//if we have one swim frame we must have them all
 	if(!swim_up_frame_ || !swim_down_frame_ || !swim_side_frame_) {
 		swim_up_frame_.reset();
 		swim_down_frame_.reset();
 		swim_side_frame_.reset();
-	}
-
-	if(node->get_child("push")) {
-		push_frame_.reset(new frame(node->get_child("push")));
 	}
 }
 
