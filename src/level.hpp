@@ -82,6 +82,12 @@ public:
 		std::string transition;
 	};
 
+	//function which will make it so the next call to get_portal() will return
+	//a pointer to a copy of the given portal. i.e. this makes the character immediately
+	//enter a portal.
+	void force_enter_portal(const portal& p);
+
+	//the portal the character has entered (if any)
 	const portal* get_portal() const;
 	void debug_dump_solid_map() const;
 
@@ -130,6 +136,8 @@ public:
 	bool is_underwater(const rect& r) const;
 
 	void get_current(const entity& e, int* velocity_x, int* velocity_y) const;
+
+	bool hide_status_bar() const { return hide_status_bar_; }
 
 private:
 	void draw_layer(int layer, int x, int y, int w, int h) const;
@@ -197,6 +205,10 @@ private:
 
 	portal left_portal_, right_portal_;
 	std::vector<portal> portals_;
+
+	mutable bool entered_portal_active_;
+	portal entered_portal_;
+
 	boost::scoped_ptr<background> background_;
 	int widest_tile_, highest_tile_;
 
@@ -219,6 +231,8 @@ private:
 	boost::scoped_ptr<fluid> fluid_;
 
 	boost::scoped_ptr<water> water_;
+
+	bool hide_status_bar_;
 	
 };
 

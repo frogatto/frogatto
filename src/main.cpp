@@ -82,6 +82,9 @@ void flip_scene(level& lvl, screen_position& screen_pos, bool flip_out) {
 
 bool show_title_screen(std::string& level_cfg)
 {
+	//currently the titlescreen is disabled.
+	return false;
+
 	preload_level(level_cfg);
 
 	const int CyclesUntilPreloadReplay = 15*20;
@@ -196,8 +199,9 @@ std::string write_key_frames() {
 	return s.str();
 }
 
-void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool record_replay)
+bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool record_replay)
 {
+	bool quit = false;
 	boost::scoped_ptr<level> start_lvl;
 	if(record_replay) {
 		start_lvl.reset(load_level(level_cfg));
@@ -213,7 +217,7 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 		if(lvl->player() && lvl->player()->hitpoints() <= 0) {
 			boost::intrusive_ptr<pc_character> save = lvl->player()->save_condition();
 			if(!save) {
-				return;
+				return false;
 			}
 			preload_level(save->current_level());
 			fade_scene(*lvl, last_draw_position());
@@ -292,6 +296,7 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 				switch(event.type) {
 				case SDL_QUIT:
 					done = true;
+					quit = true;
 					break;
 				case SDL_KEYDOWN: {
 					//if we're in a replay any keypress will exit it.
@@ -304,6 +309,7 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 					const SDLKey key = event.key.keysym.sym;
 					if(key == SDLK_ESCAPE) {
 						done = true;
+						quit = true;
 						break;
 					} else if(key == SDLK_e && (mod&KMOD_CTRL)) {
 						editor(lvl->id().c_str()).edit_level();
@@ -369,7 +375,7 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 
 				if(key_record_pos == key_record.size()) {
 					fade_scene(*lvl, last_draw_position());
-					return;
+					return false;
 				}
 			}
 		}
@@ -396,6 +402,8 @@ void play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 
 		if (!paused) ++cycle;
 	}
+
+	return quit;
 }
 
 }
@@ -409,7 +417,7 @@ extern "C" int main(int argc, char** argv)
 	bool record_replay = false;
 	bool fullscreen = false;
 	int width = 800, height = 600;
-	std::string level_cfg = "pineapple-field.cfg";
+	std::string level_cfg = "titlescreen.cfg";
 	bool unit_tests_only = false, skip_tests = false;;
 	bool run_benchmarks = false;
 	for(int n = 1; n < argc; ++n) {
@@ -511,7 +519,10 @@ extern "C" int main(int argc, char** argv)
 	glEnable(GL_TEXTURE_2D);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	while(!show_title_screen(level_cfg)) {
+	bool quit = false;
+	const std::string orig_level_cfg = level_cfg;
+
+	while(!quit && !show_title_screen(level_cfg)) {
 		last_draw_position() = screen_position();
 
 		boost::scoped_ptr<level> lvl(load_level(level_cfg));
@@ -528,8 +539,8 @@ extern "C" int main(int argc, char** argv)
 			key_record_pos = 0;
 		}
 
-		play_level(lvl, level_cfg, record_replay);
-		level_cfg = "pineapple-field.cfg";
+		quit = play_level(lvl, level_cfg, record_replay);
+		level_cfg = orig_level_cfg;
 
 		key_record.clear();
 		key_record_pos = 0;

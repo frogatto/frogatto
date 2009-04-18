@@ -21,12 +21,14 @@
 #include "wml_utils.hpp"
 
 level::level(const std::string& level_cfg)
-	: id_(level_cfg), save_point_x_(-1), save_point_y_(-1),
-	  editor_(false), air_resistance_(0), water_resistance_(7), end_game_(false)
+	: id_(level_cfg), entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
+	  editor_(false), air_resistance_(0), water_resistance_(7), end_game_(false),
+      hide_status_bar_(false)
 {
 	turn_reference_counting_off();
 
 	wml::const_node_ptr node(wml::parse_wml(preprocess(sys::read_file("data/level/" + level_cfg))));
+	hide_status_bar_ = wml::get_bool(node, "hide_status_bar", false);
 	music_ = node->attr("music");
 	replay_data_ = node->attr("replay_data");
 	cycle_ = wml::get_int(node, "cycle");
@@ -299,6 +301,7 @@ void level::rebuild_tiles_rect(const rect& r)
 wml::const_node_ptr level::write() const
 {
 	wml::node_ptr res(new wml::node("level"));
+	res->set_attr("hide_status_bar", hide_status_bar_ ? "yes" : "no");
 	res->set_attr("title", title_);
 	res->set_attr("music", music_);
 	if(cycle_) {
@@ -1231,8 +1234,19 @@ void level::remove_props_in_rect(int x1, int y1, int x2, int y2)
 	props_.erase(std::remove_if(props_.begin(), props_.end(), prop_object_in_rect(x1, y1, x2, y2)), props_.end());
 }
 
+void level::force_enter_portal(const portal& p)
+{
+	entered_portal_active_ = true;
+	entered_portal_ = p;
+}
+
 const level::portal* level::get_portal() const
 {
+	if(entered_portal_active_) {
+		entered_portal_active_ = false;
+		return &entered_portal_;
+	}
+
 	if(!player_) {
 		return NULL;
 	}

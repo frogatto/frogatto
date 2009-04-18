@@ -206,7 +206,9 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 
 	debug_console::draw();
 
-	draw_statusbar(lvl, pos, focus);
+	if(!lvl.hide_status_bar()) {
+		draw_statusbar(lvl, pos, focus);
+	}
 }
 
 void draw_statusbar(const level& lvl, screen_position& pos, const entity* focus)
