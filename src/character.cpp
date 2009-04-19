@@ -39,10 +39,10 @@ character::character(wml::const_node_ptr node)
 	time_in_frame_(0),
 	hitpoints_(wml::get_int(node, "hitpoints", type_->hitpoints())),
 	max_hitpoints_(wml::get_int(node, "max_hitpoints", type_->hitpoints())),
-	walk_speed_(wml::get_int(node, "walk_speed", type_->walk())),
-	jump_power_(wml::get_int(node, "jump_power", type_->jump())),
-	boost_power_(wml::get_int(node, "boost_power", type_->boost())),
-	glide_speed_(wml::get_int(node, "glide_speed", type_->glide())),
+	walk_speed_(wml::get_int(node, "walk_speed")),
+	jump_power_(wml::get_int(node, "jump_power")),
+	boost_power_(wml::get_int(node, "boost_power")),
+	glide_speed_(wml::get_int(node, "glide_speed")),
 	cycle_num_(0), last_jump_(false), last_walk_(0),
     frame_id_(0), loop_sound_(-1)
 {
@@ -71,10 +71,10 @@ character::character(const std::string& type, int x, int y, bool face_right)
 	time_in_frame_(0),
 	hitpoints_(type_->hitpoints()),
 	max_hitpoints_(type_->hitpoints()),
-	walk_speed_(type_->walk()),
-	jump_power_(type_->jump()),
-	boost_power_(type_->boost()),
-	glide_speed_(type_->glide()),
+	walk_speed_(0),
+	jump_power_(0),
+	boost_power_(0),
+	glide_speed_(0),
 	cycle_num_(0), last_jump_(false), last_walk_(0),
     frame_id_(0), loop_sound_(-1)
 {
@@ -120,16 +120,16 @@ wml::node_ptr character::write() const
 	if(max_hitpoints_ != type_->hitpoints()) {
 		res->set_attr("max_hitpoints", formatter() << max_hitpoints_);
 	}
-	if(walk_speed_ != type_->walk()) {
+	if(walk_speed_ != 0) {
 		res->set_attr("walk_speed", formatter() << walk_speed_);
 	}
-	if(jump_power_ != type_->jump()) {
+	if(jump_power_ != 0) {
 		res->set_attr("jump_power", formatter() << jump_power_);
 	}
-	if(boost_power_ != type_->boost()) {
+	if(boost_power_ != 0) {
 		res->set_attr("boost_power", formatter() << boost_power_);
 	}
-	if(glide_speed_ != type_->glide()) {
+	if(glide_speed_ != 0) {
 		res->set_attr("glide_speed", formatter() << glide_speed_);
 	}
 	if(walk_formula_) {
@@ -1291,22 +1291,22 @@ int character::max_hitpoints() const
 
 int character::walk_speed() const
 {
-	return walk_speed_;
+	return type_->walk() + walk_speed_;
 }
 
 int character::jump_power() const
 {
-	return jump_power_;
+	return type_->jump() + jump_power_;
 }
 
 int character::boost_power() const
 {
-	return boost_power_;
+	return type_->boost() + boost_power_;
 }
 
 int character::glide_speed() const
 {
-	return glide_speed_;
+	return type_->glide() + glide_speed_;
 }
 
 void character::get_hit()

@@ -83,6 +83,7 @@ void modifier::modify_target(variant target, const modification& mod) {
 		for(std::map<std::string, game_logic::const_formula_ptr>::const_iterator i = mods.begin(); i != mods.end(); ++i) {
 			variant value = i->second->execute(*target.as_callable());
 			target.mutable_callable()->mutate_value(i->first, value);
+			std::cerr << "SETTING VALUE: " << i->first << " -> " << value.string_cast() << "\n";
 		}
 	}
 }

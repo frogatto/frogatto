@@ -1,6 +1,9 @@
+#include <iostream>
+
 #include "wml_formula_adapter.hpp"
 #include "wml_node.hpp"
 #include "wml_schema.hpp"
+#include "wml_writer.hpp"
 
 namespace wml {
 variant node_elements_callable::get_value(const std::string& key) const
