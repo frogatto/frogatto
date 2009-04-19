@@ -1066,6 +1066,7 @@ int character::remove_powerup(const_powerup_ptr powerup)
 	const int result = std::count(powerups_.begin(), powerups_.end(), powerup);
 	powerups_.erase(std::remove(powerups_.begin(), powerups_.end(), powerup), powerups_.end());
 
+	old_types_.push_back(type_);
 	//set the new current powerup
 	if(powerups_.empty()) {
 		type_ = base_type_;
