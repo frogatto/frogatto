@@ -1024,10 +1024,17 @@ void character::get_powerup(const std::string& id)
 void character::get_powerup(const_powerup_ptr p)
 {
 	if(p->is_permanent()) {
-		old_types_.push_back(type_);
-		old_types_.push_back(base_type_);
-		type_ = type_->get_modified(p->modifier());
-		base_type_ = base_type_->get_modified(p->modifier());
+		
+		//check if we already have it - if so don't apply it.
+		std::vector<const_powerup_ptr>::iterator itor = std::find(abilities_.begin(), abilities_.end(), p);
+		if(itor == abilities_.end()) {
+			old_types_.push_back(type_);
+			old_types_.push_back(base_type_);
+			type_ = type_->get_modified(p->modifier());
+			base_type_ = base_type_->get_modified(p->modifier());
+		
+			abilities_.insert(itor,p);
+		}
 		return;
 	}
 

@@ -128,6 +128,14 @@ void show_inventory(pc_character& c)
 			                       GLfloat(y2)/inventory.height());
 		}
 
+		std::vector<const_powerup_ptr> abilities = c.abilities();
+		for(int n = 0; n != abilities.size(); ++n) {
+			const int xpos = 200 + n*46;
+			const int ypos = 183;
+			abilities[n]->icon().draw(xpos, ypos);
+		}
+		
+		
 		draw_statusbar(*c.get_level(), last_draw_position(), &c);
 		SDL_GL_SwapBuffers();
 		SDL_Delay(20);

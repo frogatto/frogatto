@@ -107,6 +107,7 @@ public:
 	virtual void remove_powerup();
 	virtual int remove_powerup(const_powerup_ptr powerup);
 	const std::vector<const_powerup_ptr>& powerups() const { return powerups_; }
+	const std::vector<const_powerup_ptr>& abilities() const { return abilities_; }
 
 protected:
 	const frame& current_frame() const;
@@ -205,6 +206,7 @@ private:
 	mutable std::vector<previous_draw> blur_;
 
 	std::vector<const_powerup_ptr> powerups_;
+	std::vector<const_powerup_ptr> abilities_;
 };
 
 class pc_character : public character {
