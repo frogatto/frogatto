@@ -27,6 +27,8 @@ class color : public game_logic::formula_callable
 	
 	variant get_value(const std::string& key) const;
 
+	void set_as_current_color() const;
+
 	
 	private:
 		union PixelUnion {

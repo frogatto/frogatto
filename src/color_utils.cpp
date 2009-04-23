@@ -1,6 +1,8 @@
-#include "color_utils.hpp"
 #include <string>
 #include <vector>
+#include <GL/gl.h>
+
+#include "color_utils.hpp"
 #include "string_utils.hpp"
 #include "unit_test.hpp"
 
@@ -73,6 +75,12 @@ variant color::get_value(const std::string& key) const
 		return variant();
 	}
 }
+
+void color::set_as_current_color() const
+{
+	glColor4ubv(c_.rgba);
+}
+	
 
 UNIT_TEST(color)
 {
