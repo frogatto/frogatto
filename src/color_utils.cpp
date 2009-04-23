@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include "string_utils.hpp"
-
+#include "unit_test.hpp"
 
 SDL_Color string_to_color(const std::string& str)
 {
@@ -63,3 +63,22 @@ variant color::get_value(const std::string& key) const
 	}
 }
 
+UNIT_TEST(color)
+{
+	//check that a value plugged into the color is returned when we
+	//ask for it.
+	CHECK_EQ(color(758492).rgba(), 758492);
+
+	//check that an rgba value is equal to an expected int value.
+	CHECK_EQ(color(255,255,0,255).rgba(), color(0xFFFF00FF).rgba());
+
+	//check that parsing from a string works properly
+	CHECK_EQ(color("255,128,255,128").rgba(), color(255,128,255,128).rgba());
+
+	//it would be nice to be able to specify a string with three instead of
+	//four values, and have it just assume 255 for the alpha.
+	CHECK_EQ(color("255,128,255").rgba(), color(255,128,255,255).rgba());
+
+	//check that we can get a value out of a color
+	CHECK_EQ(color(255,128,64,0).get_value("g").as_int(), 128);
+}
