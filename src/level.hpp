@@ -23,6 +23,8 @@
 #include "tile_map.hpp"
 #include "water.hpp"
 #include "wml_node_fwd.hpp"
+#include "color_utils.hpp"
+
 
 class level : public game_logic::formula_callable
 {
@@ -233,6 +235,7 @@ private:
 	boost::scoped_ptr<water> water_;
 
 	bool hide_status_bar_;
+	graphics::color tint_;
 	
 };
 

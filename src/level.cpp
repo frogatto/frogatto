@@ -19,11 +19,12 @@
 #include "wml_node.hpp"
 #include "wml_parser.hpp"
 #include "wml_utils.hpp"
+#include "color_utils.hpp"
 
 level::level(const std::string& level_cfg)
 	: id_(level_cfg), entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
 	  editor_(false), air_resistance_(0), water_resistance_(7), end_game_(false),
-      hide_status_bar_(false)
+      hide_status_bar_(false), tint_(0xFFFF00FF)
 {
 	turn_reference_counting_off();
 
@@ -1345,6 +1346,8 @@ variant level::get_value(const std::string& key) const
 		return variant(player_.get());
 	} else if(key == "num_active") {
 		return variant(active_chars_.size());
+	} else if(key == "tint") {
+		return variant(new graphics::color(tint_));
 	} else {
 		return variant();
 	}
