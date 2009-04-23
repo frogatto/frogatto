@@ -43,7 +43,17 @@ color::color( const std::string& str)
 			itor != components.end(); ++itor)
 		{
 			c_.rgba[i] = atoi(itor->c_str());
+			++i;
 		}
+	} else if ( components.size() == 3){ //assume that the fourth value, alpha, is 255
+		int i=0;
+		for( std::vector<std::string>::iterator itor = components.begin();
+			itor != components.end(); ++itor)
+		{
+				c_.rgba[i] = atoi(itor->c_str());
+				++i;
+		}
+		c_.rgba[3] = 255; //no need to read the string element, b/c there isn't one
 	}
 }
 
