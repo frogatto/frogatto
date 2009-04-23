@@ -25,7 +25,7 @@ class color : public game_logic::formula_callable
 	color( uint32_t rgba);
 	color( const std::string& str);
 	
-	variant color::get_value(const std::string& key) const;
+	variant get_value(const std::string& key) const;
 
 	
 	private:
@@ -36,6 +36,12 @@ class color : public game_logic::formula_callable
 
 		PixelUnion c_;
 		
+	static PixelUnion convert_pixel_byte_order(PixelUnion p) {
+#if SDL_BYTEORDER == SDL_LIL_ENDIAN
+		std::reverse(p.rgba, p.rgba + sizeof(p.rgba));
+#endif
+		return p;
+	}
 };
 	
 }
