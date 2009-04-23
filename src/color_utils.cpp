@@ -30,6 +30,7 @@ color::color( uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 color::color( uint32_t rgba)
 {
 	c_.value = rgba;
+	c_ = convert_pixel_byte_order(c_);
 }
 
 color::color( const std::string& str)

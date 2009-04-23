@@ -18,7 +18,7 @@ class color : public game_logic::formula_callable
 	uint8_t g() const {return c_.rgba[1]; }
 	uint8_t b() const {return c_.rgba[2]; }
 	uint8_t a() const {return c_.rgba[3]; }
-	uint32_t rgba() const {return c_.value; }
+	uint32_t rgba() const {return convert_pixel_byte_order(c_).value; }
 	//TODO: color to return string version
 	
 	color( uint8_t r, uint8_t g, uint8_t b, uint8_t a);
