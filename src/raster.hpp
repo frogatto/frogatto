@@ -17,6 +17,7 @@
 
 #include "SDL.h"
 
+#include "color_utils.hpp"
 #include "geometry.hpp"
 #include "texture.hpp"
 
@@ -52,6 +53,7 @@ void clear_raster_distortion();
 
 void draw_rect(const SDL_Rect& rect, const SDL_Color& color,
                unsigned char alpha=0xFF);
+void draw_rect(const rect& rect, const graphics::color& color);
 void draw_hollow_rect(const SDL_Rect& rect, const SDL_Color& color,
                unsigned char alpha=0xFF);
 int screen_width();

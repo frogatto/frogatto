@@ -24,7 +24,7 @@
 level::level(const std::string& level_cfg)
 	: id_(level_cfg), entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
 	  editor_(false), air_resistance_(0), water_resistance_(7), end_game_(false),
-      hide_status_bar_(false), tint_(0xFFFF00FF)
+      hide_status_bar_(false), tint_(0)
 {
 	turn_reference_counting_off();
 
@@ -599,6 +599,10 @@ void level::draw(int x, int y, int w, int h) const
 
 	if(background_) {
 		background_->draw_foreground(start_x, start_y, 0.0);
+	}
+
+	if( tint_.a() > 0){
+		graphics::draw_rect(rect(x,y,w,h), tint_ );
 	}
 }
 
@@ -1350,6 +1354,19 @@ variant level::get_value(const std::string& key) const
 		return variant(new graphics::color(tint_));
 	} else {
 		return variant();
+	}
+}
+
+void level::set_value(const std::string& key, const variant& value)
+{
+	if(key == "tint") {
+		 if(value.is_string()) {
+			tint_ = graphics::color(value.as_string());
+		 } else if(value.is_list() && value.num_elements() == 4) {
+			tint_ = graphics::color(value[0].as_int(), value[1].as_int(), value[2].as_int(), value[3].as_int());
+		 }
+	} else {
+		vars_[key] = value;
 	}
 }
 

@@ -312,6 +312,16 @@ void draw_rect(const SDL_Rect& r, const SDL_Color& color,
 	glEnable(GL_TEXTURE_2D);
 }
 
+void draw_rect(const rect& r, const graphics::color& color)
+{
+	glDisable(GL_TEXTURE_2D);
+	glColor4ub(color.r(),color.g(),color.b(),color.a());
+	glRecti(r.x(),r.y(),r.x()+r.w(),r.y()+r.h());
+	glColor4ub(255, 255, 255, 255);
+	glEnable(GL_TEXTURE_2D);
+}
+	
+	
 void draw_hollow_rect(const SDL_Rect& r, const SDL_Color& color,
 		      unsigned char alpha) {
 

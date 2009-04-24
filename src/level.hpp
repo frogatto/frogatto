@@ -140,6 +140,7 @@ public:
 	void get_current(const entity& e, int* velocity_x, int* velocity_y) const;
 
 	bool hide_status_bar() const { return hide_status_bar_; }
+	graphics::color tint() const { return tint_; }
 
 private:
 	void draw_layer(int layer, int x, int y, int w, int h) const;
@@ -166,6 +167,8 @@ private:
 	std::string replay_data_;
 	int cycle_;
 
+	std::map<std::string, variant> vars_;
+	
 	typedef std::map<tile_pos, solid_info> solid_map;
 	solid_map solid_;
 	solid_map standable_;
@@ -174,6 +177,7 @@ private:
 	void set_solid(solid_map& map, int x, int y, int friction, int damage);
 
 	variant get_value(const std::string& key) const;
+	void set_value(const std::string& key, const variant& value);
 
 	std::string title_;
 
