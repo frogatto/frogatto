@@ -734,7 +734,7 @@ expression_ptr parse_expression(const token* i1, const token* i2, function_symbo
 				return expression_ptr(new identifier_expression(
 				                 std::string(i1->begin,i1->end)));
 			} else if(i1->type == TOKEN_INTEGER) {
-				int n = boost::lexical_cast<int>(std::string(i1->begin,i1->end));
+				int n = strtol(std::string(i1->begin,i1->end).c_str(), NULL, 0);
 				return expression_ptr(new integer_expression(n));
 			} else if(i1->type == TOKEN_STRING_LITERAL) {
 				return expression_ptr(new string_expression(std::string(i1->begin+1,i1->end-1)));

@@ -17,6 +17,7 @@
 
 #include "foreach.hpp"
 #include "formula_tokenizer.hpp"
+#include "unit_test.hpp"
 
 namespace formula_tokenizer
 {
@@ -36,6 +37,7 @@ token_type token_types[] = { { regex("^(not\\b|and\\b|or\\b|where\\b|d(?=[^a-zA-
 				{ regex("^def\\b"),        TOKEN_KEYWORD },
 				{ regex("^'[^']*'"),       TOKEN_STRING_LITERAL },
 				{ regex("^[a-zA-Z_][a-zA-Z_0-9]*"),    TOKEN_IDENTIFIER },
+				{ regex("^0x[0-9a-fA-F]+"),          TOKEN_INTEGER },
 				{ regex("^\\d+"),          TOKEN_INTEGER },
 				{ regex("^\\("),           TOKEN_LPARENS },
 				{ regex("^\\)"),           TOKEN_RPARENS },
@@ -71,12 +73,10 @@ token get_token(iterator& i1, iterator i2) {
 
 }
 
-#ifdef UNIT_TEST_TOKENIZER
-
-int main()
+UNIT_TEST(tokenizer_test)
 {
 	using namespace formula_tokenizer;
-	std::string test = "(abc + 4 * (5+3))^2";
+	std::string test = "(abc + 0x4 * (5+3))*2";
 	std::string::const_iterator i1 = test.begin();
 	std::string::const_iterator i2 = test.end();
 	TOKEN_TYPE types[] = {TOKEN_LPARENS, TOKEN_IDENTIFIER,
@@ -86,16 +86,13 @@ int main()
 						  TOKEN_WHITESPACE, TOKEN_LPARENS,
 						  TOKEN_INTEGER, TOKEN_OPERATOR,
 						  TOKEN_INTEGER, TOKEN_RPARENS,
-						  TOKEN_RPARENS, TOKEN_KEYWORD,
-	                      TOKEN_OPERATOR, TOKEN_INTEGER};
-	std::string tokens[] = {"(", "abc", " ", "+", " ", "4", " ",
-	                        "*", " ", "(", "5", "+", "3", ")", ")", "functions"};
+						  TOKEN_RPARENS, TOKEN_OPERATOR, TOKEN_INTEGER};
+	std::string tokens[] = {"(", "abc", " ", "+", " ", "0x4", " ",
+	                        "*", " ", "(", "5", "+", "3", ")", ")", "*", "2"};
 	for(int n = 0; n != sizeof(types)/sizeof(*types); ++n) {
 		token t = get_token(i1,i2);
-		assert(std::string(t.begin,t.end) == tokens[n]);
-		assert(t.type == types[n]);
+		CHECK_EQ(std::string(t.begin,t.end), tokens[n]);
+		CHECK_EQ(t.type, types[n]);
 
 	}
 }
-
-#endif
