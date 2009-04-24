@@ -21,7 +21,7 @@ class color : public game_logic::formula_callable
 	uint32_t rgba() const {return convert_pixel_byte_order(c_).value; }
 	//TODO: color to return string version
 	
-	color( uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+	color( int r, int g, int b, int a);
 	color( uint32_t rgba);
 	color( const std::string& str);
 	

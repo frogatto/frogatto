@@ -5,6 +5,7 @@
 #include "color_utils.hpp"
 #include "string_utils.hpp"
 #include "unit_test.hpp"
+#include "utils.hpp"
 
 SDL_Color string_to_color(const std::string& str)
 {
@@ -20,13 +21,12 @@ SDL_Color string_to_color(const std::string& str)
 
 using namespace graphics;
 
-color::color( uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+color::color( int r, int g, int b, int a)
 {
-	c_.rgba[0] = r;
-	c_.rgba[1] = g;
-	c_.rgba[2] = b;
-	c_.rgba[3] = a;
-	
+	c_.rgba[0] = truncate_to_char(r);
+	c_.rgba[1] = truncate_to_char(g);
+	c_.rgba[2] = truncate_to_char(b);
+	c_.rgba[3] = truncate_to_char(a);
 }
 
 color::color( uint32_t rgba)
@@ -90,7 +90,7 @@ UNIT_TEST(color)
 
 	//check that an rgba value is equal to an expected int value.
 	CHECK_EQ(color(255,255,0,255).rgba(), color(0xFFFF00FF).rgba());
-
+	
 	//check that parsing from a string works properly
 	CHECK_EQ(color("255,128,255,128").rgba(), color(255,128,255,128).rgba());
 
