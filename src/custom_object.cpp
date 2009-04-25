@@ -660,25 +660,28 @@ const frame& custom_object::icon_frame() const
 
 void custom_object::handle_event(const std::string& event, const formula_callable* context)
 {
-	game_logic::const_formula_ptr handler;
-	std::map<std::string, game_logic::const_formula_ptr>::const_iterator handler_itor = event_handlers_.find(event);
-	if(handler_itor != event_handlers_.end()) {
-		handler = handler_itor->second;
-	} else {
-		handler = type_->get_event_handler(event);
-	}
-
-	if(handler) {
-		variant var;
-
-		if(context) {
-			game_logic::formula_callable_with_backup callable(*this, *context);
-			var = handler->execute(callable);
+	if ( (hitpoints_ > 0) || (event == "die"))
+	{
+		game_logic::const_formula_ptr handler;
+		std::map<std::string, game_logic::const_formula_ptr>::const_iterator handler_itor = event_handlers_.find(event);
+		if(handler_itor != event_handlers_.end()) {
+			handler = handler_itor->second;
 		} else {
-			var = handler->execute(*this);
+			handler = type_->get_event_handler(event);
 		}
 
-		execute_command(var);
+		if(handler) {
+			variant var;
+
+			if(context) {
+				game_logic::formula_callable_with_backup callable(*this, *context);
+				var = handler->execute(callable);
+			} else {
+				var = handler->execute(*this);
+			}
+
+			execute_command(var);
+		}
 	}
 }
 
