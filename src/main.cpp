@@ -344,6 +344,9 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 						sound::mute(!sound::muted()); //toggle sound
 					} else if(key == SDLK_p && mod & KMOD_CTRL) {
 						paused = !paused;
+					} else if(key == SDLK_p && mod & KMOD_ALT) {
+						preferences::set_use_pretty_scaling(!preferences::use_pretty_scaling());
+						graphics::texture::clear_textures();
 					}
 					break;
 				}

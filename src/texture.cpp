@@ -15,9 +15,11 @@
 #include "surface_cache.hpp"
 #include "surface_formula.hpp"
 #include "texture.hpp"
+#include "thread.hpp"
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <map>
+#include <set>
 #include <iostream>
 #include <cstring>
 
@@ -27,6 +29,26 @@ namespace graphics
 surface scale_surface(surface input);
 
 namespace {
+	std::set<texture*>& texture_registry() {
+		static std::set<texture*>* reg = new std::set<texture*>;
+		return *reg;
+	}
+
+	threading::mutex& texture_registry_mutex() {
+		static threading::mutex* m = new threading::mutex;
+		return *m;
+	}
+
+	void add_texture_to_registry(texture* t) {
+		threading::lock lk(texture_registry_mutex());
+		texture_registry().insert(t);
+	}
+
+	void remove_texture_from_registry(texture* t) {
+		threading::lock lk(texture_registry_mutex());
+		texture_registry().erase(t);
+	}
+
 	typedef std::map<texture::key,graphics::texture> texture_map;
 	texture_map texture_cache;
 	const size_t TextureBufSize = 128;
@@ -147,22 +169,63 @@ texture::manager::~manager() {
 
 void texture::clear_textures()
 {
-	texture_cache.clear();
+	//go through all the textures and clear out the ID's. We only want to
+	//re-initialize each shared ID once.
+	threading::lock lk(texture_registry_mutex());
+	for(std::set<texture*>::iterator i = texture_registry().begin(); i != texture_registry().end(); ++i) {
+		texture& t = **i;
+		if(t.id_) {
+			t.id_->destroy();
+		}
+	}
+
+	//go through and initialize anyone's ID which hasn't been initialized
+	//already.
+	for(std::set<texture*>::iterator i = texture_registry().begin(); i != texture_registry().end(); ++i) {
+		texture& t = **i;
+		if(t.id_ && t.id_->s.get() == NULL) {
+			t.initialize();
+		}
+	}
 }
 
-texture::texture(const key& surfs, options_type options)
+texture::texture() : width_(0), height_(0)
+{
+	add_texture_to_registry(this);
+}
+
+texture::texture(const key& surfs)
    : width_(0), height_(0), ratio_w_(1.0), ratio_h_(1.0), key_(surfs)
 {
+	add_texture_to_registry(this);
+	initialize();
+}
+
+texture::texture(const texture& t)
+  : id_(t.id_), width_(t.width_), height_(t.height_),
+   ratio_w_(t.ratio_w_), ratio_h_(t.ratio_h_), key_(t.key_),
+   alpha_map_(t.alpha_map_)
+{
+	add_texture_to_registry(this);
+}
+
+texture::~texture()
+{
+	remove_texture_from_registry(this);
+}
+
+void texture::initialize()
+{
 	assert(graphics_initialized);
-	if(surfs.empty() ||
-	   std::find(surfs.begin(),surfs.end(),surface()) != surfs.end()) {
+	if(key_.empty() ||
+	   std::find(key_.begin(),key_.end(),surface()) != key_.end()) {
 		return;
 	}
 
 	npot_allowed = is_npot_allowed();
 
-	width_ = surfs.front()->w;
-	height_ = surfs.front()->h;
+	width_ = key_.front()->w;
+	height_ = key_.front()->h;
 	alpha_map_.resize(width_*height_);
 
 	unsigned int surf_width = width_;
@@ -180,8 +243,8 @@ texture::texture(const key& surfs, options_type options)
 
 	surface s(SDL_CreateRGBSurface(SDL_SWSURFACE,surf_width,surf_height,32,SURFACE_MASK));
 
-	for(key::const_iterator i = surfs.begin(); i != surfs.end(); ++i) {
-		if(i == surfs.begin()) {
+	for(key::const_iterator i = key_.begin(); i != key_.end(); ++i) {
+		if(i == key_.begin()) {
 			SDL_SetAlpha(i->get(), 0, SDL_ALPHA_OPAQUE);
 		} else {
 			SDL_SetAlpha(i->get(), SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
@@ -209,11 +272,10 @@ texture::texture(const key& surfs, options_type options)
 		}
 	}
 
-	if(preferences::use_pretty_scaling()) {
-		s = scale_surface(s);
+	if(!id_) {
+		id_.reset(new ID);
 	}
 
-	id_.reset(new ID);
 	id_->s = s;
 
 	current_texture = 0;
@@ -228,6 +290,10 @@ void texture::set_as_current_texture() const
 	}
 
 	if(id_->init() == false) {
+		if(preferences::use_pretty_scaling()) {
+			id_->s = scale_surface(id_->s);
+		}
+
 		id_->id = get_texture_id();
 		glBindTexture(GL_TEXTURE_2D,id_->id);
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -279,45 +345,45 @@ texture texture::get_frame_buffer()
 	return t;
 }
 
-texture texture::get(const std::string& str, options_type options)
+texture texture::get(const std::string& str)
 {
 	std::cerr << "texture get: '" << str << "'\n";
-	return get(surface_cache::get(str), options);
+	return get(surface_cache::get(str));
 }
 
-texture texture::get(const std::string& str, const std::string& algorithm, options_type options)
+texture texture::get(const std::string& str, const std::string& algorithm)
 {
 	std::cerr << "texture get: '" << str << "'\n";
-	return get(get_surface_formula(surface_cache::get(str), algorithm), options);
+	return get(get_surface_formula(surface_cache::get(str), algorithm));
 }
 
-texture texture::get(const key& surfs, options_type options)
+texture texture::get(const key& surfs)
 {
 	texture_map::iterator i = texture_cache.find(surfs);
 	if(i != texture_cache.end()) {
 		return i->second;
 	} else {
 
-		texture t(surfs, options);
+		texture t(surfs);
 
 		texture_cache.insert(std::pair<key,texture>(surfs,t));
 		return t;
 	}
 }
 
-texture texture::get(const surface& surf, options_type options)
+texture texture::get(const surface& surf)
 {
-	return get(key(1,surf), options);
+	return get(key(1,surf));
 }
 
-texture texture::get_no_cache(const key& surfs, options_type options)
+texture texture::get_no_cache(const key& surfs)
 {
-	return texture(surfs, options);
+	return texture(surfs);
 }
 
-texture texture::get_no_cache(const surface& surf, options_type options)
+texture texture::get_no_cache(const surface& surf)
 {
-	return texture(key(1,surf), options);
+	return texture(key(1,surf));
 }
 
 void texture::set_current_texture(const key& k)
@@ -342,9 +408,17 @@ void texture::clear_cache()
 
 texture::ID::~ID()
 {
+	destroy();
+}
+
+void texture::ID::destroy()
+{
 	if(graphics_initialized && init()) {
 		avail_textures.push_back(id);
 	}
+
+	id = GLuint(-1);
+	s = surface();
 }
 
 }

@@ -24,7 +24,7 @@ void run_benchmarks(const std::vector<std::string>* benchmarks=NULL);
 
 #define CHECK(cond, msg) if(!(cond)) { std::cerr << __FILE__ << ":" << __LINE__ << ": TEST CHECK FAILED: " << #cond << ": " << msg << "\n"; throw test::failure_exception(); }
 
-#define CHECK_CMP(a, b, cmp) CHECK((a) cmp (b), #a << ": " << (a) << "; " << #b << ": " << #b)
+#define CHECK_CMP(a, b, cmp) CHECK((a) cmp (b), #a << ": " << (a) << "; " << #b << ": " << (b))
 
 #define CHECK_EQ(a, b) CHECK_CMP(a, b, ==)
 #define CHECK_NE(a, b) CHECK_CMP(a, b, !=)

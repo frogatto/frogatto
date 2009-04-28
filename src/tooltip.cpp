@@ -20,20 +20,24 @@ namespace gui {
 
 namespace {
 boost::shared_ptr<std::string> cur_tooltip;
-graphics::texture text;
+
+graphics::texture& text() {
+	static graphics::texture t;
+	return t;
+}
 }
 
 void set_tooltip(const boost::shared_ptr<std::string>& tip)
 {
 	cur_tooltip = tip;
-	text = font::render_text(*cur_tooltip, graphics::color_yellow(), 18);
+	text() = font::render_text(*cur_tooltip, graphics::color_yellow(), 18);
 }
 
 void remove_tooltip(const boost::shared_ptr<std::string>& tip)
 {
 	if(tip == cur_tooltip) {
 		cur_tooltip.reset();
-		text = graphics::texture();
+		text() = graphics::texture();
 	}
 }
 
@@ -47,8 +51,8 @@ void draw_tooltip()
 	SDL_GetMouseState(&mousex,&mousey);
 
 	const int pad = 10;
-	const int width = text.width() + pad*2;
-	const int height = text.height() + pad*2;
+	const int width = text().width() + pad*2;
+	const int height = text().height() + pad*2;
 	int x = mousex - width/2;
 	int y = mousey - height;
 	if(x < 0) {
@@ -70,7 +74,7 @@ void draw_tooltip()
 	SDL_Rect rect = {x,y,width,height};
 	graphics::draw_rect(rect, graphics::color_black(), 160);
 
-	graphics::blit_texture(text,x+pad,y+pad);
+	graphics::blit_texture(text(),x+pad,y+pad);
 }
 
 }

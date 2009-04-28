@@ -35,11 +35,11 @@ public:
 		~manager();
 	};
 
-	enum OPTION { NO_MIPMAP, PRETTY_SCALING, NUM_OPTIONS };
-	typedef std::bitset<NUM_OPTIONS> options_type;
 	static void clear_textures();
 
-	texture() : width_(0), height_(0) {}
+	texture();
+	texture(const texture& t);
+	~texture();
 
 	typedef std::vector<surface> key;
 
@@ -47,12 +47,11 @@ public:
 	bool valid() const { return id_; }
 
 	static texture get_frame_buffer();
-	static texture get(const std::string& str, options_type options=options_type());
-	static texture get(const std::string& str, const std::string& algorithm, options_type options=options_type());
-	static texture get(const key& k, options_type options=options_type());
-	static texture get(const surface& surf, options_type options=options_type());
-	static texture get_no_cache(const key& k, options_type options=options_type());
-	static texture get_no_cache(const surface& surf, options_type options=options_type());
+	static texture get(const std::string& str);
+	static texture get(const std::string& str, const std::string& algorithm);
+	static texture get(const key& k);
+	static texture get_no_cache(const key& k);
+	static texture get_no_cache(const surface& surf);
 	static void set_current_texture(const key& k);
 	static void set_coord(GLfloat x, GLfloat y);
 	static void clear_cache();
@@ -66,7 +65,10 @@ public:
 	friend bool operator<(const texture&, const texture&);
 
 private:
-	explicit texture(const key& surfs, options_type options=options_type());
+	void initialize();
+
+	static texture get(const surface& surf);
+	explicit texture(const key& surfs);
 
 	struct ID {
 		ID() : id(GLuint(-1)) {
@@ -76,6 +78,8 @@ private:
 		}
 
 		~ID();
+
+		void destroy();
 
 		bool init() const { return id != GLuint(-1); }
 
