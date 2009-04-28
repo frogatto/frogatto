@@ -305,6 +305,13 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 					const SDL_ResizeEvent* const resize = reinterpret_cast<SDL_ResizeEvent*>(&event);
 					screen_width = resize->w;
 					screen_height = resize->h;
+					if(screen_width > screen_height + screen_height/3) {
+						screen_width = screen_height + screen_height/3;
+					}
+
+					if(screen_height > (screen_width*3)/4) {
+						screen_height = (screen_width*3)/4;
+					}
 					SDL_SetVideoMode(screen_width,screen_height,0,SDL_RESIZABLE|SDL_OPENGL|(fullscreen ? SDL_FULLSCREEN : 0));
 
 				}
