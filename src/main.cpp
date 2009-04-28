@@ -302,6 +302,7 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 					quit = true;
 					break;
 				case SDL_VIDEORESIZE: {
+					continue; //disabled.
 					const SDL_ResizeEvent* const resize = reinterpret_cast<SDL_ResizeEvent*>(&event);
 					screen_width = resize->w;
 					screen_height = resize->h;
@@ -312,7 +313,7 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 					if(screen_height > (screen_width*3)/4) {
 						screen_height = (screen_width*3)/4;
 					}
-					SDL_SetVideoMode(screen_width,screen_height,0,SDL_RESIZABLE|SDL_OPENGL|(fullscreen ? SDL_FULLSCREEN : 0));
+					SDL_SetVideoMode(screen_width,screen_height,0,SDL_OPENGL|(fullscreen ? SDL_FULLSCREEN : 0));
 
 				}
 				case SDL_KEYDOWN: {
@@ -366,7 +367,7 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 						graphics::texture::clear_textures();
 					} else if(key == SDLK_f && mod & KMOD_CTRL) {
 						fullscreen = !fullscreen;
-						SDL_SetVideoMode(screen_width,screen_height,0,SDL_RESIZABLE|SDL_OPENGL|(fullscreen ? SDL_FULLSCREEN : 0));
+						SDL_SetVideoMode(screen_width,screen_height,0,SDL_OPENGL|(fullscreen ? SDL_FULLSCREEN : 0));
 					}
 					break;
 				}
@@ -488,7 +489,7 @@ extern "C" int main(int argc, char** argv)
 		return -1;
 	}
 
-	if(SDL_SetVideoMode(screen_width,screen_height,0,SDL_RESIZABLE|SDL_OPENGL|(fullscreen ? SDL_FULLSCREEN : 0)) == NULL) {
+	if(SDL_SetVideoMode(screen_width,screen_height,0,SDL_OPENGL|(fullscreen ? SDL_FULLSCREEN : 0)) == NULL) {
 		std::cerr << "could not set video mode\n";
 		return -1;
 	}
