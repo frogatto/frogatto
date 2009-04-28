@@ -46,6 +46,9 @@
 #include "wml_writer.hpp"
 
 namespace {
+int screen_width = 900, screen_height = 600;
+bool fullscreen = false;
+
 
 void fade_scene(level& lvl, screen_position& screen_pos) {
 	for(int n = 0; n < 255; n += 20) {
@@ -298,6 +301,13 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 					done = true;
 					quit = true;
 					break;
+				case SDL_VIDEORESIZE: {
+					const SDL_ResizeEvent* const resize = reinterpret_cast<SDL_ResizeEvent*>(&event);
+					screen_width = resize->w;
+					screen_height = resize->h;
+					SDL_SetVideoMode(screen_width,screen_height,0,SDL_RESIZABLE|SDL_OPENGL|(fullscreen ? SDL_FULLSCREEN : 0));
+
+				}
 				case SDL_KEYDOWN: {
 					//if we're in a replay any keypress will exit it.
 					if(!record_replay && key_record.empty() == false) {
@@ -347,6 +357,9 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 					} else if(key == SDLK_p && mod & KMOD_ALT) {
 						preferences::set_use_pretty_scaling(!preferences::use_pretty_scaling());
 						graphics::texture::clear_textures();
+					} else if(key == SDLK_f && mod & KMOD_CTRL) {
+						fullscreen = !fullscreen;
+						SDL_SetVideoMode(screen_width,screen_height,0,SDL_RESIZABLE|SDL_OPENGL|(fullscreen ? SDL_FULLSCREEN : 0));
 					}
 					break;
 				}
@@ -418,8 +431,6 @@ extern "C" int main(int argc, char** argv)
 	std::cerr.sync_with_stdio(true);
 	#endif
 	bool record_replay = false;
-	bool fullscreen = false;
-	int width = 800, height = 600;
 	std::string level_cfg = "titlescreen.cfg";
 	bool unit_tests_only = false, skip_tests = false;;
 	bool run_benchmarks = false;
@@ -435,10 +446,10 @@ extern "C" int main(int argc, char** argv)
 			fullscreen = true;
 		} else if(arg == "--width") {
 			std::string w(argv[++n]);
-			width = boost::lexical_cast<int>(w);
+			screen_width = boost::lexical_cast<int>(w);
 		} else if(arg == "--height" && n+1 < argc) {
 			std::string h(argv[++n]);
-			height = boost::lexical_cast<int>(h);
+			screen_height = boost::lexical_cast<int>(h);
 		} else if(arg == "--level" && n+1 < argc) {
 			level_cfg = argv[++n];
 		} else if(arg == "--record_replay") {
@@ -470,7 +481,7 @@ extern "C" int main(int argc, char** argv)
 		return -1;
 	}
 
-	if(SDL_SetVideoMode(width,height,0,SDL_OPENGL|(fullscreen ? SDL_FULLSCREEN : 0)) == NULL) {
+	if(SDL_SetVideoMode(screen_width,screen_height,0,SDL_RESIZABLE|SDL_OPENGL|(fullscreen ? SDL_FULLSCREEN : 0)) == NULL) {
 		std::cerr << "could not set video mode\n";
 		return -1;
 	}
