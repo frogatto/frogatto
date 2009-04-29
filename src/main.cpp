@@ -46,7 +46,7 @@
 #include "wml_writer.hpp"
 
 namespace {
-int screen_width = 900, screen_height = 600;
+int screen_width = 800, screen_height = 600;
 bool fullscreen = false;
 
 
