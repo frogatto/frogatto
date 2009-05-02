@@ -1456,6 +1456,13 @@ variant character::get_value(const std::string& key) const
 		return variant(current_frame().damage());
 	} else if(key == "level") {
 		return variant(lvl_);
+	} else if(key == "water_level") {
+		rect water_area;
+		if(lvl_->is_underwater(body_rect(), &water_area)) {
+			return variant(water_area.y());
+		} else {
+			return variant();
+		}
 	} else {
 		
 		std::map<std::string, variant>::const_iterator i = type_->variables().find(key);

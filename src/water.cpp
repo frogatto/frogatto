@@ -246,3 +246,18 @@ void water::get_current(const entity& e, int* velocity_x, int* velocity_y) const
 		*velocity_y += current_y_formula_->execute(e).as_int();
 	}
 }
+
+bool water::is_underwater(const rect& r, rect* result_water_area) const
+{
+	const point p((r.x() + r.x2())/2, (r.y() + r.y2())/2);
+	foreach(const area& a, areas_) {
+		if(point_in_rect(p, a.rect_)) {
+			if(result_water_area) {
+				*result_water_area = a.rect_;
+			}
+			return true;
+		}
+	}
+
+	return false;
+}

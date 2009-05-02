@@ -29,6 +29,8 @@ public:
 	int max_offset() const;
 
 	void get_current(const entity& e, int* velocity_x, int* velocity_y) const;
+
+	bool is_underwater(const rect& r, rect* water_area=NULL) const;
 	
 private:
 
