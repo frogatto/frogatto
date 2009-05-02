@@ -10,6 +10,7 @@
 #include "raster.hpp"
 #include "texture.hpp"
 #include "message_dialog.hpp"
+#include "options_dialog.hpp"
 #include "raster_distortion.hpp"
 #include "sound.hpp"
 #include "speech_dialog.hpp"
@@ -617,6 +618,38 @@ private:
 	}
 };
 
+	
+class dialog_box_command : public custom_object_command_callable
+{
+public:
+	explicit dialog_box_command(const std::string& kind)
+	: kind_(kind)
+	{}
+	virtual void execute(level& lvl, custom_object& ob) const {
+		//lvl.set_end_game();
+		if(kind_ == "options"){
+			options_dialog current_dialog(100,100,200,200);
+			current_dialog.show_modal();
+		}
+	}
+private:
+	std::string kind_;
+};
+
+class dialog_box_function : public function_expression {
+public:
+	explicit dialog_box_function(const args_list& args)
+	: function_expression("dialog_box", args, 1) {
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new dialog_box_command(
+					   args()[0]->evaluate(variables).as_string()));
+		}
+};
+	
+	
+	
 class end_game_command : public custom_object_command_callable
 {
 public:
@@ -868,6 +901,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new dialog_function(args));
 	} else if(fn == "speech_dialog") {
 		return expression_ptr(new speech_dialog_function(args));
+	} else if(fn == "dialog_box") {
+		return expression_ptr(new dialog_box_function(args));
 	} else if(fn == "scroll_to") {
 		return expression_ptr(new scroll_to_function(args));
 	} else if(fn == "end_game") {
