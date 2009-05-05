@@ -25,9 +25,7 @@ my $friend = $tilename;
 my $noslopes = 0;
 
 while(my $arg = shift @ARGV) {
-	if($arg eq '--grass') {
-		$grass = shift @ARGV;
-	} elsif($arg eq '--solid') {
+	if($arg eq '--solid') {
 		$solid = "solid=" . (shift @ARGV);
 	} elsif($arg eq '--friend') {
 		$friend = shift @ARGV;
@@ -42,504 +40,6 @@ while((length $tilename) < 3) {
 	$tilename = " $tilename";
 }
 
-if($grass) {
-
-printf qq~
-#grass top - thin ledge
-[tile_pattern]
-image=$image
-tiles=%s
-pattern="
-$friend?,$friend?, $friend?,
-$friend?,   , $friend?,
-$grass, $grass, $grass,
-$friend?,   , $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 2, 10), &coord($base, 4, 13);
-
-printf qq~
-#grass - thin ledge
-[tile_pattern]
-image=$image
-tiles=%s
-%s
-pattern="
-$friend?,   , $friend?,
-$grass, $grass, $grass,
-$friend?,   , $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 3, 10), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid ), &coord($base, 5, 13);
-
-printf qq~
-#grass top - thin ledge with no grass to the left.
-[tile_pattern]
-image=$image
-tiles=%s
-solid=no
-reverse=no
-pattern="
-$friend?,$friend?, $friend?,
-$friend?,   , $friend?,
-$friend, $grass, $grass,
-$friend?,   , $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 2, 9), &coord($base, 4, 12);
-
-printf qq~
-#grass - thin ledge with no grass to the left.
-[tile_pattern]
-image=$image
-tiles=%s
-%s
-reverse=no
-pattern="
-$friend?,   , $friend?,
-$friend, $grass, $grass,
-$friend?,   , $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 3, 9), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid ), &coord($base, 5, 12);
-
-printf qq~
-#grass top - thin ledge with no grass to the right.
-[tile_pattern]
-image=$image
-tiles=%s
-solid=no
-reverse=no
-pattern="
-$friend?,$friend?, $friend?,
-$friend?,   , $friend?,
-$grass, $grass, $friend,
-$friend?,   , $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 2, 11), &coord($base, 4, 14);
-
-printf qq~
-#grass - thin ledge with no grass to the right.
-[tile_pattern]
-image=$image
-tiles=%s
-%s
-reverse=no
-pattern="
-$friend?,   , $friend?,
-$grass, $grass, $friend,
-$friend?,   , $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 3, 11), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid ), &coord($base, 5, 14);
-
-printf qq~
-#grass top - thin ledge with no grass on either side.
-[tile_pattern]
-image=$image
-tiles=%s
-reverse=no
-pattern="
-$friend?,$friend?,$friend?,
-$friend?,   , $friend?,
-$friend, $grass, $friend,
-$friend?,   , $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 2, 12), &coord($base, 4, 15);
-
-printf qq~
-#grass - thin ledge with no grass on either side.
-[tile_pattern]
-image=$image
-tiles=%s
-%s
-reverse=no
-pattern="
-$friend?,   , $friend?,
-$friend, $grass, $friend,
-$friend?,   , $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 3, 12), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid ), &coord($base, 5, 15);
-
-printf qq~
-#grass top - left edge of thin ledge
-[tile_pattern]
-image=$image
-tiles=%s
-reverse=no
-pattern="
-$friend?,$friend?,$friend?,
-$friend?,   , $friend?,
-   , $grass, $friend,
-$friend?,   , $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 0, 9), &coord($base, 4, 12);
-
-printf qq~
-#grass - left edge of thin ledge
-[tile_pattern]
-image=$image
-tiles=%s
-%s
-reverse=no
-pattern="
-$friend?,   , $friend?,
-   , $grass, $friend,
-$friend?,   , $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 1, 9), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid ), &coord($base, 5, 12);
-
-printf qq~
-#grass top - right edge of thin ledge
-[tile_pattern]
-image=$image
-tiles=%s
-reverse=no
-pattern="
-$friend?,$friend?,$friend?,
-$friend?,   , $friend?,
-$friend, $grass,   ,
-$friend?,   , $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 0, 10), &coord($base, 4, 14);
-
-printf qq~
-#grass - right edge of thin ledge
-[tile_pattern]
-image=$image
-tiles=%s
-%s
-reverse=no
-pattern="
-$friend?,   , $friend?,
-$friend, $grass,   ,
-$friend?,   , $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 1, 10), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid ), &coord($base, 5, 14);
-
-printf qq~
-#grass top - single tile
-[tile_pattern]
-image=$image
-tiles=%s
-reverse=no
-pattern="
-$friend?,$friend?,$friend?,
-$friend?,   , $friend?,
-   , $grass,   ,
-$friend?,   , $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 0, 11), &coord($base, 4, 15);
-
-printf qq~
-#grass - single tile
-[tile_pattern]
-image=$image
-tiles=%s
-%s
-reverse=no
-pattern="
-$friend?,   , $friend?,
-   , $grass,   ,
-$friend?,   , $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 1, 11), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid ), &coord($base, 5, 15);
-
-printf qq~
-#grass top - regular ground as part of a long line of grass
-[tile_pattern]
-image=$image
-tiles=%s
-reverse=no
-pattern="
-$friend?,$friend?, $friend?,
-$friend?,   , $friend?,
-$grass, $grass,$grass,
-$friend?,$friend, $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 4, 10), &coord($base, 4, 13);
-
-printf qq~
-#grass - regular ground as part of a long line of grass
-[tile_pattern]
-image=$image
-tiles=%s
-%s
-reverse=no
-pattern="
-$friend?,   , $friend?,
-$grass, $grass,$grass,
-$friend?,$friend, $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 5, 10), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid ), &coord($base, 5, 13);
-
-printf qq~
-#grass top - with no grass (just dirt) to the left
-[tile_pattern]
-image=$image
-tiles=%s
-reverse=no
-pattern="
-$friend?,$friend?, $friend?,
-$friend?,   , $friend?,
-$friend, $grass,$grass,
-$friend?,$friend, $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 0, 12), &coord($base, 4, 12);
-
-printf qq~
-#grass - with no grass (just dirt) to the left
-[tile_pattern]
-image=$image
-tiles=%s
-%s
-reverse=no
-pattern="
-$friend?,   , $friend?,
-$friend, $grass,$grass,
-$friend?,$friend, $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 1, 12), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid ), &coord($base, 5, 12);
-
-printf qq~
-#grass top - with no grass (just dirt) to the right
-[tile_pattern]
-image=$image
-tiles=%s
-reverse=no
-pattern="
-$friend?,$friend?, $friend?,
-$friend?,   , $friend?,
-$grass, $grass,$friend,
-$friend?,$friend, $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 0, 13), &coord($base, 4, 14);
-
-printf qq~
-#grass - with no grass (just dirt) to the right
-[tile_pattern]
-image=$image
-tiles=%s
-%s
-reverse=no
-pattern="
-$friend?,   , $friend?,
-$grass, $grass,$friend,
-$friend?,$friend, $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 1, 13), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid ), &coord($base, 5, 14);
-
-printf qq~
-#grass top - with dirt on either side
-[tile_pattern]
-image=$image
-tiles=%s
-reverse=no
-pattern="
-$friend?,$friend?, $friend?,
-$friend?,   , $friend?,
-$friend, $grass,$friend,
-$friend?,$friend, $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 2, 13), &coord($base, 4, 15);
-
-printf qq~
-#grass - with dirt on either side
-[tile_pattern]
-image=$image
-tiles=%s
-%s
-reverse=no
-pattern="
-$friend?,   , $friend?,
-$friend, $grass,$friend,
-$friend?,$friend, $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 3, 13), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid ), &coord($base, 5, 15);
-
-printf qq~
-#grass top - left side of cliff
-[tile_pattern]
-image=$image
-tiles=%s
-reverse=no
-pattern="
-$friend?,$friend?, $friend?,
-$friend?,   , $friend?,
-   , $grass,$grass,
-$friend?,$friend, $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 4, 9), &coord($base, 4, 12);
-
-printf qq~
-#grass - left side of cliff
-[tile_pattern]
-image=$image
-tiles=%s
-%s
-reverse=no
-pattern="
-$friend?,   , $friend?,
-   , $grass,$grass,
-$friend?,$friend, $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 5, 9), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid ), &coord($base, 5, 12);
-
-printf qq~
-#grass top - right side of cliff
-[tile_pattern]
-image=$image
-tiles=%s
-reverse=no
-pattern="
-$friend?,$friend?, $friend?,
-$friend?,   , $friend?,
-$grass,$grass,   ,
-$friend?,$friend, $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 4, 11), &coord($base, 4, 14);
-
-printf qq~
-#grass - right side of cliff
-[tile_pattern]
-image=$image
-tiles=%s
-%s
-reverse=no
-pattern="
-$friend?,   , $friend?,
-$grass,$grass,   ,
-$friend?,$friend, $friend?"
-	[tile]
-	image=$image
-	tiles=%s
-	zorder=1
-	[/tile]
-[/tile_pattern]
-~, &coord($base, 5, 11), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid ), &coord($base, 5, 14);
-
-} #end if($grass)
-
 printf qq~
 #horizontal tile
 [tile_pattern]
@@ -551,7 +51,7 @@ pattern="
 $friend,$tilename,$friend,
 .* ,   ,.* "
 [/tile_pattern]
-~, &coord($base, 3, 1), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid );
+~, &coord($base, 3, 1), $solid ;
 
 printf qq~
 #horizontal tile with one tile below but not on either side
@@ -564,7 +64,7 @@ pattern="
 $friend,$tilename,$friend,
    ,$friend,   "
 [/tile_pattern]
-~, &coord($base, 0, 5), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid );
+~, &coord($base, 0, 5), $solid;
 
 printf qq~
 #horizontal tile with one tile above but not on either side
@@ -577,7 +77,7 @@ pattern="
 $friend,$tilename,$friend,
    ,$friend,   "
 [/tile_pattern]
-~, &coord($base, 2, 5), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid );
+~, &coord($base, 2, 5), $solid;
 
 printf qq~
 #overhang
@@ -591,7 +91,7 @@ pattern="
    ,$tilename,$friend,
 .* ,   ,.* "
 [/tile_pattern]
-~, &coord($base, 3, 0), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid );
+~, &coord($base, 3, 0), $solid;
 
 printf qq~
 #overhang - reversed
@@ -605,7 +105,7 @@ pattern="
 $friend,$tilename,   ,
 .* ,   ,.* "
 [/tile_pattern]
-~, &coord($base, 3, 2), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid );
+~, &coord($base, 3, 2), $solid;
 
 printf qq~
 #sloped
@@ -619,7 +119,7 @@ pattern="
    ,$tilename,$friend,
 $friend,$friend,$friend"
 [/tile_pattern]
-~, &coord($base, 0, $noslopes ? 0 : 7), (($solid eq 'solid=yes' and not $noslopes) ? 'solid_heights="24,23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0,0,0,0,0,0,0,0"' : (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid ));
+~, &coord($base, 0, $noslopes ? 0 : 7), (($solid eq 'solid=yes' and not $noslopes) ? 'solid=diagonal' : $solid);
 
 printf qq~
 #sloped - tile immediately beneath
@@ -635,7 +135,7 @@ pattern="
 .*,$friend,$friend,$friend,.*,
 .*,.*,.*,.*,.*"
 [/tile_pattern]
-~, &coord($base, $noslopes ? 5 : 1, $noslopes ? 1 : 7), (($solid eq 'solid=yes' and not $noslopes) ? 'solid_heights="32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,31,30,29,28,27,26,25"' : $solid);
+~, &coord($base, $noslopes ? 5 : 1, $noslopes ? 1 : 7), $solid;
 
 
 printf qq~
@@ -650,7 +150,7 @@ $friend?,    ,   ,
 $friend,$tilename,   ,
 $friend,$friend,$friend"
 [/tile_pattern]
-~, &coord($base, 0, $noslopes ? 2 : 8), (($solid eq 'solid=yes' and not $noslopes) ? 'solid_heights="0,0,0,0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24"' : (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid ));
+~, &coord($base, 0, $noslopes ? 2 : 8), (($solid eq 'solid=yes' and not $noslopes) ? 'solid=reverse_diagonal' : $solid);
 
 printf qq~
 #sloped - reversed - tile immediately beneath
@@ -666,7 +166,7 @@ pattern="
 .*,$friend,$friend,$friend,.*,
 .*,.*,.*,.*,.*"
 [/tile_pattern]
-~, &coord($base, $noslopes ? 5 : 1, $noslopes ? 0 : 8), (($solid eq 'solid=yes' and not $noslopes) ? 'solid_heights="25,26,27,28,29,30,31,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32"' : $solid);
+~, &coord($base, $noslopes ? 5 : 1, $noslopes ? 0 : 8), $solid;
 
 
 printf qq~
@@ -680,7 +180,7 @@ pattern="
    ,$tilename,   ,
  .*,   , .*"
 [/tile_pattern]
-~, &coord($base, 3, 3), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid );
+~, &coord($base, 3, 3), $solid;
 
 printf qq~
 #top of thin platform
@@ -693,7 +193,7 @@ pattern="
    ,$tilename,   ,
  .*,$friend, .*"
 [/tile_pattern]
-~, &coord($base, 0, 3), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid );
+~, &coord($base, 0, 3), $solid;
 
 printf qq~
 #part of thin platform
@@ -733,7 +233,7 @@ pattern="
     ,$tilename,$friend ,
 $friend?,$friend,$friend "
 [/tile_pattern]
-~, &coord($base, 0, 0), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid );
+~, &coord($base, 0, 0), $solid;
 
 printf qq~
 #cliff edge - reverse
@@ -747,7 +247,7 @@ $friend?,   ,.* ,
 $friend,$tilename,   ,
 $friend,$friend,$friend?"
 [/tile_pattern]
-~, &coord($base, 0, 2), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid );
+~, &coord($base, 0, 2), $solid;
 
 printf qq~
 #cliff edge -- version with a corner underneath/opposite
@@ -761,7 +261,7 @@ pattern="
     ,$tilename,$friend ,
 $friend?,$friend,    "
 [/tile_pattern]
-~, &coord($base, 0, 6), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid );
+~, &coord($base, 0, 6), $solid;
 
 printf qq~
 #cliff edge (reversed) -- version with a corner underneath/opposite
@@ -775,7 +275,7 @@ $friend?,   ,.*,
 $friend,$tilename,   ,
     ,$friend,$friend?"
 [/tile_pattern]
-~, &coord($base, 0, 4), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid );
+~, &coord($base, 0, 4), $solid;
 
 printf qq~
 #middle of a cross
@@ -1224,7 +724,7 @@ pattern="
 $friend,$tilename,$friend,
    ,$friend,$friend"
 [/tile_pattern]
-~, &coord($base, 3, 7), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid );
+~, &coord($base, 3, 7), $solid;
 
 printf qq~
 #ground - with a corner on one side beneath (reversed)
@@ -1238,7 +738,7 @@ pattern="
 $friend,$tilename,$friend,
 $friend,$friend,   "
 [/tile_pattern]
-~, &coord($base, 3, 6), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid );
+~, &coord($base, 3, 6), $solid;
 
 printf qq~
 #ground
@@ -1251,7 +751,7 @@ $friend?,    ,$friend?,
 $friend ,$tilename ,$friend ,
 $friend?,$friend?,$friend?"
 [/tile_pattern]
-~, &coord($base, 0, 1), (($solid eq 'solid=yes') ? 'solid_heights="24"' : $solid );
+~, &coord($base, 0, 1), $solid;
 
 sub base_unencode($) {
 	my $base = lc(shift @_);
