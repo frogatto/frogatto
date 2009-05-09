@@ -101,10 +101,13 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	const SDL_Rect waterline_rect = {a.rect_.x(), a.rect_.y(), a.rect_.w(), 2};
 	const SDL_Rect underwater_rect = {a.rect_.x(), a.rect_.y(), a.rect_.w(), a.rect_.h()};
 
+	glEnable(GL_LINE_SMOOTH);
+	glEnable(GL_POLYGON_SMOOTH);
+
 	bool draw_with_waves = false;
 	if(a.waves_.empty() == false) {
 
-		std::vector<int> heights(w);
+		std::vector<GLfloat> heights(w);
 		foreach(const wave& wv, a.waves_) {
 			int begin_x = std::max<int>(wv.xpos - wv.length, x);
 			int end_x = std::min<int>(wv.xpos + wv.length + 1, x + w);
@@ -142,7 +145,7 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 			for(int xpos = begin_x; xpos != end_x; ++xpos) {
 				const int index = xpos - x;
 				ASSERT_INDEX_INTO_VECTOR(index, heights);
-				const int ypos = a.rect_.y() - heights[index];
+				const GLfloat ypos = a.rect_.y() - heights[index];
 
 				deepwater_color.set_as_current_color();
 				glVertex3f(xpos, underwater_rect.y + 100, 0.0);
@@ -165,7 +168,7 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 			for(int xpos = begin_x; xpos != end_x; ++xpos) {
 				const int index = xpos - x;
 				ASSERT_INDEX_INTO_VECTOR(index, heights);
-				const int ypos = a.rect_.y() - heights[index];
+				const GLfloat ypos = a.rect_.y() - heights[index];
 				glVertex3f(xpos, ypos, 0.0);
 			}
 			glEnd();
@@ -199,6 +202,9 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 	glEnable(GL_TEXTURE_2D);
+
+	glDisable(GL_LINE_SMOOTH);
+	glDisable(GL_POLYGON_SMOOTH);
 
 	return true;
 }
