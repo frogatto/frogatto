@@ -84,7 +84,7 @@ character::character(const std::string& type, int x, int y, bool face_right)
 
 pc_character::pc_character(wml::const_node_ptr node)
 	  : character(node), prev_left_(true), prev_right_(true),
-	    last_left_(-1000), last_right_(-1000), score_(wml::get_int(node, "score"))
+	    last_left_(-1000), last_right_(-1000), running_(false), score_(wml::get_int(node, "score"))
 	{}
 
 
