@@ -30,6 +30,7 @@ wml::node_ptr water::write() const
 	foreach(const area& a, areas_) {
 		wml::node_ptr node(new wml::node("area"));
 		node->set_attr("rect", a.rect_.to_string());
+		result->add_child(node);
 	}
 
 	return result;
@@ -177,7 +178,7 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 
 namespace {
 bool wave_dead(const water::wave& w) {
-	return w.height <= 0 || w.length <= 0;
+	return w.height <= 0.2 || w.length <= 0;
 }
 }
 
