@@ -2,6 +2,7 @@
 #include <math.h>
 
 #include "asserts.hpp"
+#include "color_utils.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "formula.hpp"
@@ -65,6 +66,8 @@ void water::set_surface_detection_rects(int zorder)
 
 bool water::draw(int x, int y, int w, int h) const
 {
+	glShadeModel(GL_SMOOTH);
+
 	bool result = false;
 	foreach(const area& a, areas_) {
 		if(draw_area(a, x, y, w, h)) {
@@ -92,8 +95,9 @@ void water::add_wave(const point& p, double xvelocity, double height, double len
 
 bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 {
-	const SDL_Color waterline_color = {250, 240, 205, 255};
-	const SDL_Color deepwater_color = {91, 169, 143, 153};
+	const graphics::color waterline_color(250, 240, 205, 255);
+	const graphics::color shallowwater_color(91, 169, 255, 140);
+	const graphics::color deepwater_color(91, 169, 143, 153);
 	const SDL_Rect waterline_rect = {a.rect_.x(), a.rect_.y(), a.rect_.w(), 2};
 	const SDL_Rect underwater_rect = {a.rect_.x(), a.rect_.y(), a.rect_.w(), a.rect_.h()};
 
@@ -140,9 +144,19 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 				ASSERT_INDEX_INTO_VECTOR(index, heights);
 				const int ypos = a.rect_.y() - heights[index];
 
-				glVertex3f(xpos, underwater_rect.y + underwater_rect.h, 0.0);
+				deepwater_color.set_as_current_color();
+				glVertex3f(xpos, underwater_rect.y + 100, 0.0);
+				shallowwater_color.set_as_current_color();
 				glVertex3f(xpos, ypos, 0.0);
 			}
+			glEnd();
+
+			glBegin(GL_TRIANGLE_STRIP);
+			deepwater_color.set_as_current_color();
+			glVertex3f(begin_x, underwater_rect.y + 100, 0.0);
+			glVertex3f(end_x, underwater_rect.y + 100, 0.0);
+			glVertex3f(begin_x, underwater_rect.y + underwater_rect.h, 0.0);
+			glVertex3f(end_x, underwater_rect.y + underwater_rect.h, 0.0);
 			glEnd();
 
 			glLineWidth(2.0);
@@ -160,8 +174,21 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	}
 
 	if(draw_with_waves == false) {
-		graphics::draw_rect(underwater_rect, deepwater_color, 153);
+		
 		glDisable(GL_TEXTURE_2D);
+
+		glBegin(GL_TRIANGLE_STRIP);
+		shallowwater_color.set_as_current_color();
+		glVertex3f(waterline_rect.x, waterline_rect.y, 0);
+		glVertex3f(waterline_rect.x + waterline_rect.w, waterline_rect.y, 0);
+
+		deepwater_color.set_as_current_color();
+		glVertex3f(waterline_rect.x, waterline_rect.y + 100, 0);
+		glVertex3f(waterline_rect.x + waterline_rect.w, waterline_rect.y + 100, 0);
+		glVertex3f(waterline_rect.x, underwater_rect.y + underwater_rect.h, 0);
+		glVertex3f(waterline_rect.x + waterline_rect.w, underwater_rect.y + underwater_rect.h, 0);
+		glEnd();
+
 		glLineWidth(2.0);
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 		glBegin(GL_LINE_STRIP);
@@ -178,7 +205,7 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 
 namespace {
 bool wave_dead(const water::wave& w) {
-	return w.height <= 0.2 || w.length <= 0;
+	return w.height <= 0.5 || w.length <= 0;
 }
 }
 

@@ -553,7 +553,7 @@ extern "C" int main(int argc, char** argv)
 		return 0;
 	}
 
-	glEnable(GL_SMOOTH);
+	glShadeModel(GL_SMOOTH);
 	glEnable(GL_BLEND);
 	glEnable(GL_TEXTURE_2D);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
