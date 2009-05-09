@@ -487,20 +487,20 @@ void level::draw(int x, int y, int w, int h) const
 
 	std::vector<entity_ptr>::const_iterator entity_itor = chars.begin();
 
+	bool water_drawn = true;
 	int water_zorder = 0;
 	if(water_) {
-		water_zorder = water_->min_zorder();
-		water_->set_surface_detection_rects(water_zorder);
+		water_drawn = false;
+		water_zorder = water_->zorder();
 	}
 
 	std::set<int>::const_iterator layer = layers_.begin();
 
 	for(; layer != layers_.end() && *layer < 0; ++layer) {
 
-		if(water_) {
-			water_->draw(water_zorder, *layer, x, y, w, h);
-			water_zorder = *layer;
-			water_->set_surface_detection_rects(water_zorder);
+		if(!water_drawn && *layer > water_zorder) {
+			water_->draw(x, y, w, h);
+			water_drawn = true;
 		}
 
 		while(entity_itor != chars.end() && (*entity_itor)->zorder() <= *layer) {
@@ -514,12 +514,6 @@ void level::draw(int x, int y, int w, int h) const
 		}
 
 		draw_layer(*layer, x, y, w, h);
-	}
-
-	if(water_) {
-		water_->draw(water_zorder, 0, x, y, w, h);
-		water_zorder = 0;
-		water_->set_surface_detection_rects(water_zorder);
 	}
 
 	foreach(item_ptr it, items_) {
@@ -536,18 +530,10 @@ void level::draw(int x, int y, int w, int h) const
 		fluid_->draw(x, y, w, h);
 	}
 
-	bool finished_water = !water_;
-
 	for(; layer != layers_.end(); ++layer) {
-		if(water_) {
-			if(water_->draw(water_zorder, *layer, x, y, w, h)) {
-				//pass
-			} else if(!finished_water) {
-				finished_water = true;
-				water_->end_drawing();
-			}
-			water_zorder = *layer;
-			water_->set_surface_detection_rects(water_zorder);
+		if(!water_drawn && *layer > water_zorder) {
+			water_->draw(x, y, w, h);
+			water_drawn = true;
 		}
 
 		while(entity_itor != chars.end() && (*entity_itor)->zorder() <= *layer) {
@@ -563,15 +549,9 @@ void level::draw(int x, int y, int w, int h) const
 		draw_layer(*layer, x, y, w, h);
 	}
 
-	if(water_) {
-		water_->draw(water_zorder, water_->max_zorder(), x, y, w, h);
-		water_zorder = water_->max_zorder();
-		graphics::clear_draw_detection_rect();
-
-		if(!finished_water) {
-			finished_water = true;
-			water_->end_drawing();
-		}
+	if(!water_drawn && *layer > water_zorder) {
+		water_->draw(x, y, w, h);
+			water_drawn = true;
 	}
 
 	while(entity_itor != chars.end()) {

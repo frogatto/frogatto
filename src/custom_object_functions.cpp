@@ -853,6 +853,44 @@ private:
 	}
 };
 
+class add_wave_command : public entity_command_callable
+{
+	int x_, y_, xvelocity_, height_, length_, delta_height_, delta_length_;
+public:
+	add_wave_command(int x, int y, int xvelocity, int height, int length, int delta_height, int delta_length) : x_(x), y_(y), xvelocity_(xvelocity), height_(height), length_(length), delta_height_(delta_height), delta_length_(delta_length)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		water* w = lvl.get_water();
+		if(!w) {
+			return;
+		}
+
+		std::cerr << "EXECUTE ADD WAVE...\n";
+
+		point p(x_, y_);
+		w->add_wave(p, xvelocity_/1000.0, height_/1000.0, length_/1000.0, delta_height_/1000.0, delta_length_/1000.0);
+	}
+};
+
+class add_wave_function : public function_expression {
+public:
+	explicit add_wave_function(const args_list& args)
+	  : function_expression("add_wave", args, 7) {
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new add_wave_command(
+		    args()[0]->evaluate(variables).as_int(),
+		    args()[1]->evaluate(variables).as_int(),
+		    args()[2]->evaluate(variables).as_int(),
+		    args()[3]->evaluate(variables).as_int(),
+		    args()[4]->evaluate(variables).as_int(),
+		    args()[5]->evaluate(variables).as_int(),
+		    args()[6]->evaluate(variables).as_int()));
+	}
+};
+
 class custom_object_function_symbol_table : public function_symbol_table
 {
 public:
@@ -917,6 +955,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new distortion_function(args));
 	} else if(fn == "teleport") {
 		return expression_ptr(new teleport_function(args));
+	} else if(fn == "add_wave") {
+		return expression_ptr(new add_wave_function(args));
 	}
 	return function_symbol_table::create_function(fn, args);
 }

@@ -142,6 +142,9 @@ public:
 	bool hide_status_bar() const { return hide_status_bar_; }
 	graphics::color tint() const { return tint_; }
 
+	water* get_water() { return water_.get(); }
+	const water* get_water() const { return water_.get(); }
+
 private:
 	void draw_layer(int layer, int x, int y, int w, int h) const;
 
