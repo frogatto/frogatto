@@ -1496,6 +1496,10 @@ void character::set_value(const std::string& key, const variant& value)
 		boost_power_ = value.as_int();
 	} else if(key == "glide_speed") {
 		glide_speed_ = value.as_int();
+	} else if(key == "x") {
+		set_pos(value.as_int(), y());
+	} else if(key == "y") {
+		set_pos(x(), value.as_int());
 	} else {
 		vars_[key] = value;
 	}
