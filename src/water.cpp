@@ -110,6 +110,19 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 				const int index = xpos - x;
 				ASSERT_INDEX_INTO_VECTOR(index, heights);
 				heights[index] += wv.height*cos(proportion*3.14*2.0)*(1.0 - proportion);
+
+				//see if the wave is close enough to the edge to reflect some of its force off it
+				const int distance_wrap_left = (wv.xpos - a.rect_.x()) + (xpos - a.rect_.x());
+				if(distance_wrap_left < wv.length) {
+					const double proportion = GLfloat(distance_wrap_left)/GLfloat(wv.length);
+					heights[index] += wv.height*cos(proportion*3.14*2.0)*(1.0 - proportion);
+				}
+
+				const int distance_wrap_right = (a.rect_.x2() - wv.xpos) + (a.rect_.x2() - xpos);
+				if(distance_wrap_right < wv.length) {
+					const double proportion = GLfloat(distance_wrap_right)/GLfloat(wv.length);
+					heights[index] += wv.height*cos(proportion*3.14*2.0)*(1.0 - proportion);
+				}
 			}
 		}
 
@@ -174,6 +187,15 @@ void water::process(const level& lvl)
 		a.distortion_ = graphics::water_distortion(lvl.cycle(), a.rect_);
 		foreach(wave& w, a.waves_) {
 			w.process();
+
+			//if the wave has hit the edge, then turn it around.
+			if(w.xpos < a.rect_.x() && w.xvelocity < 0) {
+				w.xvelocity *= -1.0;
+			}
+
+			if(w.xpos > a.rect_.x2() && w.xvelocity > 0) {
+				w.xvelocity *= -1.0;
+			}
 		}
 
 		a.waves_.erase(std::remove_if(a.waves_.begin(), a.waves_.end(), wave_dead), a.waves_.end());
@@ -182,7 +204,7 @@ void water::process(const level& lvl)
 
 void water::wave::process() {
 	xpos += xvelocity;
-	height -= delta_height;
+	height *= 0.99;
 	length += delta_length;
 }
 
