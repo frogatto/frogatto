@@ -204,7 +204,7 @@ void water::process(const level& lvl)
 
 void water::wave::process() {
 	xpos += xvelocity;
-	height *= 0.99;
+	height *= 0.996;
 	length += delta_length;
 }
 
