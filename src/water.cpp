@@ -109,7 +109,7 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 
 				const int index = xpos - x;
 				ASSERT_INDEX_INTO_VECTOR(index, heights);
-				heights[index] += wv.height*(cos(proportion*3.14)+1.0)/2.0;
+				heights[index] += wv.height*cos(proportion*3.14*2.0)*(1.0 - proportion);
 			}
 		}
 
