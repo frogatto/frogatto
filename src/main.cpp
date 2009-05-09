@@ -210,6 +210,10 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 		start_lvl.reset(load_level(level_cfg));
 	}
 
+	time_t current_second = time(NULL);
+	int current_fps = 0, next_fps = 0;
+	int current_delay = 0, next_delay = 0;
+
 	CKey key;
 
 	int cycle = 0;
@@ -418,9 +422,22 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 		}
 
 		draw_scene(*lvl, last_draw_position());
+		draw_fps(current_fps, current_delay);
+		
 		SDL_GL_SwapBuffers();
+		++next_fps;
+
+		const time_t this_second = time(NULL);
+		if(this_second != current_second) {
+			current_second = this_second;
+			current_fps = next_fps;
+			current_delay = next_delay;
+			next_fps = 0;
+			next_delay = 0;
+		}
 
 		const int wait_time = std::max<int>(1, desired_end_time - SDL_GetTicks());
+		next_delay += wait_time;
 		SDL_Delay(wait_time);
 		std::cerr << "delay: " << wait_time << "\n";
 

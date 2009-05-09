@@ -211,6 +211,14 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 	}
 }
 
+void draw_fps(int fps, int delay)
+{
+	std::ostringstream s;
+	s << fps << "fps; " << (delay/10) << "% idle";
+	graphics::texture t(font::render_text(s.str(), graphics::color_white(), 18));
+	graphics::blit_texture(t, 10, 10);
+}
+
 void draw_statusbar(const level& lvl, screen_position& pos, const entity* focus)
 {
 	static int frame_num = 0;
