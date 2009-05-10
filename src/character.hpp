@@ -37,7 +37,7 @@ public:
 	virtual void draw() const;
 	void draw_group() const;
 	void process(level& lvl);
-	bool is_standing(const level& lvl, int* friction=NULL, int* damage=NULL, int* adjust_y=NULL, entity_ptr* standing_on=NULL) const;
+	bool is_standing(const level& lvl, int* friction=NULL, int* traction=NULL, int* damage=NULL, int* adjust_y=NULL, entity_ptr* standing_on=NULL) const;
 	int collide_left() const;
 	int collide_right() const;
 
@@ -68,7 +68,7 @@ public:
 	int glide_speed() const;
 	void get_hit();
 
-	bool is_standable(int x, int y, int* friction=NULL, int* adjust_y=NULL) const;
+	bool is_standable(int x, int y, int* friction=NULL, int* traction=NULL, int* adjust_y=NULL) const;
 	void stood_on_by(const entity_ptr& ch) { standing_on_.push_back(ch); }
 
 	bool enter() const { return look_up() || look_down(); }
@@ -129,6 +129,8 @@ protected:
 
 	int rotate() const { return rotate_; }
 	void set_rotate(int rotate) { rotate_ = rotate; }
+
+	int current_traction() const { return current_traction_; }
 private:
 
 	void set_driver_position();
@@ -175,6 +177,8 @@ private:
 	int boost_power_;
 	int glide_speed_;
 	int cycle_num_;
+
+	int current_traction_;
 
 	std::vector<entity_ptr> standing_on_;
 

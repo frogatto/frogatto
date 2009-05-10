@@ -51,7 +51,7 @@ public:
 	int group() const { return group_; }
 	void set_group(int group) { group_ = group; }
 
-	virtual bool is_standable(int x, int y, int* friction=NULL, int* adjust_y=NULL) const { return false; }
+	virtual bool is_standable(int x, int y, int* friction=NULL, int* traction=NULL, int* adjust_y=NULL) const { return false; }
 
 	virtual void stood_on_by(const entity_ptr& ch) {}
 

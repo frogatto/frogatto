@@ -65,6 +65,7 @@ public:
 	bool all_solid() const { return all_solid_; }
 	const std::string& id() const { return id_; }
 	int friction() const { return friction_; }
+	int traction() const { return traction_; }
 	int damage() const { return damage_; }
 	const graphics::texture& texture() const { return t_; }
 	static void draw(const level_tile& t);
@@ -79,6 +80,7 @@ private:
 	bool flip_;
 	int damage_;
 	int friction_;
+	int traction_;
 };
 
 #endif

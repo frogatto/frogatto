@@ -30,7 +30,7 @@ public:
 	virtual int velocity_x() const;
 	virtual int velocity_y() const;
 
-	virtual bool is_standable(int x, int y, int* friction=NULL, int* adjust_y=NULL) const;
+	virtual bool is_standable(int x, int y, int* friction=NULL, int* traction=NULL, int* adjust_y=NULL) const;
 
 	virtual void stood_on_by(const entity_ptr& ch);
 	virtual bool destroyed() const;

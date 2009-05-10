@@ -48,9 +48,9 @@ public:
 	void draw_debug_solid(int x, int y, int w, int h) const;
 	void draw_background(double x, double y, int rotation) const;
 	void process();
-	bool standable(int x, int y, int* friction=NULL, int* damage=NULL, int* adjust_y=NULL, entity_ptr* ch=NULL, const entity* exclude=NULL) const;
-	bool solid(int x, int y, int* friction=NULL, int* damage=NULL) const;
-	bool solid(const rect& r, int* friction=NULL, int* damage=NULL) const;
+	bool standable(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL, int* adjust_y=NULL, entity_ptr* ch=NULL, const entity* exclude=NULL) const;
+	bool solid(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
+	bool solid(const rect& r, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
 	entity_ptr collide(int x, int y, const entity* exclude=NULL) const;
 	entity_ptr collide(const rect& r, const entity* exclude=NULL) const;
 	entity_ptr board(int x, int y) const;
@@ -152,18 +152,19 @@ private:
 
 	void rebuild_tiles_rect(const rect& r);
 	void add_tile_solid(const level_tile& t);
-	void add_solid_rect(int x1, int y1, int x2, int y2, int friction, int damage);
-	void add_solid(int x, int y, int friction, int damage);
-	void add_standable(int x, int y, int friction, int damage);
+	void add_solid_rect(int x1, int y1, int x2, int y2, int friction, int traction, int damage);
+	void add_solid(int x, int y, int friction, int traction, int damage);
+	void add_standable(int x, int y, int friction, int traction, int damage);
 	typedef std::pair<int,int> tile_pos;
 	typedef std::bitset<TileSize*TileSize> tile_bitmap;
 
 	struct solid_info {
-		solid_info() : all_solid(false), friction(0), damage(0)
+		solid_info() : all_solid(false), friction(0), traction(0), damage(0)
 		{}
 		tile_bitmap bitmap;
 		bool all_solid;
 		int friction;
+		int traction;
 		int damage;
 	};
 
@@ -178,8 +179,8 @@ private:
 	solid_map solid_;
 	solid_map standable_;
 
-	bool is_solid(const solid_map& map, int x, int y, int* friction, int* damage) const;
-	void set_solid(solid_map& map, int x, int y, int friction, int damage);
+	bool is_solid(const solid_map& map, int x, int y, int* friction, int* traction, int* damage) const;
+	void set_solid(solid_map& map, int x, int y, int friction, int traction, int damage);
 
 	variant get_value(const std::string& key) const;
 	void set_value(const std::string& key, const variant& value);
@@ -191,6 +192,7 @@ private:
 	struct solid_rect {
 		rect r;
 		int friction;
+		int traction;
 		int damage;
 	};
 	std::vector<solid_rect> solid_rects_;

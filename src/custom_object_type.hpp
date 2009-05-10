@@ -49,6 +49,7 @@ public:
 
 	int springiness() const { return springiness_; }
 	int surface_friction() const { return surface_friction_; }
+	int surface_traction() const { return surface_traction_; }
 
 	//amount of friction we experience.
 	int friction() const { return friction_; }
@@ -89,6 +90,7 @@ private:
 
 	int springiness_;
 	int surface_friction_;
+	int surface_traction_;
 	int friction_;
 
 	bool on_players_side_;

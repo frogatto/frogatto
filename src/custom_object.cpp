@@ -349,11 +349,15 @@ int custom_object::velocity_y() const
 	return velocity_y_;
 }
 
-bool custom_object::is_standable(int xpos, int ypos, int* friction, int* adjust_y) const
+bool custom_object::is_standable(int xpos, int ypos, int* friction, int* traction, int* adjust_y) const
 {
 	if(!body_passthrough() && springiness() == 0 && !body_harmful() && point_collides(xpos, ypos)) {
 		if(friction) {
 			*friction = type_->surface_friction();
+		}
+
+		if(traction) {
+			*traction = type_->surface_traction();
 		}
 
 		if(adjust_y) {
@@ -382,6 +386,10 @@ bool custom_object::is_standable(int xpos, int ypos, int* friction, int* adjust_
 
 		if(friction) {
 			*friction = type_->surface_friction();
+		}
+
+		if(traction) {
+			*traction = type_->surface_traction();
 		}
 
 		if(adjust_y) {
