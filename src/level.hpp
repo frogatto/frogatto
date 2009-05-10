@@ -145,6 +145,8 @@ public:
 	water* get_water() { return water_.get(); }
 	const water* get_water() const { return water_.get(); }
 
+	water& get_or_create_water();
+
 private:
 	void draw_layer(int layer, int x, int y, int w, int h) const;
 

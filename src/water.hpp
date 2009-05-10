@@ -14,9 +14,13 @@ class level;
 class water
 {
 public:
+	water();
 	explicit water(wml::const_node_ptr node);
 
 	wml::node_ptr write() const;
+
+	void add_rect(const rect& r);
+	void delete_rect(const rect& r);
 
 	bool draw(int x, int y, int w, int h) const;
 	int zorder() const { return zorder_; }

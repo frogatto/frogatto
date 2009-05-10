@@ -39,7 +39,7 @@
 #include "wml_writer.hpp"
 
 namespace {
-const char* ModeStrings[] = {"Tiles", "Objects", "Items", "Groups", "Properties", "Variations", "Props", "Portals"};
+const char* ModeStrings[] = {"Tiles", "Objects", "Items", "Groups", "Properties", "Variations", "Props", "Portals", "Water"};
 }
 
 class editor_mode_dialog : public gui::dialog
@@ -598,6 +598,14 @@ void editor::edit_level()
 						prop_object obj(xtile, ytile, all_props[cur_item_]->id());
 						obj.set_zorder(obj.zorder() + foreground_zorder_change());
 						lvl_->add_prop(obj);
+					}
+				} else if(mode_ == EDIT_WATER) {
+					rect r(rect::from_coordinates(anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey));
+					if(event.button.button == SDL_BUTTON_LEFT) {
+						water& w = lvl_->get_or_create_water();
+						w.add_rect(r);
+					} else if(lvl_->get_water()) {
+						lvl_->get_water()->delete_rect(r);
 					}
 				}
 

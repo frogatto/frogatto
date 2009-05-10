@@ -13,8 +13,16 @@
 #include "wml_utils.hpp"
 #include "color_utils.hpp"
 
+namespace {
+	const int WaterZorder = 3;
+}
+
+water::water()
+  : zorder_(WaterZorder)
+{}
+
 water::water(wml::const_node_ptr water_node) :
-  zorder_(wml::get_int(water_node, "zorder", 3)),
+  zorder_(wml::get_int(water_node, "zorder", WaterZorder)),
   current_x_formula_(game_logic::formula::create_optional_formula(water_node->attr("current_x_formula"))),
   current_y_formula_(game_logic::formula::create_optional_formula(water_node->attr("current_y_formula")))
 {
@@ -35,6 +43,22 @@ wml::node_ptr water::write() const
 	}
 
 	return result;
+}
+
+void water::add_rect(const rect& r)
+{
+	areas_.push_back(area(r));
+}
+
+void water::delete_rect(const rect& r)
+{
+	for(std::vector<area>::iterator i = areas_.begin(); i != areas_.end(); ) {
+		if(rects_intersect(r, i->rect_)) {
+			i = areas_.erase(i);
+		} else {
+			++i;
+		}
+	}
 }
 
 void water::begin_drawing()

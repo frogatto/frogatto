@@ -1370,3 +1370,12 @@ void level::get_current(const entity& e, int* velocity_x, int* velocity_y) const
 		water_->get_current(e, velocity_x, velocity_y);
 	}
 }
+
+water& level::get_or_create_water()
+{
+	if(!water_) {
+		water_.reset(new water);
+	}
+
+	return *water_;
+}
