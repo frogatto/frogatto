@@ -332,9 +332,19 @@ void character::process(level& lvl)
 		} else if(current_frame_ == type_->roll_frame()) {
 			handle_event("leave_" + current_frame_->id() + "_anim");
 
+			//see if we collide with anything solid right now
+			const bool solid_in_roll = lvl_->solid(body_rect());
+
 			//set to half way through crouching.
 			current_frame_ = type_->crouch_frame();
 			time_in_frame_ = current_frame_->duration()/2 - 1;
+
+			const bool solid_in_crouch = lvl_->solid(body_rect());
+			if(!solid_in_roll && solid_in_crouch) {
+				//stopping the roll would cause a collission, so make it continue.
+				current_frame_ = type_->roll_frame();
+				time_in_frame_ = 0;
+			}
 		}
 		
 		if( lvl.is_underwater(body_rect()) && type_->swim_side_idle_frame() ) {
@@ -1182,7 +1192,10 @@ void character::change_frame(const frame* new_frame)
 		handle_event("leave_" + current_frame_->id() + "_anim");
 	}
 
-	rotate_ = 0;
+	const frame* old_frame = current_frame_;
+	const int old_time_in_frame = time_in_frame_;
+
+	const bool solid_before_change = lvl_->solid(body_rect());
 
 	++frame_id_;
 
@@ -1193,10 +1206,21 @@ void character::change_frame(const frame* new_frame)
 
 	current_frame_ = new_frame;
 
+	rotate_ = 0;
+
 	const int diff_x = feet_x() - start_x;
 	const int diff_y = feet_y() - start_y;
 
 	set_pos(x() - diff_x, y() - diff_y);
+
+	const bool solid_after_change = lvl_->solid(body_rect());
+	if(!solid_before_change && solid_after_change) {
+		//changing frame like this causes a collission, so disallow it and roll back.
+		current_frame_ = old_frame;
+		time_in_frame_ = old_time_in_frame;
+		set_pos(x() + diff_x, y() + diff_y);
+		return;
+	}
 
 	if(new_frame->velocity_x()) {
 		velocity_x_ = new_frame->velocity_x()*(face_right() ? 1 : -1);
