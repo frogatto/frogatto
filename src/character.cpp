@@ -1347,7 +1347,7 @@ int character::glide_speed() const
 
 void character::get_hit()
 {
-	assert(false);
+	//assert(false);
 	assert(!invincible_);
 	remove_powerup();
 	if(is_human()) {
