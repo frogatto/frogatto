@@ -582,9 +582,16 @@ void editor::edit_level()
 						c = entity::build(node);
 					}
 
-					execute_command(
-					  boost::bind(&level::add_character, lvl_.get(), c),
-					  boost::bind(&level::remove_character, lvl_.get(), c));
+					if(c->is_human() && lvl_->player()) {
+						execute_command(
+						  boost::bind(&level::add_character, lvl_.get(), c),
+						  boost::bind(&level::add_character, lvl_.get(), lvl_->player()));
+
+					} else {
+						execute_command(
+						  boost::bind(&level::add_character, lvl_.get(), c),
+						  boost::bind(&level::remove_character, lvl_.get(), c));
+					}
 				}
 				break;
 			case SDL_MOUSEBUTTONUP:
