@@ -8,6 +8,7 @@
 
 namespace {
 std::map<std::string, prop_ptr> props_map;
+int prop_id = 0;
 }
 
 std::vector<const_prop_ptr> prop::all_props()
@@ -56,7 +57,7 @@ prop::prop(wml::const_node_ptr node)
 }
 
 prop_object::prop_object(int x, int y, const std::string& id)
-  : type_(prop::get(id))
+  : id_(prop_id++), type_(prop::get(id))
 {
 	if(!type_) {
 		std::cerr << "could not find prop '" << id << "'\n";

@@ -232,10 +232,10 @@ void draw_statusbar(const level& lvl, screen_position& pos, const entity* focus)
 			player = player->driver();
 		}
 
-		graphics::blit_texture(statusbar, 0, 600 - 124, 800, 124,
+		graphics::blit_texture(statusbar, 0, graphics::screen_height() - 124, graphics::screen_width(), 124,
 		                       0.0, 0.0, 0.0, 1.0, 62.0/104.0);
 
-		player->icon_frame().draw(210, 600 - 124 + 14, true);
+		player->icon_frame().draw(210, graphics::screen_height() - 124 + 14, true);
 		for(int hp = 0; hp < player->max_hitpoints(); ++hp) {
 			GLfloat shift = 0.0; // default to green
 			if(hp >= player->hitpoints()) {
@@ -249,7 +249,7 @@ void draw_statusbar(const level& lvl, screen_position& pos, const entity* focus)
 				const GLfloat frame = frame_num/10.0;
 				glColor4f(sin(frame), 1.0, 0.0, 1.0);
 			}
-			graphics::blit_texture(statusbar, 278 + 30*hp, 600 - 124 + 16, 30, 74,
+			graphics::blit_texture(statusbar, 278 + 30*hp, graphics::screen_height() - 124 + 16, 30, 74,
 			                       0.0, (99.0 + shift)/400.0, 62.0/103.0, (114.0 + shift)/400.0, 99.0/103.0);
 			glColor4f(1.0, 1.0, 1.0, 1.0);
 		}
@@ -272,7 +272,7 @@ void draw_statusbar(const level& lvl, screen_position& pos, const entity* focus)
 			}
 		}
 
-		draw_number(pos.coins, 3, 267*2, 600 - 124 + 11*2);
+		draw_number(pos.coins, 3, 267*2, graphics::screen_height() - 124 + 11*2);
 
 		const int score = player->score();
 
@@ -289,15 +289,15 @@ void draw_statusbar(const level& lvl, screen_position& pos, const entity* focus)
 			}
 		}
 
-		draw_number(pos.score, 7, 232*2, 600 - 124 + 49*2);
+		draw_number(pos.score, 7, 232*2, graphics::screen_height() - 124 + 49*2);
 	}
 
 	if(lvl.player() && lvl.player()->driver()) {
 		const_character_ptr vehicle = lvl.player();
-		vehicle->icon_frame().draw(18, 600 - 124 + 22, true);
+		vehicle->icon_frame().draw(18, graphics::screen_height() - 124 + 22, true);
 		for(int hp = 0; hp < vehicle->max_hitpoints(); ++hp) {
 			const GLfloat is_red = hp >= vehicle->hitpoints() ? 11.0 : 0.0;
-			graphics::blit_texture(statusbar, 90 + 22*hp, 600 - 124 + 22, 20, 28,
+			graphics::blit_texture(statusbar, 90 + 22*hp, graphics::screen_height() - 124 + 22, 20, 28,
 			                       0.0, (375.0 + is_red)/400.0, 68.0/103.0, (385.0 + is_red)/400.0, 82.0/103.0);
 		}
 		
@@ -312,13 +312,13 @@ void draw_statusbar(const level& lvl, screen_position& pos, const entity* focus)
 		const int xp_level = xp/xp_needed;
 		xp %= xp_needed;
 
-		graphics::blit_texture(statusbar, 73*2, 600 - 124 + 46*2, 14*2, 8*2,
+		graphics::blit_texture(statusbar, 73*2, graphics::screen_height() - 124 + 46*2, 14*2, 8*2,
 		                       0.0, 9.0/400.0, (80.0 - 9.0*(xp_level))/103.0,
 		                       23.0/400.0, (88.0 - 9.0*(xp_level))/103.0);
 
 		for(int n = 0; n != xp_needed - 1; ++n) {
 			const double has_xp = (n < xp) ? 0.0 : 9.0;
-			graphics::blit_texture(statusbar, 14*2 + 10*2*n, 600 - 124 + 46*2 + 1, 8*2, 8*2, 0.0,
+			graphics::blit_texture(statusbar, 14*2 + 10*2*n, graphics::screen_height() - 124 + 46*2 + 1, 8*2, 8*2, 0.0,
 			                       (49.0 + has_xp)/400.0, 81.0/103.0,
 								   (57.0 + has_xp)/400.0, 89.0/103.0);
 		}

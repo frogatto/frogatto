@@ -13,7 +13,7 @@ namespace editor_dialogs
 {
 
 prop_editor_dialog::prop_editor_dialog(editor& e)
-  : gui::dialog(640, 40, 160, 560), editor_(e)
+  : gui::dialog(graphics::screen_width() - 160, 40, 160, 560), editor_(e)
 {
 	if(editor_.get_props().empty() == false) {
 		category_ = editor_.get_props().front()->category();

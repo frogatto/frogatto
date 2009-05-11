@@ -272,6 +272,13 @@ wml::node_ptr tile_map::write() const
 	return res;
 }
 
+const char* tile_map::get_tile_from_pixel_pos(int xpos, int ypos) const
+{
+	const int x = (xpos - xpos_)/TileSize;
+	const int y = (ypos - ypos_)/TileSize;
+	return get_tile(y, x);
+}
+
 const char* tile_map::get_tile(int y, int x) const
 {
 	if(x < 0 || y < 0 || y >= map_.size() || x >= map_[y].size()) {
@@ -322,7 +329,7 @@ int tile_map::variation(int x, int y) const
 	return variations_[y][x];
 }
 
-void tile_map::flip_variation(int x, int y)
+void tile_map::flip_variation(int x, int y, int delta)
 {
 	const int variations = get_variations(x, y);
 	if(variations <= 1) {
@@ -341,9 +348,13 @@ void tile_map::flip_variation(int x, int y)
 		row.resize(x + 1);
 	}
 
-	row[x]++;
-	if(row[x] >= variations) {
-		row[x] = 0;
+	row[x] += delta;
+	while(row[x] < 0) {
+		row[x] += variations;
+	}
+
+	while(row[x] >= variations) {
+		row[x] = row[x]%variations;
 	}
 }
 

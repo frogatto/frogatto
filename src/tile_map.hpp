@@ -26,9 +26,10 @@ public:
 	bool set_tile(int xpos, int ypos, const std::string& str);
 	int zorder() const { return zorder_; }
 	void set_zorder(int z) { zorder_ = z; }
+	const char* get_tile_from_pixel_pos(int xpos, int ypos) const;
 	const char* get_tile(int y, int x) const;
 	int get_variations(int x, int y) const;
-	void flip_variation(int x, int y);
+	void flip_variation(int x, int y, int delta=0);
 private:
 	int variation(int x, int y) const;
 	const tile_pattern* get_matching_pattern(int x, int y, tile_pattern_cache& cache, bool* face_right) const;

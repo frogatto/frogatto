@@ -58,6 +58,9 @@ void draw_hollow_rect(const SDL_Rect& rect, const SDL_Color& color,
                unsigned char alpha=0xFF);
 int screen_width();
 int screen_height();
+void zoom_in();
+void zoom_out();
+void zoom_default();
 
 void coords_to_screen(GLdouble sx, GLdouble sy, GLdouble sz,
 		      GLdouble* dx, GLdouble* dy, GLdouble* dz);

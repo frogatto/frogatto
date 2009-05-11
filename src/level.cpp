@@ -248,13 +248,13 @@ int level::variations(int xtile, int ytile) const
 	return 1;
 }
 
-void level::flip_variations(int xtile, int ytile)
+void level::flip_variations(int xtile, int ytile, int delta)
 {
 	for(std::map<int, tile_map>::iterator i = tile_maps_.begin();
 	    i != tile_maps_.end(); ++i) {
 		std::cerr << "get_variations zorder: " << i->first << "\n";
 		if(i->second.get_variations(xtile, ytile) > 1) {
-			i->second.flip_variation(xtile, ytile);
+			i->second.flip_variation(xtile, ytile, delta);
 		}
 	}
 
@@ -944,6 +944,15 @@ void level::add_tile(const level_tile& t)
 
 void level::add_tile_rect(int zorder, int x1, int y1, int x2, int y2, const std::string& str)
 {
+	add_tile_rect_vector(zorder, x1, y1, x2, y2, std::vector<std::string>(1, str));
+}
+
+void level::add_tile_rect_vector(int zorder, int x1, int y1, int x2, int y2, const std::vector<std::string>& tiles)
+{
+	if(tiles.empty()) {
+		return;
+	}
+
 	if(x1 > x2) {
 		std::swap(x1, x2);
 	}
@@ -963,16 +972,59 @@ void level::add_tile_rect(int zorder, int x1, int y1, int x2, int y2, const std:
 
 	bool changed = false;
 
+	int index = 0;
 	for(int x = x1; x < x2; x += 32) {
 		std::cerr << "x: " << x << "\n";
 		for(int y = y1; y < y2; y += 32) {
 			std::cerr << "adding tile: " << x << "," << y << "\n";
-			changed = m.set_tile(x, y, str) || changed;
+			changed = m.set_tile(x, y, tiles[index]) || changed;
+			if(index+1 < tiles.size()) {
+				++index;
+			}
 		}
 	}
 
 	if(changed) {
 		rebuild_tiles_rect(rect(x1-32, y1-64, (x2 - x1) + 64, (y2 - y1) + 128));
+	}
+}
+
+void level::get_tile_rect(int zorder, int x1, int y1, int x2, int y2, std::vector<std::string>& tiles) const
+{
+	if(x1 > x2) {
+		std::swap(x1, x2);
+	}
+
+	if(y1 > y2) {
+		std::swap(y1, y2);
+	}
+
+	x1 = x1 - x1%32;
+	y1 = y1 - y1%32;
+	x2 = x2 - x2%32 + 32;
+	y2 = y2 - y2%32 + 32;
+
+	std::map<int, tile_map>::const_iterator map_iterator = tile_maps_.find(zorder);
+	if(map_iterator == tile_maps_.end()) {
+		return;
+	}
+	const tile_map& m = map_iterator->second;
+
+	for(int x = x1; x < x2; x += 32) {
+		for(int y = y1; y < y2; y += 32) {
+			tiles.push_back(m.get_tile_from_pixel_pos(x, y));
+		}
+	}
+}
+
+void level::get_all_tiles_rect(int x1, int y1, int x2, int y2, std::map<int, std::vector<std::string> >& tiles) const
+{
+	for(std::set<int>::const_iterator i = layers_.begin(); i != layers_.end(); ++i) {
+		std::vector<std::string> cleared;
+		get_tile_rect(*i, x1, y1, x2, y2, cleared);
+		if(std::count(cleared.begin(), cleared.end(), "") != cleared.size()) {
+			tiles[*i].swap(cleared);
+		}
 	}
 }
 
@@ -1046,31 +1098,6 @@ const level_tile* level::get_tile_at(int x, int y) const
 		return &*i;
 	} else {
 		return NULL;
-	}
-}
-
-void level::remove_characters_in_rect(int x1, int y1, int x2, int y2)
-{
-	rect r = rect::from_coordinates(x1, y1, x2, y2);
-	std::vector<entity_ptr>::iterator c = chars_.begin();
-	while(c != chars_.end()) {
-		if(point_in_rect(point((*c)->x(), (*c)->y()), r)) {
-			if(*c == player_) {
-				player_ = NULL;
-			}
-			c = chars_.erase(c);
-		} else {
-			++c;
-		}
-	}
-
-	std::vector<item_ptr>::iterator i = items_.begin();
-	while(i != items_.end()) {
-		if(*i && point_in_rect(point((*i)->x(), (*i)->y()), r)) {
-			i = items_.erase(i);
-		} else {
-			++i;
-		}
 	}
 }
 
@@ -1211,6 +1238,16 @@ void level::add_prop(const prop_object& new_prop)
 	layers_.insert(new_prop.zorder());
 }
 
+void level::remove_prop(const prop_object& p)
+{
+	for(std::vector<prop_object>::iterator i = props_.begin(); i != props_.end(); ++i) {
+		if(i->equal_id(p)) {
+			props_.erase(i);
+			return;
+		}
+	}
+}
+
 namespace {
 struct prop_object_in_rect
 {
@@ -1224,6 +1261,16 @@ struct prop_object_in_rect
 	}
 	int x1, y1, x2, y2;
 };
+}
+
+void level::get_props_in_rect(int x1, int y1, int x2, int y2, std::vector<prop_object>& props)
+{
+	prop_object_in_rect f(x1, y1, x2, y2);
+	foreach(const prop_object& p, props_) {
+		if(f(p)) {
+			props.push_back(p);
+		}
+	}
 }
 
 void level::remove_props_in_rect(int x1, int y1, int x2, int y2)
@@ -1313,7 +1360,7 @@ int level::group_size(int group) const
 
 void level::set_character_group(entity_ptr c, int group_num)
 {
-	assert(group_num >= 0 && group_num < groups_.size());
+	assert(group_num < groups_.size());
 
 	//remove any current grouping
 	if(c->group() >= 0) {
@@ -1324,8 +1371,10 @@ void level::set_character_group(entity_ptr c, int group_num)
 
 	c->set_group(group_num);
 
-	entity_group& group = groups_[group_num];
-	group.push_back(c);
+	if(group_num >= 0) {
+		entity_group& group = groups_[group_num];
+		group.push_back(c);
+	}
 }
 
 int level::add_group()

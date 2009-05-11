@@ -10,6 +10,7 @@
 
    See the COPYING file for more details.
 */
+#include "raster.hpp"
 #include "tooltip.hpp"
 #include "translate.hpp"
 #include "widget.hpp"
@@ -29,11 +30,15 @@ void widget::normalize_event(SDL_Event* event)
 {
 	switch(event->type) {
 	case SDL_MOUSEMOTION:
+		event->motion.x = (event->motion.x*graphics::screen_width())/800;
+		event->motion.y = (event->motion.y*graphics::screen_height())/600;
 		event->motion.x -= x();
 		event->motion.y -= y();
 		break;
 	case SDL_MOUSEBUTTONDOWN:
 	case SDL_MOUSEBUTTONUP:
+		event->button.x = (event->button.x*graphics::screen_width())/800;
+		event->button.y = (event->button.y*graphics::screen_height())/600;
 		event->button.x -= x();
 		event->button.y -= y();
 		break;
@@ -78,6 +83,26 @@ void widget::draw() const
 	if(visible_) {
 		handle_draw();
 	}
+}
+
+int widget::x() const
+{
+	return x_;
+}
+
+int widget::y() const
+{
+	return y_;
+}
+
+int widget::width() const
+{
+	return w_;
+}
+
+int widget::height() const
+{
+	return h_;
 }
 
 }

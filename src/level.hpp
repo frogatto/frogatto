@@ -59,6 +59,9 @@ public:
 	void set_boundaries(const rect& bounds) { boundaries_ = bounds; }
 	void add_tile(const level_tile& t);
 	void add_tile_rect(int zorder, int x1, int y1, int x2, int y2, const std::string& tile);
+	void add_tile_rect_vector(int zorder, int x1, int y1, int x2, int y2, const std::vector<std::string>& tiles);
+	void get_tile_rect(int zorder, int x1, int y1, int x2, int y2, std::vector<std::string>& tiles) const;
+	void get_all_tiles_rect(int x1, int y1, int x2, int y2, std::map<int, std::vector<std::string> >& tiles) const;
 	void clear_tile_rect(int x1, int y1, int x2, int y2);
 	void remove_tiles_at(int x, int y);
 	const level_tile* get_tile_at(int x, int y) const;
@@ -72,6 +75,8 @@ public:
 	void add_character(entity_ptr p);
 	void add_item(item_ptr p);
 	void add_prop(const prop_object& new_prop);
+	void remove_prop(const prop_object& new_prop);
+	void get_props_in_rect(int x1, int y1, int x2, int y2, std::vector<prop_object>& props);
 	void remove_props_in_rect(int x1, int y1, int x2, int y2);
 
 	struct portal {
@@ -109,7 +114,7 @@ public:
 	const std::string& title() const { return title_; }
 
 	int variations(int xtile, int ytile) const;
-	void flip_variations(int xtile, int ytile);
+	void flip_variations(int xtile, int ytile, int delta=1);
 
 	int auto_move_camera_x() const { return auto_move_camera_.x; }
 	int auto_move_camera_y() const { return auto_move_camera_.y; }

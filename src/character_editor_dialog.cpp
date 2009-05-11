@@ -14,7 +14,7 @@ namespace editor_dialogs
 {
 
 character_editor_dialog::character_editor_dialog(editor& e)
-  : gui::dialog(640, 40, 160, 560), editor_(e)
+  : gui::dialog(graphics::screen_width() - 160, 40, 160, 560), editor_(e)
 {
 	if(editor_.all_characters().empty() == false) {
 		category_ = editor_.all_characters().front().category;

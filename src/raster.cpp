@@ -411,9 +411,13 @@ void pop_clip() {
 	}
 }
 
+namespace {
+int zoom_level = 1;
+}
+
 int screen_width()
 {
-	return 800;
+	return 800*zoom_level;
 	/*
 	SDL_Surface* surf = SDL_GetVideoSurface();
 	if(surf) {
@@ -425,7 +429,7 @@ int screen_width()
 
 int screen_height()
 {
-	return 600;
+	return 600*zoom_level;
 	/*
 	SDL_Surface* surf = SDL_GetVideoSurface();
 	if(surf) {
@@ -433,6 +437,27 @@ int screen_height()
 	} else {
 		return 768;
 	}*/
+}
+
+void zoom_in()
+{
+	--zoom_level;
+	if(zoom_level < 1) {
+		zoom_level = 1;
+	}
+}
+
+void zoom_out()
+{
+	++zoom_level;
+	if(zoom_level > 5) {
+		zoom_level = 5;
+	}
+}
+
+void zoom_default()
+{
+	zoom_level = 1;
 }
 
 const SDL_Color& color_black()

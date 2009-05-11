@@ -1,7 +1,7 @@
 #ifndef EDITOR_HPP_INCLUDED
 #define EDITOR_HPP_INCLUDED
 
-#include <boost/scoped_ptr.hpp>
+#include <boost/function.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <vector>
 
@@ -94,6 +94,17 @@ private:
 
 	//if the mouse is currently down, drawing a rect.
 	bool drawing_rect_;
+
+	void execute_command(boost::function<void()> command, boost::function<void()> undo);
+	void undo_command();
+	void redo_command();
+
+	struct executable_command {
+		boost::function<void()> redo_command;
+		boost::function<void()> undo_command;
+	};
+
+	std::vector<executable_command> undo_, redo_;
 };
 
 #endif

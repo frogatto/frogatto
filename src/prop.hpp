@@ -42,6 +42,7 @@ class prop_object
 public:
 	prop_object(int x, int y, const std::string& id);
 	explicit prop_object(wml::const_node_ptr node);
+	bool equal_id(const prop_object& p) const { return p.id_ == id_; }
 	void draw() const;
 	const rect& area() const { return area_; }
 	bool operator<(const prop_object& o) const;
@@ -52,6 +53,7 @@ public:
 	void set_zorder(int zorder) { zorder_ = zorder; }
 	const std::vector<rect>& solid_rects() const { return solid_rects_; }
 private:
+	int id_;
 	const_prop_ptr type_;
 	rect area_;
 

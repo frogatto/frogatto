@@ -30,10 +30,10 @@ public:
 	virtual void set_loc(int x, int y) { x_ = x; y_ = y; }
 	virtual void set_dim(int w, int h) { w_ = w; h_ = h; }
 
-	int x() const { return x_; }
-	int y() const { return y_; }
-	int width() const { return w_; }
-	int height() const { return h_; }
+	int x() const;
+	int y() const;
+	int width() const;
+	int height() const;
 	void set_tooltip(const std::string& str);
 	bool visible() { return visible_; }
 	void set_visible(bool visible) { visible_ = visible; }

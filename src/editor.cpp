@@ -115,7 +115,7 @@ class editor_mode_dialog : public gui::dialog
 	}
 public:
 	explicit editor_mode_dialog(editor& e)
-	  : gui::dialog(640, 0, 160, 40), editor_(e)
+	  : gui::dialog(graphics::screen_width() - 160, 0, 160, 40), editor_(e)
 	{
 		init();
 	}
@@ -130,6 +130,12 @@ public:
 };
 
 namespace {
+
+void execute_functions(const std::vector<boost::function<void()> >& v) {
+	foreach(const boost::function<void()>& f, v) {
+		f();
+	}
+}
 
 const int TileSize = 32;
 
@@ -255,6 +261,9 @@ void editor::edit_level()
 		int mousex, mousey;
 		const unsigned int buttons = SDL_GetMouseState(&mousex, &mousey);
 
+		mousex = (mousex*graphics::screen_width())/800;
+		mousey = (mousey*graphics::screen_height())/600;
+
 		if(buttons == 0) {
 			drawing_rect_ = false;
 		}
@@ -301,20 +310,20 @@ void editor::edit_level()
 			const rect& bounds = lvl_->boundaries();
 			if(key_[SDLK_LEFT]) {
 				if(key_[SDLK_LEFT] && bounds.w() > TileSize) {
-					lvl_->set_boundaries(rect(bounds.x(), bounds.y(), bounds.w() - TileSize, bounds.h()));
+					execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x(), bounds.y(), bounds.w() - TileSize, bounds.h())), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
 				}
 			}
 
 			if(key_[SDLK_RIGHT]) {
-				lvl_->set_boundaries(rect(bounds.x(), bounds.y(), bounds.w() + TileSize, bounds.h()));
+					execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x(), bounds.y(), bounds.w() + TileSize, bounds.h())), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
 			}
 
 			if(key_[SDLK_UP] && bounds.h() > TileSize) {
-				lvl_->set_boundaries(rect(bounds.x(), bounds.y(), bounds.w(), bounds.h() - TileSize));
+					execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x(), bounds.y(), bounds.w(), bounds.h() - TileSize)), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
 			}
 
 			if(key_[SDLK_DOWN]) {
-				lvl_->set_boundaries(rect(bounds.x(), bounds.y(), bounds.w(), bounds.h() + TileSize));
+					execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x(), bounds.y(), bounds.w(), bounds.h() + TileSize)), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
 			}
 		}
 
@@ -335,11 +344,30 @@ void editor::edit_level()
 			case SDL_KEYDOWN:
 				std::cerr << "keydown " << (int)event.key.keysym.sym << " vs " << (int)SDLK_LEFT << "\n";
 				if(event.key.keysym.sym == SDLK_ESCAPE) {
+					graphics::zoom_default();
 					return;
 				}
 
+				if(event.key.keysym.sym == SDLK_u) {
+					undo_command();
+				}
+
+				if(event.key.keysym.sym == SDLK_r) {
+					redo_command();
+				}
+
+				if(event.key.keysym.sym == SDLK_z) {
+					graphics::zoom_in();
+				}
+
+				if(event.key.keysym.sym == SDLK_x) {
+					graphics::zoom_out();
+				}
+
 				if((mode_ == EDIT_PROPERTIES || mode_ == EDIT_CHARS) && event.key.keysym.sym == SDLK_DELETE) {
-					lvl_->remove_character(lvl_->editor_selection());
+					execute_command(
+					    boost::bind(&level::remove_character, lvl_.get(), lvl_->editor_selection()),
+					    boost::bind(&level::add_character, lvl_.get(), lvl_->editor_selection()));
 				}
 
 				if(mode_ == EDIT_PROPERTIES &&
@@ -368,7 +396,9 @@ void editor::edit_level()
 						vars->get_inputs(&inputs);
 						if(selected_property < inputs.size()) {
 							const std::string& key = inputs[selected_property].name;
-							vars->mutate_value(key, vars->query_value(key) + variant(increment));
+							execute_command(
+							  boost::bind(&game_logic::formula_callable::mutate_value, vars, key, vars->query_value(key) + variant(increment)),
+							  boost::bind(&game_logic::formula_callable::mutate_value, vars, key, vars->query_value(key)));
 						}
 					}
 				}
@@ -508,7 +538,9 @@ void editor::edit_level()
 						index = (index + 1)%levels.size();
 					}
 
-					lvl_->set_previous_level(levels[index]);
+					execute_command(
+					  boost::bind(&level::set_previous_level, lvl_.get(), levels[index]),
+					  boost::bind(&level::set_previous_level, lvl_.get(), lvl_->previous_level()));
 
 				} else if(select_next_level_) {
 
@@ -521,7 +553,9 @@ void editor::edit_level()
 						index = (index + 1)%levels.size();
 					}
 
-					lvl_->set_next_level(levels[index]);
+					execute_command(
+					  boost::bind(&level::set_previous_level, lvl_.get(), levels[index]),
+					  boost::bind(&level::set_previous_level, lvl_.get(), lvl_->next_level()));
 
 				} else if(mode_ == EDIT_CHARS && event.button.button == SDL_BUTTON_LEFT && !lvl_->editor_selection()) {
 					wml::node_ptr node(wml::deep_copy(enemy_types[cur_item_].node));
@@ -547,13 +581,10 @@ void editor::edit_level()
 
 						c = entity::build(node);
 					}
-					lvl_->add_character(c);
-				} else if(mode_ == EDIT_ITEMS && event.button.button == SDL_BUTTON_LEFT) {
-					wml::node_ptr node(wml::deep_copy(placeable_items[cur_item_].node));
-					node->set_attr("x", formatter() << (anchorx_ - anchorx_%TileSize));
-					node->set_attr("y", formatter() << (anchory_ - anchory_%TileSize));
-					item_ptr i(new item(node));
-					lvl_->add_item(i);
+
+					execute_command(
+					  boost::bind(&level::add_character, lvl_.get(), c),
+					  boost::bind(&level::remove_character, lvl_.get(), c));
 				}
 				break;
 			case SDL_MOUSEBUTTONUP:
@@ -561,20 +592,50 @@ void editor::edit_level()
 					if(!drawing_rect_) {
 						//wasn't drawing a rect; ignore.
 					} else if(event.button.button == SDL_BUTTON_LEFT) {
-						lvl_->add_tile_rect(tilesets[cur_tileset_].zorder + foreground_zorder_change(), anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey, tilesets[cur_tileset_].type);
+						const int zorder = tilesets[cur_tileset_].zorder + foreground_zorder_change();
+						std::vector<std::string> old_rect;
+						lvl_->get_tile_rect(zorder, anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey, old_rect);
+
+						execute_command(
+						  boost::bind(&level::add_tile_rect, lvl_.get(), zorder, anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey, tilesets[cur_tileset_].type),
+						  boost::bind(&level::add_tile_rect_vector, lvl_.get(), zorder, anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey, old_rect));
+						  
 					} else if(event.button.button == SDL_BUTTON_RIGHT) {
-						lvl_->clear_tile_rect(anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey);
+						std::map<int, std::vector<std::string> > old_tiles;
+						lvl_->get_all_tiles_rect(anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey, old_tiles);
+						std::vector<boost::function<void()> > undo;
+						for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
+							undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey, i->second));
+						}
+
+						execute_command(
+						  boost::bind(&level::clear_tile_rect, lvl_.get(), anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey),
+						  boost::bind(execute_functions, undo));
 					}
 				} else if(mode_ == EDIT_CHARS || mode_ == EDIT_ITEMS) {
 					if(event.button.button == SDL_BUTTON_RIGHT) {
-						lvl_->remove_characters_in_rect(anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey);
+						std::vector<boost::function<void()> > undo, redo;
+						std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey));
+
+						foreach(const entity_ptr& c, chars) {
+							redo.push_back(boost::bind(&level::remove_character, lvl_.get(), c));
+							undo.push_back(boost::bind(&level::add_character, lvl_.get(), c));
+						}
+						execute_command(
+						  boost::bind(execute_functions, redo),
+						  boost::bind(execute_functions, undo));
 					}
 				} else if(mode_ == EDIT_GROUPS && drawing_rect_) {
 					std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey));
+
 					const int group = lvl_->add_group();
-					foreach(entity_ptr c, chars) {
-						lvl_->set_character_group(c, group);
+					std::vector<boost::function<void()> > undo, redo;
+
+					foreach(const entity_ptr& c, chars) {
+						undo.push_back(boost::bind(&level::set_character_group, lvl_.get(), c, c->group()));
+						redo.push_back(boost::bind(&level::set_character_group, lvl_.get(), c, group));
 					}
+
 				} else if(mode_ == EDIT_PROPERTIES && drawing_rect_) {
 					std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey));
 					if(chars.empty() == false) {
@@ -583,10 +644,21 @@ void editor::edit_level()
 				} else if(mode_ == EDIT_VARIATIONS) {
 					const int xtile = (xpos_ + mousex)/TileSize;
 					const int ytile = (ypos_ + mousey)/TileSize;
-					lvl_->flip_variations(xtile, ytile);
+					execute_command(
+					  boost::bind(&level::flip_variations, lvl_.get(), xtile, ytile, 1),
+					  boost::bind(&level::flip_variations, lvl_.get(), xtile, ytile, -1));
 				} else if(mode_ == EDIT_PROPS) {
 					if(event.button.button == SDL_BUTTON_RIGHT && drawing_rect_) {
-						lvl_->remove_props_in_rect(anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey);
+						std::vector<boost::function<void()> > undo;
+						std::vector<prop_object> props;
+						lvl_->get_props_in_rect(anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey, props);
+						foreach(const prop_object& p, props) {
+							undo.push_back(boost::bind(&level::add_prop, lvl_.get(), p));
+						}
+
+						execute_command(
+						  boost::bind(&level::remove_props_in_rect, lvl_.get(), anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey),
+						  boost::bind(execute_functions, undo));
 					} else if(event.button.button == SDL_BUTTON_LEFT) {
 						int xtile = ((xpos_ + mousex)/TileSize)*TileSize;
 						int ytile = ((ypos_ + mousey)/TileSize)*TileSize;
@@ -597,15 +669,23 @@ void editor::edit_level()
 						}
 						prop_object obj(xtile, ytile, all_props[cur_item_]->id());
 						obj.set_zorder(obj.zorder() + foreground_zorder_change());
-						lvl_->add_prop(obj);
+
+						execute_command(
+						  boost::bind(&level::add_prop, lvl_.get(), obj),
+						  boost::bind(&level::remove_prop, lvl_.get(), obj));
 					}
 				} else if(mode_ == EDIT_WATER) {
 					rect r(rect::from_coordinates(anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey));
 					if(event.button.button == SDL_BUTTON_LEFT) {
 						water& w = lvl_->get_or_create_water();
+						execute_command(
+						  boost::bind(&water::add_rect, &w, r),
+						  boost::bind(&water::delete_rect, &w, r));
 						w.add_rect(r);
 					} else if(lvl_->get_water()) {
-						lvl_->get_water()->delete_rect(r);
+						execute_command(
+						  boost::bind(&water::delete_rect, lvl_->get_water(), r),
+						  boost::bind(&water::add_rect, lvl_->get_water(), r));
 					}
 				}
 
@@ -717,6 +797,9 @@ void editor::draw() const
 
 	int mousex, mousey;
 	SDL_GetMouseState(&mousex, &mousey);
+
+	mousex = (mousex*graphics::screen_width())/800;
+	mousey = (mousey*graphics::screen_height())/600;
 
 	graphics::prepare_raster();
 	lvl_->draw_background(0,0,0);
@@ -893,4 +976,37 @@ void editor::draw() const
 
 	SDL_GL_SwapBuffers();
 	SDL_Delay(20);
+}
+
+void editor::execute_command(boost::function<void()> command, boost::function<void()> undo)
+{
+	command();
+
+	executable_command cmd;
+	cmd.redo_command = command;
+	cmd.undo_command = undo;
+	undo_.push_back(cmd);
+	redo_.clear();
+}
+
+void editor::undo_command()
+{
+	if(undo_.empty()) {
+		return;
+	}
+
+	undo_.back().undo_command();
+	redo_.push_back(undo_.back());
+	undo_.pop_back();
+}
+
+void editor::redo_command()
+{
+	if(redo_.empty()) {
+		return;
+	}
+
+	redo_.back().redo_command();
+	undo_.push_back(redo_.back());
+	redo_.pop_back();
 }

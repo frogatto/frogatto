@@ -265,12 +265,18 @@ void character::process(level& lvl)
 	const bool is_underwater = lvl.is_underwater(body_rect());
 	bool is_swimming = is_in_swimming_frame();
 	if(is_swimming && !is_underwater) {
+		const static std::string LeaveWaterStr = "leave_water";
+		handle_event(LeaveWaterStr);
+
 		change_frame(type_->jump_frame());
 
 		//give a little boost to our vertical velocity as we emerge from
 		//the water by increasing it by 50%. This allows us to jump out
 		//of water in a reasonable way.
 		velocity_y_ += velocity_y_/2;
+		if(velocity_y_ < -jump_power()) {
+			velocity_y_ = -jump_power();
+		}
 		is_swimming = false;
 	} else if(type().has_swim_frames() && !is_swimming && is_underwater) {
 		change_frame(type_->swim_side_idle_frame());
@@ -493,7 +499,7 @@ void character::process(level& lvl)
 		const int right = collide_right();
 		for(int xpos = left; xpos < right; ++xpos) {
 			int damage = 0;
-			if(lvl.solid(xpos, ypos, NULL, invincible_ ? NULL : &damage)) {
+			if(lvl.solid(xpos, ypos, NULL, NULL, invincible_ ? NULL : &damage)) {
 				if(!damage) {
 					collide = true;
 					break;
@@ -608,8 +614,6 @@ void character::process(level& lvl)
 	const bool standing = is_standing(lvl, &friction, &current_traction_, &damage, NULL, &standing_on);
 
 	velocity_x_ += (accel_x*current_traction_)/100;
-
-	std::cerr << "TRACTION: " << current_traction_ << "\n";
 
 	if(is_underwater) {
 		friction += lvl.water_resistance();
@@ -868,7 +872,7 @@ void character::walk(const level& lvl, bool move_right)
 		}
 
 		int damage;
-		if(type_->push_frame() && (collide_entity || lvl.solid(x, y, NULL, &damage) && damage == 0)) {
+		if(type_->push_frame() && (collide_entity || lvl.solid(x, y, NULL, NULL, &damage) && damage == 0)) {
 			if(current_frame_ != type_->push_frame()) {
 				change_frame(type_->push_frame());
 			}
@@ -952,7 +956,7 @@ void character::uncrouch(const level& lvl)
 		current_frame_ = &type().get_frame();
 
 		int damage = 0;
-		if(lvl.solid(body_rect(), NULL, &damage) && damage == 0) {
+		if(lvl.solid(body_rect(), NULL, NULL, &damage) && damage == 0) {
 			// Looks like this will make us collide, so don't let us
 			// uncrouch.
 			current_frame_ = type().crouch_frame();
@@ -1199,7 +1203,9 @@ void character::change_frame(const frame* new_frame)
 	const frame* old_frame = current_frame_;
 	const int old_time_in_frame = time_in_frame_;
 
-	const bool solid_before_change = lvl_->solid(body_rect());
+	//if we're rolling or crouching we want to disallow changes to frames that
+	//might make us collide with solid surfaces etc.
+	const bool solid_before_change = current_frame_ != type_->crouch_frame() && current_frame_ != type_->roll_frame() || lvl_->solid(body_rect());
 
 	++frame_id_;
 
@@ -1347,7 +1353,6 @@ int character::glide_speed() const
 
 void character::get_hit()
 {
-	//assert(false);
 	assert(!invincible_);
 	remove_powerup();
 	if(is_human()) {
