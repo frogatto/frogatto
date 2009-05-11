@@ -67,6 +67,7 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
     ignore_collide_(wml::get_bool(node, "ignore_collide", false)),
     springiness_(wml::get_int(node, "springiness")),
 	surface_friction_(wml::get_int(node, "surface_friction", 20)),
+	surface_traction_(wml::get_int(node, "surface_traction", 100)),
 	friction_(wml::get_int(node, "friction")),
 	on_players_side_(wml::get_bool(node, "on_players_side", false)),
 	respawns_(wml::get_bool(node, "respawns", true))
