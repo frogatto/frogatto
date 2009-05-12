@@ -19,6 +19,9 @@ namespace {
 //are identical will point to the same place, and so we can easily
 //test equality of regexes.
 std::map<std::string, const boost::regex*> regex_pool;
+
+typedef std::map<const boost::regex*, bool> regex_match_map;
+std::map<boost::array<char, 4>, regex_match_map> re_matches;
 const boost::regex& get_regex_from_pool(const std::string& key)
 {
 	const boost::regex*& re = regex_pool[key];
@@ -27,6 +30,18 @@ const boost::regex& get_regex_from_pool(const std::string& key)
 	}
 
 	return *re;
+}
+
+bool match_regex(boost::array<char, 4> str, const boost::regex* re) {
+	std::map<const boost::regex*, bool>& m = re_matches[str];
+	std::map<const boost::regex*, bool>::const_iterator i = m.find(re);
+	if(i != m.end()) {
+		return i->second;
+	}
+
+	const bool match = boost::regex_match(str.data(), str.data() + strlen(str.data()), *re);
+	m[re] = match;
+	return match;
 }
 
 const int TileSize = 32;
@@ -73,7 +88,7 @@ struct tile_pattern {
 			main_tile = 4;
 		}
 
-		current_tile_pattern = boost::regex(patterns[main_tile].empty() ? "^$" : patterns[main_tile]);
+		current_tile_pattern = &get_regex_from_pool(patterns[main_tile].empty() ? "^$" : patterns[main_tile]);
 
 		for(int n = 0; n != patterns.size(); ++n) {
 			if(n == main_tile) {
@@ -104,7 +119,7 @@ struct tile_pattern {
 		}
 	}
 
-	boost::regex current_tile_pattern;
+	const boost::regex* current_tile_pattern;
 
 	struct surrounding_tile {
 		surrounding_tile(int x, int y, const std::string& s)
@@ -286,8 +301,8 @@ void tile_map::build_patterns()
 	foreach(const tile_pattern& p, patterns) {
 		std::vector<const boost::regex*> re;
 		std::vector<const boost::regex*> accepted_re;
-		if(!p.current_tile_pattern.empty()) {
-			re.push_back(&p.current_tile_pattern);
+		if(!p.current_tile_pattern->empty()) {
+			re.push_back(p.current_tile_pattern);
 		}
 		
 		foreach(const tile_pattern::surrounding_tile& t, p.surrounding_tiles) {
@@ -297,11 +312,18 @@ void tile_map::build_patterns()
 		int matches = 0;
 		foreach(pattern_index_entry& e, pattern_index_) {
 			foreach(const boost::regex*& regex, re) {
-				if(regex && boost::regex_match(e.str.data(), e.str.data() + strlen(e.str.data()), *regex)) {
+				if(regex && match_regex(e.str, regex)) {
 					accepted_re.push_back(regex);
 					regex = NULL;
 					++matches;
+					if(matches == re.size()) {
+						break;
+					}
 				}
+			}
+
+			if(matches == re.size()) {
+				break;
 			}
 		}
 
@@ -318,7 +340,7 @@ void tile_map::build_patterns()
 		e.matching_patterns.clear();
 
 		foreach(const boost::regex* re, all_regexes) {
-			if(boost::regex_match(e.str.data(), e.str.data() + strlen(e.str.data()), *re)) {
+			if(match_regex(e.str, re)) {
 				e.matching_patterns.push_back(re);
 			}
 		}
@@ -575,7 +597,7 @@ const tile_pattern* tile_map::get_matching_pattern(int x, int y, tile_pattern_ca
 	if(itor == cache.cache.end()) {
 		itor = cache.cache.insert(std::pair<const char*,std::vector<const tile_pattern*> >(current_tile, std::vector<const tile_pattern*>())).first;
 		foreach(const tile_pattern* p, get_patterns()) {
-			if(!p->current_tile_pattern.empty() && !boost::regex_match(current_tile, current_tile + strlen(current_tile), p->current_tile_pattern)) {
+			if(!p->current_tile_pattern->empty() && !boost::regex_match(current_tile, current_tile + strlen(current_tile), *p->current_tile_pattern)) {
 				continue;
 			}
 
