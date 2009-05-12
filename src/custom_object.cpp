@@ -129,9 +129,9 @@ void custom_object::draw() const
 
 void custom_object::draw_group() const
 {
-	if(group() >= 0) {
+//	if(group() >= 0) {
 		blit_texture(font::render_text(formatter() << group(), graphics::color_yellow(), 24), x(), y());
-	}
+//	}
 }
 
 namespace {

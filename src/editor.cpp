@@ -296,7 +296,7 @@ void editor::edit_level()
 			lvl_->editor_selection()->set_pos(xpos - (ctrl_pressed ? 0 : (xpos%TileSize)), ypos - (ctrl_pressed ? 0 : (ypos%TileSize)));
 		}
 
-		const int ScrollSpeed = 8;
+		const int ScrollSpeed = 8*zoom_;
 
 		const bool ctrl = key_[SDLK_LCTRL] || key_[SDLK_RCTRL];
 
@@ -680,6 +680,10 @@ void editor::edit_level()
 						redo.push_back(boost::bind(&level::set_character_group, lvl_.get(), c, group));
 					}
 
+					execute_command(
+					  boost::bind(execute_functions, redo),
+					  boost::bind(execute_functions, undo));
+
 				} else if(mode_ == EDIT_PROPERTIES && drawing_rect_) {
 					std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos, ypos));
 					if(chars.empty() == false) {
@@ -725,7 +729,6 @@ void editor::edit_level()
 						execute_command(
 						  boost::bind(&water::add_rect, &w, r),
 						  boost::bind(&water::delete_rect, &w, r));
-						w.add_rect(r);
 					} else if(lvl_->get_water()) {
 						execute_command(
 						  boost::bind(&water::delete_rect, lvl_->get_water(), r),
