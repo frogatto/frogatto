@@ -36,7 +36,12 @@ level::level(const std::string& level_cfg)
 	replay_data_ = node->attr("replay_data");
 	cycle_ = wml::get_int(node, "cycle");
 	title_ = node->attr("title");
-	boundaries_ = rect(0, 0, wml::get_int(node, "width"), wml::get_int(node, "height"));
+	if(node->has_attr("dimensions")) {
+		boundaries_ = rect(node->attr("dimensions"));
+	} else {
+		boundaries_ = rect(0, 0, wml::get_int(node, "width"), wml::get_int(node, "height"));
+	}
+
 	xscale_ = wml::get_int(node, "xscale", 100);
 	yscale_ = wml::get_int(node, "yscale", 100);
 	auto_move_camera_ = point(node->attr("auto_move_camera"));
@@ -315,8 +320,7 @@ wml::const_node_ptr level::write() const
 	if(cycle_) {
 		res->set_attr("cycle", formatter() << cycle_);
 	}
-	res->set_attr("width", formatter() << boundaries().w());
-	res->set_attr("height", formatter() << boundaries().h());
+	res->set_attr("dimensions", boundaries().to_string());
 
 	res->set_attr("xscale", formatter() << xscale_);
 	res->set_attr("yscale", formatter() << yscale_);
@@ -961,6 +965,20 @@ void level::add_tile_rect_vector(int zorder, int x1, int y1, int x2, int y2, con
 	}
 }
 
+namespace {
+const int TileSize = 32;
+int round_tile_size(int n)
+{
+	if(n >= 0) {
+		return n - n%TileSize;
+	} else {
+		n = -n + 32;
+		return -(n - n%TileSize);
+	}
+}
+
+}
+
 bool level::add_tile_rect_vector_internal(int zorder, int x1, int y1, int x2, int y2, const std::vector<std::string>& tiles)
 {
 	if(tiles.empty()) {
@@ -975,10 +993,10 @@ bool level::add_tile_rect_vector_internal(int zorder, int x1, int y1, int x2, in
 		std::swap(y1, y2);
 	}
 
-	x1 = x1 - x1%32;
-	y1 = y1 - y1%32;
-	x2 = x2 - x2%32 + 32;
-	y2 = y2 - y2%32 + 32;
+	x1 = round_tile_size(x1);
+	y1 = round_tile_size(y1);
+	x2 = round_tile_size(x2 + TileSize);
+	y2 = round_tile_size(y2 + TileSize);
 
 	tile_map& m = tile_maps_[zorder];
 	m.set_zorder(zorder);
@@ -1010,10 +1028,10 @@ void level::get_tile_rect(int zorder, int x1, int y1, int x2, int y2, std::vecto
 		std::swap(y1, y2);
 	}
 
-	x1 = x1 - x1%32;
-	y1 = y1 - y1%32;
-	x2 = x2 - x2%32 + 32;
-	y2 = y2 - y2%32 + 32;
+	x1 = round_tile_size(x1);
+	y1 = round_tile_size(y1);
+	x2 = round_tile_size(x2 + TileSize);
+	y2 = round_tile_size(y2 + TileSize);
 
 	std::map<int, tile_map>::const_iterator map_iterator = tile_maps_.find(zorder);
 	if(map_iterator == tile_maps_.end()) {
@@ -1315,7 +1333,7 @@ const level::portal* level::get_portal() const
 	}
 
 	const rect& r = player_->body_rect();
-	if(r.x() < 0 && left_portal_.level_dest.empty() == false) {
+	if(r.x() < boundaries().x() && left_portal_.level_dest.empty() == false) {
 		return &left_portal_;
 	}
 

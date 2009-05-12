@@ -139,6 +139,16 @@ void execute_functions(const std::vector<boost::function<void()> >& v) {
 
 const int TileSize = 32;
 
+int round_tile_size(int n)
+{
+	if(n >= 0) {
+		return n - n%TileSize;
+	} else {
+		n = -n + 32;
+		return -(n - n%TileSize);
+	}
+}
+
 std::vector<editor::tileset> tilesets;
 
 std::vector<editor::enemy_type> enemy_types;
@@ -268,8 +278,8 @@ void editor::edit_level()
 			drawing_rect_ = false;
 		}
 
-		const int selectx = (xpos_ + mousex)/TileSize;
-		const int selecty = (ypos_ + mousey)/TileSize;
+		const int selectx = round_tile_size(xpos_ + mousex);
+		const int selecty = round_tile_size(ypos_ + mousey);
 
 		const bool object_mode = (mode_ == EDIT_PROPERTIES || mode_ == EDIT_CHARS);
 
@@ -307,23 +317,45 @@ void editor::edit_level()
 				ypos_ += ScrollSpeed;
 			}
 		} else {
+			const bool left_ctrl = key_[SDLK_LCTRL];
 			const rect& bounds = lvl_->boundaries();
-			if(key_[SDLK_LEFT]) {
-				if(key_[SDLK_LEFT] && bounds.w() > TileSize) {
-					execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x(), bounds.y(), bounds.w() - TileSize, bounds.h())), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
+
+			if(left_ctrl) {
+				if(key_[SDLK_LEFT]) {
+					if(key_[SDLK_LEFT] && bounds.w() > TileSize) {
+						execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x() - TileSize, bounds.y(), bounds.w() + TileSize, bounds.h())), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
+					}
 				}
-			}
 
-			if(key_[SDLK_RIGHT]) {
-					execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x(), bounds.y(), bounds.w() + TileSize, bounds.h())), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
-			}
+				if(key_[SDLK_RIGHT]) {
+						execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x() + TileSize, bounds.y(), bounds.w() - TileSize, bounds.h())), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
+				}
 
-			if(key_[SDLK_UP] && bounds.h() > TileSize) {
-					execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x(), bounds.y(), bounds.w(), bounds.h() - TileSize)), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
-			}
+				if(key_[SDLK_UP] && bounds.h() > TileSize) {
+						execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x(), bounds.y() - TileSize, bounds.w(), bounds.h() + TileSize)), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
+				}
 
-			if(key_[SDLK_DOWN]) {
-					execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x(), bounds.y(), bounds.w(), bounds.h() + TileSize)), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
+				if(key_[SDLK_DOWN]) {
+						execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x(), bounds.y() + TileSize, bounds.w(), bounds.h() - TileSize)), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
+				}
+			} else {
+				if(key_[SDLK_LEFT]) {
+					if(key_[SDLK_LEFT] && bounds.w() > TileSize) {
+						execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x(), bounds.y(), bounds.w() - TileSize, bounds.h())), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
+					}
+				}
+
+				if(key_[SDLK_RIGHT]) {
+						execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x(), bounds.y(), bounds.w() + TileSize, bounds.h())), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
+				}
+
+				if(key_[SDLK_UP] && bounds.h() > TileSize) {
+						execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x(), bounds.y(), bounds.w(), bounds.h() - TileSize)), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
+				}
+
+				if(key_[SDLK_DOWN]) {
+						execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x(), bounds.y(), bounds.w(), bounds.h() + TileSize)), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
+				}
 			}
 		}
 
@@ -559,8 +591,8 @@ void editor::edit_level()
 
 				} else if(mode_ == EDIT_CHARS && event.button.button == SDL_BUTTON_LEFT && !lvl_->editor_selection()) {
 					wml::node_ptr node(wml::deep_copy(enemy_types[cur_item_].node));
-					node->set_attr("x", formatter() << (anchorx_ - (ctrl_pressed ? 0 : (anchorx_%TileSize))));
-					node->set_attr("y", formatter() << (anchory_ - (ctrl_pressed ? 0 : (anchory_%TileSize))));
+					node->set_attr("x", formatter() << (ctrl_pressed ? anchorx_ : round_tile_size(anchorx_)));
+					node->set_attr("y", formatter() << (ctrl_pressed ? anchory_ : round_tile_size(anchory_)));
 					node->set_attr("face_right", face_right_ ? "yes" : "no");
 
 					wml::node_ptr vars = node->get_child("vars");
@@ -649,8 +681,8 @@ void editor::edit_level()
 						selected_entity = chars.front();
 					}
 				} else if(mode_ == EDIT_VARIATIONS) {
-					const int xtile = (xpos_ + mousex)/TileSize;
-					const int ytile = (ypos_ + mousey)/TileSize;
+					const int xtile = round_tile_size(xpos_ + mousex);
+					const int ytile = round_tile_size(ypos_ + mousey);
 					execute_command(
 					  boost::bind(&level::flip_variations, lvl_.get(), xtile, ytile, 1),
 					  boost::bind(&level::flip_variations, lvl_.get(), xtile, ytile, -1));
@@ -667,8 +699,8 @@ void editor::edit_level()
 						  boost::bind(&level::remove_props_in_rect, lvl_.get(), anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey),
 						  boost::bind(execute_functions, undo));
 					} else if(event.button.button == SDL_BUTTON_LEFT) {
-						int xtile = ((xpos_ + mousex)/TileSize)*TileSize;
-						int ytile = ((ypos_ + mousey)/TileSize)*TileSize;
+						int xtile = round_tile_size(xpos_ + mousex);
+						int ytile = round_tile_size(ypos_ + mousey);
 						if(ctrl_pressed) {
 							//allow pixel perfect placement if ctrl is pressed
 							xtile = xpos_ + mousex;
@@ -826,7 +858,7 @@ void editor::draw() const
 		previous_level = "(no previous level)";
 	}
 	graphics::texture t = font::render_text(previous_level, graphics::color_black(), 24);
-	int x = -t.width();
+	int x = lvl_->boundaries().x() - t.width();
 	int y = ypos_ + graphics::screen_height()/2;
 
 	select_next_level_ = select_previous_level_ = false;
@@ -849,8 +881,8 @@ void editor::draw() const
 	}
 
 	if(mode_ == EDIT_PROPS) {
-		int x = ((xpos_ + mousex)/TileSize)*TileSize;
-		int y = ((ypos_ + mousey)/TileSize)*TileSize;
+		int x = round_tile_size(xpos_ + mousex);
+		int y = round_tile_size(ypos_ + mousey);
 		if(ctrl_pressed) {
 			x = xpos_ + mousex;
 			y = ypos_ + mousey;
