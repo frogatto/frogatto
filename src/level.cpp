@@ -959,6 +959,13 @@ void level::add_tile_rect(int zorder, int x1, int y1, int x2, int y2, const std:
 
 void level::add_tile_rect_vector(int zorder, int x1, int y1, int x2, int y2, const std::vector<std::string>& tiles)
 {
+	if(x1 > x2) {
+		std::swap(x1, x2);
+	}
+
+	if(y1 > y2) {
+		std::swap(y1, y2);
+	}
 	const bool changed = add_tile_rect_vector_internal(zorder, x1, y1, x2, y2, tiles);
 	if(changed) {
 		rebuild_tiles_rect(rect(x1-64, y1-128, (x2 - x1) + 128, (y2 - y1) + 256));
@@ -1059,6 +1066,14 @@ void level::get_all_tiles_rect(int x1, int y1, int x2, int y2, std::map<int, std
 
 void level::clear_tile_rect(int x1, int y1, int x2, int y2)
 {
+	if(x1 > x2) {
+		std::swap(x1, x2);
+	}
+
+	if(y1 > y2) {
+		std::swap(y1, y2);
+	}
+
 	bool changed = false;
 	std::vector<std::string> v(1, "");
 	for(std::set<int>::const_iterator i = layers_.begin(); i != layers_.end(); ++i) {
