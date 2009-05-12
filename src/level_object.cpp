@@ -193,16 +193,19 @@ bool level_object::is_solid(int x, int y) const
 
 namespace {
 int hash_level_object(int x, int y) {
+	x /= 32;
+	y /= 32;
 	x = (x + 92872873) ^ 918273;
 	y = (y + 1672517) ^ 128123;
-	return x*y + x + y;
+	return (x*y + x + y)*1103515245 + 12345;
 }
 }
 
 void level_object::draw(const level_tile& t)
 {
 	int index = 0;
-	const std::vector<int>& tiles = t.object->tiles_[hash_level_object(t.x,t.y)%t.object->tiles_.size()];
+	const int random_index = hash_level_object(t.x,t.y);
+	const std::vector<int>& tiles = t.object->tiles_[random_index%t.object->tiles_.size()];
 	foreach(int i, tiles) {
 		if(i < 0) {
 			continue;
