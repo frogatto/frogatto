@@ -635,6 +635,11 @@ void editor::edit_level()
 						std::vector<std::string> old_rect;
 						lvl_->get_tile_rect(zorder, anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey, old_rect);
 
+						std::cerr << "BACKUP TILES: " << old_rect.size() << "\n";
+						foreach(const std::string& s, old_rect) {
+							std::cerr << "BACKUP: (" << s << ")\n";
+						}
+
 						execute_command(
 						  boost::bind(&level::add_tile_rect, lvl_.get(), zorder, anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey, tilesets[cur_tileset_].type),
 						  boost::bind(&level::add_tile_rect_vector, lvl_.get(), zorder, anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey, old_rect));

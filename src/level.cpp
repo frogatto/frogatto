@@ -1014,7 +1014,7 @@ bool level::add_tile_rect_vector_internal(int zorder, int x1, int y1, int x2, in
 	for(int x = x1; x < x2; x += 32) {
 		std::cerr << "x: " << x << "\n";
 		for(int y = y1; y < y2; y += 32) {
-			std::cerr << "adding tile: " << x << "," << y << "\n";
+			std::cerr << "adding tile: " << x << "," << y << ": (" << tiles[index] << ")\n";
 			changed = m.set_tile(x, y, tiles[index]) || changed;
 			if(index+1 < tiles.size()) {
 				++index;
@@ -1042,6 +1042,7 @@ void level::get_tile_rect(int zorder, int x1, int y1, int x2, int y2, std::vecto
 
 	std::map<int, tile_map>::const_iterator map_iterator = tile_maps_.find(zorder);
 	if(map_iterator == tile_maps_.end()) {
+		tiles.push_back("");
 		return;
 	}
 	const tile_map& m = map_iterator->second;
