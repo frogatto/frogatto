@@ -15,11 +15,27 @@
 
 namespace {
 
+//a pool of regular expressions. This makes sure that two regexes that
+//are identical will point to the same place, and so we can easily
+//test equality of regexes.
+std::map<std::string, const boost::regex*> regex_pool;
+const boost::regex& get_regex_from_pool(const std::string& key)
+{
+	const boost::regex*& re = regex_pool[key];
+	if(!re) {
+		re = new boost::regex(key);
+	}
+
+	return *re;
+}
+
 const int TileSize = 32;
 
 struct is_whitespace {
 	bool operator()(char c) const { return isspace(c); }
 };
+
+}
 
 struct tile_pattern {
 	explicit tile_pattern(wml::const_node_ptr node)
@@ -92,11 +108,11 @@ struct tile_pattern {
 
 	struct surrounding_tile {
 		surrounding_tile(int x, int y, const std::string& s)
-		  : xoffset(x), yoffset(y), pattern(s.empty() ? "^$" : s)
+		  : xoffset(x), yoffset(y), pattern(&get_regex_from_pool(s.empty() ? "^$" : s))
 		{}
 		int xoffset;
 		int yoffset;
-		boost::regex pattern;
+		const boost::regex* pattern;
 	};
 
 	std::vector<surrounding_tile> surrounding_tiles;
@@ -118,7 +134,10 @@ struct tile_pattern {
 	game_logic::const_formula_ptr filter_formula;
 };
 
+namespace {
+
 std::vector<tile_pattern> patterns;
+int current_patterns_version = 0;
 
 class filter_callable : public game_logic::formula_callable {
 	const tile_map& m_;
@@ -182,12 +201,17 @@ void tile_map::init(wml::const_node_ptr node)
 		const wml::const_node_ptr& p = p1->second;
 		patterns.push_back(tile_pattern(p));
 	}
+
+	++current_patterns_version;
 }
 
-tile_map::tile_map() : xpos_(0), ypos_(0), zorder_(0)
+tile_map::tile_map() : xpos_(0), ypos_(0), zorder_(0), patterns_version_(-1)
 {
 	//turn off reference counting
 	add_ref();
+
+	//make an entry for the empty string.
+	pattern_index_.push_back(pattern_index_entry());
 }
 
 tile_map::tile_map(wml::const_node_ptr node)
@@ -212,6 +236,9 @@ tile_map::tile_map(wml::const_node_ptr node)
 	}
 	}
 
+	//make an entry for the empty string.
+	pattern_index_.push_back(pattern_index_entry());
+
 	{
 	std::vector<std::string> lines = util::split(node->attr("tiles"), '\n', 0);
 	foreach(const std::string& line, lines) {
@@ -225,10 +252,91 @@ tile_map::tile_map(wml::const_node_ptr node)
 			}
 
 			std::copy(item.begin(), item.end(), str.begin());
-			map_.back().push_back(str);
+
+			int index_entry = 0;
+			foreach(const pattern_index_entry& e, pattern_index_) {
+				if(strcmp(e.str.data(), str.data()) == 0) {
+					break;
+				}
+
+				++index_entry;
+			}
+
+			if(index_entry == pattern_index_.size()) {
+				pattern_index_.push_back(pattern_index_entry());
+				pattern_index_.back().str = str;
+			}
+
+			map_.back().push_back(index_entry);
 		}
 	}
+
+	build_patterns();
+
 	}
+}
+
+void tile_map::build_patterns()
+{
+	std::vector<const boost::regex*> all_regexes;
+
+	patterns_version_ = current_patterns_version;
+	const int begin_time = SDL_GetTicks();
+	patterns_.clear();
+	foreach(const tile_pattern& p, patterns) {
+		std::vector<const boost::regex*> re;
+		std::vector<const boost::regex*> accepted_re;
+		if(!p.current_tile_pattern.empty()) {
+			re.push_back(&p.current_tile_pattern);
+		}
+		
+		foreach(const tile_pattern::surrounding_tile& t, p.surrounding_tiles) {
+			re.push_back(t.pattern);
+		}
+
+		int matches = 0;
+		foreach(pattern_index_entry& e, pattern_index_) {
+			foreach(const boost::regex*& regex, re) {
+				if(regex && boost::regex_match(e.str.data(), e.str.data() + strlen(e.str.data()), *regex)) {
+					accepted_re.push_back(regex);
+					regex = NULL;
+					++matches;
+				}
+			}
+		}
+
+		if(matches == re.size()) {
+			all_regexes.insert(all_regexes.end(), accepted_re.begin(), accepted_re.end());
+			patterns_.push_back(&p);
+		}
+	}
+
+	std::sort(all_regexes.begin(), all_regexes.end());
+	all_regexes.erase(std::unique(all_regexes.begin(), all_regexes.end()), all_regexes.end());
+
+	foreach(pattern_index_entry& e, pattern_index_) {
+		e.matching_patterns.clear();
+
+		foreach(const boost::regex* re, all_regexes) {
+			if(boost::regex_match(e.str.data(), e.str.data() + strlen(e.str.data()), *re)) {
+				e.matching_patterns.push_back(re);
+			}
+		}
+	}
+
+	const int end_time = SDL_GetTicks();
+	static int total_time = 0;
+	total_time += (end_time - begin_time);
+	std::cerr << "BUILD PATTERNS: " << (end_time - begin_time) << " " << total_time << "\n";
+}
+
+const std::vector<const tile_pattern*>& tile_map::get_patterns() const
+{
+	if(patterns_version_ != current_patterns_version) {
+		const_cast<tile_map*>(this)->build_patterns();
+	}
+
+	return patterns_;
 }
 
 wml::node_ptr tile_map::write() const
@@ -238,13 +346,13 @@ wml::node_ptr tile_map::write() const
 	res->set_attr("y", formatter() << ypos_);
 	res->set_attr("zorder", formatter() << zorder_);
 	std::ostringstream tiles;
-	foreach(const std::vector<tile_string>& row, map_) {
+	foreach(const std::vector<int>& row, map_) {
 		tiles << "\n";
 		for(int i = 0; i != row.size(); ++i) {
 			if(i) {
 				tiles << ",";
 			}
-			tiles << row[i].data();
+			tiles << pattern_index_[row[i]].str.data();
 		}
 		
 		if(row.empty()) {
@@ -285,7 +393,16 @@ const char* tile_map::get_tile(int y, int x) const
 		return "";
 	}
 
-	return map_[y][x].data();
+	return pattern_index_[map_[y][x]].str.data();
+}
+
+const tile_map::pattern_index_entry& tile_map::get_tile_entry(int y, int x) const
+{
+	if(x < 0 || y < 0 || y >= map_.size() || x >= map_[y].size()) {
+		return pattern_index_.front();
+	}
+
+	return pattern_index_[map_[y][x]];
 }
 
 namespace {
@@ -295,7 +412,7 @@ struct cstr_less {
 	}
 };
 
-typedef std::map<const char*, std::vector<tile_pattern>, cstr_less> tile_pattern_cache_map;
+typedef std::map<const char*, std::vector<const tile_pattern*>, cstr_less> tile_pattern_cache_map;
 struct tile_pattern_cache {
 	tile_pattern_cache_map cache;
 };
@@ -321,7 +438,6 @@ int tile_map::get_variations(int x, int y) const
 
 int tile_map::variation(int x, int y) const
 {
-	std::cerr << "VARIATION: " << x << "," << y << "/" << (y < variations_.size() ? variations_[y].size() : 0) << "," << variations_.size() << "\n";
 	if(x < 0 || y < 0 || y >= variations_.size() || x >= variations_[y].size()) {
 		return 0;
 	}
@@ -362,9 +478,9 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles,
                            const rect* r) const
 {
 	const int begin_time = SDL_GetTicks();
-	std::cerr << "build tiles...\n";
+	std::cerr << "build tiles... " << patterns_.size() << "/" << patterns.size() << "\n";
 	int width = 0;
-	foreach(const std::vector<tile_string>& row, map_) {
+	foreach(const std::vector<int>& row, map_) {
 		if(row.size() > width) {
 			width = row.size();
 		}
@@ -457,27 +573,28 @@ const tile_pattern* tile_map::get_matching_pattern(int x, int y, tile_pattern_ca
 	//matching the current tile.
 	tile_pattern_cache_map::iterator itor = cache.cache.find(current_tile);
 	if(itor == cache.cache.end()) {
-		itor = cache.cache.insert(std::pair<const char*,std::vector<tile_pattern> >(current_tile, std::vector<tile_pattern>())).first;
-		foreach(const tile_pattern& p, patterns) {
-			if(!p.current_tile_pattern.empty() && !boost::regex_match(current_tile, current_tile + strlen(current_tile), p.current_tile_pattern)) {
+		itor = cache.cache.insert(std::pair<const char*,std::vector<const tile_pattern*> >(current_tile, std::vector<const tile_pattern*>())).first;
+		foreach(const tile_pattern* p, get_patterns()) {
+			if(!p->current_tile_pattern.empty() && !boost::regex_match(current_tile, current_tile + strlen(current_tile), p->current_tile_pattern)) {
 				continue;
 			}
 
-			itor->second.push_back(p);
+			itor->second.push_back(&*p);
 		}
 	}
 
-	const std::vector<tile_pattern>& matching_patterns = itor->second;
+	const std::vector<const tile_pattern*>& matching_patterns = itor->second;
 
-	foreach(const tile_pattern& p, matching_patterns) {
+	foreach(const tile_pattern* ptr, matching_patterns) {
+		const tile_pattern& p = *ptr;
 		if(p.filter_formula && p.filter_formula->execute(callable).as_bool() == false) {
 			continue;
 		}
 
 		bool match = true;
 		foreach(const tile_pattern::surrounding_tile& t, p.surrounding_tiles) {
-			const char* str = get_tile(y + t.yoffset, x + t.xoffset);
-			if(!boost::regex_match(str, str + strlen(str), t.pattern)) {
+			const pattern_index_entry& entry = get_tile_entry(y + t.yoffset, x + t.xoffset);
+			if(std::find(entry.matching_patterns.begin(), entry.matching_patterns.end(), t.pattern) == entry.matching_patterns.end()) {
 				match = false;
 				break;
 			}
@@ -496,8 +613,8 @@ const tile_pattern* tile_map::get_matching_pattern(int x, int y, tile_pattern_ca
 			match = true;
 
 			foreach(const tile_pattern::surrounding_tile& t, p.surrounding_tiles) {
-				const char* str = get_tile(y + t.yoffset, x - t.xoffset);
-				if(!boost::regex_match(str, str + strlen(str), t.pattern)) {
+				const pattern_index_entry& entry = get_tile_entry(y + t.yoffset, x - t.xoffset);
+				if(std::find(entry.matching_patterns.begin(), entry.matching_patterns.end(), t.pattern) == entry.matching_patterns.end()) {
 					match = false;
 					break;
 				}
@@ -527,8 +644,8 @@ bool tile_map::set_tile(int xpos, int ypos, const std::string& str)
 	std::fill(empty_tile.begin(), empty_tile.end(), '\0');
 	if(xpos < xpos_) {
 		const int add_tiles = abs((xpos - xpos_)/TileSize);
-		std::vector<tile_string> insert(add_tiles, empty_tile);
-		foreach(std::vector<tile_string>& row, map_) {
+		std::vector<int> insert(add_tiles, get_pattern_index_entry(empty_tile));
+		foreach(std::vector<int>& row, map_) {
 			row.insert(row.begin(), insert.begin(), insert.end());
 		}
 
@@ -536,7 +653,7 @@ bool tile_map::set_tile(int xpos, int ypos, const std::string& str)
 	}
 
 	while(ypos < ypos_) {
-		map_.insert(map_.begin(), std::vector<tile_string>());
+		map_.insert(map_.begin(), std::vector<int>());
 		ypos_ -= TileSize;
 	}
 
@@ -548,27 +665,50 @@ bool tile_map::set_tile(int xpos, int ypos, const std::string& str)
 		map_.resize(y + 1);
 	}
 
-	std::vector<tile_string>& row = map_[y];
+	std::vector<int>& row = map_[y];
 
-	if(row.size() > x && strcmp(row[x].data(), str.c_str()) == 0) {
-		return false;
-	}
-
-	while(row.size() <= x) {
-		row.push_back(empty_tile);
-	}
-
+	tile_string tstr;
+	memset(&tstr[0], 0, tstr.size());
 	std::string::const_iterator end = str.end();
 	if(str.size() > 3) {
 		end = str.begin() + 3;
 	}
 
-	row[x] = empty_tile;
-	std::copy(str.begin(), end, row[x].begin());
+	std::copy(str.begin(), end, tstr.begin());
+
+	const int index = get_pattern_index_entry(tstr);
+	if(row.size() > x && row[x] == index) {
+		std::cerr << "tile unchanged: '" << pattern_index_[index].str.data() << "'\n";
+		return false;
+	}
+
+	const int empty_index = get_pattern_index_entry(empty_tile);
+	while(row.size() <= x) {
+		row.push_back(empty_index);
+	}
+
+		std::cerr << "tile changed: '" << pattern_index_[row[x]].str.data() << "' -> '" << pattern_index_[index].str.data() << "' -- " << row[x] << " -> " << index << "\n";
+	row[x] = index;
 
 	// clear out variations info
 	if (y < variations_.size() && x < variations_[y].size()) {
 		variations_[y][x] = 0;
 	}
 	return true;
+}
+
+int tile_map::get_pattern_index_entry(const tile_string& str) {
+	int index = 0;
+	foreach(pattern_index_entry& e, pattern_index_) {
+		if(strcmp(e.str.data(), str.data()) == 0) {
+			return index;
+		}
+		std::cerr << "tile changed ne " << index << ": (" << e.str.data() << ") (" << str.data() << ")\n";
+		++index;
+	}
+
+	pattern_index_.push_back(pattern_index_entry());
+	pattern_index_.back().str = str;
+	build_patterns();
+	return index;
 }

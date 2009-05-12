@@ -26,6 +26,8 @@ level::level(const std::string& level_cfg)
 	  editor_(false), air_resistance_(0), water_resistance_(7), end_game_(false),
       hide_status_bar_(false), tint_(0)
 {
+	std::cerr << "in level constructor...\n";
+	const int start_time = SDL_GetTicks();
 	turn_reference_counting_off();
 
 	wml::const_node_ptr node(wml::parse_wml(preprocess(sys::read_file("data/level/" + level_cfg))));
@@ -81,6 +83,8 @@ level::level(const std::string& level_cfg)
 		tile_maps_[m.zorder()].build_tiles(&tiles_);
 		std::cerr << "LAYER " << m.zorder() << " BUILT " << (tiles_.size() - before) << " tiles\n";
 	}
+
+	std::cerr << "done building tile_map..." << SDL_GetTicks() << "\n";
 
 	for(int i = begin_tile_index; i != tiles_.size(); ++i) {
 		add_tile_solid(tiles_[i]);
@@ -167,6 +171,8 @@ level::level(const std::string& level_cfg)
 	if(water_node) {
 		water_.reset(new water(water_node));
 	}
+
+	std::cerr << "done level constructor: " << (SDL_GetTicks() - start_time) << "\n";
 }
 
 void level::load_character(wml::const_node_ptr c)
@@ -949,8 +955,16 @@ void level::add_tile_rect(int zorder, int x1, int y1, int x2, int y2, const std:
 
 void level::add_tile_rect_vector(int zorder, int x1, int y1, int x2, int y2, const std::vector<std::string>& tiles)
 {
+	const bool changed = add_tile_rect_vector_internal(zorder, x1, y1, x2, y2, tiles);
+	if(changed) {
+		rebuild_tiles_rect(rect(x1-64, y1-128, (x2 - x1) + 128, (y2 - y1) + 256));
+	}
+}
+
+bool level::add_tile_rect_vector_internal(int zorder, int x1, int y1, int x2, int y2, const std::vector<std::string>& tiles)
+{
 	if(tiles.empty()) {
-		return;
+		return false;
 	}
 
 	if(x1 > x2) {
@@ -968,7 +982,6 @@ void level::add_tile_rect_vector(int zorder, int x1, int y1, int x2, int y2, con
 
 	tile_map& m = tile_maps_[zorder];
 	m.set_zorder(zorder);
-	std::cerr << "add tile rect: " << x1 << "," << x2 << "," << y1 << "," << y2 << "\n";
 
 	bool changed = false;
 
@@ -984,9 +997,7 @@ void level::add_tile_rect_vector(int zorder, int x1, int y1, int x2, int y2, con
 		}
 	}
 
-	if(changed) {
-		rebuild_tiles_rect(rect(x1-32, y1-64, (x2 - x1) + 64, (y2 - y1) + 128));
-	}
+	return changed;
 }
 
 void level::get_tile_rect(int zorder, int x1, int y1, int x2, int y2, std::vector<std::string>& tiles) const
@@ -1030,8 +1041,16 @@ void level::get_all_tiles_rect(int x1, int y1, int x2, int y2, std::map<int, std
 
 void level::clear_tile_rect(int x1, int y1, int x2, int y2)
 {
+	bool changed = false;
+	std::vector<std::string> v(1, "");
 	for(std::set<int>::const_iterator i = layers_.begin(); i != layers_.end(); ++i) {
-		add_tile_rect(*i, x1, y1, x2, y2, "");
+		if(add_tile_rect_vector_internal(*i, x1, y1, x2, y2, v)) {
+			changed = true;
+		}
+	}
+
+	if(changed) {
+		rebuild_tiles_rect(rect(x1-64, y1-128, (x2 - x1) + 128, (y2 - y1) + 256));
 	}
 }
 
