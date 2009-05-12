@@ -44,6 +44,7 @@ frame::frame(wml::const_node_ptr node)
 	 nframes_per_row_(wml::get_int(node, "frames_per_row", -1)),
 	 frame_time_(wml::get_int(node, "duration", -1)),
 	 reverse_frame_(wml::get_bool(node, "reverse")),
+	 play_backwards_(wml::get_bool(node, "play_backwards")),
 	 scale_(wml::get_int(node, "scale", 2)),
 	 pad_(wml::get_int(node, "pad")),
 	 rotate_(wml::get_int(node, "rotate")),
@@ -159,21 +160,39 @@ bool frame::hit(int time_in_frame) const
 
 int frame::frame_number(int time) const
 {
-	int frame_num = 0;
-	if(frame_time_ > 0 && nframes_ >= 1) {
-		if(time >= duration()) {
-			frame_num = nframes_-1;
-		} else {
-			frame_num = time/frame_time_;
+	if(play_backwards_){
+		int frame_num = nframes_-1;
+		if(frame_time_ > 0 && nframes_ >= 1) {
+			if(time >= duration()) {
+				frame_num = 0;
+			} else {
+				frame_num = nframes_-1 - time/frame_time_;
+			}
+			
+			//if we are in reverse now
+			if(frame_num < 0) {
+				frame_num = -frame_num - 1;
+			}
 		}
-
-		//if we are in reverse now
-		if(frame_num >= nframes_) {
-			frame_num = nframes_ - 1 - (frame_num - nframes_);
+		
+		return frame_num;
+	} else {
+		int frame_num = 0;
+		if(frame_time_ > 0 && nframes_ >= 1) {
+			if(time >= duration()) {
+				frame_num = nframes_-1;
+			} else {
+				frame_num = time/frame_time_;
+			}
+			
+			//if we are in reverse now
+			if(frame_num >= nframes_) {
+				frame_num = nframes_ - 1 - (frame_num - nframes_);
+			}
 		}
+		
+		return frame_num;
 	}
-
-	return frame_num;
 }
 
 const std::string* frame::get_event(int time_in_frame) const

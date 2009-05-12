@@ -69,6 +69,7 @@ private:
 	int nframes_per_row_;
 	int frame_time_;
 	bool reverse_frame_;
+	bool play_backwards_;
 	int scale_;
 	int pad_;
 	int rotate_;
