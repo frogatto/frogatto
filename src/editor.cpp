@@ -222,7 +222,7 @@ editor::tileset::tileset(wml::const_node_ptr node)
 }
 
 editor::editor(const char* level_cfg)
-  : xpos_(0), ypos_(0), anchorx_(0), anchory_(0),
+  : zoom_(1), xpos_(0), ypos_(0), anchorx_(0), anchory_(0),
     selected_entity_startx_(0), selected_entity_starty_(0),
     filename_(level_cfg), mode_(EDIT_TILES), done_(false), face_right_(true),
     cur_tileset_(0),
@@ -278,18 +278,18 @@ void editor::edit_level()
 			drawing_rect_ = false;
 		}
 
-		const int selectx = round_tile_size(xpos_ + mousex);
-		const int selecty = round_tile_size(ypos_ + mousey);
+		const int selectx = round_tile_size(xpos_ + mousex*zoom_);
+		const int selecty = round_tile_size(ypos_ + mousey*zoom_);
 
 		const bool object_mode = (mode_ == EDIT_PROPERTIES || mode_ == EDIT_CHARS);
 
 		if(object_mode && !buttons) {
-			lvl_->set_editor_selection(lvl_->get_character_at_point(xpos_ + mousex, ypos_ + mousey));
+			lvl_->set_editor_selection(lvl_->get_character_at_point(xpos_ + mousex*zoom_, ypos_ + mousey*zoom_));
 		} else if(!object_mode) {
 			lvl_->set_editor_selection(entity_ptr());
 		} else if(lvl_->editor_selection()) {
-			const int dx = xpos_ + mousex - anchorx_;
-			const int dy = ypos_ + mousey - anchory_;
+			const int dx = xpos_ + mousex*zoom_ - anchorx_;
+			const int dy = ypos_ + mousey*zoom_ - anchory_;
 			const int xpos = selected_entity_startx_ + dx;
 			const int ypos = selected_entity_starty_ + dy;
 
@@ -376,7 +376,6 @@ void editor::edit_level()
 			case SDL_KEYDOWN:
 				std::cerr << "keydown " << (int)event.key.keysym.sym << " vs " << (int)SDLK_LEFT << "\n";
 				if(event.key.keysym.sym == SDLK_ESCAPE) {
-					graphics::zoom_default();
 					return;
 				}
 
@@ -389,11 +388,15 @@ void editor::edit_level()
 				}
 
 				if(event.key.keysym.sym == SDLK_z) {
-					graphics::zoom_in();
+					if(zoom_ > 1) {
+						--zoom_;
+					}
 				}
 
 				if(event.key.keysym.sym == SDLK_x) {
-					graphics::zoom_out();
+					if(zoom_ < 5) {
+						++zoom_;
+					}
 				}
 
 				if((mode_ == EDIT_PROPERTIES || mode_ == EDIT_CHARS) && event.key.keysym.sym == SDLK_DELETE) {
@@ -545,8 +548,8 @@ void editor::edit_level()
 
 				break;
 			case SDL_MOUSEBUTTONDOWN:
-				anchorx_ = xpos_ + mousex;
-				anchory_ = ypos_ + mousey;
+				anchorx_ = xpos_ + mousex*zoom_;
+				anchory_ = ypos_ + mousey*zoom_;
 
 				if(mode_ != EDIT_PROPERTIES && mode_ != EDIT_CHARS) {
 					drawing_rect_ = true;
@@ -626,35 +629,37 @@ void editor::edit_level()
 					}
 				}
 				break;
-			case SDL_MOUSEBUTTONUP:
+			case SDL_MOUSEBUTTONUP: {
+				const int xpos = xpos_ + mousex*zoom_;
+				const int ypos = ypos_ + mousey*zoom_;
 				if(mode_ == EDIT_TILES) {
 					if(!drawing_rect_) {
 						//wasn't drawing a rect; ignore.
 					} else if(event.button.button == SDL_BUTTON_LEFT) {
 						const int zorder = tilesets[cur_tileset_].zorder + foreground_zorder_change();
 						std::vector<std::string> old_rect;
-						lvl_->get_tile_rect(zorder, anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey, old_rect);
+						lvl_->get_tile_rect(zorder, anchorx_, anchory_, xpos, ypos, old_rect);
 
 						execute_command(
-						  boost::bind(&level::add_tile_rect, lvl_.get(), zorder, anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey, tilesets[cur_tileset_].type),
-						  boost::bind(&level::add_tile_rect_vector, lvl_.get(), zorder, anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey, old_rect));
+						  boost::bind(&level::add_tile_rect, lvl_.get(), zorder, anchorx_, anchory_, xpos, ypos, tilesets[cur_tileset_].type),
+						  boost::bind(&level::add_tile_rect_vector, lvl_.get(), zorder, anchorx_, anchory_, xpos, ypos, old_rect));
 						  
 					} else if(event.button.button == SDL_BUTTON_RIGHT) {
 						std::map<int, std::vector<std::string> > old_tiles;
-						lvl_->get_all_tiles_rect(anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey, old_tiles);
+						lvl_->get_all_tiles_rect(anchorx_, anchory_, xpos, ypos, old_tiles);
 						std::vector<boost::function<void()> > undo;
 						for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
-							undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey, i->second));
+							undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, anchorx_, anchory_, xpos, ypos, i->second));
 						}
 
 						execute_command(
-						  boost::bind(&level::clear_tile_rect, lvl_.get(), anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey),
+						  boost::bind(&level::clear_tile_rect, lvl_.get(), anchorx_, anchory_, xpos, ypos),
 						  boost::bind(execute_functions, undo));
 					}
 				} else if(mode_ == EDIT_CHARS || mode_ == EDIT_ITEMS) {
 					if(event.button.button == SDL_BUTTON_RIGHT) {
 						std::vector<boost::function<void()> > undo, redo;
-						std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey));
+						std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos, ypos));
 
 						foreach(const entity_ptr& c, chars) {
 							redo.push_back(boost::bind(&level::remove_character, lvl_.get(), c));
@@ -665,7 +670,7 @@ void editor::edit_level()
 						  boost::bind(execute_functions, undo));
 					}
 				} else if(mode_ == EDIT_GROUPS && drawing_rect_) {
-					std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey));
+					std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos, ypos));
 
 					const int group = lvl_->add_group();
 					std::vector<boost::function<void()> > undo, redo;
@@ -676,13 +681,13 @@ void editor::edit_level()
 					}
 
 				} else if(mode_ == EDIT_PROPERTIES && drawing_rect_) {
-					std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey));
+					std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos, ypos));
 					if(chars.empty() == false) {
 						selected_entity = chars.front();
 					}
 				} else if(mode_ == EDIT_VARIATIONS) {
-					const int xtile = round_tile_size(xpos_ + mousex);
-					const int ytile = round_tile_size(ypos_ + mousey);
+					const int xtile = round_tile_size(xpos);
+					const int ytile = round_tile_size(ypos);
 					execute_command(
 					  boost::bind(&level::flip_variations, lvl_.get(), xtile, ytile, 1),
 					  boost::bind(&level::flip_variations, lvl_.get(), xtile, ytile, -1));
@@ -690,21 +695,21 @@ void editor::edit_level()
 					if(event.button.button == SDL_BUTTON_RIGHT && drawing_rect_) {
 						std::vector<boost::function<void()> > undo;
 						std::vector<prop_object> props;
-						lvl_->get_props_in_rect(anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey, props);
+						lvl_->get_props_in_rect(anchorx_, anchory_, xpos, ypos, props);
 						foreach(const prop_object& p, props) {
 							undo.push_back(boost::bind(&level::add_prop, lvl_.get(), p));
 						}
 
 						execute_command(
-						  boost::bind(&level::remove_props_in_rect, lvl_.get(), anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey),
+						  boost::bind(&level::remove_props_in_rect, lvl_.get(), anchorx_, anchory_, xpos, ypos),
 						  boost::bind(execute_functions, undo));
 					} else if(event.button.button == SDL_BUTTON_LEFT) {
-						int xtile = round_tile_size(xpos_ + mousex);
-						int ytile = round_tile_size(ypos_ + mousey);
+						int xtile = round_tile_size(xpos);
+						int ytile = round_tile_size(ypos);
 						if(ctrl_pressed) {
 							//allow pixel perfect placement if ctrl is pressed
-							xtile = xpos_ + mousex;
-							ytile = ypos_ + mousey;
+							xtile = xpos;
+							ytile = ypos;
 						}
 						prop_object obj(xtile, ytile, all_props[cur_item_]->id());
 						obj.set_zorder(obj.zorder() + foreground_zorder_change());
@@ -714,7 +719,7 @@ void editor::edit_level()
 						  boost::bind(&level::remove_prop, lvl_.get(), obj));
 					}
 				} else if(mode_ == EDIT_WATER) {
-					rect r(rect::from_coordinates(anchorx_, anchory_, xpos_ + mousex, ypos_ + mousey));
+					rect r(rect::from_coordinates(anchorx_, anchory_, xpos, ypos));
 					if(event.button.button == SDL_BUTTON_LEFT) {
 						water& w = lvl_->get_or_create_water();
 						execute_command(
@@ -730,6 +735,7 @@ void editor::edit_level()
 
 				drawing_rect_ = false;
 				break;
+			}
 			default:
 				break;
 			}
@@ -841,12 +847,11 @@ void editor::draw() const
 	mousey = (mousey*graphics::screen_height())/600;
 
 	graphics::prepare_raster();
-	lvl_->draw_background(0,0,0);
 	glPushMatrix();
+	glScalef(1.0/zoom_, 1.0/zoom_, 0);
 	glTranslatef(-xpos_,-ypos_,0);
 
-	lvl_->draw(xpos_, ypos_, graphics::screen_width(), graphics::screen_height());
-
+	lvl_->draw(xpos_, ypos_, graphics::screen_width()*zoom_, graphics::screen_height()*zoom_);
 
 	{
 	std::string next_level = "To " + lvl_->next_level();
@@ -863,8 +868,8 @@ void editor::draw() const
 
 	select_next_level_ = select_previous_level_ = false;
 
-	const int selectx = xpos_ + mousex;
-	const int selecty = ypos_ + mousey;
+	const int selectx = xpos_ + mousex*zoom_;
+	const int selecty = ypos_ + mousey*zoom_;
 	if(selectx > x && selectx < 0 && selecty > y && selecty < y + t.height()) {
 		t = font::render_text(previous_level, graphics::color_yellow(), 24);
 		select_previous_level_ = true;
@@ -881,11 +886,11 @@ void editor::draw() const
 	}
 
 	if(mode_ == EDIT_PROPS) {
-		int x = round_tile_size(xpos_ + mousex);
-		int y = round_tile_size(ypos_ + mousey);
+		int x = round_tile_size(xpos_ + mousex*zoom_);
+		int y = round_tile_size(ypos_ + mousey*zoom_);
 		if(ctrl_pressed) {
-			x = xpos_ + mousex;
-			y = ypos_ + mousey;
+			x = xpos_ + mousex*zoom_;
+			y = ypos_ + mousey*zoom_;
 		}
 
 		glColor4f(1.0, 1.0, 1.0, 0.5);
@@ -895,13 +900,13 @@ void editor::draw() const
 
 	if(drawing_rect_) {
 		int x1 = anchorx_;
-		int x2 = xpos_ + mousex;
+		int x2 = xpos_ + mousex*zoom_;
 		if(x1 > x2) {
 			std::swap(x1,x2);
 		}
 
 		int y1 = anchory_;
-		int y2 = ypos_ + mousey;
+		int y2 = ypos_ + mousey*zoom_;
 		if(y1 > y2) {
 			std::swap(y1,y2);
 		}
@@ -916,12 +921,12 @@ void editor::draw() const
 	glDisable(GL_TEXTURE_2D);
 	glBegin(GL_LINES);
 	glColor4ub(255, 255, 255, 64);
-	for(int x = TileSize - xpos_%TileSize; x < graphics::screen_width(); x += 32) {
+	for(int x = TileSize - (xpos_/zoom_)%TileSize; x < graphics::screen_width(); x += 32/zoom_) {
 		glVertex3f(x, 0, 0);
 		glVertex3f(x, graphics::screen_height(), 0);
 	}
 
-	for(int y = TileSize - ypos_%TileSize; y < graphics::screen_height(); y += 32) {
+	for(int y = TileSize - (ypos_/zoom_)%TileSize; y < graphics::screen_height(); y += 32/zoom_) {
 		glVertex3f(0, y, 0);
 		glVertex3f(graphics::screen_width(), y, 0);
 	}
@@ -929,21 +934,21 @@ void editor::draw() const
 	
 	// draw level boundaries in clear white
 	{
-		const int x1 = lvl_->boundaries().x();
-		const int x2 = lvl_->boundaries().x2();
-		const int y1 = lvl_->boundaries().y();
-		const int y2 = lvl_->boundaries().y2();
-		glVertex3f(x1 - xpos_, y1 - ypos_, 0);
-		glVertex3f(x2 - xpos_, y1 - ypos_, 0);
+		const int x1 = lvl_->boundaries().x()/zoom_;
+		const int x2 = lvl_->boundaries().x2()/zoom_;
+		const int y1 = lvl_->boundaries().y()/zoom_;
+		const int y2 = lvl_->boundaries().y2()/zoom_;
+		glVertex3f(x1 - xpos_/zoom_, y1 - ypos_/zoom_, 0);
+		glVertex3f(x2 - xpos_/zoom_, y1 - ypos_/zoom_, 0);
 
-		glVertex3f(x1 - xpos_, y1 - ypos_, 0);
-		glVertex3f(x1 - xpos_, y2 - ypos_, 0);
+		glVertex3f(x1 - xpos_/zoom_, y1 - ypos_/zoom_, 0);
+		glVertex3f(x1 - xpos_/zoom_, y2 - ypos_/zoom_, 0);
 
-		glVertex3f(x2 - xpos_, y1 - ypos_, 0);
-		glVertex3f(x2 - xpos_, y2 - ypos_, 0);
+		glVertex3f(x2 - xpos_/zoom_, y1 - ypos_/zoom_, 0);
+		glVertex3f(x2 - xpos_/zoom_, y2 - ypos_/zoom_, 0);
 
-		glVertex3f(x1 - xpos_, y2 - ypos_, 0);
-		glVertex3f(x2 - xpos_, y2 - ypos_, 0);
+		glVertex3f(x1 - xpos_/zoom_, y2 - ypos_/zoom_, 0);
+		glVertex3f(x2 - xpos_/zoom_, y2 - ypos_/zoom_, 0);
 	}
 
 	glEnd();
@@ -1000,7 +1005,7 @@ void editor::draw() const
 
 	//the location of the mouse cursor in the map
 	char loc_buf[256];
-	sprintf(loc_buf, "%d,%d", xpos_ + mousex, ypos_ + mousey);
+	sprintf(loc_buf, "%d,%d", xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
 	graphics::blit_texture(font::render_text(loc_buf, graphics::color_yellow(), 14), 10, 10);
 
 	if(foreground_mode) {
