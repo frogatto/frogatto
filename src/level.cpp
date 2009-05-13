@@ -23,7 +23,7 @@
 
 level::level(const std::string& level_cfg)
 	: id_(level_cfg), entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
-	  editor_(false), air_resistance_(0), water_resistance_(7), end_game_(false),
+	  editor_(false), show_foreground_(true), air_resistance_(0), water_resistance_(7), end_game_(false),
       hide_status_bar_(false), tint_(0)
 {
 	std::cerr << "in level constructor...\n";
@@ -446,6 +446,10 @@ void level::set_next_level(const std::string& name)
 
 void level::draw_layer(int layer, int x, int y, int w, int h) const
 {
+	if(layer >= 1000 && editor_ && show_foreground_ == false) {
+		return;
+	}
+
 	glPushMatrix();
 
 	//basic implementation of the foreground layer: z values >= 1000 are

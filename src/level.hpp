@@ -109,6 +109,9 @@ public:
 	void set_editor_selection(entity_ptr c) { editor_selection_ = c; }
 	entity_ptr editor_selection() const { return editor_selection_; }
 
+	bool show_foreground() const { return show_foreground_; }
+	void set_show_foreground(bool value) { show_foreground_ = value; }
+
 	void rebuild_tiles();
 
 	const std::string& title() const { return title_; }
@@ -238,6 +241,8 @@ private:
 	int save_point_x_, save_point_y_;
 	bool editor_;
 	entity_ptr editor_selection_;
+
+	bool show_foreground_;
 
 	point auto_move_camera_;
 	int air_resistance_;

@@ -459,6 +459,11 @@ void editor::edit_level()
 					}
 				}
 
+				if(event.key.keysym.sym == SDLK_f) {
+					lvl_->set_show_foreground(!lvl_->show_foreground());
+					std::cerr << "flip showing of foreground\n";
+				}
+
 				if((mode_ == EDIT_PROPERTIES || mode_ == EDIT_CHARS) && event.key.keysym.sym == SDLK_DELETE) {
 					execute_command(
 					    boost::bind(&level::remove_character, lvl_.get(), lvl_->editor_selection()),
