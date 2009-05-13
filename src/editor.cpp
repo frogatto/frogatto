@@ -149,6 +149,66 @@ int round_tile_size(int n)
 	}
 }
 
+bool resizing_left_level_edge = false,
+     resizing_right_level_edge = false,
+     resizing_top_level_edge = false,
+     resizing_bottom_level_edge = false;
+
+const int RectEdgeSelectThreshold = 6;
+
+rect modify_selected_rect(rect boundaries, int xpos, int ypos) {
+
+	const int x = round_tile_size(xpos);
+	const int y = round_tile_size(ypos);
+
+	if(resizing_left_level_edge) {
+		boundaries = rect::from_coordinates(x, boundaries.y(), boundaries.x2(), boundaries.y2());
+	}
+
+	if(resizing_right_level_edge) {
+		boundaries = rect::from_coordinates(boundaries.x(), boundaries.y(), x, boundaries.y2());
+	}
+
+	if(resizing_top_level_edge) {
+		boundaries = rect::from_coordinates(boundaries.x(), y, boundaries.x2(), boundaries.y2());
+	}
+
+	if(resizing_bottom_level_edge) {
+		boundaries = rect::from_coordinates(boundaries.x(), boundaries.y(), boundaries.x2(), y);
+	}
+
+	return boundaries;
+}
+
+//find if an edge of a rectangle is selected
+bool rect_left_edge_selected(const rect& r, int x, int y) {
+	return y >= r.y() - RectEdgeSelectThreshold &&
+	       y <= r.y2() + RectEdgeSelectThreshold &&
+	       x >= r.x() - RectEdgeSelectThreshold &&
+	       x <= r.x() + RectEdgeSelectThreshold;
+}
+
+bool rect_right_edge_selected(const rect& r, int x, int y) {
+	return y >= r.y() - RectEdgeSelectThreshold &&
+	       y <= r.y2() + RectEdgeSelectThreshold &&
+	       x >= r.x2() - RectEdgeSelectThreshold &&
+	       x <= r.x2() + RectEdgeSelectThreshold;
+}
+
+bool rect_top_edge_selected(const rect& r, int x, int y) {
+	return x >= r.x() - RectEdgeSelectThreshold &&
+	       x <= r.x2() + RectEdgeSelectThreshold &&
+	       y >= r.y() - RectEdgeSelectThreshold &&
+	       y <= r.y() + RectEdgeSelectThreshold;
+}
+
+bool rect_bottom_edge_selected(const rect& r, int x, int y) {
+	return x >= r.x() - RectEdgeSelectThreshold &&
+	       x <= r.x2() + RectEdgeSelectThreshold &&
+	       y >= r.y2() - RectEdgeSelectThreshold &&
+	       y <= r.y2() + RectEdgeSelectThreshold;
+}
+
 std::vector<editor::tileset> tilesets;
 
 std::vector<editor::enemy_type> enemy_types;
@@ -551,6 +611,15 @@ void editor::edit_level()
 				anchorx_ = xpos_ + mousex*zoom_;
 				anchory_ = ypos_ + mousey*zoom_;
 
+				resizing_left_level_edge = rect_left_edge_selected(lvl_->boundaries(), anchorx_, anchory_);
+				resizing_right_level_edge = rect_right_edge_selected(lvl_->boundaries(), anchorx_, anchory_);
+				resizing_top_level_edge = rect_top_edge_selected(lvl_->boundaries(), anchorx_, anchory_);
+				resizing_bottom_level_edge = rect_bottom_edge_selected(lvl_->boundaries(), anchorx_, anchory_);
+
+				if(resizing_left_level_edge || resizing_right_level_edge || resizing_top_level_edge || resizing_bottom_level_edge) {
+					break;
+				}
+
 				if(mode_ != EDIT_PROPERTIES && mode_ != EDIT_CHARS) {
 					drawing_rect_ = true;
 				} else if(property_dialog_) {
@@ -632,6 +701,21 @@ void editor::edit_level()
 			case SDL_MOUSEBUTTONUP: {
 				const int xpos = xpos_ + mousex*zoom_;
 				const int ypos = ypos_ + mousey*zoom_;
+
+				if(resizing_left_level_edge || resizing_right_level_edge ||resizing_top_level_edge || resizing_bottom_level_edge) {
+					rect boundaries = modify_selected_rect(lvl_->boundaries(), xpos, ypos);
+
+					resizing_left_level_edge = resizing_right_level_edge = resizing_top_level_edge = resizing_bottom_level_edge = false;
+
+					if(boundaries != lvl_->boundaries()) {
+						execute_command(
+						  boost::bind(&level::set_boundaries, lvl_.get(), boundaries),
+						  boost::bind(&level::set_boundaries, lvl_.get(), lvl_->boundaries()));
+					}
+					break;
+				}
+
+
 				if(mode_ == EDIT_TILES) {
 					if(!drawing_rect_) {
 						//wasn't drawing a rect; ignore.
@@ -856,6 +940,9 @@ void editor::draw() const
 
 	lvl_->draw(xpos_, ypos_, graphics::screen_width()*zoom_, graphics::screen_height()*zoom_);
 
+	const int selectx = xpos_ + mousex*zoom_;
+	const int selecty = ypos_ + mousey*zoom_;
+
 	{
 	std::string next_level = "To " + lvl_->next_level();
 	std::string previous_level = "To " + lvl_->previous_level();
@@ -871,8 +958,6 @@ void editor::draw() const
 
 	select_next_level_ = select_previous_level_ = false;
 
-	const int selectx = xpos_ + mousex*zoom_;
-	const int selecty = ypos_ + mousey*zoom_;
 	if(selectx > x && selectx < 0 && selecty > y && selecty < y + t.height()) {
 		t = font::render_text(previous_level, graphics::color_yellow(), 24);
 		select_previous_level_ = true;
@@ -933,22 +1018,47 @@ void editor::draw() const
 		glVertex3f(0, y, 0);
 		glVertex3f(graphics::screen_width(), y, 0);
 	}
-	glColor4ub(255, 255, 255, 255);
 	
 	// draw level boundaries in clear white
 	{
-		const int x1 = lvl_->boundaries().x()/zoom_;
-		const int x2 = lvl_->boundaries().x2()/zoom_;
-		const int y1 = lvl_->boundaries().y()/zoom_;
-		const int y2 = lvl_->boundaries().y2()/zoom_;
+		rect boundaries = modify_selected_rect(lvl_->boundaries(), selectx, selecty);
+		const int x1 = boundaries.x()/zoom_;
+		const int x2 = boundaries.x2()/zoom_;
+		const int y1 = boundaries.y()/zoom_;
+		const int y2 = boundaries.y2()/zoom_;
+
+		if(resizing_top_level_edge || rect_top_edge_selected(lvl_->boundaries(), selectx, selecty)) {
+			glColor4ub(255, 255, 0, 255);
+		} else {
+			glColor4ub(255, 255, 255, 255);
+		}
+
 		glVertex3f(x1 - xpos_/zoom_, y1 - ypos_/zoom_, 0);
 		glVertex3f(x2 - xpos_/zoom_, y1 - ypos_/zoom_, 0);
+
+		if(resizing_left_level_edge || rect_left_edge_selected(lvl_->boundaries(), selectx, selecty)) {
+			glColor4ub(255, 255, 0, 255);
+		} else {
+			glColor4ub(255, 255, 255, 255);
+		}
 
 		glVertex3f(x1 - xpos_/zoom_, y1 - ypos_/zoom_, 0);
 		glVertex3f(x1 - xpos_/zoom_, y2 - ypos_/zoom_, 0);
 
+		if(resizing_right_level_edge || rect_right_edge_selected(lvl_->boundaries(), selectx, selecty)) {
+			glColor4ub(255, 255, 0, 255);
+		} else {
+			glColor4ub(255, 255, 255, 255);
+		}
+
 		glVertex3f(x2 - xpos_/zoom_, y1 - ypos_/zoom_, 0);
 		glVertex3f(x2 - xpos_/zoom_, y2 - ypos_/zoom_, 0);
+
+		if(resizing_bottom_level_edge || rect_bottom_edge_selected(lvl_->boundaries(), selectx, selecty)) {
+			glColor4ub(255, 255, 0, 255);
+		} else {
+			glColor4ub(255, 255, 255, 255);
+		}
 
 		glVertex3f(x1 - xpos_/zoom_, y2 - ypos_/zoom_, 0);
 		glVertex3f(x2 - xpos_/zoom_, y2 - ypos_/zoom_, 0);
