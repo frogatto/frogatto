@@ -99,6 +99,12 @@ class editor_mode_dialog : public gui::dialog
 				case SDLK_c:
 					mode = editor::EDIT_CHARS;
 					break;
+				case SDLK_p:
+					mode = editor::EDIT_PROPERTIES;
+					break;
+				case SDLK_g:
+					mode = editor::EDIT_GROUPS;
+					break;
 				}
 
 				if(mode < editor::NUM_MODES) {
@@ -612,9 +618,6 @@ void editor::edit_level()
 					change_mode(EDIT_GROUPS);
 				}
 
-				if(event.key.keysym.sym == SDLK_p) {
-					change_mode(EDIT_PROPERTIES);
-				}
 
 				if(event.key.keysym.sym == SDLK_r &&
 				   (event.key.keysym.mod&KMOD_CTRL)) {
