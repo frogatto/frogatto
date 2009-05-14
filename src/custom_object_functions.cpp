@@ -6,6 +6,7 @@
 #include "debug_console.hpp"
 #include "draw_scene.hpp"
 #include "entity.hpp"
+#include "filesystem.hpp"
 #include "level.hpp"
 #include "raster.hpp"
 #include "texture.hpp"
@@ -16,9 +17,10 @@
 #include "speech_dialog.hpp"
 #include "string_utils.hpp"
 #include "text_entry_widget.hpp"
+#include "wml_parser.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
-
+#include "wml_writer.hpp"
 
 using namespace game_logic;
 
@@ -29,6 +31,7 @@ class save_game_command : public entity_command_callable
 	public:
 		virtual void execute(level& lvl, entity& ob) const {
 			lvl.player()->save_game();
+			sys::write_file("data/level/save.cfg", wml::output(lvl.write()));
 		}
 	};
 
@@ -42,7 +45,40 @@ private:
 		return variant(new save_game_command());
 	}
 };
-	
+
+class load_game_command : public entity_command_callable
+	{
+	public:
+		virtual void execute(level& lvl, entity& ob) const {
+			level::portal p;
+			p.level_dest = "save.cfg";
+			p.dest_starting_pos = true;
+			lvl.force_enter_portal(p);
+		}
+	};
+
+class load_game_function : public function_expression {
+public:
+	explicit load_game_function(const args_list& args)
+	: function_expression("load_game",args,0)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new load_game_command());
+	}
+};
+
+class can_load_game_function : public function_expression {
+public:
+	explicit can_load_game_function(const args_list& args)
+	: function_expression("can_load_game",args,0)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(sys::file_exists("data/level/save.cfg"));
+	}
+};
+
 class music_command : public entity_command_callable
 	{
 	public:
@@ -909,6 +945,10 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new spawn_function(args, false));
 	} else if(fn == "save_game") {
 		return expression_ptr(new save_game_function(args));
+	} else if(fn == "load_game") {
+		return expression_ptr(new load_game_function(args));
+	} else if(fn == "can_load_game") {
+		return expression_ptr(new can_load_game_function(args));
 	} else if(fn == "sound") {
 		return expression_ptr(new sound_function(args));
 	} else if(fn == "music") {

@@ -14,6 +14,7 @@
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "sound.hpp"
+#include "string_utils.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
 
@@ -85,7 +86,18 @@ character::character(const std::string& type, int x, int y, bool face_right)
 pc_character::pc_character(wml::const_node_ptr node)
 	  : character(node), prev_left_(true), prev_right_(true),
 	    last_left_(-1000), last_right_(-1000), running_(false), score_(wml::get_int(node, "score"))
-	{}
+{
+	FOREACH_WML_CHILD(items, node, "items_destroyed") {
+		std::vector<int>& v = items_destroyed_[node->attr("level")];
+		v = vector_lexical_cast<int>(util::split(node->attr("items")));
+	}
+
+	FOREACH_WML_CHILD(objects, node, "objects_destroyed") {
+		std::vector<int>& v = objects_destroyed_[node->attr("level")];
+		v = vector_lexical_cast<int>(util::split(node->attr("objects")));
+	}
+
+}
 
 
 character::~character()
@@ -165,6 +177,41 @@ wml::node_ptr pc_character::write() const
 {
 	wml::node_ptr result = character::write();
 	result->set_attr("score", formatter() << score_);
+
+	for(std::map<std::string, std::vector<int> >::const_iterator i = items_destroyed_.begin(); i != items_destroyed_.end(); ++i) {
+		wml::node_ptr items(new wml::node("items_destroyed"));
+		items->set_attr("level", i->first);
+		std::ostringstream s;
+		foreach(int n, i->second) {
+			s << n << ",";
+		}
+
+		std::string str = s.str();
+		if(str.empty() == false) {
+			str.resize(str.size() - 1);
+		}
+
+		items->set_attr("items", str);
+		result->add_child(items);
+	}
+
+	for(std::map<std::string, std::vector<int> >::const_iterator i = objects_destroyed_.begin(); i != objects_destroyed_.end(); ++i) {
+		wml::node_ptr objects(new wml::node("objects_destroyed"));
+		objects->set_attr("level", i->first);
+		std::ostringstream s;
+		foreach(int n, i->second) {
+			s << n << ",";
+		}
+
+		std::string str = s.str();
+		if(str.empty() == false) {
+			str.resize(str.size() - 1);
+		}
+
+		objects->set_attr("objects", str);
+		result->add_child(objects);
+	}
+
 	return result;
 }
 
