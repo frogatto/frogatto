@@ -496,7 +496,18 @@ void character::process(level& lvl)
 			break;
 		}
 
+		const int start_pos = y();
+
 		set_pos(x() + dir, y());
+
+		int adjust_y = 0;
+ 		set_pos(x(), y()-1);
+ 		while(is_standing(lvl, NULL, NULL, &adjust_y)) {
+ 			set_pos(x(), y()-1);
+ 		}
+
+ 		set_pos(x(), y()+1);
+ 		set_pos(x(), y()+adjust_y);
 
 		if(started_standing) {
 			try_to_make_standing();
