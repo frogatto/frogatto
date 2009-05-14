@@ -498,24 +498,16 @@ void character::process(level& lvl)
 
 		set_pos(x() + dir, y());
 
-		int adjust_y = 0;
-		set_pos(x(), y()-1);
-		while(is_standing(lvl, NULL, NULL, &adjust_y)) {
-			set_pos(x(), y()-1);
-		}
-
-		set_pos(x(), y()+1);
-
-		set_pos(x(), y() + adjust_y);
-
 		if(started_standing) {
 			try_to_make_standing();
 		}
 	}
 
 	for(int n = 0; n < velocity_y_/100; ++n) {
-		if(is_standing(lvl)) {
+		int adjust_y = 0;
+		if(is_standing(lvl, NULL, NULL, NULL, &adjust_y)) {
 			velocity_y_ = 0;
+			set_pos(x(), y() + adjust_y);
 			break;
 		}
 
