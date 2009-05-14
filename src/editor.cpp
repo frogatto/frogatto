@@ -533,7 +533,7 @@ void editor::edit_level()
 					std::cerr << "flip showing of foreground\n";
 				}
 
-				if((mode_ == EDIT_PROPERTIES || mode_ == EDIT_CHARS) && event.key.keysym.sym == SDLK_DELETE) {
+				if((mode_ == EDIT_PROPERTIES || mode_ == EDIT_CHARS) && (event.key.keysym.sym == SDLK_DELETE || event.key.keysym.sym == SDLK_BACKSPACE)) {
 					execute_command(
 					    boost::bind(&level::remove_character, lvl_.get(), lvl_->editor_selection()),
 					    boost::bind(&level::add_character, lvl_.get(), lvl_->editor_selection()));
