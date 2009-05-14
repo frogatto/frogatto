@@ -5,6 +5,7 @@
 
 #include "boost/intrusive_ptr.hpp"
 
+#include "editor_variable_info.hpp"
 #include "formula_callable.hpp"
 #include "formula_fwd.hpp"
 #include "geometry.hpp"
@@ -111,11 +112,15 @@ public:
 
 	void draw_debug_rects() const;
 
+	const_editor_entity_info_ptr editor_info() const { return editor_info_; }
+
 protected:
 	void set_respawn(bool value) { respawn_ = value; }
 
 	//move the entity by a number of centi pixels.
 	void move_centipixels(int x, int y) { x_ += x; y_ += y; }
+
+	void set_editor_info(const_editor_entity_info_ptr p) { editor_info_ = p; }
 
 private:
 	virtual void control(const level& lvl) = 0;
@@ -130,6 +135,8 @@ private:
 	int id_;
 
 	bool respawn_;
+
+	const_editor_entity_info_ptr editor_info_;
 };
 
 #endif

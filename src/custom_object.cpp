@@ -42,7 +42,13 @@ custom_object::custom_object(wml::const_node_ptr node)
 	next_animation_formula_ = type_->next_animation_formula();
 
 	custom_object_type::init_event_handlers(node, event_handlers_);
-	std::cerr << "custom_object b\n";
+	std::cerr << "custom_object: " << body_rect().w() << "\n";
+
+	wml::const_node_ptr editor_info = node->get_child("editor_info");
+	if(editor_info) {
+		std::cerr << "CREATE EDITOR INFO\n";
+		set_editor_info(const_editor_entity_info_ptr(new editor_entity_info(editor_info)));
+	}
 }
 
 custom_object::custom_object(const std::string& type, int x, int y, bool face_right)
@@ -96,6 +102,10 @@ wml::node_ptr custom_object::write() const
 
 	if(custom_type_) {
 		res->add_child(wml::deep_copy(custom_type_));
+	}
+
+	if(editor_info()) {
+		res->add_child(editor_info()->write());
 	}
 	return res;
 }
@@ -465,6 +475,10 @@ variant custom_object::get_value(const std::string& key) const
 		return variant(body_rect().x() + body_rect().w()/2);
 	} else if(key == "midpoint_y") {
 		return variant(body_rect().y() + body_rect().h()/2);
+	} else if(key == "img_w") {
+		return variant(current_frame().width());
+	} else if(key == "img_h") {
+		return variant(current_frame().height());
 	} else if(key == "front") {
 		return variant(face_right() ? body_rect().x2() : body_rect().x());
 	} else if(key == "back") {
@@ -530,6 +544,10 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		set_pos(value.as_int(), y());
 	} else if(key == "y") {
 		set_pos(x(), value.as_int());
+	} else if(key == "midpoint_x") {
+		set_pos(value.as_int() - body_rect().w()/2, y());
+	} else if(key == "midpoint_y") {
+		set_pos(x(), value.as_int() - body_rect().h()/2);
 	} else if(key == "facing") {
 		set_face_right(value.as_int() > 0);
 	} else if(key == "hitpoints") {

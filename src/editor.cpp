@@ -131,10 +131,51 @@ public:
 
 namespace {
 
+const int RectEdgeSelectThreshold = 6;
+
 void execute_functions(const std::vector<boost::function<void()> >& v) {
 	foreach(const boost::function<void()>& f, v) {
 		f();
 	}
+}
+
+const editor_variable_info* g_variable_editing = NULL;
+int g_variable_editing_original_value = 0;
+const editor_variable_info* variable_info_selected(const_entity_ptr e, int xpos, int ypos)
+{
+	if(!e || !e->editor_info()) {
+		return NULL;
+	}
+
+	foreach(const editor_variable_info& var, e->editor_info()->vars()) {
+		const variant value = e->query_value(var.variable_name());
+		switch(var.type()) {
+			case editor_variable_info::XPOSITION: {
+				if(!value.is_int()) {
+					break;
+				}
+
+				if(xpos >= value.as_int() - RectEdgeSelectThreshold && xpos <= value.as_int() + RectEdgeSelectThreshold) {
+					return &var;
+				}
+				break;
+			}
+			case editor_variable_info::YPOSITION: {
+				if(!value.is_int()) {
+					break;
+				}
+
+				if(ypos >= value.as_int() - RectEdgeSelectThreshold && ypos <= value.as_int() + RectEdgeSelectThreshold) {
+					return &var;
+				}
+				break;
+			}
+			default:
+				break;
+		}
+	}
+
+	return NULL;
 }
 
 const int TileSize = 32;
@@ -153,8 +194,6 @@ bool resizing_left_level_edge = false,
      resizing_right_level_edge = false,
      resizing_top_level_edge = false,
      resizing_bottom_level_edge = false;
-
-const int RectEdgeSelectThreshold = 6;
 
 rect modify_selected_rect(rect boundaries, int xpos, int ypos) {
 
@@ -342,8 +381,23 @@ void editor::edit_level()
 		const int selecty = round_tile_size(ypos_ + mousey*zoom_);
 
 		const bool object_mode = (mode_ == EDIT_PROPERTIES || mode_ == EDIT_CHARS);
+		if(property_dialog_ && g_variable_editing) {
+			int diff = 0;
+			switch(g_variable_editing->type()) {
+			case editor_variable_info::XPOSITION:
+				diff = (xpos_ + mousex*zoom_) - anchorx_;
+				break;
+			case editor_variable_info::YPOSITION:
+				diff = (ypos_ + mousey*zoom_) - anchory_;
+				break;
+			default:
+				break;
+			}
 
-		if(object_mode && !buttons) {
+			if(property_dialog_ && property_dialog_->get_entity()) {
+				property_dialog_->get_entity()->mutate_value(g_variable_editing->variable_name(), variant(g_variable_editing_original_value + diff));
+			}
+		} else if(object_mode && !buttons) {
 			lvl_->set_editor_selection(lvl_->get_character_at_point(xpos_ + mousex*zoom_, ypos_ + mousey*zoom_));
 		} else if(!object_mode) {
 			lvl_->set_editor_selection(entity_ptr());
@@ -353,7 +407,16 @@ void editor::edit_level()
 			const int xpos = selected_entity_startx_ + dx;
 			const int ypos = selected_entity_starty_ + dy;
 
-			lvl_->editor_selection()->set_pos(xpos - (ctrl_pressed ? 0 : (xpos%TileSize)), ypos - (ctrl_pressed ? 0 : (ypos%TileSize)));
+			const int new_x = xpos - (ctrl_pressed ? 0 : (xpos%TileSize));
+			const int new_y = ypos - (ctrl_pressed ? 0 : (ypos%TileSize));
+
+			if(new_x != lvl_->editor_selection()->x() || new_y != lvl_->editor_selection()->y()) {
+				execute_command(
+				  boost::bind(&entity::set_pos, lvl_->editor_selection().get(), new_x, new_y),
+				  boost::bind(&entity::set_pos, lvl_->editor_selection().get(),
+				              lvl_->editor_selection()->x(),
+				              lvl_->editor_selection()->y()));
+			}
 		}
 
 		const int ScrollSpeed = 8*zoom_;
@@ -627,6 +690,10 @@ void editor::edit_level()
 
 				if(mode_ != EDIT_PROPERTIES && mode_ != EDIT_CHARS) {
 					drawing_rect_ = true;
+				} else if(property_dialog_ && variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_)) {
+					g_variable_editing = variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_);
+					g_variable_editing_original_value = property_dialog_->get_entity()->query_value(g_variable_editing->variable_name()).as_int();
+					
 				} else if(property_dialog_) {
 					property_dialog_->set_entity(lvl_->editor_selection());
 				}
@@ -688,7 +755,10 @@ void editor::edit_level()
 							vars->set_attr(i->first, i->second);
 						}
 
+						std::cerr << "BUILDING ENTITY...\n";
 						c = entity::build(node);
+						std::cerr << "DONE BUILDING ENTITY: " << (c->editor_info() ? "YES" : "NO");
+						fprintf(stderr, " ENTITY: %p\n", c.get());
 					}
 
 					if(c->is_human() && lvl_->player()) {
@@ -706,6 +776,18 @@ void editor::edit_level()
 			case SDL_MOUSEBUTTONUP: {
 				const int xpos = xpos_ + mousex*zoom_;
 				const int ypos = ypos_ + mousey*zoom_;
+
+				if(g_variable_editing) {
+					if(property_dialog_ && property_dialog_->get_entity()) {
+						entity_ptr e = property_dialog_->get_entity();
+						const std::string& var = g_variable_editing->variable_name();
+						execute_command(
+						  boost::bind(&entity::mutate_value, e.get(), var, e->query_value(var)),
+						  boost::bind(&entity::mutate_value, e.get(), var, variant(g_variable_editing_original_value)));
+						property_dialog_->init();
+					}
+					g_variable_editing = NULL;
+				}
 
 				if(resizing_left_level_edge || resizing_right_level_edge ||resizing_top_level_edge || resizing_bottom_level_edge) {
 					rect boundaries = modify_selected_rect(lvl_->boundaries(), xpos, ypos);
@@ -978,7 +1060,7 @@ void editor::draw() const
 	graphics::blit_texture(t, x, y);
 	}
 
-	if(mode_ == EDIT_PROPS) {
+	if(mode_ == EDIT_PROPS || mode_ == EDIT_CHARS) {
 		int x = round_tile_size(xpos_ + mousex*zoom_);
 		int y = round_tile_size(ypos_ + mousey*zoom_);
 		if(ctrl_pressed) {
@@ -987,7 +1069,11 @@ void editor::draw() const
 		}
 
 		glColor4f(1.0, 1.0, 1.0, 0.5);
-		all_props[cur_item_]->get_frame().draw(x, y, true);
+		if(mode_ == EDIT_PROPS) {
+			all_props[cur_item_]->get_frame().draw(x, y, true);
+		} else {
+			all_characters()[cur_item_].preview_frame->draw(x, y, true);
+		}
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 	}
 
@@ -1008,6 +1094,43 @@ void editor::draw() const
 		const SDL_Color color = {255,255,255,255};
 		graphics::draw_hollow_rect(rect, color);
 	}
+
+	if(property_dialog_ && property_dialog_->get_entity() && property_dialog_->get_entity()->editor_info()) {
+		glDisable(GL_TEXTURE_2D);
+		glBegin(GL_LINES);
+
+		const editor_variable_info* selected_var = variable_info_selected(property_dialog_->get_entity(), xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
+		foreach(const editor_variable_info& var, property_dialog_->get_entity()->editor_info()->vars()) {
+			const std::string& name = var.variable_name();
+			const editor_variable_info::VARIABLE_TYPE type = var.type();
+			variant value = property_dialog_->get_entity()->query_value(name);
+			if(&var == selected_var) {
+				glColor4ub(255, 255, 0, 255);
+			} else {
+				glColor4ub(255, 0, 0, 255);
+			}
+
+			switch(type) {
+				case editor_variable_info::XPOSITION:
+					if(value.is_int()) {
+						glVertex3f(value.as_int(), ypos_/zoom_, 0);
+						glVertex3f(value.as_int(), ypos_/zoom_ + graphics::screen_height(), 0);
+					}
+					break;
+				case editor_variable_info::YPOSITION:
+					if(value.is_int()) {
+						glVertex3f(xpos_/zoom_, value.as_int(), 0);
+						glVertex3f(xpos_/zoom_ + graphics::screen_width(), value.as_int(), 0);
+					}
+					break;
+				default:
+					break;
+			}
+		}
+		glEnd();
+		glEnable(GL_TEXTURE_2D);
+	}
+
 	glPopMatrix();
 
 	//draw grid

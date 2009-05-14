@@ -16,6 +16,7 @@ public:
 	explicit property_editor_dialog(editor& e);
 	void init();
 
+	entity_ptr get_entity() const { return entity_; }
 	void set_entity(entity_ptr e);
 private:
 	void change_property(const std::string& id, int change);

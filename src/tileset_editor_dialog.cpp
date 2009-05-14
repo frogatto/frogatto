@@ -16,7 +16,7 @@ namespace editor_dialogs
 {
 
 tileset_editor_dialog::tileset_editor_dialog(editor& e)
-  : dialog(graphics::screen_width() - 160, 40, 160, 560), editor_(e)
+  : dialog(graphics::screen_width() - 160, 40, 160, 560), editor_(e), first_index_(-1)
 {
 	if(editor_.all_tilesets().empty() == false) {
 		category_ = editor_.all_tilesets().front().category;
@@ -40,9 +40,13 @@ void tileset_editor_dialog::init()
 	add_widget(widget_ptr(category_button));
 
 	grid_ptr grid(new gui::grid(2));
-	int index = 0;
+	int index = 0, first_index = -1;
+	first_index_ = -1;
 	foreach(const editor::tileset& t, editor_.all_tilesets()) {
 		if(t.category == category_) {
+			if(first_index_ == -1) {
+				first_index_ = index;
+			}
 			preview_tileset_widget* preview = new preview_tileset_widget(*t.preview);
 			preview->set_dim(64, 64);
 			button_ptr tileset_button(new button(widget_ptr(preview), boost::bind(&tileset_editor_dialog::set_tileset, this, index)));
@@ -61,6 +65,10 @@ void tileset_editor_dialog::select_category(const std::string& category)
 {
 	category_ = category;
 	init();
+
+	if(first_index_ != -1) {
+		set_tileset(first_index_);
+	}
 }
 
 void tileset_editor_dialog::close_context_menu(int index)
@@ -113,8 +121,10 @@ void tileset_editor_dialog::show_category_menu()
 
 void tileset_editor_dialog::set_tileset(int index)
 {
-	editor_.set_tileset(index);
-	init();
+	if(editor_.get_tileset() != index) {
+		editor_.set_tileset(index);
+		init();
+	}
 }
 
 bool tileset_editor_dialog::handle_event(const SDL_Event& event, bool claimed)

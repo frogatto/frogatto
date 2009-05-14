@@ -14,7 +14,7 @@ namespace editor_dialogs
 {
 
 character_editor_dialog::character_editor_dialog(editor& e)
-  : gui::dialog(graphics::screen_width() - 160, 40, 160, 560), editor_(e)
+  : gui::dialog(graphics::screen_width() - 160, 40, 160, 560), editor_(e), first_index_(-1)
 {
 	if(editor_.all_characters().empty() == false) {
 		category_ = editor_.all_characters().front().category;
@@ -40,8 +40,13 @@ void character_editor_dialog::init()
 
 	grid_ptr grid(new gui::grid(2));
 	int index = 0;
+	first_index_ = -1;
 	foreach(const editor::enemy_type& c, editor_.all_characters()) {
 		if(c.category == category_) {
+			if(first_index_ == -1) {
+				first_index_ = index;
+			}
+
 			image_widget* preview = new image_widget(c.preview_frame->img());
 			preview->set_dim(64, 64);
 			preview->set_area(c.preview_frame->area());
@@ -55,6 +60,7 @@ void character_editor_dialog::init()
 
 	grid->finish_row();
 	add_widget(grid);
+
 }
 
 void character_editor_dialog::show_category_menu()
@@ -102,8 +108,10 @@ void character_editor_dialog::show_category_menu()
 
 void character_editor_dialog::set_character(int index)
 {
-	editor_.set_item(index);
-	init();
+	if(editor_.get_item() != index) {
+		editor_.set_item(index);
+		init();
+	}
 }
 
 void character_editor_dialog::close_context_menu(int index)
@@ -116,6 +124,9 @@ void character_editor_dialog::select_category(const std::string& category)
 {
 	category_ = category;
 	init();
+	if(first_index_ >= 0) {
+		set_character(first_index_);
+	}
 }
 
 }

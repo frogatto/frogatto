@@ -28,6 +28,9 @@ private:
 
 	gui::widget_ptr context_menu_;
 	std::string category_;
+
+	//index of the first item in the current category
+	int first_index_;
 };
 
 }

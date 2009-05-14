@@ -25,6 +25,8 @@ private:
 	editor& editor_;
 	std::string category_;
 	gui::widget_ptr context_menu_;
+
+	int first_index_;
 };
 
 }
