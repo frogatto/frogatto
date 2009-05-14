@@ -274,10 +274,14 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 				}
 
 				character_ptr player = lvl->player();
-				if(player) {
+				if(player && portal->saved_game == false) {
+					std::cerr << "ADD PLAYER IN LEVEL\n";
 					player->set_pos(dest);
 					new_level->add_player(player);
 					player->move_to_standing(*new_level);
+				} else {
+					std::cerr << "IS SAVED GAME\n";
+					player = new_level->player();
 				}
 
 				lvl.reset(new_level);

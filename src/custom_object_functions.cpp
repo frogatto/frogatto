@@ -53,6 +53,7 @@ class load_game_command : public entity_command_callable
 			level::portal p;
 			p.level_dest = "save.cfg";
 			p.dest_starting_pos = true;
+			p.saved_game = true;
 			lvl.force_enter_portal(p);
 		}
 	};

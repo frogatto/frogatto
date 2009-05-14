@@ -311,7 +311,7 @@ void level::rebuild_tiles_rect(const rect& r)
 	std::sort(tiles_.begin(), tiles_.end(), level_tile_zorder_pos_comparer());
 }
 
-wml::const_node_ptr level::write() const
+wml::node_ptr level::write() const
 {
 	wml::node_ptr res(new wml::node("level"));
 	res->set_attr("hide_status_bar", hide_status_bar_ ? "yes" : "no");

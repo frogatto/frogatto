@@ -103,7 +103,7 @@ public:
 	bool respawn() const { return respawn_; }
 
 	virtual bool boardable_vehicle() const { return false; }
-	virtual void boarded(level& lvl, character_ptr player) {}
+	virtual void boarded(level& lvl, const character_ptr& player) {}
 
 	virtual int weight() const { return 1; }
 

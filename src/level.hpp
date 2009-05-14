@@ -43,7 +43,7 @@ public:
 	const std::string& id() const { return id_; }
 	const std::string& music() const { return music_; }
 
-	wml::const_node_ptr write() const;
+	wml::node_ptr write() const;
 	void draw(int x, int y, int w, int h) const;
 	void draw_debug_solid(int x, int y, int w, int h) const;
 	void draw_background(double x, double y, int rotation) const;
@@ -80,6 +80,8 @@ public:
 	void remove_props_in_rect(int x1, int y1, int x2, int y2);
 
 	struct portal {
+		portal() : dest_starting_pos(false), automatic(false), saved_game(false)
+		{}
 		rect area;
 		std::string level_dest;
 		std::string dest_str;
@@ -87,6 +89,7 @@ public:
 		bool dest_starting_pos;
 		bool automatic;
 		std::string transition;
+		bool saved_game;
 	};
 
 	//function which will make it so the next call to get_portal() will return

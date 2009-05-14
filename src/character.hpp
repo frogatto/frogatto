@@ -89,7 +89,7 @@ public:
 
 	int current_animation_id() const { return frame_id_; }
 
-	void boarded(level& lvl, character_ptr player);
+	void boarded(level& lvl, const character_ptr& player);
 	void unboarded(level& lvl);
 
 	virtual int weight() const;

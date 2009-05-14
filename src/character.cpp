@@ -1,3 +1,4 @@
+#include <boost/bind.hpp>
 #include <iostream>
 #include <limits.h>
 
@@ -7,6 +8,7 @@
 #include "font.hpp"
 #include "formatter.hpp"
 #include "formula.hpp"
+#include "functional.hpp"
 #include "joystick.hpp"
 #include "level.hpp"
 #include "level_logic.hpp"
@@ -53,6 +55,15 @@ character::character(wml::const_node_ptr node)
 	wml::const_node_ptr driver = node->get_child("character");
 	if(driver) {
 		driver_ = new pc_character(driver);
+	}
+
+	foreach(const std::string& p, util::split(node->attr("powerups"))) {
+		std::cerr << "get_powerup(" << p << ")\n";
+		get_powerup(p);
+	}
+
+	foreach(const std::string& p, util::split(node->attr("abilities"))) {
+		get_powerup(p);
 	}
 }
 
@@ -170,6 +181,9 @@ wml::node_ptr character::write() const
 	if(driver_) {
 		res->add_child(driver_->write());
 	}
+
+	res->set_attr("powerups", util::join(map_vector<std::string>(powerups_, boost::bind(&powerup::id, _1))));
+	res->set_attr("abilities", util::join(map_vector<std::string>(abilities_, boost::bind(&powerup::id, _1))));
 	return res;
 }
 
@@ -821,7 +835,7 @@ bool character::spring_off_head(const entity& jumped_on_by)
 	return hitpoints_ > 0;
 }
 
-void character::boarded(level& lvl, character_ptr player)
+void character::boarded(level& lvl, const character_ptr& player)
 {
 	pc_character* pc_player = dynamic_cast<pc_character*>(player.get());
 	if(pc_player == NULL) {
@@ -1083,6 +1097,8 @@ void character::get_powerup(const std::string& id)
 		int ticks = SDL_GetTicks();
 		get_powerup(p);
 		std::cerr << "POWERUP: " << (SDL_GetTicks() - ticks) << "\n";
+	} else {
+		std::cerr << "POWERUP '" << id << "' NOT FOUND!\n";
 	}
 }
 
@@ -1270,8 +1286,7 @@ void character::change_frame(const frame* new_frame)
 
 	set_pos(x() - diff_x, y() - diff_y);
 
-	const bool solid_after_change = lvl_->solid(body_rect());
-	if(!solid_before_change && solid_after_change) {
+	if(!solid_before_change && lvl_->solid(body_rect())) {
 		//changing frame like this causes a collission, so disallow it and roll back.
 		current_frame_ = old_frame;
 		time_in_frame_ = old_time_in_frame;
