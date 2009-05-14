@@ -1113,14 +1113,14 @@ void editor::draw() const
 			switch(type) {
 				case editor_variable_info::XPOSITION:
 					if(value.is_int()) {
-						glVertex3f(value.as_int(), ypos_/zoom_, 0);
-						glVertex3f(value.as_int(), ypos_/zoom_ + graphics::screen_height(), 0);
+						glVertex3f(value.as_int(), ypos_, 0);
+						glVertex3f(value.as_int(), ypos_ + graphics::screen_height()*zoom_, 0);
 					}
 					break;
 				case editor_variable_info::YPOSITION:
 					if(value.is_int()) {
-						glVertex3f(xpos_/zoom_, value.as_int(), 0);
-						glVertex3f(xpos_/zoom_ + graphics::screen_width(), value.as_int(), 0);
+						glVertex3f(xpos_, value.as_int(), 0);
+						glVertex3f(xpos_+ graphics::screen_width()*zoom_, value.as_int(), 0);
 					}
 					break;
 				default:
