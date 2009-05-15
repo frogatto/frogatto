@@ -26,7 +26,7 @@ class editor_mode_dialog;
 class editor
 {
 public:
-	editor(const char* level_cfg);
+	editor(const char* level_cfg, int xpos=0, int ypos=0);
 	~editor();
 	void edit_level();
 

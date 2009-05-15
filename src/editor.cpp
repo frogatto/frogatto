@@ -326,8 +326,8 @@ editor::tileset::tileset(wml::const_node_ptr node)
 	}
 }
 
-editor::editor(const char* level_cfg)
-  : zoom_(1), xpos_(0), ypos_(0), anchorx_(0), anchory_(0),
+editor::editor(const char* level_cfg, int xpos, int ypos)
+  : zoom_(1), xpos_(xpos), ypos_(ypos), anchorx_(0), anchory_(0),
     selected_entity_startx_(0), selected_entity_starty_(0),
     filename_(level_cfg), mode_(EDIT_TILES), done_(false), face_right_(true),
     cur_tileset_(0),
