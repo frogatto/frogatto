@@ -231,6 +231,7 @@ tile_map::tile_map() : xpos_(0), ypos_(0), zorder_(0), patterns_version_(-1)
 
 tile_map::tile_map(wml::const_node_ptr node)
   : xpos_(wml::get_int(node, "x")), ypos_(wml::get_int(node, "y")),
+	x_speed_(wml::get_int(node, "x_speed", 100)), y_speed_(wml::get_int(node, "y_speed", 100)),
     zorder_(wml::get_int(node, "zorder"))
 {
 	//turn off reference counting
@@ -366,6 +367,8 @@ wml::node_ptr tile_map::write() const
 	wml::node_ptr res(new wml::node("tile_map"));
 	res->set_attr("x", formatter() << xpos_);
 	res->set_attr("y", formatter() << ypos_);
+	res->set_attr("x_speed", formatter() << x_speed_);
+	res->set_attr("y_speed", formatter() << y_speed_);
 	res->set_attr("zorder", formatter() << zorder_);
 	std::ostringstream tiles;
 	foreach(const std::vector<int>& row, map_) {

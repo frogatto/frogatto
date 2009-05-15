@@ -27,6 +27,8 @@ public:
 	void build_tiles(std::vector<level_tile>* tiles, const rect* r=NULL) const;
 	bool set_tile(int xpos, int ypos, const std::string& str);
 	int zorder() const { return zorder_; }
+	int x_speed() const { return x_speed_; }
+	int y_speed() const { return y_speed_; }
 	void set_zorder(int z) { zorder_ = z; }
 	const char* get_tile_from_pixel_pos(int xpos, int ypos) const;
 	const char* get_tile(int y, int x) const;
@@ -40,6 +42,7 @@ private:
 	const tile_pattern* get_matching_pattern(int x, int y, tile_pattern_cache& cache, bool* face_right) const;
 	variant get_value(const std::string& key) const { return variant(); }
 	int xpos_, ypos_;
+	int x_speed_, y_speed_;
 	int zorder_;
 
 	typedef boost::array<char, 4> tile_string;
