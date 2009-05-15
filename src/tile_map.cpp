@@ -73,7 +73,7 @@ struct tile_pattern {
 		int main_tile = patterns.size()/2;
 
 
-		int width = wml::get_int(node, "pattern_width", sqrt(patterns.size()));
+		int width = wml::get_int(node, "pattern_width", sqrt(static_cast<float>(patterns.size())));
 		int height = patterns.size()/width;
 
 		int top = -height/2;
