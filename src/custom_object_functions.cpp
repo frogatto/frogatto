@@ -865,28 +865,33 @@ private:
 class teleport_command : public entity_command_callable
 {
 public:
-	explicit teleport_command(const std::string& level) : level_(level)
+	teleport_command(const std::string& level, const std::string& label) : level_(level), label_(label)
 	{}
 
 	virtual void execute(level& lvl, entity& ob) const {
 		level::portal p;
 		p.level_dest = level_;
 		p.dest_starting_pos = true;
+		p.dest_label = label_;
 		p.automatic = true;
 		lvl.force_enter_portal(p);
 	}
 private:
-	std::string level_;
+	std::string level_, label_;
 };
 
 class teleport_function : public function_expression {
 public:
 	explicit teleport_function(const args_list& args)
-	  : function_expression("teleport", args, 1) {
+	  : function_expression("teleport", args, 1, 2) {
 	}
 private:
 	variant execute(const formula_callable& variables) const {
-		return variant(new teleport_command(args()[0]->evaluate(variables).as_string()));
+		std::string label;
+		if(args().size() > 1) {
+			label = args()[1]->evaluate(variables).as_string();
+		}
+		return variant(new teleport_command(args()[0]->evaluate(variables).as_string(), label));
 	}
 };
 

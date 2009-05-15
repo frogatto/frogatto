@@ -199,6 +199,10 @@ void level::load_character(wml::const_node_ptr c)
 
 		groups_[group].push_back(chars_.back());
 	}
+
+	if(chars_.back()->label().empty() == false) {
+		chars_by_label_[chars_.back()->label()] = chars_.back();
+	}
 }
 
 void level::finish_loading()
@@ -692,6 +696,9 @@ void level::process()
 			}
 		} else { //char is inactive
 			if( c->dies_on_inactive() ){
+				if(c->label().empty() == false) {
+					chars_by_label_.erase(c->label());
+				}
 				
 				c = entity_ptr(); //can't delete it while iterating over the container, so we null it for later removal
 			}
@@ -734,6 +741,9 @@ void level::process()
 			if(player_ && c->get_id() != -1) {
 			std::cerr << "OBJECT DEST: " << c->get_id() << "\n";
 				player_->object_destroyed(id(), c->get_id());
+			}
+			if(c->label().empty() == false) {
+				chars_by_label_.erase(c->label());
 			}
 			chars_.erase(std::remove(chars_.begin(), chars_.end(), c), chars_.end());
 			if(c->group() >= 0) {
@@ -1160,6 +1170,9 @@ const level_tile* level::get_tile_at(int x, int y) const
 
 void level::remove_character(entity_ptr e)
 {
+	if(e->label().empty() == false) {
+		chars_by_label_.erase(e->label());
+	}
 	chars_.erase(std::remove(chars_.begin(), chars_.end(), e), chars_.end());
 }
 
@@ -1266,6 +1279,9 @@ void level::add_player(entity_ptr p)
 	for(int n = 0; n != chars_.size(); ++n) {
 		if(chars_[n]->respawn() == false && std::binary_search(destroyed_objects.begin(), destroyed_objects.end(), chars_[n]->get_id())) {
 			std::cerr << "removing character: " << n << ": " << chars_[n]->get_id() << "\n";
+			if(chars_[n]->label().empty() == false) {
+				chars_by_label_.erase(chars_[n]->label());
+			}
 			chars_[n] = entity_ptr();
 		}
 	}
@@ -1275,6 +1291,10 @@ void level::add_player(entity_ptr p)
 
 void level::add_character(entity_ptr p)
 {
+	if(p->label().empty() == false) {
+		chars_by_label_[p->label()] = p;
+	}
+
 	if(p->is_human()) {
 		add_player(p);
 	} else {
@@ -1496,4 +1516,31 @@ water& level::get_or_create_water()
 	}
 
 	return *water_;
+}
+
+entity_ptr level::get_entity_by_label(const std::string& label)
+{
+	std::map<std::string, entity_ptr>::iterator itor = chars_by_label_.find(label);
+	if(itor != chars_by_label_.end()) {
+		return itor->second;
+	}
+
+	return entity_ptr();
+}
+
+const_entity_ptr level::get_entity_by_label(const std::string& label) const
+{
+	std::map<std::string, entity_ptr>::const_iterator itor = chars_by_label_.find(label);
+	if(itor != chars_by_label_.end()) {
+		return itor->second;
+	}
+
+	return const_entity_ptr();
+}
+
+void level::get_all_labels(std::vector<std::string>& labels) const
+{
+	for(std::map<std::string, entity_ptr>::const_iterator i = chars_by_label_.begin(); i != chars_by_label_.end(); ++i) {
+		labels.push_back(i->first);
+	}
 }

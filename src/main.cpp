@@ -239,9 +239,22 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 
 		const level::portal* portal = lvl->get_portal();
 		if(portal) {
+			//we might want to change the portal, so copy it and make it mutable.
+			level::portal mutable_portal = *portal;
+			portal = &mutable_portal;
+
 			level_cfg = portal->level_dest;
 			if(level_cfg.empty()) {
 				//the portal is within the same level
+
+				if(portal->dest_label.empty() == false) {
+					const_entity_ptr dest_door = lvl->get_entity_by_label(portal->dest_label);
+					if(dest_door) {
+						mutable_portal.dest = point(dest_door->x(), dest_door->y());
+						mutable_portal.dest_starting_pos = false;
+					}
+				}
+
 				last_draw_position() = screen_position();
 				character_ptr player = lvl->player();
 				if(player) {
@@ -261,6 +274,17 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 				}
 
 				level* new_level = load_level(level_cfg);
+
+				if(portal->dest_label.empty() == false) {
+					//the label of an object was specified as an entry point,
+					//so set our position there.
+					const_entity_ptr dest_door = new_level->get_entity_by_label(portal->dest_label);
+					if(dest_door) {
+						mutable_portal.dest = point(dest_door->x(), dest_door->y());
+						mutable_portal.dest_starting_pos = false;
+					}
+				}
+
 				sound::play_music(new_level->music());
 				set_scene_title(new_level->title());
 				point dest = portal->dest;

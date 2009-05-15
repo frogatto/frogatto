@@ -26,6 +26,7 @@ class dialog : public widget, public input::listener_container
 public:
 	typedef std::vector<widget_ptr>::const_iterator child_iterator;
 
+	dialog(int x, int y, int w, int h);
 	virtual ~dialog() {}
 	virtual void show_modal();
 	void show();
@@ -48,7 +49,6 @@ public:
 	child_iterator end_children() const { return widgets_.end(); }
     bool process_event(const SDL_Event& e, bool claimed);
 protected:
-	dialog(int x, int y, int w, int h);
 	virtual bool handle_event(const SDL_Event& event, bool claimed);
 	virtual bool handle_event_children(const SDL_Event& event, bool claimed);
 	virtual void handle_draw() const;

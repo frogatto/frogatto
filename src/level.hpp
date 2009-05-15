@@ -84,6 +84,7 @@ public:
 		{}
 		rect area;
 		std::string level_dest;
+		std::string dest_label;
 		std::string dest_str;
 		point dest;
 		bool dest_starting_pos;
@@ -158,6 +159,11 @@ public:
 
 	water& get_or_create_water();
 
+	entity_ptr get_entity_by_label(const std::string& label);
+	const_entity_ptr get_entity_by_label(const std::string& label) const;
+
+	void get_all_labels(std::vector<std::string>& labels) const;
+
 private:
 	bool add_tile_rect_vector_internal(int zorder, int x1, int y1, int x2, int y2, const std::vector<std::string>& tiles);
 
@@ -213,6 +219,8 @@ private:
 	std::set<int> layers_;
 	std::vector<entity_ptr> chars_;
 	std::vector<entity_ptr> active_chars_;
+
+	std::map<std::string, entity_ptr> chars_by_label_;
 	pc_character_ptr player_;
 
 	//characters stored in wml format; they can't be loaded in a separate thread

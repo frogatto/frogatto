@@ -18,11 +18,18 @@ public:
 
 	entity_ptr get_entity() const { return entity_; }
 	void set_entity(entity_ptr e);
+	void set_label_dialog();
 private:
 	void change_property(const std::string& id, int change);
+	void change_level_property(const std::string& id);
+	void set_level_property(const std::string& id, int index);
+
+	void change_label_property(const std::string& id);
+	void set_label_property(const std::string& id, const std::vector<std::string>& labels, int index);
 
 	editor& editor_;
 	entity_ptr entity_;
+	gui::widget_ptr context_menu_;
 };
 
 }

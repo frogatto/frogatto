@@ -38,6 +38,9 @@ public:
 	virtual bool on_players_side() const { return false; }
 	virtual void process(level& lvl) = 0;
 	virtual void execute_command(const variant& var) = 0;
+
+	const std::string& label() const { return label_; }
+	void set_label(const std::string& lb) { label_ = lb; }
 	
 	void set_pos(const point& p) { x_ = p.x*100; y_ = p.y*100; }
 	void set_pos(int x, int y) { x_ = x*100; y_ = y*100; }
@@ -124,6 +127,8 @@ protected:
 
 private:
 	virtual void control(const level& lvl) = 0;
+
+	std::string label_;
 
 	int x_, y_;
 

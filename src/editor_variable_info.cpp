@@ -6,7 +6,7 @@
 #include "wml_utils.hpp"
 
 editor_variable_info::editor_variable_info(wml::const_node_ptr node)
-  : name_(node->attr("name")), type_(TYPE_INTEGER)
+  : name_(node->attr("name")), type_(TYPE_INTEGER), info_(node->attr("info"))
 {
 	const std::string& type = node->attr("type");
 	if(type == "x") {
@@ -14,6 +14,10 @@ editor_variable_info::editor_variable_info(wml::const_node_ptr node)
 		std::cerr << "XPOS VARIABLE\n";
 	} else if(type == "y") {
 		type_ = YPOSITION;
+	} else if(type == "level") {
+		type_ = TYPE_LEVEL;
+	} else if(type == "label") {
+		type_ = TYPE_LABEL;
 	}
 }
 
@@ -21,12 +25,22 @@ wml::node_ptr editor_variable_info::write() const
 {
 	wml::node_ptr node(new wml::node("var"));
 	node->set_attr("name", name_);
+	if(info_.empty() == false) {
+		node->set_attr("info", info_);
+	}
+
 	switch(type_) {
 	case XPOSITION:
 		node->set_attr("type", "x");
 		break;
 	case YPOSITION:
 		node->set_attr("type", "y");
+		break;
+	case TYPE_LEVEL:
+		node->set_attr("type", "level");
+		break;
+	case TYPE_LABEL:
+		node->set_attr("type", "label");
 		break;
 	}
 	return node;
@@ -48,4 +62,15 @@ wml::node_ptr editor_entity_info::write() const
 	}
 
 	return node;
+}
+
+const editor_variable_info* editor_entity_info::get_var_info(const std::string& var_name) const
+{
+	foreach(const editor_variable_info& v, vars_) {
+		if(v.variable_name() == var_name) {
+			return &v;
+		}
+	}
+
+	return NULL;
 }

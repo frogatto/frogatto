@@ -30,6 +30,8 @@ custom_object::custom_object(wml::const_node_ptr node)
 	last_hit_by_anim_(0),
 	cycle_(0)
 {
+	set_label(node->attr("label"));
+
 	if(!type_->respawns()) {
 		set_respawn(false);
 	}
@@ -77,6 +79,10 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 wml::node_ptr custom_object::write() const
 {
 	wml::node_ptr res(new wml::node("character"));
+	if(label().empty() == false) {
+		res->set_attr("label", label());
+	}
+
 	res->set_attr("custom", "yes");
 	res->set_attr("type", type_->id());
 	res->set_attr("x", formatter() << x());
@@ -139,6 +145,10 @@ void custom_object::draw() const
 
 void custom_object::draw_group() const
 {
+	if(label().empty() == false) {
+		blit_texture(font::render_text(label(), graphics::color_yellow(), 32), x(), y() + 26);
+	}
+
 	if(group() >= 0) {
 		blit_texture(font::render_text(formatter() << group(), graphics::color_yellow(), 24), x(), y());
 	}
