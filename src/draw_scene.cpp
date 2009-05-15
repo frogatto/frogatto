@@ -96,7 +96,7 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 		//calculate the adjustment to the camera's target position based on
 		//our vertical look. This is calculated as the square root of the
 		//vertical look, to make the movement slowly converge.
-		const int vertical_look = std::sqrt(static_cast<float>(std::abs(pos.vertical_look)) * (pos.vertical_look > 0 ? 1 : -1));
+		const int vertical_look = std::sqrt(std::abs(pos.vertical_look)) * (pos.vertical_look > 0 ? 1 : -1);
 
 		//find the y point for the camera to converge toward
 		const int y = std::min(std::max(focus->feet_y() - drawable_height()/5 + vertical_look, min_y), max_y);
