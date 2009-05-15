@@ -220,7 +220,7 @@ void tile_map::init(wml::const_node_ptr node)
 	++current_patterns_version;
 }
 
-tile_map::tile_map() : xpos_(0), ypos_(0), zorder_(0), patterns_version_(-1)
+tile_map::tile_map() : xpos_(0), ypos_(0), x_speed_(100), y_speed_(100), zorder_(0), patterns_version_(-1)
 {
 	//turn off reference counting
 	add_ref();

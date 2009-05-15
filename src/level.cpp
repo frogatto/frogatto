@@ -459,15 +459,18 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 	
 	// parallax scrolling for tiles.
 	std::map<int, tile_map>::const_iterator tile_map_iterator = tile_maps_.find(layer);
-	int scrollx = tile_map_iterator->second.x_speed();
-	int scrolly = tile_map_iterator->second.y_speed();
+	if(tile_map_iterator != tile_maps_.end()) {
+		int scrollx = tile_map_iterator->second.x_speed();
+		int scrolly = tile_map_iterator->second.y_speed();
 
-	glTranslatef(((scrollx - 100)*x)/100, ((scrolly - 100)*y)/100, 0.0);
-	
-	//here, we adjust the input parameters (which are screen bounds) to account for the parallax shift
-	x = (x*scrollx)/100;
-	y = (y*scrolly)/100;	
-	
+		glTranslatef(((scrollx - 100)*x)/100, ((scrolly - 100)*y)/100, 0.0);
+		
+		//here, we adjust the screen bounds (they're a first order optimization) to account for the parallax shift
+		x = (x*100)/scrollx;
+		y = (y*100)/scrolly;	
+	} 
+		
+		
 	//basic implementation of the foreground layer: z values >= 1000 are
 	//considered in the foreground, and thus have x scaling increased.
 	//TODO: a more comprehensive and configurable implementation of this.
