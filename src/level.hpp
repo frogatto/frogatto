@@ -199,7 +199,7 @@ private:
 	solid_map standable_;
 
 	bool is_solid(const solid_map& map, int x, int y, int* friction, int* traction, int* damage) const;
-	void set_solid(solid_map& map, int x, int y, int friction, int traction, int damage);
+	void set_solid(solid_map& map, int x, int y, int friction, int traction, int damage, bool solid=true);
 
 	variant get_value(const std::string& key) const;
 	void set_value(const std::string& key, const variant& value);
@@ -215,6 +215,7 @@ private:
 		int damage;
 	};
 	std::vector<solid_rect> solid_rects_;
+	std::vector<rect> passthrough_rects_;
 	std::vector<level_tile> tiles_;
 	std::set<int> layers_;
 	std::vector<entity_ptr> chars_;

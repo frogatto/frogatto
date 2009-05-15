@@ -8,7 +8,7 @@ wml_schema_test_objects = filesystem.o string_utils.o wml_node.o wml_parser.o wm
 OPT=-O2
 
 %.o : src/%.cpp
-	g++ -g $(OPT) `sdl-config --cflags` -I/usr/X11R6/include -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -fthreadsafe-statics -c $<
+	g++ -g -I/home/david/STLport-5.2.1/stlport $(OPT) `sdl-config --cflags` -I/usr/X11R6/include -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -fthreadsafe-statics -c $<
 
 game: $(objects)
 	g++ -g $(OPT) -L/sw/lib -L/usr/X11R6/lib -lX11 -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -L/usr/lib `sdl-config --libs` -lSDLmain -lSDL -lGL -lGLU -lSDL_image -lSDL_ttf -lSDL_mixer -lboost_regex -fthreadsafe-statics *.o -o game

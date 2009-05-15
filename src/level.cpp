@@ -147,6 +147,19 @@ level::level(const std::string& level_cfg)
 		portals_.push_back(p);
 	}
 
+	r1 = node->begin_child("passthrough_rect");
+	r2 = node->end_child("passthrough_rect");
+	for(; r1 != r2; ++r1) {
+		rect r(r1->second->attr("rect"));
+		for(int y = r.y(); y != r.y2(); ++y) {
+			for(int x = r.x(); x != r.x2(); ++x) {
+				set_solid(solid_, x, y, 0, 0, 0, false);
+			}
+		}
+
+		passthrough_rects_.push_back(r);
+	}
+
 	if(node->has_attr("next_level")) {
 		right_portal_.level_dest = node->attr("next_level");
 		right_portal_.dest_str = "left";
@@ -355,6 +368,12 @@ wml::node_ptr level::write() const
 		res->add_child(node);
 	}
 
+	foreach(const rect& r, passthrough_rects_) {
+		wml::node_ptr node(new wml::node("passthrough_rect"));
+		node->set_attr("rect", r.to_string());
+		res->add_child(node);
+	}
+
 	for(std::map<int, tile_map>::const_iterator i = tile_maps_.begin(); i != tile_maps_.end(); ++i) {
 		res->add_child(i->second.write());
 	}
@@ -459,17 +478,16 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 	
 	// parallax scrolling for tiles.
 	std::map<int, tile_map>::const_iterator tile_map_iterator = tile_maps_.find(layer);
-	if(tile_map_iterator != tile_maps_.end()) {
+//	if(tile_map_iterator != tile_maps_.end()) {
 		int scrollx = tile_map_iterator->second.x_speed();
 		int scrolly = tile_map_iterator->second.y_speed();
 
 		glTranslatef(((scrollx - 100)*x)/100, ((scrolly - 100)*y)/100, 0.0);
 		
 		//here, we adjust the screen bounds (they're a first order optimization) to account for the parallax shift
-		x = (x*100)/scrollx;
-		y = (y*100)/scrolly;	
-	} 
-		
+//		x = (x*100)/scrollx;
+//		y = (y*100)/scrolly;	
+//	} 
 		
 	//basic implementation of the foreground layer: z values >= 1000 are
 	//considered in the foreground, and thus have x scaling increased.
@@ -1251,7 +1269,7 @@ void level::add_standable(int x, int y, int friction, int traction, int damage)
 	set_solid(standable_, x, y, friction, traction, damage);
 }
 
-void level::set_solid(solid_map& map, int x, int y, int friction, int traction, int damage)
+void level::set_solid(solid_map& map, int x, int y, int friction, int traction, int damage, bool solid)
 {
 	tile_pos pos(x/TileSize, y/TileSize);
 	x = x%TileSize;
@@ -1267,10 +1285,20 @@ void level::set_solid(solid_map& map, int x, int y, int friction, int traction, 
 	}
 	const int index = y*TileSize + x;
 	solid_info& info = map[pos];
-	info.friction = friction;
-	info.traction = traction;
-	info.damage = damage;
-	info.bitmap.set(index);
+
+	if(solid) {
+		info.friction = friction;
+		info.traction = traction;
+		info.damage = damage;
+		info.bitmap.set(index);
+	} else {
+		if(info.all_solid) {
+			info.all_solid = false;
+			info.bitmap.set();
+		}
+
+		info.bitmap.reset(index);
+	}
 }
 
 void level::add_player(entity_ptr p)
