@@ -43,6 +43,8 @@ public:
 		double delta_height;
 		double delta_length;
 
+		int left_bound, right_bound;
+
 		void process();
 	};
 	
@@ -56,9 +58,14 @@ private:
 		std::vector<char> draw_detection_buf_;
 
 		std::vector<wave> waves_;
+
+		//segments of the surface without solid.
+		std::vector<std::pair<int, int> > surface_segments_;
 	};
 
 	std::vector<area> areas_;
+
+	static void init_area_surface_segments(const level& lvl, area& a);
 
 	bool draw_area(const area& a, int x, int y, int w, int h) const;
 

@@ -1,17 +1,65 @@
 #include <iostream>
+#include <stack>
 
+#include "foreach.hpp"
 #include "frame.hpp"
 #include "graphical_font.hpp"
 #include "gui_section.hpp"
 #include "raster.hpp"
 #include "speech_dialog.hpp"
 
-speech_dialog::speech_dialog()
-  : cycle_(0), left_side_speaking_(false), horizontal_position_(0), text_char_(0)
-{}
+namespace {
+std::stack<speech_dialog*> current_dialogs;
+}
 
-bool speech_dialog::key_press()
+speech_dialog* speech_dialog::get()
 {
+	if(current_dialogs.empty() == false) {
+		return current_dialogs.top();
+	}
+
+	return NULL;
+}
+
+speech_dialog::speech_dialog()
+  : cycle_(0), left_side_speaking_(false), horizontal_position_(0), text_char_(0), option_selected_(0)
+{
+	current_dialogs.push(this);
+}
+
+speech_dialog::~speech_dialog()
+{
+	current_dialogs.pop();
+}
+
+bool speech_dialog::key_press(const SDL_Event& event)
+{
+	if(text_char_ == num_chars() && options_.empty() == false) {
+		switch(event.key.keysym.sym) {
+		case SDLK_UP:
+			--option_selected_;
+			if(option_selected_ < 0) {
+				option_selected_ = options_.size() - 1;
+			}
+			break;
+		case SDLK_DOWN:
+			++option_selected_;
+			if(option_selected_ == options_.size()) {
+				option_selected_ = 0;
+			}
+			break;
+		case SDLK_RETURN:
+		case SDLK_SPACE:
+		case SDLK_a:
+		case SDLK_s:
+			return true;
+		default:
+			break;
+		}
+
+		return false;
+	}
+
 	if(text_char_ < num_chars()) {
 		text_char_ = num_chars();
 		return false;
@@ -117,6 +165,30 @@ void speech_dialog::draw() const
 		f.draw(xpos, ypos, false);
 	}
 
+	if(text_char_ == num_chars() && options_.empty() == false) {
+		const_gui_section_ptr options_panel = gui_section::get("speech_portrait_pane");
+		int xpos = graphics::screen_width() - options_panel->width()*1.5;
+		int ypos = graphics::screen_height() - options_panel->height()*1.7;
+		options_panel->blit(xpos, ypos);
+
+		xpos += 20 + TextBorder;
+		ypos += 20 + TextBorder;
+
+		glColor3ub(255, 187, 10);
+		int index = 0;
+		foreach(const std::string& option, options_) {
+			rect area = font->draw(xpos, ypos, option);
+
+			if(index == option_selected_) {
+				const_gui_section_ptr cursor = gui_section::get("cursor");
+				cursor->blit(area.x2(), area.y());
+			}
+
+			ypos = area.y2();
+			++index;
+		}
+		glColor4f(1.0, 1.0, 1.0, 1.0);
+	}
 }
 
 void speech_dialog::set_speaker_and_flip_side(const_entity_ptr e)
@@ -144,6 +216,12 @@ void speech_dialog::set_text(const std::vector<std::string>& text)
 {
 	text_ = text;
 	text_char_ = 0;
+}
+
+void speech_dialog::set_options(const std::vector<std::string>& options)
+{
+	options_ = options;
+	option_selected_ = 0;
 }
 
 int speech_dialog::num_chars() const

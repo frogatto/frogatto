@@ -450,7 +450,7 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 		}
 
 		draw_scene(*lvl, last_draw_position());
-		draw_fps(current_fps, current_delay);
+		draw_fps(*lvl, current_fps, current_delay);
 		
 		SDL_GL_SwapBuffers();
 		++next_fps;

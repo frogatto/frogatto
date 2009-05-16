@@ -574,12 +574,21 @@ public:
 			}
 
 			if(var.is_list()) {
+				std::vector<variant> option_commands;
+				std::vector<std::string> options;
 				std::vector<std::string> message;
 				for(int n = 0; n != var.num_elements(); ++n) {
-					message.push_back(var[n].as_string());
+					if(message.empty() == false && var[n].is_list()) {
+						options.push_back(message.back());
+						message.pop_back();
+						option_commands.push_back(var[n]);
+					} else {
+						message.push_back(var[n].as_string());
+					}
 				}
 
 				dialog_.set_text(message);
+				dialog_.set_options(options);
 
 				bool done = false;
 				while(!done) {
@@ -587,7 +596,7 @@ public:
 					while(SDL_PollEvent(&event)) {
 						switch(event.type) {
 						case SDL_KEYDOWN:
-							done = dialog_.key_press();
+							done = dialog_.key_press(event);
 							break;
 						}
 					}
@@ -595,6 +604,15 @@ public:
 					dialog_.process();
 					draw(lvl);
 				}
+
+				if(options.empty() == false) {
+					const int index = dialog_.option_selected();
+					if(index >= 0 && index < option_commands.size()) {
+						ob.execute_command(option_commands[index]);
+					}
+				}
+
+				dialog_.set_options(std::vector<std::string>());
 			}
 		}
 	}

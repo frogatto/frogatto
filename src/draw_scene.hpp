@@ -25,6 +25,6 @@ screen_position& last_draw_position();
 void set_scene_title(const std::string& msg);
 void draw_scene(const level& lvl, screen_position& pos, const entity* focus=NULL);
 void draw_statusbar(const level& lvl, screen_position& pos, const entity* focus=NULL);
-void draw_fps(int fps, int delay);
+void draw_fps(const level& lvl, int fps, int delay);
 
 #endif

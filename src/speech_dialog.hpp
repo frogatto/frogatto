@@ -1,6 +1,8 @@
 #ifndef SPEECH_DIALOG_HPP_INCLUDED
 #define SPEECH_DIALOG_HPP_INCLUDED
 
+#include "SDL.h"
+
 #include <string>
 #include <vector>
 
@@ -10,15 +12,21 @@
 class speech_dialog
 {
 public:
-	speech_dialog();
+	static speech_dialog* get();
 
-	bool key_press();
+	speech_dialog();
+	~speech_dialog();
+
+	bool key_press(const SDL_Event& e);
 	void process();
 	void draw() const;
 	void set_speaker_and_flip_side(const_entity_ptr e);
 	void set_speaker(const_entity_ptr e, bool left_side);
 	void set_side(bool left_side);
 	void set_text(const std::vector<std::string>& text);
+	void set_options(const std::vector<std::string>& options);
+
+	int option_selected() const { return option_selected_; }
 private:
 	int cycle_;
 	const_entity_ptr left_, right_;
@@ -28,7 +36,13 @@ private:
 	std::vector<std::string> text_;
 	int text_char_;
 
+	std::vector<std::string> options_;
+	int option_selected_;
+
 	int num_chars() const;
+
+	speech_dialog(const speech_dialog&);
+	void operator=(const speech_dialog&);
 };
 
 #endif

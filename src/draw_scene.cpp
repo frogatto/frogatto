@@ -15,6 +15,7 @@
 #include "level.hpp"
 #include "message_dialog.hpp"
 #include "raster.hpp"
+#include "speech_dialog.hpp"
 #include "texture.hpp"
 
 namespace {
@@ -110,12 +111,12 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 		const int target_ypos = 100*(y - drawable_height()/2);
 
 		//adjust the vertical look according to if the focus is looking up/down
-		if(message_dialog::get() == NULL && focus->look_up()) {
+		if(message_dialog::get() == NULL && speech_dialog::get() == NULL && focus->look_up()) {
 			pos.vertical_look -= vertical_look_speed;
 			if(pos.vertical_look < -max_vertical_look) {
 				pos.vertical_look = -max_vertical_look;
 			}
-		} else if(message_dialog::get() == NULL && focus->look_down()) {
+		} else if(message_dialog::get() == NULL && speech_dialog::get() == NULL && focus->look_down()) {
 			pos.vertical_look += vertical_look_speed;
 			if(pos.vertical_look > max_vertical_look) {
 				pos.vertical_look = max_vertical_look;
@@ -211,10 +212,10 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 	}
 }
 
-void draw_fps(int fps, int delay)
+void draw_fps(const level& lvl, int fps, int delay)
 {
 	std::ostringstream s;
-	s << fps << "fps; " << (delay/10) << "% idle";
+	s << fps << "fps; " << (delay/10) << "% idle; " << lvl.num_active_chars() << " objects active";
 	graphics::texture t(font::render_text(s.str(), graphics::color_white(), 18));
 	graphics::blit_texture(t, 10, 10);
 }

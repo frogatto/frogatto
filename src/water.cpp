@@ -109,7 +109,14 @@ void water::add_wave(const point& p, double xvelocity, double height, double len
 	std::cerr << "water::add_wave\n";
 	foreach(area& a, areas_) {
 		if(point_in_rect(p, a.rect_)) {
-			wave wv = { p.x, xvelocity, height, length, delta_height, delta_length };
+			std::pair<int, int> bounds(a.rect_.x(), a.rect_.x2());
+			for(int n = 0; n != a.surface_segments_.size(); ++n) {
+				if(p.x >= a.surface_segments_[n].first && p.x <= a.surface_segments_[n].second) {
+					bounds = a.surface_segments_[n];
+					break;
+				}
+			}
+			wave wv = { p.x, xvelocity, height, length, delta_height, delta_length, bounds.first, bounds.second };
 			a.waves_.push_back(wv);
 			std::cerr << "adding wave...\n";
 			return;
@@ -144,13 +151,13 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 				heights[index] += wv.height*cos(proportion*3.14*2.0)*(1.0 - proportion);
 
 				//see if the wave is close enough to the edge to reflect some of its force off it
-				const int distance_wrap_left = (wv.xpos - a.rect_.x()) + (xpos - a.rect_.x());
+				const int distance_wrap_left = (wv.xpos - wv.left_bound) + (xpos - wv.left_bound);
 				if(distance_wrap_left < wv.length) {
 					const double proportion = GLfloat(distance_wrap_left)/GLfloat(wv.length);
 					heights[index] += wv.height*cos(proportion*3.14*2.0)*(1.0 - proportion);
 				}
 
-				const int distance_wrap_right = (a.rect_.x2() - wv.xpos) + (a.rect_.x2() - xpos);
+				const int distance_wrap_right = (wv.right_bound - wv.xpos) + (wv.right_bound - xpos);
 				if(distance_wrap_right < wv.length) {
 					const double proportion = GLfloat(distance_wrap_right)/GLfloat(wv.length);
 					heights[index] += wv.height*cos(proportion*3.14*2.0)*(1.0 - proportion);
@@ -242,16 +249,18 @@ bool wave_dead(const water::wave& w) {
 void water::process(const level& lvl)
 {
 	foreach(area& a, areas_) {
+		init_area_surface_segments(lvl, a);
+
 		a.distortion_ = graphics::water_distortion(lvl.cycle(), a.rect_);
 		foreach(wave& w, a.waves_) {
 			w.process();
 
 			//if the wave has hit the edge, then turn it around.
-			if(w.xpos < a.rect_.x() && w.xvelocity < 0) {
+			if(w.xpos < w.left_bound && w.xvelocity < 0) {
 				w.xvelocity *= -1.0;
 			}
 
-			if(w.xpos > a.rect_.x2() && w.xvelocity > 0) {
+			if(w.xpos > w.right_bound && w.xvelocity > 0) {
 				w.xvelocity *= -1.0;
 			}
 		}
@@ -290,4 +299,28 @@ bool water::is_underwater(const rect& r, rect* result_water_area) const
 	}
 
 	return false;
+}
+
+void water::init_area_surface_segments(const level& lvl, water::area& a)
+{
+	if(a.surface_segments_.empty() == false) {
+		return;
+	}
+
+	bool prev_solid = true;
+	int begin_segment = 0;
+	for(int x = a.rect_.x(); x != a.rect_.x2(); ++x) {
+		const bool solid = lvl.solid(x, a.rect_.y()) || x == a.rect_.x2()-1;
+		if(solid && !prev_solid) {
+			a.surface_segments_.push_back(std::make_pair(begin_segment, x));
+		} else if(!solid && prev_solid) {
+			begin_segment = x;
+		}
+
+		prev_solid = solid;
+	}
+
+	if(a.surface_segments_.empty()) {
+		a.surface_segments_.push_back(std::make_pair(0,0));
+	}
 }

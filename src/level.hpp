@@ -164,6 +164,8 @@ public:
 
 	void get_all_labels(std::vector<std::string>& labels) const;
 
+	int num_active_chars() const { return active_chars_.size(); }
+
 private:
 	bool add_tile_rect_vector_internal(int zorder, int x1, int y1, int x2, int y2, const std::vector<std::string>& tiles);
 
