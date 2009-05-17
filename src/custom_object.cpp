@@ -33,8 +33,9 @@ custom_object::custom_object(wml::const_node_ptr node)
 	if(node->has_attr("label")) {
 		set_label(node->attr("label"));
 	} else {
+		//generate a random label for the object
 		char buf[64];
-		sprintf(buf, "%x", rand());
+		sprintf(buf, "_%x", rand());
 		set_label(buf);
 	}
 
@@ -76,8 +77,9 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	cycle_(0)
 {
 	{
+		//generate a random label for the object
 		char buf[64];
-		sprintf(buf, "%x", rand());
+		sprintf(buf, "_%x", rand());
 		set_label(buf);
 	}
 
@@ -174,7 +176,7 @@ void custom_object::draw() const
 
 void custom_object::draw_group() const
 {
-	if(label().empty() == false) {
+	if(label().empty() == false && label()[0] != '_') {
 		blit_texture(font::render_text(label(), graphics::color_yellow(), 32), x(), y() + 26);
 	}
 
@@ -187,7 +189,7 @@ namespace {
 class collide_with_callable : public game_logic::formula_callable {
 	entity* e_;
 public:
-	explicit collide_with_callable(entity* e) : e_(e) {}
+	explicit collide_with_callable(entity* e) : game_logic::formula_callable(false), e_(e) {}
 	variant get_value(const std::string& key) const {
 		if(key == "collide_with") {
 			return variant(e_);
@@ -261,9 +263,9 @@ void custom_object::process(level& lvl)
 		if(!collide && !body_passthrough()) {
 			entity_ptr collide_with = lvl.collide(rect(xpos, ybegin, 1, yend - ybegin), this);
 			if(collide_with.get() != NULL) {
-				collide_with_callable callable(collide_with.get());
+				game_logic::formula_callable_ptr callable(new collide_with_callable(collide_with.get()));
 				std::cerr << "collide_with\n";
-				handle_event("collide_with", &callable);
+				handle_event("collide_with", callable.get());
 				collide = true;
 			}
 		}
@@ -291,9 +293,9 @@ void custom_object::process(level& lvl)
 	if(!body_passthrough()) {
 		entity_ptr collide_with = lvl.collide(body_rect(), this);
 		if(collide_with.get() != NULL) {
-			collide_with_callable callable(collide_with.get());
+				game_logic::formula_callable_ptr callable(new collide_with_callable(collide_with.get()));
 			std::cerr << "collide_with\n";
-			handle_event("collide_with", &callable);
+			handle_event("collide_with", callable.get());
 			collide = true;
 		}
 	}
