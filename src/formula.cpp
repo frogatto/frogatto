@@ -229,7 +229,8 @@ private:
 		const variant left = left_->evaluate(variables);
 		if(!left.is_callable()) {
 			if(left.is_list()) {
-				return right_->evaluate(list_callable(left));
+				list_callable lc(left);	
+				return right_->evaluate(lc);
 			}
 
 			return left;
