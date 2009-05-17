@@ -504,6 +504,39 @@ private:
 	}
 };
 
+class set_group_command : public entity_command_callable {
+public:
+	explicit set_group_command(int group=-1) : group_(group)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		if(group_ < 0 && ob.group() < 0) {
+			ob.set_group(lvl.add_group());
+		} else if(group_ >= 0) {
+			ob.set_group(group_);
+		}
+	}
+
+private:
+	int group_;
+};
+
+class set_group_function : public function_expression {
+public:
+	explicit set_group_function(const args_list& args)
+	  : function_expression("set_group", args, 0, 1) {
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		int group = -1;
+		if(args().size() > 0) {
+			group = args()[0]->evaluate(variables).as_int();
+		}
+
+		return variant(new set_group_command(group));
+	}
+};
+
 class scroll_to_command : public custom_object_command_callable
 {
 public:
@@ -749,6 +782,8 @@ private:
 			str += args()[n]->evaluate(variables).to_debug_string();
 		}
 
+		fprintf(stderr, "DEBUG FUNCTION: %s\n", str.c_str());
+
 		return variant(new debug_command(str));
 	}
 };
@@ -877,6 +912,22 @@ private:
 		                       args()[0]->evaluate(variables).as_int(),
 		                       args()[1]->evaluate(variables).as_int(),
 		                       args()[2]->evaluate(variables).as_int()));
+	}
+};
+
+class get_object_function : public function_expression {
+public:
+	explicit get_object_function(const args_list& args)
+	  : function_expression("get_object", args, 2) {
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		level* lvl = args()[0]->evaluate(variables).try_convert<level>();
+		if(lvl) {
+			return variant(lvl->get_entity_by_label(args()[1]->evaluate(variables).as_string()).get());
+		}
+
+		return variant();
 	}
 };
 
@@ -1017,6 +1068,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new score_function(args));
 	} else if(fn == "distortion") {
 		return expression_ptr(new distortion_function(args));
+	} else if(fn == "get_object") {
+		return expression_ptr(new get_object_function(args));
 	} else if(fn == "teleport") {
 		return expression_ptr(new teleport_function(args));
 	} else if(fn == "add_wave") {

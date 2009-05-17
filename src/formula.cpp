@@ -33,7 +33,7 @@ void formula_callable::set_value(const std::string& key, const variant& /*value*
 }
 
 map_formula_callable::map_formula_callable(wml::const_node_ptr node)
-  : fallback_(NULL)
+  : formula_callable(false), fallback_(NULL)
 {
 	if(!node) {
 		return;
@@ -56,7 +56,7 @@ void map_formula_callable::write(wml::node_ptr node) const
 }
 
 map_formula_callable::map_formula_callable(
-    const formula_callable* fallback) : fallback_(fallback)
+    const formula_callable* fallback) : formula_callable(false), fallback_(fallback)
 {}
 
 map_formula_callable& map_formula_callable::add(const std::string& key,
@@ -183,8 +183,10 @@ private:
 
 class list_callable : public formula_callable {
 	variant list_;
+
+	list_callable(const list_callable&);
 public:
-	explicit list_callable(const variant& list) : list_(list)
+	explicit list_callable(const variant& list) : formula_callable(false), list_(list)
 	{}
 
 	void get_inputs(std::vector<formula_input>* inputs) const {
@@ -339,7 +341,7 @@ class where_variables: public formula_callable {
 public:
 	where_variables(const formula_callable &base,
 			expr_table_ptr table )
-		: base_(base), table_(table) { }
+		: formula_callable(false), base_(base), table_(table) { }
 private:
 	const formula_callable& base_;
 	expr_table_ptr table_;

@@ -684,7 +684,9 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 		break;
 	}
 	case TYPE_CALLABLE: {
-		s << "{";
+		char buf[64];
+		sprintf(buf, "(%p)", callable_);
+		s << buf << "{";
 		if(std::find(seen->begin(), seen->end(), callable_) == seen->end()) {
 			seen->push_back(callable_);
 			std::vector<game_logic::formula_input> v = callable_->inputs();

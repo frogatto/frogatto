@@ -516,6 +516,8 @@ extern "C" int main(int argc, char** argv)
 		}
 	}
 
+	srand(time(NULL));
+
 	if(!skip_tests && !test::run_tests()) {
 		return -1;
 	}

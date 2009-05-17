@@ -18,7 +18,7 @@ class custom_object : public entity
 public:
 	explicit custom_object(wml::const_node_ptr node);
 	custom_object(const std::string& type, int x, int y, bool face_right);
-	virtual ~custom_object() {}
+	virtual ~custom_object();
 	virtual wml::node_ptr write() const;
 	virtual void setup_drawing() const;
 	virtual void draw() const;
@@ -88,6 +88,8 @@ private:
 
 	int velocity_x_, velocity_y_;
 	int rotate_;
+
+	int zorder_;
 
 	int hitpoints_;
 	bool was_underwater_;

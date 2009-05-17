@@ -344,7 +344,7 @@ class variant_comparator : public formula_callable {
 		fallback_->get_inputs(inputs);
 	}
 public:
-	variant_comparator(const expression_ptr& expr, const formula_callable& fallback) : expr_(expr), fallback_(&fallback)
+	variant_comparator(const expression_ptr& expr, const formula_callable& fallback) : formula_callable(false), expr_(expr), fallback_(&fallback)
 	{}
 
 	bool operator()(const variant& a, const variant& b) const {
@@ -465,7 +465,7 @@ private:
 			const std::string self = args()[1]->evaluate(variables).as_string();
 			for(size_t n = 0; n != items.num_elements(); ++n) {
 				self_callable.add(self, items[n]);
-				const variant val = args().back()->evaluate(formula_callable_with_backup(self_callable, formula_variant_callable_with_backup(items[n], variables)));
+				const variant val = args().back()->evaluate(formula_callable_with_backup(self_callable, variables));
 				vars.push_back(val);
 			}
 		}

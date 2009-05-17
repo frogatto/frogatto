@@ -22,15 +22,21 @@ custom_object::custom_object(wml::const_node_ptr node)
 	frame_name_(wml::get_str(node, "current_frame", "normal")),
 	time_in_frame_(wml::get_int(node, "time_in_frame")),
 	velocity_x_(0), velocity_y_(0),
-	rotate_(0),
+	rotate_(0), zorder_(wml::get_int(node, "zorder", type_->zorder())),
 	hitpoints_(wml::get_int(node, "hitpoints", type_->hitpoints())),
 	was_underwater_(false),
 	lvl_(NULL),
 	vars_(new game_logic::map_formula_callable(node->get_child("vars"))),
 	last_hit_by_anim_(0),
-	cycle_(0)
+	cycle_(wml::get_int(node, "cycle"))
 {
-	set_label(node->attr("label"));
+	if(node->has_attr("label")) {
+		set_label(node->attr("label"));
+	} else {
+		char buf[64];
+		sprintf(buf, "%x", rand());
+		set_label(buf);
+	}
 
 	if(!type_->respawns()) {
 		set_respawn(false);
@@ -61,7 +67,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
     frame_name_("normal"),
 	time_in_frame_(0),
 	velocity_x_(0), velocity_y_(0),
-	rotate_(0),
+	rotate_(0), zorder_(type_->zorder()),
 	hitpoints_(type_->hitpoints()),
 	was_underwater_(false),
 	lvl_(NULL),
@@ -69,11 +75,22 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	last_hit_by_anim_(0),
 	cycle_(0)
 {
+	{
+		char buf[64];
+		sprintf(buf, "%x", rand());
+		set_label(buf);
+	}
+
 	memset(draw_color_, 0xFF, sizeof(draw_color_));
 	assert(type_.get());
 	set_frame(frame_name_);
 
 	next_animation_formula_ = type_->next_animation_formula();
+}
+
+custom_object::~custom_object()
+{
+	std::cerr << "DESTROY CUSTOM OBJECT\n";
 }
 
 wml::node_ptr custom_object::write() const
@@ -83,10 +100,22 @@ wml::node_ptr custom_object::write() const
 		res->set_attr("label", label());
 	}
 
+	if(cycle_ > 1) {
+		res->set_attr("cycle", formatter() << cycle_);
+	}
+
+	if(frame_name_ != "default") {
+		res->set_attr("current_frame", frame_name_);
+	}
+
 	res->set_attr("custom", "yes");
 	res->set_attr("type", type_->id());
 	res->set_attr("x", formatter() << x());
 	res->set_attr("y", formatter() << y());
+
+	if(zorder_ != type_->zorder()) {
+		res->set_attr("zorder", formatter() << y());
+	}
 
 	res->set_attr("face_right", face_right() ? "yes" : "no");
 	res->set_attr("time_in_frame", formatter() << time_in_frame_);
@@ -176,9 +205,10 @@ void custom_object::process(level& lvl)
 	const int start_x = x();
 	++cycle_;
 
-	if(lvl_ == NULL) {
+	if(lvl_ == NULL && cycle_ == 1) {
 		lvl_ = &lvl;
 		handle_event("create");
+		handle_event("done_create");
 	}
 
 	lvl_ = &lvl;
@@ -356,7 +386,7 @@ void custom_object::process(level& lvl)
 
 int custom_object::zorder() const
 {
-	return type_->zorder();
+	return zorder_;
 }
 
 int custom_object::velocity_x() const
@@ -465,10 +495,14 @@ variant custom_object::get_value(const std::string& key) const
 		return variant(hitpoints_);
 	} else if(key == "max_hitpoints") {
 		return variant(type_->hitpoints());
+	} else if(key == "label") {
+		return variant(label());
 	} else if(key == "x") {
 		return variant(x());
 	} else if(key == "y") {
 		return variant(y());
+	} else if(key == "z") {
+		return variant(zorder_);
 	} else if(key == "x1") {
 		return variant(body_rect().x());
 	} else if(key == "y1") {
@@ -556,6 +590,8 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		set_pos(value.as_int(), y());
 	} else if(key == "y") {
 		set_pos(x(), value.as_int());
+	} else if(key == "z") {
+		zorder_ = value.as_int();
 	} else if(key == "midpoint_x") {
 		set_pos(value.as_int() - body_rect().w()/2, y());
 	} else if(key == "midpoint_y") {
@@ -728,7 +764,6 @@ void custom_object::handle_event(const std::string& event, const formula_callabl
 void custom_object::execute_command(const variant& var)
 {
 	if(var.is_null()) { return; }
-	std::cerr << "execute command..\n";
 	if(var.is_list()) {
 		for(int n = 0; n != var.num_elements(); ++n) {
 			execute_command(var[n]);
