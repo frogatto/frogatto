@@ -118,6 +118,9 @@ character_type::character_type(wml::const_node_ptr node)
 		swim_down_frame_.reset();
 		swim_side_frame_.reset();
 	}
+	
+	mass_ = wml::get_int(node, "mass", (get_frame().collide_w() * get_frame().collide_h() )  );
+
 }
 
 const_character_type_ptr character_type::get_modified(const wml::modifier& modifier) const

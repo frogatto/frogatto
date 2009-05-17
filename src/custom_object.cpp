@@ -495,6 +495,8 @@ variant custom_object::get_value(const std::string& key) const
 		return variant(hitpoints_);
 	} else if(key == "max_hitpoints") {
 		return variant(type_->hitpoints());
+	} else if(key == "mass") {
+		return variant(type_->mass());
 	} else if(key == "label") {
 		return variant(label());
 	} else if(key == "x") {

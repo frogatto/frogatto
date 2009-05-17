@@ -88,6 +88,8 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 		}
 	}
 
+	mass_ = wml::get_int(node, "mass", (default_frame_->collide_w() * default_frame_->collide_h() ) );
+	
 	wml::node::const_child_iterator c1 = node->begin_child("child");
 	wml::node::const_child_iterator c2 = node->end_child("child");
 	for(; c1 != c2; ++c1) {

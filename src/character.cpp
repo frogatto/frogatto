@@ -1555,6 +1555,8 @@ variant character::get_value(const std::string& key) const
 		return variant(jump_power());
 	} else if(key == "glide_speed") {
 		return variant(glide_speed());
+	} else if(key == "mass") {
+		return variant(type_->mass());
 	} else if(key == "damage") {
 		return variant(current_frame().damage());
 	} else if(key == "level") {

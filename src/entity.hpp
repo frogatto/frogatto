@@ -110,6 +110,8 @@ public:
 	virtual void boarded(level& lvl, const character_ptr& player) {}
 
 	virtual int weight() const { return 1; }
+	
+	virtual int mass() const = 0;
 
 	virtual void get_powerup(const std::string& id) {}
 
