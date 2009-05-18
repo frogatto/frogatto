@@ -21,6 +21,18 @@ std::string point::to_string() const
 	return formatter() << x << "," << y;
 }
 
+bool operator==(const point& a, const point& b) {
+	return a.x == b.x && a.y == b.y;
+}
+
+bool operator!=(const point& a, const point& b) {
+	return !operator==(a, b);
+}
+
+bool operator<(const point& a, const point& b) {
+	return a.x < b.x || a.x == b.x && a.y < b.y;
+}
+
 std::string rect::to_string() const
 {
 	return formatter() << x() << "," << y() << "," << x2() << "," << y2();

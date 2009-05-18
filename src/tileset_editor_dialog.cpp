@@ -16,7 +16,7 @@ namespace editor_dialogs
 {
 
 tileset_editor_dialog::tileset_editor_dialog(editor& e)
-  : dialog(graphics::screen_width() - 160, 40, 160, 560), editor_(e), first_index_(-1)
+  : dialog(graphics::screen_width() - 160, 100, 160, 500), editor_(e), first_index_(-1)
 {
 	if(editor_.all_tilesets().empty() == false) {
 		category_ = editor_.all_tilesets().front().category;

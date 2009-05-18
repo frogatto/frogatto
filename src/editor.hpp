@@ -5,6 +5,7 @@
 #include <boost/scoped_ptr.hpp>
 #include <vector>
 
+#include "geometry.hpp"
 #include "key.hpp"
 #include "level.hpp"
 #include "level_object.hpp"
@@ -48,6 +49,11 @@ public:
 		const frame* preview_frame;
 	};
 
+	struct tile_selection {
+		bool empty() const { return tiles.empty(); }
+		std::vector<point> tiles;
+	};
+
 	const std::vector<tileset>& all_tilesets() const;
 	int get_tileset() const { return cur_tileset_; }
 	void set_tileset(int index);
@@ -59,6 +65,10 @@ public:
 
 	const std::vector<const_prop_ptr>& get_props() const;
 
+	enum EDIT_TOOL { TOOL_ADD_RECT, TOOL_SELECT_RECT, NUM_TOOLS };
+	EDIT_TOOL tool() const { return tool_; }
+	void change_tool(EDIT_TOOL tool) { tool_ = tool; }
+
 	enum EDIT_MODE { EDIT_TILES, EDIT_CHARS, EDIT_ITEMS, EDIT_GROUPS, EDIT_PROPERTIES, EDIT_VARIATIONS, EDIT_PROPS, EDIT_PORTALS, EDIT_WATER, NUM_MODES };
 	EDIT_MODE mode() const { return mode_; }
 	void change_mode(int nmode);
@@ -66,6 +76,12 @@ public:
 	level& get_level() { return *lvl_; }
 private:
 	void draw() const;
+	void draw_selection(int xoffset, int yoffset) const;
+
+	void add_tile_rect(int x1, int y1, int x2, int y2);
+	void select_tile_rect(int x1, int y1, int x2, int y2);
+
+	void set_selection(const tile_selection& s);
 
 	CKey key_;
 
@@ -79,6 +95,7 @@ private:
 	int selected_entity_startx_, selected_entity_starty_;
 	std::string filename_;
 
+	EDIT_TOOL tool_;
 	EDIT_MODE mode_;
 	mutable bool select_previous_level_, select_next_level_;
 	bool done_;
@@ -86,6 +103,8 @@ private:
 	int cur_tileset_;
 
 	int cur_item_;
+
+	tile_selection tile_selection_;
 
 	boost::scoped_ptr<editor_mode_dialog> editor_mode_dialog_;
 	boost::scoped_ptr<editor_dialogs::character_editor_dialog> character_dialog_;
@@ -96,7 +115,7 @@ private:
 	gui::dialog* current_dialog_;
 
 	//if the mouse is currently down, drawing a rect.
-	bool drawing_rect_;
+	bool drawing_rect_, dragging_;
 
 	void execute_command(boost::function<void()> command, boost::function<void()> undo);
 	void undo_command();

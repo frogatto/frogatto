@@ -17,6 +17,10 @@ struct point {
 	int x, y;
 };
 
+bool operator==(const point& a, const point& b);
+bool operator!=(const point& a, const point& b);
+bool operator<(const point& a, const point& b);
+
 class rect {
 public:
 	static rect from_coordinates(int x1, int y1, int x2, int y2);
