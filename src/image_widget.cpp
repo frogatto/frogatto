@@ -58,4 +58,21 @@ void image_widget::handle_draw() const
 	}
 }
 
+gui_section_widget::gui_section_widget(const std::string& id, int w, int h)
+  : section_(gui_section::get(id))
+{
+	if(section_ && w == -1) {
+		set_dim(section_->width(), section_->height());
+	} else {
+		set_dim(w,h);
+	}
+}
+
+void gui_section_widget::handle_draw() const
+{
+	if(section_) {
+		section_->blit(x(), y(), width(), height());
+	}
+}
+
 }

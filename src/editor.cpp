@@ -21,6 +21,7 @@
 #include "formatter.hpp"
 #include "frame.hpp"
 #include "grid_widget.hpp"
+#include "image_widget.hpp"
 #include "item.hpp"
 #include "key.hpp"
 #include "label.hpp"
@@ -43,6 +44,8 @@ namespace {
 const char* ModeStrings[] = {"Tiles", "Objects", "Items", "Groups", "Properties", "Variations", "Props", "Portals", "Water"};
 
 const char* ToolStrings[] = {"Add", "Select"};
+
+const char* ToolIcons[] = {"editor_rect_add", "editor_rect_select"};
 }
 
 class editor_mode_dialog : public gui::dialog
@@ -148,7 +151,7 @@ public:
 		grid_ptr grid(new gui::grid(3));
 		for(int n = 0; n != editor::NUM_TOOLS; ++n) {
 			button_ptr tool_button(
-			  new button(widget_ptr(new label(ToolStrings[n], graphics::color_white())),
+			  new button(widget_ptr(new gui_section_widget(ToolIcons[n], 32, 32)),
 			             boost::bind(&editor_mode_dialog::select_tool, this, n)));
 			grid->add_col(widget_ptr(new border_widget(tool_button, n == editor_.tool() ? graphics::color(255,0,0,255) : graphics::color(0,0,0,0))));
 		}

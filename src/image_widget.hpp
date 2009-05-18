@@ -16,6 +16,7 @@
 #include <string>
 
 #include "geometry.hpp"
+#include "gui_section.hpp"
 #include "image_widget_fwd.hpp"
 #include "texture.hpp"
 #include "widget.hpp"
@@ -36,6 +37,16 @@ private:
 	graphics::texture texture_;
 	GLfloat rotate_;
 	rect area_;
+};
+
+class gui_section_widget : public widget
+{
+public:
+	explicit gui_section_widget(const std::string& id, int w=-1, int h=-1);
+
+private:
+	void handle_draw() const;
+	const_gui_section_ptr section_;
 };
 
 }
