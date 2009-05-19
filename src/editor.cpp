@@ -516,6 +516,7 @@ void editor::edit_level()
 
 		SDL_Event event;
 		while(SDL_PollEvent(&event)) {
+
 			if(editor_mode_dialog_->process_event(event, false)) {
 				continue;
 			}
@@ -559,7 +560,7 @@ void editor::edit_level()
 					std::cerr << "flip showing of foreground\n";
 				}
 
-				if((mode_ == EDIT_PROPERTIES || mode_ == EDIT_CHARS) && (event.key.keysym.sym == SDLK_DELETE || event.key.keysym.sym == SDLK_BACKSPACE)) {
+				if((mode_ == EDIT_PROPERTIES || mode_ == EDIT_CHARS) && (event.key.keysym.sym == SDLK_DELETE || event.key.keysym.sym == SDLK_BACKSPACE) && lvl_->editor_selection()) {
 					execute_command(
 					    boost::bind(&level::remove_character, lvl_.get(), lvl_->editor_selection()),
 					    boost::bind(&level::add_character, lvl_.get(), lvl_->editor_selection()));

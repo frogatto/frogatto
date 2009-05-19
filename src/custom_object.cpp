@@ -206,9 +206,9 @@ void custom_object::process(level& lvl)
 	previous_y_ = y();
 	const int start_x = x();
 	++cycle_;
+	lvl_ = &lvl;
 
-	if(lvl_ == NULL && cycle_ == 1) {
-		lvl_ = &lvl;
+	if(cycle_ == 1) {
 		handle_event("create");
 		handle_event("done_create");
 	}

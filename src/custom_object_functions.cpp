@@ -199,7 +199,9 @@ public:
 	virtual void execute(level& lvl, entity& ob) const {
 		entity_ptr e;
 		if(custom_) {
-			e = new custom_object(type_, x_, y_, face_right_);
+			custom_object* obj = new custom_object(type_, x_, y_, face_right_);
+			obj->set_level(lvl);
+			e = obj;
 		} else {
 			e = new character(type_, x_, y_, face_right_);
 		}
@@ -510,11 +512,15 @@ public:
 	{}
 
 	virtual void execute(level& lvl, entity& ob) const {
-		if(group_ < 0 && ob.group() < 0) {
-			ob.set_group(lvl.add_group());
-		} else if(group_ >= 0) {
-			ob.set_group(group_);
+		int group = group_;
+		if(group < 0) {
+			if(ob.group() >= 0) {
+				return;
+			}
+			group = lvl.add_group();
 		}
+
+		lvl.set_character_group(&ob, group);
 	}
 
 private:
@@ -1056,6 +1062,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new speech_dialog_function(args));
 	} else if(fn == "dialog_box") {
 		return expression_ptr(new dialog_box_function(args));
+	} else if(fn == "set_group") {
+		return expression_ptr(new set_group_function(args));
 	} else if(fn == "scroll_to") {
 		return expression_ptr(new scroll_to_function(args));
 	} else if(fn == "end_game") {

@@ -17,6 +17,7 @@
 
 #include <boost/shared_ptr.hpp>
 
+#include <iostream>
 #include <map>
 
 #include "formula.hpp"
@@ -51,10 +52,12 @@ public:
 	{
 		set_name(name.c_str());
 		if(min_args >= 0 && args_.size() < static_cast<size_t>(min_args)) {
+			std::cerr << "ERROR: incorrect number of arguments to function '" << name << "': expected [" << min_args << "," << max_args << "], found " << args_.size() << "\n";
 			throw formula_error();
 		}
 
 		if(max_args >= 0 && args_.size() > static_cast<size_t>(max_args)) {
+			std::cerr << "ERROR: incorrect number of arguments to function '" << name << "': expected [" << min_args << "," << max_args << "], found " << args_.size() << "\n";
 			throw formula_error();
 		}
 	}

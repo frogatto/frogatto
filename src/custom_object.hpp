@@ -24,6 +24,7 @@ public:
 	virtual void draw() const;
 	virtual void draw_group() const;
 	virtual void process(level& lvl);
+	void set_level(level& lvl) { lvl_ = &lvl; }
 
 	virtual int zorder() const;
 
