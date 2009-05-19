@@ -64,6 +64,11 @@ public:
 	void get_all_tiles_rect(int x1, int y1, int x2, int y2, std::map<int, std::vector<std::string> >& tiles) const;
 	void clear_tile_rect(int x1, int y1, int x2, int y2);
 	void remove_tiles_at(int x, int y);
+
+	//function to do 'magic wand' selection -- given an x/y pixel position,
+	//will return all the solid tiles connected
+	std::vector<point> get_solid_contiguous_region(int xpos, int ypos) const;
+
 	const level_tile* get_tile_at(int x, int y) const;
 	void remove_characters_in_rect(int x1, int y1, int x2, int y2);
 	void remove_character(entity_ptr e);

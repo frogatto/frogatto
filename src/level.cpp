@@ -1191,6 +1191,55 @@ void level::remove_tiles_at(int x, int y)
 	tiles_.erase(std::remove_if(tiles_.begin(), tiles_.end(), tile_on_point(x,y)), tiles_.end());
 }
 
+std::vector<point> level::get_solid_contiguous_region(int xpos, int ypos) const
+{
+	std::vector<point> result;
+
+	xpos = round_tile_size(xpos);
+	ypos = round_tile_size(ypos);
+
+	tile_pos base(xpos/TileSize, ypos/TileSize);
+	solid_map::const_iterator base_itor = solid_.find(base);
+	if(base_itor == solid_.end() || base_itor->second.all_solid == false && base_itor->second.bitmap.any() == false) {
+		return result;
+	}
+
+	std::set<tile_pos> positions;
+	positions.insert(base);
+
+	int last_count = -1;
+	while(positions.size() != last_count) {
+		last_count = positions.size();
+
+		std::vector<tile_pos> new_positions;
+		foreach(const tile_pos& pos, positions) {
+			new_positions.push_back(std::make_pair(pos.first-1, pos.second));
+			new_positions.push_back(std::make_pair(pos.first+1, pos.second));
+			new_positions.push_back(std::make_pair(pos.first, pos.second-1));
+			new_positions.push_back(std::make_pair(pos.first, pos.second+1));
+		}
+
+		foreach(const tile_pos& pos, new_positions) {
+			if(positions.count(pos)) {
+				continue;
+			}
+
+			solid_map::const_iterator itor = solid_.find(pos);
+			if(itor == solid_.end() || itor->second.all_solid == false && itor->second.bitmap.any() == false) {
+				continue;
+			}
+
+			positions.insert(pos);
+		}
+	}
+
+	foreach(const tile_pos& pos, positions) {
+		result.push_back(point(pos.first, pos.second));
+	}
+
+	return result;
+}
+
 const level_tile* level::get_tile_at(int x, int y) const
 {
 	std::vector<level_tile>::const_iterator i = std::find_if(tiles_.begin(), tiles_.end(), tile_on_point(x,y));

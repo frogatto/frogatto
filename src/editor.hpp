@@ -67,7 +67,7 @@ public:
 
 	const std::vector<const_prop_ptr>& get_props() const;
 
-	enum EDIT_TOOL { TOOL_ADD_RECT, TOOL_SELECT_RECT, NUM_TOOLS };
+	enum EDIT_TOOL { TOOL_ADD_RECT, TOOL_SELECT_RECT, TOOL_MAGIC_WAND, NUM_TOOLS };
 	EDIT_TOOL tool() const { return tool_; }
 	void change_tool(EDIT_TOOL tool) { tool_ = tool; }
 
@@ -82,6 +82,7 @@ private:
 
 	void add_tile_rect(int x1, int y1, int x2, int y2);
 	void select_tile_rect(int x1, int y1, int x2, int y2);
+	void select_magic_wand(int xpos, int ypos);
 
 	void set_selection(const tile_selection& s);
 

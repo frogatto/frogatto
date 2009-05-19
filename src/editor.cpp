@@ -43,9 +43,9 @@
 namespace {
 const char* ModeStrings[] = {"Tiles", "Objects", "Items", "Groups", "Properties", "Variations", "Props", "Portals", "Water"};
 
-const char* ToolStrings[] = {"Add", "Select"};
+const char* ToolStrings[] = {"Add", "Select", "Wand"};
 
-const char* ToolIcons[] = {"editor_rect_add", "editor_rect_select"};
+const char* ToolIcons[] = {"editor_rect_add", "editor_rect_select", "editor_wand"};
 }
 
 class editor_mode_dialog : public gui::dialog
@@ -725,6 +725,8 @@ void editor::edit_level()
 				   std::binary_search(tile_selection_.tiles.begin(), tile_selection_.tiles.end(), point(round_tile_size(anchorx_)/TileSize, round_tile_size(anchory_)/TileSize))) {
 					//we are beginning to drag our selection
 					dragging_ = true;
+				} else if(tool() == TOOL_MAGIC_WAND) {
+					drawing_rect_ = false;
 				} else if(mode_ != EDIT_PROPERTIES && mode_ != EDIT_CHARS) {
 					drawing_rect_ = true;
 				} else if(property_dialog_ && variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_)) {
@@ -905,7 +907,10 @@ void editor::edit_level()
 						  boost::bind(execute_functions, undo));
 						
 					} else if(!drawing_rect_) {
-						//wasn't drawing a rect; ignore.
+						//wasn't drawing a rect.
+						if(event.button.button == SDL_BUTTON_LEFT && tool() == TOOL_MAGIC_WAND) {
+							select_magic_wand(anchorx_, anchory_);
+						}
 					} else if(event.button.button == SDL_BUTTON_LEFT) {
 
 						if(tool() == TOOL_ADD_RECT) {
@@ -1074,6 +1079,23 @@ void editor::select_tile_rect(int x1, int y1, int x2, int y2)
 		}
 	}
 
+	execute_command(
+	  boost::bind(&editor::set_selection, this, new_selection),	
+	  boost::bind(&editor::set_selection, this, tile_selection_));
+}
+
+void editor::select_magic_wand(int xpos, int ypos)
+{
+	tile_selection new_selection;
+
+	const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
+	if(ctrl_pressed) {
+		//adding to the selection
+		new_selection = tile_selection_;
+	}
+
+	std::vector<point> tiles = lvl_->get_solid_contiguous_region(xpos, ypos);
+	new_selection.tiles.insert(new_selection.tiles.end(), tiles.begin(), tiles.end());
 	execute_command(
 	  boost::bind(&editor::set_selection, this, new_selection),	
 	  boost::bind(&editor::set_selection, this, tile_selection_));
