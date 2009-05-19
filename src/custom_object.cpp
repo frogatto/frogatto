@@ -367,7 +367,15 @@ void custom_object::process(level& lvl)
 		const int dy = y() - previous_y_;
 
 		foreach(const entity_ptr& c, stood_on_by_) {
+			const int start_x = c->x();
+			const int start_y = c->y();
 			c->set_pos(c->x() + dx, c->y() + dy);
+			int damage = 0;
+			if(lvl_->solid(c->body_rect(), NULL, NULL, &damage) && damage == 0) {
+				//doing this movement would make the character collide with
+				//something solid, so undo it.
+				c->set_pos(start_x, start_y);
+			}
 		}
 		stood_on_by_.clear();
 	}
