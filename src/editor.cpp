@@ -351,8 +351,24 @@ editor::tileset::tileset(wml::const_node_ptr node)
 	}
 }
 
-editor::editor(const char* level_cfg, int xpos, int ypos)
-  : zoom_(1), xpos_(xpos), ypos_(ypos), anchorx_(0), anchory_(0),
+void editor::edit(const char* level_cfg, int xpos, int ypos)
+{
+	//keep a map of editors so that when we edit a level and then later
+	//come back to it we'll save all the state we had previously
+	static std::map<std::string, editor*> editors;
+	editor*& e = editors[level_cfg];
+	if(!e) {
+		e = new editor(level_cfg);
+	}
+
+	e->xpos_ = xpos;
+	e->ypos_ = ypos;
+
+	e->edit_level();
+}
+
+editor::editor(const char* level_cfg)
+  : zoom_(1), xpos_(0), ypos_(0), anchorx_(0), anchory_(0),
     selected_entity_startx_(0), selected_entity_starty_(0),
     filename_(level_cfg), tool_(TOOL_ADD_RECT),
     mode_(EDIT_TILES), done_(false), face_right_(true),

@@ -362,7 +362,7 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 						quit = true;
 						break;
 					} else if(key == SDLK_e && (mod&KMOD_CTRL)) {
-						editor(lvl->id().c_str(), last_draw_position().x/100, last_draw_position().y/100).edit_level();
+						editor::edit(lvl->id().c_str(), last_draw_position().x/100, last_draw_position().y/100);
 						lvl.reset(load_level(lvl->id().c_str()));
 					} else if(key == SDLK_s && (mod&KMOD_CTRL)) {
 						std::string data;
