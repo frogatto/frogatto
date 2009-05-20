@@ -22,6 +22,7 @@ class property_editor_dialog;
 class tileset_editor_dialog;
 }
 
+class editor_menu_dialog;
 class editor_mode_dialog;
 
 class editor
@@ -76,6 +77,14 @@ public:
 	void change_mode(int nmode);
 
 	level& get_level() { return *lvl_; }
+
+	void save_level();
+	void quit() { done_ = true; }
+	void zoom_in();
+	void zoom_out();
+
+	void undo_command();
+	void redo_command();
 private:
 	void draw() const;
 	void draw_selection(int xoffset, int yoffset) const;
@@ -109,6 +118,7 @@ private:
 
 	tile_selection tile_selection_;
 
+	boost::scoped_ptr<editor_menu_dialog> editor_menu_dialog_;
 	boost::scoped_ptr<editor_mode_dialog> editor_mode_dialog_;
 	boost::scoped_ptr<editor_dialogs::character_editor_dialog> character_dialog_;
 	boost::scoped_ptr<editor_dialogs::prop_editor_dialog> prop_dialog_;
@@ -121,8 +131,6 @@ private:
 	bool drawing_rect_, dragging_;
 
 	void execute_command(boost::function<void()> command, boost::function<void()> undo);
-	void undo_command();
-	void redo_command();
 
 	struct executable_command {
 		boost::function<void()> redo_command;

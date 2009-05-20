@@ -40,6 +40,114 @@
 #include "wml_utils.hpp"
 #include "wml_writer.hpp"
 
+class editor_menu_dialog : public gui::dialog
+{
+	struct menu_item {
+		std::string description;
+		std::string hotkey;
+		boost::function<void()> action;
+	};
+
+	void execute_menu_item(const std::vector<menu_item>& items, int n) {
+		if(n >= 0 && n < items.size()) {
+			items[n].action();
+		}
+
+		remove_widget(context_menu_);
+		context_menu_.reset();
+	}
+
+	void show_file_menu() {
+		menu_item items[] = {
+			"Save", "ctrl+s", boost::bind(&editor::save_level, &editor_),
+			"Exit", "<esc>", boost::bind(&editor::quit, &editor_),
+		};
+
+		std::vector<menu_item> res;
+		foreach(const menu_item& m, items) {
+			res.push_back(m);
+		}
+		show_menu(res);
+	}
+
+	void show_edit_menu() {
+		menu_item items[] = {
+			"Undo", "u", boost::bind(&editor::undo_command, &editor_),
+			"Redo", "r", boost::bind(&editor::redo_command, &editor_),
+		};
+
+		std::vector<menu_item> res;
+		foreach(const menu_item& m, items) {
+			res.push_back(m);
+		}
+		show_menu(res);
+	}
+
+	void show_view_menu() {
+		menu_item items[] = {
+			"Zoom Out", "x", boost::bind(&editor::zoom_out, &editor_),
+			"Zoom In", "z", boost::bind(&editor::zoom_in, &editor_),
+			editor_.get_level().show_foreground() ? "Hide Foreground" : "Show Foreground", "f", boost::bind(&level::set_show_foreground, &editor_.get_level(), !editor_.get_level().show_foreground()),
+		};
+
+		std::vector<menu_item> res;
+		foreach(const menu_item& m, items) {
+			res.push_back(m);
+		}
+		show_menu(res);
+	}
+
+	void show_menu(const std::vector<menu_item>& items) {
+		using namespace gui;
+		gui::grid* grid = new gui::grid(2);
+		grid->set_hpad(40);
+		grid->set_show_background(true);
+		grid->allow_selection();
+		grid->register_selection_callback(boost::bind(&editor_menu_dialog::execute_menu_item, this, items, _1));
+		foreach(const menu_item& item, items) {
+			grid->add_col(widget_ptr(new label(item.description, graphics::color_white()))).
+			      add_col(widget_ptr(new label(item.hotkey, graphics::color_white())));
+		}
+
+		int mousex, mousey;
+		SDL_GetMouseState(&mousex, &mousey);
+
+		mousex -= x();
+		mousey -= y();
+
+		remove_widget(context_menu_);
+		context_menu_.reset(grid);
+		add_widget(context_menu_, mousex, mousey);
+	}
+
+	editor& editor_;
+	gui::widget_ptr context_menu_;
+public:
+	explicit editor_menu_dialog(editor& e)
+	  : gui::dialog(0, 0, graphics::screen_width() - 160, 40), editor_(e)
+	{
+		init();
+	}
+
+	void init() {
+		clear();
+
+		using namespace gui;
+		gui::grid* grid = new gui::grid(3);
+		grid->add_col(widget_ptr(
+		  new button(widget_ptr(new label("File", graphics::color_white())),
+		             boost::bind(&editor_menu_dialog::show_file_menu, this))));
+		grid->add_col(widget_ptr(
+		  new button(widget_ptr(new label("Edit", graphics::color_white())),
+		             boost::bind(&editor_menu_dialog::show_edit_menu, this))));
+		grid->add_col(widget_ptr(
+		  new button(widget_ptr(new label("View", graphics::color_white())),
+		             boost::bind(&editor_menu_dialog::show_view_menu, this))));
+		add_widget(widget_ptr(grid));
+	}
+		
+};
+
 namespace {
 const char* ModeStrings[] = {"Tiles", "Objects", "Items", "Groups", "Properties", "Variations", "Props", "Portals", "Water"};
 
@@ -377,6 +485,7 @@ editor::editor(const char* level_cfg)
     current_dialog_(NULL),
 	drawing_rect_(false), dragging_(false)
 {
+	editor_menu_dialog_.reset(new editor_menu_dialog(*this));
 	editor_mode_dialog_.reset(new editor_mode_dialog(*this));
 
 	static bool first_time = true;
@@ -413,6 +522,7 @@ void editor::edit_level()
 
 	select_previous_level_ = false;
 	select_next_level_ = false;
+	done_ = false;
 	while(!done_) {
 		const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
 		int mousex, mousey;
@@ -533,6 +643,10 @@ void editor::edit_level()
 		SDL_Event event;
 		while(SDL_PollEvent(&event)) {
 
+			if(editor_menu_dialog_->process_event(event, false)) {
+				continue;
+			}
+
 			if(editor_mode_dialog_->process_event(event, false)) {
 				continue;
 			}
@@ -560,15 +674,11 @@ void editor::edit_level()
 				}
 
 				if(event.key.keysym.sym == SDLK_z) {
-					if(zoom_ > 1) {
-						zoom_ /= 2;
-					}
+					zoom_in();
 				}
 
 				if(event.key.keysym.sym == SDLK_x) {
-					if(zoom_ < 8) {
-						zoom_ *= 2;
-					}
+					zoom_out();
 				}
 
 				if(event.key.keysym.sym == SDLK_f) {
@@ -601,32 +711,7 @@ void editor::edit_level()
 				}
 
 				if(event.key.keysym.sym == SDLK_s) {
-					const std::string path = "data/level/";
-					std::string data;
-					wml::write(lvl_->write(), data);
-					sys::write_file(path + filename_, data);
-
-					//see if we should write the next/previous levels also
-					//based on them having changed.
-					if(lvl_->previous_level().empty() == false) {
-						level prev(lvl_->previous_level());
-						if(prev.next_level() != lvl_->id()) {
-							prev.set_next_level(lvl_->id());
-							std::string data;
-							wml::write(prev.write(), data);
-							sys::write_file(path + prev.id(), data);
-						}
-					}
-
-					if(lvl_->next_level().empty() == false) {
-						level next(lvl_->next_level());
-						if(next.previous_level() != lvl_->id()) {
-							next.set_previous_level(lvl_->id());
-							std::string data;
-							wml::write(next.write(), data);
-							sys::write_file(path + next.id(), data);
-						}
-					}
+					save_level();
 				}
 
 				if(event.key.keysym.sym == SDLK_f &&
@@ -1197,6 +1282,50 @@ void editor::change_mode(int nmode)
 	}
 }
 
+void editor::save_level()
+{
+	const std::string path = "data/level/";
+	std::string data;
+	wml::write(lvl_->write(), data);
+	sys::write_file(path + filename_, data);
+
+	//see if we should write the next/previous levels also
+	//based on them having changed.
+	if(lvl_->previous_level().empty() == false) {
+		level prev(lvl_->previous_level());
+		if(prev.next_level() != lvl_->id()) {
+			prev.set_next_level(lvl_->id());
+			std::string data;
+			wml::write(prev.write(), data);
+			sys::write_file(path + prev.id(), data);
+		}
+	}
+
+	if(lvl_->next_level().empty() == false) {
+		level next(lvl_->next_level());
+		if(next.previous_level() != lvl_->id()) {
+			next.set_previous_level(lvl_->id());
+			std::string data;
+			wml::write(next.write(), data);
+			sys::write_file(path + next.id(), data);
+		}
+	}
+}
+
+void editor::zoom_in()
+{
+	if(zoom_ > 1) {
+		zoom_ /= 2;
+	}
+}
+
+void editor::zoom_out()
+{
+	if(zoom_ < 8) {
+		zoom_ *= 2;
+	}
+}
+
 void editor::draw() const
 {
 	const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
@@ -1407,7 +1536,7 @@ void editor::draw() const
 	//the location of the mouse cursor in the map
 	char loc_buf[256];
 	sprintf(loc_buf, "%d,%d", xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
-	graphics::blit_texture(font::render_text(loc_buf, graphics::color_yellow(), 14), 10, 10);
+	graphics::blit_texture(font::render_text(loc_buf, graphics::color_yellow(), 14), 10, 60);
 
 	if(foreground_mode) {
 		graphics::blit_texture(font::render_text("(Foreground mode)", graphics::color_yellow(), 14), 10, 26);
@@ -1417,6 +1546,7 @@ void editor::draw() const
 		current_dialog_->draw();
 	}
 
+	editor_menu_dialog_->draw();
 	editor_mode_dialog_->draw();
 
 	SDL_GL_SwapBuffers();
