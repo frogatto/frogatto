@@ -119,6 +119,8 @@ public:
 
 	const_editor_entity_info_ptr editor_info() const { return editor_info_; }
 
+	virtual entity_ptr clone() const { return entity_ptr(); }
+
 protected:
 	void set_respawn(bool value) { respawn_ = value; }
 

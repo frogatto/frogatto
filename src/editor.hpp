@@ -86,6 +86,8 @@ public:
 	void undo_command();
 	void redo_command();
 private:
+	void process_ghost_objects();
+	void remove_ghost_objects();
 	void draw() const;
 	void draw_selection(int xoffset, int yoffset) const;
 
@@ -138,6 +140,8 @@ private:
 	};
 
 	std::vector<executable_command> undo_, redo_;
+
+	std::vector<entity_ptr> ghost_objects_;
 };
 
 #endif

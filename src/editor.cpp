@@ -508,6 +508,35 @@ editor::~editor()
 {
 }
 
+void editor::process_ghost_objects()
+{
+	const size_t num_chars_before = lvl_->get_chars().size();
+	foreach(const entity_ptr& p, ghost_objects_) {
+		p->process(*lvl_);
+	}
+
+	for(size_t n = num_chars_before; n < lvl_->get_chars().size(); ++n) {
+		ghost_objects_.push_back(lvl_->get_chars()[n]);
+		lvl_->get_chars()[n]->process(*lvl_);
+	}
+
+	foreach(entity_ptr& p, ghost_objects_) {
+		if(p->destroyed()) {
+			lvl_->remove_character(p);
+			p = entity_ptr();
+		}
+	}
+
+	ghost_objects_.erase(std::remove(ghost_objects_.begin(), ghost_objects_.end(), entity_ptr()), ghost_objects_.end());
+}
+
+void editor::remove_ghost_objects()
+{
+	foreach(entity_ptr c, ghost_objects_) {
+		lvl_->remove_character(c);
+	}
+}
+
 void editor::edit_level()
 {
 	tileset_dialog_.reset(new editor_dialogs::tileset_editor_dialog(*this));
@@ -524,6 +553,8 @@ void editor::edit_level()
 	select_next_level_ = false;
 	done_ = false;
 	while(!done_) {
+		process_ghost_objects();
+
 		const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
 		int mousex, mousey;
 		const unsigned int buttons = SDL_GetMouseState(&mousex, &mousey);
@@ -556,9 +587,27 @@ void editor::edit_level()
 				property_dialog_->get_entity()->mutate_value(g_variable_editing->variable_name(), variant(g_variable_editing_original_value + diff));
 			}
 		} else if(object_mode && !buttons) {
-			lvl_->set_editor_selection(lvl_->get_character_at_point(xpos_ + mousex*zoom_, ypos_ + mousey*zoom_));
+			remove_ghost_objects();
+			entity_ptr c = lvl_->get_character_at_point(xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
+			foreach(const entity_ptr& ghost, ghost_objects_) {
+				lvl_->add_character(ghost);
+			}
+
+			lvl_->set_editor_selection(c);
+			if(ghost_objects_.empty() && c) {
+				entity_ptr clone = c->clone();
+				if(clone) {
+					ghost_objects_.push_back(clone);
+					lvl_->add_character(clone);
+				}
+			} else if(ghost_objects_.empty() == false && !c) {
+				remove_ghost_objects();
+				ghost_objects_.clear();
+			}
 		} else if(!object_mode) {
 			lvl_->set_editor_selection(entity_ptr());
+			remove_ghost_objects();
+			ghost_objects_.clear();
 		} else if(lvl_->editor_selection()) {
 			const int dx = xpos_ + mousex*zoom_ - anchorx_;
 			const int dy = ypos_ + mousey*zoom_ - anchory_;
@@ -1284,6 +1333,9 @@ void editor::change_mode(int nmode)
 
 void editor::save_level()
 {
+	remove_ghost_objects();
+	ghost_objects_.clear();
+
 	const std::string path = "data/level/";
 	std::string data;
 	wml::write(lvl_->write(), data);

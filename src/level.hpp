@@ -169,6 +169,7 @@ public:
 
 	void get_all_labels(std::vector<std::string>& labels) const;
 
+	const std::vector<entity_ptr>& get_chars() { return chars_; }
 	int num_active_chars() const { return active_chars_.size(); }
 
 private:

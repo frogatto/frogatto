@@ -68,6 +68,10 @@ public:
 	const frame& portrait_frame() const;
 	const frame& icon_frame() const;
 
+	entity_ptr clone() const;
+
+	uint8_t* color_buf() { return draw_color_; }
+
 private:
 	virtual void control(const level& lvl);
 

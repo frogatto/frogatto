@@ -746,6 +746,11 @@ const frame& custom_object::icon_frame() const
 	return type_->default_frame();
 }
 
+entity_ptr custom_object::clone() const
+{
+	return entity_ptr(new custom_object(*this));
+}
+
 void custom_object::handle_event(const std::string& event, const formula_callable* context)
 {
 	if ( (hitpoints_ > 0) || (event == "die"))
