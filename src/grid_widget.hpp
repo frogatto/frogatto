@@ -46,6 +46,7 @@ public:
 
 	void allow_selection(bool val=true) { allow_selection_ = val; }
 	void must_select(bool val=true) { must_select_ = val; selected_row_ = 0; }
+	void swallow_clicks(bool val=true) { swallow_clicks_ = val; }
 	int selection() const { return selected_row_; }
 	void register_mouseover_callback(callback_type cb);
 	void register_selection_callback(callback_type cb);
@@ -65,6 +66,7 @@ private:
 	int selected_row_;
 	bool allow_selection_;
 	bool must_select_;
+	bool swallow_clicks_;
 
 	std::vector<widget_ptr> new_row_;
 	std::vector<boost::function<void()> > row_callbacks_;

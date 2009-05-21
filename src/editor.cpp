@@ -2,6 +2,7 @@
 #include <GL/glu.h>
 #include <SDL/SDL.h>
 #include <iostream>
+#include <cmath>
 
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
@@ -33,6 +34,7 @@
 #include "prop_editor_dialog.hpp"
 #include "raster.hpp"
 #include "texture.hpp"
+#include "text_entry_widget.hpp"
 #include "tile_map.hpp"
 #include "tileset_editor_dialog.hpp"
 #include "wml_node.hpp"
@@ -42,6 +44,14 @@
 
 class editor_menu_dialog : public gui::dialog
 {
+	void do_open_level(dialog* d, const std::vector<std::string>& levels, int index, std::string* result) {
+		if(index >= 0 && index < levels.size()) {
+			d->close();
+			editor_.close();
+			*result = levels[index];
+		}
+	}
+
 	struct menu_item {
 		std::string description;
 		std::string hotkey;
@@ -59,6 +69,8 @@ class editor_menu_dialog : public gui::dialog
 
 	void show_file_menu() {
 		menu_item items[] = {
+			"New...", "", boost::bind(&editor_menu_dialog::new_level, this),
+			"Open...", "ctrl+o", boost::bind(&editor_menu_dialog::open_level, this),
 			"Save", "ctrl+s", boost::bind(&editor::save_level, &editor_),
 			"Exit", "<esc>", boost::bind(&editor::quit, &editor_),
 		};
@@ -103,6 +115,7 @@ class editor_menu_dialog : public gui::dialog
 		grid->set_hpad(40);
 		grid->set_show_background(true);
 		grid->allow_selection();
+		grid->swallow_clicks();
 		grid->register_selection_callback(boost::bind(&editor_menu_dialog::execute_menu_item, this, items, _1));
 		foreach(const menu_item& item, items) {
 			grid->add_col(widget_ptr(new label(item.description, graphics::color_white()))).
@@ -145,15 +158,63 @@ public:
 		             boost::bind(&editor_menu_dialog::show_view_menu, this))));
 		add_widget(widget_ptr(grid));
 	}
+
+	void new_level() {
+		using namespace gui;
+		dialog d(0, 0, graphics::screen_width(), graphics::screen_height());
+		d.add_widget(widget_ptr(new label("New Level", graphics::color_white(), 48)));
+		text_entry_widget* entry = new text_entry_widget;
+		d.add_widget(widget_ptr(new label("Name:", graphics::color_white())))
+		 .add_widget(widget_ptr(entry));
+		d.show_modal();
 		
+		std::string name = entry->text();
+		if(name.empty() == false) {
+			sys::write_file("data/level/" + name, "[level]\n[/level]\n");
+			editor_.close();
+			editor::edit(name.c_str());
+		}
+	}
+
+	void open_level() {
+		using namespace gui;
+		dialog d(0, 0, graphics::screen_width(), graphics::screen_height());
+		d.add_widget(widget_ptr(new label("Open Level", graphics::color_white(), 48)));
+
+		std::string result;
+		const int levels_per_col = 20;
+		std::vector<std::string> levels = get_known_levels();
+		gui::grid* parent_grid = new gui::grid(levels.size()/levels_per_col + (levels.size()%levels_per_col ? 1 : 0));
+		int index = 0;
+		while(index < levels.size()) {
+			const int end = std::min(index + levels_per_col, static_cast<int>(levels.size()));
+			gui::grid* grid = new gui::grid(1);
+			grid->set_show_background(true);
+			grid->allow_selection();
+
+			std::vector<std::string> levels_portion(levels.begin() + index, levels.end());
+			grid->register_selection_callback(boost::bind(&editor_menu_dialog::do_open_level, this, &d, levels_portion, _1, &result));
+			while(index != end) {
+				grid->add_col(widget_ptr(new label(levels[index], graphics::color_white())));
+				++index;
+			}
+			parent_grid->add_col(widget_ptr(grid));
+		}
+
+		d.add_widget(widget_ptr(parent_grid));
+		d.show_modal();
+		if(result.empty() == false) {
+			editor::edit(result.c_str());
+		}
+	}
 };
 
 namespace {
 const char* ModeStrings[] = {"Tiles", "Objects", "Items", "Groups", "Properties", "Variations", "Props", "Portals", "Water"};
 
-const char* ToolStrings[] = {"Add", "Select", "Wand"};
+const char* ToolStrings[] = {"Add", "Select", "Wand", "Pencil"};
 
-const char* ToolIcons[] = {"editor_rect_add", "editor_rect_select", "editor_wand"};
+const char* ToolIcons[] = {"editor_rect_add", "editor_rect_select", "editor_wand", "editor_pencil"};
 }
 
 class editor_mode_dialog : public gui::dialog
@@ -206,6 +267,11 @@ class editor_mode_dialog : public gui::dialog
 	bool handle_event(const SDL_Event& event, bool claimed)
 	{
 		if(!claimed) {
+			const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
+			if(ctrl_pressed) {
+				return false;
+			}
+
 			switch(event.type) {
 			case SDL_KEYDOWN: {
 				editor::EDIT_MODE mode = editor::NUM_MODES;
@@ -278,6 +344,9 @@ void execute_functions(const std::vector<boost::function<void()> >& v) {
 		f();
 	}
 }
+
+//the tiles that we've drawn in the current action.
+std::vector<point> g_current_draw_tiles;
 
 const editor_variable_info* g_variable_editing = NULL;
 int g_variable_editing_original_value = 0;
@@ -469,10 +538,21 @@ void editor::edit(const char* level_cfg, int xpos, int ypos)
 		e = new editor(level_cfg);
 	}
 
-	e->xpos_ = xpos;
-	e->ypos_ = ypos;
+	if(xpos != -1) {
+		e->xpos_ = xpos;
+		e->ypos_ = ypos;
+	}
 
 	e->edit_level();
+}
+
+namespace {
+std::string g_last_edited_level;
+}
+
+std::string editor::last_edited_level()
+{
+	return g_last_edited_level;
 }
 
 editor::editor(const char* level_cfg)
@@ -539,6 +619,8 @@ void editor::remove_ghost_objects()
 
 void editor::edit_level()
 {
+	g_last_edited_level = filename_;
+
 	tileset_dialog_.reset(new editor_dialogs::tileset_editor_dialog(*this));
 	current_dialog_ = tileset_dialog_.get();
 
@@ -689,6 +771,17 @@ void editor::edit_level()
 			}
 		}
 
+		//if we're drawing with a pencil see if we add a new tile
+		if(tool() == TOOL_PENCIL && mode_ == EDIT_TILES && (buttons&SDL_BUTTON_LEFT)) {
+			const int xpos = xpos_ + mousex*zoom_;
+			const int ypos = ypos_ + mousey*zoom_;
+			point p(round_tile_size(xpos), round_tile_size(ypos));
+			if(std::find(g_current_draw_tiles.begin(), g_current_draw_tiles.end(), p) == g_current_draw_tiles.end()) {
+				g_current_draw_tiles.push_back(p);
+				add_tile_rect(p.x, p.y, p.x, p.y);
+			}
+		}
+
 		SDL_Event event;
 		while(SDL_PollEvent(&event)) {
 
@@ -757,6 +850,10 @@ void editor::edit_level()
 					execute_command(
 					  boost::bind(execute_functions, redo),
 					  boost::bind(execute_functions, undo));
+				}
+
+				if(event.key.keysym.sym == SDLK_o) {
+					editor_menu_dialog_->open_level();
 				}
 
 				if(event.key.keysym.sym == SDLK_s) {
@@ -861,6 +958,14 @@ void editor::edit_level()
 					dragging_ = true;
 				} else if(tool() == TOOL_MAGIC_WAND) {
 					drawing_rect_ = false;
+				} else if(tool() == TOOL_PENCIL) {
+					drawing_rect_ = false;
+					if(mode_ == EDIT_TILES) {
+						point p(round_tile_size(anchorx_), round_tile_size(anchory_));
+						add_tile_rect(p.x, p.y, p.x, p.y);
+						g_current_draw_tiles.clear();
+						g_current_draw_tiles.push_back(p);
+					}
 				} else if(mode_ != EDIT_PROPERTIES && mode_ != EDIT_CHARS) {
 					drawing_rect_ = true;
 				} else if(property_dialog_ && variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_)) {

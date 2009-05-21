@@ -39,7 +39,7 @@ level::level(const std::string& level_cfg)
 	if(node->has_attr("dimensions")) {
 		boundaries_ = rect(node->attr("dimensions"));
 	} else {
-		boundaries_ = rect(0, 0, wml::get_int(node, "width"), wml::get_int(node, "height"));
+		boundaries_ = rect(0, 0, wml::get_int(node, "width", 800), wml::get_int(node, "height", 600));
 	}
 
 	xscale_ = wml::get_int(node, "xscale", 100);

@@ -28,7 +28,8 @@ class editor_mode_dialog;
 class editor
 {
 public:
-	static void edit(const char* level_cfg, int xpos, int ypos);
+	static void edit(const char* level_cfg, int xpos=-1, int ypos=-1);
+	static std::string last_edited_level();
 
 	editor(const char* level_cfg);
 	~editor();
@@ -68,7 +69,7 @@ public:
 
 	const std::vector<const_prop_ptr>& get_props() const;
 
-	enum EDIT_TOOL { TOOL_ADD_RECT, TOOL_SELECT_RECT, TOOL_MAGIC_WAND, NUM_TOOLS };
+	enum EDIT_TOOL { TOOL_ADD_RECT, TOOL_SELECT_RECT, TOOL_MAGIC_WAND, TOOL_PENCIL, NUM_TOOLS };
 	EDIT_TOOL tool() const { return tool_; }
 	void change_tool(EDIT_TOOL tool) { tool_ = tool; }
 
@@ -85,6 +86,8 @@ public:
 
 	void undo_command();
 	void redo_command();
+
+	void close() { done_ = true; }
 private:
 	void process_ghost_objects();
 	void remove_ghost_objects();

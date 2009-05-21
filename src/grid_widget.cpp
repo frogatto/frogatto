@@ -22,7 +22,7 @@ grid::grid(int ncols)
   : ncols_(ncols), col_widths_(ncols, 0),
     col_aligns_(ncols, grid::ALIGN_LEFT), row_height_(0),
 	selected_row_(-1), allow_selection_(false), must_select_(false),
-	hpad_(0), show_background_(false)
+    swallow_clicks_(false), hpad_(0), show_background_(false)
 {
 	set_dim(0,0);
 }
@@ -199,6 +199,10 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 
 			if(on_select_) {
 				on_select_(row_index);
+			}
+
+			if(swallow_clicks_) {
+				claimed = true;
 			}
 		}
 	}
