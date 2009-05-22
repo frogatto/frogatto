@@ -906,7 +906,7 @@ void editor::edit_level()
 					std::map<int, std::vector<std::string> > tiles;
 					lvl_->get_all_tiles_rect(anchorx_, anchory_, anchorx_, anchory_, tiles);
 					std::string tile;
-					for(std::map<int, std::vector<std::string> >::const_reverse_iterator i = tiles.rbegin(); i != tiles.rend(); ++i) {
+					for(std::map<int, std::vector<std::string> >::reverse_iterator i = tiles.rbegin(); i != tiles.rend(); ++i) {
 						if(i->second.empty() == false) {
 							tile = i->second.back();
 							std::cerr << "picking tile: '" << tile << "'\n";
