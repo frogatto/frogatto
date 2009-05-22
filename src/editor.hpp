@@ -69,7 +69,7 @@ public:
 
 	const std::vector<const_prop_ptr>& get_props() const;
 
-	enum EDIT_TOOL { TOOL_ADD_RECT, TOOL_SELECT_RECT, TOOL_MAGIC_WAND, TOOL_PENCIL, NUM_TOOLS };
+	enum EDIT_TOOL { TOOL_ADD_RECT, TOOL_SELECT_RECT, TOOL_MAGIC_WAND, TOOL_PENCIL, TOOL_PICKER, NUM_TOOLS };
 	EDIT_TOOL tool() const { return tool_; }
 	void change_tool(EDIT_TOOL tool) { tool_ = tool; }
 

@@ -1,5 +1,6 @@
 #include <boost/bind.hpp>
 
+#include "border_widget.hpp"
 #include "button.hpp"
 #include "character_editor_dialog.hpp"
 #include "editor.hpp"
@@ -14,7 +15,7 @@ namespace editor_dialogs
 {
 
 character_editor_dialog::character_editor_dialog(editor& e)
-  : gui::dialog(graphics::screen_width() - 160, 100, 160, 500), editor_(e), first_index_(-1)
+  : gui::dialog(graphics::screen_width() - 160, 160, 160, 440), editor_(e), first_index_(-1)
 {
 	if(editor_.all_characters().empty() == false) {
 		category_ = editor_.all_characters().front().category;
@@ -30,15 +31,15 @@ void character_editor_dialog::init()
 	set_padding(20);
 
 	const frame& frame = *editor_.all_characters()[editor_.get_item()].preview_frame;
-	image_widget* preview = new image_widget(frame.img());
-	preview->set_dim(150, 150);
-	preview->set_area(frame.area());
-	add_widget(widget_ptr(preview), 10, 10);
+//	image_widget* preview = new image_widget(frame.img());
+//	preview->set_dim(150, 150);
+//	preview->set_area(frame.area());
+//	add_widget(widget_ptr(preview), 10, 10);
 
 	button* category_button = new button(widget_ptr(new label(category_, graphics::color_white())), boost::bind(&character_editor_dialog::show_category_menu, this));
-	add_widget(widget_ptr(category_button));
+	add_widget(widget_ptr(category_button), 10, 10);
 
-	grid_ptr grid(new gui::grid(2));
+	grid_ptr grid(new gui::grid(3));
 	int index = 0;
 	first_index_ = -1;
 	foreach(const editor::enemy_type& c, editor_.all_characters()) {
@@ -48,11 +49,11 @@ void character_editor_dialog::init()
 			}
 
 			image_widget* preview = new image_widget(c.preview_frame->img());
-			preview->set_dim(64, 64);
+			preview->set_dim(40, 40);
 			preview->set_area(c.preview_frame->area());
 			button_ptr char_button(new button(widget_ptr(preview), boost::bind(&character_editor_dialog::set_character, this, index)));
-			char_button->set_dim(68, 68);
-			grid->add_col(char_button);
+			char_button->set_dim(44, 44);
+			grid->add_col(gui::widget_ptr(new gui::border_widget(char_button, index == editor_.get_item() ? graphics::color(255,255,255,255) : graphics::color(0,0,0,0))));
 		}
 
 		++index;

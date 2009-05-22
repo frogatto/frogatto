@@ -17,11 +17,11 @@ class tileset_editor_dialog : public gui::dialog
 public:
 	explicit tileset_editor_dialog(editor& e);
 	void init();
-private:
 	void select_category(const std::string& category);
+	void set_tileset(int index);
+private:
 	void close_context_menu(int index);
 	void show_category_menu();
-	void set_tileset(int index);
 
 	bool handle_event(const SDL_Event& event, bool claimed);
 	editor& editor_;

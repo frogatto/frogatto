@@ -3,6 +3,7 @@
 
 #include <iostream>
 
+#include "border_widget.hpp"
 #include "button.hpp"
 #include "editor.hpp"
 #include "foreach.hpp"
@@ -16,7 +17,7 @@ namespace editor_dialogs
 {
 
 tileset_editor_dialog::tileset_editor_dialog(editor& e)
-  : dialog(graphics::screen_width() - 160, 100, 160, 500), editor_(e), first_index_(-1)
+  : dialog(graphics::screen_width() - 160, 160, 160, 440), editor_(e), first_index_(-1)
 {
 	if(editor_.all_tilesets().empty() == false) {
 		category_ = editor_.all_tilesets().front().category;
@@ -32,14 +33,11 @@ void tileset_editor_dialog::init()
 	set_padding(20);
 
 	assert(editor_.get_tileset() >= 0 && editor_.get_tileset() < editor_.all_tilesets().size());
-	preview_tileset_widget* preview = new preview_tileset_widget(*editor_.all_tilesets()[editor_.get_tileset()].preview);
-
-	add_widget(widget_ptr(preview), 10, 10);
 
 	button* category_button = new button(widget_ptr(new label(category_, graphics::color_white())), boost::bind(&tileset_editor_dialog::show_category_menu, this));
-	add_widget(widget_ptr(category_button));
+	add_widget(widget_ptr(category_button), 10, 10);
 
-	grid_ptr grid(new gui::grid(2));
+	grid_ptr grid(new gui::grid(3));
 	int index = 0, first_index = -1;
 	first_index_ = -1;
 	foreach(const editor::tileset& t, editor_.all_tilesets()) {
@@ -48,10 +46,10 @@ void tileset_editor_dialog::init()
 				first_index_ = index;
 			}
 			preview_tileset_widget* preview = new preview_tileset_widget(*t.preview);
-			preview->set_dim(64, 64);
+			preview->set_dim(40, 40);
 			button_ptr tileset_button(new button(widget_ptr(preview), boost::bind(&tileset_editor_dialog::set_tileset, this, index)));
-			tileset_button->set_dim(68, 68);
-			grid->add_col(tileset_button);
+			tileset_button->set_dim(44, 44);
+			grid->add_col(gui::widget_ptr(new gui::border_widget(tileset_button, index == editor_.get_tileset() ? graphics::color(255,255,255,255) : graphics::color(0,0,0,0))));
 		}
 
 		++index;

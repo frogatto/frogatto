@@ -212,9 +212,9 @@ public:
 namespace {
 const char* ModeStrings[] = {"Tiles", "Objects", "Items", "Groups", "Properties", "Variations", "Props", "Portals", "Water"};
 
-const char* ToolStrings[] = {"Add", "Select", "Wand", "Pencil"};
+const char* ToolStrings[] = {"Add", "Select", "Wand", "Pencil", "Picker"};
 
-const char* ToolIcons[] = {"editor_rect_add", "editor_rect_select", "editor_wand", "editor_pencil"};
+const char* ToolIcons[] = {"editor_draw_rect", "editor_rect_select", "editor_wand", "editor_pencil", "editor_eyedropper"};
 }
 
 class editor_mode_dialog : public gui::dialog
@@ -310,7 +310,7 @@ class editor_mode_dialog : public gui::dialog
 	}
 public:
 	explicit editor_mode_dialog(editor& e)
-	  : gui::dialog(graphics::screen_width() - 160, 0, 160, 100), editor_(e)
+	  : gui::dialog(graphics::screen_width() - 160, 0, 160, 160), editor_(e)
 	{
 		init();
 	}
@@ -884,58 +884,6 @@ void editor::edit_level()
 					lvl_->rebuild_tiles();
 				}
 
-				if(event.key.keysym.sym == SDLK_COMMA) {
-					switch(mode_) {
-					case EDIT_TILES:
-						set_tileset(cur_tileset_-1);
-						break;
-					case EDIT_CHARS:
-						--cur_item_;
-						if(cur_item_ < 0) {
-							cur_item_ = enemy_types.size()-1;
-						}
-						break;
-					case EDIT_ITEMS:
-						--cur_item_;
-						if(cur_item_ < 0) {
-							cur_item_ = placeable_items.size()-1;
-						}
-						break;
-					case EDIT_PROPS:
-						--cur_item_;
-						if(cur_item_ < 0) {
-							cur_item_ = all_props.size()-1;
-						}
-						break;
-					}
-				}
-
-				if(event.key.keysym.sym == SDLK_PERIOD) {
-					switch(mode_) {
-					case EDIT_TILES:
-						set_tileset(cur_tileset_+1);
-						break;
-					case EDIT_CHARS:
-						++cur_item_;
-						if(cur_item_ == enemy_types.size()) {
-							cur_item_ = 0;
-						}
-						break;
-					case EDIT_ITEMS:
-						++cur_item_;
-						if(cur_item_ == placeable_items.size()) {
-							cur_item_ = 0;
-						}
-						break;
-					case EDIT_PROPS:
-						++cur_item_;
-						if(cur_item_ == all_props.size()) {
-							cur_item_ = 0;
-						}
-						break;
-					}
-				}
-
 				break;
 			case SDL_MOUSEBUTTONDOWN:
 				anchorx_ = xpos_ + mousex*zoom_;
@@ -952,7 +900,31 @@ void editor::edit_level()
 
 				dragging_ = drawing_rect_ = false;
 
-				if(mode_ == EDIT_TILES && !tile_selection_.empty() &&
+				if(mode_ == EDIT_TILES && tool() == TOOL_PICKER) {
+					std::cerr << "pick tile...\n";
+					//pick the top most tile at this point.
+					std::map<int, std::vector<std::string> > tiles;
+					lvl_->get_all_tiles_rect(anchorx_, anchory_, anchorx_, anchory_, tiles);
+					std::string tile;
+					for(std::map<int, std::vector<std::string> >::const_reverse_iterator i = tiles.rbegin(); i != tiles.rend(); ++i) {
+						if(i->second.empty() == false) {
+							tile = i->second.back();
+							std::cerr << "picking tile: '" << tile << "'\n";
+							break;
+						}
+					}
+
+					if(!tile.empty()) {
+						for(int n = 0; n != all_tilesets().size(); ++n) {
+							if(all_tilesets()[n].type == tile) {
+								tileset_dialog_->select_category(all_tilesets()[n].category);
+								tileset_dialog_->set_tileset(n);
+								std::cerr << "pick tile " << n << "\n";
+								break;
+							}
+						}
+					}
+				} else if(mode_ == EDIT_TILES && !tile_selection_.empty() &&
 				   std::binary_search(tile_selection_.tiles.begin(), tile_selection_.tiles.end(), point(round_tile_size(anchorx_)/TileSize, round_tile_size(anchory_)/TileSize))) {
 					//we are beginning to drag our selection
 					dragging_ = true;
