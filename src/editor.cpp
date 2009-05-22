@@ -327,7 +327,7 @@ public:
 			button_ptr tool_button(
 			  new button(widget_ptr(new gui_section_widget(ToolIcons[n], 32, 32)),
 			             boost::bind(&editor_mode_dialog::select_tool, this, n)));
-			grid->add_col(widget_ptr(new border_widget(tool_button, n == editor_.tool() ? graphics::color(255,0,0,255) : graphics::color(0,0,0,0))));
+			grid->add_col(widget_ptr(new border_widget(tool_button, n == editor_.tool() ? graphics::color(255,255,255,255) : graphics::color(0,0,0,0))));
 		}
 
 		grid->finish_row();
@@ -951,6 +951,19 @@ void editor::edit_level()
 				if(lvl_->editor_selection()) {
 					selected_entity_startx_ = lvl_->editor_selection()->x();
 					selected_entity_starty_ = lvl_->editor_selection()->y();
+
+					if(tool() == TOOL_PICKER && mode_ == EDIT_CHARS) {
+						wml::const_node_ptr node = lvl_->editor_selection()->write();
+						const std::string type = node->attr("type");
+						for(int n = 0; n != all_characters().size(); ++n) {
+							const enemy_type& c = all_characters()[n];
+							if(c.node->attr("type") == type) {
+								character_dialog_->select_category(c.category);
+								character_dialog_->set_character(n);
+								break;
+							}
+						}
+					}
 				}
 
 				if(select_previous_level_) {

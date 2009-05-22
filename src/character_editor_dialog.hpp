@@ -16,12 +16,12 @@ class character_editor_dialog : public gui::dialog
 public:
 	explicit character_editor_dialog(editor& e);
 	void init();
+	void set_character(int index);
+	void select_category(const std::string& str);
 private:
 	void show_category_menu();
-	void set_character(int index);
 
 	void close_context_menu(int index);
-	void select_category(const std::string& str);
 	editor& editor_;
 	std::string category_;
 	gui::widget_ptr context_menu_;
