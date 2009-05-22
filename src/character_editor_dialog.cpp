@@ -82,7 +82,7 @@ void character_editor_dialog::show_category_menu()
 		categories.insert(c.category);
 
 		image_widget* preview = new image_widget(c.preview_frame->img());
-		preview->set_dim(48, 48);
+		preview->set_dim(32, 32);
 		preview->set_area(c.preview_frame->area());
 		grid->add_col(widget_ptr(preview))
 		     .add_col(widget_ptr(new label(c.category, graphics::color_white())));

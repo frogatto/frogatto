@@ -16,7 +16,7 @@ namespace editor_dialogs
 {
 
 property_editor_dialog::property_editor_dialog(editor& e)
-  : gui::dialog(graphics::screen_width() - 160, 40, 160, 560), editor_(e)
+  : gui::dialog(graphics::screen_width() - 160, 160, 160, 440), editor_(e)
 {
 	init();
 }
