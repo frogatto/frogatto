@@ -1480,7 +1480,11 @@ void editor::draw() const
 	glScalef(1.0/zoom_, 1.0/zoom_, 0);
 	glTranslatef(-xpos_,-ypos_,0);
 
-	lvl_->draw_background(xpos_, ypos_, 0);
+	if(zoom_ == 1) {
+		//backgrounds only draw nicely at the regular zoom level for now.
+		lvl_->draw_background(xpos_, ypos_, 0);
+	}
+
 	lvl_->draw(xpos_, ypos_, graphics::screen_width()*zoom_, graphics::screen_height()*zoom_);
 
 	const int selectx = xpos_ + mousex*zoom_;
