@@ -6,6 +6,7 @@
 #include "boost/scoped_ptr.hpp"
 #include "boost/shared_ptr.hpp"
 
+#include "current_generator.hpp"
 #include "formula_fwd.hpp"
 #include "frame.hpp"
 #include "variant.hpp"
@@ -86,6 +87,10 @@ public:
 	game_logic::const_formula_ptr get_event_handler(const std::string& frame_id) const;
 
 	const std::map<std::string, variant>& variables() const { return variables_; }
+
+	current_generator_ptr current_generator() const { return current_generator_; }
+	int radial_distortion() const { return radial_distortion_; }
+	int radial_distortion_intensity() const { return radial_distortion_intensity_; }
 private:
 	wml::const_node_ptr wml_;
 
@@ -125,6 +130,10 @@ private:
 	std::map<std::string, game_logic::const_formula_ptr> event_handlers_;
 
 	std::map<std::string, variant> variables_;
+
+	current_generator_ptr current_generator_;
+
+	int radial_distortion_, radial_distortion_intensity_;
 };
 
 #endif

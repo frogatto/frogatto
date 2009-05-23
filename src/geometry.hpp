@@ -33,6 +33,9 @@ public:
 	int w() const;
 	int h() const;
 
+	int mid_x() const { return (x() + x2())/2; }
+	int mid_y() const { return (y() + y2())/2; }
+
 	std::string to_string() const;
 
 	SDL_Rect sdl_rect() const;

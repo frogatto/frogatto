@@ -5,6 +5,7 @@
 
 #include "boost/intrusive_ptr.hpp"
 
+#include "current_generator.hpp"
 #include "editor_variable_info.hpp"
 #include "formula_callable.hpp"
 #include "formula_fwd.hpp"
@@ -124,7 +125,11 @@ public:
 
 	virtual entity_ptr clone() const { return entity_ptr(); }
 
+	virtual void generate_current(const entity& target, int* velocity_x, int* velocity_y) const;
+
 protected:
+	void set_current_generator(current_generator* generator);
+
 	void set_respawn(bool value) { respawn_ = value; }
 
 	//move the entity by a number of centi pixels.
@@ -150,6 +155,8 @@ private:
 	bool respawn_;
 
 	const_editor_entity_info_ptr editor_info_;
+
+	current_generator_ptr current_generator_;
 };
 
 #endif

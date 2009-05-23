@@ -112,3 +112,19 @@ void entity::draw_debug_rects() const
 	const SDL_Rect rect = { feet_x() - 1, feet_y() - 1, 3, 3 };
 	graphics::draw_rect(rect, graphics::color_white(), 0xFF);
 }
+
+void entity::generate_current(const entity& target, int* velocity_x, int* velocity_y) const
+{
+	if(current_generator_) {
+		const rect& my_rect = body_rect();
+		const rect& target_rect = target.body_rect();
+		current_generator_->generate(my_rect.mid_x(), my_rect.mid_y(),
+		                             target_rect.mid_x(), target_rect.mid_y(),
+		                             velocity_x, velocity_y);
+	}
+}
+
+void entity::set_current_generator(current_generator* generator)
+{
+	current_generator_ = current_generator_ptr(generator);
+}

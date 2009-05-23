@@ -32,6 +32,7 @@ public:
 
 	int cycle() const { return cycle_; }
 	void next_cycle() const { ++cycle_; }
+	void set_cycle(int n) { cycle_ = n; }
 private:
 	virtual variant get_value(const std::string& key) const { return variant(); }
 	rect area_;
@@ -58,7 +59,7 @@ private:
 class radial_distortion : public raster_distortion
 {
 public:
-	radial_distortion(int x, int y, int radius);
+	radial_distortion(int x, int y, int radius, int intensity=5);
 
 	void distort_point(GLfloat* x, GLfloat* y) const;
 
@@ -67,6 +68,7 @@ public:
 private:
 	int x_, y_;
 	GLfloat radius_;
+	GLfloat intensity_;
 
 	virtual variant get_value(const std::string& key) const;
 	virtual void set_value(const std::string& key, const variant& value);

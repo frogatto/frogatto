@@ -58,8 +58,15 @@ character_type::character_type(wml::const_node_ptr node)
 	passenger_x_(wml::get_int(node, "passenger_x")),
 	passenger_y_(wml::get_int(node, "passenger_y")),
 	vehicle_die_object_(wml::get_str(node, "vehicle_die_object")),
-	loop_sound_(wml::get_str(node, "loop_sound"))
+	loop_sound_(wml::get_str(node, "loop_sound")),
+	radial_distortion_(wml::get_int(node, "radial_distortion")),
+	radial_distortion_intensity_(wml::get_int(node, "radial_distortion_intensity", 5))
 {
+	wml::const_node_ptr current_generator_node = node->get_child("current_generator");
+	if(current_generator_node) {
+		current_generator_ = current_generator_ptr(current_generator::create(current_generator_node));
+	}
+
 	for(wml::node::const_attr_iterator attr = node->begin_attr(); attr != node->end_attr(); ++attr) {
 		static const std::string on_start = "on_";
 		const std::string& name = attr->first;

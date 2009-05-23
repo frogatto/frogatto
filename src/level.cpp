@@ -1608,9 +1608,28 @@ bool level::is_underwater(const rect& r, rect* res_water_area) const
 
 void level::get_current(const entity& e, int* velocity_x, int* velocity_y) const
 {
-	if(is_underwater(e.body_rect())) {
-		water_->get_current(e, velocity_x, velocity_y);
+	if(e.mass() == 0) {
+		return;
 	}
+
+	int delta_x = 0, delta_y = 0;
+	if(is_underwater(e.body_rect())) {
+		water_->get_current(e, &delta_x, &delta_y);
+	}
+
+	foreach(const entity_ptr& c, active_chars_) {
+		if(c.get() != &e) {
+			c->generate_current(e, &delta_x, &delta_y);
+		}
+	}
+
+	delta_x /= e.mass();
+	delta_y /= e.mass();
+
+	std::cerr << "CURRENT: " << delta_x << "," << delta_y << "\n";
+
+	*velocity_x += delta_x;
+	*velocity_y += delta_y;
 }
 
 water& level::get_or_create_water()

@@ -36,9 +36,9 @@ variant water_distortion::get_value(const std::string& key) const
 	return variant();
 }
 
-radial_distortion::radial_distortion(int x, int y, int radius)
+radial_distortion::radial_distortion(int x, int y, int radius, int intensity)
   : raster_distortion(rect(x - radius, y - radius, radius*2, radius*2)),
-    x_(x), y_(y), radius_(radius)
+    x_(x), y_(y), radius_(radius), intensity_(intensity)
 {
 }
 
@@ -58,7 +58,7 @@ void radial_distortion::distort_point(GLfloat* x, GLfloat* y) const
 	const GLfloat unit_vector_x = vector_x/distance;
 	const GLfloat unit_vector_y = vector_y/distance;
 
-	const GLfloat distort = sin(distance + cycle()*0.2)*5.0*((radius_ - distance)/radius_);
+	const GLfloat distort = sin(distance + cycle()*0.2)*intensity_*((radius_ - distance)/radius_);
 	*x += unit_vector_x*distort;
 	*y += unit_vector_y*distort;
 }

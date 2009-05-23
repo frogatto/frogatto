@@ -14,6 +14,7 @@
 #include "geometry.hpp"
 #include "key.hpp"
 #include "powerup_fwd.hpp"
+#include "raster_distortion.hpp"
 #include "wml_node_fwd.hpp"
 
 class level;
@@ -34,6 +35,7 @@ public:
 	level* get_level() { return lvl_; }
 	void set_level(level* lvl);
 	virtual wml::node_ptr write() const;
+	virtual void setup_drawing() const;
 	virtual void draw() const;
 	void draw_group() const;
 	void process(level& lvl);
@@ -109,6 +111,8 @@ public:
 	virtual int remove_powerup(const_powerup_ptr powerup);
 	const std::vector<const_powerup_ptr>& powerups() const { return powerups_; }
 	const std::vector<const_powerup_ptr>& abilities() const { return abilities_; }
+
+	virtual void generate_current(const entity& target, int* velocity_x, int* velocity_y) const;
 
 protected:
 	const frame& current_frame() const;
@@ -212,6 +216,9 @@ private:
 
 	std::vector<const_powerup_ptr> powerups_;
 	std::vector<const_powerup_ptr> abilities_;
+
+	//manages the memory of the distortion; doesn't do anything else.
+	mutable graphics::const_raster_distortion_ptr distortion_;
 };
 
 class pc_character : public character {

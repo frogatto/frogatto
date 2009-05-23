@@ -229,6 +229,17 @@ wml::node_ptr pc_character::write() const
 	return result;
 }
 
+void character::setup_drawing() const
+{
+	using namespace graphics;
+	if(type_->radial_distortion()) {
+		raster_distortion* distort = new radial_distortion(body_rect().mid_x(), body_rect().mid_y(), type_->radial_distortion(), type_->radial_distortion_intensity());
+		distort->set_cycle(cycle_num_);
+		distortion_ = raster_distortion_ptr(distort);
+		graphics::add_raster_distortion(distortion_.get());
+	}
+}
+
 void character::draw() const
 {
 	if(driver_) {
@@ -1166,6 +1177,19 @@ int character::remove_powerup(const_powerup_ptr powerup)
 	}
 	change_to_stand_frame();
 	return result;
+}
+
+void character::generate_current(const entity& target, int* velocity_x, int* velocity_y) const
+{
+	if(type_->current_generator()) {
+		const rect& my_rect = body_rect();
+		const rect& target_rect = target.body_rect();
+		type_->current_generator()->generate(my_rect.mid_x(), my_rect.mid_y(),
+		                                     target_rect.mid_x(), target_rect.mid_y(),
+		                                     velocity_x, velocity_y);
+	}
+
+	entity::generate_current(target, velocity_x, velocity_y);
 }
 
 const frame& character::current_frame() const

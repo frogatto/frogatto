@@ -58,6 +58,8 @@ public:
 	bool on_players_side() const { return on_players_side_; }
 	bool respawns() const { return respawns_; }
 
+	bool affected_by_currents() const { return affected_by_currents_; }
+
 	wml::const_node_ptr get_child(const std::string& key) const {
 		if(children_.count(key)) {
 			return children_.find(key)->second;
@@ -97,6 +99,8 @@ private:
 
 	bool on_players_side_;
 	bool respawns_;
+
+	bool affected_by_currents_;
 
 	std::map<std::string, wml::const_node_ptr> children_;
 

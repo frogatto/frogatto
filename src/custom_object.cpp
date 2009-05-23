@@ -244,6 +244,10 @@ void custom_object::process(level& lvl)
 		velocity_y_ = (velocity_y_*(100-type_->friction()))/100;
 	}
 
+	if(type_->affected_by_currents()) {
+		lvl.get_current(*this, &velocity_x_, &velocity_y_);
+	}
+
 	bool collide = false;
 
 	if(type_->ignore_collide()) {
