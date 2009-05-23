@@ -120,6 +120,10 @@ wml::node_ptr custom_object::write() const
 	}
 
 	res->set_attr("face_right", face_right() ? "yes" : "no");
+	if(upside_down()) {
+		res->set_attr("upside_down", "yes");
+	}
+
 	res->set_attr("time_in_frame", formatter() << time_in_frame_);
 
 	if(group() >= 0) {
@@ -165,7 +169,7 @@ void custom_object::draw() const
 		glColor4ubv(draw_color_);
 	}
 
-	frame_->draw(x(), y(), face_right(), time_in_frame_, rotate_);
+	frame_->draw(x(), y(), face_right(), upside_down(), time_in_frame_, rotate_);
 	if(draw_color_int_ != DefaultColor) {
 		static const uint8_t AllWhite[4] = {0xFF, 0xFF, 0xFF, 0xFF};
 		glColor4ubv(AllWhite);
@@ -543,6 +547,12 @@ variant custom_object::get_value(const std::string& key) const
 		return variant(cycle_);
 	} else if(key == "facing") {
 		return variant(face_right() ? 1 : -1);
+	} else if(key == "upside_down") {
+		return variant(upside_down() ? 1 : 0);
+	} else if(key == "up") {
+		return variant(upside_down() ? 1 : -1);
+	} else if(key == "down") {
+		return variant(upside_down() ? -1 : 1);
 	} else if(key == "velocity_x") {
 		return variant(velocity_x_);
 	} else if(key == "velocity_y") {
@@ -610,6 +620,8 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		set_pos(x(), value.as_int() - body_rect().h()/2);
 	} else if(key == "facing") {
 		set_face_right(value.as_int() > 0);
+	} else if(key == "upside_down") {
+		set_upside_down(value.as_int());
 	} else if(key == "hitpoints") {
 		hitpoints_ = value.as_int();
 		if(hitpoints_ <= 0) {

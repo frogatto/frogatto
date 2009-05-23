@@ -20,7 +20,7 @@ public:
 	//sound, useful if the sound is later cancelled.
 	void play_sound(const void* object=NULL) const;
 	bool is_alpha(int x, int y, int time, bool face_right) const;
-	void draw(int x, int y, bool face_right=true, int time=0, int rotate=0) const;
+	void draw(int x, int y, bool face_right=true, bool upside_down=false, int time=0, int rotate=0) const;
 	int collide_x() const { return collide_rect_.x()*scale_; }
 	int collide_y() const { return collide_rect_.y()*scale_; }
 	int collide_w() const { return collide_rect_.w()*scale_; }

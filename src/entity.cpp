@@ -12,6 +12,7 @@ entity::entity(wml::const_node_ptr node)
   : x_(wml::get_int(node, "x")*100),
     y_(wml::get_int(node, "y")*100),
 	face_right_(wml::get_bool(node, "face_right")),
+	upside_down_(wml::get_bool(node, "upside_down", false)),
 	group_(wml::get_int(node, "group", -1)),
     id_(-1), respawn_(wml::get_bool(node, "respawn", true))
 {
@@ -19,7 +20,7 @@ entity::entity(wml::const_node_ptr node)
 }
 
 entity::entity(int x, int y, bool face_right)
-  : x_(x*100), y_(y*100), face_right_(face_right), group_(-1), id_(-1)
+  : x_(x*100), y_(y*100), face_right_(face_right), upside_down_(false), group_(-1), id_(-1)
 {
 }
 
@@ -55,6 +56,11 @@ void entity::set_face_right(bool facing)
 	x_ += delta_x*100;
 }
 
+void entity::set_upside_down(bool facing)
+{
+	upside_down_ = facing;
+}
+
 void entity::activation_distance(int* x, int* y)
 {
 	*x = 900;
@@ -64,7 +70,10 @@ void entity::activation_distance(int* x, int* y)
 rect entity::body_rect() const
 {
 	const frame& f = current_frame();
-	return rect(face_right() ? x() + f.collide_x() : x() + f.width() - f.collide_x() - f.collide_w(), y() + f.collide_y(), f.collide_w(), f.collide_h());
+
+	const int ypos = y() + (upside_down() ? (f.height() - (f.collide_y() + f.collide_h())) : f.collide_y());
+	return rect(face_right() ? x() + f.collide_x() : x() + f.width() - f.collide_x() - f.collide_w(),
+	            ypos, f.collide_w(), f.collide_h());
 }
 
 rect entity::hit_rect() const

@@ -80,6 +80,9 @@ public:
 	bool face_right() const { return face_right_; }
 	virtual void set_face_right(bool facing);
 
+	bool upside_down() const { return upside_down_; }
+	virtual void set_upside_down(bool facing);
+
 	int face_dir() const { return face_right() ? 1 : -1; }
 
 	virtual bool body_harmful() const { return true; }
@@ -137,6 +140,7 @@ private:
 	int x_, y_;
 
 	bool face_right_;
+	bool upside_down_;
 
 	//the entity group the entity is in.
 	int group_;

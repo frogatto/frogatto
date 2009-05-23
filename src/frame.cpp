@@ -121,13 +121,13 @@ bool frame::is_alpha(int x, int y, int time, bool face_right) const
 	return texture_.is_alpha((texture_.width()-1)*u, (texture_.height()-1)*v);
 }
 
-void frame::draw(int x, int y, bool face_right, int time, int rotate) const
+void frame::draw(int x, int y, bool face_right, bool upside_down, int time, int rotate) const
 {
 	GLfloat rect[4];
 	get_rect_in_texture(time, face_right, &rect[0]);
 	
 	//the last 4 params are the rectangle of the single, specific frame
-	graphics::blit_texture(texture_, x, y, width()*(face_right ? 1 : -1), height(), rotate + (face_right ? rotate_ : -rotate_),
+	graphics::blit_texture(texture_, x, y, width()*(face_right ? 1 : -1), height()*(upside_down ? -1 : 1), rotate + (face_right ? rotate_ : -rotate_),
 	                       rect[0], rect[1], rect[2], rect[3]);
 
 }

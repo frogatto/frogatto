@@ -235,7 +235,7 @@ void character::draw() const
 		driver_->draw();
 	}
 	const int slope = rotate_ + (current_frame().rotate_on_slope() ? -slope_standing_on(5)*face_dir() : 0);
-	current_frame().draw(x(), y(), face_right(), time_in_frame_, slope);
+	current_frame().draw(x(), y(), face_right(), false, time_in_frame_, slope);
 
 	//if we blur then back up information about the frame here
 	if(current_frame().blur()) {
@@ -257,7 +257,7 @@ void character::draw() const
 		std::cerr << "draw blurred frame\n";
 		p->alpha = (p->alpha*p->blur)/100;
 		glColor4f(1.0, 1.0, 1.0, p->alpha/100.0);
-		p->frame_drawn->draw(p->x, p->y, p->face_right, p->time_in_frame, p->slope);
+		p->frame_drawn->draw(p->x, p->y, p->face_right, false, p->time_in_frame, p->slope);
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 		if(p->alpha < 5) {
 			p = blur_.erase(p);
