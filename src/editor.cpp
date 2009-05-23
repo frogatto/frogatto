@@ -37,6 +37,7 @@
 #include "text_entry_widget.hpp"
 #include "tile_map.hpp"
 #include "tileset_editor_dialog.hpp"
+#include "tooltip.hpp"
 #include "wml_node.hpp"
 #include "wml_parser.hpp"
 #include "wml_utils.hpp"
@@ -212,7 +213,7 @@ public:
 namespace {
 const char* ModeStrings[] = {"Tiles", "Objects", "Items", "Groups", "Properties", "Variations", "Props", "Portals", "Water"};
 
-const char* ToolStrings[] = {"Add", "Select", "Wand", "Pencil", "Picker"};
+const char* ToolStrings[] = {"Add tiles by drawing rectangles", "Select Tiles or Objects", "Select connected regions of tiles", "Add tiles by drawing pencil strokes", "Pick tiles or objects"};
 
 const char* ToolIcons[] = {"editor_draw_rect", "editor_rect_select", "editor_wand", "editor_pencil", "editor_eyedropper"};
 }
@@ -327,6 +328,7 @@ public:
 			button_ptr tool_button(
 			  new button(widget_ptr(new gui_section_widget(ToolIcons[n], 32, 32)),
 			             boost::bind(&editor_mode_dialog::select_tool, this, n)));
+			tool_button->set_tooltip(ToolStrings[n]);
 			grid->add_col(widget_ptr(new border_widget(tool_button, n == editor_.tool() ? graphics::color(255,255,255,255) : graphics::color(0,0,0,0))));
 		}
 
@@ -1690,6 +1692,7 @@ void editor::draw() const
 
 	editor_menu_dialog_->draw();
 	editor_mode_dialog_->draw();
+	gui::draw_tooltip();
 
 	SDL_GL_SwapBuffers();
 	SDL_Delay(20);
