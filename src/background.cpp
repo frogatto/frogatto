@@ -1,4 +1,5 @@
 #include <iostream>
+#include <map>
 
 #include "background.hpp"
 #include "color_utils.hpp"
@@ -6,8 +7,27 @@
 #include "formatter.hpp"
 #include "level.hpp"
 #include "raster.hpp"
+#include "thread.hpp"
 #include "wml_node.hpp"
+#include "wml_parser.hpp"
 #include "wml_utils.hpp"
+
+namespace {
+std::map<std::string, boost::shared_ptr<background> > cache;
+threading::mutex cache_mutex;
+}
+
+boost::shared_ptr<background> background::get(const std::string& id)
+{
+	threading::lock lck(cache_mutex);
+	boost::shared_ptr<background>& obj = cache[id];
+	if(!obj) {
+		obj.reset(new background(wml::parse_wml_from_file("data/backgrounds/" + id + ".cfg")));
+		obj->id_ = id;
+	}
+
+	return obj;
+}
 
 background::background(const wml::const_node_ptr& node)
 {

@@ -121,6 +121,9 @@ public:
 	bool show_foreground() const { return show_foreground_; }
 	void set_show_foreground(bool value) { show_foreground_ = value; }
 
+	bool show_background() const { return show_background_; }
+	void set_show_background(bool value) { show_background_ = value; }
+
 	void rebuild_tiles();
 
 	const std::string& title() const { return title_; }
@@ -252,7 +255,7 @@ private:
 	mutable bool entered_portal_active_;
 	portal entered_portal_;
 
-	boost::scoped_ptr<background> background_;
+	boost::shared_ptr<background> background_;
 	int widest_tile_, highest_tile_;
 
 	std::map<int, tile_map> tile_maps_;
@@ -262,7 +265,7 @@ private:
 	bool editor_;
 	entity_ptr editor_selection_;
 
-	bool show_foreground_;
+	bool show_foreground_, show_background_;
 
 	point auto_move_camera_;
 	int air_resistance_;

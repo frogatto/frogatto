@@ -23,7 +23,7 @@
 
 level::level(const std::string& level_cfg)
 	: id_(level_cfg), entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
-	  editor_(false), show_foreground_(true), air_resistance_(0), water_resistance_(7), end_game_(false),
+	  editor_(false), show_foreground_(true), show_background_(true), air_resistance_(0), water_resistance_(7), end_game_(false),
       hide_status_bar_(false), tint_(0)
 {
 	std::cerr << "in level constructor...\n";
@@ -177,6 +177,8 @@ level::level(const std::string& level_cfg)
 	wml::const_node_ptr bg = node->get_child("background");
 	if(bg) {
 		background_.reset(new background(bg));
+	} else if(node->has_attr("background")) {
+		background_ = background::get(node->attr("background"));
 	}
 
 	wml::const_node_ptr fluid_node = node->get_child("fluid");
@@ -424,7 +426,11 @@ wml::node_ptr level::write() const
 	}
 
 	if(background_) {
-		res->add_child(background_->write());
+		if(background_->id().empty()) {
+			res->add_child(background_->write());
+		} else {
+			res->set_attr("background", background_->id());
+		}
 	}
 
 	return res;
@@ -672,6 +678,10 @@ void level::draw_debug_solid(int x, int y, int w, int h) const
 
 void level::draw_background(double x, double y, int rotation) const
 {
+	if(show_background_ == false) {
+		return;
+	}
+
 	if(water_) {
 		water_->begin_drawing();
 	}

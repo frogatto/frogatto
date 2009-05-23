@@ -101,6 +101,7 @@ class editor_menu_dialog : public gui::dialog
 			"Zoom Out", "x", boost::bind(&editor::zoom_out, &editor_),
 			"Zoom In", "z", boost::bind(&editor::zoom_in, &editor_),
 			editor_.get_level().show_foreground() ? "Hide Foreground" : "Show Foreground", "f", boost::bind(&level::set_show_foreground, &editor_.get_level(), !editor_.get_level().show_foreground()),
+			editor_.get_level().show_background() ? "Hide Background" : "Show Background", "b", boost::bind(&level::set_show_background, &editor_.get_level(), !editor_.get_level().show_background()),
 		};
 
 		std::vector<menu_item> res;
@@ -491,11 +492,6 @@ int selected_property = 0;
 
 std::vector<const_prop_ptr> all_props;
 
-bool foreground_mode = false;
-int foreground_zorder_change() {
-	return foreground_mode ? 1500 : 0;
-}
-
 }
 
 void editor::enemy_type::init(wml::const_node_ptr node)
@@ -827,7 +823,10 @@ void editor::edit_level()
 
 				if(event.key.keysym.sym == SDLK_f) {
 					lvl_->set_show_foreground(!lvl_->show_foreground());
-					std::cerr << "flip showing of foreground\n";
+				}
+
+				if(event.key.keysym.sym == SDLK_b) {
+					lvl_->set_show_background(!lvl_->show_background());
 				}
 
 				if((mode_ == EDIT_PROPERTIES || mode_ == EDIT_CHARS) && (event.key.keysym.sym == SDLK_DELETE || event.key.keysym.sym == SDLK_BACKSPACE) && lvl_->editor_selection()) {
@@ -862,11 +861,7 @@ void editor::edit_level()
 					save_level();
 				}
 
-				if(event.key.keysym.sym == SDLK_f &&
-				   (event.key.keysym.mod&KMOD_CTRL)) {
-					//set to edit foregrounds.
-					foreground_mode = !foreground_mode;
-				} else if(event.key.keysym.sym == SDLK_f) {
+				if(event.key.keysym.sym == SDLK_f) {
 					face_right_ = !face_right_;
 				}
 
@@ -1212,7 +1207,7 @@ void editor::edit_level()
 							ytile = ypos;
 						}
 						prop_object obj(xtile, ytile, all_props[cur_item_]->id());
-						obj.set_zorder(obj.zorder() + foreground_zorder_change());
+						obj.set_zorder(obj.zorder());
 
 						execute_command(
 						  boost::bind(&level::add_prop, lvl_.get(), obj),
@@ -1246,7 +1241,7 @@ void editor::edit_level()
 
 void editor::add_tile_rect(int x1, int y1, int x2, int y2)
 {
-	const int zorder = tilesets[cur_tileset_].zorder + foreground_zorder_change();
+	const int zorder = tilesets[cur_tileset_].zorder;
 	std::vector<std::string> old_rect;
 	lvl_->get_tile_rect(zorder, x1, y1, x2, y2, old_rect);
 
@@ -1485,6 +1480,7 @@ void editor::draw() const
 	glScalef(1.0/zoom_, 1.0/zoom_, 0);
 	glTranslatef(-xpos_,-ypos_,0);
 
+	lvl_->draw_background(xpos_, ypos_, 0);
 	lvl_->draw(xpos_, ypos_, graphics::screen_width()*zoom_, graphics::screen_height()*zoom_);
 
 	const int selectx = xpos_ + mousex*zoom_;
@@ -1681,10 +1677,6 @@ void editor::draw() const
 	char loc_buf[256];
 	sprintf(loc_buf, "%d,%d", xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
 	graphics::blit_texture(font::render_text(loc_buf, graphics::color_yellow(), 14), 10, 60);
-
-	if(foreground_mode) {
-		graphics::blit_texture(font::render_text("(Foreground mode)", graphics::color_yellow(), 14), 10, 26);
-	}
 
 	if(current_dialog_) {
 		current_dialog_->draw();

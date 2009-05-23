@@ -1,6 +1,7 @@
 #ifndef BACKGROUND_HPP_INCLUDED
 #define BACKGROUND_HPP_INCLUDED
 
+#include <string>
 #include <vector>
 
 #include "boost/shared_ptr.hpp"
@@ -15,11 +16,15 @@ class level;
 class background
 {
 public:
+	static boost::shared_ptr<background> get(const std::string& id);
+
 	explicit background(const wml::const_node_ptr& node);
+	const std::string& id() const { return id_; }
 	wml::node_ptr write() const;
 	void draw(double x, double y, int rotation) const;
 	void draw_foreground(double x, double y, int rotation) const;
 private:
+	std::string id_;
 	SDL_Color top_, bot_;
 	int width_, height_;
 
