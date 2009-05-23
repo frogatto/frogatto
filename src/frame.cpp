@@ -164,7 +164,11 @@ int frame::frame_number(int time) const
 		int frame_num = nframes_-1;
 		if(frame_time_ > 0 && nframes_ >= 1) {
 			if(time >= duration()) {
-				frame_num = 0;
+				if(reverse_frame_){
+					frame_num = nframes_-1;
+				}else{	
+					frame_num = 0;
+				}
 			} else {
 				frame_num = nframes_-1 - time/frame_time_;
 			}
