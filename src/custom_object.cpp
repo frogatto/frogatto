@@ -613,9 +613,9 @@ void custom_object::set_value(const std::string& key, const variant& value)
 	if(key == "time_in_animation") {
 		time_in_frame_ = value.as_int();
 	} else if(key == "x") {
-		set_pos(value.as_int(), y());
+		set_x(value.as_int());
 	} else if(key == "y") {
-		set_pos(x(), value.as_int());
+		set_y(value.as_int());
 	} else if(key == "z") {
 		zorder_ = value.as_int();
 	} else if(key == "midpoint_x") {
@@ -647,6 +647,8 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		draw_color_[3] = value.as_int();
 	} else if(key == "distortion") {
 		distortion_ = value.try_convert<graphics::raster_distortion>();
+	} else if(key == "current_generator") {
+		set_current_generator(value.try_convert<current_generator>());
 	} else {
 		vars_->add(key, value);
 	}
