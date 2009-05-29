@@ -73,6 +73,7 @@ class editor_menu_dialog : public gui::dialog
 			"New...", "", boost::bind(&editor_menu_dialog::new_level, this),
 			"Open...", "ctrl+o", boost::bind(&editor_menu_dialog::open_level, this),
 			"Save", "ctrl+s", boost::bind(&editor::save_level, &editor_),
+			"Save As...", "", boost::bind(&editor_menu_dialog::save_level_as, this),
 			"Exit", "<esc>", boost::bind(&editor::quit, &editor_),
 		};
 
@@ -175,6 +176,20 @@ public:
 			sys::write_file("data/level/" + name, "[level]\n[/level]\n");
 			editor_.close();
 			editor::edit(name.c_str());
+		}
+	}
+
+	void save_level_as() {
+		using namespace gui;
+		dialog d(0, 0, graphics::screen_width(), graphics::screen_height());
+		d.add_widget(widget_ptr(new label("Save As", graphics::color_white(), 48)));
+		text_entry_widget* entry = new text_entry_widget;
+		d.add_widget(widget_ptr(new label("Name:", graphics::color_white())))
+		 .add_widget(widget_ptr(entry));
+		d.show_modal();
+		
+		if(!d.cancelled() && entry->text().empty() == false) {
+			editor_.save_level_as(entry->text());
 		}
 	}
 
@@ -526,12 +541,15 @@ editor::tileset::tileset(wml::const_node_ptr node)
 	}
 }
 
+namespace {
+//keep a map of editors so that when we edit a level and then later
+//come back to it we'll save all the state we had previously
+static std::map<std::string, editor*> all_editors;
+}
+
 void editor::edit(const char* level_cfg, int xpos, int ypos)
 {
-	//keep a map of editors so that when we edit a level and then later
-	//come back to it we'll save all the state we had previously
-	static std::map<std::string, editor*> editors;
-	editor*& e = editors[level_cfg];
+	editor*& e = all_editors[level_cfg];
 	if(!e) {
 		e = new editor(level_cfg);
 	}
@@ -1416,6 +1434,15 @@ void editor::change_mode(int nmode)
 		cur_item_ = 0;
 		break;
 	}
+}
+
+void editor::save_level_as(const std::string& fname)
+{
+	all_editors.erase(filename_);
+	all_editors[fname] = this;
+	filename_ = fname;
+	save_level();
+	g_last_edited_level = filename_;
 }
 
 void editor::save_level()

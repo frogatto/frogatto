@@ -376,9 +376,7 @@ void character::process(level& lvl)
 			change_to_stand_frame();
 		} else if(current_frame_ == type_->walk_frame()) {
 			time_in_frame_ = 0;
-			if(velocity_x_/100 == 0) {
-				change_to_stand_frame();
-			}
+			change_to_stand_frame();
 		} else if(current_frame_ == type_->push_frame()) {
 			time_in_frame_ = 0;
 		} else if(current_frame_ == type_->fly_frame()) {
@@ -406,7 +404,8 @@ void character::process(level& lvl)
 			handle_event("leave_" + current_frame_->id() + "_anim");
 
 			time_in_frame_ = 0;
-			current_frame_ = type_->run_frame();
+//			current_frame_ = type_->run_frame();
+			change_to_stand_frame();
 		} else if(current_frame_ == type_->roll_frame()) {
 			handle_event("leave_" + current_frame_->id() + "_anim");
 

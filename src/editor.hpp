@@ -80,6 +80,7 @@ public:
 	level& get_level() { return *lvl_; }
 
 	void save_level();
+	void save_level_as(const std::string& filename);
 	void quit() { done_ = true; }
 	void zoom_in();
 	void zoom_out();
@@ -88,6 +89,7 @@ public:
 	void redo_command();
 
 	void close() { done_ = true; }
+
 private:
 	void process_ghost_objects();
 	void remove_ghost_objects();

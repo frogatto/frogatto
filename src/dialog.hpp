@@ -42,6 +42,7 @@ public:
 	void close() { opened_ = false; }
 
 	bool closed() { return !opened_; }
+	bool cancelled() { return cancelled_; }
 	void set_cursor(int x, int y) { add_x_ = x; add_y_ = y; }
 	int cursor_x() const { return add_x_; }
 	int cursor_y() const { return add_y_; }
@@ -60,6 +61,7 @@ protected:
 private:
 	std::vector<widget_ptr> widgets_;
 	bool opened_;
+	bool cancelled_;
 	bool clear_bg_;
 
 	//default padding between widgets

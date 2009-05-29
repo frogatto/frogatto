@@ -188,7 +188,17 @@ private:
 										args()[3]->evaluate(variables).as_int() ));
 	}
 };
-	
+
+class radial_current_function : public function_expression {
+public:
+	explicit radial_current_function(const args_list& args)
+	  : function_expression("radial_current", args, 2, 2)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new radial_current_generator(args()[0]->evaluate(variables).as_int(), args()[1]->evaluate(variables).as_int()));
+	}
+};
 
 class spawn_command : public entity_command_callable
 {
@@ -1038,6 +1048,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new stop_sound_function(args));
 	} else if(fn == "shake_screen") {
 		return expression_ptr(new shake_screen_function(args));
+	} else if(fn == "radial_current") {
+		return expression_ptr(new radial_current_function(args));
 	} else if(fn == "child") {
 		return expression_ptr(new child_function(args));
 	} else if(fn == "hit") {

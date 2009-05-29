@@ -68,8 +68,8 @@ level* load_level(const std::string& lvl)
 }
 
 namespace {
-bool not_cfg_file(const std::string& filename) {
-	return filename.size() < 4 || !std::equal(filename.end() - 4, filename.end(), ".cfg");
+bool hidden_file(const std::string& filename) {
+	return !filename.empty() && filename[0] != '.';
 }
 }
 
@@ -77,6 +77,6 @@ std::vector<std::string> get_known_levels()
 {
 	std::vector<std::string> files;
 	sys::get_files_in_dir("data/level/", &files);
-	files.erase(std::remove_if(files.begin(), files.end(), not_cfg_file), files.end());
+	files.erase(std::remove_if(files.begin(), files.end(), hidden_file), files.end());
 	return files;
 }

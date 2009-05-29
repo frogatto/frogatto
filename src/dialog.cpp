@@ -25,7 +25,7 @@
 namespace gui {
 
 dialog::dialog(int x, int y, int w, int h)
-  : opened_(false), clear_bg_(true), padding_(10),
+  : opened_(false), cancelled_(false), clear_bg_(true), padding_(10),
     add_x_(0), add_y_(0), bg_alpha_(1.0)
 {
 	set_loc(x,y);
@@ -100,6 +100,7 @@ void dialog::show_modal()
 {
     input::pump pump;
 	opened_ = true;
+	cancelled_ = false;
     pump.register_listener(this);
 
 	while(opened_ && pump.process()) {
@@ -171,8 +172,13 @@ bool dialog::handle_event(const SDL_Event& event, bool claimed)
            (event.key.keysym.sym == SDLK_SPACE ||
             event.key.keysym.sym == SDLK_RETURN)) {
             close();
+			cancelled_ = false;
             claimed = true;
-        }
+        } else if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
+			close();
+			cancelled_ = true;
+			claimed = true;
+		}
     }
     claimed |= handle_event_children(event, claimed);
 
