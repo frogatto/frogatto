@@ -43,8 +43,6 @@ custom_object::custom_object(wml::const_node_ptr node)
 		set_respawn(false);
 	}
 
-	memset(draw_color_, 0xFF, sizeof(draw_color_));
-
 	assert(type_.get());
 	set_frame(frame_name_);
 
@@ -83,7 +81,6 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 		set_label(buf);
 	}
 
-	memset(draw_color_, 0xFF, sizeof(draw_color_));
 	assert(type_.get());
 	set_frame(frame_name_);
 
@@ -164,16 +161,33 @@ void custom_object::draw() const
 		return;
 	}
 
-	static const uint32_t DefaultColor = 0xFFFFFFFF;
-	if(draw_color_int_ != DefaultColor) {
-		glColor4ubv(draw_color_);
+	if(draw_color_) {
+		draw_color_->to_color().set_as_current_color();
 	}
 
 	frame_->draw(x(), y(), face_right(), upside_down(), time_in_frame_, rotate_);
-	if(draw_color_int_ != DefaultColor) {
+
+	if(draw_color_) {
+		if(!draw_color_->fits_in_color()) {
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+			graphics::color_transform transform = *draw_color_;
+			while(!transform.fits_in_color()) {
+				transform = transform - transform.to_color();
+				transform.to_color().set_as_current_color();
+				frame_->draw(x(), y(), face_right(), upside_down(), time_in_frame_, rotate_);
+			}
+
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		}
+
 		static const uint8_t AllWhite[4] = {0xFF, 0xFF, 0xFF, 0xFF};
 		glColor4ubv(AllWhite);
 	}
+
+//	if(draw_color_int_ != DefaultColor) {
+//		static const uint8_t AllWhite[4] = {0xFF, 0xFF, 0xFF, 0xFF};
+//		glColor4ubv(AllWhite);
+//	}
 
 	draw_debug_rects();
 }
@@ -572,13 +586,13 @@ variant custom_object::get_value(const std::string& key) const
 	} else if(key == "stood_on") {
 		return variant(stood_on_by_.size());
 	} else if(key == "red") {
-		return variant(draw_color_[0]);
+		return variant(draw_color().r());
 	} else if(key == "green") {
-		return variant(draw_color_[1]);
+		return variant(draw_color().g());
 	} else if(key == "blue") {
-		return variant(draw_color_[2]);
+		return variant(draw_color().b());
 	} else if(key == "alpha") {
-		return variant(draw_color_[3]);
+		return variant(draw_color().a());
 	} else if(key == "damage") {
 		return variant(current_frame().damage());
 	} else if(key == "hit_by") {
@@ -638,13 +652,17 @@ void custom_object::set_value(const std::string& key, const variant& value)
 	} else if(key == "rotate") {
 		rotate_ = value.as_int();
 	} else if(key == "red") {
-		draw_color_[0] = value.as_int();
+		make_draw_color();
+		draw_color_->buf()[0] = value.as_int();
 	} else if(key == "green") {
-		draw_color_[1] = value.as_int();
+		make_draw_color();
+		draw_color_->buf()[1] = value.as_int();
 	} else if(key == "blue") {
-		draw_color_[2] = value.as_int();
+		make_draw_color();
+		draw_color_->buf()[2] = value.as_int();
 	} else if(key == "alpha") {
-		draw_color_[3] = value.as_int();
+		make_draw_color();
+		draw_color_->buf()[3] = value.as_int();
 	} else if(key == "distortion") {
 		distortion_ = value.try_convert<graphics::raster_distortion>();
 	} else if(key == "current_generator") {
@@ -815,4 +833,21 @@ void custom_object::execute_command(const variant& var)
 			}
 		}
 	}
+}
+
+void custom_object::make_draw_color()
+{
+	if(!draw_color_.get()) {
+		draw_color_.reset(new graphics::color_transform(draw_color()));
+	}
+}
+
+const graphics::color_transform& custom_object::draw_color() const
+{
+	if(draw_color_.get()) {
+		return *draw_color_;
+	}
+
+	static const graphics::color_transform white(0xFF, 0xFF, 0xFF, 0xFF);
+	return white;
 }

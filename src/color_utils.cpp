@@ -1,3 +1,4 @@
+#include <sstream>
 #include <string>
 #include <vector>
 #include <GL/gl.h>
@@ -19,7 +20,7 @@ SDL_Color string_to_color(const std::string& str)
 	return res;
 }
 
-using namespace graphics;
+namespace graphics {
 
 color::color( int r, int g, int b, int a)
 {
@@ -80,7 +81,112 @@ void color::set_as_current_color() const
 {
 	glColor4ubv(c_.rgba);
 }
-	
+
+color_transform::color_transform(const color& c)
+{
+	rgba_[0] = c.r();
+	rgba_[1] = c.g();
+	rgba_[2] = c.b();
+	rgba_[3] = c.a();
+}
+
+color_transform::color_transform(uint16_t r, uint16_t g, uint16_t b, uint16_t a)
+{
+	rgba_[0] = r;
+	rgba_[1] = g;
+	rgba_[2] = b;
+	rgba_[3] = a;
+}
+
+color_transform::color_transform(const std::string& str)
+{
+	std::fill(rgba_, rgba_ + 4, 255);
+	std::vector<std::string> components = util::split(str);
+	for(int n = 0; n != components.size(); ++n) {
+		if(n < 4) {
+			rgba_[n] = atoi(components[n].c_str());
+		}
+	}
+}
+
+std::string color_transform::to_string() const
+{
+	std::ostringstream s;
+	for(int n = 0; n != 4; ++n) {
+		if(n) {
+			s << ",";
+		}
+
+		s << rgba_[n];
+	}
+
+	return s.str();
+}
+
+variant color_transform::get_value(const std::string& key) const
+{
+	if(key == "r"){
+		return variant(r());
+	} else if(key == "g"){
+		return variant(g());
+	} else if(key == "b"){
+		return variant(b());
+	} else if(key == "a"){
+		return variant(a());
+	} else {
+		return variant();
+	}
+}
+
+namespace {
+uint16_t clip(uint16_t val) {
+	return val > 255 ? 255 : val;
+	if(val > 255) {
+		val = 255;
+	}
+
+	return val;
+}
+}
+
+color color_transform::to_color() const
+{
+	return color(clip(r()),clip(g()),clip(b()),clip(a()));
+}
+
+bool color_transform::fits_in_color() const
+{
+	for(int n = 0; n != 4; ++n) {
+		if(rgba_[n] > 255) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+color_transform operator+(const color_transform& a, const color_transform& b)
+{
+	return color_transform(a.r() + b.r(), a.g() + b.g(), a.b() + b.b(), std::max(a.a(), b.a()));
+}
+
+color_transform operator-(const color_transform& a, const color_transform& b)
+{
+	color_transform result = a;
+	for(int n = 0; n != 3; ++n) {
+		if(result.buf()[n] > b.buf()[n]) {
+			result.buf()[n] -= b.buf()[n];
+		} else {
+			result.buf()[n] = 0;
+		}
+	}
+
+	if(result.buf()[3] > 255) {
+		result.buf()[3] = 255;
+	}
+
+	return result;
+}
 
 UNIT_TEST(color)
 {
@@ -100,4 +206,6 @@ UNIT_TEST(color)
 
 	//check that we can get a value out of a color
 	CHECK_EQ(color(255,128,64,0).get_value("g").as_int(), 128);
+}
+
 }

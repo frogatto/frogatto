@@ -45,6 +45,36 @@ class color : public game_logic::formula_callable
 		return p;
 	}
 };
+
+class color_transform : public game_logic::formula_callable
+{
+public:
+	color_transform(const color& c);
+	color_transform(uint16_t r, uint16_t g, uint16_t b, uint16_t a);
+	explicit color_transform(const std::string& str);
+
+	std::string to_string() const;
+
+	uint16_t r() const { return rgba_[0]; }
+	uint16_t g() const { return rgba_[1]; }
+	uint16_t b() const { return rgba_[2]; }
+	uint16_t a() const { return rgba_[3]; }
+
+	uint16_t* buf() { return rgba_; }
+	const uint16_t* buf() const { return rgba_; }
 	
+	variant get_value(const std::string& key) const;
+
+	color to_color() const;
+
+	//whether this fits in a color object.
+	bool fits_in_color() const;
+private:
+	uint16_t rgba_[4];
+};
+
+color_transform operator+(const color_transform& a, const color_transform& b);
+color_transform operator-(const color_transform& a, const color_transform& b);
+
 }
 #endif

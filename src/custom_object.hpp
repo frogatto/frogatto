@@ -1,8 +1,10 @@
 #ifndef CUSTOM_OBJECT_HPP_INCLUDED
 #define CUSTOM_OBJECT_HPP_INCLUDED
 
+#include <boost/shared_ptr.hpp>
 #include <inttypes.h>
 
+#include "color_utils.hpp"
 #include "custom_object_type.hpp"
 #include "entity.hpp"
 #include "formula.hpp"
@@ -70,8 +72,6 @@ public:
 
 	entity_ptr clone() const;
 
-	uint8_t* color_buf() { return draw_color_; }
-
 private:
 	virtual void control(const level& lvl);
 
@@ -117,10 +117,9 @@ private:
 
 	graphics::const_raster_distortion_ptr distortion_;
 
-	union {
-	uint8_t draw_color_[4];
-	uint32_t draw_color_int_;
-	};
+	void make_draw_color();
+	const graphics::color_transform& draw_color() const;
+	boost::shared_ptr<graphics::color_transform> draw_color_;
 };
 
 #endif
