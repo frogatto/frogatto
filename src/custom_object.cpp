@@ -663,6 +663,11 @@ void custom_object::set_value(const std::string& key, const variant& value)
 	} else if(key == "alpha") {
 		make_draw_color();
 		draw_color_->buf()[3] = value.as_int();
+	} else if(key == "brightness"){
+		make_draw_color();
+		draw_color_->buf()[0] = value.as_int();
+		draw_color_->buf()[1] = value.as_int();
+		draw_color_->buf()[2] = value.as_int();
 	} else if(key == "distortion") {
 		distortion_ = value.try_convert<graphics::raster_distortion>();
 	} else if(key == "current_generator") {
