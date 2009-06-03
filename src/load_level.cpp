@@ -69,7 +69,7 @@ level* load_level(const std::string& lvl)
 
 namespace {
 bool hidden_file(const std::string& filename) {
-	return !filename.empty() && filename[0] != '.';
+	return !filename.empty() && filename[0] == '.';
 }
 }
 
