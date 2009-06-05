@@ -1547,7 +1547,7 @@ void editor::draw() const
 	graphics::blit_texture(t, x, y);
 	}
 
-	if(mode_ == EDIT_PROPS || mode_ == EDIT_CHARS) {
+	if(mode_ == EDIT_PROPS || (mode_ == EDIT_CHARS && !lvl_->editor_selection())) {
 		int x = round_tile_size(xpos_ + mousex*zoom_);
 		int y = round_tile_size(ypos_ + mousey*zoom_);
 		if(ctrl_pressed) {
