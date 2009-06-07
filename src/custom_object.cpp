@@ -550,9 +550,12 @@ variant custom_object::get_value(const std::string& key) const
 	} else if(key == "h") {
 		return variant(body_rect().h());
 	} else if(key == "midpoint_x") {
-		return variant(body_rect().x() + body_rect().w()/2);
+		//note that we're taking the image midpoint, NOT the collision-rect midpoint
+		//in practice, we've always calculated this from the image for our scripting,
+		//and many object actually lack non-zero collision-rect widths.
+		return variant(x() + current_frame().width()/2);
 	} else if(key == "midpoint_y") {
-		return variant(body_rect().y() + body_rect().h()/2);
+		return variant(y() + current_frame().height()/2);
 	} else if(key == "img_w") {
 		return variant(current_frame().width());
 	} else if(key == "img_h") {
