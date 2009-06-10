@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "asserts.hpp"
+#include "current_generator.hpp"
 #include "custom_object_functions.hpp"
 #include "custom_object.hpp"
 #include "debug_console.hpp"
@@ -1018,6 +1019,23 @@ private:
 	}
 };
 
+class rect_current_function : public function_expression {
+public:
+	explicit rect_current_function(const args_list& args)
+           : function_expression("rect_current", args, 6) {
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new rect_current_generator(rect(
+		                  args()[0]->evaluate(variables).as_int(),
+		                  args()[1]->evaluate(variables).as_int(),
+		                  args()[2]->evaluate(variables).as_int(),
+		                  args()[3]->evaluate(variables).as_int()),
+		                  args()[4]->evaluate(variables).as_int(),
+		                  args()[5]->evaluate(variables).as_int()));
+	}
+};
+
 class custom_object_function_symbol_table : public function_symbol_table
 {
 public:
@@ -1094,6 +1112,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new teleport_function(args));
 	} else if(fn == "add_wave") {
 		return expression_ptr(new add_wave_function(args));
+	} else if(fn == "rect_current") {
+		return expression_ptr(new rect_current_function(args));
 	}
 	return function_symbol_table::create_function(fn, args);
 }
