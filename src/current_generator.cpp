@@ -35,7 +35,7 @@ radial_current_generator::radial_current_generator(wml::const_node_ptr node)
     radius_(wml::get_int(node, "radius"))
 {}
 
-void radial_current_generator::generate(int center_x, int center_y, int target_x, int target_y, int* velocity_x, int* velocity_y) {
+void radial_current_generator::generate(int center_x, int center_y, int target_x, int target_y, int target_mass, int* velocity_x, int* velocity_y) {
 	if(center_x == target_x && center_y == target_y) {
 		return;
 	}
@@ -69,19 +69,44 @@ wml::node_ptr radial_current_generator::write() const
 	return result;
 }
 
-rect_current_generator::rect_current_generator(const rect& r, int xdir, int ydir)
-  : rect_(r), xdir_(xdir), ydir_(ydir)
+rect_current_generator::rect_current_generator(const rect& r, int xvelocity, int yvelocity, int strength)
+  : rect_(r), xvelocity_(xvelocity), yvelocity_(yvelocity), strength_(strength)
 {}
 
 rect_current_generator::rect_current_generator(wml::const_node_ptr node)
-  : rect_(node->attr("rect")), xdir_(wml::get_int(node, "xdir")), ydir_(wml::get_int(node, "ydir"))
+  : rect_(node->attr("rect")), xvelocity_(wml::get_int(node, "xvelocity")), yvelocity_(wml::get_int(node, "yvelocity")), strength_(wml::get_int(node, "strength"))
 {}
 
-void rect_current_generator::generate(int center_x, int center_y, int target_x, int target_y, int* velocity_x, int* velocity_y)
+void rect_current_generator::generate(int center_x, int center_y, int target_x, int target_y, int target_mass, int* velocity_x, int* velocity_y)
 {
 	if(point_in_rect(point(target_x, target_y), rect_)) {
-		*velocity_x += xdir_;
-		*velocity_y += ydir_;
+		if(xvelocity_ > 0 && *velocity_x < xvelocity_) {
+			const int amount = (xvelocity_ - *velocity_x)*strength_/(target_mass*1000);
+			*velocity_x += amount;
+			if(*velocity_x > xvelocity_) {
+				*velocity_x = xvelocity_;
+			}
+		} else if(xvelocity_ < 0 && *velocity_x > xvelocity_) {
+			const int amount = (xvelocity_ - *velocity_x)*strength_/(target_mass*1000);
+			*velocity_x += amount;
+			if(*velocity_x < xvelocity_) {
+				*velocity_x = xvelocity_;
+			}
+		}
+
+		if(yvelocity_ > 0 && *velocity_y < yvelocity_) {
+			const int amount = (yvelocity_ - *velocity_y)*strength_/(target_mass*1000);
+			*velocity_y += amount;
+			if(*velocity_y > yvelocity_) {
+				*velocity_y = yvelocity_;
+			}
+		} else if(yvelocity_ < 0 && *velocity_y > yvelocity_) {
+			const int amount = (yvelocity_ - *velocity_y)*strength_/(target_mass*1000);
+			*velocity_y += amount;
+			if(*velocity_y < yvelocity_) {
+				*velocity_y = yvelocity_;
+			}
+		}
 	}
 }
 
@@ -90,7 +115,8 @@ wml::node_ptr rect_current_generator::write() const
 	wml::node_ptr node(new wml::node("current_generator"));
 	node->set_attr("type", "rect");
 	node->set_attr("rect", rect_.to_string());
-	node->set_attr("xdir", formatter() << xdir_);
-	node->set_attr("ydir", formatter() << ydir_);
+	node->set_attr("xvelocity", formatter() << xvelocity_);
+	node->set_attr("yvelocity", formatter() << yvelocity_);
+	node->set_attr("strength", formatter() << strength_);
 	return node;
 }

@@ -1614,17 +1614,25 @@ void level::get_current(const entity& e, int* velocity_x, int* velocity_y) const
 
 	int delta_x = 0, delta_y = 0;
 	if(is_underwater(e.body_rect())) {
+		delta_x += *velocity_x;
+		delta_y += *velocity_y;
 		water_->get_current(e, &delta_x, &delta_y);
-	}
-
-	foreach(const entity_ptr& c, active_chars_) {
-		if(c.get() != &e) {
-			c->generate_current(e, &delta_x, &delta_y);
-		}
+		delta_x -= *velocity_x;
+		delta_y -= *velocity_y;
 	}
 
 	delta_x /= e.mass();
 	delta_y /= e.mass();
+
+	foreach(const entity_ptr& c, active_chars_) {
+		if(c.get() != &e) {
+			delta_x += *velocity_x;
+			delta_y += *velocity_y;
+			c->generate_current(e, &delta_x, &delta_y);
+			delta_x -= *velocity_x;
+			delta_y -= *velocity_y;
+		}
+	}
 
 	std::cerr << "CURRENT: " << delta_x << "," << delta_y << "\n";
 

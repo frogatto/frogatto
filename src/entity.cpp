@@ -119,7 +119,7 @@ void entity::generate_current(const entity& target, int* velocity_x, int* veloci
 		const rect& my_rect = body_rect();
 		const rect& target_rect = target.body_rect();
 		current_generator_->generate(my_rect.mid_x(), my_rect.mid_y(),
-		                             target_rect.mid_x(), target_rect.mid_y(),
+		                             target_rect.mid_x(), target_rect.mid_y(), target.mass(),
 		                             velocity_x, velocity_y);
 	}
 }

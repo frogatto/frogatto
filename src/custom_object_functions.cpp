@@ -1022,7 +1022,7 @@ private:
 class rect_current_function : public function_expression {
 public:
 	explicit rect_current_function(const args_list& args)
-           : function_expression("rect_current", args, 6) {
+           : function_expression("rect_current", args, 7) {
 	}
 private:
 	variant execute(const formula_callable& variables) const {
@@ -1032,7 +1032,8 @@ private:
 		                  args()[2]->evaluate(variables).as_int(),
 		                  args()[3]->evaluate(variables).as_int()),
 		                  args()[4]->evaluate(variables).as_int(),
-		                  args()[5]->evaluate(variables).as_int()));
+		                  args()[5]->evaluate(variables).as_int(),
+		                  args()[6]->evaluate(variables).as_int()));
 	}
 };
 

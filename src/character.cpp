@@ -1184,7 +1184,7 @@ void character::generate_current(const entity& target, int* velocity_x, int* vel
 		const rect& my_rect = body_rect();
 		const rect& target_rect = target.body_rect();
 		type_->current_generator()->generate(my_rect.mid_x(), my_rect.mid_y(),
-		                                     target_rect.mid_x(), target_rect.mid_y(),
+		                                     target_rect.mid_x(), target_rect.mid_y(), target.mass(),
 		                                     velocity_x, velocity_y);
 	}
 
