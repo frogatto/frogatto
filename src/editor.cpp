@@ -44,6 +44,15 @@
 #include "wml_utils.hpp"
 #include "wml_writer.hpp"
 
+namespace {
+//keep a map of editors so that when we edit a level and then later
+//come back to it we'll save all the state we had previously
+static std::map<std::string, editor*> all_editors;
+
+//the last level we edited
+std::string g_last_edited_level;
+}
+
 class editor_menu_dialog : public gui::dialog
 {
 	struct menu_item {
@@ -105,6 +114,19 @@ class editor_menu_dialog : public gui::dialog
 		show_menu(res);
 	}
 
+	void show_window_menu() {
+		std::vector<menu_item> res;
+		for(std::map<std::string, editor*>::const_iterator i = all_editors.begin(); i != all_editors.end(); ++i) {
+			std::string name = i->first;
+			if(name == g_last_edited_level) {
+				name += " *";
+			}
+			menu_item item = { name, "", boost::bind(&editor_menu_dialog::open_level_in_editor, this, i->first) };
+			res.push_back(item);
+		}
+		show_menu(res);
+	}
+
 	void show_menu(const std::vector<menu_item>& items) {
 		using namespace gui;
 		gui::grid* grid = new gui::grid(2);
@@ -142,7 +164,7 @@ public:
 		clear();
 
 		using namespace gui;
-		gui::grid* grid = new gui::grid(3);
+		gui::grid* grid = new gui::grid(4);
 		grid->add_col(widget_ptr(
 		  new button(widget_ptr(new label("File", graphics::color_white())),
 		             boost::bind(&editor_menu_dialog::show_file_menu, this))));
@@ -152,6 +174,9 @@ public:
 		grid->add_col(widget_ptr(
 		  new button(widget_ptr(new label("View", graphics::color_white())),
 		             boost::bind(&editor_menu_dialog::show_view_menu, this))));
+		grid->add_col(widget_ptr(
+		  new button(widget_ptr(new label("Window", graphics::color_white())),
+		             boost::bind(&editor_menu_dialog::show_window_menu, this))));
 		add_widget(widget_ptr(grid));
 	}
 
@@ -168,7 +193,7 @@ public:
 		if(name.empty() == false) {
 			sys::write_file("data/level/" + name, "[level]\n[/level]\n");
 			editor_.close();
-			editor::edit(name.c_str());
+			g_last_edited_level = name;
 		}
 	}
 
@@ -187,10 +212,15 @@ public:
 	}
 
 	void open_level() {
-		std::string result = show_choose_level_dialog("Open Level");
-		if(result.empty() == false) {
+		open_level_in_editor(show_choose_level_dialog("Open Level"));
+	}
+
+	void open_level_in_editor(const std::string& lvl) {
+		if(lvl.empty() == false && lvl != g_last_edited_level) {
+			remove_widget(context_menu_);
+			context_menu_.reset();
 			editor_.close();
-			editor::edit(result.c_str());
+			g_last_edited_level = lvl;
 		}
 	}
 };
@@ -510,12 +540,6 @@ editor::tileset::tileset(wml::const_node_ptr node)
 	}
 }
 
-namespace {
-//keep a map of editors so that when we edit a level and then later
-//come back to it we'll save all the state we had previously
-static std::map<std::string, editor*> all_editors;
-}
-
 void editor::edit(const char* level_cfg, int xpos, int ypos)
 {
 	editor*& e = all_editors[level_cfg];
@@ -529,10 +553,10 @@ void editor::edit(const char* level_cfg, int xpos, int ypos)
 	}
 
 	e->edit_level();
-}
-
-namespace {
-std::string g_last_edited_level;
+	if(g_last_edited_level != level_cfg) {
+		//a new level was set, so start editing it now.
+		edit(g_last_edited_level.c_str());
+	}
 }
 
 std::string editor::last_edited_level()
