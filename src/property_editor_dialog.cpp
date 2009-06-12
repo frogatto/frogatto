@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "button.hpp"
+#include "editor_dialogs.hpp"
 #include "foreach.hpp"
 #include "grid_widget.hpp"
 #include "image_widget.hpp"
@@ -106,50 +107,11 @@ void property_editor_dialog::change_property(const std::string& id, int change)
 
 void property_editor_dialog::change_level_property(const std::string& id)
 {
-	using namespace gui;
-	gui::grid* grid = new gui::grid(1);
-	grid->set_show_background(true);
-	grid->allow_selection();
-	grid->register_selection_callback(boost::bind(&property_editor_dialog::set_level_property, this, id, _1));
-	
-	std::vector<std::string> levels = get_known_levels();
-	foreach(const std::string& lvl, levels) {
-		grid->add_col(widget_ptr(new label(lvl, graphics::color_white())));
-	}
-
-	int mousex, mousey;
-	SDL_GetMouseState(&mousex, &mousey);
-	mousex -= x();
-	mousey -= y();
-
-	if(grid->height() > graphics::screen_height() - mousey) {
-		mousey = graphics::screen_height() - grid->height();
-	}
-
-	if(grid->width() > graphics::screen_width() - mousex) {
-		mousex = graphics::screen_width() - grid->width();
-	}
-
-	remove_widget(context_menu_);
-	context_menu_.reset(grid);
-	add_widget(context_menu_, mousex, mousey);
-}
-
-void property_editor_dialog::set_level_property(const std::string& id, int index)
-{
-	remove_widget(context_menu_);
-	context_menu_.reset();
-
-	std::vector<std::string> levels = get_known_levels();
-	if(index < 0 || index >= levels.size()) {
+	std::string lvl = show_choose_level_dialog("Set " + id);
+	if(lvl.empty() == false) {
+		entity_->mutate_value(id, variant(lvl));
 		init();
-		return;
 	}
-
-	const std::string& lvl = levels[index];
-	entity_->mutate_value(id, variant(lvl));
-
-	init();
 }
 
 void property_editor_dialog::set_label_dialog()
@@ -160,8 +122,19 @@ void property_editor_dialog::set_label_dialog()
 	d.add_widget(widget_ptr(new label("Label:", graphics::color_white())))
 	 .add_widget(widget_ptr(entry));
 	d.show_modal();
+
+	//we have to add and remove the character from the level to
+	//modify their label properly.
+	editor_.get_level().remove_character(entity_);
 	entity_->set_label(entry->text());
+	editor_.get_level().add_character(entity_);
 	init();
+}
+
+namespace {
+bool hidden_label(const std::string& label) {
+	return label.empty() || label[0] == '_';
+}
 }
 
 void property_editor_dialog::change_label_property(const std::string& id)
@@ -185,6 +158,8 @@ void property_editor_dialog::change_label_property(const std::string& id)
 	if(!loaded_level) {
 		editor_.get_level().get_all_labels(labels);
 	}
+
+	labels.erase(std::remove_if(labels.begin(), labels.end(), hidden_label), labels.end());
 
 	if(labels.empty() == false) {
 		gui::grid* grid = new gui::grid(1);

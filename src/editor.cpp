@@ -15,6 +15,7 @@
 #include "character_type.hpp"
 #include "draw_tile.hpp"
 #include "editor.hpp"
+#include "editor_dialogs.hpp"
 #include "entity.hpp"
 #include "filesystem.hpp"
 #include "font.hpp"
@@ -45,14 +46,6 @@
 
 class editor_menu_dialog : public gui::dialog
 {
-	void do_open_level(dialog* d, const std::vector<std::string>& levels, int index, std::string* result) {
-		if(index >= 0 && index < levels.size()) {
-			d->close();
-			editor_.close();
-			*result = levels[index];
-		}
-	}
-
 	struct menu_item {
 		std::string description;
 		std::string hotkey;
@@ -194,33 +187,9 @@ public:
 	}
 
 	void open_level() {
-		using namespace gui;
-		dialog d(0, 0, graphics::screen_width(), graphics::screen_height());
-		d.add_widget(widget_ptr(new label("Open Level", graphics::color_white(), 48)));
-
-		std::string result;
-		const int levels_per_col = 20;
-		std::vector<std::string> levels = get_known_levels();
-		gui::grid* parent_grid = new gui::grid(levels.size()/levels_per_col + (levels.size()%levels_per_col ? 1 : 0));
-		int index = 0;
-		while(index < levels.size()) {
-			const int end = std::min(index + levels_per_col, static_cast<int>(levels.size()));
-			gui::grid* grid = new gui::grid(1);
-			grid->set_show_background(true);
-			grid->allow_selection();
-
-			std::vector<std::string> levels_portion(levels.begin() + index, levels.end());
-			grid->register_selection_callback(boost::bind(&editor_menu_dialog::do_open_level, this, &d, levels_portion, _1, &result));
-			while(index != end) {
-				grid->add_col(widget_ptr(new label(levels[index], graphics::color_white())));
-				++index;
-			}
-			parent_grid->add_col(widget_ptr(grid));
-		}
-
-		d.add_widget(widget_ptr(parent_grid));
-		d.show_modal();
+		std::string result = show_choose_level_dialog("Open Level");
 		if(result.empty() == false) {
+			editor_.close();
 			editor::edit(result.c_str());
 		}
 	}

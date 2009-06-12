@@ -42,6 +42,7 @@ public:
 
 	const std::string& label() const { return label_; }
 	void set_label(const std::string& lb) { label_ = lb; }
+	void set_distinct_label();
 	
 	void set_pos(const point& p) { x_ = p.x*100; y_ = p.y*100; }
 	void set_pos(int x, int y) { x_ = x*100; y_ = y*100; }

@@ -33,10 +33,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 	if(node->has_attr("label")) {
 		set_label(node->attr("label"));
 	} else {
-		//generate a random label for the object
-		char buf[64];
-		sprintf(buf, "_%x", rand());
-		set_label(buf);
+		set_distinct_label();
 	}
 
 	if(!type_->respawns()) {
@@ -792,7 +789,9 @@ const frame& custom_object::icon_frame() const
 
 entity_ptr custom_object::clone() const
 {
-	return entity_ptr(new custom_object(*this));
+	entity_ptr res(new custom_object(*this));
+	res->set_distinct_label();
+	return res;
 }
 
 void custom_object::handle_event(const std::string& event, const formula_callable* context)

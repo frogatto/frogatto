@@ -128,3 +128,11 @@ void entity::set_current_generator(current_generator* generator)
 {
 	current_generator_ = current_generator_ptr(generator);
 }
+
+void entity::set_distinct_label()
+{
+	//generate a random label for the object
+	char buf[64];
+	sprintf(buf, "_%x", rand());
+	set_label(buf);
+}
