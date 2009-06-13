@@ -296,7 +296,7 @@ class editor_mode_dialog : public gui::dialog
 					mode = editor::EDIT_TILES;
 					break;
 				case SDLK_o:
-					mode = editor::EDIT_PROPS;
+					mode = editor::EDIT_CHARS;
 					break;
 				case SDLK_v:
 					mode = editor::EDIT_VARIATIONS;
