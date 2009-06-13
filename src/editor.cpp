@@ -341,7 +341,7 @@ public:
 		grid_ptr grid(new gui::grid(3));
 		for(int n = 0; n != editor::NUM_TOOLS; ++n) {
 			button_ptr tool_button(
-			  new button(widget_ptr(new gui_section_widget(ToolIcons[n], 32, 32)),
+			  new button(widget_ptr(new gui_section_widget(ToolIcons[n], 26, 26)),
 			             boost::bind(&editor_mode_dialog::select_tool, this, n)));
 			tool_button->set_tooltip(ToolStrings[n]);
 			grid->add_col(widget_ptr(new border_widget(tool_button, n == editor_.tool() ? graphics::color(255,255,255,255) : graphics::color(0,0,0,0))));
