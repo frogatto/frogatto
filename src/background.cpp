@@ -36,22 +36,20 @@ background::background(const wml::const_node_ptr& node)
 	width_ = wml::get_int(node, "width");
 	height_ = wml::get_int(node, "height");
 
-	wml::node::const_child_iterator i1 = node->begin_child("layer");
-	wml::node::const_child_iterator i2 = node->end_child("layer");
-	for(; i1 != i2; ++i1) {
+	FOREACH_WML_CHILD(layer_node, node, "layer") {
 		layer bg;
-		bg.image = (*i1->second)["image"];
-		bg.image_formula = i1->second->attr("image_formula");
-		bg.xscale = wml::get_int(i1->second, "xscale", 100);
-		bg.yscale = wml::get_int(i1->second, "yscale", 100);
-		bg.xspeed = wml::get_int(i1->second, "xspeed", 0);
-		bg.yoffset = wml::get_int(i1->second, "yoffset", 0);
-		bg.scale = wml::get_int(i1->second, "scale", 1);
+		bg.image = (*layer_node)["image"];
+		bg.image_formula = layer_node->attr("image_formula");
+		bg.xscale = wml::get_int(layer_node, "xscale", 100);
+		bg.yscale = wml::get_int(layer_node, "yscale", 100);
+		bg.xspeed = wml::get_int(layer_node, "xspeed", 0);
+		bg.yoffset = wml::get_int(layer_node, "yoffset", 0);
+		bg.scale = wml::get_int(layer_node, "scale", 1);
 		if(bg.scale < 1) {
 			bg.scale = 1;
 		}
 
-		std::string blend_mode = i1->second->attr("mode");
+		std::string blend_mode = layer_node->attr("mode");
 		if ( blend_mode == "GL_MAX"){
 			bg.mode = GL_MAX;
 		}else if (blend_mode == "GL_MIN"){
@@ -61,15 +59,15 @@ background::background(const wml::const_node_ptr& node)
 		}
 		
 		std::fill(bg.color, bg.color + 4, 0.0);
-		bg.color[0] = wml::get_attr<GLfloat>(i1->second, "red", 1.0);
-		bg.color[1] = wml::get_attr<GLfloat>(i1->second, "green", 1.0);
-		bg.color[2] = wml::get_attr<GLfloat>(i1->second, "blue", 1.0);
-		bg.color[3] = wml::get_attr<GLfloat>(i1->second, "alpha", 1.0);
+		bg.color[0] = wml::get_attr<GLfloat>(layer_node, "red", 1.0);
+		bg.color[1] = wml::get_attr<GLfloat>(layer_node, "green", 1.0);
+		bg.color[2] = wml::get_attr<GLfloat>(layer_node, "blue", 1.0);
+		bg.color[3] = wml::get_attr<GLfloat>(layer_node, "alpha", 1.0);
 
-		bg.y1 = wml::get_attr<int>(i1->second, "y1");
-		bg.y2 = wml::get_attr<int>(i1->second, "y2");
+		bg.y1 = wml::get_attr<int>(layer_node, "y1");
+		bg.y2 = wml::get_attr<int>(layer_node, "y2");
 
-		bg.foreground = wml::get_bool(i1->second, "foreground", false);
+		bg.foreground = wml::get_bool(layer_node, "foreground", false);
 		layers_.push_back(bg);
 	}
 }
