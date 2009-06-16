@@ -38,7 +38,11 @@ private:
 		int xspeed;				//speed is how fast (in millipixels/cycle) the bg moves on its own.  It's for drifting clounds/rivers.
 		int scale;				//a multiplier on the dimensions of the image.  Usually unused.
 		int yoffset;			
-		GLfloat color[4];		
+		GLfloat color[4];
+		
+		GLenum mode;			//Do we use the regular 'GL_FUNC_ADD' blend mode, or do we do something special?  Examples:
+								//GL_MAX ->  Max(src,dest) pixels, displays whichever's brighter.  Useful for clouds.
+								//GL_MIN ->  vice-versa, useful for spooky mist.
 
 		// Top and bottom edges of the background.
 		mutable int y1, y2;
