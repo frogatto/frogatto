@@ -637,7 +637,7 @@ void level::draw(int x, int y, int w, int h) const
 	draw_debug_solid(x, y, w, h);
 
 	if(background_) {
-		background_->draw_foreground(start_x, start_y, 0.0);
+		background_->draw_foreground(start_x, start_y, 0.0, cycle());
 	}
 
 	if( tint_.a() > 0){
@@ -691,7 +691,7 @@ void level::draw_background(double x, double y, int rotation) const
 	}
 
 	if(background_) {
-		background_->draw(x, y, rotation);
+		background_->draw(x, y, rotation, cycle());
 	}
 }
 

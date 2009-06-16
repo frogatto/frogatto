@@ -44,6 +44,7 @@ background::background(const wml::const_node_ptr& node)
 		bg.image_formula = i1->second->attr("image_formula");
 		bg.xscale = wml::get_int(i1->second, "xscale", 100);
 		bg.yscale = wml::get_int(i1->second, "yscale", 100);
+		bg.xspeed = wml::get_int(i1->second, "xspeed", 0);
 		bg.yoffset = wml::get_int(i1->second, "yoffset", 0);
 		bg.scale = wml::get_int(i1->second, "scale", 1);
 		if(bg.scale < 1) {
@@ -80,6 +81,7 @@ wml::node_ptr background::write() const
 		node->set_attr("image", bg.image);
 		node->set_attr("xscale", formatter() << bg.xscale);
 		node->set_attr("yscale", formatter() << bg.yscale);
+		node->set_attr("xspeed", formatter() << bg.xspeed);
 		node->set_attr("yoffset", formatter() << bg.yoffset);
 		node->set_attr("y1", formatter() << bg.y1);
 		node->set_attr("y2", formatter() << bg.y2);
@@ -98,7 +100,7 @@ wml::node_ptr background::write() const
 	return res;
 }
 
-void background::draw(double xpos, double ypos, int rotation) const
+void background::draw(double xpos, double ypos, int rotation, int cycle) const
 {
 	const int max_x = width_ - graphics::screen_width();
 	const int max_y = height_ - graphics::screen_height();
@@ -158,21 +160,21 @@ void background::draw(double xpos, double ypos, int rotation) const
 
 	foreach(const layer& bg, layers_) {
 		if(bg.foreground == false) {
-			draw_layer(xpos, ypos, rotation, bg);
+			draw_layer(xpos, ypos, rotation, bg, cycle);
 		}
 	}
 }
 
-void background::draw_foreground(double xpos, double ypos, int rotation) const
+void background::draw_foreground(double xpos, double ypos, int rotation, int cycle) const
 {
 	foreach(const layer& bg, layers_) {
 		if(bg.foreground) {
-			draw_layer(xpos, ypos, rotation, bg);
+			draw_layer(xpos, ypos, rotation, bg, cycle);
 		}
 	}
 }
 
-void background::draw_layer(int x, int y, int rotation, const background::layer& bg) const
+void background::draw_layer(int x, int y, int rotation, const background::layer& bg, int cycle) const
 {
 	int screen_width = graphics::screen_width();
 
@@ -190,7 +192,7 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 
 	const double ScaleImage = 2.0;
 	const double xscale = double(bg.xscale)/100.0;
-	const double xpos = int(double(x)*xscale)/double(bg.texture.width()*ScaleImage);
+	const double xpos = (-double(bg.xspeed)*double(cycle)/1000 + int(double(x)*xscale))/double(bg.texture.width()*ScaleImage);
 	const double xpos2 = xpos + double(screen_width)/(bg.texture.width()*ScaleImage);
 	
 	glPushMatrix();

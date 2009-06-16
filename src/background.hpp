@@ -21,8 +21,8 @@ public:
 	explicit background(const wml::const_node_ptr& node);
 	const std::string& id() const { return id_; }
 	wml::node_ptr write() const;
-	void draw(double x, double y, int rotation) const;
-	void draw_foreground(double x, double y, int rotation) const;
+	void draw(double x, double y, int rotation, int cycle) const;
+	void draw_foreground(double x, double y, int rotation, int cycle) const;
 private:
 	std::string id_;
 	SDL_Color top_, bot_;
@@ -32,10 +32,13 @@ private:
 		std::string image;
 		std::string image_formula;
 		mutable graphics::texture texture;
-		int xscale, yscale;
-		int scale;
-		int yoffset;
-		GLfloat color[4];
+		int xscale, yscale;		//scales are how quickly the background scrolls compared to normal ground movement when the player
+								//walks around.  They give us the illusion of 'depth'. 100 is normal ground, less=distant, more=closer
+		
+		int xspeed;				//speed is how fast (in millipixels/cycle) the bg moves on its own.  It's for drifting clounds/rivers.
+		int scale;				//a multiplier on the dimensions of the image.  Usually unused.
+		int yoffset;			
+		GLfloat color[4];		
 
 		// Top and bottom edges of the background.
 		mutable int y1, y2;
@@ -44,7 +47,7 @@ private:
 		bool foreground;
 	};
 
-	void draw_layer(int x, int y, int rotation, const layer& bg) const;
+	void draw_layer(int x, int y, int rotation, const layer& bg, int cycle) const;
 
 	std::vector<layer> layers_;
 };
