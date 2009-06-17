@@ -439,7 +439,7 @@ wml::node_ptr level::write() const
 point level::get_dest_from_str(const std::string& key) const
 {
 	if(key == "left") {
-		return boundaries().x() + 128;
+		return boundaries().x() + 32;
 	} else if(key == "right") {
 		return boundaries().x2() - 128;
 	} else {
