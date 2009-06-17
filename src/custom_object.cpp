@@ -10,6 +10,8 @@
 #include "raster.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
+#include "utils.hpp"
+
 
 custom_object::custom_object(wml::const_node_ptr node)
   : entity(node),
@@ -653,16 +655,16 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		rotate_ = value.as_int();
 	} else if(key == "red") {
 		make_draw_color();
-		draw_color_->buf()[0] = value.as_int();
+		draw_color_->buf()[0] = truncate_to_char(value.as_int());
 	} else if(key == "green") {
 		make_draw_color();
-		draw_color_->buf()[1] = value.as_int();
+		draw_color_->buf()[1] = truncate_to_char(value.as_int());
 	} else if(key == "blue") {
 		make_draw_color();
-		draw_color_->buf()[2] = value.as_int();
+		draw_color_->buf()[2] = truncate_to_char(value.as_int());
 	} else if(key == "alpha") {
 		make_draw_color();
-		draw_color_->buf()[3] = value.as_int();
+		draw_color_->buf()[3] = truncate_to_char(value.as_int());
 	} else if(key == "brightness"){
 		make_draw_color();
 		draw_color_->buf()[0] = value.as_int();
