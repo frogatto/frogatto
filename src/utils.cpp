@@ -10,13 +10,11 @@
 
    See the COPYING file for more details.
 */
-#ifndef UTILS_HPP_INCLUDED
-#define UTILS_HPP_INCLUDED
 
 #include <algorithm>
+#include "utils.hpp"
 
 
-int truncate_to_char(int value);
+int truncate_to_char(int value) { return std::min(std::max(value, 0), 255); }
 
 
-#endif
