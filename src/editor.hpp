@@ -10,6 +10,7 @@
 #include "level.hpp"
 #include "level_object.hpp"
 #include "prop.hpp"
+#include "stats.hpp"
 
 namespace gui {
 class dialog;
@@ -34,6 +35,9 @@ public:
 	editor(const char* level_cfg);
 	~editor();
 	void edit_level();
+
+	void load_stats();
+	void download_stats();
 
 	struct tileset {
 		static void init(wml::const_node_ptr node);
@@ -147,6 +151,8 @@ private:
 	std::vector<executable_command> undo_, redo_;
 
 	std::vector<entity_ptr> ghost_objects_;
+
+	std::vector<stats::record_ptr> stats_;
 };
 
 #endif

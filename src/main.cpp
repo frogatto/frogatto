@@ -34,6 +34,7 @@
 #include "prop.hpp"
 #include "raster.hpp"
 #include "sound.hpp"
+#include "stats.hpp"
 #include "string_utils.hpp"
 #include "surface_cache.hpp"
 #include "texture.hpp"
@@ -549,6 +550,7 @@ extern "C" int main(int argc, char** argv)
 	const font::manager font_manager;
 	const sound::manager sound_manager;
 	const joystick::manager joystick_manager;
+	const stats::manager stats_manager;
 
 	const SDL_Surface* fb = SDL_GetVideoSurface();
 	if(fb == NULL) {

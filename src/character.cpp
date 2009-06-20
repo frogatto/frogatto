@@ -16,6 +16,7 @@
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "sound.hpp"
+#include "stats.hpp"
 #include "string_utils.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
@@ -1461,10 +1462,16 @@ void character::get_hit()
 		return;
 	}
 
+	if(hitpoints_ <= 0 && is_human()) {
+		//record the player's death in stats.
+		stats::record_event(lvl_->id(), stats::record_ptr(new stats::die_record(point(x(), y()))));
+	}
+
 	invincible_ = invincibility_duration();
 
 	if(hitpoints_ <= 0 && type_->die_frame()) {
 		change_frame(type_->die_frame());
+
 	} else if(type_->gethit_frame()) {
 		change_frame(type_->gethit_frame());
 	}

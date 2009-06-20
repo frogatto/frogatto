@@ -14,6 +14,7 @@
 #include "character_editor_dialog.hpp"
 #include "character_type.hpp"
 #include "draw_tile.hpp"
+#include "debug_console.hpp"
 #include "editor.hpp"
 #include "editor_dialogs.hpp"
 #include "entity.hpp"
@@ -34,6 +35,7 @@
 #include "property_editor_dialog.hpp"
 #include "prop_editor_dialog.hpp"
 #include "raster.hpp"
+#include "stats.hpp"
 #include "texture.hpp"
 #include "text_entry_widget.hpp"
 #include "tile_map.hpp"
@@ -114,6 +116,17 @@ class editor_menu_dialog : public gui::dialog
 		show_menu(res);
 	}
 
+	void show_stats_menu() {
+		menu_item items[] = {
+		        "Refresh stats", "", boost::bind(&editor::download_stats, &editor_),
+		};
+		std::vector<menu_item> res;
+		foreach(const menu_item& m, items) {
+			res.push_back(m);
+		}
+		show_menu(res);
+	}
+
 	void show_window_menu() {
 		std::vector<menu_item> res;
 		for(std::map<std::string, editor*>::const_iterator i = all_editors.begin(); i != all_editors.end(); ++i) {
@@ -164,7 +177,7 @@ public:
 		clear();
 
 		using namespace gui;
-		gui::grid* grid = new gui::grid(4);
+		gui::grid* grid = new gui::grid(5);
 		grid->add_col(widget_ptr(
 		  new button(widget_ptr(new label("File", graphics::color_white())),
 		             boost::bind(&editor_menu_dialog::show_file_menu, this))));
@@ -177,6 +190,9 @@ public:
 		grid->add_col(widget_ptr(
 		  new button(widget_ptr(new label("Window", graphics::color_white())),
 		             boost::bind(&editor_menu_dialog::show_window_menu, this))));
+		grid->add_col(widget_ptr(
+		  new button(widget_ptr(new label("Statistics", graphics::color_white())),
+		             boost::bind(&editor_menu_dialog::show_stats_menu, this))));
 		add_widget(widget_ptr(grid));
 	}
 
@@ -628,6 +644,8 @@ void editor::remove_ghost_objects()
 
 void editor::edit_level()
 {
+	load_stats();
+
 	g_last_edited_level = filename_;
 
 	tileset_dialog_.reset(new editor_dialogs::tileset_editor_dialog(*this));
@@ -1250,6 +1268,36 @@ void editor::edit_level()
 	}
 }
 
+void editor::load_stats()
+{
+	stats_.clear();
+
+	const std::string fname = "data/stats/" + lvl_->id();
+	if(!sys::file_exists(fname)) {
+		return;
+	}
+
+	std::string doc = "[stats]\n" + sys::read_file(fname) + "[/stats]\n";
+	wml::const_node_ptr node(wml::parse_wml(doc));
+	for(wml::node::const_all_child_iterator i = node->begin_children(); i != node->end_children(); ++i) {
+		stats_.push_back(stats::record::read(*i));
+		if(!stats_.back()) {
+			stats_.pop_back();
+		}
+	}
+}
+
+void editor::download_stats()
+{
+	const bool result = stats::download(lvl_->id());
+	if(result) {
+		debug_console::add_message("Got latest stats from the server");
+		load_stats();
+	} else {
+		debug_console::add_message("Download of stats failed");
+	}
+}
+
 void editor::add_tile_rect(int x1, int y1, int x2, int y2)
 {
 	const int zorder = tilesets[cur_tileset_].zorder;
@@ -1611,6 +1659,10 @@ void editor::draw() const
 		glEnable(GL_TEXTURE_2D);
 	}
 
+	foreach(const stats::const_record_ptr& record, stats_) {
+		record->draw();
+	}
+
 	glPopMatrix();
 
 	//draw grid
@@ -1709,6 +1761,8 @@ void editor::draw() const
 	editor_menu_dialog_->draw();
 	editor_mode_dialog_->draw();
 	gui::draw_tooltip();
+
+	debug_console::draw();
 
 	SDL_GL_SwapBuffers();
 	SDL_Delay(20);
