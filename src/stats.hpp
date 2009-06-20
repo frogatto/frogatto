@@ -44,7 +44,26 @@ private:
 	point p_;
 };
 
+class quit_record : public record {
+public:
+	explicit quit_record(const point& p);
+	wml::node_ptr write() const;
+	void draw() const;
+private:
+	point p_;
+};
+
+class player_move_record : public record {
+public:
+	player_move_record(const point& src, const point& dst);
+	wml::node_ptr write() const;
+	void draw() const;
+private:
+	point src_, dst_;
+};
+
 void record_event(const std::string& lvl, const_record_ptr r);
+void flush();
 
 }
 

@@ -223,6 +223,10 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 	while(!done) {
 		const int desired_end_time = SDL_GetTicks() + 20;
 		if(lvl->player() && lvl->player()->hitpoints() <= 0) {
+			//record stats of the player's death
+			lvl->player()->record_stats_movement();
+			stats::record_event(lvl->id(), stats::record_ptr(new stats::die_record(lvl->player()->midpoint())));
+
 			boost::intrusive_ptr<pc_character> save = lvl->player()->save_condition();
 			if(!save) {
 				return false;
@@ -359,6 +363,12 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 					const SDLMod mod = SDL_GetModState();
 					const SDLKey key = event.key.keysym.sym;
 					if(key == SDLK_ESCAPE) {
+						//record a quit event in stats
+						if(lvl->player()) {
+							lvl->player()->record_stats_movement();
+							stats::record_event(lvl->id(), stats::record_ptr(new stats::quit_record(lvl->player()->midpoint())));
+						}
+
 						done = true;
 						quit = true;
 						break;
@@ -537,6 +547,8 @@ extern "C" int main(int argc, char** argv)
 		return -1;
 	}
 
+	const stats::manager stats_manager;
+
 	if(SDL_SetVideoMode(screen_width,screen_height,0,SDL_OPENGL|(fullscreen ? SDL_FULLSCREEN : 0)) == NULL) {
 		std::cerr << "could not set video mode\n";
 		return -1;
@@ -550,7 +562,6 @@ extern "C" int main(int argc, char** argv)
 	const font::manager font_manager;
 	const sound::manager sound_manager;
 	const joystick::manager joystick_manager;
-	const stats::manager stats_manager;
 
 	const SDL_Surface* fb = SDL_GetVideoSurface();
 	if(fb == NULL) {

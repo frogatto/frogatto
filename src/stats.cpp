@@ -100,7 +100,7 @@ void send_stats_thread() {
 		{
 			threading::lock lck(write_queue_mutex);
 			if(!send_stats_done && write_queue.empty()) {
-				send_stats_signal.wait(write_queue_mutex);
+				send_stats_signal.wait_timeout(write_queue_mutex, 60000);
 			}
 
 			if(send_stats_done && write_queue.empty()) {
@@ -208,6 +208,10 @@ manager::~manager() {
 record_ptr record::read(wml::const_node_ptr node) {
 	if(node->name() == "die") {
 		return record_ptr(new die_record(point(node->attr("pos"))));
+	} else if(node->name() == "quit") {
+		return record_ptr(new quit_record(point(node->attr("pos"))));
+	} else if(node->name() == "move") {
+		return record_ptr(new player_move_record(point(node->attr("src")), point(node->attr("dst"))));
 	} else {
 		fprintf(stderr, "UNRECOGNIZED STATS NODE: '%s'\n", node->name().c_str());
 		return record_ptr();
@@ -239,10 +243,59 @@ void die_record::draw() const
 	glColor4ub(255, 255, 255, 255);
 }
 
+quit_record::quit_record(const point& p) : p_(p)
+{}
+
+wml::node_ptr quit_record::write() const
+{
+	wml::node_ptr result(new wml::node("quit"));
+	result->set_attr("pos", p_.to_string());
+	return result;
+}
+
+void quit_record::draw() const
+{
+	glPointSize(5);
+	glDisable(GL_TEXTURE_2D);
+	glColor4ub(255, 255, 0, 255);
+	glBegin(GL_POINTS);
+	glVertex3f(p_.x, p_.y, 0);
+	glEnd();
+	glEnable(GL_TEXTURE_2D);
+	glColor4ub(255, 255, 255, 255);
+}
+
+player_move_record::player_move_record(const point& src, const point& dst) : src_(src), dst_(dst)
+{}
+
+wml::node_ptr player_move_record::write() const
+{
+	wml::node_ptr result(new wml::node("move"));
+	result->set_attr("src", src_.to_string());
+	result->set_attr("dst", dst_.to_string());
+	return result;
+}
+
+void player_move_record::draw() const
+{
+	glDisable(GL_TEXTURE_2D);
+	glColor4ub(0, 0, 255, 128);
+	glBegin(GL_LINES);
+	glVertex3f(src_.x, src_.y, 0);
+	glVertex3f(dst_.x, dst_.y, 0);
+	glEnd();
+	glEnable(GL_TEXTURE_2D);
+	glColor4ub(255, 255, 255, 255);
+}
+
 void record_event(const std::string& lvl, const_record_ptr r)
 {
 	threading::lock lck(write_queue_mutex);
 	write_queue[lvl].push_back(r);
+}
+
+void flush()
+{
 	send_stats_signal.notify_one();
 }
 

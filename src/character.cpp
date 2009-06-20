@@ -1418,6 +1418,12 @@ bool character::point_collides(int xpos, int ypos) const
 	return point_in_rect(point(xpos, ypos), body_rect());
 }
 
+point character::midpoint() const
+{
+	const rect& body = body_rect();
+	return point(body.mid_x(), body.mid_y());
+}
+
 void character::hit_by(entity& e)
 {
 	if(!invincible_) {
@@ -1504,11 +1510,6 @@ void character::get_hit()
 			lvl_->add_character(ep);
 		}
 		return;
-	}
-
-	if(hitpoints_ <= 0 && is_human()) {
-		//record the player's death in stats.
-		stats::record_event(lvl_->id(), stats::record_ptr(new stats::die_record(point(x(), y()))));
 	}
 
 	invincible_ = invincibility_duration();
@@ -1795,11 +1796,30 @@ const std::vector<int>& pc_character::get_objects_destroyed(const std::string& l
 	return v;
 }
 
+void pc_character::record_stats_movement()
+{
+	if(!get_level()) {
+		return;
+	}
+
+	point pos = midpoint();
+	if(last_stats_position_ != point() && last_stats_position_ != pos) {
+		stats::record_event(get_level()->id(), stats::record_ptr(new stats::player_move_record(last_stats_position_, pos)));
+	}
+	last_stats_position_ = pos;
+}
+
 void pc_character::control(const level& lvl)
 {
 	if(current_level_ != lvl.id()) {
 		//key_.RequireRelease();
 		current_level_ = lvl.id();
+		last_stats_position_ = midpoint();
+	}
+
+	//periodically record a movement sample
+	if((cycle()%10) == 0) {
+		record_stats_movement();
 	}
 
 	if(is_in_swimming_frame()) {

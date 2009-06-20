@@ -60,6 +60,8 @@ public:
 	void set_velocity(int x, int y) { velocity_x_ = x; velocity_y_ = y; }
 	virtual int mass() const { return type_->mass(); }
 
+	point midpoint() const;
+
 	bool point_collides(int x, int y) const;
 	void hit_by(entity& e);
 	void move_to_standing(level& lvl);
@@ -283,6 +285,8 @@ public:
 
 	int score(int points) { score_ += points; return score_; }
 	int score() const { return score_; }
+
+	void record_stats_movement();
 private:
 	virtual void read_controls();
 
@@ -303,6 +307,9 @@ private:
 	std::string current_level_;
 
 	int score_;
+
+	//position last time we recorded a stats sample
+	point last_stats_position_;
 };
 
 #endif
