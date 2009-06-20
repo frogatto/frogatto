@@ -860,3 +860,23 @@ const graphics::color_transform& custom_object::draw_color() const
 	static const graphics::color_transform white(0xFF, 0xFF, 0xFF, 0xFF);
 	return white;
 }
+
+game_logic::const_formula_ptr custom_object::get_event_handler(const std::string& key) const
+{
+	std::map<std::string, game_logic::const_formula_ptr>::const_iterator itor = event_handlers_.find(key);
+	if(itor != event_handlers_.end()) {
+		return itor->second;
+	}
+
+	return game_logic::const_formula_ptr();
+}
+
+void custom_object::set_event_handler(const std::string& key, game_logic::const_formula_ptr f)
+{
+	if(!f) {
+		event_handlers_.erase(key);
+	} else {
+		event_handlers_[key] = f;
+	}
+}
+

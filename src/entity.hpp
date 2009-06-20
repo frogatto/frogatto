@@ -130,6 +130,9 @@ public:
 
 	virtual void generate_current(const entity& target, int* velocity_x, int* velocity_y) const;
 
+	virtual game_logic::const_formula_ptr get_event_handler(const std::string& key) const { return game_logic::const_formula_ptr(); }
+	virtual void set_event_handler(const std::string& key, game_logic::const_formula_ptr f) { return; }
+
 protected:
 	void set_current_generator(current_generator* generator);
 

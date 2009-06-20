@@ -299,6 +299,9 @@ void pc_character::draw() const
 
 void character::process(level& lvl)
 {
+	clear_control_status();
+	read_controls();
+
 	static const std::string ProcessStr = "process";
 	handle_event(ProcessStr);
 
@@ -1336,9 +1339,50 @@ void character::change_frame(const frame* new_frame)
 	old_types_.clear();
 }
 
+game_logic::const_formula_ptr character::get_event_handler(const std::string& key) const
+{
+	std::map<std::string, game_logic::const_formula_ptr>::const_iterator itor = event_handlers_.find(key);
+	if(itor != event_handlers_.end()) {
+		return itor->second;
+	}
+
+	return game_logic::const_formula_ptr();
+}
+
+void character::set_event_handler(const std::string& key, game_logic::const_formula_ptr f)
+{
+	std::cerr << "SET EVENT HANDLER: '" << key << "' -> " << (f ? f->str() : "(null)") << "\n";
+	if(!f) {
+		event_handlers_.erase(key);
+	} else {
+		event_handlers_[key] = f;
+	}
+}
+
+void character::set_control_status(const std::string& key, bool value)
+{
+	static const std::string keys[] = { "up", "down", "left", "right", "attack", "jump" };
+	const std::string* k = std::find(keys, keys + NUM_CONTROLS, key);
+	if(k == keys + NUM_CONTROLS) {
+		return;
+	}
+
+	const int index = k - keys;
+	controls_[index] = value;
+}
+
 void character::handle_event(const std::string& event_id)
 {
-	game_logic::const_formula_ptr event = type_->get_event_handler(event_id);
+	game_logic::const_formula_ptr event;
+	std::map<std::string, game_logic::const_formula_ptr>::const_iterator event_itor = event_handlers_.find(event_id);
+	if(event_itor != event_handlers_.end()) {
+		event = event_itor->second;
+	}
+
+	if(!event) {
+		event = type_->get_event_handler(event_id);
+	}
+
 	execute_formula(event);
 }
 
@@ -1719,12 +1763,12 @@ void character::control(const level& lvl)
 
 bool pc_character::look_up() const
 {
-	return key_[SDLK_UP] || joystick::up();
+	return control_status(CONTROL_UP);
 }
 
 bool pc_character::look_down() const
 {
-	return key_[SDLK_DOWN] || joystick::down();
+	return control_status(CONTROL_DOWN);
 }
 
 void pc_character::item_destroyed(const std::string& level_id, int item)
@@ -1778,12 +1822,12 @@ void pc_character::control(const level& lvl)
 		return;
 	}
 
-	if(running_ && !key_[SDLK_LEFT] && !key_[SDLK_RIGHT] && !joystick::left() && !joystick::right()) {
+	if(running_ && !control_status(CONTROL_LEFT) && !control_status(CONTROL_RIGHT)) {
 		running_ = false;
 	}
 
 
-	if(key_[SDLK_DOWN] || joystick::down()) {
+	if(control_status(CONTROL_DOWN)) {
 		if (&current_frame() != type().crouch_frame() && &current_frame() != type().roll_frame())
 		{
 			crouch(lvl);
@@ -1792,14 +1836,14 @@ void pc_character::control(const level& lvl)
 		uncrouch(lvl);
 	}
 
-	if(key_[SDLK_UP] || joystick::up()) {
+	if(control_status(CONTROL_UP)) {
 		lookup(lvl);
 	} else if(&current_frame() == type().lookup_frame()) {
 		unlookup(lvl);
 	}
 	
-	if(key_[SDLK_a] || joystick::button(1) || joystick::button(3)) {
-		if(key_[SDLK_DOWN] || joystick::down()) {
+	if(control_status(CONTROL_JUMP)) {
+		if(control_status(CONTROL_DOWN)) {
 			jump_down(lvl);
 		} else {
 			jump(lvl);
@@ -1809,19 +1853,19 @@ void pc_character::control(const level& lvl)
 		set_last_jump(false);
 	}
 	
-	if(key_[SDLK_s] || joystick::button(0) || joystick::button(2)) {
+	if(control_status(CONTROL_ATTACK)) {
 		if(&current_frame() == type().crouch_frame()){
 			roll(lvl);
 			return;
 		} else if (&current_frame() != type().roll_frame()) {
-			attack(lvl,key_[SDLK_DOWN] || joystick::down());
+			attack(lvl, control_status(CONTROL_DOWN));
 			return;
 		}		   
 	}
 
 	const int double_tap_cycles = 10;
 
-	if(key_[SDLK_LEFT] || joystick::left()) {
+	if(control_status(CONTROL_LEFT)) {
 		walk(lvl, false);
 		if(!prev_left_ || running_) {
 			if(last_left_ > cycle() - double_tap_cycles || running_) {
@@ -1836,7 +1880,7 @@ void pc_character::control(const level& lvl)
 		prev_left_ = false;
 	}
 
-	if(key_[SDLK_RIGHT] || joystick::right()) {
+	if(control_status(CONTROL_RIGHT)) {
 		walk(lvl, true);
 		if(!prev_right_ || running_) {
 			if(last_right_ > cycle() - double_tap_cycles || running_) {
@@ -1856,7 +1900,7 @@ void pc_character::swimming_control(const level& lvl)
 {
 	bool idle = true;
 
-	if(key_[SDLK_LEFT] || joystick::left()) {
+	if(control_status(CONTROL_LEFT)) {
 		set_face_right(false);
 		if(&current_frame() != type().swim_side_frame()) {
 			change_frame(type().swim_side_frame());
@@ -1873,7 +1917,7 @@ void pc_character::swimming_control(const level& lvl)
 		}
 
 		idle = false;
-	} else if(key_[SDLK_RIGHT] || joystick::right()) {
+	} else if(control_status(CONTROL_RIGHT)) {
 		set_face_right(true);
 		if(&current_frame() != type().swim_side_frame()) {
 			change_frame(type().swim_side_frame());
@@ -1890,13 +1934,13 @@ void pc_character::swimming_control(const level& lvl)
 		}
 
 		idle = false;
-	} else if(key_[SDLK_UP] || joystick::up()) {
+	} else if(control_status(CONTROL_UP)) {
 		if(&current_frame() != type().swim_up_frame()) {
 			change_frame(type().swim_up_frame());
 		}
 
 		idle = false;
-	} else if(key_[SDLK_DOWN] || joystick::down()) {
+	} else if(control_status(CONTROL_DOWN)) {
 		if(&current_frame() != type().swim_down_frame()) {
 			change_frame(type().swim_down_frame());
 		}
@@ -1926,4 +1970,14 @@ void pc_character::save_game()
 		save_condition_->driver() = new pc_character(*driver());
 		driver()->save_condition_ = save_condition_;
 	}
+}
+
+void pc_character::read_controls()
+{
+	set_control_status(CONTROL_UP, key_[SDLK_UP] || joystick::up());
+	set_control_status(CONTROL_DOWN, key_[SDLK_DOWN] || joystick::down());
+	set_control_status(CONTROL_LEFT, key_[SDLK_LEFT] || joystick::left());
+	set_control_status(CONTROL_RIGHT, key_[SDLK_RIGHT] || joystick::right());
+	set_control_status(CONTROL_ATTACK, key_[SDLK_s] || joystick::button(0) || joystick::button(2));
+	set_control_status(CONTROL_JUMP, key_[SDLK_a] || joystick::button(1) || joystick::button(3));
 }

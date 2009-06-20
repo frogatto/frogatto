@@ -19,12 +19,12 @@
 #include "geometry.hpp"
 #include "item.hpp"
 #include "level_object.hpp"
+#include "movement_script.hpp"
 #include "prop.hpp"
 #include "tile_map.hpp"
 #include "water.hpp"
 #include "wml_node_fwd.hpp"
 #include "color_utils.hpp"
-
 
 class level : public game_logic::formula_callable
 {
@@ -175,6 +175,9 @@ public:
 	const std::vector<entity_ptr>& get_chars() { return chars_; }
 	int num_active_chars() const { return active_chars_.size(); }
 
+	void begin_movement_script(const std::string& name, entity& e);
+	void end_movement_script();
+
 private:
 	bool add_tile_rect_vector_internal(int zorder, int x1, int y1, int x2, int y2, const std::vector<std::string>& tiles);
 
@@ -283,6 +286,8 @@ private:
 	bool hide_status_bar_;
 	graphics::color tint_;
 	
+	std::map<std::string, movement_script> movement_scripts_;
+	std::vector<active_movement_script_ptr> active_movement_scripts_;
 };
 
 #endif

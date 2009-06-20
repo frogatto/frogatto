@@ -114,6 +114,20 @@ public:
 
 	virtual void generate_current(const entity& target, int* velocity_x, int* velocity_y) const;
 
+	enum CONTROL_ITEM {
+	  CONTROL_UP,
+	  CONTROL_DOWN,
+	  CONTROL_LEFT,
+	  CONTROL_RIGHT,
+	  CONTROL_ATTACK,
+	  CONTROL_JUMP,
+	  NUM_CONTROLS,
+	};
+
+	void set_control_status(const std::string& key, bool value);
+	void set_control_status(CONTROL_ITEM ctrl, bool value) { controls_[ctrl] = value; }
+	void clear_control_status() { for(int n = 0; n != NUM_CONTROLS; ++n) { controls_[n] = false; } }
+
 protected:
 	const frame& current_frame() const;
 	const character_type& type() const { return *type_; }
@@ -128,6 +142,9 @@ protected:
 	virtual bool boardable_vehicle() const;
 	virtual void swap_player_state(pc_character& player) {}
 
+	game_logic::const_formula_ptr get_event_handler(const std::string& key) const;
+	void set_event_handler(const std::string& key, game_logic::const_formula_ptr f);
+
 protected:
 	bool is_in_swimming_frame() const;
 	void change_frame(const frame* new_frame);
@@ -136,7 +153,11 @@ protected:
 	void set_rotate(int rotate) { rotate_ = rotate; }
 
 	int current_traction() const { return current_traction_; }
+
+	bool control_status(CONTROL_ITEM ctrl) const { return controls_[ctrl]; }
 private:
+
+	virtual void read_controls() {}
 
 	void set_driver_position();
 
@@ -219,6 +240,10 @@ private:
 
 	//manages the memory of the distortion; doesn't do anything else.
 	mutable graphics::const_raster_distortion_ptr distortion_;
+
+	std::map<std::string, game_logic::const_formula_ptr> event_handlers_;
+
+	bool controls_[NUM_CONTROLS];
 };
 
 class pc_character : public character {
@@ -259,6 +284,7 @@ public:
 	int score(int points) { score_ += points; return score_; }
 	int score() const { return score_; }
 private:
+	virtual void read_controls();
 
 	virtual void set_value(const std::string& key, const variant& value);
 	virtual int invincibility_duration() const { return 150; }

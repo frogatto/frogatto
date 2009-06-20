@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "asserts.hpp"
+#include "character.hpp"
 #include "current_generator.hpp"
 #include "custom_object_functions.hpp"
 #include "custom_object.hpp"
@@ -1037,6 +1038,82 @@ private:
 	}
 };
 
+class begin_script_command : public entity_command_callable {
+public:
+	explicit begin_script_command(const std::string& id) : id_(id) {
+	}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		lvl.begin_movement_script(id_, ob);
+	}
+private:
+	std::string id_;
+};
+
+class begin_script_function : public function_expression {
+public:
+	explicit begin_script_function(const args_list& args)
+	   : function_expression("begin_script", args, 1) {
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new begin_script_command(args()[0]->evaluate(variables).as_string()));
+	}
+};
+
+class end_script_command : public entity_command_callable {
+public:
+	virtual void execute(level& lvl, entity& ob) const {
+		lvl.end_movement_script();
+	}
+};
+
+class end_script_function : public function_expression {
+public:
+	explicit end_script_function(const args_list& args)
+	   : function_expression("end_script", args, 0) {
+	}
+
+	variant execute(const formula_callable& variables) const {
+		return variant(new end_script_command);
+	}
+};
+
+class control_command : public entity_command_callable {
+public:
+	explicit control_command(const std::vector<std::string>& v) : v_(v)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		character* c = dynamic_cast<character*>(&ob);
+		if(c) {
+			c->clear_control_status();
+			foreach(const std::string& s, v_) {
+				c->set_control_status(s, true);
+			}
+		}
+	}
+private:
+	std::vector<std::string> v_;
+};
+
+class control_function : public function_expression {
+public:
+	explicit control_function(const args_list& args)
+	  : function_expression("control_function", args, 1) {
+	}
+
+	variant execute(const formula_callable& variables) const {
+		std::vector<std::string> items;
+		variant v = args()[0]->evaluate(variables);
+		for(int n = 0; n != v.num_elements(); ++n) {
+			items.push_back(v[n].as_string());
+		}
+
+		return variant(new control_command(items));
+	}
+};
+
 class custom_object_function_symbol_table : public function_symbol_table
 {
 public:
@@ -1115,7 +1192,14 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new add_wave_function(args));
 	} else if(fn == "rect_current") {
 		return expression_ptr(new rect_current_function(args));
+	} else if(fn == "begin_script") {
+		return expression_ptr(new begin_script_function(args));
+	} else if(fn == "end_script") {
+		return expression_ptr(new end_script_function(args));
+	} else if(fn == "control") {
+		return expression_ptr(new control_function(args));
 	}
+
 	return function_symbol_table::create_function(fn, args);
 }
 

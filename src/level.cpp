@@ -192,6 +192,11 @@ level::level(const std::string& level_cfg)
 		water_.reset(new water(water_node));
 	}
 
+	FOREACH_WML_CHILD(script_node, node, "script") {
+		movement_script s(script_node);
+		movement_scripts_[s.id()] = s;
+	}
+
 	std::cerr << "done level constructor: " << (SDL_GetTicks() - start_time) << "\n";
 }
 
@@ -431,6 +436,10 @@ wml::node_ptr level::write() const
 		} else {
 			res->set_attr("background", background_->id());
 		}
+	}
+
+	for(std::map<std::string, movement_script>::const_iterator i = movement_scripts_.begin(); i != movement_scripts_.end(); ++i) {
+		res->add_child(i->second.write());
 	}
 
 	return res;
@@ -1673,5 +1682,22 @@ void level::get_all_labels(std::vector<std::string>& labels) const
 {
 	for(std::map<std::string, entity_ptr>::const_iterator i = chars_by_label_.begin(); i != chars_by_label_.end(); ++i) {
 		labels.push_back(i->first);
+	}
+}
+
+void level::begin_movement_script(const std::string& key, entity& e)
+{
+	std::map<std::string, movement_script>::const_iterator itor = movement_scripts_.find(key);
+	if(itor == movement_scripts_.end()) {
+		return;
+	}
+
+	active_movement_scripts_.push_back(itor->second.begin_execution(e));
+}
+
+void level::end_movement_script()
+{
+	if(!active_movement_scripts_.empty()) {
+		active_movement_scripts_.pop_back();
 	}
 }

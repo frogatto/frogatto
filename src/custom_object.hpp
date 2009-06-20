@@ -72,6 +72,9 @@ public:
 
 	entity_ptr clone() const;
 
+	game_logic::const_formula_ptr get_event_handler(const std::string& key) const;
+	void set_event_handler(const std::string& key, game_logic::const_formula_ptr f);
+
 private:
 	virtual void control(const level& lvl);
 
