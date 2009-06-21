@@ -32,7 +32,7 @@ public:
 	static record_ptr read(wml::const_node_ptr node);
 	virtual ~record();
 	virtual wml::node_ptr write() const = 0;
-	virtual void draw() const = 0;
+	virtual void draw() const {}
 };
 
 class die_record : public record {
@@ -51,6 +51,14 @@ public:
 	void draw() const;
 private:
 	point p_;
+};
+
+class load_level_record : public record {
+public:
+	explicit load_level_record(int ms);
+	wml::node_ptr write() const;
+private:
+	int ms_;
 };
 
 class player_move_record : public record {

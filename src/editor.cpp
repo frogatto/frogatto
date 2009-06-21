@@ -644,6 +644,7 @@ void editor::remove_ghost_objects()
 
 void editor::edit_level()
 {
+	stats::flush();
 	load_stats();
 
 	g_last_edited_level = filename_;

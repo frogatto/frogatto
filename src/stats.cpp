@@ -9,8 +9,10 @@
 #include <boost/asio.hpp>
 
 #include "filesystem.hpp"
+#include "formatter.hpp"
 #include "stats.hpp"
 #include "wml_node.hpp"
+#include "wml_utils.hpp"
 #include "wml_writer.hpp"
 
 namespace stats {
@@ -212,6 +214,8 @@ record_ptr record::read(wml::const_node_ptr node) {
 		return record_ptr(new quit_record(point(node->attr("pos"))));
 	} else if(node->name() == "move") {
 		return record_ptr(new player_move_record(point(node->attr("src")), point(node->attr("dst"))));
+	} else if(node->name() == "load") {
+		return record_ptr(new load_level_record(wml::get_int(node, "ms")));
 	} else {
 		fprintf(stderr, "UNRECOGNIZED STATS NODE: '%s'\n", node->name().c_str());
 		return record_ptr();
@@ -286,6 +290,16 @@ void player_move_record::draw() const
 	glEnd();
 	glEnable(GL_TEXTURE_2D);
 	glColor4ub(255, 255, 255, 255);
+}
+
+load_level_record::load_level_record(int ms) : ms_(ms)
+{}
+
+wml::node_ptr load_level_record::write() const
+{
+	wml::node_ptr result(new wml::node("load"));
+	result->set_attr("ms", formatter() << ms_);
+	return result;
 }
 
 void record_event(const std::string& lvl, const_record_ptr r)

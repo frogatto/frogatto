@@ -14,6 +14,7 @@
 #include "preferences.hpp"
 #include "preprocessor.hpp"
 #include "raster.hpp"
+#include "stats.hpp"
 #include "string_utils.hpp"
 #include "tile_map.hpp"
 #include "wml_node.hpp"
@@ -197,7 +198,9 @@ level::level(const std::string& level_cfg)
 		movement_scripts_[s.id()] = s;
 	}
 
-	std::cerr << "done level constructor: " << (SDL_GetTicks() - start_time) << "\n";
+	const int time_taken_ms = (SDL_GetTicks() - start_time);
+	stats::record_event(id(), stats::const_record_ptr(new stats::load_level_record(time_taken_ms)));
+	std::cerr << "done level constructor: " << time_taken_ms << "\n";
 }
 
 void level::load_character(wml::const_node_ptr c)
