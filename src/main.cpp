@@ -214,6 +214,8 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 	time_t current_second = time(NULL);
 	int current_fps = 0, next_fps = 0;
 	int current_delay = 0, next_delay = 0;
+	int current_draw = 0, next_draw = 0;
+	int current_process = 0, next_process = 0;
 
 	CKey key;
 
@@ -450,7 +452,11 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 		if(message_dialog::get()) {
 			message_dialog::get()->process();
 		} else {
-			if (!paused) lvl->process();
+			if (!paused) {
+				const int start_process = SDL_GetTicks();
+				lvl->process();
+				next_process += (SDL_GetTicks() - start_process);
+			}
 		}
 
 		if(lvl->end_game()) {
@@ -460,8 +466,11 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 			break;
 		}
 
+		const int start_draw = SDL_GetTicks();
 		draw_scene(*lvl, last_draw_position());
-		draw_fps(*lvl, current_fps, current_delay);
+		next_draw += (SDL_GetTicks() - start_draw);
+
+		draw_fps(*lvl, current_fps, current_delay, current_draw, current_process);
 		
 		SDL_GL_SwapBuffers();
 		++next_fps;
@@ -471,8 +480,12 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 			current_second = this_second;
 			current_fps = next_fps;
 			current_delay = next_delay;
+			current_draw = next_draw;
+			current_process = next_process;
 			next_fps = 0;
 			next_delay = 0;
+			next_draw = 0;
+			next_process = 0;
 		}
 
 		const int wait_time = std::max<int>(1, desired_end_time - SDL_GetTicks());
