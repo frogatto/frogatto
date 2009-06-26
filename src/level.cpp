@@ -739,8 +739,14 @@ void level::process()
 	foreach(entity_ptr& c, chars_) {
 		int distance_x = 0, distance_y = 0;
 		c->activation_distance(&distance_x, &distance_y);
-		if(std::abs(player_->x() - c->x()) < distance_x &&
-		   std::abs(player_->y() - c->y()) < distance_y ||
+
+		const int x = c->x();
+		const int y = c->y();
+		const int x2 = x + c->current_frame().width();
+		const int y2 = y + c->current_frame().height();
+
+		if((player_->x() < x ? x - player_->x() : player_->x() - x2) < distance_x &&
+		   (player_->y() < y ? y - player_->y() : player_->y() - y2) < distance_y ||
 		   c->always_active()) {
 			if(c->group() >= 0) {
 				assert(c->group() < groups_.size());
