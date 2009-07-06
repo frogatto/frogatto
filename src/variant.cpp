@@ -1,6 +1,7 @@
 #include <cmath>
 #include <set>
 #include <stdlib.h>
+#include <stdio.h>
 #include <iostream>
 #include <string.h>
 
