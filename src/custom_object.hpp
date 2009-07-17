@@ -71,6 +71,7 @@ public:
 	const frame& icon_frame() const;
 
 	entity_ptr clone() const;
+	entity_ptr backup() const;
 
 	game_logic::const_formula_ptr get_event_handler(const std::string& key) const;
 	void set_event_handler(const std::string& key, game_logic::const_formula_ptr f);

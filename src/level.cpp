@@ -2,6 +2,7 @@
 #include <iostream>
 #include <math.h>
 
+#include "controls.hpp"
 #include "draw_tile.hpp"
 #include "entity.hpp"
 #include "filesystem.hpp"
@@ -235,6 +236,8 @@ void level::finish_loading()
 	}
 
 	wml_chars_.clear();
+
+	controls::new_level(cycle_, 1, 0);
 }
 
 void level::load_save_point(const level& lvl)
@@ -728,6 +731,9 @@ void level::process()
 	}
 
 	++cycle_;
+
+	controls::read_local_controls();
+
 	const int ticks = SDL_GetTicks();
 	active_chars_.clear();
 	active_items_.clear();
@@ -1708,5 +1714,15 @@ void level::end_movement_script()
 {
 	if(!active_movement_scripts_.empty()) {
 		active_movement_scripts_.pop_back();
+	}
+}
+
+void level::backup()
+{
+	backup_snapshot_ptr snapshot(new backup_snapshot);
+	snapshot->cycle = cycle_;
+	snapshot->chars.reserve(chars_.size());
+	foreach(const entity_ptr& e, chars_) {
+		snapshot->chars.push_back(e->backup());
 	}
 }

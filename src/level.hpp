@@ -2,6 +2,7 @@
 #define LEVEL_HPP_INCLUDED
 
 #include <bitset>
+#include <deque>
 #include <map>
 #include <set>
 #include <string>
@@ -178,6 +179,8 @@ public:
 	void begin_movement_script(const std::string& name, entity& e);
 	void end_movement_script();
 
+	void backup();
+
 private:
 	bool add_tile_rect_vector_internal(int zorder, int x1, int y1, int x2, int y2, const std::vector<std::string>& tiles);
 
@@ -288,6 +291,15 @@ private:
 	
 	std::map<std::string, movement_script> movement_scripts_;
 	std::vector<active_movement_script_ptr> active_movement_scripts_;
+
+	struct backup_snapshot {
+		int cycle;
+		std::vector<entity_ptr> chars;
+	};
+
+	typedef boost::shared_ptr<backup_snapshot> backup_snapshot_ptr;
+
+	std::deque<backup_snapshot_ptr> backups_;
 };
 
 #endif

@@ -223,6 +223,8 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 	bool paused = false;
 	bool done = false;
 	while(!done) {
+		lvl->backup();
+
 		const int desired_end_time = SDL_GetTicks() + 20;
 		if(lvl->player() && lvl->player()->hitpoints() <= 0) {
 			//record stats of the player's death

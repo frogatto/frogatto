@@ -8,6 +8,7 @@
 #include "boost/intrusive_ptr.hpp"
 
 #include "character_type.hpp"
+#include "controls.hpp"
 #include "entity.hpp"
 #include "formula_callable.hpp"
 #include "formula_fwd.hpp"
@@ -116,19 +117,11 @@ public:
 
 	virtual void generate_current(const entity& target, int* velocity_x, int* velocity_y) const;
 
-	enum CONTROL_ITEM {
-	  CONTROL_UP,
-	  CONTROL_DOWN,
-	  CONTROL_LEFT,
-	  CONTROL_RIGHT,
-	  CONTROL_ATTACK,
-	  CONTROL_JUMP,
-	  NUM_CONTROLS,
-	};
-
 	void set_control_status(const std::string& key, bool value);
-	void set_control_status(CONTROL_ITEM ctrl, bool value) { controls_[ctrl] = value; }
-	void clear_control_status() { for(int n = 0; n != NUM_CONTROLS; ++n) { controls_[n] = false; } }
+	void set_control_status(controls::CONTROL_ITEM ctrl, bool value) { controls_[ctrl] = value; }
+	void clear_control_status() { for(int n = 0; n != controls::NUM_CONTROLS; ++n) { controls_[n] = false; } }
+
+	virtual entity_ptr backup() const;
 
 protected:
 	const frame& current_frame() const;
@@ -156,7 +149,7 @@ protected:
 
 	int current_traction() const { return current_traction_; }
 
-	bool control_status(CONTROL_ITEM ctrl) const { return controls_[ctrl]; }
+	bool control_status(controls::CONTROL_ITEM ctrl) const { return controls_[ctrl]; }
 private:
 
 	virtual void read_controls() {}
@@ -245,7 +238,7 @@ private:
 
 	std::map<std::string, game_logic::const_formula_ptr> event_handlers_;
 
-	bool controls_[NUM_CONTROLS];
+	bool controls_[controls::NUM_CONTROLS];
 };
 
 class pc_character : public character {
@@ -287,6 +280,8 @@ public:
 	int score() const { return score_; }
 
 	void record_stats_movement();
+
+	virtual entity_ptr backup() const;
 private:
 	virtual void read_controls();
 
@@ -295,6 +290,7 @@ private:
 	virtual void control(const level& lvl);
 	void swimming_control(const level& lvl);
 	CKey key_;
+	int player_index_;
 
 	bool prev_left_, prev_right_;
 	int last_left_, last_right_;

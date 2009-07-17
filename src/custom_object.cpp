@@ -796,6 +796,12 @@ entity_ptr custom_object::clone() const
 	return res;
 }
 
+entity_ptr custom_object::backup() const
+{
+	entity_ptr res(new custom_object(*this));
+	return res;
+}
+
 void custom_object::handle_event(const std::string& event, const formula_callable* context)
 {
 	if ( (hitpoints_ > 0) || (event == "die"))

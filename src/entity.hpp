@@ -127,6 +127,7 @@ public:
 	const_editor_entity_info_ptr editor_info() const { return editor_info_; }
 
 	virtual entity_ptr clone() const { return entity_ptr(); }
+	virtual entity_ptr backup() const = 0;
 
 	virtual void generate_current(const entity& target, int* velocity_x, int* velocity_y) const;
 
