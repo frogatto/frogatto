@@ -30,7 +30,8 @@ custom_object::custom_object(wml::const_node_ptr node)
 	lvl_(NULL),
 	vars_(new game_logic::map_formula_callable(node->get_child("vars"))),
 	last_hit_by_anim_(0),
-	cycle_(wml::get_int(node, "cycle"))
+	cycle_(wml::get_int(node, "cycle")),
+	can_interact_with_(false)
 {
 	if(node->has_attr("label")) {
 		set_label(node->attr("label"));
@@ -49,6 +50,8 @@ custom_object::custom_object(wml::const_node_ptr node)
 
 	custom_object_type::init_event_handlers(node, event_handlers_);
 	std::cerr << "custom_object: " << body_rect().w() << "\n";
+
+	can_interact_with_ = (event_handlers_.count("interact") || type_->get_event_handler("interact"));
 
 	wml::const_node_ptr editor_info = node->get_child("editor_info");
 	if(editor_info) {
@@ -884,5 +887,10 @@ void custom_object::set_event_handler(const std::string& key, game_logic::const_
 	} else {
 		event_handlers_[key] = f;
 	}
+}
+
+bool custom_object::can_interact_with() const
+{
+	return can_interact_with_;
 }
 

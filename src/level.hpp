@@ -179,6 +179,11 @@ public:
 	void begin_movement_script(const std::string& name, entity& e);
 	void end_movement_script();
 
+	//function which, given the rect of the player's body will return true iff
+	//the player can currently "interact" with a portal or object. i.e. if
+	//pressing up will talk to someone or enter a door etc.
+	bool can_interact(const rect& body) const;
+
 	void backup();
 
 private:

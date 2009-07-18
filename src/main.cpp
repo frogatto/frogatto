@@ -52,6 +52,10 @@ bool fullscreen = false;
 
 
 void fade_scene(level& lvl, screen_position& screen_pos) {
+	if(lvl.player()) {
+		lvl.player()->set_invisible(true);
+	}
+
 	for(int n = 0; n < 255; n += 20) {
 		lvl.process();
 		draw_scene(lvl, screen_pos);
@@ -66,9 +70,17 @@ void fade_scene(level& lvl, screen_position& screen_pos) {
 	const SDL_Color c = {0,0,0,0};
 	graphics::draw_rect(r, c, 255);
 	SDL_GL_SwapBuffers();
+
+	if(lvl.player()) {
+		lvl.player()->set_invisible(false);
+	}
 }
 
 void flip_scene(level& lvl, screen_position& screen_pos, bool flip_out) {
+	if(lvl.player()) {
+		lvl.player()->set_invisible(true);
+	}
+
 	if(!flip_out) {
 		screen_pos.flip_rotate = 1000;
 	}
@@ -82,6 +94,10 @@ void flip_scene(level& lvl, screen_position& screen_pos, bool flip_out) {
 	}
 
 	screen_pos.flip_rotate = 0;
+
+	if(lvl.player()) {
+		lvl.player()->set_invisible(false);
+	}
 }
 
 bool show_title_screen(std::string& level_cfg)

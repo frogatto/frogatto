@@ -76,6 +76,8 @@ public:
 	game_logic::const_formula_ptr get_event_handler(const std::string& key) const;
 	void set_event_handler(const std::string& key, game_logic::const_formula_ptr f);
 
+	bool can_interact_with() const;
+
 private:
 	virtual void control(const level& lvl);
 
@@ -124,6 +126,8 @@ private:
 	void make_draw_color();
 	const graphics::color_transform& draw_color() const;
 	boost::shared_ptr<graphics::color_transform> draw_color_;
+
+	bool can_interact_with_;
 };
 
 #endif

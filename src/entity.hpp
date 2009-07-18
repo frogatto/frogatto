@@ -134,6 +134,11 @@ public:
 	virtual game_logic::const_formula_ptr get_event_handler(const std::string& key) const { return game_logic::const_formula_ptr(); }
 	virtual void set_event_handler(const std::string& key, game_logic::const_formula_ptr f) { return; }
 
+	//function which returns true if this object can be 'interacted' with.
+	//i.e. if the player ovelaps with the object and presses up if they will
+	//talk to or enter the object.
+	virtual bool can_interact_with() const { return false; }
+
 protected:
 	void set_current_generator(current_generator* generator);
 

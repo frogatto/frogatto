@@ -111,6 +111,7 @@ character_type::character_type(wml::const_node_ptr node)
 	slide_frame_.reset(create_frame(node, "slide"));
 	spring_frame_.reset(create_frame(node, "spring"));
 	push_frame_.reset(create_frame(node, "push"));
+	interact_frame_.reset(create_frame(node, "interact"));
 	swim_side_idle_frame_.reset(create_frame(node, "swim_side_idle"));
 	swim_up_idle_frame_.reset(create_frame(node, "swim_up_idle"));
 	swim_down_idle_frame_.reset(create_frame(node, "swim_down_idle"));

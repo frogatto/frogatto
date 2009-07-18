@@ -1717,6 +1717,24 @@ void level::end_movement_script()
 	}
 }
 
+bool level::can_interact(const rect& body) const
+{
+	foreach(const portal& p, portals_) {
+		if(p.automatic == false && rects_intersect(body, p.area)) {
+			return true;
+		}
+	}
+
+	foreach(const entity_ptr& c, active_chars_) {
+		if(c->can_interact_with() && rects_intersect(body, c->body_rect()) &&
+		   intersection_rect(body, c->body_rect()).w() >= std::min(body.w(), c->body_rect().w())/2) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void level::backup()
 {
 	backup_snapshot_ptr snapshot(new backup_snapshot);

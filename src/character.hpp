@@ -77,7 +77,7 @@ public:
 	bool is_standable(int x, int y, int* friction=NULL, int* traction=NULL, int* adjust_y=NULL) const;
 	void stood_on_by(const entity_ptr& ch) { standing_on_.push_back(ch); }
 
-	bool enter() const { return look_up() || look_down(); }
+	bool enter() const;
 	virtual bool look_up() const { return false; }
 	virtual bool look_down() const { return false; }
 
@@ -122,6 +122,8 @@ public:
 	void clear_control_status() { for(int n = 0; n != controls::NUM_CONTROLS; ++n) { controls_[n] = false; } }
 
 	virtual entity_ptr backup() const;
+
+	void set_invisible(bool value) { invisible_ = value; }
 
 protected:
 	const frame& current_frame() const;
@@ -216,6 +218,11 @@ private:
 	int frame_id_;
 
 	int loop_sound_;
+
+	//if set to true, the character is currently interacting, and will be
+	//locked in the interacting frame.
+	bool interacting_;
+	bool invisible_;
 
 	//blur information
 	struct previous_draw {

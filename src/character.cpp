@@ -48,7 +48,7 @@ character::character(wml::const_node_ptr node)
 	boost_power_(wml::get_int(node, "boost_power")),
 	glide_speed_(wml::get_int(node, "glide_speed")),
 	cycle_num_(0), current_traction_(100), last_jump_(false), last_walk_(0),
-    frame_id_(0), loop_sound_(-1)
+    frame_id_(0), loop_sound_(-1), interacting_(false), invisible_(false)
 {
 	current_frame_ = &type_->get_frame();
 	assert(type_);
@@ -243,6 +243,10 @@ void character::setup_drawing() const
 
 void character::draw() const
 {
+	if(invisible_) {
+		return;
+	}
+
 	if(driver_) {
 		driver_->draw();
 	}
@@ -366,7 +370,7 @@ void character::process(level& lvl)
 	lvl.get_current(*this, &velocity_x_, &velocity_y_);
 
 	//executed when an animation ends, generally acts by switching to a new animation
-	if(time_in_frame_ == current_frame_->duration() && current_frame_ != type_->jump_frame() && current_frame_ != type_->fall_frame() && current_frame_ != type_->gethit_frame() && current_frame_ != type_->die_frame()) {
+	if(time_in_frame_ >= current_frame_->duration() && current_frame_ != type_->jump_frame() && current_frame_ != type_->fall_frame() && current_frame_ != type_->gethit_frame() && current_frame_ != type_->die_frame()) {
 
 		//fire an event to signal the end of this animation.
 		handle_event("end_" + current_frame_->id() + "_anim");
@@ -389,6 +393,12 @@ void character::process(level& lvl)
 		} else if(current_frame_ == type_->crouch_frame() ||
 		          current_frame_ == type_->lookup_frame()) {
 			change_to_stand_frame();
+		} else if(current_frame_ == type_->interact_frame()) {
+			if(interacting_) {
+				--time_in_frame_;
+			} else {
+				change_to_stand_frame();
+			}
 		} else if(current_frame_ == type_->attack_frame() ||
 		          current_frame_ == type_->up_attack_frame()) {
 			change_to_stand_frame();
@@ -1050,7 +1060,15 @@ void character::uncrouch(const level& lvl)
 
 void character::lookup(const level& lvl)
 {
-	if(is_standing(lvl) && current_frame_ != type_->lookup_frame()) {
+	if(!is_standing(lvl)) {
+		return;
+	}
+
+	if(type_->interact_frame() && current_frame_ != type_->interact_frame() && lvl_->can_interact(body_rect())) {
+		change_frame(type_->interact_frame());
+	}
+	
+	if(type_->lookup_frame() && current_frame_ != type_->lookup_frame() && current_frame_ != type_->interact_frame()) {
 		change_frame(type_->lookup_frame());
 	}
 }
@@ -1560,6 +1578,11 @@ bool character::is_standable(int xpos, int ypos, int* friction, int* traction, i
 	return true;
 }
 
+bool character::enter() const
+{
+	return &current_frame() == type_->interact_frame();
+}
+
 variant character::get_value(const std::string& key) const
 {
 	if(key == "x") {
@@ -1681,6 +1704,9 @@ void character::set_value(const std::string& key, const variant& value)
 		set_pos(value.as_int(), y());
 	} else if(key == "y") {
 		set_pos(x(), value.as_int());
+	} else if(key == "interact") {
+		interacting_ = value.as_bool();
+		std::cerr << "INTERACT: " << (interacting_ ? "TRUE" : "FALSE") << "\n";
 	} else {
 		vars_[key] = value;
 	}

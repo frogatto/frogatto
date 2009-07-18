@@ -63,6 +63,7 @@ public:
 	const frame* swim_down_frame() const { return swim_down_frame_.get(); }
 	const frame* swim_up_frame() const { return swim_up_frame_.get(); }
 	const frame* push_frame() const { return push_frame_.get(); }
+	const frame* interact_frame() const { return interact_frame_.get(); }
 
 	bool has_swim_frames() const { return swim_side_frame(); }
 
@@ -107,7 +108,7 @@ private:
 			  die_frame_, fly_frame_, slide_frame_, spring_frame_,
 			  swim_side_idle_frame_,swim_down_idle_frame_,swim_up_idle_frame_,
 			  swim_side_frame_,swim_down_frame_,swim_up_frame_,
-	          push_frame_;
+	          push_frame_, interact_frame_;
 	int walk_;
 	int jump_;
 	int boost_;
