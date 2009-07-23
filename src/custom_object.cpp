@@ -23,7 +23,8 @@ custom_object::custom_object(wml::const_node_ptr node)
     frame_(&type_->default_frame()),
 	frame_name_(wml::get_str(node, "current_frame", "normal")),
 	time_in_frame_(wml::get_int(node, "time_in_frame")),
-	velocity_x_(0), velocity_y_(0),
+	velocity_x_(wml::get_int(node, "velocity_x")),
+	velocity_y_(wml::get_int(node, "velocity_y")),
 	rotate_(0), zorder_(wml::get_int(node, "zorder", type_->zorder())),
 	hitpoints_(wml::get_int(node, "hitpoints", type_->hitpoints())),
 	was_underwater_(false),
@@ -113,6 +114,8 @@ wml::node_ptr custom_object::write() const
 	res->set_attr("type", type_->id());
 	res->set_attr("x", formatter() << x());
 	res->set_attr("y", formatter() << y());
+	res->set_attr("velocity_x", formatter() << velocity_x_);
+	res->set_attr("velocity_y", formatter() << velocity_y_);
 
 	if(zorder_ != type_->zorder()) {
 		res->set_attr("zorder", formatter() << y());
