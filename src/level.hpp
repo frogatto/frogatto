@@ -77,6 +77,8 @@ public:
 	entity_ptr get_character_at_point(int x, int y) const;
 	const_pc_character_ptr player() const { return player_; }
 	pc_character_ptr player() { return player_; }
+	std::vector<pc_character_ptr>& players() { return players_; }
+	const std::vector<pc_character_ptr>& players() const { return players_; }
 	void add_player(entity_ptr p);
 	void add_character(entity_ptr p);
 	void add_item(item_ptr p);
@@ -84,6 +86,10 @@ public:
 	void remove_prop(const prop_object& new_prop);
 	void get_props_in_rect(int x1, int y1, int x2, int y2, std::vector<prop_object>& props);
 	void remove_props_in_rect(int x1, int y1, int x2, int y2);
+
+	//sets the last 'touched' player. This is the player found in the level when
+	//using WML, so it works reasonably well in multiplayer.
+	void set_touched_player(pc_character_ptr p) { last_touched_player_ = p; }
 
 	struct portal {
 		portal() : dest_starting_pos(false), automatic(false), saved_game(false)
@@ -184,9 +190,12 @@ public:
 	//pressing up will talk to someone or enter a door etc.
 	bool can_interact(const rect& body) const;
 
+	void replay_from_cycle(int ncycle);
 	void backup();
 
 private:
+	void do_processing();
+
 	bool add_tile_rect_vector_internal(int zorder, int x1, int y1, int x2, int y2, const std::vector<std::string>& tiles);
 
 	void draw_layer(int layer, int x, int y, int w, int h) const;
@@ -245,6 +254,9 @@ private:
 
 	std::map<std::string, entity_ptr> chars_by_label_;
 	pc_character_ptr player_;
+	pc_character_ptr last_touched_player_;
+
+	std::vector<pc_character_ptr> players_;
 
 	//characters stored in wml format; they can't be loaded in a separate thread
 	//they will be loaded when complete_load_level() is called.
@@ -300,7 +312,11 @@ private:
 	struct backup_snapshot {
 		int cycle;
 		std::vector<entity_ptr> chars;
+		std::vector<pc_character_ptr> players;
+		pc_character_ptr player, last_touched_player;
 	};
+
+	void restore_from_backup(backup_snapshot& snapshot);
 
 	typedef boost::shared_ptr<backup_snapshot> backup_snapshot_ptr;
 

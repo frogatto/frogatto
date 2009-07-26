@@ -92,7 +92,6 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 
 custom_object::~custom_object()
 {
-	std::cerr << "DESTROY CUSTOM OBJECT\n";
 }
 
 wml::node_ptr custom_object::write() const
@@ -376,8 +375,11 @@ void custom_object::process(level& lvl)
 		}
 	}
 
-	if(lvl.player() && rects_intersect(body_rect(), lvl.player()->body_rect())) {
-		handle_event(lvl.player()->enter() ? "interact" : "touch");
+	foreach(pc_character_ptr& p, lvl.players()) {
+		if(rects_intersect(body_rect(), p->body_rect())) {
+			lvl.set_touched_player(p);
+			handle_event(p->enter() ? "interact" : "touch");
+		}
 	}
 
 	static const std::string ProcessStr = "process";

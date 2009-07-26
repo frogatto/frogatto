@@ -8,6 +8,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/scoped_ptr.hpp>
 
+#include "controls.hpp"
 #include "debug_console.hpp"
 #include "draw_number.hpp"
 #include "draw_scene.hpp"
@@ -212,12 +213,20 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 	}
 }
 
-void draw_fps(const level& lvl, int fps, int delay, int draw, int process)
+void draw_fps(const level& lvl, const performance_data& data)
 {
 	std::ostringstream s;
-	s << fps << "fps; " << (draw/10) << "% draw; " << (process/10) << "% process; " << (delay/10) << "% idle; " << lvl.num_active_chars() << " objects active";
-	graphics::texture t(font::render_text(s.str(), graphics::color_white(), 18));
+	s << data.fps << "fps; " << (data.draw/10) << "% draw; " << (data.process/10) << "% process; " << (data.delay/10) << "% idle; " << lvl.num_active_chars() << " objects; " << data.cycle << " cycles";
+	graphics::texture t(font::render_text(s.str(), graphics::color_white(), 14));
 	graphics::blit_texture(t, 10, 10);
+
+	if(controls::num_players() > 1) {
+		//draw networking stats
+		std::ostringstream s;
+		s << controls::packets_received() << " packets received; " << controls::num_errors() << " errors; " << controls::cycles_behind() << " behind; " << controls::their_highest_confirmed() << " remote cycles " << controls::last_packet_size() << " packet";
+		graphics::texture t(font::render_text(s.str(), graphics::color_white(), 14));
+		graphics::blit_texture(t, 10, 24);
+	}
 }
 
 void draw_statusbar(const level& lvl, screen_position& pos, const entity* focus)

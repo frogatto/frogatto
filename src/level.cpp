@@ -12,6 +12,7 @@
 #include "level.hpp"
 #include "level_object.hpp"
 #include "load_level.hpp"
+#include "multiplayer.hpp"
 #include "preferences.hpp"
 #include "preprocessor.hpp"
 #include "raster.hpp"
@@ -212,7 +213,12 @@ void level::load_character(wml::const_node_ptr c)
 		chars_.back()->set_id(chars_.size());
 	}
 	if(chars_.back()->is_human()) {
-		player_ = chars_.back()->is_human();
+		if(players_.size() == multiplayer::slot()) {
+			last_touched_player_ = player_ = chars_.back()->is_human();
+		}
+
+		players_.push_back(chars_.back()->is_human());
+		players_.back()->set_player_slot(players_.size() - 1);
 	}
 
 	const int group = chars_.back()->group();
@@ -237,7 +243,7 @@ void level::finish_loading()
 
 	wml_chars_.clear();
 
-	controls::new_level(cycle_, 1, 0);
+	controls::new_level(cycle_, players_.empty() ? 1 : players_.size(), multiplayer::slot());
 }
 
 void level::load_save_point(const level& lvl)
@@ -596,8 +602,8 @@ void level::draw(int x, int y, int w, int h) const
 		}
 	}
 
-	if(player_) {
-		player_->draw();
+	foreach(const pc_character_ptr& p, players_) {
+		p->draw();
 	}
 
 	if(fluid_) {
@@ -721,6 +727,8 @@ bool sort_entity_drawing_pos(const entity_ptr& a, const entity_ptr& b) {
 
 void level::process()
 {
+	multiplayer::send_and_receive();
+
 	const int LevelPreloadFrequency = 500; //10 seconds
 	//see if we have levels to pre-load. Load one periodically.
 	if((cycle_%LevelPreloadFrequency) == 0) {
@@ -730,9 +738,14 @@ void level::process()
 		}
 	}
 
-	++cycle_;
-
 	controls::read_local_controls();
+
+	do_processing();
+}
+
+void level::do_processing()
+{
+	++cycle_;
 
 	const int ticks = SDL_GetTicks();
 	active_chars_.clear();
@@ -751,9 +764,16 @@ void level::process()
 		const int x2 = x + c->current_frame().width();
 		const int y2 = y + c->current_frame().height();
 
-		if((player_->x() < x ? x - player_->x() : player_->x() - x2) < distance_x &&
-		   (player_->y() < y ? y - player_->y() : player_->y() - y2) < distance_y ||
-		   c->always_active()) {
+		bool is_active = c->always_active();
+		foreach(const pc_character_ptr& p, players_) {
+			if((p->x() < x ? x - p->x() : p->x() - x2) < distance_x &&
+		   	   (p->y() < y ? y - p->y() : p->y() - y2) < distance_y) {
+				is_active = true;
+				break;
+			}
+		}
+
+		if(is_active) {
 			if(c->group() >= 0) {
 				assert(c->group() < groups_.size());
 				const entity_group& group = groups_[c->group()];
@@ -947,7 +967,7 @@ entity_ptr level::collide(int x, int y, const entity* exclude) const
 		if(is_players_side && c->on_players_side()) {
 			continue;
 		}
-		if(c.get() != exclude && c != player_ &&
+		if(c.get() != exclude && !c->is_human() &&
 		   (!c->body_passthrough() || is_players_side && c->body_harmful()) &&
 		   c->point_collides(x,y)) {
 			res = c;
@@ -956,7 +976,7 @@ entity_ptr level::collide(int x, int y, const entity* exclude) const
 			}
 		}
 
-		if(c.get() != exclude && c != player_) {
+		if(c.get() != exclude && !c->is_human()) {
 			if((!c->body_passthrough() || is_players_side && c->body_harmful()) &&
 			   c->point_collides(x,y)) {
 				return c;
@@ -984,7 +1004,7 @@ entity_ptr level::collide(const rect& r, const entity* exclude) const
 			continue;
 		}
 
-		if(c.get() != exclude && c != player_) {
+		if(c.get() != exclude && !c->is_human()) {
 			if((!c->body_passthrough() || is_players_side && c->body_harmful()) &&
 			   rects_intersect(r, c->body_rect())) {
 				return c;
@@ -1014,12 +1034,11 @@ entity_ptr level::board(int x, int y) const
 
 character_ptr level::hit_by_player(const rect& r) const
 {
-	if(!player_) {
-		return character_ptr();
-	}
-	
-	if(rects_intersect(r, player_->hit_rect())) {
-		return player_;
+	for(std::vector<pc_character_ptr>::const_iterator p = players_.begin();
+	    p != players_.end(); ++p) {
+		if(rects_intersect(r, (*p)->hit_rect())) {
+			return *p;
+		}
 	}
 
 	return character_ptr();
@@ -1389,7 +1408,15 @@ void level::set_solid(solid_map& map, int x, int y, int friction, int traction, 
 void level::add_player(entity_ptr p)
 {
 	chars_.erase(std::remove(chars_.begin(), chars_.end(), player()), chars_.end());
-	player_ = p->is_human();
+	last_touched_player_ = player_ = p->is_human();
+	if(players_.empty()) {
+		player_->set_player_slot(players_.size());
+		players_.push_back(player_);
+	} else {
+		player_->set_player_slot(0);
+		players_[0] = player_;
+	}
+
 	assert(player_);
 	chars_.push_back(p);
 
@@ -1593,7 +1620,7 @@ variant level::get_value(const std::string& key) const
 	if(key == "cycle") {
 		return variant(cycle_);
 	} else if(key == "player") {
-		return variant(player_.get());
+		return variant(last_touched_player_.get());
 	} else if(key == "num_active") {
 		return variant(active_chars_.size());
 	} else if(key == "tint") {
@@ -1735,6 +1762,27 @@ bool level::can_interact(const rect& body) const
 	return false;
 }
 
+void level::replay_from_cycle(int ncycle)
+{
+	const int cycles_ago = cycle_ - ncycle;
+	if(cycles_ago <= 0) {
+		return;
+	}
+
+	int index = static_cast<int>(backups_.size()) - cycles_ago;
+	if(index < 0) {
+		index = 0;
+	}
+
+	const int cycle_to_play_until = cycle_;
+	restore_from_backup(*backups_[index]);
+	backups_.erase(backups_.begin() + index, backups_.end());
+	while(cycle_ < cycle_to_play_until) {
+		backup();
+		do_processing();
+	}
+}
+
 void level::backup()
 {
 	backup_snapshot_ptr snapshot(new backup_snapshot);
@@ -1742,5 +1790,27 @@ void level::backup()
 	snapshot->chars.reserve(chars_.size());
 	foreach(const entity_ptr& e, chars_) {
 		snapshot->chars.push_back(e->backup());
+		if(snapshot->chars.back()->is_human()) {
+			snapshot->players.push_back(snapshot->chars.back()->is_human());
+			if(e == player_) {
+				snapshot->player = snapshot->players.back();
+			}
+		}
 	}
+
+	snapshot->last_touched_player = last_touched_player_;
+
+	backups_.push_back(snapshot);
+	if(backups_.size() > 300) {
+		backups_.erase(backups_.begin(), backups_.begin() + 100);
+	}
+}
+
+void level::restore_from_backup(backup_snapshot& snapshot)
+{
+	cycle_ = snapshot.cycle;
+	chars_ = snapshot.chars;
+	players_ = snapshot.players;
+	player_ = snapshot.player;
+	last_touched_player_ = snapshot.last_touched_player;
 }

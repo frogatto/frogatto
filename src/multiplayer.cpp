@@ -1,0 +1,182 @@
+#include <sstream>
+#include <string>
+
+#include <inttypes.h>
+#include <stdio.h>
+
+#include <boost/asio.hpp>
+#include <boost/shared_ptr.hpp>
+
+#include "controls.hpp"
+#include "multiplayer.hpp"
+
+using boost::asio::ip::tcp;
+using boost::asio::ip::udp;
+
+namespace multiplayer {
+
+namespace {
+boost::shared_ptr<boost::asio::io_service> asio_service;
+boost::shared_ptr<tcp::socket> tcp_socket;
+boost::shared_ptr<udp::socket> udp_socket;
+boost::shared_ptr<udp::endpoint> udp_endpoint;
+
+int32_t id;
+int player_slot;
+}
+
+int slot()
+{
+	return player_slot;
+}
+
+manager::manager(bool activate)
+{
+	if(activate) {
+		asio_service.reset(new boost::asio::io_service);
+	}
+}
+
+manager::~manager() {
+	udp_endpoint.reset();
+	tcp_socket.reset();
+	udp_socket.reset();
+	asio_service.reset();
+}
+
+void setup_networked_game(const std::string& server)
+{
+	boost::asio::io_service& io_service = *asio_service;
+	tcp::resolver resolver(io_service);
+
+	tcp::resolver::query query(server, "17000");
+
+	tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
+	tcp::resolver::iterator end;
+
+	tcp_socket.reset(new tcp::socket(io_service));
+	tcp::socket& socket = *tcp_socket;
+	boost::system::error_code error = boost::asio::error::host_not_found;
+	while(error && endpoint_iterator != end) {
+		socket.close();
+		socket.connect(*endpoint_iterator++, error);
+	}
+
+	if(error) {
+		fprintf(stderr, "NETWORK ERROR: Can't resolve host\n");
+		throw multiplayer::error();
+	}
+
+	boost::array<char, 5> initial_response;
+	size_t len = socket.read_some(boost::asio::buffer(initial_response), error);
+	if(error) {
+		fprintf(stderr, "ERROR READING INITIAL RESPONSE\n");
+		throw multiplayer::error();
+	}
+
+	if(len != 5) {
+		fprintf(stderr, "INITIAL RESPONSE HAS THE WRONG SIZE: %d\n", (int)len);
+		throw multiplayer::error();
+	}
+
+	memcpy(&id, &initial_response[0], 4);
+	player_slot = initial_response[4];
+
+	fprintf(stderr, "ID: %d; SLOT: %d\n", id, player_slot);
+
+    udp::resolver udp_resolver(io_service);
+    udp::resolver::query udp_query(udp::v4(), server, "17001");
+	udp_endpoint.reset(new udp::endpoint);
+    *udp_endpoint = *udp_resolver.resolve(udp_query);
+    udp::endpoint& receiver_endpoint = *udp_endpoint;
+
+	udp_socket.reset(new udp::socket(io_service));
+    udp_socket->open(udp::v4());
+
+	boost::array<char, 4> udp_msg;
+	memcpy(&udp_msg[0], &id, 4);
+
+//	udp_socket->send_to(boost::asio::buffer(udp_msg), receiver_endpoint);
+
+	fprintf(stderr, "SENT UDP PACKET\n");
+
+	udp::endpoint sender_endpoint;
+//	len = udp_socket->receive_from(boost::asio::buffer(udp_msg), sender_endpoint);
+	fprintf(stderr, "GOT UDP PACKET: %d\n", (int)len);
+
+	std::string msg = "greetings!";
+	socket.write_some(boost::asio::buffer(msg), error);
+	if(error) {
+		fprintf(stderr, "NETWORK ERROR: Could not send data\n");
+		throw multiplayer::error();
+	}
+}
+
+void sync_start_time()
+{
+	if(!tcp_socket) {
+		return;
+	}
+
+	std::ostringstream s;
+	s << "READY/" << controls::num_players();
+	boost::system::error_code error = boost::asio::error::host_not_found;
+	tcp_socket->write_some(boost::asio::buffer(s.str()), error);
+	if(error) {
+		fprintf(stderr, "ERROR WRITING TO SOCKET\n");
+		throw multiplayer::error();
+	}
+
+	boost::array<char, 1024> response;
+	size_t len = tcp_socket->read_some(boost::asio::buffer(response), error);
+	if(error) {
+		fprintf(stderr, "ERROR READING FROM SOCKET\n");
+		throw multiplayer::error();
+	}
+
+	std::string str(&response[0], &response[0] + len);
+	if(str != "START") {
+		fprintf(stderr, "UNEXPECTED RESPONSE: '%s'\n", str.c_str());
+		throw multiplayer::error();
+	}
+}
+
+namespace {
+bool udp_packet_waiting()
+{
+	if(!udp_socket) {
+		return false;
+	}
+
+	boost::asio::socket_base::bytes_readable command(true);
+	udp_socket->io_control(command);
+	return command.get() != 0;
+}
+}
+
+void send_and_receive()
+{
+	if(!udp_socket) {
+		return;
+	}
+
+	//send our ID followed by the send packet.
+	std::vector<char> send_buf(4);
+	memcpy(&send_buf[0], &id, 4);
+	controls::write_control_packet(send_buf);
+	udp_socket->send_to(boost::asio::buffer(send_buf), *udp_endpoint);
+
+	while(udp_packet_waiting()) {
+		udp::endpoint sender_endpoint;
+		boost::array<char, 4096> udp_msg;
+		size_t len = udp_socket->receive_from(boost::asio::buffer(udp_msg), sender_endpoint);
+		if(len < 4) {
+			fprintf(stderr, "UDP PACKET TOO SHORT: %d\n", (int)len);
+			continue;
+		}
+
+		controls::read_control_packet(&udp_msg[4], len - 4);
+	}
+}
+
+}

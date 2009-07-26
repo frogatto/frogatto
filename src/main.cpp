@@ -28,6 +28,7 @@
 #include "level_object.hpp"
 #include "load_level.hpp"
 #include "message_dialog.hpp"
+#include "multiplayer.hpp"
 #include "powerup.hpp"
 #include "preferences.hpp"
 #include "preprocessor.hpp"
@@ -238,10 +239,18 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 	int cycle = 0;
 	bool paused = false;
 	bool done = false;
+	const int start_time = SDL_GetTicks();
 	while(!done) {
-		lvl->backup();
+		if(controls::first_invalid_cycle() >= 0) {
+			lvl->replay_from_cycle(controls::first_invalid_cycle());
+			controls::mark_valid();
+		}
 
-		const int desired_end_time = SDL_GetTicks() + 20;
+		if(controls::num_players() > 1) {
+			lvl->backup();
+		}
+
+		const int desired_end_time = start_time + cycle*20 + 20;
 		if(lvl->player() && lvl->player()->hitpoints() <= 0) {
 			//record stats of the player's death
 			lvl->player()->record_stats_movement();
@@ -488,7 +497,8 @@ bool play_level(boost::scoped_ptr<level>& lvl, std::string& level_cfg, bool reco
 		draw_scene(*lvl, last_draw_position());
 		next_draw += (SDL_GetTicks() - start_draw);
 
-		draw_fps(*lvl, current_fps, current_delay, current_draw, current_process);
+		performance_data perf = { current_fps, current_delay, current_draw, current_process, cycle };
+		draw_fps(*lvl, perf);
 		
 		SDL_GL_SwapBuffers();
 		++next_fps;
@@ -529,6 +539,7 @@ extern "C" int main(int argc, char** argv)
 	std::string level_cfg = "titlescreen.cfg";
 	bool unit_tests_only = false, skip_tests = false;;
 	bool run_benchmarks = false;
+	std::string server;
 	for(int n = 1; n < argc; ++n) {
 		std::string arg(argv[n]);
 		if(arg == "--benchmarks") {
@@ -549,6 +560,8 @@ extern "C" int main(int argc, char** argv)
 			level_cfg = argv[++n];
 		} else if(arg == "--record_replay") {
 			record_replay = true;
+		} else if(arg == "--host" && n+1 < argc) {
+			server = argv[++n];
 		} else {
 			const bool res = preferences::parse_arg(argv[n]);
 			if(!res) {
@@ -635,10 +648,17 @@ extern "C" int main(int argc, char** argv)
 	bool quit = false;
 	const std::string orig_level_cfg = level_cfg;
 
+	multiplayer::manager mp_manager(server.empty() == false);
+
+	if(server.empty() == false) {
+		multiplayer::setup_networked_game(server);
+	}
+
 	while(!quit && !show_title_screen(level_cfg)) {
 		last_draw_position() = screen_position();
 
 		boost::scoped_ptr<level> lvl(load_level(level_cfg));
+
 		assert(lvl.get());
 		sound::play_music(lvl->music());
 		if(lvl->player()) {
@@ -652,6 +672,7 @@ extern "C" int main(int argc, char** argv)
 			key_record_pos = 0;
 		}
 
+		multiplayer::sync_start_time();
 		quit = play_level(lvl, level_cfg, record_replay);
 		level_cfg = orig_level_cfg;
 

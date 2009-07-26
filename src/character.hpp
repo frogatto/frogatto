@@ -289,6 +289,8 @@ public:
 	void record_stats_movement();
 
 	virtual entity_ptr backup() const;
+
+	void set_player_slot(int n) { player_index_ = n; }
 private:
 	virtual void read_controls();
 
