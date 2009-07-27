@@ -57,6 +57,7 @@ private:
 
 struct formula_error
 {
+	formula_error();
 };
 
 }

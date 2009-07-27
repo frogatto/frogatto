@@ -22,10 +22,15 @@
 #include "formula_function.hpp"
 #include "formula_tokenizer.hpp"
 #include "map_utils.hpp"
+#include "random.hpp"
 #include "wml_node.hpp"
 
 namespace game_logic
 {
+
+formula_error::formula_error()
+{
+}
 
 void formula_callable::set_value(const std::string& key, const variant& /*value*/)
 {
@@ -323,7 +328,7 @@ private:
 	static int dice_roll(int num_rolls, int faces) {
 		int res = 0;
 		while(faces > 0 && num_rolls-- > 0) {
-			res += (rand()%faces)+1;
+			res += (rng::generate()%faces)+1;
 		}
 		return res;
 	}
@@ -816,6 +821,9 @@ formula_ptr formula::create_optional_formula(const std::string& str, function_sy
 		return formula_ptr(new formula(str, symbols));
 	} catch(...) {
 		std::cerr << "ERROR parsing optional formula: '" << str << "'\n";
+		//for now die a horrible death on such errors
+		assert(false);
+
 		return formula_ptr();
 	}
 }
