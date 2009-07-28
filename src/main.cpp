@@ -10,6 +10,7 @@
 #include <boost/scoped_ptr.hpp>
 
 #include "character_type.hpp"
+#include "controls.hpp"
 #include "custom_object_functions.hpp"
 #include "custom_object_type.hpp"
 #include "draw_scene.hpp"
@@ -681,6 +682,8 @@ extern "C" int main(int argc, char** argv)
 	}
 
 	} //end manager scope, make managers destruct before calling SDL_Quit
+
+	controls::debug_dump_controls();
 	std::cerr << "quitting...\n";
 	SDL_Quit();
 	std::cerr << "quit called...\n";

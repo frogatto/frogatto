@@ -310,6 +310,7 @@ private:
 	std::vector<active_movement_script_ptr> active_movement_scripts_;
 
 	struct backup_snapshot {
+		unsigned int rng_seed;
 		int cycle;
 		std::vector<entity_ptr> chars;
 		std::vector<pc_character_ptr> players;

@@ -125,6 +125,8 @@ public:
 
 	void set_invisible(bool value) { invisible_ = value; }
 
+	std::string debug_description() const;
+
 protected:
 	const frame& current_frame() const;
 	const character_type& type() const { return *type_; }
@@ -141,6 +143,8 @@ protected:
 
 	game_logic::const_formula_ptr get_event_handler(const std::string& key) const;
 	void set_event_handler(const std::string& key, game_logic::const_formula_ptr f);
+
+	void map_entities(const std::map<entity_ptr, entity_ptr>& m);
 
 protected:
 	bool is_in_swimming_frame() const;

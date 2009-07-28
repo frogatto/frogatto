@@ -35,7 +35,6 @@ std::string next_music;
 //of the next scheduled track, if there is one.
 void on_music_finished()
 {
-	std::cerr << "music finished...\n";
 	Mix_FreeMusic(current_music);
 	current_music = NULL;
 	if(next_music.empty() == false) {
@@ -178,7 +177,6 @@ void play_music(const std::string& file)
 	}
 
 	if(current_music) {
-		std::cerr << "fading out music...\n";
 		next_music = file;
 		Mix_FadeOutMusic(1000);
 		return;
@@ -187,11 +185,9 @@ void play_music(const std::string& file)
 	current_music_name = file;
 	current_music = Mix_LoadMUS(("music/" + file).c_str());
 	if(!current_music) {
-		std::cerr << "Mix_LaadMUS ERROR loading " << file << ": " << Mix_GetError() << "\n";
+		std::cerr << "Mix_LoadMUS ERROR loading " << file << ": " << Mix_GetError() << "\n";
 		return;
 	}
-
-	std::cerr << "playing music: " << file << "\n";
 
 	Mix_FadeInMusic(current_music, -1, 1000);
 }
@@ -214,7 +210,7 @@ void play_music_interrupt(const std::string& file)
 	current_music_name = file;
 	current_music = Mix_LoadMUS(("music/" + file).c_str());
 	if(!current_music) {
-		std::cerr << "Mix_LaadMUS ERROR loading " << file << ": " << Mix_GetError() << "\n";
+		std::cerr << "Mix_LoadMUS ERROR loading " << file << ": " << Mix_GetError() << "\n";
 		return;
 	}
 

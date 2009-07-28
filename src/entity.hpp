@@ -53,6 +53,9 @@ public:
 	int y() const { return y_/100; }
 	virtual int zorder() const { return 0; }
 
+	int centi_x() const { return x_; }
+	int centi_y() const { return y_; }
+
 	virtual int velocity_x() const { return 0; }
 	virtual int velocity_y() const { return 0; }
 
@@ -138,6 +141,13 @@ public:
 	//i.e. if the player ovelaps with the object and presses up if they will
 	//talk to or enter the object.
 	virtual bool can_interact_with() const { return false; }
+
+	virtual std::string debug_description() const = 0;
+
+	//a function call which tells us to get any references to other entities
+	//that we hold, and map them according to the mapping given. This is useful
+	//when we back up an entire level and want to make references match.
+	virtual void map_entities(const std::map<entity_ptr, entity_ptr>& m) {}
 
 protected:
 	void set_current_generator(current_generator* generator);

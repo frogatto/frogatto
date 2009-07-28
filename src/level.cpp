@@ -2,6 +2,7 @@
 #include <iostream>
 #include <math.h>
 
+#include "asserts.hpp"
 #include "controls.hpp"
 #include "draw_tile.hpp"
 #include "entity.hpp"
@@ -15,6 +16,7 @@
 #include "multiplayer.hpp"
 #include "preferences.hpp"
 #include "preprocessor.hpp"
+#include "random.hpp"
 #include "raster.hpp"
 #include "stats.hpp"
 #include "string_utils.hpp"
@@ -1764,18 +1766,19 @@ bool level::can_interact(const rect& body) const
 
 void level::replay_from_cycle(int ncycle)
 {
+	std::cerr << "REPLAY FROM " << ncycle << "-" << (cycle_-1) << "\n";
+
 	const int cycles_ago = cycle_ - ncycle;
 	if(cycles_ago <= 0) {
 		return;
 	}
 
 	int index = static_cast<int>(backups_.size()) - cycles_ago;
-	if(index < 0) {
-		index = 0;
-	}
+	ASSERT_GE(index, 0);
 
 	const int cycle_to_play_until = cycle_;
 	restore_from_backup(*backups_[index]);
+	ASSERT_EQ(cycle_, ncycle);
 	backups_.erase(backups_.begin() + index, backups_.end());
 	while(cycle_ < cycle_to_play_until) {
 		backup();
@@ -1785,11 +1788,18 @@ void level::replay_from_cycle(int ncycle)
 
 void level::backup()
 {
+	std::map<entity_ptr, entity_ptr> entity_map;
+
+	std::cerr << "BACKUP " << cycle_ << ": ";
 	backup_snapshot_ptr snapshot(new backup_snapshot);
+	snapshot->rng_seed = rng::get_seed();
 	snapshot->cycle = cycle_;
 	snapshot->chars.reserve(chars_.size());
 	foreach(const entity_ptr& e, chars_) {
+		std::cerr << e->debug_description() << "(" << e->centi_x() << "," << e->centi_y() << "):";
 		snapshot->chars.push_back(e->backup());
+		entity_map[e] = snapshot->chars.back();
+
 		if(snapshot->chars.back()->is_human()) {
 			snapshot->players.push_back(snapshot->chars.back()->is_human());
 			if(e == player_) {
@@ -1797,6 +1807,12 @@ void level::backup()
 			}
 		}
 	}
+
+	foreach(const entity_ptr& e, snapshot->chars) {
+		e->map_entities(entity_map);
+	}
+
+	std::cerr << "\n";
 
 	snapshot->last_touched_player = last_touched_player_;
 
@@ -1808,6 +1824,7 @@ void level::backup()
 
 void level::restore_from_backup(backup_snapshot& snapshot)
 {
+	rng::set_seed(snapshot.rng_seed);
 	cycle_ = snapshot.cycle;
 	chars_ = snapshot.chars;
 	players_ = snapshot.players;

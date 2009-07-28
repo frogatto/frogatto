@@ -3,10 +3,13 @@
 #include <assert.h>
 #include <inttypes.h>
 
+#include <stdio.h>
+
 #include <vector>
 
 #include "SDL.h"
 
+#include "asserts.hpp"
 #include "controls.hpp"
 #include "foreach.hpp"
 #include "joystick.hpp"
@@ -109,14 +112,12 @@ void read_local_controls()
 
 void get_control_status(int cycle, int player, bool* output)
 {
+	--cycle;
 	cycle -= starting_cycles;
 
-	unsigned char state = 0;
-	if(cycle < controls[player].size()) {
-		state = controls[player][cycle];
-	} else if(!controls[player].empty()) {
-		state = controls[player].back();
-	}
+	ASSERT_INDEX_INTO_VECTOR(cycle, controls[player]);
+
+	unsigned char state = controls[player][cycle];
 
 	for(int n = 0; n != NUM_CONTROLS; ++n) {
 		output[n] = (state&(1 << n)) ? true : false;
@@ -295,6 +296,30 @@ int cycles_behind()
 int last_packet_size()
 {
 	return last_packet_size_;
+}
+
+void debug_dump_controls()
+{
+	fprintf(stderr, "CONTROLS:");
+	for(int n = 0; n < nplayers; ++n) {
+		fprintf(stderr, " %d:", n);
+		for(int m = 0; m < controls[n].size() && m < highest_confirmed[n]; ++m) {
+			char c = controls[n][m];
+			fprintf(stderr, "%02x", (int)c);
+		}
+	}
+
+	fprintf(stderr, "\n");
+
+	for(int n = 0; n < nplayers; ++n) {
+		for(int m = 0; m < controls[n].size() && m < highest_confirmed[n]; ++m) {
+			fprintf(stderr, "CTRL PLAYER %d CYCLE %d: ", n, m);
+			for(int j = 0; j != NUM_CONTROLS; ++j) {
+				fprintf(stderr, (1 << j)&controls[n][m] ? "1" : "0");
+			}
+			fprintf(stderr, "\n");
+		}
+	}
 }
 
 }

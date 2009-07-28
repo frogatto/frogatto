@@ -14,6 +14,7 @@
 #include "level_logic.hpp"
 #include "powerup.hpp"
 #include "preferences.hpp"
+#include "random.hpp"
 #include "raster.hpp"
 #include "sound.hpp"
 #include "stats.hpp"
@@ -66,6 +67,10 @@ character::character(wml::const_node_ptr node)
 	foreach(const std::string& p, util::split(node->attr("abilities"))) {
 		get_powerup(p);
 	}
+
+	foreach(bool& b, controls_) {
+		b = false;
+	}
 }
 
 character::character(const std::string& type, int x, int y, bool face_right)
@@ -93,6 +98,10 @@ character::character(const std::string& type, int x, int y, bool face_right)
 {
 	current_frame_ = &type_->get_frame();
 	assert(type_);
+
+	foreach(bool& b, controls_) {
+		b = false;
+	}
 }
 
 pc_character::pc_character(wml::const_node_ptr node)
@@ -376,7 +385,7 @@ void character::process(level& lvl)
 		handle_event("end_" + current_frame_->id() + "_anim");
 
 		if(current_frame_ == &type_->get_frame()) {
-			change_frame((rand()%5) == 0 ? type_->idle_frame() : &type_->get_frame());
+			change_frame((rng::generate()%5) == 0 ? type_->idle_frame() : &type_->get_frame());
 		} else if(current_frame_ == type_->stand_up_slope_frame()) {
 			time_in_frame_ = 0;
 		} else if(current_frame_ == type_->stand_down_slope_frame()) {
@@ -1378,6 +1387,16 @@ void character::set_event_handler(const std::string& key, game_logic::const_form
 	}
 }
 
+void character::map_entities(const std::map<entity_ptr, entity_ptr>& m)
+{
+	foreach(entity_ptr& e, standing_on_) {
+		std::map<entity_ptr, entity_ptr>::const_iterator i = m.find(e);
+		if(i != m.end()) {
+			e = i->second;
+		}
+	}
+}
+
 void character::set_control_status(const std::string& key, bool value)
 {
 	static const std::string keys[] = { "up", "down", "left", "right", "attack", "jump" };
@@ -2036,4 +2055,17 @@ entity_ptr character::backup() const
 entity_ptr pc_character::backup() const
 {
 	return entity_ptr(new pc_character(*this));
+}
+
+std::string character::debug_description() const
+{
+	std::ostringstream s;
+	s << type_->id() << "/" << current_frame().id() << "/" << time_in_frame_ << "/";
+	for(int n = 0; n != controls::NUM_CONTROLS; ++n) {
+		s << (controls_[n] ? "1" : "0");
+	}
+
+	s << "/velx=" << velocity_x_ << ";vely=" << velocity_y_;
+
+	return s.str();
 }

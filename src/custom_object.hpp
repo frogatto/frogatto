@@ -78,6 +78,10 @@ public:
 
 	bool can_interact_with() const;
 
+	std::string debug_description() const;
+
+	void map_entities(const std::map<entity_ptr, entity_ptr>& m);
+
 private:
 	virtual void control(const level& lvl);
 

@@ -117,11 +117,11 @@ const frame& custom_object_type::get_frame(const std::string& key) const
 	if(itor == frames_.end() || itor->second.empty()) {
 		return default_frame();
 	} else {
-		if(itor->second.size() == 1) {
+//		if(itor->second.size() == 1) {
 			return *itor->second.front().get();
-		} else {
-			return *itor->second[rand()%itor->second.size()].get();
-		}
+//		} else {
+//			return *itor->second[rand()%itor->second.size()].get();
+//		}
 	}
 }
 

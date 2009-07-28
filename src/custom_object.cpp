@@ -382,6 +382,10 @@ void custom_object::process(level& lvl)
 		}
 	}
 
+	if(lvl.players().empty() == false) {
+		lvl.set_touched_player(lvl.players().front());
+	}
+
 	static const std::string ProcessStr = "process";
 	handle_event(ProcessStr);
 
@@ -897,5 +901,27 @@ void custom_object::set_event_handler(const std::string& key, game_logic::const_
 bool custom_object::can_interact_with() const
 {
 	return can_interact_with_;
+}
+
+std::string custom_object::debug_description() const
+{
+	return type_->id();
+}
+
+void custom_object::map_entities(const std::map<entity_ptr, entity_ptr>& m)
+{
+	if(last_hit_by_) {
+		std::map<entity_ptr, entity_ptr>::const_iterator i = m.find(last_hit_by_);
+		if(i != m.end()) {
+			last_hit_by_ = i->second;
+		}
+	}
+
+	foreach(entity_ptr& e, stood_on_by_) {
+		std::map<entity_ptr, entity_ptr>::const_iterator i = m.find(e);
+		if(i != m.end()) {
+			e = i->second;
+		}
+	}
 }
 
