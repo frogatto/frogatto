@@ -1628,7 +1628,7 @@ variant level::get_value(const std::string& key) const
 	} else if(key == "tint") {
 		return variant(new graphics::color(tint_));
 	} else {
-		return variant();
+		return variant(get_entity_by_label(key).get());
 	}
 }
 
