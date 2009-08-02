@@ -68,6 +68,7 @@ public:
 	void move_to_standing(level& lvl);
 	int hitpoints() const;
 	int max_hitpoints() const;
+	void heal() { hitpoints_ = max_hitpoints_; }
 	int walk_speed() const;
 	int jump_power() const;
 	int boost_power() const;
@@ -156,6 +157,8 @@ protected:
 	int current_traction() const { return current_traction_; }
 
 	bool control_status(controls::CONTROL_ITEM ctrl) const { return controls_[ctrl]; }
+
+	void change_to_stand_frame();
 private:
 
 	virtual void read_controls() {}
@@ -166,7 +169,6 @@ private:
 	int slope_standing_on(int range=1) const;
 
 	bool can_continue_sliding() const;
-	void change_to_stand_frame();
 	bool in_stand_frame() const;
 
 	virtual int invincibility_duration() const { return 10; }
@@ -295,6 +297,8 @@ public:
 	virtual entity_ptr backup() const;
 
 	void set_player_slot(int n) { player_index_ = n; }
+
+	void respawn();
 private:
 	virtual void read_controls();
 
@@ -313,6 +317,9 @@ private:
 	mutable std::map<std::string, std::vector<int> > objects_destroyed_;
 
 	boost::intrusive_ptr<pc_character> save_condition_;
+
+	//the player's spawn location, in case they need respawning (in mp games)
+	int spawn_x_, spawn_y_;
 	std::string current_level_;
 
 	int score_;

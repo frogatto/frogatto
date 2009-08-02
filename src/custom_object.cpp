@@ -237,6 +237,12 @@ void custom_object::process(level& lvl)
 
 	lvl_ = &lvl;
 
+	variant scheduled_command = get_scheduled_command(lvl.cycle());
+	while(!scheduled_command.is_null()) {
+		execute_command(scheduled_command);
+		scheduled_command = get_scheduled_command(lvl.cycle());
+	}
+
 	++time_in_frame_;
 
 	if(time_in_frame_ == frame_->duration()) {

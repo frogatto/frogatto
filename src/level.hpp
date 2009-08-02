@@ -37,6 +37,9 @@ public:
 	//in the main thread.
 	void finish_loading();
 
+	//function which sets which player we're controlling on this machine.
+	void set_multiplayer_slot(int slot);
+
 	const std::string& replay_data() const { return replay_data_; }
 	void load_save_point(const level& lvl);
 	void set_save_point(int x, int y) { save_point_x_ = x; save_point_y_ = y; }
@@ -192,6 +195,8 @@ public:
 
 	void replay_from_cycle(int ncycle);
 	void backup();
+
+	bool is_multiplayer() const { return players_.size() > 1; }
 
 private:
 	void do_processing();

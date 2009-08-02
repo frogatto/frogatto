@@ -27,8 +27,7 @@ public:
 	explicit server(boost::asio::io_service& io_service)
 	  : acceptor_(io_service, tcp::endpoint(tcp::v4(), 17000)),
 	    next_id_(0), slots_(0),
-		udp_socket_(io_service, udp::endpoint(udp::v4(), 17001)),
-		nready_(0)
+		udp_socket_(io_service, udp::endpoint(udp::v4(), 17001))
 	{
 		start_accept();
 		start_udp_receive();
@@ -90,19 +89,37 @@ private:
 			std::string str(buf->data(), buf->data() + nbytes);
 			std::cerr << "RECEIVE {{{" << str << "}}}\n";
 
-			static boost::regex ready("READY/(\\d+)");
+			static boost::regex ready("READY/(.+)/(\\d+)");
 
 			boost::cmatch match;
 			if(boost::regex_match(str.c_str(), match, ready)) {
-				++nready_;
-				const int nplayers = atoi(match[1].first);
-				if(nready_ >= nplayers) {
+				std::string level_id(match[1].first, match[1].second);
+
+				GameInfoPtr& game = games_[level_id];
+				if(!game) {
+					game.reset(new GameInfo);
+				}
+
+				SocketInfo& info = sockets_info_[socket];
+				if(info.game) {
+					//if the player is already in a game, remove them from it.
+					std::vector<socket_ptr>& v = info.game->players;
+					v.erase(std::remove(v.begin(), v.end(), socket), v.end());
+				}
+
+				info.game = game;
+
+				game->players.push_back(socket);
+
+				const int nplayers = atoi(match[2].first);
+				if(game->players.size() >= nplayers) {
 					std::string msg = "START";
-					foreach(socket_ptr socket, sockets_) {
+					foreach(socket_ptr socket, game->players) {
 						boost::asio::async_write(*socket, boost::asio::buffer(msg),
 			                         boost::bind(&server::handle_send, this, socket, _1, _2));
 					}
-					nready_ = 0;
+
+					game.reset();
 				}
 			}
 
@@ -113,6 +130,12 @@ private:
 	}
 
 	void disconnect(socket_ptr socket) {
+
+		SocketInfo& info = sockets_info_[socket];
+		if(info.game) {
+			std::vector<socket_ptr>& v = info.game->players;
+			v.erase(std::remove(v.begin(), v.end(), socket), v.end());
+		}
 
 		std::cerr << "CLOSING SOCKET: ";
 		socket->close();
@@ -131,14 +154,25 @@ private:
 
 	typedef boost::shared_ptr<udp::endpoint> udp_endpoint_ptr;
 
+	struct GameInfo;
+	typedef boost::shared_ptr<GameInfo> GameInfoPtr;
+
 	struct SocketInfo {
 		uint32_t id;
 		uint8_t slot;
 		udp_endpoint_ptr udp_endpoint;
+		GameInfoPtr game;
 	};
 
 	std::map<socket_ptr, SocketInfo> sockets_info_;
 	std::map<uint32_t, socket_ptr> id_to_socket_;
+
+	struct GameInfo {
+		GameInfo()  {}
+		std::vector<socket_ptr> players;
+	};
+
+	std::map<std::string, GameInfoPtr> games_;
 
 	uint32_t next_id_;
 	uint64_t slots_;
@@ -160,9 +194,10 @@ private:
 			if(socket_it != id_to_socket_.end()) {
 				assert(sockets_info_.count(socket_it->second));
 				sockets_info_[socket_it->second].udp_endpoint = endpoint;
+				GameInfoPtr game = sockets_info_[socket_it->second].game;
 
 				for(std::map<socket_ptr, SocketInfo>::iterator i = sockets_info_.begin(); i != sockets_info_.end(); ++i) {
-					if(i->first != socket_it->second && i->second.udp_endpoint) {
+					if(i->first != socket_it->second && i->second.game == game && i->second.udp_endpoint) {
 						udp_socket_.async_send_to(boost::asio::buffer(&udp_buf_[0], len), *i->second.udp_endpoint,
 						    boost::bind(&server::handle_udp_send, this, i->second.udp_endpoint, _1, _2));
 					}
@@ -183,7 +218,6 @@ private:
 
 	udp::socket udp_socket_;
 	boost::array<char, 1024> udp_buf_;
-	int nready_;
 };
 
 int main(int argc, char** argv)

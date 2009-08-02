@@ -248,6 +248,13 @@ void level::finish_loading()
 	controls::new_level(cycle_, players_.empty() ? 1 : players_.size(), multiplayer::slot());
 }
 
+void level::set_multiplayer_slot(int slot)
+{
+	ASSERT_INDEX_INTO_VECTOR(slot, players_);
+	last_touched_player_ = player_ = players_[slot];
+	controls::new_level(cycle_, players_.empty() ? 1 : players_.size(), multiplayer::slot());
+}
+
 void level::load_save_point(const level& lvl)
 {
 	if(lvl.save_point_x_ < 0) {
@@ -825,7 +832,7 @@ void level::do_processing()
 
 	foreach(entity_ptr c, active_chars_) {
 		c->process(*this);
-		if(c->destroyed() && c != player_) {
+		if(c->destroyed() && !c->is_human()) {
 			std::cerr << "OBJECT DIE: " << c->get_id() << "\n";
 			if(player_ && c->get_id() != -1) {
 			std::cerr << "OBJECT DEST: " << c->get_id() << "\n";
@@ -1623,6 +1630,8 @@ variant level::get_value(const std::string& key) const
 		return variant(cycle_);
 	} else if(key == "player") {
 		return variant(last_touched_player_.get());
+	} else if(key == "local_player") {
+		return variant(player_.get());
 	} else if(key == "num_active") {
 		return variant(active_chars_.size());
 	} else if(key == "tint") {

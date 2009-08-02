@@ -71,6 +71,7 @@ int their_highest_confirmed() {
 
 void new_level(int level_starting_cycles, int level_nplayers, int level_local_player)
 {
+	std::cerr << "SET STARTING CYCLES: " << level_starting_cycles << "\n";
 	starting_cycles = level_starting_cycles;
 	nplayers = level_nplayers;
 	local_player = level_local_player;

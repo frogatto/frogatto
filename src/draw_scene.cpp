@@ -37,10 +37,10 @@ screen_position& last_draw_position()
 	return last_position;
 }
 
-void set_scene_title(const std::string& msg) {
+void set_scene_title(const std::string& msg, int duration) {
 	title_texture_fg = font::render_text(msg, graphics::color_white(), 60);
 	title_texture_bg = font::render_text(msg, graphics::color_black(), 60);
-	title_display_remaining = 50;
+	title_display_remaining = duration;
 }
 
 GLfloat hp_ratio = -1.0;

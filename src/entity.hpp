@@ -149,6 +149,9 @@ public:
 	//when we back up an entire level and want to make references match.
 	virtual void map_entities(const std::map<entity_ptr, entity_ptr>& m) {}
 
+	void add_scheduled_command(int cycle, variant cmd);
+	variant get_scheduled_command(int cycle);
+
 protected:
 	void set_current_generator(current_generator* generator);
 
@@ -179,6 +182,9 @@ private:
 	const_editor_entity_info_ptr editor_info_;
 
 	current_generator_ptr current_generator_;
+
+	typedef std::pair<int, variant> ScheduledCommand;
+	std::vector<ScheduledCommand> scheduled_commands_;
 };
 
 #endif

@@ -158,6 +158,34 @@ private:
 	}
 };
 
+class title_command : public entity_command_callable
+{
+public:
+	title_command(const std::string& title, int duration)
+	  : title_(title), duration_(duration)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		set_scene_title(title_, duration_);
+	}
+private:
+	std::string title_;
+	int duration_;
+};
+
+class title_function : public function_expression {
+public:
+	explicit title_function(const args_list& args)
+	  : function_expression("title",args,1,2)
+	  {}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new title_command(
+		  args()[0]->evaluate(variables).as_string(),
+		  args().size() >= 2 ? args()[1]->evaluate(variables).as_int() : 50));
+	}
+};
+
 class shake_screen_command : public entity_command_callable
 	{
 	public:
@@ -982,6 +1010,32 @@ private:
 	}
 };
 
+class schedule_command : public entity_command_callable {
+public:
+	schedule_command(int cycles, variant cmd) : cycles_(cycles), cmd_(cmd)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		ob.add_scheduled_command(lvl.cycle() + cycles_, cmd_);
+	}
+private:
+	int cycles_;
+	variant cmd_;
+};
+
+class schedule_function : public function_expression {
+public:
+	explicit schedule_function(const args_list& args)
+	  : function_expression("schedule", args, 2, 2) {
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new schedule_command(
+		    args()[0]->evaluate(variables).as_int(),
+		    args()[1]->evaluate(variables)));
+	}
+};
+
 class add_wave_command : public entity_command_callable
 {
 	int x_, y_, xvelocity_, height_, length_, delta_height_, delta_length_;
@@ -1142,6 +1196,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new music_function(args));
 	} else if(fn == "stop_sound") {
 		return expression_ptr(new stop_sound_function(args));
+	} else if(fn == "title") {
+		return expression_ptr(new title_function(args));
 	} else if(fn == "shake_screen") {
 		return expression_ptr(new shake_screen_function(args));
 	} else if(fn == "radial_current") {
@@ -1188,6 +1244,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new get_object_function(args));
 	} else if(fn == "teleport") {
 		return expression_ptr(new teleport_function(args));
+	} else if(fn == "schedule") {
+		return expression_ptr(new schedule_function(args));
 	} else if(fn == "add_wave") {
 		return expression_ptr(new add_wave_function(args));
 	} else if(fn == "rect_current") {

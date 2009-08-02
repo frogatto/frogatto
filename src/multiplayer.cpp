@@ -8,6 +8,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "controls.hpp"
+#include "level.hpp"
 #include "multiplayer.hpp"
 
 using boost::asio::ip::tcp;
@@ -23,6 +24,28 @@ boost::shared_ptr<udp::endpoint> udp_endpoint;
 
 int32_t id;
 int player_slot;
+
+bool udp_packet_waiting()
+{
+	if(!udp_socket) {
+		return false;
+	}
+
+	boost::asio::socket_base::bytes_readable command(true);
+	udp_socket->io_control(command);
+	return command.get() != 0;
+}
+
+bool tcp_packet_waiting()
+{
+	if(!tcp_socket) {
+		return false;
+	}
+
+	boost::asio::socket_base::bytes_readable command(true);
+	tcp_socket->io_control(command);
+	return command.get() != 0;
+}
 }
 
 int slot()
@@ -42,6 +65,7 @@ manager::~manager() {
 	tcp_socket.reset();
 	udp_socket.reset();
 	asio_service.reset();
+	player_slot = 0;
 }
 
 void setup_networked_game(const std::string& server)
@@ -112,19 +136,29 @@ void setup_networked_game(const std::string& server)
 	}
 }
 
-void sync_start_time()
+void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 {
 	if(!tcp_socket) {
 		return;
 	}
 
 	std::ostringstream s;
-	s << "READY/" << controls::num_players();
+	s << "READY/" << lvl.id() << "/" << lvl.players().size();
 	boost::system::error_code error = boost::asio::error::host_not_found;
 	tcp_socket->write_some(boost::asio::buffer(s.str()), error);
 	if(error) {
 		fprintf(stderr, "ERROR WRITING TO SOCKET\n");
 		throw multiplayer::error();
+	}
+
+	while(!tcp_packet_waiting()) {
+		if(idle_fn) {
+			const bool res = idle_fn();
+			if(!res) {
+				std::cerr << "quitting game...\n";
+				throw multiplayer::error();
+			}
+		}
 	}
 
 	boost::array<char, 1024> response;
@@ -141,22 +175,9 @@ void sync_start_time()
 	}
 }
 
-namespace {
-bool udp_packet_waiting()
-{
-	if(!udp_socket) {
-		return false;
-	}
-
-	boost::asio::socket_base::bytes_readable command(true);
-	udp_socket->io_control(command);
-	return command.get() != 0;
-}
-}
-
 void send_and_receive()
 {
-	if(!udp_socket) {
+	if(!udp_socket || controls::num_players() == 1) {
 		return;
 	}
 

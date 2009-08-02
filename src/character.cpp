@@ -106,7 +106,9 @@ character::character(const std::string& type, int x, int y, bool face_right)
 
 pc_character::pc_character(wml::const_node_ptr node)
 	  : character(node), player_index_(0), prev_left_(true), prev_right_(true),
-	    last_left_(-1000), last_right_(-1000), running_(false), score_(wml::get_int(node, "score"))
+	    last_left_(-1000), last_right_(-1000), running_(false),
+		spawn_x_(x()), spawn_y_(y()),
+		score_(wml::get_int(node, "score"))
 {
 	FOREACH_WML_CHILD(items, node, "items_destroyed") {
 		std::vector<int>& v = items_destroyed_[node->attr("level")];
@@ -327,6 +329,13 @@ void character::process(level& lvl)
 	previous_y_ = y();
 
 	++cycle_num_;
+
+	variant scheduled_command = get_scheduled_command(lvl.cycle());
+	while(!scheduled_command.is_null()) {
+		execute_command(scheduled_command);
+		scheduled_command = get_scheduled_command(lvl.cycle());
+	}
+
 	const int start_x = x();
 	const int start_y = y();
 
@@ -2056,6 +2065,14 @@ entity_ptr character::backup() const
 entity_ptr pc_character::backup() const
 {
 	return entity_ptr(new pc_character(*this));
+}
+
+void pc_character::respawn()
+{
+	heal();
+	set_pos(spawn_x_, spawn_y_);
+	set_velocity(0, 0);
+	change_to_stand_frame();
 }
 
 std::string character::debug_description() const
