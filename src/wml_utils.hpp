@@ -13,6 +13,8 @@
 #ifndef WML_UTILS_HPP_INCLUDED
 #define WML_UTILS_HPP_INCLUDED
 
+#include <stdlib.h>
+
 #include "foreach.hpp"
 #include "wml_node.hpp"
 
@@ -95,7 +97,16 @@ T get_attr(const_node_ptr ptr, const std::string& key,
 inline int get_int(const_node_ptr ptr, const std::string& key,
                    int default_value=0)
 {
-	return get_attr<int>(ptr,key,default_value);
+	if(!ptr) {
+		return default_value;
+	}
+
+	const std::string& str = (*ptr)[key];
+	if(str.empty()) {
+		return default_value;
+	}
+
+	return atoi(str.c_str());
 }
 
 inline bool require(bool cond)

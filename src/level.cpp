@@ -1636,6 +1636,8 @@ variant level::get_value(const std::string& key) const
 		return variant(active_chars_.size());
 	} else if(key == "tint") {
 		return variant(new graphics::color(tint_));
+	} else if(key == "in_editor") {
+		return variant(editor_);
 	} else {
 		return variant(get_entity_by_label(key).get());
 	}

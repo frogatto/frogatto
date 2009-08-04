@@ -347,14 +347,15 @@ texture texture::get_frame_buffer()
 
 texture texture::get(const std::string& str)
 {
-	std::cerr << "texture get: '" << str << "'\n";
-	return get(surface_cache::get(str));
+	texture result(get(surface_cache::get(str)));
+
+	return result;
 }
 
 texture texture::get(const std::string& str, const std::string& algorithm)
 {
-	std::cerr << "texture get: '" << str << "'\n";
-	return get(get_surface_formula(surface_cache::get(str), algorithm));
+	texture result(get(get_surface_formula(surface_cache::get(str), algorithm)));
+	return result;
 }
 
 texture texture::get(const key& surfs)

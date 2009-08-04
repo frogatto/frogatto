@@ -1,3 +1,4 @@
+#include "unit_test.hpp"
 #include "wml_utils.hpp"
 
 namespace wml {
@@ -105,4 +106,13 @@ bool child_sequence_iterator::at_end() const
 	return i1_ == i2_;
 }
 
+}
+
+BENCHMARK(wml_get_int)
+{
+	wml::node_ptr node(new wml::node("a"));
+	node->set_attr("abc", "47");
+	BENCHMARK_LOOP {
+		wml::get_int(node, "abc");
+	}
 }

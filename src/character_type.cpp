@@ -62,6 +62,7 @@ character_type::character_type(wml::const_node_ptr node)
 	radial_distortion_(wml::get_int(node, "radial_distortion")),
 	radial_distortion_intensity_(wml::get_int(node, "radial_distortion_intensity", 5))
 {
+	const int ticks = SDL_GetTicks();
 	wml::const_node_ptr current_generator_node = node->get_child("current_generator");
 	if(current_generator_node) {
 		current_generator_ = current_generator_ptr(current_generator::create(current_generator_node));
@@ -85,6 +86,8 @@ character_type::character_type(wml::const_node_ptr node)
 			variables_[v->first] = var;
 		}
 	}
+
+	const int frames_ticks = SDL_GetTicks();
 
 	stand_up_slope_frame_.reset(create_frame(node, "stand_up_slope"));
 	stand_down_slope_frame_.reset(create_frame(node, "stand_down_slope"));
@@ -119,6 +122,8 @@ character_type::character_type(wml::const_node_ptr node)
 	swim_up_frame_.reset(create_frame(node, "swim_up"));
 	swim_down_frame_.reset(create_frame(node, "swim_down"));
 
+	std::cerr << "CHARACTER_TYPE FRAMES: " << (SDL_GetTicks() - frames_ticks) << "\n";
+
 
 	//if we have one swim frame we must have them all
 	if(!swim_up_frame_ || !swim_down_frame_ || !swim_side_frame_) {
@@ -129,15 +134,21 @@ character_type::character_type(wml::const_node_ptr node)
 	
 	mass_ = wml::get_int(node, "mass", (get_frame().collide_w() * get_frame().collide_h() )  );
 
+	std::cerr << "CHARACTER_TYPE_CONS: " << (SDL_GetTicks() - ticks) << "\n";
 }
 
 const_character_type_ptr character_type::get_modified(const wml::modifier& modifier) const
 {
 	wml::node_ptr node = wml::deep_copy(wml_);
 //	std::cerr << "BEFORE: {{{" << wml::output(node) << "}}}\n";
+	int ticks = SDL_GetTicks();
 	modifier.modify(node);
+	std::cerr << "WML_MODIFY: " << (SDL_GetTicks() - ticks) << "\n";
 //	std::cerr << "AFTER: {{{" << wml::output(node) << "}}}\n";
-	return const_character_type_ptr(new character_type(node));
+	ticks = SDL_GetTicks();
+	const_character_type_ptr result(new character_type(node));
+	std::cerr << "CHARACTER_TYPE: " << (SDL_GetTicks() - ticks) << "\n";
+	return result;
 }
 
 game_logic::const_formula_ptr character_type::get_event_handler(const std::string& event_id) const

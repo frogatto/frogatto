@@ -1036,6 +1036,34 @@ private:
 	}
 };
 
+class add_water_command : public entity_command_callable
+{
+	rect r_;
+public:
+	add_water_command(const rect& r) : r_(r)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		lvl.get_or_create_water().add_rect(r_);
+	}
+};
+
+class add_water_function : public function_expression {
+public:
+	explicit add_water_function(const args_list& args)
+	  : function_expression("add_water", args, 4) {
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new add_water_command(
+		  rect::from_coordinates(
+		    args()[0]->evaluate(variables).as_int(),
+		    args()[1]->evaluate(variables).as_int(),
+		    args()[2]->evaluate(variables).as_int(),
+		    args()[3]->evaluate(variables).as_int())));
+	}
+};
+
 class add_wave_command : public entity_command_callable
 {
 	int x_, y_, xvelocity_, height_, length_, delta_height_, delta_length_;
@@ -1246,6 +1274,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new teleport_function(args));
 	} else if(fn == "schedule") {
 		return expression_ptr(new schedule_function(args));
+	} else if(fn == "add_water") {
+		return expression_ptr(new add_water_function(args));
 	} else if(fn == "add_wave") {
 		return expression_ptr(new add_wave_function(args));
 	} else if(fn == "rect_current") {
