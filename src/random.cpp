@@ -5,7 +5,6 @@ namespace rng {
 static unsigned int next = 1;
 
 int generate() {
-	return 1;
 	next = next * 1103515245 + 12345;
 	return((unsigned int)(next/65536) % 32768);
 }
