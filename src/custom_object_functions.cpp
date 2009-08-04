@@ -10,6 +10,7 @@
 #include "entity.hpp"
 #include "filesystem.hpp"
 #include "level.hpp"
+#include "level_runner.hpp"
 #include "raster.hpp"
 #include "texture.hpp"
 #include "message_dialog.hpp"
@@ -642,6 +643,7 @@ public:
 	  : args_(args)
 	{}
 	virtual void execute(level& lvl, entity& ob) const {
+		pause_scope pauser;
 
 		foreach(variant var, args_) {
 			if(var.is_callable()) {
