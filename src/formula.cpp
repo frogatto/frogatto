@@ -97,7 +97,7 @@ namespace {
 class function_list_expression : public formula_expression {
 public:
 	explicit function_list_expression(function_symbol_table *symbols)
-		: symbols_(symbols)
+		: formula_expression("_function_list"), symbols_(symbols)
 	{}
 
 private:
@@ -118,7 +118,7 @@ private:
 class list_expression : public formula_expression {
 public:
 	explicit list_expression(const std::vector<expression_ptr>& items)
-	   : items_(items)
+	   : formula_expression("_list"), items_(items)
 	{}
 
 private:
@@ -138,7 +138,7 @@ private:
 class map_expression : public formula_expression {
 public:
 	explicit map_expression(const std::vector<expression_ptr>& items)
-	   : items_(items)
+	   : formula_expression("_map"), items_(items)
 	{}
 
 private:
@@ -159,7 +159,7 @@ private:
 class unary_operator_expression : public formula_expression {
 public:
 	unary_operator_expression(const std::string& op, expression_ptr arg)
-	  : operand_(arg)
+	  : formula_expression("_unary"), operand_(arg)
 	{
 		if(op == "not") {
 			op_ = NOT;
@@ -227,7 +227,7 @@ public:
 class dot_expression : public formula_expression {
 public:
 	dot_expression(expression_ptr left, expression_ptr right)
-	   : left_(left), right_(right)
+	   : formula_expression("_dot"), left_(left), right_(right)
 	{}
 private:
 	variant execute(const formula_callable& variables) const {
@@ -250,7 +250,7 @@ private:
 class square_bracket_expression : public formula_expression { //TODO
 public:
 	square_bracket_expression(expression_ptr left, expression_ptr key)
-	   : left_(left), key_(key)
+	   : formula_expression("_sqbr"), left_(left), key_(key)
 	{}
 private:
 	variant execute(const formula_callable& variables) const {
@@ -271,7 +271,7 @@ class operator_expression : public formula_expression {
 public:
 	operator_expression(const std::string& op, expression_ptr left,
 	                             expression_ptr right)
-	  : op_(OP(op[0])), left_(left), right_(right)
+	  : formula_expression("_op"), op_(OP(op[0])), left_(left), right_(right)
 	{
 		if(op == ">=") {
 			op_ = GTE;
@@ -371,7 +371,7 @@ class where_expression: public formula_expression {
 public:
 	explicit where_expression(expression_ptr body,
 				  expr_table_ptr clauses)
-		: body_(body), clauses_(clauses)
+		: formula_expression("_where"), body_(body), clauses_(clauses)
 	{}
 
 private:
@@ -379,15 +379,16 @@ private:
 	expr_table_ptr clauses_;
 
 	variant execute(const formula_callable& variables) const {
-		where_variables wrapped_variables(variables, clauses_);
-		return body_->evaluate(wrapped_variables);
+		formula_callable_ptr wrapped_variables(new where_variables(variables, clauses_));
+		return body_->evaluate(*wrapped_variables);
 	}
 };
 
 
 class identifier_expression : public formula_expression {
 public:
-	explicit identifier_expression(const std::string& id) : id_(id)
+	explicit identifier_expression(const std::string& id)
+	  : formula_expression("_id"), id_(id)
 	{}
 private:
 	variant execute(const formula_callable& variables) const {
@@ -398,7 +399,7 @@ private:
 
 class null_expression : public formula_expression {
 public:
-	explicit null_expression() {};
+	explicit null_expression() : formula_expression("_null") {}
 private:
 	variant execute(const formula_callable& /*variables*/) const {
 		return variant();
@@ -408,7 +409,7 @@ private:
 
 class integer_expression : public formula_expression {
 public:
-	explicit integer_expression(int i) : i_(i)
+	explicit integer_expression(int i) : formula_expression("_int"), i_(i)
 	{}
 private:
 	variant execute(const formula_callable& /*variables*/) const {
@@ -420,7 +421,7 @@ private:
 
 class string_expression : public formula_expression {
 public:
-	explicit string_expression(std::string str)
+	explicit string_expression(std::string str) : formula_expression("_string")
 	{
 		std::string::iterator i;
 		while((i = std::find(str.begin(), str.end(), '{')) != str.end()) {

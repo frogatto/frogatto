@@ -51,6 +51,8 @@ character::character(wml::const_node_ptr node)
 	cycle_num_(0), current_traction_(100), last_jump_(false), last_walk_(0),
     frame_id_(0), loop_sound_(-1), interacting_(false), invisible_(false)
 {
+	set_label(node->attr("label"));
+
 	current_frame_ = &type_->get_frame();
 	assert(type_);
 

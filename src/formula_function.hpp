@@ -28,6 +28,7 @@ namespace game_logic {
 class formula_expression {
 public:
 	formula_expression() : name_(NULL) {}
+	explicit formula_expression(const char* name) : name_(name) {}
 	virtual ~formula_expression() {}
 	variant evaluate(const formula_callable& variables) const {
 		call_stack_manager manager(name_);

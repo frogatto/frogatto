@@ -64,6 +64,7 @@ std::string get_call_stack()
 
 type_error::type_error(const std::string& str) : message(str) {
 	std::cerr << "ERROR: " << message << "\n" << get_call_stack();
+	assert(false);
 }
 
 struct variant_list {
@@ -355,6 +356,12 @@ variant variant::operator+(const variant& v) const
 		std::string s;
 		v.serialize_to_string(s);
 		return variant(as_string() + s);
+	}
+
+	if(v.type_ == TYPE_STRING) {
+		std::string s;
+		serialize_to_string(s);
+		return variant(s + v.as_string());
 	}
 
 	return variant(as_int() + v.as_int());

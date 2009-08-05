@@ -14,8 +14,6 @@
 
 #include <iostream>
 #include <math.h>
-
-//#include "foreach.hpp"
 #include "formula_callable.hpp"
 #include "formula_function.hpp"
 
@@ -575,17 +573,18 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 	indent += "  ";
 	std::cerr << indent << "executing '" << formula_->str() << "'\n";
 	const int begin_time = SDL_GetTicks();
-	map_formula_callable callable;
+	map_formula_callable* callable = new map_formula_callable;
+	variant callable_scope(callable);
 	for(size_t n = 0; n != arg_names_.size(); ++n) {
 		variant var = args()[n]->evaluate(variables);
-		callable.add(arg_names_[n], var);
+		callable->add(arg_names_[n], var);
 		if(static_cast<int>(n) == star_arg_) {
-			callable.set_fallback(var.as_callable());
+			callable->set_fallback(var.as_callable());
 		}
 	}
 
 	if(precondition_) {
-		if(!precondition_->execute(callable).as_bool()) {
+		if(!precondition_->execute(*callable).as_bool()) {
 			std::cerr << "FAILED function precondition for function '" << formula_->str() << "' with arguments: ";
 			for(size_t n = 0; n != arg_names_.size(); ++n) {
 				std::cerr << "  arg " << (n+1) << ": " << args()[n]->evaluate(variables).to_debug_string() << "\n";
@@ -593,7 +592,7 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 		}
 	}
 
-	variant res = formula_->execute(callable);
+	variant res = formula_->execute(*callable);
 	const int taken = SDL_GetTicks() - begin_time;
 	std::cerr << indent << "returning: " << taken << "\n";
 	indent.resize(indent.size() - 2);

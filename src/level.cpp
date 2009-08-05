@@ -736,6 +736,7 @@ bool sort_entity_drawing_pos(const entity_ptr& a, const entity_ptr& b) {
 
 void level::process()
 {
+	std::cerr << "RANDOM CYCLE " << id_ << " " << cycle_ << ": " << rng::get_seed() << "\n";
 	multiplayer::send_and_receive();
 
 	const int LevelPreloadFrequency = 500; //10 seconds

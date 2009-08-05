@@ -811,7 +811,6 @@ public:
 	explicit debug_command(const std::string& str) : str_(str)
 	{}
 	virtual void execute(level& lvl, entity& ob) const {
-		std::cerr << "CUSTOM DEBUG: '" << str_ << "'\n";
 		debug_console::add_message(str_);
 	}
 private:
@@ -864,7 +863,7 @@ public:
 							history_pos_ = history_.size();
 							entry_.set_text("");
 							game_logic::formula f(text, &get_custom_object_functions_symbol_table());
-							variant v = f.execute(callable_);
+							variant v = f.execute(ob);
 							ob.execute_command(v);
 							debug_console::add_message(v.to_debug_string());
 						} catch(game_logic::formula_error&) {
