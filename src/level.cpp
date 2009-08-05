@@ -1842,4 +1842,11 @@ void level::restore_from_backup(backup_snapshot& snapshot)
 	players_ = snapshot.players;
 	player_ = snapshot.player;
 	last_touched_player_ = snapshot.last_touched_player;
+
+	chars_by_label_.clear();
+	foreach(const entity_ptr& e, chars_) {
+		if(e->label().empty() == false) {
+			chars_by_label_[e->label()] = e;
+		}
+	}
 }
