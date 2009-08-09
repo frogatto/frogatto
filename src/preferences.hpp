@@ -10,6 +10,17 @@ bool use_pretty_scaling();
 void set_use_pretty_scaling(bool value);
 bool fullscreen();
 void set_fullscreen(bool value);
+
+void set_widescreen();
+
+int virtual_screen_width();
+int virtual_screen_height();
+
+int actual_screen_width();
+int actual_screen_height();
+
+void set_actual_screen_width(int width);
+void set_actual_screen_height(int height);
 }
 
 #endif

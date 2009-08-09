@@ -8,6 +8,12 @@ bool no_sound_ = false;
 bool show_debug_hitboxes_ = false;
 bool use_pretty_scaling_ = false;
 bool fullscreen_ = false;
+
+int virtual_screen_width_ = 800;
+int virtual_screen_height_ = 600;
+
+int actual_screen_width_ = 800;
+int actual_screen_height_ = 600;
 }
 
 bool no_sound() {
@@ -34,6 +40,42 @@ void set_fullscreen(bool value) {
 	fullscreen_ = value;
 }
 
+void set_widescreen()
+{
+	virtual_screen_width_ = (virtual_screen_height_*16)/9;
+	actual_screen_width_ = (actual_screen_height_*16)/9;
+}
+
+int virtual_screen_width()
+{
+	return virtual_screen_width_;
+}
+
+int virtual_screen_height()
+{
+	return virtual_screen_height_;
+}
+
+int actual_screen_width()
+{
+	return actual_screen_width_;
+}
+
+int actual_screen_height()
+{
+	return actual_screen_height_;
+}
+
+void set_actual_screen_width(int width)
+{
+	actual_screen_width_ = width;
+}
+
+void set_actual_screen_height(int height)
+{
+	actual_screen_height_ = height;
+}
+
 bool parse_arg(const char* arg) {
 	std::string s(arg);
 	if(s == "--show_hitboxes") {
@@ -44,6 +86,8 @@ bool parse_arg(const char* arg) {
 		no_sound_ = true;
 	} else if(s == "--fullscreen") {
 		fullscreen_ = true;
+	} else if(s == "--widescreen") {
+		set_widescreen();
 	} else {
 		return false;
 	}

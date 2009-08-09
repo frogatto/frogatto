@@ -83,11 +83,16 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 		const int max_vertical_look = (drawable_height()/3)*(drawable_height()/3);
 		const int vertical_look_speed = 300;
 
+		//find how much padding will have to be on the edge of the screen due
+		//to the level being wider than the screen. This value will be 0
+		//if the level is larger than the screen (i.e. most cases)
+		const int x_screen_pad = std::max<int>(0, graphics::screen_width() - lvl.boundaries().w());
+
 		//find the boundary values for the camera position based on the size
 		//of the level. These boundaries keep the camera from ever going out
 		//of the bounds of the level.
-		const int min_x = lvl.boundaries().x() + graphics::screen_width()/2;
-		const int max_x = lvl.boundaries().x2() - graphics::screen_width()/2;
+		const int min_x = lvl.boundaries().x() + graphics::screen_width()/2 - x_screen_pad/2;
+		const int max_x = lvl.boundaries().x2() - graphics::screen_width()/2 + x_screen_pad/2;
 		const int min_y = lvl.boundaries().y() + drawable_height()/2;
 		const int max_y = lvl.boundaries().y2() - drawable_height()/2;
 

@@ -51,7 +51,6 @@
 #include "wml_writer.hpp"
 
 namespace {
-int screen_width = 800, screen_height = 600;
 
 bool show_title_screen(std::string& level_cfg)
 {
@@ -126,12 +125,12 @@ extern "C" int main(int argc, char** argv)
 			unit_tests_only = true;
 		} else if(arg == "--notests") {
 			skip_tests = true;
-		} else if(arg == "--width") {
+		} else if(arg == "--width" && n+1 < argc) {
 			std::string w(argv[++n]);
-			screen_width = boost::lexical_cast<int>(w);
+			preferences::set_actual_screen_width(boost::lexical_cast<int>(w));
 		} else if(arg == "--height" && n+1 < argc) {
 			std::string h(argv[++n]);
-			screen_height = boost::lexical_cast<int>(h);
+			preferences::set_actual_screen_height(boost::lexical_cast<int>(h));
 		} else if(arg == "--level" && n+1 < argc) {
 			level_cfg = argv[++n];
 		} else if(arg == "--host" && n+1 < argc) {
@@ -167,7 +166,7 @@ extern "C" int main(int argc, char** argv)
 
 	const stats::manager stats_manager;
 
-	if(SDL_SetVideoMode(screen_width,screen_height,0,SDL_OPENGL|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) == NULL) {
+	if(SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_OPENGL|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) == NULL) {
 		std::cerr << "could not set video mode\n";
 		return -1;
 	}

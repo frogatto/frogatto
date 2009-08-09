@@ -31,6 +31,7 @@
 #include "level.hpp"
 #include "level_object.hpp"
 #include "load_level.hpp"
+#include "preferences.hpp"
 #include "prop.hpp"
 #include "property_editor_dialog.hpp"
 #include "prop_editor_dialog.hpp"
@@ -669,8 +670,8 @@ void editor::edit_level()
 		int mousex, mousey;
 		const unsigned int buttons = SDL_GetMouseState(&mousex, &mousey);
 
-		mousex = (mousex*graphics::screen_width())/800;
-		mousey = (mousey*graphics::screen_height())/600;
+		mousex = (mousex*graphics::screen_width())/preferences::virtual_screen_width();
+		mousey = (mousey*graphics::screen_height())/preferences::virtual_screen_height();
 
 		if(buttons == 0) {
 			drawing_rect_ = false;
@@ -1541,8 +1542,8 @@ void editor::draw() const
 	int mousex, mousey;
 	SDL_GetMouseState(&mousex, &mousey);
 
-	mousex = (mousex*graphics::screen_width())/800;
-	mousey = (mousey*graphics::screen_height())/600;
+	mousex = (mousex*graphics::screen_width())/preferences::virtual_screen_width();
+	mousey = (mousey*graphics::screen_height())/preferences::virtual_screen_height();
 
 	graphics::prepare_raster();
 	glPushMatrix();

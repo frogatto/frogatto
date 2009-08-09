@@ -10,6 +10,8 @@
 
    See the COPYING file for more details.
 */
+
+#include "preferences.hpp"
 #include "raster.hpp"
 #include "tooltip.hpp"
 #include "translate.hpp"
@@ -30,15 +32,15 @@ void widget::normalize_event(SDL_Event* event)
 {
 	switch(event->type) {
 	case SDL_MOUSEMOTION:
-		event->motion.x = (event->motion.x*graphics::screen_width())/800;
-		event->motion.y = (event->motion.y*graphics::screen_height())/600;
+		event->motion.x = (event->motion.x*graphics::screen_width())/preferences::virtual_screen_width();
+		event->motion.y = (event->motion.y*graphics::screen_height())/preferences::virtual_screen_height();
 		event->motion.x -= x();
 		event->motion.y -= y();
 		break;
 	case SDL_MOUSEBUTTONDOWN:
 	case SDL_MOUSEBUTTONUP:
-		event->button.x = (event->button.x*graphics::screen_width())/800;
-		event->button.y = (event->button.y*graphics::screen_height())/600;
+		event->button.x = (event->button.x*graphics::screen_width())/preferences::virtual_screen_width();
+		event->button.y = (event->button.y*graphics::screen_height())/preferences::virtual_screen_height();
 		event->button.x -= x();
 		event->button.y -= y();
 		break;

@@ -16,6 +16,7 @@
 
 #include "asserts.hpp"
 #include "foreach.hpp"
+#include "preferences.hpp"
 #include "raster.hpp"
 #include "raster_distortion.hpp"
 
@@ -417,7 +418,7 @@ int zoom_level = 1;
 
 int screen_width()
 {
-	return 800*zoom_level;
+	return preferences::virtual_screen_width()*zoom_level;
 	/*
 	SDL_Surface* surf = SDL_GetVideoSurface();
 	if(surf) {
@@ -429,7 +430,7 @@ int screen_width()
 
 int screen_height()
 {
-	return 600*zoom_level;
+	return preferences::virtual_screen_height()*zoom_level;
 	/*
 	SDL_Surface* surf = SDL_GetVideoSurface();
 	if(surf) {
