@@ -13,6 +13,7 @@
 #include "wml_node_fwd.hpp"
 
 struct tile_pattern;
+struct multi_tile_pattern;
 
 namespace {
 struct tile_pattern_cache;
@@ -63,6 +64,11 @@ private:
 	std::vector<pattern_index_entry> pattern_index_;
 
 	int get_pattern_index_entry(const tile_string& str);
+
+	//the subset of all multi tile patterns which might be valid for this map.
+	std::vector<const multi_tile_pattern*> multi_patterns_;
+
+	const multi_tile_pattern* get_matching_multi_pattern(int x, int y, std::map<point, level_object_ptr>& mapping) const;
 
 	//the subset of all global patterns which might be valid for this map.
 	std::vector<const tile_pattern*> patterns_;

@@ -8,6 +8,7 @@
 #include "formula.hpp"
 #include "formula_callable.hpp"
 #include "formula_function.hpp"
+#include "multi_tile_pattern.hpp"
 #include "string_utils.hpp"
 #include "tile_map.hpp"
 #include "wml_node.hpp"
@@ -15,22 +16,8 @@
 
 namespace {
 
-//a pool of regular expressions. This makes sure that two regexes that
-//are identical will point to the same place, and so we can easily
-//test equality of regexes.
-std::map<std::string, const boost::regex*> regex_pool;
-
 typedef std::map<const boost::regex*, bool> regex_match_map;
 std::map<boost::array<char, 4>, regex_match_map> re_matches;
-const boost::regex& get_regex_from_pool(const std::string& key)
-{
-	const boost::regex*& re = regex_pool[key];
-	if(!re) {
-		re = new boost::regex(key);
-	}
-
-	return *re;
-}
 
 bool match_regex(boost::array<char, 4> str, const boost::regex* re) {
 	std::map<const boost::regex*, bool>& m = re_matches[str];
@@ -219,6 +206,8 @@ void tile_map::init(wml::const_node_ptr node)
 		patterns.push_back(tile_pattern(p));
 	}
 
+	multi_tile_pattern::init(node);
+
 	++current_patterns_version;
 }
 
@@ -333,6 +322,41 @@ void tile_map::build_patterns()
 		if(matches == re.size()) {
 			all_regexes.insert(all_regexes.end(), accepted_re.begin(), accepted_re.end());
 			patterns_.push_back(&p);
+		}
+	}
+
+	foreach(const multi_tile_pattern& p, multi_tile_pattern::get_all()) {
+		std::vector<const boost::regex*> re;
+		std::vector<const boost::regex*> accepted_re;
+
+		re.reserve(p.width()*p.height());
+		for(int x = 0; x < p.width(); ++x) {
+			for(int y = 0; y < p.height(); ++y) {
+				re.push_back(p.tile_at(x, y).re);
+			}
+		}
+
+		int matches = 0;
+		foreach(pattern_index_entry& e, pattern_index_) {
+			foreach(const boost::regex*& regex, re) {
+				if(regex && match_regex(e.str, regex)) {
+					accepted_re.push_back(regex);
+					regex = NULL;
+					++matches;
+					if(matches == re.size()) {
+						break;
+					}
+				}
+			}
+
+			if(matches == re.size()) {
+				break;
+			}
+		}
+
+		if(matches == re.size()) {
+			all_regexes.insert(all_regexes.end(), accepted_re.begin(), accepted_re.end());
+			multi_patterns_.push_back(&p);
 		}
 	}
 
@@ -501,6 +525,45 @@ void tile_map::flip_variation(int x, int y, int delta)
 	}
 }
 
+const multi_tile_pattern* tile_map::get_matching_multi_pattern(int x, int y, std::map<point, level_object_ptr>& mapping) const
+{
+	foreach(const multi_tile_pattern* p, multi_patterns_) {
+		bool match = true;
+		for(int xpos = 0; xpos < p->width() && match; ++xpos) {
+			for(int ypos = 0; ypos < p->height() && match; ++ypos) {
+				if(p->tile_at(xpos, ypos).tile && mapping.count(point(x + xpos, y + ypos))) {
+					//there is already another pattern filling this tile.
+					match = false;
+					break;
+				}
+
+				const pattern_index_entry& entry = get_tile_entry(y + ypos, x + xpos);
+				if(std::find(entry.matching_patterns.begin(), entry.matching_patterns.end(), p->tile_at(xpos, ypos).re) == entry.matching_patterns.end()) {
+					//the regex doesn't match
+					match = false;
+					break;
+				}
+			}
+		}
+
+		if(match) {
+			for(int xpos = 0; xpos < p->width() && match; ++xpos) {
+				for(int ypos = 0; ypos < p->height() && match; ++ypos) {
+					level_object_ptr ob = p->tile_at(xpos, ypos).tile;
+					if(ob) {
+						mapping[point(x + xpos, y + ypos)] = ob;
+						std::cerr << "INSERTING AT " << (x + xpos) << "," << (y + ypos) << "\n";
+					}
+				}
+			}
+
+			return p;
+		}
+	}
+
+	return NULL;
+}
+
 void tile_map::build_tiles(std::vector<level_tile>* tiles,
                            const rect* r) const
 {
@@ -513,6 +576,20 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles,
 		}
 	}
 
+	std::map<point, level_object_ptr> multi_pattern_matches;
+	for(int y = -1; y <= static_cast<int>(map_.size()); ++y) {
+		const int ypos = ypos_ + y*TileSize;
+
+		if(r && ypos < r->y() || r && ypos > r->y2()) {
+			continue;
+		}
+
+		for(int x = -1; x <= width; ++x) {
+			get_matching_multi_pattern(x, y, multi_pattern_matches);
+		}
+	}
+
+
 	tile_pattern_cache cache;
 
 	int ntiles = 0;
@@ -524,13 +601,29 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles,
 		}
 
 		for(int x = -1; x <= width; ++x) {
-			bool face_right = true;
-			const tile_pattern* p = get_matching_pattern(x, y, cache, &face_right);
 			const int xpos = xpos_ + x*TileSize;
 
+			std::map<point, level_object_ptr>::const_iterator itor = multi_pattern_matches.find(point(x, y));
+			if(itor != multi_pattern_matches.end() && itor->second) {
+				std::cerr << "PATTERN MATCH: multi " << x << ", " << y << "\n";
+				level_tile t;
+				t.x = xpos;
+				t.y = ypos;
+				t.zorder = zorder_;
+				t.object = itor->second;
+				t.rotate = 0;
+				t.face_right = false;
+				tiles->push_back(t);
+				continue;
+			}
+
+			bool face_right = true;
+			const tile_pattern* p = get_matching_pattern(x, y, cache, &face_right);
 			if(p == NULL) {
 				continue;
 			}
+
+			std::cerr << "PATTERN MATCH: single " << x << ", " << y << "\n";
 
 			if(r && xpos < r->x() || r && xpos > r->x2()) {
 				continue;
