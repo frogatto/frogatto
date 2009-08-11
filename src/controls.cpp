@@ -78,6 +78,14 @@ void new_level(int level_starting_cycles, int level_nplayers, int level_local_pl
 	foreach(std::vector<unsigned char>& v, controls) {
 		v.clear();
 	}
+
+	foreach(int32_t& highest, highest_confirmed) {
+		highest = 0;
+	}
+
+	foreach(int32_t& highest, remote_highest_confirmed) {
+		highest = 0;
+	}
 }
 
 void read_local_controls()

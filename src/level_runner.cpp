@@ -136,7 +136,7 @@ bool level_runner::play_level()
 	while(!done && !quit_) {
 		bool res = play_cycle();
 		if(!res) {
-			return false;
+			return quit_;
 		}
 	}
 
@@ -411,7 +411,7 @@ bool level_runner::play_cycle()
 
 	if (!paused) ++cycle;
 
-	return true;
+	return !quit_;
 }
 
 pause_scope::pause_scope() : ticks_(SDL_GetTicks())
