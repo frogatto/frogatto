@@ -1501,22 +1501,28 @@ void editor::save_level()
 	//see if we should write the next/previous levels also
 	//based on them having changed.
 	if(lvl_->previous_level().empty() == false) {
-		level prev(lvl_->previous_level());
-		if(prev.next_level() != lvl_->id()) {
-			prev.set_next_level(lvl_->id());
-			std::string data;
-			wml::write(prev.write(), data);
-			sys::write_file(path + prev.id(), data);
+		try {
+			level prev(lvl_->previous_level());
+			if(prev.next_level() != lvl_->id()) {
+				prev.set_next_level(lvl_->id());
+				std::string data;
+				wml::write(prev.write(), data);
+				sys::write_file(path + prev.id(), data);
+			}
+		} catch(...) {
 		}
 	}
 
 	if(lvl_->next_level().empty() == false) {
-		level next(lvl_->next_level());
-		if(next.previous_level() != lvl_->id()) {
-			next.set_previous_level(lvl_->id());
-			std::string data;
-			wml::write(next.write(), data);
-			sys::write_file(path + next.id(), data);
+		try {
+			level next(lvl_->next_level());
+			if(next.previous_level() != lvl_->id()) {
+				next.set_previous_level(lvl_->id());
+				std::string data;
+				wml::write(next.write(), data);
+				sys::write_file(path + next.id(), data);
+			}
+		} catch(...) {
 		}
 	}
 }
