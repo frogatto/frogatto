@@ -20,6 +20,12 @@ typedef std::map<const boost::regex*, bool> regex_match_map;
 std::map<boost::array<char, 4>, regex_match_map> re_matches;
 
 bool match_regex(boost::array<char, 4> str, const boost::regex* re) {
+	if(reinterpret_cast<intptr_t>(re)&1) {
+		//the low bit in the re pointer is set, meaning this is an inverted
+		//match.
+		return !match_regex(str, reinterpret_cast<const boost::regex*>(reinterpret_cast<intptr_t>(re)-1));
+	}
+
 	std::map<const boost::regex*, bool>& m = re_matches[str];
 	std::map<const boost::regex*, bool>::const_iterator i = m.find(re);
 	if(i != m.end()) {
@@ -218,6 +224,7 @@ tile_map::tile_map() : xpos_(0), ypos_(0), x_speed_(100), y_speed_(100), zorder_
 
 	//make an entry for the empty string.
 	pattern_index_.push_back(pattern_index_entry());
+	pattern_index_.back().matching_patterns.push_back(&get_regex_from_pool(""));
 }
 
 tile_map::tile_map(wml::const_node_ptr node)
@@ -245,6 +252,7 @@ tile_map::tile_map(wml::const_node_ptr node)
 
 	//make an entry for the empty string.
 	pattern_index_.push_back(pattern_index_entry());
+	pattern_index_.back().matching_patterns.push_back(&get_regex_from_pool(""));
 
 	{
 	std::vector<std::string> lines = util::split(node->attr("tiles"), '\n', 0);
@@ -544,6 +552,8 @@ const multi_tile_pattern* tile_map::get_matching_multi_pattern(int x, int y, std
 		if(p->chance() < 100 && random_hash(x, y, zorder_, random_seed++) > p->chance()) {
 			continue;
 		}
+
+		std::cerr << "MATCHING VS PATTERN...\n";
 
 		bool match = true;
 		for(int xpos = 0; xpos < p->width() && match; ++xpos) {

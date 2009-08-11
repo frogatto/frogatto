@@ -35,12 +35,7 @@ bool notspace(char c)
 
 std::string &strip(std::string &str)
 {
-	//if all the string contains is whitespace, then the whitespace may
-	//have meaning, so don't strip it
 	std::string::iterator it = std::find_if(str.begin(), str.end(), notspace);
-	if (it == str.end())
-		return str;
-
 	str.erase(str.begin(), it);
 	str.erase(std::find_if(str.rbegin(), str.rend(), notspace).base(), str.end());
 

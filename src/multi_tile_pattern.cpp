@@ -27,6 +27,8 @@ const boost::regex& get_regex_from_pool(const std::string& key)
 	const boost::regex*& re = regex_pool[key];
 	if(!re) {
 		if(key.empty() == false && key[0] == '!') {
+			//if the re starts with a ! we treat that as 'not matches'.
+			//This is marked by setting the lowest bit in the pointer.
 			re = new boost::regex(std::string(key.begin() + 1, key.end()));
 			re = reinterpret_cast<const boost::regex*>(reinterpret_cast<intptr_t>(re)+1);
 		} else {
@@ -81,8 +83,8 @@ multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr node)
 				item.resize(arrow - item.c_str());
 			}
 
-			util::strip(item);
-			util::strip(map_to);
+			item = util::strip(item);
+			map_to = util::strip(map_to);
 
 			tile_info info;
 			info.re = &get_regex_from_pool(item);
