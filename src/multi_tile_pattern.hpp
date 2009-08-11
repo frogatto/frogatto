@@ -26,10 +26,13 @@ public:
 
 	int width() const;
 	int height() const;
+
+	int chance() const { return chance_; }
 private:
 	std::string id_;
 	std::vector<tile_info> tiles_;
 	int width_, height_;
+	int chance_;
 };
 
 #endif

@@ -44,7 +44,7 @@ void multi_tile_pattern::init(wml::const_node_ptr node)
 }
 
 multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr node)
-  : id_(node->attr("id")), width_(-1), height_(-1)
+  : id_(node->attr("id")), width_(-1), height_(-1), chance_(wml::get_int(node, "chance", 100))
 {
 	std::map<std::string, level_object_ptr> objects;
 	for(wml::node::const_all_child_iterator i = node->begin_children();

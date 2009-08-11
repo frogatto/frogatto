@@ -525,9 +525,26 @@ void tile_map::flip_variation(int x, int y, int delta)
 	}
 }
 
+namespace {
+int random_hash(int x, int y, int zorder, int n)
+{
+	int num = x*124789251 + y*11953 + zorder*117 + n;
+
+	num = num * 1103515245 + 12345;
+	return (num/65536)%100;
+}
+
+}
+
 const multi_tile_pattern* tile_map::get_matching_multi_pattern(int x, int y, std::map<point, level_object_ptr>& mapping) const
 {
+	int random_seed = 0;
 	foreach(const multi_tile_pattern* p, multi_patterns_) {
+
+		if(p->chance() < 100 && random_hash(x, y, zorder_, random_seed++) > p->chance()) {
+			continue;
+		}
+
 		bool match = true;
 		for(int xpos = 0; xpos < p->width() && match; ++xpos) {
 			for(int ypos = 0; ypos < p->height() && match; ++ypos) {
