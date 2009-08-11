@@ -214,16 +214,28 @@ std::string parse_value(std::string::const_iterator& i1,
 			continue;
 		}
 
-		//outside of quotes we only parse non-space characters
-		if(!isspace(*i1)) {
-			res.push_back(*i1);
-		}
+		res.push_back(*i1);
 
 		++i1;
 	}
 
 	if(i1 == i2) {
 		throw parse_error(formatter() << "unexpected end of wml document while parsing value '" << std::string(beg,i1) << "'");
+	}
+
+	//strip the string, but leave it untouched if it's all whitespace.
+	{
+		std::string::iterator i = res.begin();
+		while(i != res.end() && isspace(*i)) {
+			++i;
+		}
+
+		if(i != res.end()) {
+			res.erase(res.begin(), i);
+			while(isspace(res[res.size()-1])) {
+				res.resize(res.size()-1);
+			}
+		}
 	}
 
 	return res;
