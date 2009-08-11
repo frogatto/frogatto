@@ -68,7 +68,7 @@ private:
 	//the subset of all multi tile patterns which might be valid for this map.
 	std::vector<const multi_tile_pattern*> multi_patterns_;
 
-	const multi_tile_pattern* get_matching_multi_pattern(int x, int y, std::map<point, level_object_ptr>& mapping) const;
+	void apply_matching_multi_pattern(int x, int y, std::map<point, level_object_ptr>& mapping) const;
 
 	//the subset of all global patterns which might be valid for this map.
 	std::vector<const tile_pattern*> patterns_;

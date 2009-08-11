@@ -536,15 +536,17 @@ void tile_map::flip_variation(int x, int y, int delta)
 namespace {
 int random_hash(int x, int y, int zorder, int n)
 {
-	int num = x*124789251 + y*11953 + zorder*117 + n;
+	unsigned int num = x*124789251 + y*11953 + zorder*117 + n;
 
 	num = num * 1103515245 + 12345;
-	return (num/65536)%100;
+	const unsigned int res = (num/65536)%100;
+	std::cerr << "HASH: " << res << "\n";
+	return res;
 }
 
 }
 
-const multi_tile_pattern* tile_map::get_matching_multi_pattern(int x, int y, std::map<point, level_object_ptr>& mapping) const
+void tile_map::apply_matching_multi_pattern(int x, int y, std::map<point, level_object_ptr>& mapping) const
 {
 	int random_seed = 0;
 	foreach(const multi_tile_pattern* p, multi_patterns_) {
@@ -552,8 +554,6 @@ const multi_tile_pattern* tile_map::get_matching_multi_pattern(int x, int y, std
 		if(p->chance() < 100 && random_hash(x, y, zorder_, random_seed++) > p->chance()) {
 			continue;
 		}
-
-		std::cerr << "MATCHING VS PATTERN...\n";
 
 		bool match = true;
 		for(int xpos = 0; xpos < p->width() && match; ++xpos) {
@@ -583,12 +583,8 @@ const multi_tile_pattern* tile_map::get_matching_multi_pattern(int x, int y, std
 					}
 				}
 			}
-
-			return p;
 		}
 	}
-
-	return NULL;
 }
 
 void tile_map::build_tiles(std::vector<level_tile>* tiles,
@@ -612,7 +608,7 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles,
 		}
 
 		for(int x = -1; x <= width; ++x) {
-			get_matching_multi_pattern(x, y, multi_pattern_matches);
+			apply_matching_multi_pattern(x, y, multi_pattern_matches);
 		}
 	}
 
