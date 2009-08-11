@@ -19,9 +19,19 @@ std::vector<multi_tile_pattern> patterns;
 
 const boost::regex& get_regex_from_pool(const std::string& key)
 {
+	if(key.empty()) {
+		static boost::regex res("^$");
+		return res;
+	}
+
 	const boost::regex*& re = regex_pool[key];
 	if(!re) {
-		re = new boost::regex(key);
+		if(key.empty() == false && key[0] == '!') {
+			re = new boost::regex(std::string(key.begin() + 1, key.end()));
+			re = reinterpret_cast<const boost::regex*>(reinterpret_cast<intptr_t>(re)+1);
+		} else {
+			re = new boost::regex(key);
+		}
 	}
 
 	return *re;

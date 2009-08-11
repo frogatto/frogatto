@@ -112,7 +112,7 @@ struct tile_pattern {
 
 	struct surrounding_tile {
 		surrounding_tile(int x, int y, const std::string& s)
-		  : xoffset(x), yoffset(y), pattern(&get_regex_from_pool(s.empty() ? "^$" : s))
+		  : xoffset(x), yoffset(y), pattern(&get_regex_from_pool(s))
 		{}
 		int xoffset;
 		int yoffset;
