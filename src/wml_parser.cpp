@@ -214,7 +214,11 @@ std::string parse_value(std::string::const_iterator& i1,
 			continue;
 		}
 
-		res.push_back(*i1);
+		//outside of quotes we only parse non-space characters
+		if(!isspace(*i1)) {
+			res.push_back(*i1);
+		}
+
 		++i1;
 	}
 
@@ -222,7 +226,6 @@ std::string parse_value(std::string::const_iterator& i1,
 		throw parse_error(formatter() << "unexpected end of wml document while parsing value '" << std::string(beg,i1) << "'");
 	}
 
-	util::strip(res);
 	return res;
 }
 
