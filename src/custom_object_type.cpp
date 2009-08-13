@@ -104,6 +104,9 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 
 	init_event_handlers(node, event_handlers_);
 
+	FOREACH_WML_CHILD(particle_node, node, "particle_system") {
+		particle_factories_[particle_node->attr("id")] = particle_system_factory::create_factory(particle_node);
+	}
 }
 
 const frame& custom_object_type::default_frame() const
@@ -133,4 +136,11 @@ game_logic::const_formula_ptr custom_object_type::get_event_handler(const std::s
 	} else {
 		return game_logic::const_formula_ptr();
 	}
+}
+
+const_particle_system_factory_ptr custom_object_type::get_particle_system_factory(const std::string& id) const
+{
+	std::map<std::string, const_particle_system_factory_ptr>::const_iterator i = particle_factories_.find(id);
+	ASSERT_LOG(i != particle_factories_.end(), "Unknown particle system type in " << id_ << ": " << id)
+	return i->second;
 }

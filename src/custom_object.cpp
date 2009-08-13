@@ -197,6 +197,10 @@ void custom_object::draw() const
 //	}
 
 	draw_debug_rects();
+
+	for(std::map<std::string, particle_system_ptr>::const_iterator i = particle_systems_.begin(); i != particle_systems_.end(); ++i) {
+		i->second->draw(rect(/*TODO: get the screen rect*/), *this);
+	}
 }
 
 void custom_object::draw_group() const
@@ -434,6 +438,15 @@ void custom_object::process(level& lvl)
 		handle_event(ExitWaterStr);
 		was_underwater_ = false;
 	}
+
+	for(std::map<std::string, particle_system_ptr>::iterator i = particle_systems_.begin(); i != particle_systems_.end(); ) {
+		i->second->process(*this);
+		if(i->second->is_destroyed()) {
+			particle_systems_.erase(i++);
+		} else {
+			++i;
+		}
+	}
 }
 
 int custom_object::zorder() const
@@ -632,6 +645,11 @@ variant custom_object::get_value(const std::string& key) const
 		               cliff_edge_within(*lvl_, feet_x(), feet_y(), face_dir()*15));
 	} else if(key == "underwater") {
 		return variant(lvl_->is_underwater(body_rect()));
+	}
+
+	std::map<std::string, particle_system_ptr>::const_iterator particle_itor = particle_systems_.find(key);
+	if(particle_itor != particle_systems_.end()) {
+		return variant(particle_itor->second.get());
 	}
 
 	return vars_->query_value(key);
@@ -942,3 +960,12 @@ void custom_object::map_entities(const std::map<entity_ptr, entity_ptr>& m)
 	}
 }
 
+void custom_object::add_particle_system(const std::string& key, const std::string& type)
+{
+	particle_systems_[key] = type_->get_particle_system_factory(type)->create(*this);
+}
+
+void custom_object::remove_particle_system(const std::string& key)
+{
+	particle_systems_.erase(key);
+}

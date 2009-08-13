@@ -1197,6 +1197,32 @@ public:
 	}
 };
 
+class add_particles_command : public custom_object_command_callable {
+public:
+	add_particles_command(const std::string& id, const std::string& type)
+	  : id_(id), type_(type) {
+	}
+
+	virtual void execute(level& lvl, custom_object& ob) const {
+		ob.add_particle_system(id_, type_);
+	}
+private:
+	std::string id_, type_;
+};
+
+class add_particles_function : public function_expression {
+public:
+	explicit add_particles_function(const args_list& args)
+	  : function_expression("add_particles", args, 1, 2) {
+	}
+
+	variant execute(const formula_callable& variables) const {
+		return variant(new add_particles_command(
+		    args()[0]->evaluate(variables).as_string(),
+		    args()[args().size() < 2 ? 0 : 1]->evaluate(variables).as_string()));
+	}
+};
+
 class custom_object_function_symbol_table : public function_symbol_table
 {
 public:
@@ -1287,6 +1313,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new end_script_function(args));
 	} else if(fn == "control") {
 		return expression_ptr(new control_function(args));
+	} else if(fn == "add_particles") {
+		return expression_ptr(new add_particles_function(args));
 	}
 
 	return function_symbol_table::create_function(fn, args);

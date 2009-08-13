@@ -58,6 +58,8 @@ color::color( const std::string& str)
 				++i;
 		}
 		c_.rgba[3] = 255; //no need to read the string element, b/c there isn't one
+	} else {
+		c_.value = 0;
 	}
 }
 

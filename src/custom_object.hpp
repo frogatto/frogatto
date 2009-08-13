@@ -9,6 +9,7 @@
 #include "entity.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
+#include "particle_system.hpp"
 #include "raster_distortion.hpp"
 #include "variant.hpp"
 #include "wml_node_fwd.hpp"
@@ -82,6 +83,9 @@ public:
 
 	void map_entities(const std::map<entity_ptr, entity_ptr>& m);
 
+	void add_particle_system(const std::string& key, const std::string& type);
+	void remove_particle_system(const std::string& key);
+
 private:
 	virtual void control(const level& lvl);
 
@@ -133,6 +137,8 @@ private:
 	boost::shared_ptr<graphics::color_transform> draw_color_;
 
 	bool can_interact_with_;
+
+	std::map<std::string, particle_system_ptr> particle_systems_;
 };
 
 #endif

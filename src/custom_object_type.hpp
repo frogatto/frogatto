@@ -9,6 +9,7 @@
 
 #include "formula.hpp"
 #include "frame.hpp"
+#include "particle_system.hpp"
 #include "wml_node.hpp"
 
 class custom_object_type;
@@ -68,6 +69,8 @@ public:
 		return wml::const_node_ptr();
 	}
 
+	const_particle_system_factory_ptr get_particle_system_factory(const std::string& id) const;
+
 private:
 	std::string id_;
 	int hitpoints_;
@@ -105,6 +108,8 @@ private:
 	std::map<std::string, wml::const_node_ptr> children_;
 
 	wml::const_node_ptr node_;
+
+	std::map<std::string, const_particle_system_factory_ptr> particle_factories_;
 };
 
 #endif
