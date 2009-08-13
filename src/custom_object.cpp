@@ -25,6 +25,8 @@ custom_object::custom_object(wml::const_node_ptr node)
 	time_in_frame_(wml::get_int(node, "time_in_frame")),
 	velocity_x_(wml::get_int(node, "velocity_x")),
 	velocity_y_(wml::get_int(node, "velocity_y")),
+	accel_x_(wml::get_int(node, "accel_x")),
+	accel_y_(wml::get_int(node, "accel_y")),
 	rotate_(0), zorder_(wml::get_int(node, "zorder", type_->zorder())),
 	hitpoints_(wml::get_int(node, "hitpoints", type_->hitpoints())),
 	was_underwater_(false),
@@ -69,6 +71,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
     frame_name_("normal"),
 	time_in_frame_(0),
 	velocity_x_(0), velocity_y_(0),
+	accel_x_(0), accel_y_(0),
 	rotate_(0), zorder_(type_->zorder()),
 	hitpoints_(type_->hitpoints()),
 	was_underwater_(false),
@@ -260,8 +263,8 @@ void custom_object::process(level& lvl)
 		handle_event(*event);
 	}
 
-	velocity_x_ += frame_->accel_x() * (face_right() ? 1 : -1);
-	velocity_y_ += frame_->accel_y();
+	velocity_x_ += accel_x_ * (face_right() ? 1 : -1);
+	velocity_y_ += accel_y_;
 
 	if(type_->friction()) {
 		velocity_x_ = (velocity_x_*(100-type_->friction()))/100;
@@ -738,13 +741,21 @@ void custom_object::set_frame(const std::string& name)
 	time_in_frame_ = 0;
 	if(frame_->velocity_x()) {
 		velocity_x_ = frame_->velocity_x() * (face_right() ? 1 : -1);
-		std::cerr << "set_frame: " << velocity_x_ << "\n";
 	}
 
 	if(frame_->velocity_y()) {
 		velocity_y_ = frame_->velocity_y();
 	}
 
+	if(frame_->accel_x()) {
+		accel_x_ = frame_->accel_x() * (face_right() ? 1 : -1);
+	}
+	
+	if(frame_->accel_y()) {
+		accel_y_ = frame_->accel_y();
+	}
+	
+	
 	frame_->play_sound(this);
 }
 
