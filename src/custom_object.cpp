@@ -611,6 +611,10 @@ variant custom_object::get_value(const std::string& key) const
 		return variant(velocity_x_);
 	} else if(key == "velocity_y") {
 		return variant(velocity_y_);
+	} else if(key == "accel_x") {
+		return variant(accel_x_);
+	} else if(key == "accel_y") {
+		return variant(accel_y_);
 	} else if(key == "vars") {
 		return variant(vars_.get());
 	} else if(key == "group") {
@@ -690,6 +694,10 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		velocity_x_ = value.as_int();
 	} else if(key == "velocity_y") {
 		velocity_y_ = value.as_int();
+	} else if(key == "accel_x") {
+		accel_x_ = value.as_int();
+	} else if(key == "accel_y") {
+		accel_y_ = value.as_int();
 	} else if(key == "rotate") {
 		rotate_ = value.as_int();
 	} else if(key == "red") {
