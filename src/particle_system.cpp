@@ -25,6 +25,8 @@ struct simple_particle_system_info {
 	    max_y_(wml::get_int(node, "max_y", 0)),
 		velocity_x_(wml::get_int(node, "velocity_x", 0)),
 		velocity_y_(wml::get_int(node, "velocity_y", 0)),
+		velocity_x_rand_(wml::get_int(node, "velocity_x_random", 0)),
+		velocity_y_rand_(wml::get_int(node, "velocity_y_random", 0)),
 		accel_x_(wml::get_int(node, "accel_x", 0)),
 		accel_y_(wml::get_int(node, "accel_y", 0)),
 		delta_r_(wml::get_int(node, "delta_r", 0)),
@@ -39,6 +41,7 @@ struct simple_particle_system_info {
 	int time_to_live_;
 	int min_x_, max_x_, min_y_, max_y_;
 	int velocity_x_, velocity_y_;
+	int velocity_x_rand_, velocity_y_rand_;
 	int accel_x_, accel_y_;
 
 	union {
@@ -91,12 +94,12 @@ private:
 	struct particle {
 		GLfloat pos[2];
 		const frame* anim;
+		GLfloat velocity[2];
 	};
 
 	struct generation {
 		int members;
 		int created_at;
-		GLfloat velocity[2];
 
 		GLfloat rgba[4];
 	};
@@ -123,13 +126,12 @@ void simple_particle_system::process(const entity& e)
 	std::deque<particle>::iterator p = particles_.begin();
 	foreach(generation& gen, generations_) {
 		for(int n = 0; n != gen.members; ++n) {
-			p->pos[0] += gen.velocity[0];
-			p->pos[1] += gen.velocity[1];
+			p->pos[0] += p->velocity[0];
+			p->pos[1] += p->velocity[1];
+			p->velocity[0] += info_.accel_x_/1000.0;
+			p->velocity[1] += info_.accel_y_/1000.0;
 			++p;
 		}
-
-		gen.velocity[0] += info_.accel_x_/1000.0;
-		gen.velocity[1] += info_.accel_y_/1000.0;
 
 		gen.rgba[0] += info_.delta_r_/1000.0;
 		gen.rgba[1] += info_.delta_g_/1000.0;
@@ -145,8 +147,6 @@ void simple_particle_system::process(const entity& e)
 	generation new_gen;
 	new_gen.members = nspawn;
 	new_gen.created_at = cycle_;
-	new_gen.velocity[0] = info_.velocity_x_/1000.0;
-	new_gen.velocity[1] = info_.velocity_y_/1000.0;
 	for(int n = 0; n != 4; ++n) {
 		new_gen.rgba[n] = info_.rgba_[n]/255.0;
 	}
@@ -157,6 +157,16 @@ void simple_particle_system::process(const entity& e)
 		particle p;
 		p.pos[0] = e.x() + info_.min_x_;
 		p.pos[1] = e.y() + info_.min_y_;
+		p.velocity[0] = info_.velocity_x_/1000.0;
+		p.velocity[1] = info_.velocity_y_/1000.0;
+
+		if(info_.velocity_x_rand_ > 0) {
+			p.velocity[0] += (rand()%info_.velocity_x_rand_)/1000.0;
+		}
+
+		if(info_.velocity_y_rand_ > 0) {
+			p.velocity[1] += (rand()%info_.velocity_y_rand_)/1000.0;
+		}
 
 		ASSERT_GT(factory_.frames_.size(), 0);
 		p.anim = factory_.frames_[rand()%factory_.frames_.size()].get();
