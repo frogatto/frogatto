@@ -1,6 +1,7 @@
 #include <iostream>
 #include <deque>
 #include <inttypes.h>
+#include <math.h>
 
 #include "asserts.hpp"
 #include "color_utils.hpp"
@@ -8,10 +9,85 @@
 #include "foreach.hpp"
 #include "frame.hpp"
 #include "particle_system.hpp"
+#include "texture.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
 
 namespace {
+
+class particle_animation {
+public:
+	explicit particle_animation(wml::const_node_ptr node) :
+	  id_(node->attr("id")),
+	  texture_(graphics::texture::get(node->attr("image"))),
+	  duration_(wml::get_int(node, "duration"))
+	{
+		rect base_area(node->has_attr("rect") ? rect(node->attr("rect")) :
+	           rect(wml::get_int(node, "x"),
+	                wml::get_int(node, "y"),
+	                wml::get_int(node, "w", texture_.width()),
+	                wml::get_int(node, "h", texture_.height())));
+		width_ = base_area.w();
+		height_ = base_area.h();
+		int nframes = wml::get_int(node, "frames", 1);
+		if(nframes < 1) {
+			nframes = 1;
+		}
+
+		const int nframes_per_row = wml::get_int(node, "frames_per_row", -1);
+		const int pad = wml::get_int(node, "pad");
+
+		int row = 0, col = 0;
+		for(int n = 0; n != nframes; ++n) {
+			rect area(base_area.x() + col*(base_area.w()+pad),
+			          base_area.y() + row*(base_area.h()+pad),
+					  base_area.w(), base_area.h());
+
+			frame_area a;
+			a.u1 = GLfloat(area.x())/GLfloat(texture_.width());
+			a.u2 = GLfloat(area.x2())/GLfloat(texture_.width());
+			a.v1 = GLfloat(area.y())/GLfloat(texture_.height());
+			a.v2 = GLfloat(area.y2())/GLfloat(texture_.height());
+
+			frames_.push_back(a);
+
+			++col;
+			if(col == nframes_per_row) {
+				col = 0;
+				++row;
+			}
+		}
+	}
+
+	struct frame_area {
+		GLfloat u1, v1, u2, v2;
+	};
+
+	const frame_area& get_frame(int t) const {
+		int index = t/duration_;
+		if(index < 0) {
+			index = 0;
+		} else if(index >= frames_.size()) {
+			index = frames_.size() - 1;
+		}
+
+		return frames_[index];
+	}
+
+	void set_texture() const {
+		texture_.set_as_current_texture();
+	}
+
+	int width() const { return width_; }
+	int height() const { return height_; }
+private:
+	std::string id_;
+	graphics::texture texture_;
+
+	std::vector<frame_area> frames_;
+	int duration_;
+	int width_, height_;
+};
 
 struct simple_particle_system_info {
 	simple_particle_system_info(wml::const_node_ptr node)
@@ -27,6 +103,10 @@ struct simple_particle_system_info {
 		velocity_y_(wml::get_int(node, "velocity_y", 0)),
 		velocity_x_rand_(wml::get_int(node, "velocity_x_random", 0)),
 		velocity_y_rand_(wml::get_int(node, "velocity_y_random", 0)),
+		velocity_magnitude_(wml::get_int(node, "velocity_magnitude", 0)),
+		velocity_magnitude_rand_(wml::get_int(node, "velocity_magnitude_random", 0)),
+		velocity_rotate_(wml::get_int(node, "velocity_rotate", 0)),
+		velocity_rotate_rand_(wml::get_int(node, "velocity_rotate_random", 0)),
 		accel_x_(wml::get_int(node, "accel_x", 0)),
 		accel_y_(wml::get_int(node, "accel_y", 0)),
 		delta_r_(wml::get_int(node, "delta_r", 0)),
@@ -42,6 +122,8 @@ struct simple_particle_system_info {
 	int min_x_, max_x_, min_y_, max_y_;
 	int velocity_x_, velocity_y_;
 	int velocity_x_rand_, velocity_y_rand_;
+	int velocity_magnitude_, velocity_magnitude_rand_;
+	int velocity_rotate_, velocity_rotate_rand_;
 	int accel_x_, accel_y_;
 
 	union {
@@ -59,8 +141,7 @@ public:
 
 	particle_system_ptr create(const entity& e) const;
 
-	typedef boost::shared_ptr<frame> frame_ptr;
-	std::vector<frame_ptr> frames_;
+	std::vector<particle_animation> frames_;
 
 	simple_particle_system_info info_;
 };
@@ -69,7 +150,7 @@ simple_particle_system_factory::simple_particle_system_factory(wml::const_node_p
   : info_(node)
 {
 	FOREACH_WML_CHILD(frame_node, node, "animation") {
-		frames_.push_back(frame_ptr(new frame(frame_node)));
+		frames_.push_back(particle_animation(frame_node));
 	}
 }
 
@@ -93,7 +174,7 @@ private:
 
 	struct particle {
 		GLfloat pos[2];
-		const frame* anim;
+		const particle_animation* anim;
 		GLfloat velocity[2];
 	};
 
@@ -168,8 +249,25 @@ void simple_particle_system::process(const entity& e)
 			p.velocity[1] += (rand()%info_.velocity_y_rand_)/1000.0;
 		}
 
+		int velocity_magnitude = info_.velocity_magnitude_;
+		if(info_.velocity_magnitude_rand_ > 0) {
+			velocity_magnitude += rand()%info_.velocity_magnitude_rand_;
+		}
+
+		if(velocity_magnitude) {
+			int rotate_velocity = info_.velocity_rotate_;
+			if(info_.velocity_rotate_rand_) {
+				rotate_velocity += rand()%info_.velocity_rotate_rand_;
+			}
+
+			const GLfloat rotate_radians = (GLfloat(rotate_velocity)/360.0)*3.14*2.0;
+			const GLfloat magnitude = velocity_magnitude/1000.0;
+			p.velocity[0] += sin(rotate_radians)*magnitude;
+			p.velocity[1] += cos(rotate_radians)*magnitude;
+		}
+
 		ASSERT_GT(factory_.frames_.size(), 0);
-		p.anim = factory_.frames_[rand()%factory_.frames_.size()].get();
+		p.anim = &factory_.frames_[rand()%factory_.frames_.size()];
 
 		const int diff_x = info_.max_x_ - info_.min_x_;
 		if(diff_x > 0) {
@@ -187,14 +285,32 @@ void simple_particle_system::process(const entity& e)
 
 void simple_particle_system::draw(const rect& area, const entity& e) const
 {
+	if(particles_.empty()) {
+		return;
+	}
+
 	std::deque<particle>::const_iterator p = particles_.begin();
+
+	//all particles must have the same texture, so just set it once.
+	p->anim->set_texture();
+	glBegin(GL_QUADS);
 	foreach(const generation& gen, generations_) {
 		glColor4fv(gen.rgba);
 		for(int n = 0; n != gen.members; ++n) {
-			p->anim->draw(p->pos[0], p->pos[1], true, false, cycle_ - gen.created_at);
+			const particle_animation* anim = p->anim;
+			const particle_animation::frame_area& f = anim->get_frame(cycle_ - gen.created_at);
+			graphics::texture::set_coord(f.u1, f.v1);
+			glVertex3f(p->pos[0], p->pos[1], 0.0);
+			graphics::texture::set_coord(f.u2, f.v1);
+			glVertex3f(p->pos[0] + anim->width(), p->pos[1], 0.0);
+			graphics::texture::set_coord(f.u2, f.v2);
+			glVertex3f(p->pos[0] + anim->width(), p->pos[1] + anim->height(), 0.0);
+			graphics::texture::set_coord(f.u1, f.v2);
+			glVertex3f(p->pos[0], p->pos[1] + anim->height(), 0.0);
 			++p;
 		}
 	}
+	glEnd();
 
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 }
