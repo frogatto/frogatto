@@ -9,7 +9,7 @@
 
 struct point {
 	explicit point(const std::string& str);
-	point(int x=0, int y=0) : x(x), y(y)
+	explicit point(int x=0, int y=0) : x(x), y(y)
 	{}
 
 	std::string to_string() const;

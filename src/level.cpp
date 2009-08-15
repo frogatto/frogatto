@@ -468,10 +468,14 @@ wml::node_ptr level::write() const
 
 point level::get_dest_from_str(const std::string& key) const
 {
+	int ypos = 0;
+	if(player()) {
+		ypos = player()->y();
+	}
 	if(key == "left") {
-		return boundaries().x() + 32;
+		return point(boundaries().x() + 32, ypos);
 	} else if(key == "right") {
-		return boundaries().x2() - 128;
+		return point(boundaries().x2() - 128, ypos);
 	} else {
 		return point();
 	}
