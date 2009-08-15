@@ -30,7 +30,7 @@ void character_editor_dialog::init()
 	using namespace gui;
 	set_padding(20);
 
-	const frame& frame = *editor_.all_characters()[editor_.get_item()].preview_frame;
+	const frame& frame = *editor_.all_characters()[editor_.get_object()].preview_frame;
 //	image_widget* preview = new image_widget(frame.img());
 //	preview->set_dim(150, 150);
 //	preview->set_area(frame.area());
@@ -53,7 +53,7 @@ void character_editor_dialog::init()
 			preview->set_area(c.preview_frame->area());
 			button_ptr char_button(new button(widget_ptr(preview), boost::bind(&character_editor_dialog::set_character, this, index)));
 			char_button->set_dim(44, 44);
-			grid->add_col(gui::widget_ptr(new gui::border_widget(char_button, index == editor_.get_item() ? graphics::color(255,255,255,255) : graphics::color(0,0,0,0))));
+			grid->add_col(gui::widget_ptr(new gui::border_widget(char_button, index == editor_.get_object() ? graphics::color(255,255,255,255) : graphics::color(0,0,0,0))));
 		}
 
 		++index;
@@ -109,10 +109,9 @@ void character_editor_dialog::show_category_menu()
 
 void character_editor_dialog::set_character(int index)
 {
-	if(editor_.get_item() != index) {
-		editor_.set_item(index);
-		init();
-	}
+	category_ = editor_.all_characters()[index].category;
+	editor_.set_object(index);
+	init();
 }
 
 void character_editor_dialog::close_context_menu(int index)

@@ -74,7 +74,6 @@ public:
 	std::vector<point> get_solid_contiguous_region(int xpos, int ypos) const;
 
 	const level_tile* get_tile_at(int x, int y) const;
-	void remove_characters_in_rect(int x1, int y1, int x2, int y2);
 	void remove_character(entity_ptr e);
 	std::vector<entity_ptr> get_characters_in_rect(const rect& r) const;
 	entity_ptr get_character_at_point(int x, int y) const;
@@ -125,8 +124,13 @@ public:
 	int add_group();
 
 	void set_editor() { editor_ = true; }
-	void set_editor_selection(entity_ptr c) { editor_selection_ = c; }
-	entity_ptr editor_selection() const { return editor_selection_; }
+	void set_editor_highlight(entity_ptr c) { editor_highlight_ = c; }
+	entity_ptr editor_highlight() const { return editor_highlight_; }
+
+	void editor_select_object(entity_ptr c);
+	void editor_clear_selection();
+
+	const std::vector<entity_ptr>& editor_selection() const { return editor_selection_; }
 
 	bool show_foreground() const { return show_foreground_; }
 	void set_show_foreground(bool value) { show_foreground_ = value; }
@@ -291,7 +295,9 @@ private:
 
 	int save_point_x_, save_point_y_;
 	bool editor_;
-	entity_ptr editor_selection_;
+	entity_ptr editor_highlight_;
+
+	std::vector<entity_ptr> editor_selection_;
 
 	bool show_foreground_, show_background_;
 

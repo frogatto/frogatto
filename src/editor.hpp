@@ -18,7 +18,6 @@ class dialog;
 
 namespace editor_dialogs {
 class character_editor_dialog;
-class prop_editor_dialog;
 class property_editor_dialog;
 class tileset_editor_dialog;
 }
@@ -68,16 +67,16 @@ public:
 
 	const std::vector<enemy_type>& all_characters() const;
 
-	int get_item() const { return cur_item_; }
-	void set_item(int index);
+	int get_object() const { return cur_object_; }
+	void set_object(int index);
 
 	const std::vector<const_prop_ptr>& get_props() const;
 
 	enum EDIT_TOOL { TOOL_ADD_RECT, TOOL_SELECT_RECT, TOOL_MAGIC_WAND, TOOL_PENCIL, TOOL_PICKER, NUM_TOOLS };
 	EDIT_TOOL tool() const { return tool_; }
-	void change_tool(EDIT_TOOL tool) { tool_ = tool; }
+	void change_tool(EDIT_TOOL tool);
 
-	enum EDIT_MODE { EDIT_TILES, EDIT_CHARS, EDIT_ITEMS, EDIT_GROUPS, EDIT_PROPERTIES, EDIT_VARIATIONS, EDIT_PROPS, EDIT_PORTALS, EDIT_WATER, NUM_MODES };
+	enum EDIT_MODE { EDIT_TILES, EDIT_CHARS, NUM_MODES };
 	EDIT_MODE mode() const { return mode_; }
 	void change_mode(int nmode);
 
@@ -125,14 +124,13 @@ private:
 	bool face_right_;
 	int cur_tileset_;
 
-	int cur_item_;
+	int cur_object_;
 
 	tile_selection tile_selection_;
 
 	boost::scoped_ptr<editor_menu_dialog> editor_menu_dialog_;
 	boost::scoped_ptr<editor_mode_dialog> editor_mode_dialog_;
 	boost::scoped_ptr<editor_dialogs::character_editor_dialog> character_dialog_;
-	boost::scoped_ptr<editor_dialogs::prop_editor_dialog> prop_dialog_;
 	boost::scoped_ptr<editor_dialogs::property_editor_dialog> property_dialog_;
 	boost::scoped_ptr<editor_dialogs::tileset_editor_dialog> tileset_dialog_;
 

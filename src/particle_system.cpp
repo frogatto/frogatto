@@ -114,7 +114,7 @@ struct simple_particle_system_info {
 		delta_b_(wml::get_int(node, "delta_b", 0)),
 		delta_a_(wml::get_int(node, "delta_a", 0))
 	{
-		irgba_ = graphics::color(node->attr("color")).rgba();
+		irgba_ = graphics::color(node->attr("color")).value();
 	}
 	int spawn_rate_, spawn_rate_random_;
 	int system_time_to_live_;
@@ -187,10 +187,12 @@ private:
 
 	std::deque<particle> particles_;
 	std::deque<generation> generations_;
+
+	int spawn_buildup_;
 };
 
 simple_particle_system::simple_particle_system(const entity& e, const simple_particle_system_factory& factory)
-  : factory_(factory), info_(factory.info_), cycle_(0)
+  : factory_(factory), info_(factory.info_), cycle_(0), spawn_buildup_(0)
 {
 }
 
@@ -224,6 +226,10 @@ void simple_particle_system::process(const entity& e)
 	if(info_.spawn_rate_random_ > 0) {
 		nspawn += rand()%info_.spawn_rate_random_;
 	}
+
+	nspawn += spawn_buildup_;
+	spawn_buildup_ = nspawn%1000;
+	nspawn /= 1000;
 
 	generation new_gen;
 	new_gen.members = nspawn;

@@ -653,13 +653,21 @@ void level::draw(int x, int y, int w, int h) const
 		++entity_itor;
 	}
 
-	if(editor_selection_) {
+	if(editor_highlight_ || !editor_selection_.empty()) {
 		static int selection = 0;
 		++selection;
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 		const GLfloat alpha = 0.5 + sin(selection/5.0)*0.5;
 		glColor4f(1.0, 1.0, 1.0, alpha);
-		editor_selection_->draw();
+
+		if(editor_highlight_) {
+			editor_highlight_->draw();
+		}
+
+		foreach(const entity_ptr& e, editor_selection_) {
+			e->draw();
+		}
+
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
@@ -1623,6 +1631,19 @@ int level::add_group()
 {
 	groups_.resize(groups_.size() + 1);
 	return groups_.size() - 1;
+}
+
+void level::editor_select_object(entity_ptr c)
+{
+	if(!c) {
+		return;
+	}
+	editor_selection_.push_back(c);
+}
+
+void level::editor_clear_selection()
+{
+	editor_selection_.clear();
 }
 
 variant level::get_value(const std::string& key) const
