@@ -1058,7 +1058,7 @@ void editor::edit_level()
 				}
 
 				if(select_previous_level_) {
-
+					std::cerr << "CHANGE PREV LEVEL\n";
 					std::vector<std::string> levels = get_known_levels();
 					assert(!levels.empty());
 					levels.push_back("");
@@ -1073,6 +1073,7 @@ void editor::edit_level()
 					  boost::bind(&level::set_previous_level, lvl_.get(), lvl_->previous_level()));
 
 				} else if(select_next_level_) {
+					std::cerr << "CHANGE NEXT LEVEL\n";
 
 					std::vector<std::string> levels = get_known_levels();
 					assert(!levels.empty());
@@ -1084,8 +1085,8 @@ void editor::edit_level()
 					}
 
 					execute_command(
-					  boost::bind(&level::set_previous_level, lvl_.get(), levels[index]),
-					  boost::bind(&level::set_previous_level, lvl_.get(), lvl_->next_level()));
+					  boost::bind(&level::set_next_level, lvl_.get(), levels[index]),
+					  boost::bind(&level::set_next_level, lvl_.get(), lvl_->next_level()));
 
 				} else if(mode_ == EDIT_CHARS && event.button.button == SDL_BUTTON_LEFT && !lvl_->editor_highlight() && tool() != TOOL_SELECT_RECT) {
 					wml::node_ptr node(wml::deep_copy(enemy_types[cur_object_].node));
@@ -1577,6 +1578,7 @@ void editor::draw() const
 	if(selectx > x && selectx < 0 && selecty > y && selecty < y + t.height()) {
 		t = font::render_text(previous_level, graphics::color_yellow(), 24);
 		select_previous_level_ = true;
+		std::cerr << "SELECT PREVIOUS LEVEL\n";
 	}
 
 	graphics::blit_texture(t, x, y);
