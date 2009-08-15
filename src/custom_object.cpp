@@ -774,7 +774,7 @@ void custom_object::set_frame(const std::string& name)
 	}
 
 	if(frame_->accel_x()) {
-		accel_x_ = frame_->accel_x() * (face_right() ? 1 : -1);
+		accel_x_ = frame_->accel_x();
 	}
 	
 	if(frame_->accel_y()) {
