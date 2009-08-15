@@ -18,7 +18,7 @@ public:
 	~speech_dialog();
 
 	bool key_press(const SDL_Event& e);
-	void process();
+	bool process();
 	void draw() const;
 	void set_speaker_and_flip_side(const_entity_ptr e);
 	void set_speaker(const_entity_ptr e, bool left_side);
@@ -28,6 +28,9 @@ public:
 
 	int option_selected() const { return option_selected_; }
 private:
+	void move_up();
+	void move_down();
+
 	int cycle_;
 	const_entity_ptr left_, right_;
 	bool left_side_speaking_;
@@ -38,6 +41,8 @@ private:
 
 	std::vector<std::string> options_;
 	int option_selected_;
+
+	bool joystick_button_pressed_, joystick_up_pressed_, joystick_down_pressed_;
 
 	int num_chars() const;
 

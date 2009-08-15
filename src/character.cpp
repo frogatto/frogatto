@@ -1487,14 +1487,29 @@ void character::move_to_standing(level& lvl)
 {
 	int start_y = y();
 	lvl_ = &lvl;
-	for(int n = 0; n != 1000; ++n) {
+	for(int n = 0; n != 10000; ++n) {
 		if(is_standing(lvl)) {
 
 			if(n == 0) {
-				for(int n = 0; n != 1000; ++n) {
+				for(int n = 0; n != 10000; ++n) {
 					set_pos(x(), y() - 1);
 					if(!is_standing(lvl)) {
 						set_pos(x(), y() + 1);
+
+						if(y() < lvl.boundaries().y()) {
+							//we are too high, out of the level. Move the
+							//character down, under the solid, and then
+							//call this function again to move them down
+							//to standing on the solid below.
+							for(int n = 0; n != 10000; ++n) {
+								set_pos(x(), y() + 1);
+								if(!is_standing(lvl)) {
+									move_to_standing(lvl);
+									return;
+								}
+							}
+						}
+
 						return;
 					}
 				}
@@ -1507,6 +1522,7 @@ void character::move_to_standing(level& lvl)
 	}
 
 	set_pos(x(), start_y);
+	std::cerr << "MOVE_TO_STANDING FAILED\n";
 }
 
 int character::hitpoints() const

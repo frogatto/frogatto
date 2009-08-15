@@ -677,12 +677,12 @@ public:
 					while(SDL_PollEvent(&event)) {
 						switch(event.type) {
 						case SDL_KEYDOWN:
-							done = dialog_.key_press(event);
+							done = done || dialog_.key_press(event);
 							break;
 						}
 					}
 
-					dialog_.process();
+					done = done || dialog_.process();
 					draw(lvl);
 				}
 

@@ -5,6 +5,7 @@
 #include "frame.hpp"
 #include "graphical_font.hpp"
 #include "gui_section.hpp"
+#include "joystick.hpp"
 #include "raster.hpp"
 #include "speech_dialog.hpp"
 
@@ -22,7 +23,10 @@ speech_dialog* speech_dialog::get()
 }
 
 speech_dialog::speech_dialog()
-  : cycle_(0), left_side_speaking_(false), horizontal_position_(0), text_char_(0), option_selected_(0)
+  : cycle_(0), left_side_speaking_(false), horizontal_position_(0), text_char_(0), option_selected_(0),
+    joystick_button_pressed_(true),
+    joystick_up_pressed_(true),
+    joystick_down_pressed_(true)
 {
 	current_dialogs.push(this);
 }
@@ -32,21 +36,31 @@ speech_dialog::~speech_dialog()
 	current_dialogs.pop();
 }
 
+void speech_dialog::move_up()
+{
+	--option_selected_;
+	if(option_selected_ < 0) {
+		option_selected_ = options_.size() - 1;
+	}
+}
+
+void speech_dialog::move_down()
+{
+	++option_selected_;
+	if(option_selected_ == options_.size()) {
+		option_selected_ = 0;
+	}
+}
+
 bool speech_dialog::key_press(const SDL_Event& event)
 {
 	if(text_char_ == num_chars() && options_.empty() == false) {
 		switch(event.key.keysym.sym) {
 		case SDLK_UP:
-			--option_selected_;
-			if(option_selected_ < 0) {
-				option_selected_ = options_.size() - 1;
-			}
+			move_up();
 			break;
 		case SDLK_DOWN:
-			++option_selected_;
-			if(option_selected_ == options_.size()) {
-				option_selected_ = 0;
-			}
+			move_down();
 			break;
 		case SDLK_RETURN:
 		case SDLK_SPACE:
@@ -74,7 +88,7 @@ bool speech_dialog::key_press(const SDL_Event& event)
 	return true;
 }
 
-void speech_dialog::process()
+bool speech_dialog::process()
 {
 	++cycle_;
 
@@ -99,6 +113,26 @@ void speech_dialog::process()
 			}
 		}
 	}
+
+	joystick::update();
+
+	if(!joystick_up_pressed_ && joystick::up()) {
+		move_up();
+	}
+
+	if(!joystick_down_pressed_ && joystick::down()) {
+		move_down();
+	}
+
+	if(!joystick_button_pressed_ && (joystick::button(0) || joystick::button(10))) {
+		return true;
+	}
+
+	joystick_up_pressed_ = joystick::up();
+	joystick_down_pressed_ = joystick::down();
+	joystick_button_pressed_ = joystick::button(0) || joystick::button(1);
+
+	return false;
 }
 
 void speech_dialog::draw() const
