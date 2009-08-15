@@ -1610,7 +1610,7 @@ bool character::is_standable(int xpos, int ypos, int* friction, int* traction, i
 
 bool character::enter() const
 {
-	return &current_frame() == type_->interact_frame() && (time_in_frame() > current_frame().duration()/2);
+	return &current_frame() == type_->interact_frame() && (time_in_frame() == current_frame().duration()/2);
 	//slightly ugly hack to make it fire the interact event after the animation
 }
 
