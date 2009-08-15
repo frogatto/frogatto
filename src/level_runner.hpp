@@ -43,6 +43,7 @@ private:
 class pause_scope
 {
 	int ticks_;
+	bool active_;
 public:
 	pause_scope();
 	~pause_scope();

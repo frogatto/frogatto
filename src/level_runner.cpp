@@ -414,12 +414,22 @@ bool level_runner::play_cycle()
 	return !quit_;
 }
 
-pause_scope::pause_scope() : ticks_(SDL_GetTicks())
+namespace {
+//variable to mark if we are already pausing. If so, don't pause again
+//based on a new pause scope.
+bool pause_scope_active = false;
+}
+
+pause_scope::pause_scope() : ticks_(SDL_GetTicks()), active_(!pause_scope_active)
 {
+	pause_scope_active = true;
 }
 
 pause_scope::~pause_scope()
 {
-	const int t = SDL_GetTicks() - ticks_;
-	global_pause_time += t;
+	if(active_) {
+		const int t = SDL_GetTicks() - ticks_;
+		global_pause_time += t;
+		pause_scope_active = false;
+	}
 }
