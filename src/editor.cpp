@@ -605,6 +605,9 @@ editor::editor(const char* level_cfg)
 	lvl_.reset(new level(level_cfg));
 	lvl_->finish_loading();
 	lvl_->set_editor();
+
+	group_property_dialog_.reset(new editor_dialogs::group_property_editor_dialog(*this));
+	property_dialog_.reset(new editor_dialogs::property_editor_dialog(*this));
 }
 
 editor::~editor()
@@ -1454,8 +1457,6 @@ void editor::change_mode(int nmode)
 			current_dialog_ = character_dialog_.get();
 			character_dialog_->set_character(cur_object_);
 		} else {
-			group_property_dialog_.reset(new editor_dialogs::group_property_editor_dialog(*this));
-			property_dialog_.reset(new editor_dialogs::property_editor_dialog(*this));
 			current_dialog_ = property_dialog_.get();
 		}
 		break;
