@@ -24,6 +24,7 @@
 #include "formatter.hpp"
 #include "frame.hpp"
 #include "grid_widget.hpp"
+#include "group_property_editor_dialog.hpp"
 #include "image_widget.hpp"
 #include "item.hpp"
 #include "key.hpp"
@@ -610,6 +611,21 @@ editor::~editor()
 {
 }
 
+void editor::group_selection()
+{
+	const int group = lvl_->add_group();
+	std::vector<boost::function<void()> > undo, redo;
+
+	foreach(const entity_ptr& c, lvl_->editor_selection()) {
+		undo.push_back(boost::bind(&level::set_character_group, lvl_.get(), c, c->group()));
+		redo.push_back(boost::bind(&level::set_character_group, lvl_.get(), c, group));
+	}
+
+	execute_command(
+	  boost::bind(execute_functions, redo),
+	  boost::bind(execute_functions, undo));
+}
+
 void editor::process_ghost_objects()
 {
 	const size_t num_chars_before = lvl_->get_chars().size();
@@ -873,10 +889,26 @@ void editor::edit_level()
 					lvl_->set_show_background(!lvl_->show_background());
 				}
 
-				if(mode_ == EDIT_CHARS && (event.key.keysym.sym == SDLK_DELETE || event.key.keysym.sym == SDLK_BACKSPACE) && lvl_->editor_highlight()) {
+				if(mode_ == EDIT_CHARS && (event.key.keysym.sym == SDLK_DELETE || event.key.keysym.sym == SDLK_BACKSPACE) && lvl_->editor_selection().empty() == false) {
+					//deleting objects. We clear the selection as well as
+					//deleting. To undo, the previous selection will be cleared,
+					//and then the deleted objects re-selected.
+					std::vector<boost::function<void()> > redo, undo;
+					undo.push_back(boost::bind(&level::editor_clear_selection, lvl_.get()));
+
+					//if we undo, return the objects to the property dialog
+					undo.push_back(boost::bind(&editor_dialogs::group_property_editor_dialog::set_group, group_property_dialog_.get(), lvl_->editor_selection()));
+					redo.push_back(boost::bind(&level::editor_clear_selection, lvl_.get()));
+					//we want to clear the objects in the property dialog
+					redo.push_back(boost::bind(&editor_dialogs::group_property_editor_dialog::set_group, group_property_dialog_.get(), std::vector<entity_ptr>()));
+					foreach(const entity_ptr& e, lvl_->editor_selection()) {
+						redo.push_back(boost::bind(&level::remove_character, lvl_.get(), e));
+						undo.push_back(boost::bind(&level::add_character, lvl_.get(), e));
+						undo.push_back(boost::bind(&level::editor_select_object, lvl_.get(), e));
+					}
 					execute_command(
-					    boost::bind(&level::remove_character, lvl_.get(), lvl_->editor_highlight()),
-					    boost::bind(&level::add_character, lvl_.get(), lvl_->editor_highlight()));
+					  boost::bind(execute_functions, redo),
+					  boost::bind(execute_functions, undo));
 				}
 
 				if(mode_ == EDIT_TILES && !tile_selection_.empty() && (event.key.keysym.sym == SDLK_DELETE || event.key.keysym.sym == SDLK_BACKSPACE)) {
@@ -971,16 +1003,15 @@ void editor::edit_level()
 					}
 				} else if(mode_ != EDIT_CHARS) {
 					drawing_rect_ = true;
-				} else if(mode_ == EDIT_CHARS && tool() == TOOL_SELECT_RECT && !lvl_->editor_highlight()) {
-					//selecting objects
-					drawing_rect_ = true;
 				} else if(property_dialog_ && variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_)) {
 					g_variable_editing = variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_);
 					g_variable_editing_original_value = property_dialog_->get_entity()->query_value(g_variable_editing->variable_name()).as_int();
 					
+				} else if(mode_ == EDIT_CHARS && tool() == TOOL_SELECT_RECT && !lvl_->editor_highlight()) {
+					//selecting objects
+					drawing_rect_ = true;
 				} else if(property_dialog_) {
 					property_dialog_->set_entity(lvl_->editor_highlight());
-
 				}
 
 				if(lvl_->editor_highlight()) {
@@ -993,6 +1024,13 @@ void editor::edit_level()
 						}
 
 						lvl_->editor_select_object(lvl_->editor_highlight());
+						group_property_dialog_->set_group(lvl_->editor_selection());
+
+						if(lvl_->editor_selection().size() > 1) {
+							current_dialog_ = group_property_dialog_.get();
+						} else {
+							current_dialog_ = property_dialog_.get();
+						}
 					}
 
 					//start dragging the object
@@ -1222,6 +1260,15 @@ void editor::edit_level()
 						foreach(const entity_ptr& c, chars) {
 							lvl_->editor_select_object(c);
 						}
+
+						group_property_dialog_->set_group(lvl_->editor_selection());
+
+						if(lvl_->editor_selection().size() == 1) {
+							current_dialog_ = property_dialog_.get();
+							property_dialog_->set_entity(lvl_->editor_selection().front());
+						} else {
+							current_dialog_ = group_property_dialog_.get();
+						}
 					}
 				}
 
@@ -1407,6 +1454,7 @@ void editor::change_mode(int nmode)
 			current_dialog_ = character_dialog_.get();
 			character_dialog_->set_character(cur_object_);
 		} else {
+			group_property_dialog_.reset(new editor_dialogs::group_property_editor_dialog(*this));
 			property_dialog_.reset(new editor_dialogs::property_editor_dialog(*this));
 			current_dialog_ = property_dialog_.get();
 		}

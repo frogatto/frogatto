@@ -18,6 +18,7 @@ class dialog;
 
 namespace editor_dialogs {
 class character_editor_dialog;
+class group_property_editor_dialog;
 class property_editor_dialog;
 class tileset_editor_dialog;
 }
@@ -93,6 +94,9 @@ public:
 
 	void close() { done_ = true; }
 
+	//make the selected objects part of a group
+	void group_selection();
+
 private:
 	void process_ghost_objects();
 	void remove_ghost_objects();
@@ -131,6 +135,7 @@ private:
 	boost::scoped_ptr<editor_menu_dialog> editor_menu_dialog_;
 	boost::scoped_ptr<editor_mode_dialog> editor_mode_dialog_;
 	boost::scoped_ptr<editor_dialogs::character_editor_dialog> character_dialog_;
+	boost::scoped_ptr<editor_dialogs::group_property_editor_dialog> group_property_dialog_;
 	boost::scoped_ptr<editor_dialogs::property_editor_dialog> property_dialog_;
 	boost::scoped_ptr<editor_dialogs::tileset_editor_dialog> tileset_dialog_;
 

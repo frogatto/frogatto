@@ -108,11 +108,11 @@ condition::WAIT_TIMEOUT_RESULT condition::wait_timeout(const mutex& m, unsigned 
 {
 	const int res = SDL_CondWaitTimeout(cond_,m.m_,timeout);
 	switch(res) {
-		case 0: return WAIT_OK;
-		case SDL_MUTEX_TIMEDOUT: return WAIT_TIMEOUT;
+		case 0: return THREAD_WAIT_OK;
+		case SDL_MUTEX_TIMEDOUT: return THREAD_WAIT_TIMEOUT;
 		default:
 			 std::cerr << "SDL_CondWaitTimeout: " << SDL_GetError() << "\n";
-			return WAIT_ERROR;
+			return THREAD_WAIT_ERROR;
 	}
 }
 
