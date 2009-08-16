@@ -252,26 +252,23 @@ public:
 namespace {
 const char* ModeStrings[] = {"Tiles", "Objects", "Properties",};
 
-const char* ToolStrings[] = {"Add tiles by drawing rectangles", "Select Tiles or Objects", "Select connected regions of tiles", "Add tiles by drawing pencil strokes", "Pick tiles or objects"};
+const char* ToolStrings[] = {
+  "Add tiles by drawing rectangles",
+  "Select Tiles",
+  "Select connected regions of tiles",
+  "Add tiles by drawing pencil strokes",
+  "Pick tiles or objects",
+  "Add Objects",
+  "Select Objects",
+};
 
-const char* ToolIcons[] = {"editor_draw_rect", "editor_rect_select", "editor_wand", "editor_pencil", "editor_eyedropper"};
+const char* ToolIcons[] = {"editor_draw_rect", "editor_rect_select", "editor_wand", "editor_pencil", "editor_eyedropper", "editor_add_object", "editor_select_object",};
 }
 
 class editor_mode_dialog : public gui::dialog
 {
 	editor& editor_;
 	gui::widget_ptr context_menu_;
-
-	void select_mode(int mode)
-	{
-		if(mode >= 0 && mode < editor::NUM_MODES) {
-			editor_.change_mode(mode);
-		}
-
-		remove_widget(context_menu_);
-		context_menu_.reset();
-		init();
-	}
 
 	void select_tool(int tool)
 	{
@@ -280,28 +277,6 @@ class editor_mode_dialog : public gui::dialog
 		}
 
 		init();
-	}
-
-	void show_menu()
-	{
-		using namespace gui;
-		gui::grid* grid = new gui::grid(1);
-		grid->set_show_background(true);
-		grid->allow_selection();
-		grid->register_selection_callback(boost::bind(&editor_mode_dialog::select_mode, this, _1));
-		for(int n = 0; n != editor::NUM_MODES; ++n) {
-			grid->add_col(widget_ptr(new label(ModeStrings[n], graphics::color_white())));
-		}
-
-		int mousex, mousey;
-		SDL_GetMouseState(&mousex, &mousey);
-
-		mousex -= x();
-		mousey -= y();
-
-		remove_widget(context_menu_);
-		context_menu_.reset(grid);
-		add_widget(context_menu_, mousex, mousey);
 	}
 
 	bool handle_event(const SDL_Event& event, bool claimed)
@@ -314,24 +289,11 @@ class editor_mode_dialog : public gui::dialog
 
 			switch(event.type) {
 			case SDL_KEYDOWN: {
-				editor::EDIT_MODE mode = editor::NUM_MODES;
 				switch(event.key.keysym.sym) {
-				case SDLK_t:
-					mode = editor::EDIT_TILES;
-					break;
-				case SDLK_o:
-					mode = editor::EDIT_CHARS;
-					break;
-				case SDLK_c:
-					mode = editor::EDIT_CHARS;
-					break;
+					//TODO: add short cuts for tools here.
+
 				}
 
-				if(mode < editor::NUM_MODES) {
-					editor_.change_mode(mode);
-					init();
-					claimed = true;
-				}
 				break;
 			}
 			}
@@ -339,6 +301,7 @@ class editor_mode_dialog : public gui::dialog
 
 		return claimed || dialog::handle_event(event, claimed);
 	}
+
 public:
 	explicit editor_mode_dialog(editor& e)
 	  : gui::dialog(graphics::screen_width() - 160, 0, 160, 160), editor_(e)
@@ -350,8 +313,6 @@ public:
 	{
 		clear();
 		using namespace gui;
-		button* b = new button(widget_ptr(new label(ModeStrings[editor_.mode()], graphics::color_white())), boost::bind(&editor_mode_dialog::show_menu, this));
-		add_widget(widget_ptr(b), 5, 5);
 
 		grid_ptr grid(new gui::grid(3));
 		for(int n = 0; n != editor::NUM_TOOLS; ++n) {
@@ -363,7 +324,7 @@ public:
 		}
 
 		grid->finish_row();
-		add_widget(grid);
+		add_widget(grid, 5, 5);
 	}
 };
 
@@ -583,7 +544,7 @@ editor::editor(const char* level_cfg)
   : zoom_(1), xpos_(0), ypos_(0), anchorx_(0), anchory_(0),
     selected_entity_startx_(0), selected_entity_starty_(0),
     filename_(level_cfg), tool_(TOOL_ADD_RECT),
-    mode_(EDIT_TILES), done_(false), face_right_(true),
+    done_(false), face_right_(true),
 	cur_tileset_(0), cur_object_(0),
     current_dialog_(NULL),
 	drawing_rect_(false), dragging_(false)
@@ -696,7 +657,7 @@ void editor::edit_level()
 		const int selectx = round_tile_size(xpos_ + mousex*zoom_);
 		const int selecty = round_tile_size(ypos_ + mousey*zoom_);
 
-		const bool object_mode = (mode_ == EDIT_CHARS);
+		const bool object_mode = (tool() == TOOL_ADD_OBJECT || tool() == TOOL_SELECT_OBJECT);
 		if(property_dialog_ && g_variable_editing) {
 			int diff = 0;
 			switch(g_variable_editing->type()) {
@@ -833,7 +794,7 @@ void editor::edit_level()
 		}
 
 		//if we're drawing with a pencil see if we add a new tile
-		if(tool() == TOOL_PENCIL && mode_ == EDIT_TILES && (buttons&SDL_BUTTON_LEFT)) {
+		if(tool() == TOOL_PENCIL && (buttons&SDL_BUTTON_LEFT)) {
 			const int xpos = xpos_ + mousex*zoom_;
 			const int ypos = ypos_ + mousey*zoom_;
 			point p(round_tile_size(xpos), round_tile_size(ypos));
@@ -892,7 +853,7 @@ void editor::edit_level()
 					lvl_->set_show_background(!lvl_->show_background());
 				}
 
-				if(mode_ == EDIT_CHARS && (event.key.keysym.sym == SDLK_DELETE || event.key.keysym.sym == SDLK_BACKSPACE) && lvl_->editor_selection().empty() == false) {
+				if(editing_objects() && (event.key.keysym.sym == SDLK_DELETE || event.key.keysym.sym == SDLK_BACKSPACE) && lvl_->editor_selection().empty() == false) {
 					//deleting objects. We clear the selection as well as
 					//deleting. To undo, the previous selection will be cleared,
 					//and then the deleted objects re-selected.
@@ -914,7 +875,7 @@ void editor::edit_level()
 					  boost::bind(execute_functions, undo));
 				}
 
-				if(mode_ == EDIT_TILES && !tile_selection_.empty() && (event.key.keysym.sym == SDLK_DELETE || event.key.keysym.sym == SDLK_BACKSPACE)) {
+				if(!tile_selection_.empty() && (event.key.keysym.sym == SDLK_DELETE || event.key.keysym.sym == SDLK_BACKSPACE)) {
 					std::vector<boost::function<void()> > redo, undo;
 					foreach(const point& p, tile_selection_.tiles) {
 						const int x = p.x*TileSize;
@@ -966,7 +927,7 @@ void editor::edit_level()
 
 				dragging_ = drawing_rect_ = false;
 
-				if(mode_ == EDIT_TILES && tool() == TOOL_PICKER) {
+				if(tool() == TOOL_PICKER) {
 					std::cerr << "pick tile...\n";
 					//pick the top most tile at this point.
 					std::map<int, std::vector<std::string> > tiles;
@@ -990,7 +951,7 @@ void editor::edit_level()
 							}
 						}
 					}
-				} else if(mode_ == EDIT_TILES && !tile_selection_.empty() &&
+				} else if(editing_tiles() && !tile_selection_.empty() &&
 				   std::binary_search(tile_selection_.tiles.begin(), tile_selection_.tiles.end(), point(round_tile_size(anchorx_)/TileSize, round_tile_size(anchory_)/TileSize))) {
 					//we are beginning to drag our selection
 					dragging_ = true;
@@ -998,19 +959,17 @@ void editor::edit_level()
 					drawing_rect_ = false;
 				} else if(tool() == TOOL_PENCIL) {
 					drawing_rect_ = false;
-					if(mode_ == EDIT_TILES) {
-						point p(round_tile_size(anchorx_), round_tile_size(anchory_));
-						add_tile_rect(p.x, p.y, p.x, p.y);
-						g_current_draw_tiles.clear();
-						g_current_draw_tiles.push_back(p);
-					}
-				} else if(mode_ != EDIT_CHARS) {
+					point p(round_tile_size(anchorx_), round_tile_size(anchory_));
+					add_tile_rect(p.x, p.y, p.x, p.y);
+					g_current_draw_tiles.clear();
+					g_current_draw_tiles.push_back(p);
+				} else if(editing_objects()) {
 					drawing_rect_ = true;
 				} else if(property_dialog_ && variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_)) {
 					g_variable_editing = variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_);
 					g_variable_editing_original_value = property_dialog_->get_entity()->query_value(g_variable_editing->variable_name()).as_int();
 					
-				} else if(mode_ == EDIT_CHARS && tool() == TOOL_SELECT_RECT && !lvl_->editor_highlight()) {
+				} else if(tool() == TOOL_SELECT_OBJECT && !lvl_->editor_highlight()) {
 					//selecting objects
 					drawing_rect_ = true;
 				} else if(property_dialog_) {
@@ -1040,7 +999,7 @@ void editor::edit_level()
 					selected_entity_startx_ = lvl_->editor_highlight()->x();
 					selected_entity_starty_ = lvl_->editor_highlight()->y();
 
-					if(tool() == TOOL_PICKER && mode_ == EDIT_CHARS) {
+					if(tool() == TOOL_PICKER) {
 						wml::const_node_ptr node = lvl_->editor_highlight()->write();
 						const std::string type = node->attr("type");
 						for(int n = 0; n != all_characters().size(); ++n) {
@@ -1088,7 +1047,7 @@ void editor::edit_level()
 					  boost::bind(&level::set_next_level, lvl_.get(), levels[index]),
 					  boost::bind(&level::set_next_level, lvl_.get(), lvl_->next_level()));
 
-				} else if(mode_ == EDIT_CHARS && event.button.button == SDL_BUTTON_LEFT && !lvl_->editor_highlight() && tool() != TOOL_SELECT_RECT) {
+				} else if(tool() == TOOL_ADD_OBJECT && event.button.button == SDL_BUTTON_LEFT && !lvl_->editor_highlight()) {
 					wml::node_ptr node(wml::deep_copy(enemy_types[cur_object_].node));
 					node->set_attr("x", formatter() << (ctrl_pressed ? anchorx_ : round_tile_size(anchorx_)));
 					node->set_attr("y", formatter() << (ctrl_pressed ? anchory_ : round_tile_size(anchory_)));
@@ -1158,7 +1117,7 @@ void editor::edit_level()
 				}
 
 
-				if(mode_ == EDIT_TILES) {
+				if(editing_tiles()) {
 					if(dragging_) {
 						const int selectx = xpos_ + mousex*zoom_;
 						const int selecty = ypos_ + mousey*zoom_;
@@ -1247,7 +1206,8 @@ void editor::edit_level()
 						  boost::bind(&level::clear_tile_rect, lvl_.get(), anchorx_, anchory_, xpos, ypos),
 						  boost::bind(execute_functions, undo));
 					}
-				} else if(mode_ == EDIT_CHARS) {
+				} else {
+					//some kind of object editing
 					if(event.button.button == SDL_BUTTON_RIGHT) {
 						std::vector<boost::function<void()> > undo, redo;
 						std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos, ypos));
@@ -1259,7 +1219,7 @@ void editor::edit_level()
 						execute_command(
 						  boost::bind(execute_functions, redo),
 						  boost::bind(execute_functions, undo));
-					} else if(tool() == TOOL_SELECT_RECT) {
+					} else if(tool() == TOOL_SELECT_OBJECT) {
 						std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos, ypos));
 						foreach(const entity_ptr& c, chars) {
 							lvl_->editor_select_object(c);
@@ -1444,33 +1404,31 @@ void editor::set_object(int index)
 	cur_object_ = index;
 }
 
-void editor::change_mode(int nmode)
-{
-	mode_ = static_cast<EDIT_MODE>(nmode);
-	switch(mode_) {
-	case EDIT_TILES:
-		tileset_dialog_.reset(new editor_dialogs::tileset_editor_dialog(*this));
-		current_dialog_ = tileset_dialog_.get();
-		break;
-	case EDIT_CHARS:
-		if(tool() != TOOL_SELECT_RECT) {
-			character_dialog_.reset(new editor_dialogs::character_editor_dialog(*this));
-			current_dialog_ = character_dialog_.get();
-			character_dialog_->set_character(cur_object_);
-		} else {
-			current_dialog_ = property_dialog_.get();
-		}
-		break;
-	}
-}
-
 void editor::change_tool(EDIT_TOOL tool)
 {
 	tool_ = tool;
 
-	//reset the mode since the selected tool can make modes behave
-	//differently.
-	change_mode(mode_);
+	switch(tool_) {
+	case TOOL_ADD_RECT:
+	case TOOL_SELECT_RECT:
+	case TOOL_MAGIC_WAND:
+	case TOOL_PENCIL:
+	case TOOL_PICKER: {
+		tileset_dialog_.reset(new editor_dialogs::tileset_editor_dialog(*this));
+		current_dialog_ = tileset_dialog_.get();
+		break;
+	}
+	case TOOL_ADD_OBJECT: {
+		character_dialog_.reset(new editor_dialogs::character_editor_dialog(*this));
+		current_dialog_ = character_dialog_.get();
+		character_dialog_->set_character(cur_object_);
+		break;
+	}
+	case TOOL_SELECT_OBJECT: {
+		current_dialog_ = property_dialog_.get();
+		break;
+	}
+	}
 }
 
 void editor::save_level_as(const std::string& fname)
@@ -1591,7 +1549,7 @@ void editor::draw() const
 	graphics::blit_texture(t, x, y);
 	}
 
-	if(mode_ == EDIT_CHARS && !lvl_->editor_highlight() && (tool() == TOOL_ADD_RECT || tool() == TOOL_PENCIL)) {
+	if(tool_ == TOOL_ADD_OBJECT && !lvl_->editor_highlight()) {
 		int x = round_tile_size(xpos_ + mousex*zoom_);
 		int y = round_tile_size(ypos_ + mousey*zoom_);
 		if(ctrl_pressed) {
@@ -1741,10 +1699,7 @@ void editor::draw() const
 
 	glEnable(GL_TEXTURE_2D);
 
-	if(mode_ == EDIT_TILES) {
-	} else if(mode_ == EDIT_CHARS) {
-		ASSERT_INDEX_INTO_VECTOR(cur_object_, enemy_types);
-	}
+	ASSERT_INDEX_INTO_VECTOR(cur_object_, enemy_types);
 
 	//the location of the mouse cursor in the map
 	char loc_buf[256];

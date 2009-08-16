@@ -73,13 +73,9 @@ public:
 
 	const std::vector<const_prop_ptr>& get_props() const;
 
-	enum EDIT_TOOL { TOOL_ADD_RECT, TOOL_SELECT_RECT, TOOL_MAGIC_WAND, TOOL_PENCIL, TOOL_PICKER, NUM_TOOLS };
+	enum EDIT_TOOL { TOOL_ADD_RECT, TOOL_SELECT_RECT, TOOL_MAGIC_WAND, TOOL_PENCIL, TOOL_PICKER, TOOL_ADD_OBJECT, TOOL_SELECT_OBJECT, NUM_TOOLS };
 	EDIT_TOOL tool() const { return tool_; }
 	void change_tool(EDIT_TOOL tool);
-
-	enum EDIT_MODE { EDIT_TILES, EDIT_CHARS, NUM_MODES };
-	EDIT_MODE mode() const { return mode_; }
-	void change_mode(int nmode);
 
 	level& get_level() { return *lvl_; }
 
@@ -109,6 +105,9 @@ private:
 
 	void set_selection(const tile_selection& s);
 
+	bool editing_objects() const { return tool_ == TOOL_ADD_OBJECT || tool_ == TOOL_SELECT_OBJECT; }
+	bool editing_tiles() const { return !editing_objects(); }
+
 	CKey key_;
 
 	boost::scoped_ptr<level> lvl_;
@@ -122,7 +121,6 @@ private:
 	std::string filename_;
 
 	EDIT_TOOL tool_;
-	EDIT_MODE mode_;
 	mutable bool select_previous_level_, select_next_level_;
 	bool done_;
 	bool face_right_;
