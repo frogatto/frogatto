@@ -1363,11 +1363,11 @@ void character::change_frame(const frame* new_frame)
 		return;
 	}
 
-	if(new_frame->velocity_x()) {
+	if(new_frame->velocity_x() != INT_MIN) {
 		velocity_x_ = new_frame->velocity_x()*(face_right() ? 1 : -1);
 	}
 
-	if(new_frame->velocity_y()) {
+	if(new_frame->velocity_y() != INT_MIN) {
 		velocity_y_ = new_frame->velocity_y();
 	}
 
