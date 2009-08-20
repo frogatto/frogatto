@@ -765,19 +765,19 @@ void custom_object::set_frame(const std::string& name)
 
 	frame_name_ = name;
 	time_in_frame_ = 0;
-	if(frame_->velocity_x()) {
+	if(frame_->velocity_x() != INT_MIN) {
 		velocity_x_ = frame_->velocity_x() * (face_right() ? 1 : -1);
 	}
 
-	if(frame_->velocity_y()) {
+	if(frame_->velocity_y() != INT_MIN) {
 		velocity_y_ = frame_->velocity_y();
 	}
 
-	if(frame_->accel_x()) {
+	if(frame_->accel_x() != INT_MIN) {
 		accel_x_ = frame_->accel_x();
 	}
 	
-	if(frame_->accel_y()) {
+	if(frame_->accel_y() != INT_MIN) {
 		accel_y_ = frame_->accel_y();
 	}
 	
