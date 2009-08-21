@@ -14,25 +14,24 @@
 
 #include "wml_node.hpp"
 
-namespace {
-	const std::string empty_string;
-}
-
 namespace wml
 {
 
-const std::string& node::operator[](const std::string& key) const
+namespace {
+	const value empty_value("");
+}
+
+const value& node::operator[](const std::string& key) const
 {
-		std::map<std::string,std::string>::const_iterator itor =
-		        attr_.find(key);
+		attr_map::const_iterator itor = attr_.find(key);
 		if(itor == attr_.end()) {
-			return empty_string;
+			return empty_value;
 		}
 
 		return itor->second;
 }
 
-const std::string& node::attr(const std::string& key) const
+const value& node::attr(const std::string& key) const
 {
 	return (*this)[key];
 }
@@ -40,6 +39,11 @@ const std::string& node::attr(const std::string& key) const
 void node::set_attr(const std::string& key, const std::string& value)
 {
 	attr_[key] = value;
+}
+
+void node::set_attr(const std::string& key, const value& val)
+{
+	attr_[key] = val;
 }
 
 void node::set_or_erase_attr(const std::string& key, const std::string& value)
@@ -212,7 +216,7 @@ const std::string& node::get_attr_comment(const std::string& name) const
 	if(i != attr_comments_.end()) {
 		return i->second;
 	} else {
-		return empty_string;
+		return empty_value;
 	}
 }
 

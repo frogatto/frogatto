@@ -48,8 +48,8 @@ struct is_whitespace {
 
 struct tile_pattern {
 	explicit tile_pattern(wml::const_node_ptr node)
-	  : tile(new level_object(node)), reverse(node->attr("reverse") != "no"),
-	    empty(node->attr("empty") == "yes"),
+	  : tile(new level_object(node)), reverse(node->attr("reverse").str() != "no"),
+	    empty(node->attr("empty").str() == "yes"),
 		rotate(wml::get_int(node, "rotate", 0)),
 		filter_formula(game_logic::formula::create_optional_formula(node->attr("filter")))
 	{

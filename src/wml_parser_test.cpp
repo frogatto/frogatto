@@ -12,6 +12,6 @@ UNIT_TEST(wml_parser)
 "[/unit]\n"
 "[goblin(10,4)]\n";
 	wml::node_ptr node = wml::parse_wml(test);
-	CHECK_EQ((*node)["x"], "10");
-	CHECK_EQ((*node)["y"], "4");
+	CHECK_EQ((*node)["x"].str(), "10");
+	CHECK_EQ((*node)["y"].str(), "4");
 }

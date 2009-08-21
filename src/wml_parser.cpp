@@ -14,6 +14,7 @@
 #include <cctype>
 #include <iostream>
 #include <map>
+#include <set>
 #include <stack>
 #include <string>
 #include <vector>
@@ -191,7 +192,8 @@ std::string parse_name(std::string::const_iterator& i1,
 }
 
 std::string parse_value(std::string::const_iterator& i1,
-                        std::string::const_iterator i2)
+                        std::string::const_iterator i2,
+						int& line_number)
 {
 	std::string res;
 	const std::string::const_iterator beg = i1;
@@ -201,6 +203,9 @@ std::string parse_value(std::string::const_iterator& i1,
 			while(i1 != i2 && *i1 != '"') {
 				if(*i1 == '\\' && i1+1 != i2) {
 					++i1;
+				}
+				if(util::isnewline(*i1)) {
+					++line_number;
 				}
 				res.push_back(*i1);
 				++i1;
@@ -254,19 +259,29 @@ int get_line_number(const std::string& doc, std::string::const_iterator i)
 	return std::count(doc.begin(), i, '\n') + 1;
 }
 
+namespace {
+std::set<std::string> filename_pool;
+}
+
 node_ptr parse_wml_internal(const std::string& error_context, const std::string& doc, bool must_have_doc, const schema* current_schema)
 {
-#define PARSE_ERROR(msg) throw parse_error(formatter() << error_context << " line " << get_line_number(doc, i) << ": " << msg);
+#define PARSE_ERROR(msg) throw parse_error(formatter() << error_context << " line " << line_number << ": " << msg);
 	node_ptr res;
 	std::stack<node_ptr> nodes;
 	std::stack<const schema*> schemas;
 	schemas.push(NULL);
 	std::string::const_iterator i = doc.begin();
 	std::string current_comment;
+	int line_number = 1;
+
+	const std::string* filename_ptr = &*filename_pool.insert(error_context).first;
 
 	try {
 	while(i != doc.end()) {
-		if(isspace(*i) || util::isnewline(*i)) {
+		if(util::isnewline(*i)) {
+			++i;
+			++line_number;
+		} else if(isspace(*i)) {
 			++i;
 		} else if(*i == '[') {
 			std::string element = parse_element(i,doc.end());
@@ -404,12 +419,12 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 
 			const std::string name = parse_name(i,doc.end());
 			++i;
-			const std::string value = parse_value(i,doc.end());
+			const std::string value = parse_value(i,doc.end(), line_number);
 
 			if(schemas.top()) {
 				schemas.top()->validate_attribute(name, value);
 			}
-			nodes.top()->set_attr(name, value);
+			nodes.top()->set_attr(name, wml::value(value, filename_ptr, line_number));
 
 			if(current_comment.empty() == false) {
 				nodes.top()->set_attr_comment(name, current_comment);

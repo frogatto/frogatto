@@ -56,7 +56,7 @@ void level_object::init(wml::const_node_ptr node)
 level_object::level_object(wml::const_node_ptr node)
   : id_(node->attr("id")), t_(graphics::texture::get(node->attr("image"))),
     width_(-1),
-	all_solid_(node->attr("solid") == "yes"),
+	all_solid_(node->attr("solid").str() == "yes"),
     passthrough_(wml::get_bool(node, "passthrough")),
     flip_(wml::get_bool(node, "flip", false)),
     friction_(wml::get_int(node, "friction", 20)),
@@ -109,7 +109,7 @@ level_object::level_object(wml::const_node_ptr node)
 
 	if(all_solid_) {
 		solid_ = std::vector<bool>(width()*height(), true);
-	} else if(node->attr("solid") == "diagonal") {
+	} else if(node->attr("solid").str() == "diagonal") {
 		solid_.resize(width()*height());
 		for(int x = 0; x < width(); ++x) {
 			for(int y = 0; y < height(); ++y) {
@@ -117,7 +117,7 @@ level_object::level_object(wml::const_node_ptr node)
 				solid_[index] = (y >= x);
 			}
 		}
-	} else if(node->attr("solid") == "reverse_diagonal") {
+	} else if(node->attr("solid").str() == "reverse_diagonal") {
 		solid_.resize(width()*height());
 		for(int x = 0; x < width(); ++x) {
 			for(int y = 0; y < height(); ++y) {

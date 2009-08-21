@@ -812,16 +812,20 @@ formula_ptr formula::create_string_formula(const std::string& str)
 	return res;
 }
 
-formula_ptr formula::create_optional_formula(const std::string& str, function_symbol_table* symbols)
+formula_ptr formula::create_optional_formula(const wml::value& val, function_symbol_table* symbols)
 {
-	if(str.empty()) {
+	if(val.empty()) {
 		return formula_ptr();
 	}
 
 	try {
-		return formula_ptr(new formula(str, symbols));
+		return formula_ptr(new formula(val, symbols));
 	} catch(...) {
-		std::cerr << "ERROR parsing optional formula: '" << str << "'\n";
+		if(val.filename()) {
+			std::cerr << *val.filename() << " " << val.line() << ": ";
+		}
+
+		std::cerr << "ERROR parsing optional formula: '" << val << "'\n";
 		//for now die a horrible death on such errors
 		assert(false);
 
@@ -829,12 +833,12 @@ formula_ptr formula::create_optional_formula(const std::string& str, function_sy
 	}
 }
 
-formula::formula(const std::string& str, function_symbol_table* symbols) : str_(str)
+formula::formula(const wml::value& val, function_symbol_table* symbols) : str_(val.str()), filename_(val.filename()), line_(val.line())
 {
 	using namespace formula_tokenizer;
 
 	std::vector<token> tokens;
-	std::string::const_iterator i1 = str.begin(), i2 = str.end();
+	std::string::const_iterator i1 = str_.begin(), i2 = str_.end();
 	while(i1 != i2) {
 		try {
 			tokens.push_back(get_token(i1,i2));
@@ -853,7 +857,10 @@ formula::formula(const std::string& str, function_symbol_table* symbols) : str_(
 			expr_ = expression_ptr(new null_expression());
 		}	
 	} catch(...) {
-		std::cerr << "error parsing formula '" << str << "'\n";
+		if(filename_) {
+			std::cerr << *filename_ << " " << line_ << ": ";
+		}
+		std::cerr << "error parsing formula '" << str_ << "'\n";
 		throw;
 	}
 }
@@ -863,7 +870,13 @@ variant formula::execute(const formula_callable& variables) const
 	try {
 		return expr_->evaluate(variables);
 	} catch(type_error& e) {
+		if(filename_) {
+			std::cerr << *filename_ << " " << line_ << ": ";
+		}
 		std::cerr << "formula type error: " << e.message << "\n";
+
+		//for now die a horrible death on a formula type error
+		assert(false);
 		return variant();
 	}
 }

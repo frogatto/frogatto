@@ -19,6 +19,7 @@
 #include <vector>
 
 #include "wml_node_fwd.hpp"
+#include "wml_value.hpp"
 
 namespace wml
 {
@@ -33,14 +34,15 @@ public:
 
 	const std::string& name() const { return name_; }
 
-	const std::string& operator[](const std::string& key) const;
-	const std::string& attr(const std::string& key) const;
+	const value& operator[](const std::string& key) const;
+	const value& attr(const std::string& key) const;
 	void set_attr(const std::string& key, const std::string& value);
+	void set_attr(const std::string& key, const value& val);
 	void set_or_erase_attr(const std::string& key, const std::string& value);
 
 	bool has_attr(const std::string& key) const;
 
-	typedef std::map<std::string,std::string> attr_map;
+	typedef std::map<std::string,value> attr_map;
 	typedef attr_map::const_iterator const_attr_iterator;
 	const_attr_iterator begin_attr() const;
 	const_attr_iterator end_attr() const;

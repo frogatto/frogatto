@@ -955,6 +955,8 @@ void editor::edit_level()
 				   std::binary_search(tile_selection_.tiles.begin(), tile_selection_.tiles.end(), point(round_tile_size(anchorx_)/TileSize, round_tile_size(anchory_)/TileSize))) {
 					//we are beginning to drag our selection
 					dragging_ = true;
+				} else if(tool() == TOOL_ADD_RECT) {
+					drawing_rect_ = true;
 				} else if(tool() == TOOL_MAGIC_WAND) {
 					drawing_rect_ = false;
 				} else if(tool() == TOOL_PENCIL) {
@@ -1004,7 +1006,7 @@ void editor::edit_level()
 						const std::string type = node->attr("type");
 						for(int n = 0; n != all_characters().size(); ++n) {
 							const enemy_type& c = all_characters()[n];
-							if(c.node->attr("type") == type) {
+							if(c.node->attr("type").str() == type) {
 								character_dialog_->select_category(c.category);
 								character_dialog_->set_character(n);
 								break;

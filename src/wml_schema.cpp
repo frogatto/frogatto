@@ -111,7 +111,7 @@ schema::schema(wml::const_node_ptr node) : id_(node->attr("id"))
 			std::string element(i->first.begin() + 1, i->first.end());
 			static const boost::regex pattern("(optional|required|repeated) ([a-z_]+)");
 			boost::smatch match;
-			if(!boost::regex_match(i->second, match, pattern)) {
+			if(!boost::regex_match(i->second.str(), match, pattern)) {
 				std::cerr << "ILLEGAL SCHEMA ELEMENT: '" << i->second << "'\n";
 				assert(false);
 			}

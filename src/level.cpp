@@ -146,7 +146,7 @@ level::level(const std::string& level_cfg)
 		p.area = rect(p1->second->attr("rect"));
 		p.level_dest = p1->second->attr("level");
 		p.dest = point(p1->second->attr("dest"));
-		p.dest_starting_pos = p1->second->attr("dest_starting_pos") == "yes";
+		p.dest_starting_pos = p1->second->attr("dest_starting_pos").str() == "yes";
 		p.automatic = wml::get_bool(p1->second, "automatic", true);
 		p.transition = p1->second->attr("transition");
 		portals_.push_back(p);

@@ -34,7 +34,7 @@ const_custom_object_type_ptr custom_object_type::get(const std::string& id)
 
 	try {
 		//create the object and add it to our cache.
-		custom_object_type_ptr result(new custom_object_type(wml::parse_wml(sys::read_file(path_itor->second))));
+		custom_object_type_ptr result(new custom_object_type(wml::parse_wml_from_file(path_itor->second)));
 		cache[id] = result;
 		return result;
 	} catch(wml::parse_error& e) {

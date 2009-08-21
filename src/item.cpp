@@ -13,7 +13,7 @@ item::item(wml::const_node_ptr node)
      x_(wml::get_int(node, "x")),
      y_(wml::get_int(node, "y")),
 	 time_in_frame_(0),
-	 touched_(node->attr("touched") == "yes")
+	 touched_(node->attr("touched").str() == "yes")
 {
 }
 
