@@ -965,12 +965,12 @@ void editor::edit_level()
 					add_tile_rect(p.x, p.y, p.x, p.y);
 					g_current_draw_tiles.clear();
 					g_current_draw_tiles.push_back(p);
-				} else if(editing_objects()) {
-					drawing_rect_ = true;
 				} else if(property_dialog_ && variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_)) {
 					g_variable_editing = variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_);
 					g_variable_editing_original_value = property_dialog_->get_entity()->query_value(g_variable_editing->variable_name()).as_int();
 					
+				} else if(editing_objects()) {
+					drawing_rect_ = true;
 				} else if(tool() == TOOL_SELECT_OBJECT && !lvl_->editor_highlight()) {
 					//selecting objects
 					drawing_rect_ = true;
@@ -1103,6 +1103,7 @@ void editor::edit_level()
 						property_dialog_->init();
 					}
 					g_variable_editing = NULL;
+					break;
 				}
 
 				if(resizing_left_level_edge || resizing_right_level_edge ||resizing_top_level_edge || resizing_bottom_level_edge) {
