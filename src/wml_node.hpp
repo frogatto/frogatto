@@ -36,7 +36,6 @@ public:
 
 	const value& operator[](const std::string& key) const;
 	const value& attr(const std::string& key) const;
-	void set_attr(const std::string& key, const std::string& value);
 	void set_attr(const std::string& key, const value& val);
 	void set_or_erase_attr(const std::string& key, const std::string& value);
 

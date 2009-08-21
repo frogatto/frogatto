@@ -15,6 +15,8 @@
 
 #include <sstream>
 
+#include "wml_value.hpp"
+
 class formatter
 {
 public:
@@ -34,6 +36,10 @@ public:
 
 	operator std::string() {
 		return stream_.str();
+	}
+
+	operator wml::value() {
+		return wml::value(stream_.str());
 	}
 private:
 	std::ostringstream stream_;

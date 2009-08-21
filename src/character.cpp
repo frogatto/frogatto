@@ -22,6 +22,10 @@
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
 
+namespace {
+int get_accel(int a) { return a == INT_MIN ? 0 : a; }
+}
+
 character::character(wml::const_node_ptr node)
   : entity(node),
     type_(character_type::get(node->attr("type"))),
@@ -711,7 +715,7 @@ void character::process(level& lvl)
 		}
 	}
 
-	int accel_x = current_frame().accel_x();
+	int accel_x = get_accel(current_frame().accel_x());
 	if(!face_right()) {
 		accel_x *= -1;
 	}
@@ -746,7 +750,7 @@ void character::process(level& lvl)
 	} else if(in_stand_frame() || current_frame_ == type_->walk_frame() ||
 	          current_frame_ == type_->run_frame() ||
 			  current_frame_ == type_->idle_frame() ||
-			  velocity_y_ + current_frame().accel_y() > 0 &&
+			  velocity_y_ + get_accel(current_frame().accel_y()) > 0 &&
 			  !is_swimming &&
 			  current_frame_ != type_->jump_attack_frame() &&
 			  current_frame_ != type_->fall_frame() &&
@@ -760,7 +764,7 @@ void character::process(level& lvl)
 		}
 	}
 
-	velocity_y_ += current_frame().accel_y();
+	velocity_y_ += get_accel(current_frame().accel_y());
 
 	const int dx = x() - start_x;
 	const int dy = y() - start_y;
@@ -1906,8 +1910,8 @@ void pc_character::control(const level& lvl)
 	   &current_frame() == type().up_attack_frame() ||
 	   &current_frame() == type().run_attack_frame()) {
 		if(&current_frame() == type().run_attack_frame()) {
-			set_velocity(velocity_x() + (current_frame().accel_x() * current_traction() * (face_right() ? 1 : -1))/100,
-			             velocity_y() + current_frame().accel_y());
+			set_velocity(velocity_x() + (get_accel(current_frame().accel_x()) * current_traction() * (face_right() ? 1 : -1))/100,
+			             velocity_y() + get_accel(current_frame().accel_y()));
 			running_ = false;
 			return;
 		}
@@ -2002,10 +2006,10 @@ void pc_character::swimming_control(const level& lvl)
 
 		if(look_up()) {
 			set_rotate(45);
-			set_velocity(velocity_x(), velocity_y() - current_frame().accel_x());
+			set_velocity(velocity_x(), velocity_y() - get_accel(current_frame().accel_x()));
 		} else if(look_down()) {
 			set_rotate(-45);
-			set_velocity(velocity_x(), velocity_y() + current_frame().accel_x());
+			set_velocity(velocity_x(), velocity_y() + get_accel(current_frame().accel_x()));
 		} else {
 			set_rotate(0);
 		}
@@ -2019,10 +2023,10 @@ void pc_character::swimming_control(const level& lvl)
 
 		if(look_up()) {
 			set_rotate(-45);
-			set_velocity(velocity_x(), velocity_y() - current_frame().accel_x());
+			set_velocity(velocity_x(), velocity_y() - get_accel(current_frame().accel_x()));
 		} else if(look_down()) {
 			set_rotate(45);
-			set_velocity(velocity_x(), velocity_y() + current_frame().accel_x());
+			set_velocity(velocity_x(), velocity_y() + get_accel(current_frame().accel_x()));
 		} else {
 			set_rotate(0);
 		}

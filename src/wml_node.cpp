@@ -36,11 +36,6 @@ const value& node::attr(const std::string& key) const
 	return (*this)[key];
 }
 
-void node::set_attr(const std::string& key, const std::string& value)
-{
-	attr_[key] = value;
-}
-
 void node::set_attr(const std::string& key, const value& val)
 {
 	attr_[key] = val;
