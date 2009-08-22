@@ -619,6 +619,16 @@ void editor::remove_ghost_objects()
 	}
 }
 
+namespace {
+unsigned int get_mouse_state(int& mousex, int& mousey) {
+	unsigned int res = SDL_GetMouseState(&mousex, &mousey);
+	mousex = (mousex*graphics::screen_width())/preferences::virtual_screen_width();
+	mousey = (mousey*graphics::screen_height())/preferences::virtual_screen_height();
+
+	return res;
+}
+}
+
 void editor::edit_level()
 {
 	stats::flush();
@@ -641,14 +651,10 @@ void editor::edit_level()
 	done_ = false;
 	while(!done_) {
 		process_ghost_objects();
+		handle_scrolling();
 
-		const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
-		const bool shift_pressed = (SDL_GetModState()&(KMOD_LSHIFT|KMOD_RSHIFT)) != 0;
 		int mousex, mousey;
-		const unsigned int buttons = SDL_GetMouseState(&mousex, &mousey);
-
-		mousex = (mousex*graphics::screen_width())/preferences::virtual_screen_width();
-		mousey = (mousey*graphics::screen_height())/preferences::virtual_screen_height();
+		const unsigned int buttons = get_mouse_state(mousex, mousey);
 
 		if(buttons == 0) {
 			drawing_rect_ = false;
@@ -675,6 +681,8 @@ void editor::edit_level()
 				property_dialog_->get_entity()->mutate_value(g_variable_editing->variable_name(), variant(g_variable_editing_original_value + diff));
 			}
 		} else if(object_mode && !buttons) {
+			//remove ghost objects and re-add them. This guarantees ghost
+			//objects always remain at the end of the level ordering.
 			remove_ghost_objects();
 			entity_ptr c = lvl_->get_character_at_point(xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
 			foreach(const entity_ptr& ghost, ghost_objects_) {
@@ -683,114 +691,31 @@ void editor::edit_level()
 
 			lvl_->set_editor_highlight(c);
 			if(ghost_objects_.empty() && c) {
+				//we have an object but no ghost for it, make the
+				//object's ghost and deploy it.
 				entity_ptr clone = c->clone();
 				if(clone) {
 					ghost_objects_.push_back(clone);
 					lvl_->add_character(clone);
 				}
 			} else if(ghost_objects_.empty() == false && !c) {
+				//ghost objects are present but we are no longer moused-over
+				//an object, so remove the ghosts.
 				remove_ghost_objects();
 				ghost_objects_.clear();
 			}
-		} else if(!object_mode) {
+		} else if(object_mode && lvl_->editor_highlight()) {
+			//we're handling objects, and a button is down, and we have an
+			//object under the mouse. This means we are dragging something.
+			handle_object_dragging(mousex, mousey);
+		}
+
+		if(!object_mode) {
+			//not in object mode, so make sure there are no ghost objects
+			//or objects highlighted.
 			lvl_->set_editor_highlight(entity_ptr());
 			remove_ghost_objects();
 			ghost_objects_.clear();
-		} else if(lvl_->editor_highlight()) {
-			const int dx = xpos_ + mousex*zoom_ - anchorx_;
-			const int dy = ypos_ + mousey*zoom_ - anchory_;
-			const int xpos = selected_entity_startx_ + dx;
-			const int ypos = selected_entity_starty_ + dy;
-
-			const int new_x = xpos - (ctrl_pressed ? 0 : (xpos%TileSize));
-			const int new_y = ypos - (ctrl_pressed ? 0 : (ypos%TileSize));
-
-			const int delta_x = new_x - lvl_->editor_highlight()->x();
-			const int delta_y = new_y - lvl_->editor_highlight()->y();
-
-			//don't move the object from its starting position until the
-			//delta in movement is large enough.
-			const bool in_starting_position =
-			  lvl_->editor_highlight()->x() == selected_entity_startx_ &&
-			  lvl_->editor_highlight()->y() == selected_entity_starty_;
-			const bool too_small_to_move = in_starting_position &&
-			         abs(dx) < 5 && abs(dy) < 5;
-
-			if(!too_small_to_move && (new_x != lvl_->editor_highlight()->x() || new_y != lvl_->editor_highlight()->y())) {
-				std::vector<boost::function<void()> > redo, undo;
-
-				foreach(const entity_ptr& e, lvl_->editor_selection()) {
-					redo.push_back(boost::bind(&entity::set_pos, e, e->x() + delta_x, e->y() + delta_y));
-					undo.push_back(
-					    boost::bind(&entity::set_pos, e, e->x(), e->y()));
-					execute_command(
-					  boost::bind(execute_functions, redo),
-					  boost::bind(execute_functions, undo));
-				}
-			}
-		}
-
-		const int ScrollSpeed = 8*zoom_;
-
-		const bool ctrl = key_[SDLK_LCTRL] || key_[SDLK_RCTRL];
-
-		if(!ctrl) {
-			if(key_[SDLK_LEFT]) {
-				xpos_ -= ScrollSpeed;
-			}
-
-			if(key_[SDLK_RIGHT]) {
-				xpos_ += ScrollSpeed;
-			}
-
-			if(key_[SDLK_UP]) {
-				ypos_ -= ScrollSpeed;
-			}
-
-			if(key_[SDLK_DOWN]) {
-				ypos_ += ScrollSpeed;
-			}
-		} else {
-			const bool left_ctrl = key_[SDLK_LCTRL];
-			const rect& bounds = lvl_->boundaries();
-
-			if(left_ctrl) {
-				if(key_[SDLK_LEFT]) {
-					if(key_[SDLK_LEFT] && bounds.w() > TileSize) {
-						execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x() - TileSize, bounds.y(), bounds.w() + TileSize, bounds.h())), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
-					}
-				}
-
-				if(key_[SDLK_RIGHT]) {
-						execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x() + TileSize, bounds.y(), bounds.w() - TileSize, bounds.h())), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
-				}
-
-				if(key_[SDLK_UP] && bounds.h() > TileSize) {
-						execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x(), bounds.y() - TileSize, bounds.w(), bounds.h() + TileSize)), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
-				}
-
-				if(key_[SDLK_DOWN]) {
-						execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x(), bounds.y() + TileSize, bounds.w(), bounds.h() - TileSize)), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
-				}
-			} else {
-				if(key_[SDLK_LEFT]) {
-					if(key_[SDLK_LEFT] && bounds.w() > TileSize) {
-						execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x(), bounds.y(), bounds.w() - TileSize, bounds.h())), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
-					}
-				}
-
-				if(key_[SDLK_RIGHT]) {
-						execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x(), bounds.y(), bounds.w() + TileSize, bounds.h())), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
-				}
-
-				if(key_[SDLK_UP] && bounds.h() > TileSize) {
-						execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x(), bounds.y(), bounds.w(), bounds.h() - TileSize)), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
-				}
-
-				if(key_[SDLK_DOWN]) {
-						execute_command(boost::bind(&level::set_boundaries, lvl_.get(), rect(bounds.x(), bounds.y(), bounds.w(), bounds.h() + TileSize)), boost::bind(&level::set_boundaries, lvl_.get(), bounds));
-				}
-			}
 		}
 
 		//if we're drawing with a pencil see if we add a new tile
@@ -824,424 +749,21 @@ void editor::edit_level()
 				done_ = true;
 				break;
 			case SDL_KEYDOWN:
-				std::cerr << "keydown " << (int)event.key.keysym.sym << " vs " << (int)SDLK_LEFT << "\n";
 				if(event.key.keysym.sym == SDLK_ESCAPE) {
 					return;
 				}
 
-				if(event.key.keysym.sym == SDLK_u) {
-					undo_command();
-				}
-
-				if(event.key.keysym.sym == SDLK_r) {
-					redo_command();
-				}
-
-				if(event.key.keysym.sym == SDLK_z) {
-					zoom_in();
-				}
-
-				if(event.key.keysym.sym == SDLK_x) {
-					zoom_out();
-				}
-
-				if(event.key.keysym.sym == SDLK_f) {
-					lvl_->set_show_foreground(!lvl_->show_foreground());
-				}
-
-				if(event.key.keysym.sym == SDLK_b) {
-					lvl_->set_show_background(!lvl_->show_background());
-				}
-
-				if(editing_objects() && (event.key.keysym.sym == SDLK_DELETE || event.key.keysym.sym == SDLK_BACKSPACE) && lvl_->editor_selection().empty() == false) {
-					//deleting objects. We clear the selection as well as
-					//deleting. To undo, the previous selection will be cleared,
-					//and then the deleted objects re-selected.
-					std::vector<boost::function<void()> > redo, undo;
-					undo.push_back(boost::bind(&level::editor_clear_selection, lvl_.get()));
-
-					//if we undo, return the objects to the property dialog
-					undo.push_back(boost::bind(&editor_dialogs::group_property_editor_dialog::set_group, group_property_dialog_.get(), lvl_->editor_selection()));
-					redo.push_back(boost::bind(&level::editor_clear_selection, lvl_.get()));
-					//we want to clear the objects in the property dialog
-					redo.push_back(boost::bind(&editor_dialogs::group_property_editor_dialog::set_group, group_property_dialog_.get(), std::vector<entity_ptr>()));
-					foreach(const entity_ptr& e, lvl_->editor_selection()) {
-						redo.push_back(boost::bind(&level::remove_character, lvl_.get(), e));
-						undo.push_back(boost::bind(&level::add_character, lvl_.get(), e));
-						undo.push_back(boost::bind(&level::editor_select_object, lvl_.get(), e));
-					}
-					execute_command(
-					  boost::bind(execute_functions, redo),
-					  boost::bind(execute_functions, undo));
-				}
-
-				if(!tile_selection_.empty() && (event.key.keysym.sym == SDLK_DELETE || event.key.keysym.sym == SDLK_BACKSPACE)) {
-					std::vector<boost::function<void()> > redo, undo;
-					foreach(const point& p, tile_selection_.tiles) {
-						const int x = p.x*TileSize;
-						const int y = p.y*TileSize;
-						redo.push_back(boost::bind(&level::clear_tile_rect, lvl_.get(), x, y, x, y));
-						std::map<int, std::vector<std::string> > old_tiles;
-						lvl_->get_all_tiles_rect(x, y, x, y, old_tiles);
-						for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
-							undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x, y, x, y, i->second));
-						}
-					}
-
-					execute_command(
-					  boost::bind(execute_functions, redo),
-					  boost::bind(execute_functions, undo));
-				}
-
-				if(event.key.keysym.sym == SDLK_o) {
-					editor_menu_dialog_->open_level();
-				}
-
-				if(event.key.keysym.sym == SDLK_s) {
-					save_level();
-				}
-
-				if(event.key.keysym.sym == SDLK_f) {
-					face_right_ = !face_right_;
-				}
-
-				if(event.key.keysym.sym == SDLK_r &&
-				   (event.key.keysym.mod&KMOD_CTRL)) {
-					tile_map::init(wml::parse_wml(sys::read_file("tiles.cfg")));
-					lvl_->rebuild_tiles();
-				}
+				handle_key_press(event.key);
+				break;
 
 				break;
 			case SDL_MOUSEBUTTONDOWN:
-				anchorx_ = xpos_ + mousex*zoom_;
-				anchory_ = ypos_ + mousey*zoom_;
-
-				resizing_left_level_edge = rect_left_edge_selected(lvl_->boundaries(), anchorx_, anchory_);
-				resizing_right_level_edge = rect_right_edge_selected(lvl_->boundaries(), anchorx_, anchory_);
-				resizing_top_level_edge = rect_top_edge_selected(lvl_->boundaries(), anchorx_, anchory_);
-				resizing_bottom_level_edge = rect_bottom_edge_selected(lvl_->boundaries(), anchorx_, anchory_);
-
-				if(resizing_left_level_edge || resizing_right_level_edge || resizing_top_level_edge || resizing_bottom_level_edge) {
-					break;
-				}
-
-				dragging_ = drawing_rect_ = false;
-
-				if(tool() == TOOL_PICKER) {
-					std::cerr << "pick tile...\n";
-					//pick the top most tile at this point.
-					std::map<int, std::vector<std::string> > tiles;
-					lvl_->get_all_tiles_rect(anchorx_, anchory_, anchorx_, anchory_, tiles);
-					std::string tile;
-					for(std::map<int, std::vector<std::string> >::reverse_iterator i = tiles.rbegin(); i != tiles.rend(); ++i) {
-						if(i->second.empty() == false) {
-							tile = i->second.back();
-							std::cerr << "picking tile: '" << tile << "'\n";
-							break;
-						}
-					}
-
-					if(!tile.empty()) {
-						for(int n = 0; n != all_tilesets().size(); ++n) {
-							if(all_tilesets()[n].type == tile) {
-								tileset_dialog_->select_category(all_tilesets()[n].category);
-								tileset_dialog_->set_tileset(n);
-								std::cerr << "pick tile " << n << "\n";
-								break;
-							}
-						}
-					}
-				} else if(editing_tiles() && !tile_selection_.empty() &&
-				   std::binary_search(tile_selection_.tiles.begin(), tile_selection_.tiles.end(), point(round_tile_size(anchorx_)/TileSize, round_tile_size(anchory_)/TileSize))) {
-					//we are beginning to drag our selection
-					dragging_ = true;
-				} else if(tool() == TOOL_ADD_RECT) {
-					drawing_rect_ = true;
-				} else if(tool() == TOOL_MAGIC_WAND) {
-					drawing_rect_ = false;
-				} else if(tool() == TOOL_PENCIL) {
-					drawing_rect_ = false;
-					point p(round_tile_size(anchorx_), round_tile_size(anchory_));
-					add_tile_rect(p.x, p.y, p.x, p.y);
-					g_current_draw_tiles.clear();
-					g_current_draw_tiles.push_back(p);
-				} else if(property_dialog_ && variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_)) {
-					g_variable_editing = variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_);
-					g_variable_editing_original_value = property_dialog_->get_entity()->query_value(g_variable_editing->variable_name()).as_int();
-					
-				} else if(editing_objects()) {
-					drawing_rect_ = true;
-				} else if(tool() == TOOL_SELECT_OBJECT && !lvl_->editor_highlight()) {
-					//selecting objects
-					drawing_rect_ = true;
-				} else if(property_dialog_) {
-					property_dialog_->set_entity(lvl_->editor_highlight());
-				}
-
-				if(lvl_->editor_highlight()) {
-
-					if(std::count(lvl_->editor_selection().begin(),
-					              lvl_->editor_selection().end(), lvl_->editor_highlight()) == 0) {
-						//set the object as selected in the editor.
-						if(!shift_pressed) {
-							lvl_->editor_clear_selection();
-						}
-
-						lvl_->editor_select_object(lvl_->editor_highlight());
-						group_property_dialog_->set_group(lvl_->editor_selection());
-
-						if(lvl_->editor_selection().size() > 1) {
-							current_dialog_ = group_property_dialog_.get();
-						} else {
-							current_dialog_ = property_dialog_.get();
-						}
-					}
-
-					//start dragging the object
-					selected_entity_startx_ = lvl_->editor_highlight()->x();
-					selected_entity_starty_ = lvl_->editor_highlight()->y();
-
-					if(tool() == TOOL_PICKER) {
-						wml::const_node_ptr node = lvl_->editor_highlight()->write();
-						const std::string type = node->attr("type");
-						for(int n = 0; n != all_characters().size(); ++n) {
-							const enemy_type& c = all_characters()[n];
-							if(c.node->attr("type").str() == type) {
-								character_dialog_->select_category(c.category);
-								character_dialog_->set_character(n);
-								break;
-							}
-						}
-					}
-				} else {
-					//clear any selection in the editor
-					lvl_->editor_clear_selection();
-				}
-
-				if(select_previous_level_) {
-					std::cerr << "CHANGE PREV LEVEL\n";
-					std::vector<std::string> levels = get_known_levels();
-					assert(!levels.empty());
-					levels.push_back("");
-					int index = std::find(levels.begin(), levels.end(), lvl_->previous_level()) - levels.begin();
-					index = (index + 1)%levels.size();
-					if(levels[index] == lvl_->id()) {
-						index = (index + 1)%levels.size();
-					}
-
-					execute_command(
-					  boost::bind(&level::set_previous_level, lvl_.get(), levels[index]),
-					  boost::bind(&level::set_previous_level, lvl_.get(), lvl_->previous_level()));
-
-				} else if(select_next_level_) {
-					std::cerr << "CHANGE NEXT LEVEL\n";
-
-					std::vector<std::string> levels = get_known_levels();
-					assert(!levels.empty());
-					levels.push_back("");
-					int index = std::find(levels.begin(), levels.end(), lvl_->next_level()) - levels.begin();
-					index = (index + 1)%levels.size();
-					if(levels[index] == lvl_->id()) {
-						index = (index + 1)%levels.size();
-					}
-
-					execute_command(
-					  boost::bind(&level::set_next_level, lvl_.get(), levels[index]),
-					  boost::bind(&level::set_next_level, lvl_.get(), lvl_->next_level()));
-
-				} else if(tool() == TOOL_ADD_OBJECT && event.button.button == SDL_BUTTON_LEFT && !lvl_->editor_highlight()) {
-					wml::node_ptr node(wml::deep_copy(enemy_types[cur_object_].node));
-					node->set_attr("x", formatter() << (ctrl_pressed ? anchorx_ : round_tile_size(anchorx_)));
-					node->set_attr("y", formatter() << (ctrl_pressed ? anchory_ : round_tile_size(anchory_)));
-					node->set_attr("face_right", face_right_ ? "yes" : "no");
-
-					wml::node_ptr vars = node->get_child("vars");
-					entity_ptr c(entity::build(node));
-					if(vars) {
-						std::map<std::string, std::string> attr;
-						for(wml::node::const_attr_iterator i = vars->begin_attr();
-						    i != vars->end_attr(); ++i) {
-							game_logic::formula_ptr f = game_logic::formula::create_string_formula(i->second);
-							if(f) {
-								attr[i->first] = f->execute(*c).as_string();
-							}
-						}
-
-						for(std::map<std::string, std::string>::const_iterator i = attr.begin(); i != attr.end(); ++i) {
-							vars->set_attr(i->first, i->second);
-						}
-
-						std::cerr << "BUILDING ENTITY...\n";
-						c = entity::build(node);
-						std::cerr << "DONE BUILDING ENTITY: " << (c->editor_info() ? "YES" : "NO");
-						fprintf(stderr, " ENTITY: %p\n", c.get());
-					}
-
-					if(c->is_human() && lvl_->player()) {
-						execute_command(
-						  boost::bind(&level::add_character, lvl_.get(), c),
-						  boost::bind(&level::add_character, lvl_.get(), lvl_->player()));
-
-					} else {
-						execute_command(
-						  boost::bind(&level::add_character, lvl_.get(), c),
-						  boost::bind(&level::remove_character, lvl_.get(), c));
-					}
-				}
+				handle_mouse_button_down(event.button);
 				break;
-			case SDL_MOUSEBUTTONUP: {
-				const int xpos = xpos_ + mousex*zoom_;
-				const int ypos = ypos_ + mousey*zoom_;
 
-				if(g_variable_editing) {
-					if(property_dialog_ && property_dialog_->get_entity()) {
-						entity_ptr e = property_dialog_->get_entity();
-						const std::string& var = g_variable_editing->variable_name();
-						execute_command(
-						  boost::bind(&entity::mutate_value, e.get(), var, e->query_value(var)),
-						  boost::bind(&entity::mutate_value, e.get(), var, variant(g_variable_editing_original_value)));
-						property_dialog_->init();
-					}
-					g_variable_editing = NULL;
-					break;
-				}
-
-				if(resizing_left_level_edge || resizing_right_level_edge ||resizing_top_level_edge || resizing_bottom_level_edge) {
-					rect boundaries = modify_selected_rect(lvl_->boundaries(), xpos, ypos);
-
-					resizing_left_level_edge = resizing_right_level_edge = resizing_top_level_edge = resizing_bottom_level_edge = false;
-
-					if(boundaries != lvl_->boundaries()) {
-						execute_command(
-						  boost::bind(&level::set_boundaries, lvl_.get(), boundaries),
-						  boost::bind(&level::set_boundaries, lvl_.get(), lvl_->boundaries()));
-					}
-					break;
-				}
-
-
-				if(editing_tiles()) {
-					if(dragging_) {
-						const int selectx = xpos_ + mousex*zoom_;
-						const int selecty = ypos_ + mousey*zoom_;
-
-						//dragging selection
-						int diffx = (selectx - anchorx_)/TileSize;
-						int diffy = (selecty - anchory_)/TileSize;
-
-						std::cerr << "MAKE DIFF: " << diffx << "," << diffy << "\n";
-						std::vector<boost::function<void()> > redo, undo;
-
-						foreach(const point& p, tile_selection_.tiles) {
-							const int x = (p.x+diffx)*TileSize;
-							const int y = (p.y+diffy)*TileSize;
-							undo.push_back(boost::bind(&level::clear_tile_rect,lvl_.get(), x, y, x, y));
-						}
-
-						//backup both the contents of the old and new regions, so we can restore them both
-						foreach(const point& p, tile_selection_.tiles) {
-							int x = p.x*TileSize;
-							int y = p.y*TileSize;
-							std::map<int, std::vector<std::string> > old_tiles;
-							lvl_->get_all_tiles_rect(x, y, x, y, old_tiles);
-							for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
-								undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x, y, x, y, i->second));
-								redo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x, y, x, y, std::vector<std::string>(1,"")));
-							}
-
-							old_tiles.clear();
-				
-							x += diffx*TileSize;
-							y += diffy*TileSize;
-							lvl_->get_all_tiles_rect(x, y, x, y, old_tiles);
-							for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
-								undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x, y, x, y, i->second));
-								redo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x, y, x, y, std::vector<std::string>(1,"")));
-							}
-						}
-
-						
-						foreach(const point& p, tile_selection_.tiles) {
-							const int x = p.x*TileSize;
-							const int y = p.y*TileSize;
-							std::map<int, std::vector<std::string> > old_tiles;
-							lvl_->get_all_tiles_rect(x, y, x, y, old_tiles);
-							for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
-								redo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x + diffx*TileSize, y + diffy*TileSize, x + diffx*TileSize, y + diffy*TileSize, i->second));
-							}
-						}
-
-						tile_selection new_selection = tile_selection_;
-						foreach(point& p, new_selection.tiles) {
-							p.x += diffx;
-							p.y += diffy;
-						}
-						
-						redo.push_back(boost::bind(&editor::set_selection, this, new_selection));
-						undo.push_back(boost::bind(&editor::set_selection, this, tile_selection_));
-
-						execute_command(
-						  boost::bind(execute_functions, redo),
-						  boost::bind(execute_functions, undo));
-						
-					} else if(!drawing_rect_) {
-						//wasn't drawing a rect.
-						if(event.button.button == SDL_BUTTON_LEFT && tool() == TOOL_MAGIC_WAND) {
-							select_magic_wand(anchorx_, anchory_);
-						}
-					} else if(event.button.button == SDL_BUTTON_LEFT) {
-
-						if(tool() == TOOL_ADD_RECT) {
-							add_tile_rect(anchorx_, anchory_, xpos, ypos);
-						} else if(tool() == TOOL_SELECT_RECT) {
-							select_tile_rect(anchorx_, anchory_, xpos, ypos);
-						}
-						  
-					} else if(event.button.button == SDL_BUTTON_RIGHT) {
-						std::map<int, std::vector<std::string> > old_tiles;
-						lvl_->get_all_tiles_rect(anchorx_, anchory_, xpos, ypos, old_tiles);
-						std::vector<boost::function<void()> > undo;
-						for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
-							undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, anchorx_, anchory_, xpos, ypos, i->second));
-						}
-
-						execute_command(
-						  boost::bind(&level::clear_tile_rect, lvl_.get(), anchorx_, anchory_, xpos, ypos),
-						  boost::bind(execute_functions, undo));
-					}
-				} else {
-					//some kind of object editing
-					if(event.button.button == SDL_BUTTON_RIGHT) {
-						std::vector<boost::function<void()> > undo, redo;
-						std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos, ypos));
-
-						foreach(const entity_ptr& c, chars) {
-							redo.push_back(boost::bind(&level::remove_character, lvl_.get(), c));
-							undo.push_back(boost::bind(&level::add_character, lvl_.get(), c));
-						}
-						execute_command(
-						  boost::bind(execute_functions, redo),
-						  boost::bind(execute_functions, undo));
-					} else if(tool() == TOOL_SELECT_OBJECT) {
-						std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos, ypos));
-						foreach(const entity_ptr& c, chars) {
-							lvl_->editor_select_object(c);
-						}
-
-						group_property_dialog_->set_group(lvl_->editor_selection());
-
-						if(lvl_->editor_selection().size() == 1) {
-							current_dialog_ = property_dialog_.get();
-							property_dialog_->set_entity(lvl_->editor_selection().front());
-						} else {
-							current_dialog_ = group_property_dialog_.get();
-						}
-					}
-				}
-
-				drawing_rect_ = dragging_ = false;
+			case SDL_MOUSEBUTTONUP:
+				handle_mouse_button_up(event.button);
 				break;
-			}
 			default:
 				break;
 			}
@@ -1250,6 +772,492 @@ void editor::edit_level()
 		draw();
 	}
 }
+
+void editor::handle_key_press(const SDL_KeyboardEvent& key)
+{
+	if(key.keysym.sym == SDLK_u) {
+		undo_command();
+	}
+
+	if(key.keysym.sym == SDLK_r) {
+		redo_command();
+	}
+
+	if(key.keysym.sym == SDLK_z) {
+		zoom_in();
+	}
+
+	if(key.keysym.sym == SDLK_x) {
+		zoom_out();
+	}
+
+	if(key.keysym.sym == SDLK_f) {
+		lvl_->set_show_foreground(!lvl_->show_foreground());
+	}
+
+	if(key.keysym.sym == SDLK_b) {
+		lvl_->set_show_background(!lvl_->show_background());
+	}
+
+	if(editing_objects() && (key.keysym.sym == SDLK_DELETE || key.keysym.sym == SDLK_BACKSPACE) && lvl_->editor_selection().empty() == false) {
+		//deleting objects. We clear the selection as well as
+		//deleting. To undo, the previous selection will be cleared,
+		//and then the deleted objects re-selected.
+		std::vector<boost::function<void()> > redo, undo;
+		undo.push_back(boost::bind(&level::editor_clear_selection, lvl_.get()));
+
+		//if we undo, return the objects to the property dialog
+		undo.push_back(boost::bind(&editor_dialogs::group_property_editor_dialog::set_group, group_property_dialog_.get(), lvl_->editor_selection()));
+		redo.push_back(boost::bind(&level::editor_clear_selection, lvl_.get()));
+		//we want to clear the objects in the property dialog
+		redo.push_back(boost::bind(&editor_dialogs::group_property_editor_dialog::set_group, group_property_dialog_.get(), std::vector<entity_ptr>()));
+		foreach(const entity_ptr& e, lvl_->editor_selection()) {
+			redo.push_back(boost::bind(&level::remove_character, lvl_.get(), e));
+			undo.push_back(boost::bind(&level::add_character, lvl_.get(), e));
+			undo.push_back(boost::bind(&level::editor_select_object, lvl_.get(), e));
+		}
+		execute_command(
+		  boost::bind(execute_functions, redo),
+		  boost::bind(execute_functions, undo));
+	}
+
+	if(!tile_selection_.empty() && (key.keysym.sym == SDLK_DELETE || key.keysym.sym == SDLK_BACKSPACE)) {
+		std::vector<boost::function<void()> > redo, undo;
+		foreach(const point& p, tile_selection_.tiles) {
+			const int x = p.x*TileSize;
+			const int y = p.y*TileSize;
+			redo.push_back(boost::bind(&level::clear_tile_rect, lvl_.get(), x, y, x, y));
+			std::map<int, std::vector<std::string> > old_tiles;
+			lvl_->get_all_tiles_rect(x, y, x, y, old_tiles);
+			for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
+				undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x, y, x, y, i->second));
+			}
+		}
+
+		execute_command(
+		  boost::bind(execute_functions, redo),
+		  boost::bind(execute_functions, undo));
+	}
+
+	if(key.keysym.sym == SDLK_o) {
+		editor_menu_dialog_->open_level();
+	}
+
+	if(key.keysym.sym == SDLK_s) {
+		save_level();
+	}
+
+	if(key.keysym.sym == SDLK_f) {
+		face_right_ = !face_right_;
+	}
+
+	if(key.keysym.sym == SDLK_r &&
+	   (key.keysym.mod&KMOD_CTRL)) {
+		tile_map::init(wml::parse_wml(sys::read_file("tiles.cfg")));
+		lvl_->rebuild_tiles();
+	}
+}
+
+void editor::handle_scrolling()
+{
+	const int ScrollSpeed = 8*zoom_;
+
+	if(key_[SDLK_LEFT]) {
+		xpos_ -= ScrollSpeed;
+	}
+
+	if(key_[SDLK_RIGHT]) {
+		xpos_ += ScrollSpeed;
+	}
+
+	if(key_[SDLK_UP]) {
+		ypos_ -= ScrollSpeed;
+	}
+
+	if(key_[SDLK_DOWN]) {
+		ypos_ += ScrollSpeed;
+	}
+}
+
+void editor::handle_object_dragging(int mousex, int mousey)
+{
+	const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
+	const int dx = xpos_ + mousex*zoom_ - anchorx_;
+	const int dy = ypos_ + mousey*zoom_ - anchory_;
+	const int xpos = selected_entity_startx_ + dx;
+	const int ypos = selected_entity_starty_ + dy;
+
+	const int new_x = xpos - (ctrl_pressed ? 0 : (xpos%TileSize));
+	const int new_y = ypos - (ctrl_pressed ? 0 : (ypos%TileSize));
+
+	const int delta_x = new_x - lvl_->editor_highlight()->x();
+	const int delta_y = new_y - lvl_->editor_highlight()->y();
+
+	//don't move the object from its starting position until the
+	//delta in movement is large enough.
+	const bool in_starting_position =
+	  lvl_->editor_highlight()->x() == selected_entity_startx_ &&
+	  lvl_->editor_highlight()->y() == selected_entity_starty_;
+	const bool too_small_to_move = in_starting_position &&
+	         abs(dx) < 5 && abs(dy) < 5;
+
+	if(!too_small_to_move && (new_x != lvl_->editor_highlight()->x() || new_y != lvl_->editor_highlight()->y())) {
+		std::vector<boost::function<void()> > redo, undo;
+
+		foreach(const entity_ptr& e, lvl_->editor_selection()) {
+			redo.push_back(boost::bind(&entity::set_pos, e, e->x() + delta_x, e->y() + delta_y));
+			undo.push_back(
+			    boost::bind(&entity::set_pos, e, e->x(), e->y()));
+			execute_command(
+			  boost::bind(execute_functions, redo),
+			  boost::bind(execute_functions, undo));
+		}
+	}
+}
+
+void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
+{
+	const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
+	const bool shift_pressed = (SDL_GetModState()&(KMOD_LSHIFT|KMOD_RSHIFT)) != 0;
+	int mousex, mousey;
+	const unsigned int buttons = get_mouse_state(mousex, mousey);
+
+	anchorx_ = xpos_ + mousex*zoom_;
+	anchory_ = ypos_ + mousey*zoom_;
+
+	resizing_left_level_edge = rect_left_edge_selected(lvl_->boundaries(), anchorx_, anchory_);
+	resizing_right_level_edge = rect_right_edge_selected(lvl_->boundaries(), anchorx_, anchory_);
+	resizing_top_level_edge = rect_top_edge_selected(lvl_->boundaries(), anchorx_, anchory_);
+	resizing_bottom_level_edge = rect_bottom_edge_selected(lvl_->boundaries(), anchorx_, anchory_);
+
+	if(resizing_left_level_edge || resizing_right_level_edge || resizing_top_level_edge || resizing_bottom_level_edge) {
+		return;
+	}
+
+	dragging_ = drawing_rect_ = false;
+
+	if(tool() == TOOL_PICKER) {
+		std::cerr << "pick tile...\n";
+		//pick the top most tile at this point.
+		std::map<int, std::vector<std::string> > tiles;
+		lvl_->get_all_tiles_rect(anchorx_, anchory_, anchorx_, anchory_, tiles);
+		std::string tile;
+		for(std::map<int, std::vector<std::string> >::reverse_iterator i = tiles.rbegin(); i != tiles.rend(); ++i) {
+			if(i->second.empty() == false) {
+				tile = i->second.back();
+				std::cerr << "picking tile: '" << tile << "'\n";
+				return;
+			}
+		}
+
+		if(!tile.empty()) {
+			for(int n = 0; n != all_tilesets().size(); ++n) {
+				if(all_tilesets()[n].type == tile) {
+					tileset_dialog_->select_category(all_tilesets()[n].category);
+					tileset_dialog_->set_tileset(n);
+					std::cerr << "pick tile " << n << "\n";
+					return;
+				}
+			}
+		}
+	} else if(editing_tiles() && !tile_selection_.empty() &&
+	   std::binary_search(tile_selection_.tiles.begin(), tile_selection_.tiles.end(), point(round_tile_size(anchorx_)/TileSize, round_tile_size(anchory_)/TileSize))) {
+		//we are beginning to drag our selection
+		dragging_ = true;
+	} else if(tool() == TOOL_ADD_RECT) {
+		drawing_rect_ = true;
+	} else if(tool() == TOOL_MAGIC_WAND) {
+		drawing_rect_ = false;
+	} else if(tool() == TOOL_PENCIL) {
+		drawing_rect_ = false;
+		point p(round_tile_size(anchorx_), round_tile_size(anchory_));
+		add_tile_rect(p.x, p.y, p.x, p.y);
+		g_current_draw_tiles.clear();
+		g_current_draw_tiles.push_back(p);
+	} else if(property_dialog_ && variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_)) {
+		g_variable_editing = variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_);
+		g_variable_editing_original_value = property_dialog_->get_entity()->query_value(g_variable_editing->variable_name()).as_int();
+		
+	} else if(editing_objects()) {
+		drawing_rect_ = true;
+	} else if(tool() == TOOL_SELECT_OBJECT && !lvl_->editor_highlight()) {
+		//selecting objects
+		drawing_rect_ = true;
+	} else if(property_dialog_) {
+		property_dialog_->set_entity(lvl_->editor_highlight());
+	}
+
+	if(lvl_->editor_highlight()) {
+
+		if(std::count(lvl_->editor_selection().begin(),
+		              lvl_->editor_selection().end(), lvl_->editor_highlight()) == 0) {
+			//set the object as selected in the editor.
+			if(!shift_pressed) {
+				lvl_->editor_clear_selection();
+			}
+
+			lvl_->editor_select_object(lvl_->editor_highlight());
+			group_property_dialog_->set_group(lvl_->editor_selection());
+
+			if(lvl_->editor_selection().size() > 1) {
+				current_dialog_ = group_property_dialog_.get();
+			} else {
+				current_dialog_ = property_dialog_.get();
+			}
+		}
+
+		//start dragging the object
+		selected_entity_startx_ = lvl_->editor_highlight()->x();
+		selected_entity_starty_ = lvl_->editor_highlight()->y();
+
+		if(tool() == TOOL_PICKER) {
+			wml::const_node_ptr node = lvl_->editor_highlight()->write();
+			const std::string type = node->attr("type");
+			for(int n = 0; n != all_characters().size(); ++n) {
+				const enemy_type& c = all_characters()[n];
+				if(c.node->attr("type").str() == type) {
+					character_dialog_->select_category(c.category);
+					character_dialog_->set_character(n);
+					return;
+				}
+			}
+		}
+	} else {
+		//clear any selection in the editor
+		lvl_->editor_clear_selection();
+	}
+
+	if(select_previous_level_) {
+		std::cerr << "CHANGE PREV LEVEL\n";
+		std::vector<std::string> levels = get_known_levels();
+		assert(!levels.empty());
+		levels.push_back("");
+		int index = std::find(levels.begin(), levels.end(), lvl_->previous_level()) - levels.begin();
+		index = (index + 1)%levels.size();
+		if(levels[index] == lvl_->id()) {
+			index = (index + 1)%levels.size();
+		}
+
+		execute_command(
+		  boost::bind(&level::set_previous_level, lvl_.get(), levels[index]),
+		  boost::bind(&level::set_previous_level, lvl_.get(), lvl_->previous_level()));
+
+	} else if(select_next_level_) {
+		std::cerr << "CHANGE NEXT LEVEL\n";
+
+		std::vector<std::string> levels = get_known_levels();
+		assert(!levels.empty());
+		levels.push_back("");
+		int index = std::find(levels.begin(), levels.end(), lvl_->next_level()) - levels.begin();
+		index = (index + 1)%levels.size();
+		if(levels[index] == lvl_->id()) {
+			index = (index + 1)%levels.size();
+		}
+
+		execute_command(
+		  boost::bind(&level::set_next_level, lvl_.get(), levels[index]),
+		  boost::bind(&level::set_next_level, lvl_.get(), lvl_->next_level()));
+
+	} else if(tool() == TOOL_ADD_OBJECT && event.button == SDL_BUTTON_LEFT && !lvl_->editor_highlight()) {
+		wml::node_ptr node(wml::deep_copy(enemy_types[cur_object_].node));
+		node->set_attr("x", formatter() << (ctrl_pressed ? anchorx_ : round_tile_size(anchorx_)));
+		node->set_attr("y", formatter() << (ctrl_pressed ? anchory_ : round_tile_size(anchory_)));
+		node->set_attr("face_right", face_right_ ? "yes" : "no");
+
+		wml::node_ptr vars = node->get_child("vars");
+		entity_ptr c(entity::build(node));
+		if(vars) {
+			std::map<std::string, std::string> attr;
+			for(wml::node::const_attr_iterator i = vars->begin_attr();
+			    i != vars->end_attr(); ++i) {
+				game_logic::formula_ptr f = game_logic::formula::create_string_formula(i->second);
+				if(f) {
+					attr[i->first] = f->execute(*c).as_string();
+				}
+			}
+
+			for(std::map<std::string, std::string>::const_iterator i = attr.begin(); i != attr.end(); ++i) {
+				vars->set_attr(i->first, i->second);
+			}
+
+			std::cerr << "BUILDING ENTITY...\n";
+			c = entity::build(node);
+			std::cerr << "DONE BUILDING ENTITY: " << (c->editor_info() ? "YES" : "NO");
+			fprintf(stderr, " ENTITY: %p\n", c.get());
+		}
+
+		if(c->is_human() && lvl_->player()) {
+			execute_command(
+			  boost::bind(&level::add_character, lvl_.get(), c),
+			  boost::bind(&level::add_character, lvl_.get(), lvl_->player()));
+
+		} else {
+			execute_command(
+			  boost::bind(&level::add_character, lvl_.get(), c),
+			  boost::bind(&level::remove_character, lvl_.get(), c));
+		}
+	}
+}
+
+void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
+{
+	const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
+	const bool shift_pressed = (SDL_GetModState()&(KMOD_LSHIFT|KMOD_RSHIFT)) != 0;
+	int mousex, mousey;
+	const unsigned int buttons = get_mouse_state(mousex, mousey);
+			
+	const int xpos = xpos_ + mousex*zoom_;
+	const int ypos = ypos_ + mousey*zoom_;
+
+	if(g_variable_editing) {
+		if(property_dialog_ && property_dialog_->get_entity()) {
+			entity_ptr e = property_dialog_->get_entity();
+			const std::string& var = g_variable_editing->variable_name();
+			execute_command(
+			  boost::bind(&entity::mutate_value, e.get(), var, e->query_value(var)),
+			  boost::bind(&entity::mutate_value, e.get(), var, variant(g_variable_editing_original_value)));
+			property_dialog_->init();
+		}
+		g_variable_editing = NULL;
+		return;
+	}
+
+	if(resizing_left_level_edge || resizing_right_level_edge ||resizing_top_level_edge || resizing_bottom_level_edge) {
+		rect boundaries = modify_selected_rect(lvl_->boundaries(), xpos, ypos);
+
+		resizing_left_level_edge = resizing_right_level_edge = resizing_top_level_edge = resizing_bottom_level_edge = false;
+
+		if(boundaries != lvl_->boundaries()) {
+			execute_command(
+			  boost::bind(&level::set_boundaries, lvl_.get(), boundaries),
+			  boost::bind(&level::set_boundaries, lvl_.get(), lvl_->boundaries()));
+		}
+		return;
+	}
+
+
+	if(editing_tiles()) {
+		if(dragging_) {
+			const int selectx = xpos_ + mousex*zoom_;
+			const int selecty = ypos_ + mousey*zoom_;
+
+			//dragging selection
+			int diffx = (selectx - anchorx_)/TileSize;
+			int diffy = (selecty - anchory_)/TileSize;
+
+			std::cerr << "MAKE DIFF: " << diffx << "," << diffy << "\n";
+			std::vector<boost::function<void()> > redo, undo;
+
+			foreach(const point& p, tile_selection_.tiles) {
+				const int x = (p.x+diffx)*TileSize;
+				const int y = (p.y+diffy)*TileSize;
+				undo.push_back(boost::bind(&level::clear_tile_rect,lvl_.get(), x, y, x, y));
+			}
+
+			//backup both the contents of the old and new regions, so we can restore them both
+			foreach(const point& p, tile_selection_.tiles) {
+				int x = p.x*TileSize;
+				int y = p.y*TileSize;
+				std::map<int, std::vector<std::string> > old_tiles;
+				lvl_->get_all_tiles_rect(x, y, x, y, old_tiles);
+				for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
+					undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x, y, x, y, i->second));
+					redo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x, y, x, y, std::vector<std::string>(1,"")));
+				}
+
+				old_tiles.clear();
+	
+				x += diffx*TileSize;
+				y += diffy*TileSize;
+				lvl_->get_all_tiles_rect(x, y, x, y, old_tiles);
+				for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
+					undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x, y, x, y, i->second));
+					redo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x, y, x, y, std::vector<std::string>(1,"")));
+				}
+			}
+
+			
+			foreach(const point& p, tile_selection_.tiles) {
+				const int x = p.x*TileSize;
+				const int y = p.y*TileSize;
+				std::map<int, std::vector<std::string> > old_tiles;
+				lvl_->get_all_tiles_rect(x, y, x, y, old_tiles);
+				for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
+					redo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x + diffx*TileSize, y + diffy*TileSize, x + diffx*TileSize, y + diffy*TileSize, i->second));
+				}
+			}
+
+			tile_selection new_selection = tile_selection_;
+			foreach(point& p, new_selection.tiles) {
+				p.x += diffx;
+				p.y += diffy;
+			}
+			
+			redo.push_back(boost::bind(&editor::set_selection, this, new_selection));
+			undo.push_back(boost::bind(&editor::set_selection, this, tile_selection_));
+
+			execute_command(
+			  boost::bind(execute_functions, redo),
+			  boost::bind(execute_functions, undo));
+			
+		} else if(!drawing_rect_) {
+			//wasn't drawing a rect.
+			if(event.button == SDL_BUTTON_LEFT && tool() == TOOL_MAGIC_WAND) {
+				select_magic_wand(anchorx_, anchory_);
+			}
+		} else if(event.button == SDL_BUTTON_LEFT) {
+
+			if(tool() == TOOL_ADD_RECT) {
+				add_tile_rect(anchorx_, anchory_, xpos, ypos);
+			} else if(tool() == TOOL_SELECT_RECT) {
+				select_tile_rect(anchorx_, anchory_, xpos, ypos);
+			}
+			  
+		} else if(event.button == SDL_BUTTON_RIGHT) {
+			std::map<int, std::vector<std::string> > old_tiles;
+			lvl_->get_all_tiles_rect(anchorx_, anchory_, xpos, ypos, old_tiles);
+			std::vector<boost::function<void()> > undo;
+			for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
+				undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, anchorx_, anchory_, xpos, ypos, i->second));
+			}
+
+			execute_command(
+			  boost::bind(&level::clear_tile_rect, lvl_.get(), anchorx_, anchory_, xpos, ypos),
+			  boost::bind(execute_functions, undo));
+		}
+	} else {
+		//some kind of object editing
+		if(event.button == SDL_BUTTON_RIGHT) {
+			std::vector<boost::function<void()> > undo, redo;
+			std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos, ypos));
+
+			foreach(const entity_ptr& c, chars) {
+				redo.push_back(boost::bind(&level::remove_character, lvl_.get(), c));
+				undo.push_back(boost::bind(&level::add_character, lvl_.get(), c));
+			}
+			execute_command(
+			  boost::bind(execute_functions, redo),
+			  boost::bind(execute_functions, undo));
+		} else if(tool() == TOOL_SELECT_OBJECT) {
+			std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos, ypos));
+			foreach(const entity_ptr& c, chars) {
+				lvl_->editor_select_object(c);
+			}
+
+			group_property_dialog_->set_group(lvl_->editor_selection());
+
+			if(lvl_->editor_selection().size() == 1) {
+				current_dialog_ = property_dialog_.get();
+				property_dialog_->set_entity(lvl_->editor_selection().front());
+			} else {
+				current_dialog_ = group_property_dialog_.get();
+			}
+		}
+	}
+
+	drawing_rect_ = dragging_ = false;
+}
+
 
 void editor::load_stats()
 {
@@ -1501,10 +1509,7 @@ void editor::draw() const
 	const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
 
 	int mousex, mousey;
-	SDL_GetMouseState(&mousex, &mousey);
-
-	mousex = (mousex*graphics::screen_width())/preferences::virtual_screen_width();
-	mousey = (mousey*graphics::screen_height())/preferences::virtual_screen_height();
+	get_mouse_state(mousex, mousey);
 
 	graphics::prepare_raster();
 	glPushMatrix();

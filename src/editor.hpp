@@ -94,6 +94,13 @@ public:
 	void group_selection();
 
 private:
+	void handle_mouse_button_down(const SDL_MouseButtonEvent& event);
+	void handle_mouse_button_up(const SDL_MouseButtonEvent& event);
+	void handle_key_press(const SDL_KeyboardEvent& key);
+	void handle_scrolling();
+
+	void handle_object_dragging(int mousex, int mousey);
+
 	void process_ghost_objects();
 	void remove_ghost_objects();
 	void draw() const;
