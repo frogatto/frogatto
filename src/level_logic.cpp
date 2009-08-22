@@ -16,7 +16,7 @@ int distance_to_cliff(const level& lvl, int xpos, int ypos, int facing)
 	const int drop = 5; //arbitrary value considered to qualify something as a cliff
 	const int max_search = 1000;
 	
-	for( int i = xpos; abs(i-xpos) > max_search; i += facing) {
+	for( int i = xpos; abs(i-xpos) < max_search; i += facing) {
 		if( !lvl.standable_tile( i, ypos) ){
 			return abs(i-xpos);
 		}
