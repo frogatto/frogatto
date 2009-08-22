@@ -8,6 +8,9 @@ class level;
 // the tile size.
 bool cliff_edge_within(const level& lvl, int xpos, int ypos, int deltax);
 
+// find out how far the nearest cliff is from [xpos, ypos]
+int distance_to_cliff(const level& lvl, int xpos, int ypos, int facing);
+
 // given a position, will return the xpos of the ground level closest to this
 // position. Will search downwards if (xpos,ypos) is not solid, and upwards
 // if (xpos,ypos) is solid. Will return INT_MIN on failure to find a result.

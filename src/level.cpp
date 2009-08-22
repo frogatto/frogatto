@@ -952,6 +952,17 @@ bool level::standable(int x, int y, int* friction, int* traction, int* damage, i
 	return false;
 }
 
+bool level::standable_tile(int x, int y, int* friction, int* traction, int* damage) const
+{
+	if(is_solid(solid_, x, y, friction, traction, damage) ||
+	   is_solid(standable_, x, y, friction, traction, damage)) {
+		return true;
+	}
+	
+	return false;
+}
+
+
 bool level::solid(int x, int y, int* friction, int* traction, int* damage) const
 {
 	return is_solid(solid_, x, y, friction, traction, damage);

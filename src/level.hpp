@@ -53,6 +53,7 @@ public:
 	void draw_background(double x, double y, int rotation) const;
 	void process();
 	bool standable(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL, int* adjust_y=NULL, entity_ptr* ch=NULL, const entity* exclude=NULL) const;
+	bool standable_tile(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
 	bool solid(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
 	bool solid(const rect& r, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
 	entity_ptr collide(int x, int y, const entity* exclude=NULL) const;

@@ -647,6 +647,8 @@ variant custom_object::get_value(const std::string& key) const
 	} else if(key == "near_cliff_edge") {
 		return variant(is_standing(*lvl_) &&
 		               cliff_edge_within(*lvl_, feet_x(), feet_y(), face_dir()*15));
+	} else if(key == "distance_to_cliff"){
+		return variant( distance_to_cliff(*lvl_, feet_x(), feet_y(), face_dir() ));
 	} else if(key == "underwater") {
 		return variant(lvl_->is_underwater(body_rect()));
 	}
