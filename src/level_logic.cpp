@@ -14,11 +14,19 @@ bool cliff_edge_within(const level& lvl, int xpos, int ypos, int deltax)
 int distance_to_cliff(const level& lvl, int xpos, int ypos, int facing)
 {
 	const int drop = 5; //arbitrary value considered to qualify something as a cliff
+						//TODO:  make this somehow related to our actual values for being able to scale height differences
 	const int max_search = 1000;
 	
-	for( int i = xpos; abs(i-xpos) < max_search; i += facing) {
-		if( !lvl.standable_tile( i, ypos) ){
-			return abs(i-xpos);
+	for( int ix = xpos; abs(ix-xpos) < max_search; ix += facing) {
+		if( !lvl.standable_tile( ix, ypos) ){
+			//then check that column to see if there is a standable pixel within a short height difference
+			int found_standable = 0;
+			for(int iy = ypos-drop; iy < ypos + 2*drop; ++iy){ 
+				found_standable += lvl.standable_tile( ix, iy);
+			}
+			if( !found_standable){
+				return abs(ix-xpos);
+			}
 		}
 	}
 	return max_search;
