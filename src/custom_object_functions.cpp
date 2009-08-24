@@ -1223,6 +1223,32 @@ public:
 	}
 };
 
+class text_command : public custom_object_command_callable {
+public:
+	text_command(const std::string& text, const std::string& font)
+	  : text_(text), font_(font) {
+	}
+
+	virtual void execute(level& lvl, custom_object& ob) const {
+		ob.set_text(text_, font_);
+	}
+private:
+	std::string text_, font_;
+};
+
+class text_function : public function_expression {
+public:
+	explicit text_function(const args_list& args)
+	  : function_expression("text", args, 1, 2) {
+	}
+	
+	variant execute(const formula_callable& variables) const {
+		const std::string text = args()[0]->evaluate(variables).as_string();
+		const std::string font = args().size() > 1 ? args()[1]->evaluate(variables).as_string() : "default";
+		return variant(new text_command(text, font));
+	}
+};
+
 class custom_object_function_symbol_table : public function_symbol_table
 {
 public:
@@ -1315,6 +1341,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new control_function(args));
 	} else if(fn == "add_particles") {
 		return expression_ptr(new add_particles_function(args));
+	} else if(fn == "text") {
+		return expression_ptr(new text_function(args));
 	}
 
 	return function_symbol_table::create_function(fn, args);

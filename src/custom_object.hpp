@@ -16,6 +16,8 @@
 
 class level;
 
+struct custom_object_text;
+
 class custom_object : public entity
 {
 public:
@@ -86,6 +88,8 @@ public:
 	void add_particle_system(const std::string& key, const std::string& type);
 	void remove_particle_system(const std::string& key);
 
+	void set_text(const std::string& text, const std::string& font);
+
 private:
 	virtual void control(const level& lvl);
 
@@ -139,6 +143,9 @@ private:
 	bool can_interact_with_;
 
 	std::map<std::string, particle_system_ptr> particle_systems_;
+
+	typedef boost::shared_ptr<custom_object_text> custom_object_text_ptr;
+	custom_object_text_ptr text_;
 };
 
 #endif

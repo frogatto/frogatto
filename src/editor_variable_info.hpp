@@ -10,7 +10,7 @@
 
 class editor_variable_info {
 public:
-	enum VARIABLE_TYPE { TYPE_INTEGER, XPOSITION, YPOSITION, TYPE_LEVEL, TYPE_LABEL };
+	enum VARIABLE_TYPE { TYPE_INTEGER, XPOSITION, YPOSITION, TYPE_LEVEL, TYPE_LABEL, TYPE_TEXT };
 
 	explicit editor_variable_info(wml::const_node_ptr node);
 

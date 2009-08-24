@@ -57,7 +57,17 @@ void property_editor_dialog::init()
 
 			const editor_variable_info* var_info = entity_->editor_info() ? entity_->editor_info()->get_var_info(in.name) : NULL;
 
-			if(var_info && var_info->type() == editor_variable_info::TYPE_LEVEL) {
+			if(var_info && var_info->type() == editor_variable_info::TYPE_TEXT) {
+				std::string current_value;
+				variant current_value_var = entity_->query_value(in.name);
+				if(current_value_var.is_string()) {
+					current_value = current_value_var.as_string();
+				}
+
+				add_widget(widget_ptr(new button(
+				      widget_ptr(new label(current_value.empty() ? "(set text)" : current_value, graphics::color_white())),
+				      boost::bind(&property_editor_dialog::change_text_property, this, in.name))));
+			} else if(var_info && var_info->type() == editor_variable_info::TYPE_LEVEL) {
 				std::string current_value;
 				variant current_value_var = entity_->query_value(in.name);
 				if(current_value_var.is_string()) {
@@ -129,6 +139,24 @@ void property_editor_dialog::set_label_dialog()
 	entity_->set_label(entry->text());
 	editor_.get_level().add_character(entity_);
 	init();
+}
+
+void property_editor_dialog::change_text_property(const std::string& id)
+{
+	//show a text box to set the new text
+	using namespace gui;
+	text_entry_widget* entry = new text_entry_widget;
+	dialog d(200, 200, 400, 200);
+	d.add_widget(widget_ptr(new label("Label:", graphics::color_white())))
+	 .add_widget(widget_ptr(entry));
+	d.show_modal();
+
+	//set the variable to the new value
+	game_logic::formula_callable* vars = entity_->vars();
+	if(vars) {
+		vars->mutate_value(id, variant(entry->text()));
+		init();
+	}
 }
 
 namespace {

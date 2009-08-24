@@ -5,6 +5,7 @@
 #include "custom_object_functions.hpp"
 #include "font.hpp"
 #include "formatter.hpp"
+#include "graphical_font.hpp"
 #include "level.hpp"
 #include "level_logic.hpp"
 #include "raster.hpp"
@@ -12,6 +13,10 @@
 #include "wml_utils.hpp"
 #include "utils.hpp"
 
+struct custom_object_text {
+	std::string text;
+	const_graphical_font_ptr font;
+};
 
 custom_object::custom_object(wml::const_node_ptr node)
   : entity(node),
@@ -60,6 +65,13 @@ custom_object::custom_object(wml::const_node_ptr node)
 	if(editor_info) {
 		std::cerr << "CREATE EDITOR INFO\n";
 		set_editor_info(const_editor_entity_info_ptr(new editor_entity_info(editor_info)));
+	}
+
+	wml::const_node_ptr text_node = node->get_child("text");
+	if(text_node) {
+		text_.reset(new custom_object_text);
+		text_->text = text_node->attr("text");
+		text_->font = graphical_font::get(text_node->attr("font"));
 	}
 }
 
@@ -152,6 +164,17 @@ wml::node_ptr custom_object::write() const
 	if(editor_info()) {
 		res->add_child(editor_info()->write());
 	}
+
+	if(text_) {
+		wml::node_ptr node(new wml::node("text"));
+		node->set_attr("text", text_->text);
+		if(text_->font) {
+			node->set_attr("font", text_->font->id());
+		}
+
+		res->add_child(node);
+	}
+	
 	return res;
 }
 
@@ -200,6 +223,10 @@ void custom_object::draw() const
 
 	for(std::map<std::string, particle_system_ptr>::const_iterator i = particle_systems_.begin(); i != particle_systems_.end(); ++i) {
 		i->second->draw(rect(/*TODO: get the screen rect*/), *this);
+	}
+
+	if(text_ && text_->font) {
+		text_->font->draw(x(), y(), text_->text);
 	}
 }
 
@@ -978,4 +1005,11 @@ void custom_object::add_particle_system(const std::string& key, const std::strin
 void custom_object::remove_particle_system(const std::string& key)
 {
 	particle_systems_.erase(key);
+}
+
+void custom_object::set_text(const std::string& text, const std::string& font)
+{
+	text_.reset(new custom_object_text);
+	text_->text = text;
+	text_->font = graphical_font::get(font);
 }

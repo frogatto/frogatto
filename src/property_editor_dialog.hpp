@@ -24,6 +24,7 @@ private:
 	void change_level_property(const std::string& id);
 
 	void change_label_property(const std::string& id);
+	void change_text_property(const std::string& id);
 	void set_label_property(const std::string& id, const std::vector<std::string>& labels, int index);
 
 	editor& editor_;

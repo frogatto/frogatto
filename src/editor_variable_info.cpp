@@ -18,6 +18,8 @@ editor_variable_info::editor_variable_info(wml::const_node_ptr node)
 		type_ = TYPE_LEVEL;
 	} else if(type == "label") {
 		type_ = TYPE_LABEL;
+	} else if(type == "text") {
+		type_ = TYPE_TEXT;
 	}
 }
 
@@ -41,6 +43,9 @@ wml::node_ptr editor_variable_info::write() const
 		break;
 	case TYPE_LABEL:
 		node->set_attr("type", "label");
+		break;
+	case TYPE_TEXT:
+		node->set_attr("type", "text");
 		break;
 	}
 	return node;
