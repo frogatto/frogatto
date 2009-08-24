@@ -169,8 +169,7 @@ bool dialog::handle_event(const SDL_Event& event, bool claimed)
 {
     if(!claimed && opened_) {
         if(event.type == SDL_KEYDOWN &&
-           (event.key.keysym.sym == SDLK_SPACE ||
-            event.key.keysym.sym == SDLK_RETURN)) {
+           event.key.keysym.sym == SDLK_RETURN) {
             close();
 			cancelled_ = false;
             claimed = true;
