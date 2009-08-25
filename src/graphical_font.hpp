@@ -31,6 +31,7 @@ private:
 
 	graphics::texture texture_;
 	std::vector<rect> char_rect_map_;
+	int kerning_;
 };
 
 #endif

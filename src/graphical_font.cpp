@@ -31,7 +31,8 @@ const_graphical_font_ptr graphical_font::get(const std::string& id)
 }
 
 graphical_font::graphical_font(wml::const_node_ptr node)
-  : id_(node->attr("id")), texture_(graphics::texture::get(node->attr("texture")))
+  : id_(node->attr("id")), texture_(graphics::texture::get(node->attr("texture"))),
+    kerning_(wml::get_int(node, "kerning", 2))
 {
 	int pad = 2;
 	wml::node::const_child_iterator i1 = node->begin_child("chars");
@@ -105,7 +106,7 @@ rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_te
 			y2 = ypos + r.h()*2;
 		}
 		
-		xpos += r.w()*2 + 4;
+		xpos += r.w()*2 + kerning_*2;
 		if(r.h() > highest) {
 			highest = r.h();
 		}
