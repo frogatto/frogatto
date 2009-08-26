@@ -15,6 +15,7 @@ private:
 	struct modification {
 		game_logic::const_formula_ptr target;
 		std::vector<std::string> add_children, add_if_not_present_children;
+		std::vector<std::string> remove_children;
 		std::map<std::string, game_logic::const_formula_ptr> attr;
 	};
 

@@ -19,6 +19,7 @@
 #include "sound.hpp"
 #include "stats.hpp"
 #include "string_utils.hpp"
+#include "utils.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
 
@@ -267,6 +268,11 @@ void character::draw() const
 	if(driver_) {
 		driver_->draw();
 	}
+
+	if(draw_color_) {
+		draw_color_->to_color().set_as_current_color();
+	}
+
 	const int slope = rotate_ + (current_frame().rotate_on_slope() ? -slope_standing_on(5)*face_dir() : 0);
 	current_frame().draw(x(), y(), face_right(), false, time_in_frame_, slope);
 
@@ -289,7 +295,12 @@ void character::draw() const
 	while(p != blur_.end()) {
 		std::cerr << "draw blurred frame\n";
 		p->alpha = (p->alpha*p->blur)/100;
-		glColor4f(1.0, 1.0, 1.0, p->alpha/100.0);
+		if(!draw_color_) {
+			glColor4f(1.0, 1.0, 1.0, p->alpha/100.0);
+		} else {
+			const graphics::color c = draw_color_->to_color();
+			glColor4ub(c.r(), c.g(), c.b(), c.a()*(p->alpha/100.0));
+		}
 		p->frame_drawn->draw(p->x, p->y, p->face_right, false, p->time_in_frame, p->slope);
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 		if(p->alpha < 5) {
@@ -297,6 +308,11 @@ void character::draw() const
 		} else {
 			++p;
 		}
+	}
+
+	if(draw_color_) {
+		static const uint8_t AllWhite[4] = {0xFF, 0xFF, 0xFF, 0xFF};
+		glColor4ubv(AllWhite);
 	}
 
 	draw_debug_rects();
@@ -1109,25 +1125,36 @@ void character::roll(const level& lvl)
 	change_frame(type_->roll_frame());
 }
 
-void character::attack(const level& lvl, bool down_key_pressed)
+bool character::attack(const level& lvl, bool down_key_pressed)
 {
 	static const std::string Event = "attack_pressed";
 	handle_event(Event);
 	if(is_standing(lvl)) {
 		if(type_->run_attack_frame() && current_frame_ == type_->run_frame()) {
 			change_frame(type_->run_attack_frame());
+			return true;
 		} else if(type_->up_attack_frame() && look_up()) {
 			change_frame(type_->up_attack_frame());
-		} else {
+			return true;
+		} else if(type_->attack_frame()) {
 			change_frame(type_->attack_frame());
+			return true;
+		} else {
+			return false;
 		}
 	} else if(current_frame_ == type_->jump_frame() || current_frame_ == type_->fall_frame()) {
 		if( type_->fall_spin_attack_frame() && down_key_pressed){
 			change_frame(type_->fall_spin_attack_frame());
-		} else {
+			return true;
+		} else if(type_->jump_attack_frame()) {
 			change_frame(type_->jump_attack_frame());
+			return true;
+		} else {
+			return false;
 		}
 	}
+
+	return false;
 }
 
 const frame& character::portrait_frame() const
@@ -1197,6 +1224,7 @@ void character::get_powerup(const_powerup_ptr p)
 void character::remove_powerup()
 {
 	if(powerups_.empty() == false) {
+		handle_event("remove_powerup");
 		blur_.clear();
 		powerups_.pop_back();
 		old_types_.push_back(type_);
@@ -1211,6 +1239,8 @@ void character::remove_powerup()
 
 int character::remove_powerup(const_powerup_ptr powerup)
 {
+	handle_event("remove_powerup");
+
 	const int result = std::count(powerups_.begin(), powerups_.end(), powerup);
 	powerups_.erase(std::remove(powerups_.begin(), powerups_.end(), powerup), powerups_.end());
 
@@ -1755,9 +1785,25 @@ void character::set_value(const std::string& key, const variant& value)
 		set_pos(value.as_int(), y());
 	} else if(key == "y") {
 		set_pos(x(), value.as_int());
+	} else if(key == "red") {
+		make_draw_color();
+		draw_color_->buf()[0] = truncate_to_char(value.as_int());
+	} else if(key == "green") {
+		make_draw_color();
+		draw_color_->buf()[1] = truncate_to_char(value.as_int());
+	} else if(key == "blue") {
+		make_draw_color();
+		draw_color_->buf()[2] = truncate_to_char(value.as_int());
+	} else if(key == "alpha") {
+		make_draw_color();
+		draw_color_->buf()[3] = truncate_to_char(value.as_int());
 	} else if(key == "interact") {
 		interacting_ = value.as_bool();
 		std::cerr << "INTERACT: " << (interacting_ ? "TRUE" : "FALSE") << "\n";
+	} else if(key == "invisible") {
+		invisible_ = value.as_bool();
+	} else if(key == "invincible") {
+		invincible_ = value.as_int();
 	} else {
 		vars_[key] = value;
 	}
@@ -1956,8 +2002,9 @@ void pc_character::control(const level& lvl)
 			roll(lvl);
 			return;
 		} else if (&current_frame() != type().roll_frame()) {
-			attack(lvl, control_status(controls::CONTROL_DOWN));
-			return;
+			if(attack(lvl, control_status(controls::CONTROL_DOWN))) {
+				return;
+			}
 		}		   
 	}
 
@@ -2108,4 +2155,11 @@ std::string character::debug_description() const
 	s << "/velx=" << velocity_x_ << ";vely=" << velocity_y_;
 
 	return s.str();
+}
+
+void character::make_draw_color()
+{
+	if(!draw_color_.get()) {
+		draw_color_.reset(new graphics::color_transform(0xFF, 0xFF, 0xFF, 0xFF));
+	}
 }

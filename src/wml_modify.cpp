@@ -18,6 +18,7 @@ modifier::modifier(wml::const_node_ptr node)
 		mod.target.reset(new game_logic::formula(i1->second->attr("_target")));
 		mod.add_children = util::split(i1->second->attr("add"));
 		mod.add_if_not_present_children = util::split(i1->second->attr("add_if_not_present"));
+		mod.remove_children = util::split(i1->second->attr("remove"));
 		mods_.push_back(mod);
 		++i1;
 	}
@@ -76,6 +77,12 @@ void modifier::modify_target(variant target, const modification& mod) {
 			foreach(const std::string& add, mod.add_if_not_present_children) {
 				if(!c->raw_node()->get_child(add)) {
 					c->raw_node()->add_child(wml::node_ptr(new wml::node(add)));
+				}
+			}
+
+			foreach(const std::string& remove, mod.remove_children) {
+				while(c->raw_node()->get_child(remove)) {
+					c->raw_node()->erase_child(c->raw_node()->get_child(remove));
 				}
 			}
 		}

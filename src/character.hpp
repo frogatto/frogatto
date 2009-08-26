@@ -8,6 +8,7 @@
 #include "boost/intrusive_ptr.hpp"
 
 #include "character_type.hpp"
+#include "color_utils.hpp"
 #include "controls.hpp"
 #include "entity.hpp"
 #include "formula_callable.hpp"
@@ -53,7 +54,7 @@ public:
 	void uncrouch(const level& lvl);
 	void lookup(const level& lvl);
 	void unlookup(const level& lvl);
-	void attack(const level& lvl, bool down_key_pressed=false);
+	bool attack(const level& lvl, bool down_key_pressed=false);
 	void roll(const level& lvl);
 
 	int velocity_x() const { return velocity_x_; }
@@ -252,6 +253,9 @@ private:
 	std::map<std::string, game_logic::const_formula_ptr> event_handlers_;
 
 	bool controls_[controls::NUM_CONTROLS];
+
+	void make_draw_color();
+	boost::shared_ptr<graphics::color_transform> draw_color_;
 };
 
 class pc_character : public character {
