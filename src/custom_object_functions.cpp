@@ -1253,6 +1253,10 @@ public:
 	}
 };
 
+void do_preload_powerup(const_powerup_ptr p, const_character_ptr ch) {
+	ch->type().get_modified(p->id(), p->modifier());
+}
+
 class preload_powerup_command : public custom_object_command_callable {
 public:
 	explicit preload_powerup_command(const std::string& id)
@@ -1281,8 +1285,9 @@ public:
 			return;
 		}
 
-		threading::thread thread(boost::bind(&character_type::get_modified, &ch->type(), p->id(), p->modifier()));
-		thread.detach();
+		do_preload_powerup(p, lvl.player());
+		//threading::thread thread(boost::bind(do_preload_powerup, p, lvl.player()));
+		//thread.detach();
 	}
 private:
 	std::string id_;

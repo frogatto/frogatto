@@ -12,6 +12,8 @@
    See the COPYING file for more details.
 */
 
+#include <boost/scoped_ptr.hpp>
+
 #include <iostream>
 #include <vector>
 
@@ -36,17 +38,14 @@ namespace {
 
 int call_boost_function(void* arg)
 {
-	//make sure we deep copy the function, since a boost function can carry
-	//around some data with it, and we want this data to be preserved even
-	//if the function goes away.
-	boost::function<void()> fn = *(boost::function<void()>*)arg;
-	fn();
+	boost::scoped_ptr<boost::function<void()> > fn((boost::function<void()>*)arg);
+	(*fn)();
 	return 0;
 }
 
 }
 
-thread::thread(boost::function<void()> fn) : fn_(fn), thread_(SDL_CreateThread(call_boost_function,&fn_))
+thread::thread(boost::function<void()> fn) : fn_(fn), thread_(SDL_CreateThread(call_boost_function, new boost::function<void()>(fn_)))
 {}
 
 thread::~thread()
