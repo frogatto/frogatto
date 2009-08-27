@@ -1198,8 +1198,8 @@ void character::get_powerup(const_powerup_ptr p)
 		if(itor == abilities_.end()) {
 			old_types_.push_back(type_);
 			old_types_.push_back(base_type_);
-			type_ = type_->get_modified(p->modifier());
-			base_type_ = base_type_->get_modified(p->modifier());
+			type_ = type_->get_modified(p->id(), p->modifier());
+			base_type_ = base_type_->get_modified(p->id(), p->modifier());
 		
 			abilities_.insert(itor,p);
 		}
@@ -1217,7 +1217,7 @@ void character::get_powerup(const_powerup_ptr p)
 	blur_.clear();
 	powerups_.push_back(p);
 	old_types_.push_back(type_);
-	type_ = base_type_->get_modified(p->modifier());
+	type_ = base_type_->get_modified(p->id(), p->modifier());
 	change_to_stand_frame();
 }
 
@@ -1231,7 +1231,7 @@ void character::remove_powerup()
 		if(powerups_.empty()) {
 			type_ = base_type_;
 		} else {
-			type_ = base_type_->get_modified(powerups_.back()->modifier());
+			type_ = base_type_->get_modified(powerups_.back()->id(), powerups_.back()->modifier());
 		}
 		change_to_stand_frame();
 	}
@@ -1249,7 +1249,7 @@ int character::remove_powerup(const_powerup_ptr powerup)
 	if(powerups_.empty()) {
 		type_ = base_type_;
 	} else {
-		type_ = base_type_->get_modified(powerups_.back()->modifier());
+		type_ = base_type_->get_modified(powerups_.back()->id(), powerups_.back()->modifier());
 	}
 	change_to_stand_frame();
 	return result;

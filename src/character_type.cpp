@@ -137,8 +137,16 @@ character_type::character_type(wml::const_node_ptr node)
 	std::cerr << "CHARACTER_TYPE_CONS: " << (SDL_GetTicks() - ticks) << "\n";
 }
 
-const_character_type_ptr character_type::get_modified(const wml::modifier& modifier) const
+const_character_type_ptr character_type::get_modified(const std::string& id, const wml::modifier& modifier) const
 {
+	if(id.empty() == false) {
+		threading::lock lck(modified_cache_mutex_);
+		std::map<std::string, const_character_type_ptr>::const_iterator i = modified_cache_.find(id);
+		if(i != modified_cache_.end()) {
+			return i->second;
+		}
+	}
+
 	wml::node_ptr node = wml::deep_copy(wml_);
 //	std::cerr << "BEFORE: {{{" << wml::output(node) << "}}}\n";
 	int ticks = SDL_GetTicks();
@@ -148,7 +156,19 @@ const_character_type_ptr character_type::get_modified(const wml::modifier& modif
 	ticks = SDL_GetTicks();
 	const_character_type_ptr result(new character_type(node));
 	std::cerr << "CHARACTER_TYPE: " << (SDL_GetTicks() - ticks) << "\n";
+
+	if(id.empty() == false) {
+		threading::lock lck(modified_cache_mutex_);
+		modified_cache_[id] = result;
+	}
+
 	return result;
+}
+
+bool character_type::modification_cached(const std::string& id) const
+{
+	threading::lock lck(modified_cache_mutex_);
+	return modified_cache_.count(id) == 1;
 }
 
 game_logic::const_formula_ptr character_type::get_event_handler(const std::string& event_id) const

@@ -128,10 +128,10 @@ public:
 	void set_invisible(bool value) { invisible_ = value; }
 
 	std::string debug_description() const;
+	const character_type& type() const { return *type_; }
 
 protected:
 	const frame& current_frame() const;
-	const character_type& type() const { return *type_; }
 	void set_last_jump(bool val) { last_jump_ = val; }
 
 	int cycle() const { return cycle_num_; }

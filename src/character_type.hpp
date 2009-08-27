@@ -9,6 +9,7 @@
 #include "current_generator.hpp"
 #include "formula_fwd.hpp"
 #include "frame.hpp"
+#include "thread.hpp"
 #include "variant.hpp"
 #include "wml_node.hpp"
 
@@ -28,7 +29,8 @@ public:
 	static const_character_type_ptr get(const std::string& id);
 	explicit character_type(wml::const_node_ptr node);
 
-	const_character_type_ptr get_modified(const wml::modifier& modifier) const;
+	const_character_type_ptr get_modified(const std::string& id, const wml::modifier& modifier) const;
+	bool modification_cached(const std::string& id) const;
 
 	const std::string& id() const { return id_; }
 	const frame& get_frame() const { return stand_; }
@@ -135,6 +137,10 @@ private:
 	current_generator_ptr current_generator_;
 
 	int radial_distortion_, radial_distortion_intensity_;
+
+	//a cache of character types resulting from acquiring a powerup.
+	mutable std::map<std::string, const_character_type_ptr> modified_cache_;
+	mutable threading::mutex modified_cache_mutex_;
 };
 
 #endif

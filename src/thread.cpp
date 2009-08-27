@@ -36,8 +36,11 @@ namespace {
 
 int call_boost_function(void* arg)
 {
-	boost::function<void()>* fn = (boost::function<void()>*)arg;
-	(*fn)();
+	//make sure we deep copy the function, since a boost function can carry
+	//around some data with it, and we want this data to be preserved even
+	//if the function goes away.
+	boost::function<void()> fn = *(boost::function<void()>*)arg;
+	fn();
 	return 0;
 }
 

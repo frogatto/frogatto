@@ -1,7 +1,9 @@
+#include <boost/bind.hpp>
 #include <iostream>
 
 #include "asserts.hpp"
 #include "character.hpp"
+#include "character_type.hpp"
 #include "current_generator.hpp"
 #include "custom_object_functions.hpp"
 #include "custom_object.hpp"
@@ -11,6 +13,7 @@
 #include "filesystem.hpp"
 #include "level.hpp"
 #include "level_runner.hpp"
+#include "powerup.hpp"
 #include "raster.hpp"
 #include "texture.hpp"
 #include "message_dialog.hpp"
@@ -20,6 +23,7 @@
 #include "speech_dialog.hpp"
 #include "string_utils.hpp"
 #include "text_entry_widget.hpp"
+#include "thread.hpp"
 #include "wml_parser.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
@@ -1249,6 +1253,52 @@ public:
 	}
 };
 
+class preload_powerup_command : public custom_object_command_callable {
+public:
+	explicit preload_powerup_command(const std::string& id)
+	  : id_(id)
+	{}
+
+	virtual void execute(level& lvl, custom_object& ob) const {
+		std::cerr << "PRELOAD_POWERUP: '" << id_ << "'\n";
+
+		const character* ch = lvl.player().get();
+		if(!ch) {
+			return;
+		}
+
+		if(ch->driver()) {
+			ch = ch->driver().get();
+		}
+
+		if(ch->type().modification_cached(id_)) {
+			//this modification is already cached, so don't bother.
+			return;
+		}
+
+		const_powerup_ptr p = powerup::get(id_);
+		if(!p) {
+			return;
+		}
+
+		threading::thread thread(boost::bind(&character_type::get_modified, &ch->type(), p->id(), p->modifier()));
+		thread.detach();
+	}
+private:
+	std::string id_;
+};
+
+class preload_powerup_function : public function_expression {
+public:
+	explicit preload_powerup_function(const args_list& args)
+	  : function_expression("preload_powerup", args, 1, 1) {
+	}
+
+	variant execute(const formula_callable& variables) const {
+		return variant(new preload_powerup_command(args()[0]->evaluate(variables).as_string()));
+	}
+};
+
 class custom_object_function_symbol_table : public function_symbol_table
 {
 public:
@@ -1343,6 +1393,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new add_particles_function(args));
 	} else if(fn == "text") {
 		return expression_ptr(new text_function(args));
+	} else if(fn == "preload_powerup") {
+		return expression_ptr(new preload_powerup_function(args));
 	}
 
 	return function_symbol_table::create_function(fn, args);
