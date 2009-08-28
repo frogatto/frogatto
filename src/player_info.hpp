@@ -34,6 +34,8 @@ public:
 	const entity& get_entity() const { return *entity_; }
 	entity& get_entity() { return *entity_; }
 
+	void set_entity(entity& e) { entity_ = &e; }
+
 	const std::string& current_level() const { return current_level_; }
 	void set_current_level(const std::string& lvl) { current_level_ = lvl; }
 

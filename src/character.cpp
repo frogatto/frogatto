@@ -111,6 +111,18 @@ pc_character::pc_character(wml::const_node_ptr node)
 {
 }
 
+pc_character::pc_character(const pc_character& c)
+  : character(c), prev_left_(c.prev_left_), prev_right_(c.prev_right_),
+    last_left_(c.last_left_), last_right_(c.last_right_),
+	running_(c.running_),
+	save_condition_(c.save_condition_),
+	spawn_x_(c.spawn_x_), spawn_y_(c.spawn_y_),
+	last_stats_position_(c.last_stats_position_),
+	player_info_(c.player_info_)
+{
+	player_info_.set_entity(*this);
+}
+
 
 character::~character()
 {
@@ -2031,6 +2043,16 @@ entity_ptr character::backup() const
 }
 
 entity_ptr pc_character::backup() const
+{
+	return entity_ptr(new pc_character(*this));
+}
+
+entity_ptr character::clone() const
+{
+	return entity_ptr(new character(*this));
+}
+
+entity_ptr pc_character::clone() const
 {
 	return entity_ptr(new pc_character(*this));
 }

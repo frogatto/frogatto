@@ -119,6 +119,7 @@ public:
 	virtual void generate_current(const entity& target, int* velocity_x, int* velocity_y) const;
 
 	virtual entity_ptr backup() const;
+	virtual entity_ptr clone() const;
 
 	void set_invisible(bool value) { invisible_ = value; }
 
@@ -251,7 +252,8 @@ class pc_character : public character {
 public:
 	explicit pc_character(wml::const_node_ptr node);
 
-	explicit pc_character(character& c) : character(c), player_info_(*this)
+	pc_character(const pc_character& c);
+	explicit pc_character(const character& c) : character(c), player_info_(*this)
 	{}
 
 	virtual ~pc_character() {}
@@ -273,6 +275,7 @@ public:
 	void record_stats_movement();
 
 	virtual entity_ptr backup() const;
+	virtual entity_ptr clone() const;
 
 	void respawn_player();
 private:
@@ -296,6 +299,8 @@ private:
 	point last_stats_position_;
 
 	player_info player_info_;
+
+	void operator=(const pc_character&);
 };
 
 #endif
