@@ -171,8 +171,8 @@ public:
 	virtual void get_powerup(const_powerup_ptr powerup) {}
 	virtual void remove_powerup() {}
 	virtual int remove_powerup(const_powerup_ptr powerup) { return 0; }
-	const std::vector<const_powerup_ptr>& powerups() const;
-	const std::vector<const_powerup_ptr>& abilities() const;
+	virtual const std::vector<const_powerup_ptr>& powerups() const;
+	virtual const std::vector<const_powerup_ptr>& abilities() const;
 
 	void set_control_status(const std::string& key, bool value);
 	void set_control_status(controls::CONTROL_ITEM ctrl, bool value) { controls_[ctrl] = value; }
