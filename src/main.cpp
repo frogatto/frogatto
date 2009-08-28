@@ -250,7 +250,7 @@ extern "C" int main(int argc, char** argv)
 		sound::play_music(lvl->music());
 		if(lvl->player()) {
 			lvl->player()->set_current_level(level_cfg);
-			lvl->player()->save_game();
+			lvl->player()->get_entity().save_game();
 		}
 
 		set_scene_title(lvl->title());

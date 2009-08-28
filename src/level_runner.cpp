@@ -24,7 +24,7 @@ int global_pause_time;
 
 void fade_scene(level& lvl, screen_position& screen_pos) {
 	if(lvl.player()) {
-		lvl.player()->set_invisible(true);
+		lvl.player()->get_entity().set_invisible(true);
 	}
 
 	for(int n = 0; n < 255; n += 20) {
@@ -43,13 +43,13 @@ void fade_scene(level& lvl, screen_position& screen_pos) {
 	SDL_GL_SwapBuffers();
 
 	if(lvl.player()) {
-		lvl.player()->set_invisible(false);
+		lvl.player()->get_entity().set_invisible(false);
 	}
 }
 
 void flip_scene(level& lvl, screen_position& screen_pos, bool flip_out) {
 	if(lvl.player()) {
-		lvl.player()->set_invisible(true);
+		lvl.player()->get_entity().set_invisible(true);
 	}
 
 	if(!flip_out) {
@@ -67,7 +67,7 @@ void flip_scene(level& lvl, screen_position& screen_pos, bool flip_out) {
 	screen_pos.flip_rotate = 0;
 
 	if(lvl.player()) {
-		lvl.player()->set_invisible(false);
+		lvl.player()->get_entity().set_invisible(false);
 	}
 }
 
@@ -155,18 +155,18 @@ bool level_runner::play_cycle()
 	}
 
 	const int desired_end_time = start_time_ + pause_time_ + global_pause_time + cycle*20 + 20;
-	if(lvl_->players().size() == 1 && lvl_->player() && lvl_->player()->hitpoints() <= 0) {
+	if(lvl_->players().size() == 1 && lvl_->player() && lvl_->player()->get_entity().hitpoints() <= 0) {
 		//record stats of the player's death
-		lvl_->player()->record_stats_movement();
-		stats::record_event(lvl_->id(), stats::record_ptr(new stats::die_record(lvl_->player()->midpoint())));
+		lvl_->player()->get_entity().record_stats_movement();
+		stats::record_event(lvl_->id(), stats::record_ptr(new stats::die_record(lvl_->player()->get_entity().midpoint())));
 
-		boost::intrusive_ptr<pc_character> save = lvl_->player()->save_condition();
+		entity_ptr save = lvl_->player()->get_entity().save_condition();
 		if(!save) {
 			return false;
 		}
-		preload_level(save->current_level());
+		preload_level(save->get_player_info()->current_level());
 		fade_scene(*lvl_, last_draw_position());
-		level* new_level = load_level(save->current_level());
+		level* new_level = load_level(save->get_player_info()->current_level());
 		sound::play_music(new_level->music());
 		set_scene_title(new_level->title());
 		new_level->add_player(save);
@@ -174,10 +174,10 @@ bool level_runner::play_cycle()
 		lvl_.reset(new_level);
 		last_draw_position() = screen_position();
 	} else if(lvl_->players().size() > 1) {
-		foreach(const pc_character_ptr& c, lvl_->players()) {
+		foreach(const entity_ptr& c, lvl_->players()) {
 			if(c->hitpoints() <= 0) {
 				//in multiplayer we respawn on death
-				c->respawn();
+				c->respawn_player();
 			}
 		}
 	}
@@ -201,9 +201,9 @@ bool level_runner::play_cycle()
 			}
 
 			last_draw_position() = screen_position();
-			character_ptr player = lvl_->player();
+			player_info* player = lvl_->player();
 			if(player) {
-				player->set_pos(portal->dest);
+				player->get_entity().set_pos(portal->dest);
 			}
 		} else {
 			//the portal is to another level
@@ -236,18 +236,18 @@ bool level_runner::play_cycle()
 			if(portal->dest_str.empty() == false) {
 				dest = new_level->get_dest_from_str(portal->dest_str);
 			} else if(portal->dest_starting_pos) {
-				character_ptr new_player = new_level->player();
+				const player_info* new_player = new_level->player();
 				if(new_player) {
-					dest = point(new_player->x(), new_player->y());
+					dest = point(new_player->get_entity().x(), new_player->get_entity().y());
 				}
 			}
 
-			character_ptr player = lvl_->player();
+			player_info* player = lvl_->player();
 			if(player && portal->saved_game == false) {
 				std::cerr << "ADD PLAYER IN LEVEL\n";
-				player->set_pos(dest);
-				new_level->add_player(player);
-				player->move_to_standing(*new_level);
+				player->get_entity().set_pos(dest);
+				new_level->add_player(&player->get_entity());
+				player->get_entity().move_to_standing(*new_level);
 			} else {
 				std::cerr << "IS SAVED GAME\n";
 				player = new_level->player();
@@ -307,8 +307,8 @@ bool level_runner::play_cycle()
 				if(key == SDLK_ESCAPE) {
 					//record a quit event in stats
 					if(lvl_->player()) {
-						lvl_->player()->record_stats_movement();
-						stats::record_event(lvl_->id(), stats::record_ptr(new stats::quit_record(lvl_->player()->midpoint())));
+						lvl_->player()->get_entity().record_stats_movement();
+						stats::record_event(lvl_->id(), stats::record_ptr(new stats::quit_record(lvl_->player()->get_entity().midpoint())));
 					}
 
 					done = true;
@@ -341,7 +341,7 @@ bool level_runner::play_cycle()
 					graphics::texture::clear_cache();
 				} else if(key == SDLK_i && lvl_->player()) {
 					pause_scope pauser;
-					show_inventory(*lvl_->player());
+					show_inventory(*lvl_, lvl_->player()->get_entity());
 				} else if(key == SDLK_m && mod & KMOD_CTRL) {
 					sound::mute(!sound::muted()); //toggle sound
 				} else if(key == SDLK_p && mod & KMOD_CTRL) {

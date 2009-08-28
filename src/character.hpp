@@ -15,6 +15,7 @@
 #include "formula_fwd.hpp"
 #include "geometry.hpp"
 #include "key.hpp"
+#include "player_info.hpp"
 #include "powerup_fwd.hpp"
 #include "raster_distortion.hpp"
 #include "wml_node_fwd.hpp"
@@ -62,8 +63,6 @@ public:
 	void set_velocity(int x, int y) { velocity_x_ = x; velocity_y_ = y; }
 	virtual int mass() const { return type_->mass(); }
 
-	point midpoint() const;
-
 	bool point_collides(int x, int y) const;
 	void hit_by(entity& e);
 	void move_to_standing(level& lvl);
@@ -102,8 +101,8 @@ public:
 
 	virtual int weight() const;
 
-	pc_character_ptr& driver() { return driver_; }
-	const_pc_character_ptr driver() const { return driver_; }
+	entity_ptr driver();
+	const_entity_ptr driver() const;
 
 	const frame& portrait_frame() const;
 	const frame& name_frame() const;
@@ -118,10 +117,6 @@ public:
 	const std::vector<const_powerup_ptr>& abilities() const { return abilities_; }
 
 	virtual void generate_current(const entity& target, int* velocity_x, int* velocity_y) const;
-
-	void set_control_status(const std::string& key, bool value);
-	void set_control_status(controls::CONTROL_ITEM ctrl, bool value) { controls_[ctrl] = value; }
-	void clear_control_status() { for(int n = 0; n != controls::NUM_CONTROLS; ++n) { controls_[n] = false; } }
 
 	virtual entity_ptr backup() const;
 
@@ -157,12 +152,8 @@ protected:
 
 	int current_traction() const { return current_traction_; }
 
-	bool control_status(controls::CONTROL_ITEM ctrl) const { return controls_[ctrl]; }
-
 	void change_to_stand_frame();
 private:
-
-	virtual void read_controls() {}
 
 	void set_driver_position();
 
@@ -252,8 +243,6 @@ private:
 
 	std::map<std::string, game_logic::const_formula_ptr> event_handlers_;
 
-	bool controls_[controls::NUM_CONTROLS];
-
 	void make_draw_color();
 	boost::shared_ptr<graphics::color_transform> draw_color_;
 };
@@ -262,7 +251,7 @@ class pc_character : public character {
 public:
 	explicit pc_character(wml::const_node_ptr node);
 
-	explicit pc_character(character& c) : character(c), score_(0)
+	explicit pc_character(character& c) : character(c), player_info_(*this)
 	{}
 
 	virtual ~pc_character() {}
@@ -270,66 +259,43 @@ public:
 	virtual wml::node_ptr write() const;
 
 	virtual void draw() const;
-	virtual pc_character* is_human() { return this; }
-	virtual const pc_character* is_human() const { return this; }
+	virtual player_info* is_human() { return &player_info_; }
+	virtual const player_info* is_human() const { return &player_info_; }
 
 	virtual bool look_up() const;
 	virtual bool look_down() const;
 
-	void item_destroyed(const std::string& level_id, int item);
-	const std::vector<int>& get_items_destroyed(const std::string& level_id) const;
-
-	void object_destroyed(const std::string& level_id, int item);
-	const std::vector<int>& get_objects_destroyed(const std::string& level_id) const;
-
 	void save_game();
-	boost::intrusive_ptr<pc_character> save_condition() const { return save_condition_; }
-	const std::string& current_level() const { return current_level_; }
-	void set_current_level(const std::string& lvl) { current_level_ = lvl; }
+	entity_ptr save_condition() const { return save_condition_; }
 
 	void set_key_state(const std::string& keys) { key_.Read(keys); }
-	virtual void swap_player_state(pc_character& player) {
-		items_destroyed_.swap(player.items_destroyed_);
-		objects_destroyed_.swap(player.objects_destroyed_);
-	}
-
-	int score(int points) { score_ += points; return score_; }
-	int score() const { return score_; }
 
 	void record_stats_movement();
 
 	virtual entity_ptr backup() const;
 
-	void set_player_slot(int n) { player_index_ = n; }
-
-	void respawn();
+	void respawn_player();
 private:
-	virtual void read_controls();
 
 	virtual void set_value(const std::string& key, const variant& value);
 	virtual int invincibility_duration() const { return 150; }
 	virtual void control(const level& lvl);
 	void swimming_control(const level& lvl);
 	CKey key_;
-	int player_index_;
 
 	bool prev_left_, prev_right_;
 	int last_left_, last_right_;
 	bool running_;
 
-	mutable std::map<std::string, std::vector<int> > items_destroyed_;
-	mutable std::map<std::string, std::vector<int> > objects_destroyed_;
-
-	boost::intrusive_ptr<pc_character> save_condition_;
+	entity_ptr save_condition_;
 
 	//the player's spawn location, in case they need respawning (in mp games)
 	int spawn_x_, spawn_y_;
-	std::string current_level_;
-
-	int score_;
 
 	//position last time we recorded a stats sample
 	point last_stats_position_;
+
+	player_info player_info_;
 };
 
 #endif

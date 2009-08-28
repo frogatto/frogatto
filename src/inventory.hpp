@@ -1,8 +1,9 @@
 #ifndef INVENTORY_HPP_INCLUDED
 #define INVENTORY_HPP_INCLUDED
 
-class pc_character;
+class entity;
+class level;
 
-void show_inventory(pc_character& c);
+void show_inventory(const level& lvl, entity& c);
 
 #endif

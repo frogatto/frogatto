@@ -13,6 +13,7 @@
 #include "filesystem.hpp"
 #include "level.hpp"
 #include "level_runner.hpp"
+#include "player_info.hpp"
 #include "powerup.hpp"
 #include "raster.hpp"
 #include "texture.hpp"
@@ -37,7 +38,7 @@ class save_game_command : public entity_command_callable
 	{
 	public:
 		virtual void execute(level& lvl, entity& ob) const {
-			lvl.player()->save_game();
+			lvl.player()->get_entity().save_game();
 			sys::write_file("data/level/save.cfg", wml::output(lvl.write()));
 		}
 	};
@@ -703,7 +704,7 @@ public:
 	}
 private:
 	void draw(const level& lvl) const {
-		draw_scene(lvl, last_draw_position(), lvl.player().get());
+		draw_scene(lvl, last_draw_position(), &lvl.player()->get_entity());
 
 		dialog_.draw();
 
@@ -902,7 +903,7 @@ public:
 	}
 private:
 	void draw(const level& lvl) const {
-		draw_scene(lvl, last_draw_position(), lvl.player().get());
+		draw_scene(lvl, last_draw_position(), &lvl.player()->get_entity());
 
 		entry_.draw();
 
@@ -1264,6 +1265,7 @@ public:
 	{}
 
 	virtual void execute(level& lvl, custom_object& ob) const {
+			/*TODO: make this work!
 		std::cerr << "PRELOAD_POWERUP: '" << id_ << "'\n";
 
 		const character* ch = lvl.player().get();
@@ -1286,6 +1288,7 @@ public:
 		}
 
 		do_preload_powerup(p, lvl.player());
+		*/
 		//threading::thread thread(boost::bind(do_preload_powerup, p, lvl.player()));
 		//thread.detach();
 	}

@@ -5,12 +5,14 @@
 
 #include "boost/intrusive_ptr.hpp"
 
+#include "controls.hpp"
 #include "current_generator.hpp"
 #include "editor_variable_info.hpp"
 #include "formula_callable.hpp"
 #include "formula_fwd.hpp"
 #include "geometry.hpp"
 #include "key.hpp"
+#include "powerup_fwd.hpp"
 #include "wml_node_fwd.hpp"
 
 class character;
@@ -18,6 +20,7 @@ class entity;
 class frame;
 class level;
 class pc_character;
+class player_info;
 
 typedef boost::intrusive_ptr<entity> entity_ptr;
 typedef boost::intrusive_ptr<const entity> const_entity_ptr;
@@ -34,8 +37,10 @@ public:
 	virtual void setup_drawing() const {}
 	virtual void draw() const = 0;
 	virtual void draw_group() const = 0;
-	virtual const pc_character* is_human() const { return NULL; }
-	virtual pc_character* is_human() { return NULL; }
+	player_info* get_player_info() { return is_human(); }
+	const player_info* get_player_info() const { return is_human(); }
+	virtual const player_info* is_human() const { return NULL; }
+	virtual player_info* is_human() { return NULL; }
 	virtual bool on_players_side() const { return false; }
 	virtual void process(level& lvl) = 0;
 	virtual void execute_command(const variant& var) = 0;
@@ -71,11 +76,13 @@ public:
 	virtual bool point_collides(int x, int y) const = 0;
 	rect body_rect() const;
 	rect hit_rect() const;
+	point midpoint() const;
 
 	virtual void hit_player() {}
 	virtual void hit_by(entity& e) {}
 
 	virtual const frame& portrait_frame() const = 0;
+	virtual const frame& name_frame() const { return portrait_frame(); }
 	virtual const frame& icon_frame() const = 0;
 	virtual const frame& current_frame() const = 0;
 
@@ -123,8 +130,6 @@ public:
 	
 	virtual int mass() const = 0;
 
-	virtual void get_powerup(const std::string& id) {}
-
 	void draw_debug_rects() const;
 
 	const_editor_entity_info_ptr editor_info() const { return editor_info_; }
@@ -152,7 +157,42 @@ public:
 	void add_scheduled_command(int cycle, variant cmd);
 	variant get_scheduled_command(int cycle);
 
+	virtual void save_game() {}
+
+	virtual entity_ptr driver() { return entity_ptr(); }
+	virtual const_entity_ptr driver() const { return const_entity_ptr(); }
+
+	virtual void move_to_standing(level& lvl) {}
+	virtual int hitpoints() const { return 1; }
+	virtual int max_hitpoints() const { return 1; }
+	virtual int num_powerups() const { return 0; }
+
+	virtual void get_powerup(const std::string& id) {}
+	virtual void get_powerup(const_powerup_ptr powerup) {}
+	virtual void remove_powerup() {}
+	virtual int remove_powerup(const_powerup_ptr powerup) { return 0; }
+	const std::vector<const_powerup_ptr>& powerups() const;
+	const std::vector<const_powerup_ptr>& abilities() const;
+
+	void set_control_status(const std::string& key, bool value);
+	void set_control_status(controls::CONTROL_ITEM ctrl, bool value) { controls_[ctrl] = value; }
+	void clear_control_status() { for(int n = 0; n != controls::NUM_CONTROLS; ++n) { controls_[n] = false; } }
+
+	virtual bool enter() const { return false; }
+
+	virtual void set_invisible(bool value) {}
+	virtual void record_stats_movement() {}
+
+	virtual entity_ptr save_condition() const { return entity_ptr(); }
+	virtual void respawn_player() {}
+
+	virtual int current_animation_id() const { return 0; }
+
 protected:
+
+	bool control_status(controls::CONTROL_ITEM ctrl) const { return controls_[ctrl]; }
+	void read_controls(int cycle);
+
 	void set_current_generator(current_generator* generator);
 
 	void set_respawn(bool value) { respawn_ = value; }
@@ -185,6 +225,8 @@ private:
 
 	typedef std::pair<int, variant> ScheduledCommand;
 	std::vector<ScheduledCommand> scheduled_commands_;
+
+	bool controls_[controls::NUM_CONTROLS];	
 };
 
 #endif

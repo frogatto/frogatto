@@ -216,11 +216,11 @@ void level::load_character(wml::const_node_ptr c)
 	}
 	if(chars_.back()->is_human()) {
 		if(players_.size() == multiplayer::slot()) {
-			last_touched_player_ = player_ = chars_.back()->is_human();
+			last_touched_player_ = player_ = chars_.back();
 		}
 
-		players_.push_back(chars_.back()->is_human());
-		players_.back()->set_player_slot(players_.size() - 1);
+		players_.push_back(chars_.back());
+		players_.back()->get_player_info()->set_player_slot(players_.size() - 1);
 	}
 
 	const int group = chars_.back()->group();
@@ -470,7 +470,7 @@ point level::get_dest_from_str(const std::string& key) const
 {
 	int ypos = 0;
 	if(player()) {
-		ypos = player()->y();
+		ypos = player()->get_entity().y();
 	}
 	if(key == "left") {
 		return point(boundaries().x() + 32, ypos);
@@ -615,7 +615,7 @@ void level::draw(int x, int y, int w, int h) const
 		}
 	}
 
-	foreach(const pc_character_ptr& p, players_) {
+	foreach(const const_entity_ptr& p, players_) {
 		p->draw();
 	}
 
@@ -787,7 +787,7 @@ void level::do_processing()
 		const int y2 = y + c->current_frame().height();
 
 		bool is_active = c->always_active();
-		foreach(const pc_character_ptr& p, players_) {
+		foreach(const entity_ptr& p, players_) {
 			if((p->x() < x ? x - p->x() : p->x() - x2) < distance_x &&
 		   	   (p->y() < y ? y - p->y() : p->y() - y2) < distance_y) {
 				is_active = true;
@@ -832,8 +832,7 @@ void level::do_processing()
 		if(i->destroyed()) {
 			i = NULL;
 			if(player_) {
-				assert(dynamic_cast<pc_character*>(player_.get()));
-				static_cast<pc_character*>(player_.get())->item_destroyed(id(), n);
+				player_->is_human()->item_destroyed(id(), n);
 			}
 			continue;
 		}
@@ -849,7 +848,7 @@ void level::do_processing()
 			std::cerr << "OBJECT DIE: " << c->get_id() << "\n";
 			if(player_ && c->get_id() != -1) {
 			std::cerr << "OBJECT DEST: " << c->get_id() << "\n";
-				player_->object_destroyed(id(), c->get_id());
+				player_->is_human()->object_destroyed(id(), c->get_id());
 			}
 			if(c->label().empty() == false) {
 				chars_by_label_.erase(c->label());
@@ -1065,16 +1064,16 @@ entity_ptr level::board(int x, int y) const
 	return entity_ptr();
 }
 
-character_ptr level::hit_by_player(const rect& r) const
+entity_ptr level::hit_by_player(const rect& r) const
 {
-	for(std::vector<pc_character_ptr>::const_iterator p = players_.begin();
+	for(std::vector<entity_ptr>::const_iterator p = players_.begin();
 	    p != players_.end(); ++p) {
 		if(rects_intersect(r, (*p)->hit_rect())) {
 			return *p;
 		}
 	}
 
-	return character_ptr();
+	return entity_ptr();
 }
 
 void level::add_tile(const level_tile& t)
@@ -1440,13 +1439,13 @@ void level::set_solid(solid_map& map, int x, int y, int friction, int traction, 
 
 void level::add_player(entity_ptr p)
 {
-	chars_.erase(std::remove(chars_.begin(), chars_.end(), player()), chars_.end());
-	last_touched_player_ = player_ = p->is_human();
+	chars_.erase(std::remove(chars_.begin(), chars_.end(), player_), chars_.end());
+	last_touched_player_ = player_ = p;
 	if(players_.empty()) {
-		player_->set_player_slot(players_.size());
+		player_->get_player_info()->set_player_slot(players_.size());
 		players_.push_back(player_);
 	} else {
-		player_->set_player_slot(0);
+		player_->get_player_info()->set_player_slot(0);
 		players_[0] = player_;
 	}
 
@@ -1454,8 +1453,7 @@ void level::add_player(entity_ptr p)
 	chars_.push_back(p);
 
 	//remove items the player has already taken
-	assert(dynamic_cast<pc_character*>(player_.get()));
-	const std::vector<int>& destroyed = static_cast<pc_character*>(player_.get())->get_items_destroyed(id());
+	const std::vector<int>& destroyed = player_->get_player_info()->get_items_destroyed(id());
 	for(int n = 0; n != items_.size(); ++n) {
 		if(std::binary_search(destroyed.begin(), destroyed.end(), n)) {
 			items_[n] = NULL;
@@ -1463,7 +1461,7 @@ void level::add_player(entity_ptr p)
 	}
 
 	//remove objects that have already been destroyed
-	const std::vector<int>& destroyed_objects = static_cast<pc_character*>(player_.get())->get_objects_destroyed(id());
+	const std::vector<int>& destroyed_objects = player_->get_player_info()->get_objects_destroyed(id());
 	for(int n = 0; n != chars_.size(); ++n) {
 		if(chars_[n]->respawn() == false && std::binary_search(destroyed_objects.begin(), destroyed_objects.end(), chars_[n]->get_id())) {
 			std::cerr << "removing character: " << n << ": " << chars_[n]->get_id() << "\n";
@@ -1849,9 +1847,9 @@ void level::backup()
 		entity_map[e] = snapshot->chars.back();
 
 		if(snapshot->chars.back()->is_human()) {
-			snapshot->players.push_back(snapshot->chars.back()->is_human());
+			snapshot->players.push_back(snapshot->chars.back());
 			if(e == player_) {
-				snapshot->player = snapshot->players.back();
+				snapshot->player = e;
 			}
 		}
 	}

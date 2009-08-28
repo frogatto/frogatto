@@ -407,7 +407,7 @@ void custom_object::process(level& lvl)
 	}
 
 	if(!type_->on_players_side()) {
-		character_ptr player = lvl.hit_by_player(body_rect());
+		entity_ptr player = lvl.hit_by_player(body_rect());
 		if(player && (last_hit_by_ != player || last_hit_by_anim_ != player->current_animation_id())) {
 			last_hit_by_ = player;
 			last_hit_by_anim_ = player->current_animation_id();
@@ -415,7 +415,7 @@ void custom_object::process(level& lvl)
 		}
 	}
 
-	foreach(pc_character_ptr& p, lvl.players()) {
+	foreach(entity_ptr& p, lvl.players()) {
 		if(rects_intersect(body_rect(), p->body_rect())) {
 			lvl.set_touched_player(p);
 			handle_event(p->enter() ? "interact" : "touch");

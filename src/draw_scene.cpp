@@ -15,6 +15,7 @@
 #include "font.hpp"
 #include "level.hpp"
 #include "message_dialog.hpp"
+#include "player_info.hpp"
 #include "raster.hpp"
 #include "speech_dialog.hpp"
 #include "texture.hpp"
@@ -48,7 +49,7 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 	static int frame_num = 0;
 	++frame_num;
 	if(focus == NULL) {
-		focus = lvl.player().get();
+		focus = &lvl.player()->get_entity();
 	}
 
 	last_position = pos;
@@ -241,22 +242,23 @@ void draw_statusbar(const level& lvl, screen_position& pos, const entity* focus)
 
 	graphics::texture statusbar(graphics::texture::get("statusbar.png"));
 
-	const_pc_character_ptr player = lvl.player();
+	const player_info* player = lvl.player();
 	if(player) {
-		if(player->driver()) {
-			player = player->driver();
+		const entity* player_obj = &player->get_entity();
+		if(player_obj->driver()) {
+			player_obj = player_obj->driver().get();
 		}
 
 		graphics::blit_texture(statusbar, 0, graphics::screen_height() - 124, graphics::screen_width(), 124,
 		                       0.0, 0.0, 0.0, 1.0, 62.0/104.0);
 
-		player->icon_frame().draw(210, graphics::screen_height() - 124 + 14, true);
-		for(int hp = 0; hp < player->max_hitpoints(); ++hp) {
+		player_obj->icon_frame().draw(210, graphics::screen_height() - 124 + 14, true);
+		for(int hp = 0; hp < player_obj->max_hitpoints(); ++hp) {
 			GLfloat shift = 0.0; // default to green
-			if(hp >= player->hitpoints()) {
+			if(hp >= player_obj->hitpoints()) {
 				//missing hitpoints, display as red
 				shift = 30.0;
-			} else if(player->hitpoints() - hp <= player->num_powerups()) {
+			} else if(player_obj->hitpoints() - hp <= player_obj->num_powerups()) {
 				//powerup, display as yellow
 				shift = 15.0;
 
@@ -269,7 +271,7 @@ void draw_statusbar(const level& lvl, screen_position& pos, const entity* focus)
 			glColor4f(1.0, 1.0, 1.0, 1.0);
 		}
 
-		variant coins = player->query_value("coins");
+		variant coins = player_obj->query_value("coins");
 		if(!coins.as_bool()) {
 			coins = variant(0);
 		}
@@ -307,8 +309,8 @@ void draw_statusbar(const level& lvl, screen_position& pos, const entity* focus)
 		draw_number(pos.score, 7, 232*2, graphics::screen_height() - 124 + 49*2);
 	}
 
-	if(lvl.player() && lvl.player()->driver()) {
-		const_character_ptr vehicle = lvl.player();
+	if(lvl.player() && lvl.player()->get_entity().driver()) {
+		const_entity_ptr vehicle = lvl.player()->get_entity().driver();
 		vehicle->icon_frame().draw(18, graphics::screen_height() - 124 + 22, true);
 		for(int hp = 0; hp < vehicle->max_hitpoints(); ++hp) {
 			const GLfloat is_red = hp >= vehicle->hitpoints() ? 11.0 : 0.0;

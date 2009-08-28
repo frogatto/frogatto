@@ -59,7 +59,7 @@ public:
 	entity_ptr collide(int x, int y, const entity* exclude=NULL) const;
 	entity_ptr collide(const rect& r, const entity* exclude=NULL) const;
 	entity_ptr board(int x, int y) const;
-	character_ptr hit_by_player(const rect& r) const;
+	entity_ptr hit_by_player(const rect& r) const;
 	const rect& boundaries() const { return boundaries_; }
 	void set_boundaries(const rect& bounds) { boundaries_ = bounds; }
 	void add_tile(const level_tile& t);
@@ -78,10 +78,10 @@ public:
 	void remove_character(entity_ptr e);
 	std::vector<entity_ptr> get_characters_in_rect(const rect& r) const;
 	entity_ptr get_character_at_point(int x, int y) const;
-	const_pc_character_ptr player() const { return player_; }
-	pc_character_ptr player() { return player_; }
-	std::vector<pc_character_ptr>& players() { return players_; }
-	const std::vector<pc_character_ptr>& players() const { return players_; }
+	const player_info* player() const { return player_->get_player_info(); }
+	player_info* player() { return player_->get_player_info(); }
+	std::vector<entity_ptr>& players() { return players_; }
+	const std::vector<entity_ptr>& players() const { return players_; }
 	void add_player(entity_ptr p);
 	void add_character(entity_ptr p);
 	void add_item(item_ptr p);
@@ -92,7 +92,7 @@ public:
 
 	//sets the last 'touched' player. This is the player found in the level when
 	//using WML, so it works reasonably well in multiplayer.
-	void set_touched_player(pc_character_ptr p) { last_touched_player_ = p; }
+	void set_touched_player(entity_ptr p) { last_touched_player_ = p; }
 
 	struct portal {
 		portal() : dest_starting_pos(false), automatic(false), saved_game(false)
@@ -263,10 +263,10 @@ private:
 	std::vector<entity_ptr> active_chars_;
 
 	std::map<std::string, entity_ptr> chars_by_label_;
-	pc_character_ptr player_;
-	pc_character_ptr last_touched_player_;
+	entity_ptr player_;
+	entity_ptr last_touched_player_;
 
-	std::vector<pc_character_ptr> players_;
+	std::vector<entity_ptr> players_;
 
 	//characters stored in wml format; they can't be loaded in a separate thread
 	//they will be loaded when complete_load_level() is called.
@@ -325,8 +325,8 @@ private:
 		unsigned int rng_seed;
 		int cycle;
 		std::vector<entity_ptr> chars;
-		std::vector<pc_character_ptr> players;
-		pc_character_ptr player, last_touched_player;
+		std::vector<entity_ptr> players;
+		entity_ptr player, last_touched_player;
 	};
 
 	void restore_from_backup(backup_snapshot& snapshot);

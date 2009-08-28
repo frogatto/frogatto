@@ -1089,7 +1089,7 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 		if(c->is_human() && lvl_->player()) {
 			execute_command(
 			  boost::bind(&level::add_character, lvl_.get(), c),
-			  boost::bind(&level::add_character, lvl_.get(), lvl_->player()));
+			  boost::bind(&level::add_character, lvl_.get(), &lvl_->player()->get_entity()));
 
 		} else {
 			execute_command(

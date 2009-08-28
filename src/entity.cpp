@@ -3,6 +3,7 @@
 #include "character.hpp"
 #include "custom_object.hpp"
 #include "entity.hpp"
+#include "foreach.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "wml_node.hpp"
@@ -16,12 +17,17 @@ entity::entity(wml::const_node_ptr node)
 	group_(wml::get_int(node, "group", -1)),
     id_(-1), respawn_(wml::get_bool(node, "respawn", true))
 {
-	std::cerr << "entity\n";
+	foreach(bool& b, controls_) {
+		b = false;
+	}
 }
 
 entity::entity(int x, int y, bool face_right)
   : x_(x*100), y_(y*100), face_right_(face_right), upside_down_(false), group_(-1), id_(-1)
 {
+	foreach(bool& b, controls_) {
+		b = false;
+	}
 }
 
 entity_ptr entity::build(wml::const_node_ptr node)
@@ -86,6 +92,12 @@ rect entity::hit_rect() const
 	}
 }
 
+point entity::midpoint() const
+{
+	const rect& body = body_rect();
+	return point(body.mid_x(), body.mid_y());
+}
+
 bool entity::is_alpha(int xpos, int ypos) const
 {
 	return current_frame().is_alpha(xpos - x(), ypos - y(), time_in_frame(), face_right());
@@ -141,6 +153,20 @@ variant entity::get_scheduled_command(int cycle)
 	return variant();
 }
 
+namespace {
+std::vector<const_powerup_ptr> empty_powerup_vector;
+}
+
+const std::vector<const_powerup_ptr>& entity::powerups() const
+{
+	return empty_powerup_vector;
+}
+
+const std::vector<const_powerup_ptr>& entity::abilities() const
+{
+	return empty_powerup_vector;
+}
+
 void entity::set_current_generator(current_generator* generator)
 {
 	current_generator_ = current_generator_ptr(generator);
@@ -152,4 +178,24 @@ void entity::set_distinct_label()
 	char buf[64];
 	sprintf(buf, "_%x", rand());
 	set_label(buf);
+}
+
+void entity::set_control_status(const std::string& key, bool value)
+{
+	static const std::string keys[] = { "up", "down", "left", "right", "attack", "jump" };
+	const std::string* k = std::find(keys, keys + controls::NUM_CONTROLS, key);
+	if(k == keys + controls::NUM_CONTROLS) {
+		return;
+	}
+
+	const int index = k - keys;
+	controls_[index] = value;
+}
+
+void entity::read_controls(int cycle)
+{
+	player_info* info = get_player_info();
+	if(info) {
+		info->read_controls(cycle);
+	}
 }

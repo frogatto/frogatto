@@ -3,15 +3,15 @@
 
 #include "SDL.h"
 
-#include "character.hpp"
 #include "draw_scene.hpp"
+#include "entity.hpp"
 #include "gui_section.hpp"
 #include "inventory.hpp"
 #include "powerup.hpp"
 #include "raster.hpp"
 #include "texture.hpp"
 
-void show_inventory(pc_character& c)
+void show_inventory(const level& lvl, entity& c)
 {
 	const_gui_section_ptr selector = gui_section::get("powerup_selector");
 	if(!selector) {
@@ -136,7 +136,7 @@ void show_inventory(pc_character& c)
 		}
 		
 		
-		draw_statusbar(*c.get_level(), last_draw_position(), &c);
+		draw_statusbar(lvl, last_draw_position(), &c);
 		SDL_GL_SwapBuffers();
 		SDL_Delay(20);
 	}

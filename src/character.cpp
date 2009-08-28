@@ -74,10 +74,6 @@ character::character(wml::const_node_ptr node)
 	foreach(const std::string& p, util::split(node->attr("abilities"))) {
 		get_powerup(p);
 	}
-
-	foreach(bool& b, controls_) {
-		b = false;
-	}
 }
 
 character::character(const std::string& type, int x, int y, bool face_right)
@@ -105,28 +101,14 @@ character::character(const std::string& type, int x, int y, bool face_right)
 {
 	current_frame_ = &type_->get_frame();
 	assert(type_);
-
-	foreach(bool& b, controls_) {
-		b = false;
-	}
 }
 
 pc_character::pc_character(wml::const_node_ptr node)
-	  : character(node), player_index_(0), prev_left_(true), prev_right_(true),
+	  : character(node), prev_left_(true), prev_right_(true),
 	    last_left_(-1000), last_right_(-1000), running_(false),
 		spawn_x_(x()), spawn_y_(y()),
-		score_(wml::get_int(node, "score"))
+		player_info_(*this, node)
 {
-	FOREACH_WML_CHILD(items, node, "items_destroyed") {
-		std::vector<int>& v = items_destroyed_[node->attr("level")];
-		v = vector_lexical_cast<int>(util::split(node->attr("items")));
-	}
-
-	FOREACH_WML_CHILD(objects, node, "objects_destroyed") {
-		std::vector<int>& v = objects_destroyed_[node->attr("level")];
-		v = vector_lexical_cast<int>(util::split(node->attr("objects")));
-	}
-
 }
 
 
@@ -209,42 +191,7 @@ wml::node_ptr character::write() const
 wml::node_ptr pc_character::write() const
 {
 	wml::node_ptr result = character::write();
-	result->set_attr("score", formatter() << score_);
-
-	for(std::map<std::string, std::vector<int> >::const_iterator i = items_destroyed_.begin(); i != items_destroyed_.end(); ++i) {
-		wml::node_ptr items(new wml::node("items_destroyed"));
-		items->set_attr("level", i->first);
-		std::ostringstream s;
-		foreach(int n, i->second) {
-			s << n << ",";
-		}
-
-		std::string str = s.str();
-		if(str.empty() == false) {
-			str.resize(str.size() - 1);
-		}
-
-		items->set_attr("items", str);
-		result->add_child(items);
-	}
-
-	for(std::map<std::string, std::vector<int> >::const_iterator i = objects_destroyed_.begin(); i != objects_destroyed_.end(); ++i) {
-		wml::node_ptr objects(new wml::node("objects_destroyed"));
-		objects->set_attr("level", i->first);
-		std::ostringstream s;
-		foreach(int n, i->second) {
-			s << n << ",";
-		}
-
-		std::string str = s.str();
-		if(str.empty() == false) {
-			str.resize(str.size() - 1);
-		}
-
-		objects->set_attr("objects", str);
-		result->add_child(objects);
-	}
-
+	player_info_.write(result);
 	return result;
 }
 
@@ -339,7 +286,7 @@ void character::process(level& lvl)
 	set_level(&lvl);
 
 	clear_control_status();
-	read_controls();
+	read_controls(lvl.cycle());
 
 	static const std::string ProcessStr = "process";
 	handle_event(ProcessStr);
@@ -658,7 +605,7 @@ void character::process(level& lvl)
 		}
 
 		if(!is_human() && !invincible_ && !boardable_vehicle()) {
-			character_ptr player = lvl.hit_by_player(body_rect());
+			entity_ptr player = lvl.hit_by_player(body_rect());
 			if(player) {
 				set_face_right(!player->face_right());
 				hit = true;
@@ -724,7 +671,7 @@ void character::process(level& lvl)
 	}
 
 	if(!is_human() && !invincible_ && !boardable_vehicle()) {
-		character_ptr player = lvl.hit_by_player(body_rect());
+		entity_ptr player = lvl.hit_by_player(body_rect());
 		if(player) {
 			set_face_right(!player->face_right());
 			get_hit();
@@ -921,7 +868,7 @@ void character::boarded(level& lvl, const character_ptr& player)
 	lvl.add_player(new_player);
 	hitpoints_ = 0;
 
-	new_player->swap_player_state(*pc_player);
+	new_player->get_player_info()->swap_player_state(*pc_player->get_player_info());
 }
 
 void character::unboarded(level& lvl)
@@ -943,7 +890,7 @@ void character::unboarded(level& lvl)
 	driver_->set_velocity(600 * (driver_->face_right() ? 1 : -1), -600);
 
 	if(pc_character* pc = dynamic_cast<pc_character*>(this)) {
-		driver_->swap_player_state(*pc);
+		driver_->get_player_info()->swap_player_state(*pc->get_player_info());
 	}
 }
 
@@ -1156,6 +1103,9 @@ bool character::attack(const level& lvl, bool down_key_pressed)
 
 	return false;
 }
+
+entity_ptr character::driver() { return driver_; }
+const_entity_ptr character::driver() const { return driver_; }
 
 const frame& character::portrait_frame() const
 {
@@ -1442,18 +1392,6 @@ void character::map_entities(const std::map<entity_ptr, entity_ptr>& m)
 	}
 }
 
-void character::set_control_status(const std::string& key, bool value)
-{
-	static const std::string keys[] = { "up", "down", "left", "right", "attack", "jump" };
-	const std::string* k = std::find(keys, keys + controls::NUM_CONTROLS, key);
-	if(k == keys + controls::NUM_CONTROLS) {
-		return;
-	}
-
-	const int index = k - keys;
-	controls_[index] = value;
-}
-
 void character::handle_event(const std::string& event_id)
 {
 	game_logic::const_formula_ptr event;
@@ -1499,12 +1437,6 @@ void character::execute_command(const variant& var)
 bool character::point_collides(int xpos, int ypos) const
 {
 	return point_in_rect(point(xpos, ypos), body_rect());
-}
-
-point character::midpoint() const
-{
-	const rect& body = body_rect();
-	return point(body.mid_x(), body.mid_y());
 }
 
 void character::hit_by(entity& e)
@@ -1700,7 +1632,7 @@ variant character::get_value(const std::string& key) const
 		return variant(cycle_num_);
 	} else if(key == "player") {
 		if(lvl_ && lvl_->player()) {
-			return variant(lvl_->player().get());
+			return variant(&lvl_->player()->get_entity());
 		} else {
 			return variant();
 		}
@@ -1896,30 +1828,6 @@ bool pc_character::look_down() const
 	return control_status(controls::CONTROL_DOWN);
 }
 
-void pc_character::item_destroyed(const std::string& level_id, int item)
-{
-	items_destroyed_[level_id].push_back(item);
-}
-
-const std::vector<int>& pc_character::get_items_destroyed(const std::string& level_id) const
-{
-	std::vector<int>& v = items_destroyed_[level_id];
-	std::sort(v.begin(), v.end());
-	return v;
-}
-
-void pc_character::object_destroyed(const std::string& level_id, int object)
-{
-	objects_destroyed_[level_id].push_back(object);
-}
-
-const std::vector<int>& pc_character::get_objects_destroyed(const std::string& level_id) const
-{
-	std::vector<int>& v = objects_destroyed_[level_id];
-	std::sort(v.begin(), v.end());
-	return v;
-}
-
 void pc_character::record_stats_movement()
 {
 	if(!get_level()) {
@@ -1935,9 +1843,9 @@ void pc_character::record_stats_movement()
 
 void pc_character::control(const level& lvl)
 {
-	if(current_level_ != lvl.id()) {
+	if(player_info_.current_level() != lvl.id()) {
 		//key_.RequireRelease();
-		current_level_ = lvl.id();
+		player_info_.set_current_level(lvl.id());
 		last_stats_position_ = midpoint();
 	}
 
@@ -2112,17 +2020,8 @@ void pc_character::save_game()
 	// If we're in a vehicle with a driver we have to set the save condition
 	// for the driver as well, and make a deep copy of the driver.
 	if(driver()) {
-		save_condition_->driver() = new pc_character(*driver());
-		driver()->save_condition_ = save_condition_;
-	}
-}
-
-void pc_character::read_controls()
-{
-	bool status[controls::NUM_CONTROLS];
-	controls::get_control_status(get_level()->cycle(), player_index_, status);
-	for(int n = 0; n != controls::NUM_CONTROLS; ++n) {
-		set_control_status(static_cast<controls::CONTROL_ITEM>(n), status[n]);
+		save_condition_->driver() = driver()->clone();
+		driver()->save_game();
 	}
 }
 
@@ -2136,7 +2035,7 @@ entity_ptr pc_character::backup() const
 	return entity_ptr(new pc_character(*this));
 }
 
-void pc_character::respawn()
+void pc_character::respawn_player()
 {
 	heal();
 	set_pos(spawn_x_, spawn_y_);
@@ -2148,9 +2047,6 @@ std::string character::debug_description() const
 {
 	std::ostringstream s;
 	s << type_->id() << "/" << current_frame().id() << "/" << time_in_frame_ << "/";
-	for(int n = 0; n != controls::NUM_CONTROLS; ++n) {
-		s << (controls_[n] ? "1" : "0");
-	}
 
 	s << "/velx=" << velocity_x_ << ";vely=" << velocity_y_;
 

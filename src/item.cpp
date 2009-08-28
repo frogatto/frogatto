@@ -31,6 +31,7 @@ wml::node_ptr item::write() const
 
 void item::process(level& lvl)
 {
+#if 0
 	++time_in_frame_;
 	if(!touched_ && time_in_frame_ == type_->get_frame().duration()) {
 		time_in_frame_ = 0;
@@ -83,6 +84,7 @@ void item::process(level& lvl)
 			}
 		}
 	}
+#endif
 }
 
 bool item::destroyed() const
