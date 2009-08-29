@@ -10,6 +10,7 @@
 
    See the COPYING file for more details.
 */
+#include "concurrent_cache.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "surface_cache.hpp"
@@ -49,7 +50,7 @@ namespace {
 		texture_registry().erase(t);
 	}
 
-	typedef std::map<texture::key,graphics::texture> texture_map;
+	typedef concurrent_cache<texture::key,graphics::texture> texture_map;
 	texture_map texture_cache;
 	const size_t TextureBufSize = 128;
 	GLuint texture_buf[TextureBufSize];
@@ -360,16 +361,14 @@ texture texture::get(const std::string& str, const std::string& algorithm)
 
 texture texture::get(const key& surfs)
 {
-	texture_map::iterator i = texture_cache.find(surfs);
-	if(i != texture_cache.end()) {
-		return i->second;
-	} else {
+	texture result = texture_cache.get(surfs);
+	if(!result.valid()) {
+		result = texture(surfs);
 
-		texture t(surfs);
-
-		texture_cache.insert(std::pair<key,texture>(surfs,t));
-		return t;
+		texture_cache.put(surfs, result);
 	}
+
+	return result;
 }
 
 texture texture::get(const surface& surf)

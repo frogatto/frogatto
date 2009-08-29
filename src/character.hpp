@@ -116,6 +116,9 @@ public:
 	const std::vector<const_powerup_ptr>& powerups() const { return powerups_; }
 	const std::vector<const_powerup_ptr>& abilities() const { return abilities_; }
 
+	void preload_powerup(const_powerup_ptr powerup);
+	bool is_powerup_loaded(const_powerup_ptr powerup) const;
+
 	virtual void generate_current(const entity& target, int* velocity_x, int* velocity_y) const;
 
 	virtual entity_ptr backup() const;

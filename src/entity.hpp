@@ -174,6 +174,11 @@ public:
 	virtual const std::vector<const_powerup_ptr>& powerups() const;
 	virtual const std::vector<const_powerup_ptr>& abilities() const;
 
+	//function to perform preloading of a powerup so it'll be ready to apply
+	//to this type of object when needed
+	virtual void preload_powerup(const_powerup_ptr powerup) {}
+	virtual bool is_powerup_loaded(const_powerup_ptr powerup) const { return true; }
+
 	void set_control_status(const std::string& key, bool value);
 	void set_control_status(controls::CONTROL_ITEM ctrl, bool value) { controls_[ctrl] = value; }
 	void clear_control_status() { for(int n = 0; n != controls::NUM_CONTROLS; ++n) { controls_[n] = false; } }

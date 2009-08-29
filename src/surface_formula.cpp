@@ -1,6 +1,7 @@
 #include <iostream>
 #include <map>
 
+#include "concurrent_cache.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
 #include "formula_function.hpp"
@@ -15,7 +16,7 @@ using namespace game_logic;
 namespace {
 
 typedef std::pair<surface, std::string> cache_key;
-typedef std::map<cache_key, surface> cache_map;
+typedef concurrent_cache<cache_key, surface> cache_map;
 cache_map cache;
 
 class rgba_function : public function_expression {
@@ -138,10 +139,11 @@ surface get_surface_formula(surface input, const std::string& algo)
 	}
 
 	cache_key key(input, algo);
-	surface& surf = cache[key];
+	surface surf = cache.get(key);
 	if(surf.get() == NULL) {
 		surf = input.clone();
 		run_formula(surf, algo);
+		cache.put(key, surf);
 	}
 
 	return surf;

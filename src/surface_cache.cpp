@@ -10,6 +10,7 @@
 
    See the COPYING file for more details.
 */
+#include "concurrent_cache.hpp"
 #include "filesystem.hpp"
 #include "surface_cache.hpp"
 #include "SDL_image.h"
@@ -25,28 +26,27 @@ namespace surface_cache
 
 namespace {
 
-	typedef std::map<std::string,surface> surface_map;
+	typedef concurrent_cache<std::string,surface> surface_map;
 	surface_map cache;
 	const std::string path = "./images/";
 }
 
 surface get(const std::string& key)
 {
-	surface_map::iterator i = cache.find(key);
-	if(i != cache.end()) {
-		return i->second;
-	} else {
+	surface surf = cache.get(key);
+	if(surf.null()) {
 		const std::string fname = path + key;
-		surface surf(IMG_Load(sys::find_file(fname).c_str()));
+		surf = surface(IMG_Load(sys::find_file(fname).c_str()));
 		std::cerr << "loading image '" << fname << "'\n";
 		if(surf.get() == false) {
 			std::cerr << "failed to load image '" << key << "'\n";
 			return surface();
 		}
 
-		cache.insert(std::pair<std::string,surface>(key,surf));
-		return surf;
+		cache.put(key,surf);
 	}
+
+	return surf;
 }
 
 void clear()

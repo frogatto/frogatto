@@ -1,5 +1,6 @@
 #include "SDL.h"
 
+#include "controls.hpp"
 #include "draw_scene.hpp"
 #include "editor.hpp"
 #include "filesystem.hpp"
@@ -154,7 +155,19 @@ bool level_runner::play_cycle()
 		lvl_->backup();
 	}
 
-	const int desired_end_time = start_time_ + pause_time_ + global_pause_time + cycle*20 + 20;
+	const bool is_multiplayer = controls::num_players() > 1;
+
+	int desired_end_time = start_time_ + pause_time_ + global_pause_time + cycle*20 + 20;
+
+	if(!is_multiplayer) {
+		const int ticks = SDL_GetTicks();
+		if(desired_end_time < ticks) {
+			const int new_desired_end_time = ticks + 20;
+			pause_time_ += new_desired_end_time - desired_end_time;
+			desired_end_time = new_desired_end_time;
+		}
+	}
+
 	if(lvl_->players().size() == 1 && lvl_->player() && lvl_->player()->get_entity().hitpoints() <= 0) {
 		//record stats of the player's death
 		lvl_->player()->get_entity().record_stats_movement();
@@ -404,6 +417,7 @@ bool level_runner::play_cycle()
 		next_process_ = 0;
 	}
 
+	const int raw_wait_time = desired_end_time - SDL_GetTicks();
 	const int wait_time = std::max<int>(1, desired_end_time - SDL_GetTicks());
 	next_delay_ += wait_time;
 	SDL_Delay(wait_time);

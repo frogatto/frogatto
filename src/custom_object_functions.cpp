@@ -1254,10 +1254,6 @@ public:
 	}
 };
 
-void do_preload_powerup(const_powerup_ptr p, const_character_ptr ch) {
-	ch->type().get_modified(p->id(), p->modifier());
-}
-
 class preload_powerup_command : public custom_object_command_callable {
 public:
 	explicit preload_powerup_command(const std::string& id)
@@ -1265,21 +1261,16 @@ public:
 	{}
 
 	virtual void execute(level& lvl, custom_object& ob) const {
-			/*TODO: make this work!
 		std::cerr << "PRELOAD_POWERUP: '" << id_ << "'\n";
 
-		const character* ch = lvl.player().get();
-		if(!ch) {
+		if(!lvl.player()){
 			return;
 		}
+
+		entity_ptr ch = &lvl.player()->get_entity();
 
 		if(ch->driver()) {
-			ch = ch->driver().get();
-		}
-
-		if(ch->type().modification_cached(id_)) {
-			//this modification is already cached, so don't bother.
-			return;
+			ch = ch->driver();
 		}
 
 		const_powerup_ptr p = powerup::get(id_);
@@ -1287,8 +1278,13 @@ public:
 			return;
 		}
 
-		do_preload_powerup(p, lvl.player());
-		*/
+		if(ch->is_powerup_loaded(p)) {
+			//this modification is already cached, so don't bother.
+			return;
+		}
+
+		ch->preload_powerup(p);
+
 		//threading::thread thread(boost::bind(do_preload_powerup, p, lvl.player()));
 		//thread.detach();
 	}

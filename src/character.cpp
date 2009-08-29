@@ -1217,6 +1217,16 @@ int character::remove_powerup(const_powerup_ptr powerup)
 	return result;
 }
 
+void character::preload_powerup(const_powerup_ptr powerup)
+{
+	type().get_modified(powerup->id(), powerup->modifier());
+}
+
+bool character::is_powerup_loaded(const_powerup_ptr powerup) const
+{
+	return type().modification_cached(powerup->id());
+}
+
 void character::generate_current(const entity& target, int* velocity_x, int* velocity_y) const
 {
 	if(type_->current_generator()) {
