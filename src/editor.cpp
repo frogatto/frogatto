@@ -719,13 +719,18 @@ void editor::edit_level()
 		}
 
 		//if we're drawing with a pencil see if we add a new tile
-		if(tool() == TOOL_PENCIL && (buttons&SDL_BUTTON_LEFT)) {
+		if(tool() == TOOL_PENCIL && buttons) {
 			const int xpos = xpos_ + mousex*zoom_;
 			const int ypos = ypos_ + mousey*zoom_;
 			point p(round_tile_size(xpos), round_tile_size(ypos));
 			if(std::find(g_current_draw_tiles.begin(), g_current_draw_tiles.end(), p) == g_current_draw_tiles.end()) {
 				g_current_draw_tiles.push_back(p);
-				add_tile_rect(p.x, p.y, p.x, p.y);
+
+				if(buttons&SDL_BUTTON_LEFT) {
+					add_tile_rect(p.x, p.y, p.x, p.y);
+				} else {
+					remove_tile_rect(p.x, p.y, p.x, p.y);
+				}
 			}
 		}
 
@@ -971,7 +976,11 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 	} else if(tool() == TOOL_PENCIL) {
 		drawing_rect_ = false;
 		point p(round_tile_size(anchorx_), round_tile_size(anchory_));
-		add_tile_rect(p.x, p.y, p.x, p.y);
+		if(buttons&SDL_BUTTON_LEFT) {
+			add_tile_rect(p.x, p.y, p.x, p.y);
+		} else {
+			remove_tile_rect(p.x, p.y, p.x, p.y);
+		}
 		g_current_draw_tiles.clear();
 		g_current_draw_tiles.push_back(p);
 	} else if(property_dialog_ && variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_)) {
@@ -1214,16 +1223,7 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 			}
 			  
 		} else if(event.button == SDL_BUTTON_RIGHT) {
-			std::map<int, std::vector<std::string> > old_tiles;
-			lvl_->get_all_tiles_rect(anchorx_, anchory_, xpos, ypos, old_tiles);
-			std::vector<boost::function<void()> > undo;
-			for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
-				undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, anchorx_, anchory_, xpos, ypos, i->second));
-			}
-
-			execute_command(
-			  boost::bind(&level::clear_tile_rect, lvl_.get(), anchorx_, anchory_, xpos, ypos),
-			  boost::bind(execute_functions, undo));
+			remove_tile_rect(anchorx_, anchory_, xpos, ypos);
 		}
 	} else {
 		//some kind of object editing
@@ -1298,6 +1298,20 @@ void editor::add_tile_rect(int x1, int y1, int x2, int y2)
 	execute_command(
 	  boost::bind(&level::add_tile_rect, lvl_.get(), zorder, x1, y1, x2, y2, tilesets[cur_tileset_].type),
 	  boost::bind(&level::add_tile_rect_vector, lvl_.get(), zorder, x1, y1, x2, y2, old_rect));
+}
+
+void editor::remove_tile_rect(int x1, int y1, int x2, int y2)
+{
+	std::map<int, std::vector<std::string> > old_tiles;
+	lvl_->get_all_tiles_rect(x1, y1, x2, y2, old_tiles);
+	std::vector<boost::function<void()> > undo;
+	for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
+		undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x1, y1, x2, y2, i->second));
+	}
+
+	execute_command(
+	  boost::bind(&level::clear_tile_rect, lvl_.get(), x1, y1, x2, y2),
+	  boost::bind(execute_functions, undo));
 }
 
 void editor::select_tile_rect(int x1, int y1, int x2, int y2)
@@ -1425,12 +1439,16 @@ void editor::change_tool(EDIT_TOOL tool)
 	case TOOL_MAGIC_WAND:
 	case TOOL_PENCIL:
 	case TOOL_PICKER: {
-		tileset_dialog_.reset(new editor_dialogs::tileset_editor_dialog(*this));
+		if(!tileset_dialog_) {
+			tileset_dialog_.reset(new editor_dialogs::tileset_editor_dialog(*this));
+		}
 		current_dialog_ = tileset_dialog_.get();
 		break;
 	}
 	case TOOL_ADD_OBJECT: {
-		character_dialog_.reset(new editor_dialogs::character_editor_dialog(*this));
+		if(!character_dialog_) {
+			character_dialog_.reset(new editor_dialogs::character_editor_dialog(*this));
+		}
 		current_dialog_ = character_dialog_.get();
 		character_dialog_->set_character(cur_object_);
 		break;

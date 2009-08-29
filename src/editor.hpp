@@ -107,6 +107,7 @@ private:
 	void draw_selection(int xoffset, int yoffset) const;
 
 	void add_tile_rect(int x1, int y1, int x2, int y2);
+	void remove_tile_rect(int x1, int y1, int x2, int y2);
 	void select_tile_rect(int x1, int y1, int x2, int y2);
 	void select_magic_wand(int xpos, int ypos);
 
