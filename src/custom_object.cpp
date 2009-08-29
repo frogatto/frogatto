@@ -8,6 +8,7 @@
 #include "graphical_font.hpp"
 #include "level.hpp"
 #include "level_logic.hpp"
+#include "playable_custom_object.hpp"
 #include "raster.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
@@ -189,6 +190,10 @@ void custom_object::draw() const
 {
 	if(frame_ == NULL) {
 		return;
+	}
+
+	if(driver_) {
+		driver_->draw();
 	}
 
 	if(draw_color_) {
@@ -473,6 +478,19 @@ void custom_object::process(level& lvl)
 		} else {
 			++i;
 		}
+	}
+
+	set_driver_position();
+}
+
+void custom_object::set_driver_position()
+{
+	if(driver_) {
+		const int pos_right = x() + type_->passenger_x();
+		const int pos_left = x() + current_frame().width() - driver_->current_frame().width() - type_->passenger_x();
+		driver_->set_face_right(face_right());
+
+		driver_->set_pos(face_right() ? pos_right : pos_left, y() + type_->passenger_y());
 	}
 }
 
@@ -1012,4 +1030,52 @@ void custom_object::set_text(const std::string& text, const std::string& font)
 	text_.reset(new custom_object_text);
 	text_->text = text;
 	text_->font = graphical_font::get(font);
+}
+
+bool custom_object::boardable_vehicle() const
+{
+	return type_->is_vehicle() && driver_.get() == NULL;
+}
+
+void custom_object::boarded(level& lvl, const entity_ptr& player)
+{
+	if(!player) {
+		return;
+	}
+
+	player->board_vehicle();
+
+	playable_custom_object* new_player(new playable_custom_object(*this));
+	new_player->driver_ = player;
+
+	lvl.add_player(new_player);
+
+	new_player->get_player_info()->swap_player_state(*player->get_player_info());
+	lvl.remove_character(this);
+}
+
+void custom_object::unboarded(level& lvl)
+{
+	custom_object* vehicle(new custom_object(*this));
+	vehicle->driver_ = entity_ptr();
+	lvl.add_character(vehicle);
+	lvl.add_player(driver_);
+	if(vehicle->velocity_x() > 100) {
+		driver_->set_face_right(false);
+	}
+	if(vehicle->velocity_x() < -100) {
+		driver_->set_face_right(true);
+	}
+
+	driver_->unboard_vehicle();
+
+	driver_->get_player_info()->swap_player_state(*get_player_info());
+}
+
+void custom_object::board_vehicle()
+{
+}
+
+void custom_object::unboard_vehicle()
+{
 }

@@ -11,6 +11,7 @@ class level;
 class playable_custom_object : public custom_object
 {
 public:
+	playable_custom_object(const custom_object& obj);
 	playable_custom_object(const playable_custom_object& obj);
 	playable_custom_object(wml::const_node_ptr node);
 

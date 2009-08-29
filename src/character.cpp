@@ -862,17 +862,27 @@ bool character::spring_off_head(const entity& jumped_on_by)
 	return hitpoints_ > 0;
 }
 
-void character::boarded(level& lvl, const character_ptr& player)
+void character::board_vehicle()
 {
-	pc_character* pc_player = dynamic_cast<pc_character*>(player.get());
-	if(pc_player == NULL) {
+	invincible_ = 0;
+	current_frame_ = &type_->get_frame();
+}
+
+void character::unboard_vehicle()
+{
+	set_velocity(600 * (face_right() ? 1 : -1), -600);
+}
+
+void character::boarded(level& lvl, const entity_ptr& player)
+{
+	if(!player) {
 		return;
 	}
 
-	player->invincible_ = 0;
-	player->current_frame_ = &player->type_->get_frame();
+	player->board_vehicle();
+
 	pc_character_ptr new_player(new pc_character(*this));
-	new_player->driver_ = pc_player;
+	new_player->driver_ = player;
 
 	if(type_->loop_sound().empty() == false) {
 		new_player->loop_sound_ = sound::play_looped(type_->loop_sound());
@@ -880,7 +890,7 @@ void character::boarded(level& lvl, const character_ptr& player)
 	lvl.add_player(new_player);
 	hitpoints_ = 0;
 
-	new_player->get_player_info()->swap_player_state(*pc_player->get_player_info());
+	new_player->get_player_info()->swap_player_state(*player->get_player_info());
 }
 
 void character::unboarded(level& lvl)
@@ -890,7 +900,7 @@ void character::unboarded(level& lvl)
 		loop_sound_ = -1;
 	}
 	character_ptr vehicle(new character(*this));
-	vehicle->driver_ = pc_character_ptr();
+	vehicle->driver_ = entity_ptr();
 	lvl.add_character(vehicle);
 	lvl.add_player(driver_);
 	if(vehicle->velocity_x() > 100) {
@@ -899,11 +909,10 @@ void character::unboarded(level& lvl)
 	if(vehicle->velocity_x() < -100) {
 		driver_->set_face_right(true);
 	}
-	driver_->set_velocity(600 * (driver_->face_right() ? 1 : -1), -600);
 
-	if(pc_character* pc = dynamic_cast<pc_character*>(this)) {
-		driver_->get_player_info()->swap_player_state(*pc->get_player_info());
-	}
+	driver_->unboard_vehicle();
+
+	driver_->get_player_info()->swap_player_state(*get_player_info());
 }
 
 int character::weight() const

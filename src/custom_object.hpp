@@ -92,6 +92,16 @@ public:
 
 	virtual int hitpoints() const { return hitpoints_; }
 
+	virtual bool boardable_vehicle() const;
+
+	virtual void boarded(level& lvl, const entity_ptr& player);
+	virtual void unboarded(level& lvl);
+
+	virtual void board_vehicle();
+	virtual void unboard_vehicle();
+
+	void set_driver_position();
+
 protected:
 	virtual void control(const level& lvl);
 	variant get_value(const std::string& key) const;
@@ -149,6 +159,8 @@ private:
 
 	typedef boost::shared_ptr<custom_object_text> custom_object_text_ptr;
 	custom_object_text_ptr text_;
+
+	entity_ptr driver_;
 };
 
 #endif

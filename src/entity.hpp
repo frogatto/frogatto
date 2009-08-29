@@ -124,7 +124,11 @@ public:
 	bool respawn() const { return respawn_; }
 
 	virtual bool boardable_vehicle() const { return false; }
-	virtual void boarded(level& lvl, const character_ptr& player) {}
+	virtual void boarded(level& lvl, const entity_ptr& player) {}
+	virtual void unboarded(level& lvl) {}
+
+	virtual void board_vehicle() {}
+	virtual void unboard_vehicle() {}
 
 	virtual int weight() const { return 1; }
 	
@@ -192,6 +196,8 @@ public:
 	virtual void respawn_player() {}
 
 	virtual int current_animation_id() const { return 0; }
+
+	virtual void set_level(level* lvl) {}
 
 protected:
 

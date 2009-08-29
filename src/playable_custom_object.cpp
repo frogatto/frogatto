@@ -3,12 +3,16 @@
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
 
+playable_custom_object::playable_custom_object(const custom_object& obj)
+  : custom_object(obj), player_info_(*this)
+{
+}
+
 playable_custom_object::playable_custom_object(const playable_custom_object& obj)
   : custom_object(obj), player_info_(obj.player_info_)
 {
 	player_info_.set_entity(*this);
 }
-
 
 playable_custom_object::playable_custom_object(wml::const_node_ptr node)
   : custom_object(node), player_info_(*this)

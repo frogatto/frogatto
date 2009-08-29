@@ -71,6 +71,11 @@ public:
 
 	const_particle_system_factory_ptr get_particle_system_factory(const std::string& id) const;
 
+	bool is_vehicle() const { return is_vehicle_; }
+
+	int passenger_x() const { return passenger_x_; }
+	int passenger_y() const { return passenger_y_; }
+
 private:
 	std::string id_;
 	int hitpoints_;
@@ -110,6 +115,9 @@ private:
 	wml::const_node_ptr node_;
 
 	std::map<std::string, const_particle_system_factory_ptr> particle_factories_;
+
+	bool is_vehicle_;
+	int passenger_x_, passenger_y_;
 };
 
 #endif

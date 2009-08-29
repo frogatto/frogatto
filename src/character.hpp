@@ -96,8 +96,11 @@ public:
 
 	int current_animation_id() const { return frame_id_; }
 
-	void boarded(level& lvl, const character_ptr& player);
+	void boarded(level& lvl, const entity_ptr& player);
 	void unboarded(level& lvl);
+
+	void board_vehicle();
+	void unboard_vehicle();
 
 	virtual int weight() const;
 
@@ -209,7 +212,7 @@ private:
 
 	std::map<std::string, variant> vars_;
 
-	pc_character_ptr driver_;
+	entity_ptr driver_;
 
 	bool last_jump_;
 	int last_walk_;
