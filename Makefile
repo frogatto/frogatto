@@ -7,7 +7,7 @@ formula_test_objects = filesystem.o formula_function.o formula_tokenizer.o strin
 wml_modify_test_objects = filesystem.o string_utils.o wml_node.o wml_parser.o wml_utils.o
 wml_schema_test_objects = filesystem.o string_utils.o wml_node.o wml_parser.o wml_utils.o
 
-OPT=-O2
+OPT=-O2 -fno-inline-functions
 
 %.o : src/%.cpp
 	g++ -fno-inline-functions -g $(OPT) `sdl-config --cflags` -I/usr/X11R6/include -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -fthreadsafe-statics -c $<

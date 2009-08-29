@@ -49,6 +49,7 @@ void preload_level(const std::string& lvl)
 
 level* load_level(const std::string& lvl)
 {
+	std::cerr << "START LOAD LEVEL\n";
 	level_map::iterator itor;
 	{
 		threading::lock lck(levels_loading_mutex);
@@ -56,6 +57,7 @@ level* load_level(const std::string& lvl)
 		if(itor == levels_loading.end()) {
 			level* res = new level(lvl);
 			res->finish_loading();
+			fprintf(stderr, "LOADED LEVEL: %p\n", res);
 			return res;
 		}
 	}
@@ -65,6 +67,7 @@ level* load_level(const std::string& lvl)
 	level* res = itor->second.second;
 	res->finish_loading();
 	levels_loading.erase(itor);
+	std::cerr << "FINISH LOAD LEVEL\n";
 	return res;
 }
 

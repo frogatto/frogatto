@@ -33,7 +33,6 @@ private:
 	virtual void process(level& lvl);
 	variant get_value(const std::string& key) const;	
 
-	CKey key_;
 	player_info player_info_;
 
 	entity_ptr save_condition_;

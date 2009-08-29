@@ -235,10 +235,13 @@ extern "C" int main(int argc, char** argv)
 			last_draw_position() = screen_position();
 			std::string level_cfg = "waiting-room.cfg";
 			boost::scoped_ptr<level> wait_lvl(load_level(level_cfg));
+			wait_lvl->set_multiplayer_slot(0);
+			std::cerr << "HAS PLAYER : " << (wait_lvl->player() ? "YES" : "NO") << "\n";
 			if(wait_lvl->player()) {
 				wait_lvl->player()->set_current_level(level_cfg);
 			}
 			level_runner runner(wait_lvl, level_cfg);
+
 			multiplayer::sync_start_time(*lvl, boost::bind(&level_runner::play_cycle, &runner));
 
 			lvl->set_multiplayer_slot(multiplayer::slot());

@@ -252,7 +252,7 @@ void level::set_multiplayer_slot(int slot)
 {
 	ASSERT_INDEX_INTO_VECTOR(slot, players_);
 	last_touched_player_ = player_ = players_[slot];
-	controls::new_level(cycle_, players_.empty() ? 1 : players_.size(), multiplayer::slot());
+	controls::new_level(cycle_, players_.empty() ? 1 : players_.size(), slot);
 }
 
 void level::load_save_point(const level& lvl)
@@ -1842,14 +1842,14 @@ void level::backup()
 	snapshot->cycle = cycle_;
 	snapshot->chars.reserve(chars_.size());
 	foreach(const entity_ptr& e, chars_) {
-		std::cerr << e->debug_description() << "(" << e->centi_x() << "," << e->centi_y() << "):";
+		std::cerr << e->debug_description() << "(" << (e->is_human() ? "HUMAN," : "") << e->centi_x() << "," << e->centi_y() << "):";
 		snapshot->chars.push_back(e->backup());
 		entity_map[e] = snapshot->chars.back();
 
 		if(snapshot->chars.back()->is_human()) {
 			snapshot->players.push_back(snapshot->chars.back());
 			if(e == player_) {
-				snapshot->player = e;
+				snapshot->player = snapshot->players.back();
 			}
 		}
 	}

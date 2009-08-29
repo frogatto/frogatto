@@ -78,8 +78,8 @@ public:
 	void remove_character(entity_ptr e);
 	std::vector<entity_ptr> get_characters_in_rect(const rect& r) const;
 	entity_ptr get_character_at_point(int x, int y) const;
-	const player_info* player() const { return player_->get_player_info(); }
-	player_info* player() { return player_->get_player_info(); }
+	const player_info* player() const { return player_ ? player_->get_player_info() : NULL; }
+	player_info* player() { return player_ ? player_->get_player_info() : NULL; }
 	std::vector<entity_ptr>& players() { return players_; }
 	const std::vector<entity_ptr>& players() const { return players_; }
 	void add_player(entity_ptr p);

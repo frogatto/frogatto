@@ -48,7 +48,7 @@ GLfloat hp_ratio = -1.0;
 void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 	static int frame_num = 0;
 	++frame_num;
-	if(focus == NULL) {
+	if(focus == NULL && lvl.player()) {
 		focus = &lvl.player()->get_entity();
 	}
 
@@ -72,7 +72,7 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 		glViewport(pixels, 0, fb->w - pixels*2, fb->h);
 	}
 
-	if(lvl.player()) {
+	if(focus) {
 		// If the camera is automatically moved along by the level (e.g. a 
 		// hurtling through the sky level) do that here.
 		pos.x += lvl.auto_move_camera_x()*100;
@@ -214,7 +214,7 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 
 	debug_console::draw();
 
-	if(!lvl.hide_status_bar()) {
+	if(!lvl.hide_status_bar() && focus) {
 		draw_statusbar(lvl, pos, focus);
 	}
 }

@@ -39,6 +39,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 	lvl_(NULL),
 	vars_(new game_logic::map_formula_callable(node->get_child("vars"))),
 	last_hit_by_anim_(0),
+	current_animation_id_(0),
 	cycle_(wml::get_int(node, "cycle")),
 	can_interact_with_(false)
 {
@@ -786,6 +787,7 @@ void custom_object::set_frame(const std::string& name)
 	const int start_y = feet_y();
 
 	frame_ = &type_->get_frame(name);
+	++current_animation_id_;
 
 	const int diff_x = feet_x() - start_x;
 	const int diff_y = feet_y() - start_y;

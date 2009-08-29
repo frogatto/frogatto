@@ -9,7 +9,7 @@ playable_custom_object::playable_custom_object(const custom_object& obj)
 }
 
 playable_custom_object::playable_custom_object(const playable_custom_object& obj)
-  : custom_object(obj), player_info_(obj.player_info_)
+  : custom_object(obj), player_info_(obj.player_info_), save_condition_(obj.save_condition_)
 {
 	player_info_.set_entity(*this);
 }
