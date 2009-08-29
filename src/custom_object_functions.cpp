@@ -139,6 +139,25 @@ private:
 	}
 };
 
+class unboard_command : public entity_command_callable {
+public:
+	virtual void execute(level& lvl, entity& ob) const {
+		std::cerr << "UNBOARD\n";
+		ob.unboarded(lvl);
+	}
+};
+
+class unboard_function : public function_expression {
+public:
+	explicit unboard_function(const args_list& args)
+	  : function_expression("unboard",args,0,0)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new unboard_command);
+	}
+};
+
 class stop_sound_command : public entity_command_callable
 {
 public:
@@ -1329,6 +1348,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new sound_function(args));
 	} else if(fn == "music") {
 		return expression_ptr(new music_function(args));
+	} else if(fn == "unboard") {
+		return expression_ptr(new unboard_function(args));
 	} else if(fn == "stop_sound") {
 		return expression_ptr(new stop_sound_function(args));
 	} else if(fn == "title") {

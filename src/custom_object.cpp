@@ -696,6 +696,8 @@ variant custom_object::get_value(const std::string& key) const
 		return variant(distance_to_cliff(*lvl_, feet_x(), feet_y(), face_dir() ));
 	} else if(key == "underwater") {
 		return variant(lvl_->is_underwater(body_rect()));
+	} else if(key == "driver") {
+		return variant(driver_.get());
 	}
 
 	std::map<std::string, particle_system_ptr>::const_iterator particle_itor = particle_systems_.find(key);
@@ -1056,6 +1058,7 @@ void custom_object::boarded(level& lvl, const entity_ptr& player)
 
 void custom_object::unboarded(level& lvl)
 {
+	std::cerr << "UNBOARDING...\n";
 	custom_object* vehicle(new custom_object(*this));
 	vehicle->driver_ = entity_ptr();
 	lvl.add_character(vehicle);

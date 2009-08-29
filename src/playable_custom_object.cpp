@@ -49,6 +49,7 @@ void playable_custom_object::process(level& lvl)
 
 	clear_control_status();
 	read_controls(lvl.cycle());
+
 	custom_object::process(lvl);
 }
 
