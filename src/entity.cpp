@@ -4,6 +4,7 @@
 #include "custom_object.hpp"
 #include "entity.hpp"
 #include "foreach.hpp"
+#include "playable_custom_object.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "wml_node.hpp"
@@ -33,7 +34,11 @@ entity::entity(int x, int y, bool face_right)
 entity_ptr entity::build(wml::const_node_ptr node)
 {
 	if(node->has_attr("is_human")) {
-		return entity_ptr(new pc_character(node));
+		if(node->has_attr("custom")) {
+			return entity_ptr(new playable_custom_object(node));
+		} else {
+			return entity_ptr(new pc_character(node));
+		}
 	} else if(node->has_attr("custom")) {
 		return entity_ptr(new custom_object(node));
 	} else {

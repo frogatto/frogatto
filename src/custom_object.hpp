@@ -90,12 +90,15 @@ public:
 
 	void set_text(const std::string& text, const std::string& font);
 
-private:
-	virtual void control(const level& lvl);
+	virtual int hitpoints() const { return hitpoints_; }
 
+protected:
+	virtual void control(const level& lvl);
+	variant get_value(const std::string& key) const;
+
+private:
 	bool is_standing(const level& lvl) const;
 
-	variant get_value(const std::string& key) const;
 	void get_inputs(std::vector<game_logic::formula_input>* inputs) const;
 	void set_value(const std::string& key, const variant& value);
 

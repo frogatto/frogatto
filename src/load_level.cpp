@@ -40,6 +40,7 @@ load_level_manager::~load_level_manager()
 
 void preload_level(const std::string& lvl)
 {
+	assert(!lvl.empty());
 	threading::lock lck(levels_loading_mutex);
 	if(levels_loading.count(lvl) == 0) {
 		levels_loading[lvl].first = new threading::thread(level_loader(lvl));

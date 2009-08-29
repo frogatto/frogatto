@@ -175,8 +175,10 @@ bool level_runner::play_cycle()
 
 		entity_ptr save = lvl_->player()->get_entity().save_condition();
 		if(!save) {
+			std::cerr << "NO SAVE; RESTART\n";
 			return false;
 		}
+		std::cerr << "LOAD SAVE\n";
 		preload_level(save->get_player_info()->current_level());
 		fade_scene(*lvl_, last_draw_position());
 		level* new_level = load_level(save->get_player_info()->current_level());
