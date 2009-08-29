@@ -951,7 +951,7 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 			if(i->second.empty() == false) {
 				tile = i->second.back();
 				std::cerr << "picking tile: '" << tile << "'\n";
-				return;
+				break;
 			}
 		}
 
