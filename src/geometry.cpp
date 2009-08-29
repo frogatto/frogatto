@@ -4,6 +4,7 @@
 #include "formatter.hpp"
 #include "geometry.hpp"
 #include "string_utils.hpp"
+#include "unit_test.hpp"
 
 point::point(const std::string& str)
 {
@@ -35,7 +36,7 @@ bool operator<(const point& a, const point& b) {
 
 std::string rect::to_string() const
 {
-	return formatter() << x() << "," << y() << "," << x2() << "," << y2();
+	return formatter() << x() << "," << y() << "," << (x2()-1) << "," << (y2()-1);
 }
 
 SDL_Rect rect::sdl_rect() const
@@ -179,4 +180,11 @@ std::ostream& operator<<(std::ostream& s, const rect& r)
 {
 	s << "rect(" << r.x() << ", " << r.y() << ", " << r.x2() << ", " << r.y2() << ")";
 	return s;
+}
+
+UNIT_TEST(rect)
+{
+	rect r(10, 10, 10, 10);
+	rect r2(r.to_string());
+	CHECK_EQ(r, r2);
 }
