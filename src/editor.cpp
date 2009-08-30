@@ -1439,6 +1439,25 @@ void editor::set_object(int index)
 	cur_object_ = index;
 }
 
+editor::EDIT_TOOL editor::tool() const
+{
+	const bool alt_pressed = (SDL_GetModState()&KMOD_ALT) != 0;
+	if(alt_pressed) {
+		switch(tool_) {
+		case TOOL_ADD_RECT:
+		case TOOL_SELECT_RECT:
+		case TOOL_MAGIC_WAND:
+		case TOOL_PENCIL:
+		case TOOL_PICKER:
+			return TOOL_PICKER;
+		default:
+			break;
+		}
+	}
+
+	return tool_;
+}
+
 void editor::change_tool(EDIT_TOOL tool)
 {
 	tool_ = tool;
@@ -1585,7 +1604,7 @@ void editor::draw() const
 	graphics::blit_texture(t, x, y);
 	}
 
-	if(tool_ == TOOL_ADD_OBJECT && !lvl_->editor_highlight()) {
+	if(tool() == TOOL_ADD_OBJECT && !lvl_->editor_highlight()) {
 		int x = round_tile_size(xpos_ + mousex*zoom_);
 		int y = round_tile_size(ypos_ + mousey*zoom_);
 		if(ctrl_pressed) {

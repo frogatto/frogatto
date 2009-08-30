@@ -75,7 +75,7 @@ public:
 	const std::vector<const_prop_ptr>& get_props() const;
 
 	enum EDIT_TOOL { TOOL_ADD_RECT, TOOL_SELECT_RECT, TOOL_MAGIC_WAND, TOOL_PENCIL, TOOL_PICKER, TOOL_ADD_OBJECT, TOOL_SELECT_OBJECT, NUM_TOOLS };
-	EDIT_TOOL tool() const { return tool_; }
+	EDIT_TOOL tool() const;
 	void change_tool(EDIT_TOOL tool);
 
 	level& get_level() { return *lvl_; }
