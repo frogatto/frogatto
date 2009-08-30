@@ -27,7 +27,8 @@
 #include "color_utils.hpp"
 
 level::level(const std::string& level_cfg)
-	: id_(level_cfg), entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
+	: id_(level_cfg), highlight_layer_(INT_MIN),
+	  entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
 	  editor_(false), show_foreground_(true), show_background_(true), air_resistance_(0), water_resistance_(7), end_game_(false),
       hide_status_bar_(false), tint_(0)
 {
@@ -507,10 +508,23 @@ void level::set_next_level(const std::string& name)
 	right_portal_.automatic = true;
 }
 
+namespace {
+//counter incremented every time the level is drawn.
+int draw_count = 0;
+}
+
 void level::draw_layer(int layer, int x, int y, int w, int h) const
 {
 	if(layer >= 1000 && editor_ && show_foreground_ == false) {
 		return;
+	}
+
+	if(editor_ && layer == highlight_layer_) {
+		const GLfloat alpha = 0.3 + (1.0+sin(draw_count/5.0))*0.35;
+		glColor4f(1.0, 1.0, 1.0, alpha);
+
+	} else if(editor_ && hidden_layers_.count(layer)) {
+		glColor4f(1.0, 1.0, 1.0, 0.3);
 	}
 
 	glPushMatrix();
@@ -563,10 +577,14 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 	}
 
 	glPopMatrix();
+
+	glColor4f(1.0, 1.0, 1.0, 1.0);
 }
 
 void level::draw(int x, int y, int w, int h) const
 {
+	++draw_count;
+
 	const int start_x = x;
 	const int start_y = y;
 
@@ -658,10 +676,8 @@ void level::draw(int x, int y, int w, int h) const
 	}
 
 	if(editor_highlight_ || !editor_selection_.empty()) {
-		static int selection = 0;
-		++selection;
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-		const GLfloat alpha = 0.5 + sin(selection/5.0)*0.5;
+		const GLfloat alpha = 0.5 + sin(draw_count/5.0)*0.5;
 		glColor4f(1.0, 1.0, 1.0, alpha);
 
 		if(editor_highlight_) {
@@ -1210,6 +1226,10 @@ void level::clear_tile_rect(int x1, int y1, int x2, int y2)
 	bool changed = false;
 	std::vector<std::string> v(1, "");
 	for(std::set<int>::const_iterator i = layers_.begin(); i != layers_.end(); ++i) {
+		if(hidden_layers_.count(*i)) {
+			continue;
+		}
+
 		if(add_tile_rect_vector_internal(*i, x1, y1, x2, y2, v)) {
 			changed = true;
 		}
@@ -1882,5 +1902,27 @@ void level::restore_from_backup(backup_snapshot& snapshot)
 		if(e->label().empty() == false) {
 			chars_by_label_[e->label()] = e;
 		}
+	}
+}
+
+void level::get_tile_layers(std::set<int>* all_layers, std::set<int>* hidden_layers)
+{
+	if(all_layers) {
+		foreach(const level_tile& t, tiles_) {
+			all_layers->insert(t.zorder);
+		}
+	}
+
+	if(hidden_layers) {
+		*hidden_layers = hidden_layers_;
+	}
+}
+
+void level::hide_tile_layer(int layer, bool is_hidden)
+{
+	if(is_hidden) {
+		hidden_layers_.insert(layer);
+	} else {
+		hidden_layers_.erase(layer);
 	}
 }

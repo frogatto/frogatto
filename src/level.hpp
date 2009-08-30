@@ -203,6 +203,11 @@ public:
 
 	bool is_multiplayer() const { return players_.size() > 1; }
 
+	void get_tile_layers(std::set<int>* all_layers, std::set<int>* hidden_layers=NULL);
+	void hide_tile_layer(int layer, bool is_hidden);
+
+	void highlight_tile_layer(int layer) { highlight_layer_ = layer; }
+
 private:
 	void do_processing();
 
@@ -259,6 +264,8 @@ private:
 	std::vector<rect> passthrough_rects_;
 	std::vector<level_tile> tiles_;
 	std::set<int> layers_;
+	std::set<int> hidden_layers_; //layers hidden in the editor.
+	int highlight_layer_;
 	std::vector<entity_ptr> chars_;
 	std::vector<entity_ptr> active_chars_;
 

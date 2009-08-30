@@ -17,6 +17,7 @@
 #include "debug_console.hpp"
 #include "editor.hpp"
 #include "editor_dialogs.hpp"
+#include "editor_layers_dialog.hpp"
 #include "entity.hpp"
 #include "filesystem.hpp"
 #include "font.hpp"
@@ -637,6 +638,7 @@ void editor::edit_level()
 	g_last_edited_level = filename_;
 
 	tileset_dialog_.reset(new editor_dialogs::tileset_editor_dialog(*this));
+	layers_dialog_.reset(new editor_dialogs::editor_layers_dialog(*this));
 	current_dialog_ = tileset_dialog_.get();
 
 	glEnable(GL_SMOOTH);
@@ -746,6 +748,10 @@ void editor::edit_level()
 			}
 
 			if(current_dialog_ && current_dialog_->process_event(event, false)) {
+				continue;
+			}
+
+			if(layers_dialog_ && layers_dialog_->process_event(event, false)) {
 				continue;
 			}
 			
@@ -1298,6 +1304,10 @@ void editor::add_tile_rect(int x1, int y1, int x2, int y2)
 	execute_command(
 	  boost::bind(&level::add_tile_rect, lvl_.get(), zorder, x1, y1, x2, y2, tilesets[cur_tileset_].type),
 	  boost::bind(&level::add_tile_rect_vector, lvl_.get(), zorder, x1, y1, x2, y2, old_rect));
+
+	if(layers_dialog_) {
+		layers_dialog_->init();
+	}
 }
 
 void editor::remove_tile_rect(int x1, int y1, int x2, int y2)
@@ -1736,6 +1746,10 @@ void editor::draw() const
 		current_dialog_->draw();
 	}
 
+	if(layers_dialog_) {
+		layers_dialog_->draw();
+	}
+
 	editor_menu_dialog_->draw();
 	editor_mode_dialog_->draw();
 	gui::draw_tooltip();
@@ -1811,6 +1825,10 @@ void editor::undo_command()
 	undo_.back().undo_command();
 	redo_.push_back(undo_.back());
 	undo_.pop_back();
+
+	if(layers_dialog_) {
+		layers_dialog_->init();
+	}
 }
 
 void editor::redo_command()
@@ -1822,4 +1840,8 @@ void editor::redo_command()
 	redo_.back().redo_command();
 	undo_.push_back(redo_.back());
 	redo_.pop_back();
+
+	if(layers_dialog_) {
+		layers_dialog_->init();
+	}
 }

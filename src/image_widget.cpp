@@ -68,6 +68,11 @@ gui_section_widget::gui_section_widget(const std::string& id, int w, int h)
 	}
 }
 
+void gui_section_widget::set_gui_section(const std::string& id)
+{
+	section_ = gui_section::get(id);
+}
+
 void gui_section_widget::handle_draw() const
 {
 	if(section_) {
