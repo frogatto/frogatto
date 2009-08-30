@@ -56,7 +56,7 @@ static std::map<std::string, editor*> all_editors;
 //the last level we edited
 std::string g_last_edited_level;
 
-bool g_draw_stats = true;
+bool g_draw_stats = false;
 
 void toggle_draw_stats() {
 	g_draw_stats = !g_draw_stats;
@@ -692,7 +692,9 @@ void editor::edit_level()
 			}
 
 			lvl_->set_editor_highlight(c);
-			if(ghost_objects_.empty() && c) {
+			//See if we should add ghost objects. Human objects don't get
+			//ghost (it doesn't make much sense for them to do so)
+			if(ghost_objects_.empty() && c && !c->is_human()) {
 				//we have an object but no ghost for it, make the
 				//object's ghost and deploy it.
 				entity_ptr clone = c->clone();
@@ -923,6 +925,9 @@ void editor::handle_object_dragging(int mousex, int mousey)
 			  boost::bind(execute_functions, redo),
 			  boost::bind(execute_functions, undo));
 		}
+
+		remove_ghost_objects();
+		ghost_objects_.clear();
 	}
 }
 
@@ -993,10 +998,8 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 		g_variable_editing = variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_);
 		g_variable_editing_original_value = property_dialog_->get_entity()->query_value(g_variable_editing->variable_name()).as_int();
 		
-	} else if(editing_objects()) {
-		drawing_rect_ = true;
 	} else if(tool() == TOOL_SELECT_OBJECT && !lvl_->editor_highlight()) {
-		//selecting objects
+		//dragging a rectangle to select objects
 		drawing_rect_ = true;
 	} else if(property_dialog_) {
 		property_dialog_->set_entity(lvl_->editor_highlight());
@@ -1244,7 +1247,7 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 			execute_command(
 			  boost::bind(execute_functions, redo),
 			  boost::bind(execute_functions, undo));
-		} else if(tool() == TOOL_SELECT_OBJECT) {
+		} else if(tool() == TOOL_SELECT_OBJECT && drawing_rect_) {
 			std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos, ypos));
 			foreach(const entity_ptr& c, chars) {
 				lvl_->editor_select_object(c);

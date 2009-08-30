@@ -31,7 +31,7 @@ void property_editor_dialog::init()
 
 	using namespace gui;
 
-	set_padding(20);
+	set_padding(5);
 
 	const frame& frame = entity_->current_frame();
 	image_widget* preview = new image_widget(frame.img());
