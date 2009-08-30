@@ -117,6 +117,8 @@ private:
 
 	void set_selection(const tile_selection& s);
 
+	void move_object(entity_ptr e, int delta_x, int delta_y);
+
 	bool editing_objects() const { return tool_ == TOOL_ADD_OBJECT || tool_ == TOOL_SELECT_OBJECT; }
 	bool editing_tiles() const { return !editing_objects(); }
 

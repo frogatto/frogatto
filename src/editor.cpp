@@ -918,9 +918,8 @@ void editor::handle_object_dragging(int mousex, int mousey)
 		std::vector<boost::function<void()> > redo, undo;
 
 		foreach(const entity_ptr& e, lvl_->editor_selection()) {
-			redo.push_back(boost::bind(&entity::set_pos, e, e->x() + delta_x, e->y() + delta_y));
-			undo.push_back(
-			    boost::bind(&entity::set_pos, e, e->x(), e->y()));
+			redo.push_back(boost::bind(&editor::move_object, this, e, delta_x, delta_y));
+			undo.push_back(boost::bind(&editor::move_object, this, e, -delta_x, -delta_y));
 			execute_command(
 			  boost::bind(execute_functions, redo),
 			  boost::bind(execute_functions, undo));
@@ -1402,6 +1401,31 @@ void editor::select_magic_wand(int xpos, int ypos)
 void editor::set_selection(const tile_selection& s)
 {
 	tile_selection_ = s;
+}
+
+void editor::move_object(entity_ptr e, int delta_x, int delta_y)
+{
+	e->set_pos(e->x() + delta_x, e->y() + delta_y);
+
+	//update any x/y co-ordinates to be the same relative to the object's
+	//new position.
+	foreach(const editor_variable_info& var, e->editor_info()->vars()) {
+		const variant value = e->query_value(var.variable_name());
+		switch(var.type()) {
+		case editor_variable_info::XPOSITION:
+			if(value.is_int()) {
+				e->mutate_value(var.variable_name(), variant(value.as_int() + delta_x));
+			}
+			break;
+		case editor_variable_info::YPOSITION:
+			if(value.is_int()) {
+				e->mutate_value(var.variable_name(), variant(value.as_int() + delta_y));
+			}
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 const std::vector<editor::tileset>& editor::all_tilesets() const
