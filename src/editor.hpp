@@ -3,6 +3,7 @@
 
 #include <boost/function.hpp>
 #include <boost/scoped_ptr.hpp>
+#include <stack>
 #include <vector>
 
 #include "geometry.hpp"
@@ -103,7 +104,20 @@ public:
 	void add_tile_rect(int zorder, const std::string& tile_id, int x1, int y1, int x2, int y2);
 
 	//function to execute a command which will go into the undo/redo list.
+	//normally any time the editor mutates the level, it should be done
+	//through this function
 	void execute_command(boost::function<void()> command, boost::function<void()> undo);
+
+	//functions to begin and end a group of commands. This is used when we
+	//are going to execute a bunch of commands, and from the point of view of
+	//undoing, they should be viewed as a single operation.
+	//When end_command_group() is called, all calls to execute_command since
+	//the corresponding call to begin_command_group() will be rolled up
+	//into a single command.
+	//
+	//These functions are re-entrant.
+	void begin_command_group();
+	void end_command_group();
 
 private:
 	void handle_mouse_button_down(const SDL_MouseButtonEvent& event);
@@ -171,6 +185,13 @@ private:
 	};
 
 	std::vector<executable_command> undo_, redo_;
+
+	//indexes into undo_ which records the beginning of the current 'group'
+	//of commands. When begin_command_group() is called, a value is added
+	//set to the size of undo_. When end_command_group() is called, all
+	//commands with index > the top value are aggregated into a single command,
+	//and the top value is popped.
+	std::stack<int> undo_commands_groups_;
 
 	std::vector<entity_ptr> ghost_objects_;
 

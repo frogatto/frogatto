@@ -245,7 +245,12 @@ void execute(const std::string& id, editor& e)
 
 	formula_callable_ptr callable(new editor_command_callable(e));
 	const variant cmd = itor->second->execute(*callable);
+
+	//execute the command, making sure the editor allows the user to undo the
+	//entire script in one go.
+	e.begin_command_group();
 	execute_command(cmd, e);
+	e.end_command_group();
 }
 
 }

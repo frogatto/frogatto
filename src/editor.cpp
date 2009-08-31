@@ -1947,6 +1947,41 @@ void editor::execute_command(boost::function<void()> command, boost::function<vo
 	redo_.clear();
 }
 
+void editor::begin_command_group()
+{
+	undo_commands_groups_.push(undo_.size());
+}
+
+void editor::end_command_group()
+{
+	ASSERT_NE(undo_commands_groups_.empty(), true);
+
+	const int index = undo_commands_groups_.top();
+	undo_commands_groups_.pop();
+
+	if(index >= undo_.size()) {
+		return;
+	}
+
+	//group all of the commands since beginning into one command
+	std::vector<boost::function<void()> > undo, redo;
+	for(int n = index; n != undo_.size(); ++n) {
+		undo.push_back(undo_[n].undo_command);
+		redo.push_back(undo_[n].redo_command);
+	}
+
+	//reverse the undos, since we want them executed in reverse order.
+	std::reverse(undo.begin(), undo.end());
+
+	executable_command cmd;
+	cmd.redo_command = boost::bind(execute_functions, redo);
+	cmd.undo_command = boost::bind(execute_functions, undo);
+
+	//replace all the individual commands with the one group command.
+	undo_.erase(undo_.begin() + index, undo_.end());
+	undo_.push_back(cmd);
+}
+
 void editor::undo_command()
 {
 	if(undo_.empty()) {
