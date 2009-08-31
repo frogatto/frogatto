@@ -175,7 +175,7 @@ public:
 	{}
 private:
 	variant get_value(const std::string& key) const {
-		if(key == "tiles") {
+		if(key == "cells") {
 			std::vector<variant> result;
 
 			const editor::tile_selection& selection = editor_.selection();

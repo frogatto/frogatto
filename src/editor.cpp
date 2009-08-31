@@ -1489,21 +1489,23 @@ void editor::move_object(entity_ptr e, int delta_x, int delta_y)
 
 	//update any x/y co-ordinates to be the same relative to the object's
 	//new position.
-	foreach(const editor_variable_info& var, e->editor_info()->vars()) {
-		const variant value = e->query_value(var.variable_name());
-		switch(var.type()) {
-		case editor_variable_info::XPOSITION:
-			if(value.is_int()) {
-				e->mutate_value(var.variable_name(), variant(value.as_int() + delta_x));
+	if(e->editor_info()) {
+		foreach(const editor_variable_info& var, e->editor_info()->vars()) {
+			const variant value = e->query_value(var.variable_name());
+			switch(var.type()) {
+			case editor_variable_info::XPOSITION:
+				if(value.is_int()) {
+					e->mutate_value(var.variable_name(), variant(value.as_int() + delta_x));
+				}
+				break;
+			case editor_variable_info::YPOSITION:
+				if(value.is_int()) {
+					e->mutate_value(var.variable_name(), variant(value.as_int() + delta_y));
+				}
+				break;
+			default:
+				break;
 			}
-			break;
-		case editor_variable_info::YPOSITION:
-			if(value.is_int()) {
-				e->mutate_value(var.variable_name(), variant(value.as_int() + delta_y));
-			}
-			break;
-		default:
-			break;
 		}
 	}
 }
