@@ -1,3 +1,4 @@
+#include <GL/glew.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <SDL/SDL.h>
@@ -10,6 +11,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/scoped_ptr.hpp>
 
+#include "asserts.hpp"
 #include "character_type.hpp"
 #include "controls.hpp"
 #include "custom_object_functions.hpp"
@@ -217,6 +219,9 @@ extern "C" int main(int argc, char** argv)
 	glEnable(GL_BLEND);
 	glEnable(GL_TEXTURE_2D);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	GLenum glew_status = glewInit();
+	ASSERT_EQ(glew_status, GLEW_OK);
 
 	bool quit = false;
 	const std::string orig_level_cfg = level_cfg;
