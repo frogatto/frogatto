@@ -292,8 +292,6 @@ class editor_mode_dialog : public gui::dialog
 		if(tool >= 0 && tool < editor::NUM_TOOLS) {
 			editor_.change_tool(static_cast<editor::EDIT_TOOL>(tool));
 		}
-
-		init();
 	}
 
 	bool handle_event(const SDL_Event& event, bool claimed)
@@ -1033,7 +1031,6 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 	}
 
 	if(lvl_->editor_highlight()) {
-
 		if(std::count(lvl_->editor_selection().begin(),
 		              lvl_->editor_selection().end(), lvl_->editor_highlight()) == 0) {
 			//set the object as selected in the editor.
@@ -1044,9 +1041,15 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 			lvl_->editor_select_object(lvl_->editor_highlight());
 			group_property_dialog_->set_group(lvl_->editor_selection());
 
+			if(!lvl_->editor_selection().empty() && tool() != TOOL_SELECT_OBJECT) {
+				//we are in add objects mode and we clicked on an object,
+				//so change to select mode.
+				change_tool(TOOL_SELECT_OBJECT);
+			}
+
 			if(lvl_->editor_selection().size() > 1) {
 				current_dialog_ = group_property_dialog_.get();
-			} else {
+			} else if(lvl_->editor_selection().size() == 1) {
 				current_dialog_ = property_dialog_.get();
 			}
 		}
@@ -1312,6 +1315,12 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 				property_dialog_->set_entity(lvl_->editor_selection().front());
 			} else {
 				current_dialog_ = group_property_dialog_.get();
+			}
+
+			if(lvl_->editor_selection().empty()) {
+				//if we choose an empty selection we revert to add
+				//objects mode.
+				change_tool(TOOL_ADD_OBJECT);
 			}
 		}
 	}
@@ -1595,6 +1604,10 @@ void editor::change_tool(EDIT_TOOL tool)
 		current_dialog_ = property_dialog_.get();
 		break;
 	}
+	}
+
+	if(editor_mode_dialog_) {
+		editor_mode_dialog_->init();
 	}
 }
 
