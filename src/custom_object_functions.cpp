@@ -1438,12 +1438,13 @@ void init_custom_object_functions(wml::const_node_ptr node)
 	wml::node::const_child_iterator i1 = node->begin_child("function");
 	wml::node::const_child_iterator i2 = node->end_child("function");
 	for(; i1 != i2; ++i1) {
+		const std::string& name = i1->second->attr("name");
+		std::vector<std::string> args = util::split(i1->second->attr("args"));
+		recursive_function_symbol_table recursive_symbols(name, args, &get_custom_object_functions_symbol_table());
+		const_formula_ptr fml(new formula(i1->second->attr("formula"), &recursive_symbols));
 		get_custom_object_functions_symbol_table().add_formula_function(
-		    i1->second->attr("name"),
-			const_formula_ptr(new formula(i1->second->attr("formula"),
-			                    &get_custom_object_functions_symbol_table())),
-			const_formula_ptr(),
-		    util::split(i1->second->attr("args")));
+		    name, fml, const_formula_ptr(), args);
+		recursive_symbols.resolve_recursive_calls(fml);
 		std::vector<std::string> names = get_custom_object_functions_symbol_table().get_function_names();
 		assert(std::count(names.begin(), names.end(), i1->second->attr("name").val()));
 	}

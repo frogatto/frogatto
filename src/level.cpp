@@ -347,7 +347,7 @@ void level::rebuild_tiles_rect(const rect& r)
 	for(std::map<int, tile_map>::const_iterator i = tile_maps_.begin(); i != tile_maps_.end(); ++i) {
 		i->second.build_tiles(&tiles, &r);
 	}
-	
+
 	foreach(level_tile& t, tiles) {
 		add_tile_solid(t);
 		tiles_.push_back(t);
@@ -1114,10 +1114,12 @@ void level::add_tile_rect_vector(int zorder, int x1, int y1, int x2, int y2, con
 	if(y1 > y2) {
 		std::swap(y1, y2);
 	}
-	const bool changed = add_tile_rect_vector_internal(zorder, x1, y1, x2, y2, tiles);
-	if(changed) {
-		rebuild_tiles_rect(rect(x1-64, y1-128, (x2 - x1) + 128, (y2 - y1) + 256));
-	}
+	add_tile_rect_vector_internal(zorder, x1, y1, x2, y2, tiles);
+}
+
+void level::refresh_tile_rect(int x1, int y1, int x2, int y2)
+{
+	rebuild_tiles_rect(rect(x1-64, y1-128, (x2 - x1) + 128, (y2 - y1) + 256));
 }
 
 namespace {
@@ -1233,10 +1235,6 @@ void level::clear_tile_rect(int x1, int y1, int x2, int y2)
 		if(add_tile_rect_vector_internal(*i, x1, y1, x2, y2, v)) {
 			changed = true;
 		}
-	}
-
-	if(changed) {
-		rebuild_tiles_rect(rect(x1-64, y1-128, (x2 - x1) + 128, (y2 - y1) + 256));
 	}
 }
 

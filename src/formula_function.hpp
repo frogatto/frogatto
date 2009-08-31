@@ -20,7 +20,7 @@
 #include <iostream>
 #include <map>
 
-#include "formula.hpp"
+#include "formula_fwd.hpp"
 #include "variant.hpp"
 
 namespace game_logic {
@@ -48,20 +48,7 @@ public:
 	explicit function_expression(
 	                    const std::string& name,
 	                    const args_list& args,
-	                    int min_args=-1, int max_args=-1)
-	    : name_(name), args_(args)
-	{
-		set_name(name.c_str());
-		if(min_args >= 0 && args_.size() < static_cast<size_t>(min_args)) {
-			std::cerr << "ERROR: incorrect number of arguments to function '" << name << "': expected [" << min_args << "," << max_args << "], found " << args_.size() << "\n";
-			throw formula_error();
-		}
-
-		if(max_args >= 0 && args_.size() > static_cast<size_t>(max_args)) {
-			std::cerr << "ERROR: incorrect number of arguments to function '" << name << "': expected [" << min_args << "," << max_args << "], found " << args_.size() << "\n";
-			throw formula_error();
-		}
-	}
+	                    int min_args=-1, int max_args=-1);
 
 protected:
 	const args_list& args() const { return args_; }
@@ -73,6 +60,9 @@ private:
 class formula_function_expression : public function_expression {
 public:
 	explicit formula_function_expression(const std::string& name, const args_list& args, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& arg_names);
+	virtual ~formula_function_expression() {}
+
+	void set_formula(const_formula_ptr f) { formula_ = f; }
 private:
 	variant execute(const formula_callable& variables) const;
 	const_formula_ptr formula_;
@@ -82,6 +72,7 @@ private:
 };
 
 typedef boost::shared_ptr<function_expression> function_expression_ptr;
+typedef boost::shared_ptr<formula_function_expression> formula_function_expression_ptr;
 
 class formula_function {
 	std::string name_;
@@ -93,7 +84,7 @@ public:
 	formula_function(const std::string& name, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& args) : name_(name), formula_(formula), precondition_(precondition), args_(args)
 	{}
 
-	function_expression_ptr generate_function_expression(const std::vector<expression_ptr>& args) const;
+	formula_function_expression_ptr generate_function_expression(const std::vector<expression_ptr>& args) const;
 };	
 
 class function_symbol_table {
@@ -104,6 +95,22 @@ public:
 	virtual expression_ptr create_function(const std::string& fn,
 					                       const std::vector<expression_ptr>& args) const;
 	std::vector<std::string> get_function_names() const;
+};
+
+//a special symbol table which is used to facilitate recursive functions.
+//it is given to a formula function during parsing, and will give out
+//function stubs for recursive calls. At the end of parsing it can fill
+//in the real call.
+class recursive_function_symbol_table : public function_symbol_table {
+	std::string name_;
+	formula_function stub_;
+	function_symbol_table* backup_;
+	mutable std::vector<formula_function_expression_ptr> expr_;
+public:
+	recursive_function_symbol_table(const std::string& fn, const std::vector<std::string>& args, function_symbol_table* backup);
+	virtual expression_ptr create_function(const std::string& fn,
+					                       const std::vector<expression_ptr>& args) const;
+	void resolve_recursive_calls(const_formula_ptr f);
 };
 
 expression_ptr create_function(const std::string& fn,

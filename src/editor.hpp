@@ -63,6 +63,8 @@ public:
 		std::vector<point> tiles;
 	};
 
+	const tile_selection& selection() const { return tile_selection_; }
+
 	const std::vector<tileset>& all_tilesets() const;
 	int get_tileset() const { return cur_tileset_; }
 	void set_tileset(int index);
@@ -93,6 +95,12 @@ public:
 
 	//make the selected objects part of a group
 	void group_selection();
+
+	void run_script(const std::string& id);
+
+	//function which gets the expected layer at which a certain tile id appears.
+	int get_tile_zorder(const std::string& tile_id) const;
+	void add_tile_rect(int zorder, const std::string& tile_id, int x1, int y1, int x2, int y2);
 
 	//function to execute a command which will go into the undo/redo list.
 	void execute_command(boost::function<void()> command, boost::function<void()> undo);

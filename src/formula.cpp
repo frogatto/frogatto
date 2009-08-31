@@ -352,6 +352,8 @@ private:
 	const formula_callable& base_;
 	expr_table_ptr table_;
 
+	mutable std::map<std::string, variant> results_cache_;
+
 	void get_inputs(std::vector<formula_input>* inputs) const {
 		for(expr_table::const_iterator i = table_->begin(); i != table_->end(); ++i) {
 			inputs->push_back(formula_input(i->first, FORMULA_READ_ONLY));
@@ -361,7 +363,14 @@ private:
 	variant get_value(const std::string& key) const {
 		expr_table::iterator i = table_->find(key);
 		if(i != table_->end()) {
-			return i->second->evaluate(base_);
+			std::map<std::string, variant>::const_iterator itor = results_cache_.find(key);
+			if(itor != results_cache_.end()) {
+				return itor->second;
+			}
+
+			variant result = i->second->evaluate(base_);
+			results_cache_[key] = result;
+			return result;
 		}
 		return base_.query_value(key);
 	}
@@ -673,11 +682,13 @@ expression_ptr parse_expression(const token* i1, const token* i2, function_symbo
 				++i1;
 			}
 			const std::string formula_str = std::string(beg->begin, (i1-1)->end);
+
+			recursive_function_symbol_table recursive_symbols(formula_name, args, symbols);
+			const_formula_ptr fml(new formula(formula_str, &recursive_symbols));
+			recursive_symbols.resolve_recursive_calls(fml);
 			const std::string precond = "";
-			symbols->add_formula_function(formula_name,
-					const_formula_ptr(new formula(formula_str, symbols)),
-					formula::create_optional_formula(precond, symbols),
-					args);
+			symbols->add_formula_function(formula_name, fml,
+					formula::create_optional_formula(precond, symbols), args);
 			if((i1 == i2) || (i1 == (i2-1))) {
 				return expression_ptr(new function_list_expression(symbols));
 			}

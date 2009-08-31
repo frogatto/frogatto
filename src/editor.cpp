@@ -17,6 +17,7 @@
 #include "debug_console.hpp"
 #include "editor.hpp"
 #include "editor_dialogs.hpp"
+#include "editor_formula_functions.hpp"
 #include "editor_layers_dialog.hpp"
 #include "entity.hpp"
 #include "filesystem.hpp"
@@ -136,6 +137,16 @@ class editor_menu_dialog : public gui::dialog
 		show_menu(res);
 	}
 
+	void show_scripts_menu() {
+		std::vector<menu_item> res;
+		foreach(const editor_script::info& script, editor_script::all_scripts()) {
+			menu_item item = { script.name, "", boost::bind(&editor::run_script, &editor_, script.name) };
+			res.push_back(item);
+		}
+		
+		show_menu(res);
+	}
+
 	void show_window_menu() {
 		std::vector<menu_item> res;
 		for(std::map<std::string, editor*>::const_iterator i = all_editors.begin(); i != all_editors.end(); ++i) {
@@ -186,7 +197,7 @@ public:
 		clear();
 
 		using namespace gui;
-		gui::grid* grid = new gui::grid(5);
+		gui::grid* grid = new gui::grid(6);
 		grid->add_col(widget_ptr(
 		  new button(widget_ptr(new label("File", graphics::color_white())),
 		             boost::bind(&editor_menu_dialog::show_file_menu, this))));
@@ -202,6 +213,11 @@ public:
 		grid->add_col(widget_ptr(
 		  new button(widget_ptr(new label("Statistics", graphics::color_white())),
 		             boost::bind(&editor_menu_dialog::show_stats_menu, this))));
+		add_widget(widget_ptr(grid));
+
+		grid->add_col(widget_ptr(
+		  new button(widget_ptr(new label("Scripts", graphics::color_white())),
+		             boost::bind(&editor_menu_dialog::show_scripts_menu, this))));
 		add_widget(widget_ptr(grid));
 	}
 
@@ -835,16 +851,28 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 	}
 
 	if(!tile_selection_.empty() && (key.keysym.sym == SDLK_DELETE || key.keysym.sym == SDLK_BACKSPACE)) {
+		int min_x = INT_MAX, min_y = INT_MAX, max_x = INT_MIN, max_y = INT_MIN;
 		std::vector<boost::function<void()> > redo, undo;
 		foreach(const point& p, tile_selection_.tiles) {
 			const int x = p.x*TileSize;
 			const int y = p.y*TileSize;
+
+			min_x = std::min(x, min_x);
+			max_x = std::max(x, max_x);
+			min_y = std::min(y, min_y);
+			max_y = std::max(y, max_y);
+
 			redo.push_back(boost::bind(&level::clear_tile_rect, lvl_.get(), x, y, x, y));
 			std::map<int, std::vector<std::string> > old_tiles;
 			lvl_->get_all_tiles_rect(x, y, x, y, old_tiles);
 			for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
 				undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x, y, x, y, i->second));
 			}
+		}
+
+		if(!tile_selection_.tiles.empty()) {
+			undo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), min_x, min_y, max_x, max_y));
+			redo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), min_x, min_y, max_x, max_y));
 		}
 
 		execute_command(
@@ -979,7 +1007,7 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 	   std::binary_search(tile_selection_.tiles.begin(), tile_selection_.tiles.end(), point(round_tile_size(anchorx_)/TileSize, round_tile_size(anchory_)/TileSize))) {
 		//we are beginning to drag our selection
 		dragging_ = true;
-	} else if(tool() == TOOL_ADD_RECT) {
+	} else if(tool() == TOOL_ADD_RECT || tool() == TOOL_SELECT_RECT) {
 		drawing_rect_ = true;
 	} else if(tool() == TOOL_MAGIC_WAND) {
 		drawing_rect_ = false;
@@ -1171,10 +1199,18 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 				undo.push_back(boost::bind(&level::clear_tile_rect,lvl_.get(), x, y, x, y));
 			}
 
+			int min_x = INT_MAX, min_y = INT_MAX, max_x = INT_MIN, max_y = INT_MIN;
+
 			//backup both the contents of the old and new regions, so we can restore them both
 			foreach(const point& p, tile_selection_.tiles) {
 				int x = p.x*TileSize;
 				int y = p.y*TileSize;
+
+				min_x = std::min(x, min_x);
+				max_x = std::max(x, max_x);
+				min_y = std::min(y, min_y);
+				max_y = std::max(y, max_y);
+
 				std::map<int, std::vector<std::string> > old_tiles;
 				lvl_->get_all_tiles_rect(x, y, x, y, old_tiles);
 				for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
@@ -1186,6 +1222,12 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 	
 				x += diffx*TileSize;
 				y += diffy*TileSize;
+
+				min_x = std::min(x, min_x);
+				max_x = std::max(x, max_x);
+				min_y = std::min(y, min_y);
+				max_y = std::max(y, max_y);
+
 				lvl_->get_all_tiles_rect(x, y, x, y, old_tiles);
 				for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
 					undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x, y, x, y, i->second));
@@ -1197,11 +1239,22 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 			foreach(const point& p, tile_selection_.tiles) {
 				const int x = p.x*TileSize;
 				const int y = p.y*TileSize;
+
+				min_x = std::min(x + diffx*TileSize, min_x);
+				max_x = std::max(x + diffx*TileSize, max_x);
+				min_y = std::min(y + diffy*TileSize, min_y);
+				max_y = std::max(y + diffy*TileSize, max_y);
+
 				std::map<int, std::vector<std::string> > old_tiles;
 				lvl_->get_all_tiles_rect(x, y, x, y, old_tiles);
 				for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
 					redo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x + diffx*TileSize, y + diffy*TileSize, x + diffx*TileSize, y + diffy*TileSize, i->second));
 				}
+			}
+
+			if(!tile_selection_.tiles.empty()) {
+				undo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), min_x, min_y, max_x, max_y));
+				redo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), min_x, min_y, max_x, max_y));
 			}
 
 			tile_selection new_selection = tile_selection_;
@@ -1297,32 +1350,59 @@ void editor::download_stats()
 	}
 }
 
-void editor::add_tile_rect(int x1, int y1, int x2, int y2)
+int editor::get_tile_zorder(const std::string& tile_id) const
 {
-	const int zorder = tilesets[cur_tileset_].zorder;
+	foreach(const editor::tileset& tile, tilesets) {
+		if(tile.type == tile_id) {
+			return tile.zorder;
+		}
+	}
+
+	return 0;
+}
+
+void editor::add_tile_rect(int zorder, const std::string& tile_id, int x1, int y1, int x2, int y2)
+{
 	std::vector<std::string> old_rect;
 	lvl_->get_tile_rect(zorder, x1, y1, x2, y2, old_rect);
 
+	std::vector<boost::function<void()> > undo, redo;
+
+	redo.push_back(boost::bind(&level::add_tile_rect, lvl_.get(), zorder, x1, y1, x2, y2, tile_id));
+	undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), zorder, x1, y1, x2, y2, old_rect));
+
+	redo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), x1, y1, x2, y2));
+	undo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), x1, y1, x2, y2));
+
 	execute_command(
-	  boost::bind(&level::add_tile_rect, lvl_.get(), zorder, x1, y1, x2, y2, tilesets[cur_tileset_].type),
-	  boost::bind(&level::add_tile_rect_vector, lvl_.get(), zorder, x1, y1, x2, y2, old_rect));
+	  boost::bind(execute_functions, redo),
+	  boost::bind(execute_functions, undo));
 
 	if(layers_dialog_) {
 		layers_dialog_->init();
 	}
 }
 
+void editor::add_tile_rect(int x1, int y1, int x2, int y2)
+{
+	add_tile_rect(tilesets[cur_tileset_].zorder, tilesets[cur_tileset_].type, x1, y1, x2, y2);
+}
+
 void editor::remove_tile_rect(int x1, int y1, int x2, int y2)
 {
 	std::map<int, std::vector<std::string> > old_tiles;
 	lvl_->get_all_tiles_rect(x1, y1, x2, y2, old_tiles);
-	std::vector<boost::function<void()> > undo;
+	std::vector<boost::function<void()> > redo, undo;
 	for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
 		undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x1, y1, x2, y2, i->second));
 	}
 
+	redo.push_back(boost::bind(&level::clear_tile_rect, lvl_.get(), x1, y1, x2, y2));
+	redo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), x1, y1, x2, y2));
+	undo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), x1, y1, x2, y2));
+
 	execute_command(
-	  boost::bind(&level::clear_tile_rect, lvl_.get(), x1, y1, x2, y2),
+	  boost::bind(execute_functions, redo),
 	  boost::bind(execute_functions, undo));
 }
 
@@ -1849,6 +1929,11 @@ void editor::draw_selection(int xoffset, int yoffset) const
 	glEnd();
 	glDisable(GL_LINE_STIPPLE);
 	glLineStipple(1, 0xFFFF);
+}
+
+void editor::run_script(const std::string& id)
+{
+	editor_script::execute(id, *this);
 }
 
 void editor::execute_command(boost::function<void()> command, boost::function<void()> undo)

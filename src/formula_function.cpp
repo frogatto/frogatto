@@ -14,6 +14,9 @@
 
 #include <iostream>
 #include <math.h>
+
+#include "foreach.hpp"
+#include "formula.hpp"
 #include "formula_callable.hpp"
 #include "formula_function.hpp"
 
@@ -459,10 +462,12 @@ private:
 				vars.push_back(val);
 			}
 		} else {
+			static const std::string index_str = "index";
 			map_formula_callable self_callable;
 			const std::string self = args()[1]->evaluate(variables).as_string();
 			for(size_t n = 0; n != items.num_elements(); ++n) {
 				self_callable.add(self, items[n]);
+				self_callable.add(index_str, variant(n));
 				const variant val = args().back()->evaluate(formula_callable_with_backup(self_callable, variables));
 				vars.push_back(val);
 			}
@@ -489,6 +494,24 @@ private:
 		}
 
 		return res;
+	}
+};
+
+class range_function : public function_expression {
+public:
+	explicit range_function(const args_list& args)
+	  : function_expression("range", args, 1, 1)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		const int nelem = args()[0]->evaluate(variables).as_int();
+		std::vector<variant> v;
+		v.reserve(nelem);
+		for(int n = 0; n < nelem; ++n) {
+			v.push_back(variant(n));
+		}
+
+		return variant(&v);
 	}
 };
 
@@ -569,10 +592,6 @@ formula_function_expression::formula_function_expression(const std::string& name
 
 variant formula_function_expression::execute(const formula_callable& variables) const
 {
-	static std::string indent;
-	indent += "  ";
-	std::cerr << indent << "executing '" << formula_->str() << "'\n";
-	const int begin_time = SDL_GetTicks();
 	map_formula_callable* callable = new map_formula_callable;
 	variant callable_scope(callable);
 	for(size_t n = 0; n != arg_names_.size(); ++n) {
@@ -593,16 +612,13 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 	}
 
 	variant res = formula_->execute(*callable);
-	const int taken = SDL_GetTicks() - begin_time;
-	std::cerr << indent << "returning: " << taken << "\n";
-	indent.resize(indent.size() - 2);
 
 	return res;
 }
 
-function_expression_ptr formula_function::generate_function_expression(const std::vector<expression_ptr>& args) const
+formula_function_expression_ptr formula_function::generate_function_expression(const std::vector<expression_ptr>& args) const
 {
-	return function_expression_ptr(new formula_function_expression(name_, args, formula_, precondition_, args_));
+	return formula_function_expression_ptr(new formula_function_expression(name_, args, formula_, precondition_, args_));
 }
 
 void function_symbol_table::add_formula_function(const std::string& name, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& args)
@@ -627,6 +643,33 @@ std::vector<std::string> function_symbol_table::get_function_names() const
 		res.push_back((*iter).first);
 	}
 	return res;
+}
+
+recursive_function_symbol_table::recursive_function_symbol_table(const std::string& fn, const std::vector<std::string>& args, function_symbol_table* backup)
+  : name_(fn), stub_(fn, const_formula_ptr(), const_formula_ptr(), args), backup_(backup)
+{
+}
+
+expression_ptr recursive_function_symbol_table::create_function(
+                 const std::string& fn,
+	             const std::vector<expression_ptr>& args) const
+{
+	if(fn == name_) {
+		formula_function_expression_ptr expr = stub_.generate_function_expression(args);
+		expr_.push_back(expr);
+		return expr;
+	} else if(backup_) {
+		return backup_->create_function(fn, args);
+	}
+
+	return expression_ptr();
+}
+
+void recursive_function_symbol_table::resolve_recursive_calls(const_formula_ptr f)
+{
+	foreach(formula_function_expression_ptr& fn, expr_) {
+		fn->set_formula(f);
+	}
 }
 
 namespace {
@@ -667,6 +710,7 @@ functions_map& get_functions_map() {
 		FUNCTION(find);
 		FUNCTION(map);
 		FUNCTION(sum);
+		FUNCTION(range);
 		FUNCTION(head);
 		FUNCTION(rgb);
 		FUNCTION(transition);
@@ -716,5 +760,24 @@ std::vector<std::string> builtin_function_names()
 
 	return res;
 }
+
+function_expression::function_expression(
+                    const std::string& name,
+                    const args_list& args,
+                    int min_args, int max_args)
+    : name_(name), args_(args)
+{
+	set_name(name.c_str());
+	if(min_args >= 0 && args_.size() < static_cast<size_t>(min_args)) {
+		std::cerr << "ERROR: incorrect number of arguments to function '" << name << "': expected [" << min_args << "," << max_args << "], found " << args_.size() << "\n";
+		throw formula_error();
+	}
+
+	if(max_args >= 0 && args_.size() > static_cast<size_t>(max_args)) {
+		std::cerr << "ERROR: incorrect number of arguments to function '" << name << "': expected [" << min_args << "," << max_args << "], found " << args_.size() << "\n";
+		throw formula_error();
+	}
+}
+
 
 }

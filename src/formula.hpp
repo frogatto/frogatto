@@ -18,6 +18,7 @@
 #include <string>
 
 #include "formula_fwd.hpp"
+#include "formula_function.hpp"
 #include "variant.hpp"
 #include "wml_value.hpp"
 

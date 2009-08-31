@@ -65,6 +65,7 @@ public:
 	void add_tile(const level_tile& t);
 	void add_tile_rect(int zorder, int x1, int y1, int x2, int y2, const std::string& tile);
 	void add_tile_rect_vector(int zorder, int x1, int y1, int x2, int y2, const std::vector<std::string>& tiles);
+	void refresh_tile_rect(int x1, int y1, int x2, int y2);
 	void get_tile_rect(int zorder, int x1, int y1, int x2, int y2, std::vector<std::string>& tiles) const;
 	void get_all_tiles_rect(int x1, int y1, int x2, int y2, std::map<int, std::vector<std::string> >& tiles) const;
 	void clear_tile_rect(int x1, int y1, int x2, int y2);
