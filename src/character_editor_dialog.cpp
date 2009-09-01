@@ -31,10 +31,6 @@ void character_editor_dialog::init()
 	set_padding(20);
 
 	const frame& frame = *editor_.all_characters()[editor_.get_object()].preview_frame;
-//	image_widget* preview = new image_widget(frame.img());
-//	preview->set_dim(150, 150);
-//	preview->set_area(frame.area());
-//	add_widget(widget_ptr(preview), 10, 10);
 
 	button* category_button = new button(widget_ptr(new label(category_, graphics::color_white())), boost::bind(&character_editor_dialog::show_category_menu, this));
 	add_widget(widget_ptr(category_button), 10, 10);
@@ -62,6 +58,11 @@ void character_editor_dialog::init()
 	grid->finish_row();
 	add_widget(grid);
 
+
+	button* facing_button = new button(
+	  widget_ptr(new label(editor_.face_right() ? "right" : "left", graphics::color_white())),
+	  boost::bind(&editor::toggle_facing, &editor_));
+	add_widget(widget_ptr(facing_button), category_button->x() + category_button->width() + 10, 10);
 }
 
 void character_editor_dialog::show_category_menu()

@@ -605,6 +605,14 @@ void editor::group_selection()
 	  boost::bind(execute_functions, undo));
 }
 
+void editor::toggle_facing()
+{
+	face_right_ = !face_right_;
+	if(character_dialog_) {
+		character_dialog_->init();
+	}
+}
+
 void editor::process_ghost_objects()
 {
 	const size_t num_chars_before = lvl_->get_chars().size();
@@ -892,7 +900,7 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 	}
 
 	if(key.keysym.sym == SDLK_f) {
-		face_right_ = !face_right_;
+		toggle_facing();
 	}
 
 	if(key.keysym.sym == SDLK_r &&

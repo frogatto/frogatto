@@ -97,6 +97,11 @@ public:
 	//make the selected objects part of a group
 	void group_selection();
 
+	bool face_right() const { return face_right_; }
+
+	//switch the current facing.
+	void toggle_facing();
+
 	void run_script(const std::string& id);
 
 	//function which gets the expected layer at which a certain tile id appears.
