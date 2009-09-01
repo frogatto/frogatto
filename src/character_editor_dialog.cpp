@@ -48,6 +48,7 @@ void character_editor_dialog::init()
 			preview->set_dim(40, 40);
 			preview->set_area(c.preview_frame->area());
 			button_ptr char_button(new button(widget_ptr(preview), boost::bind(&character_editor_dialog::set_character, this, index)));
+			char_button->set_tooltip(c.node->attr("type"));
 			char_button->set_dim(44, 44);
 			grid->add_col(gui::widget_ptr(new gui::border_widget(char_button, index == editor_.get_object() ? graphics::color(255,255,255,255) : graphics::color(0,0,0,0))));
 		}
@@ -62,6 +63,7 @@ void character_editor_dialog::init()
 	button* facing_button = new button(
 	  widget_ptr(new label(editor_.face_right() ? "right" : "left", graphics::color_white())),
 	  boost::bind(&editor::toggle_facing, &editor_));
+	facing_button->set_tooltip("f  Change Facing");
 	add_widget(widget_ptr(facing_button), category_button->x() + category_button->width() + 10, 10);
 }
 
