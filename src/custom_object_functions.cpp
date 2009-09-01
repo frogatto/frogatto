@@ -559,6 +559,33 @@ private:
 	}
 };
 
+class set_solid_command : public entity_command_callable {
+	rect r_;
+public:
+	explicit set_solid_command(const rect& r) : r_(r)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		lvl.set_solid_area(r_, false);
+	}
+};
+
+class set_solid_function : public function_expression {
+public:
+	explicit set_solid_function(const args_list& args)
+	  : function_expression("set_solid", args, 4, 4) {
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new set_solid_command(
+		  rect::from_coordinates(
+			args()[0]->evaluate(variables).as_int(),
+			args()[1]->evaluate(variables).as_int(),
+			args()[2]->evaluate(variables).as_int(),
+			args()[3]->evaluate(variables).as_int())));
+	}
+};
+
 class group_size_function : public function_expression {
 public:
 	explicit group_size_function(const args_list& args)
@@ -1376,6 +1403,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new get_powerup_function(args));
 	} else if(fn == "solid") {
 		return expression_ptr(new solid_function(args));
+	} else if(fn == "set_solid") {
+		return expression_ptr(new set_solid_function(args));
 	} else if(fn == "dialog") {
 		return expression_ptr(new dialog_function(args));
 	} else if(fn == "speech_dialog") {

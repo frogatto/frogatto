@@ -56,6 +56,7 @@ public:
 	bool standable_tile(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
 	bool solid(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
 	bool solid(const rect& r, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
+	void set_solid_area(const rect& r, bool solid);
 	entity_ptr collide(int x, int y, const entity* exclude=NULL) const;
 	entity_ptr collide(const rect& r, const entity* exclude=NULL) const;
 	entity_ptr board(int x, int y) const;
@@ -262,7 +263,6 @@ private:
 		int damage;
 	};
 	std::vector<solid_rect> solid_rects_;
-	std::vector<rect> passthrough_rects_;
 	std::vector<level_tile> tiles_;
 	std::set<int> layers_;
 	std::set<int> hidden_layers_; //layers hidden in the editor.

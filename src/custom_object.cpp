@@ -41,6 +41,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 	last_hit_by_anim_(0),
 	current_animation_id_(0),
 	cycle_(wml::get_int(node, "cycle")),
+	loaded_(false),
 	can_interact_with_(false)
 {
 	if(node->has_attr("label")) {
@@ -92,7 +93,8 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	lvl_(NULL),
 	vars_(new game_logic::map_formula_callable),
 	last_hit_by_anim_(0),
-	cycle_(0)
+	cycle_(0),
+	loaded_(false)
 {
 	{
 		//generate a random label for the object
@@ -269,6 +271,11 @@ void custom_object::process(level& lvl)
 	const int start_x = x();
 	++cycle_;
 	lvl_ = &lvl;
+
+	if(!loaded_) {
+		handle_event("load");
+		loaded_ = true;
+	}
 
 	if(cycle_ == 1) {
 		handle_event("create");

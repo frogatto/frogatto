@@ -153,19 +153,6 @@ level::level(const std::string& level_cfg)
 		portals_.push_back(p);
 	}
 
-	r1 = node->begin_child("passthrough_rect");
-	r2 = node->end_child("passthrough_rect");
-	for(; r1 != r2; ++r1) {
-		rect r(r1->second->attr("rect"));
-		for(int y = r.y(); y != r.y2(); ++y) {
-			for(int x = r.x(); x != r.x2(); ++x) {
-				set_solid(solid_, x, y, 0, 0, 0, false);
-			}
-		}
-
-		passthrough_rects_.push_back(r);
-	}
-
 	if(node->has_attr("next_level")) {
 		right_portal_.level_dest = node->attr("next_level");
 		right_portal_.dest_str = "left";
@@ -394,12 +381,6 @@ wml::node_ptr level::write() const
 		node->set_attr("friction", formatter() << r.friction);
 		node->set_attr("traction", formatter() << r.traction);
 		node->set_attr("damage", formatter() << r.damage);
-		res->add_child(node);
-	}
-
-	foreach(const rect& r, passthrough_rects_) {
-		wml::node_ptr node(new wml::node("passthrough_rect"));
-		node->set_attr("rect", r.to_string());
 		res->add_child(node);
 	}
 
@@ -1000,6 +981,15 @@ bool level::solid(const rect& r, int* friction, int* traction, int* damage) cons
 	}
 
 	return false;
+}
+
+void level::set_solid_area(const rect& r, bool solid)
+{
+	for(int y = r.y(); y < r.y2(); ++y) {
+		for(int x = r.x(); x < r.x2(); ++x) {
+			set_solid(solid_, x, y, 0, 0, 0, solid);
+		}
+	}
 }
 
 entity_ptr level::collide(int x, int y, const entity* exclude) const

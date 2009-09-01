@@ -647,7 +647,12 @@ unsigned int get_mouse_state(int& mousex, int& mousey) {
 void editor::edit_level()
 {
 	stats::flush();
-	load_stats();
+	try {
+		load_stats();
+	} catch(...) {
+		debug_console::add_message("Error parsing stats");
+		std::cerr << "ERROR LOADING STATS\n";
+	}
 
 	g_last_edited_level = filename_;
 
@@ -1353,7 +1358,12 @@ void editor::download_stats()
 	const bool result = stats::download(lvl_->id());
 	if(result) {
 		debug_console::add_message("Got latest stats from the server");
-		load_stats();
+		try {
+			load_stats();
+		} catch(...) {
+			debug_console::add_message("Error parsing stats");
+			std::cerr << "ERROR LOADING STATS\n";
+		}
 	} else {
 		debug_console::add_message("Download of stats failed");
 	}

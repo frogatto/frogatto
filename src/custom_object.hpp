@@ -147,6 +147,10 @@ private:
 
 	int cycle_;
 
+	//variable which is always set to false on construction, and then the
+	//first time process is called will fire the on_load event and set to false
+	bool loaded_;
+
 	std::map<std::string, game_logic::const_formula_ptr> event_handlers_;
 
 	std::vector<entity_ptr> stood_on_by_;
