@@ -64,6 +64,7 @@ public:
 	virtual int mass() const { return type_->mass(); }
 
 	bool point_collides(int x, int y) const;
+	bool rect_collides(const rect& r) const;
 	void hit_by(entity& e);
 	void move_to_standing(level& lvl);
 	int hitpoints() const;

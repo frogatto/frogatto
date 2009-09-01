@@ -74,6 +74,7 @@ public:
 	virtual bool destroyed() const = 0;
 
 	virtual bool point_collides(int x, int y) const = 0;
+	virtual bool rect_collides(const rect& r) const = 0;
 	rect body_rect() const;
 	rect hit_rect() const;
 	point midpoint() const;

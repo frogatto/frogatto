@@ -42,6 +42,7 @@ public:
 	virtual void stood_on_by(const entity_ptr& ch);
 	virtual bool destroyed() const;
 	virtual bool point_collides(int x, int y) const;
+	virtual bool rect_collides(const rect& r) const;
 
 	virtual bool on_players_side() const;
 

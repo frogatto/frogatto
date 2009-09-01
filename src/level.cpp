@@ -1054,7 +1054,7 @@ entity_ptr level::collide(const rect& r, const entity* exclude) const
 
 		if(c.get() != exclude && !c->is_human()) {
 			if((!c->body_passthrough() || is_players_side && c->body_harmful()) &&
-			   rects_intersect(r, c->body_rect())) {
+			   c->rect_collides(r)) {
 				return c;
 			}
 

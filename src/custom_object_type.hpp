@@ -76,6 +76,8 @@ public:
 	int passenger_x() const { return passenger_x_; }
 	int passenger_y() const { return passenger_y_; }
 
+	bool use_image_for_collisions() const { return use_image_for_collisions_; }
+
 private:
 	std::string id_;
 	int hitpoints_;
@@ -118,6 +120,8 @@ private:
 
 	bool is_vehicle_;
 	int passenger_x_, passenger_y_;
+
+	bool use_image_for_collisions_;
 };
 
 #endif

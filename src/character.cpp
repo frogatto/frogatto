@@ -700,6 +700,7 @@ void character::process(level& lvl)
 	int damage = 0;
 	entity_ptr standing_on;
 	const bool standing = is_standing(lvl, &friction, &current_traction_, &damage, NULL, &standing_on);
+	if(is_human()) std::cerr << "STANDING: " << x()<< "," << y() << " " << (standing ? "YES" : "NO") << "\n";
 
 	velocity_x_ += (accel_x*current_traction_)/100;
 
@@ -1468,6 +1469,11 @@ void character::execute_command(const variant& var)
 bool character::point_collides(int xpos, int ypos) const
 {
 	return point_in_rect(point(xpos, ypos), body_rect());
+}
+
+bool character::rect_collides(const rect& r) const
+{
+	return rects_intersect(r, body_rect());
 }
 
 void character::hit_by(entity& e)

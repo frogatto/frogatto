@@ -74,7 +74,8 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	affected_by_currents_(wml::get_bool(node, "affected_by_currents", false)),
 	is_vehicle_(wml::get_bool(node, "vehicle", false)),	
 	passenger_x_(wml::get_int(node, "passenger_x")),
-	passenger_y_(wml::get_int(node, "passenger_y"))
+	passenger_y_(wml::get_int(node, "passenger_y")),
+	use_image_for_collisions_(wml::get_bool(node, "use_image_for_collisions", false))
 {
 	wml::node::const_child_iterator a1 = node->begin_child("animation");
 	wml::node::const_child_iterator a2 = node->end_child("animation");

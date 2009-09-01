@@ -522,7 +522,12 @@ bool custom_object::is_standable(int xpos, int ypos, int* friction, int* tractio
 		}
 
 		if(adjust_y) {
-			*adjust_y = ypos - body_rect().y();
+			if(type_->use_image_for_collisions()) {
+				for(*adjust_y = 0; point_collides(xpos, ypos - *adjust_y - 1); --(*adjust_y)) {
+				}
+			} else {
+				*adjust_y = ypos - body_rect().y();
+			}
 		}
 
 		return true;
@@ -576,7 +581,35 @@ bool custom_object::destroyed() const
 
 bool custom_object::point_collides(int xpos, int ypos) const
 {
-	return point_in_rect(point(xpos, ypos), body_rect());
+	if(type_->use_image_for_collisions()) {
+		const bool result = !current_frame().is_alpha(xpos - x(), ypos - y(), time_in_frame_, face_right());
+		return result;
+	} else {
+		return point_in_rect(point(xpos, ypos), body_rect());
+	}
+}
+
+bool custom_object::rect_collides(const rect& r) const
+{
+	if(type_->use_image_for_collisions()) {
+		rect myrect(x(), y(), current_frame().width(), current_frame().height());
+		if(rects_intersect(myrect, r)) {
+			rect intersection = intersection_rect(myrect, r);
+			for(int y = intersection.y(); y < intersection.y2(); ++y) {
+				for(int x = intersection.x(); x < intersection.x2(); ++x) {
+					if(point_collides(x, y)) {
+						return true;
+					}
+				}
+			}
+
+			return false;
+		} else {
+			return false;
+		}
+	} else {
+		return rects_intersect(r, body_rect());
+	}
 }
 
 bool custom_object::on_players_side() const
