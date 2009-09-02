@@ -50,12 +50,19 @@ void property_editor_dialog::init()
 		std::vector<game_logic::formula_input> inputs;
 		vars->get_inputs(&inputs);
 		foreach(const game_logic::formula_input& in, inputs) {
+			const editor_variable_info* var_info = entity_->editor_info() ? entity_->editor_info()->get_var_info(in.name) : NULL;
+
+			if(var_info && (var_info->type() == editor_variable_info::XPOSITION
+			             || var_info->type() == editor_variable_info::YPOSITION)) {
+				//don't show x/y position as they are directly editable on
+				//the map.
+				continue;
+			}
+
 			std::ostringstream s;
 			s << in.name << ": " << vars->query_value(in.name).to_debug_string();
 			label_ptr lb = label::create(s.str(), graphics::color_white());
 			add_widget(widget_ptr(lb));
-
-			const editor_variable_info* var_info = entity_->editor_info() ? entity_->editor_info()->get_var_info(in.name) : NULL;
 
 			if(var_info && var_info->type() == editor_variable_info::TYPE_TEXT) {
 				std::string current_value;

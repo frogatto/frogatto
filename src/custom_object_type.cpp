@@ -10,7 +10,7 @@
 #include "wml_utils.hpp"
 
 namespace {
-std::map<std::string, std::string> object_file_paths;
+std::map<std::string, std::string> object_file_paths, prototype_file_paths;
 
 typedef std::map<std::string, const_custom_object_type_ptr> object_map;
 object_map cache;
@@ -26,6 +26,7 @@ const_custom_object_type_ptr custom_object_type::get(const std::string& id)
 	if(object_file_paths.empty()) {
 		//find out the paths to all our files
 		sys::get_unique_filenames_under_dir("data/objects", &object_file_paths);
+		sys::get_unique_filenames_under_dir("data/object_prototypes", &prototype_file_paths);
 	}
 
 	//find the file for the object we are loading.
@@ -33,8 +34,19 @@ const_custom_object_type_ptr custom_object_type::get(const std::string& id)
 	ASSERT_LOG(path_itor != object_file_paths.end(), "Could not find file for object '" << id << "'");
 
 	try {
+		wml::node_ptr node = wml::parse_wml_from_file(path_itor->second);
+
+		if(node->has_attr("prototype")) {
+			//look up the object's prototype and merge it in
+			std::map<std::string, std::string>::const_iterator path_itor = prototype_file_paths.find(node->attr("prototype").str() + ".cfg");
+			ASSERT_LOG(path_itor != prototype_file_paths.end(), "Could not find file for prototype '" << node->attr("prototype") << "'");
+
+			wml::const_node_ptr prototype_node = wml::parse_wml_from_file(path_itor->second);
+			wml::merge_over(prototype_node, node);
+		}
+
 		//create the object and add it to our cache.
-		custom_object_type_ptr result(new custom_object_type(wml::parse_wml_from_file(path_itor->second)));
+		custom_object_type_ptr result(new custom_object_type(node));
 		cache[id] = result;
 		return result;
 	} catch(wml::parse_error& e) {
