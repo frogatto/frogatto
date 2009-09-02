@@ -5,6 +5,7 @@
 
 #include "background.hpp"
 #include "color_utils.hpp"
+#include "filesystem.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "level.hpp"
@@ -29,6 +30,21 @@ boost::shared_ptr<background> background::get(const std::string& id)
 	}
 
 	return obj;
+}
+
+std::vector<std::string> background::get_available_backgrounds()
+{
+	std::vector<std::string> files;
+	sys::get_files_in_dir("data/backgrounds/", &files);
+
+	std::vector<std::string> result;
+	foreach(const std::string& fname, files) {
+		if(fname.size() > 4 && std::equal(fname.end() - 4, fname.end(), ".cfg")) {
+			result.push_back(std::string(fname.begin(), fname.end() - 4));
+		}
+	}
+
+	return result;
 }
 
 background::background(const wml::const_node_ptr& node)

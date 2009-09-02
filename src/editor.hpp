@@ -94,6 +94,8 @@ public:
 
 	void close() { done_ = true; }
 
+	void edit_level_properties();
+
 	//make the selected objects part of a group
 	void group_selection();
 

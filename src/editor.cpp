@@ -19,6 +19,7 @@
 #include "editor_dialogs.hpp"
 #include "editor_formula_functions.hpp"
 #include "editor_layers_dialog.hpp"
+#include "editor_level_properties_dialog.hpp"
 #include "entity.hpp"
 #include "filesystem.hpp"
 #include "font.hpp"
@@ -99,6 +100,7 @@ class editor_menu_dialog : public gui::dialog
 
 	void show_edit_menu() {
 		menu_item items[] = {
+			"Level Properties", "", boost::bind(&editor::edit_level_properties, &editor_),
 			"Undo", "u", boost::bind(&editor::undo_command, &editor_),
 			"Redo", "r", boost::bind(&editor::redo_command, &editor_),
 		};
@@ -2043,4 +2045,10 @@ void editor::redo_command()
 	if(layers_dialog_) {
 		layers_dialog_->init();
 	}
+}
+
+void editor::edit_level_properties()
+{
+	editor_dialogs::editor_level_properties_dialog prop_dialog(*this);
+	prop_dialog.show_modal();
 }

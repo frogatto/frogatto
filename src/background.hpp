@@ -17,6 +17,7 @@ class background
 {
 public:
 	static boost::shared_ptr<background> get(const std::string& id);
+	static std::vector<std::string> get_available_backgrounds();
 
 	explicit background(const wml::const_node_ptr& node);
 	const std::string& id() const { return id_; }

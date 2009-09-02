@@ -141,9 +141,13 @@ public:
 	bool show_background() const { return show_background_; }
 	void set_show_background(bool value) { show_background_ = value; }
 
+	const std::string& get_background_id() const;
+	void set_background_by_id(const std::string& id);
+
 	void rebuild_tiles();
 
 	const std::string& title() const { return title_; }
+	void set_title(const std::string& t) { title_ = t; }
 
 	int variations(int xtile, int ytile) const;
 	void flip_variations(int xtile, int ytile, int delta=1);

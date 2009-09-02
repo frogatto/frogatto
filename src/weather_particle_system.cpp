@@ -48,7 +48,7 @@ void weather_particle_system::draw(const rect& area, const entity& e) const
 	glColor4f(0.75, 0.75, 1.0, 0.9);
 	foreach(const particle& p, particles_)
 	{
-		//printf("Drawing a particle at %f:%f\n", p.pos[0], p.pos[1]);
+		//fprintf(stderr, "Drawing a particle at %f:%f\n", p.pos[0], p.pos[1]);
 		glVertex3f(p.pos[0], p.pos[1], 0.0);
 		glVertex3f(p.pos[0], p.pos[1]+8.0, 0.0);
 	}

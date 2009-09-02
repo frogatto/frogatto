@@ -1667,6 +1667,21 @@ void level::editor_clear_selection()
 	editor_selection_.clear();
 }
 
+const std::string& level::get_background_id() const
+{
+	if(background_) {
+		return background_->id();
+	} else {
+		static const std::string empty_string;
+		return empty_string;
+	}
+}
+
+void level::set_background_by_id(const std::string& id)
+{
+	background_ = background::get(id);
+}
+
 variant level::get_value(const std::string& key) const
 {
 	if(key == "cycle") {
