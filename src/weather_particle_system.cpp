@@ -38,18 +38,20 @@ void weather_particle_system::process(const entity& e)
 		p.pos[1] += p.velocity[1];
 	}
 	
-	if (particles_.size() > 1000) particles_.pop_front();
+	if (particles_.size() > 300) particles_.pop_front();
 }
 
 void weather_particle_system::draw(const rect& area, const entity& e) const
 {
+	glDisable(GL_TEXTURE_2D);
 	glBegin(GL_LINES);
 	glColor4f(0.75, 0.75, 1.0, 0.9);
 	foreach(const particle& p, particles_)
 	{
 		//printf("Drawing a particle at %f:%f\n", p.pos[0], p.pos[1]);
 		glVertex3f(p.pos[0], p.pos[1], 0.0);
-		glVertex3f(p.pos[0], p.pos[1]+8, 0.0);
+		glVertex3f(p.pos[0], p.pos[1]+8.0, 0.0);
 	}
 	glEnd();
+	glEnable(GL_TEXTURE_2D);
 }
