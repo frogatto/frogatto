@@ -41,8 +41,13 @@ const_custom_object_type_ptr custom_object_type::get(const std::string& id)
 			std::map<std::string, std::string>::const_iterator path_itor = prototype_file_paths.find(node->attr("prototype").str() + ".cfg");
 			ASSERT_LOG(path_itor != prototype_file_paths.end(), "Could not find file for prototype '" << node->attr("prototype") << "'");
 
-			wml::const_node_ptr prototype_node = wml::parse_wml_from_file(path_itor->second);
-			wml::merge_over(prototype_node, node);
+			wml::node_ptr prototype_node = wml::parse_wml_from_file(path_itor->second);
+
+			//anything that comes in our node will take precedence in what
+			//was in the prototype node, so merge over the prototype node,
+			//and then take what is in it and use it.
+			wml::merge_over(node, prototype_node);
+			node = prototype_node;
 		}
 
 		//create the object and add it to our cache.
