@@ -12,6 +12,7 @@
 #include "texture.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
+#include "weather_particle_system.hpp"
 
 namespace {
 
@@ -333,6 +334,8 @@ const_particle_system_factory_ptr particle_system_factory::create_factory(wml::c
 	const std::string& type = node->attr("type");
 	if(type == "simple") {
 		return const_particle_system_factory_ptr(new simple_particle_system_factory(node));
+	} else if (type == "weather") {
+		return const_particle_system_factory_ptr(new weather_particle_system_factory(node));
 	}
 
 	ASSERT_LOG(false, "Unrecognized particle system type: " << node->attr("type"));
