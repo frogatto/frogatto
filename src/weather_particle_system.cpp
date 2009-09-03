@@ -15,30 +15,29 @@ particle_system_ptr weather_particle_system_factory::create(const entity& e) con
 weather_particle_system::weather_particle_system(const entity& e, const weather_particle_system_factory& factory)
  : factory_(factory), cycle_(0)
 {
-	
+	for (int i = 0; i < 1500; i++)
+	{
+		particle new_p;
+		new_p.pos[0] = rand()%repeat_period;
+		new_p.pos[1] = rand()%repeat_period;
+		new_p.velocity[0] = 0;
+		new_p.velocity[1] = 5+(rand()%3);
+		particles_.push_back(new_p);
+	}
 }
 
 void weather_particle_system::process(const entity& e)
 {
 	++cycle_;
 	
-	for (int i = 0; i < 10; i++)
-	{
-		particle new_p;
-		new_p.pos[0] = rand()%repeat_period;
-		new_p.pos[1] = 0;
-		new_p.velocity[0] = 0;
-		new_p.velocity[1] = 5+(rand()%3);
-		particles_.push_back(new_p);
-	}
-	
 	foreach(particle& p, particles_)
 	{
 		p.pos[0] += p.velocity[0];
 		p.pos[1] += p.velocity[1];
+		p.pos[1] = static_cast<int>(p.pos[1]) % repeat_period;
 	}
 	
-	while (particles_.size() > 1500) particles_.pop_front();
+	//while (particles_.size() > 1500) particles_.pop_front();
 }
 
 void weather_particle_system::draw(const rect& area, const entity& e) const
