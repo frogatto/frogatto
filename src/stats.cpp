@@ -156,7 +156,6 @@ bool download(const std::string& lvl) {
 	size_t nbytes;
 	boost::array<char, 256> buf;
 	while(!error && (nbytes = socket.read_some(boost::asio::buffer(buf), error)) > 0) {
-		fprintf(stderr, "read %d bytes: (((%s)))\n", (int)nbytes, std::string(buf.begin(), buf.begin() + nbytes).c_str());
 		payload.insert(payload.end(), buf.begin(), buf.begin() + nbytes);
 	}
 

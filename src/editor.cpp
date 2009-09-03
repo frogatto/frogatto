@@ -1439,8 +1439,8 @@ void editor::select_tile_rect(int x1, int y1, int x2, int y2)
 {
 	tile_selection new_selection;
 
-	const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
-	if(ctrl_pressed) {
+	const bool shift_pressed = (SDL_GetModState()&KMOD_SHIFT) != 0;
+	if(shift_pressed) {
 		//adding to the selection
 		new_selection = tile_selection_;
 	}

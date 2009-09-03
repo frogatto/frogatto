@@ -17,6 +17,7 @@ public:
 	explicit editor_level_properties_dialog(editor& e);
 	void init();
 private:
+	void add_stats(const std::vector<stats::record_ptr>& stats);
 	void change_title();
 	void change_background();
 	void execute_change_background(const std::vector<std::string>& choices, int index);

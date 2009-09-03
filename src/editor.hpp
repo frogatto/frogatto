@@ -40,6 +40,7 @@ public:
 
 	void load_stats();
 	void download_stats();
+	const std::vector<stats::record_ptr>& stats() const { return stats_; }
 
 	struct tileset {
 		static void init(wml::const_node_ptr node);
