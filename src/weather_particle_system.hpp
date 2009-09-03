@@ -27,6 +27,7 @@ public:
 	void draw(const rect& area, const entity& e) const;
 	
 private:
+	static const int repeat_period = 1000;
 	variant get_value(const std::string& key) const { return variant(); }
 	
 	const weather_particle_system_factory& factory_;

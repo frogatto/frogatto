@@ -25,7 +25,7 @@ void weather_particle_system::process(const entity& e)
 	for (int i = 0; i < 10; i++)
 	{
 		particle new_p;
-		new_p.pos[0] = e.x()+(rand()%1000);
+		new_p.pos[0] = rand()%repeat_period;
 		new_p.pos[1] = e.y();
 		new_p.velocity[0] = 0;
 		new_p.velocity[1] = 3+(rand()%5);
@@ -46,11 +46,17 @@ void weather_particle_system::draw(const rect& area, const entity& e) const
 	glDisable(GL_TEXTURE_2D);
 	glBegin(GL_LINES);
 	glColor4f(0.75, 0.75, 1.0, 0.9);
+	int offset = area.x()-(area.x()%repeat_period);
 	foreach(const particle& p, particles_)
 	{
-		//fprintf(stderr, "Drawing a particle at %f:%f\n", p.pos[0], p.pos[1]);
-		glVertex3f(p.pos[0], p.pos[1], 0.0);
-		glVertex3f(p.pos[0], p.pos[1]+8.0, 0.0);
+		float my_x = p.pos[0]+offset;
+		do
+		{
+			glVertex3f(my_x, p.pos[1], 0.0);
+			glVertex3f(my_x, p.pos[1]+8.0, 0.0);
+			my_x += repeat_period;
+			//printf("my_x: %f, area.x: %i, area.w: %i\n", my_x, area.x(), area.w());
+		} while (my_x < area.x()+area.w());
 	}
 	glEnd();
 	glEnable(GL_TEXTURE_2D);
