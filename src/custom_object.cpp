@@ -231,7 +231,7 @@ void custom_object::draw() const
 	draw_debug_rects();
 
 	for(std::map<std::string, particle_system_ptr>::const_iterator i = particle_systems_.begin(); i != particle_systems_.end(); ++i) {
-		i->second->draw(rect(last_draw_position().x, last_draw_position().y, graphics::screen_width(), graphics::screen_height()), *this);
+		i->second->draw(rect(last_draw_position().x/100, last_draw_position().y/100, graphics::screen_width(), graphics::screen_height()), *this);
 	}
 
 	if(text_ && text_->font) {
