@@ -26,9 +26,9 @@ void weather_particle_system::process(const entity& e)
 	{
 		particle new_p;
 		new_p.pos[0] = rand()%repeat_period;
-		new_p.pos[1] = e.y();
+		new_p.pos[1] = 0;
 		new_p.velocity[0] = 0;
-		new_p.velocity[1] = 3+(rand()%5);
+		new_p.velocity[1] = 5+(rand()%3);
 		particles_.push_back(new_p);
 	}
 	
@@ -38,26 +38,36 @@ void weather_particle_system::process(const entity& e)
 		p.pos[1] += p.velocity[1];
 	}
 	
-	if (particles_.size() > 300) particles_.pop_front();
+	while (particles_.size() > 1500) particles_.pop_front();
 }
 
 void weather_particle_system::draw(const rect& area, const entity& e) const
 {
 	glDisable(GL_TEXTURE_2D);
+	//glEnable(GL_SMOOTH);
+	glLineWidth(1);
 	glBegin(GL_LINES);
 	glColor4f(0.75, 0.75, 1.0, 0.9);
-	int offset = area.x()-(area.x()%repeat_period);
+	int offset_x = area.x()-(area.x()%repeat_period);
+	int offset_y = area.y()-(area.y()%repeat_period);
 	foreach(const particle& p, particles_)
 	{
-		float my_x = p.pos[0]+offset;
+		float my_y = p.pos[1]+offset_y;
 		do
 		{
-			glVertex3f(my_x, p.pos[1], 0.0);
-			glVertex3f(my_x, p.pos[1]+8.0, 0.0);
-			my_x += repeat_period;
-			//printf("my_x: %f, area.x: %i, area.w: %i\n", my_x, area.x(), area.w());
-		} while (my_x < area.x()+area.w());
+			float my_x = p.pos[0]+offset_x;
+			do
+			{
+				glVertex3f(my_x, my_y, 0.0);
+				glVertex3f(my_x, my_y+8.0, 0.0);
+				my_x += repeat_period;
+				//printf("my_x: %f, area.x: %i, area.w: %i\n", my_x, area.x(), area.w());
+			} while (my_x < area.x()+area.w());
+			my_y += repeat_period;
+		} while (my_y < area.y()+area.h());
 	}
 	glEnd();
+	//glDisable(GL_SMOOTH);
 	glEnable(GL_TEXTURE_2D);
+	glColor4f(1.0, 1.0, 1.0, 1.0);
 }
