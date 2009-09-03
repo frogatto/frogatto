@@ -3,6 +3,7 @@
 
 #include "custom_object.hpp"
 #include "custom_object_functions.hpp"
+#include "draw_scene.hpp"
 #include "font.hpp"
 #include "formatter.hpp"
 #include "graphical_font.hpp"
@@ -230,7 +231,7 @@ void custom_object::draw() const
 	draw_debug_rects();
 
 	for(std::map<std::string, particle_system_ptr>::const_iterator i = particle_systems_.begin(); i != particle_systems_.end(); ++i) {
-		i->second->draw(rect(/*TODO: get the screen rect*/), *this);
+		i->second->draw(rect(last_draw_position().x, last_draw_position().y, graphics::screen_width(), graphics::screen_height()), *this);
 	}
 
 	if(text_ && text_->font) {
@@ -425,6 +426,17 @@ void custom_object::process(level& lvl)
 			last_hit_by_ = player;
 			last_hit_by_anim_ = player->current_animation_id();
 			handle_event("hit_by_player");
+		}
+	}
+
+	if(!type_->on_players_side() && driver_) {
+		//if this is a vehicle with a driver, handle the driver being
+		//hit by the player.
+		entity_ptr player = lvl.hit_by_player(driver_->body_rect());
+		if(player && (last_hit_by_ != player || last_hit_by_anim_ != player->current_animation_id())) {
+			last_hit_by_ = player;
+			last_hit_by_anim_ = player->current_animation_id();
+			handle_event("driver_hit_by_player");
 		}
 	}
 
@@ -1089,32 +1101,45 @@ void custom_object::boarded(level& lvl, const entity_ptr& player)
 
 	player->board_vehicle();
 
-	playable_custom_object* new_player(new playable_custom_object(*this));
-	new_player->driver_ = player;
+	if(player->is_human()) {
+		playable_custom_object* new_player(new playable_custom_object(*this));
+		new_player->driver_ = player;
 
-	lvl.add_player(new_player);
+		lvl.add_player(new_player);
 
-	new_player->get_player_info()->swap_player_state(*player->get_player_info());
-	lvl.remove_character(this);
+		new_player->get_player_info()->swap_player_state(*player->get_player_info());
+		lvl.remove_character(this);
+	} else {
+		driver_ = player;
+		lvl.remove_character(player);
+	}
 }
 
 void custom_object::unboarded(level& lvl)
 {
-	std::cerr << "UNBOARDING...\n";
-	custom_object* vehicle(new custom_object(*this));
-	vehicle->driver_ = entity_ptr();
-	lvl.add_character(vehicle);
-	lvl.add_player(driver_);
-	if(vehicle->velocity_x() > 100) {
+	if(velocity_x() > 100) {
 		driver_->set_face_right(false);
 	}
-	if(vehicle->velocity_x() < -100) {
+
+	if(velocity_x() < -100) {
 		driver_->set_face_right(true);
 	}
 
-	driver_->unboard_vehicle();
+	if(is_human()) {
+		custom_object* vehicle(new custom_object(*this));
+		vehicle->driver_ = entity_ptr();
+		lvl.add_character(vehicle);
 
-	driver_->get_player_info()->swap_player_state(*get_player_info());
+		lvl.add_player(driver_);
+
+		driver_->unboard_vehicle();
+
+		driver_->get_player_info()->swap_player_state(*get_player_info());
+	} else {
+		lvl.add_character(driver_);
+		driver_->unboard_vehicle();
+		driver_.reset();
+	}
 }
 
 void custom_object::board_vehicle()
