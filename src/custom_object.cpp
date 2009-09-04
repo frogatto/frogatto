@@ -271,7 +271,9 @@ public:
 
 void custom_object::process(level& lvl)
 {
-	const bool started_standing = is_standing(lvl);
+	int surface_friction = 0, surface_traction = 0, surface_damage = 0, surface_adjust_y = 0;
+	entity_ptr standing_on;
+	const bool started_standing = is_standing(lvl, &surface_friction, &surface_traction, &surface_damage, &surface_adjust_y, &standing_on);
 	previous_y_ = y();
 	const int start_x = x();
 	++cycle_;
@@ -300,6 +302,10 @@ void custom_object::process(level& lvl)
 	}
 
 	++time_in_frame_;
+
+	if(surface_damage) {
+		handle_event("surface_damage");
+	}
 
 	if(time_in_frame_ == frame_->duration()) {
 		if(next_animation_formula_) {
@@ -655,10 +661,10 @@ void custom_object::control(const level& lvl)
 {
 }
 
-bool custom_object::is_standing(const level& lvl) const
+bool custom_object::is_standing(const level& lvl, int* friction, int* traction, int* damage, int* adjust_y, entity_ptr* standing_on) const
 {
 	return (current_frame().feet_x() || current_frame().feet_y()) &&
-	       lvl.standable(feet_x(), feet_y());
+	       lvl.standable(feet_x(), feet_y(), friction, traction, damage, adjust_y, standing_on);
 }
 
 variant custom_object::get_value(const std::string& key) const
