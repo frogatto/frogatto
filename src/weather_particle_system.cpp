@@ -51,8 +51,8 @@ void weather_particle_system::draw(const rect& area, const entity& e) const
 	glLineWidth(info_.line_width);
 	glBegin(GL_LINES);
 	glColor4f(info_.rgba[0]/255.0, info_.rgba[1]/255.0, info_.rgba[2]/255.0, info_.rgba[3]/255.0);
-	int offset_x = area.x()-(area.x() % info_.repeat_period);
-	int offset_y = area.y()-(area.y() % info_.repeat_period);
+	int offset_x = area.x()-abs(area.x() % info_.repeat_period);
+	int offset_y = area.y()-abs(area.y() % info_.repeat_period);
 	foreach(const particle& p, particles_)
 	{
 		float my_y = p.pos[1]+offset_y;
