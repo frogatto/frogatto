@@ -1170,7 +1170,7 @@ void custom_object::unboarded(level& lvl)
 	} else {
 		lvl.add_character(driver_);
 		driver_->unboard_vehicle();
-		driver_.reset = entity_ptr();
+		driver_ = entity_ptr();
 	}
 }
 
