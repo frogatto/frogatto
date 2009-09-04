@@ -326,8 +326,8 @@ void custom_object::process(level& lvl)
 	velocity_y_ += accel_y_;
 
 	if(type_->friction()) {
-		velocity_x_ = (velocity_x_*(100-type_->friction()))/100;
-		velocity_y_ = (velocity_y_*(100-type_->friction()))/100;
+		velocity_x_ = (velocity_x_*(100-(surface_friction+type_->friction())))/100;
+		velocity_y_ = (velocity_y_*(100-(surface_friction+type_->friction())))/100;
 	}
 
 	if(type_->affected_by_currents()) {
