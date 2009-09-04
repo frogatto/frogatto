@@ -36,7 +36,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 	accel_y_(wml::get_int(node, "accel_y")),
 	rotate_(0), zorder_(wml::get_int(node, "zorder", type_->zorder())),
 	hitpoints_(wml::get_int(node, "hitpoints", type_->hitpoints())),
-	was_underwater_(false),
+	was_underwater_(false), invincible_(0),
 	lvl_(NULL),
 	vars_(new game_logic::map_formula_callable(node->get_child("vars"))),
 	last_hit_by_anim_(0),
@@ -90,7 +90,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	accel_x_(0), accel_y_(0),
 	rotate_(0), zorder_(type_->zorder()),
 	hitpoints_(type_->hitpoints()),
-	was_underwater_(false),
+	was_underwater_(false), invincible_(0),
 	lvl_(NULL),
 	vars_(new game_logic::map_formula_callable),
 	last_hit_by_anim_(0),
@@ -196,6 +196,10 @@ void custom_object::draw() const
 		return;
 	}
 
+	if(is_human() && ((invincible_/5)%2) == 1) {
+		return;
+	}
+
 	if(driver_) {
 		driver_->draw();
 	}
@@ -272,6 +276,10 @@ void custom_object::process(level& lvl)
 	const int start_x = x();
 	++cycle_;
 	lvl_ = &lvl;
+
+	if(invincible_) {
+		--invincible_;
+	}
 
 	if(!loaded_) {
 		handle_event("load");
@@ -420,23 +428,30 @@ void custom_object::process(level& lvl)
 		}
 	}
 
-	if(!type_->on_players_side()) {
-		entity_ptr player = lvl.hit_by_player(body_rect());
-		if(player && (last_hit_by_ != player || last_hit_by_anim_ != player->current_animation_id())) {
-			last_hit_by_ = player;
-			last_hit_by_anim_ = player->current_animation_id();
-			handle_event("hit_by_player");
-		}
-	}
+	if(!invincible_) {
+		if(on_players_side()) {
+			entity_ptr collide_with = lvl_->collide(body_rect(), this);
+			if(collide_with && collide_with->body_harmful()) {
+				handle_event("get_hit");
+			}
+		} else {
+			entity_ptr player = lvl.hit_by_player(body_rect());
+			if(player && (last_hit_by_ != player || last_hit_by_anim_ != player->current_animation_id())) {
+				last_hit_by_ = player;
+				last_hit_by_anim_ = player->current_animation_id();
+				handle_event("hit_by_player");
+			}
 
-	if(!type_->on_players_side() && driver_) {
-		//if this is a vehicle with a driver, handle the driver being
-		//hit by the player.
-		entity_ptr player = lvl.hit_by_player(driver_->body_rect());
-		if(player && (last_hit_by_ != player || last_hit_by_anim_ != player->current_animation_id())) {
-			last_hit_by_ = player;
-			last_hit_by_anim_ = player->current_animation_id();
-			handle_event("driver_hit_by_player");
+			if(driver_) {
+				//if this is a vehicle with a driver, handle the driver being
+				//hit by the player.
+				entity_ptr player = lvl.hit_by_player(driver_->body_rect());
+				if(player && (last_hit_by_ != player || last_hit_by_anim_ != player->current_animation_id())) {
+					last_hit_by_ = player;
+					last_hit_by_anim_ = player->current_animation_id();
+					handle_event("driver_hit_by_player");
+				}
+			}
 		}
 	}
 
@@ -633,7 +648,7 @@ bool custom_object::rect_collides(const rect& r) const
 
 bool custom_object::on_players_side() const
 {
-	return type_->on_players_side();
+	return type_->on_players_side() || is_human();
 }
 
 void custom_object::control(const level& lvl)
@@ -751,11 +766,20 @@ variant custom_object::get_value(const std::string& key) const
 		return variant(lvl_->is_underwater(body_rect()));
 	} else if(key == "driver") {
 		return variant(driver_.get());
+	} else if(key == "is_human") {
+		return variant(is_human() ? 1 : 0);
+	} else if(key == "invincible") {
+		return variant(invincible_);
 	}
 
 	std::map<std::string, particle_system_ptr>::const_iterator particle_itor = particle_systems_.find(key);
 	if(particle_itor != particle_systems_.end()) {
 		return variant(particle_itor->second.get());
+	}
+
+	std::map<std::string, variant>::const_iterator i = type_->variables().find(key);
+	if(i != type_->variables().end()) {
+		return i->second;
 	}
 
 	return vars_->query_value(key);
@@ -823,6 +847,8 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		distortion_ = value.try_convert<graphics::raster_distortion>();
 	} else if(key == "current_generator") {
 		set_current_generator(value.try_convert<current_generator>());
+	} else if(key == "invincible") {
+		invincible_ = value.as_int();
 	} else {
 		vars_->add(key, value);
 	}

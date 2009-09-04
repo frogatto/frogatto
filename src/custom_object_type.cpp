@@ -128,6 +128,15 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	FOREACH_WML_CHILD(particle_node, node, "particle_system") {
 		particle_factories_[particle_node->attr("id")] = particle_system_factory::create_factory(particle_node);
 	}
+
+	wml::const_node_ptr vars = node->get_child("vars");
+	if(vars) {
+		for(wml::node::const_attr_iterator v = vars->begin_attr(); v != vars->end_attr(); ++v) {
+			variant var;
+			var.serialize_from_string(v->second);
+			variables_[v->first] = var;
+		}
+	}
 }
 
 const frame& custom_object_type::default_frame() const

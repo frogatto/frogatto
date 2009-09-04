@@ -10,6 +10,7 @@
 #include "formula.hpp"
 #include "frame.hpp"
 #include "particle_system.hpp"
+#include "variant.hpp"
 #include "wml_node.hpp"
 
 class custom_object_type;
@@ -78,6 +79,8 @@ public:
 
 	bool use_image_for_collisions() const { return use_image_for_collisions_; }
 
+	const std::map<std::string, variant>& variables() const { return variables_; }
+
 private:
 	std::string id_;
 	int hitpoints_;
@@ -122,6 +125,8 @@ private:
 	int passenger_x_, passenger_y_;
 
 	bool use_image_for_collisions_;
+
+	std::map<std::string, variant> variables_;
 };
 
 #endif

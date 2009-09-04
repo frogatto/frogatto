@@ -135,6 +135,8 @@ private:
 	int hitpoints_;
 	bool was_underwater_;
 
+	int invincible_;
+
 	game_logic::const_formula_ptr next_animation_formula_;
 
 	level* lvl_;

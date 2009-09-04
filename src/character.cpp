@@ -1186,6 +1186,9 @@ void character::get_powerup(const_powerup_ptr p)
 		return;
 	}
 
+	//handle removing of the current powerup
+	handle_event("remove_powerup");
+
 	blur_.clear();
 	powerups_.push_back(p);
 	old_types_.push_back(type_);

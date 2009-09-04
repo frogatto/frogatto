@@ -271,11 +271,12 @@ public:
 			e = new character(type_, x_, y_, face_right_);
 		}
 		lvl.add_character(e);
-		e->execute_command(instantiation_commands_);
 		
 		//spawn with the spawned object's midpoint (rather than its upper-left corner) at x_, y_.
 		//This means objects are centered on the point they're spawned on, which is a lot more intuitive for scripting.
 		e->set_pos(e->x() - e->current_frame().width() / 2 , e->y() - e->current_frame().height() / 2);
+
+		e->execute_command(instantiation_commands_);
 	}
 private:
 	std::string type_;
@@ -303,6 +304,51 @@ private:
 	}
 
 	bool custom_;
+};
+
+class board_vehicle_command : public entity_command_callable {
+	entity_ptr vehicle_;
+public:
+	explicit board_vehicle_command(entity_ptr vehicle) : vehicle_(vehicle)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		vehicle_->boarded(lvl, entity_ptr(&ob));
+	}
+};
+
+class board_vehicle_function : public function_expression {
+public:
+	explicit board_vehicle_function(const args_list& args)
+	  : function_expression("board_vehicle", args, 1, 1)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		entity_ptr vehicle = args()[0]->evaluate(variables).try_convert<entity>();
+		if(vehicle) {
+			return variant(new board_vehicle_command(vehicle));
+		} else {
+			return variant();
+		}
+	}
+};
+
+class eject_vehicle_command : public entity_command_callable {
+public:
+	virtual void execute(level& lvl, entity& ob) const {
+		ob.unboarded(lvl);
+	}
+};
+
+class eject_vehicle_function : public function_expression {
+public:
+	explicit eject_vehicle_function(const args_list& args)
+	  : function_expression("eject_vehicle", args, 0, 0)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new eject_vehicle_command());
+	}
 };
 
 class child_command : public custom_object_command_callable
@@ -1365,6 +1411,10 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new spawn_function(args, true));
 	} else if(fn == "char") {
 		return expression_ptr(new spawn_function(args, false));
+	} else if(fn == "board_vehicle") {
+		return expression_ptr(new board_vehicle_function(args));
+	} else if(fn == "eject_vehicle") {
+		return expression_ptr(new eject_vehicle_function(args));
 	} else if(fn == "save_game") {
 		return expression_ptr(new save_game_function(args));
 	} else if(fn == "load_game") {
