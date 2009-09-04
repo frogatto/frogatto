@@ -1,7 +1,11 @@
-#include "weather_particle_system.hpp"
 #include <cstdio>
+#include <math.h>
+
+#include "weather_particle_system.hpp"
+#include "wml_utils.hpp"
 
 weather_particle_system_factory::weather_particle_system_factory (wml::const_node_ptr node)
+ : info(node)
 {
 	
 }
@@ -13,15 +17,17 @@ particle_system_ptr weather_particle_system_factory::create(const entity& e) con
 
 
 weather_particle_system::weather_particle_system(const entity& e, const weather_particle_system_factory& factory)
- : factory_(factory), cycle_(0)
+ : factory_(factory), info_(factory.info), cycle_(0)
 {
-	for (int i = 0; i < 1500; i++)
+	base_velocity = sqrtf(info_.velocity_x*info_.velocity_x + info_.velocity_y*info_.velocity_y);
+	direction[0] = info_.velocity_x / base_velocity;
+	direction[1] = info_.velocity_y / base_velocity;
+	for (int i = 0; i < info_.number_of_particles; i++)
 	{
 		particle new_p;
-		new_p.pos[0] = rand()%repeat_period;
-		new_p.pos[1] = rand()%repeat_period;
-		new_p.velocity[0] = 0;
-		new_p.velocity[1] = 5+(rand()%3);
+		new_p.pos[0] = rand()%info_.repeat_period;
+		new_p.pos[1] = rand()%info_.repeat_period;
+		new_p.velocity = base_velocity + (info_.velocity_rand ? (rand() % info_.velocity_rand) : 0);
 		particles_.push_back(new_p);
 	}
 }
@@ -32,9 +38,8 @@ void weather_particle_system::process(const entity& e)
 	
 	foreach(particle& p, particles_)
 	{
-		p.pos[0] += p.velocity[0];
-		p.pos[1] += p.velocity[1];
-		p.pos[1] = static_cast<int>(p.pos[1]) % repeat_period;
+		p.pos[0] = static_cast<int>(p.pos[0]+direction[0] * p.velocity) % info_.repeat_period;
+		p.pos[1] = static_cast<int>(p.pos[1]+direction[1] * p.velocity) % info_.repeat_period;
 	}
 	
 	//while (particles_.size() > 1500) particles_.pop_front();
@@ -43,12 +48,11 @@ void weather_particle_system::process(const entity& e)
 void weather_particle_system::draw(const rect& area, const entity& e) const
 {
 	glDisable(GL_TEXTURE_2D);
-	//glEnable(GL_SMOOTH);
-	glLineWidth(1);
+	glLineWidth(info_.line_width);
 	glBegin(GL_LINES);
-	glColor4f(0.75, 0.75, 1.0, 0.9);
-	int offset_x = area.x()-(area.x()%repeat_period);
-	int offset_y = area.y()-(area.y()%repeat_period);
+	glColor4f(info_.rgba[0]/255.0, info_.rgba[1]/255.0, info_.rgba[2]/255.0, info_.rgba[3]/255.0);
+	int offset_x = area.x()-(area.x() % info_.repeat_period);
+	int offset_y = area.y()-(area.y() % info_.repeat_period);
 	foreach(const particle& p, particles_)
 	{
 		float my_y = p.pos[1]+offset_y;
@@ -58,11 +62,11 @@ void weather_particle_system::draw(const rect& area, const entity& e) const
 			do
 			{
 				glVertex3f(my_x, my_y, 0.0);
-				glVertex3f(my_x, my_y+8.0, 0.0);
-				my_x += repeat_period;
+				glVertex3f(my_x+direction[0]*info_.line_length, my_y+direction[1]*info_.line_length, 0.0);
+				my_x += info_.repeat_period;
 				//printf("my_x: %f, area.x: %i, area.w: %i\n", my_x, area.x(), area.w());
 			} while (my_x < area.x()+area.w());
-			my_y += repeat_period;
+			my_y += info_.repeat_period;
 		} while (my_y < area.y()+area.h());
 	}
 	glEnd();
