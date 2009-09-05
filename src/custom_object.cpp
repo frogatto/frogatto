@@ -208,8 +208,7 @@ void custom_object::draw() const
 		draw_color_->to_color().set_as_current_color();
 	}
 
-	const int slope = rotate_ + (current_frame().rotate_on_slope() ? -slope_standing_on(type_->feet_width()*2)*face_dir() : 0);
-	frame_->draw(x(), y(), face_right(), upside_down(), time_in_frame_, slope);
+	frame_->draw(x(), y(), face_right(), upside_down(), time_in_frame_, rotate_);
 
 	if(draw_color_) {
 		if(!draw_color_->fits_in_color()) {
@@ -796,6 +795,8 @@ variant custom_object::get_value(const std::string& key) const
 		               cliff_edge_within(*lvl_, feet_x(), feet_y(), face_dir()*15));
 	} else if(key == "distance_to_cliff"){
 		return variant(distance_to_cliff(*lvl_, feet_x(), feet_y(), face_dir() ));
+	} else if(key == "slope_standing_on") {
+		return variant(-slope_standing_on(type_->feet_width()*2)*face_dir());
 	} else if(key == "underwater") {
 		return variant(lvl_->is_underwater(body_rect()));
 	} else if(key == "driver") {

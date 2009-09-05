@@ -46,6 +46,9 @@ node_ptr deep_copy(const_node_ptr node, const std::string& name);
 void merge_over(const_node_ptr src, node_ptr dst);
 void copy_over(const_node_ptr src, node_ptr dst);
 
+//find a child which has a given attribute matching
+node_ptr find_child_by_attribute(node_ptr node, const std::string& element_name, const std::string& attr, const std::string& value);
+
 std::vector<const_node_ptr> child_nodes(const const_node_ptr& ptr,
                                         const std::string& element);
 std::vector<node_ptr> child_nodes(const node_ptr& ptr,

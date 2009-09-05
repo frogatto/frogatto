@@ -43,10 +43,56 @@ const_custom_object_type_ptr custom_object_type::get(const std::string& id)
 
 			wml::node_ptr prototype_node = wml::parse_wml_from_file(path_itor->second);
 
-			//anything that comes in our node will take precedence in what
-			//was in the prototype node, so merge over the prototype node,
-			//and then take what is in it and use it.
-			wml::merge_over(node, prototype_node);
+			//we have a prototype node and an object node. We want to merge
+			//them together to give one object definition. We will save
+			//the final definition in the prototype_node, overwriting its
+			//values with changes from the object node.
+
+			//begin by setting attributes in the prototype node from
+			//the object node.
+			for(wml::node::const_attr_iterator i = node->begin_attr();
+			    i != node->end_attr(); ++i) {
+				prototype_node->set_attr(i->first, i->second);
+			}
+
+			//go over every animation in the object, and see if the animation
+			//is also defined in the prototype.
+			FOREACH_WML_CHILD(anim_node, node, "animation") {
+				wml::node_ptr target_anim = wml::find_child_by_attribute(prototype_node, "animation", "id", anim_node->attr("id"));
+				if(target_anim) {
+					//the animation is in the prototype, so we merge the
+					//object's definition of the animation with the
+					//prototype's.
+					wml::merge_over(anim_node, target_anim);
+				} else {
+					//the animation isn't in the prototype, so just add
+					//what is given in the object.
+					prototype_node->add_child(wml::deep_copy(anim_node));
+				}
+			}
+
+			//now go over every element and copy them in.
+			for(wml::node::all_child_iterator i = node->begin_children();
+			    i != node->end_children(); ++i) {
+				const std::string& name = (*i)->name();
+				if(name == "animation") {
+					//we handled animations above, so ignore this here.
+					continue;
+				}
+
+				if(name == "vars") {
+					//we like to merge in vars nodes into one vars definition
+					//if both the object and prototype have vars definitions.
+					wml::node_ptr target = prototype_node->get_child("vars");
+					if(target) {
+						wml::merge_over(*i, target);
+						continue;
+					}
+				}
+
+				prototype_node->add_child(*i);
+			}
+			    
 			node = prototype_node;
 		}
 

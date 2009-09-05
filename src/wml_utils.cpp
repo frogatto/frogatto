@@ -58,6 +58,21 @@ void copy_over(const_node_ptr src, node_ptr dst)
 	merge_over(src, dst);
 }
 
+node_ptr find_child_by_attribute(node_ptr node, const std::string& element_name, const std::string& attr, const std::string& value)
+{
+	node::child_iterator i1 = node->begin_child(element_name);
+	node::child_iterator i2 = node->end_child(element_name);
+	while(i1 != i2) {
+		if(i1->second->attr(attr).str() == value) {
+			return i1->second;
+		}
+
+		++i1;
+	}
+
+	return node_ptr();
+}
+
 std::vector<const_node_ptr> child_nodes(const const_node_ptr& ptr,
                                         const std::string& element)
 {
