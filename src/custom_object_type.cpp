@@ -92,6 +92,7 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	is_vehicle_(wml::get_bool(node, "vehicle", false)),	
 	passenger_x_(wml::get_int(node, "passenger_x")),
 	passenger_y_(wml::get_int(node, "passenger_y")),
+	feet_width_(wml::get_int(node, "feet_width", 5)),
 	use_image_for_collisions_(wml::get_bool(node, "use_image_for_collisions", false))
 {
 	wml::node::const_child_iterator a1 = node->begin_child("animation");

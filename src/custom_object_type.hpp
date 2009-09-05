@@ -77,6 +77,8 @@ public:
 	int passenger_x() const { return passenger_x_; }
 	int passenger_y() const { return passenger_y_; }
 
+	int feet_width() const { return feet_width_; }
+
 	bool use_image_for_collisions() const { return use_image_for_collisions_; }
 
 	const std::map<std::string, variant>& variables() const { return variables_; }
@@ -123,6 +125,7 @@ private:
 
 	bool is_vehicle_;
 	int passenger_x_, passenger_y_;
+	int feet_width_;
 
 	bool use_image_for_collisions_;
 

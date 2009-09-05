@@ -208,7 +208,8 @@ void custom_object::draw() const
 		draw_color_->to_color().set_as_current_color();
 	}
 
-	frame_->draw(x(), y(), face_right(), upside_down(), time_in_frame_, rotate_);
+	const int slope = rotate_ + (current_frame().rotate_on_slope() ? -slope_standing_on(type_->feet_width()*2)*face_dir() : 0);
+	frame_->draw(x(), y(), face_right(), upside_down(), time_in_frame_, slope);
 
 	if(draw_color_) {
 		if(!draw_color_->fits_in_color()) {
@@ -377,6 +378,32 @@ void custom_object::process(level& lvl)
 		//doesn't actually execute a movement.
 		if(n < std::abs(velocity_x_/100)) {
 			set_pos(x() + dir, y());
+
+			//if we go up or down a slope, and we began the frame standing,
+			//move the character up or down as appropriate to try to keep
+			//them standing.
+
+			if(started_standing && !is_standing(lvl)) {
+				set_pos(x(), y()+1);
+				int max_drop = 2;
+				while(--max_drop && started_standing && !is_standing(lvl)) {
+					set_pos(x(), y()+1);
+				}
+			} else if(started_standing) {
+				const int original_y = y();
+				int max_slope = 3;
+				set_pos(x(), y()-1);
+				while(--max_slope && is_standing(lvl)) {
+					set_pos(x(), y()-1);
+				}
+
+				if(!max_slope) {
+					set_pos(x(), original_y);
+				} else {
+					set_pos(x(), y()+1);
+				}
+			}
+
 		}
 	}
 
@@ -664,7 +691,8 @@ void custom_object::control(const level& lvl)
 bool custom_object::is_standing(const level& lvl, int* friction, int* traction, int* damage, int* adjust_y, entity_ptr* standing_on) const
 {
 	return (current_frame().feet_x() || current_frame().feet_y()) &&
-	       lvl.standable(feet_x(), feet_y(), friction, traction, damage, adjust_y, standing_on);
+	       (lvl.standable(feet_x() - type_->feet_width(), feet_y(), friction, traction, damage, adjust_y, standing_on) ||
+	        lvl.standable(feet_x() + type_->feet_width(), feet_y(), friction, traction, damage, adjust_y, standing_on));
 }
 
 variant custom_object::get_value(const std::string& key) const
@@ -1037,6 +1065,56 @@ void custom_object::execute_command(const variant& var)
 				cmd->execute(*lvl_, *this);
 			}
 		}
+	}
+}
+
+int custom_object::slope_standing_on(int range) const
+{
+	if(lvl_ == NULL || !is_standing(*lvl_)) {
+		return 0;
+	}
+
+	const int forward = face_right() ? 1 : -1;
+	const int xpos = feet_x();
+	int ypos = feet_y();
+
+
+	for(int n = 0; !lvl_->solid(xpos, ypos) && n != 10; ++n) {
+		++ypos;
+	}
+
+	if(range == 1) {
+		if(lvl_->solid(xpos + forward, ypos - 1) &&
+		   !lvl_->solid(xpos - forward, ypos)) {
+			return 45;
+		}
+
+		if(!lvl_->solid(xpos + forward, ypos) &&
+		   lvl_->solid(xpos - forward, ypos - 1)) {
+			return -45;
+		}
+
+		return 0;
+	} else {
+		if(!is_standing(*lvl_)) {
+			return 0;
+		}
+
+		int y1 = find_ground_level(*lvl_, xpos + forward*range, ypos, range+1);
+		int y2 = find_ground_level(*lvl_, xpos - forward*range, ypos, range+1);
+		while((y1 == INT_MIN || y2 == INT_MIN) && range > 0) {
+			y1 = find_ground_level(*lvl_, xpos + forward*range, ypos, range+1);
+			y2 = find_ground_level(*lvl_, xpos - forward*range, ypos, range+1);
+			--range;
+		}
+
+		if(range == 0) {
+			return 0;
+		}
+
+		const int dy = y2 - y1;
+		const int dx = range*2;
+		return (dy*45)/dx;
 	}
 }
 

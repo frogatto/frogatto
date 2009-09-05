@@ -13,23 +13,51 @@ bool cliff_edge_within(const level& lvl, int xpos, int ypos, int deltax)
 
 int distance_to_cliff(const level& lvl, int xpos, int ypos, int facing)
 {
-	const int drop = 5; //arbitrary value considered to qualify something as a cliff
-						//TODO:  make this somehow related to our actual values for being able to scale height differences
 	const int max_search = 1000;
+	const int cliff_face = 5;
+	const int cliff_drop = 2;
 	
-	for( int ix = xpos; abs(ix-xpos) < max_search; ix += facing) {
-		if( !lvl.standable_tile( ix, ypos) ){
-			//then check that column to see if there is a standable pixel within a short height difference
-			int found_standable = 0;
-			for(int iy = ypos-drop; iy < ypos + 2*drop; ++iy){ 
-				found_standable += lvl.standable_tile( ix, iy);
+	//search for up to three pixels below us to try to get a starting
+	//position which is standable.
+	for(int n = 0; n != 3; ++n) {
+		if(lvl.standable_tile(xpos, ypos)) {
+			break;
+		}
+
+		++ypos;
+	}
+
+	//make sure we are at the surface.
+	while(lvl.standable_tile(xpos, ypos-1)) {
+		--ypos;
+	}
+
+	int result = 0;
+	for(; result < max_search; xpos += facing, ++result) {
+		if(lvl.standable_tile(xpos, ypos)) {
+			int ydiff = 0;
+			while(lvl.standable_tile(xpos, ypos-1) && ydiff < cliff_face) {
+				--ypos;
+				++ydiff;
 			}
-			if( !found_standable){
-				return abs(ix-xpos);
+
+			if(ydiff == cliff_face) {
+				return max_search;
+			}
+		} else {
+			int ydiff = 0;
+			while(!lvl.standable_tile(xpos, ypos) && ydiff < cliff_drop) {
+				++ypos;
+				++ydiff;
+			}
+
+			if(ydiff == cliff_drop) {
+				return result;
 			}
 		}
 	}
-	return max_search;
+
+	return result;
 }
 
 int find_ground_level(const level& lvl, int xpos, int ypos, int max_search)

@@ -118,6 +118,8 @@ private:
 	void handle_event(const std::string& event, const formula_callable* context=NULL);
 	void execute_command(const variant& var);
 
+	int slope_standing_on(int range) const;
+
 	int previous_y_;
 
 	wml::const_node_ptr custom_type_;
