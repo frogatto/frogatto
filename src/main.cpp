@@ -152,11 +152,6 @@ extern "C" int main(int argc, char** argv)
 		return -1;
 	}
 
-	if(run_benchmarks) {
-		test::run_benchmarks();
-		return 0;
-	}
-
 	if(unit_tests_only) {
 		return 0;
 	}
@@ -212,6 +207,11 @@ extern "C" int main(int argc, char** argv)
 		framed_gui_element::init(wml::parse_wml_from_file("gui.cfg"));
 		graphical_font::init(wml::parse_wml_from_file("fonts.cfg"));
 	} catch(const wml::parse_error& e) {
+		return 0;
+	}
+
+	if(run_benchmarks) {
+		test::run_benchmarks();
 		return 0;
 	}
 

@@ -13,6 +13,7 @@
 #include "raster.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
+#include "unit_test.hpp"
 #include "utils.hpp"
 
 struct custom_object_text {
@@ -1260,3 +1261,14 @@ void custom_object::board_vehicle()
 void custom_object::unboard_vehicle()
 {
 }
+
+BENCHMARK_ARG(custom_object_get_attr, const std::string& attr)
+{
+	static custom_object* obj = new custom_object("black_ant", 0, 0, false);
+	BENCHMARK_LOOP {
+		obj->query_value(attr);
+	}
+}
+
+BENCHMARK_ARG_CALL(custom_object_get_attr, easy_lookup, "time_in_animation");
+BENCHMARK_ARG_CALL(custom_object_get_attr, hard_lookup, "xxxx");
