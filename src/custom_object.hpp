@@ -21,6 +21,8 @@ struct custom_object_text;
 class custom_object : public entity
 {
 public:
+	static void init();
+
 	explicit custom_object(wml::const_node_ptr node);
 	custom_object(const std::string& type, int x, int y, bool face_right);
 	virtual ~custom_object();
@@ -110,6 +112,8 @@ protected:
 	variant get_value(const std::string& key) const;
 
 private:
+	struct Accessor;
+
 	bool is_standing(const level& lvl, int* friction=0, int* traction=0, int* damage=0, int* adjust_y=0, entity_ptr* standing_on=0) const;
 
 	void get_inputs(std::vector<game_logic::formula_input>* inputs) const;

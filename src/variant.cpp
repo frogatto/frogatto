@@ -55,15 +55,16 @@ std::string get_call_stack()
 		if(!*i) {
 			continue;
 		}
-		res += "  ";
-		res += *i;
-		res += "\n";
+		res += formatter() << "  FRAME " << (i - call_stack.begin()) << ": " << *i << "\n";
 	}
 	return res;
 }
 
+void output_formula_error_info();
+
 type_error::type_error(const std::string& str) : message(str) {
 	std::cerr << "ERROR: " << message << "\n" << get_call_stack();
+	output_formula_error_info();
 	assert(false);
 }
 

@@ -126,8 +126,6 @@ void run_formula(surface surf, const std::string& algo)
 	if(locked) {
 		SDL_UnlockSurface(surf.get());
 	}
-
-	std::cerr << "run_formula in " << (SDL_GetTicks() - ticks) << " ticks\n";
 }
 
 }

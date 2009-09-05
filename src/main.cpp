@@ -14,6 +14,7 @@
 #include "asserts.hpp"
 #include "character_type.hpp"
 #include "controls.hpp"
+#include "custom_object.hpp"
 #include "custom_object_functions.hpp"
 #include "custom_object_type.hpp"
 #include "draw_scene.hpp"
@@ -187,6 +188,7 @@ extern "C" int main(int argc, char** argv)
 	graphics::texture::manager texture_manager;
 
 	try {
+		custom_object::init();
 		init_custom_object_functions(wml::parse_wml_from_file("functions.cfg"));
 		wml::schema::init(wml::parse_wml_from_file("schema.cfg"));
 		character_type::init(wml::parse_wml_from_file("characters.cfg",

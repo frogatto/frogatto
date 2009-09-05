@@ -31,13 +31,15 @@ public:
 	explicit formula_expression(const char* name) : name_(name) {}
 	virtual ~formula_expression() {}
 	variant evaluate(const formula_callable& variables) const {
-		call_stack_manager manager(name_);
+		call_stack_manager manager(str_.c_str());
 		return execute(variables);
 	}
 	void set_name(const char* name) { name_ = name; }
+	void set_str(const std::string& str) { str_ = str; }
 private:
 	virtual variant execute(const formula_callable& variables) const = 0;
 	const char* name_;
+	std::string str_;
 };
 
 typedef boost::shared_ptr<formula_expression> expression_ptr;

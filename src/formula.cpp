@@ -25,6 +25,17 @@
 #include "random.hpp"
 #include "wml_node.hpp"
 
+namespace {
+//the last formula that was executed; used for outputting debugging info.
+const game_logic::formula* last_executed_formula;
+}
+
+void output_formula_error_info() {
+	if(last_executed_formula) {
+		last_executed_formula->output_debug_info();
+	}
+}
+
 namespace game_logic
 {
 
@@ -663,7 +674,18 @@ void parse_where_clauses(const token* i1, const token * i2,
 	}
 }
 
+expression_ptr parse_expression_internal(const token* i1, const token* i2, function_symbol_table* symbols);
+
 expression_ptr parse_expression(const token* i1, const token* i2, function_symbol_table* symbols)
+{
+	expression_ptr result(parse_expression_internal(i1, i2, symbols));
+	if(result && i1 != i2) {
+		result->set_str(std::string(i1->begin, (i2-1)->end));
+	}
+	return result;
+}
+
+expression_ptr parse_expression_internal(const token* i1, const token* i2, function_symbol_table* symbols)
 {
 	if(i1 == i2) {
 		std::cerr << "empty expression\n";
@@ -861,23 +883,32 @@ formula::formula(const wml::value& val, function_symbol_table* symbols) : str_(v
 		}
 	}
 
-	try {
-		if(tokens.size() != 0) {
-			expr_ = parse_expression(&tokens[0],&tokens[0] + tokens.size(), symbols);
-		} else {
-			expr_ = expression_ptr(new null_expression());
-		}	
-	} catch(...) {
-		if(filename_) {
-			std::cerr << *filename_ << " " << line_ << ": ";
-		}
-		std::cerr << "error parsing formula '" << str_ << "'\n";
-		throw;
+	if(tokens.size() != 0) {
+		expr_ = parse_expression(&tokens[0],&tokens[0] + tokens.size(), symbols);
+	} else {
+		expr_ = expression_ptr(new null_expression());
+	}	
+}
+
+formula::~formula() {
+	if(last_executed_formula == this) {
+		last_executed_formula = NULL;
 	}
+}
+
+void formula::output_debug_info() const
+{
+	std::cerr << "FORMULA: ";
+	if(filename_) {
+		std::cerr << *filename_ << " " << line_ << ": ";
+	}
+
+	std::cerr << str_ << "\n";
 }
 
 variant formula::execute(const formula_callable& variables) const
 {
+	last_executed_formula = this;
 	try {
 		return expr_->evaluate(variables);
 	} catch(type_error& e) {
@@ -894,6 +925,7 @@ variant formula::execute(const formula_callable& variables) const
 
 variant formula::execute() const
 {
+	last_executed_formula = this;
 	static map_formula_callable null_callable;
 	return execute(null_callable);
 }

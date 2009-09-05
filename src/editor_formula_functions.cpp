@@ -1,5 +1,6 @@
 #include <map>
 
+#include "custom_object.hpp"
 #include "debug_console.hpp"
 #include "editor.hpp"
 #include "editor_formula_functions.hpp"
@@ -26,6 +27,37 @@ public:
 private:
 	variant get_value(const std::string& key) const {
 		return variant();
+	}
+};
+
+class add_object_command : public editor_command {
+	std::string id_;
+	int x_, y_;
+	bool facing_;
+public:
+	add_object_command(const std::string& id, int x, int y, bool facing)
+	  : id_(id), x_(x), y_(y), facing_(facing)
+	{}
+private:
+	void execute(editor& e) {
+		custom_object* obj = new custom_object(id_, x_, y_, facing_);
+		obj->set_level(e.get_level());
+		e.get_level().add_character(obj);
+	}
+};
+
+class add_object_function : public function_expression {
+public:
+	explicit add_object_function(const args_list& args)
+	  : function_expression("add_object", args, 4, 4)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new add_object_command(
+		        args()[0]->evaluate(variables).as_string(),
+		        args()[1]->evaluate(variables).as_int(),
+		        args()[2]->evaluate(variables).as_int(),
+		        args()[3]->evaluate(variables).as_bool()));
 	}
 };
 
@@ -103,6 +135,8 @@ public:
 	{
 		if(fn == "add_tiles") {
 			return expression_ptr(new add_tiles_function(args));
+		} else if(fn == "add_object") {
+			return expression_ptr(new add_object_function(args));
 		} else if(fn == "debug") {
 			return expression_ptr(new debug_function(args));
 		} else {

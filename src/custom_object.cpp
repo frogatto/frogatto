@@ -1,3 +1,6 @@
+#include <boost/bind.hpp>
+#include <boost/function.hpp>
+
 #include <cassert>
 #include <iostream>
 
@@ -695,117 +698,141 @@ bool custom_object::is_standing(const level& lvl, int* friction, int* traction, 
 	        lvl.standable(feet_x() + type_->feet_width(), feet_y(), friction, traction, damage, adjust_y, standing_on));
 }
 
+namespace {
+typedef boost::function<variant(const custom_object& obj)> object_accessor;
+std::map<std::string, object_accessor> object_accessor_map;
+}
+
+//A utility class which is used to calculate the value of a custom object's
+//attributes for the formula system.
+struct custom_object::Accessor {
+#define CUSTOM_ACCESSOR(name, expression) static variant name(const custom_object& obj) { return variant(expression); }
+#define SIMPLE_ACCESSOR(name) static variant name(const custom_object& obj) { return variant(obj.name##_); }
+	CUSTOM_ACCESSOR(time_in_animation, obj.time_in_frame_)
+	CUSTOM_ACCESSOR(level, obj.lvl_)
+	CUSTOM_ACCESSOR(animation, obj.frame_name_)
+	SIMPLE_ACCESSOR(hitpoints)
+	CUSTOM_ACCESSOR(max_hitpoints, obj.type_->hitpoints())
+	CUSTOM_ACCESSOR(mass, obj.type_->mass())
+	CUSTOM_ACCESSOR(label, obj.label())
+	CUSTOM_ACCESSOR(x, obj.x())
+	CUSTOM_ACCESSOR(y, obj.y())
+	CUSTOM_ACCESSOR(z, obj.zorder_)
+	CUSTOM_ACCESSOR(x1, obj.body_rect().x())
+	CUSTOM_ACCESSOR(y1, obj.body_rect().y())
+	CUSTOM_ACCESSOR(x2, obj.body_rect().x2())
+	CUSTOM_ACCESSOR(y2, obj.body_rect().y2())
+	CUSTOM_ACCESSOR(w, obj.body_rect().w())
+	CUSTOM_ACCESSOR(h, obj.body_rect().h())
+
+	//note that we're taking the image midpoint, NOT the collision-rect midpoint
+	//in practice, we've always calculated this from the image for our scripting,
+	//and many object actually lack non-zero collision-rect widths.
+	CUSTOM_ACCESSOR(midpoint_x, obj.x() + obj.current_frame().width()/2)
+	CUSTOM_ACCESSOR(midpoint_y, obj.y() + obj.current_frame().height()/2)
+
+	CUSTOM_ACCESSOR(img_w, obj.current_frame().width()/2);
+	CUSTOM_ACCESSOR(img_h, obj.current_frame().height()/2);
+	CUSTOM_ACCESSOR(front, obj.face_right() ? obj.body_rect().x2() : obj.body_rect().x());
+	CUSTOM_ACCESSOR(back, obj.face_right() ? obj.body_rect().x() : obj.body_rect().x2());
+	SIMPLE_ACCESSOR(cycle);
+	CUSTOM_ACCESSOR(facing, obj.face_right() ? 1 : -1);
+	CUSTOM_ACCESSOR(upside_down, obj.upside_down() ? 1 : 0);
+	CUSTOM_ACCESSOR(up, obj.upside_down() ? 1 : -1);
+	CUSTOM_ACCESSOR(down, obj.upside_down() ? -1 : 1);
+	SIMPLE_ACCESSOR(velocity_x);
+	SIMPLE_ACCESSOR(velocity_y);
+	SIMPLE_ACCESSOR(accel_x);
+	SIMPLE_ACCESSOR(accel_y);
+	CUSTOM_ACCESSOR(vars, obj.vars_.get());
+	CUSTOM_ACCESSOR(group, obj.group());
+	SIMPLE_ACCESSOR(rotate);
+	CUSTOM_ACCESSOR(me, &obj);
+	CUSTOM_ACCESSOR(stood_on, obj.stood_on_by_.size());
+	CUSTOM_ACCESSOR(red, obj.draw_color().r());
+	CUSTOM_ACCESSOR(green, obj.draw_color().g());
+	CUSTOM_ACCESSOR(blue, obj.draw_color().b());
+	CUSTOM_ACCESSOR(alpha, obj.draw_color().a());
+	CUSTOM_ACCESSOR(damage, obj.current_frame().damage());
+	CUSTOM_ACCESSOR(hit_by, obj.last_hit_by_.get());
+	CUSTOM_ACCESSOR(distortion, obj.distortion_.get());
+	CUSTOM_ACCESSOR(is_standing, (obj.lvl_ ? variant(obj.is_standing(*obj.lvl_)) : variant()));
+	CUSTOM_ACCESSOR(near_cliff_edge, obj.is_standing(*obj.lvl_) && cliff_edge_within(*obj.lvl_, obj.feet_x(), obj.feet_y(), obj.face_dir()*15));
+	CUSTOM_ACCESSOR(distance_to_cliff, ::distance_to_cliff(*obj.lvl_, obj.feet_x(), obj.feet_y(), obj.face_dir()));
+	CUSTOM_ACCESSOR(slope_standing_on, -obj.slope_standing_on(obj.type_->feet_width()*2)*obj.face_dir());
+	CUSTOM_ACCESSOR(underwater, obj.lvl_->is_underwater(obj.body_rect()));
+	CUSTOM_ACCESSOR(driver, obj.driver_.get());
+	CUSTOM_ACCESSOR(is_human, obj.is_human() ? 1 : 0);
+	SIMPLE_ACCESSOR(invincible);
+#undef SIMPLE_ACCESSOR
+#undef CUSTOM_ACCESSOR
+
+	static void init() {
+#define ACCESSOR(name) object_accessor_map.insert(std::pair<std::string,object_accessor>(#name, boost::bind(name, _1)))
+		ACCESSOR(time_in_animation);
+		ACCESSOR(level);
+		ACCESSOR(animation);
+		ACCESSOR(hitpoints);
+		ACCESSOR(max_hitpoints);
+		ACCESSOR(mass);
+		ACCESSOR(label);
+		ACCESSOR(x);
+		ACCESSOR(y);
+		ACCESSOR(z);
+		ACCESSOR(x1);
+		ACCESSOR(y1);
+		ACCESSOR(x2);
+		ACCESSOR(y2);
+		ACCESSOR(w);
+		ACCESSOR(h);
+		ACCESSOR(midpoint_x);
+		ACCESSOR(midpoint_y);
+		ACCESSOR(img_w);
+		ACCESSOR(img_h);
+		ACCESSOR(front);
+		ACCESSOR(back);
+		ACCESSOR(cycle);
+		ACCESSOR(facing);
+		ACCESSOR(upside_down);
+		ACCESSOR(up);
+		ACCESSOR(down);
+		ACCESSOR(velocity_x);
+		ACCESSOR(velocity_y);
+		ACCESSOR(accel_x);
+		ACCESSOR(accel_y);
+		ACCESSOR(vars);
+		ACCESSOR(group);
+		ACCESSOR(rotate);
+		ACCESSOR(me);
+		ACCESSOR(stood_on);
+		ACCESSOR(red);
+		ACCESSOR(green);
+		ACCESSOR(blue);
+		ACCESSOR(alpha);
+		ACCESSOR(damage);
+		ACCESSOR(hit_by);
+		ACCESSOR(distortion);
+		ACCESSOR(is_standing);
+		ACCESSOR(near_cliff_edge);
+		ACCESSOR(distance_to_cliff);
+		ACCESSOR(slope_standing_on);
+		ACCESSOR(underwater);
+		ACCESSOR(driver);
+		ACCESSOR(is_human);
+		ACCESSOR(invincible);
+	}
+};
+
+void custom_object::init()
+{
+	Accessor::init();
+}
+
 variant custom_object::get_value(const std::string& key) const
 {
-	if(key == "time_in_animation") {
-		return variant(time_in_frame_);
-	} else if(key == "level") {
-		return variant(lvl_);
-	} else if(key == "animation") {
-		return variant(frame_name_);
-	} else if(key == "hitpoints") {
-		return variant(hitpoints_);
-	} else if(key == "max_hitpoints") {
-		return variant(type_->hitpoints());
-	} else if(key == "mass") {
-		return variant(type_->mass());
-	} else if(key == "label") {
-		return variant(label());
-	} else if(key == "x") {
-		return variant(x());
-	} else if(key == "y") {
-		return variant(y());
-	} else if(key == "z") {
-		return variant(zorder_);
-	} else if(key == "x1") {
-		return variant(body_rect().x());
-	} else if(key == "y1") {
-		return variant(body_rect().y());
-	} else if(key == "x2") {
-		return variant(body_rect().x2());
-	} else if(key == "y2") {
-		return variant(body_rect().y2());
-	} else if(key == "w") {
-		return variant(body_rect().w());
-	} else if(key == "h") {
-		return variant(body_rect().h());
-	} else if(key == "midpoint_x") {
-		//note that we're taking the image midpoint, NOT the collision-rect midpoint
-		//in practice, we've always calculated this from the image for our scripting,
-		//and many object actually lack non-zero collision-rect widths.
-		return variant(x() + current_frame().width()/2);
-	} else if(key == "midpoint_y") {
-		return variant(y() + current_frame().height()/2);
-	} else if(key == "img_w") {
-		return variant(current_frame().width());
-	} else if(key == "img_h") {
-		return variant(current_frame().height());
-	} else if(key == "front") {
-		return variant(face_right() ? body_rect().x2() : body_rect().x());
-	} else if(key == "back") {
-		return variant(face_right() ? body_rect().x() : body_rect().x2());
-	} else if(key == "cycle") {
-		return variant(cycle_);
-	} else if(key == "facing") {
-		return variant(face_right() ? 1 : -1);
-	} else if(key == "upside_down") {
-		return variant(upside_down() ? 1 : 0);
-	} else if(key == "up") {
-		return variant(upside_down() ? 1 : -1);
-	} else if(key == "down") {
-		return variant(upside_down() ? -1 : 1);
-	} else if(key == "velocity_x") {
-		return variant(velocity_x_);
-	} else if(key == "velocity_y") {
-		return variant(velocity_y_);
-	} else if(key == "accel_x") {
-		return variant(accel_x_);
-	} else if(key == "accel_y") {
-		return variant(accel_y_);
-	} else if(key == "vars") {
-		return variant(vars_.get());
-	} else if(key == "group") {
-		return variant(group());
-	} else if(key == "rotate") {
-		return variant(rotate_);
-	} else if(key == "me") {
-		return variant(this);
-	} else if(key == "stood_on") {
-		return variant(stood_on_by_.size());
-	} else if(key == "red") {
-		return variant(draw_color().r());
-	} else if(key == "green") {
-		return variant(draw_color().g());
-	} else if(key == "blue") {
-		return variant(draw_color().b());
-	} else if(key == "alpha") {
-		return variant(draw_color().a());
-	} else if(key == "damage") {
-		return variant(current_frame().damage());
-	} else if(key == "hit_by") {
-		return variant(last_hit_by_.get());
-	} else if(key == "distortion") {
-		return variant(distortion_.get());
-	} else if(key == "is_standing") {
-		if(!lvl_) {
-			return variant();
-		}
-		return variant(is_standing(*lvl_));
-	} else if(key == "near_cliff_edge") {
-		return variant(is_standing(*lvl_) &&
-		               cliff_edge_within(*lvl_, feet_x(), feet_y(), face_dir()*15));
-	} else if(key == "distance_to_cliff"){
-		return variant(distance_to_cliff(*lvl_, feet_x(), feet_y(), face_dir() ));
-	} else if(key == "slope_standing_on") {
-		return variant(-slope_standing_on(type_->feet_width()*2)*face_dir());
-	} else if(key == "underwater") {
-		return variant(lvl_->is_underwater(body_rect()));
-	} else if(key == "driver") {
-		return variant(driver_.get());
-	} else if(key == "is_human") {
-		return variant(is_human() ? 1 : 0);
-	} else if(key == "invincible") {
-		return variant(invincible_);
+	std::map<std::string, object_accessor>::const_iterator accessor_itor = object_accessor_map.find(key);
+	if(accessor_itor != object_accessor_map.end()) {
+		return accessor_itor->second(*this);
 	}
 
 	std::map<std::string, particle_system_ptr>::const_iterator particle_itor = particle_systems_.find(key);
@@ -1270,5 +1297,5 @@ BENCHMARK_ARG(custom_object_get_attr, const std::string& attr)
 	}
 }
 
-BENCHMARK_ARG_CALL(custom_object_get_attr, easy_lookup, "time_in_animation");
+BENCHMARK_ARG_CALL(custom_object_get_attr, easy_lookup, "x");
 BENCHMARK_ARG_CALL(custom_object_get_attr, hard_lookup, "xxxx");
