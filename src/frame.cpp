@@ -118,7 +118,6 @@ bool frame::is_alpha(int x, int y, int time, bool face_right) const
 	ASSERT_LE(u, 1.0);
 	ASSERT_LE(v, 1.0);
 
-	fprintf(stderr, "IS_ALPHA: %d, %d\n", int((texture_.width()-1)*u), int((texture_.height()-1)*v));
 	return texture_.is_alpha((texture_.width()-1)*u, (texture_.height()-1)*v);
 }
 

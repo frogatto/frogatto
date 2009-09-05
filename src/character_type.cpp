@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "asserts.hpp"
 #include "character_type.hpp"
 #include "custom_object_functions.hpp"
 #include "formula.hpp"
@@ -25,7 +26,9 @@ void character_type::init(wml::const_node_ptr node)
 
 const_character_type_ptr character_type::get(const std::string& id)
 {
-	return cache[id];
+	const_character_type_ptr result = cache[id];
+	ASSERT_LOG(result, "Character not found: '" << id << "'");
+	return result;
 }
 
 namespace {
