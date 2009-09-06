@@ -996,8 +996,8 @@ entity_ptr level::collide(int x, int y, const entity* exclude) const
 {
 	const bool is_players_side = exclude && (exclude->on_players_side() || exclude->is_human());
 	entity_ptr res;
-	for(std::vector<entity_ptr>::const_iterator i = active_chars_.begin();
-	    i != active_chars_.end(); ++i) {
+	for(std::vector<entity_ptr>::const_iterator i = chars_.begin();
+	    i != chars_.end(); ++i) {
 		const entity_ptr& c = *i;
 		if(c->destroyed()) {
 			continue;
@@ -1032,8 +1032,8 @@ entity_ptr level::collide(int x, int y, const entity* exclude) const
 entity_ptr level::collide(const rect& r, const entity* exclude) const
 {
 	const bool is_players_side = exclude && (exclude->on_players_side() || exclude->is_human());
-	for(std::vector<entity_ptr>::const_iterator i = active_chars_.begin();
-	    i != active_chars_.end(); ++i) {
+	for(std::vector<entity_ptr>::const_iterator i = chars_.begin();
+	    i != chars_.end(); ++i) {
 		const entity_ptr& c = *i;
 		if(c->destroyed()) {
 			continue;
