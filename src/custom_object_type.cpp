@@ -55,6 +55,17 @@ const_custom_object_type_ptr custom_object_type::get(const std::string& id)
 				prototype_node->set_attr(i->first, i->second);
 			}
 
+			//mapping of animation nodes is kinda complicated: in the
+			//prototype there can be one specification of each animation.
+			//in objects there can be multiple specifications. Each
+			//animation in the object inherits from the specification in
+			//the prototype.
+			//
+			//We are going to build a completely fresh/new set of animations
+			//in a vector, and then wipe out all current animations and
+			//replace with these from the vector.
+			std::vector<wml::node_ptr> animation_nodes;
+
 			//go over every animation in the object, and see if the animation
 			//is also defined in the prototype.
 			FOREACH_WML_CHILD(anim_node, node, "animation") {
@@ -63,12 +74,19 @@ const_custom_object_type_ptr custom_object_type::get(const std::string& id)
 					//the animation is in the prototype, so we merge the
 					//object's definition of the animation with the
 					//prototype's.
-					wml::merge_over(anim_node, target_anim);
+					wml::node_ptr new_node(wml::deep_copy(target_anim));
+					wml::merge_over(anim_node, new_node);
+					animation_nodes.push_back(new_node);
 				} else {
 					//the animation isn't in the prototype, so just add
 					//what is given in the object.
-					prototype_node->add_child(wml::deep_copy(anim_node));
+					animation_nodes.push_back(wml::deep_copy(anim_node));
 				}
+			}
+
+			prototype_node->clear_children("animation");
+			foreach(wml::node_ptr node, animation_nodes) {
+				prototype_node->add_child(node);
 			}
 
 			//now go over every element and copy them in.

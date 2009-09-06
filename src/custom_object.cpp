@@ -699,7 +699,8 @@ bool custom_object::is_standing(const level& lvl, int* friction, int* traction, 
 }
 
 namespace {
-typedef boost::function<variant(const custom_object& obj)> object_accessor;
+typedef variant (*object_accessor)(const custom_object& obj);
+//typedef boost::function<variant(const custom_object& obj)> object_accessor;
 std::map<std::string, object_accessor> object_accessor_map;
 }
 
@@ -768,7 +769,7 @@ struct custom_object::Accessor {
 #undef CUSTOM_ACCESSOR
 
 	static void init() {
-#define ACCESSOR(name) object_accessor_map.insert(std::pair<std::string,object_accessor>(#name, boost::bind(name, _1)))
+#define ACCESSOR(name) object_accessor_map.insert(std::pair<std::string,object_accessor>(#name, name))
 		ACCESSOR(time_in_animation);
 		ACCESSOR(level);
 		ACCESSOR(animation);
@@ -835,14 +836,14 @@ variant custom_object::get_value(const std::string& key) const
 		return accessor_itor->second(*this);
 	}
 
-	std::map<std::string, particle_system_ptr>::const_iterator particle_itor = particle_systems_.find(key);
-	if(particle_itor != particle_systems_.end()) {
-		return variant(particle_itor->second.get());
-	}
-
 	std::map<std::string, variant>::const_iterator i = type_->variables().find(key);
 	if(i != type_->variables().end()) {
 		return i->second;
+	}
+
+	std::map<std::string, particle_system_ptr>::const_iterator particle_itor = particle_systems_.find(key);
+	if(particle_itor != particle_systems_.end()) {
+		return variant(particle_itor->second.get());
 	}
 
 	return vars_->query_value(key);
