@@ -756,6 +756,7 @@ struct custom_object::Accessor {
 	CUSTOM_ACCESSOR(alpha, obj.draw_color().a());
 	CUSTOM_ACCESSOR(damage, obj.current_frame().damage());
 	CUSTOM_ACCESSOR(hit_by, obj.last_hit_by_.get());
+	CUSTOM_ACCESSOR(jumped_on_by, obj.last_jumped_on_by_.get());
 	CUSTOM_ACCESSOR(distortion, obj.distortion_.get());
 	CUSTOM_ACCESSOR(is_standing, (obj.lvl_ ? variant(obj.is_standing(*obj.lvl_)) : variant()));
 	CUSTOM_ACCESSOR(near_cliff_edge, obj.is_standing(*obj.lvl_) && cliff_edge_within(*obj.lvl_, obj.feet_x(), obj.feet_y(), obj.face_dir()*15));
@@ -812,6 +813,7 @@ struct custom_object::Accessor {
 		ACCESSOR(alpha);
 		ACCESSOR(damage);
 		ACCESSOR(hit_by);
+		ACCESSOR(jumped_on_by);
 		ACCESSOR(distortion);
 		ACCESSOR(is_standing);
 		ACCESSOR(near_cliff_edge);
@@ -1021,8 +1023,9 @@ int custom_object::springiness() const
 	return type_->springiness();
 }
 
-bool custom_object::spring_off_head(const entity& landed_on_by)
+bool custom_object::spring_off_head(entity& landed_on_by)
 {
+	last_jumped_on_by_ = entity_ptr(&landed_on_by);
 	handle_event("jumped_on");
 	return true;
 }

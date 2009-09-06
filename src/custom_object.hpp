@@ -60,7 +60,7 @@ public:
 	bool body_harmful() const;
 	bool body_passthrough() const;
 	int springiness() const;
-	bool spring_off_head(const entity& landed_on_by);
+	bool spring_off_head(entity& landed_on_by);
 
 	int time_in_frame() const { return time_in_frame_; }
 
@@ -149,6 +149,7 @@ private:
 
 	game_logic::map_formula_callable_ptr vars_;
 
+	entity_ptr last_jumped_on_by_;
 	entity_ptr last_hit_by_;
 	int last_hit_by_anim_;
 	int current_animation_id_;

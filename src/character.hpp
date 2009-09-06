@@ -93,7 +93,7 @@ public:
 	int time_in_frame() const { return time_in_frame_; }
 
 	int springiness() const;
-	bool spring_off_head(const entity& jumped_on_by);
+	bool spring_off_head(entity& jumped_on_by);
 
 	int current_animation_id() const { return frame_id_; }
 

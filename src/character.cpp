@@ -846,7 +846,7 @@ int character::springiness() const
 	return type_->springiness();
 }
 
-bool character::spring_off_head(const entity& jumped_on_by)
+bool character::spring_off_head(entity& jumped_on_by)
 {
 	const int weight = jumped_on_by.weight();
 	if(weight > 1) {

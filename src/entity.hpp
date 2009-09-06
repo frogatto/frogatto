@@ -105,7 +105,7 @@ public:
 	virtual int time_in_frame() const = 0;
 
 	virtual int springiness() const = 0;
-	virtual bool spring_off_head(const entity& landed_on_by) { return true; }
+	virtual bool spring_off_head(entity& landed_on_by) { return true; }
 
 	virtual void activation_distance(int* x, int* y);
 	virtual bool dies_on_inactive() const { return false; } 
