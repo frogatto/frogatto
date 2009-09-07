@@ -97,9 +97,14 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 		const int min_y = lvl.boundaries().y() + drawable_height()/2;
 		const int max_y = lvl.boundaries().y2() - drawable_height()/2;
 
+		//we look a certain number of frames ahead -- assuming the focus
+		//keeps moving at the current velocity, we converge toward the point
+		//they will be at in x frames.
+		const int PredictiveFrames = 20;
+
 		//find the point we want the camera to converge toward. It will be the
 		//feet of the player, but inside the boundaries we calculated above.
-		const int x = std::min(std::max(focus->feet_x(), min_x), max_x);
+		const int x = std::min(std::max(focus->feet_x() + (focus->velocity_x()*PredictiveFrames)/100, min_x), max_x);
 
 		//calculate the adjustment to the camera's target position based on
 		//our vertical look. This is calculated as the square root of the
