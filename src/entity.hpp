@@ -104,6 +104,9 @@ public:
 
 	virtual int time_in_frame() const = 0;
 
+	virtual int teleport_offset_x() const { return 0; }
+	virtual int teleport_offset_y() const { return 0; }
+
 	virtual int springiness() const = 0;
 	virtual bool spring_off_head(entity& landed_on_by) { return true; }
 

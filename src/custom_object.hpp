@@ -38,6 +38,9 @@ public:
 	virtual int velocity_x() const;
 	virtual int velocity_y() const;
 	virtual int mass() const { return type_->mass(); }
+
+	int teleport_offset_x() const { return type_->teleport_offset_x(); }
+	int teleport_offset_y() const { return type_->teleport_offset_y(); }
 	
 	virtual bool is_standable(int x, int y, int* friction=NULL, int* traction=NULL, int* adjust_y=NULL) const;
 

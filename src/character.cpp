@@ -1375,7 +1375,7 @@ void character::change_frame(const frame* new_frame)
 	set_pos(x() - diff_x, y() - diff_y);
 
 	if(!solid_before_change && lvl_->solid(body_rect())) {
-		//changing frame like this causes a collission, so disallow it and roll back.
+		//changing frame like this causes a collision, so disallow it and roll back.
 		current_frame_ = old_frame;
 		time_in_frame_ = old_time_in_frame;
 		set_pos(x() + diff_x, y() + diff_y);

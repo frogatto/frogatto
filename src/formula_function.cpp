@@ -288,7 +288,7 @@ private:
 class choose_function : public function_expression {
 public:
 	explicit choose_function(const args_list& args)
-	     : function_expression("choose", args, 2, 2)
+	     : function_expression("choose", args, 1, 2)
 	{}
 
 private:
@@ -297,7 +297,14 @@ private:
 		int max_index = -1;
 		variant max_value;
 		for(size_t n = 0; n != items.num_elements(); ++n) {
-			const variant val = args()[1]->evaluate(formula_variant_callable_with_backup(items[n], variables));
+			variant val;
+			
+			if(args().size() >= 2) {
+				val = args()[1]->evaluate(formula_variant_callable_with_backup(items[n], variables));
+			} else {
+				val = variant(rand());
+			}
+
 			if(max_index == -1 || val > max_value) {
 				max_index = n;
 				max_value = val;
