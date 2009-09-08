@@ -240,7 +240,7 @@ bool level_runner::play_cycle()
 				//so set our position there.
 				const_entity_ptr dest_door = new_level->get_entity_by_label(portal->dest_label);
 				if(dest_door) {
-					mutable_portal.dest = point(dest_door->x(), dest_door->y());
+					mutable_portal.dest = point(dest_door->x() + dest_door->teleport_offset_x()*dest_door->face_dir(), dest_door->y() + dest_door->teleport_offset_y());
 					mutable_portal.dest_starting_pos = false;
 				}
 			}
