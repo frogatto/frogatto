@@ -1427,6 +1427,14 @@ void editor::add_tile_rect(int x1, int y1, int x2, int y2)
 
 void editor::remove_tile_rect(int x1, int y1, int x2, int y2)
 {
+	if(x2 < x1) {
+		std::swap(x1, x2);
+	}
+
+	if(y2 < y1) {
+		std::swap(y1, y2);
+	}
+
 	std::map<int, std::vector<std::string> > old_tiles;
 	lvl_->get_all_tiles_rect(x1, y1, x2, y2, old_tiles);
 	std::vector<boost::function<void()> > redo, undo;
