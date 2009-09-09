@@ -838,6 +838,11 @@ variant custom_object::get_value(const std::string& key) const
 		return accessor_itor->second(*this);
 	}
 
+	variant var_result = vars_->query_value(key);
+	if(!var_result.is_null()) {
+		return var_result;
+	}
+
 	std::map<std::string, variant>::const_iterator i = type_->variables().find(key);
 	if(i != type_->variables().end()) {
 		return i->second;
@@ -848,7 +853,7 @@ variant custom_object::get_value(const std::string& key) const
 		return variant(particle_itor->second.get());
 	}
 
-	return vars_->query_value(key);
+	return variant();
 }
 
 void custom_object::get_inputs(std::vector<game_logic::formula_input>* inputs) const
