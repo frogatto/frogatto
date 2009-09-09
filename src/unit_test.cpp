@@ -81,7 +81,7 @@ void run_benchmark(const std::string& name, BenchmarkTest fn)
 		const int start_time = SDL_GetTicks();
 		fn(nruns);
 		const int64_t time_taken = SDL_GetTicks() - start_time;
-		if(time_taken >= MinTicks) {
+		if(time_taken >= MinTicks || nruns > 1000000000) {
 			const int64_t ns = time_taken*1000000LL;
 			const int64_t ns_per_iter = ns/nruns;
 			std::cerr << "BENCH " << name << ": " << nruns << " iterations, " << ns_per_iter << "ns/iteration; total, " << ns << "ns\n";

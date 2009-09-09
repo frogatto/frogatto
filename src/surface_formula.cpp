@@ -5,6 +5,7 @@
 #include "formula.hpp"
 #include "formula_callable.hpp"
 #include "formula_function.hpp"
+#include "hi_res_timer.hpp"
 #include "surface.hpp"
 #include "surface_cache.hpp"
 #include "surface_formula.hpp"
@@ -87,6 +88,8 @@ private:
 
 void run_formula(surface surf, const std::string& algo)
 {
+	const hi_res_timer timer("run_formula");
+
 	const int ticks = SDL_GetTicks();
 	surface_formula_symbol_table table(surf);
 	game_logic::formula f(algo, &table);
@@ -158,5 +161,36 @@ BENCHMARK(surface_formula)
 	const std::string algo("rgba(b,r,g,a)");
 	BENCHMARK_LOOP {
 		run_formula(target, algo);
+	}
+}
+
+BENCHMARK(pixel_table)
+{
+	//This is some hard coded test data. It gives the set of pixels in
+	//the input image, and the pixels we want to map to.
+	const Uint32 PixelsFrom[] = {0xFF00FFFF, 0xFFFFFFFF, 0x9772FF13, 0xFF002145, 0x00FFFFFF, 0x94FF28FF };
+	const Uint32 PixelsTo[] = {0x00FF0000, 0xFF00FFFF, 0xFFFFFFFF, 0x9772FF13, 0xFF002145, 0x00FFFFFF };
+	const int NumColors = sizeof(PixelsFrom)/sizeof(*PixelsFrom);
+
+	//Set up an image of a million pixels in size. Set all values to values
+	//in the 'pixels from' range.
+	std::vector<Uint32> image(1000000);
+	for(int n = 0; n != image.size(); ++n) {
+		image[n] = PixelsFrom[n%NumColors];
+	}
+
+	//set up our table mapping pixels from -> pixels to.
+	typedef std::map<Uint32, Uint32> PixelTable;
+	PixelTable table;
+	for(int n = 0; n != NumColors; ++n) {
+		table.insert(std::pair<Uint32, Uint32>(PixelsFrom[n], PixelsTo[n]));
+	}
+
+	//now go over the image and map all source pixels to their destinations.
+	//this is the part that we want to benchmark.
+	BENCHMARK_LOOP {
+		for(int n = 0; n != image.size(); ++n) {
+			image[n] = table[image[n]];
+		}
 	}
 }

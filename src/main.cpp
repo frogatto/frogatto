@@ -117,13 +117,24 @@ extern "C" int main(int argc, char** argv)
 	std::cerr.sync_with_stdio(true);
 	#endif
 	std::string level_cfg = "titlescreen.cfg";
-	bool unit_tests_only = false, skip_tests = false;;
+	bool unit_tests_only = false, skip_tests = false;
 	bool run_benchmarks = false;
+	std::vector<std::string> benchmarks_list;
 	std::string server = "wesnoth.org";
 	for(int n = 1; n < argc; ++n) {
-		std::string arg(argv[n]);
+		const std::string arg(argv[n]);
+		std::string arg_name, arg_value;
+		std::string::const_iterator equal = std::find(arg.begin(), arg.end(), '=');
+		if(equal != arg.end()) {
+			arg_name = std::string(arg.begin(), equal);
+			arg_value = std::string(equal+1, arg.end());
+		}
+		
 		if(arg == "--benchmarks") {
 			run_benchmarks = true;
+		} else if(arg_name == "--benchmarks") {
+			run_benchmarks = true;
+			benchmarks_list = util::split(arg_value);
 		} else if(arg == "--tests") {
 			unit_tests_only = true;
 		} else if(arg == "--notests") {
@@ -213,7 +224,11 @@ extern "C" int main(int argc, char** argv)
 	}
 
 	if(run_benchmarks) {
-		test::run_benchmarks();
+		if(benchmarks_list.empty() == false) {
+			test::run_benchmarks(&benchmarks_list);
+		} else {
+			test::run_benchmarks();
+		}
 		return 0;
 	}
 
