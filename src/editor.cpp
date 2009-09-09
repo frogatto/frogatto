@@ -1392,6 +1392,14 @@ int editor::get_tile_zorder(const std::string& tile_id) const
 
 void editor::add_tile_rect(int zorder, const std::string& tile_id, int x1, int y1, int x2, int y2)
 {
+	if(x2 < x1) {
+		std::swap(x1, x2);
+	}
+
+	if(y2 < y1) {
+		std::swap(y1, y2);
+	}
+
 	std::vector<std::string> old_rect;
 	lvl_->get_tile_rect(zorder, x1, y1, x2, y2, old_rect);
 
