@@ -250,7 +250,38 @@ void blit_texture_with_distortion(const texture& tex, int x, int y, int w, int h
 	glEnd();
 }
 
+int blit_texture_translate_x = 0;
+int blit_texture_translate_y = 0;
+
 }  // namespace
+
+distortion_translation::distortion_translation()
+  : x_(0), y_(0)
+{
+}
+
+distortion_translation::~distortion_translation()
+{
+	if(x_ || y_) {
+		foreach(const raster_distortion* distort, distortions_) {
+			rect r = distort->area();
+			r = rect(r.x() + x_, r.y() + y_, r.w(), r.h());
+			const_cast<raster_distortion*>(distort)->set_area(r);
+		}
+	}
+}
+
+void distortion_translation::translate(int x, int y)
+{
+	x_ += x;
+	y_ += y;
+
+	foreach(const raster_distortion* distort, distortions_) {
+		rect r = distort->area();
+		r = rect(r.x() - x, r.y() - y, r.w(), r.h());
+		const_cast<raster_distortion*>(distort)->set_area(r);
+	}
+}
 
 void blit_texture(const texture& tex, int x, int y, int w, int h, GLfloat rotate, GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2)
 {

@@ -20,6 +20,7 @@
 #include "editor_formula_functions.hpp"
 #include "editor_layers_dialog.hpp"
 #include "editor_level_properties_dialog.hpp"
+#include "editor_stats_dialog.hpp"
 #include "entity.hpp"
 #include "filesystem.hpp"
 #include "font.hpp"
@@ -130,6 +131,7 @@ class editor_menu_dialog : public gui::dialog
 
 	void show_stats_menu() {
 		menu_item items[] = {
+		        "Details...", "", boost::bind(&editor::show_stats, &editor_),
 		        "Refresh stats", "", boost::bind(&editor::download_stats, &editor_),
 		};
 		std::vector<menu_item> res;
@@ -677,8 +679,6 @@ void editor::edit_level()
 
 	int selected_tile = 0;
 
-	select_previous_level_ = false;
-	select_next_level_ = false;
 	done_ = false;
 	while(!done_) {
 		process_ghost_objects();
@@ -1090,38 +1090,7 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 		lvl_->editor_clear_selection();
 	}
 
-	if(select_previous_level_) {
-		std::cerr << "CHANGE PREV LEVEL\n";
-		std::vector<std::string> levels = get_known_levels();
-		assert(!levels.empty());
-		levels.push_back("");
-		int index = std::find(levels.begin(), levels.end(), lvl_->previous_level()) - levels.begin();
-		index = (index + 1)%levels.size();
-		if(levels[index] == lvl_->id()) {
-			index = (index + 1)%levels.size();
-		}
-
-		execute_command(
-		  boost::bind(&level::set_previous_level, lvl_.get(), levels[index]),
-		  boost::bind(&level::set_previous_level, lvl_.get(), lvl_->previous_level()));
-
-	} else if(select_next_level_) {
-		std::cerr << "CHANGE NEXT LEVEL\n";
-
-		std::vector<std::string> levels = get_known_levels();
-		assert(!levels.empty());
-		levels.push_back("");
-		int index = std::find(levels.begin(), levels.end(), lvl_->next_level()) - levels.begin();
-		index = (index + 1)%levels.size();
-		if(levels[index] == lvl_->id()) {
-			index = (index + 1)%levels.size();
-		}
-
-		execute_command(
-		  boost::bind(&level::set_next_level, lvl_.get(), levels[index]),
-		  boost::bind(&level::set_next_level, lvl_.get(), lvl_->next_level()));
-
-	} else if(tool() == TOOL_ADD_OBJECT && event.button == SDL_BUTTON_LEFT && !lvl_->editor_highlight()) {
+	if(tool() == TOOL_ADD_OBJECT && event.button == SDL_BUTTON_LEFT && !lvl_->editor_highlight()) {
 		wml::node_ptr node(wml::deep_copy(enemy_types[cur_object_].node));
 		node->set_attr("x", formatter() << (ctrl_pressed ? anchorx_ : round_tile_size(anchorx_)));
 		node->set_attr("y", formatter() << (ctrl_pressed ? anchory_ : round_tile_size(anchory_)));
@@ -1361,6 +1330,12 @@ void editor::load_stats()
 			stats_.pop_back();
 		}
 	}
+}
+
+void editor::show_stats()
+{
+	editor_dialogs::editor_stats_dialog stats_dialog(*this);
+	stats_dialog.show_modal();
 }
 
 void editor::download_stats()
@@ -1744,21 +1719,9 @@ void editor::draw() const
 	int x = lvl_->boundaries().x() - t.width();
 	int y = ypos_ + graphics::screen_height()/2;
 
-	select_next_level_ = select_previous_level_ = false;
-
-	if(selectx > x && selectx < 0 && selecty > y && selecty < y + t.height()) {
-		t = font::render_text(previous_level, graphics::color_yellow(), 24);
-		select_previous_level_ = true;
-		std::cerr << "SELECT PREVIOUS LEVEL\n";
-	}
-
 	graphics::blit_texture(t, x, y);
 	t = font::render_text(next_level, graphics::color_black(), 24);
 	x = lvl_->boundaries().x2();
-	if(selectx > x && selectx < x + t.width() && selecty > y && selecty < y + t.height()) {
-		t = font::render_text(next_level, graphics::color_yellow(), 24);
-		select_next_level_ = true;
-	}
 	graphics::blit_texture(t, x, y);
 	}
 

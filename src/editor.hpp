@@ -39,6 +39,7 @@ public:
 	void edit_level();
 
 	void load_stats();
+	void show_stats();
 	void download_stats();
 	const std::vector<stats::record_ptr>& stats() const { return stats_; }
 
@@ -165,7 +166,6 @@ private:
 	std::string filename_;
 
 	EDIT_TOOL tool_;
-	mutable bool select_previous_level_, select_next_level_;
 	bool done_;
 	bool face_right_;
 	int cur_tileset_;

@@ -27,7 +27,7 @@ public:
 	virtual int granularity_y() const = 0;
 
 	//the area that the raster distortion takes effect in.
-	const rect& area() const { return area_; }
+	rect area() const { return area_; }
 	void set_area(const rect& area) { area_ = area; }
 
 	int cycle() const { return cycle_; }

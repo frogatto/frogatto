@@ -51,6 +51,15 @@ void add_raster_distortion(const raster_distortion* distortion);
 void remove_raster_distortion(const raster_distortion* distortion);
 void clear_raster_distortion();
 
+//a class that translates distortions within its scope.
+class distortion_translation {
+	int x_, y_;
+public:
+	distortion_translation();
+	~distortion_translation();
+	void translate(int x, int y);
+};
+
 void draw_rect(const SDL_Rect& rect, const SDL_Color& color,
                unsigned char alpha=0xFF);
 void draw_rect(const rect& rect, const graphics::color& color);

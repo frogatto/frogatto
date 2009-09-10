@@ -510,6 +510,8 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 
 	glPushMatrix();
 
+	graphics::distortion_translation distort_translation;
+
 	
 	// parallax scrolling for tiles.
 	std::map<int, tile_map>::const_iterator tile_map_iterator = tile_maps_.find(layer);
@@ -521,6 +523,7 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 		const int diffy = ((scrolly - 100)*y)/100;
 
 		glTranslatef(diffx, diffy, 0.0);
+		distort_translation.translate(diffx, diffy);
 		
 		//here, we adjust the screen bounds (they're a first order optimization) to account for the parallax shift
 		x -= diffx;
