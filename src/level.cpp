@@ -590,7 +590,7 @@ void level::draw(int x, int y, int w, int h) const
 	w += widest_tile_;
 	h += highest_tile_;
 
-	const std::vector<entity_ptr>* chars_ptr = &chars_;
+	const std::vector<entity_ptr>* chars_ptr = &active_chars_;
 	std::vector<entity_ptr> editor_chars_buf;
 	if(editor_) {
 		//in the editor we draw all chars, not just active chars. We also
