@@ -1200,6 +1200,10 @@ void level::get_tile_rect(int zorder, int x1, int y1, int x2, int y2, std::vecto
 void level::get_all_tiles_rect(int x1, int y1, int x2, int y2, std::map<int, std::vector<std::string> >& tiles) const
 {
 	for(std::set<int>::const_iterator i = layers_.begin(); i != layers_.end(); ++i) {
+		if(hidden_layers_.count(*i)) {
+			continue;
+		}
+
 		std::vector<std::string> cleared;
 		get_tile_rect(*i, x1, y1, x2, y2, cleared);
 		if(std::count(cleared.begin(), cleared.end(), "") != cleared.size()) {
