@@ -568,6 +568,15 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 }
 
+namespace {
+bool sort_entity_drawing_pos(const entity_ptr& a, const entity_ptr& b) {
+	return a->zorder() < b->zorder() ||
+	       a->zorder() == b->zorder() && a->y() < b->y() ||
+		   a->zorder() == b->zorder() && a->y() < b->y() ||
+		   a->zorder() == b->zorder() && a->y() == b->y() && a->x() < b->x();
+}
+}
+
 void level::draw(int x, int y, int w, int h) const
 {
 	++draw_count;
@@ -581,7 +590,18 @@ void level::draw(int x, int y, int w, int h) const
 	w += widest_tile_;
 	h += highest_tile_;
 
-	const std::vector<entity_ptr>& chars = (editor_ ? chars_ : active_chars_);
+	const std::vector<entity_ptr>* chars_ptr = &chars_;
+	std::vector<entity_ptr> editor_chars_buf;
+	if(editor_) {
+		//in the editor we draw all chars, not just active chars. We also
+		//sort the chars by drawing order to make sure they are drawn in
+		//the correct order.
+		editor_chars_buf = chars_;
+		std::sort(editor_chars_buf.begin(), editor_chars_buf.end(), sort_entity_drawing_pos);
+		chars_ptr = &editor_chars_buf;
+	}
+
+	const std::vector<entity_ptr>& chars = *chars_ptr;
 
 	std::vector<entity_ptr>::const_iterator entity_itor = chars.begin();
 
@@ -738,15 +758,6 @@ void level::draw_background(double x, double y, int rotation) const
 	if(background_) {
 		background_->draw(x, y, rotation, cycle());
 	}
-}
-
-namespace {
-bool sort_entity_drawing_pos(const entity_ptr& a, const entity_ptr& b) {
-	return a->zorder() < b->zorder() ||
-	       a->zorder() == b->zorder() && a->y() < b->y() ||
-		   a->zorder() == b->zorder() && a->y() < b->y() ||
-		   a->zorder() == b->zorder() && a->y() == b->y() && a->x() < b->x();
-}
 }
 
 void level::process()
@@ -1000,6 +1011,10 @@ void level::set_solid_area(const rect& r, bool solid)
 
 entity_ptr level::collide(int x, int y, const entity* exclude) const
 {
+	if(editor_) {
+		return entity_ptr();
+	}
+	
 	const bool is_players_side = exclude && (exclude->on_players_side() || exclude->is_human());
 	entity_ptr res;
 	for(std::vector<entity_ptr>::const_iterator i = chars_.begin();
@@ -1037,6 +1052,10 @@ entity_ptr level::collide(int x, int y, const entity* exclude) const
 
 entity_ptr level::collide(const rect& r, const entity* exclude) const
 {
+	if(editor_) {
+		return entity_ptr();
+	}
+
 	const bool is_players_side = exclude && (exclude->on_players_side() || exclude->is_human());
 	for(std::vector<entity_ptr>::const_iterator i = chars_.begin();
 	    i != chars_.end(); ++i) {
