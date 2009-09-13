@@ -48,6 +48,10 @@ level::level(const std::string& level_cfg)
 		boundaries_ = rect(0, 0, wml::get_int(node, "width", 800), wml::get_int(node, "height", 600));
 	}
 
+	if(node->has_attr("lock_screen")) {
+		lock_screen_.reset(new point(node->attr("lock_screen")));
+	}
+
 	xscale_ = wml::get_int(node, "xscale", 100);
 	yscale_ = wml::get_int(node, "yscale", 100);
 	auto_move_camera_ = point(node->attr("auto_move_camera"));
@@ -362,6 +366,10 @@ wml::node_ptr level::write() const
 	res->set_attr("water_resistance", formatter() << water_resistance_);
 
 	res->set_attr("preloads", util::join(preloads_));
+
+	if(lock_screen_) {
+		res->set_attr("lock_screen", lock_screen_->to_string());
+	}
 
 	if(fluid_) {
 		res->add_child(fluid_->write());
@@ -1726,7 +1734,17 @@ variant level::get_value(const std::string& key) const
 	} else if(key == "in_editor") {
 		return variant(editor_);
 	} else {
-		return variant(get_entity_by_label(key).get());
+		const_entity_ptr e = get_entity_by_label(key);
+		if(e) {
+			return variant(e.get());
+		}
+
+		std::map<std::string, variant>::const_iterator i = vars_.find(key);
+		if(i != vars_.end()) {
+			return i->second;
+		}
+
+		return variant();
 	}
 }
 
@@ -1738,6 +1756,12 @@ void level::set_value(const std::string& key, const variant& value)
 		 } else if(value.is_list() && value.num_elements() == 4) {
 			tint_ = graphics::color(value[0].as_int(), value[1].as_int(), value[2].as_int(), value[3].as_int());
 		 }
+	} else if(key == "lock_screen") {
+		if(value.is_list()) {
+			lock_screen_.reset(new point(value[0].as_int(), value[1].as_int()));
+		} else {
+			lock_screen_.reset();
+		}
 	} else {
 		vars_[key] = value;
 	}

@@ -214,6 +214,8 @@ public:
 
 	void highlight_tile_layer(int layer) { highlight_layer_ = layer; }
 
+	const point* lock_screen() const { return lock_screen_.get(); }
+
 private:
 	void do_processing();
 
@@ -332,6 +334,8 @@ private:
 	
 	std::map<std::string, movement_script> movement_scripts_;
 	std::vector<active_movement_script_ptr> active_movement_scripts_;
+
+	boost::scoped_ptr<point> lock_screen_;
 
 	struct backup_snapshot {
 		unsigned int rng_seed;

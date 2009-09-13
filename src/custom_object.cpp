@@ -441,8 +441,22 @@ void custom_object::process(level& lvl)
 //			}
 //		}
 
-		if(!collide && velocity_y_ > 0 && is_standing(lvl)) {
+		entity_ptr jumped_on;
+		if(!collide && !body_passthrough() && velocity_y_ > 0 && is_standing(lvl, NULL, NULL, NULL, NULL, &jumped_on)) {
 			collide = true;
+		}
+
+		if(!collide && !body_passthrough() && velocity_y_ > 0) {
+			entity_ptr bounce = lvl.collide(feet_x() - type_->feet_width(), feet_y(), this);
+			if(!bounce) {
+				bounce = lvl.collide(feet_x() + type_->feet_width(), feet_y(), this);
+			}
+
+			if(bounce && bounce->spring_off_head(*this)) {
+				vars_->add("bounce_off", variant(bounce.get()));
+				handle_event("bounce");
+				break;
+			}
 		}
 
 		if(collide) {
@@ -504,6 +518,7 @@ void custom_object::process(level& lvl)
 
 	static const std::string ProcessStr = "process";
 	handle_event(ProcessStr);
+	handle_event("process_" + frame_name_);
 
 	if(type_->timer_frequency() > 0 && (cycle_%type_->timer_frequency()) == 0) {
 		static const std::string TimerStr = "timer";
@@ -709,6 +724,7 @@ std::map<std::string, object_accessor> object_accessor_map;
 struct custom_object::Accessor {
 #define CUSTOM_ACCESSOR(name, expression) static variant name(const custom_object& obj) { return variant(expression); }
 #define SIMPLE_ACCESSOR(name) static variant name(const custom_object& obj) { return variant(obj.name##_); }
+	CUSTOM_ACCESSOR(type, obj.type_->id())
 	CUSTOM_ACCESSOR(time_in_animation, obj.time_in_frame_)
 	CUSTOM_ACCESSOR(level, obj.lvl_)
 	CUSTOM_ACCESSOR(animation, obj.frame_name_)
@@ -766,11 +782,26 @@ struct custom_object::Accessor {
 	CUSTOM_ACCESSOR(driver, obj.driver_.get());
 	CUSTOM_ACCESSOR(is_human, obj.is_human() ? 1 : 0);
 	SIMPLE_ACCESSOR(invincible);
+	CUSTOM_ACCESSOR(springiness, obj.springiness());
+	CUSTOM_ACCESSOR(destroyed, obj.destroyed());
 #undef SIMPLE_ACCESSOR
 #undef CUSTOM_ACCESSOR
 
+	static variant standing_on(const custom_object& obj) {
+		if(!obj.lvl_) {
+			return variant();
+		}
+		
+		entity_ptr stand_on;
+		obj.is_standing(*obj.lvl_, NULL, NULL, NULL, NULL, &stand_on);
+		return variant(stand_on.get());
+	}
+
+#define CUSTOM_ACCESSOR(name, expression) static variant name(const custom_object& obj) { return variant(expression); }
+
 	static void init() {
 #define ACCESSOR(name) object_accessor_map.insert(std::pair<std::string,object_accessor>(#name, name))
+		ACCESSOR(type);
 		ACCESSOR(time_in_animation);
 		ACCESSOR(level);
 		ACCESSOR(animation);
@@ -823,6 +854,9 @@ struct custom_object::Accessor {
 		ACCESSOR(driver);
 		ACCESSOR(is_human);
 		ACCESSOR(invincible);
+		ACCESSOR(springiness);
+		ACCESSOR(destroyed);
+		ACCESSOR(standing_on);
 	}
 };
 
@@ -866,7 +900,9 @@ void custom_object::get_inputs(std::vector<game_logic::formula_input>* inputs) c
 
 void custom_object::set_value(const std::string& key, const variant& value)
 {
-	if(key == "time_in_animation") {
+	if(key == "animation") {
+		set_frame(value.as_string());
+	} else if(key == "time_in_animation") {
 		time_in_frame_ = value.as_int();
 	} else if(key == "x") {
 		set_x(value.as_int());

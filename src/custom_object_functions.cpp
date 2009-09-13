@@ -607,19 +607,20 @@ private:
 
 class set_solid_command : public entity_command_callable {
 	rect r_;
+	bool is_solid_;
 public:
-	explicit set_solid_command(const rect& r) : r_(r)
+	set_solid_command(const rect& r, bool is_solid) : r_(r), is_solid_(is_solid)
 	{}
 
 	virtual void execute(level& lvl, entity& ob) const {
-		lvl.set_solid_area(r_, false);
+		lvl.set_solid_area(r_, is_solid_);
 	}
 };
 
 class set_solid_function : public function_expression {
 public:
 	explicit set_solid_function(const args_list& args)
-	  : function_expression("set_solid", args, 4, 4) {
+	  : function_expression("set_solid", args, 4, 5) {
 	}
 private:
 	variant execute(const formula_callable& variables) const {
@@ -628,7 +629,8 @@ private:
 			args()[0]->evaluate(variables).as_int(),
 			args()[1]->evaluate(variables).as_int(),
 			args()[2]->evaluate(variables).as_int(),
-			args()[3]->evaluate(variables).as_int())));
+			args()[3]->evaluate(variables).as_int()),
+			args().size() > 4 ? args()[4]->evaluate(variables).as_bool() : false));
 	}
 };
 
