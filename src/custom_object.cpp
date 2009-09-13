@@ -279,6 +279,10 @@ void custom_object::process(level& lvl)
 	entity_ptr standing_on;
 	const bool started_standing = is_standing(lvl, &surface_friction, &surface_traction, &surface_damage, &surface_adjust_y, &standing_on);
 	previous_y_ = y();
+	if(started_standing && velocity_y_ > 0) {
+		velocity_y_ = 0;
+	}
+
 	const int start_x = x();
 	++cycle_;
 	lvl_ = &lvl;
@@ -358,7 +362,7 @@ void custom_object::process(level& lvl)
 			}
 		}
 
-		if(!collide && !body_passthrough()) {
+		if(!collide) {
 			entity_ptr collide_with = lvl.collide(rect(xpos, ybegin, 1, yend - ybegin), this);
 			if(collide_with.get() != NULL) {
 				game_logic::formula_callable_ptr callable(new collide_with_callable(collide_with.get()));
@@ -442,11 +446,11 @@ void custom_object::process(level& lvl)
 //		}
 
 		entity_ptr jumped_on;
-		if(!collide && !body_passthrough() && velocity_y_ > 0 && is_standing(lvl, NULL, NULL, NULL, NULL, &jumped_on)) {
+		if(!collide && !type_->ignore_collide() && velocity_y_ > 0 && is_standing(lvl, NULL, NULL, NULL, NULL, &jumped_on)) {
 			collide = true;
 		}
 
-		if(!collide && !body_passthrough() && velocity_y_ > 0) {
+		if(!collide && !type_->ignore_collide() && velocity_y_ > 0) {
 			entity_ptr bounce = lvl.collide(feet_x() - type_->feet_width(), feet_y(), this);
 			if(!bounce) {
 				bounce = lvl.collide(feet_x() + type_->feet_width(), feet_y(), this);
