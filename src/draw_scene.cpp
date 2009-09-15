@@ -112,8 +112,12 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 		//vertical look, to make the movement slowly converge.
 		const int vertical_look = std::sqrt(std::abs(pos.vertical_look)) * (pos.vertical_look > 0 ? 1 : -1);
 
+		//calculate the y velocity for predictive movement. We eliminate small
+		//velocities to stop jittering.
+		const int velocity_y = std::abs(focus->velocity_y()) > 5 ? velocity_y : 0;
+
 		//find the y point for the camera to converge toward
-		int y = std::min(std::max(focus->feet_y() - drawable_height()/5 + (focus->velocity_y()*PredictiveFramesVert)/100 + vertical_look, min_y), max_y);
+		int y = std::min(std::max(focus->feet_y() - drawable_height()/5 + (velocity_y*PredictiveFramesVert)/100 + vertical_look, min_y), max_y);
 
 		if(lvl.lock_screen()) {
 			x = lvl.lock_screen()->x;
