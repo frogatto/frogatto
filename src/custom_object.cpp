@@ -448,9 +448,8 @@ void custom_object::process(level& lvl)
 //			}
 //		}
 
-		entity_ptr jumped_on;
-		if(!collide && !type_->ignore_collide() && velocity_y_ > 0 && is_standing(lvl, NULL, NULL, NULL, NULL, &jumped_on)) {
-			collide = true;
+		if(type_->id() == "breakable_block") {
+			std::cerr << "COLLIDE " << n << "/" << velocity_y_/100 << "\n";
 		}
 
 		if(!collide && !type_->ignore_collide() && velocity_y_ > 0) {
@@ -464,6 +463,11 @@ void custom_object::process(level& lvl)
 				handle_event("bounce");
 				break;
 			}
+		}
+
+		entity_ptr jumped_on;
+		if(!collide && !type_->ignore_collide() && velocity_y_ > 0 && is_standing(lvl, NULL, NULL, NULL, NULL, &jumped_on)) {
+			collide = true;
 		}
 
 		if(collide) {
@@ -480,7 +484,9 @@ void custom_object::process(level& lvl)
 	}
 
 	if(collide) {
+		std::cerr << "COLLIDE!\n";
 		if(velocity_y_ < 0 || !started_standing) {
+			std::cerr << "COLLIDE EVENT\n";
 			handle_event(velocity_y_ < 0 ? "collide_head" : "collide_feet");
 		}
 	}

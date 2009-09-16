@@ -1043,7 +1043,7 @@ entity_ptr level::collide(int x, int y, const entity* exclude) const
 			}
 		}
 
-		if(c.get() != exclude && !c->is_human()) {
+		if(c.get() != exclude) {
 			if((!c->body_passthrough() || is_players_side && c->body_harmful()) &&
 			   c->point_collides(x,y)) {
 				return c;
