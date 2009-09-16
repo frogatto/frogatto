@@ -4,6 +4,7 @@
 #include <cassert>
 #include <iostream>
 
+#include "asserts.hpp"
 #include "custom_object.hpp"
 #include "custom_object_functions.hpp"
 #include "draw_scene.hpp"
@@ -1108,50 +1109,68 @@ entity_ptr custom_object::backup() const
 
 void custom_object::handle_event(const std::string& event, const formula_callable* context)
 {
-	if ( (hitpoints_ > 0) || (event == "die"))
-	{
-		game_logic::const_formula_ptr handler;
-		std::map<std::string, game_logic::const_formula_ptr>::const_iterator handler_itor = event_handlers_.find(event);
-		if(handler_itor != event_handlers_.end()) {
-			handler = handler_itor->second;
+	if(hitpoints_ <= 0 && event != "die") {
+		return;
+	}
+
+	std::vector<game_logic::const_formula_ptr> handlers;
+
+	std::map<std::string, game_logic::const_formula_ptr>::const_iterator handler_itor = event_handlers_.find(event);
+	if(handler_itor != event_handlers_.end()) {
+		game_logic::const_formula_ptr handler = handler_itor->second;
+		if(handler) {
+			handlers.push_back(handler);
+		}
+	}
+
+
+	game_logic::const_formula_ptr handler = type_->get_event_handler(event);
+	if(handler) {
+		handlers.push_back(handler);
+	}
+
+	foreach(const game_logic::const_formula_ptr& handler, handlers) {
+		variant var;
+
+		if(context) {
+			game_logic::formula_callable_with_backup callable(*this, *context);
+			var = handler->execute(callable);
 		} else {
-			handler = type_->get_event_handler(event);
+			var = handler->execute(*this);
 		}
 
-		if(handler) {
-			variant var;
-
-			if(context) {
-				game_logic::formula_callable_with_backup callable(*this, *context);
-				var = handler->execute(callable);
-			} else {
-				var = handler->execute(*this);
-			}
-
-			execute_command(var);
+		const bool result = execute_command(var);
+		if(!result) {
+			break;
 		}
 	}
 }
 
-void custom_object::execute_command(const variant& var)
+bool custom_object::execute_command(const variant& var)
 {
-	if(var.is_null()) { return; }
+	bool result = true;
+	if(var.is_null()) { return result; }
 	if(var.is_list()) {
 		for(int n = 0; n != var.num_elements(); ++n) {
-			execute_command(var[n]);
+			result = execute_command(var[n]) && result;
 		}
 	} else {
 		custom_object_command_callable* cmd = var.try_convert<custom_object_command_callable>();
 		if(cmd != NULL) {
-			std::cerr << "executing!\n";
 			cmd->execute(*lvl_, *this);
 		} else {
 			entity_command_callable* cmd = var.try_convert<entity_command_callable>();
 			if(cmd != NULL) {
 				cmd->execute(*lvl_, *this);
+			} else {
+				if(var.try_convert<swallow_object_command_callable>()) {
+					result = false;
+				}
 			}
 		}
 	}
+
+	return result;
 }
 
 int custom_object::slope_standing_on(int range) const
@@ -1356,3 +1375,22 @@ BENCHMARK_ARG(custom_object_get_attr, const std::string& attr)
 
 BENCHMARK_ARG_CALL(custom_object_get_attr, easy_lookup, "x");
 BENCHMARK_ARG_CALL(custom_object_get_attr, hard_lookup, "xxxx");
+
+BENCHMARK_ARG(custom_object_handle_event, const std::string& object_event)
+{
+	std::string::const_iterator i = std::find(object_event.begin(), object_event.end(), ':');
+	ASSERT_LOG(i != object_event.end(), "custom_object_event_handle argument must have a pipe seperator: " << object_event);
+	std::string obj_type(object_event.begin(), i);
+	std::string event_name(i+1, object_event.end());
+	static level* lvl = new level("titlescreen.cfg");
+	static custom_object* obj = new custom_object(obj_type, 0, 0, false);
+	obj->set_level(*lvl);
+	BENCHMARK_LOOP {
+		obj->handle_event(event_name);
+	}
+}
+
+BENCHMARK_ARG_CALL(custom_object_handle_event, ant_collide, "black_ant:collide");
+BENCHMARK_ARG_CALL(custom_object_handle_event, ant_non_exist, "black_ant:blahblah");
+
+BENCHMARK_ARG_CALL_COMMAND_LINE(custom_object_handle_event);

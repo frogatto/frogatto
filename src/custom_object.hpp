@@ -110,6 +110,8 @@ public:
 
 	virtual int current_animation_id() const { return current_animation_id_; }
 
+	void handle_event(const std::string& event, const formula_callable* context=NULL);
+
 protected:
 	virtual void control(const level& lvl);
 	variant get_value(const std::string& key) const;
@@ -122,8 +124,7 @@ private:
 	void get_inputs(std::vector<game_logic::formula_input>* inputs) const;
 	void set_value(const std::string& key, const variant& value);
 
-	void handle_event(const std::string& event, const formula_callable* context=NULL);
-	void execute_command(const variant& var);
+	bool execute_command(const variant& var);
 
 	int slope_standing_on(int range) const;
 

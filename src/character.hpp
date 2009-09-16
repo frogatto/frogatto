@@ -178,7 +178,7 @@ private:
 
 	void handle_event(const std::string& event_id);
 	void execute_formula(const game_logic::const_formula_ptr& f);
-	void execute_command(const variant& var);
+	bool execute_command(const variant& var);
 	const_character_type_ptr type_;
 	const_character_type_ptr base_type_;
 

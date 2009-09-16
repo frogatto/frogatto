@@ -1397,6 +1397,17 @@ public:
 	}
 };
 
+class swallow_event_function : public function_expression {
+public:
+	explicit swallow_event_function(const args_list& args)
+	  : function_expression("swallow_event", args, 0, 0) {
+	}
+
+	variant execute(const formula_callable& variables) const {
+		return variant(new swallow_object_command_callable);
+	}
+};
+
 class custom_object_function_symbol_table : public function_symbol_table
 {
 public:
@@ -1501,6 +1512,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new text_function(args));
 	} else if(fn == "preload_powerup") {
 		return expression_ptr(new preload_powerup_function(args));
+	} else if(fn == "swallow_event") {
+		return expression_ptr(new swallow_event_function(args));
 	}
 
 	return function_symbol_table::create_function(fn, args);

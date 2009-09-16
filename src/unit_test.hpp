@@ -14,11 +14,14 @@ struct failure_exception {
 
 typedef boost::function<void ()> UnitTest;
 typedef boost::function<void (int)> BenchmarkTest;
+typedef boost::function<void (int, const std::string&)> CommandLineBenchmarkTest;
 
 int register_test(const std::string& name, UnitTest test);
 int register_benchmark(const std::string& name, BenchmarkTest test);
+int register_benchmark_cl(const std::string& name, CommandLineBenchmarkTest test);
 bool run_tests(const std::vector<std::string>* tests=NULL);
 void run_benchmarks(const std::vector<std::string>* benchmarks=NULL);
+void run_command_line_benchmark(const std::string& benchmark_name, const std::string& arg);
 
 }
 
@@ -53,5 +56,11 @@ void run_benchmarks(const std::vector<std::string>* benchmarks=NULL);
 		BENCHMARK_ARG_##name(benchmark_iterations, arg); \
 	} \
 	static int BENCHMARK_ARG_VAR_##name_##id = test::register_benchmark(#name " " #id, BENCHMARK_ARG_CALL_##name_##id);
+
+#define BENCHMARK_ARG_CALL_COMMAND_LINE(name) \
+	void BENCHMARK_ARG_CALL_##name(int benchmark_iterations, const std::string& arg) { \
+		BENCHMARK_ARG_##name(benchmark_iterations, arg); \
+	} \
+	static int BENCHMARK_ARG_VAR_##name = test::register_benchmark_cl(#name, BENCHMARK_ARG_CALL_##name);
 
 #endif

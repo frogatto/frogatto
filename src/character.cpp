@@ -1453,9 +1453,9 @@ void character::execute_formula(const game_logic::const_formula_ptr& f)
 	execute_command(f->execute(*this));
 }
 
-void character::execute_command(const variant& var)
+bool character::execute_command(const variant& var)
 {
-	if(var.is_null()) { return; }
+	if(var.is_null()) { return true; }
 	if(var.is_list()) {
 		for(int n = 0; n != var.num_elements(); ++n) {
 			execute_command(var[n]);
@@ -1467,6 +1467,8 @@ void character::execute_command(const variant& var)
 			cmd->execute(*lvl_, *this);
 		}
 	}
+
+	return true;
 }
 
 bool character::point_collides(int xpos, int ypos) const

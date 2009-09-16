@@ -1,3 +1,4 @@
+#include <boost/bind.hpp>
 #include <iostream>
 #include <map>
 
@@ -20,6 +21,13 @@ typedef std::map<std::string, BenchmarkTest> BenchmarkMap;
 BenchmarkMap& get_benchmark_map()
 {
 	static BenchmarkMap map;
+	return map;
+}
+
+typedef std::map<std::string, CommandLineBenchmarkTest> CommandLineBenchmarkMap;
+CommandLineBenchmarkMap& get_cl_benchmark_map()
+{
+	static CommandLineBenchmarkMap map;
 	return map;
 }
 
@@ -69,6 +77,12 @@ int register_benchmark(const std::string& name, BenchmarkTest test)
 	return 0;
 }
 
+int register_benchmark_cl(const std::string& name, CommandLineBenchmarkTest test)
+{
+	get_cl_benchmark_map()[name] = test;
+	return 0;
+}
+
 namespace {
 void run_benchmark(const std::string& name, BenchmarkTest fn)
 {
@@ -103,8 +117,21 @@ void run_benchmarks(const std::vector<std::string>* benchmarks)
 	}
 
 	foreach(const std::string& benchmark, *benchmarks) {
-		run_benchmark(benchmark, get_benchmark_map()[benchmark]);
+		std::string::const_iterator colon = std::find(benchmark.begin(), benchmark.end(), ':');
+		if(colon != benchmark.end()) {
+			//this benchmark has a user-supplied argument
+			const std::string bench_name(benchmark.begin(), colon);
+			const std::string arg(colon+1, benchmark.end());
+			run_command_line_benchmark(bench_name, arg);
+		} else {
+			run_benchmark(benchmark, get_benchmark_map()[benchmark]);
+		}
 	}
+}
+
+void run_command_line_benchmark(const std::string& benchmark_name, const std::string& arg)
+{
+	run_benchmark(benchmark_name, boost::bind(get_cl_benchmark_map()[benchmark_name], _1, arg));
 }
 
 }

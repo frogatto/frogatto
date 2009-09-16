@@ -43,7 +43,7 @@ public:
 	virtual player_info* is_human() { return NULL; }
 	virtual bool on_players_side() const { return false; }
 	virtual void process(level& lvl) = 0;
-	virtual void execute_command(const variant& var) = 0;
+	virtual bool execute_command(const variant& var) = 0;
 
 	const std::string& label() const { return label_; }
 	void set_label(const std::string& lb) { label_ = lb; }
