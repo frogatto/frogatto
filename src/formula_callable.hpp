@@ -15,6 +15,7 @@
 #ifndef FORMULA_CALLABLE_HPP_INCLUDED
 #define FORMULA_CALLABLE_HPP_INCLUDED
 
+#include <iostream>
 #include <map>
 #include <string>
 
@@ -82,7 +83,8 @@ protected:
 		return this < callable ? -1 : (this == callable ? 0 : 1);
 	}
 
-	virtual void serialize_to_string(std::string& /*str*/) const {
+	virtual void serialize_to_string(std::string& str) const {
+		std::cerr << "CONTENTS {{{" << str << "}}}\n";
 		throw type_error("Tried to serialize type which cannot be serialized");
 	}
 private:

@@ -151,6 +151,7 @@ private:
 	level* lvl_;
 
 	game_logic::map_formula_callable_ptr vars_;
+	game_logic::map_formula_callable_ptr tmp_vars_;
 
 	entity_ptr last_jumped_on_by_;
 	entity_ptr last_hit_by_;

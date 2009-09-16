@@ -65,6 +65,7 @@ map_formula_callable::map_formula_callable(wml::const_node_ptr node)
 void map_formula_callable::write(wml::node_ptr node) const
 {
 	for(std::map<std::string,variant>::const_iterator i = values_.begin(); i != values_.end(); ++i) {
+		std::cerr << "SERIALIZE '" << i->first << "'\n";
 		std::string val;
 		i->second.serialize_to_string(val);
 		node->set_attr(i->first, val);

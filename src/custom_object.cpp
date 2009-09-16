@@ -43,6 +43,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 	was_underwater_(false), invincible_(0),
 	lvl_(NULL),
 	vars_(new game_logic::map_formula_callable(node->get_child("vars"))),
+	tmp_vars_(new game_logic::map_formula_callable),
 	last_hit_by_anim_(0),
 	current_animation_id_(0),
 	cycle_(wml::get_int(node, "cycle")),
@@ -97,6 +98,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	was_underwater_(false), invincible_(0),
 	lvl_(NULL),
 	vars_(new game_logic::map_formula_callable),
+	tmp_vars_(new game_logic::map_formula_callable),
 	last_hit_by_anim_(0),
 	cycle_(0),
 	loaded_(false)
@@ -457,7 +459,7 @@ void custom_object::process(level& lvl)
 			}
 
 			if(bounce && bounce->spring_off_head(*this)) {
-				vars_->add("bounce_off", variant(bounce.get()));
+				tmp_vars_->add("bounce_off", variant(bounce.get()));
 				handle_event("bounce");
 				break;
 			}
@@ -766,6 +768,7 @@ struct custom_object::Accessor {
 	SIMPLE_ACCESSOR(accel_x);
 	SIMPLE_ACCESSOR(accel_y);
 	CUSTOM_ACCESSOR(vars, obj.vars_.get());
+	CUSTOM_ACCESSOR(tmp, obj.tmp_vars_.get());
 	CUSTOM_ACCESSOR(group, obj.group());
 	SIMPLE_ACCESSOR(rotate);
 	CUSTOM_ACCESSOR(me, &obj);
@@ -876,7 +879,12 @@ variant custom_object::get_value(const std::string& key) const
 		return accessor_itor->second(*this);
 	}
 
-	variant var_result = vars_->query_value(key);
+	variant var_result = tmp_vars_->query_value(key);
+	if(!var_result.is_null()) {
+		return var_result;
+	}
+
+	var_result = vars_->query_value(key);
 	if(!var_result.is_null()) {
 		return var_result;
 	}
