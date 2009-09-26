@@ -51,6 +51,10 @@ custom_object::custom_object(wml::const_node_ptr node)
 	loaded_(false),
 	can_interact_with_(false)
 {
+	if(node->has_attr("draw_color")) {
+		draw_color_.reset(new graphics::color_transform(node->attr("draw_color")));
+	}
+
 	if(node->has_attr("label")) {
 		set_label(node->attr("label"));
 	} else {
@@ -124,6 +128,10 @@ custom_object::~custom_object()
 wml::node_ptr custom_object::write() const
 {
 	wml::node_ptr res(new wml::node("character"));
+	if(draw_color_) {
+		res->set_attr("draw_color", draw_color_->to_string());
+	}
+
 	if(label().empty() == false) {
 		res->set_attr("label", label());
 	}
@@ -452,7 +460,12 @@ void custom_object::process(level& lvl)
 			std::cerr << "COLLIDE " << n << "/" << velocity_y_/100 << "\n";
 		}
 
-		if(!collide && !type_->ignore_collide() && velocity_y_ > 0) {
+		entity_ptr jumped_on;
+		if(!collide && !type_->ignore_collide() && velocity_y_ > 0 && is_standing(lvl, NULL, NULL, NULL, NULL, &jumped_on)) {
+			collide = true;
+		}
+
+		if((!collide || jumped_on) && !type_->ignore_collide() && velocity_y_ > 0) {
 			entity_ptr bounce = lvl.collide(feet_x() - type_->feet_width(), feet_y(), this);
 			if(!bounce) {
 				bounce = lvl.collide(feet_x() + type_->feet_width(), feet_y(), this);
@@ -463,11 +476,6 @@ void custom_object::process(level& lvl)
 				handle_event("bounce");
 				break;
 			}
-		}
-
-		entity_ptr jumped_on;
-		if(!collide && !type_->ignore_collide() && velocity_y_ > 0 && is_standing(lvl, NULL, NULL, NULL, NULL, &jumped_on)) {
-			collide = true;
 		}
 
 		if(collide) {

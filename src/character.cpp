@@ -74,6 +74,13 @@ character::character(wml::const_node_ptr node)
 	foreach(const std::string& p, util::split(node->attr("abilities"))) {
 		get_powerup(p);
 	}
+
+	wml::const_node_ptr vars_node = node->get_child("vars");
+	if(vars_node) {
+		for(wml::node::const_attr_iterator i = vars_node->begin_attr(); i != vars_node->end_attr(); ++i) {
+			vars_[i->first].serialize_from_string(i->second);
+		}
+	}
 }
 
 character::character(const std::string& type, int x, int y, bool face_right)
@@ -197,6 +204,16 @@ wml::node_ptr character::write() const
 
 	res->set_attr("powerups", util::join(map_vector<std::string>(powerups_, boost::bind(&powerup::id, _1))));
 	res->set_attr("abilities", util::join(map_vector<std::string>(abilities_, boost::bind(&powerup::id, _1))));
+
+	wml::node_ptr vars_node(new wml::node("vars"));
+	for(std::map<std::string, variant>::const_iterator i = vars_.begin();
+	    i != vars_.end(); ++i) {
+		std::string value;
+		i->second.serialize_to_string(value);
+		vars_node->set_attr(i->first, value);
+	}
+
+	res->add_child(vars_node);
 	return res;
 }
 

@@ -4,6 +4,7 @@
 
 #include "asserts.hpp"
 #include "controls.hpp"
+#include "draw_scene.hpp"
 #include "draw_tile.hpp"
 #include "entity.hpp"
 #include "filesystem.hpp"
@@ -799,6 +800,11 @@ void level::do_processing()
 		return;
 	}
 
+	const int screen_left = last_draw_position().x/100;
+	const int screen_right = last_draw_position().x/100 + graphics::screen_width();
+	const int screen_top = last_draw_position().y/100;
+	const int screen_bottom = last_draw_position().y/100 + graphics::screen_height();
+
 	foreach(entity_ptr& c, chars_) {
 		int distance_x = 0, distance_y = 0;
 		c->activation_distance(&distance_x, &distance_y);
@@ -809,11 +815,22 @@ void level::do_processing()
 		const int y2 = y + c->current_frame().height();
 
 		bool is_active = c->always_active();
-		foreach(const entity_ptr& p, players_) {
-			if((p->x() < x ? x - p->x() : p->x() - x2) < distance_x &&
-		   	   (p->y() < y ? y - p->y() : p->y() - y2) < distance_y) {
+		if(!is_active && players_.size() == 1) {
+			std::cerr << "ACTIVE: " << screen_left << ", " << screen_top << "," << screen_right << "," << screen_bottom << "\n";
+			//in single player mode, make objects on-screen always active.
+			//we don't have a good solution for this for multiplayer, yet.
+			if(x2 >= screen_left && x < screen_right && y2 >= screen_top && y < screen_bottom) {
 				is_active = true;
-				break;
+			}
+		}
+
+		if(!is_active) {
+			foreach(const entity_ptr& p, players_) {
+				if((p->x() < x ? x - p->x() : p->x() - x2) < distance_x &&
+			   	   (p->y() < y ? y - p->y() : p->y() - y2) < distance_y) {
+					is_active = true;
+					break;
+				}
 			}
 		}
 
