@@ -640,6 +640,10 @@ expression_ptr function_symbol_table::create_function(const std::string& fn, con
 		return i->second.generate_function_expression(args);
 	}
 
+	if(backup_) {
+		return backup_->create_function(fn, args);
+	}
+
 	return expression_ptr();
 }
 

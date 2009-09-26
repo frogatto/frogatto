@@ -126,12 +126,17 @@ const_custom_object_type_ptr custom_object_type::get(const std::string& id)
 }
 
 void custom_object_type::init_event_handlers(wml::const_node_ptr node,
-                                             event_handler_map& handlers)
+                                             event_handler_map& handlers,
+											 game_logic::function_symbol_table* symbols)
 {
+	if(symbols == NULL) {
+		symbols = &get_custom_object_functions_symbol_table();
+	}
+
 	for(wml::node::const_attr_iterator i = node->begin_attr(); i != node->end_attr(); ++i) {
 		if(i->first.size() > 3 && std::equal(i->first.begin(), i->first.begin() + 3, "on_")) {
 			const std::string event(i->first.begin() + 3, i->first.end());
-			handlers[event] = game_logic::formula::create_optional_formula(i->second, &get_custom_object_functions_symbol_table());
+			handlers[event] = game_logic::formula::create_optional_formula(i->second, symbols);
 		}
 	}
 }
@@ -150,6 +155,7 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	surface_friction_(wml::get_int(node, "surface_friction", 20)),
 	surface_traction_(wml::get_int(node, "surface_traction", 100)),
 	friction_(wml::get_int(node, "friction")),
+	traction_(wml::get_int(node, "traction", 100)),
 	on_players_side_(wml::get_bool(node, "on_players_side", false)),
 	respawns_(wml::get_bool(node, "respawns", true)),
 	affected_by_currents_(wml::get_bool(node, "affected_by_currents", false)),
@@ -161,6 +167,12 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	teleport_offset_x_(wml::get_int(node, "teleport_offset_x")),
 	teleport_offset_y_(wml::get_int(node, "teleport_offset_y"))
 {
+	if(node->has_attr("functions")) {
+		object_functions_.reset(new game_logic::function_symbol_table);
+		object_functions_->set_backup(&get_custom_object_functions_symbol_table());
+		game_logic::formula f(node->attr("functions"), object_functions_.get());
+	}
+
 	wml::node::const_child_iterator a1 = node->begin_child("animation");
 	wml::node::const_child_iterator a2 = node->end_child("animation");
 	for(; a1 != a2; ++a1) {
@@ -188,9 +200,9 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 
 	assert(default_frame_);
 
-	next_animation_formula_ = game_logic::formula::create_optional_formula(node->attr("next_animation"), &get_custom_object_functions_symbol_table());
+	next_animation_formula_ = game_logic::formula::create_optional_formula(node->attr("next_animation"), function_symbols());
 
-	init_event_handlers(node, event_handlers_);
+	init_event_handlers(node, event_handlers_, function_symbols());
 
 	FOREACH_WML_CHILD(particle_node, node, "particle_system") {
 		particle_factories_[particle_node->attr("id")] = particle_system_factory::create_factory(particle_node);
@@ -240,4 +252,13 @@ const_particle_system_factory_ptr custom_object_type::get_particle_system_factor
 	std::map<std::string, const_particle_system_factory_ptr>::const_iterator i = particle_factories_.find(id);
 	ASSERT_LOG(i != particle_factories_.end(), "Unknown particle system type in " << id_ << ": " << id)
 	return i->second;
+}
+
+game_logic::function_symbol_table* custom_object_type::function_symbols() const
+{
+	if(object_functions_) {
+		return object_functions_.get();
+	} else {
+		return &get_custom_object_functions_symbol_table();
+	}
 }

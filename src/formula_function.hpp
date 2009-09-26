@@ -91,8 +91,11 @@ public:
 
 class function_symbol_table {
 	std::map<std::string, formula_function> custom_formulas_;
+	const function_symbol_table* backup_;
 public:
+	function_symbol_table() : backup_(0) {}
 	virtual ~function_symbol_table() {}
+	void set_backup(const function_symbol_table* backup) { backup_ = backup; }
 	virtual void add_formula_function(const std::string& name, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& args);
 	virtual expression_ptr create_function(const std::string& fn,
 					                       const std::vector<expression_ptr>& args) const;

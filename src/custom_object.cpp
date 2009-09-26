@@ -345,7 +345,9 @@ void custom_object::process(level& lvl)
 	velocity_y_ += accel_y_;
 
 	if(type_->friction()) {
+		std::cerr << "FRICTION " << type_->friction() << ": " << velocity_x_ << " -> ";
 		velocity_x_ = (velocity_x_*(100-(surface_friction+type_->friction())))/100;
+		std::cerr << velocity_x_ << "\n";
 		velocity_y_ = (velocity_y_*(100-(surface_friction+type_->friction())))/100;
 	}
 

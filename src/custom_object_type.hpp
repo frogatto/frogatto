@@ -8,6 +8,7 @@
 #include "boost/shared_ptr.hpp"
 
 #include "formula.hpp"
+#include "formula_function.hpp"
 #include "frame.hpp"
 #include "particle_system.hpp"
 #include "variant.hpp"
@@ -26,7 +27,8 @@ public:
 	typedef std::map<std::string, game_logic::const_formula_ptr> event_handler_map;
 
 	static void init_event_handlers(wml::const_node_ptr node,
-	                                event_handler_map& handlers);
+	                                event_handler_map& handlers,
+									game_logic::function_symbol_table* symbols=0);
 
 	explicit custom_object_type(wml::const_node_ptr node);
 
@@ -56,6 +58,7 @@ public:
 
 	//amount of friction we experience.
 	int friction() const { return friction_; }
+	int traction() const { return traction_; }
 
 	bool on_players_side() const { return on_players_side_; }
 	bool respawns() const { return respawns_; }
@@ -86,6 +89,8 @@ public:
 
 	const std::map<std::string, variant>& variables() const { return variables_; }
 
+	game_logic::function_symbol_table* function_symbols() const;
+
 private:
 	std::string id_;
 	int hitpoints_;
@@ -100,6 +105,7 @@ private:
 	game_logic::const_formula_ptr next_animation_formula_;
 
 	event_handler_map event_handlers_;
+	boost::shared_ptr<game_logic::function_symbol_table> object_functions_;
 
 	int zorder_;
 
@@ -112,7 +118,7 @@ private:
 	int springiness_;
 	int surface_friction_;
 	int surface_traction_;
-	int friction_;
+	int friction_, traction_;
 	int mass_;
 
 	bool on_players_side_;

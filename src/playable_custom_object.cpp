@@ -47,8 +47,23 @@ void playable_custom_object::process(level& lvl)
 		player_info_.set_current_level(lvl.id());
 	}
 
+	bool controls[controls::NUM_CONTROLS];
+	for(int n = 0; n != controls::NUM_CONTROLS; ++n) {
+		controls[n] = control_status(static_cast<controls::CONTROL_ITEM>(n));
+	}
+
 	clear_control_status();
 	read_controls(lvl.cycle());
+	static const std::string keys[] = { "up", "down", "left", "right", "attack", "jump" };	
+	for(int n = 0; n != controls::NUM_CONTROLS; ++n) {
+		if(controls[n] != control_status(static_cast<controls::CONTROL_ITEM>(n))) {
+			if(controls[n]) {
+				handle_event("end_ctrl_" + keys[n]);
+			} else {
+				handle_event("ctrl_" + keys[n]);
+			}
+		}
+	}
 
 	custom_object::process(lvl);
 }
