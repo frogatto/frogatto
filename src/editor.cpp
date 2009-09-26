@@ -752,7 +752,7 @@ void editor::edit_level()
 		}
 
 		//if we're drawing with a pencil see if we add a new tile
-		if(tool() == TOOL_PENCIL && buttons) {
+		if(tool() == TOOL_PENCIL && buttons && mousey > editor_menu_dialog_->height() && mousex < editor_mode_dialog_->x()) {
 			const int xpos = xpos_ + mousex*zoom_;
 			const int ypos = ypos_ + mousey*zoom_;
 			point p(round_tile_size(xpos), round_tile_size(ypos));
