@@ -816,7 +816,6 @@ void level::do_processing()
 
 		bool is_active = c->always_active();
 		if(!is_active && players_.size() == 1) {
-			std::cerr << "ACTIVE: " << screen_left << ", " << screen_top << "," << screen_right << "," << screen_bottom << "\n";
 			//in single player mode, make objects on-screen always active.
 			//we don't have a good solution for this for multiplayer, yet.
 			if(x2 >= screen_left && x < screen_right && y2 >= screen_top && y < screen_bottom) {
