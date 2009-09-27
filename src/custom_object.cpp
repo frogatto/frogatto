@@ -286,7 +286,7 @@ public:
 
 void custom_object::process(level& lvl)
 {
-	int surface_friction = 0, surface_traction = 0, surface_damage = 0, surface_adjust_y = 0;
+	int surface_friction = 0, surface_traction = 1000, surface_damage = 0, surface_adjust_y = 0;
 	entity_ptr standing_on;
 	const bool started_standing = is_standing(lvl, &surface_friction, &surface_traction, &surface_damage, &surface_adjust_y, &standing_on);
 	previous_y_ = y();
@@ -341,14 +341,17 @@ void custom_object::process(level& lvl)
 		handle_event(*event);
 	}
 
-	velocity_x_ += accel_x_ * (face_right() ? 1 : -1);
+	velocity_x_ += (accel_x_ * surface_traction * (face_right() ? 1 : -1))/1000;
 	velocity_y_ += accel_y_;
 
 	if(type_->friction()) {
-		std::cerr << "FRICTION " << type_->friction() << ": " << velocity_x_ << " -> ";
-		velocity_x_ = (velocity_x_*(100-(surface_friction+type_->friction())))/100;
-		std::cerr << velocity_x_ << "\n";
-		velocity_y_ = (velocity_y_*(100-(surface_friction+type_->friction())))/100;
+		const bool is_underwater = lvl.is_underwater(body_rect());
+
+		const int air_resistance = is_underwater ? lvl.air_resistance() : lvl.water_resistance();
+
+		const int friction = ((surface_friction + air_resistance)*type_->friction())/1000;
+		velocity_x_ = (velocity_x_*(1000 - friction))/1000;
+		velocity_y_ = (velocity_y_*(1000 - friction))/1000;
 	}
 
 	if(type_->affected_by_currents()) {

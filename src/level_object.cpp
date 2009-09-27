@@ -59,7 +59,7 @@ level_object::level_object(wml::const_node_ptr node)
 	all_solid_(node->attr("solid").str() == "yes"),
     passthrough_(wml::get_bool(node, "passthrough")),
     flip_(wml::get_bool(node, "flip", false)),
-    friction_(wml::get_int(node, "friction", 20)),
+    friction_(wml::get_int(node, "friction", 100)),
     traction_(wml::get_int(node, "traction", 100)),
     damage_(wml::get_int(node, "damage", 0))
 {
