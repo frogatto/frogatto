@@ -32,7 +32,7 @@ struct token_type {
 };
 
 //create the array with list of possible tokens
-token_type token_types[] = { { regex("^(not\\b|and\\b|or\\b|where\\b|d(?=[^a-zA-Z])|\\*|\\+|-(?=[^>])|\\^|%|/|<=|>=|<|>|!=|=|\\.)"), TOKEN_OPERATOR },
+token_type token_types[] = { { regex("^(not\\b|and\\b|or\\b|where\\b|in\\b|d(?=[^a-zA-Z])|\\*|\\+|-(?=[^>])|\\^|%|/|<=|>=|<|>|!=|=|\\.)"), TOKEN_OPERATOR },
 				{ regex("^functions\\b"),  TOKEN_KEYWORD },
 				{ regex("^def\\b"),        TOKEN_KEYWORD },
 				{ regex("^'[^']*'"),       TOKEN_STRING_LITERAL },
@@ -77,7 +77,7 @@ token get_token(iterator& i1, iterator i2) {
 UNIT_TEST(tokenizer_test)
 {
 	using namespace formula_tokenizer;
-	std::string test = "(abc + 0x4 * (5+3))*2";
+	std::string test = "(abc + 0x4 * (5+3))*2 in [4,5]";
 	std::string::const_iterator i1 = test.begin();
 	std::string::const_iterator i2 = test.end();
 	TOKEN_TYPE types[] = {TOKEN_LPARENS, TOKEN_IDENTIFIER,
@@ -89,7 +89,8 @@ UNIT_TEST(tokenizer_test)
 						  TOKEN_INTEGER, TOKEN_RPARENS,
 						  TOKEN_RPARENS, TOKEN_OPERATOR, TOKEN_INTEGER};
 	std::string tokens[] = {"(", "abc", " ", "+", " ", "0x4", " ",
-	                        "*", " ", "(", "5", "+", "3", ")", ")", "*", "2"};
+	                        "*", " ", "(", "5", "+", "3", ")", ")", "*", "2",
+							"in", "[", "4", ",", "5", "]"};
 	for(int n = 0; n != sizeof(types)/sizeof(*types); ++n) {
 		token t = get_token(i1,i2);
 		CHECK_EQ(std::string(t.begin,t.end), tokens[n]);

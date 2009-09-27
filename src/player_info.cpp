@@ -90,6 +90,11 @@ void player_info::read_controls(int cycle)
 {
 	bool status[controls::NUM_CONTROLS];
 	controls::get_control_status(cycle, slot_, status);
+	if(status[controls::CONTROL_LEFT] && status[controls::CONTROL_RIGHT]) {
+		//if both left and right are held, treat it as if neither are.
+		status[controls::CONTROL_LEFT] = status[controls::CONTROL_RIGHT] = false;
+	}
+
 	for(int n = 0; n != controls::NUM_CONTROLS; ++n) {
 		entity_->set_control_status(static_cast<controls::CONTROL_ITEM>(n), status[n]);
 	}

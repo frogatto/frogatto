@@ -17,12 +17,14 @@
 #include <vector>
 
 //#include "foreach.hpp"
+#include "asserts.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
 #include "formula_function.hpp"
 #include "formula_tokenizer.hpp"
 #include "map_utils.hpp"
 #include "random.hpp"
+#include "unit_test.hpp"
 #include "wml_node.hpp"
 
 namespace {
@@ -295,6 +297,8 @@ public:
 			op_ = AND;
 		} else if(op == "or") {
 			op_ = OR;
+		} else if(op == "in") {
+			op_ = IN;
 		}
 	}
 
@@ -303,6 +307,18 @@ private:
 		const variant left = left_->evaluate(variables);
 		const variant right = right_->evaluate(variables);
 		switch(op_) {
+		case IN:
+			if(!right.is_list()) {
+				return variant();
+			} else {
+				for(int n = 0; n != right.num_elements(); ++n) {
+					if(left == right[n]) {
+						return variant(1);
+					}
+				}
+
+				return variant(0);
+			}
 		case AND: 
 			return left.as_bool() == false ? left : right;
 		case OR: 
@@ -345,7 +361,7 @@ private:
 		return res;
 	}
 
-	enum OP { AND, OR, NEQ, LTE, GTE, GT='>', LT='<', EQ='=',
+	enum OP { IN, AND, OR, NEQ, LTE, GTE, GT='>', LT='<', EQ='=',
 	          ADD='+', SUB='-', MUL='*', DIV='/', DICE='d', POW='^', MOD='%' };
 
 	OP op_;
@@ -501,6 +517,7 @@ int operator_precedence(const token& t)
 		precedence_map["where"] = ++n;
 		precedence_map["or"]    = ++n;
 		precedence_map["and"]   = ++n;
+		precedence_map["in"] = ++n;
 		precedence_map["="]     = ++n;
 		precedence_map["!="]    = n;
 		precedence_map["<"]     = n;
@@ -929,6 +946,11 @@ variant formula::execute() const
 	last_executed_formula = this;
 	static map_formula_callable null_callable;
 	return execute(null_callable);
+}
+
+UNIT_TEST(formula_in) {
+	CHECK(formula("1 in [4,5,6]").execute() == variant(0), "test failed");
+	CHECK(formula("5 in [4,5,6]").execute() == variant(1), "test failed");
 }
 
 }
