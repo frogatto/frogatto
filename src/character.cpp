@@ -53,7 +53,7 @@ character::character(wml::const_node_ptr node)
 	jump_power_(wml::get_int(node, "jump_power")),
 	boost_power_(wml::get_int(node, "boost_power")),
 	glide_speed_(wml::get_int(node, "glide_speed")),
-	cycle_num_(0), current_traction_(100), last_jump_(false), last_walk_(0),
+	cycle_num_(0), current_traction_(1000), last_jump_(false), last_walk_(0),
     frame_id_(0), loop_sound_(-1), interacting_(false), invisible_(false)
 {
 	set_label(node->attr("label"));
@@ -103,7 +103,7 @@ character::character(const std::string& type, int x, int y, bool face_right)
 	jump_power_(0),
 	boost_power_(0),
 	glide_speed_(0),
-	cycle_num_(0), current_traction_(100), last_jump_(false), last_walk_(0),
+	cycle_num_(0), current_traction_(1000), last_jump_(false), last_walk_(0),
     frame_id_(0), loop_sound_(-1)
 {
 	current_frame_ = &type_->get_frame();
@@ -713,13 +713,13 @@ void character::process(level& lvl)
 	}
 
 	int friction = 0;
-	current_traction_ = 100;
+	current_traction_ = 1000;
 	int damage = 0;
 	entity_ptr standing_on;
 	const bool standing = is_standing(lvl, &friction, &current_traction_, &damage, NULL, &standing_on);
 	if(is_human()) std::cerr << "STANDING: " << x()<< "," << y() << " " << (standing ? "YES" : "NO") << "\n";
 
-	velocity_x_ += (accel_x*current_traction_)/100;
+	velocity_x_ += (accel_x*current_traction_)/1000;
 
 	if(is_underwater) {
 		friction += lvl.water_resistance();
@@ -971,7 +971,7 @@ void character::walk(const level& lvl, bool move_right)
 	const bool standing = is_standing(lvl);
 	set_face_right(move_right);
 	const int run_bonus = current_frame_ == type_->run_frame() ? 2 : 1;
-	velocity_x_ += (standing ? (walk_speed()*run_bonus*current_traction_)/100 : glide_speed())*(move_right ? 1 : -1);
+	velocity_x_ += (standing ? (walk_speed()*run_bonus*current_traction_)/1000 : glide_speed())*(move_right ? 1 : -1);
 	if(standing && current_frame_ != type_->walk_frame() && type_->walk_frame() && current_frame_ != type_->jump_frame() && current_frame_ != type_->turn_frame() && current_frame_ != type_->run_frame()) {
 
 		//see if we are pushing into something, in which case we go into a
@@ -1923,7 +1923,7 @@ void pc_character::control(const level& lvl)
 	   &current_frame() == type().up_attack_frame() ||
 	   &current_frame() == type().run_attack_frame()) {
 		if(&current_frame() == type().run_attack_frame()) {
-			set_velocity(velocity_x() + (get_accel(current_frame().accel_x()) * current_traction() * (face_right() ? 1 : -1))/100,
+			set_velocity(velocity_x() + (get_accel(current_frame().accel_x()) * current_traction() * (face_right() ? 1 : -1))/1000,
 			             velocity_y() + get_accel(current_frame().accel_y()));
 			running_ = false;
 			return;
