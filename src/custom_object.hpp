@@ -4,6 +4,7 @@
 #include <boost/shared_ptr.hpp>
 #include <inttypes.h>
 
+#include "blur.hpp"
 #include "color_utils.hpp"
 #include "custom_object_type.hpp"
 #include "entity.hpp"
@@ -112,6 +113,8 @@ public:
 
 	void handle_event(const std::string& event, const formula_callable* context=NULL);
 
+	void set_blur(const blur_info* blur);
+
 protected:
 	virtual void control(const level& lvl);
 	variant get_value(const std::string& key) const;
@@ -183,6 +186,8 @@ private:
 	custom_object_text_ptr text_;
 
 	entity_ptr driver_;
+
+	boost::shared_ptr<blur_info> blur_;
 };
 
 #endif

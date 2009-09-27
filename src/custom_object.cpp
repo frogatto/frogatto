@@ -225,6 +225,10 @@ void custom_object::draw() const
 
 	frame_->draw(x(), y(), face_right(), upside_down(), time_in_frame_, rotate_);
 
+	if(blur_) {
+		blur_->draw();
+	}
+
 	if(draw_color_) {
 		if(!draw_color_->fits_in_color()) {
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
@@ -295,6 +299,7 @@ void custom_object::process(level& lvl)
 	}
 
 	const int start_x = x();
+	const int start_y = y();
 	++cycle_;
 	lvl_ = &lvl;
 
@@ -593,6 +598,13 @@ void custom_object::process(level& lvl)
 	}
 
 	set_driver_position();
+
+	if(blur_) {
+		blur_->next_frame(start_x, start_y, x(), y(), frame_, time_in_frame_, face_right(), upside_down(), rotate_);
+		if(blur_->destroyed()) {
+			blur_.reset();
+		}
+	}
 }
 
 void custom_object::set_driver_position()
@@ -997,7 +1009,7 @@ void custom_object::set_value(const std::string& key, const variant& value)
 void custom_object::set_frame(const std::string& name)
 {
 	//fire an event to say that we're leaving the current frame.
-	if(frame_) {
+	if(frame_ && name != frame_name_) {
 		handle_event("leave_" + frame_name_ + "_anim");
 	}
 
@@ -1383,6 +1395,19 @@ void custom_object::board_vehicle()
 
 void custom_object::unboard_vehicle()
 {
+}
+
+void custom_object::set_blur(const blur_info* blur)
+{
+	if(blur) {
+		if(blur_) {
+			blur_->copy_settings(*blur); 
+		} else {
+			blur_.reset(new blur_info(*blur));
+		}
+	} else {
+		blur_.reset();
+	}
 }
 
 BENCHMARK_ARG(custom_object_get_attr, const std::string& attr)

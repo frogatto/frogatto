@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "asserts.hpp"
+#include "blur.hpp"
 #include "character.hpp"
 #include "character_type.hpp"
 #include "current_generator.hpp"
@@ -1322,6 +1323,33 @@ public:
 	}
 };
 
+class blur_command : public custom_object_command_callable {
+	int alpha_, fade_, granularity_;
+public:
+	blur_command(int alpha, int fade, int granularity)
+	  : alpha_(alpha), fade_(fade), granularity_(granularity)
+	{}
+
+	virtual void execute(level& lvl, custom_object& ob) const {
+		blur_info blur(double(alpha_)/1000.0, double(fade_)/1000.0, granularity_);
+		ob.set_blur(&blur);
+	}
+};
+
+class blur_function : public function_expression {
+public:
+	explicit blur_function(const args_list& args)
+	  : function_expression("blur", args, 0, 3) {
+	}
+	
+	variant execute(const formula_callable& variables) const {
+		return variant(new blur_command(
+		  args().size() > 0 ? args()[0]->evaluate(variables).as_int() : 0,
+		  args().size() > 1 ? args()[1]->evaluate(variables).as_int() : 10,
+		  args().size() > 2 ? args()[2]->evaluate(variables).as_int() : 1));
+	}
+};
+
 class text_command : public custom_object_command_callable {
 public:
 	text_command(const std::string& text, const std::string& font)
@@ -1508,6 +1536,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new control_function(args));
 	} else if(fn == "add_particles") {
 		return expression_ptr(new add_particles_function(args));
+	} else if(fn == "blur") {
+		return expression_ptr(new blur_function(args));
 	} else if(fn == "text") {
 		return expression_ptr(new text_function(args));
 	} else if(fn == "preload_powerup") {
