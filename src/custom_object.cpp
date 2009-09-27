@@ -861,6 +861,7 @@ struct custom_object::Accessor {
 		ACCESSOR(accel_x);
 		ACCESSOR(accel_y);
 		ACCESSOR(vars);
+		ACCESSOR(tmp);
 		ACCESSOR(group);
 		ACCESSOR(rotate);
 		ACCESSOR(me);
