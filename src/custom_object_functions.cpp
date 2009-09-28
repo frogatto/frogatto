@@ -912,6 +912,7 @@ public:
 	{}
 	virtual void execute(level& lvl, entity& ob) const {
 		debug_console::add_message(str_);
+		std::cerr << "CONSOLE: " << str_ << "\n";
 	}
 private:
 	std::string str_;
