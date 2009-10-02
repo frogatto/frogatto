@@ -566,7 +566,7 @@ editor::editor(const char* level_cfg)
     done_(false), face_right_(true),
 	cur_tileset_(0), cur_object_(0),
     current_dialog_(NULL),
-	drawing_rect_(false), dragging_(false)
+	drawing_rect_(false), dragging_(false), level_changed_(0)
 {
 	editor_menu_dialog_.reset(new editor_menu_dialog(*this));
 	editor_mode_dialog_.reset(new editor_mode_dialog(*this));
@@ -792,7 +792,9 @@ void editor::edit_level()
 				break;
 			case SDL_KEYDOWN:
 				if(event.key.keysym.sym == SDLK_ESCAPE) {
-					return;
+					if(confirm_quit()) {
+						return;
+					}
 				}
 
 				handle_key_press(event.key);
@@ -1631,8 +1633,63 @@ void editor::save_level_as(const std::string& fname)
 	g_last_edited_level = filename_;
 }
 
+void editor::quit()
+{
+	if(confirm_quit()) {
+		done_ = true;
+	}
+}
+
+namespace {
+void quit_editor_result(gui::dialog* d, int* result_ptr, int result) {
+	d->close();
+	*result_ptr = result;
+}
+}
+
+bool editor::confirm_quit()
+{
+	if(!level_changed_) {
+		return true;
+	}
+
+	const int center_x = graphics::screen_width()/2;
+	const int center_y = graphics::screen_height()/2;
+	using namespace gui;
+	dialog d(center_x - 140, center_y - 100, center_x + 140, center_y + 100);
+
+	d.add_widget(widget_ptr(new label("Do you want to save the level?", graphics::color_white())), dialog::MOVE_DOWN);
+
+	gui::grid* grid = new gui::grid(3);
+
+	int result = 0;
+	grid->add_col(widget_ptr(
+	  new button(widget_ptr(new label("Yes", graphics::color_white())),
+	             boost::bind(quit_editor_result, &d, &result, 0))));
+	grid->add_col(widget_ptr(
+	  new button(widget_ptr(new label("No", graphics::color_white())),
+	             boost::bind(quit_editor_result, &d, &result, 1))));
+	grid->add_col(widget_ptr(
+	  new button(widget_ptr(new label("Cancel", graphics::color_white())),
+	             boost::bind(quit_editor_result, &d, &result, 2))));
+	d.add_widget(widget_ptr(grid));
+	d.show_modal();
+
+	if(result == 2) {
+		return false;
+	}
+
+	if(result == 0 && !d.cancelled()) {
+		save_level();
+	}
+
+	return true;
+}
+
 void editor::save_level()
 {
+	level_changed_ = 0;
+
 	remove_ghost_objects();
 	ghost_objects_.clear();
 
@@ -1952,6 +2009,8 @@ void editor::run_script(const std::string& id)
 
 void editor::execute_command(boost::function<void()> command, boost::function<void()> undo)
 {
+	level_changed_++;
+
 	command();
 
 	executable_command cmd;
@@ -2002,6 +2061,8 @@ void editor::undo_command()
 		return;
 	}
 
+	--level_changed_;
+
 	undo_.back().undo_command();
 	redo_.push_back(undo_.back());
 	undo_.pop_back();
@@ -2016,6 +2077,8 @@ void editor::redo_command()
 	if(redo_.empty()) {
 		return;
 	}
+
+	++level_changed_;
 
 	redo_.back().redo_command();
 	undo_.push_back(redo_.back());

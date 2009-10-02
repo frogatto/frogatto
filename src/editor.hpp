@@ -87,7 +87,8 @@ public:
 
 	void save_level();
 	void save_level_as(const std::string& filename);
-	void quit() { done_ = true; }
+	void quit();
+	bool confirm_quit();
 	void zoom_in();
 	void zoom_out();
 
@@ -204,6 +205,8 @@ private:
 	std::vector<entity_ptr> ghost_objects_;
 
 	std::vector<stats::record_ptr> stats_;
+
+	int level_changed_;
 };
 
 #endif
