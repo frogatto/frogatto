@@ -13,6 +13,7 @@
 #include "geometry.hpp"
 #include "key.hpp"
 #include "powerup_fwd.hpp"
+#include "solid_map_fwd.hpp"
 #include "wml_node_fwd.hpp"
 
 class character;
@@ -75,6 +76,7 @@ public:
 
 	virtual bool point_collides(int x, int y) const = 0;
 	virtual bool rect_collides(const rect& r) const = 0;
+	virtual const_solid_info_ptr solid() const;
 	rect body_rect() const;
 	rect hit_rect() const;
 	point midpoint() const;

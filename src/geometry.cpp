@@ -66,7 +66,10 @@ rect::rect(const std::string& str)
 	}
 
 	std::vector<std::string> items = util::split(str);
-	if(items.size() == 3) {
+	if(items.size() == 2) {
+		*this = rect::from_coordinates(
+		    atoi(items[0].c_str()), atoi(items[1].c_str()), 1, 1);
+	} else if(items.size() == 3) {
 		*this = rect::from_coordinates(
 		    atoi(items[0].c_str()), atoi(items[1].c_str()),
 		    atoi(items[2].c_str()), 1);

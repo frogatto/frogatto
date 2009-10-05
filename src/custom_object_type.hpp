@@ -11,6 +11,7 @@
 #include "formula_function.hpp"
 #include "frame.hpp"
 #include "particle_system.hpp"
+#include "solid_map_fwd.hpp"
 #include "variant.hpp"
 #include "wml_node.hpp"
 
@@ -91,6 +92,8 @@ public:
 
 	game_logic::function_symbol_table* function_symbols() const;
 
+	const_solid_info_ptr solid() const { return solid_; }
+
 private:
 	std::string id_;
 	int hitpoints_;
@@ -141,6 +144,8 @@ private:
 	std::map<std::string, variant> variables_;
 
 	int teleport_offset_x_, teleport_offset_y_;
+
+	const_solid_info_ptr solid_;
 };
 
 #endif

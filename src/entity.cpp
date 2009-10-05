@@ -7,6 +7,7 @@
 #include "playable_custom_object.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
+#include "solid_map.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
 
@@ -48,11 +49,19 @@ entity_ptr entity::build(wml::const_node_ptr node)
 
 int entity::feet_x() const
 {
+	const_solid_info_ptr s = solid();
+	if(s) {
+		return x() + s->area().x() + s->area().w()/2;
+	}
 	return face_right() ? x() + current_frame().feet_x() : x() + current_frame().width() - current_frame().feet_x();
 }
 
 int entity::feet_y() const
 {
+	const_solid_info_ptr s = solid();
+	if(s) {
+		return y() + s->area().y() + s->area().h();
+	}
 	return y() + current_frame().feet_y();
 }
 
@@ -76,6 +85,11 @@ void entity::activation_distance(int* x, int* y)
 {
 	*x = 900;
 	*y = 500;
+}
+
+const_solid_info_ptr entity::solid() const
+{
+	return const_solid_info_ptr();
 }
 
 rect entity::body_rect() const

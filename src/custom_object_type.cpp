@@ -5,6 +5,7 @@
 #include "custom_object_functions.hpp"
 #include "custom_object_type.hpp"
 #include "filesystem.hpp"
+#include "solid_map.hpp"
 #include "wml_node.hpp"
 #include "wml_parser.hpp"
 #include "wml_utils.hpp"
@@ -165,7 +166,8 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	feet_width_(wml::get_int(node, "feet_width", 5)),
 	use_image_for_collisions_(wml::get_bool(node, "use_image_for_collisions", false)),
 	teleport_offset_x_(wml::get_int(node, "teleport_offset_x")),
-	teleport_offset_y_(wml::get_int(node, "teleport_offset_y"))
+	teleport_offset_y_(wml::get_int(node, "teleport_offset_y")),
+	solid_(solid_info::create(node))
 {
 	if(node->has_attr("functions")) {
 		object_functions_.reset(new game_logic::function_symbol_table);

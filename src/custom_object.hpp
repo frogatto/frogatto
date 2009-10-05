@@ -50,6 +50,8 @@ public:
 	virtual bool point_collides(int x, int y) const;
 	virtual bool rect_collides(const rect& r) const;
 
+	const_solid_info_ptr solid() const;
+
 	virtual bool on_players_side() const;
 
 	virtual const frame& current_frame() const { return *frame_; }

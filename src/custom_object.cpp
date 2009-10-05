@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "asserts.hpp"
+#include "collision_utils.hpp"
 #include "custom_object.hpp"
 #include "custom_object_functions.hpp"
 #include "draw_scene.hpp"
@@ -71,7 +72,6 @@ custom_object::custom_object(wml::const_node_ptr node)
 	next_animation_formula_ = type_->next_animation_formula();
 
 	custom_object_type::init_event_handlers(node, event_handlers_);
-	std::cerr << "custom_object: " << body_rect().w() << "\n";
 
 	can_interact_with_ = (event_handlers_.count("interact") || type_->get_event_handler("interact"));
 
@@ -290,6 +290,9 @@ public:
 
 void custom_object::process(level& lvl)
 {
+	//the object should never be colliding with the level at the start of processing.
+	assert(!entity_collides_with_level(lvl, *this, MOVE_NONE));
+
 	int surface_friction = 0, surface_traction = 1000, surface_damage = 0, surface_adjust_y = 0;
 	entity_ptr standing_on;
 	const bool started_standing = is_standing(lvl, &surface_friction, &surface_traction, &surface_damage, &surface_adjust_y, &standing_on);
@@ -369,6 +372,7 @@ void custom_object::process(level& lvl)
 		move_centipixels(velocity_x_, velocity_y_);
 	}
 
+	assert(!entity_collides_with_level(lvl, *this, MOVE_NONE));
 	for(int n = 0; n <= std::abs(velocity_x_/100) && !collide && !type_->ignore_collide(); ++n) {
 		const int dir = velocity_x_/100 > 0 ? 1 : -1;
 		int xpos = dir < 0 ? body_rect().x() : (body_rect().x2() - 1);
@@ -376,11 +380,9 @@ void custom_object::process(level& lvl)
 		const int ybegin = y() + current_frame().collide_y();
 		const int yend = ybegin + current_frame().collide_h();
 		int damage = 0;
-		for(int ypos = ybegin; ypos != yend; ++ypos) {
-			if(lvl.solid(xpos, ypos, NULL, &damage)) {
-				collide = true;
-				break;
-			}
+
+		if(entity_collides_with_level(lvl, *this, dir > 0 ? MOVE_RIGHT : MOVE_LEFT, NULL, NULL, &damage)) {
+			collide = true;
 		}
 
 		if(!collide) {
@@ -398,6 +400,7 @@ void custom_object::process(level& lvl)
 			if(n != 0) {
 				set_pos(x() - dir, y());
 			}
+			assert(!entity_collides_with_level(lvl, *this, MOVE_NONE));
 			break;
 		}
 
@@ -412,11 +415,18 @@ void custom_object::process(level& lvl)
 			//them standing.
 
 			if(started_standing && !is_standing(lvl)) {
+				assert(!entity_collides_with_level(lvl, *this, MOVE_NONE));
+
 				set_pos(x(), y()+1);
 				int max_drop = 2;
 				while(--max_drop && started_standing && !is_standing(lvl)) {
 					set_pos(x(), y()+1);
 				}
+
+				while(entity_collides_with_level(lvl, *this, MOVE_NONE)) {
+					set_pos(x(), y()-1);
+				}
+
 			} else if(started_standing) {
 				const int original_y = y();
 				int max_slope = 3;
@@ -449,22 +459,40 @@ void custom_object::process(level& lvl)
 		}
 	}
 
+	assert(!entity_collides_with_level(lvl, *this, MOVE_NONE));
+
 	//std::cerr << "velocity_y: " << velocity_y_ << "\n";
 	collide = false;
+				std::cerr << "START COUNT: " << entity_collides_with_level_count(lvl, *this, MOVE_NONE) << "\n";
 	for(int n = 0; n <= std::abs(velocity_y_/100) && !collide && !type_->ignore_collide(); ++n) {
 		const int dir = velocity_y_/100 > 0 ? 1 : -1;
-		int ypos = dir < 0 ? body_rect().y() : (body_rect().y2() - 1);
-
-		const int xbegin = body_rect().x();
-		const int xend = body_rect().x2();
 		int damage = 0;
-// TODO: at the moment we don't consider it a collision if we 
-//		for(int xpos = xbegin; xpos != xend; ++xpos) {
-//			if(lvl.solid(xpos, ypos, NULL, &damage)) {
-//				collide = true;
-//				break;
-//			}
-//		}
+				std::cerr << "BEFORE COUNT: " << entity_collides_with_level_count(lvl, *this, MOVE_NONE) << "\n";
+
+		if(velocity_y_ > 0) {
+			if(entity_collides_with_level(lvl, *this, MOVE_DOWN, NULL, NULL, &damage)) {
+				//our 'legs' but not our feet collide with the level. Try to
+				//move one pixel to the left or right and see if either
+				//direction makes us no longer colliding.
+				std::cerr << "NORMAL COUNT: " << entity_collides_with_level_count(lvl, *this, MOVE_NONE) << "\n";
+				set_pos(x() + 1, y());
+				std::cerr << "RIGHT COUNT: " << entity_collides_with_level_count(lvl, *this, MOVE_NONE) << "\n";
+				if(entity_collides_with_level(lvl, *this, MOVE_DOWN) || entity_collides_with_level(lvl, *this, MOVE_RIGHT)) {
+					set_pos(x() - 2, y());
+				std::cerr << "LEFT COUNT: " << entity_collides_with_level_count(lvl, *this, MOVE_NONE) << "\n";
+					if(entity_collides_with_level(lvl, *this, MOVE_DOWN) || entity_collides_with_level(lvl, *this, MOVE_LEFT)) {
+						assert(false);
+						//moving in either direction fails to resolve the collision.
+						//This effectively means the object is 'stuck' in a small
+						//pit.
+						set_pos(x() + 1, y());
+						collide = true;
+					}
+				}
+				
+
+			}
+		}
 
 		if(type_->id() == "breakable_block") {
 			std::cerr << "COLLIDE " << n << "/" << velocity_y_/100 << "\n";
@@ -735,6 +763,15 @@ bool custom_object::rect_collides(const rect& r) const
 	}
 }
 
+const_solid_info_ptr custom_object::solid() const
+{
+	if(current_frame().solid()) {
+		return current_frame().solid();
+	}
+
+	return type_->solid();
+}
+
 bool custom_object::on_players_side() const
 {
 	return type_->on_players_side() || is_human();
@@ -746,7 +783,7 @@ void custom_object::control(const level& lvl)
 
 bool custom_object::is_standing(const level& lvl, int* friction, int* traction, int* damage, int* adjust_y, entity_ptr* standing_on) const
 {
-	return (current_frame().feet_x() || current_frame().feet_y()) &&
+	return (feet_x() || feet_y()) &&
 	       (lvl.standable(feet_x() - type_->feet_width(), feet_y(), friction, traction, damage, adjust_y, standing_on) ||
 	        lvl.standable(feet_x() + type_->feet_width(), feet_y(), friction, traction, damage, adjust_y, standing_on));
 }
@@ -1024,25 +1061,7 @@ void custom_object::set_frame(const std::string& name)
 
 	set_pos(x() - diff_x, y() - diff_y);
 
-	//try to resolve collision by adjusting position
-	if(lvl_ && !type_->ignore_collide()) {
-		const int MaxAdjust = 10;
-		rect body = body_rect();
-		const int middle = (body.y() + body.y2())/2;
-		int n = 0;
-		while(n != MaxAdjust && lvl_->solid(body.x() + n, middle)) {
-			++n;
-		}
-
-		set_pos(x() + n, y());
-
-		n = 0;
-		while(n != MaxAdjust && lvl_->solid(body.x2() - n, middle)) {
-			++n;
-		}
-
-		set_pos(x() - n, y());
-	}
+	//TODO: check if we are now colliding with something, and handle properly.
 
 	frame_name_ = name;
 	time_in_frame_ = 0;
@@ -1062,8 +1081,9 @@ void custom_object::set_frame(const std::string& name)
 		accel_y_ = frame_->accel_y();
 	}
 	
-	
 	frame_->play_sound(this);
+
+	assert(lvl_ == NULL || !entity_collides_with_level(*lvl_, *this, MOVE_NONE));
 }
 
 void custom_object::die()

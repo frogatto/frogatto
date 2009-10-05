@@ -6,6 +6,7 @@
 #include "foreach.hpp"
 #include "frame.hpp"
 #include "raster.hpp"
+#include "solid_map.hpp"
 #include "sound.hpp"
 #include "string_utils.hpp"
 #include "texture.hpp"
@@ -15,6 +16,7 @@
 frame::frame(wml::const_node_ptr node)
    : id_(node->name()),
      texture_(graphics::texture::get(node->attr("image"), node->attr("image_formula"))),
+	 solid_(solid_info::create(node)),
      collide_rect_(node->has_attr("collide") ? rect(node->attr("collide")) :
 	               rect(wml::get_int(node, "collide_x"),
                         wml::get_int(node, "collide_y"),
