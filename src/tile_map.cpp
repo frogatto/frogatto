@@ -646,7 +646,6 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles,
 
 			std::map<point, level_object_ptr>::const_iterator itor = multi_pattern_matches.find(point(x, y));
 			if(itor != multi_pattern_matches.end() && itor->second) {
-				std::cerr << "PATTERN MATCH: multi " << x << ", " << y << "\n";
 				level_tile t;
 				t.x = xpos;
 				t.y = ypos;
@@ -664,7 +663,6 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles,
 				continue;
 			}
 
-			std::cerr << "PATTERN MATCH: single " << x << ", " << y << "\n";
 
 			if(r && xpos < r->x() || r && xpos > r->x2()) {
 				continue;

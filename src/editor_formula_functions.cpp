@@ -61,6 +61,35 @@ private:
 	}
 };
 
+class remove_tile_rect_command : public editor_command {
+	std::string tile_id_;
+	int x1_, y1_, x2_, y2_;
+public:
+	remove_tile_rect_command(const std::string& tile_id, int x1, int y1, int x2, int y2)
+	  : tile_id_(tile_id), x1_(x1), y1_(y1), x2_(x2), y2_(y2)
+	{}
+
+	void execute(editor& e) {
+		e.add_tile_rect(e.get_tile_zorder(tile_id_), "", x1_, y1_, x2_, y2_);
+	}
+};
+
+class remove_tiles_function : public function_expression {
+public:
+	explicit remove_tiles_function(const args_list& args)
+	  : function_expression("remove_tiles", args, 3, 5)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		const std::string& tile_id = args()[0]->evaluate(variables).as_string();
+		const int x1 = args()[1]->evaluate(variables).as_int();
+		const int y1 = args()[2]->evaluate(variables).as_int();
+		const int x2 = args().size() > 3 ? args()[3]->evaluate(variables).as_int() : x1;
+		const int y2 = args().size() > 4 ? args()[4]->evaluate(variables).as_int() : y1;
+		return variant(new remove_tile_rect_command(tile_id, x1*TileSize, y1*TileSize, x2*TileSize, y2*TileSize));
+	}
+};
+
 class add_tile_rect_command : public editor_command {
 	std::string tile_id_;
 	int x1_, y1_, x2_, y2_;
@@ -133,7 +162,9 @@ public:
 	                           const std::string& fn,
 	                           const std::vector<expression_ptr>& args) const
 	{
-		if(fn == "add_tiles") {
+		if(fn == "remove_tiles") {
+			return expression_ptr(new remove_tiles_function(args));
+		} else if(fn == "add_tiles") {
 			return expression_ptr(new add_tiles_function(args));
 		} else if(fn == "add_object") {
 			return expression_ptr(new add_object_function(args));

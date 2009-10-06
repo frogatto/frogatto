@@ -467,19 +467,15 @@ void custom_object::process(level& lvl)
 	for(int n = 0; n <= std::abs(velocity_y_/100) && !collide && !type_->ignore_collide(); ++n) {
 		const int dir = velocity_y_/100 > 0 ? 1 : -1;
 		int damage = 0;
-				std::cerr << "BEFORE COUNT: " << entity_collides_with_level_count(lvl, *this, MOVE_NONE) << "\n";
 
 		if(velocity_y_ > 0) {
 			if(entity_collides_with_level(lvl, *this, MOVE_DOWN, NULL, NULL, &damage)) {
 				//our 'legs' but not our feet collide with the level. Try to
 				//move one pixel to the left or right and see if either
 				//direction makes us no longer colliding.
-				std::cerr << "NORMAL COUNT: " << entity_collides_with_level_count(lvl, *this, MOVE_NONE) << "\n";
 				set_pos(x() + 1, y());
-				std::cerr << "RIGHT COUNT: " << entity_collides_with_level_count(lvl, *this, MOVE_NONE) << "\n";
 				if(entity_collides_with_level(lvl, *this, MOVE_DOWN) || entity_collides_with_level(lvl, *this, MOVE_RIGHT)) {
 					set_pos(x() - 2, y());
-				std::cerr << "LEFT COUNT: " << entity_collides_with_level_count(lvl, *this, MOVE_NONE) << "\n";
 					if(entity_collides_with_level(lvl, *this, MOVE_DOWN) || entity_collides_with_level(lvl, *this, MOVE_LEFT)) {
 						assert(false);
 						//moving in either direction fails to resolve the collision.
