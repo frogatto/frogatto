@@ -434,6 +434,18 @@ private:
 	std::string id_;
 };
 
+class variant_expression : public formula_expression {
+public:
+	explicit variant_expression(variant v) : formula_expression("_var"), v_(v)
+	{}
+private:
+	variant execute(const formula_callable& /*variables*/) const {
+		return v_;
+	}
+
+	variant v_;
+};
+
 class null_expression : public formula_expression {
 public:
 	explicit null_expression() : formula_expression("_null") {}
@@ -694,9 +706,38 @@ void parse_where_clauses(const token* i1, const token * i2,
 
 expression_ptr parse_expression_internal(const token* i1, const token* i2, function_symbol_table* symbols);
 
+namespace {
+//a special callable which will throw an exception if it's actually called.
+//we use this to determine if an expression is static -- i.e. doesn't
+//depend on input, and can be reduced to its result.
+struct non_static_expression_exception {};
+class static_formula_callable : public formula_callable {
+public:
+	variant get_value(const std::string& key) const {
+		throw non_static_expression_exception();
+	}
+};
+}
+
 expression_ptr parse_expression(const token* i1, const token* i2, function_symbol_table* symbols)
 {
 	expression_ptr result(parse_expression_internal(i1, i2, symbols));
+
+	//we want to try to evaluate this expression, and see if it is static.
+	//it is static if it never reads its input, if it doesn't call the rng,
+	//and if a reference to the input itself is not stored.
+	try {
+		const unsigned int rng_seed = rng::get_seed();
+		formula_callable_ptr static_callable(new static_formula_callable);
+		variant res = result->evaluate(*static_callable);
+		if(rng_seed == rng::get_seed() && static_callable->refcount() == 1) {
+			//this expression is static. Reduce it to its result.
+			result = expression_ptr(new variant_expression(res));
+		}
+	} catch(non_static_expression_exception& e) {
+		//the expression isn't static. Not an error.
+	}
+
 	if(result && i1 != i2) {
 		result->set_str(std::string(i1->begin, (i2-1)->end));
 	}

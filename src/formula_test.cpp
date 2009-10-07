@@ -126,6 +126,7 @@ BENCHMARK_ARG_CALL(formula, arithmetic, "(5 + 4)*17 + 12*9 - 5/2");
 BENCHMARK_ARG_CALL(formula, read_input, "char");
 BENCHMARK_ARG_CALL(formula, read_input_sub, "char.strength");
 BENCHMARK_ARG_CALL(formula, array, "[4, 5, 8, 12, 17, 0, 19]");
+BENCHMARK_ARG_CALL(formula, array_str, "['stand', 'walk', 'run', 'jump']");
 BENCHMARK_ARG_CALL(formula, string, "'blah'");
 BENCHMARK_ARG_CALL(formula, null_function, "null()");
 BENCHMARK_ARG_CALL(formula, if_function, "if(4 > 5, 7, 8)");
