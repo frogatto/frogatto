@@ -828,64 +828,6 @@ private:
 	}
 };
 
-class dialog_function : public function_expression {
-public:
-	explicit dialog_function(const args_list& args)
-	  : function_expression("dialog", args, 1, -1) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		const std::string msg = args()[0]->evaluate(variables).as_string();
-		std::vector<std::string> options;
-		for(int n = 1; n < args().size(); n += 2) {
-			options.push_back(args()[n]->evaluate(variables).as_string());
-		}
-
-		const int selected_option = show_msg_dialog(msg, options);
-
-		if(selected_option >= 0) {
-			const int command_index = 2 + selected_option*2;
-			if(command_index < args().size()) {
-				return args()[command_index]->evaluate(variables);
-			}
-		}
-
-		return variant();
-	}
-};
-
-	
-class dialog_box_command : public custom_object_command_callable
-{
-public:
-	explicit dialog_box_command(const std::string& kind)
-	: kind_(kind)
-	{}
-	virtual void execute(level& lvl, custom_object& ob) const {
-		//lvl.set_end_game();
-		if(kind_ == "options"){
-			options_dialog current_dialog(100,100,200,200);
-			current_dialog.show_modal();
-		}
-	}
-private:
-	std::string kind_;
-};
-
-class dialog_box_function : public function_expression {
-public:
-	explicit dialog_box_function(const args_list& args)
-	: function_expression("dialog_box", args, 1) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new dialog_box_command(
-					   args()[0]->evaluate(variables).as_string()));
-		}
-};
-	
-	
-	
 class end_game_command : public custom_object_command_callable
 {
 public:
@@ -1497,12 +1439,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new solid_function(args));
 	} else if(fn == "set_solid") {
 		return expression_ptr(new set_solid_function(args));
-	} else if(fn == "dialog") {
-		return expression_ptr(new dialog_function(args));
 	} else if(fn == "speech_dialog") {
 		return expression_ptr(new speech_dialog_function(args));
-	} else if(fn == "dialog_box") {
-		return expression_ptr(new dialog_box_function(args));
 	} else if(fn == "set_group") {
 		return expression_ptr(new set_group_function(args));
 	} else if(fn == "scroll_to") {
