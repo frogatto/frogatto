@@ -488,6 +488,12 @@ void custom_object::process(level& lvl)
 				
 
 			}
+		} else {
+			//velocity_y_ < 0 -- going up
+			if(entity_collides_with_level(lvl, *this, MOVE_UP, NULL, NULL, &damage)) {
+				collide = true;
+				set_pos(x(), y()+1);
+			}
 		}
 
 		if(type_->id() == "breakable_block") {
