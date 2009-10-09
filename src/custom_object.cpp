@@ -373,6 +373,8 @@ void custom_object::process(level& lvl)
 	}
 
 	assert(!entity_collides_with_level(lvl, *this, MOVE_NONE));
+
+	collision_info collide_info;
 	for(int n = 0; n <= std::abs(velocity_x_/100) && !collide && !type_->ignore_collide(); ++n) {
 		const int dir = velocity_x_/100 > 0 ? 1 : -1;
 		int xpos = dir < 0 ? body_rect().x() : (body_rect().x2() - 1);
@@ -381,7 +383,7 @@ void custom_object::process(level& lvl)
 		const int yend = ybegin + current_frame().collide_h();
 		int damage = 0;
 
-		if(entity_collides_with_level(lvl, *this, dir > 0 ? MOVE_RIGHT : MOVE_LEFT, NULL, NULL, &damage)) {
+		if(entity_collides(lvl, *this, dir > 0 ? MOVE_RIGHT : MOVE_LEFT, &collide_info)) {
 			collide = true;
 		}
 
@@ -423,7 +425,7 @@ void custom_object::process(level& lvl)
 					set_pos(x(), y()+1);
 				}
 
-				while(entity_collides_with_level(lvl, *this, MOVE_NONE)) {
+				while(entity_collides(lvl, *this, MOVE_NONE)) {
 					set_pos(x(), y()-1);
 				}
 
@@ -449,16 +451,6 @@ void custom_object::process(level& lvl)
 		handle_event("collide");
 	}
 
-	if(!body_passthrough()) {
-		entity_ptr collide_with = lvl.collide(body_rect(), this);
-		if(collide_with.get() != NULL) {
-				game_logic::formula_callable_ptr callable(new collide_with_callable(collide_with.get()));
-			std::cerr << "collide_with\n";
-			handle_event("collide_with", callable.get());
-			collide = true;
-		}
-	}
-
 	assert(!entity_collides_with_level(lvl, *this, MOVE_NONE));
 
 	//std::cerr << "velocity_y: " << velocity_y_ << "\n";
@@ -469,19 +461,18 @@ void custom_object::process(level& lvl)
 		int damage = 0;
 
 		if(velocity_y_ > 0) {
-			if(entity_collides_with_level(lvl, *this, MOVE_DOWN, NULL, NULL, &damage)) {
+			if(entity_collides(lvl, *this, MOVE_DOWN, &collide_info)) {
 				//our 'legs' but not our feet collide with the level. Try to
 				//move one pixel to the left or right and see if either
 				//direction makes us no longer colliding.
 				set_pos(x() + 1, y());
-				if(entity_collides_with_level(lvl, *this, MOVE_DOWN) || entity_collides_with_level(lvl, *this, MOVE_RIGHT)) {
+				if(entity_collides(lvl, *this, MOVE_DOWN) || entity_collides(lvl, *this, MOVE_RIGHT)) {
 					set_pos(x() - 2, y());
-					if(entity_collides_with_level(lvl, *this, MOVE_DOWN) || entity_collides_with_level(lvl, *this, MOVE_LEFT)) {
-						assert(false);
+					if(entity_collides(lvl, *this, MOVE_DOWN) || entity_collides(lvl, *this, MOVE_LEFT)) {
 						//moving in either direction fails to resolve the collision.
 						//This effectively means the object is 'stuck' in a small
 						//pit.
-						set_pos(x() + 1, y());
+						set_pos(x() + 1, y()-1);
 						collide = true;
 					}
 				}
@@ -490,7 +481,7 @@ void custom_object::process(level& lvl)
 			}
 		} else {
 			//velocity_y_ < 0 -- going up
-			if(entity_collides_with_level(lvl, *this, MOVE_UP, NULL, NULL, &damage)) {
+			if(entity_collides(lvl, *this, MOVE_UP, &collide_info)) {
 				collide = true;
 				set_pos(x(), y()+1);
 			}

@@ -564,41 +564,38 @@ int random_hash(int x, int y, int z, int n)
 
 }
 
-void tile_map::apply_matching_multi_pattern(int x, int y, std::map<point, level_object_ptr>& mapping) const
+void tile_map::apply_matching_multi_pattern(int x, int y, const multi_tile_pattern& pattern, std::map<point, level_object_ptr>& mapping) const
 {
 	int random_seed = 0;
-	foreach(const multi_tile_pattern* p, multi_patterns_) {
+	if(pattern.chance() < 100 && random_hash(x, y, zorder_, random_seed++) > pattern.chance()) {
+		return;
+	}
 
-		if(p->chance() < 100 && random_hash(x, y, zorder_, random_seed++) > p->chance()) {
-			continue;
-		}
+	bool match = true;
+	for(int xpos = 0; xpos < pattern.width() && match; ++xpos) {
+		for(int ypos = 0; ypos < pattern.height() && match; ++ypos) {
+			if(pattern.tile_at(xpos, ypos).tile && mapping.count(point(x + xpos, y + ypos))) {
+				//there is already another pattern filling this tile.
+				match = false;
+				break;
+			}
 
-		bool match = true;
-		for(int xpos = 0; xpos < p->width() && match; ++xpos) {
-			for(int ypos = 0; ypos < p->height() && match; ++ypos) {
-				if(p->tile_at(xpos, ypos).tile && mapping.count(point(x + xpos, y + ypos))) {
-					//there is already another pattern filling this tile.
-					match = false;
-					break;
-				}
-
-				const pattern_index_entry& entry = get_tile_entry(y + ypos, x + xpos);
-				if(std::find(entry.matching_patterns.begin(), entry.matching_patterns.end(), p->tile_at(xpos, ypos).re) == entry.matching_patterns.end()) {
-					//the regex doesn't match
-					match = false;
-					break;
-				}
+			const pattern_index_entry& entry = get_tile_entry(y + ypos, x + xpos);
+			if(std::find(entry.matching_patterns.begin(), entry.matching_patterns.end(), pattern.tile_at(xpos, ypos).re) == entry.matching_patterns.end()) {
+				//the regex doesn't match
+				match = false;
+				break;
 			}
 		}
+	}
 
-		if(match) {
-			for(int xpos = 0; xpos < p->width() && match; ++xpos) {
-				for(int ypos = 0; ypos < p->height() && match; ++ypos) {
-					level_object_ptr ob = p->tile_at(xpos, ypos).tile;
-					if(ob) {
-						mapping[point(x + xpos, y + ypos)] = ob;
-						std::cerr << "INSERTING AT " << (x + xpos) << "," << (y + ypos) << "\n";
-					}
+	if(match) {
+		for(int xpos = 0; xpos < pattern.width() && match; ++xpos) {
+			for(int ypos = 0; ypos < pattern.height() && match; ++ypos) {
+				level_object_ptr ob = pattern.tile_at(xpos, ypos).tile;
+				if(ob) {
+					mapping[point(x + xpos, y + ypos)] = ob;
+					std::cerr << "INSERTING AT " << (x + xpos) << "," << (y + ypos) << "\n";
 				}
 			}
 		}
@@ -618,15 +615,18 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles,
 	}
 
 	std::map<point, level_object_ptr> multi_pattern_matches;
-	for(int y = -1; y <= static_cast<int>(map_.size()); ++y) {
-		const int ypos = ypos_ + y*TileSize;
 
-		if(r && ypos < r->y() || r && ypos > r->y2()) {
-			continue;
-		}
+	foreach(const multi_tile_pattern* p, multi_patterns_) {
+		for(int y = -1; y <= static_cast<int>(map_.size()); ++y) {
+			const int ypos = ypos_ + y*TileSize;
+	
+			if(r && ypos < r->y() || r && ypos > r->y2()) {
+				continue;
+			}
 
-		for(int x = -1; x <= width; ++x) {
-			apply_matching_multi_pattern(x, y, multi_pattern_matches);
+			for(int x = -1; x <= width; ++x) {
+				apply_matching_multi_pattern(x, y, *p, multi_pattern_matches);
+			}
 		}
 	}
 

@@ -49,6 +49,7 @@ public:
 	static const_solid_info_ptr create(wml::const_node_ptr node);
 	const std::vector<const_solid_map_ptr>& solid() const { return solid_; }
 	const rect& area() const { return area_; }
+	bool solid_at(int x, int y, const std::string** area_id=NULL) const;
 private:
 	std::vector<const_solid_map_ptr> solid_;
 	rect area_;

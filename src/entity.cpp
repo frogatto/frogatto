@@ -92,6 +92,17 @@ const_solid_info_ptr entity::solid() const
 	return const_solid_info_ptr();
 }
 
+rect entity::solid_rect() const
+{
+	const_solid_info_ptr s = solid();
+	if(s) {
+		const rect& area = s->area();
+		return rect(x() + area.x(), y() + area.y(), area.w(), area.h());
+	} else {
+		return rect();
+	}
+}
+
 rect entity::body_rect() const
 {
 	const frame& f = current_frame();

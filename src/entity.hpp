@@ -8,6 +8,7 @@
 #include "controls.hpp"
 #include "current_generator.hpp"
 #include "editor_variable_info.hpp"
+#include "entity_fwd.hpp"
 #include "formula_callable.hpp"
 #include "formula_fwd.hpp"
 #include "geometry.hpp"
@@ -17,14 +18,11 @@
 #include "wml_node_fwd.hpp"
 
 class character;
-class entity;
 class frame;
 class level;
 class pc_character;
 class player_info;
 
-typedef boost::intrusive_ptr<entity> entity_ptr;
-typedef boost::intrusive_ptr<const entity> const_entity_ptr;
 typedef boost::intrusive_ptr<character> character_ptr;
 
 class entity : public game_logic::formula_callable
@@ -77,6 +75,7 @@ public:
 	virtual bool point_collides(int x, int y) const = 0;
 	virtual bool rect_collides(const rect& r) const = 0;
 	virtual const_solid_info_ptr solid() const;
+	rect solid_rect() const;
 	rect body_rect() const;
 	rect hit_rect() const;
 	point midpoint() const;

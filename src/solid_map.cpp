@@ -128,3 +128,17 @@ const_solid_info_ptr solid_info::create(wml::const_node_ptr node)
 		return const_solid_info_ptr(result);
 	}
 }
+
+bool solid_info::solid_at(int x, int y, const std::string** area_id) const
+{
+	foreach(const const_solid_map_ptr& s, solid_) {
+		if(s->solid_at(x - s->area().x(), y - s->area().y())) {
+			if(area_id) {
+				*area_id = &s->id();
+			}
+			return true;
+		}
+	}
+
+	return false;
+}

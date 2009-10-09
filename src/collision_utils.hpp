@@ -1,10 +1,32 @@
 #ifndef COLLISION_UTILS_HPP_INCLUDED
 #define COLLISION_UTILS_HPP_INCLUDED
 
+#include "entity_fwd.hpp"
 #include "solid_map.hpp"
 
 class entity;
 class level;
+
+struct collision_info {
+	collision_info() : friction(0), traction(0), damage(0), adjust_y(0), area_id(0), collide_with_area_id(0)
+	{}
+	int friction;
+	int traction;
+	int damage;
+	int adjust_y;
+	const std::string* area_id;
+
+	entity_ptr collide_with;
+	const std::string* collide_with_area_id;
+};
+
+bool point_standable(level& lvl, int x, int y, collision_info* info=NULL);
+
+bool entity_collides(level& lvl, const entity& e, MOVE_DIRECTION dir, collision_info* info=NULL);
+
+bool entity_collides_with_entity(const entity& e, const entity& other,
+                                 const std::string** area_id=NULL,
+								 const std::string** other_area_id=NULL);
 
 bool entity_collides_with_level(const level& lvl, const entity& e, MOVE_DIRECTION dir, int* friction=NULL, int* traction=NULL, int* damage=NULL);
 int entity_collides_with_level_count(const level& lvl, const entity& e, MOVE_DIRECTION dir);
