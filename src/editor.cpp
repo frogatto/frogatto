@@ -2023,10 +2023,14 @@ void editor::execute_command(boost::function<void()> command, boost::function<vo
 void editor::begin_command_group()
 {
 	undo_commands_groups_.push(undo_.size());
+
+	lvl_->editor_freeze_tile_updates(true);
 }
 
 void editor::end_command_group()
 {
+	lvl_->editor_freeze_tile_updates(false);
+
 	ASSERT_NE(undo_commands_groups_.empty(), true);
 
 	const int index = undo_commands_groups_.top();
@@ -2045,6 +2049,13 @@ void editor::end_command_group()
 
 	//reverse the undos, since we want them executed in reverse order.
 	std::reverse(undo.begin(), undo.end());
+
+	//make it so undoing and redoing will freeze tile updates during the
+	//group command, and then do a full refresh of tiles once we're done.
+	undo.insert(undo.begin(), boost::bind(&level::editor_freeze_tile_updates, lvl_.get(), true));
+	undo.push_back(boost::bind(&level::editor_freeze_tile_updates, lvl_.get(), false));
+	redo.insert(redo.begin(), boost::bind(&level::editor_freeze_tile_updates, lvl_.get(), true));
+	redo.push_back(boost::bind(&level::editor_freeze_tile_updates, lvl_.get(), false));
 
 	executable_command cmd;
 	cmd.redo_command = boost::bind(execute_functions, redo);

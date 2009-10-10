@@ -31,7 +31,8 @@ level::level(const std::string& level_cfg)
 	: id_(level_cfg), highlight_layer_(INT_MIN),
 	  entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
 	  editor_(false), show_foreground_(true), show_background_(true), air_resistance_(0), water_resistance_(7), end_game_(false),
-      hide_status_bar_(false), tint_(0)
+      hide_status_bar_(false), tint_(0),
+	  editor_tile_updates_frozen_(0)
 {
 	std::cerr << "in level constructor...\n";
 	const int start_time = SDL_GetTicks();
@@ -263,6 +264,10 @@ void level::load_save_point(const level& lvl)
 
 void level::rebuild_tiles()
 {
+	if(editor_tile_updates_frozen_) {
+		return;
+	}
+
 	std::cerr << "rebuild tiles...\n";
 	solid_.clear();
 	standable_.clear();
@@ -325,6 +330,10 @@ struct TileInRect {
 
 void level::rebuild_tiles_rect(const rect& r)
 {
+	if(editor_tile_updates_frozen_) {
+		return;
+	}
+
 	for(int x = r.x(); x < r.x2(); x += TileSize) {
 		for(int y = r.y(); y < r.y2(); y += TileSize) {
 			tile_pos pos(x/TileSize, y/TileSize);
@@ -1987,3 +1996,16 @@ void level::hide_tile_layer(int layer, bool is_hidden)
 		hidden_layers_.erase(layer);
 	}
 }
+
+void level::editor_freeze_tile_updates(bool value)
+{
+	if(value) {
+		++editor_tile_updates_frozen_;
+	} else {
+		--editor_tile_updates_frozen_;
+		if(editor_tile_updates_frozen_ == 0) {
+			rebuild_tiles();
+		}
+	}
+}
+

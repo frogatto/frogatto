@@ -216,6 +216,8 @@ public:
 
 	const point* lock_screen() const { return lock_screen_.get(); }
 
+	void editor_freeze_tile_updates(bool value);
+
 private:
 	void do_processing();
 
@@ -350,6 +352,8 @@ private:
 	typedef boost::shared_ptr<backup_snapshot> backup_snapshot_ptr;
 
 	std::deque<backup_snapshot_ptr> backups_;
+
+	int editor_tile_updates_frozen_;
 };
 
 #endif
