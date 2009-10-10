@@ -72,6 +72,9 @@ public:
 
 	virtual bool destroyed() const = 0;
 
+	virtual int surface_friction() const { return 0; }
+	virtual int surface_traction() const { return 0; }
+
 	virtual bool point_collides(int x, int y) const = 0;
 	virtual bool rect_collides(const rect& r) const = 0;
 	virtual const_solid_info_ptr solid() const;

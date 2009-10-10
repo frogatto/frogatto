@@ -293,9 +293,9 @@ void custom_object::process(level& lvl)
 	//the object should never be colliding with the level at the start of processing.
 	assert(!entity_collides_with_level(lvl, *this, MOVE_NONE));
 
-	int surface_friction = 0, surface_traction = 1000, surface_damage = 0, surface_adjust_y = 0;
-	entity_ptr standing_on;
-	const bool started_standing = is_standing(lvl, &surface_friction, &surface_traction, &surface_damage, &surface_adjust_y, &standing_on);
+	collision_info stand_info;
+	const bool started_standing = is_standing(lvl, &stand_info);
+
 	previous_y_ = y();
 	if(started_standing && velocity_y_ > 0) {
 		velocity_y_ = 0;
@@ -330,7 +330,7 @@ void custom_object::process(level& lvl)
 
 	++time_in_frame_;
 
-	if(surface_damage) {
+	if(stand_info.damage) {
 		handle_event("surface_damage");
 	}
 
@@ -349,7 +349,7 @@ void custom_object::process(level& lvl)
 		handle_event(*event);
 	}
 
-	velocity_x_ += (accel_x_ * surface_traction * (face_right() ? 1 : -1))/1000;
+	velocity_x_ += (accel_x_ * stand_info.traction * (face_right() ? 1 : -1))/1000;
 	velocity_y_ += accel_y_;
 
 	if(type_->friction()) {
@@ -357,7 +357,7 @@ void custom_object::process(level& lvl)
 
 		const int air_resistance = is_underwater ? lvl.air_resistance() : lvl.water_resistance();
 
-		const int friction = ((surface_friction + air_resistance)*type_->friction())/1000;
+		const int friction = ((stand_info.friction + air_resistance)*type_->friction())/1000;
 		velocity_x_ = (velocity_x_*(1000 - friction))/1000;
 		velocity_y_ = (velocity_y_*(1000 - friction))/1000;
 	}
@@ -374,9 +374,13 @@ void custom_object::process(level& lvl)
 
 	assert(!entity_collides_with_level(lvl, *this, MOVE_NONE));
 
+	//calculate velocity which takes into account velocity of the object we're standing on.
+	const int effective_velocity_x = velocity_x_ + (stand_info.collide_with ? stand_info.collide_with->velocity_x() : 0);
+	const int effective_velocity_y = velocity_y_ + (stand_info.collide_with ? stand_info.collide_with->velocity_y() : 0);
+
 	collision_info collide_info;
-	for(int n = 0; n <= std::abs(velocity_x_/100) && !collide && !type_->ignore_collide(); ++n) {
-		const int dir = velocity_x_/100 > 0 ? 1 : -1;
+	for(int n = 0; n <= std::abs(effective_velocity_x/100) && !collide && !type_->ignore_collide(); ++n) {
+		const int dir = effective_velocity_x/100 > 0 ? 1 : -1;
 		int xpos = dir < 0 ? body_rect().x() : (body_rect().x2() - 1);
 
 		const int ybegin = y() + current_frame().collide_y();
@@ -409,7 +413,7 @@ void custom_object::process(level& lvl)
 		//we don't adjust the position on the last time through, since it's only
 		//used to see if there was a collision after the last movement, and
 		//doesn't actually execute a movement.
-		if(n < std::abs(velocity_x_/100)) {
+		if(n < std::abs(effective_velocity_x/100)) {
 			set_pos(x() + dir, y());
 
 			//if we go up or down a slope, and we began the frame standing,
@@ -456,11 +460,11 @@ void custom_object::process(level& lvl)
 	//std::cerr << "velocity_y: " << velocity_y_ << "\n";
 	collide = false;
 				std::cerr << "START COUNT: " << entity_collides_with_level_count(lvl, *this, MOVE_NONE) << "\n";
-	for(int n = 0; n <= std::abs(velocity_y_/100) && !collide && !type_->ignore_collide(); ++n) {
-		const int dir = velocity_y_/100 > 0 ? 1 : -1;
+	for(int n = 0; n <= std::abs(effective_velocity_y/100) && !collide && !type_->ignore_collide(); ++n) {
+		const int dir = effective_velocity_y/100 > 0 ? 1 : -1;
 		int damage = 0;
 
-		if(velocity_y_ > 0) {
+		if(effective_velocity_y > 0) {
 			if(entity_collides(lvl, *this, MOVE_DOWN, &collide_info)) {
 				//our 'legs' but not our feet collide with the level. Try to
 				//move one pixel to the left or right and see if either
@@ -480,23 +484,19 @@ void custom_object::process(level& lvl)
 
 			}
 		} else {
-			//velocity_y_ < 0 -- going up
+			//effective_velocity_y < 0 -- going up
 			if(entity_collides(lvl, *this, MOVE_UP, &collide_info)) {
 				collide = true;
 				set_pos(x(), y()+1);
 			}
 		}
 
-		if(type_->id() == "breakable_block") {
-			std::cerr << "COLLIDE " << n << "/" << velocity_y_/100 << "\n";
-		}
-
-		entity_ptr jumped_on;
-		if(!collide && !type_->ignore_collide() && velocity_y_ > 0 && is_standing(lvl, NULL, NULL, NULL, NULL, &jumped_on)) {
+		collision_info jump_on_info;
+		if(!collide && !type_->ignore_collide() && effective_velocity_y > 0 && is_standing(lvl, &jump_on_info)) {
 			collide = true;
 		}
-
-		if((!collide || jumped_on) && !type_->ignore_collide() && velocity_y_ > 0) {
+/*
+		if((!collide || jump_on_info.collide_with) && !type_->ignore_collide() && velocity_y_ > 0) {
 			entity_ptr bounce = lvl.collide(feet_x() - type_->feet_width(), feet_y(), this);
 			if(!bounce) {
 				bounce = lvl.collide(feet_x() + type_->feet_width(), feet_y(), this);
@@ -508,7 +508,7 @@ void custom_object::process(level& lvl)
 				break;
 			}
 		}
-
+*/
 		if(collide) {
 			std::cerr << "collide y!\n";
 			break;
@@ -517,16 +517,16 @@ void custom_object::process(level& lvl)
 		//we don't adjust the position on the last time through, since it's only
 		//used to see if there was a collision after the last movement, and
 		//doesn't actually execute a movement.
-		if(n < std::abs(velocity_y_/100)) {
+		if(n < std::abs(effective_velocity_y/100)) {
 			set_pos(x(), y() + dir);
 		}
 	}
 
 	if(collide) {
 		std::cerr << "COLLIDE!\n";
-		if(velocity_y_ < 0 || !started_standing) {
+		if(effective_velocity_y < 0 || !started_standing) {
 			std::cerr << "COLLIDE EVENT\n";
-			handle_event(velocity_y_ < 0 ? "collide_head" : "collide_feet");
+			handle_event(effective_velocity_y < 0 ? "collide_head" : "collide_feet");
 		}
 	}
 
@@ -654,6 +654,16 @@ int custom_object::velocity_y() const
 	return velocity_y_;
 }
 
+int custom_object::surface_friction() const
+{
+	return type_->surface_friction();
+}
+
+int custom_object::surface_traction() const
+{
+	return type_->surface_traction();
+}
+
 bool custom_object::is_standable(int xpos, int ypos, int* friction, int* traction, int* adjust_y) const
 {
 	if(!body_passthrough() && springiness() == 0 && !body_harmful() && point_collides(xpos, ypos)) {
@@ -774,11 +784,10 @@ void custom_object::control(const level& lvl)
 {
 }
 
-bool custom_object::is_standing(const level& lvl, int* friction, int* traction, int* damage, int* adjust_y, entity_ptr* standing_on) const
+bool custom_object::is_standing(const level& lvl, collision_info* info) const
 {
 	return (feet_x() || feet_y()) &&
-	       (lvl.standable(feet_x() - type_->feet_width(), feet_y(), friction, traction, damage, adjust_y, standing_on) ||
-	        lvl.standable(feet_x() + type_->feet_width(), feet_y(), friction, traction, damage, adjust_y, standing_on));
+	       point_standable(lvl, *this, feet_x(), feet_y(), info);
 }
 
 namespace {
@@ -862,8 +871,9 @@ struct custom_object::Accessor {
 		}
 		
 		entity_ptr stand_on;
-		obj.is_standing(*obj.lvl_, NULL, NULL, NULL, NULL, &stand_on);
-		return variant(stand_on.get());
+		collision_info info;
+		obj.is_standing(*obj.lvl_, &info);
+		return variant(info.collide_with.get());
 	}
 
 #define CUSTOM_ACCESSOR(name, expression) static variant name(const custom_object& obj) { return variant(expression); }

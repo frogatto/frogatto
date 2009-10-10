@@ -833,8 +833,7 @@ void character::try_to_make_standing()
 
 bool character::is_standing(const level& lvl, int* friction, int* traction, int* damage, int* adjust_y, entity_ptr* standing_on) const
 {
-	return lvl.standable(feet_x()-type_->feet_width(), feet_y(), friction, traction, damage, adjust_y, standing_on, this) ||
-	       lvl.standable(feet_x()+type_->feet_width(), feet_y(), friction, traction, damage, adjust_y, standing_on, this);
+	return true;
 }
 
 bool character::destroyed() const

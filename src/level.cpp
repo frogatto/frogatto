@@ -968,22 +968,11 @@ bool level::is_solid(const solid_map& map, int x, int y, int* friction, int* tra
 	return false;
 }
 
-bool level::standable(int x, int y, int* friction, int* traction, int* damage, int* adjust_y, entity_ptr* ch, const entity* exclude) const
+bool level::standable(int x, int y, int* friction, int* traction, int* damage) const
 {
 	if(is_solid(solid_, x, y, friction, traction, damage) ||
 	   is_solid(standable_, x, y, friction, traction, damage)) {
 	   return true;
-	}
-
-	for(std::vector<entity_ptr>::const_iterator i = active_chars_.begin();
-	    i != active_chars_.end(); ++i) {
-		const entity_ptr& c = *i;
-		if(c.get() != exclude && c->is_standable(x, y, friction, traction, adjust_y)) {
-			if(ch) {
-				*ch = c;
-			}
-			return true;
-		}
 	}
 
 	return false;

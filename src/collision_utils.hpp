@@ -20,7 +20,7 @@ struct collision_info {
 	const std::string* collide_with_area_id;
 };
 
-bool point_standable(level& lvl, int x, int y, collision_info* info=NULL);
+bool point_standable(const level& lvl, const entity& e, int x, int y, collision_info* info=NULL);
 
 bool entity_collides(level& lvl, const entity& e, MOVE_DIRECTION dir, collision_info* info=NULL);
 

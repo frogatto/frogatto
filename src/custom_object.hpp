@@ -15,6 +15,7 @@
 #include "variant.hpp"
 #include "wml_node_fwd.hpp"
 
+class collision_info;
 class level;
 
 struct custom_object_text;
@@ -75,6 +76,9 @@ public:
 
 	int cycle() const { return cycle_; }
 
+	int surface_friction() const;
+	int surface_traction() const;
+
 	wml::const_node_ptr get_child(const std::string& key) const {
 		return type_->get_child(key);
 	}
@@ -124,7 +128,7 @@ protected:
 private:
 	struct Accessor;
 
-	bool is_standing(const level& lvl, int* friction=0, int* traction=0, int* damage=0, int* adjust_y=0, entity_ptr* standing_on=0) const;
+	bool is_standing(const level& lvl, collision_info* info=NULL) const;
 
 	void get_inputs(std::vector<game_logic::formula_input>* inputs) const;
 	void set_value(const std::string& key, const variant& value);

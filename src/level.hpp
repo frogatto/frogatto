@@ -52,7 +52,7 @@ public:
 	void draw_debug_solid(int x, int y, int w, int h) const;
 	void draw_background(double x, double y, int rotation) const;
 	void process();
-	bool standable(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL, int* adjust_y=NULL, entity_ptr* ch=NULL, const entity* exclude=NULL) const;
+	bool standable(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
 	bool standable_tile(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
 	bool solid(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
 	bool solid(const rect& r, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
@@ -193,7 +193,7 @@ public:
 
 	void get_all_labels(std::vector<std::string>& labels) const;
 
-	const std::vector<entity_ptr>& get_chars() { return chars_; }
+	const std::vector<entity_ptr>& get_chars() const { return chars_; }
 	int num_active_chars() const { return active_chars_.size(); }
 
 	void begin_movement_script(const std::string& name, entity& e);
