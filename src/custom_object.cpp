@@ -11,6 +11,7 @@
 #include "draw_scene.hpp"
 #include "font.hpp"
 #include "formatter.hpp"
+#include "formula_callable.hpp"
 #include "graphical_font.hpp"
 #include "level.hpp"
 #include "level_logic.hpp"
@@ -1076,6 +1077,8 @@ void custom_object::set_value(const std::string& key, const variant& value)
 
 void custom_object::set_frame(const std::string& name)
 {
+	const std::string previous_animation = frame_name_;
+
 	//fire an event to say that we're leaving the current frame.
 	if(frame_ && name != frame_name_) {
 		handle_event("leave_" + frame_name_ + "_anim");
@@ -1114,7 +1117,14 @@ void custom_object::set_frame(const std::string& name)
 	
 	frame_->play_sound(this);
 
-	assert(lvl_ == NULL || !entity_collides_with_level(*lvl_, *this, MOVE_NONE));
+	if(lvl_ && entity_collides_with_level(*lvl_, *this, MOVE_NONE)) {
+		game_logic::map_formula_callable* callable(new game_logic::map_formula_callable(this));
+		callable->add("previous_animation", variant(previous_animation));
+		game_logic::formula_callable_ptr callable_ptr(callable);
+		handle_event("change_animation_failure", callable);
+		handle_event("change_animation_failure_" + frame_name_, callable);
+		assert(!entity_collides_with_level(*lvl_, *this, MOVE_NONE));
+	}
 }
 
 void custom_object::die()
