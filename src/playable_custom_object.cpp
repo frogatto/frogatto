@@ -47,6 +47,8 @@ void playable_custom_object::process(level& lvl)
 		player_info_.set_current_level(lvl.id());
 	}
 
+	custom_object::process(lvl);
+
 	bool controls[controls::NUM_CONTROLS];
 	for(int n = 0; n != controls::NUM_CONTROLS; ++n) {
 		controls[n] = control_status(static_cast<controls::CONTROL_ITEM>(n));
@@ -64,8 +66,6 @@ void playable_custom_object::process(level& lvl)
 			}
 		}
 	}
-
-	custom_object::process(lvl);
 }
 
 bool playable_custom_object::look_up() const

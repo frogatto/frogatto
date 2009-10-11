@@ -3,23 +3,39 @@
 #include "geometry.hpp"
 #include "level.hpp"
 
-bool point_standable(const level& lvl, const entity& e, int x, int y, collision_info* info)
+bool point_standable(const level& lvl, const entity& e, int x, int y, collision_info* info, ALLOW_PLATFORM allow_platform)
 {
 	if(lvl.standable(x, y, info ? &info->friction : NULL, info ? &info->traction : NULL, info ? &info->damage : NULL)) {
 		return true;
 	}
 
 	foreach(const entity_ptr& obj, lvl.get_chars()) {
-		if(&e == obj.get() || !point_in_rect(point(x,y), obj->solid_rect())) {
+		if(&e == obj.get()) {
+			continue;
+		}
+
+		if(allow_platform == SOLID_AND_PLATFORMS) {
+			const rect platform_rect = obj->platform_rect();
+			if(point_in_rect(point(x,y), platform_rect)) {
+				if(info) {
+					info->collide_with = obj;
+					info->friction = obj->surface_friction();
+					info->traction = obj->surface_traction();
+					info->adjust_y = y - platform_rect.y();
+					info->platform = true;
+				}
+
+				return true;
+			}
+		}
+
+		if(!point_in_rect(point(x,y), obj->solid_rect())) {
 			continue;
 		}
 
 		const_solid_info_ptr solid = obj->solid();
-		if(!solid) {
-			continue;
-		}
 
-		if(solid->solid_at(x - obj->x(), y - obj->y(), info ? &info->collide_with_area_id : NULL)) {
+		if(solid && solid->solid_at(x - obj->x(), y - obj->y(), info ? &info->collide_with_area_id : NULL)) {
 			if(info) {
 				info->collide_with = obj;
 				info->friction = obj->surface_friction();

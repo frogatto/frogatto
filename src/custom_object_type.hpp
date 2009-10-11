@@ -93,6 +93,7 @@ public:
 	game_logic::function_symbol_table* function_symbols() const;
 
 	const_solid_info_ptr solid() const { return solid_; }
+	const_solid_info_ptr platform() const { return platform_; }
 
 private:
 	std::string id_;
@@ -145,7 +146,7 @@ private:
 
 	int teleport_offset_x_, teleport_offset_y_;
 
-	const_solid_info_ptr solid_;
+	const_solid_info_ptr solid_, platform_;
 };
 
 #endif

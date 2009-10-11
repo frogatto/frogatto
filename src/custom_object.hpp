@@ -52,6 +52,7 @@ public:
 	virtual bool rect_collides(const rect& r) const;
 
 	const_solid_info_ptr solid() const;
+	const_solid_info_ptr platform() const;
 
 	virtual bool on_players_side() const;
 
@@ -176,7 +177,10 @@ private:
 
 	std::map<std::string, game_logic::const_formula_ptr> event_handlers_;
 
+	entity_ptr standing_on_;
 	std::vector<entity_ptr> stood_on_by_;
+
+	int standing_on_prev_x_, standing_on_prev_y_;
 
 	graphics::const_raster_distortion_ptr distortion_;
 
@@ -194,6 +198,10 @@ private:
 	entity_ptr driver_;
 
 	boost::shared_ptr<blur_info> blur_;
+
+	//set if we should fall through platforms. This is decremented automatically
+	//at the end of every cycle.
+	int fall_through_platforms_;
 };
 
 #endif

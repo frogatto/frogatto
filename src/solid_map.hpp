@@ -15,6 +15,7 @@ class solid_map
 {
 public:
 	static void create_object_solid_maps(wml::const_node_ptr node, std::vector<const_solid_map_ptr>& v);
+	static void create_object_platform_maps(wml::const_node_ptr node, std::vector<const_solid_map_ptr>& v);
 
 	const std::string& id() const { return id_; }
 	const rect& area() const { return area_; }
@@ -47,10 +48,13 @@ class solid_info
 {
 public:
 	static const_solid_info_ptr create(wml::const_node_ptr node);
+	static const_solid_info_ptr create_platform(wml::const_node_ptr node);
 	const std::vector<const_solid_map_ptr>& solid() const { return solid_; }
 	const rect& area() const { return area_; }
 	bool solid_at(int x, int y, const std::string** area_id=NULL) const;
 private:
+	static const_solid_info_ptr create_from_solid_maps(const std::vector<const_solid_map_ptr>& v);
+
 	std::vector<const_solid_map_ptr> solid_;
 	rect area_;
 };

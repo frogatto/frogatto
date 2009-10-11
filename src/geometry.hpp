@@ -39,6 +39,8 @@ public:
 	std::string to_string() const;
 
 	SDL_Rect sdl_rect() const;
+
+	bool empty() const { return w() == 0 || h() == 0; }
 private:
 	point top_left_, bottom_right_;
 };

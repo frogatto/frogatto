@@ -14,6 +14,7 @@
 entity::entity(wml::const_node_ptr node)
   : x_(wml::get_int(node, "x")*100),
     y_(wml::get_int(node, "y")*100),
+	prev_feet_x_(INT_MIN), prev_feet_y_(INT_MIN),
 	face_right_(wml::get_bool(node, "face_right")),
 	upside_down_(wml::get_bool(node, "upside_down", false)),
 	group_(wml::get_int(node, "group", -1)),
@@ -25,7 +26,7 @@ entity::entity(wml::const_node_ptr node)
 }
 
 entity::entity(int x, int y, bool face_right)
-  : x_(x*100), y_(y*100), face_right_(face_right), upside_down_(false), group_(-1), id_(-1)
+  : x_(x*100), y_(y*100), prev_feet_x_(INT_MIN), prev_feet_y_(INT_MIN), face_right_(face_right), upside_down_(false), group_(-1), id_(-1)
 {
 	foreach(bool& b, controls_) {
 		b = false;
@@ -47,6 +48,11 @@ entity_ptr entity::build(wml::const_node_ptr node)
 	}
 }
 
+bool entity::has_feet() const
+{
+	return solid();
+}
+
 int entity::feet_x() const
 {
 	const_solid_info_ptr s = solid();
@@ -63,6 +69,30 @@ int entity::feet_y() const
 		return y() + s->area().y() + s->area().h();
 	}
 	return y() + current_frame().feet_y();
+}
+
+int entity::last_move_x() const
+{
+	if(prev_feet_x_ == INT_MIN) {
+		return 0;
+	}
+
+	return feet_x() - prev_feet_x_;
+}
+
+int entity::last_move_y() const
+{
+	if(prev_feet_y_ == INT_MIN) {
+		return 0;
+	}
+
+	return feet_y() - prev_feet_y_;
+}
+
+void entity::process(level& lvl)
+{
+	prev_feet_x_ = feet_x();
+	prev_feet_y_ = feet_y();
 }
 
 void entity::set_face_right(bool facing)
@@ -92,12 +122,38 @@ const_solid_info_ptr entity::solid() const
 	return const_solid_info_ptr();
 }
 
+const_solid_info_ptr entity::platform() const
+{
+	return const_solid_info_ptr();
+}
+
 rect entity::solid_rect() const
 {
 	const_solid_info_ptr s = solid();
 	if(s) {
 		const rect& area = s->area();
 		return rect(x() + area.x(), y() + area.y(), area.w(), area.h());
+	} else {
+		return rect();
+	}
+}
+
+rect entity::platform_rect() const
+{
+	const_solid_info_ptr s = platform();
+	if(s) {
+		const int delta_y = last_move_y();
+		const rect& area = s->area();
+		
+		if(area.empty()) {
+			return rect();
+		}
+
+		if(delta_y < 0) {
+			return rect(x() + area.x(), y() + area.y(), area.w(), area.h());
+		} else {
+			return rect(x() + area.x(), y() + area.y(), area.w(), area.h() - delta_y);
+		}
 	} else {
 		return rect();
 	}

@@ -50,6 +50,27 @@ void solid_map::create_object_solid_maps(wml::const_node_ptr node, std::vector<c
 	std::cerr << "\n";
 }
 
+void solid_map::create_object_platform_maps(wml::const_node_ptr node, std::vector<const_solid_map_ptr>& v)
+{
+	if(!node->has_attr("platform_area")) {
+		return;
+	}
+
+	rect area(node->attr("platform_area"));
+	area = rect(area.x()*2, area.y()*2, area.w()*2, area.h()*2);
+
+	solid_map_ptr platform(new solid_map);
+	platform->id_ = "platform";
+	platform->area_ = area;
+	platform->solid_.resize(area.w()*area.h(), true);
+	platform->calculate_side(0, -1, platform->top_);
+	platform->calculate_side(0, 1, platform->bottom_);
+	platform->calculate_side(-1, 0, platform->left_);
+	platform->calculate_side(1, 0, platform->right_);
+	platform->calculate_side(-100000, 0, platform->all_);
+	v.push_back(platform);
+}
+
 bool solid_map::solid_at(int x, int y) const
 {
 	ASSERT_EQ(solid_.size(), area_.w()*area_.h());
@@ -96,10 +117,8 @@ void solid_map::calculate_side(int xdir, int ydir, std::vector<point>& points) c
 	}
 }
 
-const_solid_info_ptr solid_info::create(wml::const_node_ptr node)
+const_solid_info_ptr solid_info::create_from_solid_maps(const std::vector<const_solid_map_ptr>& solid)
 {
-	std::vector<const_solid_map_ptr> solid;
-	solid_map::create_object_solid_maps(node, solid);
 	if(solid.empty()) {
 		return const_solid_info_ptr();
 	} else {
@@ -127,6 +146,20 @@ const_solid_info_ptr solid_info::create(wml::const_node_ptr node)
 		result->solid_= solid;
 		return const_solid_info_ptr(result);
 	}
+}
+
+const_solid_info_ptr solid_info::create(wml::const_node_ptr node)
+{
+	std::vector<const_solid_map_ptr> solid;
+	solid_map::create_object_solid_maps(node, solid);
+	return create_from_solid_maps(solid);
+}
+
+const_solid_info_ptr solid_info::create_platform(wml::const_node_ptr node)
+{
+	std::vector<const_solid_map_ptr> platform;
+	solid_map::create_object_platform_maps(node, platform);
+	return create_from_solid_maps(platform);
 }
 
 bool solid_info::solid_at(int x, int y, const std::string** area_id) const

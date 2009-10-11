@@ -167,7 +167,8 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	use_image_for_collisions_(wml::get_bool(node, "use_image_for_collisions", false)),
 	teleport_offset_x_(wml::get_int(node, "teleport_offset_x")),
 	teleport_offset_y_(wml::get_int(node, "teleport_offset_y")),
-	solid_(solid_info::create(node))
+	solid_(solid_info::create(node)),
+	platform_(solid_info::create_platform(node))
 {
 	if(node->has_attr("functions")) {
 		object_functions_.reset(new game_logic::function_symbol_table);

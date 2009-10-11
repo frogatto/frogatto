@@ -41,7 +41,7 @@ public:
 	virtual const player_info* is_human() const { return NULL; }
 	virtual player_info* is_human() { return NULL; }
 	virtual bool on_players_side() const { return false; }
-	virtual void process(level& lvl) = 0;
+	virtual void process(level& lvl);
 	virtual bool execute_command(const variant& var) = 0;
 
 	const std::string& label() const { return label_; }
@@ -78,7 +78,9 @@ public:
 	virtual bool point_collides(int x, int y) const = 0;
 	virtual bool rect_collides(const rect& r) const = 0;
 	virtual const_solid_info_ptr solid() const;
+	virtual const_solid_info_ptr platform() const;
 	rect solid_rect() const;
+	rect platform_rect() const;
 	rect body_rect() const;
 	rect hit_rect() const;
 	point midpoint() const;
@@ -93,8 +95,12 @@ public:
 
 	bool is_alpha(int xpos, int ypos) const;
 
+	bool has_feet() const;
 	int feet_x() const;
 	int feet_y() const;
+
+	int last_move_x() const;
+	int last_move_y() const;
 
 	bool face_right() const { return face_right_; }
 	virtual void set_face_right(bool facing);
@@ -227,6 +233,8 @@ private:
 	std::string label_;
 
 	int x_, y_;
+
+	int prev_feet_x_, prev_feet_y_;
 
 	bool face_right_;
 	bool upside_down_;
