@@ -85,7 +85,7 @@ void show_inventory(const level& lvl, entity& c)
 
 		graphics::prepare_raster();
 
-		graphics::texture inventory(graphics::texture::get("inventory.png"));
+		graphics::texture inventory(graphics::texture::get("gui/inventory.png"));
 
 		const int InventoryWidth = 400;
 		const int InventoryHeight = 240;
