@@ -13,7 +13,7 @@ OPT=-O2 -fno-inline-functions
 	g++ -fno-inline-functions -g $(OPT) `sdl-config --cflags` -I/usr/X11R6/include -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -fthreadsafe-statics -c $<
 
 game: $(objects)
-	g++ -g $(OPT) -L/sw/lib -L/usr/X11R6/lib -lX11 -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -L/usr/lib `sdl-config --libs` -lSDLmain -lSDL -lGL -lGLU -lGLEW -lSDL_image -lSDL_ttf -lSDL_mixer -lboost_regex-mt -lboost_system-mt -fthreadsafe-statics $(objects) -o game
+	g++ -g $(OPT) -L/sw/lib -L/usr/X11R6/lib -lprofiler -L. -lX11 -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -L/usr/lib `sdl-config --libs` -lSDLmain -lSDL -lGL -lGLU -lGLEW -lSDL_image -lSDL_ttf -lSDL_mixer -lboost_regex-mt -lboost_system-mt -fthreadsafe-statics $(objects) -o game
 
 server: $(server_objects)
 	g++ -fno-inline-functions -g $(OPT) -L/sw/lib -L/usr/X11R6/lib -lX11 -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -L/usr/lib `sdl-config --libs` -lSDLmain -lSDL -lGL -lGLU -lSDL_image -lSDL_ttf -lSDL_mixer -lboost_regex-mt -lboost_system-mt -lboost_thread-mt -lboost_iostreams-mt -fthreadsafe-statics $(server_objects) -o server

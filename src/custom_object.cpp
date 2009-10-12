@@ -385,8 +385,6 @@ void custom_object::process(level& lvl)
 		move_centipixels(velocity_x_, velocity_y_);
 	}
 
-	assert(!entity_collides_with_level(lvl, *this, MOVE_NONE));
-
 	//calculate velocity which takes into account velocity of the object we're standing on.
 	int effective_velocity_x = velocity_x_;
 	int effective_velocity_y = velocity_y_;
@@ -404,11 +402,9 @@ void custom_object::process(level& lvl)
 	}
 
 	collision_info collide_info;
-	assert(!entity_collides_with_level(lvl, *this, MOVE_NONE));
 
 	//std::cerr << "velocity_y: " << velocity_y_ << "\n";
 	collide = false;
-		std::cerr << "START COUNT: " << entity_collides_with_level_count(lvl, *this, MOVE_NONE) << "\n";
 	for(int n = 0; n <= std::abs(effective_velocity_y/100) && !collide && !type_->ignore_collide(); ++n) {
 		const int dir = effective_velocity_y/100 > 0 ? 1 : -1;
 		int damage = 0;
@@ -482,12 +478,10 @@ void custom_object::process(level& lvl)
 			handle_event(effective_velocity_y < 0 ? "collide_head" : "collide_feet");
 		}
 	}
-	assert(!entity_collides_with_level(lvl, *this, MOVE_NONE));
 
 	collide = false;
 
 	for(int n = 0; n < std::abs(effective_velocity_x/100) && !collide && !type_->ignore_collide(); ++n) {
-		assert(!entity_collides_with_level(lvl, *this, MOVE_NONE));
 		const int dir = effective_velocity_x/100 > 0 ? 1 : -1;
 		int damage = 0;
 		const int original_y = y();
@@ -532,7 +526,6 @@ void custom_object::process(level& lvl)
 		if(collide) {
 			//undo the move to cancel out the collision
 			set_pos(x() - dir, original_y);
-			assert(!entity_collides_with_level(lvl, *this, MOVE_NONE));
 			break;
 		}
 	}
@@ -1130,7 +1123,6 @@ void custom_object::set_frame(const std::string& name)
 		game_logic::formula_callable_ptr callable_ptr(callable);
 		handle_event("change_animation_failure", callable);
 		handle_event("change_animation_failure_" + frame_name_, callable);
-		assert(!entity_collides_with_level(*lvl_, *this, MOVE_NONE));
 	}
 }
 
