@@ -180,6 +180,10 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	wml::node::const_child_iterator a2 = node->end_child("animation");
 	for(; a1 != a2; ++a1) {
 		boost::shared_ptr<frame> f(new frame(a1->second));
+		if(use_image_for_collisions_) {
+			f->set_image_as_solid();
+		}
+
 		frames_[a1->second->attr("id")].push_back(f);
 		const int duplicates = atoi(a1->second->attr("duplicates").c_str());
 		if(duplicates > 1) {

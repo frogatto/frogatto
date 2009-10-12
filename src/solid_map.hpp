@@ -11,11 +11,16 @@
 
 enum MOVE_DIRECTION { MOVE_LEFT, MOVE_RIGHT, MOVE_UP, MOVE_DOWN, MOVE_NONE };
 
+namespace graphics {
+class texture;
+}
+
 class solid_map
 {
 public:
 	static void create_object_solid_maps(wml::const_node_ptr node, std::vector<const_solid_map_ptr>& v);
 	static void create_object_platform_maps(wml::const_node_ptr node, std::vector<const_solid_map_ptr>& v);
+	static const_solid_map_ptr create_from_texture(const graphics::texture& t, const rect& area);
 
 	const std::string& id() const { return id_; }
 	const rect& area() const { return area_; }
@@ -49,6 +54,7 @@ class solid_info
 public:
 	static const_solid_info_ptr create(wml::const_node_ptr node);
 	static const_solid_info_ptr create_platform(wml::const_node_ptr node);
+	static const_solid_info_ptr create_from_texture(const graphics::texture& t, const rect& area);
 	const std::vector<const_solid_map_ptr>& solid() const { return solid_; }
 	const rect& area() const { return area_; }
 	bool solid_at(int x, int y, const std::string** area_id=NULL) const;

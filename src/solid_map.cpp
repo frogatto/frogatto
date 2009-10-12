@@ -1,6 +1,7 @@
 #include "asserts.hpp"
 #include "foreach.hpp"
 #include "solid_map.hpp"
+#include "texture.hpp"
 #include "wml_node.hpp"
 
 void solid_map::create_object_solid_maps(wml::const_node_ptr node, std::vector<const_solid_map_ptr>& v)
@@ -69,6 +70,38 @@ void solid_map::create_object_platform_maps(wml::const_node_ptr node, std::vecto
 	platform->calculate_side(1, 0, platform->right_);
 	platform->calculate_side(-100000, 0, platform->all_);
 	v.push_back(platform);
+}
+const_solid_map_ptr solid_map::create_from_texture(const graphics::texture& t, const rect& area)
+{
+	solid_map_ptr solid(new solid_map);
+	solid->area_ = rect(0, 0, area.w()*2, area.h()*2);
+	solid->solid_.resize(solid->area_.w()*solid->area_.h(), false);
+	std::cerr << "SOLID MAP: " << solid->area_ << " {{{\n";
+	for(int y = 0; y < solid->area_.h(); ++y) {
+		for(int x = 0; x < solid->area_.w(); ++x) {
+			bool is_solid = !t.is_alpha(area.x() + x/2, area.y() + y/2);
+			if(!is_solid && (y&1) && y < solid->area_.h() - 1 && !t.is_alpha(area.x() + x/2, area.y() + y/2 + 1)) {
+				//we are scaling things up by double, so we want to smooth
+				//things out. In the bottom half of an empty source pixel, we
+				//will set it to solid if the pixel below is solid, and the
+				//adjacent horizontal pixel is solid
+				if((x&1) && x < solid->area_.w() - 1 && !t.is_alpha(area.x() + x/2 + 1, area.y() + y/2)) {
+					is_solid = true;
+				} else if(!(x&1) && x > 0 && !t.is_alpha(area.x() + x/2 - 1, area.y() + y/2)) {
+					is_solid = true;
+				}
+			}
+
+			if(is_solid) {
+				solid->set_solid(x, y);
+			}
+
+			std::cerr << (is_solid ? "1" : "0");
+		}
+
+		std::cerr << "\n";
+	}
+	return solid;
 }
 
 bool solid_map::solid_at(int x, int y) const
@@ -160,6 +193,13 @@ const_solid_info_ptr solid_info::create_platform(wml::const_node_ptr node)
 	std::vector<const_solid_map_ptr> platform;
 	solid_map::create_object_platform_maps(node, platform);
 	return create_from_solid_maps(platform);
+}
+
+const_solid_info_ptr solid_info::create_from_texture(const graphics::texture& t, const rect& area)
+{
+	std::vector<const_solid_map_ptr> solid;
+	solid.push_back(solid_map::create_from_texture(t, area));
+	return create_from_solid_maps(solid);
 }
 
 bool solid_info::solid_at(int x, int y, const std::string** area_id) const

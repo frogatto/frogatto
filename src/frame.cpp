@@ -87,6 +87,11 @@ frame::frame(wml::const_node_ptr node)
 	}
 }
 
+void frame::set_image_as_solid()
+{
+	solid_ = solid_info::create_from_texture(texture_, img_rect_);
+}
+
 void frame::play_sound(const void* object) const
 {
 	if (sounds_.empty() == false){

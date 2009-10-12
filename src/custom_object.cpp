@@ -292,6 +292,12 @@ public:
 
 void custom_object::process(level& lvl)
 {
+	if(type_->use_image_for_collisions()) {
+		//anything that uses their image for collisions is a static,
+		//un-moving object that will stay immobile.
+		return;
+	}
+
 	entity::process(lvl);
 
 	//the object should never be colliding with the level at the start of processing.
@@ -492,9 +498,10 @@ void custom_object::process(level& lvl)
 		//move the character up or down as appropriate to try to keep
 		//them standing.
 
-		if(started_standing && !is_standing(lvl)) {
+		const bool standing = is_standing(lvl);
+		if(started_standing && !standing) {
 			int max_drop = 2;
-			while(--max_drop && started_standing && !is_standing(lvl)) {
+			while(--max_drop && !is_standing(lvl)) {
 				set_pos(x(), y()+1);
 
 				if(entity_collides(lvl, *this, MOVE_NONE)) {
@@ -502,19 +509,19 @@ void custom_object::process(level& lvl)
 					break;
 				}
 			}
-		} else if(started_standing) {
-			int max_slope = 3;
+		} else if(standing) {
+			int max_slope = 5;
 			while(--max_slope && is_standing(lvl)) {
 				set_pos(x(), y()-1);
-				if(entity_collides(lvl, *this, MOVE_NONE)) {
-					break;
-				}
 			}
 
 			if(!max_slope) {
 				set_pos(x(), original_y);
 			} else {
 				set_pos(x(), y()+1);
+				if(entity_collides(lvl, *this, MOVE_NONE)) {
+					set_pos(x(), original_y);
+				}
 			}
 		}
 
