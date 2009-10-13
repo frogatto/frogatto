@@ -29,6 +29,7 @@
 #include "formatter.hpp"
 #include "preprocessor.hpp"
 #include "string_utils.hpp"
+#include "unit_test.hpp"
 #include "wml_parser.hpp"
 #include "wml_schema.hpp"
 #include "wml_utils.hpp"
@@ -261,13 +262,21 @@ int get_line_number(const std::string& doc, std::string::const_iterator i)
 
 namespace {
 std::set<std::string> filename_pool;
+
+struct node_frame {
+	node_ptr node;
+
+	//all 'bases' defined for nodes that we parse in this element.
+	std::map<std::string, node_ptr> base_nodes;
+};
+
 }
 
 node_ptr parse_wml_internal(const std::string& error_context, const std::string& doc, bool must_have_doc, const schema* current_schema)
 {
 #define PARSE_ERROR(msg) throw parse_error(formatter() << error_context << " line " << line_number << ": " << msg);
 	node_ptr res;
-	std::stack<node_ptr> nodes;
+	std::stack<node_frame> nodes;
 	std::stack<const schema*> schemas;
 	schemas.push(NULL);
 	std::string::const_iterator i = doc.begin();
@@ -289,12 +298,12 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 				const std::string close_element(element.begin()+1,element.end());
 				if(nodes.empty()) {
 					PARSE_ERROR("close element found when there are no elements");
-				} else if(nodes.top()->name() != close_element) {
-					PARSE_ERROR("mismatch between open and close elements: '" << nodes.top()->name() << "' vs '" << close_element << "'");
+				} else if(nodes.top().node->name() != close_element) {
+					PARSE_ERROR("mismatch between open and close elements: '" << nodes.top().node->name() << "' vs '" << close_element << "'");
 				}
 
 				if(schemas.top()) {
-					schemas.top()->validate_node(nodes.top());
+					schemas.top()->validate_node(nodes.top().node);
 				}
 
 				schemas.pop();
@@ -352,12 +361,21 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 						res = el;
 						continue;
 					} else {
-						nodes.top()->add_child(el);
+						nodes.top().node->add_child(el);
 						continue;
 					}
 				}
 
 				node_ptr el(new node(element));
+				if(!nodes.empty()) {
+					//see if we have a base node to use recorded to base this
+					//node off, rather than starting fresh.
+					std::map<std::string, node_ptr>::const_iterator itor = nodes.top().base_nodes.find(element);
+					if(itor != nodes.top().base_nodes.end()) {
+						el = deep_copy(itor->second);
+					}
+				}
+
 				el->set_schema(schemas.top());
 				foreach(const wml::node_ptr& parent, parents) {
 					wml::merge_over(parent, el);
@@ -402,15 +420,19 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 					std::string template_name_str(template_name,beg_args);
 					util::strip(template_name_str);
 					wml_templates[template_name_str] = t;
+				} else if(prefix == "base") {
+					nodes.top().base_nodes[element] = el;
 				} else if(prefix != "") {
 					PARSE_ERROR("unrecognized element prefix");
 				} else if(nodes.empty()) {
 					res = el;
 				} else {
-					nodes.top()->add_child(el);
+					nodes.top().node->add_child(el);
 				}
 
-				nodes.push(el);
+				node_frame frame;
+				frame.node = el;
+				nodes.push(frame);
 			}
 		} else if(isalnum(*i) || *i == '_') {
 			if(nodes.empty()) {
@@ -424,10 +446,10 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 			if(schemas.top()) {
 				schemas.top()->validate_attribute(name, value);
 			}
-			nodes.top()->set_attr(name, wml::value(value, filename_ptr, line_number));
+			nodes.top().node->set_attr(name, wml::value(value, filename_ptr, line_number));
 
 			if(current_comment.empty() == false) {
-				nodes.top()->set_attr_comment(name, current_comment);
+				nodes.top().node->set_attr_comment(name, current_comment);
 				current_comment.clear();
 			}
 		} else if(*i == '@') {
@@ -455,7 +477,7 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 				}
 				wml::node_ptr node(parse_wml_from_file("data/" + filename, NULL, name == "import"));
 				if(node) {
-					nodes.top()->add_child(node);
+					nodes.top().node->add_child(node);
 				}
 
 			} else {
@@ -511,29 +533,25 @@ parse_error::parse_error(const std::string& msg) : message(msg)
 
 }
 
-#ifdef WML_PARSER_UNIT_TEST
+UNIT_TEST(wml_parser_test) {
+	const std::string doc =
+"[doc]\n"
+"attr=blah\n"
+"  [base:test]\n"
+"  x=y\n"
+"  [/test]\n"
+"  [test]\n"
+"  a=b\n"
+"  [/test]\n"
+"[/doc]\n";
 
-int main()
-{
-	const std::string test_sub = "abc {xyz} {abc}";
-	std::string res_sub;
-	std::vector<std::string> sub_names, sub_values;
-	sub_names.push_back("{xyz}");
-	sub_names.push_back("{abc}");
-	sub_values.push_back("4");
-	sub_values.push_back("14");
-	wml::substitute_attr(test_sub,sub_names,sub_values,&res_sub);
-	assert(res_sub == "abc 4 14");
+	wml::const_node_ptr node(wml::parse_wml(doc));
+	CHECK_EQ(node->name(), "doc");
+	CHECK_EQ(node->attr("attr").str(), "blah");
 
-	const std::string test =
-"[template:unit goblin(x,y)]\n"
-"x={x}\n"
-"y={y}\n"
-"[/unit]\n"
-"[goblin(10,4)]\n";
-	wml::node_ptr node = wml::parse_wml(test);
-	assert((*node)["x"] == "10");
-	assert((*node)["y"] == "4");
+	wml::const_node_ptr test_node = node->get_child("test");
+	CHECK_NE(test_node, wml::const_node_ptr());
+
+	CHECK_EQ(test_node->attr("x").str(), "y");
+	CHECK_EQ(test_node->attr("a").str(), "b");
 }
-
-#endif

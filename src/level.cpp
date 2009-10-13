@@ -3,6 +3,7 @@
 #include <math.h>
 
 #include "asserts.hpp"
+#include "collision_utils.hpp"
 #include "controls.hpp"
 #include "draw_scene.hpp"
 #include "draw_tile.hpp"
@@ -908,6 +909,8 @@ void level::do_processing()
 			}
 		}
 	}
+
+	detect_user_collisions(*this);
 
 	foreach(item_ptr i, active_items_) {
 		i->process(*this);

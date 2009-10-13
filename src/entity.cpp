@@ -57,7 +57,8 @@ int entity::feet_x() const
 {
 	const_solid_info_ptr s = solid();
 	if(s) {
-		return x() + s->area().x() + s->area().w()/2;
+		const int diff = s->area().x() + s->area().w()/2;
+		return face_right() ? x() + diff : x() + current_frame().width() - diff;
 	}
 	return face_right() ? x() + current_frame().feet_x() : x() + current_frame().width() - current_frame().feet_x();
 }
@@ -103,7 +104,8 @@ void entity::set_face_right(bool facing)
 	const int start_x = feet_x();
 	face_right_ = facing;
 	const int delta_x = feet_x() - start_x;
-	x_ += delta_x*100;
+	x_ -= delta_x*100;
+	assert(feet_x() == start_x);
 }
 
 void entity::set_upside_down(bool facing)
@@ -132,7 +134,13 @@ rect entity::solid_rect() const
 	const_solid_info_ptr s = solid();
 	if(s) {
 		const rect& area = s->area();
-		return rect(x() + area.x(), y() + area.y(), area.w(), area.h());
+
+		if(face_right()) {
+			return rect(x() + area.x(), y() + area.y(), area.w(), area.h());
+		} else {
+			const frame& f = current_frame();
+			return rect(x() + f.width() - area.x() - area.w(), y() + area.y(), area.w(), area.h());
+		}
 	} else {
 		return rect();
 	}

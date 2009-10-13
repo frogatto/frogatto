@@ -85,6 +85,27 @@ frame::frame(wml::const_node_ptr node)
 			event_names_.push_back(p.second);
 		}
 	}
+
+	static const std::string AreaPostfix = "_area";
+	for(wml::node::const_attr_iterator i = node->begin_attr(); i != node->end_attr(); ++i) {
+		const std::string& attr = i->first;
+		if(attr.size() <= AreaPostfix.size() || std::equal(AreaPostfix.begin(), AreaPostfix.end(), attr.end() - AreaPostfix.size()) == false) {
+			continue;
+		}
+
+		const std::string area_id = std::string(attr.begin(), attr.end() - AreaPostfix.size());
+
+		rect r;
+		if(i->second.str() == "none") {
+			continue;
+		} else if(i->second.str() == "all") {
+			r = rect(0, 0, width(), height());
+		} else {
+			r = rect(i->second);
+		}
+		collision_area area = { area_id, r };
+		collision_areas_.push_back(area);
+	}
 }
 
 void frame::set_image_as_solid()

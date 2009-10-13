@@ -1,6 +1,7 @@
 #ifndef FRAME_HPP_INCLUDED
 #define FRAME_HPP_INCLUDED
 
+#include <string>
 #include <vector>
 
 #include "geometry.hpp"
@@ -11,6 +12,11 @@
 class frame
 {
 public:
+	struct collision_area {
+		std::string name;
+		rect area;
+	};
+
 	explicit frame(wml::const_node_ptr node);
 
 	//ID of the frame. Not unique, but is the name of the element the frame
@@ -53,6 +59,8 @@ public:
 	int damage() const { return damage_; }
 
 	const std::string* get_event(int time_in_frame) const;
+
+	const std::vector<collision_area>& collision_areas() const { return collision_areas_; }
 private:
 	int frame_number(int time_in_frame) const;
 	void get_rect_in_texture(int time, bool face_right,
@@ -84,6 +92,8 @@ private:
 	std::vector<int> event_frames_;
 	std::vector<std::string> event_names_;
 	std::vector <std::string> sounds_;
+
+	std::vector<collision_area> collision_areas_;
 };
 
 #endif

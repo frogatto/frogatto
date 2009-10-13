@@ -1123,6 +1123,7 @@ void custom_object::set_frame(const std::string& name)
 		game_logic::formula_callable_ptr callable_ptr(callable);
 		handle_event("change_animation_failure", callable);
 		handle_event("change_animation_failure_" + frame_name_, callable);
+		assert(!entity_collides_with_level(*lvl_, *this, MOVE_NONE));
 	}
 }
 
