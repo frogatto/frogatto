@@ -58,6 +58,7 @@ public:
 		explicit enemy_type(wml::const_node_ptr node);
 		wml::const_node_ptr node;
 		std::string category;
+		entity_ptr preview_object;
 		const frame* preview_frame;
 	};
 

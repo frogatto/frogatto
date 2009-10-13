@@ -138,15 +138,12 @@ int entity_collides_with_level_count(const level& lvl, const entity& e, MOVE_DIR
 		return 0;
 	}
 
-	std::cerr << "FEET_X: " << e.feet_x() << "\n";
-
 	const frame& f = e.current_frame();
 	int count = 0;
 	foreach(const const_solid_map_ptr& m, s->solid()) {
 		const std::vector<point>& points = m->dir(dir);
 		foreach(const point& p, points) {
 			const int xpos = e.face_right() ? e.x() + p.x : e.x() + f.width() - 1 - p.x;
-			std::cerr << "COLLIDE: (" << xpos << "," << (e.y() + p.y) << ") " << (lvl.solid(xpos, e.y() + p.y) ? "1" : "0") << "\n";
 			if(lvl.solid(xpos, e.y() + p.y)) {
 				++count;
 			}
@@ -154,6 +151,59 @@ int entity_collides_with_level_count(const level& lvl, const entity& e, MOVE_DIR
 	}
 
 	return count;
+}
+
+bool place_entity_in_level(const level& lvl, entity& e)
+{
+	if(!entity_collides_with_level(lvl, e, MOVE_NONE)) {
+		return true;
+	}
+
+	if(!entity_collides_with_level(lvl, e, MOVE_UP)) {
+		while(entity_collides_with_level(lvl, e, MOVE_NONE)) {
+			e.set_pos(e.x(), e.y()-1);
+			if(entity_collides_with_level(lvl, e, MOVE_UP)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	if(!entity_collides_with_level(lvl, e, MOVE_DOWN)) {
+		while(entity_collides_with_level(lvl, e, MOVE_NONE)) {
+			e.set_pos(e.x(), e.y()+1);
+			if(entity_collides_with_level(lvl, e, MOVE_DOWN)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	if(!entity_collides_with_level(lvl, e, MOVE_LEFT)) {
+		while(entity_collides_with_level(lvl, e, MOVE_NONE)) {
+			e.set_pos(e.x()-1, e.y());
+			if(entity_collides_with_level(lvl, e, MOVE_LEFT)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	if(!entity_collides_with_level(lvl, e, MOVE_RIGHT)) {
+		while(entity_collides_with_level(lvl, e, MOVE_NONE)) {
+			e.set_pos(e.x()+1, e.y());
+			if(entity_collides_with_level(lvl, e, MOVE_RIGHT)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	return false;
 }
 
 int entity_user_collision(const entity& a, const entity& b, collision_pair* areas_colliding, int buf_size)

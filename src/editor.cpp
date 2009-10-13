@@ -13,6 +13,7 @@
 #include "character.hpp"
 #include "character_editor_dialog.hpp"
 #include "character_type.hpp"
+#include "collision_utils.hpp"
 #include "draw_tile.hpp"
 #include "debug_console.hpp"
 #include "editor.hpp"
@@ -514,7 +515,8 @@ void editor::enemy_type::init(wml::const_node_ptr node)
 
 editor::enemy_type::enemy_type(wml::const_node_ptr node)
   : node(node), category(node->attr("category")),
-    preview_frame(&entity::build(node)->current_frame())
+    preview_object(entity::build(node)),
+    preview_frame(&preview_object->current_frame())
 {}
 
 void editor::tileset::init(wml::const_node_ptr node)
@@ -1120,7 +1122,11 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 			fprintf(stderr, " ENTITY: %p\n", c.get());
 		}
 
-		if(c->is_human() && lvl_->player()) {
+		if(!place_entity_in_level(*lvl_, *c)) {
+			//could not place entity. Not really an error; the user just
+			//clicked in an illegal position to place an object.
+
+		} else if(c->is_human() && lvl_->player()) {
 			execute_command(
 			  boost::bind(&level::add_character, lvl_.get(), c),
 			  boost::bind(&level::add_character, lvl_.get(), &lvl_->player()->get_entity()));
@@ -1790,9 +1796,13 @@ void editor::draw() const
 			y = ypos_ + mousey*zoom_;
 		}
 
-		glColor4f(1.0, 1.0, 1.0, 0.5);
-		all_characters()[cur_object_].preview_frame->draw(x, y, face_right_);
-		glColor4f(1.0, 1.0, 1.0, 1.0);
+		entity& e = *all_characters()[cur_object_].preview_object;
+		e.set_pos(x, y);
+		if(place_entity_in_level(*lvl_, e)) {
+			glColor4f(1.0, 1.0, 1.0, 0.5);
+			all_characters()[cur_object_].preview_frame->draw(e.x(), e.y(), face_right_);
+			glColor4f(1.0, 1.0, 1.0, 1.0);
+		}
 	}
 
 	if(drawing_rect_) {

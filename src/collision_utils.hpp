@@ -31,8 +31,11 @@ bool entity_collides_with_entity(const entity& e, const entity& other,
                                  const std::string** area_id=NULL,
 								 const std::string** other_area_id=NULL);
 
+
 bool entity_collides_with_level(const level& lvl, const entity& e, MOVE_DIRECTION dir, int* friction=NULL, int* traction=NULL, int* damage=NULL);
 int entity_collides_with_level_count(const level& lvl, const entity& e, MOVE_DIRECTION dir);
+
+bool place_entity_in_level(const level& lvl, entity& e);
 
 typedef std::pair<const std::string*, const std::string*> collision_pair;
 int entity_user_collision(const entity& a, const entity& b, collision_pair* areas_colliding, int buf_size);
