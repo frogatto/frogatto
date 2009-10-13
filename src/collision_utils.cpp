@@ -185,12 +185,29 @@ int entity_user_collision(const entity& a, const entity& b, collision_pair* area
 			            b.y() + area_b.area.y(),
 						area_b.area.w(), area_b.area.h());
 			if(rects_intersect(rect_a, rect_b)) {
-				++result;
-				if(buf_size > 0) {
-					areas_colliding->first = &area_a.name;
-					areas_colliding->second = &area_b.name;
-					++areas_colliding;
-					--buf_size;
+				const int time_a = a.time_in_frame();
+				const int time_b = b.time_in_frame();
+
+				bool found = false;
+				const rect intersection = intersection_rect(rect_a, rect_b);
+				for(int y = intersection.y(); y <= intersection.y2() && !found; ++y) {
+					for(int x = intersection.x(); x <= intersection.x2(); ++x) {
+						if(!fa.is_alpha(x - a.x(), y - a.y(), time_a, a.face_right()) &&
+						   !fb.is_alpha(x - b.x(), y - b.y(), time_b, b.face_right())) {
+							found = true;
+							break;
+						}
+					}
+				}
+
+				if(found) {
+					++result;
+					if(buf_size > 0) {
+						areas_colliding->first = &area_a.name;
+						areas_colliding->second = &area_b.name;
+						++areas_colliding;
+						--buf_size;
+					}
 				}
 			}
 		}

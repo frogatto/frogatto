@@ -242,7 +242,7 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 void draw_fps(const level& lvl, const performance_data& data)
 {
 	std::ostringstream s;
-	s << data.fps << "fps; " << (data.draw/10) << "% draw; " << (data.process/10) << "% process; " << (data.delay/10) << "% idle; " << lvl.num_active_chars() << " objects; " << data.cycle << " cycles";
+	s << data.fps << "fps; " << (data.draw/10) << "% draw; " << (data.process/10) << "% process; " << (data.delay/10) << "% idle; " << lvl.num_active_chars() << " objects; " << 50*(data.cycle/50) << " cycles";
 	graphics::texture t(font::render_text(s.str(), graphics::color_white(), 14));
 	graphics::blit_texture(t, 10, 10);
 
