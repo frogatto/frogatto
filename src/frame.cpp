@@ -131,14 +131,14 @@ bool frame::is_alpha(int x, int y, int time, bool face_right) const
 	}
 
 	GLfloat rect[4];
-	get_rect_in_texture(time, face_right, &rect[0]);
+	get_rect_in_texture(time, &rect[0]);
 	
 	const GLfloat xratio1 = GLfloat(width() - x)/width();
 	const GLfloat xratio2 = GLfloat(x)/width();
 	const GLfloat yratio1 = GLfloat(height() - y)/height();
 	const GLfloat yratio2 = GLfloat(y)/height();
 
-	const GLfloat u = xratio1*rect[0] + xratio2*rect[2];
+	const GLfloat u = xratio1*rect[face_right ? 0 : 2] + xratio2*rect[face_right ? 2 : 0];
 	const GLfloat v = yratio1*rect[1] + yratio2*rect[3];
 
 	ASSERT_GE(u, 0.0);
@@ -152,7 +152,7 @@ bool frame::is_alpha(int x, int y, int time, bool face_right) const
 void frame::draw(int x, int y, bool face_right, bool upside_down, int time, int rotate) const
 {
 	GLfloat rect[4];
-	get_rect_in_texture(time, face_right, &rect[0]);
+	get_rect_in_texture(time, &rect[0]);
 	
 	//the last 4 params are the rectangle of the single, specific frame
 	graphics::blit_texture(texture_, x, y, width()*(face_right ? 1 : -1), height()*(upside_down ? -1 : 1), rotate + (face_right ? rotate_ : -rotate_),
@@ -160,7 +160,7 @@ void frame::draw(int x, int y, bool face_right, bool upside_down, int time, int 
 
 }
 
-void frame::get_rect_in_texture(int time, bool face_right, GLfloat* output_rect) const
+void frame::get_rect_in_texture(int time, GLfloat* output_rect) const
 {
 	//picks out a single frame to draw from a whole animation, based on time
 	const int current_col = (nframes_per_row_ > 0) ? (frame_number(time) % nframes_per_row_) : frame_number(time) ;

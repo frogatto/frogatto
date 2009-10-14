@@ -63,8 +63,8 @@ public:
 	const std::vector<collision_area>& collision_areas() const { return collision_areas_; }
 private:
 	int frame_number(int time_in_frame) const;
-	void get_rect_in_texture(int time, bool face_right,
-	                         GLfloat* output_rect) const;
+
+	void get_rect_in_texture(int time, GLfloat* output_rect) const;
 	std::string id_;
 	graphics::texture texture_;
 	const_solid_info_ptr solid_;

@@ -212,6 +212,7 @@ int entity_user_collision(const entity& a, const entity& b, collision_pair* area
 		return 0;
 	}
 
+
 	const frame& fa = a.current_frame();
 	const frame& fb = b.current_frame();
 

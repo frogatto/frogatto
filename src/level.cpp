@@ -810,6 +810,8 @@ void level::do_processing()
 		return;
 	}
 
+	detect_user_collisions(*this);
+
 	const int screen_left = last_draw_position().x/100;
 	const int screen_right = last_draw_position().x/100 + graphics::screen_width();
 	const int screen_top = last_draw_position().y/100;
@@ -909,8 +911,6 @@ void level::do_processing()
 			}
 		}
 	}
-
-	detect_user_collisions(*this);
 
 	foreach(item_ptr i, active_items_) {
 		i->process(*this);
