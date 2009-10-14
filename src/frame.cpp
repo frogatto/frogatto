@@ -102,6 +102,7 @@ frame::frame(wml::const_node_ptr node)
 			r = rect(0, 0, width(), height());
 		} else {
 			r = rect(i->second);
+			r = rect(r.x()*scale_, r.y()*scale_, r.w()*scale_, r.h()*scale_);
 		}
 		collision_area area = { area_id, r };
 		collision_areas_.push_back(area);
