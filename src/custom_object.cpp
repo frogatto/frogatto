@@ -54,6 +54,12 @@ custom_object::custom_object(wml::const_node_ptr node)
 	standing_on_prev_x_(INT_MIN), standing_on_prev_y_(INT_MIN),
 	can_interact_with_(false), fall_through_platforms_(0)
 {
+	for(std::map<std::string, variant>::const_iterator i = type_->variables().begin(); i != type_->variables().end(); ++i) {
+		if(!vars_->contains(i->first)) {
+			vars_->add(i->first, i->second);
+		}
+	}
+
 	if(node->has_attr("draw_color")) {
 		draw_color_.reset(new graphics::color_transform(node->attr("draw_color")));
 	}
@@ -110,6 +116,12 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	cycle_(0),
 	loaded_(false), fall_through_platforms_(0)
 {
+	for(std::map<std::string, variant>::const_iterator i = type_->variables().begin(); i != type_->variables().end(); ++i) {
+		if(!vars_->contains(i->first)) {
+			vars_->add(i->first, i->second);
+		}
+	}
+
 	{
 		//generate a random label for the object
 		char buf[64];

@@ -151,6 +151,7 @@ public:
 	void set_fallback(const formula_callable* fallback) { fallback_ = fallback; }
 	bool empty() const { return values_.empty(); }
 	void clear() { values_.clear(); }
+	bool contains(const std::string& key) const { return values_.count(key); }
 
 	typedef std::map<std::string,variant>::const_iterator const_iterator;
 
