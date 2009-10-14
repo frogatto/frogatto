@@ -320,6 +320,12 @@ const std::string& variant::as_string() const
 
 variant variant::operator+(const variant& v) const
 {
+	if(type_ == TYPE_NULL) {
+		return v;
+	} else if(v.type_ == TYPE_NULL) {
+		return *this;
+	}
+
 	if(type_ == TYPE_LIST) {
 		if(v.type_ == TYPE_LIST) {
 			std::vector<variant> res;

@@ -1125,6 +1125,9 @@ void custom_object::set_frame(const std::string& name)
 		handle_event("change_animation_failure_" + frame_name_, callable);
 		assert(!entity_collides_with_level(*lvl_, *this, MOVE_NONE));
 	}
+
+	handle_event("enter_anim");
+	handle_event("enter_" + frame_name_ + "_anim");
 }
 
 void custom_object::die()
