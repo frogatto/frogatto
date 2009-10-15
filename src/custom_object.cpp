@@ -436,6 +436,10 @@ void custom_object::process(level& lvl)
 		const int dir = effective_velocity_y/100 > 0 ? 1 : -1;
 		int damage = 0;
 
+		if(type_->object_level_collisions() && non_solid_entity_collides_with_level(lvl, *this)) {
+			handle_event("collide_level");
+		}
+
 		if(effective_velocity_y > 0) {
 			if(entity_collides(lvl, *this, MOVE_DOWN, &collide_info)) {
 				//our 'legs' but not our feet collide with the level. Try to
@@ -509,6 +513,10 @@ void custom_object::process(level& lvl)
 	collide = false;
 
 	for(int n = 0; n < std::abs(effective_velocity_x/100) && !collide && !type_->ignore_collide(); ++n) {
+		if(type_->object_level_collisions() && non_solid_entity_collides_with_level(lvl, *this)) {
+			handle_event("collide_level");
+		}
+
 		const int dir = effective_velocity_x/100 > 0 ? 1 : -1;
 		int damage = 0;
 		const int original_y = y();

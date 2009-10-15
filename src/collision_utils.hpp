@@ -37,6 +37,8 @@ int entity_collides_with_level_count(const level& lvl, const entity& e, MOVE_DIR
 
 bool place_entity_in_level(const level& lvl, entity& e);
 
+bool non_solid_entity_collides_with_level(const level& lvl, const entity& e);
+
 typedef std::pair<const std::string*, const std::string*> collision_pair;
 int entity_user_collision(const entity& a, const entity& b, collision_pair* areas_colliding, int buf_size);
 

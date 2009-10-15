@@ -52,6 +52,8 @@ public:
 	bool body_passthrough() const { return body_passthrough_; }
 	bool ignore_collide() const { return ignore_collide_; }
 
+	bool object_level_collisions() const { return object_level_collisions_; }
+
 	int springiness() const { return springiness_; }
 	int surface_friction() const { return surface_friction_; }
 	int surface_traction() const { return surface_traction_; }
@@ -119,6 +121,7 @@ private:
 	bool body_harmful_;
 	bool body_passthrough_;
 	bool ignore_collide_;
+	bool object_level_collisions_;
 
 	int springiness_;
 	int surface_friction_;

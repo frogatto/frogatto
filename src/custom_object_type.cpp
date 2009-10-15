@@ -153,6 +153,7 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
     body_harmful_(wml::get_bool(node, "body_harmful", true)),
     body_passthrough_(wml::get_bool(node, "body_passthrough", false)),
     ignore_collide_(wml::get_bool(node, "ignore_collide", false)),
+    object_level_collisions_(wml::get_bool(node, "object_level_collisions", false)),
     springiness_(wml::get_int(node, "springiness")),
 	surface_friction_(wml::get_int(node, "surface_friction", 20)),
 	surface_traction_(wml::get_int(node, "surface_traction", 100)),

@@ -153,6 +153,22 @@ int entity_collides_with_level_count(const level& lvl, const entity& e, MOVE_DIR
 	return count;
 }
 
+bool non_solid_entity_collides_with_level(const level& lvl, const entity& e)
+{
+	const frame& f = e.current_frame();
+	for(int y = 0; y < f.height(); ++y) {
+		for(int x = 0; x < f.width(); ++x) {
+			if(!f.is_alpha(e.face_right() ? x : f.width() - x - 1, y, e.time_in_frame(), true)) {
+				if(lvl.solid(e.x() + x, e.y() + y)) {
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
 bool place_entity_in_level(const level& lvl, entity& e)
 {
 	if(!entity_collides_with_level(lvl, e, MOVE_NONE)) {
