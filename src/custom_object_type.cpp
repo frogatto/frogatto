@@ -6,6 +6,7 @@
 #include "custom_object_type.hpp"
 #include "filesystem.hpp"
 #include "solid_map.hpp"
+#include "string_utils.hpp"
 #include "wml_node.hpp"
 #include "wml_parser.hpp"
 #include "wml_utils.hpp"
@@ -222,6 +223,10 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 			var.serialize_from_string(v->second);
 			variables_[v->first] = var;
 		}
+	}
+
+	if(node->has_attr("tags")) {
+		tags_ = util::split(node->attr("tags"));
 	}
 }
 

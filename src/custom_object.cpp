@@ -47,6 +47,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 	lvl_(NULL),
 	vars_(new game_logic::map_formula_callable(node->get_child("vars"))),
 	tmp_vars_(new game_logic::map_formula_callable),
+	tags_(new game_logic::map_formula_callable(node->get_child("tags"))),
 	last_hit_by_anim_(0),
 	current_animation_id_(0),
 	cycle_(wml::get_int(node, "cycle")),
@@ -54,6 +55,16 @@ custom_object::custom_object(wml::const_node_ptr node)
 	standing_on_prev_x_(INT_MIN), standing_on_prev_y_(INT_MIN),
 	can_interact_with_(false), fall_through_platforms_(0)
 {
+	wml::const_node_ptr tags_node = node->get_child("tags");
+	if(tags_node) {
+		tags_ = new game_logic::map_formula_callable(node->get_child("tags"));
+	} else {
+		tags_ = new game_logic::map_formula_callable;
+		foreach(const std::string& tag, type_->tags()) {
+			tags_->add(tag, variant(1));
+		}
+	}
+
 	for(std::map<std::string, variant>::const_iterator i = type_->variables().begin(); i != type_->variables().end(); ++i) {
 		if(!vars_->contains(i->first)) {
 			vars_->add(i->first, i->second);
@@ -190,6 +201,10 @@ wml::node_ptr custom_object::write() const
 	wml::node_ptr vars(new wml::node("vars"));
 	vars_->write(vars);
 	res->add_child(vars);
+
+	wml::node_ptr tags(new wml::node("tags"));
+	tags_->write(tags);
+	res->add_child(tags);
 
 	if(custom_type_) {
 		res->add_child(wml::deep_copy(custom_type_));
@@ -868,6 +883,7 @@ struct custom_object::Accessor {
 	SIMPLE_ACCESSOR(accel_y);
 	CUSTOM_ACCESSOR(vars, obj.vars_.get());
 	CUSTOM_ACCESSOR(tmp, obj.tmp_vars_.get());
+	CUSTOM_ACCESSOR(tags, obj.tags_.get());
 	CUSTOM_ACCESSOR(group, obj.group());
 	SIMPLE_ACCESSOR(rotate);
 	CUSTOM_ACCESSOR(me, &obj);
@@ -952,6 +968,7 @@ struct custom_object::Accessor {
 		ACCESSOR(accel_y);
 		ACCESSOR(vars);
 		ACCESSOR(tmp);
+		ACCESSOR(tags);
 		ACCESSOR(group);
 		ACCESSOR(rotate);
 		ACCESSOR(me);
@@ -1082,6 +1099,13 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		invincible_ = value.as_int();
 	} else if(key == "fall_through_platforms") {
 		fall_through_platforms_ = value.as_int();
+	} else if(key == "tags") {
+		if(value.is_list()) {
+			tags_ = new game_logic::map_formula_callable;
+			for(int n = 0; n != value.num_elements(); ++n) {
+				tags_->add(value[n].as_string(), variant(1));
+			}
+		}
 	} else {
 		vars_->add(key, value);
 	}

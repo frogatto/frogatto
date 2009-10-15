@@ -89,6 +89,7 @@ public:
 	bool use_image_for_collisions() const { return use_image_for_collisions_; }
 
 	const std::map<std::string, variant>& variables() const { return variables_; }
+	const std::vector<std::string>& tags() const { return tags_; }
 
 	game_logic::function_symbol_table* function_symbols() const;
 
@@ -143,6 +144,7 @@ private:
 	bool use_image_for_collisions_;
 
 	std::map<std::string, variant> variables_;
+	std::vector<std::string> tags_;
 
 	int teleport_offset_x_, teleport_offset_y_;
 
