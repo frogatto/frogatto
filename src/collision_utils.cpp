@@ -379,10 +379,12 @@ public:
 
 void detect_user_collisions(level& lvl)
 {
+	std::vector<entity_ptr> chars = lvl.get_chars();
+
 	const int MaxCollisions = 16;
 	collision_pair collision_buf[MaxCollisions];
-	for(std::vector<entity_ptr>::const_iterator i = lvl.get_chars().begin(); i != lvl.get_chars().end(); ++i) {
-		for(std::vector<entity_ptr>::const_iterator j = i + 1; j != lvl.get_chars().end(); ++j) {
+	for(std::vector<entity_ptr>::const_iterator i = chars.begin(); i != chars.end(); ++i) {
+		for(std::vector<entity_ptr>::const_iterator j = i + 1; j != chars.end(); ++j) {
 			const entity_ptr& a = *i;
 			const entity_ptr& b = *j;
 			int ncollisions = entity_user_collision(*a, *b, collision_buf, MaxCollisions);
