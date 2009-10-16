@@ -902,7 +902,7 @@ struct custom_object::Accessor {
 	CUSTOM_ACCESSOR(distance_to_cliff, ::distance_to_cliff(*obj.lvl_, obj.feet_x(), obj.feet_y(), obj.face_dir()));
 	CUSTOM_ACCESSOR(slope_standing_on, -obj.slope_standing_on(obj.type_->feet_width()*2)*obj.face_dir());
 	CUSTOM_ACCESSOR(underwater, obj.lvl_->is_underwater(obj.body_rect()));
-	CUSTOM_ACCESSOR(driver, obj.driver_.get());
+	CUSTOM_ACCESSOR(driver, obj.driver_ ? obj.driver_.get() : &obj);
 	CUSTOM_ACCESSOR(is_human, obj.is_human() ? 1 : 0);
 	SIMPLE_ACCESSOR(invincible);
 	CUSTOM_ACCESSOR(springiness, obj.springiness());
