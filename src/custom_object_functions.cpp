@@ -5,6 +5,7 @@
 #include "blur.hpp"
 #include "character.hpp"
 #include "character_type.hpp"
+#include "collision_utils.hpp"
 #include "current_generator.hpp"
 #include "custom_object_functions.hpp"
 #include "custom_object.hpp"
@@ -965,6 +966,54 @@ private:
 	}
 };
 
+class fire_event_command : public entity_command_callable {
+	const entity_ptr target_;
+	const std::string event_;
+	const const_formula_callable_ptr callable_;
+public:
+	fire_event_command(entity_ptr target, const std::string& event, const_formula_callable_ptr callable)
+	  : target_(target), event_(event), callable_(callable)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		entity* e = target_ ? target_.get() : &ob;
+		e->handle_event(event_, callable_.get());
+	}
+};
+
+class fire_event_function : public function_expression {
+public:
+	explicit fire_event_function(const args_list& args)
+	  : function_expression("fire_event", args, 1, 3) {
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		entity_ptr target;
+		std::string event;
+		const_formula_callable_ptr callable;
+
+		if(args().size() == 3) {
+			target = args()[0]->evaluate(variables).convert_to<entity>();
+			event = args()[1]->evaluate(variables).as_string();
+			callable = args()[2]->evaluate(variables).as_callable();
+		} else if(args().size() == 2) {
+			variant v1 = args()[0]->evaluate(variables);
+			variant v2 = args()[1]->evaluate(variables);
+			if(v1.is_string()) {
+				event = v1.as_string();
+				callable = v2.as_callable();
+			} else {
+				target = v1.convert_to<entity>();
+				event = v2.as_string();
+			}
+		} else {
+			event = args()[0]->evaluate(variables).as_string();
+		}
+
+		return variant(new fire_event_command(target, event, callable));
+	}
+};
+
 class score_command : public entity_command_callable
 {
 public:
@@ -1266,6 +1315,21 @@ public:
 	}
 };
 
+class collides_function : public function_expression {
+public:
+	explicit collides_function(const args_list& args)
+	  : function_expression("collides", args, 4, 4) {
+	}
+
+	variant execute(const formula_callable& variables) const {
+		return variant(entity_user_collision_specific_areas(
+		           *args()[0]->evaluate(variables).convert_to<entity>(),
+		           args()[1]->evaluate(variables).as_string(),
+		           *args()[2]->evaluate(variables).convert_to<entity>(),
+		           args()[3]->evaluate(variables).as_string()));
+	}
+};
+
 class blur_command : public custom_object_command_callable {
 	int alpha_, fade_, granularity_;
 public:
@@ -1451,6 +1515,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new debug_function(args));
 	} else if(fn == "debug_console") {
 		return expression_ptr(new debug_console_function(args));
+	} else if(fn == "fire_event") {
+		return expression_ptr(new fire_event_function(args));
 	} else if(fn == "score") {
 		return expression_ptr(new score_function(args));
 	} else if(fn == "distortion") {
@@ -1475,6 +1541,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new control_function(args));
 	} else if(fn == "add_particles") {
 		return expression_ptr(new add_particles_function(args));
+	} else if(fn == "collides") {
+		return expression_ptr(new collides_function(args));
 	} else if(fn == "blur") {
 		return expression_ptr(new blur_function(args));
 	} else if(fn == "text") {

@@ -42,6 +42,8 @@ bool non_solid_entity_collides_with_level(const level& lvl, const entity& e);
 typedef std::pair<const std::string*, const std::string*> collision_pair;
 int entity_user_collision(const entity& a, const entity& b, collision_pair* areas_colliding, int buf_size);
 
+bool entity_user_collision_specific_areas(const entity& a, const std::string& area_a, const entity& b, const std::string& area_b);
+
 void detect_user_collisions(level& lvl);
 
 #endif

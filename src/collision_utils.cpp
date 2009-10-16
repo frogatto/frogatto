@@ -5,7 +5,11 @@
 
 bool point_standable(const level& lvl, const entity& e, int x, int y, collision_info* info, ALLOW_PLATFORM allow_platform)
 {
-	if(lvl.standable(x, y, info ? &info->friction : NULL, info ? &info->traction : NULL, info ? &info->damage : NULL)) {
+	if(allow_platform == SOLID_AND_PLATFORMS  && lvl.standable(x, y, info ? &info->friction : NULL, info ? &info->traction : NULL, info ? &info->damage : NULL) ||
+	   allow_platform != SOLID_AND_PLATFORMS  && lvl.solid(x, y, info ? &info->friction : NULL, info ? &info->traction : NULL, info ? &info->damage : NULL)) {
+		if(info && !lvl.solid(x, y)) {
+			info->platform = true;
+		}
 		return true;
 	}
 
@@ -228,7 +232,6 @@ int entity_user_collision(const entity& a, const entity& b, collision_pair* area
 		return 0;
 	}
 
-
 	const frame& fa = a.current_frame();
 	const frame& fb = b.current_frame();
 
@@ -281,6 +284,74 @@ int entity_user_collision(const entity& a, const entity& b, collision_pair* area
 	}
 
 	return result;
+}
+
+bool entity_user_collision_specific_areas(const entity& a, const std::string& area_a_id, const entity& b, const std::string& area_b_id)
+{
+	if(&a == &b) {
+		return false;
+	}
+
+	const frame& fa = a.current_frame();
+	const frame& fb = b.current_frame();
+
+	if(fa.collision_areas().empty() || fb.collision_areas().empty()) {
+		return false;
+	}
+
+	if(!rects_intersect(rect(a.x(), a.y(), fa.width(), fa.height()),
+	                    rect(b.x(), b.y(), fb.width(), fb.height()))) {
+		return false;
+	}
+
+	const frame::collision_area* area_a = NULL;
+	foreach(const frame::collision_area& area, fa.collision_areas()) {
+		if(area.name == area_a_id) {
+			area_a = &area;
+			break;
+		}
+	}
+
+	if(!area_a) {
+		return false;
+	}
+
+	const frame::collision_area* area_b = NULL;
+	foreach(const frame::collision_area& area, fb.collision_areas()) {
+		if(area.name == area_b_id) {
+			area_b = &area;
+			break;
+		}
+	}
+
+	if(!area_b) {
+		return false;
+	}
+
+	rect rect_a(a.face_right() ? a.x() + area_a->area.x() : a.x() + fa.width() - area_a->area.x() - area_a->area.w(),
+	            a.y() + area_a->area.y(),
+				area_a->area.w(), area_a->area.h());
+	rect rect_b(b.face_right() ? b.x() + area_b->area.x() : b.x() + fb.width() - area_b->area.x() - area_b->area.w(),
+	            b.y() + area_b->area.y(),
+				area_b->area.w(), area_b->area.h());
+	if(!rects_intersect(rect_a, rect_b)) {
+		return false;
+	}
+
+	const int time_a = a.time_in_frame();
+	const int time_b = b.time_in_frame();
+
+	const rect intersection = intersection_rect(rect_a, rect_b);
+	for(int y = intersection.y(); y <= intersection.y2(); ++y) {
+		for(int x = intersection.x(); x <= intersection.x2(); ++x) {
+			if(!fa.is_alpha(x - a.x(), y - a.y(), time_a, a.face_right()) &&
+			   !fb.is_alpha(x - b.x(), y - b.y(), time_b, b.face_right())) {
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 namespace {

@@ -1746,6 +1746,13 @@ variant level::get_value(const std::string& key) const
 		return variant(player_.get());
 	} else if(key == "num_active") {
 		return variant(active_chars_.size());
+	} else if(key == "active_chars") {
+		std::vector<variant> v;
+		foreach(const entity_ptr& e, active_chars_) {
+			v.push_back(variant(e.get()));
+		}
+
+		return variant(&v);
 	} else if(key == "tint") {
 		return variant(new graphics::color(tint_));
 	} else if(key == "in_editor") {

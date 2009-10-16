@@ -88,5 +88,9 @@ variant playable_custom_object::get_value(const std::string& key) const
 		}
 	}
 
+	if(key == "player") {
+		return variant(1);
+	}
+
 	return custom_object::get_value(key);
 }

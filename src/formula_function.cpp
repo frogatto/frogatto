@@ -406,6 +406,7 @@ private:
 			}
 		} else {
 			map_formula_callable self_callable;
+			self_callable.add("context", variant(&variables));
 			const std::string self = args()[1]->evaluate(variables).as_string();
 			for(size_t n = 0; n != items.num_elements(); ++n) {
 				self_callable.add(self, items[n]);
@@ -471,6 +472,7 @@ private:
 		} else {
 			static const std::string index_str = "index";
 			map_formula_callable self_callable;
+			self_callable.add("context", variant(&variables));
 			const std::string self = args()[1]->evaluate(variables).as_string();
 			for(size_t n = 0; n != items.num_elements(); ++n) {
 				self_callable.add(self, items[n]);

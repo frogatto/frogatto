@@ -618,13 +618,6 @@ void custom_object::process(level& lvl)
 		}
 	}
 
-	foreach(entity_ptr& p, lvl.players()) {
-		if(rects_intersect(body_rect(), p->body_rect())) {
-			lvl.set_touched_player(p);
-			handle_event(p->enter() ? "interact" : "touch");
-		}
-	}
-
 	if(lvl.players().empty() == false) {
 		lvl.set_touched_player(lvl.players().front());
 	}
