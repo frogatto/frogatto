@@ -62,6 +62,7 @@ public:
 	//amount of friction we experience.
 	int friction() const { return friction_; }
 	int traction() const { return traction_; }
+	int traction_in_air() const { return traction_in_air_; }
 
 	bool on_players_side() const { return on_players_side_; }
 	bool respawns() const { return respawns_; }
@@ -126,7 +127,7 @@ private:
 	int springiness_;
 	int surface_friction_;
 	int surface_traction_;
-	int friction_, traction_;
+	int friction_, traction_, traction_in_air_;
 	int mass_;
 
 	bool on_players_side_;
