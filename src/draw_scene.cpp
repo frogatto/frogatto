@@ -237,6 +237,8 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 	if(!lvl.hide_status_bar() && focus) {
 		draw_statusbar(lvl, pos, focus);
 	}
+
+	lvl.draw_status();
 }
 
 void draw_fps(const level& lvl, const performance_data& data)

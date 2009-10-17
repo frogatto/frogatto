@@ -707,12 +707,29 @@ void parse_where_clauses(const token* i1, const token * i2,
 expression_ptr parse_expression_internal(const token* i1, const token* i2, function_symbol_table* symbols);
 
 namespace {
+
+//only allow one static_formula_callable to be active at a time.
+bool static_formula_callable_active = false;
+
 //a special callable which will throw an exception if it's actually called.
 //we use this to determine if an expression is static -- i.e. doesn't
 //depend on input, and can be reduced to its result.
 struct non_static_expression_exception {};
 class static_formula_callable : public formula_callable {
+	static_formula_callable(const static_formula_callable&);
 public:
+	static_formula_callable() {
+		if(static_formula_callable_active) {
+			throw non_static_expression_exception();
+		}
+
+		static_formula_callable_active = true;
+	}
+
+	~static_formula_callable() {
+		static_formula_callable_active = false;
+	}
+
 	variant get_value(const std::string& key) const {
 		throw non_static_expression_exception();
 	}

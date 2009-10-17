@@ -33,7 +33,8 @@ level::level(const std::string& level_cfg)
 	  entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
 	  editor_(false), show_foreground_(true), show_background_(true), air_resistance_(0), water_resistance_(7), end_game_(false),
       hide_status_bar_(false), tint_(0),
-	  editor_tile_updates_frozen_(0)
+	  editor_tile_updates_frozen_(0),
+	  status_gui_(new status_gui)
 {
 	std::cerr << "in level constructor...\n";
 	const int start_time = SDL_GetTicks();
@@ -594,6 +595,11 @@ bool sort_entity_drawing_pos(const entity_ptr& a, const entity_ptr& b) {
 		   a->zorder() == b->zorder() && a->y() < b->y() ||
 		   a->zorder() == b->zorder() && a->y() == b->y() && a->x() < b->x();
 }
+}
+
+void level::draw_status() const
+{
+	status_gui_->draw();
 }
 
 void level::draw(int x, int y, int w, int h) const
@@ -1757,6 +1763,8 @@ variant level::get_value(const std::string& key) const
 		return variant(new graphics::color(tint_));
 	} else if(key == "in_editor") {
 		return variant(editor_);
+	} else if(key == "status_gui") {
+		return variant(status_gui_.get());
 	} else {
 		const_entity_ptr e = get_entity_by_label(key);
 		if(e) {

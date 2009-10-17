@@ -22,6 +22,7 @@
 #include "level_object.hpp"
 #include "movement_script.hpp"
 #include "prop.hpp"
+#include "status_gui.hpp"
 #include "tile_map.hpp"
 #include "water.hpp"
 #include "wml_node_fwd.hpp"
@@ -49,6 +50,7 @@ public:
 
 	wml::node_ptr write() const;
 	void draw(int x, int y, int w, int h) const;
+	void draw_status() const;
 	void draw_debug_solid(int x, int y, int w, int h) const;
 	void draw_background(double x, double y, int rotation) const;
 	void process();
@@ -354,6 +356,8 @@ private:
 	std::deque<backup_snapshot_ptr> backups_;
 
 	int editor_tile_updates_frozen_;
+
+	status_gui_ptr status_gui_;
 };
 
 #endif

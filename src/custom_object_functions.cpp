@@ -21,6 +21,7 @@
 #include "texture.hpp"
 #include "message_dialog.hpp"
 #include "options_dialog.hpp"
+#include "random.hpp"
 #include "raster_distortion.hpp"
 #include "sound.hpp"
 #include "speech_dialog.hpp"
@@ -306,6 +307,37 @@ private:
 	}
 
 	bool custom_;
+};
+
+class object_function : public function_expression {
+public:
+	explicit object_function(const args_list& args)
+	  : function_expression("object", args, 4, 5) {
+	}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		//generate a random number just so we mark this as being a
+		//function which shouldn't have its result cached.
+		rng::generate();
+
+		const std::string type = args()[0]->evaluate(variables).as_string();
+		const int x = args()[1]->evaluate(variables).as_int();
+		const int y = args()[2]->evaluate(variables).as_int();
+		const bool face_right = args()[3]->evaluate(variables).as_int() > 0;
+		custom_object* obj = new custom_object(type, x, y, face_right);
+
+		if(args().size() > 4) {
+			variant properties = args()[4]->evaluate(variables);
+			variant keys = properties.get_keys();
+			for(int n = 0; n != keys.num_elements(); ++n) {
+				variant value = properties[keys[n]];
+				obj->mutate_value(keys.as_string(), value);
+			}
+		}
+
+		return variant(obj);
+	}
 };
 
 class board_vehicle_command : public entity_command_callable {
@@ -1459,6 +1491,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new spawn_function(args, true));
 	} else if(fn == "char") {
 		return expression_ptr(new spawn_function(args, false));
+	} else if(fn == "object") {
+		return expression_ptr(new object_function(args));
 	} else if(fn == "board_vehicle") {
 		return expression_ptr(new board_vehicle_function(args));
 	} else if(fn == "eject_vehicle") {
