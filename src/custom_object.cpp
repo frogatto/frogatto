@@ -396,7 +396,7 @@ void custom_object::process(level& lvl)
 	if(type_->friction()) {
 		const bool is_underwater = lvl.is_underwater(body_rect());
 
-		const int air_resistance = is_underwater ? lvl.air_resistance() : lvl.water_resistance();
+		const int air_resistance = is_underwater ? lvl.water_resistance() : lvl.air_resistance();
 
 		const int friction = ((stand_info.friction + air_resistance)*type_->friction())/1000;
 		velocity_x_ = (velocity_x_*(1000 - friction))/1000;
