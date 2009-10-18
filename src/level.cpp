@@ -59,7 +59,7 @@ level::level(const std::string& level_cfg)
 	xscale_ = wml::get_int(node, "xscale", 100);
 	yscale_ = wml::get_int(node, "yscale", 100);
 	auto_move_camera_ = point(node->attr("auto_move_camera"));
-	air_resistance_ = wml::get_int(node, "air_resistance", 50);
+	air_resistance_ = wml::get_int(node, "air_resistance", 20);
 	water_resistance_ = wml::get_int(node, "water_resistance", 100);
 
 	camera_rotation_ = game_logic::formula::create_optional_formula(node->attr("camera_rotation"));
