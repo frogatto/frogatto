@@ -122,6 +122,8 @@ public:
 
 	void set_blur(const blur_info* blur);
 
+	bool execute_command(const variant& var);
+
 protected:
 	virtual void control(const level& lvl);
 	variant get_value(const std::string& key) const;
@@ -133,8 +135,6 @@ private:
 
 	void get_inputs(std::vector<game_logic::formula_input>* inputs) const;
 	void set_value(const std::string& key, const variant& value);
-
-	bool execute_command(const variant& var);
 
 	int slope_standing_on(int range) const;
 

@@ -18,6 +18,7 @@
 #include "formula.hpp"
 #include "formula_callable.hpp"
 #include "geometry.hpp"
+#include "gui_formula_functions.hpp"
 #include "item.hpp"
 #include "level_object.hpp"
 #include "movement_script.hpp"
@@ -358,6 +359,8 @@ private:
 	int editor_tile_updates_frozen_;
 
 	status_gui_ptr status_gui_;
+
+	gui_algorithm_ptr gui_algorithm_;
 };
 
 #endif

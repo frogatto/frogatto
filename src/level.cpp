@@ -12,6 +12,7 @@
 #include "fluid.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
+#include "gui_formula_functions.hpp"
 #include "level.hpp"
 #include "level_object.hpp"
 #include "load_level.hpp"
@@ -201,6 +202,8 @@ level::level(const std::string& level_cfg)
 	const int time_taken_ms = (SDL_GetTicks() - start_time);
 	stats::record_event(id(), stats::const_record_ptr(new stats::load_level_record(time_taken_ms)));
 	std::cerr << "done level constructor: " << time_taken_ms << "\n";
+
+	gui_algorithm_ = gui_algorithm::create(wml::get_str(node, "gui", "default"));
 }
 
 void level::load_character(wml::const_node_ptr c)
@@ -599,7 +602,10 @@ bool sort_entity_drawing_pos(const entity_ptr& a, const entity_ptr& b) {
 
 void level::draw_status() const
 {
-	status_gui_->draw();
+//	status_gui_->draw();
+	if(gui_algorithm_) {
+		gui_algorithm_->draw(*this);
+	}
 }
 
 void level::draw(int x, int y, int w, int h) const
@@ -787,6 +793,10 @@ void level::draw_background(double x, double y, int rotation) const
 
 void level::process()
 {
+	if(gui_algorithm_) {
+		gui_algorithm_->process(*this);
+	}
+
 	std::cerr << "RANDOM CYCLE " << id_ << " " << cycle_ << ": " << rng::get_seed() << "\n";
 	multiplayer::send_and_receive();
 
