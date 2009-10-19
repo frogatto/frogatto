@@ -1155,13 +1155,13 @@ void custom_object::set_frame(const std::string& name)
 	
 	frame_->play_sound(this);
 
-	if(lvl_ && entity_collides_with_level(*lvl_, *this, MOVE_NONE)) {
+	if(lvl_ && entity_collides(*lvl_, *this, MOVE_NONE)) {
 		game_logic::map_formula_callable* callable(new game_logic::map_formula_callable(this));
 		callable->add("previous_animation", variant(previous_animation));
 		game_logic::formula_callable_ptr callable_ptr(callable);
 		handle_event("change_animation_failure", callable);
 		handle_event("change_animation_failure_" + frame_name_, callable);
-		assert(!entity_collides_with_level(*lvl_, *this, MOVE_NONE));
+		assert(!entity_collides(*lvl_, *this, MOVE_NONE));
 	}
 
 	handle_event("enter_anim");
