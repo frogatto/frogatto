@@ -621,15 +621,19 @@ void editor::toggle_facing()
 
 void editor::process_ghost_objects()
 {
+	lvl_->swap_chars(ghost_objects_);
+
 	const size_t num_chars_before = lvl_->get_chars().size();
-	foreach(const entity_ptr& p, ghost_objects_) {
+	foreach(const entity_ptr& p, lvl_->get_chars()) {
 		p->process(*lvl_);
 	}
 
 	for(size_t n = num_chars_before; n < lvl_->get_chars().size(); ++n) {
 		ghost_objects_.push_back(lvl_->get_chars()[n]);
-		lvl_->get_chars()[n]->process(*lvl_);
+//		lvl_->get_chars()[n]->process(*lvl_);
 	}
+
+	lvl_->swap_chars(ghost_objects_);
 
 	foreach(entity_ptr& p, ghost_objects_) {
 		if(p->destroyed()) {
@@ -913,6 +917,16 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 	   (key.keysym.mod&KMOD_CTRL)) {
 		tile_map::init(wml::parse_wml(sys::read_file("tiles.cfg")));
 		lvl_->rebuild_tiles();
+	}
+
+	if(key.keysym.sym == SDLK_c) {
+		foreach(const entity_ptr& obj, lvl_->get_chars()) {
+			if(entity_collides_with_level(*lvl_, *obj, MOVE_NONE)) {
+				xpos_ = obj->x() - graphics::screen_width()/2;
+				ypos_ = obj->y() - graphics::screen_height()/2;
+				break;
+			}
+		}
 	}
 }
 

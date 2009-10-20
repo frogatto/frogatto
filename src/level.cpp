@@ -707,10 +707,26 @@ void level::draw(int x, int y, int w, int h) const
 		if(!(*entity_itor)->is_human()) {
 			(*entity_itor)->draw();
 			if(editor_) {
+
 				(*entity_itor)->draw_group();
 			}
 		}
 		++entity_itor;
+	}
+
+	if(editor_) {
+		foreach(const entity_ptr& obj, chars_) {
+			if(entity_collides_with_level(*this, *obj, MOVE_NONE)) {
+				//if the entity is colliding with the level, then draw
+				//it in red to mark as 'bad'.
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+				const GLfloat alpha = 0.5 + sin(draw_count/5.0)*0.5;
+				glColor4f(1.0, 0.0, 0.0, alpha);
+				obj->draw();
+				glColor4f(1.0, 1.0, 1.0, 1.0);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			}
+		}
 	}
 
 	if(editor_highlight_ || !editor_selection_.empty()) {

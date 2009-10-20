@@ -197,6 +197,7 @@ public:
 	void get_all_labels(std::vector<std::string>& labels) const;
 
 	const std::vector<entity_ptr>& get_chars() const { return chars_; }
+	void swap_chars(std::vector<entity_ptr>& v) { chars_.swap(v); }
 	int num_active_chars() const { return active_chars_.size(); }
 
 	void begin_movement_script(const std::string& name, entity& e);
