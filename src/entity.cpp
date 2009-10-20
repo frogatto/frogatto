@@ -158,9 +158,9 @@ rect entity::platform_rect() const
 		}
 
 		if(delta_y < 0) {
-			return rect(x() + area.x(), y() + area.y(), area.w(), area.h());
-		} else {
 			return rect(x() + area.x(), y() + area.y(), area.w(), area.h() - delta_y);
+		} else {
+			return rect(x() + area.x(), y() + area.y(), area.w(), area.h());
 		}
 	} else {
 		return rect();
