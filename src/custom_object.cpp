@@ -333,6 +333,10 @@ void custom_object::process(level& lvl)
 	collision_info stand_info;
 	const bool started_standing = is_standing(lvl, &stand_info);
 
+	if(y() > lvl.boundaries().y2()) {
+		--hitpoints_;
+	}
+	
 	previous_y_ = y();
 	if((started_standing || standing_on_) && velocity_y_ > 0) {
 		velocity_y_ = 0;
