@@ -1186,6 +1186,50 @@ void custom_object::hit_by(entity& e)
 	handle_event("hit_by_player");
 }
 
+void custom_object::move_to_standing(level& lvl)
+{
+	int start_y = y();
+	lvl_ = &lvl;
+	//descend from the initial-position (what the player was at in the prev level) until we're standing
+	for(int n = 0; n != 10000; ++n) {
+		if(is_standing(lvl)) {
+			
+			if(n == 0) {  //if we've somehow managed to be standing on the very first frame, try to avoid the possibility that this is actually some open space underground on a cave level by scanning up till we reach the surface.
+				for(int n = 0; n != 10000; ++n) {
+					set_pos(x(), y() - 1);
+					if(!is_standing(lvl)) {
+						set_pos(x(), y() + 1);
+						
+						if(y() < lvl.boundaries().y()) {
+							//we are too high, out of the level. Move the
+							//character down, under the solid, and then
+							//call this function again to move them down
+							//to standing on the solid below.
+							for(int n = 0; n != 10000; ++n) {
+								set_pos(x(), y() + 1);
+								if(!is_standing(lvl)) {
+									move_to_standing(lvl);
+									return;
+								}
+							}
+						}
+						
+						return;
+					}
+				}
+				return;
+			}
+			return;
+		}
+		
+		set_pos(x(), y() + 1);
+	}
+	
+	set_pos(x(), start_y);
+	std::cerr << "MOVE_TO_STANDING FAILED\n";
+}
+
+
 bool custom_object::dies_on_inactive() const
 {
 	return type_->dies_on_inactive();

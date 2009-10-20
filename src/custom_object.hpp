@@ -64,6 +64,7 @@ public:
 	bool always_active() const;
 	void hit_player();
 	void hit_by(entity& e);
+	void move_to_standing(level& lvl);
 
 	bool body_harmful() const;
 	bool body_passthrough() const;
