@@ -95,7 +95,7 @@ public:
 
 	bool is_alpha(int xpos, int ypos) const;
 
-	bool has_feet() const;
+	virtual bool has_feet() const;
 	int feet_x() const;
 	int feet_y() const;
 

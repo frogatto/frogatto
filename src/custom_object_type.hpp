@@ -90,6 +90,7 @@ public:
 	int teleport_offset_y() const { return teleport_offset_y_; }
 
 	bool use_image_for_collisions() const { return use_image_for_collisions_; }
+	bool has_feet() const { return has_feet_; }
 
 	const std::map<std::string, variant>& variables() const { return variables_; }
 	const std::vector<std::string>& tags() const { return tags_; }
@@ -146,6 +147,8 @@ private:
 	int feet_width_;
 
 	bool use_image_for_collisions_;
+
+	bool has_feet_;
 
 	std::map<std::string, variant> variables_;
 	std::vector<std::string> tags_;

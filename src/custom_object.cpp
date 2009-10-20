@@ -704,6 +704,11 @@ int custom_object::surface_traction() const
 	return type_->surface_traction();
 }
 
+bool custom_object::has_feet() const
+{
+	return type_->has_feet() && solid();
+}
+
 bool custom_object::is_standable(int xpos, int ypos, int* friction, int* traction, int* adjust_y) const
 {
 	if(!body_passthrough() && springiness() == 0 && !body_harmful() && point_collides(xpos, ypos)) {
@@ -1155,13 +1160,13 @@ void custom_object::set_frame(const std::string& name)
 	
 	frame_->play_sound(this);
 
-	if(lvl_ && entity_collides(*lvl_, *this, MOVE_NONE)) {
+	if(lvl_ && entity_collides_with_level(*lvl_, *this, MOVE_NONE)) {
 		game_logic::map_formula_callable* callable(new game_logic::map_formula_callable(this));
 		callable->add("previous_animation", variant(previous_animation));
 		game_logic::formula_callable_ptr callable_ptr(callable);
 		handle_event("change_animation_failure", callable);
 		handle_event("change_animation_failure_" + frame_name_, callable);
-		assert(!entity_collides(*lvl_, *this, MOVE_NONE));
+		assert(!entity_collides_with_level(*lvl_, *this, MOVE_NONE));
 	}
 
 	handle_event("enter_anim");

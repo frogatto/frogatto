@@ -168,6 +168,7 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	passenger_y_(wml::get_int(node, "passenger_y")),
 	feet_width_(wml::get_int(node, "feet_width", 5)),
 	use_image_for_collisions_(wml::get_bool(node, "use_image_for_collisions", false)),
+	has_feet_(wml::get_bool(node, "has_feet", true) && use_image_for_collisions_ == false),
 	teleport_offset_x_(wml::get_int(node, "teleport_offset_x")),
 	teleport_offset_y_(wml::get_int(node, "teleport_offset_y")),
 	solid_(solid_info::create(node)),
