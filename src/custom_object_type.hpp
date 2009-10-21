@@ -100,6 +100,9 @@ public:
 	const_solid_info_ptr solid() const { return solid_; }
 	const_solid_info_ptr platform() const { return platform_; }
 
+	//true if the object can ever be solid or standable
+	bool has_solid() const { return has_solid_; }
+
 private:
 	std::string id_;
 	int hitpoints_;
@@ -156,6 +159,9 @@ private:
 	int teleport_offset_x_, teleport_offset_y_;
 
 	const_solid_info_ptr solid_, platform_;
+
+	//variable which is true if the object is ever solid or standable
+	bool has_solid_;
 };
 
 #endif

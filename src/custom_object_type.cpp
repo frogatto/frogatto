@@ -172,7 +172,8 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	teleport_offset_x_(wml::get_int(node, "teleport_offset_x")),
 	teleport_offset_y_(wml::get_int(node, "teleport_offset_y")),
 	solid_(solid_info::create(node)),
-	platform_(solid_info::create_platform(node))
+	platform_(solid_info::create_platform(node)),
+	has_solid_(solid_ || use_image_for_collisions_)
 {
 	if(node->has_attr("functions")) {
 		object_functions_.reset(new game_logic::function_symbol_table);
@@ -186,6 +187,10 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 		boost::shared_ptr<frame> f(new frame(a1->second));
 		if(use_image_for_collisions_) {
 			f->set_image_as_solid();
+		}
+
+		if(f->solid()) {
+			has_solid_ = true;
 		}
 
 		frames_[a1->second->attr("id")].push_back(f);

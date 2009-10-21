@@ -58,6 +58,10 @@ bool point_standable(const level& lvl, const entity& e, int x, int y, collision_
 
 bool entity_collides(level& lvl, const entity& e, MOVE_DIRECTION dir, collision_info* info)
 {
+	if(!e.solid()) {
+		return false;
+	}
+
 	if(entity_collides_with_level(lvl, e, dir, info ? &info->friction : NULL, info ? &info->traction : NULL, info ? &info->damage : NULL)) {
 		return true;
 	}
@@ -160,6 +164,10 @@ int entity_collides_with_level_count(const level& lvl, const entity& e, MOVE_DIR
 bool non_solid_entity_collides_with_level(const level& lvl, const entity& e)
 {
 	const frame& f = e.current_frame();
+	if(!lvl.may_be_solid_in_rect(rect(e.x(), e.y(), f.width(), f.height()))) {
+		return false;
+	}
+
 	for(int y = 0; y < f.height(); ++y) {
 		for(int x = 0; x < f.width(); ++x) {
 			if(!f.is_alpha(e.face_right() ? x : f.width() - x - 1, y, e.time_in_frame(), true)) {

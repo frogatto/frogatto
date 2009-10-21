@@ -817,6 +817,10 @@ bool custom_object::rect_collides(const rect& r) const
 
 const_solid_info_ptr custom_object::solid() const
 {
+	if(!type_->has_solid()) {
+		return const_solid_info_ptr();
+	}
+
 	if(current_frame().solid()) {
 		return current_frame().solid();
 	}

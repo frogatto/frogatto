@@ -59,6 +59,7 @@ public:
 	bool standable_tile(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
 	bool solid(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
 	bool solid(const rect& r, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
+	bool may_be_solid_in_rect(const rect& r) const;
 	void set_solid_area(const rect& r, bool solid);
 	entity_ptr collide(int x, int y, const entity* exclude=NULL) const;
 	entity_ptr collide(const rect& r, const entity* exclude=NULL) const;

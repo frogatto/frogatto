@@ -960,6 +960,7 @@ void level::do_processing()
 
 bool level::is_solid(const solid_map& map, int x, int y, int* friction, int* traction, int* damage) const
 {
+
 	tile_pos pos(x/TileSize, y/TileSize);
 	x = x%TileSize;
 	y = y%TileSize;
@@ -1049,6 +1050,34 @@ bool level::solid(const rect& r, int* friction, int* traction, int* damage) cons
 	for(int y = ybegin; y != yend; ++y) {
 		for(int x = xbegin; x != xend; ++x) {
 			if(solid(x, y, friction, traction, damage)) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+bool level::may_be_solid_in_rect(const rect& r) const
+{
+	int x = r.x();
+	int y = r.y();
+	tile_pos pos(x/TileSize, y/TileSize);
+	x = x%TileSize;
+	y = y%TileSize;
+	if(x < 0) {
+		pos.first--;
+		x += 32;
+	}
+
+	if(y < 0) {
+		pos.second--;
+		y += 32;
+	}
+
+	for(int ypos = 0; ypos <= (y + r.h())/TileSize; ++ypos) {
+		for(int xpos = 0; xpos <= (x + r.w())/TileSize; ++xpos) {
+			if(solid_.count(tile_pos(pos.first + xpos, pos.second + ypos))) {
 				return true;
 			}
 		}
