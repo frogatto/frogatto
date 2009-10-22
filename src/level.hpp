@@ -184,7 +184,6 @@ public:
 
 	void get_current(const entity& e, int* velocity_x, int* velocity_y) const;
 
-	bool hide_status_bar() const { return hide_status_bar_; }
 	graphics::color tint() const { return tint_; }
 
 	water* get_water() { return water_.get(); }
@@ -339,7 +338,6 @@ private:
 
 	boost::scoped_ptr<water> water_;
 
-	bool hide_status_bar_;
 	graphics::color tint_;
 	
 	std::map<std::string, movement_script> movement_scripts_;

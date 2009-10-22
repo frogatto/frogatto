@@ -33,8 +33,7 @@ level::level(const std::string& level_cfg)
 	: id_(level_cfg), highlight_layer_(INT_MIN),
 	  entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
 	  editor_(false), show_foreground_(true), show_background_(true), air_resistance_(0), water_resistance_(7), end_game_(false),
-      hide_status_bar_(false), tint_(0),
-	  editor_tile_updates_frozen_(0),
+      tint_(0), editor_tile_updates_frozen_(0),
 	  status_gui_(new status_gui)
 {
 	std::cerr << "in level constructor...\n";
@@ -42,7 +41,6 @@ level::level(const std::string& level_cfg)
 	turn_reference_counting_off();
 
 	wml::const_node_ptr node(wml::parse_wml(preprocess(sys::read_file("data/level/" + level_cfg))));
-	hide_status_bar_ = wml::get_bool(node, "hide_status_bar", false);
 	music_ = node->attr("music");
 	replay_data_ = node->attr("replay_data");
 	cycle_ = wml::get_int(node, "cycle");
@@ -366,7 +364,6 @@ void level::rebuild_tiles_rect(const rect& r)
 wml::node_ptr level::write() const
 {
 	wml::node_ptr res(new wml::node("level"));
-	res->set_attr("hide_status_bar", hide_status_bar_ ? "yes" : "no");
 	res->set_attr("title", title_);
 	res->set_attr("music", music_);
 	if(cycle_) {
