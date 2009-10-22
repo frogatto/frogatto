@@ -1,6 +1,8 @@
 #ifndef REFERENCE_COUNTED_OBJECT_HPP_INCLUDED
 #define REFERENCE_COUNTED_OBJECT_HPP_INCLUDED
 
+#include <assert.h>
+
 #include "boost/intrusive_ptr.hpp"
 
 class reference_counted_object
@@ -11,7 +13,7 @@ public:
 	reference_counted_object& operator=(const reference_counted_object& /*obj*/) {
 		return *this;
 	}
-	virtual ~reference_counted_object() {}
+	virtual ~reference_counted_object() { }
 
 	void add_ref() const { ++count_; }
 	void dec_ref() const { if(--count_ == 0) { delete const_cast<reference_counted_object*>(this); } }

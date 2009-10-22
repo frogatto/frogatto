@@ -11,12 +11,13 @@
 class level;
 
 class gui_algorithm;
-typedef boost::shared_ptr<gui_algorithm> gui_algorithm_ptr;
+typedef boost::intrusive_ptr<gui_algorithm> gui_algorithm_ptr;
 typedef boost::shared_ptr<frame> frame_ptr;
 
 class gui_algorithm : public game_logic::formula_callable {
 public:
 	gui_algorithm(wml::const_node_ptr node);
+	~gui_algorithm();
 
 	static gui_algorithm_ptr get(const std::string& key);
 	static gui_algorithm_ptr create(const std::string& key);
@@ -27,6 +28,9 @@ public:
 	void draw_animation(const std::string& object_name, const std::string& anim, int x, int y, int cycle) const;
 
 private:
+	gui_algorithm(const gui_algorithm&);
+	void operator=(const gui_algorithm&);
+
 	variant get_value(const std::string& key) const;
 
 	void execute_command(variant v);

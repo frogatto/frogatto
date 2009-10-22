@@ -148,6 +148,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 
 custom_object::~custom_object()
 {
+	std::cerr << "DESTROY: '" << type_->id() << "'\n";
 }
 
 wml::node_ptr custom_object::write() const

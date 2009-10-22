@@ -224,6 +224,9 @@ public:
 	void editor_freeze_tile_updates(bool value);
 
 private:
+	level(const level&);
+	void operator=(const level&);
+
 	void do_processing();
 
 	bool add_tile_rect_vector_internal(int zorder, int x1, int y1, int x2, int y2, const std::vector<std::string>& tiles);

@@ -515,7 +515,10 @@ private:
 	variant execute(const formula_callable& variables) const {
 		const int nelem = args()[0]->evaluate(variables).as_int();
 		std::vector<variant> v;
-		v.reserve(nelem);
+		if(nelem < 128) {
+			v.reserve(nelem);
+		}
+
 		for(int n = 0; n < nelem; ++n) {
 			v.push_back(variant(n));
 		}
