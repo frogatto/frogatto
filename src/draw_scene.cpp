@@ -23,7 +23,7 @@
 namespace {
 
 int drawable_height() {
-	const int statusbar_height = 124;
+	const int statusbar_height = 0;
 	return graphics::screen_height() - statusbar_height;
 }
 
@@ -233,10 +233,6 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 	glPopMatrix();
 
 	debug_console::draw();
-
-	if(!lvl.hide_status_bar() && focus) {
-		draw_statusbar(lvl, pos, focus);
-	}
 
 	lvl.draw_status();
 }
