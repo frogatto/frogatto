@@ -22,6 +22,7 @@
 
 namespace gui {
 
+//a button widget. Forwards to a given function whenever it is clicked.
 class button : public widget
 {
 public:

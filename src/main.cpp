@@ -12,7 +12,6 @@
 #include <boost/scoped_ptr.hpp>
 
 #include "asserts.hpp"
-#include "character_type.hpp"
 #include "controls.hpp"
 #include "custom_object.hpp"
 #include "custom_object_functions.hpp"
@@ -26,7 +25,6 @@
 #include "graphical_font.hpp"
 #include "gui_section.hpp"
 #include "inventory.hpp"
-#include "item.hpp"
 #include "joystick.hpp"
 #include "key.hpp"
 #include "level.hpp"
@@ -35,6 +33,7 @@
 #include "load_level.hpp"
 #include "message_dialog.hpp"
 #include "multiplayer.hpp"
+#include "player_info.hpp"
 #include "powerup.hpp"
 #include "preferences.hpp"
 #include "preprocessor.hpp"
@@ -202,12 +201,8 @@ extern "C" int main(int argc, char** argv)
 		custom_object::init();
 		init_custom_object_functions(wml::parse_wml_from_file("functions.cfg"));
 		wml::schema::init(wml::parse_wml_from_file("schema.cfg"));
-		character_type::init(wml::parse_wml_from_file("characters.cfg",
-		                     wml::schema::get("characters")));
 //		custom_object_type::init(wml::parse_wml_from_file("objects.cfg",
 //								 wml::schema::get("objects")));
-		item_type::init(wml::parse_wml_from_file("items.cfg",
-		                wml::schema::get("items")));
 		level_object::init(wml::parse_wml_from_file("tiles.cfg",
 		                   wml::schema::get("tiles")));
 		tile_map::init(wml::parse_wml_from_file("tiles.cfg",

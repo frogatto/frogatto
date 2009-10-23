@@ -6,6 +6,7 @@
 
 namespace gui {
 
+//a widget which draws a border around another widget it holds as its child.
 class border_widget : public widget
 {
 public:

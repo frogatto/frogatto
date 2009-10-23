@@ -11,6 +11,7 @@ class editor;
 namespace editor_dialogs
 {
 
+//editor dialog which displays the details of an object and allows editing it.
 class character_editor_dialog : public gui::dialog
 {
 public:

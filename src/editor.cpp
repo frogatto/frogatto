@@ -10,9 +10,7 @@
 #include "asserts.hpp"
 #include "border_widget.hpp"
 #include "button.hpp"
-#include "character.hpp"
 #include "character_editor_dialog.hpp"
-#include "character_type.hpp"
 #include "collision_utils.hpp"
 #include "draw_tile.hpp"
 #include "debug_console.hpp"
@@ -31,12 +29,12 @@
 #include "grid_widget.hpp"
 #include "group_property_editor_dialog.hpp"
 #include "image_widget.hpp"
-#include "item.hpp"
 #include "key.hpp"
 #include "label.hpp"
 #include "level.hpp"
 #include "level_object.hpp"
 #include "load_level.hpp"
+#include "player_info.hpp"
 #include "preferences.hpp"
 #include "prop.hpp"
 #include "property_editor_dialog.hpp"
@@ -472,30 +470,6 @@ std::vector<editor::tileset> tilesets;
 
 std::vector<editor::enemy_type> enemy_types;
 
-struct placeable_item {
-	static void init(wml::const_node_ptr node);
-	explicit placeable_item(wml::const_node_ptr node);
-	wml::const_node_ptr node;
-	const_item_type_ptr type;
-};
-
-std::vector<placeable_item> placeable_items;
-
-void placeable_item::init(wml::const_node_ptr node)
-{
-	wml::node::const_child_iterator i1 = node->begin_child("item");
-	wml::node::const_child_iterator i2 = node->end_child("item");
-	for(; i1 != i2; ++i1) {
-		placeable_items.push_back(placeable_item(i1->second));
-	}
-
-	std::cerr << "ITEMS: " << placeable_items.size() << "\n";
-}
-
-placeable_item::placeable_item(wml::const_node_ptr node)
-  : node(node), type(item_type::get((*node)["type"]))
-{}
-
 int selected_property = 0;
 
 std::vector<const_prop_ptr> all_props;
@@ -576,7 +550,6 @@ editor::editor(const char* level_cfg)
 		wml::const_node_ptr editor_cfg = wml::parse_wml(sys::read_file("editor.cfg"));
 		tileset::init(editor_cfg);
 		enemy_type::init(editor_cfg);
-		placeable_item::init(editor_cfg);
 		all_props = prop::all_props();
 		first_time = false;
 	}

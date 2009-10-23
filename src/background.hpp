@@ -13,10 +13,14 @@
 
 class level;
 
+//class which represents the background to a level.
 class background
 {
 public:
+	//gets a background associated with a given ID.
 	static boost::shared_ptr<background> get(const std::string& id);
+
+	//all available backgrounds.
 	static std::vector<std::string> get_available_backgrounds();
 
 	explicit background(const wml::const_node_ptr& node);

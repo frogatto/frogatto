@@ -12,19 +12,15 @@
 #include "boost/scoped_ptr.hpp"
 
 #include "background.hpp"
-#include "character.hpp"
 #include "entity.hpp"
-#include "fluid.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
 #include "geometry.hpp"
 #include "gui_formula_functions.hpp"
-#include "item.hpp"
 #include "level_object.hpp"
 #include "level_solid_map.hpp"
 #include "movement_script.hpp"
 #include "prop.hpp"
-#include "status_gui.hpp"
 #include "tile_map.hpp"
 #include "water.hpp"
 #include "wml_node_fwd.hpp"
@@ -90,7 +86,6 @@ public:
 	const std::vector<entity_ptr>& players() const { return players_; }
 	void add_player(entity_ptr p);
 	void add_character(entity_ptr p);
-	void add_item(item_ptr p);
 	void add_prop(const prop_object& new_prop);
 	void remove_prop(const prop_object& new_prop);
 	void get_props_in_rect(int x1, int y1, int x2, int y2, std::vector<prop_object>& props);
@@ -288,9 +283,6 @@ private:
 	typedef std::vector<entity_ptr> entity_group;
 	std::vector<entity_group> groups_;
 
-	std::vector<item_ptr> items_;
-	std::vector<item_ptr> active_items_;
-
 	std::vector<prop_object> props_;
 
 	portal left_portal_, right_portal_;
@@ -322,8 +314,6 @@ private:
 
 	std::vector<std::string> preloads_; //future levels to preload
 
-	boost::scoped_ptr<fluid> fluid_;
-
 	boost::scoped_ptr<water> water_;
 
 	graphics::color tint_;
@@ -348,8 +338,6 @@ private:
 	std::deque<backup_snapshot_ptr> backups_;
 
 	int editor_tile_updates_frozen_;
-
-	status_gui_ptr status_gui_;
 
 	gui_algorithm_ptr gui_algorithm_;
 };

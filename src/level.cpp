@@ -9,7 +9,6 @@
 #include "draw_tile.hpp"
 #include "entity.hpp"
 #include "filesystem.hpp"
-#include "fluid.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "gui_formula_functions.hpp"
@@ -17,6 +16,7 @@
 #include "level_object.hpp"
 #include "load_level.hpp"
 #include "multiplayer.hpp"
+#include "player_info.hpp"
 #include "preferences.hpp"
 #include "preprocessor.hpp"
 #include "random.hpp"
@@ -34,8 +34,7 @@ level::level(const std::string& level_cfg)
 	: id_(level_cfg), highlight_layer_(INT_MIN),
 	  entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
 	  editor_(false), show_foreground_(true), show_background_(true), air_resistance_(0), water_resistance_(7), end_game_(false),
-      tint_(0), editor_tile_updates_frozen_(0),
-	  status_gui_(new status_gui)
+      tint_(0), editor_tile_updates_frozen_(0)
 {
 	std::cerr << "in level constructor...\n";
 	const int start_time = SDL_GetTicks();
@@ -123,14 +122,9 @@ level::level(const std::string& level_cfg)
 		load_character(c1->second);
 	}
 
-	wml::node::const_child_iterator i1 = node->begin_child("item");
-	wml::node::const_child_iterator i2 = node->end_child("item");
-	for(; i1 != i2; ++i1) {
-		items_.push_back(item_ptr(new item(i1->second)));
-	}
+	wml::node::const_child_iterator i1 = node->begin_child("prop");
+	wml::node::const_child_iterator i2 = node->end_child("prop");
 
-	i1 = node->begin_child("prop");
-	i2 = node->end_child("prop");
 	for(; i1 != i2; ++i1) {
 		props_.push_back(prop_object(i1->second));
 		layers_.insert(props_.back().zorder());
@@ -180,12 +174,6 @@ level::level(const std::string& level_cfg)
 		background_.reset(new background(bg));
 	} else if(node->has_attr("background")) {
 		background_ = background::get(node->attr("background"));
-	}
-
-	wml::const_node_ptr fluid_node = node->get_child("fluid");
-	if(fluid_node) {
-		fluid_.reset(new fluid(boundaries().w(), boundaries().h()));
-		fluid_->read(fluid_node);
 	}
 
 	wml::const_node_ptr water_node = node->get_child("water");
@@ -384,10 +372,6 @@ wml::node_ptr level::write() const
 		res->set_attr("lock_screen", lock_screen_->to_string());
 	}
 
-	if(fluid_) {
-		res->add_child(fluid_->write());
-	}
-
 	if(water_) {
 		res->add_child(water_->write());
 	}
@@ -426,12 +410,6 @@ wml::node_ptr level::write() const
 
 	foreach(const prop_object& p, props_) {
 		res->add_child(p.write());
-	}
-
-	foreach(item_ptr it, items_) {
-		if(it) {
-			res->add_child(it->write());
-		}
 	}
 
 	foreach(const portal& p, portals_) {
@@ -600,7 +578,6 @@ bool sort_entity_drawing_pos(const entity_ptr& a, const entity_ptr& b) {
 
 void level::draw_status() const
 {
-//	status_gui_->draw();
 	if(gui_algorithm_) {
 		gui_algorithm_->draw(*this);
 	}
@@ -663,18 +640,8 @@ void level::draw(int x, int y, int w, int h) const
 		draw_layer(*layer, x, y, w, h);
 	}
 
-	foreach(item_ptr it, items_) {
-		if(it) {
-			it->draw();
-		}
-	}
-
 	foreach(const const_entity_ptr& p, players_) {
 		p->draw();
-	}
-
-	if(fluid_) {
-		fluid_->draw(x, y, w, h);
 	}
 
 	for(; layer != layers_.end(); ++layer) {
@@ -810,7 +777,6 @@ void level::do_processing()
 
 	const int ticks = SDL_GetTicks();
 	active_chars_.clear();
-	active_items_.clear();
 
 	if(!player_) {
 		return;
@@ -879,24 +845,6 @@ void level::do_processing()
 	std::cerr << "active: " << active_chars_.size() << "/" << chars_.size() << "\n";
 
 	const int ActivationDistance = 700;
-	for(int n = 0; n != items_.size(); ++n) {
-		item_ptr& i = items_[n];
-		if(!i) {
-			continue;
-		}
-
-		if(i->destroyed()) {
-			i = NULL;
-			if(player_) {
-				player_->is_human()->item_destroyed(id(), n);
-			}
-			continue;
-		}
-
-		if(std::abs(player_->x() - i->x()) < ActivationDistance) {
-			active_items_.push_back(i);
-		}
-	}
 
 	foreach(entity_ptr c, active_chars_) {
 		c->process(*this);
@@ -918,14 +866,7 @@ void level::do_processing()
 		}
 	}
 
-	foreach(item_ptr i, active_items_) {
-		i->process(*this);
-	}
 	std::cerr << "process: " << (SDL_GetTicks() - ticks) << "\n";
-
-	if(fluid_) {
-		fluid_->process(*this);
-	}
 
 	if(water_) {
 		water_->process(*this);
@@ -1547,14 +1488,6 @@ void level::add_player(entity_ptr p)
 	assert(player_);
 	chars_.push_back(p);
 
-	//remove items the player has already taken
-	const std::vector<int>& destroyed = player_->get_player_info()->get_items_destroyed(id());
-	for(int n = 0; n != items_.size(); ++n) {
-		if(std::binary_search(destroyed.begin(), destroyed.end(), n)) {
-			items_[n] = NULL;
-		}
-	}
-
 	//remove objects that have already been destroyed
 	const std::vector<int>& destroyed_objects = player_->get_player_info()->get_objects_destroyed(id());
 	for(int n = 0; n != chars_.size(); ++n) {
@@ -1583,11 +1516,6 @@ void level::add_character(entity_ptr p)
 	}
 
 	layers_.insert(p->zorder());
-}
-
-void level::add_item(item_ptr p)
-{
-	items_.push_back(p);
 }
 
 void level::add_prop(const prop_object& new_prop)
@@ -1756,8 +1684,6 @@ variant level::get_value(const std::string& key) const
 		return variant(new graphics::color(tint_));
 	} else if(key == "in_editor") {
 		return variant(editor_);
-	} else if(key == "status_gui") {
-		return variant(status_gui_.get());
 	} else {
 		const_entity_ptr e = get_entity_by_label(key);
 		if(e) {

@@ -11,18 +11,12 @@
 class player_info
 {
 public:
-	explicit player_info(entity& e) : entity_(&e), score_(0), slot_(0)
+	explicit player_info(entity& e) : entity_(&e), slot_(0)
 	{}
 	player_info(entity& e, wml::const_node_ptr node);
 	
-	void item_destroyed(const std::string& level_id, int item);
-	const std::vector<int>& get_items_destroyed(const std::string& level_id) const;
-
 	void object_destroyed(const std::string& level_id, int item);
 	const std::vector<int>& get_objects_destroyed(const std::string& level_id) const;
-
-	int score(int points) { score_ += points; return score_; }
-	int score() const { return score_; }
 
 	void write(wml::node_ptr node) const;
 
@@ -49,8 +43,6 @@ private:
 	mutable std::map<std::string, std::vector<int> > items_destroyed_;
 	mutable std::map<std::string, std::vector<int> > objects_destroyed_;
 	
-	int score_;
-
 	//the number of the player.
 	int slot_;
 

@@ -11,6 +11,7 @@
 #include "level_runner.hpp"
 #include "load_level.hpp"
 #include "message_dialog.hpp"
+#include "player_info.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "sound.hpp"

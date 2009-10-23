@@ -3,8 +3,6 @@
 
 #include "asserts.hpp"
 #include "blur.hpp"
-#include "character.hpp"
-#include "character_type.hpp"
 #include "collision_utils.hpp"
 #include "current_generator.hpp"
 #include "custom_object_functions.hpp"
@@ -265,14 +263,9 @@ public:
 	  : type_(type), x_(x), y_(y), face_right_(face_right), instantiation_commands_(instantiation_commands), custom_(custom)
 	{}
 	virtual void execute(level& lvl, entity& ob) const {
-		entity_ptr e;
-		if(custom_) {
-			custom_object* obj = new custom_object(type_, x_, y_, face_right_);
-			obj->set_level(lvl);
-			e = obj;
-		} else {
-			e = new character(type_, x_, y_, face_right_);
-		}
+		custom_object* obj = new custom_object(type_, x_, y_, face_right_);
+		obj->set_level(lvl);
+		entity_ptr e = obj;
 		lvl.add_character(e);
 		
 		//spawn with the spawned object's midpoint (rather than its upper-left corner) at x_, y_.
@@ -1260,41 +1253,6 @@ public:
 	}
 };
 
-class control_command : public entity_command_callable {
-public:
-	explicit control_command(const std::vector<std::string>& v) : v_(v)
-	{}
-
-	virtual void execute(level& lvl, entity& ob) const {
-		character* c = dynamic_cast<character*>(&ob);
-		if(c) {
-			c->clear_control_status();
-			foreach(const std::string& s, v_) {
-				c->set_control_status(s, true);
-			}
-		}
-	}
-private:
-	std::vector<std::string> v_;
-};
-
-class control_function : public function_expression {
-public:
-	explicit control_function(const args_list& args)
-	  : function_expression("control_function", args, 1) {
-	}
-
-	variant execute(const formula_callable& variables) const {
-		std::vector<std::string> items;
-		variant v = args()[0]->evaluate(variables);
-		for(int n = 0; n != v.num_elements(); ++n) {
-			items.push_back(v[n].as_string());
-		}
-
-		return variant(new control_command(items));
-	}
-};
-
 class add_particles_command : public custom_object_command_callable {
 public:
 	add_particles_command(const std::string& id, const std::string& type)
@@ -1543,8 +1501,6 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new begin_script_function(args));
 	} else if(fn == "end_script") {
 		return expression_ptr(new end_script_function(args));
-	} else if(fn == "control") {
-		return expression_ptr(new control_function(args));
 	} else if(fn == "add_particles") {
 		return expression_ptr(new add_particles_function(args));
 	} else if(fn == "collides") {

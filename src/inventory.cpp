@@ -135,8 +135,6 @@ void show_inventory(const level& lvl, entity& c)
 			abilities[n]->icon().draw(xpos, ypos);
 		}
 		
-		
-		draw_statusbar(lvl, last_draw_position(), &c);
 		SDL_GL_SwapBuffers();
 		SDL_Delay(20);
 	}
