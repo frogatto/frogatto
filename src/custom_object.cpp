@@ -404,8 +404,9 @@ void custom_object::process(level& lvl)
 		const int air_resistance = is_underwater ? lvl.water_resistance() : lvl.air_resistance();
 
 		const int friction = ((stand_info.friction + air_resistance)*type_->friction())/1000;
+		const int vertical_resistance = (air_resistance*type_->friction())/1000;
 		velocity_x_ = (velocity_x_*(1000 - friction))/1000;
-		velocity_y_ = (velocity_y_*(1000 - friction))/1000;
+		velocity_y_ = (velocity_y_*(1000 - vertical_resistance))/1000;
 	}
 
 	if(type_->affected_by_currents()) {
