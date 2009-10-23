@@ -38,7 +38,7 @@ bool match_regex(boost::array<char, 4> str, const boost::regex* re) {
 	return match;
 }
 
-const int TileSize = 32;
+static const int TileSize = 32;
 
 struct is_whitespace {
 	bool operator()(char c) const { return isspace(c); }

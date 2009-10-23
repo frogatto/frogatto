@@ -400,8 +400,6 @@ const editor_variable_info* variable_info_selected(const_entity_ptr e, int xpos,
 	return NULL;
 }
 
-const int TileSize = 32;
-
 int round_tile_size(int n)
 {
 	if(n >= 0) {

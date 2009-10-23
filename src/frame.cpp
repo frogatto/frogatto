@@ -107,6 +107,8 @@ frame::frame(wml::const_node_ptr node)
 		collision_area area = { area_id, r };
 		collision_areas_.push_back(area);
 	}
+
+	build_alpha();
 }
 
 void frame::set_image_as_solid()
@@ -125,12 +127,60 @@ void frame::play_sound(const void* object) const
 	}
 }
 
+void frame::build_alpha()
+{
+	if(!texture_.valid()) {
+		return;
+	}
+
+	alpha_.resize(nframes_*img_rect_.w()*img_rect_.h());
+
+	for(int n = 0; n < nframes_; ++n) {
+		GLfloat rect[4];
+		get_rect_in_frame_number(n, &rect[0]);
+		for(int y = 0; y < img_rect_.h(); ++y) {
+			for(int x = 0; x < img_rect_.w(); ++x) {
+				const GLfloat xratio = GLfloat(x)/img_rect_.w();
+				const GLfloat yratio = GLfloat(y)/img_rect_.h();
+
+				const GLfloat u = xratio*rect[2] + (1.0-xratio)*rect[0];
+				const GLfloat v = yratio*rect[3] + (1.0 - yratio)*rect[1];
+				ASSERT_GE(u, 0.0);
+				ASSERT_GE(v, 0.0);
+				ASSERT_LE(u, 1.0);
+				ASSERT_LE(v, 1.0);
+				const bool a = texture_.is_alpha((texture_.width()-1)*u, (texture_.height()-1)*v);
+				alpha_[y*img_rect_.w()*nframes_ + x + n*img_rect_.w()] = a;
+			}
+		}
+
+	}
+}
+
 bool frame::is_alpha(int x, int y, int time, bool face_right) const
 {
+	if(alpha_.empty()) {
+		return true;
+	}
+
+	if(face_right == false) {
+		x = width() - x - 1;
+	}
+
 	if(x < 0 || y < 0 || x >= width() || y >= height()) {
 		return true;
 	}
 
+	x /= scale_;
+	y /= scale_;
+
+	const int nframe = frame_number(time);
+	x += nframe*img_rect_.w();
+	
+	const int index = y*img_rect_.w()*nframes_ + x;
+	ASSERT_INDEX_INTO_VECTOR(index, alpha_);
+	return alpha_[index];
+	
 	GLfloat rect[4];
 	get_rect_in_texture(time, &rect[0]);
 	
@@ -163,9 +213,14 @@ void frame::draw(int x, int y, bool face_right, bool upside_down, int time, int 
 
 void frame::get_rect_in_texture(int time, GLfloat* output_rect) const
 {
+	get_rect_in_frame_number(frame_number(time), output_rect);
+}
+
+void frame::get_rect_in_frame_number(int nframe, GLfloat* output_rect) const
+{
 	//picks out a single frame to draw from a whole animation, based on time
-	const int current_col = (nframes_per_row_ > 0) ? (frame_number(time) % nframes_per_row_) : frame_number(time) ;
-	const int current_row = (nframes_per_row_ > 0) ? (frame_number(time)/nframes_per_row_) : 0 ;
+	const int current_col = (nframes_per_row_ > 0) ? (nframe % nframes_per_row_) : nframe ;
+	const int current_row = (nframes_per_row_ > 0) ? (nframe/nframes_per_row_) : 0 ;
 
 	output_rect[0] = GLfloat(img_rect_.x() + current_col*(img_rect_.w()+pad_))/GLfloat(texture_.width());
 	output_rect[1] = GLfloat(img_rect_.y() + ((img_rect_.h()+pad_) * current_row)) / GLfloat(texture_.height());

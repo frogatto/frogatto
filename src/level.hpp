@@ -21,6 +21,7 @@
 #include "gui_formula_functions.hpp"
 #include "item.hpp"
 #include "level_object.hpp"
+#include "level_solid_map.hpp"
 #include "movement_script.hpp"
 #include "prop.hpp"
 #include "status_gui.hpp"
@@ -32,7 +33,6 @@
 class level : public game_logic::formula_callable
 {
 public:
-	static const int TileSize = 32;
 	explicit level(const std::string& level_cfg);
 
 	//function to do anything which loads the level and must be done
@@ -121,7 +121,6 @@ public:
 
 	//the portal the character has entered (if any)
 	const portal* get_portal() const;
-	void debug_dump_solid_map() const;
 
 	int xscale() const { return xscale_; }
 	int yscale() const { return yscale_; }
@@ -240,16 +239,6 @@ private:
 	typedef std::pair<int,int> tile_pos;
 	typedef std::bitset<TileSize*TileSize> tile_bitmap;
 
-	struct solid_info {
-		solid_info() : all_solid(false), friction(0), traction(0), damage(0)
-		{}
-		tile_bitmap bitmap;
-		bool all_solid;
-		int friction;
-		int traction;
-		int damage;
-	};
-
 	std::string id_;
 	std::string music_;
 	std::string replay_data_;
@@ -257,12 +246,11 @@ private:
 
 	std::map<std::string, variant> vars_;
 	
-	typedef std::map<tile_pos, solid_info> solid_map;
-	solid_map solid_;
-	solid_map standable_;
+	level_solid_map solid_;
+	level_solid_map standable_;
 
-	bool is_solid(const solid_map& map, int x, int y, int* friction, int* traction, int* damage) const;
-	void set_solid(solid_map& map, int x, int y, int friction, int traction, int damage, bool solid=true);
+	bool is_solid(const level_solid_map& map, int x, int y, int* friction, int* traction, int* damage) const;
+	void set_solid(level_solid_map& map, int x, int y, int friction, int traction, int damage, bool solid=true);
 
 	variant get_value(const std::string& key) const;
 	void set_value(const std::string& key, const variant& value);

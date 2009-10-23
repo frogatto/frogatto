@@ -24,6 +24,7 @@
 #include "stats.hpp"
 #include "string_utils.hpp"
 #include "tile_map.hpp"
+#include "unit_test.hpp"
 #include "wml_node.hpp"
 #include "wml_parser.hpp"
 #include "wml_utils.hpp"
@@ -759,30 +760,6 @@ void level::draw_debug_solid(int x, int y, int w, int h) const
 	if(preferences::show_debug_hitboxes() == false) {
 		return;
 	}
-
-	for(solid_map::const_iterator i = solid_.begin(); i != solid_.end(); ++i) {
-		const int xpos = i->first.first*TileSize;
-		const int ypos = i->first.second*TileSize;
-
-		if(xpos < x || ypos < y || xpos > x + w || ypos > y + h) {
-			continue;
-		}
-
-		const solid_info& info = i->second;
-		if(info.all_solid) {
-			const SDL_Rect rect = {xpos, ypos, TileSize, TileSize};
-			graphics::draw_rect(rect, graphics::color_black(), 0x99);
-		} else {
-			for(int yi = 0; yi != TileSize; ++yi) {
-				for(int xi = 0; xi != TileSize; ++xi) {
-					if(info.bitmap[yi*TileSize + xi]) {
-						const SDL_Rect rect = {xpos + xi, ypos + yi, 1, 1};
-						graphics::draw_rect(rect, graphics::color_black(), 0x99);
-					}
-				}
-			}
-		}
-	}
 }
 
 void level::draw_background(double x, double y, int rotation) const
@@ -955,9 +932,8 @@ void level::do_processing()
 	}
 }
 
-bool level::is_solid(const solid_map& map, int x, int y, int* friction, int* traction, int* damage) const
+bool level::is_solid(const level_solid_map& map, int x, int y, int* friction, int* traction, int* damage) const
 {
-
 	tile_pos pos(x/TileSize, y/TileSize);
 	x = x%TileSize;
 	y = y%TileSize;
@@ -971,35 +947,35 @@ bool level::is_solid(const solid_map& map, int x, int y, int* friction, int* tra
 		y += 32;
 	}
 
-	std::map<tile_pos, solid_info>::const_iterator i = map.find(pos);
-	if(i != map.end()) {
-		if(i->second.all_solid) {
+	const tile_solid_info* info = map.find(pos);
+	if(info != NULL) {
+		if(info->all_solid) {
 			if(friction) {
-				*friction = i->second.friction;
+				*friction = info->friction;
 			}
 
 			if(traction) {
-				*traction = i->second.traction;
+				*traction = info->traction;
 			}
 
 			if(damage) {
-				*damage = i->second.damage;
+				*damage = info->damage;
 			}
 			return true;
 		}
 		
 		const int index = y*TileSize + x;
-		if(i->second.bitmap.test(index)) {
+		if(info->bitmap.test(index)) {
 			if(friction) {
-				*friction = i->second.friction;
+				*friction = info->friction;
 			}
 
 			if(traction) {
-				*traction = i->second.traction;
+				*traction = info->traction;
 			}
 
 			if(damage) {
-				*damage = i->second.damage;
+				*damage = info->damage;
 			}
 			return true;
 		} else {
@@ -1074,7 +1050,7 @@ bool level::may_be_solid_in_rect(const rect& r) const
 
 	for(int ypos = 0; ypos <= (y + r.h())/TileSize; ++ypos) {
 		for(int xpos = 0; xpos <= (x + r.w())/TileSize; ++xpos) {
-			if(solid_.count(tile_pos(pos.first + xpos, pos.second + ypos))) {
+			if(solid_.find(tile_pos(pos.first + xpos, pos.second + ypos))) {
 				return true;
 			}
 		}
@@ -1221,7 +1197,6 @@ void level::refresh_tile_rect(int x1, int y1, int x2, int y2)
 }
 
 namespace {
-const int TileSize = 32;
 int round_tile_size(int n)
 {
 	if(n >= 0) {
@@ -1404,8 +1379,8 @@ std::vector<point> level::get_solid_contiguous_region(int xpos, int ypos) const
 	ypos = round_tile_size(ypos);
 
 	tile_pos base(xpos/TileSize, ypos/TileSize);
-	solid_map::const_iterator base_itor = solid_.find(base);
-	if(base_itor == solid_.end() || base_itor->second.all_solid == false && base_itor->second.bitmap.any() == false) {
+	const tile_solid_info* info = solid_.find(base);
+	if(info == NULL || info->all_solid == false && info->bitmap.any() == false) {
 		return result;
 	}
 
@@ -1429,8 +1404,8 @@ std::vector<point> level::get_solid_contiguous_region(int xpos, int ypos) const
 				continue;
 			}
 
-			solid_map::const_iterator itor = solid_.find(pos);
-			if(itor == solid_.end() || itor->second.all_solid == false && itor->second.bitmap.any() == false) {
+			const tile_solid_info* info = solid_.find(pos);
+			if(info == NULL || info->all_solid == false && info->bitmap.any() == false) {
 				continue;
 			}
 
@@ -1506,7 +1481,7 @@ void level::add_solid_rect(int x1, int y1, int x2, int y2, int friction, int tra
 	for(int y = y1; y < y2; y += TileSize) {
 		for(int x = x1; x < x2; x += TileSize) {
 			tile_pos pos(x/TileSize, y/TileSize);
-			solid_info& s = solid_[pos];
+			tile_solid_info& s = solid_.insert_or_find(pos);
 			s.all_solid = true;
 			s.friction = friction;
 			s.traction = traction;
@@ -1525,7 +1500,7 @@ void level::add_standable(int x, int y, int friction, int traction, int damage)
 	set_solid(standable_, x, y, friction, traction, damage);
 }
 
-void level::set_solid(solid_map& map, int x, int y, int friction, int traction, int damage, bool solid)
+void level::set_solid(level_solid_map& map, int x, int y, int friction, int traction, int damage, bool solid)
 {
 	tile_pos pos(x/TileSize, y/TileSize);
 	x = x%TileSize;
@@ -1540,7 +1515,7 @@ void level::set_solid(solid_map& map, int x, int y, int friction, int traction, 
 		y += 32;
 	}
 	const int index = y*TileSize + x;
-	solid_info& info = map[pos];
+	tile_solid_info& info = map.insert_or_find(pos);
 
 	if(solid) {
 		info.friction = friction;
@@ -1693,40 +1668,6 @@ const level::portal* level::get_portal() const
 	}
 
 	return NULL;
-}
-
-void level::debug_dump_solid_map() const
-{
-	int min_x = 1000000, max_x = -1000000, min_y = 1000000, max_y = -1000000;
-	for(solid_map::const_iterator i = solid_.begin(); i != solid_.end(); ++i) {
-		if(i->first.first < min_x) {
-			min_x = i->first.first;
-		}
-
-		if(i->first.first > max_x) {
-			max_x = i->first.first;
-			std::cerr << "max_x: " << max_x << "\n";
-		}
-
-		if(i->first.second < min_y) {
-			min_y = i->first.second;
-		}
-
-		if(i->first.second > max_y) {
-			max_y = i->first.second;
-			std::cerr << "max_y: " << max_x << "\n";
-		}
-	}
-
-	std::cerr << "SOLID MAP: " << min_x << "-" << max_x << "\n";
-	std::cerr << "SOLID MAP: " << min_y << "-" << max_y << "\n";
-
-	for(int y = min_y*32; y < (max_y+1)*32; ++y) {
-		for(int x = min_x*32; x < (max_x+1)*32; ++x) {
-			std::cerr << (solid(x, y) ? "1" : "0");
-		}
-		std::cerr << "\n";
-	}
 }
 
 int level::group_size(int group) const
@@ -2079,3 +2020,11 @@ void level::editor_freeze_tile_updates(bool value)
 	}
 }
 
+BENCHMARK(level_solid)
+{
+	//benchmark which tells us how long level::solid takes.
+	static level* lvl = new level("stairway-to-heaven.cfg");
+	BENCHMARK_LOOP {
+		lvl->solid(rng::generate()%1000, rng::generate()%1000);
+	}
+}
