@@ -598,6 +598,8 @@ void custom_object::process(level& lvl)
 		//we are standing on a new object. Adjust our velocity relative to
 		//the object we're standing on
 		velocity_x_ -= stand_info.collide_with->last_move_x()*100;
+
+		stand_info.collide_with->handle_event("jumped_on");
 	}
 
 	standing_on_ = stand_info.collide_with;
