@@ -43,12 +43,6 @@ void solid_map::create_object_solid_maps(wml::const_node_ptr node, std::vector<c
 	legs_map->calculate_side(1, 0, legs_map->right_);
 	legs_map->calculate_side(-10000, 0, legs_map->all_);
 	v.push_back(legs_map);
-
-	std::cerr << "LEGS: ";
-	foreach(const point& p, legs_map->bottom_) {
-		std::cerr << p.x << "," << p.y << " ";
-	}
-	std::cerr << "\n";
 }
 
 void solid_map::create_object_platform_maps(wml::const_node_ptr node, std::vector<const_solid_map_ptr>& v)
@@ -76,7 +70,6 @@ const_solid_map_ptr solid_map::create_from_texture(const graphics::texture& t, c
 	solid_map_ptr solid(new solid_map);
 	solid->area_ = rect(0, 0, area.w()*2, area.h()*2);
 	solid->solid_.resize(solid->area_.w()*solid->area_.h(), false);
-	std::cerr << "SOLID MAP: " << solid->area_ << " {{{\n";
 	for(int y = 0; y < solid->area_.h(); ++y) {
 		for(int x = 0; x < solid->area_.w(); ++x) {
 			bool is_solid = !t.is_alpha(area.x() + x/2, area.y() + y/2);
@@ -95,11 +88,7 @@ const_solid_map_ptr solid_map::create_from_texture(const graphics::texture& t, c
 			if(is_solid) {
 				solid->set_solid(x, y);
 			}
-
-			std::cerr << (is_solid ? "1" : "0");
 		}
-
-		std::cerr << "\n";
 	}
 	return solid;
 }

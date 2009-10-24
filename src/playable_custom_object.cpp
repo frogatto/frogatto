@@ -83,7 +83,6 @@ variant playable_custom_object::get_value(const std::string& key) const
 	static const std::string ctrl[] = { "ctrl_up", "ctrl_down", "ctrl_left", "ctrl_right", "ctrl_attack", "ctrl_jump" };
 	for(int n = 0; n < sizeof(ctrl)/sizeof(*ctrl); ++n) {
 		if(key == ctrl[n]) {
-			std::cerr << "CONTROL: '" << key << "'\n";
 			return variant(control_status(static_cast<controls::CONTROL_ITEM>(n)));
 		}
 	}

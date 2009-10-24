@@ -754,7 +754,6 @@ void level::process()
 		gui_algorithm_->process(*this);
 	}
 
-	std::cerr << "RANDOM CYCLE " << id_ << " " << cycle_ << ": " << rng::get_seed() << "\n";
 	multiplayer::send_and_receive();
 
 	const int LevelPreloadFrequency = 500; //10 seconds

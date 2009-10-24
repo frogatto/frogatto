@@ -119,7 +119,6 @@ gui_algorithm::gui_algorithm(wml::const_node_ptr node)
 	  cycle_(0), object_(new custom_object("dummy_gui_object", 0, 0, true))
 {
 	object_->add_ref();
-	std::cerr << "dummy_gui_object REF COUNT " << object_->refcount() << "\n";
 	FOREACH_WML_CHILD(frame_node, node, "animation") {
 		frame_ptr f(new frame(frame_node));
 		frames_[frame_node->attr("id")] = f;
@@ -207,7 +206,6 @@ variant gui_algorithm::get_value(const std::string& key) const
 	if(key == "level") {
 		return variant(lvl_);
 	} else if(key == "object") {
-		std::cerr << "GET dummy_gui_object: " << object_->refcount() << "\n";
 		return variant(object_.get());
 	} else if(key == "cycle") {
 		return variant(cycle_);

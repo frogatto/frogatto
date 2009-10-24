@@ -56,7 +56,6 @@ struct tile_pattern {
 		variations.push_back(tile);
 
 		pattern_str = node->attr("pattern");
-		std::cerr << "tile pattern: {{{" << node->attr("pattern") << "}}}\n";
 		std::string pattern_str = node->attr("pattern");
 		pattern_str.erase(std::remove_if(pattern_str.begin(), pattern_str.end(), is_whitespace()), pattern_str.end());
 		std::vector<std::string> patterns = util::split(pattern_str, ',', 0);
@@ -66,8 +65,6 @@ struct tile_pattern {
 		//the main pattern is always the very middle one.
 		int main_tile = patterns.size()/2;
 
-
-		std::cerr << "WIDTH: '" << node->attr("pattern_width") << "' -> " << patterns.size() << "\n";
 		int width = wml::get_int(node, "pattern_width", sqrt(static_cast<float>(patterns.size())));
 		assert(width != 0);
 		int height = patterns.size()/width;
@@ -106,7 +103,6 @@ struct tile_pattern {
 		i1 = node->begin_child("tile");
 		i2 = node->end_child("tile");
 		while(i1 != i2) {
-			std::cerr << "added object...\n";
 			added_tile t;
 			t.object = level_object_ptr(new level_object(i1->second));
 			t.zorder = wml::get_int(i1->second, "zorder");
@@ -385,7 +381,6 @@ void tile_map::build_patterns()
 	const int end_time = SDL_GetTicks();
 	static int total_time = 0;
 	total_time += (end_time - begin_time);
-	std::cerr << "BUILD PATTERNS: " << (end_time - begin_time) << " " << total_time << "\n";
 }
 
 const std::vector<const tile_pattern*>& tile_map::get_patterns() const
@@ -487,11 +482,8 @@ int tile_map::get_variations(int x, int y) const
 	bool face_right = false;
 	const tile_pattern* p = get_matching_pattern(x, y, cache, &face_right);
 	if(p == NULL) {
-	std::cerr << "get_variations(" << x << ", " << y << ") -> null\n";
 		return 0;
 	}
-
-	std::cerr << "get_variations(" << x << ", " << y << ") -> " << p->variations.size() << "\n";
 
 	return p->variations.size();
 }
@@ -595,7 +587,6 @@ void tile_map::apply_matching_multi_pattern(int x, int y, const multi_tile_patte
 				level_object_ptr ob = pattern.tile_at(xpos, ypos).tile;
 				if(ob) {
 					mapping[point(x + xpos, y + ypos)] = ob;
-					std::cerr << "INSERTING AT " << (x + xpos) << "," << (y + ypos) << "\n";
 				}
 			}
 		}

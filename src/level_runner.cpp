@@ -176,10 +176,8 @@ bool level_runner::play_cycle()
 
 		entity_ptr save = lvl_->player()->get_entity().save_condition();
 		if(!save) {
-			std::cerr << "NO SAVE; RESTART\n";
 			return false;
 		}
-		std::cerr << "LOAD SAVE\n";
 		preload_level(save->get_player_info()->current_level());
 		fade_scene(*lvl_, last_draw_position());
 		level* new_level = load_level(save->get_player_info()->current_level());
@@ -260,12 +258,11 @@ bool level_runner::play_cycle()
 
 			player_info* player = lvl_->player();
 			if(player && portal->saved_game == false) {
-				std::cerr << "ADD PLAYER IN LEVEL\n";
 				player->get_entity().set_pos(dest);
 				new_level->add_player(&player->get_entity());
 				player->get_entity().move_to_standing(*new_level);
+				player->get_entity().handle_event("enter_level");
 			} else {
-				std::cerr << "IS SAVED GAME\n";
 				player = new_level->player();
 			}
 
@@ -424,7 +421,6 @@ bool level_runner::play_cycle()
 	const int wait_time = std::max<int>(1, desired_end_time - SDL_GetTicks());
 	next_delay_ += wait_time;
 	SDL_Delay(wait_time);
-	std::cerr << "delay: " << wait_time << "\n";
 
 	if (!paused) ++cycle;
 

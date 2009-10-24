@@ -148,7 +148,6 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 
 custom_object::~custom_object()
 {
-	std::cerr << "DESTROY: '" << type_->id() << "'\n";
 }
 
 wml::node_ptr custom_object::write() const
@@ -343,10 +342,11 @@ void custom_object::process(level& lvl)
 		velocity_y_ = 0;
 	}
 
+	lvl_ = &lvl;
+
 	const int start_x = x();
 	const int start_y = y();
 	++cycle_;
-	lvl_ = &lvl;
 
 	if(invincible_) {
 		--invincible_;
@@ -361,8 +361,6 @@ void custom_object::process(level& lvl)
 		handle_event("create");
 		handle_event("done_create");
 	}
-
-	lvl_ = &lvl;
 
 	variant scheduled_command = get_scheduled_command(lvl.cycle());
 	while(!scheduled_command.is_null()) {
@@ -436,6 +434,7 @@ void custom_object::process(level& lvl)
 	}
 
 	collision_info collide_info;
+	collision_info jump_on_info;
 
 	//std::cerr << "velocity_y: " << velocity_y_ << "\n";
 	collide = false;
@@ -474,7 +473,6 @@ void custom_object::process(level& lvl)
 			}
 		}
 
-		collision_info jump_on_info;
 		if(!collide && !type_->ignore_collide() && effective_velocity_y > 0 && is_standing(lvl, &jump_on_info)) {
 			if(!jump_on_info.collide_with || jump_on_info.collide_with != standing_on_) {
 				collide = true;
@@ -510,10 +508,15 @@ void custom_object::process(level& lvl)
 	}
 
 	if(collide) {
-		std::cerr << "COLLIDE!\n";
 		if(effective_velocity_y < 0 || !started_standing) {
-			std::cerr << "COLLIDE EVENT\n";
 			handle_event(effective_velocity_y < 0 ? "collide_head" : "collide_feet");
+		}
+
+		if(collide_info.damage || jump_on_info.damage) {
+			game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
+			callable->add("damage", variant(std::max(collide_info.damage, jump_on_info.damage)));
+			variant v(callable);
+			handle_event("collide_damage", callable);
 		}
 	}
 
@@ -525,7 +528,6 @@ void custom_object::process(level& lvl)
 		}
 
 		const int dir = effective_velocity_x/100 > 0 ? 1 : -1;
-		int damage = 0;
 		const int original_y = y();
 		
 		set_pos(x() + dir, y());
@@ -574,6 +576,12 @@ void custom_object::process(level& lvl)
 
 	if(collide) {
 		handle_event("collide");
+		if(collide_info.damage) {
+			game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
+			callable->add("damage", variant(collide_info.damage));
+			variant v(callable);
+			handle_event("collide_damage", callable);
+		}
 	}
 
 	stand_info = collision_info();
