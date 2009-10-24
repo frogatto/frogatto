@@ -77,6 +77,10 @@ bool entity_collides(level& lvl, const entity& e, MOVE_DIRECTION dir, collision_
 
 bool entity_collides_with_entity(const entity& e, const entity& other, const std::string** area_id, const std::string** other_area_id)
 {
+	if((e.solid_dimensions()&other.solid_dimensions()) == 0) {
+		return false;
+	}
+
 	const rect our_rect = e.solid_rect();
 	const rect other_rect = other.solid_rect();
 

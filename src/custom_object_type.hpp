@@ -103,6 +103,8 @@ public:
 	//true if the object can ever be solid or standable
 	bool has_solid() const { return has_solid_; }
 
+	unsigned int solid_dimensions() const { return solid_dimensions_; }
+
 private:
 	std::string id_;
 	int hitpoints_;
@@ -162,6 +164,8 @@ private:
 
 	//variable which is true if the object is ever solid or standable
 	bool has_solid_;
+
+	unsigned int solid_dimensions_;
 };
 
 #endif

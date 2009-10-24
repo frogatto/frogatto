@@ -16,6 +16,20 @@ std::map<std::string, std::string> object_file_paths, prototype_file_paths;
 
 typedef std::map<std::string, const_custom_object_type_ptr> object_map;
 object_map cache;
+
+int get_solid_dimension_id(const std::string& key) {
+	static std::map<std::string, int> dims;
+	static int next_id = 0;
+
+	std::map<std::string, int>::const_iterator itor = dims.find(key);
+	if(itor != dims.end()) {
+		return itor->second;
+	}
+
+	dims[key] = next_id;
+	return next_id++;
+}
+
 }
 
 const_custom_object_type_ptr custom_object_type::get(const std::string& id)
@@ -173,8 +187,17 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	teleport_offset_y_(wml::get_int(node, "teleport_offset_y")),
 	solid_(solid_info::create(node)),
 	platform_(solid_info::create_platform(node)),
-	has_solid_(solid_ || use_image_for_collisions_)
+	has_solid_(solid_ || use_image_for_collisions_),
+	solid_dimensions_(has_solid_ ? 0xFFFFFFFF : 0)
 {
+	if(node->has_attr("solid_dimensions")) {
+		solid_dimensions_ = 0;
+		foreach(const std::string& key, util::split(node->attr("solid_dimensions"))) {
+			solid_dimensions_ = solid_dimensions_|(1 << get_solid_dimension_id(key));
+		}
+		
+	}
+
 	if(node->has_attr("functions")) {
 		object_functions_.reset(new game_logic::function_symbol_table);
 		object_functions_->set_backup(&get_custom_object_functions_symbol_table());

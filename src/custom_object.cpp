@@ -55,6 +55,8 @@ custom_object::custom_object(wml::const_node_ptr node)
 	standing_on_prev_x_(INT_MIN), standing_on_prev_y_(INT_MIN),
 	can_interact_with_(false), fall_through_platforms_(0)
 {
+	set_solid_dimensions(type_->solid_dimensions());
+
 	wml::const_node_ptr tags_node = node->get_child("tags");
 	if(tags_node) {
 		tags_ = new game_logic::map_formula_callable(node->get_child("tags"));
@@ -127,6 +129,8 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	cycle_(0),
 	loaded_(false), fall_through_platforms_(0)
 {
+	set_solid_dimensions(type_->solid_dimensions());
+
 	for(std::map<std::string, variant>::const_iterator i = type_->variables().begin(); i != type_->variables().end(); ++i) {
 		if(!vars_->contains(i->first)) {
 			vars_->add(i->first, i->second);

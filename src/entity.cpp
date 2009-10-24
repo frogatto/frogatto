@@ -17,7 +17,8 @@ entity::entity(wml::const_node_ptr node)
 	face_right_(wml::get_bool(node, "face_right")),
 	upside_down_(wml::get_bool(node, "upside_down", false)),
 	group_(wml::get_int(node, "group", -1)),
-    id_(-1), respawn_(wml::get_bool(node, "respawn", true))
+    id_(-1), respawn_(wml::get_bool(node, "respawn", true)),
+	solid_dimensions_(0)
 {
 	foreach(bool& b, controls_) {
 		b = false;
@@ -25,7 +26,7 @@ entity::entity(wml::const_node_ptr node)
 }
 
 entity::entity(int x, int y, bool face_right)
-  : x_(x*100), y_(y*100), prev_feet_x_(INT_MIN), prev_feet_y_(INT_MIN), face_right_(face_right), upside_down_(false), group_(-1), id_(-1)
+  : x_(x*100), y_(y*100), prev_feet_x_(INT_MIN), prev_feet_y_(INT_MIN), face_right_(face_right), upside_down_(false), group_(-1), id_(-1), solid_dimensions_(0)
 {
 	foreach(bool& b, controls_) {
 		b = false;

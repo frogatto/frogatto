@@ -215,6 +215,8 @@ public:
 
 	virtual void set_level(level* lvl) {}
 
+	unsigned int solid_dimensions() const { return solid_dimensions_; }
+
 protected:
 
 	bool control_status(controls::CONTROL_ITEM ctrl) const { return controls_[ctrl]; }
@@ -228,6 +230,8 @@ protected:
 	void move_centipixels(int x, int y) { x_ += x; y_ += y; }
 
 	void set_editor_info(const_editor_entity_info_ptr p) { editor_info_ = p; }
+
+	void set_solid_dimensions(unsigned int dim) { solid_dimensions_ = dim; }
 
 private:
 	virtual void control(const level& lvl) = 0;
@@ -247,6 +251,8 @@ private:
 	int id_;
 
 	bool respawn_;
+
+	unsigned int solid_dimensions_;
 
 	const_editor_entity_info_ptr editor_info_;
 
