@@ -52,7 +52,11 @@ void solid_map::create_object_platform_maps(wml::const_node_ptr node, std::vecto
 	}
 
 	rect area(node->attr("platform_area"));
-	area = rect(area.x()*2, area.y()*2, area.w()*2, area.h()*2);
+
+	//intentionally do NOT double the height of the area.
+	area = rect(area.x()*2, area.y()*2, area.w()*2, 1);
+
+	ASSERT_EQ(area.h(), 1);
 
 	solid_map_ptr platform(new solid_map);
 	platform->id_ = "platform";
@@ -164,7 +168,7 @@ const_solid_info_ptr solid_info::create_from_solid_maps(const std::vector<const_
 			}
 		}
 
-		result->area_ = rect::from_coordinates(x1, y1, x2, y2);
+		result->area_ = rect::from_coordinates(x1, y1, x2-1, y2-1);
 		result->solid_= solid;
 		return const_solid_info_ptr(result);
 	}

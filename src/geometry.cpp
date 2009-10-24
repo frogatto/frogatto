@@ -190,4 +190,10 @@ UNIT_TEST(rect)
 	rect r(10, 10, 10, 10);
 	rect r2(r.to_string());
 	CHECK_EQ(r, r2);
+
+	r = rect(10, 10, 10, 0);
+	CHECK_NE(true, point_in_rect(point(15, 9), r));
+	CHECK_NE(true, point_in_rect(point(15, 10), r));
+	CHECK_NE(true, point_in_rect(point(15, 11), r));
+	CHECK_EQ(r.h(), 0);
 }

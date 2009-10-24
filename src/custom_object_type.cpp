@@ -188,7 +188,7 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	solid_(solid_info::create(node)),
 	platform_(solid_info::create_platform(node)),
 	has_solid_(solid_ || use_image_for_collisions_),
-	solid_dimensions_(has_solid_ ? 0xFFFFFFFF : 0)
+	solid_dimensions_(has_solid_ || platform_ ? 0xFFFFFFFF : 0)
 {
 	if(node->has_attr("solid_dimensions")) {
 		solid_dimensions_ = 0;

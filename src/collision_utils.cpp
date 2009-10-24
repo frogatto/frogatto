@@ -14,7 +14,7 @@ bool point_standable(const level& lvl, const entity& e, int x, int y, collision_
 	}
 
 	foreach(const entity_ptr& obj, lvl.get_chars()) {
-		if(&e == obj.get()) {
+		if(&e == obj.get() || (e.solid_dimensions()&obj->solid_dimensions()) == 0) {
 			continue;
 		}
 

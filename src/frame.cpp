@@ -89,7 +89,7 @@ frame::frame(wml::const_node_ptr node)
 	static const std::string AreaPostfix = "_area";
 	for(wml::node::const_attr_iterator i = node->begin_attr(); i != node->end_attr(); ++i) {
 		const std::string& attr = i->first;
-		if(attr.size() <= AreaPostfix.size() || std::equal(AreaPostfix.begin(), AreaPostfix.end(), attr.end() - AreaPostfix.size()) == false || attr == "solid_area") {
+		if(attr.size() <= AreaPostfix.size() || std::equal(AreaPostfix.begin(), AreaPostfix.end(), attr.end() - AreaPostfix.size()) == false || attr == "solid_area" ||attr == "platform_area") {
 			continue;
 		}
 

@@ -336,13 +336,20 @@ void custom_object::process(level& lvl)
 
 	collision_info stand_info;
 	const bool started_standing = is_standing(lvl, &stand_info);
+	if(!started_standing && standing_on_) {
+		//if we were standing on something the previous frame, but aren't
+		//standing any longer, we use the value of what we were previously
+		//standing on.
+		stand_info.traction = standing_on_->surface_traction();
+		stand_info.friction = standing_on_->surface_friction();
+	}
 
 	if(y() > lvl.boundaries().y2()) {
 		--hitpoints_;
 	}
 	
 	previous_y_ = y();
-	if((started_standing || standing_on_) && velocity_y_ > 0) {
+	if(started_standing && velocity_y_ > 0) {
 		velocity_y_ = 0;
 	}
 
@@ -542,8 +549,8 @@ void custom_object::process(level& lvl)
 
 		const bool standing = is_standing(lvl);
 		if(started_standing && !standing) {
-			int max_drop = 2;
-			while(--max_drop && !is_standing(lvl)) {
+			int max_drop = 1;
+			while(max_drop-- && !is_standing(lvl)) {
 				set_pos(x(), y()+1);
 
 				if(entity_collides(lvl, *this, MOVE_NONE)) {
@@ -552,6 +559,7 @@ void custom_object::process(level& lvl)
 				}
 			}
 		} else if(standing) {
+			const int begin_y = feet_y();
 			int max_slope = 5;
 			while(--max_slope && is_standing(lvl)) {
 				set_pos(x(), y()-1);
@@ -860,8 +868,9 @@ void custom_object::control(const level& lvl)
 
 bool custom_object::is_standing(const level& lvl, collision_info* info) const
 {
-	return has_feet() &&
+	const bool result = has_feet() &&
 	       point_standable(lvl, *this, feet_x(), feet_y(), info, fall_through_platforms_ ? SOLID_ONLY : SOLID_AND_PLATFORMS);
+	return result;
 }
 
 namespace {
