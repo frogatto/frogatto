@@ -24,6 +24,11 @@
 
 namespace game_logic {
 
+variant formula_expression::execute_member(const formula_callable& variables, std::string& id) const
+{
+	throw formula_error();
+}
+
 namespace {
 
 class dir_function : public function_expression {

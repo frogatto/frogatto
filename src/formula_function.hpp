@@ -34,8 +34,16 @@ public:
 		call_stack_manager manager(str_.c_str());
 		return execute(variables);
 	}
+
+	variant evaluate_with_member(const formula_callable& variables, std::string& id) const {
+		call_stack_manager manager(str_.c_str());
+		return execute_member(variables, id);
+	}
 	void set_name(const char* name) { name_ = name; }
 	void set_str(const std::string& str) { str_ = str; }
+	const std::string& str() const { return str_; }
+protected:
+	virtual variant execute_member(const formula_callable& variables, std::string& id) const;
 private:
 	virtual variant execute(const formula_callable& variables) const = 0;
 	const char* name_;

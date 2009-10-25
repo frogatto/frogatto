@@ -568,6 +568,17 @@ public:
 	}
 private:
 	variant execute(const formula_callable& variables) const {
+		if(args().size() == 2) {
+			try {
+				std::string member;
+				variant target = args()[0]->evaluate_with_member(variables, member);
+				return variant(new set_command(
+				  target, member, args()[1]->evaluate(variables)));
+			} catch(game_logic::formula_error&) {
+				std::cerr << "FAIL TO SET\n";
+			}
+		}
+
 		variant target;
 		if(args().size() == 3) {
 			target = args()[0]->evaluate(variables);

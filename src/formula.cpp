@@ -238,6 +238,25 @@ public:
 	}
 };
 
+class identifier_expression : public formula_expression {
+public:
+	explicit identifier_expression(const std::string& id)
+	  : formula_expression("_id"), id_(id)
+	{}
+
+	const std::string& id() const { return id_; }
+private:
+	variant execute_member(const formula_callable& variables, std::string& id) const {
+		id = id_;
+		return variables.query_value("self");
+	}
+
+	variant execute(const formula_callable& variables) const {
+		return variables.query_value(id_);
+	}
+	std::string id_;
+};
+
 class dot_expression : public formula_expression {
 public:
 	dot_expression(expression_ptr left, expression_ptr right)
@@ -256,6 +275,19 @@ private:
 		}
 
 		return right_->evaluate(*left.as_callable());
+	}
+
+	variant execute_member(const formula_callable& variables, std::string& id) const {
+		const variant left = left_->evaluate(variables);
+
+		const identifier_expression* id_expr = dynamic_cast<identifier_expression*>(right_.get());
+		if(!id_expr) {
+			return right_->evaluate_with_member(*left.as_callable(), id);
+		}
+
+		id = id_expr->id();
+
+		return left;
 	}
 
 	expression_ptr left_, right_;
@@ -421,18 +453,6 @@ private:
 	}
 };
 
-
-class identifier_expression : public formula_expression {
-public:
-	explicit identifier_expression(const std::string& id)
-	  : formula_expression("_id"), id_(id)
-	{}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variables.query_value(id_);
-	}
-	std::string id_;
-};
 
 class variant_expression : public formula_expression {
 public:
