@@ -1200,7 +1200,8 @@ void custom_object::set_frame(const std::string& name)
 		game_logic::formula_callable_ptr callable_ptr(callable);
 		handle_event("change_animation_failure", callable);
 		handle_event("change_animation_failure_" + frame_name_, callable);
-		assert(!entity_collides_with_level(*lvl_, *this, MOVE_NONE));
+		ASSERT_LOG(!entity_collides_with_level(*lvl_, *this, MOVE_NONE),
+		  "Object '" << type_->id() << "' has different solid areas when changing from frame " << previous_animation << " to " << frame_name_ << " and doesn't handle it properly");
 	}
 
 	handle_event("enter_anim");
