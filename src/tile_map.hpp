@@ -68,7 +68,15 @@ private:
 	//the subset of all multi tile patterns which might be valid for this map.
 	std::vector<const multi_tile_pattern*> multi_patterns_;
 
-	void apply_matching_multi_pattern(int x, int y, const multi_tile_pattern& pattern, std::map<point, level_object_ptr>& mapping) const;
+	typedef std::pair<point, int> point_zorder;
+	//function to apply the first found matching multi pattern.
+	//mapping represents all the tiles added in our zorder.
+	//different_zorder_mapping represents the mappings in different zorders
+	//to this tile_map.
+	void apply_matching_multi_pattern(int x, int y,
+	  const multi_tile_pattern& pattern,
+	  std::map<point, level_object_ptr>& mapping,
+	  std::map<point_zorder, level_object_ptr>& different_zorder_mapping) const;
 
 	//the subset of all global patterns which might be valid for this map.
 	std::vector<const tile_pattern*> patterns_;

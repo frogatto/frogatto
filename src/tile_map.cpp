@@ -556,7 +556,10 @@ int random_hash(int x, int y, int z, int n)
 
 }
 
-void tile_map::apply_matching_multi_pattern(int x, int y, const multi_tile_pattern& pattern, std::map<point, level_object_ptr>& mapping) const
+void tile_map::apply_matching_multi_pattern(int x, int y,
+  const multi_tile_pattern& pattern,
+  std::map<point, level_object_ptr>& mapping,
+  std::map<point_zorder, level_object_ptr>& different_zorder_mapping) const
 {
 	int random_seed = 0;
 	if(pattern.chance() < 100 && random_hash(x, y, zorder_, random_seed++) > pattern.chance()) {
@@ -584,9 +587,14 @@ void tile_map::apply_matching_multi_pattern(int x, int y, const multi_tile_patte
 	if(match) {
 		for(int xpos = 0; xpos < pattern.width() && match; ++xpos) {
 			for(int ypos = 0; ypos < pattern.height() && match; ++ypos) {
-				level_object_ptr ob = pattern.tile_at(xpos, ypos).tile;
+				const multi_tile_pattern::tile_info& info = pattern.tile_at(xpos, ypos);
+				level_object_ptr ob = info.tile;
 				if(ob) {
-					mapping[point(x + xpos, y + ypos)] = ob;
+					if(info.zorder == INT_MIN) {
+						mapping[point(x + xpos, y + ypos)] = ob;
+					} else {
+						different_zorder_mapping[point_zorder(point(x + xpos, y + ypos), info.zorder)] = ob;
+					}
 				}
 			}
 		}
@@ -606,6 +614,7 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles,
 	}
 
 	std::map<point, level_object_ptr> multi_pattern_matches;
+	std::map<point_zorder, level_object_ptr> different_zorder_multi_pattern_matches;
 
 	foreach(const multi_tile_pattern* p, multi_patterns_) {
 		for(int y = -1; y <= static_cast<int>(map_.size()); ++y) {
@@ -616,9 +625,28 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles,
 			}
 
 			for(int x = -1; x <= width; ++x) {
-				apply_matching_multi_pattern(x, y, *p, multi_pattern_matches);
+				apply_matching_multi_pattern(x, y, *p, multi_pattern_matches, different_zorder_multi_pattern_matches);
 			}
 		}
+	}
+
+	//add all tiles in different zorders to our own.
+	for(std::map<point_zorder, level_object_ptr>::const_iterator i = different_zorder_multi_pattern_matches.begin(); i != different_zorder_multi_pattern_matches.end(); ++i) {
+		const level_object_ptr& obj = i->second;
+		const int x = i->first.first.x;
+		const int y = i->first.first.y;
+
+		const int xpos = xpos_ + x*TileSize;
+		const int ypos = ypos_ + y*TileSize;
+
+		level_tile t;
+		t.x = xpos;
+		t.y = ypos;
+		t.zorder = i->first.second;
+		t.object = i->second;
+		t.rotate = 0;
+		t.face_right = false;
+		tiles->push_back(t);
 	}
 
 

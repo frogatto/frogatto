@@ -20,6 +20,7 @@ public:
 	struct tile_info {
 		const boost::regex* re;
 		level_object_ptr tile;
+		int zorder;
 	};
 
 	const tile_info& tile_at(int x, int y) const;

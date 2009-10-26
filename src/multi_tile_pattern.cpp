@@ -59,9 +59,13 @@ multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr node)
   : id_(node->attr("id")), width_(-1), height_(-1), chance_(wml::get_int(node, "chance", 100))
 {
 	std::map<std::string, level_object_ptr> objects;
+	std::map<std::string, int> object_zorders;
 	for(wml::node::const_all_child_iterator i = node->begin_children();
 	    i != node->end_children(); ++i) {
 		objects[(*i)->name()].reset(new level_object(*i));
+		if((*i)->has_attr("zorder")) {
+			object_zorders[(*i)->name()] = wml::get_int(*i, "zorder");
+		}
 	}
 
 	std::vector<std::string> lines = util::split(node->attr("pattern"), '\n', 0);
@@ -88,6 +92,11 @@ multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr node)
 
 			tile_info info;
 			info.re = &get_regex_from_pool(item);
+			info.zorder = INT_MIN;
+			std::map<std::string, int>::const_iterator zorder_itor = object_zorders.find(map_to);
+			if(zorder_itor != object_zorders.end()) {
+				info.zorder = zorder_itor->second;
+			}
 
 			if(map_to.empty() == false) {
 				info.tile = objects[map_to];
