@@ -549,9 +549,9 @@ int random_hash(int x, int y, int z, int n)
 
 	return (
 	  x_rng[x%(sizeof(x_rng)/sizeof(*x_rng))] +
-	  y_rng[x%(sizeof(y_rng)/sizeof(*y_rng))] +
-	  z_rng[x%(sizeof(z_rng)/sizeof(*z_rng))] +
-	  n_rng[x%(sizeof(n_rng)/sizeof(*n_rng))])%100;
+	  y_rng[y%(sizeof(y_rng)/sizeof(*y_rng))] +
+	  z_rng[z%(sizeof(z_rng)/sizeof(*z_rng))] +
+	  n_rng[n%(sizeof(n_rng)/sizeof(*n_rng))])%100;
 }
 
 }
