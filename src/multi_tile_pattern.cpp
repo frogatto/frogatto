@@ -58,10 +58,21 @@ void multi_tile_pattern::init(wml::const_node_ptr node)
 multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr node)
   : id_(node->attr("id")), width_(-1), height_(-1), chance_(wml::get_int(node, "chance", 100))
 {
+	FOREACH_WML_CHILD(alternative_node, node, "alternative") {
+		wml::node_ptr merged(new wml::node("multi_tile_pattern"));
+		wml::merge_attr_over(node, merged);
+		wml::merge_over(alternative_node, merged);
+		alternatives_.push_back(boost::shared_ptr<multi_tile_pattern>(new multi_tile_pattern(merged)));
+	}
+
 	std::map<std::string, level_object_ptr> objects;
 	std::map<std::string, int> object_zorders;
 	for(wml::node::const_all_child_iterator i = node->begin_children();
 	    i != node->end_children(); ++i) {
+		if((*i)->name() == "alternative") {
+			continue;
+		}
+
 		objects[(*i)->name()].reset(new level_object(*i));
 		if((*i)->has_attr("zorder")) {
 			object_zorders[(*i)->name()] = wml::get_int(*i, "zorder");
@@ -128,4 +139,18 @@ int multi_tile_pattern::width() const
 int multi_tile_pattern::height() const
 {
 	return height_;
+}
+
+const multi_tile_pattern& multi_tile_pattern::choose_random_alternative(int seed) const
+{
+	if(alternatives_.empty()) {
+		return *this;
+	}
+
+	const int index = seed%(alternatives_.size() + 1);
+	if(index == alternatives_.size()) {
+		return *this;
+	}
+
+	return *alternatives_[index];
 }

@@ -43,6 +43,7 @@ typedef std::vector<node_ptr> node_vector;
 
 node_ptr deep_copy(const_node_ptr node);
 node_ptr deep_copy(const_node_ptr node, const std::string& name);
+void merge_attr_over(const_node_ptr src, node_ptr dst);
 void merge_over(const_node_ptr src, node_ptr dst);
 void copy_over(const_node_ptr src, node_ptr dst);
 

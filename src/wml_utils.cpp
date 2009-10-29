@@ -30,12 +30,8 @@ node_ptr deep_copy(const_node_ptr ptr)
 	return deep_copy(ptr, ptr->name());
 }
 
-void merge_over(const_node_ptr src, node_ptr dst)
+void merge_attr_over(const_node_ptr src, node_ptr dst)
 {
-	if(src->get_comment().empty() == false) {
-		dst->set_comment(src->get_comment());
-	}
-
 	for(node::const_attr_iterator i = src->begin_attr();
 	    i != src->end_attr(); ++i) {
 		dst->set_attr(i->first,i->second);
@@ -44,6 +40,15 @@ void merge_over(const_node_ptr src, node_ptr dst)
 			dst->set_attr_comment(i->first,comment);
 		}
 	}
+}
+
+void merge_over(const_node_ptr src, node_ptr dst)
+{
+	if(src->get_comment().empty() == false) {
+		dst->set_comment(src->get_comment());
+	}
+
+	merge_attr_over(src, dst);
 
 	for(node::const_all_child_iterator i = src->begin_children();
 	    i != src->end_children(); ++i) {

@@ -2,6 +2,7 @@
 #define MULTI_TILE_PATTERN_HPP_INCLUDED
 
 #include <boost/regex.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include <string>
 #include <vector>
@@ -29,9 +30,12 @@ public:
 	int height() const;
 
 	int chance() const { return chance_; }
+
+	const multi_tile_pattern& choose_random_alternative(int seed) const;
 private:
 	std::string id_;
 	std::vector<tile_info> tiles_;
+	std::vector<boost::shared_ptr<multi_tile_pattern> > alternatives_;
 	int width_, height_;
 	int chance_;
 };

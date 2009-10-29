@@ -551,18 +551,20 @@ int random_hash(int x, int y, int z, int n)
 	  x_rng[x%(sizeof(x_rng)/sizeof(*x_rng))] +
 	  y_rng[y%(sizeof(y_rng)/sizeof(*y_rng))] +
 	  z_rng[z%(sizeof(z_rng)/sizeof(*z_rng))] +
-	  n_rng[n%(sizeof(n_rng)/sizeof(*n_rng))])%100;
+	  n_rng[n%(sizeof(n_rng)/sizeof(*n_rng))]);
 }
 
 }
 
 void tile_map::apply_matching_multi_pattern(int x, int y,
-  const multi_tile_pattern& pattern,
+  const multi_tile_pattern& base_pattern,
   std::map<point, level_object_ptr>& mapping,
   std::map<point_zorder, level_object_ptr>& different_zorder_mapping) const
 {
-	int random_seed = 0;
-	if(pattern.chance() < 100 && random_hash(x, y, zorder_, random_seed++) > pattern.chance()) {
+	const int hash = random_hash(x, y, zorder_, 0);
+	const multi_tile_pattern& pattern = base_pattern.choose_random_alternative(hash);
+
+	if(pattern.chance() < 100 && hash%100 > pattern.chance()) {
 		return;
 	}
 
