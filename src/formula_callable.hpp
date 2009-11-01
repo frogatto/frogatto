@@ -153,6 +153,8 @@ public:
 	void clear() { values_.clear(); }
 	bool contains(const std::string& key) const { return values_.count(key); }
 
+	const std::map<std::string, variant>& values() const { return values_; }
+
 	typedef std::map<std::string,variant>::const_iterator const_iterator;
 
 	const_iterator begin() const { return values_.begin(); }

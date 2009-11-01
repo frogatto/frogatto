@@ -202,9 +202,11 @@ wml::node_ptr custom_object::write() const
 		res->set_attr("on_" + i->first, i->second->str());
 	}
 
-	wml::node_ptr vars(new wml::node("vars"));
-	vars_->write(vars);
-	res->add_child(vars);
+	if(vars_->values() != type_->variables()) {
+		wml::node_ptr vars(new wml::node("vars"));
+		vars_->write(vars);
+		res->add_child(vars);
+	}
 
 	wml::node_ptr tags(new wml::node("tags"));
 	tags_->write(tags);
