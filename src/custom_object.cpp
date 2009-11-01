@@ -909,6 +909,8 @@ struct custom_object::Accessor {
 	CUSTOM_ACCESSOR(midpoint_x, obj.x() + obj.current_frame().width()/2)
 	CUSTOM_ACCESSOR(midpoint_y, obj.y() + obj.current_frame().height()/2)
 
+	CUSTOM_ACCESSOR(solid_rect, obj.solid_rect().callable());
+
 	CUSTOM_ACCESSOR(img_w, obj.current_frame().width());
 	CUSTOM_ACCESSOR(img_h, obj.current_frame().height());
 	CUSTOM_ACCESSOR(front, obj.face_right() ? obj.body_rect().x2() : obj.body_rect().x());
@@ -994,6 +996,7 @@ struct custom_object::Accessor {
 		ACCESSOR(h);
 		ACCESSOR(midpoint_x);
 		ACCESSOR(midpoint_y);
+		ACCESSOR(solid_rect);
 		ACCESSOR(img_w);
 		ACCESSOR(img_h);
 		ACCESSOR(front);

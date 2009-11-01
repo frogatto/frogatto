@@ -632,14 +632,12 @@ private:
 		const int x = args()[1]->evaluate(variables).as_int();
 		const int y = args()[2]->evaluate(variables).as_int();
 
-		custom_object* me = variables.query_value("me").convert_to<custom_object>();
-
 		int w = args().size() >= 4 ? args()[3]->evaluate(variables).as_int() : 1;
 		int h = args().size() >= 5 ? args()[4]->evaluate(variables).as_int() : 1;
 
 		rect r(x, y, w, h);
 
-		return variant(lvl->solid(r) || lvl->collide(r, me));
+		return variant(lvl->solid(r));
 	}
 };
 

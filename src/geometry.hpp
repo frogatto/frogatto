@@ -21,6 +21,10 @@ bool operator==(const point& a, const point& b);
 bool operator!=(const point& a, const point& b);
 bool operator<(const point& a, const point& b);
 
+namespace game_logic {
+class formula_callable;
+}
+
 class rect {
 public:
 	static rect from_coordinates(int x1, int y1, int x2, int y2);
@@ -41,6 +45,8 @@ public:
 	SDL_Rect sdl_rect() const;
 
 	bool empty() const { return w() == 0 || h() == 0; }
+
+	game_logic::formula_callable* callable() const;
 private:
 	point top_left_, bottom_right_;
 };
