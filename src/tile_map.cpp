@@ -571,7 +571,7 @@ void tile_map::apply_matching_multi_pattern(int x, int y,
 	bool match = true;
 	for(int xpos = 0; xpos < pattern.width() && match; ++xpos) {
 		for(int ypos = 0; ypos < pattern.height() && match; ++ypos) {
-			if(pattern.tile_at(xpos, ypos).tile && mapping.count(point(x + xpos, y + ypos))) {
+			if(pattern.tile_at(xpos, ypos).tiles.empty() == false && mapping.count(point(x + xpos, y + ypos))) {
 				//there is already another pattern filling this tile.
 				match = false;
 				break;
@@ -590,12 +590,14 @@ void tile_map::apply_matching_multi_pattern(int x, int y,
 		for(int xpos = 0; xpos < pattern.width() && match; ++xpos) {
 			for(int ypos = 0; ypos < pattern.height() && match; ++ypos) {
 				const multi_tile_pattern::tile_info& info = pattern.tile_at(xpos, ypos);
-				level_object_ptr ob = info.tile;
-				if(ob) {
-					if(info.zorder == INT_MIN) {
-						mapping[point(x + xpos, y + ypos)] = ob;
-					} else {
-						different_zorder_mapping[point_zorder(point(x + xpos, y + ypos), info.zorder)] = ob;
+				foreach(const multi_tile_pattern::tile_entry& entry, info.tiles) {
+					level_object_ptr ob = entry.tile;
+					if(ob) {
+						if(entry.zorder == INT_MIN) {
+							mapping[point(x + xpos, y + ypos)] = ob;
+						} else {
+							different_zorder_mapping[point_zorder(point(x + xpos, y + ypos), entry.zorder)] = ob;
+						}
 					}
 				}
 			}

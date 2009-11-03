@@ -18,10 +18,15 @@ public:
 	static const std::vector<multi_tile_pattern>& get_all();
 	static void init(wml::const_node_ptr node);
 	explicit multi_tile_pattern(wml::const_node_ptr node);
-	struct tile_info {
-		const boost::regex* re;
+
+	struct tile_entry {
 		level_object_ptr tile;
 		int zorder;
+	};
+
+	struct tile_info {
+		const boost::regex* re;
+		std::vector<tile_entry> tiles;
 	};
 
 	const tile_info& tile_at(int x, int y) const;

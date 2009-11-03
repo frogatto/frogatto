@@ -90,27 +90,43 @@ multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr node)
 		ASSERT_LOG(width_ == items.size(), "Inconsistent multi_tile_pattern size in pattern " << id_);
 
 		foreach(std::string item, items) {
-			std::string map_to;
+			std::vector<const char*> arrows;
 			const char* arrow = strstr(item.c_str(), "->");
-			if(arrow) {
-				map_to = arrow+2;
-				util::strip(map_to);
-				item.resize(arrow - item.c_str());
+			while(arrow) {
+				arrows.push_back(arrow);
+				arrow = strstr(arrow+2, "->");
 			}
 
-			item = util::strip(item);
-			map_to = util::strip(map_to);
+			std::vector<std::string> map_to;
+			if(arrows.empty() == false) {
+				arrows.push_back(item.c_str() + item.size());
+				for(int n = 0; n != arrows.size()-1; ++n) {
+					std::string m(arrows[n]+2, arrows[n+1]);
+					util::strip(m);
+					map_to.push_back(m);
+				}
+
+				item = std::string(item.c_str(), arrows.front());
+			}
+
+			util::strip(item);
 
 			tile_info info;
 			info.re = &get_regex_from_pool(item);
-			info.zorder = INT_MIN;
-			std::map<std::string, int>::const_iterator zorder_itor = object_zorders.find(map_to);
-			if(zorder_itor != object_zorders.end()) {
-				info.zorder = zorder_itor->second;
-			}
 
-			if(map_to.empty() == false) {
-				info.tile = objects[map_to];
+			foreach(const std::string& m, map_to) {
+				tile_entry entry;
+				entry.zorder = INT_MIN;
+				std::map<std::string, int>::const_iterator zorder_itor = object_zorders.find(m);
+				if(zorder_itor != object_zorders.end()) {
+					entry.zorder = zorder_itor->second;
+				}
+
+				if(map_to.empty() == false) {
+					entry.tile = objects[m];
+				}
+
+				info.tiles.push_back(entry);
 			}
 
 			tiles_.push_back(info);
