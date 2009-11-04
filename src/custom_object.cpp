@@ -150,6 +150,49 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	next_animation_formula_ = type_->next_animation_formula();
 }
 
+custom_object::custom_object(const custom_object& o) :
+	entity(o),
+	previous_y_(o.previous_y_),
+	custom_type_(o.custom_type_),
+	type_(o.type_),
+	frame_(frame_),
+	frame_name_(o.frame_name_),
+	time_in_frame_(o.time_in_frame_),
+	velocity_x_(o.velocity_x_), velocity_y_(o.velocity_y_),
+	accel_x_(o.accel_x_), accel_y_(o.accel_y_),
+	rotate_(o.rotate_),
+	zorder_(o.zorder_),
+	hitpoints_(o.hitpoints_),
+	was_underwater_(o.was_underwater_),
+	invincible_(o.invincible_),
+	next_animation_formula_(o.next_animation_formula_),
+	lvl_(o.lvl_),
+
+	vars_(new game_logic::map_formula_callable(*o.vars_)),
+	tmp_vars_(new game_logic::map_formula_callable(*o.tmp_vars_)),
+	tags_(new game_logic::map_formula_callable(*o.tags_)),
+
+	last_jumped_on_by_(o.last_jumped_on_by_),
+	last_hit_by_(o.last_hit_by_),
+	last_hit_by_anim_(o.last_hit_by_anim_),
+	current_animation_id_(o.current_animation_id_),
+	cycle_(o.cycle_),
+	loaded_(o.loaded_),
+	event_handlers_(o.event_handlers_),
+	standing_on_(o.standing_on_),
+	stood_on_by_(o.stood_on_by_),
+	standing_on_prev_x_(o.standing_on_prev_x_), standing_on_prev_y_(o.standing_on_prev_y_),
+	distortion_(o.distortion_),
+	draw_color_(o.draw_color_),
+	can_interact_with_(o.can_interact_with_),
+	particle_systems_(o.particle_systems_),
+	text_(o.text_),
+	driver_(o.driver_),
+	blur_(o.blur_),
+	fall_through_platforms_(o.fall_through_platforms_)
+{
+}
+
 custom_object::~custom_object()
 {
 }

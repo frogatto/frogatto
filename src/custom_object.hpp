@@ -27,6 +27,7 @@ public:
 
 	explicit custom_object(wml::const_node_ptr node);
 	custom_object(const std::string& type, int x, int y, bool face_right);
+	custom_object(const custom_object& o);
 	virtual ~custom_object();
 	virtual wml::node_ptr write() const;
 	virtual void setup_drawing() const;
@@ -132,6 +133,7 @@ protected:
 	variant get_value(const std::string& key) const;
 
 private:
+	custom_object& operator=(const custom_object& o);
 	struct Accessor;
 
 	bool is_standing(const level& lvl, collision_info* info=NULL) const;
