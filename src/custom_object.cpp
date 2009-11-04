@@ -47,7 +47,6 @@ custom_object::custom_object(wml::const_node_ptr node)
 	lvl_(NULL),
 	vars_(new game_logic::map_formula_callable(node->get_child("vars"))),
 	tmp_vars_(new game_logic::map_formula_callable),
-	tags_(new game_logic::map_formula_callable(node->get_child("tags"))),
 	last_hit_by_anim_(0),
 	current_animation_id_(0),
 	cycle_(wml::get_int(node, "cycle")),
@@ -125,10 +124,15 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	lvl_(NULL),
 	vars_(new game_logic::map_formula_callable),
 	tmp_vars_(new game_logic::map_formula_callable),
+	tags_(new game_logic::map_formula_callable),
 	last_hit_by_anim_(0),
 	cycle_(0),
 	loaded_(false), fall_through_platforms_(0)
 {
+	foreach(const std::string& tag, type_->tags()) {
+		tags_->add(tag, variant(1));
+	}
+
 	set_solid_dimensions(type_->solid_dimensions());
 
 	for(std::map<std::string, variant>::const_iterator i = type_->variables().begin(); i != type_->variables().end(); ++i) {
@@ -155,7 +159,7 @@ custom_object::custom_object(const custom_object& o) :
 	previous_y_(o.previous_y_),
 	custom_type_(o.custom_type_),
 	type_(o.type_),
-	frame_(frame_),
+	frame_(o.frame_),
 	frame_name_(o.frame_name_),
 	time_in_frame_(o.time_in_frame_),
 	velocity_x_(o.velocity_x_), velocity_y_(o.velocity_y_),

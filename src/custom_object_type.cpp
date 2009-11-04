@@ -258,6 +258,7 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 
 	if(node->has_attr("tags")) {
 		tags_ = util::split(node->attr("tags"));
+		std::sort(tags_.begin(), tags_.end());
 	}
 }
 
