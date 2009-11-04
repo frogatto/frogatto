@@ -1673,7 +1673,6 @@ BENCHMARK_ARG(custom_object_handle_event, const std::string& object_event)
 	}
 }
 
-BENCHMARK_ARG_CALL(custom_object_handle_event, ant_collide, "black_ant:collide");
 BENCHMARK_ARG_CALL(custom_object_handle_event, ant_non_exist, "black_ant:blahblah");
 
 BENCHMARK_ARG_CALL_COMMAND_LINE(custom_object_handle_event);

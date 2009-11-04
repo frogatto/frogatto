@@ -297,7 +297,7 @@ surface scale_surface(surface input) {
 
 BENCHMARK(surface_scaling)
 {
-	surface s(graphics::surface_cache::get("frogattospritesheet1.png"));
+	surface s(graphics::surface_cache::get("characters/frogatto-spritesheet1.png"));
 	assert(s.get());
 
 	surface target(SDL_CreateRGBSurface(SDL_SWSURFACE,s->w,s->h,32,SURFACE_MASK));

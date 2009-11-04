@@ -152,7 +152,7 @@ surface get_surface_formula(surface input, const std::string& algo)
 
 BENCHMARK(surface_formula)
 {
-	surface s(graphics::surface_cache::get("frogattospritesheet1.png"));
+	surface s(graphics::surface_cache::get("characters/frogatto-spritesheet1.png"));
 	assert(s.get());
 
 	surface target(SDL_CreateRGBSurface(SDL_SWSURFACE,s->w,s->h,32,SURFACE_MASK));
