@@ -118,28 +118,49 @@ private:
 class sound_command : public entity_command_callable
 {
 public:
-	explicit sound_command(const std::string& name)
-	  : name_(name)
+	explicit sound_command(const std::string& name, const bool loops)
+	  : name_(name), loops_(loops)
 	{}
 	virtual void execute(level& lvl, entity& ob) const {
-		sound::play(name_, &ob);
+		if(loops_){
+			sound::play_looped(name_, &ob);
+		}else{
+			sound::play(name_, &ob);
+		}
 	}
 private:
 	std::string name_;
+	bool loops_;
 };
 
 class sound_function : public function_expression {
 public:
 	explicit sound_function(const args_list& args)
-	  : function_expression("sound",args,1,1)
+	  : function_expression("sound",args,1,2)
 	  {}
 private:
 	variant execute(const formula_callable& variables) const {
 		return variant(new sound_command(
-						args()[0]->evaluate(variables).as_string()));
+										 args()[0]->evaluate(variables).as_string(),
+										 false));
 	}
 };
 
+	
+class sound_loop_function : public function_expression {
+public:
+	explicit sound_loop_function(const args_list& args)
+	: function_expression("sound_loop",args,1,2)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new sound_command(
+										 args()[0]->evaluate(variables).as_string(),
+										 true));
+	}
+};
+	
+	
 class unboard_command : public entity_command_callable {
 public:
 	virtual void execute(level& lvl, entity& ob) const {
@@ -1446,6 +1467,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new can_load_game_function(args));
 	} else if(fn == "sound") {
 		return expression_ptr(new sound_function(args));
+	} else if(fn == "sound_loop") {
+		return expression_ptr(new sound_loop_function(args));
 	} else if(fn == "music") {
 		return expression_ptr(new music_function(args));
 	} else if(fn == "unboard") {

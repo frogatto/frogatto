@@ -26,7 +26,7 @@ void stop_sound(const std::string& file, const void* object=0);
 // function to play a sound effect over and over in a loop. Will return
 // a handle to the sound effect. Will keep playing until cancel_looped()
 // is called with the handle.
-int play_looped(const std::string& file);
+int play_looped(const std::string& file, const void* object=0);
 void cancel_looped(int handle);
 
 void play_music(const std::string& file);

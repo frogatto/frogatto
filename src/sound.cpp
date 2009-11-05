@@ -152,13 +152,13 @@ void stop_sound(const std::string& file, const void* object)
 	}
 }
 
-int play_looped(const std::string& file)
+int play_looped(const std::string& file, const void* object)
 {
 	if(preferences::no_sound() || mute_) {
 		return -1;
 	}
 
-	return play_internal(file, -1, NULL);
+	return play_internal(file, -1, object);
 }
 
 void cancel_looped(int handle)
