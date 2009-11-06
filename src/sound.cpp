@@ -124,10 +124,11 @@ int play_internal(const std::string& file, int loops, const void* object)
 	if(result >= 0) {
 		if(channels_to_sounds_playing.size() <= result) {
 			channels_to_sounds_playing.resize(result + 1);
-			channels_to_sounds_playing[result].file = file;
-			channels_to_sounds_playing[result].object = object;
-			channels_to_sounds_playing[result].loops = loops;
 		}
+
+		channels_to_sounds_playing[result].file = file;
+		channels_to_sounds_playing[result].object = object;
+		channels_to_sounds_playing[result].loops = loops;
 	}
 
 	return result;
@@ -159,12 +160,13 @@ void stop_looped_sounds(const void* object)
 	for(int n = 0; n != channels_to_sounds_playing.size(); ++n) {
 		if(channels_to_sounds_playing[n].object == object &&
 		   (channels_to_sounds_playing[n].loops != 0)) {
-			printf("STOPPING SOUND: %s, LOOP VAlUE=%d, OBJECT=", channels_to_sounds_playing[n].file.c_str(),channels_to_sounds_playing[n].loops); 
-			std::cerr << channels_to_sounds_playing[n].object << " \n";
+			fprintf(stderr, "HALTING SOUND: %s, LOOP VAlUE=%d, OBJECT=%p\n", channels_to_sounds_playing[n].file.c_str(),channels_to_sounds_playing[n].loops, channels_to_sounds_playing[n].object); 
 			Mix_HaltChannel(n);
-		} else {
-			printf("KEEPING SOUND: %s, LOOP VAlUE=%d, OBJECT=", channels_to_sounds_playing[n].file.c_str(),channels_to_sounds_playing[n].loops); 
-			std::cerr << channels_to_sounds_playing[n].object << " \n";
+		} else if(channels_to_sounds_playing[n].object == object) {
+			//this sound is a looped sound, but make sure it keeps going
+			//until it ends, since this function signals that the associated
+			//object is going away.
+			channels_to_sounds_playing[n].object = NULL;
 		}
 	}
 }
@@ -175,7 +177,10 @@ int play_looped(const std::string& file, const void* object)
 		return -1;
 	}
 
-	return play_internal(file, -1, object);
+
+	const int result = play_internal(file, -1, object);
+	std::cerr << "PLAY: " << object << " " << file << " -> " << result << "\n";
+	return result;
 }
 
 void cancel_looped(int handle)
