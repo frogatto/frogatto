@@ -99,6 +99,7 @@ namespace {
 struct sound_playing {
 	std::string file;
 	const void* object;
+	int		loops;		//not strictly boolean.  -1=true, 0=false
 };
 
 std::vector<sound_playing> channels_to_sounds_playing;
@@ -125,6 +126,7 @@ int play_internal(const std::string& file, int loops, const void* object)
 			channels_to_sounds_playing.resize(result + 1);
 			channels_to_sounds_playing[result].file = file;
 			channels_to_sounds_playing[result].object = object;
+			channels_to_sounds_playing[result].loops = loops;
 		}
 	}
 
@@ -151,7 +153,22 @@ void stop_sound(const std::string& file, const void* object)
 		}
 	}
 }
-
+	
+void stop_looped_sounds(const void* object)
+{
+	for(int n = 0; n != channels_to_sounds_playing.size(); ++n) {
+		if(channels_to_sounds_playing[n].object == object &&
+		   (channels_to_sounds_playing[n].loops != 0)) {
+			printf("STOPPING SOUND: %s, LOOP VAlUE=%d, OBJECT=", channels_to_sounds_playing[n].file.c_str(),channels_to_sounds_playing[n].loops); 
+			std::cerr << channels_to_sounds_playing[n].object << " \n";
+			Mix_HaltChannel(n);
+		} else {
+			printf("KEEPING SOUND: %s, LOOP VAlUE=%d, OBJECT=", channels_to_sounds_playing[n].file.c_str(),channels_to_sounds_playing[n].loops); 
+			std::cerr << channels_to_sounds_playing[n].object << " \n";
+		}
+	}
+}
+	
 int play_looped(const std::string& file, const void* object)
 {
 	if(preferences::no_sound() || mute_) {

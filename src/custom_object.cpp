@@ -21,6 +21,7 @@
 #include "wml_utils.hpp"
 #include "unit_test.hpp"
 #include "utils.hpp"
+#include "sound.hpp"
 
 struct custom_object_text {
 	std::string text;
@@ -199,6 +200,8 @@ custom_object::custom_object(const custom_object& o) :
 
 custom_object::~custom_object()
 {
+	sound::stop_looped_sounds(this);
+	std::cerr << "Object died:" << type_->id() << " " << this << " \n";
 }
 
 wml::node_ptr custom_object::write() const

@@ -23,6 +23,11 @@ void play(const std::string& file, const void* object=0);
 //the same as the object in play().
 void stop_sound(const std::string& file, const void* object=0);
 
+//stop all looped sounds associated with an object; same object as in play()
+//intended to be called in all object's destructors
+void stop_looped_sounds(const void* object=0);
+
+	
 // function to play a sound effect over and over in a loop. Will return
 // a handle to the sound effect. Will keep playing until cancel_looped()
 // is called with the handle.
