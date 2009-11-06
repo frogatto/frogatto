@@ -45,6 +45,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 	rotate_(0), zorder_(wml::get_int(node, "zorder", type_->zorder())),
 	hitpoints_(wml::get_int(node, "hitpoints", type_->hitpoints())),
 	was_underwater_(false), invincible_(0),
+	sound_volume_(128),
 	lvl_(NULL),
 	vars_(new game_logic::map_formula_callable(node->get_child("vars"))),
 	tmp_vars_(new game_logic::map_formula_callable),
@@ -122,6 +123,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	rotate_(0), zorder_(type_->zorder()),
 	hitpoints_(type_->hitpoints()),
 	was_underwater_(false), invincible_(0),
+	sound_volume_(128),
 	lvl_(NULL),
 	vars_(new game_logic::map_formula_callable),
 	tmp_vars_(new game_logic::map_formula_callable),
@@ -170,6 +172,7 @@ custom_object::custom_object(const custom_object& o) :
 	hitpoints_(o.hitpoints_),
 	was_underwater_(o.was_underwater_),
 	invincible_(o.invincible_),
+	sound_volume_(o.sound_volume_),
 	next_animation_formula_(o.next_animation_formula_),
 	lvl_(o.lvl_),
 
@@ -201,7 +204,7 @@ custom_object::custom_object(const custom_object& o) :
 custom_object::~custom_object()
 {
 	sound::stop_looped_sounds(this);
-	std::cerr << "Object died:" << type_->id() << " " << this << " \n";
+	//std::cerr << "Object died:" << type_->id() << " " << this << " \n";
 }
 
 wml::node_ptr custom_object::write() const
@@ -999,6 +1002,7 @@ struct custom_object::Accessor {
 	CUSTOM_ACCESSOR(driver, obj.driver_ ? obj.driver_.get() : &obj);
 	CUSTOM_ACCESSOR(is_human, obj.is_human() ? 1 : 0);
 	SIMPLE_ACCESSOR(invincible);
+	SIMPLE_ACCESSOR(sound_volume);
 	CUSTOM_ACCESSOR(springiness, obj.springiness());
 	CUSTOM_ACCESSOR(destroyed, obj.destroyed());
 #undef SIMPLE_ACCESSOR
@@ -1086,6 +1090,7 @@ struct custom_object::Accessor {
 		ACCESSOR(driver);
 		ACCESSOR(is_human);
 		ACCESSOR(invincible);
+		ACCESSOR(sound_volume);
 		ACCESSOR(springiness);
 		ACCESSOR(destroyed);
 		ACCESSOR(standing_on);
@@ -1649,6 +1654,12 @@ void custom_object::set_blur(const blur_info* blur)
 	} else {
 		blur_.reset();
 	}
+}
+
+void custom_object::set_sound_volume(const int sound_volume)
+{
+	sound::change_volume(this, sound_volume);
+	sound_volume_ = sound_volume;
 }
 
 BENCHMARK_ARG(custom_object_get_attr, const std::string& attr)

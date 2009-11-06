@@ -125,7 +125,8 @@ public:
 	void handle_event(const std::string& event, const formula_callable* context=NULL);
 
 	void set_blur(const blur_info* blur);
-
+	void set_sound_volume(const int volume);
+	
 	bool execute_command(const variant& var);
 
 protected:
@@ -161,6 +162,8 @@ private:
 	bool was_underwater_;
 
 	int invincible_;
+	
+	int sound_volume_;	//see sound.cpp; valid values are 0-128, note that this affects all sounds spawned by this object
 
 	game_logic::const_formula_ptr next_animation_formula_;
 

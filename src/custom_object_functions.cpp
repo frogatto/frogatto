@@ -159,6 +159,34 @@ private:
 										 true));
 	}
 };
+
+class sound_volume_command : public entity_command_callable {
+public:
+	explicit sound_volume_command(const int volume)
+	: volume_(volume)
+	{}
+	virtual void execute(level& lvl,entity& ob) const {
+		//sound::change_volume(&ob, volume_);
+		ob.set_sound_volume(volume_);
+	}
+private:
+	std::string name_;
+	int volume_;
+};
+	
+	
+	
+class sound_volume_function : public function_expression {
+public:
+	explicit sound_volume_function(const args_list& args)
+	: function_expression("sound_volume",args,1,1)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new sound_volume_command(
+										 args()[0]->evaluate(variables).as_int()));
+	}
+};
 	
 	
 class unboard_command : public entity_command_callable {
@@ -1469,6 +1497,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new sound_function(args));
 	} else if(fn == "sound_loop") {
 		return expression_ptr(new sound_loop_function(args));
+	} else if(fn == "sound_volume") {
+		return expression_ptr(new sound_volume_function(args));
 	} else if(fn == "music") {
 		return expression_ptr(new music_function(args));
 	} else if(fn == "unboard") {

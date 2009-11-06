@@ -183,6 +183,24 @@ int play_looped(const std::string& file, const void* object)
 	return result;
 }
 
+void change_volume(const void* object, int volume)
+{
+	//Note - range is 0-128 (MIX_MAX_VOLUME).  Truncate:
+	if( volume > 128){
+		volume = 128;
+	} else if ( volume < 0 ){
+		volume = 0;
+	}
+	
+	//find the channel associated with this object.
+	for(int n = 0; n != channels_to_sounds_playing.size(); ++n) {
+		if(channels_to_sounds_playing[n].object == object) {
+			Mix_Volume(n, volume);
+		} //else, we just do nothing
+	}
+	
+}
+	
 void cancel_looped(int handle)
 {
 	Mix_HaltChannel(handle);

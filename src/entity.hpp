@@ -144,6 +144,7 @@ public:
 	virtual void board_vehicle() {}
 	virtual void unboard_vehicle() {}
 
+	virtual void set_sound_volume(const int volume) = 0;
 	virtual int weight() const { return 1; }
 	
 	virtual int mass() const = 0;
