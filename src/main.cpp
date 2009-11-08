@@ -178,6 +178,8 @@ extern "C" int main(int argc, char** argv)
 		std::cerr << "could not set video mode\n";
 		return -1;
 	}
+	
+	SDL_WM_SetCaption("Frogatto", "Frogatto");
 
 	std::cerr << "JOYSTICKS: " << SDL_NumJoysticks() << "\n";
 
