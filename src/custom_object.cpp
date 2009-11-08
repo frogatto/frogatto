@@ -1029,6 +1029,15 @@ struct custom_object::Accessor {
 		return variant(info.collide_with.get());
 	}
 
+	static variant stood_on_by(const custom_object& obj) {
+		std::vector<variant> v;
+		foreach(entity_ptr e, obj.stood_on_by_) {
+			v.push_back(variant(e.get()));
+		}
+
+		return variant(&v);
+	}
+
 #define CUSTOM_ACCESSOR(name, expression) static variant name(const custom_object& obj) { return variant(expression); }
 
 	static void init() {
@@ -1094,6 +1103,7 @@ struct custom_object::Accessor {
 		ACCESSOR(springiness);
 		ACCESSOR(destroyed);
 		ACCESSOR(standing_on);
+		ACCESSOR(stood_on_by);
 	}
 };
 
