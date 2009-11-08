@@ -191,7 +191,7 @@ custom_object::custom_object(const custom_object& o) :
 	stood_on_by_(o.stood_on_by_),
 	standing_on_prev_x_(o.standing_on_prev_x_), standing_on_prev_y_(o.standing_on_prev_y_),
 	distortion_(o.distortion_),
-	draw_color_(o.draw_color_),
+	draw_color_(o.draw_color_ ? new graphics::color_transform(*o.draw_color_) : NULL),
 	can_interact_with_(o.can_interact_with_),
 	particle_systems_(o.particle_systems_),
 	text_(o.text_),
