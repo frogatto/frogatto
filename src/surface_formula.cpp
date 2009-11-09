@@ -2,6 +2,7 @@
 #include <map>
 #include <GL/glew.h>
 
+#include "asserts.hpp"
 #include "concurrent_cache.hpp"
 #include "filesystem.hpp"
 #include "formula.hpp"
@@ -155,6 +156,20 @@ surface get_surface_formula(surface input, const std::string& algo)
 namespace {
 typedef std::map<std::pair<std::string,std::string>, GLuint> shader_map;
 shader_map shader_cache;
+
+void check_shader_errors(const std::string& fname, GLuint shader)
+{
+	int value = 0;
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &value);
+	if(value == GL_FALSE) {
+		char buf[1024*16];
+		int len;
+		glGetShaderInfoLog(shader, sizeof(buf), &len, buf);
+		std::string errors(buf, buf + len);
+		ASSERT_LOG(false, "COMPILE ERROR IN SHADER " << fname << ": " << errors);
+	}
+}
+
 }
 
 GLuint get_gl_shader(const std::string& vertex_shader_file, const std::string& fragment_shader_file)
@@ -177,12 +192,24 @@ GLuint get_gl_shader(const std::string& vertex_shader_file, const std::string& f
 	glShaderSource(fragment_id, 1, &fragment_str, NULL);
 
 	glCompileShader(vertex_id);
+	check_shader_errors(vertex_shader_file, vertex_id);
 	glCompileShader(fragment_id);
+	check_shader_errors(fragment_shader_file, fragment_id);
 
 	GLuint program_id = glCreateProgram();
 	glAttachShader(program_id, vertex_id);
 	glAttachShader(program_id, fragment_id);
 	glLinkProgram(program_id);
+
+	int link_status = 0;
+	glGetProgramiv(program_id, GL_LINK_STATUS, &link_status);
+	if(link_status != GL_TRUE) {
+		char buf[1024*16];
+		int len;
+		glGetProgramInfoLog(program_id, sizeof(buf), &len, buf);
+		std::string errors(buf, buf + len);
+		ASSERT_LOG(false, "LINK ERROR IN SHADER PROGRAM: " << errors);
+	}
 
 	shader_cache[std::make_pair(vertex_shader_file, fragment_shader_file)] = program_id;
 
