@@ -1,7 +1,9 @@
 #include <iostream>
 #include <map>
+#include <GL/glew.h>
 
 #include "concurrent_cache.hpp"
+#include "filesystem.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
 #include "formula_function.hpp"
@@ -148,6 +150,45 @@ surface get_surface_formula(surface input, const std::string& algo)
 	}
 
 	return surf;
+}
+
+namespace {
+typedef std::map<std::pair<std::string,std::string>, GLuint> shader_map;
+shader_map shader_cache;
+}
+
+GLuint get_gl_shader(const std::string& vertex_shader_file, const std::string& fragment_shader_file)
+{
+	shader_map::iterator itor = shader_cache.find(std::make_pair(vertex_shader_file, fragment_shader_file));
+	if(itor != shader_cache.end()) {
+		return itor->second;
+	}
+
+	const std::string vertex_shader = sys::read_file("data/shaders/" + vertex_shader_file);
+	const std::string fragment_shader = sys::read_file("data/shaders/" + fragment_shader_file);
+
+	GLuint vertex_id = glCreateShader(GL_VERTEX_SHADER);
+	GLuint fragment_id = glCreateShader(GL_FRAGMENT_SHADER);
+
+	const char* vertex_str = vertex_shader.c_str();
+	glShaderSource(vertex_id, 1, &vertex_str, NULL);
+
+	const char* fragment_str = fragment_shader.c_str();
+	glShaderSource(fragment_id, 1, &fragment_str, NULL);
+
+	glCompileShader(vertex_id);
+	glCompileShader(fragment_id);
+
+	GLuint program_id = glCreateProgram();
+	glAttachShader(program_id, vertex_id);
+	glAttachShader(program_id, fragment_id);
+	glLinkProgram(program_id);
+
+	shader_cache[std::make_pair(vertex_shader_file, fragment_shader_file)] = program_id;
+
+	glUseProgram(0);
+
+	return program_id;
 }
 
 BENCHMARK(surface_formula)

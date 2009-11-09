@@ -10,6 +10,11 @@
 
    See the COPYING file for more details.
 */
+
+#include <GL/glew.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+
 #include "concurrent_cache.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
@@ -17,8 +22,6 @@
 #include "surface_formula.hpp"
 #include "texture.hpp"
 #include "thread.hpp"
-#include <GL/gl.h>
-#include <GL/glu.h>
 #include <map>
 #include <set>
 #include <iostream>

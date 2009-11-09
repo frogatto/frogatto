@@ -49,6 +49,24 @@ surface get(const std::string& key)
 	return surf;
 }
 
+void clear_unused()
+{
+	surface_map::lock lck(cache);
+	std::map<std::string, surface>& map = lck.map();
+	std::map<std::string, surface>::iterator i = map.begin();
+	while(i != map.end()) {
+		std::cerr << "CACHE REF " << i->first << " -> " << i->second->refcount << "\n";
+		if(i->second->refcount == 1) {
+			std::cerr << "CACHE FREE " << i->first << "\n";
+			map.erase(i++);
+		} else {
+			++i;
+		}
+	}
+
+	std::cerr << "CACHE ITEMS: " << map.size() << "\n";
+}
+
 void clear()
 {
 	cache.clear();

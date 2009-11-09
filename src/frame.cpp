@@ -1,3 +1,4 @@
+#include <GL/glew.h>
 #include <iostream>
 
 #include <boost/lexical_cast.hpp>
@@ -9,6 +10,7 @@
 #include "solid_map.hpp"
 #include "sound.hpp"
 #include "string_utils.hpp"
+#include "surface_formula.hpp"
 #include "texture.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
@@ -53,8 +55,13 @@ frame::frame(wml::const_node_ptr node)
 	 blur_(wml::get_int(node, "blur")),
 	 rotate_on_slope_(wml::get_bool(node, "rotate_on_slope")),
 	 damage_(wml::get_int(node, "damage")),
-	 sounds_(util::split(node->attr("sound")))
+	 sounds_(util::split(node->attr("sound"))),
+	 shader_(0)
 {
+	if(node->has_attr("fragment_shader")) {
+		shader_ = get_gl_shader(node->attr("vertex_shader"), node->attr("fragment_shader"));
+	}
+
 	std::vector<std::string> hit_frames = util::split((*node)["hit_frames"]);
 	foreach(const std::string& f, hit_frames) {
 		hit_frames_.push_back(boost::lexical_cast<int>(f));
@@ -202,13 +209,18 @@ bool frame::is_alpha(int x, int y, int time, bool face_right) const
 
 void frame::draw(int x, int y, bool face_right, bool upside_down, int time, int rotate) const
 {
+	if(shader_) {
+		glUseProgram(shader_);
+	}
 	GLfloat rect[4];
 	get_rect_in_texture(time, &rect[0]);
 	
 	//the last 4 params are the rectangle of the single, specific frame
 	graphics::blit_texture(texture_, x, y, width()*(face_right ? 1 : -1), height()*(upside_down ? -1 : 1), rotate + (face_right ? rotate_ : -rotate_),
 	                       rect[0], rect[1], rect[2], rect[3]);
-
+	if(shader_) {
+		glUseProgram(0);
+	}
 }
 
 void frame::get_rect_in_texture(int time, GLfloat* output_rect) const
