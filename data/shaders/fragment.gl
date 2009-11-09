@@ -5,54 +5,24 @@ void main()
 	vec4 color = texture2D(tex,gl_TexCoord[0].st);
 	ivec4 icolor = ivec4(color[0]*255.0, color[1]*255.0, color[2]*255.0, color[3]*255.0);
 	if(icolor.a == 255) {
-		switch(icolor.r) {
-		case 2:  icolor = ivec4(100, 45, 85, 255); break;
-		case 29: icolor = ivec4(143, 44, 106, 255); break;
-		case 50: icolor = ivec4(168, 85, 0, 255); break;
-		case 59: icolor = ivec4(203, 126, 39, 255); break;
-		case 61: icolor = ivec4(148, 87, 69, 255); break;
-		case 85: icolor = ivec4(52, 28, 66, 255); break;
-		case 137: icolor = ivec4(235, 197, 82, 255); break;
-		case 146: icolor = ivec4(100, 45, 85, 255); break;
-		case 158: icolor = ivec4(112, 154, 209, 255); break;
-		case 197: icolor = ivec4(160, 197, 201, 255); break;
-		case 209: icolor = ivec4(255, 239, 198, 255); break;
-		case 233: icolor = ivec4(208, 230, 230, 255); break;
-		case 249: icolor = ivec4(255, 249, 189, 255); break;
-		}
+		if(icolor.r == 2) { icolor = ivec4(100, 45, 85, 255); }
+		else if(icolor.r == 29) { icolor = ivec4(143, 44, 106, 255); }
+		else if(icolor.r == 50) { icolor = ivec4(168, 85, 0, 255); }
+		else if(icolor.r == 59) { icolor = ivec4(203, 126, 39, 255); }
+		else if(icolor.r == 61) { icolor = ivec4(148, 87, 69, 255); }
+		else if(icolor.r == 85) { icolor = ivec4(52, 28, 66, 255); }
+		else if(icolor.r == 137) { icolor = ivec4(235, 197, 82, 255); }
+		else if(icolor.r == 146) { icolor = ivec4(100, 45, 85, 255); }
+		else if(icolor.r == 158) { icolor = ivec4(112, 154, 209, 255); }
+		else if(icolor.r == 197) { icolor = ivec4(160, 197, 201, 255); }
+		else if(icolor.r == 209) { icolor = ivec4(255, 239, 198, 255); }
+		else if(icolor.r == 233) { icolor = ivec4(208, 230, 230, 255); }
+		else if(icolor.r == 249) { icolor = ivec4(255, 249, 189, 255); }
+
 		color[0] = float(icolor[0])/255.0;
 		color[1] = float(icolor[1])/255.0;
 		color[2] = float(icolor[2])/255.0;
 		color[3] = float(icolor[3])/255.0;
-/*
-		ivec4 inputColors[30] = ivec4[](
-		  ivec4(2,   104, 105, 255), ivec4(100, 45, 85, 255),
-		  ivec4(29,  172, 113, 255), ivec4(143, 44, 106, 255),
-		  ivec4(50,  155, 117, 255), ivec4(168, 85, 0, 255),
-		  ivec4(59,  209,  64, 255), ivec4(203, 126, 39, 255),
-		  ivec4(61,  182, 121, 255), ivec4(148, 87, 69, 255),
-		  ivec4(85,   48, 105, 255), ivec4(52, 28, 66, 255),
-		  ivec4(137, 242,  53, 255), ivec4(235, 197, 82, 255),
-		  ivec4(146,  75, 129, 255), ivec4(100, 45, 85, 255),
-		  ivec4(158, 193, 134, 255), ivec4(112, 154, 209, 255),
-		  ivec4(168, 217, 245, 255), ivec4(123, 186, 223, 255),
-		  ivec4(197, 225, 228, 255), ivec4(160, 197, 201, 255),
-		  ivec4(197, 242, 168, 255), ivec4(255, 242, 0, 255),
-		  ivec4(209, 249,  93, 255), ivec4(255, 239, 198, 255),
-		  ivec4(233, 249, 249, 255), ivec4(208, 230, 230, 255),
-		  ivec4(249, 249, 219, 255), ivec4(255, 249, 189, 255)
-		);
-		for(int colorNum = 0; colorNum < 30; colorNum += 2) {
-			if(inputColors[colorNum] == icolor) {
-				colorNum++;
-				color[0] = float(inputColors[colorNum][0])/255.0;
-				color[1] = float(inputColors[colorNum][1])/255.0;
-				color[2] = float(inputColors[colorNum][2])/255.0;
-				color[3] = float(inputColors[colorNum][3])/255.0;
-				break;
-			}
-		}
-*/
 	}
 
 	color *= gl_Color;
