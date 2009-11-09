@@ -3,7 +3,7 @@ uniform sampler2D tex;
 void main()
 {
 	vec4 color = texture2D(tex,gl_TexCoord[0].st);
-	ivec4 icolor = ivec4(color[0]*255, color[1]*255, color[2]*255, color[3]*255);
+	ivec4 icolor = ivec4(color[0]*255.0, color[1]*255.0, color[2]*255.0, color[3]*255.0);
 	if(icolor.a == 255) {
 		ivec4 inputColors[30] = ivec4[](
 		  ivec4(2,   104, 105, 255), ivec4(100, 45, 85, 255),
@@ -26,11 +26,10 @@ void main()
 		for(int colorNum = 0; colorNum < 30; colorNum += 2) {
 			if(inputColors[colorNum] == icolor) {
 				colorNum++;
-				color[0] = inputColors[colorNum][0]/255.0;
-				color[1] = inputColors[colorNum][1]/255.0;
-				color[2] = inputColors[colorNum][2]/255.0;
-				color[3] = inputColors[colorNum][3]/255.0;
-				//color = vec4(1.0, 1.0, 1.0, 1.0);
+				color[0] = float(inputColors[colorNum][0])/255.0;
+				color[1] = float(inputColors[colorNum][1])/255.0;
+				color[2] = float(inputColors[colorNum][2])/255.0;
+				color[3] = float(inputColors[colorNum][3])/255.0;
 				break;
 			}
 		}
