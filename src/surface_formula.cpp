@@ -159,11 +159,11 @@ shader_map shader_cache;
 
 void check_shader_errors(const std::string& fname, GLuint shader)
 {
-	int value = 0;
+	GLint value = 0;
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &value);
 	if(value == GL_FALSE) {
 		char buf[1024*16];
-		int len;
+		GLint len;
 		glGetShaderInfoLog(shader, sizeof(buf), &len, buf);
 		std::string errors(buf, buf + len);
 		ASSERT_LOG(false, "COMPILE ERROR IN SHADER " << fname << ": " << errors);
@@ -201,11 +201,11 @@ GLuint get_gl_shader(const std::string& vertex_shader_file, const std::string& f
 	glAttachShader(program_id, fragment_id);
 	glLinkProgram(program_id);
 
-	int link_status = 0;
+	GLint link_status = 0;
 	glGetProgramiv(program_id, GL_LINK_STATUS, &link_status);
 	if(link_status != GL_TRUE) {
 		char buf[1024*16];
-		int len;
+		GLint len;
 		glGetProgramInfoLog(program_id, sizeof(buf), &len, buf);
 		std::string errors(buf, buf + len);
 		ASSERT_LOG(false, "LINK ERROR IN SHADER PROGRAM: " << errors);
