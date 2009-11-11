@@ -129,8 +129,9 @@ public:
 
 	virtual bool body_passthrough() const { return false; }
 
-	virtual bool look_up() const { return false; }
-	virtual bool look_down() const { return false; }
+	//the number of pixels up or down to adjust the scroll position if this
+	//object is focused.
+	virtual int vertical_look() const { return 0; }
 
 	void set_id(int id) { id_ = id; }
 	int get_id() const { return id_; }

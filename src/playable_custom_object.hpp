@@ -26,16 +26,18 @@ public:
 	virtual entity_ptr backup() const;
 	virtual entity_ptr clone() const;
 
-	virtual bool look_up() const;
-	virtual bool look_down() const;
+	virtual int vertical_look() const { return vertical_look_; }
 
 private:
 	virtual void process(level& lvl);
 	variant get_value(const std::string& key) const;	
+	void set_value(const std::string& key, const variant& value);
 
 	player_info player_info_;
 
 	entity_ptr save_condition_;
+
+	int vertical_look_;
 
 	void operator=(const playable_custom_object);
 };

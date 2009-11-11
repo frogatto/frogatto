@@ -78,12 +78,6 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 		pos.x += lvl.auto_move_camera_x()*100;
 		pos.y += lvl.auto_move_camera_y()*100;
 
-		//constants for the maximum that looking up or down can adjust the
-		//screen by, and the speed which the target position moves when
-		//the player looks up or down.
-		const int max_vertical_look = (drawable_height()/3)*(drawable_height()/3);
-		const int vertical_look_speed = 300;
-
 		//find how much padding will have to be on the edge of the screen due
 		//to the level being wider than the screen. This value will be 0
 		//if the level is larger than the screen (i.e. most cases)
@@ -119,7 +113,7 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 		//calculate the adjustment to the camera's target position based on
 		//our vertical look. This is calculated as the square root of the
 		//vertical look, to make the movement slowly converge.
-		const int vertical_look = std::sqrt(std::abs(pos.vertical_look)) * (pos.vertical_look > 0 ? 1 : -1);
+		const int vertical_look = focus->vertical_look();
 
 		//find the y point for the camera to converge toward
 		int y = std::min(std::max(focus->feet_y() - drawable_height()/5 + displacement_y*PredictiveFramesVert + vertical_look, min_y), max_y);
@@ -136,34 +130,6 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 		//the actual camera position will converge toward this point
 		const int target_xpos = 100*(x - graphics::screen_width()/2);
 		const int target_ypos = 100*(y - drawable_height()/2);
-
-		//adjust the vertical look according to if the focus is looking up/down
-		if(message_dialog::get() == NULL && speech_dialog::get() == NULL && focus->look_up()) {
-			pos.vertical_look -= vertical_look_speed;
-			if(pos.vertical_look < -max_vertical_look) {
-				pos.vertical_look = -max_vertical_look;
-			}
-		} else if(message_dialog::get() == NULL && speech_dialog::get() == NULL && focus->look_down()) {
-			pos.vertical_look += vertical_look_speed;
-			if(pos.vertical_look > max_vertical_look) {
-				pos.vertical_look = max_vertical_look;
-			}
-		} else {
-			if(pos.vertical_look > 0) {
-				pos.vertical_look -= vertical_look_speed;
-				if(pos.vertical_look < 0) {
-					pos.vertical_look = 0;
-				}
-			} else if(pos.vertical_look < 0) {
-				pos.vertical_look += vertical_look_speed;
-				if(pos.vertical_look > 0) {
-					pos.vertical_look = 0;
-				}
-			}
-		}
-		
-		
-		
 
 		if(pos.init == false) {
 			pos.x = target_xpos;

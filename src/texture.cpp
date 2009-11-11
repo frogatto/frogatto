@@ -341,6 +341,8 @@ texture texture::get_frame_buffer()
 	t.width_ = actual_width;
 	t.height_ = actual_height;
 
+	glReadBuffer(GL_FRONT);
+
 	t.set_as_current_texture();
 	glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 0, 0, actual_width, actual_height, 0);
 

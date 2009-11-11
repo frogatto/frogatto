@@ -4,18 +4,18 @@
 #include "wml_utils.hpp"
 
 playable_custom_object::playable_custom_object(const custom_object& obj)
-  : custom_object(obj), player_info_(*this)
+  : custom_object(obj), player_info_(*this), vertical_look_(0)
 {
 }
 
 playable_custom_object::playable_custom_object(const playable_custom_object& obj)
-  : custom_object(obj), player_info_(obj.player_info_), save_condition_(obj.save_condition_)
+  : custom_object(obj), player_info_(obj.player_info_), save_condition_(obj.save_condition_), vertical_look_(0)
 {
 	player_info_.set_entity(*this);
 }
 
 playable_custom_object::playable_custom_object(wml::const_node_ptr node)
-  : custom_object(node), player_info_(*this)
+  : custom_object(node), player_info_(*this), vertical_look_(0)
 {
 }
 
@@ -68,16 +68,6 @@ void playable_custom_object::process(level& lvl)
 	}
 }
 
-bool playable_custom_object::look_up() const
-{
-	return control_status(controls::CONTROL_UP);
-}
-
-bool playable_custom_object::look_down() const
-{
-	return control_status(controls::CONTROL_DOWN);
-}
-
 variant playable_custom_object::get_value(const std::string& key) const
 {
 	static const std::string ctrl[] = { "ctrl_up", "ctrl_down", "ctrl_left", "ctrl_right", "ctrl_attack", "ctrl_jump" };
@@ -89,7 +79,18 @@ variant playable_custom_object::get_value(const std::string& key) const
 
 	if(key == "player") {
 		return variant(1);
+	} else if(key == "vertical_look") {
+		return variant(vertical_look_);
 	}
 
 	return custom_object::get_value(key);
+}
+
+void playable_custom_object::set_value(const std::string& key, const variant& value)
+{
+	if(key == "vertical_look") {
+		vertical_look_ = value.as_int();
+	} else {
+		custom_object::set_value(key, value);
+	}
 }

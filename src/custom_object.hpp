@@ -132,6 +132,7 @@ public:
 protected:
 	virtual void control(const level& lvl);
 	variant get_value(const std::string& key) const;
+	void set_value(const std::string& key, const variant& value);
 
 private:
 	custom_object& operator=(const custom_object& o);
@@ -140,7 +141,6 @@ private:
 	bool is_standing(const level& lvl, collision_info* info=NULL) const;
 
 	void get_inputs(std::vector<game_logic::formula_input>* inputs) const;
-	void set_value(const std::string& key, const variant& value);
 
 	int slope_standing_on(int range) const;
 
