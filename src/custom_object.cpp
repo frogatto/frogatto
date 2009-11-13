@@ -1114,6 +1114,11 @@ void custom_object::init()
 
 variant custom_object::get_value(const std::string& key) const
 {
+	std::map<std::string, game_logic::const_formula_ptr>::const_iterator property_itor = type_->properties().find(key);
+	if(property_itor != type_->properties().end() && property_itor->second) {
+		return property_itor->second->execute(*this);
+	}
+
 	std::map<std::string, object_accessor>::const_iterator accessor_itor = object_accessor_map.find(key);
 	if(accessor_itor != object_accessor_map.end()) {
 		return accessor_itor->second(*this);

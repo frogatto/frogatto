@@ -95,6 +95,8 @@ public:
 	const std::map<std::string, variant>& variables() const { return variables_; }
 	const std::vector<std::string>& tags() const { return tags_; }
 
+	const std::map<std::string, game_logic::const_formula_ptr>& properties() const { return properties_; }
+
 	game_logic::function_symbol_table* function_symbols() const;
 
 	const_solid_info_ptr solid() const { return solid_; }
@@ -157,6 +159,8 @@ private:
 
 	std::map<std::string, variant> variables_;
 	std::vector<std::string> tags_;
+
+	std::map<std::string, game_logic::const_formula_ptr> properties_;
 
 	int teleport_offset_x_, teleport_offset_y_;
 

@@ -190,6 +190,7 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	has_solid_(solid_ || use_image_for_collisions_),
 	solid_dimensions_(has_solid_ || platform_ ? 0xFFFFFFFF : 0)
 {
+
 	if(node->has_attr("solid_dimensions")) {
 		solid_dimensions_ = 0;
 		foreach(const std::string& key, util::split(node->attr("solid_dimensions"))) {
@@ -259,6 +260,13 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	if(node->has_attr("tags")) {
 		tags_ = util::split(node->attr("tags"));
 		std::sort(tags_.begin(), tags_.end());
+	}
+
+	wml::const_node_ptr properties_node = node->get_child("properties");
+	if(properties_node) {
+		for(wml::node::const_attr_iterator i = properties_node->begin_attr(); i != properties_node->end_attr(); ++i) {
+			properties_[i->first] = game_logic::formula::create_optional_formula(i->second, function_symbols());
+		}
 	}
 }
 

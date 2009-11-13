@@ -764,8 +764,7 @@ expression_ptr create_function(const std::string& fn,
 
 	functions_map::const_iterator i = get_functions_map().find(fn);
 	if(i == get_functions_map().end()) {
-		std::cerr << "no function '" << fn << "'\n";
-		throw formula_error();
+		return expression_ptr();
 	}
 
 	return i->second->create_function(args);

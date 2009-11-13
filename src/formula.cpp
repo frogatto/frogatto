@@ -18,6 +18,7 @@
 
 //#include "foreach.hpp"
 #include "asserts.hpp"
+#include "foreach.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
 #include "formula_function.hpp"
@@ -255,6 +256,40 @@ private:
 		return variables.query_value(id_);
 	}
 	std::string id_;
+};
+
+class lambda_function_expression : public formula_expression {
+public:
+	lambda_function_expression(const std::vector<std::string>& args, const_formula_ptr fml) : args_(args), fml_(fml)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(fml_, args_, variables);
+	}
+
+	std::vector<std::string> args_;
+	game_logic::const_formula_ptr fml_;
+};
+
+class function_call_expression : public formula_expression {
+public:
+	function_call_expression(expression_ptr left, const std::vector<expression_ptr>& args)
+	  : formula_expression("_fn"), left_(left), args_(args)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		const variant left = left_->evaluate(variables);
+		std::vector<variant> args;
+		foreach(const expression_ptr& e, args_) {
+			args.push_back(e->evaluate(variables));
+		}
+
+		return left(args);
+	}
+
+	expression_ptr left_;
+	std::vector<expression_ptr> args_;
 };
 
 class dot_expression : public formula_expression {
@@ -563,6 +598,7 @@ int operator_precedence(const token& t)
 		precedence_map["%"]     = ++n;
 		precedence_map["^"]     = ++n;
 		precedence_map["d"]     = ++n;
+		precedence_map["("]     = ++n;
 		precedence_map["."]     = ++n;
 	}
 
@@ -788,22 +824,31 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 		throw formula_error();
 	}
 
-	if(i1->type == TOKEN_KEYWORD &&
-			(i1+1)->type == TOKEN_IDENTIFIER) {
-		if(std::string(i1->begin, i1->end) == "def") {
+	if(i1->type == TOKEN_KEYWORD && std::string(i1->begin, i1->end) == "def" &&
+	   ((i1+1)->type == TOKEN_IDENTIFIER || (i1+1)->type == TOKEN_LPARENS)) {
 			++i1;
-			const std::string formula_name = std::string(i1->begin, i1->end);
+			std::string formula_name;
+			if(i1->type == TOKEN_IDENTIFIER) {
+				formula_name = std::string(i1->begin, i1->end);
+				++i1;
+			}
+
 			std::vector<std::string> args;
-			parse_function_args(++i1, i2, &args);
+			parse_function_args(i1, i2, &args);
 			const token* beg = i1;
 			while((i1 != i2) && (i1->type != TOKEN_SEMICOLON)) {
 				++i1;
 			}
 			const std::string formula_str = std::string(beg->begin, (i1-1)->end);
 
-			recursive_function_symbol_table recursive_symbols(formula_name, args, symbols);
+			recursive_function_symbol_table recursive_symbols(formula_name.empty() ? "recurse" : formula_name, args, symbols);
 			const_formula_ptr fml(new formula(formula_str, &recursive_symbols));
 			recursive_symbols.resolve_recursive_calls(fml);
+
+			if(formula_name.empty()) {
+				return expression_ptr(new lambda_function_expression(args, fml));
+			}
+
 			const std::string precond = "";
 			symbols->add_formula_function(formula_name, fml,
 					formula::create_optional_formula(precond, symbols), args);
@@ -813,16 +858,29 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 			else {
 				return parse_expression((i1+1), i2, symbols);
 			}
-		}
 	}
 
 	int parens = 0;
 	const token* op = NULL;
+	const token* fn_call = NULL;
+
 	for(const token* i = i1; i != i2; ++i) {
+		if(fn_call && i+1 == i2 && i->type != TOKEN_RPARENS) {
+			fn_call = NULL;
+		}
+
 		if(i->type == TOKEN_LPARENS || i->type == TOKEN_LSQUARE) {
+			if(i->type == TOKEN_LPARENS && parens == 0 && i != i1) {
+				fn_call = i;
+			}
+
 			++parens;
 		} else if(i->type == TOKEN_RPARENS || i->type == TOKEN_RSQUARE) {
 			--parens;
+
+			if(parens == 0 && i+1 != i2) {
+				fn_call = NULL;
+			}
 		} else if(parens == 0 && i->type == TOKEN_OPERATOR) {
 			if(op == NULL || operator_precedence(*op) >
 							 operator_precedence(*i)) {
@@ -892,18 +950,28 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 			if(nleft == nright) {
 				std::vector<expression_ptr> args;
 				parse_args(i1+2,i2-1,&args,symbols);
-				return expression_ptr(
+				expression_ptr result(
 				  create_function(std::string(i1->begin,i1->end),args,symbols));
+				if(result) {
+					return result;
+				}
 			}
 		}
 
-		std::ostringstream expr;
-		while(i1 != i2) {
-			expr << std::string(i1->begin,i1->end);
-			++i1;
+		if(!fn_call) {
+			std::ostringstream expr;
+			while(i1 != i2) {
+				expr << std::string(i1->begin,i1->end);
+				++i1;
+			}
+			std::cerr << "could not parse expression: '" << expr.str() << "'\n";
+			throw formula_error();
 		}
-		std::cerr << "could not parse expression: '" << expr.str() << "'\n";
-		throw formula_error();
+	}
+
+	if(fn_call && (op == NULL || operator_precedence(*op) >
+	                             operator_precedence(*fn_call))) {
+		op = fn_call;
 	}
 
 	if(op == i1) {
@@ -913,6 +981,14 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 	}
 
 	const std::string op_name(op->begin,op->end);
+
+	if(op_name == "(") {
+		std::vector<expression_ptr> args;
+		parse_args(op+1, i2-1, &args, symbols);
+
+		return expression_ptr(new function_call_expression(
+		                            parse_expression(i1, op, symbols), args));
+	}
 
 	if(op_name == ".") {
 		return expression_ptr(new dot_expression(
@@ -1022,13 +1098,20 @@ variant formula::execute(const formula_callable& variables) const
 variant formula::execute() const
 {
 	last_executed_formula = this;
-	static map_formula_callable null_callable;
-	return execute(null_callable);
+
+	map_formula_callable* null_callable = new map_formula_callable;
+	variant ref(null_callable);
+	return execute(*null_callable);
 }
 
 UNIT_TEST(formula_in) {
 	CHECK(formula("1 in [4,5,6]").execute() == variant(0), "test failed");
 	CHECK(formula("5 in [4,5,6]").execute() == variant(1), "test failed");
+}
+
+UNIT_TEST(formula_fn) {
+	function_symbol_table symbols;
+	CHECK(formula("def f(g) g(5) + 1; f(def(n) n*n)", &symbols).execute() == variant(26), "test failed");
 }
 
 }

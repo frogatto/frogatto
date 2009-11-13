@@ -28,6 +28,8 @@ std::string variant_type_to_string(variant::TYPE type) {
 		return "string";
 	case variant::TYPE_MAP: 
 		return "map";
+	case variant::TYPE_FUNCTION: 
+		return "function";
 	default:
 		assert(false);
 		return "invalid";
@@ -89,6 +91,20 @@ struct variant_map {
 	int refcount;
 };
 
+struct variant_fn {
+	variant_fn() : refcount(0)
+	{}
+
+	const std::string* begin_args;
+	const std::string* end_args;
+
+	game_logic::const_formula_ptr fn;
+
+	game_logic::const_formula_callable_ptr callable;
+
+	int refcount;
+};
+
 void variant::increment_refcount()
 {
 	switch(type_) {
@@ -104,6 +120,8 @@ void variant::increment_refcount()
 	case TYPE_CALLABLE:
 		intrusive_ptr_add_ref(callable_);
 		break;
+	case TYPE_FUNCTION:
+		++fn_->refcount;
 
 	// These are not used here, add them to silence a compiler warning.
 	case TYPE_NULL:
@@ -132,6 +150,11 @@ void variant::release()
 		break;
 	case TYPE_CALLABLE:
 		intrusive_ptr_release(callable_);
+		break;
+	case TYPE_FUNCTION:
+		if(--fn_->refcount == 0) {
+			delete fn_;
+		}
 		break;
 
 	// These are not used here, add them to silence a compiler warning.
@@ -180,6 +203,17 @@ variant::variant(std::map<variant,variant>* map)
 	assert(map);
 	map_ = new variant_map;
 	map_->elements.swap(*map);
+	increment_refcount();
+}
+
+variant::variant(game_logic::const_formula_ptr fml, const std::vector<std::string>& args, const game_logic::formula_callable& callable)
+  : type_(TYPE_FUNCTION)
+{
+	fn_ = new variant_fn;
+	fn_->begin_args = &args[0];
+	fn_->end_args = fn_->begin_args + args.size();
+	fn_->fn = fml;
+	fn_->callable = &callable;
 	increment_refcount();
 }
 
@@ -277,6 +311,19 @@ size_t variant::num_elements() const
 	}
 }
 
+variant variant::operator()(const std::vector<variant>& args) const
+{
+	must_be(TYPE_FUNCTION);
+	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(fn_->callable.get());
+	variant v(callable);
+
+	for(size_t n = 0; n != args.size() && n != fn_->end_args - fn_->begin_args; ++n) {
+		callable->add(fn_->begin_args[n], args[n]);
+	}
+
+	return fn_->fn->execute(*callable);
+}
+
 variant variant::get_member(const std::string& str) const
 {
 	if(is_callable()) {
@@ -305,6 +352,8 @@ bool variant::as_bool() const
 		return !map_->elements.empty();
 	case TYPE_STRING:
 		return !string_->str.empty();
+	case TYPE_FUNCTION:
+		return true;
 	default:
 		assert(false);
 		return false;

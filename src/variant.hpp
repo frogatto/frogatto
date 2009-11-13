@@ -6,6 +6,8 @@
 #include <map>
 #include <vector>
 
+#include "formula_fwd.hpp"
+
 namespace game_logic {
 class formula_callable;
 }
@@ -27,6 +29,7 @@ struct call_stack_manager {
 struct variant_list;
 struct variant_string;
 struct variant_map;
+struct variant_fn;
 
 struct type_error {
 	explicit type_error(const std::string& str);
@@ -41,6 +44,7 @@ public:
 	explicit variant(std::vector<variant>* array);
 	explicit variant(const std::string& str);
 	explicit variant(std::map<variant,variant>* map);
+	variant(game_logic::const_formula_ptr, const std::vector<std::string>& args, const game_logic::formula_callable& callable);
 	~variant() { release(); }
 
 	variant(const variant& v);
@@ -50,12 +54,15 @@ public:
 	const variant& operator[](const variant v) const;
 	size_t num_elements() const;
 
+	variant operator()(const std::vector<variant>& args) const;
+
 	variant get_member(const std::string& str) const;
 
 	bool is_string() const { return type_ == TYPE_STRING; }
 	bool is_null() const { return type_ == TYPE_NULL; }
 	bool is_int() const { return type_ == TYPE_INT; }
 	bool is_map() const { return type_ == TYPE_MAP; }
+	bool is_function() const { return type_ == TYPE_FUNCTION; }
 	int as_int() const { if(type_ == TYPE_NULL) { return 0; } must_be(TYPE_INT); return int_value_; }
 	bool as_bool() const;
 
@@ -114,7 +121,7 @@ public:
 	std::string string_cast() const;
 
 	std::string to_debug_string(std::vector<const game_logic::formula_callable*>* seen=NULL) const;
-	enum TYPE { TYPE_NULL, TYPE_INT, TYPE_CALLABLE, TYPE_LIST, TYPE_STRING, TYPE_MAP };
+	enum TYPE { TYPE_NULL, TYPE_INT, TYPE_CALLABLE, TYPE_LIST, TYPE_STRING, TYPE_MAP, TYPE_FUNCTION };
 private:
 	void must_be(TYPE t) const;
 	TYPE type_;
@@ -125,6 +132,7 @@ private:
 		variant_list* list_;
 		variant_string* string_;
 		variant_map* map_;
+		variant_fn* fn_;
 	};
 
 	void increment_refcount();
