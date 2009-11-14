@@ -215,6 +215,8 @@ private:
 	//current shader we're using to draw with.
 	std::vector<std::string> fragment_shaders_, vertex_shaders_;
 	mutable GLuint shader_;
+
+	mutable game_logic::map_formula_callable_ptr shader_vars_;
 };
 
 #endif

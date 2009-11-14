@@ -328,6 +328,13 @@ void custom_object::draw() const
 
 	if(shader_) {
 		glUseProgram(shader_);
+
+		if(shader_vars_) {
+			for(game_logic::map_formula_callable::const_iterator i = shader_vars_->begin(); i != shader_vars_->end(); ++i) {
+				GLuint id = glGetUniformLocation(shader_, i->first.c_str());
+				glUniform1f(id, i->second.as_int()/1000.0);
+			}
+		}
 	}
 
 	if(driver_) {
@@ -1087,6 +1094,14 @@ struct custom_object::Accessor {
 		return variant(&v);
 	}
 
+	static variant shader(const custom_object& obj) {
+		if(obj.shader_vars_.get() == NULL) {
+			obj.shader_vars_.reset(new game_logic::map_formula_callable);
+		}
+
+		return variant(obj.shader_vars_.get());
+	}
+
 #define CUSTOM_ACCESSOR(name, expression) static variant name(const custom_object& obj) { return variant(expression); }
 
 	static void init() {
@@ -1155,6 +1170,7 @@ struct custom_object::Accessor {
 		ACCESSOR(stood_on_by);
 		ACCESSOR(fragment_shaders);
 		ACCESSOR(vertex_shaders);
+		ACCESSOR(shader);
 	}
 };
 

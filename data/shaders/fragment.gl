@@ -1,4 +1,6 @@
 uniform sampler2D tex;
+uniform float src_factor;
+uniform float dst_factor;
 
 void main()
 {
@@ -19,10 +21,10 @@ void main()
 		else if(icolor.r <= 233) { icolor = ivec4(208, 230, 230, 255); }
 		else if(icolor.r <= 249) { icolor = ivec4(255, 249, 189, 255); }
 
-		color[0] = float(icolor[0])/255.0;
-		color[1] = float(icolor[1])/255.0;
-		color[2] = float(icolor[2])/255.0;
-		color[3] = float(icolor[3])/255.0;
+		color[0] = src_factor*color[0] + dst_factor*float(icolor[0])/255.0;
+		color[1] = src_factor*color[1] + dst_factor*float(icolor[1])/255.0;
+		color[2] = src_factor*color[2] + dst_factor*float(icolor[2])/255.0;
+		color[3] = src_factor*color[3] + dst_factor*float(icolor[3])/255.0;
 	}
 
 	color *= gl_Color;
