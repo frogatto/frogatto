@@ -98,8 +98,6 @@ private:
 
 	void build_alpha();
 	std::vector<bool> alpha_;
-
-	GLuint shader_;
 };
 
 #endif

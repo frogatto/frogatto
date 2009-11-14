@@ -211,6 +211,10 @@ private:
 	//set if we should fall through platforms. This is decremented automatically
 	//at the end of every cycle.
 	int fall_through_platforms_;
+
+	//current shader we're using to draw with.
+	std::vector<std::string> fragment_shaders_, vertex_shaders_;
+	mutable GLuint shader_;
 };
 
 #endif

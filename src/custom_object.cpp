@@ -1,3 +1,5 @@
+#include <GL/glew.h>
+
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 
@@ -17,6 +19,8 @@
 #include "level_logic.hpp"
 #include "playable_custom_object.hpp"
 #include "raster.hpp"
+#include "string_utils.hpp"
+#include "surface_formula.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
 #include "unit_test.hpp"
@@ -54,7 +58,10 @@ custom_object::custom_object(wml::const_node_ptr node)
 	cycle_(wml::get_int(node, "cycle")),
 	loaded_(false),
 	standing_on_prev_x_(INT_MIN), standing_on_prev_y_(INT_MIN),
-	can_interact_with_(false), fall_through_platforms_(0)
+	can_interact_with_(false), fall_through_platforms_(0),
+	fragment_shaders_(util::split(node->attr("fragment_shaders"))),
+	vertex_shaders_(util::split(node->attr("vertex_shaders"))),
+	shader_(0)
 {
 	set_solid_dimensions(type_->solid_dimensions());
 
@@ -130,7 +137,8 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	tags_(new game_logic::map_formula_callable),
 	last_hit_by_anim_(0),
 	cycle_(0),
-	loaded_(false), fall_through_platforms_(0)
+	loaded_(false), fall_through_platforms_(0),
+	shader_(0)
 {
 	foreach(const std::string& tag, type_->tags()) {
 		tags_->add(tag, variant(1));
@@ -197,7 +205,10 @@ custom_object::custom_object(const custom_object& o) :
 	text_(o.text_),
 	driver_(o.driver_),
 	blur_(o.blur_),
-	fall_through_platforms_(o.fall_through_platforms_)
+	fall_through_platforms_(o.fall_through_platforms_),
+	fragment_shaders_(o.fragment_shaders_),
+	vertex_shaders_(o.vertex_shaders_),
+	shader_(o.shader_)
 {
 }
 
@@ -232,6 +243,14 @@ wml::node_ptr custom_object::write() const
 	res->set_attr("y", formatter() << y());
 	res->set_attr("velocity_x", formatter() << velocity_x_);
 	res->set_attr("velocity_y", formatter() << velocity_y_);
+
+	if(!vertex_shaders_.empty()) {
+		res->set_attr("vertex_shaders", util::join(vertex_shaders_));
+	}
+
+	if(!fragment_shaders_.empty()) {
+		res->set_attr("fragment_shaders", util::join(fragment_shaders_));
+	}
 
 	if(zorder_ != type_->zorder()) {
 		res->set_attr("zorder", formatter() << y());
@@ -303,6 +322,14 @@ void custom_object::draw() const
 		return;
 	}
 
+	if(shader_ == 0 && !fragment_shaders_.empty() && !vertex_shaders_.empty()) {
+		shader_ = get_gl_shader(vertex_shaders_, fragment_shaders_);
+	}
+
+	if(shader_) {
+		glUseProgram(shader_);
+	}
+
 	if(driver_) {
 		driver_->draw();
 	}
@@ -347,6 +374,10 @@ void custom_object::draw() const
 
 	if(text_ && text_->font) {
 		text_->font->draw(x(), y(), text_->text);
+	}
+
+	if(shader_) {
+		glUseProgram(0);
 	}
 }
 
@@ -1038,6 +1069,24 @@ struct custom_object::Accessor {
 		return variant(&v);
 	}
 
+	static variant fragment_shaders(const custom_object& obj) {
+		std::vector<variant> v;
+		foreach(const std::string& shader, obj.fragment_shaders_) {
+			v.push_back(variant(shader));
+		}
+
+		return variant(&v);
+	}
+
+	static variant vertex_shaders(const custom_object& obj) {
+		std::vector<variant> v;
+		foreach(const std::string& shader, obj.vertex_shaders_) {
+			v.push_back(variant(shader));
+		}
+
+		return variant(&v);
+	}
+
 #define CUSTOM_ACCESSOR(name, expression) static variant name(const custom_object& obj) { return variant(expression); }
 
 	static void init() {
@@ -1104,6 +1153,8 @@ struct custom_object::Accessor {
 		ACCESSOR(destroyed);
 		ACCESSOR(standing_on);
 		ACCESSOR(stood_on_by);
+		ACCESSOR(fragment_shaders);
+		ACCESSOR(vertex_shaders);
 	}
 };
 
@@ -1222,6 +1273,18 @@ void custom_object::set_value(const std::string& key, const variant& value)
 				tags_->add(value[n].as_string(), variant(1));
 			}
 		}
+	} else if(key == "fragment_shaders") {
+		fragment_shaders_.clear();
+		for(int n = 0; n != value.num_elements(); ++n) {
+			fragment_shaders_.push_back(value[n].as_string());
+		}
+		shader_ = 0;
+	} else if(key == "vertex_shaders") {
+		vertex_shaders_.clear();
+		for(int n = 0; n != value.num_elements(); ++n) {
+			vertex_shaders_.push_back(value[n].as_string());
+		}
+		shader_ = 0;
 	} else {
 		vars_->add(key, value);
 	}

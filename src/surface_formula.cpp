@@ -5,6 +5,7 @@
 #include "asserts.hpp"
 #include "concurrent_cache.hpp"
 #include "filesystem.hpp"
+#include "foreach.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
 #include "formula_function.hpp"
@@ -154,7 +155,10 @@ surface get_surface_formula(surface input, const std::string& algo)
 }
 
 namespace {
-typedef std::map<std::pair<std::string,std::string>, GLuint> shader_map;
+typedef std::map<std::pair<std::string, GLuint>, GLuint> shader_object_map;
+shader_object_map shader_object_cache;
+
+typedef std::map<std::pair<std::vector<std::string>,std::vector<std::string> >, GLuint> shader_map;
 shader_map shader_cache;
 
 void check_shader_errors(const std::string& fname, GLuint shader)
@@ -170,35 +174,55 @@ void check_shader_errors(const std::string& fname, GLuint shader)
 	}
 }
 
+GLuint compile_shader(const std::string& shader_file, GLuint type)
+{
+	GLuint& id = shader_object_cache[std::make_pair(shader_file, type)];
+	if(id) {
+		return id;
+	}
+
+	id = glCreateShader(type);
+
+	const std::string file_data = sys::read_file("data/shaders/" + shader_file);
+
+	const char* file_str = file_data.c_str();
+	glShaderSource(id, 1, &file_str, NULL);
+
+	glCompileShader(id);
+	check_shader_errors(shader_file, id);
+
+	return id;
 }
 
-GLuint get_gl_shader(const std::string& vertex_shader_file, const std::string& fragment_shader_file)
+}
+
+GLuint get_gl_shader(const std::vector<std::string>& vertex_shader_file,
+                     const std::vector<std::string>& fragment_shader_file)
 {
+	if(vertex_shader_file.empty() || fragment_shader_file.empty()) {
+		return 0;
+	}
+
 	shader_map::iterator itor = shader_cache.find(std::make_pair(vertex_shader_file, fragment_shader_file));
 	if(itor != shader_cache.end()) {
 		return itor->second;
 	}
 
-	const std::string vertex_shader = sys::read_file("data/shaders/" + vertex_shader_file);
-	const std::string fragment_shader = sys::read_file("data/shaders/" + fragment_shader_file);
+	std::vector<GLuint> shader_objects;
+	foreach(const std::string& shader_file, vertex_shader_file) {
+		shader_objects.push_back(compile_shader(shader_file, GL_VERTEX_SHADER));
+	}
 
-	GLuint vertex_id = glCreateShader(GL_VERTEX_SHADER);
-	GLuint fragment_id = glCreateShader(GL_FRAGMENT_SHADER);
-
-	const char* vertex_str = vertex_shader.c_str();
-	glShaderSource(vertex_id, 1, &vertex_str, NULL);
-
-	const char* fragment_str = fragment_shader.c_str();
-	glShaderSource(fragment_id, 1, &fragment_str, NULL);
-
-	glCompileShader(vertex_id);
-	check_shader_errors(vertex_shader_file, vertex_id);
-	glCompileShader(fragment_id);
-	check_shader_errors(fragment_shader_file, fragment_id);
+	foreach(const std::string& shader_file, fragment_shader_file) {
+		shader_objects.push_back(compile_shader(shader_file, GL_FRAGMENT_SHADER));
+	}
 
 	GLuint program_id = glCreateProgram();
-	glAttachShader(program_id, vertex_id);
-	glAttachShader(program_id, fragment_id);
+
+	foreach(GLuint shader_id, shader_objects) {
+		glAttachShader(program_id, shader_id);
+	}
+
 	glLinkProgram(program_id);
 
 	GLint link_status = 0;
