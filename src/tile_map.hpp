@@ -31,6 +31,7 @@ public:
 	int x_speed() const { return x_speed_; }
 	int y_speed() const { return y_speed_; }
 	void set_zorder(int z) { zorder_ = z; }
+	void set_speed(int x_speed, int y_speed) { x_speed_ = x_speed; y_speed_ = y_speed; }
 	const char* get_tile_from_pixel_pos(int xpos, int ypos) const;
 	const char* get_tile(int y, int x) const;
 	int get_variations(int x, int y) const;

@@ -502,7 +502,10 @@ void editor::tileset::init(wml::const_node_ptr node)
 
 editor::tileset::tileset(wml::const_node_ptr node)
   : category(node->attr("category")), type(node->attr("type")),
-    zorder(wml::get_int(node, "zorder")), sloped(wml::get_bool(node, "sloped"))
+    zorder(wml::get_int(node, "zorder")),
+	x_speed(wml::get_int(node, "x_speed", 100)),
+	y_speed(wml::get_int(node, "y_speed", 100)),
+	sloped(wml::get_bool(node, "sloped"))
 {
 	if(node->get_child("preview")) {
 		preview.reset(new tile_map(node->get_child("preview")));
@@ -1390,7 +1393,15 @@ void editor::add_tile_rect(int zorder, const std::string& tile_id, int x1, int y
 
 void editor::add_tile_rect(int x1, int y1, int x2, int y2)
 {
+	x1 += ((100 - tilesets[cur_tileset_].x_speed)*xpos_)/100;
+	x2 += ((100 - tilesets[cur_tileset_].x_speed)*xpos_)/100;
+	y1 += ((100 - tilesets[cur_tileset_].y_speed)*ypos_)/100;
+	y2 += ((100 - tilesets[cur_tileset_].y_speed)*ypos_)/100;
+
 	add_tile_rect(tilesets[cur_tileset_].zorder, tilesets[cur_tileset_].type, x1, y1, x2, y2);
+	lvl_->set_tile_layer_speed(tilesets[cur_tileset_].zorder,
+	                           tilesets[cur_tileset_].x_speed,
+							   tilesets[cur_tileset_].y_speed);
 }
 
 void editor::remove_tile_rect(int x1, int y1, int x2, int y2)
@@ -1546,6 +1557,10 @@ void editor::set_tileset(int index)
 	} else if(cur_tileset_ >= tilesets.size()) {
 		cur_tileset_ = 0;
 	}
+
+	lvl_->set_tile_layer_speed(tilesets[cur_tileset_].zorder,
+	                           tilesets[cur_tileset_].x_speed,
+							   tilesets[cur_tileset_].y_speed);
 }
 
 void editor::set_object(int index)

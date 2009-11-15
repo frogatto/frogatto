@@ -1131,6 +1131,13 @@ void level::add_tile_rect_vector(int zorder, int x1, int y1, int x2, int y2, con
 	add_tile_rect_vector_internal(zorder, x1, y1, x2, y2, tiles);
 }
 
+void level::set_tile_layer_speed(int zorder, int x_speed, int y_speed)
+{
+	tile_map& m = tile_maps_[zorder];
+	m.set_zorder(zorder);
+	m.set_speed(x_speed, y_speed);
+}
+
 void level::refresh_tile_rect(int x1, int y1, int x2, int y2)
 {
 	rebuild_tiles_rect(rect(x1-64, y1-128, (x2 - x1) + 128, (y2 - y1) + 256));

@@ -49,6 +49,8 @@ public:
 		std::string category;
 		std::string type;
 		int zorder;
+		int x_speed;
+		int y_speed;
 		boost::shared_ptr<tile_map> preview;
 		bool sloped;
 	};
