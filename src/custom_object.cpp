@@ -758,7 +758,7 @@ void custom_object::process(level& lvl)
 		handle_event(TimerStr);
 	}
 	
-	const bool is_underwater = lvl.is_underwater(body_rect());
+	const bool is_underwater = lvl.is_underwater(solid_rect());
 	if( is_underwater && !was_underwater_){
 		//event on_enter_water
 		const static std::string EnterWaterStr = "enter_water";
@@ -1036,7 +1036,7 @@ struct custom_object::Accessor {
 	CUSTOM_ACCESSOR(near_cliff_edge, obj.is_standing(*obj.lvl_) && cliff_edge_within(*obj.lvl_, obj.feet_x(), obj.feet_y(), obj.face_dir()*15));
 	CUSTOM_ACCESSOR(distance_to_cliff, ::distance_to_cliff(*obj.lvl_, obj.feet_x(), obj.feet_y(), obj.face_dir()));
 	CUSTOM_ACCESSOR(slope_standing_on, -obj.slope_standing_on(obj.type_->feet_width()*2)*obj.face_dir());
-	CUSTOM_ACCESSOR(underwater, obj.lvl_->is_underwater(obj.body_rect()));
+	CUSTOM_ACCESSOR(underwater, obj.lvl_->is_underwater(obj.solid_rect()));
 	CUSTOM_ACCESSOR(driver, obj.driver_ ? obj.driver_.get() : &obj);
 	CUSTOM_ACCESSOR(is_human, obj.is_human() ? 1 : 0);
 	SIMPLE_ACCESSOR(invincible);
