@@ -43,6 +43,8 @@ surface get(const std::string& key)
 			return surface();
 		}
 
+		std::cerr << "IMAGE SIZE: " << (surf->w*surf->h) << "\n";
+
 		cache.put(key,surf);
 	}
 

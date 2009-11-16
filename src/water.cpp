@@ -108,6 +108,7 @@ void water::add_wave(const point& p, double xvelocity, double height, double len
 {
 	std::cerr << "water::add_wave\n";
 	foreach(area& a, areas_) {
+		std::cerr << "wave: " << p.x << "," << p.y << " in " << a.rect_ << "\n";
 		if(point_in_rect(p, a.rect_)) {
 			std::pair<int, int> bounds(a.rect_.x(), a.rect_.x2());
 			for(int n = 0; n != a.surface_segments_.size(); ++n) {
@@ -122,6 +123,8 @@ void water::add_wave(const point& p, double xvelocity, double height, double len
 			return;
 		}
 	}
+
+	std::cerr << "wave not added\n";
 }
 
 bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
@@ -223,6 +226,9 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 		glVertex3f(waterline_rect.x + waterline_rect.w, underwater_rect.y + underwater_rect.h, 0);
 		glEnd();
 
+	glDisable(GL_LINE_SMOOTH);
+
+		std::cerr << "DRAW LINE: " << waterline_rect.x << " " << waterline_rect.w << "\n";
 		glLineWidth(2.0);
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 		glBegin(GL_LINE_STRIP);

@@ -989,12 +989,12 @@ struct custom_object::Accessor {
 	CUSTOM_ACCESSOR(x, obj.x())
 	CUSTOM_ACCESSOR(y, obj.y())
 	CUSTOM_ACCESSOR(z, obj.zorder_)
-	CUSTOM_ACCESSOR(x1, obj.body_rect().x())
-	CUSTOM_ACCESSOR(y1, obj.body_rect().y())
-	CUSTOM_ACCESSOR(x2, obj.body_rect().x2())
-	CUSTOM_ACCESSOR(y2, obj.body_rect().y2())
-	CUSTOM_ACCESSOR(w, obj.body_rect().w())
-	CUSTOM_ACCESSOR(h, obj.body_rect().h())
+	CUSTOM_ACCESSOR(x1, obj.solid_rect().x())
+	CUSTOM_ACCESSOR(y1, obj.solid_rect().y())
+	CUSTOM_ACCESSOR(x2, obj.solid_rect().x2())
+	CUSTOM_ACCESSOR(y2, obj.solid_rect().y2())
+	CUSTOM_ACCESSOR(w, obj.solid_rect().w())
+	CUSTOM_ACCESSOR(h, obj.solid_rect().h())
 
 	//note that we're taking the image midpoint, NOT the collision-rect midpoint
 	//in practice, we've always calculated this from the image for our scripting,
