@@ -528,15 +528,6 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 		x -= diffx;
 		y -= diffy;
 	} 
-		
-	//basic implementation of the foreground layer: z values >= 1000 are
-	//considered in the foreground, and thus have x scaling increased.
-	//TODO: a more comprehensive and configurable implementation of this.
-	if(layer >= 1000 && editor_ == false) {
-		const int dx = x/5;
-		glTranslatef(-dx, 0.0, 0.0);
-		x += dx;
-	}
 
 	typedef std::vector<prop_object>::const_iterator prop_itor;
 	std::pair<prop_itor,prop_itor> prop_range = std::equal_range(props_.begin(), props_.end(), layer);
