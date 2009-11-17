@@ -125,6 +125,38 @@ level_object::level_object(wml::const_node_ptr node)
 				solid_[index] = (y >= (width() - x));
 			}
 		}
+	} else if(node->attr("solid").str() == "quarter_diagonal_lower") {
+		solid_.resize(width()*height());
+		for(int x = 0; x < width(); ++x) {
+			for(int y = 0; y < height(); ++y) {
+				const int index = y*width() + x;
+				solid_[index] = (y >= (x/2 + width()/2));
+			}
+		}
+	} else if(node->attr("solid").str() == "quarter_diagonal_upper") {
+		solid_.resize(width()*height());
+		for(int x = 0; x < width(); ++x) {
+			for(int y = 0; y < height(); ++y) {
+				const int index = y*width() + x;
+				solid_[index] = (y >= x/2);
+			}
+		}
+	} else if(node->attr("solid").str() == "reverse_quarter_diagonal_lower") {
+		solid_.resize(width()*height());
+		for(int x = 0; x < width(); ++x) {
+			for(int y = 0; y < height(); ++y) {
+				const int index = y*width() + x;
+				solid_[index] = (y >= (width() - x/2));
+			}
+		}
+	} else if(node->attr("solid").str() == "reverse_quarter_diagonal_upper") {
+		solid_.resize(width()*height());
+		for(int x = 0; x < width(); ++x) {
+			for(int y = 0; y < height(); ++y) {
+				const int index = y*width() + x;
+				solid_[index] = (y >= (width()/2 - x/2));
+			}
+		}
 	} else if(node->has_attr("solid_heights")) {
 		//this is a csv list of heights which represent the solids
 		std::vector<std::string> heights = util::split(node->attr("solid_heights"));
