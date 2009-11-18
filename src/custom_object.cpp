@@ -632,7 +632,7 @@ void custom_object::process(level& lvl)
 		}
 
 		const int dir = effective_velocity_x/100 > 0 ? 1 : -1;
-		const int original_y = y();
+		int original_y = y();
 		
 		set_pos(x() + dir, y());
 
@@ -642,13 +642,26 @@ void custom_object::process(level& lvl)
 
 		const bool standing = is_standing(lvl);
 		if(started_standing && !standing) {
-			int max_drop = 1;
-			while(max_drop-- && !is_standing(lvl)) {
-				set_pos(x(), y()+1);
-
-				if(entity_collides(lvl, *this, MOVE_NONE)) {
-					set_pos(x(), y()-1);
+			//code to make us to up a slope even on a platform.
+			//TODO: this needs some improvements.
+			for(int n = 0; n != 4; ++n) {
+				set_pos(x(), y()-1);
+				if(is_standing(lvl)) {
+					original_y = y();
 					break;
+				}
+			}
+
+			if(!is_standing(lvl)) {
+				set_pos(x(), y()+4);
+				int max_drop = 1;
+				while(max_drop-- && !is_standing(lvl)) {
+					set_pos(x(), y()+1);
+	
+					if(entity_collides(lvl, *this, MOVE_NONE)) {
+						set_pos(x(), y()-1);
+						break;
+					}
 				}
 			}
 		} else if(standing) {
