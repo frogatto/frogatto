@@ -9,7 +9,7 @@
 #include "surface.hpp"
 #include "surface_cache.hpp"
 #include "wml_utils.hpp"
-
+#include "wml_writer.hpp"
 namespace {
 typedef std::map<std::string,const_level_object_ptr> tiles_map;
 tiles_map tiles_cache;
@@ -108,13 +108,25 @@ level_object::level_object(wml::const_node_ptr node)
 	}
 
 	if(all_solid_) {
-		solid_ = std::vector<bool>(width()*height(), true);
+		if(passthrough_){
+			solid_.resize(width()*height());
+			for(int x = 0; x < width(); ++x) {
+				for(int y = 0; y < height(); ++y) {
+					const int index = y*width() + x;
+					solid_[index] = (y == 0);
+				}
+			}
+			//set all_solid_ to false because it's not longer the case.
+			all_solid_ = false;
+		}else{
+			solid_ = std::vector<bool>(width()*height(), true);
+		}
 	} else if(node->attr("solid").str() == "diagonal") {
 		solid_.resize(width()*height());
 		for(int x = 0; x < width(); ++x) {
 			for(int y = 0; y < height(); ++y) {
 				const int index = y*width() + x;
-				solid_[index] = (y >= x);
+				solid_[index] = (passthrough_? (y==x) : (y >= x));
 			}
 		}
 	} else if(node->attr("solid").str() == "reverse_diagonal") {
@@ -122,7 +134,7 @@ level_object::level_object(wml::const_node_ptr node)
 		for(int x = 0; x < width(); ++x) {
 			for(int y = 0; y < height(); ++y) {
 				const int index = y*width() + x;
-				solid_[index] = (y >= (width() - x));
+				solid_[index] = (passthrough_? (y == (width() - x)) : (y >= (width() - x)));
 			}
 		}
 	} else if(node->attr("solid").str() == "quarter_diagonal_lower") {
@@ -130,7 +142,7 @@ level_object::level_object(wml::const_node_ptr node)
 		for(int x = 0; x < width(); ++x) {
 			for(int y = 0; y < height(); ++y) {
 				const int index = y*width() + x;
-				solid_[index] = (y >= (x/2 + width()/2));
+				solid_[index] = (passthrough_? (y == (x/2 + width()/2)) : (y >= (x/2 + width()/2)));
 			}
 		}
 	} else if(node->attr("solid").str() == "quarter_diagonal_upper") {
@@ -138,7 +150,7 @@ level_object::level_object(wml::const_node_ptr node)
 		for(int x = 0; x < width(); ++x) {
 			for(int y = 0; y < height(); ++y) {
 				const int index = y*width() + x;
-				solid_[index] = (y >= x/2);
+				solid_[index] = (passthrough_? (y == x/2) : (y >= x/2));
 			}
 		}
 	} else if(node->attr("solid").str() == "reverse_quarter_diagonal_lower") {
@@ -146,7 +158,7 @@ level_object::level_object(wml::const_node_ptr node)
 		for(int x = 0; x < width(); ++x) {
 			for(int y = 0; y < height(); ++y) {
 				const int index = y*width() + x;
-				solid_[index] = (y >= (width() - x/2));
+				solid_[index] = (passthrough_? (y == (width() - x/2)) : (y >= (width() - x/2)));
 			}
 		}
 	} else if(node->attr("solid").str() == "reverse_quarter_diagonal_upper") {
@@ -154,7 +166,7 @@ level_object::level_object(wml::const_node_ptr node)
 		for(int x = 0; x < width(); ++x) {
 			for(int y = 0; y < height(); ++y) {
 				const int index = y*width() + x;
-				solid_[index] = (y >= (width()/2 - x/2));
+				solid_[index] = (passthrough_? (y == (width()/2 - x/2)) : (y >= (width()/2 - x/2)));
 			}
 		}
 	} else if(node->has_attr("solid_heights")) {
@@ -196,6 +208,20 @@ level_object::level_object(wml::const_node_ptr node)
 			}
 		}
 	}
+	
+	/* //debug code to output the solidity of a tile in case we need to introspect at some point
+	std::cerr << "LEVEL_OBJECT: " << wml::output(node) << ":::\nSOLID:::\n";
+	if(solid_.size() == height()*width()) {
+		for(int y = 0; y != height(); ++y) {
+			for(int x = 0; x != width(); ++x) {
+				std::cerr << (solid_[y*width() + x] ? "1" : "0");
+			}
+			
+			std::cerr << "\n";
+		}
+	} else {
+		std::cerr << "SOLID SIZE: " << solid_.size() << "\n";
+	}*/
 }
 
 int level_object::width() const
