@@ -158,7 +158,7 @@ level_object::level_object(wml::const_node_ptr node)
 		for(int x = 0; x < width(); ++x) {
 			for(int y = 0; y < height(); ++y) {
 				const int index = y*width() + x;
-				solid_[index] = (passthrough_? (y == (width() - x/2)) : (y >= (width() - x/2)));
+				solid_[index] = (passthrough_? (y == (width() - x/2) -1) : (y >= (width() - x/2)));
 			}
 		}
 	} else if(node->attr("solid").str() == "reverse_quarter_diagonal_upper") {
@@ -166,7 +166,7 @@ level_object::level_object(wml::const_node_ptr node)
 		for(int x = 0; x < width(); ++x) {
 			for(int y = 0; y < height(); ++y) {
 				const int index = y*width() + x;
-				solid_[index] = (passthrough_? (y == (width()/2 - x/2)) : (y >= (width()/2 - x/2)));
+				solid_[index] = (passthrough_? (y == (width()/2 - x/2) -1) : (y >= (width()/2 - x/2)));
 			}
 		}
 	} else if(node->has_attr("solid_heights")) {
