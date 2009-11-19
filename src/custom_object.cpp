@@ -631,6 +631,8 @@ void custom_object::process(level& lvl)
 			handle_event("collide_level");
 		}
 
+		const bool previous_standing = is_standing(lvl);
+
 		const int dir = effective_velocity_x/100 > 0 ? 1 : -1;
 		int original_y = y();
 		
@@ -641,10 +643,11 @@ void custom_object::process(level& lvl)
 		//them standing.
 
 		const bool standing = is_standing(lvl);
-		if(started_standing && !standing) {
+		if(previous_standing && !standing) {
+			const int UpwardsSearchRange = 2;
 			//code to make us to up a slope even on a platform.
 			//TODO: this needs some improvements.
-			for(int n = 0; n != 4; ++n) {
+			for(int n = 0; n != UpwardsSearchRange; ++n) {
 				set_pos(x(), y()-1);
 				if(is_standing(lvl)) {
 					original_y = y();
@@ -653,7 +656,7 @@ void custom_object::process(level& lvl)
 			}
 
 			if(!is_standing(lvl)) {
-				set_pos(x(), y()+4);
+				set_pos(x(), y()+UpwardsSearchRange);
 				int max_drop = 1;
 				while(max_drop-- && !is_standing(lvl)) {
 					set_pos(x(), y()+1);
