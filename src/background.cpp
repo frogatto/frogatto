@@ -68,12 +68,14 @@ background::background(const wml::const_node_ptr& node)
 		}
 
 		std::string blend_mode = layer_node->attr("mode");
-		if ( blend_mode == "GL_MAX"){
-			bg.mode = GL_MAX;
-		}else if (blend_mode == "GL_MIN"){
-			bg.mode = GL_MIN;
-		}else{
-			bg.mode = GL_FUNC_ADD;
+		if(GLEW_EXT_blend_minmax) {
+			if(blend_mode == "GL_MAX") {
+				bg.mode = GL_MAX;
+			} else if(blend_mode == "GL_MIN") {
+				bg.mode = GL_MIN;
+			} else {
+				bg.mode = GL_FUNC_ADD;
+			}
 		}
 		
 		std::fill(bg.color, bg.color + 4, 0.0);
@@ -222,7 +224,10 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 	
 	glPushMatrix();
 	glColor4fv(bg.color);
-	glBlendEquation(bg.mode);
+
+	if(GLEW_EXT_blend_minmax) {
+		glBlendEquation(bg.mode);
+	}
 	graphics::blit_texture(bg.texture, x, y + bg.yoffset*ScaleImage - (y*bg.yscale)/100,
 	                       screen_width,
 					       (bg.y2 - bg.y1)*ScaleImage, 0.0, xpos,
@@ -231,7 +236,9 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 						   double(bg.y2)/double(bg.texture.height()));
 
 	glColor4f(1.0,1.0,1.0,1.0);
-	glBlendEquation(GL_FUNC_ADD);
+	if(GLEW_EXT_blend_minmax) {
+		glBlendEquation(GL_FUNC_ADD);
+	}
 	glPopMatrix();
 }
 
