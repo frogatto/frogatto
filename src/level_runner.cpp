@@ -75,6 +75,10 @@ void iris_scene(const level& lvl, screen_position& screen_pos, float amount) {
 	glStencilFunc(GL_NEVER, 1, 1);
 	glStencilOp(GL_REPLACE, GL_KEEP, GL_KEEP);
 
+	glPushMatrix();
+
+	glTranslatef(-screen_pos.x/100, -screen_pos.y/100, 0);
+
 	point pos = lvl.player()->get_entity().midpoint();
 
 	//Draw a circle.
@@ -88,6 +92,8 @@ void iris_scene(const level& lvl, screen_position& screen_pos, float amount) {
 	}
 
 	glEnd();
+
+	glPopMatrix();
 
 	//Now we've set the stencil to a circle, set things up so that the stencil
 	//will be used.
