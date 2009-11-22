@@ -209,7 +209,8 @@ level_object::level_object(wml::const_node_ptr node)
 		}
 	}
 	
-	/* //debug code to output the solidity of a tile in case we need to introspect at some point
+	//debug code to output the solidity of a tile in case we need to introspect at some point
+	/*
 	std::cerr << "LEVEL_OBJECT: " << wml::output(node) << ":::\nSOLID:::\n";
 	if(solid_.size() == height()*width()) {
 		for(int y = 0; y != height(); ++y) {
@@ -221,7 +222,8 @@ level_object::level_object(wml::const_node_ptr node)
 		}
 	} else {
 		std::cerr << "SOLID SIZE: " << solid_.size() << "\n";
-	}*/
+	}
+	*/
 }
 
 int level_object::width() const

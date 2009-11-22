@@ -182,8 +182,13 @@ rect entity::hit_rect() const
 
 point entity::midpoint() const
 {
-	const rect& body = body_rect();
-	return point(body.mid_x(), body.mid_y());
+	if(solid()) {
+		const rect r = solid_rect();
+		return point(r.x() + r.w()/2, r.y() + r.h()/2);
+	}
+
+	const frame& f = current_frame();
+	return point(x() + f.width()/2, y() + f.height()/2);
 }
 
 bool entity::is_alpha(int xpos, int ypos) const

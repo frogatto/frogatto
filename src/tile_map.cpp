@@ -3,12 +3,14 @@
 #include <math.h>
 #include <sstream>
 
+#include "asserts.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
 #include "formula_function.hpp"
 #include "multi_tile_pattern.hpp"
+#include "point_map.hpp"
 #include "random.hpp"
 #include "string_utils.hpp"
 #include "tile_map.hpp"
@@ -231,40 +233,52 @@ tile_map::tile_map(wml::const_node_ptr node)
 {
 	//turn off reference counting
 	add_ref();
-	{
-	std::vector<std::string> lines = util::split(node->attr("variations"), '\n', 0);
-	foreach(const std::string& line, lines) {
-		variations_.resize(variations_.size()+1);
-		std::vector<std::string> items = util::split(line, ',', util::STRIP_SPACES);
-		foreach(const std::string& item, items) {
-			int n = 0;
-			if(item.empty() == false) {
-				n = atoi(item.c_str());
-			}
-
-			variations_.back().push_back(n);
-		}
-	}
-	}
 
 	//make an entry for the empty string.
 	pattern_index_.push_back(pattern_index_entry());
 	pattern_index_.back().matching_patterns.push_back(&get_regex_from_pool(""));
 
 	{
-	std::vector<std::string> lines = util::split(node->attr("tiles"), '\n', 0);
+	const std::string& tiles_str = node->attr("tiles");
+	std::vector<std::string> lines;
+	lines.reserve(std::count(tiles_str.begin(), tiles_str.end(), '\n')+1);
+
+	util::split(tiles_str, lines, '\n', 0);
 	foreach(const std::string& line, lines) {
 		map_.resize(map_.size()+1);
-		std::vector<std::string> items = util::split(line, ',', util::STRIP_SPACES);
-		foreach(std::string item, items) {
-			tile_string str;
-			std::fill(str.begin(), str.end(), '\0');
-			if(item.size() > str.size()-1) {
-				item.resize(str.size()-1);
+
+		std::vector<tile_string> items;
+		const char* ptr = line.c_str();
+		bool found_end = line.empty();
+		while(!found_end) {
+			const char* end = strchr(ptr, ',');
+			if(end == NULL) {
+				end = line.c_str() + line.size();
+				found_end = true;
 			}
 
-			std::copy(item.begin(), item.end(), str.begin());
+			//We want to copy [ptr,end) to tile_string. First strip the spaces.
+			while(ptr != end && isspace(*ptr)) {
+				++ptr;
+			}
 
+			while(end != ptr && isspace(*(end-1))) {
+				--end;
+			}
+
+			ASSERT_LOG(end - ptr <= 4, "TILE PATTERN IS TOO LONG: " << std::string(ptr, end));
+
+			tile_string tile;
+			std::fill(tile.begin(), tile.end(), '\0');
+			std::copy(ptr, end, tile.begin());
+			items.push_back(tile);
+
+			if(!found_end) {
+				ptr = end + 1;
+			}
+		}
+
+		foreach(const tile_string& str, items) {
 			int index_entry = 0;
 			foreach(const pattern_index_entry& e, pattern_index_) {
 				if(strcmp(e.str.data(), str.data()) == 0) {
@@ -402,8 +416,16 @@ wml::node_ptr tile_map::write() const
 	res->set_attr("zorder", formatter() << zorder_);
 	std::ostringstream tiles;
 	foreach(const std::vector<int>& row, map_) {
+		
+		//cut off any empty cells at the end.
+		int size = row.size();
+		while(size > 2 && *pattern_index_[row[size-1]].str.data() == 0) {
+			--size;
+		}
+
+
 		tiles << "\n";
-		for(int i = 0; i != row.size(); ++i) {
+		for(int i = 0; i != size; ++i) {
 			if(i) {
 				tiles << ",";
 			}
@@ -558,7 +580,7 @@ int random_hash(int x, int y, int z, int n)
 
 void tile_map::apply_matching_multi_pattern(int x, int y,
   const multi_tile_pattern& base_pattern,
-  std::map<point, level_object_ptr>& mapping,
+  point_map<level_object_ptr>& mapping,
   std::map<point_zorder, level_object_ptr>& different_zorder_mapping) const
 {
 	const int hash = random_hash(x, y, zorder_, 0);
@@ -571,7 +593,7 @@ void tile_map::apply_matching_multi_pattern(int x, int y,
 	bool match = true;
 	for(int xpos = 0; xpos < pattern.width() && match; ++xpos) {
 		for(int ypos = 0; ypos < pattern.height() && match; ++ypos) {
-			if(pattern.tile_at(xpos, ypos).tiles.empty() == false && mapping.count(point(x + xpos, y + ypos))) {
+			if(pattern.tile_at(xpos, ypos).tiles.empty() == false && mapping.get(point(x + xpos, y + ypos))) {
 				//there is already another pattern filling this tile.
 				match = false;
 				break;
@@ -594,7 +616,7 @@ void tile_map::apply_matching_multi_pattern(int x, int y,
 					level_object_ptr ob = entry.tile;
 					if(ob) {
 						if(entry.zorder == INT_MIN) {
-							mapping[point(x + xpos, y + ypos)] = ob;
+							mapping.insert(point(x + xpos, y + ypos), ob);
 						} else {
 							different_zorder_mapping[point_zorder(point(x + xpos, y + ypos), entry.zorder)] = ob;
 						}
@@ -617,7 +639,7 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles,
 		}
 	}
 
-	std::map<point, level_object_ptr> multi_pattern_matches;
+	point_map<level_object_ptr> multi_pattern_matches;
 	std::map<point_zorder, level_object_ptr> different_zorder_multi_pattern_matches;
 
 	foreach(const multi_tile_pattern* p, multi_patterns_) {
@@ -667,13 +689,13 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles,
 		for(int x = -1; x <= width; ++x) {
 			const int xpos = xpos_ + x*TileSize;
 
-			std::map<point, level_object_ptr>::const_iterator itor = multi_pattern_matches.find(point(x, y));
-			if(itor != multi_pattern_matches.end() && itor->second) {
+			const level_object_ptr& obj = multi_pattern_matches.get(point(x, y));
+			if(obj) {
 				level_tile t;
 				t.x = xpos;
 				t.y = ypos;
 				t.zorder = zorder_;
-				t.object = itor->second;
+				t.object = obj;
 				t.rotate = 0;
 				t.face_right = false;
 				tiles->push_back(t);

@@ -10,6 +10,7 @@
 #include "formula_callable.hpp"
 #include "geometry.hpp"
 #include "level_object.hpp"
+#include "point_map.hpp"
 #include "wml_node_fwd.hpp"
 
 struct tile_pattern;
@@ -76,7 +77,7 @@ private:
 	//to this tile_map.
 	void apply_matching_multi_pattern(int x, int y,
 	  const multi_tile_pattern& pattern,
-	  std::map<point, level_object_ptr>& mapping,
+	  point_map<level_object_ptr>& mapping,
 	  std::map<point_zorder, level_object_ptr>& different_zorder_mapping) const;
 
 	//the subset of all global patterns which might be valid for this map.

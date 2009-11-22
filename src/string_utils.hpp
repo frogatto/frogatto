@@ -26,8 +26,9 @@ bool notspace(char c);
 std::string& strip(std::string& str);
 
 enum { REMOVE_EMPTY = 0x01, STRIP_SPACES = 0x02 };
-std::vector< std::string > split(std::string const &val, char c = ',', int flags = REMOVE_EMPTY | STRIP_SPACES);
-std::vector< std::string > split(std::string const &val, std::string const &delim);
+std::vector<std::string> split(std::string const &val, char c = ',', int flags = REMOVE_EMPTY | STRIP_SPACES);
+void split(std::string const &val, std::vector<std::string>& res, char c = ',', int flags = REMOVE_EMPTY | STRIP_SPACES);
+std::vector<std::string> split(std::string const &val, std::string const &delim);
 std::string join(const std::vector<std::string>& v, char c=',');
 
 bool string_starts_with(const std::string& target, const std::string& prefix);

@@ -706,7 +706,14 @@ void custom_object::process(level& lvl)
 	}
 
 	stand_info = collision_info();
-	is_standing(lvl, &stand_info);
+	if(velocity_y_ >= 0) {
+		is_standing(lvl, &stand_info);
+	}
+
+	if(stand_info.collide_with && standing_on_ != stand_info.collide_with &&
+	   effective_velocity_y < stand_info.collide_with->velocity_y()) {
+		stand_info.collide_with = NULL;
+	}
 
 	if(standing_on_ && standing_on_ != stand_info.collide_with) {
 		//we were previously standing on an object and we're not anymore.

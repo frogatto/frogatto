@@ -1951,3 +1951,10 @@ BENCHMARK(level_solid)
 		lvl->solid(rng::generate()%1000, rng::generate()%1000);
 	}
 }
+
+BENCHMARK(load_fatpipe)
+{
+	BENCHMARK_LOOP {
+		level lvl("fatpipe-stones.cfg");
+	}
+}

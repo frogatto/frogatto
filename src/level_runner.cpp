@@ -256,7 +256,7 @@ bool level_runner::play_cycle()
 			preload_level(level_cfg_);
 
 			const std::string transition = portal->transition;
-			if(transition.empty() || transition == "fade") {
+			if(transition == "fade") {
 				transition_scene(*lvl_, last_draw_position(), true, fade_scene);
 			} else if(transition == "flip") {
 				transition_scene(*lvl_, last_draw_position(), true, flip_scene);

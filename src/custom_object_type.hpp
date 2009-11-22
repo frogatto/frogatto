@@ -32,6 +32,7 @@ public:
 									game_logic::function_symbol_table* symbols=0);
 
 	explicit custom_object_type(wml::const_node_ptr node);
+	~custom_object_type();
 
 	const std::string& id() const { return id_; }
 	int hitpoints() const { return hitpoints_; }

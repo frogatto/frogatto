@@ -1063,6 +1063,7 @@ formula::formula(const wml::value& val, function_symbol_table* symbols) : str_(v
 }
 
 formula::~formula() {
+	std::cerr << "DESTROY FORMULA: {{{" << str_ << "}}}\n";
 	if(last_executed_formula == this) {
 		last_executed_formula = NULL;
 	}

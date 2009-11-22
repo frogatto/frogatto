@@ -10,6 +10,7 @@
 #include "wml_node.hpp"
 #include "wml_parser.hpp"
 #include "wml_utils.hpp"
+#include "unit_test.hpp"
 
 namespace {
 std::map<std::string, std::string> object_file_paths, prototype_file_paths;
@@ -268,6 +269,11 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 			properties_[i->first] = game_logic::formula::create_optional_formula(i->second, function_symbols());
 		}
 	}
+}
+
+custom_object_type::~custom_object_type()
+{
+	std::cerr << "DESTROY TYPE: '" << id_ << "'\n";
 }
 
 const frame& custom_object_type::default_frame() const

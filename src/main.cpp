@@ -159,14 +159,6 @@ extern "C" int main(int argc, char** argv)
 
 	srand(time(NULL));
 
-	if(!skip_tests && !test::run_tests()) {
-		return -1;
-	}
-
-	if(unit_tests_only) {
-		return 0;
-	}
-
 	if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_JOYSTICK) < 0) {
 		std::cerr << "could not init SDL\n";
 		return -1;
@@ -217,6 +209,14 @@ extern "C" int main(int argc, char** argv)
 		framed_gui_element::init(wml::parse_wml_from_file("gui.cfg"));
 		graphical_font::init(wml::parse_wml_from_file("fonts.cfg"));
 	} catch(const wml::parse_error& e) {
+		return 0;
+	}
+
+	if(!skip_tests && !test::run_tests()) {
+		return -1;
+	}
+
+	if(unit_tests_only) {
 		return 0;
 	}
 

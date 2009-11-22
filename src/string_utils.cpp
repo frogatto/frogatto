@@ -42,7 +42,7 @@ std::string &strip(std::string &str)
 	return str;
 }
 
-std::vector< std::string > split(std::string const &val, const std::string& delim)
+std::vector<std::string> split(std::string const &val, const std::string& delim)
 {
 	/* this might be slow but its very convenient so long as you
 	   aren't calling it too often */
@@ -67,10 +67,15 @@ std::vector< std::string > split(std::string const &val, const std::string& deli
 	return res;
 }
 
-std::vector< std::string > split(std::string const &val, char c, int flags)
+std::vector<std::string> split(std::string const &val, char c, int flags)
 {
-	std::vector< std::string > res;
+	std::vector<std::string> res;
+	split(val, res, c, flags);
+	return res;
+}
 
+void split(std::string const &val, std::vector<std::string>& res, char c, int flags)
+{
 	std::string::const_iterator i1 = val.begin();
 	std::string::const_iterator i2 = val.begin();
 
@@ -98,8 +103,6 @@ std::vector< std::string > split(std::string const &val, char c, int flags)
 		strip(new_val);
 	if (!(flags & REMOVE_EMPTY) || !new_val.empty())
 		res.push_back(new_val);
-
-	return res;
 }
 
 std::string join(const std::vector<std::string>& v, char j)
