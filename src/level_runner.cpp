@@ -1,3 +1,7 @@
+#include <math.h>
+
+#include <boost/function.hpp>
+
 #include "SDL.h"
 
 #include "controls.hpp"
@@ -24,53 +28,75 @@
 namespace {
 int global_pause_time;
 
-void fade_scene(level& lvl, screen_position& screen_pos) {
+typedef boost::function<void(const level&, screen_position&, float)> TransitionFn;
+
+void transition_scene(level& lvl, screen_position& screen_pos, bool transition_out, TransitionFn draw_fn) {
 	if(lvl.player()) {
 		lvl.player()->get_entity().set_invisible(true);
 	}
 
-	for(int n = 0; n < 255; n += 20) {
+	for(int n = 0; n <= 20; ++n) {
 		lvl.process();
-		draw_scene(lvl, screen_pos);
-		const SDL_Rect r = {0, 0, graphics::screen_width(), graphics::screen_height()};
-		const SDL_Color c = {0,0,0,0};
-		graphics::draw_rect(r, c, n);
+
+		draw_fn(lvl, screen_pos, transition_out ? (n/20.0) : (1 - n/20.0));
+
 		SDL_GL_SwapBuffers();
-		SDL_Delay(20);		
+		SDL_Delay(20);
 	}
-
-	const SDL_Rect r = {0, 0, graphics::screen_width(), graphics::screen_height()};
-	const SDL_Color c = {0,0,0,0};
-	graphics::draw_rect(r, c, 255);
-	SDL_GL_SwapBuffers();
-
+	
 	if(lvl.player()) {
 		lvl.player()->get_entity().set_invisible(false);
 	}
 }
 
-void flip_scene(level& lvl, screen_position& screen_pos, bool flip_out) {
-	if(lvl.player()) {
-		lvl.player()->get_entity().set_invisible(true);
+void fade_scene(const level& lvl, screen_position& screen_pos, float fade) {
+	draw_scene(lvl, screen_pos);
+
+	const SDL_Rect r = {0, 0, graphics::screen_width(), graphics::screen_height()};
+	const SDL_Color c = {0,0,0,0};
+	graphics::draw_rect(r, c, fade*255);
+}
+
+void flip_scene(const level& lvl, screen_position& screen_pos, float amount) {
+	screen_pos.flip_rotate = amount*1000;
+	draw_scene(lvl, screen_pos);
+}
+
+void iris_scene(const level& lvl, screen_position& screen_pos, float amount) {
+	if(lvl.player() == NULL) {
+		return;
 	}
 
-	if(!flip_out) {
-		screen_pos.flip_rotate = 1000;
-	}
-	for(int n = 0; n != 20; ++n) {
-		screen_pos.flip_rotate += 50 * (flip_out ? 1 : -1);
-		lvl.process();
-		draw_scene(lvl, screen_pos);
+	//Enable the stencil buffer.
+	glEnable(GL_STENCIL_TEST);
+	glClear(GL_STENCIL_BUFFER_BIT);
 
-		SDL_GL_SwapBuffers();
-		SDL_Delay(20);
+	//Set things up so we will draw to the stencil buffer, not to the screen.
+	glStencilFunc(GL_NEVER, 1, 1);
+	glStencilOp(GL_REPLACE, GL_KEEP, GL_KEEP);
+
+	point pos = lvl.player()->get_entity().midpoint();
+
+	//Draw a circle.
+	const float radius = 500 - amount*500;
+	glBegin(GL_TRIANGLE_FAN);
+	glVertex3f(pos.x, pos.y, 0);
+	for(double angle = 0; angle < 3.1459*2.0; angle += 0.01) {
+		const double x = pos.x + radius*cos(angle);
+		const double y = pos.y + radius*sin(angle);
+		glVertex3f(x, y, 0);
 	}
 
-	screen_pos.flip_rotate = 0;
+	glEnd();
 
-	if(lvl.player()) {
-		lvl.player()->get_entity().set_invisible(false);
-	}
+	//Now we've set the stencil to a circle, set things up so that the stencil
+	//will be used.
+	glStencilFunc(GL_EQUAL, 1, 1);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+	
+	draw_scene(lvl, screen_pos);
+
+	glDisable(GL_STENCIL_TEST);
 }
 
 void show_end_game()
@@ -179,7 +205,7 @@ bool level_runner::play_cycle()
 			return false;
 		}
 		preload_level(save->get_player_info()->current_level());
-		fade_scene(*lvl_, last_draw_position());
+		transition_scene(*lvl_, last_draw_position(), false, fade_scene);
 		level* new_level = load_level(save->get_player_info()->current_level());
 		sound::play_music(new_level->music());
 		set_scene_title(new_level->title());
@@ -225,9 +251,11 @@ bool level_runner::play_cycle()
 
 			const std::string transition = portal->transition;
 			if(transition.empty() || transition == "fade") {
-				fade_scene(*lvl_, last_draw_position());
+				transition_scene(*lvl_, last_draw_position(), true, fade_scene);
 			} else if(transition == "flip") {
-				flip_scene(*lvl_, last_draw_position(), true);
+				transition_scene(*lvl_, last_draw_position(), true, flip_scene);
+			} else if(transition == "iris") {
+				transition_scene(*lvl_, last_draw_position(), true, iris_scene);
 			} else if(transition == "instant") {
 				//do nothing.
 			}
@@ -278,7 +306,7 @@ bool level_runner::play_cycle()
 			last_draw_position() = screen_position();
 
 			if(transition == "flip") {
-				flip_scene(*lvl_, last_draw_position(), false);
+				transition_scene(*lvl_, last_draw_position(), false, flip_scene);
 			}
 
 			if(done) {
@@ -388,7 +416,7 @@ bool level_runner::play_cycle()
 	}
 
 	if(lvl_->end_game()) {
-		fade_scene(*lvl_, last_draw_position());
+		transition_scene(*lvl_, last_draw_position(), false, fade_scene);
 		show_end_game();
 		done = true;
 		return true;
