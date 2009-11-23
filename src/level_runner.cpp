@@ -65,6 +65,7 @@ void flip_scene(const level& lvl, screen_position& screen_pos, float amount) {
 bool calculate_stencil_buffer_available() {
 	GLint stencil_buffer_bits = 0;
 	glGetIntegerv(GL_STENCIL_BITS, &stencil_buffer_bits);
+	std::cerr << "stencil buffer size: " << stencil_buffer_bits << "\n";
 	return stencil_buffer_bits > 0;	
 }
 
@@ -282,6 +283,9 @@ bool level_runner::play_cycle()
 				transition_scene(*lvl_, last_draw_position(), true, iris_scene);
 			} else if(transition == "instant") {
 				//do nothing.
+			} else {
+				transition_scene(*lvl_, last_draw_position(), true, iris_scene);
+	
 			}
 
 			level* new_level = load_level(level_cfg_);

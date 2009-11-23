@@ -165,12 +165,16 @@ extern "C" int main(int argc, char** argv)
 	}
 
 	const stats::manager stats_manager;
-
+	
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 1);
+	
 	if(SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_OPENGL|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) == NULL) {
 		std::cerr << "could not set video mode\n";
 		return -1;
 	}
+
 	
+
 	SDL_WM_SetCaption("Frogatto", "Frogatto");
 
 	std::cerr << "JOYSTICKS: " << SDL_NumJoysticks() << "\n";
