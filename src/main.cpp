@@ -229,10 +229,6 @@ extern "C" int main(int argc, char** argv)
 		return 0;
 	}
 
-	GLint stencil_buffer_bits = 0;
-	glGetIntegerv(GL_STENCIL_BITS, &stencil_buffer_bits);
-	std::cerr << "BITS IN STENCIL BUFFER: " << stencil_buffer_bits << "\n";
-
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_BLEND);
 	glEnable(GL_TEXTURE_2D);

@@ -62,7 +62,25 @@ void flip_scene(const level& lvl, screen_position& screen_pos, float amount) {
 	draw_scene(lvl, screen_pos);
 }
 
+bool calculate_stencil_buffer_available() {
+	GLint stencil_buffer_bits = 0;
+	glGetIntegerv(GL_STENCIL_BITS, &stencil_buffer_bits);
+	return stencil_buffer_bits > 0;	
+}
+
+bool is_stencil_buffer_available() {
+	static const bool result = calculate_stencil_buffer_available();
+	return result;
+}
+
 void iris_scene(const level& lvl, screen_position& screen_pos, float amount) {
+	if(!is_stencil_buffer_available()) {
+		//there's no stencil buffer available, so resort to a fade
+		//effect instead.
+		fade_scene(lvl, screen_pos, amount);
+		return;
+	}
+
 	if(lvl.player() == NULL) {
 		return;
 	}
