@@ -322,6 +322,15 @@ public:
 		e->set_pos(e->x() - e->current_frame().width() / 2 , e->y() - e->current_frame().height() / 2);
 
 		e->execute_command(instantiation_commands_);
+
+		//send an event to the parent to let them know they've spawned a child,
+		//and let them record the child's details.
+		game_logic::map_formula_callable* spawn_callable(new game_logic::map_formula_callable);
+		variant holder(spawn_callable);
+		spawn_callable->add("parent", variant(&ob));
+		spawn_callable->add("child", variant(obj));
+		ob.handle_event("child_spawned", spawn_callable);
+		obj->handle_event("spawned", spawn_callable);
 	}
 private:
 	std::string type_;

@@ -387,11 +387,18 @@ public:
 		}
 	}
 };
+
 }
 
 void detect_user_collisions(level& lvl)
 {
-	std::vector<entity_ptr> chars = lvl.get_chars();
+	std::vector<entity_ptr> chars;
+	chars.reserve(lvl.get_chars().size());
+	foreach(const entity_ptr& a, lvl.get_chars()) {
+		if(a->current_frame().collision_areas().empty() == false) {
+			chars.push_back(a);
+		}
+	}
 
 	const int MaxCollisions = 16;
 	collision_pair collision_buf[MaxCollisions];

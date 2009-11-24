@@ -501,7 +501,7 @@ void custom_object::process(level& lvl)
 	}
 
 	if(type_->friction()) {
-		const bool is_underwater = lvl.is_underwater(body_rect());
+		const bool is_underwater = lvl.is_underwater(solid_rect());
 
 		const int air_resistance = is_underwater ? lvl.water_resistance() : lvl.air_resistance();
 

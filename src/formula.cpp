@@ -68,7 +68,6 @@ map_formula_callable::map_formula_callable(wml::const_node_ptr node)
 void map_formula_callable::write(wml::node_ptr node) const
 {
 	for(std::map<std::string,variant>::const_iterator i = values_.begin(); i != values_.end(); ++i) {
-		std::cerr << "SERIALIZE '" << i->first << "'\n";
 		std::string val;
 		i->second.serialize_to_string(val);
 		node->set_attr(i->first, val);
@@ -598,6 +597,7 @@ int operator_precedence(const token& t)
 		precedence_map["%"]     = ++n;
 		precedence_map["^"]     = ++n;
 		precedence_map["d"]     = ++n;
+		precedence_map["["]     = ++n;
 		precedence_map["("]     = ++n;
 		precedence_map["."]     = ++n;
 	}
@@ -708,9 +708,9 @@ void parse_where_clauses(const token* i1, const token * i2,
 	const token *beg = i1;
 	std::string var_name;
 	while(i1 != i2) {
-		if(i1->type == TOKEN_LPARENS) {
+		if(i1->type == TOKEN_LPARENS || i1->type == TOKEN_LBRACKET || i1->type == TOKEN_LSQUARE) {
 			++parens;
-		} else if(i1->type == TOKEN_RPARENS) {
+		} else if(i1->type == TOKEN_RPARENS || i1->type == TOKEN_RBRACKET || i1->type == TOKEN_RSQUARE) {
 			--parens;
 		} else if(!parens) {
 			if(i1->type == TOKEN_COMMA) {
@@ -872,6 +872,9 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 		if(i->type == TOKEN_LPARENS || i->type == TOKEN_LSQUARE) {
 			if(i->type == TOKEN_LPARENS && parens == 0 && i != i1) {
 				fn_call = i;
+			} else if(i->type == TOKEN_LSQUARE && parens == 0 && i != i1 && (i-1)->type != TOKEN_OPERATOR && (op == NULL || operator_precedence(*op) > operator_precedence(*i))) {
+				//the square bracket itself is an operator
+				op = i;
 			}
 
 			++parens;
@@ -887,6 +890,12 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 				op = i;
 			}
 		}
+	}
+
+	if(op != NULL && op->type == TOKEN_LSQUARE) {
+		//the square bracket operator is handled below, just set the op
+		//to NULL and it'll be handled.
+		op = NULL;
 	}
 
 	if(op == NULL) {
@@ -1063,7 +1072,6 @@ formula::formula(const wml::value& val, function_symbol_table* symbols) : str_(v
 }
 
 formula::~formula() {
-	std::cerr << "DESTROY FORMULA: {{{" << str_ << "}}}\n";
 	if(last_executed_formula == this) {
 		last_executed_formula = NULL;
 	}
@@ -1113,6 +1121,27 @@ UNIT_TEST(formula_in) {
 UNIT_TEST(formula_fn) {
 	function_symbol_table symbols;
 	CHECK(formula("def f(g) g(5) + 1; f(def(n) n*n)", &symbols).execute() == variant(26), "test failed");
+}
+
+UNIT_TEST(array_index) {
+	formula f("map(range(6), 'n', elements[n]) = elements "
+	          "where elements = [5, 6, 7, 8, 9, 10]");
+	CHECK(f.execute() == variant(1), "test failed");
+}
+
+UNIT_TEST(dot_precedence) {
+	map_formula_callable* callable = new map_formula_callable;
+	variant ref(callable);
+	map_formula_callable* callable2 = new map_formula_callable;
+	std::vector<variant> v;
+	for(int n = 0; n != 10; ++n) {
+		v.push_back(variant(n));
+	}
+	callable2->add("item", variant(&v));
+	callable->add("obj", variant(callable2));
+	formula f("obj.item[n] where n = 2");
+	const variant result = f.execute(*callable);
+	CHECK(result == variant(2), "test failed: " << result.to_debug_string());
 }
 
 }

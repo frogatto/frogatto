@@ -598,7 +598,8 @@ void editor::process_ghost_objects()
 	lvl_->swap_chars(ghost_objects_);
 
 	const size_t num_chars_before = lvl_->get_chars().size();
-	foreach(const entity_ptr& p, lvl_->get_chars()) {
+	const std::vector<entity_ptr> chars = lvl_->get_chars();
+	foreach(const entity_ptr& p, chars) {
 		p->process(*lvl_);
 	}
 
