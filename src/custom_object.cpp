@@ -1258,9 +1258,13 @@ void custom_object::set_value(const std::string& key, const variant& value)
 	} else if(key == "z") {
 		zorder_ = value.as_int();
 	} else if(key == "midpoint_x") {
-		set_pos(value.as_int() - body_rect().w()/2, y());
+		const point p = midpoint();
+		const int xdiff = p.x - x();
+		set_pos(value.as_int() - xdiff, y());
 	} else if(key == "midpoint_y") {
-		set_pos(x(), value.as_int() - body_rect().h()/2);
+		const point p = midpoint();
+		const int ydiff = p.y - y();
+		set_pos(x(), value.as_int() - ydiff);
 	} else if(key == "facing") {
 		set_face_right(value.as_int() > 0);
 	} else if(key == "upside_down") {
