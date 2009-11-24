@@ -230,7 +230,7 @@ bool level_runner::play_cycle()
 			return false;
 		}
 		preload_level(save->get_player_info()->current_level());
-		transition_scene(*lvl_, last_draw_position(), false, fade_scene);
+		transition_scene(*lvl_, last_draw_position(), true, fade_scene);
 		level* new_level = load_level(save->get_player_info()->current_level());
 		sound::play_music(new_level->music());
 		set_scene_title(new_level->title());
