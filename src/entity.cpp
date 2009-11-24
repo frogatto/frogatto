@@ -202,7 +202,7 @@ void entity::draw_debug_rects() const
 		return;
 	}
 
-	const rect& body = body_rect();
+	const rect& body = solid_rect();
 	if(body.w() > 0 && body.h() > 0) {
 		const SDL_Rect rect = { body.x(), body.y(), body.w(), body.h() };
 		graphics::draw_rect(rect, graphics::color_black(), 0xAA);

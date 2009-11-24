@@ -147,10 +147,8 @@ void frame::build_alpha()
 
 				const GLfloat u = xratio*rect[2] + (1.0-xratio)*rect[0];
 				const GLfloat v = yratio*rect[3] + (1.0 - yratio)*rect[1];
-				ASSERT_GE(u, 0.0);
-				ASSERT_GE(v, 0.0);
-				ASSERT_LE(u, 1.0);
-				ASSERT_LE(v, 1.0);
+				ASSERT_LOG(u >= 0.0 && v >= 0.0 && u <= 1.0 && v <= 1.0,
+				           "Bad rectangle co-ordinates in animation " << id_ << "/" << n);
 				const bool a = texture_.is_alpha((texture_.width()-1)*u, (texture_.height()-1)*v);
 				alpha_[y*img_rect_.w()*nframes_ + x + n*img_rect_.w()] = a;
 			}
