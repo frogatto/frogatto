@@ -296,11 +296,11 @@ variant variant::get_values() const
 
 size_t variant::num_elements() const
 {
-	if(type_ == TYPE_CALLABLE) {
+	if (type_ == TYPE_NULL){
+		return 0;
+	} else if(type_ == TYPE_CALLABLE) {
 		return 1;
-	}
-
-	if (type_ == TYPE_LIST) {
+	} else if (type_ == TYPE_LIST) {
 		assert(list_);
 		return list_->elements.size();
 	} else if (type_ == TYPE_MAP) {

@@ -1012,6 +1012,7 @@ struct custom_object::Accessor {
 	CUSTOM_ACCESSOR(x, obj.x())
 	CUSTOM_ACCESSOR(y, obj.y())
 	CUSTOM_ACCESSOR(z, obj.zorder_)
+	CUSTOM_ACCESSOR(zorder, obj.zorder_)
 	CUSTOM_ACCESSOR(x1, obj.solid_rect().x())
 	CUSTOM_ACCESSOR(y1, obj.solid_rect().y())
 	CUSTOM_ACCESSOR(x2, obj.solid_rect().x2())
@@ -1140,6 +1141,7 @@ struct custom_object::Accessor {
 		ACCESSOR(x);
 		ACCESSOR(y);
 		ACCESSOR(z);
+		ACCESSOR(zorder);
 		ACCESSOR(x1);
 		ACCESSOR(y1);
 		ACCESSOR(x2);
@@ -1255,7 +1257,7 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		set_x(value.as_int());
 	} else if(key == "y") {
 		set_y(value.as_int());
-	} else if(key == "z") {
+	} else if(key == "z" || key == "zorder") {
 		zorder_ = value.as_int();
 	} else if(key == "midpoint_x") {
 		const point p = midpoint();
