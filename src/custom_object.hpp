@@ -197,6 +197,8 @@ private:
 	const graphics::color_transform& draw_color() const;
 	boost::shared_ptr<graphics::color_transform> draw_color_;
 
+	boost::shared_ptr<rect> draw_area_;
+
 	bool can_interact_with_;
 
 	std::map<std::string, particle_system_ptr> particle_systems_;

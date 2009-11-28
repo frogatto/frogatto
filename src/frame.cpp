@@ -210,14 +210,36 @@ void frame::draw(int x, int y, bool face_right, bool upside_down, int time, int 
 	                       rect[0], rect[1], rect[2], rect[3]);
 }
 
+void frame::draw(int x, int y, const rect& area, bool face_right, bool upside_down, int time, int rotate) const
+{
+	GLfloat rect[4];
+	get_rect_in_texture(time, &rect[0]);
+
+	const int x_adjust = area.x();
+	const int y_adjust = area.y();
+	const int w_adjust = area.w() - img_rect_.w();
+	const int h_adjust = area.h() - img_rect_.h();
+
+	std::cerr << "ADJUST: " << area << ": " << x_adjust << "," << y_adjust << "," << w_adjust << "," << h_adjust << "\n";
+
+	rect[0] += GLfloat(x_adjust)/GLfloat(texture_.width());
+	rect[1] += GLfloat(y_adjust)/GLfloat(texture_.height());
+	rect[2] += GLfloat(x_adjust + w_adjust)/GLfloat(texture_.width());
+	rect[3] += GLfloat(y_adjust + h_adjust)/GLfloat(texture_.height());
+
+	//the last 4 params are the rectangle of the single, specific frame
+	graphics::blit_texture(texture_, x, y, (width() + w_adjust*scale_)*(face_right ? 1 : -1), (height() + h_adjust*scale_)*(upside_down ? -1 : 1), rotate + (face_right ? rotate_ : -rotate_),
+	                       rect[0], rect[1], rect[2], rect[3]);
+}
+
 void frame::get_rect_in_texture(int time, GLfloat* output_rect) const
 {
+	//picks out a single frame to draw from a whole animation, based on time
 	get_rect_in_frame_number(frame_number(time), output_rect);
 }
 
 void frame::get_rect_in_frame_number(int nframe, GLfloat* output_rect) const
 {
-	//picks out a single frame to draw from a whole animation, based on time
 	const int current_col = (nframes_per_row_ > 0) ? (nframe % nframes_per_row_) : nframe ;
 	const int current_row = (nframes_per_row_ > 0) ? (nframe/nframes_per_row_) : 0 ;
 
