@@ -908,21 +908,34 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 void editor::handle_scrolling()
 {
 	const int ScrollSpeed = 24*zoom_;
+	const int FastScrollSpeed = 48*zoom_;
 
 	if(key_[SDLK_LEFT]) {
 		xpos_ -= ScrollSpeed;
+		if(key_[SDLK_KP0]) {
+			xpos_ -= FastScrollSpeed;
+		}
 	}
 
 	if(key_[SDLK_RIGHT]) {
 		xpos_ += ScrollSpeed;
+		if(key_[SDLK_KP0]) {
+			xpos_ += FastScrollSpeed;
+		}
 	}
 
 	if(key_[SDLK_UP]) {
 		ypos_ -= ScrollSpeed;
+		if(key_[SDLK_KP0]) {
+			ypos_ -= FastScrollSpeed;
+		}
 	}
 
 	if(key_[SDLK_DOWN]) {
 		ypos_ += ScrollSpeed;
+		if(key_[SDLK_KP0]) {
+			ypos_ += FastScrollSpeed;
+		}
 	}
 }
 
