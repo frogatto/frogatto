@@ -907,7 +907,7 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 
 void editor::handle_scrolling()
 {
-	const int ScrollSpeed = 8*zoom_;
+	const int ScrollSpeed = 24*zoom_;
 
 	if(key_[SDLK_LEFT]) {
 		xpos_ -= ScrollSpeed;
