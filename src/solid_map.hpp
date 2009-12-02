@@ -20,7 +20,7 @@ class solid_map
 public:
 	static void create_object_solid_maps(wml::const_node_ptr node, std::vector<const_solid_map_ptr>& v);
 	static void create_object_platform_maps(wml::const_node_ptr node, std::vector<const_solid_map_ptr>& v);
-	static const_solid_map_ptr create_from_texture(const graphics::texture& t, const rect& area);
+	static solid_map_ptr create_from_texture(const graphics::texture& t, const rect& area);
 
 	const std::string& id() const { return id_; }
 	const rect& area() const { return area_; }
@@ -34,6 +34,8 @@ public:
 	const std::vector<point>& bottom() const { return bottom_; }
 	const std::vector<point>& all() const { return all_; }
 private:
+	static const_solid_map_ptr create_object_solid_map_from_solid_node(wml::const_node_ptr node);
+
 	solid_map() {}
 
 	void set_solid(int x, int y, bool value=true);

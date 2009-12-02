@@ -3,9 +3,22 @@
 #include "solid_map.hpp"
 #include "texture.hpp"
 #include "wml_node.hpp"
+#include "wml_utils.hpp"
+
+const_solid_map_ptr solid_map::create_object_solid_map_from_solid_node(wml::const_node_ptr node)
+{
+	solid_map_ptr result(create_from_texture(graphics::texture::get(node->attr("image")), rect(node->attr("area"))));
+	result->id_ = node->attr("id");
+	return result;
+
+}
 
 void solid_map::create_object_solid_maps(wml::const_node_ptr node, std::vector<const_solid_map_ptr>& v)
 {
+	FOREACH_WML_CHILD(solid_node, node, "solid") {
+		v.push_back(create_object_solid_map_from_solid_node(solid_node));
+	}
+
 	if(!node->has_attr("solid_area")) {
 		return;
 	}
@@ -69,7 +82,7 @@ void solid_map::create_object_platform_maps(wml::const_node_ptr node, std::vecto
 	platform->calculate_side(-100000, 0, platform->all_);
 	v.push_back(platform);
 }
-const_solid_map_ptr solid_map::create_from_texture(const graphics::texture& t, const rect& area)
+solid_map_ptr solid_map::create_from_texture(const graphics::texture& t, const rect& area)
 {
 	solid_map_ptr solid(new solid_map);
 	solid->area_ = rect(0, 0, area.w()*2, area.h()*2);
