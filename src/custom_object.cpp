@@ -39,6 +39,7 @@ custom_object::custom_object(wml::const_node_ptr node)
     type_(custom_type_ ?
 	      const_custom_object_type_ptr(new custom_object_type(custom_type_)) :
 		  custom_object_type::get(node->attr("type"))),
+	base_type_(type_),
     frame_(&type_->default_frame()),
 	frame_name_(wml::get_str(node, "current_frame", "normal")),
 	time_in_frame_(wml::get_int(node, "time_in_frame")),
@@ -122,6 +123,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
   : entity(x, y, face_right),
     previous_y_(y),
     type_(custom_object_type::get(type)),
+	base_type_(type_),
 	frame_(&type_->default_frame()),
     frame_name_("normal"),
 	time_in_frame_(0),
@@ -170,6 +172,8 @@ custom_object::custom_object(const custom_object& o) :
 	previous_y_(o.previous_y_),
 	custom_type_(o.custom_type_),
 	type_(o.type_),
+	base_type_(o.base_type_),
+	current_variation_(o.current_variation_),
 	frame_(o.frame_),
 	frame_name_(o.frame_name_),
 	time_in_frame_(o.time_in_frame_),
@@ -1130,6 +1134,15 @@ struct custom_object::Accessor {
 		return variant(obj.shader_vars_.get());
 	}
 
+	static variant variations(const custom_object& obj) {
+		std::vector<variant> result;
+		foreach(const std::string& s, obj.current_variation_) {
+			result.push_back(variant(s));
+		}
+
+		return variant(&result);
+	}
+
 #define CUSTOM_ACCESSOR(name, expression) static variant name(const custom_object& obj) { return variant(expression); }
 
 	static void init() {
@@ -1200,6 +1213,7 @@ struct custom_object::Accessor {
 		ACCESSOR(fragment_shaders);
 		ACCESSOR(vertex_shaders);
 		ACCESSOR(shader);
+		ACCESSOR(variations);
 	}
 };
 
@@ -1339,6 +1353,21 @@ void custom_object::set_value(const std::string& key, const variant& value)
 			draw_area_.reset(new rect(value[0].as_int(), value[1].as_int(), value[2].as_int(), value[3].as_int()));
 		} else {
 			draw_area_.reset();
+		}
+	} else if(key == "variations") {
+		current_variation_.clear();
+		if(value.is_list()) {
+			for(int n = 0; n != value.num_elements(); ++n) {
+				current_variation_.push_back(value[n].as_string());
+			}
+		} else if(value.is_string()) {
+			current_variation_.push_back(value.as_string());
+		}
+
+		if(current_variation_.empty()) {
+			type_ = base_type_;
+		} else {
+			type_ = base_type_->get_variation(current_variation_);
 		}
 	} else {
 		vars_->add(key, value);

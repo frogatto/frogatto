@@ -7,6 +7,7 @@
 #include "filesystem.hpp"
 #include "solid_map.hpp"
 #include "string_utils.hpp"
+#include "wml_modify.hpp"
 #include "wml_node.hpp"
 #include "wml_parser.hpp"
 #include "wml_utils.hpp"
@@ -158,6 +159,7 @@ void custom_object_type::init_event_handlers(wml::const_node_ptr node,
 	}
 }
 
+
 custom_object_type::custom_object_type(wml::const_node_ptr node)
   : id_(node->attr("id")),
 	hitpoints_(wml::get_int(node, "hitpoints", 1)),
@@ -269,6 +271,15 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 			properties_[i->first] = game_logic::formula::create_optional_formula(i->second, function_symbols());
 		}
 	}
+
+	FOREACH_WML_CHILD(variation_node, node, "object_variation") {
+		const std::string& id = variation_node->attr("id");
+		variations_[id].reset(new wml::modifier(variation_node));
+	}
+
+	if(!variations_.empty()) {
+		node_ = node;
+	}
 }
 
 custom_object_type::~custom_object_type()
@@ -319,4 +330,24 @@ game_logic::function_symbol_table* custom_object_type::function_symbols() const
 	} else {
 		return &get_custom_object_functions_symbol_table();
 	}
+}
+
+const_custom_object_type_ptr custom_object_type::get_variation(const std::vector<std::string>& variations) const
+{
+	ASSERT_LOG(node_, "tried to set variation in object which has no variations");
+
+	const_custom_object_type_ptr& result = variations_cache_[variations];
+	if(!result) {
+		wml::node_ptr node = wml::deep_copy(node_);
+		foreach(const std::string& v, variations) {
+			std::map<std::string, wml::const_modifier_ptr>::const_iterator var_itor = variations_.find(v);
+			if(var_itor != variations_.end() && var_itor->second) {
+				var_itor->second->modify(node);
+			}
+		}
+
+		result.reset(new custom_object_type(node));
+	}
+
+	return result;
 }

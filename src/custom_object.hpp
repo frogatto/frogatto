@@ -147,7 +147,9 @@ private:
 	int previous_y_;
 
 	wml::const_node_ptr custom_type_;
-	const_custom_object_type_ptr type_;
+	const_custom_object_type_ptr type_; //the type after variations are applied
+	const_custom_object_type_ptr base_type_; //the type without any variation
+	std::vector<std::string> current_variation_;
 	const frame* frame_;
 	std::string frame_name_;
 	int time_in_frame_;

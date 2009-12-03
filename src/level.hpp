@@ -92,6 +92,9 @@ public:
 	void get_props_in_rect(int x1, int y1, int x2, int y2, std::vector<prop_object>& props);
 	void remove_props_in_rect(int x1, int y1, int x2, int y2);
 
+	//schedule a character for removal at the end of the current cycle.
+	void schedule_character_removal(entity_ptr p);
+
 	//sets the last 'touched' player. This is the player found in the level when
 	//using WML, so it works reasonably well in multiplayer.
 	void set_touched_player(entity_ptr p) { last_touched_player_ = p; }
@@ -266,8 +269,14 @@ private:
 	std::set<int> layers_;
 	std::set<int> hidden_layers_; //layers hidden in the editor.
 	int highlight_layer_;
+
+	void erase_char(entity_ptr c);
 	std::vector<entity_ptr> chars_;
 	std::vector<entity_ptr> active_chars_;
+
+	//a list of the objects which are scheduled for deletion at the end
+	//of the current cycle.
+	std::vector<entity_ptr> delete_chars_;
 
 	std::map<std::string, entity_ptr> chars_by_label_;
 	entity_ptr player_;

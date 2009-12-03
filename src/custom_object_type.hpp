@@ -20,6 +20,11 @@ class custom_object_type;
 typedef boost::shared_ptr<custom_object_type> custom_object_type_ptr;
 typedef boost::shared_ptr<const custom_object_type> const_custom_object_type_ptr;
 
+namespace wml {
+class modifier;
+typedef boost::shared_ptr<const modifier> const_modifier_ptr;
+}
+
 class custom_object_type
 {
 public:
@@ -108,6 +113,8 @@ public:
 
 	unsigned int solid_dimensions() const { return solid_dimensions_; }
 
+	const_custom_object_type_ptr get_variation(const std::vector<std::string>& variations) const;
+
 private:
 	std::string id_;
 	int hitpoints_;
@@ -171,6 +178,9 @@ private:
 	bool has_solid_;
 
 	unsigned int solid_dimensions_;
+
+	std::map<std::string, wml::const_modifier_ptr> variations_;
+	mutable std::map<std::vector<std::string>, const_custom_object_type_ptr> variations_cache_;
 };
 
 #endif

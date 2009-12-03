@@ -1136,6 +1136,60 @@ private:
 	}
 };
 
+class add_object_command : public entity_command_callable {
+	entity_ptr e_;
+public:
+	explicit add_object_command(entity_ptr e) : e_(e)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		lvl.add_character(e_);
+	}
+};
+
+class add_object_function : public function_expression {
+public:
+	explicit add_object_function(const args_list& args)
+	  : function_expression("add_object", args, 1) {
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		entity_ptr e(args()[0]->evaluate(variables).try_convert<entity>());
+		if(e) {
+			return variant(new add_object_command(e));
+		} else {
+			return variant();
+		}
+	}
+};
+
+class remove_object_command : public entity_command_callable {
+	entity_ptr e_;
+public:
+	explicit remove_object_command(entity_ptr e) : e_(e)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		lvl.schedule_character_removal(e_);
+	}
+};
+
+class remove_object_function : public function_expression {
+public:
+	explicit remove_object_function(const args_list& args)
+	  : function_expression("remove_object", args, 1) {
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		entity_ptr e(args()[0]->evaluate(variables).try_convert<entity>());
+		if(e) {
+			return variant(new remove_object_command(e));
+		} else {
+			return variant();
+		}
+	}
+};
+
 class teleport_command : public entity_command_callable
 {
 public:
@@ -1562,6 +1616,10 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new distortion_function(args));
 	} else if(fn == "get_object") {
 		return expression_ptr(new get_object_function(args));
+	} else if(fn == "add_object") {
+		return expression_ptr(new add_object_function(args));
+	} else if(fn == "remove_object") {
+		return expression_ptr(new remove_object_function(args));
 	} else if(fn == "teleport") {
 		return expression_ptr(new teleport_function(args));
 	} else if(fn == "schedule") {

@@ -844,15 +844,9 @@ void level::do_processing()
 			std::cerr << "OBJECT DEST: " << c->get_id() << "\n";
 				player_->is_human()->object_destroyed(id(), c->get_id());
 			}
-			if(c->label().empty() == false) {
-				chars_by_label_.erase(c->label());
-			}
-			chars_.erase(std::remove(chars_.begin(), chars_.end(), c), chars_.end());
-			if(c->group() >= 0) {
-				assert(c->group() < groups_.size());
-				entity_group& group = groups_[c->group()];
-				group.erase(std::remove(group.begin(), group.end(), c), group.end());
-			}
+
+			erase_char(c);
+
 		}
 	}
 
@@ -860,6 +854,26 @@ void level::do_processing()
 
 	if(water_) {
 		water_->process(*this);
+	}
+
+	foreach(const entity_ptr& e, delete_chars_) {
+		erase_char(e);
+	}
+
+	delete_chars_.clear();
+}
+
+void level::erase_char(entity_ptr c)
+{
+
+	if(c->label().empty() == false) {
+		chars_by_label_.erase(c->label());
+	}
+	chars_.erase(std::remove(chars_.begin(), chars_.end(), c), chars_.end());
+	if(c->group() >= 0) {
+		assert(c->group() < groups_.size());
+		entity_group& group = groups_[c->group()];
+		group.erase(std::remove(group.begin(), group.end(), c), group.end());
 	}
 }
 
@@ -1559,6 +1573,11 @@ void level::get_props_in_rect(int x1, int y1, int x2, int y2, std::vector<prop_o
 void level::remove_props_in_rect(int x1, int y1, int x2, int y2)
 {
 	props_.erase(std::remove_if(props_.begin(), props_.end(), prop_object_in_rect(x1, y1, x2, y2)), props_.end());
+}
+
+void level::schedule_character_removal(entity_ptr p)
+{
+	delete_chars_.push_back(p);
 }
 
 void level::force_enter_portal(const portal& p)
