@@ -32,7 +32,7 @@ weather_particle_system::weather_particle_system(const entity& e, const weather_
 	}
 }
 
-void weather_particle_system::process(const entity& e)
+void weather_particle_system::process(const level& lvl, const entity& e)
 {
 	++cycle_;
 	

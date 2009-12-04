@@ -162,7 +162,7 @@ public:
 	~simple_particle_system() {}
 
 	bool is_destroyed() const { return info_.system_time_to_live_ == 0; }
-	void process(const entity& e);
+	void process(const level& lvl, const entity& e);
 	void draw(const rect& area, const entity& e) const;
 
 private:
@@ -197,7 +197,7 @@ simple_particle_system::simple_particle_system(const entity& e, const simple_par
 {
 }
 
-void simple_particle_system::process(const entity& e)
+void simple_particle_system::process(const level& lvl, const entity& e)
 {
 	--info_.system_time_to_live_;
 	++cycle_;
