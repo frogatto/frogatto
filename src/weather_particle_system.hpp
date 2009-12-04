@@ -69,7 +69,7 @@ private:
 	GLfloat direction[2];
 	GLfloat base_velocity;
 	
-	std::deque<particle> particles_;
+	std::vector<particle> particles_;
 };
 
 #endif

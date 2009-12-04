@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <math.h>
+#include <vector>
 
 #include "weather_particle_system.hpp"
 #include "wml_utils.hpp"
@@ -22,6 +23,7 @@ weather_particle_system::weather_particle_system(const entity& e, const weather_
 	base_velocity = sqrtf(info_.velocity_x*info_.velocity_x + info_.velocity_y*info_.velocity_y);
 	direction[0] = info_.velocity_x / base_velocity;
 	direction[1] = info_.velocity_y / base_velocity;
+	particles_.reserve(info_.number_of_particles);
 	for (int i = 0; i < info_.number_of_particles; i++)
 	{
 		particle new_p;
@@ -49,12 +51,14 @@ void weather_particle_system::draw(const rect& area, const entity& e) const
 {
 	glDisable(GL_TEXTURE_2D);
 	glLineWidth(info_.line_width);
-	glBegin(GL_LINES);
+	//glBegin(GL_LINES);
 	glColor4f(info_.rgba[0]/255.0, info_.rgba[1]/255.0, info_.rgba[2]/255.0, info_.rgba[3]/255.0);
 	int offset_x = area.x() - area.x()%info_.repeat_period;
 	if (area.x() < 0) offset_x -= info_.repeat_period;
 	int offset_y = area.y() - area.y()%info_.repeat_period;
 	if (area.y() < 0) offset_y -= info_.repeat_period;
+	glEnableClientState(GL_VERTEX_ARRAY);
+	std::vector<GLfloat> vertices;
 	foreach(const particle& p, particles_)
 	{
 		float my_y = p.pos[1]+offset_y;
@@ -63,15 +67,22 @@ void weather_particle_system::draw(const rect& area, const entity& e) const
 			float my_x = p.pos[0]+offset_x;
 			do
 			{
-				glVertex3f(my_x, my_y, 0.0);
-				glVertex3f(my_x+direction[0]*info_.line_length, my_y+direction[1]*info_.line_length, 0.0);
+				vertices.push_back(my_x);
+				vertices.push_back(my_y);
+				vertices.push_back(my_x+direction[0]*info_.line_length);
+				vertices.push_back(my_y+direction[1]*info_.line_length);
+				//glVertex2f(my_x, my_y);
+				//glVertex2f(my_x+direction[0]*info_.line_length, my_y+direction[1]*info_.line_length);
 				my_x += info_.repeat_period;
 				//printf("my_x: %f, area.x: %i, area.w: %i\n", my_x, area.x(), area.w());
 			} while (my_x < area.x()+area.w());
 			my_y += info_.repeat_period;
 		} while (my_y < area.y()+area.h());
 	}
-	glEnd();
+	glVertexPointer(2, GL_FLOAT, 0, &vertices.front());
+	glDrawArrays(GL_LINES, 0, vertices.size());
+	glDisableClientState(GL_VERTEX_ARRAY);
+	//glEnd();
 	//glDisable(GL_SMOOTH);
 	glEnable(GL_TEXTURE_2D);
 	glColor4f(1.0, 1.0, 1.0, 1.0);
