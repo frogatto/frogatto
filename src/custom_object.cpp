@@ -1071,7 +1071,7 @@ struct custom_object::Accessor {
 	CUSTOM_ACCESSOR(is_standing, (obj.lvl_ ? variant(obj.is_standing(*obj.lvl_)) : variant()));
 	CUSTOM_ACCESSOR(near_cliff_edge, obj.is_standing(*obj.lvl_) && cliff_edge_within(*obj.lvl_, obj.feet_x(), obj.feet_y(), obj.face_dir()*15));
 	CUSTOM_ACCESSOR(distance_to_cliff, ::distance_to_cliff(*obj.lvl_, obj.feet_x(), obj.feet_y(), obj.face_dir()));
-	CUSTOM_ACCESSOR(slope_standing_on, -obj.slope_standing_on(obj.type_->feet_width()*2)*obj.face_dir());
+	CUSTOM_ACCESSOR(slope_standing_on, -obj.slope_standing_on(6)*obj.face_dir());
 	CUSTOM_ACCESSOR(underwater, obj.lvl_->is_underwater(obj.solid_rect()));
 	CUSTOM_ACCESSOR(driver, obj.driver_ ? obj.driver_.get() : &obj);
 	CUSTOM_ACCESSOR(is_human, obj.is_human() ? 1 : 0);
@@ -1573,7 +1573,6 @@ entity_ptr custom_object::backup() const
 
 void custom_object::handle_event(const std::string& event, const formula_callable* context)
 {
-	std::cerr << "HANDLE EVENT: " << event << "\n";
 	if(hitpoints_ <= 0 && event != "die") {
 		return;
 	}
@@ -1649,18 +1648,18 @@ int custom_object::slope_standing_on(int range) const
 	int ypos = feet_y();
 
 
-	for(int n = 0; !lvl_->solid(xpos, ypos) && n != 10; ++n) {
+	for(int n = 0; !lvl_->standable(xpos, ypos) && n != 10; ++n) {
 		++ypos;
 	}
 
 	if(range == 1) {
-		if(lvl_->solid(xpos + forward, ypos - 1) &&
-		   !lvl_->solid(xpos - forward, ypos)) {
+		if(lvl_->standable(xpos + forward, ypos - 1) &&
+		   !lvl_->standable(xpos - forward, ypos)) {
 			return 45;
 		}
 
-		if(!lvl_->solid(xpos + forward, ypos) &&
-		   lvl_->solid(xpos - forward, ypos - 1)) {
+		if(!lvl_->standable(xpos + forward, ypos) &&
+		   lvl_->standable(xpos - forward, ypos - 1)) {
 			return -45;
 		}
 

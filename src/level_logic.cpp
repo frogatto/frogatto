@@ -74,15 +74,18 @@ int find_ground_level(const level& lvl, int xpos, int ypos, int max_search)
 
 		return ypos + 1;
 	} else {
-		++ypos;
-		while(!lvl.standable(xpos, ypos) && --max_search > 0) {
-			++ypos;
+		//search both up and down, since in the case of a platform the
+		//ground may be above us.
+		for(int n = 1; n < max_search; ++n) {
+			if(lvl.standable(xpos, ypos + n)) {
+				return ypos + n - 1;
+			}
+
+			if(lvl.standable(xpos, ypos - n) && !lvl.standable(xpos, ypos - n - 1)) {
+				return ypos - n;
+			}
 		}
 
-		if(!max_search) {
-			return INT_MIN;
-		}
-
-		return ypos - 1;
+		return INT_MIN;
 	}
 }
