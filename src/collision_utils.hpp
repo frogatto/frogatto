@@ -66,7 +66,7 @@ int entity_collides_with_level_count(const level& lvl, const entity& e, MOVE_DIR
 //function to try placing an entity in a level, without it colliding. The entity
 //may be moved according to some heuristics to place it sensibly -- the object's
 //location will be modified. Will return true iff it succeeds in placing it.
-bool place_entity_in_level(const level& lvl, entity& e);
+bool place_entity_in_level(level& lvl, entity& e);
 
 //function which returns true iff an entity collides with the level in
 //'non-solid' space. That is, if any of the entity's pixels collide with

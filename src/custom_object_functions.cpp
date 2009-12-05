@@ -1136,6 +1136,43 @@ private:
 	}
 };
 
+//a command which moves an object in a given direction enough to resolve
+//any solid conflicts.
+class resolve_solid_command : public entity_command_callable {
+	entity_ptr e_;
+	int xdir_, ydir_, max_cycles_;
+public:
+	resolve_solid_command(entity_ptr e, int xdir, int ydir, int max_cycles) : e_(e), xdir_(xdir), ydir_(ydir), max_cycles_(max_cycles)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		int max_cycles = max_cycles_;
+		while(entity_collides(lvl, *e_, MOVE_NONE) && max_cycles > 0) {
+			e_->set_pos(e_->x() + xdir_, e_->y() + ydir_);
+			--max_cycles;
+		}
+	}
+};
+
+class resolve_solid_function : public function_expression {
+public:
+	explicit resolve_solid_function(const args_list& args)
+	  : function_expression("resolve_solid", args, 3, 4) {
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		entity_ptr e(args()[0]->evaluate(variables).try_convert<entity>());
+		const int xdir = args()[1]->evaluate(variables).as_int();
+		const int ydir = args()[2]->evaluate(variables).as_int();
+		const int max_cycles = args().size() > 3 ? args()[3]->evaluate(variables).as_int() : 100;
+		if(e) {
+			return variant(new resolve_solid_command(e, xdir, ydir, max_cycles));
+		} else {
+			return variant();
+		}
+	}
+};
+
 class add_object_command : public entity_command_callable {
 	entity_ptr e_;
 public:
@@ -1143,7 +1180,9 @@ public:
 	{}
 
 	virtual void execute(level& lvl, entity& ob) const {
-		lvl.add_character(e_);
+		if(place_entity_in_level(lvl, *e_)) {
+			lvl.add_character(e_);
+		}
 	}
 };
 
@@ -1618,6 +1657,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new get_object_function(args));
 	} else if(fn == "add_object") {
 		return expression_ptr(new add_object_function(args));
+	} else if(fn == "resolve_solid") {
+		return expression_ptr(new resolve_solid_function(args));
 	} else if(fn == "remove_object") {
 		return expression_ptr(new remove_object_function(args));
 	} else if(fn == "teleport") {

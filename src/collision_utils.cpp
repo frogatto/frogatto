@@ -185,16 +185,16 @@ bool non_solid_entity_collides_with_level(const level& lvl, const entity& e)
 	return false;
 }
 
-bool place_entity_in_level(const level& lvl, entity& e)
+bool place_entity_in_level(level& lvl, entity& e)
 {
-	if(!entity_collides_with_level(lvl, e, MOVE_NONE)) {
+	if(!entity_collides(lvl, e, MOVE_NONE)) {
 		return true;
 	}
 
-	if(!entity_collides_with_level(lvl, e, MOVE_UP)) {
-		while(entity_collides_with_level(lvl, e, MOVE_NONE)) {
+	if(!entity_collides(lvl, e, MOVE_UP)) {
+		while(entity_collides(lvl, e, MOVE_NONE)) {
 			e.set_pos(e.x(), e.y()-1);
-			if(entity_collides_with_level(lvl, e, MOVE_UP)) {
+			if(entity_collides(lvl, e, MOVE_UP)) {
 				return false;
 			}
 		}
@@ -202,10 +202,10 @@ bool place_entity_in_level(const level& lvl, entity& e)
 		return true;
 	}
 
-	if(!entity_collides_with_level(lvl, e, MOVE_DOWN)) {
-		while(entity_collides_with_level(lvl, e, MOVE_NONE)) {
+	if(!entity_collides(lvl, e, MOVE_DOWN)) {
+		while(entity_collides(lvl, e, MOVE_NONE)) {
 			e.set_pos(e.x(), e.y()+1);
-			if(entity_collides_with_level(lvl, e, MOVE_DOWN)) {
+			if(entity_collides(lvl, e, MOVE_DOWN)) {
 				return false;
 			}
 		}
@@ -213,10 +213,10 @@ bool place_entity_in_level(const level& lvl, entity& e)
 		return true;
 	}
 
-	if(!entity_collides_with_level(lvl, e, MOVE_LEFT)) {
-		while(entity_collides_with_level(lvl, e, MOVE_NONE)) {
+	if(!entity_collides(lvl, e, MOVE_LEFT)) {
+		while(entity_collides(lvl, e, MOVE_NONE)) {
 			e.set_pos(e.x()-1, e.y());
-			if(entity_collides_with_level(lvl, e, MOVE_LEFT)) {
+			if(entity_collides(lvl, e, MOVE_LEFT)) {
 				return false;
 			}
 		}
@@ -224,10 +224,10 @@ bool place_entity_in_level(const level& lvl, entity& e)
 		return true;
 	}
 
-	if(!entity_collides_with_level(lvl, e, MOVE_RIGHT)) {
-		while(entity_collides_with_level(lvl, e, MOVE_NONE)) {
+	if(!entity_collides(lvl, e, MOVE_RIGHT)) {
+		while(entity_collides(lvl, e, MOVE_NONE)) {
 			e.set_pos(e.x()+1, e.y());
-			if(entity_collides_with_level(lvl, e, MOVE_RIGHT)) {
+			if(entity_collides(lvl, e, MOVE_RIGHT)) {
 				return false;
 			}
 		}
