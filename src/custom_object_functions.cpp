@@ -1170,7 +1170,7 @@ public:
 	{}
 
 	virtual void execute(level& lvl, entity& ob) const {
-		lvl.schedule_character_removal(e_);
+		lvl.remove_character(e_);
 	}
 };
 

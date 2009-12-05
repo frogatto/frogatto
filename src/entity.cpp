@@ -265,6 +265,13 @@ void entity::set_current_generator(current_generator* generator)
 	current_generator_ = current_generator_ptr(generator);
 }
 
+void entity::set_attached_objects(const std::vector<entity_ptr>& v)
+{
+	if(v != attached_objects_) {
+		attached_objects_ = v;
+	}
+}
+
 void entity::set_distinct_label()
 {
 	//generate a random label for the object

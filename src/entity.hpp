@@ -235,6 +235,9 @@ protected:
 
 	void set_solid_dimensions(unsigned int dim) { solid_dimensions_ = dim; }
 
+	const std::vector<entity_ptr>& attached_objects() const { return attached_objects_; }
+	void set_attached_objects(const std::vector<entity_ptr>& v);
+
 private:
 	virtual void control(const level& lvl) = 0;
 
@@ -264,6 +267,11 @@ private:
 	std::vector<ScheduledCommand> scheduled_commands_;
 
 	bool controls_[controls::NUM_CONTROLS];	
+
+	//attached objects are objects which are also drawn with this object.
+	//attached objects should generally NOT be present in the level, and are
+	//NOT processed independently of this object.
+	std::vector<entity_ptr> attached_objects_;
 };
 
 #endif

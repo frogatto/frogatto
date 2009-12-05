@@ -345,6 +345,10 @@ void custom_object::draw() const
 		driver_->draw();
 	}
 
+	foreach(const entity_ptr& attached, attached_objects()) {
+		attached->draw();
+	}
+
 	if(draw_color_) {
 		draw_color_->to_color().set_as_current_color();
 	}
@@ -1143,6 +1147,15 @@ struct custom_object::Accessor {
 		return variant(&result);
 	}
 
+	static variant attached_objects(const custom_object& obj) {
+		std::vector<variant> result;
+		foreach(const entity_ptr& e, obj.attached_objects()) {
+			result.push_back(variant(e.get()));
+		}
+
+		return variant(&result);
+	}
+
 #define CUSTOM_ACCESSOR(name, expression) static variant name(const custom_object& obj) { return variant(expression); }
 
 	static void init() {
@@ -1214,6 +1227,7 @@ struct custom_object::Accessor {
 		ACCESSOR(vertex_shaders);
 		ACCESSOR(shader);
 		ACCESSOR(variations);
+		ACCESSOR(attached_objects);
 	}
 };
 
@@ -1278,12 +1292,12 @@ void custom_object::set_value(const std::string& key, const variant& value)
 	} else if(key == "z" || key == "zorder") {
 		zorder_ = value.as_int();
 	} else if(key == "midpoint_x") {
-		const point p = midpoint();
-		const int xdiff = p.x - x();
+		const int current_x = x() + current_frame().width()/2;
+		const int xdiff = current_x - x();
 		set_pos(value.as_int() - xdiff, y());
 	} else if(key == "midpoint_y") {
-		const point p = midpoint();
-		const int ydiff = p.y - y();
+		const int current_y = y() + current_frame().height()/2;
+		const int ydiff = current_y - y();
 		set_pos(x(), value.as_int() - ydiff);
 	} else if(key == "facing") {
 		set_face_right(value.as_int() > 0);
@@ -1369,6 +1383,16 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		} else {
 			type_ = base_type_->get_variation(current_variation_);
 		}
+	} else if(key == "attached_objects") {
+		std::vector<entity_ptr> v;
+		for(int n = 0; n != value.num_elements(); ++n) {
+			entity* e = value[n].try_convert<entity>();
+			if(e) {
+				v.push_back(entity_ptr(e));
+			}
+		}
+
+		set_attached_objects(v);
 	} else {
 		vars_->add(key, value);
 	}
@@ -1549,6 +1573,7 @@ entity_ptr custom_object::backup() const
 
 void custom_object::handle_event(const std::string& event, const formula_callable* context)
 {
+	std::cerr << "HANDLE EVENT: " << event << "\n";
 	if(hitpoints_ <= 0 && event != "die") {
 		return;
 	}
