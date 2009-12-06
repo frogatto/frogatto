@@ -239,9 +239,9 @@ void die_record::draw() const
 	glPointSize(5);
 	glDisable(GL_TEXTURE_2D);
 	glColor4ub(255, 0, 0, 255);
-	glBegin(GL_POINTS);
-	glVertex3f(p_.x, p_.y, 0);
-	glEnd();
+	GLfloat point[] = {p_.x, p_.y};
+	glVertexPointer(2, GL_FLOAT, 0, point);
+	glDrawArrays(GL_POINTS, 0, 1);
 	glEnable(GL_TEXTURE_2D);
 	glColor4ub(255, 255, 255, 255);
 }
@@ -261,9 +261,9 @@ void quit_record::draw() const
 	glPointSize(5);
 	glDisable(GL_TEXTURE_2D);
 	glColor4ub(255, 255, 0, 255);
-	glBegin(GL_POINTS);
-	glVertex3f(p_.x, p_.y, 0);
-	glEnd();
+	GLfloat point[] = {p_.x, p_.y};
+	glVertexPointer(2, GL_FLOAT, 0, point);
+	glDrawArrays(GL_POINTS, 0, 1);
 	glEnable(GL_TEXTURE_2D);
 	glColor4ub(255, 255, 255, 255);
 }
@@ -283,10 +283,9 @@ void player_move_record::draw() const
 {
 	glDisable(GL_TEXTURE_2D);
 	glColor4ub(0, 0, 255, 128);
-	glBegin(GL_LINES);
-	glVertex3f(src_.x, src_.y, 0);
-	glVertex3f(dst_.x, dst_.y, 0);
-	glEnd();
+	GLfloat varray[] = {src_.x, src_.y, dst_.x, dst_.y};
+	glVertexPointer(2, GL_FLOAT, 0, varray);
+	glDrawArrays(GL_LINES, 0, 4);
 	glEnable(GL_TEXTURE_2D);
 	glColor4ub(255, 255, 255, 255);
 }

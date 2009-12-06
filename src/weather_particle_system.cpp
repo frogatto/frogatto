@@ -51,7 +51,6 @@ void weather_particle_system::draw(const rect& area, const entity& e) const
 {
 	glDisable(GL_TEXTURE_2D);
 	glLineWidth(info_.line_width);
-	//glBegin(GL_LINES);
 	glColor4f(info_.rgba[0]/255.0, info_.rgba[1]/255.0, info_.rgba[2]/255.0, info_.rgba[3]/255.0);
 	int offset_x = area.x() - area.x()%info_.repeat_period;
 	if (area.x() < 0) offset_x -= info_.repeat_period;
@@ -71,8 +70,6 @@ void weather_particle_system::draw(const rect& area, const entity& e) const
 				vertices.push_back(my_y);
 				vertices.push_back(my_x+direction[0]*info_.line_length);
 				vertices.push_back(my_y+direction[1]*info_.line_length);
-				//glVertex2f(my_x, my_y);
-				//glVertex2f(my_x+direction[0]*info_.line_length, my_y+direction[1]*info_.line_length);
 				my_x += info_.repeat_period;
 				//printf("my_x: %f, area.x: %i, area.w: %i\n", my_x, area.x(), area.w());
 			} while (my_x < area.x()+area.w());
@@ -81,7 +78,6 @@ void weather_particle_system::draw(const rect& area, const entity& e) const
 	}
 	glVertexPointer(2, GL_FLOAT, 0, &vertices.front());
 	glDrawArrays(GL_LINES, 0, vertices.size()/2);
-	//glEnd();
 	//glDisable(GL_SMOOTH);
 	glEnable(GL_TEXTURE_2D);
 	glColor4f(1.0, 1.0, 1.0, 1.0);

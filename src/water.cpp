@@ -231,9 +231,12 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 		std::cerr << "DRAW LINE: " << waterline_rect.x << " " << waterline_rect.w << "\n";
 		glLineWidth(2.0);
 		glColor4f(1.0, 1.0, 1.0, 1.0);
-		glBegin(GL_LINE_STRIP);
-		glVertex3f(waterline_rect.x, waterline_rect.y, 0);
-		glVertex3f(waterline_rect.x + waterline_rect.w, waterline_rect.y, 0);
+		GLfloat varray[] = {
+			waterline_rect.x, waterline_rect.y,
+			waterline_rect.x + waterline_rect.w, waterline_rect.y
+		};
+		glVertexPointer(2, GL_FLOAT, 0, varray);
+		glDrawArrays(GL_LINES, 0, 2);
 		glEnd();
 	}
 
