@@ -57,7 +57,6 @@ void weather_particle_system::draw(const rect& area, const entity& e) const
 	if (area.x() < 0) offset_x -= info_.repeat_period;
 	int offset_y = area.y() - area.y()%info_.repeat_period;
 	if (area.y() < 0) offset_y -= info_.repeat_period;
-	glEnableClientState(GL_VERTEX_ARRAY);
 	static std::vector<GLfloat> vertices;
 	vertices.clear();
 	foreach(const particle& p, particles_)
@@ -82,7 +81,6 @@ void weather_particle_system::draw(const rect& area, const entity& e) const
 	}
 	glVertexPointer(2, GL_FLOAT, 0, &vertices.front());
 	glDrawArrays(GL_LINES, 0, vertices.size()/2);
-	glDisableClientState(GL_VERTEX_ARRAY);
 	//glEnd();
 	//glDisable(GL_SMOOTH);
 	glEnable(GL_TEXTURE_2D);

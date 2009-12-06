@@ -236,6 +236,9 @@ extern "C" int main(int argc, char** argv)
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_BLEND);
 	glEnable(GL_TEXTURE_2D);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	GLenum glew_status = glewInit();
