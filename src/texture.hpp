@@ -54,8 +54,8 @@ public:
 	static texture get_no_cache(const surface& surf);
 	static void set_current_texture(const key& k);
 	static void set_coord(GLfloat x, GLfloat y);
-	static GLfloat texture::get_coord_x(GLfloat x);
-	static GLfloat texture::get_coord_y(GLfloat y);
+	static GLfloat get_coord_x(GLfloat x);
+	static GLfloat get_coord_y(GLfloat y);
 	static void clear_cache();
 
 	unsigned int width() const { return width_; }
