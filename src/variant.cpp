@@ -407,6 +407,8 @@ variant variant::operator+(const variant& v) const
 	if(type_ == TYPE_STRING) {
 		if(v.type_ == TYPE_MAP) {
 			return variant(as_string() + v.as_string());
+		} else if(v.type_ == TYPE_STRING) {
+			return variant(as_string() + v.as_string());
 		}
 
 		std::string s;
