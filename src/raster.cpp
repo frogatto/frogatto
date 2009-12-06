@@ -358,14 +358,16 @@ void draw_hollow_rect(const SDL_Rect& r, const SDL_Color& color,
 		      unsigned char alpha) {
 
 	glDisable(GL_TEXTURE_2D);
-	glBegin(GL_LINE_LOOP);
 	glColor4ub(color.r, color.g, color.b, alpha);
-	glVertex3f( r.x, r.y, 0);
-	glVertex3f( r.x + r.w, r.y, 0);
-	glVertex3f( r.x + r.w, r.y + r.h, 0);
-	glVertex3f( r.x, r.y + r.h, 0);
+	GLfloat varray[] = {
+		r.x, r.y,
+		r.x + r.w, r.y,
+		r.x + r.w, r.y + r.h,
+		r.x, r.y + r.h
+	};
+	glVertexPointer(2, GL_FLOAT, 0, varray);
+	glDrawArrays(GL_LINE_LOOP, 0, sizeof(varray)/sizeof(GLfloat)/2);
 	glColor4ub(255, 255, 255, 255);
-	glEnd();
 	glEnable(GL_TEXTURE_2D);
 }
 
