@@ -87,17 +87,22 @@ void blit_texture(const texture& tex, int x, int y, GLfloat rotate)
 	glRotatef(rotate,0.0,0.0,1.0);
 
 	tex.set_as_current_texture();
-
-	glBegin(GL_QUADS);
-	graphics::texture::set_coord(0.0,0.0);
-	glVertex3i(-w,-h,0);
-	graphics::texture::set_coord(0.0,1.0);
-	glVertex3i(-w,h+h_odd,0);
-	graphics::texture::set_coord(1.0,1.0);
-	glVertex3i(w+w_odd,h+h_odd,0);
-	graphics::texture::set_coord(1.0,0.0);
-	glVertex3i(w+w_odd,-h,0);
-	glEnd();
+	
+	GLfloat varray[] = {
+		-w, -h,
+		-w, h+h_odd,
+		w+w_odd, -h,
+		w+w_odd, h+h_odd
+	};
+	GLfloat tcarray[] = {
+		texture::get_coord_x(0.0), texture::get_coord_y(0.0),
+		texture::get_coord_x(0.0), texture::get_coord_y(1.0),
+		texture::get_coord_x(1.0), texture::get_coord_y(0.0),
+		texture::get_coord_x(1.0), texture::get_coord_y(1.0)
+	};
+	glVertexPointer(2, GL_FLOAT, 0, varray);
+	glTexCoordPointer(2, GL_FLOAT, 0, tcarray);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 	glPopMatrix();
 }
@@ -158,16 +163,21 @@ void blit_texture_internal(const texture& tex, int x, int y, int w, int h, GLflo
 	tex.set_as_current_texture();
 	glTranslatef(x+abs(w),y+abs(h),0.0);
 	glRotatef(rotate,0.0,0.0,1.0);
-	glBegin(GL_QUADS);
-	graphics::texture::set_coord(x1,y1);
-	glVertex3i(-w,-h,0);
-	graphics::texture::set_coord(x1,y2);
-	glVertex3i(-w,h+h_odd,0);
-	graphics::texture::set_coord(x2,y2);
-	glVertex3i(w+w_odd,h+h_odd,0);
-	graphics::texture::set_coord(x2,y1);
-	glVertex3i(w+w_odd,-h,0);
-	glEnd();
+	GLfloat varray[] = {
+		-w, -h,
+		-w, h+h_odd,
+		w+w_odd, -h,
+		w+w_odd, h+h_odd
+	};
+	GLfloat tcarray[] = {
+		texture::get_coord_x(x1), texture::get_coord_y(y1),
+		texture::get_coord_x(x1), texture::get_coord_y(y2),
+		texture::get_coord_x(x2), texture::get_coord_y(y1),
+		texture::get_coord_x(x2), texture::get_coord_y(y2)
+	};
+	glVertexPointer(2, GL_FLOAT, 0, varray);
+	glTexCoordPointer(2, GL_FLOAT, 0, tcarray);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glPopMatrix();
 }
 
@@ -339,7 +349,15 @@ void draw_rect(const SDL_Rect& r, const SDL_Color& color,
 {
 	glDisable(GL_TEXTURE_2D);
 	glColor4ub(color.r,color.g,color.b,alpha);
-	glRecti(r.x,r.y,r.x+r.w,r.y+r.h);
+	GLfloat varray[] = {
+		r.x, r.y,
+		r.x+r.w, r.y,
+		r.x, r.y+r.h,
+		r.x+r.w, r.y+r.h
+	};
+	glVertexPointer(2, GL_FLOAT, 0, varray);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	//glRecti(r.x,r.y,r.x+r.w,r.y+r.h);
 	glColor4ub(255, 255, 255, 255);
 	glEnable(GL_TEXTURE_2D);
 }
@@ -348,7 +366,15 @@ void draw_rect(const rect& r, const graphics::color& color)
 {
 	glDisable(GL_TEXTURE_2D);
 	glColor4ub(color.r(),color.g(),color.b(),color.a());
-	glRecti(r.x(),r.y(),r.x()+r.w(),r.y()+r.h());
+	GLfloat varray[] = {
+		r.x(), r.y(),
+		r.x()+r.w(), r.y(),
+		r.x(), r.y()+r.h(),
+		r.x()+r.w(), r.y()+r.h()
+	};
+	glVertexPointer(2, GL_FLOAT, 0, varray);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	//glRecti(r.x(),r.y(),r.x()+r.w(),r.y()+r.h());
 	glColor4ub(255, 255, 255, 255);
 	glEnable(GL_TEXTURE_2D);
 }
@@ -421,6 +447,7 @@ void push_clip(const SDL_Rect& r)
 		glDisable(GL_SCISSOR_TEST);
 	}
 }
+	
 void pop_clip() {
 	const bool was_enabled_clip = glIsEnabled(GL_SCISSOR_TEST);
 	bool should_enable_clip = false;

@@ -404,6 +404,16 @@ void texture::set_coord(GLfloat x, GLfloat y)
 	}
 }
 
+GLfloat texture::get_coord_x(GLfloat x)
+{
+	return npot_allowed ? x : x*width_multiplier;
+}
+
+GLfloat texture::get_coord_y(GLfloat y)
+{
+	return npot_allowed ? y : y*height_multiplier;
+}
+
 void texture::clear_cache()
 {
 	texture_cache.clear();
