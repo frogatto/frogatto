@@ -1995,33 +1995,35 @@ void editor::draw_selection(int xoffset, int yoffset) const
 	glColor4ub(255, 255, 255, 255);
 	glEnable(GL_LINE_STIPPLE);
 	glLineStipple(1, stipple_mask);
-	glBegin(GL_LINES);
+	std::vector<GLfloat>& varray = graphics::global_vertex_array();
+	varray.clear();
 	foreach(const point& p, tile_selection_.tiles) {
 		const int size = TileSize/zoom_;
 		const int xpos = xoffset/zoom_ + p.x*size - xpos_/zoom_;
 		const int ypos = yoffset/zoom_ + p.y*size - ypos_/zoom_;
 
 		if(std::binary_search(tile_selection_.tiles.begin(), tile_selection_.tiles.end(), point(p.x, p.y - 1)) == false) {
-			glVertex3f(xpos, ypos, 0);
-			glVertex3f(xpos + size, ypos, 0);
+			varray.push_back(xpos); varray.push_back(ypos);
+			varray.push_back(xpos + size); varray.push_back(ypos);
 		}
 
 		if(std::binary_search(tile_selection_.tiles.begin(), tile_selection_.tiles.end(), point(p.x, p.y + 1)) == false) {
-			glVertex3f(xpos + size, ypos + size, 0);
-			glVertex3f(xpos, ypos + size, 0);
+			varray.push_back(xpos + size); varray.push_back(ypos + size);
+			varray.push_back(xpos); varray.push_back(ypos + size);
 		}
 
 		if(std::binary_search(tile_selection_.tiles.begin(), tile_selection_.tiles.end(), point(p.x - 1, p.y)) == false) {
-			glVertex3f(xpos, ypos + size, 0);
-			glVertex3f(xpos, ypos, 0);
+			varray.push_back(xpos); varray.push_back(ypos + size);
+			varray.push_back(xpos); varray.push_back(ypos);
 		}
 
 		if(std::binary_search(tile_selection_.tiles.begin(), tile_selection_.tiles.end(), point(p.x + 1, p.y)) == false) {
-			glVertex3f(xpos + size, ypos, 0);
-			glVertex3f(xpos + size, ypos + size, 0);
+			varray.push_back(xpos + size); varray.push_back(ypos);
+			varray.push_back(xpos + size); varray.push_back(ypos + size);
 		}
 	}
-	glEnd();
+	glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+	glDrawArrays(GL_LINES, 0, varray.size()/2);
 	glDisable(GL_LINE_STIPPLE);
 	glLineStipple(1, 0xFFFF);
 }

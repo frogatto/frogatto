@@ -204,15 +204,17 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
 
 			glLineWidth(2.0);
-			glBegin(GL_LINE_STRIP);
+			varray.clear();
 			glColor4f(1.0, 1.0, 1.0, 1.0);
 			for(int xpos = begin_x; xpos != end_x; ++xpos) {
 				const int index = xpos - x;
 				ASSERT_INDEX_INTO_VECTOR(index, heights);
 				const GLfloat ypos = a.rect_.y() - heights[index];
-				glVertex3f(xpos, ypos, 0.0);
+				varray.push_back(xpos);
+				varray.push_back(ypos);
 			}
-			glEnd();
+			glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+			glDrawArrays(GL_LINE_STRIP, 0, varray.size()/2);
 
 		}
 	}
@@ -244,7 +246,6 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 		};
 		glVertexPointer(2, GL_FLOAT, 0, varray);
 		glDrawArrays(GL_LINES, 0, 2);
-		glEnd();
 	}
 
 	glColor4f(1.0, 1.0, 1.0, 1.0);
