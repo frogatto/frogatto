@@ -102,15 +102,19 @@ void iris_scene(const level& lvl, screen_position& screen_pos, float amount) {
 
 	//Draw a circle.
 	const float radius = 500 - amount*500;
-	glBegin(GL_TRIANGLE_FAN);
-	glVertex3f(pos.x, pos.y, 0);
+	std::vector<GLfloat>& varray = graphics::global_vertex_array();
+	varray.clear();
+	varray.push_back(pos.x);
+	varray.push_back(pos.y);
 	for(double angle = 0; angle < 3.1459*2.0; angle += 0.01) {
 		const double x = pos.x + radius*cos(angle);
 		const double y = pos.y + radius*sin(angle);
-		glVertex3f(x, y, 0);
+		varray.push_back(x);
+		varray.push_back(y);
 	}
 
-	glEnd();
+	glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+	glDrawArrays(GL_TRIANGLE_FAN, 0, varray.size()/2);
 
 	glPopMatrix();
 

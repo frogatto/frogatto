@@ -13,6 +13,7 @@
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
 #include "weather_particle_system.hpp"
+#include "raster.hpp"
 
 namespace {
 
@@ -300,24 +301,37 @@ void simple_particle_system::draw(const rect& area, const entity& e) const
 
 	//all particles must have the same texture, so just set it once.
 	p->anim->set_texture();
-	glBegin(GL_QUADS);
+	std::vector<GLfloat>& varray = graphics::global_vertex_array();
+	std::vector<GLfloat>& tcarray = graphics::global_texcoords_array();
+	varray.clear();
+	tcarray.clear();
 	foreach(const generation& gen, generations_) {
 		glColor4fv(gen.rgba);
 		for(int n = 0; n != gen.members; ++n) {
 			const particle_animation* anim = p->anim;
 			const particle_animation::frame_area& f = anim->get_frame(cycle_ - gen.created_at);
-			graphics::texture::set_coord(f.u1, f.v1);
-			glVertex3f(p->pos[0], p->pos[1], 0.0);
-			graphics::texture::set_coord(f.u2, f.v1);
-			glVertex3f(p->pos[0] + anim->width(), p->pos[1], 0.0);
-			graphics::texture::set_coord(f.u2, f.v2);
-			glVertex3f(p->pos[0] + anim->width(), p->pos[1] + anim->height(), 0.0);
-			graphics::texture::set_coord(f.u1, f.v2);
-			glVertex3f(p->pos[0], p->pos[1] + anim->height(), 0.0);
+			tcarray.push_back(graphics::texture::get_coord_x(f.u1));
+			tcarray.push_back(graphics::texture::get_coord_y(f.v1));
+			varray.push_back(p->pos[0]);
+			varray.push_back(p->pos[1]);
+			tcarray.push_back(graphics::texture::get_coord_x(f.u2));
+			tcarray.push_back(graphics::texture::get_coord_y(f.v1));
+			varray.push_back(p->pos[0] + anim->width());
+			varray.push_back(p->pos[1]);
+			tcarray.push_back(graphics::texture::get_coord_x(f.u1));
+			tcarray.push_back(graphics::texture::get_coord_y(f.v2));
+			varray.push_back(p->pos[0]);
+			varray.push_back(p->pos[1] + anim->height());
+			tcarray.push_back(graphics::texture::get_coord_x(f.u2));
+			tcarray.push_back(graphics::texture::get_coord_y(f.v2));
+			varray.push_back(p->pos[0] + anim->width());
+			varray.push_back(p->pos[1] + anim->height());
 			++p;
 		}
 	}
-	glEnd();
+	glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+	glTexCoordPointer(2, GL_FLOAT, 0, &tcarray.front());
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
 
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 }

@@ -176,6 +176,8 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 
 			glColor4ub(91, 169, 143, 153);
 			glBegin(GL_QUAD_STRIP);
+			std::vector<GLfloat>& varray = graphics::global_vertex_array();
+			varray.clear(); //this isn't used here yet
 			for(int xpos = begin_x; xpos != end_x; ++xpos) {
 				const int index = xpos - x;
 				ASSERT_INDEX_INTO_VECTOR(index, heights);
@@ -188,13 +190,18 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 			}
 			glEnd();
 
-			glBegin(GL_TRIANGLE_STRIP);
+			varray.clear();
 			deepwater_color.set_as_current_color();
-			glVertex3f(begin_x, underwater_rect.y + 100, 0.0);
-			glVertex3f(end_x, underwater_rect.y + 100, 0.0);
-			glVertex3f(begin_x, underwater_rect.y + underwater_rect.h, 0.0);
-			glVertex3f(end_x, underwater_rect.y + underwater_rect.h, 0.0);
-			glEnd();
+			varray.push_back(begin_x);
+			varray.push_back(underwater_rect.y + 100);
+			varray.push_back(end_x);
+			varray.push_back(underwater_rect.y + 100);
+			varray.push_back(begin_x);
+			varray.push_back(underwater_rect.y + underwater_rect.h);
+			varray.push_back(end_x);
+			varray.push_back(underwater_rect.y + underwater_rect.h);
+			glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
 
 			glLineWidth(2.0);
 			glBegin(GL_LINE_STRIP);

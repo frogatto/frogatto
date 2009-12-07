@@ -31,6 +31,18 @@ namespace graphics
    rectangle changes */
 std::vector<boost::shared_array<GLint> > clip_rectangles;
 
+std::vector<GLfloat>& global_vertex_array()
+{
+	static std::vector<GLfloat> v;
+	return v;
+}
+
+std::vector<GLfloat>& global_texcoords_array()
+{
+	static std::vector<GLfloat> v;
+	return v;
+}
+
 void prepare_raster()
 {
 	const SDL_Surface* fb = SDL_GetVideoSurface();
@@ -229,7 +241,6 @@ void blit_texture_with_distortion(const texture& tex, int x, int y, int w, int h
 	}
 
 	tex.set_as_current_texture();
-	glBegin(GL_QUADS);
 
 	const int xdiff = distort.granularity_x();
 	const int ydiff = distort.granularity_y();
@@ -246,18 +257,18 @@ void blit_texture_with_distortion(const texture& tex, int x, int y, int w, int h
 			const GLfloat v1 = (y1*(y+h - ybegin) + y2*(ybegin - y))/h;
 			const GLfloat v2 = (y1*(y+h - yend) + y2*(yend - y))/h;
 
-			GLfloat points[8] = { xbegin, ybegin, xend, ybegin, xend, yend, xbegin, yend };
-			GLfloat uv[8] = { u1, v1, u2, v1, u2, v2, u1, v2 };
+			GLfloat points[8] = { xbegin, ybegin, xend, ybegin, xbegin, yend, xend, yend };
+			GLfloat uv[8] = { u1, v1, u2, v1, u1, v2, u2, v2 };
 
 			for(int n = 0; n != 4; ++n) {
 				distort.distort_point(&points[n*2], &points[n*2 + 1]);
-				graphics::texture::set_coord(uv[n*2], uv[n*2 + 1]);
-				glVertex3f(points[n*2], points[n*2 + 1], 0.0);
 			}
+			
+			glVertexPointer(2, GL_FLOAT, 0, points);
+			glTexCoordPointer(2, GL_FLOAT, 0, uv);
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		}
 	}
-
-	glEnd();
 }
 
 int blit_texture_translate_x = 0;
