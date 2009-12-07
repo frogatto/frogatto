@@ -1839,7 +1839,7 @@ void editor::draw() const
 
 	if(property_dialog_ && property_dialog_->get_entity() && property_dialog_->get_entity()->editor_info()) {
 		glDisable(GL_TEXTURE_2D);
-		glBegin(GL_LINES);
+		std::vector<GLfloat>& varray = graphics::global_vertex_array();
 
 		const editor_variable_info* selected_var = variable_info_selected(property_dialog_->get_entity(), xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
 		foreach(const editor_variable_info& var, property_dialog_->get_entity()->editor_info()->vars()) {
@@ -1852,24 +1852,26 @@ void editor::draw() const
 				glColor4ub(255, 0, 0, 255);
 			}
 
+			varray.clear();
 			switch(type) {
 				case editor_variable_info::XPOSITION:
 					if(value.is_int()) {
-						glVertex3f(value.as_int(), ypos_, 0);
-						glVertex3f(value.as_int(), ypos_ + graphics::screen_height()*zoom_, 0);
+						varray.push_back(value.as_int()); varray.push_back(ypos_);
+						varray.push_back(value.as_int()); varray.push_back(ypos_ + graphics::screen_height()*zoom_);
 					}
 					break;
 				case editor_variable_info::YPOSITION:
 					if(value.is_int()) {
-						glVertex3f(xpos_, value.as_int(), 0);
-						glVertex3f(xpos_+ graphics::screen_width()*zoom_, value.as_int(), 0);
+						varray.push_back(xpos_); varray.push_back(value.as_int());
+						varray.push_back(xpos_ + graphics::screen_width()*zoom_); varray.push_back(value.as_int());
 					}
 					break;
 				default:
 					break;
 			}
+			glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+			glDrawArrays(GL_LINES, 0, varray.size()/2);
 		}
-		glEnd();
 		glEnable(GL_TEXTURE_2D);
 	}
 

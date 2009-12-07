@@ -149,6 +149,7 @@ void background::draw(double xpos, double ypos, int rotation, int cycle) const
 	glShadeModel(GL_SMOOTH);
 	glDisable(GL_TEXTURE_2D);
 	glPushMatrix();
+	std::vector<GLfloat>& varray = graphics::global_vertex_array();
 	glBegin(GL_POLYGON);
 
 	glColor3fv(top_col);
@@ -162,13 +163,15 @@ void background::draw(double xpos, double ypos, int rotation, int cycle) const
 
 	if(rotation) {
 		const int border = 100;
-		glBegin(GL_POLYGON);
 		glColor3fv(top_col);
-		glVertex3i(-border, -border, 0);
-		glVertex3i(graphics::screen_width() + border, -border, 0);
-		glVertex3i(graphics::screen_width() + border, 0, 0);
-		glVertex3i(-border, 0, 0);
-		glEnd();
+		varray.clear();
+		
+		varray.push_back(-border); varray.push_back(-border);
+		varray.push_back(graphics::screen_width() + border); varray.push_back(-border);
+		varray.push_back(graphics::screen_width() + border); varray.push_back(0);
+		varray.push_back(-border); varray.push_back(0);
+		glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 		glBegin(GL_POLYGON);
 		glColor3fv(top_col);
