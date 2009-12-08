@@ -139,48 +139,61 @@ void background::draw(double xpos, double ypos, int rotation, int cycle) const
 	
 	x = std::min<double>(1.0, std::max<double>(0.0, x));
 	y = std::min<double>(1.0, std::max<double>(0.0, y));
-	const GLfloat top_col[] = {top_.r/255.0,
-	                           top_.g/255.0,
-	                           top_.b/255.0};
-	const GLfloat bot_col[] = {bot_.r/255.0,
-	                           bot_.g/255.0,
-	                           bot_.b/255.0};
+	const GLfloat top_col[] = {
+		top_.r/255.0,
+		top_.g/255.0,
+		top_.b/255.0,
+		1.0
+	};
+	const GLfloat bot_col[] = {
+		bot_.r/255.0,
+		bot_.g/255.0,
+		bot_.b/255.0,
+		1.0
+	};
 
 	glShadeModel(GL_SMOOTH);
 	glDisable(GL_TEXTURE_2D);
 	glPushMatrix();
-	std::vector<GLfloat>& varray = graphics::global_vertex_array();
-	glBegin(GL_POLYGON);
-
-	glColor3fv(top_col);
-	glVertex3i(xpos, ypos, 0);
-	glVertex3i(xpos + graphics::screen_width(), ypos, 0);
-	glColor3fv(bot_col);
-	glVertex3i(xpos + graphics::screen_width(), ypos + height_, 0);
-	glVertex3i(xpos, ypos + height_, 0);
-
-	glEnd();
+	GLfloat varray[] = {
+		xpos, ypos,
+		xpos + graphics::screen_width(), ypos,
+		xpos, ypos + height_,
+		xpos + graphics::screen_width(), ypos + height_
+	};
+	GLfloat carray[4*4]; //4 floats per color, 4 vertices/colors
+	for (int i = 0; i < 8; i++) carray[i] = top_col[i%4];
+	for (int i = 0; i < 8; i++) carray[i+8] = bot_col[i%4];
+	glEnableClientState(GL_COLOR_ARRAY);
+	glVertexPointer(2, GL_FLOAT, 0, varray);
+	glColorPointer(4, GL_FLOAT, 0, carray);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glDisableClientState(GL_COLOR_ARRAY);
 
 	if(rotation) {
 		const int border = 100;
 		glColor3fv(top_col);
-		varray.clear();
 		
-		varray.push_back(-border); varray.push_back(-border);
-		varray.push_back(graphics::screen_width() + border); varray.push_back(-border);
-		varray.push_back(graphics::screen_width() + border); varray.push_back(0);
-		varray.push_back(-border); varray.push_back(0);
-		glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+		GLfloat varray2[] = {
+			-border, -border,
+			graphics::screen_width() + border, -border,
+			-border, 0,
+			graphics::screen_width() + border, 0
+		};
+		glVertexPointer(2, GL_FLOAT, 0, varray2);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-		glBegin(GL_POLYGON);
-		glColor3fv(top_col);
-		glVertex3i(-border, 0, 0);
-		glVertex3i(graphics::screen_width() + border, 0, 0);
-		glColor3fv(bot_col);
-		glVertex3i(graphics::screen_width() + border, height_, 0);
-		glVertex3i(-border, height_, 0);
-		glEnd();
+		
+		GLfloat varray3[] = {
+			-border, 0,
+			graphics::screen_width() + border, 0,
+			-border, height_,
+			graphics::screen_width() + border, height_
+		};
+		glEnableClientState(GL_COLOR_ARRAY);
+		glVertexPointer(2, GL_FLOAT, 0, varray3);
+		glColorPointer(4, GL_FLOAT, 0, carray); //same colors from further up in the function
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		glDisableClientState(GL_COLOR_ARRAY);
 	}
 
 	glColor3f(1.0,1.0,1.0);

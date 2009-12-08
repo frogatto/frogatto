@@ -1836,10 +1836,10 @@ void editor::draw() const
 		const SDL_Color color = {255,255,255,255};
 		graphics::draw_hollow_rect(rect, color);
 	}
-
+	
+	std::vector<GLfloat>& varray = graphics::global_vertex_array();
 	if(property_dialog_ && property_dialog_->get_entity() && property_dialog_->get_entity()->editor_info()) {
 		glDisable(GL_TEXTURE_2D);
-		std::vector<GLfloat>& varray = graphics::global_vertex_array();
 
 		const editor_variable_info* selected_var = variable_info_selected(property_dialog_->get_entity(), xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
 		foreach(const editor_variable_info& var, property_dialog_->get_entity()->editor_info()->vars()) {
@@ -1885,64 +1885,84 @@ void editor::draw() const
 
 	//draw grid
 	glDisable(GL_TEXTURE_2D);
-	glBegin(GL_LINES);
+	varray.clear();
 	glColor4ub(255, 255, 255, 64);
 	for(int x = TileSize - (xpos_/zoom_)%TileSize; x < graphics::screen_width(); x += 32/zoom_) {
-		glVertex3f(x, 0, 0);
-		glVertex3f(x, graphics::screen_height(), 0);
+		varray.push_back(x); varray.push_back(0);
+		varray.push_back(x); varray.push_back(graphics::screen_height());
 	}
 
 	for(int y = TileSize - (ypos_/zoom_)%TileSize; y < graphics::screen_height(); y += 32/zoom_) {
-		glVertex3f(0, y, 0);
-		glVertex3f(graphics::screen_width(), y, 0);
+		varray.push_back(0); varray.push_back(y);
+		varray.push_back(graphics::screen_width()); varray.push_back(y);
 	}
+	glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+	glDrawArrays(GL_LINES, 0, varray.size()/2);
 	
 	// draw level boundaries in clear white
 	{
+		varray.clear();
+		std::vector<GLfloat>& carray = graphics::global_texcoords_array(); //reusing texcoords array for colors
+		carray.clear();
 		rect boundaries = modify_selected_rect(lvl_->boundaries(), selectx, selecty);
 		const int x1 = boundaries.x()/zoom_;
 		const int x2 = boundaries.x2()/zoom_;
 		const int y1 = boundaries.y()/zoom_;
 		const int y2 = boundaries.y2()/zoom_;
+		
+		graphics::color selected_color(255, 255, 0, 255);
+		graphics::color normal_color(255, 255, 255, 255);
 
 		if(resizing_top_level_edge || rect_top_edge_selected(lvl_->boundaries(), selectx, selecty)) {
-			glColor4ub(255, 255, 0, 255);
+			selected_color.add_to_vector(&carray);
+			selected_color.add_to_vector(&carray);
 		} else {
-			glColor4ub(255, 255, 255, 255);
+			normal_color.add_to_vector(&carray);
+			normal_color.add_to_vector(&carray);
 		}
-
-		glVertex3f(x1 - xpos_/zoom_, y1 - ypos_/zoom_, 0);
-		glVertex3f(x2 - xpos_/zoom_, y1 - ypos_/zoom_, 0);
+		
+		varray.push_back(x1 - xpos_/zoom_); varray.push_back(y1 - ypos_/zoom_);
+		varray.push_back(x2 - xpos_/zoom_); varray.push_back(y1 - ypos_/zoom_);
 
 		if(resizing_left_level_edge || rect_left_edge_selected(lvl_->boundaries(), selectx, selecty)) {
-			glColor4ub(255, 255, 0, 255);
+			selected_color.add_to_vector(&carray);
+			selected_color.add_to_vector(&carray);
 		} else {
-			glColor4ub(255, 255, 255, 255);
+			normal_color.add_to_vector(&carray);
+			normal_color.add_to_vector(&carray);
 		}
 
-		glVertex3f(x1 - xpos_/zoom_, y1 - ypos_/zoom_, 0);
-		glVertex3f(x1 - xpos_/zoom_, y2 - ypos_/zoom_, 0);
+		varray.push_back(x1 - xpos_/zoom_); varray.push_back(y1 - ypos_/zoom_);
+		varray.push_back(x1 - xpos_/zoom_); varray.push_back(y2 - ypos_/zoom_);
 
 		if(resizing_right_level_edge || rect_right_edge_selected(lvl_->boundaries(), selectx, selecty)) {
-			glColor4ub(255, 255, 0, 255);
+			selected_color.add_to_vector(&carray);
+			selected_color.add_to_vector(&carray);
 		} else {
-			glColor4ub(255, 255, 255, 255);
+			normal_color.add_to_vector(&carray);
+			normal_color.add_to_vector(&carray);
 		}
-
-		glVertex3f(x2 - xpos_/zoom_, y1 - ypos_/zoom_, 0);
-		glVertex3f(x2 - xpos_/zoom_, y2 - ypos_/zoom_, 0);
+		
+		varray.push_back(x2 - xpos_/zoom_); varray.push_back(y1 - ypos_/zoom_);
+		varray.push_back(x2 - xpos_/zoom_); varray.push_back(y2 - ypos_/zoom_);
 
 		if(resizing_bottom_level_edge || rect_bottom_edge_selected(lvl_->boundaries(), selectx, selecty)) {
-			glColor4ub(255, 255, 0, 255);
+			selected_color.add_to_vector(&carray);
+			selected_color.add_to_vector(&carray);
 		} else {
-			glColor4ub(255, 255, 255, 255);
+			normal_color.add_to_vector(&carray);
+			normal_color.add_to_vector(&carray);
 		}
-
-		glVertex3f(x1 - xpos_/zoom_, y2 - ypos_/zoom_, 0);
-		glVertex3f(x2 - xpos_/zoom_, y2 - ypos_/zoom_, 0);
+		
+		varray.push_back(x1 - xpos_/zoom_); varray.push_back(y2 - ypos_/zoom_);
+		varray.push_back(x2 - xpos_/zoom_); varray.push_back(y2 - ypos_/zoom_);
+		
+		glEnableClientState(GL_COLOR_ARRAY);
+		glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+		glColorPointer(4, GL_FLOAT, 0, &carray.front());
+		glDrawArrays(GL_LINES, 0, varray.size()/2);
+		glDisableClientState(GL_COLOR_ARRAY);
 	}
-
-	glEnd();
 
 	draw_selection(0, 0);
 	
