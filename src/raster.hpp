@@ -74,8 +74,8 @@ void zoom_in();
 void zoom_out();
 void zoom_default();
 
-void coords_to_screen(GLdouble sx, GLdouble sy, GLdouble sz,
-		      GLdouble* dx, GLdouble* dy, GLdouble* dz);
+void coords_to_screen(GLfloat sx, GLfloat sy, GLfloat sz,
+		      GLfloat* dx, GLfloat* dy, GLfloat* dz);
 void push_clip(const SDL_Rect& rect);
 void pop_clip();
 

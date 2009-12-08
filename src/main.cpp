@@ -17,7 +17,9 @@
 #include "custom_object_functions.hpp"
 #include "custom_object_type.hpp"
 #include "draw_scene.hpp"
+#ifndef NO_EDITOR
 #include "editor.hpp"
+#endif
 #include "filesystem.hpp"
 #include "font.hpp"
 #include "foreach.hpp"

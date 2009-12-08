@@ -172,7 +172,7 @@ void background::draw(double xpos, double ypos, int rotation, int cycle) const
 
 	if(rotation) {
 		const int border = 100;
-		glColor3fv(top_col);
+		glColor4f(top_col[0], top_col[1], top_col[2], 1.0);
 		
 		GLfloat varray2[] = {
 			-border, -border,
@@ -196,7 +196,7 @@ void background::draw(double xpos, double ypos, int rotation, int cycle) const
 		glDisableClientState(GL_COLOR_ARRAY);
 	}
 
-	glColor3f(1.0,1.0,1.0);
+	glColor4f(1.0,1.0,1.0,1.0);
 	glPopMatrix();
 	glEnable(GL_TEXTURE_2D);
 	glShadeModel(GL_FLAT);
@@ -239,7 +239,7 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 	const double xpos2 = xpos + double(screen_width)/(bg.texture.width()*ScaleImage);
 	
 	glPushMatrix();
-	glColor4fv(bg.color);
+	glColor4f(bg.color[0], bg.color[1], bg.color[2], bg.color[3]);
 
 	if(GLEW_EXT_blend_minmax) {
 		glBlendEquation(bg.mode);

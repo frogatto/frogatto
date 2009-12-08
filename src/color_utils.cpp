@@ -81,7 +81,7 @@ variant color::get_value(const std::string& key) const
 
 void color::set_as_current_color() const
 {
-	glColor4ubv(c_.rgba);
+	glColor4ub(c_.rgba[0], c_.rgba[1], c_.rgba[2], c_.rgba[3]);
 }
 
 void color::add_to_vector(std::vector<GLfloat>* v) const

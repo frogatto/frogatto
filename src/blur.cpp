@@ -50,7 +50,7 @@ void blur_info::draw() const
 		f.object_frame->draw(f.x, f.y, f.facing, f.upside_down, f.time_in_frame, f.rotate);
 	}
 
-	glColor4fv(color);
+	glColor4f(color[0], color[1], color[2], color[3]);
 }
 
 bool blur_info::destroyed() const

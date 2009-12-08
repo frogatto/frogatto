@@ -306,7 +306,7 @@ void simple_particle_system::draw(const rect& area, const entity& e) const
 	varray.clear();
 	tcarray.clear();
 	foreach(const generation& gen, generations_) {
-		glColor4fv(gen.rgba);
+		glColor4f(gen.rgba[0], gen.rgba[1], gen.rgba[2], gen.rgba[3]);
 		for(int n = 0; n != gen.members; ++n) {
 			const particle_animation* anim = p->anim;
 			const particle_animation::frame_area& f = anim->get_frame(cycle_ - gen.created_at);

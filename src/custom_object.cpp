@@ -376,13 +376,11 @@ void custom_object::draw() const
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		}
 
-		static const uint8_t AllWhite[4] = {0xFF, 0xFF, 0xFF, 0xFF};
-		glColor4ubv(AllWhite);
+		glColor4ub(255, 255, 255, 255);
 	}
 
 //	if(draw_color_int_ != DefaultColor) {
-//		static const uint8_t AllWhite[4] = {0xFF, 0xFF, 0xFF, 0xFF};
-//		glColor4ubv(AllWhite);
+//		glColor4ub(255, 255, 255, 255);
 //	}
 
 	draw_debug_rects();

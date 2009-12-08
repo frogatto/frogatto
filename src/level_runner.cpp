@@ -6,7 +6,9 @@
 
 #include "controls.hpp"
 #include "draw_scene.hpp"
+#ifndef NO_EDITOR
 #include "editor.hpp"
+#endif
 #include "filesystem.hpp"
 #include "font.hpp"
 #include "foreach.hpp"
@@ -388,10 +390,12 @@ bool level_runner::play_cycle()
 					quit_ = true;
 					break;
 				} else if(key == SDLK_e && (mod&KMOD_CTRL)) {
+					#ifndef NO_EDITOR
 					pause_time_ -= SDL_GetTicks();
 					editor::edit(lvl_->id().c_str(), last_draw_position().x/100, last_draw_position().y/100);
 					lvl_.reset(load_level(editor::last_edited_level().c_str()));
 					pause_time_ += SDL_GetTicks();
+					#endif
 				} else if(key == SDLK_s && (mod&KMOD_CTRL)) {
 					std::string data;
 					
