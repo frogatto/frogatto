@@ -175,20 +175,25 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 			glDisable(GL_TEXTURE_2D);
 
 			glColor4ub(91, 169, 143, 153);
-			glBegin(GL_QUAD_STRIP);
 			std::vector<GLfloat>& varray = graphics::global_vertex_array();
-			varray.clear(); //this isn't used here yet
+			std::vector<GLfloat>& carray = graphics::global_texcoords_array(); //using texcoord array for colors instead
+			varray.clear();
+			carray.clear();
 			for(int xpos = begin_x; xpos != end_x; ++xpos) {
 				const int index = xpos - x;
 				ASSERT_INDEX_INTO_VECTOR(index, heights);
 				const GLfloat ypos = a.rect_.y() - heights[index];
 
-				deepwater_color.set_as_current_color();
-				glVertex3f(xpos, underwater_rect.y + 100, 0.0);
-				shallowwater_color.set_as_current_color();
-				glVertex3f(xpos, ypos, 0.0);
+				deepwater_color.add_to_vector(&carray);
+				varray.push_back(xpos); varray.push_back(underwater_rect.y + 100);
+				shallowwater_color.add_to_vector(&carray);
+				varray.push_back(xpos); varray.push_back(ypos);
 			}
-			glEnd();
+			glEnableClientState(GL_COLOR_ARRAY);
+			glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+			glColorPointer(4, GL_FLOAT, 0, &carray.front());
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
+			glDisableClientState(GL_COLOR_ARRAY);
 
 			varray.clear();
 			deepwater_color.set_as_current_color();
@@ -222,18 +227,29 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	if(draw_with_waves == false) {
 		
 		glDisable(GL_TEXTURE_2D);
-
-		glBegin(GL_TRIANGLE_STRIP);
-		shallowwater_color.set_as_current_color();
-		glVertex3f(waterline_rect.x, waterline_rect.y, 0);
-		glVertex3f(waterline_rect.x + waterline_rect.w, waterline_rect.y, 0);
-
-		deepwater_color.set_as_current_color();
-		glVertex3f(waterline_rect.x, waterline_rect.y + 100, 0);
-		glVertex3f(waterline_rect.x + waterline_rect.w, waterline_rect.y + 100, 0);
-		glVertex3f(waterline_rect.x, underwater_rect.y + underwater_rect.h, 0);
-		glVertex3f(waterline_rect.x + waterline_rect.w, underwater_rect.y + underwater_rect.h, 0);
-		glEnd();
+		
+		GLfloat vertices[] = {
+			waterline_rect.x, waterline_rect.y, //shallow water colored
+			waterline_rect.x + waterline_rect.w, waterline_rect.y,
+			
+			waterline_rect.x, waterline_rect.y + 100, //deep water colored
+			waterline_rect.x + waterline_rect.w, waterline_rect.y + 100,
+			waterline_rect.x, underwater_rect.y + underwater_rect.h,
+			waterline_rect.x + waterline_rect.w, underwater_rect.y + underwater_rect.h
+		};
+		
+		std::vector<GLfloat>& carray = graphics::global_texcoords_array(); //using texcoord array for colors instead
+		carray.clear();
+		shallowwater_color.add_to_vector(&carray);
+		shallowwater_color.add_to_vector(&carray);
+		for (int i = 0; i < 4; i++)
+			deepwater_color.add_to_vector(&carray);
+		
+		glEnableClientState(GL_COLOR_ARRAY);
+		glVertexPointer(2, GL_FLOAT, 0, vertices);
+		glColorPointer(4, GL_FLOAT, 0, &carray.front());
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, sizeof(vertices)/sizeof(GLfloat)/2);
+		glDisableClientState(GL_COLOR_ARRAY);
 
 	glDisable(GL_LINE_SMOOTH);
 

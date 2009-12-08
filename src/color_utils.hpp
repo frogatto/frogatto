@@ -2,6 +2,7 @@
 #define COLOR_UTILS_HPP_INCLUDED
 
 #include "SDL.h"
+#include "GL/gl.h"
 
 #include <string>
 #include <vector>
@@ -30,6 +31,7 @@ class color : public game_logic::formula_callable
 	variant get_value(const std::string& key) const;
 
 	void set_as_current_color() const;
+	void add_to_vector(std::vector<GLfloat>* v) const;
 
 	
 	private:

@@ -84,6 +84,14 @@ void color::set_as_current_color() const
 	glColor4ubv(c_.rgba);
 }
 
+void color::add_to_vector(std::vector<GLfloat>* v) const
+{
+	v->push_back(r()/255.0);
+	v->push_back(g()/255.0);
+	v->push_back(b()/255.0);
+	v->push_back(a()/255.0);
+}
+
 color_transform::color_transform(const color& c)
 {
 	rgba_[0] = c.r();
