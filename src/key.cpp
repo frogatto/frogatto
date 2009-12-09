@@ -19,7 +19,11 @@
 
 CKey::CKey() : is_enabled(true), require_key_release(false), num_keys(300)
 {
+	#if SDL_MAJOR_VERSION == 1 && SDL_MINOR_VERSION == 3
+	key_list = SDL_GetKeyboardState( &num_keys );
+	#else
 	key_list = SDL_GetKeyState( &num_keys );
+	#endif
 }
 
 int CKey::operator[]( int code ) const

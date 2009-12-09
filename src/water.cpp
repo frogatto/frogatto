@@ -136,7 +136,9 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	const SDL_Rect underwater_rect = {a.rect_.x(), a.rect_.y(), a.rect_.w(), a.rect_.h()};
 
 	glEnable(GL_LINE_SMOOTH);
+	#ifdef GL_POLYGON_SMOOTH
 	glEnable(GL_POLYGON_SMOOTH);
+	#endif
 
 	bool draw_with_waves = false;
 	if(a.waves_.empty() == false) {
@@ -268,7 +270,9 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	glEnable(GL_TEXTURE_2D);
 
 	glDisable(GL_LINE_SMOOTH);
+	#ifdef GL_POLYGON_SMOOTH
 	glDisable(GL_POLYGON_SMOOTH);
+	#endif
 
 	return true;
 }
