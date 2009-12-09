@@ -30,10 +30,6 @@ dialog::dialog(int x, int y, int w, int h)
 {
 	set_loc(x,y);
 	set_dim(w,h);
-
-	if(x == 0 && y == 0 && w == graphics::screen_width() && h == graphics::screen_height()) {
-		bg_ = graphics::texture::get_frame_buffer();
-	}
 }
 
 dialog& dialog::add_widget(widget_ptr w, dialog::MOVE_DIRECTION dir)
@@ -188,7 +184,11 @@ bool dialog::handle_event(const SDL_Event& event, bool claimed)
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP: {
 			int mousex, mousey;
+			#if SDL_MAJOR_VERSION == 1 && SDL_MINOR_VERSION == 3
+			SDL_GetMouseState(0, &mousex, &mousey);
+			#else
 			SDL_GetMouseState(&mousex, &mousey);
+			#endif
 			if(mousex >= x() && mousex < x() + width() &&
 			   mousey >= y() && mousey < y() + height()) {
 				claimed = true;

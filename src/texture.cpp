@@ -11,7 +11,6 @@
    See the COPYING file for more details.
 */
 
-#include <GL/glew.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 
@@ -323,37 +322,6 @@ void texture::set_as_current_texture() const
 	height_multiplier = ratio_h_;
 }
 
-texture texture::get_frame_buffer()
-{
-	texture t;
-	t.id_.reset(new ID(get_texture_id()));
-	int width = screen_width();
-	int height = screen_height();
-
-	int actual_width = width;
-	int actual_height = height;
-	t.ratio_w_ = 1.0;
-	t.ratio_h_ = 1.0;
-
-	if(!npot_allowed) {
-		actual_width = actual_height =
-		   std::max(next_power_of_2(actual_width),
-		            next_power_of_2(actual_height));
-		t.ratio_w_ = GLfloat(width)/GLfloat(actual_width);
-		t.ratio_h_ = GLfloat(height)/GLfloat(actual_height);
-	}
-
-	t.width_ = actual_width;
-	t.height_ = actual_height;
-
-	glReadBuffer(GL_FRONT);
-
-	t.set_as_current_texture();
-	glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 0, 0, actual_width, actual_height, 0);
-
-	return t;
-}
-
 texture texture::get(const std::string& str)
 {
 	texture result(get(surface_cache::get(str)));
@@ -398,15 +366,6 @@ void texture::set_current_texture(const key& k)
 {
 	texture t(get(k));
 	t.set_as_current_texture();
-}
-
-void texture::set_coord(GLfloat x, GLfloat y)
-{
-	if(npot_allowed) {
-		glTexCoord2f(x,y);
-	} else {
-		glTexCoord2f(x*width_multiplier,y*height_multiplier);
-	}
 }
 
 GLfloat texture::get_coord_x(GLfloat x)

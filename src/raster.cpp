@@ -56,6 +56,9 @@ void prepare_raster()
 	glShadeModel(GL_FLAT);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
+	#ifdef SDL_VIDEO_OPENGL_ES
+	#define glOrtho glOrthof
+	#endif
 	glOrtho(0,screen_width(),screen_height(),0,-1.0,1.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

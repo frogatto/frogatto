@@ -433,6 +433,7 @@ namespace input {
         }
     }
 
+#ifndef NO_EDITOR
     bool mouse_drag_listener::process_event(const SDL_Event& event, bool claimed) {
         Sint32 pos[2];
         Sint16 rel[2];
@@ -616,5 +617,7 @@ namespace input {
         
         return claimed;
     }
+#endif // NO_EDITOR
 
 }
+

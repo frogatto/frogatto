@@ -805,31 +805,6 @@ private:
 	}
 };
 
-namespace {
-int show_msg_dialog(const std::string& msg, const std::vector<std::string>& options)
-{
-	message_dialog::show_modal(msg, &options);
-
-	int selected_option = -1;
-
-	graphics::texture bg(graphics::texture::get_frame_buffer());
-
-	while(message_dialog::get() != NULL) {
-		graphics::blit_texture(bg, 0, 0, graphics::screen_width(), -graphics::screen_height());
-		message_dialog::get()->draw();
-		SDL_GL_SwapBuffers();
-
-		selected_option = message_dialog::get()->selected_option();
-		message_dialog::get()->process();
-
-		SDL_Delay(20);
-	}
-
-	return selected_option;
-}
-
-}
-
 class speech_dialog_command : public entity_command_callable {
 public:
 	explicit speech_dialog_command(const std::vector<variant>& args)

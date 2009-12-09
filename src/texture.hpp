@@ -46,14 +46,12 @@ public:
 	void set_as_current_texture() const;
 	bool valid() const { return id_; }
 
-	static texture get_frame_buffer();
 	static texture get(const std::string& str);
 	static texture get(const std::string& str, const std::string& algorithm);
 	static texture get(const key& k);
 	static texture get_no_cache(const key& k);
 	static texture get_no_cache(const surface& surf);
 	static void set_current_texture(const key& k);
-	static void set_coord(GLfloat x, GLfloat y);
 	static GLfloat get_coord_x(GLfloat x);
 	static GLfloat get_coord_y(GLfloat y);
 	static void clear_cache();
