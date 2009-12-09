@@ -14,6 +14,8 @@ int virtual_screen_height_ = 600;
 
 int actual_screen_width_ = 800;
 int actual_screen_height_ = 600;
+
+bool force_no_npot_textures_ = false;
 }
 
 bool no_sound() {
@@ -76,6 +78,11 @@ void set_actual_screen_height(int height)
 	actual_screen_height_ = height;
 }
 
+bool force_no_npot_textures()
+{
+	return force_no_npot_textures_;
+}
+
 bool parse_arg(const char* arg) {
 	std::string s(arg);
 	if(s == "--show_hitboxes") {
@@ -88,6 +95,8 @@ bool parse_arg(const char* arg) {
 		fullscreen_ = true;
 	} else if(s == "--widescreen") {
 		set_widescreen();
+	} else if(s == "--potonly") {
+		force_no_npot_textures_ = true;
 	} else {
 		return false;
 	}

@@ -101,6 +101,11 @@ namespace {
 	if (once) return npot;
 	once = true;
 
+	if(preferences::force_no_npot_textures()) {
+		npot = false;
+		return false;
+	}
+
 	const char *supported = reinterpret_cast<const char *>(glGetString(GL_EXTENSIONS));
 	const char *version = reinterpret_cast<const char *>(glGetString(GL_VERSION));
 	const char *vendor = reinterpret_cast<const char *>(glGetString(GL_VENDOR));

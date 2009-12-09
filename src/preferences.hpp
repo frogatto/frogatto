@@ -21,6 +21,8 @@ int actual_screen_height();
 
 void set_actual_screen_width(int width);
 void set_actual_screen_height(int height);
+
+bool force_no_npot_textures();
 }
 
 #endif
