@@ -151,7 +151,7 @@ void schema::attribute_info::validate(const std::string& name, const std::string
 		static const boost::regex pattern("(true|false|yes|no)");
 		boost::smatch match;
 		if(!boost::regex_match(value, match, pattern)) {
-			generate_error(formatter() << "Value for attribute " << name << " is " << value << " which is not an integer");
+			generate_error(formatter() << "Value for attribute " << name << " is " << value << " which is not a boolean.");
 		}
 		break;
 	}
