@@ -416,9 +416,11 @@ void coords_to_screen(GLdouble sx, GLdouble sy, GLdouble sz,
 	GLdouble model[16], proj[16];
 	GLint view[4];
 
+#ifndef SDL_VIDEO_OPENGL_ES
 	glGetDoublev(GL_MODELVIEW_MATRIX, model);
 	glGetDoublev(GL_PROJECTION_MATRIX, proj);
 	glGetIntegerv(GL_VIEWPORT, view);
+#endif
 
 	gluProject(sx, sy, sz, model, proj, view, dx, dy, dz);
 }

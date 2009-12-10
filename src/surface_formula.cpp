@@ -1,6 +1,9 @@
 #include <iostream>
 #include <map>
+#include <SDL.h>
+#ifndef SDL_VIDEO_OPENGL_ES
 #include <GL/glew.h>
+#endif
 
 #include "asserts.hpp"
 #include "concurrent_cache.hpp"
@@ -163,6 +166,7 @@ shader_map shader_cache;
 
 void check_shader_errors(const std::string& fname, GLuint shader)
 {
+#ifndef SDL_VIDEO_OPENGL_ES
 	GLint value = 0;
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &value);
 	if(value == GL_FALSE) {
@@ -172,6 +176,7 @@ void check_shader_errors(const std::string& fname, GLuint shader)
 		std::string errors(buf, buf + len);
 		ASSERT_LOG(false, "COMPILE ERROR IN SHADER " << fname << ": " << errors);
 	}
+#endif
 }
 
 GLuint compile_shader(const std::string& shader_file, GLuint type)
@@ -180,7 +185,7 @@ GLuint compile_shader(const std::string& shader_file, GLuint type)
 	if(id) {
 		return id;
 	}
-
+#ifndef SDL_VIDEO_OPENGL_ES
 	id = glCreateShader(type);
 
 	const std::string file_data = sys::read_file("data/shaders/" + shader_file);
@@ -192,6 +197,9 @@ GLuint compile_shader(const std::string& shader_file, GLuint type)
 	check_shader_errors(shader_file, id);
 
 	return id;
+#else
+	return 0;
+#endif
 }
 
 }
@@ -199,6 +207,7 @@ GLuint compile_shader(const std::string& shader_file, GLuint type)
 GLuint get_gl_shader(const std::vector<std::string>& vertex_shader_file,
                      const std::vector<std::string>& fragment_shader_file)
 {
+#ifndef SDL_VIDEO_OPENGL_ES
 	if(vertex_shader_file.empty() || fragment_shader_file.empty()) {
 		return 0;
 	}
@@ -240,6 +249,9 @@ GLuint get_gl_shader(const std::vector<std::string>& vertex_shader_file,
 	glUseProgram(0);
 
 	return program_id;
+#else
+	return 0;
+#endif
 }
 
 BENCHMARK(surface_formula)

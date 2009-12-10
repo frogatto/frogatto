@@ -28,6 +28,9 @@ CKey::CKey() : is_enabled(true), require_key_release(false), num_keys(300)
 
 int CKey::operator[]( int code ) const
 {
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+	return 0;
+#endif
 	if(require_key_release) {
 		if(std::count(key_list, key_list + num_keys, 0) == num_keys) {
 			require_key_release = false;

@@ -16,6 +16,7 @@ std::map<int, TTF_Font*> font_table;
 
 TTF_Font* get_font(int size)
 {
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	TTF_Font*& font = font_table[size];
 	if(font == NULL) {
 		font = TTF_OpenFont(FontFile, size);
@@ -26,6 +27,9 @@ TTF_Font* get_font(int size)
 	}
 
 	return font;
+#else
+	return NULL;
+#endif
 }
 
 struct cache_entry
@@ -44,6 +48,7 @@ int cache_index = 0;
 
 manager::manager()
 {
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	const int res = TTF_Init();
 	if(res == -1) {
 		std::cerr << "Could not initialize ttf\n";
@@ -51,11 +56,14 @@ manager::manager()
 	} else {
 		std::cerr << "initialized ttf\n";
 	}
+#endif
 }
 
 manager::~manager()
 {
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	TTF_Quit();
+#endif
 }
 
 graphics::texture render_text(const std::string& text,
@@ -66,8 +74,12 @@ graphics::texture render_text(const std::string& text,
 			return cache[n].texture;
 		}
 	}
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	TTF_Font* font = get_font(size);
 	graphics::surface s(TTF_RenderUTF8_Blended(font, text.c_str(), color));
+#else
+	graphics::surface s;
+#endif
 	graphics::texture res = graphics::texture::get_no_cache(s);
 	cache_index = (cache_index+1)%CacheSize;
 	cache[cache_index].text = text;

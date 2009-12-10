@@ -946,6 +946,7 @@ private:
 	}
 };
 
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 class debug_console_command : public entity_command_callable
 {
 public:
@@ -1032,6 +1033,7 @@ private:
 		return variant(new debug_console_command(variables));
 	}
 };
+#endif
 
 class fire_event_command : public entity_command_callable {
 	const entity_ptr target_;
@@ -1622,8 +1624,10 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new end_game_function(args));
 	} else if(fn == "debug") {
 		return expression_ptr(new debug_function(args));
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	} else if(fn == "debug_console") {
 		return expression_ptr(new debug_console_function(args));
+#endif
 	} else if(fn == "fire_event") {
 		return expression_ptr(new fire_event_function(args));
 	} else if(fn == "distortion") {

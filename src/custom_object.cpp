@@ -1,4 +1,7 @@
+#include <SDL/SDL.h>
+#ifndef SDL_VIDEO_OPENGL_ES
 #include <GL/glew.h>
+#endif
 
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
@@ -105,11 +108,13 @@ custom_object::custom_object(wml::const_node_ptr node)
 
 	can_interact_with_ = (event_handlers_.count("interact") || type_->get_event_handler("interact"));
 
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	wml::const_node_ptr editor_info = node->get_child("editor_info");
 	if(editor_info) {
 		std::cerr << "CREATE EDITOR INFO\n";
 		set_editor_info(const_editor_entity_info_ptr(new editor_entity_info(editor_info)));
 	}
+#endif
 
 	wml::const_node_ptr text_node = node->get_child("text");
 	if(text_node) {
@@ -292,9 +297,11 @@ wml::node_ptr custom_object::write() const
 		res->add_child(wml::deep_copy(custom_type_));
 	}
 
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	if(editor_info()) {
 		res->add_child(editor_info()->write());
 	}
+#endif
 
 	if(text_) {
 		wml::node_ptr node(new wml::node("text"));
@@ -330,6 +337,7 @@ void custom_object::draw() const
 		shader_ = get_gl_shader(vertex_shaders_, fragment_shaders_);
 	}
 
+#ifndef SDL_VIDEO_OPENGL_ES
 	if(shader_) {
 		glUseProgram(shader_);
 
@@ -340,6 +348,7 @@ void custom_object::draw() const
 			}
 		}
 	}
+#endif
 
 	if(driver_) {
 		driver_->draw();
@@ -393,9 +402,11 @@ void custom_object::draw() const
 		text_->font->draw(x(), y(), text_->text);
 	}
 
+#ifndef SDL_VIDEO_OPENGL_ES
 	if(shader_) {
 		glUseProgram(0);
 	}
+#endif
 }
 
 void custom_object::draw_group() const

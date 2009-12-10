@@ -24,10 +24,12 @@ const size_t BufferSize = 1024;
 bool sound_ok = false;
 bool mute_ = false;
 
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 typedef std::map<std::string, Mix_Chunk*> cache_map;
 cache_map cache;
 
 Mix_Music* current_music = NULL;
+#endif
 std::string current_music_name;
 std::string next_music;
 
@@ -35,12 +37,14 @@ std::string next_music;
 //of the next scheduled track, if there is one.
 void on_music_finished()
 {
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	Mix_FreeMusic(current_music);
 	current_music = NULL;
 	if(next_music.empty() == false) {
 		play_music(next_music);
 	}
 	next_music.clear();
+#endif
 }
 
 }
@@ -50,7 +54,7 @@ manager::manager()
 	if(preferences::no_sound()) {
 		return;
 	}
-
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	if(SDL_WasInit(SDL_INIT_AUDIO) == 0) {
 		if(SDL_InitSubSystem(SDL_INIT_AUDIO) == -1) {
 			sound_ok = false;
@@ -70,6 +74,7 @@ manager::manager()
 
 	Mix_HookMusicFinished(on_music_finished);
 	Mix_VolumeMusic(MIX_MAX_VOLUME);
+#endif
 }
 
 manager::~manager()
@@ -78,9 +83,11 @@ manager::~manager()
 		return;
 	}
 
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	Mix_HookMusicFinished(NULL);
 	next_music.clear();
 	Mix_CloseAudio();
+#endif
 }
 
 bool ok() { return sound_ok; }
@@ -89,7 +96,9 @@ bool muted() { return mute_; }
 void mute (bool flag)
 {
 	mute_ = flag;
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	Mix_VolumeMusic(MIX_MAX_VOLUME*(!flag));
+#endif
 }
 
 namespace {
@@ -110,6 +119,7 @@ int play_internal(const std::string& file, int loops, const void* object)
 		return -1;
 	}
 
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	Mix_Chunk*& chunk = cache[file];
 	if(chunk == NULL) {
 		chunk = Mix_LoadWAV(("sounds/" + file).c_str());
@@ -132,6 +142,9 @@ int play_internal(const std::string& file, int loops, const void* object)
 	}
 
 	return result;
+#else
+	return -1;
+#endif
 }
 
 }
@@ -147,16 +160,19 @@ void play(const std::string& file, const void* object)
 
 void stop_sound(const std::string& file, const void* object)
 {
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	for(int n = 0; n != channels_to_sounds_playing.size(); ++n) {
 		if(channels_to_sounds_playing[n].object == object &&
 		   channels_to_sounds_playing[n].file == file) {
 			Mix_HaltChannel(n);
 		}
 	}
+#endif
 }
 	
 void stop_looped_sounds(const void* object)
 {
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	for(int n = 0; n != channels_to_sounds_playing.size(); ++n) {
 		if(channels_to_sounds_playing[n].object == object &&
 		   (channels_to_sounds_playing[n].loops != 0)) {
@@ -169,6 +185,7 @@ void stop_looped_sounds(const void* object)
 			channels_to_sounds_playing[n].object = NULL;
 		}
 	}
+#endif
 }
 	
 int play_looped(const std::string& file, const void* object)
@@ -192,18 +209,21 @@ void change_volume(const void* object, int volume)
 		volume = 0;
 	}
 	
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	//find the channel associated with this object.
 	for(int n = 0; n != channels_to_sounds_playing.size(); ++n) {
 		if(channels_to_sounds_playing[n].object == object) {
 			Mix_Volume(n, volume);
 		} //else, we just do nothing
 	}
-	
+#endif
 }
 	
 void cancel_looped(int handle)
 {
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	Mix_HaltChannel(handle);
+#endif
 }
 
 void play_music(const std::string& file)
@@ -212,6 +232,7 @@ void play_music(const std::string& file)
 		return;
 	}
 
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	if(file.empty() || file == current_music_name) {
 		return;
 	}
@@ -230,6 +251,7 @@ void play_music(const std::string& file)
 	}
 
 	Mix_FadeInMusic(current_music, -1, 1000);
+#endif
 }
 
 void play_music_interrupt(const std::string& file)
@@ -243,6 +265,7 @@ void play_music_interrupt(const std::string& file)
 		next_music.clear();
 	}
 
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	Mix_HaltMusic();
 
 	next_music = current_music_name;
@@ -255,6 +278,7 @@ void play_music_interrupt(const std::string& file)
 	}
 
 	Mix_PlayMusic(current_music, 1);
+#endif
 }
 
 }

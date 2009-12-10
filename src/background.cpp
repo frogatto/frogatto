@@ -1,4 +1,7 @@
+#include <SDL.h>
+#ifndef SDL_VIDEO_OPENGL_ES
 #include <GL/glew.h>
+#endif
 
 #include <iostream>
 #include <map>
@@ -67,6 +70,7 @@ background::background(const wml::const_node_ptr& node)
 			bg.scale = 1;
 		}
 
+#ifndef SDL_VIDEO_OPENGL_ES
 		std::string blend_mode = layer_node->attr("mode");
 		if(GLEW_EXT_blend_minmax) {
 			if(blend_mode == "GL_MAX") {
@@ -77,6 +81,7 @@ background::background(const wml::const_node_ptr& node)
 				bg.mode = GL_FUNC_ADD;
 			}
 		}
+#endif
 		
 		std::fill(bg.color, bg.color + 4, 0.0);
 		bg.color[0] = wml::get_attr<GLfloat>(layer_node, "red", 1.0);
@@ -241,9 +246,11 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 	glPushMatrix();
 	glColor4f(bg.color[0], bg.color[1], bg.color[2], bg.color[3]);
 
+#ifndef SDL_VIDEO_OPENGL_ES
 	if(GLEW_EXT_blend_minmax) {
 		glBlendEquation(bg.mode);
 	}
+#endif
 	graphics::blit_texture(bg.texture, x, y + bg.yoffset*ScaleImage - (y*bg.yscale)/100,
 	                       screen_width,
 					       (bg.y2 - bg.y1)*ScaleImage, 0.0, xpos,
@@ -252,9 +259,11 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 						   double(bg.y2)/double(bg.texture.height()));
 
 	glColor4f(1.0,1.0,1.0,1.0);
+#ifndef SDL_VIDEO_OPENGL_ES
 	if(GLEW_EXT_blend_minmax) {
 		glBlendEquation(GL_FUNC_ADD);
 	}
+#endif
 	glPopMatrix();
 }
 

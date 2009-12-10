@@ -144,7 +144,10 @@ namespace input {
 
     SDLMod get_mod_change_state(const SDLKey& key) {
         SDLMod ret;
-
+#if SDL_MAJOR_VERSION == 1 && SDL_MINOR_VERSION == 3
+#define SDLK_LMETA SDLK_LGUI
+#define SDLK_RMETA SDLK_RGUI
+#endif
         switch(key) {
         case SDLK_LSHIFT:
             ret = KMOD_LSHIFT;
@@ -251,7 +254,7 @@ namespace input {
             binding_itor = bindings_.find(sym.sym);
         }
         assert(binding_itor != bindings_.end());
-        binding_itor->second[sym.mod] = logical_key;
+        binding_itor->second[static_cast<SDLMod>(sym.mod)] = logical_key;
     }
     
     void key_listener::bind_key(int logical_key, const SDLKey& k, 
@@ -268,7 +271,7 @@ namespace input {
         binding_map::iterator binding_itor = bindings_.find(k.sym);
         if(binding_itor != bindings_.end()) {
             mod_map& mm = binding_itor->second;
-            mod_map::iterator mod_itor = mm.find(k.mod);
+            mod_map::iterator mod_itor = mm.find(static_cast<SDLMod>(k.mod));
             if(mod_itor != mm.end()) {
                 mm.erase(mod_itor);
                 had_key = true;
@@ -336,7 +339,7 @@ namespace input {
         }
         mod_map::const_iterator mod_itor;
         const mod_map& mm = binding_itor->second;
-        mod_itor = mm.find(sym.mod);
+        mod_itor = mm.find(static_cast<SDLMod>(sym.mod));
         if(mod_itor == mm.end()) {
             return -1;
         }
@@ -352,7 +355,7 @@ namespace input {
         switch(type) {
         case SDL_KEYDOWN:
             if(binding_itor != bindings_.end()) {
-                mod_map::iterator mod_itor = binding_itor->second.find(sym.mod);
+                mod_map::iterator mod_itor = binding_itor->second.find(static_cast<SDLMod>(sym.mod));
                 if(mod_itor != binding_itor->second.end()) {
                     do_keydown(mod_itor->second);
                     changed = true;

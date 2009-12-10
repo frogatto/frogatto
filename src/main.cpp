@@ -1,7 +1,9 @@
+#include <SDL/SDL.h>
+#ifndef SDL_VIDEO_OPENGL_ES
 #include <GL/glew.h>
+#endif
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include <SDL/SDL.h>
 #include <algorithm>
 #include <cmath>
 #include <iostream>
@@ -96,6 +98,10 @@ bool show_title_screen(std::string& level_cfg)
 				}
 				
 				//These ifs make the game not start if you're trying to do a command, on Mac
+#if SDL_MAJOR_VERSION == 1 && SDL_MINOR_VERSION == 3
+#define SDLK_LMETA SDLK_LGUI
+#define SDLK_RMETA SDLK_RGUI
+#endif
 				if(event.key.keysym.sym != SDLK_LMETA && !(event.key.keysym.mod & KMOD_LMETA) &&
 					event.key.keysym.sym != SDLK_RMETA && !(event.key.keysym.mod & KMOD_RMETA)){
 					return false;
@@ -158,6 +164,10 @@ extern "C" int main(int argc, char** argv)
 			}
 		}
 	}
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+	preferences::set_actual_screen_width(320);
+	preferences::set_actual_screen_height(480);
+#endif
 
 	srand(time(NULL));
 
@@ -243,8 +253,10 @@ extern "C" int main(int argc, char** argv)
 	
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+#ifndef SDL_VIDEO_OPENGL_ES
 	GLenum glew_status = glewInit();
 	ASSERT_EQ(glew_status, GLEW_OK);
+#endif
 
 	bool quit = false;
 	const std::string orig_level_cfg = level_cfg;
