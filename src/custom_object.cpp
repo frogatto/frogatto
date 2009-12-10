@@ -333,6 +333,8 @@ void custom_object::draw() const
 		return;
 	}
 
+	glDisable(GL_TEXTURE_2D);
+
 	if(shader_ == 0 && !fragment_shaders_.empty() && !vertex_shaders_.empty()) {
 		shader_ = get_gl_shader(vertex_shaders_, fragment_shaders_);
 	}
@@ -407,6 +409,7 @@ void custom_object::draw() const
 		glUseProgram(0);
 	}
 #endif
+	glEnable(GL_TEXTURE_2D);
 }
 
 void custom_object::draw_group() const
@@ -437,6 +440,8 @@ public:
 
 void custom_object::process(level& lvl)
 {
+	lvl_ = &lvl;
+
 	if(type_->use_image_for_collisions()) {
 		//anything that uses their image for collisions is a static,
 		//un-moving object that will stay immobile.
@@ -466,8 +471,6 @@ void custom_object::process(level& lvl)
 	if(started_standing && velocity_y_ > 0) {
 		velocity_y_ = 0;
 	}
-
-	lvl_ = &lvl;
 
 	const int start_x = x();
 	const int start_y = y();
@@ -1402,6 +1405,30 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		}
 
 		set_attached_objects(v);
+	} else if(key == "solid_dimensions_in" || key == "solid_dimensions_not_in") {
+		unsigned int solid = 0;
+		for(int n = 0; n != value.num_elements(); ++n) {
+			const int id = get_solid_dimension_id(value[n].as_string());
+			solid |= 1 << id;
+		}
+
+		if(key == "solid_dimensions_not_in") {
+			solid = ~solid;
+		}
+
+		const unsigned int old_solid = solid_dimensions();
+		set_solid_dimensions(solid);
+		collision_info collide_info;
+		if(entity_collides(*lvl_, *this, MOVE_NONE, &collide_info)) {
+			set_solid_dimensions(old_solid);
+			ASSERT_EQ(entity_collides(*lvl_, *this, MOVE_NONE), false);
+
+			game_logic::map_formula_callable* callable(new game_logic::map_formula_callable(this));
+			callable->add("collide_with", variant(collide_info.collide_with.get()));
+			game_logic::formula_callable_ptr callable_ptr(callable);
+
+			handle_event("change_solid_dimensions_fail", callable);
+		}
 	} else {
 		vars_->add(key, value);
 	}
@@ -1449,13 +1476,13 @@ void custom_object::set_frame(const std::string& name)
 	
 	frame_->play_sound(this);
 
-	if(lvl_ && entity_collides_with_level(*lvl_, *this, MOVE_NONE)) {
+	if(lvl_ && entity_collides(*lvl_, *this, MOVE_NONE)) {
 		game_logic::map_formula_callable* callable(new game_logic::map_formula_callable(this));
 		callable->add("previous_animation", variant(previous_animation));
 		game_logic::formula_callable_ptr callable_ptr(callable);
 		handle_event("change_animation_failure", callable);
 		handle_event("change_animation_failure_" + frame_name_, callable);
-		ASSERT_LOG(!entity_collides_with_level(*lvl_, *this, MOVE_NONE),
+		ASSERT_LOG(destroyed() || !entity_collides_with_level(*lvl_, *this, MOVE_NONE),
 		  "Object '" << type_->id() << "' has different solid areas when changing from frame " << previous_animation << " to " << frame_name_ << " and doesn't handle it properly");
 	}
 
