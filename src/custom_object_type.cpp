@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "asserts.hpp"
+#include "collision_utils.hpp"
 #include "custom_object_functions.hpp"
 #include "custom_object_type.hpp"
 #include "filesystem.hpp"
@@ -18,19 +19,6 @@ std::map<std::string, std::string> object_file_paths, prototype_file_paths;
 
 typedef std::map<std::string, const_custom_object_type_ptr> object_map;
 object_map cache;
-
-int get_solid_dimension_id(const std::string& key) {
-	static std::map<std::string, int> dims;
-	static int next_id = 0;
-
-	std::map<std::string, int>::const_iterator itor = dims.find(key);
-	if(itor != dims.end()) {
-		return itor->second;
-	}
-
-	dims[key] = next_id;
-	return next_id++;
-}
 
 }
 
@@ -197,8 +185,10 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	if(node->has_attr("solid_dimensions")) {
 		solid_dimensions_ = 0;
 		foreach(const std::string& key, util::split(node->attr("solid_dimensions"))) {
-			solid_dimensions_ = solid_dimensions_|(1 << get_solid_dimension_id(key));
+			solid_dimensions_ |= (1 << get_solid_dimension_id(key));
 		}
+
+		std::cerr << "SOLID DIMENSIONS " << id_ << ": " << node->attr("solid_dimensions") << " -> " << solid_dimensions_ << "\n";
 		
 	}
 

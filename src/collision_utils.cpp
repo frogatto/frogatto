@@ -1,7 +1,36 @@
+#include "asserts.hpp"
 #include "collision_utils.hpp"
 #include "foreach.hpp"
 #include "geometry.hpp"
 #include "level.hpp"
+
+namespace {
+std::map<std::string, int> solid_dimensions;
+std::vector<std::string> solid_dimension_ids;
+}
+
+int get_num_solid_dimensions()
+{
+	return solid_dimensions.size();
+}
+
+const std::string& get_solid_dimension_key(int id)
+{
+	ASSERT_INDEX_INTO_VECTOR(id, solid_dimension_ids);
+	return solid_dimension_ids[id];
+}
+
+int get_solid_dimension_id(const std::string& key)
+{
+	std::map<std::string, int>::const_iterator itor = solid_dimensions.find(key);
+	if(itor != solid_dimensions.end()) {
+		return itor->second;
+	}
+
+	solid_dimensions[key] = solid_dimension_ids.size();
+	solid_dimension_ids.push_back(key);
+	return solid_dimensions.size()-1;
+}
 
 bool point_standable(const level& lvl, const entity& e, int x, int y, collision_info* info, ALLOW_PLATFORM allow_platform)
 {

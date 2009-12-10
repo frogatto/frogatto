@@ -846,7 +846,6 @@ void level::do_processing()
 			}
 
 			erase_char(c);
-
 		}
 	}
 

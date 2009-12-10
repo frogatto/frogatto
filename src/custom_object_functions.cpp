@@ -1123,10 +1123,17 @@ public:
 	{}
 
 	virtual void execute(level& lvl, entity& ob) const {
+		const int start_x = e_->x();
+		const int start_y = e_->y();
+
 		int max_cycles = max_cycles_;
 		while(entity_collides(lvl, *e_, MOVE_NONE) && max_cycles > 0) {
 			e_->set_pos(e_->x() + xdir_, e_->y() + ydir_);
 			--max_cycles;
+		}
+
+		if(max_cycles == 0) {
+			e_->set_pos(start_x, start_y);
 		}
 	}
 };

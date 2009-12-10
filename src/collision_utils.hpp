@@ -1,11 +1,14 @@
 #ifndef COLLISION_UTILS_HPP_INCLUDED
 #define COLLISION_UTILS_HPP_INCLUDED
 
-#include "entity_fwd.hpp"
+#include "entity.hpp"
 #include "solid_map.hpp"
 
-class entity;
 class level;
+
+int get_num_solid_dimensions();
+const std::string& get_solid_dimension_key(int id);
+int get_solid_dimension_id(const std::string& key);
 
 //struct which provides information about a surface we collide with.
 struct collision_info {
