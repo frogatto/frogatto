@@ -80,6 +80,7 @@ bool show_title_screen(std::string& level_cfg)
 
 		graphics::prepare_raster();
 		graphics::blit_texture(img, 0, 0, graphics::screen_width(), graphics::screen_height());
+		
 		SDL_GL_SwapBuffers();
 		joystick::update();
 		for(int n = 0; n != 6; ++n) {
@@ -113,6 +114,38 @@ bool show_title_screen(std::string& level_cfg)
 	}
 
 	return true;
+}
+
+void iphone_test ()
+{
+	graphics::texture img(graphics::texture::get("titlescreen.png"));
+	bool done = false;
+	while (!done)
+	{
+		SDL_Event event;
+		while (SDL_PollEvent(&event))
+		{
+			if (event.type == SDL_QUIT || event.type == SDL_MOUSEBUTTONDOWN)
+				done = true;
+		}
+		graphics::prepare_raster();
+		graphics::blit_texture(img, 0, 0, 200, 100);
+		std::cerr << gluErrorString(glGetError()) << "~1\n";
+		glDisable(GL_TEXTURE_2D);
+		SDL_Rect rect = {10, 10, 50, 50};
+		glColor4f(1.0, 0.5, 0.0, 1.0);
+		GLfloat vertices[] = {
+			rect.x, rect.y,
+			rect.x+rect.w, rect.y,
+			rect.x, rect.y+rect.h,
+			rect.x+rect.w, rect.y+rect.h
+		};
+		glVertexPointer(2, GL_FLOAT, 0, vertices);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		glEnable(GL_TEXTURE_2D);
+		SDL_GL_SwapBuffers();
+		SDL_Delay(500);
+	}
 }
 
 }
@@ -177,13 +210,29 @@ extern "C" int main(int argc, char** argv)
 	}
 
 	const stats::manager stats_manager;
-	
+
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 1);
 	
-	if(SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_OPENGL|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) == NULL) {
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+	SDL_WindowID windowID = SDL_CreateWindow (NULL, 0, 0, preferences::actual_screen_width(), preferences::actual_screen_height(),
+		SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN |
+		SDL_WINDOW_BORDERLESS);
+	if (windowID == 0) { 
+		std::cerr << "Could not create window: " << SDL_GetError() << "\n"; 
+		return -1;
+	}
+	
+	if (SDL_GL_CreateContext(windowID) == 0) {
+		std::cerr << "Could not create GL context: " << SDL_GetError() << "\n";
+		return -1;
+	}
+	
+#else
+	if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_OPENGL|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) == NULL) {
 		std::cerr << "could not set video mode\n";
 		return -1;
 	}
+#endif
 
 	
 
@@ -197,11 +246,13 @@ extern "C" int main(int argc, char** argv)
 	const font::manager font_manager;
 	const sound::manager sound_manager;
 	const joystick::manager joystick_manager;
-
+		
+	#if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
 	const SDL_Surface* fb = SDL_GetVideoSurface();
 	if(fb == NULL) {
 		return 0;
 	}
+	#endif
 
 	sound::play("arrive.wav");
 
@@ -252,6 +303,10 @@ extern "C" int main(int argc, char** argv)
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+	iphone_test();
+#endif
 
 #ifndef SDL_VIDEO_OPENGL_ES
 	GLenum glew_status = glewInit();
@@ -311,5 +366,7 @@ extern "C" int main(int argc, char** argv)
 	std::cerr << "quitting...\n";
 	SDL_Quit();
 	std::cerr << "quit called...\n";
+	std::cerr << SDL_GetError() << "\n";
+	std::cerr << gluErrorString(glGetError()) << "\n";
 	return 0;
 }

@@ -45,12 +45,20 @@ std::vector<GLfloat>& global_texcoords_array()
 
 void prepare_raster()
 {
+	#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+	int w = 320;
+	int h = 480;
+	#else
 	const SDL_Surface* fb = SDL_GetVideoSurface();
 	if(fb == NULL) {
+		std::cerr << "Framebuffer was null in prepare_raster\n";
 		return;
 	}
+	int w = fb->w;
+	int h = fb->h;
+	#endif
 
-	glViewport(0,0,fb->w,fb->h);
+	glViewport(0,0,w,h);
 	glClearColor(0.0,0.0,0.0,0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glShadeModel(GL_FLAT);

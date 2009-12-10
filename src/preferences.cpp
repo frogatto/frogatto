@@ -9,11 +9,19 @@ bool show_debug_hitboxes_ = false;
 bool use_pretty_scaling_ = false;
 bool fullscreen_ = false;
 
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+int virtual_screen_width_ = 320;
+int virtual_screen_height_ = 480;
+
+int actual_screen_width_ = 320;
+int actual_screen_height_ = 480;
+#else
 int virtual_screen_width_ = 800;
 int virtual_screen_height_ = 600;
 
 int actual_screen_width_ = 800;
 int actual_screen_height_ = 600;
+#endif
 
 bool force_no_npot_textures_ = false;
 }

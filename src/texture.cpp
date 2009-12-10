@@ -287,6 +287,16 @@ void texture::initialize()
 	current_texture = 0;
 }
 
+int next_pot (int n)
+{
+	int num = 1;
+	while (num < n)
+	{
+		num *= 2;
+	}
+	return num;
+}
+
 void texture::set_as_current_texture() const
 {
 	if(!valid()) {
@@ -302,10 +312,28 @@ void texture::set_as_current_texture() const
 
 		id_->id = get_texture_id();
 		glBindTexture(GL_TEXTURE_2D,id_->id);
-			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-			glTexImage2D(GL_TEXTURE_2D,0,4,id_->s->w,id_->s->h,0,GL_RGBA,
-				     GL_UNSIGNED_BYTE,id_->s->pixels);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		#ifdef SDL_VIDEO_OPENGL_ES
+		
+		int bpp;                    /* texture bits per pixel */
+		Uint32 Rmask, Gmask, Bmask, Amask;  /* masks for pixel format passed into OpenGL */
+		SDL_Surface *surface_rgba8888;  /* this serves as a destination to convert the surface
+											 to format passed into OpenGL */
+		
+		/* Grab info about format that will be passed into OpenGL */
+		SDL_PixelFormatEnumToMasks(SDL_PIXELFORMAT_ABGR8888, &bpp, &Rmask, &Gmask, &Bmask, &Amask);
+		/* Create surface that will hold pixels passed into OpenGL */
+		surface_rgba8888 = SDL_CreateRGBSurface(0, next_pot(id_->s->w), next_pot(id_->s->h), bpp, Rmask, Gmask, Bmask, Amask);
+		/* Blit to this surface, effectively converting the format */
+		SDL_BlitSurface(id_->s, NULL, surface_rgba8888, NULL);
+		
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surface_rgba8888->w, surface_rgba8888->h, 0, GL_RGBA,
+			GL_UNSIGNED_BYTE, surface_rgba8888->pixels);
+		#else
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, id_->s->w, id_->s->h, 0, GL_RGBA,
+			GL_UNSIGNED_BYTE, id_->s->pixels);
+		#endif
 
 		//free the surface.
 		id_->s = surface();
@@ -318,6 +346,7 @@ void texture::set_as_current_texture() const
 	current_texture = id_->id;
 
 	glBindTexture(GL_TEXTURE_2D,id_->id);
+	std::cerr << gluErrorString(glGetError()) << "~set_as_current_texture~\n";
 	width_multiplier = ratio_w_;
 	height_multiplier = ratio_h_;
 }

@@ -832,7 +832,7 @@ void level::do_processing()
 	active_chars_.erase(std::unique(active_chars_.begin(), active_chars_.end()), active_chars_.end());
 	std::sort(active_chars_.begin(), active_chars_.end(), sort_entity_drawing_pos);
 
-	std::cerr << "active: " << active_chars_.size() << "/" << chars_.size() << "\n";
+	//std::cerr << "active: " << active_chars_.size() << "/" << chars_.size() << "\n";
 
 	const int ActivationDistance = 700;
 
@@ -850,7 +850,7 @@ void level::do_processing()
 		}
 	}
 
-	std::cerr << "process: " << (SDL_GetTicks() - ticks) << "\n";
+	//std::cerr << "process: " << (SDL_GetTicks() - ticks) << "\n";
 
 	if(water_) {
 		water_->process(*this);
