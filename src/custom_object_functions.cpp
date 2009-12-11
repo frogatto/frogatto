@@ -305,6 +305,34 @@ private:
 	}
 };
 
+class execute_on_command : public entity_command_callable
+{
+	entity_ptr e_;
+	variant cmd_;
+public:
+	execute_on_command(entity_ptr e, variant cmd) : e_(e), cmd_(cmd)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		e_->execute_command(cmd_);
+	}
+};
+
+class execute_function : public function_expression
+{
+public:
+	explicit execute_function(const args_list& args)
+	  : function_expression("execute", args, 2, 2) {
+	}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		entity_ptr e(args()[0]->evaluate(variables).convert_to<entity>());
+		variant cmd = args()[1]->evaluate(variables);
+		return variant(new execute_on_command(e, cmd));
+	}
+};
+
 class spawn_command : public entity_command_callable
 {
 public:
@@ -1567,7 +1595,9 @@ expression_ptr custom_object_function_symbol_table::create_function(
                            const std::string& fn,
                            const std::vector<expression_ptr>& args) const
 {
-	if(fn == "spawn") {
+	if(fn == "execute") {
+		return expression_ptr(new execute_function(args));
+	} else if(fn == "spawn") {
 		return expression_ptr(new spawn_function(args, true));
 	} else if(fn == "char") {
 		return expression_ptr(new spawn_function(args, false));

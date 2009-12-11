@@ -12,6 +12,7 @@
 #include "wml_node.hpp"
 #include "wml_parser.hpp"
 #include "wml_utils.hpp"
+#include "wml_writer.hpp"
 #include "unit_test.hpp"
 
 namespace {
@@ -19,6 +20,99 @@ std::map<std::string, std::string> object_file_paths, prototype_file_paths;
 
 typedef std::map<std::string, const_custom_object_type_ptr> object_map;
 object_map cache;
+
+void merge_into_prototype(wml::node_ptr prototype_node, wml::node_ptr node)
+{
+	//we have a prototype node and an object node. We want to merge
+	//them together to give one object definition. We will save
+	//the final definition in the prototype_node, overwriting its
+	//values with changes from the object node.
+	//begin by setting attributes in the prototype node from
+	//the object node.
+	for(wml::node::const_attr_iterator i = node->begin_attr();
+	    i != node->end_attr(); ++i) {
+		prototype_node->set_attr(i->first, i->second);
+	}
+
+	//mapping of animation nodes is kinda complicated: in the
+	//prototype there can be one specification of each animation.
+	//in objects there can be multiple specifications. Each
+	//animation in the object inherits from the specification in
+	//the prototype.
+	//
+	//We are going to build a completely fresh/new set of animations
+	//in a vector, and then wipe out all current animations and
+	//replace with these from the vector.
+	std::vector<wml::node_ptr> animation_nodes;
+
+	//go over every animation in the object, and see if the animation
+	//is also defined in the prototype.
+	FOREACH_WML_CHILD(anim_node, node, "animation") {
+		wml::node_ptr target_anim = wml::find_child_by_attribute(prototype_node, "animation", "id", anim_node->attr("id"));
+		if(target_anim) {
+			//the animation is in the prototype, so we merge the
+			//object's definition of the animation with the
+			//prototype's.
+			wml::node_ptr new_node(wml::deep_copy(target_anim));
+			wml::merge_over(anim_node, new_node);
+			animation_nodes.push_back(new_node);
+		} else {
+			//the animation isn't in the prototype, so just add
+			//what is given in the object.
+			animation_nodes.push_back(wml::deep_copy(anim_node));
+		}
+	}
+
+	prototype_node->clear_children("animation");
+	foreach(wml::node_ptr node, animation_nodes) {
+		prototype_node->add_child(node);
+	}
+
+	//now go over every element and copy them in.
+	for(wml::node::all_child_iterator i = node->begin_children();
+	    i != node->end_children(); ++i) {
+		const std::string& name = (*i)->name();
+		if(name == "animation") {
+			//we handled animations above, so ignore this here.
+			continue;
+		}
+
+		if(name == "vars") {
+			//we like to merge in vars nodes into one vars definition
+			//if both the object and prototype have vars definitions.
+			wml::node_ptr target = prototype_node->get_child("vars");
+			if(target) {
+				wml::merge_over(*i, target);
+				continue;
+			}
+		}
+
+		prototype_node->add_child(*i);
+	}
+}
+
+//function which finds if a node has a prototype, and if so, applies the
+//prototype to the node.
+wml::node_ptr merge_prototype(wml::node_ptr node)
+{
+	if(!node->has_attr("prototype")) {
+		return node;
+	}
+
+	std::vector<std::string> protos = util::split(node->attr("prototype"));
+
+	foreach(const std::string& proto, protos) {
+		//look up the object's prototype and merge it in
+		std::map<std::string, std::string>::const_iterator path_itor = prototype_file_paths.find(proto + ".cfg");
+		ASSERT_LOG(path_itor != prototype_file_paths.end(), "Could not find file for prototype '" << node->attr("prototype") << "'");
+
+		wml::node_ptr prototype_node = wml::parse_wml_from_file(path_itor->second);
+		prototype_node = merge_prototype(prototype_node);
+		merge_into_prototype(prototype_node, node);
+		node = prototype_node;
+	}
+	return node;
+}
 
 }
 
@@ -42,83 +136,10 @@ const_custom_object_type_ptr custom_object_type::get(const std::string& id)
 	try {
 		wml::node_ptr node = wml::parse_wml_from_file(path_itor->second);
 
-		if(node->has_attr("prototype")) {
-			//look up the object's prototype and merge it in
-			std::map<std::string, std::string>::const_iterator path_itor = prototype_file_paths.find(node->attr("prototype").str() + ".cfg");
-			ASSERT_LOG(path_itor != prototype_file_paths.end(), "Could not find file for prototype '" << node->attr("prototype") << "'");
+		node = merge_prototype(node);
 
-			wml::node_ptr prototype_node = wml::parse_wml_from_file(path_itor->second);
-
-			//we have a prototype node and an object node. We want to merge
-			//them together to give one object definition. We will save
-			//the final definition in the prototype_node, overwriting its
-			//values with changes from the object node.
-
-			//begin by setting attributes in the prototype node from
-			//the object node.
-			for(wml::node::const_attr_iterator i = node->begin_attr();
-			    i != node->end_attr(); ++i) {
-				prototype_node->set_attr(i->first, i->second);
-			}
-
-			//mapping of animation nodes is kinda complicated: in the
-			//prototype there can be one specification of each animation.
-			//in objects there can be multiple specifications. Each
-			//animation in the object inherits from the specification in
-			//the prototype.
-			//
-			//We are going to build a completely fresh/new set of animations
-			//in a vector, and then wipe out all current animations and
-			//replace with these from the vector.
-			std::vector<wml::node_ptr> animation_nodes;
-
-			//go over every animation in the object, and see if the animation
-			//is also defined in the prototype.
-			FOREACH_WML_CHILD(anim_node, node, "animation") {
-				wml::node_ptr target_anim = wml::find_child_by_attribute(prototype_node, "animation", "id", anim_node->attr("id"));
-				if(target_anim) {
-					//the animation is in the prototype, so we merge the
-					//object's definition of the animation with the
-					//prototype's.
-					wml::node_ptr new_node(wml::deep_copy(target_anim));
-					wml::merge_over(anim_node, new_node);
-					animation_nodes.push_back(new_node);
-				} else {
-					//the animation isn't in the prototype, so just add
-					//what is given in the object.
-					animation_nodes.push_back(wml::deep_copy(anim_node));
-				}
-			}
-
-			prototype_node->clear_children("animation");
-			foreach(wml::node_ptr node, animation_nodes) {
-				prototype_node->add_child(node);
-			}
-
-			//now go over every element and copy them in.
-			for(wml::node::all_child_iterator i = node->begin_children();
-			    i != node->end_children(); ++i) {
-				const std::string& name = (*i)->name();
-				if(name == "animation") {
-					//we handled animations above, so ignore this here.
-					continue;
-				}
-
-				if(name == "vars") {
-					//we like to merge in vars nodes into one vars definition
-					//if both the object and prototype have vars definitions.
-					wml::node_ptr target = prototype_node->get_child("vars");
-					if(target) {
-						wml::merge_over(*i, target);
-						continue;
-					}
-				}
-
-				prototype_node->add_child(*i);
-			}
-			    
-			node = prototype_node;
-		}
+		std::cerr << "NODE FOR " << id << ": {{{\n";
+		std::cerr << wml::output(node) << "\n}}}\n";
 
 		//create the object and add it to our cache.
 		custom_object_type_ptr result(new custom_object_type(node));
@@ -255,8 +276,7 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 		std::sort(tags_.begin(), tags_.end());
 	}
 
-	wml::const_node_ptr properties_node = node->get_child("properties");
-	if(properties_node) {
+	FOREACH_WML_CHILD(properties_node, node, "properties") {
 		for(wml::node::const_attr_iterator i = properties_node->begin_attr(); i != properties_node->end_attr(); ++i) {
 			properties_[i->first] = game_logic::formula::create_optional_formula(i->second, function_symbols());
 		}

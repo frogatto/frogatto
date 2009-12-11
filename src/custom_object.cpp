@@ -1234,8 +1234,12 @@ void custom_object::init()
 
 variant custom_object::get_value(const std::string& key) const
 {
+	if(type_->id() == "black_ant") {
+		std::cerr << "GET VALUE: '" << key << "'\n";
+	}
 	std::map<std::string, game_logic::const_formula_ptr>::const_iterator property_itor = type_->properties().find(key);
 	if(property_itor != type_->properties().end() && property_itor->second) {
+		std::cerr << "FOUND PROPERTY: '" << property_itor->second->str() << "'\n";
 		return property_itor->second->execute(*this);
 	}
 
