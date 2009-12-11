@@ -333,8 +333,6 @@ void custom_object::draw() const
 		return;
 	}
 
-	glDisable(GL_TEXTURE_2D);
-
 	if(shader_ == 0 && !fragment_shaders_.empty() && !vertex_shaders_.empty()) {
 		shader_ = get_gl_shader(vertex_shaders_, fragment_shaders_);
 	}
@@ -409,7 +407,6 @@ void custom_object::draw() const
 		glUseProgram(0);
 	}
 #endif
-	glEnable(GL_TEXTURE_2D);
 }
 
 void custom_object::draw_group() const
