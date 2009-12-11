@@ -29,6 +29,9 @@
 class level : public game_logic::formula_callable
 {
 public:
+	static level& current();
+	void set_as_current_level();
+
 	explicit level(const std::string& level_cfg);
 
 	//function to do anything which loads the level and must be done

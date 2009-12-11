@@ -192,6 +192,7 @@ level_runner::level_runner(boost::scoped_ptr<level>& lvl, std::string& level_cfg
 
 bool level_runner::play_level()
 {
+	lvl_->set_as_current_level();
 	while(!done && !quit_) {
 		bool res = play_cycle();
 		if(!res) {
@@ -241,6 +242,7 @@ bool level_runner::play_cycle()
 		sound::play_music(new_level->music());
 		set_scene_title(new_level->title());
 		new_level->add_player(save);
+		new_level->set_as_current_level();
 		save->save_game();
 		lvl_.reset(new_level);
 		last_draw_position() = screen_position();
@@ -305,6 +307,8 @@ bool level_runner::play_cycle()
 					mutable_portal.dest_starting_pos = false;
 				}
 			}
+
+			new_level->set_as_current_level();
 
 			sound::play_music(new_level->music());
 			set_scene_title(new_level->title());
@@ -394,6 +398,7 @@ bool level_runner::play_cycle()
 					pause_time_ -= SDL_GetTicks();
 					editor::edit(lvl_->id().c_str(), last_draw_position().x/100, last_draw_position().y/100);
 					lvl_.reset(load_level(editor::last_edited_level().c_str()));
+					lvl_->set_as_current_level();
 					pause_time_ += SDL_GetTicks();
 					#endif
 				} else if(key == SDLK_s && (mod&KMOD_CTRL)) {
@@ -409,6 +414,7 @@ bool level_runner::play_cycle()
 					int index = std::find(levels.begin(), levels.end(), lvl_->id()) - levels.begin();
 					index = (index+1)%levels.size();
 					level* new_level = load_level(levels[index]);
+					new_level->set_as_current_level();
 					sound::play_music(new_level->music());
 					set_scene_title(new_level->title());
 					lvl_.reset(new_level);

@@ -54,7 +54,6 @@ custom_object::custom_object(wml::const_node_ptr node)
 	hitpoints_(wml::get_int(node, "hitpoints", type_->hitpoints())),
 	was_underwater_(false), invincible_(0),
 	sound_volume_(128),
-	lvl_(NULL),
 	vars_(new game_logic::map_formula_callable(node->get_child("vars"))),
 	tmp_vars_(new game_logic::map_formula_callable),
 	last_hit_by_anim_(0),
@@ -100,7 +99,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 	}
 
 	assert(type_.get());
-	set_frame(frame_name_);
+	set_frame_no_adjustments(frame_name_);
 
 	next_animation_formula_ = type_->next_animation_formula();
 
@@ -138,7 +137,6 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	hitpoints_(type_->hitpoints()),
 	was_underwater_(false), invincible_(0),
 	sound_volume_(128),
-	lvl_(NULL),
 	vars_(new game_logic::map_formula_callable),
 	tmp_vars_(new game_logic::map_formula_callable),
 	tags_(new game_logic::map_formula_callable),
@@ -167,7 +165,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	}
 
 	assert(type_.get());
-	set_frame(frame_name_);
+	set_frame_no_adjustments(frame_name_);
 
 	next_animation_formula_ = type_->next_animation_formula();
 }
@@ -191,7 +189,6 @@ custom_object::custom_object(const custom_object& o) :
 	invincible_(o.invincible_),
 	sound_volume_(o.sound_volume_),
 	next_animation_formula_(o.next_animation_formula_),
-	lvl_(o.lvl_),
 
 	vars_(new game_logic::map_formula_callable(*o.vars_)),
 	tmp_vars_(new game_logic::map_formula_callable(*o.tmp_vars_)),
@@ -437,8 +434,6 @@ public:
 
 void custom_object::process(level& lvl)
 {
-	lvl_ = &lvl;
-
 	if(type_->use_image_for_collisions()) {
 		//anything that uses their image for collisions is a static,
 		//un-moving object that will stay immobile.
@@ -760,7 +755,7 @@ void custom_object::process(level& lvl)
 
 	if(!invincible_) {
 		if(on_players_side()) {
-			entity_ptr collide_with = lvl_->collide(body_rect(), this);
+			entity_ptr collide_with = level::current().collide(body_rect(), this);
 			if(collide_with && collide_with->body_harmful()) {
 				handle_event("get_hit");
 			}
@@ -1024,7 +1019,7 @@ struct custom_object::Accessor {
 #define SIMPLE_ACCESSOR(name) static variant name(const custom_object& obj) { return variant(obj.name##_); }
 	CUSTOM_ACCESSOR(type, obj.type_->id())
 	CUSTOM_ACCESSOR(time_in_animation, obj.time_in_frame_)
-	CUSTOM_ACCESSOR(level, obj.lvl_)
+	CUSTOM_ACCESSOR(level, &level::current())
 	CUSTOM_ACCESSOR(animation, obj.frame_name_)
 	SIMPLE_ACCESSOR(hitpoints)
 	CUSTOM_ACCESSOR(max_hitpoints, obj.type_->hitpoints())
@@ -1077,11 +1072,11 @@ struct custom_object::Accessor {
 	CUSTOM_ACCESSOR(hit_by, obj.last_hit_by_.get());
 	CUSTOM_ACCESSOR(jumped_on_by, obj.last_jumped_on_by_.get());
 	CUSTOM_ACCESSOR(distortion, obj.distortion_.get());
-	CUSTOM_ACCESSOR(is_standing, (obj.lvl_ ? variant(obj.is_standing(*obj.lvl_)) : variant()));
-	CUSTOM_ACCESSOR(near_cliff_edge, obj.is_standing(*obj.lvl_) && cliff_edge_within(*obj.lvl_, obj.feet_x(), obj.feet_y(), obj.face_dir()*15));
-	CUSTOM_ACCESSOR(distance_to_cliff, ::distance_to_cliff(*obj.lvl_, obj.feet_x(), obj.feet_y(), obj.face_dir()));
+	CUSTOM_ACCESSOR(is_standing, variant(obj.is_standing(level::current())));
+	CUSTOM_ACCESSOR(near_cliff_edge, obj.is_standing(level::current()) && cliff_edge_within(level::current(), obj.feet_x(), obj.feet_y(), obj.face_dir()*15));
+	CUSTOM_ACCESSOR(distance_to_cliff, ::distance_to_cliff(level::current(), obj.feet_x(), obj.feet_y(), obj.face_dir()));
 	CUSTOM_ACCESSOR(slope_standing_on, -obj.slope_standing_on(6)*obj.face_dir());
-	CUSTOM_ACCESSOR(underwater, obj.lvl_->is_underwater(obj.solid_rect()));
+	CUSTOM_ACCESSOR(underwater, level::current().is_underwater(obj.solid_rect()));
 	CUSTOM_ACCESSOR(driver, obj.driver_ ? obj.driver_.get() : &obj);
 	CUSTOM_ACCESSOR(is_human, obj.is_human() ? 1 : 0);
 	SIMPLE_ACCESSOR(invincible);
@@ -1092,23 +1087,15 @@ struct custom_object::Accessor {
 #undef CUSTOM_ACCESSOR
 
 	static variant is_standing_on_platform(const custom_object& obj) {
-		if(!obj.lvl_) {
-			return variant();
-		}
-
 		collision_info info;
-		obj.is_standing(*obj.lvl_, &info);
+		obj.is_standing(level::current(), &info);
 		return variant(info.platform);
 	}
 
 	static variant standing_on(const custom_object& obj) {
-		if(!obj.lvl_) {
-			return variant();
-		}
-		
 		entity_ptr stand_on;
 		collision_info info;
-		obj.is_standing(*obj.lvl_, &info);
+		obj.is_standing(level::current(), &info);
 		return variant(info.collide_with.get());
 	}
 
@@ -1416,9 +1403,9 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		const unsigned int old_solid = solid_dimensions();
 		set_solid_dimensions(solid);
 		collision_info collide_info;
-		if(entity_collides(*lvl_, *this, MOVE_NONE, &collide_info)) {
+		if(entity_collides(level::current(), *this, MOVE_NONE, &collide_info)) {
 			set_solid_dimensions(old_solid);
-			ASSERT_EQ(entity_collides(*lvl_, *this, MOVE_NONE), false);
+			ASSERT_EQ(entity_collides(level::current(), *this, MOVE_NONE), false);
 
 			game_logic::map_formula_callable* callable(new game_logic::map_formula_callable(this));
 			callable->add("collide_with", variant(collide_info.collide_with.get()));
@@ -1451,8 +1438,27 @@ void custom_object::set_frame(const std::string& name)
 
 	set_pos(x() - diff_x, y() - diff_y);
 
-	//TODO: check if we are now colliding with something, and handle properly.
+	set_frame_no_adjustments(name);
 
+	frame_->play_sound(this);
+
+	if(entity_collides(level::current(), *this, MOVE_NONE)) {
+		game_logic::map_formula_callable* callable(new game_logic::map_formula_callable(this));
+		callable->add("previous_animation", variant(previous_animation));
+		game_logic::formula_callable_ptr callable_ptr(callable);
+		handle_event("change_animation_failure", callable);
+		handle_event("change_animation_failure_" + frame_name_, callable);
+		ASSERT_LOG(destroyed() || !entity_collides_with_level(level::current(), *this, MOVE_NONE),
+		  "Object '" << type_->id() << "' has different solid areas when changing from frame " << previous_animation << " to " << frame_name_ << " and doesn't handle it properly");
+	}
+
+	handle_event("enter_anim");
+	handle_event("enter_" + frame_name_ + "_anim");
+}
+
+void custom_object::set_frame_no_adjustments(const std::string& name)
+{
+	frame_ = &type_->get_frame(name);
 	frame_name_ = name;
 	time_in_frame_ = 0;
 	if(frame_->velocity_x() != INT_MIN) {
@@ -1470,21 +1476,6 @@ void custom_object::set_frame(const std::string& name)
 	if(frame_->accel_y() != INT_MIN) {
 		accel_y_ = frame_->accel_y();
 	}
-	
-	frame_->play_sound(this);
-
-	if(lvl_ && entity_collides(*lvl_, *this, MOVE_NONE)) {
-		game_logic::map_formula_callable* callable(new game_logic::map_formula_callable(this));
-		callable->add("previous_animation", variant(previous_animation));
-		game_logic::formula_callable_ptr callable_ptr(callable);
-		handle_event("change_animation_failure", callable);
-		handle_event("change_animation_failure_" + frame_name_, callable);
-		ASSERT_LOG(destroyed() || !entity_collides_with_level(*lvl_, *this, MOVE_NONE),
-		  "Object '" << type_->id() << "' has different solid areas when changing from frame " << previous_animation << " to " << frame_name_ << " and doesn't handle it properly");
-	}
-
-	handle_event("enter_anim");
-	handle_event("enter_" + frame_name_ + "_anim");
 }
 
 void custom_object::die()
@@ -1508,7 +1499,6 @@ void custom_object::hit_by(entity& e)
 void custom_object::move_to_standing(level& lvl)
 {
 	int start_y = y();
-	lvl_ = &lvl;
 	//descend from the initial-position (what the player was at in the prev level) until we're standing
 	for(int n = 0; n != 10000; ++n) {
 		if(is_standing(lvl)) {
@@ -1654,11 +1644,11 @@ bool custom_object::execute_command(const variant& var)
 	} else {
 		custom_object_command_callable* cmd = var.try_convert<custom_object_command_callable>();
 		if(cmd != NULL) {
-			cmd->execute(*lvl_, *this);
+			cmd->execute(level::current(), *this);
 		} else {
 			entity_command_callable* cmd = var.try_convert<entity_command_callable>();
 			if(cmd != NULL) {
-				cmd->execute(*lvl_, *this);
+				cmd->execute(level::current(), *this);
 			} else {
 				if(var.try_convert<swallow_object_command_callable>()) {
 					result = false;
@@ -1672,7 +1662,7 @@ bool custom_object::execute_command(const variant& var)
 
 int custom_object::slope_standing_on(int range) const
 {
-	if(lvl_ == NULL || !is_standing(*lvl_)) {
+	if(!is_standing(level::current())) {
 		return 0;
 	}
 
@@ -1681,32 +1671,32 @@ int custom_object::slope_standing_on(int range) const
 	int ypos = feet_y();
 
 
-	for(int n = 0; !lvl_->standable(xpos, ypos) && n != 10; ++n) {
+	for(int n = 0; !level::current().standable(xpos, ypos) && n != 10; ++n) {
 		++ypos;
 	}
 
 	if(range == 1) {
-		if(lvl_->standable(xpos + forward, ypos - 1) &&
-		   !lvl_->standable(xpos - forward, ypos)) {
+		if(level::current().standable(xpos + forward, ypos - 1) &&
+		   !level::current().standable(xpos - forward, ypos)) {
 			return 45;
 		}
 
-		if(!lvl_->standable(xpos + forward, ypos) &&
-		   lvl_->standable(xpos - forward, ypos - 1)) {
+		if(!level::current().standable(xpos + forward, ypos) &&
+		   level::current().standable(xpos - forward, ypos - 1)) {
 			return -45;
 		}
 
 		return 0;
 	} else {
-		if(!is_standing(*lvl_)) {
+		if(!is_standing(level::current())) {
 			return 0;
 		}
 
-		int y1 = find_ground_level(*lvl_, xpos + forward*range, ypos, range+1);
-		int y2 = find_ground_level(*lvl_, xpos - forward*range, ypos, range+1);
+		int y1 = find_ground_level(level::current(), xpos + forward*range, ypos, range+1);
+		int y2 = find_ground_level(level::current(), xpos - forward*range, ypos, range+1);
 		while((y1 == INT_MIN || y2 == INT_MIN) && range > 0) {
-			y1 = find_ground_level(*lvl_, xpos + forward*range, ypos, range+1);
-			y2 = find_ground_level(*lvl_, xpos - forward*range, ypos, range+1);
+			y1 = find_ground_level(level::current(), xpos + forward*range, ypos, range+1);
+			y2 = find_ground_level(level::current(), xpos - forward*range, ypos, range+1);
 			--range;
 		}
 

@@ -34,7 +34,7 @@ public:
 	virtual void draw() const;
 	virtual void draw_group() const;
 	virtual void process(level& lvl);
-	void set_level(level& lvl) { lvl_ = &lvl; }
+	void set_level(level& lvl) { }
 
 	virtual int zorder() const;
 
@@ -62,6 +62,10 @@ public:
 	virtual const frame& current_frame() const { return *frame_; }
 
 	void set_frame(const std::string& name);
+
+	//bare setting of the frame without adjusting position/checking solidity
+	//etc etc.
+	void set_frame_no_adjustments(const std::string& name);
 	void die();
 	bool dies_on_inactive() const;
 	bool always_active() const;
@@ -168,8 +172,6 @@ private:
 	int sound_volume_;	//see sound.cpp; valid values are 0-128, note that this affects all sounds spawned by this object
 
 	game_logic::const_formula_ptr next_animation_formula_;
-
-	level* lvl_;
 
 	game_logic::map_formula_callable_ptr vars_;
 	game_logic::map_formula_callable_ptr tmp_vars_;

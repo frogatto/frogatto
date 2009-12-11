@@ -30,6 +30,21 @@
 #include "wml_utils.hpp"
 #include "color_utils.hpp"
 
+namespace {
+level* current_level;
+}
+
+level& level::current()
+{
+	ASSERT_LOG(current_level, "Tried to query current level when there is none");
+	return *current_level;
+}
+
+void level::set_as_current_level()
+{
+	current_level = this;
+}
+
 level::level(const std::string& level_cfg)
 	: id_(level_cfg), highlight_layer_(INT_MIN),
 	  entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
