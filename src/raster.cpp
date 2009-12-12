@@ -42,8 +42,77 @@ std::vector<GLfloat>& global_texcoords_array()
 	static std::vector<GLfloat> v;
 	return v;
 }
-
+	
+#ifdef SDL_VIDEO_OPENGL_ES
+#define glOrtho glOrthof
+#endif
+	
 void prepare_raster()
+{
+	int real_w, real_h;
+	bool rotated;
+	
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+	real_w = 320;
+	real_h = 480;
+	rotated = true;
+#else
+	const SDL_Surface* fb = SDL_GetVideoSurface();
+	if(fb == NULL) {
+		std::cerr << "Framebuffer was null in prepare_raster\n";
+		return;
+	}
+	real_w = fb->w;
+	real_h = fb->h;
+	rotated = false;
+#endif
+	
+	int screen_w;
+	int screen_h;
+	if(rotated) {
+		screen_w = real_h;
+		screen_h = real_w;
+	} else {
+		screen_w = real_w;
+		screen_h = real_h;
+	}
+	
+	// screen_width() must return screen_w, screen_height() must return screen_h
+	// if these are used by the game drawing functions... If not, then the amount
+	// of blocks need to be changed. So there needs to be a 'screen rotated' setting
+	// somewhere and those functions need to take that into account.
+	
+	glViewport(0,0,real_w,real_h);
+	glClearColor(0.0,0.0,0.0,0.0);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glShadeModel(GL_FLAT);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	
+	// DEBUG:
+	
+	glOrtho(0, real_w, real_h, 0, -1.0, 1.0);
+	
+	if(rotated) {
+		// Rotate 90 degrees ccw, then move real_h pixels down
+		// This has to be in opposite order since A(); B(); means A(B(x))
+		glTranslatef(real_w, 0.0f, 0.0f);
+		glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
+		glTranslatef(0.0f, 0.5f, 0.0f);
+		glScalef(0.5f, 0.5f, 1.0f);
+	}
+	
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_LIGHTING);
+	glDisable(GL_LIGHT0);
+	
+	glColor4f(1.0, 1.0, 1.0, 1.0);
+}
+
+/*void prepare_raster()
 {
 	#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 	int w = 320;
@@ -64,9 +133,13 @@ void prepare_raster()
 	glShadeModel(GL_FLAT);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	#ifdef SDL_VIDEO_OPENGL_ES
-	#define glOrtho glOrthof
-	#endif
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+	glScalef(0.25f, 0.25f, 1.0f);
+	glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
+#endif
+#ifdef SDL_VIDEO_OPENGL_ES
+#define glOrtho glOrthof
+#endif
 	glOrtho(0,screen_width(),screen_height(),0,-1.0,1.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -76,7 +149,7 @@ void prepare_raster()
 	glDisable(GL_LIGHT0);
 
 	glColor4f(1.0, 1.0, 1.0, 1.0);
-}
+}*/
 
 namespace {
 struct draw_detection_rect {

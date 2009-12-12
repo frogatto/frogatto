@@ -197,10 +197,6 @@ extern "C" int main(int argc, char** argv)
 			}
 		}
 	}
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-	preferences::set_actual_screen_width(320);
-	preferences::set_actual_screen_height(480);
-#endif
 
 	srand(time(NULL));
 
@@ -305,7 +301,7 @@ extern "C" int main(int argc, char** argv)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-	iphone_test();
+	//iphone_test();
 #endif
 
 #ifndef SDL_VIDEO_OPENGL_ES
