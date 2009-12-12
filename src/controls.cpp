@@ -18,6 +18,7 @@
 #include "foreach.hpp"
 #include "joystick.hpp"
 #include "key.hpp"
+#include "iphone_controls.hpp"
 
 namespace controls {
 namespace {
@@ -99,12 +100,12 @@ void read_local_controls()
 	}
 
 	unsigned char state = 0;
-	if(keyboard()[SDLK_UP] || joystick::up()) { state |= (1 << CONTROL_UP); }
-	if(keyboard()[SDLK_DOWN] || joystick::down()) { state |= (1 << CONTROL_DOWN); }
-	if(keyboard()[SDLK_LEFT] || joystick::left()) { state |= (1 << CONTROL_LEFT); }
-	if(keyboard()[SDLK_RIGHT] || joystick::right()) { state |= (1 << CONTROL_RIGHT); }
-	if(keyboard()[SDLK_s] || joystick::button(0) || joystick::button(2)) { state |= (1 << CONTROL_ATTACK); }
-	if(keyboard()[SDLK_a] || joystick::button(1) || joystick::button(3)) { state |= (1 << CONTROL_JUMP); }
+	if(keyboard()[SDLK_UP] || joystick::up() || iphone_controls::up()) { state |= (1 << CONTROL_UP); }
+	if(keyboard()[SDLK_DOWN] || joystick::down() || iphone_controls::down()) { state |= (1 << CONTROL_DOWN); }
+	if(keyboard()[SDLK_LEFT] || joystick::left() || iphone_controls::left()) { state |= (1 << CONTROL_LEFT); }
+	if(keyboard()[SDLK_RIGHT] || joystick::right() || iphone_controls::right()) { state |= (1 << CONTROL_RIGHT); }
+	if(keyboard()[SDLK_s] || joystick::button(0) || joystick::button(2) || iphone_controls::attack()) { state |= (1 << CONTROL_ATTACK); }
+	if(keyboard()[SDLK_a] || joystick::button(1) || joystick::button(3) || iphone_controls::jump()) { state |= (1 << CONTROL_JUMP); }
 
 	controls[local_player].push_back(state);
 	highest_confirmed[local_player]++;
