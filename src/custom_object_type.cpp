@@ -272,8 +272,10 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	}
 
 	if(node->has_attr("tags")) {
-		tags_ = util::split(node->attr("tags"));
-		std::sort(tags_.begin(), tags_.end());
+		const std::vector<std::string> tags = util::split(node->attr("tags"));
+		foreach(const std::string& tag, tags) {
+			tags_[tag] = variant(1);
+		}
 	}
 
 	FOREACH_WML_CHILD(properties_node, node, "properties") {

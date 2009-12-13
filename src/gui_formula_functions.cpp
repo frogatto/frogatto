@@ -14,6 +14,7 @@
 #include "frame.hpp"
 #include "gui_formula_functions.hpp"
 #include "level.hpp"
+#include "raster.hpp"
 #include "wml_node.hpp"
 #include "wml_parser.hpp"
 #include "wml_utils.hpp"
@@ -88,6 +89,21 @@ private:
 	}
 };
 
+class color_function : public function_expression {
+public:
+	explicit color_function(const args_list& args)
+	  : function_expression("color", args, 4, 4)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new gui_command(boost::bind(&gui_algorithm::color, _1,
+		         args()[0]->evaluate(variables).as_int(),
+		         args()[1]->evaluate(variables).as_int(),
+		         args()[2]->evaluate(variables).as_int(),
+		         args()[3]->evaluate(variables).as_int())));
+	}
+};
+
 class gui_command_function_symbol_table : public function_symbol_table
 {
 public:
@@ -104,6 +120,8 @@ public:
 			return expression_ptr(new draw_animation_function(args));
 		} else if(fn == "draw_number") {
 			return expression_ptr(new draw_number_function(args));
+		} else if(fn == "color") {
+			return expression_ptr(new color_function(args));
 		}
 
 		return function_symbol_table::create_function(fn, args);
@@ -155,6 +173,8 @@ void gui_algorithm::draw(const level& lvl) {
 		variant result = draw_formula_->execute(*this);
 		execute_command(result);
 	}
+
+	glColor4ub(255, 255, 255, 255);
 }
 
 void gui_algorithm::execute_command(variant v) {
@@ -201,6 +221,12 @@ void gui_algorithm::draw_animation(const std::string& object_name, const std::st
 	}
 }
 
+void gui_algorithm::color(unsigned char r, unsigned char g, unsigned char b, unsigned char a) const
+{
+	glColor4ub(r, g, b, a);
+}
+
+
 variant gui_algorithm::get_value(const std::string& key) const
 {
 	if(key == "level") {
@@ -209,6 +235,10 @@ variant gui_algorithm::get_value(const std::string& key) const
 		return variant(object_.get());
 	} else if(key == "cycle") {
 		return variant(cycle_);
+	} else if(key == "screen_width") {
+		return variant(graphics::screen_width());
+	} else if(key == "screen_height") {
+		return variant(graphics::screen_height());
 	} else {
 		return variant();
 	}

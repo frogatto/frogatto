@@ -78,6 +78,10 @@ map_formula_callable::map_formula_callable(
     const formula_callable* fallback) : formula_callable(false), fallback_(fallback)
 {}
 
+map_formula_callable::map_formula_callable(
+   const std::map<std::string, variant>& values) : formula_callable(false), fallback_(NULL), values_(values)
+{}
+
 map_formula_callable& map_formula_callable::add(const std::string& key,
                                                 const variant& value)
 {

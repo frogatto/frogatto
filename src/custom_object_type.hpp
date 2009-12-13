@@ -99,7 +99,7 @@ public:
 	bool has_feet() const { return has_feet_; }
 
 	const std::map<std::string, variant>& variables() const { return variables_; }
-	const std::vector<std::string>& tags() const { return tags_; }
+	const std::map<std::string, variant>& tags() const { return tags_; }
 
 	const std::map<std::string, game_logic::const_formula_ptr>& properties() const { return properties_; }
 
@@ -166,7 +166,7 @@ private:
 	bool has_feet_;
 
 	std::map<std::string, variant> variables_;
-	std::vector<std::string> tags_;
+	std::map<std::string, variant> tags_;
 
 	std::map<std::string, game_logic::const_formula_ptr> properties_;
 

@@ -26,6 +26,7 @@ public:
 	void draw(const level& lvl);
 
 	void draw_animation(const std::string& object_name, const std::string& anim, int x, int y, int cycle) const;
+	void color(unsigned char r, unsigned char g, unsigned char b, unsigned char a) const;
 
 private:
 	gui_algorithm(const gui_algorithm&);

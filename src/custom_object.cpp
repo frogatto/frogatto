@@ -72,10 +72,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 	if(tags_node) {
 		tags_ = new game_logic::map_formula_callable(node->get_child("tags"));
 	} else {
-		tags_ = new game_logic::map_formula_callable;
-		foreach(const std::string& tag, type_->tags()) {
-			tags_->add(tag, variant(1));
-		}
+		tags_ = new game_logic::map_formula_callable(type_->tags());
 	}
 
 	for(std::map<std::string, variant>::const_iterator i = type_->variables().begin(); i != type_->variables().end(); ++i) {
@@ -139,16 +136,12 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	sound_volume_(128),
 	vars_(new game_logic::map_formula_callable),
 	tmp_vars_(new game_logic::map_formula_callable),
-	tags_(new game_logic::map_formula_callable),
+	tags_(new game_logic::map_formula_callable(type_->tags())),
 	last_hit_by_anim_(0),
 	cycle_(0),
 	loaded_(false), fall_through_platforms_(0),
 	shader_(0)
 {
-	foreach(const std::string& tag, type_->tags()) {
-		tags_->add(tag, variant(1));
-	}
-
 	set_solid_dimensions(type_->solid_dimensions());
 
 	for(std::map<std::string, variant>::const_iterator i = type_->variables().begin(); i != type_->variables().end(); ++i) {
@@ -286,9 +279,11 @@ wml::node_ptr custom_object::write() const
 		res->add_child(vars);
 	}
 
-	wml::node_ptr tags(new wml::node("tags"));
-	tags_->write(tags);
-	res->add_child(tags);
+	if(tags_->values() != type_->tags()) {
+		wml::node_ptr tags(new wml::node("tags"));
+		tags_->write(tags);
+		res->add_child(tags);
+	}
 
 	if(custom_type_) {
 		res->add_child(wml::deep_copy(custom_type_));
