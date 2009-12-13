@@ -126,12 +126,16 @@ namespace {
 			if (!std::strstr(supported, "NV_fragment_program2") ||
 				!std::strstr(supported, "NV_vertex_program3")) {
 					npot = false;
-				}
-			} else if (std::strstr(vendor, "ATI Technologies")) {
+			}
+		} else if (std::strstr(vendor, "ATI Technologies")) {
 					// TODO: Investigation note: my ATI card works fine for npot textures as long
 					// as mipmapping is enabled. otherwise it runs slowly. Work out why. --David
 				//if (!std::strstr(supported, "GL_ARB_texture_non_power_of_two"))
 					npot = false;
+		} else if(std::strstr(vendor, "Apple Computer")) {
+			if (!std::strstr(supported, "GL_ARB_texture_non_power_of_two")) {
+				npot = false;
+			}
 		}
 	}
 	if(!npot) {
