@@ -16,7 +16,7 @@ namespace preferences {
 		
 		int actual_screen_width_ = 320;
 		int actual_screen_height_ = 480;
-		
+
 		bool screen_rotated_ = true;
 #else
 		int virtual_screen_width_ = 800;
@@ -29,6 +29,13 @@ namespace preferences {
 #endif
 		
 		bool force_no_npot_textures_ = false;
+	}
+
+	int xypos_draw_mask = actual_screen_width_ < virtual_screen_width_ ? ~1 : ~0;
+	namespace {
+	void recalculate_draw_mask() {
+		xypos_draw_mask = actual_screen_width_ < virtual_screen_width_ ? ~1 : ~0;
+	}
 	}
 	
 	bool no_sound() {
@@ -59,6 +66,7 @@ namespace preferences {
 	{
 		virtual_screen_width_ = (virtual_screen_height_*16)/9;
 		actual_screen_width_ = (actual_screen_height_*16)/9;
+		recalculate_draw_mask();
 	}
 	
 	int virtual_screen_width()
@@ -84,6 +92,7 @@ namespace preferences {
 	void set_actual_screen_width(int width)
 	{
 		actual_screen_width_ = width;
+		recalculate_draw_mask();
 	}
 	
 	void set_actual_screen_height(int height)

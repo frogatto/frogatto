@@ -16,6 +16,7 @@
 #include "level.hpp"
 #include "message_dialog.hpp"
 #include "player_info.hpp"
+#include "preferences.hpp"
 #include "raster.hpp"
 #include "speech_dialog.hpp"
 #include "texture.hpp"
@@ -190,11 +191,14 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 				pos.shake_y_vel += (-1 * pos.shake_y_offset/3 - pos.shake_y_vel/15);
 			}
 		}
-
-		glTranslatef(-pos.x/100, -pos.y/100, 0);
-		lvl.draw_background(pos.x/100, pos.y/100, camera_rotation);
 	}
-	lvl.draw(pos.x/100, pos.y/100, graphics::screen_width(), drawable_height());
+
+	const int xscroll = (pos.x/100)&preferences::xypos_draw_mask;
+	const int yscroll = (pos.y/100)&preferences::xypos_draw_mask;
+	glTranslatef(-xscroll, -yscroll, 0);
+	lvl.draw_background(xscroll, yscroll, camera_rotation);
+
+	lvl.draw(xscroll, yscroll, graphics::screen_width(), drawable_height());
 	graphics::clear_raster_distortion();
 	glPopMatrix();
 

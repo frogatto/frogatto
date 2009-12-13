@@ -158,6 +158,9 @@ namespace graphics
 		if(!tex.valid()) {
 			return;
 		}
+
+		x &= preferences::xypos_draw_mask;
+		y &= preferences::xypos_draw_mask;
 		
 		int h = tex.height();
 		int w = tex.width();
@@ -379,6 +382,9 @@ namespace graphics
 	
 	void blit_texture(const texture& tex, int x, int y, int w, int h, GLfloat rotate, GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2)
 	{
+		x &= preferences::xypos_draw_mask;
+		y &= preferences::xypos_draw_mask;
+
 		if(w < 0) {
 			std::swap(x1, x2);
 			w *= -1;

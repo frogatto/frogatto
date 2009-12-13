@@ -203,7 +203,7 @@ void frame::draw(int x, int y, bool face_right, bool upside_down, int time, int 
 {
 	GLfloat rect[4];
 	get_rect_in_texture(time, &rect[0]);
-	
+
 	//the last 4 params are the rectangle of the single, specific frame
 	graphics::blit_texture(texture_, x, y, width()*(face_right ? 1 : -1), height()*(upside_down ? -1 : 1), rotate + (face_right ? rotate_ : -rotate_),
 	                       rect[0], rect[1], rect[2], rect[3]);

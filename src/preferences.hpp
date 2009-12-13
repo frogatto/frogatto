@@ -18,6 +18,11 @@ namespace preferences {
 	
 	int actual_screen_width();
 	int actual_screen_height();
+
+	//this is the mask which we apply to all x,y values before drawing, to
+	//avoid drawing things at "half pixels" when the actual screen dimensions
+	//are lower than the virtual screen dimensions.
+	extern int xypos_draw_mask;
 	
 	void set_actual_screen_width(int width);
 	void set_actual_screen_height(int height);
