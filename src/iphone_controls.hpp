@@ -13,15 +13,8 @@ public:
 	static bool attack();
 	static bool jump();
 	
-	static void process_event (const SDL_Event& event);
-	
 private:
-	/*static bool up_;
-	static bool down_;
-	static bool left_;
-	static bool right_;
-	static bool attack_;
-	static bool jump_;*/
+	static bool hittest_button (const SDL_Rect& rect, int button_x, int button_y);
 };
 
 #endif
