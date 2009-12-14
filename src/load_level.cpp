@@ -40,6 +40,8 @@ load_level_manager::~load_level_manager()
 
 void preload_level(const std::string& lvl)
 {
+	//--TODO: Currently multi-threaded pre-loading causes weird crashes.
+	//--      need to fix this!!
 		/*
 	assert(!lvl.empty());
 	threading::lock lck(levels_loading_mutex);
