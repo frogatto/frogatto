@@ -13,6 +13,7 @@
 #include "draw_number.hpp"
 #include "draw_scene.hpp"
 #include "font.hpp"
+#include "graphical_font.hpp"
 #include "level.hpp"
 #include "message_dialog.hpp"
 #include "player_info.hpp"
@@ -209,16 +210,20 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 
 void draw_fps(const level& lvl, const performance_data& data)
 {
+	const_graphical_font_ptr font(graphical_font::get("door_label"));
+	if(!font) {
+		return;
+	}
 	std::ostringstream s;
 	s << data.fps << "fps; " << (data.draw/10) << "% draw; " << (data.process/10) << "% process; " << (data.delay/10) << "% idle; " << lvl.num_active_chars() << " objects; " << 50*(data.cycle/50) << " cycles";
-	graphics::texture t(font::render_text(s.str(), graphics::color_white(), 14));
-	graphics::blit_texture(t, 10, 60);
+
+	const rect area = font->draw(10, 60, s.str());
 
 	if(controls::num_players() > 1) {
 		//draw networking stats
 		std::ostringstream s;
 		s << controls::packets_received() << " packets received; " << controls::num_errors() << " errors; " << controls::cycles_behind() << " behind; " << controls::their_highest_confirmed() << " remote cycles " << controls::last_packet_size() << " packet";
-		graphics::texture t(font::render_text(s.str(), graphics::color_white(), 14));
-		graphics::blit_texture(t, 10, 24);
+
+		font->draw(10, area.y2() + 5, s.str());
 	}
 }
