@@ -8,6 +8,7 @@
 #include "boost/shared_ptr.hpp"
 
 #include "formula.hpp"
+#include "formula_callable.hpp"
 #include "formula_function.hpp"
 #include "frame.hpp"
 #include "particle_system.hpp"
@@ -99,6 +100,7 @@ public:
 	bool has_feet() const { return has_feet_; }
 
 	const std::map<std::string, variant>& variables() const { return variables_; }
+	game_logic::const_map_formula_callable_ptr consts() const { return consts_; }
 	const std::map<std::string, variant>& tags() const { return tags_; }
 
 	const std::map<std::string, game_logic::const_formula_ptr>& properties() const { return properties_; }
@@ -166,6 +168,7 @@ private:
 	bool has_feet_;
 
 	std::map<std::string, variant> variables_;
+	game_logic::map_formula_callable_ptr consts_;
 	std::map<std::string, variant> tags_;
 
 	std::map<std::string, game_logic::const_formula_ptr> properties_;

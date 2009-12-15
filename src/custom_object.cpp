@@ -1012,6 +1012,7 @@ std::map<std::string, object_accessor> object_accessor_map;
 struct custom_object::Accessor {
 #define CUSTOM_ACCESSOR(name, expression) static variant name(const custom_object& obj) { return variant(expression); }
 #define SIMPLE_ACCESSOR(name) static variant name(const custom_object& obj) { return variant(obj.name##_); }
+	CUSTOM_ACCESSOR(consts, obj.type_->consts().get())
 	CUSTOM_ACCESSOR(type, obj.type_->id())
 	CUSTOM_ACCESSOR(time_in_animation, obj.time_in_frame_)
 	CUSTOM_ACCESSOR(level, &level::current())
@@ -1151,6 +1152,7 @@ struct custom_object::Accessor {
 
 	static void init() {
 #define ACCESSOR(name) object_accessor_map.insert(std::pair<std::string,object_accessor>(#name, name))
+		ACCESSOR(consts);
 		ACCESSOR(type);
 		ACCESSOR(time_in_animation);
 		ACCESSOR(level);
@@ -1229,9 +1231,6 @@ void custom_object::init()
 
 variant custom_object::get_value(const std::string& key) const
 {
-	if(type_->id() == "black_ant") {
-		std::cerr << "GET VALUE: '" << key << "'\n";
-	}
 	std::map<std::string, game_logic::const_formula_ptr>::const_iterator property_itor = type_->properties().find(key);
 	if(property_itor != type_->properties().end() && property_itor->second) {
 		std::cerr << "FOUND PROPERTY: '" << property_itor->second->str() << "'\n";

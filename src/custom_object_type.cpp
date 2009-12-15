@@ -63,6 +63,17 @@ void merge_into_prototype(wml::node_ptr prototype_node, wml::node_ptr node)
 		}
 	}
 
+	//now go over the prototype node and add any animations that don't
+	//appear in the child.
+	FOREACH_WML_CHILD(anim_node, prototype_node, "animation") {
+		if(wml::find_child_by_attribute(node, "animation", "id", anim_node->attr("id"))) {
+			//it's already in the child, so don't add it.
+			continue;
+		}
+
+		animation_nodes.push_back(wml::deep_copy(anim_node));
+	}
+
 	prototype_node->clear_children("animation");
 	foreach(wml::node_ptr node, animation_nodes) {
 		prototype_node->add_child(node);
@@ -77,10 +88,10 @@ void merge_into_prototype(wml::node_ptr prototype_node, wml::node_ptr node)
 			continue;
 		}
 
-		if(name == "vars") {
+		if(name == "vars" || name == "consts") {
 			//we like to merge in vars nodes into one vars definition
 			//if both the object and prototype have vars definitions.
-			wml::node_ptr target = prototype_node->get_child("vars");
+			wml::node_ptr target = prototype_node->get_child(name);
 			if(target) {
 				wml::merge_over(*i, target);
 				continue;
@@ -268,6 +279,16 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 			variant var;
 			var.serialize_from_string(v->second);
 			variables_[v->first] = var;
+		}
+	}
+
+	consts_.reset(new game_logic::map_formula_callable);
+	wml::const_node_ptr consts = node->get_child("consts");
+	if(consts) {
+		for(wml::node::const_attr_iterator v = consts->begin_attr(); v != consts->end_attr(); ++v) {
+			variant var;
+			var.serialize_from_string(v->second);
+			consts_->add(v->first, var);
 		}
 	}
 
