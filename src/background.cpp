@@ -144,17 +144,17 @@ void background::draw(double xpos, double ypos, int rotation, int cycle) const
 	
 	x = std::min<double>(1.0, std::max<double>(0.0, x));
 	y = std::min<double>(1.0, std::max<double>(0.0, y));
-	const GLfloat top_col[] = {
-		top_.r/255.0,
-		top_.g/255.0,
-		top_.b/255.0,
-		1.0
+	const GLubyte top_col[] = {
+		top_.r,
+		top_.g,
+		top_.b,
+		255
 	};
-	const GLfloat bot_col[] = {
-		bot_.r/255.0,
-		bot_.g/255.0,
-		bot_.b/255.0,
-		1.0
+	const GLubyte bot_col[] = {
+		bot_.r,
+		bot_.g,
+		bot_.b,
+		255
 	};
 
 	glShadeModel(GL_SMOOTH);
@@ -166,18 +166,18 @@ void background::draw(double xpos, double ypos, int rotation, int cycle) const
 		xpos, ypos + height_,
 		xpos + graphics::screen_width(), ypos + height_
 	};
-	GLfloat carray[4*4]; //4 floats per color, 4 vertices/colors
+	GLubyte carray[4*4]; //4 floats per color, 4 vertices/colors
 	for (int i = 0; i < 8; i++) carray[i] = top_col[i%4];
 	for (int i = 0; i < 8; i++) carray[i+8] = bot_col[i%4];
 	glEnableClientState(GL_COLOR_ARRAY);
 	glVertexPointer(2, GL_FLOAT, 0, varray);
-	glColorPointer(4, GL_FLOAT, 0, carray);
+	glColorPointer(4, GL_UNSIGNED_BYTE, 0, carray);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glDisableClientState(GL_COLOR_ARRAY);
 
 	if(rotation) {
 		const int border = 100;
-		glColor4f(top_col[0], top_col[1], top_col[2], 1.0);
+		glColor4ub(top_col[0], top_col[1], top_col[2], 255);
 		
 		GLfloat varray2[] = {
 			-border, -border,
@@ -196,7 +196,7 @@ void background::draw(double xpos, double ypos, int rotation, int cycle) const
 		};
 		glEnableClientState(GL_COLOR_ARRAY);
 		glVertexPointer(2, GL_FLOAT, 0, varray3);
-		glColorPointer(4, GL_FLOAT, 0, carray); //same colors from further up in the function
+		glColorPointer(4, GL_UNSIGNED_BYTE, 0, carray); //same colors from further up in the function
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		glDisableClientState(GL_COLOR_ARRAY);
 	}
