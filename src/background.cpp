@@ -159,6 +159,7 @@ void background::draw(double xpos, double ypos, int rotation, int cycle) const
 
 	glShadeModel(GL_SMOOTH);
 	glDisable(GL_TEXTURE_2D);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glPushMatrix();
 	GLfloat varray[] = {
 		xpos, ypos,
@@ -203,6 +204,7 @@ void background::draw(double xpos, double ypos, int rotation, int cycle) const
 
 	glColor4f(1.0,1.0,1.0,1.0);
 	glPopMatrix();
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);
 	glShadeModel(GL_FLAT);
 
