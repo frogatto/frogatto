@@ -655,6 +655,7 @@ void editor::edit_level()
 
 	glEnable(GL_SMOOTH);
 	glEnable(GL_BLEND);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -1840,6 +1841,7 @@ void editor::draw() const
 	std::vector<GLfloat>& varray = graphics::global_vertex_array();
 	if(property_dialog_ && property_dialog_->get_entity() && property_dialog_->get_entity()->editor_info()) {
 		glDisable(GL_TEXTURE_2D);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 		const editor_variable_info* selected_var = variable_info_selected(property_dialog_->get_entity(), xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
 		foreach(const editor_variable_info& var, property_dialog_->get_entity()->editor_info()->vars()) {
@@ -1872,6 +1874,7 @@ void editor::draw() const
 			glVertexPointer(2, GL_FLOAT, 0, &varray.front());
 			glDrawArrays(GL_LINES, 0, varray.size()/2);
 		}
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
 	}
 
@@ -1885,6 +1888,7 @@ void editor::draw() const
 
 	//draw grid
 	glDisable(GL_TEXTURE_2D);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	varray.clear();
 	glColor4ub(255, 255, 255, 64);
 	for(int x = TileSize - (xpos_/zoom_)%TileSize; x < graphics::screen_width(); x += 32/zoom_) {
@@ -1975,7 +1979,8 @@ void editor::draw() const
 			draw_selection(diffx*TileSize, diffy*TileSize);
 		}
 	}
-
+	
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);
 
 	ASSERT_INDEX_INTO_VECTOR(cur_object_, enemy_types);

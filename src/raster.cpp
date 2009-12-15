@@ -438,6 +438,7 @@ namespace graphics
 				   unsigned char alpha)
 	{
 		glDisable(GL_TEXTURE_2D);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glColor4ub(color.r,color.g,color.b,alpha);
 		GLfloat varray[] = {
 			r.x, r.y,
@@ -449,12 +450,14 @@ namespace graphics
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		//glRecti(r.x,r.y,r.x+r.w,r.y+r.h);
 		glColor4ub(255, 255, 255, 255);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
 	}
 	
 	void draw_rect(const rect& r, const graphics::color& color)
 	{
 		glDisable(GL_TEXTURE_2D);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glColor4ub(color.r(),color.g(),color.b(),color.a());
 		GLfloat varray[] = {
 			r.x(), r.y(),
@@ -466,6 +469,7 @@ namespace graphics
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		//glRecti(r.x(),r.y(),r.x()+r.w(),r.y()+r.h());
 		glColor4ub(255, 255, 255, 255);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
 	}
 	
@@ -474,6 +478,7 @@ namespace graphics
 						  unsigned char alpha) {
 		
 		glDisable(GL_TEXTURE_2D);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glColor4ub(color.r, color.g, color.b, alpha);
 		GLfloat varray[] = {
 			r.x, r.y,
@@ -484,6 +489,7 @@ namespace graphics
 		glVertexPointer(2, GL_FLOAT, 0, varray);
 		glDrawArrays(GL_LINE_LOOP, 0, sizeof(varray)/sizeof(GLfloat)/2);
 		glColor4ub(255, 255, 255, 255);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
 	}
 	

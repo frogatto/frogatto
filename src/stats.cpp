@@ -238,10 +238,12 @@ void die_record::draw() const
 {
 	glPointSize(5);
 	glDisable(GL_TEXTURE_2D);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glColor4ub(255, 0, 0, 255);
 	GLfloat point[] = {p_.x, p_.y};
 	glVertexPointer(2, GL_FLOAT, 0, point);
 	glDrawArrays(GL_POINTS, 0, 1);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);
 	glColor4ub(255, 255, 255, 255);
 }
@@ -260,10 +262,12 @@ void quit_record::draw() const
 {
 	glPointSize(5);
 	glDisable(GL_TEXTURE_2D);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glColor4ub(255, 255, 0, 255);
 	GLfloat point[] = {p_.x, p_.y};
 	glVertexPointer(2, GL_FLOAT, 0, point);
 	glDrawArrays(GL_POINTS, 0, 1);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);
 	glColor4ub(255, 255, 255, 255);
 }
@@ -282,10 +286,12 @@ wml::node_ptr player_move_record::write() const
 void player_move_record::draw() const
 {
 	glDisable(GL_TEXTURE_2D);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glColor4ub(0, 0, 255, 128);
 	GLfloat varray[] = {src_.x, src_.y, dst_.x, dst_.y};
 	glVertexPointer(2, GL_FLOAT, 0, varray);
 	glDrawArrays(GL_LINES, 0, 4);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);
 	glColor4ub(255, 255, 255, 255);
 }

@@ -132,6 +132,7 @@ void iphone_test ()
 		graphics::blit_texture(img, 0, 0, 200, 100);
 		std::cerr << gluErrorString(glGetError()) << "~1\n";
 		glDisable(GL_TEXTURE_2D);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		SDL_Rect rect = {10, 10, 50, 50};
 		glColor4f(1.0, 0.5, 0.0, 1.0);
 		GLfloat vertices[] = {
@@ -142,6 +143,7 @@ void iphone_test ()
 		};
 		glVertexPointer(2, GL_FLOAT, 0, vertices);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
 		SDL_GL_SwapBuffers();
 		SDL_Delay(500);

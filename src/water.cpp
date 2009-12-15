@@ -175,6 +175,7 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 		if(end_x > begin_x+1) {
 			draw_with_waves = true;
 			glDisable(GL_TEXTURE_2D);
+			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 			glColor4ub(91, 169, 143, 153);
 			std::vector<GLfloat>& varray = graphics::global_vertex_array();
@@ -229,6 +230,7 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	if(draw_with_waves == false) {
 		
 		glDisable(GL_TEXTURE_2D);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		
 		GLfloat vertices[] = {
 			waterline_rect.x, waterline_rect.y, //shallow water colored
@@ -267,6 +269,7 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	}
 
 	glColor4f(1.0, 1.0, 1.0, 1.0);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);
 
 	glDisable(GL_LINE_SMOOTH);

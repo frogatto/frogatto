@@ -50,6 +50,7 @@ void weather_particle_system::process(const level& lvl, const entity& e)
 void weather_particle_system::draw(const rect& area, const entity& e) const
 {
 	glDisable(GL_TEXTURE_2D);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glLineWidth(info_.line_width);
 	glColor4f(info_.rgba[0]/255.0, info_.rgba[1]/255.0, info_.rgba[2]/255.0, info_.rgba[3]/255.0);
 	int offset_x = area.x() - area.x()%info_.repeat_period;
@@ -79,6 +80,7 @@ void weather_particle_system::draw(const rect& area, const entity& e) const
 	glVertexPointer(2, GL_FLOAT, 0, &vertices.front());
 	glDrawArrays(GL_LINES, 0, vertices.size()/2);
 	//glDisable(GL_SMOOTH);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 }
