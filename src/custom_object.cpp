@@ -412,21 +412,6 @@ void custom_object::draw_group() const
 	}
 }
 
-namespace {
-class collide_with_callable : public game_logic::formula_callable {
-	entity* e_;
-public:
-	explicit collide_with_callable(entity* e) : game_logic::formula_callable(false), e_(e) {}
-	variant get_value(const std::string& key) const {
-		if(key == "collide_with") {
-			return variant(e_);
-		} else {
-			return variant();
-		}
-	}
-};
-}
-
 void custom_object::process(level& lvl)
 {
 	if(type_->use_image_for_collisions()) {
@@ -624,7 +609,19 @@ void custom_object::process(level& lvl)
 
 	if(collide) {
 		if(effective_velocity_y < 0 || !started_standing) {
-			handle_event(effective_velocity_y < 0 ? "collide_head" : "collide_feet");
+
+			game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
+			variant v(callable);
+	
+			callable->add("area", variant(*collide_info.area_id));
+
+			if(collide_info.collide_with) {
+				callable->add("collide_with", variant(collide_info.collide_with.get()));
+				callable->add("collide_with_area", variant(*collide_info.collide_with_area_id));
+
+			}
+
+			handle_event(effective_velocity_y < 0 ? "collide_head" : "collide_feet", callable);
 		}
 
 		if(collide_info.damage || jump_on_info.damage) {
@@ -707,7 +704,19 @@ void custom_object::process(level& lvl)
 	}
 
 	if(collide) {
-		handle_event("collide");
+
+		game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
+		variant v(callable);
+
+		callable->add("area", variant(*collide_info.area_id));
+
+		if(collide_info.collide_with) {
+			callable->add("collide_with", variant(collide_info.collide_with.get()));
+			callable->add("collide_with_area", variant(*collide_info.collide_with_area_id));
+
+		}
+
+		handle_event("collide", callable);
 		if(collide_info.damage) {
 			game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
 			callable->add("damage", variant(collide_info.damage));
