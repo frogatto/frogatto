@@ -157,25 +157,48 @@ void background::draw(double xpos, double ypos, int rotation, int cycle) const
 		255
 	};
 
+	
+	//The following takes the two background colors, and makes them seemingly extend infinitely far off the top and bottom of the screen.
 	glShadeModel(GL_SMOOTH);
 	glDisable(GL_TEXTURE_2D);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glPushMatrix();
+	
+	//draw from the top of the screen down to a certain height in the level, but no further.
+	//This is the upper color; often the sky
 	GLfloat varray[] = {
-		xpos, ypos,
-		xpos + graphics::screen_width(), ypos,
-		xpos, ypos + height_,
-		xpos + graphics::screen_width(), ypos + height_
+	xpos, ypos,
+	xpos + graphics::screen_width(), ypos,
+		xpos, std::max(ypos, static_cast<double>(height_)),
+	xpos + graphics::screen_width(), std::max(ypos, static_cast<double>(height_))
 	};
+	
 	GLubyte carray[4*4]; //4 floats per color, 4 vertices/colors
-	for (int i = 0; i < 8; i++) carray[i] = top_col[i%4];
-	for (int i = 0; i < 8; i++) carray[i+8] = bot_col[i%4];
+	for (int i = 0; i < 16; i++) carray[i] = top_col[i%4];
 	glEnableClientState(GL_COLOR_ARRAY);
 	glVertexPointer(2, GL_FLOAT, 0, varray);
 	glColorPointer(4, GL_UNSIGNED_BYTE, 0, carray);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glDisableClientState(GL_COLOR_ARRAY);
 
+	//draw from a certain height in the level down to the bottom of the screen.
+	//This is the bottom color; often ground or ocean fading to a dark monotone.
+	GLfloat varray2[] = {
+		xpos, std::max(ypos, static_cast<double>(height_)),
+		xpos + graphics::screen_width(), std::max(ypos, static_cast<double>(height_)),
+		xpos, ypos + graphics::screen_height(),
+		xpos + graphics::screen_width(), ypos + graphics::screen_height()
+	};
+	
+	GLubyte carray2[4*4]; //4 floats per color, 4 vertices/colors
+	for (int i = 0; i < 16; i++) carray2[i] = bot_col[i%4];
+	glEnableClientState(GL_COLOR_ARRAY);
+	glVertexPointer(2, GL_FLOAT, 0, varray2);
+	glColorPointer(4, GL_UNSIGNED_BYTE, 0, carray2);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glDisableClientState(GL_COLOR_ARRAY);
+	
+	
 	if(rotation) {
 		const int border = 100;
 		glColor4ub(top_col[0], top_col[1], top_col[2], 255);
