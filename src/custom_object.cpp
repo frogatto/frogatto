@@ -414,6 +414,8 @@ void custom_object::draw_group() const
 
 void custom_object::process(level& lvl)
 {
+	assert(!entity_collides(level::current(), *this, MOVE_NONE));
+
 	if(type_->use_image_for_collisions()) {
 		//anything that uses their image for collisions is a static,
 		//un-moving object that will stay immobile.
@@ -536,6 +538,8 @@ void custom_object::process(level& lvl)
 	collision_info collide_info;
 	collision_info jump_on_info;
 
+	assert(!entity_collides(level::current(), *this, MOVE_NONE));
+
 	//std::cerr << "velocity_y: " << velocity_y_ << "\n";
 	collide = false;
 	for(int n = 0; n <= std::abs(effective_velocity_y/100) && !collide && !type_->ignore_collide(); ++n) {
@@ -559,6 +563,7 @@ void custom_object::process(level& lvl)
 						//This effectively means the object is 'stuck' in a small
 						//pit.
 						set_x(x() + 1);
+						set_y(y() - 1);
 						collide = true;
 					}
 				}
@@ -606,6 +611,8 @@ void custom_object::process(level& lvl)
 			set_y(y() + dir);
 		}
 	}
+
+	assert(!entity_collides(level::current(), *this, MOVE_NONE));
 
 	if(collide) {
 		if(effective_velocity_y < 0 || !started_standing) {
@@ -1438,6 +1445,7 @@ void custom_object::set_value(const std::string& key, const variant& value)
 
 void custom_object::set_frame(const std::string& name)
 {
+	assert(!entity_collides(level::current(), *this, MOVE_NONE));
 	const std::string previous_animation = frame_name_;
 
 	//fire an event to say that we're leaving the current frame.
