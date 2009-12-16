@@ -44,6 +44,7 @@ void water_particle_system::process(const level& lvl, const entity& e)
 		p.pos[1] = static_cast<int>(p.pos[1]+direction[1] * p.velocity) % info_.repeat_period;
 	}
 	
+	
 	//while (particles_.size() > 1500) particles_.pop_front();
 }
 
@@ -67,16 +68,19 @@ void water_particle_system::draw(const rect& area, const entity& e) const
 			float my_x = p.pos[0]+offset_x;
 			do
 			{
-				vertices.push_back(my_x);
-				vertices.push_back(my_y);
-				vertices.push_back(my_x+direction[0]*info_.line_length);
-				vertices.push_back(my_y+direction[1]*info_.line_length);
+				if ((2200 < my_x) && (my_x < 2600) && (650 < my_y) && (my_y < 900)){
+					vertices.push_back(my_x);
+					vertices.push_back(my_y);
+					vertices.push_back(my_x+direction[0]*info_.line_length);
+					vertices.push_back(my_y+direction[1]*info_.line_length);
+				}
 				my_x += info_.repeat_period;
 				//printf("my_x: %f, area.x: %i, area.w: %i\n", my_x, area.x(), area.w());
 			} while (my_x < area.x()+area.w());
 			my_y += info_.repeat_period;
 		} while (my_y < area.y()+area.h());
 	}
+
 	glVertexPointer(2, GL_FLOAT, 0, &vertices.front());
 	glDrawArrays(GL_LINES, 0, vertices.size()/2);
 	//glDisable(GL_SMOOTH);
