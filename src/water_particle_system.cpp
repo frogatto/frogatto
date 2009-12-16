@@ -20,6 +20,7 @@ particle_system_ptr water_particle_system_factory::create(const entity& e) const
 water_particle_system::water_particle_system(const entity& e, const water_particle_system_factory& factory)
  : factory_(factory), info_(factory.info), cycle_(0)
 {
+	area_ = rect("0,0,1,1");
 	base_velocity = sqrtf(info_.velocity_x*info_.velocity_x + info_.velocity_y*info_.velocity_y);
 	direction[0] = info_.velocity_x / base_velocity;
 	direction[1] = info_.velocity_y / base_velocity;
@@ -68,7 +69,8 @@ void water_particle_system::draw(const rect& area, const entity& e) const
 			float my_x = p.pos[0]+offset_x;
 			do
 			{
-				if ((2200 < my_x) && (my_x < 2600) && (650 < my_y) && (my_y < 900)){
+				//if ((2200 < my_x) && (my_x < 2600) && (650 < my_y) && (my_y < 900)){
+				if ((area_.x() < my_x) && (my_x < area_.x2()) && (area_.y() < my_y) && (my_y < area_.y2())){
 					vertices.push_back(my_x);
 					vertices.push_back(my_y);
 					vertices.push_back(my_x+direction[0]*info_.line_length);
@@ -80,6 +82,7 @@ void water_particle_system::draw(const rect& area, const entity& e) const
 			my_y += info_.repeat_period;
 		} while (my_y < area.y()+area.h());
 	}
+	printf("area_.x: %i, area_.x2: %i, area.y: %i, area.y2: %i\n", area_.x(), area_.x2(), area_.y(), area_.y2());
 
 	glVertexPointer(2, GL_FLOAT, 0, &vertices.front());
 	glDrawArrays(GL_LINES, 0, vertices.size()/2);
@@ -87,4 +90,16 @@ void water_particle_system::draw(const rect& area, const entity& e) const
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);
 	glColor4f(1.0, 1.0, 1.0, 1.0);
+}
+
+
+void water_particle_system::set_value(const std::string& key, const variant& value)
+{
+	if(key == "area") {
+		if(value.is_string()) {
+			area_ = rect(value.as_string());
+		} else if(value.is_list() && value.num_elements() == 4) {
+			area_ = rect::from_coordinates(value[0].as_int(), value[1].as_int(), value[2].as_int(), value[3].as_int());
+		}		
+	}
 }
