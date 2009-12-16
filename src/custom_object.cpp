@@ -551,14 +551,14 @@ void custom_object::process(level& lvl)
 				//our 'legs' but not our feet collide with the level. Try to
 				//move one pixel to the left or right and see if either
 				//direction makes us no longer colliding.
-				set_pos(x() + 1, y());
+				set_x(x() + 1);
 				if(entity_collides(lvl, *this, MOVE_DOWN) || entity_collides(lvl, *this, MOVE_RIGHT)) {
-					set_pos(x() - 2, y());
+					set_x(x() - 2);
 					if(entity_collides(lvl, *this, MOVE_DOWN) || entity_collides(lvl, *this, MOVE_LEFT)) {
 						//moving in either direction fails to resolve the collision.
 						//This effectively means the object is 'stuck' in a small
 						//pit.
-						set_pos(x() + 1, y()-1);
+						set_x(x() + 1);
 						collide = true;
 					}
 				}
@@ -569,7 +569,7 @@ void custom_object::process(level& lvl)
 			//effective_velocity_y < 0 -- going up
 			if(entity_collides(lvl, *this, MOVE_UP, &collide_info)) {
 				collide = true;
-				set_pos(x(), y()+1);
+				set_y(y()+1);
 			}
 		}
 
@@ -603,7 +603,7 @@ void custom_object::process(level& lvl)
 		//used to see if there was a collision after the last movement, and
 		//doesn't actually execute a movement.
 		if(n < std::abs(effective_velocity_y/100)) {
-			set_pos(x(), y() + dir);
+			set_y(y() + dir);
 		}
 	}
 
@@ -636,17 +636,23 @@ void custom_object::process(level& lvl)
 
 	collide = false;
 
-	for(int n = 0; n < std::abs(effective_velocity_x/100) && !collide && !type_->ignore_collide(); ++n) {
+	for(int move_left = std::abs(effective_velocity_x); move_left > 0 && !collide && !type_->ignore_collide(); move_left -= 100) {
 		if(type_->object_level_collisions() && non_solid_entity_collides_with_level(lvl, *this)) {
 			handle_event("collide_level");
 		}
 
 		const bool previous_standing = is_standing(lvl);
 
-		const int dir = effective_velocity_x/100 > 0 ? 1 : -1;
-		int original_y = y();
+		const int dir = effective_velocity_x > 0 ? 1 : -1;
+		int original_centi_y = centi_y();
+
+		const int move_amount = std::min(std::max(move_left, 0), 100);
 		
-		set_pos(x() + dir, y());
+		const bool moved = move_centipixels(move_amount*dir, 0);
+		if(!moved) {
+			//we didn't actually move any pixels, so just abort.
+			break;
+		}
 
 		//if we go up or down a slope, and we began the frame standing,
 		//move the character up or down as appropriate to try to keep
@@ -658,21 +664,21 @@ void custom_object::process(level& lvl)
 			//code to make us to up a slope even on a platform.
 			//TODO: this needs some improvements.
 			for(int n = 0; n != UpwardsSearchRange; ++n) {
-				set_pos(x(), y()-1);
+				set_y(y()-1);
 				if(is_standing(lvl)) {
-					original_y = y();
+					original_centi_y = centi_y();
 					break;
 				}
 			}
 
 			if(!is_standing(lvl)) {
-				set_pos(x(), y()+UpwardsSearchRange);
+				set_y(y()+UpwardsSearchRange);
 				int max_drop = 1;
 				while(max_drop-- && !is_standing(lvl)) {
-					set_pos(x(), y()+1);
+					set_y(y()+1);
 	
 					if(entity_collides(lvl, *this, MOVE_NONE)) {
-						set_pos(x(), y()-1);
+						set_y(y()-1);
 						break;
 					}
 				}
@@ -681,15 +687,15 @@ void custom_object::process(level& lvl)
 			const int begin_y = feet_y();
 			int max_slope = 5;
 			while(--max_slope && is_standing(lvl)) {
-				set_pos(x(), y()-1);
+				set_y(y()-1);
 			}
 
 			if(!max_slope) {
-				set_pos(x(), original_y);
+				set_centi_y(original_centi_y);
 			} else {
-				set_pos(x(), y()+1);
+				set_y(y()+1);
 				if(entity_collides(lvl, *this, MOVE_NONE)) {
-					set_pos(x(), original_y);
+					set_centi_y(original_centi_y);
 				}
 			}
 		}
@@ -700,7 +706,8 @@ void custom_object::process(level& lvl)
 
 		if(collide) {
 			//undo the move to cancel out the collision
-			set_pos(x() - dir, original_y);
+			move_centipixels(-dir*move_amount, 0);
+			set_centi_y(original_centi_y);
 			break;
 		}
 	}
@@ -1447,7 +1454,7 @@ void custom_object::set_frame(const std::string& name)
 	const int diff_x = feet_x() - start_x;
 	const int diff_y = feet_y() - start_y;
 
-	set_pos(x() - diff_x, y() - diff_y);
+	move_centipixels(-diff_x*100, -diff_y*100);
 
 	set_frame_no_adjustments(name);
 

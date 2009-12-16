@@ -53,6 +53,9 @@ public:
 	void set_x(int x) { x_ = x*100; }
 	void set_y(int y) { y_ = y*100; }
 
+	void set_centi_x(int x) { x_ = x; }
+	void set_centi_y(int y) { y_ = y; }
+
 	int x() const { return x_/100; }
 	int y() const { return y_/100; }
 	virtual int zorder() const { return 0; }
@@ -228,8 +231,9 @@ protected:
 
 	void set_respawn(bool value) { respawn_ = value; }
 
-	//move the entity by a number of centi pixels.
-	void move_centipixels(int x, int y) { x_ += x; y_ += y; }
+	//move the entity by a number of centi pixels. Returns true if its
+	//position is changed.
+	bool move_centipixels(int dx, int dy) { int start_x = x(); int start_y = y(); x_ += dx; y_ += dy; return x() != start_x || y() != start_y; }
 
 	void set_editor_info(const_editor_entity_info_ptr p) { editor_info_ = p; }
 
