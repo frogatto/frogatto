@@ -613,7 +613,9 @@ void custom_object::process(level& lvl)
 			game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
 			variant v(callable);
 	
-			callable->add("area", variant(*collide_info.area_id));
+			if(collide_info.area_id != NULL) {
+				callable->add("area", variant(*collide_info.area_id));
+			}
 
 			if(collide_info.collide_with) {
 				callable->add("collide_with", variant(collide_info.collide_with.get()));
@@ -708,7 +710,9 @@ void custom_object::process(level& lvl)
 		game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
 		variant v(callable);
 
-		callable->add("area", variant(*collide_info.area_id));
+		if(collide_info.area_id != NULL) {
+			callable->add("area", variant(*collide_info.area_id));
+		}
 
 		if(collide_info.collide_with) {
 			callable->add("collide_with", variant(collide_info.collide_with.get()));
