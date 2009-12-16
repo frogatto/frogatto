@@ -1,0 +1,86 @@
+#include <cstdio>
+#include <math.h>
+#include <vector>
+
+#include "water_particle_system.hpp"
+#include "wml_utils.hpp"
+
+water_particle_system_factory::water_particle_system_factory (wml::const_node_ptr node)
+ : info(node)
+{
+	
+}
+
+particle_system_ptr water_particle_system_factory::create(const entity& e) const
+{
+	return particle_system_ptr(new water_particle_system(e, *this));
+}
+
+
+water_particle_system::water_particle_system(const entity& e, const water_particle_system_factory& factory)
+ : factory_(factory), info_(factory.info), cycle_(0)
+{
+	base_velocity = sqrtf(info_.velocity_x*info_.velocity_x + info_.velocity_y*info_.velocity_y);
+	direction[0] = info_.velocity_x / base_velocity;
+	direction[1] = info_.velocity_y / base_velocity;
+	particles_.reserve(info_.number_of_particles);
+	for (int i = 0; i < info_.number_of_particles; i++)
+	{
+		particle new_p;
+		new_p.pos[0] = rand()%info_.repeat_period;
+		new_p.pos[1] = rand()%info_.repeat_period;
+		new_p.velocity = base_velocity + (info_.velocity_rand ? (rand() % info_.velocity_rand) : 0);
+		particles_.push_back(new_p);
+	}
+}
+
+void water_particle_system::process(const level& lvl, const entity& e)
+{
+	++cycle_;
+	
+	foreach(particle& p, particles_)
+	{
+		p.pos[0] = static_cast<int>(p.pos[0]+direction[0] * p.velocity) % info_.repeat_period;
+		p.pos[1] = static_cast<int>(p.pos[1]+direction[1] * p.velocity) % info_.repeat_period;
+	}
+	
+	//while (particles_.size() > 1500) particles_.pop_front();
+}
+
+void water_particle_system::draw(const rect& area, const entity& e) const
+{
+	glDisable(GL_TEXTURE_2D);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glLineWidth(info_.line_width);
+	glColor4f(info_.rgba[0]/255.0, info_.rgba[1]/255.0, info_.rgba[2]/255.0, info_.rgba[3]/255.0);
+	int offset_x = area.x() - area.x()%info_.repeat_period;
+	if (area.x() < 0) offset_x -= info_.repeat_period;
+	int offset_y = area.y() - area.y()%info_.repeat_period;
+	if (area.y() < 0) offset_y -= info_.repeat_period;
+	static std::vector<GLfloat> vertices;
+	vertices.clear();
+	foreach(const particle& p, particles_)
+	{
+		float my_y = p.pos[1]+offset_y;
+		do
+		{
+			float my_x = p.pos[0]+offset_x;
+			do
+			{
+				vertices.push_back(my_x);
+				vertices.push_back(my_y);
+				vertices.push_back(my_x+direction[0]*info_.line_length);
+				vertices.push_back(my_y+direction[1]*info_.line_length);
+				my_x += info_.repeat_period;
+				//printf("my_x: %f, area.x: %i, area.w: %i\n", my_x, area.x(), area.w());
+			} while (my_x < area.x()+area.w());
+			my_y += info_.repeat_period;
+		} while (my_y < area.y()+area.h());
+	}
+	glVertexPointer(2, GL_FLOAT, 0, &vertices.front());
+	glDrawArrays(GL_LINES, 0, vertices.size()/2);
+	//glDisable(GL_SMOOTH);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnable(GL_TEXTURE_2D);
+	glColor4f(1.0, 1.0, 1.0, 1.0);
+}

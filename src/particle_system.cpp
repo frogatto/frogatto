@@ -13,6 +13,7 @@
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
 #include "weather_particle_system.hpp"
+#include "water_particle_system.hpp"
 #include "raster.hpp"
 
 namespace {
@@ -350,6 +351,8 @@ const_particle_system_factory_ptr particle_system_factory::create_factory(wml::c
 		return const_particle_system_factory_ptr(new simple_particle_system_factory(node));
 	} else if (type == "weather") {
 		return const_particle_system_factory_ptr(new weather_particle_system_factory(node));
+	} else if (type == "water") {
+		return const_particle_system_factory_ptr(new water_particle_system_factory(node));
 	}
 
 	ASSERT_LOG(false, "Unrecognized particle system type: " << node->attr("type"));
