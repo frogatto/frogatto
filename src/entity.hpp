@@ -56,8 +56,8 @@ public:
 	void set_centi_x(int x) { x_ = x; }
 	void set_centi_y(int y) { y_ = y; }
 
-	int x() const { return x_/100; }
-	int y() const { return y_/100; }
+	int x() const { return x_/100 - (x_ < 0 && x_%100 ? 1 : 0); }
+	int y() const { return y_/100 - (y_ < 0 && y_%100 ? 1 : 0); }
 	virtual int zorder() const { return 0; }
 
 	int centi_x() const { return x_; }
