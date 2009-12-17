@@ -264,10 +264,16 @@ namespace {
 std::set<std::string> filename_pool;
 
 struct node_frame {
+	node_frame() : derived_frame(false) {}
+
 	node_ptr node;
 
 	//all 'bases' defined for nodes that we parse in this element.
 	std::map<std::string, node_ptr> base_nodes;
+
+	//if we are derived, then we don't do checks for multiply defined
+	//attributes.
+	bool derived_frame;
 };
 
 }
@@ -366,6 +372,7 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 					}
 				}
 
+				bool derived_node = false;
 				node_ptr el(new node(element));
 				if(!nodes.empty()) {
 					//see if we have a base node to use recorded to base this
@@ -373,6 +380,7 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 					std::map<std::string, node_ptr>::const_iterator itor = nodes.top().base_nodes.find(element);
 					if(itor != nodes.top().base_nodes.end()) {
 						el = deep_copy(itor->second);
+						derived_node = true;
 					}
 				}
 
@@ -432,6 +440,7 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 
 				node_frame frame;
 				frame.node = el;
+				frame.derived_frame = derived_node;
 				nodes.push(frame);
 			}
 		} else if(isalnum(*i) || *i == '_') {
@@ -445,6 +454,10 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 
 			if(schemas.top()) {
 				schemas.top()->validate_attribute(name, value);
+			}
+
+			if(!nodes.top().derived_frame && nodes.top().node->has_attr(name)) {
+				PARSE_ERROR("attribute appears multiple times");
 			}
 			nodes.top().node->set_attr(name, wml::value(value, filename_ptr, line_number));
 

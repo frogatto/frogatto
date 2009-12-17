@@ -643,6 +643,7 @@ void custom_object::process(level& lvl)
 
 	collide = false;
 
+	assert(!entity_collides(level::current(), *this, MOVE_NONE));
 	for(int move_left = std::abs(effective_velocity_x); move_left > 0 && !collide && !type_->ignore_collide(); move_left -= 100) {
 		if(type_->object_level_collisions() && non_solid_entity_collides_with_level(lvl, *this)) {
 			handle_event("collide_level");
@@ -651,7 +652,7 @@ void custom_object::process(level& lvl)
 		const bool previous_standing = is_standing(lvl);
 
 		const int dir = effective_velocity_x > 0 ? 1 : -1;
-		int original_centi_y = centi_y();
+		const int original_centi_y = centi_y();
 
 		const int move_amount = std::min(std::max(move_left, 0), 100);
 		
@@ -669,11 +670,9 @@ void custom_object::process(level& lvl)
 		if(previous_standing && !standing) {
 			const int UpwardsSearchRange = 2;
 			//code to make us to up a slope even on a platform.
-			//TODO: this needs some improvements.
 			for(int n = 0; n != UpwardsSearchRange; ++n) {
 				set_y(y()-1);
 				if(is_standing(lvl)) {
-					original_centi_y = centi_y();
 					break;
 				}
 			}
@@ -707,7 +706,7 @@ void custom_object::process(level& lvl)
 			}
 		}
 
-		if(entity_collides(lvl, *this, dir > 0 ? MOVE_RIGHT : MOVE_LEFT, &collide_info)) {
+		if(entity_collides(lvl, *this, centi_y() != original_centi_y ? MOVE_NONE : (dir > 0 ? MOVE_RIGHT : MOVE_LEFT), &collide_info)) {
 			collide = true;
 		}
 
@@ -718,6 +717,8 @@ void custom_object::process(level& lvl)
 			break;
 		}
 	}
+
+	assert(!entity_collides(level::current(), *this, MOVE_NONE));
 
 	if(collide) {
 

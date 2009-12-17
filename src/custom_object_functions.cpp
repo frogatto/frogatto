@@ -359,6 +359,10 @@ public:
 		spawn_callable->add("child", variant(obj));
 		ob.handle_event("child_spawned", spawn_callable);
 		obj->handle_event("spawned", spawn_callable);
+
+		if(entity_collides(level::current(), *e, MOVE_NONE)) {
+			lvl.remove_character(e);
+		}
 	}
 private:
 	std::string type_;

@@ -106,9 +106,7 @@ bool water::draw(int x, int y, int w, int h) const
 
 void water::add_wave(const point& p, double xvelocity, double height, double length, double delta_height, double delta_length)
 {
-	std::cerr << "water::add_wave\n";
 	foreach(area& a, areas_) {
-		std::cerr << "wave: " << p.x << "," << p.y << " in " << a.rect_ << "\n";
 		if(point_in_rect(p, a.rect_)) {
 			std::pair<int, int> bounds(a.rect_.x(), a.rect_.x2());
 			for(int n = 0; n != a.surface_segments_.size(); ++n) {
@@ -119,12 +117,9 @@ void water::add_wave(const point& p, double xvelocity, double height, double len
 			}
 			wave wv = { p.x, xvelocity, height, length, delta_height, delta_length, bounds.first, bounds.second };
 			a.waves_.push_back(wv);
-			std::cerr << "adding wave...\n";
 			return;
 		}
 	}
-
-	std::cerr << "wave not added\n";
 }
 
 bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
@@ -257,7 +252,6 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 
 	glDisable(GL_LINE_SMOOTH);
 
-		std::cerr << "DRAW LINE: " << waterline_rect.x << " " << waterline_rect.w << "\n";
 		glLineWidth(2.0);
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 		GLfloat varray[] = {
