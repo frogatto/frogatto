@@ -491,15 +491,16 @@ void custom_object::process(level& lvl)
 		handle_event(*event);
 	}
 
+	const bool is_underwater = lvl.is_underwater(solid_rect());
+	
 	const int traction_from_surface = (stand_info.traction*type_->traction())/1000;
-	velocity_x_ += (accel_x_ * (traction_from_surface + type_->traction_in_air()) * (face_right() ? 1 : -1))/1000;
+	velocity_x_ += (accel_x_ * ( started_standing? traction_from_surface : (is_underwater?type_->traction_in_water() :type_->traction_in_air())) * (face_right() ? 1 : -1))/1000;
 	if(!standing_on_ || accel_y_ < 0) {
 		//do not accelerate downwards if standing on something.
 		velocity_y_ += accel_y_;
 	}
 
 	if(type_->friction()) {
-		const bool is_underwater = lvl.is_underwater(solid_rect());
 
 		const int air_resistance = is_underwater ? lvl.water_resistance() : lvl.air_resistance();
 
@@ -820,7 +821,6 @@ void custom_object::process(level& lvl)
 		handle_event(TimerStr);
 	}
 	
-	const bool is_underwater = lvl.is_underwater(solid_rect());
 	if( is_underwater && !was_underwater_){
 		//event on_enter_water
 		const static std::string EnterWaterStr = "enter_water";

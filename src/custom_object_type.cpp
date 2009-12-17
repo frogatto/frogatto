@@ -197,6 +197,7 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	friction_(wml::get_int(node, "friction")),
 	traction_(wml::get_int(node, "traction", 1000)),
 	traction_in_air_(wml::get_int(node, "traction_in_air", 0)),
+	traction_in_water_(wml::get_int(node, "traction_in_water", 0)),
 	on_players_side_(wml::get_bool(node, "on_players_side", false)),
 	respawns_(wml::get_bool(node, "respawns", true)),
 	affected_by_currents_(wml::get_bool(node, "affected_by_currents", false)),
