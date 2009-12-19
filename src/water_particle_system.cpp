@@ -82,7 +82,6 @@ void water_particle_system::draw(const rect& area, const entity& e) const
 			my_y += info_.repeat_period;
 		} while (my_y < area.y()+area.h());
 	}
-	printf("area_.x: %i, area_.x2: %i, area.y: %i, area.y2: %i\n", area_.x(), area_.x2(), area_.y(), area_.y2());
 
 	glVertexPointer(2, GL_FLOAT, 0, &vertices.front());
 	glDrawArrays(GL_LINES, 0, vertices.size()/2);
