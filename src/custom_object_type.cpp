@@ -134,6 +134,13 @@ const_custom_object_type_ptr custom_object_type::get(const std::string& id)
 		return itor->second;
 	}
 
+	const_custom_object_type_ptr result(create(id));
+	cache[id] = result;
+	return result;
+}
+
+custom_object_type_ptr custom_object_type::create(const std::string& id)
+{
 	if(object_file_paths.empty()) {
 		//find out the paths to all our files
 		sys::get_unique_filenames_under_dir("data/objects", &object_file_paths);
@@ -154,7 +161,6 @@ const_custom_object_type_ptr custom_object_type::get(const std::string& id)
 
 		//create the object and add it to our cache.
 		custom_object_type_ptr result(new custom_object_type(node));
-		cache[id] = result;
 		return result;
 	} catch(wml::parse_error& e) {
 		ASSERT_LOG(false, "Error parsing WML for custom object in " << path_itor->second << ": " << e.message);
@@ -191,7 +197,6 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
     body_passthrough_(wml::get_bool(node, "body_passthrough", false)),
     ignore_collide_(wml::get_bool(node, "ignore_collide", false)),
     object_level_collisions_(wml::get_bool(node, "object_level_collisions", false)),
-    springiness_(wml::get_int(node, "springiness")),
 	surface_friction_(wml::get_int(node, "surface_friction", 100)),
 	surface_traction_(wml::get_int(node, "surface_traction", 100)),
 	friction_(wml::get_int(node, "friction")),
@@ -384,4 +389,20 @@ const_custom_object_type_ptr custom_object_type::get_variation(const std::vector
 	}
 
 	return result;
+}
+
+BENCHMARK(custom_object_type_load)
+{
+	static std::map<std::string,std::string> file_paths;
+	if(file_paths.empty()) {
+		sys::get_unique_filenames_under_dir("data/objects", &file_paths);
+	}
+
+	BENCHMARK_LOOP {
+		for(std::map<std::string,std::string>::const_iterator i = file_paths.begin(); i != file_paths.end(); ++i) {
+			if(i->first.size() > 4 && std::equal(i->first.end()-4, i->first.end(), ".cfg")) {
+				custom_object_type::create(std::string(i->first.begin(), i->first.end()-4));
+			}
+		}
+	}
 }

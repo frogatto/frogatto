@@ -30,6 +30,7 @@ class custom_object_type
 {
 public:
 	static const_custom_object_type_ptr get(const std::string& id);
+	static custom_object_type_ptr create(const std::string& id);
 
 	typedef std::map<std::string, game_logic::const_formula_ptr> event_handler_map;
 
@@ -61,7 +62,6 @@ public:
 
 	bool object_level_collisions() const { return object_level_collisions_; }
 
-	int springiness() const { return springiness_; }
 	int surface_friction() const { return surface_friction_; }
 	int surface_traction() const { return surface_traction_; }
 	int mass() const { return mass_; }
@@ -143,7 +143,6 @@ private:
 	bool ignore_collide_;
 	bool object_level_collisions_;
 
-	int springiness_;
 	int surface_friction_;
 	int surface_traction_;
 	int friction_, traction_, traction_in_air_, traction_in_water_;

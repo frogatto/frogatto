@@ -75,8 +75,6 @@ public:
 
 	bool body_harmful() const;
 	bool body_passthrough() const;
-	int springiness() const;
-	bool spring_off_head(entity& landed_on_by);
 
 	int time_in_frame() const { return time_in_frame_; }
 

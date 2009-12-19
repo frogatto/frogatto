@@ -895,7 +895,7 @@ bool custom_object::has_feet() const
 
 bool custom_object::is_standable(int xpos, int ypos, int* friction, int* traction, int* adjust_y) const
 {
-	if(!body_passthrough() && springiness() == 0 && !body_harmful() && point_collides(xpos, ypos)) {
+	if(!body_passthrough() && !body_harmful() && point_collides(xpos, ypos)) {
 		if(friction) {
 			*friction = type_->surface_friction();
 		}
@@ -1105,7 +1105,6 @@ struct custom_object::Accessor {
 	CUSTOM_ACCESSOR(is_human, obj.is_human() ? 1 : 0);
 	SIMPLE_ACCESSOR(invincible);
 	SIMPLE_ACCESSOR(sound_volume);
-	CUSTOM_ACCESSOR(springiness, obj.springiness());
 	CUSTOM_ACCESSOR(destroyed, obj.destroyed());
 #undef SIMPLE_ACCESSOR
 #undef CUSTOM_ACCESSOR
@@ -1240,7 +1239,6 @@ struct custom_object::Accessor {
 		ACCESSOR(is_human);
 		ACCESSOR(invincible);
 		ACCESSOR(sound_volume);
-		ACCESSOR(springiness);
 		ACCESSOR(destroyed);
 		ACCESSOR(standing_on);
 		ACCESSOR(stood_on_by);
@@ -1584,18 +1582,6 @@ bool custom_object::body_harmful() const
 bool custom_object::body_passthrough() const
 {
 	return type_->body_passthrough();
-}
-
-int custom_object::springiness() const
-{
-	return type_->springiness();
-}
-
-bool custom_object::spring_off_head(entity& landed_on_by)
-{
-	last_jumped_on_by_ = entity_ptr(&landed_on_by);
-	handle_event("jumped_on");
-	return true;
 }
 
 const frame& custom_object::portrait_frame() const
