@@ -229,11 +229,13 @@ texture::~texture()
 //an alpha channel. The dest surface may be larger than the source surface,
 //in which case it will put it in the upper-left corner. This is much faster
 //than using SDL blitting functions.
-void add_alpha_channel_to_surface(uint8_t* dst, const uint8_t* src, size_t dst_w, size_t src_w, size_t src_h)
+void add_alpha_channel_to_surface(uint8_t* dst_ptr, const uint8_t* src_ptr, size_t dst_w, size_t src_w, size_t src_h, size_t src_pitch)
 {
 	ASSERT_GE(dst_w, src_w);
 
 	for(size_t y = 0; y < src_h; ++y) {
+		uint8_t* dst = dst_ptr + y*dst_w*4;
+		const uint8_t* src = src_ptr + y*src_pitch;
 		for(size_t x = 0; x < src_w; ++x) {
 			*dst++ = *src++;
 			*dst++ = *src++;
@@ -273,8 +275,8 @@ void texture::initialize()
 	}
 
 	surface s(SDL_CreateRGBSurface(SDL_SWSURFACE,surf_width,surf_height,32,SURFACE_MASK));
-	if(key_.size() == 1 && key_.front()->format->Rmask == 0xFF && key_.front()->format->Gmask == 0xFF00 && key_.front()->format->Bmask == 0xFF0000) {
-		add_alpha_channel_to_surface((uint8_t*)s->pixels, (uint8_t*)key_.front()->pixels, s->w, key_.front()->w, key_.front()->h);
+	if(key_.size() == 1 && key_.front()->format->Rmask == 0xFF && key_.front()->format->Gmask == 0xFF00 && key_.front()->format->Bmask == 0xFF0000 && key_.front()->format->Amask == 0) {
+		add_alpha_channel_to_surface((uint8_t*)s->pixels, (uint8_t*)key_.front()->pixels, s->w, key_.front()->w, key_.front()->h, key_.front()->pitch);
 	} else {
 		for(key::const_iterator i = key_.begin(); i != key_.end(); ++i) {
 			if(i == key_.begin()) {
