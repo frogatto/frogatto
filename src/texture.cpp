@@ -14,6 +14,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 
+#include "asserts.hpp"
 #include "concurrent_cache.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
@@ -224,6 +225,27 @@ texture::~texture()
 	remove_texture_from_registry(this);
 }
 
+//this function is designed to convert a 24bpp surface to a 32bpp one, adding
+//an alpha channel. The dest surface may be larger than the source surface,
+//in which case it will put it in the upper-left corner. This is much faster
+//than using SDL blitting functions.
+void add_alpha_channel_to_surface(uint8_t* dst, const uint8_t* src, size_t dst_w, size_t src_w, size_t src_h)
+{
+	ASSERT_GE(dst_w, src_w);
+
+	for(size_t y = 0; y < src_h; ++y) {
+		for(size_t x = 0; x < src_w; ++x) {
+			*dst++ = *src++;
+			*dst++ = *src++;
+			*dst++ = *src++;
+			*dst++ = 0xFF;
+		}
+
+		dst += (dst_w - src_w)*4;
+	}
+}
+
+
 void texture::initialize()
 {
 	assert(graphics_initialized);
@@ -250,17 +272,19 @@ void texture::initialize()
 		ratio_h_ = GLfloat(height_)/GLfloat(surf_height);
 	}
 
-
 	surface s(SDL_CreateRGBSurface(SDL_SWSURFACE,surf_width,surf_height,32,SURFACE_MASK));
+	if(key_.size() == 1 && key_.front()->format->Rmask == 0xFF && key_.front()->format->Gmask == 0xFF00 && key_.front()->format->Bmask == 0xFF0000) {
+		add_alpha_channel_to_surface((uint8_t*)s->pixels, (uint8_t*)key_.front()->pixels, s->w, key_.front()->w, key_.front()->h);
+	} else {
+		for(key::const_iterator i = key_.begin(); i != key_.end(); ++i) {
+			if(i == key_.begin()) {
+				SDL_SetAlpha(i->get(), 0, SDL_ALPHA_OPAQUE);
+			} else {
+				SDL_SetAlpha(i->get(), SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
+			}
 
-	for(key::const_iterator i = key_.begin(); i != key_.end(); ++i) {
-		if(i == key_.begin()) {
-			SDL_SetAlpha(i->get(), 0, SDL_ALPHA_OPAQUE);
-		} else {
-			SDL_SetAlpha(i->get(), SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
+			SDL_BlitSurface(i->get(),NULL,s.get(),NULL);
 		}
-
-		SDL_BlitSurface(i->get(),NULL,s.get(),NULL);
 	}
 
 	const int npixels = surf_width*surf_height;
