@@ -10,11 +10,12 @@ void blit_digit(const graphics::texture& t, char digit, int xpos, int ypos,
 	const int yadd = yoffset > 0.0 ? int(yoffset*14) : 0;
 	const int ysub = yoffset < 0.0 ? int(yoffset*14) : 0;
 	const int offset = (digit - '0') * 9;
-	graphics::blit_texture(t, xpos, ypos + yadd, 16, 14 + ysub - yadd, 0.0,
+	graphics::queue_blit_texture(t, xpos, ypos + yadd, 16, 14 + ysub - yadd,
 					       (234.0 + offset)/400.0,
 						   (63.0 - ysub/2.0)/104.0,
 						   (242.0 + offset)/400.0,
 						   (70.0 - yadd/2.0)/104.0);
+	graphics::flush_blit_texture();
 }
 }
 

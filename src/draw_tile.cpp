@@ -28,5 +28,6 @@ void draw_from_tilesheet(const graphics::texture& t, int tile_num, int x, int y,
 		std::swap(x1, x2);
 	}
 
-	graphics::blit_texture(t, x, y, 32, 32, rotate, x1, y1, x2, y2);
+	queue_blit_texture(t, x, y, 32, 32, x1, y1, x2, y2);
+//	graphics::blit_texture(t, x, y, 32, 32, rotate, x1, y1, x2, y2);
 }

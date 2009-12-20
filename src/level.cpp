@@ -558,15 +558,28 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 	std::pair<itor,itor> range = std::equal_range(tiles_.begin(), tiles_.end(), layer, level_tile_zorder_comparer());
 	itor t = std::lower_bound(range.first, range.second, x,
 	                          level_tile_x_pos_comparer());
+
+	//if we draw tiles one on top of each other we don't have to flush.
+	//keep track of where the next tile should be to avoid flushing.
+	int next_x = 0, next_y = 0;
+
 	int count = 0, total = 0;
 	while(t != tiles_.end() && t->zorder == layer && t->x < x + w) {
 		if(t->y > y && t->y < y + h) {
+			if(t->x != next_x || t->y != next_y) {
+				graphics::flush_blit_texture();
+			}
+
 			++count;
 			draw_tile(*t);
+			next_x = t->x;
+			next_y = t->y + TileSize;
 		}
 		++t;
 		++total;
 	}
+
+	graphics::flush_blit_texture();
 
 	glPopMatrix();
 

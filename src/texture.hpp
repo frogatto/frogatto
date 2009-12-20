@@ -54,6 +54,8 @@ public:
 	static void set_current_texture(const key& k);
 	static GLfloat get_coord_x(GLfloat x);
 	static GLfloat get_coord_y(GLfloat y);
+	GLfloat translate_coord_x(GLfloat x) const;
+	GLfloat translate_coord_y(GLfloat y) const;
 	static void clear_cache();
 
 	unsigned int width() const { return width_; }

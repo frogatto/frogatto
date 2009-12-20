@@ -41,6 +41,10 @@ void blit_texture(const texture& tex, int x=0, int y=0, GLfloat rotate=0.0);
 //dimensions are powers of two. Otherwise they must be in the range [0,1]
 void blit_texture(const texture& tex, int x, int y, int w, int h, GLfloat rotate=0.0, GLfloat x1=0.0, GLfloat y1=0.0, GLfloat x2=1.0, GLfloat y2=1.0);
 
+void queue_blit_texture(const texture& tex, int x, int y, int w, int h,
+                        GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2);
+void flush_blit_texture();
+
 //function which sets a rectangle where we want to detect if pixels are written.
 //buf must point to a buffer with a size of rect.w*rect.h. Whenever a pixel
 //is blitted within rect, the corresponding pixel in buf will be set. buf

@@ -420,6 +420,16 @@ GLfloat texture::get_coord_y(GLfloat y)
 	return npot_allowed ? y : y*height_multiplier;
 }
 
+GLfloat texture::translate_coord_x(GLfloat x) const
+{
+	return npot_allowed ? x : x*ratio_w_;
+}
+
+GLfloat texture::translate_coord_y(GLfloat y) const
+{
+	return npot_allowed ? y : y*ratio_h_;
+}
+
 void texture::clear_cache()
 {
 	texture_cache.clear();

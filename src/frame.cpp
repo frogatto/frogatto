@@ -204,6 +204,13 @@ void frame::draw(int x, int y, bool face_right, bool upside_down, int time, int 
 	GLfloat rect[4];
 	get_rect_in_texture(time, &rect[0]);
 
+	if(rotate == 0) {
+		//if there is no rotation, then we can make a much simpler call
+		graphics::queue_blit_texture(texture_, x, y, width()*(face_right ? 1 : -1), height()*(upside_down ? -1 : 1), rect[0], rect[1], rect[2], rect[3]);
+		graphics::flush_blit_texture();
+		return;
+	}
+
 	//the last 4 params are the rectangle of the single, specific frame
 	graphics::blit_texture(texture_, x, y, width()*(face_right ? 1 : -1), height()*(upside_down ? -1 : 1), rotate + (face_right ? rotate_ : -rotate_),
 	                       rect[0], rect[1], rect[2], rect[3]);

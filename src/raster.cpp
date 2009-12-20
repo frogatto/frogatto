@@ -406,6 +406,72 @@ namespace graphics
 		}
 		blit_texture_internal(tex, x, y, w, h, rotate, x1, y1, x2, y2);
 	}
+
+namespace {
+const texture* blit_current_texture;
+std::vector<GLfloat> blit_tcqueue;
+std::vector<GLfloat> blit_vqueue;
+}
+
+void queue_blit_texture(const texture& tex, int x, int y, int w, int h,
+                        GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2)
+{
+	if(&tex != blit_current_texture) {
+		flush_blit_texture();
+		blit_current_texture = &tex;
+	}
+
+	x1 = tex.translate_coord_x(x1);
+	y1 = tex.translate_coord_y(y1);
+	x2 = tex.translate_coord_x(x2);
+	y2 = tex.translate_coord_y(y2);
+
+	if(w < 0) {
+		std::swap(x1, x2);
+		w *= -1;
+	}
+		
+	if(h < 0) {
+		std::swap(y1, y2);
+		h *= -1;
+	}
+	
+	blit_tcqueue.push_back(x1);
+	blit_tcqueue.push_back(y1);
+	blit_tcqueue.push_back(x2);
+	blit_tcqueue.push_back(y1);
+	blit_tcqueue.push_back(x1);
+	blit_tcqueue.push_back(y2);
+	blit_tcqueue.push_back(x2);
+	blit_tcqueue.push_back(y2);
+
+	blit_vqueue.push_back(x);
+	blit_vqueue.push_back(y);
+	blit_vqueue.push_back(x + w);
+	blit_vqueue.push_back(y);
+	blit_vqueue.push_back(x);
+	blit_vqueue.push_back(y + h);
+	blit_vqueue.push_back(x + w);
+	blit_vqueue.push_back(y + h);
+
+	flush_blit_texture();
+}
+
+void flush_blit_texture()
+{
+	if(!blit_current_texture) {
+		return;
+	}
+
+	blit_current_texture->set_as_current_texture();
+	glVertexPointer(2, GL_FLOAT, 0, &blit_vqueue.front());
+	glTexCoordPointer(2, GL_FLOAT, 0, &blit_tcqueue.front());
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, blit_tcqueue.size()/2);
+
+	blit_current_texture = NULL;
+	blit_tcqueue.clear();
+	blit_vqueue.clear();
+}
 	
 	void set_draw_detection_rect(const rect& rect, char* buf)
 	{
