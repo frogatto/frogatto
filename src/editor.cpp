@@ -561,6 +561,7 @@ editor::editor(const char* level_cfg)
 	lvl_.reset(new level(level_cfg));
 	lvl_->finish_loading();
 	lvl_->set_editor();
+	lvl_->set_as_current_level();
 
 	group_property_dialog_.reset(new editor_dialogs::group_property_editor_dialog(*this));
 	property_dialog_.reset(new editor_dialogs::property_editor_dialog(*this));
@@ -599,6 +600,7 @@ void editor::process_ghost_objects()
 
 	const size_t num_chars_before = lvl_->get_chars().size();
 	const std::vector<entity_ptr> chars = lvl_->get_chars();
+	std::cerr << "processing " << chars.size() << " ghost chars\n";
 	foreach(const entity_ptr& p, chars) {
 		p->process(*lvl_);
 	}
