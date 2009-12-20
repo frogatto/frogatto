@@ -391,6 +391,9 @@ const_custom_object_type_ptr custom_object_type::get_variation(const std::vector
 	return result;
 }
 
+#include "texture.hpp"
+#include "surface_cache.hpp"
+
 BENCHMARK(custom_object_type_load)
 {
 	static std::map<std::string,std::string> file_paths;
@@ -404,5 +407,17 @@ BENCHMARK(custom_object_type_load)
 				custom_object_type::create(std::string(i->first.begin(), i->first.end()-4));
 			}
 		}
+		graphics::surface_cache::clear();
+		graphics::texture::clear_textures();
+	}
+}
+
+
+BENCHMARK(custom_object_type_frogatto_load)
+{
+	BENCHMARK_LOOP {
+		custom_object_type::create("frogatto_playable");
+		graphics::texture::clear_textures();
+		graphics::surface_cache::clear();
 	}
 }
