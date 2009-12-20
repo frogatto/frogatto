@@ -29,7 +29,8 @@ private:
 	time_t current_second_;
 
 	int current_fps_, next_fps_, current_delay_, next_delay_,
-	    current_draw_, next_draw_, current_process_, next_process_;
+	    current_draw_, next_draw_, current_process_, next_process_,
+		current_flip_, next_flip_;
 
 	CKey key;
 

@@ -29,6 +29,7 @@ struct performance_data {
 	int delay;
 	int draw;
 	int process;
+	int flip;
 	int cycle;
 };
 
