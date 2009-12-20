@@ -125,11 +125,6 @@ rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_te
 			font_tcarray.push_back(v1);
 			font_tcarray.push_back(u2);
 			font_tcarray.push_back(v2);
-			graphics::blit_texture(texture_, xpos, ypos, r.w()*2, r.h()*2, 0.0,
-			                GLfloat(r.x ())/GLfloat(texture_.width()),
-			                GLfloat(r.y ())/GLfloat(texture_.height()),
-			                GLfloat(r.x2())/GLfloat(texture_.width()),
-			                GLfloat(r.y2())/GLfloat(texture_.height()));
 		}
 
 		if(xpos + r.w()*2 > x2) {
