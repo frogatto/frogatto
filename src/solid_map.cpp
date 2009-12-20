@@ -82,10 +82,68 @@ void solid_map::create_object_platform_maps(wml::const_node_ptr node, std::vecto
 	platform->calculate_side(-100000, 0, platform->all_);
 	v.push_back(platform);
 }
-solid_map_ptr solid_map::create_from_texture(const graphics::texture& t, const rect& area)
+solid_map_ptr solid_map::create_from_texture(const graphics::texture& t, const rect& area_rect)
 {
+	rect area = area_rect;
+
+	bool found_solid = false;
+	while(!found_solid && area.h() > 0) {
+		for(int x = 0; x < area.w(); ++x) {
+			if(!t.is_alpha(area.x() + x, area.y() + area.h() - 1)) {
+				found_solid = true;
+				break;
+			}
+		}
+
+		if(!found_solid) {
+			area = rect(area.x(), area.y(), area.w(), area.h()-1);
+		}
+	}
+
+	found_solid = false;
+	while(!found_solid && area.h() > 0) {
+		for(int x = 0; x < area.w(); ++x) {
+			if(!t.is_alpha(area.x() + x, area.y())) {
+				found_solid = true;
+				break;
+			}
+		}
+
+		if(!found_solid) {
+			area = rect(area.x(), area.y()+1, area.w(), area.h()-1);
+		}
+	}
+
+	found_solid = false;
+	while(!found_solid && area.w() > 0) {
+		for(int y = 0; y < area.h(); ++y) {
+			if(!t.is_alpha(area.x(), area.y() + y)) {
+				found_solid = true;
+				break;
+			}
+		}
+
+		if(!found_solid) {
+			area = rect(area.x()+1, area.y(), area.w()-1, area.h());
+		}
+	}
+
+	found_solid = false;
+	while(!found_solid && area.w() > 0) {
+		for(int y = 0; y < area.h(); ++y) {
+			if(!t.is_alpha(area.x() + area.w() - 1, area.y() + y)) {
+				found_solid = true;
+				break;
+			}
+		}
+
+		if(!found_solid) {
+			area = rect(area.x(), area.y(), area.w()-1, area.h());
+		}
+	}
+
 	solid_map_ptr solid(new solid_map);
-	solid->area_ = rect(0, 0, area.w()*2, area.h()*2);
+	solid->area_ = rect(area.x()*2, area.y()*2, area.w()*2, area.h()*2);
 	solid->solid_.resize(solid->area_.w()*solid->area_.h(), false);
 	for(int y = 0; y < solid->area_.h(); ++y) {
 		for(int x = 0; x < solid->area_.w(); ++x) {
