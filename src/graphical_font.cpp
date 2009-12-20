@@ -71,8 +71,20 @@ rect graphical_font::draw(int x, int y, const std::string& text) const
 	return do_draw(x, y, text);
 }
 
+namespace {
+std::vector<GLfloat> font_varray;
+std::vector<GLfloat> font_tcarray;
+}
+
 rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_text) const
 {
+	if(draw_text) {
+		texture_.set_as_current_texture();
+	}
+
+	font_varray.clear();
+	font_tcarray.clear();
+
 	int x2 = x, y2 = y;
 	int xpos = x, ypos = y, highest = 0;
 	for(std::string::const_iterator i = text.begin(); i != text.end(); ++i) {
@@ -90,7 +102,29 @@ rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_te
 
 		const rect& r = char_rect_map_[c];
 
-		if(draw_text && *i != ' ') {
+		if(draw_text) {
+			const GLfloat u1 = graphics::texture::get_coord_x(GLfloat(r.x ())/GLfloat(texture_.width()));
+			const GLfloat v1 = graphics::texture::get_coord_y(GLfloat(r.y ())/GLfloat(texture_.height()));
+			const GLfloat u2 = graphics::texture::get_coord_x(GLfloat(r.x2() + kerning_)/GLfloat(texture_.width()));
+			const GLfloat v2 = graphics::texture::get_coord_y(GLfloat(r.y2() + kerning_)/GLfloat(texture_.height()));
+
+			font_varray.push_back(xpos);
+			font_varray.push_back(ypos);
+			font_varray.push_back(xpos);
+			font_varray.push_back(ypos + (r.h() + kerning_)*2);
+			font_tcarray.push_back(u1);
+			font_tcarray.push_back(v1);
+			font_tcarray.push_back(u1);
+			font_tcarray.push_back(v2);
+
+			font_varray.push_back(xpos + (r.w() + kerning_)*2);
+			font_varray.push_back(ypos);
+			font_varray.push_back(xpos + (r.w() + kerning_)*2);
+			font_varray.push_back(ypos + (r.h() + kerning_)*2);
+			font_tcarray.push_back(u2);
+			font_tcarray.push_back(v1);
+			font_tcarray.push_back(u2);
+			font_tcarray.push_back(v2);
 			graphics::blit_texture(texture_, xpos, ypos, r.w()*2, r.h()*2, 0.0,
 			                GLfloat(r.x ())/GLfloat(texture_.width()),
 			                GLfloat(r.y ())/GLfloat(texture_.height()),
@@ -110,6 +144,13 @@ rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_te
 		if(r.h() > highest) {
 			highest = r.h();
 		}
+	}
+
+	if(draw_text) {
+		texture_.set_as_current_texture();
+		glVertexPointer(2, GL_FLOAT, 0, font_varray.data());
+		glTexCoordPointer(2, GL_FLOAT, 0, font_tcarray.data());
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, font_varray.size()/2);
 	}
 
 	return rect(x, y, x2 - x, y2 - y);
