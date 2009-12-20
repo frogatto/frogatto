@@ -486,13 +486,14 @@ void flush_blit_texture()
 	
 	void add_raster_distortion(const raster_distortion* distortion)
 	{
-		distortion->next_cycle();
-		distortions_.push_back(distortion);
+//TODO: distortions currently disabled
+//		distortion->next_cycle();
+//		distortions_.push_back(distortion);
 	}
 	
 	void remove_raster_distortion(const raster_distortion* distortion)
 	{
-		distortions_.erase(std::remove(distortions_.begin(), distortions_.end(), distortion), distortions_.end());
+//		distortions_.erase(std::remove(distortions_.begin(), distortions_.end(), distortion), distortions_.end());
 	}
 	
 	void clear_raster_distortion()
