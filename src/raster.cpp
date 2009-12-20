@@ -453,8 +453,6 @@ void queue_blit_texture(const texture& tex, int x, int y, int w, int h,
 	blit_vqueue.push_back(y + h);
 	blit_vqueue.push_back(x + w);
 	blit_vqueue.push_back(y + h);
-
-	flush_blit_texture();
 }
 
 void flush_blit_texture()
