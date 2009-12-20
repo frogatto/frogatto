@@ -53,7 +53,7 @@ void water_particle_system::draw(const rect& area, const entity& e) const
 {
 	glDisable(GL_TEXTURE_2D);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glLineWidth(info_.line_width);
+	glPointSize(info_.dot_size);
 	glColor4f(info_.rgba[0]/255.0, info_.rgba[1]/255.0, info_.rgba[2]/255.0, info_.rgba[3]/255.0);
 	int offset_x = area.x() - area.x()%info_.repeat_period;
 	if (area.x() < 0) offset_x -= info_.repeat_period;
@@ -69,12 +69,9 @@ void water_particle_system::draw(const rect& area, const entity& e) const
 			float my_x = p.pos[0]+offset_x;
 			do
 			{
-				//if ((2200 < my_x) && (my_x < 2600) && (650 < my_y) && (my_y < 900)){
 				if ((area_.x() < my_x) && (my_x < area_.x2()) && (area_.y() < my_y) && (my_y < area_.y2())){
 					vertices.push_back(my_x);
 					vertices.push_back(my_y);
-					vertices.push_back(my_x+direction[0]*info_.line_length);
-					vertices.push_back(my_y+direction[1]*info_.line_length);
 				}
 				my_x += info_.repeat_period;
 				//printf("my_x: %f, area.x: %i, area.w: %i\n", my_x, area.x(), area.w());
@@ -84,7 +81,7 @@ void water_particle_system::draw(const rect& area, const entity& e) const
 	}
 
 	glVertexPointer(2, GL_FLOAT, 0, &vertices.front());
-	glDrawArrays(GL_LINES, 0, vertices.size()/2);
+	glDrawArrays(GL_POINTS, 0, vertices.size()/2);
 	//glDisable(GL_SMOOTH);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);

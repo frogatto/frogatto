@@ -19,8 +19,7 @@ struct water_particle_system_info {
 	velocity_x(wml::get_int(node, "velocity_x")),
 	velocity_y(wml::get_int(node, "velocity_y", -5)),
 	velocity_rand(wml::get_int(node, "velocity_rand", 3)),
-	line_width(wml::get_int(node, "line_width", 1)),
-	line_length(wml::get_int(node, "line_length", 1))
+	dot_size(wml::get_int(node, "dot_size", 1))
 	{
 		irgba = graphics::color(node->attr("color")).value();
 	}
@@ -28,7 +27,7 @@ struct water_particle_system_info {
 	int repeat_period;
 	int velocity_x, velocity_y;
 	int velocity_rand;
-	int line_width, line_length;
+	int dot_size;
 	
 	union {
 		uint8_t rgba[4];
