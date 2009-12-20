@@ -21,6 +21,7 @@
 #include "surface_formula.hpp"
 #include "texture.hpp"
 #include "thread.hpp"
+#include "unit_test.hpp"
 #include <map>
 #include <set>
 #include <iostream>
@@ -43,13 +44,14 @@ namespace {
 	}
 
 	void add_texture_to_registry(texture* t) {
-		threading::lock lk(texture_registry_mutex());
-		texture_registry().insert(t);
+// TODO: Currently the registry is disabled for performance reasons.
+//		threading::lock lk(texture_registry_mutex());
+//		texture_registry().insert(t);
 	}
 
 	void remove_texture_from_registry(texture* t) {
-		threading::lock lk(texture_registry_mutex());
-		texture_registry().erase(t);
+//		threading::lock lk(texture_registry_mutex());
+//		texture_registry().erase(t);
 	}
 
 	typedef concurrent_cache<texture::key,graphics::texture> texture_map;
@@ -259,7 +261,7 @@ void texture::initialize()
 
 	width_ = key_.front()->w;
 	height_ = key_.front()->h;
-	alpha_map_.resize(width_*height_);
+	alpha_map_.reset(new std::vector<bool>(width_*height_));
 
 	unsigned int surf_width = width_;
 	unsigned int surf_height = height_;
@@ -302,7 +304,7 @@ void texture::initialize()
 			const int x = n%surf_width;
 			const int y = n/surf_width;
 			if(x < width_ && y < height_) {
-				alpha_map_[y*width_ + x] = true;
+				(*alpha_map_)[y*width_ + x] = true;
 			}
 		}
 	}
@@ -438,4 +440,12 @@ void texture::ID::destroy()
 	s = surface();
 }
 
+}
+
+BENCHMARK(texture_copy_ctor)
+{
+	graphics::texture t(graphics::texture::get("characters/frogatto-spritesheet1.png"));
+	BENCHMARK_LOOP {
+		graphics::texture t2(t);
+	}
 }
