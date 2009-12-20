@@ -143,8 +143,8 @@ rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_te
 
 	if(draw_text) {
 		texture_.set_as_current_texture();
-		glVertexPointer(2, GL_FLOAT, 0, font_varray.data());
-		glTexCoordPointer(2, GL_FLOAT, 0, font_tcarray.data());
+		glVertexPointer(2, GL_FLOAT, 0, &font_varray.front());
+		glTexCoordPointer(2, GL_FLOAT, 0, &font_tcarray.front());
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, font_varray.size()/2);
 	}
 

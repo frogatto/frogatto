@@ -205,6 +205,7 @@ bool level_runner::play_level()
 
 bool level_runner::play_cycle()
 {
+	SDL_GL_SwapBuffers();
 	if(controls::first_invalid_cycle() >= 0) {
 		lvl_->replay_from_cycle(controls::first_invalid_cycle());
 		controls::mark_valid();
@@ -471,7 +472,6 @@ bool level_runner::play_cycle()
 	performance_data perf = { current_fps_, current_delay_, current_draw_, current_process_, cycle };
 	draw_fps(*lvl_, perf);
 	
-	SDL_GL_SwapBuffers();
 	++next_fps_;
 
 	const time_t this_second = time(NULL);
@@ -490,7 +490,7 @@ bool level_runner::play_cycle()
 	const int raw_wait_time = desired_end_time - SDL_GetTicks();
 	const int wait_time = std::max<int>(1, desired_end_time - SDL_GetTicks());
 	next_delay_ += wait_time;
-	SDL_Delay(wait_time);
+	if (wait_time != 1) SDL_Delay(wait_time);
 
 	if (!paused) ++cycle;
 
