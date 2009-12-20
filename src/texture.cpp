@@ -1,4 +1,3 @@
-
 /*
    Copyright (C) 2007 by David White <dave.net>
    Part of the Silver Tree Project
@@ -133,7 +132,7 @@ namespace {
 					// as mipmapping is enabled. otherwise it runs slowly. Work out why. --David
 				//if (!std::strstr(supported, "GL_ARB_texture_non_power_of_two"))
 					npot = false;
-		} else if(std::strstr(vendor, "Apple Computer")) {
+		} else if(std::strstr(vendor, "Apple Computer") || std::strstr(vendor, "Imagination Technologies")) {
 			if (!std::strstr(supported, "GL_ARB_texture_non_power_of_two")) {
 				npot = false;
 			}
