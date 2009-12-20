@@ -100,6 +100,7 @@ bool water::draw(int x, int y, int w, int h) const
 	}
 
 	end_drawing();
+	glShadeModel(GL_FLAT);
 
 	return result;
 }

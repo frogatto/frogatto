@@ -215,7 +215,7 @@ void draw_fps(const level& lvl, const performance_data& data)
 		return;
 	}
 	std::ostringstream s;
-	s << data.fps << "fps; " << (data.draw/10) << "% draw; " << (data.process/10) << "% process; " << (data.delay/10) << "% idle; " << lvl.num_active_chars() << " objects; " << 50*(data.cycle/50) << " cycles";
+	s << data.fps << "fps; " << (data.draw/10) << "% draw; " << (data.flip/10) << "% flip; " << (data.process/10) << "% process; " << (data.delay/10) << "% idle; " << lvl.num_active_chars() << " objects; " << 50*(data.cycle/50) << " cycles";
 
 	const rect area = font->draw(10, 60, s.str());
 

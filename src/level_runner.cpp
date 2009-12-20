@@ -180,6 +180,8 @@ level_runner::level_runner(boost::scoped_ptr<level>& lvl, std::string& level_cfg
 	next_delay_ = 0;
 	current_draw_ = 0;
 	next_draw_ = 0;
+	current_flip_ = 0;
+	next_flip_ = 0;
 	current_process_ = 0;
 	next_process_ = 0;
 
@@ -466,12 +468,14 @@ bool level_runner::play_cycle()
 
 	const int start_draw = SDL_GetTicks();
 	draw_scene(*lvl_, last_draw_position());
+	performance_data perf = { current_fps_, current_delay_, current_draw_, current_process_, current_flip_, cycle };
+	draw_fps(*lvl_, perf);
+
 	next_draw_ += (SDL_GetTicks() - start_draw);
 
-	performance_data perf = { current_fps_, current_delay_, current_draw_, current_process_, cycle };
-	draw_fps(*lvl_, perf);
-	
+	const int start_flip = SDL_GetTicks();
 	SDL_GL_SwapBuffers();
+	next_flip_ += (SDL_GetTicks() - start_flip);
 	++next_fps_;
 
 	const time_t this_second = time(NULL);
@@ -480,11 +484,13 @@ bool level_runner::play_cycle()
 		current_fps_ = next_fps_;
 		current_delay_ = next_delay_;
 		current_draw_ = next_draw_;
+		current_flip_ = next_flip_;
 		current_process_ = next_process_;
 		next_fps_ = 0;
 		next_delay_ = 0;
 		next_draw_ = 0;
 		next_process_ = 0;
+		next_flip_ = 0;
 	}
 
 	const int raw_wait_time = desired_end_time - SDL_GetTicks();
