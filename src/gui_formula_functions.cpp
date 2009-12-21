@@ -15,6 +15,7 @@
 #include "gui_formula_functions.hpp"
 #include "level.hpp"
 #include "raster.hpp"
+#include "unit_test.hpp"
 #include "wml_node.hpp"
 #include "wml_parser.hpp"
 #include "wml_utils.hpp"
@@ -26,14 +27,21 @@ namespace {
 typedef boost::function<void (const gui_algorithm* algo)> gui_command_function;
 
 class gui_command : public formula_callable {
-	gui_command_function fn_;
 	variant get_value(const std::string& key) const { return variant(); }
 public:
-	explicit gui_command(const gui_command_function& fn) : fn_(fn) {
-	}
+
+	virtual void execute(const gui_algorithm& algo) = 0;
+};
+
+class draw_number_command : public gui_command {
+	int number_, places_, x_, y_;
+public:
+	draw_number_command(int number, int places, int x, int y)
+	  : number_(number), places_(places), x_(x), y_(y)
+	{}
 
 	void execute(const gui_algorithm& algo) {
-		fn_(&algo);
+		draw_number(number_, places_, x_, y_);
 	}
 };
 
@@ -43,16 +51,29 @@ public:
 	  : function_expression("draw_number", args, 4, 4)
 	{}
 private:
-	static void draw(const gui_algorithm*, int number, int places, int x, int y) {
-		draw_number(number, places, x, y);
-	}
 	variant execute(const formula_callable& variables) const {
 		const int number = args()[0]->evaluate(variables).as_int();
 		const int places = args()[1]->evaluate(variables).as_int();
 		const int x = args()[2]->evaluate(variables).as_int();
 		const int y = args()[3]->evaluate(variables).as_int();
+		return variant(new draw_number_command(number, places, x, y));
+	}
+};
 
-		return variant(new gui_command(boost::bind(draw, _1, number, places, x, y)));
+class draw_animation_command : public gui_command {
+	variant anim_;
+	int x_, y_;
+	variant get_value(const std::string& key) const { return variant(); }
+public:
+	draw_animation_command(const variant& anim, int x, int y)
+	  : anim_(anim), x_(x), y_(y)
+	{}
+
+	void execute(const gui_algorithm& algo) {
+		const frame* f = algo.get_frame(anim_.as_string());
+		if(f) {
+			f->draw(x_, y_);
+		}
 	}
 };
 
@@ -63,6 +84,10 @@ public:
 	{}
 private:
 	variant execute(const formula_callable& variables) const {
+		const int x = args()[1]->evaluate(variables).as_int();
+		const int y = args()[2]->evaluate(variables).as_int();
+		return variant(new draw_animation_command(args()[0]->evaluate(variables), x, y));
+/*
 		std::vector<variant> v;
 		v.reserve(args().size());
 		for(int n = 0; n != args().size(); ++n) {
@@ -86,6 +111,18 @@ private:
 		}
 
 		return variant(new gui_command(boost::bind(&gui_algorithm::draw_animation, _1, object, anim, x, y, time)));
+		*/
+	}
+};
+
+class color_command : public gui_command {
+	unsigned char r_, g_, b_, a_;
+public:
+	color_command(int r, int g, int b, int a) : r_(r), g_(g), b_(b), a_(a)
+	{}
+
+	void execute(const gui_algorithm& algo) {
+		glColor4ub(r_, g_, b_, a_);
 	}
 };
 
@@ -96,11 +133,11 @@ public:
 	{}
 private:
 	variant execute(const formula_callable& variables) const {
-		return variant(new gui_command(boost::bind(&gui_algorithm::color, _1,
+		return variant(new color_command(
 		         args()[0]->evaluate(variables).as_int(),
 		         args()[1]->evaluate(variables).as_int(),
 		         args()[2]->evaluate(variables).as_int(),
-		         args()[3]->evaluate(variables).as_int())));
+		         args()[3]->evaluate(variables).as_int()));
 	}
 };
 
@@ -226,6 +263,15 @@ void gui_algorithm::color(unsigned char r, unsigned char g, unsigned char b, uns
 	glColor4ub(r, g, b, a);
 }
 
+const frame* gui_algorithm::get_frame(const std::string& id) const
+{
+	const std::map<std::string, frame_ptr>::const_iterator itor = frames_.find(id);
+	if(itor != frames_.end()) {
+		return itor->second.get();
+	} else {
+		return NULL;
+	}
+}
 
 variant gui_algorithm::get_value(const std::string& key) const
 {
@@ -241,5 +287,22 @@ variant gui_algorithm::get_value(const std::string& key) const
 		return variant(graphics::screen_height());
 	} else {
 		return variant();
+	}
+}
+
+#include "level.hpp"
+
+BENCHMARK(gui_algorithm_bench)
+{
+	static boost::intrusive_ptr<level> lvl;
+	if(!lvl) {
+		lvl = boost::intrusive_ptr<level>(new level("titlescreen.cfg"));
+		lvl->finish_loading();
+		lvl->set_as_current_level();
+	}
+
+	static gui_algorithm_ptr gui(gui_algorithm::get("default"));
+	BENCHMARK_LOOP {
+		gui->draw(*lvl);
 	}
 }

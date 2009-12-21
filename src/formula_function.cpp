@@ -469,6 +469,8 @@ private:
 		std::vector<variant> vars;
 		const variant items = args()[0]->evaluate(variables);
 
+		vars.reserve(items.num_elements());
+
 		if(args().size() == 2) {
 			for(size_t n = 0; n != items.num_elements(); ++n) {
 				const variant val = args().back()->evaluate(formula_variant_callable_with_backup(items[n], variables));
@@ -554,6 +556,33 @@ private:
 	variant execute(const formula_callable& variables) const {
 		const variant items = args()[0]->evaluate(variables);
 		return variant(static_cast<int>(items.num_elements()));
+	}
+};
+
+class slice_function : public function_expression {
+public:
+	explicit slice_function(const args_list& args)
+	    : function_expression("slice", args, 3, 3)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		const variant list = args()[0]->evaluate(variables);
+		if(list.num_elements() == 0) {
+			return variant();
+		}
+		int begin_index = args()[1]->evaluate(variables).as_int()%list.num_elements();
+		int end_index = args()[2]->evaluate(variables).as_int()%list.num_elements();
+		if(end_index >= begin_index) {
+			std::vector<variant> result;
+			result.reserve(end_index - begin_index);
+			while(begin_index != end_index) {
+				result.push_back(list[begin_index++]);
+			}
+
+			return variant(&result);
+		} else {
+			return variant();
+		}
 	}
 };
 
@@ -738,6 +767,7 @@ functions_map& get_functions_map() {
 		FUNCTION(transition);
 		FUNCTION(color_transition);
 		FUNCTION(size);
+		FUNCTION(slice);
 		FUNCTION(null);
 		FUNCTION(refcount);
 		FUNCTION(keys);
