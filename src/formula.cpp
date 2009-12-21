@@ -21,6 +21,7 @@
 #include "foreach.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
+#include "formula_constants.hpp"
 #include "formula_function.hpp"
 #include "formula_tokenizer.hpp"
 #include "map_utils.hpp"
@@ -240,6 +241,21 @@ public:
 			return variant();
 		}
 	}
+};
+
+class const_identifier_expression : public formula_expression {
+public:
+	explicit const_identifier_expression(const std::string& id)
+	  : formula_expression("_const_id"), v_(get_constant(id))
+	{
+	}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		return v_;
+	}
+
+	variant v_;
 };
 
 class identifier_expression : public formula_expression {
@@ -942,6 +958,9 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 				if(std::string(i1->begin,i1->end) == "functions") {
 					return expression_ptr(new function_list_expression(symbols));
 				}
+			} else if(i1->type == TOKEN_CONST_IDENTIFIER) {
+				return expression_ptr(new const_identifier_expression(
+				                 std::string(i1->begin,i1->end)));
 			} else if(i1->type == TOKEN_IDENTIFIER) {
 				return expression_ptr(new identifier_expression(
 				                 std::string(i1->begin,i1->end)));

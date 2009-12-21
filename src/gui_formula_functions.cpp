@@ -67,7 +67,8 @@ class draw_animation_command : public gui_command {
 public:
 	draw_animation_command(const variant& anim, int x, int y)
 	  : anim_(anim), x_(x), y_(y)
-	{}
+	{
+	}
 
 	void execute(const gui_algorithm& algo) {
 		const frame* f = algo.get_frame(anim_.as_string());
