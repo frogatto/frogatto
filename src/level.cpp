@@ -553,6 +553,7 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 
 	short begin_range = 0;
 	short end_range = 0;
+	graphics::blit_queue blit_queue_store;
 	const graphics::blit_queue* blit_queue = NULL;
 
 	while(t != tiles_.end() && t->zorder == layer && t->y < y + h) {
@@ -576,7 +577,12 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 		if(t->x > x && t->x < x + w && !t->draw_disabled) {
 			if(blit_queue != t->blit_queue) {
 				if(blit_queue) {
-					blit_queue->do_blit_range(begin_range, end_range);
+					if(!blit_queue_store.merge(*blit_queue, begin_range, end_range)) {
+						blit_queue_store.do_blit();
+						blit_queue_store.clear();
+						blit_queue_store.merge(*blit_queue, begin_range, end_range);
+					}
+//					blit_queue->do_blit_range(begin_range, end_range);
 				}
 
 				blit_queue = t->blit_queue;
@@ -589,8 +595,15 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 	}
 
 	if(blit_queue) {
-		blit_queue->do_blit_range(begin_range, end_range);
+					if(!blit_queue_store.merge(*blit_queue, begin_range, end_range)) {
+						blit_queue_store.do_blit();
+						blit_queue_store.clear();
+						blit_queue_store.merge(*blit_queue, begin_range, end_range);
+					}
+//		blit_queue->do_blit_range(begin_range, end_range);
 	}
+
+	blit_queue_store.do_blit();
 
 	draw_layer_solid(layer, x, y, w, h);
 

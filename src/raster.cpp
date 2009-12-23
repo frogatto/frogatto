@@ -503,6 +503,31 @@ void blit_queue::do_blit_range(short begin, short end) const
 	glTexCoordPointer(2, GL_FLOAT, 0, &uv_[begin]);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, (end - begin)/2);
 }
+
+bool blit_queue::merge(const blit_queue& q, short begin, short end)
+{
+	if(vertex_.empty()) {
+		texture_ = q.texture_;
+		vertex_.insert(vertex_.end(), q.vertex_.begin()+begin, q.vertex_.begin()+end);
+		uv_.insert(uv_.end(), q.uv_.begin()+begin, q.uv_.begin()+end);
+		return true;
+	}
+
+	if(texture_ != q.texture_) {
+		return false;
+	}
+
+	repeat_last();
+	vertex_.push_back(q.vertex_[begin]);
+	vertex_.push_back(q.vertex_[begin+1]);
+	uv_.push_back(q.uv_[begin]);
+	uv_.push_back(q.uv_[begin+1]);
+
+	vertex_.insert(vertex_.end(), q.vertex_.begin()+begin, q.vertex_.begin()+end);
+	uv_.insert(uv_.end(), q.uv_.begin()+begin, q.uv_.begin()+end);
+
+	return true;
+}
 	
 	void set_draw_detection_rect(const rect& rect, char* buf)
 	{

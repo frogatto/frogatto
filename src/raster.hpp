@@ -53,6 +53,7 @@ public:
 	void set_texture(GLuint id) {
 		texture_ = id;
 	}
+	GLuint texture() const { return texture_; }
 	void clear();
 	void do_blit() const;
 	void do_blit_range(short begin, short end) const;
@@ -65,14 +66,16 @@ public:
 
 	void repeat_last() {
 		if(!vertex_.empty()) {
-			vertex_.push_back(vertex_.size()-2);
-			vertex_.push_back(vertex_.size()-2);
-			uv_.push_back(uv_.size()-2);
-			uv_.push_back(uv_.size()-2);
+			vertex_.push_back(vertex_[vertex_.size()-2]);
+			vertex_.push_back(vertex_[vertex_.size()-2]);
+			uv_.push_back(uv_[uv_.size()-2]);
+			uv_.push_back(uv_[uv_.size()-2]);
 		}
 	}
 
 	short position() const { return vertex_.size(); }
+
+	bool merge(const blit_queue& q, short begin, short end);
 private:
 	GLuint texture_;
 	std::vector<GLshort> vertex_;
