@@ -53,12 +53,33 @@ public:
 	{}
 private:
 	variant execute(const formula_callable& variables) const {
+		static cache_entry cache[4];
+		static int cache_loc;
+
 		const int number = args()[0]->evaluate(variables).as_int();
 		const int places = args()[1]->evaluate(variables).as_int();
 		const int x = args()[2]->evaluate(variables).as_int();
 		const int y = args()[3]->evaluate(variables).as_int();
-		return variant(new draw_number_command(number, places, x, y));
+		for(int n = 0; n != sizeof(cache)/sizeof(*cache); ++n) {
+			if(x == cache[n].x && y == cache[n].y && number == cache[n].number && places == cache[n].places) {
+				return cache[n].result;
+			}
+		}
+		const int n = cache_loc++%(sizeof(cache)/sizeof(*cache));
+		cache[n].x = x;
+		cache[n].y = y;
+		cache[n].number = number;
+		cache[n].places = places;
+		cache[n].result = variant(new draw_number_command(number, places, x, y));
+		return cache[n].result;
 	}
+
+	struct cache_entry {
+		cache_entry() : x(-1), y(-1) {}
+		int number, places, x, y;
+		variant result;
+	};
+
 };
 
 class draw_animation_command : public gui_command {
