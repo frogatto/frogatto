@@ -556,6 +556,23 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 	const graphics::blit_queue* blit_queue = NULL;
 
 	while(t != tiles_.end() && t->zorder == layer && t->y < y + h) {
+		const int increment = 8;
+		while(t->x < x - TileSize) {
+			if(t+increment >= tiles_.end() || t[increment].y != t->y || t[increment].zorder != t->zorder || t[increment].x > x - TileSize) {
+				break;
+			}
+
+			t += increment;
+		}
+
+		while(t->x > x + w) {
+			if(t+increment >= tiles_.end() || t[increment].y != t->y || t[increment].zorder != t->zorder) {
+				break;
+			}
+
+			t += increment;
+		}
+
 		if(t->x > x && t->x < x + w && !t->draw_disabled) {
 			if(blit_queue != t->blit_queue) {
 				if(blit_queue) {
@@ -668,6 +685,29 @@ void level::prepare_tiles_for_drawing()
 	}
 
 	solid_color_rects_.erase(std::remove_if(solid_color_rects_.begin(), solid_color_rects_.end(), solid_color_rect_empty()), solid_color_rects_.end());
+
+	//remove tiles that are obscured by other tiles.
+	std::set<std::pair<int, int> > opaque;
+	for(int n = tiles_.size(); n > 0; --n) {
+		level_tile& t = tiles_[n-1];
+		const tile_map& map = tile_maps_[t.zorder];
+		if(map.x_speed() != 100 || map.y_speed() != 100) {
+			while(n != 0 && tiles_[n-1].zorder == t.zorder) {
+				--n;
+			}
+
+			continue;
+		}
+
+		if(!t.draw_disabled && opaque.count(std::pair<int,int>(t.x, t.y))) {
+			t.draw_disabled = true;
+			continue;
+		}
+
+		if(t.object->is_opaque()) {
+			opaque.insert(std::pair<int,int>(t.x, t.y));
+		}
+	}
 }
 
 namespace {

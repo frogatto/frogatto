@@ -76,6 +76,8 @@ public:
 	static void draw(const level_tile& t);
 	static void queue_draw(graphics::blit_queue& q, const level_tile& t);
 
+	bool is_opaque() const { return opaque_; }
+
 	const graphics::color* solid_color() const { return solid_color_.get(); }
 private:
 	std::string id_;
@@ -89,6 +91,8 @@ private:
 	int damage_;
 	int friction_;
 	int traction_;
+
+	bool opaque_;
 
 	boost::intrusive_ptr<graphics::color> solid_color_;
 };

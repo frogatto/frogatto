@@ -60,10 +60,12 @@ level_object::level_object(wml::const_node_ptr node)
     flip_(wml::get_bool(node, "flip", false)),
     friction_(wml::get_int(node, "friction", 100)),
     traction_(wml::get_int(node, "traction", 100)),
-    damage_(wml::get_int(node, "damage", 0))
+    damage_(wml::get_int(node, "damage", 0)),
+	opaque_(wml::get_bool(node, "opaque", false))
 {
 	if(node->has_attr("solid_color")) {
 		solid_color_ = boost::intrusive_ptr<graphics::color>(new graphics::color(node->attr("solid_color")));
+		opaque_ = true;
 	}
 
 	std::vector<std::string> tile_variations = util::split(node->attr("tiles"), '|');
