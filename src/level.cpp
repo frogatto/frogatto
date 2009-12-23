@@ -556,7 +556,7 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 	const graphics::blit_queue* blit_queue = NULL;
 
 	while(t != tiles_.end() && t->zorder == layer && t->y < y + h) {
-		if(t->x > x && t->x < x + w) {
+		if(t->x > x && t->x < x + w && !t->draw_disabled) {
 			if(blit_queue != t->blit_queue) {
 				if(blit_queue) {
 					blit_queue->do_blit_range(begin_range, end_range);
@@ -575,18 +575,78 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 		blit_queue->do_blit_range(begin_range, end_range);
 	}
 
+	draw_layer_solid(layer, x, y, w, h);
+
 	glPopMatrix();
 
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 }
 
+void level::draw_layer_solid(int layer, int x, int y, int w, int h) const
+{
+	typedef std::vector<solid_color_rect>::const_iterator SolidItor;
+	std::pair<SolidItor, SolidItor> solid = std::equal_range(solid_color_rects_.begin(), solid_color_rects_.end(), layer, solid_color_rect_cmp());
+	if(solid.first != solid.second) {
+		const rect viewport(x, y, w, h);
+
+		glDisable(GL_TEXTURE_2D);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		while(solid.first != solid.second) {
+			rect area = solid.first->area;
+			if(!rects_intersect(area, viewport)) {
+				++solid.first;
+				continue;
+			}
+
+			area = intersection_rect(area, viewport);
+
+			solid.first->color.set_as_current_color();
+			GLshort varray[] = {
+			  area.x(), area.y(),
+			  area.x() + area.w(), area.y(),
+			  area.x(), area.y() + area.h(),
+			  area.x() + area.w(), area.y() + area.h(),
+			};
+
+			glVertexPointer(2, GL_SHORT, 0, varray);
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+			++solid.first;
+		}
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glEnable(GL_TEXTURE_2D);
+	}
+}
+
 void level::prepare_tiles_for_drawing()
 {
+	solid_color_rects_.clear();
+
 	for(int n = 0; n != tiles_.size(); ++n) {
+		if(tiles_[n].object->solid_color()) {
+			tiles_[n].draw_disabled = true;
+			tiles_[n].blit_queue = NULL;
+			if(!solid_color_rects_.empty()) {
+				solid_color_rect& r = solid_color_rects_.back();
+				if(r.layer == tiles_[n].zorder && r.color.rgba() == tiles_[n].object->solid_color()->rgba() && r.area.y() == tiles_[n].y && r.area.x() + r.area.w() == tiles_[n].x) {
+					r.area = rect(r.area.x(), r.area.y(), r.area.w() + TileSize, r.area.h());
+					continue;
+				}
+			}
+				
+			solid_color_rect r;
+			r.color = *tiles_[n].object->solid_color();
+			r.area = rect(tiles_[n].x, tiles_[n].y, TileSize, TileSize);
+			r.layer = tiles_[n].zorder;
+			solid_color_rects_.push_back(r);
+			continue;
+		}
+
+		tiles_[n].draw_disabled = false;
 		tiles_[n].blit_queue_buf.clear();
 
 		//see if this tile can be drawn in a strip with the previous tile.
-		if(n > 0 && tiles_[n].x == tiles_[n-1].x + TileSize && tiles_[n].y == tiles_[n-1].y && tiles_[n].object->texture().get_id() == tiles_[n-1].object->texture().get_id()) {
+		if(n > 0 && tiles_[n].x == tiles_[n-1].x + TileSize && tiles_[n].y == tiles_[n-1].y && tiles_[n].object->texture().get_id() == tiles_[n-1].object->texture().get_id() && !tiles_[n-1].draw_disabled) {
 			tiles_[n].blit_queue = tiles_[n-1].blit_queue;
 		} else {
 			tiles_[n].blit_queue = &tiles_[n].blit_queue_buf;
@@ -597,6 +657,17 @@ void level::prepare_tiles_for_drawing()
 		queue_draw_tile(*tiles_[n].blit_queue, tiles_[n]);
 		tiles_[n].blit_queue_end = tiles_[n].blit_queue->position();
 	}
+
+	for(int n = 1; n < solid_color_rects_.size(); ++n) {
+		solid_color_rect& a = solid_color_rects_[n-1];
+		solid_color_rect& b = solid_color_rects_[n];
+		if(a.area.x() == b.area.x() && a.area.x2() == b.area.x2() && a.area.y() + a.area.h() == b.area.y() && a.layer == b.layer) {
+			a.area = rect(a.area.x(), a.area.y(), a.area.w(), a.area.h() + b.area.h());
+			b.area = rect(0,0,0,0);
+		}
+	}
+
+	solid_color_rects_.erase(std::remove_if(solid_color_rects_.begin(), solid_color_rects_.end(), solid_color_rect_empty()), solid_color_rects_.end());
 }
 
 namespace {

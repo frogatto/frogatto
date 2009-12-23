@@ -25,15 +25,14 @@ class color : public game_logic::formula_callable
 	uint32_t value() const { return c_.value; }
 	
 	color( int r, int g, int b, int a);
-	color( uint32_t rgba);
-	color( const std::string& str);
+	explicit color( uint32_t rgba = 0);
+	explicit color( const std::string& str);
 	
 	variant get_value(const std::string& key) const;
 
 	void set_as_current_color() const;
 	void add_to_vector(std::vector<GLfloat>* v) const;
 
-	
 	private:
 		union PixelUnion {
 			uint32_t value;

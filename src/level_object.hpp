@@ -4,6 +4,7 @@
 #include <boost/shared_ptr.hpp>
 #include <vector>
 
+#include "color_utils.hpp"
 #include "raster.hpp"
 #include "texture.hpp"
 #include "wml_node_fwd.hpp"
@@ -21,6 +22,7 @@ struct level_tile {
 	graphics::blit_queue blit_queue_buf;
 	graphics::blit_queue* blit_queue;
 	short blit_queue_begin, blit_queue_end;
+	bool draw_disabled;
 };
 
 struct level_tile_zorder_comparer {
@@ -73,6 +75,8 @@ public:
 	const graphics::texture& texture() const { return t_; }
 	static void draw(const level_tile& t);
 	static void queue_draw(graphics::blit_queue& q, const level_tile& t);
+
+	const graphics::color* solid_color() const { return solid_color_.get(); }
 private:
 	std::string id_;
 	graphics::texture t_;
@@ -85,6 +89,8 @@ private:
 	int damage_;
 	int friction_;
 	int traction_;
+
+	boost::intrusive_ptr<graphics::color> solid_color_;
 };
 
 #endif

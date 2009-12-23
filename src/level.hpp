@@ -234,6 +234,7 @@ private:
 	bool add_tile_rect_vector_internal(int zorder, int x1, int y1, int x2, int y2, const std::vector<std::string>& tiles);
 
 	void draw_layer(int layer, int x, int y, int w, int h) const;
+	void draw_layer_solid(int layer, int x, int y, int w, int h) const;
 
 	void rebuild_tiles_rect(const rect& r);
 	void add_tile_solid(const level_tile& t);
@@ -274,6 +275,23 @@ private:
 	std::set<int> layers_;
 	std::set<int> hidden_layers_; //layers hidden in the editor.
 	int highlight_layer_;
+
+	struct solid_color_rect {
+		graphics::color color;
+		rect area;
+		int layer;
+	};
+
+	struct solid_color_rect_empty {
+		bool operator()(const solid_color_rect& r) const { return r.area.w() == 0; }
+	};
+
+	struct solid_color_rect_cmp {
+		bool operator()(const solid_color_rect& r, int zorder) const { return r.layer < zorder; }
+		bool operator()(int zorder, const solid_color_rect& r) const { return zorder < r.layer; }
+	};
+
+	std::vector<solid_color_rect> solid_color_rects_;
 
 	void erase_char(entity_ptr c);
 	std::vector<entity_ptr> chars_;
