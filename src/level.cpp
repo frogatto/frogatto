@@ -553,7 +553,7 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 
 	short begin_range = 0;
 	short end_range = 0;
-	graphics::blit_queue blit_queue_store;
+	static graphics::blit_queue blit_queue_store;
 	const graphics::blit_queue* blit_queue = NULL;
 
 	while(t != tiles_.end() && t->zorder == layer && t->y < y + h) {
