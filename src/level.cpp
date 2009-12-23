@@ -553,55 +553,69 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 
 	short begin_range = 0;
 	short end_range = 0;
-	static graphics::blit_queue blit_queue_store;
-	blit_queue_store.clear();
-	const graphics::blit_queue* blit_queue = NULL;
 
-	while(t != tiles_.end() && t->zorder == layer && t->y < y + h) {
-		const int increment = 8;
-		while(t->x < x - TileSize) {
-			if(t+increment >= tiles_.end() || t[increment].y != t->y || t[increment].zorder != t->zorder || t[increment].x > x - TileSize) {
-				break;
-			}
+	layer_blit_info& blit_info = blit_cache_[layer];
 
-			t += increment;
-		}
+	const int blit_x_pos = x/32 - (x < 0 ? 1 : 0);
+	const int blit_y_pos = y/32 - (y < 0 ? 1 : 0);
 
-		while(t->x > x + w) {
-			if(t+increment >= tiles_.end() || t[increment].y != t->y || t[increment].zorder != t->zorder) {
-				break;
-			}
+	graphics::blit_queue& blit_queue_store = blit_info.blit_queue;
 
-			t += increment;
-		}
+	if(blit_info.last_x != blit_x_pos || blit_info.last_y != blit_y_pos) {
+		blit_info.last_x = blit_x_pos;
+		blit_info.last_y = blit_y_pos;
+		blit_queue_store.clear();
 
-		if(t->x > x && t->x < x + w && !t->draw_disabled) {
-			if(blit_queue != t->blit_queue) {
-				if(blit_queue) {
-					if(!blit_queue_store.merge(*blit_queue, begin_range, end_range)) {
-						blit_queue_store.do_blit();
-						blit_queue_store.clear();
-						blit_queue_store.merge(*blit_queue, begin_range, end_range);
-					}
-//					blit_queue->do_blit_range(begin_range, end_range);
+		const graphics::blit_queue* blit_queue = NULL;
+
+		while(t != tiles_.end() && t->zorder == layer && t->y < y + h) {
+			const int increment = 8;
+			while(t->x < x - TileSize) {
+				if(t+increment >= tiles_.end() || t[increment].y != t->y || t[increment].zorder != t->zorder || t[increment].x > x - TileSize) {
+					break;
 				}
 
-				blit_queue = t->blit_queue;
-				begin_range = t->blit_queue_begin;
+				t += increment;
 			}
 
-			end_range = t->blit_queue_end;
-		}
-		++t;
-	}
+			while(t->x > x + w) {
+				if(t+increment >= tiles_.end() || t[increment].y != t->y || t[increment].zorder != t->zorder) {
+					break;
+				}
 
-	if(blit_queue) {
-					if(!blit_queue_store.merge(*blit_queue, begin_range, end_range)) {
-						blit_queue_store.do_blit();
-						blit_queue_store.clear();
-						blit_queue_store.merge(*blit_queue, begin_range, end_range);
+				t += increment;
+			}
+
+			if(t->x >= x && t->x <= x + w && !t->draw_disabled) {
+				if(blit_queue != t->blit_queue) {
+					if(blit_queue) {
+						if(!blit_queue_store.merge(*blit_queue, begin_range, end_range)) {
+							blit_info.last_x = INT_MIN;
+							blit_queue_store.do_blit();
+							blit_queue_store.clear();
+							blit_queue_store.merge(*blit_queue, begin_range, end_range);
+						}
+//						blit_queue->do_blit_range(begin_range, end_range);
 					}
-//		blit_queue->do_blit_range(begin_range, end_range);
+
+					blit_queue = t->blit_queue;
+					begin_range = t->blit_queue_begin;
+				}
+
+				end_range = t->blit_queue_end;
+			}
+			++t;
+		}
+
+		if(blit_queue) {
+						if(!blit_queue_store.merge(*blit_queue, begin_range, end_range)) {
+							blit_info.last_x = INT_MIN;
+							blit_queue_store.do_blit();
+							blit_queue_store.clear();
+							blit_queue_store.merge(*blit_queue, begin_range, end_range);
+						}
+//			blit_queue->do_blit_range(begin_range, end_range);
+		}
 	}
 
 	blit_queue_store.do_blit();

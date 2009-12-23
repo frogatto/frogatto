@@ -21,6 +21,7 @@
 #include "level_solid_map.hpp"
 #include "movement_script.hpp"
 #include "prop.hpp"
+#include "raster.hpp"
 #include "tile_map.hpp"
 #include "water.hpp"
 #include "wml_node_fwd.hpp"
@@ -275,6 +276,14 @@ private:
 	std::set<int> layers_;
 	std::set<int> hidden_layers_; //layers hidden in the editor.
 	int highlight_layer_;
+
+	struct layer_blit_info {
+		layer_blit_info() : last_x(INT_MIN), last_y(INT_MIN) {}
+		graphics::blit_queue blit_queue;
+		int last_x, last_y;
+	};
+
+	mutable std::map<int, layer_blit_info> blit_cache_;
 
 	struct solid_color_rect {
 		graphics::color color;
