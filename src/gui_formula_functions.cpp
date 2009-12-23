@@ -34,14 +34,15 @@ public:
 };
 
 class draw_number_command : public gui_command {
-	int number_, places_, x_, y_;
+	graphics::blit_queue blit_;
 public:
 	draw_number_command(int number, int places, int x, int y)
-	  : number_(number), places_(places), x_(x), y_(y)
-	{}
+	{
+		queue_draw_number(blit_, number, places, x, y);
+	}
 
 	void execute(const gui_algorithm& algo) {
-		draw_number(number_, places_, x_, y_);
+		blit_.do_blit();
 	}
 };
 
@@ -61,33 +62,38 @@ private:
 };
 
 class draw_animation_command : public gui_command {
-	variant anim_;
-	int x_, y_;
+	graphics::blit_queue blit_;
 	variant get_value(const std::string& key) const { return variant(); }
 public:
-	draw_animation_command(const variant& anim, int x, int y)
-	  : anim_(anim), x_(x), y_(y)
+	draw_animation_command(const frame_ptr& f, int x, int y)
 	{
+		f->draw_into_blit_queue(blit_, x, y);
 	}
 
 	void execute(const gui_algorithm& algo) {
-		const frame* f = algo.get_frame(anim_.as_string());
-		if(f) {
-			f->draw(x_, y_);
-		}
+		blit_.do_blit();
 	}
 };
 
 class draw_animation_function : public function_expression {
 public:
-	explicit draw_animation_function(const args_list& args)
-	  : function_expression("draw_animation", args, 3, 5)
+	draw_animation_function(gui_algorithm_ptr algo, const args_list& args)
+	  : function_expression("draw_animation", args, 3, 5), algo_(algo)
 	{}
+
+	gui_algorithm_ptr algo_;
 private:
 	variant execute(const formula_callable& variables) const {
+		variant anim = args()[0]->evaluate(variables);
+		const frame_ptr f = algo_->get_frame(anim.as_string());
+		if(!f) {
+			return variant();
+		}
+
 		const int x = args()[1]->evaluate(variables).as_int();
 		const int y = args()[2]->evaluate(variables).as_int();
-		return variant(new draw_animation_command(args()[0]->evaluate(variables), x, y));
+
+		return variant(new draw_animation_command(f, x, y));
 /*
 		std::vector<variant> v;
 		v.reserve(args().size());
@@ -144,18 +150,17 @@ private:
 
 class gui_command_function_symbol_table : public function_symbol_table
 {
+	gui_algorithm_ptr algo_;
 public:
-	static gui_command_function_symbol_table& instance() {
-		static gui_command_function_symbol_table result;
-		return result;
-	}
+	gui_command_function_symbol_table(gui_algorithm_ptr algo) : algo_(algo)
+	{}
 
 	expression_ptr create_function(
 	                           const std::string& fn,
 	                           const std::vector<expression_ptr>& args) const
 	{
 		if(fn == "draw_animation") {
-			return expression_ptr(new draw_animation_function(args));
+			return expression_ptr(new draw_animation_function(algo_, args));
 		} else if(fn == "draw_number") {
 			return expression_ptr(new draw_number_function(args));
 		} else if(fn == "color") {
@@ -170,15 +175,18 @@ public:
 
 gui_algorithm::gui_algorithm(wml::const_node_ptr node)
 	  : lvl_(NULL),
-	  draw_formula_(formula::create_optional_formula(node->attr("on_draw"), &gui_command_function_symbol_table::instance())),
 	  process_formula_(formula::create_optional_formula(node->attr("on_process"), &get_custom_object_functions_symbol_table())),
 	  cycle_(0), object_(new custom_object("dummy_gui_object", 0, 0, true))
 {
+	gui_command_function_symbol_table symbols(gui_algorithm_ptr(this));
+
 	object_->add_ref();
 	FOREACH_WML_CHILD(frame_node, node, "animation") {
 		frame_ptr f(new frame(frame_node));
 		frames_[frame_node->attr("id")] = f;
 	}
+
+	draw_formula_ = formula::create_optional_formula(node->attr("on_draw"), &symbols);
 }
 
 gui_algorithm::~gui_algorithm()
@@ -264,13 +272,13 @@ void gui_algorithm::color(unsigned char r, unsigned char g, unsigned char b, uns
 	glColor4ub(r, g, b, a);
 }
 
-const frame* gui_algorithm::get_frame(const std::string& id) const
+frame_ptr gui_algorithm::get_frame(const std::string& id) const
 {
 	const std::map<std::string, frame_ptr>::const_iterator itor = frames_.find(id);
 	if(itor != frames_.end()) {
-		return itor->second.get();
+		return itor->second;
 	} else {
-		return NULL;
+		return frame_ptr();
 	}
 }
 

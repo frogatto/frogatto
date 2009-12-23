@@ -45,6 +45,40 @@ void queue_blit_texture(const texture& tex, int x, int y, int w, int h,
                         GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2);
 void flush_blit_texture();
 
+class blit_queue
+{
+public:
+	blit_queue() : texture_(0)
+	{}
+	void set_texture(GLuint id) {
+		texture_ = id;
+	}
+	void clear();
+	void do_blit() const;
+	void do_blit_range(short begin, short end) const;
+	void add(GLfloat x, GLfloat y, GLfloat u, GLfloat v) {
+		vertex_.push_back(x);
+		vertex_.push_back(y);
+		uv_.push_back(u);
+		uv_.push_back(v);
+	}
+
+	void repeat_last() {
+		if(!vertex_.empty()) {
+			vertex_.push_back(vertex_.size()-2);
+			vertex_.push_back(vertex_.size()-2);
+			uv_.push_back(uv_.size()-2);
+			uv_.push_back(uv_.size()-2);
+		}
+	}
+
+	short position() const { return vertex_.size(); }
+private:
+	GLuint texture_;
+	std::vector<GLfloat> vertex_;
+	std::vector<GLfloat> uv_;
+};
+
 //function which sets a rectangle where we want to detect if pixels are written.
 //buf must point to a buffer with a size of rect.w*rect.h. Whenever a pixel
 //is blitted within rect, the corresponding pixel in buf will be set. buf

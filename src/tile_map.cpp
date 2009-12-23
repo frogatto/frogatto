@@ -52,7 +52,6 @@ struct tile_pattern {
 	explicit tile_pattern(wml::const_node_ptr node)
 	  : tile(new level_object(node)), reverse(node->attr("reverse").str() != "no"),
 	    empty(node->attr("empty").str() == "yes"),
-		rotate(wml::get_int(node, "rotate", 0)),
 		filter_formula(game_logic::formula::create_optional_formula(node->attr("filter")))
 	{
 		variations.push_back(tile);
@@ -131,7 +130,6 @@ struct tile_pattern {
 	std::vector<level_object_ptr> variations;
 	bool reverse;
 	bool empty;
-	int rotate;
 
 	struct added_tile {
 		level_object_ptr object;
@@ -670,7 +668,6 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles,
 		t.y = ypos;
 		t.zorder = i->first.second;
 		t.object = i->second;
-		t.rotate = 0;
 		t.face_right = false;
 		tiles->push_back(t);
 	}
@@ -696,7 +693,6 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles,
 				t.y = ypos;
 				t.zorder = zorder_;
 				t.object = obj;
-				t.rotate = 0;
 				t.face_right = false;
 				tiles->push_back(t);
 				continue;
@@ -730,7 +726,6 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles,
 			if(t.object->flipped()) {
 				t.face_right = !t.face_right;
 			}
-			t.rotate = p->rotate;
 			tiles->push_back(t);
 
 			foreach(const tile_pattern::added_tile& a, p->added_tiles) {
@@ -748,7 +743,6 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles,
 					t.face_right = !t.face_right;
 				}
 
-				t.rotate = p->rotate;
 				tiles->push_back(t);
 			}
 		}

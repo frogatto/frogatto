@@ -328,12 +328,10 @@ int next_pot (int n)
 	return num;
 }
 
-void texture::set_as_current_texture() const
+GLuint texture::get_id() const
 {
 	if(!valid()) {
-		glBindTexture(GL_TEXTURE_2D,0);
-		current_texture = 0;
-		return;
+		return 0;
 	}
 
 	if(id_->init() == false) {
@@ -352,16 +350,33 @@ void texture::set_as_current_texture() const
 		id_->s = surface();
 	}
 
-	if(current_texture == id_->id) {
+	return id_->id;
+}
+
+void texture::set_current_texture(GLuint id)
+{
+	if(!id || current_texture == id) {
 		return;
 	}
 
-	current_texture = id_->id;
+	glBindTexture(GL_TEXTURE_2D,id);
+	current_texture = id;
+}
 
-	glBindTexture(GL_TEXTURE_2D,id_->id);
-	//std::cerr << gluErrorString(glGetError()) << "~set_as_current_texture~\n";
+void texture::set_as_current_texture() const
+{
 	width_multiplier = ratio_w_;
 	height_multiplier = ratio_h_;
+
+	const GLuint id = get_id();
+	if(!id || current_texture == id) {
+		return;
+	}
+
+	current_texture = id;
+
+	glBindTexture(GL_TEXTURE_2D,id);
+	//std::cerr << gluErrorString(glGetError()) << "~set_as_current_texture~\n";
 }
 
 texture texture::get(const std::string& str)

@@ -40,7 +40,6 @@ level_tile level_object::build_tile(wml::const_node_ptr node)
 		res.object = tiles_cache[node->attr("tile")];
 	}
 	res.face_right = wml::get_bool(node, "face_right");
-	res.rotate = wml::get_int(node, "rotate", 0);
 	return res;
 }
 
@@ -276,7 +275,27 @@ void level_object::draw(const level_tile& t)
 			x = t.object->width_ - x - 1;
 		}
 		const int y = index/t.object->width_;
-		draw_from_tilesheet(t.object->t_, i, t.x + x*32, t.y + y*32, t.face_right, t.rotate);
+		draw_from_tilesheet(t.object->t_, i, t.x + x*32, t.y + y*32, t.face_right, 0);
+		++index;
+	}
+}
+
+void level_object::queue_draw(graphics::blit_queue& q, const level_tile& t)
+{
+	int index = 0;
+	const int random_index = hash_level_object(t.x,t.y);
+	const std::vector<int>& tiles = t.object->tiles_[random_index%t.object->tiles_.size()];
+	foreach(int i, tiles) {
+		if(i < 0) {
+			continue;
+		}
+
+		int x = index%t.object->width_;
+		if(t.face_right) {
+			x = t.object->width_ - x - 1;
+		}
+		const int y = index/t.object->width_;
+		queue_draw_from_tilesheet(q, t.object->t_, i, t.x + x*32, t.y + y*32, t.face_right);
 		++index;
 	}
 }

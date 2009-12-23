@@ -470,6 +470,39 @@ void flush_blit_texture()
 	blit_tcqueue.clear();
 	blit_vqueue.clear();
 }
+
+void blit_queue::clear()
+{
+	texture_ = 0;
+	vertex_.clear();
+	uv_.clear();
+}
+
+void blit_queue::do_blit() const
+{
+	if(vertex_.empty()) {
+		return;
+	}
+
+	texture::set_current_texture(texture_);
+
+	glVertexPointer(2, GL_FLOAT, 0, &vertex_.front());
+	glTexCoordPointer(2, GL_FLOAT, 0, &uv_.front());
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, uv_.size()/2);
+}
+
+void blit_queue::do_blit_range(short begin, short end) const
+{
+	if(vertex_.empty()) {
+		return;
+	}
+
+	texture::set_current_texture(texture_);
+
+	glVertexPointer(2, GL_FLOAT, 0, &vertex_[begin]);
+	glTexCoordPointer(2, GL_FLOAT, 0, &uv_[begin]);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, (end - begin)/2);
+}
 	
 	void set_draw_detection_rect(const rect& rect, char* buf)
 	{

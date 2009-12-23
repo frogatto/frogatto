@@ -9,6 +9,10 @@
 #include "texture.hpp"
 #include "wml_node_fwd.hpp"
 
+namespace graphics {
+class blit_queue;
+}
+
 class frame
 {
 public:
@@ -27,6 +31,7 @@ public:
 	//sound, useful if the sound is later cancelled.
 	void play_sound(const void* object=NULL) const;
 	bool is_alpha(int x, int y, int time, bool face_right) const;
+	void draw_into_blit_queue(graphics::blit_queue& blit, int x, int y, bool face_right=true, bool upside_down=false, int time=0) const;
 	void draw(int x, int y, bool face_right=true, bool upside_down=false, int time=0, int rotate=0) const;
 	void draw(int x, int y, const rect& area, bool face_right=true, bool upside_down=false, int time=0, int rotate=0) const;
 	void set_image_as_solid();

@@ -199,6 +199,22 @@ bool frame::is_alpha(int x, int y, int time, bool face_right) const
 	return texture_.is_alpha((texture_.width()-1)*u, (texture_.height()-1)*v);
 }
 
+void frame::draw_into_blit_queue(graphics::blit_queue& blit, int x, int y, bool face_right, bool upside_down, int time) const
+{
+	GLfloat rect[4];
+	get_rect_in_texture(time, &rect[0]);
+
+	const int w = width()*(face_right ? 1 : -1);
+	const int h = height()*(upside_down ? -1 : 1);
+
+	blit.set_texture(texture_.get_id());
+
+	blit.add(x, y, rect[0], rect[1]);
+	blit.add(x + w, y, rect[2], rect[1]);
+	blit.add(x, y + h, rect[0], rect[3]);
+	blit.add(x + w, y + h, rect[2], rect[3]);
+}
+
 void frame::draw(int x, int y, bool face_right, bool upside_down, int time, int rotate) const
 {
 	GLfloat rect[4];

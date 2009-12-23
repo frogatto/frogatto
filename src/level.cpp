@@ -125,6 +125,7 @@ level::level(const std::string& level_cfg)
 	}
 
 	std::sort(tiles_.begin(), tiles_.end(), level_tile_zorder_pos_comparer());
+	prepare_tiles_for_drawing();
 
 	wml::node::const_child_iterator c1 = node->begin_child("character");
 	wml::node::const_child_iterator c2 = node->end_child("character");
@@ -294,6 +295,7 @@ void level::rebuild_tiles()
 	std::cerr << "sorting...\n";
 
 	std::sort(tiles_.begin(), tiles_.end(), level_tile_zorder_pos_comparer());
+	prepare_tiles_for_drawing();
 }
 
 int level::variations(int xtile, int ytile) const
@@ -363,6 +365,7 @@ void level::rebuild_tiles_rect(const rect& r)
 	}
 
 	std::sort(tiles_.begin(), tiles_.end(), level_tile_zorder_pos_comparer());
+	prepare_tiles_for_drawing();
 }
 
 wml::node_ptr level::write() const
@@ -556,34 +559,55 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 
 	typedef std::vector<level_tile>::const_iterator itor;
 	std::pair<itor,itor> range = std::equal_range(tiles_.begin(), tiles_.end(), layer, level_tile_zorder_comparer());
-	itor t = std::lower_bound(range.first, range.second, x,
-	                          level_tile_x_pos_comparer());
+	itor t = std::lower_bound(range.first, range.second, y,
+	                          level_tile_y_pos_comparer());
 
-	//if we draw tiles one on top of each other we don't have to flush.
-	//keep track of where the next tile should be to avoid flushing.
-	int next_x = 0, next_y = 0;
+	short begin_range = 0;
+	short end_range = 0;
+	const graphics::blit_queue* blit_queue = NULL;
 
-	int count = 0, total = 0;
-	while(t != tiles_.end() && t->zorder == layer && t->x < x + w) {
-		if(t->y > y && t->y < y + h) {
-			if(t->x != next_x || t->y != next_y) {
-				graphics::flush_blit_texture();
+	while(t != tiles_.end() && t->zorder == layer && t->y < y + h) {
+		if(t->x > x && t->x < x + w) {
+			if(blit_queue != t->blit_queue) {
+				if(blit_queue) {
+					blit_queue->do_blit_range(begin_range, end_range);
+				}
+
+				blit_queue = t->blit_queue;
+				begin_range = t->blit_queue_begin;
 			}
 
-			++count;
-			draw_tile(*t);
-			next_x = t->x;
-			next_y = t->y + TileSize;
+			end_range = t->blit_queue_end;
 		}
 		++t;
-		++total;
 	}
 
-	graphics::flush_blit_texture();
+	if(blit_queue) {
+		blit_queue->do_blit_range(begin_range, end_range);
+	}
 
 	glPopMatrix();
 
 	glColor4f(1.0, 1.0, 1.0, 1.0);
+}
+
+void level::prepare_tiles_for_drawing()
+{
+	for(int n = 0; n != tiles_.size(); ++n) {
+		tiles_[n].blit_queue_buf.clear();
+
+		//see if this tile can be drawn in a strip with the previous tile.
+		if(n > 0 && tiles_[n].x == tiles_[n-1].x + TileSize && tiles_[n].y == tiles_[n-1].y && tiles_[n].object->texture().get_id() == tiles_[n-1].object->texture().get_id()) {
+			tiles_[n].blit_queue = tiles_[n-1].blit_queue;
+		} else {
+			tiles_[n].blit_queue = &tiles_[n].blit_queue_buf;
+		}
+
+		tiles_[n].blit_queue = &tiles_[n].blit_queue_buf;
+		tiles_[n].blit_queue_begin = tiles_[n].blit_queue->position();
+		queue_draw_tile(*tiles_[n].blit_queue, tiles_[n]);
+		tiles_[n].blit_queue_end = tiles_[n].blit_queue->position();
+	}
 }
 
 namespace {
@@ -1144,6 +1168,7 @@ void level::add_tile(const level_tile& t)
 	tiles_.insert(itor, t);
 	add_tile_solid(t);
 	layers_.insert(t.zorder);
+	prepare_tiles_for_drawing();
 }
 
 void level::add_tile_rect(int zorder, int x1, int y1, int x2, int y2, const std::string& str)
@@ -1348,6 +1373,7 @@ struct tile_on_point {
 void level::remove_tiles_at(int x, int y)
 {
 	tiles_.erase(std::remove_if(tiles_.begin(), tiles_.end(), tile_on_point(x,y)), tiles_.end());
+	prepare_tiles_for_drawing();
 }
 
 std::vector<point> level::get_solid_contiguous_region(int xpos, int ypos) const

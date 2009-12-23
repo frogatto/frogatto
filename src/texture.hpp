@@ -43,6 +43,8 @@ public:
 
 	typedef std::vector<surface> key;
 
+	GLuint get_id() const;
+	static void set_current_texture(GLuint id);
 	void set_as_current_texture() const;
 	bool valid() const { return id_; }
 
