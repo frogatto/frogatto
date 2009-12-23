@@ -528,7 +528,6 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 	glPushMatrix();
 
 	graphics::distortion_translation distort_translation;
-
 	
 	// parallax scrolling for tiles.
 	std::map<int, tile_map>::const_iterator tile_map_iterator = tile_maps_.find(layer);
@@ -546,16 +545,6 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 		x -= diffx;
 		y -= diffy;
 	} 
-
-	typedef std::vector<prop_object>::const_iterator prop_itor;
-	std::pair<prop_itor,prop_itor> prop_range = std::equal_range(props_.begin(), props_.end(), layer);
-	while(prop_range.first != prop_range.second) {
-		const rect& area = prop_range.first->area();
-		if(! (area.x() > x + w || area.x2() < x || area.y() > y + h || area.y2() < y)) {
-			prop_range.first->draw();
-		}
-		++prop_range.first;
-	}
 
 	typedef std::vector<level_tile>::const_iterator itor;
 	std::pair<itor,itor> range = std::equal_range(tiles_.begin(), tiles_.end(), layer, level_tile_zorder_comparer());

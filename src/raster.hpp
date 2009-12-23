@@ -56,7 +56,7 @@ public:
 	void clear();
 	void do_blit() const;
 	void do_blit_range(short begin, short end) const;
-	void add(GLfloat x, GLfloat y, GLfloat u, GLfloat v) {
+	void add(GLshort x, GLshort y, GLfloat u, GLfloat v) {
 		vertex_.push_back(x);
 		vertex_.push_back(y);
 		uv_.push_back(u);
@@ -75,7 +75,7 @@ public:
 	short position() const { return vertex_.size(); }
 private:
 	GLuint texture_;
-	std::vector<GLfloat> vertex_;
+	std::vector<GLshort> vertex_;
 	std::vector<GLfloat> uv_;
 };
 
