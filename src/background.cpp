@@ -140,17 +140,6 @@ wml::node_ptr background::write() const
 
 void background::draw(double xpos, double ypos, int rotation, int cycle) const
 {
-	const int max_x = width_ - graphics::screen_width();
-	const int max_y = height_ - graphics::screen_height();
-
-	double x = xpos/max_x;
-	double y = ypos/max_y;
-
-	double y2 = y + double(graphics::screen_height())/double(height_);
-	
-	x = std::min<double>(1.0, std::max<double>(0.0, x));
-	y = std::min<double>(1.0, std::max<double>(0.0, y));
-
 	//set the background colors for the level. The area above 'height' is
 	//painted with the top color, and the area below height is painted with
 	//the bottom color. For efficiency we do this using color clearing, with
