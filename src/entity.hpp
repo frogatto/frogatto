@@ -71,8 +71,6 @@ public:
 
 	virtual bool is_standable(int x, int y, int* friction=NULL, int* traction=NULL, int* adjust_y=NULL) const { return false; }
 
-	virtual void stood_on_by(const entity_ptr& ch) {}
-
 	virtual bool destroyed() const = 0;
 
 	virtual int surface_friction() const { return 0; }

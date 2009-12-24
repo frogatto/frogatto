@@ -195,7 +195,6 @@ custom_object::custom_object(const custom_object& o) :
 	loaded_(o.loaded_),
 	event_handlers_(o.event_handlers_),
 	standing_on_(o.standing_on_),
-	stood_on_by_(o.stood_on_by_),
 	standing_on_prev_x_(o.standing_on_prev_x_), standing_on_prev_y_(o.standing_on_prev_y_),
 	distortion_(o.distortion_),
 	draw_color_(o.draw_color_ ? new graphics::color_transform(*o.draw_color_) : NULL),
@@ -759,7 +758,11 @@ void custom_object::process(level& lvl)
 		velocity_x_ -= stand_info.collide_with->last_move_x()*100;
 		velocity_y_ = 0;
 
-		stand_info.collide_with->handle_event("jumped_on");
+		game_logic::map_formula_callable* callable(new game_logic::map_formula_callable(this));
+		callable->add("jumped_on_by", variant(collide_info.collide_with.get()));
+		game_logic::formula_callable_ptr callable_ptr(callable);
+
+		stand_info.collide_with->handle_event("jumped_on", callable);
 	}
 
 	standing_on_ = stand_info.collide_with;
@@ -942,12 +945,6 @@ bool custom_object::is_standable(int xpos, int ypos, int* friction, int* tractio
 	return false;
 }
 
-void custom_object::stood_on_by(const entity_ptr& ch)
-{
-	handle_event("stood_on");
-	stood_on_by_.push_back(ch);
-}
-
 bool custom_object::destroyed() const
 {
 	return hitpoints_ <= 0;
@@ -1078,7 +1075,6 @@ struct custom_object::Accessor {
 	CUSTOM_ACCESSOR(group, obj.group());
 	SIMPLE_ACCESSOR(rotate);
 	CUSTOM_ACCESSOR(me, &obj);
-	CUSTOM_ACCESSOR(stood_on, obj.stood_on_by_.size());
 	CUSTOM_ACCESSOR(red, obj.draw_color().r());
 	CUSTOM_ACCESSOR(green, obj.draw_color().g());
 	CUSTOM_ACCESSOR(blue, obj.draw_color().b());
@@ -1111,15 +1107,6 @@ struct custom_object::Accessor {
 		collision_info info;
 		obj.is_standing(level::current(), &info);
 		return variant(info.collide_with.get());
-	}
-
-	static variant stood_on_by(const custom_object& obj) {
-		std::vector<variant> v;
-		foreach(entity_ptr e, obj.stood_on_by_) {
-			v.push_back(variant(e.get()));
-		}
-
-		return variant(&v);
 	}
 
 	static variant fragment_shaders(const custom_object& obj) {
@@ -1211,7 +1198,6 @@ struct custom_object::Accessor {
 		ACCESSOR(group);
 		ACCESSOR(rotate);
 		ACCESSOR(me);
-		ACCESSOR(stood_on);
 		ACCESSOR(red);
 		ACCESSOR(green);
 		ACCESSOR(blue);
@@ -1232,7 +1218,6 @@ struct custom_object::Accessor {
 		ACCESSOR(sound_volume);
 		ACCESSOR(destroyed);
 		ACCESSOR(standing_on);
-		ACCESSOR(stood_on_by);
 		ACCESSOR(fragment_shaders);
 		ACCESSOR(vertex_shaders);
 		ACCESSOR(shader);
@@ -1765,13 +1750,6 @@ void custom_object::map_entities(const std::map<entity_ptr, entity_ptr>& m)
 		std::map<entity_ptr, entity_ptr>::const_iterator i = m.find(last_hit_by_);
 		if(i != m.end()) {
 			last_hit_by_ = i->second;
-		}
-	}
-
-	foreach(entity_ptr& e, stood_on_by_) {
-		std::map<entity_ptr, entity_ptr>::const_iterator i = m.find(e);
-		if(i != m.end()) {
-			e = i->second;
 		}
 	}
 }

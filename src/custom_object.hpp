@@ -49,7 +49,6 @@ public:
 	
 	virtual bool is_standable(int x, int y, int* friction=NULL, int* traction=NULL, int* adjust_y=NULL) const;
 
-	virtual void stood_on_by(const entity_ptr& ch);
 	virtual bool destroyed() const;
 	virtual bool point_collides(int x, int y) const;
 	virtual bool rect_collides(const rect& r) const;
@@ -189,7 +188,6 @@ private:
 	std::map<std::string, game_logic::const_formula_ptr> event_handlers_;
 
 	entity_ptr standing_on_;
-	std::vector<entity_ptr> stood_on_by_;
 
 	int standing_on_prev_x_, standing_on_prev_y_;
 
