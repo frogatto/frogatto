@@ -759,7 +759,7 @@ void custom_object::process(level& lvl)
 		velocity_y_ = 0;
 
 		game_logic::map_formula_callable* callable(new game_logic::map_formula_callable(this));
-		callable->add("jumped_on_by", variant(collide_info.collide_with.get()));
+		callable->add("jumped_on_by", variant(this));
 		game_logic::formula_callable_ptr callable_ptr(callable);
 
 		stand_info.collide_with->handle_event("jumped_on", callable);
