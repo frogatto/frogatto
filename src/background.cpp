@@ -145,20 +145,36 @@ void background::draw(double xpos, double ypos, int rotation, int cycle) const
 	//the bottom color. For efficiency we do this using color clearing, with
 	//scissors to divide the screen into top and bottom.
 	if(height_ < ypos) {
+		//the entire screen is full of the bottom color
 		glClearColor(bot_.r/255.0, bot_.g/255.0, bot_.b/255.0, 0.0);
 		glClear(GL_COLOR_BUFFER_BIT);
 	} else if(height_ > ypos + graphics::screen_height()) {
+		//the entire screen is full of the top color.
 		glClearColor(top_.r/255.0, top_.g/255.0, top_.b/255.0, 0.0);
 		glClear(GL_COLOR_BUFFER_BIT);
 	} else {
+		//both bottom and top colors are on the screen, so draw them both,
+		//using scissors to delinate their areas.
 		const int dist_from_bottom = ypos + graphics::screen_height() - height_;
 
 		glEnable(GL_SCISSOR_TEST);
+
+		//the scissor test does not respect any rotations etc. We use a rotation
+		//to transform the iPhone's display, which is fine normally, but
+		//here we have to accomodate the iPhone being "on its side"
+#if TARGET_OS_IPHONE
+		glScissor(dist_from_bottom, 0, graphics::screen_height() - dist_from_bottom, graphics::screen_width());
+#else
 		glScissor(0, dist_from_bottom, graphics::screen_width(), graphics::screen_height() - dist_from_bottom);
+#endif
 		glClearColor(top_.r/255.0, top_.g/255.0, top_.b/255.0, 0.0);
 		glClear(GL_COLOR_BUFFER_BIT);
 
+#if TARGET_OS_IPHONE
+		glScissor(0, 0, dist_from_bottom, graphics::screen_width());
+#else
 		glScissor(0, 0, graphics::screen_width(), dist_from_bottom);
+#endif
 		glClearColor(bot_.r/255.0, bot_.g/255.0, bot_.b/255.0, 0.0);
 		glClear(GL_COLOR_BUFFER_BIT);
 

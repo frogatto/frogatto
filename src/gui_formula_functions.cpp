@@ -115,31 +115,6 @@ private:
 		const int y = args()[2]->evaluate(variables).as_int();
 
 		return variant(new draw_animation_command(f, x, y));
-/*
-		std::vector<variant> v;
-		v.reserve(args().size());
-		for(int n = 0; n != args().size(); ++n) {
-			v.push_back(args()[n]->evaluate(variables));
-		}
-
-		int index = 0;
-		std::string object;
-		if(v[1].is_string()) {
-			index = 1;
-			object = v[0].as_string();
-			ASSERT_GE(v.size(), 4);
-		}
-
-		std::string anim = v[index].as_string();
-		const int x = v[index+1].as_int();
-		const int y = v[index+2].as_int();
-		int time = -1;
-		if(index+3 < v.size()) {
-			time = v[index+3].as_int();
-		}
-
-		return variant(new gui_command(boost::bind(&gui_algorithm::draw_animation, _1, object, anim, x, y, time)));
-		*/
 	}
 };
 

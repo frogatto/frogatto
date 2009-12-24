@@ -21,6 +21,11 @@
 #include "geometry.hpp"
 #include "texture.hpp"
 
+namespace preferences
+{
+extern int xypos_draw_mask;
+}
+
 namespace graphics
 {
 
@@ -58,8 +63,8 @@ public:
 	void do_blit() const;
 	void do_blit_range(short begin, short end) const;
 	void add(GLshort x, GLshort y, GLfloat u, GLfloat v) {
-		vertex_.push_back(x);
-		vertex_.push_back(y);
+		vertex_.push_back(x&preferences::xypos_draw_mask);
+		vertex_.push_back(y&preferences::xypos_draw_mask);
 		uv_.push_back(u);
 		uv_.push_back(v);
 	}

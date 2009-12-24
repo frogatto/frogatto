@@ -416,6 +416,9 @@ std::vector<GLfloat> blit_vqueue;
 void queue_blit_texture(const texture& tex, int x, int y, int w, int h,
                         GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2)
 {
+	x &= preferences::xypos_draw_mask;
+	y &= preferences::xypos_draw_mask;
+
 	if(&tex != blit_current_texture) {
 		flush_blit_texture();
 		blit_current_texture = &tex;
