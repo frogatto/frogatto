@@ -556,19 +556,19 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 
 	layer_blit_info& blit_info = blit_cache_[layer];
 
-	const int blit_x_pos = x/32 - (x < 0 ? 1 : 0);
-	const int blit_y_pos = y/32 - (y < 0 ? 1 : 0);
+	const rect tile_positions(x/32 - (x < 0 ? 1 : 0), y/32 - (y < 0 ? 1 : 0),
+	                          (x + w)/32 - (x + w < 0 ? 1 : 0),
+							  (y + h)/32 - (y + h < 0 ? 1 : 0));
 
 	graphics::blit_queue& blit_queue_store = blit_info.blit_queue;
 
-	if(blit_info.last_x != blit_x_pos || blit_info.last_y != blit_y_pos) {
-		blit_info.last_x = blit_x_pos;
-		blit_info.last_y = blit_y_pos;
+	if(blit_info.tile_positions != tile_positions) {
+		blit_info.tile_positions = tile_positions;
 		blit_queue_store.clear();
 
 		const graphics::blit_queue* blit_queue = NULL;
 
-		while(t != tiles_.end() && t->zorder == layer && t->y < y + h) {
+		while(t != tiles_.end() && t->zorder == layer && t->y <= y + h) {
 			const int increment = 8;
 			while(t->x < x - TileSize) {
 				if(t+increment >= tiles_.end() || t[increment].y != t->y || t[increment].zorder != t->zorder || t[increment].x > x - TileSize) {
@@ -590,7 +590,7 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 				if(blit_queue != t->blit_queue) {
 					if(blit_queue) {
 						if(!blit_queue_store.merge(*blit_queue, begin_range, end_range)) {
-							blit_info.last_x = INT_MIN;
+							blit_info.tile_positions = rect();
 							blit_queue_store.do_blit();
 							blit_queue_store.clear();
 							blit_queue_store.merge(*blit_queue, begin_range, end_range);
@@ -609,7 +609,7 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 
 		if(blit_queue) {
 						if(!blit_queue_store.merge(*blit_queue, begin_range, end_range)) {
-							blit_info.last_x = INT_MIN;
+							blit_info.tile_positions = rect();
 							blit_queue_store.do_blit();
 							blit_queue_store.clear();
 							blit_queue_store.merge(*blit_queue, begin_range, end_range);

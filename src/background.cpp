@@ -3,6 +3,8 @@
 #include <GL/glew.h>
 #endif
 
+#include <math.h>
+
 #include <iostream>
 #include <map>
 
@@ -64,6 +66,8 @@ background::background(const wml::const_node_ptr& node)
 		bg.xscale = wml::get_int(layer_node, "xscale", 100);
 		bg.yscale = wml::get_int(layer_node, "yscale", 100);
 		bg.xspeed = wml::get_int(layer_node, "xspeed", 0);
+		bg.xpad = wml::get_int(layer_node, "xpad", 0);
+		bg.xoffset = wml::get_int(layer_node, "xoffset", 0);
 		bg.yoffset = wml::get_int(layer_node, "yoffset", 0);
 		bg.scale = wml::get_int(layer_node, "scale", 1);
 		if(bg.scale < 1) {
@@ -114,6 +118,8 @@ wml::node_ptr background::write() const
 		node->set_attr("xscale", formatter() << bg.xscale);
 		node->set_attr("yscale", formatter() << bg.yscale);
 		node->set_attr("xspeed", formatter() << bg.xspeed);
+		node->set_attr("xpad", formatter() << bg.xpad);
+		node->set_attr("xoffset", formatter() << bg.xoffset);
 		node->set_attr("yoffset", formatter() << bg.yoffset);
 		node->set_attr("y1", formatter() << bg.y1);
 		node->set_attr("y2", formatter() << bg.y2);
@@ -144,92 +150,31 @@ void background::draw(double xpos, double ypos, int rotation, int cycle) const
 	
 	x = std::min<double>(1.0, std::max<double>(0.0, x));
 	y = std::min<double>(1.0, std::max<double>(0.0, y));
-	const GLubyte top_col[] = {
-		top_.r,
-		top_.g,
-		top_.b,
-		255
-	};
-	const GLubyte bot_col[] = {
-		bot_.r,
-		bot_.g,
-		bot_.b,
-		255
-	};
 
-	
-	//The following takes the two background colors, and makes them seemingly extend infinitely far off the top and bottom of the screen.
-	glShadeModel(GL_SMOOTH);
-	glDisable(GL_TEXTURE_2D);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glPushMatrix();
-	
-	//draw from the top of the screen down to a certain height in the level, but no further.
-	//This is the upper color; often the sky
-	GLfloat varray[] = {
-	xpos, ypos,
-	xpos + graphics::screen_width(), ypos,
-		xpos, std::max(ypos, static_cast<double>(height_)),
-	xpos + graphics::screen_width(), std::max(ypos, static_cast<double>(height_))
-	};
-	
-	GLubyte carray[4*4]; //4 floats per color, 4 vertices/colors
-	for (int i = 0; i < 16; i++) carray[i] = top_col[i%4];
-	glEnableClientState(GL_COLOR_ARRAY);
-	glVertexPointer(2, GL_FLOAT, 0, varray);
-	glColorPointer(4, GL_UNSIGNED_BYTE, 0, carray);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glDisableClientState(GL_COLOR_ARRAY);
+	//set the background colors for the level. The area above 'height' is
+	//painted with the top color, and the area below height is painted with
+	//the bottom color. For efficiency we do this using color clearing, with
+	//scissors to divide the screen into top and bottom.
+	if(height_ < ypos) {
+		glClearColor(bot_.r/255.0, bot_.g/255.0, bot_.b/255.0, 0.0);
+		glClear(GL_COLOR_BUFFER_BIT);
+	} else if(height_ > ypos + graphics::screen_height()) {
+		glClearColor(top_.r/255.0, top_.g/255.0, top_.b/255.0, 0.0);
+		glClear(GL_COLOR_BUFFER_BIT);
+	} else {
+		const int dist_from_bottom = ypos + graphics::screen_height() - height_;
 
-	//draw from a certain height in the level down to the bottom of the screen.
-	//This is the bottom color; often ground or ocean fading to a dark monotone.
-	GLfloat varray2[] = {
-		xpos, std::max(ypos, static_cast<double>(height_)),
-		xpos + graphics::screen_width(), std::max(ypos, static_cast<double>(height_)),
-		xpos, ypos + graphics::screen_height(),
-		xpos + graphics::screen_width(), ypos + graphics::screen_height()
-	};
-	
-	GLubyte carray2[4*4]; //4 floats per color, 4 vertices/colors
-	for (int i = 0; i < 16; i++) carray2[i] = bot_col[i%4];
-	glEnableClientState(GL_COLOR_ARRAY);
-	glVertexPointer(2, GL_FLOAT, 0, varray2);
-	glColorPointer(4, GL_UNSIGNED_BYTE, 0, carray2);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glDisableClientState(GL_COLOR_ARRAY);
-	
-	
-	if(rotation) {
-		const int border = 100;
-		glColor4ub(top_col[0], top_col[1], top_col[2], 255);
-		
-		GLfloat varray2[] = {
-			-border, -border,
-			graphics::screen_width() + border, -border,
-			-border, 0,
-			graphics::screen_width() + border, 0
-		};
-		glVertexPointer(2, GL_FLOAT, 0, varray2);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-		
-		GLfloat varray3[] = {
-			-border, 0,
-			graphics::screen_width() + border, 0,
-			-border, height_,
-			graphics::screen_width() + border, height_
-		};
-		glEnableClientState(GL_COLOR_ARRAY);
-		glVertexPointer(2, GL_FLOAT, 0, varray3);
-		glColorPointer(4, GL_UNSIGNED_BYTE, 0, carray); //same colors from further up in the function
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-		glDisableClientState(GL_COLOR_ARRAY);
+		glEnable(GL_SCISSOR_TEST);
+		glScissor(0, dist_from_bottom, graphics::screen_width(), graphics::screen_height() - dist_from_bottom);
+		glClearColor(top_.r/255.0, top_.g/255.0, top_.b/255.0, 0.0);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		glScissor(0, 0, graphics::screen_width(), dist_from_bottom);
+		glClearColor(bot_.r/255.0, bot_.g/255.0, bot_.b/255.0, 0.0);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		glDisable(GL_SCISSOR_TEST);
 	}
-
-	glColor4f(1.0,1.0,1.0,1.0);
-	glPopMatrix();
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glEnable(GL_TEXTURE_2D);
-	glShadeModel(GL_FLAT);
 
 	foreach(const layer& bg, layers_) {
 		if(bg.foreground == false) {
@@ -251,11 +196,6 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 {
 	int screen_width = graphics::screen_width();
 
-	//add some area around the edge of the screen to account for distortions.
-	//TODO: find a more elegant and accurate way to do this.
-	x -= 50;
-	screen_width += 100;
-
 	if(!bg.texture.valid()) {
 		bg.texture = graphics::texture::get(bg.image, bg.image_formula);
 		if(bg.y2 == 0) {
@@ -265,8 +205,20 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 
 	const double ScaleImage = 2.0;
 	const double xscale = double(bg.xscale)/100.0;
-	const double xpos = (-double(bg.xspeed)*double(cycle)/1000 + int(double(x)*xscale))/double(bg.texture.width()*ScaleImage);
-	const double xpos2 = xpos + double(screen_width)/(bg.texture.width()*ScaleImage);
+	GLfloat xpos = (-GLfloat(bg.xspeed)*GLfloat(cycle)/1000 + int(GLfloat(x + bg.xoffset)*xscale))/GLfloat((bg.texture.width()+bg.xpad)*ScaleImage);
+
+	//clamp xpos into the [0.0, 1.0] range
+	if(xpos > 0) {
+		xpos -= floor(xpos);
+	} else {
+		while(xpos < 0) { xpos += 1.0; }
+		//xpos += ceil(-xpos);
+	}
+
+	if(bg.xpad > 0) {
+		xpos *= GLfloat(bg.texture.width() + bg.xpad)/GLfloat(bg.texture.width());
+		std::cerr << "PAD: " << xpos << "\n";
+	}
 	
 	glPushMatrix();
 	glColor4f(bg.color[0], bg.color[1], bg.color[2], bg.color[3]);
@@ -276,12 +228,27 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 		glBlendEquation(bg.mode);
 	}
 #endif
-	graphics::blit_texture(bg.texture, x, y + bg.yoffset*ScaleImage - (y*bg.yscale)/100,
-	                       screen_width,
-					       (bg.y2 - bg.y1)*ScaleImage, 0.0, xpos,
-						   double(bg.y1)/double(bg.texture.height()),
-						   xpos2,
-						   double(bg.y2)/double(bg.texture.height()));
+
+	while(screen_width > 0) {
+		const int texture_blit_width = (1.0 - xpos)*bg.texture.width()*ScaleImage;
+
+		const int blit_width = std::min(texture_blit_width, screen_width);
+
+		if(blit_width > 0) {
+			const GLfloat xpos2 = xpos + GLfloat(blit_width)/(GLfloat(bg.texture.width())*2.0);
+			graphics::blit_texture(bg.texture, x, y + bg.yoffset*ScaleImage - (y*bg.yscale)/100,
+			                       blit_width,
+							       (bg.y2 - bg.y1)*ScaleImage, 0.0, xpos,
+								   double(bg.y1)/double(bg.texture.height()),
+								   xpos2,
+								   double(bg.y2)/double(bg.texture.height()));
+		}
+
+		x += blit_width + bg.xpad*ScaleImage;
+
+		xpos = 0.0;
+		screen_width -= blit_width + bg.xpad*ScaleImage;
+	}
 
 	glColor4f(1.0,1.0,1.0,1.0);
 #ifndef SDL_VIDEO_OPENGL_ES

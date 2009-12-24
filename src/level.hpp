@@ -278,9 +278,8 @@ private:
 	int highlight_layer_;
 
 	struct layer_blit_info {
-		layer_blit_info() : last_x(INT_MIN), last_y(INT_MIN) {}
 		graphics::blit_queue blit_queue;
-		int last_x, last_y;
+		rect tile_positions;
 	};
 
 	mutable std::map<int, layer_blit_info> blit_cache_;

@@ -41,7 +41,9 @@ private:
 								//walks around.  They give us the illusion of 'depth'. 100 is normal ground, less=distant, more=closer
 		
 		int xspeed;				//speed is how fast (in millipixels/cycle) the bg moves on its own.  It's for drifting clounds/rivers.
+		int xpad;               //amount of empty space padding we put between
 		int scale;				//a multiplier on the dimensions of the image.  Usually unused.
+		int xoffset;
 		int yoffset;			
 		GLfloat color[4];
 		

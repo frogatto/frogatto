@@ -68,8 +68,8 @@ namespace graphics
 #endif
 		
 		glViewport(0, 0, preferences::actual_screen_width(), preferences::actual_screen_height());
-		glClearColor(0.0, 0.0, 0.0, 0.0);
-		glClear(GL_COLOR_BUFFER_BIT);
+//		glClearColor(0.0, 0.0, 0.0, 0.0);
+//		glClear(GL_COLOR_BUFFER_BIT);
 		glShadeModel(GL_FLAT);
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
