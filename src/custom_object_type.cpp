@@ -223,7 +223,9 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	if(node->has_attr("solid_dimensions")) {
 		solid_dimensions_ = 0;
 		foreach(const std::string& key, util::split(node->attr("solid_dimensions"))) {
-			solid_dimensions_ |= (1 << get_solid_dimension_id(key));
+			if(key != "level_only") {
+				solid_dimensions_ |= (1 << get_solid_dimension_id(key));
+			}
 		}
 
 		std::cerr << "SOLID DIMENSIONS " << id_ << ": " << node->attr("solid_dimensions") << " -> " << solid_dimensions_ << "\n";
