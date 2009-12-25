@@ -434,7 +434,7 @@ void detect_user_collisions(level& lvl)
 	std::vector<entity_ptr> chars;
 	chars.reserve(lvl.get_chars().size());
 	foreach(const entity_ptr& a, lvl.get_chars()) {
-		if(a->current_frame().collision_areas().empty() == false) {
+		if(a->collide_dimensions() != 0 && a->current_frame().collision_areas().empty() == false) {
 			chars.push_back(a);
 		}
 	}
@@ -445,6 +445,11 @@ void detect_user_collisions(level& lvl)
 		for(std::vector<entity_ptr>::const_iterator j = i + 1; j != chars.end(); ++j) {
 			const entity_ptr& a = *i;
 			const entity_ptr& b = *j;
+			if((a->collide_dimensions()&b->collide_dimensions()) == 0) {
+				//the objects do not share a dimension, and so can't collide.
+				continue;
+			}
+
 			int ncollisions = entity_user_collision(*a, *b, collision_buf, MaxCollisions);
 			if(ncollisions > MaxCollisions) {
 				ncollisions = MaxCollisions;

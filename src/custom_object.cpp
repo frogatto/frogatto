@@ -67,6 +67,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 	shader_(0)
 {
 	set_solid_dimensions(type_->solid_dimensions());
+	set_collide_dimensions(type_->collide_dimensions());
 
 	wml::const_node_ptr tags_node = node->get_child("tags");
 	if(tags_node) {
@@ -143,6 +144,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	shader_(0)
 {
 	set_solid_dimensions(type_->solid_dimensions());
+	set_collide_dimensions(type_->collide_dimensions());
 
 	for(std::map<std::string, variant>::const_iterator i = type_->variables().begin(); i != type_->variables().end(); ++i) {
 		if(!vars_->contains(i->first)) {

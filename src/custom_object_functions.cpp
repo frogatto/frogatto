@@ -681,6 +681,25 @@ private:
 	}
 };
 
+class set_value_function : public function_expression {
+public:
+	explicit set_value_function(const args_list& args)
+	  : function_expression("set_value", args, 2, 3) {
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		variant target;
+		if(args().size() == 3) {
+			target = args()[0]->evaluate(variables);
+		}
+		const int begin_index = args().size() == 2 ? 0 : 1;
+		return variant(new set_command(
+		    target,
+		    args()[begin_index]->evaluate(variables).as_string(),
+			args()[begin_index + 1]->evaluate(variables)));
+	}
+};
+
 class get_powerup_command : public entity_command_callable
 {
 public:
@@ -1649,6 +1668,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new set_var_function(args));
 	} else if(fn == "set") {
 		return expression_ptr(new set_function(args));
+	} else if(fn == "set_value") {
+		return expression_ptr(new set_value_function(args));
 	} else if(fn == "powerup") {
 		return expression_ptr(new get_powerup_function(args));
 	} else if(fn == "solid") {

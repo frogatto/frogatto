@@ -216,6 +216,7 @@ public:
 	virtual void set_level(level* lvl) {}
 
 	unsigned int solid_dimensions() const { return solid_dimensions_; }
+	unsigned int collide_dimensions() const { return collide_dimensions_; }
 
 protected:
 
@@ -235,6 +236,7 @@ protected:
 	void set_editor_info(const_editor_entity_info_ptr p) { editor_info_ = p; }
 
 	void set_solid_dimensions(unsigned int dim) { solid_dimensions_ = dim; }
+	void set_collide_dimensions(unsigned int dim) { collide_dimensions_ = dim; }
 
 	const std::vector<entity_ptr>& attached_objects() const { return attached_objects_; }
 	void set_attached_objects(const std::vector<entity_ptr>& v);
@@ -258,7 +260,7 @@ private:
 
 	bool respawn_;
 
-	unsigned int solid_dimensions_;
+	unsigned int solid_dimensions_, collide_dimensions_;
 
 	const_editor_entity_info_ptr editor_info_;
 

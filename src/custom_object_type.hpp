@@ -115,6 +115,7 @@ public:
 	bool has_solid() const { return has_solid_; }
 
 	unsigned int solid_dimensions() const { return solid_dimensions_; }
+	unsigned int collide_dimensions() const { return collide_dimensions_; }
 
 	const_custom_object_type_ptr get_variation(const std::vector<std::string>& variations) const;
 
@@ -180,7 +181,7 @@ private:
 	//variable which is true if the object is ever solid or standable
 	bool has_solid_;
 
-	unsigned int solid_dimensions_;
+	unsigned int solid_dimensions_, collide_dimensions_;
 
 	std::map<std::string, wml::const_modifier_ptr> variations_;
 	mutable std::map<std::vector<std::string>, const_custom_object_type_ptr> variations_cache_;

@@ -222,7 +222,6 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 
 	if(bg.xpad > 0) {
 		xpos *= GLfloat(bg.texture.width() + bg.xpad)/GLfloat(bg.texture.width());
-		std::cerr << "PAD: " << xpos << "\n";
 	}
 	
 	glPushMatrix();

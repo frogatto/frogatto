@@ -217,7 +217,8 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	solid_(solid_info::create(node)),
 	platform_(solid_info::create_platform(node)),
 	has_solid_(solid_ || use_image_for_collisions_),
-	solid_dimensions_(has_solid_ || platform_ ? 0xFFFFFFFF : 0)
+	solid_dimensions_(has_solid_ || platform_ ? 0xFFFFFFFF : 0),
+	collide_dimensions_(0xFFFFFFFF )
 {
 
 	if(node->has_attr("solid_dimensions")) {
@@ -227,9 +228,15 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 				solid_dimensions_ |= (1 << get_solid_dimension_id(key));
 			}
 		}
+	}
 
-		std::cerr << "SOLID DIMENSIONS " << id_ << ": " << node->attr("solid_dimensions") << " -> " << solid_dimensions_ << "\n";
-		
+	if(node->has_attr("collide_dimensions")) {
+		collide_dimensions_ = 0;
+		foreach(const std::string& key, util::split(node->attr("collide_dimensions"))) {
+			if(key != "level_only") {
+				collide_dimensions_ |= (1 << get_solid_dimension_id(key));
+			}
+		}
 	}
 
 	if(node->has_attr("functions")) {
