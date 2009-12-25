@@ -1,4 +1,4 @@
-#include <SDL/SDL.h>
+#include <SDL.h>
 #ifndef SDL_VIDEO_OPENGL_ES
 #include <GL/glew.h>
 #endif

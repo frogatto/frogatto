@@ -16,7 +16,7 @@
 #include <boost/shared_ptr.hpp>
 #include <string>
 
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include "input.hpp"
 
 namespace gui {
