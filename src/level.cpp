@@ -1059,27 +1059,46 @@ void level::erase_char(entity_ptr c)
 bool level::is_solid(const level_solid_map& map, const entity& e, const std::vector<point>& points, int* friction, int* traction, int* damage) const
 {
 	const tile_solid_info* info = NULL;
+	int prev_x = INT_MIN, prev_y = INT_MIN;
 
 	const frame& current_frame = e.current_frame();
 	
 	for(std::vector<point>::const_iterator p = points.begin(); p != points.end(); ++p) {
-		int x = e.x() + (e.face_right() ? p->x : current_frame.width() - 1 - p->x);
-		int y = e.y() + p->y;
+		int x, y;
+		if(prev_x != INT_MIN) {
+			const int diff_x = (p->x - (p-1)->x) * (e.face_right() ? 1 : -1);
+			const int diff_y = p->y - (p-1)->y;
 
-		tile_pos pos(x/TileSize, y/TileSize);
-		x = x%TileSize;
-		y = y%TileSize;
-		if(x < 0) {
-			pos.first--;
-			x += 32;
+			x = prev_x + diff_x;
+			y = prev_y + diff_y;
+			
+			if(x < 0 || y < 0 || x >= TileSize || y >= TileSize) {
+				//we need to recalculate the info, since we've stepped into
+				//another tile.
+				prev_x = INT_MIN;
+			}
+		}
+		
+		if(prev_x == INT_MIN) {
+			x = e.x() + (e.face_right() ? p->x : (current_frame.width() - 1 - p->x));
+			y = e.y() + p->y;
+
+			tile_pos pos(x/TileSize, y/TileSize);
+			x = x%TileSize;
+			y = y%TileSize;
+			if(x < 0) {
+				pos.first--;
+				x += 32;
+			}
+
+			if(y < 0) {
+				pos.second--;
+				y += 32;
+			}
+
+			info = map.find(pos);
 		}
 
-		if(y < 0) {
-			pos.second--;
-			y += 32;
-		}
-
-		const tile_solid_info* info = map.find(pos);
 		if(info != NULL) {
 			if(info->all_solid) {
 				if(friction) {
@@ -1113,7 +1132,8 @@ bool level::is_solid(const level_solid_map& map, const entity& e, const std::vec
 			}
 		}
 
-		return false;
+		prev_x = x;
+		prev_y = y;
 	}
 
 	return false;
