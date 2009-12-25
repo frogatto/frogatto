@@ -157,8 +157,8 @@ custom_object_type_ptr custom_object_type::create(const std::string& id)
 
 		node = merge_prototype(node);
 
-		std::cerr << "NODE FOR " << id << ": {{{\n";
-		std::cerr << wml::output(node) << "\n}}}\n";
+//		std::cerr << "NODE FOR " << id << ": {{{\n";
+//		std::cerr << wml::output(node) << "\n}}}\n";
 
 		//create the object and add it to our cache.
 		custom_object_type_ptr result(new custom_object_type(node));
@@ -337,7 +337,6 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 
 custom_object_type::~custom_object_type()
 {
-	std::cerr << "DESTROY TYPE: '" << id_ << "'\n";
 }
 
 const frame& custom_object_type::default_frame() const

@@ -791,8 +791,6 @@ expression_ptr create_function(const std::string& fn,
 		}
 	}
 
-	std::cerr << "FN: '" << fn << "' " << fn.size() << "\n";
-
 	functions_map::const_iterator i = get_functions_map().find(fn);
 	if(i == get_functions_map().end()) {
 		return expression_ptr();

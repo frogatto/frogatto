@@ -826,9 +826,6 @@ expression_ptr parse_expression(const token* i1, const token* i2, function_symbo
 		if(rng_seed == rng::get_seed() && static_callable->refcount() == 1) {
 			//this expression is static. Reduce it to its result.
 			result = expression_ptr(new variant_expression(res));
-
-			const std::string expr_str(i1->begin, (i2-1)->end);
-			std::cerr << "STATIC_EXPR: " << expr_str << "\n";
 		}
 	} catch(non_static_expression_exception& e) {
 		//the expression isn't static. Not an error.
