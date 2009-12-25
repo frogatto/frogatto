@@ -1090,11 +1090,16 @@ formula::formula(const wml::value& val, function_symbol_table* symbols) : str_(v
 		}
 	}
 
-	if(tokens.size() != 0) {
-		expr_ = parse_expression(&tokens[0],&tokens[0] + tokens.size(), symbols);
-	} else {
-		expr_ = expression_ptr(new null_expression());
-	}	
+	try {
+		if(tokens.size() != 0) {
+			expr_ = parse_expression(&tokens[0],&tokens[0] + tokens.size(), symbols);
+		} else {
+			expr_ = expression_ptr(new null_expression());
+		}	
+	} catch(formula_error&) {
+		std::cerr << "ERROR WHILE PARSING AT " << (filename_ ? *filename_ : "UNKNOWN") << ":" << line_ << "::\n" << str_ << "\n";
+		throw;
+	}
 }
 
 formula::~formula() {
