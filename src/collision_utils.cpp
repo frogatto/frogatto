@@ -159,6 +159,20 @@ bool entity_collides_with_level(const level& lvl, const entity& e, MOVE_DIRECTIO
 	}
 
 	const frame& f = e.current_frame();
+
+	const rect& area = s->area();
+	if(e.face_right()) {
+		rect solid_area(e.x() + area.x(), e.y() + area.y(), area.w(), area.h());
+		if(!lvl.may_be_solid_in_rect(solid_area)) {
+			return false;
+		}
+	} else {
+		rect solid_area(e.x() + f.width() - area.x() - area.w(), e.y() + area.y(), area.w(), area.h());
+		if(!lvl.may_be_solid_in_rect(solid_area)) {
+			return false;
+		}
+	}
+
 	foreach(const const_solid_map_ptr& m, s->solid()) {
 		const std::vector<point>& points = m->dir(dir);
 		foreach(const point& p, points) {

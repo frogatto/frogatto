@@ -1172,8 +1172,11 @@ bool level::may_be_solid_in_rect(const rect& r) const
 		y += 32;
 	}
 
-	for(int ypos = 0; ypos <= (y + r.h())/TileSize; ++ypos) {
-		for(int xpos = 0; xpos <= (x + r.w())/TileSize; ++xpos) {
+	const int x2 = (x + r.w())/TileSize + ((x + r.w())%TileSize ? 1 : 0);
+	const int y2 = (y + r.h())/TileSize + ((y + r.h())%TileSize ? 1 : 0);
+
+	for(int ypos = 0; ypos < y2; ++ypos) {
+		for(int xpos = 0; xpos < x2; ++xpos) {
 			if(solid_.find(tile_pos(pos.first + xpos, pos.second + ypos))) {
 				return true;
 			}

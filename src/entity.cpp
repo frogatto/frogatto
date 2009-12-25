@@ -100,6 +100,8 @@ void entity::set_face_right(bool facing)
 	const int delta_x = feet_x() - start_x;
 	x_ -= delta_x*100;
 	assert(feet_x() == start_x);
+
+	calculate_solid_rect();
 }
 
 void entity::set_upside_down(bool facing)
@@ -123,20 +125,25 @@ const_solid_info_ptr entity::platform() const
 	return const_solid_info_ptr();
 }
 
-rect entity::solid_rect() const
+const rect& entity::solid_rect() const
+{
+	return solid_rect_;
+}
+
+void entity::calculate_solid_rect()
 {
 	const_solid_info_ptr s = solid();
 	if(s) {
 		const rect& area = s->area();
 
 		if(face_right()) {
-			return rect(x() + area.x(), y() + area.y(), area.w(), area.h());
+			solid_rect_ = rect(x() + area.x(), y() + area.y(), area.w(), area.h());
 		} else {
 			const frame& f = current_frame();
-			return rect(x() + f.width() - area.x() - area.w(), y() + area.y(), area.w(), area.h());
+			solid_rect_ = rect(x() + f.width() - area.x() - area.w(), y() + area.y(), area.w(), area.h());
 		}
 	} else {
-		return rect();
+		solid_rect_ = rect();
 	}
 }
 
@@ -269,6 +276,20 @@ void entity::set_attached_objects(const std::vector<entity_ptr>& v)
 {
 	if(v != attached_objects_) {
 		attached_objects_ = v;
+	}
+}
+
+bool entity::move_centipixels(int dx, int dy)
+{
+	int start_x = x();
+	int start_y = y();
+	x_ += dx;
+	y_ += dy;
+	if(x() != start_x || y() != start_y) {
+		calculate_solid_rect();
+		return true;
+	} else {
+		return false;
 	}
 }
 

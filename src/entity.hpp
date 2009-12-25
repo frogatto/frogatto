@@ -48,13 +48,13 @@ public:
 	void set_label(const std::string& lb) { label_ = lb; }
 	void set_distinct_label();
 	
-	void set_pos(const point& p) { x_ = p.x*100; y_ = p.y*100; }
-	void set_pos(int x, int y) { x_ = x*100; y_ = y*100; }
-	void set_x(int x) { x_ = x*100; }
-	void set_y(int y) { y_ = y*100; }
+	void set_pos(const point& p) { x_ = p.x*100; y_ = p.y*100; calculate_solid_rect(); }
+	void set_pos(int x, int y) { x_ = x*100; y_ = y*100; calculate_solid_rect(); }
+	void set_x(int x) { x_ = x*100; calculate_solid_rect(); }
+	void set_y(int y) { y_ = y*100; calculate_solid_rect(); }
 
-	void set_centi_x(int x) { x_ = x; }
-	void set_centi_y(int y) { y_ = y; }
+	void set_centi_x(int x) { x_ = x; calculate_solid_rect(); }
+	void set_centi_y(int y) { y_ = y; calculate_solid_rect(); }
 
 	int x() const { return x_/100 - (x_ < 0 && x_%100 ? 1 : 0); }
 	int y() const { return y_/100 - (y_ < 0 && y_%100 ? 1 : 0); }
@@ -80,7 +80,7 @@ public:
 	virtual bool rect_collides(const rect& r) const = 0;
 	virtual const_solid_info_ptr solid() const;
 	virtual const_solid_info_ptr platform() const;
-	rect solid_rect() const;
+	const rect &solid_rect() const;
 	rect platform_rect() const;
 	rect body_rect() const;
 	rect hit_rect() const;
@@ -219,6 +219,8 @@ public:
 
 protected:
 
+	void calculate_solid_rect();
+
 	bool control_status(controls::CONTROL_ITEM ctrl) const { return controls_[ctrl]; }
 	void read_controls(int cycle);
 
@@ -228,7 +230,7 @@ protected:
 
 	//move the entity by a number of centi pixels. Returns true if its
 	//position is changed.
-	bool move_centipixels(int dx, int dy) { int start_x = x(); int start_y = y(); x_ += dx; y_ += dy; return x() != start_x || y() != start_y; }
+	bool move_centipixels(int dx, int dy);
 
 	void set_editor_info(const_editor_entity_info_ptr p) { editor_info_ = p; }
 
@@ -271,6 +273,8 @@ private:
 	//attached objects should generally NOT be present in the level, and are
 	//NOT processed independently of this object.
 	std::vector<entity_ptr> attached_objects_;
+
+	rect solid_rect_;
 };
 
 #endif

@@ -1379,6 +1379,8 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		} else {
 			type_ = base_type_->get_variation(current_variation_);
 		}
+
+		calculate_solid_rect();
 	} else if(key == "attached_objects") {
 		std::vector<entity_ptr> v;
 		for(int n = 0; n != value.num_elements(); ++n) {
@@ -1476,6 +1478,8 @@ void custom_object::set_frame_no_adjustments(const std::string& name)
 	if(frame_->accel_y() != INT_MIN) {
 		accel_y_ = frame_->accel_y();
 	}
+
+	calculate_solid_rect();
 }
 
 void custom_object::die()
