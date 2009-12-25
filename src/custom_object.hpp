@@ -95,8 +95,8 @@ public:
 	virtual entity_ptr clone() const;
 	virtual entity_ptr backup() const;
 
-	game_logic::const_formula_ptr get_event_handler(const std::string& key) const;
-	void set_event_handler(const std::string& key, game_logic::const_formula_ptr f);
+	game_logic::const_formula_ptr get_event_handler(int key) const;
+	void set_event_handler(int, game_logic::const_formula_ptr f);
 
 	bool can_interact_with() const;
 
@@ -124,6 +124,7 @@ public:
 	virtual int current_animation_id() const { return current_animation_id_; }
 
 	void handle_event(const std::string& event, const formula_callable* context=NULL);
+	void handle_event(int event, const formula_callable* context=NULL);
 
 	void set_blur(const blur_info* blur);
 	void set_sound_volume(const int volume);
@@ -185,7 +186,7 @@ private:
 	//first time process is called will fire the on_load event and set to false
 	bool loaded_;
 
-	std::map<std::string, game_logic::const_formula_ptr> event_handlers_;
+	std::vector<game_logic::const_formula_ptr> event_handlers_;
 
 	entity_ptr standing_on_;
 

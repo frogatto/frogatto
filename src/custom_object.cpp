@@ -20,6 +20,7 @@
 #include "graphical_font.hpp"
 #include "level.hpp"
 #include "level_logic.hpp"
+#include "object_events.hpp"
 #include "playable_custom_object.hpp"
 #include "raster.hpp"
 #include "string_utils.hpp"
@@ -103,7 +104,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 
 	custom_object_type::init_event_handlers(node, event_handlers_);
 
-	can_interact_with_ = (event_handlers_.count("interact") || type_->get_event_handler("interact"));
+	can_interact_with_ = get_event_handler(OBJECT_EVENT_INTERACT).get() != NULL;
 
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	wml::const_node_ptr editor_info = node->get_child("editor_info");
@@ -267,11 +268,12 @@ wml::node_ptr custom_object::write() const
 		res->set_attr("group", formatter() << group());
 	}
 
-	for(std::map<std::string, game_logic::const_formula_ptr>::const_iterator i = event_handlers_.begin(); i != event_handlers_.end(); ++i) {
-		if(!i->second) {
+	for(int n = 0; n != event_handlers_.size(); ++n) {
+		if(!event_handlers_[n]) {
 			continue;
 		}
-		res->set_attr("on_" + i->first, i->second->str());
+
+		res->set_attr("on_" + get_object_event_str(n), event_handlers_[n]->str());
 	}
 
 	if(vars_->values() != type_->variables()) {
@@ -454,13 +456,13 @@ void custom_object::process(level& lvl)
 	}
 
 	if(!loaded_) {
-		handle_event("load");
+		handle_event(OBJECT_EVENT_LOAD);
 		loaded_ = true;
 	}
 
 	if(cycle_ == 1) {
-		handle_event("create");
-		handle_event("done_create");
+		handle_event(OBJECT_EVENT_CREATE);
+		handle_event(OBJECT_EVENT_DONE_CREATE);
 	}
 
 	variant scheduled_command = get_scheduled_command(lvl.cycle());
@@ -472,17 +474,16 @@ void custom_object::process(level& lvl)
 	++time_in_frame_;
 
 	if(stand_info.damage) {
-		handle_event("surface_damage");
+		handle_event(OBJECT_EVENT_SURFACE_DAMAGE);
 	}
 
 	if(time_in_frame_ == frame_->duration()) {
+		handle_event(frame_->end_event_id());
+		handle_event(OBJECT_EVENT_END_ANIM);
 		if(next_animation_formula_) {
 			variant var = next_animation_formula_->execute(*this);
 			set_frame(var.as_string());
 		}
-
-		handle_event("end_" + frame_name_ + "_anim");
-		handle_event("end_anim");
 	}
 
 	const std::string* event = frame_->get_event(time_in_frame_);
@@ -545,7 +546,7 @@ void custom_object::process(level& lvl)
 		int damage = 0;
 
 		if(type_->object_level_collisions() && non_solid_entity_collides_with_level(lvl, *this)) {
-			handle_event("collide_level");
+			handle_event(OBJECT_EVENT_COLLIDE_LEVEL);
 		}
 
 		if(effective_velocity_y > 0) {
@@ -626,14 +627,14 @@ void custom_object::process(level& lvl)
 
 			}
 
-			handle_event(effective_velocity_y < 0 ? "collide_head" : "collide_feet", callable);
+			handle_event(effective_velocity_y < 0 ? OBJECT_EVENT_COLLIDE_HEAD : OBJECT_EVENT_COLLIDE_FEET, callable);
 		}
 
 		if(collide_info.damage || jump_on_info.damage) {
 			game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
 			callable->add("damage", variant(std::max(collide_info.damage, jump_on_info.damage)));
 			variant v(callable);
-			handle_event("collide_damage", callable);
+			handle_event(OBJECT_EVENT_COLLIDE_DAMAGE, callable);
 		}
 	}
 
@@ -641,7 +642,7 @@ void custom_object::process(level& lvl)
 
 	for(int move_left = std::abs(effective_velocity_x); move_left > 0 && !collide && !type_->ignore_collide(); move_left -= 100) {
 		if(type_->object_level_collisions() && non_solid_entity_collides_with_level(lvl, *this)) {
-			handle_event("collide_level");
+			handle_event(OBJECT_EVENT_COLLIDE_LEVEL);
 		}
 
 		const bool previous_standing = is_standing(lvl);
@@ -728,12 +729,12 @@ void custom_object::process(level& lvl)
 
 		}
 
-		handle_event("collide", callable);
+		handle_event(OBJECT_EVENT_COLLIDE, callable);
 		if(collide_info.damage) {
 			game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
 			callable->add("damage", variant(collide_info.damage));
 			variant v(callable);
-			handle_event("collide_damage", callable);
+			handle_event(OBJECT_EVENT_COLLIDE_DAMAGE, callable);
 		}
 	}
 
@@ -764,7 +765,7 @@ void custom_object::process(level& lvl)
 		callable->add("jumped_on_by", variant(this));
 		game_logic::formula_callable_ptr callable_ptr(callable);
 
-		stand_info.collide_with->handle_event("jumped_on", callable);
+		stand_info.collide_with->handle_event(OBJECT_EVENT_JUMPED_ON, callable);
 	}
 
 	standing_on_ = stand_info.collide_with;
@@ -777,14 +778,14 @@ void custom_object::process(level& lvl)
 		if(on_players_side()) {
 			entity_ptr collide_with = level::current().collide(body_rect(), this);
 			if(collide_with && collide_with->body_harmful()) {
-				handle_event("get_hit");
+				handle_event(OBJECT_EVENT_GET_HIT);
 			}
 		} else {
 			entity_ptr player = lvl.hit_by_player(body_rect());
 			if(player && (last_hit_by_ != player || last_hit_by_anim_ != player->current_animation_id())) {
 				last_hit_by_ = player;
 				last_hit_by_anim_ = player->current_animation_id();
-				handle_event("hit_by_player");
+				handle_event(OBJECT_EVENT_HIT_BY_PLAYER);
 			}
 
 			if(driver_) {
@@ -808,24 +809,21 @@ void custom_object::process(level& lvl)
 		--fall_through_platforms_;
 	}
 
-	static const std::string ProcessStr = "process";
-	handle_event(ProcessStr);
-	handle_event("process_" + frame_name_);
+	handle_event(OBJECT_EVENT_PROCESS);
+	handle_event(frame_->process_event_id());
 
 	if(type_->timer_frequency() > 0 && (cycle_%type_->timer_frequency()) == 0) {
 		static const std::string TimerStr = "timer";
-		handle_event(TimerStr);
+		handle_event(OBJECT_EVENT_TIMER);
 	}
 	
 	if( is_underwater && !was_underwater_){
 		//event on_enter_water
-		const static std::string EnterWaterStr = "enter_water";
-		handle_event(EnterWaterStr);
+		handle_event(OBJECT_EVENT_ENTER_WATER);
 		was_underwater_ = true;
 	}else if ( !is_underwater && was_underwater_ ){
 		//event on_exit_water
-		const static std::string ExitWaterStr = "exit_water";
-		handle_event(ExitWaterStr);
+		handle_event(OBJECT_EVENT_EXIT_WATER);
 		was_underwater_ = false;
 	}
 
@@ -1415,7 +1413,7 @@ void custom_object::set_value(const std::string& key, const variant& value)
 			callable->add("collide_with", variant(collide_info.collide_with.get()));
 			game_logic::formula_callable_ptr callable_ptr(callable);
 
-			handle_event("change_solid_dimensions_fail", callable);
+			handle_event(OBJECT_EVENT_CHANGE_SOLID_DIMENSIONS_FAIL, callable);
 		}
 	} else {
 		vars_->add(key, value);
@@ -1428,7 +1426,7 @@ void custom_object::set_frame(const std::string& name)
 
 	//fire an event to say that we're leaving the current frame.
 	if(frame_ && name != frame_name_) {
-		handle_event("leave_" + frame_name_ + "_anim");
+		handle_event(frame_->leave_event_id());
 	}
 
 	const int start_x = feet_x();
@@ -1450,14 +1448,14 @@ void custom_object::set_frame(const std::string& name)
 		game_logic::map_formula_callable* callable(new game_logic::map_formula_callable(this));
 		callable->add("previous_animation", variant(previous_animation));
 		game_logic::formula_callable_ptr callable_ptr(callable);
-		handle_event("change_animation_failure", callable);
+		handle_event(OBJECT_EVENT_CHANGE_ANIMATION_FAILURE, callable);
 		handle_event("change_animation_failure_" + frame_name_, callable);
 		ASSERT_LOG(destroyed() || !entity_collides_with_level(level::current(), *this, MOVE_NONE),
 		  "Object '" << type_->id() << "' has different solid areas when changing from frame " << previous_animation << " to " << frame_name_ << " and doesn't handle it properly");
 	}
 
-	handle_event("enter_anim");
-	handle_event("enter_" + frame_name_ + "_anim");
+	handle_event(OBJECT_EVENT_ENTER_ANIM);
+	handle_event(frame_->enter_event_id());
 }
 
 void custom_object::set_frame_no_adjustments(const std::string& name)
@@ -1487,19 +1485,19 @@ void custom_object::set_frame_no_adjustments(const std::string& name)
 void custom_object::die()
 {
 	hitpoints_ = 0;
-	handle_event("die");
+	handle_event(OBJECT_EVENT_DIE);
 }
 
 void custom_object::hit_player()
 {
-	handle_event("hit_player");
+	handle_event(OBJECT_EVENT_HIT_PLAYER);
 }
 
 void custom_object::hit_by(entity& e)
 {
 	std::cerr << "hit_by!\n";
 	last_hit_by_ = &e;
-	handle_event("hit_by_player");
+	handle_event(OBJECT_EVENT_HIT_BY_PLAYER);
 }
 
 void custom_object::move_to_standing(level& lvl)
@@ -1590,20 +1588,20 @@ entity_ptr custom_object::backup() const
 
 void custom_object::handle_event(const std::string& event, const formula_callable* context)
 {
-	if(hitpoints_ <= 0 && event != "die") {
+	handle_event(get_object_event_id(event), context);
+}
+
+void custom_object::handle_event(int event, const formula_callable* context)
+{
+	if(hitpoints_ <= 0 && event != OBJECT_EVENT_DIE) {
 		return;
 	}
 
 	std::vector<game_logic::const_formula_ptr> handlers;
 
-	std::map<std::string, game_logic::const_formula_ptr>::const_iterator handler_itor = event_handlers_.find(event);
-	if(handler_itor != event_handlers_.end()) {
-		game_logic::const_formula_ptr handler = handler_itor->second;
-		if(handler) {
-			handlers.push_back(handler);
-		}
+	if(event < event_handlers_.size() && event_handlers_[event]) {
+		handlers.push_back(event_handlers_[event]);
 	}
-
 
 	game_logic::const_formula_ptr handler = type_->get_event_handler(event);
 	if(handler) {
@@ -1721,23 +1719,22 @@ const graphics::color_transform& custom_object::draw_color() const
 	return white;
 }
 
-game_logic::const_formula_ptr custom_object::get_event_handler(const std::string& key) const
+game_logic::const_formula_ptr custom_object::get_event_handler(int key) const
 {
-	std::map<std::string, game_logic::const_formula_ptr>::const_iterator itor = event_handlers_.find(key);
-	if(itor != event_handlers_.end()) {
-		return itor->second;
+	if(key < event_handlers_.size()) {
+		return event_handlers_[key];
+	} else {
+		return game_logic::const_formula_ptr();
 	}
-
-	return game_logic::const_formula_ptr();
 }
 
-void custom_object::set_event_handler(const std::string& key, game_logic::const_formula_ptr f)
+void custom_object::set_event_handler(int key, game_logic::const_formula_ptr f)
 {
-	if(!f) {
-		event_handlers_.erase(key);
-	} else {
-		event_handlers_[key] = f;
+	if(key >= event_handlers_.size()) {
+		event_handlers_.resize(key+1);
 	}
+
+	event_handlers_[key] = f;
 }
 
 bool custom_object::can_interact_with() const
@@ -1872,14 +1869,15 @@ BENCHMARK_ARG_CALL(custom_object_get_attr, hard_lookup, "xxxx");
 BENCHMARK_ARG(custom_object_handle_event, const std::string& object_event)
 {
 	std::string::const_iterator i = std::find(object_event.begin(), object_event.end(), ':');
-	ASSERT_LOG(i != object_event.end(), "custom_object_event_handle argument must have a pipe seperator: " << object_event);
+	ASSERT_LOG(i != object_event.end(), "custom_object_event_handle argument must have a colon seperator: " << object_event);
 	std::string obj_type(object_event.begin(), i);
 	std::string event_name(i+1, object_event.end());
 	static level* lvl = new level("titlescreen.cfg");
 	static custom_object* obj = new custom_object(obj_type, 0, 0, false);
 	obj->set_level(*lvl);
+	const int event_id = get_object_event_id(event_name);
 	BENCHMARK_LOOP {
-		obj->handle_event(event_name);
+		obj->handle_event(event_id);
 	}
 }
 

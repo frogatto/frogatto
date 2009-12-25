@@ -157,10 +157,11 @@ public:
 
 	virtual void generate_current(const entity& target, int* velocity_x, int* velocity_y) const;
 
-	virtual game_logic::const_formula_ptr get_event_handler(const std::string& key) const { return game_logic::const_formula_ptr(); }
-	virtual void set_event_handler(const std::string& key, game_logic::const_formula_ptr f) { return; }
+	virtual game_logic::const_formula_ptr get_event_handler(int key) const { return game_logic::const_formula_ptr(); }
+	virtual void set_event_handler(int, game_logic::const_formula_ptr f) { return; }
 
 	virtual void handle_event(const std::string& id, const formula_callable* context=NULL) {}
+	virtual void handle_event(int id, const formula_callable* context=NULL) {}
 
 	//function which returns true if this object can be 'interacted' with.
 	//i.e. if the player ovelaps with the object and presses up if they will

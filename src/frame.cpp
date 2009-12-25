@@ -5,6 +5,7 @@
 #include "asserts.hpp"
 #include "foreach.hpp"
 #include "frame.hpp"
+#include "object_events.hpp"
 #include "raster.hpp"
 #include "solid_map.hpp"
 #include "sound.hpp"
@@ -15,7 +16,11 @@
 #include "wml_utils.hpp"
 
 frame::frame(wml::const_node_ptr node)
-   : id_(node->name()),
+   : id_(node->attr("id")),
+     enter_event_id_(get_object_event_id("enter_" + id_ + "_anim")),
+	 end_event_id_(get_object_event_id("end_" + id_ + "_anim")),
+	 leave_event_id_(get_object_event_id("leave_" + id_ + "_anim")),
+	 process_event_id_(get_object_event_id("process_" + id_)),
      texture_(graphics::texture::get(node->attr("image"), node->attr("image_formula"))),
 	 solid_(solid_info::create(node)),
      collide_rect_(node->has_attr("collide") ? rect(node->attr("collide")) :

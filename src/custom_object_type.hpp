@@ -32,7 +32,7 @@ public:
 	static const_custom_object_type_ptr get(const std::string& id);
 	static custom_object_type_ptr create(const std::string& id);
 
-	typedef std::map<std::string, game_logic::const_formula_ptr> event_handler_map;
+	typedef std::vector<game_logic::const_formula_ptr> event_handler_map;
 
 	static void init_event_handlers(wml::const_node_ptr node,
 	                                event_handler_map& handlers,
@@ -51,7 +51,7 @@ public:
 
 	const game_logic::const_formula_ptr& next_animation_formula() const { return next_animation_formula_; }
 
-	game_logic::const_formula_ptr get_event_handler(const std::string& event) const;
+	game_logic::const_formula_ptr get_event_handler(int event) const;
 
 	int zorder() const { return zorder_; }
 	bool dies_on_inactive() const { return dies_on_inactive_;}

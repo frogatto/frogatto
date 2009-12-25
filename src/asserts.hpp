@@ -2,6 +2,7 @@
 #define ASSERTS_HPP_INCLUDED
 
 #include <iostream>
+#include <stdlib.h>
 
 //various asserts of standard "equality" tests, such as "equals", "not equals", "greater than", etc.  Example usage:
 //ASSERT_NE(x, y);

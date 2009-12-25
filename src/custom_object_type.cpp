@@ -6,6 +6,7 @@
 #include "custom_object_functions.hpp"
 #include "custom_object_type.hpp"
 #include "filesystem.hpp"
+#include "object_events.hpp"
 #include "solid_map.hpp"
 #include "string_utils.hpp"
 #include "wml_modify.hpp"
@@ -180,7 +181,11 @@ void custom_object_type::init_event_handlers(wml::const_node_ptr node,
 	for(wml::node::const_attr_iterator i = node->begin_attr(); i != node->end_attr(); ++i) {
 		if(i->first.size() > 3 && std::equal(i->first.begin(), i->first.begin() + 3, "on_")) {
 			const std::string event(i->first.begin() + 3, i->first.end());
-			handlers[event] = game_logic::formula::create_optional_formula(i->second, symbols);
+			const int event_id = get_object_event_id(event);
+			if(handlers.size() <= event_id) {
+				handlers.resize(event_id+1);
+			}
+			handlers[event_id] = game_logic::formula::create_optional_formula(i->second, symbols);
 		}
 	}
 }
@@ -354,13 +359,12 @@ const frame& custom_object_type::get_frame(const std::string& key) const
 	}
 }
 
-game_logic::const_formula_ptr custom_object_type::get_event_handler(const std::string& event) const
+game_logic::const_formula_ptr custom_object_type::get_event_handler(int event) const
 {
-	std::map<std::string, game_logic::const_formula_ptr>::const_iterator i = event_handlers_.find(event);
-	if(i != event_handlers_.end()) {
-		return i->second;
-	} else {
+	if(event >= event_handlers_.size()) {
 		return game_logic::const_formula_ptr();
+	} else {
+		return event_handlers_[event];
 	}
 }
 

@@ -13,6 +13,7 @@
 #include "filesystem.hpp"
 #include "level.hpp"
 #include "level_runner.hpp"
+#include "object_events.hpp"
 #include "player_info.hpp"
 #include "powerup.hpp"
 #include "raster.hpp"

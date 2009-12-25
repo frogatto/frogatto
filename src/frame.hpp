@@ -67,12 +67,20 @@ public:
 	const std::string* get_event(int time_in_frame) const;
 
 	const std::vector<collision_area>& collision_areas() const { return collision_areas_; }
+
+	int enter_event_id() const { return enter_event_id_; }
+	int end_event_id() const { return end_event_id_; }
+	int leave_event_id() const { return leave_event_id_; }
+	int process_event_id() const { return process_event_id_; }
 private:
 	int frame_number(int time_in_frame) const;
 
 	void get_rect_in_texture(int time, GLfloat* output_rect) const;
 	void get_rect_in_frame_number(int nframe, GLfloat* output_rect) const;
 	std::string id_;
+
+	//ID's used to signal events that occur on this animation.
+	int enter_event_id_, end_event_id_, leave_event_id_, process_event_id_;
 	graphics::texture texture_;
 	const_solid_info_ptr solid_;
 	rect collide_rect_;

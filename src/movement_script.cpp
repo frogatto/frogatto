@@ -1,6 +1,7 @@
 #include "custom_object_functions.hpp"
 #include "foreach.hpp"
 #include "movement_script.hpp"
+#include "object_events.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
 
@@ -8,7 +9,7 @@ active_movement_script::~active_movement_script()
 {
 	foreach(const entity_mod& mod, mods_) {
 		for(std::map<std::string, game_logic::const_formula_ptr>::const_iterator i = mod.handlers_backup.begin(); i != mod.handlers_backup.end(); ++i) {
-			mod.entity->set_event_handler(i->first, i->second);
+			mod.entity->set_event_handler(get_object_event_id(i->first), i->second);
 		}
 		
 	}
@@ -19,8 +20,8 @@ void active_movement_script::modify(entity_ptr entity, const std::map<std::strin
 	entity_mod mod;
 	mod.entity = entity;
 	for(std::map<std::string, game_logic::const_formula_ptr>::const_iterator i = handlers.begin(); i != handlers.end(); ++i) {
-		mod.handlers_backup[i->first] = entity->get_event_handler(i->first);
-		entity->set_event_handler(i->first, i->second);
+		mod.handlers_backup[i->first] = entity->get_event_handler(get_object_event_id(i->first));
+		entity->set_event_handler(get_object_event_id(i->first), i->second);
 	}
 
 	mods_.push_back(mod);
