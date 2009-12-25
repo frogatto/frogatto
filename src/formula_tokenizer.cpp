@@ -13,8 +13,6 @@
 
 #include <iostream>
 
-#include <boost/regex.hpp>
-
 #include "foreach.hpp"
 #include "formula_tokenizer.hpp"
 #include "unit_test.hpp"
@@ -24,49 +22,155 @@ namespace formula_tokenizer
 
 namespace {
 
-using boost::regex;
+const TOKEN_TYPE* create_single_char_tokens() {
+	static TOKEN_TYPE chars[256];
+	std::fill(chars, chars+256, TOKEN_INVALID);
 
-struct token_type {
-	regex re;
-	TOKEN_TYPE type;
-};
+	chars['('] = TOKEN_LPARENS;
+	chars[')'] = TOKEN_RPARENS;
+	chars['['] = TOKEN_LSQUARE;
+	chars[']'] = TOKEN_RSQUARE;
+	chars['{'] = TOKEN_LBRACKET;
+	chars['}'] = TOKEN_RBRACKET;
+	chars[','] = TOKEN_COMMA;
+	chars[';'] = TOKEN_SEMICOLON;
+	chars['.'] = TOKEN_OPERATOR;
+	chars['+'] = TOKEN_OPERATOR;
+	chars['*'] = TOKEN_OPERATOR;
+	chars['/'] = TOKEN_OPERATOR;
+	chars['='] = TOKEN_OPERATOR;
+	chars['%'] = TOKEN_OPERATOR;
+	chars['^'] = TOKEN_OPERATOR;
+	return chars;
+}
 
-//create the array with list of possible tokens
-token_type token_types[] = { { regex("^(not\\b|and\\b|or\\b|where\\b|in\\b|d(?=[^a-zA-Z])|\\*|\\+|-(?=[^>])|\\^|%|/|<=|>=|<|>|!=|=|\\.)"), TOKEN_OPERATOR },
-				{ regex("^functions\\b"),  TOKEN_KEYWORD },
-				{ regex("^def\\b"),        TOKEN_KEYWORD },
-				{ regex("^'[^']*'"),       TOKEN_STRING_LITERAL },
-				{ regex("^~[^~]*~"),       TOKEN_STRING_LITERAL },
-				{ regex("^[A-Z][A-Z_0-9]*"),    TOKEN_CONST_IDENTIFIER },
-				{ regex("^[a-zA-Z_][a-zA-Z_0-9]*"),    TOKEN_IDENTIFIER },
-				{ regex("^0x[0-9a-fA-F]+"),          TOKEN_INTEGER },
-				{ regex("^\\d+"),          TOKEN_INTEGER },
-				{ regex("^\\("),           TOKEN_LPARENS },
-				{ regex("^\\)"),           TOKEN_RPARENS },
-				{ regex("^\\["),           TOKEN_LSQUARE },
-				{ regex("^\\]"),           TOKEN_RSQUARE },
-				{ regex("^\\{"),           TOKEN_LBRACKET },
-				{ regex("^\\}"),           TOKEN_RBRACKET },
-				{ regex("^#.*?#"),	   TOKEN_COMMENT },
-				{ regex("^,"),             TOKEN_COMMA },
-				{ regex("^;"),             TOKEN_SEMICOLON },
-				{ regex("^\\s+"),          TOKEN_WHITESPACE },
-				{ regex("^->"),          TOKEN_POINTER }
-};
+const TOKEN_TYPE* single_char_tokens = create_single_char_tokens();
 
 }
 
 token get_token(iterator& i1, iterator i2) {
-	foreach(const token_type& t, token_types) {
-		boost::smatch match;
-		if(boost::regex_search(i1, i2, match, t.re, boost::match_single_line)) {
-			token res;
-			res.type = t.type;
-			res.begin = i1;
-			i1 = res.end = i1 + match.length();
-			
-			return res;
+	token t;
+	t.begin = i1;
+	t.type = single_char_tokens[*i1];
+	if(t.type != TOKEN_INVALID) {
+		t.end = ++i1;
+		return t;
+	}
+
+	switch(*i1) {
+	case '\'':
+	case '~':
+	case '#':
+		t.type = *i1 == '#' ? TOKEN_COMMENT : TOKEN_STRING_LITERAL;
+		i1 = std::find(i1+1, i2, *i1);
+		if(i1 == i2) {
+			std::cerr << "Unterminated string or comment\n";
+			throw token_error();
 		}
+		t.end = ++i1;
+		return t;
+	case '>':
+	case '<':
+	case '!':
+		t.type = TOKEN_OPERATOR;
+		++i1;
+		if(i1 != i2 && *i1 == '=') {
+			++i1;
+		} else if(*(i1-1) == '!') {
+			std::cerr << "Unexpected character in formula: '!'\n";
+			throw token_error();
+		}
+
+		t.end = i1;
+		return t;
+	case '-':
+		++i1;
+		if(i1 != i2 && *i1 == '>') {
+			t.type = TOKEN_POINTER;
+			++i1;
+		} else {
+			t.type = TOKEN_OPERATOR;
+		}
+
+		t.end = i1;
+		return t;
+	case '0':
+		if(i1 + 1 != i2 && *(i1+1) == 'x') {
+			t.type = TOKEN_INTEGER;
+			i1 += 2;
+			while(i1 != i2 && isxdigit(*i1)) {
+				++i1;
+			}
+
+			t.end = i1;
+
+			return t;
+		}
+
+		break;
+	case 'd':
+		if(i1 + 1 != i2 && !isalpha(*(i1+1))) {
+			//die operator as in 1d6.
+			t.type = TOKEN_OPERATOR;
+			t.end = ++i1;
+			return t;
+		}
+		break;
+	}
+
+	if(isspace(*i1)) {
+		t.type = TOKEN_WHITESPACE;
+		while(i1 != i2 && isspace(*i1)) {
+			++i1;
+		}
+
+		t.end = i1;
+		return t;
+	}
+
+	if(isdigit(*i1)) {
+		t.type = TOKEN_INTEGER;
+		while(i1 != i2 && isdigit(*i1)) {
+			++i1;
+		}
+
+		t.end = i1;
+		return t;
+	}
+
+	if(isalpha(*i1) || *i1 == '_') {
+		++i1;
+		while(i1 != i2 && (isalnum(*i1) || *i1 == '_')) {
+			++i1;
+		}
+
+		t.end = i1;
+
+		static const std::string Keywords[] = { "functions", "def" };
+		foreach(const std::string& str, Keywords) {
+			if(str.size() == (t.end - t.begin) && std::equal(str.begin(), str.end(), t.begin)) {
+				t.type = TOKEN_KEYWORD;
+				return t;
+			}
+		}
+
+		static const std::string Operators[] = { "not", "and", "or", "where", "in" };
+		foreach(const std::string& str, Operators) {
+			if(str.size() == (t.end - t.begin) && std::equal(str.begin(), str.end(), t.begin)) {
+				t.type = TOKEN_OPERATOR;
+				return t;
+			}
+		}
+
+		for(std::string::const_iterator i = t.begin; i != t.end; ++i) {
+			if(islower(*i)) {
+				t.type = TOKEN_IDENTIFIER;
+				return t;
+			}
+		}
+
+		t.type = TOKEN_CONST_IDENTIFIER;
+		return t;
 	}
 
 	std::cerr << "Unrecognized token: '" << std::string(i1,i2) << "'\n";
@@ -97,5 +201,63 @@ UNIT_TEST(tokenizer_test)
 		CHECK_EQ(std::string(t.begin,t.end), tokens[n]);
 		CHECK_EQ(t.type, types[n]);
 
+	}
+}
+
+BENCHMARK(tokenizer_bench)
+{
+	const std::string input =
+"	  #function which returns true if the object is in an animation that"
+"	   requires frogatto be on the ground#"	
+"	  def animation_requires_standing(obj)"
+"	    obj.animation in ['stand', 'stand_up_slope', 'stand_down_slope', 'run', 'walk', 'lookup', 'crouch', 'enter_crouch', 'leave_crouch', 'turn', 'roll','skid'];"
+"	  def set_facing(obj, facing) if(obj.facing != facing and (not (obj.animation in ['interact', 'slide'])),"
+"	           [facing(facing), if(obj.is_standing, animation('turn'))]);"
+
+"	  def stand(obj)"
+"	   if(abs(obj.velocity_x) > 240 and (not obj.animation in ['walk']), animation('skid'),"
+"	     if(abs(obj.slope_standing_on) < 20, animation('stand'),"
+"		   if(obj.slope_standing_on*obj.facing > 0, animation('stand_down_slope'),"
+"			                                animation('stand_up_slope'))));"
+
+
+"	  #make Frogatto walk. anim can be either 'walk' or 'run'. Does checking"
+"	   to make sure Frogatto is in a state where he can walk or run."
+"	   Will make Frogatto 'glide' if in mid air.#"
+"	  def walk(obj, dir, anim)"
+"	    if(obj.is_standing and (not (obj.animation in ['walk', 'run', 'jump', 'turn', 'run', 'crouch', 'enter_crouch', 'roll', 'run_attack', 'energyshot', 'attack', 'up_attack', 'interact'])), [animation(anim), if(anim = 'run', [sound('run.ogg')])],"
+"	       #Frogatto is in the air, so make him glide.#"
+"		   if(((not obj.is_standing) and obj.animation != 'slide'), set(obj.velocity_x, obj.velocity_x + obj.jump_glide*dir)));"
+
+"	  #Function to attempt to make Frogatto crouch; does checking to make"
+"	   sure he's in a state that allows entering a crouch.#"
+"	  def crouch(obj)"
+"	  	if(((not obj.animation in ['crouch', 'enter_crouch', 'roll', 'interact'] ) and obj.is_standing), animation('enter_crouch'));"
+"	  def roll(obj)"
+"	    if( obj.animation in ['crouch'] and obj.is_standing, animation('roll'));"
+"	  def get_charge_cycles(obj)"
+"	    if(obj.tmp.start_attack_cycle, obj.cycle - obj.tmp.start_attack_cycle, 0);"
+	  
+"	  #Function to make Frogatto attack. Does checking and chooses the"
+"	   appropriate type of attack animation, if any.#"
+"	  def attack(obj, charge_cycles)"
+"	  [if('fat' in obj.variations,"
+"				[animation('spit')],["
+"					if(obj.animation in ['stand', 'stand_up_slope', 'stand_down_slope', 'walk', 'lookup','skid'], animation(if(obj.ctrl_up, 'up_', '') + if(charge_cycles >= obj.vars.charge_time, 'energyshot', 'attack'))),"
+					
+"					if(obj.animation in ['run'], animation('run_attack')),"
+					
+"					if(obj.animation in ['jump', 'fall'], animation(if(charge_cycles >= obj.vars.charge_time,'energyshot' + if(obj.ctrl_down,'_down','_jump'),  if(obj.ctrl_down, 'fall_spin_attack', 'jump_attack' )))),"
+					
+"					if(obj.animation in ['crouch'] and (charge_cycles > obj.vars.charge_time), animation('energyshot_crouch'))]"
+				
+"	    )];";
+
+	BENCHMARK_LOOP {
+		std::string::const_iterator i1 = input.begin();
+		std::string::const_iterator i2 = input.end();
+		while(i1 != i2) {
+			formula_tokenizer::get_token(i1, i2);
+		}
 	}
 }
