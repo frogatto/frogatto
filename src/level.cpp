@@ -1056,6 +1056,69 @@ void level::erase_char(entity_ptr c)
 	}
 }
 
+bool level::is_solid(const level_solid_map& map, const entity& e, const std::vector<point>& points, int* friction, int* traction, int* damage) const
+{
+	const tile_solid_info* info = NULL;
+
+	const frame& current_frame = e.current_frame();
+	
+	for(std::vector<point>::const_iterator p = points.begin(); p != points.end(); ++p) {
+		int x = e.x() + (e.face_right() ? p->x : current_frame.width() - 1 - p->x);
+		int y = e.y() + p->y;
+
+		tile_pos pos(x/TileSize, y/TileSize);
+		x = x%TileSize;
+		y = y%TileSize;
+		if(x < 0) {
+			pos.first--;
+			x += 32;
+		}
+
+		if(y < 0) {
+			pos.second--;
+			y += 32;
+		}
+
+		const tile_solid_info* info = map.find(pos);
+		if(info != NULL) {
+			if(info->all_solid) {
+				if(friction) {
+					*friction = info->friction;
+				}
+
+				if(traction) {
+					*traction = info->traction;
+				}
+
+				if(damage) {
+					*damage = info->damage;
+				}
+				return true;
+			}
+		
+			const int index = y*TileSize + x;
+			if(info->bitmap.test(index)) {
+				if(friction) {
+					*friction = info->friction;
+				}
+
+				if(traction) {
+					*traction = info->traction;
+				}
+
+				if(damage) {
+					*damage = info->damage;
+				}
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	return false;
+}
+
 bool level::is_solid(const level_solid_map& map, int x, int y, int* friction, int* traction, int* damage) const
 {
 	tile_pos pos(x/TileSize, y/TileSize);
@@ -1134,6 +1197,11 @@ bool level::standable_tile(int x, int y, int* friction, int* traction, int* dama
 bool level::solid(int x, int y, int* friction, int* traction, int* damage) const
 {
 	return is_solid(solid_, x, y, friction, traction, damage);
+}
+
+bool level::solid(const entity& e, const std::vector<point>& points, int* friction, int* traction, int* damage) const
+{
+	return is_solid(solid_, e, points, friction, traction, damage);
 }
 
 bool level::solid(const rect& r, int* friction, int* traction, int* damage) const

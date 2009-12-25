@@ -174,12 +174,8 @@ bool entity_collides_with_level(const level& lvl, const entity& e, MOVE_DIRECTIO
 	}
 
 	foreach(const const_solid_map_ptr& m, s->solid()) {
-		const std::vector<point>& points = m->dir(dir);
-		foreach(const point& p, points) {
-			const int xpos = e.face_right() ? e.x() + p.x : e.x() + f.width() - 1 - p.x;
-			if(lvl.solid(xpos, e.y() + p.y, friction, traction, damage)) {
-				return true;
-			}
+		if(lvl.solid(e, m->dir(dir), friction, traction, damage)) {
+			return true;
 		}
 	}
 

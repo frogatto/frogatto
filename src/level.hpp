@@ -58,6 +58,7 @@ public:
 	bool standable(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
 	bool standable_tile(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
 	bool solid(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
+	bool solid(const entity& e, const std::vector<point>& points, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
 	bool solid(const rect& r, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
 	bool may_be_solid_in_rect(const rect& r) const;
 	void set_solid_area(const rect& r, bool solid);
@@ -256,6 +257,8 @@ private:
 	level_solid_map standable_;
 
 	bool is_solid(const level_solid_map& map, int x, int y, int* friction, int* traction, int* damage) const;
+	bool is_solid(const level_solid_map& map, const entity& e, const std::vector<point>& points, int* friction, int* traction, int* damage) const;
+
 	void set_solid(level_solid_map& map, int x, int y, int friction, int traction, int damage, bool solid=true);
 
 	variant get_value(const std::string& key) const;
