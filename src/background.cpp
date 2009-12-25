@@ -197,6 +197,10 @@ void background::draw_foreground(double xpos, double ypos, int rotation, int cyc
 	}
 }
 
+namespace {
+graphics::blit_queue blit_queue;
+}
+
 void background::draw_layer(int x, int y, int rotation, const background::layer& bg, int cycle) const
 {
 	int screen_width = graphics::screen_width();
@@ -224,7 +228,6 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 		xpos *= GLfloat(bg.texture.width() + bg.xpad)/GLfloat(bg.texture.width());
 	}
 	
-	glPushMatrix();
 	glColor4f(bg.color[0], bg.color[1], bg.color[2], bg.color[3]);
 
 #ifndef SDL_VIDEO_OPENGL_ES
@@ -240,12 +243,26 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 
 		if(blit_width > 0) {
 			const GLfloat xpos2 = xpos + GLfloat(blit_width)/(GLfloat(bg.texture.width())*2.0);
-			graphics::blit_texture(bg.texture, x, y + bg.yoffset*ScaleImage - (y*bg.yscale)/100,
-			                       blit_width,
-							       (bg.y2 - bg.y1)*ScaleImage, 0.0, xpos,
-								   double(bg.y1)/double(bg.texture.height()),
-								   xpos2,
-								   double(bg.y2)/double(bg.texture.height()));
+
+			const GLshort x1 = x;
+			const GLshort y1 = y + bg.yoffset*ScaleImage - (y*bg.yscale)/100;
+			const GLshort x2 = x1 + blit_width;
+			const GLshort y2 = y1 + (bg.y2 - bg.y1)*ScaleImage;
+
+			const GLfloat u1 = bg.texture.translate_coord_x(xpos);
+			const GLfloat u2 = bg.texture.translate_coord_x(xpos2);
+			const GLfloat v1 = bg.texture.translate_coord_y(double(bg.y1)/double(bg.texture.height()));
+			const GLfloat v2 = bg.texture.translate_coord_y(double(bg.y2)/double(bg.texture.height()));
+
+			blit_queue.clear();
+			blit_queue.set_texture(bg.texture.get_id());
+
+			blit_queue.add(x1, y1, u1, v1);
+			blit_queue.add(x2, y1, u2, v1);
+			blit_queue.add(x1, y2, u1, v2);
+			blit_queue.add(x2, y2, u2, v2);
+
+			blit_queue.do_blit();
 		}
 
 		x += blit_width + bg.xpad*ScaleImage;
@@ -260,6 +277,5 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 		glBlendEquation(GL_FUNC_ADD);
 	}
 #endif
-	glPopMatrix();
 }
 
