@@ -142,22 +142,16 @@ void frame::build_alpha()
 	alpha_.resize(nframes_*img_rect_.w()*img_rect_.h());
 
 	for(int n = 0; n < nframes_; ++n) {
-		GLfloat rect[4];
-		get_rect_in_frame_number(n, &rect[0]);
-		for(int y = 0; y < img_rect_.h(); ++y) {
-			for(int x = 0; x < img_rect_.w(); ++x) {
-				const GLfloat xratio = GLfloat(x)/img_rect_.w();
-				const GLfloat yratio = GLfloat(y)/img_rect_.h();
+		const int current_col = (nframes_per_row_ > 0) ? (n% nframes_per_row_) : n;
+		const int current_row = (nframes_per_row_ > 0) ? (n/nframes_per_row_) : 0;
+		const int xbase = img_rect_.x() + current_col*(img_rect_.w()+pad_);
+		const int ybase = img_rect_.y() + current_row*(img_rect_.h()+pad_);
 
-				const GLfloat u = xratio*rect[2] + (1.0-xratio)*rect[0];
-				const GLfloat v = yratio*rect[3] + (1.0 - yratio)*rect[1];
-				ASSERT_LOG(u >= 0.0 && v >= 0.0 && u <= 1.0 && v <= 1.0,
-				           "Bad rectangle co-ordinates in animation " << id_ << "/" << n);
-				const bool a = texture_.is_alpha((texture_.width()-1)*u, (texture_.height()-1)*v);
-				alpha_[y*img_rect_.w()*nframes_ + x + n*img_rect_.w()] = a;
-			}
+		for(int y = 0; y != img_rect_.h(); ++y) {
+			std::vector<bool>::iterator dst = alpha_.begin() + y*img_rect_.w()*nframes_ + n*img_rect_.w();
+			std::vector<bool>::const_iterator src = texture_.get_alpha_row(xbase, ybase + y);
+			std::copy(src, src + img_rect_.w(), dst);
 		}
-
 	}
 }
 
@@ -184,24 +178,6 @@ bool frame::is_alpha(int x, int y, int time, bool face_right) const
 	const int index = y*img_rect_.w()*nframes_ + x;
 	ASSERT_INDEX_INTO_VECTOR(index, alpha_);
 	return alpha_[index];
-	
-	GLfloat rect[4];
-	get_rect_in_texture(time, &rect[0]);
-	
-	const GLfloat xratio1 = GLfloat(width() - x)/width();
-	const GLfloat xratio2 = GLfloat(x)/width();
-	const GLfloat yratio1 = GLfloat(height() - y)/height();
-	const GLfloat yratio2 = GLfloat(y)/height();
-
-	const GLfloat u = xratio1*rect[face_right ? 0 : 2] + xratio2*rect[face_right ? 2 : 0];
-	const GLfloat v = yratio1*rect[1] + yratio2*rect[3];
-
-	ASSERT_GE(u, 0.0);
-	ASSERT_GE(v, 0.0);
-	ASSERT_LE(u, 1.0);
-	ASSERT_LE(v, 1.0);
-
-	return texture_.is_alpha((texture_.width()-1)*u, (texture_.height()-1)*v);
 }
 
 void frame::draw_into_blit_queue(graphics::blit_queue& blit, int x, int y, bool face_right, bool upside_down, int time) const
