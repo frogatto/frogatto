@@ -69,11 +69,12 @@ public:
 	friend bool operator==(const texture&, const texture&);
 	friend bool operator<(const texture&, const texture&);
 
-private:
 	void initialize();
+	explicit texture(const key& surfs);
+
+private:
 
 	static texture get(const surface& surf);
-	explicit texture(const key& surfs);
 
 	struct ID {
 		ID() : id(GLuint(-1)) {

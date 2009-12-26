@@ -80,8 +80,9 @@ public:
 	virtual bool rect_collides(const rect& r) const = 0;
 	virtual const_solid_info_ptr solid() const;
 	virtual const_solid_info_ptr platform() const;
-	const rect &solid_rect() const;
-	rect platform_rect() const;
+	const rect& solid_rect() const { return solid_rect_; }
+	const rect& frame_rect() const { return frame_rect_; }
+	rect platform_rect() const { return platform_rect_; }
 	rect body_rect() const;
 	rect hit_rect() const;
 	point midpoint() const;
@@ -277,7 +278,8 @@ private:
 	//NOT processed independently of this object.
 	std::vector<entity_ptr> attached_objects_;
 
-	rect solid_rect_;
+	//caches of commonly queried rects.
+	rect solid_rect_, frame_rect_, platform_rect_;
 };
 
 #endif

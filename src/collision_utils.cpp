@@ -279,6 +279,10 @@ bool place_entity_in_level(level& lvl, entity& e)
 
 int entity_user_collision(const entity& a, const entity& b, collision_pair* areas_colliding, int buf_size)
 {
+	if(!rects_intersect(a.frame_rect(), b.frame_rect())) {
+		return 0;
+	}
+
 	if(&a == &b) {
 		return 0;
 	}
@@ -287,11 +291,6 @@ int entity_user_collision(const entity& a, const entity& b, collision_pair* area
 	const frame& fb = b.current_frame();
 
 	if(fa.collision_areas().empty() || fb.collision_areas().empty()) {
-		return 0;
-	}
-
-	if(!rects_intersect(rect(a.x(), a.y(), fa.width(), fa.height()),
-	                    rect(b.x(), b.y(), fb.width(), fb.height()))) {
 		return 0;
 	}
 

@@ -125,13 +125,12 @@ const_solid_info_ptr entity::platform() const
 	return const_solid_info_ptr();
 }
 
-const rect& entity::solid_rect() const
-{
-	return solid_rect_;
-}
-
 void entity::calculate_solid_rect()
 {
+	const frame& f = current_frame();
+
+	frame_rect_ = rect(x(), y(), f.width(), f.height());
+	
 	const_solid_info_ptr s = solid();
 	if(s) {
 		const rect& area = s->area();
@@ -139,32 +138,28 @@ void entity::calculate_solid_rect()
 		if(face_right()) {
 			solid_rect_ = rect(x() + area.x(), y() + area.y(), area.w(), area.h());
 		} else {
-			const frame& f = current_frame();
 			solid_rect_ = rect(x() + f.width() - area.x() - area.w(), y() + area.y(), area.w(), area.h());
 		}
 	} else {
 		solid_rect_ = rect();
 	}
-}
 
-rect entity::platform_rect() const
-{
-	const_solid_info_ptr s = platform();
+	s = platform();
 	if(s) {
 		const int delta_y = last_move_y();
 		const rect& area = s->area();
 		
 		if(area.empty()) {
-			return rect();
-		}
-
-		if(delta_y < 0) {
-			return rect(x() + area.x(), y() + area.y(), area.w(), area.h() - delta_y);
+			platform_rect_ = rect();
 		} else {
-			return rect(x() + area.x(), y() + area.y(), area.w(), area.h());
+			if(delta_y < 0) {
+				platform_rect_ = rect(x() + area.x(), y() + area.y(), area.w(), area.h() - delta_y);
+			} else {
+				platform_rect_ = rect(x() + area.x(), y() + area.y(), area.w(), area.h());
+			}
 		}
 	} else {
-		return rect();
+		platform_rect_ = rect();
 	}
 }
 
