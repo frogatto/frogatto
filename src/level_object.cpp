@@ -43,15 +43,6 @@ level_tile level_object::build_tile(wml::const_node_ptr node)
 	return res;
 }
 
-void level_object::init(wml::const_node_ptr node)
-{
-	wml::node::const_child_iterator t1 = node->begin_child("tile");
-	wml::node::const_child_iterator t2 = node->end_child("tile");
-	for(; t1 != t2; ++t1) {
-		tiles_cache[t1->second->attr("id")].reset(new level_object(t1->second));
-	}
-}
-
 level_object::level_object(wml::const_node_ptr node)
   : id_(node->attr("id")), t_(graphics::texture::get(node->attr("image"))),
     width_(-1),

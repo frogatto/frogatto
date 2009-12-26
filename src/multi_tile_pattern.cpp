@@ -47,6 +47,10 @@ const std::vector<multi_tile_pattern>& multi_tile_pattern::get_all()
 void multi_tile_pattern::init(wml::const_node_ptr node)
 {
 	patterns.clear();
+}
+
+void multi_tile_pattern::load(wml::const_node_ptr node)
+{
 	wml::node::const_child_iterator p1 = node->begin_child("multi_tile_pattern");
 	wml::node::const_child_iterator p2 = node->end_child("multi_tile_pattern");
 	for(; p1 != p2; ++p1) {

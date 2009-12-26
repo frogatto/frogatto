@@ -17,6 +17,7 @@ class multi_tile_pattern
 public:
 	static const std::vector<multi_tile_pattern>& get_all();
 	static void init(wml::const_node_ptr node);
+	static void load(wml::const_node_ptr node);
 	explicit multi_tile_pattern(wml::const_node_ptr node);
 
 	struct tile_entry {

@@ -2249,3 +2249,21 @@ BENCHMARK(load_fatpipe)
 		level lvl("fatpipe-stones.cfg");
 	}
 }
+
+#include "wml_writer.hpp"
+
+BENCHMARK(load_and_save_all_levels)
+{
+	BENCHMARK_LOOP {
+		std::vector<std::string> files;
+		sys::get_files_in_dir("data/level/", &files);
+		foreach(const std::string& file, files) {
+			std::cerr << "LOAD_LEVEL '" << file << "'\n";
+			boost::intrusive_ptr<level> lvl(new level(file));
+
+			std::string data;
+			wml::write(lvl->write(), data);
+			sys::write_file("data/level/" + file, data);
+		}
+	}
+}

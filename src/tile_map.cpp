@@ -2,6 +2,7 @@
 #include <iostream>
 #include <math.h>
 #include <sstream>
+#include <set>
 
 #include "asserts.hpp"
 #include "foreach.hpp"
@@ -15,6 +16,7 @@
 #include "string_utils.hpp"
 #include "tile_map.hpp"
 #include "wml_node.hpp"
+#include "wml_parser.hpp"
 #include "wml_utils.hpp"
 
 namespace {
@@ -196,11 +198,18 @@ public:
 	}
 };
 
+std::map<std::string, std::vector<std::string> > files_index;
+std::set<std::string> files_loaded;
+
 }
 
-void tile_map::init(wml::const_node_ptr node)
+void tile_map::load(const std::string& fname)
 {
-	patterns.clear();
+	if(files_loaded.count(fname)) {
+		return;
+	}
+
+	wml::const_node_ptr node = wml::parse_wml_from_file("data/tiles/" + fname);
 
 	wml::node::const_child_iterator p1 = node->begin_child("tile_pattern");
 	wml::node::const_child_iterator p2 = node->end_child("tile_pattern");
@@ -208,6 +217,22 @@ void tile_map::init(wml::const_node_ptr node)
 		const wml::const_node_ptr& p = p1->second;
 		patterns.push_back(tile_pattern(p));
 	}
+
+	multi_tile_pattern::load(node);
+
+	++current_patterns_version;
+}
+
+void tile_map::init(wml::const_node_ptr node)
+{
+	files_index.clear();
+
+	for(wml::node::const_attr_iterator i = node->begin_attr(); i != node->end_attr(); ++i) {
+		files_index[i->first] = util::split(i->second);
+	}
+
+	patterns.clear();
+	files_loaded.clear();
 
 	multi_tile_pattern::init(node);
 
@@ -231,6 +256,14 @@ tile_map::tile_map(wml::const_node_ptr node)
 {
 	//turn off reference counting
 	add_ref();
+
+	const std::string& unique_tiles = node->attr("unique_tiles");
+	foreach(const std::string& tile, util::split(unique_tiles)) {
+		const std::vector<std::string>& files = files_index[tile];
+		foreach(const std::string& file, files) {
+			load(file);
+		}
+	}
 
 	//make an entry for the empty string.
 	pattern_index_.push_back(pattern_index_entry());
@@ -412,6 +445,8 @@ wml::node_ptr tile_map::write() const
 	res->set_attr("x_speed", formatter() << x_speed_);
 	res->set_attr("y_speed", formatter() << y_speed_);
 	res->set_attr("zorder", formatter() << zorder_);
+
+	std::vector<boost::array<char, 4> > unique_tiles;
 	std::ostringstream tiles;
 	foreach(const std::vector<int>& row, map_) {
 		
@@ -428,12 +463,26 @@ wml::node_ptr tile_map::write() const
 				tiles << ",";
 			}
 			tiles << pattern_index_[row[i]].str.data();
+			unique_tiles.push_back(pattern_index_[row[i]].str);
 		}
 		
 		if(row.empty()) {
 			tiles << ",";
 		}
 	}
+
+	std::sort(unique_tiles.begin(), unique_tiles.end());
+	unique_tiles.erase(std::unique(unique_tiles.begin(), unique_tiles.end()), unique_tiles.end());
+	std::ostringstream unique_str;
+	for(int n = 0; n != unique_tiles.size(); ++n) {
+		if(n != 0) {
+			unique_str << ",";
+		}
+
+		unique_str << unique_tiles[n].data();
+	}
+
+	res->set_attr("unique_tiles", unique_str.str());
 
 	std::ostringstream variations;
 	foreach(const std::vector<int>& row, variations_) {

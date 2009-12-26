@@ -59,7 +59,6 @@ class level_object {
 public:
 	static std::vector<const_level_object_ptr> all();
 	static level_tile build_tile(wml::const_node_ptr node);
-	static void init(wml::const_node_ptr node);
 	explicit level_object(wml::const_node_ptr node);
 	int width() const;
 	int height() const;

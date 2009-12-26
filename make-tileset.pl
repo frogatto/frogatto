@@ -13,6 +13,8 @@ close DATE;
 my $command_line = "$0 " . (join ' ', @ARGV);
 print "# Generated on $date using:\n#  $command_line\n";
 
+print "[tiles]\n";
+
 my $tilename = shift @ARGV;
 my $base = shift @ARGV;
 my $image = shift @ARGV;
@@ -773,3 +775,5 @@ sub coord($$$) {
 
 	return &base_encode($row) . &base_encode($col);
 }
+
+print "[/tiles]\n";

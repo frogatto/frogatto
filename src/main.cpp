@@ -260,10 +260,6 @@ extern "C" int main(int argc, char** argv)
 		custom_object::init();
 		init_custom_object_functions(wml::parse_wml_from_file("functions.cfg"));
 		wml::schema::init(wml::parse_wml_from_file("schema.cfg"));
-//		custom_object_type::init(wml::parse_wml_from_file("objects.cfg",
-//								 wml::schema::get("objects")));
-		level_object::init(wml::parse_wml_from_file("tiles.cfg",
-		                   wml::schema::get("tiles")));
 		tile_map::init(wml::parse_wml_from_file("tiles.cfg",
 		               wml::schema::get("tiles")));
 		prop::init(wml::parse_wml_from_file("prop.cfg",
