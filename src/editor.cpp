@@ -551,6 +551,7 @@ editor::editor(const char* level_cfg)
 	static bool first_time = true;
 	if(first_time) {
 		wml::const_node_ptr editor_cfg = wml::parse_wml(sys::read_file("editor.cfg"));
+		tile_map::load_all();
 		tileset::init(editor_cfg);
 		enemy_type::init(editor_cfg);
 		all_props = prop::all_props();
@@ -894,6 +895,7 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 	if(key.keysym.sym == SDLK_r &&
 	   (key.keysym.mod&KMOD_CTRL)) {
 		tile_map::init(wml::parse_wml(sys::read_file("tiles.cfg")));
+		tile_map::load_all();
 		lvl_->rebuild_tiles();
 	}
 

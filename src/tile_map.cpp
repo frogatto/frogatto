@@ -203,6 +203,15 @@ std::set<std::string> files_loaded;
 
 }
 
+void tile_map::load_all()
+{
+	for(std::map<std::string, std::vector<std::string> >::const_iterator i = files_index.begin(); i != files_index.end(); ++i) {
+		foreach(const std::string& s, i->second) {
+			load(s);
+		}
+	}
+}
+
 void tile_map::load(const std::string& fname)
 {
 	if(files_loaded.count(fname)) {
