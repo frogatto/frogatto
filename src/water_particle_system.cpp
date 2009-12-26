@@ -49,8 +49,13 @@ void water_particle_system::process(const level& lvl, const entity& e)
 	//while (particles_.size() > 1500) particles_.pop_front();
 }
 
-void water_particle_system::draw(const rect& area, const entity& e) const
+void water_particle_system::draw(const rect& screen_area, const entity& e) const
 {
+	const rect area = intersection_rect(screen_area, area_);
+	if(area.w() == 0 || area.h() == 0) {
+		return;
+	}
+	
 	glDisable(GL_TEXTURE_2D);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glPointSize(info_.dot_size);
@@ -59,28 +64,37 @@ void water_particle_system::draw(const rect& area, const entity& e) const
 	if (area.x() < 0) offset_x -= info_.repeat_period;
 	int offset_y = area.y() - area.y()%info_.repeat_period;
 	if (area.y() < 0) offset_y -= info_.repeat_period;
-	static std::vector<GLfloat> vertices;
+	static std::vector<GLshort> vertices;
 	vertices.clear();
 	foreach(const particle& p, particles_)
 	{
-		float my_y = p.pos[1]+offset_y;
-		do
-		{
-			float my_x = p.pos[0]+offset_x;
-			do
-			{
-				if ((area_.x() < my_x) && (my_x < area_.x2()) && (area_.y() < my_y) && (my_y < area_.y2())){
-					vertices.push_back(my_x);
-					vertices.push_back(my_y);
-				}
-				my_x += info_.repeat_period;
-				//printf("my_x: %f, area.x: %i, area.w: %i\n", my_x, area.x(), area.w());
-			} while (my_x < area.x()+area.w());
+		GLshort my_y = p.pos[1]+offset_y;
+		GLshort xpos = p.pos[0]+offset_x;
+		while(my_y < area_.y()) {
 			my_y += info_.repeat_period;
-		} while (my_y < area.y()+area.h());
+		}
+
+		while(xpos < area_.x()) {
+			xpos += info_.repeat_period;
+		}
+
+		if(my_y > area_.y2() || xpos > area_.x2()) {
+			continue;
+		}
+
+		while(my_y <= area.y2()) {
+			GLshort my_x = xpos;
+
+			while (my_x <= area.x2()) {
+				vertices.push_back(my_x);
+				vertices.push_back(my_y);
+				my_x += info_.repeat_period;
+			}
+			my_y += info_.repeat_period;
+		}
 	}
 
-	glVertexPointer(2, GL_FLOAT, 0, &vertices.front());
+	glVertexPointer(2, GL_SHORT, 0, &vertices.front());
 	glDrawArrays(GL_POINTS, 0, vertices.size()/2);
 	//glDisable(GL_SMOOTH);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
