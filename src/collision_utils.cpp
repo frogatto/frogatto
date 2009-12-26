@@ -145,17 +145,17 @@ bool entity_collides_with_entity(const entity& e, const entity& other, const std
 
 bool entity_collides_with_level(const level& lvl, const entity& e, MOVE_DIRECTION dir, int* friction, int* traction, int* damage)
 {
+	const_solid_info_ptr s = e.solid();
+	if(!s) {
+		return false;
+	}
+
 	if(e.face_right() == false) {
 		if(dir == MOVE_RIGHT) {
 			dir = MOVE_LEFT;
 		} else if(dir == MOVE_LEFT) {
 			dir = MOVE_RIGHT;
 		}
-	}
-
-	const_solid_info_ptr s = e.solid();
-	if(!s) {
-		return false;
 	}
 
 	const frame& f = e.current_frame();

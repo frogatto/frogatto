@@ -1282,9 +1282,17 @@ void custom_object::set_value(const std::string& key, const variant& value)
 	} else if(key == "time_in_animation") {
 		time_in_frame_ = value.as_int();
 	} else if(key == "x") {
+		const int start_x = centi_x();
 		set_x(value.as_int());
+		if(entity_collides(level::current(), *this, MOVE_NONE)) {
+//			set_centi_x(start_x);
+		}
 	} else if(key == "y") {
+		const int start_y = centi_y();
 		set_y(value.as_int());
+		if(entity_collides(level::current(), *this, MOVE_NONE)) {
+//			set_centi_y(start_y);
+		}
 	} else if(key == "z" || key == "zorder") {
 		zorder_ = value.as_int();
 	} else if(key == "midpoint_x") {
