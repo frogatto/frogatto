@@ -22,8 +22,8 @@ namespace formula_tokenizer
 
 namespace {
 
-const TOKEN_TYPE* create_single_char_tokens() {
-	static TOKEN_TYPE chars[256];
+const FFL_TOKEN_TYPE* create_single_char_tokens() {
+	static FFL_TOKEN_TYPE chars[256];
 	std::fill(chars, chars+256, TOKEN_INVALID);
 
 	chars['('] = TOKEN_LPARENS;
@@ -44,7 +44,7 @@ const TOKEN_TYPE* create_single_char_tokens() {
 	return chars;
 }
 
-const TOKEN_TYPE* single_char_tokens = create_single_char_tokens();
+const FFL_TOKEN_TYPE* single_char_tokens = create_single_char_tokens();
 
 }
 
@@ -185,7 +185,7 @@ UNIT_TEST(tokenizer_test)
 	std::string test = "(abc + 0x4 * (5+3))*2 in [4,5]";
 	std::string::const_iterator i1 = test.begin();
 	std::string::const_iterator i2 = test.end();
-	TOKEN_TYPE types[] = {TOKEN_LPARENS, TOKEN_IDENTIFIER,
+	FFL_TOKEN_TYPE types[] = {TOKEN_LPARENS, TOKEN_IDENTIFIER,
 	                      TOKEN_WHITESPACE, TOKEN_OPERATOR,
 						  TOKEN_WHITESPACE, TOKEN_INTEGER,
 						  TOKEN_WHITESPACE, TOKEN_OPERATOR,
