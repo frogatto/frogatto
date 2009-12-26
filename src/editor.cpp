@@ -36,7 +36,6 @@
 #include "load_level.hpp"
 #include "player_info.hpp"
 #include "preferences.hpp"
-#include "prop.hpp"
 #include "property_editor_dialog.hpp"
 #include "raster.hpp"
 #include "stats.hpp"
@@ -472,8 +471,6 @@ std::vector<editor::enemy_type> enemy_types;
 
 int selected_property = 0;
 
-std::vector<const_prop_ptr> all_props;
-
 }
 
 void editor::enemy_type::init(wml::const_node_ptr node)
@@ -554,7 +551,6 @@ editor::editor(const char* level_cfg)
 		tile_map::load_all();
 		tileset::init(editor_cfg);
 		enemy_type::init(editor_cfg);
-		all_props = prop::all_props();
 		first_time = false;
 	}
 
@@ -1561,11 +1557,6 @@ const std::vector<editor::tileset>& editor::all_tilesets() const
 const std::vector<editor::enemy_type>& editor::all_characters() const
 {
 	return enemy_types;
-}
-
-const std::vector<const_prop_ptr>& editor::get_props() const
-{
-	return all_props;
 }
 
 void editor::set_tileset(int index)

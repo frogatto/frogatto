@@ -10,7 +10,6 @@
 #include "key.hpp"
 #include "level.hpp"
 #include "level_object.hpp"
-#include "prop.hpp"
 #include "stats.hpp"
 
 namespace gui {
@@ -79,8 +78,6 @@ public:
 
 	int get_object() const { return cur_object_; }
 	void set_object(int index);
-
-	const std::vector<const_prop_ptr>& get_props() const;
 
 	enum EDIT_TOOL { TOOL_ADD_RECT, TOOL_SELECT_RECT, TOOL_MAGIC_WAND, TOOL_PENCIL, TOOL_PICKER, TOOL_ADD_OBJECT, TOOL_SELECT_OBJECT, NUM_TOOLS };
 	EDIT_TOOL tool() const;

@@ -138,26 +138,6 @@ level::level(const std::string& level_cfg)
 		load_character(c1->second);
 	}
 
-	wml::node::const_child_iterator i1 = node->begin_child("prop");
-	wml::node::const_child_iterator i2 = node->end_child("prop");
-
-	for(; i1 != i2; ++i1) {
-		props_.push_back(prop_object(i1->second));
-		layers_.insert(props_.back().zorder());
-		foreach(const rect& r, props_.back().solid_rects()) {
-			std::cerr << "rect height: " << r.h() << "\n";
-			if(r.h() > 1) {
-				add_solid_rect(r.x(), r.y(), r.x2(), r.y2(), 20, 100, 0);
-			} else {
-				for(int x = r.x(); x <= r.x2(); ++x) {
-					add_standable(x, r.y(), 20, 100, 0);
-				}
-			}
-		}
-	}
-
-	std::sort(props_.begin(), props_.end());
-
 	wml::node::const_child_iterator p1 = node->begin_child("portal");
 	wml::node::const_child_iterator p2 = node->end_child("portal");
 	for(; p1 != p2; ++p1) {
@@ -424,10 +404,6 @@ wml::node_ptr level::write() const
 
 	foreach(entity_ptr ch, chars_) {
 		res->add_child(ch->write());
-	}
-
-	foreach(const prop_object& p, props_) {
-		res->add_child(p.write());
 	}
 
 	foreach(const portal& p, portals_) {
@@ -1799,52 +1775,6 @@ void level::add_character(entity_ptr p)
 	}
 
 	layers_.insert(p->zorder());
-}
-
-void level::add_prop(const prop_object& new_prop)
-{
-	props_.insert(std::lower_bound(props_.begin(), props_.end(), new_prop), new_prop);
-	layers_.insert(new_prop.zorder());
-}
-
-void level::remove_prop(const prop_object& p)
-{
-	for(std::vector<prop_object>::iterator i = props_.begin(); i != props_.end(); ++i) {
-		if(i->equal_id(p)) {
-			props_.erase(i);
-			return;
-		}
-	}
-}
-
-namespace {
-struct prop_object_in_rect
-{
-	prop_object_in_rect(int x1, int y1, int x2, int y2)
-	  : x1(x1), y1(y1), x2(x2), y2(y2)
-	{}
-
-	bool operator()(const prop_object& o) {
-		return x1 < o.area().x() && x2 > o.area().x2() &&
-		       y1 < o.area().y() && y2 > o.area().y2();
-	}
-	int x1, y1, x2, y2;
-};
-}
-
-void level::get_props_in_rect(int x1, int y1, int x2, int y2, std::vector<prop_object>& props)
-{
-	prop_object_in_rect f(x1, y1, x2, y2);
-	foreach(const prop_object& p, props_) {
-		if(f(p)) {
-			props.push_back(p);
-		}
-	}
-}
-
-void level::remove_props_in_rect(int x1, int y1, int x2, int y2)
-{
-	props_.erase(std::remove_if(props_.begin(), props_.end(), prop_object_in_rect(x1, y1, x2, y2)), props_.end());
 }
 
 void level::schedule_character_removal(entity_ptr p)

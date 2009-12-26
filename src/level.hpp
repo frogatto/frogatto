@@ -20,7 +20,6 @@
 #include "level_object.hpp"
 #include "level_solid_map.hpp"
 #include "movement_script.hpp"
-#include "prop.hpp"
 #include "raster.hpp"
 #include "tile_map.hpp"
 #include "water.hpp"
@@ -92,10 +91,6 @@ public:
 	const std::vector<entity_ptr>& players() const { return players_; }
 	void add_player(entity_ptr p);
 	void add_character(entity_ptr p);
-	void add_prop(const prop_object& new_prop);
-	void remove_prop(const prop_object& new_prop);
-	void get_props_in_rect(int x1, int y1, int x2, int y2, std::vector<prop_object>& props);
-	void remove_props_in_rect(int x1, int y1, int x2, int y2);
 
 	//schedule a character for removal at the end of the current cycle.
 	void schedule_character_removal(entity_ptr p);
@@ -326,8 +321,6 @@ private:
 
 	typedef std::vector<entity_ptr> entity_group;
 	std::vector<entity_group> groups_;
-
-	std::vector<prop_object> props_;
 
 	portal left_portal_, right_portal_;
 	std::vector<portal> portals_;

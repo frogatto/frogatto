@@ -41,7 +41,6 @@
 #include "powerup.hpp"
 #include "preferences.hpp"
 #include "preprocessor.hpp"
-#include "prop.hpp"
 #include "raster.hpp"
 #include "sound.hpp"
 #include "stats.hpp"
@@ -262,8 +261,6 @@ extern "C" int main(int argc, char** argv)
 		wml::schema::init(wml::parse_wml_from_file("schema.cfg"));
 		tile_map::init(wml::parse_wml_from_file("tiles.cfg",
 		               wml::schema::get("tiles")));
-		prop::init(wml::parse_wml_from_file("prop.cfg",
-		           wml::schema::get("props")));
 		powerup::init(wml::parse_wml_from_file("powerups.cfg",
 		              wml::schema::get("powerups")));
 		gui_section::init(wml::parse_wml_from_file("gui.cfg"));
