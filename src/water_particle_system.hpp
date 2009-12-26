@@ -13,16 +13,8 @@
 #include "geometry.hpp"
 
 struct water_particle_system_info {
-	water_particle_system_info(wml::const_node_ptr node)
-	: number_of_particles(wml::get_int(node, "number_of_particles", 1500)),
-	repeat_period(wml::get_int(node, "repeat_period", 1000)),
-	velocity_x(wml::get_int(node, "velocity_x")),
-	velocity_y(wml::get_int(node, "velocity_y", -5)),
-	velocity_rand(wml::get_int(node, "velocity_rand", 3)),
-	dot_size(wml::get_int(node, "dot_size", 1))
-	{
-		irgba = graphics::color(node->attr("color")).value();
-	}
+	water_particle_system_info(wml::const_node_ptr node);
+
 	int number_of_particles;
 	int repeat_period;
 	int velocity_x, velocity_y;

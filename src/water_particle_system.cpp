@@ -2,8 +2,26 @@
 #include <math.h>
 #include <vector>
 
+#include "preferences.hpp"
 #include "water_particle_system.hpp"
 #include "wml_utils.hpp"
+
+water_particle_system_info::water_particle_system_info(wml::const_node_ptr node)
+: number_of_particles(wml::get_int(node, "number_of_particles", 1500)),
+repeat_period(wml::get_int(node, "repeat_period", 1000)),
+velocity_x(wml::get_int(node, "velocity_x")),
+velocity_y(wml::get_int(node, "velocity_y", -5)),
+velocity_rand(wml::get_int(node, "velocity_rand", 3)),
+dot_size(wml::get_int(node, "dot_size", 1))
+{
+	irgba = graphics::color(node->attr("color")).value();
+
+	if(dot_size > 1 && preferences::xypos_draw_mask) {
+		//if we are clipping our drawing granularity, then we have a small
+		//enough screen that we want to shrink the particles.
+		dot_size /= 2;
+	}
+}
 
 water_particle_system_factory::water_particle_system_factory (wml::const_node_ptr node)
  : info(node)
