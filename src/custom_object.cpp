@@ -516,10 +516,6 @@ void custom_object::process(level& lvl)
 
 	bool collide = false;
 
-	if(type_->ignore_collide()) {
-		move_centipixels(velocity_x_, velocity_y_);
-	}
-
 	//calculate velocity which takes into account velocity of the object we're standing on.
 	int effective_velocity_x = velocity_x_;
 	int effective_velocity_y = velocity_y_;
@@ -534,6 +530,12 @@ void custom_object::process(level& lvl)
 		//y position to suit its last movement and put us on top of
 		//the platform.
 		effective_velocity_y -= stand_info.adjust_y*100;
+	}
+
+	if(!solid() && !type_->object_level_collisions()) {
+		move_centipixels(effective_velocity_x, effective_velocity_y);
+		effective_velocity_x = 0;
+		effective_velocity_y = 0;
 	}
 
 	collision_info collide_info;
@@ -1235,7 +1237,6 @@ variant custom_object::get_value(const std::string& key) const
 {
 	std::map<std::string, game_logic::const_formula_ptr>::const_iterator property_itor = type_->properties().find(key);
 	if(property_itor != type_->properties().end() && property_itor->second) {
-		std::cerr << "FOUND PROPERTY: '" << property_itor->second->str() << "'\n";
 		return property_itor->second->execute(*this);
 	}
 

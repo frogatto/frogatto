@@ -195,7 +195,8 @@ public:
 	void get_all_labels(std::vector<std::string>& labels) const;
 
 	const std::vector<entity_ptr>& get_chars() const { return chars_; }
-	void swap_chars(std::vector<entity_ptr>& v) { chars_.swap(v); }
+	const std::vector<entity_ptr>& get_solid_chars() const;
+	void swap_chars(std::vector<entity_ptr>& v) { chars_.swap(v); solid_chars_.clear(); }
 	int num_active_chars() const { return active_chars_.size(); }
 
 	void begin_movement_script(const std::string& name, entity& e);
@@ -302,10 +303,7 @@ private:
 	void erase_char(entity_ptr c);
 	std::vector<entity_ptr> chars_;
 	std::vector<entity_ptr> active_chars_;
-
-	//a list of the objects which are scheduled for deletion at the end
-	//of the current cycle.
-	std::vector<entity_ptr> delete_chars_;
+	mutable std::vector<entity_ptr> solid_chars_;
 
 	std::map<std::string, entity_ptr> chars_by_label_;
 	entity_ptr player_;

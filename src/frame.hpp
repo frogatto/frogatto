@@ -30,6 +30,7 @@ public:
 	//play a sound. 'object' is just the address of the object playing the
 	//sound, useful if the sound is later cancelled.
 	void play_sound(const void* object=NULL) const;
+	std::vector<bool>::const_iterator alpha_row(int x, int y, int time, bool face_right) const;
 	bool is_alpha(int x, int y, int time, bool face_right) const;
 	void draw_into_blit_queue(graphics::blit_queue& blit, int x, int y, bool face_right=true, bool upside_down=false, int time=0) const;
 	void draw(int x, int y, bool face_right=true, bool upside_down=false, int time=0, int rotate=0) const;

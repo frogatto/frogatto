@@ -217,6 +217,8 @@ void level::load_character(wml::const_node_ptr c)
 	if(chars_.back()->label().empty() == false) {
 		chars_by_label_[chars_.back()->label()] = chars_.back();
 	}
+
+	solid_chars_.clear();
 }
 
 void level::finish_loading()
@@ -1011,11 +1013,7 @@ void level::do_processing()
 		water_->process(*this);
 	}
 
-	foreach(const entity_ptr& e, delete_chars_) {
-		erase_char(e);
-	}
-
-	delete_chars_.clear();
+	solid_chars_.clear();
 }
 
 void level::erase_char(entity_ptr c)
@@ -1030,6 +1028,8 @@ void level::erase_char(entity_ptr c)
 		entity_group& group = groups_[c->group()];
 		group.erase(std::remove(group.begin(), group.end(), c), group.end());
 	}
+
+	solid_chars_.clear();
 }
 
 bool level::is_solid(const level_solid_map& map, const entity& e, const std::vector<point>& points, int* friction, int* traction, int* damage) const
@@ -1777,11 +1777,6 @@ void level::add_character(entity_ptr p)
 	layers_.insert(p->zorder());
 }
 
-void level::schedule_character_removal(entity_ptr p)
-{
-	delete_chars_.push_back(p);
-}
-
 void level::force_enter_portal(const portal& p)
 {
 	entered_portal_active_ = true;
@@ -2020,6 +2015,19 @@ void level::get_all_labels(std::vector<std::string>& labels) const
 	}
 }
 
+const std::vector<entity_ptr>& level::get_solid_chars() const
+{
+	if(solid_chars_.empty()) {
+		foreach(const entity_ptr& e, chars_) {
+			if(e->solid()) {
+				solid_chars_.push_back(e);
+			}
+		}
+	}
+
+	return solid_chars_;
+}
+
 void level::begin_movement_script(const std::string& key, entity& e)
 {
 	std::map<std::string, movement_script>::const_iterator itor = movement_scripts_.find(key);
@@ -2121,6 +2129,8 @@ void level::restore_from_backup(backup_snapshot& snapshot)
 	players_ = snapshot.players;
 	player_ = snapshot.player;
 	last_touched_player_ = snapshot.last_touched_player;
+
+	solid_chars_.clear();
 
 	chars_by_label_.clear();
 	foreach(const entity_ptr& e, chars_) {

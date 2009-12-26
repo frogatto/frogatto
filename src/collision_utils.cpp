@@ -42,7 +42,9 @@ bool point_standable(const level& lvl, const entity& e, int x, int y, collision_
 		return true;
 	}
 
-	foreach(const entity_ptr& obj, lvl.get_chars()) {
+	const std::vector<entity_ptr>& chars = allow_platform == SOLID_AND_PLATFORMS ? lvl.get_chars() : lvl.get_solid_chars();
+
+	foreach(const entity_ptr& obj, chars) {
 		if(&e == obj.get() || (e.solid_dimensions()&obj->solid_dimensions()) == 0) {
 			continue;
 		}
@@ -95,7 +97,7 @@ bool entity_collides(level& lvl, const entity& e, MOVE_DIRECTION dir, collision_
 		return true;
 	}
 
-	foreach(const entity_ptr& obj, lvl.get_chars()) {
+	foreach(const entity_ptr& obj, lvl.get_solid_chars()) {
 		if(obj.get() != &e && entity_collides_with_entity(e, *obj, info ? &info->area_id : NULL, info ? &info->collide_with_area_id : NULL)) {
 			return true;
 		}
@@ -308,10 +310,13 @@ int entity_user_collision(const entity& a, const entity& b, collision_pair* area
 				const int time_a = a.time_in_frame();
 				const int time_b = b.time_in_frame();
 
+				//we only check every other pixel, since this gives us
+				//enough accuracy and is 4x faster.
+				const int Stride = 2;
 				bool found = false;
 				const rect intersection = intersection_rect(rect_a, rect_b);
-				for(int y = intersection.y(); y <= intersection.y2() && !found; ++y) {
-					for(int x = intersection.x(); x <= intersection.x2(); ++x) {
+				for(int y = intersection.y(); y <= intersection.y2() && !found; y += Stride) {
+					for(int x = intersection.x(); x <= intersection.x2(); x += Stride) {
 						if(!fa.is_alpha(x - a.x(), y - a.y(), time_a, a.face_right()) &&
 						   !fb.is_alpha(x - b.x(), y - b.y(), time_b, b.face_right())) {
 							found = true;
@@ -430,8 +435,8 @@ public:
 
 void detect_user_collisions(level& lvl)
 {
-	std::vector<entity_ptr> chars;
-	chars.reserve(lvl.get_chars().size());
+	static std::vector<entity_ptr> chars;
+	chars.clear();
 	foreach(const entity_ptr& a, lvl.get_chars()) {
 		if(a->collide_dimensions() != 0 && a->current_frame().collision_areas().empty() == false) {
 			chars.push_back(a);
