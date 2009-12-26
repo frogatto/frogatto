@@ -40,7 +40,7 @@ namespace input {
             claimed = process_event(event, claimed);
         }
 
-        return not killed_;
+        return !killed_;
     }
 
     namespace {
