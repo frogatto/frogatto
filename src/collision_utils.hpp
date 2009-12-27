@@ -88,4 +88,6 @@ bool entity_user_collision_specific_areas(const entity& a, const std::string& ar
 //the colliding objects.
 void detect_user_collisions(level& lvl);
 
+bool is_flightpath_clear(const level& lvl, const entity& e, const rect& area);
+
 #endif

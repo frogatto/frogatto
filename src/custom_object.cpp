@@ -532,10 +532,20 @@ void custom_object::process(level& lvl)
 		effective_velocity_y -= stand_info.adjust_y*100;
 	}
 
-	if(!solid() && !type_->object_level_collisions()) {
-		move_centipixels(effective_velocity_x, effective_velocity_y);
-		effective_velocity_x = 0;
-		effective_velocity_y = 0;
+	if(effective_velocity_x || effective_velocity_y) {
+		if(!solid() && !type_->object_level_collisions()) {
+			move_centipixels(effective_velocity_x, effective_velocity_y);
+			effective_velocity_x = 0;
+			effective_velocity_y = 0;
+		} else if(!type_->has_feet() && solid()) {
+			move_centipixels(effective_velocity_x, effective_velocity_y);
+			if(is_flightpath_clear(lvl, *this, solid_rect())) {
+				effective_velocity_x = 0;
+				effective_velocity_y = 0;
+			} else {
+				move_centipixels(-effective_velocity_x, -effective_velocity_y);
+			}
+		}
 	}
 
 	collision_info collide_info;

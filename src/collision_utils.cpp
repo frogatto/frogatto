@@ -486,3 +486,24 @@ void detect_user_collisions(level& lvl)
 		}
 	}
 }
+
+bool is_flightpath_clear(const level& lvl, const entity& e, const rect& area)
+{
+	if(lvl.may_be_solid_in_rect(area)) {
+		return false;
+	}
+
+	const std::vector<entity_ptr>& v = lvl.get_solid_chars();
+	for(std::vector<entity_ptr>::const_iterator obj = v.begin();
+	    obj != v.end(); ++obj) {
+		if(obj->get() == &e) {
+			continue;
+		}
+
+		if(rects_intersect(area, (*obj)->solid_rect())) {
+			return false;
+		}
+	}
+
+	return true;
+}
