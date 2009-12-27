@@ -2019,7 +2019,7 @@ const std::vector<entity_ptr>& level::get_solid_chars() const
 {
 	if(solid_chars_.empty()) {
 		foreach(const entity_ptr& e, chars_) {
-			if(e->solid()) {
+			if(e->solid() || e->platform()) {
 				solid_chars_.push_back(e);
 			}
 		}

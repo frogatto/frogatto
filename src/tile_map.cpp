@@ -61,7 +61,10 @@ struct tile_pattern {
 		pattern_str = node->attr("pattern");
 		std::string pattern_str = node->attr("pattern");
 		pattern_str.erase(std::remove_if(pattern_str.begin(), pattern_str.end(), is_whitespace()), pattern_str.end());
-		std::vector<std::string> patterns = util::split(pattern_str, ',', 0);
+
+		static std::vector<std::string> patterns;
+		patterns.clear();
+		util::split(pattern_str, patterns, ',', 0);
 
 		assert(!patterns.empty());
 

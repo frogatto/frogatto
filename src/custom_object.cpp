@@ -991,8 +991,9 @@ const_solid_info_ptr custom_object::solid() const
 		return const_solid_info_ptr();
 	}
 
-	if(current_frame().solid()) {
-		return current_frame().solid();
+	const frame& f = current_frame();
+	if(f.solid()) {
+		return f.solid();
 	}
 
 	return type_->solid();

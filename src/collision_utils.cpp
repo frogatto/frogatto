@@ -42,16 +42,20 @@ bool point_standable(const level& lvl, const entity& e, int x, int y, collision_
 		return true;
 	}
 
-	const std::vector<entity_ptr>& chars = allow_platform == SOLID_AND_PLATFORMS ? lvl.get_chars() : lvl.get_solid_chars();
+	const point pt(x, y);
 
-	foreach(const entity_ptr& obj, chars) {
+	const std::vector<entity_ptr>& chars = lvl.get_solid_chars();
+
+	for(std::vector<entity_ptr>::const_iterator i = chars.begin();
+	    i != chars.end(); ++i) {
+		const entity_ptr& obj = *i;
 		if(&e == obj.get() || (e.solid_dimensions()&obj->solid_dimensions()) == 0) {
 			continue;
 		}
 
 		if(allow_platform == SOLID_AND_PLATFORMS) {
-			const rect platform_rect = obj->platform_rect();
-			if(point_in_rect(point(x,y), platform_rect)) {
+			const rect& platform_rect = obj->platform_rect();
+			if(point_in_rect(pt, platform_rect)) {
 				if(info) {
 					info->collide_with = obj;
 					info->friction = obj->surface_friction();
@@ -64,7 +68,7 @@ bool point_standable(const level& lvl, const entity& e, int x, int y, collision_
 			}
 		}
 
-		if(!point_in_rect(point(x,y), obj->solid_rect())) {
+		if(!point_in_rect(pt, obj->solid_rect())) {
 			continue;
 		}
 
@@ -93,12 +97,13 @@ bool entity_collides(level& lvl, const entity& e, MOVE_DIRECTION dir, collision_
 		return false;
 	}
 
-	if(entity_collides_with_level(lvl, e, dir, info ? &info->friction : NULL, info ? &info->traction : NULL, info ? &info->damage : NULL)) {
+	if(entity_collides_with_level(lvl, e, dir, info)) {
 		return true;
 	}
 
-	foreach(const entity_ptr& obj, lvl.get_solid_chars()) {
-		if(obj.get() != &e && entity_collides_with_entity(e, *obj, info ? &info->area_id : NULL, info ? &info->collide_with_area_id : NULL)) {
+	const std::vector<entity_ptr>& solid_chars = lvl.get_solid_chars();
+	for(std::vector<entity_ptr>::const_iterator obj = solid_chars.begin(); obj != solid_chars.end(); ++obj) {
+		if(obj->get() != &e && entity_collides_with_entity(e, **obj, info)) {
 			return true;
 		}
 	}
@@ -106,14 +111,14 @@ bool entity_collides(level& lvl, const entity& e, MOVE_DIRECTION dir, collision_
 	return false;
 }
 
-bool entity_collides_with_entity(const entity& e, const entity& other, const std::string** area_id, const std::string** other_area_id)
+bool entity_collides_with_entity(const entity& e, const entity& other, collision_info* info)
 {
 	if((e.solid_dimensions()&other.solid_dimensions()) == 0) {
 		return false;
 	}
 
-	const rect our_rect = e.solid_rect();
-	const rect other_rect = other.solid_rect();
+	const rect& our_rect = e.solid_rect();
+	const rect& other_rect = other.solid_rect();
 
 	if(!rects_intersect(our_rect, other_rect)) {
 		return false;
@@ -132,10 +137,10 @@ bool entity_collides_with_entity(const entity& e, const entity& other, const std
 		for(int x = area.x(); x < area.x2(); ++x) {
 			const int our_x = e.face_right() ? x - e.x() : (e.x() + our_frame.width()-1) - x;
 			const int our_y = y - e.y();
-			if(our_solid->solid_at(our_x, our_y, area_id)) {
+			if(our_solid->solid_at(our_x, our_y, info ? &info->area_id : NULL)) {
 				const int other_x = other.face_right() ? x - other.x() : (other.x() + other_frame.width()-1) - x;
 				const int other_y = y - other.y();
-				if(other_solid->solid_at(other_x, other_y, other_area_id)) {
+				if(other_solid->solid_at(other_x, other_y, info ? &info->collide_with_area_id : NULL)) {
 					return true;
 				}
 			}
@@ -145,7 +150,7 @@ bool entity_collides_with_entity(const entity& e, const entity& other, const std
 	return false;
 }
 
-bool entity_collides_with_level(const level& lvl, const entity& e, MOVE_DIRECTION dir, int* friction, int* traction, int* damage)
+bool entity_collides_with_level(const level& lvl, const entity& e, MOVE_DIRECTION dir, collision_info* info)
 {
 	const_solid_info_ptr s = e.solid();
 	if(!s) {
@@ -174,6 +179,10 @@ bool entity_collides_with_level(const level& lvl, const entity& e, MOVE_DIRECTIO
 			return false;
 		}
 	}
+
+	int* friction = info ? &info->friction : NULL;
+	int* traction = info ? &info->traction : NULL;
+	int* damage = info ? &info->damage : NULL;
 
 	foreach(const const_solid_map_ptr& m, s->solid()) {
 		if(lvl.solid(e, m->dir(dir), friction, traction, damage)) {

@@ -54,13 +54,11 @@ bool point_standable(const level& lvl, const entity& e, int x, int y, collision_
 bool entity_collides(level& lvl, const entity& e, MOVE_DIRECTION dir, collision_info* info=NULL);
 
 //function which finds if one entity collides with another given entity.
-bool entity_collides_with_entity(const entity& e, const entity& other,
-                                 const std::string** area_id=NULL,
-								 const std::string** other_area_id=NULL);
+bool entity_collides_with_entity(const entity& e, const entity& other, collision_info* info=NULL);
 
 
 //function which finds if an entity collides with a level tile.
-bool entity_collides_with_level(const level& lvl, const entity& e, MOVE_DIRECTION dir, int* friction=NULL, int* traction=NULL, int* damage=NULL);
+bool entity_collides_with_level(const level& lvl, const entity& e, MOVE_DIRECTION dir, collision_info* info=NULL);
 
 //function which finds how many pixels in an entity collide with the level.
 //this is generally used for debug purposes.
