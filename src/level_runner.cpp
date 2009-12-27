@@ -37,13 +37,13 @@ void transition_scene(level& lvl, screen_position& screen_pos, bool transition_o
 		lvl.player()->get_entity().set_invisible(true);
 	}
 
-	for(int n = 0; n <= 20; ++n) {
+	for(int n = 0; n <= 10; ++n) {
 		lvl.process();
 
-		draw_fn(lvl, screen_pos, transition_out ? (n/20.0) : (1 - n/20.0));
+		draw_fn(lvl, screen_pos, transition_out ? (n/10.0) : (1 - n/10.0));
 
 		SDL_GL_SwapBuffers();
-		SDL_Delay(20);
+		SDL_Delay(40);
 	}
 	
 	if(lvl.player()) {
@@ -218,12 +218,12 @@ bool level_runner::play_cycle()
 
 	const bool is_multiplayer = controls::num_players() > 1;
 
-	int desired_end_time = start_time_ + pause_time_ + global_pause_time + cycle*20 + 20;
+	int desired_end_time = start_time_ + pause_time_ + global_pause_time + cycle*40 + 40;
 
 	if(!is_multiplayer) {
 		const int ticks = SDL_GetTicks();
 		if(desired_end_time < ticks) {
-			const int new_desired_end_time = ticks + 20;
+			const int new_desired_end_time = ticks + 40;
 			pause_time_ += new_desired_end_time - desired_end_time;
 			desired_end_time = new_desired_end_time;
 		}
@@ -448,14 +448,14 @@ bool level_runner::play_cycle()
 
 	if(message_dialog::get()) {
 		message_dialog::get()->process();
-		pause_time_ += 20;
+		pause_time_ += 40;
 	} else {
 		if (!paused) {
 			const int start_process = SDL_GetTicks();
 			lvl_->process();
 			next_process_ += (SDL_GetTicks() - start_process);
 		} else {
-			pause_time_ += 20;
+			pause_time_ += 40;
 		}
 	}
 
