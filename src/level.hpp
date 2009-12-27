@@ -296,6 +296,7 @@ private:
 	struct solid_color_rect_cmp {
 		bool operator()(const solid_color_rect& r, int zorder) const { return r.layer < zorder; }
 		bool operator()(int zorder, const solid_color_rect& r) const { return zorder < r.layer; }
+		bool operator()(const solid_color_rect& a, const solid_color_rect& b) const { return a.layer < b.layer; }
 	};
 
 	std::vector<solid_color_rect> solid_color_rects_;

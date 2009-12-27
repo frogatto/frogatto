@@ -607,8 +607,10 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 
 void level::draw_layer_solid(int layer, int x, int y, int w, int h) const
 {
+	solid_color_rect arg;
+	arg.layer = layer;
 	typedef std::vector<solid_color_rect>::const_iterator SolidItor;
-	std::pair<SolidItor, SolidItor> solid = std::equal_range(solid_color_rects_.begin(), solid_color_rects_.end(), layer, solid_color_rect_cmp());
+	std::pair<SolidItor, SolidItor> solid = std::equal_range(solid_color_rects_.begin(), solid_color_rects_.end(), arg, solid_color_rect_cmp());
 	if(solid.first != solid.second) {
 		const rect viewport(x, y, w, h);
 
