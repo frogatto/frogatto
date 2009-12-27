@@ -328,8 +328,6 @@ void custom_object::draw() const
 		return;
 	}
 
-	const_cast<custom_object*>(this)->move_centipixels(velocity_x_/2, velocity_y_/2);
-
 	if(shader_ == 0 && !fragment_shaders_.empty() && !vertex_shaders_.empty()) {
 		shader_ = get_gl_shader(vertex_shaders_, fragment_shaders_);
 	}
@@ -404,7 +402,6 @@ void custom_object::draw() const
 		glUseProgram(0);
 	}
 #endif
-	const_cast<custom_object*>(this)->move_centipixels(-velocity_x_/2, -velocity_y_/2);
 }
 
 void custom_object::draw_group() const
@@ -420,10 +417,6 @@ void custom_object::draw_group() const
 
 void custom_object::process(level& lvl)
 {
-	if(++cycle_ % 2) {
-		return;
-	}
-
 	if(type_->use_image_for_collisions()) {
 		//anything that uses their image for collisions is a static,
 		//un-moving object that will stay immobile.
@@ -456,6 +449,7 @@ void custom_object::process(level& lvl)
 
 	const int start_x = x();
 	const int start_y = y();
+	++cycle_;
 
 	if(invincible_) {
 		--invincible_;
