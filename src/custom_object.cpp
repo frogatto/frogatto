@@ -543,6 +543,9 @@ void custom_object::process(level& lvl)
 				effective_velocity_x = 0;
 				effective_velocity_y = 0;
 			} else {
+				//we can't guarantee smooth movement to this location, so
+				//roll the move back and we'll do a pixel-by-pixel move
+				//until we collide.
 				move_centipixels(-effective_velocity_x, -effective_velocity_y);
 			}
 		}
@@ -553,7 +556,7 @@ void custom_object::process(level& lvl)
 
 	//std::cerr << "velocity_y: " << velocity_y_ << "\n";
 	collide = false;
-	for(int n = 0; n <= std::abs(effective_velocity_y/100) && !collide && !type_->ignore_collide(); ++n) {
+	for(int n = 0; effective_velocity_y && n <= std::abs(effective_velocity_y/100) && !collide && !type_->ignore_collide(); ++n) {
 		const int dir = effective_velocity_y/100 > 0 ? 1 : -1;
 		int damage = 0;
 
@@ -1515,7 +1518,6 @@ void custom_object::hit_player()
 
 void custom_object::hit_by(entity& e)
 {
-	std::cerr << "hit_by!\n";
 	last_hit_by_ = &e;
 	handle_event(OBJECT_EVENT_HIT_BY_PLAYER);
 }
