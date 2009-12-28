@@ -153,8 +153,12 @@ namespace game_logic
 			//reference to the list, so that we can allow static evaluation
 			//not to be fooled.
 			variant static_evaluate(const formula_callable& variables) const {
-				variant result = formula_expression::static_evaluate(variables);
-				result_ = variant();
+				variant result;
+				std::vector<variant>& res = result.initialize_list();
+				for(std::vector<expression_ptr>::const_iterator i = items_.begin(); i != items_.end(); ++i) {
+					res.push_back((*i)->evaluate(variables));
+				}
+
 				return result;
 			}
 

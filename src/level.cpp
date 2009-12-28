@@ -999,9 +999,7 @@ void level::do_processing()
 	foreach(entity_ptr c, active_chars_) {
 		c->process(*this);
 		if(c->destroyed() && !c->is_human()) {
-			std::cerr << "OBJECT DIE: " << c->get_id() << "\n";
 			if(player_ && c->get_id() != -1) {
-			std::cerr << "OBJECT DEST: " << c->get_id() << "\n";
 				player_->is_human()->object_destroyed(id(), c->get_id());
 			}
 

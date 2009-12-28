@@ -106,6 +106,7 @@ public:
 private:
 	variant execute(const formula_callable& variables) const {
 		variant anim = args()[0]->evaluate(variables);
+		std::cerr << "DRAW ANIMATION: " << anim.as_string() << "\n";
 		const frame_ptr f = algo_->get_frame(anim.as_string());
 		if(!f) {
 			return variant();
