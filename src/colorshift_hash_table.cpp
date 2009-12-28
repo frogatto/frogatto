@@ -33,7 +33,7 @@ void colorshift_hash_table::insert(const pixel_pair& entry){
 	int desired_element = entry.first%length_;
 	
 	for(int i=0; i <= elements_stored_; ++i){
-		(desired_element + 1) % length_; //modulo addition
+		desired_element = (desired_element + 1) % length_; //modulo addition
 		
 		if (array_[desired_element].first != empty_color_){
 			array_[desired_element] = entry;
@@ -80,7 +80,7 @@ uint32_t colorshift_hash_table::operator[](uint32_t key) const {
 	int desired_element = key%length_;
 	
 	for(int i=0; i <= elements_stored_; ++i){
-		(desired_element + 1) % length_; //modulo addition
+		desired_element = (desired_element + 1) % length_; //modulo addition
 		
 		if (array_[desired_element].first == key){  //then we don't have a collision, and can return the color
 			return array_[key%length_].second;

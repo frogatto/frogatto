@@ -1,3 +1,6 @@
+#ifndef COLORSHIFT_HASH_TABLE_HPP_INCLUDED
+#define COLORSHIFT_HASH_TABLE_HPP_INCLUDED
+
 //A quick data structure for doing color shifts of pixel art images.
 #include <utility>
 #include <inttypes.h>
@@ -25,3 +28,5 @@ private:
 	
 	
 };
+
+#endif
