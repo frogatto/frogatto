@@ -30,6 +30,9 @@ public:
 	formula_expression() : name_(NULL) {}
 	explicit formula_expression(const char* name) : name_(name) {}
 	virtual ~formula_expression() {}
+	virtual variant static_evaluate(const formula_callable& variables) const {
+		return evaluate(variables);
+	}
 	variant evaluate(const formula_callable& variables) const {
 		call_stack_manager manager(str_.c_str());
 		return execute(variables);

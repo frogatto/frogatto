@@ -130,6 +130,24 @@ void variant::increment_refcount()
 	}
 }
 
+std::vector<variant>& variant::initialize_list()
+{
+	if(type_ == TYPE_LIST) {
+		if(list_->refcount == 1) {
+			list_->elements.clear();
+			return list_->elements;
+		}
+		release();
+	} else {
+		release();
+		type_ = TYPE_LIST;
+	}
+
+	list_ = new variant_list;
+	increment_refcount();
+	return list_->elements;
+}
+
 void variant::release()
 {
 	switch(type_) {

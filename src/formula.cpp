@@ -92,8 +92,16 @@ namespace game_logic
 	
 	variant map_formula_callable::get_value(const std::string& key) const
 	{
-		return map_get_value_default(values_, key,
-									 fallback_ ? fallback_->query_value(key) : variant());
+		std::map<std::string, variant>::const_iterator itor = values_.find(key);
+		if(itor == values_.end()) {
+			if(fallback_) {
+				return fallback_->query_value(key);
+			} else {
+				return variant();
+			}
+		} else {
+			return itor->second;
+		}
 	}
 	
 	void map_formula_callable::get_inputs(std::vector<formula_input>* inputs) const
@@ -141,17 +149,26 @@ namespace game_logic
 			{}
 			
 		private:
+			//a special version of static evaluation that doesn't save a
+			//reference to the list, so that we can allow static evaluation
+			//not to be fooled.
+			variant static_evaluate(const formula_callable& variables) const {
+				variant result = formula_expression::static_evaluate(variables);
+				result_ = variant();
+				return result;
+			}
+
 			variant execute(const formula_callable& variables) const {
-				std::vector<variant> res;
-				res.reserve(items_.size());
+				std::vector<variant>& res = result_.initialize_list();
 				for(std::vector<expression_ptr>::const_iterator i = items_.begin(); i != items_.end(); ++i) {
 					res.push_back((*i)->evaluate(variables));
 				}
 				
-				return variant(&res);
+				return result_;
 			}
 			
 			std::vector<expression_ptr> items_;
+			mutable variant result_;
 		};
 		
 		class map_expression : public formula_expression {
@@ -822,7 +839,7 @@ namespace game_logic
 			try {
 				const unsigned int rng_seed = rng::get_seed();
 				formula_callable_ptr static_callable(new static_formula_callable);
-				variant res = result->evaluate(*static_callable);
+				variant res = result->static_evaluate(*static_callable);
 				if(rng_seed == rng::get_seed() && static_callable->refcount() == 1) {
 					//this expression is static. Reduce it to its result.
 					result = expression_ptr(new variant_expression(res));

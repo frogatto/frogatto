@@ -45,7 +45,10 @@ public:
 	explicit variant(const std::string& str);
 	explicit variant(std::map<variant,variant>* map);
 	variant(game_logic::const_formula_ptr, const std::vector<std::string>& args, const game_logic::formula_callable& callable);
-	~variant() { release(); }
+
+	//only call the non-inlined release() function if we have a type
+	//that needs releasing.
+	~variant() { if(type_ > TYPE_INT) { release(); } }
 
 	variant(const variant& v);
 	const variant& operator=(const variant& v);
@@ -121,6 +124,8 @@ public:
 	std::string string_cast() const;
 
 	std::string to_debug_string(std::vector<const game_logic::formula_callable*>* seen=NULL) const;
+
+	std::vector<variant>& initialize_list();
 	enum TYPE { TYPE_NULL, TYPE_INT, TYPE_CALLABLE, TYPE_LIST, TYPE_STRING, TYPE_MAP, TYPE_FUNCTION };
 private:
 	void must_be(TYPE t) const;
@@ -134,6 +139,11 @@ private:
 		variant_map* map_;
 		variant_fn* fn_;
 	};
+
+	//function to initialize the variant as a list, returning the
+	//underlying list vector to be initialized. If the variant is already a list,
+	//and holds the only reference to that list, then that list object may
+	//be cleared and re-used as a performance optimization.
 
 	void increment_refcount();
 	void release();
