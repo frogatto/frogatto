@@ -1456,6 +1456,7 @@ void custom_object::set_frame(const std::string& name)
 	const int start_y = feet_y();
 
 	frame_ = &type_->get_frame(name);
+	calculate_solid_rect();
 	++current_animation_id_;
 
 	const int diff_x = feet_x() - start_x;
