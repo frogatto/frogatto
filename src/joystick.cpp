@@ -141,4 +141,23 @@ bool button(int n) {
 	return false;
 }
 
+int iphone_tilt() {
+#if TARGET_OS_IPHONE
+	return SDL_JoystickGetAxis(joysticks.front(), 1);
+#else
+	return 0;
+#endif
+}
+
+std::vector<int> get_info() {
+	std::vector<int> res;
+	res.push_back(joysticks.size());
+	foreach(SDL_Joystick* j, joysticks) {
+		res.push_back(SDL_JoystickGetAxis(j, 0));
+		res.push_back(SDL_JoystickGetAxis(j, 1));
+	}
+	
+	return res;
+}
+
 }

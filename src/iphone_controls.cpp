@@ -39,7 +39,8 @@ bool iphone_controls::hittest_button (const SDL_Rect& rect, int button_x, int bu
 			//if (rect.w == 141) printf("Left rect: %i,%i,%i,%i - Mouse: %i,%i", button_x, button_y, w, h,  x*2, y*2);
 			if (x*2 > button_x && x*2 < button_x+w*2 && y*2 > button_y && y*2 < button_y+h*2)
 			{
-				if (!tex.is_alpha(rect.x+x-button_x/2, rect.y+y-button_y/2)) return true;
+				//if (!tex.is_alpha(rect.x+x-button_x/2, rect.y+y-button_y/2)) return true;
+				return true;
 			}
 		}
 	}
@@ -48,27 +49,27 @@ bool iphone_controls::hittest_button (const SDL_Rect& rect, int button_x, int bu
 
 bool iphone_controls::up()
 {
-	return hittest_button(up_arrow, 46, preferences::virtual_screen_height()-184);
+	return hittest_button(up_arrow, 46, preferences::virtual_screen_height()-284);
 }
 
 bool iphone_controls::down()
 {
-	return hittest_button(down_arrow, 46, preferences::virtual_screen_height()-78);
+	return hittest_button(down_arrow, 46, preferences::virtual_screen_height()-178);
 }
 
 bool iphone_controls::left()
 {
-	return hittest_button(left_arrow, 0, preferences::virtual_screen_height()-146);
+	return hittest_button(left_arrow, 0, preferences::virtual_screen_height()-246);
 }
 
 bool iphone_controls::right()
 {
-	return hittest_button(right_arrow, 114, preferences::virtual_screen_height()-146);
+	return hittest_button(right_arrow, 114, preferences::virtual_screen_height()-246);
 }
 
 bool iphone_controls::attack()
 {
-	return hittest_button(b_button, preferences::virtual_screen_width()-108, preferences::virtual_screen_height()-248);
+	return hittest_button(b_button, 8, preferences::virtual_screen_height()-124);
 }
 
 bool iphone_controls::jump()

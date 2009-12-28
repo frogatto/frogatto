@@ -2,6 +2,7 @@
 #include "entity.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
+#include "joystick.hpp"
 #include "player_info.hpp"
 #include "string_utils.hpp"
 #include "wml_node.hpp"
@@ -53,6 +54,14 @@ void player_info::read_controls(int cycle)
 {
 	bool status[controls::NUM_CONTROLS];
 	controls::get_control_status(cycle, slot_, status);
+
+	const int tilt = joystick::iphone_tilt();
+	if(tilt <= -400) {
+		status[controls::CONTROL_RIGHT] = true;
+	} else if(tilt >= 400) {
+		status[controls::CONTROL_LEFT] = true;
+	}
+
 	if(status[controls::CONTROL_LEFT] && status[controls::CONTROL_RIGHT]) {
 		//if both left and right are held, treat it as if neither are.
 		status[controls::CONTROL_LEFT] = status[controls::CONTROL_RIGHT] = false;

@@ -1,3 +1,4 @@
+#include "joystick.hpp"
 #include "level.hpp"
 #include "playable_custom_object.hpp"
 #include "wml_node.hpp"
@@ -70,6 +71,10 @@ void playable_custom_object::process(level& lvl)
 
 variant playable_custom_object::get_value(const std::string& key) const
 {
+	if(key == "ctrl_tilt") {
+		return variant(-joystick::iphone_tilt());
+	}
+
 	static const std::string ctrl[] = { "ctrl_up", "ctrl_down", "ctrl_left", "ctrl_right", "ctrl_attack", "ctrl_jump" };
 	for(int n = 0; n < sizeof(ctrl)/sizeof(*ctrl); ++n) {
 		if(key == ctrl[n]) {
