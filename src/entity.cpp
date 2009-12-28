@@ -115,25 +115,15 @@ void entity::activation_distance(int* x, int* y)
 	*y = 500;
 }
 
-const_solid_info_ptr entity::solid() const
-{
-	return const_solid_info_ptr();
-}
-
-const_solid_info_ptr entity::platform() const
-{
-	return const_solid_info_ptr();
-}
-
 void entity::calculate_solid_rect()
 {
 	const frame& f = current_frame();
 
 	frame_rect_ = rect(x(), y(), f.width(), f.height());
 	
-	const_solid_info_ptr s = solid();
-	if(s) {
-		const rect& area = s->area();
+	solid_ = calculate_solid();
+	if(solid_) {
+		const rect& area = solid_->area();
 
 		if(face_right()) {
 			solid_rect_ = rect(x() + area.x(), y() + area.y(), area.w(), area.h());
@@ -144,10 +134,10 @@ void entity::calculate_solid_rect()
 		solid_rect_ = rect();
 	}
 
-	s = platform();
-	if(s) {
+	platform_ = calculate_platform();
+	if(platform_) {
 		const int delta_y = last_move_y();
-		const rect& area = s->area();
+		const rect& area = platform_->area();
 		
 		if(area.empty()) {
 			platform_rect_ = rect();

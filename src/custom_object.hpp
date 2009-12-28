@@ -53,9 +53,6 @@ public:
 	virtual bool point_collides(int x, int y) const;
 	virtual bool rect_collides(const rect& r) const;
 
-	const_solid_info_ptr solid() const;
-	const_solid_info_ptr platform() const;
-
 	virtual bool on_players_side() const;
 
 	virtual const frame& current_frame() const { return *frame_; }
@@ -139,6 +136,9 @@ protected:
 private:
 	custom_object& operator=(const custom_object& o);
 	struct Accessor;
+
+	const_solid_info_ptr calculate_solid() const;
+	const_solid_info_ptr calculate_platform() const;
 
 	bool is_standing(const level& lvl, collision_info* info=NULL) const;
 

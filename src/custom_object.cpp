@@ -998,7 +998,7 @@ bool custom_object::rect_collides(const rect& r) const
 	}
 }
 
-const_solid_info_ptr custom_object::solid() const
+const_solid_info_ptr custom_object::calculate_solid() const
 {
 	if(!type_->has_solid()) {
 		return const_solid_info_ptr();
@@ -1012,7 +1012,7 @@ const_solid_info_ptr custom_object::solid() const
 	return type_->solid();
 }
 
-const_solid_info_ptr custom_object::platform() const
+const_solid_info_ptr custom_object::calculate_platform() const
 {
 	return type_->platform();
 }

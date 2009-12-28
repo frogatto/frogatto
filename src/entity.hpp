@@ -78,8 +78,8 @@ public:
 
 	virtual bool point_collides(int x, int y) const = 0;
 	virtual bool rect_collides(const rect& r) const = 0;
-	virtual const_solid_info_ptr solid() const;
-	virtual const_solid_info_ptr platform() const;
+	const const_solid_info_ptr& platform() const { return platform_; }
+	const const_solid_info_ptr& solid() const { return solid_; }
 	const rect& solid_rect() const { return solid_rect_; }
 	const rect& frame_rect() const { return frame_rect_; }
 	rect platform_rect() const { return platform_rect_; }
@@ -222,6 +222,8 @@ public:
 
 protected:
 
+	virtual const_solid_info_ptr calculate_solid() const = 0;
+	virtual const_solid_info_ptr calculate_platform() const = 0;
 	void calculate_solid_rect();
 
 	bool control_status(controls::CONTROL_ITEM ctrl) const { return controls_[ctrl]; }
@@ -280,6 +282,7 @@ private:
 
 	//caches of commonly queried rects.
 	rect solid_rect_, frame_rect_, platform_rect_;
+	const_solid_info_ptr solid_, platform_;
 };
 
 #endif

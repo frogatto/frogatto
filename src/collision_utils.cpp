@@ -97,8 +97,6 @@ bool entity_collides(level& lvl, const entity& e, MOVE_DIRECTION dir, collision_
 		return false;
 	}
 
-	std::cerr << "COLLIDE: '" << e.debug_description() << "'\n";
-
 	if(entity_collides_with_level(lvl, e, dir, info)) {
 		return true;
 	}
