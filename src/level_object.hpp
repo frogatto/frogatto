@@ -46,13 +46,18 @@ struct level_tile_zorder_pos_comparer {
 };
 
 struct level_tile_y_pos_comparer {
-	bool operator()(const level_tile& a, int b) const {
-		return a.y < b;
-	}
-
-	bool operator()(int a, const level_tile& b) const {
-		return a < b.y;
-	}
+ 
+        bool operator()(const level_tile& a, int b) const {
+                return a.y < b;
+        }
+ 
+        bool operator()(int a, const level_tile& b) const {
+                return a < b.y;
+        }
+ 
+        bool operator()(const level_tile& a, const level_tile& b) const {
+                return a.y < b.y;
+        }
 };
 
 class level_object {
