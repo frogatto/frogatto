@@ -26,11 +26,13 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus=NULL
 
 struct performance_data {
 	int fps;
+	int cycles_per_second;
 	int delay;
 	int draw;
 	int process;
 	int flip;
 	int cycle;
+	int nevents;
 };
 
 void draw_fps(const level& lvl, const performance_data& data);

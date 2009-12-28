@@ -5,6 +5,7 @@
 #include "SDL.h"
 
 #include "controls.hpp"
+#include "custom_object.hpp"
 #include "draw_scene.hpp"
 #ifndef NO_EDITOR
 #include "editor.hpp"
@@ -176,6 +177,8 @@ level_runner::level_runner(boost::scoped_ptr<level>& lvl, std::string& level_cfg
 	current_second_ = time(NULL);
 	current_fps_ = 0;
 	next_fps_ = 0;
+	current_cycles_ = 0;
+	next_cycles_ = 0;
 	current_delay_ = 0;
 	next_delay_ = 0;
 	current_draw_ = 0;
@@ -184,6 +187,9 @@ level_runner::level_runner(boost::scoped_ptr<level>& lvl, std::string& level_cfg
 	next_flip_ = 0;
 	current_process_ = 0;
 	next_process_ = 0;
+	current_events_ = 0;
+
+	nskip_draw_ = 0;
 
 	cycle = 0;
 	paused = false;
@@ -208,12 +214,6 @@ bool level_runner::play_level()
 bool level_runner::play_cycle()
 {
 
-	const int start_draw = SDL_GetTicks();
-	draw_scene(*lvl_, last_draw_position());
-	performance_data perf = { current_fps_, current_delay_, current_draw_, current_process_, current_flip_, cycle };
-	draw_fps(*lvl_, perf);
-
-	next_draw_ += (SDL_GetTicks() - start_draw);
 	if(controls::first_invalid_cycle() >= 0) {
 		lvl_->replay_from_cycle(controls::first_invalid_cycle());
 		controls::mark_valid();
@@ -473,24 +473,44 @@ bool level_runner::play_cycle()
 		return true;
 	}
 
-	const int start_flip = SDL_GetTicks();
-	SDL_GL_SwapBuffers();
-	next_flip_ += (SDL_GetTicks() - start_flip);
-	++next_fps_;
+	const int MaxSkips = 3;
+
+	const int start_draw = SDL_GetTicks();
+	if(start_draw < desired_end_time || nskip_draw_ >= MaxSkips) {
+		draw_scene(*lvl_, last_draw_position());
+		performance_data perf = { current_fps_, current_cycles_, current_delay_, current_draw_, current_process_, current_flip_, cycle, current_events_ };
+		draw_fps(*lvl_, perf);
+
+		next_draw_ += (SDL_GetTicks() - start_draw);
+
+		const int start_flip = SDL_GetTicks();
+		SDL_GL_SwapBuffers();
+		next_flip_ += (SDL_GetTicks() - start_flip);
+		++next_fps_;
+		nskip_draw_ = 0;
+	} else {
+		++nskip_draw_;
+	}
+
+	++next_cycles_;
 
 	const time_t this_second = time(NULL);
 	if(this_second != current_second_) {
 		current_second_ = this_second;
 		current_fps_ = next_fps_;
+		current_cycles_ = next_cycles_;
 		current_delay_ = next_delay_;
 		current_draw_ = next_draw_;
 		current_flip_ = next_flip_;
 		current_process_ = next_process_;
+		current_events_ = custom_object::events_handled_per_second;
 		next_fps_ = 0;
+		next_cycles_ = 0;
 		next_delay_ = 0;
 		next_draw_ = 0;
 		next_process_ = 0;
 		next_flip_ = 0;
+		custom_object::events_handled_per_second = 0;
 	}
 
 	const int raw_wait_time = desired_end_time - SDL_GetTicks();

@@ -1632,6 +1632,8 @@ void custom_object::handle_event(int event, const formula_callable* context)
 	}
 
 	foreach(const game_logic::const_formula_ptr& handler, handlers) {
+		++events_handled_per_second;
+
 		variant var;
 
 		if(context) {
@@ -1877,6 +1879,8 @@ void custom_object::set_sound_volume(const int sound_volume)
 	sound::change_volume(this, sound_volume);
 	sound_volume_ = sound_volume;
 }
+
+int custom_object::events_handled_per_second = 0;
 
 BENCHMARK_ARG(custom_object_get_attr, const std::string& attr)
 {

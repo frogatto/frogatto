@@ -128,6 +128,9 @@ public:
 	
 	bool execute_command(const variant& var);
 
+	//statistic on how many FFL events are handled every second.
+	static int events_handled_per_second;
+
 protected:
 	virtual void control(const level& lvl);
 	variant get_value(const std::string& key) const;
