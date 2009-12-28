@@ -496,7 +496,7 @@ bool level_runner::play_cycle()
 	const int raw_wait_time = desired_end_time - SDL_GetTicks();
 	const int wait_time = std::max<int>(1, desired_end_time - SDL_GetTicks());
 	next_delay_ += wait_time;
-//	if (wait_time != 1) SDL_Delay(wait_time);
+	if (wait_time != 1) SDL_Delay(wait_time);
 
 	if (!paused) ++cycle;
 

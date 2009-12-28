@@ -13,7 +13,7 @@ namespace {
 //test equality of regexes.
 std::map<std::string, const boost::regex*> regex_pool;
 
-std::vector<multi_tile_pattern> patterns;
+std::deque<multi_tile_pattern> patterns;
 
 }
 
@@ -39,7 +39,7 @@ const boost::regex& get_regex_from_pool(const std::string& key)
 	return *re;
 }
 
-const std::vector<multi_tile_pattern>& multi_tile_pattern::get_all()
+const std::deque<multi_tile_pattern>& multi_tile_pattern::get_all()
 {
 	return patterns;
 }

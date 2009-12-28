@@ -4,6 +4,7 @@
 #include <boost/regex.hpp>
 #include <boost/shared_ptr.hpp>
 
+#include <deque>
 #include <string>
 #include <vector>
 
@@ -15,7 +16,9 @@ const boost::regex& get_regex_from_pool(const std::string& key);
 class multi_tile_pattern
 {
 public:
-	static const std::vector<multi_tile_pattern>& get_all();
+	//all multi tile patterns loaded. This is a deque meaning callers can
+	//save pointers to members, knowing they will never be destroyed.
+	static const std::deque<multi_tile_pattern>& get_all();
 	static void init(wml::const_node_ptr node);
 	static void load(wml::const_node_ptr node);
 	explicit multi_tile_pattern(wml::const_node_ptr node);

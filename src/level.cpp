@@ -540,7 +540,7 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 
 	graphics::blit_queue& blit_queue_store = blit_info.blit_queue;
 
-	if(blit_info.tile_positions != tile_positions) {
+	if(blit_info.tile_positions != tile_positions || editor_) {
 		blit_info.tile_positions = tile_positions;
 		blit_queue_store.clear();
 

@@ -1765,6 +1765,8 @@ void editor::draw() const
 	get_mouse_state(mousex, mousey);
 
 	graphics::prepare_raster();
+	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClear(GL_COLOR_BUFFER_BIT);
 	glPushMatrix();
 	glScalef(1.0/zoom_, 1.0/zoom_, 0);
 	glTranslatef(-xpos_,-ypos_,0);
