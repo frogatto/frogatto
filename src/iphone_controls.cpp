@@ -34,8 +34,8 @@ bool iphone_controls::hittest_button (const SDL_Rect& rect, int button_x, int bu
 				x = y;
 				y = preferences::actual_screen_width()-tmp;
 			}
-			int w = (rect.w*3)/2-rect.x; // rect.w/h are really x+w and y+h
-			int h = (rect.h*3)/2-rect.y;
+			int w = 3*(rect.w-rect.x)/2; // rect.w/h are really x+w and y+h
+			int h = 3*(rect.h-rect.y)/2;
 			//if (rect.w == 141) printf("Left rect: %i,%i,%i,%i - Mouse: %i,%i", button_x, button_y, w, h,  x*2, y*2);
 			if (x*2 > button_x && x*2 < button_x+w*2 && y*2 > button_y && y*2 < button_y+h*2)
 			{
