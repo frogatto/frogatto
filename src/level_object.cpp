@@ -281,9 +281,9 @@ int base64_unencode(const char* begin, const char* end)
 void level_object::write_compiled()
 {
 	for(int n = 0; n <= level_object_index.size()/64; ++n) {
-		char file_number[3];
-		base64_encode(n, file_number, 2);
-		const std::string filename = std::string(file_number) + ".cfg";
+		char buf[128];
+		sprintf(buf, "%d", n);
+		const std::string filename = std::string(buf) + ".cfg";
 		wml::node_ptr tiles_node(new wml::node("tiles"));
 		for(int m = n*64; m < level_object_index.size() && m < (n+1)*64; ++m) {
 			tiles_node->add_child(wml::deep_copy(level_object_index[m]));
@@ -298,9 +298,12 @@ void level_object::write_compiled()
 namespace {
 std::vector<const_level_object_ptr> compiled_tiles;
 
-void load_compiled_tiles(int starting_index, const std::string& fname)
+void load_compiled_tiles(int index)
 {
-	wml::const_node_ptr node(wml::parse_wml_from_file("data/compiled/tiles/" + fname + ".cfg"));
+	int starting_index = index*64;
+	char buf[128];
+	sprintf(buf, "%d", index);
+	wml::const_node_ptr node(wml::parse_wml_from_file("data/compiled/tiles/" + std::string(buf) + ".cfg"));
 	int count = 0;
 	for(wml::node::const_all_child_iterator i = node->begin_children(); i != node->end_children(); ++i) {
 		if(starting_index >= compiled_tiles.size()) {
@@ -317,7 +320,7 @@ const_level_object_ptr level_object::get_compiled(const char* buf)
 {
 	const int index = base64_unencode(buf, buf+3);
 	if(index >= compiled_tiles.size() || !compiled_tiles[index]) {
-		load_compiled_tiles(base64_unencode(buf, buf+2)*64, std::string(buf,buf+2));
+		load_compiled_tiles(base64_unencode(buf, buf+2));
 	}
 
 	ASSERT_LOG(index >= compiled_tiles.size() || compiled_tiles[index], "COULD NOT LOAD COMPILED TILE: " << std::string(buf, buf+3) << " -> " << index);
