@@ -200,6 +200,11 @@ gui_algorithm_ptr gui_algorithm::get(const std::string& key) {
 	return ptr;
 }
 
+void gui_algorithm::new_level() {
+	cycle_ = 0;
+	object_ = boost::intrusive_ptr<custom_object>(new custom_object("dummy_gui_object", 0, 0, true));
+}
+
 void gui_algorithm::process(level& lvl) {
 	lvl_ = &lvl;
 	++cycle_;

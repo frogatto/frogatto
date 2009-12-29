@@ -195,7 +195,8 @@ level::level(const std::string& level_cfg)
 	stats::record_event(id(), stats::const_record_ptr(new stats::load_level_record(time_taken_ms)));
 	std::cerr << "done level constructor: " << time_taken_ms << "\n";
 
-	gui_algorithm_ = gui_algorithm::create(wml::get_str(node, "gui", "default"));
+	gui_algorithm_ = gui_algorithm::get(wml::get_str(node, "gui", "default"));
+	gui_algorithm_->new_level();
 }
 
 void level::read_compiled_tiles(wml::const_node_ptr node)
@@ -794,6 +795,7 @@ void level::prepare_tiles_for_drawing()
 			tiles_[n].blit_queue = tiles_[n-1].blit_queue;
 		} else {
 			tiles_[n].blit_queue = &tiles_[n].blit_queue_buf;
+			tiles_[n].blit_queue->reserve(8);
 		}
 
 		tiles_[n].blit_queue = &tiles_[n].blit_queue_buf;

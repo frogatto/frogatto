@@ -81,6 +81,11 @@ public:
 	short position() const { return vertex_.size(); }
 
 	bool merge(const blit_queue& q, short begin, short end);
+
+	void reserve(size_t n) {
+		vertex_.reserve(n);
+		uv_.reserve(n);
+	}
 private:
 	GLuint texture_;
 	std::vector<GLshort> vertex_;

@@ -23,6 +23,8 @@ public:
 	static gui_algorithm_ptr get(const std::string& key);
 	static gui_algorithm_ptr create(const std::string& key);
 
+	void new_level();
+
 	void process(level& lvl);
 	void draw(const level& lvl);
 
