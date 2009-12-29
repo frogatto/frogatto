@@ -500,15 +500,12 @@ void custom_object::process(level& lvl)
 		velocity_y_ += accel_y_ * (is_underwater ? type_->traction_in_water() : 1000)/1000;
 	}
 
-	std::cerr << "ACCEL: " << accel_x_ << "/" << accel_y_ << "\n";
-
 	if(type_->friction()) {
 
 		const int air_resistance = is_underwater ? lvl.water_resistance() : lvl.air_resistance();
 
 		const int friction = ((stand_info.friction + air_resistance)*type_->friction())/1000;
 		const int vertical_resistance = (air_resistance*type_->friction())/1000;
-		std::cerr << "RESISTANCE: " << friction << "/" << vertical_resistance << " -> " << velocity_x_ << "/" << velocity_y_ << "\n";
 		velocity_x_ = (velocity_x_*(1000 - friction))/1000;
 		velocity_y_ = (velocity_y_*(1000 - vertical_resistance))/1000;
 	}
