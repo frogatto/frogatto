@@ -497,8 +497,10 @@ void custom_object::process(level& lvl)
 	velocity_x_ += (accel_x_ * (stand_info.traction ? traction_from_surface : (is_underwater?type_->traction_in_water() :type_->traction_in_air())) * (face_right() ? 1 : -1))/1000;
 	if(!standing_on_ || accel_y_ < 0) {
 		//do not accelerate downwards if standing on something.
-		velocity_y_ += accel_y_;
+		velocity_y_ += accel_y_ * (is_underwater ? type_->traction_in_water() : 1000)/1000;
 	}
+
+	std::cerr << "ACCEL: " << accel_x_ << "/" << accel_y_ << "\n";
 
 	if(type_->friction()) {
 
@@ -506,6 +508,7 @@ void custom_object::process(level& lvl)
 
 		const int friction = ((stand_info.friction + air_resistance)*type_->friction())/1000;
 		const int vertical_resistance = (air_resistance*type_->friction())/1000;
+		std::cerr << "RESISTANCE: " << friction << "/" << vertical_resistance << " -> " << velocity_x_ << "/" << velocity_y_ << "\n";
 		velocity_x_ = (velocity_x_*(1000 - friction))/1000;
 		velocity_y_ = (velocity_y_*(1000 - vertical_resistance))/1000;
 	}
@@ -647,7 +650,7 @@ void custom_object::process(level& lvl)
 
 		if(collide_info.damage || jump_on_info.damage) {
 			game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
-			callable->add("damage", variant(std::max(collide_info.damage, jump_on_info.damage)));
+			callable->add("surface_damage", variant(std::max(collide_info.damage, jump_on_info.damage)));
 			variant v(callable);
 			handle_event(OBJECT_EVENT_COLLIDE_DAMAGE, callable);
 		}
@@ -747,7 +750,7 @@ void custom_object::process(level& lvl)
 		handle_event(OBJECT_EVENT_COLLIDE, callable);
 		if(collide_info.damage) {
 			game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
-			callable->add("damage", variant(collide_info.damage));
+			callable->add("surface_damage", variant(collide_info.damage));
 			variant v(callable);
 			handle_event(OBJECT_EVENT_COLLIDE_DAMAGE, callable);
 		}
@@ -1034,6 +1037,10 @@ bool custom_object::is_standing(const level& lvl, collision_info* info) const
 }
 
 namespace {
+
+//this shows all object events that are currently active.
+std::vector<int> event_call_stack;
+
 typedef variant (*object_accessor)(const custom_object& obj);
 //typedef boost::function<variant(const custom_object& obj)> object_accessor;
 std::map<std::string, object_accessor> object_accessor_map;
@@ -1169,6 +1176,15 @@ struct custom_object::Accessor {
 		return variant(&result);
 	}
 
+	static variant call_stack(const custom_object& obj) {
+		std::vector<variant> result;
+		foreach(int ev, event_call_stack) {
+			result.push_back(variant(get_object_event_str(ev)));
+		}
+
+		return variant(&result);
+	}
+
 #define CUSTOM_ACCESSOR(name, expression) static variant name(const custom_object& obj) { return variant(expression); }
 
 	static void init() {
@@ -1239,6 +1255,7 @@ struct custom_object::Accessor {
 		ACCESSOR(shader);
 		ACCESSOR(variations);
 		ACCESSOR(attached_objects);
+		ACCESSOR(call_stack);
 	}
 };
 
@@ -1632,6 +1649,8 @@ void custom_object::handle_event(int event, const formula_callable* context)
 	}
 
 	foreach(const game_logic::const_formula_ptr& handler, handlers) {
+		event_call_stack.push_back(event);
+
 		++events_handled_per_second;
 
 		variant var;
@@ -1647,6 +1666,8 @@ void custom_object::handle_event(int event, const formula_callable* context)
 		if(!result) {
 			break;
 		}
+
+		event_call_stack.pop_back();
 	}
 }
 

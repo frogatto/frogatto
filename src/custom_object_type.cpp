@@ -348,6 +348,7 @@ const frame& custom_object_type::get_frame(const std::string& key) const
 {
 	frame_map::const_iterator itor = frames_.find(key);
 	if(itor == frames_.end() || itor->second.empty()) {
+		ASSERT_LOG(key == "normal", "UNKNOWN FRAME " << key << " IN " << id_);
 		return default_frame();
 	} else {
 		if(itor->second.size() == 1) {
