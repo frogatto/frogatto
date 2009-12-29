@@ -122,11 +122,18 @@ level::level(const std::string& level_cfg)
 
 	std::cerr << "done building tile_map..." << SDL_GetTicks() << "\n";
 
+	const int num_compiled = wml::get_int(node, "num_compiled_tiles");
+
+	tiles_.resize(tiles_.size() + num_compiled);
+	std::vector<level_tile>::iterator compiled_itor = tiles_.end() - num_compiled;
+
 	t1 = node->begin_child("compiled_tiles");
 	t2 = node->end_child("compiled_tiles");
 	for(; t1 != t2; ++t1) {
-		read_compiled_tiles(t1->second);
+		read_compiled_tiles(t1->second, compiled_itor);
 	}
+
+	ASSERT_LOG(compiled_itor == tiles_.end(), "INCORRECT NUMBER OF COMPILED TILES");
 
 	for(int i = begin_tile_index; i != tiles_.size(); ++i) {
 		add_tile_solid(tiles_[i]);
@@ -199,7 +206,7 @@ level::level(const std::string& level_cfg)
 	gui_algorithm_->new_level();
 }
 
-void level::read_compiled_tiles(wml::const_node_ptr node)
+void level::read_compiled_tiles(wml::const_node_ptr node, std::vector<level_tile>::iterator& out)
 {
 	const int xbase = wml::get_int(node, "x");
 	const int ybase = wml::get_int(node, "y");
@@ -219,22 +226,24 @@ void level::read_compiled_tiles(wml::const_node_ptr node)
 			y += TileSize;
 			++i;
 		} else {
-			tiles_.push_back(level_tile());
-			tiles_.back().x = x;
-			tiles_.back().y = y;
-			tiles_.back().zorder = zorder;
-			tiles_.back().face_right = false;
-			tiles_.back().draw_disabled = false;
-			tiles_.back().blit_queue = NULL;
-			tiles_.back().blit_queue_begin = tiles_.back().blit_queue_end = 0;
+			ASSERT_LOG(out != tiles_.end(), "NOT ENOUGH COMPILED TILES REPORTED");
+
+			out->x = x;
+			out->y = y;
+			out->zorder = zorder;
+			out->face_right = false;
+			out->draw_disabled = false;
+			out->blit_queue = NULL;
+			out->blit_queue_begin = out->blit_queue_end = 0;
 			if(*i == '~') {
-				tiles_.back().face_right = true;
+				out->face_right = true;
 				++i;
 			}
 
 			ASSERT_LOG(end - i >= 3, "ILLEGAL TILE FOUND");
 
-			tiles_.back().object = level_object::get_compiled(i);
+			out->object = level_object::get_compiled(i);
+			++out;
 			i += 3;
 		}
 	}
@@ -450,6 +459,8 @@ wml::node_ptr level::write() const
 	}
 
 	if(preferences::compiling_tiles && !tiles_.empty()) {
+		res->set_attr("num_compiled_tiles", formatter() << tiles_.size());
+
 		int last_zorder = INT_MIN;
 		int basex = 0, basey = 0;
 		int last_x = 0, last_y = 0;
