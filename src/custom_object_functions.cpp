@@ -656,9 +656,21 @@ class set_function : public function_expression {
 public:
 	explicit set_function(const args_list& args)
 	  : function_expression("set", args, 2, 3) {
+		if(args.size() == 2) {
+			variant literal = args[0]->is_literal();
+			if(literal.is_string()) {
+				key_ = literal.as_string();
+			} else {
+				args[0]->is_identifier(&key_);
+			}
+		}
 	}
 private:
 	variant execute(const formula_callable& variables) const {
+		if(!key_.empty()) {
+			return variant(new set_command(variant(), key_, args()[1]->evaluate(variables)));
+		}
+
 		if(args().size() == 2) {
 			try {
 				std::string member;
@@ -680,6 +692,8 @@ private:
 		    args()[begin_index]->evaluate(variables).as_string(),
 			args()[begin_index + 1]->evaluate(variables)));
 	}
+
+	std::string key_;
 };
 
 class set_value_function : public function_expression {

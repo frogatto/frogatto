@@ -33,6 +33,15 @@ public:
 	virtual variant static_evaluate(const formula_callable& variables) const {
 		return evaluate(variables);
 	}
+
+	virtual bool is_identifier(std::string* id) const {
+		return false;
+	}
+
+	virtual variant is_literal() const {
+		return variant();
+	}
+
 	variant evaluate(const formula_callable& variables) const {
 		call_stack_manager manager(str_.c_str());
 		return execute(variables);

@@ -286,6 +286,14 @@ namespace game_logic
 			{}
 			
 			const std::string& id() const { return id_; }
+
+			bool is_identifier(std::string* ident) const {
+				if(ident) {
+					*ident = id_;
+				}
+
+				return true;
+			}
 		private:
 			variant execute_member(const formula_callable& variables, std::string& id) const {
 				id = id_;
@@ -588,6 +596,14 @@ namespace game_logic
 				std::reverse(subs_.begin(), subs_.end());
 				
 				str_ = variant(str);
+			}
+
+			variant is_literal() const {
+				if(subs_.empty()) {
+					return variant(str_);
+				} else {
+					return variant();
+				}
 			}
 		private:
 			variant execute(const formula_callable& variables) const {
