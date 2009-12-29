@@ -225,6 +225,8 @@ private:
 	level(const level&);
 	void operator=(const level&);
 
+	void read_compiled_tiles(wml::const_node_ptr node);
+
 	void prepare_tiles_for_drawing();
 
 	void do_processing();

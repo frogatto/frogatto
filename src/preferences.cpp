@@ -27,11 +27,15 @@ namespace preferences {
 		
 		bool screen_rotated_ = false;
 #endif
+
+		bool load_compiled_ = false;
 		
 		bool force_no_npot_textures_ = false;
 	}
 
 	int xypos_draw_mask = actual_screen_width_ < virtual_screen_width_ ? ~1 : ~0;
+	bool compiling_tiles = false;
+
 	namespace {
 	void recalculate_draw_mask() {
 		xypos_draw_mask = actual_screen_width_ < virtual_screen_width_ ? ~1 : ~0;
@@ -98,6 +102,16 @@ namespace preferences {
 	void set_actual_screen_height(int height)
 	{
 		actual_screen_height_ = height;
+	}
+
+	bool load_compiled()
+	{
+		return load_compiled_;
+	}
+
+	void set_load_compiled(bool value)
+	{
+		load_compiled_ = value;
 	}
 	
 	bool force_no_npot_textures()

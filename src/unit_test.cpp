@@ -2,6 +2,7 @@
 #include <iostream>
 #include <map>
 
+#include "asserts.hpp"
 #include "foreach.hpp"
 #include "unit_test.hpp"
 
@@ -31,11 +32,24 @@ CommandLineBenchmarkMap& get_cl_benchmark_map()
 	return map;
 }
 
+typedef std::map<std::string, UtilityProgram> UtilityMap;
+UtilityMap& get_utility_map()
+{
+	static UtilityMap map;
+	return map;
+}
+
 }
 
 int register_test(const std::string& name, UnitTest test)
 {
 	get_test_map()[name] = test;
+	return 0;
+}
+
+int register_utility(const std::string& name, UtilityProgram utility)
+{
+	get_utility_map()[name] = utility;
 	return 0;
 }
 
@@ -94,11 +108,24 @@ void run_benchmark(const std::string& name, BenchmarkTest fn)
 	for(int64_t nruns = 10; ; nruns *= 10) {
 		const int start_time = SDL_GetTicks();
 		fn(nruns);
-		const int64_t time_taken = SDL_GetTicks() - start_time;
-		if(time_taken >= MinTicks || nruns > 1000000000) {
-			const int64_t ns = time_taken*1000000LL;
-			const int64_t ns_per_iter = ns/nruns;
-			std::cerr << "BENCH " << name << ": " << nruns << " iterations, " << ns_per_iter << "ns/iteration; total, " << ns << "ns\n";
+		const int64_t time_taken_ms = SDL_GetTicks() - start_time;
+		if(time_taken_ms >= MinTicks || nruns > 1000000000) {
+			int64_t time_taken = time_taken_ms*1000000LL;
+			int time_taken_units = 0;
+			int64_t time_taken_per_iter = time_taken/nruns;
+			int time_taken_per_iter_units = 0;
+			while(time_taken > 10000 && time_taken_units < 3) {
+				time_taken /= 1000;
+				time_taken_units++;
+			}
+
+			while(time_taken_per_iter > 10000 && time_taken_per_iter_units < 3) {
+				time_taken_per_iter /= 1000;
+				time_taken_per_iter_units++;
+			}
+
+			const char* units[] = {"ns", "us", "ms", "s"};
+			std::cerr << "BENCH " << name << ": " << nruns << " iterations, " << time_taken_per_iter << units[time_taken_per_iter_units] << "/iteration; total, " << time_taken << units[time_taken_units] << "\n";
 			return;
 		}
 	}
@@ -132,6 +159,13 @@ void run_benchmarks(const std::vector<std::string>* benchmarks)
 void run_command_line_benchmark(const std::string& benchmark_name, const std::string& arg)
 {
 	run_benchmark(benchmark_name, boost::bind(get_cl_benchmark_map()[benchmark_name], _1, arg));
+}
+
+void run_utility(const std::string& utility_name, const std::vector<std::string>& arg)
+{
+	UtilityProgram util = get_utility_map()[utility_name];
+	ASSERT_LOG(util, "Unknown utility: '" << utility_name << "'");
+	util(arg);
 }
 
 }

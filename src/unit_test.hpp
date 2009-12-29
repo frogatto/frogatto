@@ -15,13 +15,16 @@ struct failure_exception {
 typedef boost::function<void ()> UnitTest;
 typedef boost::function<void (int)> BenchmarkTest;
 typedef boost::function<void (int, const std::string&)> CommandLineBenchmarkTest;
+typedef boost::function<void (const std::vector<std::string>&)> UtilityProgram;
 
 int register_test(const std::string& name, UnitTest test);
 int register_benchmark(const std::string& name, BenchmarkTest test);
 int register_benchmark_cl(const std::string& name, CommandLineBenchmarkTest test);
+int register_utility(const std::string& name, UtilityProgram utility);
 bool run_tests(const std::vector<std::string>* tests=NULL);
 void run_benchmarks(const std::vector<std::string>* benchmarks=NULL);
 void run_command_line_benchmark(const std::string& benchmark_name, const std::string& arg);
+void run_utility(const std::string& utility_name, const std::vector<std::string>& arg);
 
 }
 
@@ -62,5 +65,10 @@ void run_command_line_benchmark(const std::string& benchmark_name, const std::st
 		BENCHMARK_ARG_##name(benchmark_iterations, arg); \
 	} \
 	static int BENCHMARK_ARG_VAR_##name = test::register_benchmark_cl(#name, BENCHMARK_ARG_CALL_##name);
+
+#define UTILITY(name) \
+    void UTILITY_##name(const std::vector<std::string>& args); \
+	static int UTILITY_VAR_##name = test::register_utility(#name, UTILITY_##name); \
+	void UTILITY_##name(const std::vector<std::string>& args)
 
 #endif

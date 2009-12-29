@@ -64,6 +64,7 @@ class level_object {
 public:
 	static std::vector<const_level_object_ptr> all();
 	static level_tile build_tile(wml::const_node_ptr node);
+	static void write_compiled();
 	explicit level_object(wml::const_node_ptr node);
 	int width() const;
 	int height() const;
@@ -83,6 +84,15 @@ public:
 	bool is_opaque() const { return opaque_; }
 
 	const graphics::color* solid_color() const { return solid_color_.get(); }
+
+	//write the compiled index of this object. buf MUST point to a buf
+	//of at least 4 chars.
+	void write_compiled_index(char* buf) const;
+
+	//reads an object from its compiled index. buf MUST point to a buf of
+	//at least 3 chars.
+	static const_level_object_ptr get_compiled(const char* buf);
+
 private:
 	std::string id_;
 	graphics::texture t_;
@@ -99,6 +109,8 @@ private:
 	bool opaque_;
 
 	boost::intrusive_ptr<graphics::color> solid_color_;
+
+	int tile_index_;
 };
 
 #endif

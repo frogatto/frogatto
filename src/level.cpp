@@ -28,6 +28,7 @@
 #include "wml_node.hpp"
 #include "wml_parser.hpp"
 #include "wml_utils.hpp"
+#include "wml_writer.hpp"
 #include "color_utils.hpp"
 
 namespace {
@@ -55,7 +56,9 @@ level::level(const std::string& level_cfg)
 	const int start_time = SDL_GetTicks();
 	turn_reference_counting_off();
 
-	wml::const_node_ptr node(wml::parse_wml(preprocess(sys::read_file("data/level/" + level_cfg))));
+	const std::string path = preferences::load_compiled() ? "data/compiled/level/" : "data/level/";
+
+	wml::const_node_ptr node(wml::parse_wml(preprocess(sys::read_file(path + level_cfg))));
 	music_ = node->attr("music");
 	replay_data_ = node->attr("replay_data");
 	cycle_ = wml::get_int(node, "cycle");
@@ -118,6 +121,12 @@ level::level(const std::string& level_cfg)
 	}
 
 	std::cerr << "done building tile_map..." << SDL_GetTicks() << "\n";
+
+	t1 = node->begin_child("compiled_tiles");
+	t2 = node->end_child("compiled_tiles");
+	for(; t1 != t2; ++t1) {
+		read_compiled_tiles(t1->second);
+	}
 
 	for(int i = begin_tile_index; i != tiles_.size(); ++i) {
 		add_tile_solid(tiles_[i]);
@@ -187,6 +196,47 @@ level::level(const std::string& level_cfg)
 	std::cerr << "done level constructor: " << time_taken_ms << "\n";
 
 	gui_algorithm_ = gui_algorithm::create(wml::get_str(node, "gui", "default"));
+}
+
+void level::read_compiled_tiles(wml::const_node_ptr node)
+{
+	const int xbase = wml::get_int(node, "x");
+	const int ybase = wml::get_int(node, "y");
+	const int zorder = wml::get_int(node, "zorder");
+
+	int x = xbase;
+	int y = ybase;
+	const std::string& tiles = node->attr("tiles");
+	const char* i = tiles.c_str();
+	const char* end = tiles.c_str() + tiles.size();
+	while(i != end) {
+		if(*i == ',') {
+			x += TileSize;
+			++i;
+		} else if(*i == '\n') {
+			x = xbase;
+			y += TileSize;
+			++i;
+		} else {
+			tiles_.push_back(level_tile());
+			tiles_.back().x = x;
+			tiles_.back().y = y;
+			tiles_.back().zorder = zorder;
+			tiles_.back().face_right = false;
+			tiles_.back().draw_disabled = false;
+			tiles_.back().blit_queue = NULL;
+			tiles_.back().blit_queue_begin = tiles_.back().blit_queue_end = 0;
+			if(*i == '~') {
+				tiles_.back().face_right = true;
+				++i;
+			}
+
+			ASSERT_LOG(end - i >= 3, "ILLEGAL TILE FOUND");
+
+			tiles_.back().object = level_object::get_compiled(i);
+			i += 3;
+		}
+	}
 }
 
 void level::load_character(wml::const_node_ptr c)
@@ -390,8 +440,77 @@ wml::node_ptr level::write() const
 	}
 
 	for(std::map<int, tile_map>::const_iterator i = tile_maps_.begin(); i != tile_maps_.end(); ++i) {
-		res->add_child(i->second.write());
+		wml::node_ptr node(i->second.write());
+		if(preferences::compiling_tiles) {
+			node->set_attr("tiles", "");
+			node->set_attr("unique_tiles", "");
+		}
+		res->add_child(node);
 	}
+
+	if(preferences::compiling_tiles && !tiles_.empty()) {
+		int last_zorder = INT_MIN;
+		int basex = 0, basey = 0;
+		int last_x = 0, last_y = 0;
+		std::string tiles_str;
+		for(int n = 0; n <= tiles_.size(); ++n) {
+			if(tiles_[n].zorder != last_zorder) {
+				if(!tiles_str.empty()) {
+					wml::node_ptr node(new wml::node("compiled_tiles"));
+					node->set_attr("zorder", formatter() << last_zorder);
+					node->set_attr("x", formatter() << basex);
+					node->set_attr("y", formatter() << basey);
+					node->set_attr("tiles", tiles_str);
+					res->add_child(node);
+				}
+
+				if(n == tiles_.size()) {
+					break;
+				}
+
+				tiles_str.clear();
+
+				last_zorder = tiles_[n].zorder;
+
+				basex = basey = INT_MAX;
+				for(int m = n; m != tiles_.size() && tiles_[m].zorder == tiles_[n].zorder; ++m) {
+					if(tiles_[m].x < basex) {
+						basex = tiles_[m].x;
+					}
+
+					if(tiles_[m].y < basey) {
+						basey = tiles_[m].y;
+					}
+				}
+
+				last_x = basex;
+				last_y = basey;
+			}
+
+			while(last_y < tiles_[n].y) {
+				tiles_str += "\n";
+				last_y += TileSize;
+				last_x = basex;
+			}
+
+			while(last_x < tiles_[n].x) {
+				tiles_str += ",";
+				last_x += TileSize;
+			}
+
+			if(tiles_[n].face_right) {
+				tiles_str += "~";
+			}
+
+			char buf[4];
+			tiles_[n].object->write_compiled_index(buf);
+			tiles_str += buf;
+			tiles_str += ",";
+
+			last_x += TileSize;
+		}
+	}
+
 /*
 	foreach(const level_tile& tile, tiles_) {
 		wml::node_ptr t(new wml::node("tile"));
@@ -2174,6 +2293,27 @@ void level::editor_freeze_tile_updates(bool value)
 	}
 }
 
+UTILITY(compile_levels)
+{
+	std::cerr << "COMPILING LEVELS...\n";
+	preferences::compiling_tiles = true;
+
+	std::vector<std::string> files;
+	sys::get_files_in_dir("data/level/", &files);
+
+	foreach(const std::string& file, files) {
+		std::cerr << "LOADING LEVEL '" << file << "'\n";
+		boost::intrusive_ptr<level> lvl(new level(file));
+		lvl->finish_loading();
+
+		std::string data;
+		wml::write(lvl->write(), data);
+		sys::write_file("data/compiled/level/" + file, data);
+	}
+
+	level_object::write_compiled();
+}
+
 BENCHMARK(level_solid)
 {
 	//benchmark which tells us how long level::solid takes.
@@ -2183,10 +2323,10 @@ BENCHMARK(level_solid)
 	}
 }
 
-BENCHMARK(load_fatpipe)
+BENCHMARK(load_nene)
 {
 	BENCHMARK_LOOP {
-		level lvl("fatpipe-stones.cfg");
+		level lvl("to-nenes-house.cfg");
 	}
 }
 

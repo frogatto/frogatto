@@ -2,12 +2,16 @@
 #include <map>
 #include <string>
 
+#include "asserts.hpp"
 #include "draw_tile.hpp"
+#include "filesystem.hpp"
 #include "level_object.hpp"
+#include "preferences.hpp"
 #include "raster.hpp"
 #include "string_utils.hpp"
 #include "surface.hpp"
 #include "surface_cache.hpp"
+#include "wml_parser.hpp"
 #include "wml_utils.hpp"
 #include "wml_writer.hpp"
 namespace {
@@ -43,6 +47,10 @@ level_tile level_object::build_tile(wml::const_node_ptr node)
 	return res;
 }
 
+namespace {
+std::vector<wml::const_node_ptr> level_object_index;
+}
+
 level_object::level_object(wml::const_node_ptr node)
   : id_(node->attr("id")), t_(graphics::texture::get(node->attr("image"))),
     width_(-1),
@@ -52,8 +60,14 @@ level_object::level_object(wml::const_node_ptr node)
     friction_(wml::get_int(node, "friction", 100)),
     traction_(wml::get_int(node, "traction", 100)),
     damage_(wml::get_int(node, "damage", 0)),
-	opaque_(wml::get_bool(node, "opaque", false))
+	opaque_(wml::get_bool(node, "opaque", false)),
+	tile_index_(-1)
 {
+	if(preferences::compiling_tiles) {
+		tile_index_ = level_object_index.size();
+		level_object_index.push_back(wml::deep_copy(node));
+	}
+
 	if(node->has_attr("solid_color")) {
 		solid_color_ = boost::intrusive_ptr<graphics::color>(new graphics::color(node->attr("solid_color")));
 		opaque_ = true;
@@ -220,6 +234,100 @@ level_object::level_object(wml::const_node_ptr node)
 		std::cerr << "SOLID SIZE: " << solid_.size() << "\n";
 	}
 	*/
+}
+
+namespace {
+const char base64_chars[65] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.!";
+
+std::vector<int> create_base64_char_to_int()
+{
+	std::vector<int> result(256);
+	int index = 0;
+	foreach(char c, base64_chars) {
+		result[c] = index++;
+	}
+
+	return result;
+}
+
+std::vector<int> base64_char_to_int = create_base64_char_to_int();
+
+void base64_encode(int num, char* buf, int nplaces)
+{
+	buf[nplaces--] = 0;
+	while(num > 0 && nplaces >= 0) {
+		buf[nplaces--] = base64_chars[num%64];
+		num /= 64;
+	}
+
+	while(nplaces >= 0) {
+		buf[nplaces--] = '0';
+	}
+}
+
+int base64_unencode(const char* begin, const char* end)
+{
+	int result = 0;
+	while(begin != end) {
+		result = result*64 + base64_char_to_int[*begin];
+		++begin;
+	}
+
+	return result;
+}
+
+}
+
+void level_object::write_compiled()
+{
+	for(int n = 0; n <= level_object_index.size()/64; ++n) {
+		char file_number[3];
+		base64_encode(n, file_number, 2);
+		const std::string filename = std::string(file_number) + ".cfg";
+		wml::node_ptr tiles_node(new wml::node("tiles"));
+		for(int m = n*64; m < level_object_index.size() && m < (n+1)*64; ++m) {
+			tiles_node->add_child(wml::deep_copy(level_object_index[m]));
+		}
+
+		std::string data;
+		wml::write(tiles_node, data);
+		sys::write_file("data/compiled/tiles/" + filename, data);
+	}
+}
+
+namespace {
+std::vector<const_level_object_ptr> compiled_tiles;
+
+void load_compiled_tiles(int starting_index, const std::string& fname)
+{
+	wml::const_node_ptr node(wml::parse_wml_from_file("data/compiled/tiles/" + fname + ".cfg"));
+	int count = 0;
+	for(wml::node::const_all_child_iterator i = node->begin_children(); i != node->end_children(); ++i) {
+		if(starting_index >= compiled_tiles.size()) {
+			compiled_tiles.resize(starting_index+64);
+		}
+		compiled_tiles[starting_index++].reset(new level_object(*i));
+		++count;
+	}
+}
+
+}
+
+const_level_object_ptr level_object::get_compiled(const char* buf)
+{
+	const int index = base64_unencode(buf, buf+3);
+	if(index >= compiled_tiles.size() || !compiled_tiles[index]) {
+		load_compiled_tiles(base64_unencode(buf, buf+2)*64, std::string(buf,buf+2));
+	}
+
+	ASSERT_LOG(index >= compiled_tiles.size() || compiled_tiles[index], "COULD NOT LOAD COMPILED TILE: " << std::string(buf, buf+3) << " -> " << index);
+
+	return compiled_tiles[index];
+}
+
+void level_object::write_compiled_index(char* buf) const
+{
+	base64_encode(tile_index_, buf, 3);
 }
 
 int level_object::width() const

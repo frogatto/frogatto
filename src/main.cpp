@@ -162,6 +162,8 @@ extern "C" int main(int argc, char** argv)
 	bool unit_tests_only = false, skip_tests = false;
 	bool run_benchmarks = false;
 	std::vector<std::string> benchmarks_list;
+	std::string utility_program;
+	std::vector<std::string> util_args;
 	std::string server = "wesnoth.org";
 	for(int n = 1; n < argc; ++n) {
 		const std::string arg(argv[n]);
@@ -172,7 +174,15 @@ extern "C" int main(int argc, char** argv)
 			arg_value = std::string(equal+1, arg.end());
 		}
 		
-		if(arg == "--benchmarks") {
+		if(arg_name == "--utility") {
+			utility_program = arg_value;
+			for(++n; n < argc; ++n) {
+				const std::string arg(argv[n]);
+				util_args.push_back(arg);
+			}
+
+			break;
+		} else if(arg == "--benchmarks") {
 			run_benchmarks = true;
 		} else if(arg_name == "--benchmarks") {
 			run_benchmarks = true;
@@ -191,6 +201,8 @@ extern "C" int main(int argc, char** argv)
 			level_cfg = argv[++n];
 		} else if(arg == "--host" && n+1 < argc) {
 			server = argv[++n];
+		} else if(arg == "--compiled") {
+			preferences::set_load_compiled(true);
 		} else {
 			const bool res = preferences::parse_arg(argv[n]);
 			if(!res) {
@@ -285,6 +297,9 @@ extern "C" int main(int argc, char** argv)
 		} else {
 			test::run_benchmarks();
 		}
+		return 0;
+	} else if(utility_program.empty() == false) {
+		test::run_utility(utility_program, util_args);
 		return 0;
 	}
 
