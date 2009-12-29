@@ -122,12 +122,39 @@ void iris_scene(const level& lvl, screen_position& screen_pos, float amount) {
 	glPopMatrix();
 
 	//Now we've set the stencil to a circle, set things up so that the stencil
-	//will be used.
+	//will be used to draw only within the circle.
 	glStencilFunc(GL_EQUAL, 1, 1);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 	
 	draw_scene(lvl, screen_pos);
 
+	//Now, reverse the rule; use the stencil to draw everything outside the circle - in this case, jet black.
+	glStencilFunc(GL_NOTEQUAL, 1, 1);
+	
+	GLfloat varray2[8];
+
+	//populate the four screen corners
+	varray2[0] = 0;
+	varray2[1] = 0;
+	
+	varray2[2] = graphics::screen_width();
+	varray2[3] = 0;
+	
+	varray2[4] = 0;
+	varray2[5] = graphics::screen_height();
+	
+	varray2[7] = graphics::screen_width();
+	varray2[8] = graphics::screen_height();
+	
+	glVertexPointer(2, GL_FLOAT, 0, &varray2);
+	glColor4ub(0, 0, 0, 255);
+	glDisable(GL_TEXTURE_2D);
+
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
+
+	glEnable(GL_TEXTURE_2D);
+
+	
 	glDisable(GL_STENCIL_TEST);
 }
 
