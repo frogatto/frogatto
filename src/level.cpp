@@ -1028,6 +1028,9 @@ void level::draw_background(double x, double y, int rotation) const
 
 	if(background_) {
 		background_->draw(x, y, rotation, cycle());
+	} else {
+		glClearColor(0.0, 0.0, 0.0, 0.0);
+		glClear(GL_COLOR_BUFFER_BIT);
 	}
 }
 
