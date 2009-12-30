@@ -16,6 +16,7 @@
 #include "level_object.hpp"
 #include "load_level.hpp"
 #include "multiplayer.hpp"
+#include "object_events.hpp"
 #include "player_info.hpp"
 #include "preferences.hpp"
 #include "preprocessor.hpp"
@@ -1059,6 +1060,13 @@ void level::process()
 	do_processing();
 }
 
+void level::process_draw()
+{
+	foreach(const entity_ptr& e, active_chars_) {
+		e->handle_event(OBJECT_EVENT_DRAW);
+	}
+}
+
 void level::do_processing()
 {
 	++cycle_;
@@ -1077,20 +1085,10 @@ void level::do_processing()
 	const int screen_top = last_draw_position().y/100;
 	const int screen_bottom = last_draw_position().y/100 + graphics::screen_height();
 
+	const rect screen_area(screen_left, screen_top, screen_right - screen_left, screen_bottom - screen_top);
+
 	foreach(entity_ptr& c, chars_) {
-		int distance_x = 0, distance_y = 0;
-		c->activation_distance(&distance_x, &distance_y);
-
-		const rect draw_area = c->draw_rect();
-
-		bool is_active = c->always_active();
-		if(!is_active && players_.size() == 1) {
-			//in single player mode, make objects on-screen always active.
-			//we don't have a good solution for this for multiplayer, yet.
-			if(draw_area.x2() >= screen_left - distance_x && draw_area.x() < screen_right + distance_x && draw_area.y2() >= screen_top - distance_y && draw_area.y() < screen_bottom + distance_y) {
-				is_active = true;
-			}
-		}
+		const bool is_active = c->is_active(screen_area);
 
 		if(is_active) {
 			if(c->group() >= 0) {

@@ -109,12 +109,6 @@ void entity::set_upside_down(bool facing)
 	upside_down_ = facing;
 }
 
-void entity::activation_distance(int* x, int* y)
-{
-	*x = 600;
-	*y = 400;
-}
-
 void entity::calculate_solid_rect()
 {
 	const frame& f = current_frame();

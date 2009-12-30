@@ -1404,6 +1404,12 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		} else {
 			draw_area_.reset();
 		}
+	} else if(key == "activation_area") {
+		if(value.is_list() && value.num_elements() == 4) {
+			activation_area_.reset(new rect(value[0].as_int(), value[1].as_int(), value[2].as_int(), value[3].as_int()));
+		} else {
+			activation_area_.reset();
+		}
 	} else if(key == "variations") {
 		current_variation_.clear();
 		if(value.is_list()) {
@@ -1536,6 +1542,33 @@ void custom_object::die()
 {
 	hitpoints_ = 0;
 	handle_event(OBJECT_EVENT_DIE);
+}
+
+bool custom_object::is_active(const rect& screen_area) const
+{
+	if(always_active()) {
+		return true;
+	}
+
+	if(activation_area_) {
+		return rects_intersect(*activation_area_, screen_area);
+	}
+
+
+	const rect& area = frame_rect();
+	if(area.x() < screen_area.x2() + 300 &&
+	   area.x2() > screen_area.x() - 300 &&
+	   area.y() < screen_area.y2() + 300 &&
+	   area.y2() > screen_area.y() - 300) {
+		return true;
+	}
+
+	if(draw_area_) {
+		rect draw_area(area.x(), area.y(), draw_area_->w()*2, draw_area_->h()*2);
+		return rects_intersect(draw_area, screen_area);
+	}
+
+	return false;
 }
 
 void custom_object::hit_player()

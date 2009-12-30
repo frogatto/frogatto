@@ -54,6 +54,7 @@ public:
 	void draw_debug_solid(int x, int y, int w, int h) const;
 	void draw_background(double x, double y, int rotation) const;
 	void process();
+	void process_draw();
 	bool standable(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
 	bool standable_tile(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
 	bool solid(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;

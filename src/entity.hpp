@@ -121,7 +121,7 @@ public:
 	virtual int teleport_offset_x() const { return 0; }
 	virtual int teleport_offset_y() const { return 0; }
 
-	virtual void activation_distance(int* x, int* y);
+	virtual bool is_active(const rect& screen_area) const = 0;
 	virtual bool dies_on_inactive() const { return false; } 
 	virtual bool always_active() const { return false; } 
 	

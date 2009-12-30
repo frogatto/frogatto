@@ -65,6 +65,7 @@ public:
 	//etc etc.
 	void set_frame_no_adjustments(const std::string& name);
 	void die();
+	bool is_active(const rect& screen_area) const;
 	bool dies_on_inactive() const;
 	bool always_active() const;
 	void hit_player();
@@ -203,7 +204,7 @@ private:
 	const graphics::color_transform& draw_color() const;
 	boost::shared_ptr<graphics::color_transform> draw_color_;
 
-	boost::shared_ptr<rect> draw_area_;
+	boost::shared_ptr<rect> draw_area_, activation_area_;
 
 	bool can_interact_with_;
 
