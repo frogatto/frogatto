@@ -140,22 +140,24 @@ wml::node_ptr background::write() const
 
 void background::draw(double xpos, double ypos, int rotation, int cycle) const
 {
+	const int height = height_ + offset_.y*2;
+
 	//set the background colors for the level. The area above 'height' is
 	//painted with the top color, and the area below height is painted with
 	//the bottom color. For efficiency we do this using color clearing, with
 	//scissors to divide the screen into top and bottom.
-	if(height_ < ypos) {
+	if(height < ypos) {
 		//the entire screen is full of the bottom color
 		glClearColor(bot_.r/255.0, bot_.g/255.0, bot_.b/255.0, 0.0);
 		glClear(GL_COLOR_BUFFER_BIT);
-	} else if(height_ > ypos + graphics::screen_height()) {
+	} else if(height > ypos + graphics::screen_height()) {
 		//the entire screen is full of the top color.
 		glClearColor(top_.r/255.0, top_.g/255.0, top_.b/255.0, 0.0);
 		glClear(GL_COLOR_BUFFER_BIT);
 	} else {
 		//both bottom and top colors are on the screen, so draw them both,
 		//using scissors to delinate their areas.
-		const int dist_from_bottom = ypos + graphics::screen_height() - height_;
+		const int dist_from_bottom = ypos + graphics::screen_height() - height;
 
 		glEnable(GL_SCISSOR_TEST);
 
@@ -197,12 +199,42 @@ void background::draw_foreground(double xpos, double ypos, int rotation, int cyc
 	}
 }
 
+void background::set_offset(const point& offset)
+{
+	offset_ = offset;
+}
+
 namespace {
 graphics::blit_queue blit_queue;
 }
 
 void background::draw_layer(int x, int y, int rotation, const background::layer& bg, int cycle) const
 {
+	const double ScaleImage = 2.0;
+	GLshort y1 = y + (bg.yoffset+offset_.y)*ScaleImage - (y*bg.yscale)/100;
+	GLshort y2 = y1 + (bg.y2 - bg.y1)*ScaleImage;
+
+	if(y2 <= y) {
+		return;
+	}
+
+	if(y1 > y + graphics::screen_height()) {
+		return;
+	}
+
+	GLfloat v1 = bg.texture.translate_coord_y(double(bg.y1)/double(bg.texture.height()));
+	GLfloat v2 = bg.texture.translate_coord_y(double(bg.y2)/double(bg.texture.height()));
+
+	if(y1 < y) {
+		v1 += (GLfloat(y - y1)/GLfloat(y2 - y1))*(v2 - v1);
+		y1 = y;
+	}
+
+	if(y2 > y + graphics::screen_height()) {
+		v2 -= (GLfloat(y2 - (y + graphics::screen_height()))/GLfloat(y2 - y1))*(v2 - v1);
+		y2 = y + graphics::screen_height();
+	}
+
 	int screen_width = graphics::screen_width();
 
 	if(!bg.texture.valid()) {
@@ -212,7 +244,6 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 		}
 	}
 
-	const double ScaleImage = 2.0;
 	const double xscale = double(bg.xscale)/100.0;
 	GLfloat xpos = (-GLfloat(bg.xspeed)*GLfloat(cycle)/1000 + int(GLfloat(x + bg.xoffset)*xscale))/GLfloat((bg.texture.width()+bg.xpad)*ScaleImage);
 
@@ -245,14 +276,10 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 			const GLfloat xpos2 = xpos + GLfloat(blit_width)/(GLfloat(bg.texture.width())*2.0);
 
 			const GLshort x1 = x;
-			const GLshort y1 = y + bg.yoffset*ScaleImage - (y*bg.yscale)/100;
 			const GLshort x2 = x1 + blit_width;
-			const GLshort y2 = y1 + (bg.y2 - bg.y1)*ScaleImage;
 
 			const GLfloat u1 = bg.texture.translate_coord_x(xpos);
 			const GLfloat u2 = bg.texture.translate_coord_x(xpos2);
-			const GLfloat v1 = bg.texture.translate_coord_y(double(bg.y1)/double(bg.texture.height()));
-			const GLfloat v2 = bg.texture.translate_coord_y(double(bg.y2)/double(bg.texture.height()));
 
 			blit_queue.clear();
 			blit_queue.set_texture(bg.texture.get_id());

@@ -59,6 +59,8 @@ public:
 
 	void set_frame(const std::string& name);
 
+	virtual rect draw_rect() const;
+
 	//bare setting of the frame without adjusting position/checking solidity
 	//etc etc.
 	void set_frame_no_adjustments(const std::string& name);
@@ -223,6 +225,8 @@ private:
 	mutable GLuint shader_;
 
 	mutable game_logic::map_formula_callable_ptr shader_vars_;
+
+	bool always_active_;
 };
 
 #endif

@@ -601,12 +601,7 @@ void editor::process_ghost_objects()
 	foreach(const entity_ptr& p, chars) {
 		p->process(*lvl_);
 	}
-/*
-	for(size_t n = num_chars_before; n < lvl_->get_chars().size(); ++n) {
-		ghost_objects_.push_back(lvl_->get_chars()[n]);
-//		lvl_->get_chars()[n]->process(*lvl_);
-	}
-*/
+
 	lvl_->swap_chars(ghost_objects_);
 
 	foreach(entity_ptr& p, ghost_objects_) {

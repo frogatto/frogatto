@@ -330,6 +330,7 @@ private:
 	portal entered_portal_;
 
 	boost::shared_ptr<background> background_;
+	point background_offset_;
 	int widest_tile_, highest_tile_;
 
 	std::map<int, tile_map> tile_maps_;

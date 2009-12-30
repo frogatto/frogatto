@@ -186,6 +186,8 @@ level::level(const std::string& level_cfg)
 		background_.reset(new background(bg));
 	} else if(node->has_attr("background")) {
 		background_ = background::get(node->attr("background"));
+		background_offset_ = point(node->attr("background_offset"));
+		background_->set_offset(background_offset_);
 	}
 
 	wml::const_node_ptr water_node = node->get_child("water");
@@ -564,6 +566,7 @@ wml::node_ptr level::write() const
 			res->add_child(background_->write());
 		} else {
 			res->set_attr("background", background_->id());
+			res->set_attr("background_offset", background_offset_.to_string());
 		}
 	}
 
@@ -1078,27 +1081,14 @@ void level::do_processing()
 		int distance_x = 0, distance_y = 0;
 		c->activation_distance(&distance_x, &distance_y);
 
-		const int x = c->x();
-		const int y = c->y();
-		const int x2 = x + c->current_frame().width();
-		const int y2 = y + c->current_frame().height();
+		const rect draw_area = c->draw_rect();
 
 		bool is_active = c->always_active();
 		if(!is_active && players_.size() == 1) {
 			//in single player mode, make objects on-screen always active.
 			//we don't have a good solution for this for multiplayer, yet.
-			if(x2 >= screen_left && x < screen_right && y2 >= screen_top && y < screen_bottom) {
+			if(draw_area.x2() >= screen_left - distance_x && draw_area.x() < screen_right + distance_x && draw_area.y2() >= screen_top - distance_y && draw_area.y() < screen_bottom + distance_y) {
 				is_active = true;
-			}
-		}
-
-		if(!is_active) {
-			foreach(const entity_ptr& p, players_) {
-				if((p->x() < x ? x - p->x() : p->x() - x2) < distance_x &&
-			   	   (p->y() < y ? y - p->y() : p->y() - y2) < distance_y) {
-					is_active = true;
-					break;
-				}
 			}
 		}
 

@@ -65,7 +65,8 @@ custom_object::custom_object(wml::const_node_ptr node)
 	can_interact_with_(false), fall_through_platforms_(0),
 	fragment_shaders_(util::split(node->attr("fragment_shaders"))),
 	vertex_shaders_(util::split(node->attr("vertex_shaders"))),
-	shader_(0)
+	shader_(0),
+	always_active_(wml::get_bool(node, "always_active", false))
 {
 	set_solid_dimensions(type_->solid_dimensions());
 	set_collide_dimensions(type_->collide_dimensions());
@@ -142,7 +143,8 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	last_hit_by_anim_(0),
 	cycle_(0),
 	loaded_(false), fall_through_platforms_(0),
-	shader_(0)
+	shader_(0),
+	always_active_(false)
 {
 	set_solid_dimensions(type_->solid_dimensions());
 	set_collide_dimensions(type_->collide_dimensions());
@@ -209,7 +211,8 @@ custom_object::custom_object(const custom_object& o) :
 	fall_through_platforms_(o.fall_through_platforms_),
 	fragment_shaders_(o.fragment_shaders_),
 	vertex_shaders_(o.vertex_shaders_),
-	shader_(o.shader_)
+	shader_(o.shader_),
+	always_active_(o.always_active_)
 {
 }
 
@@ -1496,6 +1499,15 @@ void custom_object::set_frame(const std::string& name)
 	handle_event(frame_->enter_event_id());
 }
 
+rect custom_object::draw_rect() const
+{
+	if(draw_area_) {
+		return rect(x(), y(), draw_area_->w()*2, draw_area_->h()*2);
+	} else {
+		return rect(x(), y(), frame_->width(), frame_->height());
+	}
+}
+
 void custom_object::set_frame_no_adjustments(const std::string& name)
 {
 	frame_ = &type_->get_frame(name);
@@ -1587,7 +1599,7 @@ bool custom_object::dies_on_inactive() const
 
 bool custom_object::always_active() const
 {
-	return type_->always_active();
+	return always_active_ || type_->always_active();
 }
 
 bool custom_object::body_harmful() const

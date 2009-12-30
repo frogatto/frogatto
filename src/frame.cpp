@@ -223,8 +223,6 @@ void frame::draw(int x, int y, const rect& area, bool face_right, bool upside_do
 	const int w_adjust = area.w() - img_rect_.w();
 	const int h_adjust = area.h() - img_rect_.h();
 
-	std::cerr << "ADJUST: " << area << ": " << x_adjust << "," << y_adjust << "," << w_adjust << "," << h_adjust << "\n";
-
 	rect[0] += GLfloat(x_adjust)/GLfloat(texture_.width());
 	rect[1] += GLfloat(y_adjust)/GLfloat(texture_.height());
 	rect[2] += GLfloat(x_adjust + w_adjust)/GLfloat(texture_.width());

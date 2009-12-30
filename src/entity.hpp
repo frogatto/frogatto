@@ -95,6 +95,8 @@ public:
 	virtual const frame& icon_frame() const = 0;
 	virtual const frame& current_frame() const = 0;
 
+	virtual rect draw_rect() const = 0;
+
 	bool is_alpha(int xpos, int ypos) const;
 
 	virtual bool has_feet() const;

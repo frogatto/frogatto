@@ -8,6 +8,7 @@
 
 #include "SDL.h"
 
+#include "geometry.hpp"
 #include "texture.hpp"
 #include "wml_node_fwd.hpp"
 
@@ -28,10 +29,13 @@ public:
 	wml::node_ptr write() const;
 	void draw(double x, double y, int rotation, int cycle) const;
 	void draw_foreground(double x, double y, int rotation, int cycle) const;
+
+	void set_offset(const point& offset);
 private:
 	std::string id_;
 	SDL_Color top_, bot_;
 	int width_, height_;
+	point offset_;
 
 	struct layer {
 		std::string image;

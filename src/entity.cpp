@@ -111,8 +111,8 @@ void entity::set_upside_down(bool facing)
 
 void entity::activation_distance(int* x, int* y)
 {
-	*x = 900;
-	*y = 500;
+	*x = 600;
+	*y = 400;
 }
 
 void entity::calculate_solid_rect()
