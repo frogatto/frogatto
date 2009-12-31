@@ -483,10 +483,13 @@ public:
 			return;
 		}
 
-		GLshort vertex[particles_.size()*2];
-		unsigned int colors[particles_.size()];
-		unsigned int* c = colors;
-		GLshort* v = vertex;
+		static std::vector<GLshort> vertex;
+		static std::vector<unsigned int> colors;
+		vertex.resize(particles_.size()*2);
+		colors.resize(particles_.size());
+
+		unsigned int* c = &colors[0];
+		GLshort* v = &vertex[0];
 		for(std::vector<particle>::const_iterator p = particles_.begin();
 		    p != particles_.end(); ++p) {
 			*v++ = p->pos_x/1024;
@@ -501,8 +504,8 @@ public:
 		glEnableClientState(GL_COLOR_ARRAY);
 		glPointSize(4);
 
-		glVertexPointer(2, GL_SHORT, 0, vertex);
-		glColorPointer(4, GL_UNSIGNED_BYTE, 0, colors);
+		glVertexPointer(2, GL_SHORT, 0, &vertex[0]);
+		glColorPointer(4, GL_UNSIGNED_BYTE, 0, &colors[0]);
 		glDrawArrays(GL_POINTS, 0, particles_.size());
 
 		glDisableClientState(GL_COLOR_ARRAY);
