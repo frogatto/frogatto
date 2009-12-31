@@ -347,7 +347,9 @@ GLuint texture::get_id() const
 			GL_UNSIGNED_BYTE, id_->s->pixels);
 
 		//free the surface.
-		id_->s = surface();
+		if(!preferences::compiling_tiles) {
+			id_->s = surface();
+		}
 	}
 
 	return id_->id;
@@ -448,6 +450,16 @@ GLfloat texture::translate_coord_y(GLfloat y) const
 void texture::clear_cache()
 {
 	texture_cache.clear();
+}
+
+const unsigned int* texture::color_at(int x, int y) const
+{
+	if(!id_ || !id_->s) {
+		return NULL;
+	}
+
+	const unsigned int* pixels = reinterpret_cast<const unsigned int*>(id_->s->pixels);
+	return pixels + y*id_->s->w + x;
 }
 
 texture::ID::~ID()

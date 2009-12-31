@@ -63,11 +63,6 @@ level_object::level_object(wml::const_node_ptr node)
 	opaque_(wml::get_bool(node, "opaque", false)),
 	tile_index_(-1)
 {
-	if(preferences::compiling_tiles) {
-		tile_index_ = level_object_index.size();
-		level_object_index.push_back(wml::deep_copy(node));
-	}
-
 	if(node->has_attr("solid_color")) {
 		solid_color_ = boost::intrusive_ptr<graphics::color>(new graphics::color(node->attr("solid_color")));
 		opaque_ = true;
@@ -218,6 +213,22 @@ level_object::level_object(wml::const_node_ptr node)
 			}
 		}
 	}
+	
+	if(preferences::compiling_tiles) {
+		tile_index_ = level_object_index.size();
+		wml::node_ptr node_copy(wml::deep_copy(node));
+		if(calculate_opaque()) {
+			node_copy->set_attr("opaque", "yes");
+		}
+
+		graphics::color col;
+		if(calculate_is_solid_color(col)) {
+			node_copy->set_attr("solid_color", graphics::color_transform(col).to_string());
+		}
+
+		level_object_index.push_back(node_copy);
+	}
+
 	
 	//debug code to output the solidity of a tile in case we need to introspect at some point
 	/*
@@ -406,4 +417,30 @@ void level_object::queue_draw(graphics::blit_queue& q, const level_tile& t)
 		queue_draw_from_tilesheet(q, t.object->t_, i, t.x + x*32, t.y + y*32, t.face_right);
 		++index;
 	}
+}
+
+bool level_object::calculate_opaque() const
+{
+	foreach(const std::vector<int>& v, tiles_) {
+		foreach(int tile, v) {
+			if(!is_tile_opaque(t_, tile)) {
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
+bool level_object::calculate_is_solid_color(graphics::color& col) const
+{
+	foreach(const std::vector<int>& v, tiles_) {
+		foreach(int tile, v) {
+			if(!is_tile_solid_color(t_, tile, col)) {
+				return false;
+			}
+		}
+	}
+
+	return true;
 }

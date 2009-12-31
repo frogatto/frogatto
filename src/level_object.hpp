@@ -82,6 +82,8 @@ public:
 	static void queue_draw(graphics::blit_queue& q, const level_tile& t);
 
 	bool is_opaque() const { return opaque_; }
+	bool calculate_opaque() const;
+	bool calculate_is_solid_color(graphics::color& col) const;
 
 	const graphics::color* solid_color() const { return solid_color_.get(); }
 

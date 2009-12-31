@@ -1,3 +1,4 @@
+#include "asserts.hpp"
 #include "draw_tile.hpp"
 #include "raster.hpp"
 
@@ -63,4 +64,47 @@ void draw_from_tilesheet(const graphics::texture& t, int tile_num, int x, int y,
 	queue_blit_texture(t, x, y, 32, 32, x1, y1, x2, y2);
 
 //	graphics::blit_texture(t, x, y, 32, 32, rotate, x1, y1, x2, y2);
+}
+
+bool is_tile_opaque(const graphics::texture& t, int tile_num)
+{
+	const int width = std::max<int>(t.width(), t.height());
+	const int xpos = 16*(tile_num%(width/16));
+	const int ypos = 16*(tile_num/(width/16));
+	for(int y = 0; y != 16; ++y) {
+		const int v = ypos + y;
+		for(int x = 0; x != 16; ++x) {
+			const int u = xpos + x;
+			if(t.is_alpha(u, v)) {
+				return false;
+			}
+		}
+	}
+	
+	return true;
+}
+
+bool is_tile_solid_color(const graphics::texture& t, int tile_num, graphics::color& col)
+{
+	bool first = true;
+	const int width = std::max<int>(t.width(), t.height());
+	const int xpos = 16*(tile_num%(width/16));
+	const int ypos = 16*(tile_num/(width/16));
+	for(int y = 0; y != 16; ++y) {
+		const int v = ypos + y;
+		for(int x = 0; x != 16; ++x) {
+			const int u = xpos + x;
+			const unsigned int* color = t.color_at(u, v);
+			ASSERT_LOG(color != NULL, "COULD NOT FIND COLOR IN TEXTURE");
+			graphics::color new_color(*color);
+			if(first || col.rgba() == new_color.rgba()) {
+				col = new_color;
+				first = false;
+			} else {
+				return false;
+			}
+		}
+	}
+	
+	return true;
 }

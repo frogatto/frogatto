@@ -25,6 +25,9 @@
 
 namespace game_logic {
 
+class formula_expression;
+typedef boost::shared_ptr<formula_expression> expression_ptr;
+
 class formula_expression {
 public:
 	formula_expression() : name_(NULL) {}
@@ -51,6 +54,15 @@ public:
 		call_stack_manager manager(str_.c_str());
 		return execute_member(variables, id);
 	}
+
+	virtual expression_ptr optimize() const {
+		return expression_ptr();
+	}
+
+	virtual bool can_reduce_to_variant(variant& v) const {
+		return false;
+	}
+
 	void set_name(const char* name) { name_ = name; }
 	void set_str(const std::string& str) { str_ = str; }
 	const std::string& str() const { return str_; }
@@ -61,8 +73,6 @@ private:
 	const char* name_;
 	std::string str_;
 };
-
-typedef boost::shared_ptr<formula_expression> expression_ptr;
 
 class function_expression : public formula_expression {
 public:
@@ -142,6 +152,24 @@ expression_ptr create_function(const std::string& fn,
                                const std::vector<expression_ptr>& args,
 							   const function_symbol_table* symbols);
 std::vector<std::string> builtin_function_names();
+
+class variant_expression : public formula_expression {
+public:
+	explicit variant_expression(variant v) : formula_expression("_var"), v_(v)
+	{}
+
+	bool can_reduce_to_variant(variant& v) const {
+		v = v_;
+		return true;
+	}
+private:
+	variant execute(const formula_callable& /*variables*/) const {
+		return v_;
+	}
+	
+	variant v_;
+};
+
 
 }
 

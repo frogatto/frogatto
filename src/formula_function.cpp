@@ -58,6 +58,23 @@ public:
 	     : function_expression("if", args, 2, 3)
 	{}
 
+	expression_ptr optimize() const {
+		variant v;
+		if(args()[0]->can_reduce_to_variant(v)) {
+			if(v.as_bool()) {
+				return args()[1];
+			} else {
+				if(args().size() == 3) {
+					return args()[2];
+				} else {
+					return expression_ptr(new variant_expression(variant()));
+				}
+			}
+		}
+
+		return expression_ptr();
+	}
+
 private:
 	variant execute(const formula_callable& variables) const {
 		const int i = args()[0]->evaluate(variables).as_bool() ? 1 : 2;

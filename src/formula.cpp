@@ -536,19 +536,6 @@ namespace game_logic
 			}
 		};
 		
-		
-		class variant_expression : public formula_expression {
-		public:
-			explicit variant_expression(variant v) : formula_expression("_var"), v_(v)
-			{}
-		private:
-			variant execute(const formula_callable& /*variables*/) const {
-				return v_;
-			}
-			
-			variant v_;
-		};
-		
 		class null_expression : public formula_expression {
 		public:
 			explicit null_expression() : formula_expression("_null") {}
@@ -861,11 +848,19 @@ namespace game_logic
 				formula_callable_ptr static_callable(new static_formula_callable);
 				variant res = result->static_evaluate(*static_callable);
 				if(rng_seed == rng::get_seed() && static_callable->refcount() == 1) {
+					std::cerr << "STATIC: " << std::string(i1->begin, (i2-1)->end) << "\n";
 					//this expression is static. Reduce it to its result.
 					result = expression_ptr(new variant_expression(res));
 				}
 			} catch(non_static_expression_exception& e) {
 				//the expression isn't static. Not an error.
+			}
+
+			if(result) {
+				expression_ptr optimized = result->optimize();
+				if(optimized) {
+					result = optimized;
+				}
 			}
 			
 			if(result && i1 != i2) {
