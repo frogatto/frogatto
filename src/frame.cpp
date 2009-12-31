@@ -61,6 +61,8 @@ frame::frame(wml::const_node_ptr node)
 	 damage_(wml::get_int(node, "damage")),
 	 sounds_(util::split(node->attr("sound")))
 {
+	ASSERT_EQ(intersection_rect(img_rect_, rect(0, 0, texture_.width(), texture_.height())), img_rect_);
+
 	std::vector<std::string> hit_frames = util::split((*node)["hit_frames"]);
 	foreach(const std::string& f, hit_frames) {
 		hit_frames_.push_back(boost::lexical_cast<int>(f));
