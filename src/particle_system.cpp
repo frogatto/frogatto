@@ -9,6 +9,8 @@
 #include "foreach.hpp"
 #include "frame.hpp"
 #include "particle_system.hpp"
+#include "preferences.hpp"
+#include "string_utils.hpp"
 #include "texture.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
@@ -342,6 +344,214 @@ particle_system_ptr simple_particle_system_factory::create(const entity& e) cons
 	return particle_system_ptr(new simple_particle_system(e, *this));
 }
 
+struct point_particle_info
+{
+	explicit point_particle_info(wml::const_node_ptr node)
+	  : generation_rate_millis(wml::get_int(node, "generation_rate_millis")),
+	    pos_x(wml::get_int(node, "pos_x")*1024),
+	    pos_y(wml::get_int(node, "pos_y")*1024),
+	    pos_x_rand(wml::get_int(node, "pos_x_rand")*1024),
+	    pos_y_rand(wml::get_int(node, "pos_y_rand")*1024),
+	    velocity_x(wml::get_int(node, "velocity_x")),
+	    velocity_y(wml::get_int(node, "velocity_y")),
+	    velocity_x_rand(wml::get_int(node, "velocity_x_rand")),
+	    velocity_y_rand(wml::get_int(node, "velocity_y_rand")),
+	    time_to_live(wml::get_int(node, "time_to_live")),
+	    time_to_live_max(wml::get_int(node, "time_to_live_rand") + time_to_live) {
+		std::vector<std::string> colors_str;
+		util::split(node->attr("colors"), colors_str);
+		foreach(const std::string& col, colors_str) {
+			unsigned int val = strtoul(col.c_str(), NULL, 16);
+			unsigned char* c = reinterpret_cast<unsigned char*>(&val);
+			std::reverse(c, c+4);
+			colors.push_back(val);
+		}
+
+		std::reverse(colors.begin(), colors.end());
+
+		if(colors.empty()) {
+			colors.push_back(0xFFFFFFFF);
+		}
+
+		ttl_divisor = time_to_live_max/colors.size();
+
+		rgba[0] = wml::get_int(node, "red");
+		rgba[1] = wml::get_int(node, "green");
+		rgba[2] = wml::get_int(node, "blue");
+		rgba[3] = wml::get_int(node, "alpha", 255);
+		rgba_rand[0] = wml::get_int(node, "red_rand");
+		rgba_rand[1] = wml::get_int(node, "green_rand");
+		rgba_rand[2] = wml::get_int(node, "blue_rand");
+		rgba_rand[3] = wml::get_int(node, "alpha_rand");
+		rgba_delta[0] = wml::get_int(node, "red_delta");
+		rgba_delta[1] = wml::get_int(node, "green_delta");
+		rgba_delta[2] = wml::get_int(node, "blue_delta");
+		rgba_delta[3] = wml::get_int(node, "alpha_delta");
+	}
+
+	int generation_rate_millis;
+	int pos_x, pos_y, pos_x_rand, pos_y_rand;
+	int velocity_x, velocity_y, velocity_x_rand, velocity_y_rand;
+	int time_to_live, time_to_live_max;
+	unsigned char rgba[4];
+	unsigned char rgba_rand[4];
+	char rgba_delta[4];
+
+	std::vector<unsigned int> colors;
+	int ttl_divisor;
+};
+
+class point_particle_system : public particle_system
+{
+public:
+	point_particle_system(const entity& obj, const point_particle_info& info) : obj_(obj), info_(info), particle_generation_(0), generation_rate_millis_(info.generation_rate_millis) {
+	}
+
+	void process(const level& lvl, const entity& e) {
+		particle_generation_ += generation_rate_millis_;
+
+		particles_.erase(std::remove_if(particles_.begin(), particles_.end(), particle_destroyed), particles_.end());
+
+		for(std::vector<particle>::iterator p = particles_.begin();
+		    p != particles_.end(); ++p) {
+			p->pos_x += p->velocity_x;
+			p->pos_y += p->velocity_y;
+			p->rgba[0] += info_.rgba_delta[0];
+			p->rgba[1] += info_.rgba_delta[1];
+			p->rgba[2] += info_.rgba_delta[2];
+			p->rgba[3] += info_.rgba_delta[3];
+			p->ttl--;
+		}
+
+		while(particle_generation_ >= 1000) {
+			particles_.push_back(particle());
+			particle& p = particles_.back();
+			p.ttl = info_.time_to_live;
+			if(info_.time_to_live_max != info_.time_to_live) {
+				p.ttl += rand()%(info_.time_to_live_max - info_.time_to_live);
+			}
+
+			p.velocity_x = info_.velocity_x;
+			p.velocity_y = info_.velocity_y;
+
+			if(info_.velocity_x_rand) {
+				p.velocity_x += rand()%info_.velocity_x_rand;
+			}
+
+			if(info_.velocity_y_rand) {
+				p.velocity_y += rand()%info_.velocity_y_rand;
+			}
+
+			p.pos_x = e.x()*1024 + info_.pos_x;
+			p.pos_y = e.y()*1024 + info_.pos_y;
+
+			if(info_.pos_x_rand) {
+				p.pos_x += rand()%info_.pos_x_rand;
+			}
+			
+			if(info_.pos_y_rand) {
+				p.pos_y += rand()%info_.pos_y_rand;
+			}
+
+			p.rgba[0] = info_.rgba[0];
+			p.rgba[1] = info_.rgba[1];
+			p.rgba[2] = info_.rgba[2];
+			p.rgba[3] = info_.rgba[3];
+
+			if(info_.rgba_rand[0]) {
+				p.rgba[0] += rand()%info_.rgba_rand[0];
+			}
+
+			if(info_.rgba_rand[1]) {
+				p.rgba[1] += rand()%info_.rgba_rand[1];
+			}
+
+			if(info_.rgba_rand[2]) {
+				p.rgba[2] += rand()%info_.rgba_rand[2];
+			}
+
+			if(info_.rgba_rand[3]) {
+				p.rgba[3] += rand()%info_.rgba_rand[3];
+			}
+
+			particle_generation_ -= 1000;
+		}
+	}
+
+	void draw(const rect& area, const entity& e) const {
+		if(particles_.empty()) {
+			return;
+		}
+
+		GLshort vertex[particles_.size()*2];
+		unsigned int colors[particles_.size()];
+		unsigned int* c = colors;
+		GLshort* v = vertex;
+		for(std::vector<particle>::const_iterator p = particles_.begin();
+		    p != particles_.end(); ++p) {
+			*v++ = p->pos_x/1024;
+			*v++ = p->pos_y/1024;
+			*c++ = info_.colors[p->ttl/info_.ttl_divisor];
+		}
+
+		glColor4f(1.0, 1.0, 1.0, 1.0);
+
+		glDisable(GL_TEXTURE_2D);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glEnableClientState(GL_COLOR_ARRAY);
+		glPointSize(4);
+
+		glVertexPointer(2, GL_SHORT, 0, vertex);
+		glColorPointer(4, GL_UNSIGNED_BYTE, 0, colors);
+		glDrawArrays(GL_POINTS, 0, particles_.size());
+
+		glDisableClientState(GL_COLOR_ARRAY);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glEnable(GL_TEXTURE_2D);
+	}
+private:
+	const entity& obj_;
+	const point_particle_info& info_;
+
+	struct particle {
+		GLshort velocity_x, velocity_y;
+		int pos_x, pos_y;
+		unsigned char rgba[4];
+		int ttl;
+	};
+
+	static bool particle_destroyed(const particle& p) { return p.ttl <= 0; }
+
+	int particle_generation_;
+	int generation_rate_millis_;
+	std::vector<particle> particles_;
+
+	variant get_value(const std::string& key) const {
+		return variant();
+	}
+
+	void set_value(const std::string& key, const variant& value) {
+		if(key == "generation_rate") {
+			generation_rate_millis_ = value.as_int();
+		}
+	}
+};
+
+class point_particle_system_factory : public particle_system_factory
+{
+public:
+	explicit point_particle_system_factory(wml::const_node_ptr node)
+	  : info_(node)
+	{}
+
+	particle_system_ptr create(const entity& e) const {
+		return particle_system_ptr(new point_particle_system(e, info_));
+	}
+
+private:
+	point_particle_info info_;
+};
+
 }
 
 const_particle_system_factory_ptr particle_system_factory::create_factory(wml::const_node_ptr node)
@@ -353,6 +563,8 @@ const_particle_system_factory_ptr particle_system_factory::create_factory(wml::c
 		return const_particle_system_factory_ptr(new weather_particle_system_factory(node));
 	} else if (type == "water") {
 		return const_particle_system_factory_ptr(new water_particle_system_factory(node));
+	} else if(type == "point") {
+		return const_particle_system_factory_ptr(new point_particle_system_factory(node));
 	}
 
 	ASSERT_LOG(false, "Unrecognized particle system type: " << node->attr("type"));
