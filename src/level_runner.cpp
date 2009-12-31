@@ -143,8 +143,8 @@ void iris_scene(const level& lvl, screen_position& screen_pos, float amount) {
 	varray2[4] = 0;
 	varray2[5] = graphics::screen_height();
 	
-	varray2[7] = graphics::screen_width();
-	varray2[8] = graphics::screen_height();
+	varray2[6] = graphics::screen_width();
+	varray2[7] = graphics::screen_height();
 	
 	glVertexPointer(2, GL_FLOAT, 0, &varray2);
 	glColor4ub(0, 0, 0, 255);
