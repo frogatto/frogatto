@@ -661,8 +661,16 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 
 	typedef std::vector<level_tile>::const_iterator itor;
 	std::pair<itor,itor> range = std::equal_range(tiles_.begin(), tiles_.end(), layer, level_tile_zorder_comparer());
-	itor t = std::lower_bound(range.first, range.second, y,
+	if(range.first == range.second) {
+		glPopMatrix();
+		return;
+	}
+
+	itor tile_itor = std::lower_bound(range.first, range.second, y,
 	                          level_tile_y_pos_comparer());
+
+	const level_tile* t = &*tile_itor;
+	const level_tile* end_tiles = &*tiles_.begin() + tiles_.size();
 
 	short begin_range = 0;
 	short end_range = 0;
@@ -681,10 +689,10 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 
 		const graphics::blit_queue* blit_queue = NULL;
 
-		while(t != tiles_.end() && t->zorder == layer && t->y <= y + h) {
+		while(t != end_tiles && t->zorder == layer && t->y <= y + h) {
 			const int increment = 8;
 			while(t->x < x - TileSize) {
-				if(t+increment >= tiles_.end() || t[increment].y != t->y || t[increment].zorder != t->zorder || t[increment].x > x - TileSize) {
+				if(t+increment >= end_tiles || t[increment].y != t->y || t[increment].zorder != t->zorder || t[increment].x > x - TileSize) {
 					break;
 				}
 
@@ -692,7 +700,7 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 			}
 
 			while(t->x > x + w) {
-				if(t+increment >= tiles_.end() || t[increment].y != t->y || t[increment].zorder != t->zorder) {
+				if(t+increment >= end_tiles || t[increment].y != t->y || t[increment].zorder != t->zorder) {
 					break;
 				}
 
