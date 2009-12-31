@@ -228,8 +228,12 @@ variant::variant(game_logic::const_formula_ptr fml, const std::vector<std::strin
   : type_(TYPE_FUNCTION)
 {
 	fn_ = new variant_fn;
-	fn_->begin_args = &args[0];
-	fn_->end_args = fn_->begin_args + args.size();
+	if(args.empty()) {
+		fn_->begin_args = fn_->end_args = NULL;
+	} else {
+		fn_->begin_args = &args[0];
+		fn_->end_args = fn_->begin_args + args.size();
+	}
 	fn_->fn = fml;
 	fn_->callable = &callable;
 	increment_refcount();
