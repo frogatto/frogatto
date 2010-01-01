@@ -94,9 +94,9 @@ bool is_tile_solid_color(const graphics::texture& t, int tile_num, graphics::col
 		const int v = ypos + y;
 		for(int x = 0; x != 16; ++x) {
 			const int u = xpos + x;
-			const unsigned int* color = t.color_at(u, v);
+			const unsigned char* color = t.color_at(u, v);
 			ASSERT_LOG(color != NULL, "COULD NOT FIND COLOR IN TEXTURE");
-			graphics::color new_color(*color);
+			graphics::color new_color(color[0], color[1], color[2], color[3]);
 			if(first || col.rgba() == new_color.rgba()) {
 				col = new_color;
 				first = false;

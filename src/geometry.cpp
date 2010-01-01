@@ -150,10 +150,11 @@ rect intersection_rect(const rect& a, const rect& b)
 	return rect(x, y, w, h);
 }
 
-void rect_difference(const rect& a, const rect& b, std::vector<rect>* output)
+int rect_difference(const rect& a, const rect& b, rect* output)
 {
 	if (rects_intersect(a,b) == false){  //return empty if there's no intersection
-		return; }
+		return -1;
+	}
 		
 	/* returning 4 rectangles in this orientation:
 	 _________
@@ -161,23 +162,31 @@ void rect_difference(const rect& a, const rect& b, std::vector<rect>* output)
 	 | |   | |
 	 | |___| |
 	 |_|___|_|  */
-	
-	if( a.x() != b.x() ){ //left
-		output->push_back(rect::from_coordinates( std::min(a.x(),b.x()), std::min(a.y(),b.y()), std::max(a.x(),b.x()), std::max(a.y2(),b.y2()) ));
-	}
-	
-	if( a.x2() != b.x2() ){ //right
-		output->push_back(rect::from_coordinates( std::min(a.x2(),b.x2()), std::min(a.y(),b.y()), std::max(a.x2(),b.x2()), std::max(a.y2(),b.y2()) ));
+
+	const rect* begin_output = output;
+
+	if(a.x() < b.x()) {
+		//get the left section of the source rectangle
+		*output++ = rect(a.x(), a.y(), b.x() - a.x(), a.h());
 	}
 
-	if( a.y() != b.y() ){ //top
-		output->push_back(rect::from_coordinates( std::max(a.x(),b.x()), std::min(a.y(),b.y()), std::min(a.x2(),b.x2()), std::max(a.y(),b.y()) ));
+	if(a.x() + a.w() > b.x() + b.w()) {
+		*output++ = rect(b.x() + b.w(), a.y(), (a.x() + a.w()) - (b.x() + b.w()), a.h());
 	}
 
-	if( a.y2() != b.y2() ){ //bottom
-		output->push_back(rect::from_coordinates( std::max(a.x(),b.x()), std::min(a.y2(),b.y2()), std::min(a.x2(),b.x2()), std::max(a.y2(),b.y2()) ));
+	if(a.y() < b.y()) {
+		const int x1 = std::max(a.x(), b.x());
+		const int x2 = std::min(a.x() + a.w(), b.x() + b.w());
+		*output++ = rect(x1, a.y(), x2 - x1, b.y() - a.y());
+	}
+
+	if(a.y() + a.h() > b.y() + b.h()) {
+		const int x1 = std::max(a.x(), b.x());
+		const int x2 = std::min(a.x() + a.w(), b.x() + b.w());
+		*output++ = rect(x1, b.y() + b.h(), x2 - x1, (a.y() + a.h()) - (b.y() + b.h()));
 	}
 	
+	return output - begin_output;
 }
 
 std::ostream& operator<<(std::ostream& s, const rect& r)
@@ -227,4 +236,25 @@ UNIT_TEST(rect)
 	CHECK_NE(true, point_in_rect(point(15, 10), r));
 	CHECK_NE(true, point_in_rect(point(15, 11), r));
 	CHECK_EQ(r.h(), 0);
+}
+
+UNIT_TEST(rect_difference)
+{
+	rect r(100, 100, 200, 400);
+	rect buf[4];
+
+	CHECK_EQ(rect_difference(r, rect(0, 0, 100, 100), buf), -1);
+
+	CHECK_EQ(rect_difference(r, rect(0, 0, 200, 1000), buf), 1);
+	CHECK_EQ(buf[0], rect(200, 100, 100, 400));
+
+	CHECK_EQ(rect_difference(r, rect(0, 0, 1000, 1000), buf), 0);
+
+	CHECK_EQ(rect_difference(r, rect(150, 150, 50, 50), buf), 4);
+	CHECK_EQ(buf[0], rect(100, 100, 50, 400));
+	CHECK_EQ(buf[1], rect(200, 100, 100, 400));
+	CHECK_EQ(buf[2], rect(150, 100, 50, 50));
+
+	CHECK_EQ(rect_difference(rect(0, 891, 800, 1491), rect(-32, 1344, 1120, 2432), buf), 1);
+	CHECK_EQ(buf[0], rect(0, 891, 800, 453));
 }

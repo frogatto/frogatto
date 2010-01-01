@@ -137,6 +137,10 @@ const_custom_object_type_ptr custom_object_type::get(const std::string& id)
 
 	const_custom_object_type_ptr result(create(id));
 	cache[id] = result;
+
+	//load the object's variations here to avoid pausing the game
+	//when an object starts its variation.
+	result->load_variations();
 	return result;
 }
 
@@ -328,11 +332,9 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	FOREACH_WML_CHILD(variation_node, node, "object_variation") {
 		const std::string& id = variation_node->attr("id");
 		variations_[id].reset(new wml::modifier(variation_node));
-	}
-
-	if(!variations_.empty()) {
 		node_ = node;
 	}
+
 }
 
 custom_object_type::~custom_object_type()
@@ -402,6 +404,13 @@ const_custom_object_type_ptr custom_object_type::get_variation(const std::vector
 	}
 
 	return result;
+}
+
+void custom_object_type::load_variations() const
+{
+	for(std::map<std::string, wml::const_modifier_ptr>::const_iterator i = variations_.begin(); i != variations_.end(); ++i) {
+		get_variation(std::vector<std::string>(1, i->first));
+	}
 }
 
 #include "texture.hpp"

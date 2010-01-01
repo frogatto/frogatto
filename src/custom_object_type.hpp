@@ -118,6 +118,7 @@ public:
 	unsigned int collide_dimensions() const { return collide_dimensions_; }
 
 	const_custom_object_type_ptr get_variation(const std::vector<std::string>& variations) const;
+	void load_variations() const;
 
 private:
 	std::string id_;

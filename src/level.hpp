@@ -52,7 +52,7 @@ public:
 	void draw(int x, int y, int w, int h) const;
 	void draw_status() const;
 	void draw_debug_solid(int x, int y, int w, int h) const;
-	void draw_background(double x, double y, int rotation) const;
+	void draw_background(int x, int y, int rotation) const;
 	void process();
 	void process_draw();
 	bool standable(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
@@ -303,6 +303,8 @@ private:
 	};
 
 	std::vector<solid_color_rect> solid_color_rects_;
+
+	std::vector<rect> opaque_rects_;
 
 	void erase_char(entity_ptr c);
 	std::vector<entity_ptr> chars_;

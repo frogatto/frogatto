@@ -65,7 +65,6 @@ level_object::level_object(wml::const_node_ptr node)
 {
 	if(node->has_attr("solid_color")) {
 		solid_color_ = boost::intrusive_ptr<graphics::color>(new graphics::color(node->attr("solid_color")));
-		opaque_ = true;
 	}
 
 	std::vector<std::string> tile_variations = util::split(node->attr("tiles"), '|');
@@ -219,6 +218,7 @@ level_object::level_object(wml::const_node_ptr node)
 		wml::node_ptr node_copy(wml::deep_copy(node));
 		if(calculate_opaque()) {
 			node_copy->set_attr("opaque", "yes");
+			opaque_ = true;
 		}
 
 		graphics::color col;
@@ -227,6 +227,10 @@ level_object::level_object(wml::const_node_ptr node)
 		}
 
 		level_object_index.push_back(node_copy);
+
+		//set solid colors to always false if we're compiling, since having
+		//solid colors will confuse the compilation.
+		solid_color_ = boost::intrusive_ptr<graphics::color>();
 	}
 
 	

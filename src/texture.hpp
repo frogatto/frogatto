@@ -66,7 +66,7 @@ public:
 	bool is_alpha(int x, int y) const { return (*alpha_map_)[y*width_ + x]; }
 	std::vector<bool>::const_iterator get_alpha_row(int x, int y) const { return alpha_map_->begin() + y*width_ + x; }
 
-	const unsigned int* color_at(int x, int y) const;
+	const unsigned char* color_at(int x, int y) const;
 
 	friend bool operator==(const texture&, const texture&);
 	friend bool operator<(const texture&, const texture&);

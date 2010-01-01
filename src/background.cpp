@@ -138,26 +138,29 @@ wml::node_ptr background::write() const
 	return res;
 }
 
-void background::draw(double xpos, double ypos, int rotation, int cycle) const
+std::vector<rect> background_rects_drawn;
+
+void background::draw(int x, int y, const rect& area, const std::vector<rect>& opaque_areas, int rotation, int cycle) const
 {
+	background_rects_drawn.clear();
 	const int height = height_ + offset_.y*2;
 
 	//set the background colors for the level. The area above 'height' is
 	//painted with the top color, and the area below height is painted with
 	//the bottom color. For efficiency we do this using color clearing, with
 	//scissors to divide the screen into top and bottom.
-	if(height < ypos) {
+	if(height < y) {
 		//the entire screen is full of the bottom color
 		glClearColor(bot_.r/255.0, bot_.g/255.0, bot_.b/255.0, 0.0);
 		glClear(GL_COLOR_BUFFER_BIT);
-	} else if(height > ypos + graphics::screen_height()) {
+	} else if(height > y + graphics::screen_height()) {
 		//the entire screen is full of the top color.
 		glClearColor(top_.r/255.0, top_.g/255.0, top_.b/255.0, 0.0);
 		glClear(GL_COLOR_BUFFER_BIT);
 	} else {
 		//both bottom and top colors are on the screen, so draw them both,
 		//using scissors to delinate their areas.
-		const int dist_from_bottom = ypos + graphics::screen_height() - height;
+		const int dist_from_bottom = y + graphics::screen_height() - height;
 
 		glEnable(GL_SCISSOR_TEST);
 
@@ -183,9 +186,36 @@ void background::draw(double xpos, double ypos, int rotation, int cycle) const
 		glDisable(GL_SCISSOR_TEST);
 	}
 
+	draw_layers(x, y, area, opaque_areas, rotation, cycle);
+}
+
+void background::draw_layers(int x, int y, const rect& area_ref, const std::vector<rect>& opaque_areas, int rotation, int cycle) const
+{
+	rect area = area_ref;
+	rect sub_areas[4];
+	for(std::vector<rect>::const_iterator i = opaque_areas.begin();
+	    i != opaque_areas.end(); ++i) {
+		const int result = rect_difference(area, *i, sub_areas);
+		if(result == -1) {
+			continue;
+		}
+
+		if(result != 1) {
+			for(int n = 0; n < result; ++n) {
+				draw_layers(x, y, sub_areas[n], opaque_areas, rotation, cycle);
+			}
+
+			return;
+		}
+
+		area = sub_areas[0];
+	}
+
+	background_rects_drawn.push_back(area);
+
 	foreach(const layer& bg, layers_) {
 		if(bg.foreground == false) {
-			draw_layer(xpos, ypos, rotation, bg, cycle);
+			draw_layer(x, y, area, rotation, bg, cycle);
 		}
 	}
 }
@@ -194,7 +224,7 @@ void background::draw_foreground(double xpos, double ypos, int rotation, int cyc
 {
 	foreach(const layer& bg, layers_) {
 		if(bg.foreground) {
-			draw_layer(xpos, ypos, rotation, bg, cycle);
+			draw_layer(xpos, ypos, rect(xpos, ypos, graphics::screen_width(), graphics::screen_height()), rotation, bg, cycle);
 		}
 	}
 }
@@ -208,7 +238,7 @@ namespace {
 graphics::blit_queue blit_queue;
 }
 
-void background::draw_layer(int x, int y, int rotation, const background::layer& bg, int cycle) const
+void background::draw_layer(int x, int y, const rect& area, int rotation, const background::layer& bg, int cycle) const
 {
 	const double ScaleImage = 2.0;
 	GLshort y1 = y + (bg.yoffset+offset_.y)*ScaleImage - (y*bg.yscale)/100;
@@ -218,24 +248,28 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 		return;
 	}
 
-	if(y1 > y + graphics::screen_height()) {
+	if(y1 > y + area.h()) {
 		return;
 	}
 
 	GLfloat v1 = bg.texture.translate_coord_y(double(bg.y1)/double(bg.texture.height()));
 	GLfloat v2 = bg.texture.translate_coord_y(double(bg.y2)/double(bg.texture.height()));
 
-	if(y1 < y) {
-		v1 += (GLfloat(y - y1)/GLfloat(y2 - y1))*(v2 - v1);
-		y1 = y;
+	if(y1 < area.y()) {
+		v1 += (GLfloat(area.y() - y1)/GLfloat(y2 - y1))*(v2 - v1);
+		y1 = area.y();
 	}
 
-	if(y2 > y + graphics::screen_height()) {
-		v2 -= (GLfloat(y2 - (y + graphics::screen_height()))/GLfloat(y2 - y1))*(v2 - v1);
-		y2 = y + graphics::screen_height();
+	if(y2 > area.y() + area.h()) {
+		v2 -= (GLfloat(y2 - (area.y() + area.h()))/GLfloat(y2 - y1))*(v2 - v1);
+		y2 = area.y() + area.h();
 	}
 
-	int screen_width = graphics::screen_width();
+	if(v1 >= v2) {
+		return;
+	}
+
+	int screen_width = area.w();
 
 	if(!bg.texture.valid()) {
 		bg.texture = graphics::texture::get(bg.image, bg.image_formula);
@@ -245,7 +279,7 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 	}
 
 	const double xscale = double(bg.xscale)/100.0;
-	GLfloat xpos = (-GLfloat(bg.xspeed)*GLfloat(cycle)/1000 + int(GLfloat(x + bg.xoffset)*xscale))/GLfloat((bg.texture.width()+bg.xpad)*ScaleImage);
+	GLfloat xpos = (-GLfloat(bg.xspeed)*GLfloat(cycle)/1000 + int(GLfloat(x + bg.xoffset)*xscale))/GLfloat((bg.texture.width()+bg.xpad)*ScaleImage) + GLfloat(area.x() - x)/GLfloat((bg.texture.width()+bg.xpad)*ScaleImage);
 
 	//clamp xpos into the [0.0, 1.0] range
 	if(xpos > 0) {
@@ -266,6 +300,9 @@ void background::draw_layer(int x, int y, int rotation, const background::layer&
 		glBlendEquation(bg.mode);
 	}
 #endif
+
+	x = area.x();
+	y = area.y();
 
 	while(screen_width > 0) {
 		const int texture_blit_width = (1.0 - xpos)*bg.texture.width()*ScaleImage;

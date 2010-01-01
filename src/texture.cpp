@@ -452,14 +452,14 @@ void texture::clear_cache()
 	texture_cache.clear();
 }
 
-const unsigned int* texture::color_at(int x, int y) const
+const unsigned char* texture::color_at(int x, int y) const
 {
 	if(!id_ || !id_->s) {
 		return NULL;
 	}
 
-	const unsigned int* pixels = reinterpret_cast<const unsigned int*>(id_->s->pixels);
-	return pixels + y*id_->s->w + x;
+	const unsigned char* pixels = reinterpret_cast<const unsigned char*>(id_->s->pixels);
+	return pixels + (y*id_->s->w + x)*id_->s->format->BytesPerPixel;
 }
 
 texture::ID::~ID()

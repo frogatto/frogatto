@@ -27,11 +27,13 @@ public:
 	explicit background(const wml::const_node_ptr& node);
 	const std::string& id() const { return id_; }
 	wml::node_ptr write() const;
-	void draw(double x, double y, int rotation, int cycle) const;
+	void draw(int x, int y, const rect& area, const std::vector<rect>& opaque_areas, int rotation, int cycle) const;
 	void draw_foreground(double x, double y, int rotation, int cycle) const;
 
 	void set_offset(const point& offset);
 private:
+
+	void draw_layers(int x, int y, const rect& area, const std::vector<rect>& opaque_areas, int rotation, int cycle) const;
 	std::string id_;
 	SDL_Color top_, bot_;
 	int width_, height_;
@@ -62,7 +64,7 @@ private:
 		bool foreground;
 	};
 
-	void draw_layer(int x, int y, int rotation, const layer& bg, int cycle) const;
+	void draw_layer(int x, int y, const rect& area, int rotation, const layer& bg, int cycle) const;
 
 	std::vector<layer> layers_;
 };

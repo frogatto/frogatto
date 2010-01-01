@@ -54,7 +54,7 @@ private:
 bool point_in_rect(const point& p, const rect& r);
 bool rects_intersect(const rect& a, const rect& b);
 rect intersection_rect(const rect& a, const rect& b);
-void rect_difference(const rect& a, const rect& b, std::vector<rect>* output); //returns a vector containing the parts of A that don't intersect B
+int rect_difference(const rect& a, const rect& b, rect* output); //returns a vector containing the parts of A that don't intersect B
 
 inline bool operator==(const rect& a, const rect& b) {
 	return a.x() == b.x() && a.y() == b.y() && a.w() == b.w() && a.h() == b.h();

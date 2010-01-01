@@ -74,6 +74,14 @@ level::level(const std::string& level_cfg)
 		lock_screen_.reset(new point(node->attr("lock_screen")));
 	}
 
+	if(node->has_attr("opaque_rects")) {
+		const std::vector<std::string> opaque_rects_str = util::split(node->attr("opaque_rects"), ':');
+		foreach(const std::string& r, opaque_rects_str) {
+			opaque_rects_.push_back(rect(r));
+			std::cerr << "OPAQUE RECT: " << r << "\n";
+		}
+	}
+
 	xscale_ = wml::get_int(node, "xscale", 100);
 	yscale_ = wml::get_int(node, "yscale", 100);
 	auto_move_camera_ = point(node->attr("auto_move_camera"));
@@ -462,14 +470,18 @@ wml::node_ptr level::write() const
 	}
 
 	if(preferences::compiling_tiles && !tiles_.empty()) {
-		res->set_attr("num_compiled_tiles", formatter() << tiles_.size());
 
+		int num_tiles = 0;
 		int last_zorder = INT_MIN;
 		int basex = 0, basey = 0;
 		int last_x = 0, last_y = 0;
 		std::string tiles_str;
 		for(int n = 0; n <= tiles_.size(); ++n) {
-			if(tiles_[n].zorder != last_zorder) {
+			if(n != tiles_.size() && tiles_[n].draw_disabled && tiles_[n].object->has_solid() == false) {
+				continue;
+			}
+
+			if(n == tiles_.size() || tiles_[n].zorder != last_zorder) {
 				if(!tiles_str.empty()) {
 					wml::node_ptr node(new wml::node("compiled_tiles"));
 					node->set_attr("zorder", formatter() << last_zorder);
@@ -523,8 +535,105 @@ wml::node_ptr level::write() const
 			tiles_str += ",";
 
 			last_x += TileSize;
+			++num_tiles;
 		}
-	}
+
+		res->set_attr("num_compiled_tiles", formatter() << num_tiles);
+
+		//calculate rectangular opaque areas of tiles that allow us
+		//to avoid drawing the background. Start by calculating the set
+		//of tiles that are opaque.
+		typedef std::pair<int,int> OpaqueLoc;
+		std::set<OpaqueLoc> opaque;
+		foreach(const level_tile& t, tiles_) {
+			if(t.object->is_opaque() == false) {
+				continue;
+			}
+
+			std::map<int, tile_map>::const_iterator tile_itor = tile_maps_.find(t.zorder);
+			ASSERT_LOG(tile_itor != tile_maps_.end(), "COULD NOT FIND TILE LAYER IN MAP");
+			if(tile_itor->second.x_speed() != 100 || tile_itor->second.y_speed() != 100) {
+				//we only consider the layer that moves at 100% speed,
+				//since calculating obscured areas at other layers is too
+				//complicated.
+				continue;
+			}
+
+			opaque.insert(std::pair<int,int>(t.x,t.y));
+		}
+
+		std::cerr << "BUILDING RECTS...\n";
+
+		std::vector<rect> opaque_rects;
+
+		//keep iterating, finding the largest rectangle we can make of
+		//available opaque locations, then removing all those opaque
+		//locations from our set, until we have all areas covered.
+		while(!opaque.empty()) {
+			rect largest_rect;
+
+			//iterate over every opaque location, treating each one
+			//as a possible upper-left corner of our rectangle.
+			foreach(const OpaqueLoc& loc, opaque) {
+				std::vector<OpaqueLoc> v;
+				v.push_back(loc);
+
+				//try to build a top row of a rectangle. After adding each
+				//cell, we will try to expand the rectangle downwards, as
+				//far as it will go.
+				while(opaque.count(OpaqueLoc(v.back().first + TileSize, v.back().second))) {
+					v.push_back(OpaqueLoc(v.back().first + TileSize, v.back().second));
+					int rows = 0;
+					bool can_expand_downwards = true;
+					while(can_expand_downwards) {
+						foreach(const OpaqueLoc& down, v) {
+							if(opaque.count(OpaqueLoc(down.first, down.second + TileSize*(rows+1))) == 0) {
+								can_expand_downwards = false;
+								break;
+							}
+						}
+
+						++rows;
+					}
+
+					rect r(v.front().first, v.front().second, v.size()*TileSize, rows*TileSize);
+					if(r.w()*r.h() > largest_rect.w()*largest_rect.h()) {
+						largest_rect = r;
+					}
+				} //end while expand rectangle to the right.
+			} //end for iterating over all possible rectangle upper-left positions
+
+			//have a minimum size for rectangles. If we fail to reach
+			//the minimum size then just stop. It's not worth bothering 
+			//with lots of small little rectangles.
+			if(largest_rect.w()*largest_rect.h() < TileSize*TileSize*32) {
+				break;
+			}
+
+			opaque_rects.push_back(largest_rect);
+
+			for(std::set<OpaqueLoc>::iterator i = opaque.begin();
+			    i != opaque.end(); ) {
+				if(i->first >= largest_rect.x() && i->second >= largest_rect.y() && i->first < largest_rect.x2() && i->second < largest_rect.y2()) {
+					opaque.erase(i++);
+				} else {
+					++i;
+				}
+			}
+		} //end searching for rectangles to add.
+		std::cerr << "DONE BUILDING RECTS...\n";
+
+		if(!opaque_rects.empty()) {
+			std::ostringstream opaque_rects_str;
+			foreach(const rect& r, opaque_rects) {
+				opaque_rects_str << r.to_string() << ":";
+			}
+
+			res->set_attr("opaque_rects", opaque_rects_str.str());
+
+			std::cerr << "RECTS: " << id_ << ": " << opaque_rects.size() << "\n";
+		}
+	} //end if preferences::compiling
 
 /*
 	foreach(const level_tile& tile, tiles_) {
@@ -860,6 +969,7 @@ void level::prepare_tiles_for_drawing()
 			opaque.insert(std::pair<int,int>(t.x, t.y));
 		}
 	}
+
 }
 
 namespace {
@@ -877,6 +987,8 @@ void level::draw_status() const
 		gui_algorithm_->draw(*this);
 	}
 }
+
+extern std::vector<rect> background_rects_drawn;
 
 void level::draw(int x, int y, int w, int h) const
 {
@@ -1024,7 +1136,7 @@ void level::draw_debug_solid(int x, int y, int w, int h) const
 	}
 }
 
-void level::draw_background(double x, double y, int rotation) const
+void level::draw_background(int x, int y, int rotation) const
 {
 	if(show_background_ == false) {
 		return;
@@ -1039,7 +1151,33 @@ void level::draw_background(double x, double y, int rotation) const
 	}
 
 	if(background_) {
-		background_->draw(x, y, rotation, cycle());
+		static std::vector<rect> opaque_areas;
+		opaque_areas.clear();
+		rect screen_area(x, y, graphics::screen_width(), graphics::screen_height());
+		foreach(const rect& r, opaque_rects_) {
+			if(rects_intersect(r, screen_area)) {
+
+				rect intersection = intersection_rect(r, screen_area);
+
+				if(intersection.w() == screen_area.w() || intersection.h() == screen_area.h()) {
+					rect result[2];
+					const int nrects = rect_difference(screen_area, intersection, result);
+					ASSERT_LOG(nrects <= 2, "TOO MANY RESULTS " << nrects << " IN " << screen_area << " - " << intersection);
+					if(nrects < 1) {
+						//background is completely obscured, so return
+						return;
+					} else if(nrects == 1) {
+						screen_area = result[0];
+					} else {
+						opaque_areas.push_back(intersection);
+					}
+				} else if(intersection.w()*intersection.h() >= TileSize*TileSize*8) {
+					opaque_areas.push_back(intersection);
+				}
+			}
+		}
+
+		background_->draw(x, y, screen_area, opaque_areas, rotation, cycle());
 	} else {
 		glClearColor(0.0, 0.0, 0.0, 0.0);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -1123,8 +1261,6 @@ void level::do_processing()
 	active_chars_.erase(std::unique(active_chars_.begin(), active_chars_.end()), active_chars_.end());
 	std::sort(active_chars_.begin(), active_chars_.end(), sort_entity_drawing_pos);
 
-	//std::cerr << "active: " << active_chars_.size() << "/" << chars_.size() << "\n";
-
 	const int ActivationDistance = 700;
 
 	foreach(entity_ptr c, active_chars_) {
@@ -1137,8 +1273,6 @@ void level::do_processing()
 			erase_char(c);
 		}
 	}
-
-	//std::cerr << "process: " << (SDL_GetTicks() - ticks) << "\n";
 
 	if(water_) {
 		water_->process(*this);
@@ -1565,9 +1699,7 @@ bool level::add_tile_rect_vector_internal(int zorder, int x1, int y1, int x2, in
 
 	int index = 0;
 	for(int x = x1; x < x2; x += 32) {
-		std::cerr << "x: " << x << "\n";
 		for(int y = y1; y < y2; y += 32) {
-			std::cerr << "adding tile: " << x << "," << y << ": (" << tiles[index] << ")\n";
 			changed = m.set_tile(x, y, tiles[index]) || changed;
 			if(index+1 < tiles.size()) {
 				++index;
@@ -2104,8 +2236,6 @@ void level::get_current(const entity& e, int* velocity_x, int* velocity_y) const
 		}
 	}
 
-	std::cerr << "CURRENT: " << delta_x << "," << delta_y << "\n";
-
 	*velocity_x += delta_x;
 	*velocity_y += delta_y;
 }
@@ -2196,8 +2326,6 @@ bool level::can_interact(const rect& body) const
 
 void level::replay_from_cycle(int ncycle)
 {
-	std::cerr << "REPLAY FROM " << ncycle << "-" << (cycle_-1) << "\n";
-
 	const int cycles_ago = cycle_ - ncycle;
 	if(cycles_ago <= 0) {
 		return;
