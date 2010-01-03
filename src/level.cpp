@@ -770,13 +770,14 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 
 	typedef std::vector<level_tile>::const_iterator itor;
 	std::pair<itor,itor> range = std::equal_range(tiles_.begin(), tiles_.end(), layer, level_tile_zorder_comparer());
-	if(range.first == range.second) {
-		glPopMatrix();
-		return;
-	}
 
 	itor tile_itor = std::lower_bound(range.first, range.second, y,
 	                          level_tile_y_pos_comparer());
+
+	if(tile_itor == range.second) {
+		glPopMatrix();
+		return;
+	}
 
 	const level_tile* t = &*tile_itor;
 	const level_tile* end_tiles = &*tiles_.begin() + tiles_.size();

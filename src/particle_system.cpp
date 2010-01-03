@@ -369,11 +369,11 @@ struct point_particle_info
 
 		std::reverse(colors.begin(), colors.end());
 
-		if(colors.empty()) {
+		while(colors.size() < 2) {
 			colors.push_back(0xFFFFFFFF);
 		}
 
-		ttl_divisor = time_to_live_max/colors.size();
+		ttl_divisor = time_to_live_max/(colors.size()-1);
 
 		rgba[0] = wml::get_int(node, "red");
 		rgba[1] = wml::get_int(node, "green");
@@ -427,6 +427,7 @@ public:
 			particles_.push_back(particle());
 			particle& p = particles_.back();
 			p.ttl = info_.time_to_live;
+			ASSERT_LT(p.ttl/info_.ttl_divisor, info_.colors.size());
 			if(info_.time_to_live_max != info_.time_to_live) {
 				p.ttl += rand()%(info_.time_to_live_max - info_.time_to_live);
 			}
