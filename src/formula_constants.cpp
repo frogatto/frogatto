@@ -16,7 +16,13 @@ variant get_constant(const std::string& id)
 #else
 		return variant(0);
 #endif
-	} else if(id == "HIGH_END_SYSTEM") {
+	} else if(id == "IPHONE_SYSTEM") {
+#if TARGET_IPHONE_SIMULATOR
+		return variant(1);
+#else
+		return variant(0);
+#endif
+	}else if(id == "HIGH_END_SYSTEM") {
 		return variant(!get_constant("LOW_END_SYSTEM").as_bool());
 	} else {
 		return variant();
