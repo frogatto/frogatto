@@ -31,6 +31,7 @@
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
 #include "wml_writer.hpp"
+#include "preferences.hpp"
 
 using namespace game_logic;
 
@@ -41,7 +42,7 @@ class save_game_command : public entity_command_callable
 	public:
 		virtual void execute(level& lvl, entity& ob) const {
 			lvl.player()->get_entity().save_game();
-			sys::write_file("data/level/save.cfg", wml::output(lvl.write()));
+			sys::write_file(preferences::save_file_path(), wml::output(lvl.write()));
 		}
 	};
 
@@ -86,7 +87,7 @@ public:
 	{}
 private:
 	variant execute(const formula_callable& variables) const {
-		return variant(sys::file_exists("data/level/save.cfg"));
+		return variant(sys::file_exists(preferences::save_file_path()));
 	}
 };
 

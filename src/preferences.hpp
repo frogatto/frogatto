@@ -5,6 +5,7 @@ namespace preferences {
 	
 	bool parse_arg(const char* arg);
 	bool no_sound();
+	const char* save_file_path();
 	bool show_debug_hitboxes();
 	bool use_pretty_scaling();
 	void set_use_pretty_scaling(bool value);

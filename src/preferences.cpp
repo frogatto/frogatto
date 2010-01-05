@@ -18,6 +18,8 @@ namespace preferences {
 		int actual_screen_height_ = 480;
 
 		bool screen_rotated_ = true;
+		
+		const char *save_file_path_ = "../Documents/save.cfg";
 #else
 		int virtual_screen_width_ = 800;
 		int virtual_screen_height_ = 600;
@@ -26,6 +28,8 @@ namespace preferences {
 		int actual_screen_height_ = 600;
 		
 		bool screen_rotated_ = false;
+		
+		const char *save_file_path_ = "data/level/save.cfg";
 #endif
 
 		bool load_compiled_ = false;
@@ -44,6 +48,10 @@ namespace preferences {
 	
 	bool no_sound() {
 		return no_sound_;
+	}
+	
+	const char *save_file_path() {
+		return save_file_path_;
 	}
 	
 	bool show_debug_hitboxes() {
