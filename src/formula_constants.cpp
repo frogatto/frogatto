@@ -11,13 +11,13 @@ variant get_constant(const std::string& id)
 	} else if(id == "SCREEN_HEIGHT") {
 		return variant(graphics::screen_height());
 	} else if(id == "LOW_END_SYSTEM") {
-#if TARGET_IPHONE_SIMULATOR
+#if TARGET_OS_IPHONE
 		return variant(1);
 #else
 		return variant(0);
 #endif
 	} else if(id == "IPHONE_SYSTEM") {
-#if TARGET_IPHONE_SIMULATOR
+#if TARGET_OS_IPHONE
 		return variant(1);
 #else
 		return variant(0);
