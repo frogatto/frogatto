@@ -18,6 +18,7 @@
 #include "foreach.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
+#include "formula_callable_utils.hpp"
 #include "formula_function.hpp"
 
 #include "SDL.h"
@@ -656,11 +657,12 @@ formula_function_expression::formula_function_expression(const std::string& name
 
 variant formula_function_expression::execute(const formula_callable& variables) const
 {
-	map_formula_callable* callable = new map_formula_callable;
+	slot_formula_callable* callable = new slot_formula_callable;
+	callable->set_names(&arg_names_);
 	variant callable_scope(callable);
 	for(size_t n = 0; n != arg_names_.size(); ++n) {
 		variant var = args()[n]->evaluate(variables);
-		callable->add(arg_names_[n], var);
+		callable->add(var);
 		if(static_cast<int>(n) == star_arg_) {
 			callable->set_fallback(var.as_callable());
 		}
@@ -690,7 +692,7 @@ void function_symbol_table::add_formula_function(const std::string& name, const_
 	custom_formulas_[name] = formula_function(name, formula, precondition, args);
 }
 
-expression_ptr function_symbol_table::create_function(const std::string& fn, const std::vector<expression_ptr>& args) const
+expression_ptr function_symbol_table::create_function(const std::string& fn, const std::vector<expression_ptr>& args, const formula_callable_definition* callable_def) const
 {
 	const std::map<std::string, formula_function>::const_iterator i = custom_formulas_.find(fn);
 	if(i != custom_formulas_.end()) {
@@ -698,7 +700,7 @@ expression_ptr function_symbol_table::create_function(const std::string& fn, con
 	}
 
 	if(backup_) {
-		return backup_->create_function(fn, args);
+		return backup_->create_function(fn, args, callable_def);
 	}
 
 	return expression_ptr();
@@ -720,14 +722,15 @@ recursive_function_symbol_table::recursive_function_symbol_table(const std::stri
 
 expression_ptr recursive_function_symbol_table::create_function(
                  const std::string& fn,
-	             const std::vector<expression_ptr>& args) const
+	             const std::vector<expression_ptr>& args,
+				 const formula_callable_definition* callable_def) const
 {
 	if(fn == name_) {
 		formula_function_expression_ptr expr = stub_.generate_function_expression(args);
 		expr_.push_back(expr);
 		return expr;
 	} else if(backup_) {
-		return backup_->create_function(fn, args);
+		return backup_->create_function(fn, args, callable_def);
 	}
 
 	return expression_ptr();
@@ -799,10 +802,11 @@ functions_map& get_functions_map() {
 
 expression_ptr create_function(const std::string& fn,
                                const std::vector<expression_ptr>& args,
-							   const function_symbol_table* symbols)
+							   const function_symbol_table* symbols,
+							   const formula_callable_definition* callable_def)
 {
 	if(symbols) {
-		expression_ptr res(symbols->create_function(fn, args));
+		expression_ptr res(symbols->create_function(fn, args, callable_def));
 		if(res) {
 			return res;
 		}
@@ -814,6 +818,22 @@ expression_ptr create_function(const std::string& fn,
 	}
 
 	return i->second->create_function(args);
+}
+
+bool optimize_function_arguments(const std::string& fn,
+                                 const function_symbol_table* symbols)
+{
+	static const std::string disable_optimization_functions[] = {
+	    "choose", "filter", "find", "map",
+	};
+
+	for(int n = 0; n < sizeof(disable_optimization_functions)/sizeof(*disable_optimization_functions); ++n) {
+		if(disable_optimization_functions[n] == fn) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 std::vector<std::string> builtin_function_names()

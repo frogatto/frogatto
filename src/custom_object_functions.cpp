@@ -11,6 +11,7 @@
 #include "draw_scene.hpp"
 #include "entity.hpp"
 #include "filesystem.hpp"
+#include "formula_callable_definition.hpp"
 #include "level.hpp"
 #include "level_runner.hpp"
 #include "object_events.hpp"
@@ -637,7 +638,7 @@ private:
 class set_command : public entity_command_callable
 {
 public:
-	explicit set_command(variant target, const std::string& attr, variant val)
+	set_command(variant target, const std::string& attr, variant val)
 	  : target_(target), attr_(attr), val_(val)
 	{}
 	virtual void execute(level& lvl, entity& ob) const {
@@ -653,10 +654,28 @@ private:
 	variant val_;
 };
 
+class set_by_slot_command : public entity_command_callable
+{
+public:
+	set_by_slot_command(int slot, const variant& value)
+	  : slot_(slot), value_(value)
+	{}
+
+	virtual void execute(level& lvl, entity& obj) const {
+		obj.mutate_value_by_slot(slot_, value_);
+	}
+
+	void set_value(const variant& value) { value_ = value; }
+
+private:
+	int slot_;
+	variant value_;
+};
+
 class set_function : public function_expression {
 public:
-	explicit set_function(const args_list& args)
-	  : function_expression("set", args, 2, 3) {
+	set_function(const args_list& args, const formula_callable_definition* callable_def)
+	  : function_expression("set", args, 2, 3), slot_(-1) {
 		if(args.size() == 2) {
 			variant literal = args[0]->is_literal();
 			if(literal.is_string()) {
@@ -664,10 +683,27 @@ public:
 			} else {
 				args[0]->is_identifier(&key_);
 			}
+
+			if(!key_.empty() && callable_def) {
+				slot_ = callable_def->get_slot(key_);
+				if(slot_ != -1) {
+					cmd_ = boost::intrusive_ptr<set_by_slot_command>(new set_by_slot_command(slot_, variant()));
+				}
+			}
 		}
 	}
 private:
 	variant execute(const formula_callable& variables) const {
+		if(slot_ != -1) {
+			if(cmd_->refcount() == 1) {
+				cmd_->set_value(args()[1]->evaluate(variables));
+				return variant(cmd_.get());
+			}
+
+			cmd_ = boost::intrusive_ptr<set_by_slot_command>(new set_by_slot_command(slot_, args()[1]->evaluate(variables)));
+			return variant(cmd_.get());
+		}
+
 		if(!key_.empty()) {
 			return variant(new set_command(variant(), key_, args()[1]->evaluate(variables)));
 		}
@@ -695,6 +731,8 @@ private:
 	}
 
 	std::string key_;
+	int slot_;
+	mutable boost::intrusive_ptr<set_by_slot_command> cmd_;
 };
 
 class set_value_function : public function_expression {
@@ -1627,12 +1665,14 @@ class custom_object_function_symbol_table : public function_symbol_table
 public:
 	expression_ptr create_function(
 	                           const std::string& fn,
-	                           const std::vector<expression_ptr>& args) const;
+	                           const std::vector<expression_ptr>& args,
+							   const formula_callable_definition* callable_def) const;
 };
 
 expression_ptr custom_object_function_symbol_table::create_function(
                            const std::string& fn,
-                           const std::vector<expression_ptr>& args) const
+                           const std::vector<expression_ptr>& args,
+						   const formula_callable_definition* callable_def) const
 {
 	if(fn == "execute") {
 		return expression_ptr(new execute_function(args));
@@ -1683,7 +1723,7 @@ expression_ptr custom_object_function_symbol_table::create_function(
 	} else if(fn == "set_var") {
 		return expression_ptr(new set_var_function(args));
 	} else if(fn == "set") {
-		return expression_ptr(new set_function(args));
+		return expression_ptr(new set_function(args, callable_def));
 	} else if(fn == "set_value") {
 		return expression_ptr(new set_value_function(args));
 	} else if(fn == "powerup") {
@@ -1746,7 +1786,7 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new swallow_event_function(args));
 	}
 
-	return function_symbol_table::create_function(fn, args);
+	return function_symbol_table::create_function(fn, args, callable_def);
 }
 
 } //namespace
@@ -1764,8 +1804,11 @@ void init_custom_object_functions(wml::const_node_ptr node)
 	for(; i1 != i2; ++i1) {
 		const std::string& name = i1->second->attr("name");
 		std::vector<std::string> args = util::split(i1->second->attr("args"));
+
+		game_logic::formula_callable_definition_ptr args_definition = game_logic::create_formula_callable_definition(args.data(), args.data() + args.size());
+
 		recursive_function_symbol_table recursive_symbols(name, args, &get_custom_object_functions_symbol_table());
-		const_formula_ptr fml(new formula(i1->second->attr("formula"), &recursive_symbols));
+		const_formula_ptr fml(new formula(i1->second->attr("formula"), &recursive_symbols, args_definition.get()));
 		get_custom_object_functions_symbol_table().add_formula_function(
 		    name, fml, const_formula_ptr(), args);
 		recursive_symbols.resolve_recursive_calls(fml);

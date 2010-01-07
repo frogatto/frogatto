@@ -50,20 +50,22 @@ public:
 	explicit surface_formula_symbol_table(surface surf) : surf_(surf)
 	{}
 	expression_ptr create_function(
-	                           const std::string& fn,
-	                           const std::vector<expression_ptr>& args) const;
+	                  const std::string& fn,
+	                  const std::vector<expression_ptr>& args,
+					  const formula_callable_definition* callable_def) const;
 private:
 	surface surf_;
 };
 
 expression_ptr surface_formula_symbol_table::create_function(
                            const std::string& fn,
-                           const std::vector<expression_ptr>& args) const
+                           const std::vector<expression_ptr>& args,
+						   const formula_callable_definition* callable_def) const
 {
 	if(fn == "rgba") {
 		return expression_ptr(new rgba_function(surf_, args));
 	} else {
-		return function_symbol_table::create_function(fn, args);
+		return function_symbol_table::create_function(fn, args, callable_def);
 	}
 }
 

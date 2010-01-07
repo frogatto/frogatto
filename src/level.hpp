@@ -15,6 +15,7 @@
 #include "entity.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
+#include "formula_callable_definition_fwd.hpp"
 #include "geometry.hpp"
 #include "gui_formula_functions.hpp"
 #include "level_object.hpp"
@@ -222,6 +223,8 @@ public:
 
 	void editor_freeze_tile_updates(bool value);
 
+	static const game_logic::formula_callable_definition& get_formula_definition();
+
 private:
 	level(const level&);
 	void operator=(const level&);
@@ -260,6 +263,7 @@ private:
 
 	void set_solid(level_solid_map& map, int x, int y, int friction, int traction, int damage, bool solid=true);
 
+	variant get_value_by_slot(int slot) const;
 	variant get_value(const std::string& key) const;
 	void set_value(const std::string& key, const variant& value);
 

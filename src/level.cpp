@@ -2140,6 +2140,54 @@ void level::set_background_by_id(const std::string& id)
 	background_ = background::get(id);
 }
 
+namespace {
+
+const std::string LevelProperties[] = {
+  "cycle", "player", "local_player", "num_active", "active_chars",
+  "tint", "in_editor",
+};
+
+enum LEVEL_PROPERTY_ID {
+	LEVEL_CYCLE, LEVEL_PLAYER, LEVEL_LOCAL_PLAYER, LEVEL_NUM_ACTIVE,
+	LEVEL_ACTIVE_CHARS, LEVEL_TINT, LEVEL_IN_EDITOR,
+};
+}
+
+const game_logic::formula_callable_definition& level::get_formula_definition()
+{
+	static game_logic::formula_callable_definition_ptr result = game_logic::create_formula_callable_definition(LevelProperties, LevelProperties + sizeof(LevelProperties)/sizeof(*LevelProperties));
+	return *result;
+}
+
+variant level::get_value_by_slot(int slot) const
+{
+	switch(slot) {
+	case LEVEL_CYCLE:
+		return variant(cycle_);
+	case LEVEL_PLAYER:
+		return variant(last_touched_player_.get());
+	case LEVEL_LOCAL_PLAYER:
+		return variant(player_.get());
+	case LEVEL_NUM_ACTIVE:
+		return variant(active_chars_.size());
+	case LEVEL_ACTIVE_CHARS: {
+		std::vector<variant> v;
+		foreach(const entity_ptr& e, active_chars_) {
+			v.push_back(variant(e.get()));
+		}
+
+		return variant(&v);
+	}
+	case LEVEL_TINT:
+		return variant(new graphics::color(tint_));
+	case LEVEL_IN_EDITOR:
+		return variant(editor_);
+	}
+
+	ASSERT_LOG(false, "BAD SLOT IN GET_VALUE FROM LEVEL " << slot);
+	return variant();
+}
+
 variant level::get_value(const std::string& key) const
 {
 	if(key == "cycle") {

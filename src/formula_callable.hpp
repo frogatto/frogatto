@@ -48,8 +48,16 @@ public:
 		return get_value(key);
 	}
 
+	variant query_value_by_slot(int slot) const {
+		return get_value_by_slot(slot);
+	}
+
 	void mutate_value(const std::string& key, const variant& value) {
 		set_value(key, value);
+	}
+
+	void mutate_value_by_slot(int slot, const variant& value) {
+		set_value_by_slot(slot, value);
 	}
 
 	std::vector<formula_input> inputs() const {
@@ -79,6 +87,7 @@ protected:
 	virtual ~formula_callable() {}
 
 	virtual void set_value(const std::string& key, const variant& value);
+	virtual void set_value_by_slot(int slot, const variant& value);
 	virtual int do_compare(const formula_callable* callable) const {
 		return this < callable ? -1 : (this == callable ? 0 : 1);
 	}
@@ -89,6 +98,7 @@ protected:
 	}
 private:
 	virtual variant get_value(const std::string& key) const = 0;
+	virtual variant get_value_by_slot(int slot) const;
 	bool has_self_;
 };
 

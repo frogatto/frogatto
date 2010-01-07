@@ -12,6 +12,7 @@
 #include "asserts.hpp"
 #include "collision_utils.hpp"
 #include "custom_object.hpp"
+#include "custom_object_callable.hpp"
 #include "custom_object_functions.hpp"
 #include "draw_scene.hpp"
 #include "font.hpp"
@@ -55,8 +56,8 @@ custom_object::custom_object(wml::const_node_ptr node)
 	hitpoints_(wml::get_int(node, "hitpoints", type_->hitpoints())),
 	was_underwater_(false), invincible_(0),
 	sound_volume_(128),
-	vars_(new game_logic::map_formula_callable(node->get_child("vars"))),
-	tmp_vars_(new game_logic::map_formula_callable),
+	vars_(new game_logic::formula_variable_storage(type_->variables())),
+	tmp_vars_(new game_logic::formula_variable_storage(type_->tmp_variables())),
 	last_hit_by_anim_(0),
 	current_animation_id_(0),
 	cycle_(wml::get_int(node, "cycle")),
@@ -68,6 +69,8 @@ custom_object::custom_object(wml::const_node_ptr node)
 	shader_(0),
 	always_active_(wml::get_bool(node, "always_active", false))
 {
+	vars_->read(node->get_child("vars"));
+
 	set_solid_dimensions(type_->solid_dimensions());
 	set_collide_dimensions(type_->collide_dimensions());
 
@@ -76,12 +79,6 @@ custom_object::custom_object(wml::const_node_ptr node)
 		tags_ = new game_logic::map_formula_callable(node->get_child("tags"));
 	} else {
 		tags_ = new game_logic::map_formula_callable(type_->tags());
-	}
-
-	for(std::map<std::string, variant>::const_iterator i = type_->variables().begin(); i != type_->variables().end(); ++i) {
-		if(!vars_->contains(i->first)) {
-			vars_->add(i->first, i->second);
-		}
 	}
 
 	if(node->has_attr("draw_color")) {
@@ -137,8 +134,8 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	hitpoints_(type_->hitpoints()),
 	was_underwater_(false), invincible_(0),
 	sound_volume_(128),
-	vars_(new game_logic::map_formula_callable),
-	tmp_vars_(new game_logic::map_formula_callable),
+	vars_(new game_logic::formula_variable_storage(type_->variables())),
+	tmp_vars_(new game_logic::formula_variable_storage(type_->tmp_variables())),
 	tags_(new game_logic::map_formula_callable(type_->tags())),
 	last_hit_by_anim_(0),
 	cycle_(0),
@@ -148,12 +145,6 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 {
 	set_solid_dimensions(type_->solid_dimensions());
 	set_collide_dimensions(type_->collide_dimensions());
-
-	for(std::map<std::string, variant>::const_iterator i = type_->variables().begin(); i != type_->variables().end(); ++i) {
-		if(!vars_->contains(i->first)) {
-			vars_->add(i->first, i->second);
-		}
-	}
 
 	{
 		//generate a random label for the object
@@ -188,8 +179,8 @@ custom_object::custom_object(const custom_object& o) :
 	sound_volume_(o.sound_volume_),
 	next_animation_formula_(o.next_animation_formula_),
 
-	vars_(new game_logic::map_formula_callable(*o.vars_)),
-	tmp_vars_(new game_logic::map_formula_callable(*o.tmp_vars_)),
+	vars_(new game_logic::formula_variable_storage(*o.vars_)),
+	tmp_vars_(new game_logic::formula_variable_storage(*o.tmp_vars_)),
 	tags_(new game_logic::map_formula_callable(*o.tags_)),
 
 	last_jumped_on_by_(o.last_jumped_on_by_),
@@ -279,7 +270,7 @@ wml::node_ptr custom_object::write() const
 		res->set_attr("on_" + get_object_event_str(n), event_handlers_[n]->str());
 	}
 
-	if(vars_->values() != type_->variables()) {
+	if(!vars_->equal_to(type_->variables())) {
 		wml::node_ptr vars(new wml::node("vars"));
 		vars_->write(vars);
 		res->add_child(vars);
@@ -629,7 +620,14 @@ void custom_object::process(level& lvl)
 		}
 	}
 
+	//this variable handled whether we already landed in our vertical movement
+	//in which case horizontal movement won't consider us to land.
+	bool vertical_landed = false;
 	if(collide) {
+		if(effective_velocity_y > 0) {
+			vertical_landed = true;
+		}
+
 		if(effective_velocity_y < 0 || !started_standing) {
 
 			game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
@@ -657,6 +655,8 @@ void custom_object::process(level& lvl)
 	}
 
 	collide = false;
+
+	bool horizontal_landed = false;
 
 	for(int move_left = std::abs(effective_velocity_x); move_left > 0 && !collide && !type_->ignore_collide(); move_left -= 100) {
 		if(type_->object_level_collisions() && non_solid_entity_collides_with_level(lvl, *this)) {
@@ -704,6 +704,10 @@ void custom_object::process(level& lvl)
 				}
 			}
 		} else if(standing) {
+			if(!vertical_landed && !started_standing && !standing_on_) {
+				horizontal_landed = true;
+			}
+
 			const int begin_y = feet_y();
 			int max_slope = 5;
 			while(--max_slope && is_standing(lvl)) {
@@ -732,7 +736,7 @@ void custom_object::process(level& lvl)
 		}
 	}
 
-	if(collide) {
+	if(collide || horizontal_landed) {
 
 		game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
 		variant v(callable);
@@ -747,7 +751,7 @@ void custom_object::process(level& lvl)
 
 		}
 
-		handle_event(OBJECT_EVENT_COLLIDE, callable);
+		handle_event(collide ? OBJECT_EVENT_COLLIDE : OBJECT_EVENT_COLLIDE_FEET, callable);
 		if(collide_info.damage) {
 			game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
 			callable->add("surface_damage", variant(collide_info.damage));
@@ -1051,6 +1055,7 @@ std::map<std::string, object_accessor> object_accessor_map;
 struct custom_object::Accessor {
 #define CUSTOM_ACCESSOR(name, expression) static variant name(const custom_object& obj) { return variant(expression); }
 #define SIMPLE_ACCESSOR(name) static variant name(const custom_object& obj) { return variant(obj.name##_); }
+
 	CUSTOM_ACCESSOR(consts, obj.type_->consts().get())
 	CUSTOM_ACCESSOR(type, obj.type_->id())
 	CUSTOM_ACCESSOR(time_in_animation, obj.time_in_frame_)
@@ -1058,6 +1063,7 @@ struct custom_object::Accessor {
 	CUSTOM_ACCESSOR(animation, obj.frame_name_)
 	SIMPLE_ACCESSOR(hitpoints)
 	CUSTOM_ACCESSOR(max_hitpoints, obj.type_->hitpoints())
+
 	CUSTOM_ACCESSOR(mass, obj.type_->mass())
 	CUSTOM_ACCESSOR(label, obj.label())
 	CUSTOM_ACCESSOR(x, obj.x())
@@ -1116,6 +1122,7 @@ struct custom_object::Accessor {
 	SIMPLE_ACCESSOR(invincible);
 	SIMPLE_ACCESSOR(sound_volume);
 	CUSTOM_ACCESSOR(destroyed, obj.destroyed());
+
 #undef SIMPLE_ACCESSOR
 #undef CUSTOM_ACCESSOR
 
@@ -1264,6 +1271,147 @@ void custom_object::init()
 	Accessor::init();
 }
 
+variant custom_object::get_value_by_slot(int slot) const
+{
+	switch(slot) {
+	case CUSTOM_OBJECT_CONSTS:            return variant(type_->consts().get());
+	case CUSTOM_OBJECT_TYPE:              return variant(type_->id());
+	case CUSTOM_OBJECT_TIME_IN_ANIMATION: return variant(time_in_frame_);
+	case CUSTOM_OBJECT_LEVEL:             return variant(&level::current());
+	case CUSTOM_OBJECT_ANIMATION:         return variant(frame_name_);
+	case CUSTOM_OBJECT_HITPOINTS:         return variant(hitpoints_);
+	case CUSTOM_OBJECT_MAX_HITPOINTS:     return variant(type_->hitpoints());
+	case CUSTOM_OBJECT_MASS:              return variant(type_->mass());
+	case CUSTOM_OBJECT_LABEL:             return variant(label());
+	case CUSTOM_OBJECT_X:                 return variant(x());
+	case CUSTOM_OBJECT_Y:                 return variant(y());
+	case CUSTOM_OBJECT_Z:
+	case CUSTOM_OBJECT_ZORDER:            return variant(zorder_);
+	case CUSTOM_OBJECT_X1:                return variant(solid_rect().x());
+	case CUSTOM_OBJECT_X2:                return variant(solid_rect().x2());
+	case CUSTOM_OBJECT_Y1:                return variant(solid_rect().y());
+	case CUSTOM_OBJECT_Y2:                return variant(solid_rect().y2());
+	case CUSTOM_OBJECT_W:                 return variant(solid_rect().w());
+	case CUSTOM_OBJECT_H:                 return variant(solid_rect().h());
+
+	case CUSTOM_OBJECT_MIDPOINT_X:        return variant(x() + current_frame().width()/2);
+	case CUSTOM_OBJECT_MIDPOINT_Y:        return variant(y() + current_frame().height()/2);
+	case CUSTOM_OBJECT_SOLID_RECT:        return variant(solid_rect().callable());
+	case CUSTOM_OBJECT_IMG_W:             return variant(current_frame().width());
+	case CUSTOM_OBJECT_IMG_H:             return variant(current_frame().height());
+	case CUSTOM_OBJECT_FRONT:             return variant(face_right() ? body_rect().x2() : body_rect().x());
+	case CUSTOM_OBJECT_BACK:              return variant(face_right() ? body_rect().x() : body_rect().x2());
+	case CUSTOM_OBJECT_CYCLE:             return variant(cycle_);
+	case CUSTOM_OBJECT_FACING:            return variant(face_right() ? 1 : -1);
+	case CUSTOM_OBJECT_UPSIDE_DOWN:       return variant(upside_down() ? 1 : -1);
+	case CUSTOM_OBJECT_UP:                return variant(upside_down() ? 1 : -1);
+	case CUSTOM_OBJECT_DOWN:              return variant(upside_down() ? -1 : 1);
+	case CUSTOM_OBJECT_VELOCITY_X:        return variant(velocity_x_);
+	case CUSTOM_OBJECT_VELOCITY_Y:        return variant(velocity_y_);
+	case CUSTOM_OBJECT_ACCEL_X:           return variant(accel_x_);
+	case CUSTOM_OBJECT_ACCEL_Y:           return variant(accel_y_);
+	case CUSTOM_OBJECT_VARS:              return variant(vars_.get());
+	case CUSTOM_OBJECT_TMP:               return variant(tmp_vars_.get());
+	case CUSTOM_OBJECT_GROUP:             return variant(group());
+	case CUSTOM_OBJECT_ROTATE:            return variant(rotate_);
+	case CUSTOM_OBJECT_ME:
+	case CUSTOM_OBJECT_SELF:              return variant(this);
+	case CUSTOM_OBJECT_RED:               return variant(draw_color().r());
+	case CUSTOM_OBJECT_GREEN:             return variant(draw_color().g());
+	case CUSTOM_OBJECT_BLUE:              return variant(draw_color().b());
+	case CUSTOM_OBJECT_ALPHA:             return variant(draw_color().a());
+	case CUSTOM_OBJECT_DAMAGE:            return variant(current_frame().damage()); case CUSTOM_OBJECT_HIT_BY:            return variant(last_hit_by_.get());
+	case CUSTOM_OBJECT_JUMPED_ON_BY:      return variant(last_jumped_on_by_.get());
+	case CUSTOM_OBJECT_DISTORTION:        return variant(distortion_.get());
+	case CUSTOM_OBJECT_IS_STANDING:       return variant(is_standing(level::current()));
+	case CUSTOM_OBJECT_NEAR_CLIFF_EDGE:   return variant(is_standing(level::current()) && cliff_edge_within(level::current(), feet_x(), feet_y(), face_dir()*15));
+	case CUSTOM_OBJECT_DISTANCE_TO_CLIFF: return variant(::distance_to_cliff(level::current(), feet_x(), feet_y(), face_dir()));
+	case CUSTOM_OBJECT_SLOPE_STANDING_ON: return variant(-slope_standing_on(6)*face_dir());
+	case CUSTOM_OBJECT_UNDERWATER:        return variant(level::current().is_underwater(solid_rect()));
+	case CUSTOM_OBJECT_DRIVER:            return variant(driver_ ? driver_.get() : this);
+	case CUSTOM_OBJECT_IS_HUMAN:          return variant(is_human() ? 1 : 0);
+	case CUSTOM_OBJECT_INVINCIBLE:        return variant(invincible_);
+	case CUSTOM_OBJECT_SOUND_VOLUME:      return variant(sound_volume_);
+	case CUSTOM_OBJECT_DESTROYED:         return variant(destroyed());
+
+	case CUSTOM_OBJECT_IS_STANDING_ON_PLATFORM: {
+		collision_info info;
+		is_standing(level::current(), &info);
+		return variant(info.platform);
+	}
+
+	case CUSTOM_OBJECT_STANDING_ON: {
+		entity_ptr stand_on;
+		collision_info info;
+		is_standing(level::current(), &info);
+		return variant(info.collide_with.get());
+	}
+	
+	case CUSTOM_OBJECT_FRAGMENT_SHADERS: {
+		std::vector<variant> v;
+		foreach(const std::string& shader, fragment_shaders_) {
+			v.push_back(variant(shader));
+		}
+
+		return variant(&v);
+	}
+
+	case CUSTOM_OBJECT_VERTEX_SHADERS: {
+		std::vector<variant> v;
+		foreach(const std::string& shader, vertex_shaders_) {
+			v.push_back(variant(shader));
+		}
+
+		return variant(&v);
+	}
+	
+	case CUSTOM_OBJECT_SHADER: {
+		if(shader_vars_.get() == NULL) {
+			shader_vars_.reset(new game_logic::map_formula_callable);
+		}
+
+		return variant(shader_vars_.get());
+	}
+
+	case CUSTOM_OBJECT_VARIATIONS: {
+		std::vector<variant> result;
+		foreach(const std::string& s, current_variation_) {
+			result.push_back(variant(s));
+		}
+
+		return variant(&result);
+	}
+
+	case CUSTOM_OBJECT_ATTACHED_OBJECTS: {
+		std::vector<variant> result;
+		foreach(const entity_ptr& e, attached_objects()) {
+			result.push_back(variant(e.get()));
+		}
+
+		return variant(&result);
+	}
+
+	case CUSTOM_OBJECT_CALL_STACK: {
+		std::vector<variant> result;
+		foreach(int ev, event_call_stack) {
+			result.push_back(variant(get_object_event_str(ev)));
+		}
+
+		return variant(&result);
+	}
+
+	case CUSTOM_OBJECT_CTRL_UP:
+	case CUSTOM_OBJECT_CTRL_DOWN:
+	case CUSTOM_OBJECT_CTRL_LEFT:
+	case CUSTOM_OBJECT_CTRL_RIGHT:
+	case CUSTOM_OBJECT_CTRL_ATTACK:
+	case CUSTOM_OBJECT_CTRL_JUMP:
+		return variant(control_status(static_cast<controls::CONTROL_ITEM>(slot - CUSTOM_OBJECT_CTRL_UP)));
+	}
+
+	ASSERT_LOG(false, "UNKNOWN SLOT QUERIED FROM OBJECT: " << slot);
+}
+
 variant custom_object::get_value(const std::string& key) const
 {
 	std::map<std::string, game_logic::const_formula_ptr>::const_iterator property_itor = type_->properties().find(key);
@@ -1294,6 +1442,10 @@ variant custom_object::get_value(const std::string& key) const
 	std::map<std::string, particle_system_ptr>::const_iterator particle_itor = particle_systems_.find(key);
 	if(particle_itor != particle_systems_.end()) {
 		return variant(particle_itor->second.get());
+	}
+
+	if(backup_callable_stack_.empty() == false && backup_callable_stack_.top()) {
+		return backup_callable_stack_.top()->query_value(key);
 	}
 
 	return variant();
@@ -1463,6 +1615,242 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		}
 	} else {
 		vars_->add(key, value);
+	}
+}
+
+void custom_object::set_value_by_slot(int slot, const variant& value)
+{
+	switch(slot) {
+	case CUSTOM_OBJECT_TIME_IN_ANIMATION:
+		time_in_frame_ = value.as_int();
+		break;
+	case CUSTOM_OBJECT_ANIMATION:
+		set_frame(value.as_string());
+		break;
+	
+	case CUSTOM_OBJECT_X: {
+		const int start_x = centi_x();
+		set_x(value.as_int());
+		if(entity_collides(level::current(), *this, MOVE_NONE)) {
+//			set_centi_x(start_x);
+		}
+
+		break;
+	}
+	
+	case CUSTOM_OBJECT_Y: {
+		const int start_y = centi_y();
+		set_y(value.as_int());
+		if(entity_collides(level::current(), *this, MOVE_NONE)) {
+//			set_centi_y(start_y);
+		}
+
+		break;
+	}
+
+	case CUSTOM_OBJECT_Z:
+	case CUSTOM_OBJECT_ZORDER:
+		zorder_ = value.as_int();
+		break;
+	
+	case CUSTOM_OBJECT_MIDPOINT_X: {
+		const int current_x = x() + current_frame().width()/2;
+		const int xdiff = current_x - x();
+		set_pos(value.as_int() - xdiff, y());
+		break;
+	}
+
+	case CUSTOM_OBJECT_MIDPOINT_Y: {
+		const int current_y = y() + current_frame().height()/2;
+		const int ydiff = current_y - y();
+		set_pos(x(), value.as_int() - ydiff);
+		break;
+	}
+
+	case CUSTOM_OBJECT_FACING:
+		set_face_right(value.as_int() > 0);
+		break;
+	
+	case CUSTOM_OBJECT_UPSIDE_DOWN:
+		set_upside_down(value.as_int());
+		break;
+
+	case CUSTOM_OBJECT_HITPOINTS:
+		hitpoints_ = value.as_int();
+		if(hitpoints_ <= 0) {
+			die();
+		}
+		break;
+
+	case CUSTOM_OBJECT_VELOCITY_X:
+		velocity_x_ = value.as_int();
+		break;
+	
+	case CUSTOM_OBJECT_VELOCITY_Y:
+		velocity_y_ = value.as_int();
+		break;
+
+	case CUSTOM_OBJECT_ACCEL_X:
+		accel_x_ = value.as_int();
+		break;
+
+	case CUSTOM_OBJECT_ACCEL_Y:
+		accel_y_ = value.as_int();
+		break;
+
+	case CUSTOM_OBJECT_ROTATE:
+		rotate_ = value.as_int();
+		break;
+	
+	case CUSTOM_OBJECT_RED:
+		make_draw_color();
+		draw_color_->buf()[0] = truncate_to_char(value.as_int());
+		break;
+	
+	case CUSTOM_OBJECT_GREEN:
+		make_draw_color();
+		draw_color_->buf()[1] = truncate_to_char(value.as_int());
+		break;
+	
+	case CUSTOM_OBJECT_BLUE:
+		make_draw_color();
+		draw_color_->buf()[2] = truncate_to_char(value.as_int());
+		break;
+
+	case CUSTOM_OBJECT_ALPHA:
+		make_draw_color();
+		draw_color_->buf()[3] = truncate_to_char(value.as_int());
+		break;
+
+	case CUSTOM_OBJECT_BRIGHTNESS:
+		make_draw_color();
+		draw_color_->buf()[0] = value.as_int();
+		draw_color_->buf()[1] = value.as_int();
+		draw_color_->buf()[2] = value.as_int();
+		break;
+	
+	case CUSTOM_OBJECT_DISTORTION:
+		distortion_ = value.try_convert<graphics::raster_distortion>();
+		break;
+	
+	case CUSTOM_OBJECT_CURRENT_GENERATOR:
+		set_current_generator(value.try_convert<current_generator>());
+		break;
+
+	case CUSTOM_OBJECT_INVINCIBLE:
+		invincible_ = value.as_int();
+		break;
+	
+	case CUSTOM_OBJECT_FALL_THROUGH_PLATFORMS:
+		fall_through_platforms_ = value.as_int();
+		break;
+	
+	case CUSTOM_OBJECT_TAGS:
+		if(value.is_list()) {
+			tags_ = new game_logic::map_formula_callable;
+			for(int n = 0; n != value.num_elements(); ++n) {
+				tags_->add(value[n].as_string(), variant(1));
+			}
+		}
+
+		break;
+	
+	case CUSTOM_OBJECT_FRAGMENT_SHADERS:
+		fragment_shaders_.clear();
+		for(int n = 0; n != value.num_elements(); ++n) {
+			fragment_shaders_.push_back(value[n].as_string());
+		}
+		shader_ = 0;
+		break;
+
+	case CUSTOM_OBJECT_VERTEX_SHADERS:
+		vertex_shaders_.clear();
+		for(int n = 0; n != value.num_elements(); ++n) {
+			vertex_shaders_.push_back(value[n].as_string());
+		}
+		shader_ = 0;
+		break;
+
+	case CUSTOM_OBJECT_DRAW_AREA:
+		if(value.is_list() && value.num_elements() == 4) {
+			draw_area_.reset(new rect(value[0].as_int(), value[1].as_int(), value[2].as_int(), value[3].as_int()));
+		} else {
+			draw_area_.reset();
+		}
+
+		break;
+	
+	case CUSTOM_OBJECT_ACTIVATION_AREA:
+		if(value.is_list() && value.num_elements() == 4) {
+			activation_area_.reset(new rect(value[0].as_int(), value[1].as_int(), value[2].as_int(), value[3].as_int()));
+		} else {
+			activation_area_.reset();
+		}
+
+		break;
+	
+	case CUSTOM_OBJECT_VARIATIONS:
+		current_variation_.clear();
+		if(value.is_list()) {
+			for(int n = 0; n != value.num_elements(); ++n) {
+				current_variation_.push_back(value[n].as_string());
+			}
+		} else if(value.is_string()) {
+			current_variation_.push_back(value.as_string());
+		}
+
+		if(current_variation_.empty()) {
+			type_ = base_type_;
+		} else {
+			type_ = base_type_->get_variation(current_variation_);
+		}
+
+		calculate_solid_rect();
+		break;
+	
+	case CUSTOM_OBJECT_ATTACHED_OBJECTS: {
+		std::vector<entity_ptr> v;
+		for(int n = 0; n != value.num_elements(); ++n) {
+			entity* e = value[n].try_convert<entity>();
+			if(e) {
+				v.push_back(entity_ptr(e));
+			}
+		}
+
+		set_attached_objects(v);
+		break;
+	}
+
+	case CUSTOM_OBJECT_SOLID_DIMENSIONS_IN:
+	case CUSTOM_OBJECT_SOLID_DIMENSIONS_NOT_IN: {
+		unsigned int solid = 0;
+		for(int n = 0; n != value.num_elements(); ++n) {
+			const int id = get_solid_dimension_id(value[n].as_string());
+			solid |= 1 << id;
+		}
+
+		if(slot == CUSTOM_OBJECT_SOLID_DIMENSIONS_NOT_IN) {
+			solid = ~solid;
+		}
+
+		const unsigned int old_solid = solid_dimensions();
+		set_solid_dimensions(solid);
+		collision_info collide_info;
+		if(entity_collides(level::current(), *this, MOVE_NONE, &collide_info)) {
+			set_solid_dimensions(old_solid);
+			ASSERT_EQ(entity_collides(level::current(), *this, MOVE_NONE), false);
+
+			game_logic::map_formula_callable* callable(new game_logic::map_formula_callable(this));
+			callable->add("collide_with", variant(collide_info.collide_with.get()));
+			game_logic::formula_callable_ptr callable_ptr(callable);
+
+			handle_event(OBJECT_EVENT_CHANGE_SOLID_DIMENSIONS_FAIL, callable);
+		}
+	}
+
+	default:
+		break;
+
 	}
 }
 
@@ -1679,30 +2067,32 @@ void custom_object::handle_event(int event, const formula_callable* context)
 		return;
 	}
 
-	std::vector<game_logic::const_formula_ptr> handlers;
+	const game_logic::formula* handlers[2];
+	int nhandlers = 0;
 
 	if(event < event_handlers_.size() && event_handlers_[event]) {
-		handlers.push_back(event_handlers_[event]);
+		handlers[nhandlers++] = event_handlers_[event].get();
 	}
 
-	game_logic::const_formula_ptr handler = type_->get_event_handler(event);
-	if(handler) {
-		handlers.push_back(handler);
+	const game_logic::formula* type_handler = type_->get_event_handler(event).get();
+	if(type_handler != NULL) {
+		handlers[nhandlers++] = type_handler;
 	}
 
-	foreach(const game_logic::const_formula_ptr& handler, handlers) {
+	if(!nhandlers) {
+		return;
+	}
+
+	backup_callable_stack_.push(context);
+
+	for(int n = 0; n != nhandlers; ++n) {
+		const game_logic::formula* handler = handlers[n];
+
 		event_call_stack.push_back(event);
 
 		++events_handled_per_second;
 
-		variant var;
-
-		if(context) {
-			game_logic::formula_callable_with_backup callable(*this, *context);
-			var = handler->execute(callable);
-		} else {
-			var = handler->execute(*this);
-		}
+		variant var = handler->execute(*this);
 
 		const bool result = execute_command(var);
 		if(!result) {
@@ -1711,6 +2101,8 @@ void custom_object::handle_event(int event, const formula_callable* context)
 
 		event_call_stack.pop_back();
 	}
+
+	backup_callable_stack_.pop();
 }
 
 bool custom_object::execute_command(const variant& var)
@@ -1947,7 +2339,7 @@ int custom_object::events_handled_per_second = 0;
 
 BENCHMARK_ARG(custom_object_get_attr, const std::string& attr)
 {
-	static custom_object* obj = new custom_object("black_ant", 0, 0, false);
+	static custom_object* obj = new custom_object("ant_black", 0, 0, false);
 	BENCHMARK_LOOP {
 		obj->query_value(attr);
 	}
@@ -1963,6 +2355,7 @@ BENCHMARK_ARG(custom_object_handle_event, const std::string& object_event)
 	std::string obj_type(object_event.begin(), i);
 	std::string event_name(i+1, object_event.end());
 	static level* lvl = new level("titlescreen.cfg");
+	lvl->set_as_current_level();
 	static custom_object* obj = new custom_object(obj_type, 0, 0, false);
 	obj->set_level(*lvl);
 	const int event_id = get_object_event_id(event_name);
@@ -1971,6 +2364,6 @@ BENCHMARK_ARG(custom_object_handle_event, const std::string& object_event)
 	}
 }
 
-BENCHMARK_ARG_CALL(custom_object_handle_event, ant_non_exist, "black_ant:blahblah");
+BENCHMARK_ARG_CALL(custom_object_handle_event, ant_non_exist, "ant_black:blahblah");
 
 BENCHMARK_ARG_CALL_COMMAND_LINE(custom_object_handle_event);

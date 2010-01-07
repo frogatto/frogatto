@@ -7,6 +7,7 @@
 #include "boost/scoped_ptr.hpp"
 #include "boost/shared_ptr.hpp"
 
+#include "custom_object_callable.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
 #include "formula_function.hpp"
@@ -40,6 +41,8 @@ public:
 
 	explicit custom_object_type(wml::const_node_ptr node);
 	~custom_object_type();
+
+	const custom_object_callable& callable_definition() const { return callable_definition_; }
 
 	const std::string& id() const { return id_; }
 	int hitpoints() const { return hitpoints_; }
@@ -101,6 +104,7 @@ public:
 	bool has_feet() const { return has_feet_; }
 
 	const std::map<std::string, variant>& variables() const { return variables_; }
+	const std::map<std::string, variant>& tmp_variables() const { return tmp_variables_; }
 	game_logic::const_map_formula_callable_ptr consts() const { return consts_; }
 	const std::map<std::string, variant>& tags() const { return tags_; }
 
@@ -121,6 +125,8 @@ public:
 	void load_variations() const;
 
 private:
+	custom_object_callable callable_definition_;
+
 	std::string id_;
 	int hitpoints_;
 
@@ -169,7 +175,7 @@ private:
 
 	bool has_feet_;
 
-	std::map<std::string, variant> variables_;
+	std::map<std::string, variant> variables_, tmp_variables_;
 	game_logic::map_formula_callable_ptr consts_;
 	std::map<std::string, variant> tags_;
 

@@ -265,7 +265,7 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 		y2 = area.y() + area.h();
 	}
 
-	if(v1 >= v2) {
+	if(v1 > v2) {
 		return;
 	}
 

@@ -7,10 +7,12 @@
 
 #include "asserts.hpp"
 #include "custom_object.hpp"
+#include "custom_object_callable.hpp"
 #include "custom_object_functions.hpp"
 #include "custom_object_type.hpp"
 #include "draw_number.hpp"
 #include "formula.hpp"
+#include "formula_callable_definition.hpp"
 #include "frame.hpp"
 #include "gui_formula_functions.hpp"
 #include "level.hpp"
@@ -154,7 +156,8 @@ public:
 
 	expression_ptr create_function(
 	                           const std::string& fn,
-	                           const std::vector<expression_ptr>& args) const
+	                           const std::vector<expression_ptr>& args,
+							   const formula_callable_definition* callable_def) const
 	{
 		if(fn == "draw_animation") {
 			return expression_ptr(new draw_animation_function(algo_, args));
@@ -164,15 +167,66 @@ public:
 			return expression_ptr(new color_function(args));
 		}
 
-		return function_symbol_table::create_function(fn, args);
+		return function_symbol_table::create_function(fn, args, callable_def);
 	}
+};
+
+const std::string AlgorithmProperties[] = {
+	"level", "object", "cycle", "screen_width", "screen_height",
+};
+
+enum ALGORITHM_PROPERTY_ID {
+	ALGO_LEVEL, ALGO_OBJECT, ALGO_CYCLE, ALGO_SCREEN_WIDTH, ALGO_SCREEN_HEIGHT,
+};
+
+class gui_algorithm_definition : public game_logic::formula_callable_definition
+{
+public:
+	static const gui_algorithm_definition& instance() {
+		static const gui_algorithm_definition def;
+		return def;
+	}
+
+	gui_algorithm_definition() {
+		for(int n = 0; n != sizeof(AlgorithmProperties)/sizeof(*AlgorithmProperties); ++n) {
+			entries_.push_back(entry(AlgorithmProperties[n]));
+			keys_to_slots_[AlgorithmProperties[n]] = n;
+		}
+
+		entries_[ALGO_OBJECT].type_definition = &custom_object_type::get("dummy_gui_object")->callable_definition();
+		entries_[ALGO_LEVEL].type_definition = &level::get_formula_definition();
+	}
+
+	int get_slot(const std::string& key) const {
+		std::map<std::string, int>::const_iterator i = keys_to_slots_.find(key);
+		if(i == keys_to_slots_.end()) {
+			return -1;
+		}
+
+		return i->second;
+	}
+
+	const entry* get_entry(int slot) const {
+		if(slot < 0 || slot >= entries_.size()) {
+			return NULL;
+		}
+
+		return &entries_[slot];
+	}
+
+	int num_slots() const {
+		return entries_.size();
+	}
+private:
+	std::vector<entry> entries_;
+	std::map<std::string, int> keys_to_slots_;
 };
 
 } // namespace
 
 gui_algorithm::gui_algorithm(wml::const_node_ptr node)
 	  : lvl_(NULL),
-	  process_formula_(formula::create_optional_formula(node->attr("on_process"), &get_custom_object_functions_symbol_table())),
+	  process_formula_(formula::create_optional_formula(node->attr("on_process"), &get_custom_object_functions_symbol_table(), &gui_algorithm_definition::instance())),
 	  cycle_(0), object_(new custom_object("dummy_gui_object", 0, 0, true))
 {
 	gui_command_function_symbol_table symbols(gui_algorithm_ptr(this));
@@ -183,7 +237,7 @@ gui_algorithm::gui_algorithm(wml::const_node_ptr node)
 		frames_[frame_node->attr("id")] = f;
 	}
 
-	draw_formula_ = formula::create_optional_formula(node->attr("on_draw"), &symbols);
+	draw_formula_ = formula::create_optional_formula(node->attr("on_draw"), &symbols, &gui_algorithm_definition::instance());
 }
 
 gui_algorithm::~gui_algorithm()
@@ -299,6 +353,24 @@ variant gui_algorithm::get_value(const std::string& key) const
 	} else {
 		return variant();
 	}
+}
+
+variant gui_algorithm::get_value_by_slot(int slot) const
+{
+	switch(slot) {
+	case ALGO_LEVEL:
+		return variant(lvl_);
+	case ALGO_OBJECT:
+		return variant(object_.get());
+	case ALGO_CYCLE:
+		return variant(cycle_);
+	case ALGO_SCREEN_WIDTH:
+		return variant(graphics::screen_width());
+	case ALGO_SCREEN_HEIGHT:
+		return variant(graphics::screen_height());
+	}
+
+	return variant();
 }
 
 #include "level.hpp"

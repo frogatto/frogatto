@@ -38,6 +38,7 @@ private:
 	void operator=(const gui_algorithm&);
 
 	variant get_value(const std::string& key) const;
+	variant get_value_by_slot(int slot) const;
 
 	void execute_command(variant v);
 

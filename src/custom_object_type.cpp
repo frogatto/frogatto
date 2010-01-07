@@ -3,6 +3,7 @@
 
 #include "asserts.hpp"
 #include "collision_utils.hpp"
+#include "custom_object_callable.hpp"
 #include "custom_object_functions.hpp"
 #include "custom_object_type.hpp"
 #include "filesystem.hpp"
@@ -89,7 +90,7 @@ void merge_into_prototype(wml::node_ptr prototype_node, wml::node_ptr node)
 			continue;
 		}
 
-		if(name == "vars" || name == "consts") {
+		if(name == "tmp" || name == "vars" || name == "consts") {
 			//we like to merge in vars nodes into one vars definition
 			//if both the object and prototype have vars definitions.
 			wml::node_ptr target = prototype_node->get_child(name);
@@ -182,6 +183,8 @@ void custom_object_type::init_event_handlers(wml::const_node_ptr node,
 		symbols = &get_custom_object_functions_symbol_table();
 	}
 
+	static custom_object_callable custom_object_definition;
+
 	for(wml::node::const_attr_iterator i = node->begin_attr(); i != node->end_attr(); ++i) {
 		if(i->first.size() > 3 && std::equal(i->first.begin(), i->first.begin() + 3, "on_")) {
 			const std::string event(i->first.begin() + 3, i->first.end());
@@ -189,7 +192,7 @@ void custom_object_type::init_event_handlers(wml::const_node_ptr node,
 			if(handlers.size() <= event_id) {
 				handlers.resize(event_id+1);
 			}
-			handlers[event_id] = game_logic::formula::create_optional_formula(i->second, symbols);
+			handlers[event_id] = game_logic::formula::create_optional_formula(i->second, symbols, &custom_object_definition);
 		}
 	}
 }
@@ -248,12 +251,6 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 		}
 	}
 
-	if(node->has_attr("functions")) {
-		object_functions_.reset(new game_logic::function_symbol_table);
-		object_functions_->set_backup(&get_custom_object_functions_symbol_table());
-		game_logic::formula f(node->attr("functions"), object_functions_.get());
-	}
-
 	wml::node::const_child_iterator a1 = node->begin_child("animation");
 	wml::node::const_child_iterator a2 = node->end_child("animation");
 	for(; a1 != a2; ++a1) {
@@ -291,19 +288,40 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 
 	next_animation_formula_ = game_logic::formula::create_optional_formula(node->attr("next_animation"), function_symbols());
 
-	init_event_handlers(node, event_handlers_, function_symbols());
-
 	FOREACH_WML_CHILD(particle_node, node, "particle_system") {
 		particle_factories_[particle_node->attr("id")] = particle_system_factory::create_factory(particle_node);
 	}
 
 	wml::const_node_ptr vars = node->get_child("vars");
 	if(vars) {
+		std::vector<std::string> var_str;
 		for(wml::node::const_attr_iterator v = vars->begin_attr(); v != vars->end_attr(); ++v) {
 			variant var;
 			var.serialize_from_string(v->second);
 			variables_[v->first] = var;
+			var_str.push_back(v->first);
 		}
+
+		game_logic::formula_callable_definition::entry* entry = callable_definition_.get_entry(CUSTOM_OBJECT_VARS);
+		ASSERT_LOG(entry != NULL, "CANNOT FIND VARS ENTRY IN OBJECT");
+		entry->type_definition_holder = game_logic::create_formula_callable_definition(var_str.data(), var_str.data() + var_str.size());
+		entry->type_definition = entry->type_definition_holder.get();
+	}
+
+	wml::const_node_ptr tmp_vars = node->get_child("tmp");
+	if(tmp_vars) {
+		std::vector<std::string> var_str;
+		for(wml::node::const_attr_iterator v = tmp_vars->begin_attr(); v != tmp_vars->end_attr(); ++v) {
+			variant var;
+			var.serialize_from_string(v->second);
+			tmp_variables_[v->first] = var;
+			var_str.push_back(v->first);
+		}
+
+		game_logic::formula_callable_definition::entry* entry = callable_definition_.get_entry(CUSTOM_OBJECT_TMP);
+		ASSERT_LOG(entry != NULL, "CANNOT FIND TMP ENTRY IN OBJECT");
+		entry->type_definition_holder = game_logic::create_formula_callable_definition(var_str.data(), var_str.data() + var_str.size());
+		entry->type_definition = entry->type_definition_holder.get();
 	}
 
 	consts_.reset(new game_logic::map_formula_callable);
@@ -325,7 +343,7 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 
 	FOREACH_WML_CHILD(properties_node, node, "properties") {
 		for(wml::node::const_attr_iterator i = properties_node->begin_attr(); i != properties_node->end_attr(); ++i) {
-			properties_[i->first] = game_logic::formula::create_optional_formula(i->second, function_symbols());
+			properties_[i->first] = game_logic::formula::create_optional_formula(i->second, function_symbols(), &callable_definition_);
 		}
 	}
 
@@ -335,6 +353,14 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 		node_ = node;
 	}
 
+	game_logic::register_formula_callable_definition("object_type", &callable_definition_);
+
+	if(node->has_attr("functions")) {
+		object_functions_.reset(new game_logic::function_symbol_table);
+		object_functions_->set_backup(&get_custom_object_functions_symbol_table());
+		game_logic::formula f(node->attr("functions"), object_functions_.get());
+	}
+	init_event_handlers(node, event_handlers_, function_symbols());
 }
 
 custom_object_type::~custom_object_type()
@@ -409,7 +435,7 @@ const_custom_object_type_ptr custom_object_type::get_variation(const std::vector
 void custom_object_type::load_variations() const
 {
 	for(std::map<std::string, wml::const_modifier_ptr>::const_iterator i = variations_.begin(); i != variations_.end(); ++i) {
-		get_variation(std::vector<std::string>(1, i->first));
+//		get_variation(std::vector<std::string>(1, i->first));
 	}
 }
 

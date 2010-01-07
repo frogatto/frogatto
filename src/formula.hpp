@@ -17,6 +17,7 @@
 #include <map>
 #include <string>
 
+#include "formula_callable_definition_fwd.hpp"
 #include "formula_fwd.hpp"
 #include "formula_function.hpp"
 #include "variant.hpp"
@@ -45,8 +46,8 @@ public:
 	// function which will create a formula that is a single string literal, 'str'.
 	// 'str' should not be enclosed in quotes.
 	static formula_ptr create_string_formula(const std::string& str);
-	static formula_ptr create_optional_formula(const wml::value& str, function_symbol_table* symbols=NULL);
-	explicit formula(const wml::value& val, function_symbol_table* symbols=NULL);
+	static formula_ptr create_optional_formula(const wml::value& str, function_symbol_table* symbols=NULL, const formula_callable_definition* def=NULL);
+	explicit formula(const wml::value& val, function_symbol_table* symbols=NULL, const formula_callable_definition* def=NULL);
 	~formula();
 	variant execute(const formula_callable& variables) const;
 	variant execute() const;

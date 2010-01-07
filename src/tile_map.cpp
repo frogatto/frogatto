@@ -192,11 +192,11 @@ class tile_map_function_symbol_table : public function_symbol_table
 {
 public:
 	expression_ptr create_function(
-	           const std::string& fn, const std::vector<expression_ptr>& args) const {
+	           const std::string& fn, const std::vector<expression_ptr>& args, const formula_callable_definition* callable_def) const {
 		if(fn == "tile_at") {
 			return expression_ptr(new tile_at_function(args));
 		} else {
-			return function_symbol_table::create_function(fn, args);
+			return function_symbol_table::create_function(fn, args, callable_def);
 		}
 	}
 };

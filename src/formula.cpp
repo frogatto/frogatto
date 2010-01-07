@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <boost/lexical_cast.hpp>
 #include <cmath>
+#include <stdio.h>
 #include <iostream>
 #include <vector>
 
@@ -21,6 +22,7 @@
 #include "foreach.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
+#include "formula_callable_definition.hpp"
 #include "formula_constants.hpp"
 #include "formula_function.hpp"
 #include "formula_tokenizer.hpp"
@@ -50,6 +52,16 @@ namespace game_logic
 	void formula_callable::set_value(const std::string& key, const variant& /*value*/)
 	{
 		std::cerr << "ERROR: cannot set key '" << key << "' on object\n";
+	}
+
+	void formula_callable::set_value_by_slot(int slot, const variant& /*value*/)
+	{
+		std::cerr << "ERROR: cannot set slot '" << slot << "' on object\n";
+	}
+
+	variant formula_callable::get_value_by_slot(int slot) const
+	{
+		ASSERT_LOG(false, "Could not get value by slot from formula callable " << slot);
 	}
 	
 	map_formula_callable::map_formula_callable(wml::const_node_ptr node)
@@ -278,11 +290,50 @@ namespace game_logic
 			
 			variant v_;
 		};
+	
+		class slot_identifier_expression : public formula_expression {
+		public:
+			slot_identifier_expression(const std::string& id, int slot, const formula_callable_definition* callable_def)
+			: formula_expression("_id"), slot_(slot), id_(id), callable_def_(callable_def)
+			{
+			}
+			
+			const std::string& id() const { return id_; }
+
+			bool is_identifier(std::string* ident) const {
+				if(ident) {
+					*ident = id_;
+				}
+
+				return true;
+			}
+
+			const formula_callable_definition* get_type_definition() const {
+				std::cerr << "GET_TYPE_DEFINITION: " << slot_ << " " <<
+				 (callable_def_->get_entry(slot_)->type_definition ? "YES" : "NO") << "\n";
+				return callable_def_->get_entry(slot_)->type_definition;
+			}
+		private:
+			variant execute_member(const formula_callable& variables, std::string& id) const {
+				id = id_;
+				return variables.query_value("self");
+			}
+			
+			variant execute(const formula_callable& variables) const {
+				std::cerr << "ID by slot\n";
+				return variables.query_value_by_slot(slot_);
+			}
+
+			int slot_;
+			std::string id_;
+			const formula_callable_definition* callable_def_;
+		};
+	
 		
 		class identifier_expression : public formula_expression {
 		public:
-			explicit identifier_expression(const std::string& id)
-			: formula_expression("_id"), id_(id)
+			identifier_expression(const std::string& id, const formula_callable_definition* callable_def)
+			: formula_expression("_id"), id_(id), callable_def_(callable_def)
 			{}
 			
 			const std::string& id() const { return id_; }
@@ -294,6 +345,30 @@ namespace game_logic
 
 				return true;
 			}
+
+			expression_ptr optimize() const {
+				if(callable_def_) {
+					const int index = callable_def_->get_slot(id_);
+					if(index != -1) {
+						return expression_ptr(new slot_identifier_expression(id_, index, callable_def_));
+					}
+				}
+
+				return expression_ptr();
+			}
+
+			const formula_callable_definition* get_type_definition() const {
+				std::cerr << "GET_TYPE_DEFINITION: " << id_ << "\n";
+				if(callable_def_) {
+					const formula_callable_definition::entry* e = callable_def_->get_entry(callable_def_->get_slot(id_));
+					if(e) {
+						return e->type_definition;
+					}
+				}
+
+				return NULL;
+			}
+
 		private:
 			variant execute_member(const formula_callable& variables, std::string& id) const {
 				id = id_;
@@ -301,9 +376,11 @@ namespace game_logic
 			}
 			
 			variant execute(const formula_callable& variables) const {
+				std::cerr << "ID by str: '" << id_ << "'\n";
 				return variables.query_value(id_);
 			}
 			std::string id_;
+			const formula_callable_definition* callable_def_;
 		};
 		
 		class lambda_function_expression : public formula_expression {
@@ -329,6 +406,7 @@ namespace game_logic
 			variant execute(const formula_callable& variables) const {
 				const variant left = left_->evaluate(variables);
 				std::vector<variant> args;
+				args.reserve(args_.size());
 				foreach(const expression_ptr& e, args_) {
 					args.push_back(e->evaluate(variables));
 				}
@@ -345,6 +423,9 @@ namespace game_logic
 			dot_expression(expression_ptr left, expression_ptr right)
 			: formula_expression("_dot"), left_(left), right_(right)
 			{}
+			const formula_callable_definition* get_type_definition() const {
+				return right_->get_type_definition();
+			}
 		private:
 			variant execute(const formula_callable& variables) const {
 				const variant left = left_->evaluate(variables);
@@ -502,6 +583,10 @@ namespace game_logic
 					inputs->push_back(formula_input(i->first, FORMULA_READ_ONLY));
 				}
 			}
+
+			variant get_value_by_slot(int slot) const {
+				return base_.query_value_by_slot(slot);
+			}
 			
 			variant get_value(const std::string& key) const {
 				expr_table::iterator i = table_->find(key);
@@ -570,7 +655,6 @@ namespace game_logic
 					}
 					
 					const std::string formula_str(i+1, j);
-					std::cerr << "FORMULA: '" << formula_str << "'\n";
 					const int pos = i - str.begin();
 					str.erase(i, j+1);
 					
@@ -650,10 +734,11 @@ namespace game_logic
 			return precedence_map[std::string(t.begin,t.end)];
 		}
 		
-		expression_ptr parse_expression(const token* i1, const token* i2, function_symbol_table* symbols);
+		expression_ptr parse_expression(const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def);
 		
 		void parse_function_args(const token* &i1, const token* i2,
-								 std::vector<std::string>* res)
+								 std::vector<std::string>* res,
+								 std::vector<std::string>* types)
 		{
 			if(i1->type == TOKEN_LPARENS) {
 				++i1;
@@ -664,10 +749,16 @@ namespace game_logic
 			
 			while((i1->type != TOKEN_RPARENS) && (i1 != i2)) {
 				if(i1->type == TOKEN_IDENTIFIER) {
-					if(std::string((i1+1)->begin, (i1+1)->end) == "*") {
+					if(i1+1 != i2 && std::string((i1+1)->begin, (i1+1)->end) == "*") {
+						types->push_back("");
 						res->push_back(std::string(i1->begin, i1->end) + std::string("*"));
 						++i1;
+					} else if(i1+1 != i2 && (i1+1)->type == TOKEN_IDENTIFIER) {
+						types->push_back(std::string(i1->begin, i1->end));
+						res->push_back(std::string((i1+1)->begin, (i1+1)->end));
+						++i1;
 					} else {
+						types->push_back("");
 						res->push_back(std::string(i1->begin, i1->end));
 					}
 				} else if (i1->type == TOKEN_COMMA) {
@@ -688,7 +779,8 @@ namespace game_logic
 		
 		void parse_args(const token* i1, const token* i2,
 						std::vector<expression_ptr>* res,
-						function_symbol_table* symbols)
+						function_symbol_table* symbols,
+						const formula_callable_definition* callable_def)
 		{
 			int parens = 0;
 			const token* beg = i1;
@@ -698,7 +790,7 @@ namespace game_logic
 				} else if(i1->type == TOKEN_RPARENS || i1->type == TOKEN_RSQUARE || i1->type == TOKEN_RBRACKET) {
 					--parens;
 				} else if(i1->type == TOKEN_COMMA && !parens) {
-					res->push_back(parse_expression(beg,i1, symbols));
+					res->push_back(parse_expression(beg,i1, symbols, callable_def));
 					beg = i1+1;
 				}
 				
@@ -706,7 +798,7 @@ namespace game_logic
 			}
 			
 			if(beg != i1) {
-				res->push_back(parse_expression(beg,i1, symbols));
+				res->push_back(parse_expression(beg,i1, symbols, callable_def));
 			}
 		}
 		
@@ -725,7 +817,7 @@ namespace game_logic
 				} else if( i1->type == TOKEN_POINTER && !parens ) {
 					if (!check_pointer) {
 						check_pointer = true;
-						res->push_back(parse_expression(beg,i1, symbols));
+						res->push_back(parse_expression(beg,i1, symbols, NULL));
 						beg = i1+1;
 					} else {
 						std::cerr << "Too many '->' operators\n";
@@ -733,7 +825,7 @@ namespace game_logic
 					}
 				} else if( i1->type == TOKEN_COMMA && !parens ) {
 					check_pointer = false;
-					res->push_back(parse_expression(beg,i1, symbols));
+					res->push_back(parse_expression(beg,i1, symbols, NULL));
 					beg = i1+1;
 				}
 				
@@ -741,12 +833,13 @@ namespace game_logic
 			}
 			
 			if(beg != i1) {
-				res->push_back(parse_expression(beg,i1, symbols));
+				res->push_back(parse_expression(beg,i1, symbols, NULL));
 			}
 		}
 		
 		void parse_where_clauses(const token* i1, const token * i2,
-								 expr_table_ptr res, function_symbol_table* symbols) {
+								 expr_table_ptr res, function_symbol_table* symbols,
+								 const formula_callable_definition* callable_def) {
 			int parens = 0;
 			const token *original_i1_cached = i1;
 			const token *beg = i1;
@@ -763,7 +856,7 @@ namespace game_logic
 							<< "'where name=<expression>,' was needed.\n";
 							throw formula_error();
 						}
-						(*res)[var_name] = parse_expression(beg,i1, symbols);
+						(*res)[var_name] = parse_expression(beg,i1, symbols, callable_def);
 						beg = i1+1;
 						var_name = "";
 					} else if(i1->type == TOKEN_OPERATOR) {
@@ -800,11 +893,11 @@ namespace game_logic
 					<< "'where name=<expression> was needed.\n";
 					throw formula_error();
 				}
-				(*res)[var_name] = parse_expression(beg,i1, symbols);
+				(*res)[var_name] = parse_expression(beg,i1, symbols, callable_def);
 			}
 		}
 		
-		expression_ptr parse_expression_internal(const token* i1, const token* i2, function_symbol_table* symbols);
+		expression_ptr parse_expression_internal(const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def);
 		
 		namespace {
 			
@@ -833,13 +926,17 @@ namespace game_logic
 				variant get_value(const std::string& key) const {
 					throw non_static_expression_exception();
 				}
+
+				variant get_value_by_slot(int slot) const {
+					throw non_static_expression_exception();
+				}
 			};
 		}
-		
-		expression_ptr parse_expression(const token* i1, const token* i2, function_symbol_table* symbols)
+
+		expression_ptr optimize_expression(expression_ptr result, function_symbol_table* symbols, const formula_callable_definition* callable_def)
 		{
-			expression_ptr result(parse_expression_internal(i1, i2, symbols));
-			
+			const std::string str = result->str();
+
 			//we want to try to evaluate this expression, and see if it is static.
 			//it is static if it never reads its input, if it doesn't call the rng,
 			//and if a reference to the input itself is not stored.
@@ -848,7 +945,6 @@ namespace game_logic
 				formula_callable_ptr static_callable(new static_formula_callable);
 				variant res = result->static_evaluate(*static_callable);
 				if(rng_seed == rng::get_seed() && static_callable->refcount() == 1) {
-					std::cerr << "STATIC: " << std::string(i1->begin, (i2-1)->end) << "\n";
 					//this expression is static. Reduce it to its result.
 					result = expression_ptr(new variant_expression(res));
 				}
@@ -863,13 +959,22 @@ namespace game_logic
 				}
 			}
 			
-			if(result && i1 != i2) {
-				result->set_str(std::string(i1->begin, (i2-1)->end));
+			if(result) {
+				result->set_str(str);
 			}
+
 			return result;
 		}
 		
-		expression_ptr parse_expression_internal(const token* i1, const token* i2, function_symbol_table* symbols)
+		expression_ptr parse_expression(const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def)
+		{
+			expression_ptr result(parse_expression_internal(i1, i2, symbols, callable_def));
+			result = optimize_expression(result, symbols, callable_def);
+
+			return result;
+		}
+		
+		expression_ptr parse_expression_internal(const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def)
 		{
 			if(i1 == i2) {
 				std::cerr << "empty expression\n";
@@ -885,8 +990,8 @@ namespace game_logic
 					++i1;
 				}
 				
-				std::vector<std::string> args;
-				parse_function_args(i1, i2, &args);
+				std::vector<std::string> args, types;
+				parse_function_args(i1, i2, &args, &types);
 				const token* beg = i1;
 				while((i1 != i2) && (i1->type != TOKEN_SEMICOLON)) {
 					++i1;
@@ -894,7 +999,26 @@ namespace game_logic
 				const std::string formula_str = std::string(beg->begin, (i1-1)->end);
 				
 				recursive_function_symbol_table recursive_symbols(formula_name.empty() ? "recurse" : formula_name, args, symbols);
-				const_formula_ptr fml(new formula(formula_str, &recursive_symbols));
+
+				formula_callable_definition_ptr args_definition;
+				if(formula_name.empty() == false) {
+					//create a definition of the callable representing
+					//function arguments.
+					args_definition = create_formula_callable_definition(args.data(), args.data() + args.size());
+					for(int n = 0; n != types.size(); ++n) {
+						if(types[n].empty()) {
+							continue;
+						}
+
+						ASSERT_LOG(args_definition->get_entry(n) != NULL, "FORMULA FUNCTION TYPE ARGS MIS-MATCH");
+
+						const formula_callable_definition* def = get_formula_callable_definition(types[n]);
+						ASSERT_LOG(def != NULL, "TYPE NOT FOUND: " << types[n]);
+						args_definition->get_entry(n)->type_definition = def;
+					}
+				}
+
+				const_formula_ptr fml(new formula(formula_str, &recursive_symbols, args_definition.get()));
 				recursive_symbols.resolve_recursive_calls(fml);
 				
 				if(formula_name.empty()) {
@@ -908,7 +1032,7 @@ namespace game_logic
 					return expression_ptr(new function_list_expression(symbols));
 				}
 				else {
-					return parse_expression((i1+1), i2, symbols);
+					return parse_expression((i1+1), i2, symbols, callable_def);
 				}
 			}
 			
@@ -952,7 +1076,7 @@ namespace game_logic
 			
 			if(op == NULL) {
 				if(i1->type == TOKEN_LPARENS && (i2-1)->type == TOKEN_RPARENS) {
-					return parse_expression(i1+1,i2-1,symbols);
+					return parse_expression(i1+1,i2-1,symbols, callable_def);
 				} else if( (i2-1)->type == TOKEN_RSQUARE) { //check if there is [ ] : either a list definition, or a operator 
 					const token* tok = i2-2;
 					int square_parens = 0;
@@ -968,13 +1092,13 @@ namespace game_logic
 						if (tok == i1) {
 							//create a list
 							std::vector<expression_ptr> args;
-							parse_args(i1+1,i2-1,&args,symbols);
+							parse_args(i1+1,i2-1,&args,symbols, callable_def);
 							return expression_ptr(new list_expression(args));
 						} else {
 							//execute operator [ ]
 							return expression_ptr(new square_bracket_expression(
-																				parse_expression(i1,tok,symbols),
-																				parse_expression(tok+1,i2-1,symbols)));
+																				parse_expression(i1,tok,symbols, callable_def),
+																				parse_expression(tok+1,i2-1,symbols, callable_def)));
 						}
 					}
 				} else if(i1->type == TOKEN_LBRACKET && (i2-1)->type == TOKEN_RBRACKET) {
@@ -992,7 +1116,7 @@ namespace game_logic
 																			  std::string(i1->begin,i1->end)));
 					} else if(i1->type == TOKEN_IDENTIFIER) {
 						return expression_ptr(new identifier_expression(
-																		std::string(i1->begin,i1->end)));
+																		std::string(i1->begin,i1->end), callable_def));
 					} else if(i1->type == TOKEN_INTEGER) {
 						int n = strtol(std::string(i1->begin,i1->end).c_str(), NULL, 0);
 						return expression_ptr(new integer_expression(n));
@@ -1012,10 +1136,11 @@ namespace game_logic
 					}
 					
 					if(nleft == nright) {
+						const std::string function_name(i1->begin, i1->end);
 						std::vector<expression_ptr> args;
-						parse_args(i1+2,i2-1,&args,symbols);
-						expression_ptr result(
-											  create_function(std::string(i1->begin,i1->end),args,symbols));
+						const bool optimize = optimize_function_arguments(function_name, symbols);
+						parse_args(i1+2,i2-1,&args,symbols, optimize ? callable_def : NULL);
+						expression_ptr result(create_function(function_name, args, symbols, callable_def));
 						if(result) {
 							return result;
 						}
@@ -1041,35 +1166,42 @@ namespace game_logic
 			if(op == i1) {
 				return expression_ptr(new unary_operator_expression(
 																	std::string(op->begin,op->end),
-																	parse_expression(op+1,i2,symbols)));
+																	parse_expression(op+1,i2,symbols, callable_def)));
 			}
 			
 			const std::string op_name(op->begin,op->end);
 			
 			if(op_name == "(") {
 				std::vector<expression_ptr> args;
-				parse_args(op+1, i2-1, &args, symbols);
+				parse_args(op+1, i2-1, &args, symbols, callable_def);
 				
 				return expression_ptr(new function_call_expression(
-																   parse_expression(i1, op, symbols), args));
+																   parse_expression(i1, op, symbols, callable_def), args));
 			}
 			
 			if(op_name == ".") {
-				return expression_ptr(new dot_expression(
-														 parse_expression(i1,op,symbols),
-														 parse_expression(op+1,i2,symbols)));
+				expression_ptr left(parse_expression(i1,op,symbols, callable_def));
+				const formula_callable_definition* type_definition = left->get_type_definition();
+				std::cerr << "TYPE DEFINITION: " << left->str() << " ::-> " << (type_definition ? "YES" : "NO") << "\n";
+				//TODO: right now we don't give the right side of the dot
+				//a expression definition. We should work out if we can
+				//statically derive information from the left half to
+				//give the right half a definition.
+				return expression_ptr(new dot_expression(left,
+														 parse_expression(op+1,i2,symbols, type_definition)));
 			}
 			
 			if(op_name == "where") {
 				expr_table_ptr table(new expr_table());
-				parse_where_clauses(op+1, i2, table, symbols);
-				return expression_ptr(new where_expression(parse_expression(i1, op, symbols),
+				parse_where_clauses(op+1, i2, table, symbols, callable_def);
+				return expression_ptr(new where_expression(parse_expression(i1, op, symbols, callable_def),
 														   table));
 			}
-			
+
+			const bool is_dot = op_name == ".";
 			return expression_ptr(new operator_expression(
-														  op_name, parse_expression(i1,op,symbols),
-														  parse_expression(op+1,i2,symbols)));
+														  op_name, parse_expression(i1,op,symbols, callable_def),
+														  parse_expression(op+1,i2,symbols, callable_def)));
 		}
 		
 	}
@@ -1081,14 +1213,14 @@ namespace game_logic
 		return res;
 	}
 	
-	formula_ptr formula::create_optional_formula(const wml::value& val, function_symbol_table* symbols)
+	formula_ptr formula::create_optional_formula(const wml::value& val, function_symbol_table* symbols, const formula_callable_definition* callable_definition)
 	{
 		if(val.empty()) {
 			return formula_ptr();
 		}
 		
 		try {
-			return formula_ptr(new formula(val, symbols));
+			return formula_ptr(new formula(val, symbols, callable_definition));
 		} catch(...) {
 			if(val.filename()) {
 				std::cerr << *val.filename() << " " << val.line() << ": ";
@@ -1102,7 +1234,7 @@ namespace game_logic
 		}
 	}
 	
-	formula::formula(const wml::value& val, function_symbol_table* symbols) : str_(val.str()), filename_(val.filename()), line_(val.line())
+	formula::formula(const wml::value& val, function_symbol_table* symbols, const formula_callable_definition* callable_definition) : str_(val.str()), filename_(val.filename()), line_(val.line())
 	{
 		using namespace formula_tokenizer;
 		
@@ -1121,7 +1253,7 @@ namespace game_logic
 		
 		try {
 			if(tokens.size() != 0) {
-				expr_ = parse_expression(&tokens[0],&tokens[0] + tokens.size(), symbols);
+				expr_ = parse_expression(&tokens[0],&tokens[0] + tokens.size(), symbols, callable_definition);
 			} else {
 				expr_ = expression_ptr(new null_expression());
 			}	

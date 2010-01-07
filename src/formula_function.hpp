@@ -20,6 +20,7 @@
 #include <iostream>
 #include <map>
 
+#include "formula_callable_definition_fwd.hpp"
 #include "formula_fwd.hpp"
 #include "variant.hpp"
 
@@ -61,6 +62,10 @@ public:
 
 	virtual bool can_reduce_to_variant(variant& v) const {
 		return false;
+	}
+
+	virtual const formula_callable_definition* get_type_definition() const {
+		return NULL;
 	}
 
 	void set_name(const char* name) { name_ = name; }
@@ -128,7 +133,8 @@ public:
 	void set_backup(const function_symbol_table* backup) { backup_ = backup; }
 	virtual void add_formula_function(const std::string& name, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& args);
 	virtual expression_ptr create_function(const std::string& fn,
-					                       const std::vector<expression_ptr>& args) const;
+					                       const std::vector<expression_ptr>& args,
+										   const formula_callable_definition* callable_def) const;
 	std::vector<std::string> get_function_names() const;
 };
 
@@ -144,13 +150,17 @@ class recursive_function_symbol_table : public function_symbol_table {
 public:
 	recursive_function_symbol_table(const std::string& fn, const std::vector<std::string>& args, function_symbol_table* backup);
 	virtual expression_ptr create_function(const std::string& fn,
-					                       const std::vector<expression_ptr>& args) const;
+					                       const std::vector<expression_ptr>& args,
+										   const formula_callable_definition* callable_def) const;
 	void resolve_recursive_calls(const_formula_ptr f);
 };
 
 expression_ptr create_function(const std::string& fn,
                                const std::vector<expression_ptr>& args,
-							   const function_symbol_table* symbols);
+							   const function_symbol_table* symbols,
+							   const formula_callable_definition* callable_def);
+bool optimize_function_arguments(const std::string& fn,
+                                 const function_symbol_table* symbols);
 std::vector<std::string> builtin_function_names();
 
 class variant_expression : public formula_expression {

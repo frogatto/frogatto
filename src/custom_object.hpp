@@ -3,6 +3,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include <inttypes.h>
+#include <stack>
 
 #include "blur.hpp"
 #include "color_utils.hpp"
@@ -10,6 +11,7 @@
 #include "entity.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
+#include "formula_variable_storage.hpp"
 #include "particle_system.hpp"
 #include "raster_distortion.hpp"
 #include "variant.hpp"
@@ -137,7 +139,9 @@ public:
 protected:
 	virtual void control(const level& lvl);
 	variant get_value(const std::string& key) const;
+	variant get_value_by_slot(int slot) const;
 	void set_value(const std::string& key, const variant& value);
+	void set_value_by_slot(int slot, const variant& value);
 
 private:
 	custom_object& operator=(const custom_object& o);
@@ -177,8 +181,7 @@ private:
 
 	game_logic::const_formula_ptr next_animation_formula_;
 
-	game_logic::map_formula_callable_ptr vars_;
-	game_logic::map_formula_callable_ptr tmp_vars_;
+	game_logic::formula_variable_storage_ptr vars_, tmp_vars_;
 	game_logic::map_formula_callable_ptr tags_;
 
 	entity_ptr last_jumped_on_by_;
@@ -228,6 +231,8 @@ private:
 	mutable game_logic::map_formula_callable_ptr shader_vars_;
 
 	bool always_active_;
+
+	std::stack<const formula_callable*> backup_callable_stack_;
 };
 
 #endif

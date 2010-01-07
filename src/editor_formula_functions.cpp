@@ -160,7 +160,8 @@ public:
 
 	expression_ptr create_function(
 	                           const std::string& fn,
-	                           const std::vector<expression_ptr>& args) const
+	                           const std::vector<expression_ptr>& args,
+							   const formula_callable_definition* callable_def) const
 	{
 		if(fn == "remove_tiles") {
 			return expression_ptr(new remove_tiles_function(args));
@@ -171,7 +172,7 @@ public:
 		} else if(fn == "debug") {
 			return expression_ptr(new debug_function(args));
 		} else {
-			return function_symbol_table::create_function(fn, args);
+			return function_symbol_table::create_function(fn, args, callable_def);
 		}
 	}
 };
