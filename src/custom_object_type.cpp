@@ -435,7 +435,7 @@ const_custom_object_type_ptr custom_object_type::get_variation(const std::vector
 void custom_object_type::load_variations() const
 {
 	for(std::map<std::string, wml::const_modifier_ptr>::const_iterator i = variations_.begin(); i != variations_.end(); ++i) {
-//		get_variation(std::vector<std::string>(1, i->first));
+		get_variation(std::vector<std::string>(1, i->first));
 	}
 }
 
