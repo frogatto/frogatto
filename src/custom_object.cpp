@@ -1944,10 +1944,10 @@ bool custom_object::is_active(const rect& screen_area) const
 
 
 	const rect& area = frame_rect();
-	if(area.x() < screen_area.x2() + 300 &&
-	   area.x2() > screen_area.x() - 300 &&
-	   area.y() < screen_area.y2() + 300 &&
-	   area.y2() > screen_area.y() - 300) {
+	if(area.x() < screen_area.x2() + 100 &&
+	   area.x2() > screen_area.x() - 100 &&
+	   area.y() < screen_area.y2() + 100 &&
+	   area.y2() > screen_area.y() - 100) {
 		return true;
 	}
 

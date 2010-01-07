@@ -304,7 +304,7 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 
 		game_logic::formula_callable_definition::entry* entry = callable_definition_.get_entry(CUSTOM_OBJECT_VARS);
 		ASSERT_LOG(entry != NULL, "CANNOT FIND VARS ENTRY IN OBJECT");
-		entry->type_definition_holder = game_logic::create_formula_callable_definition(var_str.data(), var_str.data() + var_str.size());
+		entry->type_definition_holder = game_logic::create_formula_callable_definition(&var_str[0], &var_str[0] + var_str.size());
 		entry->type_definition = entry->type_definition_holder.get();
 	}
 
@@ -320,7 +320,7 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 
 		game_logic::formula_callable_definition::entry* entry = callable_definition_.get_entry(CUSTOM_OBJECT_TMP);
 		ASSERT_LOG(entry != NULL, "CANNOT FIND TMP ENTRY IN OBJECT");
-		entry->type_definition_holder = game_logic::create_formula_callable_definition(var_str.data(), var_str.data() + var_str.size());
+		entry->type_definition_holder = game_logic::create_formula_callable_definition(&var_str[0], &var_str[0] + var_str.size());
 		entry->type_definition = entry->type_definition_holder.get();
 	}
 

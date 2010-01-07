@@ -1004,7 +1004,7 @@ namespace game_logic
 				if(formula_name.empty() == false) {
 					//create a definition of the callable representing
 					//function arguments.
-					args_definition = create_formula_callable_definition(args.data(), args.data() + args.size());
+					args_definition = create_formula_callable_definition(&args[0], &args[0] + args.size());
 					for(int n = 0; n != types.size(); ++n) {
 						if(types[n].empty()) {
 							continue;

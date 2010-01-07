@@ -1805,7 +1805,7 @@ void init_custom_object_functions(wml::const_node_ptr node)
 		const std::string& name = i1->second->attr("name");
 		std::vector<std::string> args = util::split(i1->second->attr("args"));
 
-		game_logic::formula_callable_definition_ptr args_definition = game_logic::create_formula_callable_definition(args.data(), args.data() + args.size());
+		game_logic::formula_callable_definition_ptr args_definition = game_logic::create_formula_callable_definition(&args[0], &args[0] + args.size());
 
 		recursive_function_symbol_table recursive_symbols(name, args, &get_custom_object_functions_symbol_table());
 		const_formula_ptr fml(new formula(i1->second->attr("formula"), &recursive_symbols, args_definition.get()));

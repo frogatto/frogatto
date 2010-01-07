@@ -149,7 +149,10 @@ level::level(const std::string& level_cfg)
 		layers_.insert(tiles_[i].zorder);
 	}
 
-	std::sort(tiles_.begin(), tiles_.end(), level_tile_zorder_pos_comparer());
+	if(std::adjacent_find(tiles_.rbegin(), tiles_.rend(), level_tile_zorder_pos_comparer()) != tiles_.rend()) {
+		std::sort(tiles_.begin(), tiles_.end(), level_tile_zorder_pos_comparer());
+	}
+
 	prepare_tiles_for_drawing();
 
 	wml::node::const_child_iterator c1 = node->begin_child("character");
@@ -347,7 +350,9 @@ void level::rebuild_tiles()
 
 	std::cerr << "sorting...\n";
 
-	std::sort(tiles_.begin(), tiles_.end(), level_tile_zorder_pos_comparer());
+	if(std::adjacent_find(tiles_.rbegin(), tiles_.rend(), level_tile_zorder_pos_comparer()) != tiles_.rend()) {
+		std::sort(tiles_.begin(), tiles_.end(), level_tile_zorder_pos_comparer());
+	}
 	prepare_tiles_for_drawing();
 }
 
@@ -417,7 +422,9 @@ void level::rebuild_tiles_rect(const rect& r)
 		layers_.insert(t.zorder);
 	}
 
-	std::sort(tiles_.begin(), tiles_.end(), level_tile_zorder_pos_comparer());
+	if(std::adjacent_find(tiles_.rbegin(), tiles_.rend(), level_tile_zorder_pos_comparer()) != tiles_.rend()) {
+		std::sort(tiles_.begin(), tiles_.end(), level_tile_zorder_pos_comparer());
+	}
 	prepare_tiles_for_drawing();
 }
 
@@ -2516,6 +2523,17 @@ BENCHMARK(load_nene)
 {
 	BENCHMARK_LOOP {
 		level lvl("to-nenes-house.cfg");
+	}
+}
+
+BENCHMARK(load_all_levels)
+{
+	std::vector<std::string> files;
+	sys::get_files_in_dir("data/level/", &files);
+	BENCHMARK_LOOP {
+		foreach(const std::string& file, files) {
+			boost::intrusive_ptr<level> lvl(new level(file));
+		}
 	}
 }
 

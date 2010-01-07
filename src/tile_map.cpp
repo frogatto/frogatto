@@ -686,8 +686,7 @@ void tile_map::apply_matching_multi_pattern(int x, int y,
 	}
 }
 
-void tile_map::build_tiles(std::vector<level_tile>* tiles,
-                           const rect* r) const
+void tile_map::build_tiles(std::vector<level_tile>* tiles, const rect* r) const
 {
 	const int begin_time = SDL_GetTicks();
 	std::cerr << "build tiles... " << patterns_.size() << "/" << patterns.size() << "\n";
