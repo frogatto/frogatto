@@ -320,7 +320,7 @@ namespace game_logic
 			}
 			
 			variant execute(const formula_callable& variables) const {
-				std::cerr << "ID by slot\n";
+//				std::cerr << "ID by slot\n";
 				return variables.query_value_by_slot(slot_);
 			}
 
@@ -376,7 +376,7 @@ namespace game_logic
 			}
 			
 			variant execute(const formula_callable& variables) const {
-				std::cerr << "ID by str: '" << id_ << "'\n";
+//				std::cerr << "ID by str: '" << id_ << "'\n";
 				return variables.query_value(id_);
 			}
 			std::string id_;
