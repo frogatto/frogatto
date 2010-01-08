@@ -802,7 +802,8 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 		undo_command();
 	}
 
-	if(key.keysym.sym == SDLK_r) {
+	if(key.keysym.sym == SDLK_r &&
+	   !(key.keysym.mod&KMOD_CTRL)) {
 		redo_command();
 	}
 
@@ -888,8 +889,6 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 
 	if(key.keysym.sym == SDLK_r &&
 	   (key.keysym.mod&KMOD_CTRL)) {
-		tile_map::init(wml::parse_wml(sys::read_file("tiles.cfg")));
-		tile_map::load_all();
 		lvl_->rebuild_tiles();
 	}
 

@@ -1665,7 +1665,7 @@ void level::set_tile_layer_speed(int zorder, int x_speed, int y_speed)
 
 void level::refresh_tile_rect(int x1, int y1, int x2, int y2)
 {
-	rebuild_tiles_rect(rect(x1-64, y1-128, (x2 - x1) + 128, (y2 - y1) + 256));
+	rebuild_tiles_rect(rect(x1-128, y1-128, (x2 - x1) + 256, (y2 - y1) + 256));
 }
 
 namespace {
