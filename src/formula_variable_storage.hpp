@@ -26,6 +26,8 @@ private:
 	variant get_value_by_slot(int slot) const;
 	void set_value(const std::string& key, const variant& value);
 	void set_value_by_slot(int slot, const variant& value);
+
+	void get_inputs(std::vector<formula_input>* inputs) const;
 	
 	std::vector<variant> values_;
 	std::map<std::string, int> strings_to_values_;
