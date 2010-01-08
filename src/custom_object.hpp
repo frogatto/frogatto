@@ -175,6 +175,8 @@ private:
 	int hitpoints_;
 	bool was_underwater_;
 
+	bool has_feet_;
+
 	int invincible_;
 	
 	int sound_volume_;	//see sound.cpp; valid values are 0-128, note that this affects all sounds spawned by this object

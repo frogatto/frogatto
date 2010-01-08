@@ -54,7 +54,9 @@ custom_object::custom_object(wml::const_node_ptr node)
 	accel_y_(wml::get_int(node, "accel_y")),
 	rotate_(0), zorder_(wml::get_int(node, "zorder", type_->zorder())),
 	hitpoints_(wml::get_int(node, "hitpoints", type_->hitpoints())),
-	was_underwater_(false), invincible_(0),
+	was_underwater_(false),
+	has_feet_(wml::get_bool(node, "has_feet", type_->has_feet())),
+	invincible_(0),
 	sound_volume_(128),
 	vars_(new game_logic::formula_variable_storage(type_->variables())),
 	tmp_vars_(new game_logic::formula_variable_storage(type_->tmp_variables())),
@@ -132,7 +134,9 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	accel_x_(0), accel_y_(0),
 	rotate_(0), zorder_(type_->zorder()),
 	hitpoints_(type_->hitpoints()),
-	was_underwater_(false), invincible_(0),
+	was_underwater_(false),
+	has_feet_(type_->has_feet()),
+	invincible_(0),
 	sound_volume_(128),
 	vars_(new game_logic::formula_variable_storage(type_->variables())),
 	tmp_vars_(new game_logic::formula_variable_storage(type_->tmp_variables())),
@@ -175,6 +179,7 @@ custom_object::custom_object(const custom_object& o) :
 	zorder_(o.zorder_),
 	hitpoints_(o.hitpoints_),
 	was_underwater_(o.was_underwater_),
+	has_feet_(o.has_feet_),
 	invincible_(o.invincible_),
 	sound_volume_(o.sound_volume_),
 	next_animation_formula_(o.next_animation_formula_),
@@ -257,6 +262,10 @@ wml::node_ptr custom_object::write() const
 	}
 
 	res->set_attr("time_in_frame", formatter() << time_in_frame_);
+
+	if(has_feet_ != type_->has_feet()) {
+		res->set_attr("has_feet", formatter() << (has_feet_ ? "yes" : "no"));
+	}
 
 	if(group() >= 0) {
 		res->set_attr("group", formatter() << group());
@@ -531,7 +540,7 @@ void custom_object::process(level& lvl)
 			move_centipixels(effective_velocity_x, effective_velocity_y);
 			effective_velocity_x = 0;
 			effective_velocity_y = 0;
-		} else if(!type_->has_feet() && solid()) {
+		} else if(!has_feet() && solid()) {
 			move_centipixels(effective_velocity_x, effective_velocity_y);
 			if(is_flightpath_clear(lvl, *this, solid_rect())) {
 				effective_velocity_x = 0;
@@ -900,7 +909,7 @@ int custom_object::surface_traction() const
 
 bool custom_object::has_feet() const
 {
-	return type_->has_feet() && solid();
+	return has_feet_ && solid();
 }
 
 bool custom_object::is_standable(int xpos, int ypos, int* friction, int* traction, int* adjust_y) const
@@ -1394,6 +1403,9 @@ variant custom_object::get_value_by_slot(int slot) const
 		return variant(&result);
 	}
 
+	case CUSTOM_OBJECT_HAS_FEET:
+		return variant(has_feet_);
+
 	case CUSTOM_OBJECT_CTRL_UP:
 	case CUSTOM_OBJECT_CTRL_DOWN:
 	case CUSTOM_OBJECT_CTRL_LEFT:
@@ -1737,6 +1749,10 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	
 	case CUSTOM_OBJECT_FALL_THROUGH_PLATFORMS:
 		fall_through_platforms_ = value.as_int();
+		break;
+	
+	case CUSTOM_OBJECT_HAS_FEET:
+		has_feet_ = value.as_bool();
 		break;
 	
 	case CUSTOM_OBJECT_TAGS:

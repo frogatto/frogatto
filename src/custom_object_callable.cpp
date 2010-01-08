@@ -17,7 +17,7 @@ std::string CustomObjectProperties[] = {
 	"attached_objects", "call_stack",
 	"solid_dimensions_in", "solid_dimensions_not_in", "brightness",
 	"current_generator", "tags", "draw_area", "activation_area",
-	"fall_through_platforms",
+	"fall_through_platforms", "has_feet",
 	"ctrl_up", "ctrl_down", "ctrl_left", "ctrl_right",
 	"ctrl_attack", "ctrl_jump",
 };
