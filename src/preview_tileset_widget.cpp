@@ -33,7 +33,9 @@ void preview_tileset_widget::handle_draw() const
 	glTranslatef(x(), y(), 0);
 	glScalef(scale, scale, 0.0);
 	foreach(const level_tile& t, tiles_) {
-		level_object::draw(t);
+		graphics::blit_queue q;
+		level_object::queue_draw(q, t);
+		q.do_blit();
 	}
 	glPopMatrix();
 }
