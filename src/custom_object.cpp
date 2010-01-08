@@ -523,7 +523,7 @@ void custom_object::process(level& lvl)
 		//if we're landing on a new platform, we might have to adjust our
 		//y position to suit its last movement and put us on top of
 		//the platform.
-		effective_velocity_y -= stand_info.adjust_y*100;
+		effective_velocity_y = stand_info.adjust_y*100;
 	}
 
 	if(effective_velocity_x || effective_velocity_y) {
