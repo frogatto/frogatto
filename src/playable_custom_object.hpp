@@ -28,6 +28,8 @@ public:
 
 	virtual int vertical_look() const { return vertical_look_; }
 
+	virtual bool is_active(const rect& screen_area) const;
+
 private:
 	virtual void process(level& lvl);
 	variant get_value(const std::string& key) const;	

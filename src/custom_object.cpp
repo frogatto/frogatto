@@ -489,7 +489,7 @@ void custom_object::process(level& lvl)
 	
 	const int traction_from_surface = (stand_info.traction*type_->traction())/1000;
 	velocity_x_ += (accel_x_ * (stand_info.traction ? traction_from_surface : (is_underwater?type_->traction_in_water() :type_->traction_in_air())) * (face_right() ? 1 : -1))/1000;
-	if(!standing_on_ || accel_y_ < 0) {
+	if(!standing_on_ && !started_standing || accel_y_ < 0) {
 		//do not accelerate downwards if standing on something.
 		velocity_y_ += accel_y_ * (is_underwater ? type_->traction_in_water() : 1000)/1000;
 	}
@@ -550,9 +550,20 @@ void custom_object::process(level& lvl)
 
 	//std::cerr << "velocity_y: " << velocity_y_ << "\n";
 	collide = false;
-	for(int n = 0; effective_velocity_y && n <= std::abs(effective_velocity_y/100) && !collide && !type_->ignore_collide(); ++n) {
-		const int dir = effective_velocity_y/100 > 0 ? 1 : -1;
+	int move_left;
+	for(move_left = std::abs(effective_velocity_y); move_left > 0 && !collide && !type_->ignore_collide(); move_left -= 100) {
+		const int dir = effective_velocity_y > 0 ? 1 : -1;
 		int damage = 0;
+
+		const int original_centi_y = centi_y();
+
+		const int move_amount = std::min(std::max(move_left, 0), 100);
+		
+		const bool moved = move_centipixels(0, move_amount*dir);
+		if(!moved) {
+			//we didn't actually move any pixels, so just abort.
+			break;
+		}
 
 		if(type_->object_level_collisions() && non_solid_entity_collides_with_level(lvl, *this)) {
 			handle_event(OBJECT_EVENT_COLLIDE_LEVEL);
@@ -571,8 +582,9 @@ void custom_object::process(level& lvl)
 						//This effectively means the object is 'stuck' in a small
 						//pit.
 						set_x(x() + 1);
-						set_y(y() - 1);
+						move_centipixels(0, -move_amount*dir);
 						collide = true;
+						break;
 					}
 				}
 				
@@ -582,7 +594,8 @@ void custom_object::process(level& lvl)
 			//effective_velocity_y < 0 -- going up
 			if(entity_collides(lvl, *this, MOVE_UP, &collide_info)) {
 				collide = true;
-				set_y(y()+1);
+				move_centipixels(0, -move_amount*dir);
+				break;
 			}
 		}
 
@@ -593,36 +606,17 @@ void custom_object::process(level& lvl)
 
 			break;
 		}
-/*
-		if((!collide || jump_on_info.collide_with) && !type_->ignore_collide() && velocity_y_ > 0) {
-			entity_ptr bounce = lvl.collide(feet_x() - type_->feet_width(), feet_y(), this);
-			if(!bounce) {
-				bounce = lvl.collide(feet_x() + type_->feet_width(), feet_y(), this);
-			}
 
-			if(bounce && bounce->spring_off_head(*this)) {
-				tmp_vars_->add("bounce_off", variant(bounce.get()));
-				handle_event("bounce");
-				break;
-			}
-		}
-*/
 		if(collide) {
 			std::cerr << "collide y!\n";
 			break;
-		}
-
-		//we don't adjust the position on the last time through, since it's only
-		//used to see if there was a collision after the last movement, and
-		//doesn't actually execute a movement.
-		if(n < std::abs(effective_velocity_y/100)) {
-			set_y(y() + dir);
 		}
 	}
 
 	//this variable handled whether we already landed in our vertical movement
 	//in which case horizontal movement won't consider us to land.
 	bool vertical_landed = false;
+
 	if(collide) {
 		if(effective_velocity_y > 0) {
 			vertical_landed = true;
@@ -658,7 +652,7 @@ void custom_object::process(level& lvl)
 
 	bool horizontal_landed = false;
 
-	for(int move_left = std::abs(effective_velocity_x); move_left > 0 && !collide && !type_->ignore_collide(); move_left -= 100) {
+	for(move_left = std::abs(effective_velocity_x); move_left > 0 && !collide && !type_->ignore_collide(); move_left -= 100) {
 		if(type_->object_level_collisions() && non_solid_entity_collides_with_level(lvl, *this)) {
 			handle_event(OBJECT_EVENT_COLLIDE_LEVEL);
 		}

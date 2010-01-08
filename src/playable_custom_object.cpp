@@ -42,6 +42,12 @@ entity_ptr playable_custom_object::clone() const
 	return entity_ptr(new playable_custom_object(*this));
 }
 
+bool playable_custom_object::is_active(const rect& screen_area) const
+{
+	//player objects are always active.
+	return true;
+}
+
 void playable_custom_object::process(level& lvl)
 {
 	if(player_info_.current_level() != lvl.id()) {
