@@ -655,6 +655,9 @@ void editor::edit_level()
 
 	int selected_tile = 0;
 
+	//reset the tool status.
+	change_tool(tool_);
+
 	done_ = false;
 	while(!done_) {
 		process_ghost_objects();
