@@ -360,7 +360,7 @@ std::vector<point> g_current_draw_tiles;
 
 const editor_variable_info* g_variable_editing = NULL;
 int g_variable_editing_original_value = 0;
-const editor_variable_info* variable_info_selected(const_entity_ptr e, int xpos, int ypos)
+const editor_variable_info* variable_info_selected(const_entity_ptr e, int xpos, int ypos, int zoom)
 {
 	if(!e || !e->editor_info()) {
 		return NULL;
@@ -374,7 +374,7 @@ const editor_variable_info* variable_info_selected(const_entity_ptr e, int xpos,
 					break;
 				}
 
-				if(xpos >= value.as_int() - RectEdgeSelectThreshold && xpos <= value.as_int() + RectEdgeSelectThreshold) {
+				if(xpos >= value.as_int() - zoom*RectEdgeSelectThreshold && xpos <= value.as_int() + zoom*RectEdgeSelectThreshold) {
 					return &var;
 				}
 				break;
@@ -384,7 +384,7 @@ const editor_variable_info* variable_info_selected(const_entity_ptr e, int xpos,
 					break;
 				}
 
-				if(ypos >= value.as_int() - RectEdgeSelectThreshold && ypos <= value.as_int() + RectEdgeSelectThreshold) {
+				if(ypos >= value.as_int() - zoom*RectEdgeSelectThreshold && ypos <= value.as_int() + zoom*RectEdgeSelectThreshold) {
 					return &var;
 				}
 				break;
@@ -437,32 +437,32 @@ rect modify_selected_rect(rect boundaries, int xpos, int ypos) {
 }
 
 //find if an edge of a rectangle is selected
-bool rect_left_edge_selected(const rect& r, int x, int y) {
-	return y >= r.y() - RectEdgeSelectThreshold &&
-	       y <= r.y2() + RectEdgeSelectThreshold &&
-	       x >= r.x() - RectEdgeSelectThreshold &&
-	       x <= r.x() + RectEdgeSelectThreshold;
+bool rect_left_edge_selected(const rect& r, int x, int y, int zoom) {
+	return y >= r.y() - RectEdgeSelectThreshold*zoom &&
+	       y <= r.y2() + RectEdgeSelectThreshold*zoom &&
+	       x >= r.x() - RectEdgeSelectThreshold*zoom &&
+	       x <= r.x() + RectEdgeSelectThreshold*zoom;
 }
 
-bool rect_right_edge_selected(const rect& r, int x, int y) {
-	return y >= r.y() - RectEdgeSelectThreshold &&
-	       y <= r.y2() + RectEdgeSelectThreshold &&
-	       x >= r.x2() - RectEdgeSelectThreshold &&
-	       x <= r.x2() + RectEdgeSelectThreshold;
+bool rect_right_edge_selected(const rect& r, int x, int y, int zoom) {
+	return y >= r.y() - RectEdgeSelectThreshold*zoom &&
+	       y <= r.y2() + RectEdgeSelectThreshold*zoom &&
+	       x >= r.x2() - RectEdgeSelectThreshold*zoom &&
+	       x <= r.x2() + RectEdgeSelectThreshold*zoom;
 }
 
-bool rect_top_edge_selected(const rect& r, int x, int y) {
-	return x >= r.x() - RectEdgeSelectThreshold &&
-	       x <= r.x2() + RectEdgeSelectThreshold &&
-	       y >= r.y() - RectEdgeSelectThreshold &&
-	       y <= r.y() + RectEdgeSelectThreshold;
+bool rect_top_edge_selected(const rect& r, int x, int y, int zoom) {
+	return x >= r.x() - RectEdgeSelectThreshold*zoom &&
+	       x <= r.x2() + RectEdgeSelectThreshold*zoom &&
+	       y >= r.y() - RectEdgeSelectThreshold*zoom &&
+	       y <= r.y() + RectEdgeSelectThreshold*zoom;
 }
 
-bool rect_bottom_edge_selected(const rect& r, int x, int y) {
-	return x >= r.x() - RectEdgeSelectThreshold &&
-	       x <= r.x2() + RectEdgeSelectThreshold &&
-	       y >= r.y2() - RectEdgeSelectThreshold &&
-	       y <= r.y2() + RectEdgeSelectThreshold;
+bool rect_bottom_edge_selected(const rect& r, int x, int y, int zoom) {
+	return x >= r.x() - RectEdgeSelectThreshold*zoom &&
+	       x <= r.x2() + RectEdgeSelectThreshold*zoom &&
+	       y >= r.y2() - RectEdgeSelectThreshold*zoom &&
+	       y <= r.y2() + RectEdgeSelectThreshold*zoom;
 }
 
 std::vector<editor::tileset> tilesets;
@@ -985,10 +985,10 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 	anchorx_ = xpos_ + mousex*zoom_;
 	anchory_ = ypos_ + mousey*zoom_;
 
-	resizing_left_level_edge = rect_left_edge_selected(lvl_->boundaries(), anchorx_, anchory_);
-	resizing_right_level_edge = rect_right_edge_selected(lvl_->boundaries(), anchorx_, anchory_);
-	resizing_top_level_edge = rect_top_edge_selected(lvl_->boundaries(), anchorx_, anchory_);
-	resizing_bottom_level_edge = rect_bottom_edge_selected(lvl_->boundaries(), anchorx_, anchory_);
+	resizing_left_level_edge = rect_left_edge_selected(lvl_->boundaries(), anchorx_, anchory_, zoom_);
+	resizing_right_level_edge = rect_right_edge_selected(lvl_->boundaries(), anchorx_, anchory_, zoom_);
+	resizing_top_level_edge = rect_top_edge_selected(lvl_->boundaries(), anchorx_, anchory_, zoom_);
+	resizing_bottom_level_edge = rect_bottom_edge_selected(lvl_->boundaries(), anchorx_, anchory_, zoom_);
 
 	if(resizing_left_level_edge || resizing_right_level_edge || resizing_top_level_edge || resizing_bottom_level_edge) {
 		return;
@@ -1038,8 +1038,8 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 		}
 		g_current_draw_tiles.clear();
 		g_current_draw_tiles.push_back(p);
-	} else if(property_dialog_ && variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_)) {
-		g_variable_editing = variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_);
+	} else if(property_dialog_ && variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_, zoom_)) {
+		g_variable_editing = variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_, zoom_);
 		g_variable_editing_original_value = property_dialog_->get_entity()->query_value(g_variable_editing->variable_name()).as_int();
 		
 	} else if(tool() == TOOL_SELECT_OBJECT && !lvl_->editor_highlight()) {
@@ -1616,6 +1616,7 @@ void editor::change_tool(EDIT_TOOL tool)
 			tileset_dialog_.reset(new editor_dialogs::tileset_editor_dialog(*this));
 		}
 		current_dialog_ = tileset_dialog_.get();
+		lvl_->editor_clear_selection();
 		break;
 	}
 	case TOOL_ADD_OBJECT: {
@@ -1833,11 +1834,11 @@ void editor::draw() const
 	}
 	
 	std::vector<GLfloat>& varray = graphics::global_vertex_array();
-	if(property_dialog_ && property_dialog_->get_entity() && property_dialog_->get_entity()->editor_info()) {
+	if(property_dialog_ && property_dialog_.get() == current_dialog_ && property_dialog_->get_entity() && property_dialog_->get_entity()->editor_info()) {
 		glDisable(GL_TEXTURE_2D);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
-		const editor_variable_info* selected_var = variable_info_selected(property_dialog_->get_entity(), xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
+		const editor_variable_info* selected_var = variable_info_selected(property_dialog_->get_entity(), xpos_ + mousex*zoom_, ypos_ + mousey*zoom_, zoom_);
 		foreach(const editor_variable_info& var, property_dialog_->get_entity()->editor_info()->vars()) {
 			const std::string& name = var.variable_name();
 			const editor_variable_info::VARIABLE_TYPE type = var.type();
@@ -1911,7 +1912,7 @@ void editor::draw() const
 		graphics::color selected_color(255, 255, 0, 255);
 		graphics::color normal_color(255, 255, 255, 255);
 
-		if(resizing_top_level_edge || rect_top_edge_selected(lvl_->boundaries(), selectx, selecty)) {
+		if(resizing_top_level_edge || rect_top_edge_selected(lvl_->boundaries(), selectx, selecty, zoom_)) {
 			selected_color.add_to_vector(&carray);
 			selected_color.add_to_vector(&carray);
 		} else {
@@ -1922,7 +1923,7 @@ void editor::draw() const
 		varray.push_back(x1 - xpos_/zoom_); varray.push_back(y1 - ypos_/zoom_);
 		varray.push_back(x2 - xpos_/zoom_); varray.push_back(y1 - ypos_/zoom_);
 
-		if(resizing_left_level_edge || rect_left_edge_selected(lvl_->boundaries(), selectx, selecty)) {
+		if(resizing_left_level_edge || rect_left_edge_selected(lvl_->boundaries(), selectx, selecty, zoom_)) {
 			selected_color.add_to_vector(&carray);
 			selected_color.add_to_vector(&carray);
 		} else {
@@ -1933,7 +1934,7 @@ void editor::draw() const
 		varray.push_back(x1 - xpos_/zoom_); varray.push_back(y1 - ypos_/zoom_);
 		varray.push_back(x1 - xpos_/zoom_); varray.push_back(y2 - ypos_/zoom_);
 
-		if(resizing_right_level_edge || rect_right_edge_selected(lvl_->boundaries(), selectx, selecty)) {
+		if(resizing_right_level_edge || rect_right_edge_selected(lvl_->boundaries(), selectx, selecty, zoom_)) {
 			selected_color.add_to_vector(&carray);
 			selected_color.add_to_vector(&carray);
 		} else {
@@ -1944,7 +1945,7 @@ void editor::draw() const
 		varray.push_back(x2 - xpos_/zoom_); varray.push_back(y1 - ypos_/zoom_);
 		varray.push_back(x2 - xpos_/zoom_); varray.push_back(y2 - ypos_/zoom_);
 
-		if(resizing_bottom_level_edge || rect_bottom_edge_selected(lvl_->boundaries(), selectx, selecty)) {
+		if(resizing_bottom_level_edge || rect_bottom_edge_selected(lvl_->boundaries(), selectx, selecty, zoom_)) {
 			selected_color.add_to_vector(&carray);
 			selected_color.add_to_vector(&carray);
 		} else {
