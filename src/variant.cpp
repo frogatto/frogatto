@@ -663,11 +663,17 @@ void variant::serialize_to_string(std::string& str) const
 		str += "}";
 		break;
 	}
-	case TYPE_STRING:
-		str += "'";
+	case TYPE_STRING: {
+		const char* delim = "'";
+		if(strchr(string_->str.c_str(), '\'')) {
+			delim = "~";
+		}
+
+		str += delim;
 		str += string_->str;
-		str += "'";
+		str += delim;
 		break;
+	}
 	default:
 		assert(false);
 	}
