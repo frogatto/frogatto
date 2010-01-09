@@ -39,7 +39,7 @@ void transition_scene(level& lvl, screen_position& screen_pos, bool transition_o
 	}
 
 	for(int n = 0; n <= 20; ++n) {
-		lvl.process();
+//		lvl.process();
 
 		draw_fn(lvl, screen_pos, transition_out ? (n/20.0) : (1 - n/20.0));
 
