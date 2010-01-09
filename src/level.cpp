@@ -1142,6 +1142,47 @@ void level::draw_debug_solid(int x, int y, int w, int h) const
 	if(preferences::show_debug_hitboxes() == false) {
 		return;
 	}
+
+	const int tile_x = x/TileSize - 2;
+	const int tile_y = y/TileSize - 2;
+
+	for(int xpos = 0; xpos < w/TileSize + 4; ++xpos) {
+		for(int ypos = 0; ypos < h/TileSize + 4; ++ypos) {
+			const tile_pos pos(tile_x + xpos, tile_y + ypos);
+			const tile_solid_info* info = solid_.find(pos);
+			if(info == NULL) {
+				continue;
+			}
+
+			const int xpixel = (tile_x + xpos)*TileSize;
+			const int ypixel = (tile_y + ypos)*TileSize;
+
+			if(info->all_solid) {
+				graphics::draw_rect(rect(xpixel, ypixel, TileSize, TileSize), graphics::color(255, 255, 255, 196));
+			} else {
+				std::vector<GLshort> v;
+				glDisable(GL_TEXTURE_2D);
+				glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+				for(int suby = 0; suby != TileSize; ++suby) {
+					for(int subx = 0; subx != TileSize; ++subx) {
+						if(info->bitmap.test(suby*TileSize + subx)) {
+							v.push_back(xpixel + subx + 1);
+							v.push_back(ypixel + suby + 1);
+						}
+					}
+				}
+
+				if(!v.empty()) {
+					glColor4ub(255, 255, 255, 196);
+					glPointSize(1);
+					glVertexPointer(2, GL_SHORT, 0, &v[0]);
+					glDrawArrays(GL_POINTS, 0, v.size()/2);
+				}
+				glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+				glEnable(GL_TEXTURE_2D);
+			}
+		}
+	}
 }
 
 void level::draw_background(int x, int y, int rotation) const
