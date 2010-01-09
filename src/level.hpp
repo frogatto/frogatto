@@ -148,6 +148,13 @@ public:
 	const std::string& get_background_id() const;
 	void set_background_by_id(const std::string& id);
 
+	//a function to start rebuilding tiles in a background thread.
+	void start_rebuild_tiles_in_background();
+
+	//a function which, if rebuilding tiles has been completed, will update
+	//with the new tiles.
+	void complete_rebuild_tiles_in_background();
+
 	void rebuild_tiles();
 
 	const std::string& title() const { return title_; }
@@ -231,6 +238,7 @@ private:
 
 	void read_compiled_tiles(wml::const_node_ptr node, std::vector<level_tile>::iterator& out);
 
+	void complete_tiles_refresh();
 	void prepare_tiles_for_drawing();
 
 	void do_processing();

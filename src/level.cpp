@@ -1,3 +1,5 @@
+#include <boost/bind.hpp>
+
 #include <algorithm>
 #include <iostream>
 #include <math.h>
@@ -24,6 +26,7 @@
 #include "raster.hpp"
 #include "stats.hpp"
 #include "string_utils.hpp"
+#include "thread.hpp"
 #include "tile_map.hpp"
 #include "unit_test.hpp"
 #include "wml_node.hpp"
@@ -326,34 +329,115 @@ void level::load_save_point(const level& lvl)
 	}
 }
 
+namespace {
+//we allow rebuilding tiles in the background. We only rebuild the tiles
+//one at a time, if more requests for rebuilds come in while we are
+//rebuilding, then queue the requests up.
+
+//the level we're currently building tiles for.
+const level* level_building = NULL;
+
+//record whether we are currently rebuilding tiles, and if we have had
+//another request come in during the current building of tiles.
+bool tile_rebuild_in_progress = false;
+bool tile_rebuild_queued = false;
+
+//a locked flag which is polled to see if tile rebuilding has been completed.
+bool tile_rebuild_complete = false;
+threading::mutex tile_rebuild_complete_mutex;
+
+//the tiles where the thread will store the new tiles.
+std::vector<level_tile> task_tiles;
+
+void build_tiles_thread_function(std::map<int, tile_map> tile_maps) {
+	task_tiles.clear();
+	for(std::map<int, tile_map>::const_iterator i = tile_maps.begin();
+	    i != tile_maps.end(); ++i) {
+		i->second.build_tiles(&task_tiles);
+	}
+
+	threading::lock l(tile_rebuild_complete_mutex);
+	tile_rebuild_complete = true;
+}
+
+}
+
+void level::start_rebuild_tiles_in_background()
+{
+	if(tile_rebuild_in_progress) {
+		tile_rebuild_queued = true;
+		return;
+	}
+
+	level_building = this;
+
+	tile_rebuild_in_progress = true;
+	tile_rebuild_complete = false;
+
+	threading::thread thr(boost::bind(build_tiles_thread_function, tile_maps_));
+	thr.detach();
+}
+
+void level::complete_rebuild_tiles_in_background()
+{
+	if(!tile_rebuild_in_progress) {
+		return;
+	}
+
+	{
+		threading::lock l(tile_rebuild_complete_mutex);
+		if(!tile_rebuild_complete) {
+			return;
+		}
+	}
+
+	if(level_building == this) {
+		tiles_.clear();
+		tiles_.swap(task_tiles);
+
+		complete_tiles_refresh();
+	}
+
+	tile_rebuild_in_progress = false;
+	if(tile_rebuild_queued) {
+		tile_rebuild_queued = false;
+		start_rebuild_tiles_in_background();
+	}
+}
+
 void level::rebuild_tiles()
 {
 	if(editor_tile_updates_frozen_) {
 		return;
 	}
 
-	std::cerr << "rebuild tiles...\n";
-	solid_.clear();
-	standable_.clear();
 	tiles_.clear();
 	for(std::map<int, tile_map>::const_iterator i = tile_maps_.begin(); i != tile_maps_.end(); ++i) {
-		std::cerr << "build tiles...\n";
 		i->second.build_tiles(&tiles_);
 	}
 
-	std::cerr << "adding solids...\n";
+	complete_tiles_refresh();
+}
+
+void level::complete_tiles_refresh()
+{
+	const int start = SDL_GetTicks();
+	std::cerr << "adding solids..." << (SDL_GetTicks() - start) << "\n";
+	solid_.clear();
+	standable_.clear();
 
 	foreach(level_tile& t, tiles_) {
 		add_tile_solid(t);
 		layers_.insert(t.zorder);
 	}
 
-	std::cerr << "sorting...\n";
+	std::cerr << "sorting..." << (SDL_GetTicks() - start) << "\n";
 
 	if(std::adjacent_find(tiles_.rbegin(), tiles_.rend(), level_tile_zorder_pos_comparer()) != tiles_.rend()) {
 		std::sort(tiles_.begin(), tiles_.end(), level_tile_zorder_pos_comparer());
 	}
 	prepare_tiles_for_drawing();
+	std::cerr << "done..." << (SDL_GetTicks() - start) << "\n";
 }
 
 int level::variations(int xtile, int ytile) const
