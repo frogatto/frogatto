@@ -111,6 +111,19 @@ bool entity_collides(level& lvl, const entity& e, MOVE_DIRECTION dir, collision_
 	return false;
 }
 
+namespace {
+rect area_within_entity(const entity& e, const rect& r)
+{
+	if(e.face_right()) {
+		return rect(e.x() + r.x(), e.y() + r.y(), r.w(), r.h());
+	} else {
+		return rect(e.x() + e.current_frame().width() - r.x() - r.w(),
+		            e.y() + e.current_frame().height() - r.y() - r.h(), r.w(), r.h());
+	}
+}
+
+}
+
 bool entity_collides_with_entity(const entity& e, const entity& other, collision_info* info)
 {
 	if((e.solid_dimensions()&other.solid_dimensions()) == 0) {
@@ -124,8 +137,6 @@ bool entity_collides_with_entity(const entity& e, const entity& other, collision
 		return false;
 	}
 
-	const rect area = intersection_rect(our_rect, other_rect);
-
 	const_solid_info_ptr our_solid = e.solid();
 	const_solid_info_ptr other_solid = other.solid();
 	assert(our_solid && other_solid);
@@ -133,15 +144,31 @@ bool entity_collides_with_entity(const entity& e, const entity& other, collision
 	const frame& our_frame = e.current_frame();
 	const frame& other_frame = other.current_frame();
 
-	for(int y = area.y(); y <= area.y2(); ++y) {
-		for(int x = area.x(); x < area.x2(); ++x) {
-			const int our_x = e.face_right() ? x - e.x() : (e.x() + our_frame.width()-1) - x;
-			const int our_y = y - e.y();
-			if(our_solid->solid_at(our_x, our_y, info ? &info->area_id : NULL)) {
-				const int other_x = other.face_right() ? x - other.x() : (other.x() + other_frame.width()-1) - x;
-				const int other_y = y - other.y();
-				if(other_solid->solid_at(other_x, other_y, info ? &info->collide_with_area_id : NULL)) {
-					return true;
+	foreach(const const_solid_map_ptr& our_map, our_solid->solid()) {
+		const rect our_rect = area_within_entity(e, our_map->area());
+		foreach(const const_solid_map_ptr& other_map, other_solid->solid()) {
+			const rect other_rect = area_within_entity(other, other_map->area());
+			if(!rects_intersect(our_rect, other_rect)) {
+				continue;
+			}
+
+			const rect area = intersection_rect(our_rect, other_rect);
+			for(int y = area.y(); y <= area.y2(); ++y) {
+				for(int x = area.x(); x <= area.x2(); ++x) {
+					const int our_x = e.face_right() ? x - (e.x() + our_map->area().x()) : (e.x() + our_frame.width()-1 - our_map->area().x()) - x;
+					const int our_y = y - (e.y() + our_map->area().y());
+					if(our_map->solid_at(our_x, our_y)) {
+						const int other_x = other.face_right() ? x - (other.x() + other_map->area().x()) : (other.x() + other_frame.width()-1 - other_map->area().x()) - x;
+						const int other_y = y - (other.y() + other_map->area().y());
+						if(other_map->solid_at(other_x, other_y)) {
+							if(info) {
+								info->area_id = &our_map->id();
+								info->collide_with_area_id = &other_map->id();
+							}
+
+							return true;
+						}
+					}
 				}
 			}
 		}
