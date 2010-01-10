@@ -7,6 +7,7 @@
 #include "custom_object_functions.hpp"
 #include "custom_object_type.hpp"
 #include "filesystem.hpp"
+#include "formula_constants.hpp"
 #include "object_events.hpp"
 #include "solid_map.hpp"
 #include "string_utils.hpp"
@@ -232,6 +233,8 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	solid_dimensions_(has_solid_ || platform_ ? 0xFFFFFFFF : 0),
 	collide_dimensions_(0xFFFFFFFF )
 {
+	//make it so any formula has these constants defined.
+	const game_logic::constants_loader scope_consts(node->get_child("consts"));
 
 	if(node->has_attr("solid_dimensions")) {
 		solid_dimensions_ = 0;

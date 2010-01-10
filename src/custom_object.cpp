@@ -523,6 +523,10 @@ void custom_object::process(level& lvl)
 	int effective_velocity_x = velocity_x_;
 	int effective_velocity_y = velocity_y_;
 
+	if(effective_velocity_y > 0 && (standing_on_ || stand_info.collide_with)) {
+		effective_velocity_y = 0;
+	}
+
 	if(standing_on_) {
 		effective_velocity_x += (standing_on_->feet_x() - standing_on_prev_x_)*100;
 		effective_velocity_y += (standing_on_->feet_y() - standing_on_prev_y_)*100;
@@ -532,7 +536,9 @@ void custom_object::process(level& lvl)
 		//if we're landing on a new platform, we might have to adjust our
 		//y position to suit its last movement and put us on top of
 		//the platform.
-		effective_velocity_y = stand_info.adjust_y*100;
+
+		effective_velocity_y -= stand_info.adjust_y*100;
+		std::cerr << "ADJUST: " << stand_info.adjust_y << "\n";
 	}
 
 	if(effective_velocity_x || effective_velocity_y) {
@@ -1890,7 +1896,7 @@ void custom_object::set_frame(const std::string& name)
 	frame_->play_sound(this);
 
 	if(entity_collides(level::current(), *this, MOVE_NONE)) {
-		game_logic::map_formula_callable* callable(new game_logic::map_formula_callable(this));
+		game_logic::map_formula_callable* callable(new game_logic::map_formula_callable);
 		callable->add("previous_animation", variant(previous_animation));
 		game_logic::formula_callable_ptr callable_ptr(callable);
 		handle_event(OBJECT_EVENT_CHANGE_ANIMATION_FAILURE, callable);
