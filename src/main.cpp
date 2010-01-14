@@ -4,6 +4,9 @@
 #endif
 #include <GL/gl.h>
 #include <GL/glu.h>
+#ifdef __APPLE__
+#include <OpenGL/OpenGL.h>
+#endif
 #include <algorithm>
 #include <cmath>
 #include <iostream>
@@ -310,6 +313,10 @@ extern "C" int main(int argc, char** argv)
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+#ifdef __APPLE__
+	long swapInterval = 1;
+	CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &swapInterval);
+#endif
 		
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 	//iphone_test();
