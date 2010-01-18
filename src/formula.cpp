@@ -62,6 +62,7 @@ namespace game_logic
 	variant formula_callable::get_value_by_slot(int slot) const
 	{
 		ASSERT_LOG(false, "Could not get value by slot from formula callable " << slot);
+		return variant(0); //so VC++ doesn't complain
 	}
 	
 	map_formula_callable::map_formula_callable(wml::const_node_ptr node)
