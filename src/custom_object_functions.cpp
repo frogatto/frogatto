@@ -949,6 +949,7 @@ public:
 					SDL_Event event;
 					while(SDL_PollEvent(&event)) {
 						switch(event.type) {
+						case SDL_MOUSEBUTTONDOWN:
 						case SDL_KEYDOWN:
 							done = done || dialog_.key_press(event);
 							break;

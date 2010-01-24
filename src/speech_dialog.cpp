@@ -55,20 +55,27 @@ void speech_dialog::move_down()
 bool speech_dialog::key_press(const SDL_Event& event)
 {
 	if(text_char_ == num_chars() && options_.empty() == false) {
-		switch(event.key.keysym.sym) {
-		case SDLK_UP:
-			move_up();
-			break;
-		case SDLK_DOWN:
-			move_down();
-			break;
-		case SDLK_RETURN:
-		case SDLK_SPACE:
-		case SDLK_a:
-		case SDLK_s:
+		if(event.type == SDL_KEYDOWN)
+		{
+			switch(event.key.keysym.sym) {
+			case SDLK_UP:
+				move_up();
+				break;
+			case SDLK_DOWN:
+				move_down();
+				break;
+			case SDLK_RETURN:
+			case SDLK_SPACE:
+			case SDLK_a:
+			case SDLK_s:
+				return true;
+			default:
+				break;
+			}
+		}
+		if(event.type == SDL_MOUSEBUTTONDOWN)
+		{
 			return true;
-		default:
-			break;
 		}
 
 		return false;
