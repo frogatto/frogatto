@@ -46,61 +46,63 @@ void property_editor_dialog::init()
 	add_widget(widget_ptr(new button(widget_ptr(new label("Set Label", graphics::color_white())), boost::bind(&property_editor_dialog::set_label_dialog, this))));
 
 	game_logic::formula_callable* vars = entity_->vars();
-	if(vars) {
-		std::vector<game_logic::formula_input> inputs;
-		vars->get_inputs(&inputs);
-		foreach(const game_logic::formula_input& in, inputs) {
-			const editor_variable_info* var_info = entity_->editor_info() ? entity_->editor_info()->get_var_info(in.name) : NULL;
-
-			if(var_info && (var_info->type() == editor_variable_info::XPOSITION
-			             || var_info->type() == editor_variable_info::YPOSITION)) {
+	if(entity_->editor_info()) {
+		foreach(const editor_variable_info& info, entity_->editor_info()->vars()) {
+			if(info.type() == editor_variable_info::XPOSITION ||
+			   info.type() == editor_variable_info::YPOSITION) {
 				//don't show x/y position as they are directly editable on
 				//the map.
 				continue;
 			}
 
 			std::ostringstream s;
-			s << in.name << ": " << vars->query_value(in.name).to_debug_string();
+			s << info.variable_name() << ": " << vars->query_value(info.variable_name()).to_debug_string();
 			label_ptr lb = label::create(s.str(), graphics::color_white());
 			add_widget(widget_ptr(lb));
 
-			if(var_info && var_info->type() == editor_variable_info::TYPE_TEXT) {
+			if(info.type() == editor_variable_info::TYPE_TEXT) {
 				std::string current_value;
-				variant current_value_var = entity_->query_value(in.name);
+				variant current_value_var = entity_->query_value(info.variable_name());
 				if(current_value_var.is_string()) {
 					current_value = current_value_var.as_string();
 				}
 
 				add_widget(widget_ptr(new button(
 				      widget_ptr(new label(current_value.empty() ? "(set text)" : current_value, graphics::color_white())),
-				      boost::bind(&property_editor_dialog::change_text_property, this, in.name))));
-			} else if(var_info && var_info->type() == editor_variable_info::TYPE_LEVEL) {
+				      boost::bind(&property_editor_dialog::change_text_property, this, info.variable_name()))));
+			} else if(info.type() == editor_variable_info::TYPE_LEVEL) {
 				std::string current_value;
-				variant current_value_var = entity_->query_value(in.name);
+				variant current_value_var = entity_->query_value(info.variable_name());
 				if(current_value_var.is_string()) {
 					current_value = current_value_var.as_string();
 				}
 
 				add_widget(widget_ptr(new button(
 				         widget_ptr(new label(current_value.empty() ? "(set level)" : current_value, graphics::color_white())),
-				         boost::bind(&property_editor_dialog::change_level_property, this, in.name))));
-			} else if(var_info && var_info->type() == editor_variable_info::TYPE_LABEL) {
+				         boost::bind(&property_editor_dialog::change_level_property, this, info.variable_name()))));
+			} else if(info.type() == editor_variable_info::TYPE_LABEL) {
 				std::string current_value;
-				variant current_value_var = entity_->query_value(in.name);
+				variant current_value_var = entity_->query_value(info.variable_name());
 				if(current_value_var.is_string()) {
 					current_value = current_value_var.as_string();
 				}
 
 				add_widget(widget_ptr(new button(
 				         widget_ptr(new label(current_value.empty() ? "(set label)" : current_value, graphics::color_white())),
-				         boost::bind(&property_editor_dialog::change_label_property, this, in.name))));
+				         boost::bind(&property_editor_dialog::change_label_property, this, info.variable_name()))));
 				
+			} else if(info.type() == editor_variable_info::TYPE_BOOLEAN) {
+				variant current_value = entity_->query_value(info.variable_name());
+				std::cerr << "CURRENT VALUE: " << current_value.as_bool() << "\n";
+				add_widget(widget_ptr(new button(
+				         widget_ptr(new label("toggle", graphics::color_white())),
+				         boost::bind(&property_editor_dialog::change_property, this, info.variable_name(), current_value.as_bool() ? -current_value.as_int() : 1))));
 			} else {
 				grid_ptr buttons_grid(new grid(4));
-				buttons_grid->add_col(widget_ptr(new button(widget_ptr(new label("-10", graphics::color_white())), boost::bind(&property_editor_dialog::change_property, this, in.name, -10))));
-				buttons_grid->add_col(widget_ptr(new button(widget_ptr(new label("-1", graphics::color_white())), boost::bind(&property_editor_dialog::change_property, this, in.name, -1))));
-				buttons_grid->add_col(widget_ptr(new button(widget_ptr(new label("+1", graphics::color_white())), boost::bind(&property_editor_dialog::change_property, this, in.name, +1))));
-				buttons_grid->add_col(widget_ptr(new button(widget_ptr(new label("+10", graphics::color_white())), boost::bind(&property_editor_dialog::change_property, this, in.name, +10))));
+				buttons_grid->add_col(widget_ptr(new button(widget_ptr(new label("-10", graphics::color_white())), boost::bind(&property_editor_dialog::change_property, this, info.variable_name(), -10))));
+				buttons_grid->add_col(widget_ptr(new button(widget_ptr(new label("-1", graphics::color_white())), boost::bind(&property_editor_dialog::change_property, this, info.variable_name(), -1))));
+				buttons_grid->add_col(widget_ptr(new button(widget_ptr(new label("+1", graphics::color_white())), boost::bind(&property_editor_dialog::change_property, this, info.variable_name(), +1))));
+				buttons_grid->add_col(widget_ptr(new button(widget_ptr(new label("+10", graphics::color_white())), boost::bind(&property_editor_dialog::change_property, this, info.variable_name(), +10))));
 				add_widget(widget_ptr(buttons_grid));
 			}
 		}
@@ -115,6 +117,7 @@ void property_editor_dialog::set_entity(entity_ptr e)
 
 void property_editor_dialog::change_property(const std::string& id, int change)
 {
+	std::cerr << "CHANGE PROPERTY: " << change << "\n";
 	game_logic::formula_callable* vars = entity_->vars();
 	if(vars) {
 		vars->mutate_value(id, vars->query_value(id) + variant(change));

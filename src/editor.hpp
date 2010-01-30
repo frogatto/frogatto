@@ -56,7 +56,7 @@ public:
 
 	struct enemy_type {
 		static void init(wml::const_node_ptr node);
-		explicit enemy_type(wml::const_node_ptr node);
+		explicit enemy_type(const custom_object_type& type);
 		wml::const_node_ptr node;
 		std::string category;
 		entity_ptr preview_object;

@@ -106,14 +106,6 @@ custom_object::custom_object(wml::const_node_ptr node)
 
 	can_interact_with_ = get_event_handler(OBJECT_EVENT_INTERACT).get() != NULL;
 
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
-	wml::const_node_ptr editor_info = node->get_child("editor_info");
-	if(editor_info) {
-		std::cerr << "CREATE EDITOR INFO\n";
-		set_editor_info(const_editor_entity_info_ptr(new editor_entity_info(editor_info)));
-	}
-#endif
-
 	wml::const_node_ptr text_node = node->get_child("text");
 	if(text_node) {
 		text_.reset(new custom_object_text);
@@ -886,6 +878,11 @@ void custom_object::set_driver_position()
 
 		driver_->set_pos(face_right() ? pos_right : pos_left, y() + type_->passenger_y());
 	}
+}
+
+const_editor_entity_info_ptr custom_object::editor_info() const
+{
+	return type_->editor_info();
 }
 
 int custom_object::zorder() const

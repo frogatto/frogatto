@@ -91,7 +91,7 @@ void merge_into_prototype(wml::node_ptr prototype_node, wml::node_ptr node)
 			continue;
 		}
 
-		if(name == "tmp" || name == "vars" || name == "consts") {
+		if(name == "tmp" || name == "vars" || name == "consts" || name == "editor_info") {
 			//we like to merge in vars nodes into one vars definition
 			//if both the object and prototype have vars definitions.
 			wml::node_ptr target = prototype_node->get_child(name);
@@ -176,6 +176,25 @@ custom_object_type_ptr custom_object_type::create(const std::string& id)
 	}
 }
 
+std::vector<const_custom_object_type_ptr> custom_object_type::get_all()
+{
+	std::vector<const_custom_object_type_ptr> res;
+	std::map<std::string, std::string> file_paths;
+	sys::get_unique_filenames_under_dir("data/objects", &file_paths);
+	for(std::map<std::string, std::string>::const_iterator i = file_paths.begin(); i != file_paths.end(); ++i) {
+		const std::string& fname = i->first;
+		if(fname.size() < 4 || std::string(fname.end()-4, fname.end()) != ".cfg") {
+			continue;
+		}
+
+		const std::string id(fname.begin(), fname.end() - 4);
+		res.push_back(get(id));
+	}
+
+	return res;
+}
+
+
 void custom_object_type::init_event_handlers(wml::const_node_ptr node,
                                              event_handler_map& handlers,
 											 game_logic::function_symbol_table* symbols)
@@ -204,6 +223,7 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	hitpoints_(wml::get_int(node, "hitpoints", 1)),
 	timer_frequency_(wml::get_int(node, "timer_frequency", -1)),
 	zorder_(wml::get_int(node, "zorder")),
+	is_human_(wml::get_bool(node, "is_human", false)),
 	dies_on_inactive_(wml::get_bool(node, "dies_on_inactive", false)),
 	always_active_(wml::get_bool(node, "always_active", false)),
     body_harmful_(wml::get_bool(node, "body_harmful", true)),
@@ -233,6 +253,10 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	solid_dimensions_(has_solid_ || platform_ ? 0xFFFFFFFF : 0),
 	collide_dimensions_(0xFFFFFFFF )
 {
+	if(node->get_child("editor_info")) {
+		editor_info_.reset(new editor_entity_info(node->get_child("editor_info")));
+	}
+
 	//make it so any formula has these constants defined.
 	const game_logic::constants_loader scope_consts(node->get_child("consts"));
 

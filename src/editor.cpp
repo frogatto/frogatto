@@ -25,6 +25,7 @@
 #include "font.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
+#include "formula.hpp"
 #include "frame.hpp"
 #include "grid_widget.hpp"
 #include "group_property_editor_dialog.hpp"
@@ -475,18 +476,32 @@ int selected_property = 0;
 
 void editor::enemy_type::init(wml::const_node_ptr node)
 {
-	wml::node::const_child_iterator i1 = node->begin_child("character");
-	wml::node::const_child_iterator i2 = node->end_child("character");
-	for(; i1 != i2; ++i1) {
-		enemy_types.push_back(editor::enemy_type(i1->second));
+	const std::vector<const_custom_object_type_ptr> types = custom_object_type::get_all();
+	foreach(const_custom_object_type_ptr t, types) {
+		if(t->editor_info()) {
+			enemy_types.push_back(editor::enemy_type(*t));
+		}
 	}
 }
 
-editor::enemy_type::enemy_type(wml::const_node_ptr node)
-  : node(node), category(node->attr("category")),
-    preview_object(entity::build(node)),
-    preview_frame(&preview_object->current_frame())
-{}
+editor::enemy_type::enemy_type(const custom_object_type& type)
+  : category(type.editor_info()->category())
+{
+	wml::node_ptr new_node(new wml::node("character"));
+	new_node->set_attr("type", type.id());
+	new_node->set_attr("custom", "yes");
+	new_node->set_attr("face_right", "false");
+	new_node->set_attr("x", "1500");
+	new_node->set_attr("y", "0");
+
+	if(type.is_human()) {
+		new_node->set_attr("is_human", "true");
+	}
+
+	node = new_node;
+	preview_object = entity::build(node);
+	preview_frame = &preview_object->current_frame();
+}
 
 void editor::tileset::init(wml::const_node_ptr node)
 {
@@ -597,7 +612,6 @@ void editor::process_ghost_objects()
 
 	const size_t num_chars_before = lvl_->get_chars().size();
 	const std::vector<entity_ptr> chars = lvl_->get_chars();
-	std::cerr << "processing " << chars.size() << " ghost chars\n";
 	foreach(const entity_ptr& p, chars) {
 		p->process(*lvl_);
 	}
@@ -1104,26 +1118,22 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 		node->set_attr("y", formatter() << (ctrl_pressed ? anchory_ : round_tile_size(anchory_)));
 		node->set_attr("face_right", face_right_ ? "yes" : "no");
 
-		wml::node_ptr vars = node->get_child("vars");
 		entity_ptr c(entity::build(node));
-		if(vars) {
-			std::map<std::string, std::string> attr;
-			for(wml::node::const_attr_iterator i = vars->begin_attr();
-			    i != vars->end_attr(); ++i) {
-				game_logic::formula_ptr f = game_logic::formula::create_string_formula(i->second);
-				if(f) {
-					attr[i->first] = f->execute(*c).as_string();
-				}
-			}
 
-			for(std::map<std::string, std::string>::const_iterator i = attr.begin(); i != attr.end(); ++i) {
-				vars->set_attr(i->first, i->second);
+		//any vars that require formula initialization are calculated here.
+		std::map<std::string, variant> vars;
+		foreach(const editor_variable_info& info, c->editor_info()->vars()) {
+			if(info.formula()) {
+				vars[info.variable_name()] = info.formula()->execute(*c);
 			}
+		}
 
-			std::cerr << "BUILDING ENTITY...\n";
-			c = entity::build(node);
-			std::cerr << "DONE BUILDING ENTITY: " << (c->editor_info() ? "YES" : "NO");
-			fprintf(stderr, " ENTITY: %p\n", c.get());
+		//we only want to actually set the vars once we've calculated all of
+		//them, to avoid any ordering issues etc. So set them all here.
+		for(std::map<std::string, variant>::const_iterator i = vars.begin();
+		    i != vars.end(); ++i) {
+			game_logic::formula_callable* obj_vars = c->query_value("vars").mutable_callable();
+			obj_vars->mutate_value(i->first, i->second);
 		}
 
 		if(!place_entity_in_level(*lvl_, *c)) {

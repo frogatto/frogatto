@@ -125,6 +125,8 @@ public:
 
 	virtual int current_animation_id() const { return current_animation_id_; }
 
+	virtual const_editor_entity_info_ptr editor_info() const;
+
 	void handle_event(const std::string& event, const formula_callable* context=NULL);
 	void handle_event(int event, const formula_callable* context=NULL);
 

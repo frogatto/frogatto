@@ -8,6 +8,7 @@
 #include "boost/shared_ptr.hpp"
 
 #include "custom_object_callable.hpp"
+#include "editor_variable_info.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
 #include "formula_function.hpp"
@@ -32,6 +33,7 @@ class custom_object_type
 public:
 	static const_custom_object_type_ptr get(const std::string& id);
 	static custom_object_type_ptr create(const std::string& id);
+	static std::vector<const_custom_object_type_ptr> get_all();
 
 	typedef std::vector<game_logic::const_formula_ptr> event_handler_map;
 
@@ -57,6 +59,7 @@ public:
 	game_logic::const_formula_ptr get_event_handler(int event) const;
 
 	int zorder() const { return zorder_; }
+	bool is_human() const { return is_human_;}
 	bool dies_on_inactive() const { return dies_on_inactive_;}
 	bool always_active() const { return always_active_;}
 	bool body_harmful() const { return body_harmful_; }
@@ -124,6 +127,8 @@ public:
 	const_custom_object_type_ptr get_variation(const std::vector<std::string>& variations) const;
 	void load_variations() const;
 
+	const_editor_entity_info_ptr editor_info() const { return editor_info_; }
+
 private:
 	custom_object_callable callable_definition_;
 
@@ -144,6 +149,7 @@ private:
 
 	int zorder_;
 
+	bool is_human_;
 	bool dies_on_inactive_;
 	bool always_active_;
 	bool body_harmful_;
@@ -192,6 +198,8 @@ private:
 
 	std::map<std::string, wml::const_modifier_ptr> variations_;
 	mutable std::map<std::vector<std::string>, const_custom_object_type_ptr> variations_cache_;
+
+	const_editor_entity_info_ptr editor_info_;
 };
 
 #endif

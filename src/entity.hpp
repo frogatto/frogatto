@@ -153,7 +153,7 @@ public:
 
 	void draw_debug_rects() const;
 
-	const_editor_entity_info_ptr editor_info() const { return editor_info_; }
+	virtual const_editor_entity_info_ptr editor_info() const { return const_editor_entity_info_ptr(); }
 
 	virtual entity_ptr clone() const { return entity_ptr(); }
 	virtual entity_ptr backup() const = 0;
@@ -239,8 +239,6 @@ protected:
 	//position is changed.
 	bool move_centipixels(int dx, int dy);
 
-	void set_editor_info(const_editor_entity_info_ptr p) { editor_info_ = p; }
-
 	void set_solid_dimensions(unsigned int dim) { solid_dimensions_ = dim; }
 	void set_collide_dimensions(unsigned int dim) { collide_dimensions_ = dim; }
 
@@ -267,8 +265,6 @@ private:
 	bool respawn_;
 
 	unsigned int solid_dimensions_, collide_dimensions_;
-
-	const_editor_entity_info_ptr editor_info_;
 
 	current_generator_ptr current_generator_;
 

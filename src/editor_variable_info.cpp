@@ -2,11 +2,13 @@
 
 #include "editor_variable_info.hpp"
 #include "foreach.hpp"
+#include "formula.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
 
 editor_variable_info::editor_variable_info(wml::const_node_ptr node)
-  : name_(node->attr("name")), type_(TYPE_INTEGER), info_(node->attr("info"))
+  : name_(node->attr("name")), type_(TYPE_INTEGER), info_(node->attr("info")),
+    formula_(game_logic::formula::create_optional_formula(node->attr("value")))
 {
 	const std::string& type = node->attr("type");
 	if(type == "x") {
@@ -20,6 +22,8 @@ editor_variable_info::editor_variable_info(wml::const_node_ptr node)
 		type_ = TYPE_LABEL;
 	} else if(type == "text") {
 		type_ = TYPE_TEXT;
+	} else if(type == "boolean") {
+		type_ = TYPE_BOOLEAN;
 	}
 }
 
@@ -47,11 +51,15 @@ wml::node_ptr editor_variable_info::write() const
 	case TYPE_TEXT:
 		node->set_attr("type", "text");
 		break;
+	case TYPE_BOOLEAN:
+		node->set_attr("type", "boolean");
+		break;
 	}
 	return node;
 }
 
 editor_entity_info::editor_entity_info(wml::const_node_ptr node)
+  : category_(node->attr("category"))
 {
 	FOREACH_WML_CHILD(var_node, node, "var") {
 		std::cerr << "CREATE VAR INFO...\n";	
@@ -62,6 +70,7 @@ editor_entity_info::editor_entity_info(wml::const_node_ptr node)
 wml::node_ptr editor_entity_info::write() const
 {
 	wml::node_ptr node(new wml::node("editor_info"));
+	node->set_attr("category", category_);
 	foreach(const editor_variable_info& v, vars_) {
 		node->add_child(v.write());
 	}
