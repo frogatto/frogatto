@@ -4,6 +4,7 @@
 #include "asserts.hpp"
 #include "blur.hpp"
 #include "collision_utils.hpp"
+#include "controls.hpp"
 #include "current_generator.hpp"
 #include "custom_object_functions.hpp"
 #include "custom_object.hpp"
@@ -910,13 +911,46 @@ private:
 	}
 };
 
+namespace {
+static int g_in_speech_dialog = 0;
+class in_speech_dialog_tracker {
+public:
+	in_speech_dialog_tracker() : cancelled_(false) {
+		g_in_speech_dialog++;
+	}
+
+	~in_speech_dialog_tracker() {
+		cancel();
+	}
+
+	void cancel() {
+		if(!cancelled_) {
+			g_in_speech_dialog--;
+			cancelled_ = true;
+		}
+	}
+
+private:
+	bool cancelled_;
+};
+}
+
 class speech_dialog_command : public entity_command_callable {
 public:
 	explicit speech_dialog_command(const std::vector<variant>& args)
 	  : args_(args)
 	{}
 	virtual void execute(level& lvl, entity& ob) const {
-		pause_scope pauser;
+//		pause_scope pauser;
+
+		if(g_in_speech_dialog) {
+			return;
+		}
+
+		//make it so the player's controls become locked for the duration of the dialog.
+		controls::local_controls_lock controller_lock;
+
+		in_speech_dialog_tracker dialog_tracker;
 
 		foreach(variant var, args_) {
 			if(var.is_callable()) {
@@ -946,6 +980,9 @@ public:
 
 				bool done = false;
 				while(!done) {
+					lvl.process();
+					lvl.process_draw();
+
 					SDL_Event event;
 					while(SDL_PollEvent(&event)) {
 						switch(event.type) {
@@ -963,6 +1000,7 @@ public:
 				if(options.empty() == false) {
 					const int index = dialog_.option_selected();
 					if(index >= 0 && index < option_commands.size()) {
+						dialog_tracker.cancel();
 						ob.execute_command(option_commands[index]);
 					}
 				}

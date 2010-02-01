@@ -16,6 +16,15 @@ enum CONTROL_ITEM {
 };
 
 void new_level(int starting_cycle, int nplayers, int local_player);
+
+//an object which can lock controls into a specific state for the duration
+//of its scope.
+class local_controls_lock {
+public:
+	explicit local_controls_lock(unsigned char state=0);
+	~local_controls_lock();
+};
+
 void read_local_controls();
 
 void get_control_status(int cycle, int player, bool* output);

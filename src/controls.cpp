@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 
+#include <stack>
 #include <vector>
 
 #include "SDL.h"
@@ -93,19 +94,39 @@ void new_level(int level_starting_cycles, int level_nplayers, int level_local_pl
 	}
 }
 
+namespace {
+std::stack<unsigned char> local_control_locks;
+}
+
+local_controls_lock::local_controls_lock(unsigned char state)
+{
+	local_control_locks.push(state);
+}
+
+local_controls_lock::~local_controls_lock()
+{
+	local_control_locks.pop();
+}
+
 void read_local_controls()
 {
 	if(local_player < 0 || local_player >= nplayers) {
 		return;
 	}
 
+
 	unsigned char state = 0;
-	if(keyboard()[SDLK_UP] || joystick::up() || iphone_controls::up()) { state |= (1 << CONTROL_UP); }
-	if(keyboard()[SDLK_DOWN] || joystick::down() || iphone_controls::down()) { state |= (1 << CONTROL_DOWN); }
-	if(keyboard()[SDLK_LEFT] || joystick::left() || iphone_controls::left()) { state |= (1 << CONTROL_LEFT); }
-	if(keyboard()[SDLK_RIGHT] || joystick::right() || iphone_controls::right()) { state |= (1 << CONTROL_RIGHT); }
-	if(keyboard()[SDLK_s] || joystick::button(0) || joystick::button(2) || iphone_controls::attack()) { state |= (1 << CONTROL_ATTACK); }
-	if(keyboard()[SDLK_a] || joystick::button(1) || joystick::button(3) || iphone_controls::jump()) { state |= (1 << CONTROL_JUMP); }
+	if(local_control_locks.empty()) {
+		if(keyboard()[SDLK_UP] || joystick::up() || iphone_controls::up()) { state |= (1 << CONTROL_UP); }
+		if(keyboard()[SDLK_DOWN] || joystick::down() || iphone_controls::down()) { state |= (1 << CONTROL_DOWN); }
+		if(keyboard()[SDLK_LEFT] || joystick::left() || iphone_controls::left()) { state |= (1 << CONTROL_LEFT); }
+		if(keyboard()[SDLK_RIGHT] || joystick::right() || iphone_controls::right()) { state |= (1 << CONTROL_RIGHT); }
+		if(keyboard()[SDLK_s] || joystick::button(0) || joystick::button(2) || iphone_controls::attack()) { state |= (1 << CONTROL_ATTACK); }
+		if(keyboard()[SDLK_a] || joystick::button(1) || joystick::button(3) || iphone_controls::jump()) { state |= (1 << CONTROL_JUMP); }
+	} else {
+		//we have the controls locked into a specific state.
+		state = local_control_locks.top();
+	}
 
 	controls[local_player].push_back(state);
 	highest_confirmed[local_player]++;
