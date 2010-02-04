@@ -22,6 +22,7 @@
 #include "texture.hpp"
 #include "message_dialog.hpp"
 #include "options_dialog.hpp"
+#include "playable_custom_object.hpp"
 #include "random.hpp"
 #include "raster_distortion.hpp"
 #include "sound.hpp"
@@ -340,11 +341,19 @@ private:
 class spawn_command : public entity_command_callable
 {
 public:
-	spawn_command(const std::string& type, int x, int y, bool face_right, variant instantiation_commands, bool custom)
-	  : type_(type), x_(x), y_(y), face_right_(face_right), instantiation_commands_(instantiation_commands), custom_(custom)
+	spawn_command(const std::string& type, int x, int y, bool face_right, variant instantiation_commands, bool player)
+	  : type_(type), x_(x), y_(y), face_right_(face_right), instantiation_commands_(instantiation_commands), player_(player)
 	{}
 	virtual void execute(level& lvl, entity& ob) const {
 		custom_object* obj = new custom_object(type_, x_, y_, face_right_);
+		
+		if(player_) {
+			//make a playable version of this object
+			custom_object* player = new playable_custom_object(*obj);
+			delete obj;
+			obj = player;
+		}
+
 		obj->set_level(lvl);
 		entity_ptr e = obj;
 		lvl.add_character(e);
@@ -373,13 +382,13 @@ private:
 	int x_, y_;
 	variant instantiation_commands_;
 	bool face_right_;
-	bool custom_;
+	bool player_;
 };
 
 class spawn_function : public function_expression {
 public:
-	spawn_function(const args_list& args, bool custom)
-	  : function_expression("spawn", args, 4, 5), custom_(custom) {
+	spawn_function(const args_list& args, bool player)
+	  : function_expression("spawn", args, 4, 5), player_(player) {
 	}
 
 private:
@@ -390,10 +399,10 @@ private:
 		                 args()[2]->evaluate(variables).as_int(),
 		                 args()[3]->evaluate(variables).as_int() > 0,
 						 args().size() > 4 ? args()[4]->evaluate(variables) : variant(),
-						 custom_));
+						 player_));
 	}
 
-	bool custom_;
+	bool player_;
 };
 
 class object_function : public function_expression {
@@ -1716,9 +1725,9 @@ expression_ptr custom_object_function_symbol_table::create_function(
 	if(fn == "execute") {
 		return expression_ptr(new execute_function(args));
 	} else if(fn == "spawn") {
-		return expression_ptr(new spawn_function(args, true));
-	} else if(fn == "char") {
 		return expression_ptr(new spawn_function(args, false));
+	} else if(fn == "spawn_player") {
+		return expression_ptr(new spawn_function(args, true));
 	} else if(fn == "object") {
 		return expression_ptr(new object_function(args));
 	} else if(fn == "board_vehicle") {
