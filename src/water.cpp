@@ -126,8 +126,8 @@ void water::add_wave(const point& p, double xvelocity, double height, double len
 bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 {
 	const graphics::color waterline_color(250, 240, 205, 255);
-	const graphics::color shallowwater_color(91, 169, 255, 140);
-	const graphics::color deepwater_color(91, 169, 143, 153);
+	const graphics::color shallowwater_color(0, 51, 61, 140);
+	const graphics::color deepwater_color(0, 51, 61, 153);
 	const SDL_Rect waterline_rect = {a.rect_.x(), a.rect_.y(), a.rect_.w(), 2};
 	const SDL_Rect underwater_rect = {a.rect_.x(), a.rect_.y(), a.rect_.w(), a.rect_.h()};
 
@@ -173,29 +173,21 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 			glDisable(GL_TEXTURE_2D);
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
-			glColor4ub(91, 169, 143, 153);
+			glColor4ub(0, 51, 61, 153);
 			std::vector<GLfloat>& varray = graphics::global_vertex_array();
-			std::vector<GLfloat>& carray = graphics::global_texcoords_array(); //using texcoord array for colors instead
 			varray.clear();
-			carray.clear();
 			for(int xpos = begin_x; xpos != end_x; ++xpos) {
 				const int index = xpos - x;
 				ASSERT_INDEX_INTO_VECTOR(index, heights);
 				const GLfloat ypos = a.rect_.y() - heights[index];
 
-				deepwater_color.add_to_vector(&carray);
 				varray.push_back(xpos); varray.push_back(underwater_rect.y + 100);
-				shallowwater_color.add_to_vector(&carray);
 				varray.push_back(xpos); varray.push_back(ypos);
 			}
-			glEnableClientState(GL_COLOR_ARRAY);
 			glVertexPointer(2, GL_FLOAT, 0, &varray.front());
-			glColorPointer(4, GL_FLOAT, 0, &carray.front());
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
-			glDisableClientState(GL_COLOR_ARRAY);
 
 			varray.clear();
-			deepwater_color.set_as_current_color();
 			varray.push_back(begin_x);
 			varray.push_back(underwater_rect.y + 100);
 			varray.push_back(end_x);
@@ -220,6 +212,18 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 			glVertexPointer(2, GL_FLOAT, 0, &varray.front());
 			glDrawArrays(GL_LINE_STRIP, 0, varray.size()/2);
 
+			//draw a second line, in a different color, just below the first
+			glColor4f(0.0, 0.9, 0.75, 0.5);
+			varray.clear();
+			for(int xpos = begin_x; xpos != end_x; ++xpos) {
+				const int index = xpos - x;
+				ASSERT_INDEX_INTO_VECTOR(index, heights);
+				const GLfloat ypos = a.rect_.y() - heights[index] +2;
+				varray.push_back(xpos);
+				varray.push_back(ypos);
+			}
+			glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+			glDrawArrays(GL_LINE_STRIP, 0, varray.size()/2);
 		}
 	}
 
@@ -238,20 +242,11 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 			waterline_rect.x + waterline_rect.w, underwater_rect.y + underwater_rect.h
 		};
 		
-		std::vector<GLfloat>& carray = graphics::global_texcoords_array(); //using texcoord array for colors instead
-		carray.clear();
-		shallowwater_color.add_to_vector(&carray);
-		shallowwater_color.add_to_vector(&carray);
-		for (int i = 0; i < 4; i++)
-			deepwater_color.add_to_vector(&carray);
-		
-		glEnableClientState(GL_COLOR_ARRAY);
+		glColor4ub(0, 51, 61, 153);
 		glVertexPointer(2, GL_FLOAT, 0, vertices);
-		glColorPointer(4, GL_FLOAT, 0, &carray.front());
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, sizeof(vertices)/sizeof(GLfloat)/2);
-		glDisableClientState(GL_COLOR_ARRAY);
 
-	glDisable(GL_LINE_SMOOTH);
+		glDisable(GL_LINE_SMOOTH);
 
 		glLineWidth(2.0);
 		glColor4f(1.0, 1.0, 1.0, 1.0);
@@ -261,6 +256,16 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 		};
 		glVertexPointer(2, GL_FLOAT, 0, varray);
 		glDrawArrays(GL_LINES, 0, 2);
+		
+		//draw a second line, in a different color, just below the first
+		glColor4f(0.0, 0.9, 0.75, 0.5);
+		GLfloat varray2[] = {
+			waterline_rect.x, waterline_rect.y+2,
+			waterline_rect.x + waterline_rect.w, waterline_rect.y+2
+		};
+		glVertexPointer(2, GL_FLOAT, 0, varray2);
+		glDrawArrays(GL_LINES, 0, 2);
+	
 	}
 
 	glColor4f(1.0, 1.0, 1.0, 1.0);
