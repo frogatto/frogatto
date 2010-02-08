@@ -210,9 +210,12 @@ void frame::draw(int x, int y, bool face_right, bool upside_down, int time, int 
 		return;
 	}
 
+	graphics::queue_blit_texture(texture_, x, y, width()*(face_right ? 1 : -1), height()*(upside_down ? -1 : 1), rotate, rect[0], rect[1], rect[2], rect[3]);
+	graphics::flush_blit_texture();
+	
 	//the last 4 params are the rectangle of the single, specific frame
-	graphics::blit_texture(texture_, x, y, width()*(face_right ? 1 : -1), height()*(upside_down ? -1 : 1), rotate + (face_right ? rotate_ : -rotate_),
-	                       rect[0], rect[1], rect[2], rect[3]);
+	//graphics::blit_texture(texture_, x, y, width()*(face_right ? 1 : -1), height()*(upside_down ? -1 : 1), rotate + (face_right ? rotate_ : -rotate_),
+	 //                      rect[0], rect[1], rect[2], rect[3]);
 }
 
 void frame::draw(int x, int y, const rect& area, bool face_right, bool upside_down, int time, int rotate) const

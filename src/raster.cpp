@@ -19,6 +19,7 @@
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "raster_distortion.hpp"
+#include "rectangle_rotator.hpp"
 
 #include <boost/shared_array.hpp>
 #include <iostream>
@@ -410,7 +411,7 @@ namespace graphics
 namespace {
 const texture* blit_current_texture;
 std::vector<GLfloat> blit_tcqueue;
-std::vector<GLfloat> blit_vqueue;
+std::vector<GLshort> blit_vqueue;
 }
 
 void queue_blit_texture(const texture& tex, int x, int y, int w, int h,
@@ -447,7 +448,7 @@ void queue_blit_texture(const texture& tex, int x, int y, int w, int h,
 	blit_tcqueue.push_back(y2);
 	blit_tcqueue.push_back(x2);
 	blit_tcqueue.push_back(y2);
-
+	
 	blit_vqueue.push_back(x);
 	blit_vqueue.push_back(y);
 	blit_vqueue.push_back(x + w);
@@ -458,6 +459,58 @@ void queue_blit_texture(const texture& tex, int x, int y, int w, int h,
 	blit_vqueue.push_back(y + h);
 }
 
+void queue_blit_texture(const texture& tex, int x, int y, int w, int h, int rotate,
+						GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2)
+{
+	x &= preferences::xypos_draw_mask;
+	y &= preferences::xypos_draw_mask;
+	
+	if(&tex != blit_current_texture) {
+		flush_blit_texture();
+		blit_current_texture = &tex;
+	}
+	
+	x1 = tex.translate_coord_x(x1);
+	y1 = tex.translate_coord_y(y1);
+	x2 = tex.translate_coord_x(x2);
+	y2 = tex.translate_coord_y(y2);
+	
+	if(w < 0) {
+		std::swap(x1, x2);
+		w *= -1;
+	}
+	
+	if(h < 0) {
+		std::swap(y1, y2);
+		h *= -1;
+	}
+	
+	blit_tcqueue.push_back(x1);
+	blit_tcqueue.push_back(y1);
+	blit_tcqueue.push_back(x2);
+	blit_tcqueue.push_back(y1);
+	blit_tcqueue.push_back(x1);
+	blit_tcqueue.push_back(y2);
+	blit_tcqueue.push_back(x2);
+	blit_tcqueue.push_back(y2);
+	
+	
+	
+	blit_vqueue.push_back(x);
+	blit_vqueue.push_back(y);
+	blit_vqueue.push_back(x + w);
+	blit_vqueue.push_back(y);
+	blit_vqueue.push_back(x);
+	blit_vqueue.push_back(y + h);
+	blit_vqueue.push_back(x + w);
+	blit_vqueue.push_back(y + h);
+
+	rect r(x,y,w,h);
+	GLshort* varray = &blit_vqueue[blit_vqueue.size()-8];
+	rotate_rect(x+(w/2), y+(h/2), rotate, varray); 
+
+}
+	
 void flush_blit_texture()
 {
 	if(!blit_current_texture) {
@@ -465,7 +518,7 @@ void flush_blit_texture()
 	}
 
 	blit_current_texture->set_as_current_texture();
-	glVertexPointer(2, GL_FLOAT, 0, &blit_vqueue.front());
+	glVertexPointer(2, GL_SHORT, 0, &blit_vqueue.front());
 	glTexCoordPointer(2, GL_FLOAT, 0, &blit_tcqueue.front());
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, blit_tcqueue.size()/2);
 

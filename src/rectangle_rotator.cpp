@@ -4,6 +4,33 @@
 #include <math.h>
 #include "unit_test.hpp"
 
+void rotate_rect(GLshort center_x, GLshort center_y, GLshort rotation, GLshort* rect_vertexes){
+
+	point p;
+	
+	float rotate_radians = (rotation * M_PI)/180;
+	
+	//rect r(rect_vertexes[0],rect_vertexes[1],rect_vertexes[4]-rect_vertexes[0],rect_vertexes[5]-rect_vertexes[1]);
+	
+	p = rotate_point_around_origin_with_offset( rect_vertexes[0], rect_vertexes[1], rotate_radians, center_x, center_y );
+	rect_vertexes[0] = p.x;
+	rect_vertexes[1] = p.y;
+	
+	p = rotate_point_around_origin_with_offset( rect_vertexes[2], rect_vertexes[3], rotate_radians, center_x, center_y );
+	rect_vertexes[2] = p.x;
+	rect_vertexes[3] = p.y;
+	
+	p = rotate_point_around_origin_with_offset( rect_vertexes[4], rect_vertexes[5], rotate_radians, center_x, center_y );
+	rect_vertexes[4] = p.x;
+	rect_vertexes[5] = p.y;
+	
+	p = rotate_point_around_origin_with_offset( rect_vertexes[6], rect_vertexes[7], rotate_radians, center_x, center_y );
+	rect_vertexes[6] = p.x;
+	rect_vertexes[7] = p.y;
+	
+}
+
+
 void rotate_rect(const rect& r, GLfloat angle, GLshort* output){
 	
 	point offset;
