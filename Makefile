@@ -35,4 +35,4 @@ wml_schema_test: $(wml_schema_test_objects)
 	
 
 clean:
-	rm *.o game
+	rm -f *.o game
