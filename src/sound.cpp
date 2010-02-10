@@ -8,6 +8,10 @@
 
 #include "sound.hpp"
 
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#include "iphone_sound.h"
+#endif
+
 namespace sound {
 
 namespace {
@@ -40,11 +44,11 @@ void on_music_finished()
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	Mix_FreeMusic(current_music);
 	current_music = NULL;
+#endif
 	if(next_music.empty() == false) {
 		play_music(next_music);
 	}
 	next_music.clear();
-#endif
 }
 
 }
@@ -74,6 +78,9 @@ manager::manager()
 
 	Mix_HookMusicFinished(on_music_finished);
 	Mix_VolumeMusic(MIX_MAX_VOLUME);
+#else
+	iphone_init_music();
+	sound_ok = true;
 #endif
 }
 
@@ -87,6 +94,8 @@ manager::~manager()
 	Mix_HookMusicFinished(NULL);
 	next_music.clear();
 	Mix_CloseAudio();
+#else
+	iphone_kill_music();
 #endif
 }
 
@@ -108,7 +117,7 @@ namespace {
 struct sound_playing {
 	std::string file;
 	const void* object;
-	int		loops;		//not strictly boolean.  -1=true, 0=false
+	int	loops;		//not strictly boolean.  -1=true, 0=false
 };
 
 std::vector<sound_playing> channels_to_sounds_playing;
@@ -232,11 +241,11 @@ void play_music(const std::string& file)
 		return;
 	}
 
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	if(file.empty() || file == current_music_name) {
 		return;
 	}
 
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	if(current_music) {
 		next_music = file;
 		Mix_FadeOutMusic(1000);
@@ -251,6 +260,11 @@ void play_music(const std::string& file)
 	}
 
 	Mix_FadeInMusic(current_music, -1, 1000);
+#else
+	std::string aac_file = file;
+	aac_file.replace(aac_file.length()-3, aac_file.length(), "m4a");
+	iphone_play_music(("music_aac/" + aac_file).c_str());
+	current_music_name = file;
 #endif
 }
 
@@ -264,13 +278,13 @@ void play_music_interrupt(const std::string& file)
 		current_music_name = next_music;
 		next_music.clear();
 	}
-
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
-	Mix_HaltMusic();
-
+	
 	next_music = current_music_name;
 	
 	current_music_name = file;
+
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
+	Mix_HaltMusic();
 	current_music = Mix_LoadMUS(("music/" + file).c_str());
 	if(!current_music) {
 		std::cerr << "Mix_LoadMUS ERROR loading " << file << ": " << Mix_GetError() << "\n";
@@ -278,6 +292,10 @@ void play_music_interrupt(const std::string& file)
 	}
 
 	Mix_PlayMusic(current_music, 1);
+#else
+	std::string aac_file = file;
+	aac_file.replace(aac_file.length()-3, aac_file.length(), "m4a");
+	iphone_play_music(("music_aac/" + aac_file).c_str());
 #endif
 }
 
