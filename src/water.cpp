@@ -168,7 +168,7 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 
 		const int begin_x = std::max(x, a.rect_.x());
 		const int end_x = std::min(x + w, a.rect_.x2());
-		if(end_x > begin_x+1) {
+		if(false && end_x > begin_x+1) {
 			draw_with_waves = true;
 			glDisable(GL_TEXTURE_2D);
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -229,6 +229,8 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 
 	if(draw_with_waves == false) {
 		
+		glBlendFunc(GL_ONE, GL_ONE);
+		glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
 		glDisable(GL_TEXTURE_2D);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		
@@ -242,9 +244,11 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 			waterline_rect.x + waterline_rect.w, underwater_rect.y + underwater_rect.h
 		};
 		
-		glColor4ub(0, 51, 61, 153);
+		glColor4ub(30, 30, 0, 255);
 		glVertexPointer(2, GL_FLOAT, 0, vertices);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, sizeof(vertices)/sizeof(GLfloat)/2);
+		glBlendEquation(GL_FUNC_ADD);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		glDisable(GL_LINE_SMOOTH);
 
