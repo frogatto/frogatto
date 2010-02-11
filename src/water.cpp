@@ -244,7 +244,7 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 			waterline_rect.x + waterline_rect.w, underwater_rect.y + underwater_rect.h
 		};
 		
-		glColor4ub(30, 30, 0, 255);
+		glColor4ub(70, 0, 00, 50);
 		glVertexPointer(2, GL_FLOAT, 0, vertices);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, sizeof(vertices)/sizeof(GLfloat)/2);
 		glBlendEquation(GL_FUNC_ADD);
