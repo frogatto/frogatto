@@ -1162,7 +1162,7 @@ void level::draw(int x, int y, int w, int h) const
 		draw_layer(*layer, x, y, w, h);
 	}
 
-	if(!water_drawn && *layer > water_zorder) {
+	if(!water_drawn) {
 		water_->draw(x, y, w, h);
 			water_drawn = true;
 	}
@@ -1396,8 +1396,12 @@ void level::do_processing()
 
 	const int ActivationDistance = 700;
 
-	foreach(entity_ptr c, active_chars_) {
-		c->process(*this);
+	std::vector<entity_ptr> active_chars = active_chars_;
+	foreach(entity_ptr c, active_chars) {
+		if(!c->destroyed()) {
+			c->process(*this);
+		}
+
 		if(c->destroyed() && !c->is_human()) {
 			if(player_ && c->get_id() != -1) {
 				player_->is_human()->object_destroyed(id(), c->get_id());
