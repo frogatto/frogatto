@@ -244,11 +244,11 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 	GLshort y1 = y + (bg.yoffset+offset_.y)*ScaleImage - (y*bg.yscale)/100;
 	GLshort y2 = y1 + (bg.y2 - bg.y1)*ScaleImage;
 
-	if(y2 <= y) {
+	if(y2 <= y || y2 <= area.y()) {
 		return;
 	}
 
-	if(y1 > y + area.h()) {
+	if(y1 > area.y2()) {
 		return;
 	}
 
