@@ -701,14 +701,14 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles, const rect* r) const
 	std::map<point_zorder, level_object_ptr> different_zorder_multi_pattern_matches;
 
 	foreach(const multi_tile_pattern* p, multi_patterns_) {
-		for(int y = -1; y <= static_cast<int>(map_.size()); ++y) {
+		for(int y = -p->height(); y < static_cast<int>(map_.size()) + p->height(); ++y) {
 			const int ypos = ypos_ + y*TileSize;
 	
 			if(r && ypos < r->y() || r && ypos > r->y2()) {
 				continue;
 			}
 
-			for(int x = -1; x <= width; ++x) {
+			for(int x = -p->height(); x < width + p->width(); ++x) {
 				apply_matching_multi_pattern(x, y, *p, multi_pattern_matches, different_zorder_multi_pattern_matches);
 			}
 		}
