@@ -230,7 +230,11 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	if(draw_with_waves == false) {
 		
 		glBlendFunc(GL_ONE, GL_ONE);
+		#if GL_OES_blend_subtract
+		glBlendEquationOES(GL_FUNC_REVERSE_SUBTRACT_OES);
+		#else
 		glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
+		#endif
 		glDisable(GL_TEXTURE_2D);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		
@@ -247,7 +251,11 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 		glColor4ub(70, 0, 00, 50);
 		glVertexPointer(2, GL_FLOAT, 0, vertices);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, sizeof(vertices)/sizeof(GLfloat)/2);
+		#if GL_OES_blend_subtract
+		glBlendEquationOES(GL_FUNC_ADD_OES);
+		#else
 		glBlendEquation(GL_FUNC_ADD);
+		#endif
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		glDisable(GL_LINE_SMOOTH);
