@@ -93,6 +93,16 @@ background::background(const wml::const_node_ptr& node)
 		bg.color[2] = wml::get_attr<GLfloat>(layer_node, "blue", 1.0);
 		bg.color[3] = wml::get_attr<GLfloat>(layer_node, "alpha", 1.0);
 
+		if(layer_node->has_attr("color_above")) {
+			bg.color_above.reset(new SDL_Color);
+			*bg.color_above = string_to_color(layer_node->attr("color_above"));
+		}
+
+		if(layer_node->has_attr("color_below")) {
+			bg.color_below.reset(new SDL_Color);
+			*bg.color_below = string_to_color(layer_node->attr("color_below"));
+		}
+
 		bg.y1 = wml::get_attr<int>(layer_node, "y1");
 		bg.y2 = wml::get_attr<int>(layer_node, "y2");
 
@@ -129,6 +139,15 @@ wml::node_ptr background::write() const
 		node->set_attr("blue", formatter() << bg.color[2]);
 		node->set_attr("alpha", formatter() << bg.color[3]);
 
+		if(bg.color_above) {
+			sprintf(buf, "%02x%02x%02x", bg.color_above->r, bg.color_above->g, bg.color_above->b);
+			node->set_attr("color_above", buf);
+		}
+
+		if(bg.color_below) {
+			sprintf(buf, "%02x%02x%02x", bg.color_below->r, bg.color_below->g, bg.color_below->b);
+			node->set_attr("color_below", buf);
+		}
 		if(bg.foreground) {
 			node->set_attr("foreground", "true");
 		}
@@ -258,6 +277,42 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 	if(y1 < area.y()) {
 		v1 += (GLfloat(area.y() - y1)/GLfloat(y2 - y1))*(v2 - v1);
 		y1 = area.y();
+	}
+
+	if(y1 > area.y() && bg.color_above) {
+		glEnable(GL_SCISSOR_TEST);
+
+		const int xpos = area.x() - x;
+		const int ypos = y1 - y;
+		const int width = area.w();
+		const int height = y1 - area.y();
+#if TARGET_OS_IPHONE
+		glScissor(graphics::screen_width() - ypos, xpos, height, width);
+#else
+		glScissor(xpos, graphics::screen_height() - ypos, width, height);
+#endif
+		glClearColor(bg.color_above->r, bg.color_above->g, bg.color_above->b, 0.0);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glDisable(GL_SCISSOR_TEST);
+	}
+
+	if(y2 < area.y() + area.h() && bg.color_below) {
+		glEnable(GL_SCISSOR_TEST);
+
+		const int xpos = area.x() - x;
+		const int ypos = area.y() + area.h() - y;
+		const int width = area.w();
+		const int height = area.y() + area.h() - y2;
+
+#if TARGET_OS_IPHONE
+		glScissor(graphics::screen_width() - ypos, xpos, height, width);
+#else
+		glScissor(xpos, graphics::screen_height() - ypos, width, height);
+#endif
+
+		glClearColor(bg.color_below->r, bg.color_below->g, bg.color_below->b, 0.0);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glDisable(GL_SCISSOR_TEST);
 	}
 
 	if(y2 > area.y() + area.h()) {
