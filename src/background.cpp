@@ -187,7 +187,7 @@ void background::draw(int x, int y, const rect& area, const std::vector<rect>& o
 		//to transform the iPhone's display, which is fine normally, but
 		//here we have to accomodate the iPhone being "on its side"
 #if TARGET_OS_IPHONE
-		glScissor(dist_from_bottom, 0, graphics::screen_height() - dist_from_bottom, graphics::screen_width());
+		glScissor(dist_from_bottom/2, 0, (graphics::screen_height() - dist_from_bottom)/2, graphics::screen_width()/2);
 #else
 		glScissor(0, dist_from_bottom, graphics::screen_width(), graphics::screen_height() - dist_from_bottom);
 #endif
@@ -195,7 +195,7 @@ void background::draw(int x, int y, const rect& area, const std::vector<rect>& o
 		glClear(GL_COLOR_BUFFER_BIT);
 
 #if TARGET_OS_IPHONE
-		glScissor(0, 0, dist_from_bottom, graphics::screen_width());
+		glScissor(0, 0, dist_from_bottom/2, graphics::screen_width()/2);
 #else
 		glScissor(0, 0, graphics::screen_width(), dist_from_bottom);
 #endif
@@ -287,7 +287,7 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 		const int width = area.w();
 		const int height = y1 - area.y();
 #if TARGET_OS_IPHONE
-		glScissor(graphics::screen_width() - ypos, xpos, height, width);
+		glScissor((graphics::screen_height() - ypos)/2, (graphics::screen_width() - (xpos + width))/2, height/2, width/2);
 #else
 		glScissor(xpos, graphics::screen_height() - ypos, width, height);
 #endif
@@ -305,7 +305,7 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 		const int height = area.y() + area.h() - y2;
 
 #if TARGET_OS_IPHONE
-		glScissor(graphics::screen_width() - ypos, xpos, height, width);
+		glScissor((graphics::screen_height() - ypos)/2, (graphics::screen_width() - (xpos + width))/2, height/2, width/2);
 #else
 		glScissor(xpos, graphics::screen_height() - ypos, width, height);
 #endif
