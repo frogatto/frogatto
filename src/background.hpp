@@ -52,6 +52,8 @@ private:
 		int xoffset;
 		int yoffset;			
 		GLfloat color[4];
+
+		boost::shared_ptr<SDL_Color> color_above, color_below;
 		
 		GLenum mode;			//Do we use the regular 'GL_FUNC_ADD' blend mode, or do we do something special?  Examples:
 								//GL_MAX ->  Max(src,dest) pixels, displays whichever's brighter.  Useful for clouds.
