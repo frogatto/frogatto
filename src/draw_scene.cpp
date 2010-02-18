@@ -214,18 +214,22 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 		const double angle = sin(0.5*3.141592653589*GLfloat(pos.flip_rotate)/1000.0);
 		const int pixels = (fb->w/2)*angle;
 		
+		
 		//first draw black over the sections of the screen which aren't to be drawn to
 		GLshort varray1[8] = {0,0,  pixels,0,  pixels,fb->h,   0,fb->h};
 		GLshort varray2[8] = {fb->w - pixels,0,  fb->w,0,   fb->w,fb->h,  fb->w - pixels,fb->h};
 		glColor4ub(0, 0, 0, 255);
 		glDisable(GL_TEXTURE_2D);
-		glViewport(0, 0, fb->w, fb->h);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);		
 		
+		glViewport(0, 0, fb->w, fb->h);
 		glVertexPointer(2, GL_SHORT, 0, &varray1);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 		glVertexPointer(2, GL_SHORT, 0, &varray2);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 		glEnable(GL_TEXTURE_2D);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glColor4ub(255, 255, 255, 255);
 
 	}
 	
