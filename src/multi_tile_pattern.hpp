@@ -33,6 +33,8 @@ public:
 		std::vector<tile_entry> tiles;
 	};
 
+	const std::string& id() const { return id_; }
+
 	const tile_info& tile_at(int x, int y) const;
 
 	int width() const;

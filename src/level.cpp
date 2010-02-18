@@ -1128,9 +1128,26 @@ void level::draw(int x, int y, int w, int h) const
 
 		while(entity_itor != chars.end() && (*entity_itor)->zorder() <= *layer) {
 			if(!(*entity_itor)->is_human()) {
+				const std::pair<int,int>* scroll_speed = (*entity_itor)->position_scale_millis();
+
+				if(scroll_speed) {
+					glPushMatrix();
+					const int scrollx = scroll_speed->first;
+					const int scrolly = scroll_speed->second;
+
+					const int diffx = ((scrollx - 1000)*x)/1000;
+					const int diffy = ((scrolly - 1000)*y)/1000;
+
+					glTranslatef(diffx, diffy, 0.0);
+				}
+
 				(*entity_itor)->draw();
 				if(editor_) {
 					(*entity_itor)->draw_group();
+				}
+
+				if(scroll_speed) {
+					glPopMatrix();
 				}
 			}
 			++entity_itor;
@@ -1348,6 +1365,12 @@ void level::process_draw()
 
 void level::do_processing()
 {
+	if(cycle_ == 0) {
+		foreach(const entity_ptr& e, chars_) {
+			e->handle_event(OBJECT_EVENT_START_LEVEL);
+		}
+	}
+
 	++cycle_;
 
 	const int ticks = SDL_GetTicks();

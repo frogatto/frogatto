@@ -145,6 +145,8 @@ protected:
 	void set_value(const std::string& key, const variant& value);
 	void set_value_by_slot(int slot, const variant& value);
 
+	const std::pair<int,int>* position_scale_millis() const { return position_scale_millis_.get(); }
+
 private:
 	custom_object& operator=(const custom_object& o);
 	struct Accessor;
@@ -171,6 +173,8 @@ private:
 	int velocity_x_, velocity_y_;
 	int accel_x_, accel_y_;
 	int rotate_;
+
+	boost::scoped_ptr<std::pair<int, int> > position_scale_millis_;
 
 	int zorder_;
 

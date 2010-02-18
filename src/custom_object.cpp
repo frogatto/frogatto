@@ -71,6 +71,10 @@ custom_object::custom_object(wml::const_node_ptr node)
 	shader_(0),
 	always_active_(wml::get_bool(node, "always_active", false))
 {
+	if(node->has_attr("position_scale_x")) {
+		position_scale_millis_.reset(new std::pair<int, int>(wml::get_int(node, "position_scale_x"), wml::get_int(node, "position_scale_y")));
+	}
+
 	vars_->read(node->get_child("vars"));
 
 	set_solid_dimensions(type_->solid_dimensions());
@@ -213,6 +217,11 @@ custom_object::~custom_object()
 wml::node_ptr custom_object::write() const
 {
 	wml::node_ptr res(new wml::node("character"));
+	if(position_scale_millis_.get() != NULL) {
+		res->set_attr("position_scale_x", formatter() << position_scale_millis_->first);
+		res->set_attr("position_scale_y", formatter() << position_scale_millis_->second);
+	}
+
 	if(draw_color_) {
 		res->set_attr("draw_color", draw_color_->to_string());
 	}
@@ -352,10 +361,13 @@ void custom_object::draw() const
 		draw_color_->to_color().set_as_current_color();
 	}
 
+	const int draw_x = x();
+	const int draw_y = y();
+
 	if(!draw_area_.get()) {
-		frame_->draw(x(), y(), face_right(), upside_down(), time_in_frame_, rotate_);
+		frame_->draw(draw_x, draw_y, face_right(), upside_down(), time_in_frame_, rotate_);
 	} else {
-		frame_->draw(x(), y(), *draw_area_, face_right(), upside_down(), time_in_frame_, rotate_);
+		frame_->draw(draw_x, draw_y, *draw_area_, face_right(), upside_down(), time_in_frame_, rotate_);
 	}
 
 	if(blur_) {
@@ -369,7 +381,7 @@ void custom_object::draw() const
 			while(!transform.fits_in_color()) {
 				transform = transform - transform.to_color();
 				transform.to_color().set_as_current_color();
-				frame_->draw(x(), y(), face_right(), upside_down(), time_in_frame_, rotate_);
+				frame_->draw(draw_x, draw_y, face_right(), upside_down(), time_in_frame_, rotate_);
 			}
 
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -389,7 +401,7 @@ void custom_object::draw() const
 	}
 
 	if(text_ && text_->font) {
-		text_->font->draw(x(), y(), text_->text);
+		text_->font->draw(draw_x, draw_y, text_->text);
 	}
 
 #ifndef SDL_VIDEO_OPENGL_ES
@@ -1622,6 +1634,24 @@ void custom_object::set_value(const std::string& key, const variant& value)
 
 			handle_event(OBJECT_EVENT_CHANGE_SOLID_DIMENSIONS_FAIL, callable);
 		}
+	} else if(key == "xscale" || key == "yscale") {
+		if(position_scale_millis_.get() == NULL) {
+			position_scale_millis_.reset(new std::pair<int,int>(1000,1000));
+		}
+
+		const int v = value.as_int();
+
+		if(key == "xscale") {
+			const int current = (position_scale_millis_->first*x())/1000;
+			const int new_value = (v*current)/1000;
+			set_x(new_value);
+			position_scale_millis_->first = v;
+		} else {
+			const int current = (position_scale_millis_->second*y())/1000;
+			const int new_value = (v*current)/1000;
+			set_y(new_value);
+			position_scale_millis_->second = v;
+		}
 	} else {
 		vars_->add(key, value);
 	}
@@ -1955,6 +1985,14 @@ bool custom_object::is_active(const rect& screen_area) const
 		return rects_intersect(*activation_area_, screen_area);
 	}
 
+	if(position_scale_millis_.get() != NULL) {
+		const int diffx = ((position_scale_millis_->first - 1000)*screen_area.x())/1000;
+		const int diffy = ((position_scale_millis_->second - 1000)*screen_area.y())/1000;
+		rect screen(screen_area.x() - diffx, screen_area.y() - diffy,
+					screen_area.w(), screen_area.h());
+		const rect& area = frame_rect();
+		return rects_intersect(screen, area);
+	}
 
 	const rect& area = frame_rect();
 	if(area.x() < screen_area.x2() + 100 &&

@@ -60,6 +60,8 @@ public:
 	int y() const { return y_/100 - (y_ < 0 && y_%100 ? 1 : 0); }
 	virtual int zorder() const { return 0; }
 
+	virtual const std::pair<int,int>* position_scale_millis() const { return 0; }
+
 	int centi_x() const { return x_; }
 	int centi_y() const { return y_; }
 

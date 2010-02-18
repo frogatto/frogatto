@@ -251,7 +251,7 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	platform_(solid_info::create_platform(node)),
 	has_solid_(solid_ || use_image_for_collisions_),
 	solid_dimensions_(has_solid_ || platform_ ? 0xFFFFFFFF : 0),
-	collide_dimensions_(0xFFFFFFFF )
+	collide_dimensions_(0xFFFFFFFF)
 {
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	if(node->get_child("editor_info")) {

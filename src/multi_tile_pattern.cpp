@@ -62,6 +62,7 @@ void multi_tile_pattern::load(wml::const_node_ptr node)
 multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr node)
   : id_(node->attr("id")), width_(-1), height_(-1), chance_(wml::get_int(node, "chance", 100))
 {
+	std::cerr << "INIT MTP: " << id_ << "\n";
 	FOREACH_WML_CHILD(alternative_node, node, "alternative") {
 		wml::node_ptr merged(new wml::node("multi_tile_pattern"));
 		wml::merge_attr_over(node, merged);
@@ -117,6 +118,7 @@ multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr node)
 
 			tile_info info;
 			info.re = &get_regex_from_pool(item);
+			fprintf(stderr, "ITEM: '%s' -> %p\n", item.c_str(), info.re);
 
 			foreach(const std::string& m, map_to) {
 				tile_entry entry;

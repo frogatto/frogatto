@@ -1319,6 +1319,8 @@ public:
 	virtual void execute(level& lvl, entity& ob) const {
 		if(place_entity_in_level(lvl, *e_)) {
 			lvl.add_character(e_);
+		} else {
+			ASSERT_LOG(false, "cannot place");
 		}
 	}
 };
@@ -1334,6 +1336,7 @@ private:
 		if(e) {
 			return variant(new add_object_command(e));
 		} else {
+			std::cerr << "OBJECT NOT VALID!\n";
 			return variant();
 		}
 	}
