@@ -261,23 +261,51 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 		glDisable(GL_LINE_SMOOTH);
 
 		glLineWidth(2.0);
-		glColor4f(1.0, 1.0, 1.0, 1.0);
-		GLfloat varray[] = {
-			waterline_rect.x, waterline_rect.y,
-			waterline_rect.x + waterline_rect.w, waterline_rect.y
-		};
-		glVertexPointer(2, GL_FLOAT, 0, varray);
-		glDrawArrays(GL_LINES, 0, 2);
+
+		typedef std::pair<int, int> Segment;
+
+		glEnableClientState(GL_COLOR_ARRAY);
+
+		const int EndSegmentSize = 20;
+
+		foreach(const Segment& seg, a.surface_segments_) {
+			glColor4f(1.0, 1.0, 1.0, 1.0);
+			GLfloat varray[] = {
+				seg.first - EndSegmentSize, waterline_rect.y,
+				seg.first, waterline_rect.y,
+				seg.second, waterline_rect.y,
+				seg.second + EndSegmentSize, waterline_rect.y,
+			};
+			static const unsigned char vcolors[] = {
+				255, 255, 255, 0,
+				255, 255, 255, 255,
+				255, 255, 255, 255,
+				255, 255, 255, 0,
+			};
+			glVertexPointer(2, GL_FLOAT, 0, varray);
+			glColorPointer(4, GL_UNSIGNED_BYTE, 0, vcolors);
+			glDrawArrays(GL_LINE_STRIP, 0, 4);
 		
-		//draw a second line, in a different color, just below the first
-		glColor4f(0.0, 0.9, 0.75, 0.5);
-		GLfloat varray2[] = {
-			waterline_rect.x, waterline_rect.y+2,
-			waterline_rect.x + waterline_rect.w, waterline_rect.y+2
-		};
-		glVertexPointer(2, GL_FLOAT, 0, varray2);
-		glDrawArrays(GL_LINES, 0, 2);
-	
+			//draw a second line, in a different color, just below the first
+			glColor4f(0.0, 0.9, 0.75, 0.5);
+			GLfloat varray2[] = {
+				seg.first - EndSegmentSize, waterline_rect.y+2,
+				seg.first, waterline_rect.y+2,
+				seg.second, waterline_rect.y+2,
+				seg.second + EndSegmentSize, waterline_rect.y+2,
+			};
+			static const unsigned char vcolors2[] = {
+				0, 230, 200, 0,
+				0, 230, 200, 128,
+				0, 230, 200, 128,
+				0, 230, 200, 0,
+			};
+			glVertexPointer(2, GL_FLOAT, 0, varray2);
+			glColorPointer(4, GL_UNSIGNED_BYTE, 0, vcolors2);
+			glDrawArrays(GL_LINE_STRIP, 0, 4);
+		}
+
+		glDisableClientState(GL_COLOR_ARRAY);
 	}
 
 	glColor4f(1.0, 1.0, 1.0, 1.0);

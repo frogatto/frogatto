@@ -74,10 +74,6 @@ void water_particle_system::draw(const rect& screen_area, const entity& e) const
 		return;
 	}
 	
-	glDisable(GL_TEXTURE_2D);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glPointSize(info_.dot_size);
-	glColor4f(info_.rgba[0]/255.0, info_.rgba[1]/255.0, info_.rgba[2]/255.0, info_.rgba[3]/255.0);
 	int offset_x = area.x() - area.x()%info_.repeat_period;
 	if (area.x() < 0) offset_x -= info_.repeat_period;
 	int offset_y = area.y() - area.y()%info_.repeat_period;
@@ -115,9 +111,14 @@ void water_particle_system::draw(const rect& screen_area, const entity& e) const
 	if(vertices.empty()) {
 		return;
 	}
+	glDisable(GL_TEXTURE_2D);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glPointSize(info_.dot_size);
+	glColor4f(info_.rgba[0]/255.0, info_.rgba[1]/255.0, info_.rgba[2]/255.0, info_.rgba[3]/255.0);
 
 	glVertexPointer(2, GL_SHORT, 0, &vertices.front());
 	glDrawArrays(GL_POINTS, 0, vertices.size()/2);
+
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);
 	glColor4f(1.0, 1.0, 1.0, 1.0);
