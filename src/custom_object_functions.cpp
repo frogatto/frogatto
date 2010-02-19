@@ -1319,8 +1319,6 @@ public:
 	virtual void execute(level& lvl, entity& ob) const {
 		if(place_entity_in_level(lvl, *e_)) {
 			lvl.add_character(e_);
-		} else {
-			ASSERT_LOG(false, "cannot place");
 		}
 	}
 };
