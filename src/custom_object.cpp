@@ -1652,6 +1652,11 @@ void custom_object::set_value(const std::string& key, const variant& value)
 			set_y(new_value);
 			position_scale_millis_->second = v;
 		}
+	} else if(key == "type") {
+		const_custom_object_type_ptr p = custom_object_type::get(value.as_string());
+		if(p) {
+			type_ = p;
+		}
 	} else {
 		vars_->add(key, value);
 	}
@@ -1660,6 +1665,13 @@ void custom_object::set_value(const std::string& key, const variant& value)
 void custom_object::set_value_by_slot(int slot, const variant& value)
 {
 	switch(slot) {
+	case CUSTOM_OBJECT_TYPE: {
+		const_custom_object_type_ptr p = custom_object_type::get(value.as_string());
+		if(p) {
+			type_ = p;
+		}
+	}
+		break;
 	case CUSTOM_OBJECT_TIME_IN_ANIMATION:
 		time_in_frame_ = value.as_int();
 		break;
