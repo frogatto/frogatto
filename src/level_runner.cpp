@@ -29,6 +29,13 @@
 #include "wml_utils.hpp"
 
 namespace {
+//The iPhone runs at 40FPS, everywhere else we run at 50FPS
+#if TARGET_OS_IPHONE
+const int FrameTimeInMillis = 25;
+#else
+const int FrameTimeInMillis = 20;
+#endif
+
 int global_pause_time;
 
 typedef boost::function<void(const level&, screen_position&, float)> TransitionFn;
@@ -44,7 +51,7 @@ void transition_scene(level& lvl, screen_position& screen_pos, bool transition_o
 		draw_fn(lvl, screen_pos, transition_out ? (n/20.0) : (1 - n/20.0));
 
 		SDL_GL_SwapBuffers();
-		SDL_Delay(20);
+		SDL_Delay(FrameTimeInMillis);
 	}
 	
 	if(lvl.player()) {
@@ -252,12 +259,12 @@ bool level_runner::play_cycle()
 
 	const bool is_multiplayer = controls::num_players() > 1;
 
-	int desired_end_time = start_time_ + pause_time_ + global_pause_time + cycle*20 + 20;
+	int desired_end_time = start_time_ + pause_time_ + global_pause_time + cycle*FrameTimeInMillis + FrameTimeInMillis;
 
 	if(!is_multiplayer) {
 		const int ticks = SDL_GetTicks();
 		if(desired_end_time < ticks) {
-			const int new_desired_end_time = ticks + 20;
+			const int new_desired_end_time = ticks + FrameTimeInMillis;
 			pause_time_ += new_desired_end_time - desired_end_time;
 			desired_end_time = new_desired_end_time;
 		}
@@ -482,14 +489,14 @@ bool level_runner::play_cycle()
 
 	if(message_dialog::get()) {
 		message_dialog::get()->process();
-		pause_time_ += 20;
+		pause_time_ += FrameTimeInMillis;
 	} else {
 		if (!paused) {
 			const int start_process = SDL_GetTicks();
 			lvl_->process();
 			next_process_ += (SDL_GetTicks() - start_process);
 		} else {
-			pause_time_ += 20;
+			pause_time_ += FrameTimeInMillis;
 		}
 	}
 
