@@ -1490,13 +1490,13 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		const int start_x = centi_x();
 		set_x(value.as_int());
 		if(entity_collides(level::current(), *this, MOVE_NONE)) {
-//			set_centi_x(start_x);
+			set_centi_x(start_x);
 		}
 	} else if(key == "y") {
 		const int start_y = centi_y();
 		set_y(value.as_int());
 		if(entity_collides(level::current(), *this, MOVE_NONE)) {
-//			set_centi_y(start_y);
+			set_centi_y(start_y);
 		}
 	} else if(key == "z" || key == "zorder") {
 		zorder_ = value.as_int();
@@ -1671,7 +1671,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		const int start_x = centi_x();
 		set_x(value.as_int());
 		if(entity_collides(level::current(), *this, MOVE_NONE)) {
-//			set_centi_x(start_x);
+			set_centi_x(start_x);
 		}
 
 		break;
@@ -1681,7 +1681,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		const int start_y = centi_y();
 		set_y(value.as_int());
 		if(entity_collides(level::current(), *this, MOVE_NONE)) {
-//			set_centi_y(start_y);
+			set_centi_y(start_y);
 		}
 
 		break;
