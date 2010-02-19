@@ -1675,7 +1675,14 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	case CUSTOM_OBJECT_TYPE: {
 		const_custom_object_type_ptr p = custom_object_type::get(value.as_string());
 		if(p) {
+			game_logic::formula_variable_storage_ptr old_vars = vars_, old_tmp_vars_ = tmp_vars_;
+
 			type_ = p;
+			vars_.reset(new game_logic::formula_variable_storage(type_->variables())),
+			tmp_vars_.reset(new game_logic::formula_variable_storage(type_->tmp_variables())),
+
+			vars_->add(*old_vars);
+			tmp_vars_->add(*old_tmp_vars_);
 		}
 	}
 		break;
