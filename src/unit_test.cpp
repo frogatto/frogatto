@@ -164,7 +164,15 @@ void run_command_line_benchmark(const std::string& benchmark_name, const std::st
 void run_utility(const std::string& utility_name, const std::vector<std::string>& arg)
 {
 	UtilityProgram util = get_utility_map()[utility_name];
-	ASSERT_LOG(util, "Unknown utility: '" << utility_name << "'");
+	if(!util) {
+		std::string known;
+		for(UtilityMap::const_iterator i = get_utility_map().begin(); i != get_utility_map().end(); ++i) {
+			if(i->second) {
+				known += i->first + " ";
+			}
+		}
+		ASSERT_LOG(false, "Unknown utility: '" << utility_name << "'; known utilities: " << known);
+	}
 	util(arg);
 }
 

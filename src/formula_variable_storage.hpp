@@ -14,6 +14,7 @@ class formula_variable_storage : public formula_callable
 public:
 	formula_variable_storage();
 	explicit formula_variable_storage(const std::map<std::string, variant>& m);
+	explicit formula_variable_storage(const formula_variable_storage& m);
 
 	bool equal_to(const std::map<std::string, variant>& m) const;
 
