@@ -67,6 +67,13 @@ void formula_variable_storage::add(const std::string& key, const variant& value)
 	}
 }
 
+void formula_variable_storage::add(const formula_variable_storage& value)
+{
+	for(std::map<std::string, int>::const_iterator i = value.strings_to_values_.begin(); i != value.strings_to_values_.end(); ++i) {
+		add(i->first, value.values_[i->second]);
+	}
+}
+
 variant formula_variable_storage::get_value(const std::string& key) const
 {
 	std::map<std::string,int>::const_iterator i = strings_to_values_.find(key);
