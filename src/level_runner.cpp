@@ -124,7 +124,9 @@ void iris_scene(const level& lvl, screen_position& screen_pos, float amount) {
 	}
 
 	glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDrawArrays(GL_TRIANGLE_FAN, 0, varray.size()/2);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	glPopMatrix();
 
@@ -157,7 +159,7 @@ void iris_scene(const level& lvl, screen_position& screen_pos, float amount) {
 	glColor4ub(0, 0, 0, 255);
 	glDisable(GL_TEXTURE_2D);
 
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, sizeof(varray2)/sizeof(GLfloat)/2);
 
 	glEnable(GL_TEXTURE_2D);
 
