@@ -944,12 +944,12 @@ private:
 };
 }
 
-class speech_dialog_command : public entity_command_callable {
+class speech_dialog_command : public custom_object_command_callable {
 public:
 	explicit speech_dialog_command(const std::vector<variant>& args)
 	  : args_(args)
 	{}
-	virtual void execute(level& lvl, entity& ob) const {
+	virtual void execute(level& lvl, custom_object& ob) const {
 //		pause_scope pauser;
 
 		if(g_in_speech_dialog) {
@@ -967,6 +967,16 @@ public:
 				if(e) {
 					std::cerr << "set speaker...\n";
 					dialog_.set_speaker_and_flip_side(e);
+				}
+
+				const entity_command_callable* entity_cmd = var.try_convert<const entity_command_callable>();
+				if(entity_cmd) {
+					entity_cmd->execute(lvl, ob);
+				}
+
+				const custom_object_command_callable* obj_cmd = var.try_convert<const custom_object_command_callable>();
+				if(obj_cmd) {
+					obj_cmd->execute(lvl, ob);
 				}
 			}
 
