@@ -97,28 +97,47 @@ private:
 class music_command : public entity_command_callable
 	{
 	public:
-		explicit music_command(const std::string& name)
-		: name_(name)
+		explicit music_command(const std::string& name, const bool loops)
+		: name_(name), loops_(loops)
 		{}
 		virtual void execute(level& lvl, entity& ob) const {
-			sound::play_music_interrupt(name_);
+			if(loops_){
+				sound::play_music(name_);
+			}else{
+				sound::play_music_interrupt(name_);
+			}
 		}
 	private:
 		std::string name_;
+		bool loops_;
 	};
 
 class music_function : public function_expression {
 public:
 	explicit music_function(const args_list& args)
-	: function_expression("music",args,1,1)
+	: function_expression("music",args,1,2)
 	{}
 private:
 	variant execute(const formula_callable& variables) const {
 		return variant(new music_command(
-										 args()[0]->evaluate(variables).as_string()));
+										 args()[0]->evaluate(variables).as_string(),
+										 true));
 	}
 };
-	
+
+	//play music just once, rather than permanently changing the song
+class music_onetime_function : public function_expression {
+public:
+	explicit music_onetime_function(const args_list& args)
+	: function_expression("music_onetime",args,1,2)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new music_command(
+										 args()[0]->evaluate(variables).as_string(),
+										 false));
+	}
+};
 	
 class sound_command : public entity_command_callable
 {
@@ -1759,6 +1778,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new sound_volume_function(args));
 	} else if(fn == "music") {
 		return expression_ptr(new music_function(args));
+	} else if(fn == "music_onetime") {
+		return expression_ptr(new music_onetime_function(args));
 	} else if(fn == "unboard") {
 		return expression_ptr(new unboard_function(args));
 	} else if(fn == "stop_sound") {
