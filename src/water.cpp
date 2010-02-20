@@ -1,3 +1,7 @@
+#ifndef SDL_VIDEO_OPENGL_ES
+#include <GL/glew.h>
+#endif
+
 #include <iostream>
 #include <math.h>
 
@@ -233,7 +237,8 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 		#if GL_OES_blend_subtract
 		glBlendEquationOES(GL_FUNC_REVERSE_SUBTRACT_OES);
 		#else
-		glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
+		if (GLEW_EXT_blend_equation_separate)
+			glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
 		#endif
 		glDisable(GL_TEXTURE_2D);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -254,7 +259,8 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 		#if GL_OES_blend_subtract
 		glBlendEquationOES(GL_FUNC_ADD_OES);
 		#else
-		glBlendEquation(GL_FUNC_ADD);
+		if (GLEW_EXT_blend_equation_separate)
+			glBlendEquation(GL_FUNC_ADD);
 		#endif
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

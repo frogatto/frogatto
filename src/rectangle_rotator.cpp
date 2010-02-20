@@ -2,6 +2,9 @@
 
 #include "rectangle_rotator.hpp"
 #include <math.h>
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 #include "unit_test.hpp"
 
 void rotate_rect(GLshort center_x, GLshort center_y, GLshort rotation, GLshort* rect_vertexes){
