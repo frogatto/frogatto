@@ -35,6 +35,7 @@
 struct custom_object_text {
 	std::string text;
 	const_graphical_font_ptr font;
+	rect dimensions;
 };
 
 custom_object::custom_object(wml::const_node_ptr node)
@@ -112,9 +113,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 
 	wml::const_node_ptr text_node = node->get_child("text");
 	if(text_node) {
-		text_.reset(new custom_object_text);
-		text_->text = text_node->attr("text");
-		text_->font = graphical_font::get(text_node->attr("font"));
+		set_text(text_node->attr("text"), text_node->attr("font"));
 	}
 }
 
@@ -2011,6 +2010,13 @@ bool custom_object::is_active(const rect& screen_area) const
 		return rects_intersect(*activation_area_, screen_area);
 	}
 
+	if(text_) {
+		const rect text_area(x(), y(), text_->dimensions.w(), text_->dimensions.h());
+		if(rects_intersect(screen_area, text_area)) {
+			return true;
+		}
+	}
+
 	if(position_scale_millis_.get() != NULL) {
 		const int diffx = ((position_scale_millis_->first - 1000)*screen_area.x())/1000;
 		const int diffy = ((position_scale_millis_->second - 1000)*screen_area.y())/1000;
@@ -2329,6 +2335,8 @@ void custom_object::set_text(const std::string& text, const std::string& font)
 	text_.reset(new custom_object_text);
 	text_->text = text;
 	text_->font = graphical_font::get(font);
+	ASSERT_LOG(text_->font, "UNKNOWN FONT: " << font);
+	text_->dimensions = text_->font->dimensions(text_->text);
 }
 
 bool custom_object::boardable_vehicle() const
