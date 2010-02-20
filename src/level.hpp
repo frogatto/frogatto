@@ -396,4 +396,6 @@ private:
 	gui_algorithm_ptr gui_algorithm_;
 };
 
+bool entity_in_current_level(const entity* e);
+
 #endif

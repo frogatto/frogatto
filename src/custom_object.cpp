@@ -1488,13 +1488,13 @@ void custom_object::set_value(const std::string& key, const variant& value)
 	} else if(key == "x") {
 		const int start_x = centi_x();
 		set_x(value.as_int());
-		if(entity_collides(level::current(), *this, MOVE_NONE) && std::find(level::current().get_chars().begin(), level::current().get_chars().end(), this) != level::current().get_chars().end()) {
+		if(entity_collides(level::current(), *this, MOVE_NONE) && entity_in_current_level(this)) {
 			set_centi_x(start_x);
 		}
 	} else if(key == "y") {
 		const int start_y = centi_y();
 		set_y(value.as_int());
-		if(entity_collides(level::current(), *this, MOVE_NONE) && std::find(level::current().get_chars().begin(), level::current().get_chars().end(), this) != level::current().get_chars().end()) {
+		if(entity_collides(level::current(), *this, MOVE_NONE) && entity_in_current_level(this)) {
 			set_centi_y(start_y);
 		}
 	} else if(key == "z" || key == "zorder") {
@@ -1623,7 +1623,7 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		const unsigned int old_solid = solid_dimensions();
 		set_solid_dimensions(solid);
 		collision_info collide_info;
-		if(entity_collides(level::current(), *this, MOVE_NONE, &collide_info)) {
+		if(entity_in_current_level(this) && entity_collides(level::current(), *this, MOVE_NONE, &collide_info)) {
 			set_solid_dimensions(old_solid);
 			ASSERT_EQ(entity_collides(level::current(), *this, MOVE_NONE), false);
 
@@ -1695,7 +1695,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	case CUSTOM_OBJECT_X: {
 		const int start_x = centi_x();
 		set_x(value.as_int());
-		if(entity_collides(level::current(), *this, MOVE_NONE) && std::find(level::current().get_chars().begin(), level::current().get_chars().end(), this) != level::current().get_chars().end()) {
+		if(entity_collides(level::current(), *this, MOVE_NONE) && entity_in_current_level(this)) {
 			set_centi_x(start_x);
 		}
 
@@ -1705,7 +1705,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	case CUSTOM_OBJECT_Y: {
 		const int start_y = centi_y();
 		set_y(value.as_int());
-		if(entity_collides(level::current(), *this, MOVE_NONE) && std::find(level::current().get_chars().begin(), level::current().get_chars().end(), this) != level::current().get_chars().end()) {
+		if(entity_collides(level::current(), *this, MOVE_NONE) && entity_in_current_level(this)) {
 			set_centi_y(start_y);
 		}
 

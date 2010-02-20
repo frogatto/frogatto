@@ -2641,6 +2641,12 @@ void level::editor_freeze_tile_updates(bool value)
 	}
 }
 
+bool entity_in_current_level(const entity* e)
+{
+	const level& lvl = level::current();
+	return std::find(lvl.get_chars().begin(), lvl.get_chars().end(), e) != lvl.get_chars().end();
+}
+
 UTILITY(compile_levels)
 {
 	std::cerr << "COMPILING LEVELS...\n";
