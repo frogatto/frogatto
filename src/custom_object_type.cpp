@@ -19,6 +19,8 @@
 #include "unit_test.hpp"
 
 namespace {
+std::string last_loaded_object;
+
 std::map<std::string, std::string> object_file_paths, prototype_file_paths;
 
 typedef std::map<std::string, const_custom_object_type_ptr> object_map;
@@ -284,7 +286,13 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	wml::node::const_child_iterator a1 = node->begin_child("animation");
 	wml::node::const_child_iterator a2 = node->end_child("animation");
 	for(; a1 != a2; ++a1) {
-		boost::shared_ptr<frame> f(new frame(a1->second));
+		boost::shared_ptr<frame> f;
+		try {
+			f.reset(new frame(a1->second));
+		} catch(frame::error&) {
+			ASSERT_LOG(false, "ERROR LOADING FRAME IN OBJECT '" << id_ << "'");
+		}
+
 		if(use_image_for_collisions_) {
 			f->set_image_as_solid();
 		}

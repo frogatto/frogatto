@@ -149,6 +149,12 @@ void frame::build_alpha()
 		const int xbase = img_rect_.x() + current_col*(img_rect_.w()+pad_);
 		const int ybase = img_rect_.y() + current_row*(img_rect_.h()+pad_);
 
+		if(xbase < 0 || ybase < 0 || xbase + img_rect_.w() > texture_.width() ||
+		   ybase + img_rect_.h() > texture_.height()) {
+			std::cerr << "IMAGE RECT FOR FRAME '" << id_ << "' IS INVALID\n";
+			throw error();
+		}
+
 		for(int y = 0; y != img_rect_.h(); ++y) {
 			std::vector<bool>::iterator dst = alpha_.begin() + y*img_rect_.w()*nframes_ + n*img_rect_.w();
 			std::vector<bool>::const_iterator src = texture_.get_alpha_row(xbase, ybase + y);

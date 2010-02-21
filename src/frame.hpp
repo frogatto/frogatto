@@ -16,6 +16,9 @@ class blit_queue;
 class frame
 {
 public:
+	//exception thrown when there's a loading error.
+	struct error {};
+
 	struct collision_area {
 		std::string name;
 		rect area;

@@ -566,6 +566,8 @@ void custom_object::process(level& lvl)
 	collision_info collide_info;
 	collision_info jump_on_info;
 
+	bool is_stuck = false;
+
 	//std::cerr << "velocity_y: " << velocity_y_ << "\n";
 	collide = false;
 	int move_left;
@@ -602,6 +604,7 @@ void custom_object::process(level& lvl)
 						set_x(x() + 1);
 						move_centipixels(0, -move_amount*dir);
 						collide = true;
+						is_stuck = true;
 						break;
 					}
 				}
@@ -634,6 +637,10 @@ void custom_object::process(level& lvl)
 	//this variable handled whether we already landed in our vertical movement
 	//in which case horizontal movement won't consider us to land.
 	bool vertical_landed = false;
+
+	if(is_stuck) {
+		handle_event(OBJECT_EVENT_STUCK);
+	}
 
 	if(collide) {
 		if(effective_velocity_y > 0) {
