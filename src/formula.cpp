@@ -970,6 +970,7 @@ namespace game_logic
 		expression_ptr parse_expression(const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def)
 		{
 			expression_ptr result(parse_expression_internal(i1, i2, symbols, callable_def));
+			result->set_str(std::string(i1->begin, (i2-1)->end));
 			result = optimize_expression(result, symbols, callable_def);
 
 			return result;

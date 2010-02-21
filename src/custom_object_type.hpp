@@ -105,6 +105,7 @@ public:
 
 	bool use_image_for_collisions() const { return use_image_for_collisions_; }
 	bool has_feet() const { return has_feet_; }
+	bool adjust_feet_on_animation_change() const { return adjust_feet_on_animation_change_; }
 
 	const std::map<std::string, variant>& variables() const { return variables_; }
 	const std::map<std::string, variant>& tmp_variables() const { return tmp_variables_; }
@@ -180,6 +181,8 @@ private:
 	bool use_image_for_collisions_;
 
 	bool has_feet_;
+
+	bool adjust_feet_on_animation_change_;
 
 	std::map<std::string, variant> variables_, tmp_variables_;
 	game_logic::map_formula_callable_ptr consts_;

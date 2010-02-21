@@ -32,8 +32,8 @@ public:
 	                wml::get_int(node, "y"),
 	                wml::get_int(node, "w", texture_.width()),
 	                wml::get_int(node, "h", texture_.height())));
-		width_ = base_area.w();
-		height_ = base_area.h();
+		width_ = base_area.w()*2;
+		height_ = base_area.h()*2;
 		int nframes = wml::get_int(node, "frames", 1);
 		if(nframes < 1) {
 			nframes = 1;
@@ -119,7 +119,6 @@ struct simple_particle_system_info {
 		delta_b_(wml::get_int(node, "delta_b", 0)),
 		delta_a_(wml::get_int(node, "delta_a", 0))
 	{
-		irgba_ = graphics::color(node->attr("color")).value();
 	}
 	int spawn_rate_, spawn_rate_random_;
 	int system_time_to_live_;
@@ -130,11 +129,6 @@ struct simple_particle_system_info {
 	int velocity_magnitude_, velocity_magnitude_rand_;
 	int velocity_rotate_, velocity_rotate_rand_;
 	int accel_x_, accel_y_;
-
-	union {
-		uint8_t rgba_[4];
-		uint32_t irgba_;
-	};
 
 	int delta_r_, delta_g_, delta_b_, delta_a_;
 };
@@ -186,8 +180,6 @@ private:
 	struct generation {
 		int members;
 		int created_at;
-
-		GLfloat rgba[4];
 	};
 
 	std::deque<particle> particles_;
@@ -220,11 +212,6 @@ void simple_particle_system::process(const level& lvl, const entity& e)
 			p->velocity[1] += info_.accel_y_/1000.0;
 			++p;
 		}
-
-		gen.rgba[0] += info_.delta_r_/1000.0;
-		gen.rgba[1] += info_.delta_g_/1000.0;
-		gen.rgba[2] += info_.delta_b_/1000.0;
-		gen.rgba[3] += info_.delta_a_/1000.0;
 	}
 
 	int nspawn = info_.spawn_rate_;
@@ -236,12 +223,11 @@ void simple_particle_system::process(const level& lvl, const entity& e)
 	spawn_buildup_ = nspawn%1000;
 	nspawn /= 1000;
 
+	std::cerr << "SPAWNING " << nspawn << " PARTICLES\n";
+
 	generation new_gen;
 	new_gen.members = nspawn;
 	new_gen.created_at = cycle_;
-	for(int n = 0; n != 4; ++n) {
-		new_gen.rgba[n] = info_.rgba_[n]/255.0;
-	}
 
 	generations_.push_back(new_gen);
 
@@ -309,10 +295,10 @@ void simple_particle_system::draw(const rect& area, const entity& e) const
 	varray.clear();
 	tcarray.clear();
 	foreach(const generation& gen, generations_) {
-		glColor4f(gen.rgba[0], gen.rgba[1], gen.rgba[2], gen.rgba[3]);
 		for(int n = 0; n != gen.members; ++n) {
 			const particle_animation* anim = p->anim;
 			const particle_animation::frame_area& f = anim->get_frame(cycle_ - gen.created_at);
+			std::cerr << "DRAW: " << p->pos[0] << ", " << p->pos[1] << " " << f.u1 << " " << f.v1 << " " << f.u2 << " " << f.v2 << "\n";
 			tcarray.push_back(graphics::texture::get_coord_x(f.u1));
 			tcarray.push_back(graphics::texture::get_coord_y(f.v1));
 			varray.push_back(p->pos[0]);
@@ -335,8 +321,6 @@ void simple_particle_system::draw(const rect& area, const entity& e) const
 	glVertexPointer(2, GL_FLOAT, 0, &varray.front());
 	glTexCoordPointer(2, GL_FLOAT, 0, &tcarray.front());
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
-
-	glColor4f(1.0, 1.0, 1.0, 1.0);
 }
 
 particle_system_ptr simple_particle_system_factory::create(const entity& e) const

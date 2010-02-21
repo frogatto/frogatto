@@ -2302,13 +2302,13 @@ void level::set_background_by_id(const std::string& id)
 namespace {
 
 const std::string LevelProperties[] = {
-  "cycle", "player", "local_player", "num_active", "active_chars",
+  "cycle", "player", "local_player", "num_active", "active_chars", "chars",
   "tint", "in_editor",
 };
 
 enum LEVEL_PROPERTY_ID {
 	LEVEL_CYCLE, LEVEL_PLAYER, LEVEL_LOCAL_PLAYER, LEVEL_NUM_ACTIVE,
-	LEVEL_ACTIVE_CHARS, LEVEL_TINT, LEVEL_IN_EDITOR,
+	LEVEL_ACTIVE_CHARS, LEVEL_CHARS, LEVEL_TINT, LEVEL_IN_EDITOR,
 };
 }
 
@@ -2330,6 +2330,14 @@ variant level::get_value_by_slot(int slot) const
 	case LEVEL_NUM_ACTIVE:
 		return variant(active_chars_.size());
 	case LEVEL_ACTIVE_CHARS: {
+		std::vector<variant> v;
+		foreach(const entity_ptr& e, active_chars_) {
+			v.push_back(variant(e.get()));
+		}
+
+		return variant(&v);
+	}
+	case LEVEL_CHARS: {
 		std::vector<variant> v;
 		foreach(const entity_ptr& e, active_chars_) {
 			v.push_back(variant(e.get()));
@@ -2360,6 +2368,13 @@ variant level::get_value(const std::string& key) const
 	} else if(key == "active_chars") {
 		std::vector<variant> v;
 		foreach(const entity_ptr& e, active_chars_) {
+			v.push_back(variant(e.get()));
+		}
+
+		return variant(&v);
+	} else if(key == "chars") {
+		std::vector<variant> v;
+		foreach(const entity_ptr& e, chars_) {
 			v.push_back(variant(e.get()));
 		}
 

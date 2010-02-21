@@ -151,6 +151,8 @@ private:
 	custom_object& operator=(const custom_object& o);
 	struct Accessor;
 
+	void process_frame();
+
 	const_solid_info_ptr calculate_solid() const;
 	const_solid_info_ptr calculate_platform() const;
 

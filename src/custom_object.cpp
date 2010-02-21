@@ -1941,7 +1941,9 @@ void custom_object::set_frame(const std::string& name)
 	const int diff_x = feet_x() - start_x;
 	const int diff_y = feet_y() - start_y;
 
-	move_centipixels(-diff_x*100, -diff_y*100);
+	if(type_->adjust_feet_on_animation_change()) {
+		move_centipixels(-diff_x*100, -diff_y*100);
+	}
 
 	set_frame_no_adjustments(name);
 
