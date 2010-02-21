@@ -159,12 +159,24 @@ public:
 	simple_particle_system(const entity& e, const simple_particle_system_factory& factory);
 	~simple_particle_system() {}
 
-	bool is_destroyed() const { return info_.system_time_to_live_ == 0; }
+	bool is_destroyed() const { return info_.system_time_to_live_ == 0 || info_.spawn_rate_ == 0 && particles_.empty(); }
 	void process(const level& lvl, const entity& e);
 	void draw(const rect& area, const entity& e) const;
 
 private:
-	variant get_value(const std::string& key) const { return variant(); }
+	variant get_value(const std::string& key) const {
+		if(key == "spawn_rate") {
+			return variant(info_.spawn_rate_);
+		} else {
+			return variant();
+		}
+	}
+
+	void set_value(const std::string& key, const variant& value) {
+		if(key == "spawn_rate") {
+			info_.spawn_rate_ = value.as_int();
+		}
+	}
 
 	const simple_particle_system_factory& factory_;
 	simple_particle_system_info info_;
@@ -298,11 +310,18 @@ void simple_particle_system::draw(const rect& area, const entity& e) const
 		for(int n = 0; n != gen.members; ++n) {
 			const particle_animation* anim = p->anim;
 			const particle_animation::frame_area& f = anim->get_frame(cycle_ - gen.created_at);
-			std::cerr << "DRAW: " << p->pos[0] << ", " << p->pos[1] << " " << f.u1 << " " << f.v1 << " " << f.u2 << " " << f.v2 << "\n";
+
+			//draw the first point twice, to allow drawing all particles
+			//in one drawing operation.
 			tcarray.push_back(graphics::texture::get_coord_x(f.u1));
 			tcarray.push_back(graphics::texture::get_coord_y(f.v1));
 			varray.push_back(p->pos[0]);
 			varray.push_back(p->pos[1]);
+			tcarray.push_back(graphics::texture::get_coord_x(f.u1));
+			tcarray.push_back(graphics::texture::get_coord_y(f.v1));
+			varray.push_back(p->pos[0]);
+			varray.push_back(p->pos[1]);
+
 			tcarray.push_back(graphics::texture::get_coord_x(f.u2));
 			tcarray.push_back(graphics::texture::get_coord_y(f.v1));
 			varray.push_back(p->pos[0] + anim->width());
@@ -310,6 +329,12 @@ void simple_particle_system::draw(const rect& area, const entity& e) const
 			tcarray.push_back(graphics::texture::get_coord_x(f.u1));
 			tcarray.push_back(graphics::texture::get_coord_y(f.v2));
 			varray.push_back(p->pos[0]);
+			varray.push_back(p->pos[1] + anim->height());
+
+			//draw the last point twice.
+			tcarray.push_back(graphics::texture::get_coord_x(f.u2));
+			tcarray.push_back(graphics::texture::get_coord_y(f.v2));
+			varray.push_back(p->pos[0] + anim->width());
 			varray.push_back(p->pos[1] + anim->height());
 			tcarray.push_back(graphics::texture::get_coord_x(f.u2));
 			tcarray.push_back(graphics::texture::get_coord_y(f.v2));
