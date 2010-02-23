@@ -18,8 +18,13 @@ namespace sound {
 
 namespace {
 // number of allocated channels, 
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 const size_t NumChannels = 16;
 const int SampleRate = 44100;
+#else
+const size_t NumChannels = 8;
+const int SampleRate = 11025;
+#endif
 
 #ifdef WIN32
 const size_t BufferSize = 4096;
@@ -71,6 +76,7 @@ class sound
 	Uint32 length; /* length of the buffer (in bytes) */
 	sound (const std::string& file = "") : length(0)
 	{
+		if (file == "") return;
 		SDL_AudioSpec spec; /* the audio format of the .wav file */
 		SDL_AudioCVT cvt; /* used to convert .wav to output format when formats differ */
 		Uint8 *tmp_buffer;
@@ -79,6 +85,7 @@ class sound
 			std::cerr << "Could not load sound: " << file << "\n";
 			return; //should maybe die
 		}
+		buffer = boost::shared_ptr<Uint8>(tmp_buffer, SDL_free);
 		/* build the audio converter */
 		int result = SDL_BuildAudioCVT(&cvt, spec.format, spec.channels, spec.freq,
 			mixer.outputSpec.format, mixer.outputSpec.channels, mixer.outputSpec.freq);
@@ -93,17 +100,16 @@ class sound
 			 */
 			cvt.buf = (Uint8 *) SDL_malloc(length * cvt.len_mult); /* allocate conversion buffer */
 			cvt.len = length; /* set conversion buffer length */
-			SDL_memcpy(cvt.buf, tmp_buffer, length); /* copy sound to conversion buffer */
+			SDL_memcpy(cvt.buf, buffer.get(), length); /* copy sound to conversion buffer */
 			if (SDL_ConvertAudio(&cvt) == -1) /* convert the sound */
 			{
 				std::cerr << "Could not convert sound: " << file << "\n";
+				SDL_free(cvt.buf);
 				return; //should maybe die
 			}
-			SDL_free(tmp_buffer); /* free the original (unconverted) buffer */
-			tmp_buffer = cvt.buf; /* point sound buffer to converted buffer */
+			buffer = boost::shared_ptr<Uint8>(cvt.buf, SDL_free); /* point sound buffer to converted buffer */
 			length = cvt.len_cvt; /* set sound buffer's new length */
 		}
-		buffer = boost::shared_ptr<Uint8>(tmp_buffer);
 	}
 	
 	bool operator==(void *p) {return buffer.get() == p;}
