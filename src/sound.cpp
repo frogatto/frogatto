@@ -108,6 +108,17 @@ class sound
 	
 	bool operator==(void *p) {return buffer.get() == p;}
 };
+	
+void sdl_stop_channel (int channel)
+{
+	mixer.channels[channel].position = NULL;  /* indicates no sound playing on channel anymore */
+	mixer.numSoundsPlaying--;
+	if (mixer.numSoundsPlaying == 0)
+	{
+		/* if no sounds left playing, pause audio callback */
+		SDL_PauseAudio(1);
+	}
+}
 
 void sdl_audio_callback (void *userdata, Uint8 * stream, int len)
 {
@@ -136,13 +147,7 @@ void sdl_audio_callback (void *userdata, Uint8 * stream, int len)
 		/* did we finish playing the sound effect ? */
 		if (mixer.channels[i].remaining == 0)
 		{
-			mixer.channels[i].position = NULL;  /* indicates no sound playing on channel anymore */
-			mixer.numSoundsPlaying--;
-			if (mixer.numSoundsPlaying == 0)
-			{
-				/* if no sounds left playing, pause audio callback */
-				SDL_PauseAudio(1);
-			}
+			sdl_stop_channel(i);
 		}
 	}
 }
@@ -347,14 +352,16 @@ void play(const std::string& file, const void* object)
 
 void stop_sound(const std::string& file, const void* object)
 {
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	for(int n = 0; n != channels_to_sounds_playing.size(); ++n) {
 		if(channels_to_sounds_playing[n].object == object &&
 		   channels_to_sounds_playing[n].file == file) {
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 			Mix_HaltChannel(n);
+#else
+			sdl_stop_channel(n);
+#endif
 		}
 	}
-#endif
 }
 	
 void stop_looped_sounds(const void* object)
