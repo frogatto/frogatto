@@ -184,6 +184,18 @@ texture::manager::~manager() {
 
 void texture::clear_textures()
 {
+	std::cerr << "TEXTURES LOADING...\n";
+	texture_map::lock lck(texture_cache);
+	for(texture_map::map_type::const_iterator i = lck.map().begin(); i != lck.map().end(); ++i) {
+		if(!i->second.id_) {
+			continue;
+		}
+
+		std::cerr << "TEXTURE: '" << i->first << "': " << (i->second.id_->init() ? "INIT" : "UNINIT") << "\n";
+	}
+
+	std::cerr << "DONE TEXTURES LOADING\n";
+/*
 	//go through all the textures and clear out the ID's. We only want to
 	//re-initialize each shared ID once.
 	threading::lock lk(texture_registry_mutex());
@@ -202,6 +214,7 @@ void texture::clear_textures()
 			t.initialize();
 		}
 	}
+	*/
 }
 
 texture::texture() : width_(0), height_(0)
@@ -210,15 +223,16 @@ texture::texture() : width_(0), height_(0)
 }
 
 texture::texture(const key& surfs)
-   : width_(0), height_(0), ratio_w_(1.0), ratio_h_(1.0), key_(surfs)
+   : width_(0), height_(0), ratio_w_(1.0), ratio_h_(1.0)
 {
 	add_texture_to_registry(this);
-	initialize();
+	initialize(surfs);
+	get_id();
 }
 
 texture::texture(const texture& t)
   : id_(t.id_), width_(t.width_), height_(t.height_),
-   ratio_w_(t.ratio_w_), ratio_h_(t.ratio_h_), key_(t.key_),
+   ratio_w_(t.ratio_w_), ratio_h_(t.ratio_h_),
    alpha_map_(t.alpha_map_)
 {
 	add_texture_to_registry(this);
@@ -252,18 +266,18 @@ void add_alpha_channel_to_surface(uint8_t* dst_ptr, const uint8_t* src_ptr, size
 }
 
 
-void texture::initialize()
+void texture::initialize(const key& k)
 {
 	assert(graphics_initialized);
-	if(key_.empty() ||
-	   std::find(key_.begin(),key_.end(),surface()) != key_.end()) {
+	if(k.empty() ||
+	   std::find(k.begin(),k.end(),surface()) != k.end()) {
 		return;
 	}
 
 	npot_allowed = is_npot_allowed();
 
-	width_ = key_.front()->w;
-	height_ = key_.front()->h;
+	width_ = k.front()->w;
+	height_ = k.front()->h;
 	alpha_map_.reset(new std::vector<bool>(width_*height_));
 
 	unsigned int surf_width = width_;
@@ -279,11 +293,11 @@ void texture::initialize()
 	}
 
 	surface s(SDL_CreateRGBSurface(SDL_SWSURFACE,surf_width,surf_height,32,SURFACE_MASK));
-	if(key_.size() == 1 && key_.front()->format->Rmask == 0xFF && key_.front()->format->Gmask == 0xFF00 && key_.front()->format->Bmask == 0xFF0000 && key_.front()->format->Amask == 0) {
-		add_alpha_channel_to_surface((uint8_t*)s->pixels, (uint8_t*)key_.front()->pixels, s->w, key_.front()->w, key_.front()->h, key_.front()->pitch);
+	if(k.size() == 1 && k.front()->format->Rmask == 0xFF && k.front()->format->Gmask == 0xFF00 && k.front()->format->Bmask == 0xFF0000 && k.front()->format->Amask == 0) {
+		add_alpha_channel_to_surface((uint8_t*)s->pixels, (uint8_t*)k.front()->pixels, s->w, k.front()->w, k.front()->h, k.front()->pitch);
 	} else {
-		for(key::const_iterator i = key_.begin(); i != key_.end(); ++i) {
-			if(i == key_.begin()) {
+		for(key::const_iterator i = k.begin(); i != k.end(); ++i) {
+			if(i == k.begin()) {
 				SDL_SetAlpha(i->get(), 0, SDL_ALPHA_OPAQUE);
 			} else {
 				SDL_SetAlpha(i->get(), SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
@@ -351,6 +365,7 @@ GLuint texture::get_id() const
 
 		//free the surface.
 		if(!preferences::compiling_tiles) {
+			std::cerr << "RELEASING SURFACE... " << id_->s.get()->refcount << "\n";
 			id_->s = surface();
 		}
 	}

@@ -43,7 +43,7 @@ private:
 		{
 			if (surf != NULL) {
 				 if(surf->refcount == 1) {
-						std::cerr << "FREE SURF: " << (surf->w*surf->h) << "\n";
+						std::cerr << "FREE SURF: " << (int)surf << ": " << (surf->w*surf->h) << "\n";
 				 }
 				 SDL_FreeSurface(surf);
 			}
@@ -58,7 +58,7 @@ public:
 	surface(SDL_Surface *surf) : surface_(surf)
 	{
 		if(surf) {
-			std::cerr << "ALLOCATE SURF: " << (surface_->w*surface_->h) << "\n";
+			std::cerr << "ALLOCATE SURF: " << (int)surf << ": " << (surface_->w*surface_->h) << "\n";
 		}
 	}
 

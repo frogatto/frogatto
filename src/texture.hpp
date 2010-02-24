@@ -68,7 +68,7 @@ public:
 	friend bool operator==(const texture&, const texture&);
 	friend bool operator<(const texture&, const texture&);
 
-	void initialize();
+	void initialize(const key&);
 	explicit texture(const key& surfs);
 
 private:
@@ -97,7 +97,6 @@ private:
 	unsigned int width_, height_;
 	GLfloat ratio_w_, ratio_h_;
 
-	key key_;
 	boost::shared_ptr<std::vector<bool> > alpha_map_;
 };
 

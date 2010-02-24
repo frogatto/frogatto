@@ -8,10 +8,8 @@
 template<typename Key, typename Value>
 class concurrent_cache
 {
-	typedef std::map<Key, Value> map_type;
-	map_type map_;
-	threading::mutex mutex_;
 public:
+	typedef std::map<Key, Value> map_type;
 	size_t size() const { threading::lock l(mutex_); return map_.size(); }
 	Value get(const Key& key) {
 		threading::lock l(mutex_);
@@ -42,6 +40,10 @@ public:
 	private:
 		concurrent_cache& cache_;
 	};
+
+private:
+	map_type map_;
+	threading::mutex mutex_;
 };
 
 #endif
