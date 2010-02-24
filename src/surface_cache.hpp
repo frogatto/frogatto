@@ -24,6 +24,7 @@ namespace surface_cache
 {
 
 surface get(const std::string& key);
+surface get_no_cache(const std::string& key);
 void clear_unused();
 void clear();
 

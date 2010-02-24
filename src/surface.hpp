@@ -13,6 +13,8 @@
 #ifndef SURFACE_HPP_INCLUDED
 #define SURFACE_HPP_INCLUDED
 
+#include <iostream>
+
 #include "SDL.h"
 #include "scoped_resource.hpp"
 
@@ -39,8 +41,12 @@ private:
 	struct free_sdl_surface {
 		void operator()(SDL_Surface *surf) const
 		{
-			if (surf != NULL)
+			if (surf != NULL) {
+				 if(surf->refcount == 1) {
+						std::cerr << "FREE SURF: " << (surf->w*surf->h) << "\n";
+				 }
 				 SDL_FreeSurface(surf);
+			}
 		}
 	};
 
@@ -50,7 +56,11 @@ public:
 	{}
 
 	surface(SDL_Surface *surf) : surface_(surf)
-	{}
+	{
+		if(surf) {
+			std::cerr << "ALLOCATE SURF: " << (surface_->w*surface_->h) << "\n";
+		}
+	}
 
 	surface(const surface& o) : surface_(o.surface_.get())
 	{
@@ -78,7 +88,11 @@ public:
 
 	SDL_Surface* operator->() const { return surface_.get(); }
 
-	void assign(SDL_Surface* surf) { surface_.assign(surf); }
+	void assign(SDL_Surface* surf) {
+		if(surf) {
+			std::cerr << "ALLOCATE SURF: " << (surface_->w*surface_->h) << "\n";
+		}
+			surface_.assign(surf); }
 
 	bool null() const { return surface_.get() == NULL; }
 

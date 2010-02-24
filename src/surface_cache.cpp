@@ -15,6 +15,7 @@
 #include "surface_cache.hpp"
 #include "SDL_image.h"
 
+#include <assert.h>
 #include <iostream>
 #include <map>
 
@@ -33,21 +34,27 @@ namespace {
 
 surface get(const std::string& key)
 {
+	assert(false);
 	surface surf = cache.get(key);
 	if(surf.null()) {
-		const std::string fname = path + key;
-		surf = surface(IMG_Load(sys::find_file(fname).c_str()));
-		std::cerr << "loading image '" << fname << "'\n";
-		if(surf.get() == false) {
-			std::cerr << "failed to load image '" << key << "'\n";
-			return surface();
-		}
-
-		std::cerr << "IMAGE SIZE: " << (surf->w*surf->h) << "\n";
-
+		surf = get_no_cache(key);
 		cache.put(key,surf);
 	}
 
+	return surf;
+}
+
+surface get_no_cache(const std::string& key)
+{
+	const std::string fname = path + key;
+	surface surf = surface(IMG_Load(sys::find_file(fname).c_str()));
+	std::cerr << "loading image '" << fname << "'\n";
+	if(surf.get() == false) {
+		std::cerr << "failed to load image '" << key << "'\n";
+		return surface();
+	}
+
+	std::cerr << "IMAGE SIZE: " << (surf->w*surf->h) << "\n";
 	return surf;
 }
 

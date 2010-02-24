@@ -15,6 +15,7 @@
 #include "key.hpp"
 #include "powerup_fwd.hpp"
 #include "solid_map_fwd.hpp"
+#include "wml_formula_callable.hpp"
 #include "wml_node_fwd.hpp"
 
 class character;
@@ -25,7 +26,7 @@ class player_info;
 
 typedef boost::intrusive_ptr<character> character_ptr;
 
-class entity : public game_logic::formula_callable
+class entity : public game_logic::wml_serializable_formula_callable
 {
 public:
 	static entity_ptr build(wml::const_node_ptr node);
@@ -249,6 +250,8 @@ protected:
 
 private:
 	virtual void control(const level& lvl) = 0;
+
+	wml::node_ptr serialize_to_wml() const { return write(); }
 
 	std::string label_;
 

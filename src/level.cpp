@@ -29,6 +29,7 @@
 #include "thread.hpp"
 #include "tile_map.hpp"
 #include "unit_test.hpp"
+#include "wml_formula_callable.hpp"
 #include "wml_node.hpp"
 #include "wml_parser.hpp"
 #include "wml_utils.hpp"
@@ -514,6 +515,8 @@ void level::rebuild_tiles_rect(const rect& r)
 
 wml::node_ptr level::write() const
 {
+	game_logic::wml_formula_callable_serialization_scope serialization_scope;
+
 	wml::node_ptr res(new wml::node("level"));
 	res->set_attr("title", title_);
 	res->set_attr("music", music_);
@@ -739,7 +742,9 @@ wml::node_ptr level::write() const
 	*/
 
 	foreach(entity_ptr ch, chars_) {
-		res->add_child(ch->write());
+		wml::node_ptr node(ch->write());
+		res->add_child(node);
+		game_logic::wml_formula_callable_serialization_scope::register_serialized_object(ch, node);
 	}
 
 	foreach(const portal& p, portals_) {
@@ -774,6 +779,8 @@ wml::node_ptr level::write() const
 	for(std::map<std::string, movement_script>::const_iterator i = movement_scripts_.begin(); i != movement_scripts_.end(); ++i) {
 		res->add_child(i->second.write());
 	}
+
+	res->add_child(serialization_scope.write_objects());
 
 	return res;
 }

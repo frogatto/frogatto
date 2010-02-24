@@ -50,10 +50,7 @@ public:
 
 	static texture get(const std::string& str);
 	static texture get(const std::string& str, const std::string& algorithm);
-	static texture get(const key& k);
-	static texture get_no_cache(const key& k);
 	static texture get_no_cache(const surface& surf);
-	static void set_current_texture(const key& k);
 	static GLfloat get_coord_x(GLfloat x);
 	static GLfloat get_coord_y(GLfloat y);
 	GLfloat translate_coord_x(GLfloat x) const;
@@ -75,8 +72,7 @@ public:
 	explicit texture(const key& surfs);
 
 private:
-
-	static texture get(const surface& surf);
+	static texture get_no_cache(const key& k);
 
 	struct ID {
 		ID() : id(GLuint(-1)) {

@@ -54,8 +54,11 @@ namespace {
 //		texture_registry().erase(t);
 	}
 
-	typedef concurrent_cache<texture::key,graphics::texture> texture_map;
+	typedef concurrent_cache<std::string,graphics::texture> texture_map;
 	texture_map texture_cache;
+	typedef concurrent_cache<std::pair<std::string,std::string>,graphics::texture> algorithm_texture_map;
+	algorithm_texture_map algorithm_texture_cache;
+
 	const size_t TextureBufSize = 128;
 	GLuint texture_buf[TextureBufSize];
 	size_t texture_buf_pos = TextureBufSize;
@@ -383,32 +386,33 @@ void texture::set_as_current_texture() const
 
 texture texture::get(const std::string& str)
 {
-	texture result(get(surface_cache::get(str)));
+	texture result = texture_cache.get(str);
+	if(!result.valid()) {
+		key surfs;
+		surfs.push_back(surface_cache::get_no_cache(str));
+		result = texture(surfs);
+		texture_cache.put(str, result);
+	}
 
 	return result;
 }
 
 texture texture::get(const std::string& str, const std::string& algorithm)
 {
-	texture result(get(get_surface_formula(surface_cache::get(str), algorithm)));
-	return result;
-}
+	if(algorithm.empty()) {
+		return get(str);
+	}
 
-texture texture::get(const key& surfs)
-{
-	texture result = texture_cache.get(surfs);
+	std::pair<std::string,std::string> k(str, algorithm);
+	texture result = algorithm_texture_cache.get(k);
 	if(!result.valid()) {
+		key surfs;
+		surfs.push_back(get_surface_formula(surface_cache::get_no_cache(str), algorithm));
 		result = texture(surfs);
-
-		texture_cache.put(surfs, result);
+		algorithm_texture_cache.put(k, result);
 	}
 
 	return result;
-}
-
-texture texture::get(const surface& surf)
-{
-	return get(key(1,surf));
 }
 
 texture texture::get_no_cache(const key& surfs)
@@ -419,12 +423,6 @@ texture texture::get_no_cache(const key& surfs)
 texture texture::get_no_cache(const surface& surf)
 {
 	return texture(key(1,surf));
-}
-
-void texture::set_current_texture(const key& k)
-{
-	texture t(get(k));
-	t.set_as_current_texture();
 }
 
 GLfloat texture::get_coord_x(GLfloat x)
