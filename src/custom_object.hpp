@@ -180,7 +180,7 @@ private:
 
 	int zorder_;
 
-	int hitpoints_;
+	int hitpoints_, max_hitpoints_;
 	bool was_underwater_;
 
 	bool has_feet_;

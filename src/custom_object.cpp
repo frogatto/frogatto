@@ -55,6 +55,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 	accel_y_(wml::get_int(node, "accel_y")),
 	rotate_(0), zorder_(wml::get_int(node, "zorder", type_->zorder())),
 	hitpoints_(wml::get_int(node, "hitpoints", type_->hitpoints())),
+	max_hitpoints_(wml::get_int(node, "max_hitpoints", type_->hitpoints())),
 	was_underwater_(false),
 	has_feet_(wml::get_bool(node, "has_feet", type_->has_feet())),
 	invincible_(0),
@@ -129,6 +130,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	accel_x_(0), accel_y_(0),
 	rotate_(0), zorder_(type_->zorder()),
 	hitpoints_(type_->hitpoints()),
+	max_hitpoints_(type_->hitpoints()),
 	was_underwater_(false),
 	has_feet_(type_->has_feet()),
 	invincible_(0),
@@ -173,6 +175,7 @@ custom_object::custom_object(const custom_object& o) :
 	rotate_(o.rotate_),
 	zorder_(o.zorder_),
 	hitpoints_(o.hitpoints_),
+	max_hitpoints_(o.max_hitpoints_),
 	was_underwater_(o.was_underwater_),
 	has_feet_(o.has_feet_),
 	invincible_(o.invincible_),
@@ -243,6 +246,11 @@ wml::node_ptr custom_object::write() const
 	res->set_attr("y", formatter() << y());
 	res->set_attr("velocity_x", formatter() << velocity_x_);
 	res->set_attr("velocity_y", formatter() << velocity_y_);
+
+	if(hitpoints_ != type_->hitpoints() || max_hitpoints_ != type_->hitpoints()) {
+		res->set_attr("hitpoints", formatter() << hitpoints_);
+		res->set_attr("max_hitpoints", formatter() << max_hitpoints_);
+	}
 
 	if(!vertex_shaders_.empty()) {
 		res->set_attr("vertex_shaders", util::join(vertex_shaders_));
@@ -1522,6 +1530,11 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		hitpoints_ = value.as_int();
 		if(hitpoints_ <= 0) {
 			die();
+		}
+	} else if(key == "max_hitpoints") {
+		max_hitpoints_ = value.as_int();
+		if(hitpoints_ > max_hitpoints_) {
+			hitpoints_ = max_hitpoints_;
 		}
 	} else if(key == "velocity_x") {
 		velocity_x_ = value.as_int();

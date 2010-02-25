@@ -62,8 +62,9 @@ level::level(const std::string& level_cfg)
 	turn_reference_counting_off();
 
 	const std::string path = preferences::load_compiled() ? "data/compiled/level/" : "data/level/";
+	const std::string filename = level_cfg == "save.cfg" ? std::string(preferences::save_file_path()) : (path + level_cfg);
 
-	wml::const_node_ptr node(wml::parse_wml(preprocess(sys::read_file(path + level_cfg))));
+	wml::const_node_ptr node(wml::parse_wml(preprocess(sys::read_file(filename))));
 	music_ = node->attr("music");
 	replay_data_ = node->attr("replay_data");
 	cycle_ = wml::get_int(node, "cycle");
