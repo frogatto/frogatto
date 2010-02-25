@@ -8,6 +8,9 @@
 	The only thing one will normally need to use is render_text(), and possibly char_width(), char_height() if you need to know the size of the resulting text. */
 
 namespace font {
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+class TTF_Font;
+#endif
 
 namespace {
 const char* FontFile = "FreeMono.ttf";

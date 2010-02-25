@@ -6,7 +6,9 @@
 
 #include "preferences.hpp"
 #include "SDL.h"
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 #include "SDL_mixer.h"
+#endif
 
 #include "sound.hpp"
 
