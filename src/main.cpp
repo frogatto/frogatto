@@ -206,6 +206,8 @@ extern "C" int main(int argc, char** argv)
 			server = argv[++n];
 		} else if(arg == "--compiled") {
 			preferences::set_load_compiled(true);
+		} else if(arg == "--nocompiled") {
+			preferences::set_load_compiled(false);
 		} else {
 			const bool res = preferences::parse_arg(argv[n]);
 			if(!res) {

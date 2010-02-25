@@ -20,6 +20,8 @@ namespace preferences {
 		bool screen_rotated_ = true;
 		
 		const char *save_file_path_ = "../Documents/save.cfg";
+
+		bool load_compiled_ = true;
 #else
 		int virtual_screen_width_ = 800;
 		int virtual_screen_height_ = 600;
@@ -30,9 +32,10 @@ namespace preferences {
 		bool screen_rotated_ = false;
 		
 		const char *save_file_path_ = "data/level/save.cfg";
-#endif
 
 		bool load_compiled_ = false;
+#endif
+
 		
 		bool force_no_npot_textures_ = false;
 	}
