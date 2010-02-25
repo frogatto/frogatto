@@ -69,10 +69,10 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 	if(pos.flip_rotate) {
 		const SDL_Surface* fb = SDL_GetVideoSurface();
 		const double angle = sin(0.5*3.141592653589*GLfloat(pos.flip_rotate)/1000.0);
-		const int pixels = (fb->w/2)*angle;
+		const int pixels = (preferences::actual_screen_width()/2)*angle;
 		
 		//then squish all future drawing inwards
-		glViewport(pixels, 0, fb->w - pixels*2, fb->h);
+		glViewport(pixels, 0, preferences::actual_screen_width() - pixels*2, preferences::actual_screen_height());
 	}
 
 	if(focus) {
@@ -212,17 +212,21 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 	if(pos.flip_rotate) {
 		const SDL_Surface* fb = SDL_GetVideoSurface();
 		const double angle = sin(0.5*3.141592653589*GLfloat(pos.flip_rotate)/1000.0);
-		const int pixels = (fb->w/2)*angle;
+		//const int pixels = (fb->w/2)*angle;
+		const int pixels = (preferences::actual_screen_width()/2)*angle;
 		
 		
 		//first draw black over the sections of the screen which aren't to be drawn to
-		GLshort varray1[8] = {0,0,  pixels,0,  pixels,fb->h,   0,fb->h};
-		GLshort varray2[8] = {fb->w - pixels,0,  fb->w,0,   fb->w,fb->h,  fb->w - pixels,fb->h};
+		//GLshort varray1[8] = {0,0,  pixels,0,  pixels,fb->h,   0,fb->h};
+		//GLshort varray2[8] = {fb->w - pixels,0,  fb->w,0,   fb->w,fb->h,  fb->w - pixels,fb->h};
+		GLshort varray1[8] = {0,0,  pixels,0,  pixels,preferences::actual_screen_height(),   0,preferences::actual_screen_height()};
+		GLshort varray2[8] = {preferences::actual_screen_width() - pixels,0,  preferences::actual_screen_width(),0,   preferences::actual_screen_width(),preferences::actual_screen_height(),  preferences::actual_screen_width() - pixels,preferences::actual_screen_height()};
 		glColor4ub(0, 0, 0, 255);
 		glDisable(GL_TEXTURE_2D);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);		
 		
-		glViewport(0, 0, fb->w, fb->h);
+		//glViewport(0, 0, fb->w, fb->h);
+		glViewport(0, 0, preferences::actual_screen_width(), preferences::actual_screen_height());
 		glVertexPointer(2, GL_SHORT, 0, &varray1);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 		glVertexPointer(2, GL_SHORT, 0, &varray2);
