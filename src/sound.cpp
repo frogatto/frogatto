@@ -88,6 +88,7 @@ class sound
 			return; //should maybe die
 		}
 		buffer = boost::shared_ptr<Uint8>(tmp_buffer, SDL_free);
+		//return; // don't convert the audio, assume it's already in the right format
 		/* build the audio converter */
 		int result = SDL_BuildAudioCVT(&cvt, spec.format, spec.channels, spec.freq,
 			mixer.outputSpec.format, mixer.outputSpec.channels, mixer.outputSpec.freq);
@@ -323,7 +324,7 @@ int play_internal(const std::string& file, int loops, const void* object)
 	{
 		std::string wav_file = file;
 		wav_file.replace(wav_file.length()-3, wav_file.length(), "wav");
-		s = sound("sounds/wave/" + wav_file);
+		s = sound("sounds_wav/" + wav_file);
 		if (s == NULL)
 		{
 			return -1;
