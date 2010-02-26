@@ -32,7 +32,7 @@
 namespace graphics
 {
 
-int graphics_thread_id;
+pthread_t graphics_thread_id;
 surface scale_surface(surface input);
 
 namespace {
@@ -78,7 +78,7 @@ namespace {
 		}
 
 		if(texture_buf_pos == TextureBufSize) {
-			if(graphics_thread_id != pthread_self()) {
+			if(!pthread_equal(graphics_thread_id, pthread_self())) {
 				//we are in a worker thread so we can't make an OpenGL
 				//call. Throw an exception.
 				std::cerr << "CANNOT ALLOCATE TEXTURE ID's in WORKER THREAD\n";
@@ -372,7 +372,7 @@ GLuint texture::get_id() const
 			id_->s = scale_surface(id_->s);
 		}
 
-		if(graphics_thread_id != pthread_self()) {
+		if(!pthread_equal(graphics_thread_id, pthread_self())) {
 			threading::lock lck(id_to_build_mutex);
 			id_to_build_.push_back(id_);
 		} else {
@@ -385,7 +385,7 @@ GLuint texture::get_id() const
 
 void texture::build_textures_from_worker_threads()
 {
-	ASSERT_EQ(pthread_self(), graphics_thread_id);
+	ASSERT_LOG(pthread_equal(pthread_self(), graphics_thread_id), "CALLED build_textures_from_worker_threads from thread other than the main one");
 	threading::lock lck(id_to_build_mutex);
 	foreach(boost::shared_ptr<ID> id, id_to_build_) {
 		id->build_id();
