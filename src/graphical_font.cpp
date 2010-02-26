@@ -39,7 +39,6 @@ graphical_font::graphical_font(wml::const_node_ptr node)
 		pad = wml::get_int(node, "pad", 2);
 	}
 	
-	std::cerr << "Padding Value: " << pad << "\n";
 	wml::node::const_child_iterator i1 = node->begin_child("chars");
 	wml::node::const_child_iterator i2 = node->end_child("chars");
 	rect current_rect;
@@ -64,7 +63,6 @@ graphical_font::graphical_font(wml::const_node_ptr node)
 
 			char_rect_map_[c] = current_rect;
 
-				std::cerr << "Padding Value: " << pad << "\n";
 			current_rect = rect(current_rect.x() + current_rect.w() + pad,
 			                    current_rect.y(),
 			                    current_rect.w(), current_rect.h());
