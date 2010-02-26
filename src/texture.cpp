@@ -12,9 +12,11 @@
 
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <pthread.h>
 
 #include "asserts.hpp"
 #include "concurrent_cache.hpp"
+#include "foreach.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "surface_cache.hpp"
@@ -30,6 +32,7 @@
 namespace graphics
 {
 
+int graphics_thread_id;
 surface scale_surface(surface input);
 
 namespace {
@@ -75,6 +78,13 @@ namespace {
 		}
 
 		if(texture_buf_pos == TextureBufSize) {
+			if(graphics_thread_id != pthread_self()) {
+				//we are in a worker thread so we can't make an OpenGL
+				//call. Throw an exception.
+				std::cerr << "CANNOT ALLOCATE TEXTURE ID's in WORKER THREAD\n";
+				throw texture::worker_thread_error();
+			}
+
 			glGenTextures(TextureBufSize, texture_buf);
 			texture_buf_pos = 0;
 		}
@@ -176,6 +186,8 @@ texture::manager::manager() {
 	height_multiplier = 1.0;
 
 	graphics_initialized = true;
+
+	graphics_thread_id = pthread_self();
 }
 
 texture::manager::~manager() {
@@ -227,7 +239,6 @@ texture::texture(const key& surfs)
 {
 	add_texture_to_registry(this);
 	initialize(surfs);
-	get_id();
 }
 
 texture::texture(const texture& t)
@@ -345,6 +356,10 @@ int next_pot (int n)
 	return num;
 }
 
+namespace {
+threading::mutex id_to_build_mutex;
+}
+
 GLuint texture::get_id() const
 {
 	if(!valid()) {
@@ -352,25 +367,31 @@ GLuint texture::get_id() const
 	}
 
 	if(id_->init() == false) {
+		id_->id = get_texture_id();
 		if(preferences::use_pretty_scaling()) {
 			id_->s = scale_surface(id_->s);
 		}
 
-		id_->id = get_texture_id();
-		glBindTexture(GL_TEXTURE_2D,id_->id);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, id_->s->w, id_->s->h, 0, GL_RGBA,
-			GL_UNSIGNED_BYTE, id_->s->pixels);
-
-		//free the surface.
-		if(!preferences::compiling_tiles) {
-			std::cerr << "RELEASING SURFACE... " << id_->s.get()->refcount << "\n";
-			id_->s = surface();
+		if(graphics_thread_id != pthread_self()) {
+			threading::lock lck(id_to_build_mutex);
+			id_to_build_.push_back(id_);
+		} else {
+			id_->build_id();
 		}
 	}
 
 	return id_->id;
+}
+
+void texture::build_textures_from_worker_threads()
+{
+	ASSERT_EQ(pthread_self(), graphics_thread_id);
+	threading::lock lck(id_to_build_mutex);
+	foreach(boost::shared_ptr<ID> id, id_to_build_) {
+		id->build_id();
+	}
+
+	id_to_build_.clear();
 }
 
 void texture::set_current_texture(GLuint id)
@@ -480,6 +501,21 @@ texture::ID::~ID()
 	destroy();
 }
 
+void texture::ID::build_id()
+{
+	glBindTexture(GL_TEXTURE_2D,id);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, s->w, s->h, 0, GL_RGBA,
+		GL_UNSIGNED_BYTE, s->pixels);
+
+	//free the surface.
+	if(!preferences::compiling_tiles) {
+		std::cerr << "RELEASING SURFACE... " << s.get()->refcount << "\n";
+		s = surface();
+	}
+}
+
 void texture::ID::destroy()
 {
 	if(graphics_initialized && init()) {
@@ -489,6 +525,8 @@ void texture::ID::destroy()
 	id = GLuint(-1);
 	s = surface();
 }
+
+std::vector<boost::shared_ptr<texture::ID> > texture::id_to_build_;
 
 }
 

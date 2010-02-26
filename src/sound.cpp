@@ -478,6 +478,9 @@ void play_music_interrupt(const std::string& file)
 	current_music_name = file;
 
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
+
+	//note that calling HaltMusic will result in on_music_finished being
+	//called, which releases the current_music pointer.
 	Mix_HaltMusic();
 	current_music = Mix_LoadMUS(("music/" + file).c_str());
 	if(!current_music) {

@@ -28,6 +28,10 @@ namespace graphics
 class texture
 {
 public:
+	//error thrown if an operation is done from a worker thread that
+	//must be completed by the main graphics thread.
+	struct worker_thread_error {};
+
 	//create an instance of this object before using the first texture,
 	//and destroy it before the program exits
 	struct manager {
@@ -36,6 +40,11 @@ public:
 	};
 
 	static void clear_textures();
+
+	//complete construction of any textures that were accessed in worker threads
+	//but which need to be completed in the main thread. May only be called
+	//in the main thread.
+	static void build_textures_from_worker_threads();
 
 	texture();
 	texture(const texture& t);
@@ -83,6 +92,7 @@ private:
 
 		~ID();
 
+		void build_id();
 		void destroy();
 
 		bool init() const { return id != GLuint(-1); }
@@ -98,6 +108,10 @@ private:
 	GLfloat ratio_w_, ratio_h_;
 
 	boost::shared_ptr<std::vector<bool> > alpha_map_;
+
+	//a list of ID objects that we assigned GL ID's to in a worker thread,
+	//but which need binding to a texture in the main thread.
+	static std::vector<boost::shared_ptr<ID> > id_to_build_;
 };
 
 inline bool operator==(const texture& a, const texture& b)

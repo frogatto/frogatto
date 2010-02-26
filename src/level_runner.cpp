@@ -1,5 +1,6 @@
 #include <math.h>
 
+#include <boost/bind.hpp>
 #include <boost/function.hpp>
 
 #include "SDL.h"
@@ -60,11 +61,10 @@ void transition_scene(level& lvl, screen_position& screen_pos, bool transition_o
 }
 
 void fade_scene(const level& lvl, screen_position& screen_pos, float fade) {
-	draw_scene(lvl, screen_pos);
-
 	const SDL_Rect r = {0, 0, graphics::screen_width(), graphics::screen_height()};
 	const SDL_Color c = {0,0,0,0};
-	graphics::draw_rect(r, c, fade*255);
+	graphics::prepare_raster();
+	graphics::draw_rect(r, c, 128*fade);
 }
 
 void flip_scene(const level& lvl, screen_position& screen_pos, float amount) {
@@ -247,6 +247,16 @@ bool level_runner::play_level()
 	return quit_;
 }
 
+namespace {
+void load_level_thread(const std::string& lvl, level** res) {
+	try {
+		*res = load_level(lvl);
+	} catch(const graphics::texture::worker_thread_error&) {
+		std::cerr << "LOAD LEVEL FAILED: MUST DO IN MAIN THREAD\n";
+	}
+}
+}
+
 bool level_runner::play_cycle()
 {
 
@@ -325,20 +335,17 @@ bool level_runner::play_cycle()
 			}
 		} else {
 			//the portal is to another level
-			preload_level(level_cfg_);
 
 			const std::string transition = portal->transition;
-			if(transition == "fade") {
-				transition_scene(*lvl_, last_draw_position(), true, fade_scene);
-			} else if(transition == "flip") {
+			if(transition == "flip") {
 				transition_scene(*lvl_, last_draw_position(), true, flip_scene);
-			} else if(transition == "iris") {
-				transition_scene(*lvl_, last_draw_position(), true, iris_scene);
 			} else if(transition == "instant") {
-				//do nothing.
-			} else {
+				//do nothing
+			} else if(transition != "fade" && is_stencil_buffer_available()) {
 				transition_scene(*lvl_, last_draw_position(), true, iris_scene);
-	
+			} else {
+				preload_level(level_cfg_);
+				transition_scene(*lvl_, last_draw_position(), true, fade_scene);
 			}
 
 			level* new_level = load_level(level_cfg_);

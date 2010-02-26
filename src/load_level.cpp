@@ -4,6 +4,7 @@
 #include "level.hpp"
 #include "load_level.hpp"
 #include "preprocessor.hpp"
+#include "texture.hpp"
 #include "thread.hpp"
 
 namespace {
@@ -17,7 +18,14 @@ public:
 	level_loader(const std::string& lvl) : lvl_(lvl)
 	{}
 	void operator()() {
-		level* lvl = new level(lvl_);
+		level* lvl = NULL;
+		try {
+			lvl = new level(lvl_);
+		} catch(const graphics::texture::worker_thread_error&) {
+			//we can't load the level in here, we must do it in the main thread.
+			std::cerr << "LOAD LEVEL FAILURE: " << lvl << " MUST LOAD IN "
+			             "MAIN THREAD\n";
+		}
 		threading::lock lck(levels_loading_mutex);
 		levels_loading[lvl_].second = lvl;
 	}
@@ -42,12 +50,11 @@ void preload_level(const std::string& lvl)
 {
 	//--TODO: Currently multi-threaded pre-loading causes weird crashes.
 	//--      need to fix this!!
-		/*
 	assert(!lvl.empty());
 	threading::lock lck(levels_loading_mutex);
 	if(levels_loading.count(lvl) == 0) {
 		levels_loading[lvl].first = new threading::thread(level_loader(lvl));
-	}*/
+	}
 }
 
 level* load_level(const std::string& lvl)
@@ -68,6 +75,9 @@ level* load_level(const std::string& lvl)
 	itor->second.first->join();
 	delete itor->second.first;
 	level* res = itor->second.second;
+	if(res == NULL) {
+		res = new level(lvl);
+	}
 	res->finish_loading();
 	levels_loading.erase(itor);
 	std::cerr << "FINISH LOAD LEVEL\n";

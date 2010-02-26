@@ -302,6 +302,8 @@ void level::load_character(wml::const_node_ptr c)
 
 void level::finish_loading()
 {
+	graphics::texture::build_textures_from_worker_threads();
+
 	foreach(wml::const_node_ptr node, wml_chars_) {
 		load_character(node);
 	}
