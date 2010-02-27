@@ -5,9 +5,45 @@
 
 //GBMusicTrack *song = nil;
 AVAudioPlayer *song = nil;
+const float fade_interval = 0.05;
+void (*song_finished_callback)() = NULL;
 
-void iphone_init_music ()
+@interface AudioDelegate : NSObject <AVAudioPlayerDelegate>
 {
+	float amount;
+	BOOL fading;
+}
+
+@property (readwrite) float amount;
+@property (readonly) BOOL fading;
+
+- (void) fadeInMusic:(id)obj;
+- (void) fadeOutMusic:(id)obj;
+
+- (void) audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag;
+@end
+
+AudioDelegate *delegate;
+
+void iphone_init_music (void (*callback)())
+{
+	delegate = [[AudioDelegate alloc] init];
+	song_finished_callback = callback;
+}
+
+void iphone_fade_in_music (int duration)
+{
+	if (song == nil || delegate == nil || delegate.fading) return;
+	song.volume = 0.0;
+	delegate.amount = (duration/1000) * fade_interval;
+	[delegate fadeInMusic:nil];
+}
+
+void iphone_fade_out_music (int duration)
+{
+	if (song == nil || delegate == nil || delegate.fading) return;
+	delegate.amount = (duration/1000) * fade_interval;
+	[delegate fadeOutMusic:nil];
 }
 
 void iphone_play_music (const char *file)
@@ -22,8 +58,10 @@ void iphone_play_music (const char *file)
 	if (song)
 	{
 		[song stop];
+		[song release];
 	}
 	song = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithCString: file]] error:NULL];
+	song.delegate = delegate;
 	[song play];
 }
 
@@ -51,4 +89,48 @@ void iphone_kill_music ()
 		[song release];
 		song = nil;
 	}
+	[delegate release];
+	delegate = nil;
 }
+
+@implementation AudioDelegate
+
+@synthesize amount;
+@synthesize fading;
+
+- (void) fadeInMusic:(id)obj
+{
+	if (song.volume + amount >= 1.0)
+	{
+		fading = NO;
+		song.volume = 1.0; //fading is done, and the volume should be exactly 1.0
+	} else {
+		fading = YES;
+		song.volume += amount;
+		[self performSelector:@selector(fadeInMusic:) withObject:nil afterDelay:fade_interval];
+	}
+}
+
+- (void) fadeOutMusic:(id)obj
+{
+	if (song.volume + amount <= 0.0)
+	{
+		fading = NO;
+		song.volume = 0.0; //fading is done, and the volume should be exactly 0.0
+		[self audioPlayerDidFinishPlaying:song successfully:YES];
+	} else {
+		fading = YES;
+		song.volume -= amount;
+		[self performSelector:@selector(fadeOutMusic:) withObject:nil afterDelay:fade_interval];
+	}
+}
+
+- (void) audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
+	[player stop];
+	[player release];
+	song = nil;
+	(*song_finished_callback)();
+}
+
+@end

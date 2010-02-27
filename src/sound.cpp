@@ -19,13 +19,12 @@
 namespace sound {
 
 namespace {
+const int SampleRate = 44100;
 // number of allocated channels, 
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 const size_t NumChannels = 16;
-const int SampleRate = 44100;
 #else
 const size_t NumChannels = 8;
-const int SampleRate = 11025;
 #endif
 
 #ifdef WIN32
@@ -40,6 +39,8 @@ std::string current_music_name;
 std::string next_music;
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 Mix_Music* current_music = NULL;
+#else
+bool playing_music = false;
 #endif
 
 //function which gets called when music finishes playing. It starts playing
@@ -49,6 +50,8 @@ void on_music_finished()
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	Mix_FreeMusic(current_music);
 	current_music = NULL;
+#else
+	playing_music = false;
 #endif
 	if(next_music.empty() == false) {
 		play_music(next_music);
@@ -241,7 +244,7 @@ manager::manager()
 	Mix_HookMusicFinished(on_music_finished);
 	Mix_VolumeMusic(MIX_MAX_VOLUME);
 #else
-	iphone_init_music();
+	iphone_init_music(on_music_finished);
 	sound_ok = true;
 	
 	/* initialize the mixer */
@@ -455,10 +458,19 @@ void play_music(const std::string& file)
 
 	Mix_FadeInMusic(current_music, -1, 1000);
 #else
+	if (playing_music)
+	{
+		next_music = file;
+		iphone_fade_out_music(1000);
+		return;
+	}
+	
+	current_music_name = file;
 	std::string aac_file = file;
 	aac_file.replace(aac_file.length()-3, aac_file.length(), "m4a");
 	iphone_play_music(("music_aac/" + aac_file).c_str());
-	current_music_name = file;
+	iphone_fade_in_music(1000);
+	playing_music = true;
 #endif
 }
 
@@ -493,6 +505,7 @@ void play_music_interrupt(const std::string& file)
 	std::string aac_file = file;
 	aac_file.replace(aac_file.length()-3, aac_file.length(), "m4a");
 	iphone_play_music(("music_aac/" + aac_file).c_str());
+	playing_music = true;
 #endif
 }
 
