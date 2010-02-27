@@ -1088,6 +1088,10 @@ void level::draw_status() const
 	if(gui_algorithm_) {
 		gui_algorithm_->draw(*this);
 	}
+
+	if(current_speech_dialog()) {
+		current_speech_dialog()->draw();
+	}
 }
 
 extern std::vector<rect> background_rects_drawn;
@@ -1364,6 +1368,12 @@ void level::process()
 	controls::read_local_controls();
 
 	do_processing();
+
+	if(speech_dialogs_.empty() == false) {
+		if(speech_dialogs_.front()->process()) {
+			speech_dialogs_.pop();
+		}
+	}
 }
 
 void level::process_draw()
@@ -2696,6 +2706,20 @@ void level::editor_freeze_tile_updates(bool value)
 			rebuild_tiles();
 		}
 	}
+}
+
+void level::add_speech_dialog(boost::shared_ptr<speech_dialog> d)
+{
+	speech_dialogs_.push(d);
+}
+
+boost::shared_ptr<const speech_dialog> level::current_speech_dialog() const
+{
+	if(speech_dialogs_.empty()) {
+		return boost::shared_ptr<const speech_dialog>();
+	}
+
+	return speech_dialogs_.front();
 }
 
 bool entity_in_current_level(const entity* e)

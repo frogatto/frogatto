@@ -12,7 +12,6 @@
 class speech_dialog
 {
 public:
-	static speech_dialog* get();
 
 	speech_dialog();
 	~speech_dialog();
@@ -21,10 +20,11 @@ public:
 	bool process();
 	void draw() const;
 	void set_speaker_and_flip_side(const_entity_ptr e);
-	void set_speaker(const_entity_ptr e, bool left_side);
+	void set_speaker(const_entity_ptr e, bool left_side=false);
 	void set_side(bool left_side);
 	void set_text(const std::vector<std::string>& text);
 	void set_options(const std::vector<std::string>& options);
+	void set_expiration(int time) { expiration_ = time; }
 
 	int option_selected() const { return option_selected_; }
 private:
@@ -43,6 +43,8 @@ private:
 	int option_selected_;
 
 	bool joystick_button_pressed_, joystick_up_pressed_, joystick_down_pressed_;
+
+	int expiration_;
 
 	int num_chars() const;
 

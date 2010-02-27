@@ -10,31 +10,17 @@
 #include "raster.hpp"
 #include "speech_dialog.hpp"
 
-namespace {
-std::stack<speech_dialog*> current_dialogs;
-}
-
-speech_dialog* speech_dialog::get()
-{
-	if(current_dialogs.empty() == false) {
-		return current_dialogs.top();
-	}
-
-	return NULL;
-}
-
 speech_dialog::speech_dialog()
   : cycle_(0), left_side_speaking_(false), horizontal_position_(0), text_char_(0), option_selected_(0),
     joystick_button_pressed_(true),
     joystick_up_pressed_(true),
-    joystick_down_pressed_(true)
+    joystick_down_pressed_(true),
+	expiration_(-1)
 {
-	current_dialogs.push(this);
 }
 
 speech_dialog::~speech_dialog()
 {
-	current_dialogs.pop();
 }
 
 void speech_dialog::move_up()
@@ -122,25 +108,27 @@ bool speech_dialog::process()
 		}
 	}
 
-	joystick::update();
+	if(expiration_ <= 0) {
+		joystick::update();
 
-	if(!joystick_up_pressed_ && joystick::up()) {
-		move_up();
-	}
+		if(!joystick_up_pressed_ && joystick::up()) {
+			move_up();
+		}
 
-	if(!joystick_down_pressed_ && joystick::down()) {
-		move_down();
-	}
+		if(!joystick_down_pressed_ && joystick::down()) {
+			move_down();
+		}
 
-	if(!joystick_button_pressed_ && (joystick::button(0) || joystick::button(10))) {
-		return true;
+		if(!joystick_button_pressed_ && (joystick::button(0) || joystick::button(10))) {
+			return true;
+		}
 	}
 
 	joystick_up_pressed_ = joystick::up();
 	joystick_down_pressed_ = joystick::down();
 	joystick_button_pressed_ = joystick::button(0) || joystick::button(1);
 
-	return false;
+	return cycle_ == expiration_;
 }
 
 void speech_dialog::draw() const

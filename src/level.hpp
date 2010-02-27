@@ -4,6 +4,7 @@
 #include <bitset>
 #include <deque>
 #include <map>
+#include <queue>
 #include <set>
 #include <string>
 #include <vector>
@@ -22,6 +23,7 @@
 #include "level_solid_map.hpp"
 #include "movement_script.hpp"
 #include "raster.hpp"
+#include "speech_dialog.hpp"
 #include "tile_map.hpp"
 #include "water.hpp"
 #include "wml_node_fwd.hpp"
@@ -232,6 +234,9 @@ public:
 
 	int zoom_level() const { return zoom_level_; }
 
+	void add_speech_dialog(boost::shared_ptr<speech_dialog> d);
+	boost::shared_ptr<const speech_dialog> current_speech_dialog() const;
+
 	const std::vector<entity_ptr>& focus_override() const { return focus_override_; }
 
 	static const game_logic::formula_callable_definition& get_formula_definition();
@@ -401,6 +406,8 @@ private:
 
 	int zoom_level_;
 	std::vector<entity_ptr> focus_override_;
+
+	std::queue<boost::shared_ptr<speech_dialog> > speech_dialogs_;
 };
 
 bool entity_in_current_level(const entity* e);

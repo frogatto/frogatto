@@ -963,6 +963,61 @@ private:
 };
 }
 
+class transient_speech_dialog_command : public custom_object_command_callable {
+	entity_ptr speaker_;
+	std::vector<std::string> text_;
+	int duration_;
+public:
+	transient_speech_dialog_command(entity_ptr speaker, const std::vector<std::string>& text, int duration) : speaker_(speaker), text_(text), duration_(duration)
+	{}
+	virtual void execute(level& lvl, custom_object& ob) const {
+		boost::shared_ptr<speech_dialog> d(new speech_dialog);
+		if(speaker_) {
+			d->set_speaker(speaker_);
+		} else {
+			d->set_speaker(entity_ptr(&ob));
+		}
+
+		d->set_text(text_);
+		d->set_expiration(duration_);
+		lvl.add_speech_dialog(d);
+	}
+};
+
+class transient_speech_dialog_function : public function_expression {
+public:
+	explicit transient_speech_dialog_function(const args_list& args)
+	  : function_expression("transient_speech_dialog", args, 1, -1) {
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		entity_ptr speaker;
+		int duration = 50;
+
+		std::vector<variant> result;
+
+		for(int n = 0; n != args().size(); ++n) {
+			variant v = args()[n]->evaluate(variables);
+			entity* e = v.try_convert<entity>();
+			if(e) {
+				speaker = entity_ptr(e);
+			} else if(v.is_int()) {
+				duration = v.as_int();
+			} else if(v.is_list()) {
+				std::vector<std::string> str;
+				for(int m = 0; m != v.num_elements(); ++m) {
+					str.push_back(v[m].as_string());
+				}
+				result.push_back(variant(new transient_speech_dialog_command(speaker, str, duration)));
+			} else {
+				ASSERT_LOG(false, "UNRECOGNIZED ARGUMENT to transient_speech_dialog: " << v.to_debug_string());
+			}
+		}
+
+		return variant(&result);
+	}
+};
+
 class speech_dialog_command : public custom_object_command_callable {
 public:
 	explicit speech_dialog_command(const std::vector<variant>& args)
@@ -1814,6 +1869,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new set_solid_function(args));
 	} else if(fn == "speech_dialog") {
 		return expression_ptr(new speech_dialog_function(args));
+	} else if(fn == "transient_speech_dialog") {
+		return expression_ptr(new transient_speech_dialog_function(args));
 	} else if(fn == "set_group") {
 		return expression_ptr(new set_group_function(args));
 	} else if(fn == "scroll_to") {
