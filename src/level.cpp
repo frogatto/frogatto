@@ -55,7 +55,7 @@ level::level(const std::string& level_cfg)
 	: id_(level_cfg), highlight_layer_(INT_MIN),
 	  entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
 	  editor_(false), show_foreground_(true), show_background_(true), air_resistance_(0), water_resistance_(7), end_game_(false),
-      tint_(0), editor_tile_updates_frozen_(0)
+      tint_(0), editor_tile_updates_frozen_(0), zoom_level_(1)
 {
 	std::cerr << "in level constructor...\n";
 	const int start_time = SDL_GetTicks();
@@ -2313,12 +2313,13 @@ namespace {
 
 const std::string LevelProperties[] = {
   "cycle", "player", "local_player", "num_active", "active_chars", "chars",
-  "tint", "in_editor",
+  "tint", "in_editor", "zoom", "focus",
 };
 
 enum LEVEL_PROPERTY_ID {
 	LEVEL_CYCLE, LEVEL_PLAYER, LEVEL_LOCAL_PLAYER, LEVEL_NUM_ACTIVE,
-	LEVEL_ACTIVE_CHARS, LEVEL_CHARS, LEVEL_TINT, LEVEL_IN_EDITOR,
+	LEVEL_ACTIVE_CHARS, LEVEL_CHARS, LEVEL_TINT, LEVEL_IN_EDITOR, LEVEL_ZOOM,
+	LEVEL_FOCUS,
 };
 }
 
@@ -2359,6 +2360,16 @@ variant level::get_value_by_slot(int slot) const
 		return variant(new graphics::color(tint_));
 	case LEVEL_IN_EDITOR:
 		return variant(editor_);
+	case LEVEL_ZOOM:
+		return variant(zoom_level_);
+	case LEVEL_FOCUS: {
+		std::vector<variant> v;
+		foreach(const entity_ptr& e, focus_override_) {
+			v.push_back(variant(e.get()));
+		}
+
+		return variant(&v);
+	}
 	}
 
 	ASSERT_LOG(false, "BAD SLOT IN GET_VALUE FROM LEVEL " << slot);
@@ -2393,6 +2404,15 @@ variant level::get_value(const std::string& key) const
 		return variant(new graphics::color(tint_));
 	} else if(key == "in_editor") {
 		return variant(editor_);
+	} else if(key == "zoom") {
+		return variant(zoom_level_);
+	} else if(key == "focus") {
+		std::vector<variant> v;
+		foreach(const entity_ptr& e, focus_override_) {
+			v.push_back(variant(e.get()));
+		}
+
+		return variant(&v);
 	} else {
 		const_entity_ptr e = get_entity_by_label(key);
 		if(e) {
@@ -2422,6 +2442,18 @@ void level::set_value(const std::string& key, const variant& value)
 		} else {
 			lock_screen_.reset();
 		}
+	} else if(key == "zoom") {
+		zoom_level_ = value.as_int();
+	} else if(key == "focus") {
+		focus_override_.clear();
+		for(int n = 0; n != value.num_elements(); ++n) {
+			entity* e = value[n].try_convert<entity>();
+			if(e) {
+				focus_override_.push_back(entity_ptr(e));
+			}
+		}
+
+		return;
 	} else {
 		vars_[key] = value;
 	}

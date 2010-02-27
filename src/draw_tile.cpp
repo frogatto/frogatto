@@ -27,10 +27,15 @@ void queue_draw_from_tilesheet(graphics::blit_queue& q, const graphics::texture&
 	const int xpos = 16*(tile_num%(width/16));
 	const int ypos = 16*(tile_num/(width/16));
 
+	//a value we subtract from the width and height of tiles when calculating
+	//UV co-ordinates. This is to prevent floating point rounding errors
+	//from causing us to draw slightly outside the tile. This is pretty
+	//nasty stuff though, and I'm not sure of a better way to do it. :(
+	const GLfloat TileEpsilon = 0.01;
 	GLfloat x1 = t.translate_coord_x(GLfloat(xpos)/GLfloat(t.width()));
-	GLfloat x2 = t.translate_coord_x(GLfloat(xpos+16)/GLfloat(t.width()));
+	GLfloat x2 = t.translate_coord_x(GLfloat(xpos+16 - TileEpsilon)/GLfloat(t.width()));
 	const GLfloat y1 = t.translate_coord_y(GLfloat(ypos)/GLfloat(t.height()));
-	const GLfloat y2 = t.translate_coord_y(GLfloat(ypos+16)/GLfloat(t.height()));
+	const GLfloat y2 = t.translate_coord_y(GLfloat(ypos+16 - TileEpsilon)/GLfloat(t.height()));
 
 	if(reverse) {
 		std::swap(x1, x2);

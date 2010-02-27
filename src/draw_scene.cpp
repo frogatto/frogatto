@@ -13,6 +13,7 @@
 #include "draw_number.hpp"
 #include "draw_scene.hpp"
 #include "font.hpp"
+#include "foreach.hpp"
 #include "graphical_font.hpp"
 #include "level.hpp"
 #include "message_dialog.hpp"
@@ -119,7 +120,36 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 		const int vertical_look = focus->vertical_look();
 
 		//find the y point for the camera to converge toward
-		int y = std::min(std::max(focus->feet_y() - drawable_height()/5 + displacement_y*PredictiveFramesVert + vertical_look, min_y), max_y);
+		int y = std::min(std::max(focus->feet_y() - drawable_height()/(5*lvl.zoom_level()) + displacement_y*PredictiveFramesVert + vertical_look, min_y), max_y);
+
+		if(lvl.focus_override().empty() == false) {
+			std::vector<entity_ptr> v = lvl.focus_override();
+			int left = 0, right = 0, top = 0, bottom = 0;
+			while(v.empty() == false) {
+				left = v[0]->feet_x();
+				right = v[0]->feet_x();
+				top = v[0]->feet_y();
+				bottom = v[0]->feet_y();
+				foreach(const entity_ptr& e, v) {
+					left = std::min<int>(e->feet_x(), left);
+					right = std::max<int>(e->feet_x(), right);
+					top = std::min<int>(e->feet_y(), top);
+					bottom = std::min<int>(e->feet_y(), bottom);
+				}
+
+				const int BorderSize = 20;
+				if(v.size() == 1 || right - left < graphics::screen_width()/lvl.zoom_level() - BorderSize && bottom - top < graphics::screen_height()/lvl.zoom_level() - BorderSize) {
+					break;
+				}
+
+				break;
+
+				v.pop_back();
+			}
+
+			x = std::min(std::max((left + right)/2, min_x), max_x);
+			y = std::min(std::max((top + bottom)/2 - drawable_height()/(5*lvl.zoom_level()), min_y), max_y);
+		}
 
 		if(lvl.lock_screen()) {
 			x = lvl.lock_screen()->x;
@@ -143,8 +173,8 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 			//We do this by moving asymptotically toward the target, which
 			//makes the camera have a nice acceleration/decceleration effect
 			//as the target position moves.
-			const int horizontal_move_speed = 30;
-			const int vertical_move_speed = 10;
+			const int horizontal_move_speed = 30/lvl.zoom_level();
+			const int vertical_move_speed = 10/lvl.zoom_level();
 			int xdiff = (target_xpos - pos.x)/horizontal_move_speed;
 			int ydiff = (target_ypos - pos.y)/vertical_move_speed;
 
@@ -193,10 +223,30 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 				pos.shake_y_vel += (-1 * pos.shake_y_offset/3 - pos.shake_y_vel/15);
 			}
 		}
+
+		const int target_zoom = lvl.zoom_level();
+		const float ZoomSpeed = 0.03;
+		if(std::abs(target_zoom - pos.zoom) < ZoomSpeed) {
+			pos.zoom = target_zoom;
+			glShadeModel(GL_SMOOTH);
+		} else if(pos.zoom > target_zoom) {
+			pos.zoom -= ZoomSpeed;
+			glShadeModel(GL_SMOOTH);
+		} else {
+			pos.zoom += ZoomSpeed;
+			glShadeModel(GL_SMOOTH);
+		}
 	}
 
-	const int xscroll = (pos.x/100)&preferences::xypos_draw_mask;
-	const int yscroll = (pos.y/100)&preferences::xypos_draw_mask;
+	int xscroll = (pos.x/100)&preferences::xypos_draw_mask;
+	int yscroll = (pos.y/100)&preferences::xypos_draw_mask;
+
+	if(pos.zoom > 1.0) {
+		glScalef(pos.zoom, pos.zoom, 0);
+		xscroll += (graphics::screen_width()/2)*(-1.0/pos.zoom + 1.0);
+		yscroll += (graphics::screen_height()/2)*(-1.0/pos.zoom + 1.0);
+	}
+
 	glTranslatef(-xscroll, -yscroll, 0);
 	lvl.draw_background(xscroll, yscroll, camera_rotation);
 

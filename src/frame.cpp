@@ -156,7 +156,11 @@ void frame::build_alpha()
 		}
 
 		for(int y = 0; y != img_rect_.h(); ++y) {
-			std::vector<bool>::iterator dst = alpha_.begin() + y*img_rect_.w()*nframes_ + n*img_rect_.w();
+			const int dst_index = y*img_rect_.w()*nframes_ + n*img_rect_.w();
+			ASSERT_INDEX_INTO_VECTOR(dst_index, alpha_);
+
+			std::vector<bool>::iterator dst = alpha_.begin() + dst_index;
+
 			std::vector<bool>::const_iterator src = texture_.get_alpha_row(xbase, ybase + y);
 			std::copy(src, src + img_rect_.w(), dst);
 		}
@@ -255,10 +259,15 @@ void frame::get_rect_in_frame_number(int nframe, GLfloat* output_rect) const
 	const int current_col = (nframes_per_row_ > 0) ? (nframe % nframes_per_row_) : nframe ;
 	const int current_row = (nframes_per_row_ > 0) ? (nframe/nframes_per_row_) : 0 ;
 
+	//a tiny amount we subtract from the right/bottom side of the texture,
+	//to avoid rounding errors in floating point going over the edge.
+	//This seems like a kludge but I don't know of a better way to do it. :(
+	const GLfloat TextureEpsilon = 0.001;
+
 	output_rect[0] = GLfloat(img_rect_.x() + current_col*(img_rect_.w()+pad_))/GLfloat(texture_.width());
 	output_rect[1] = GLfloat(img_rect_.y() + ((img_rect_.h()+pad_) * current_row)) / GLfloat(texture_.height());
-	output_rect[2] = GLfloat(img_rect_.x() + current_col*(img_rect_.w()+pad_) + img_rect_.w())/GLfloat(texture_.width());
-	output_rect[3] = GLfloat(img_rect_.y() + ((img_rect_.h()+pad_) * current_row) + img_rect_.h())/GLfloat(texture_.height());
+	output_rect[2] = GLfloat(img_rect_.x() + current_col*(img_rect_.w()+pad_) + img_rect_.w())/GLfloat(texture_.width()) - TextureEpsilon;
+	output_rect[3] = GLfloat(img_rect_.y() + ((img_rect_.h()+pad_) * current_row) + img_rect_.h())/GLfloat(texture_.height()) - TextureEpsilon;
 }
 
 int frame::duration() const

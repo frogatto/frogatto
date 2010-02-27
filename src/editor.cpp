@@ -661,7 +661,6 @@ void editor::edit_level()
 	layers_dialog_.reset(new editor_dialogs::editor_layers_dialog(*this));
 	current_dialog_ = tileset_dialog_.get();
 
-	glEnable(GL_SMOOTH);
 	glEnable(GL_BLEND);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);

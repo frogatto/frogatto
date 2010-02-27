@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stack>
 
+#include "draw_scene.hpp"
 #include "foreach.hpp"
 #include "frame.hpp"
 #include "graphical_font.hpp"
@@ -144,16 +145,41 @@ bool speech_dialog::process()
 
 void speech_dialog::draw() const
 {
-	const_gui_section_ptr portrait_panel = gui_section::get("speech_portrait_pane");
 	const_gui_section_ptr text_panel = gui_section::get("speech_text_pane");
-	portrait_panel->blit(-horizontal_position_, graphics::screen_height() - portrait_panel->height());
-	portrait_panel->blit(graphics::screen_width() - horizontal_position_, graphics::screen_height() - portrait_panel->height());
-	text_panel->blit(portrait_panel->width() - horizontal_position_, graphics::screen_height() - text_panel->height());
-
 	const_graphical_font_ptr font = graphical_font::get("default");
 
 	const int TextBorder = 10;
-	const rect text_area(portrait_panel->width() - horizontal_position_ + TextBorder, graphics::screen_height() - text_panel->height() + TextBorder, text_panel->width() - TextBorder*2, text_panel->height() - TextBorder*2);
+	const rect pane_area(0, graphics::screen_height() - text_panel->height() + TextBorder*2, graphics::screen_width(), text_panel->height() + TextBorder*2);
+	graphics::draw_rect(pane_area, graphics::color(85, 53, 53, 255));
+
+	const_entity_ptr speaker = left_side_speaking_ ? left_ : right_;
+	if(speaker) {
+		const screen_position& pos = last_draw_position();
+		const int screen_x = pos.x/100 + (graphics::screen_width()/2)*(-1.0/pos.zoom + 1.0);
+		const int screen_y = pos.y/100 + (graphics::screen_height()/2)*(-1.0/pos.zoom + 1.0);
+
+		const int xpos = (speaker->feet_x() - screen_x)*pos.zoom;
+		const int ypos = (speaker->feet_y() - screen_y)*pos.zoom - 10;
+
+		glDisable(GL_TEXTURE_2D);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glColor4ub(85, 53, 53, 255);
+
+		const GLshort varray[] = {
+			(pane_area.w()/2 + xpos)/2 - 30, pane_area.y(),
+			(pane_area.w()/2 + xpos)/2 + 30, pane_area.y(),
+			xpos, ypos,
+		};
+
+		glVertexPointer(2, GL_SHORT, 0, varray);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+
+		glColor4ub(255, 255, 255, 255);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glEnable(GL_TEXTURE_2D);
+	}
+
+	const rect text_area(TextBorder, graphics::screen_height() - text_panel->height() + TextBorder, graphics::screen_width() - TextBorder*2, text_panel->height() - TextBorder*2);
 
 	//if we have multiple lines, we always align on the very left, otherwise
 	//we center it.
@@ -190,20 +216,6 @@ void speech_dialog::draw() const
 		const_gui_section_ptr down_arrow = gui_section::get("speech_text_down_arrow");
 		down_arrow->blit(text_area.x2() - down_arrow->width() - 10, text_area.y2() - down_arrow->height() - 10);
 		
-	}
-
-	if(left_) {
-		const frame& f = left_->portrait_frame();
-		const int xpos = -horizontal_position_ + portrait_panel->width()/2 - f.width()/2;
-		const int ypos = graphics::screen_height() - f.height() - 18;
-		f.draw(xpos, ypos);
-	}
-
-	if(right_) {
-		const frame& f = right_->portrait_frame();
-		const int xpos = graphics::screen_width() - horizontal_position_ + portrait_panel->width()/2 - f.width()/2;
-		const int ypos = graphics::screen_height() - f.height() - 18;
-		f.draw(xpos, ypos, false);
 	}
 
 	if(text_char_ == num_chars() && options_.empty() == false) {

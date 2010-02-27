@@ -230,6 +230,10 @@ public:
 
 	void editor_freeze_tile_updates(bool value);
 
+	int zoom_level() const { return zoom_level_; }
+
+	const std::vector<entity_ptr>& focus_override() const { return focus_override_; }
+
 	static const game_logic::formula_callable_definition& get_formula_definition();
 
 private:
@@ -394,6 +398,9 @@ private:
 	int editor_tile_updates_frozen_;
 
 	gui_algorithm_ptr gui_algorithm_;
+
+	int zoom_level_;
+	std::vector<entity_ptr> focus_override_;
 };
 
 bool entity_in_current_level(const entity* e);
