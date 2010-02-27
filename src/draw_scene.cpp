@@ -8,6 +8,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/scoped_ptr.hpp>
 
+#include "asserts.hpp"
 #include "controls.hpp"
 #include "debug_console.hpp"
 #include "draw_number.hpp"
@@ -30,8 +31,8 @@ int drawable_height() {
 	return graphics::screen_height() - statusbar_height;
 }
 
-graphics::texture title_texture_fg, title_texture_bg;
-int title_display_remaining = 0;
+std::string scene_title_;
+int scene_title_duration_;
 
 screen_position last_position;
 }
@@ -42,9 +43,8 @@ screen_position& last_draw_position()
 }
 
 void set_scene_title(const std::string& msg, int duration) {
-	title_texture_fg = font::render_text(msg, graphics::color_white(), 60);
-	title_texture_bg = font::render_text(msg, graphics::color_black(), 60);
-	title_display_remaining = duration;
+	scene_title_ = msg;
+	scene_title_duration_ = duration;
 }
 
 GLfloat hp_ratio = -1.0;
@@ -257,6 +257,24 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 	debug_console::draw();
 
 	lvl.draw_status();
+
+	if(scene_title_duration_ > 0) {
+		--scene_title_duration_;
+		const const_graphical_font_ptr f = graphical_font::get("default");
+		ASSERT_LOG(f.get() != NULL, "COULD NOT LOAD DEFAULT FONT");
+		const rect r = f->dimensions(scene_title_);
+		const GLfloat alpha = scene_title_duration_ > 10 ? 1.0 : scene_title_duration_/10.0;
+		{
+			glColor4ub(0, 0, 0, 128*alpha);
+			f->draw(graphics::screen_width()/2 - r.w()/2 + 2, graphics::screen_height()/2 - r.h()/2 + 2, scene_title_);
+			glColor4ub(255, 255, 255, 255*alpha);
+		}
+
+		{
+			f->draw(graphics::screen_width()/2 - r.w()/2, graphics::screen_height()/2 - r.h()/2, scene_title_);
+			glColor4ub(255, 255, 255, 255);
+		}
+	}
 	
 	
 	if(pos.flip_rotate) {
