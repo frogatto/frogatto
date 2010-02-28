@@ -346,6 +346,8 @@ const level* level_building = NULL;
 bool tile_rebuild_in_progress = false;
 bool tile_rebuild_queued = false;
 
+threading::thread* rebuild_tile_thread = NULL;
+
 //a locked flag which is polled to see if tile rebuilding has been completed.
 bool tile_rebuild_complete = false;
 threading::mutex tile_rebuild_complete_mutex;
@@ -378,8 +380,7 @@ void level::start_rebuild_tiles_in_background()
 	tile_rebuild_in_progress = true;
 	tile_rebuild_complete = false;
 
-	threading::thread thr(boost::bind(build_tiles_thread_function, tile_maps_));
-	thr.detach();
+	rebuild_tile_thread = new threading::thread(boost::bind(build_tiles_thread_function, tile_maps_));
 }
 
 void level::complete_rebuild_tiles_in_background()
@@ -394,6 +395,10 @@ void level::complete_rebuild_tiles_in_background()
 			return;
 		}
 	}
+
+	ASSERT_LOG(rebuild_tile_thread, "REBUILD TILE THREAD IS NULL");
+	delete rebuild_tile_thread;
+	rebuild_tile_thread = NULL;
 
 	if(level_building == this) {
 		tiles_.clear();
