@@ -1,5 +1,5 @@
 #import "iphone_sound.h"
-#import "GBMusicTrack.h"
+//#import "GBMusicTrack.h"
 
 #import <AVFoundation/AVFoundation.h>
 
@@ -68,18 +68,12 @@ void iphone_play_music (const char *file)
 
 void iphone_pause_music ()
 {
-	if (song)
-	{
-		[song pause];
-	}
+	[song pause];
 }
 
 void iphone_resume_music ()
 {
-	if (song)
-	{
-		[song play];
-	}
+	[song play];
 }
 
 void iphone_kill_music ()
@@ -134,6 +128,7 @@ void iphone_kill_music ()
 	[player release];
 	song = nil;
 	(*song_finished_callback)();
+	NSLog(@"Finished playing music");
 }
 
 @end

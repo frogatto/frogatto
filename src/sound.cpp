@@ -24,7 +24,7 @@ const int SampleRate = 44100;
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 const size_t NumChannels = 16;
 #else
-const size_t NumChannels = 8;
+const size_t NumChannels = 16;
 #endif
 
 #ifdef WIN32
@@ -60,7 +60,9 @@ void on_music_finished()
 }
 
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-	
+
+class sound; //so mixer can make pointers to it
+
 struct
 {
 	/* channel array holds information about currently playing sounds */
@@ -69,6 +71,9 @@ struct
 		Uint8 *position; /* what is the current position in the buffer of this sound ? */
 		Uint32 remaining; /* how many bytes remaining before we're done playing the sound ? */
 		Uint32 timestamp; /* when did this sound start playing ? */
+		int volume;
+		int loops;
+		sound *s;
 	} channels[NumChannels];
 	SDL_AudioSpec outputSpec; /* what audio format are we using for output? */
 	int numSoundsPlaying; /* how many sounds are currently playing */
@@ -91,7 +96,7 @@ class sound
 			return; //should maybe die
 		}
 		buffer = boost::shared_ptr<Uint8>(tmp_buffer, SDL_free);
-		//return; // don't convert the audio, assume it's already in the right format
+		return; // don't convert the audio, assume it's already in the right format
 		/* build the audio converter */
 		int result = SDL_BuildAudioCVT(&cvt, spec.format, spec.channels, spec.freq,
 			mixer.outputSpec.format, mixer.outputSpec.channels, mixer.outputSpec.freq);
@@ -150,7 +155,7 @@ void sdl_audio_callback (void *userdata, Uint8 * stream, int len)
 		copy_amt = mixer.channels[i].remaining < len ? mixer.channels[i].remaining : len;
 		
 		/* mix this sound effect with the output */
-		SDL_MixAudioFormat(stream, mixer.channels[i].position, mixer.outputSpec.format, copy_amt, 150);
+		SDL_MixAudioFormat(stream, mixer.channels[i].position, mixer.outputSpec.format, copy_amt, mixer.channels[i].volume);
 		
 		/* update buffer position in sound effect and the number of bytes left */
 		mixer.channels[i].position += copy_amt;
@@ -159,12 +164,19 @@ void sdl_audio_callback (void *userdata, Uint8 * stream, int len)
 		/* did we finish playing the sound effect ? */
 		if (mixer.channels[i].remaining == 0)
 		{
-			sdl_stop_channel(i);
+			if (mixer.channels[i].loops != 0)
+			{
+				mixer.channels[i].position = mixer.channels[i].s->buffer.get();
+				mixer.channels[i].remaining = mixer.channels[i].s->length;
+				if (mixer.channels[i].loops != -1) mixer.channels[i].loops--;
+			} else {
+				sdl_stop_channel(i);
+			}
 		}
 	}
 }
 
-int sdl_play_sound (sound s)
+int sdl_play_sound (sound *s, int loops)
 {
 	/*
 	 find an empty channel to play on.
@@ -198,9 +210,12 @@ int sdl_play_sound (sound s)
 		mixer.numSoundsPlaying++;
 	
 	/* point channel data to wav data */
-	mixer.channels[selected_channel].position = s.buffer.get();
-	mixer.channels[selected_channel].remaining = s.length;
+	mixer.channels[selected_channel].position = s->buffer.get();
+	mixer.channels[selected_channel].remaining = s->length;
 	mixer.channels[selected_channel].timestamp = SDL_GetTicks();
+	mixer.channels[selected_channel].volume = SDL_MIX_MAXVOLUME;
+	mixer.channels[selected_channel].loops = loops;
+	mixer.channels[selected_channel].s = s;
 	
 	return selected_channel;
 }
@@ -252,7 +267,7 @@ manager::manager()
 	/* setup output format */
 	mixer.outputSpec.freq = SampleRate;
 	mixer.outputSpec.format = AUDIO_S16LSB;
-	mixer.outputSpec.channels = 2;
+	mixer.outputSpec.channels = 1;
 	mixer.outputSpec.samples = 256;
 	mixer.outputSpec.callback = sdl_audio_callback;
 	mixer.outputSpec.userdata = NULL;
@@ -334,7 +349,7 @@ int play_internal(const std::string& file, int loops, const void* object)
 		}
 	}
 	
-	int result = sdl_play_sound(s);
+	int result = sdl_play_sound(&s, loops);
 #endif
 
 	//record which channel the sound is playing on.
@@ -415,20 +430,24 @@ void change_volume(const void* object, int volume)
 		volume = 0;
 	}
 	
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	//find the channel associated with this object.
 	for(int n = 0; n != channels_to_sounds_playing.size(); ++n) {
 		if(channels_to_sounds_playing[n].object == object) {
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 			Mix_Volume(n, volume);
+#else
+			mixer.channels[n].volume = volume;
+#endif
 		} //else, we just do nothing
 	}
-#endif
 }
 	
 void cancel_looped(int handle)
 {
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	Mix_HaltChannel(handle);
+#else
+	sdl_stop_channel(handle);
 #endif
 }
 
