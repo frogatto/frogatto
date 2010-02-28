@@ -190,6 +190,7 @@ std::vector<const_custom_object_type_ptr> custom_object_type::get_all()
 		}
 
 		const std::string id(fname.begin(), fname.end() - 4);
+		std::cerr << "LOAD OBJECT: " << id << "\n";
 		res.push_back(get(id));
 	}
 

@@ -519,7 +519,14 @@ void custom_object::process(level& lvl)
 		const int air_resistance = is_underwater ? lvl.water_resistance() : lvl.air_resistance();
 
 		const int friction = ((stand_info.friction + air_resistance)*type_->friction())/1000;
-		const int vertical_resistance = (air_resistance*type_->friction())/1000;
+		int vertical_resistance = (air_resistance*type_->friction())/1000;
+		if(velocity_y_ > 0 && !is_underwater) {
+			//vertical air resistance is reduced when moving downwards.
+			//This works well for most objects, though consider making it
+			//configurable in future.
+			vertical_resistance /= 2;
+		}
+
 		velocity_x_ = (velocity_x_*(1000 - friction))/1000;
 		velocity_y_ = (velocity_y_*(1000 - vertical_resistance))/1000;
 	}
@@ -1077,6 +1084,15 @@ namespace {
 //this shows all object events that are currently active.
 std::vector<int> event_call_stack;
 
+variant call_stack(const custom_object& obj) {
+	std::vector<variant> result;
+	for(int n = 0; n != event_call_stack.size(); ++n) {
+		result.push_back(variant(get_object_event_str(event_call_stack[n])));
+	}
+
+	return variant(&result);
+}
+
 typedef variant (*object_accessor)(const custom_object& obj);
 //typedef boost::function<variant(const custom_object& obj)> object_accessor;
 std::map<std::string, object_accessor> object_accessor_map;
@@ -1210,15 +1226,6 @@ struct custom_object::Accessor {
 		std::vector<variant> result;
 		foreach(const entity_ptr& e, obj.attached_objects()) {
 			result.push_back(variant(e.get()));
-		}
-
-		return variant(&result);
-	}
-
-	static variant call_stack(const custom_object& obj) {
-		std::vector<variant> result;
-		foreach(int ev, event_call_stack) {
-			result.push_back(variant(get_object_event_str(ev)));
 		}
 
 		return variant(&result);
@@ -1424,12 +1431,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	}
 
 	case CUSTOM_OBJECT_CALL_STACK: {
-		std::vector<variant> result;
-		foreach(int ev, event_call_stack) {
-			result.push_back(variant(get_object_event_str(ev)));
-		}
-
-		return variant(&result);
+		return call_stack(*this);
 	}
 
 	case CUSTOM_OBJECT_HAS_FEET:
