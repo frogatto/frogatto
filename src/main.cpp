@@ -275,15 +275,15 @@ extern "C" int main(int argc, char** argv)
 
 	try {
 		custom_object::init();
-		init_custom_object_functions(wml::parse_wml_from_file("functions.cfg"));
-		wml::schema::init(wml::parse_wml_from_file("schema.cfg"));
-		tile_map::init(wml::parse_wml_from_file("tiles.cfg",
+		init_custom_object_functions(wml::parse_wml_from_file("data/functions.cfg"));
+		wml::schema::init(wml::parse_wml_from_file("data/schema.cfg"));
+		tile_map::init(wml::parse_wml_from_file("data/tiles.cfg",
 		               wml::schema::get("tiles")));
-		powerup::init(wml::parse_wml_from_file("powerups.cfg",
+		powerup::init(wml::parse_wml_from_file("data/powerups.cfg",
 		              wml::schema::get("powerups")));
-		gui_section::init(wml::parse_wml_from_file("gui.cfg"));
-		framed_gui_element::init(wml::parse_wml_from_file("gui.cfg"));
-		graphical_font::init(wml::parse_wml_from_file("fonts.cfg"));
+		gui_section::init(wml::parse_wml_from_file("data/gui.cfg"));
+		framed_gui_element::init(wml::parse_wml_from_file("data/gui.cfg"));
+		graphical_font::init(wml::parse_wml_from_file("data/fonts.cfg"));
 	} catch(const wml::parse_error& e) {
 		return 0;
 	}

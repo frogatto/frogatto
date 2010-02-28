@@ -562,7 +562,7 @@ editor::editor(const char* level_cfg)
 
 	static bool first_time = true;
 	if(first_time) {
-		wml::const_node_ptr editor_cfg = wml::parse_wml(sys::read_file("editor.cfg"));
+		wml::const_node_ptr editor_cfg = wml::parse_wml(sys::read_file("data/editor.cfg"));
 		tile_map::load_all();
 		tileset::init(editor_cfg);
 		enemy_type::init(editor_cfg);
