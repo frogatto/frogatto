@@ -133,12 +133,39 @@ bool speech_dialog::process()
 
 void speech_dialog::draw() const
 {
-	const_gui_section_ptr text_panel = gui_section::get("speech_text_pane");
+	static const const_gui_section_ptr top_corner = gui_section::get("speech_dialog_top_corner");
+	static const const_gui_section_ptr bottom_corner = gui_section::get("speech_dialog_bottom_corner");
+	static const const_gui_section_ptr top_edge = gui_section::get("speech_dialog_top_edge");
+	static const const_gui_section_ptr bottom_edge = gui_section::get("speech_dialog_bottom_edge");
+	static const const_gui_section_ptr side_edge = gui_section::get("speech_dialog_side_edge");
+	static const const_gui_section_ptr arrow = gui_section::get("speech_dialog_arrow");
+
 	const_graphical_font_ptr font = graphical_font::get("default");
 
+	const int TextAreaHeight = 80;
+
 	const int TextBorder = 10;
-	const rect pane_area(0, graphics::screen_height() - text_panel->height() + TextBorder*2, graphics::screen_width(), text_panel->height() + TextBorder*2);
+	const rect pane_area(
+	  top_corner->width(),
+	  graphics::screen_height() - TextAreaHeight + TextBorder,
+	  graphics::screen_width() - top_corner->width()*2,
+	  TextAreaHeight - bottom_corner->height());
+
+	const rect text_area(pane_area.x()-30, pane_area.y()-30, pane_area.w()+60, pane_area.h()+60);
+
 	graphics::draw_rect(pane_area, graphics::color(85, 53, 53, 255));
+	top_corner->blit(pane_area.x() - top_corner->width(), pane_area.y() - top_corner->height());
+	top_corner->blit(pane_area.x2()-1, pane_area.y() - top_corner->height(), -top_corner->width(), top_corner->height());
+
+	top_edge->blit(pane_area.x(), pane_area.y() - top_edge->height(), pane_area.w(), top_edge->height());
+
+	bottom_corner->blit(pane_area.x() - bottom_corner->width(), pane_area.y2());
+	bottom_corner->blit(pane_area.x2()-1, pane_area.y2(), -bottom_corner->width(), bottom_corner->height());
+
+	bottom_edge->blit(pane_area.x(), pane_area.y2(), pane_area.w(), bottom_edge->height());
+
+	side_edge->blit(pane_area.x() - side_edge->width(), pane_area.y(), side_edge->width(), pane_area.h());
+	side_edge->blit(pane_area.x2()-1, pane_area.y(), -side_edge->width(), pane_area.h());
 
 	const_entity_ptr speaker = left_side_speaking_ ? left_ : right_;
 	if(speaker) {
@@ -146,28 +173,16 @@ void speech_dialog::draw() const
 		const int screen_x = pos.x/100 + (graphics::screen_width()/2)*(-1.0/pos.zoom + 1.0);
 		const int screen_y = pos.y/100 + (graphics::screen_height()/2)*(-1.0/pos.zoom + 1.0);
 
-		const int xpos = (speaker->feet_x() - screen_x)*pos.zoom;
+		const int xpos = (speaker->feet_x() - screen_x)*pos.zoom - 36;
 		const int ypos = (speaker->feet_y() - screen_y)*pos.zoom - 10;
 
-		glDisable(GL_TEXTURE_2D);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glColor4ub(85, 53, 53, 255);
-
-		const GLshort varray[] = {
-			(pane_area.w()/2 + xpos)/2 - 30, pane_area.y(),
-			(pane_area.w()/2 + xpos)/2 + 30, pane_area.y(),
-			xpos, ypos,
-		};
-
-		glVertexPointer(2, GL_SHORT, 0, varray);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-
-		glColor4ub(255, 255, 255, 255);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glEnable(GL_TEXTURE_2D);
+		//if the arrow to the speaker is within reasonable limits, then
+		//blit it.
+		if(xpos > top_corner->width() && xpos < graphics::screen_width() - top_corner->width() - arrow->width()) {
+			arrow->blit(xpos, pane_area.y() - arrow->height() - 30);
+		}
 	}
 
-	const rect text_area(TextBorder, graphics::screen_height() - text_panel->height() + TextBorder, graphics::screen_width() - TextBorder*2, text_panel->height() - TextBorder*2);
 
 	//if we have multiple lines, we always align on the very left, otherwise
 	//we center it.
