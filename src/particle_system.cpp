@@ -235,7 +235,7 @@ void simple_particle_system::process(const level& lvl, const entity& e)
 	spawn_buildup_ = nspawn%1000;
 	nspawn /= 1000;
 
-	std::cerr << "SPAWNING " << nspawn << " PARTICLES\n";
+	//std::cerr << "SPAWNING " << nspawn << " PARTICLES\n";
 
 	generation new_gen;
 	new_gen.members = nspawn;

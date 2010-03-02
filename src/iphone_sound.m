@@ -63,6 +63,7 @@ void iphone_play_music (const char *file)
 	}
 	song = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithCString: file]] error:NULL];
 	song.delegate = delegate;
+	song.numberOfLoops = -1; // loop indefinitely
 	[song play];
 }
 
