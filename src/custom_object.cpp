@@ -1975,9 +1975,13 @@ void custom_object::set_frame(const std::string& name)
 		game_logic::map_formula_callable* callable(new game_logic::map_formula_callable);
 		callable->add("previous_animation", variant(previous_animation));
 		game_logic::formula_callable_ptr callable_ptr(callable);
+		static int change_animation_failure_recurse = 0;
+		ASSERT_LOG(change_animation_failure_recurse < 5, "OBJECT " << type_->id() << " FAILS TO RESOLVE ANIMATION CHANGE FAILURES");
+		++change_animation_failure_recurse;
 		handle_event(OBJECT_EVENT_CHANGE_ANIMATION_FAILURE, callable);
 		handle_event("change_animation_failure_" + frame_name_, callable);
-		ASSERT_LOG(destroyed() || !entity_collides_with_level(level::current(), *this, MOVE_NONE),
+		--change_animation_failure_recurse;
+		ASSERT_LOG(destroyed() || !entity_collides(level::current(), *this, MOVE_NONE),
 		  "Object '" << type_->id() << "' has different solid areas when changing from frame " << previous_animation << " to " << frame_name_ << " and doesn't handle it properly");
 	}
 
@@ -2456,6 +2460,17 @@ BENCHMARK_ARG(custom_object_get_attr, const std::string& attr)
 
 BENCHMARK_ARG_CALL(custom_object_get_attr, easy_lookup, "x");
 BENCHMARK_ARG_CALL(custom_object_get_attr, hard_lookup, "xxxx");
+
+BENCHMARK_ARG(custom_object_formula, const std::string& f)
+{
+	static custom_object* obj = new custom_object("ant_black", 0, 0, false);
+	const game_logic::formula fml(f, NULL, &custom_object_type::get("ant_black")->callable_definition());
+	BENCHMARK_LOOP {
+		fml.execute(*obj);
+	}
+}
+
+BENCHMARK_ARG_CALL_COMMAND_LINE(custom_object_formula);
 
 BENCHMARK_ARG(custom_object_handle_event, const std::string& object_event)
 {
