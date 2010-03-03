@@ -34,7 +34,7 @@ void wml_formula_callable_serialization_scope::register_serialized_object(const_
 std::string  wml_formula_callable_serialization_scope::require_serialized_object(const_wml_serializable_formula_callable_ptr ptr)
 {
 	char addr_buf[256];
-	sprintf(addr_buf, "serialize_load(%p)", ptr.get());
+	sprintf(addr_buf, "%p", ptr.get());
 
 	ASSERT_LOG(scopes.empty() == false, "require_serialized_object() called when there is no wml_formula_callable_serialization_scope");
 	scopes.top().objects_to_write.insert(ptr);
@@ -74,6 +74,33 @@ wml::node_ptr wml_formula_callable_serialization_scope::write_objects() const
 	}
 
 	return result;
+}
+
+namespace {
+std::map<intptr_t, wml_serializable_formula_callable_ptr> registered_objects;
+}
+
+void wml_formula_callable_read_scope::register_serialized_object(intptr_t addr, wml_serializable_formula_callable_ptr ptr)
+{
+	fprintf(stderr, "REGISTER SERIALIZED: 0x%x\n", (int)addr);
+	registered_objects[addr] = ptr;
+}
+
+wml_formula_callable_read_scope::wml_formula_callable_read_scope()
+{
+}
+
+wml_formula_callable_read_scope::~wml_formula_callable_read_scope()
+{
+	std::set<variant*> v;
+	swap_variants_loading(v);
+	for(std::set<variant*>::iterator i = v.begin(); i != v.end(); ++i) {
+		variant& var = **i;
+		fprintf(stderr, "LOAD SERIALIZED: 0x%x\n", (int)var.as_callable_loading());
+		var = variant(registered_objects[var.as_callable_loading()].get());
+	}
+
+	registered_objects.clear();
 }
 
 }

@@ -169,6 +169,8 @@ level::level(const std::string& level_cfg)
 		}
 
 		load_character(c1->second);
+		const intptr_t addr_id = strtoll(c1->second->attr("_addr").c_str(), NULL, 16);
+		game_logic::wml_formula_callable_read_scope::register_serialized_object(addr_id, chars_.back());
 	}
 
 	wml::node::const_child_iterator p1 = node->begin_child("portal");
@@ -304,8 +306,12 @@ void level::finish_loading()
 {
 	graphics::texture::build_textures_from_worker_threads();
 
+	game_logic::wml_formula_callable_read_scope read_scope;
 	foreach(wml::const_node_ptr node, wml_chars_) {
 		load_character(node);
+
+		const intptr_t addr_id = strtoll(node->attr("_addr").c_str(), NULL, 16);
+		game_logic::wml_formula_callable_read_scope::register_serialized_object(addr_id, chars_.back());
 	}
 
 	wml_chars_.clear();

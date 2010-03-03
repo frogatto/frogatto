@@ -640,6 +640,19 @@ private:
 	}
 };
 
+class deserialize_function : public function_expression {
+public:
+	explicit deserialize_function(const args_list& args)
+	  : function_expression("deserialize", args, 1, 1)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		const intptr_t id = strtoll(args()[0]->evaluate(variables).as_string().c_str(), NULL, 16);
+		return variant::create_variant_under_construction(id);
+	}
+};
+
 }
 
 formula_function_expression::formula_function_expression(const std::string& name, const args_list& args, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& arg_names)
@@ -792,6 +805,7 @@ functions_map& get_functions_map() {
 		FUNCTION(refcount);
 		FUNCTION(keys);
 		FUNCTION(values);
+		FUNCTION(deserialize);
 #undef FUNCTION
 	}
 

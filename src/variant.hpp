@@ -4,6 +4,7 @@
 #include <boost/shared_ptr.hpp>
 #include <string>
 #include <map>
+#include <set>
 #include <vector>
 
 #include "formula_fwd.hpp"
@@ -26,6 +27,9 @@ struct call_stack_manager {
 	}
 };
 
+class variant;
+void swap_variants_loading(std::set<variant*>& v);
+
 struct variant_list;
 struct variant_string;
 struct variant_map;
@@ -45,6 +49,8 @@ public:
 	explicit variant(const std::string& str);
 	explicit variant(std::map<variant,variant>* map);
 	variant(game_logic::const_formula_ptr, const std::vector<std::string>& args, const game_logic::formula_callable& callable);
+
+	static variant create_variant_under_construction(intptr_t id);
 
 	//only call the non-inlined release() function if we have a type
 	//that needs releasing.
@@ -78,6 +84,8 @@ public:
 		must_be(TYPE_CALLABLE); return callable_; }
 	game_logic::formula_callable* mutable_callable() const {
 		must_be(TYPE_CALLABLE); return mutable_callable_; }
+
+	intptr_t as_callable_loading() const { return callable_loading_; }
 
 	template<typename T>
 	T* try_convert() const {
@@ -126,7 +134,7 @@ public:
 	std::string to_debug_string(std::vector<const game_logic::formula_callable*>* seen=NULL) const;
 
 	std::vector<variant>& initialize_list();
-	enum TYPE { TYPE_NULL, TYPE_INT, TYPE_CALLABLE, TYPE_LIST, TYPE_STRING, TYPE_MAP, TYPE_FUNCTION };
+	enum TYPE { TYPE_NULL, TYPE_INT, TYPE_CALLABLE, TYPE_CALLABLE_LOADING, TYPE_LIST, TYPE_STRING, TYPE_MAP, TYPE_FUNCTION };
 private:
 	void must_be(TYPE t) const;
 	TYPE type_;
@@ -134,6 +142,7 @@ private:
 		int int_value_;
 		const game_logic::formula_callable* callable_;
 		game_logic::formula_callable* mutable_callable_;
+		intptr_t callable_loading_;
 		variant_list* list_;
 		variant_string* string_;
 		variant_map* map_;

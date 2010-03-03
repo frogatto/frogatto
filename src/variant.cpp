@@ -7,7 +7,7 @@
 
 #include "boost/lexical_cast.hpp"
 
-//#include "foreach.hpp"
+#include "asserts.hpp"
 #include "formatter.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
@@ -15,6 +15,8 @@
 #include "wml_formula_callable.hpp"
 
 namespace {
+std::set<variant*> callable_variants_loading;
+
 std::string variant_type_to_string(variant::TYPE type) {
 	switch(type) {
 	case variant::TYPE_NULL: 
@@ -23,6 +25,8 @@ std::string variant_type_to_string(variant::TYPE type) {
 		return "int";
 	case variant::TYPE_CALLABLE: 
 		return "object";
+	case variant::TYPE_CALLABLE_LOADING: 
+		return "object_loading";
 	case variant::TYPE_LIST: 
 		return "list";
 	case variant::TYPE_STRING: 
@@ -38,6 +42,11 @@ std::string variant_type_to_string(variant::TYPE type) {
 }
 
 std::vector<const char*> call_stack;
+}
+
+void swap_variants_loading(std::set<variant*>& v)
+{
+	callable_variants_loading.swap(v);
 }
 
 void push_call_stack(const char* str)
@@ -121,8 +130,12 @@ void variant::increment_refcount()
 	case TYPE_CALLABLE:
 		intrusive_ptr_add_ref(callable_);
 		break;
+	case TYPE_CALLABLE_LOADING:
+		callable_variants_loading.insert(this);
+		break;
 	case TYPE_FUNCTION:
 		++fn_->refcount;
+		break;
 
 	// These are not used here, add them to silence a compiler warning.
 	case TYPE_NULL:
@@ -169,6 +182,9 @@ void variant::release()
 		break;
 	case TYPE_CALLABLE:
 		intrusive_ptr_release(callable_);
+		break;
+	case TYPE_CALLABLE_LOADING:
+		callable_variants_loading.erase(this);
 		break;
 	case TYPE_FUNCTION:
 		if(--fn_->refcount == 0) {
@@ -367,6 +383,8 @@ bool variant::as_bool() const
 		return false;
 	case TYPE_INT:
 		return int_value_ != 0;
+	case TYPE_CALLABLE_LOADING:
+		return true;
 	case TYPE_CALLABLE:
 		return callable_ != NULL;
 	case TYPE_LIST:
@@ -544,6 +562,10 @@ bool variant::operator==(const variant& v) const
 		return map_->elements == v.map_->elements;
 	}
 
+	case TYPE_CALLABLE_LOADING: {
+		return false;
+	}
+
 	case TYPE_CALLABLE: {
 		return callable_->equals(v.callable_);
 	}
@@ -593,6 +615,10 @@ bool variant::operator<=(const variant& v) const
 		return map_->elements <= v.map_->elements;
 	}
 
+	case TYPE_CALLABLE_LOADING: {
+		return false;
+	}
+
 	case TYPE_CALLABLE: {
 		return !v.callable_->less(callable_);
 	}
@@ -632,6 +658,10 @@ void variant::serialize_to_string(std::string& str) const
 	case TYPE_INT:
 		str += boost::lexical_cast<std::string>(int_value_);
 		break;
+	case TYPE_CALLABLE_LOADING: {
+		ASSERT_LOG(false, "TRIED TO SERIALIZE A VARIANT LOADING");
+		break;
+	}
 	case TYPE_CALLABLE: {
 		if(game_logic::wml_formula_callable_serialization_scope::is_active()) {
 			const game_logic::wml_serializable_formula_callable* obj = try_convert<game_logic::wml_serializable_formula_callable>();
@@ -640,7 +670,7 @@ void variant::serialize_to_string(std::string& str) const
 				//it might be present in the level or a reference to it held
 				//from multiple objects. So we record the address of it and
 				//register it to be recorded seperately.
-				str += game_logic::wml_formula_callable_serialization_scope::require_serialized_object(obj);
+				str += "deserialize('" + game_logic::wml_formula_callable_serialization_scope::require_serialized_object(obj) + "')";
 				return;
 			}
 		}
@@ -702,6 +732,15 @@ void variant::serialize_from_string(const std::string& str)
 	}
 }
 
+variant variant::create_variant_under_construction(intptr_t id)
+{
+	variant v;
+	v.type_ = TYPE_CALLABLE_LOADING;
+	v.callable_loading_ = id;
+	v.increment_refcount();
+	return v;
+}
+
 int variant::refcount() const
 {
 	switch(type_) {
@@ -729,6 +768,8 @@ std::string variant::string_cast() const
 		return "0";
 	case TYPE_INT:
 		return boost::lexical_cast<std::string>(int_value_);
+	case TYPE_CALLABLE_LOADING:
+		return "(object loading)";
 	case TYPE_CALLABLE:
 		return "(object)";
 	case TYPE_LIST: {
@@ -791,6 +832,12 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 		s << "]";
 		break;
 	}
+	case TYPE_CALLABLE_LOADING: {
+		char buf[64];
+		sprintf(buf, "(loading %x)", callable_loading_);
+		s << buf;
+	}
+
 	case TYPE_CALLABLE: {
 		char buf[64];
 		sprintf(buf, "(%p)", callable_);
