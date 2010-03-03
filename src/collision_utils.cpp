@@ -326,8 +326,8 @@ int entity_user_collision(const entity& a, const entity& b, collision_pair* area
 				const rect intersection = intersection_rect(rect_a, rect_b);
 				for(int y = intersection.y(); y <= intersection.y2() && !found; y += Stride) {
 					for(int x = intersection.x(); x <= intersection.x2(); x += Stride) {
-						if(!fa.is_alpha(x - a.x(), y - a.y(), time_a, a.face_right()) &&
-						   !fb.is_alpha(x - b.x(), y - b.y(), time_b, b.face_right())) {
+						if((area_a.no_alpha_check || !fa.is_alpha(x - a.x(), y - a.y(), time_a, a.face_right())) &&
+						   (area_b.no_alpha_check || !fb.is_alpha(x - b.x(), y - b.y(), time_b, b.face_right()))) {
 							found = true;
 							break;
 						}

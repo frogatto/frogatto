@@ -103,16 +103,25 @@ frame::frame(wml::const_node_ptr node)
 
 		const std::string area_id = std::string(attr.begin(), attr.end() - AreaPostfix.size());
 
+		bool solid = false;
+		std::string value = i->second;
+
+		static const std::string SolidStr = "solid:";
+		if(value.size() > SolidStr.size() && std::equal(SolidStr.begin(), SolidStr.end(), value.begin())) {
+			solid = true;
+			value.erase(value.begin(), value.begin() + SolidStr.size());
+		}
+
 		rect r;
-		if(i->second.str() == "none") {
+		if(value == "none") {
 			continue;
-		} else if(i->second.str() == "all") {
+		} else if(value == "all") {
 			r = rect(0, 0, width(), height());
 		} else {
-			r = rect(i->second);
+			r = rect(value);
 			r = rect(r.x()*scale_, r.y()*scale_, r.w()*scale_, r.h()*scale_);
 		}
-		collision_area area = { area_id, r };
+		collision_area area = { area_id, r, solid };
 		collision_areas_.push_back(area);
 	}
 

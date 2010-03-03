@@ -22,6 +22,10 @@ public:
 	struct collision_area {
 		std::string name;
 		rect area;
+
+		//if this flag is set, then the entire area is considered to
+		//collide, rather than just the pixels that have non-zero alpha.
+		bool no_alpha_check;
 	};
 
 	explicit frame(wml::const_node_ptr node);
