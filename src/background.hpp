@@ -64,6 +64,9 @@ private:
 
 		//if true, this layer is actually drawn in the foreground.
 		bool foreground;
+
+		//if false we can disable blending while this is drawn
+		bool blend;
 	};
 
 	void draw_layer(int x, int y, const rect& area, int rotation, const layer& bg, int cycle) const;

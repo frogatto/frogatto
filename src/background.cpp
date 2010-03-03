@@ -70,6 +70,7 @@ background::background(const wml::const_node_ptr& node)
 		bg.xoffset = wml::get_int(layer_node, "xoffset", 0);
 		bg.yoffset = wml::get_int(layer_node, "yoffset", 0);
 		bg.scale = wml::get_int(layer_node, "scale", 1);
+		bg.blend = wml::get_bool(layer_node, "blend", true);
 		if(bg.scale < 1) {
 			bg.scale = 1;
 		}
@@ -234,7 +235,15 @@ void background::draw_layers(int x, int y, const rect& area_ref, const std::vect
 
 	foreach(const layer& bg, layers_) {
 		if(bg.foreground == false) {
+			if(bg.blend == false) {
+				glDisable(GL_BLEND);
+			}
+
 			draw_layer(x, y, area, rotation, bg, cycle);
+
+			if(bg.blend == false) {
+				glEnable(GL_BLEND);
+			}
 		}
 	}
 }
