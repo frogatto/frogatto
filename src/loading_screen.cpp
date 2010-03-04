@@ -21,7 +21,12 @@ void loading_screen::load (wml::const_node_ptr node)
 	FOREACH_WML_CHILD(preload_node, node, "preload")
 	{
 		draw_and_increment(wml::get_str(preload_node, "message"));
-		custom_object_type::get(wml::get_str(preload_node, "name"));
+		if (wml::get_str(preload_node, "type") == "object")
+		{
+			custom_object_type::get(wml::get_str(preload_node, "name"));
+		} else if (wml::get_str(preload_node, "type") == "texture") {
+			graphics::texture::get(wml::get_str(preload_node, "name"));
+		}
 	}
 }
 
@@ -46,7 +51,7 @@ void loading_screen::draw (const std::string& message)
 	graphics::draw_rect(bg, graphics::color(96, 96, 96, 255));
 	float amount_done = (float)status_ / (float)items_;
 	rect bar(screen_w/2 - bar_width/2, screen_h/2 - bar_height/2, bar_width*amount_done, bar_height);
-	graphics::draw_rect(bar, graphics::color(220, 220, 220, 255));
+	graphics::draw_rect(bar, graphics::color(255, 255, 255, 255));
 	
 	const_graphical_font_ptr font = graphical_font::get("door_label");
 	rect text_size = font->dimensions(message);
