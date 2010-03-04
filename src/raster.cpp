@@ -43,6 +43,12 @@ namespace graphics
 		static std::vector<GLfloat> v;
 		return v;
 	}
+
+	std::vector<GLbyte>& global_vertex_color_array()
+	{
+		static std::vector<GLbyte> v;
+		return v;
+	}
 	
 #ifdef SDL_VIDEO_OPENGL_ES
 #define glOrtho glOrthof

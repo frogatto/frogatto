@@ -304,6 +304,9 @@ void simple_particle_system::draw(const rect& area, const entity& e) const
 	p->anim->set_texture();
 	std::vector<GLfloat>& varray = graphics::global_vertex_array();
 	std::vector<GLfloat>& tcarray = graphics::global_texcoords_array();
+	std::vector<GLbyte>& carray = graphics::global_vertex_color_array();
+
+	carray.clear();
 	varray.clear();
 	tcarray.clear();
 	foreach(const generation& gen, generations_) {
@@ -311,8 +314,20 @@ void simple_particle_system::draw(const rect& area, const entity& e) const
 			const particle_animation* anim = p->anim;
 			const particle_animation::frame_area& f = anim->get_frame(cycle_ - gen.created_at);
 
+			if(info_.delta_a_){
+				//Spare the bandwidth if we're opaque
+				const int alpha_level = std::max(256 - info_.delta_a_*(cycle_ - gen.created_at), 0);
+				const int red = 255;
+				const int green = 255;
+				const int blue = 255;
+				for( int i = 0; i < 6; ++i){
+					carray.push_back(red); carray.push_back(green); carray.push_back(blue); carray.push_back(alpha_level);
+				}
+
+			}
 			//draw the first point twice, to allow drawing all particles
 			//in one drawing operation.
+			
 			tcarray.push_back(graphics::texture::get_coord_x(f.u1));
 			tcarray.push_back(graphics::texture::get_coord_y(f.v1));
 			varray.push_back(p->pos[0]);
@@ -343,9 +358,19 @@ void simple_particle_system::draw(const rect& area, const entity& e) const
 			++p;
 		}
 	}
+	
+	if(info_.delta_a_){
+		glEnableClientState(GL_COLOR_ARRAY);
+		glColorPointer(4, GL_UNSIGNED_BYTE, 0, &carray.front());
+	}
+	
 	glVertexPointer(2, GL_FLOAT, 0, &varray.front());
 	glTexCoordPointer(2, GL_FLOAT, 0, &tcarray.front());
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
+	
+	if(info_.delta_a_){
+		glDisableClientState(GL_COLOR_ARRAY);
+	}
 }
 
 particle_system_ptr simple_particle_system_factory::create(const entity& e) const

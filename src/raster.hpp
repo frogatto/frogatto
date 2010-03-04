@@ -31,6 +31,7 @@ namespace graphics
 
 std::vector<GLfloat>& global_vertex_array();
 std::vector<GLfloat>& global_texcoords_array();
+std::vector<GLbyte>& global_vertex_color_array();
 
 void prepare_raster();
 void blit_texture(const texture& tex, int x=0, int y=0, GLfloat rotate=0.0);
