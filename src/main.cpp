@@ -249,8 +249,14 @@ extern "C" int main(int argc, char** argv)
 		return -1;
 	}
 #endif
-
 	
+	glShadeModel(GL_SMOOTH);
+	glEnable(GL_BLEND);
+	glEnable(GL_TEXTURE_2D);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	SDL_WM_SetCaption("Frogatto", "Frogatto");
 
@@ -279,7 +285,7 @@ extern "C" int main(int argc, char** argv)
 		graphical_font::init(wml::parse_wml_from_file("data/fonts.cfg"));
 		preloads = wml::parse_wml_from_file("data/preload.cfg");
 		int preload_items = std::distance(preloads->begin_child("preload"), preloads->end_child("preload"));
-		loader.set_number_of_items(preload_items+8); // 8 is the number of items that will be loaded below
+		loader.set_number_of_items(preload_items+7); // 7 is the number of items that will be loaded below
 		loader.draw_and_increment("Initializing custom object");
 		custom_object::init();
 		loader.draw_and_increment("Initializing custom object functions");
@@ -323,13 +329,6 @@ extern "C" int main(int argc, char** argv)
 		return 0;
 	}
 
-	glShadeModel(GL_SMOOTH);
-	glEnable(GL_BLEND);
-	glEnable(GL_TEXTURE_2D);
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 #if defined(__APPLE__) && !(TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE)
 	long swapInterval = 1;
 	CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &swapInterval);

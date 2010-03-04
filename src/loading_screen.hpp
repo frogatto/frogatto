@@ -4,6 +4,8 @@
 #include <string>
 
 #include "wml_node_fwd.hpp"
+#include "texture.hpp"
+#include "graphical_font.hpp"
 
 class loading_screen
 {
@@ -18,6 +20,7 @@ class loading_screen
 	private:
 	int items_; // number of items we'll load
 	int status_; // how many items we've loaded so far
+	graphics::texture background_;
 };
 
 #endif
