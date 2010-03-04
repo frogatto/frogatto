@@ -38,6 +38,7 @@
 #include "level_object.hpp"
 #include "level_runner.hpp"
 #include "load_level.hpp"
+#include "loading_screen.hpp"
 #include "message_dialog.hpp"
 #include "multiplayer.hpp"
 #include "player_info.hpp"
@@ -269,24 +270,38 @@ extern "C" int main(int argc, char** argv)
 	}
 	#endif
 
-	sound::play("arrive.wav");
-
 	graphics::texture::manager texture_manager;
 
+	wml::const_node_ptr preloads;
+	loading_screen loader;
+	
 	try {
+		graphical_font::init(wml::parse_wml_from_file("data/fonts.cfg"));
+		preloads = wml::parse_wml_from_file("data/preload.cfg");
+		int preload_items = std::distance(preloads->begin_child("preload"), preloads->end_child("preload"));
+		loader.set_number_of_items(preload_items+8); // 8 is the number of items that will be loaded below
+		loader.draw_and_increment("Initializing custom object");
 		custom_object::init();
+		loader.draw_and_increment("Initializing custom object functions");
 		init_custom_object_functions(wml::parse_wml_from_file("data/functions.cfg"));
+		loader.draw_and_increment("Initializing schemas");
 		wml::schema::init(wml::parse_wml_from_file("data/schema.cfg"));
+		loader.draw_and_increment("Initializing tiles");
 		tile_map::init(wml::parse_wml_from_file("data/tiles.cfg",
 		               wml::schema::get("tiles")));
+		loader.draw_and_increment("Initializing powerups");
 		powerup::init(wml::parse_wml_from_file("data/powerups.cfg",
 		              wml::schema::get("powerups")));
+		loader.draw_and_increment("Initializing GUI");
 		gui_section::init(wml::parse_wml_from_file("data/gui.cfg"));
+		loader.draw_and_increment("Initializing GUI");
 		framed_gui_element::init(wml::parse_wml_from_file("data/gui.cfg"));
-		graphical_font::init(wml::parse_wml_from_file("data/fonts.cfg"));
 	} catch(const wml::parse_error& e) {
 		return 0;
 	}
+	
+	loader.load(preloads);
+	loader.draw("Loading titlescreen");
 
 	if(!skip_tests && !test::run_tests()) {
 		return -1;
