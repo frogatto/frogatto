@@ -61,10 +61,15 @@ level_object::level_object(wml::const_node_ptr node)
     traction_(wml::get_int(node, "traction", 100)),
     damage_(wml::get_int(node, "damage", 0)),
 	opaque_(wml::get_bool(node, "opaque", false)),
+	draw_area_(0, 0, 16, 16),
 	tile_index_(-1)
 {
 	if(node->has_attr("solid_color")) {
 		solid_color_ = boost::intrusive_ptr<graphics::color>(new graphics::color(node->attr("solid_color")));
+	}
+
+	if(node->has_attr("draw_area")) {
+		draw_area_ = rect(node->attr("draw_area"));
 	}
 
 	std::vector<std::string> tile_variations = util::split(node->attr("tiles"), '|');
@@ -224,6 +229,10 @@ level_object::level_object(wml::const_node_ptr node)
 		graphics::color col;
 		if(calculate_is_solid_color(col)) {
 			node_copy->set_attr("solid_color", graphics::color_transform(col).to_string());
+		}
+
+		if(calculate_draw_area()) {
+			node_copy->set_attr("draw_area", draw_area_.to_string());
 		}
 
 		level_object_index.push_back(node_copy);
@@ -418,7 +427,7 @@ void level_object::queue_draw(graphics::blit_queue& q, const level_tile& t)
 			x = t.object->width_ - x - 1;
 		}
 		const int y = index/t.object->width_;
-		queue_draw_from_tilesheet(q, t.object->t_, i, t.x + x*32, t.y + y*32, t.face_right);
+		queue_draw_from_tilesheet(q, t.object->t_, t.object->draw_area_, i, t.x + x*32, t.y + y*32, t.face_right);
 		++index;
 	}
 }
@@ -447,4 +456,16 @@ bool level_object::calculate_is_solid_color(graphics::color& col) const
 	}
 
 	return true;
+}
+
+bool level_object::calculate_draw_area()
+{
+	draw_area_ = rect();
+	foreach(const std::vector<int>& v, tiles_) {
+		foreach(int tile, v) {
+			draw_area_ = rect_union(draw_area_, get_tile_non_alpha_area(t_, tile));
+		}
+	}
+
+	return draw_area_ != rect(0, 0, 16, 16);
 }

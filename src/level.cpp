@@ -254,8 +254,6 @@ void level::read_compiled_tiles(wml::const_node_ptr node, std::vector<level_tile
 			out->zorder = zorder;
 			out->face_right = false;
 			out->draw_disabled = false;
-			out->blit_queue = NULL;
-			out->blit_queue_begin = out->blit_queue_end = 0;
 			if(*i == '~') {
 				out->face_right = true;
 				++i;
@@ -894,9 +892,6 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 	const level_tile* t = &*tile_itor;
 	const level_tile* end_tiles = &*tiles_.begin() + tiles_.size();
 
-	short begin_range = 0;
-	short end_range = 0;
-
 	layer_blit_info& blit_info = blit_cache_[layer];
 
 	const rect tile_positions(x/32 - (x < 0 ? 1 : 0), y/32 - (y < 0 ? 1 : 0),
@@ -910,8 +905,6 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 		blit_info.tile_positions = tile_positions;
 		opaque_blit_queue_store.clear();
 		blended_blit_queue_store.clear();
-
-		const graphics::blit_queue* blit_queue = NULL;
 
 		graphics::blit_queue* target_queue = &blended_blit_queue_store;
 
@@ -934,37 +927,18 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 			}
 
 			if(t->x >= x && t->x <= x + w && !t->draw_disabled) {
-				if(blit_queue != t->blit_queue) {
-					if(blit_queue) {
-						if(!target_queue->merge(*blit_queue, begin_range, end_range)) {
-							//this occurs if a layer contains different
-							//textures, in which case we can't cache our
-							//drawing.
-							blit_info.tile_positions = rect();
-							target_queue->do_blit();
-							target_queue->clear();
-							target_queue->merge(*blit_queue, begin_range, end_range);
-						}
-					}
-
-					target_queue = t->object->is_opaque() ? &opaque_blit_queue_store : &blended_blit_queue_store;
-
-					blit_queue = t->blit_queue;
-					begin_range = t->blit_queue_begin;
+				target_queue = t->object->is_opaque() ? &opaque_blit_queue_store : &blended_blit_queue_store;
+				if(!target_queue->merge(t->blit_queue, 0, t->blit_queue.size())) {
+					//this occurs if a layer contains different
+					//textures, in which case we can't cache our
+					//drawing.
+					blit_info.tile_positions = rect();
+					target_queue->do_blit();
+					target_queue->clear();
+					target_queue->merge(t->blit_queue, 0, t->blit_queue.size());
 				}
-
-				end_range = t->blit_queue_end;
 			}
 			++t;
-		}
-
-		if(blit_queue) {
-			if(!target_queue->merge(*blit_queue, begin_range, end_range)) {
-				blit_info.tile_positions = rect();
-				target_queue->do_blit();
-				target_queue->clear();
-				target_queue->merge(*blit_queue, begin_range, end_range);
-			}
 		}
 	}
 
@@ -1028,7 +1002,7 @@ void level::prepare_tiles_for_drawing()
 	for(int n = 0; n != tiles_.size(); ++n) {
 		if(tiles_[n].object->solid_color()) {
 			tiles_[n].draw_disabled = true;
-			tiles_[n].blit_queue = NULL;
+			tiles_[n].blit_queue.clear();
 			if(!solid_color_rects_.empty()) {
 				solid_color_rect& r = solid_color_rects_.back();
 				if(r.layer == tiles_[n].zorder && r.color.rgba() == tiles_[n].object->solid_color()->rgba() && r.area.y() == tiles_[n].y && r.area.x() + r.area.w() == tiles_[n].x) {
@@ -1046,20 +1020,10 @@ void level::prepare_tiles_for_drawing()
 		}
 
 		tiles_[n].draw_disabled = false;
-		tiles_[n].blit_queue_buf.clear();
+		tiles_[n].blit_queue.clear();
+		tiles_[n].blit_queue.reserve(8);
 
-		//see if this tile can be drawn in a strip with the previous tile.
-		if(n > 0 && tiles_[n].x == tiles_[n-1].x + TileSize && tiles_[n].y == tiles_[n-1].y && tiles_[n].object->texture().get_id() == tiles_[n-1].object->texture().get_id() && !tiles_[n-1].draw_disabled && tiles_[n].object->is_opaque() == tiles_[n-1].object->is_opaque()) {
-			tiles_[n].blit_queue = tiles_[n-1].blit_queue;
-		} else {
-			tiles_[n].blit_queue = &tiles_[n].blit_queue_buf;
-			tiles_[n].blit_queue->reserve(8);
-		}
-
-		tiles_[n].blit_queue = &tiles_[n].blit_queue_buf;
-		tiles_[n].blit_queue_begin = tiles_[n].blit_queue->position();
-		queue_draw_tile(*tiles_[n].blit_queue, tiles_[n]);
-		tiles_[n].blit_queue_end = tiles_[n].blit_queue->position();
+		queue_draw_tile(tiles_[n].blit_queue, tiles_[n]);
 	}
 
 	for(int n = 1; n < solid_color_rects_.size(); ++n) {

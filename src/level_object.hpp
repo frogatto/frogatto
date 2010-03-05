@@ -19,9 +19,7 @@ struct level_tile {
 	int zorder;
 	const_level_object_ptr object;
 	bool face_right;
-	graphics::blit_queue blit_queue_buf;
-	graphics::blit_queue* blit_queue;
-	short blit_queue_begin, blit_queue_end;
+	graphics::blit_queue blit_queue;
 	bool draw_disabled;
 };
 
@@ -84,6 +82,8 @@ public:
 	bool calculate_opaque() const;
 	bool calculate_is_solid_color(graphics::color& col) const;
 
+	bool calculate_draw_area();
+
 	const graphics::color* solid_color() const { return solid_color_.get(); }
 
 	//write the compiled index of this object. buf MUST point to a buf
@@ -108,6 +108,8 @@ private:
 	int traction_;
 
 	bool opaque_;
+
+	rect draw_area_;
 
 	boost::intrusive_ptr<graphics::color> solid_color_;
 

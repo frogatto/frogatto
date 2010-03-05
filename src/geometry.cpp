@@ -189,6 +189,24 @@ int rect_difference(const rect& a, const rect& b, rect* output)
 	return output - begin_output;
 }
 
+rect rect_union(const rect& a, const rect& b)
+{
+	if(a.w() == 0 || a.h() == 0) {
+		return b;
+	}
+
+	if(b.w() == 0 || b.h() == 0) {
+		return a;
+	}
+
+	const int x = std::min<int>(a.x(), b.x());
+	const int y = std::min<int>(a.y(), b.y());
+	const int x2 = std::max<int>(a.x2(), b.x2());
+	const int y2 = std::max<int>(a.y2(), b.y2());
+
+	return rect(x, y, x2 - x, y2 - y);
+}
+
 std::ostream& operator<<(std::ostream& s, const rect& r)
 {
 	s << "rect(" << r.x() << ", " << r.y() << ", " << r.x2() << ", " << r.y2() << ")";

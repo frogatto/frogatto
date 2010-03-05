@@ -64,6 +64,7 @@ public:
 	GLuint texture() const { return texture_; }
 	void clear();
 	bool empty() const { return vertex_.empty(); }
+	size_t size() const { return vertex_.size(); }
 	void do_blit() const;
 	void do_blit_range(short begin, short end) const;
 	void add(GLshort x, GLshort y, GLfloat u, GLfloat v) {
