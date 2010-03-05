@@ -301,7 +301,10 @@ private:
 	int highlight_layer_;
 
 	struct layer_blit_info {
-		graphics::blit_queue blit_queue;
+		//we have two blit queues for a layer. One to draw tiles which have
+		//some alpha (GL_BLEND enabled) and others which are completely opaque
+		//and can be drawn more efficiently without alpha blending.
+		graphics::blit_queue opaque_blit_queue, blended_blit_queue;
 		rect tile_positions;
 	};
 

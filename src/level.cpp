@@ -903,13 +903,17 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 	                          (x + w)/32 - (x + w < 0 ? 1 : 0),
 							  (y + h)/32 - (y + h < 0 ? 1 : 0));
 
-	graphics::blit_queue& blit_queue_store = blit_info.blit_queue;
+	graphics::blit_queue& opaque_blit_queue_store = blit_info.opaque_blit_queue;
+	graphics::blit_queue& blended_blit_queue_store = blit_info.blended_blit_queue;
 
 	if(blit_info.tile_positions != tile_positions || editor_) {
 		blit_info.tile_positions = tile_positions;
-		blit_queue_store.clear();
+		opaque_blit_queue_store.clear();
+		blended_blit_queue_store.clear();
 
 		const graphics::blit_queue* blit_queue = NULL;
+
+		graphics::blit_queue* target_queue = &blended_blit_queue_store;
 
 		while(t != end_tiles && t->zorder == layer && t->y <= y + h) {
 			const int increment = 8;
@@ -932,14 +936,19 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 			if(t->x >= x && t->x <= x + w && !t->draw_disabled) {
 				if(blit_queue != t->blit_queue) {
 					if(blit_queue) {
-						if(!blit_queue_store.merge(*blit_queue, begin_range, end_range)) {
+						if(!target_queue->merge(*blit_queue, begin_range, end_range)) {
+							//this occurs if a layer contains different
+							//textures, in which case we can't cache our
+							//drawing.
 							blit_info.tile_positions = rect();
-							blit_queue_store.do_blit();
-							blit_queue_store.clear();
-							blit_queue_store.merge(*blit_queue, begin_range, end_range);
+							target_queue->do_blit();
+							target_queue->clear();
+							target_queue->merge(*blit_queue, begin_range, end_range);
+							assert(false);
 						}
-//						blit_queue->do_blit_range(begin_range, end_range);
 					}
+
+					target_queue = t->object->is_opaque() ? &opaque_blit_queue_store : &blended_blit_queue_store;
 
 					blit_queue = t->blit_queue;
 					begin_range = t->blit_queue_begin;
@@ -951,17 +960,23 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 		}
 
 		if(blit_queue) {
-						if(!blit_queue_store.merge(*blit_queue, begin_range, end_range)) {
-							blit_info.tile_positions = rect();
-							blit_queue_store.do_blit();
-							blit_queue_store.clear();
-							blit_queue_store.merge(*blit_queue, begin_range, end_range);
-						}
-//			blit_queue->do_blit_range(begin_range, end_range);
+			if(!target_queue->merge(*blit_queue, begin_range, end_range)) {
+				blit_info.tile_positions = rect();
+				target_queue->do_blit();
+				target_queue->clear();
+				target_queue->merge(*blit_queue, begin_range, end_range);
+				assert(false);
+			}
 		}
 	}
 
-	blit_queue_store.do_blit();
+	if(!opaque_blit_queue_store.empty()) {
+		glDisable(GL_BLEND);
+		opaque_blit_queue_store.do_blit();
+		glEnable(GL_BLEND);
+	}
+
+	blended_blit_queue_store.do_blit();
 
 	draw_layer_solid(layer, x, y, w, h);
 
@@ -1036,7 +1051,7 @@ void level::prepare_tiles_for_drawing()
 		tiles_[n].blit_queue_buf.clear();
 
 		//see if this tile can be drawn in a strip with the previous tile.
-		if(n > 0 && tiles_[n].x == tiles_[n-1].x + TileSize && tiles_[n].y == tiles_[n-1].y && tiles_[n].object->texture().get_id() == tiles_[n-1].object->texture().get_id() && !tiles_[n-1].draw_disabled) {
+		if(n > 0 && tiles_[n].x == tiles_[n-1].x + TileSize && tiles_[n].y == tiles_[n-1].y && tiles_[n].object->texture().get_id() == tiles_[n-1].object->texture().get_id() && !tiles_[n-1].draw_disabled && tiles_[n].object->is_opaque() == tiles_[n-1].object->is_opaque()) {
 			tiles_[n].blit_queue = tiles_[n-1].blit_queue;
 		} else {
 			tiles_[n].blit_queue = &tiles_[n].blit_queue_buf;

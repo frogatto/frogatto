@@ -228,13 +228,10 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 		const float ZoomSpeed = 0.03;
 		if(std::abs(target_zoom - pos.zoom) < ZoomSpeed) {
 			pos.zoom = target_zoom;
-			glShadeModel(GL_SMOOTH);
 		} else if(pos.zoom > target_zoom) {
 			pos.zoom -= ZoomSpeed;
-			glShadeModel(GL_SMOOTH);
 		} else {
 			pos.zoom += ZoomSpeed;
-			glShadeModel(GL_SMOOTH);
 		}
 	}
 
