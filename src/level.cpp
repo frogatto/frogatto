@@ -944,7 +944,6 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 							target_queue->do_blit();
 							target_queue->clear();
 							target_queue->merge(*blit_queue, begin_range, end_range);
-							assert(false);
 						}
 					}
 
@@ -965,7 +964,6 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 				target_queue->do_blit();
 				target_queue->clear();
 				target_queue->merge(*blit_queue, begin_range, end_range);
-				assert(false);
 			}
 		}
 	}
