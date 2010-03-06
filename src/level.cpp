@@ -878,6 +878,9 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 		y -= diffy;
 	} 
 
+	glPopMatrix();
+	return;
+
 	typedef std::vector<level_tile>::const_iterator itor;
 	std::pair<itor,itor> range = std::equal_range(tiles_.begin(), tiles_.end(), layer, level_tile_zorder_comparer());
 
@@ -889,68 +892,80 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 		return;
 	}
 
+	std::map<int, layer_blit_info>::iterator layer_itor = blit_cache_.find(layer);
+	if(layer_itor == blit_cache_.end()) {
+		glPopMatrix();
+		return;
+	}
+
 	const level_tile* t = &*tile_itor;
 	const level_tile* end_tiles = &*tiles_.begin() + tiles_.size();
 
-	layer_blit_info& blit_info = blit_cache_[layer];
+	layer_blit_info& blit_info = layer_itor->second;
 
 	const rect tile_positions(x/32 - (x < 0 ? 1 : 0), y/32 - (y < 0 ? 1 : 0),
 	                          (x + w)/32 - (x + w < 0 ? 1 : 0),
 							  (y + h)/32 - (y + h < 0 ? 1 : 0));
 
-	graphics::blit_queue& opaque_blit_queue_store = blit_info.opaque_blit_queue;
-	graphics::blit_queue& blended_blit_queue_store = blit_info.blended_blit_queue;
+	std::vector<GLshort>& opaque_indexes = blit_info.opaque_indexes;
+	std::vector<GLshort>& translucent_indexes = blit_info.translucent_indexes;
 
 	if(blit_info.tile_positions != tile_positions || editor_) {
 		blit_info.tile_positions = tile_positions;
-		opaque_blit_queue_store.clear();
-		blended_blit_queue_store.clear();
 
-		graphics::blit_queue* target_queue = &blended_blit_queue_store;
+		opaque_indexes.clear();
+		translucent_indexes.clear();
 
-		while(t != end_tiles && t->zorder == layer && t->y <= y + h) {
-			const int increment = 8;
-			while(t->x < x - TileSize) {
-				if(t+increment >= end_tiles || t[increment].y != t->y || t[increment].zorder != t->zorder || t[increment].x > x - TileSize) {
-					break;
+		int ystart = std::max<int>(0, (y - blit_info.ybase)/TileSize);
+		int yend = std::min<int>(blit_info.indexes.size(), (y + h - blit_info.ybase)/TileSize + 1);
+
+		for(; ystart < yend; ++ystart) {
+			const std::vector<GLshort>& indexes = blit_info.indexes[ystart];
+			int xstart = std::max<int>(0, (x - blit_info.xbase)/TileSize);
+			int xend = std::min<int>(indexes.size(), (x + w - blit_info.xbase)/TileSize + 1);
+			for(; xstart < xend; ++xstart) {
+				if(indexes[xstart] != SHRT_MIN) {
+					if(indexes[xstart] > 0) {
+						GLshort index = indexes[xstart];
+						opaque_indexes.push_back(index);
+						opaque_indexes.push_back(index+1);
+						opaque_indexes.push_back(index+2);
+						opaque_indexes.push_back(index+1);
+						opaque_indexes.push_back(index+2);
+						opaque_indexes.push_back(index+3);
+						ASSERT_INDEX_INTO_VECTOR(index, blit_info.blit_vertexes);
+						ASSERT_INDEX_INTO_VECTOR(index+3, blit_info.blit_vertexes);
+					} else {
+						GLshort index = -indexes[xstart];
+						translucent_indexes.push_back(index);
+						translucent_indexes.push_back(index+1);
+						translucent_indexes.push_back(index+2);
+						translucent_indexes.push_back(index+1);
+						translucent_indexes.push_back(index+2);
+						translucent_indexes.push_back(index+3);
+						ASSERT_INDEX_INTO_VECTOR(index, blit_info.blit_vertexes);
+						ASSERT_INDEX_INTO_VECTOR(index+3, blit_info.blit_vertexes);
+					}
 				}
-
-				t += increment;
 			}
-
-			while(t->x > x + w) {
-				if(t+increment >= end_tiles || t[increment].y != t->y || t[increment].zorder != t->zorder) {
-					break;
-				}
-
-				t += increment;
-			}
-
-			if(t->x >= x && t->x <= x + w && !t->draw_disabled) {
-				target_queue = t->object->is_opaque() ? &opaque_blit_queue_store : &blended_blit_queue_store;
-				if(!target_queue->merge(t->blit_queue, 0, t->blit_queue.size())) {
-					//this occurs if a layer contains different
-					//textures, in which case we can't cache our
-					//drawing.
-					blit_info.tile_positions = rect();
-					target_queue->do_blit();
-					target_queue->clear();
-					target_queue->merge(t->blit_queue, 0, t->blit_queue.size());
-				}
-			}
-			++t;
 		}
 	}
 
-	if(!opaque_blit_queue_store.empty()) {
-		glDisable(GL_BLEND);
-		opaque_blit_queue_store.do_blit();
-		glEnable(GL_BLEND);
-	}
-
-	blended_blit_queue_store.do_blit();
-
+	glDisable(GL_BLEND);
 	draw_layer_solid(layer, x, y, w, h);
+	graphics::texture::set_current_texture(blit_info.texture_id);
+	if(false && !opaque_indexes.empty()) {
+		glVertexPointer(2, GL_SHORT, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
+		glTexCoordPointer(2, GL_FLOAT, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
+		glDrawElements(GL_TRIANGLES, opaque_indexes.size()/6, GL_UNSIGNED_SHORT, &opaque_indexes[0]);
+	}
+	glEnable(GL_BLEND);
+
+	if(false && !translucent_indexes.empty()) {
+		glVertexPointer(2, GL_SHORT, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
+		glTexCoordPointer(2, GL_FLOAT, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
+		glDrawElements(GL_TRIANGLES, translucent_indexes.size()/6, GL_UNSIGNED_SHORT, &translucent_indexes[0]);
+	}
 
 	glPopMatrix();
 
@@ -998,8 +1013,29 @@ void level::draw_layer_solid(int layer, int x, int y, int w, int h) const
 void level::prepare_tiles_for_drawing()
 {
 	solid_color_rects_.clear();
+	blit_cache_.clear();
 
 	for(int n = 0; n != tiles_.size(); ++n) {
+		layer_blit_info& blit_info = blit_cache_[tiles_[n].zorder];
+		if(blit_info.xbase == -1) {
+			blit_info.texture_id = tiles_[n].object->texture().get_id();
+			blit_info.xbase = tiles_[n].x;
+			blit_info.ybase = tiles_[n].y;
+		}
+
+		if(tiles_[n].x < blit_info.xbase) {
+			blit_info.xbase = tiles_[n].x;
+		}
+
+		if(tiles_[n].y < blit_info.ybase) {
+			blit_info.ybase = tiles_[n].y;
+		}
+	}
+
+
+	for(int n = 0; n != tiles_.size(); ++n) {
+		layer_blit_info& blit_info = blit_cache_[tiles_[n].zorder];
+
 		if(tiles_[n].object->solid_color()) {
 			tiles_[n].draw_disabled = true;
 			tiles_[n].blit_queue.clear();
@@ -1020,10 +1056,26 @@ void level::prepare_tiles_for_drawing()
 		}
 
 		tiles_[n].draw_disabled = false;
-		tiles_[n].blit_queue.clear();
-		tiles_[n].blit_queue.reserve(8);
 
-		queue_draw_tile(tiles_[n].blit_queue, tiles_[n]);
+		blit_info.blit_vertexes.resize(blit_info.blit_vertexes.size() + 4);
+		const int npoints = level_object::calculate_tile_corners(&blit_info.blit_vertexes[blit_info.blit_vertexes.size() - 4], tiles_[n]);
+		if(npoints == 0) {
+			blit_info.blit_vertexes.resize(blit_info.blit_vertexes.size() - 4);
+		} else {
+			const int xtile = (tiles_[n].x - blit_info.xbase)/TileSize;
+			const int ytile = (tiles_[n].y - blit_info.ybase)/TileSize;
+			ASSERT_GE(xtile, 0);
+			ASSERT_GE(ytile, 0);
+			if(blit_info.indexes.size() <= ytile) {
+				blit_info.indexes.resize(ytile+1);
+			}
+
+			if(blit_info.indexes[ytile].size() <= xtile) {
+				blit_info.indexes[ytile].resize(xtile+1, SHRT_MIN);
+			}
+
+			blit_info.indexes[ytile][xtile] = (blit_info.blit_vertexes.size() - 4) * (tiles_[n].object->is_opaque() ? 1 : -1);
+		}
 	}
 
 	for(int n = 1; n < solid_color_rects_.size(); ++n) {

@@ -29,6 +29,8 @@
 #include "wml_node_fwd.hpp"
 #include "color_utils.hpp"
 
+class tile_corner;
+
 class level : public game_logic::formula_callable
 {
 public:
@@ -301,10 +303,21 @@ private:
 	int highlight_layer_;
 
 	struct layer_blit_info {
+		layer_blit_info() : xbase(-1), ybase(-1)
+		{}
+
+		GLuint texture_id;
+
+		std::vector<tile_corner> blit_vertexes;
+
+		int xbase, ybase;
+		std::vector<std::vector<GLshort> > indexes;
+
 		//we have two blit queues for a layer. One to draw tiles which have
 		//some alpha (GL_BLEND enabled) and others which are completely opaque
 		//and can be drawn more efficiently without alpha blending.
-		graphics::blit_queue opaque_blit_queue, blended_blit_queue;
+		std::vector<GLshort> opaque_indexes, translucent_indexes;
+
 		rect tile_positions;
 	};
 

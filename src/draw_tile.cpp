@@ -1,5 +1,6 @@
 #include "asserts.hpp"
 #include "draw_tile.hpp"
+#include "level_object.hpp"
 #include "raster.hpp"
 
 #include <algorithm>
@@ -13,6 +14,62 @@ void queue_draw_tile(graphics::blit_queue& q, const level_tile& t)
 void draw_tile(const level_tile& t)
 {
 	level_object::draw(t);
+}
+
+int get_tile_corners(tile_corner* result, const graphics::texture& t, const rect& area, int tile_num, int x, int y, bool reverse)
+{
+	if(tile_num < 0 || area.w() <= 0 || area.h() <= 0 || area.x() < 0 || area.y() < 0) {
+		return 0;
+	}
+
+	const int width = std::max<int>(t.width(), t.height());
+	const int xpos = 16*(tile_num%(width/16)) + area.x();
+	const int ypos = 16*(tile_num/(width/16)) + area.y();
+
+	//a value we subtract from the width and height of tiles when calculating
+	//UV co-ordinates. This is to prevent floating point rounding errors
+	//from causing us to draw slightly outside the tile. This is pretty
+	//nasty stuff though, and I'm not sure of a better way to do it. :(
+	const GLfloat TileEpsilon = 0.01;
+	GLfloat x1 = t.translate_coord_x(GLfloat(xpos)/GLfloat(t.width()));
+	GLfloat x2 = t.translate_coord_x(GLfloat(xpos+area.w() - TileEpsilon)/GLfloat(t.width()));
+	const GLfloat y1 = t.translate_coord_y(GLfloat(ypos)/GLfloat(t.height()));
+	const GLfloat y2 = t.translate_coord_y(GLfloat(ypos+area.h() - TileEpsilon)/GLfloat(t.height()));
+
+	int area_x = area.x()*2;
+	if(reverse) {
+		std::swap(x1, x2);
+		area_x = 32 - area.x()*2 - area.w()*2;
+	}
+
+	x += area_x;
+	y += area.y()*2;
+
+	result->vertex[0] = x;
+	result->vertex[1] = y;
+	result->uv[0] = x1;
+	result->uv[1] = y1;
+	++result;
+
+	result->vertex[0] = x;
+	result->vertex[1] = y + area.h()*2;
+	result->uv[0] = x1;
+	result->uv[1] = y2;
+	++result;
+
+	result->vertex[0] = x + area.w()*2;
+	result->vertex[1] = y;
+	result->uv[0] = x2;
+	result->uv[1] = y1;
+	++result;
+
+	result->vertex[0] = x + area.w()*2;
+	result->vertex[1] = y + area.h()*2;
+	result->uv[0] = x2;
+	result->uv[1] = y2;
+	++result;
+
+	return 4;
 }
 
 void queue_draw_from_tilesheet(graphics::blit_queue& q, const graphics::texture& t, const rect& area, int tile_num, int x, int y, bool reverse)

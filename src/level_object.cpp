@@ -432,6 +432,29 @@ void level_object::queue_draw(graphics::blit_queue& q, const level_tile& t)
 	}
 }
 
+int level_object::calculate_tile_corners(tile_corner* result, const level_tile& t)
+{
+	int res = 0;
+	int index = 0;
+	const int random_index = hash_level_object(t.x,t.y);
+	const std::vector<int>& tiles = t.object->tiles_[random_index%t.object->tiles_.size()];
+	foreach(int i, tiles) {
+		if(i < 0) {
+			continue;
+		}
+
+		int x = index%t.object->width_;
+		if(t.face_right) {
+			x = t.object->width_ - x - 1;
+		}
+		const int y = index/t.object->width_;
+		res = get_tile_corners(result, t.object->t_, t.object->draw_area_, i, t.x + x*32, t.y + y*32, t.face_right);
+		++index;
+	}
+
+	return res;
+}
+
 bool level_object::calculate_opaque() const
 {
 	foreach(const std::vector<int>& v, tiles_) {
