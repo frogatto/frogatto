@@ -744,7 +744,6 @@ private:
 				return variant(new set_command(
 				  target, member, args()[1]->evaluate(variables)));
 			} catch(game_logic::formula_error&) {
-				std::cerr << "FAIL TO SET\n";
 			}
 		}
 

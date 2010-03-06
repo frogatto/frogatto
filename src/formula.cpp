@@ -310,8 +310,6 @@ namespace game_logic
 			}
 
 			const formula_callable_definition* get_type_definition() const {
-				std::cerr << "GET_TYPE_DEFINITION: " << slot_ << " " <<
-				 (callable_def_->get_entry(slot_)->type_definition ? "YES" : "NO") << "\n";
 				return callable_def_->get_entry(slot_)->type_definition;
 			}
 		private:
@@ -359,7 +357,6 @@ namespace game_logic
 			}
 
 			const formula_callable_definition* get_type_definition() const {
-				std::cerr << "GET_TYPE_DEFINITION: " << id_ << "\n";
 				if(callable_def_) {
 					const formula_callable_definition::entry* e = callable_def_->get_entry(callable_def_->get_slot(id_));
 					if(e) {
@@ -1184,7 +1181,6 @@ namespace game_logic
 			if(op_name == ".") {
 				expression_ptr left(parse_expression(i1,op,symbols, callable_def));
 				const formula_callable_definition* type_definition = left->get_type_definition();
-				std::cerr << "TYPE DEFINITION: " << left->str() << " ::-> " << (type_definition ? "YES" : "NO") << "\n";
 				//TODO: right now we don't give the right side of the dot
 				//a expression definition. We should work out if we can
 				//statically derive information from the left half to

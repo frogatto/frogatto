@@ -3,7 +3,7 @@
 
 namespace {
 std::string CustomObjectProperties[] = {
-	"consts", "type", "time_in_animation", "level", "animation",
+	"consts", "type", "time_in_animation", "time_in_animation_delta", "level", "animation",
 	"hitpoints", "max_hitpoints", "mass", "label", "x", "y", "z", "zorder",
 	"x1", "x2", "y1", "y2", "w", "h", "midpoint_x", "midpoint_y",
 	"solid_rect", "img_w", "img_h", "front", "back", "cycle", "facing",

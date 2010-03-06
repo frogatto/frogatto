@@ -49,6 +49,7 @@ custom_object::custom_object(wml::const_node_ptr node)
     frame_(&type_->default_frame()),
 	frame_name_(wml::get_str(node, "current_frame", "normal")),
 	time_in_frame_(wml::get_int(node, "time_in_frame")),
+	time_in_frame_delta_(wml::get_int(node, "time_in_frame_delta", 1)),
 	velocity_x_(wml::get_int(node, "velocity_x")),
 	velocity_y_(wml::get_int(node, "velocity_y")),
 	accel_x_(wml::get_int(node, "accel_x")),
@@ -125,7 +126,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	base_type_(type_),
 	frame_(&type_->default_frame()),
     frame_name_("normal"),
-	time_in_frame_(0),
+	time_in_frame_(0), time_in_frame_delta_(1),
 	velocity_x_(0), velocity_y_(0),
 	accel_x_(0), accel_y_(0),
 	rotate_(0), zorder_(type_->zorder()),
@@ -170,6 +171,7 @@ custom_object::custom_object(const custom_object& o) :
 	frame_(o.frame_),
 	frame_name_(o.frame_name_),
 	time_in_frame_(o.time_in_frame_),
+	time_in_frame_delta_(o.time_in_frame_delta_),
 	velocity_x_(o.velocity_x_), velocity_y_(o.velocity_y_),
 	accel_x_(o.accel_x_), accel_y_(o.accel_y_),
 	rotate_(o.rotate_),
@@ -270,6 +272,10 @@ wml::node_ptr custom_object::write() const
 	}
 
 	res->set_attr("time_in_frame", formatter() << time_in_frame_);
+
+	if(time_in_frame_delta_ != 1) {
+		res->set_attr("time_in_frame_delta", formatter() << time_in_frame_delta_);
+	}
 
 	if(has_feet_ != type_->has_feet()) {
 		res->set_attr("has_feet", formatter() << (has_feet_ ? "yes" : "no"));
@@ -485,10 +491,17 @@ void custom_object::process(level& lvl)
 		scheduled_command = get_scheduled_command(lvl.cycle());
 	}
 
-	++time_in_frame_;
-
 	if(stand_info.damage) {
 		handle_event(OBJECT_EVENT_SURFACE_DAMAGE);
+	}
+
+	time_in_frame_ += time_in_frame_delta_;
+	if(time_in_frame_ < 0) {
+		time_in_frame_ = 0;
+	}
+
+	if(time_in_frame_ > frame_->duration()) {
+		time_in_frame_ = frame_->duration();
 	}
 
 	if(time_in_frame_ == frame_->duration()) {
@@ -1107,6 +1120,7 @@ struct custom_object::Accessor {
 	CUSTOM_ACCESSOR(consts, obj.type_->consts().get())
 	CUSTOM_ACCESSOR(type, obj.type_->id())
 	CUSTOM_ACCESSOR(time_in_animation, obj.time_in_frame_)
+	CUSTOM_ACCESSOR(time_in_animation_delta, obj.time_in_frame_delta_)
 	CUSTOM_ACCESSOR(level, &level::current())
 	CUSTOM_ACCESSOR(animation, obj.frame_name_)
 	SIMPLE_ACCESSOR(hitpoints)
@@ -1316,6 +1330,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_CONSTS:            return variant(type_->consts().get());
 	case CUSTOM_OBJECT_TYPE:              return variant(type_->id());
 	case CUSTOM_OBJECT_TIME_IN_ANIMATION: return variant(time_in_frame_);
+	case CUSTOM_OBJECT_TIME_IN_ANIMATION_DELTA: return variant(time_in_frame_delta_);
 	case CUSTOM_OBJECT_LEVEL:             return variant(&level::current());
 	case CUSTOM_OBJECT_ANIMATION:         return variant(frame_name_);
 	case CUSTOM_OBJECT_HITPOINTS:         return variant(hitpoints_);
@@ -1502,6 +1517,8 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		set_frame(value.as_string());
 	} else if(key == "time_in_animation") {
 		time_in_frame_ = value.as_int();
+	} else if(key == "time_in_animation_delta") {
+		time_in_frame_delta_ = value.as_int();
 	} else if(key == "x") {
 		const int start_x = centi_x();
 		set_x(value.as_int());
@@ -1709,6 +1726,9 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		break;
 	case CUSTOM_OBJECT_TIME_IN_ANIMATION:
 		time_in_frame_ = value.as_int();
+		break;
+	case CUSTOM_OBJECT_TIME_IN_ANIMATION_DELTA:
+		time_in_frame_delta_ = value.as_int();
 		break;
 	case CUSTOM_OBJECT_ANIMATION:
 		set_frame(value.as_string());

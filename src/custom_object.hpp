@@ -171,6 +171,7 @@ private:
 	const frame* frame_;
 	std::string frame_name_;
 	int time_in_frame_;
+	int time_in_frame_delta_;
 
 	int velocity_x_, velocity_y_;
 	int accel_x_, accel_y_;
