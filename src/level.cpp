@@ -878,9 +878,6 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 		y -= diffy;
 	} 
 
-	glPopMatrix();
-	return;
-
 	typedef std::vector<level_tile>::const_iterator itor;
 	std::pair<itor,itor> range = std::equal_range(tiles_.begin(), tiles_.end(), layer, level_tile_zorder_comparer());
 
@@ -954,17 +951,17 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 	glDisable(GL_BLEND);
 	draw_layer_solid(layer, x, y, w, h);
 	graphics::texture::set_current_texture(blit_info.texture_id);
-	if(false && !opaque_indexes.empty()) {
+	if(!opaque_indexes.empty()) {
 		glVertexPointer(2, GL_SHORT, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
 		glTexCoordPointer(2, GL_FLOAT, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
-		glDrawElements(GL_TRIANGLES, opaque_indexes.size()/6, GL_UNSIGNED_SHORT, &opaque_indexes[0]);
+		glDrawElements(GL_TRIANGLES, opaque_indexes.size(), GL_UNSIGNED_SHORT, &opaque_indexes[0]);
 	}
 	glEnable(GL_BLEND);
 
-	if(false && !translucent_indexes.empty()) {
+	if(!translucent_indexes.empty()) {
 		glVertexPointer(2, GL_SHORT, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
 		glTexCoordPointer(2, GL_FLOAT, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
-		glDrawElements(GL_TRIANGLES, translucent_indexes.size()/6, GL_UNSIGNED_SHORT, &translucent_indexes[0]);
+		glDrawElements(GL_TRIANGLES, translucent_indexes.size(), GL_UNSIGNED_SHORT, &translucent_indexes[0]);
 	}
 
 	glPopMatrix();
@@ -1007,6 +1004,7 @@ void level::draw_layer_solid(int layer, int x, int y, int w, int h) const
 		}
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
+		glColor4ub(255, 255, 255, 255);
 	}
 }
 
