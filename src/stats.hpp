@@ -19,7 +19,9 @@ public:
 	manager();
 	~manager();
 private:
-	threading::thread background_thread_;
+	//currently the stats thread (and thus stats) are disabled, due to
+	//causing crashes on the iPhone. Need to investigate.
+	//threading::thread background_thread_;
 };
 
 class record;

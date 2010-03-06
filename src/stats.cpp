@@ -197,7 +197,7 @@ bool download(const std::string& lvl) {
 	}
 }
 
-manager::manager() : background_thread_(send_stats_thread)
+manager::manager() // : background_thread_(send_stats_thread)
 {}
 
 manager::~manager() {
