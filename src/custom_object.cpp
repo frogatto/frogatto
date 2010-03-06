@@ -1382,6 +1382,19 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_DISTANCE_TO_CLIFF: return variant(::distance_to_cliff(level::current(), feet_x(), feet_y(), face_dir()));
 	case CUSTOM_OBJECT_SLOPE_STANDING_ON: return variant(-slope_standing_on(6)*face_dir());
 	case CUSTOM_OBJECT_UNDERWATER:        return variant(level::current().is_underwater(solid_rect()));
+	case CUSTOM_OBJECT_WATER_BOUNDS: {
+		rect area;
+		if(level::current().is_underwater(solid_rect(), &area)) {
+			std::vector<variant> v;
+			v.push_back(variant(area.x()));
+			v.push_back(variant(area.y()));
+			v.push_back(variant(area.x2()));
+			v.push_back(variant(area.y2()));
+			return variant(&v);
+		} else {
+			return variant();
+		}
+	}
 	case CUSTOM_OBJECT_DRIVER:            return variant(driver_ ? driver_.get() : this);
 	case CUSTOM_OBJECT_IS_HUMAN:          return variant(is_human() ? 1 : 0);
 	case CUSTOM_OBJECT_INVINCIBLE:        return variant(invincible_);

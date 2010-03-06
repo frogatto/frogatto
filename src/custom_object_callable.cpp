@@ -11,7 +11,7 @@ std::string CustomObjectProperties[] = {
 	"accel_x", "accel_y", "vars", "tmp", "group", "rotate", "me", "self",
 	"red", "green", "blue", "alpha", "damage", "hit_by", "jumped_on_by",
 	"distortion", "is_standing", "near_cliff_edge", "distance_to_cliff",
-	"slope_standing_on", "underwater", "driver", "is_human", "invincible",
+	"slope_standing_on", "underwater", "water_bounds", "driver", "is_human", "invincible",
 	"sound_volume", "destroyed", "is_standing_on_platform", "standing_on",
 	"fragment_shaders", "vertex_shaders", "shader", "variations",
 	"attached_objects", "call_stack",
