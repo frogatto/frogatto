@@ -17,6 +17,7 @@
 
 frame::frame(wml::const_node_ptr node)
    : id_(node->attr("id")),
+     variant_id_(id_),
      enter_event_id_(get_object_event_id("enter_" + id_ + "_anim")),
 	 end_event_id_(get_object_event_id("end_" + id_ + "_anim")),
 	 leave_event_id_(get_object_event_id("leave_" + id_ + "_anim")),

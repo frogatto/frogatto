@@ -1122,7 +1122,7 @@ struct custom_object::Accessor {
 	CUSTOM_ACCESSOR(time_in_animation, obj.time_in_frame_)
 	CUSTOM_ACCESSOR(time_in_animation_delta, obj.time_in_frame_delta_)
 	CUSTOM_ACCESSOR(level, &level::current())
-	CUSTOM_ACCESSOR(animation, obj.frame_name_)
+	CUSTOM_ACCESSOR(animation, obj.frame_->variant_id())
 	SIMPLE_ACCESSOR(hitpoints)
 	CUSTOM_ACCESSOR(max_hitpoints, obj.type_->hitpoints())
 

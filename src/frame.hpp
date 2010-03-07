@@ -7,6 +7,7 @@
 #include "geometry.hpp"
 #include "solid_map_fwd.hpp"
 #include "texture.hpp"
+#include "variant.hpp"
 #include "wml_node_fwd.hpp"
 
 namespace graphics {
@@ -33,6 +34,7 @@ public:
 	//ID of the frame. Not unique, but is the name of the element the frame
 	//came from. Useful to tell what kind of frame it is.
 	const std::string& id() const { return id_; }
+	const variant& variant_id() const { return variant_id_; }
 
 	//play a sound. 'object' is just the address of the object playing the
 	//sound, useful if the sound is later cancelled.
@@ -86,6 +88,10 @@ private:
 	void get_rect_in_texture(int time, GLfloat* output_rect) const;
 	void get_rect_in_frame_number(int nframe, GLfloat* output_rect) const;
 	std::string id_;
+
+	//ID as a variant, useful to be able to get a variant of the ID
+	//very efficiently.
+	variant variant_id_;
 
 	//ID's used to signal events that occur on this animation.
 	int enter_event_id_, end_event_id_, leave_event_id_, process_event_id_;
