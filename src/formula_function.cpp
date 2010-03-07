@@ -670,19 +670,22 @@ formula_function_expression::formula_function_expression(const std::string& name
 
 variant formula_function_expression::execute(const formula_callable& variables) const
 {
-	slot_formula_callable* callable = new slot_formula_callable;
-	callable->set_names(&arg_names_);
-	variant callable_scope(callable);
+	if(!callable_ || callable_->refcount() != 1) {
+		callable_ = boost::intrusive_ptr<slot_formula_callable>(new slot_formula_callable);
+	}
+
+	callable_->set_names(&arg_names_);
+
 	for(size_t n = 0; n != arg_names_.size(); ++n) {
 		variant var = args()[n]->evaluate(variables);
-		callable->add(var);
+		callable_->add(var);
 		if(static_cast<int>(n) == star_arg_) {
-			callable->set_fallback(var.as_callable());
+			callable_->set_fallback(var.as_callable());
 		}
 	}
 
 	if(precondition_) {
-		if(!precondition_->execute(*callable).as_bool()) {
+		if(!precondition_->execute(*callable_).as_bool()) {
 			std::cerr << "FAILED function precondition for function '" << formula_->str() << "' with arguments: ";
 			for(size_t n = 0; n != arg_names_.size(); ++n) {
 				std::cerr << "  arg " << (n+1) << ": " << args()[n]->evaluate(variables).to_debug_string() << "\n";
@@ -690,7 +693,9 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 		}
 	}
 
-	variant res = formula_->execute(*callable);
+	variant res = formula_->execute(*callable_);
+
+	callable_->clear();
 
 	return res;
 }

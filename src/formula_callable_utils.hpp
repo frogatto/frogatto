@@ -1,3 +1,6 @@
+#ifndef FORMULA_CALLABLE_UTILS_HPP_INCLUDED
+#define FORMULA_CALLABLE_UTILS_HPP_INCLUDED
+
 #include <boost/intrusive_ptr.hpp>
 
 #include <vector>
@@ -42,6 +45,12 @@ public:
 		return values_[slot];
 	}
 
+	void clear() {
+		value_names_ = 0;
+		values_.clear();
+		fallback_ = const_formula_callable_ptr();
+	}
+
 private:
 	const std::vector<std::string>* value_names_;
 	std::vector<variant> values_;
@@ -49,3 +58,5 @@ private:
 };
 
 }
+
+#endif

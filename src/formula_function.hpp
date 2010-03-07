@@ -15,12 +15,14 @@
 #ifndef FORMULA_FUNCTION_HPP_INCLUDED
 #define FORMULA_FUNCTION_HPP_INCLUDED
 
+#include <boost/intrusive_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include <iostream>
 #include <map>
 
 #include "formula_callable_definition_fwd.hpp"
+#include "formula_callable_utils.hpp"
 #include "formula_fwd.hpp"
 #include "variant.hpp"
 
@@ -106,6 +108,11 @@ private:
 	const_formula_ptr precondition_;
 	std::vector<std::string> arg_names_;
 	int star_arg_;
+
+	//this is the callable object that is populated with the arguments to the
+	//function. We try to reuse the same object every time the function is
+	//called rather than recreating it each time.
+	mutable boost::intrusive_ptr<slot_formula_callable> callable_;
 };
 
 typedef boost::shared_ptr<function_expression> function_expression_ptr;
