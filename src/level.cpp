@@ -904,8 +904,8 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 	                          (x + w)/32 - (x + w < 0 ? 1 : 0),
 							  (y + h)/32 - (y + h < 0 ? 1 : 0));
 
-	std::vector<GLshort>& opaque_indexes = blit_info.opaque_indexes;
-	std::vector<GLshort>& translucent_indexes = blit_info.translucent_indexes;
+	std::vector<GLint>& opaque_indexes = blit_info.opaque_indexes;
+	std::vector<GLint>& translucent_indexes = blit_info.translucent_indexes;
 
 	if(blit_info.tile_positions != tile_positions || editor_) {
 		blit_info.tile_positions = tile_positions;
@@ -917,13 +917,13 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 		int yend = std::min<int>(blit_info.indexes.size(), (y + h - blit_info.ybase)/TileSize + 1);
 
 		for(; ystart < yend; ++ystart) {
-			const std::vector<GLshort>& indexes = blit_info.indexes[ystart];
+			const std::vector<GLint>& indexes = blit_info.indexes[ystart];
 			int xstart = std::max<int>(0, (x - blit_info.xbase)/TileSize);
 			int xend = std::min<int>(indexes.size(), (x + w - blit_info.xbase)/TileSize + 1);
 			for(; xstart < xend; ++xstart) {
 				if(indexes[xstart] != SHRT_MIN) {
 					if(indexes[xstart] > 0) {
-						GLshort index = indexes[xstart];
+						GLint index = indexes[xstart];
 						opaque_indexes.push_back(index);
 						opaque_indexes.push_back(index+1);
 						opaque_indexes.push_back(index+2);
@@ -933,7 +933,7 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 						ASSERT_INDEX_INTO_VECTOR(index, blit_info.blit_vertexes);
 						ASSERT_INDEX_INTO_VECTOR(index+3, blit_info.blit_vertexes);
 					} else {
-						GLshort index = -indexes[xstart];
+						GLint index = -indexes[xstart];
 						translucent_indexes.push_back(index);
 						translucent_indexes.push_back(index+1);
 						translucent_indexes.push_back(index+2);
@@ -957,7 +957,7 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 	if(!opaque_indexes.empty()) {
 		glVertexPointer(2, GL_SHORT, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
 		glTexCoordPointer(2, GL_FLOAT, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
-		glDrawElements(GL_TRIANGLES, opaque_indexes.size(), GL_UNSIGNED_SHORT, &opaque_indexes[0]);
+		glDrawElements(GL_TRIANGLES, opaque_indexes.size(), GL_UNSIGNED_INT, &opaque_indexes[0]);
 	}
 	glEnable(GL_BLEND);
 
@@ -970,11 +970,11 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 			//we will draw each tile seperately.
 			for(int n = 0; n < translucent_indexes.size(); n += 6) {
 				graphics::texture::set_current_texture(blit_info.vertex_texture_ids[translucent_indexes[n]/4]);
-				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, &translucent_indexes[n]);
+				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, &translucent_indexes[n]);
 			}
 		} else {
 			//we have just one texture ID and so can draw all tiles in one call.
-			glDrawElements(GL_TRIANGLES, translucent_indexes.size(), GL_UNSIGNED_SHORT, &translucent_indexes[0]);
+			glDrawElements(GL_TRIANGLES, translucent_indexes.size(), GL_UNSIGNED_INT, &translucent_indexes[0]);
 		}
 	}
 

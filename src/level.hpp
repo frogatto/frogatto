@@ -315,12 +315,15 @@ private:
 		std::vector<GLuint> vertex_texture_ids;
 
 		int xbase, ybase;
-		std::vector<std::vector<GLshort> > indexes;
+
+		//a two dimensional array of indexes into vertex_texture_ids,
+		//representing the tiles in a layer.
+		std::vector<std::vector<GLint> > indexes;
 
 		//we have two blit queues for a layer. One to draw tiles which have
 		//some alpha (GL_BLEND enabled) and others which are completely opaque
 		//and can be drawn more efficiently without alpha blending.
-		std::vector<GLshort> opaque_indexes, translucent_indexes;
+		std::vector<GLint> opaque_indexes, translucent_indexes;
 
 		rect tile_positions;
 	};
