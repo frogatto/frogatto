@@ -1532,6 +1532,7 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		time_in_frame_ = value.as_int();
 	} else if(key == "time_in_animation_delta") {
 		time_in_frame_delta_ = value.as_int();
+		std::cerr << "SET TIME IN ANIMATION_DELTA: " << time_in_frame_delta_ << "\n";
 	} else if(key == "x") {
 		const int start_x = centi_x();
 		set_x(value.as_int());
@@ -1742,6 +1743,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		break;
 	case CUSTOM_OBJECT_TIME_IN_ANIMATION_DELTA:
 		time_in_frame_delta_ = value.as_int();
+		std::cerr << "SET TIME IN ANIMATION_DELTA: " << time_in_frame_delta_ << "\n";
 		break;
 	case CUSTOM_OBJECT_ANIMATION:
 		set_frame(value.as_string());

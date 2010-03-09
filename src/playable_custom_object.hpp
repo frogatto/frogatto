@@ -1,6 +1,9 @@
 #ifndef PLAYABLE_CUSTOM_OBJECT_HPP_INCLUDED
 #define PLAYABLE_CUSTOM_OBJECT_HPP_INCLUDED
 
+#include <boost/scoped_ptr.hpp>
+
+#include "controls.hpp"
 #include "custom_object.hpp"
 #include "key.hpp"
 #include "player_info.hpp"
@@ -40,6 +43,8 @@ private:
 	entity_ptr save_condition_;
 
 	int vertical_look_;
+
+	boost::scoped_ptr<controls::local_controls_lock> control_lock_;
 
 	void operator=(const playable_custom_object);
 };

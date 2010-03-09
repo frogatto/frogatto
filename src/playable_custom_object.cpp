@@ -75,13 +75,16 @@ void playable_custom_object::process(level& lvl)
 	}
 }
 
+namespace {
+	static const std::string ctrl[] = { "ctrl_up", "ctrl_down", "ctrl_left", "ctrl_right", "ctrl_attack", "ctrl_jump" };
+}
+
 variant playable_custom_object::get_value(const std::string& key) const
 {
 	if(key == "ctrl_tilt") {
 		return variant(-joystick::iphone_tilt());
 	}
 
-	static const std::string ctrl[] = { "ctrl_up", "ctrl_down", "ctrl_left", "ctrl_right", "ctrl_attack", "ctrl_jump" };
 	for(int n = 0; n < sizeof(ctrl)/sizeof(*ctrl); ++n) {
 		if(key == ctrl[n]) {
 			return variant(control_status(static_cast<controls::CONTROL_ITEM>(n)));
@@ -101,6 +104,36 @@ void playable_custom_object::set_value(const std::string& key, const variant& va
 {
 	if(key == "vertical_look") {
 		vertical_look_ = value.as_int();
+	} else if(key == "control_lock") {
+		if(value.is_null() && control_lock_.get() != NULL) {
+			control_lock_.reset();
+		} else if(value.is_list()) {
+			unsigned char state = 0;
+			for(int n = 0; n != value.num_elements(); ++n) {
+				ASSERT_LOG(value[n].is_string(), "MEMBER OF control_lock LIST NOT A STRING");
+				const std::string& str = value[n].as_string();
+				int control_key = -1;
+				for(int m = 0; m != sizeof(ctrl)/sizeof(*ctrl); ++m) {
+					if(ctrl[m] == str) {
+						control_key = m;
+						break;
+					}
+				}
+
+				ASSERT_LOG(control_key != -1, "ILLEGAL STRING SET FOR control_lock: '" << str << "' LEGAL KEYS ARE ctrl_(up|down|left|right|attack|jump)");
+				state |= 1 << control_key;
+			}
+
+			std::cerr << "SET CONTROL STATE: " << (int)state << "\n";
+
+			//destroy the old one before creating a new control_lock,
+			//since control_lock objects must be constructed and destroyed
+			//in FIFO order.
+			control_lock_.reset();
+			control_lock_.reset(new controls::local_controls_lock(state));
+		} else {
+			ASSERT_LOG(false, "BAD VALUE WHEN SETTING control_lock KEY. A LIST OR NULL IS REQUIRED.");
+		}
 	} else {
 		custom_object::set_value(key, value);
 	}

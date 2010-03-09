@@ -1073,7 +1073,6 @@ void level::prepare_tiles_for_drawing()
 
 		tiles_[n].draw_disabled = false;
 
-
 		blit_info.blit_vertexes.resize(blit_info.blit_vertexes.size() + 4);
 		const int npoints = level_object::calculate_tile_corners(&blit_info.blit_vertexes[blit_info.blit_vertexes.size() - 4], tiles_[n]);
 		if(npoints == 0) {

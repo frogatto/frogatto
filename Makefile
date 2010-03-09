@@ -10,7 +10,7 @@ wml_schema_test_objects = filesystem.o string_utils.o wml_node.o wml_parser.o wm
 OPT=-O2 -fno-inline-functions
 
 %.o : src/%.cpp
-	g++ -fno-inline-functions -g $(OPT) `sdl-config --cflags` -I/usr/X11R6/include -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -fthreadsafe-statics -c $<
+	g++ -DIMPLEMENT_SAVE_PNG -fno-inline-functions -g $(OPT) `sdl-config --cflags` -I/usr/X11R6/include -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -fthreadsafe-statics -c $<
 
 game: $(objects)
 	g++ -g $(OPT) -lprofiler -L. -L/sw/lib -L/usr/X11R6/lib -L. -lX11 -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -L/usr/lib `sdl-config --libs` -lSDLmain -lSDL -lGL -lGLU -lGLEW -lSDL_image -lSDL_ttf -lSDL_mixer -lboost_regex-mt -lboost_system-mt -fthreadsafe-statics $(objects) -o game
