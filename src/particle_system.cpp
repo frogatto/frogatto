@@ -175,6 +175,19 @@ private:
 	void set_value(const std::string& key, const variant& value) {
 		if(key == "spawn_rate") {
 			info_.spawn_rate_ = value.as_int();
+		} else if(key == "min_x") {
+			info_.min_x_ = value.as_int();
+		} else if(key == "max_x") {
+			info_.max_x_ = value.as_int();
+		} else if(key == "min_y") {
+			info_.min_y_ = value.as_int();
+		} else if(key == "max_y") {
+			info_.max_y_ = value.as_int();
+		} else if(key == "velocity_x") {
+			std::cerr << "SET VELOCITY_X PARTICLES: " << value.as_int() << "\n";
+			info_.velocity_x_ = value.as_int();
+		} else if(key == "velocity_y") {
+			info_.velocity_y_ = value.as_int();
 		}
 	}
 
