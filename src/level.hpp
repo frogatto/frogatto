@@ -303,12 +303,16 @@ private:
 	int highlight_layer_;
 
 	struct layer_blit_info {
-		layer_blit_info() : xbase(-1), ybase(-1)
+		layer_blit_info() : texture_id(0), xbase(-1), ybase(-1)
 		{}
 
 		GLuint texture_id;
 
 		std::vector<tile_corner> blit_vertexes;
+
+		//texture ID's for each set of corners, used if texture_id == -1
+		//(i.e. if there are 
+		std::vector<GLuint> vertex_texture_ids;
 
 		int xbase, ybase;
 		std::vector<std::vector<GLshort> > indexes;

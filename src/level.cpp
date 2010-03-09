@@ -950,7 +950,10 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 
 	glDisable(GL_BLEND);
 	draw_layer_solid(layer, x, y, w, h);
-	graphics::texture::set_current_texture(blit_info.texture_id);
+	if(blit_info.texture_id != GLuint(-1)) {
+		graphics::texture::set_current_texture(blit_info.texture_id);
+	}
+
 	if(!opaque_indexes.empty()) {
 		glVertexPointer(2, GL_SHORT, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
 		glTexCoordPointer(2, GL_FLOAT, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
@@ -961,7 +964,18 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 	if(!translucent_indexes.empty()) {
 		glVertexPointer(2, GL_SHORT, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
 		glTexCoordPointer(2, GL_FLOAT, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
-		glDrawElements(GL_TRIANGLES, translucent_indexes.size(), GL_UNSIGNED_SHORT, &translucent_indexes[0]);
+
+		if(blit_info.texture_id == GLuint(-1)) {
+			//we have multiple different texture ID's in this layer. This means
+			//we will draw each tile seperately.
+			for(int n = 0; n < translucent_indexes.size(); n += 6) {
+				graphics::texture::set_current_texture(blit_info.vertex_texture_ids[translucent_indexes[n]/4]);
+				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, &translucent_indexes[n]);
+			}
+		} else {
+			//we have just one texture ID and so can draw all tiles in one call.
+			glDrawElements(GL_TRIANGLES, translucent_indexes.size(), GL_UNSIGNED_SHORT, &translucent_indexes[0]);
+		}
 	}
 
 	glPopMatrix();
@@ -1014,6 +1028,10 @@ void level::prepare_tiles_for_drawing()
 	blit_cache_.clear();
 
 	for(int n = 0; n != tiles_.size(); ++n) {
+		if(tiles_[n].object->solid_color()) {
+			continue;
+		}
+
 		layer_blit_info& blit_info = blit_cache_[tiles_[n].zorder];
 		if(blit_info.xbase == -1) {
 			blit_info.texture_id = tiles_[n].object->texture().get_id();
@@ -1030,9 +1048,7 @@ void level::prepare_tiles_for_drawing()
 		}
 	}
 
-
 	for(int n = 0; n != tiles_.size(); ++n) {
-		layer_blit_info& blit_info = blit_cache_[tiles_[n].zorder];
 
 		if(tiles_[n].object->solid_color()) {
 			tiles_[n].draw_disabled = true;
@@ -1053,13 +1069,21 @@ void level::prepare_tiles_for_drawing()
 			continue;
 		}
 
+		layer_blit_info& blit_info = blit_cache_[tiles_[n].zorder];
+
 		tiles_[n].draw_disabled = false;
+
 
 		blit_info.blit_vertexes.resize(blit_info.blit_vertexes.size() + 4);
 		const int npoints = level_object::calculate_tile_corners(&blit_info.blit_vertexes[blit_info.blit_vertexes.size() - 4], tiles_[n]);
 		if(npoints == 0) {
 			blit_info.blit_vertexes.resize(blit_info.blit_vertexes.size() - 4);
 		} else {
+			blit_info.vertex_texture_ids.push_back(tiles_[n].object->texture().get_id());
+			if(blit_info.vertex_texture_ids.back() != blit_info.texture_id) {
+				blit_info.texture_id = GLuint(-1);
+			}
+
 			const int xtile = (tiles_[n].x - blit_info.xbase)/TileSize;
 			const int ytile = (tiles_[n].y - blit_info.ybase)/TileSize;
 			ASSERT_GE(xtile, 0);

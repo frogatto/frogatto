@@ -99,8 +99,7 @@ public:
 private:
 	std::string id_;
 	graphics::texture t_;
-	int width_;
-	std::vector<std::vector<int> > tiles_;
+	std::vector<int> tiles_;
 	std::vector<bool> solid_;
 	bool all_solid_;
 	bool passthrough_;

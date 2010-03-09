@@ -34,7 +34,6 @@ namespace {
 
 surface get(const std::string& key)
 {
-	assert(false);
 	surface surf = cache.get(key);
 	if(surf.null()) {
 		surf = get_no_cache(key);

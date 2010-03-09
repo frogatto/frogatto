@@ -163,6 +163,10 @@ bool is_tile_solid_color(const graphics::texture& t, int tile_num, graphics::col
 			const unsigned char* color = t.color_at(u, v);
 			ASSERT_LOG(color != NULL, "COULD NOT FIND COLOR IN TEXTURE");
 			graphics::color new_color(color[0], color[1], color[2], color[3]);
+			if(new_color.a() != 0xFF) {
+				return false;
+			}
+
 			if(first || col.rgba() == new_color.rgba()) {
 				col = new_color;
 				first = false;

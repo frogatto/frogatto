@@ -2,6 +2,7 @@
 #include <map>
 #include <string>
 
+#include "IMG_savepng.h"
 #include "asserts.hpp"
 #include "draw_tile.hpp"
 #include "filesystem.hpp"
@@ -49,11 +50,47 @@ level_tile level_object::build_tile(wml::const_node_ptr node)
 
 namespace {
 std::vector<wml::const_node_ptr> level_object_index;
+
+//a tile identifier made up of a filename and tile position.
+typedef std::pair<std::string, int> tile_id;
+std::map<tile_id, int> compiled_tile_ids;
+}
+
+//defined in texture.cpp
+namespace graphics {
+void set_alpha_for_transparent_colors_in_rgba_surface(SDL_Surface* s);
+}
+
+void create_compiled_tiles_image()
+{
+	graphics::surface s(SDL_CreateRGBSurface(SDL_SWSURFACE, 1024, (compiled_tile_ids.size()/64 + 1)*16, 32, SURFACE_MASK));
+	for(std::map<tile_id, int>::const_iterator itor = compiled_tile_ids.begin();
+	    itor != compiled_tile_ids.end(); ++itor) {
+		graphics::surface src = graphics::surface_cache::get(itor->first.first);
+		SDL_SetAlpha(src.get(), 0, SDL_ALPHA_OPAQUE);
+		const int width = std::max<int>(src->w, src->h)/16;
+
+		const int src_x = (itor->first.second%width) * 16;
+		const int src_y = (itor->first.second/width) * 16;
+		
+		const int dst_x = (itor->second%64) * 16;
+		const int dst_y = (itor->second/64) * 16;
+
+		SDL_Rect src_rect = { src_x, src_y, 16, 16 };
+		SDL_Rect dst_rect = { dst_x, dst_y, 16, 16 };
+
+		std::cerr << "BLIT COMPILED TILES: " << itor->first.first << ", " << itor->first.second << " -> " << itor->second << ": " << dst_x << ", " << dst_y << "\n";
+
+		SDL_BlitSurface(src.get(), &src_rect, s.get(), &dst_rect);
+	}
+
+	graphics::set_alpha_for_transparent_colors_in_rgba_surface(s.get());
+
+	IMG_SavePNG("images/tiles-compiled.png", s.get(), 5);
 }
 
 level_object::level_object(wml::const_node_ptr node)
   : id_(node->attr("id")), t_(graphics::texture::get(node->attr("image"))),
-    width_(-1),
 	all_solid_(node->attr("solid").str() == "yes"),
     passthrough_(wml::get_bool(node, "passthrough")),
     flip_(wml::get_bool(node, "flip", false)),
@@ -74,26 +111,15 @@ level_object::level_object(wml::const_node_ptr node)
 
 	std::vector<std::string> tile_variations = util::split(node->attr("tiles"), '|');
 	foreach(const std::string& variation, tile_variations) {
-		tiles_.resize(tiles_.size()+1);
-		std::vector<std::string> lines = util::split(variation, '\n');
-		foreach(const std::string& line, lines) {
-			std::vector<std::string> items = util::split(line);
-			if(width_ == -1) {
-				width_ = items.size();
-			}
-
-			items.resize(width_);
-
-			foreach(const std::string& item, items) {
-				try {
-					const int width = std::max<int>(t_.width(), t_.height());
-					assert(width%16 == 0);
-					const int base = width/16;
-					tiles_.back().push_back(strtol(item.c_str(), NULL, base));
-				} catch(boost::bad_lexical_cast&) {
-					tiles_.back().push_back(-1);
-				}
-			}
+		if(!variation.empty() && variation[0] == '+') {
+			//a + symbol at the start of tiles means that it's just a base-10
+			//number. This is generally what is used for compiled tiles.
+			tiles_.push_back(strtol(variation.c_str()+1, NULL, 10));
+		} else {
+			const int width = std::max<int>(t_.width(), t_.height());
+			assert(width%16 == 0);
+			const int base = std::min<int>(32, width/16);
+			tiles_.push_back(strtol(variation.c_str(), NULL, base));
 		}
 	}
 
@@ -235,6 +261,30 @@ level_object::level_object(wml::const_node_ptr node)
 			node_copy->set_attr("draw_area", draw_area_.to_string());
 		}
 
+		std::string tiles_str;
+
+		foreach(int tile, tiles_) {
+			tile_id id(node_copy->attr("image"), tile);
+			std::map<tile_id, int>::const_iterator itor = compiled_tile_ids.find(id);
+			if(itor == compiled_tile_ids.end()) {
+				compiled_tile_ids[id] = compiled_tile_ids.size();
+				itor = compiled_tile_ids.find(id);
+			}
+
+			const int index = itor->second;
+
+			char tile_pos[64];
+			sprintf(tile_pos, "+%d", index);
+			if(!tiles_str.empty()) {
+				tiles_str += "|";
+			}
+
+			tiles_str += tile_pos;
+		}
+
+		node_copy->set_attr("image", "tiles-compiled.png");
+		node_copy->set_attr("tiles", tiles_str);
+
 		level_object_index.push_back(node_copy);
 
 		//set solid colors to always false if we're compiling, since having
@@ -242,7 +292,6 @@ level_object::level_object(wml::const_node_ptr node)
 		solid_color_ = boost::intrusive_ptr<graphics::color>();
 	}
 
-	
 	//debug code to output the solidity of a tile in case we need to introspect at some point
 	/*
 	std::cerr << "LEVEL_OBJECT: " << wml::output(node) << ":::\nSOLID:::\n";
@@ -317,6 +366,8 @@ void level_object::write_compiled()
 		wml::write(tiles_node, data);
 		sys::write_file("data/compiled/tiles/" + filename, data);
 	}
+
+	create_compiled_tiles_image();
 }
 
 namespace {
@@ -359,12 +410,12 @@ void level_object::write_compiled_index(char* buf) const
 
 int level_object::width() const
 {
-	return width_*32;
+	return 32;
 }
 
 int level_object::height() const
 {
-	return (tiles_.front().size()/width_)*32;
+	return 32;
 }
 
 bool level_object::is_solid(int x, int y) const
@@ -394,74 +445,33 @@ int hash_level_object(int x, int y) {
 
 void level_object::draw(const level_tile& t)
 {
-	int index = 0;
 	const int random_index = hash_level_object(t.x,t.y);
-	const std::vector<int>& tiles = t.object->tiles_[random_index%t.object->tiles_.size()];
-	foreach(int i, tiles) {
-		if(i < 0) {
-			continue;
-		}
+	const int tile = t.object->tiles_[random_index%t.object->tiles_.size()];
 
-		int x = index%t.object->width_;
-		if(t.face_right) {
-			x = t.object->width_ - x - 1;
-		}
-		const int y = index/t.object->width_;
-		draw_from_tilesheet(t.object->t_, i, t.x + x*32, t.y + y*32, t.face_right, 0);
-		++index;
-	}
+	draw_from_tilesheet(t.object->t_, tile, t.x, t.y, t.face_right, 0);
 }
 
 void level_object::queue_draw(graphics::blit_queue& q, const level_tile& t)
 {
-	int index = 0;
 	const int random_index = hash_level_object(t.x,t.y);
-	const std::vector<int>& tiles = t.object->tiles_[random_index%t.object->tiles_.size()];
-	foreach(int i, tiles) {
-		if(i < 0) {
-			continue;
-		}
+	const int tile = t.object->tiles_[random_index%t.object->tiles_.size()];
 
-		int x = index%t.object->width_;
-		if(t.face_right) {
-			x = t.object->width_ - x - 1;
-		}
-		const int y = index/t.object->width_;
-		queue_draw_from_tilesheet(q, t.object->t_, t.object->draw_area_, i, t.x + x*32, t.y + y*32, t.face_right);
-		++index;
-	}
+	queue_draw_from_tilesheet(q, t.object->t_, t.object->draw_area_, tile, t.x, t.y, t.face_right);
 }
 
 int level_object::calculate_tile_corners(tile_corner* result, const level_tile& t)
 {
-	int res = 0;
-	int index = 0;
 	const int random_index = hash_level_object(t.x,t.y);
-	const std::vector<int>& tiles = t.object->tiles_[random_index%t.object->tiles_.size()];
-	foreach(int i, tiles) {
-		if(i < 0) {
-			continue;
-		}
+	const int tile = t.object->tiles_[random_index%t.object->tiles_.size()];
 
-		int x = index%t.object->width_;
-		if(t.face_right) {
-			x = t.object->width_ - x - 1;
-		}
-		const int y = index/t.object->width_;
-		res = get_tile_corners(result, t.object->t_, t.object->draw_area_, i, t.x + x*32, t.y + y*32, t.face_right);
-		++index;
-	}
-
-	return res;
+	return get_tile_corners(result, t.object->t_, t.object->draw_area_, tile, t.x, t.y, t.face_right);
 }
 
 bool level_object::calculate_opaque() const
 {
-	foreach(const std::vector<int>& v, tiles_) {
-		foreach(int tile, v) {
-			if(!is_tile_opaque(t_, tile)) {
-				return false;
-			}
+	foreach(int tile, tiles_) {
+		if(!is_tile_opaque(t_, tile)) {
+			return false;
 		}
 	}
 
@@ -470,11 +480,9 @@ bool level_object::calculate_opaque() const
 
 bool level_object::calculate_is_solid_color(graphics::color& col) const
 {
-	foreach(const std::vector<int>& v, tiles_) {
-		foreach(int tile, v) {
-			if(!is_tile_solid_color(t_, tile, col)) {
-				return false;
-			}
+	foreach(int tile, tiles_) {
+		if(!is_tile_solid_color(t_, tile, col)) {
+			return false;
 		}
 	}
 
@@ -484,10 +492,8 @@ bool level_object::calculate_is_solid_color(graphics::color& col) const
 bool level_object::calculate_draw_area()
 {
 	draw_area_ = rect();
-	foreach(const std::vector<int>& v, tiles_) {
-		foreach(int tile, v) {
-			draw_area_ = rect_union(draw_area_, get_tile_non_alpha_area(t_, tile));
-		}
+	foreach(int tile, tiles_) {
+		draw_area_ = rect_union(draw_area_, get_tile_non_alpha_area(t_, tile));
 	}
 
 	return draw_area_ != rect(0, 0, 16, 16);

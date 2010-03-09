@@ -276,6 +276,21 @@ void add_alpha_channel_to_surface(uint8_t* dst_ptr, const uint8_t* src_ptr, size
 	}
 }
 
+void set_alpha_for_transparent_colors_in_rgba_surface(SDL_Surface* s)
+{
+	const int npixels = s->w*s->h;
+	for(int n = 0; n != npixels; ++n) {
+		//we use a color in our sprite sheets to indicate transparency, rather than an alpha channel
+		static const unsigned char AlphaPixel[] = {0x6f, 0x6d, 0x51}; //the background color, brown
+		static const unsigned char AlphaPixel2[] = {0xf9, 0x30, 0x3d}; //the border color, red
+		unsigned char* pixel = reinterpret_cast<unsigned char*>(s->pixels) + n*4;
+
+		if(pixel[0] == AlphaPixel[0] && pixel[1] == AlphaPixel[1] && pixel[2] == AlphaPixel[2] ||
+		   pixel[0] == AlphaPixel2[0] && pixel[1] == AlphaPixel2[1] && pixel[2] == AlphaPixel2[2]) {
+			pixel[3] = 0;
+		}
+	}
+}
 
 void texture::initialize(const key& k)
 {
@@ -306,6 +321,9 @@ void texture::initialize(const key& k)
 	surface s(SDL_CreateRGBSurface(SDL_SWSURFACE,surf_width,surf_height,32,SURFACE_MASK));
 	if(k.size() == 1 && k.front()->format->Rmask == 0xFF && k.front()->format->Gmask == 0xFF00 && k.front()->format->Bmask == 0xFF0000 && k.front()->format->Amask == 0) {
 		add_alpha_channel_to_surface((uint8_t*)s->pixels, (uint8_t*)k.front()->pixels, s->w, k.front()->w, k.front()->h, k.front()->pitch);
+	} else if(k.size() == 1 && k.front()->format->Rmask == 0xFF00 && k.front()->format->Gmask == 0xFF0000 && k.front()->format->Bmask == 0xFF000000 && k.front()->format->Amask == 0xFF) {
+		//alpha channel already exists, so no conversion necessary.
+		s = k.front();
 	} else {
 		for(key::const_iterator i = k.begin(); i != k.end(); ++i) {
 			if(i == k.begin()) {
@@ -318,19 +336,13 @@ void texture::initialize(const key& k)
 		}
 	}
 
-	const int npixels = surf_width*surf_height;
+	set_alpha_for_transparent_colors_in_rgba_surface(s.get());
+	const int npixels = s->w*s->h;
 	for(int n = 0; n != npixels; ++n) {
-		//we use a color in our sprite sheets to indicate transparency, rather than an alpha channel
-		static const unsigned char AlphaPixel[] = {0x6f, 0x6d, 0x51}; //the background color, brown
-		static const unsigned char AlphaPixel2[] = {0xf9, 0x30, 0x3d}; //the border color, red
-		unsigned char* pixel = reinterpret_cast<unsigned char*>(s->pixels) + n*4;
-
-		if(pixel[0] == AlphaPixel[0] && pixel[1] == AlphaPixel[1] && pixel[2] == AlphaPixel[2] ||
-		   pixel[0] == AlphaPixel2[0] && pixel[1] == AlphaPixel2[1] && pixel[2] == AlphaPixel2[2]) {
-			pixel[3] = 0;
-
-			const int x = n%surf_width;
-			const int y = n/surf_width;
+		const unsigned char* pixel = reinterpret_cast<const unsigned char*>(s->pixels) + n*4;
+		if(pixel[3] == 0) {
+			const int x = n%s->w;
+			const int y = n/s->w;
 			if(x < width_ && y < height_) {
 				(*alpha_map_)[y*width_ + x] = true;
 			}
