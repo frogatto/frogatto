@@ -24,13 +24,18 @@
  * 4/17/04 - IMG_SavePNG & IMG_SavePNG_RW - Philip D. Bober
  * 11/08/2004 - Compr fix, levels -1,1-7 now work - Tyler Montbriand
  */
+
+#ifdef IMPLEMENT_SAVE_PNG
+#include <png.h>
+#endif
+
 #include <stdlib.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_byteorder.h>
-#include <png.h>
 #include "IMG_savepng.h"
 
 int IMG_SavePNG(const char *file, SDL_Surface *surf,int compression){
+#ifdef IMPLEMENT_SAVE_PNG
 	SDL_RWops *fp;
 	int ret;
 	
@@ -43,14 +48,20 @@ int IMG_SavePNG(const char *file, SDL_Surface *surf,int compression){
 	ret=IMG_SavePNG_RW(fp,surf,compression);
 	SDL_RWclose(fp);
 	return ret;
+#else
+	return 0;
+#endif
 }
 
+#ifdef IMPLEMENT_SAVE_PNG
 static void png_write_data(png_structp png_ptr,png_bytep data, png_size_t length){
 	SDL_RWops *rp = (SDL_RWops*) png_get_io_ptr(png_ptr);
 	SDL_RWwrite(rp,data,1,length);
 }
+#endif
 
 int IMG_SavePNG_RW(SDL_RWops *src, SDL_Surface *surf,int compression){
+#ifdef IMPLEMENT_SAVE_PNG
 	png_structp png_ptr;
 	png_infop info_ptr;
 	SDL_PixelFormat *fmt=NULL;
@@ -278,4 +289,7 @@ savedone: /* clean up and return */
 		free(row_pointers);
 	}
 	return ret;
+#else
+	return 0;
+#endif
 }
