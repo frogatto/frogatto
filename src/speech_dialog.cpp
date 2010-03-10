@@ -184,9 +184,9 @@ void speech_dialog::draw() const
 	}
 
 
-	//if we have multiple lines, we always align on the very left, otherwise
-	//we center it.
-	int text_left_align = text_.size() > 1 ? text_area.x() + 16 : text_area.x2();
+	//we center our text. Create a vector of the left edge of the text.
+	std::vector<int> text_left_align;
+
 	int total_height = 0;
 	for(int n = 0; n < text_.size(); ++n) {
 		rect area = font->dimensions(text_[n]);
@@ -197,9 +197,7 @@ void speech_dialog::draw() const
 
 		const int width = area.w();
 		const int left = text_area.x() + text_area.w()/2 - width/2;
-		if(left < text_left_align) {
-			text_left_align = left;
-		}
+		text_left_align.push_back(left);
 	}
 
 	int ypos = text_area.y() + (text_area.h() - total_height)/2;
@@ -209,7 +207,7 @@ void speech_dialog::draw() const
 		                  std::min<int>(nchars, text_[n].size()));
 		//currently the color of speech is hard coded.
 		glColor4ub(255, 187, 10, 255);
-		rect area = font->draw(text_left_align, ypos, str);
+		rect area = font->draw(text_left_align[n], ypos, str);
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 		ypos = area.y2();
 		nchars -= text_[n].size();
