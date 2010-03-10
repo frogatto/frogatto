@@ -2,7 +2,7 @@
 #include "custom_object_callable.hpp"
 
 namespace {
-std::string CustomObjectProperties[] = {
+const std::string CustomObjectProperties[] = {
 	"consts", "type", "time_in_animation", "time_in_animation_delta", "level", "animation",
 	"hitpoints", "max_hitpoints", "mass", "label", "x", "y", "z", "zorder",
 	"x1", "x2", "y1", "y2", "w", "h", "midpoint_x", "midpoint_y",
@@ -39,6 +39,7 @@ custom_object_callable::custom_object_callable()
 	}
 
 	for(int n = 0; n != entries_.size(); ++n) {
+		std::cerr << "SLOT: " << entries_[n].id << " -> " << n << "\n";
 		keys_to_slots_[entries_[n].id] = n;
 	}
 }

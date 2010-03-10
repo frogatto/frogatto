@@ -1334,7 +1334,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_LEVEL:             return variant(&level::current());
 	case CUSTOM_OBJECT_ANIMATION:         return variant(frame_name_);
 	case CUSTOM_OBJECT_HITPOINTS:         return variant(hitpoints_);
-	case CUSTOM_OBJECT_MAX_HITPOINTS:     return variant(type_->hitpoints());
+	case CUSTOM_OBJECT_MAX_HITPOINTS:     return variant(max_hitpoints_);
 	case CUSTOM_OBJECT_MASS:              return variant(type_->mass());
 	case CUSTOM_OBJECT_LABEL:             return variant(label());
 	case CUSTOM_OBJECT_X:                 return variant(x());
@@ -1462,8 +1462,8 @@ variant custom_object::get_value_by_slot(int slot) const
 		return call_stack(*this);
 	}
 
-	case CUSTOM_OBJECT_HAS_FEET:
-		return variant(has_feet_);
+	case CUSTOM_OBJECT_TAGS: return variant(tags_.get());
+	case CUSTOM_OBJECT_HAS_FEET: return variant(has_feet_);
 
 	case CUSTOM_OBJECT_CTRL_UP:
 	case CUSTOM_OBJECT_CTRL_DOWN:
@@ -1479,14 +1479,14 @@ variant custom_object::get_value_by_slot(int slot) const
 
 variant custom_object::get_value(const std::string& key) const
 {
+	const int slot = type_->callable_definition().get_slot(key);
+	if(slot >= 0 && slot < NUM_CUSTOM_OBJECT_PROPERTIES) {
+		return get_value_by_slot(slot);
+	}
+
 	std::map<std::string, game_logic::const_formula_ptr>::const_iterator property_itor = type_->properties().find(key);
 	if(property_itor != type_->properties().end() && property_itor->second) {
 		return property_itor->second->execute(*this);
-	}
-
-	std::map<std::string, object_accessor>::const_iterator accessor_itor = object_accessor_map.find(key);
-	if(accessor_itor != object_accessor_map.end()) {
-		return accessor_itor->second(*this);
 	}
 
 	variant var_result = tmp_vars_->query_value(key);
@@ -1800,6 +1800,12 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		hitpoints_ = value.as_int();
 		if(hitpoints_ <= 0) {
 			die();
+		}
+		break;
+	case CUSTOM_OBJECT_MAX_HITPOINTS:
+		max_hitpoints_ = value.as_int();
+		if(hitpoints_ > max_hitpoints_) {
+			hitpoints_ = max_hitpoints_;
 		}
 		break;
 
