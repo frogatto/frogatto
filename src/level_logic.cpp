@@ -34,7 +34,7 @@ int distance_to_cliff(const level& lvl, int xpos, int ypos, int facing)
 
 	int result = 0;
 	for(; result < max_search; xpos += facing, ++result) {
-		if(lvl.standable_tile(xpos, ypos)) {
+		if(lvl.standable_tile(xpos, ypos) || lvl.standable_tile(xpos, ypos-1)) {
 			int ydiff = 0;
 			while(lvl.standable_tile(xpos, ypos-1) && ydiff < cliff_face) {
 				--ypos;
