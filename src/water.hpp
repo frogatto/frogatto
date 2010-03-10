@@ -19,7 +19,8 @@ public:
 
 	wml::node_ptr write() const;
 
-	void add_rect(const rect& r);
+	//color must point to an array of 4 bytes.
+	void add_rect(const rect& r, const unsigned char* color);
 	void delete_rect(const rect& r);
 
 	bool draw(int x, int y, int w, int h) const;
@@ -51,8 +52,7 @@ public:
 private:
 
 	struct area {
-		explicit area(const rect& r) : rect_(r), distortion_(0, rect(0,0,0,0))
-		{}
+		area(const rect& r, const unsigned char* color);
 		rect rect_;
 		graphics::water_distortion distortion_;
 		std::vector<char> draw_detection_buf_;
@@ -61,6 +61,8 @@ private:
 
 		//segments of the surface without solid.
 		std::vector<std::pair<int, int> > surface_segments_;
+
+		unsigned char color[4];
 	};
 
 	std::vector<area> areas_;

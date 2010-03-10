@@ -1516,28 +1516,43 @@ private:
 class add_water_command : public entity_command_callable
 {
 	rect r_;
+	boost::array<unsigned char, 4> color_;
 public:
-	add_water_command(const rect& r) : r_(r)
+	add_water_command(const rect& r, boost::array<unsigned char, 4> col) : r_(r), color_(col)
 	{}
 
 	virtual void execute(level& lvl, entity& ob) const {
-		lvl.get_or_create_water().add_rect(r_);
+		lvl.get_or_create_water().add_rect(r_, color_.data());
 	}
 };
 
 class add_water_function : public function_expression {
 public:
 	explicit add_water_function(const args_list& args)
-	  : function_expression("add_water", args, 4) {
+	  : function_expression("add_water", args, 4, 5) {
 	}
 private:
 	variant execute(const formula_callable& variables) const {
+		static const unsigned char default_color[] = {70, 0, 0, 50};
+		boost::array<unsigned char, 4> color;
+		for(int n = 0; n != 4; ++n) {
+			color[n] = default_color[n];
+		}
+
+		if(args().size() > 4) {
+			variant v = args()[4]->evaluate(variables);
+			ASSERT_LOG(v.is_list(), "MUST PROVIDE COLOR LIST AS FOURTH ARGUMENT TO add_water(), found: " << v.to_debug_string());
+			for(int n = 0; n < 4 && n < v.num_elements(); ++n) {
+				color[n] = v[n].as_int();
+			}
+		}
+
 		return variant(new add_water_command(
 		  rect::from_coordinates(
 		    args()[0]->evaluate(variables).as_int(),
 		    args()[1]->evaluate(variables).as_int(),
 		    args()[2]->evaluate(variables).as_int(),
-		    args()[3]->evaluate(variables).as_int())));
+		    args()[3]->evaluate(variables).as_int()), color));
 	}
 };
 

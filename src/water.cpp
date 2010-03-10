@@ -13,6 +13,7 @@
 #include "formula.hpp"
 #include "level.hpp"
 #include "raster.hpp"
+#include "string_utils.hpp"
 #include "water.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
@@ -33,7 +34,16 @@ water::water(wml::const_node_ptr water_node) :
 {
 	FOREACH_WML_CHILD(area_node, water_node, "area") {
 		const rect r(area_node->attr("rect"));
-		areas_.push_back(area(r));
+		std::vector<std::string> str = util::split(area_node->attr("color"));
+		unsigned char color[4];
+		for(int n = 0; n != 4; ++n) {
+			if(n < str.size()) {
+				color[n] = atoi(str[n].c_str());
+			} else {
+				color[n] = 0;
+			}
+		}
+		areas_.push_back(area(r, color));
 	}
 }
 
@@ -44,15 +54,20 @@ wml::node_ptr water::write() const
 	foreach(const area& a, areas_) {
 		wml::node_ptr node(new wml::node("area"));
 		node->set_attr("rect", a.rect_.to_string());
+		node->set_attr("color", formatter()
+		               << static_cast<int>(a.color[0]) << ","
+		               << static_cast<int>(a.color[1]) << ","
+		               << static_cast<int>(a.color[2]) << ","
+		               << static_cast<int>(a.color[3]));
 		result->add_child(node);
 	}
 
 	return result;
 }
 
-void water::add_rect(const rect& r)
+void water::add_rect(const rect& r, const unsigned char* color)
 {
-	areas_.push_back(area(r));
+	areas_.push_back(area(r, color));
 }
 
 void water::delete_rect(const rect& r)
@@ -254,7 +269,7 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 			waterline_rect.x + waterline_rect.w, underwater_rect.y + underwater_rect.h
 		};
 		
-		glColor4ub(70, 0, 00, 50);
+		glColor4ubv(a.color);
 		glVertexPointer(2, GL_FLOAT, 0, vertices);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, sizeof(vertices)/sizeof(GLfloat)/2);
 		#if GL_OES_blend_subtract
@@ -409,5 +424,13 @@ void water::init_area_surface_segments(const level& lvl, water::area& a)
 
 	if(a.surface_segments_.empty()) {
 		a.surface_segments_.push_back(std::make_pair(0,0));
+	}
+}
+
+water::area::area(const rect& r, const unsigned char* pcolor)
+  : rect_(r), distortion_(0, rect(0,0,0,0))
+{
+	for(int n = 0; n != 4; ++n) {
+		color[n] = pcolor[n];
 	}
 }
