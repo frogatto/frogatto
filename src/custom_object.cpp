@@ -520,6 +520,16 @@ void custom_object::process(level& lvl)
 
 	const bool is_underwater = lvl.is_underwater(solid_rect());
 	
+	if( is_underwater && !was_underwater_){
+		//event on_enter_water
+		handle_event(OBJECT_EVENT_ENTER_WATER);
+		was_underwater_ = true;
+	}else if ( !is_underwater && was_underwater_ ){
+		//event on_exit_water
+		handle_event(OBJECT_EVENT_EXIT_WATER);
+		was_underwater_ = false;
+	}
+	
 	const int traction_from_surface = (stand_info.traction*type_->traction())/1000;
 	velocity_x_ += (accel_x_ * (stand_info.traction ? traction_from_surface : (is_underwater?type_->traction_in_water() :type_->traction_in_air())) * (face_right() ? 1 : -1))/1000;
 	if(!standing_on_ && !started_standing || accel_y_ < 0) {
@@ -884,16 +894,6 @@ void custom_object::process(level& lvl)
 	if(type_->timer_frequency() > 0 && (cycle_%type_->timer_frequency()) == 0) {
 		static const std::string TimerStr = "timer";
 		handle_event(OBJECT_EVENT_TIMER);
-	}
-	
-	if( is_underwater && !was_underwater_){
-		//event on_enter_water
-		handle_event(OBJECT_EVENT_ENTER_WATER);
-		was_underwater_ = true;
-	}else if ( !is_underwater && was_underwater_ ){
-		//event on_exit_water
-		handle_event(OBJECT_EVENT_EXIT_WATER);
-		was_underwater_ = false;
 	}
 
 	for(std::map<std::string, particle_system_ptr>::iterator i = particle_systems_.begin(); i != particle_systems_.end(); ) {
