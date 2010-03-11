@@ -40,7 +40,6 @@ custom_object_callable::custom_object_callable()
 	}
 
 	for(int n = 0; n != entries_.size(); ++n) {
-		std::cerr << "SLOT: " << entries_[n].id << " -> " << n << "\n";
 		keys_to_slots_[entries_[n].id] = n;
 	}
 }
