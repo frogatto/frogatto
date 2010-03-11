@@ -946,6 +946,11 @@ namespace game_logic
 					//this expression is static. Reduce it to its result.
 					result = expression_ptr(new variant_expression(res));
 				}
+
+				//it's possible if there is a latent reference to it the
+				//static callable won't get destroyed, so make sure we
+				//mark it as inactive to allow others to be created.
+				static_formula_callable_active = false;
 			} catch(non_static_expression_exception& e) {
 				//the expression isn't static. Not an error.
 			}
