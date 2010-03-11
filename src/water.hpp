@@ -3,12 +3,13 @@
 
 #include <vector>
 
+#include "entity_fwd.hpp"
 #include "formula_fwd.hpp"
 #include "geometry.hpp"
 #include "raster_distortion.hpp"
+#include "variant.hpp"
 #include "wml_node_fwd.hpp"
 
-class entity;
 class level;
 
 class water
@@ -20,7 +21,7 @@ public:
 	wml::node_ptr write() const;
 
 	//color must point to an array of 4 bytes.
-	void add_rect(const rect& r, const unsigned char* color);
+	void add_rect(const rect& r, const unsigned char* color, variant obj);
 	void delete_rect(const rect& r);
 
 	bool draw(int x, int y, int w, int h) const;
@@ -32,7 +33,7 @@ public:
 
 	void get_current(const entity& e, int* velocity_x, int* velocity_y) const;
 
-	bool is_underwater(const rect& r, rect* water_area=NULL) const;
+	bool is_underwater(const rect& r, rect* water_area=NULL, variant* obj=NULL) const;
 
 	void add_wave(const point& p, double xvelocity, double height, double length, double delta_height, double delta_length);
 
@@ -52,7 +53,7 @@ public:
 private:
 
 	struct area {
-		area(const rect& r, const unsigned char* color);
+		area(const rect& r, const unsigned char* color, variant obj);
 		rect rect_;
 		graphics::water_distortion distortion_;
 		std::vector<char> draw_detection_buf_;
@@ -62,7 +63,8 @@ private:
 		//segments of the surface without solid.
 		std::vector<std::pair<int, int> > surface_segments_;
 
-		unsigned char color[4];
+		unsigned char color_[4];
+		variant obj_;
 	};
 
 	std::vector<area> areas_;

@@ -43,7 +43,10 @@ water::water(wml::const_node_ptr water_node) :
 				color[n] = 0;
 			}
 		}
-		areas_.push_back(area(r, color));
+
+		variant obj;
+		obj.serialize_from_string(area_node->attr("object"));
+		areas_.push_back(area(r, color, obj));
 	}
 }
 
@@ -55,19 +58,24 @@ wml::node_ptr water::write() const
 		wml::node_ptr node(new wml::node("area"));
 		node->set_attr("rect", a.rect_.to_string());
 		node->set_attr("color", formatter()
-		               << static_cast<int>(a.color[0]) << ","
-		               << static_cast<int>(a.color[1]) << ","
-		               << static_cast<int>(a.color[2]) << ","
-		               << static_cast<int>(a.color[3]));
+		               << static_cast<int>(a.color_[0]) << ","
+		               << static_cast<int>(a.color_[1]) << ","
+		               << static_cast<int>(a.color_[2]) << ","
+		               << static_cast<int>(a.color_[3]));
+
+		std::string obj;
+		a.obj_.serialize_to_string(obj);
+		node->set_attr("object", obj);
+
 		result->add_child(node);
 	}
 
 	return result;
 }
 
-void water::add_rect(const rect& r, const unsigned char* color)
+void water::add_rect(const rect& r, const unsigned char* color, variant obj)
 {
-	areas_.push_back(area(r, color));
+	areas_.push_back(area(r, color, obj));
 }
 
 void water::delete_rect(const rect& r)
@@ -269,7 +277,7 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 			waterline_rect.x + waterline_rect.w, underwater_rect.y + underwater_rect.h
 		};
 		
-		glColor4ubv(a.color);
+		glColor4ubv(a.color_);
 		glVertexPointer(2, GL_FLOAT, 0, vertices);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, sizeof(vertices)/sizeof(GLfloat)/2);
 		#if GL_OES_blend_subtract
@@ -388,13 +396,17 @@ void water::get_current(const entity& e, int* velocity_x, int* velocity_y) const
 	}
 }
 
-bool water::is_underwater(const rect& r, rect* result_water_area) const
+bool water::is_underwater(const rect& r, rect* result_water_area, variant* e) const
 {
 	const point p((r.x() + r.x2())/2, (r.y() + r.y2())/2);
 	foreach(const area& a, areas_) {
 		if(point_in_rect(p, a.rect_)) {
 			if(result_water_area) {
 				*result_water_area = a.rect_;
+			}
+
+			if(e) {
+				*e = a.obj_;
 			}
 			return true;
 		}
@@ -427,10 +439,10 @@ void water::init_area_surface_segments(const level& lvl, water::area& a)
 	}
 }
 
-water::area::area(const rect& r, const unsigned char* pcolor)
-  : rect_(r), distortion_(0, rect(0,0,0,0))
+water::area::area(const rect& r, const unsigned char* pcolor, variant obj)
+  : rect_(r), distortion_(0, rect(0,0,0,0)), obj_(obj)
 {
 	for(int n = 0; n != 4; ++n) {
-		color[n] = pcolor[n];
+		color_[n] = pcolor[n];
 	}
 }

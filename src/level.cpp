@@ -2539,9 +2539,9 @@ int level::camera_rotation() const
 	return camera_rotation_->execute(*this).as_int();
 }
 
-bool level::is_underwater(const rect& r, rect* res_water_area) const
+bool level::is_underwater(const rect& r, rect* res_water_area, variant* v) const
 {
-	return water_ && water_->is_underwater(r, res_water_area);
+	return water_ && water_->is_underwater(r, res_water_area, v);
 }
 
 void level::get_current(const entity& e, int* velocity_x, int* velocity_y) const

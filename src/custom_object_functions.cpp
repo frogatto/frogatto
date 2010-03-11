@@ -1522,7 +1522,7 @@ public:
 	{}
 
 	virtual void execute(level& lvl, entity& ob) const {
-		lvl.get_or_create_water().add_rect(r_, color_.data());
+		lvl.get_or_create_water().add_rect(r_, color_.data(), variant(&ob));
 	}
 };
 

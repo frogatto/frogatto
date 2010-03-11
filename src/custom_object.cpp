@@ -1395,6 +1395,11 @@ variant custom_object::get_value_by_slot(int slot) const
 			return variant();
 		}
 	}
+	case CUSTOM_OBJECT_WATER_OBJECT: {
+		variant v;
+		level::current().is_underwater(solid_rect(), NULL, &v);
+		return v;
+	}
 	case CUSTOM_OBJECT_DRIVER:            return variant(driver_ ? driver_.get() : this);
 	case CUSTOM_OBJECT_IS_HUMAN:          return variant(is_human() ? 1 : 0);
 	case CUSTOM_OBJECT_INVINCIBLE:        return variant(invincible_);

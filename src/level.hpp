@@ -191,7 +191,7 @@ public:
 	void set_next_level(const std::string& name);
 
 	int cycle() const { return cycle_; }
-	bool is_underwater(const rect& r, rect* res_water_area=NULL) const;
+	bool is_underwater(const rect& r, rect* res_water_area=NULL, variant* v=NULL) const;
 
 	void get_current(const entity& e, int* velocity_x, int* velocity_y) const;
 
