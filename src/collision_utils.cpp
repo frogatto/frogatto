@@ -104,6 +104,9 @@ bool entity_collides(level& lvl, const entity& e, MOVE_DIRECTION dir, collision_
 	const std::vector<entity_ptr>& solid_chars = lvl.get_solid_chars();
 	for(std::vector<entity_ptr>::const_iterator obj = solid_chars.begin(); obj != solid_chars.end(); ++obj) {
 		if(obj->get() != &e && entity_collides_with_entity(e, **obj, info)) {
+			if(info) {
+				info->collide_with = *obj;
+			}
 			return true;
 		}
 	}

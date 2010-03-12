@@ -188,7 +188,6 @@ custom_object::custom_object(const custom_object& o) :
 	tmp_vars_(new game_logic::formula_variable_storage(*o.tmp_vars_)),
 	tags_(new game_logic::map_formula_callable(*o.tags_)),
 
-	last_jumped_on_by_(o.last_jumped_on_by_),
 	last_hit_by_(o.last_hit_by_),
 	last_hit_by_anim_(o.last_hit_by_anim_),
 	current_animation_id_(o.current_animation_id_),
@@ -804,8 +803,9 @@ void custom_object::process(level& lvl)
 
 		if(collide_info.collide_with) {
 			callable->add("collide_with", variant(collide_info.collide_with.get()));
-			callable->add("collide_with_area", variant(*collide_info.collide_with_area_id));
-
+			if(collide_info.collide_with_area_id) {
+				callable->add("collide_with_area", variant(*collide_info.collide_with_area_id));
+			}
 		}
 
 		handle_event(collide ? OBJECT_EVENT_COLLIDE : OBJECT_EVENT_COLLIDE_FEET, callable);
@@ -1172,7 +1172,6 @@ struct custom_object::Accessor {
 	CUSTOM_ACCESSOR(alpha, obj.draw_color().a());
 	CUSTOM_ACCESSOR(damage, obj.current_frame().damage());
 	CUSTOM_ACCESSOR(hit_by, obj.last_hit_by_.get());
-	CUSTOM_ACCESSOR(jumped_on_by, obj.last_jumped_on_by_.get());
 	CUSTOM_ACCESSOR(distortion, obj.distortion_.get());
 	CUSTOM_ACCESSOR(is_standing, variant(obj.is_standing(level::current())));
 	CUSTOM_ACCESSOR(near_cliff_edge, obj.is_standing(level::current()) && cliff_edge_within(level::current(), obj.feet_x(), obj.feet_y(), obj.face_dir()*15));
@@ -1296,7 +1295,6 @@ struct custom_object::Accessor {
 		ACCESSOR(alpha);
 		ACCESSOR(damage);
 		ACCESSOR(hit_by);
-		ACCESSOR(jumped_on_by);
 		ACCESSOR(distortion);
 		ACCESSOR(is_standing);
 		ACCESSOR(is_standing_on_platform);
@@ -1375,7 +1373,6 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_BLUE:              return variant(draw_color().b());
 	case CUSTOM_OBJECT_ALPHA:             return variant(draw_color().a());
 	case CUSTOM_OBJECT_DAMAGE:            return variant(current_frame().damage()); case CUSTOM_OBJECT_HIT_BY:            return variant(last_hit_by_.get());
-	case CUSTOM_OBJECT_JUMPED_ON_BY:      return variant(last_jumped_on_by_.get());
 	case CUSTOM_OBJECT_DISTORTION:        return variant(distortion_.get());
 	case CUSTOM_OBJECT_IS_STANDING:       return variant(is_standing(level::current()));
 	case CUSTOM_OBJECT_NEAR_CLIFF_EDGE:   return variant(is_standing(level::current()) && cliff_edge_within(level::current(), feet_x(), feet_y(), face_dir()*15));

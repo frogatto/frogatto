@@ -431,6 +431,8 @@ namespace game_logic
 					if(left.is_list()) {
 						list_callable lc(left);	
 						return right_->evaluate(lc);
+					} else if(left.is_map()) {
+						return left[variant(right_->str())];
 					}
 					
 					return left;

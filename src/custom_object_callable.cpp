@@ -9,7 +9,7 @@ const std::string CustomObjectProperties[] = {
 	"solid_rect", "img_w", "img_h", "front", "back", "cycle", "facing",
 	"upside_down", "up", "down", "velocity_x", "velocity_y",
 	"accel_x", "accel_y", "vars", "tmp", "group", "rotate", "me", "self",
-	"red", "green", "blue", "alpha", "damage", "hit_by", "jumped_on_by",
+	"red", "green", "blue", "alpha", "damage", "hit_by",
 	"distortion", "is_standing", "near_cliff_edge", "distance_to_cliff",
 	"slope_standing_on", "underwater", "water_bounds", "water_object",
 	"driver", "is_human", "invincible",

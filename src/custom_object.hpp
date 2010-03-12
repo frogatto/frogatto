@@ -195,7 +195,6 @@ private:
 	game_logic::formula_variable_storage_ptr vars_, tmp_vars_;
 	game_logic::map_formula_callable_ptr tags_;
 
-	entity_ptr last_jumped_on_by_;
 	entity_ptr last_hit_by_;
 	int last_hit_by_anim_;
 	int current_animation_id_;

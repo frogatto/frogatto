@@ -444,6 +444,24 @@ private:
 	}
 };
 
+class mapping_function : public function_expression {
+public:
+	explicit mapping_function(const args_list& args)
+	  : function_expression("mapping", args, -1, -1)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		map_formula_callable* callable = new map_formula_callable;
+		for(size_t n = 0; n < args().size()-1; n += 2) {
+			callable->add(args()[n]->evaluate(variables).as_string(),
+			              args()[n+1]->evaluate(variables));
+		}
+
+		return variant(callable);
+	}
+};
+
 class find_function : public function_expression {
 public:
 	explicit find_function(const args_list& args)
@@ -796,6 +814,7 @@ functions_map& get_functions_map() {
 		FUNCTION(wave);
 		FUNCTION(sort);
 		FUNCTION(filter);
+		FUNCTION(mapping);
 		FUNCTION(find);
 		FUNCTION(map);
 		FUNCTION(sum);
