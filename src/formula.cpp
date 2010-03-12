@@ -911,7 +911,7 @@ namespace game_logic
 			class static_formula_callable : public formula_callable {
 				static_formula_callable(const static_formula_callable&);
 			public:
-				static_formula_callable() {
+				static_formula_callable() : formula_callable(false) {
 					if(static_formula_callable_active) {
 						throw non_static_expression_exception();
 					}
