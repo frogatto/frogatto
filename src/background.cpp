@@ -280,6 +280,17 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 		return;
 	}
 
+	if(!bg.texture.valid()) {
+		bg.texture = graphics::texture::get(bg.image, bg.image_formula);
+		if(bg.y2 == 0) {
+			bg.y2 = bg.texture.height();
+		}
+	}
+
+	if(!bg.texture.valid()) {
+		return;
+	}
+
 	GLfloat v1 = bg.texture.translate_coord_y(double(bg.y1)/double(bg.texture.height()));
 	GLfloat v2 = bg.texture.translate_coord_y(double(bg.y2)/double(bg.texture.height()));
 
@@ -334,13 +345,6 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 	}
 
 	int screen_width = area.w();
-
-	if(!bg.texture.valid()) {
-		bg.texture = graphics::texture::get(bg.image, bg.image_formula);
-		if(bg.y2 == 0) {
-			bg.y2 = bg.texture.height();
-		}
-	}
 
 	const double xscale = double(bg.xscale)/100.0;
 	GLfloat xpos = (-GLfloat(bg.xspeed)*GLfloat(cycle)/1000 + int(GLfloat(x + bg.xoffset)*xscale))/GLfloat((bg.texture.width()+bg.xpad)*ScaleImage) + GLfloat(area.x() - x)/GLfloat((bg.texture.width()+bg.xpad)*ScaleImage);
