@@ -1,7 +1,9 @@
 #import "iphone_sound.h"
+#include "SDL.h"
 //#import "GBMusicTrack.h"
 
 #import <AVFoundation/AVFoundation.h>
+#import <AudioToolbox/AudioToolbox.h>
 
 //GBMusicTrack *song = nil;
 AVAudioPlayer *song = nil;
@@ -29,6 +31,11 @@ void iphone_init_music (void (*callback)())
 {
 	delegate = [[AudioDelegate alloc] init];
 	song_finished_callback = callback;
+	
+	AudioSessionInitialize (NULL, NULL, NULL, NULL);
+	AudioSessionSetActive (true);
+	UInt32 sessionCategory = kAudioSessionCategory_SoloAmbientSound;
+	AudioSessionSetProperty (kAudioSessionProperty_AudioCategory, sizeof(sessionCategory), &sessionCategory);
 }
 
 void iphone_fade_in_music (int duration)
@@ -56,15 +63,22 @@ void iphone_play_music (const char *file)
 //	song = [[GBMusicTrack alloc] initWithPath:[NSString stringWithCString: file]];
 //	[song setRepeat:YES];
 //	[song play];
+	int timer = SDL_GetTicks();
 	if (song)
 	{
 		[song stop];
 		[song release];
 	}
-	song = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithCString: file]] error:NULL];
+	NSLog(@"Stopping the old song took %i ms", SDL_GetTicks()-timer);
+	timer = SDL_GetTicks();
+	song = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[NSString stringWithUTF8String: file]] error:NULL];
+	NSLog(@"Initializing the new song took %i ms", SDL_GetTicks()-timer);
 	song.delegate = delegate;
 	song.numberOfLoops = -1; // loop indefinitely
+	
+	timer = SDL_GetTicks();
 	[song play];
+	NSLog(@"Playing the new song (%s) took %i ms", file, SDL_GetTicks()-timer);
 }
 
 void iphone_pause_music ()
