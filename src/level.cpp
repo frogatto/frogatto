@@ -904,8 +904,8 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 	                          (x + w)/32 - (x + w < 0 ? 1 : 0),
 							  (y + h)/32 - (y + h < 0 ? 1 : 0));
 
-	std::vector<GLint>& opaque_indexes = blit_info.opaque_indexes;
-	std::vector<GLint>& translucent_indexes = blit_info.translucent_indexes;
+	std::vector<layer_blit_info::IndexType>& opaque_indexes = blit_info.opaque_indexes;
+	std::vector<layer_blit_info::IndexType>& translucent_indexes = blit_info.translucent_indexes;
 
 	if(blit_info.tile_positions != tile_positions || editor_) {
 		blit_info.tile_positions = tile_positions;
