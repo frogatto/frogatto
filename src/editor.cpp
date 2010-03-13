@@ -50,6 +50,8 @@
 #include "wml_utils.hpp"
 #include "wml_writer.hpp"
 
+#include "IMG_savepng.h"
+
 namespace {
 //keep a map of editors so that when we edit a level and then later
 //come back to it we'll save all the state we had previously
@@ -813,6 +815,10 @@ void editor::edit_level()
 
 void editor::handle_key_press(const SDL_KeyboardEvent& key)
 {
+	if(key.keysym.sym == SDLK_s && (key.keysym.mod&KMOD_ALT)) {
+		IMG_SaveFrameBuffer("screenshot.png", 5);
+	}
+
 	if(key.keysym.sym == SDLK_u) {
 		undo_command();
 	}
