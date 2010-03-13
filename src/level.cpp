@@ -917,7 +917,7 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 		int yend = std::min<int>(blit_info.indexes.size(), (y + h - blit_info.ybase)/TileSize + 1);
 
 		for(; ystart < yend; ++ystart) {
-			const std::vector<GLint>& indexes = blit_info.indexes[ystart];
+			const std::vector<layer_blit_info::IndexType>& indexes = blit_info.indexes[ystart];
 			int xstart = std::max<int>(0, (x - blit_info.xbase)/TileSize);
 			int xend = std::min<int>(indexes.size(), (x + w - blit_info.xbase)/TileSize + 1);
 			for(; xstart < xend; ++xstart) {
