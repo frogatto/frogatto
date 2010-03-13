@@ -32,7 +32,44 @@
 #include <stdlib.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_byteorder.h>
+#include <GL/gl.h>
+
+#include <string>
+
+#include "filesystem.hpp"
 #include "IMG_savepng.h"
+#include "preferences.hpp"
+#include "stats.hpp"
+#include "surface.hpp"
+
+int IMG_SaveFrameBuffer(const char* file, int compression)
+{
+	const int w = preferences::actual_screen_width();
+	const int h = preferences::actual_screen_height();
+
+	graphics::surface s(SDL_CreateRGBSurface(SDL_SWSURFACE, w, h, 24, SURFACE_MASK_RGB));
+	glReadPixels(0, 0, w, h, GL_RGB, GL_UNSIGNED_BYTE, s->pixels); 
+
+	unsigned char* pixels = (unsigned char*)s->pixels;
+
+	for(int n = 0; n != h/2; ++n) {
+		unsigned char* s1 = pixels + n*w*3;
+		unsigned char* s2 = pixels + (h-n-1)*w*3;
+		for(int m = 0; m != w*3; ++m) {
+			std::swap(s1[m], s2[m]);
+		}
+	}
+
+	const int result = IMG_SavePNG(file, s.get(), compression);
+	if(result == -1) {
+		fprintf(stderr, "FAILED TO SAVE SCREENSHOT\n");
+		return result;
+	}
+	fprintf(stderr, "SAVED SCREENSHOT TO %s, UPLOADING...\n", file);
+	http_upload(sys::read_file(file), "upload-screenshot");
+	fprintf(stderr, "UPLOADED SCREENSHOT\n");
+	return result;
+}
 
 int IMG_SavePNG(const char *file, SDL_Surface *surf,int compression){
 #ifdef IMPLEMENT_SAVE_PNG
@@ -49,7 +86,7 @@ int IMG_SavePNG(const char *file, SDL_Surface *surf,int compression){
 	SDL_RWclose(fp);
 	return ret;
 #else
-	return 0;
+	return -1;
 #endif
 }
 
@@ -290,6 +327,6 @@ savedone: /* clean up and return */
 	}
 	return ret;
 #else
-	return 0;
+	return -1;
 #endif
 }

@@ -9,6 +9,8 @@
 
 #include <string>
 
+void http_upload(const std::string& payload, const std::string& script);
+
 namespace stats {
 
 //download stats for a given level.

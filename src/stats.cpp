@@ -15,20 +15,12 @@
 #include "wml_utils.hpp"
 #include "wml_writer.hpp"
 
-namespace stats {
-
-namespace {
-std::map<std::string, std::vector<const_record_ptr> > write_queue;
-threading::mutex write_queue_mutex;
-threading::condition send_stats_signal;
-bool send_stats_done = false;
-
-void http_upload(const std::string& payload) {
+void http_upload(const std::string& payload, const std::string& script) {
 	using boost::asio::ip::tcp;
 
 	std::ostringstream s;
 	std::string header =
-	    "POST /cgi-bin/upload-frogatto HTTP/1.1\n"
+	    "POST /cgi-bin/" + script + " HTTP/1.1\n"
 	    "Host: www.wesnoth.org\n"
 	    "User-Agent: Frogatto 0.1\n"
 	    "Content-Type: text/plain\n";
@@ -61,6 +53,14 @@ void http_upload(const std::string& payload) {
 	}
 }
 
+namespace stats {
+
+namespace {
+std::map<std::string, std::vector<const_record_ptr> > write_queue;
+threading::mutex write_queue_mutex;
+threading::condition send_stats_signal;
+bool send_stats_done = false;
+
 void send_stats(const std::map<std::string, std::vector<const_record_ptr> >& queue) {
 	if(queue.empty()) {
 		return;
@@ -90,7 +90,7 @@ void send_stats(const std::map<std::string, std::vector<const_record_ptr> >& que
 	std::string msg_str;
 	wml::write(msg, msg_str);
 	try {
-		http_upload(msg_str);
+		http_upload(msg_str, "upload-frogatto");
 	} catch(...) {
 		fprintf(stderr, "STATS ERROR: ERROR PERFORMING HTTP UPLOAD!\n");
 	}

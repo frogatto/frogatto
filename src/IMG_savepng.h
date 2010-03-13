@@ -30,6 +30,8 @@
 #define IMG_COMPRESS_MAX 9
 #define IMG_COMPRESS_DEFAULT -1
 
+int IMG_SaveFrameBuffer(const char* file, int compression=5);
+
 /**
  * Takes a filename, a surface to save, and a compression level.  The
  * compression level can be 0(min) through 9(max), or -1(default).

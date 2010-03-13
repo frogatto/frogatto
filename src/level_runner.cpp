@@ -28,6 +28,7 @@
 #include "wml_node.hpp"
 #include "wml_writer.hpp"
 #include "wml_utils.hpp"
+#include "IMG_savepng.h"
 
 namespace {
 //The iPhone runs at 40FPS, everywhere else we run at 50FPS
@@ -459,6 +460,8 @@ bool level_runner::play_cycle()
 					wml::node_ptr lvl_node = wml::deep_copy(lvl_->write());
 					wml::write(lvl_node, data);
 					sys::write_file("save.cfg", data);
+				} else if(key == SDLK_s && (mod&KMOD_ALT)) {
+					IMG_SaveFrameBuffer("screenshot.png", 5);
 				} else if(key == SDLK_w && (mod&KMOD_CTRL)) {
 					//warp to another level.
 					std::vector<std::string> levels = get_known_levels();
