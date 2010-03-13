@@ -316,14 +316,26 @@ private:
 
 		int xbase, ybase;
 
+//the iPhone doesn't seem to support ints being used as indexes in glDrawElements
+// -- or at least XCode is saying GL_UNSIGNED_INT is undefined. So use shorts
+//on the iPhone. Since we compile tiles on the iPhone and solid colored tiles
+//are not counted, this is probably fine.
+#if TARGET_OS_IPHONE
+		typedef GLshort IndexType;
+#define TILE_INDEX_TYPE GL_UNSIGNED_SHORT
+#else
+		typedef GLint IndexType;
+#define TILE_INDEX_TYPE GL_UNSIGNED_INT
+#endif
+
 		//a two dimensional array of indexes into vertex_texture_ids,
 		//representing the tiles in a layer.
-		std::vector<std::vector<GLint> > indexes;
+		std::vector<std::vector<IndexType> > indexes;
 
 		//we have two blit queues for a layer. One to draw tiles which have
 		//some alpha (GL_BLEND enabled) and others which are completely opaque
 		//and can be drawn more efficiently without alpha blending.
-		std::vector<GLint> opaque_indexes, translucent_indexes;
+		std::vector<IndexType> opaque_indexes, translucent_indexes;
 
 		rect tile_positions;
 	};

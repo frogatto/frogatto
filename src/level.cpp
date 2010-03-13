@@ -954,10 +954,16 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 		graphics::texture::set_current_texture(blit_info.texture_id);
 	}
 
+#if TARGET_OS_IPHONE
+	const GLenum index_type = GL_UNSIGNED_SHORT;
+#else
+	const GLenum index_type = GL_UNSIGNED_SHORT;
+#endif
+
 	if(!opaque_indexes.empty()) {
 		glVertexPointer(2, GL_SHORT, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
 		glTexCoordPointer(2, GL_FLOAT, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
-		glDrawElements(GL_TRIANGLES, opaque_indexes.size(), GL_UNSIGNED_INT, &opaque_indexes[0]);
+		glDrawElements(GL_TRIANGLES, opaque_indexes.size(), TILE_INDEX_TYPE, &opaque_indexes[0]);
 	}
 	glEnable(GL_BLEND);
 
@@ -970,11 +976,11 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 			//we will draw each tile seperately.
 			for(int n = 0; n < translucent_indexes.size(); n += 6) {
 				graphics::texture::set_current_texture(blit_info.vertex_texture_ids[translucent_indexes[n]/4]);
-				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, &translucent_indexes[n]);
+				glDrawElements(GL_TRIANGLES, 6, TILE_INDEX_TYPE, &translucent_indexes[n]);
 			}
 		} else {
 			//we have just one texture ID and so can draw all tiles in one call.
-			glDrawElements(GL_TRIANGLES, translucent_indexes.size(), GL_UNSIGNED_INT, &translucent_indexes[0]);
+			glDrawElements(GL_TRIANGLES, translucent_indexes.size(), TILE_INDEX_TYPE, &translucent_indexes[0]);
 		}
 	}
 
