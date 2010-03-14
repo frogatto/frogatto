@@ -354,7 +354,10 @@ threading::thread* rebuild_tile_thread = NULL;
 
 //a locked flag which is polled to see if tile rebuilding has been completed.
 bool tile_rebuild_complete = false;
-threading::mutex tile_rebuild_complete_mutex;
+threading::mutex& tile_rebuild_complete_mutex() {
+	static threading::mutex m;
+	return m;
+}
 
 //the tiles where the thread will store the new tiles.
 std::vector<level_tile> task_tiles;
@@ -366,7 +369,7 @@ void build_tiles_thread_function(std::map<int, tile_map> tile_maps) {
 		i->second.build_tiles(&task_tiles);
 	}
 
-	threading::lock l(tile_rebuild_complete_mutex);
+	threading::lock l(tile_rebuild_complete_mutex());
 	tile_rebuild_complete = true;
 }
 
@@ -394,7 +397,7 @@ void level::complete_rebuild_tiles_in_background()
 	}
 
 	{
-		threading::lock l(tile_rebuild_complete_mutex);
+		threading::lock l(tile_rebuild_complete_mutex());
 		if(!tile_rebuild_complete) {
 			return;
 		}

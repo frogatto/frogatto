@@ -25,7 +25,11 @@ namespace {
 
 typedef std::pair<surface, std::string> cache_key;
 typedef concurrent_cache<cache_key, surface> cache_map;
-cache_map cache;
+
+cache_map& cache() {
+	static cache_map instance;
+	return instance;
+}
 
 class rgba_function : public function_expression {
 public:
@@ -149,11 +153,11 @@ surface get_surface_formula(surface input, const std::string& algo)
 	}
 
 	cache_key key(input, algo);
-	surface surf = cache.get(key);
+	surface surf = cache().get(key);
 	if(surf.get() == NULL) {
 		surf = input.clone();
 		run_formula(surf, algo);
-		cache.put(key, surf);
+		cache().put(key, surf);
 	}
 
 	return surf;

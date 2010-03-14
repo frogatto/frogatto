@@ -10,7 +10,11 @@
 namespace {
 typedef std::map<std::string, std::pair<threading::thread*, level*> > level_map;
 level_map levels_loading;
-threading::mutex levels_loading_mutex;
+
+threading::mutex& levels_loading_mutex() {
+	static threading::mutex m;
+	return m; 
+}
 
 class level_loader {
 	std::string lvl_;
@@ -26,7 +30,7 @@ public:
 			std::cerr << "LOAD LEVEL FAILURE: " << lvl << " MUST LOAD IN "
 			             "MAIN THREAD\n";
 		}
-		threading::lock lck(levels_loading_mutex);
+		threading::lock lck(levels_loading_mutex());
 		levels_loading[lvl_].second = lvl;
 	}
 };
@@ -51,7 +55,7 @@ void preload_level(const std::string& lvl)
 	//--TODO: Currently multi-threaded pre-loading causes weird crashes.
 	//--      need to fix this!!
 	assert(!lvl.empty());
-	threading::lock lck(levels_loading_mutex);
+	threading::lock lck(levels_loading_mutex());
 	if(levels_loading.count(lvl) == 0) {
 		levels_loading[lvl].first = new threading::thread(level_loader(lvl));
 	}
@@ -62,7 +66,7 @@ level* load_level(const std::string& lvl)
 	std::cerr << "START LOAD LEVEL\n";
 	level_map::iterator itor;
 	{
-		threading::lock lck(levels_loading_mutex);
+		threading::lock lck(levels_loading_mutex());
 		itor = levels_loading.find(lvl);
 		if(itor == levels_loading.end()) {
 			level* res = new level(lvl);

@@ -31,7 +31,11 @@ int drawable_height() {
 	return graphics::screen_height() - statusbar_height;
 }
 
-std::string scene_title_;
+std::string& scene_title() {
+	static std::string title;
+	return title;
+}
+
 int scene_title_duration_;
 
 screen_position last_position;
@@ -43,7 +47,7 @@ screen_position& last_draw_position()
 }
 
 void set_scene_title(const std::string& msg, int duration) {
-	scene_title_ = msg;
+	scene_title() = msg;
 	scene_title_duration_ = duration;
 }
 
@@ -259,16 +263,16 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 		--scene_title_duration_;
 		const const_graphical_font_ptr f = graphical_font::get("default");
 		ASSERT_LOG(f.get() != NULL, "COULD NOT LOAD DEFAULT FONT");
-		const rect r = f->dimensions(scene_title_);
+		const rect r = f->dimensions(scene_title());
 		const GLfloat alpha = scene_title_duration_ > 10 ? 1.0 : scene_title_duration_/10.0;
 		{
 			glColor4ub(0, 0, 0, 128*alpha);
-			f->draw(graphics::screen_width()/2 - r.w()/2 + 2, graphics::screen_height()/2 - r.h()/2 + 2, scene_title_);
+			f->draw(graphics::screen_width()/2 - r.w()/2 + 2, graphics::screen_height()/2 - r.h()/2 + 2, scene_title());
 			glColor4ub(255, 255, 255, 255*alpha);
 		}
 
 		{
-			f->draw(graphics::screen_width()/2 - r.w()/2, graphics::screen_height()/2 - r.h()/2, scene_title_);
+			f->draw(graphics::screen_width()/2 - r.w()/2, graphics::screen_height()/2 - r.h()/2, scene_title());
 			glColor4ub(255, 255, 255, 255);
 		}
 	}

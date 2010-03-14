@@ -58,9 +58,15 @@ namespace {
 	}
 
 	typedef concurrent_cache<std::string,graphics::texture> texture_map;
-	texture_map texture_cache;
+	texture_map& texture_cache() {
+		static texture_map cache;
+		return cache;
+	}
 	typedef concurrent_cache<std::pair<std::string,std::string>,graphics::texture> algorithm_texture_map;
-	algorithm_texture_map algorithm_texture_cache;
+	algorithm_texture_map& algorithm_texture_cache() {
+		static algorithm_texture_map cache;
+		return cache;
+	}
 
 	const size_t TextureBufSize = 128;
 	GLuint texture_buf[TextureBufSize];
@@ -197,7 +203,7 @@ texture::manager::~manager() {
 void texture::clear_textures()
 {
 	std::cerr << "TEXTURES LOADING...\n";
-	texture_map::lock lck(texture_cache);
+	texture_map::lock lck(texture_cache());
 	for(texture_map::map_type::const_iterator i = lck.map().begin(); i != lck.map().end(); ++i) {
 		if(!i->second.id_) {
 			continue;
@@ -434,12 +440,12 @@ void texture::set_as_current_texture() const
 
 texture texture::get(const std::string& str)
 {
-	texture result = texture_cache.get(str);
+	texture result = texture_cache().get(str);
 	if(!result.valid()) {
 		key surfs;
 		surfs.push_back(surface_cache::get_no_cache(str));
 		result = texture(surfs);
-		texture_cache.put(str, result);
+		texture_cache().put(str, result);
 	}
 
 	return result;
@@ -452,12 +458,12 @@ texture texture::get(const std::string& str, const std::string& algorithm)
 	}
 
 	std::pair<std::string,std::string> k(str, algorithm);
-	texture result = algorithm_texture_cache.get(k);
+	texture result = algorithm_texture_cache().get(k);
 	if(!result.valid()) {
 		key surfs;
 		surfs.push_back(get_surface_formula(surface_cache::get_no_cache(str), algorithm));
 		result = texture(surfs);
-		algorithm_texture_cache.put(k, result);
+		algorithm_texture_cache().put(k, result);
 	}
 
 	return result;
@@ -495,7 +501,7 @@ GLfloat texture::translate_coord_y(GLfloat y) const
 
 void texture::clear_cache()
 {
-	texture_cache.clear();
+	texture_cache().clear();
 }
 
 const unsigned char* texture::color_at(int x, int y) const

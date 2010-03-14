@@ -27,17 +27,21 @@ namespace surface_cache
 
 namespace {
 
-	typedef concurrent_cache<std::string,surface> surface_map;
-	surface_map cache;
-	const std::string path = "./images/";
+typedef concurrent_cache<std::string,surface> surface_map;
+surface_map& cache() {
+	static surface_map c;
+	return c;
+}
+
+const std::string path = "./images/";
 }
 
 surface get(const std::string& key)
 {
-	surface surf = cache.get(key);
+	surface surf = cache().get(key);
 	if(surf.null()) {
 		surf = get_no_cache(key);
-		cache.put(key,surf);
+		cache().put(key,surf);
 	}
 
 	return surf;
@@ -59,7 +63,7 @@ surface get_no_cache(const std::string& key)
 
 void clear_unused()
 {
-	surface_map::lock lck(cache);
+	surface_map::lock lck(cache());
 	std::map<std::string, surface>& map = lck.map();
 	std::map<std::string, surface>::iterator i = map.begin();
 	while(i != map.end()) {
@@ -77,7 +81,7 @@ void clear_unused()
 
 void clear()
 {
-	cache.clear();
+	cache().clear();
 }
 
 }

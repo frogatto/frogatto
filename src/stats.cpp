@@ -57,8 +57,17 @@ namespace stats {
 
 namespace {
 std::map<std::string, std::vector<const_record_ptr> > write_queue;
-threading::mutex write_queue_mutex;
-threading::condition send_stats_signal;
+
+threading::mutex& write_queue_mutex() {
+	static threading::mutex m;
+	return m;
+}
+
+threading::condition& send_stats_signal() {
+	static threading::condition c;
+	return c;
+}
+
 bool send_stats_done = false;
 
 void send_stats(const std::map<std::string, std::vector<const_record_ptr> >& queue) {
@@ -100,9 +109,9 @@ void send_stats_thread() {
 	for(;;) {
 		std::map<std::string, std::vector<const_record_ptr> > queue;
 		{
-			threading::lock lck(write_queue_mutex);
+			threading::lock lck(write_queue_mutex());
 			if(!send_stats_done && write_queue.empty()) {
-				send_stats_signal.wait_timeout(write_queue_mutex, 60000);
+				send_stats_signal().wait_timeout(write_queue_mutex(), 60000);
 			}
 
 			if(send_stats_done && write_queue.empty()) {
@@ -201,9 +210,9 @@ manager::manager() // : background_thread_(send_stats_thread)
 {}
 
 manager::~manager() {
-	threading::lock lck(write_queue_mutex);
+	threading::lock lck(write_queue_mutex());
 	send_stats_done = true;
-	send_stats_signal.notify_one();
+	send_stats_signal().notify_one();
 }
 
 record_ptr record::read(wml::const_node_ptr node) {
@@ -308,13 +317,13 @@ wml::node_ptr load_level_record::write() const
 
 void record_event(const std::string& lvl, const_record_ptr r)
 {
-	threading::lock lck(write_queue_mutex);
+	threading::lock lck(write_queue_mutex());
 	write_queue[lvl].push_back(r);
 }
 
 void flush()
 {
-	send_stats_signal.notify_one();
+	send_stats_signal().notify_one();
 }
 
 }

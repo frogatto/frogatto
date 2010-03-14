@@ -76,7 +76,7 @@ void playable_custom_object::process(level& lvl)
 }
 
 namespace {
-	static const std::string ctrl[] = { "ctrl_up", "ctrl_down", "ctrl_left", "ctrl_right", "ctrl_attack", "ctrl_jump" };
+	static const char* ctrl[] = { "ctrl_up", "ctrl_down", "ctrl_left", "ctrl_right", "ctrl_attack", "ctrl_jump" };
 }
 
 variant playable_custom_object::get_value(const std::string& key) const

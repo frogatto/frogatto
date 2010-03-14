@@ -157,6 +157,7 @@ void iphone_test ()
 
 extern "C" int main(int argc, char** argv)
 {
+	fprintf(stderr, "main\n");
 
 	#ifdef NO_STDERR
 	std::freopen("/dev/null", "w", stderr);

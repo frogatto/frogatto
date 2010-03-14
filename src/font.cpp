@@ -44,7 +44,12 @@ struct cache_entry
 };
 
 const int CacheSize = 4;
-cache_entry cache[CacheSize];
+
+std::vector<cache_entry>& cache() {
+	static std::vector<cache_entry> instance(CacheSize);
+	return instance;
+}
+
 int cache_index = 0;
 
 }
@@ -73,8 +78,8 @@ graphics::texture render_text(const std::string& text,
                               const SDL_Color& color, int size)
 {
 	for(int n = 0; n != CacheSize; ++n) {
-		if(text == cache[n].text && memcmp(&color, &cache[n].color, sizeof(color)) == 0 && size == cache[n].size) {
-			return cache[n].texture;
+		if(text == cache()[n].text && memcmp(&color, &cache()[n].color, sizeof(color)) == 0 && size == cache()[n].size) {
+			return cache()[n].texture;
 		}
 	}
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
@@ -85,10 +90,10 @@ graphics::texture render_text(const std::string& text,
 #endif
 	graphics::texture res = graphics::texture::get_no_cache(s);
 	cache_index = (cache_index+1)%CacheSize;
-	cache[cache_index].text = text;
-	cache[cache_index].color = color;
-	cache[cache_index].size = size;
-	cache[cache_index].texture = res;
+	cache()[cache_index].text = text;
+	cache()[cache_index].color = color;
+	cache()[cache_index].size = size;
+	cache()[cache_index].texture = res;
 	return res;
 }
 

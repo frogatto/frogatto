@@ -55,10 +55,13 @@
 namespace {
 //keep a map of editors so that when we edit a level and then later
 //come back to it we'll save all the state we had previously
-static std::map<std::string, editor*> all_editors;
+std::map<std::string, editor*> all_editors;
 
 //the last level we edited
-std::string g_last_edited_level;
+std::string& g_last_edited_level() {
+	static std::string str;
+	return str;
+}
 
 bool g_draw_stats = false;
 
@@ -156,7 +159,7 @@ class editor_menu_dialog : public gui::dialog
 		std::vector<menu_item> res;
 		for(std::map<std::string, editor*>::const_iterator i = all_editors.begin(); i != all_editors.end(); ++i) {
 			std::string name = i->first;
-			if(name == g_last_edited_level) {
+			if(name == g_last_edited_level()) {
 				name += " *";
 			}
 			menu_item item = { name, "", boost::bind(&editor_menu_dialog::open_level_in_editor, this, i->first) };
@@ -239,7 +242,7 @@ public:
 		if(name.empty() == false) {
 			sys::write_file("data/level/" + name, "[level]\n[/level]\n");
 			editor_.close();
-			g_last_edited_level = name;
+			g_last_edited_level() = name;
 		}
 	}
 
@@ -262,11 +265,11 @@ public:
 	}
 
 	void open_level_in_editor(const std::string& lvl) {
-		if(lvl.empty() == false && lvl != g_last_edited_level) {
+		if(lvl.empty() == false && lvl != g_last_edited_level()) {
 			remove_widget(context_menu_);
 			context_menu_.reset();
 			editor_.close();
-			g_last_edited_level = lvl;
+			g_last_edited_level() = lvl;
 		}
 	}
 };
@@ -539,15 +542,15 @@ void editor::edit(const char* level_cfg, int xpos, int ypos)
 	}
 
 	e->edit_level();
-	if(g_last_edited_level != level_cfg) {
+	if(g_last_edited_level() != level_cfg) {
 		//a new level was set, so start editing it now.
-		edit(g_last_edited_level.c_str());
+		edit(g_last_edited_level().c_str());
 	}
 }
 
 std::string editor::last_edited_level()
 {
-	return g_last_edited_level;
+	return g_last_edited_level();
 }
 
 editor::editor(const char* level_cfg)
@@ -657,7 +660,7 @@ void editor::edit_level()
 		std::cerr << "ERROR LOADING STATS\n";
 	}
 
-	g_last_edited_level = filename_;
+	g_last_edited_level() = filename_;
 
 	tileset_dialog_.reset(new editor_dialogs::tileset_editor_dialog(*this));
 	layers_dialog_.reset(new editor_dialogs::editor_layers_dialog(*this));
@@ -1669,7 +1672,7 @@ void editor::save_level_as(const std::string& fname)
 	all_editors[fname] = this;
 	filename_ = fname;
 	save_level();
-	g_last_edited_level = filename_;
+	g_last_edited_level() = filename_;
 }
 
 void editor::quit()

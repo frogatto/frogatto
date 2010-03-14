@@ -13,7 +13,10 @@ namespace {
 //test equality of regexes.
 std::map<std::string, const boost::regex*> regex_pool;
 
-std::deque<multi_tile_pattern> patterns;
+std::deque<multi_tile_pattern>& patterns() {
+	static std::deque<multi_tile_pattern> instance;
+	return instance;
+}
 
 }
 
@@ -41,12 +44,12 @@ const boost::regex& get_regex_from_pool(const std::string& key)
 
 const std::deque<multi_tile_pattern>& multi_tile_pattern::get_all()
 {
-	return patterns;
+	return patterns();
 }
 
 void multi_tile_pattern::init(wml::const_node_ptr node)
 {
-	patterns.clear();
+	patterns().clear();
 }
 
 void multi_tile_pattern::load(wml::const_node_ptr node)
@@ -55,7 +58,7 @@ void multi_tile_pattern::load(wml::const_node_ptr node)
 	wml::node::const_child_iterator p2 = node->end_child("multi_tile_pattern");
 	for(; p1 != p2; ++p1) {
 		const wml::const_node_ptr& p = p1->second;
-		patterns.push_back(multi_tile_pattern(p));
+		patterns().push_back(multi_tile_pattern(p));
 	}
 }
 

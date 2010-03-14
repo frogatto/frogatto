@@ -1,8 +1,16 @@
 #include "asserts.hpp"
 #include "custom_object_callable.hpp"
 
-namespace {
-const std::string CustomObjectProperties[] = {
+const custom_object_callable& custom_object_callable::instance()
+{
+	static const custom_object_callable obj;
+	return obj;
+}
+
+custom_object_callable::custom_object_callable()
+{
+
+	static const std::string CustomObjectProperties[] = {
 	"consts", "type", "time_in_animation", "time_in_animation_delta", "level", "animation",
 	"hitpoints", "max_hitpoints", "mass", "label", "x", "y", "z", "zorder",
 	"x1", "x2", "y1", "y2", "w", "h", "midpoint_x", "midpoint_y",
@@ -22,17 +30,6 @@ const std::string CustomObjectProperties[] = {
 	"ctrl_up", "ctrl_down", "ctrl_left", "ctrl_right",
 	"ctrl_attack", "ctrl_jump",
 };
-
-}
-
-const custom_object_callable& custom_object_callable::instance()
-{
-	static const custom_object_callable obj;
-	return obj;
-}
-
-custom_object_callable::custom_object_callable()
-{
 	ASSERT_EQ(NUM_CUSTOM_OBJECT_PROPERTIES, sizeof(CustomObjectProperties)/sizeof(*CustomObjectProperties));
 
 	for(int n = 0; n != sizeof(CustomObjectProperties)/sizeof(*CustomObjectProperties); ++n) {

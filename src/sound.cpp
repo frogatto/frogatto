@@ -35,8 +35,16 @@ const size_t BufferSize = 1024;
 
 bool sound_ok = false;
 bool mute_ = false;
-std::string current_music_name;
-std::string next_music;
+std::string& current_music_name() {
+	static std::string name;
+	return name;
+}
+
+std::string& next_music() {
+	static std::string name;
+	return name;
+}
+
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 Mix_Music* current_music = NULL;
 #else
@@ -53,10 +61,10 @@ void on_music_finished()
 #else
 	playing_music = false;
 #endif
-	if(next_music.empty() == false) {
-		play_music(next_music);
+	if(next_music().empty() == false) {
+		play_music(next_music());
 	}
-	next_music.clear();
+	next_music().clear();
 }
 
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
@@ -289,7 +297,7 @@ manager::~manager()
 
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	Mix_HookMusicFinished(NULL);
-	next_music.clear();
+	next_music().clear();
 	Mix_CloseAudio();
 #else
 	iphone_kill_music();
@@ -457,18 +465,18 @@ void play_music(const std::string& file)
 		return;
 	}
 
-	if(file.empty() || file == current_music_name) {
+	if(file.empty() || file == current_music_name()) {
 		return;
 	}
 
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	if(current_music) {
-		next_music = file;
+		next_music() = file;
 		Mix_FadeOutMusic(1000);
 		return;
 	}
 
-	current_music_name = file;
+	current_music_name() = file;
 	current_music = Mix_LoadMUS(("music/" + file).c_str());
 	if(!current_music) {
 		std::cerr << "Mix_LoadMUS ERROR loading " << file << ": " << Mix_GetError() << "\n";
@@ -479,12 +487,12 @@ void play_music(const std::string& file)
 #else
 	if (playing_music)
 	{
-		next_music = file;
+		next_music() = file;
 		iphone_fade_out_music(1000);
 		return;
 	}
 	
-	current_music_name = file;
+	current_music_name() = file;
 	std::string aac_file = file;
 	aac_file.replace(aac_file.length()-3, aac_file.length(), "m4a");
 	iphone_play_music(("music_aac/" + aac_file).c_str());
@@ -499,14 +507,14 @@ void play_music_interrupt(const std::string& file)
 		return;
 	}
 
-	if(next_music.empty() == false) {
-		current_music_name = next_music;
-		next_music.clear();
+	if(next_music().empty() == false) {
+		current_music_name() = next_music();
+		next_music().clear();
 	}
 	
-	next_music = current_music_name;
+	next_music() = current_music_name();
 	
-	current_music_name = file;
+	current_music_name() = file;
 
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 

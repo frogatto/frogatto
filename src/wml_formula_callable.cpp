@@ -17,7 +17,7 @@ struct scope_info {
 	std::set<const_wml_serializable_formula_callable_ptr> objects_to_write, objects_written;
 };
 
-std::stack<scope_info> scopes;
+std::stack<scope_info, std::vector<scope_info> > scopes;
 
 }
 

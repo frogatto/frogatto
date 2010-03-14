@@ -15,19 +15,16 @@
 #include "formatter.hpp"
 #include "level.hpp"
 #include "raster.hpp"
-#include "thread.hpp"
 #include "wml_node.hpp"
 #include "wml_parser.hpp"
 #include "wml_utils.hpp"
 
 namespace {
 std::map<std::string, boost::shared_ptr<background> > cache;
-threading::mutex cache_mutex;
 }
 
 boost::shared_ptr<background> background::get(const std::string& id)
 {
-	threading::lock lck(cache_mutex);
 	boost::shared_ptr<background>& obj = cache[id];
 	if(!obj) {
 		obj.reset(new background(wml::parse_wml_from_file("data/backgrounds/" + id + ".cfg")));
@@ -290,6 +287,9 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 	if(!bg.texture.valid()) {
 		return;
 	}
+
+	ASSERT_GT(bg.texture.height(), 0);
+	ASSERT_GT(bg.texture.width(), 0);
 
 	GLfloat v1 = bg.texture.translate_coord_y(double(bg.y1)/double(bg.texture.height()));
 	GLfloat v2 = bg.texture.translate_coord_y(double(bg.y2)/double(bg.texture.height()));

@@ -19,12 +19,22 @@
 #include "unit_test.hpp"
 
 namespace {
-std::string last_loaded_object;
+std::map<std::string, std::string>& object_file_paths() {
+	static std::map<std::string, std::string> paths;
+	return paths;
+}
 
-std::map<std::string, std::string> object_file_paths, prototype_file_paths;
+std::map<std::string, std::string>& prototype_file_paths() {
+	static std::map<std::string, std::string> paths;
+	return paths;
+}
 
 typedef std::map<std::string, const_custom_object_type_ptr> object_map;
-object_map cache;
+
+object_map& cache() {
+	static object_map instance;
+	return instance;
+}
 
 void merge_into_prototype(wml::node_ptr prototype_node, wml::node_ptr node)
 {
@@ -119,8 +129,8 @@ wml::node_ptr merge_prototype(wml::node_ptr node)
 
 	foreach(const std::string& proto, protos) {
 		//look up the object's prototype and merge it in
-		std::map<std::string, std::string>::const_iterator path_itor = prototype_file_paths.find(proto + ".cfg");
-		ASSERT_LOG(path_itor != prototype_file_paths.end(), "Could not find file for prototype '" << node->attr("prototype") << "'");
+		std::map<std::string, std::string>::const_iterator path_itor = prototype_file_paths().find(proto + ".cfg");
+		ASSERT_LOG(path_itor != prototype_file_paths().end(), "Could not find file for prototype '" << node->attr("prototype") << "'");
 
 		wml::node_ptr prototype_node = wml::parse_wml_from_file(path_itor->second);
 		prototype_node = merge_prototype(prototype_node);
@@ -134,13 +144,13 @@ wml::node_ptr merge_prototype(wml::node_ptr node)
 
 const_custom_object_type_ptr custom_object_type::get(const std::string& id)
 {
-	object_map::const_iterator itor = cache.find(id);
-	if(itor != cache.end()) {
+	object_map::const_iterator itor = cache().find(id);
+	if(itor != cache().end()) {
 		return itor->second;
 	}
 
 	const_custom_object_type_ptr result(create(id));
-	cache[id] = result;
+	cache()[id] = result;
 
 	//load the object's variations here to avoid pausing the game
 	//when an object starts its variation.
@@ -150,15 +160,15 @@ const_custom_object_type_ptr custom_object_type::get(const std::string& id)
 
 custom_object_type_ptr custom_object_type::create(const std::string& id)
 {
-	if(object_file_paths.empty()) {
+	if(object_file_paths().empty()) {
 		//find out the paths to all our files
-		sys::get_unique_filenames_under_dir("data/objects", &object_file_paths);
-		sys::get_unique_filenames_under_dir("data/object_prototypes", &prototype_file_paths);
+		sys::get_unique_filenames_under_dir("data/objects", &object_file_paths());
+		sys::get_unique_filenames_under_dir("data/object_prototypes", &prototype_file_paths());
 	}
 
 	//find the file for the object we are loading.
-	std::map<std::string, std::string>::const_iterator path_itor = object_file_paths.find(id + ".cfg");
-	ASSERT_LOG(path_itor != object_file_paths.end(), "Could not find file for object '" << id << "'");
+	std::map<std::string, std::string>::const_iterator path_itor = object_file_paths().find(id + ".cfg");
+	ASSERT_LOG(path_itor != object_file_paths().end(), "Could not find file for object '" << id << "'");
 
 	try {
 		wml::node_ptr node = wml::parse_wml_from_file(path_itor->second);
