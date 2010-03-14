@@ -39,6 +39,28 @@ void run_utility(const std::string& utility_name, const std::vector<std::string>
 #define CHECK_LT(a, b) CHECK_CMP(a, b, <)
 #define CHECK_GT(a, b) CHECK_CMP(a, b, >)
 
+//on the iPhone we don't do unit tests or benchmarks.
+#if TARGET_OS_IPHONE
+
+#define UNIT_TEST(name) \
+	void TEST_##name()
+
+#define BENCHMARK(name) \
+	void BENCHMARK_##name(int benchmark_iterations)
+
+#define BENCHMARK_LOOP
+
+#define BENCHMARK_ARG(name, arg) \
+	void BENCHMARK_ARG_##name(int benchmark_iterations, arg)
+
+#define BENCHMARK_ARG_CALL(name, id, arg)
+
+#define BENCHMARK_ARG_CALL_COMMAND_LINE(name)
+
+#define UTILITY(name) void UTILITY_##name(const std::vector<std::string>& args)
+
+#else
+
 #define UNIT_TEST(name) \
 	void TEST_##name(); \
 	static int TEST_VAR_##name = test::register_test(#name, TEST_##name); \
@@ -70,5 +92,7 @@ void run_utility(const std::string& utility_name, const std::vector<std::string>
     void UTILITY_##name(const std::vector<std::string>& args); \
 	static int UTILITY_VAR_##name = test::register_utility(#name, UTILITY_##name); \
 	void UTILITY_##name(const std::vector<std::string>& args)
+
+#endif
 
 #endif
