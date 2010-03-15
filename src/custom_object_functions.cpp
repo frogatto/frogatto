@@ -149,6 +149,7 @@ public:
 		if(loops_){
 			sound::play_looped(name_, &ob);
 		}else{
+			std::cerr << "PLAY SOUND COMMAND: " << name_ << "\n";
 			sound::play(name_, &ob);
 		}
 	}
