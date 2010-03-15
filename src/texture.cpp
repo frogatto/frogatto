@@ -532,10 +532,17 @@ void texture::ID::build_id()
 		GLushort* dst = &*buf.begin();
 		for(int n = 0; n != s->w*s->h; ++n) {
 			GLuint p = *src;
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+			*dst = (((p >> 28)&0xF) << 12) |
+			       (((p >> 20)&0xF) << 8) |
+			       (((p >> 12)&0xF) << 4) |
+			       (((p >> 4)&0xF) << 0);
+#else
 			*dst = (((p >> 28)&0xF) << 0) |
 			       (((p >> 20)&0xF) << 4) |
 			       (((p >> 12)&0xF) << 8) |
 			       (((p >> 4)&0xF) << 12);
+#endif
 			++dst;
 			++src;
 		}
