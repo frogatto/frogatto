@@ -1020,8 +1020,8 @@ private:
 
 class speech_dialog_command : public custom_object_command_callable {
 public:
-	explicit speech_dialog_command(const std::vector<variant>& args)
-	  : args_(args)
+	explicit speech_dialog_command(const std::vector<variant>& args, bool paused=false)
+	  : args_(args), paused_(paused)
 	{}
 	virtual void execute(level& lvl, custom_object& ob) const {
 //		pause_scope pauser;
@@ -1073,8 +1073,10 @@ public:
 
 				bool done = false;
 				while(!done) {
-					lvl.process();
-					lvl.process_draw();
+					if(!paused_) {
+						lvl.process();
+						lvl.process_draw();
+					}
 
 					SDL_Event event;
 					while(SDL_PollEvent(&event)) {
@@ -1115,6 +1117,7 @@ private:
 	std::vector<variant> args_;
 
 	mutable speech_dialog dialog_;
+	bool paused_;
 };
 
 class speech_dialog_function : public function_expression {
@@ -1130,6 +1133,22 @@ private:
 		}
 
 		return variant(new speech_dialog_command(v));
+	}
+};
+
+class paused_speech_dialog_function : public function_expression {
+public:
+	explicit paused_speech_dialog_function(const args_list& args)
+	  : function_expression("paused_speech_dialog", args, 1, -1) {
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		std::vector<variant> v;
+		for(int n = 0; n != args().size(); ++n) {
+			v.push_back(args()[n]->evaluate(variables));
+		}
+
+		return variant(new speech_dialog_command(v, true));
 	}
 };
 
@@ -1884,6 +1903,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new set_solid_function(args));
 	} else if(fn == "speech_dialog") {
 		return expression_ptr(new speech_dialog_function(args));
+	} else if(fn == "paused_speech_dialog") {
+		return expression_ptr(new paused_speech_dialog_function(args));
 	} else if(fn == "transient_speech_dialog") {
 		return expression_ptr(new transient_speech_dialog_function(args));
 	} else if(fn == "set_group") {
