@@ -377,6 +377,9 @@ private:
 	//they will be loaded when complete_load_level() is called.
 	std::vector<wml::const_node_ptr> wml_chars_;
 
+	std::vector<wml::node_ptr> wml_compiled_tiles_;
+	int num_compiled_tiles_;
+
 	void load_character(wml::const_node_ptr c);
 
 	typedef std::vector<entity_ptr> entity_group;

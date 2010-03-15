@@ -53,6 +53,7 @@ void level::set_as_current_level()
 
 level::level(const std::string& level_cfg)
 	: id_(level_cfg), highlight_layer_(INT_MIN),
+	  num_compiled_tiles_(0),
 	  entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
 	  editor_(false), show_foreground_(true), show_background_(true), air_resistance_(0), water_resistance_(7), end_game_(false),
       tint_(0), editor_tile_updates_frozen_(0), zoom_level_(1)
@@ -136,15 +137,16 @@ level::level(const std::string& level_cfg)
 
 	std::cerr << "done building tile_map..." << SDL_GetTicks() << "\n";
 
-	const int num_compiled = wml::get_int(node, "num_compiled_tiles");
+	num_compiled_tiles_ = wml::get_int(node, "num_compiled_tiles");
 
-	tiles_.resize(tiles_.size() + num_compiled);
-	std::vector<level_tile>::iterator compiled_itor = tiles_.end() - num_compiled;
+	tiles_.resize(tiles_.size() + num_compiled_tiles_);
+	std::vector<level_tile>::iterator compiled_itor = tiles_.end() - num_compiled_tiles_;
 
 	t1 = node->begin_child("compiled_tiles");
 	t2 = node->end_child("compiled_tiles");
 	for(; t1 != t2; ++t1) {
 		read_compiled_tiles(t1->second, compiled_itor);
+		wml_compiled_tiles_.push_back(t1->second);
 	}
 
 	ASSERT_LOG(compiled_itor == tiles_.end(), "INCORRECT NUMBER OF COMPILED TILES");
@@ -744,18 +746,6 @@ wml::node_ptr level::write() const
 		}
 	} //end if preferences::compiling
 
-/*
-	foreach(const level_tile& tile, tiles_) {
-		wml::node_ptr t(new wml::node("tile"));
-		t->set_attr("x", formatter() << tile.x);
-		t->set_attr("y", formatter() << tile.y);
-		t->set_attr("zorder", formatter() << tile.zorder);
-		t->set_attr("tile", formatter() << tile.object->id());
-		t->set_attr("face_right", tile.face_right ? "true" : "false");
-		res->add_child(t);
-	}
-	*/
-
 	foreach(entity_ptr ch, chars_) {
 		wml::node_ptr node(ch->write());
 		res->add_child(node);
@@ -796,6 +786,13 @@ wml::node_ptr level::write() const
 	}
 
 	res->add_child(serialization_scope.write_objects());
+
+	if(num_compiled_tiles_ > 0) {
+		res->set_attr("num_compiled_tiles", formatter() << num_compiled_tiles_);
+		foreach(wml::node_ptr compiled_node, wml_compiled_tiles_) {
+			res->add_child(compiled_node);
+		}
+	}
 
 	return res;
 }
