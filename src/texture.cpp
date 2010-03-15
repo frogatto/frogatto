@@ -519,6 +519,32 @@ texture::ID::~ID()
 	destroy();
 }
 
+namespace {
+
+inline unsigned int round_8bits_to_4bits(unsigned int n) {
+	n = n&0xFF;
+	const unsigned int pattern = n&0xF0;
+	if(n >= 0x80) {
+		const unsigned int high = pattern | (pattern >> 4);
+		const unsigned int low = (pattern-0x10) | ((pattern-0x10) >> 4);
+		if(abs(n - low) < abs(high - n)) {
+			return low;
+		} else {
+			return high;
+		}
+	} else {
+		const unsigned int low = pattern | (pattern >> 4);
+		const unsigned int high = (pattern+0x10) | ((pattern+0x10) >> 4);
+		if(abs(n - low) < abs(high - n)) {
+			return low;
+		} else {
+			return high;
+		}
+	}
+}
+
+}
+
 void texture::ID::build_id()
 {
 	glBindTexture(GL_TEXTURE_2D,id);
@@ -531,7 +557,11 @@ void texture::ID::build_id()
 		const GLuint* src = reinterpret_cast<const GLuint*>(s->pixels);
 		GLushort* dst = &*buf.begin();
 		for(int n = 0; n != s->w*s->h; ++n) {
-			GLuint p = *src;
+			const GLuint p =
+			  round_8bits_to_4bits(*src >> 24) << 24 |
+			  round_8bits_to_4bits(*src >> 16) << 16 |
+			  round_8bits_to_4bits(*src >> 8) << 8 |
+			  round_8bits_to_4bits(*src >> 0) << 0;
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
 			*dst = (((p >> 28)&0xF) << 12) |
 			       (((p >> 20)&0xF) << 8) |
