@@ -20,6 +20,7 @@ namespace preferences {
 		bool screen_rotated_ = true;
 		
 		const char *save_file_path_ = "../Documents/save.cfg";
+		const char *auto_save_file_path_ = "../Documents/autosave.cfg";
 
 		bool load_compiled_ = true;
 
@@ -34,6 +35,7 @@ namespace preferences {
 		bool screen_rotated_ = false;
 		
 		const char *save_file_path_ = "data/level/save.cfg";
+		const char *auto_save_file_path_ = "data/level/autosave.cfg";
 
 		bool load_compiled_ = false;
 
@@ -58,6 +60,10 @@ namespace preferences {
 	
 	const char *save_file_path() {
 		return save_file_path_;
+	}
+
+	const char *auto_save_file_path() {
+		return auto_save_file_path_;
 	}
 	
 	bool show_debug_hitboxes() {

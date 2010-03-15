@@ -144,6 +144,12 @@ extern "C" int main(int argc, char** argv)
 	std::string utility_program;
 	std::vector<std::string> util_args;
 	std::string server = "wesnoth.org";
+
+	//on the iPhone, try to restore the auto-save if it exists
+	if(sys::file_exists(preferences::auto_save_file_path())) {
+		level_cfg = "autosave.cfg";
+	}
+
 	for(int n = 1; n < argc; ++n) {
 		const std::string arg(argv[n]);
 		std::string arg_name, arg_value;

@@ -408,6 +408,9 @@ bool level_runner::play_cycle()
 		while(SDL_PollEvent(&event)) {
 			switch(event.type) {
 			case SDL_QUIT:
+#ifdef TARGET_OS_IPHONE
+				sys::write_file(preferences::auto_save_file_path(), wml::output(lvl_->write()));
+#endif
 				done = true;
 				quit_ = true;
 				break;

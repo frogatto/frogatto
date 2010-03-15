@@ -63,7 +63,12 @@ level::level(const std::string& level_cfg)
 	turn_reference_counting_off();
 
 	const std::string path = preferences::load_compiled() ? "data/compiled/level/" : "data/level/";
-	const std::string filename = level_cfg == "save.cfg" ? std::string(preferences::save_file_path()) : (path + level_cfg);
+	std::string filename = path + level_cfg;
+	if(level_cfg == "save.cfg") {
+		filename = preferences::save_file_path();
+	} else if(level_cfg == "autosave.cfg") {
+		filename = preferences::auto_save_file_path();
+	}
 
 	wml::const_node_ptr node(wml::parse_wml(preprocess(sys::read_file(filename))));
 	music_ = node->attr("music");
