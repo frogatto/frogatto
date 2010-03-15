@@ -677,6 +677,26 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
 	}
+
+	void draw_circle(int x, int y, int radius)
+	{
+		glDisable(GL_TEXTURE_2D);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		static std::vector<GLfloat> varray;
+		varray.push_back(x);
+		varray.push_back(y);
+		for(double angle = 0; angle < 3.1459*2.0; angle += 0.1) {
+			const double xpos = x + radius*cos(angle);
+			const double ypos = y + radius*sin(angle);
+			varray.push_back(xpos);
+			varray.push_back(ypos);
+		}
+
+		glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+		glDrawArrays(GL_TRIANGLE_FAN, 0, varray.size()/2);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glEnable(GL_TEXTURE_2D);
+	}
 	
 	void coords_to_screen(GLdouble sx, GLdouble sy, GLdouble sz,
 						  GLdouble* dx, GLdouble* dy, GLdouble* dz) {
