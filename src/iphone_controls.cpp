@@ -166,6 +166,12 @@ bool iphone_controls::jump()
 
 #else // dummy functions for non-iPhone
 
+void iphone_controls::draw() {}
+
+void iphone_controls::set_underwater(bool value) {}
+
+bool iphone_controls::water_dir(float* xvalue, float* yvalue) { return false; }
+
 bool iphone_controls::up() {return false;}
 
 bool iphone_controls::down() {return false;}
