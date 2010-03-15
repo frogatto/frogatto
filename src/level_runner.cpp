@@ -31,12 +31,7 @@
 #include "IMG_savepng.h"
 
 namespace {
-//The iPhone runs at 40FPS, everywhere else we run at 50FPS
-#if TARGET_OS_IPHONE
-const int FrameTimeInMillis = 25;
-#else
 const int FrameTimeInMillis = 20;
-#endif
 
 int global_pause_time;
 

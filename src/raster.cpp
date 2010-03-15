@@ -683,6 +683,7 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 		glDisable(GL_TEXTURE_2D);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		static std::vector<GLfloat> varray;
+		varray.clear();
 		varray.push_back(x);
 		varray.push_back(y);
 		for(double angle = 0; angle < 3.1459*2.0; angle += 0.1) {
@@ -691,6 +692,10 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 			varray.push_back(xpos);
 			varray.push_back(ypos);
 		}
+
+		//repeat the first coordinate to complete the circle.
+		varray.push_back(varray[2]);
+		varray.push_back(varray[3]);
 
 		glVertexPointer(2, GL_FLOAT, 0, &varray.front());
 		glDrawArrays(GL_TRIANGLE_FAN, 0, varray.size()/2);

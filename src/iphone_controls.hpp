@@ -12,6 +12,11 @@ public:
 	static bool right();
 	static bool attack();
 	static bool jump();
+	static bool water_dir(float* x, float* y);
+
+	static void set_underwater(bool value);
+
+	static void draw();
 	
 private:
 	static bool hittest_button (const SDL_Rect& rect, int button_x, int button_y);

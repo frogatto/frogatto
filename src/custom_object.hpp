@@ -145,6 +145,10 @@ protected:
 	void set_value(const std::string& key, const variant& value);
 	void set_value_by_slot(int slot, const variant& value);
 
+	bool is_underwater() const {
+		return was_underwater_;
+	}
+
 	const std::pair<int,int>* position_scale_millis() const { return position_scale_millis_.get(); }
 
 private:

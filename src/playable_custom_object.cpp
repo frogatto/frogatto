@@ -1,3 +1,4 @@
+#include "iphone_controls.hpp"
 #include "joystick.hpp"
 #include "level.hpp"
 #include "playable_custom_object.hpp"
@@ -5,18 +6,22 @@
 #include "wml_utils.hpp"
 
 playable_custom_object::playable_custom_object(const custom_object& obj)
-  : custom_object(obj), player_info_(*this), vertical_look_(0)
+  : custom_object(obj), player_info_(*this), vertical_look_(0),
+    underwater_ctrl_x_(0), underwater_ctrl_y_(0)
 {
 }
 
 playable_custom_object::playable_custom_object(const playable_custom_object& obj)
-  : custom_object(obj), player_info_(obj.player_info_), save_condition_(obj.save_condition_), vertical_look_(0)
+  : custom_object(obj), player_info_(obj.player_info_),
+    save_condition_(obj.save_condition_), vertical_look_(0),
+    underwater_ctrl_x_(0), underwater_ctrl_y_(0)
 {
 	player_info_.set_entity(*this);
 }
 
 playable_custom_object::playable_custom_object(wml::const_node_ptr node)
-  : custom_object(node), player_info_(*this), vertical_look_(0)
+  : custom_object(node), player_info_(*this), vertical_look_(0),
+    underwater_ctrl_x_(0), underwater_ctrl_y_(0)
 {
 }
 
@@ -54,7 +59,15 @@ void playable_custom_object::process(level& lvl)
 		player_info_.set_current_level(lvl.id());
 	}
 
-	custom_object::process(lvl);
+	iphone_controls::set_underwater(is_underwater());
+	float underwater_x, underwater_y;
+	if(is_underwater() && iphone_controls::water_dir(&underwater_x, &underwater_y)) {
+		underwater_ctrl_x_ = underwater_x*1000;
+		underwater_ctrl_y_ = underwater_y*1000;
+	} else {
+		underwater_ctrl_x_ = 0;
+		underwater_ctrl_y_ = 0;
+	}
 
 	bool controls[controls::NUM_CONTROLS];
 	for(int n = 0; n != controls::NUM_CONTROLS; ++n) {
@@ -73,6 +86,9 @@ void playable_custom_object::process(level& lvl)
 			}
 		}
 	}
+
+	custom_object::process(lvl);
+
 }
 
 namespace {
@@ -83,6 +99,10 @@ variant playable_custom_object::get_value(const std::string& key) const
 {
 	if(key == "ctrl_tilt") {
 		return variant(-joystick::iphone_tilt());
+	} else if(key == "ctrl_x") {
+		return variant(underwater_ctrl_x_);
+	} else if(key == "ctrl_y") {
+		return variant(underwater_ctrl_y_);
 	}
 
 	for(int n = 0; n < sizeof(ctrl)/sizeof(*ctrl); ++n) {

@@ -65,58 +65,6 @@ bool show_title_screen(std::string& level_cfg)
 {
 	//currently the titlescreen is disabled.
 	return false;
-
-	preload_level(level_cfg);
-
-	const int CyclesUntilPreloadReplay = 15*20;
-	const int CyclesUntilShowReplay = 18*20;
-
-	graphics::texture img(graphics::texture::get("titlescreen.png"));
-
-	for(int cycle = 0; ; ++cycle) {
-		if(cycle == CyclesUntilPreloadReplay) {
-			preload_level("replay.cfg");
-		} else if(cycle == CyclesUntilShowReplay) {
-			level_cfg = "replay.cfg";
-			return false;
-		}
-
-		graphics::prepare_raster();
-		graphics::blit_texture(img, 0, 0, graphics::screen_width(), graphics::screen_height());
-		
-		SDL_GL_SwapBuffers();
-		joystick::update();
-		for(int n = 0; n != 6; ++n) {
-			if(joystick::button(n)) {
-				return false;
-			}
-		}
-		SDL_Event event;
-		while(SDL_PollEvent(&event)) {
-			switch(event.type) {
-			case SDL_QUIT:
-				return true;
-			case SDL_KEYDOWN:
-				if(event.key.keysym.sym == SDLK_ESCAPE) {
-					return true;
-				}
-				
-				//These ifs make the game not start if you're trying to do a command, on Mac
-#if SDL_MAJOR_VERSION == 1 && SDL_MINOR_VERSION == 3
-#define SDLK_LMETA SDLK_LGUI
-#define SDLK_RMETA SDLK_RGUI
-#endif
-				if(event.key.keysym.sym != SDLK_LMETA && !(event.key.keysym.mod & KMOD_LMETA) &&
-					event.key.keysym.sym != SDLK_RMETA && !(event.key.keysym.mod & KMOD_RMETA)){
-					return false;
-				}
-			}
-		}
-
-		SDL_Delay(50);
-	}
-
-	return true;
 }
 
 void iphone_test ()
@@ -157,11 +105,37 @@ void iphone_test ()
 
 extern "C" int main(int argc, char** argv)
 {
-	fprintf(stderr, "main\n");
+	if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_JOYSTICK) < 0) {
+		std::cerr << "could not init SDL\n";
+		return -1;
+	}
 
+
+//	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 1);
+	
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+	SDL_WindowID windowID = SDL_CreateWindow (NULL, 0, 0, preferences::actual_screen_width(), preferences::actual_screen_height(),
+		SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN |
+		SDL_WINDOW_BORDERLESS);
+	if (windowID == 0) { 
+		std::cerr << "Could not create window: " << SDL_GetError() << "\n"; 
+		return -1;
+	}
+	
+	if (SDL_GL_CreateContext(windowID) == 0) {
+		std::cerr << "Could not create GL context: " << SDL_GetError() << "\n";
+		return -1;
+	}
+	
+#else
+	if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_OPENGL|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) == NULL) {
+		std::cerr << "could not set video mode\n";
+		return -1;
+	}
+#endif
 	#ifdef NO_STDERR
-	std::freopen("/dev/null", "w", stderr);
-	std::cerr.sync_with_stdio(true);
+//	std::freopen("/dev/null", "w", stderr);
+//	std::cerr.sync_with_stdio(true);
 	#endif
 	std::string level_cfg = "titlescreen.cfg";
 	bool unit_tests_only = false, skip_tests = false;
@@ -219,37 +193,9 @@ extern "C" int main(int argc, char** argv)
 		}
 	}
 
-	srand(time(NULL));
-
-	if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_JOYSTICK) < 0) {
-		std::cerr << "could not init SDL\n";
-		return -1;
-	}
+//	srand(time(NULL));
 
 	const stats::manager stats_manager;
-
-	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 1);
-	
-#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-	SDL_WindowID windowID = SDL_CreateWindow (NULL, 0, 0, preferences::actual_screen_width(), preferences::actual_screen_height(),
-		SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN |
-		SDL_WINDOW_BORDERLESS);
-	if (windowID == 0) { 
-		std::cerr << "Could not create window: " << SDL_GetError() << "\n"; 
-		return -1;
-	}
-	
-	if (SDL_GL_CreateContext(windowID) == 0) {
-		std::cerr << "Could not create GL context: " << SDL_GetError() << "\n";
-		return -1;
-	}
-	
-#else
-	if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_OPENGL|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) == NULL) {
-		std::cerr << "could not set video mode\n";
-		return -1;
-	}
-#endif
 	
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_BLEND);

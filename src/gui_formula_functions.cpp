@@ -15,6 +15,7 @@
 #include "formula_callable_definition.hpp"
 #include "frame.hpp"
 #include "gui_formula_functions.hpp"
+#include "iphone_controls.hpp"
 #include "level.hpp"
 #include "raster.hpp"
 #include "unit_test.hpp"
@@ -277,6 +278,8 @@ void gui_algorithm::draw(const level& lvl) {
 	}
 
 	glColor4ub(255, 255, 255, 255);
+
+	iphone_controls::draw();
 }
 
 void gui_algorithm::execute_command(variant v) {
