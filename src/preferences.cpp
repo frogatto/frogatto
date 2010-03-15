@@ -22,6 +22,8 @@ namespace preferences {
 		const char *save_file_path_ = "../Documents/save.cfg";
 
 		bool load_compiled_ = true;
+
+		bool use_16bpp_textures_ = true;
 #else
 		int virtual_screen_width_ = 800;
 		int virtual_screen_height_ = 600;
@@ -34,8 +36,9 @@ namespace preferences {
 		const char *save_file_path_ = "data/level/save.cfg";
 
 		bool load_compiled_ = false;
-#endif
 
+		bool use_16bpp_textures_ = false;
+#endif
 		
 		bool force_no_npot_textures_ = false;
 	}
@@ -149,10 +152,18 @@ namespace preferences {
 			set_widescreen();
 		} else if(s == "--potonly") {
 			force_no_npot_textures_ = true;
+		} else if(s == "--textures16") {
+			use_16bpp_textures_ = true;
+		} else if(s == "--textures32") {
+			use_16bpp_textures_ = false;
 		} else {
 			return false;
 		}
 		
 		return true;
+	}
+
+	bool use_16bpp_textures() {
+		return use_16bpp_textures_;
 	}
 }

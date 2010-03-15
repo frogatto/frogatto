@@ -40,6 +40,8 @@ namespace preferences {
 	bool screen_rotated();
 	
 	bool force_no_npot_textures();
+
+	bool use_16bpp_textures();
 }
 
 #endif

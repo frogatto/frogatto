@@ -524,8 +524,28 @@ void texture::ID::build_id()
 	glBindTexture(GL_TEXTURE_2D,id);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, s->w, s->h, 0, GL_RGBA,
-		GL_UNSIGNED_BYTE, s->pixels);
+
+
+	if(preferences::use_16bpp_textures()) {
+		std::vector<GLushort> buf(s->w*s->h);
+		const GLuint* src = reinterpret_cast<const GLuint*>(s->pixels);
+		GLushort* dst = &*buf.begin();
+		for(int n = 0; n != s->w*s->h; ++n) {
+			GLuint p = *src;
+			*dst = (((p >> 28)&0xF) << 0) |
+			       (((p >> 20)&0xF) << 4) |
+			       (((p >> 12)&0xF) << 8) |
+			       (((p >> 4)&0xF) << 12);
+			++dst;
+			++src;
+		}
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, s->w, s->h, 0, GL_RGBA,
+		             GL_UNSIGNED_SHORT_4_4_4_4, &buf[0]);
+	} else {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, s->w, s->h, 0, GL_RGBA,
+			GL_UNSIGNED_BYTE, s->pixels);
+	}
 
 	//free the surface.
 	if(!preferences::compiling_tiles) {
