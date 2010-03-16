@@ -13,8 +13,8 @@ namespace
 	//The w/h of these rects are actually x+w and y+h
 	SDL_Rect up_arrow = {106,2,156,37};
 	SDL_Rect down_arrow = {106,39,156,74};
-	SDL_Rect left_arrow = {106,76,141,126};
-	SDL_Rect right_arrow = {143,76,178,126};
+	SDL_Rect left_arrow = {10,10,74,56};
+	SDL_Rect right_arrow = {126,10,190,56};
 	SDL_Rect a_button = {2,62,52,122};
 	SDL_Rect b_button = {2,2,52,60};
 
