@@ -295,6 +295,8 @@ class editor_mode_dialog : public gui::dialog
 	editor& editor_;
 	gui::widget_ptr context_menu_;
 
+	std::vector<gui::border_widget*> tool_borders_;
+
 	void select_tool(int tool)
 	{
 		if(tool >= 0 && tool < editor::NUM_TOOLS) {
@@ -334,8 +336,10 @@ public:
 
 	void init()
 	{
-		clear();
 		using namespace gui;
+		clear();
+
+		tool_borders_.clear();
 
 		grid_ptr grid(new gui::grid(3));
 		for(int n = 0; n != editor::NUM_TOOLS; ++n) {
@@ -343,11 +347,21 @@ public:
 			  new button(widget_ptr(new gui_section_widget(ToolIcons[n], 26, 26)),
 			             boost::bind(&editor_mode_dialog::select_tool, this, n)));
 			tool_button->set_tooltip(ToolStrings[n]);
-			grid->add_col(widget_ptr(new border_widget(tool_button, n == editor_.tool() ? graphics::color(255,255,255,255) : graphics::color(0,0,0,0))));
+			tool_borders_.push_back(new border_widget(tool_button, graphics::color(0,0,0,0)));
+			grid->add_col(widget_ptr(tool_borders_.back()));
 		}
 
 		grid->finish_row();
 		add_widget(grid, 5, 5);
+
+		refresh_selection();
+	}
+
+	void refresh_selection() {
+		using namespace gui;
+		for(int n = 0; n != tool_borders_.size(); ++n) {
+			tool_borders_[n]->set_color(n == editor_.tool() ? graphics::color(255,255,255,255) : graphics::color(0,0,0,0));
+		}
 	}
 };
 
@@ -679,6 +693,10 @@ void editor::edit_level()
 	done_ = false;
 	int prev_mousex = -1, prev_mousey = -1;
 	while(!done_) {
+		if(editor_mode_dialog_) {
+			editor_mode_dialog_->refresh_selection();
+		}
+
 		process_ghost_objects();
 		handle_scrolling();
 
@@ -753,9 +771,15 @@ void editor::edit_level()
 		}
 
 		if(!object_mode) {
-			//not in object mode, so make sure there are no ghost objects
-			//or objects highlighted.
-			lvl_->set_editor_highlight(entity_ptr());
+			//not in object mode, the picker still highlights objects,
+			//though it won't create ghosts, so remove all ghosts.
+			if(tool() == TOOL_PICKER) {
+				entity_ptr c = lvl_->get_character_at_point(xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
+				lvl_->set_editor_highlight(c);
+			} else {
+				lvl_->set_editor_highlight(entity_ptr());
+			}
+
 			remove_ghost_objects();
 			ghost_objects_.clear();
 		}
@@ -1038,26 +1062,41 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 	dragging_ = drawing_rect_ = false;
 
 	if(tool() == TOOL_PICKER) {
-		std::cerr << "pick tile...\n";
-		//pick the top most tile at this point.
-		std::map<int, std::vector<std::string> > tiles;
-		lvl_->get_all_tiles_rect(anchorx_, anchory_, anchorx_, anchory_, tiles);
-		std::string tile;
-		for(std::map<int, std::vector<std::string> >::reverse_iterator i = tiles.rbegin(); i != tiles.rend(); ++i) {
-			if(i->second.empty() == false) {
-				tile = i->second.back();
-				std::cerr << "picking tile: '" << tile << "'\n";
-				break;
-			}
-		}
+		if(lvl_->editor_highlight()) {
+			change_tool(TOOL_ADD_OBJECT);
 
-		if(!tile.empty()) {
-			for(int n = 0; n != all_tilesets().size(); ++n) {
-				if(all_tilesets()[n].type == tile) {
-					tileset_dialog_->select_category(all_tilesets()[n].category);
-					tileset_dialog_->set_tileset(n);
-					std::cerr << "pick tile " << n << "\n";
+			wml::const_node_ptr node = lvl_->editor_highlight()->write();
+			const std::string type = node->attr("type");
+			for(int n = 0; n != all_characters().size(); ++n) {
+				const enemy_type& c = all_characters()[n];
+				if(c.node->attr("type").str() == type) {
+					character_dialog_->select_category(c.category);
+					character_dialog_->set_character(n);
 					return;
+				}
+			}
+			return;
+		} else {
+			//pick the top most tile at this point.
+			std::map<int, std::vector<std::string> > tiles;
+			lvl_->get_all_tiles_rect(anchorx_, anchory_, anchorx_, anchory_, tiles);
+			std::string tile;
+			for(std::map<int, std::vector<std::string> >::reverse_iterator i = tiles.rbegin(); i != tiles.rend(); ++i) {
+				if(i->second.empty() == false) {
+					tile = i->second.back();
+					std::cerr << "picking tile: '" << tile << "'\n";
+					break;
+				}
+			}
+
+			if(!tile.empty()) {
+				for(int n = 0; n != all_tilesets().size(); ++n) {
+					if(all_tilesets()[n].type == tile) {
+						tileset_dialog_->select_category(all_tilesets()[n].category);
+						tileset_dialog_->set_tileset(n);
+						std::cerr << "pick tile " << n << "\n";
+						return;
+					}
 				}
 			}
 		}
@@ -1101,7 +1140,7 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 			lvl_->editor_select_object(lvl_->editor_highlight());
 			group_property_dialog_->set_group(lvl_->editor_selection());
 
-			if(!lvl_->editor_selection().empty() && tool() != TOOL_SELECT_OBJECT) {
+			if(!lvl_->editor_selection().empty() && tool() == TOOL_ADD_OBJECT) {
 				//we are in add objects mode and we clicked on an object,
 				//so change to select mode.
 				change_tool(TOOL_SELECT_OBJECT);
@@ -1118,18 +1157,6 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 		selected_entity_startx_ = lvl_->editor_highlight()->x();
 		selected_entity_starty_ = lvl_->editor_highlight()->y();
 
-		if(tool() == TOOL_PICKER) {
-			wml::const_node_ptr node = lvl_->editor_highlight()->write();
-			const std::string type = node->attr("type");
-			for(int n = 0; n != all_characters().size(); ++n) {
-				const enemy_type& c = all_characters()[n];
-				if(c.node->attr("type").str() == type) {
-					character_dialog_->select_category(c.category);
-					character_dialog_->set_character(n);
-					return;
-				}
-			}
-		}
 	} else {
 		//clear any selection in the editor
 		lvl_->editor_clear_selection();
@@ -1634,6 +1661,7 @@ editor::EDIT_TOOL editor::tool() const
 	const bool alt_pressed = (SDL_GetModState()&KMOD_ALT) != 0;
 	if(alt_pressed) {
 		switch(tool_) {
+		case TOOL_ADD_OBJECT:
 		case TOOL_ADD_RECT:
 		case TOOL_SELECT_RECT:
 		case TOOL_MAGIC_WAND:
@@ -1651,6 +1679,8 @@ editor::EDIT_TOOL editor::tool() const
 void editor::change_tool(EDIT_TOOL tool)
 {
 	tool_ = tool;
+
+	std::cerr << "CHANGE TOOL: " << (int)tool << "\n";
 
 	switch(tool_) {
 	case TOOL_ADD_RECT:

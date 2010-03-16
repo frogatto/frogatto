@@ -11,6 +11,7 @@ class border_widget : public widget
 {
 public:
 	border_widget(widget_ptr child, graphics::color col, int border_size=2);
+	void set_color(const graphics::color& col);
 private:
 	void handle_draw() const;
 	bool handle_event(const SDL_Event& event, bool claimed);
