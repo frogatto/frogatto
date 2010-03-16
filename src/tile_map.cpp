@@ -642,14 +642,12 @@ int random_hash(int x, int y, int z, int n)
 }
 
 void tile_map::apply_matching_multi_pattern(int& x, int y,
-  const multi_tile_pattern& base_pattern,
+  const multi_tile_pattern& pattern,
   point_map<level_object_ptr>& mapping,
   std::map<point_zorder, level_object_ptr>& different_zorder_mapping) const
 {
-	const int hash = random_hash(x, y, zorder_, 0);
-	const multi_tile_pattern& pattern = base_pattern.choose_random_alternative(hash);
 
-	if(pattern.chance() < 100 && hash%100 > pattern.chance()) {
+	if(pattern.chance() < 100 && random_hash(x, y, zorder_, 0)%100 > pattern.chance()) {
 		return;
 	}
 
@@ -677,9 +675,11 @@ void tile_map::apply_matching_multi_pattern(int& x, int y,
 	}
 
 	if(match) {
-		for(int xpos = 0; xpos < pattern.width() && match; ++xpos) {
-			for(int ypos = 0; ypos < pattern.height() && match; ++ypos) {
-				const multi_tile_pattern::tile_info& info = pattern.tile_at(xpos, ypos);
+		const int hash = random_hash(x, y, zorder_, 0);
+		const multi_tile_pattern& chosen_pattern = pattern.choose_random_alternative(hash);
+		for(int xpos = 0; xpos < chosen_pattern.width() && match; ++xpos) {
+			for(int ypos = 0; ypos < chosen_pattern.height() && match; ++ypos) {
+				const multi_tile_pattern::tile_info& info = chosen_pattern.tile_at(xpos, ypos);
 				foreach(const multi_tile_pattern::tile_entry& entry, info.tiles) {
 					level_object_ptr ob = entry.tile;
 					if(ob) {
@@ -718,7 +718,7 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles, const rect* r) const
 				continue;
 			}
 
-			for(int x = -p->height(); x < width + p->width(); ++x) {
+			for(int x = -p->width(); x < width + p->width(); ++x) {
 				apply_matching_multi_pattern(x, y, *p, multi_pattern_matches, different_zorder_multi_pattern_matches);
 			}
 		}

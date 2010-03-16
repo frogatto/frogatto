@@ -169,8 +169,39 @@ multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr node)
 		}
 	}
 	
+	//try_order_ dictates the order in which patterns will be tried to see
+	//if an MTP matches.
+	//
+	//we want to order try_order_ to allow maximum chance of patterns being
+	//excluded from matching quickly.
 	std::sort(try_order_.begin(), try_order_.end(),
 	          compare_match_cell_by_run_length);
+	if(!try_order_.empty()) {
+		for(int n = 0; n != try_order_.size(); ++n) {
+			const match_cell& cell = try_order_[n];
+			if(tiles_[cell.loc.y*width_ + cell.loc.x].re != &get_regex_from_pool("")) {
+				if(n != 0) {
+					match_cell c = try_order_[n];
+					try_order_.erase(try_order_.begin() + n);
+					try_order_.insert(try_order_.begin(), c);
+				}
+				break;
+			}
+		}
+
+		if(try_order_.size() > 2 && tiles_[try_order_[0].loc.y*width_ + try_order_[0].loc.x].re == tiles_[try_order_[1].loc.y*width_ + try_order_[1].loc.x].re) {
+			const boost::regex* re = tiles_[try_order_[0].loc.y*width_ + try_order_[0].loc.x].re;
+
+			for(int n = 2; n != try_order_.size(); ++n) {
+				const match_cell& cell = try_order_[n];
+				if(tiles_[cell.loc.y*width_ + cell.loc.x].re != re) {
+					match_cell c = try_order_[n];
+					try_order_.erase(try_order_.begin() + n);
+					try_order_.insert(try_order_.begin() + 1, c);
+				}
+			}
+		}
+	}
 }
 
 const multi_tile_pattern::tile_info& multi_tile_pattern::tile_at(int x, int y) const

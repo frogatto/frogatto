@@ -60,7 +60,7 @@ private:
 	struct pattern_index_entry {
 		pattern_index_entry() { for(int n = 0; n != str.size(); ++n) { str[n] = 0; } }
 		tile_string str;
-		std::vector<const boost::regex*> matching_patterns;
+		mutable std::vector<const boost::regex*> matching_patterns;
 	};
 
 	const pattern_index_entry& get_tile_entry(int y, int x) const;
