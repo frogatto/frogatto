@@ -3,6 +3,8 @@
 
 #include <SDL.h>
 
+class rect;
+
 class iphone_controls
 {
 public:
@@ -19,7 +21,7 @@ public:
 	static void draw();
 	
 private:
-	static bool hittest_button (const SDL_Rect& rect, int button_x, int button_y);
+	static bool hittest_button (const rect& r);
 };
 
 #endif

@@ -4,19 +4,19 @@
 
 #include <SDL.h>
 
+#include "geometry.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "texture.hpp"
 
 namespace
 {
-	//The w/h of these rects are actually x+w and y+h
-	SDL_Rect up_arrow = {106,2,156,37};
-	SDL_Rect down_arrow = {106,39,156,74};
-	SDL_Rect left_arrow = {10,10,74,56};
-	SDL_Rect right_arrow = {126,10,190,56};
-	SDL_Rect a_button = {2,62,52,122};
-	SDL_Rect b_button = {2,2,52,60};
+	const rect left_arrow(10, 640 - 84, 55*2, 34*2);
+	const rect right_arrow(184, 640 - 84, 55*2, 34*2);
+	const rect down_arrow(119, 640 - 66, 34*2, 42*2);
+	const rect up_arrow(119, 640 - 147, 34*2, 55*2);
+	const rect a_button(960 - 102, 640 - 120, 50*2, 60*2);
+	const rect b_button(960 - 102, 640 - 240, 50*2, 60*2);
 
 	const int underwater_circle_x = 120;
 	const int underwater_circle_y = 520;
@@ -85,28 +85,21 @@ void iphone_controls::draw()
 	glColor4ub(255, 255, 255, 255);
 }
 
-bool iphone_controls::hittest_button (const SDL_Rect& rect, int button_x, int button_y)
+bool iphone_controls::hittest_button(const rect& area)
 {
 	static graphics::texture tex(graphics::texture::get("gui/iphone_controls.png"));
-	for (int i = 0; i < SDL_GetNumMice(); i++)
-	{
+	for(int i = 0; i < SDL_GetNumMice(); i++) {
 		int x, y;
 		Uint8 button_state = SDL_GetMouseState(i, &x, &y);
-		if (button_state & SDL_BUTTON(SDL_BUTTON_LEFT))
-		{
+		if(button_state & SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			//rotate the coordinates
-			if (preferences::screen_rotated())
-			{
-				int tmp = x;
-				x = y;
-				y = preferences::actual_screen_width()-tmp;
+			if(preferences::screen_rotated()) {
+				x = preferences::actual_screen_width() - x;
+				std::swap(x, y);
 			}
-			int w = 3*(rect.w-rect.x)/2; // rect.w/h are really x+w and y+h
-			int h = 3*(rect.h-rect.y)/2;
-			//if (rect.w == 141) printf("Left rect: %i,%i,%i,%i - Mouse: %i,%i", button_x, button_y, w, h,  x*2, y*2);
-			if (x*2 > button_x && x*2 < button_x+w*2 && y*2 > button_y && y*2 < button_y+h*2)
-			{
-				//if (!tex.is_alpha(rect.x+x-button_x/2, rect.y+y-button_y/2)) return true;
+
+			const point mouse_pos(x*2, y*2);
+			if(point_in_rect(mouse_pos, area)) {
 				return true;
 			}
 		}
@@ -120,7 +113,7 @@ bool iphone_controls::up()
 		return false;
 	}
 
-	return hittest_button(up_arrow, 46, preferences::virtual_screen_height()-305);
+	return hittest_button(up_arrow);
 }
 
 bool iphone_controls::down()
@@ -129,7 +122,7 @@ bool iphone_controls::down()
 		return false;
 	}
 
-	return hittest_button(down_arrow, 46, preferences::virtual_screen_height()-120);
+	return hittest_button(down_arrow);
 }
 
 bool iphone_controls::left()
@@ -138,7 +131,7 @@ bool iphone_controls::left()
 		return false;
 	}
 
-	return hittest_button(left_arrow, 18, preferences::virtual_screen_height()-236);
+	return hittest_button(left_arrow);
 }
 
 bool iphone_controls::right()
@@ -147,12 +140,12 @@ bool iphone_controls::right()
 		return false;
 	}
 
-	return hittest_button(right_arrow, 124, preferences::virtual_screen_height()-236);
+	return hittest_button(right_arrow);
 }
 
 bool iphone_controls::attack()
 {
-	return hittest_button(b_button, preferences::virtual_screen_width()-164, preferences::virtual_screen_height()-358);
+	return hittest_button(b_button);
 }
 
 bool iphone_controls::jump()
@@ -161,7 +154,7 @@ bool iphone_controls::jump()
 		return false;
 	}
 
-	return hittest_button(a_button, preferences::virtual_screen_width()-164, preferences::virtual_screen_height()-184);
+	return hittest_button(a_button);
 }
 
 #else // dummy functions for non-iPhone
