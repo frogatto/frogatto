@@ -359,6 +359,14 @@ bool tile_rebuild_queued = false;
 
 threading::thread* rebuild_tile_thread = NULL;
 
+//an unsynchronized buffer only accessed by the main thread with layers
+//that will be rebuilt.
+std::vector<int> rebuild_tile_layers_buffer;
+
+//buffer accessed by the worker thread which contains layers that will
+//be rebuilt.
+std::vector<int> rebuild_tile_layers_worker_buffer;
+
 //a locked flag which is polled to see if tile rebuilding has been completed.
 bool tile_rebuild_complete = false;
 threading::mutex& tile_rebuild_complete_mutex() {
@@ -371,9 +379,19 @@ std::vector<level_tile> task_tiles;
 
 void build_tiles_thread_function(std::map<int, tile_map> tile_maps) {
 	task_tiles.clear();
-	for(std::map<int, tile_map>::const_iterator i = tile_maps.begin();
-	    i != tile_maps.end(); ++i) {
-		i->second.build_tiles(&task_tiles);
+
+	if(rebuild_tile_layers_worker_buffer.empty()) {
+		for(std::map<int, tile_map>::const_iterator i = tile_maps.begin();
+		    i != tile_maps.end(); ++i) {
+			i->second.build_tiles(&task_tiles);
+		}
+	} else {
+		foreach(int layer, rebuild_tile_layers_worker_buffer) {
+			std::map<int, tile_map>::const_iterator itor = tile_maps.find(layer);
+			if(itor != tile_maps.end()) {
+				itor->second.build_tiles(&task_tiles);
+			}
+		}
 	}
 
 	threading::lock l(tile_rebuild_complete_mutex());
@@ -382,9 +400,20 @@ void build_tiles_thread_function(std::map<int, tile_map> tile_maps) {
 
 }
 
-void level::start_rebuild_tiles_in_background()
+void level::start_rebuild_tiles_in_background(const std::vector<int>& layers)
 {
+	//merge the new layers with any layers we already have queued up.
+	if(layers.empty() == false && (!tile_rebuild_queued || rebuild_tile_layers_buffer.empty() == false)) {
+		//add the layers we want to rebuild to those already requested.
+		rebuild_tile_layers_buffer.insert(rebuild_tile_layers_buffer.end(), layers.begin(), layers.end());
+		std::sort(rebuild_tile_layers_buffer.begin(), rebuild_tile_layers_buffer.end());
+		rebuild_tile_layers_buffer.erase(std::unique(rebuild_tile_layers_buffer.begin(), rebuild_tile_layers_buffer.end()), rebuild_tile_layers_buffer.end());
+	} else if(layers.empty()) {
+		rebuild_tile_layers_buffer.clear();
+	}
+
 	if(tile_rebuild_in_progress) {
+
 		tile_rebuild_queued = true;
 		return;
 	}
@@ -394,7 +423,16 @@ void level::start_rebuild_tiles_in_background()
 	tile_rebuild_in_progress = true;
 	tile_rebuild_complete = false;
 
+	rebuild_tile_layers_worker_buffer = rebuild_tile_layers_buffer;
+	rebuild_tile_layers_buffer.clear();
+
 	rebuild_tile_thread = new threading::thread(boost::bind(build_tiles_thread_function, tile_maps_));
+}
+
+namespace {
+bool level_tile_from_layer(const level_tile& t, int zorder) {
+	return t.zorder == zorder;
+}
 }
 
 void level::complete_rebuild_tiles_in_background()
@@ -410,21 +448,32 @@ void level::complete_rebuild_tiles_in_background()
 		}
 	}
 
-	ASSERT_LOG(rebuild_tile_thread, "REBUILD TILE THREAD IS NULL");
+//	ASSERT_LOG(rebuild_tile_thread, "REBUILD TILE THREAD IS NULL");
 	delete rebuild_tile_thread;
 	rebuild_tile_thread = NULL;
 
 	if(level_building == this) {
-		tiles_.clear();
-		tiles_.swap(task_tiles);
+		if(rebuild_tile_layers_worker_buffer.empty()) {
+			tiles_.clear();
+		} else {
+			foreach(int layer, rebuild_tile_layers_worker_buffer) {
+				tiles_.erase(std::remove_if(tiles_.begin(), tiles_.end(), boost::bind(level_tile_from_layer, _1, layer)), tiles_.end());
+			}
+		}
+
+		tiles_.insert(tiles_.end(), task_tiles.begin(), task_tiles.end());
+		std::sort(tiles_.begin(), tiles_.end(), level_tile_zorder_pos_comparer());
+		task_tiles.clear();
 
 		complete_tiles_refresh();
 	}
 
+	rebuild_tile_layers_worker_buffer.clear();
+
 	tile_rebuild_in_progress = false;
 	if(tile_rebuild_queued) {
 		tile_rebuild_queued = false;
-		start_rebuild_tiles_in_background();
+		start_rebuild_tiles_in_background(rebuild_tile_layers_buffer);
 	}
 }
 

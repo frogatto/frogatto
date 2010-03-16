@@ -221,6 +221,8 @@ void tile_map::load(const std::string& fname)
 		return;
 	}
 
+	files_loaded.insert(fname);
+
 	wml::const_node_ptr node = wml::parse_wml_from_file("data/tiles/" + fname);
 
 	wml::node::const_child_iterator p1 = node->begin_child("tile_pattern");
@@ -230,7 +232,9 @@ void tile_map::load(const std::string& fname)
 		patterns.push_back(tile_pattern(p));
 	}
 
+	const int start = multi_tile_pattern::get_all().size();
 	multi_tile_pattern::load(node);
+	std::cerr << "TILE_MAP_LOAD: " << fname << " -> " << (multi_tile_pattern::get_all().size() - start) << ": " << multi_tile_pattern::get_all().size() << "\n";
 
 	++current_patterns_version;
 }
@@ -637,7 +641,7 @@ int random_hash(int x, int y, int z, int n)
 
 }
 
-void tile_map::apply_matching_multi_pattern(int x, int y,
+void tile_map::apply_matching_multi_pattern(int& x, int y,
   const multi_tile_pattern& base_pattern,
   point_map<level_object_ptr>& mapping,
   std::map<point_zorder, level_object_ptr>& different_zorder_mapping) const
@@ -650,20 +654,25 @@ void tile_map::apply_matching_multi_pattern(int x, int y,
 	}
 
 	bool match = true;
-	for(int xpos = 0; xpos < pattern.width() && match; ++xpos) {
-		for(int ypos = 0; ypos < pattern.height() && match; ++ypos) {
-			if(pattern.tile_at(xpos, ypos).tiles.empty() == false && mapping.get(point(x + xpos, y + ypos))) {
-				//there is already another pattern filling this tile.
-				match = false;
-				break;
-			}
+	for(int n = 0; n != pattern.try_order().size() && match; ++n) {
+		const int xpos = pattern.try_order()[n].loc.x;
+		const int ypos = pattern.try_order()[n].loc.y;
 
-			const pattern_index_entry& entry = get_tile_entry(y + ypos, x + xpos);
-			if(std::find(entry.matching_patterns.begin(), entry.matching_patterns.end(), pattern.tile_at(xpos, ypos).re) == entry.matching_patterns.end()) {
-				//the regex doesn't match
-				match = false;
-				break;
-			}
+		const pattern_index_entry& entry = get_tile_entry(y + ypos, x + xpos);
+		if(std::find(entry.matching_patterns.begin(), entry.matching_patterns.end(), pattern.tile_at(xpos, ypos).re) == entry.matching_patterns.end()) {
+			//the regex doesn't match
+			match = false;
+
+			//because this didn't match, we can skip over all patterns that
+			//have the same pattern repeating.
+			x += pattern.try_order()[n].run_length;
+			break;
+		}
+
+		if(pattern.tile_at(xpos, ypos).tiles.empty() == false && mapping.get(point(x + xpos, y + ypos))) {
+			//there is already another pattern filling this tile.
+			match = false;
+			break;
 		}
 	}
 
@@ -700,6 +709,7 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles, const rect* r) const
 	point_map<level_object_ptr> multi_pattern_matches;
 	std::map<point_zorder, level_object_ptr> different_zorder_multi_pattern_matches;
 
+	std::cerr << "MULTIPATTERNS: " << multi_patterns_.size() << "/" << multi_tile_pattern::get_all().size() << "\n";
 	foreach(const multi_tile_pattern* p, multi_patterns_) {
 		for(int y = -p->height(); y < static_cast<int>(map_.size()) + p->height(); ++y) {
 			const int ypos = ypos_ + y*TileSize;
@@ -726,6 +736,7 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles, const rect* r) const
 		level_tile t;
 		t.x = xpos;
 		t.y = ypos;
+		t.layer_from = zorder_;
 		t.zorder = i->first.second;
 		t.object = i->second;
 		t.face_right = false;
@@ -751,6 +762,7 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles, const rect* r) const
 				level_tile t;
 				t.x = xpos;
 				t.y = ypos;
+				t.layer_from = zorder_;
 				t.zorder = zorder_;
 				t.object = obj;
 				t.face_right = false;
@@ -774,6 +786,7 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles, const rect* r) const
 			level_tile t;
 			t.x = xpos;
 			t.y = ypos;
+			t.layer_from = zorder_;
 			t.zorder = zorder_;
 
 			int variation_num = variation(x, y);
@@ -793,6 +806,7 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles, const rect* r) const
 				level_tile t;
 				t.x = xpos;
 				t.y = ypos;
+				t.layer_from = zorder_;
 				t.zorder = zorder_;
 				if(a.zorder) {
 					t.zorder = a.zorder;

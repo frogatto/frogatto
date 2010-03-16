@@ -892,8 +892,8 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 		if(!tile_selection_.tiles.empty()) {
 			undo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), min_x, min_y, max_x, max_y));
 			redo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), min_x, min_y, max_x, max_y));
-			undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get()));
-			redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get()));
+			undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), std::vector<int>()));
+			redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), std::vector<int>()));
 		}
 
 		execute_command(
@@ -1272,8 +1272,8 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 			if(!tile_selection_.tiles.empty()) {
 				undo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), min_x, min_y, max_x, max_y));
 				redo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), min_x, min_y, max_x, max_y));
-				undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get()));
-				redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get()));
+				undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), std::vector<int>()));
+				redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), std::vector<int>()));
 			}
 
 			tile_selection new_selection = tile_selection_;
@@ -1417,8 +1417,11 @@ void editor::add_tile_rect(int zorder, const std::string& tile_id, int x1, int y
 
 	redo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), x1, y1, x2, y2));
 	undo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), x1, y1, x2, y2));
-	undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get()));
-	redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get()));
+
+	std::vector<int> layers;
+	layers.push_back(zorder);
+	undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), layers));
+	redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), layers));
 
 	execute_command(
 	  boost::bind(execute_functions, redo),
@@ -1462,8 +1465,8 @@ void editor::remove_tile_rect(int x1, int y1, int x2, int y2)
 	redo.push_back(boost::bind(&level::clear_tile_rect, lvl_.get(), x1, y1, x2, y2));
 	redo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), x1, y1, x2, y2));
 	undo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), x1, y1, x2, y2));
-	undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get()));
-	redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get()));
+	undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), std::vector<int>()));
+	redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), std::vector<int>()));
 
 	execute_command(
 	  boost::bind(execute_functions, redo),

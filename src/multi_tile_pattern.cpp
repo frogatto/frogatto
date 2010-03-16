@@ -62,6 +62,13 @@ void multi_tile_pattern::load(wml::const_node_ptr node)
 	}
 }
 
+namespace {
+bool compare_match_cell_by_run_length(const multi_tile_pattern::match_cell& a,
+                                      const multi_tile_pattern::match_cell& b) {
+	return a.run_length > b.run_length;
+}
+}
+
 multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr node)
   : id_(node->attr("id")), width_(-1), height_(-1), chance_(wml::get_int(node, "chance", 100))
 {
@@ -143,15 +150,37 @@ multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr node)
 	}
 
 	ASSERT_EQ(tiles_.size(), width_*height_);
+
+	for(int y = 0; y != height_; ++y) {
+		int run_length = 0;
+		for(int x = 0; x != width_; ++x) {
+			if(x != 0) {
+				if(tiles_[y*width_ + x].re == tiles_[y*width_ + x-1].re) {
+					++run_length;
+				} else {
+					run_length = 0;
+				}
+			}
+
+			match_cell cell;
+			cell.loc = point(x, y);
+			cell.run_length = run_length;
+			try_order_.push_back(cell);
+		}
+	}
+	
+	std::sort(try_order_.begin(), try_order_.end(),
+	          compare_match_cell_by_run_length);
 }
 
 const multi_tile_pattern::tile_info& multi_tile_pattern::tile_at(int x, int y) const
 {
-	ASSERT_GE(x, 0);
-	ASSERT_GE(y, 0);
-	ASSERT_LT(x, width_);
-	ASSERT_LT(y, height_);
-	ASSERT_EQ(tiles_.size(), width_*height_);
+	//asserts commented out for performance
+//	ASSERT_GE(x, 0);
+//	ASSERT_GE(y, 0);
+//	ASSERT_LT(x, width_);
+//	ASSERT_LT(y, height_);
+//	ASSERT_EQ(tiles_.size(), width_*height_);
 
 	return tiles_[y*width_ + x];
 }

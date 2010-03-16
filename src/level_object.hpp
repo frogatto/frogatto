@@ -17,6 +17,7 @@ typedef boost::shared_ptr<const level_object> const_level_object_ptr;
 struct level_tile {
 	bool is_solid(int x, int y) const;
 	int x, y;
+	int layer_from; //which zorder layer causes this tile to be built?
 	int zorder;
 	const_level_object_ptr object;
 	bool face_right;

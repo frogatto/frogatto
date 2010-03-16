@@ -77,7 +77,7 @@ private:
 	//mapping represents all the tiles added in our zorder.
 	//different_zorder_mapping represents the mappings in different zorders
 	//to this tile_map.
-	void apply_matching_multi_pattern(int x, int y,
+	void apply_matching_multi_pattern(int& x, int y,
 	  const multi_tile_pattern& pattern,
 	  point_map<level_object_ptr>& mapping,
 	  std::map<point_zorder, level_object_ptr>& different_zorder_mapping) const;
