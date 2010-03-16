@@ -677,6 +677,7 @@ void editor::edit_level()
 	change_tool(tool_);
 
 	done_ = false;
+	int prev_mousex = -1, prev_mousey = -1;
 	while(!done_) {
 		process_ghost_objects();
 		handle_scrolling();
@@ -687,6 +688,17 @@ void editor::edit_level()
 		if(buttons == 0) {
 			drawing_rect_ = false;
 		}
+
+		//make middle-clicking drag the screen around.
+		if(prev_mousex != -1 && prev_mousey != -1 && (buttons&SDL_BUTTON_MIDDLE)) {
+			const int diff_x = mousex - prev_mousex;
+			const int diff_y = mousey - prev_mousey;
+			xpos_ -= diff_x*zoom_;
+			ypos_ -= diff_y*zoom_;
+		}
+
+		prev_mousex = mousex;
+		prev_mousey = mousey;
 
 		const int selectx = round_tile_size(xpos_ + mousex*zoom_);
 		const int selecty = round_tile_size(ypos_ + mousey*zoom_);
@@ -1010,6 +1022,9 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 
 	anchorx_ = xpos_ + mousex*zoom_;
 	anchory_ = ypos_ + mousey*zoom_;
+	if(event.button == SDL_BUTTON_MIDDLE) {
+		return;
+	}
 
 	resizing_left_level_edge = rect_left_edge_selected(lvl_->boundaries(), anchorx_, anchory_, zoom_);
 	resizing_right_level_edge = rect_right_edge_selected(lvl_->boundaries(), anchorx_, anchory_, zoom_);
