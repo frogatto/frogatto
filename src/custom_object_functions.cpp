@@ -23,6 +23,7 @@
 #include "message_dialog.hpp"
 #include "options_dialog.hpp"
 #include "playable_custom_object.hpp"
+#include "preferences.hpp"
 #include "random.hpp"
 #include "raster_distortion.hpp"
 #include "sound.hpp"
@@ -1191,6 +1192,10 @@ public:
 	}
 private:
 	variant execute(const formula_callable& variables) const {
+		if(!preferences::debug()) {
+			return variant();
+		}
+
 		std::string str;
 		for(int n = 0; n != args().size(); ++n) {
 			str += args()[n]->evaluate(variables).to_debug_string();

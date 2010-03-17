@@ -1457,9 +1457,6 @@ void editor::add_tile_rect(int zorder, const std::string& tile_id, int x1, int y
 	redo.push_back(boost::bind(&level::add_tile_rect, lvl_.get(), zorder, x1, y1, x2, y2, tile_id));
 	undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), zorder, x1, y1, x2, y2, old_rect));
 
-	redo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), x1, y1, x2, y2));
-	undo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), x1, y1, x2, y2));
-
 	std::vector<int> layers;
 	layers.push_back(zorder);
 	undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), layers));

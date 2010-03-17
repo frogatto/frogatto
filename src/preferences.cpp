@@ -9,6 +9,7 @@ namespace preferences {
 		bool show_debug_hitboxes_ = false;
 		bool use_pretty_scaling_ = false;
 		bool fullscreen_ = false;
+		bool debug_ = true;
 		
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 		int virtual_screen_width_ = 960;
@@ -143,6 +144,11 @@ namespace preferences {
 	{
 		return screen_rotated_;
 	}
+
+	bool debug()
+	{
+		return debug_;
+	}
 	
 	bool parse_arg(const char* arg) {
 		std::string s(arg);
@@ -162,6 +168,10 @@ namespace preferences {
 			use_16bpp_textures_ = true;
 		} else if(s == "--textures32") {
 			use_16bpp_textures_ = false;
+		} else if(s == "--debug") {
+			debug_ = true;
+		} else if(s == "--nodebug") {
+			debug_ = false;
 		} else {
 			return false;
 		}

@@ -21,6 +21,9 @@ namespace preferences {
 	int actual_screen_width();
 	int actual_screen_height();
 
+	//whether we are debugging
+	bool debug();
+
 	//load compiled data from data/compiled/
 	bool load_compiled();
 

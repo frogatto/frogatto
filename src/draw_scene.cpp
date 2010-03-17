@@ -310,6 +310,10 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 
 void draw_fps(const level& lvl, const performance_data& data)
 {
+	if(!preferences::debug()) {
+		return;
+	}
+
 	const_graphical_font_ptr font(graphical_font::get("door_label"));
 	if(!font) {
 		return;
