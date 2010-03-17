@@ -112,27 +112,7 @@ extern "C" int main(int argc, char** argv)
 
 
 //	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 1);
-	
-#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-	SDL_WindowID windowID = SDL_CreateWindow (NULL, 0, 0, preferences::actual_screen_width(), preferences::actual_screen_height(),
-		SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN |
-		SDL_WINDOW_BORDERLESS);
-	if (windowID == 0) { 
-		std::cerr << "Could not create window: " << SDL_GetError() << "\n"; 
-		return -1;
-	}
-	
-	if (SDL_GL_CreateContext(windowID) == 0) {
-		std::cerr << "Could not create GL context: " << SDL_GetError() << "\n";
-		return -1;
-	}
-	
-#else
-	if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_OPENGL|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) == NULL) {
-		std::cerr << "could not set video mode\n";
-		return -1;
-	}
-#endif
+
 	#ifdef NO_STDERR
 //	std::freopen("/dev/null", "w", stderr);
 //	std::cerr.sync_with_stdio(true);
@@ -198,6 +178,27 @@ extern "C" int main(int argc, char** argv)
 			}
 		}
 	}
+	
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+	SDL_WindowID windowID = SDL_CreateWindow (NULL, 0, 0, preferences::actual_screen_width(), preferences::actual_screen_height(),
+		SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN |
+		SDL_WINDOW_BORDERLESS);
+	if (windowID == 0) { 
+		std::cerr << "Could not create window: " << SDL_GetError() << "\n"; 
+		return -1;
+	}
+	
+	if (SDL_GL_CreateContext(windowID) == 0) {
+		std::cerr << "Could not create GL context: " << SDL_GetError() << "\n";
+		return -1;
+	}
+	
+#else
+	if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_OPENGL|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) == NULL) {
+		std::cerr << "could not set video mode\n";
+		return -1;
+	}
+#endif
 
 //	srand(time(NULL));
 
