@@ -18,7 +18,7 @@ void queue_blit_digit(graphics::blit_queue& q, const graphics::texture& t, char 
 	const int y = ypos + yadd;
 
 	const int x2 = x + NumberWidth;
-	const int y2 = y + 14 + ysub;
+	const int y2 = y + 14 + ysub - yadd;
 
 	const GLfloat u1 = t.translate_coord_x((234.0 + offset)/400.0);
 	const GLfloat v1 = t.translate_coord_y((63.0 - ysub/2.0)/104.0);
