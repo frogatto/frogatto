@@ -85,6 +85,60 @@ private:
 
 };
 
+class draw_animation_area_command : public gui_command {
+	frame_ptr frame_;
+	int x_, y_;
+	rect area_;
+
+	variant get_value(const std::string& key) const { return variant(); }
+public:
+	draw_animation_area_command(const frame_ptr& f, int x, int y, const rect& area)
+	  : frame_(f), x_(x), y_(y), area_(area)
+	{}
+
+	void execute(const gui_algorithm& algo) {
+		frame_->draw(x_, y_, area_);
+	}
+};
+
+class draw_animation_area_function : public function_expression {
+public:
+	draw_animation_area_function(gui_algorithm_ptr algo, const args_list& args)
+	  : function_expression("draw_animation_area", args, 4, 7), algo_(algo)
+	{}
+
+	gui_algorithm_ptr algo_;
+private:
+	variant execute(const formula_callable& variables) const {
+		variant anim = args()[0]->evaluate(variables);
+		const frame_ptr f = algo_->get_frame(anim.as_string());
+		if(!f) {
+			return variant();
+		}
+
+		const int x = args()[1]->evaluate(variables).as_int();
+		const int y = args()[2]->evaluate(variables).as_int();
+
+		int vals[4];
+		for(int n = 0; n != args().size() - 3; ++n) {
+			vals[n] = args()[n+3]->evaluate(variables).as_int();
+		}
+
+		rect area;
+		if(args().size() == 4) {
+			area = rect(0, 0, vals[0], f->height()/2);
+		} else if(args().size() == 5) {
+			area = rect(0, 0, vals[0], vals[1]);
+			                  
+		} else {
+			ASSERT_EQ(args().size(), 7);
+			area = rect(vals[0], vals[1], vals[2], vals[3]);
+		}
+
+		return variant(new draw_animation_area_command(f, x, y, area));
+	}
+};
+
 class draw_animation_command : public gui_command {
 	graphics::blit_queue blit_;
 	variant get_value(const std::string& key) const { return variant(); }
@@ -102,14 +156,13 @@ public:
 class draw_animation_function : public function_expression {
 public:
 	draw_animation_function(gui_algorithm_ptr algo, const args_list& args)
-	  : function_expression("draw_animation", args, 3, 5), algo_(algo)
+	  : function_expression("draw_animation", args, 3, 3), algo_(algo)
 	{}
 
 	gui_algorithm_ptr algo_;
 private:
 	variant execute(const formula_callable& variables) const {
 		variant anim = args()[0]->evaluate(variables);
-		std::cerr << "DRAW ANIMATION: " << anim.as_string() << "\n";
 		const frame_ptr f = algo_->get_frame(anim.as_string());
 		if(!f) {
 			return variant();
@@ -162,6 +215,8 @@ public:
 	{
 		if(fn == "draw_animation") {
 			return expression_ptr(new draw_animation_function(algo_, args));
+		} else if(fn == "draw_animation_area") {
+			return expression_ptr(new draw_animation_area_function(algo_, args));
 		} else if(fn == "draw_number") {
 			return expression_ptr(new draw_number_function(args));
 		} else if(fn == "color") {
