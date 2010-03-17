@@ -1041,12 +1041,13 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 {
 	const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
 	const bool shift_pressed = (SDL_GetModState()&(KMOD_LSHIFT|KMOD_RSHIFT)) != 0;
+	const bool alt_pressed = (SDL_GetModState()&KMOD_ALT) != 0;
 	int mousex, mousey;
 	const unsigned int buttons = get_mouse_state(mousex, mousey);
 
 	anchorx_ = xpos_ + mousex*zoom_;
 	anchory_ = ypos_ + mousey*zoom_;
-	if(event.button == SDL_BUTTON_MIDDLE) {
+	if(event.button == SDL_BUTTON_MIDDLE && !alt_pressed) {
 		return;
 	}
 
@@ -1095,6 +1096,10 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 						tileset_dialog_->select_category(all_tilesets()[n].category);
 						tileset_dialog_->set_tileset(n);
 						std::cerr << "pick tile " << n << "\n";
+						//if we're in adding objects mode then switch to adding tiles mode.
+						if(tool_ == TOOL_ADD_OBJECT) {
+							change_tool(TOOL_ADD_RECT);
+						}
 						return;
 					}
 				}
