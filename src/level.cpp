@@ -431,7 +431,7 @@ void level::start_rebuild_tiles_in_background(const std::vector<int>& layers)
 
 namespace {
 bool level_tile_from_layer(const level_tile& t, int zorder) {
-	return t.zorder == zorder;
+	return t.layer_from == zorder;
 }
 }
 
