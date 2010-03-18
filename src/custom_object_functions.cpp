@@ -382,7 +382,6 @@ public:
 	{}
 	virtual void execute(level& lvl, entity& ob) const {
 		custom_object* obj = new custom_object(type_, x_, y_, face_right_);
-		
 		if(player_) {
 			//make a playable version of this object
 			custom_object* player = new playable_custom_object(*obj);
@@ -397,6 +396,35 @@ public:
 		//spawn with the spawned object's midpoint (rather than its upper-left corner) at x_, y_.
 		//This means objects are centered on the point they're spawned on, which is a lot more intuitive for scripting.
 		e->set_pos(e->x() - e->current_frame().width() / 2 , e->y() - e->current_frame().height() / 2);
+
+		if(!place_entity_in_level(lvl, *obj)) {
+			//the object can't immediately/easily be placed in the level
+			//due to a solid collision. Try to incrementally push it in
+			//different directions and try to place it until we find
+			//a direciton that works.
+			const int xpos = obj->x();
+			const int ypos = obj->y();
+
+			bool found = false;
+			for(int distance = 4; distance < 256 && !found; distance *= 2) {
+				const point points[] = { point(xpos-distance, ypos),
+				                         point(xpos+distance, ypos),
+				                         point(xpos, ypos-distance),
+				                         point(xpos, ypos+distance), };
+				foreach(const point& p, points) {
+					obj->set_pos(p);
+					if(place_entity_in_level(lvl, *obj)) {
+						found = true;
+						break;
+					}
+				}
+			}
+
+			if(!found) {
+				delete obj;
+				return;
+			}
+		}
 
 		e->execute_command(instantiation_commands_);
 

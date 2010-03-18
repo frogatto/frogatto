@@ -77,7 +77,6 @@ public:
 	int traction() const { return traction_; }
 	int damage() const { return damage_; }
 	const graphics::texture& texture() const { return t_; }
-	static void draw(const level_tile& t);
 	static void queue_draw(graphics::blit_queue& q, const level_tile& t);
 	static int calculate_tile_corners(tile_corner* result, const level_tile& t);
 

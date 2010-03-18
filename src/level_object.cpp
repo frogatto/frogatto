@@ -443,14 +443,6 @@ int hash_level_object(int x, int y) {
 }
 }
 
-void level_object::draw(const level_tile& t)
-{
-	const int random_index = hash_level_object(t.x,t.y);
-	const int tile = t.object->tiles_[random_index%t.object->tiles_.size()];
-
-	draw_from_tilesheet(t.object->t_, tile, t.x, t.y, t.face_right, 0);
-}
-
 void level_object::queue_draw(graphics::blit_queue& q, const level_tile& t)
 {
 	const int random_index = hash_level_object(t.x,t.y);
