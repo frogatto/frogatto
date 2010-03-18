@@ -1,5 +1,6 @@
 #include <boost/bind.hpp>
 #include <iostream>
+#include <time.h>
 
 #include "asserts.hpp"
 #include "blur.hpp"
@@ -49,6 +50,20 @@ class save_game_command : public entity_command_callable
 			sys::write_file(preferences::save_file_path(), wml::output(lvl.write()));
 		}
 	};
+
+class time_function : public function_expression {
+public:
+	explicit time_function(const args_list& args)
+	: function_expression("time",args,0)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		int a = rng::generate(); //this is to make the engine optimisation leave this function alone. please do not delete
+		time_t t1;
+		time(&t1);
+		return variant(t1);
+	}
+};
 
 class save_game_function : public function_expression {
 public:
@@ -1851,7 +1866,9 @@ expression_ptr custom_object_function_symbol_table::create_function(
 	} else if(fn == "spawn") {
 		return expression_ptr(new spawn_function(args, false));
 	} else if(fn == "spawn_player") {
-		return expression_ptr(new spawn_function(args, true));
+		return expression_ptr(new spawn_function(args, false));
+	} else if(fn == "time") {
+		return expression_ptr(new time_function(args));
 	} else if(fn == "object") {
 		return expression_ptr(new object_function(args));
 	} else if(fn == "board_vehicle") {
