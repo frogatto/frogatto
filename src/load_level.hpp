@@ -4,12 +4,18 @@
 #include <string>
 #include <vector>
 
+#include "wml_node_fwd.hpp"
+
 class level;
 
 struct load_level_manager {
 	load_level_manager();
 	~load_level_manager();
 };
+
+void preload_level_wml(const std::string& lvl);
+wml::const_node_ptr load_level_wml(const std::string& lvl);
+wml::const_node_ptr load_level_wml_nowait(const std::string& lvl);
 
 void preload_level(const std::string& lvl);
 level* load_level(const std::string& lvl);

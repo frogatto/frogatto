@@ -24,6 +24,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "asserts.hpp"
+#include "concurrent_cache.hpp"
 #include "filesystem.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
@@ -60,7 +61,7 @@ private:
 };
 
 typedef boost::shared_ptr<wml_template> wml_template_ptr;
-typedef std::map<std::string,wml_template_ptr> wml_template_map;
+typedef concurrent_cache<std::string,wml_template_ptr> wml_template_map;
 wml_template_map wml_templates;
 
 bool substitute_single_attr(const std::string& arg_name,
@@ -261,7 +262,7 @@ int get_line_number(const std::string& doc, std::string::const_iterator i)
 }
 
 namespace {
-std::set<std::string> filename_pool;
+concurrent_cache<std::string, std::string*> filename_pool;
 
 struct node_frame {
 	node_frame() : derived_frame(false) {}
@@ -289,7 +290,12 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 	std::string current_comment;
 	int line_number = 1;
 
-	const std::string* filename_ptr = &*filename_pool.insert(error_context).first;
+	const std::string* filename_ptr = filename_pool.get(error_context);
+	if(!filename_ptr) {
+		std::string* str = new std::string(error_context);
+		filename_ptr = str;
+		filename_pool.put(error_context, str);
+	}
 
 	try {
 	while(i != doc.end()) {
@@ -351,13 +357,12 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 
 					element.erase(begin_args,element.end());
 
-					const wml_template_map::const_iterator t =
-					           wml_templates.find(element);
-					if(t == wml_templates.end()) {
+					const wml_template_ptr t = wml_templates.get(element);
+					if(t.get() == NULL) {
 						PARSE_ERROR("unrecognized template call: '" << element << "'\n");
 					}
 
-					const wml::node_ptr el = t->second->call(args);
+					const wml::node_ptr el = t->call(args);
 					assert(el);
 					if(!prefix.empty()) {
 						parents.push_back(el);
@@ -427,7 +432,7 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 
 					std::string template_name_str(template_name,beg_args);
 					util::strip(template_name_str);
-					wml_templates[template_name_str] = t;
+					wml_templates.put(template_name_str, t);
 				} else if(prefix == "base") {
 					nodes.top().base_nodes[element] = el;
 				} else if(prefix != "") {

@@ -23,7 +23,12 @@ public:
 
 	void put(const Key& key, const Value& value) {
 		threading::lock l(mutex_);
-		map_.insert(std::pair<Key,Value>(key, value));
+		map_[key] = value;
+	}
+
+	int count(const Key& key) const {
+		threading::lock l(mutex_);
+		return map_.count(key);
 	}
 
 	void clear() {
@@ -43,7 +48,7 @@ public:
 
 private:
 	map_type map_;
-	threading::mutex mutex_;
+	mutable threading::mutex mutex_;
 };
 
 #endif

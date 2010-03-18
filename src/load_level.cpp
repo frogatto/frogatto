@@ -1,11 +1,82 @@
 #include <assert.h>
 
+#include "asserts.hpp"
+#include "concurrent_cache.hpp"
 #include "filesystem.hpp"
 #include "level.hpp"
 #include "load_level.hpp"
+#include "preferences.hpp"
 #include "preprocessor.hpp"
 #include "texture.hpp"
 #include "thread.hpp"
+#include "wml_parser.hpp"
+
+namespace {
+typedef concurrent_cache<std::string, wml::const_node_ptr> level_wml_map;
+level_wml_map wml_cache;
+
+std::map<std::string, threading::thread*> wml_threads;
+
+class wml_loader {
+	std::string lvl_;
+public:
+	wml_loader(const std::string& lvl) : lvl_(lvl)
+	{}
+	void operator()() {
+		static const std::string path = preferences::load_compiled() ? "data/compiled/level/" : "data/level/";
+		const std::string filename = path + lvl_;
+		wml::const_node_ptr node(wml::parse_wml(preprocess(sys::read_file(filename))));
+		wml_cache.put(lvl_, node);
+	}
+};
+}
+
+void preload_level_wml(const std::string& lvl)
+{
+	if(lvl == "save.cfg" || lvl == "autosave.cfg") {
+		return;
+	}
+
+	if(wml_cache.count(lvl)) {
+		return;
+	}
+
+	wml_cache.put(lvl, wml::const_node_ptr());
+	wml_threads[lvl] = new threading::thread(wml_loader(lvl));
+}
+
+wml::const_node_ptr load_level_wml(const std::string& lvl)
+{
+	if(lvl == "save.cfg" || lvl == "autosave.cfg") {
+		std::string filename;
+		if(lvl == "save.cfg") {
+			filename = preferences::save_file_path();
+		} else {
+			filename = preferences::auto_save_file_path();
+		}
+
+		return wml::parse_wml(preprocess(sys::read_file(filename)));
+	}
+
+	if(wml_cache.count(lvl)) {
+		std::map<std::string, threading::thread*>::iterator t = wml_threads.find(lvl);
+		if(t != wml_threads.end()) {
+			delete t->second;
+			wml_threads.erase(t);
+		}
+
+		return wml_cache.get(lvl);
+	}
+
+	wml_loader loader(lvl);
+	loader();
+	return load_level_wml_nowait(lvl);
+}
+
+wml::const_node_ptr load_level_wml_nowait(const std::string& lvl)
+{
+	return wml_cache.get(lvl);
+}
 
 namespace {
 typedef std::map<std::string, std::pair<threading::thread*, level*> > level_map;
@@ -34,6 +105,7 @@ public:
 		levels_loading[lvl_].second = lvl;
 	}
 };
+
 }
 
 load_level_manager::load_level_manager()

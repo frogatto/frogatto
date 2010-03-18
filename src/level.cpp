@@ -62,15 +62,9 @@ level::level(const std::string& level_cfg)
 	const int start_time = SDL_GetTicks();
 	turn_reference_counting_off();
 
-	const std::string path = preferences::load_compiled() ? "data/compiled/level/" : "data/level/";
-	std::string filename = path + level_cfg;
-	if(level_cfg == "save.cfg") {
-		filename = preferences::save_file_path();
-	} else if(level_cfg == "autosave.cfg") {
-		filename = preferences::auto_save_file_path();
-	}
+	wml::const_node_ptr node = load_level_wml(level_cfg);
+	ASSERT_LOG(node.get() != NULL, "LOAD LEVEL WML FOR " << level_cfg << " FAILED");
 
-	wml::const_node_ptr node(wml::parse_wml(preprocess(sys::read_file(filename))));
 	music_ = node->attr("music");
 	replay_data_ = node->attr("replay_data");
 	cycle_ = wml::get_int(node, "cycle");
@@ -322,6 +316,15 @@ void level::finish_loading()
 	wml_chars_.clear();
 
 	controls::new_level(cycle_, players_.empty() ? 1 : players_.size(), multiplayer::slot());
+
+	//start loading FML for previous and next level
+	if(!previous_level().empty()) {
+		preload_level_wml(previous_level());
+	}
+
+	if(!next_level().empty()) {
+		preload_level_wml(next_level());
+	}
 }
 
 void level::set_multiplayer_slot(int slot)
