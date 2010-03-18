@@ -7,21 +7,22 @@
 
 playable_custom_object::playable_custom_object(const custom_object& obj)
   : custom_object(obj), player_info_(*this), vertical_look_(0),
-    underwater_ctrl_x_(0), underwater_ctrl_y_(0)
+    underwater_ctrl_x_(0), underwater_ctrl_y_(0), underwater_controls_(false)
 {
 }
 
 playable_custom_object::playable_custom_object(const playable_custom_object& obj)
   : custom_object(obj), player_info_(obj.player_info_),
     save_condition_(obj.save_condition_), vertical_look_(0),
-    underwater_ctrl_x_(0), underwater_ctrl_y_(0)
+    underwater_ctrl_x_(0), underwater_ctrl_y_(0), underwater_controls_(false)
 {
 	player_info_.set_entity(*this);
 }
 
 playable_custom_object::playable_custom_object(wml::const_node_ptr node)
   : custom_object(node), player_info_(*this), vertical_look_(0),
-    underwater_ctrl_x_(0), underwater_ctrl_y_(0)
+    underwater_ctrl_x_(0), underwater_ctrl_y_(0),
+	underwater_controls_(wml::get_bool(node, "underwater_controls", false))
 {
 }
 
@@ -29,6 +30,9 @@ wml::node_ptr playable_custom_object::write() const
 {
 	wml::node_ptr node = custom_object::write();
 	node->set_attr("is_human", "true");
+	if(underwater_controls_) {
+		node->set_attr("underwater_controls", "true");
+	}
 	return node;
 }
 
@@ -59,9 +63,9 @@ void playable_custom_object::process(level& lvl)
 		player_info_.set_current_level(lvl.id());
 	}
 
-	iphone_controls::set_underwater(is_underwater());
+	iphone_controls::set_underwater(underwater_controls_);
 	float underwater_x, underwater_y;
-	if(is_underwater() && iphone_controls::water_dir(&underwater_x, &underwater_y)) {
+	if(underwater_controls_ && iphone_controls::water_dir(&underwater_x, &underwater_y)) {
 		underwater_ctrl_x_ = underwater_x*1000;
 		underwater_ctrl_y_ = underwater_y*1000;
 	} else {
@@ -97,7 +101,9 @@ namespace {
 
 variant playable_custom_object::get_value(const std::string& key) const
 {
-	if(key == "ctrl_tilt") {
+	if(key == "underwater_controls") {
+		return variant(underwater_controls_);
+	} else if(key == "ctrl_tilt") {
 		return variant(-joystick::iphone_tilt());
 	} else if(key == "ctrl_x") {
 		return variant(underwater_ctrl_x_);
@@ -122,7 +128,9 @@ variant playable_custom_object::get_value(const std::string& key) const
 
 void playable_custom_object::set_value(const std::string& key, const variant& value)
 {
-	if(key == "vertical_look") {
+	if(key == "underwater_controls") {
+		underwater_controls_ = value.as_bool();
+	} else if(key == "vertical_look") {
 		vertical_look_ = value.as_int();
 	} else if(key == "control_lock") {
 		if(value.is_null() && control_lock_.get() != NULL) {

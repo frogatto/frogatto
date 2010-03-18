@@ -46,6 +46,8 @@ private:
 
 	int underwater_ctrl_x_, underwater_ctrl_y_;
 
+	bool underwater_controls_;
+
 	boost::scoped_ptr<controls::local_controls_lock> control_lock_;
 
 	void operator=(const playable_custom_object);

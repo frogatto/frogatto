@@ -13,9 +13,16 @@
 
 namespace {
 typedef concurrent_cache<std::string, wml::const_node_ptr> level_wml_map;
-level_wml_map wml_cache;
+level_wml_map& wml_cache() {
+	static level_wml_map instance;
+	return instance;
+}
 
-std::map<std::string, threading::thread*> wml_threads;
+std::map<std::string, threading::thread*>& wml_threads()
+{
+	static std::map<std::string, threading::thread*> instance;
+	return instance;
+}
 
 class wml_loader {
 	std::string lvl_;
@@ -26,7 +33,7 @@ public:
 		static const std::string path = preferences::load_compiled() ? "data/compiled/level/" : "data/level/";
 		const std::string filename = path + lvl_;
 		wml::const_node_ptr node(wml::parse_wml(preprocess(sys::read_file(filename))));
-		wml_cache.put(lvl_, node);
+		wml_cache().put(lvl_, node);
 	}
 };
 }
@@ -37,12 +44,12 @@ void preload_level_wml(const std::string& lvl)
 		return;
 	}
 
-	if(wml_cache.count(lvl)) {
+	if(wml_cache().count(lvl)) {
 		return;
 	}
 
-	wml_cache.put(lvl, wml::const_node_ptr());
-	wml_threads[lvl] = new threading::thread(wml_loader(lvl));
+	wml_cache().put(lvl, wml::const_node_ptr());
+	wml_threads()[lvl] = new threading::thread(wml_loader(lvl));
 }
 
 wml::const_node_ptr load_level_wml(const std::string& lvl)
@@ -58,14 +65,14 @@ wml::const_node_ptr load_level_wml(const std::string& lvl)
 		return wml::parse_wml(preprocess(sys::read_file(filename)));
 	}
 
-	if(wml_cache.count(lvl)) {
-		std::map<std::string, threading::thread*>::iterator t = wml_threads.find(lvl);
-		if(t != wml_threads.end()) {
+	if(wml_cache().count(lvl)) {
+		std::map<std::string, threading::thread*>::iterator t = wml_threads().find(lvl);
+		if(t != wml_threads().end()) {
 			delete t->second;
-			wml_threads.erase(t);
+			wml_threads().erase(t);
 		}
 
-		return wml_cache.get(lvl);
+		return wml_cache().get(lvl);
 	}
 
 	wml_loader loader(lvl);
@@ -75,7 +82,7 @@ wml::const_node_ptr load_level_wml(const std::string& lvl)
 
 wml::const_node_ptr load_level_wml_nowait(const std::string& lvl)
 {
-	return wml_cache.get(lvl);
+	return wml_cache().get(lvl);
 }
 
 namespace {
