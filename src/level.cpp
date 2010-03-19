@@ -1257,7 +1257,12 @@ void level::draw(int x, int y, int w, int h) const
 
 	std::set<int>::const_iterator layer = layers_.begin();
 
-	for(; layer != layers_.end() && *layer < 0; ++layer) {
+	int player_zorder = 0;
+	if(players_.empty() == false) {
+		player_zorder = players_.front()->zorder();
+	}
+
+	for(; layer != layers_.end() && *layer < player_zorder; ++layer) {
 
 		if(!water_drawn && *layer > water_zorder) {
 			water_->draw(x, y, w, h);
