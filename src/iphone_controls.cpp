@@ -33,7 +33,8 @@ bool iphone_controls::water_dir(float* xvalue, float* yvalue)
 {
 	for(int i = 0; i < SDL_GetNumMice(); i++) {
 		int x, y;
-		Uint8 button_state = SDL_GetMouseState(i, &x, &y);
+		SDL_SelectMouse(i);
+		Uint8 button_state = SDL_GetMouseState(&x, &y);
 		if (button_state & SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			if (preferences::screen_rotated()) {
 				int tmp = x;
@@ -90,7 +91,8 @@ bool iphone_controls::hittest_button(const rect& area)
 	static graphics::texture tex(graphics::texture::get("gui/iphone_controls.png"));
 	for(int i = 0; i < SDL_GetNumMice(); i++) {
 		int x, y;
-		Uint8 button_state = SDL_GetMouseState(i, &x, &y);
+		SDL_SelectMouse(i);
+		Uint8 button_state = SDL_GetMouseState(&x, &y);
 		if(button_state & SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			//rotate the coordinates
 			if(preferences::screen_rotated()) {

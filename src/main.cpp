@@ -188,8 +188,12 @@ extern "C" int main(int argc, char** argv)
 		return -1;
 	}
 	
-	if (SDL_GL_CreateContext(windowID) == 0) {
-		std::cerr << "Could not create GL context: " << SDL_GetError() << "\n";
+	//	if (SDL_GL_CreateContext(windowID) == 0) {
+	//		std::cerr << "Could not create GL context: " << SDL_GetError() << "\n";
+	//		return -1;
+	//	}
+	if (SDL_CreateRenderer(windowID, -1, 0) != 0) {
+		std::cerr << "Could not create renderer\n";
 		return -1;
 	}
 	
@@ -261,7 +265,7 @@ extern "C" int main(int argc, char** argv)
 	}
 	
 	loader.load(preloads);
-	loader.draw("Loading titlescreen");
+	loader.draw("Loading level");
 
 	if(!skip_tests && !test::run_tests()) {
 		return -1;
