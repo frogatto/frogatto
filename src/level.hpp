@@ -34,6 +34,12 @@ class tile_corner;
 class level : public game_logic::formula_callable
 {
 public:
+	struct summary {
+		std::string music, title;
+	};
+
+	static summary get_summary(const std::string& id);
+
 	static level& current();
 	void set_as_current_level();
 

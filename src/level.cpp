@@ -38,6 +38,31 @@
 
 namespace {
 level* current_level;
+
+std::map<std::string, level::summary> load_level_summaries() {
+	std::map<std::string, level::summary> result;
+	const wml::const_node_ptr node = wml::parse_wml_from_file("data/compiled/level_index.cfg");
+	
+	FOREACH_WML_CHILD(level_node, node, "level") {
+		level::summary& s = result[level_node->attr("level")];
+		s.music = level_node->attr("music");
+		s.title = level_node->attr("title");
+	}
+
+	return result;
+}
+
+}
+
+level::summary level::get_summary(const std::string& id)
+{
+	static const std::map<std::string, summary> summaries = load_level_summaries();
+	std::map<std::string, summary>::const_iterator i = summaries.find(id);
+	if(i != summaries.end()) {
+		return i->second;
+	}
+
+	return summary();
 }
 
 level& level::current()
