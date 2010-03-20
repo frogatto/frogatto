@@ -176,6 +176,7 @@ bool iphone_controls::jump()
 void iphone_controls::draw() {}
 
 void iphone_controls::set_underwater(bool value) {}
+void iphone_controls::set_can_interact(bool value) {}
 
 bool iphone_controls::water_dir(float* xvalue, float* yvalue) { return false; }
 
