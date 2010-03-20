@@ -26,7 +26,7 @@ void solid_map::create_object_solid_maps(wml::const_node_ptr node, std::vector<c
 	rect area(node->attr("solid_area"));
 	area = rect(area.x()*2, area.y()*2, area.w()*2, area.h()*2);
 
-	const int legs_height = area.w()/2 + 1;
+	int legs_height = area.w()/2 + 1;
 	if(legs_height < area.h()) {
 		rect body(area.x(), area.y(), area.w(), area.h() - legs_height);
 		solid_map_ptr body_map(new solid_map);
@@ -38,6 +38,8 @@ void solid_map::create_object_solid_maps(wml::const_node_ptr node, std::vector<c
 		body_map->calculate_side(1, 0, body_map->right_);
 		body_map->calculate_side(-100000, 0, body_map->all_);
 		v.push_back(body_map);
+	} else {
+		legs_height = area.h();
 	}
 
 	rect legs(area.x(), area.y2() - legs_height, area.w(), legs_height);
