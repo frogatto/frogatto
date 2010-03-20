@@ -560,6 +560,8 @@ void editor::edit(const char* level_cfg, int xpos, int ypos)
 		//a new level was set, so start editing it now.
 		edit(g_last_edited_level().c_str());
 	}
+
+	clear_level_wml();
 }
 
 std::string editor::last_edited_level()

@@ -13,6 +13,7 @@ struct load_level_manager {
 	~load_level_manager();
 };
 
+void clear_level_wml();
 void preload_level_wml(const std::string& lvl);
 wml::const_node_ptr load_level_wml(const std::string& lvl);
 wml::const_node_ptr load_level_wml_nowait(const std::string& lvl);

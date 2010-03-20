@@ -43,6 +43,11 @@ public:
 };
 }
 
+void clear_level_wml()
+{
+	wml_cache().clear();
+}
+
 void preload_level_wml(const std::string& lvl)
 {
 	if(lvl == "save.cfg" || lvl == "autosave.cfg") {
