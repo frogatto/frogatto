@@ -472,7 +472,7 @@ void play_music(const std::string& file)
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	if(current_music) {
 		next_music() = file;
-		Mix_FadeOutMusic(1000);
+		Mix_FadeOutMusic(500);
 		return;
 	}
 
@@ -483,12 +483,12 @@ void play_music(const std::string& file)
 		return;
 	}
 
-	Mix_FadeInMusic(current_music, -1, 1000);
+	Mix_FadeInMusic(current_music, -1, 500);
 #else
 	if (playing_music)
 	{
 		next_music() = file;
-		iphone_fade_out_music(1000);
+		iphone_fade_out_music(500);
 		return;
 	}
 	
@@ -496,7 +496,7 @@ void play_music(const std::string& file)
 	std::string aac_file = file;
 	aac_file.replace(aac_file.length()-3, aac_file.length(), "m4a");
 	iphone_play_music(("music_aac/" + aac_file).c_str());
-	iphone_fade_in_music(1000);
+	iphone_fade_in_music(500);
 	playing_music = true;
 #endif
 }

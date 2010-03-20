@@ -331,7 +331,9 @@ bool level_runner::play_cycle()
 			}
 		} else {
 			//the portal is to another level
-
+			
+			level::summary summary = level::get_summary(level_cfg_);
+			sound::play_music(summary.music);
 			const std::string transition = portal->transition;
 			if(transition == "flip") {
 				transition_scene(*lvl_, last_draw_position(), true, flip_scene);
@@ -358,7 +360,7 @@ bool level_runner::play_cycle()
 
 			new_level->set_as_current_level();
 
-			sound::play_music(new_level->music());
+			//sound::play_music(new_level->music());
 			set_scene_title(new_level->title());
 			point dest = portal->dest;
 			if(portal->dest_str.empty() == false) {

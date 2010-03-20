@@ -8,11 +8,16 @@
 #include "graphical_font.hpp"
 #include "gui_section.hpp"
 #include "joystick.hpp"
+#include "preferences.hpp"
 #include "raster.hpp"
 #include "speech_dialog.hpp"
 
 namespace {
-	const int OptionHeight = 15;
+	const int OptionHeight = 60;
+	const int OptionWidth = 150;
+	const int OptionsPadding = 20; // padding around all options, not individual ones; includes border
+	const int OptionsX = 135; // these denote the bottom right corner
+	const int OptionsY = 115;
 }
 
 speech_dialog::speech_dialog()
@@ -30,7 +35,23 @@ speech_dialog::~speech_dialog()
 
 bool speech_dialog::handle_mouse_move(int x, int y)
 {
-	return true;
+	if(preferences::screen_rotated()) {
+		x = preferences::actual_screen_width() - x;
+		std::swap(x, y);
+	}
+	rect box(
+		preferences::actual_screen_width() - OptionsX - OptionWidth - OptionsPadding,
+		preferences::actual_screen_height() - OptionsY - OptionHeight*options_.size() - OptionsPadding,
+		OptionWidth, OptionHeight*options_.size()
+	);
+	std::cerr << "Options box: " << box << " : " << x << " : " << y << "\n";
+	if (point_in_rect(point(x, y), box))
+	{
+		option_selected_ = (y-box.y())/OptionHeight;
+		return true;
+	} else {
+		return false;
+	}
 }
 
 void speech_dialog::move_up()
@@ -244,24 +265,27 @@ void speech_dialog::draw() const
 	if(text_char_ == num_chars() && options_.empty() == false) {
 		//const_gui_section_ptr options_panel = gui_section::get("speech_portrait_pane");
 		const_framed_gui_element_ptr options_panel = framed_gui_element::get("regular_window");
-		int xpos = graphics::screen_width() - 275;
-		int ypos = graphics::screen_height() - 230;
-		options_panel->blit(xpos, ypos, 90, 62, 2);
+		int xpos = graphics::screen_width() - OptionsX - OptionWidth - OptionsPadding*2;
+		int ypos = graphics::screen_height() - OptionsY - OptionHeight*options_.size() - OptionsPadding*2;
+		// the division by 2 (and lack of multiplication of OptionsPadding) here is
+		// because the last options specifies that it will multiply everything by 2
+		options_panel->blit(xpos, ypos, OptionsPadding + OptionWidth/2, OptionsPadding + (OptionHeight * options_.size())/2, 2);
 
-		xpos += 20 + TextBorder;
-		ypos += 20 + TextBorder;
+		xpos += OptionsPadding + 15; //10 = hardcoded x padding that doesn't affect hit area
+		ypos += OptionsPadding;
 
 		glColor4ub(255, 187, 10, 255);
 		int index = 0;
 		foreach(const std::string& option, options_) {
-			rect area = font->draw(xpos, ypos, option);
+			rect area = font->dimensions(option);
+			area = font->draw(xpos, ypos+(OptionHeight/2-area.h()/4), option);
 
 			if(index == option_selected_) {
 				const_gui_section_ptr cursor = gui_section::get("cursor");
 				cursor->blit(area.x2(), area.y());
 			}
 
-			ypos = area.y2();
+			ypos += OptionHeight;
 			++index;
 		}
 		glColor4f(1.0, 1.0, 1.0, 1.0);
