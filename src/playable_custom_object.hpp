@@ -33,6 +33,8 @@ public:
 
 	virtual bool is_active(const rect& screen_area) const;
 
+	bool can_interact() const { return can_interact_ != 0; }
+
 private:
 	virtual void process(level& lvl);
 	variant get_value(const std::string& key) const;	
@@ -47,6 +49,8 @@ private:
 	int underwater_ctrl_x_, underwater_ctrl_y_;
 
 	bool underwater_controls_;
+
+	int can_interact_;
 
 	boost::scoped_ptr<controls::local_controls_lock> control_lock_;
 

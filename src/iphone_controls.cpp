@@ -18,15 +18,23 @@ namespace
 	const rect a_button(960 - 102, 640 - 120, 50*2, 60*2);
 	const rect b_button(960 - 102, 640 - 240, 50*2, 60*2);
 
+	const rect interact_button(960 - 300 - 30, 640 - 130, 50*2 + 60, 60*2);
+
 	const int underwater_circle_x = 120;
 	const int underwater_circle_y = 520;
 
 	bool is_underwater = false;
+	bool can_interact = false;
 }
 
 void iphone_controls::set_underwater(bool value)
 {
 	is_underwater = value;
+}
+
+void iphone_controls::set_can_interact(bool value)
+{
+	can_interact = value;
 }
 
 bool iphone_controls::water_dir(float* xvalue, float* yvalue)
@@ -113,6 +121,10 @@ bool iphone_controls::up()
 {
 	if(is_underwater) {
 		return false;
+	}
+
+	if(can_interact && hittest_button(interact_button)) {
+		return true;
 	}
 
 	return hittest_button(up_arrow);

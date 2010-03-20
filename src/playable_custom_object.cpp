@@ -7,14 +7,16 @@
 
 playable_custom_object::playable_custom_object(const custom_object& obj)
   : custom_object(obj), player_info_(*this), vertical_look_(0),
-    underwater_ctrl_x_(0), underwater_ctrl_y_(0), underwater_controls_(false)
+    underwater_ctrl_x_(0), underwater_ctrl_y_(0), underwater_controls_(false),
+	can_interact_(0)
 {
 }
 
 playable_custom_object::playable_custom_object(const playable_custom_object& obj)
   : custom_object(obj), player_info_(obj.player_info_),
     save_condition_(obj.save_condition_), vertical_look_(0),
-    underwater_ctrl_x_(0), underwater_ctrl_y_(0), underwater_controls_(false)
+    underwater_ctrl_x_(0), underwater_ctrl_y_(0), underwater_controls_(false),
+	can_interact_(0)
 {
 	player_info_.set_entity(*this);
 }
@@ -22,7 +24,8 @@ playable_custom_object::playable_custom_object(const playable_custom_object& obj
 playable_custom_object::playable_custom_object(wml::const_node_ptr node)
   : custom_object(node), player_info_(*this), vertical_look_(0),
     underwater_ctrl_x_(0), underwater_ctrl_y_(0),
-	underwater_controls_(wml::get_bool(node, "underwater_controls", false))
+	underwater_controls_(wml::get_bool(node, "underwater_controls", false)),
+	can_interact_(0)
 {
 }
 
@@ -63,7 +66,13 @@ void playable_custom_object::process(level& lvl)
 		player_info_.set_current_level(lvl.id());
 	}
 
+	if(can_interact_ > 0) {
+		--can_interact_;
+	}
+
 	iphone_controls::set_underwater(underwater_controls_);
+	iphone_controls::set_can_interact(can_interact_ != 0);
+
 	float underwater_x, underwater_y;
 	if(underwater_controls_ && iphone_controls::water_dir(&underwater_x, &underwater_y)) {
 		underwater_ctrl_x_ = underwater_x*1000;
@@ -101,7 +110,9 @@ namespace {
 
 variant playable_custom_object::get_value(const std::string& key) const
 {
-	if(key == "underwater_controls") {
+	if(key == "can_interact") {
+		return variant(can_interact_);
+	} else if(key == "underwater_controls") {
 		return variant(underwater_controls_);
 	} else if(key == "ctrl_tilt") {
 		return variant(-joystick::iphone_tilt());
@@ -128,7 +139,9 @@ variant playable_custom_object::get_value(const std::string& key) const
 
 void playable_custom_object::set_value(const std::string& key, const variant& value)
 {
-	if(key == "underwater_controls") {
+	if(key == "can_interact") {
+		can_interact_ = value.as_int();
+	} else if(key == "underwater_controls") {
 		underwater_controls_ = value.as_bool();
 	} else if(key == "vertical_look") {
 		vertical_look_ = value.as_int();

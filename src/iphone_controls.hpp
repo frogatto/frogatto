@@ -17,6 +17,7 @@ public:
 	static bool water_dir(float* x, float* y);
 
 	static void set_underwater(bool value);
+	static void set_can_interact(bool value);
 
 	static void draw();
 	
