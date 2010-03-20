@@ -32,8 +32,13 @@ public:
 	void operator()() {
 		static const std::string path = preferences::load_compiled() ? "data/compiled/level/" : "data/level/";
 		const std::string filename = path + lvl_;
-		wml::const_node_ptr node(wml::parse_wml(preprocess(sys::read_file(filename))));
-		wml_cache().put(lvl_, node);
+		try {
+			wml::const_node_ptr node(wml::parse_wml(preprocess(sys::read_file(filename))));
+			wml_cache().put(lvl_, node);
+		} catch(...) {
+			std::cerr << "FAILED TO LOAD " << filename << "\n";
+			ASSERT_LOG(false, "FAILED TO LOAD");
+		}
 	}
 };
 }

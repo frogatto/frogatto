@@ -683,7 +683,7 @@ void tile_map::apply_matching_multi_pattern(int& x, int y,
 				foreach(const multi_tile_pattern::tile_entry& entry, info.tiles) {
 					level_object_ptr ob = entry.tile;
 					if(ob) {
-						if(entry.zorder == INT_MIN) {
+						if(entry.zorder == INT_MIN || entry.zorder == zorder_) {
 							mapping.insert(point(x + xpos, y + ypos), ob);
 						} else {
 							different_zorder_mapping[point_zorder(point(x + xpos, y + ypos), entry.zorder)] = ob;

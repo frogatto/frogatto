@@ -2865,15 +2865,26 @@ UTILITY(compile_levels)
 	std::vector<std::string> files;
 	sys::get_files_in_dir("data/level/", &files);
 
+	wml::node_ptr index_node(new wml::node("level_index"));
+
 	foreach(const std::string& file, files) {
 		std::cerr << "LOADING LEVEL '" << file << "'\n";
 		boost::intrusive_ptr<level> lvl(new level(file));
 		lvl->finish_loading();
-
 		std::string data;
 		wml::write(lvl->write(), data);
 		sys::write_file("data/compiled/level/" + file, data);
+
+		wml::node_ptr node(new wml::node("level"));
+		node->set_attr("level", lvl->id());
+		node->set_attr("title", lvl->title());
+		node->set_attr("music", lvl->music());
+		index_node->add_child(node);
 	}
+
+	std::string index_data;
+	wml::write(index_node, index_data);
+	sys::write_file("data/compiled/level_index.cfg", index_data);
 
 	level_object::write_compiled();
 }
