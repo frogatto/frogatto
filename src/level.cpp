@@ -2336,6 +2336,10 @@ void level::add_player(entity_ptr p)
 
 void level::add_character(entity_ptr p)
 {
+	if(solid_chars_.empty() == false && p->solid()) {
+		solid_chars_.push_back(p);
+	}
+
 	if(p->label().empty() == false) {
 		chars_by_label_[p->label()] = p;
 	}

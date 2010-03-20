@@ -391,7 +391,6 @@ public:
 
 		obj->set_level(lvl);
 		entity_ptr e = obj;
-		lvl.add_character(e);
 		
 		//spawn with the spawned object's midpoint (rather than its upper-left corner) at x_, y_.
 		//This means objects are centered on the point they're spawned on, which is a lot more intuitive for scripting.
@@ -421,10 +420,11 @@ public:
 			}
 
 			if(!found) {
-				delete obj;
 				return;
 			}
 		}
+
+		lvl.add_character(e);
 
 		e->execute_command(instantiation_commands_);
 
@@ -437,7 +437,7 @@ public:
 		ob.handle_event("child_spawned", spawn_callable);
 		obj->handle_event("spawned", spawn_callable);
 
-		if(entity_collides(level::current(), *e, MOVE_NONE)) {
+		if(entity_collides(lvl, *e, MOVE_NONE)) {
 			lvl.remove_character(e);
 		}
 	}
