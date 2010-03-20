@@ -447,8 +447,8 @@ public:
 
 void detect_user_collisions(level& lvl)
 {
-	static std::vector<entity_ptr> chars;
-	chars.clear();
+	std::vector<entity_ptr> chars;
+	chars.reserve(lvl.get_chars().size());
 	foreach(const entity_ptr& a, lvl.get_chars()) {
 		if(a->collide_dimensions() != 0 && a->current_frame().collision_areas().empty() == false) {
 			chars.push_back(a);
