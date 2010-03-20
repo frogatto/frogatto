@@ -38,11 +38,13 @@ bool speech_dialog::handle_mouse_move(int x, int y)
 	if(preferences::screen_rotated()) {
 		x = preferences::actual_screen_width() - x;
 		std::swap(x, y);
+		x *= 2;
+		y *= 2;
 	}
 	rect box(
-		preferences::actual_screen_width() - OptionsX - OptionWidth - OptionsPadding,
-		preferences::actual_screen_height() - OptionsY - OptionHeight*options_.size() - OptionsPadding,
-		OptionWidth, OptionHeight*options_.size()
+		960 - OptionsX - OptionWidth - OptionsPadding,
+		640 - OptionsY - OptionHeight*options_.size() - OptionsPadding,
+		OptionWidth + OptionsPadding*2, OptionHeight*options_.size() + OptionsPadding*2
 	);
 	std::cerr << "Options box: " << box << " : " << x << " : " << y << "\n";
 	if (point_in_rect(point(x, y), box))
