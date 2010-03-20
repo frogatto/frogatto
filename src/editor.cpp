@@ -738,7 +738,13 @@ void editor::edit_level()
 			}
 
 			if(property_dialog_ && property_dialog_->get_entity()) {
-				property_dialog_->get_entity()->mutate_value(g_variable_editing->variable_name(), variant(g_variable_editing_original_value + diff));
+				const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
+				int new_value = g_variable_editing_original_value + diff;
+				if(ctrl_pressed) {
+					new_value += TileSize/2;
+					new_value = new_value - new_value%TileSize;
+				}
+				property_dialog_->get_entity()->mutate_value(g_variable_editing->variable_name(), variant(new_value));
 			}
 		} else if(object_mode && !buttons) {
 			//remove ghost objects and re-add them. This guarantees ghost
