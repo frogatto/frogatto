@@ -4,11 +4,16 @@
 #include "draw_scene.hpp"
 #include "foreach.hpp"
 #include "frame.hpp"
+#include "framed_gui_element.hpp"
 #include "graphical_font.hpp"
 #include "gui_section.hpp"
 #include "joystick.hpp"
 #include "raster.hpp"
 #include "speech_dialog.hpp"
+
+namespace {
+	const int OptionHeight = 15;
+}
 
 speech_dialog::speech_dialog()
   : cycle_(0), left_side_speaking_(false), horizontal_position_(0), text_char_(0), option_selected_(0),
@@ -21,6 +26,11 @@ speech_dialog::speech_dialog()
 
 speech_dialog::~speech_dialog()
 {
+}
+
+bool speech_dialog::handle_mouse_move(int x, int y)
+{
+	return true;
 }
 
 void speech_dialog::move_up()
@@ -41,6 +51,7 @@ void speech_dialog::move_down()
 
 bool speech_dialog::key_press(const SDL_Event& event)
 {
+	static int last_mouse = 0;
 	if(text_char_ == num_chars() && options_.empty() == false) {
 		if(event.type == SDL_KEYDOWN)
 		{
@@ -62,7 +73,18 @@ bool speech_dialog::key_press(const SDL_Event& event)
 		}
 		if(event.type == SDL_MOUSEBUTTONDOWN)
 		{
-			return true;
+			last_mouse = event.button.which;
+			handle_mouse_move(event.button.x, event.button.y);
+		}
+		if (event.type == SDL_MOUSEMOTION)
+		{
+			if (event.motion.which == last_mouse)
+				handle_mouse_move(event.motion.x, event.motion.y);
+		}
+		if (event.type == SDL_MOUSEBUTTONUP)
+		{
+			if (event.motion.which == last_mouse)
+				return handle_mouse_move(event.motion.x, event.motion.y);
 		}
 
 		return false;
@@ -220,10 +242,11 @@ void speech_dialog::draw() const
 	}
 
 	if(text_char_ == num_chars() && options_.empty() == false) {
-		const_gui_section_ptr options_panel = gui_section::get("speech_portrait_pane");
-		int xpos = graphics::screen_width() - options_panel->width()*1.5;
-		int ypos = graphics::screen_height() - options_panel->height()*1.7;
-		options_panel->blit(xpos, ypos);
+		//const_gui_section_ptr options_panel = gui_section::get("speech_portrait_pane");
+		const_framed_gui_element_ptr options_panel = framed_gui_element::get("regular_window");
+		int xpos = graphics::screen_width() - 275;
+		int ypos = graphics::screen_height() - 230;
+		options_panel->blit(xpos, ypos, 90, 62, 2);
 
 		xpos += 20 + TextBorder;
 		ypos += 20 + TextBorder;

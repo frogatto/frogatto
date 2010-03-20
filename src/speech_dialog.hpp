@@ -28,6 +28,7 @@ public:
 
 	int option_selected() const { return option_selected_; }
 private:
+	bool handle_mouse_move(int x, int y);
 	void move_up();
 	void move_down();
 

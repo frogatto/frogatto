@@ -18,12 +18,12 @@ public:
 	static void init(wml::const_node_ptr node);
 	static const_framed_gui_element_ptr get(const std::string& key);
 
-	void blit(int x, int y, int w, int h) const;
+	void blit(int x, int y, int w, int h, int scale=1) const;
 	explicit framed_gui_element(wml::const_node_ptr node);
 
 	
 private:
-	void blit_subsection(rect subsection, int x, int y, int w, int h) const;
+	void blit_subsection(rect subsection, int x, int y, int w, int h, int scale=1) const;
 	
 	const rect area_;
 	const int corner_height_;
