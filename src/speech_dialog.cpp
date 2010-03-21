@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stack>
 
+#include "color_utils.hpp"
 #include "draw_scene.hpp"
 #include "foreach.hpp"
 #include "frame.hpp"
@@ -13,9 +14,16 @@
 #include "speech_dialog.hpp"
 
 namespace {
-	const int OptionHeight = 60;
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+	const int OptionHeight = 70;
+	const int OptionWidth = 200;
+	const int OptionXPad = 20;
+#else
+	const int OptionHeight = 45;
 	const int OptionWidth = 150;
-	const int OptionsPadding = 20; // padding around all options, not individual ones; includes border
+	const int OptionXPad = 10;
+#endif
+	const int OptionsBorder = 20; // size of the border around the options window
 	const int OptionsX = 135; // these denote the bottom right corner
 	const int OptionsY = 115;
 }
@@ -27,6 +35,9 @@ speech_dialog::speech_dialog()
     joystick_down_pressed_(true),
 	expiration_(-1)
 {
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+	option_selected_ = -1;
+#endif
 }
 
 speech_dialog::~speech_dialog()
@@ -42,9 +53,9 @@ bool speech_dialog::handle_mouse_move(int x, int y)
 		y *= 2;
 	}
 	rect box(
-		960 - OptionsX - OptionWidth - OptionsPadding,
-		640 - OptionsY - OptionHeight*options_.size() - OptionsPadding,
-		OptionWidth + OptionsPadding*2, OptionHeight*options_.size() + OptionsPadding*2
+		960 - OptionsX - OptionWidth - OptionsBorder,
+		640 - OptionsY - OptionHeight*options_.size() - OptionsBorder,
+		OptionWidth + OptionsBorder*2, OptionHeight*options_.size() + OptionsBorder*2
 	);
 	std::cerr << "Options box: " << box << " : " << x << " : " << y << "\n";
 	if (point_in_rect(point(x, y), box))
@@ -52,6 +63,7 @@ bool speech_dialog::handle_mouse_move(int x, int y)
 		option_selected_ = (y-box.y())/OptionHeight;
 		return true;
 	} else {
+		option_selected_ = -1;
 		return false;
 	}
 }
@@ -94,6 +106,7 @@ bool speech_dialog::key_press(const SDL_Event& event)
 				break;
 			}
 		}
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 		if(event.type == SDL_MOUSEBUTTONDOWN)
 		{
 			last_mouse = event.button.which;
@@ -107,8 +120,12 @@ bool speech_dialog::key_press(const SDL_Event& event)
 		if (event.type == SDL_MOUSEBUTTONUP)
 		{
 			if (event.motion.which == last_mouse)
+			{
 				return handle_mouse_move(event.motion.x, event.motion.y);
+				last_mouse = -1;
+			}
 		}
+#endif
 
 		return false;
 	}
@@ -267,25 +284,33 @@ void speech_dialog::draw() const
 	if(text_char_ == num_chars() && options_.empty() == false) {
 		//const_gui_section_ptr options_panel = gui_section::get("speech_portrait_pane");
 		const_framed_gui_element_ptr options_panel = framed_gui_element::get("regular_window");
-		int xpos = graphics::screen_width() - OptionsX - OptionWidth - OptionsPadding*2;
-		int ypos = graphics::screen_height() - OptionsY - OptionHeight*options_.size() - OptionsPadding*2;
-		// the division by 2 (and lack of multiplication of OptionsPadding) here is
+		int xpos = graphics::screen_width() - OptionsX - OptionWidth - OptionsBorder*2;
+		int ypos = graphics::screen_height() - OptionsY - OptionHeight*options_.size() - OptionsBorder*2;
+		// the division by 2 (and lack of multiplication of OptionsBorder) here is
 		// because the last options specifies that it will multiply everything by 2
-		options_panel->blit(xpos, ypos, OptionsPadding + OptionWidth/2, OptionsPadding + (OptionHeight * options_.size())/2, 2);
+		options_panel->blit(xpos, ypos, OptionsBorder + OptionWidth/2, OptionsBorder + (OptionHeight * options_.size())/2, 2);
 
-		xpos += OptionsPadding + 15; //10 = hardcoded x padding that doesn't affect hit area
-		ypos += OptionsPadding;
+		xpos += OptionsBorder + OptionXPad;
+		ypos += OptionsBorder;
 
 		glColor4ub(255, 187, 10, 255);
 		int index = 0;
 		foreach(const std::string& option, options_) {
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+			if(index == option_selected_) {
+				graphics::draw_rect(rect(xpos-OptionXPad, ypos, OptionWidth, OptionHeight), graphics::color(0xC74545FF));
+				glColor4ub(255, 187, 10, 255); //reset color to what it was, since draw_rect changes it
+			}
+#endif
 			rect area = font->dimensions(option);
 			area = font->draw(xpos, ypos+(OptionHeight/2-area.h()/4), option);
 
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 			if(index == option_selected_) {
 				const_gui_section_ptr cursor = gui_section::get("cursor");
 				cursor->blit(area.x2(), area.y());
 			}
+#endif
 
 			ypos += OptionHeight;
 			++index;
@@ -324,7 +349,11 @@ void speech_dialog::set_text(const std::vector<std::string>& text)
 void speech_dialog::set_options(const std::vector<std::string>& options)
 {
 	options_ = options;
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+	option_selected_ = -1;
+#else
 	option_selected_ = 0;
+#endif
 }
 
 int speech_dialog::num_chars() const
