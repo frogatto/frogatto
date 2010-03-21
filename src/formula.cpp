@@ -725,9 +725,12 @@ namespace game_logic
 				precedence_map["%"]     = ++n;
 				precedence_map["^"]     = ++n;
 				precedence_map["d"]     = ++n;
+
+				//these operators are equal precedence, and left
+				//associative. Thus, x.y[4].z = ((x.y)[4]).z
 				precedence_map["["]     = ++n;
-				precedence_map["("]     = ++n;
-				precedence_map["."]     = ++n;
+				precedence_map["("]     = n;
+				precedence_map["."]     = n;
 			}
 			
 			assert(precedence_map.count(std::string(t.begin,t.end)));
@@ -1054,7 +1057,7 @@ namespace game_logic
 				if(i->type == TOKEN_LPARENS || i->type == TOKEN_LSQUARE) {
 					if(i->type == TOKEN_LPARENS && parens == 0 && i != i1) {
 						fn_call = i;
-					} else if(i->type == TOKEN_LSQUARE && parens == 0 && i != i1 && (i-1)->type != TOKEN_OPERATOR && (op == NULL || operator_precedence(*op) > operator_precedence(*i))) {
+					} else if(i->type == TOKEN_LSQUARE && parens == 0 && i != i1 && (i-1)->type != TOKEN_OPERATOR && (op == NULL || operator_precedence(*op) >= operator_precedence(*i))) {
 						//the square bracket itself is an operator
 						op = i;
 					}
@@ -1067,7 +1070,7 @@ namespace game_logic
 						fn_call = NULL;
 					}
 				} else if(parens == 0 && i->type == TOKEN_OPERATOR) {
-					if(op == NULL || operator_precedence(*op) >
+					if(op == NULL || operator_precedence(*op) >=
 					   operator_precedence(*i)) {
 						op = i;
 					}
@@ -1164,7 +1167,7 @@ namespace game_logic
 				}
 			}
 			
-			if(fn_call && (op == NULL || operator_precedence(*op) >
+			if(fn_call && (op == NULL || operator_precedence(*op) >=
 						   operator_precedence(*fn_call))) {
 				op = fn_call;
 			}
@@ -1332,15 +1335,16 @@ namespace game_logic
 		map_formula_callable* callable2 = new map_formula_callable;
 		std::vector<variant> v;
 		for(int n = 0; n != 10; ++n) {
-			v.push_back(variant(n));
+			map_formula_callable* obj = new map_formula_callable;
+			obj->add("value", variant(n));
+			v.push_back(variant(obj));
 		}
 		callable2->add("item", variant(&v));
 		callable->add("obj", variant(callable2));
-		formula f("obj.item[n] where n = 2");
+		formula f("obj.item[n].value where n = 2");
 		const variant result = f.execute(*callable);
 		CHECK(result == variant(2), "test failed: " << result.to_debug_string());
 	}
-	
 }
 
 #ifdef UNIT_TEST_FORMULA
