@@ -714,6 +714,10 @@ void custom_object::process(level& lvl)
 
 	bool horizontal_landed = false;
 
+	if(type_->id() == "beetle_black_armor") {
+		std::cerr << "B BEETLE: " << (face_right() ? "RIGHT " : "LEFT ") << feet_x() << ", " << feet_y() << ": " << effective_velocity_x << ", " << effective_velocity_y << ": " << (is_standing(lvl) ? "STAND" : " NOT STANDING") << "\n";
+	}
+
 	for(move_left = std::abs(effective_velocity_x); move_left > 0 && !collide && !type_->ignore_collide(); move_left -= 100) {
 		if(type_->object_level_collisions() && non_solid_entity_collides_with_level(lvl, *this)) {
 			handle_event(OBJECT_EVENT_COLLIDE_LEVEL);
@@ -754,7 +758,9 @@ void custom_object::process(level& lvl)
 					set_y(y()+1);
 	
 					if(entity_collides(lvl, *this, MOVE_NONE)) {
-						set_y(y()-1);
+						//don't adjust the position in here. Just abort, let
+						//it fall through below, and the entire move will
+						//be rolled back due to the collision.
 						break;
 					}
 				}
@@ -790,6 +796,10 @@ void custom_object::process(level& lvl)
 			set_centi_y(original_centi_y);
 			break;
 		}
+	}
+
+	if(type_->id() == "beetle_black_armor") {
+		std::cerr << "E BEETLE: " << (face_right() ? "RIGHT " : "LEFT ") << feet_x() << ", " << feet_y() << ": " << effective_velocity_x << ", " << effective_velocity_y << ": " << (is_standing(lvl) ? "STAND" : " NOT STANDING") << "\n";
 	}
 
 	if(collide || horizontal_landed) {
