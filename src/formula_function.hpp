@@ -90,6 +90,7 @@ public:
 	                    int min_args=-1, int max_args=-1);
 
 protected:
+	const std::string& name() const { return name_; }
 	const args_list& args() const { return args_; }
 private:
 	std::string name_;

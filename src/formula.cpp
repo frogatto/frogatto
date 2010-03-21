@@ -177,6 +177,14 @@ namespace game_logic
 
 			variant execute(const formula_callable& variables) const {
 				std::vector<variant>& res = result_.initialize_list();
+
+				//hold a reference to the result while we're evaluating the
+				//expression. This is to make the reference count for the list
+				//above 1, so that if this list expression is called
+				//recursively, we know we can't re-use the same list multiple
+				//times.
+				variant ref = result_;
+
 				for(std::vector<expression_ptr>::const_iterator i = items_.begin(); i != items_.end(); ++i) {
 					res.push_back((*i)->evaluate(variables));
 				}

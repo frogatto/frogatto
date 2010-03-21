@@ -694,16 +694,21 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 
 	callable_->set_names(&arg_names_);
 
+	//we reset callable_ to NULL during any calls so that recursive calls
+	//will work properly.
+	boost::intrusive_ptr<slot_formula_callable> tmp_callable(callable_);
+	callable_.reset();
+
 	for(size_t n = 0; n != arg_names_.size(); ++n) {
 		variant var = args()[n]->evaluate(variables);
-		callable_->add(var);
+		tmp_callable->add(var);
 		if(static_cast<int>(n) == star_arg_) {
-			callable_->set_fallback(var.as_callable());
+			tmp_callable->set_fallback(var.as_callable());
 		}
 	}
 
 	if(precondition_) {
-		if(!precondition_->execute(*callable_).as_bool()) {
+		if(!precondition_->execute(*tmp_callable).as_bool()) {
 			std::cerr << "FAILED function precondition for function '" << formula_->str() << "' with arguments: ";
 			for(size_t n = 0; n != arg_names_.size(); ++n) {
 				std::cerr << "  arg " << (n+1) << ": " << args()[n]->evaluate(variables).to_debug_string() << "\n";
@@ -711,8 +716,9 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 		}
 	}
 
-	variant res = formula_->execute(*callable_);
+	variant res = formula_->execute(*tmp_callable);
 
+	callable_ = tmp_callable;
 	callable_->clear();
 
 	return res;
