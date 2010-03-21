@@ -16,15 +16,22 @@ int distance_to_cliff(const level& lvl, int xpos, int ypos, int facing)
 	const int max_search = 1000;
 	const int cliff_face = 5;
 	const int cliff_drop = 2;
+
+	bool found = false;
 	
 	//search for up to three pixels below us to try to get a starting
 	//position which is standable.
 	for(int n = 0; n != 3; ++n) {
 		if(lvl.standable_tile(xpos, ypos)) {
+			found = true;
 			break;
 		}
 
 		++ypos;
+	}
+
+	if(!found) {
+		return max_search;
 	}
 
 	//make sure we are at the surface.

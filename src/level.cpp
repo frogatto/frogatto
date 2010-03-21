@@ -441,7 +441,6 @@ void level::start_rebuild_tiles_in_background(const std::vector<int>& layers)
 	}
 
 	if(tile_rebuild_in_progress) {
-
 		tile_rebuild_queued = true;
 		return;
 	}
@@ -455,6 +454,23 @@ void level::start_rebuild_tiles_in_background(const std::vector<int>& layers)
 	rebuild_tile_layers_buffer.clear();
 
 	rebuild_tile_thread = new threading::thread(boost::bind(build_tiles_thread_function, tile_maps_));
+}
+
+void level::freeze_rebuild_tiles_in_background()
+{
+	tile_rebuild_in_progress = true;
+}
+
+void level::unfreeze_rebuild_tiles_in_background()
+{
+	if(rebuild_tile_thread != NULL) {
+		//a thread is actually in flight calculating tiles, so any requests
+		//would have been queued up anyway.
+		return;
+	}
+
+	tile_rebuild_in_progress = false;
+	start_rebuild_tiles_in_background(rebuild_tile_layers_buffer);
 }
 
 namespace {
@@ -476,6 +492,8 @@ void level::complete_rebuild_tiles_in_background()
 		}
 	}
 
+	const int begin_time = SDL_GetTicks();
+
 //	ASSERT_LOG(rebuild_tile_thread, "REBUILD TILE THREAD IS NULL");
 	delete rebuild_tile_thread;
 	rebuild_tile_thread = NULL;
@@ -490,11 +508,12 @@ void level::complete_rebuild_tiles_in_background()
 		}
 
 		tiles_.insert(tiles_.end(), task_tiles.begin(), task_tiles.end());
-		std::sort(tiles_.begin(), tiles_.end(), level_tile_zorder_pos_comparer());
 		task_tiles.clear();
 
 		complete_tiles_refresh();
 	}
+
+	std::cerr << "COMPLETE TILE REBUILD: " << (SDL_GetTicks() - begin_time) << "\n";
 
 	rebuild_tile_layers_worker_buffer.clear();
 

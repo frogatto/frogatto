@@ -375,6 +375,9 @@ void execute_functions(const std::vector<boost::function<void()> >& v) {
 	}
 }
 
+//the current state of the rectangle we're dragging
+rect g_rect_drawing;
+
 //the tiles that we've drawn in the current action.
 std::vector<point> g_current_draw_tiles;
 
@@ -776,6 +779,8 @@ void editor::edit_level()
 			//we're handling objects, and a button is down, and we have an
 			//object under the mouse. This means we are dragging something.
 			handle_object_dragging(mousex, mousey);
+		} else if(drawing_rect_) {
+			handle_drawing_rect(mousex, mousey);
 		}
 
 		if(!object_mode) {
@@ -854,9 +859,8 @@ void editor::edit_level()
 			}
 		}
 
-		draw();
-
 		lvl_->complete_rebuild_tiles_in_background();
+		draw();
 	}
 }
 
@@ -1045,6 +1049,54 @@ void editor::handle_object_dragging(int mousex, int mousey)
 	}
 }
 
+void editor::handle_drawing_rect(int mousex, int mousey)
+{
+	const unsigned int buttons = get_mouse_state(mousex, mousey);
+
+	const int xpos = xpos_ + mousex*zoom_;
+	const int ypos = ypos_ + mousey*zoom_;
+
+	int x1 = xpos;
+	int x2 = anchorx_;
+	int y1 = ypos;
+	int y2 = anchory_;
+	if(x1 > x2) {
+		std::swap(x1, x2);
+	}
+
+	if(y1 > y2) {
+		std::swap(y1, y2);
+	}
+
+	x1 = round_tile_size(x1);
+	x2 = round_tile_size(x2 + TileSize);
+	y1 = round_tile_size(y1);
+	y2 = round_tile_size(y2 + TileSize);
+
+	const rect new_rect = rect(x1, y1, x2 - x1, y2 - y1);
+	if(g_rect_drawing == new_rect) {
+		return;
+	}
+
+	if(tool() == TOOL_ADD_RECT) {
+		lvl_->freeze_rebuild_tiles_in_background();
+		if(tmp_undo_.get()) {
+			tmp_undo_->undo_command();
+		}
+
+		if(buttons == SDL_BUTTON_LEFT) {
+			add_tile_rect(anchorx_, anchory_, xpos, ypos);
+		} else {
+			remove_tile_rect(anchorx_, anchory_, xpos, ypos);
+		}
+
+		tmp_undo_.reset(new executable_command(undo_.back()));
+		undo_.pop_back();
+		lvl_->unfreeze_rebuild_tiles_in_background();
+	}
+	g_rect_drawing = new_rect;
+}
+
 void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 {
 	const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
@@ -1118,7 +1170,9 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 		//we are beginning to drag our selection
 		dragging_ = true;
 	} else if(tool() == TOOL_ADD_RECT || tool() == TOOL_SELECT_RECT) {
+		tmp_undo_.reset();
 		drawing_rect_ = true;
+		g_rect_drawing = rect();
 	} else if(tool() == TOOL_MAGIC_WAND) {
 		drawing_rect_ = false;
 	} else if(tool() == TOOL_PENCIL) {
@@ -1352,13 +1406,31 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 		} else if(event.button == SDL_BUTTON_LEFT) {
 
 			if(tool() == TOOL_ADD_RECT) {
+
+				lvl_->freeze_rebuild_tiles_in_background();
+				if(tmp_undo_.get()) {
+					//if we have a temporary change that was made while dragging
+					//to preview the change, undo that now.
+					tmp_undo_->undo_command();
+					tmp_undo_.reset();
+				}
+
 				add_tile_rect(anchorx_, anchory_, xpos, ypos);
+				lvl_->unfreeze_rebuild_tiles_in_background();
 			} else if(tool() == TOOL_SELECT_RECT) {
 				select_tile_rect(anchorx_, anchory_, xpos, ypos);
 			}
 			  
 		} else if(event.button == SDL_BUTTON_RIGHT) {
+			lvl_->freeze_rebuild_tiles_in_background();
+			if(tmp_undo_.get()) {
+				//if we have a temporary change that was made while dragging
+				//to preview the change, undo that now.
+				tmp_undo_->undo_command();
+				tmp_undo_.reset();
+			}
 			remove_tile_rect(anchorx_, anchory_, xpos, ypos);
+			lvl_->unfreeze_rebuild_tiles_in_background();
 		}
 	} else {
 		//some kind of object editing

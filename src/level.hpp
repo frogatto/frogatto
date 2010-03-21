@@ -165,6 +165,12 @@ public:
 	//with the new tiles.
 	void complete_rebuild_tiles_in_background();
 
+	//stop calls to start_rebuild_tiles_in_background from proceeding
+	//until unfreeze_rebuild_tiles_in_background() is called.
+	void freeze_rebuild_tiles_in_background();
+
+	void unfreeze_rebuild_tiles_in_background();
+
 	void rebuild_tiles();
 
 	const std::string& title() const { return title_; }

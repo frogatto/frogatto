@@ -136,6 +136,7 @@ private:
 	void handle_scrolling();
 
 	void handle_object_dragging(int mousex, int mousey);
+	void handle_drawing_rect(int mousex, int mousey);
 
 	void process_ghost_objects();
 	void remove_ghost_objects();
@@ -194,6 +195,10 @@ private:
 	};
 
 	std::vector<executable_command> undo_, redo_;
+
+	//a temporary undo which is used for when we execute commands on
+	//a temporary basis -- e.g. for a preview -- so we can later undo them.
+	boost::scoped_ptr<executable_command> tmp_undo_;
 
 	//indexes into undo_ which records the beginning of the current 'group'
 	//of commands. When begin_command_group() is called, a value is added
