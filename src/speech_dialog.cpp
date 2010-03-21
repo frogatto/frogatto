@@ -53,8 +53,8 @@ bool speech_dialog::handle_mouse_move(int x, int y)
 		y *= 2;
 	}
 	rect box(
-		960 - OptionsX - OptionWidth - OptionsBorder,
-		640 - OptionsY - OptionHeight*options_.size() - OptionsBorder,
+		preferences::virtual_screen_width() - OptionsX - OptionWidth - OptionsBorder,
+		preferences::virtual_screen_height() - OptionsY - OptionHeight*options_.size() - OptionsBorder,
 		OptionWidth + OptionsBorder*2, OptionHeight*options_.size() + OptionsBorder*2
 	);
 	//std::cerr << "Options box: " << box << " : " << x << " : " << y << "\n";
@@ -121,8 +121,8 @@ bool speech_dialog::key_press(const SDL_Event& event)
 		{
 			if (event.motion.which == last_mouse)
 			{
-				return handle_mouse_move(event.motion.x, event.motion.y);
 				last_mouse = -1;
+				return handle_mouse_move(event.motion.x, event.motion.y);
 			}
 		}
 #endif
