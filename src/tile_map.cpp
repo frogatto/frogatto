@@ -950,7 +950,6 @@ bool tile_map::set_tile(int xpos, int ypos, const std::string& str)
 
 	const int index = get_pattern_index_entry(tstr);
 	if(row.size() > x && row[x] == index) {
-		std::cerr << "tile unchanged: '" << pattern_index_[index].str.data() << "'\n";
 		return false;
 	}
 
@@ -959,7 +958,6 @@ bool tile_map::set_tile(int xpos, int ypos, const std::string& str)
 		row.push_back(empty_index);
 	}
 
-		std::cerr << "tile changed: '" << pattern_index_[row[x]].str.data() << "' -> '" << pattern_index_[index].str.data() << "' -- " << row[x] << " -> " << index << "\n";
 	row[x] = index;
 
 	// clear out variations info
@@ -975,7 +973,6 @@ int tile_map::get_pattern_index_entry(const tile_string& str) {
 		if(strcmp(e.str.data(), str.data()) == 0) {
 			return index;
 		}
-		std::cerr << "tile changed ne " << index << ": (" << e.str.data() << ") (" << str.data() << ")\n";
 		++index;
 	}
 

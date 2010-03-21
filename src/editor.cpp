@@ -698,6 +698,8 @@ void editor::edit_level()
 	done_ = false;
 	int prev_mousex = -1, prev_mousey = -1;
 	while(!done_) {
+		const int scheduled_frame_end_time = SDL_GetTicks() + 20;
+
 		if(editor_mode_dialog_) {
 			editor_mode_dialog_->refresh_selection();
 		}
@@ -861,6 +863,8 @@ void editor::edit_level()
 
 		lvl_->complete_rebuild_tiles_in_background();
 		draw();
+
+		SDL_Delay(std::max<int>(1, scheduled_frame_end_time - SDL_GetTicks()));
 	}
 }
 
@@ -938,8 +942,6 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 		}
 
 		if(!tile_selection_.tiles.empty()) {
-			undo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), min_x, min_y, max_x, max_y));
-			redo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), min_x, min_y, max_x, max_y));
 			undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), std::vector<int>()));
 			redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), std::vector<int>()));
 		}
@@ -1379,8 +1381,6 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 			}
 
 			if(!tile_selection_.tiles.empty()) {
-				undo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), min_x, min_y, max_x, max_y));
-				redo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), min_x, min_y, max_x, max_y));
 				undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), std::vector<int>()));
 				redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), std::vector<int>()));
 			}
@@ -1587,8 +1587,6 @@ void editor::remove_tile_rect(int x1, int y1, int x2, int y2)
 	}
 
 	redo.push_back(boost::bind(&level::clear_tile_rect, lvl_.get(), x1, y1, x2, y2));
-	redo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), x1, y1, x2, y2));
-	undo.push_back(boost::bind(&level::refresh_tile_rect, lvl_.get(), x1, y1, x2, y2));
 	undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), std::vector<int>()));
 	redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), std::vector<int>()));
 
@@ -2158,7 +2156,6 @@ void editor::draw() const
 	debug_console::draw();
 
 	SDL_GL_SwapBuffers();
-	SDL_Delay(20);
 }
 
 void editor::draw_selection(int xoffset, int yoffset) const
