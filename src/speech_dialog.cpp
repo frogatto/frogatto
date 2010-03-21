@@ -57,7 +57,7 @@ bool speech_dialog::handle_mouse_move(int x, int y)
 		640 - OptionsY - OptionHeight*options_.size() - OptionsBorder,
 		OptionWidth + OptionsBorder*2, OptionHeight*options_.size() + OptionsBorder*2
 	);
-	std::cerr << "Options box: " << box << " : " << x << " : " << y << "\n";
+	//std::cerr << "Options box: " << box << " : " << x << " : " << y << "\n";
 	if (point_in_rect(point(x, y), box))
 	{
 		option_selected_ = (y-box.y())/OptionHeight;
