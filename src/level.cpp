@@ -1159,7 +1159,6 @@ void level::prepare_tiles_for_drawing()
 
 		if(tiles_[n].object->solid_color()) {
 			tiles_[n].draw_disabled = true;
-			tiles_[n].blit_queue.clear();
 			if(!solid_color_rects_.empty()) {
 				solid_color_rect& r = solid_color_rects_.back();
 				if(r.layer == tiles_[n].zorder && r.color.rgba() == tiles_[n].object->solid_color()->rgba() && r.area.y() == tiles_[n].y && r.area.x() + r.area.w() == tiles_[n].x) {

@@ -21,7 +21,6 @@ struct level_tile {
 	int zorder;
 	const_level_object_ptr object;
 	bool face_right;
-	graphics::blit_queue blit_queue;
 	bool draw_disabled;
 };
 
