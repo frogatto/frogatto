@@ -803,7 +803,7 @@ void editor::edit_level()
 		if(tool() == TOOL_PENCIL && buttons && mousey > editor_menu_dialog_->height() && mousex < editor_mode_dialog_->x()) {
 			const int xpos = xpos_ + mousex*zoom_;
 			const int ypos = ypos_ + mousey*zoom_;
-			point p(round_tile_size(xpos), round_tile_size(ypos));
+			point p(xpos, ypos);
 			if(std::find(g_current_draw_tiles.begin(), g_current_draw_tiles.end(), p) == g_current_draw_tiles.end()) {
 				g_current_draw_tiles.push_back(p);
 
@@ -1179,7 +1179,7 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 		drawing_rect_ = false;
 	} else if(tool() == TOOL_PENCIL) {
 		drawing_rect_ = false;
-		point p(round_tile_size(anchorx_), round_tile_size(anchory_));
+		point p(anchorx_, anchory_);
 		if(buttons&SDL_BUTTON_LEFT) {
 			add_tile_rect(p.x, p.y, p.x, p.y);
 		} else {
