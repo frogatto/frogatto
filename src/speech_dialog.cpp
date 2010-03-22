@@ -129,6 +129,8 @@ bool speech_dialog::key_press(const SDL_Event& event)
 		}
 
 		return false;
+	} else if (event.type != SDL_KEYDOWN && event.type != SDL_MOUSEBUTTONDOWN) {
+		return false; // only keydown and mousebuttondown should be handled by the rest of the function
 	}
 
 	if(text_char_ < num_chars()) {
