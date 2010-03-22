@@ -105,27 +105,28 @@ bool speech_dialog::key_press(const SDL_Event& event)
 			default:
 				break;
 			}
-		}
+			
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-		if(event.type == SDL_MOUSEBUTTONDOWN)
-		{
-			last_mouse = event.button.which;
-			handle_mouse_move(event.button.x, event.button.y);
-		}
-		if (event.type == SDL_MOUSEMOTION)
-		{
-			if (event.motion.which == last_mouse)
-				handle_mouse_move(event.motion.x, event.motion.y);
-		}
-		if (event.type == SDL_MOUSEBUTTONUP)
-		{
-			if (event.motion.which == last_mouse)
+			if(event.type == SDL_MOUSEBUTTONDOWN)
 			{
-				last_mouse = -1;
-				return handle_mouse_move(event.motion.x, event.motion.y);
+				last_mouse = event.button.which;
+				handle_mouse_move(event.button.x, event.button.y);
 			}
-		}
+			if (event.type == SDL_MOUSEMOTION)
+			{
+				if (event.motion.which == last_mouse)
+					handle_mouse_move(event.motion.x, event.motion.y);
+			}
+			if (event.type == SDL_MOUSEBUTTONUP)
+			{
+				if (event.motion.which == last_mouse)
+				{
+					last_mouse = -1;
+					return handle_mouse_move(event.motion.x, event.motion.y);
+				}
+			}
 #endif
+		}
 
 		return false;
 	}

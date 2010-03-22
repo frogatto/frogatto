@@ -1126,8 +1126,10 @@ public:
 					while(SDL_PollEvent(&event)) {
 						switch(event.type) {
 						case SDL_MOUSEBUTTONDOWN:
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 						case SDL_MOUSEBUTTONUP:
 						case SDL_MOUSEMOTION:
+#endif
 						case SDL_KEYDOWN:
 							done = done || dialog_.key_press(event);
 							break;
