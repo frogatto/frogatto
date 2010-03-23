@@ -305,7 +305,7 @@ extern "C" int main(int argc, char** argv)
 	const std::string orig_level_cfg = level_cfg;
 
 	while(!quit && !show_title_screen(level_cfg)) {
-		boost::scoped_ptr<level> lvl(load_level(level_cfg));
+		boost::intrusive_ptr<level> lvl(load_level(level_cfg));
 
 		//see if we're loading a multiplayer level, in which case we
 		//connect to the server.
@@ -317,7 +317,7 @@ extern "C" int main(int argc, char** argv)
 		if(lvl->is_multiplayer()) {
 			last_draw_position() = screen_position();
 			std::string level_cfg = "waiting-room.cfg";
-			boost::scoped_ptr<level> wait_lvl(load_level(level_cfg));
+			boost::intrusive_ptr<level> wait_lvl(load_level(level_cfg));
 			wait_lvl->set_multiplayer_slot(0);
 			std::cerr << "HAS PLAYER : " << (wait_lvl->player() ? "YES" : "NO") << "\n";
 			if(wait_lvl->player()) {

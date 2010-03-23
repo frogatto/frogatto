@@ -168,6 +168,7 @@ namespace game_logic
 			variant static_evaluate(const formula_callable& variables) const {
 				variant result;
 				std::vector<variant>& res = result.initialize_list();
+				res.reserve(items_.size());
 				for(std::vector<expression_ptr>::const_iterator i = items_.begin(); i != items_.end(); ++i) {
 					res.push_back((*i)->evaluate(variables));
 				}
@@ -176,24 +177,10 @@ namespace game_logic
 			}
 
 			variant execute(const formula_callable& variables) const {
-				std::vector<variant>& res = result_.initialize_list();
-
-				//hold a reference to the result while we're evaluating the
-				//expression. This is to make the reference count for the list
-				//above 1, so that if this list expression is called
-				//recursively, we know we can't re-use the same list multiple
-				//times.
-				variant ref = result_;
-
-				for(std::vector<expression_ptr>::const_iterator i = items_.begin(); i != items_.end(); ++i) {
-					res.push_back((*i)->evaluate(variables));
-				}
-				
-				return result_;
+				return static_evaluate(variables);
 			}
 			
 			std::vector<expression_ptr> items_;
-			mutable variant result_;
 		};
 		
 		class map_expression : public formula_expression {
@@ -437,8 +424,8 @@ namespace game_logic
 				const variant left = left_->evaluate(variables);
 				if(!left.is_callable()) {
 					if(left.is_list()) {
-						list_callable lc(left);	
-						return right_->evaluate(lc);
+						formula_callable_ptr lc(new list_callable(left));	
+						return right_->evaluate(*lc);
 					} else if(left.is_map()) {
 						return left[variant(right_->str())];
 					}

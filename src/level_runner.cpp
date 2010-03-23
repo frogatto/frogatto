@@ -201,7 +201,7 @@ void show_end_game()
 
 }
 
-level_runner::level_runner(boost::scoped_ptr<level>& lvl, std::string& level_cfg)
+level_runner::level_runner(boost::intrusive_ptr<level>& lvl, std::string& level_cfg)
   : lvl_(lvl), level_cfg_(level_cfg)
 {
 	quit_ = false;
