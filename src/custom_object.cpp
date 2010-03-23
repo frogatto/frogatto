@@ -2053,13 +2053,12 @@ void custom_object::handle_event(int event, const formula_callable* context)
 #endif
 
 		const bool result = execute_command(var);
-		if(!result) {
-			break;
-		}
-
 #ifndef DISABLE_FORMULA_PROFILER
 		event_call_stack.pop_back();
 #endif
+		if(!result) {
+			break;
+		}
 	}
 
 	backup_callable_stack_.pop();
