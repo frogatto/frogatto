@@ -13,6 +13,10 @@ public:
 	~manager() {}
 };
 
+class suspend_scope
+{
+};
+
 }
 
 #else
@@ -40,6 +44,15 @@ class manager
 public:
 	explicit manager(const char* output_file);
 	~manager();
+};
+
+class suspend_scope
+{
+public:
+	suspend_scope() { event_call_stack.swap(backup_); }
+	~suspend_scope() { event_call_stack.swap(backup_); }
+private:
+	event_call_stack_type backup_;
 };
 
 }

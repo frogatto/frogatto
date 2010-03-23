@@ -64,8 +64,7 @@ manager::manager(const char* output_file)
 		profiler_on = true;
 		output_fname = output_file;
 
-		const sighandler_t sigresult = signal(SIGPROF, sigprof_handler);
-		assert(sigresult != SIG_ERR);
+		signal(SIGPROF, sigprof_handler);
 
 		struct itimerval timer;
 		timer.it_interval.tv_sec = 0;

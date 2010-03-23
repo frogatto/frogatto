@@ -14,6 +14,7 @@
 #include "entity.hpp"
 #include "filesystem.hpp"
 #include "formula_callable_definition.hpp"
+#include "formula_profiler.hpp"
 #include "level.hpp"
 #include "level_runner.hpp"
 #include "object_events.hpp"
@@ -1073,6 +1074,8 @@ public:
 		if(g_in_speech_dialog) {
 			return;
 		}
+
+		formula_profiler::suspend_scope profiler_suspend;
 
 		//make it so the player's controls become locked for the duration of the dialog.
 		controls::local_controls_lock controller_lock;
