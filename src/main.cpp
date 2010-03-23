@@ -28,6 +28,7 @@
 #include "filesystem.hpp"
 #include "font.hpp"
 #include "foreach.hpp"
+#include "formula_profiler.hpp"
 #include "framed_gui_element.hpp"
 #include "graphical_font.hpp"
 #include "gui_section.hpp"
@@ -125,6 +126,9 @@ extern "C" int main(int argc, char** argv)
 	std::vector<std::string> util_args;
 	std::string server = "wesnoth.org";
 
+	const char* profile_output = NULL;
+	std::string profile_output_buf;
+
 	//on the iPhone, try to restore the auto-save if it exists
 	if(sys::file_exists(preferences::auto_save_file_path())) {
 		level_cfg = "autosave.cfg";
@@ -139,7 +143,10 @@ extern "C" int main(int argc, char** argv)
 			arg_value = std::string(equal+1, arg.end());
 		}
 		
-		if(arg_name == "--utility") {
+		if(arg_name == "--profile" || arg == "--profile") {
+			profile_output_buf = arg_value;
+			profile_output = profile_output_buf.c_str();
+		} else if(arg_name == "--utility") {
 			utility_program = arg_value;
 			for(++n; n < argc; ++n) {
 				const std::string arg(argv[n]);
@@ -300,6 +307,8 @@ extern "C" int main(int argc, char** argv)
 	GLenum glew_status = glewInit();
 	ASSERT_EQ(glew_status, GLEW_OK);
 #endif
+
+	formula_profiler::manager profiler(profile_output);
 
 	bool quit = false;
 	const std::string orig_level_cfg = level_cfg;

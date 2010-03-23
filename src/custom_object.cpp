@@ -18,6 +18,7 @@
 #include "font.hpp"
 #include "formatter.hpp"
 #include "formula_callable.hpp"
+#include "formula_profiler.hpp"
 #include "graphical_font.hpp"
 #include "level.hpp"
 #include "level_logic.hpp"
@@ -1096,14 +1097,18 @@ bool custom_object::is_standing(const level& lvl, collision_info* info) const
 
 namespace {
 
-//this shows all object events that are currently active.
-std::vector<int> event_call_stack;
+#ifndef DISABLE_FORMULA_PROFILER
+using formula_profiler::event_call_stack;
+#endif
 
 variant call_stack(const custom_object& obj) {
 	std::vector<variant> result;
+
+#ifndef DISABLE_FORMULA_PROFILER
 	for(int n = 0; n != event_call_stack.size(); ++n) {
-		result.push_back(variant(get_object_event_str(event_call_stack[n])));
+		result.push_back(variant(get_object_event_str(event_call_stack[n].event_id)));
 	}
+#endif
 
 	return variant(&result);
 }
@@ -2034,18 +2039,27 @@ void custom_object::handle_event(int event, const formula_callable* context)
 	for(int n = 0; n != nhandlers; ++n) {
 		const game_logic::formula* handler = handlers[n];
 
-		event_call_stack.push_back(event);
+#ifndef DISABLE_FORMULA_PROFILER
+		formula_profiler::custom_object_event_frame event_frame = { type_.get(), event, false };
+		event_call_stack.push_back(event_frame);
+#endif
 
 		++events_handled_per_second;
 
 		variant var = handler->execute(*this);
+
+#ifndef DISABLE_FORMULA_PROFILER
+		event_call_stack.back().executing_commands = true;
+#endif
 
 		const bool result = execute_command(var);
 		if(!result) {
 			break;
 		}
 
+#ifndef DISABLE_FORMULA_PROFILER
 		event_call_stack.pop_back();
+#endif
 	}
 
 	backup_callable_stack_.pop();
