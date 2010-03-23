@@ -1,6 +1,8 @@
 #ifndef FORMULA_PROFILER_HPP_INCLUDED
 #define FORMULA_PROFILER_HPP_INCLUDED
 
+#include <string>
+
 #ifdef DISABLE_FORMULA_PROFILER
 
 namespace formula_profiler
@@ -16,6 +18,8 @@ public:
 class suspend_scope
 {
 };
+
+std::string get_profile_summary() { return ""; }
 
 }
 
@@ -54,6 +58,8 @@ public:
 private:
 	event_call_stack_type backup_;
 };
+
+std::string get_profile_summary();
 
 }
 

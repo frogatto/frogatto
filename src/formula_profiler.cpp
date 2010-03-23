@@ -24,6 +24,7 @@ namespace formula_profiler
 event_call_stack_type event_call_stack;
 
 namespace {
+bool handler_disabled = false;
 bool profiler_on = false;
 std::string output_fname;
 pthread_t main_thread;
@@ -36,7 +37,7 @@ const size_t max_samples = 10000;
 
 void sigprof_handler(int sig)
 {
-	if(!pthread_equal(main_thread, pthread_self())) {
+	if(handler_disabled || !pthread_equal(main_thread, pthread_self())) {
 		return;
 	}
 
@@ -105,6 +106,51 @@ bool custom_object_event_frame::operator<(const custom_object_event_frame& f) co
 	       type == f.type && event_id == f.event_id && executing_commands < f.executing_commands;
 }
 
+std::string get_profile_summary()
+{
+	if(!profiler_on) {
+		return "";
+	}
+
+	handler_disabled = true;
+
+	static int last_empty_samples = 0;
+	static int last_num_samples = 0;
+
+	const int nsamples = num_samples - last_num_samples;
+	const int nempty = empty_samples - last_empty_samples;
+
+	std::sort(event_call_stack_samples.end() - nsamples, event_call_stack_samples.end());
+
+	std::ostringstream s;
+
+	s << "PROFILE: " << (nsamples + nempty) << " CPU. " << nsamples << " IN FFL ";
+
+
+	std::vector<std::pair<int, std::string> > samples;
+	int count = 0;
+	for(int n = last_num_samples; n < num_samples; ++n) {
+		if(n+1 == num_samples || event_call_stack_samples[n].type != event_call_stack_samples[n+1].type) {
+			samples.push_back(std::pair<int, std::string>(count + 1, event_call_stack_samples[n].type->id()));
+			count = 0;
+		} else {
+			++count;
+		}
+	}
+
+	std::sort(samples.begin(), samples.end());
+	std::reverse(samples.begin(), samples.end());
+	for(int n = 0; n != samples.size(); ++n) {
+		s << samples[n].second << " " << samples[n].first << " ";
+	}
+
+	last_empty_samples = empty_samples;
+	last_num_samples = num_samples;
+
+	handler_disabled = false;
+
+	return s.str();
+}
 
 }
 

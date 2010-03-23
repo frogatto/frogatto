@@ -31,6 +31,7 @@ private:
 	int current_fps_, next_fps_, current_cycles_, next_cycles_, current_delay_, next_delay_,
 	    current_draw_, next_draw_, current_process_, next_process_,
 		current_flip_, next_flip_, current_events_;
+	std::string profiling_summary_;
 	int nskip_draw_;
 
 	CKey key;

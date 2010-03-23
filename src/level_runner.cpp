@@ -14,6 +14,7 @@
 #include "filesystem.hpp"
 #include "font.hpp"
 #include "foreach.hpp"
+#include "formula_profiler.hpp"
 #include "inventory.hpp"
 #include "joystick.hpp"
 #include "level_runner.hpp"
@@ -525,7 +526,7 @@ bool level_runner::play_cycle()
 	if(start_draw < desired_end_time || nskip_draw_ >= MaxSkips) {
 		lvl_->process_draw();
 		draw_scene(*lvl_, last_draw_position());
-		performance_data perf = { current_fps_, current_cycles_, current_delay_, current_draw_, current_process_, current_flip_, cycle, current_events_ };
+		performance_data perf = { current_fps_, current_cycles_, current_delay_, current_draw_, current_process_, current_flip_, cycle, current_events_, profiling_summary_ };
 		draw_fps(*lvl_, perf);
 
 		next_draw_ += (SDL_GetTicks() - start_draw);
@@ -558,6 +559,8 @@ bool level_runner::play_cycle()
 		next_process_ = 0;
 		next_flip_ = 0;
 		custom_object::events_handled_per_second = 0;
+
+		profiling_summary_ = formula_profiler::get_profile_summary();
 	}
 
 	const int raw_wait_time = desired_end_time - SDL_GetTicks();

@@ -34,6 +34,8 @@ struct performance_data {
 	int flip;
 	int cycle;
 	int nevents;
+
+	std::string profiling_info;
 };
 
 void draw_fps(const level& lvl, const performance_data& data);

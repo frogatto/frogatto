@@ -321,13 +321,17 @@ void draw_fps(const level& lvl, const performance_data& data)
 	std::ostringstream s;
 	s << data.fps << "/" << data.cycles_per_second << "fps; " << (data.draw/10) << "% draw; " << (data.flip/10) << "% flip; " << (data.process/10) << "% process; " << (data.delay/10) << "% idle; " << lvl.num_active_chars() << " objects; " << data.nevents << " events";
 
-	const rect area = font->draw(10, 60, s.str());
+	rect area = font->draw(10, 60, s.str());
 
 	if(controls::num_players() > 1) {
 		//draw networking stats
 		std::ostringstream s;
 		s << controls::packets_received() << " packets received; " << controls::num_errors() << " errors; " << controls::cycles_behind() << " behind; " << controls::their_highest_confirmed() << " remote cycles " << controls::last_packet_size() << " packet";
 
-		font->draw(10, area.y2() + 5, s.str());
+		area = font->draw(10, area.y2() + 5, s.str());
+	}
+
+	if(!data.profiling_info.empty()) {
+		font->draw(10, area.y2() + 5, data.profiling_info);
 	}
 }
