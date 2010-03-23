@@ -25,7 +25,7 @@ int get_tile_corners(tile_corner* result, const graphics::texture& t, const rect
 	//UV co-ordinates. This is to prevent floating point rounding errors
 	//from causing us to draw slightly outside the tile. This is pretty
 	//nasty stuff though, and I'm not sure of a better way to do it. :(
-	const GLfloat TileEpsilon = 0.0001;
+	const GLfloat TileEpsilon = 0.01;
 	GLfloat x1 = t.translate_coord_x(GLfloat(xpos + TileEpsilon)/GLfloat(t.width()));
 	GLfloat x2 = t.translate_coord_x(GLfloat(xpos+area.w() - TileEpsilon)/GLfloat(t.width()));
 	const GLfloat y1 = t.translate_coord_y(GLfloat(ypos + TileEpsilon)/GLfloat(t.height()));
