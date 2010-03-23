@@ -1,11 +1,9 @@
 #import "iphone_sound.h"
 #include "SDL.h"
-//#import "GBMusicTrack.h"
 
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 
-//GBMusicTrack *song = nil;
 AVAudioPlayer *song = nil;
 const float fade_interval = 0.05;
 void (*song_finished_callback)() = NULL;
@@ -56,13 +54,6 @@ void iphone_fade_out_music (int duration)
 
 void iphone_play_music (const char *file)
 {
-//	if (song)
-//	{
-//		[song close];
-//	}
-//	song = [[GBMusicTrack alloc] initWithPath:[NSString stringWithCString: file]];
-//	[song setRepeat:YES];
-//	[song play];
 	int timer = SDL_GetTicks();
 	if (song)
 	{
@@ -144,6 +135,11 @@ void iphone_kill_music ()
 	song = nil;
 	(*song_finished_callback)();
 	NSLog(@"Finished playing music");
+}
+
+- (void) audioPlayerEndInterruption:(AVAudioPlayer *)player
+{
+	[player play];
 }
 
 @end
