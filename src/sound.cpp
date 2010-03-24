@@ -365,8 +365,9 @@ int play_internal(const std::string& file, int loops, const void* object)
 		if(channels_to_sounds_playing.size() <= result) {
 			channels_to_sounds_playing.resize(result + 1);
 		}
-		
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 		Mix_Volume(result, MIX_MAX_VOLUME); //start sound at full volume
+#endif
 
 		channels_to_sounds_playing[result].file = file;
 		channels_to_sounds_playing[result].object = object;
