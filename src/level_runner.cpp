@@ -107,8 +107,12 @@ void iris_scene(const level& lvl, screen_position& screen_pos, float amount) {
 
 	point pos = lvl.player()->get_entity().midpoint();
 
+	//we want to make the circle shrink quickly at first, but then slow
+	//as it gets smaller, so we use the square of the amount to achieve this.
+	amount = (1.0 - amount)*(1.0 - amount);
+
 	//Draw a circle.
-	const float radius = 500 - amount*500;
+	const float radius = amount*500;
 	std::vector<GLfloat>& varray = graphics::global_vertex_array();
 	varray.clear();
 	varray.push_back(pos.x);
