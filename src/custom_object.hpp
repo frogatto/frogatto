@@ -145,6 +145,10 @@ protected:
 	void set_value(const std::string& key, const variant& value);
 	void set_value_by_slot(int slot, const variant& value);
 
+	//function which indicates if the object wants to walk up or down stairs.
+	//-1 = up stairs, 0 = no change, 1 = down stairs
+	virtual int walk_up_or_down_stairs() const { return 0; }
+
 	bool is_underwater() const {
 		return was_underwater_;
 	}

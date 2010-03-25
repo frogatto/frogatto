@@ -60,6 +60,11 @@ bool playable_custom_object::is_active(const rect& screen_area) const
 	return true;
 }
 
+int playable_custom_object::walk_up_or_down_stairs() const
+{
+	return control_status(controls::CONTROL_DOWN) - control_status(controls::CONTROL_UP);
+}
+
 void playable_custom_object::process(level& lvl)
 {
 	if(player_info_.current_level() != lvl.id()) {

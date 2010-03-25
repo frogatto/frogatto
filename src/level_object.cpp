@@ -141,8 +141,10 @@ level_object::level_object(wml::const_node_ptr node)
 			}
 		}
 	}
+	
+	std::vector<std::string> solid_attr = util::split(node->attr("solid").str());
 
-	if(all_solid_) {
+	if(all_solid_ || std::find(solid_attr.begin(), solid_attr.end(), "flat") != solid_attr.end()) {
 		if(passthrough_){
 			solid_.resize(width()*height());
 			for(int x = 0; x < width(); ++x) {
@@ -156,55 +158,69 @@ level_object::level_object(wml::const_node_ptr node)
 		}else{
 			solid_ = std::vector<bool>(width()*height(), true);
 		}
-	} else if(node->attr("solid").str() == "diagonal") {
+	}
+		
+	if(std::find(solid_attr.begin(), solid_attr.end(), "diagonal") != solid_attr.end()) {
 		solid_.resize(width()*height());
 		for(int x = 0; x < width(); ++x) {
 			for(int y = 0; y < height(); ++y) {
 				const int index = y*width() + x;
-				solid_[index] = (passthrough_? (y==x) : (y >= x));
+				solid_[index] = solid_[index] || (passthrough_? (y==x) : (y >= x));
 			}
 		}
-	} else if(node->attr("solid").str() == "reverse_diagonal") {
+	}
+	
+	if(std::find(solid_attr.begin(), solid_attr.end(), "reverse_diagonal") != solid_attr.end()) {
 		solid_.resize(width()*height());
 		for(int x = 0; x < width(); ++x) {
 			for(int y = 0; y < height(); ++y) {
 				const int index = y*width() + x;
-				solid_[index] = (passthrough_? (y == (width() - x)) : (y >= (width() - x)));
+				solid_[index] = solid_[index] || (passthrough_? (y == (width() - (x+1))) : (y >= (width() - (x+1))));
 			}
 		}
-	} else if(node->attr("solid").str() == "quarter_diagonal_lower") {
+	}
+	
+	if(std::find(solid_attr.begin(), solid_attr.end(), "quarter_diagonal_lower") != solid_attr.end()) {
 		solid_.resize(width()*height());
 		for(int x = 0; x < width(); ++x) {
 			for(int y = 0; y < height(); ++y) {
 				const int index = y*width() + x;
-				solid_[index] = (passthrough_? (y == (x/2 + width()/2)) : (y >= (x/2 + width()/2)));
+				solid_[index] = solid_[index] || (passthrough_? (y == (x/2 + width()/2)) : (y >= (x/2 + width()/2)));
 			}
 		}
-	} else if(node->attr("solid").str() == "quarter_diagonal_upper") {
+	}
+	
+	if(std::find(solid_attr.begin(), solid_attr.end(), "quarter_diagonal_upper") != solid_attr.end()) {
 		solid_.resize(width()*height());
 		for(int x = 0; x < width(); ++x) {
 			for(int y = 0; y < height(); ++y) {
 				const int index = y*width() + x;
-				solid_[index] = (passthrough_? (y == x/2) : (y >= x/2));
+				solid_[index] = solid_[index] || (passthrough_? (y == x/2) : (y >= x/2));
 			}
 		}
-	} else if(node->attr("solid").str() == "reverse_quarter_diagonal_lower") {
+	}
+	
+	if(std::find(solid_attr.begin(), solid_attr.end(), "reverse_quarter_diagonal_lower") != solid_attr.end()) {
 		solid_.resize(width()*height());
 		for(int x = 0; x < width(); ++x) {
 			for(int y = 0; y < height(); ++y) {
 				const int index = y*width() + x;
-				solid_[index] = (passthrough_? (y == (width() - x/2) -1) : (y >= (width() - x/2)));
+				solid_[index] = solid_[index] || (passthrough_? (y == (width() - x/2) -1) : (y >= (width() - x/2)));
 			}
 		}
-	} else if(node->attr("solid").str() == "reverse_quarter_diagonal_upper") {
+	}
+	
+	if(std::find(solid_attr.begin(), solid_attr.end(), "reverse_quarter_diagonal_upper") != solid_attr.end()) {
 		solid_.resize(width()*height());
 		for(int x = 0; x < width(); ++x) {
 			for(int y = 0; y < height(); ++y) {
 				const int index = y*width() + x;
-				solid_[index] = (passthrough_? (y == (width()/2 - x/2) -1) : (y >= (width()/2 - x/2)));
+				solid_[index] = solid_[index] || (passthrough_? (y == (width()/2 - x/2) -1) : (y >= (width()/2 - x/2)));
 			}
 		}
-	} else if(node->has_attr("solid_heights")) {
+	}
+	
+	if(node->has_attr("solid_heights")) {
 		//this is a csv list of heights which represent the solids
 		std::vector<std::string> heights = util::split(node->attr("solid_heights"));
 		if(!heights.empty()) {

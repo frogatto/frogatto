@@ -739,37 +739,58 @@ void custom_object::process(level& lvl)
 
 		const bool standing = is_standing(lvl);
 		if(previous_standing && !standing) {
-			const int UpwardsSearchRange = 2;
-			//code to make us to up a slope even on a platform.
-			for(int n = 0; n != UpwardsSearchRange; ++n) {
-				set_y(y()-1);
-				if(is_standing(lvl)) {
-					break;
-				}
-			}
 
-			if(!is_standing(lvl)) {
-				set_y(y()+UpwardsSearchRange);
-				int max_drop = 1;
-				while(max_drop-- && !is_standing(lvl)) {
-					set_y(y()+1);
-	
-					if(entity_collides(lvl, *this, MOVE_NONE)) {
-						//don't adjust the position in here. Just abort, let
-						//it fall through below, and the entire move will
-						//be rolled back due to the collision.
+			//we were standing, but we're not now. We want to look for
+			//slopes that will enable us to still be standing. We see
+			//if the object is trying to walk down stairs, in which case
+			//we look downwards first, otherwise we look upwards first,
+			//then downwards.
+			int dir = walk_up_or_down_stairs() > 0 ? 1 : -1;
+
+			for(int tries = 0; tries != 2; ++tries) {
+				bool resolved = false;
+				const int SearchRange = 2;
+				for(int n = 0; n != SearchRange; ++n) {
+					set_y(y()+dir);
+					if(is_standing(lvl)) {
+						resolved = true;
 						break;
 					}
 				}
+
+				if(resolved) {
+					break;
+				}
+
+				dir *= -1;
+				set_centi_y(original_centi_y);
 			}
 		} else if(standing) {
 			if(!vertical_landed && !started_standing && !standing_on_) {
 				horizontal_landed = true;
 			}
 
+			collision_info slope_standing_info;
+
+			//we are standing, but we need to see if we should be standing
+			//on a higher point. If there are solid points immediately above
+			//where we are, we adjust our feet to be on them.
+			//
+			//However, if there is a platform immediately above us, we only
+			//adjust our feet upward if the object is trying to walk up
+			//stairs, normally by the player pressing up while walking.
 			const int begin_y = feet_y();
 			int max_slope = 5;
-			while(--max_slope && is_standing(lvl)) {
+			while(--max_slope && is_standing(lvl, &slope_standing_info)) {
+				if(slope_standing_info.platform && walk_up_or_down_stairs() >= 0) {
+					if(max_slope == 4) {
+						//we always move at least one pixel up, if there is
+						//solid, otherwise we'll fall through.
+						set_y(y()-1);
+					}
+					break;
+				}
+
 				set_y(y()-1);
 			}
 
@@ -780,6 +801,23 @@ void custom_object::process(level& lvl)
 				if(entity_collides(lvl, *this, MOVE_NONE)) {
 					set_centi_y(original_centi_y);
 				}
+			}
+
+			if(walk_up_or_down_stairs() > 0) {
+				//if we are trying to walk down stairs and we're on a platform
+				//and one pixel below is walkable, then we move down by
+				//one pixel.
+				is_standing(lvl, &slope_standing_info);
+				std::cerr << "TRYING TO MOVE DOWN\n";
+				if(slope_standing_info.platform) {
+					set_y(y()+1);
+					if(!is_standing(lvl) || entity_collides(lvl, *this, MOVE_NONE)) {
+						std::cerr << "MOVE DOWN FAILED\n";
+						set_y(y()-1);
+					}
+				}
+
+				std::cerr << "MOVE DOWN POS: " << y() << "\n";
 			}
 		}
 

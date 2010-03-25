@@ -36,6 +36,8 @@ public:
 	bool can_interact() const { return can_interact_ != 0; }
 
 private:
+	int walk_up_or_down_stairs() const;
+
 	virtual void process(level& lvl);
 	variant get_value(const std::string& key) const;	
 	void set_value(const std::string& key, const variant& value);
