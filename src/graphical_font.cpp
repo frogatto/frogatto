@@ -82,6 +82,10 @@ std::vector<GLfloat> font_tcarray;
 
 rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_text) const
 {
+	if(text.empty()) {
+		return rect(x, y, 0, 0);
+	}
+
 	if(draw_text) {
 		texture_.set_as_current_texture();
 	}
@@ -153,7 +157,7 @@ rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_te
 		}
 	}
 
-	if(draw_text) {
+	if(draw_text && !font_varray.empty()) {
 		texture_.set_as_current_texture();
 		glVertexPointer(2, GL_FLOAT, 0, &font_varray.front());
 		glTexCoordPointer(2, GL_FLOAT, 0, &font_tcarray.front());
