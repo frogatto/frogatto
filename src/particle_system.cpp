@@ -384,6 +384,8 @@ void simple_particle_system::draw(const rect& area, const entity& e) const
 	if(info_.delta_a_){
 		glDisableClientState(GL_COLOR_ARRAY);
 	}
+
+	glColor4f(1.0, 1.0, 1.0, 1.0);
 }
 
 particle_system_ptr simple_particle_system_factory::create(const entity& e) const
@@ -559,6 +561,8 @@ public:
 		glDisableClientState(GL_COLOR_ARRAY);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
+
+		glColor4f(1.0, 1.0, 1.0, 1.0);
 	}
 private:
 	const entity& obj_;
