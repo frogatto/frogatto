@@ -341,10 +341,6 @@ void custom_object::draw() const
 		return;
 	}
 
-	if(is_human() && ((invincible_/5)%2) == 1) {
-		return;
-	}
-
 	if(shader_ == 0 && !fragment_shaders_.empty() && !vertex_shaders_.empty()) {
 		shader_ = get_gl_shader(vertex_shaders_, fragment_shaders_);
 	}
