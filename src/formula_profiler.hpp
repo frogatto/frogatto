@@ -19,7 +19,7 @@ class suspend_scope
 {
 };
 
-std::string get_profile_summary() { return ""; }
+inline std::string get_profile_summary() { return ""; }
 
 }
 
