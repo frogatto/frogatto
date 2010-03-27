@@ -1674,7 +1674,20 @@ void editor::set_selection(const tile_selection& s)
 
 void editor::move_object(entity_ptr e, int delta_x, int delta_y)
 {
+	const int orig_x = e->x();
+	const int orig_y = e->y();
+
 	e->set_pos(e->x() + delta_x, e->y() + delta_y);
+
+	if(!place_entity_in_level(*lvl_, *e)) {
+		//if we can't place the object due to solidity, then cancel
+		//the movement.
+		e->set_pos(orig_x, orig_y);
+		return;
+	}
+
+	delta_x = e->x() - orig_x;
+	delta_y = e->y() - orig_y;
 
 	//update any x/y co-ordinates to be the same relative to the object's
 	//new position.
