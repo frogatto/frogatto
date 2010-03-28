@@ -491,7 +491,7 @@ void play_music(const std::string& file)
 	if (playing_music)
 	{
 		next_music() = file;
-		iphone_fade_out_music(500);
+		iphone_fade_out_music(350);
 		return;
 	}
 	
@@ -499,7 +499,7 @@ void play_music(const std::string& file)
 	std::string aac_file = file;
 	aac_file.replace(aac_file.length()-3, aac_file.length(), "m4a");
 	iphone_play_music(("music_aac/" + aac_file).c_str());
-	iphone_fade_in_music(500);
+	iphone_fade_in_music(350);
 	playing_music = true;
 #endif
 }
