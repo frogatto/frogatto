@@ -40,6 +40,9 @@ public:
 	int mid_x() const { return (x() + x2())/2; }
 	int mid_y() const { return (y() + y2())/2; }
 
+	const point& top_left() const { return top_left_; }
+	const point& bottom_right() const { return bottom_right_; }
+
 	std::string to_string() const;
 
 	SDL_Rect sdl_rect() const;

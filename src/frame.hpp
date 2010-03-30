@@ -70,6 +70,9 @@ public:
 	bool hit(int time_in_frame) const;
 	const graphics::texture& img() const { return texture_; }
 	const rect& area() const { return img_rect_; }
+	int num_frames() const { return nframes_; }
+	int num_frames_per_row() const { return nframes_per_row_ > 0 && nframes_per_row_ < nframes_ ? nframes_per_row_ : nframes_; }
+	int pad() const { return pad_; }
 	int blur() const { return blur_; }
 	bool rotate_on_slope() const { return rotate_on_slope_; }
 	int damage() const { return damage_; }

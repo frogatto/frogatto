@@ -108,6 +108,7 @@ class editor_menu_dialog : public gui::dialog
 			"Level Properties", "", boost::bind(&editor::edit_level_properties, &editor_),
 			"Undo", "u", boost::bind(&editor::undo_command, &editor_),
 			"Redo", "r", boost::bind(&editor::redo_command, &editor_),
+			"Edit Object...", "", boost::bind(&editor::edit_object_type, &editor_),
 		};
 
 		std::vector<menu_item> res;
@@ -2314,6 +2315,14 @@ void editor::redo_command()
 	if(layers_dialog_) {
 		layers_dialog_->init();
 	}
+}
+
+void show_object_editor_dialog(const std::string& obj_type);
+
+void editor::edit_object_type()
+{
+	std::string type = enemy_types[cur_object_].node->attr("type");
+	show_object_editor_dialog(type);
 }
 
 void editor::edit_level_properties()

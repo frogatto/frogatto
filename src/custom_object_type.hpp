@@ -31,8 +31,11 @@ typedef boost::shared_ptr<const modifier> const_modifier_ptr;
 class custom_object_type
 {
 public:
+	static wml::node_ptr merge_prototype(wml::node_ptr node);
+	static const std::string* get_object_path(const std::string& id);
 	static const_custom_object_type_ptr get(const std::string& id);
 	static custom_object_type_ptr create(const std::string& id);
+	static void invalidate_object(const std::string& id);
 	static std::vector<const_custom_object_type_ptr> get_all();
 
 	typedef std::vector<game_logic::const_formula_ptr> event_handler_map;

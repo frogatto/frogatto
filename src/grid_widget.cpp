@@ -192,8 +192,10 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 		} else if(event.type == SDL_MOUSEBUTTONDOWN) {
 			const SDL_MouseButtonEvent& e = event.button;
 			const int row_index = row_at(e.x, e.y);
+			std::cerr << "SELECT ROW: " << row_index << "\n";
 			if(row_index >= 0 && row_index < row_callbacks_.size() &&
 			   row_callbacks_[row_index]) {
+			std::cerr << "ROW CB: " << row_index << "\n";
 				row_callbacks_[row_index]();
 			}
 

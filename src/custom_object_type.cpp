@@ -117,9 +117,11 @@ void merge_into_prototype(wml::node_ptr prototype_node, wml::node_ptr node)
 	}
 }
 
+}
+
 //function which finds if a node has a prototype, and if so, applies the
 //prototype to the node.
-wml::node_ptr merge_prototype(wml::node_ptr node)
+wml::node_ptr custom_object_type::merge_prototype(wml::node_ptr node)
 {
 	if(!node->has_attr("prototype")) {
 		return node;
@@ -140,6 +142,20 @@ wml::node_ptr merge_prototype(wml::node_ptr node)
 	return node;
 }
 
+const std::string* custom_object_type::get_object_path(const std::string& id)
+{
+	if(object_file_paths().empty()) {
+		//find out the paths to all our files
+		sys::get_unique_filenames_under_dir("data/objects", &object_file_paths());
+		sys::get_unique_filenames_under_dir("data/object_prototypes", &prototype_file_paths());
+	}
+
+	std::map<std::string, std::string>::const_iterator itor = object_file_paths().find(id);
+	if(itor == object_file_paths().end()) {
+		return NULL;
+	}
+
+	return &itor->second;
 }
 
 const_custom_object_type_ptr custom_object_type::get(const std::string& id)
@@ -186,6 +202,11 @@ custom_object_type_ptr custom_object_type::create(const std::string& id)
 	} catch(...) {
 		ASSERT_LOG(false, "Unknown error loading custom object in " << path_itor->second);
 	}
+}
+
+void custom_object_type::invalidate_object(const std::string& id)
+{
+	cache().erase(id);
 }
 
 std::vector<const_custom_object_type_ptr> custom_object_type::get_all()

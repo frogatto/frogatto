@@ -95,6 +95,8 @@ public:
 	void undo_command();
 	void redo_command();
 
+	void edit_object_type();
+
 	void close() { done_ = true; }
 
 	void edit_level_properties();

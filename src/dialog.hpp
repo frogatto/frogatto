@@ -40,6 +40,7 @@ public:
 	void clear();
 	void set_padding(int pad) { padding_ = pad; }
 	void close() { opened_ = false; }
+	void cancel() { cancelled_ = true; close(); }
 
 	bool closed() { return !opened_; }
 	bool cancelled() { return cancelled_; }
@@ -72,6 +73,8 @@ private:
 
 	graphics::texture bg_;
 	mutable GLfloat bg_alpha_;
+
+	int last_draw_;
 };
 
 typedef boost::shared_ptr<dialog> dialog_ptr;

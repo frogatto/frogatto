@@ -26,7 +26,7 @@ namespace gui {
 
 dialog::dialog(int x, int y, int w, int h)
   : opened_(false), cancelled_(false), clear_bg_(true), padding_(10),
-    add_x_(0), add_y_(0), bg_alpha_(1.0)
+    add_x_(0), add_y_(0), bg_alpha_(1.0), last_draw_(-1)
 {
 	set_loc(x,y);
 	set_dim(w,h);
@@ -119,7 +119,13 @@ void dialog::prepare_draw()
 void dialog::complete_draw()
 {
 	SDL_GL_SwapBuffers();
-	SDL_Delay(1);
+
+	const int end_draw = last_draw_ + 20;
+	const int delay_time = std::max<int>(1, end_draw - SDL_GetTicks());
+
+	SDL_Delay(delay_time);
+
+	last_draw_ = SDL_GetTicks();
 }
 
 void dialog::handle_draw_children() const {
