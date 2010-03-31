@@ -172,6 +172,13 @@ namespace preferences {
 			debug_ = true;
 		} else if(s == "--nodebug") {
 			debug_ = false;
+		} else if(s == "--simiphone") {
+			virtual_screen_width_ = 960;
+			virtual_screen_height_ = 640;
+		
+			actual_screen_width_ = 480;
+			actual_screen_height_ = 320;
+			use_16bpp_textures_ = true;
 		} else {
 			return false;
 		}
