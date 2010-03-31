@@ -1532,6 +1532,10 @@ public:
 	virtual void execute(level& lvl, entity& ob) const {
 		level::portal p;
 		p.level_dest = level_;
+		if(p.level_dest.empty()) {
+			p.level_dest = lvl.id();
+		}
+
 		p.dest_starting_pos = true;
 		p.dest_label = label_;
 		p.automatic = true;
@@ -1556,7 +1560,10 @@ private:
 				transition = args()[2]->evaluate(variables).as_string();
 			}
 		}
-		return variant(new teleport_command(args()[0]->evaluate(variables).as_string(), label, transition));
+
+		variant dst_level = args()[0]->evaluate(variables);
+		const std::string dst_level_str = dst_level.is_null() ? "" : dst_level.as_string();
+		return variant(new teleport_command(dst_level_str, label, transition));
 	}
 };
 
