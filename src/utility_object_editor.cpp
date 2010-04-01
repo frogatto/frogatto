@@ -39,10 +39,16 @@ bool is_pixel_border(const surface& s, int x, int y)
 	}
 
 	unsigned char* pixel = reinterpret_cast<unsigned char*>(s->pixels) + y*s->pitch + x*3;
-	for(int n = 0; n != 3; ++n) {
-		if(pixel[n] != RedBorder[n]) {
-			return false;
-		}
+	if(pixel[s->format->Rshift/8] != RedBorder[0]) {
+		return false;
+	}
+
+	if(pixel[s->format->Gshift/8] != RedBorder[1]) {
+		return false;
+	}
+
+	if(pixel[s->format->Bshift/8] != RedBorder[2]) {
+		return false;
 	}
 
 	return true;
@@ -76,7 +82,7 @@ public:
 	object_image_widget(const std::string& fname, boost::function<void(RectSelection)> handler) : selection_handler_(handler)
 	{
 		surface_ = graphics::surface_cache::get(fname);
-		ASSERT_LOG(surface_->format->Rmask == 0xFF && surface_->format->Gmask == 0xFF00 && surface_->format->Bmask == 0xFF0000 && surface_->format->Amask == 0, "SURFACE NOT IN EXPECTED FORMAT");
+		ASSERT_LOG(surface_->format->Amask == 0 && surface_->format->BitsPerPixel == 24, "SURFACE NOT IN EXPECTED FORMAT: " << surface_->format->BitsPerPixel);
 
 		for(int y = 0; y != surface_->h; ++y) {
 			for(int x = 0; x != surface_->w; ++x) {
