@@ -46,6 +46,13 @@ namespace preferences {
 	bool force_no_npot_textures();
 
 	bool use_16bpp_textures();
+
+	class editor_screen_size_scope {
+		int width_, height_;
+	public:
+		editor_screen_size_scope();
+		~editor_screen_size_scope();
+	};
 }
 
 #endif

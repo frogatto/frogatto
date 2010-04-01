@@ -672,6 +672,8 @@ unsigned int get_mouse_state(int& mousex, int& mousey) {
 
 void editor::edit_level()
 {
+	preferences::editor_screen_size_scope screen_size_scope;
+
 	stats::flush();
 	try {
 		load_stats();

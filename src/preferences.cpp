@@ -149,6 +149,16 @@ namespace preferences {
 	{
 		return debug_;
 	}
+
+	editor_screen_size_scope::editor_screen_size_scope() : width_(virtual_screen_width_), height_(virtual_screen_height_) {
+		virtual_screen_width_ = actual_screen_width_;
+		virtual_screen_height_ = actual_screen_height_;
+	}
+
+	editor_screen_size_scope::~editor_screen_size_scope() {
+		virtual_screen_width_ = width_;
+		virtual_screen_height_ = height_;
+	}
 	
 	bool parse_arg(const char* arg) {
 		std::string s(arg);
