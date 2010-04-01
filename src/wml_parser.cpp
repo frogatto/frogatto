@@ -465,6 +465,7 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 				PARSE_ERROR("attribute appears multiple times");
 			}
 			nodes.top().node->set_attr(name, wml::value(value, filename_ptr, line_number));
+			nodes.top().node->add_attr_order(name);
 
 			if(current_comment.empty() == false) {
 				nodes.top().node->set_attr_comment(name, current_comment);

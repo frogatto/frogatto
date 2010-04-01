@@ -93,6 +93,9 @@ public:
 	const schema* get_schema() const { return schema_; }
 	void set_schema(const schema* s) { schema_ = s; }
 
+	void add_attr_order(const std::string& attr);
+	const std::vector<std::string>& attr_order() const { return attr_order_; }
+
 private:
 	std::string name_;
 	attr_map attr_;
@@ -104,6 +107,8 @@ private:
 	//comment data
 	std::string comment_;
 	attr_map attr_comments_;
+
+	std::vector<std::string> attr_order_;
 };
 
 }

@@ -29,8 +29,22 @@ void write(const wml::const_node_ptr& node, std::string& res,
 		write_comment(node->get_comment(), indent, res);
 	}
 	res += indent + "[" + node->name() + "]\n";
+
+	const std::vector<std::string>& attr_order = node->attr_order();
+	foreach(const std::string& attr, attr_order) {
+		const std::string& comment = node->get_attr_comment(attr);
+		if(comment.empty() == false) {
+			write_comment(comment, indent, res);
+		}
+		res += indent + attr + "=\"" + node->attr(attr).str() + "\"\n";
+	}
+
 	for(wml::node::const_attr_iterator i = node->begin_attr();
 	    i != node->end_attr(); ++i) {
+		if(std::find(attr_order.begin(), attr_order.end(), i->first) != attr_order.end()) {
+			continue;
+		}
+
 		const std::string& comment = node->get_attr_comment(i->first);
 		if(comment.empty() == false) {
 			write_comment(comment, indent, res);

@@ -215,4 +215,9 @@ const std::string& node::get_attr_comment(const std::string& name) const
 	}
 }
 
+void node::add_attr_order(const std::string& attr)
+{
+	attr_order_.push_back(attr);
+}
+
 }
