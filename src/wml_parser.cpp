@@ -434,7 +434,10 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 					util::strip(template_name_str);
 					wml_templates.put(template_name_str, t);
 				} else if(prefix == "base") {
+					el->set_prefix("base");
 					nodes.top().base_nodes[element] = el;
+					nodes.top().node->set_base_element(element, el);
+					std::cerr << "SET BASE: " << nodes.top().node->name() << " -> " << element << "\n";
 				} else if(prefix != "") {
 					PARSE_ERROR("unrecognized element prefix");
 				} else if(nodes.empty()) {

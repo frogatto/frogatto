@@ -38,6 +38,12 @@ object_map& cache() {
 
 void merge_into_prototype(wml::node_ptr prototype_node, wml::node_ptr node)
 {
+	std::cerr << "merging...\n";
+	for(std::map<std::string, wml::const_node_ptr>::const_iterator i = node->base_elements().begin(); i != node->base_elements().end(); ++i) {
+		prototype_node->set_base_element(i->first, i->second);
+		std::cerr << "SET PROTOTYPE BASE: " << i->first << "\n";
+	}
+
 	//we have a prototype node and an object node. We want to merge
 	//them together to give one object definition. We will save
 	//the final definition in the prototype_node, overwriting its

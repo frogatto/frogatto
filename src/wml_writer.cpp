@@ -1,3 +1,6 @@
+#include <iostream>
+#include <set>
+
 #include "foreach.hpp"
 #include "string_utils.hpp"
 #include "wml_node.hpp"
@@ -23,15 +26,24 @@ void write(const wml::const_node_ptr& node, std::string& res)
 }
 
 void write(const wml::const_node_ptr& node, std::string& res,
-           std::string& indent)
+           std::string& indent, wml::const_node_ptr base)
 {
 	if(node->get_comment().empty() == false) {
 		write_comment(node->get_comment(), indent, res);
 	}
-	res += indent + "[" + node->name() + "]\n";
+	res += indent + "[";
+	if(node->prefix().empty() == false) {
+		res += node->prefix() + ":";
+	}
+	
+	res += node->name() + "]\n";
 
 	const std::vector<std::string>& attr_order = node->attr_order();
 	foreach(const std::string& attr, attr_order) {
+		if(base && base->attr(attr).str() == node->attr(attr).str()) {
+			continue;
+		}
+
 		const std::string& comment = node->get_attr_comment(attr);
 		if(comment.empty() == false) {
 			write_comment(comment, indent, res);
@@ -45,6 +57,10 @@ void write(const wml::const_node_ptr& node, std::string& res,
 			continue;
 		}
 
+		if(base && base->attr(i->first).str() == i->second.str()) {
+			continue;
+		}
+
 		const std::string& comment = node->get_attr_comment(i->first);
 		if(comment.empty() == false) {
 			write_comment(comment, indent, res);
@@ -52,9 +68,24 @@ void write(const wml::const_node_ptr& node, std::string& res,
 		res += indent + i->first + "=\"" + i->second.str() + "\"\n";
 	}
 	indent.push_back('\t');
+
+	std::cerr << "BASE ELEMENTS : " << node->base_elements().size() << "\n";
+	for(std::map<std::string, wml::const_node_ptr>::const_iterator i = node->base_elements().begin(); i != node->base_elements().end(); ++i) {
+		std::cerr << "'" << i->first << "'" << "\n";
+	}
+
+	std::set<std::string> base_written;
 	for(wml::node::const_all_child_iterator i = node->begin_children();
 	    i != node->end_children(); ++i) {
-		write(*i, res, indent);
+		wml::const_node_ptr base_node = node->get_base_element((*i)->name());
+		if(base_node && base_written.count((*i)->name()) == 0) {
+			base_written.insert((*i)->name());
+			if(base_node) {
+				write(base_node, res, indent);
+			}
+		}
+
+		write(*i, res, indent, base_node);
 	}
 	indent.resize(indent.size()-1);
 	res += indent + "[/" + node->name() + "]\n\n";

@@ -8,10 +8,16 @@ node_ptr deep_copy(const_node_ptr ptr, const std::string& name)
 	node_ptr res(new node(name));
 	res->set_schema(ptr->get_schema());
 	res->set_comment(ptr->get_comment());
+	for(std::map<std::string, wml::const_node_ptr>::const_iterator i = ptr->base_elements().begin(); i != ptr->base_elements().end(); ++i) {
+		std::cerr << "COPY: " << ptr->name() << " -> " << i->first << "\n";
+		res->set_base_element(i->first, i->second);
+	}
+
 	for(std::vector<std::string>::const_iterator i = ptr->attr_order().begin();
 	    i != ptr->attr_order().end(); ++i) {
 		res->add_attr_order(*i);
 	}
+
 	for(node::const_attr_iterator i = ptr->begin_attr();
 	    i != ptr->end_attr(); ++i) {
 		res->set_attr(i->first,i->second);
@@ -53,6 +59,10 @@ void merge_over(const_node_ptr src, node_ptr dst)
 	}
 
 	merge_attr_over(src, dst);
+
+	for(std::map<std::string, wml::const_node_ptr>::const_iterator i = src->base_elements().begin(); i != src->base_elements().end(); ++i) {
+		dst->set_base_element(i->first, i->second);
+	}
 
 	for(node::const_all_child_iterator i = src->begin_children();
 	    i != src->end_children(); ++i) {

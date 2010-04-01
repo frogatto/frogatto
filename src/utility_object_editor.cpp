@@ -501,7 +501,9 @@ void show_object_editor_dialog(const std::string& obj_type)
 	ASSERT_LOG(type.get() != NULL, "COULD NOT LOAD OBJECT");
 
 	wml::node_ptr obj_node = wml::parse_wml_from_file(*fname);
+	std::cerr << "OBJECT NODE: " << obj_node->base_elements().size() << "\n";
 	wml::node_ptr node = custom_object_type::merge_prototype(obj_node);
+	std::cerr << "PROTO NODE: " << node->base_elements().size() << "\n";
 	wml::const_node_ptr anim = node->get_child("animation");
 	ASSERT_LOG(anim.get() != NULL, "COULD NOT FIND ANIMATION");
 
@@ -523,6 +525,7 @@ void show_object_editor_dialog(const std::string& obj_type)
 		}
 	}
 
+	std::cerr << "OBJECT NODE2: " << obj_node->base_elements().size() << "\n";
 	sys::write_file(*fname, wml::output(obj_node));
 }
 

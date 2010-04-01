@@ -32,6 +32,8 @@ public:
 	explicit node(const std::string& name) : name_(name), schema_(NULL)
 	{}
 
+	void set_prefix(const std::string& p) { prefix_ = p; }
+	const std::string& prefix() const { return prefix_; }
 	const std::string& name() const { return name_; }
 
 	const value& operator[](const std::string& key) const;
@@ -96,8 +98,13 @@ public:
 	void add_attr_order(const std::string& attr);
 	const std::vector<std::string>& attr_order() const { return attr_order_; }
 
+	void set_base_element(const std::string& key, wml::const_node_ptr node);
+	wml::const_node_ptr get_base_element(const std::string& key) const;
+
+	const std::map<std::string, wml::const_node_ptr>& base_elements() const { return base_elements_; }
+
 private:
-	std::string name_;
+	std::string name_, prefix_;
 	attr_map attr_;
 	std::multimap<std::string,boost::shared_ptr<node> > childmap_;
 	std::vector<boost::shared_ptr<node> > children_;
@@ -109,6 +116,8 @@ private:
 	attr_map attr_comments_;
 
 	std::vector<std::string> attr_order_;
+
+	std::map<std::string, wml::const_node_ptr> base_elements_;
 };
 
 }

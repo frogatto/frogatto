@@ -220,4 +220,20 @@ void node::add_attr_order(const std::string& attr)
 	attr_order_.push_back(attr);
 }
 
+void node::set_base_element(const std::string& key, wml::const_node_ptr node)
+{
+	base_elements_[key] = node;
+}
+
+wml::const_node_ptr node::get_base_element(const std::string& key) const
+{
+	std::map<std::string, wml::const_node_ptr>::const_iterator itor = base_elements_.find(key);
+	if(itor != base_elements_.end()) {
+		return itor->second;
+	} else {
+		return wml::const_node_ptr();
+	}
+}
+
+
 }
