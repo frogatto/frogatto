@@ -43,7 +43,7 @@ void write(const wml::const_node_ptr& node, std::string& res,
 		write(*i, res, indent);
 	}
 	indent.resize(indent.size()-1);
-	res += indent + "[/" + node->name() + "]\n";
+	res += indent + "[/" + node->name() + "]\n\n";
 }
 
 std::string output(const wml::const_node_ptr& node)
