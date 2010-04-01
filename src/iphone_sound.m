@@ -52,7 +52,7 @@ void iphone_fade_out_music (int duration)
 	[delegate fadeOutMusic:nil];
 }
 
-void iphone_play_music (const char *file)
+void iphone_play_music (const char *file, int loops)
 {
 	int timer = SDL_GetTicks();
 	if (song)
@@ -65,7 +65,7 @@ void iphone_play_music (const char *file)
 	song = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[NSString stringWithUTF8String: file]] error:NULL];
 	NSLog(@"Initializing the new song took %i ms", SDL_GetTicks()-timer);
 	song.delegate = delegate;
-	song.numberOfLoops = -1; // loop indefinitely
+	song.numberOfLoops = loops; // loop indefinitely
 	
 	timer = SDL_GetTicks();
 	[song play];

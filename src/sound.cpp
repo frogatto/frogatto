@@ -498,7 +498,7 @@ void play_music(const std::string& file)
 	current_music_name() = file;
 	std::string aac_file = file;
 	aac_file.replace(aac_file.length()-3, aac_file.length(), "m4a");
-	iphone_play_music(("music_aac/" + aac_file).c_str());
+	iphone_play_music(("music_aac/" + aac_file).c_str(), -1);
 	iphone_fade_in_music(350);
 	playing_music = true;
 #endif
@@ -534,7 +534,7 @@ void play_music_interrupt(const std::string& file)
 #else
 	std::string aac_file = file;
 	aac_file.replace(aac_file.length()-3, aac_file.length(), "m4a");
-	iphone_play_music(("music_aac/" + aac_file).c_str());
+	iphone_play_music(("music_aac/" + aac_file).c_str(), 0);
 	playing_music = true;
 #endif
 }
