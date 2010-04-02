@@ -132,6 +132,8 @@ public:
 	void end_command_group();
 
 private:
+	void reset_dialog_positions();
+
 	void handle_mouse_button_down(const SDL_MouseButtonEvent& event);
 	void handle_mouse_button_up(const SDL_MouseButtonEvent& event);
 	void handle_key_press(const SDL_KeyboardEvent& key);

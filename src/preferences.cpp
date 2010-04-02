@@ -5,6 +5,8 @@
 
 namespace preferences {
 	namespace {
+		int screen_editor_mode = 0;
+
 		bool no_sound_ = false;
 		bool show_debug_hitboxes_ = false;
 		bool use_pretty_scaling_ = false;
@@ -117,12 +119,18 @@ namespace preferences {
 	void set_actual_screen_width(int width)
 	{
 		actual_screen_width_ = width;
+		if(screen_editor_mode) {
+			virtual_screen_width_ = actual_screen_width_;
+		}
 		recalculate_draw_mask();
 	}
 	
 	void set_actual_screen_height(int height)
 	{
 		actual_screen_height_ = height;
+		if(screen_editor_mode) {
+			virtual_screen_height_ = actual_screen_height_;
+		}
 	}
 
 	bool load_compiled()
@@ -151,6 +159,7 @@ namespace preferences {
 	}
 
 	editor_screen_size_scope::editor_screen_size_scope() : width_(virtual_screen_width_), height_(virtual_screen_height_) {
+		++screen_editor_mode;
 		virtual_screen_width_ = actual_screen_width_;
 		virtual_screen_height_ = actual_screen_height_;
 	}
@@ -158,6 +167,7 @@ namespace preferences {
 	editor_screen_size_scope::~editor_screen_size_scope() {
 		virtual_screen_width_ = width_;
 		virtual_screen_height_ = height_;
+		--screen_editor_mode;
 	}
 	
 	bool parse_arg(const char* arg) {

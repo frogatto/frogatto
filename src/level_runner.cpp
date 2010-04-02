@@ -422,21 +422,12 @@ bool level_runner::play_cycle()
 				quit_ = true;
 				break;
 			case SDL_VIDEORESIZE: {
-				continue; //disabled.
-				/*
 				const SDL_ResizeEvent* const resize = reinterpret_cast<SDL_ResizeEvent*>(&event);
-				screen_width = resize->w;
-				screen_height = resize->h;
-				if(screen_width > screen_height + screen_height/3) {
-					screen_width = screen_height + screen_height/3;
-				}
 
-				if(screen_height > (screen_width*3)/4) {
-					screen_height = (screen_width*3)/4;
-				}
-				SDL_SetVideoMode(screen_width,screen_height,0,SDL_OPENGL|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
-				*/
-
+				preferences::set_actual_screen_width(resize->w);
+				preferences::set_actual_screen_height(resize->h);
+				SDL_SetVideoMode(resize->w,resize->h,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+				continue;
 			}
 			case SDL_KEYDOWN: {
 				const SDLMod mod = SDL_GetModState();

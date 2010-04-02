@@ -674,6 +674,7 @@ unsigned int get_mouse_state(int& mousex, int& mousey) {
 
 void editor::edit_level()
 {
+	reset_dialog_positions();
 	stats::flush();
 	try {
 		load_stats();
@@ -859,6 +860,18 @@ void editor::edit_level()
 			case SDL_MOUSEBUTTONUP:
 				handle_mouse_button_up(event.button);
 				break;
+			case SDL_VIDEORESIZE: {
+				const SDL_ResizeEvent* const resize = reinterpret_cast<SDL_ResizeEvent*>(&event);
+
+				preferences::set_actual_screen_width(resize->w);
+				preferences::set_actual_screen_height(resize->h);
+				SDL_SetVideoMode(resize->w,resize->h,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+				
+				reset_dialog_positions();
+
+				continue;
+			}
+
 			default:
 				break;
 			}
@@ -869,6 +882,19 @@ void editor::edit_level()
 
 		SDL_Delay(std::max<int>(1, scheduled_frame_end_time - SDL_GetTicks()));
 	}
+}
+
+void editor::reset_dialog_positions()
+{
+
+#define SET_DIALOG_POS(d) if(d) { d->set_loc(graphics::screen_width() - d->width(), d->y()); }
+				SET_DIALOG_POS(editor_mode_dialog_);
+				SET_DIALOG_POS(character_dialog_);
+				SET_DIALOG_POS(layers_dialog_);
+				SET_DIALOG_POS(group_property_dialog_);
+				SET_DIALOG_POS(property_dialog_);
+				SET_DIALOG_POS(tileset_dialog_);
+#undef SET_DIALOG_POS
 }
 
 void editor::handle_key_press(const SDL_KeyboardEvent& key)
