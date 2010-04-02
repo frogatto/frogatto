@@ -30,7 +30,11 @@ namespace {
 using namespace gui;
 using graphics::surface;
 
+#if SDL_BYTEORER == SDL_BIG_ENDIAN
+const unsigned char RedBorder[] = {0x3d, 0x30, 0xf9};
+#else
 const unsigned char RedBorder[] = {0xf9, 0x30, 0x3d};
+#endif
 
 bool is_pixel_border(const surface& s, int x, int y)
 {
