@@ -549,6 +549,8 @@ editor::tileset::tileset(wml::const_node_ptr node)
 
 void editor::edit(const char* level_cfg, int xpos, int ypos)
 {
+	preferences::editor_screen_size_scope screen_size_scope;
+
 	editor*& e = all_editors[level_cfg];
 	if(!e) {
 		e = new editor(level_cfg);
@@ -672,8 +674,6 @@ unsigned int get_mouse_state(int& mousex, int& mousey) {
 
 void editor::edit_level()
 {
-	preferences::editor_screen_size_scope screen_size_scope;
-
 	stats::flush();
 	try {
 		load_stats();
