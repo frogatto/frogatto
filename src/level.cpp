@@ -2499,13 +2499,13 @@ namespace {
 
 const std::string LevelProperties[] = {
   "cycle", "player", "local_player", "num_active", "active_chars", "chars",
-  "tint", "in_editor", "zoom", "focus",
+  "tint", "in_editor", "zoom", "focus", "gui",
 };
 
 enum LEVEL_PROPERTY_ID {
 	LEVEL_CYCLE, LEVEL_PLAYER, LEVEL_LOCAL_PLAYER, LEVEL_NUM_ACTIVE,
 	LEVEL_ACTIVE_CHARS, LEVEL_CHARS, LEVEL_TINT, LEVEL_IN_EDITOR, LEVEL_ZOOM,
-	LEVEL_FOCUS,
+	LEVEL_FOCUS, LEVEL_GUI
 };
 }
 
@@ -2556,6 +2556,13 @@ variant level::get_value_by_slot(int slot) const
 
 		return variant(&v);
 	}
+	case LEVEL_GUI: {
+		if(gui_algorithm_) {
+			return variant(gui_algorithm_->get_object());
+		} else {
+			return variant();
+		}
+	}
 	}
 
 	ASSERT_LOG(false, "BAD SLOT IN GET_VALUE FROM LEVEL " << slot);
@@ -2599,6 +2606,12 @@ variant level::get_value(const std::string& key) const
 		}
 
 		return variant(&v);
+	} else if(key == "gui") {
+		if(gui_algorithm_) {
+			return variant(gui_algorithm_->get_object());
+		} else {
+			return variant();
+		}
 	} else {
 		const_entity_ptr e = get_entity_by_label(key);
 		if(e) {

@@ -1,6 +1,8 @@
 #ifndef FRAME_HPP_INCLUDED
 #define FRAME_HPP_INCLUDED
 
+#include <boost/array.hpp>
+
 #include <string>
 #include <vector>
 
@@ -88,8 +90,15 @@ public:
 private:
 	int frame_number(int time_in_frame) const;
 
-	void get_rect_in_texture(int time, GLfloat* output_rect) const;
-	void get_rect_in_frame_number(int nframe, GLfloat* output_rect) const;
+	struct frame_info {
+		frame_info() : x_adjust(0), y_adjust(0), x2_adjust(0), y2_adjust(0)
+		{}
+		int x_adjust, y_adjust, x2_adjust, y2_adjust;
+		rect area;
+	};
+
+	void get_rect_in_texture(int time, GLfloat* output_rect, const frame_info*& info) const;
+	void get_rect_in_frame_number(int nframe, GLfloat* output_rect, const frame_info*& info) const;
 	std::string id_;
 
 	//ID as a variant, useful to be able to get a variant of the ID
@@ -103,6 +112,9 @@ private:
 	rect collide_rect_;
 	rect hit_rect_;
 	rect img_rect_;
+
+	std::vector<frame_info> frames_;
+
 	rect platform_rect_;
 	std::vector<int> hit_frames_;
 	int platform_x_, platform_y_, platform_w_;

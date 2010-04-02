@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 
 #include <boost/lexical_cast.hpp>
@@ -147,6 +148,7 @@ void frame::play_sound(const void* object) const
 
 void frame::build_alpha()
 {
+	frames_.resize(nframes_);
 	if(!texture_.valid()) {
 		return;
 	}
@@ -174,6 +176,66 @@ void frame::build_alpha()
 			std::vector<bool>::const_iterator src = texture_.get_alpha_row(xbase, ybase + y);
 			std::copy(src, src + img_rect_.w(), dst);
 		}
+
+		//now calculate if the actual frame we should be using for drawing
+		//is smaller than the outer rectangle, so we can save on drawing space
+		frame_info& f = frames_[n];
+		f.area = rect(xbase, ybase, img_rect_.w(), img_rect_.h());
+		int top;
+		for(top = 0; top != img_rect_.h(); ++top) {
+			const std::vector<bool>::const_iterator a = texture_.get_alpha_row(xbase, ybase + top);
+			if(std::find(a, a + img_rect_.w(), false) != a + img_rect_.w()) {
+				break;
+			}
+		}
+
+		int bot;
+		for(bot = img_rect_.h(); bot > 0; --bot) {
+			const std::vector<bool>::const_iterator a = texture_.get_alpha_row(xbase, ybase + bot-1);
+			if(std::find(a, a + img_rect_.w(), false) != a + img_rect_.w()) {
+				break;
+			}
+		}
+
+		int left;
+		for(left = 0; left < img_rect_.w(); ++left) {
+			std::vector<bool>::const_iterator a = texture_.get_alpha_row(xbase + left, ybase);
+
+			bool has_opaque = false;
+			for(int n = 0; n != img_rect_.h(); ++n) {
+				if(!*a) {
+					has_opaque = true;
+				}
+				a += texture_.width();
+			}
+
+			if(has_opaque) {
+				break;
+			}
+		}
+
+		int right;
+		for(right = img_rect_.w(); right > 0; --right) {
+			std::vector<bool>::const_iterator a = texture_.get_alpha_row(xbase + right-1, ybase);
+
+			bool has_opaque = false;
+			for(int n = 0; n != img_rect_.h(); ++n) {
+				if(!*a) {
+					has_opaque = true;
+				}
+				a += texture_.width();
+			}
+
+			if(has_opaque) {
+				break;
+			}
+		}
+
+		f.x_adjust = left;
+		f.y_adjust = top;
+		f.x2_adjust = img_rect_.w() - right;
+		f.y2_adjust = img_rect_.h() - bot;
+		f.area = rect(xbase + left, ybase + top, right - left, bot - top);
 	}
 }
 
@@ -204,11 +266,14 @@ bool frame::is_alpha(int x, int y, int time, bool face_right) const
 
 void frame::draw_into_blit_queue(graphics::blit_queue& blit, int x, int y, bool face_right, bool upside_down, int time) const
 {
+	const frame_info* info = NULL;
 	GLfloat rect[4];
-	get_rect_in_texture(time, &rect[0]);
+	get_rect_in_texture(time, &rect[0], info);
 
-	const int w = width()*(face_right ? 1 : -1);
-	const int h = height()*(upside_down ? -1 : 1);
+	x += (face_right ? info->x_adjust : info->x2_adjust)*scale_;
+	y += (info->y_adjust)*scale_;
+	const int w = info->area.w()*scale_*(face_right ? 1 : -1);
+	const int h = info->area.h()*scale_*(upside_down ? -1 : 1);
 
 	blit.set_texture(texture_.get_id());
 
@@ -220,33 +285,39 @@ void frame::draw_into_blit_queue(graphics::blit_queue& blit, int x, int y, bool 
 
 void frame::draw(int x, int y, bool face_right, bool upside_down, int time, int rotate) const
 {
+	const frame_info* info = NULL;
 	GLfloat rect[4];
-	get_rect_in_texture(time, &rect[0]);
+	get_rect_in_texture(time, &rect[0], info);
+
+	x += (face_right ? info->x_adjust : info->x2_adjust)*scale_;
+	y += info->y_adjust*scale_;
+	const int w = info->area.w()*scale_*(face_right ? 1 : -1);
+	const int h = info->area.h()*scale_*(upside_down ? -1 : 1);
 
 	if(rotate == 0) {
 		//if there is no rotation, then we can make a much simpler call
-		graphics::queue_blit_texture(texture_, x, y, width()*(face_right ? 1 : -1), height()*(upside_down ? -1 : 1), rect[0], rect[1], rect[2], rect[3]);
+		graphics::queue_blit_texture(texture_, x, y, w, h, rect[0], rect[1], rect[2], rect[3]);
 		graphics::flush_blit_texture();
 		return;
 	}
 
-	graphics::queue_blit_texture(texture_, x, y, width()*(face_right ? 1 : -1), height()*(upside_down ? -1 : 1), rotate, rect[0], rect[1], rect[2], rect[3]);
+	graphics::queue_blit_texture(texture_, x, y, w, h, rotate, rect[0], rect[1], rect[2], rect[3]);
 	graphics::flush_blit_texture();
-	
-	//the last 4 params are the rectangle of the single, specific frame
-	//graphics::blit_texture(texture_, x, y, width()*(face_right ? 1 : -1), height()*(upside_down ? -1 : 1), rotate + (face_right ? rotate_ : -rotate_),
-	 //                      rect[0], rect[1], rect[2], rect[3]);
 }
 
 void frame::draw(int x, int y, const rect& area, bool face_right, bool upside_down, int time, int rotate) const
 {
+	const frame_info* info = NULL;
 	GLfloat rect[4];
-	get_rect_in_texture(time, &rect[0]);
+	get_rect_in_texture(time, &rect[0], info);
 
 	const int x_adjust = area.x();
 	const int y_adjust = area.y();
 	const int w_adjust = area.w() - img_rect_.w();
 	const int h_adjust = area.h() - img_rect_.h();
+
+	const int w = info->area.w()*scale_*(face_right ? 1 : -1);
+	const int h = info->area.h()*scale_*(upside_down ? -1 : 1);
 
 	rect[0] += GLfloat(x_adjust)/GLfloat(texture_.width());
 	rect[1] += GLfloat(y_adjust)/GLfloat(texture_.height());
@@ -254,18 +325,21 @@ void frame::draw(int x, int y, const rect& area, bool face_right, bool upside_do
 	rect[3] += GLfloat(y_adjust + h_adjust)/GLfloat(texture_.height());
 
 	//the last 4 params are the rectangle of the single, specific frame
-	graphics::blit_texture(texture_, x, y, (width() + w_adjust*scale_)*(face_right ? 1 : -1), (height() + h_adjust*scale_)*(upside_down ? -1 : 1), rotate + (face_right ? rotate_ : -rotate_),
+	graphics::blit_texture(texture_, x, y, (w + w_adjust*scale_)*(face_right ? 1 : -1), (h + h_adjust*scale_)*(upside_down ? -1 : 1), rotate + (face_right ? rotate_ : -rotate_),
 	                       rect[0], rect[1], rect[2], rect[3]);
 }
 
-void frame::get_rect_in_texture(int time, GLfloat* output_rect) const
+void frame::get_rect_in_texture(int time, GLfloat* output_rect, const frame_info*& info) const
 {
 	//picks out a single frame to draw from a whole animation, based on time
-	get_rect_in_frame_number(frame_number(time), output_rect);
+	get_rect_in_frame_number(frame_number(time), output_rect, info);
 }
 
-void frame::get_rect_in_frame_number(int nframe, GLfloat* output_rect) const
+void frame::get_rect_in_frame_number(int nframe, GLfloat* output_rect, const frame_info*& info_result) const
 {
+	const frame_info& info = frames_[nframe];
+	info_result = &info;
+
 	const int current_col = (nframes_per_row_ > 0) ? (nframe % nframes_per_row_) : nframe ;
 	const int current_row = (nframes_per_row_ > 0) ? (nframe/nframes_per_row_) : 0 ;
 
@@ -274,10 +348,10 @@ void frame::get_rect_in_frame_number(int nframe, GLfloat* output_rect) const
 	//This seems like a kludge but I don't know of a better way to do it. :(
 	const GLfloat TextureEpsilon = 0.0001;
 
-	output_rect[0] = GLfloat(img_rect_.x() + current_col*(img_rect_.w()+pad_))/GLfloat(texture_.width()) + TextureEpsilon;
-	output_rect[1] = GLfloat(img_rect_.y() + ((img_rect_.h()+pad_) * current_row)) / GLfloat(texture_.height());
-	output_rect[2] = GLfloat(img_rect_.x() + current_col*(img_rect_.w()+pad_) + img_rect_.w())/GLfloat(texture_.width()) - TextureEpsilon;
-	output_rect[3] = GLfloat(img_rect_.y() + ((img_rect_.h()+pad_) * current_row) + img_rect_.h())/GLfloat(texture_.height()) - TextureEpsilon;
+	output_rect[0] = GLfloat(info.area.x())/GLfloat(texture_.width()) + TextureEpsilon;
+	output_rect[1] = GLfloat(info.area.y()) / GLfloat(texture_.height());
+	output_rect[2] = GLfloat(info.area.x2() + 1)/GLfloat(texture_.width()) - TextureEpsilon;
+	output_rect[3] = GLfloat(info.area.y2() + 1)/GLfloat(texture_.height()) - TextureEpsilon;
 }
 
 int frame::duration() const

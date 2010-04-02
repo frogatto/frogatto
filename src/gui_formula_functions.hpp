@@ -33,6 +33,8 @@ public:
 
 	frame_ptr get_frame(const std::string& id) const;
 
+	const custom_object* get_object() const { return object_.get(); }
+
 private:
 	gui_algorithm(const gui_algorithm&);
 	void operator=(const gui_algorithm&);
