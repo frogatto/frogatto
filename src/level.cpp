@@ -1573,7 +1573,8 @@ void level::process_draw()
 void level::do_processing()
 {
 	if(cycle_ == 0) {
-		foreach(const entity_ptr& e, chars_) {
+		const std::vector<entity_ptr> chars = chars_;
+		foreach(const entity_ptr& e, chars) {
 			e->handle_event(OBJECT_EVENT_START_LEVEL);
 		}
 	}
