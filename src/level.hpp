@@ -203,6 +203,8 @@ public:
 	void set_next_level(const std::string& name);
 
 	int cycle() const { return cycle_; }
+	bool in_dialog() const { return in_dialog_; }
+	void set_in_dialog(bool value) { in_dialog_ = value; }
 	bool is_underwater(const rect& r, rect* res_water_area=NULL, variant* v=NULL) const;
 
 	void get_current(const entity& e, int* velocity_x, int* velocity_y) const;
@@ -283,6 +285,8 @@ private:
 	std::string music_;
 	std::string replay_data_;
 	int cycle_;
+
+	bool in_dialog_;
 
 	std::map<std::string, variant> vars_;
 	

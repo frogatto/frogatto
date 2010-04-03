@@ -93,6 +93,7 @@ level::level(const std::string& level_cfg)
 	music_ = node->attr("music");
 	replay_data_ = node->attr("replay_data");
 	cycle_ = wml::get_int(node, "cycle");
+	in_dialog_ = false;
 	title_ = node->attr("title");
 	if(node->has_attr("dimensions")) {
 		boundaries_ = rect(node->attr("dimensions"));
@@ -2498,12 +2499,14 @@ void level::set_background_by_id(const std::string& id)
 namespace {
 
 const std::string LevelProperties[] = {
-  "cycle", "player", "local_player", "num_active", "active_chars", "chars",
+  "cycle", "player", "in_dialog",
+  "local_player", "num_active", "active_chars", "chars",
   "tint", "in_editor", "zoom", "focus", "gui",
 };
 
 enum LEVEL_PROPERTY_ID {
-	LEVEL_CYCLE, LEVEL_PLAYER, LEVEL_LOCAL_PLAYER, LEVEL_NUM_ACTIVE,
+	LEVEL_CYCLE, LEVEL_PLAYER, LEVEL_IN_DIALOG,
+	LEVEL_LOCAL_PLAYER, LEVEL_NUM_ACTIVE,
 	LEVEL_ACTIVE_CHARS, LEVEL_CHARS, LEVEL_TINT, LEVEL_IN_EDITOR, LEVEL_ZOOM,
 	LEVEL_FOCUS, LEVEL_GUI
 };
@@ -2522,6 +2525,8 @@ variant level::get_value_by_slot(int slot) const
 		return variant(cycle_);
 	case LEVEL_PLAYER:
 		return variant(last_touched_player_.get());
+	case LEVEL_IN_DIALOG:
+		return variant(in_dialog_);
 	case LEVEL_LOCAL_PLAYER:
 		return variant(player_.get());
 	case LEVEL_NUM_ACTIVE:
@@ -2575,6 +2580,8 @@ variant level::get_value(const std::string& key) const
 		return variant(cycle_);
 	} else if(key == "player") {
 		return variant(last_touched_player_.get());
+	} else if(key == "in_dialog") {
+		return variant(in_dialog_);
 	} else if(key == "local_player") {
 		return variant(player_.get());
 	} else if(key == "num_active") {
@@ -2653,6 +2660,8 @@ void level::set_value(const std::string& key, const variant& value)
 		}
 
 		return;
+	} else if(key == "in_dialog") {
+		in_dialog_ = value.as_bool();
 	} else {
 		vars_[key] = value;
 	}

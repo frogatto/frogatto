@@ -1063,6 +1063,18 @@ private:
 	}
 };
 
+namespace {
+struct in_dialog_setter {
+	level& lvl_;
+	in_dialog_setter(level& lvl) : lvl_(lvl) { 
+		lvl_.set_in_dialog(true);
+	}
+	~in_dialog_setter() {
+		lvl_.set_in_dialog(false);
+	}
+};
+}
+
 class speech_dialog_command : public custom_object_command_callable {
 public:
 	explicit speech_dialog_command(const std::vector<variant>& args, bool paused=false)
@@ -1076,6 +1088,7 @@ public:
 		}
 
 		formula_profiler::suspend_scope profiler_suspend;
+		in_dialog_setter dialog_setter(lvl);
 
 		//make it so the player's controls become locked for the duration of the dialog.
 		controls::local_controls_lock controller_lock;
