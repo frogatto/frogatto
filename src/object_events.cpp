@@ -29,6 +29,7 @@ std::vector<std::string> create_object_event_names()
 	res.push_back("enter_water");
 	res.push_back("exit_water");
 	res.push_back("change_solid_dimensions_fail");
+	res.push_back("add_object_fail");
 	res.push_back("change_animation_failure");
 	res.push_back("die");
 	res.push_back("hit_player");

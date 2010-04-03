@@ -1475,6 +1475,14 @@ public:
 	virtual void execute(level& lvl, entity& ob) const {
 		if(place_entity_in_level(lvl, *e_)) {
 			lvl.add_character(e_);
+		} else {
+			collision_info collide_info;
+			entity_collides(level::current(), *e_, MOVE_NONE, &collide_info);
+			game_logic::map_formula_callable* callable(new game_logic::map_formula_callable(this));
+			callable->add("collide_with", variant(collide_info.collide_with.get()));
+
+			game_logic::formula_callable_ptr callable_ptr(callable);
+			e_->handle_event(OBJECT_EVENT_ADD_OBJECT_FAIL, callable);
 		}
 	}
 };
