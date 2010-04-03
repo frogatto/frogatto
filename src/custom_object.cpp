@@ -75,6 +75,11 @@ custom_object::custom_object(wml::const_node_ptr node)
 	shader_(0),
 	always_active_(wml::get_bool(node, "always_active", false))
 {
+	if(node->has_attr("variations")) {
+		current_variation_ = util::split(node->attr("variations"));
+		type_ = base_type_->get_variation(current_variation_);
+	}
+
 	if(node->has_attr("position_scale_x")) {
 		position_scale_millis_.reset(new std::pair<int, int>(wml::get_int(node, "position_scale_x"), wml::get_int(node, "position_scale_y")));
 	}
@@ -224,6 +229,10 @@ wml::node_ptr custom_object::write() const
 	if(position_scale_millis_.get() != NULL) {
 		res->set_attr("position_scale_x", formatter() << position_scale_millis_->first);
 		res->set_attr("position_scale_y", formatter() << position_scale_millis_->second);
+	}
+
+	if(!current_variation_.empty()) {
+		res->set_attr("variations", util::join(current_variation_));
 	}
 
 	if(draw_color_) {

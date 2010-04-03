@@ -200,6 +200,11 @@ level::level(const std::string& level_cfg)
 		game_logic::wml_formula_callable_read_scope::register_serialized_object(addr_id, chars_.back());
 	}
 
+	wml::const_node_ptr serialized_objects = node->get_child("serialized_objects");
+	if(serialized_objects.get() != NULL) {
+		wml_chars_.push_back(serialized_objects);
+	}
+
 	wml::node::const_child_iterator p1 = node->begin_child("portal");
 	wml::node::const_child_iterator p2 = node->end_child("portal");
 	for(; p1 != p2; ++p1) {
@@ -333,6 +338,15 @@ void level::finish_loading()
 
 	game_logic::wml_formula_callable_read_scope read_scope;
 	foreach(wml::const_node_ptr node, wml_chars_) {
+		if(node->name() == "serialized_objects") {
+			FOREACH_WML_CHILD(obj_node, node, "character") {
+				const intptr_t addr_id = strtoll(obj_node->attr("_addr").c_str(), NULL, 16);
+				game_logic::wml_formula_callable_read_scope::register_serialized_object(addr_id, entity::build(obj_node));
+				fprintf(stderr, "DESERIALIZED: %x\n", addr_id);
+			}
+			continue;
+		}
+
 		load_character(node);
 
 		const intptr_t addr_id = strtoll(node->attr("_addr").c_str(), NULL, 16);
