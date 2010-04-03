@@ -417,9 +417,11 @@ bool water::is_underwater(const rect& r, rect* result_water_area, variant* e) co
 
 void water::init_area_surface_segments(const level& lvl, water::area& a)
 {
-	if(a.surface_segments_.empty() == false) {
+	if(a.surface_segments_init_) {
 		return;
 	}
+
+	a.surface_segments_init_ = true;
 
 	bool prev_solid = true;
 	int begin_segment = 0;
@@ -433,14 +435,10 @@ void water::init_area_surface_segments(const level& lvl, water::area& a)
 
 		prev_solid = solid;
 	}
-
-	if(a.surface_segments_.empty()) {
-		a.surface_segments_.push_back(std::make_pair(0,0));
-	}
 }
 
 water::area::area(const rect& r, const unsigned char* pcolor, variant obj)
-  : rect_(r), distortion_(0, rect(0,0,0,0)), obj_(obj)
+  : rect_(r), distortion_(0, rect(0,0,0,0)), surface_segments_init_(false), obj_(obj)
 {
 	for(int n = 0; n != 4; ++n) {
 		color_[n] = pcolor[n];

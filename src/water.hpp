@@ -62,6 +62,7 @@ private:
 
 		//segments of the surface without solid.
 		std::vector<std::pair<int, int> > surface_segments_;
+		bool surface_segments_init_;
 
 		unsigned char color_[4];
 		variant obj_;
