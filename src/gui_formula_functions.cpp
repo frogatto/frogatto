@@ -14,6 +14,7 @@
 #include "formula.hpp"
 #include "formula_callable_definition.hpp"
 #include "frame.hpp"
+#include "graphical_font.hpp"
 #include "gui_formula_functions.hpp"
 #include "iphone_controls.hpp"
 #include "level.hpp"
@@ -34,6 +35,41 @@ class gui_command : public formula_callable {
 public:
 
 	virtual void execute(const gui_algorithm& algo) = 0;
+};
+
+class draw_text_command : public gui_command {
+	const_graphical_font_ptr font_;
+	std::string text_;
+	int x_, y_;
+public:
+	draw_text_command(const_graphical_font_ptr font, const std::string& text, int x, int y)
+	  : font_(font), text_(text), x_(x), y_(y)
+	{}
+
+	void execute(const gui_algorithm& algo) {
+		font_->draw(x_, y_, text_);
+	}
+};
+
+class draw_text_function : public function_expression {
+public:
+	explicit draw_text_function(const args_list& args)
+	 : function_expression("draw_text", args, 3, 4)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		std::string font = "default";
+
+		int arg = 0;
+		if(args().size() == 4) {
+			font = args()[arg++]->evaluate(variables).as_string();
+		}
+
+		std::string text = args()[arg++]->evaluate(variables).as_string();
+		const int x = args()[arg++]->evaluate(variables).as_int();
+		const int y = args()[arg++]->evaluate(variables).as_int();
+		return variant(new draw_text_command(graphical_font::get(font), text, x, y));
+	}
 };
 
 class draw_number_command : public gui_command {
@@ -219,6 +255,8 @@ public:
 			return expression_ptr(new draw_animation_area_function(algo_, args));
 		} else if(fn == "draw_number") {
 			return expression_ptr(new draw_number_function(args));
+		} else if(fn == "draw_text") {
+			return expression_ptr(new draw_text_function(args));
 		} else if(fn == "color") {
 			return expression_ptr(new color_function(args));
 		}
