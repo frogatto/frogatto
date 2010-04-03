@@ -350,8 +350,8 @@ void frame::get_rect_in_frame_number(int nframe, GLfloat* output_rect, const fra
 
 	output_rect[0] = GLfloat(info.area.x())/GLfloat(texture_.width()) + TextureEpsilon;
 	output_rect[1] = GLfloat(info.area.y()) / GLfloat(texture_.height());
-	output_rect[2] = GLfloat(info.area.x2() + 1)/GLfloat(texture_.width()) - TextureEpsilon;
-	output_rect[3] = GLfloat(info.area.y2() + 1)/GLfloat(texture_.height()) - TextureEpsilon;
+	output_rect[2] = GLfloat(info.area.x() + info.area.w())/GLfloat(texture_.width()) - TextureEpsilon;
+	output_rect[3] = GLfloat(info.area.y() + info.area.h())/GLfloat(texture_.height()) - TextureEpsilon;
 }
 
 int frame::duration() const
