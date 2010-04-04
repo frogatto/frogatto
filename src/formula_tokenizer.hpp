@@ -1,6 +1,6 @@
 /* $Id: formula_tokenizer.hpp 25713 2008-04-09 18:36:16Z dragonking $ */
 /*
-   Copyright (C) 2007 - 2008 by David White <dave.net>
+   Copyright (C) 2007 - 2008 by David White <dave@whitevine.net>
    Part of the Silver Tree Project
 
    This program is free software; you can redistribute it and/or modify

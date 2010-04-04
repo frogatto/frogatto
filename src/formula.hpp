@@ -1,6 +1,6 @@
 /* $Id: formula.hpp 24955 2008-03-21 23:11:31Z dragonking $ */
 /*
-   Copyright (C) 2007 - 2008 by David White <dave.net>
+   Copyright (C) 2007 - 2008 by David White <dave@whitevine.net>
    Part of the Silver Tree Project
 
    This program is free software; you can redistribute it and/or modify
