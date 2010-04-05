@@ -36,6 +36,10 @@ object_map& cache() {
 	return instance;
 }
 
+namespace {
+const std::string BaseStr = "%PROTO%";
+}
+
 void merge_into_prototype(wml::node_ptr prototype_node, wml::node_ptr node)
 {
 	std::cerr << "merging...\n";
@@ -52,7 +56,20 @@ void merge_into_prototype(wml::node_ptr prototype_node, wml::node_ptr node)
 	//the object node.
 	for(wml::node::const_attr_iterator i = node->begin_attr();
 	    i != node->end_attr(); ++i) {
-		prototype_node->set_attr(i->first, i->second);
+		std::string::const_iterator base_itor = std::search(i->second.str().begin(), i->second.str().end(), BaseStr.begin(), BaseStr.end());
+		if(base_itor != i->second.str().end()) {
+			std::string base_attr = prototype_node->attr(i->first);
+			if(base_attr.empty()) {
+				base_attr = "null()";
+			}
+			
+			std::string value = std::string(i->second.str().begin(), base_itor) + base_attr + std::string(base_itor + BaseStr.size(), i->second.str().end());
+
+			wml::value val(value, i->second.filename(), i->second.line());
+			prototype_node->set_attr(i->first, val);
+		} else {
+			prototype_node->set_attr(i->first, i->second);
+		}
 	}
 
 	//mapping of animation nodes is kinda complicated: in the
@@ -543,5 +560,21 @@ BENCHMARK(custom_object_type_frogatto_load)
 		custom_object_type::create("frogatto_playable");
 		graphics::texture::clear_textures();
 		graphics::surface_cache::clear();
+	}
+}
+
+UTILITY(object_definition)
+{
+	foreach(const std::string& arg, args) {
+		const_custom_object_type_ptr obj = custom_object_type::get(arg);
+		ASSERT_LOG(obj.get() != NULL, "NO OBJECT FOUND: " << arg);
+
+		const std::string* fname = custom_object_type::get_object_path(arg + ".cfg");
+		ASSERT_LOG(fname != NULL, "NO OBJECT FILE FOUND: " << arg);
+
+		wml::node_ptr obj_node = wml::parse_wml_from_file(*fname);
+		wml::node_ptr node = custom_object_type::merge_prototype(obj_node);
+
+		std::cout << "OBJECT " << arg << "\n---\n" << wml::output(node) << "\n---\n";
 	}
 }

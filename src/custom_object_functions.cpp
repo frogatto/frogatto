@@ -488,12 +488,15 @@ private:
 		const bool face_right = args()[3]->evaluate(variables).as_int() > 0;
 		custom_object* obj = new custom_object(type, x, y, face_right);
 
+		//adjust so the object's x/y is its midpoint.
+		obj->set_pos(obj->x() - obj->current_frame().width() / 2 , obj->y() - obj->current_frame().height() / 2);
+
 		if(args().size() > 4) {
 			variant properties = args()[4]->evaluate(variables);
 			variant keys = properties.get_keys();
 			for(int n = 0; n != keys.num_elements(); ++n) {
 				variant value = properties[keys[n]];
-				obj->mutate_value(keys.as_string(), value);
+				obj->mutate_value(keys[n].as_string(), value);
 			}
 		}
 

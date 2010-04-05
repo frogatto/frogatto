@@ -133,6 +133,8 @@ public:
 
 	const_editor_entity_info_ptr editor_info() const { return editor_info_; }
 
+	wml::const_node_ptr node() const { return node_; }
+
 private:
 	custom_object_callable callable_definition_;
 
