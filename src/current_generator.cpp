@@ -79,17 +79,21 @@ rect_current_generator::rect_current_generator(wml::const_node_ptr node)
 
 void rect_current_generator::generate(int center_x, int center_y, int target_x, int target_y, int target_mass, int* velocity_x, int* velocity_y)
 {
+	const double strength_multiplier = 1.0 + 0.5*sin(SDL_GetTicks()*0.005);
+	const int strength = strength_*strength_multiplier;
 	if(point_in_rect(point(target_x, target_y), rect_)) {
 		if(xvelocity_ > 0 && *velocity_x < xvelocity_) {
+			int amount = (xvelocity_ - std::max(0, *velocity_x))*strength/(target_mass*1000);
 			const int distance = rect_.x2() - target_x;
-			const int amount = distance*(xvelocity_ - std::max(0, *velocity_x))*strength_/(target_mass*1000*rect_.w());
+			amount = (amount*distance*distance)/(rect_.h()*rect_.h());
 			*velocity_x += amount;
 			if(*velocity_x > xvelocity_) {
 				*velocity_x = xvelocity_;
 			}
 		} else if(xvelocity_ < 0 && *velocity_x > xvelocity_) {
+			int amount = (xvelocity_ - std::min(0, *velocity_x))*strength/(target_mass*1000);
 			const int distance = target_x - rect_.x();
-			const int amount = distance*(xvelocity_ - std::min(0, *velocity_x))*strength_/(target_mass*1000*rect_.w());
+			amount = (amount*distance*distance)/(rect_.h()*rect_.h());
 			*velocity_x += amount;
 			if(*velocity_x < xvelocity_) {
 				*velocity_x = xvelocity_;
@@ -97,7 +101,7 @@ void rect_current_generator::generate(int center_x, int center_y, int target_x, 
 		}
 
 		if(yvelocity_ > 0 && *velocity_y < yvelocity_) {
-			int amount = (yvelocity_ - std::max(0, *velocity_y))*strength_/(target_mass*1000);
+			int amount = (yvelocity_ - std::max(0, *velocity_y))*strength/(target_mass*1000);
 			const int distance = rect_.y2() - target_y;
 			amount = (amount*distance*distance)/(rect_.h()*rect_.h());
 			*velocity_y += amount;
@@ -105,7 +109,7 @@ void rect_current_generator::generate(int center_x, int center_y, int target_x, 
 				*velocity_y = yvelocity_;
 			}
 		} else if(yvelocity_ < 0 && *velocity_y > yvelocity_) {
-			int amount = (yvelocity_ - std::min(0, *velocity_y))*strength_/(target_mass*1000);
+			int amount = (yvelocity_ - std::min(0, *velocity_y))*strength/(target_mass*1000);
 			const int distance = target_y - rect_.y();
 			amount = (amount*distance*distance)/(rect_.h()*rect_.h());
 			*velocity_y += amount;
