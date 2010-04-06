@@ -159,7 +159,7 @@ public:
 	simple_particle_system(const entity& e, const simple_particle_system_factory& factory);
 	~simple_particle_system() {}
 
-	bool is_destroyed() const { return info_.system_time_to_live_ == 0 || info_.spawn_rate_ == 0 && particles_.empty(); }
+	bool is_destroyed() const { return info_.system_time_to_live_ == 0 || info_.spawn_rate_ < 0 && particles_.empty(); }
 	void process(const level& lvl, const entity& e);
 	void draw(const rect& area, const entity& e) const;
 
@@ -244,11 +244,12 @@ void simple_particle_system::process(const level& lvl, const entity& e)
 		nspawn += rand()%info_.spawn_rate_random_;
 	}
 
-	nspawn += spawn_buildup_;
+	if(nspawn > 0) {
+		nspawn += spawn_buildup_;
+	}
+
 	spawn_buildup_ = nspawn%1000;
 	nspawn /= 1000;
-
-	//std::cerr << "SPAWNING " << nspawn << " PARTICLES\n";
 
 	generation new_gen;
 	new_gen.members = nspawn;
