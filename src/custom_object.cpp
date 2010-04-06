@@ -569,7 +569,7 @@ void custom_object::process(level& lvl)
 	int effective_velocity_x = velocity_x_;
 	int effective_velocity_y = velocity_y_;
 
-	if(effective_velocity_y > 0 && (standing_on_ || stand_info.collide_with)) {
+	if(effective_velocity_y > 0 && (standing_on_ || started_standing)) {
 		effective_velocity_y = 0;
 	}
 
