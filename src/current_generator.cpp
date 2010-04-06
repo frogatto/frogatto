@@ -97,15 +97,17 @@ void rect_current_generator::generate(int center_x, int center_y, int target_x, 
 		}
 
 		if(yvelocity_ > 0 && *velocity_y < yvelocity_) {
+			int amount = (yvelocity_ - std::max(0, *velocity_y))*strength_/(target_mass*1000);
 			const int distance = rect_.y2() - target_y;
-			const int amount = distance*(yvelocity_ - std::max(0, *velocity_y))*strength_/(target_mass*1000*rect_.w());
+			amount = (amount*distance*distance)/(rect_.h()*rect_.h());
 			*velocity_y += amount;
 			if(*velocity_y > yvelocity_) {
 				*velocity_y = yvelocity_;
 			}
 		} else if(yvelocity_ < 0 && *velocity_y > yvelocity_) {
+			int amount = (yvelocity_ - std::min(0, *velocity_y))*strength_/(target_mass*1000);
 			const int distance = target_y - rect_.y();
-			const int amount = distance*(yvelocity_ - std::min(0, *velocity_y))*strength_/(target_mass*1000*rect_.w());
+			amount = (amount*distance*distance)/(rect_.h()*rect_.h());
 			*velocity_y += amount;
 			if(*velocity_y < yvelocity_) {
 				*velocity_y = yvelocity_;
