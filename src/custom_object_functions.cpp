@@ -1040,7 +1040,7 @@ public:
 private:
 	variant execute(const formula_callable& variables) const {
 		entity_ptr speaker;
-		int duration = 50;
+		int duration = 100;
 
 		std::vector<variant> result;
 
