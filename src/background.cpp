@@ -155,11 +155,8 @@ wml::node_ptr background::write() const
 	return res;
 }
 
-std::vector<rect> background_rects_drawn;
-
 void background::draw(int x, int y, const rect& area, const std::vector<rect>& opaque_areas, int rotation, int cycle) const
 {
-	background_rects_drawn.clear();
 	const int height = height_ + offset_.y*2;
 
 	//set the background colors for the level. The area above 'height' is
@@ -206,20 +203,26 @@ void background::draw(int x, int y, const rect& area, const std::vector<rect>& o
 	draw_layers(x, y, area, opaque_areas, rotation, cycle);
 }
 
-void background::draw_layers(int x, int y, const rect& area_ref, const std::vector<rect>& opaque_areas, int rotation, int cycle) const
-{
-	rect area = area_ref;
+namespace {
+graphics::blit_queue blit_queue;
+
+void calculate_draw_areas(rect area, std::vector<rect>::const_iterator opaque1, std::vector<rect>::const_iterator opaque2, std::vector<rect>* areas) {
+	if(opaque1 == opaque2) {
+		areas->push_back(area);
+		return;
+	}
+
 	rect sub_areas[4];
-	for(std::vector<rect>::const_iterator i = opaque_areas.begin();
-	    i != opaque_areas.end(); ++i) {
-		const int result = rect_difference(area, *i, sub_areas);
+	for(; opaque1 != opaque2; ++opaque1) {
+		const int result = rect_difference(area, *opaque1, sub_areas);
 		if(result == -1) {
 			continue;
 		}
 
 		if(result != 1) {
 			for(int n = 0; n < result; ++n) {
-				draw_layers(x, y, sub_areas[n], opaque_areas, rotation, cycle);
+
+				calculate_draw_areas(sub_areas[n], opaque1+1, opaque2, areas);
 			}
 
 			return;
@@ -228,19 +231,37 @@ void background::draw_layers(int x, int y, const rect& area_ref, const std::vect
 		area = sub_areas[0];
 	}
 
-	background_rects_drawn.push_back(area);
+	areas->push_back(area);
+}
 
-	foreach(const layer& bg, layers_) {
+}
+
+void background::draw_layers(int x, int y, const rect& area_ref, const std::vector<rect>& opaque_areas, int rotation, int cycle) const
+{
+	static std::vector<rect> areas;
+	areas.clear();
+	calculate_draw_areas(area_ref, opaque_areas.begin(), opaque_areas.end(), &areas);
+
+	for(std::vector<layer>::const_iterator i = layers_.begin(); i != layers_.end(); ++i) {
+		const layer& bg = *i;
 		if(bg.foreground == false) {
-			if(bg.blend == false) {
-				glDisable(GL_BLEND);
+
+			for(std::vector<rect>::const_iterator a = areas.begin(); a != areas.end(); ++a) {
+				draw_layer(x, y, *a, rotation, bg, cycle);
 			}
 
-			draw_layer(x, y, area, rotation, bg, cycle);
-
-			if(bg.blend == false) {
-				glEnable(GL_BLEND);
+			if(!blit_queue.empty() && (i+1 == layers_.end() || i->texture != (i+1)->texture || (i+1)->foreground || i->blend != (i+1)->blend)) {
+				if(bg.blend == false) {
+					glDisable(GL_BLEND);
+				}
+				blit_queue.set_texture(bg.texture.get_id());
+				blit_queue.do_blit();
+				blit_queue.clear();
+				if(bg.blend == false) {
+					glEnable(GL_BLEND);
+				}
 			}
+
 		}
 	}
 }
@@ -250,6 +271,11 @@ void background::draw_foreground(double xpos, double ypos, int rotation, int cyc
 	foreach(const layer& bg, layers_) {
 		if(bg.foreground) {
 			draw_layer(xpos, ypos, rect(xpos, ypos, graphics::screen_width(), graphics::screen_height()), rotation, bg, cycle);
+			if(!blit_queue.empty()) {
+				blit_queue.set_texture(bg.texture.get_id());
+				blit_queue.do_blit();
+				blit_queue.clear();
+			}
 		}
 	}
 }
@@ -257,10 +283,6 @@ void background::draw_foreground(double xpos, double ypos, int rotation, int cyc
 void background::set_offset(const point& offset)
 {
 	offset_ = offset;
-}
-
-namespace {
-graphics::blit_queue blit_queue;
 }
 
 void background::draw_layer(int x, int y, const rect& area, int rotation, const background::layer& bg, int cycle) const
@@ -299,7 +321,7 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 		y1 = area.y();
 	}
 
-	if(y1 > area.y() && bg.color_above) {
+	if(bg.color_above && y1 > area.y()) {
 		glEnable(GL_SCISSOR_TEST);
 
 		const int xpos = area.x() - x;
@@ -316,7 +338,7 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 		glDisable(GL_SCISSOR_TEST);
 	}
 
-	if(y2 < area.y() + area.h() && bg.color_below) {
+	if(bg.color_below && y2 < area.y() + area.h()) {
 		glEnable(GL_SCISSOR_TEST);
 
 		const int xpos = area.x() - x;
@@ -386,15 +408,12 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 			const GLfloat u1 = bg.texture.translate_coord_x(xpos);
 			const GLfloat u2 = bg.texture.translate_coord_x(xpos2);
 
-			blit_queue.clear();
-			blit_queue.set_texture(bg.texture.get_id());
-
+			blit_queue.repeat_last();
 			blit_queue.add(x1, y1, u1, v1);
+			blit_queue.repeat_last();
 			blit_queue.add(x2, y1, u2, v1);
 			blit_queue.add(x1, y2, u1, v2);
 			blit_queue.add(x2, y2, u2, v2);
-
-			blit_queue.do_blit();
 		}
 
 		x += blit_width + bg.xpad*ScaleImage;
