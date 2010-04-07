@@ -3,6 +3,7 @@
 #include "foreach.hpp"
 #include "geometry.hpp"
 #include "level.hpp"
+#include "object_events.hpp"
 
 namespace {
 std::map<std::string, int> solid_dimensions;
@@ -75,7 +76,7 @@ bool point_standable(const level& lvl, const entity& e, int x, int y, collision_
 		const frame& f = obj->current_frame();
 		const int xpos = obj->face_right() ? x - obj->x() : obj->x() + f.width() - x - 1;
 
-		const_solid_info_ptr solid = obj->solid();
+		const solid_info* solid = obj->solid();
 
 		if(solid && solid->solid_at(x - obj->x(), y - obj->y(), info ? &info->collide_with_area_id : NULL)) {
 			if(info) {
@@ -129,8 +130,8 @@ bool entity_collides_with_entity(const entity& e, const entity& other, collision
 
 	const rect area = intersection_rect(our_rect, other_rect);
 
-	const_solid_info_ptr our_solid = e.solid();
-	const_solid_info_ptr other_solid = other.solid();
+	const solid_info* our_solid = e.solid();
+	const solid_info* other_solid = other.solid();
 	assert(our_solid && other_solid);
 
 	const frame& our_frame = e.current_frame();
@@ -155,7 +156,7 @@ bool entity_collides_with_entity(const entity& e, const entity& other, collision
 
 bool entity_collides_with_level(const level& lvl, const entity& e, MOVE_DIRECTION dir, collision_info* info)
 {
-	const_solid_info_ptr s = e.solid();
+	const solid_info* s = e.solid();
 	if(!s) {
 		return false;
 	}
@@ -198,7 +199,7 @@ bool entity_collides_with_level(const level& lvl, const entity& e, MOVE_DIRECTIO
 
 int entity_collides_with_level_count(const level& lvl, const entity& e, MOVE_DIRECTION dir)
 {
-	const_solid_info_ptr s = e.solid();
+	const solid_info* s = e.solid();
 	if(!s) {
 		return 0;
 	}
@@ -297,10 +298,6 @@ int entity_user_collision(const entity& a, const entity& b, collision_pair* area
 		return 0;
 	}
 
-	if(&a == &b) {
-		return 0;
-	}
-
 	const frame& fa = a.current_frame();
 	const frame& fb = b.current_frame();
 
@@ -311,10 +308,10 @@ int entity_user_collision(const entity& a, const entity& b, collision_pair* area
 	int result = 0;
 
 	foreach(const frame::collision_area& area_a, fa.collision_areas()) {
+		rect rect_a(a.face_right() ? a.x() + area_a.area.x() : a.x() + fa.width() - area_a.area.x() - area_a.area.w(),
+		            a.y() + area_a.area.y(),
+					area_a.area.w(), area_a.area.h());
 		foreach(const frame::collision_area& area_b, fb.collision_areas()) {
-			rect rect_a(a.face_right() ? a.x() + area_a.area.x() : a.x() + fa.width() - area_a.area.x() - area_a.area.w(),
-			            a.y() + area_a.area.y(),
-						area_a.area.w(), area_a.area.h());
 			rect rect_b(b.face_right() ? b.x() + area_b.area.x() : b.x() + fb.width() - area_b.area.x() - area_b.area.w(),
 			            b.y() + area_b.area.y(),
 						area_b.area.w(), area_b.area.h());
@@ -443,6 +440,18 @@ public:
 	}
 };
 
+int get_collision_event_id(const std::string& area)
+{
+	static std::map<std::string, int> cache;
+	std::map<std::string, int>::const_iterator itor = cache.find(area);
+	if(itor != cache.end()) {
+		return itor->second;
+	}
+
+	cache[area] = get_object_event_id("collide_object_" + area);
+	return cache[area];
+}
+
 }
 
 void detect_user_collisions(level& lvl)
@@ -455,13 +464,15 @@ void detect_user_collisions(level& lvl)
 		}
 	}
 
+	static const int CollideObjectID = get_object_event_id("collide_object");
+
 	const int MaxCollisions = 16;
 	collision_pair collision_buf[MaxCollisions];
 	for(std::vector<entity_ptr>::const_iterator i = chars.begin(); i != chars.end(); ++i) {
 		for(std::vector<entity_ptr>::const_iterator j = i + 1; j != chars.end(); ++j) {
 			const entity_ptr& a = *i;
 			const entity_ptr& b = *j;
-			if((a->collide_dimensions()&b->collide_dimensions()) == 0) {
+			if(a == b || (a->collide_dimensions()&b->collide_dimensions()) == 0) {
 				//the objects do not share a dimension, and so can't collide.
 				continue;
 			}
@@ -475,15 +486,15 @@ void detect_user_collisions(level& lvl)
 				{
 					user_collision_callable* callable = new user_collision_callable(a, b, *collision_buf[n].first, *collision_buf[n].second);
 					game_logic::formula_callable_ptr ptr(callable);
-					a->handle_event("collide_object", callable);
-					a->handle_event("collide_object_" + *collision_buf[n].first, callable);
+					a->handle_event(CollideObjectID, callable);
+					a->handle_event(get_collision_event_id(*collision_buf[n].first), callable);
 				}
 
 				{
 					user_collision_callable* callable = new user_collision_callable(b, a, *collision_buf[n].second, *collision_buf[n].first);
 					game_logic::formula_callable_ptr ptr(callable);
-					b->handle_event("collide_object", callable);
-					b->handle_event("collide_object_" + *collision_buf[n].second, callable);
+					b->handle_event(CollideObjectID, callable);
+					b->handle_event(get_collision_event_id(*collision_buf[n].second), callable);
 				}
 			}
 		}

@@ -928,33 +928,6 @@ void custom_object::process(level& lvl)
 		standing_on_prev_y_ = standing_on_->feet_y();
 	}
 
-	if(!invincible_) {
-		if(on_players_side()) {
-			entity_ptr collide_with = level::current().collide(body_rect(), this);
-			if(collide_with && collide_with->body_harmful()) {
-				handle_event(OBJECT_EVENT_GET_HIT);
-			}
-		} else {
-			entity_ptr player = lvl.hit_by_player(body_rect());
-			if(player && (last_hit_by_ != player || last_hit_by_anim_ != player->current_animation_id())) {
-				last_hit_by_ = player;
-				last_hit_by_anim_ = player->current_animation_id();
-				handle_event(OBJECT_EVENT_HIT_BY_PLAYER);
-			}
-
-			if(driver_) {
-				//if this is a vehicle with a driver, handle the driver being
-				//hit by the player.
-				entity_ptr player = lvl.hit_by_player(driver_->body_rect());
-				if(player && (last_hit_by_ != player || last_hit_by_anim_ != player->current_animation_id())) {
-					last_hit_by_ = player;
-					last_hit_by_anim_ = player->current_animation_id();
-					handle_event("driver_hit_by_player");
-				}
-			}
-		}
-	}
-
 	if(lvl.players().empty() == false) {
 		lvl.set_touched_player(lvl.players().front());
 	}
@@ -1132,23 +1105,23 @@ bool custom_object::rect_collides(const rect& r) const
 	}
 }
 
-const_solid_info_ptr custom_object::calculate_solid() const
+const solid_info* custom_object::calculate_solid() const
 {
 	if(!type_->has_solid()) {
-		return const_solid_info_ptr();
+		return NULL;
 	}
 
 	const frame& f = current_frame();
 	if(f.solid()) {
-		return f.solid();
+		return f.solid().get();
 	}
 
-	return type_->solid();
+	return type_->solid().get();
 }
 
-const_solid_info_ptr custom_object::calculate_platform() const
+const solid_info* custom_object::calculate_platform() const
 {
-	return type_->platform();
+	return type_->platform().get();
 }
 
 bool custom_object::on_players_side() const
@@ -2141,7 +2114,8 @@ bool custom_object::execute_command(const variant& var)
 	bool result = true;
 	if(var.is_null()) { return result; }
 	if(var.is_list()) {
-		for(int n = 0; n != var.num_elements(); ++n) {
+		const int num_elements = var.num_elements();
+		for(int n = 0; n != num_elements; ++n) {
 			result = execute_command(var[n]) && result;
 		}
 	} else {

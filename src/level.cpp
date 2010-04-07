@@ -1978,18 +1978,6 @@ entity_ptr level::board(int x, int y) const
 	return entity_ptr();
 }
 
-entity_ptr level::hit_by_player(const rect& r) const
-{
-	for(std::vector<entity_ptr>::const_iterator p = players_.begin();
-	    p != players_.end(); ++p) {
-		if(rects_intersect(r, (*p)->hit_rect())) {
-			return *p;
-		}
-	}
-
-	return entity_ptr();
-}
-
 void level::add_tile(const level_tile& t)
 {
 	std::vector<level_tile>::iterator itor = std::lower_bound(tiles_.begin(), tiles_.end(), t, level_tile_zorder_comparer());
