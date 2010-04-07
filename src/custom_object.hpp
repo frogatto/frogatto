@@ -161,8 +161,8 @@ private:
 
 	void process_frame();
 
-	const_solid_info_ptr calculate_solid() const;
-	const_solid_info_ptr calculate_platform() const;
+	const solid_info* calculate_solid() const;
+	const solid_info* calculate_platform() const;
 
 	bool is_standing(const level& lvl, collision_info* info=NULL) const;
 

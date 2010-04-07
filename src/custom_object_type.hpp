@@ -119,8 +119,8 @@ public:
 
 	game_logic::function_symbol_table* function_symbols() const;
 
-	const_solid_info_ptr solid() const { return solid_; }
-	const_solid_info_ptr platform() const { return platform_; }
+	const const_solid_info_ptr& solid() const { return solid_; }
+	const const_solid_info_ptr& platform() const { return platform_; }
 
 	//true if the object can ever be solid or standable
 	bool has_solid() const { return has_solid_; }

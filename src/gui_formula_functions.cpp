@@ -383,7 +383,8 @@ void gui_algorithm::draw(const level& lvl) {
 
 void gui_algorithm::execute_command(variant v) {
 	if(v.is_list()) {
-		for(int n = 0; n != v.num_elements(); ++n) {
+		const int num_elements = v.num_elements();
+		for(int n = 0; n != num_elements; ++n) {
 			execute_command(v[n]);
 		}
 

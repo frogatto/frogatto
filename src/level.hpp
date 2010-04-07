@@ -76,7 +76,6 @@ public:
 	entity_ptr collide(int x, int y, const entity* exclude=NULL) const;
 	entity_ptr collide(const rect& r, const entity* exclude=NULL) const;
 	entity_ptr board(int x, int y) const;
-	entity_ptr hit_by_player(const rect& r) const;
 	const rect& boundaries() const { return boundaries_; }
 	void set_boundaries(const rect& bounds) { boundaries_ = bounds; }
 	void add_tile(const level_tile& t);
