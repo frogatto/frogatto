@@ -356,7 +356,7 @@ void gui_algorithm::new_level() {
 void gui_algorithm::process(level& lvl) {
 	lvl_ = &lvl;
 	++cycle_;
-	if(process_formula_) {
+	if((cycle_%2) == 0 && process_formula_) {
 		object_->set_level(lvl);
 		variant result = process_formula_->execute(*this);
 		object_->execute_command(result);
@@ -365,10 +365,16 @@ void gui_algorithm::process(level& lvl) {
 
 void gui_algorithm::draw(const level& lvl) {
 	lvl_ = &lvl;
-	if(draw_formula_) {
-		variant result = draw_formula_->execute(*this);
-		execute_command(result);
+
+	if((cycle_%2) == 0) {
+		cached_draw_commands_ = variant();
 	}
+
+	if(cached_draw_commands_.is_null() && draw_formula_) {
+		cached_draw_commands_ = draw_formula_->execute(*this);
+	}
+
+	execute_command(cached_draw_commands_);
 
 	glColor4ub(255, 255, 255, 255);
 

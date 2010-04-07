@@ -51,6 +51,8 @@ private:
 	std::map<std::string, frame_ptr> frames_;
 
 	boost::intrusive_ptr<custom_object> object_;
+
+	variant cached_draw_commands_;
 };
 
 #endif
