@@ -49,9 +49,8 @@ bool entity::has_feet() const
 
 int entity::feet_x() const
 {
-	const_solid_info_ptr s = solid();
-	if(s) {
-		const int diff = s->area().x() + s->area().w()/2;
+	if(solid_) {
+		const int diff = solid_->area().x() + solid_->area().w()/2;
 		return face_right() ? x() + diff : x() + current_frame().width() - diff;
 	}
 	return face_right() ? x() + current_frame().feet_x() : x() + current_frame().width() - current_frame().feet_x();
@@ -59,9 +58,8 @@ int entity::feet_x() const
 
 int entity::feet_y() const
 {
-	const_solid_info_ptr s = solid();
-	if(s) {
-		return y() + s->area().y() + s->area().h();
+	if(solid_) {
+		return y() + solid_->area().y() + solid_->area().h();
 	}
 	return y() + current_frame().feet_y();
 }
