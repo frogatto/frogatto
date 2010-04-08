@@ -314,7 +314,6 @@ namespace game_logic
 			}
 			
 			variant execute(const formula_callable& variables) const {
-//				std::cerr << "ID by slot\n";
 				return variables.query_value_by_slot(slot_);
 			}
 

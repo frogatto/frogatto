@@ -79,8 +79,7 @@ rect_current_generator::rect_current_generator(wml::const_node_ptr node)
 
 void rect_current_generator::generate(int center_x, int center_y, int target_x, int target_y, int target_mass, int* velocity_x, int* velocity_y)
 {
-	const double strength_multiplier = 1.0 + 0.5*sin(SDL_GetTicks()*0.005);
-	const int strength = strength_*strength_multiplier;
+	const int strength = strength_;
 	if(point_in_rect(point(target_x, target_y), rect_)) {
 		if(xvelocity_ > 0 && *velocity_x < xvelocity_) {
 			int amount = (xvelocity_ - std::max(0, *velocity_x))*strength/(target_mass*1000);
