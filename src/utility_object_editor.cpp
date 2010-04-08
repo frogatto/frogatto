@@ -16,6 +16,7 @@
 #include "geometry.hpp"
 #include "grid_widget.hpp"
 #include "label.hpp"
+#include "preferences.hpp"
 #include "raster.hpp"
 #include "surface.hpp"
 #include "surface_cache.hpp"
@@ -272,7 +273,7 @@ class object_image_dialog : public gui::dialog
 {
 public:
 	object_image_dialog(const std::string& image_name, wml::node_ptr node)
-	  : dialog(0, 0, 800, 600), image_name_(image_name), node_(node),
+	  : dialog(0, 0, graphics::screen_width(), graphics::screen_height()), image_name_(image_name), node_(node),
 	    duration_(1), reverse_(false)
 	{
 		for(wml::node::child_iterator i = node->begin_child("animation"); i != node->end_child("animation"); ++i) {
@@ -331,7 +332,7 @@ public:
 		g->add_col(widget_ptr(new button(widget_ptr(new label("Ok", graphics::color_white())), boost::bind(&dialog::close, this))));
 		g->add_col(widget_ptr(new button(widget_ptr(new label("Cancel", graphics::color_white())), boost::bind(&dialog::cancel, this))));
 
-		add_widget(g, 660, 560);
+		add_widget(g, graphics::screen_width() - 140, 560);
 
 		object_image_widget* image_widget = new object_image_widget(image_name_, boost::bind(&object_image_dialog::set_selection, this, _1));
 
@@ -361,7 +362,7 @@ public:
 
 		animation_id_label_.reset(new label(animation_editing_->attr("id"), graphics::color_white()));
 
-		add_widget(widget_ptr(new label(node_->attr("id"), graphics::color_white(), 16)), 580, 2);
+		add_widget(widget_ptr(new label(node_->attr("id"), graphics::color_white(), 16)), graphics::screen_width() - 220, 2);
 
 		g = grid_ptr(new grid(2));
 		g->set_hpad(10);
@@ -537,5 +538,6 @@ UTILITY(object_editor)
 {
 	ASSERT_LOG(args.empty() == false, "MUST SPECIFY NAME OF OBJECT TO EDIT");
 
+	preferences::editor_screen_size_scope screen_size_scope;
 	show_object_editor_dialog(args.front());
 }
