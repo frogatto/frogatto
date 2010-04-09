@@ -93,6 +93,7 @@ level::level(const std::string& level_cfg)
 	music_ = node->attr("music");
 	replay_data_ = node->attr("replay_data");
 	cycle_ = wml::get_int(node, "cycle");
+	time_freeze_ = 0;
 	in_dialog_ = false;
 	title_ = node->attr("title");
 	if(node->has_attr("dimensions")) {
@@ -1628,6 +1629,10 @@ void level::do_processing()
 	const int ActivationDistance = 700;
 
 	std::vector<entity_ptr> active_chars = active_chars_;
+	if(time_freeze_ >= 1000) {
+		time_freeze_ -= 1000;
+		active_chars = chars_immune_from_time_freeze_;
+	}
 	foreach(entity_ptr c, active_chars) {
 		if(!c->destroyed()) {
 			c->process(*this);
@@ -2622,6 +2627,15 @@ variant level::get_value(const std::string& key) const
 		} else {
 			return variant();
 		}
+	} else if(key == "time_freeze") {
+		return variant(time_freeze_);
+	} else if(key == "chars_immune_from_freeze") {
+		std::vector<variant> v;
+		foreach(const entity_ptr& e, chars_immune_from_time_freeze_) {
+			v.push_back(variant(e.get()));
+		}
+
+		return variant(&v);
 	} else {
 		const_entity_ptr e = get_entity_by_label(key);
 		if(e) {
@@ -2665,6 +2679,16 @@ void level::set_value(const std::string& key, const variant& value)
 		return;
 	} else if(key == "in_dialog") {
 		in_dialog_ = value.as_bool();
+	} else if(key == "time_freeze") {
+		time_freeze_ = value.as_int();
+	} else if(key == "chars_immune_from_freeze") {
+		chars_immune_from_time_freeze_.clear();
+		for(int n = 0; n != value.num_elements(); ++n) {
+			entity_ptr e(value[n].try_convert<entity>());
+			if(e) {
+				chars_immune_from_time_freeze_.push_back(e);
+			}
+		}
 	} else {
 		vars_[key] = value;
 	}

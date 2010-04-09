@@ -56,6 +56,8 @@ variant node_callable::get_value(const std::string& key) const
 		}
 
 		return elements_;
+	} else if(key == "node") {
+		return variant(this);
 	}
 
 	if(schema && schema->has_attribute(key) == false) {

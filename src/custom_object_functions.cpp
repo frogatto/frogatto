@@ -1806,6 +1806,11 @@ public:
 	{}
 
 	virtual void execute(level& lvl, custom_object& ob) const {
+		if(alpha_ == 0) {
+			ob.set_blur(NULL);
+			return;
+		}
+
 		blur_info blur(double(alpha_)/1000.0, double(fade_)/1000.0, granularity_);
 		ob.set_blur(&blur);
 	}

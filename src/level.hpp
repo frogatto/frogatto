@@ -285,6 +285,8 @@ private:
 	std::string replay_data_;
 	int cycle_;
 
+	int time_freeze_;
+
 	bool in_dialog_;
 
 	std::map<std::string, variant> vars_;
@@ -381,6 +383,8 @@ private:
 	std::vector<entity_ptr> chars_;
 	std::vector<entity_ptr> active_chars_;
 	mutable std::vector<entity_ptr> solid_chars_;
+
+	std::vector<entity_ptr> chars_immune_from_time_freeze_;
 
 	std::map<std::string, entity_ptr> chars_by_label_;
 	entity_ptr player_;

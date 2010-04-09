@@ -1480,6 +1480,7 @@ void custom_object::set_value(const std::string& key, const variant& value)
 			activation_area_.reset();
 		}
 	} else if(key == "variations") {
+		handle_event("reset_variations");
 		current_variation_.clear();
 		if(value.is_list()) {
 			for(int n = 0; n != value.num_elements(); ++n) {
@@ -1496,6 +1497,8 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		}
 
 		calculate_solid_rect();
+
+		handle_event("set_variations");
 	} else if(key == "attached_objects") {
 		std::vector<entity_ptr> v;
 		for(int n = 0; n != value.num_elements(); ++n) {
@@ -1765,6 +1768,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		break;
 	
 	case CUSTOM_OBJECT_VARIATIONS:
+		handle_event("reset_variations");
 		current_variation_.clear();
 		if(value.is_list()) {
 			for(int n = 0; n != value.num_elements(); ++n) {
@@ -1781,6 +1785,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		}
 
 		calculate_solid_rect();
+		handle_event("set_variations");
 		break;
 	
 	case CUSTOM_OBJECT_ATTACHED_OBJECTS: {

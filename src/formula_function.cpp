@@ -651,6 +651,19 @@ private:
 	}
 };
 
+class strstr_function : public function_expression {
+public:
+	explicit strstr_function(const args_list& args)
+	  : function_expression("strstr", args, 2, 2)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		const std::string& haystack = args()[0]->evaluate(variables).as_string();
+		const std::string& needle = args()[1]->evaluate(variables).as_string();
+		return variant(strstr(haystack.c_str(), needle.c_str()) != NULL);
+	}
+};
+
 class null_function : public function_expression {
 public:
 	explicit null_function(const args_list& args)
@@ -846,6 +859,8 @@ functions_map& get_functions_map() {
 		FUNCTION(color_transition);
 		FUNCTION(size);
 		FUNCTION(slice);
+		FUNCTION(str);
+		FUNCTION(strstr);
 		FUNCTION(null);
 		FUNCTION(refcount);
 		FUNCTION(keys);
