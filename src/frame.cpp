@@ -206,7 +206,9 @@ void frame::build_alpha()
 				if(!*a) {
 					has_opaque = true;
 				}
-				a += texture_.width();
+				if(n+1 != img_rect_.h()) {
+					a += texture_.width();
+				}
 			}
 
 			if(has_opaque) {
@@ -223,7 +225,10 @@ void frame::build_alpha()
 				if(!*a) {
 					has_opaque = true;
 				}
-				a += texture_.width();
+
+				if(n+1 != img_rect_.h()) {
+					a += texture_.width();
+				}
 			}
 
 			if(has_opaque) {
