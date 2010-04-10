@@ -37,6 +37,7 @@ private:
 	CKey key;
 
 	int cycle;
+	int die_at;
 	bool paused;
 	bool done;
 	int start_time_;

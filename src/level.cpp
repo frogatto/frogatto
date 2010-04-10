@@ -1634,7 +1634,7 @@ void level::do_processing()
 		active_chars = chars_immune_from_time_freeze_;
 	}
 	foreach(entity_ptr c, active_chars) {
-		if(!c->destroyed()) {
+		if(!c->destroyed() || c->is_human()) {
 			c->process(*this);
 		}
 

@@ -43,6 +43,7 @@ void transition_scene(level& lvl, screen_position& screen_pos, bool transition_o
 		lvl.player()->get_entity().set_invisible(true);
 	}
 
+
 	for(int n = 0; n <= 20; ++n) {
 //		lvl.process();
 
@@ -229,6 +230,7 @@ level_runner::level_runner(boost::intrusive_ptr<level>& lvl, std::string& level_
 	nskip_draw_ = 0;
 
 	cycle = 0;
+	die_at = -1;
 	paused = false;
 	done = false;
 	start_time_ = SDL_GetTicks();
@@ -260,7 +262,6 @@ void load_level_thread(const std::string& lvl, level** res) {
 
 bool level_runner::play_cycle()
 {
-
 	if(controls::first_invalid_cycle() >= 0) {
 		lvl_->replay_from_cycle(controls::first_invalid_cycle());
 		controls::mark_valid();
@@ -283,7 +284,13 @@ bool level_runner::play_cycle()
 		}
 	}
 
-	if(lvl_->players().size() == 1 && lvl_->player() && lvl_->player()->get_entity().hitpoints() <= 0) {
+	if(die_at <= 0 && lvl_->players().size() == 1 && lvl_->player() && lvl_->player()->get_entity().hitpoints() <= 0) {
+		die_at = cycle;
+	}
+
+	if(die_at > 0 && cycle >= die_at + 30) {
+		die_at = -1;
+
 		//record stats of the player's death
 		lvl_->player()->get_entity().record_stats_movement();
 		stats::record_event(lvl_->id(), stats::record_ptr(new stats::die_record(lvl_->player()->get_entity().midpoint())));
@@ -292,6 +299,11 @@ bool level_runner::play_cycle()
 		if(!save) {
 			return false;
 		}
+
+		//draw the scene a couple of times to make sure it's on all buffers.
+		draw_scene(*lvl_, last_draw_position());
+		draw_scene(*lvl_, last_draw_position());
+
 		preload_level(save->get_player_info()->current_level());
 		transition_scene(*lvl_, last_draw_position(), true, fade_scene);
 		level* new_level = load_level(save->get_player_info()->current_level());
