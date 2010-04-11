@@ -683,6 +683,16 @@ void editor::edit_level()
 		std::cerr << "ERROR LOADING STATS\n";
 	}
 
+	foreach(entity_ptr c, lvl_->get_chars()) {
+		if(entity_collides_with_level(*lvl_, *c, MOVE_NONE)) {
+			if(place_entity_in_level(*lvl_, *c)) {
+				debug_console::add_message(formatter() << "Adjusted position of " << c->debug_description() << " to fit in the level");
+			} else {
+				debug_console::add_message(formatter() << c->debug_description() << " is in an illegal position and can't be auto-corrected");
+			}
+		}
+	}
+
 	g_last_edited_level() = filename_;
 
 	tileset_dialog_.reset(new editor_dialogs::tileset_editor_dialog(*this));
