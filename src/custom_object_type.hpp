@@ -47,6 +47,8 @@ public:
 	explicit custom_object_type(wml::const_node_ptr node);
 	~custom_object_type();
 
+	const_custom_object_type_ptr get_sub_object(const std::string& id) const;
+
 	const custom_object_callable& callable_definition() const { return callable_definition_; }
 
 	const std::string& id() const { return id_; }
@@ -208,6 +210,8 @@ private:
 	mutable std::map<std::vector<std::string>, const_custom_object_type_ptr> variations_cache_;
 
 	const_editor_entity_info_ptr editor_info_;
+
+	std::map<std::string, const_custom_object_type_ptr> sub_objects_;
 };
 
 #endif

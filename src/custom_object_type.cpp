@@ -183,6 +183,16 @@ const std::string* custom_object_type::get_object_path(const std::string& id)
 
 const_custom_object_type_ptr custom_object_type::get(const std::string& id)
 {
+	std::string::const_iterator dot_itor = std::find(id.begin(), id.end(), '.');
+	if(dot_itor != id.end()) {
+		const_custom_object_type_ptr parent = get(std::string(id.begin(), dot_itor));
+		if(!parent) {
+			return const_custom_object_type_ptr();
+		}
+
+		return parent->get_sub_object(std::string(dot_itor+1, id.end()));
+	}
+
 	object_map::const_iterator itor = cache().find(id);
 	if(itor != cache().end()) {
 		return itor->second;
@@ -195,6 +205,16 @@ const_custom_object_type_ptr custom_object_type::get(const std::string& id)
 	//when an object starts its variation.
 	result->load_variations();
 	return result;
+}
+
+const_custom_object_type_ptr custom_object_type::get_sub_object(const std::string& id) const
+{
+	std::map<std::string, const_custom_object_type_ptr>::const_iterator itor = sub_objects_.find(id);
+	if(itor != sub_objects_.end()) {
+		return itor->second;
+	} else {
+		return const_custom_object_type_ptr();
+	}
 }
 
 custom_object_type_ptr custom_object_type::create(const std::string& id)
@@ -383,6 +403,11 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 
 	FOREACH_WML_CHILD(particle_node, node, "particle_system") {
 		particle_factories_[particle_node->attr("id")] = particle_system_factory::create_factory(particle_node);
+	}
+
+	FOREACH_WML_CHILD(object_node, node, "object_type") {
+		wml::node_ptr dup_object_node = wml::deep_copy(object_node);
+		sub_objects_[object_node->attr("id")].reset(new custom_object_type(merge_prototype(dup_object_node)));
 	}
 
 	wml::const_node_ptr vars = node->get_child("vars");
