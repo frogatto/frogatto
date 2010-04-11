@@ -407,7 +407,9 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 
 	FOREACH_WML_CHILD(object_node, node, "object_type") {
 		wml::node_ptr dup_object_node = wml::deep_copy(object_node);
-		sub_objects_[object_node->attr("id")].reset(new custom_object_type(merge_prototype(dup_object_node)));
+		custom_object_type* type = new custom_object_type(merge_prototype(dup_object_node));
+		type->id_ = id_ + "." + type->id_;
+		sub_objects_[object_node->attr("id")].reset(type);
 	}
 
 	wml::const_node_ptr vars = node->get_child("vars");
