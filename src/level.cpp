@@ -85,7 +85,6 @@ level::level(const std::string& level_cfg)
 {
 	std::cerr << "in level constructor...\n";
 	const int start_time = SDL_GetTicks();
-	turn_reference_counting_off();
 
 	wml::const_node_ptr node = load_level_wml(level_cfg);
 	ASSERT_LOG(node.get() != NULL, "LOAD LEVEL WML FOR " << level_cfg << " FAILED");
@@ -258,6 +257,10 @@ level::level(const std::string& level_cfg)
 
 	gui_algorithm_ = gui_algorithm::get(wml::get_str(node, "gui", "default"));
 	gui_algorithm_->new_level();
+}
+
+level::~level()
+{
 }
 
 void level::read_compiled_tiles(wml::const_node_ptr node, std::vector<level_tile>::iterator& out)

@@ -44,6 +44,7 @@ public:
 	void set_as_current_level();
 
 	explicit level(const std::string& level_cfg);
+	~level();
 
 	//function to do anything which loads the level and must be done
 	//in the main thread.
