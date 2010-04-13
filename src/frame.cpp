@@ -65,7 +65,7 @@ frame::frame(wml::const_node_ptr node)
 {
 	ASSERT_EQ(intersection_rect(img_rect_, rect(0, 0, texture_.width(), texture_.height())), img_rect_);
 
-	std::cerr << "FRAME: " << img_rect_.w()*img_rect_.h()*nframes_ << "\n";
+	std::cerr << "FRAME: " << node->attr("image") << ": " << img_rect_.w()*img_rect_.h()*nframes_ << "\n";
 
 	std::vector<std::string> hit_frames = util::split((*node)["hit_frames"]);
 	foreach(const std::string& f, hit_frames) {

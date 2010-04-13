@@ -446,6 +446,7 @@ texture texture::get(const std::string& str)
 		surfs.push_back(surface_cache::get_no_cache(str));
 		result = texture(surfs);
 		texture_cache().put(str, result);
+		std::cerr << (next_power_of_2(result.width())*next_power_of_2(result.height())*2)/1024 << "KB TEXTURE " << str << ": " << result.width() << "x" << result.height() << "\n";
 	}
 
 	return result;

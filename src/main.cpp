@@ -43,7 +43,6 @@
 #include "message_dialog.hpp"
 #include "multiplayer.hpp"
 #include "player_info.hpp"
-#include "powerup.hpp"
 #include "preferences.hpp"
 #include "preprocessor.hpp"
 #include "raster.hpp"
@@ -260,9 +259,6 @@ extern "C" int main(int argc, char** argv)
 		loader.draw_and_increment("Initializing tiles");
 		tile_map::init(wml::parse_wml_from_file("data/tiles.cfg",
 		               wml::schema::get("tiles")));
-		loader.draw_and_increment("Initializing powerups");
-		powerup::init(wml::parse_wml_from_file("data/powerups.cfg",
-		              wml::schema::get("powerups")));
 		loader.draw_and_increment("Initializing GUI");
 		gui_section::init(wml::parse_wml_from_file("data/gui.cfg"));
 		loader.draw_and_increment("Initializing GUI");

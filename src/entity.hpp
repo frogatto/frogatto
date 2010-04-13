@@ -93,8 +93,6 @@ public:
 	virtual void hit_player() {}
 	virtual void hit_by(entity& e) {}
 
-	virtual const frame& portrait_frame() const = 0;
-	virtual const frame& name_frame() const { return portrait_frame(); }
 	virtual const frame& icon_frame() const = 0;
 	virtual const frame& current_frame() const = 0;
 

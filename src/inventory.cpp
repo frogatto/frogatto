@@ -94,9 +94,6 @@ void show_inventory(const level& lvl, entity& c)
 		                       GLfloat(InventoryWidth)/inventory.width(),
 		                       GLfloat(InventoryHeight)/inventory.height());
 
-		c.portrait_frame().draw(27, 38);
-		c.name_frame().draw(30, 200);
-
 		for(int n = 0; n != powerups.size(); ++n) {
 			const int xpos = 208 + (n%3)*46;
 			const int ypos = 36 + (n/3)*66;

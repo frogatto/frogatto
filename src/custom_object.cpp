@@ -2034,11 +2034,6 @@ bool custom_object::body_passthrough() const
 	return type_->body_passthrough();
 }
 
-const frame& custom_object::portrait_frame() const
-{
-	return type_->get_frame("portrait");
-}
-
 const frame& custom_object::icon_frame() const
 {
 	return type_->default_frame();
