@@ -1499,6 +1499,11 @@ public:
 
 			game_logic::formula_callable_ptr callable_ptr(callable);
 			e_->handle_event(OBJECT_EVENT_ADD_OBJECT_FAIL, callable);
+
+			if(!e_->destroyed()) {
+				callable->add("object", variant(e_.get()));
+				ob.handle_event(OBJECT_EVENT_ADD_OBJECT_FAIL, callable);
+			}
 		}
 	}
 };
