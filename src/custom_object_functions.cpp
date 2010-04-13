@@ -1935,7 +1935,7 @@ expression_ptr custom_object_function_symbol_table::create_function(
 	} else if(fn == "spawn") {
 		return expression_ptr(new spawn_function(args, false));
 	} else if(fn == "spawn_player") {
-		return expression_ptr(new spawn_function(args, false));
+		return expression_ptr(new spawn_function(args, true));
 	} else if(fn == "time") {
 		return expression_ptr(new time_function(args));
 	} else if(fn == "object") {
