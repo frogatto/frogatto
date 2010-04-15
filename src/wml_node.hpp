@@ -40,6 +40,7 @@ public:
 	const value& attr(const std::string& key) const;
 	void set_attr(const std::string& key, const value& val);
 	void set_or_erase_attr(const std::string& key, const std::string& value);
+	void erase_attr(const std::string& key);
 
 	bool has_attr(const std::string& key) const;
 
@@ -102,6 +103,8 @@ public:
 	wml::const_node_ptr get_base_element(const std::string& key) const;
 
 	const std::map<std::string, wml::const_node_ptr>& base_elements() const { return base_elements_; }
+
+	void strip_prettiness();
 
 private:
 	std::string name_, prefix_;

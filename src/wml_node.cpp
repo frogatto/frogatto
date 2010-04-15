@@ -50,6 +50,14 @@ void node::set_or_erase_attr(const std::string& key, const std::string& value)
 	}
 }
 
+void node::erase_attr(const std::string& key)
+{
+	attr_.erase(key);
+	if(!attr_order_.empty()) {
+		attr_order_.erase(std::find(attr_order_.begin(), attr_order_.end(), key));
+	}
+}
+
 bool node::has_attr(const std::string& key) const
 {
 	attr_map::const_iterator itor = attr_.find(key);
@@ -232,6 +240,19 @@ wml::const_node_ptr node::get_base_element(const std::string& key) const
 		return itor->second;
 	} else {
 		return wml::const_node_ptr();
+	}
+}
+
+void node::strip_prettiness()
+{
+	comment_.clear();
+	attr_comments_.clear();
+	attr_order_.clear();
+	base_elements_.clear();
+
+	for(std::vector<boost::shared_ptr<node> >::iterator i = children_.begin();
+	    i != children_.end(); ++i) {
+		(*i)->strip_prettiness();
 	}
 }
 

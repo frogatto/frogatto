@@ -30,8 +30,8 @@ public:
 		rect base_area(node->has_attr("rect") ? rect(node->attr("rect")) :
 	           rect(wml::get_int(node, "x"),
 	                wml::get_int(node, "y"),
-	                wml::get_int(node, "w", texture_.width()),
-	                wml::get_int(node, "h", texture_.height())));
+	                wml::get_int(node, "w"),
+	                wml::get_int(node, "h")));
 		width_ = base_area.w()*2;
 		height_ = base_area.h()*2;
 		int nframes = wml::get_int(node, "frames", 1);

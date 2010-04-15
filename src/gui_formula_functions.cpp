@@ -18,6 +18,7 @@
 #include "gui_formula_functions.hpp"
 #include "iphone_controls.hpp"
 #include "level.hpp"
+#include "preferences.hpp"
 #include "raster.hpp"
 #include "unit_test.hpp"
 #include "wml_node.hpp"
@@ -398,7 +399,8 @@ void gui_algorithm::execute_command(variant v) {
 }
 
 gui_algorithm_ptr gui_algorithm::create(const std::string& key) {
-	return gui_algorithm_ptr(new gui_algorithm(wml::parse_wml_from_file("data/gui/" + key + ".cfg")));
+	static const std::string path = preferences::load_compiled() ? "data/compiled/gui/" : "data/gui/";
+	return gui_algorithm_ptr(new gui_algorithm(wml::parse_wml_from_file(path + key + ".cfg")));
 }
 
 void gui_algorithm::draw_animation(const std::string& object_name, const std::string& anim, int x, int y, int cycle) const {

@@ -260,9 +260,11 @@ extern "C" int main(int argc, char** argv)
 		tile_map::init(wml::parse_wml_from_file("data/tiles.cfg",
 		               wml::schema::get("tiles")));
 		loader.draw_and_increment("Initializing GUI");
-		gui_section::init(wml::parse_wml_from_file("data/gui.cfg"));
+
+		wml::const_node_ptr gui_node = wml::parse_wml_from_file(preferences::load_compiled() ? "data/compiled/gui.cfg" : "data/gui.cfg");
+		gui_section::init(gui_node);
 		loader.draw_and_increment("Initializing GUI");
-		framed_gui_element::init(wml::parse_wml_from_file("data/gui.cfg"));
+		framed_gui_element::init(gui_node);
 	} catch(const wml::parse_error& e) {
 		return 0;
 	}

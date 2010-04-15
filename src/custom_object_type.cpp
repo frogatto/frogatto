@@ -9,6 +9,7 @@
 #include "filesystem.hpp"
 #include "formula_constants.hpp"
 #include "object_events.hpp"
+#include "preferences.hpp"
 #include "solid_map.hpp"
 #include "string_utils.hpp"
 #include "wml_modify.hpp"
@@ -27,6 +28,16 @@ std::map<std::string, std::string>& object_file_paths() {
 std::map<std::string, std::string>& prototype_file_paths() {
 	static std::map<std::string, std::string> paths;
 	return paths;
+}
+
+const std::string& object_file_path() {
+	if(preferences::load_compiled()) {
+		static const std::string value =  "data/compiled/objects/";
+		return value;
+	} else {
+		static const std::string value =  "data/objects/";
+		return value;
+	}
 }
 
 typedef std::map<std::string, const_custom_object_type_ptr> object_map;
@@ -169,7 +180,7 @@ const std::string* custom_object_type::get_object_path(const std::string& id)
 {
 	if(object_file_paths().empty()) {
 		//find out the paths to all our files
-		sys::get_unique_filenames_under_dir("data/objects", &object_file_paths());
+		sys::get_unique_filenames_under_dir(object_file_path(), &object_file_paths());
 		sys::get_unique_filenames_under_dir("data/object_prototypes", &prototype_file_paths());
 	}
 
@@ -221,7 +232,7 @@ custom_object_type_ptr custom_object_type::create(const std::string& id)
 {
 	if(object_file_paths().empty()) {
 		//find out the paths to all our files
-		sys::get_unique_filenames_under_dir("data/objects", &object_file_paths());
+		sys::get_unique_filenames_under_dir(object_file_path(), &object_file_paths());
 		sys::get_unique_filenames_under_dir("data/object_prototypes", &prototype_file_paths());
 	}
 
@@ -256,7 +267,7 @@ std::vector<const_custom_object_type_ptr> custom_object_type::get_all()
 {
 	std::vector<const_custom_object_type_ptr> res;
 	std::map<std::string, std::string> file_paths;
-	sys::get_unique_filenames_under_dir("data/objects", &file_paths);
+	sys::get_unique_filenames_under_dir(object_file_path(), &file_paths);
 	for(std::map<std::string, std::string>::const_iterator i = file_paths.begin(); i != file_paths.end(); ++i) {
 		const std::string& fname = i->first;
 		if(fname.size() < 4 || std::string(fname.end()-4, fname.end()) != ".cfg") {

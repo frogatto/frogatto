@@ -42,8 +42,8 @@ frame::frame(wml::const_node_ptr node)
 	 img_rect_(node->has_attr("rect") ? rect(node->attr("rect")) :
 	           rect(wml::get_int(node, "x"),
 	                wml::get_int(node, "y"),
-	                wml::get_int(node, "w", texture_.width()),
-	                wml::get_int(node, "h", texture_.height()))),
+	                wml::get_int(node, "w"),
+	                wml::get_int(node, "h"))),
 	 feet_x_(wml::get_int(node, "feet_x")),
 	 feet_y_(wml::get_int(node, "feet_y")),
 	 accel_x_(wml::get_int(node, "accel_x", INT_MIN)),
@@ -165,7 +165,7 @@ void frame::build_alpha()
 
 		if(xbase < 0 || ybase < 0 || xbase + img_rect_.w() > texture_.width() ||
 		   ybase + img_rect_.h() > texture_.height()) {
-			std::cerr << "IMAGE RECT FOR FRAME '" << id_ << "' IS INVALID\n";
+			std::cerr << "IMAGE RECT FOR FRAME '" << id_ << "' #" << n << ": " << img_rect_.x() << " + " << current_col << " * (" << img_rect_.w() << "+" << pad_ << ") IS INVALID: " << xbase << ", " << ybase << ", " << (xbase + img_rect_.w()) << ", " << (ybase + img_rect_.h()) << " / " << texture_.width() << "," << texture_.height() << "\n";
 			throw error();
 		}
 
