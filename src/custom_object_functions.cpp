@@ -1096,9 +1096,14 @@ public:
 		//make it so the player's controls become locked for the duration of the dialog.
 		controls::local_controls_lock controller_lock;
 
-		in_speech_dialog_tracker dialog_tracker;
+		execute_commands(lvl, ob, args_);
+	}
 
-		foreach(variant var, args_) {
+private:
+	void execute_commands(level& lvl, custom_object& ob, const std::vector<variant>& commands) const {
+		in_speech_dialog_tracker dialog_tracker;
+	
+		foreach(variant var, commands) {
 			if(var.is_callable()) {
 				const_entity_ptr e = var.try_convert<entity>();
 				if(e) {
@@ -1118,6 +1123,16 @@ public:
 			}
 
 			if(var.is_list()) {
+				if(var.num_elements() > 0 && var[0].is_callable()) {
+					std::vector<variant> cmd;
+					for(int n = 0; n != var.num_elements(); ++n) {
+						cmd.push_back(var[n]);
+					}
+
+					execute_commands(lvl, ob, cmd);
+					continue;
+				}
+
 				std::vector<variant> option_commands;
 				std::vector<std::string> options;
 				std::vector<std::string> message;
@@ -1169,7 +1184,7 @@ public:
 			}
 		}
 	}
-private:
+
 	void draw(const level& lvl) const {
 		draw_scene(lvl, last_draw_position(), &lvl.player()->get_entity());
 
