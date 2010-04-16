@@ -131,6 +131,7 @@ UTILITY(object_compiler)
 		wml::node_ptr obj_node =  wml::parse_wml_from_file(*path);
 		obj_node = custom_object_type::merge_prototype(obj_node);
 		obj_node->erase_attr("prototype");
+		obj_node->clear_children("editor_info");
 		objects.push_back(obj_node);
 		nodes_to_files[obj_node] = "data/compiled/objects/" + type->id() + ".cfg";
 

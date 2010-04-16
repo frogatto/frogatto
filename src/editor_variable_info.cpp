@@ -8,6 +8,7 @@
 
 editor_variable_info::editor_variable_info(wml::const_node_ptr node)
   : name_(node->attr("name")), type_(TYPE_INTEGER), info_(node->attr("info")),
+    help_(node->attr("help")),
     formula_(game_logic::formula::create_optional_formula(node->attr("value")))
 {
 	const std::string& type = node->attr("type");
@@ -59,7 +60,7 @@ wml::node_ptr editor_variable_info::write() const
 }
 
 editor_entity_info::editor_entity_info(wml::const_node_ptr node)
-  : category_(node->attr("category"))
+  : category_(node->attr("category")), help_(node->attr("help"))
 {
 	FOREACH_WML_CHILD(var_node, node, "var") {
 		std::cerr << "CREATE VAR INFO...\n";	

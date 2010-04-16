@@ -48,7 +48,13 @@ void character_editor_dialog::init()
 			preview->set_dim(40, 40);
 			preview->set_area(c.preview_frame->area());
 			button_ptr char_button(new button(widget_ptr(preview), boost::bind(&character_editor_dialog::set_character, this, index)));
-			char_button->set_tooltip(c.node->attr("type"));
+
+			std::string tooltip_str = c.node->attr("type");
+			const_editor_entity_info_ptr editor_info = c.preview_object->editor_info();
+			if(editor_info && !editor_info->help().empty()) {
+				tooltip_str += "\n" + editor_info->help();
+			}
+			char_button->set_tooltip(tooltip_str);
 			char_button->set_dim(44, 44);
 			grid->add_col(gui::widget_ptr(new gui::border_widget(char_button, index == editor_.get_object() ? graphics::color(255,255,255,255) : graphics::color(0,0,0,0))));
 		}

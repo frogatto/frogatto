@@ -1404,8 +1404,9 @@ void custom_object::set_value(const std::string& key, const variant& value)
 	} else if(key == "upside_down") {
 		set_upside_down(value.as_int());
 	} else if(key == "hitpoints") {
+		const int old_hitpoints = hitpoints_;
 		hitpoints_ = value.as_int();
-		if(hitpoints_ <= 0) {
+		if(old_hitpoints > 0 && hitpoints_ <= 0) {
 			die();
 		}
 	} else if(key == "max_hitpoints") {
@@ -1643,12 +1644,14 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		set_upside_down(value.as_int());
 		break;
 
-	case CUSTOM_OBJECT_HITPOINTS:
+	case CUSTOM_OBJECT_HITPOINTS: {
+		const int old_hitpoints = hitpoints_;
 		hitpoints_ = value.as_int();
-		if(hitpoints_ <= 0) {
+		if(old_hitpoints > 0 && hitpoints_ <= 0) {
 			die();
 		}
 		break;
+	}
 	case CUSTOM_OBJECT_MAX_HITPOINTS:
 		max_hitpoints_ = value.as_int();
 		if(hitpoints_ > max_hitpoints_) {

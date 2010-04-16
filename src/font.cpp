@@ -2,6 +2,8 @@
 #include <map>
 
 #include "font.hpp"
+#include "foreach.hpp"
+#include "string_utils.hpp"
 #include "surface.hpp"
 
 /*  This manages the TTF loading library, and allows you to use fonts.
@@ -84,7 +86,33 @@ graphics::texture render_text(const std::string& text,
 	}
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	TTF_Font* font = get_font(size);
-	graphics::surface s(TTF_RenderUTF8_Blended(font, text.c_str(), color));
+
+	graphics::surface s;
+	if(std::find(text.begin(), text.end(), '\n') == text.end()) {
+		s = graphics::surface(TTF_RenderUTF8_Blended(font, text.c_str(), color));
+	} else {
+		std::vector<graphics::surface> parts;
+		std::vector<std::string> lines = util::split(text, '\n');
+		int height = 0, width = 0;
+		foreach(const std::string& line, lines) {
+			parts.push_back(graphics::surface(TTF_RenderUTF8_Blended(font, line.c_str(), color)));
+			if(parts.back()->w > width) {
+				width = parts.back()->w;
+			}
+
+			height += parts.back()->h;
+		}
+
+		const SDL_PixelFormat* f = parts.front()->format;
+		s = graphics::surface(SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, f->BitsPerPixel, f->Rmask, f->Gmask, f->Bmask, f->Amask));
+		int ypos = 0;
+		foreach(graphics::surface part, parts) {
+			SDL_Rect rect = {0, ypos, part->w, part->h};
+			SDL_SetAlpha(part.get(), 0, SDL_ALPHA_OPAQUE);
+			SDL_BlitSurface(part.get(), NULL, s.get(), &rect);
+			ypos += part->h;
+		}
+	}
 #else
 	graphics::surface s;
 #endif
