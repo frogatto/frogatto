@@ -35,6 +35,7 @@
 #include "level.hpp"
 #include "level_object.hpp"
 #include "load_level.hpp"
+#include "object_events.hpp"
 #include "player_info.hpp"
 #include "preferences.hpp"
 #include "property_editor_dialog.hpp"
@@ -643,6 +644,10 @@ void editor::process_ghost_objects()
 		p->process(*lvl_);
 	}
 
+	foreach(const entity_ptr& p, chars) {
+		p->handle_event(OBJECT_EVENT_DRAW);
+	}
+
 	lvl_->swap_chars(ghost_objects_);
 
 	foreach(entity_ptr& p, ghost_objects_) {
@@ -784,6 +789,11 @@ void editor::edit_level()
 				if(clone) {
 					ghost_objects_.push_back(clone);
 					lvl_->add_character(clone);
+
+					//fire the event to tell the ghost it's been added.
+					lvl_->swap_chars(ghost_objects_);
+					clone->handle_event(OBJECT_EVENT_START_LEVEL);
+					lvl_->swap_chars(ghost_objects_);
 				}
 			} else if(ghost_objects_.empty() == false && !c) {
 				//ghost objects are present but we are no longer moused-over
