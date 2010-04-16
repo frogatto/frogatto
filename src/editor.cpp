@@ -646,7 +646,7 @@ void editor::process_ghost_objects()
 	lvl_->swap_chars(ghost_objects_);
 
 	foreach(entity_ptr& p, ghost_objects_) {
-		if(p->destroyed()) {
+		if(p && p->destroyed()) {
 			lvl_->remove_character(p);
 			p = entity_ptr();
 		}

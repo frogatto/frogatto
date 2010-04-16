@@ -161,7 +161,7 @@ private:
 
 	CKey key_;
 
-	boost::scoped_ptr<level> lvl_;
+	boost::intrusive_ptr<level> lvl_;
 	int zoom_;
 	int xpos_, ypos_;
 	int anchorx_, anchory_;
