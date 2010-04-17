@@ -36,6 +36,7 @@ public:
 	static const_custom_object_type_ptr get(const std::string& id);
 	static custom_object_type_ptr create(const std::string& id);
 	static void invalidate_object(const std::string& id);
+	static void invalidate_all_objects();
 	static std::vector<const_custom_object_type_ptr> get_all();
 
 	typedef std::vector<game_logic::const_formula_ptr> event_handler_map;

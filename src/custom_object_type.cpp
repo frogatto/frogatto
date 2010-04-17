@@ -263,6 +263,13 @@ void custom_object_type::invalidate_object(const std::string& id)
 	cache().erase(id);
 }
 
+void custom_object_type::invalidate_all_objects()
+{
+	cache().clear();
+	object_file_paths().clear();
+	prototype_file_paths().clear();
+}
+
 std::vector<const_custom_object_type_ptr> custom_object_type::get_all()
 {
 	std::vector<const_custom_object_type_ptr> res;

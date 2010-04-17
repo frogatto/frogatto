@@ -110,6 +110,7 @@ class editor_menu_dialog : public gui::dialog
 			"Undo", "u", boost::bind(&editor::undo_command, &editor_),
 			"Redo", "r", boost::bind(&editor::redo_command, &editor_),
 			"Edit Object...", "", boost::bind(&editor::edit_object_type, &editor_),
+			"New Object...", "", boost::bind(&editor::new_object_type, &editor_),
 		};
 
 		std::vector<menu_item> res;
@@ -500,6 +501,7 @@ int selected_property = 0;
 
 void editor::enemy_type::init(wml::const_node_ptr node)
 {
+	enemy_types.clear();
 	const std::vector<const_custom_object_type_ptr> types = custom_object_type::get_all();
 	foreach(const_custom_object_type_ptr t, types) {
 		if(t->editor_info()) {
@@ -2371,6 +2373,15 @@ void editor::edit_object_type()
 {
 	std::string type = enemy_types[cur_object_].node->attr("type");
 	show_object_editor_dialog(type);
+}
+
+void launch_object_editor(const std::vector<std::string>& args);
+
+void editor::new_object_type()
+{
+	launch_object_editor(std::vector<std::string>());
+	wml::const_node_ptr editor_cfg = wml::parse_wml(sys::read_file("data/editor.cfg"));
+	enemy_type::init(editor_cfg);
 }
 
 void editor::edit_level_properties()

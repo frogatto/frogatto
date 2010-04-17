@@ -534,10 +534,117 @@ void show_object_editor_dialog(const std::string& obj_type)
 	sys::write_file(*fname, wml::output(obj_node));
 }
 
-UTILITY(object_editor)
+namespace {
+void select_prototype(dialog* d, int* index, int num) {
+	*index = num;
+	d->close();
+}
+
+bool is_not_cfg_filename(const std::string& fname) {
+	return fname.size() <= 4 || std::string(fname.end()-4, fname.end()) != ".cfg";
+}
+
+}
+
+void launch_object_editor(const std::vector<std::string>& args)
 {
-	ASSERT_LOG(args.empty() == false, "MUST SPECIFY NAME OF OBJECT TO EDIT");
+	std::string name;
+	if(!args.empty()) {
+		name = args.front();
+	} else {
+		using namespace gui;
+
+		while(name.empty()) {
+			dialog d(0, 0, graphics::screen_width(), graphics::screen_height());
+			d.add_widget(widget_ptr(new label("Enter the name of the new object", graphics::color_white())));
+			text_entry_widget* entry = new text_entry_widget;
+			d.add_widget(widget_ptr(entry));
+
+			d.show_modal();
+			if(d.cancelled()) {
+				return;
+			}
+
+			name = entry->text();
+		}
+
+		std::string image;
+		while(image.empty()) {
+			dialog d(0, 0, graphics::screen_width(), graphics::screen_height());
+			d.add_widget(widget_ptr(new label("Enter image to use for the new object", graphics::color_white())));
+			text_entry_widget* entry = new text_entry_widget;
+			d.add_widget(widget_ptr(entry));
+
+			d.show_modal();
+			if(d.cancelled()) {
+				return;
+			}
+
+			std::map<std::string, std::string> files;
+			sys::get_unique_filenames_under_dir("images/", &files);
+			typedef std::pair<std::string, std::string> FilePair;
+			foreach(const FilePair& f, files) {
+				if(f.first.size() <= 4 || std::string(f.first.end()-4,f.first.end()) != ".png") {
+					continue;
+				}
+
+				if(f.first == entry->text()) {
+					image = f.second;
+
+					//erase the 'images/' part off the filename
+					image.erase(image.begin(), image.begin()+8);
+					break;
+				}
+			}
+		}
+
+		std::vector<std::string> prototypes;
+		sys::get_files_in_dir("data/object_prototypes", &prototypes);
+		prototypes.erase(std::remove_if(prototypes.begin(), prototypes.end(), is_not_cfg_filename), prototypes.end());
+
+		dialog d(0, 0, graphics::screen_width(), graphics::screen_height());
+		d.add_widget(widget_ptr(new label("Select prototype to base this object off", graphics::color_white())));
+		gui::grid* grid = new gui::grid(1);
+		foreach(std::string& proto, prototypes) {
+			proto.erase(proto.end()-4, proto.end());
+			grid->add_col(widget_ptr(new label(proto, graphics::color_white())));
+		}
+
+		grid->allow_selection();
+		grid->must_select();
+
+		int prototype_index = -1;
+		grid->register_selection_callback(boost::bind(select_prototype, &d, &prototype_index, _1));
+
+		d.add_widget(widget_ptr(grid));
+		d.show_modal();
+
+		if(d.cancelled() || prototype_index < 0) {
+			return;
+		}
+
+		std::ostringstream object_stream;
+		object_stream << "[object_type]\nid=\"" << name
+		              << "\"\nprototype=\"" << prototypes[prototype_index] << "\"\n"
+					  << "\t[base:animation]\n\timage=\"" << image << "\"\n\t[/animation]\n";
+
+		wml::const_node_ptr proto_node = wml::parse_wml_from_file("data/object_prototypes/" + prototypes[prototype_index] + ".cfg");
+		FOREACH_WML_CHILD(anim_node, proto_node, "animation") {
+			const std::string id = anim_node->attr("id");
+			object_stream << "\t[animation]\n\tid=\"" << id << "\"\n\t[/animation]\n";
+		}
+
+		object_stream << "[/object_type]\n";
+		sys::write_file("data/objects/" + name + ".cfg", object_stream.str());
+		custom_object_type::invalidate_all_objects();
+	}
 
 	preferences::editor_screen_size_scope screen_size_scope;
-	show_object_editor_dialog(args.front());
+	show_object_editor_dialog(name);
+	custom_object_type::invalidate_all_objects();
+}
+
+UTILITY(object_editor)
+{
+	launch_object_editor(args);
 }

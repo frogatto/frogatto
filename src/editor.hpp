@@ -96,6 +96,7 @@ public:
 	void redo_command();
 
 	void edit_object_type();
+	void new_object_type();
 
 	void close() { done_ = true; }
 
