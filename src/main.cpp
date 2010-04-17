@@ -128,10 +128,13 @@ extern "C" int main(int argc, char** argv)
 	const char* profile_output = NULL;
 	std::string profile_output_buf;
 
+#ifdef TARGET_OS_IPHONE
 	//on the iPhone, try to restore the auto-save if it exists
-	if(sys::file_exists(preferences::auto_save_file_path())) {
+	if(sys::file_exists(preferences::auto_save_file_path()) && sys::read_file(std::string(preferences::auto_save_file_path()) + ".stat") == "1") {
 		level_cfg = "autosave.cfg";
+		sys::write_file(std::string(preferences::auto_save_file_path()) + ".stat", "0");
 	}
+#endif
 
 	for(int n = 1; n < argc; ++n) {
 		const std::string arg(argv[n]);

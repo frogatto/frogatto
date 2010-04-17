@@ -429,6 +429,7 @@ bool level_runner::play_cycle()
 			case SDL_QUIT:
 #ifdef TARGET_OS_IPHONE
 				sys::write_file(preferences::auto_save_file_path(), wml::output(lvl_->write()));
+				sys::write_file(std::string(preferences::auto_save_file_path()) + ".stat", "1");
 #endif
 				done = true;
 				quit_ = true;
