@@ -732,6 +732,25 @@ private:
 	variant val_;
 };
 
+class add_command : public entity_command_callable
+{
+public:
+	add_command(variant target, const std::string& attr, variant val)
+	  : target_(target), attr_(attr), val_(val)
+	{}
+	virtual void execute(level& lvl, entity& ob) const {
+		if(target_.is_callable()) {
+			target_.mutable_callable()->mutate_value(attr_, target_.mutable_callable()->query_value(attr_) + val_);
+		} else {
+			ob.mutate_value(attr_, ob.query_value(attr_) + val_);
+		}
+	}
+private:
+	variant target_;
+	std::string attr_;
+	variant val_;
+};
+
 class set_by_slot_command : public entity_command_callable
 {
 public:
@@ -741,6 +760,24 @@ public:
 
 	virtual void execute(level& lvl, entity& obj) const {
 		obj.mutate_value_by_slot(slot_, value_);
+	}
+
+	void set_value(const variant& value) { value_ = value; }
+
+private:
+	int slot_;
+	variant value_;
+};
+
+class add_by_slot_command : public entity_command_callable
+{
+public:
+	add_by_slot_command(int slot, const variant& value)
+	  : slot_(slot), value_(value)
+	{}
+
+	virtual void execute(level& lvl, entity& obj) const {
+		obj.mutate_value_by_slot(slot_, obj.query_value_by_slot(slot_) + value_);
 	}
 
 	void set_value(const variant& value) { value_ = value; }
@@ -810,6 +847,68 @@ private:
 	std::string key_;
 	int slot_;
 	mutable boost::intrusive_ptr<set_by_slot_command> cmd_;
+};
+
+class add_function : public function_expression {
+public:
+	add_function(const args_list& args, const formula_callable_definition* callable_def)
+	  : function_expression("add", args, 2, 3), slot_(-1) {
+		if(args.size() == 2) {
+			variant literal = args[0]->is_literal();
+			if(literal.is_string()) {
+				key_ = literal.as_string();
+			} else {
+				args[0]->is_identifier(&key_);
+			}
+
+			if(!key_.empty() && callable_def) {
+				slot_ = callable_def->get_slot(key_);
+				if(slot_ != -1) {
+					cmd_ = boost::intrusive_ptr<add_by_slot_command>(new add_by_slot_command(slot_, variant()));
+				}
+			}
+		}
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		if(slot_ != -1) {
+			if(cmd_->refcount() == 1) {
+				cmd_->set_value(args()[1]->evaluate(variables));
+				return variant(cmd_.get());
+			}
+
+			cmd_ = boost::intrusive_ptr<add_by_slot_command>(new add_by_slot_command(slot_, args()[1]->evaluate(variables)));
+			return variant(cmd_.get());
+		}
+
+		if(!key_.empty()) {
+			return variant(new add_command(variant(), key_, args()[1]->evaluate(variables)));
+		}
+
+		if(args().size() == 2) {
+			try {
+				std::string member;
+				variant target = args()[0]->evaluate_with_member(variables, member);
+				return variant(new add_command(
+				  target, member, args()[1]->evaluate(variables)));
+			} catch(game_logic::formula_error&) {
+			}
+		}
+
+		variant target;
+		if(args().size() == 3) {
+			target = args()[0]->evaluate(variables);
+		}
+		const int begin_index = args().size() == 2 ? 0 : 1;
+		return variant(new add_command(
+		    target,
+		    args()[begin_index]->evaluate(variables).as_string(),
+			args()[begin_index + 1]->evaluate(variables)));
+	}
+
+	std::string key_;
+	int slot_;
+	mutable boost::intrusive_ptr<add_by_slot_command> cmd_;
 };
 
 class set_value_function : public function_expression {
@@ -2006,6 +2105,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new set_function(args, callable_def));
 	} else if(fn == "set_value") {
 		return expression_ptr(new set_value_function(args));
+	} else if(fn == "add") {
+		return expression_ptr(new add_function(args, callable_def));
 	} else if(fn == "powerup") {
 		return expression_ptr(new get_powerup_function(args));
 	} else if(fn == "solid") {
