@@ -120,6 +120,8 @@ inline bool require(bool cond)
 	}
 }
 
+std::vector<int> get_vector_int(const_node_ptr ptr, const std::string& key);
+
 template<typename Value>
 node_ptr write_attribute_map(const std::string& name, const std::map<std::string,Value>& vals)
 {

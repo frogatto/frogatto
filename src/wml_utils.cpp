@@ -1,3 +1,4 @@
+#include "string_utils.hpp"
 #include "unit_test.hpp"
 #include "wml_utils.hpp"
 
@@ -138,6 +139,17 @@ void child_sequence_iterator::next()
 bool child_sequence_iterator::at_end() const
 {
 	return i1_ == i2_;
+}
+
+std::vector<int> get_vector_int(const_node_ptr ptr, const std::string& key)
+{
+	std::vector<std::string> v = util::split(ptr->attr(key));
+	std::vector<int> result(v.size());
+	for(int n = 0; n != v.size(); ++n) {
+		result[n] = atoi(v[n].c_str());
+	}
+
+	return result;
 }
 
 }

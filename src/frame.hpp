@@ -87,8 +87,6 @@ public:
 	int end_event_id() const { return end_event_id_; }
 	int leave_event_id() const { return leave_event_id_; }
 	int process_event_id() const { return process_event_id_; }
-private:
-	int frame_number(int time_in_frame) const;
 
 	struct frame_info {
 		frame_info() : x_adjust(0), y_adjust(0), x2_adjust(0), y2_adjust(0)
@@ -96,6 +94,10 @@ private:
 		int x_adjust, y_adjust, x2_adjust, y2_adjust;
 		rect area;
 	};
+
+	const std::vector<frame_info>& frame_layout() const { return frames_; }
+private:
+	int frame_number(int time_in_frame) const;
 
 	void get_rect_in_texture(int time, GLfloat* output_rect, const frame_info*& info) const;
 	void get_rect_in_frame_number(int nframe, GLfloat* output_rect, const frame_info*& info) const;
@@ -139,6 +141,7 @@ private:
 
 	std::vector<collision_area> collision_areas_;
 
+	void build_alpha_from_frame_info();
 	void build_alpha();
 	std::vector<bool> alpha_;
 };

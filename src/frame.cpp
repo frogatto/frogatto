@@ -129,7 +129,30 @@ frame::frame(wml::const_node_ptr node)
 		collision_areas_.push_back(area);
 	}
 
-	build_alpha();
+	if(node->has_attr("frame_info")) {
+		const std::vector<int> values = wml::get_vector_int(node, "frame_info");
+		ASSERT_EQ(values.size()%8, 0);
+		std::vector<int>::const_iterator i = values.begin();
+		while(i != values.end()) {
+			frame_info info;
+			info.x_adjust = *i++;
+			info.y_adjust = *i++;
+			info.x2_adjust = *i++;
+			info.y2_adjust = *i++;
+			const int x = *i++;
+			const int y = *i++;
+			const int w = *i++;
+			const int h = *i++;
+			info.area = rect(x, y, w, h);
+			frames_.push_back(info);
+		}
+
+		ASSERT_EQ(frames_.size(), nframes_);
+
+		build_alpha_from_frame_info();
+	} else {
+		build_alpha();
+	}
 }
 
 void frame::set_image_as_solid()
@@ -148,6 +171,32 @@ void frame::play_sound(const void* object) const
 	}
 }
 
+void frame::build_alpha_from_frame_info()
+{
+	if(!texture_.valid()) {
+		return;
+	}
+
+	alpha_.resize(nframes_*img_rect_.w()*img_rect_.h(), true);
+	for(int n = 0; n < nframes_; ++n) {
+		const rect& area = frames_[n].area;
+		int dst_index = frames_[n].y_adjust*img_rect_.w()*nframes_ + frames_[n].x_adjust;
+		for(int y = 0; y != area.h(); ++y) {
+			ASSERT_INDEX_INTO_VECTOR(dst_index, alpha_);
+			std::vector<bool>::iterator dst = alpha_.begin() + dst_index;
+
+			ASSERT_LT(area.x(), texture_.width());
+			ASSERT_LT(area.x() + area.w(), texture_.width());
+			ASSERT_LT(area.y() + y, texture_.height());
+			std::vector<bool>::const_iterator src = texture_.get_alpha_row(area.x(), area.y() + y);
+
+			std::copy(src, src + area.w(), dst);
+			
+			dst_index += img_rect_.w()*nframes_;
+		}
+	}
+}
+
 void frame::build_alpha()
 {
 	frames_.resize(nframes_);
@@ -155,7 +204,7 @@ void frame::build_alpha()
 		return;
 	}
 
-	alpha_.resize(nframes_*img_rect_.w()*img_rect_.h());
+	alpha_.resize(nframes_*img_rect_.w()*img_rect_.h(), true);
 
 	for(int n = 0; n < nframes_; ++n) {
 		const int current_col = (nframes_per_row_ > 0) ? (n% nframes_per_row_) : n;
