@@ -63,10 +63,6 @@ frame::frame(wml::const_node_ptr node)
 	 damage_(wml::get_int(node, "damage")),
 	 sounds_(util::split(node->attr("sound")))
 {
-	ASSERT_EQ(intersection_rect(img_rect_, rect(0, 0, texture_.width(), texture_.height())), img_rect_);
-
-	std::cerr << "FRAME: " << node->attr("image") << ": " << img_rect_ << " SIZE " << img_rect_.w()*img_rect_.h()*nframes_ << "\n";
-
 	std::vector<std::string> hit_frames = util::split((*node)["hit_frames"]);
 	foreach(const std::string& f, hit_frames) {
 		hit_frames_.push_back(boost::lexical_cast<int>(f));
@@ -145,6 +141,10 @@ frame::frame(wml::const_node_ptr node)
 			const int h = *i++;
 			info.area = rect(x, y, w, h);
 			frames_.push_back(info);
+			ASSERT_EQ(intersection_rect(info.area, rect(0, 0, texture_.width(), texture_.height())), info.area);
+			ASSERT_EQ(w + (info.x_adjust + info.x2_adjust), img_rect_.w());
+			ASSERT_EQ(h + (info.y_adjust + info.y2_adjust), img_rect_.h());
+
 		}
 
 		ASSERT_EQ(frames_.size(), nframes_);
@@ -180,13 +180,13 @@ void frame::build_alpha_from_frame_info()
 	alpha_.resize(nframes_*img_rect_.w()*img_rect_.h(), true);
 	for(int n = 0; n < nframes_; ++n) {
 		const rect& area = frames_[n].area;
-		int dst_index = frames_[n].y_adjust*img_rect_.w()*nframes_ + frames_[n].x_adjust;
+		int dst_index = frames_[n].y_adjust*img_rect_.w()*nframes_ + n*img_rect_.w() + frames_[n].x_adjust;
 		for(int y = 0; y != area.h(); ++y) {
 			ASSERT_INDEX_INTO_VECTOR(dst_index, alpha_);
 			std::vector<bool>::iterator dst = alpha_.begin() + dst_index;
 
 			ASSERT_LT(area.x(), texture_.width());
-			ASSERT_LT(area.x() + area.w(), texture_.width());
+			ASSERT_LE(area.x() + area.w(), texture_.width());
 			ASSERT_LT(area.y() + y, texture_.height());
 			std::vector<bool>::const_iterator src = texture_.get_alpha_row(area.x(), area.y() + y);
 
@@ -287,11 +287,21 @@ void frame::build_alpha()
 			}
 		}
 
+		if(right < left) {
+			right = left;
+		}
+
+		if(bot < top) {
+			bot = top;
+		}
+
 		f.x_adjust = left;
 		f.y_adjust = top;
 		f.x2_adjust = img_rect_.w() - right;
 		f.y2_adjust = img_rect_.h() - bot;
 		f.area = rect(xbase + left, ybase + top, right - left, bot - top);
+		ASSERT_EQ(f.area.w() + f.x_adjust + f.x2_adjust, img_rect_.w());
+		ASSERT_EQ(f.area.h() + f.y_adjust + f.y2_adjust, img_rect_.h());
 	}
 }
 

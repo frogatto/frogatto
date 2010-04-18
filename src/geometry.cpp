@@ -48,11 +48,11 @@ SDL_Rect rect::sdl_rect() const
 
 rect rect::from_coordinates(int x1, int y1, int x2, int y2)
 {
-	if(x1 > x2) {
+	if(x1 > x2+1) {
 		std::swap(x1, x2);
 	}
 
-	if(y1 > y2) {
+	if(y1 > y2+1) {
 		std::swap(y1, y2);
 	}
 

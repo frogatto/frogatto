@@ -42,17 +42,23 @@ public:
 		const int nframes_per_row = wml::get_int(node, "frames_per_row", -1);
 		const int pad = wml::get_int(node, "pad");
 
+		frame frame_obj(node);
+
 		int row = 0, col = 0;
 		for(int n = 0; n != nframes; ++n) {
-			rect area(base_area.x() + col*(base_area.w()+pad),
-			          base_area.y() + row*(base_area.h()+pad),
-					  base_area.w(), base_area.h());
+			const frame::frame_info& info = frame_obj.frame_layout()[n];
+			const rect& area = info.area;
 
 			frame_area a;
 			a.u1 = GLfloat(area.x())/GLfloat(texture_.width());
 			a.u2 = GLfloat(area.x2())/GLfloat(texture_.width());
 			a.v1 = GLfloat(area.y())/GLfloat(texture_.height());
 			a.v2 = GLfloat(area.y2())/GLfloat(texture_.height());
+
+			a.x_adjust = info.x_adjust*2;
+			a.y_adjust = info.y_adjust*2;
+			a.x2_adjust = info.x2_adjust*2;
+			a.y2_adjust = info.y2_adjust*2;
 
 			frames_.push_back(a);
 
@@ -66,6 +72,7 @@ public:
 
 	struct frame_area {
 		GLfloat u1, v1, u2, v2;
+		int x_adjust, y_adjust, x2_adjust, y2_adjust;
 	};
 
 	const frame_area& get_frame(int t) const {
@@ -344,31 +351,31 @@ void simple_particle_system::draw(const rect& area, const entity& e) const
 			
 			tcarray.push_back(graphics::texture::get_coord_x(f.u1));
 			tcarray.push_back(graphics::texture::get_coord_y(f.v1));
-			varray.push_back(p->pos[0]);
-			varray.push_back(p->pos[1]);
+			varray.push_back(p->pos[0] + f.x_adjust);
+			varray.push_back(p->pos[1] + f.y_adjust);
 			tcarray.push_back(graphics::texture::get_coord_x(f.u1));
 			tcarray.push_back(graphics::texture::get_coord_y(f.v1));
-			varray.push_back(p->pos[0]);
-			varray.push_back(p->pos[1]);
+			varray.push_back(p->pos[0] + f.x_adjust);
+			varray.push_back(p->pos[1] + f.y_adjust);
 
 			tcarray.push_back(graphics::texture::get_coord_x(f.u2));
 			tcarray.push_back(graphics::texture::get_coord_y(f.v1));
-			varray.push_back(p->pos[0] + anim->width());
-			varray.push_back(p->pos[1]);
+			varray.push_back(p->pos[0] + anim->width() - f.x2_adjust);
+			varray.push_back(p->pos[1] + f.y_adjust);
 			tcarray.push_back(graphics::texture::get_coord_x(f.u1));
 			tcarray.push_back(graphics::texture::get_coord_y(f.v2));
-			varray.push_back(p->pos[0]);
-			varray.push_back(p->pos[1] + anim->height());
+			varray.push_back(p->pos[0] + f.x_adjust);
+			varray.push_back(p->pos[1] + anim->height() - f.y2_adjust);
 
 			//draw the last point twice.
 			tcarray.push_back(graphics::texture::get_coord_x(f.u2));
 			tcarray.push_back(graphics::texture::get_coord_y(f.v2));
-			varray.push_back(p->pos[0] + anim->width());
-			varray.push_back(p->pos[1] + anim->height());
+			varray.push_back(p->pos[0] + anim->width() - f.x2_adjust);
+			varray.push_back(p->pos[1] + anim->height() - f.y2_adjust);
 			tcarray.push_back(graphics::texture::get_coord_x(f.u2));
 			tcarray.push_back(graphics::texture::get_coord_y(f.v2));
-			varray.push_back(p->pos[0] + anim->width());
-			varray.push_back(p->pos[1] + anim->height());
+			varray.push_back(p->pos[0] + anim->width() - f.x2_adjust);
+			varray.push_back(p->pos[1] + anim->height() - f.y2_adjust);
 			++p;
 		}
 	}

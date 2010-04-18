@@ -28,8 +28,15 @@ const int TextureImageSize = 1024;
 struct animation_area {
 	explicit animation_area(wml::node_ptr node) : anim(new frame(node)), is_particle(false)
 	{
-		width = anim->area().w()*anim->num_frames_per_row();
-		height = anim->area().h()*(anim->num_frames()/anim->num_frames_per_row());
+		width = 0;
+		height = 0;
+		foreach(const frame::frame_info& f, anim->frame_layout()) {
+			width += f.area.w();
+			if(f.area.h() > height) {
+				height = f.area.h();
+			}
+		}
+
 		src_image = node->attr("image");
 		dst_image = -1;
 	}
@@ -228,17 +235,21 @@ UTILITY(object_compiler)
 		surface dst = surfaces[anim->dst_image];
 		surface src = graphics::surface_cache::get(anim->src_image);
 		ASSERT_LOG(src.get() != NULL, "COULD NOT LOAD IMAGE: '" << anim->src_image << "'");
+		int xdst = 0;
 		for(int f = 0; f != anim->anim->num_frames(); ++f) {
+			const frame::frame_info& info = anim->anim->frame_layout()[f];
+
 			const int x = f%anim->anim->num_frames_per_row();
 			const int y = f/anim->anim->num_frames_per_row();
 
 			const rect& base_area = anim->anim->area();
 			const int xpos = base_area.x() + (base_area.w()+anim->anim->pad())*x;
 			const int ypos = base_area.y() + (base_area.h()+anim->anim->pad())*y;
-			SDL_Rect blit_src = {xpos, ypos, base_area.w(), base_area.h()};
-			SDL_Rect blit_dst = {anim->dst_area.x() + x*base_area.w(),
-			                     anim->dst_area.y() + y*base_area.h(),
-								 base_area.w(), base_area.h()};
+			SDL_Rect blit_src = {xpos + info.x_adjust, ypos + info.y_adjust, info.area.w(), info.area.h()};
+			SDL_Rect blit_dst = {anim->dst_area.x() + xdst,
+			                     anim->dst_area.y(),
+								 info.area.w(), info.area.h()};
+			xdst += info.area.w();
 			ASSERT_GE(blit_dst.x, anim->dst_area.x());
 			ASSERT_GE(blit_dst.y, anim->dst_area.y());
 			ASSERT_LE(blit_dst.x + blit_dst.w, anim->dst_area.x() + anim->dst_area.w());
@@ -269,9 +280,36 @@ UTILITY(object_compiler)
 		node->erase_attr("w");
 		node->erase_attr("h");
 		node->erase_attr("pad");
+
+		const frame::frame_info& first_frame = anim->anim->frame_layout().front();
 		
-		rect r(anim->dst_area.x(), anim->dst_area.y(), anim->anim->area().w(), anim->anim->area().h());
+		rect r(anim->dst_area.x() - first_frame.x_adjust, anim->dst_area.y() - first_frame.y_adjust, anim->anim->area().w(), anim->anim->area().h());
 		node->set_attr("rect", r.to_string());
+
+		int xpos = anim->dst_area.x();
+
+		std::vector<int> v;
+		foreach(const frame::frame_info& f, anim->anim->frame_layout()) {
+			ASSERT_EQ(f.area.w() + f.x_adjust + f.x2_adjust, anim->anim->area().w());
+			ASSERT_EQ(f.area.h() + f.y_adjust + f.y2_adjust, anim->anim->area().h());
+			v.push_back(f.x_adjust);
+			v.push_back(f.y_adjust);
+			v.push_back(f.x2_adjust);
+			v.push_back(f.y2_adjust);
+			v.push_back(xpos);
+			v.push_back(anim->dst_area.y());
+			v.push_back(f.area.w());
+			v.push_back(f.area.h());
+
+			xpos += f.area.w();
+		}
+
+		std::vector<std::string> vs;
+		foreach(int n, v) {
+			vs.push_back(formatter() << n);
+		}
+
+		node->set_attr("frame_info", util::join(vs));
 	}
 
 	for(std::map<wml::node_ptr, std::string>::iterator i = nodes_to_files.begin(); i != nodes_to_files.end(); ++i) {
