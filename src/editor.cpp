@@ -788,7 +788,7 @@ void editor::edit_level()
 				//we have an object but no ghost for it, make the
 				//object's ghost and deploy it.
 				entity_ptr clone = c->clone();
-				if(clone) {
+				if(clone && !entity_collides_with_level(*lvl_, *clone, MOVE_NONE)) {
 					ghost_objects_.push_back(clone);
 					lvl_->add_character(clone);
 
