@@ -182,6 +182,9 @@ namespace preferences {
 			fullscreen_ = true;
 		} else if(s == "--widescreen") {
 			set_widescreen();
+		} else if(s == "--bigscreen") {
+			virtual_screen_width_ = actual_screen_width_;
+			virtual_screen_height_ = actual_screen_height_;
 		} else if(s == "--potonly") {
 			force_no_npot_textures_ = true;
 		} else if(s == "--textures16") {
