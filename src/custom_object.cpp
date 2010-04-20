@@ -2080,6 +2080,7 @@ void custom_object::handle_event(int event, const formula_callable* context)
 	backup_callable_stack_.push(context);
 
 	for(int n = 0; n != nhandlers; ++n) {
+		std::cerr << "HANDLE EVENT: " << debug_description() << ": " << get_object_event_str(event) << "\n";
 		const game_logic::formula* handler = handlers[n];
 
 #ifndef DISABLE_FORMULA_PROFILER
