@@ -46,7 +46,7 @@ variant get_constant(const std::string& id)
 	return variant();
 }
 
-constants_loader::constants_loader(wml::const_node_ptr node)
+constants_loader::constants_loader(wml::const_node_ptr node) : same_as_base_(false)
 {
 	constants_map m;
 	if(node) {
@@ -59,6 +59,10 @@ constants_loader::constants_loader(wml::const_node_ptr node)
 
 			m[attr].serialize_from_string(i->second);
 		}
+	}
+
+	if(constants_stack.empty() == false && constants_stack.back() == m) {
+		same_as_base_ = true;
 	}
 
 	constants_stack.push_back(m);

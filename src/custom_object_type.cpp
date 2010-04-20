@@ -363,6 +363,9 @@ custom_object_type::custom_object_type(wml::const_node_ptr node, const custom_ob
 
 	//make it so any formula has these constants defined.
 	const game_logic::constants_loader scope_consts(node->get_child("consts"));
+	if(scope_consts.same_as_base() == false) {
+		base_type = NULL;
+	}
 
 	if(node->has_attr("solid_dimensions")) {
 		solid_dimensions_ = 0;
