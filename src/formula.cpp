@@ -731,7 +731,7 @@ namespace game_logic
 			return precedence_map[std::string(t.begin,t.end)];
 		}
 		
-		expression_ptr parse_expression(const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def);
+		expression_ptr parse_expression(const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def, bool* can_optimize=NULL);
 		
 		void parse_function_args(const token* &i1, const token* i2,
 								 std::vector<std::string>* res,
@@ -777,7 +777,8 @@ namespace game_logic
 		void parse_args(const token* i1, const token* i2,
 						std::vector<expression_ptr>* res,
 						function_symbol_table* symbols,
-						const formula_callable_definition* callable_def)
+						const formula_callable_definition* callable_def,
+						bool* can_optimize)
 		{
 			int parens = 0;
 			const token* beg = i1;
@@ -787,7 +788,7 @@ namespace game_logic
 				} else if(i1->type == TOKEN_RPARENS || i1->type == TOKEN_RSQUARE || i1->type == TOKEN_RBRACKET) {
 					--parens;
 				} else if(i1->type == TOKEN_COMMA && !parens) {
-					res->push_back(parse_expression(beg,i1, symbols, callable_def));
+					res->push_back(parse_expression(beg,i1, symbols, callable_def, can_optimize));
 					beg = i1+1;
 				}
 				
@@ -795,7 +796,7 @@ namespace game_logic
 			}
 			
 			if(beg != i1) {
-				res->push_back(parse_expression(beg,i1, symbols, callable_def));
+				res->push_back(parse_expression(beg,i1, symbols, callable_def, can_optimize));
 			}
 		}
 		
@@ -894,7 +895,7 @@ namespace game_logic
 			}
 		}
 		
-		expression_ptr parse_expression_internal(const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def);
+		expression_ptr parse_expression_internal(const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def, bool* can_optimize=NULL);
 		
 		namespace {
 			
@@ -930,28 +931,30 @@ namespace game_logic
 			};
 		}
 
-		expression_ptr optimize_expression(expression_ptr result, function_symbol_table* symbols, const formula_callable_definition* callable_def)
+		expression_ptr optimize_expression(expression_ptr result, function_symbol_table* symbols, const formula_callable_definition* callable_def, bool reduce_to_static)
 		{
 			const std::string str = result->str();
 
-			//we want to try to evaluate this expression, and see if it is static.
-			//it is static if it never reads its input, if it doesn't call the rng,
-			//and if a reference to the input itself is not stored.
-			try {
-				const unsigned int rng_seed = rng::get_seed();
-				formula_callable_ptr static_callable(new static_formula_callable);
-				variant res = result->static_evaluate(*static_callable);
-				if(rng_seed == rng::get_seed() && static_callable->refcount() == 1) {
-					//this expression is static. Reduce it to its result.
-					result = expression_ptr(new variant_expression(res));
+			if(reduce_to_static) {
+				//we want to try to evaluate this expression, and see if it is static.
+				//it is static if it never reads its input, if it doesn't call the rng,
+				//and if a reference to the input itself is not stored.
+				try {
+					const unsigned int rng_seed = rng::get_seed();
+					formula_callable_ptr static_callable(new static_formula_callable);
+					variant res = result->static_evaluate(*static_callable);
+					if(rng_seed == rng::get_seed() && static_callable->refcount() == 1) {
+						//this expression is static. Reduce it to its result.
+						result = expression_ptr(new variant_expression(res));
+					}
+	
+					//it's possible if there is a latent reference to it the
+					//static callable won't get destroyed, so make sure we
+					//mark it as inactive to allow others to be created.
+					static_formula_callable_active = false;
+				} catch(non_static_expression_exception& e) {
+					//the expression isn't static. Not an error.
 				}
-
-				//it's possible if there is a latent reference to it the
-				//static callable won't get destroyed, so make sure we
-				//mark it as inactive to allow others to be created.
-				static_formula_callable_active = false;
-			} catch(non_static_expression_exception& e) {
-				//the expression isn't static. Not an error.
 			}
 
 			if(result) {
@@ -968,16 +971,22 @@ namespace game_logic
 			return result;
 		}
 		
-		expression_ptr parse_expression(const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def)
+		expression_ptr parse_expression(const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def, bool* can_optimize)
 		{
-			expression_ptr result(parse_expression_internal(i1, i2, symbols, callable_def));
+			bool optimize = true;
+			expression_ptr result(parse_expression_internal(i1, i2, symbols, callable_def, &optimize));
 			result->set_str(std::string(i1->begin, (i2-1)->end));
-			result = optimize_expression(result, symbols, callable_def);
+
+			result = optimize_expression(result, symbols, callable_def, optimize);
+
+			if(can_optimize && !optimize) {
+				*can_optimize = false;
+			}
 
 			return result;
 		}
 		
-		expression_ptr parse_expression_internal(const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def)
+		expression_ptr parse_expression_internal(const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def, bool* can_optimize)
 		{
 			if(i1 == i2) {
 				std::cerr << "empty expression\n";
@@ -1035,7 +1044,7 @@ namespace game_logic
 					return expression_ptr(new function_list_expression(symbols));
 				}
 				else {
-					return parse_expression((i1+1), i2, symbols, callable_def);
+					return parse_expression((i1+1), i2, symbols, callable_def, can_optimize);
 				}
 			}
 			
@@ -1079,7 +1088,7 @@ namespace game_logic
 			
 			if(op == NULL) {
 				if(i1->type == TOKEN_LPARENS && (i2-1)->type == TOKEN_RPARENS) {
-					return parse_expression(i1+1,i2-1,symbols, callable_def);
+					return parse_expression(i1+1,i2-1,symbols, callable_def, can_optimize);
 				} else if( (i2-1)->type == TOKEN_RSQUARE) { //check if there is [ ] : either a list definition, or a operator 
 					const token* tok = i2-2;
 					int square_parens = 0;
@@ -1095,13 +1104,13 @@ namespace game_logic
 						if (tok == i1) {
 							//create a list
 							std::vector<expression_ptr> args;
-							parse_args(i1+1,i2-1,&args,symbols, callable_def);
+							parse_args(i1+1,i2-1,&args,symbols, callable_def, can_optimize);
 							return expression_ptr(new list_expression(args));
 						} else {
 							//execute operator [ ]
 							return expression_ptr(new square_bracket_expression(
-																				parse_expression(i1,tok,symbols, callable_def),
-																				parse_expression(tok+1,i2-1,symbols, callable_def)));
+																				parse_expression(i1,tok,symbols, callable_def, can_optimize),
+																				parse_expression(tok+1,i2-1,symbols, callable_def, can_optimize)));
 						}
 					}
 				} else if(i1->type == TOKEN_LBRACKET && (i2-1)->type == TOKEN_RBRACKET) {
@@ -1118,6 +1127,9 @@ namespace game_logic
 						return expression_ptr(new const_identifier_expression(
 																			  std::string(i1->begin,i1->end)));
 					} else if(i1->type == TOKEN_IDENTIFIER) {
+						if(can_optimize) {
+							*can_optimize = false;
+						}
 						return expression_ptr(new identifier_expression(
 																		std::string(i1->begin,i1->end), callable_def));
 					} else if(i1->type == TOKEN_INTEGER) {
@@ -1142,7 +1154,7 @@ namespace game_logic
 						const std::string function_name(i1->begin, i1->end);
 						std::vector<expression_ptr> args;
 						const bool optimize = optimize_function_arguments(function_name, symbols);
-						parse_args(i1+2,i2-1,&args,symbols, optimize ? callable_def : NULL);
+						parse_args(i1+2,i2-1,&args,symbols, optimize ? callable_def : NULL, can_optimize);
 						expression_ptr result(create_function(function_name, args, symbols, callable_def));
 						if(result) {
 							return result;
@@ -1169,41 +1181,41 @@ namespace game_logic
 			if(op == i1) {
 				return expression_ptr(new unary_operator_expression(
 																	std::string(op->begin,op->end),
-																	parse_expression(op+1,i2,symbols, callable_def)));
+																	parse_expression(op+1,i2,symbols, callable_def, can_optimize)));
 			}
 			
 			const std::string op_name(op->begin,op->end);
 			
 			if(op_name == "(") {
 				std::vector<expression_ptr> args;
-				parse_args(op+1, i2-1, &args, symbols, callable_def);
+				parse_args(op+1, i2-1, &args, symbols, callable_def, can_optimize);
 				
 				return expression_ptr(new function_call_expression(
-																   parse_expression(i1, op, symbols, callable_def), args));
+																   parse_expression(i1, op, symbols, callable_def, can_optimize), args));
 			}
 			
 			if(op_name == ".") {
-				expression_ptr left(parse_expression(i1,op,symbols, callable_def));
+				expression_ptr left(parse_expression(i1,op,symbols, callable_def, can_optimize));
 				const formula_callable_definition* type_definition = left->get_type_definition();
 				//TODO: right now we don't give the right side of the dot
 				//a expression definition. We should work out if we can
 				//statically derive information from the left half to
 				//give the right half a definition.
 				return expression_ptr(new dot_expression(left,
-														 parse_expression(op+1,i2,symbols, type_definition)));
+														 parse_expression(op+1,i2,symbols, type_definition, can_optimize)));
 			}
 			
 			if(op_name == "where") {
 				expr_table_ptr table(new expr_table());
 				parse_where_clauses(op+1, i2, table, symbols, callable_def);
-				return expression_ptr(new where_expression(parse_expression(i1, op, symbols, callable_def),
+				return expression_ptr(new where_expression(parse_expression(i1, op, symbols, callable_def, can_optimize),
 														   table));
 			}
 
 			const bool is_dot = op_name == ".";
 			return expression_ptr(new operator_expression(
-														  op_name, parse_expression(i1,op,symbols, callable_def),
-														  parse_expression(op+1,i2,symbols, callable_def)));
+														  op_name, parse_expression(i1,op,symbols, callable_def, can_optimize),
+														  parse_expression(op+1,i2,symbols, callable_def, can_optimize)));
 		}
 		
 	}
