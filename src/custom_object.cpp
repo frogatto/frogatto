@@ -1124,11 +1124,6 @@ const solid_info* custom_object::calculate_platform() const
 	return type_->platform().get();
 }
 
-bool custom_object::on_players_side() const
-{
-	return type_->on_players_side() || is_human();
-}
-
 void custom_object::control(const level& lvl)
 {
 }

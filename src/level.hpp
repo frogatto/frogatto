@@ -74,8 +74,6 @@ public:
 	bool solid(const rect& r, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
 	bool may_be_solid_in_rect(const rect& r) const;
 	void set_solid_area(const rect& r, bool solid);
-	entity_ptr collide(int x, int y, const entity* exclude=NULL) const;
-	entity_ptr collide(const rect& r, const entity* exclude=NULL) const;
 	entity_ptr board(int x, int y) const;
 	const rect& boundaries() const { return boundaries_; }
 	void set_boundaries(const rect& bounds) { boundaries_ = bounds; }

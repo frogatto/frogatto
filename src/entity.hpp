@@ -41,7 +41,6 @@ public:
 	const player_info* get_player_info() const { return is_human(); }
 	virtual const player_info* is_human() const { return NULL; }
 	virtual player_info* is_human() { return NULL; }
-	virtual bool on_players_side() const { return false; }
 	virtual void process(level& lvl);
 	virtual bool execute_command(const variant& var) = 0;
 

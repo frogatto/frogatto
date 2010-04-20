@@ -43,9 +43,10 @@ public:
 
 	static void init_event_handlers(wml::const_node_ptr node,
 	                                event_handler_map& handlers,
-									game_logic::function_symbol_table* symbols=0);
+									game_logic::function_symbol_table* symbols=0,
+									const event_handler_map* base_handlers=NULL);
 
-	explicit custom_object_type(wml::const_node_ptr node);
+	explicit custom_object_type(wml::const_node_ptr node, const custom_object_type* base_type=NULL);
 	~custom_object_type();
 
 	const_custom_object_type_ptr get_sub_object(const std::string& id) const;
@@ -84,7 +85,6 @@ public:
 	int traction_in_air() const { return traction_in_air_; }
 	int traction_in_water() const { return traction_in_water_; }
 
-	bool on_players_side() const { return on_players_side_; }
 	bool respawns() const { return respawns_; }
 
 	bool affected_by_currents() const { return affected_by_currents_; }
@@ -171,7 +171,6 @@ private:
 	int friction_, traction_, traction_in_air_, traction_in_water_;
 	int mass_;
 
-	bool on_players_side_;
 	bool respawns_;
 
 	bool affected_by_currents_;

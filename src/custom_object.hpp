@@ -55,8 +55,6 @@ public:
 	virtual bool point_collides(int x, int y) const;
 	virtual bool rect_collides(const rect& r) const;
 
-	virtual bool on_players_side() const;
-
 	virtual const frame& current_frame() const { return *frame_; }
 
 	void set_frame(const std::string& name);

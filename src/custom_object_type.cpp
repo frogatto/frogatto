@@ -212,9 +212,6 @@ const_custom_object_type_ptr custom_object_type::get(const std::string& id)
 	const_custom_object_type_ptr result(create(id));
 	cache()[id] = result;
 
-	//load the object's variations here to avoid pausing the game
-	//when an object starts its variation.
-	result->load_variations();
 	return result;
 }
 
@@ -250,6 +247,10 @@ custom_object_type_ptr custom_object_type::create(const std::string& id)
 
 		//create the object and add it to our cache.
 		custom_object_type_ptr result(new custom_object_type(node));
+
+		//load the object's variations here to avoid pausing the game
+		//when an object starts its variation.
+		result->load_variations();
 		return result;
 	} catch(wml::parse_error& e) {
 		ASSERT_LOG(false, "Error parsing WML for custom object in " << path_itor->second << ": " << e.message);
@@ -292,7 +293,8 @@ std::vector<const_custom_object_type_ptr> custom_object_type::get_all()
 
 void custom_object_type::init_event_handlers(wml::const_node_ptr node,
                                              event_handler_map& handlers,
-											 game_logic::function_symbol_table* symbols)
+											 game_logic::function_symbol_table* symbols,
+											 const event_handler_map* base_handlers)
 {
 	if(symbols == NULL) {
 		symbols = &get_custom_object_functions_symbol_table();
@@ -307,13 +309,18 @@ void custom_object_type::init_event_handlers(wml::const_node_ptr node,
 			if(handlers.size() <= event_id) {
 				handlers.resize(event_id+1);
 			}
-			handlers[event_id] = game_logic::formula::create_optional_formula(i->second, symbols, &custom_object_definition);
+
+			if(base_handlers && base_handlers->size() > event_id && (*base_handlers)[event_id] && (*base_handlers)[event_id]->str() == i->second.str()) {
+				handlers[event_id] = (*base_handlers)[event_id];
+			} else {
+				handlers[event_id] = game_logic::formula::create_optional_formula(i->second, symbols, &custom_object_definition);
+			}
 		}
 	}
 }
 
 
-custom_object_type::custom_object_type(wml::const_node_ptr node)
+custom_object_type::custom_object_type(wml::const_node_ptr node, const custom_object_type* base_type)
   : id_(node->attr("id")),
 	hitpoints_(wml::get_int(node, "hitpoints", 1)),
 	timer_frequency_(wml::get_int(node, "timer_frequency", -1)),
@@ -331,7 +338,6 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 	traction_(wml::get_int(node, "traction", 1000)),
 	traction_in_air_(wml::get_int(node, "traction_in_air", 0)),
 	traction_in_water_(wml::get_int(node, "traction_in_water", 0)),
-	on_players_side_(wml::get_bool(node, "on_players_side", false)),
 	respawns_(wml::get_bool(node, "respawns", true)),
 	affected_by_currents_(wml::get_bool(node, "affected_by_currents", false)),
 	is_vehicle_(wml::get_bool(node, "vehicle", false)),	
@@ -498,7 +504,7 @@ custom_object_type::custom_object_type(wml::const_node_ptr node)
 		object_functions_->set_backup(&get_custom_object_functions_symbol_table());
 		game_logic::formula f(node->attr("functions"), object_functions_.get());
 	}
-	init_event_handlers(node, event_handlers_, function_symbols());
+	init_event_handlers(node, event_handlers_, function_symbols(), base_type ? &base_type->event_handlers_ : NULL);
 }
 
 custom_object_type::~custom_object_type()
@@ -564,7 +570,7 @@ const_custom_object_type_ptr custom_object_type::get_variation(const std::vector
 			}
 		}
 
-		result.reset(new custom_object_type(node));
+		result.reset(new custom_object_type(node, this));
 	}
 
 	return result;
