@@ -172,8 +172,6 @@ solid_map_ptr solid_map::create_from_texture(const graphics::texture& t, const r
 
 bool solid_map::solid_at(int x, int y) const
 {
-	ASSERT_EQ(solid_.size(), area_.w()*area_.h());
-
 	if(x < 0 || y < 0 || x >= area_.w() || y >= area_.h()) {
 		return false;
 	}
@@ -207,11 +205,18 @@ void solid_map::set_solid(int x, int y, bool value)
 
 void solid_map::calculate_side(int xdir, int ydir, std::vector<point>& points) const
 {
-	for(int y = 0; y < area_.h(); ++y) {
-		for(int x = 0; x < area_.w(); ++x) {
-			if(solid_at(x, y) && !solid_at(x + xdir, y + ydir)) {
+	int index = 0;
+	const int height = area_.h();
+	const int width = area_.w();
+	for(int y = 0; y < height; ++y) {
+		for(int x = 0; x < width; ++x) {
+			//for performance reasons, check our current position directly
+			//rather than calling solid_at() so we don't do bounds checking.
+			if(solid_[index] && !solid_at(x + xdir, y + ydir)) {
 				points.push_back(point(area_.x() + x, area_.y() + y));
 			}
+
+			++index;
 		}
 	}
 }

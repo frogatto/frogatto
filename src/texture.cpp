@@ -343,6 +343,7 @@ void texture::initialize(const key& k)
 	}
 
 	set_alpha_for_transparent_colors_in_rgba_surface(s.get());
+
 	const int npixels = s->w*s->h;
 	for(int n = 0; n != npixels; ++n) {
 		const unsigned char* pixel = reinterpret_cast<const unsigned char*>(s->pixels) + n*4;
@@ -522,27 +523,8 @@ texture::ID::~ID()
 
 namespace {
 
-inline unsigned int round_8bits_to_4bits(unsigned int n) {
-	n = n&0xFF;
-	const unsigned int pattern = n&0xF0;
-	if(n >= 0x80) {
-		const unsigned int high = pattern | (pattern >> 4);
-		const unsigned int low = (pattern-0x10) | ((pattern-0x10) >> 4);
-		if(abs(n - low) < abs(high - n)) {
-			return low;
-		} else {
-			return high;
-		}
-	} else {
-		const unsigned int low = pattern | (pattern >> 4);
-		const unsigned int high = (pattern+0x10) | ((pattern+0x10) >> 4);
-		if(abs(n - low) < abs(high - n)) {
-			return low;
-		} else {
-			return high;
-		}
-	}
-}
+const unsigned char table_8bits_to_4bits[256] = {
+0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, };
 
 }
 
@@ -559,10 +541,10 @@ void texture::ID::build_id()
 		GLushort* dst = &*buf.begin();
 		for(int n = 0; n != s->w*s->h; ++n) {
 			const GLuint p =
-			  round_8bits_to_4bits(*src >> 24) << 24 |
-			  round_8bits_to_4bits(*src >> 16) << 16 |
-			  round_8bits_to_4bits(*src >> 8) << 8 |
-			  round_8bits_to_4bits(*src >> 0) << 0;
+			  table_8bits_to_4bits[(*src >> 24)&0xFF] << 28 |
+			  table_8bits_to_4bits[(*src >> 16)&0xFF] << 20 |
+			  table_8bits_to_4bits[(*src >> 8)&0xFF] << 12 |
+			  table_8bits_to_4bits[(*src >> 0)&0xFF] << 4;
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
 			*dst = (((p >> 28)&0xF) << 12) |
 			       (((p >> 20)&0xF) << 8) |
@@ -613,3 +595,4 @@ BENCHMARK(texture_copy_ctor)
 		graphics::texture t2(t);
 	}
 }
+
