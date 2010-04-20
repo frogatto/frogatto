@@ -499,7 +499,11 @@ custom_object_type::custom_object_type(wml::const_node_ptr node, const custom_ob
 
 	game_logic::register_formula_callable_definition("object_type", &callable_definition_);
 
-	if(node->has_attr("functions")) {
+	if(base_type) {
+		//if we're a variation, just get the functions from our base type.
+		//variations can't define new functions.
+		object_functions_ = base_type->object_functions_;
+	} else if(node->has_attr("functions")) {
 		object_functions_.reset(new game_logic::function_symbol_table);
 		object_functions_->set_backup(&get_custom_object_functions_symbol_table());
 		game_logic::formula f(node->attr("functions"), object_functions_.get());
