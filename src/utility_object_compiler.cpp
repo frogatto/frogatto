@@ -129,6 +129,10 @@ UTILITY(object_compiler)
 
 		gui_nodes[gui] = wml::parse_wml_from_file("data/gui/" + gui);
 		animation_containing_nodes.push_back(gui_nodes[gui]);
+		if(gui_nodes[gui]->has_attr("no_compile_image")) {
+			std::vector<std::string> images = util::split(gui_nodes[gui]->attr("no_compile_image"));
+			no_compile_images.insert(no_compile_images.end(), images.begin(), images.end());
+		}
 	}
 
 	std::vector<const_custom_object_type_ptr> types = custom_object_type::get_all();
