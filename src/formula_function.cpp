@@ -725,7 +725,7 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 	//we reset callable_ to NULL during any calls so that recursive calls
 	//will work properly.
 	boost::intrusive_ptr<slot_formula_callable> tmp_callable(callable_);
-	callable_.reset();
+	callable_.reset(NULL);
 
 	for(size_t n = 0; n != arg_names_.size(); ++n) {
 		variant var = args()[n]->evaluate(variables);
