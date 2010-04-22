@@ -36,7 +36,8 @@ variant get_constant(const std::string& id)
 		return variant(!get_constant("LOW_END_SYSTEM").as_bool());
 	}
 
-	foreach(const constants_map& m, constants_stack) {
+	if(constants_stack.empty() == false) {
+		constants_map& m = constants_stack.back();
 		constants_map::const_iterator itor = m.find(id);
 		if(itor != m.end()) {
 			return itor->second;

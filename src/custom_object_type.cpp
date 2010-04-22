@@ -359,6 +359,9 @@ custom_object_type::custom_object_type(wml::const_node_ptr node, const custom_ob
 
 	//make it so any formula has these constants defined.
 	const game_logic::constants_loader scope_consts(node->get_child("consts"));
+
+	//if some constants change from base to variation, then we have to
+	//re-parse all formulas.
 	if(scope_consts.same_as_base() == false) {
 		base_type = NULL;
 	}
