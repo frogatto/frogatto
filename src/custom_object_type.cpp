@@ -578,6 +578,10 @@ const_custom_object_type_ptr custom_object_type::get_variation(const std::vector
 			}
 		}
 
+		//set our constants so the variation can decide whether it needs
+		//to re-parse formulas or not.
+		const game_logic::constants_loader scope_consts(node_->get_child("consts"));
+
 		result.reset(new custom_object_type(node, this));
 	}
 
@@ -586,13 +590,13 @@ const_custom_object_type_ptr custom_object_type::get_variation(const std::vector
 
 void custom_object_type::load_variations() const
 {
-	if(!node_ || variations_.empty()) {
+	if(!node_ || variations_.empty() || !node_->has_attr("load_variations")) {
 		return;
 	}
 
-	const game_logic::constants_loader scope_consts(node_->get_child("consts"));
-	for(std::map<std::string, wml::const_modifier_ptr>::const_iterator i = variations_.begin(); i != variations_.end(); ++i) {
-		get_variation(std::vector<std::string>(1, i->first));
+	const std::vector<std::string> variations_to_load = util::split(node_->attr("load_variations"));
+	foreach(const std::string& v, variations_to_load) {
+		get_variation(std::vector<std::string>(1, v));
 	}
 }
 
