@@ -53,10 +53,8 @@ const std::string BaseStr = "%PROTO%";
 
 void merge_into_prototype(wml::node_ptr prototype_node, wml::node_ptr node)
 {
-	std::cerr << "merging...\n";
 	for(std::map<std::string, wml::const_node_ptr>::const_iterator i = node->base_elements().begin(); i != node->base_elements().end(); ++i) {
 		prototype_node->set_base_element(i->first, i->second);
-		std::cerr << "SET PROTOTYPE BASE: " << i->first << "\n";
 	}
 
 	//we have a prototype node and an object node. We want to merge
@@ -242,9 +240,6 @@ custom_object_type_ptr custom_object_type::create(const std::string& id)
 
 		node = merge_prototype(node);
 
-//		std::cerr << "NODE FOR " << id << ": {{{\n";
-//		std::cerr << wml::output(node) << "\n}}}\n";
-
 		//create the object and add it to our cache.
 		custom_object_type_ptr result(new custom_object_type(node));
 
@@ -283,7 +278,6 @@ std::vector<const_custom_object_type_ptr> custom_object_type::get_all()
 		}
 
 		const std::string id(fname.begin(), fname.end() - 4);
-		std::cerr << "LOAD OBJECT: " << id << "\n";
 		res.push_back(get(id));
 	}
 
@@ -361,6 +355,8 @@ custom_object_type::custom_object_type(wml::const_node_ptr node, const custom_ob
 	}
 #endif
 
+	const bool is_variation = base_type != NULL;
+
 	//make it so any formula has these constants defined.
 	const game_logic::constants_loader scope_consts(node->get_child("consts"));
 	if(scope_consts.same_as_base() == false) {
@@ -432,11 +428,13 @@ custom_object_type::custom_object_type(wml::const_node_ptr node, const custom_ob
 		particle_factories_[particle_node->attr("id")] = particle_system_factory::create_factory(particle_node);
 	}
 
-	FOREACH_WML_CHILD(object_node, node, "object_type") {
-		wml::node_ptr dup_object_node = wml::deep_copy(object_node);
-		custom_object_type* type = new custom_object_type(merge_prototype(dup_object_node));
-		type->id_ = id_ + "." + type->id_;
-		sub_objects_[object_node->attr("id")].reset(type);
+	if(!is_variation) {
+		FOREACH_WML_CHILD(object_node, node, "object_type") {
+			wml::node_ptr dup_object_node = wml::deep_copy(object_node);
+			custom_object_type* type = new custom_object_type(merge_prototype(dup_object_node));
+			type->id_ = id_ + "." + type->id_;
+			sub_objects_[object_node->attr("id")].reset(type);
+		}
 	}
 
 	wml::const_node_ptr vars = node->get_child("vars");
@@ -585,6 +583,11 @@ const_custom_object_type_ptr custom_object_type::get_variation(const std::vector
 
 void custom_object_type::load_variations() const
 {
+	if(!node_ || variations_.empty()) {
+		return;
+	}
+
+	const game_logic::constants_loader scope_consts(node_->get_child("consts"));
 	for(std::map<std::string, wml::const_modifier_ptr>::const_iterator i = variations_.begin(); i != variations_.end(); ++i) {
 		get_variation(std::vector<std::string>(1, i->first));
 	}
