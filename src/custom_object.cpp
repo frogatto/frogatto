@@ -463,6 +463,7 @@ void custom_object::process(level& lvl)
 	entity::process(lvl);
 
 	//the object should never be colliding with the level at the start of processing.
+//	assert(!entity_collides_with_level(lvl, *this, MOVE_NONE));
 //	assert(!entity_collides(lvl, *this, MOVE_NONE));
 
 	collision_info stand_info;
