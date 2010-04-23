@@ -464,11 +464,12 @@ bool level_runner::play_cycle()
 					pause_time_ += SDL_GetTicks();
 					#endif
 				} else if(key == SDLK_s && (mod&KMOD_CTRL)) {
+					std::cerr << "SAVING...\n";
 					std::string data;
 					
 					wml::node_ptr lvl_node = wml::deep_copy(lvl_->write());
 					wml::write(lvl_node, data);
-					sys::write_file("save.cfg", data);
+					sys::write_file("data/level/save.cfg", data);
 				} else if(key == SDLK_s && (mod&KMOD_ALT)) {
 					IMG_SaveFrameBuffer("screenshot.png", 5);
 				} else if(key == SDLK_w && (mod&KMOD_CTRL)) {

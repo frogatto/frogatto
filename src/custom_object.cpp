@@ -231,6 +231,18 @@ wml::node_ptr custom_object::write() const
 		res->set_attr("position_scale_y", formatter() << position_scale_millis_->second);
 	}
 
+	if(!attached_objects().empty()) {
+		std::string s;
+
+		foreach(const entity_ptr& e, attached_objects()) {
+			char buf[256];
+			sprintf(buf, "%p", e.get());
+			s += buf;
+		}
+
+		res->set_attr("attached_objects", s);
+	}
+
 	if(!current_variation_.empty()) {
 		res->set_attr("variations", util::join(current_variation_));
 	}

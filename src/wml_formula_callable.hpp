@@ -48,6 +48,7 @@ class wml_formula_callable_read_scope
 {
 public:
 	static void register_serialized_object(intptr_t addr, wml_serializable_formula_callable_ptr ptr);
+	static wml_serializable_formula_callable_ptr get_serialized_object(intptr_t addr);
 	wml_formula_callable_read_scope();
 	~wml_formula_callable_read_scope();
 private:

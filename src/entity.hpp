@@ -222,6 +222,8 @@ public:
 	unsigned int solid_dimensions() const { return solid_dimensions_; }
 	unsigned int collide_dimensions() const { return collide_dimensions_; }
 
+	void set_attached_objects(const std::vector<entity_ptr>& v);
+
 protected:
 
 	virtual const solid_info* calculate_solid() const = 0;
@@ -243,7 +245,6 @@ protected:
 	void set_collide_dimensions(unsigned int dim) { collide_dimensions_ = dim; }
 
 	const std::vector<entity_ptr>& attached_objects() const { return attached_objects_; }
-	void set_attached_objects(const std::vector<entity_ptr>& v);
 
 private:
 	virtual void control(const level& lvl) = 0;

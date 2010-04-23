@@ -86,6 +86,11 @@ void wml_formula_callable_read_scope::register_serialized_object(intptr_t addr, 
 	registered_objects[addr] = ptr;
 }
 
+wml_serializable_formula_callable_ptr wml_formula_callable_read_scope::get_serialized_object(intptr_t addr)
+{
+	return registered_objects[addr];
+}
+
 wml_formula_callable_read_scope::wml_formula_callable_read_scope()
 {
 }

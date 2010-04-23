@@ -190,14 +190,8 @@ level::level(const std::string& level_cfg)
 	wml::node::const_child_iterator c1 = node->begin_child("character");
 	wml::node::const_child_iterator c2 = node->end_child("character");
 	for(; c1 != c2; ++c1) {
-		if(c1->second->get_child("type")) {
-			wml_chars_.push_back(c1->second);
-			continue;
-		}
-
-		load_character(c1->second);
-		const intptr_t addr_id = strtoll(c1->second->attr("_addr").c_str(), NULL, 16);
-		game_logic::wml_formula_callable_read_scope::register_serialized_object(addr_id, chars_.back());
+		wml_chars_.push_back(c1->second);
+		continue;
 	}
 
 	wml::const_node_ptr serialized_objects = node->get_child("serialized_objects");
@@ -342,12 +336,19 @@ void level::finish_loading()
 
 	game_logic::wml_formula_callable_read_scope read_scope;
 	foreach(wml::const_node_ptr node, wml_chars_) {
+		if(node->name() != "serialized_objects") {
+			continue;
+		}
+
+		FOREACH_WML_CHILD(obj_node, node, "character") {
+			const intptr_t addr_id = strtoll(obj_node->attr("_addr").c_str(), NULL, 16);
+			game_logic::wml_formula_callable_read_scope::register_serialized_object(addr_id, entity::build(obj_node));
+			fprintf(stderr, "DESERIALIZED: %x\n", addr_id);
+		}
+	}
+
+	foreach(wml::const_node_ptr node, wml_chars_) {
 		if(node->name() == "serialized_objects") {
-			FOREACH_WML_CHILD(obj_node, node, "character") {
-				const intptr_t addr_id = strtoll(obj_node->attr("_addr").c_str(), NULL, 16);
-				game_logic::wml_formula_callable_read_scope::register_serialized_object(addr_id, entity::build(obj_node));
-				fprintf(stderr, "DESERIALIZED: %x\n", addr_id);
-			}
 			continue;
 		}
 
@@ -355,6 +356,24 @@ void level::finish_loading()
 
 		const intptr_t addr_id = strtoll(node->attr("_addr").c_str(), NULL, 16);
 		game_logic::wml_formula_callable_read_scope::register_serialized_object(addr_id, chars_.back());
+
+		if(node->has_attr("attached_objects")) {
+			std::cerr << "LOADING ATTACHED: " << node->attr("attached_objects") << "\n";
+			std::vector<entity_ptr> attached;
+			std::vector<std::string> v = util::split(node->attr("attached_objects"));
+			foreach(const std::string& s, v) {
+				std::cerr << "ATTACHED: " << s << "\n";
+				const intptr_t addr_id = strtoll(s.c_str(), NULL, 16);
+				game_logic::wml_serializable_formula_callable_ptr obj = game_logic::wml_formula_callable_read_scope::get_serialized_object(addr_id);
+				entity* e = dynamic_cast<entity*>(obj.get());
+				if(e) {
+					std::cerr << "GOT ATTACHED\n";
+					attached.push_back(entity_ptr(e));
+				}
+			}
+
+			chars_.back()->set_attached_objects(attached);
+		}
 	}
 
 	wml_chars_.clear();
