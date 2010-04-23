@@ -41,27 +41,33 @@ void solid_map::create_object_solid_maps(wml::const_node_ptr node, std::vector<c
 		body_map->calculate_side(-1, 0, body_map->left_);
 		body_map->calculate_side(1, 0, body_map->right_);
 		body_map->calculate_side(-100000, 0, body_map->all_);
+
+		if(legs_height == 0) {
+			body_map->calculate_side(0, 1, body_map->bottom_);
+		}
 		v.push_back(body_map);
 	} else {
 		legs_height = area.h();
 	}
 
-	rect legs(area.x(), area.y2() - legs_height, area.w(), legs_height);
-	solid_map_ptr legs_map(new solid_map);
-	legs_map->id_ = "legs";
-	legs_map->area_ = legs;
-	legs_map->solid_.resize(legs.w()*legs.h(), false);
-	for(int y = 0; y != legs.h(); ++y) {
-		for(int x = y; x < legs.w() - y; ++x) {
-			legs_map->set_solid(x, y);
+	if(legs_height) {
+		rect legs(area.x(), area.y2() - legs_height, area.w(), legs_height);
+		solid_map_ptr legs_map(new solid_map);
+		legs_map->id_ = "legs";
+		legs_map->area_ = legs;
+		legs_map->solid_.resize(legs.w()*legs.h(), false);
+		for(int y = 0; y != legs.h(); ++y) {
+			for(int x = y; x < legs.w() - y; ++x) {
+				legs_map->set_solid(x, y);
+			}
 		}
-	}
 
-	legs_map->calculate_side(0, 1, legs_map->bottom_);
-	legs_map->calculate_side(-1, 0, legs_map->left_);
-	legs_map->calculate_side(1, 0, legs_map->right_);
-	legs_map->calculate_side(-10000, 0, legs_map->all_);
-	v.push_back(legs_map);
+		legs_map->calculate_side(0, 1, legs_map->bottom_);
+		legs_map->calculate_side(-1, 0, legs_map->left_);
+		legs_map->calculate_side(1, 0, legs_map->right_);
+		legs_map->calculate_side(-10000, 0, legs_map->all_);
+		v.push_back(legs_map);
+	}
 }
 
 void solid_map::create_object_platform_maps(wml::const_node_ptr node, std::vector<const_solid_map_ptr>& v)
