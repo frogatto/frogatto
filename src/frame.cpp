@@ -126,10 +126,15 @@ frame::frame(wml::const_node_ptr node)
 	}
 
 	if(node->has_attr("frame_info")) {
-		const std::vector<int> values = wml::get_vector_int(node, "frame_info");
-		ASSERT_EQ(values.size()%8, 0);
-		std::vector<int>::const_iterator i = values.begin();
-		while(i != values.end()) {
+		int values_buf[1024];
+		int num_values = 1024;
+		util::split_into_ints(node->attr("frame_info").c_str(), values_buf, &num_values);
+
+		ASSERT_EQ(num_values%8, 0);
+		ASSERT_LE(num_values, 1024);
+		const int* i = values_buf;
+		const int* i2 = values_buf + num_values;
+		while(i != i2) {
 			frame_info info;
 			info.x_adjust = *i++;
 			info.y_adjust = *i++;

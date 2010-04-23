@@ -14,7 +14,10 @@ struct point {
 
 	std::string to_string() const;
 
-	int x, y;
+	union {
+		struct { int x, y; };
+		int buf[2];
+	};
 };
 
 bool operator==(const point& a, const point& b);

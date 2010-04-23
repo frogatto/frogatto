@@ -9,11 +9,9 @@
 
 point::point(const std::string& str)
 {
-	std::vector<std::string> items = util::split(str);
-	if(items.size() == 2) {
-		x = atoi(items[0].c_str());
-		y = atoi(items[1].c_str());
-	} else {
+	int buf_size = 2;
+	util::split_into_ints(str.c_str(), buf, &buf_size);
+	if(buf_size != 2) {
 		x = y = 0;
 	}
 }
@@ -66,20 +64,23 @@ rect::rect(const std::string& str)
 		return;
 	}
 
-	std::vector<std::string> items = util::split(str);
-	if(items.size() == 2) {
-		*this = rect::from_coordinates(
-		    atoi(items[0].c_str()), atoi(items[1].c_str()), 1, 1);
-	} else if(items.size() == 3) {
-		*this = rect::from_coordinates(
-		    atoi(items[0].c_str()), atoi(items[1].c_str()),
-		    atoi(items[2].c_str()), 1);
-	} else if(items.size() == 4) {
-		*this = rect::from_coordinates(
-		    atoi(items[0].c_str()), atoi(items[1].c_str()),
-		    atoi(items[2].c_str()), atoi(items[3].c_str()));
-	} else {
+	int items[4];
+	int num_items = 4;
+	util::split_into_ints(str.c_str(), items, &num_items);
+
+	switch(num_items) {
+	case 2:
+		*this = rect::from_coordinates(items[0], items[1], 1, 1);
+		break;
+	case 3:
+		*this = rect::from_coordinates(items[0], items[1], items[2], 1);
+		break;
+	case 4:
+		*this = rect::from_coordinates(items[0], items[1], items[2], items[3]);
+		break;
+	default:
 		*this = rect();
+		break;
 	}
 }
 
@@ -275,4 +276,12 @@ UNIT_TEST(rect_difference)
 
 	CHECK_EQ(rect_difference(rect(0, 891, 800, 1491), rect(-32, 1344, 1120, 2432), buf), 1);
 	CHECK_EQ(buf[0], rect(0, 891, 800, 453));
+}
+
+BENCHMARK(benchmark_rect_str)
+{
+	static const std::string str = "45,89,100, 120";
+	BENCHMARK_LOOP {
+		const rect r(str);
+	}
 }

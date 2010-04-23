@@ -31,6 +31,12 @@ void split(std::string const &val, std::vector<std::string>& res, char c = ',', 
 std::vector<std::string> split(std::string const &val, std::string const &delim);
 std::string join(const std::vector<std::string>& v, char c=',');
 
+//splits the string 's' into ints, storing the output in 'output'. s
+//should point to a comma-separated list of integers. output_size should point
+//to the size of 'output'. The number of ints found will be stored in
+//output_size.
+const char* split_into_ints(const char* s, int* output, int* output_size);
+
 bool string_starts_with(const std::string& target, const std::string& prefix);
 std::string strip_string_prefix(const std::string& target, const std::string& prefix);
 }

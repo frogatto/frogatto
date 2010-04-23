@@ -11,6 +11,7 @@
    See the COPYING file for more details.
 */
 #include "string_utils.hpp"
+#include "unit_test.hpp"
 
 #include <algorithm>
 #include <cctype>
@@ -119,6 +120,33 @@ std::string join(const std::vector<std::string>& v, char j)
 	return res;
 }
 
+const char* split_into_ints(const char* s, int* output, int* output_size)
+{
+	char* endptr = NULL;
+	int index = 0;
+	for(;;) {
+		int result = strtol(s, &endptr, 10);
+		if(endptr == s) {
+			break;
+		}
+
+		if(index < *output_size) {
+			output[index] = result;
+		}
+
+		++index;
+
+		if(*endptr != ',') {
+			break;
+		}
+
+		s = endptr+1;
+	}
+
+	*output_size = index;
+	return endptr;
+}
+
 bool string_starts_with(const std::string& target, const std::string& prefix) {
 	if(target.length() < prefix.length()) {
 		return false;
@@ -134,4 +162,26 @@ std::string strip_string_prefix(const std::string& target, const std::string& pr
 	return target.substr(prefix.length());
 }
 
+}
+
+UNIT_TEST(test_split_into_ints)
+{
+	int buf[6];
+	int buf_size = 6;
+	const char* str = "4,18,7,245";
+	const char* res = util::split_into_ints(str, buf, &buf_size);
+	CHECK_EQ(buf_size, 4);
+	CHECK_EQ(res, str + strlen(str));
+	CHECK_EQ(buf[0], 4);
+	CHECK_EQ(buf[1], 18);
+	CHECK_EQ(buf[2], 7);
+	CHECK_EQ(buf[3], 245);
+
+	buf[1] = 0;
+	buf_size = 1;
+	res = util::split_into_ints(str, buf, &buf_size);
+	CHECK_EQ(buf_size, 4);
+	CHECK_EQ(res, str + strlen(str));
+	CHECK_EQ(buf[0], 4);
+	CHECK_EQ(buf[1], 0);
 }
