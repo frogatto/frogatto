@@ -417,12 +417,12 @@ void frame::get_rect_in_frame_number(int nframe, GLfloat* output_rect, const fra
 	//a tiny amount we subtract from the right/bottom side of the texture,
 	//to avoid rounding errors in floating point going over the edge.
 	//This seems like a kludge but I don't know of a better way to do it. :(
-	const GLfloat TextureEpsilon = 0.0001;
+	const GLfloat TextureEpsilon = 0.1;
 
-	output_rect[0] = GLfloat(info.area.x())/GLfloat(texture_.width()) + TextureEpsilon;
-	output_rect[1] = GLfloat(info.area.y()) / GLfloat(texture_.height());
-	output_rect[2] = GLfloat(info.area.x() + info.area.w())/GLfloat(texture_.width()) - TextureEpsilon;
-	output_rect[3] = GLfloat(info.area.y() + info.area.h())/GLfloat(texture_.height()) - TextureEpsilon;
+	output_rect[0] = GLfloat(info.area.x() + TextureEpsilon)/GLfloat(texture_.width());
+	output_rect[1] = GLfloat(info.area.y() + TextureEpsilon) / GLfloat(texture_.height());
+	output_rect[2] = GLfloat(info.area.x() + info.area.w() - TextureEpsilon)/GLfloat(texture_.width());
+	output_rect[3] = GLfloat(info.area.y() + info.area.h() - TextureEpsilon)/GLfloat(texture_.height());
 }
 
 int frame::duration() const
