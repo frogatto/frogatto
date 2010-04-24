@@ -2902,6 +2902,31 @@ bool entity_in_current_level(const entity* e)
 	return std::find(lvl.get_chars().begin(), lvl.get_chars().end(), e) != lvl.get_chars().end();
 }
 
+UTILITY(correct_solidity)
+{
+	std::vector<std::string> files;
+	sys::get_files_in_dir("data/level/", &files);
+	foreach(const std::string& file, files) {
+		boost::intrusive_ptr<level> lvl(new level(file));
+		lvl->finish_loading();
+		lvl->set_as_current_level();
+
+		foreach(entity_ptr c, lvl->get_chars()) {
+			if(entity_collides_with_level(*lvl, *c, MOVE_NONE)) {
+				if(place_entity_in_level(*lvl, *c)) {
+					std::cerr << "LEVEL: " << lvl->id() << " CORRECTED " << c->debug_description() << "\n";
+				} else {
+					std::cerr << "LEVEL: " << lvl->id() << " FAILED TO CORRECT " << c->debug_description() << "\n";
+				}
+			}
+		}
+
+		std::string data;
+		wml::write(lvl->write(), data);
+		sys::write_file("data/level/" + file, data);
+	}
+}
+
 UTILITY(compile_levels)
 {
 	std::cerr << "COMPILING LEVELS...\n";
@@ -2971,6 +2996,7 @@ BENCHMARK(load_and_save_all_levels)
 		foreach(const std::string& file, files) {
 			std::cerr << "LOAD_LEVEL '" << file << "'\n";
 			boost::intrusive_ptr<level> lvl(new level(file));
+			lvl->finish_loading();
 
 			std::string data;
 			wml::write(lvl->write(), data);
