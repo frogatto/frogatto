@@ -40,8 +40,8 @@ gui_section::gui_section(wml::const_node_ptr node)
 void gui_section::blit(int x, int y, int w, int h) const
 {
 	graphics::blit_texture(texture_, x, y, w, h, 0.0,
-	                       GLfloat(area_.x())/GLfloat(texture_.width()),
-	                       GLfloat(area_.y())/GLfloat(texture_.height()),
-	                       GLfloat(area_.x2())/GLfloat(texture_.width()),
-	                       GLfloat(area_.y2())/GLfloat(texture_.height()));
+	                       GLfloat(area_.x()+0.01)/GLfloat(texture_.width()),
+	                       GLfloat(area_.y()+0.01)/GLfloat(texture_.height()),
+	                       GLfloat(area_.x2()-0.01)/GLfloat(texture_.width()),
+	                       GLfloat(area_.y2()-0.01)/GLfloat(texture_.height()));
 }
