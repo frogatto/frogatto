@@ -253,6 +253,7 @@ extern "C" int main(int argc, char** argv)
 		preloads = wml::parse_wml_from_file("data/preload.cfg");
 		int preload_items = std::distance(preloads->begin_child("preload"), preloads->end_child("preload"));
 		loader.set_number_of_items(preload_items+7); // 7 is the number of items that will be loaded below
+		loader.load(preloads);
 		loader.draw_and_increment("Initializing custom object");
 		custom_object::init();
 		loader.draw_and_increment("Initializing custom object functions");
@@ -272,7 +273,6 @@ extern "C" int main(int argc, char** argv)
 		return 0;
 	}
 	
-	loader.load(preloads);
 	loader.draw("Loading level");
 
 	if(!skip_tests && !test::run_tests()) {

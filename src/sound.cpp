@@ -5,6 +5,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "preferences.hpp"
+#include "filesystem.hpp"
 #include "SDL.h"
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 #include "SDL_mixer.h"
@@ -498,6 +499,7 @@ void play_music(const std::string& file)
 	current_music_name() = file;
 	std::string aac_file = file;
 	aac_file.replace(aac_file.length()-3, aac_file.length(), "m4a");
+	if (!sys::file_exists("music_aac/" + aac_file)) return;
 	iphone_play_music(("music_aac/" + aac_file).c_str(), -1);
 	iphone_fade_in_music(350);
 	playing_music = true;

@@ -60,12 +60,10 @@ void iphone_play_music (const char *file, int loops)
 		[song stop];
 		[song release];
 	}
-	NSLog(@"Stopping the old song took %i ms", SDL_GetTicks()-timer);
-	timer = SDL_GetTicks();
 	song = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[NSString stringWithUTF8String: file]] error:NULL];
 	NSLog(@"Initializing the new song took %i ms", SDL_GetTicks()-timer);
 	song.delegate = delegate;
-	song.numberOfLoops = loops; // loop indefinitely
+	song.numberOfLoops = loops;
 	
 	timer = SDL_GetTicks();
 	[song play];

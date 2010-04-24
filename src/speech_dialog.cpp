@@ -212,8 +212,8 @@ void speech_dialog::draw() const
 	const int TextBorder = 10;
 	const rect pane_area(
 	  top_corner->width(),
-	  graphics::screen_height() - TextAreaHeight + TextBorder,
-	  graphics::screen_width() - top_corner->width()*2,
+	  preferences::virtual_screen_height() - TextAreaHeight + TextBorder,
+	  preferences::virtual_screen_width() - top_corner->width()*2,
 	  TextAreaHeight - bottom_corner->height());
 
 	const rect text_area(pane_area.x()-30, pane_area.y()-30, pane_area.w()+60, pane_area.h()+60);
