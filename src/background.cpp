@@ -159,6 +159,8 @@ void background::draw(int x, int y, const rect& area, const std::vector<rect>& o
 {
 	const int height = height_ + offset_.y*2;
 
+	std::cerr << "BG DRAW\n";
+
 	//set the background colors for the level. The area above 'height' is
 	//painted with the top color, and the area below height is painted with
 	//the bottom color. For efficiency we do this using color clearing, with
@@ -238,8 +240,10 @@ void calculate_draw_areas(rect area, std::vector<rect>::const_iterator opaque1, 
 
 void background::draw_layers(int x, int y, const rect& area_ref, const std::vector<rect>& opaque_areas, int rotation, int cycle) const
 {
+	std::cerr << "BG DRAW LAYERS\n";
 	static std::vector<rect> areas;
 	areas.clear();
+	std::cerr << "BG CALCULATE\n";
 	calculate_draw_areas(area_ref, opaque_areas.begin(), opaque_areas.end(), &areas);
 
 	for(std::vector<layer>::const_iterator i = layers_.begin(); i != layers_.end(); ++i) {
@@ -255,7 +259,9 @@ void background::draw_layers(int x, int y, const rect& area_ref, const std::vect
 					glDisable(GL_BLEND);
 				}
 				blit_queue.set_texture(bg.texture.get_id());
+				std::cerr << "BG DO_BLIT\n";
 				blit_queue.do_blit();
+				std::cerr << "BG DONE_BLIT\n";
 				blit_queue.clear();
 				if(bg.blend == false) {
 					glEnable(GL_BLEND);
@@ -264,6 +270,8 @@ void background::draw_layers(int x, int y, const rect& area_ref, const std::vect
 
 		}
 	}
+
+	std::cerr << "BG DONE DRAW LAYER\n";
 }
 
 void background::draw_foreground(double xpos, double ypos, int rotation, int cycle) const
@@ -287,9 +295,11 @@ void background::set_offset(const point& offset)
 
 void background::draw_layer(int x, int y, const rect& area, int rotation, const background::layer& bg, int cycle) const
 {
+	std::cerr << "BG DRAW LAYER: " << x << ", " << y << "\n";
 	const double ScaleImage = 2.0;
 	GLshort y1 = y + (bg.yoffset+offset_.y)*ScaleImage - (y*bg.yscale)/100;
 	GLshort y2 = y1 + (bg.y2 - bg.y1)*ScaleImage;
+	std::cerr << "BG DRAW LAYER 1: " << y1 << ", " << y2 << "\n";
 
 	if(y2 <= y || y2 <= area.y()) {
 		return;
@@ -395,6 +405,7 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 	y = area.y();
 
 	while(screen_width > 0) {
+		std::cerr << "BG BLIT\n";
 		const int texture_blit_width = (1.0 - xpos)*bg.texture.width()*ScaleImage;
 
 		const int blit_width = std::min(texture_blit_width, screen_width);
