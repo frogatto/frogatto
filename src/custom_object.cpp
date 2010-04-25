@@ -86,8 +86,8 @@ custom_object::custom_object(wml::const_node_ptr node)
 
 	vars_->read(node->get_child("vars"));
 
-	set_solid_dimensions(type_->solid_dimensions());
-	set_collide_dimensions(type_->collide_dimensions());
+	set_solid_dimensions(wml::get_int(node, "solid_dim", type_->solid_dimensions()));
+	set_collide_dimensions(wml::get_int(node, "collide_dim", type_->collide_dimensions()));
 
 	wml::const_node_ptr tags_node = node->get_child("tags");
 	if(tags_node) {
@@ -270,6 +270,14 @@ wml::node_ptr custom_object::write() const
 	res->set_attr("velocity_x", formatter() << velocity_x_);
 	res->set_attr("velocity_y", formatter() << velocity_y_);
 
+	if(solid_dimensions() != type_->solid_dimensions()) {
+		res->set_attr("solid_dim", formatter() << solid_dimensions());
+	}
+
+	if(collide_dimensions() != type_->collide_dimensions()) {
+		res->set_attr("collide_dim", formatter() << collide_dimensions());
+	}
+
 	if(hitpoints_ != type_->hitpoints() || max_hitpoints_ != type_->hitpoints()) {
 		res->set_attr("hitpoints", formatter() << hitpoints_);
 		res->set_attr("max_hitpoints", formatter() << max_hitpoints_);
@@ -284,7 +292,7 @@ wml::node_ptr custom_object::write() const
 	}
 
 	if(zorder_ != type_->zorder()) {
-		res->set_attr("zorder", formatter() << y());
+		res->set_attr("zorder", formatter() << zorder_);
 	}
 
 	res->set_attr("face_right", face_right() ? "yes" : "no");
