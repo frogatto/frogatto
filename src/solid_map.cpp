@@ -19,7 +19,7 @@ void solid_map::create_object_solid_maps(wml::const_node_ptr node, std::vector<c
 		v.push_back(create_object_solid_map_from_solid_node(solid_node));
 	}
 
-	if(!node->has_attr("solid_area")) {
+	if(!node->has_attr("solid_area") || node->attr("solid_area") == "none") {
 		return;
 	}
 
