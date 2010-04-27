@@ -544,7 +544,7 @@ void custom_object::process(level& lvl)
 		handle_event(*event);
 	}
 
-	const bool is_underwater = lvl.is_underwater(solid_rect());
+	const bool is_underwater = solid() && lvl.is_underwater(solid_rect());
 	
 	if( is_underwater && !was_underwater_){
 		//event on_enter_water
@@ -1236,7 +1236,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_NEAR_CLIFF_EDGE:   return variant(is_standing(level::current()) && cliff_edge_within(level::current(), feet_x(), feet_y(), face_dir()*15));
 	case CUSTOM_OBJECT_DISTANCE_TO_CLIFF: return variant(::distance_to_cliff(level::current(), feet_x(), feet_y(), face_dir()));
 	case CUSTOM_OBJECT_SLOPE_STANDING_ON: return variant(-slope_standing_on(6)*face_dir());
-	case CUSTOM_OBJECT_UNDERWATER:        return variant(level::current().is_underwater(solid_rect()));
+	case CUSTOM_OBJECT_UNDERWATER:        return variant(level::current().is_underwater(solid() ? solid_rect() : rect(x(), y(), current_frame().width(), current_frame().height())));
 	case CUSTOM_OBJECT_WATER_BOUNDS: {
 		rect area;
 		if(level::current().is_underwater(solid_rect(), &area)) {
