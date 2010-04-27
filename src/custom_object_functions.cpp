@@ -1951,27 +1951,29 @@ public:
 
 class text_command : public custom_object_command_callable {
 public:
-	text_command(const std::string& text, const std::string& font)
-	  : text_(text), font_(font) {
+	text_command(const std::string& text, const std::string& font, int size)
+	  : text_(text), font_(font), size_(size) {
 	}
 
 	virtual void execute(level& lvl, custom_object& ob) const {
-		ob.set_text(text_, font_);
+		ob.set_text(text_, font_, size_*2);
 	}
 private:
 	std::string text_, font_;
+	int size_;
 };
 
 class text_function : public function_expression {
 public:
 	explicit text_function(const args_list& args)
-	  : function_expression("text", args, 1, 2) {
+	  : function_expression("text", args, 1, 3) {
 	}
 	
 	variant execute(const formula_callable& variables) const {
 		const std::string text = args()[0]->evaluate(variables).as_string();
 		const std::string font = args().size() > 1 ? args()[1]->evaluate(variables).as_string() : "default";
-		return variant(new text_command(text, font));
+		const int size = args().size() > 2 ? args()[2]->evaluate(variables).as_int() : 1;
+		return variant(new text_command(text, font, size));
 	}
 };
 

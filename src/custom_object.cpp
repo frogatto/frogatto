@@ -36,6 +36,7 @@
 struct custom_object_text {
 	std::string text;
 	const_graphical_font_ptr font;
+	int size;
 	rect dimensions;
 };
 
@@ -73,7 +74,8 @@ custom_object::custom_object(wml::const_node_ptr node)
 	fragment_shaders_(util::split(node->attr("fragment_shaders"))),
 	vertex_shaders_(util::split(node->attr("vertex_shaders"))),
 	shader_(0),
-	always_active_(wml::get_bool(node, "always_active", false))
+	always_active_(wml::get_bool(node, "always_active", false)),
+	last_cycle_active_(0)
 {
 	if(node->has_attr("variations")) {
 		current_variation_ = util::split(node->attr("variations"));
@@ -121,7 +123,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 
 	wml::const_node_ptr text_node = node->get_child("text");
 	if(text_node) {
-		set_text(text_node->attr("text"), text_node->attr("font"));
+		set_text(text_node->attr("text"), text_node->attr("font"), wml::get_int(text_node, "size", 2));
 	}
 }
 
@@ -149,7 +151,8 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	cycle_(0),
 	loaded_(false), fall_through_platforms_(0),
 	shader_(0),
-	always_active_(false)
+	always_active_(false),
+	last_cycle_active_(0)
 {
 	set_solid_dimensions(type_->solid_dimensions());
 	set_collide_dimensions(type_->collide_dimensions());
@@ -213,7 +216,8 @@ custom_object::custom_object(const custom_object& o) :
 	fragment_shaders_(o.fragment_shaders_),
 	vertex_shaders_(o.vertex_shaders_),
 	shader_(o.shader_),
-	always_active_(o.always_active_)
+	always_active_(o.always_active_),
+	last_cycle_active_(0)
 {
 }
 
@@ -351,6 +355,8 @@ wml::node_ptr custom_object::write() const
 			node->set_attr("font", text_->font->id());
 		}
 
+		node->set_attr("size", formatter() << text_->size);
+
 		res->add_child(node);
 	}
 	
@@ -439,7 +445,7 @@ void custom_object::draw() const
 	}
 
 	if(text_ && text_->font) {
-		text_->font->draw(draw_x, draw_y, text_->text);
+		text_->font->draw(draw_x, draw_y, text_->text, text_->size);
 	}
 
 #ifndef SDL_VIDEO_OPENGL_ES
@@ -467,6 +473,12 @@ void custom_object::process(level& lvl)
 		//un-moving object that will stay immobile.
 		return;
 	}
+
+	if(last_cycle_active_ < lvl.cycle() - 5) {
+		handle_event(OBJECT_EVENT_BECOME_ACTIVE);
+	}
+
+	last_cycle_active_ = lvl.cycle();
 
 	entity::process(lvl);
 
@@ -1185,6 +1197,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	switch(slot) {
 	case CUSTOM_OBJECT_CONSTS:            return variant(type_->consts().get());
 	case CUSTOM_OBJECT_TYPE:              return variant(type_->id());
+	case CUSTOM_OBJECT_ACTIVE:            return variant(last_cycle_active_ >= level::current().cycle() - 2);
 	case CUSTOM_OBJECT_TIME_IN_ANIMATION: return variant(time_in_frame_);
 	case CUSTOM_OBJECT_TIME_IN_ANIMATION_DELTA: return variant(time_in_frame_delta_);
 	case CUSTOM_OBJECT_LEVEL:             return variant(&level::current());
@@ -2271,11 +2284,12 @@ void custom_object::remove_particle_system(const std::string& key)
 	particle_systems_.erase(key);
 }
 
-void custom_object::set_text(const std::string& text, const std::string& font)
+void custom_object::set_text(const std::string& text, const std::string& font, int size)
 {
 	text_.reset(new custom_object_text);
 	text_->text = text;
 	text_->font = graphical_font::get(font);
+	text_->size = size;
 	ASSERT_LOG(text_->font, "UNKNOWN FONT: " << font);
 	text_->dimensions = text_->font->dimensions(text_->text);
 }

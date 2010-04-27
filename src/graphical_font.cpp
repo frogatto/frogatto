@@ -70,9 +70,9 @@ graphical_font::graphical_font(wml::const_node_ptr node)
 	}
 }
 
-rect graphical_font::draw(int x, int y, const std::string& text) const
+rect graphical_font::draw(int x, int y, const std::string& text, int size) const
 {
-	return do_draw(x, y, text);
+	return do_draw(x, y, text, true, size);
 }
 
 namespace {
@@ -80,7 +80,7 @@ std::vector<GLfloat> font_varray;
 std::vector<GLfloat> font_tcarray;
 }
 
-rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_text) const
+rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_text, int size) const
 {
 	if(text.empty()) {
 		return rect(x, y, 0, 0);
@@ -121,7 +121,7 @@ rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_te
 			font_varray.push_back(xpos);
 			font_varray.push_back(ypos);
 			font_varray.push_back(xpos);
-			font_varray.push_back(ypos + (r.h())*2);
+			font_varray.push_back(ypos + (r.h())*size);
 			font_tcarray.push_back(u1);
 			font_tcarray.push_back(v1);
 			font_tcarray.push_back(u1);
@@ -129,12 +129,12 @@ rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_te
 			font_tcarray.push_back(u1);
 			font_tcarray.push_back(v2);
 
-			font_varray.push_back(xpos + (r.w())*2);
+			font_varray.push_back(xpos + (r.w())*size);
 			font_varray.push_back(ypos);
-			font_varray.push_back(xpos + (r.w())*2);
-			font_varray.push_back(ypos + (r.h())*2);
-			font_varray.push_back(xpos + (r.w())*2);
-			font_varray.push_back(ypos + (r.h())*2);
+			font_varray.push_back(xpos + (r.w())*size);
+			font_varray.push_back(ypos + (r.h())*size);
+			font_varray.push_back(xpos + (r.w())*size);
+			font_varray.push_back(ypos + (r.h())*size);
 			font_tcarray.push_back(u2);
 			font_tcarray.push_back(v1);
 			font_tcarray.push_back(u2);
@@ -143,15 +143,15 @@ rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_te
 			font_tcarray.push_back(v2);
 		}
 
-		if(xpos + r.w()*2 > x2) {
-			x2 = xpos + r.w()*2;
+		if(xpos + r.w()*size > x2) {
+			x2 = xpos + r.w()*size;
 		}
 
-		if(ypos + r.h()*2 > y2) {
-			y2 = ypos + r.h()*2;
+		if(ypos + r.h()*size > y2) {
+			y2 = ypos + r.h()*size;
 		}
 		
-		xpos += r.w()*2 + kerning_*2;
+		xpos += r.w()*size + kerning_*size;
 		if(r.h() > highest) {
 			highest = r.h();
 		}
@@ -167,8 +167,8 @@ rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_te
 	return rect(x, y, x2 - x, y2 - y);
 }
 
-rect graphical_font::dimensions(const std::string& text) const
+rect graphical_font::dimensions(const std::string& text, int size) const
 {
-	return do_draw(0, 0, text, false);
+	return do_draw(0, 0, text, false, size);
 }
 

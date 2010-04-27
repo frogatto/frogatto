@@ -13,6 +13,7 @@ std::vector<std::string> create_object_event_names()
 	res.push_back("load");
 	res.push_back("create");
 	res.push_back("done_create");
+	res.push_back("become_active");
 	res.push_back("surface_damage");
 	res.push_back("enter_anim");
 	res.push_back("end_anim");

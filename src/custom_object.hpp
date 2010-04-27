@@ -106,7 +106,7 @@ public:
 	void add_particle_system(const std::string& key, const std::string& type);
 	void remove_particle_system(const std::string& key);
 
-	void set_text(const std::string& text, const std::string& font);
+	void set_text(const std::string& text, const std::string& font, int size);
 
 	virtual int hitpoints() const { return hitpoints_; }
 
@@ -248,6 +248,8 @@ private:
 	bool always_active_;
 
 	std::stack<const formula_callable*> backup_callable_stack_;
+
+	int last_cycle_active_;
 };
 
 #endif

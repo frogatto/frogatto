@@ -21,11 +21,11 @@ public:
 	static const_graphical_font_ptr get(const std::string& id);
 	explicit graphical_font(wml::const_node_ptr node);
 	const std::string& id() const { return id_; }
-	rect draw(int x, int y, const std::string& text) const;
-	rect dimensions(const std::string& text) const;
+	rect draw(int x, int y, const std::string& text, int size=2) const;
+	rect dimensions(const std::string& text, int size=2) const;
 
 private:
-	rect do_draw(int x, int y, const std::string& text, bool draw_text=true) const;
+	rect do_draw(int x, int y, const std::string& text, bool draw_text, int size) const;
 
 	std::string id_;
 
