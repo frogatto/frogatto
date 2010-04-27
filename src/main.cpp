@@ -128,11 +128,13 @@ extern "C" int main(int argc, char** argv)
 	const char* profile_output = NULL;
 	std::string profile_output_buf;
 
+	std::string orig_level_cfg = level_cfg;
 #ifdef TARGET_OS_IPHONE
 	//on the iPhone, try to restore the auto-save if it exists
 	if(sys::file_exists(preferences::auto_save_file_path()) && sys::read_file(std::string(preferences::auto_save_file_path()) + ".stat") == "1") {
 		level_cfg = "autosave.cfg";
 		sys::write_file(std::string(preferences::auto_save_file_path()) + ".stat", "0");
+		
 	}
 #endif
 
@@ -173,6 +175,7 @@ extern "C" int main(int argc, char** argv)
 			preferences::set_actual_screen_height(boost::lexical_cast<int>(h));
 		} else if(arg == "--level" && n+1 < argc) {
 			level_cfg = argv[++n];
+			orig_level_cfg = level_cfg;
 		} else if(arg == "--host" && n+1 < argc) {
 			server = argv[++n];
 		} else if(arg == "--compiled") {
@@ -309,10 +312,19 @@ extern "C" int main(int argc, char** argv)
 	ASSERT_EQ(glew_status, GLEW_OK);
 #endif
 
+	//look to see if we got any quit events while loading.
+	{
+	SDL_Event event;
+	while(SDL_PollEvent(&event)) {
+		if(event.type == SDL_QUIT) {
+			return 0;
+		}
+	}
+	}
+
 	formula_profiler::manager profiler(profile_output);
 
 	bool quit = false;
-	const std::string orig_level_cfg = level_cfg;
 
 	while(!quit && !show_title_screen(level_cfg)) {
 		boost::intrusive_ptr<level> lvl(load_level(level_cfg));
@@ -329,7 +341,6 @@ extern "C" int main(int argc, char** argv)
 			std::string level_cfg = "waiting-room.cfg";
 			boost::intrusive_ptr<level> wait_lvl(load_level(level_cfg));
 			wait_lvl->set_multiplayer_slot(0);
-			std::cerr << "HAS PLAYER : " << (wait_lvl->player() ? "YES" : "NO") << "\n";
 			if(wait_lvl->player()) {
 				wait_lvl->player()->set_current_level(level_cfg);
 			}
@@ -344,7 +355,7 @@ extern "C" int main(int argc, char** argv)
 
 		assert(lvl.get());
 		sound::play_music(lvl->music());
-		if(lvl->player()) {
+		if(lvl->player() && level_cfg != "autosave.cfg") {
 			lvl->player()->set_current_level(level_cfg);
 			lvl->player()->get_entity().save_game();
 		}
@@ -361,9 +372,7 @@ extern "C" int main(int argc, char** argv)
 	} //end manager scope, make managers destruct before calling SDL_Quit
 
 //	controls::debug_dump_controls();
-	std::cerr << "quitting...\n";
 	SDL_Quit();
-	std::cerr << "quit called...\n";
 	std::cerr << SDL_GetError() << "\n";
 	std::cerr << gluErrorString(glGetError()) << "\n";
 	return 0;
