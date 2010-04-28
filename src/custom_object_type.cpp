@@ -240,6 +240,8 @@ custom_object_type_ptr custom_object_type::create(const std::string& id)
 
 		node = merge_prototype(node);
 
+		ASSERT_LOG(node->attr("id").str() == id, "IN " << path_itor->second << " OBJECT ID DOES NOT MATCH FILENAME");
+
 		//create the object and add it to our cache.
 		custom_object_type_ptr result(new custom_object_type(node));
 
