@@ -732,6 +732,8 @@ wml::node_ptr level::write() const
 
 	if(preferences::compiling_tiles && !tiles_.empty()) {
 
+		level_object::set_current_palette(palettes_used_);
+
 		int num_tiles = 0;
 		int last_zorder = INT_MIN;
 		int basex = 0, basey = 0;
@@ -944,7 +946,7 @@ wml::node_ptr level::write() const
 		}
 	}
 
-	if(palettes_used_) {
+	if(palettes_used_ && !preferences::compiling_tiles) {
 		std::vector<std::string> out;
 		unsigned int p = palettes_used_;
 		int id = 0;

@@ -132,6 +132,8 @@ private:
 	unsigned int current_palettes_;
 
 	void set_palette(unsigned int palette);
+
+	void get_palettes_used(std::vector<int>& v) const;
 };
 
 #endif

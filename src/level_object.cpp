@@ -52,8 +52,10 @@ level_tile level_object::build_tile(wml::const_node_ptr node)
 namespace {
 std::vector<wml::const_node_ptr> level_object_index;
 
-//a tile identifier made up of a filename and tile position.
-typedef std::pair<std::string, int> tile_id;
+typedef std::pair<std::string, int> filename_palette_pair;
+
+//a tile identifier made up of a filename, palette and tile position.
+typedef std::pair<filename_palette_pair, int> tile_id;
 std::map<tile_id, int> compiled_tile_ids;
 }
 
@@ -67,20 +69,29 @@ void create_compiled_tiles_image()
 	graphics::surface s(SDL_CreateRGBSurface(SDL_SWSURFACE, 1024, (compiled_tile_ids.size()/64 + 1)*16, 32, SURFACE_MASK));
 	for(std::map<tile_id, int>::const_iterator itor = compiled_tile_ids.begin();
 	    itor != compiled_tile_ids.end(); ++itor) {
-		graphics::surface src = graphics::surface_cache::get(itor->first.first);
+		const tile_id& tile_info = itor->first;
+		const std::string& filename = tile_info.first.first;
+		const int palette = tile_info.first.second;
+		const int tile_pos = tile_info.second;
+
+		std::cerr << "WRITING PALETTE: " << palette << "\n";
+
+		graphics::surface src = graphics::surface_cache::get(filename);
+		if(palette >= 0) {
+			src = graphics::map_palette(src, palette);
+		}
+
 		SDL_SetAlpha(src.get(), 0, SDL_ALPHA_OPAQUE);
 		const int width = std::max<int>(src->w, src->h)/16;
 
-		const int src_x = (itor->first.second%width) * 16;
-		const int src_y = (itor->first.second/width) * 16;
+		const int src_x = (tile_pos%width) * 16;
+		const int src_y = (tile_pos/width) * 16;
 		
 		const int dst_x = (itor->second%64) * 16;
 		const int dst_y = (itor->second/64) * 16;
 
 		SDL_Rect src_rect = { src_x, src_y, 16, 16 };
 		SDL_Rect dst_rect = { dst_x, dst_y, 16, 16 };
-
-		std::cerr << "BLIT COMPILED TILES: " << itor->first.first << ", " << itor->first.second << " -> " << itor->second << ": " << dst_x << ", " << dst_y << "\n";
 
 		SDL_BlitSurface(src.get(), &src_rect, s.get(), &dst_rect);
 	}
@@ -314,50 +325,61 @@ level_object::level_object(wml::const_node_ptr node)
 	
 	if(preferences::compiling_tiles) {
 		tile_index_ = level_object_index.size();
-		wml::node_ptr node_copy(wml::deep_copy(node));
-		if(calculate_opaque()) {
-			node_copy->set_attr("opaque", "yes");
-			opaque_ = true;
-		}
-
-		graphics::color col;
-		if(calculate_is_solid_color(col)) {
-			node_copy->set_attr("solid_color", graphics::color_transform(col).to_string());
-		}
-
-		if(calculate_draw_area()) {
-			node_copy->set_attr("draw_area", draw_area_.to_string());
-		}
-
-		std::string tiles_str;
-
-		foreach(int tile, tiles_) {
-			tile_id id(node_copy->attr("image"), tile);
-			std::map<tile_id, int>::const_iterator itor = compiled_tile_ids.find(id);
-			if(itor == compiled_tile_ids.end()) {
-				compiled_tile_ids[id] = compiled_tile_ids.size();
-				itor = compiled_tile_ids.find(id);
-			}
-
-			const int index = itor->second;
-
-			char tile_pos[64];
-			sprintf(tile_pos, "+%d", index);
-			if(!tiles_str.empty()) {
-				tiles_str += "|";
-			}
-
-			tiles_str += tile_pos;
-		}
-
-		node_copy->set_attr("image", "tiles-compiled.png");
-		node_copy->set_attr("tiles", tiles_str);
-
-		level_object_index.push_back(node_copy);
 
 		//set solid colors to always false if we're compiling, since having
 		//solid colors will confuse the compilation.
 		solid_color_ = boost::intrusive_ptr<graphics::color>();
+
+		std::vector<int> palettes;
+		palettes.push_back(-1);
+		get_palettes_used(palettes);
+
+		foreach(int palette, palettes) {
+			wml::node_ptr node_copy(wml::deep_copy(node));
+			node_copy->erase_attr("palettes");
+			if(calculate_opaque()) {
+				node_copy->set_attr("opaque", "yes");
+				opaque_ = true;
+			}
+
+			graphics::color col;
+			if(calculate_is_solid_color(col)) {
+				if(palette >= 0) {
+					col = graphics::map_palette(col, palette);
+				}
+				node_copy->set_attr("solid_color", graphics::color_transform(col).to_string());
+			}
+
+			if(calculate_draw_area()) {
+				node_copy->set_attr("draw_area", draw_area_.to_string());
+			}
+
+			std::string tiles_str;
+
+			foreach(int tile, tiles_) {
+				tile_id id(filename_palette_pair(node_copy->attr("image"), palette), tile);
+				std::map<tile_id, int>::const_iterator itor = compiled_tile_ids.find(id);
+				if(itor == compiled_tile_ids.end()) {
+					compiled_tile_ids[id] = compiled_tile_ids.size();
+					itor = compiled_tile_ids.find(id);
+				}
+
+				const int index = itor->second;
+
+				char tile_pos[64];
+				sprintf(tile_pos, "+%d", index);
+				if(!tiles_str.empty()) {
+					tiles_str += "|";
+				}
+
+				tiles_str += tile_pos;
+			}
+
+			node_copy->set_attr("image", "tiles-compiled.png");
+			node_copy->set_attr("tiles", tiles_str);
+	
+			level_object_index.push_back(node_copy);
+		}
 	}
 
 	//debug code to output the solidity of a tile in case we need to introspect at some point
@@ -480,7 +502,22 @@ const_level_object_ptr level_object::get_compiled(const char* buf)
 
 void level_object::write_compiled_index(char* buf) const
 {
-	base64_encode(tile_index_, buf, 3);
+	if(current_palettes_ == 0) {
+		base64_encode(tile_index_, buf, 3);
+	} else {
+		unsigned int mask = current_palettes_;
+		int npalette = 0;
+		while(!(mask&1)) {
+			mask >>= 1;
+			++npalette;
+		}
+
+		std::vector<int> palettes;
+		get_palettes_used(palettes);
+		std::vector<int>::const_iterator i = std::find(palettes.begin(), palettes.end(), npalette);
+		ASSERT_LOG(i != palettes.end(), "PALETTE NOT FOUND: " << npalette);
+		base64_encode(tile_index_ + 1 + (i - palettes.begin()), buf, 3);
+	}
 }
 
 int level_object::width() const
@@ -585,5 +622,19 @@ void level_object::set_palette(unsigned int palette)
 		}
 
 		t_ = graphics::texture::get_palette_mapped(image_, npalette);
+	}
+}
+
+void level_object::get_palettes_used(std::vector<int>& v) const
+{
+	unsigned int p = palettes_recognized_;
+	int palette = 0;
+	while(p) {
+		if(p&1) {
+			v.push_back(palette);
+		}
+
+		p >>= 1;
+		++palette;
 	}
 }

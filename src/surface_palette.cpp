@@ -63,15 +63,19 @@ const std::string& get_palette_name(int id)
 surface map_palette(surface s, int palette)
 {
 	if(palette < 0 || palette >= palettes.size() || palettes[palette].mapping.empty()) {
-		std::cerr << "fail to map palette " << palette << ": " << palette << "/" << palettes.size() << "\n";
 		return s;
+	}
+
+	surface result(SDL_CreateRGBSurface(SDL_SWSURFACE, s->w, s->h, 32, SURFACE_MASK));
+
+	if(s->format->BytesPerPixel != 4) {
+		s = surface(SDL_ConvertSurface(s.get(), result->format, 0));
 	}
 
 	ASSERT_LOG(s->format->BytesPerPixel == 4, "SURFACE NOT IN 32bpp PIXEL FORMAT");
 
 	std::cerr << "mapping palette " << palette << "\n";
 
-	surface result(SDL_CreateRGBSurface(SDL_SWSURFACE, s->w, s->h, 32, SURFACE_MASK));
 
 	uint32_t* dst = reinterpret_cast<uint32_t*>(result->pixels);
 	const uint32_t* src = reinterpret_cast<const uint32_t*>(s->pixels);
@@ -90,6 +94,21 @@ surface map_palette(surface s, int palette)
 		++dst;
 	}
 	return result;
+}
+
+color map_palette(const color& c, int palette)
+{
+	if(palette < 0 || palette >= palettes.size() || palettes[palette].mapping.empty()) {
+		return c;
+	}
+
+	const std::map<uint32_t,uint32_t>& mapping = palettes[palette].mapping;
+	std::map<uint32_t,uint32_t>::const_iterator i = mapping.find(c.value());
+	if(i != mapping.end()) {
+		return color(i->second);
+	} else {
+		return c;
+	}
 }
 
 }
