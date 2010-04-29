@@ -1189,6 +1189,10 @@ public:
 			return;
 		}
 
+		foreach(const entity_ptr& e, lvl.get_chars()) {
+			e->handle_event(OBJECT_EVENT_BEGIN_DIALOG);
+		}
+
 		formula_profiler::suspend_scope profiler_suspend;
 		in_dialog_setter dialog_setter(lvl);
 

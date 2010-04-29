@@ -39,6 +39,7 @@ std::vector<std::string> create_object_event_names()
 	res.push_back("child_spawned");
 	res.push_back("spawned");
 	res.push_back("draw");
+	res.push_back("begin_dialog");
 
 	ASSERT_EQ(res.size(), NUM_OBJECT_BUILTIN_EVENT_IDS);
 	return res;
