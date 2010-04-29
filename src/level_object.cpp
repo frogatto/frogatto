@@ -573,7 +573,7 @@ void level_object::set_palette(unsigned int palette)
 		return;
 	}
 
-	std::cerr << "setting palette to " << palette << "\n";
+	current_palettes_ = palette;
 
 	if(palette == 0) {
 		t_ = graphics::texture::get(image_);
