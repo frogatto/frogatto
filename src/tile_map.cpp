@@ -225,6 +225,8 @@ void tile_map::load(const std::string& fname)
 
 	wml::const_node_ptr node = wml::parse_wml_from_file("data/tiles/" + fname);
 
+	palette_scope palette_setter(node->attr("palettes"));
+
 	wml::node::const_child_iterator p1 = node->begin_child("tile_pattern");
 	wml::node::const_child_iterator p2 = node->end_child("tile_pattern");
 	for(; p1 != p2; ++p1) {

@@ -26,6 +26,7 @@
 #include "raster.hpp"
 #include "stats.hpp"
 #include "string_utils.hpp"
+#include "surface_palette.hpp"
 #include "thread.hpp"
 #include "tile_map.hpp"
 #include "unit_test.hpp"
@@ -81,7 +82,8 @@ level::level(const std::string& level_cfg)
 	  num_compiled_tiles_(0),
 	  entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
 	  editor_(false), show_foreground_(true), show_background_(true), air_resistance_(0), water_resistance_(7), end_game_(false),
-      tint_(0), editor_tile_updates_frozen_(0), zoom_level_(1)
+      tint_(0), editor_tile_updates_frozen_(0), zoom_level_(1),
+	  palettes_used_(0)
 {
 	std::cerr << "in level constructor...\n";
 	const int start_time = SDL_GetTicks();
@@ -185,6 +187,14 @@ level::level(const std::string& level_cfg)
 		std::sort(tiles_.begin(), tiles_.end(), level_tile_zorder_pos_comparer());
 	}
 
+	if(node->has_attr("palettes")) {
+		std::vector<std::string> v = util::split(node->attr("palettes"));
+		foreach(const std::string& p, v) {
+			const int id = graphics::get_palette_id(p);
+			palettes_used_ |= (1 << id);
+		}
+	}
+
 	prepare_tiles_for_drawing();
 
 	wml::node::const_child_iterator c1 = node->begin_child("character");
@@ -251,6 +261,7 @@ level::level(const std::string& level_cfg)
 
 	gui_algorithm_ = gui_algorithm::get(wml::get_str(node, "gui", "default"));
 	gui_algorithm_->new_level();
+
 }
 
 level::~level()
@@ -933,6 +944,22 @@ wml::node_ptr level::write() const
 		}
 	}
 
+	if(palettes_used_) {
+		std::vector<std::string> out;
+		unsigned int p = palettes_used_;
+		int id = 0;
+		while(p) {
+			if(p&1) {
+				out.push_back(graphics::get_palette_name(id));
+			}
+
+			p >>= 1;
+			++id;
+		}
+
+		res->set_attr("palettes", util::join(out));
+	}
+
 	return res;
 }
 
@@ -1169,6 +1196,8 @@ void level::draw_layer_solid(int layer, int x, int y, int w, int h) const
 
 void level::prepare_tiles_for_drawing()
 {
+	level_object::set_current_palette(palettes_used_);
+
 	solid_color_rects_.clear();
 	blit_cache_.clear();
 

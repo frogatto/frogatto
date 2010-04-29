@@ -59,6 +59,7 @@ public:
 
 	static texture get(const std::string& str);
 	static texture get(const std::string& str, const std::string& algorithm);
+	static texture get_palette_mapped(const std::string& str, int palette);
 	static texture get_no_cache(const surface& surf);
 	static GLfloat get_coord_x(GLfloat x);
 	static GLfloat get_coord_y(GLfloat y);

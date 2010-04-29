@@ -464,6 +464,9 @@ private:
 	std::vector<entity_ptr> focus_override_;
 
 	std::queue<boost::shared_ptr<speech_dialog> > speech_dialogs_;
+
+	//color palettes that the level has set.
+	unsigned int palettes_used_;
 };
 
 bool entity_in_current_level(const entity* e);

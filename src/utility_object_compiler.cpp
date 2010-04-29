@@ -138,7 +138,7 @@ UTILITY(object_compiler)
 	std::vector<const_custom_object_type_ptr> types = custom_object_type::get_all();
 	foreach(const_custom_object_type_ptr type, types) {
 		const std::string* path = custom_object_type::get_object_path(type->id() + ".cfg");
-		std::cerr << type->id() << " -> " << *path << "\n";
+		std::cerr << "OBJECT: " << type->id() << " -> " << *path << "\n";
 		wml::node_ptr obj_node =  wml::parse_wml_from_file(*path);
 		obj_node = custom_object_type::merge_prototype(obj_node);
 		obj_node->erase_attr("prototype");

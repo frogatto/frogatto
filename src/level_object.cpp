@@ -12,6 +12,7 @@
 #include "string_utils.hpp"
 #include "surface.hpp"
 #include "surface_cache.hpp"
+#include "surface_palette.hpp"
 #include "wml_parser.hpp"
 #include "wml_utils.hpp"
 #include "wml_writer.hpp"
@@ -89,8 +90,44 @@ void create_compiled_tiles_image()
 	IMG_SavePNG("images/tiles-compiled.png", s.get(), 5);
 }
 
+namespace {
+unsigned int current_palette_set = 0;
+std::set<level_object*>& palette_level_objects() {
+	//we never want this to be destroyed, since it's too hard to
+	//guarantee destruction order.
+	static std::set<level_object*>* instance = new std::set<level_object*>;
+	return *instance;
+}
+}
+
+palette_scope::palette_scope(const std::string& str)
+  : original_value(current_palette_set)
+{
+	current_palette_set = 0;	
+	if(str.empty() == false) {
+		std::vector<std::string> p = util::split(str);
+		foreach(const std::string& pal, p) {
+			const int id = graphics::get_palette_id(pal);
+			current_palette_set |= 1 << id;
+		}
+	}
+}
+
+palette_scope::~palette_scope()
+{
+	current_palette_set = original_value;
+}
+
+void level_object::set_current_palette(unsigned int palette)
+{
+	foreach(level_object* obj, palette_level_objects()) {
+		obj->set_palette(palette);
+	}
+}
+
 level_object::level_object(wml::const_node_ptr node)
-  : id_(node->attr("id")), t_(graphics::texture::get(node->attr("image"))),
+  : id_(node->attr("id")), image_(node->attr("image")),
+    t_(graphics::texture::get(image_)),
 	all_solid_(node->attr("solid").str() == "yes"),
     passthrough_(wml::get_bool(node, "passthrough")),
     flip_(wml::get_bool(node, "flip", false)),
@@ -99,8 +136,23 @@ level_object::level_object(wml::const_node_ptr node)
     damage_(wml::get_int(node, "damage", 0)),
 	opaque_(wml::get_bool(node, "opaque", false)),
 	draw_area_(0, 0, 16, 16),
-	tile_index_(-1)
+	tile_index_(-1),
+	palettes_recognized_(current_palette_set),
+	current_palettes_(0)
 {
+	if(node->has_attr("palettes")) {
+		palettes_recognized_ = 0;
+		std::vector<std::string> p = util::split(node->attr("palettes"));
+		foreach(const std::string& pal, p) {
+			const int id = graphics::get_palette_id(pal);
+			palettes_recognized_ |= 1 << id;
+		}
+	}
+
+	if(palettes_recognized_) {
+		palette_level_objects().insert(this);
+	}
+
 	if(node->has_attr("solid_color")) {
 		solid_color_ = boost::intrusive_ptr<graphics::color>(new graphics::color(node->attr("solid_color")));
 	}
@@ -325,6 +377,13 @@ level_object::level_object(wml::const_node_ptr node)
 	*/
 }
 
+level_object::~level_object()
+{
+	if(palettes_recognized_) {
+		palette_level_objects().erase(this);
+	}
+}
+
 namespace {
 const char base64_chars[65] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.!";
 
@@ -505,4 +564,26 @@ bool level_object::calculate_draw_area()
 	}
 
 	return draw_area_ != rect(0, 0, 16, 16);
+}
+
+void level_object::set_palette(unsigned int palette)
+{
+	palette &= palettes_recognized_;
+	if(palette == current_palettes_) {
+		return;
+	}
+
+	std::cerr << "setting palette to " << palette << "\n";
+
+	if(palette == 0) {
+		t_ = graphics::texture::get(image_);
+	} else {
+		int npalette = 0;
+		while((palette&1) == 0) {
+			palette >>= 1;
+			++npalette;
+		}
+
+		t_ = graphics::texture::get_palette_mapped(image_, npalette);
+	}
 }

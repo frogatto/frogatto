@@ -58,12 +58,24 @@ struct level_tile_y_pos_comparer {
         }
 };
 
+//utility which sets the palette for objects loaded within a scope
+struct palette_scope {
+	explicit palette_scope(const std::string& str);
+	~palette_scope();	
+
+	unsigned int original_value;
+};
+
 class level_object {
 public:
 	static std::vector<const_level_object_ptr> all();
 	static level_tile build_tile(wml::const_node_ptr node);
 	static void write_compiled();
+
+	static void set_current_palette(unsigned int palette);
 	explicit level_object(wml::const_node_ptr node);
+	~level_object();
+
 	int width() const;
 	int height() const;
 	bool is_passthrough() const { return passthrough_; }
@@ -97,6 +109,7 @@ public:
 
 private:
 	std::string id_;
+	std::string image_;
 	graphics::texture t_;
 	std::vector<int> tiles_;
 	std::vector<bool> solid_;
@@ -114,6 +127,11 @@ private:
 	boost::intrusive_ptr<graphics::color> solid_color_;
 
 	int tile_index_;
+
+	unsigned int palettes_recognized_;
+	unsigned int current_palettes_;
+
+	void set_palette(unsigned int palette);
 };
 
 #endif

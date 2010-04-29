@@ -21,6 +21,7 @@
 #include "raster.hpp"
 #include "surface_cache.hpp"
 #include "surface_formula.hpp"
+#include "surface_palette.hpp"
 #include "texture.hpp"
 #include "thread.hpp"
 #include "unit_test.hpp"
@@ -65,6 +66,12 @@ namespace {
 	typedef concurrent_cache<std::pair<std::string,std::string>,graphics::texture> algorithm_texture_map;
 	algorithm_texture_map& algorithm_texture_cache() {
 		static algorithm_texture_map cache;
+		return cache;
+	}
+
+	typedef concurrent_cache<std::pair<std::string,int>,graphics::texture> palette_texture_map;
+	palette_texture_map& palette_texture_cache() {
+		static palette_texture_map cache;
 		return cache;
 	}
 
@@ -466,6 +473,27 @@ texture texture::get(const std::string& str, const std::string& algorithm)
 		surfs.push_back(get_surface_formula(surface_cache::get_no_cache(str), algorithm));
 		result = texture(surfs);
 		algorithm_texture_cache().put(k, result);
+	}
+
+	return result;
+}
+
+texture texture::get_palette_mapped(const std::string& str, int palette)
+{
+	std::cerr << "get palette mapped: " << str << "," << palette << "\n";
+	std::pair<std::string,int> k(str, palette);
+	texture result = palette_texture_cache().get(k);
+	if(!result.valid()) {
+		key surfs;
+		surface s = surface_cache::get_no_cache(str);
+		if(s->format->BytesPerPixel == 3) {
+			surface dst(SDL_CreateRGBSurface(SDL_SWSURFACE,s->w,s->h,32,SURFACE_MASK));
+			add_alpha_channel_to_surface((uint8_t*)dst->pixels, (uint8_t*)s->pixels, s->w, s->w, s->h, s->pitch);
+			s = dst;
+		}
+		surfs.push_back(map_palette(s, palette));
+		result = texture(surfs);
+		palette_texture_cache().put(k, result);
 	}
 
 	return result;
