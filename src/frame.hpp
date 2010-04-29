@@ -31,7 +31,10 @@ public:
 		bool no_alpha_check;
 	};
 
+	static void set_color_palette(unsigned int palettes);
+
 	explicit frame(wml::const_node_ptr node);
+	~frame();
 
 	//ID of the frame. Not unique, but is the name of the element the frame
 	//came from. Useful to tell what kind of frame it is.
@@ -101,7 +104,7 @@ private:
 
 	void get_rect_in_texture(int time, GLfloat* output_rect, const frame_info*& info) const;
 	void get_rect_in_frame_number(int nframe, GLfloat* output_rect, const frame_info*& info) const;
-	std::string id_;
+	std::string id_, image_;
 
 	//ID as a variant, useful to be able to get a variant of the ID
 	//very efficiently.
@@ -144,6 +147,11 @@ private:
 	void build_alpha_from_frame_info();
 	void build_alpha();
 	std::vector<bool> alpha_;
+
+	std::vector<int> palettes_recognized_;
+	int current_palette_;
+
+	void set_palettes(unsigned int palettes);
 };
 
 #endif

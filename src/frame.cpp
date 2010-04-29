@@ -12,18 +12,29 @@
 #include "sound.hpp"
 #include "string_utils.hpp"
 #include "surface_formula.hpp"
+#include "surface_palette.hpp"
 #include "texture.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
 
+namespace {
+std::set<frame*>& palette_frames() {
+	static std::set<frame*>* instance = new std::set<frame*>;
+	return *instance;
+}
+
+unsigned int current_palette_mask = 0;
+}
+
 frame::frame(wml::const_node_ptr node)
    : id_(node->attr("id")),
+     image_(node->attr("image")),
      variant_id_(id_),
      enter_event_id_(get_object_event_id("enter_" + id_ + "_anim")),
 	 end_event_id_(get_object_event_id("end_" + id_ + "_anim")),
 	 leave_event_id_(get_object_event_id("leave_" + id_ + "_anim")),
 	 process_event_id_(get_object_event_id("process_" + id_)),
-     texture_(graphics::texture::get(node->attr("image"), node->attr("image_formula"))),
+     texture_(graphics::texture::get(image_, node->attr("image_formula"))),
 	 solid_(solid_info::create(node)),
      collide_rect_(node->has_attr("collide") ? rect(node->attr("collide")) :
 	               rect(wml::get_int(node, "collide_x"),
@@ -61,7 +72,8 @@ frame::frame(wml::const_node_ptr node)
 	 blur_(wml::get_int(node, "blur")),
 	 rotate_on_slope_(wml::get_bool(node, "rotate_on_slope")),
 	 damage_(wml::get_int(node, "damage")),
-	 sounds_(util::split(node->attr("sound")))
+	 sounds_(util::split(node->attr("sound"))),
+	 current_palette_(-1)
 {
 	std::vector<std::string> hit_frames = util::split((*node)["hit_frames"]);
 	foreach(const std::string& f, hit_frames) {
@@ -157,6 +169,61 @@ frame::frame(wml::const_node_ptr node)
 		build_alpha_from_frame_info();
 	} else {
 		build_alpha();
+	}
+
+	std::vector<std::string> palettes = util::split(node->attr("palettes"));
+	foreach(const std::string& p, palettes) {
+		palettes_recognized_.push_back(graphics::get_palette_id(p));
+	}
+
+	std::cerr << "PALETTES: " << node->attr("palettes").str() << " " << palettes_recognized_.size() << "\n";
+
+	if(palettes_recognized_.empty() == false) {
+		palette_frames().insert(this);
+		if(current_palette_mask) {
+			set_palettes(current_palette_mask);
+		}
+	}
+}
+
+frame::~frame()
+{
+	if(palettes_recognized_.empty() == false) {
+		palette_frames().erase(this);
+	}
+}
+
+void frame::set_palettes(unsigned int palettes)
+{
+	if(current_palette_ >= 0 && (1 << current_palette_) == palettes) {
+		return;
+	}
+
+	int npalette = 0;
+	while(palettes) {
+		if((palettes&1) && std::count(palettes_recognized_.begin(), palettes_recognized_.end(), npalette)) {
+			break;
+		}
+		++npalette;
+		palettes >>= 1;
+	}
+
+	if(palettes == 0) {
+		if(current_palette_ != -1) {
+			texture_ = graphics::texture::get(image_);
+			current_palette_ = -1;
+		}
+		return;
+	}
+
+	texture_ = graphics::texture::get_palette_mapped(image_, npalette);
+}
+
+void frame::set_color_palette(unsigned int palettes)
+{
+	current_palette_mask = palettes;
+	for(std::set<frame*>::iterator i = palette_frames().begin(); i != palette_frames().end(); ++i) {
+		(*i)->set_palettes(palettes);
 	}
 }
 

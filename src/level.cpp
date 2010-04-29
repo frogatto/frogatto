@@ -75,6 +75,7 @@ level& level::current()
 void level::set_as_current_level()
 {
 	current_level = this;
+	frame::set_color_palette(palettes_used_);
 }
 
 level::level(const std::string& level_cfg)
@@ -946,7 +947,7 @@ wml::node_ptr level::write() const
 		}
 	}
 
-	if(palettes_used_ && !preferences::compiling_tiles) {
+	if(palettes_used_) {
 		std::vector<std::string> out;
 		unsigned int p = palettes_used_;
 		int id = 0;

@@ -167,7 +167,7 @@ UTILITY(object_compiler)
 			}
 
 			animation_area_ptr anim(new animation_area(*i));
-			if(anim->src_image.empty() || std::find(no_compile_images.begin(), no_compile_images.end(), anim->src_image) != no_compile_images.end()) {
+			if(anim->src_image.empty() || (*i)->has_attr("palettes") || std::find(no_compile_images.begin(), no_compile_images.end(), anim->src_image) != no_compile_images.end()) {
 				continue;
 			}
 
