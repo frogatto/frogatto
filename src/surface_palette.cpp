@@ -23,6 +23,7 @@ void load_palette_def(const std::string& id)
 	def.name = id;
 	surface s = surface_cache::get_no_cache("palette/" + id + ".png");
 
+	ASSERT_LOG(s.get(), "COULD NOT LOAD PALETTE IMAGE " << id);
 	ASSERT_LOG(s->format->BytesPerPixel == 4, "PALETTE " << id << " NOT IN 32bpp PIXEL FORMAT");
 
 	const uint32_t* pixels = reinterpret_cast<const uint32_t*>(s->pixels);
