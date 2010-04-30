@@ -414,9 +414,9 @@ bool level_runner::play_cycle()
 				transition_scene(*lvl_, last_draw_position(), false, flip_scene);
 			}
 
-			if(done) {
-				return false;
-			}
+			//we always want to exit this function so that we don't
+			//draw the new level when it hasn't had a chance to process.
+			return !done;
 		}
 	}
 

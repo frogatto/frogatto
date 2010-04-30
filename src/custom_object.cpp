@@ -617,7 +617,6 @@ void custom_object::process(level& lvl)
 		//the platform.
 
 		effective_velocity_y -= stand_info.adjust_y*100;
-		std::cerr << "ADJUST: " << stand_info.adjust_y << "\n";
 	}
 
 	if(effective_velocity_x || effective_velocity_y) {

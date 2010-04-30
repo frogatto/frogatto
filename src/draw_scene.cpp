@@ -61,6 +61,10 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 
 	last_position = pos;
 
+	//flag which gets set to false if we abort drawing, due to the
+	//screen position being initialized now.
+	const bool draw_level = pos.init;
+
 	const int start_time = SDL_GetTicks();
 	graphics::prepare_raster();
 	glPushMatrix();
@@ -237,6 +241,11 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 		} else {
 			pos.zoom += ZoomSpeed;
 		}
+	}
+
+	if(!draw_level) {
+		glPopMatrix();
+		return;
 	}
 
 	int xscroll = (pos.x/100)&preferences::xypos_draw_mask;
