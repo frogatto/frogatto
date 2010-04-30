@@ -14,6 +14,7 @@ const std::string& get_palette_name(int id);
 
 surface map_palette(surface s, int palette);
 color map_palette(const color& c, int palette);
+SDL_Color map_palette(const SDL_Color& c, int palette);
 }
 
 #endif

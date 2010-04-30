@@ -15,20 +15,25 @@
 #include "formatter.hpp"
 #include "level.hpp"
 #include "raster.hpp"
+#include "surface_palette.hpp"
 #include "wml_node.hpp"
 #include "wml_parser.hpp"
 #include "wml_utils.hpp"
 
 namespace {
-std::map<std::string, boost::shared_ptr<background> > cache;
+//a cache key with background name and palette ID.
+typedef std::pair<std::string, int> cache_key;
+std::map<cache_key, boost::shared_ptr<background> > cache;
 }
 
-boost::shared_ptr<background> background::get(const std::string& id)
+boost::shared_ptr<background> background::get(const std::string& name, int palette_id)
 {
+	const cache_key id(name, palette_id);
+
 	boost::shared_ptr<background>& obj = cache[id];
 	if(!obj) {
-		obj.reset(new background(wml::parse_wml_from_file("data/backgrounds/" + id + ".cfg")));
-		obj->id_ = id;
+		obj.reset(new background(wml::parse_wml_from_file("data/backgrounds/" + name + ".cfg"), palette_id));
+		obj->id_ = name;
 	}
 
 	return obj;
@@ -49,10 +54,16 @@ std::vector<std::string> background::get_available_backgrounds()
 	return result;
 }
 
-background::background(const wml::const_node_ptr& node)
+background::background(const wml::const_node_ptr& node, int palette) : palette_(palette)
 {
 	top_ = string_to_color(node->attr("top"));
 	bot_ = string_to_color(node->attr("bottom"));
+
+	if(palette_ != -1) {
+		top_ = graphics::map_palette(top_, palette);
+		bot_ = graphics::map_palette(bot_, palette);
+	}
+
 	width_ = wml::get_int(node, "width");
 	height_ = wml::get_int(node, "height");
 
@@ -94,11 +105,17 @@ background::background(const wml::const_node_ptr& node)
 		if(layer_node->has_attr("color_above")) {
 			bg.color_above.reset(new SDL_Color);
 			*bg.color_above = string_to_color(layer_node->attr("color_above"));
+			if(palette_ != -1) {
+				*bg.color_above = graphics::map_palette(*bg.color_above, palette);
+			}
 		}
 
 		if(layer_node->has_attr("color_below")) {
 			bg.color_below.reset(new SDL_Color);
 			*bg.color_below = string_to_color(layer_node->attr("color_below"));
+			if(palette_ != -1) {
+				*bg.color_below = graphics::map_palette(*bg.color_below, palette);
+			}
 		}
 
 		bg.y1 = wml::get_attr<int>(layer_node, "y1");
@@ -310,7 +327,12 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 	}
 
 	if(!bg.texture.valid()) {
-		bg.texture = graphics::texture::get(bg.image, bg.image_formula);
+		if(palette_ == -1) {
+			bg.texture = graphics::texture::get(bg.image, bg.image_formula);
+		} else {
+			bg.texture = graphics::texture::get_palette_mapped(bg.image, palette_);
+		}
+
 		if(bg.y2 == 0) {
 			bg.y2 = bg.texture.height();
 		}

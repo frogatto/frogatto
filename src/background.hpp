@@ -19,12 +19,12 @@ class background
 {
 public:
 	//gets a background associated with a given ID.
-	static boost::shared_ptr<background> get(const std::string& id);
+	static boost::shared_ptr<background> get(const std::string& id, int palette_id);
 
 	//all available backgrounds.
 	static std::vector<std::string> get_available_backgrounds();
 
-	explicit background(const wml::const_node_ptr& node);
+	background(const wml::const_node_ptr& node, int palette);
 	const std::string& id() const { return id_; }
 	wml::node_ptr write() const;
 	void draw(int x, int y, const rect& area, const std::vector<rect>& opaque_areas, int rotation, int cycle) const;
@@ -72,6 +72,7 @@ private:
 	void draw_layer(int x, int y, const rect& area, int rotation, const layer& bg, int cycle) const;
 
 	std::vector<layer> layers_;
+	int palette_;
 };
 
 #endif

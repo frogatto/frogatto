@@ -38,6 +38,10 @@ void load_palette_def(const std::string& id)
 
 int get_palette_id(const std::string& name)
 {
+	if(name.empty()) {
+		return -1;
+	}
+
 	static std::map<std::string, int> m;
 	std::map<std::string, int>::const_iterator i = m.find(name);
 	if(i != m.end()) {
@@ -109,6 +113,13 @@ color map_palette(const color& c, int palette)
 	} else {
 		return c;
 	}
+}
+
+SDL_Color map_palette(const SDL_Color& c, int palette)
+{
+	color result = map_palette(color(c.r, c.g, c.b, 255), palette);
+	SDL_Color res = { result.r(), result.g(), result.b(), 255 };
+	return res;
 }
 
 }

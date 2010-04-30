@@ -10,7 +10,6 @@
 
 SDL_Color string_to_color(const std::string& str);
 
-
 namespace graphics {
 class color : public game_logic::formula_callable
 {

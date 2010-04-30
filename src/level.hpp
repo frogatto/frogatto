@@ -467,6 +467,8 @@ private:
 
 	//color palettes that the level has set.
 	unsigned int palettes_used_;
+
+	int background_palette_;
 };
 
 bool entity_in_current_level(const entity* e);

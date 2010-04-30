@@ -84,7 +84,8 @@ level::level(const std::string& level_cfg)
 	  entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
 	  editor_(false), show_foreground_(true), show_background_(true), air_resistance_(0), water_resistance_(7), end_game_(false),
       tint_(0), editor_tile_updates_frozen_(0), zoom_level_(1),
-	  palettes_used_(0)
+	  palettes_used_(0),
+	  background_palette_(-1)
 {
 	std::cerr << "in level constructor...\n";
 	const int start_time = SDL_GetTicks();
@@ -196,6 +197,10 @@ level::level(const std::string& level_cfg)
 		}
 	}
 
+	if(node->has_attr("background_palette")) {
+		background_palette_ = graphics::get_palette_id(node->attr("background_palette"));
+	}
+
 	prepare_tiles_for_drawing();
 
 	wml::node::const_child_iterator c1 = node->begin_child("character");
@@ -239,9 +244,9 @@ level::level(const std::string& level_cfg)
 
 	wml::const_node_ptr bg = node->get_child("background");
 	if(bg) {
-		background_.reset(new background(bg));
+		background_.reset(new background(bg, background_palette_));
 	} else if(node->has_attr("background")) {
-		background_ = background::get(node->attr("background"));
+		background_ = background::get(node->attr("background"), background_palette_);
 		background_offset_ = point(node->attr("background_offset"));
 		background_->set_offset(background_offset_);
 	}
@@ -961,6 +966,10 @@ wml::node_ptr level::write() const
 		}
 
 		res->set_attr("palettes", util::join(out));
+	}
+
+	if(background_palette_ != -1) {
+		res->set_attr("background_palette", graphics::get_palette_name(background_palette_));
 	}
 
 	return res;
@@ -2482,7 +2491,7 @@ const std::string& level::get_background_id() const
 
 void level::set_background_by_id(const std::string& id)
 {
-	background_ = background::get(id);
+	background_ = background::get(id, background_palette_);
 }
 
 namespace {
