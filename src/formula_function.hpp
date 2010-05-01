@@ -49,12 +49,16 @@ public:
 	}
 
 	variant evaluate(const formula_callable& variables) const {
+#if !TARGET_OS_IPHONE
 		call_stack_manager manager(str_.c_str());
+#endif
 		return execute(variables);
 	}
 
 	variant evaluate_with_member(const formula_callable& variables, std::string& id) const {
+#if !TARGET_OS_IPHONE
 		call_stack_manager manager(str_.c_str());
+#endif
 		return execute_member(variables, id);
 	}
 
