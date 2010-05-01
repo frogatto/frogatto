@@ -643,11 +643,9 @@ bool variant::operator>(const variant& v) const
 	return !(*this <= v);
 }
 
-void variant::must_be(variant::TYPE t) const
+void variant::throw_type_error(variant::TYPE t) const
 {
-	if(type_ != t) {
-		throw type_error(formatter() << "type error: " << " expected " << variant_type_to_string(t) << " but found " << variant_type_to_string(type_) << " (" << to_debug_string() << ")");
-	}
+	throw type_error(formatter() << "type error: " << " expected " << variant_type_to_string(t) << " but found " << variant_type_to_string(type_) << " (" << to_debug_string() << ")");
 }
 
 void variant::serialize_to_string(std::string& str) const

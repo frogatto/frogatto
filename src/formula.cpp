@@ -1351,6 +1351,15 @@ namespace game_logic
 		const variant result = f.execute(*callable);
 		CHECK(result == variant(2), "test failed: " << result.to_debug_string());
 	}
+
+	BENCHMARK(formula_if) {
+		static map_formula_callable* callable = new map_formula_callable;
+		callable->add("x", variant(1));
+		static formula f("if(x, 1, 0)");
+		BENCHMARK_LOOP {
+			f.execute(*callable);
+		}
+	}
 }
 
 #ifdef UNIT_TEST_FORMULA

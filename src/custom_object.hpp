@@ -124,8 +124,8 @@ public:
 
 	virtual const_editor_entity_info_ptr editor_info() const;
 
-	void handle_event(const std::string& event, const formula_callable* context=NULL);
-	void handle_event(int event, const formula_callable* context=NULL);
+	virtual void handle_event(const std::string& event, const formula_callable* context=NULL);
+	virtual void handle_event(int event, const formula_callable* context=NULL);
 
 	void set_blur(const blur_info* blur);
 	void set_sound_volume(const int volume);

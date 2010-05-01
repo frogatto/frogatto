@@ -136,7 +136,16 @@ public:
 	std::vector<variant>& initialize_list();
 	enum TYPE { TYPE_NULL, TYPE_INT, TYPE_CALLABLE, TYPE_CALLABLE_LOADING, TYPE_LIST, TYPE_STRING, TYPE_MAP, TYPE_FUNCTION };
 private:
-	void must_be(TYPE t) const;
+	void must_be(TYPE t) const {
+#if !TARGET_OS_IPHONE
+		if(type_ != t) {
+			throw_type_error(t);
+		}
+#endif
+	}
+
+	void throw_type_error(TYPE expected) const;
+
 	TYPE type_;
 	union {
 		int int_value_;

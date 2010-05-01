@@ -16,7 +16,7 @@ public:
 	virtual ~reference_counted_object() { }
 
 	void add_ref() const { ++count_; }
-	void dec_ref() const { if(--count_ == 0) { delete const_cast<reference_counted_object*>(this); } }
+	void dec_ref() const { if(--count_ == 0) { delete this; } }
 
 	int refcount() const { return count_; }
 
