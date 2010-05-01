@@ -43,15 +43,6 @@ using namespace game_logic;
 
 namespace {
 
-class save_game_command : public entity_command_callable
-	{
-	public:
-		virtual void execute(level& lvl, entity& ob) const {
-			lvl.player()->get_entity().save_game();
-			sys::write_file(preferences::save_file_path(), wml::output(lvl.write()));
-		}
-	};
-
 class time_function : public function_expression {
 public:
 	explicit time_function(const args_list& args)
@@ -66,15 +57,32 @@ private:
 	}
 };
 
+class save_game_command : public entity_command_callable
+{
+	bool persistent_;
+public:
+	explicit save_game_command(bool persistent) : persistent_(persistent)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		lvl.player()->get_entity().save_game();
+		if(persistent_) {
+			sys::write_file(preferences::save_file_path(), wml::output(lvl.write()));
+		}
+	}
+};
+
 class save_game_function : public function_expression {
 public:
-	explicit save_game_function(const args_list& args)
-	: function_expression("save_game",args,0)
+	save_game_function(const args_list& args, bool persistent)
+	: function_expression("save_game",args,0), persistent_(persistent)
 	{}
 private:
 	variant execute(const formula_callable& variables) const {
-		return variant(new save_game_command());
+		return variant(new save_game_command(persistent_));
 	}
+
+	bool persistent_;
 };
 
 class load_game_command : public entity_command_callable
@@ -2069,8 +2077,10 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new board_vehicle_function(args));
 	} else if(fn == "eject_vehicle") {
 		return expression_ptr(new eject_vehicle_function(args));
+	} else if(fn == "checkpoint_game") {
+		return expression_ptr(new save_game_function(args, false));
 	} else if(fn == "save_game") {
-		return expression_ptr(new save_game_function(args));
+		return expression_ptr(new save_game_function(args, true));
 	} else if(fn == "load_game") {
 		return expression_ptr(new load_game_function(args));
 	} else if(fn == "can_load_game") {

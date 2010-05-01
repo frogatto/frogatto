@@ -11,6 +11,7 @@ std::vector<std::string> create_object_event_names()
 	std::vector<std::string> res;
 	res.push_back("start_level");
 	res.push_back("load");
+	res.push_back("load_checkpoint");
 	res.push_back("create");
 	res.push_back("done_create");
 	res.push_back("become_active");

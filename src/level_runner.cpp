@@ -20,6 +20,7 @@
 #include "level_runner.hpp"
 #include "load_level.hpp"
 #include "message_dialog.hpp"
+#include "object_events.hpp"
 #include "player_info.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
@@ -312,6 +313,7 @@ bool level_runner::play_cycle()
 		new_level->add_player(save);
 		new_level->set_as_current_level();
 		save->save_game();
+		save->handle_event(OBJECT_EVENT_LOAD_CHECKPOINT);
 		lvl_.reset(new_level);
 		last_draw_position() = screen_position();
 	} else if(lvl_->players().size() > 1) {
