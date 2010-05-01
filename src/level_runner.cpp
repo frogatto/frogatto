@@ -349,8 +349,11 @@ bool level_runner::play_cycle()
 		} else {
 			//the portal is to another level
 			
-			level::summary summary = level::get_summary(level_cfg_);
-			sound::play_music(summary.music);
+			if (preferences::load_compiled())
+			{
+				level::summary summary = level::get_summary(level_cfg_);
+				sound::play_music(summary.music);
+			}
 			const std::string transition = portal->transition;
 			if(transition == "flip") {
 				transition_scene(*lvl_, last_draw_position(), true, flip_scene);
@@ -364,6 +367,8 @@ bool level_runner::play_cycle()
 			}
 
 			level* new_level = load_level(level_cfg_);
+			if (!preferences::load_compiled())
+				sound::play_music(new_level->music());
 
 			if(portal->dest_label.empty() == false) {
 				//the label of an object was specified as an entry point,
