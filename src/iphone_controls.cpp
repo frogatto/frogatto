@@ -15,7 +15,7 @@ namespace
 	const rect right_arrow(184, 640 - 84, 55*2, 34*2);
 	const rect down_arrow(119, 640 - 66, 34*2, 42*2);
 	const rect up_arrow(119, 640 - 147, 34*2, 55*2);
-	const rect a_button(960 - 102, 640 - 120, 50*2, 60*2);
+	const rect a_button(960 - 204, 640 - 120, 50*2, 60*2);
 	const rect b_button(960 - 102, 640 - 240, 50*2, 60*2);
 
 	const rect interact_button(960 - 300 - 30, 640 - 130, 50*2 + 60, 60*2);
