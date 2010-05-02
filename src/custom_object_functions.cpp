@@ -119,6 +119,25 @@ private:
 	}
 };
 
+class move_to_standing_command : public entity_command_callable
+{
+public:
+	virtual void execute(level& lvl, entity& ob) const {
+		ob.move_to_standing(lvl);
+	}
+};
+
+class move_to_standing_function : public function_expression {
+public:
+	explicit move_to_standing_function(const args_list& args)
+	: function_expression("move_to_standing",args,0)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(new move_to_standing_command());
+	}
+};
+
 class music_command : public entity_command_callable
 	{
 	public:
@@ -2091,6 +2110,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new sound_loop_function(args));
 	} else if(fn == "sound_volume") {
 		return expression_ptr(new sound_volume_function(args));
+	} else if(fn == "move_to_standing") {
+		return expression_ptr(new move_to_standing_function(args));
 	} else if(fn == "music") {
 		return expression_ptr(new music_function(args));
 	} else if(fn == "music_onetime") {
