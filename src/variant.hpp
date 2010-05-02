@@ -7,6 +7,8 @@
 #include <set>
 #include <vector>
 
+#include <string.h>
+
 #include "formula_fwd.hpp"
 
 namespace game_logic {
@@ -42,8 +44,8 @@ struct type_error {
 
 class variant {
 public:
-	variant();
-	explicit variant(int n);
+	variant() : type_(TYPE_NULL), int_value_(0) {}
+	explicit variant(int n) : type_(TYPE_INT), int_value_(n) {}
 	explicit variant(const game_logic::formula_callable* callable);
 	explicit variant(std::vector<variant>* array);
 	explicit variant(const std::string& str);
@@ -56,7 +58,13 @@ public:
 	//that needs releasing.
 	~variant() { if(type_ > TYPE_INT) { release(); } }
 
-	variant(const variant& v);
+	variant(const variant& v) {
+		memcpy(this, &v, sizeof(v));
+		if(type_ > TYPE_INT) {
+			increment_refcount();
+		}
+	}
+
 	const variant& operator=(const variant& v);
 
 	const variant& operator[](size_t n) const;

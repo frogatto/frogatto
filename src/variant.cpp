@@ -199,12 +199,6 @@ void variant::release()
 	}
 }
 
-variant::variant() : type_(TYPE_NULL), int_value_(0)
-{}
-
-variant::variant(int n) : type_(TYPE_INT), int_value_(n)
-{}
-
 variant::variant(const game_logic::formula_callable* callable)
 	: type_(TYPE_CALLABLE), callable_(callable)
 {
@@ -256,18 +250,16 @@ variant::variant(game_logic::const_formula_ptr fml, const std::vector<std::strin
 	increment_refcount();
 }
 
-variant::variant(const variant& v)
-{
-	memcpy(this, &v, sizeof(v));
-	increment_refcount();
-}
-
 const variant& variant::operator=(const variant& v)
 {
 	if(&v != this) {
-		release();
+		if(type_ > TYPE_INT) {
+			release();
+		}
 		memcpy(this, &v, sizeof(v));
-		increment_refcount();
+		if(type_ > TYPE_INT) {
+			increment_refcount();
+		}
 	}
 	return *this;
 }
@@ -410,6 +402,10 @@ const std::string& variant::as_string() const
 
 variant variant::operator+(const variant& v) const
 {
+	if(type_ == TYPE_INT) {
+		return variant(int_value_ + v.as_int());
+	}
+
 	if(type_ == TYPE_NULL) {
 		return v;
 	} else if(v.type_ == TYPE_NULL) {
