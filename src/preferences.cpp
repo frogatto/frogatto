@@ -21,6 +21,8 @@ namespace preferences {
 		int actual_screen_height_ = 480;
 
 		bool screen_rotated_ = true;
+
+		bool show_fps_ = false;
 		
 		const char *save_file_path_ = "../Documents/save.cfg";
 		const char *auto_save_file_path_ = "../Documents/autosave.cfg";
@@ -36,6 +38,8 @@ namespace preferences {
 		int actual_screen_height_ = 600;
 		
 		bool screen_rotated_ = false;
+
+		bool show_fps_ = true;
 		
 		const char *save_file_path_ = "data/level/save.cfg";
 		const char *auto_save_file_path_ = "data/level/autosave.cfg";
@@ -158,6 +162,11 @@ namespace preferences {
 		return debug_;
 	}
 
+	bool show_fps()
+	{
+		return show_fps_;
+	}
+
 	editor_screen_size_scope::editor_screen_size_scope() : width_(virtual_screen_width_), height_(virtual_screen_height_) {
 		++screen_editor_mode;
 		virtual_screen_width_ = actual_screen_width_;
@@ -202,6 +211,10 @@ namespace preferences {
 			actual_screen_width_ = 480;
 			actual_screen_height_ = 320;
 			use_16bpp_textures_ = true;
+		} else if(s == "--fps") {
+			show_fps_ = true;
+		} else if(s == "--no-fps") {
+			show_fps_ = false;
 		} else {
 			return false;
 		}

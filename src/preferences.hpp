@@ -24,6 +24,9 @@ namespace preferences {
 	//whether we are debugging
 	bool debug();
 
+	//whether to show the fps display at the top
+	bool show_fps();
+
 	//load compiled data from data/compiled/
 	bool load_compiled();
 

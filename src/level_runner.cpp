@@ -543,7 +543,10 @@ bool level_runner::play_cycle()
 		lvl_->process_draw();
 		draw_scene(*lvl_, last_draw_position());
 		performance_data perf = { current_fps_, current_cycles_, current_delay_, current_draw_, current_process_, current_flip_, cycle, current_events_, profiling_summary_ };
-		draw_fps(*lvl_, perf);
+
+		if(preferences::show_fps()) {
+			draw_fps(*lvl_, perf);
+		}
 
 		next_draw_ += (SDL_GetTicks() - start_draw);
 
