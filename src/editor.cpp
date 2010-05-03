@@ -2086,8 +2086,11 @@ void editor::draw() const
 				default:
 					break;
 			}
-			glVertexPointer(2, GL_FLOAT, 0, &varray.front());
-			glDrawArrays(GL_LINES, 0, varray.size()/2);
+
+			if(!varray.empty()) {
+				glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+				glDrawArrays(GL_LINES, 0, varray.size()/2);
+			}
 		}
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
