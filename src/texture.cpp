@@ -486,11 +486,6 @@ texture texture::get_palette_mapped(const std::string& str, int palette)
 	if(!result.valid()) {
 		key surfs;
 		surface s = surface_cache::get_no_cache(str);
-		if(s->format->BytesPerPixel == 3) {
-			surface dst(SDL_CreateRGBSurface(SDL_SWSURFACE,s->w,s->h,32,SURFACE_MASK));
-			add_alpha_channel_to_surface((uint8_t*)dst->pixels, (uint8_t*)s->pixels, s->w, s->w, s->h, s->pitch);
-			s = dst;
-		}
 		surfs.push_back(map_palette(s, palette));
 		result = texture(surfs);
 		palette_texture_cache().put(k, result);

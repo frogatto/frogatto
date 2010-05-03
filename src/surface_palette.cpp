@@ -23,6 +23,11 @@ void load_palette_def(const std::string& id)
 	def.name = id;
 	surface s = surface_cache::get_no_cache("palette/" + id + ".png");
 
+	surface converted(SDL_CreateRGBSurface(SDL_SWSURFACE, s->w, s->h, 32, SURFACE_MASK));
+	SDL_SetAlpha(s.get(), 0, SDL_ALPHA_OPAQUE);
+	SDL_BlitSurface(s.get(), NULL, converted.get(), NULL);
+	s = converted;
+
 	ASSERT_LOG(s.get(), "COULD NOT LOAD PALETTE IMAGE " << id);
 	ASSERT_LOG(s->format->BytesPerPixel == 4, "PALETTE " << id << " NOT IN 32bpp PIXEL FORMAT");
 
@@ -73,9 +78,7 @@ surface map_palette(surface s, int palette)
 
 	surface result(SDL_CreateRGBSurface(SDL_SWSURFACE, s->w, s->h, 32, SURFACE_MASK));
 
-	if(s->format->BytesPerPixel != 4) {
-		s = surface(SDL_ConvertSurface(s.get(), result->format, 0));
-	}
+	s = surface(SDL_ConvertSurface(s.get(), result->format, 0));
 
 	ASSERT_LOG(s->format->BytesPerPixel == 4, "SURFACE NOT IN 32bpp PIXEL FORMAT");
 
