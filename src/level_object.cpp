@@ -166,6 +166,9 @@ level_object::level_object(wml::const_node_ptr node)
 
 	if(node->has_attr("solid_color")) {
 		solid_color_ = boost::intrusive_ptr<graphics::color>(new graphics::color(node->attr("solid_color")));
+		if(preferences::use_16bpp_textures()) {
+			*solid_color_ = graphics::color(graphics::map_color_to_16bpp(solid_color_->rgba()));
+		}
 	}
 
 	if(node->has_attr("draw_area")) {

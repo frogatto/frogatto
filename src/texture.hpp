@@ -137,6 +137,8 @@ inline bool operator<(const texture& a, const texture& b)
 	return a.id_->id < b.id_->id;
 }
 
+unsigned int map_color_to_16bpp(unsigned int color);
+
 }
 
 #endif

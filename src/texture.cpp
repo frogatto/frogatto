@@ -557,6 +557,18 @@ const unsigned char table_8bits_to_4bits[256] = {
 
 }
 
+unsigned int map_color_to_16bpp(unsigned int color)
+{
+	return table_8bits_to_4bits[(color >> 24)&0xFF] << 28 |
+	       table_8bits_to_4bits[(color >> 24)&0xFF] << 24 |
+	       table_8bits_to_4bits[(color >> 16)&0xFF] << 20 |
+	       table_8bits_to_4bits[(color >> 16)&0xFF] << 16 |
+	       table_8bits_to_4bits[(color >>  8)&0xFF] << 12 |
+	       table_8bits_to_4bits[(color >>  8)&0xFF] << 8 |
+	       table_8bits_to_4bits[(color >>  0)&0xFF] << 4 |
+	       table_8bits_to_4bits[(color >>  0)&0xFF] << 0;
+}
+
 void texture::ID::build_id()
 {
 	glBindTexture(GL_TEXTURE_2D,id);
