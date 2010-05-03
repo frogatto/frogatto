@@ -32,6 +32,12 @@ class color : public game_logic::formula_callable
 	void set_as_current_color() const;
 	void add_to_vector(std::vector<GLfloat>* v) const;
 
+	static uint32_t convert_pixel_byte_order(uint32_t p) {
+		PixelUnion pu;
+		pu.value = p;
+		return convert_pixel_byte_order(pu).value;
+	}
+
 	private:
 		union PixelUnion {
 			uint32_t value;

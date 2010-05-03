@@ -110,7 +110,7 @@ color map_palette(const color& c, int palette)
 	const std::map<uint32_t,uint32_t>& mapping = palettes[palette].mapping;
 	std::map<uint32_t,uint32_t>::const_iterator i = mapping.find(c.value());
 	if(i != mapping.end()) {
-		return color(i->second);
+		return color(color::convert_pixel_byte_order(i->second));
 	} else {
 		return c;
 	}
