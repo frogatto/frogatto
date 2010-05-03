@@ -1955,6 +1955,10 @@ bool custom_object::is_active(const rect& screen_area) const
 		return true;
 	}
 
+	if(type_->goes_inactive_only_when_standing() && !is_standing(level::current())) {
+		return true;
+	}
+
 	if(activation_area_) {
 		return rects_intersect(*activation_area_, screen_area);
 	}

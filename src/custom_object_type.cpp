@@ -322,6 +322,7 @@ custom_object_type::custom_object_type(wml::const_node_ptr node, const custom_ob
 	timer_frequency_(wml::get_int(node, "timer_frequency", -1)),
 	zorder_(wml::get_int(node, "zorder")),
 	is_human_(wml::get_bool(node, "is_human", false)),
+	goes_inactive_only_when_standing_(wml::get_bool(node, "goes_inactive_only_when_standing", false)),
 	dies_on_inactive_(wml::get_bool(node, "dies_on_inactive", false)),
 	always_active_(wml::get_bool(node, "always_active", false)),
     body_harmful_(wml::get_bool(node, "body_harmful", true)),

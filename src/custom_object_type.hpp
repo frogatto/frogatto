@@ -67,6 +67,7 @@ public:
 
 	int zorder() const { return zorder_; }
 	bool is_human() const { return is_human_;}
+	bool goes_inactive_only_when_standing() const { return goes_inactive_only_when_standing_; }
 	bool dies_on_inactive() const { return dies_on_inactive_;}
 	bool always_active() const { return always_active_;}
 	bool body_harmful() const { return body_harmful_; }
@@ -159,6 +160,7 @@ private:
 	int zorder_;
 
 	bool is_human_;
+	bool goes_inactive_only_when_standing_;
 	bool dies_on_inactive_;
 	bool always_active_;
 	bool body_harmful_;
