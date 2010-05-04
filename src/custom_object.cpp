@@ -77,6 +77,14 @@ custom_object::custom_object(wml::const_node_ptr node)
 	always_active_(wml::get_bool(node, "always_active", false)),
 	last_cycle_active_(0)
 {
+	if(node->has_attr("draw_area")) {
+		draw_area_.reset(new rect(node->attr("draw_area")));
+	}
+
+	if(node->has_attr("activation_area")) {
+		activation_area_.reset(new rect(node->attr("activation_area")));
+	}
+
 	if(node->has_attr("variations")) {
 		current_variation_ = util::split(node->attr("variations"));
 		type_ = base_type_->get_variation(current_variation_);
@@ -124,6 +132,13 @@ custom_object::custom_object(wml::const_node_ptr node)
 	wml::const_node_ptr text_node = node->get_child("text");
 	if(text_node) {
 		set_text(text_node->attr("text"), text_node->attr("font"), wml::get_int(text_node, "size", 2));
+	}
+
+	if(node->has_attr("particles")) {
+		std::vector<std::string> particles = util::split(node->attr("particles"));
+		foreach(const std::string& p, particles) {
+			add_particle_system(p, p);
+		}
 	}
 }
 
@@ -358,6 +373,27 @@ wml::node_ptr custom_object::write() const
 		node->set_attr("size", formatter() << text_->size);
 
 		res->add_child(node);
+	}
+
+	if(draw_area_) {
+		res->set_attr("draw_area", draw_area_->to_string());
+	}
+
+	if(activation_area_) {
+		res->set_attr("activation_area", activation_area_->to_string());
+	}
+
+	if(!particle_systems_.empty()) {
+		std::string systems;
+		for(std::map<std::string, particle_system_ptr>::const_iterator i = particle_systems_.begin(); i != particle_systems_.end(); ++i) {
+			if(systems.empty()) {
+				systems += ",";
+			}
+
+			systems += i->first;
+		}
+
+		res->set_attr("particles", systems);
 	}
 	
 	return res;
