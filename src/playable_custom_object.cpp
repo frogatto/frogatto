@@ -94,7 +94,7 @@ void playable_custom_object::process(level& lvl)
 
 	clear_control_status();
 	read_controls(lvl.cycle());
-	static const std::string keys[] = { "up", "down", "left", "right", "attack", "jump" };	
+	static const std::string keys[] = { "up", "down", "left", "right", "attack", "jump", "tongue" };	
 	for(int n = 0; n != controls::NUM_CONTROLS; ++n) {
 		if(controls[n] != control_status(static_cast<controls::CONTROL_ITEM>(n))) {
 			if(controls[n]) {
@@ -110,7 +110,7 @@ void playable_custom_object::process(level& lvl)
 }
 
 namespace {
-	static const char* ctrl[] = { "ctrl_up", "ctrl_down", "ctrl_left", "ctrl_right", "ctrl_attack", "ctrl_jump" };
+	static const char* ctrl[] = { "ctrl_up", "ctrl_down", "ctrl_left", "ctrl_right", "ctrl_attack", "ctrl_jump", "ctrl_tongue" };
 }
 
 variant playable_custom_object::get_value(const std::string& key) const

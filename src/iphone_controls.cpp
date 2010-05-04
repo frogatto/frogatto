@@ -17,6 +17,7 @@ namespace
 	const rect up_arrow(119, 640 - 147, 34*2, 55*2);
 	const rect a_button(960 - 204, 640 - 120, 50*2, 60*2);
 	const rect b_button(960 - 102, 640 - 240, 50*2, 60*2);
+	const rect c_button(960 - 102, 640 - 360, 50*2, 60*2);
 
 	const rect interact_button(960 - 300 - 30, 640 - 130, 50*2 + 60, 60*2);
 
@@ -171,6 +172,15 @@ bool iphone_controls::jump()
 	return hittest_button(a_button);
 }
 
+bool iphone_controls::tongue()
+{
+	if(is_underwater) {
+		return false;
+	}
+
+	return hittest_button(c_button);
+}
+
 #else // dummy functions for non-iPhone
 
 void iphone_controls::draw() {}
@@ -191,5 +201,7 @@ bool iphone_controls::right() {return false;}
 bool iphone_controls::attack() {return false;}
 
 bool iphone_controls::jump() {return false;}
+
+bool iphone_controls::tongue() {return false;}
 
 #endif

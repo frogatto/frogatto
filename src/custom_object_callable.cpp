@@ -29,7 +29,7 @@ custom_object_callable::custom_object_callable()
 	"current_generator", "tags", "draw_area", "activation_area",
 	"fall_through_platforms", "has_feet",
 	"ctrl_up", "ctrl_down", "ctrl_left", "ctrl_right",
-	"ctrl_attack", "ctrl_jump",
+	"ctrl_attack", "ctrl_jump", "ctrl_tongue",
 };
 	ASSERT_EQ(NUM_CUSTOM_OBJECT_PROPERTIES, sizeof(CustomObjectProperties)/sizeof(*CustomObjectProperties));
 

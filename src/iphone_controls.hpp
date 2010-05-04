@@ -14,6 +14,7 @@ public:
 	static bool right();
 	static bool attack();
 	static bool jump();
+	static bool tongue();
 	static bool water_dir(float* x, float* y);
 
 	static void set_underwater(bool value);

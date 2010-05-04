@@ -1379,6 +1379,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_CTRL_RIGHT:
 	case CUSTOM_OBJECT_CTRL_ATTACK:
 	case CUSTOM_OBJECT_CTRL_JUMP:
+	case CUSTOM_OBJECT_CTRL_TONGUE:
 		return variant(control_status(static_cast<controls::CONTROL_ITEM>(slot - CUSTOM_OBJECT_CTRL_UP)));
 	}
 
