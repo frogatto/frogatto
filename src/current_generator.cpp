@@ -118,7 +118,7 @@ void rect_current_generator::generate(int center_x, int center_y, int target_x, 
 			}
 			*velocity_y += amount;
 			if(*velocity_y < yvelocity_) {
-				*velocity_y = yvelocity_;
+//				*velocity_y = yvelocity_;
 			}
 		}
 	}
