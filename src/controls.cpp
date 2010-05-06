@@ -121,9 +121,9 @@ void read_local_controls()
 		if(keyboard()[SDLK_DOWN] || joystick::down() || iphone_controls::down()) { state |= (1 << CONTROL_DOWN); }
 		if(keyboard()[SDLK_LEFT] || joystick::left() || iphone_controls::left()) { state |= (1 << CONTROL_LEFT); }
 		if(keyboard()[SDLK_RIGHT] || joystick::right() || iphone_controls::right()) { state |= (1 << CONTROL_RIGHT); }
-		if(keyboard()[SDLK_s] || joystick::button(0) || iphone_controls::attack()) { state |= (1 << CONTROL_ATTACK); }
+		if(keyboard()[SDLK_d] || joystick::button(0) || iphone_controls::attack()) { state |= (1 << CONTROL_ATTACK); }
 		if(keyboard()[SDLK_a] || joystick::button(1) || iphone_controls::jump()) { state |= (1 << CONTROL_JUMP); }
-		if(keyboard()[SDLK_d] || joystick::button(2) || iphone_controls::tongue()) { state |= (1 << CONTROL_TONGUE); }
+		if(keyboard()[SDLK_s] || joystick::button(2) || iphone_controls::tongue()) { state |= (1 << CONTROL_TONGUE); }
 	} else {
 		//we have the controls locked into a specific state.
 		state = local_control_locks.top();
