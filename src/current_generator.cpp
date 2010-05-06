@@ -108,9 +108,14 @@ void rect_current_generator::generate(int center_x, int center_y, int target_x, 
 				*velocity_y = yvelocity_;
 			}
 		} else if(yvelocity_ < 0 && *velocity_y > yvelocity_) {
-			int amount = (yvelocity_ - std::min(0, *velocity_y))*strength/(target_mass*1000);
+			int amount = yvelocity_*strength/(target_mass*1000);
 			const int distance = target_y - rect_.y();
-			amount = (amount*distance*distance)/(rect_.h()*rect_.h());
+//			amount = (amount*distance*distance)/(rect_.h()*rect_.h());
+			std::cerr << "DIST: " << distance << "/" << rect_.h() << " " << *velocity_y << "\n";
+			if(distance < rect_.h()/2 && *velocity_y > 0) {
+				std::cerr << "CANCEL\n";
+				amount = 0;
+			}
 			*velocity_y += amount;
 			if(*velocity_y < yvelocity_) {
 				*velocity_y = yvelocity_;
