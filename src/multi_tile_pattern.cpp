@@ -6,6 +6,7 @@
 #include "string_utils.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
+#include "wml_writer.hpp"
 
 namespace {
 //a pool of regular expressions. This makes sure that two regexes that
@@ -67,42 +68,25 @@ bool compare_match_cell_by_run_length(const multi_tile_pattern::match_cell& a,
                                       const multi_tile_pattern::match_cell& b) {
 	return a.run_length > b.run_length;
 }
-}
 
-multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr node)
-  : id_(node->attr("id")), width_(-1), height_(-1), chance_(wml::get_int(node, "chance", 100))
-{
-	std::cerr << "INIT MTP: " << id_ << "\n";
-	FOREACH_WML_CHILD(alternative_node, node, "alternative") {
-		wml::node_ptr merged(new wml::node("multi_tile_pattern"));
-		wml::merge_attr_over(node, merged);
-		wml::merge_over(alternative_node, merged);
-		alternatives_.push_back(boost::shared_ptr<multi_tile_pattern>(new multi_tile_pattern(merged)));
-	}
+struct raw_cell {
+	std::string regex;
+	std::vector<std::string> map_to;
+};
 
-	std::map<std::string, level_object_ptr> objects;
-	std::map<std::string, int> object_zorders;
-	for(wml::node::const_all_child_iterator i = node->begin_children();
-	    i != node->end_children(); ++i) {
-		if((*i)->name() == "alternative") {
-			continue;
-		}
+int parse_pattern(const std::string& pattern, std::vector<raw_cell>& out) {
 
-		objects[(*i)->name()].reset(new level_object(*i));
-		if((*i)->has_attr("zorder")) {
-			object_zorders[(*i)->name()] = wml::get_int(*i, "zorder");
-		}
-	}
+	std::vector<std::string> lines = util::split(pattern, '\n', 0);
+	const int height = lines.size();
+	int width = -1;
 
-	std::vector<std::string> lines = util::split(node->attr("pattern"), '\n', 0);
-	height_ = lines.size();
 	foreach(const std::string& line, lines) {
 		std::vector<std::string> items = util::split(line, ',', util::STRIP_SPACES);
-		if(width_ == -1) {
-			width_ = items.size();
+		if(width == -1) {
+			width = items.size();
 		}
 
-		ASSERT_LOG(width_ == items.size(), "Inconsistent multi_tile_pattern size in pattern " << id_);
+		ASSERT_LOG(width == items.size(), "Inconsistent multi_tile_pattern size in pattern " << pattern);
 
 		foreach(std::string item, items) {
 			std::vector<const char*> arrows;
@@ -112,13 +96,14 @@ multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr node)
 				arrow = strstr(arrow+2, "->");
 			}
 
-			std::vector<std::string> map_to;
+			raw_cell cell;
+
 			if(arrows.empty() == false) {
 				arrows.push_back(item.c_str() + item.size());
 				for(int n = 0; n != arrows.size()-1; ++n) {
 					std::string m(arrows[n]+2, arrows[n+1]);
 					util::strip(m);
-					map_to.push_back(m);
+					cell.map_to.push_back(m);
 				}
 
 				item = std::string(item.c_str(), arrows.front());
@@ -126,27 +111,148 @@ multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr node)
 
 			util::strip(item);
 
-			tile_info info;
-			info.re = &get_regex_from_pool(item);
-			fprintf(stderr, "ITEM: '%s' -> %p\n", item.c_str(), info.re);
+			cell.regex = item;
+			out.push_back(cell);
+		}
+	}
 
-			foreach(const std::string& m, map_to) {
-				tile_entry entry;
-				entry.zorder = INT_MIN;
-				std::map<std::string, int>::const_iterator zorder_itor = object_zorders.find(m);
-				if(zorder_itor != object_zorders.end()) {
-					entry.zorder = zorder_itor->second;
+	return width;
+}
+
+}
+
+multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr const_node)
+  : id_(const_node->attr("id")), width_(-1), height_(-1), chance_(wml::get_int(const_node, "chance", 100))
+{
+	wml::node_ptr node = wml::deep_copy(const_node);
+
+	std::cerr << "INIT MTP: " << id_ << "\n";
+	FOREACH_WML_CHILD(alternative_node, node, "alternative") {
+		wml::node_ptr merged(new wml::node("multi_tile_pattern"));
+		wml::merge_attr_over(node, merged);
+		wml::merge_over(alternative_node, merged);
+		alternatives_.push_back(boost::shared_ptr<multi_tile_pattern>(new multi_tile_pattern(merged)));
+	}
+
+	std::vector<raw_cell> cells;
+	width_ = parse_pattern(node->attr("pattern"), cells);
+	height_ = cells.size()/width_;
+
+	std::map<std::string, wml::node_ptr> base_nodes;
+
+	FOREACH_WML_CHILD(range_node, const_node, "range") {
+		const std::string from = range_node->attr("from");
+		const std::string to = range_node->attr("to");
+
+		ASSERT_LOG(from != "", "MTP " << id_ << " DOES NOT HAVE from SPECIFIED IN RANGE: " << wml::output(range_node));
+		ASSERT_LOG(to != "", "MTP " << id_ << " DOES NOT HAVE to SPECIFIED IN RANGE");
+
+		std::string tile_pos = range_node->attr("tiles");
+		ASSERT_LOG(tile_pos.size() == 2, "In range for MTP " << id_ << " the tiles attribute is not in the correct format");
+
+		int from_index = -1;
+		int to_index = -1;
+		for(int n = 0; n != cells.size(); ++n) {
+			foreach(const std::string& m, cells[n].map_to) {
+				if(m == from) {
+					ASSERT_LOG(from_index == -1, "In multi_tile_pattern range specification for " << id_ << " the cell " << m << " is ambiguous since it appears multiple times");
+					from_index = n;
 				}
 
-				if(map_to.empty() == false) {
-					entry.tile = objects[m];
+				if(m == to) {
+					ASSERT_LOG(to_index == -1, "In multi_tile_pattern range specification for " << id_ << " the cell " << m << " is ambiguous since it appears multiple times");
+					to_index = n;
+				}
+			}
+		}
+
+		ASSERT_LOG(from_index != -1, "In multi_tile_pattern range specification for " << id_ << " the cell '" << from << "' was not found");
+		ASSERT_LOG(to_index != -1, "In multi_tile_pattern range specification for " << id_ << " the cell " << to << " was not found");
+		ASSERT_LOG(to_index > from_index, "In multi_tile_pattern range specification for " << id_ << " the cell " << to << " comes before the cell " << from);
+
+		const int from_x = from_index%width_;
+		const int from_y = from_index/width_;
+		const int to_x = to_index%width_;
+		const int to_y = to_index/width_;
+
+		char row = tile_pos[0];
+		for(int y = from_y; y <= to_y; ++y) {
+			char col = tile_pos[1];
+			for(int x = from_x; x <= to_x; ++x) {
+				const int index = y*width_ + x;
+				ASSERT_LT(index, cells.size());
+				foreach(const std::string& m, cells[index].map_to) {
+					wml::node_ptr base_node = wml::deep_copy(range_node);
+					base_node->set_name(m);
+					base_node->erase_attr("from");
+					base_node->erase_attr("to");
+					char buf[3] = {row, col, 0};
+					base_node->set_attr("tile", buf);
+
+					if(node->get_child(m)) {
+						ASSERT_LOG(base_nodes.count(m) == 0, "IN CALCULATING RANGE FOR MTP " << id_ << " TILE " << m << " APPEARS MULTIPLE TIMES");
+						base_nodes[m] = base_node;
+					} else {
+						node->add_child(base_node);
+					}
 				}
 
-				info.tiles.push_back(entry);
+				if(col == '9') {
+					col = 'a';
+				} else {
+					++col;
+				}
 			}
 
-			tiles_.push_back(info);
+			if(row == '9') {
+				row = 'a';
+			} else {
+				++row;
+			}
 		}
+	}
+
+	std::map<std::string, level_object_ptr> objects;
+	std::map<std::string, int> object_zorders;
+	for(wml::node::const_all_child_iterator i = node->begin_children();
+	    i != node->end_children(); ++i) {
+		if((*i)->name() == "alternative" || (*i)->name() == "range") {
+			continue;
+		}
+
+		wml::const_node_ptr obj_node = *i;
+		if(base_nodes.count(obj_node->name())) {
+			wml::merge_over(obj_node, base_nodes[obj_node->name()]);
+			obj_node = base_nodes[obj_node->name()];
+		}
+
+		objects[obj_node->name()].reset(new level_object(obj_node));
+		if(obj_node->has_attr("zorder")) {
+			object_zorders[obj_node->name()] = wml::get_int(obj_node, "zorder");
+		}
+	}
+
+	foreach(const raw_cell& cell, cells) {
+
+		tile_info info;
+		info.re = &get_regex_from_pool(cell.regex);
+
+		foreach(const std::string& m, cell.map_to) {
+			tile_entry entry;
+			entry.zorder = INT_MIN;
+			std::map<std::string, int>::const_iterator zorder_itor = object_zorders.find(m);
+			if(zorder_itor != object_zorders.end()) {
+				entry.zorder = zorder_itor->second;
+			}
+
+			if(cell.map_to.empty() == false) {
+				entry.tile = objects[m];
+			}
+
+			info.tiles.push_back(entry);
+		}
+
+		tiles_.push_back(info);
 	}
 
 	ASSERT_EQ(tiles_.size(), width_*height_);

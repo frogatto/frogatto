@@ -35,6 +35,7 @@ public:
 	void set_prefix(const std::string& p) { prefix_ = p; }
 	const std::string& prefix() const { return prefix_; }
 	const std::string& name() const { return name_; }
+	void set_name(const std::string& new_name) { name_ = new_name; }
 
 	const value& operator[](const std::string& key) const;
 	const value& attr(const std::string& key) const;
