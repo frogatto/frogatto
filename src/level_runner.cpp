@@ -5,6 +5,7 @@
 
 #include "SDL.h"
 
+#include "collision_utils.hpp"
 #include "controls.hpp"
 #include "custom_object.hpp"
 #include "draw_scene.hpp"
@@ -314,6 +315,7 @@ bool level_runner::play_cycle()
 		new_level->set_as_current_level();
 		save->save_game();
 		save->handle_event(OBJECT_EVENT_LOAD_CHECKPOINT);
+		place_entity_in_level(*new_level, *save);
 		lvl_.reset(new_level);
 		last_draw_position() = screen_position();
 	} else if(lvl_->players().size() > 1) {

@@ -187,7 +187,7 @@ multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr const_node)
 					base_node->erase_attr("from");
 					base_node->erase_attr("to");
 					char buf[3] = {row, col, 0};
-					base_node->set_attr("tile", buf);
+					base_node->set_attr("tiles", buf);
 
 					if(node->get_child(m)) {
 						ASSERT_LOG(base_nodes.count(m) == 0, "IN CALCULATING RANGE FOR MTP " << id_ << " TILE " << m << " APPEARS MULTIPLE TIMES");
