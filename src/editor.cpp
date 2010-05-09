@@ -690,6 +690,8 @@ void editor::edit_level()
 		std::cerr << "ERROR LOADING STATS\n";
 	}
 
+	lvl_->set_as_current_level();
+
 	foreach(entity_ptr c, lvl_->get_chars()) {
 		if(entity_collides_with_level(*lvl_, *c, MOVE_NONE)) {
 			if(place_entity_in_level(*lvl_, *c)) {
@@ -770,7 +772,8 @@ void editor::edit_level()
 					new_value += TileSize/2;
 					new_value = new_value - new_value%TileSize;
 				}
-				property_dialog_->get_entity()->mutate_value(g_variable_editing->variable_name(), variant(new_value));
+
+				mutate_object_value(property_dialog_->get_entity(), g_variable_editing->variable_name(), variant(new_value));
 			}
 		} else if(object_mode && !buttons) {
 			//remove ghost objects and re-add them. This guarantees ghost
@@ -963,8 +966,8 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 		//we want to clear the objects in the property dialog
 		redo.push_back(boost::bind(&editor_dialogs::group_property_editor_dialog::set_group, group_property_dialog_.get(), std::vector<entity_ptr>()));
 		foreach(const entity_ptr& e, lvl_->editor_selection()) {
-			redo.push_back(boost::bind(&level::remove_character, lvl_.get(), e));
-			undo.push_back(boost::bind(&level::add_character, lvl_.get(), e));
+			redo.push_back(boost::bind(&editor::remove_object_from_level, this, e));
+			undo.push_back(boost::bind(&editor::add_object_to_level, this, e));
 			undo.push_back(boost::bind(&level::editor_select_object, lvl_.get(), e));
 		}
 		execute_command(
@@ -1312,13 +1315,13 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 
 		} else if(c->is_human() && lvl_->player()) {
 			execute_command(
-			  boost::bind(&level::add_character, lvl_.get(), c),
-			  boost::bind(&level::add_character, lvl_.get(), &lvl_->player()->get_entity()));
+			  boost::bind(&editor::add_object_to_level, this, c),
+			  boost::bind(&editor::add_object_to_level, this, &lvl_->player()->get_entity()));
 
 		} else {
 			execute_command(
-			  boost::bind(&level::add_character, lvl_.get(), c),
-			  boost::bind(&level::remove_character, lvl_.get(), c));
+			  boost::bind(&editor::add_object_to_level, this, c),
+			  boost::bind(&editor::remove_object_from_level, this, c));
 		}
 	}
 }
@@ -1338,8 +1341,8 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 			entity_ptr e = property_dialog_->get_entity();
 			const std::string& var = g_variable_editing->variable_name();
 			execute_command(
-			  boost::bind(&entity::mutate_value, e.get(), var, e->query_value(var)),
-			  boost::bind(&entity::mutate_value, e.get(), var, variant(g_variable_editing_original_value)));
+			  boost::bind(&editor::mutate_object_value, this, e.get(), var, e->query_value(var)),
+			  boost::bind(&editor::mutate_object_value, this, e.get(), var, variant(g_variable_editing_original_value)));
 			property_dialog_->init();
 		}
 		g_variable_editing = NULL;
@@ -1490,8 +1493,8 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 			std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos, ypos));
 
 			foreach(const entity_ptr& c, chars) {
-				redo.push_back(boost::bind(&level::remove_character, lvl_.get(), c));
-				undo.push_back(boost::bind(&level::add_character, lvl_.get(), c));
+				redo.push_back(boost::bind(&editor::remove_object_from_level, this, c));
+				undo.push_back(boost::bind(&editor::add_object_to_level, this, c));
 			}
 			execute_command(
 			  boost::bind(execute_functions, redo),
@@ -2392,3 +2395,23 @@ void editor::edit_level_properties()
 	editor_dialogs::editor_level_properties_dialog prop_dialog(*this);
 	prop_dialog.show_modal();
 }
+
+void editor::add_object_to_level(entity_ptr e)
+{
+	lvl_->add_character(e);
+	e->handle_event("editor_added");
+}
+
+void editor::remove_object_from_level(entity_ptr e)
+{
+	e->handle_event("editor_removed");
+	lvl_->remove_character(e);
+}
+
+void editor::mutate_object_value(entity_ptr e, const std::string& value, variant new_value)
+{
+	e->handle_event("editor_changing_variable");
+	e->mutate_value(value, new_value);
+	e->handle_event("editor_changed_variable");
+}
+

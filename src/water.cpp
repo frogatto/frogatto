@@ -81,7 +81,7 @@ void water::add_rect(const rect& r, const unsigned char* color, variant obj)
 void water::delete_rect(const rect& r)
 {
 	for(std::vector<area>::iterator i = areas_.begin(); i != areas_.end(); ) {
-		if(rects_intersect(r, i->rect_)) {
+		if(r == i->rect_) {
 			i = areas_.erase(i);
 		} else {
 			++i;

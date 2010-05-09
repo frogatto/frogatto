@@ -2960,6 +2960,9 @@ UTILITY(correct_solidity)
 					std::cerr << "LEVEL: " << lvl->id() << " FAILED TO CORRECT " << c->debug_description() << "\n";
 				}
 			}
+
+			c->handle_event("editor_removed");
+			c->handle_event("editor_added");
 		}
 
 		std::string data;

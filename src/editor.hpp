@@ -160,6 +160,13 @@ private:
 	bool editing_objects() const { return tool_ == TOOL_ADD_OBJECT || tool_ == TOOL_SELECT_OBJECT; }
 	bool editing_tiles() const { return !editing_objects(); }
 
+	//functions which add and remove an object from a level, as well as
+	//sending the object appropriate events.
+	void add_object_to_level(entity_ptr e);
+	void remove_object_from_level(entity_ptr e);
+
+	void mutate_object_value(entity_ptr e, const std::string& value, variant new_value);
+
 	CKey key_;
 
 	boost::intrusive_ptr<level> lvl_;
