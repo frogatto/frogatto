@@ -135,14 +135,19 @@ multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr const_node)
 	}
 
 	std::vector<raw_cell> cells;
+	std::vector<raw_cell> cells_different_zorder;
 	width_ = parse_pattern(node->attr("pattern"), cells);
 	height_ = cells.size()/width_;
+
+	cells_different_zorder.resize(cells.size());
 
 	std::map<std::string, wml::node_ptr> base_nodes;
 
 	FOREACH_WML_CHILD(range_node, const_node, "range") {
 		const std::string from = range_node->attr("from");
 		const std::string to = range_node->attr("to");
+
+		const bool different_zorder = range_node->has_attr("zorder");
 
 		ASSERT_LOG(from != "", "MTP " << id_ << " DOES NOT HAVE from SPECIFIED IN RANGE: " << wml::output(range_node));
 		ASSERT_LOG(to != "", "MTP " << id_ << " DOES NOT HAVE to SPECIFIED IN RANGE");
@@ -181,7 +186,12 @@ multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr const_node)
 			for(int x = from_x; x <= to_x; ++x) {
 				const int index = y*width_ + x;
 				ASSERT_LT(index, cells.size());
-				foreach(const std::string& m, cells[index].map_to) {
+				foreach(std::string m, cells[index].map_to) {
+					if(different_zorder) {
+						m += "_zorder";
+						cells_different_zorder[index].map_to.push_back(m);
+					}
+
 					wml::node_ptr base_node = wml::deep_copy(range_node);
 					base_node->set_name(m);
 					base_node->erase_attr("from");
@@ -209,6 +219,16 @@ multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr const_node)
 			} else {
 				++row;
 			}
+		}
+	}
+
+	if(const_node->get_child("range")) {
+		std::cerr << "PARSE MTP: " << wml::output(node) << "\n";
+	}
+
+	for(int n = 0; n != cells.size(); ++n) {
+		foreach(const std::string& m, cells_different_zorder[n].map_to) {
+			cells[n].map_to.push_back(m);
 		}
 	}
 
