@@ -2209,7 +2209,8 @@ void editor::draw() const
 	//the location of the mouse cursor in the map
 	char loc_buf[256];
 	sprintf(loc_buf, "%d,%d", xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
-	graphics::blit_texture(font::render_text(loc_buf, graphics::color_yellow(), 14), 10, 60);
+	glColor4f(1.0, 1.0, 1.0, 1.0);
+	graphics::blit_texture(font::render_text(loc_buf, graphics::color_white(), 14), 10, 60);
 
 	if(current_dialog_) {
 		current_dialog_->draw();
