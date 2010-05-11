@@ -151,7 +151,7 @@ void playable_custom_object::set_value(const std::string& key, const variant& va
 	} else if(key == "vertical_look") {
 		vertical_look_ = value.as_int();
 	} else if(key == "control_lock") {
-		if(value.is_null() && control_lock_.get() != NULL) {
+		if(value.is_null()) {
 			control_lock_.reset();
 		} else if(value.is_list()) {
 			unsigned char state = 0;
@@ -178,7 +178,7 @@ void playable_custom_object::set_value(const std::string& key, const variant& va
 			control_lock_.reset();
 			control_lock_.reset(new controls::local_controls_lock(state));
 		} else {
-			ASSERT_LOG(false, "BAD VALUE WHEN SETTING control_lock KEY. A LIST OR NULL IS REQUIRED.");
+			ASSERT_LOG(false, "BAD VALUE WHEN SETTING control_lock KEY. A LIST OR NULL IS REQUIRED: " << value.to_debug_string());
 		}
 	} else {
 		custom_object::set_value(key, value);

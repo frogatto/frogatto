@@ -879,6 +879,7 @@ void parse_args(const token* i1, const token* i2,
 				const formula_callable_definition* callable_def,
 				bool* can_optimize)
 {
+	ASSERT_LE(i1, i2);
 	int parens = 0;
 	const token* beg = i1;
 	while(i1 != i2) {
@@ -1286,6 +1287,11 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 	const std::string op_name(op->begin,op->end);
 	
 	if(op_name == "(") {
+		if(i2 - op < 2) {
+			std::cerr << "MISSING PARENS IN FORMULA\n";
+			throw formula_error();
+		}
+
 		std::vector<expression_ptr> args;
 		parse_args(op+1, i2-1, &args, symbols, callable_def, can_optimize);
 		
