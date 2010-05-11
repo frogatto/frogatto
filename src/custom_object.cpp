@@ -1543,6 +1543,7 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		if(value.is_list() && value.num_elements() == 4) {
 			activation_area_.reset(new rect(value[0].as_int(), value[1].as_int(), value[2].as_int(), value[3].as_int()));
 		} else {
+			ASSERT_LOG(value.is_null(), "BAD ACTIVATION AREA: " << value.to_debug_string());
 			activation_area_.reset();
 		}
 	} else if(key == "variations") {
@@ -1830,6 +1831,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		if(value.is_list() && value.num_elements() == 4) {
 			activation_area_.reset(new rect(value[0].as_int(), value[1].as_int(), value[2].as_int(), value[3].as_int()));
 		} else {
+			ASSERT_LOG(value.is_null(), "BAD ACTIVATION AREA: " << value.to_debug_string());
 			activation_area_.reset();
 		}
 
