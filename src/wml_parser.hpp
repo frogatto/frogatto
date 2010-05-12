@@ -24,7 +24,10 @@ class schema;
 
 struct parse_error {
 	parse_error(const std::string& msg);
+	parse_error(const std::string& msg, std::string::const_iterator error_loc);
 	std::string message;
+
+	std::string::const_iterator error_loc;
 };
 
 node_ptr parse_wml(const std::string& doc, bool must_have_doc=true, const schema* schema=NULL);
