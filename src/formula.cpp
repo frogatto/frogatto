@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <boost/lexical_cast.hpp>
 #include <cmath>
+#include <stack>
 #include <stdio.h>
 #include <iostream>
 #include <vector>
@@ -1263,12 +1264,33 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 		}
 		
 		if(!fn_call) {
-			std::ostringstream expr;
-			while(i1 != i2) {
-				expr << std::string(i1->begin,i1->end);
-				++i1;
+			if(i1->type == TOKEN_IDENTIFIER && (i1+1)->type == TOKEN_LPARENS) {
+				const token* match = i1+2;
+				int depth = 0;
+				while(match < i2) {
+					if(match->type == TOKEN_LPARENS) {
+						++depth;
+					} else if(match->type == TOKEN_RPARENS) {
+						if(depth == 0) {
+							break;
+						}
+						--depth;
+					}
+					++match;
+				}
+
+				if(match != i2) {
+					++match;
+					ASSERT_LT(match, i2); 
+
+					std::cerr << "unexpected tokens after function call: '" << std::string(match->begin, (i2-1)->end) << "'\n";
+				} else {
+					std::cerr << "no closing parenthesis to function call: '" << std::string(i1->begin, (i2-1)->end) << "'\n";
+				}
+			} else {
+				std::cerr << "could not parse expression: '" << std::string(i1->begin, (i2-1)->end) << "'\n";
 			}
-			std::cerr << "could not parse expression: '" << expr.str() << "'\n";
+
 			throw formula_error();
 		}
 	}
@@ -1366,6 +1388,76 @@ formula::formula(const wml::value& val, function_symbol_table* symbols, const fo
 				tokens.pop_back();
 			}
 		} catch(token_error& /*e*/) {
+			throw formula_error();
+		}
+	}
+
+	//check that all kinds of brackets match up.
+	{
+		std::string error_msg;
+		int error_loc = -1;
+
+		std::stack<formula_tokenizer::FFL_TOKEN_TYPE> brackets;
+		std::stack<int> brackets_locs;
+		for(int n = 0; n != tokens.size(); ++n) {
+			switch(tokens[n].type) {
+			case TOKEN_LPARENS:
+			case TOKEN_LSQUARE:
+			case TOKEN_LBRACKET:
+				brackets.push(tokens[n].type);
+				brackets_locs.push(n);
+				break;
+			case TOKEN_RPARENS:
+			case TOKEN_RSQUARE:
+			case TOKEN_RBRACKET:
+				if(brackets.empty()) {
+					error_msg = "UNEXPECTED TOKEN: " + std::string(tokens[n].begin, tokens[n].end);
+					error_loc = n;
+					break;
+				} else if(brackets.top() != tokens[n].type-1) {
+					const int m = brackets_locs.top();
+					error_msg = "UNMATCHED BRACKET: " + std::string(tokens[m].begin, tokens[m].end);
+					error_loc = m;
+					break;
+				}
+
+				brackets.pop();
+				brackets_locs.pop();
+				break;
+			}
+		}
+
+		if(brackets.empty() == false) {
+			const int m = brackets_locs.top();
+			error_msg = "UNMATCHED BRACKET: " + std::string(tokens[m].begin, tokens[m].end);
+			error_loc = m;
+		}
+
+		if(error_loc != -1) {
+			const token& tok = tokens[error_loc];
+			std::string::const_iterator begin_line = tokens.front().begin;
+			std::string::const_iterator i = begin_line;
+			int nline = 0;
+			while(i < tok.begin) {
+				if(i == tok.begin) {
+					break;
+				}
+
+				if(*i == '\n') {
+					++nline;
+					begin_line = i+1;
+				}
+				++i;
+			}
+
+			const std::string::const_iterator end_line = std::find(begin_line, tokens.back().end, '\n');
+			std::cerr << "ERROR WHILE PARSING AT " << (filename_ ? *filename_ : "UNKNOWN") << ":" << (line_ + nline) << " " << error_msg << "\n";
+			std::cerr << std::string(begin_line, end_line) << "\n";
+			for(int n = 0; n < tok.begin - begin_line; ++n) {
+				std::cerr << " ";
+			}
+
+			std::cerr << "^\n";
 			throw formula_error();
 		}
 	}
