@@ -621,13 +621,23 @@ void custom_object::process(level& lvl)
 	}
 
 	if(position_schedule_.get() != NULL) {
+		const int pos = cycle_/position_schedule_->speed;
+		const int next_fraction = cycle_%position_schedule_->speed;
+		const int this_fraction = position_schedule_->speed - next_fraction;
+
 		int xpos = INT_MIN, ypos = INT_MIN;
 		if(position_schedule_->x_pos.empty() == false) {
-			xpos = position_schedule_->x_pos[cycle_%position_schedule_->x_pos.size()];
+			xpos = position_schedule_->x_pos[pos%position_schedule_->x_pos.size()];
+			if(next_fraction) {
+				xpos = (xpos*this_fraction + next_fraction*position_schedule_->x_pos[(pos+1)%position_schedule_->x_pos.size()])/position_schedule_->speed;
+			}
 		}
 
 		if(position_schedule_->y_pos.empty() == false) {
-			ypos = position_schedule_->y_pos[cycle_%position_schedule_->y_pos.size()];
+			ypos = position_schedule_->y_pos[pos%position_schedule_->y_pos.size()];
+			if(next_fraction) {
+				ypos = (ypos*this_fraction + next_fraction*position_schedule_->y_pos[(pos+1)%position_schedule_->y_pos.size()])/position_schedule_->speed;
+			}
 		}
 
 		if(xpos != INT_MIN && ypos != INT_MIN) {
@@ -639,7 +649,10 @@ void custom_object::process(level& lvl)
 		}
 
 		if(position_schedule_->rotation.empty() == false) {
-			rotate_ = position_schedule_->rotation[cycle_%position_schedule_->rotation.size()];
+			rotate_ = position_schedule_->rotation[pos%position_schedule_->rotation.size()];
+			if(next_fraction) {
+				rotate_ = (rotate_*this_fraction + next_fraction*position_schedule_->rotation[(pos+1)%position_schedule_->rotation.size()])/position_schedule_->speed;
+			}
 		}
 	}
 
@@ -2021,6 +2034,16 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		for(int n = 0; n != value.num_elements(); ++n) {
 			position_schedule_->rotation.push_back(value[n].as_int());
 		}
+		break;
+	}
+
+	case CUSTOM_OBJECT_SCHEDULE_SPEED: {
+		if(position_schedule_.get() == NULL) {
+			position_schedule_.reset(new position_schedule);
+		}
+
+		position_schedule_->speed = value.as_int();
+
 		break;
 	}
 
