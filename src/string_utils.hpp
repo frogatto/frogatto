@@ -37,6 +37,8 @@ std::string join(const std::vector<std::string>& v, char c=',');
 //output_size.
 const char* split_into_ints(const char* s, int* output, int* output_size);
 
+std::string join_ints(const int* buf, int size);
+
 bool string_starts_with(const std::string& target, const std::string& prefix);
 std::string strip_string_prefix(const std::string& target, const std::string& prefix);
 }

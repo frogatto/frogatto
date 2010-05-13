@@ -6,6 +6,8 @@
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 
+#include <stdio.h>
+
 #include <cassert>
 #include <iostream>
 
@@ -77,6 +79,45 @@ custom_object::custom_object(wml::const_node_ptr node)
 	always_active_(wml::get_bool(node, "always_active", false)),
 	last_cycle_active_(0)
 {
+	if(node->has_attr("x_schedule")) {
+		if(position_schedule_.get() == NULL) {
+			position_schedule_.reset(new position_schedule);
+		}
+
+		const std::string& s = node->attr("x_schedule").str();
+
+		int nints = std::count(s.begin(), s.end(), ',')+1;
+		position_schedule_->x_pos.resize(nints);
+		util::split_into_ints(s.c_str(), &position_schedule_->x_pos[0], &nints);
+		position_schedule_->x_pos.resize(nints);
+	}
+
+	if(node->has_attr("y_schedule")) {
+		if(position_schedule_.get() == NULL) {
+			position_schedule_.reset(new position_schedule);
+		}
+
+		const std::string& s = node->attr("y_schedule").str();
+
+		int nints = std::count(s.begin(), s.end(), ',')+1;
+		position_schedule_->y_pos.resize(nints);
+		util::split_into_ints(s.c_str(), &position_schedule_->y_pos[0], &nints);
+		position_schedule_->y_pos.resize(nints);
+	}
+
+	if(node->has_attr("rotation_schedule")) {
+		if(position_schedule_.get() == NULL) {
+			position_schedule_.reset(new position_schedule);
+		}
+
+		const std::string& s = node->attr("rotation_schedule").str();
+
+		int nints = std::count(s.begin(), s.end(), ',')+1;
+		position_schedule_->rotation.resize(nints);
+		util::split_into_ints(s.c_str(), &position_schedule_->rotation[0], &nints);
+		position_schedule_->rotation.resize(nints);
+	}
+
 	if(node->has_attr("draw_area")) {
 		draw_area_.reset(new rect(node->attr("draw_area")));
 	}
@@ -248,6 +289,20 @@ wml::node_ptr custom_object::write() const
 	if(position_scale_millis_.get() != NULL) {
 		res->set_attr("position_scale_x", formatter() << position_scale_millis_->first);
 		res->set_attr("position_scale_y", formatter() << position_scale_millis_->second);
+	}
+
+	if(position_schedule_.get() != NULL) {
+		if(position_schedule_->x_pos.empty() == false) {
+			res->set_attr("x_schedule", util::join_ints(&position_schedule_->x_pos[0], position_schedule_->x_pos.size()));
+		}
+
+		if(position_schedule_->y_pos.empty() == false) {
+			res->set_attr("y_schedule", util::join_ints(&position_schedule_->y_pos[0], position_schedule_->y_pos.size()));
+		}
+
+		if(position_schedule_->rotation.empty() == false) {
+			res->set_attr("rotation_schedule", util::join_ints(&position_schedule_->rotation[0], position_schedule_->rotation.size()));
+		}
 	}
 
 	if(!attached_objects().empty()) {
@@ -563,6 +618,29 @@ void custom_object::process(level& lvl)
 	while(!scheduled_command.is_null()) {
 		execute_command(scheduled_command);
 		scheduled_command = get_scheduled_command(lvl.cycle());
+	}
+
+	if(position_schedule_.get() != NULL) {
+		int xpos = INT_MIN, ypos = INT_MIN;
+		if(position_schedule_->x_pos.empty() == false) {
+			xpos = position_schedule_->x_pos[cycle_%position_schedule_->x_pos.size()];
+		}
+
+		if(position_schedule_->y_pos.empty() == false) {
+			ypos = position_schedule_->y_pos[cycle_%position_schedule_->y_pos.size()];
+		}
+
+		if(xpos != INT_MIN && ypos != INT_MIN) {
+			set_pos(xpos, ypos);
+		} else if(xpos != INT_MIN) {
+			set_x(xpos);
+		} else if(ypos != INT_MIN) {
+			set_y(ypos);
+		}
+
+		if(position_schedule_->rotation.empty() == false) {
+			rotate_ = position_schedule_->rotation[cycle_%position_schedule_->rotation.size()];
+		}
 	}
 
 	if(stand_info.damage) {
@@ -1348,6 +1426,19 @@ variant custom_object::get_value_by_slot(int slot) const
 		return variant(shader_vars_.get());
 	}
 
+	case CUSTOM_OBJECT_ACTIVATION_AREA: {
+		if(activation_area_.get() != NULL) {
+			std::vector<variant> v(4);
+			v[0] = variant(activation_area_->x());
+			v[1] = variant(activation_area_->y());
+			v[2] = variant(activation_area_->w());
+			v[3] = variant(activation_area_->h());
+			return variant(&v);
+		} else {
+			return variant();
+		}
+	}
+
 	case CUSTOM_OBJECT_VARIATIONS: {
 		std::vector<variant> result;
 		foreach(const std::string& s, current_variation_) {
@@ -1896,6 +1987,41 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 
 			handle_event(OBJECT_EVENT_CHANGE_SOLID_DIMENSIONS_FAIL, callable);
 		}
+		break;
+	}
+
+	case CUSTOM_OBJECT_X_SCHEDULE: {
+		if(position_schedule_.get() == NULL) {
+			position_schedule_.reset(new position_schedule);
+		}
+
+		position_schedule_->x_pos.clear();
+		for(int n = 0; n != value.num_elements(); ++n) {
+			position_schedule_->x_pos.push_back(value[n].as_int());
+		}
+		break;
+	}
+	case CUSTOM_OBJECT_Y_SCHEDULE: {
+		if(position_schedule_.get() == NULL) {
+			position_schedule_.reset(new position_schedule);
+		}
+
+		position_schedule_->y_pos.clear();
+		for(int n = 0; n != value.num_elements(); ++n) {
+			position_schedule_->y_pos.push_back(value[n].as_int());
+		}
+		break;
+	}
+	case CUSTOM_OBJECT_ROTATION_SCHEDULE: {
+		if(position_schedule_.get() == NULL) {
+			position_schedule_.reset(new position_schedule);
+		}
+
+		position_schedule_->rotation.clear();
+		for(int n = 0; n != value.num_elements(); ++n) {
+			position_schedule_->rotation.push_back(value[n].as_int());
+		}
+		break;
 	}
 
 	default:

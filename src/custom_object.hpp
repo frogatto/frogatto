@@ -250,6 +250,14 @@ private:
 	std::stack<const formula_callable*> backup_callable_stack_;
 
 	int last_cycle_active_;
+
+	struct position_schedule {
+		std::vector<int> x_pos;
+		std::vector<int> y_pos;
+		std::vector<int> rotation;
+	};
+
+	boost::scoped_ptr<position_schedule> position_schedule_;
 };
 
 #endif

@@ -15,6 +15,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <stdio.h>
 
 namespace util
 {
@@ -145,6 +146,22 @@ const char* split_into_ints(const char* s, int* output, int* output_size)
 
 	*output_size = index;
 	return endptr;
+}
+
+std::string join_ints(const int* ints, int size)
+{
+	std::string result;
+	char buf[256];
+	for(int n = 0; n != size; ++n) {
+		if(n != 0) {
+			result += ",";
+		}
+
+		sprintf(buf, "%d", ints[n]);
+		result += buf;
+	}
+
+	return result;
 }
 
 bool string_starts_with(const std::string& target, const std::string& prefix) {
