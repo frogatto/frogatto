@@ -825,6 +825,7 @@ void custom_object::process(level& lvl)
 		if(!collide && !type_->ignore_collide() && effective_velocity_y > 0 && is_standing(lvl, &jump_on_info)) {
 			if(!jump_on_info.collide_with || jump_on_info.collide_with != standing_on_) {
 				collide = true;
+				collide_info = jump_on_info;
 			}
 
 			break;
