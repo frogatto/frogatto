@@ -861,7 +861,9 @@ void custom_object::process(level& lvl)
 
 			if(collide_info.collide_with) {
 				callable->add("collide_with", variant(collide_info.collide_with.get()));
-				callable->add("collide_with_area", variant(*collide_info.collide_with_area_id));
+				if(collide_info.collide_with_area_id) {
+					callable->add("collide_with_area", variant(*collide_info.collide_with_area_id));
+				}
 
 			}
 
