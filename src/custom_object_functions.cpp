@@ -1976,6 +1976,19 @@ public:
 	}
 };
 
+class collides_with_level_function : public function_expression {
+public:
+	explicit collides_with_level_function(const args_list& args)
+	  : function_expression("collides_with_level", args, 1, 1) {
+	}
+
+	variant execute(const formula_callable& variables) const {
+		return variant(non_solid_entity_collides_with_level(
+		           level::current(),
+		           *args()[0]->evaluate(variables).convert_to<entity>()));
+	}
+};
+
 class blur_command : public custom_object_command_callable {
 	int alpha_, fade_, granularity_;
 public:
@@ -2228,6 +2241,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new add_particles_function(args));
 	} else if(fn == "collides") {
 		return expression_ptr(new collides_function(args));
+	} else if(fn == "collides_with_level") {
+		return expression_ptr(new collides_with_level_function(args));
 	} else if(fn == "blur") {
 		return expression_ptr(new blur_function(args));
 	} else if(fn == "text") {

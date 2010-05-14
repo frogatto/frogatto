@@ -1451,6 +1451,10 @@ formula::formula(const wml::value& val, function_symbol_table* symbols, const fo
 			}
 
 			const std::string::const_iterator end_line = std::find(begin_line, tokens.back().end, '\n');
+			while(begin_line < end_line && isspace(*begin_line)) {
+				++begin_line;
+			}
+
 			std::cerr << "ERROR WHILE PARSING AT " << (filename_ ? *filename_ : "UNKNOWN") << ":" << (line_ + nline) << " " << error_msg << "\n";
 			std::cerr << std::string(begin_line, end_line) << "\n";
 			for(int n = 0; n < tok.begin - begin_line; ++n) {
