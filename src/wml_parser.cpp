@@ -209,8 +209,9 @@ std::string parse_name(std::string::const_iterator& i1,
 
 std::string parse_value(std::string::const_iterator& i1,
                         std::string::const_iterator i2,
-						int& line_number)
+						int& line_number, int& line_starts_at)
 {
+	line_starts_at = line_number;
 	std::string res;
 	const std::string::const_iterator beg = i1;
 	while(i1 != i2 && !util::isnewline(*i1) && *i1 != '#') {
@@ -246,8 +247,12 @@ std::string parse_value(std::string::const_iterator& i1,
 
 	//strip the string, but leave it untouched if it's all whitespace.
 	{
+		int newlines = 0;
 		std::string::iterator i = res.begin();
 		while(i != res.end() && isspace(*i)) {
+			if(*i == '\n') {
+				++newlines;
+			}
 			++i;
 		}
 
@@ -256,6 +261,8 @@ std::string parse_value(std::string::const_iterator& i1,
 			while(isspace(res[res.size()-1])) {
 				res.resize(res.size()-1);
 			}
+
+			line_starts_at += newlines;
 		}
 	}
 
@@ -474,8 +481,9 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 			std::string::const_iterator name_start = i;
 
 			const std::string name = parse_name(i,doc.end());
+			int attr_line = line_number;
 			++i;
-			const std::string value = parse_value(i,doc.end(), line_number);
+			const std::string value = parse_value(i,doc.end(), line_number, attr_line);
 
 			if(schemas.top()) {
 				schemas.top()->validate_attribute(name, value);
@@ -484,7 +492,7 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 			if(!nodes.top().derived_frame && nodes.top().node->has_attr(name)) {
 				PARSE_ERROR("attribute appears multiple times", name_start);
 			}
-			nodes.top().node->set_attr(name, wml::value(value, filename_ptr, line_number));
+			nodes.top().node->set_attr(name, wml::value(value, filename_ptr, attr_line));
 			nodes.top().node->add_attr_order(name);
 
 			if(current_comment.empty() == false) {

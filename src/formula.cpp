@@ -1455,14 +1455,15 @@ formula::formula(const wml::value& val, function_symbol_table* symbols, const fo
 				++begin_line;
 			}
 
-			std::cerr << "ERROR WHILE PARSING AT " << (filename_ ? *filename_ : "UNKNOWN") << ":" << (line_ + nline) << " " << error_msg << "\n";
-			std::cerr << std::string(begin_line, end_line) << "\n";
+			std::string whitespace;
 			for(int n = 0; n < tok.begin - begin_line; ++n) {
-				std::cerr << " ";
+				whitespace += " ";
 			}
 
-			std::cerr << "^\n";
-			throw formula_error();
+			ASSERT_LOG(false, "ERROR WHILE PARSING FORMULA AT "
+			  << (filename_ ? *filename_ : "UNKNOWN") << ":"
+			  << (line_ + nline) << " " << error_msg << "\n"
+			  << std::string(begin_line, end_line) << "\n" << "^\n");
 		}
 	}
 	
