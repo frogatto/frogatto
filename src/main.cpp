@@ -252,6 +252,7 @@ extern "C" int main(int argc, char** argv)
 	loading_screen loader;
 	
 	try {
+		wml::schema::init(wml::parse_wml_from_file("data/schema.cfg"));
 		graphical_font::init(wml::parse_wml_from_file("data/fonts.cfg"));
 		preloads = wml::parse_wml_from_file("data/preload.cfg");
 		int preload_items = std::distance(preloads->begin_child("preload"), preloads->end_child("preload"));
@@ -261,8 +262,6 @@ extern "C" int main(int argc, char** argv)
 		custom_object::init();
 		loader.draw_and_increment("Initializing custom object functions");
 		init_custom_object_functions(wml::parse_wml_from_file("data/functions.cfg"));
-		loader.draw_and_increment("Initializing schemas");
-		wml::schema::init(wml::parse_wml_from_file("data/schema.cfg"));
 		loader.draw_and_increment("Initializing tiles");
 		tile_map::init(wml::parse_wml_from_file("data/tiles.cfg",
 		               wml::schema::get("tiles")));

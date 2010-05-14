@@ -101,7 +101,8 @@ schema::attribute_info parse_attribute_info(const std::string& str)
 }
 }
 
-schema::schema(wml::const_node_ptr node) : id_(node->attr("id"))
+schema::schema(wml::const_node_ptr node)
+  : id_(node->name()), default_prefix_(node->attr("default_prefix"))
 {
 	for(wml::node::const_attr_iterator i = node->begin_attr();
 	    i != node->end_attr(); ++i) {
@@ -130,7 +131,9 @@ schema::schema(wml::const_node_ptr node) : id_(node->attr("id"))
 
 			elements_[element] = info;
 		} else {
-			attributes_[i->first] = parse_attribute_info(i->second);
+			if(i->first != "default_prefix") {
+				attributes_[i->first] = parse_attribute_info(i->second);
+			}
 		}
 	}
 }
@@ -202,7 +205,8 @@ bool schema::has_attribute(const std::string& name) const
 void schema::validate_attribute(const std::string& name, const std::string& value) const
 {
 	attribute_map::const_iterator itor = attributes_.find(name);
-	if(itor == attributes_.end()) {
+	if(itor == attributes_.end() && name.size() <= default_prefix_.size() &&
+	 std::equal(default_prefix_.begin(), default_prefix_.end(), name.begin())) {
 		static const std::string DefaultStr = "default";
 		itor = attributes_.find(DefaultStr);
 	}
@@ -230,6 +234,10 @@ void schema::validate_node(wml::const_node_ptr node) const
 		if(i->second.optional == false && node->has_attr(i->first) == false) {
 			generate_error(formatter() << "Required attribute " << i->first << " not found");
 		}
+	}
+
+	for(wml::node::const_attr_iterator i = node->begin_attr(); i != node->end_attr(); ++i) {
+		validate_attribute(i->first, i->second);
 	}
 
 	for(element_map::const_iterator i = elements_.begin(); i != elements_.end(); ++i) {

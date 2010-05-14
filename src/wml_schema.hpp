@@ -53,6 +53,7 @@ public:
 private:
 	static void generate_error(const std::string& msg);
 	std::string id_;
+	std::string default_prefix_;
 
 	typedef std::map<std::string, attribute_info> attribute_map;
 	attribute_map attributes_;

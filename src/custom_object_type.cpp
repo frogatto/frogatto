@@ -15,6 +15,7 @@
 #include "wml_modify.hpp"
 #include "wml_node.hpp"
 #include "wml_parser.hpp"
+#include "wml_schema.hpp"
 #include "wml_utils.hpp"
 #include "wml_writer.hpp"
 #include "unit_test.hpp"
@@ -242,6 +243,11 @@ custom_object_type_ptr custom_object_type::create(const std::string& id)
 
 		ASSERT_LOG(node->attr("id").str() == id, "IN " << path_itor->second << " OBJECT ID DOES NOT MATCH FILENAME");
 
+		static const wml::schema* schema = wml::schema::get("custom_object");
+		if(schema) {
+			schema->validate_node(node);
+		}
+
 		//create the object and add it to our cache.
 		custom_object_type_ptr result(new custom_object_type(node));
 
@@ -251,6 +257,8 @@ custom_object_type_ptr custom_object_type::create(const std::string& id)
 		return result;
 	} catch(wml::parse_error& e) {
 		ASSERT_LOG(false, "Error parsing WML for custom object in " << path_itor->second << ": " << e.message);
+	} catch(wml::schema_error& e) {
+		ASSERT_LOG(false, "Error loading object '" << id << "': " << e.message);
 	} catch(...) {
 		ASSERT_LOG(false, "Unknown error loading custom object in " << path_itor->second);
 	}
