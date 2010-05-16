@@ -506,6 +506,62 @@ private:
 	}
 };
 
+class transform_callable : public formula_callable {
+public:
+	explicit transform_callable(const formula_callable& backup)
+	  : backup_(backup)
+	{}
+
+	void set(const variant& v, const variant& i)
+	{
+		value_ = v;
+		index_ = i;
+	}
+private:
+	variant get_value(const std::string& key) const {
+		if(key == "v") {
+			return value_;
+		} else if(key == "i") {
+			return index_;
+		} else {
+			return backup_.query_value(key);
+		}
+	}
+
+	variant get_value_by_slot(int slot) const {
+		return backup_.query_value_by_slot(slot);
+	}
+
+	const formula_callable& backup_;
+	variant value_, index_;
+};
+
+class transform_function : public function_expression {
+public:
+	explicit transform_function(const args_list& args)
+	    : function_expression("transform", args, 2, 2)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		std::vector<variant> vars;
+		const variant items = args()[0]->evaluate(variables);
+
+		vars.reserve(items.num_elements());
+
+		transform_callable* callable = new transform_callable(variables);
+		variant v(callable);
+
+		const int nitems = items.num_elements();
+		for(size_t n = 0; n != nitems; ++n) {
+			callable->set(items[n], variant(n));
+			const variant val = args().back()->evaluate(*callable);
+			vars.push_back(val);
+		}
+
+		return variant(&vars);
+	}
+};
+
 class map_function : public function_expression {
 public:
 	explicit map_function(const args_list& args)
@@ -850,6 +906,7 @@ functions_map& get_functions_map() {
 		FUNCTION(filter);
 		FUNCTION(mapping);
 		FUNCTION(find);
+		FUNCTION(transform);
 		FUNCTION(map);
 		FUNCTION(sum);
 		FUNCTION(range);

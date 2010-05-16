@@ -171,6 +171,8 @@ public:
 	const_iterator begin() const { return values_.begin(); }
 	const_iterator end() const { return values_.end(); }
 
+	variant& ref(const std::string& key) { return values_[key]; }
+
 private:
 	//map_formula_callable(const map_formula_callable&);
 

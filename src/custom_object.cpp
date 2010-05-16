@@ -2569,6 +2569,21 @@ void custom_object::set_sound_volume(const int sound_volume)
 	sound_volume_ = sound_volume;
 }
 
+BENCHMARK(custom_object_spike) {
+	static level* lvl = NULL;
+	if(!lvl) {	
+		lvl = new level("test.cfg");
+		static variant v(lvl);
+		lvl->finish_loading();
+		lvl->set_as_current_level();
+	}
+	BENCHMARK_LOOP {
+		custom_object* obj = new custom_object("chain_base", 0, 0, false);
+		variant v(obj);
+		obj->handle_event(OBJECT_EVENT_CREATE);
+	}
+}
+
 int custom_object::events_handled_per_second = 0;
 
 BENCHMARK_ARG(custom_object_get_attr, const std::string& attr)
