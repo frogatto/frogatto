@@ -408,7 +408,7 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 	glColor4f(bg.color[0], bg.color[1], bg.color[2], bg.color[3]);
 
 #ifndef SDL_VIDEO_OPENGL_ES
-	if(GLEW_EXT_blend_minmax) {
+	if (GLEW_EXT_blend_minmax && (GLEW_ARB_imaging || GLEW_VERSION_1_4)) {
 		glBlendEquation(bg.mode);
 	}
 #endif
@@ -446,7 +446,7 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 
 	glColor4f(1.0,1.0,1.0,1.0);
 #ifndef SDL_VIDEO_OPENGL_ES
-	if(GLEW_EXT_blend_minmax) {
+	if (GLEW_EXT_blend_minmax && (GLEW_ARB_imaging || GLEW_VERSION_1_4)) {
 		glBlendEquation(GL_FUNC_ADD);
 	}
 #endif
