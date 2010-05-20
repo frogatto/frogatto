@@ -40,11 +40,20 @@ int global_pause_time;
 
 typedef boost::function<void(const level&, screen_position&, float)> TransitionFn;
 
+//prepare to call transition_scene by making sure that frame buffers are
+//filled with the image of the screen.
+void prepare_transition_scene(level& lvl, screen_position& screen_pos)
+{
+	draw_scene(lvl, screen_pos);
+	SDL_GL_SwapBuffers();
+	draw_scene(lvl, screen_pos);
+	SDL_GL_SwapBuffers();
+}
+
 void transition_scene(level& lvl, screen_position& screen_pos, bool transition_out, TransitionFn draw_fn) {
 	if(lvl.player()) {
 		lvl.player()->get_entity().set_invisible(true);
 	}
-
 
 	for(int n = 0; n <= 20; ++n) {
 //		lvl.process();
@@ -63,7 +72,6 @@ void transition_scene(level& lvl, screen_position& screen_pos, bool transition_o
 void fade_scene(const level& lvl, screen_position& screen_pos, float fade) {
 	const SDL_Rect r = {0, 0, graphics::screen_width(), graphics::screen_height()};
 	const SDL_Color c = {0,0,0,0};
-	graphics::prepare_raster();
 	graphics::draw_rect(r, c, 128*fade);
 }
 
@@ -302,9 +310,7 @@ bool level_runner::play_cycle()
 			return false;
 		}
 
-		//draw the scene a couple of times to make sure it's on all buffers.
-		draw_scene(*lvl_, last_draw_position());
-		draw_scene(*lvl_, last_draw_position());
+		prepare_transition_scene(*lvl_, last_draw_position());
 
 		preload_level(save->get_player_info()->current_level());
 		transition_scene(*lvl_, last_draw_position(), true, fade_scene);
@@ -358,6 +364,9 @@ bool level_runner::play_cycle()
 				level::summary summary = level::get_summary(level_cfg_);
 				sound::play_music(summary.music);
 			}
+
+			prepare_transition_scene(*lvl_, last_draw_position());
+
 			const std::string transition = portal->transition;
 			if(transition == "flip") {
 				transition_scene(*lvl_, last_draw_position(), true, flip_scene);
@@ -420,6 +429,7 @@ bool level_runner::play_cycle()
 			last_draw_position() = screen_position();
 
 			if(transition == "flip") {
+				prepare_transition_scene(*lvl_, last_draw_position());
 				transition_scene(*lvl_, last_draw_position(), false, flip_scene);
 			}
 
@@ -532,6 +542,7 @@ bool level_runner::play_cycle()
 	}
 
 	if(lvl_->end_game()) {
+		prepare_transition_scene(*lvl_, last_draw_position());
 		transition_scene(*lvl_, last_draw_position(), false, fade_scene);
 		show_end_game();
 		done = true;
