@@ -157,11 +157,15 @@ rect entity::body_rect() const
 rect entity::hit_rect() const
 {
 	const frame& f = current_frame();
-	if(f.hit(time_in_frame())) {
-		return rect(face_right() ? x() + f.hit_x() : x() + f.width() - f.hit_x() - f.hit_w(), y() + f.hit_y(), f.hit_w(), f.hit_h());
-	} else {
-		return rect();
+	const std::vector<frame::collision_area>& areas = f.collision_areas();
+	foreach(const frame::collision_area& a, areas) {
+		if(a.name == "attack") {
+			const rect& r = a.area;
+			return rect(face_right() ? x() + r.x() : x() + f.width() - r.x() - r.w(), y() + r.y(), r.w(), r.h());
+		}
 	}
+
+	return rect();
 }
 
 point entity::midpoint() const
