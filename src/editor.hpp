@@ -116,10 +116,12 @@ public:
 	int get_tile_zorder(const std::string& tile_id) const;
 	void add_tile_rect(int zorder, const std::string& tile_id, int x1, int y1, int x2, int y2);
 
+	enum EXECUTABLE_COMMAND_TYPE { COMMAND_TYPE_DEFAULT, COMMAND_TYPE_DRAG_OBJECT };
+
 	//function to execute a command which will go into the undo/redo list.
 	//normally any time the editor mutates the level, it should be done
 	//through this function
-	void execute_command(boost::function<void()> command, boost::function<void()> undo);
+	void execute_command(boost::function<void()> command, boost::function<void()> undo, EXECUTABLE_COMMAND_TYPE type=COMMAND_TYPE_DEFAULT);
 
 	//functions to begin and end a group of commands. This is used when we
 	//are going to execute a bunch of commands, and from the point of view of
@@ -204,6 +206,7 @@ private:
 	struct executable_command {
 		boost::function<void()> redo_command;
 		boost::function<void()> undo_command;
+		EXECUTABLE_COMMAND_TYPE type;
 	};
 
 	std::vector<executable_command> undo_, redo_;

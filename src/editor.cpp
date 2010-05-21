@@ -378,6 +378,8 @@ void execute_functions(const std::vector<boost::function<void()> >& v) {
 	}
 }
 
+bool g_started_dragging_object = false;
+
 //the current state of the rectangle we're dragging
 rect g_rect_drawing;
 
@@ -1093,12 +1095,25 @@ void editor::handle_object_dragging(int mousex, int mousey)
 		std::vector<boost::function<void()> > redo, undo;
 
 		foreach(const entity_ptr& e, lvl_->editor_selection()) {
-			redo.push_back(boost::bind(&editor::move_object, this, e, delta_x, delta_y));
-			undo.push_back(boost::bind(&editor::move_object, this, e, -delta_x, -delta_y));
-			execute_command(
-			  boost::bind(execute_functions, redo),
-			  boost::bind(execute_functions, undo));
+			redo.push_back(boost::bind(&editor::move_object, this, e, e->x() + delta_x, e->y() + delta_y));
+			undo.push_back(boost::bind(&editor::move_object, this, e, e->x(), e->y()));
+
 		}
+
+		//all dragging that is done should be treated as one operation
+		//from an undo/redo perspective. So, we see if we're already dragging
+		//and have performed existing drag operations, and if so we
+		//roll the previous undo command into this.
+		boost::function<void()> undo_fn = boost::bind(execute_functions, undo);
+
+		if(g_started_dragging_object && undo_.empty() == false && undo_.back().type == COMMAND_TYPE_DRAG_OBJECT) {
+			undo_fn = undo_.back().undo_command;
+			undo_command();
+		}
+
+		execute_command(boost::bind(execute_functions, redo), undo_fn, COMMAND_TYPE_DRAG_OBJECT);
+
+		g_started_dragging_object = true;
 
 		remove_ghost_objects();
 		ghost_objects_.clear();
@@ -1279,6 +1294,8 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 		//start dragging the object
 		selected_entity_startx_ = lvl_->editor_highlight()->x();
 		selected_entity_starty_ = lvl_->editor_highlight()->y();
+
+		g_started_dragging_object = false;
 
 	} else {
 		//clear any selection in the editor
@@ -1726,12 +1743,12 @@ void editor::set_selection(const tile_selection& s)
 	tile_selection_ = s;
 }
 
-void editor::move_object(entity_ptr e, int delta_x, int delta_y)
+void editor::move_object(entity_ptr e, int new_x, int new_y)
 {
 	const int orig_x = e->x();
 	const int orig_y = e->y();
 
-	e->set_pos(e->x() + delta_x, e->y() + delta_y);
+	e->set_pos(new_x, new_y);
 
 	if(!place_entity_in_level(*lvl_, *e)) {
 		//if we can't place the object due to solidity, then cancel
@@ -1740,8 +1757,8 @@ void editor::move_object(entity_ptr e, int delta_x, int delta_y)
 		return;
 	}
 
-	delta_x = e->x() - orig_x;
-	delta_y = e->y() - orig_y;
+	const int delta_x = e->x() - orig_x;
+	const int delta_y = e->y() - orig_y;
 
 	//update any x/y co-ordinates to be the same relative to the object's
 	//new position.
@@ -2281,7 +2298,7 @@ void editor::run_script(const std::string& id)
 	editor_script::execute(id, *this);
 }
 
-void editor::execute_command(boost::function<void()> command, boost::function<void()> undo)
+void editor::execute_command(boost::function<void()> command, boost::function<void()> undo, EXECUTABLE_COMMAND_TYPE type)
 {
 	level_changed_++;
 
@@ -2290,6 +2307,7 @@ void editor::execute_command(boost::function<void()> command, boost::function<vo
 	executable_command cmd;
 	cmd.redo_command = command;
 	cmd.undo_command = undo;
+	cmd.type = type;
 	undo_.push_back(cmd);
 	redo_.clear();
 }
