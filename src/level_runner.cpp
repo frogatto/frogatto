@@ -379,7 +379,7 @@ bool level_runner::play_cycle()
 				transition_scene(*lvl_, last_draw_position(), true, fade_scene);
 			}
 
-			level* new_level = load_level(level_cfg_);
+			boost::intrusive_ptr<level> new_level(load_level(level_cfg_));
 			if (!preferences::load_compiled())
 				sound::play_music(new_level->music());
 
@@ -420,12 +420,12 @@ bool level_runner::play_cycle()
 			//if we're in a multiplayer level then going through a portal
 			//will take us out of multiplayer.
 			if(lvl_->players().size() != new_level->players().size()) {
-				lvl_.reset(new_level);
+				lvl_ = new_level;
 				done = true;
 				throw multiplayer_exception();
 			}
 
-			lvl_.reset(new_level);
+			lvl_ = new_level;
 			last_draw_position() = screen_position();
 
 			if(transition == "flip") {

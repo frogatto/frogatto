@@ -38,7 +38,7 @@
 #include "color_utils.hpp"
 
 namespace {
-level* current_level;
+boost::intrusive_ptr<level> current_level;
 
 std::map<std::string, level::summary> load_level_summaries() {
 	std::map<std::string, level::summary> result;
@@ -2499,14 +2499,14 @@ namespace {
 const std::string LevelProperties[] = {
   "cycle", "player", "in_dialog",
   "local_player", "num_active", "active_chars", "chars",
-  "tint", "in_editor", "zoom", "focus", "gui",
+  "tint", "in_editor", "zoom", "focus", "gui", "id",
 };
 
 enum LEVEL_PROPERTY_ID {
 	LEVEL_CYCLE, LEVEL_PLAYER, LEVEL_IN_DIALOG,
 	LEVEL_LOCAL_PLAYER, LEVEL_NUM_ACTIVE,
 	LEVEL_ACTIVE_CHARS, LEVEL_CHARS, LEVEL_TINT, LEVEL_IN_EDITOR, LEVEL_ZOOM,
-	LEVEL_FOCUS, LEVEL_GUI
+	LEVEL_FOCUS, LEVEL_GUI, LEVEL_ID
 };
 }
 
@@ -2565,6 +2565,9 @@ variant level::get_value_by_slot(int slot) const
 		} else {
 			return variant();
 		}
+	}
+	case LEVEL_ID: {
+		return variant(id_);
 	}
 	}
 
@@ -2626,6 +2629,8 @@ variant level::get_value(const std::string& key) const
 		}
 
 		return variant(&v);
+	} else if(key == "id") {
+		return variant(id());
 	} else {
 		const_entity_ptr e = get_entity_by_label(key);
 		if(e) {
