@@ -429,7 +429,6 @@ bool level_runner::play_cycle()
 			last_draw_position() = screen_position();
 
 			if(transition == "flip") {
-				prepare_transition_scene(*lvl_, last_draw_position());
 				transition_scene(*lvl_, last_draw_position(), false, flip_scene);
 			}
 
@@ -542,7 +541,6 @@ bool level_runner::play_cycle()
 	}
 
 	if(lvl_->end_game()) {
-		prepare_transition_scene(*lvl_, last_draw_position());
 		transition_scene(*lvl_, last_draw_position(), false, fade_scene);
 		show_end_game();
 		done = true;

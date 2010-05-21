@@ -76,6 +76,9 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 	}
 
 	if(pos.flip_rotate) {
+		glClearColor(0.0, 0.0, 0.0, 0.0);
+		glClear(GL_COLOR_BUFFER_BIT);
+
 		const SDL_Surface* fb = SDL_GetVideoSurface();
 		const double angle = sin(0.5*3.141592653589*GLfloat(pos.flip_rotate)/1000.0);
 		const int pixels = (preferences::actual_screen_width()/2)*angle;
