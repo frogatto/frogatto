@@ -358,7 +358,9 @@ custom_object_type::custom_object_type(wml::const_node_ptr node, const custom_ob
 	platform_(solid_info::create_platform(node)),
 	has_solid_(solid_ || use_image_for_collisions_),
 	solid_dimensions_(has_solid_ || platform_ ? 0xFFFFFFFF : 0),
-	collide_dimensions_(0xFFFFFFFF)
+	collide_dimensions_(0xFFFFFFFF),
+	weak_solid_dimensions_(has_solid_ || platform_ ? 0xFFFFFFFF : 0),
+	weak_collide_dimensions_(0xFFFFFFFF)
 {
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	if(node->get_child("editor_info")) {
@@ -378,21 +380,35 @@ custom_object_type::custom_object_type(wml::const_node_ptr node, const custom_ob
 	}
 
 	if(node->has_attr("solid_dimensions")) {
-		solid_dimensions_ = 0;
-		foreach(const std::string& key, util::split(node->attr("solid_dimensions"))) {
+		weak_solid_dimensions_ = solid_dimensions_ = 0;
+		foreach(std::string key, util::split(node->attr("solid_dimensions"))) {
 			if(key != "level_only") {
-				solid_dimensions_ |= (1 << get_solid_dimension_id(key));
+				if(key.empty() == false && key[0] == '~') {
+					key = std::string(key.begin()+1, key.end());
+					weak_solid_dimensions_ |= (1 << get_solid_dimension_id(key));
+				} else {
+					solid_dimensions_ |= (1 << get_solid_dimension_id(key));
+				}
 			}
 		}
+
+		weak_solid_dimensions_ |= solid_dimensions_;
 	}
 
 	if(node->has_attr("collide_dimensions")) {
-		collide_dimensions_ = 0;
-		foreach(const std::string& key, util::split(node->attr("collide_dimensions"))) {
+		weak_collide_dimensions_ = collide_dimensions_ = 0;
+		foreach(std::string key, util::split(node->attr("collide_dimensions"))) {
 			if(key != "level_only") {
-				collide_dimensions_ |= (1 << get_solid_dimension_id(key));
+				if(key.empty() == false && key[0] == '~') {
+					key = std::string(key.begin()+1, key.end());
+					weak_collide_dimensions_ |= (1 << get_solid_dimension_id(key));
+				} else {
+					collide_dimensions_ |= (1 << get_solid_dimension_id(key));
+				}
 			}
 		}
+
+		weak_collide_dimensions_ |= collide_dimensions_;
 	}
 
 	wml::node::const_child_iterator a1 = node->begin_child("animation");

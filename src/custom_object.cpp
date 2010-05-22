@@ -137,8 +137,10 @@ custom_object::custom_object(wml::const_node_ptr node)
 
 	vars_->read(node->get_child("vars"));
 
-	set_solid_dimensions(wml::get_int(node, "solid_dim", type_->solid_dimensions()));
-	set_collide_dimensions(wml::get_int(node, "collide_dim", type_->collide_dimensions()));
+	set_solid_dimensions(wml::get_int(node, "solid_dim", type_->solid_dimensions()),
+	                     wml::get_int(node, "weak_solid_dim", type_->weak_solid_dimensions()));
+	set_collide_dimensions(wml::get_int(node, "collide_dim", type_->collide_dimensions()),
+	                       wml::get_int(node, "weak_collide_dim", type_->weak_collide_dimensions()));
 
 	wml::const_node_ptr tags_node = node->get_child("tags");
 	if(tags_node) {
@@ -210,8 +212,10 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	always_active_(false),
 	last_cycle_active_(0)
 {
-	set_solid_dimensions(type_->solid_dimensions());
-	set_collide_dimensions(type_->collide_dimensions());
+	set_solid_dimensions(type_->solid_dimensions(),
+	                     type_->weak_solid_dimensions());
+	set_collide_dimensions(type_->collide_dimensions(),
+	                       type_->weak_collide_dimensions());
 
 	{
 		//generate a random label for the object
@@ -344,12 +348,16 @@ wml::node_ptr custom_object::write() const
 	res->set_attr("velocity_x", formatter() << velocity_x_);
 	res->set_attr("velocity_y", formatter() << velocity_y_);
 
-	if(solid_dimensions() != type_->solid_dimensions()) {
+	if(solid_dimensions() != type_->solid_dimensions() ||
+	   weak_solid_dimensions() != type_->weak_solid_dimensions()) {
 		res->set_attr("solid_dim", formatter() << solid_dimensions());
+		res->set_attr("weak_solid_dim", formatter() << weak_solid_dimensions());
 	}
 
-	if(collide_dimensions() != type_->collide_dimensions()) {
+	if(collide_dimensions() != type_->collide_dimensions() ||
+	   weak_collide_dimensions() != type_->weak_collide_dimensions()) {
 		res->set_attr("collide_dim", formatter() << collide_dimensions());
+		res->set_attr("weak_collide_dim", formatter() << weak_collide_dimensions());
 	}
 
 	if(hitpoints_ != type_->hitpoints() || max_hitpoints_ != type_->hitpoints()) {
@@ -1684,21 +1692,33 @@ void custom_object::set_value(const std::string& key, const variant& value)
 
 		set_attached_objects(v);
 	} else if(key == "solid_dimensions_in" || key == "solid_dimensions_not_in") {
-		unsigned int solid = 0;
+
+		unsigned int solid = 0, weak = 0;
 		for(int n = 0; n != value.num_elements(); ++n) {
-			const int id = get_solid_dimension_id(value[n].as_string());
-			solid |= 1 << id;
+			std::string str = value[n].as_string();
+			if(!str.empty() && str[0] == '~') {
+				str = std::string(str.begin() + 1, str.end());
+				const int id = get_solid_dimension_id(str);
+				weak |= 1 << id;
+			} else {
+				const int id = get_solid_dimension_id(value[n].as_string());
+				solid |= 1 << id;
+			}
 		}
 
 		if(key == "solid_dimensions_not_in") {
 			solid = ~solid;
+			weak = ~weak;
 		}
 
+		weak |= solid;
+
 		const unsigned int old_solid = solid_dimensions();
-		set_solid_dimensions(solid);
+		const unsigned int old_weak = weak_solid_dimensions();
+		set_solid_dimensions(solid, weak);
 		collision_info collide_info;
 		if(entity_in_current_level(this) && entity_collides(level::current(), *this, MOVE_NONE, &collide_info)) {
-			set_solid_dimensions(old_solid);
+			set_solid_dimensions(old_solid, old_weak);
 			ASSERT_EQ(entity_collides(level::current(), *this, MOVE_NONE), false);
 
 			game_logic::map_formula_callable* callable(new game_logic::map_formula_callable(this));
@@ -1707,6 +1727,7 @@ void custom_object::set_value(const std::string& key, const variant& value)
 
 			handle_event(OBJECT_EVENT_CHANGE_SOLID_DIMENSIONS_FAIL, callable);
 		}
+
 	} else if(key == "xscale" || key == "yscale") {
 		if(position_scale_millis_.get() == NULL) {
 			position_scale_millis_.reset(new std::pair<int,int>(1000,1000));
@@ -1980,21 +2001,32 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 
 	case CUSTOM_OBJECT_SOLID_DIMENSIONS_IN:
 	case CUSTOM_OBJECT_SOLID_DIMENSIONS_NOT_IN: {
-		unsigned int solid = 0;
+		unsigned int solid = 0, weak = 0;
 		for(int n = 0; n != value.num_elements(); ++n) {
-			const int id = get_solid_dimension_id(value[n].as_string());
-			solid |= 1 << id;
+			std::string str = value[n].as_string();
+			if(!str.empty() && str[0] == '~') {
+				str = std::string(str.begin() + 1, str.end());
+				const int id = get_solid_dimension_id(str);
+				weak |= 1 << id;
+			} else {
+				const int id = get_solid_dimension_id(value[n].as_string());
+				solid |= 1 << id;
+			}
 		}
 
 		if(slot == CUSTOM_OBJECT_SOLID_DIMENSIONS_NOT_IN) {
 			solid = ~solid;
+			weak = ~weak;
 		}
 
+		weak |= solid;
+
 		const unsigned int old_solid = solid_dimensions();
-		set_solid_dimensions(solid);
+		const unsigned int old_weak = weak_solid_dimensions();
+		set_solid_dimensions(solid, weak);
 		collision_info collide_info;
-		if(entity_collides(level::current(), *this, MOVE_NONE, &collide_info)) {
-			set_solid_dimensions(old_solid);
+		if(entity_in_current_level(this) && entity_collides(level::current(), *this, MOVE_NONE, &collide_info)) {
+			set_solid_dimensions(old_solid, old_weak);
 			ASSERT_EQ(entity_collides(level::current(), *this, MOVE_NONE), false);
 
 			game_logic::map_formula_callable* callable(new game_logic::map_formula_callable(this));
@@ -2003,6 +2035,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 
 			handle_event(OBJECT_EVENT_CHANGE_SOLID_DIMENSIONS_FAIL, callable);
 		}
+
 		break;
 	}
 

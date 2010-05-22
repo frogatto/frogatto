@@ -50,7 +50,9 @@ bool point_standable(const level& lvl, const entity& e, int x, int y, collision_
 	for(std::vector<entity_ptr>::const_iterator i = chars.begin();
 	    i != chars.end(); ++i) {
 		const entity_ptr& obj = *i;
-		if(&e == obj.get() || (e.solid_dimensions()&obj->solid_dimensions()) == 0) {
+		if(&e == obj.get() ||
+		   (e.weak_solid_dimensions()&obj->solid_dimensions()) == 0 &&
+		   (e.solid_dimensions()&obj->weak_solid_dimensions()) == 0) {
 			continue;
 		}
 
@@ -117,7 +119,8 @@ bool entity_collides(level& lvl, const entity& e, MOVE_DIRECTION dir, collision_
 
 bool entity_collides_with_entity(const entity& e, const entity& other, collision_info* info)
 {
-	if((e.solid_dimensions()&other.solid_dimensions()) == 0) {
+	if((e.solid_dimensions()&other.weak_solid_dimensions()) == 0 &&
+	   (e.weak_solid_dimensions()&other.solid_dimensions()) == 0) {
 		return false;
 	}
 
@@ -459,7 +462,7 @@ void detect_user_collisions(level& lvl)
 	std::vector<entity_ptr> chars;
 	chars.reserve(lvl.get_chars().size());
 	foreach(const entity_ptr& a, lvl.get_chars()) {
-		if(a->collide_dimensions() != 0 && a->current_frame().collision_areas().empty() == false) {
+		if(a->weak_collide_dimensions() != 0 && a->current_frame().collision_areas().empty() == false) {
 			chars.push_back(a);
 		}
 	}
@@ -472,7 +475,9 @@ void detect_user_collisions(level& lvl)
 		for(std::vector<entity_ptr>::const_iterator j = i + 1; j != chars.end(); ++j) {
 			const entity_ptr& a = *i;
 			const entity_ptr& b = *j;
-			if(a == b || (a->collide_dimensions()&b->collide_dimensions()) == 0) {
+			if(a == b ||
+			   (a->weak_collide_dimensions()&b->collide_dimensions()) == 0 &&
+			   (a->collide_dimensions()&b->weak_collide_dimensions()) == 0) {
 				//the objects do not share a dimension, and so can't collide.
 				continue;
 			}

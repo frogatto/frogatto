@@ -222,6 +222,9 @@ public:
 	unsigned int solid_dimensions() const { return solid_dimensions_; }
 	unsigned int collide_dimensions() const { return collide_dimensions_; }
 
+	unsigned int weak_solid_dimensions() const { return weak_solid_dimensions_; }
+	unsigned int weak_collide_dimensions() const { return weak_collide_dimensions_; }
+
 	void set_attached_objects(const std::vector<entity_ptr>& v);
 
 protected:
@@ -241,8 +244,8 @@ protected:
 	//position is changed.
 	bool move_centipixels(int dx, int dy);
 
-	void set_solid_dimensions(unsigned int dim) { solid_dimensions_ = dim; }
-	void set_collide_dimensions(unsigned int dim) { collide_dimensions_ = dim; }
+	void set_solid_dimensions(unsigned int dim, unsigned int weak) { solid_dimensions_ = dim; weak_solid_dimensions_ = dim|weak; }
+	void set_collide_dimensions(unsigned int dim, unsigned int weak) { collide_dimensions_ = dim; weak_collide_dimensions_ = dim|weak; }
 
 	const std::vector<entity_ptr>& attached_objects() const { return attached_objects_; }
 
@@ -268,6 +271,7 @@ private:
 	bool respawn_;
 
 	unsigned int solid_dimensions_, collide_dimensions_;
+	unsigned int weak_solid_dimensions_, weak_collide_dimensions_;
 
 	current_generator_ptr current_generator_;
 

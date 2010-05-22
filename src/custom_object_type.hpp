@@ -132,6 +132,9 @@ public:
 	unsigned int solid_dimensions() const { return solid_dimensions_; }
 	unsigned int collide_dimensions() const { return collide_dimensions_; }
 
+	unsigned int weak_solid_dimensions() const { return weak_solid_dimensions_; }
+	unsigned int weak_collide_dimensions() const { return weak_collide_dimensions_; }
+
 	const_custom_object_type_ptr get_variation(const std::vector<std::string>& variations) const;
 	void load_variations() const;
 
@@ -207,6 +210,7 @@ private:
 	bool has_solid_;
 
 	unsigned int solid_dimensions_, collide_dimensions_;
+	unsigned int weak_solid_dimensions_, weak_collide_dimensions_;
 
 	std::map<std::string, wml::const_modifier_ptr> variations_;
 	mutable std::map<std::vector<std::string>, const_custom_object_type_ptr> variations_cache_;
