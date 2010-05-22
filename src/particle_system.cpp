@@ -413,6 +413,7 @@ struct point_particle_info
 	    velocity_y(wml::get_int(node, "velocity_y")),
 	    velocity_x_rand(wml::get_int(node, "velocity_x_rand")),
 	    velocity_y_rand(wml::get_int(node, "velocity_y_rand")),
+		dot_size(wml::get_int(node, "dot_size", 1)),
 	    time_to_live(wml::get_int(node, "time_to_live")),
 	    time_to_live_max(wml::get_int(node, "time_to_live_rand") + time_to_live) {
 		std::vector<std::string> colors_str;
@@ -453,6 +454,7 @@ struct point_particle_info
 	unsigned char rgba[4];
 	unsigned char rgba_rand[4];
 	char rgba_delta[4];
+	int dot_size;
 
 	std::vector<unsigned int> colors;
 	int ttl_divisor;
@@ -560,7 +562,7 @@ public:
 		glDisable(GL_TEXTURE_2D);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnableClientState(GL_COLOR_ARRAY);
-		glPointSize(4);
+		glPointSize(info_.dot_size);
 
 		glVertexPointer(2, GL_SHORT, 0, &vertex[0]);
 		glColorPointer(4, GL_UNSIGNED_BYTE, 0, &colors[0]);
