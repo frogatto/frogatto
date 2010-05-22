@@ -554,7 +554,7 @@ public:
 		    p != particles_.end(); ++p) {
 			*v++ = p->pos_x/1024;
 			*v++ = p->pos_y/1024;
-			*c++ = info_.colors[p->ttl/info_.ttl_divisor];
+			*c++ = p->color;
 		}
 
 		glColor4f(1.0, 1.0, 1.0, 1.0);
@@ -581,7 +581,7 @@ private:
 	struct particle {
 		GLshort velocity_x, velocity_y;
 		int pos_x, pos_y;
-		unsigned char rgba[4];
+		union { unsigned int color; unsigned char rgba[4]; };
 		int ttl;
 	};
 
