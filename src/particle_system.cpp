@@ -421,15 +421,13 @@ struct point_particle_info
 		foreach(const std::string& col, colors_str) {
 			unsigned int val = strtoul(col.c_str(), NULL, 16);
 			unsigned char* c = reinterpret_cast<unsigned char*>(&val);
+#if SDL_BYTEORDER == SDL_LIL_ENDIAN
 			std::reverse(c, c+4);
+#endif
 			colors.push_back(val);
 		}
 
 		std::reverse(colors.begin(), colors.end());
-
-		while(colors.size() < 2) {
-			colors.push_back(0xFFFFFFFF);
-		}
 
 		ttl_divisor = time_to_live_max/(colors.size()-1);
 
@@ -445,6 +443,12 @@ struct point_particle_info
 		rgba_delta[1] = wml::get_int(node, "green_delta");
 		rgba_delta[2] = wml::get_int(node, "blue_delta");
 		rgba_delta[3] = wml::get_int(node, "alpha_delta");
+
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+		std::reverse(rgba, rgba+4);
+		std::reverse(rgba_rand, rgba_rand+4);
+		std::reverse(rgba_delta, rgba_delta+4);
+#endif
 	}
 
 	int generation_rate_millis;
@@ -486,7 +490,6 @@ public:
 			particles_.push_back(particle());
 			particle& p = particles_.back();
 			p.ttl = info_.time_to_live;
-			ASSERT_LT(p.ttl/info_.ttl_divisor, info_.colors.size());
 			if(info_.time_to_live_max != info_.time_to_live) {
 				p.ttl += rand()%(info_.time_to_live_max - info_.time_to_live);
 			}
@@ -554,7 +557,11 @@ public:
 		    p != particles_.end(); ++p) {
 			*v++ = p->pos_x/1024;
 			*v++ = p->pos_y/1024;
-			*c++ = p->color;
+			if(info_.colors.size() >= 2) {
+				*c++ = info_.colors[p->ttl/info_.ttl_divisor];
+			} else {
+				*c++ = p->color;
+			}
 		}
 
 		glColor4f(1.0, 1.0, 1.0, 1.0);
