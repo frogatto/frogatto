@@ -413,7 +413,7 @@ struct point_particle_info
 	    velocity_y(wml::get_int(node, "velocity_y")),
 	    velocity_x_rand(wml::get_int(node, "velocity_x_rand")),
 	    velocity_y_rand(wml::get_int(node, "velocity_y_rand")),
-		dot_size(wml::get_int(node, "dot_size", 1)),
+		dot_size(wml::get_int(node, "dot_size", 1)*(preferences::double_scale() ? 2 : 1)),
 	    time_to_live(wml::get_int(node, "time_to_live")),
 	    time_to_live_max(wml::get_int(node, "time_to_live_rand") + time_to_live) {
 		std::vector<std::string> colors_str;
@@ -443,12 +443,6 @@ struct point_particle_info
 		rgba_delta[1] = wml::get_int(node, "green_delta");
 		rgba_delta[2] = wml::get_int(node, "blue_delta");
 		rgba_delta[3] = wml::get_int(node, "alpha_delta");
-
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-		std::reverse(rgba, rgba+4);
-		std::reverse(rgba_rand, rgba_rand+4);
-		std::reverse(rgba_delta, rgba_delta+4);
-#endif
 	}
 
 	int generation_rate_millis;

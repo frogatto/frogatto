@@ -53,6 +53,9 @@ namespace preferences {
 	}
 
 	int xypos_draw_mask = actual_screen_width_ < virtual_screen_width_ ? ~1 : ~0;
+	bool double_scale() {
+		return xypos_draw_mask&1 != 0;
+	}
 	bool compiling_tiles = false;
 
 	namespace {

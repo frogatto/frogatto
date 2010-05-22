@@ -37,6 +37,8 @@ namespace preferences {
 	//are lower than the virtual screen dimensions.
 	extern int xypos_draw_mask;
 
+	bool double_scale();
+
 	//this is a flag set to true iff we are in a mode where we write
 	//'compiled' tile output.
 	extern bool compiling_tiles;

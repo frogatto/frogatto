@@ -3,6 +3,7 @@
 #include "asserts.hpp"
 #include "foreach.hpp"
 #include "formula_constants.hpp"
+#include "preferences.hpp"
 #include "raster.hpp"
 #include "wml_node.hpp"
 
@@ -17,7 +18,7 @@ std::vector<constants_map> constants_stack;
 variant get_constant(const std::string& id)
 {
 	if(id == "DOUBLE_SCALE") {
-		return variant(preferences::xypos_draw_mask&1);
+		return variant(preferences::double_scale());
 	} else if(id == "SCREEN_WIDTH") {
 		return variant(graphics::screen_width());
 	} else if(id == "SCREEN_HEIGHT") {
