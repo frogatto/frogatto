@@ -211,6 +211,8 @@ namespace preferences {
 			actual_screen_width_ = 480;
 			actual_screen_height_ = 320;
 			use_16bpp_textures_ = true;
+
+			recalculate_draw_mask();
 		} else if(s == "--fps") {
 			show_fps_ = true;
 		} else if(s == "--no-fps") {

@@ -16,7 +16,9 @@ std::vector<constants_map> constants_stack;
 
 variant get_constant(const std::string& id)
 {
-	if(id == "SCREEN_WIDTH") {
+	if(id == "DOUBLE_SCALE") {
+		return variant(preferences::xypos_draw_mask&1);
+	} else if(id == "SCREEN_WIDTH") {
 		return variant(graphics::screen_width());
 	} else if(id == "SCREEN_HEIGHT") {
 		return variant(graphics::screen_height());
