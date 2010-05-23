@@ -188,6 +188,7 @@ void property_editor_dialog::change_label_property(const std::string& id)
 		variant level_id = entity_->query_value(var_info->info());
 		if(level_id.is_string() && level_id.as_string().empty() == false && level_id.as_string() != editor_.get_level().id()) {
 			level lvl(level_id.as_string());
+			lvl.finish_loading();
 			lvl.get_all_labels(labels);
 			loaded_level = true;
 		}
