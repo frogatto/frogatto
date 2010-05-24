@@ -83,7 +83,7 @@ level::level(const std::string& level_cfg)
 	  num_compiled_tiles_(0),
 	  entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
 	  editor_(false), show_foreground_(true), show_background_(true), air_resistance_(0), water_resistance_(7), end_game_(false),
-      tint_(0), editor_tile_updates_frozen_(0), zoom_level_(1),
+      editor_tile_updates_frozen_(0), zoom_level_(1),
 	  palettes_used_(0),
 	  background_palette_(-1)
 {
@@ -1497,10 +1497,6 @@ void level::draw(int x, int y, int w, int h) const
 	if(background_) {
 		background_->draw_foreground(start_x, start_y, 0.0, cycle());
 	}
-
-	if( tint_.a() > 0){
-		graphics::draw_rect(rect(x,y,w,h), tint_ );
-	}
 }
 
 void level::draw_debug_solid(int x, int y, int w, int h) const
@@ -2499,13 +2495,13 @@ namespace {
 const std::string LevelProperties[] = {
   "cycle", "player", "in_dialog",
   "local_player", "num_active", "active_chars", "chars",
-  "tint", "in_editor", "zoom", "focus", "gui", "id",
+  "in_editor", "zoom", "focus", "gui", "id",
 };
 
 enum LEVEL_PROPERTY_ID {
 	LEVEL_CYCLE, LEVEL_PLAYER, LEVEL_IN_DIALOG,
 	LEVEL_LOCAL_PLAYER, LEVEL_NUM_ACTIVE,
-	LEVEL_ACTIVE_CHARS, LEVEL_CHARS, LEVEL_TINT, LEVEL_IN_EDITOR, LEVEL_ZOOM,
+	LEVEL_ACTIVE_CHARS, LEVEL_CHARS, LEVEL_IN_EDITOR, LEVEL_ZOOM,
 	LEVEL_FOCUS, LEVEL_GUI, LEVEL_ID
 };
 }
@@ -2545,8 +2541,6 @@ variant level::get_value_by_slot(int slot) const
 
 		return variant(&v);
 	}
-	case LEVEL_TINT:
-		return variant(new graphics::color(tint_));
 	case LEVEL_IN_EDITOR:
 		return variant(editor_);
 	case LEVEL_ZOOM:
@@ -2601,8 +2595,6 @@ variant level::get_value(const std::string& key) const
 		}
 
 		return variant(&v);
-	} else if(key == "tint") {
-		return variant(new graphics::color(tint_));
 	} else if(key == "in_editor") {
 		return variant(editor_);
 	} else if(key == "zoom") {
@@ -2648,13 +2640,7 @@ variant level::get_value(const std::string& key) const
 
 void level::set_value(const std::string& key, const variant& value)
 {
-	if(key == "tint") {
-		 if(value.is_string()) {
-			tint_ = graphics::color(value.as_string());
-		 } else if(value.is_list() && value.num_elements() == 4) {
-			tint_ = graphics::color(value[0].as_int(), value[1].as_int(), value[2].as_int(), value[3].as_int());
-		 }
-	} else if(key == "lock_screen") {
+	if(key == "lock_screen") {
 		if(value.is_list()) {
 			lock_screen_.reset(new point(value[0].as_int(), value[1].as_int()));
 		} else {

@@ -36,6 +36,16 @@ std::string& scene_title() {
 	return title;
 }
 
+struct screen_flash {
+	graphics::color_transform color, delta;
+	int duration;
+};
+
+std::vector<screen_flash>& flashes() {
+	static std::vector<screen_flash> obj;
+	return obj;
+}
+
 int scene_title_duration_;
 
 screen_position last_position;
@@ -44,6 +54,12 @@ screen_position last_position;
 screen_position& last_draw_position()
 {
 	return last_position;
+}
+
+void screen_color_flash(const graphics::color_transform& color, const graphics::color_transform& color_delta, int duration)
+{
+	screen_flash f = { color, color_delta, duration };
+	flashes().push_back(f);
 }
 
 void set_scene_title(const std::string& msg, int duration) {
@@ -266,6 +282,25 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 	lvl.draw(xscroll, yscroll, graphics::screen_width(), drawable_height());
 	graphics::clear_raster_distortion();
 	glPopMatrix();
+
+	for(std::vector<screen_flash>::iterator i = flashes().begin();
+	    i != flashes().end(); ) {
+		const graphics::color& tint = i->color.to_color();
+		if(tint.a() > 0) {
+			graphics::draw_rect(rect(0, 0, graphics::screen_width(), graphics::screen_height()), tint);
+		}
+
+		i->color = graphics::color_transform(i->color.r() + i->delta.r(),
+		                                     i->color.g() + i->delta.g(),
+		                                     i->color.b() + i->delta.b(),
+		                                     i->color.a() + i->delta.a());
+
+		if(--i->duration <= 0) {
+			i = flashes().erase(i);
+		} else {
+			++i;
+		}
+	}
 
 	debug_console::draw();
 

@@ -100,7 +100,7 @@ color_transform::color_transform(const color& c)
 	rgba_[3] = c.a();
 }
 
-color_transform::color_transform(uint16_t r, uint16_t g, uint16_t b, uint16_t a)
+color_transform::color_transform(int16_t r, int16_t g, int16_t b, int16_t a)
 {
 	rgba_[0] = r;
 	rgba_[1] = g;
@@ -149,13 +149,8 @@ variant color_transform::get_value(const std::string& key) const
 }
 
 namespace {
-uint16_t clip(uint16_t val) {
-	return val > 255 ? 255 : val;
-	if(val > 255) {
-		val = 255;
-	}
-
-	return val;
+int16_t clip(int16_t val) {
+	return val < 0 ? 0 : (val > 255 ? 255 : val);
 }
 }
 

@@ -302,6 +302,51 @@ private:
 	}
 };
 
+class screen_flash_command : public entity_command_callable
+{
+public:
+	screen_flash_command(const graphics::color_transform& color,
+	                     const graphics::color_transform& delta, int duration)
+	  : color_(color), delta_(delta), duration_(duration)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		screen_color_flash(color_, delta_, duration_);
+	}
+private:
+	graphics::color_transform color_, delta_;
+	int duration_;
+};
+
+class screen_flash_function : public function_expression {
+public:
+	explicit screen_flash_function(const args_list& args)
+	  : function_expression("screen_flash",args,2,3)
+	  {}
+private:
+	variant execute(const formula_callable& variables) const {
+		const variant color = args()[0]->evaluate(variables);
+		const variant delta = args().size() > 2 ? args()[1]->evaluate(variables) : variant();
+		const variant duration = args()[args().size() - 1]->evaluate(variables);
+		ASSERT_LOG(color.is_list() && color.num_elements() == 4 &&
+		           (delta.is_null() || delta.is_list() && delta.num_elements() == 4) &&
+		           duration.is_int(),
+		           "BAD ARGUMENT TO screen_flash() FUNCTION: ARGUMENT FORMAT "
+				   "IS screen_flash([r,g,b,a], (optional)[dr,dg,db,da], duration)");
+		graphics::color_transform delta_color = graphics::color_transform(0,0,0,0);
+		if(delta.is_null() == false) {
+			delta_color = graphics::color_transform(
+			  delta[0].as_int(), delta[1].as_int(),
+			  delta[2].as_int(), delta[3].as_int());
+		}
+
+		return variant(new screen_flash_command(
+		  graphics::color_transform(color[0].as_int(), color[1].as_int(),
+		                            color[2].as_int(), color[3].as_int()),
+						  delta_color, duration.as_int()));
+	}
+};
+
 class title_command : public entity_command_callable
 {
 public:
@@ -2161,6 +2206,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 		return expression_ptr(new unboard_function(args));
 	} else if(fn == "stop_sound") {
 		return expression_ptr(new stop_sound_function(args));
+	} else if(fn == "screen_flash") {
+		return expression_ptr(new screen_flash_function(args));
 	} else if(fn == "title") {
 		return expression_ptr(new title_function(args));
 	} else if(fn == "shake_screen") {

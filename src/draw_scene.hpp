@@ -3,6 +3,11 @@
 
 #include <string>
 
+namespace graphics {
+class color;
+class color_transform;
+}
+
 class entity;
 class level;
 
@@ -22,6 +27,8 @@ struct screen_position {
 };
 
 screen_position& last_draw_position();
+
+void screen_color_flash(const graphics::color_transform& color, const graphics::color_transform& color_delta, int duration);
 void set_scene_title(const std::string& msg, int duration=150);
 void draw_scene(const level& lvl, screen_position& pos, const entity* focus=NULL);
 
