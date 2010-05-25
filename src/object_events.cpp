@@ -34,8 +34,6 @@ std::vector<std::string> create_object_event_names()
 	res.push_back("add_object_fail");
 	res.push_back("change_animation_failure");
 	res.push_back("die");
-	res.push_back("hit_player");
-	res.push_back("hit_by_player");
 	res.push_back("interact");
 	res.push_back("child_spawned");
 	res.push_back("spawned");

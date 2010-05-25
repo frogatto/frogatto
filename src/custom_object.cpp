@@ -2219,17 +2219,6 @@ bool custom_object::is_active(const rect& screen_area) const
 	return false;
 }
 
-void custom_object::hit_player()
-{
-	handle_event(OBJECT_EVENT_HIT_PLAYER);
-}
-
-void custom_object::hit_by(entity& e)
-{
-	last_hit_by_ = &e;
-	handle_event(OBJECT_EVENT_HIT_BY_PLAYER);
-}
-
 void custom_object::move_to_standing(level& lvl)
 {
 	int start_y = y();

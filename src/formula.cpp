@@ -402,6 +402,10 @@ private:
 		foreach(const expression_ptr& e, args_) {
 			args.push_back(e->evaluate(variables));
 		}
+
+		if(!left.is_function()) {
+			std::cerr << "ERROR: " << left_->str() << " IS NOT A VALID FUNCTION\n";
+		}
 		
 		return left(args);
 	}

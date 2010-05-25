@@ -1,5 +1,7 @@
 #include <boost/bind.hpp>
 #include <iostream>
+#include <map>
+#include <string>
 #include <time.h>
 
 #include "asserts.hpp"
@@ -33,6 +35,7 @@
 #include "string_utils.hpp"
 #include "text_entry_widget.hpp"
 #include "thread.hpp"
+#include "unit_test.hpp"
 #include "wml_parser.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
@@ -43,19 +46,58 @@ using namespace game_logic;
 
 namespace {
 
-class time_function : public function_expression {
+class function_creator {
 public:
-	explicit time_function(const args_list& args)
-	: function_expression("time",args,0)
-	{}
-private:
-	variant execute(const formula_callable& variables) const {
-		int a = rng::generate(); //this is to make the engine optimisation leave this function alone. please do not delete
-		time_t t1;
-		time(&t1);
-		return variant(t1);
+	virtual ~function_creator() {}
+	virtual function_expression* create(const function_expression::args_list& args) const = 0;
+};
+
+template<typename T>
+class specific_function_creator : public function_creator {
+public:
+	virtual ~specific_function_creator() {}
+	virtual function_expression* create(const function_expression::args_list& args) const {
+		return new T(args);
 	}
 };
+
+std::map<std::string, function_creator*>& function_creators() {
+	static std::map<std::string, function_creator*> creators;
+	return creators;
+}
+
+int register_function_creator(const std::string& id, function_creator* creator) {
+	function_creators()[id] = creator;
+	return function_creators().size();
+}
+
+std::vector<std::string>& function_helpstrings() {
+	static std::vector<std::string> instance;
+	return instance;
+}
+
+int register_function_helpstring(const std::string& str) {
+	function_helpstrings().push_back(str);
+	return function_helpstrings().size();
+}
+
+#define FUNCTION_DEF(name, min_args, max_args, helpstring) \
+const int name##_dummy_help_var = register_function_helpstring(helpstring); \
+class name##_function : public function_expression { \
+public: \
+	explicit name##_function(const args_list& args) \
+	  : function_expression(#name, args, min_args, max_args) {} \
+private: \
+	variant execute(const formula_callable& variables) const {
+
+#define END_FUNCTION_DEF(name) } }; const int name##_dummy_var = register_function_creator(#name, new specific_function_creator<name##_function>());
+
+FUNCTION_DEF(time, 0, 0, "time() -> timestamp: returns the current real time")
+	rng::generate(); //this is to make the engine optimisation leave this function alone.
+	time_t t1;
+	time(&t1);
+	return variant(t1);
+END_FUNCTION_DEF(time)
 
 class save_game_command : public entity_command_callable
 {
@@ -72,18 +114,13 @@ public:
 	}
 };
 
-class save_game_function : public function_expression {
-public:
-	save_game_function(const args_list& args, bool persistent)
-	: function_expression("save_game",args,0), persistent_(persistent)
-	{}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new save_game_command(persistent_));
-	}
+FUNCTION_DEF(checkpoint_game, 0, 0, "checkpoint_game(): saves a checkpoint of the game")
+	return variant(new save_game_command(false));
+END_FUNCTION_DEF(checkpoint_game)
 
-	bool persistent_;
-};
+FUNCTION_DEF(save_game, 0, 0, "save_game(): saves the current game state")
+	return variant(new save_game_command(true));
+END_FUNCTION_DEF(save_game)
 
 class load_game_command : public entity_command_callable
 	{
@@ -97,27 +134,13 @@ class load_game_command : public entity_command_callable
 		}
 	};
 
-class load_game_function : public function_expression {
-public:
-	explicit load_game_function(const args_list& args)
-	: function_expression("load_game",args,0)
-	{}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new load_game_command());
-	}
-};
+FUNCTION_DEF(load_game, 0, 0, "load_game(): loads the saved game")
+	return variant(new load_game_command());
+END_FUNCTION_DEF(load_game)
 
-class can_load_game_function : public function_expression {
-public:
-	explicit can_load_game_function(const args_list& args)
-	: function_expression("can_load_game",args,0)
-	{}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(sys::file_exists(preferences::save_file_path()));
-	}
-};
+FUNCTION_DEF(can_load_game, 0, 0, "can_load_game(): returns true iff there is a saved game available to load")
+	return variant(sys::file_exists(preferences::save_file_path()));
+END_FUNCTION_DEF(can_load_game)
 
 class move_to_standing_command : public entity_command_callable
 {
@@ -127,16 +150,9 @@ public:
 	}
 };
 
-class move_to_standing_function : public function_expression {
-public:
-	explicit move_to_standing_function(const args_list& args)
-	: function_expression("move_to_standing",args,0)
-	{}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new move_to_standing_command());
-	}
-};
+FUNCTION_DEF(move_to_standing, 0, 0, "move_to_standing(): tries to move the object downwards if it's in the air, or upwards if it's in solid space, until it's standing on solid ground.");
+	return variant(new move_to_standing_command());
+END_FUNCTION_DEF(move_to_standing)
 
 class music_command : public entity_command_callable
 	{
@@ -156,32 +172,17 @@ class music_command : public entity_command_callable
 		bool loops_;
 	};
 
-class music_function : public function_expression {
-public:
-	explicit music_function(const args_list& args)
-	: function_expression("music",args,1,2)
-	{}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new music_command(
-										 args()[0]->evaluate(variables).as_string(),
-										 true));
-	}
-};
+FUNCTION_DEF(music, 1, 1, "music(string id): plays the music file given by 'id' in a loop")
+	return variant(new music_command(
+									 args()[0]->evaluate(variables).as_string(),
+									 true));
+END_FUNCTION_DEF(music)
 
-	//play music just once, rather than permanently changing the song
-class music_onetime_function : public function_expression {
-public:
-	explicit music_onetime_function(const args_list& args)
-	: function_expression("music_onetime",args,1,2)
-	{}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new music_command(
-										 args()[0]->evaluate(variables).as_string(),
-										 false));
-	}
-};
+FUNCTION_DEF(music_onetime, 1, 1, "music_onetime(string id): plays the music file given by 'id' once")
+	return variant(new music_command(
+									 args()[0]->evaluate(variables).as_string(),
+									 false));
+END_FUNCTION_DEF(music_onetime)
 	
 class sound_command : public entity_command_callable
 {
@@ -202,32 +203,18 @@ private:
 	bool loops_;
 };
 
-class sound_function : public function_expression {
-public:
-	explicit sound_function(const args_list& args)
-	  : function_expression("sound",args,1,2)
-	  {}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new sound_command(
-										 args()[0]->evaluate(variables).as_string(),
-										 false));
-	}
-};
+FUNCTION_DEF(sound, 1, 1, "sound(string id): plays the sound file given by 'id'")
+	return variant(new sound_command(
+									 args()[0]->evaluate(variables).as_string(),
+									 false));
+END_FUNCTION_DEF(sound)
 
-	
-class sound_loop_function : public function_expression {
-public:
-	explicit sound_loop_function(const args_list& args)
-	: function_expression("sound_loop",args,1,2)
-	{}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new sound_command(
-										 args()[0]->evaluate(variables).as_string(),
-										 true));
-	}
-};
+FUNCTION_DEF(sound_loop, 1, 1, "sound_loop(string id): plays the sound file given by 'id' in a loop")
+	return variant(new sound_command(
+									 args()[0]->evaluate(variables).as_string(),
+									 true));
+END_FUNCTION_DEF(sound_loop)
+
 
 class sound_volume_command : public entity_command_callable {
 public:
@@ -242,40 +229,11 @@ private:
 	std::string name_;
 	int volume_;
 };
-	
-	
-	
-class sound_volume_function : public function_expression {
-public:
-	explicit sound_volume_function(const args_list& args)
-	: function_expression("sound_volume",args,1,1)
-	{}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new sound_volume_command(
-										 args()[0]->evaluate(variables).as_int()));
-	}
-};
-	
-	
-class unboard_command : public entity_command_callable {
-public:
-	virtual void execute(level& lvl, entity& ob) const {
-		std::cerr << "UNBOARD\n";
-		ob.unboarded(lvl);
-	}
-};
 
-class unboard_function : public function_expression {
-public:
-	explicit unboard_function(const args_list& args)
-	  : function_expression("unboard",args,0,0)
-	{}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new unboard_command);
-	}
-};
+FUNCTION_DEF(sound_volume, 1, 1, "sound_volume(int volume): sets the volume of sound effects")
+	return variant(new sound_volume_command(
+									 args()[0]->evaluate(variables).as_int()));
+END_FUNCTION_DEF(sound_volume)
 
 class stop_sound_command : public entity_command_callable
 {
@@ -290,17 +248,10 @@ private:
 	std::string name_;
 };
 
-class stop_sound_function : public function_expression {
-public:
-	explicit stop_sound_function(const args_list& args)
-	  : function_expression("stop_sound",args,1,1)
-	  {}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new stop_sound_command(
-						args()[0]->evaluate(variables).as_string()));
-	}
-};
+FUNCTION_DEF(stop_sound, 1, 1, "stop_sound(string id): stops the sound that the current object is playing with the given id")
+	return variant(new stop_sound_command(
+					args()[0]->evaluate(variables).as_string()));
+END_FUNCTION_DEF(stop_sound)
 
 class screen_flash_command : public entity_command_callable
 {
@@ -318,34 +269,27 @@ private:
 	int duration_;
 };
 
-class screen_flash_function : public function_expression {
-public:
-	explicit screen_flash_function(const args_list& args)
-	  : function_expression("screen_flash",args,2,3)
-	  {}
-private:
-	variant execute(const formula_callable& variables) const {
-		const variant color = args()[0]->evaluate(variables);
-		const variant delta = args().size() > 2 ? args()[1]->evaluate(variables) : variant();
-		const variant duration = args()[args().size() - 1]->evaluate(variables);
-		ASSERT_LOG(color.is_list() && color.num_elements() == 4 &&
-		           (delta.is_null() || delta.is_list() && delta.num_elements() == 4) &&
-		           duration.is_int(),
-		           "BAD ARGUMENT TO screen_flash() FUNCTION: ARGUMENT FORMAT "
-				   "IS screen_flash([r,g,b,a], (optional)[dr,dg,db,da], duration)");
-		graphics::color_transform delta_color = graphics::color_transform(0,0,0,0);
-		if(delta.is_null() == false) {
-			delta_color = graphics::color_transform(
-			  delta[0].as_int(), delta[1].as_int(),
-			  delta[2].as_int(), delta[3].as_int());
-		}
-
-		return variant(new screen_flash_command(
-		  graphics::color_transform(color[0].as_int(), color[1].as_int(),
-		                            color[2].as_int(), color[3].as_int()),
-						  delta_color, duration.as_int()));
+FUNCTION_DEF(screen_flash, 2, 3, "screen_flash(list int[4] color, (optional) list int[4] delta, int duration): flashes the screen the given color, and keeps the flash going for duration cycles. If delta is given, the color of the flash will be changed every cycle until the duration expires.")
+	const variant color = args()[0]->evaluate(variables);
+	const variant delta = args().size() > 2 ? args()[1]->evaluate(variables) : variant();
+	const variant duration = args()[args().size() - 1]->evaluate(variables);
+	ASSERT_LOG(color.is_list() && color.num_elements() == 4 &&
+	           (delta.is_null() || delta.is_list() && delta.num_elements() == 4) &&
+	           duration.is_int(),
+	           "BAD ARGUMENT TO screen_flash() FUNCTION: ARGUMENT FORMAT "
+			   "IS screen_flash([r,g,b,a], (optional)[dr,dg,db,da], duration)");
+	graphics::color_transform delta_color = graphics::color_transform(0,0,0,0);
+	if(delta.is_null() == false) {
+		delta_color = graphics::color_transform(
+		  delta[0].as_int(), delta[1].as_int(),
+		  delta[2].as_int(), delta[3].as_int());
 	}
-};
+
+	return variant(new screen_flash_command(
+	  graphics::color_transform(color[0].as_int(), color[1].as_int(),
+	                            color[2].as_int(), color[3].as_int()),
+					  delta_color, duration.as_int()));
+END_FUNCTION_DEF(screen_flash)
 
 class title_command : public entity_command_callable
 {
@@ -362,18 +306,11 @@ private:
 	int duration_;
 };
 
-class title_function : public function_expression {
-public:
-	explicit title_function(const args_list& args)
-	  : function_expression("title",args,1,2)
-	  {}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new title_command(
-		  args()[0]->evaluate(variables).as_string(),
-		  args().size() >= 2 ? args()[1]->evaluate(variables).as_int() : 50));
-	}
-};
+FUNCTION_DEF(title, 1, 2, "title(string text, int duration=50): shows level title text on the screen for duration cycles")
+	return variant(new title_command(
+	  args()[0]->evaluate(variables).as_string(),
+	  args().size() >= 2 ? args()[1]->evaluate(variables).as_int() : 50));
+END_FUNCTION_DEF(title)
 
 class shake_screen_command : public entity_command_callable
 	{
@@ -393,31 +330,24 @@ class shake_screen_command : public entity_command_callable
 		int x_offset_,y_offset_,x_velocity_,y_velocity_;
 	};
 
-class shake_screen_function : public function_expression {
-public:
-	explicit shake_screen_function(const args_list& args)
-	: function_expression("shake_screen",args,4,4)
-	{}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new shake_screen_command(
-										args()[0]->evaluate(variables).as_int(),
-										args()[1]->evaluate(variables).as_int(),
-										args()[2]->evaluate(variables).as_int(),
-										args()[3]->evaluate(variables).as_int() ));
-	}
-};
+FUNCTION_DEF(shake_screen, 4, 4, "shake_screen(int x_offset, int y_offset, int x_velocity, int y_velocity): makes the screen camera shake")
+	return variant(new shake_screen_command(
+									args()[0]->evaluate(variables).as_int(),
+									args()[1]->evaluate(variables).as_int(),
+									args()[2]->evaluate(variables).as_int(),
+									args()[3]->evaluate(variables).as_int() ));
+END_FUNCTION_DEF(shake_screen)
 
-class radial_current_function : public function_expression {
-public:
-	explicit radial_current_function(const args_list& args)
-	  : function_expression("radial_current", args, 2, 2)
-	{}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new radial_current_generator(args()[0]->evaluate(variables).as_int(), args()[1]->evaluate(variables).as_int()));
-	}
-};
+FUNCTION_DEF(radial_current, 2, 2, "radial_current(int intensity, int radius) -> current object: creates a current generator with the given intensity and radius")
+	return variant(new radial_current_generator(args()[0]->evaluate(variables).as_int(), args()[1]->evaluate(variables).as_int()));
+END_FUNCTION_DEF(radial_current)
+
+FUNCTION_DEF(distortion, 3, 3, "distortion(int, int, int): (currently unsupported")
+	return variant(new graphics::radial_distortion(
+	                       args()[0]->evaluate(variables).as_int(),
+	                       args()[1]->evaluate(variables).as_int(),
+	                       args()[2]->evaluate(variables).as_int()));
+END_FUNCTION_DEF(distortion)
 
 class execute_on_command : public entity_command_callable
 {
@@ -432,20 +362,11 @@ public:
 	}
 };
 
-class execute_function : public function_expression
-{
-public:
-	explicit execute_function(const args_list& args)
-	  : function_expression("execute", args, 2, 2) {
-	}
-
-private:
-	variant execute(const formula_callable& variables) const {
-		entity_ptr e(args()[0]->evaluate(variables).convert_to<entity>());
-		variant cmd = args()[1]->evaluate(variables);
-		return variant(new execute_on_command(e, cmd));
-	}
-};
+FUNCTION_DEF(execute, 2, 2, "execute(object context, command cmd): this function will execute the command or list of commands given by cmd on the object given by context. For instance, animation('foo') will set the current object to animation 'foo'. execute(obj, animation('foo')) can be used to set the object given by obj to the animation 'foo'.")
+	entity_ptr e(args()[0]->evaluate(variables).convert_to<entity>());
+	variant cmd = args()[1]->evaluate(variables);
+	return variant(new execute_on_command(e, cmd));
+END_FUNCTION_DEF(execute)
 
 class spawn_command : public entity_command_callable
 {
@@ -522,173 +443,51 @@ private:
 	bool player_;
 };
 
-class spawn_function : public function_expression {
-public:
-	spawn_function(const args_list& args, bool player)
-	  : function_expression("spawn", args, 4, 5), player_(player) {
-	}
+FUNCTION_DEF(spawn, 4, 5, "spawn(string type_id, int midpoint_x, int midpoint_y, int facing, (optional) list of commands cmd): will create a new object of type given by type_id with the given midpoint and facing. Immediately after creation the object will have any commands given by cmd executed on it. The child object will have the spawned event sent to it, and the parent object will have the child_spawned event sent to it.")
+	return variant(new spawn_command(
+	                 args()[0]->evaluate(variables).as_string(),
+	                 args()[1]->evaluate(variables).as_int(),
+	                 args()[2]->evaluate(variables).as_int(),
+	                 args()[3]->evaluate(variables).as_int() > 0,
+					 args().size() > 4 ? args()[4]->evaluate(variables) : variant(),
+					 false));
+END_FUNCTION_DEF(spawn)
 
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new spawn_command(
-		                 args()[0]->evaluate(variables).as_string(),
-		                 args()[1]->evaluate(variables).as_int(),
-		                 args()[2]->evaluate(variables).as_int(),
-		                 args()[3]->evaluate(variables).as_int() > 0,
-						 args().size() > 4 ? args()[4]->evaluate(variables) : variant(),
-						 player_));
-	}
+FUNCTION_DEF(spawn_player, 4, 5, "spawn_player(string type_id, int midpoint_x, int midpoint_y, int facing, (optional) list of commands cmd): identical to spawn except that the new object is playable.")
+	return variant(new spawn_command(
+	                 args()[0]->evaluate(variables).as_string(),
+	                 args()[1]->evaluate(variables).as_int(),
+	                 args()[2]->evaluate(variables).as_int(),
+	                 args()[3]->evaluate(variables).as_int() > 0,
+					 args().size() > 4 ? args()[4]->evaluate(variables) : variant(),
+					 true));
+END_FUNCTION_DEF(spawn_player)
 
-	bool player_;
-};
+FUNCTION_DEF(object, 4, 5, "object(string type_id, int midpoint_x, int midpoint_y, int facing, (optional) map properties) -> object: constructs and returns a new object. Note that the difference between this and spawn is that spawn returns a command to actually place the object in the level. object only creates the object and returns it. It may be stored for later use.")
+	//generate a random number just so we mark this as being a
+	//function which shouldn't have its result cached.
+	rng::generate();
 
-class object_function : public function_expression {
-public:
-	explicit object_function(const args_list& args)
-	  : function_expression("object", args, 4, 5) {
-	}
+	const std::string type = args()[0]->evaluate(variables).as_string();
+	const int x = args()[1]->evaluate(variables).as_int();
+	const int y = args()[2]->evaluate(variables).as_int();
+	const bool face_right = args()[3]->evaluate(variables).as_int() > 0;
+	custom_object* obj = new custom_object(type, x, y, face_right);
 
-private:
-	variant execute(const formula_callable& variables) const {
-		//generate a random number just so we mark this as being a
-		//function which shouldn't have its result cached.
-		rng::generate();
+	//adjust so the object's x/y is its midpoint.
+	obj->set_pos(obj->x() - obj->current_frame().width() / 2 , obj->y() - obj->current_frame().height() / 2);
 
-		const std::string type = args()[0]->evaluate(variables).as_string();
-		const int x = args()[1]->evaluate(variables).as_int();
-		const int y = args()[2]->evaluate(variables).as_int();
-		const bool face_right = args()[3]->evaluate(variables).as_int() > 0;
-		custom_object* obj = new custom_object(type, x, y, face_right);
-
-		//adjust so the object's x/y is its midpoint.
-		obj->set_pos(obj->x() - obj->current_frame().width() / 2 , obj->y() - obj->current_frame().height() / 2);
-
-		if(args().size() > 4) {
-			variant properties = args()[4]->evaluate(variables);
-			variant keys = properties.get_keys();
-			for(int n = 0; n != keys.num_elements(); ++n) {
-				variant value = properties[keys[n]];
-				obj->mutate_value(keys[n].as_string(), value);
-			}
-		}
-
-		return variant(obj);
-	}
-};
-
-class board_vehicle_command : public entity_command_callable {
-	entity_ptr vehicle_;
-public:
-	explicit board_vehicle_command(entity_ptr vehicle) : vehicle_(vehicle)
-	{}
-
-	virtual void execute(level& lvl, entity& ob) const {
-		vehicle_->boarded(lvl, entity_ptr(&ob));
-	}
-};
-
-class board_vehicle_function : public function_expression {
-public:
-	explicit board_vehicle_function(const args_list& args)
-	  : function_expression("board_vehicle", args, 1, 1)
-	{}
-private:
-	variant execute(const formula_callable& variables) const {
-		entity_ptr vehicle = args()[0]->evaluate(variables).try_convert<entity>();
-		if(vehicle) {
-			return variant(new board_vehicle_command(vehicle));
-		} else {
-			return variant();
+	if(args().size() > 4) {
+		variant properties = args()[4]->evaluate(variables);
+		variant keys = properties.get_keys();
+		for(int n = 0; n != keys.num_elements(); ++n) {
+			variant value = properties[keys[n]];
+			obj->mutate_value(keys[n].as_string(), value);
 		}
 	}
-};
 
-class eject_vehicle_command : public entity_command_callable {
-public:
-	virtual void execute(level& lvl, entity& ob) const {
-		ob.unboarded(lvl);
-	}
-};
-
-class eject_vehicle_function : public function_expression {
-public:
-	explicit eject_vehicle_function(const args_list& args)
-	  : function_expression("eject_vehicle", args, 0, 0)
-	{}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new eject_vehicle_command());
-	}
-};
-
-class child_command : public custom_object_command_callable
-{
-public:
-	child_command(const std::string& type, int x, int y)
-	  : type_(type), x_(x), y_(y)
-	{}
-	virtual void execute(level& lvl, custom_object& ob) const {
-		wml::const_node_ptr node = ob.get_child(type_);
-		if(node) {
-			entity_ptr e(entity::build(node));
-			if(x_ || y_) {
-				e->set_pos(x_, y_);
-			}
-			lvl.add_character(e);
-		}
-	}
-private:
-	std::string type_;
-	int x_, y_;
-};
-
-class child_function : public function_expression {
-public:
-	explicit child_function(const args_list& args)
-	  : function_expression("child", args, 1, 3) {
-	}
-
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new child_command(
-		                  args()[0]->evaluate(variables).as_string(),
-		  args().size() >= 2 ? args()[1]->evaluate(variables).as_int() : 0,
-		  args().size() >= 3 ? args()[2]->evaluate(variables).as_int() : 0));
-	}
-};
-
-class hit_command : public entity_command_callable
-{
-public:
-	explicit hit_command(entity_ptr e) : e_(e)
-	{}
-
-private:
-	void execute(level& lvl, entity& ob) const {
-		e_->hit_by(ob);
-	}
-	entity_ptr e_;
-};
-
-class hit_function : public function_expression {
-public:
-	explicit hit_function(const args_list& args)
-	  : function_expression("hit", args, 1, 1) {
-	}
-
-private:
-	variant execute(const formula_callable& variables) const {
-		std::cerr << "hit_function\n";
-		variant var(args()[0]->evaluate(variables));
-		entity_ptr e(var.try_convert<entity>());
-		if(e.get()) {
-			return variant(new hit_command(e));
-		} else {
-			std::cerr << "ERROR: hit function given bad argument\n";
-			return variant();
-		}
-	}
-};
+	return variant(obj);
+END_FUNCTION_DEF(object)
 
 class animation_command : public custom_object_command_callable
 {
@@ -704,17 +503,9 @@ private:
 	std::string anim_;
 };
 
-class animation_function : public function_expression {
-public:
-	explicit animation_function(const args_list& args)
-	  : function_expression("animation", args, 1) {
-	}
-
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new animation_command(args()[0]->evaluate(variables).as_string()));
-	}
-};
+FUNCTION_DEF(animation, 1, 1, "animation(string id): changes the current object's animation to the given animation. time_in_animation is reset to 0.")
+	return variant(new animation_command(args()[0]->evaluate(variables).as_string()));
+END_FUNCTION_DEF(animation)
 
 class die_command : public custom_object_command_callable
 {
@@ -724,16 +515,9 @@ public:
 	}
 }; 
 
-class die_function : public function_expression {
-public:
-	explicit die_function(const args_list& args)
-	  : function_expression("die", args, 0) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new die_command());
-	}
-};
+FUNCTION_DEF(die, 0, 0, "die(): causes the current object to die. The object will receive the on_die signal and may even use it to resurrect itself. Use remove_object() to remove an object from play without it receiving on_die.")
+	return variant(new die_command());
+END_FUNCTION_DEF(die)
 
 class facing_command : public custom_object_command_callable
 {
@@ -747,16 +531,9 @@ private:
 	int facing_;
 };
 
-class facing_function : public function_expression {
-public:
-	explicit facing_function(const args_list& args)
-	  : function_expression("facing", args, 1) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new facing_command(args()[0]->evaluate(variables).as_int()));
-	}
-};
+FUNCTION_DEF(facing, 1, 1, "facing(int new_facing): changes the current object's facing according to the value of new_facing (1 for right, otherwise left).")
+	return variant(new facing_command(args()[0]->evaluate(variables).as_int()));
+END_FUNCTION_DEF(facing)
 
 class set_var_command : public custom_object_command_callable
 {
@@ -772,18 +549,11 @@ private:
 	variant val_;
 };
 
-class set_var_function : public function_expression {
-public:
-	explicit set_var_function(const args_list& args)
-	  : function_expression("set_var", args, 2) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new set_var_command(
-		    args()[0]->evaluate(variables).as_string(),
-			args()[1]->evaluate(variables)));
-	}
-};
+FUNCTION_DEF(set_var, 2, 2, "set_var(string varname, variant value): sets the variable named varname within the current object. Note that you should generally use set(vars.blah, x) rather than set_var('blah', x). The only exception is if you want to create the command and save it for later execution on an object you don't yet have access to -- most useful with the spawn() function.")
+	return variant(new set_var_command(
+	    args()[0]->evaluate(variables).as_string(),
+		args()[1]->evaluate(variables)));
+END_FUNCTION_DEF(set_var)
 
 class set_command : public entity_command_callable
 {
@@ -983,74 +753,18 @@ private:
 	mutable boost::intrusive_ptr<add_by_slot_command> cmd_;
 };
 
-class set_value_function : public function_expression {
-public:
-	explicit set_value_function(const args_list& args)
-	  : function_expression("set_value", args, 2, 3) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		variant target;
-		if(args().size() == 3) {
-			target = args()[0]->evaluate(variables);
-		}
-		const int begin_index = args().size() == 2 ? 0 : 1;
-		return variant(new set_command(
-		    target,
-		    args()[begin_index]->evaluate(variables).as_string(),
-			args()[begin_index + 1]->evaluate(variables)));
-	}
-};
+FUNCTION_DEF(solid, 3, 5, "solid(level, int x, int y, (optional)int w=1, (optional) int h=1) -> boolean: returns true iff the level contains solid space within the given (x,y,w,h) rectangle")
+	level* lvl = args()[0]->evaluate(variables).convert_to<level>();
+	const int x = args()[1]->evaluate(variables).as_int();
+	const int y = args()[2]->evaluate(variables).as_int();
 
-class get_powerup_command : public entity_command_callable
-{
-public:
-	explicit get_powerup_command(entity_ptr target, const std::string& powerup_id)
-	  : target_(target), powerup_id_(powerup_id)
-	{}
+	int w = args().size() >= 4 ? args()[3]->evaluate(variables).as_int() : 1;
+	int h = args().size() >= 5 ? args()[4]->evaluate(variables).as_int() : 1;
 
-	virtual void execute(level& lvl, entity& ob) const {
-		target_->get_powerup(powerup_id_);
-	}
+	rect r(x, y, w, h);
 
-private:
-	entity_ptr target_;
-	std::string powerup_id_;
-};
-
-class get_powerup_function : public function_expression {
-public:
-	explicit get_powerup_function(const args_list& args)
-	  : function_expression("set", args, 2, 2) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		std::cerr << "POWERUP FUNCTION\n";
-		entity_ptr target(args()[0]->evaluate(variables).convert_to<entity>());
-		const std::string id = args()[1]->evaluate(variables).as_string();
-		return variant(new get_powerup_command(target, id));
-	}
-};
-
-class solid_function : public function_expression {
-public:
-	explicit solid_function(const args_list& args)
-	  : function_expression("solid", args, 3, 5) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		level* lvl = args()[0]->evaluate(variables).convert_to<level>();
-		const int x = args()[1]->evaluate(variables).as_int();
-		const int y = args()[2]->evaluate(variables).as_int();
-
-		int w = args().size() >= 4 ? args()[3]->evaluate(variables).as_int() : 1;
-		int h = args().size() >= 5 ? args()[4]->evaluate(variables).as_int() : 1;
-
-		rect r(x, y, w, h);
-
-		return variant(lvl->solid(r));
-	}
-};
+	return variant(lvl->solid(r));
+END_FUNCTION_DEF(solid)
 
 class set_solid_command : public entity_command_callable {
 	rect r_;
@@ -1064,34 +778,21 @@ public:
 	}
 };
 
-class set_solid_function : public function_expression {
-public:
-	explicit set_solid_function(const args_list& args)
-	  : function_expression("set_solid", args, 4, 5) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new set_solid_command(
-		  rect::from_coordinates(
-			args()[0]->evaluate(variables).as_int(),
-			args()[1]->evaluate(variables).as_int(),
-			args()[2]->evaluate(variables).as_int(),
-			args()[3]->evaluate(variables).as_int()),
-			args().size() > 4 ? args()[4]->evaluate(variables).as_bool() : false));
-	}
-};
+FUNCTION_DEF(set_solid, 4, 5, "set_solid(x1, y1, x2, y2, boolean is_solid=false): modifies the solidity of the level such that the rectangle given by (x1, y1, x2, y2) will have its solidity set to the value of is_solid")
+	return variant(new set_solid_command(
+	  rect::from_coordinates(
+		args()[0]->evaluate(variables).as_int(),
+		args()[1]->evaluate(variables).as_int(),
+		args()[2]->evaluate(variables).as_int(),
+		args()[3]->evaluate(variables).as_int()),
+		args().size() > 4 ? args()[4]->evaluate(variables).as_bool() : false));
 
-class group_size_function : public function_expression {
-public:
-	explicit group_size_function(const args_list& args)
-	  : function_expression("group_size", args, 2) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		level* lvl = args()[0]->evaluate(variables).convert_to<level>();
-		return variant(lvl->group_size(args()[1]->evaluate(variables).as_int()));
-	}
-};
+END_FUNCTION_DEF(set_solid)
+
+FUNCTION_DEF(group_size, 2, 2, "group_size(level, int group_id) -> int: gives the number of objects in the object group given by group_id")
+	level* lvl = args()[0]->evaluate(variables).convert_to<level>();
+	return variant(lvl->group_size(args()[1]->evaluate(variables).as_int()));
+END_FUNCTION_DEF(group_size)
 
 class set_group_command : public entity_command_callable {
 public:
@@ -1114,21 +815,14 @@ private:
 	int group_;
 };
 
-class set_group_function : public function_expression {
-public:
-	explicit set_group_function(const args_list& args)
-	  : function_expression("set_group", args, 0, 1) {
+FUNCTION_DEF(set_group, 0, 1, "set_group((optional)int group_id): sets the current object to have the given group id, or to be in no group if group_id is not given")
+	int group = -1;
+	if(args().size() > 0) {
+		group = args()[0]->evaluate(variables).as_int();
 	}
-private:
-	variant execute(const formula_callable& variables) const {
-		int group = -1;
-		if(args().size() > 0) {
-			group = args()[0]->evaluate(variables).as_int();
-		}
 
-		return variant(new set_group_command(group));
-	}
-};
+	return variant(new set_group_command(group));
+END_FUNCTION_DEF(set_group)
 
 class scroll_to_command : public custom_object_command_callable
 {
@@ -1147,16 +841,9 @@ private:
 	entity_ptr focus_;
 };
 
-class scroll_to_function : public function_expression {
-public:
-	explicit scroll_to_function(const args_list& args)
-	  : function_expression("scroll_to", args, 1, 1) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new scroll_to_command(args()[0]->evaluate(variables).try_convert<entity>()));
-	}
-};
+FUNCTION_DEF(scroll_to, 1, 1, "scroll_to(object target): scrolls the screen to the target object")
+	return variant(new scroll_to_command(args()[0]->evaluate(variables).try_convert<entity>()));
+END_FUNCTION_DEF(scroll_to)
 
 namespace {
 static int g_in_speech_dialog = 0;
@@ -1203,39 +890,32 @@ public:
 	}
 };
 
-class transient_speech_dialog_function : public function_expression {
-public:
-	explicit transient_speech_dialog_function(const args_list& args)
-	  : function_expression("transient_speech_dialog", args, 1, -1) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		entity_ptr speaker;
-		int duration = 100;
+FUNCTION_DEF(transient_speech_dialog, 1, -1, "transient_speech_dialog(...): schedules a sequence of speech dialogs to be shown. Arguments may include a list of strings, which contain text. An integer which sets the duration of the dialog. An object which sets the speaker.")
+	entity_ptr speaker;
+	int duration = 100;
 
-		std::vector<variant> result;
+	std::vector<variant> result;
 
-		for(int n = 0; n != args().size(); ++n) {
-			variant v = args()[n]->evaluate(variables);
-			entity* e = v.try_convert<entity>();
-			if(e) {
-				speaker = entity_ptr(e);
-			} else if(v.is_int()) {
-				duration = v.as_int();
-			} else if(v.is_list()) {
-				std::vector<std::string> str;
-				for(int m = 0; m != v.num_elements(); ++m) {
-					str.push_back(v[m].as_string());
-				}
-				result.push_back(variant(new transient_speech_dialog_command(speaker, str, duration)));
-			} else {
-				ASSERT_LOG(false, "UNRECOGNIZED ARGUMENT to transient_speech_dialog: " << v.to_debug_string());
+	for(int n = 0; n != args().size(); ++n) {
+		variant v = args()[n]->evaluate(variables);
+		entity* e = v.try_convert<entity>();
+		if(e) {
+			speaker = entity_ptr(e);
+		} else if(v.is_int()) {
+			duration = v.as_int();
+		} else if(v.is_list()) {
+			std::vector<std::string> str;
+			for(int m = 0; m != v.num_elements(); ++m) {
+				str.push_back(v[m].as_string());
 			}
+			result.push_back(variant(new transient_speech_dialog_command(speaker, str, duration)));
+		} else {
+			ASSERT_LOG(false, "UNRECOGNIZED ARGUMENT to transient_speech_dialog: " << v.to_debug_string());
 		}
-
-		return variant(&result);
 	}
-};
+
+	return variant(&result);
+END_FUNCTION_DEF(transient_speech_dialog)
 
 namespace {
 struct in_dialog_setter {
@@ -1375,37 +1055,23 @@ private:
 	bool paused_;
 };
 
-class speech_dialog_function : public function_expression {
-public:
-	explicit speech_dialog_function(const args_list& args)
-	  : function_expression("speech_dialog", args, 1, -1) {
+FUNCTION_DEF(speech_dialog, 1, -1, "speech_dialog(...): schedules a sequence of speech dialogs to be shown modally. Arguments may include a list of strings, which contain text. An integer which sets the duration of the dialog. An object which sets the speaker. A string by itself indicates an option that should be shown for the player to select from. A string should be followed by a list of commands that will be executed should the player choose that option.")
+	std::vector<variant> v;
+	for(int n = 0; n != args().size(); ++n) {
+		v.push_back(args()[n]->evaluate(variables));
 	}
-private:
-	variant execute(const formula_callable& variables) const {
-		std::vector<variant> v;
-		for(int n = 0; n != args().size(); ++n) {
-			v.push_back(args()[n]->evaluate(variables));
-		}
 
-		return variant(new speech_dialog_command(v));
-	}
-};
+	return variant(new speech_dialog_command(v));
+END_FUNCTION_DEF(speech_dialog)
 
-class paused_speech_dialog_function : public function_expression {
-public:
-	explicit paused_speech_dialog_function(const args_list& args)
-	  : function_expression("paused_speech_dialog", args, 1, -1) {
+FUNCTION_DEF(paused_speech_dialog, 1, -1, "paused_speech_dialog(...): like speech_dialog(), except the game is paused while the dialog is displayed.")
+	std::vector<variant> v;
+	for(int n = 0; n != args().size(); ++n) {
+		v.push_back(args()[n]->evaluate(variables));
 	}
-private:
-	variant execute(const formula_callable& variables) const {
-		std::vector<variant> v;
-		for(int n = 0; n != args().size(); ++n) {
-			v.push_back(args()[n]->evaluate(variables));
-		}
 
-		return variant(new speech_dialog_command(v, true));
-	}
-};
+	return variant(new speech_dialog_command(v, true));
+END_FUNCTION_DEF(paused_speech_dialog)
 
 class end_game_command : public custom_object_command_callable
 {
@@ -1415,16 +1081,9 @@ public:
 	}
 };
 
-class end_game_function : public function_expression {
-public:
-	explicit end_game_function(const args_list& args)
-	  : function_expression("end_game", args, 0, 0) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new end_game_command());
-	}
-};
+FUNCTION_DEF(end_game, 0, 0, "end_game(): exits the game")
+	return variant(new end_game_command());
+END_FUNCTION_DEF(end_game)
 
 class debug_command : public entity_command_callable
 {
@@ -1439,27 +1098,20 @@ private:
 	std::string str_;
 };
 
-class debug_function : public function_expression {
-public:
-	explicit debug_function(const args_list& args)
-	  : function_expression("debug", args, 1, -1) {
+FUNCTION_DEF(debug, 1, -1, "debug(...): outputs arguments to the console")
+	if(!preferences::debug()) {
+		return variant();
 	}
-private:
-	variant execute(const formula_callable& variables) const {
-		if(!preferences::debug()) {
-			return variant();
-		}
 
-		std::string str;
-		for(int n = 0; n != args().size(); ++n) {
-			str += args()[n]->evaluate(variables).to_debug_string();
-		}
-
-		fprintf(stderr, "DEBUG FUNCTION: %s\n", str.c_str());
-
-		return variant(new debug_command(str));
+	std::string str;
+	for(int n = 0; n != args().size(); ++n) {
+		str += args()[n]->evaluate(variables).to_debug_string();
 	}
-};
+
+	fprintf(stderr, "DEBUG FUNCTION: %s\n", str.c_str());
+
+	return variant(new debug_command(str));
+END_FUNCTION_DEF(debug)
 
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 class debug_console_command : public entity_command_callable
@@ -1538,16 +1190,10 @@ private:
 	mutable int history_pos_;
 };
 
-class debug_console_function : public function_expression {
-public:
-	explicit debug_console_function(const args_list& args)
-	  : function_expression("debug_console", args, 0, 0) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new debug_console_command(variables));
-	}
-};
+FUNCTION_DEF(debug_console, 0, 0, "debug_console(): provides an interactive debugging console")
+	return variant(new debug_console_command(variables));
+END_FUNCTION_DEF(debug_console)
+
 #endif
 
 class fire_event_command : public entity_command_callable {
@@ -1565,68 +1211,41 @@ public:
 	}
 };
 
-class fire_event_function : public function_expression {
-public:
-	explicit fire_event_function(const args_list& args)
-	  : function_expression("fire_event", args, 1, 3) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		entity_ptr target;
-		std::string event;
-		const_formula_callable_ptr callable;
+FUNCTION_DEF(fire_event, 1, 3, "fire_event((optional) object target, string id, (optional)callable arg): fires the event with the given id. Targets the current object by default, or target if given. Sends arg as the event argument if given")
+	entity_ptr target;
+	std::string event;
+	const_formula_callable_ptr callable;
 
-		if(args().size() == 3) {
-			target = args()[0]->evaluate(variables).convert_to<entity>();
-			event = args()[1]->evaluate(variables).as_string();
-			callable = args()[2]->evaluate(variables).as_callable();
-		} else if(args().size() == 2) {
-			variant v1 = args()[0]->evaluate(variables);
-			variant v2 = args()[1]->evaluate(variables);
-			if(v1.is_string()) {
-				event = v1.as_string();
-				callable = v2.as_callable();
-			} else {
-				target = v1.convert_to<entity>();
-				event = v2.as_string();
-			}
+	if(args().size() == 3) {
+		target = args()[0]->evaluate(variables).convert_to<entity>();
+		event = args()[1]->evaluate(variables).as_string();
+		callable = args()[2]->evaluate(variables).as_callable();
+	} else if(args().size() == 2) {
+		variant v1 = args()[0]->evaluate(variables);
+		variant v2 = args()[1]->evaluate(variables);
+		if(v1.is_string()) {
+			event = v1.as_string();
+			callable = v2.as_callable();
 		} else {
-			event = args()[0]->evaluate(variables).as_string();
+			target = v1.convert_to<entity>();
+			event = v2.as_string();
 		}
+	} else {
+		event = args()[0]->evaluate(variables).as_string();
+	}
 
-		return variant(new fire_event_command(target, event, callable));
-	}
-};
+	return variant(new fire_event_command(target, event, callable));
+END_FUNCTION_DEF(fire_event)
 
-class distortion_function : public function_expression {
-public:
-	explicit distortion_function(const args_list& args)
-	  : function_expression("distortion", args, 3) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new graphics::radial_distortion(
-		                       args()[0]->evaluate(variables).as_int(),
-		                       args()[1]->evaluate(variables).as_int(),
-		                       args()[2]->evaluate(variables).as_int()));
-	}
-};
+FUNCTION_DEF(get_object, 2, 2, "get_object(level, string label) -> object: returns the object that is present in the given level that has the given label")
 
-class get_object_function : public function_expression {
-public:
-	explicit get_object_function(const args_list& args)
-	  : function_expression("get_object", args, 2) {
+	level* lvl = args()[0]->evaluate(variables).try_convert<level>();
+	if(lvl) {
+		return variant(lvl->get_entity_by_label(args()[1]->evaluate(variables).as_string()).get());
 	}
-private:
-	variant execute(const formula_callable& variables) const {
-		level* lvl = args()[0]->evaluate(variables).try_convert<level>();
-		if(lvl) {
-			return variant(lvl->get_entity_by_label(args()[1]->evaluate(variables).as_string()).get());
-		}
 
-		return variant();
-	}
-};
+	return variant();
+END_FUNCTION_DEF(get_object)
 
 //a command which moves an object in a given direction enough to resolve
 //any solid conflicts.
@@ -1653,24 +1272,17 @@ public:
 	}
 };
 
-class resolve_solid_function : public function_expression {
-public:
-	explicit resolve_solid_function(const args_list& args)
-	  : function_expression("resolve_solid", args, 3, 4) {
+FUNCTION_DEF(resolve_solid, 3, 4, "resolve_solid(object, int xdir, int ydir, int max_cycles=100): will attempt to move the given object in the direction indicated by xdir/ydir until the object no longer has a solid overlap. Gives up after max_cycles")
+	entity_ptr e(args()[0]->evaluate(variables).try_convert<entity>());
+	const int xdir = args()[1]->evaluate(variables).as_int();
+	const int ydir = args()[2]->evaluate(variables).as_int();
+	const int max_cycles = args().size() > 3 ? args()[3]->evaluate(variables).as_int() : 100;
+	if(e) {
+		return variant(new resolve_solid_command(e, xdir, ydir, max_cycles));
+	} else {
+		return variant();
 	}
-private:
-	variant execute(const formula_callable& variables) const {
-		entity_ptr e(args()[0]->evaluate(variables).try_convert<entity>());
-		const int xdir = args()[1]->evaluate(variables).as_int();
-		const int ydir = args()[2]->evaluate(variables).as_int();
-		const int max_cycles = args().size() > 3 ? args()[3]->evaluate(variables).as_int() : 100;
-		if(e) {
-			return variant(new resolve_solid_command(e, xdir, ydir, max_cycles));
-		} else {
-			return variant();
-		}
-	}
-};
+END_FUNCTION_DEF(resolve_solid)
 
 class add_object_command : public entity_command_callable {
 	entity_ptr e_;
@@ -1698,22 +1310,16 @@ public:
 	}
 };
 
-class add_object_function : public function_expression {
-public:
-	explicit add_object_function(const args_list& args)
-	  : function_expression("add_object", args, 1) {
+FUNCTION_DEF(add_object, 1, 1, "add_object(object): inserts the given object into the level. The object should not currently be persent in the level. The position of the object is tweaked to make sure there are no solid overlaps, however if it is not possible to reasonably place the object without a solid overlap, then the object will not be placed and the object and caller will both receive the event add_object_fail.")
+
+	entity_ptr e(args()[0]->evaluate(variables).try_convert<entity>());
+	if(e) {
+		return variant(new add_object_command(e));
+	} else {
+		std::cerr << "OBJECT NOT VALID!\n";
+		return variant();
 	}
-private:
-	variant execute(const formula_callable& variables) const {
-		entity_ptr e(args()[0]->evaluate(variables).try_convert<entity>());
-		if(e) {
-			return variant(new add_object_command(e));
-		} else {
-			std::cerr << "OBJECT NOT VALID!\n";
-			return variant();
-		}
-	}
-};
+END_FUNCTION_DEF(add_object)
 
 class remove_object_command : public entity_command_callable {
 	entity_ptr e_;
@@ -1726,21 +1332,15 @@ public:
 	}
 };
 
-class remove_object_function : public function_expression {
-public:
-	explicit remove_object_function(const args_list& args)
-	  : function_expression("remove_object", args, 1) {
+FUNCTION_DEF(remove_object, 1, 1, "remove_object(object): removes the given object from the level. If there are no references to the object stored, then the object will immediately be destroyed. However it is possible to keep a reference to the object and even insert it back into the level later using add_object()")
+
+	entity_ptr e(args()[0]->evaluate(variables).try_convert<entity>());
+	if(e) {
+		return variant(new remove_object_command(e));
+	} else {
+		return variant();
 	}
-private:
-	variant execute(const formula_callable& variables) const {
-		entity_ptr e(args()[0]->evaluate(variables).try_convert<entity>());
-		if(e) {
-			return variant(new remove_object_command(e));
-		} else {
-			return variant();
-		}
-	}
-};
+END_FUNCTION_DEF(remove_object)
 
 class teleport_command : public entity_command_callable
 {
@@ -1765,26 +1365,19 @@ private:
 	std::string level_, label_, transition_;
 };
 
-class teleport_function : public function_expression {
-public:
-	explicit teleport_function(const args_list& args)
-	  : function_expression("teleport", args, 1, 3) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		std::string label, transition;
-		if(args().size() > 1) {
-			label = args()[1]->evaluate(variables).as_string();
-			if(args().size() > 2) {
-				transition = args()[2]->evaluate(variables).as_string();
-			}
+FUNCTION_DEF(teleport, 1, 3, "teleport(string dest_level, (optional)string dest_label, (optional)string transition): teleports the player to a new level. The level is given by dest_level, with null() for the current level. If dest_label is given then the player will be teleported to the object in the destination level with that label. If transition is given, it names are type of transition (such as 'flip' or 'fade') which indicates the kind of visual effect to use for the transition.")
+	std::string label, transition;
+	if(args().size() > 1) {
+		label = args()[1]->evaluate(variables).as_string();
+		if(args().size() > 2) {
+			transition = args()[2]->evaluate(variables).as_string();
 		}
-
-		variant dst_level = args()[0]->evaluate(variables);
-		const std::string dst_level_str = dst_level.is_null() ? "" : dst_level.as_string();
-		return variant(new teleport_command(dst_level_str, label, transition));
 	}
-};
+
+	variant dst_level = args()[0]->evaluate(variables);
+	const std::string dst_level_str = dst_level.is_null() ? "" : dst_level.as_string();
+	return variant(new teleport_command(dst_level_str, label, transition));
+END_FUNCTION_DEF(teleport)
 
 class schedule_command : public entity_command_callable {
 public:
@@ -1799,18 +1392,11 @@ private:
 	variant cmd_;
 };
 
-class schedule_function : public function_expression {
-public:
-	explicit schedule_function(const args_list& args)
-	  : function_expression("schedule", args, 2, 2) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new schedule_command(
-		    args()[0]->evaluate(variables).as_int(),
-		    args()[1]->evaluate(variables)));
-	}
-};
+FUNCTION_DEF(schedule, 2, 2, "schedule(int cycles_in_future, list of commands): schedules the given list of commands to be run on the current object the given number of cycles in the future. Note that the object must be valid (not destroyed) and still present in the level for the commands to be run.")
+	return variant(new schedule_command(
+	    args()[0]->evaluate(variables).as_int(),
+	    args()[1]->evaluate(variables)));
+END_FUNCTION_DEF(schedule)
 
 class add_water_command : public entity_command_callable
 {
@@ -1825,35 +1411,28 @@ public:
 	}
 };
 
-class add_water_function : public function_expression {
-public:
-	explicit add_water_function(const args_list& args)
-	  : function_expression("add_water", args, 4, 5) {
+FUNCTION_DEF(add_water, 4, 5, "add_water(int x1, int y1, int x2, int y2, (optional)[r,g,b,a]=[70,0,0,50]): adds water of the given color in the given rectangle.")
+	static const unsigned char default_color[] = {70, 0, 0, 50};
+	boost::array<unsigned char, 4> color;
+	for(int n = 0; n != 4; ++n) {
+		color[n] = default_color[n];
 	}
-private:
-	variant execute(const formula_callable& variables) const {
-		static const unsigned char default_color[] = {70, 0, 0, 50};
-		boost::array<unsigned char, 4> color;
-		for(int n = 0; n != 4; ++n) {
-			color[n] = default_color[n];
-		}
 
-		if(args().size() > 4) {
-			variant v = args()[4]->evaluate(variables);
-			ASSERT_LOG(v.is_list(), "MUST PROVIDE COLOR LIST AS FOURTH ARGUMENT TO add_water(), found: " << v.to_debug_string());
-			for(int n = 0; n < 4 && n < v.num_elements(); ++n) {
-				color[n] = v[n].as_int();
-			}
+	if(args().size() > 4) {
+		variant v = args()[4]->evaluate(variables);
+		ASSERT_LOG(v.is_list(), "MUST PROVIDE COLOR LIST AS FOURTH ARGUMENT TO add_water(), found: " << v.to_debug_string());
+		for(int n = 0; n < 4 && n < v.num_elements(); ++n) {
+			color[n] = v[n].as_int();
 		}
-
-		return variant(new add_water_command(
-		  rect::from_coordinates(
-		    args()[0]->evaluate(variables).as_int(),
-		    args()[1]->evaluate(variables).as_int(),
-		    args()[2]->evaluate(variables).as_int(),
-		    args()[3]->evaluate(variables).as_int()), color));
 	}
-};
+
+	return variant(new add_water_command(
+	  rect::from_coordinates(
+	    args()[0]->evaluate(variables).as_int(),
+	    args()[1]->evaluate(variables).as_int(),
+	    args()[2]->evaluate(variables).as_int(),
+	    args()[3]->evaluate(variables).as_int()), color));
+END_FUNCTION_DEF(add_water)
 
 class remove_water_command : public entity_command_callable
 {
@@ -1867,21 +1446,14 @@ public:
 	}
 };
 
-class remove_water_function : public function_expression {
-public:
-	explicit remove_water_function(const args_list& args)
-	  : function_expression("remove_water", args, 4, 4) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new remove_water_command(
-		  rect::from_coordinates(
-		    args()[0]->evaluate(variables).as_int(),
-		    args()[1]->evaluate(variables).as_int(),
-		    args()[2]->evaluate(variables).as_int(),
-		    args()[3]->evaluate(variables).as_int())));
-	}
-};
+FUNCTION_DEF(remove_water, 4, 4, "remove_water(int x1, int y1, int x2, int y2): removes water that has the given rectangular area.")
+	return variant(new remove_water_command(
+	  rect::from_coordinates(
+	    args()[0]->evaluate(variables).as_int(),
+	    args()[1]->evaluate(variables).as_int(),
+	    args()[2]->evaluate(variables).as_int(),
+	    args()[3]->evaluate(variables).as_int())));
+END_FUNCTION_DEF(remove_water)
 
 class add_wave_command : public entity_command_callable
 {
@@ -1903,41 +1475,27 @@ public:
 	}
 };
 
-class add_wave_function : public function_expression {
-public:
-	explicit add_wave_function(const args_list& args)
-	  : function_expression("add_wave", args, 7) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new add_wave_command(
-		    args()[0]->evaluate(variables).as_int(),
-		    args()[1]->evaluate(variables).as_int(),
-		    args()[2]->evaluate(variables).as_int(),
-		    args()[3]->evaluate(variables).as_int(),
-		    args()[4]->evaluate(variables).as_int(),
-		    args()[5]->evaluate(variables).as_int(),
-		    args()[6]->evaluate(variables).as_int()));
-	}
-};
+FUNCTION_DEF(add_wave, 7, 7, "add_wave(int x, int y, int xvelocity, int height, int length, int delta_height, int delta_length): will add a wave with the given characteristics at the surface of the water above the (x,y) point. (x,y) must be within a body of water. Waves are a visual effect only and may not display at all on slower devices.")
+	return variant(new add_wave_command(
+	    args()[0]->evaluate(variables).as_int(),
+	    args()[1]->evaluate(variables).as_int(),
+	    args()[2]->evaluate(variables).as_int(),
+	    args()[3]->evaluate(variables).as_int(),
+	    args()[4]->evaluate(variables).as_int(),
+	    args()[5]->evaluate(variables).as_int(),
+	    args()[6]->evaluate(variables).as_int()));
+END_FUNCTION_DEF(add_wave)
 
-class rect_current_function : public function_expression {
-public:
-	explicit rect_current_function(const args_list& args)
-           : function_expression("rect_current", args, 7) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new rect_current_generator(rect(
-		                  args()[0]->evaluate(variables).as_int(),
-		                  args()[1]->evaluate(variables).as_int(),
-		                  args()[2]->evaluate(variables).as_int(),
-		                  args()[3]->evaluate(variables).as_int()),
-		                  args()[4]->evaluate(variables).as_int(),
-		                  args()[5]->evaluate(variables).as_int(),
-		                  args()[6]->evaluate(variables).as_int()));
-	}
-};
+FUNCTION_DEF(rect_current, 7, 7, "rect_current(int x, int y, int w, int h, int xvelocity, int yvelocity, int strength) -> current generator object: creates a current generator object that has a current with the given parameters. Set the return value of this function to an object's rect_current to attach it to an object and thus place it in the level.")
+	return variant(new rect_current_generator(rect(
+	                  args()[0]->evaluate(variables).as_int(),
+	                  args()[1]->evaluate(variables).as_int(),
+	                  args()[2]->evaluate(variables).as_int(),
+	                  args()[3]->evaluate(variables).as_int()),
+	                  args()[4]->evaluate(variables).as_int(),
+	                  args()[5]->evaluate(variables).as_int(),
+	                  args()[6]->evaluate(variables).as_int()));
+END_FUNCTION_DEF(rect_current)
 
 class begin_script_command : public entity_command_callable {
 public:
@@ -1951,16 +1509,9 @@ private:
 	std::string id_;
 };
 
-class begin_script_function : public function_expression {
-public:
-	explicit begin_script_function(const args_list& args)
-	   : function_expression("begin_script", args, 1) {
-	}
-private:
-	variant execute(const formula_callable& variables) const {
-		return variant(new begin_script_command(args()[0]->evaluate(variables).as_string()));
-	}
-};
+FUNCTION_DEF(begin_script, 1, 1, "begin_script(string id): begins the script with the given ID.")
+	return variant(new begin_script_command(args()[0]->evaluate(variables).as_string()));
+END_FUNCTION_DEF(begin_script)
 
 class end_script_command : public entity_command_callable {
 public:
@@ -1969,16 +1520,9 @@ public:
 	}
 };
 
-class end_script_function : public function_expression {
-public:
-	explicit end_script_function(const args_list& args)
-	   : function_expression("end_script", args, 0) {
-	}
-
-	variant execute(const formula_callable& variables) const {
-		return variant(new end_script_command);
-	}
-};
+FUNCTION_DEF(end_script, 0, 0, "end_script(): ends the most recent script to have begun.")
+	return variant(new end_script_command);
+END_FUNCTION_DEF(end_script)
 
 class add_particles_command : public custom_object_command_callable {
 public:
@@ -1993,46 +1537,25 @@ private:
 	std::string id_, type_;
 };
 
-class add_particles_function : public function_expression {
-public:
-	explicit add_particles_function(const args_list& args)
-	  : function_expression("add_particles", args, 1, 2) {
-	}
+FUNCTION_DEF(add_particles, 1, 2, "add_particles(string id): adds the particle system with the given id to the object")
+	return variant(new add_particles_command(
+	    args()[0]->evaluate(variables).as_string(),
+	    args()[args().size() < 2 ? 0 : 1]->evaluate(variables).as_string()));
+END_FUNCTION_DEF(add_particles)
 
-	variant execute(const formula_callable& variables) const {
-		return variant(new add_particles_command(
-		    args()[0]->evaluate(variables).as_string(),
-		    args()[args().size() < 2 ? 0 : 1]->evaluate(variables).as_string()));
-	}
-};
+FUNCTION_DEF(collides, 4, 4, "collides(object a, string area_a, object b, string area_b) -> boolean: returns true iff area_a within object a collides with area_b within object b.")
+	return variant(entity_user_collision_specific_areas(
+	           *args()[0]->evaluate(variables).convert_to<entity>(),
+	           args()[1]->evaluate(variables).as_string(),
+	           *args()[2]->evaluate(variables).convert_to<entity>(),
+	           args()[3]->evaluate(variables).as_string()));
+END_FUNCTION_DEF(collides)
 
-class collides_function : public function_expression {
-public:
-	explicit collides_function(const args_list& args)
-	  : function_expression("collides", args, 4, 4) {
-	}
-
-	variant execute(const formula_callable& variables) const {
-		return variant(entity_user_collision_specific_areas(
-		           *args()[0]->evaluate(variables).convert_to<entity>(),
-		           args()[1]->evaluate(variables).as_string(),
-		           *args()[2]->evaluate(variables).convert_to<entity>(),
-		           args()[3]->evaluate(variables).as_string()));
-	}
-};
-
-class collides_with_level_function : public function_expression {
-public:
-	explicit collides_with_level_function(const args_list& args)
-	  : function_expression("collides_with_level", args, 1, 1) {
-	}
-
-	variant execute(const formula_callable& variables) const {
-		return variant(non_solid_entity_collides_with_level(
-		           level::current(),
-		           *args()[0]->evaluate(variables).convert_to<entity>()));
-	}
-};
+FUNCTION_DEF(collides_with_level, 1, 1, "collides_with_level(object) -> boolean: returns true iff the given object collides with the level.")
+	return variant(non_solid_entity_collides_with_level(
+	           level::current(),
+	           *args()[0]->evaluate(variables).convert_to<entity>()));
+END_FUNCTION_DEF(collides_with_level)
 
 class blur_command : public custom_object_command_callable {
 	int alpha_, fade_, granularity_;
@@ -2052,19 +1575,12 @@ public:
 	}
 };
 
-class blur_function : public function_expression {
-public:
-	explicit blur_function(const args_list& args)
-	  : function_expression("blur", args, 0, 3) {
-	}
-	
-	variant execute(const formula_callable& variables) const {
-		return variant(new blur_command(
-		  args().size() > 0 ? args()[0]->evaluate(variables).as_int() : 0,
-		  args().size() > 1 ? args()[1]->evaluate(variables).as_int() : 10,
-		  args().size() > 2 ? args()[2]->evaluate(variables).as_int() : 1));
-	}
-};
+FUNCTION_DEF(blur, 0, 3, "blur(int alpha=0, int fade=10, int granularity=1): creates a motion blur for the current object.")
+	return variant(new blur_command(
+	  args().size() > 0 ? args()[0]->evaluate(variables).as_int() : 0,
+	  args().size() > 1 ? args()[1]->evaluate(variables).as_int() : 10,
+	  args().size() > 2 ? args()[2]->evaluate(variables).as_int() : 1));
+END_FUNCTION_DEF(blur)
 
 class text_command : public custom_object_command_callable {
 public:
@@ -2080,79 +1596,16 @@ private:
 	int size_;
 };
 
-class text_function : public function_expression {
-public:
-	explicit text_function(const args_list& args)
-	  : function_expression("text", args, 1, 3) {
-	}
-	
-	variant execute(const formula_callable& variables) const {
-		const std::string text = args()[0]->evaluate(variables).as_string();
-		const std::string font = args().size() > 1 ? args()[1]->evaluate(variables).as_string() : "default";
-		const int size = args().size() > 2 ? args()[2]->evaluate(variables).as_int() : 1;
-		return variant(new text_command(text, font, size));
-	}
-};
+FUNCTION_DEF(text, 1, 3, "text(string text, (optional)string font='default', (optional)int size=1): adds text for the current object")
+	const std::string text = args()[0]->evaluate(variables).as_string();
+	const std::string font = args().size() > 1 ? args()[1]->evaluate(variables).as_string() : "default";
+	const int size = args().size() > 2 ? args()[2]->evaluate(variables).as_int() : 1;
+	return variant(new text_command(text, font, size));
+END_FUNCTION_DEF(text)
 
-class preload_powerup_command : public custom_object_command_callable {
-public:
-	explicit preload_powerup_command(const std::string& id)
-	  : id_(id)
-	{}
-
-	virtual void execute(level& lvl, custom_object& ob) const {
-		std::cerr << "PRELOAD_POWERUP: '" << id_ << "'\n";
-
-		if(!lvl.player()){
-			return;
-		}
-
-		entity_ptr ch = &lvl.player()->get_entity();
-
-		if(ch->driver()) {
-			ch = ch->driver();
-		}
-
-		const_powerup_ptr p = powerup::get(id_);
-		if(!p) {
-			return;
-		}
-
-		if(ch->is_powerup_loaded(p)) {
-			//this modification is already cached, so don't bother.
-			return;
-		}
-
-		ch->preload_powerup(p);
-
-		//threading::thread thread(boost::bind(do_preload_powerup, p, lvl.player()));
-		//thread.detach();
-	}
-private:
-	std::string id_;
-};
-
-class preload_powerup_function : public function_expression {
-public:
-	explicit preload_powerup_function(const args_list& args)
-	  : function_expression("preload_powerup", args, 1, 1) {
-	}
-
-	variant execute(const formula_callable& variables) const {
-		return variant(new preload_powerup_command(args()[0]->evaluate(variables).as_string()));
-	}
-};
-
-class swallow_event_function : public function_expression {
-public:
-	explicit swallow_event_function(const args_list& args)
-	  : function_expression("swallow_event", args, 0, 0) {
-	}
-
-	variant execute(const formula_callable& variables) const {
-		return variant(new swallow_object_command_callable);
-	}
-};
+FUNCTION_DEF(swallow_event, 0, 0, "swallow_event(): when used in an instance-specific event handler, this causes the event to be swallowed and not passed to the object's main event handler.")
+	return variant(new swallow_object_command_callable);
+END_FUNCTION_DEF(swallow_event)
 
 class custom_object_function_symbol_table : public function_symbol_table
 {
@@ -2168,136 +1621,15 @@ expression_ptr custom_object_function_symbol_table::create_function(
                            const std::vector<expression_ptr>& args,
 						   const formula_callable_definition* callable_def) const
 {
-	if(fn == "execute") {
-		return expression_ptr(new execute_function(args));
-	} else if(fn == "spawn") {
-		return expression_ptr(new spawn_function(args, false));
-	} else if(fn == "spawn_player") {
-		return expression_ptr(new spawn_function(args, true));
-	} else if(fn == "time") {
-		return expression_ptr(new time_function(args));
-	} else if(fn == "object") {
-		return expression_ptr(new object_function(args));
-	} else if(fn == "board_vehicle") {
-		return expression_ptr(new board_vehicle_function(args));
-	} else if(fn == "eject_vehicle") {
-		return expression_ptr(new eject_vehicle_function(args));
-	} else if(fn == "checkpoint_game") {
-		return expression_ptr(new save_game_function(args, false));
-	} else if(fn == "save_game") {
-		return expression_ptr(new save_game_function(args, true));
-	} else if(fn == "load_game") {
-		return expression_ptr(new load_game_function(args));
-	} else if(fn == "can_load_game") {
-		return expression_ptr(new can_load_game_function(args));
-	} else if(fn == "sound") {
-		return expression_ptr(new sound_function(args));
-	} else if(fn == "sound_loop") {
-		return expression_ptr(new sound_loop_function(args));
-	} else if(fn == "sound_volume") {
-		return expression_ptr(new sound_volume_function(args));
-	} else if(fn == "move_to_standing") {
-		return expression_ptr(new move_to_standing_function(args));
-	} else if(fn == "music") {
-		return expression_ptr(new music_function(args));
-	} else if(fn == "music_onetime") {
-		return expression_ptr(new music_onetime_function(args));
-	} else if(fn == "unboard") {
-		return expression_ptr(new unboard_function(args));
-	} else if(fn == "stop_sound") {
-		return expression_ptr(new stop_sound_function(args));
-	} else if(fn == "screen_flash") {
-		return expression_ptr(new screen_flash_function(args));
-	} else if(fn == "title") {
-		return expression_ptr(new title_function(args));
-	} else if(fn == "shake_screen") {
-		return expression_ptr(new shake_screen_function(args));
-	} else if(fn == "radial_current") {
-		return expression_ptr(new radial_current_function(args));
-	} else if(fn == "child") {
-		return expression_ptr(new child_function(args));
-	} else if(fn == "hit") {
-		return expression_ptr(new hit_function(args));
-	} else if(fn == "animation") {
-		return expression_ptr(new animation_function(args));
-	} else if(fn == "die") {
-		return expression_ptr(new die_function(args));
-	} else if(fn == "facing") {
-		return expression_ptr(new facing_function(args));
-	} else if(fn == "set_var") {
-		return expression_ptr(new set_var_function(args));
-	} else if(fn == "set") {
+	if(fn == "set") {
 		return expression_ptr(new set_function(args, callable_def));
-	} else if(fn == "set_value") {
-		return expression_ptr(new set_value_function(args));
 	} else if(fn == "add") {
 		return expression_ptr(new add_function(args, callable_def));
-	} else if(fn == "powerup") {
-		return expression_ptr(new get_powerup_function(args));
-	} else if(fn == "solid") {
-		return expression_ptr(new solid_function(args));
-	} else if(fn == "set_solid") {
-		return expression_ptr(new set_solid_function(args));
-	} else if(fn == "speech_dialog") {
-		return expression_ptr(new speech_dialog_function(args));
-	} else if(fn == "paused_speech_dialog") {
-		return expression_ptr(new paused_speech_dialog_function(args));
-	} else if(fn == "transient_speech_dialog") {
-		return expression_ptr(new transient_speech_dialog_function(args));
-	} else if(fn == "set_group") {
-		return expression_ptr(new set_group_function(args));
-	} else if(fn == "scroll_to") {
-		return expression_ptr(new scroll_to_function(args));
-	} else if(fn == "end_game") {
-		return expression_ptr(new end_game_function(args));
-	} else if(fn == "debug") {
-		return expression_ptr(new debug_function(args));
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
-	} else if(fn == "debug_console") {
-		return expression_ptr(new debug_console_function(args));
-#endif
-	} else if(fn == "fire_event") {
-		return expression_ptr(new fire_event_function(args));
-	} else if(fn == "distortion") {
-		return expression_ptr(new distortion_function(args));
-	} else if(fn == "get_object") {
-		return expression_ptr(new get_object_function(args));
-	} else if(fn == "add_object") {
-		return expression_ptr(new add_object_function(args));
-	} else if(fn == "resolve_solid") {
-		return expression_ptr(new resolve_solid_function(args));
-	} else if(fn == "remove_object") {
-		return expression_ptr(new remove_object_function(args));
-	} else if(fn == "teleport") {
-		return expression_ptr(new teleport_function(args));
-	} else if(fn == "schedule") {
-		return expression_ptr(new schedule_function(args));
-	} else if(fn == "add_water") {
-		return expression_ptr(new add_water_function(args));
-	} else if(fn == "remove_water") {
-		return expression_ptr(new remove_water_function(args));
-	} else if(fn == "add_wave") {
-		return expression_ptr(new add_wave_function(args));
-	} else if(fn == "rect_current") {
-		return expression_ptr(new rect_current_function(args));
-	} else if(fn == "begin_script") {
-		return expression_ptr(new begin_script_function(args));
-	} else if(fn == "end_script") {
-		return expression_ptr(new end_script_function(args));
-	} else if(fn == "add_particles") {
-		return expression_ptr(new add_particles_function(args));
-	} else if(fn == "collides") {
-		return expression_ptr(new collides_function(args));
-	} else if(fn == "collides_with_level") {
-		return expression_ptr(new collides_with_level_function(args));
-	} else if(fn == "blur") {
-		return expression_ptr(new blur_function(args));
-	} else if(fn == "text") {
-		return expression_ptr(new text_function(args));
-	} else if(fn == "preload_powerup") {
-		return expression_ptr(new preload_powerup_function(args));
-	} else if(fn == "swallow_event") {
-		return expression_ptr(new swallow_event_function(args));
+	}
+
+	std::map<std::string, function_creator*>::const_iterator i = function_creators().find(fn);
+	if(i != function_creators().end()) {
+		return expression_ptr(i->second->create(args));
 	}
 
 	return function_symbol_table::create_function(fn, args, callable_def);
@@ -2330,3 +1662,16 @@ void init_custom_object_functions(wml::const_node_ptr node)
 		assert(std::count(names.begin(), names.end(), i1->second->attr("name").val()));
 	}
 }
+
+UTILITY(document_object_functions) {
+	std::sort(function_helpstrings().begin(), function_helpstrings().end());
+	foreach(std::string s, function_helpstrings()) {
+		std::string::iterator i = std::find(s.begin(), s.end(), ':');
+		if(i != s.end()) {
+			s = "<b>" + std::string(s.begin(), i) + "</b>" + std::string(i, s.end());
+		}
+		s = "<p>" + s + "</p>";
+		std::cout << s << "\n";
+	}
+}
+

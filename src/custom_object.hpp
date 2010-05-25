@@ -68,8 +68,6 @@ public:
 	virtual bool is_active(const rect& screen_area) const;
 	bool dies_on_inactive() const;
 	bool always_active() const;
-	void hit_player();
-	void hit_by(entity& e);
 	void move_to_standing(level& lvl);
 
 	bool body_harmful() const;
