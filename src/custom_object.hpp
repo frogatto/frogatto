@@ -130,6 +130,8 @@ public:
 	
 	bool execute_command(const variant& var);
 
+	bool allow_level_collisions() const;
+
 	//statistic on how many FFL events are handled every second.
 	static int events_handled_per_second;
 

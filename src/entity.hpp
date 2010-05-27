@@ -224,6 +224,8 @@ public:
 
 	void set_attached_objects(const std::vector<entity_ptr>& v);
 
+	virtual bool allow_level_collisions() const { return false; }
+
 protected:
 
 	virtual const solid_info* calculate_solid() const = 0;

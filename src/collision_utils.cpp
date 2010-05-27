@@ -100,7 +100,7 @@ bool entity_collides(level& lvl, const entity& e, MOVE_DIRECTION dir, collision_
 		return false;
 	}
 
-	if(entity_collides_with_level(lvl, e, dir, info)) {
+	if(!e.allow_level_collisions() && entity_collides_with_level(lvl, e, dir, info)) {
 		return true;
 	}
 

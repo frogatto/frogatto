@@ -2591,6 +2591,11 @@ void custom_object::set_sound_volume(const int sound_volume)
 	sound_volume_ = sound_volume;
 }
 
+bool custom_object::allow_level_collisions() const
+{
+	return type_->use_image_for_collisions();
+}
+
 BENCHMARK(custom_object_spike) {
 	static level* lvl = NULL;
 	if(!lvl) {	
