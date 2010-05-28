@@ -256,13 +256,21 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	}
 
 	if(draw_with_waves == false) {
+
+		unsigned char water_color[] = {a.color_[0], a.color_[1], a.color_[2], a.color_[3]};
 		
 		glBlendFunc(GL_ONE, GL_ONE);
 		#if GL_OES_blend_subtract
 		glBlendEquationOES(GL_FUNC_REVERSE_SUBTRACT_OES);
 		#else
-		if (GLEW_EXT_blend_equation_separate)
+		if(GLEW_EXT_blend_equation_separate) {
 			glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
+		} else {
+			const int max_color = std::max(water_color[0], std::max(water_color[1], water_color[2]));
+			water_color[0] = max_color - water_color[0];
+			water_color[1] = max_color - water_color[1];
+			water_color[2] = max_color - water_color[2];
+		}
 		#endif
 		glDisable(GL_TEXTURE_2D);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -277,7 +285,7 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 			waterline_rect.x + waterline_rect.w, underwater_rect.y + underwater_rect.h
 		};
 		
-		glColor4ub(a.color_[0], a.color_[1], a.color_[2], a.color_[3]);
+		glColor4ub(water_color[0], water_color[1], water_color[2], water_color[3]);
 		glVertexPointer(2, GL_FLOAT, 0, vertices);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, sizeof(vertices)/sizeof(GLfloat)/2);
 		#if GL_OES_blend_subtract
