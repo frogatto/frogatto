@@ -263,13 +263,13 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 		#if GL_OES_blend_subtract
 		glBlendEquationOES(GL_FUNC_REVERSE_SUBTRACT_OES);
 		#else
-		if(GLEW_EXT_blend_equation_separate) {
+		if(false && GLEW_EXT_blend_equation_separate) {
 			glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
 		} else {
 			const int max_color = std::max(water_color[0], std::max(water_color[1], water_color[2]));
-			water_color[0] = max_color - water_color[0];
-			water_color[1] = max_color - water_color[1];
-			water_color[2] = max_color - water_color[2];
+			water_color[0] = (max_color - water_color[0])/8;
+			water_color[1] = (max_color - water_color[1])/8;
+			water_color[2] = (max_color - water_color[2])/8;
 		}
 		#endif
 		glDisable(GL_TEXTURE_2D);
