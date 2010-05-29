@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stack>
+#include <limits.h>
 
 #include "color_utils.hpp"
 #include "draw_scene.hpp"
@@ -210,27 +211,9 @@ void speech_dialog::draw() const
 	const int TextAreaHeight = 80;
 
 	const int TextBorder = 10;
-	const rect pane_area(
-	  top_corner->width(),
-	  preferences::virtual_screen_height() - TextAreaHeight + TextBorder,
-	  preferences::virtual_screen_width() - top_corner->width()*2,
-	  TextAreaHeight - bottom_corner->height());
 
-	const rect text_area(pane_area.x()-30, pane_area.y()-30, pane_area.w()+60, pane_area.h()+60);
-
-	graphics::draw_rect(pane_area, graphics::color(85, 53, 53, 255));
-	top_corner->blit(pane_area.x() - top_corner->width(), pane_area.y() - top_corner->height());
-	top_corner->blit(pane_area.x2()-1, pane_area.y() - top_corner->height(), -top_corner->width(), top_corner->height());
-
-	top_edge->blit(pane_area.x(), pane_area.y() - top_edge->height(), pane_area.w(), top_edge->height());
-
-	bottom_corner->blit(pane_area.x() - bottom_corner->width(), pane_area.y2());
-	bottom_corner->blit(pane_area.x2()-1, pane_area.y2(), -bottom_corner->width(), bottom_corner->height());
-
-	bottom_edge->blit(pane_area.x(), pane_area.y2(), pane_area.w(), bottom_edge->height());
-
-	side_edge->blit(pane_area.x() - side_edge->width(), pane_area.y(), side_edge->width(), pane_area.h());
-	side_edge->blit(pane_area.x2()-1, pane_area.y(), -side_edge->width(), pane_area.h());
+	int speaker_xpos = INT_MAX;
+	int speaker_ypos = INT_MAX;
 
 	const_entity_ptr speaker = left_side_speaking_ ? left_ : right_;
 	if(speaker) {
@@ -238,13 +221,43 @@ void speech_dialog::draw() const
 		const int screen_x = pos.x/100 + (graphics::screen_width()/2)*(-1.0/pos.zoom + 1.0);
 		const int screen_y = pos.y/100 + (graphics::screen_height()/2)*(-1.0/pos.zoom + 1.0);
 
-		const int xpos = (speaker->feet_x() - screen_x)*pos.zoom - 36;
-		const int ypos = (speaker->feet_y() - screen_y)*pos.zoom - 10;
+		speaker_xpos = (speaker->feet_x() - screen_x)*pos.zoom - 36;
+		speaker_ypos = (speaker->feet_y() - screen_y)*pos.zoom - 10;
+	}
+
+	if(pane_area_.w() == 0) {
+		pane_area_ = rect(
+		  top_corner->width(),
+		  preferences::virtual_screen_height() - TextAreaHeight + TextBorder,
+		  preferences::virtual_screen_width() - top_corner->width()*2,
+		  TextAreaHeight - bottom_corner->height());
+		if(speaker_ypos < 100) {
+			pane_area_ = rect(pane_area_.x(), top_corner->height() + 50, pane_area_.w(), pane_area_.h());
+		}
+	}
+
+	const rect text_area(pane_area_.x()-30, pane_area_.y()-30, pane_area_.w()+60, pane_area_.h()+60);
+
+	graphics::draw_rect(pane_area_, graphics::color(85, 53, 53, 255));
+	top_corner->blit(pane_area_.x() - top_corner->width(), pane_area_.y() - top_corner->height());
+	top_corner->blit(pane_area_.x2()-1, pane_area_.y() - top_corner->height(), -top_corner->width(), top_corner->height());
+
+	top_edge->blit(pane_area_.x(), pane_area_.y() - top_edge->height(), pane_area_.w(), top_edge->height());
+
+	bottom_corner->blit(pane_area_.x() - bottom_corner->width(), pane_area_.y2());
+	bottom_corner->blit(pane_area_.x2()-1, pane_area_.y2(), -bottom_corner->width(), bottom_corner->height());
+
+	bottom_edge->blit(pane_area_.x(), pane_area_.y2(), pane_area_.w(), bottom_edge->height());
+
+	side_edge->blit(pane_area_.x() - side_edge->width(), pane_area_.y(), side_edge->width(), pane_area_.h());
+	side_edge->blit(pane_area_.x2()-1, pane_area_.y(), -side_edge->width(), pane_area_.h());
+
+	if(speaker) {
 
 		//if the arrow to the speaker is within reasonable limits, then
 		//blit it.
-		if(xpos > top_corner->width() && xpos < graphics::screen_width() - top_corner->width() - arrow->width()) {
-			arrow->blit(xpos, pane_area.y() - arrow->height() - 30);
+		if(speaker_xpos > top_corner->width() && speaker_xpos < graphics::screen_width() - top_corner->width() - arrow->width()) {
+			arrow->blit(speaker_xpos, pane_area_.y() - arrow->height() - 30);
 		}
 	}
 
@@ -336,6 +349,8 @@ void speech_dialog::set_speaker(const_entity_ptr e, bool left_side)
 	} else {
 		right_ = e;
 	}
+
+	pane_area_ = rect();
 }
 
 void speech_dialog::set_side(bool left_side)

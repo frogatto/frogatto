@@ -47,6 +47,8 @@ private:
 
 	int expiration_;
 
+	mutable rect pane_area_;
+
 	int num_chars() const;
 
 	speech_dialog(const speech_dialog&);
