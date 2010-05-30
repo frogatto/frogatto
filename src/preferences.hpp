@@ -1,10 +1,14 @@
 #ifndef PREFERENCES_HPP_INCLUDED
 #define PREFERENCES_HPP_INCLUDED
 
+#include <string>
+
 namespace preferences {
 	
 	bool parse_arg(const char* arg);
 	bool no_sound();
+
+	const std::string& level_path();
 	const char* save_file_path();
 	const char* auto_save_file_path();
 	bool show_debug_hitboxes();

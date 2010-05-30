@@ -243,7 +243,7 @@ public:
 		
 		std::string name = entry->text();
 		if(name.empty() == false) {
-			sys::write_file("data/level/" + name, "[level]\n[/level]\n");
+			sys::write_file(preferences::level_path() + name, "[level]\n[/level]\n");
 			editor_.close();
 			g_last_edited_level() = name;
 		}
@@ -1947,7 +1947,7 @@ void editor::save_level()
 	remove_ghost_objects();
 	ghost_objects_.clear();
 
-	const std::string path = "data/level/";
+	const std::string path = preferences::level_path();
 	std::string data;
 	wml::write(lvl_->write(), data);
 	sys::write_file(path + filename_, data);

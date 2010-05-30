@@ -2937,7 +2937,7 @@ bool entity_in_current_level(const entity* e)
 UTILITY(correct_solidity)
 {
 	std::vector<std::string> files;
-	sys::get_files_in_dir("data/level/", &files);
+	sys::get_files_in_dir(preferences::level_path(), &files);
 	foreach(const std::string& file, files) {
 		boost::intrusive_ptr<level> lvl(new level(file));
 		lvl->finish_loading();
@@ -2958,7 +2958,7 @@ UTILITY(correct_solidity)
 
 		std::string data;
 		wml::write(lvl->write(), data);
-		sys::write_file("data/level/" + file, data);
+		sys::write_file(preferences::level_path() + file, data);
 	}
 }
 
@@ -2968,7 +2968,7 @@ UTILITY(compile_levels)
 	preferences::compiling_tiles = true;
 
 	std::vector<std::string> files;
-	sys::get_files_in_dir("data/level/", &files);
+	sys::get_files_in_dir(preferences::level_path(), &files);
 
 	wml::node_ptr index_node(new wml::node("level_index"));
 
@@ -3013,7 +3013,7 @@ BENCHMARK(load_nene)
 BENCHMARK(load_all_levels)
 {
 	std::vector<std::string> files;
-	sys::get_files_in_dir("data/level/", &files);
+	sys::get_files_in_dir(preferences::level_path(), &files);
 	BENCHMARK_LOOP {
 		foreach(const std::string& file, files) {
 			boost::intrusive_ptr<level> lvl(new level(file));
@@ -3027,7 +3027,7 @@ BENCHMARK(load_and_save_all_levels)
 {
 	BENCHMARK_LOOP {
 		std::vector<std::string> files;
-		sys::get_files_in_dir("data/level/", &files);
+		sys::get_files_in_dir(preferences::level_path(), &files);
 		foreach(const std::string& file, files) {
 			std::cerr << "LOAD_LEVEL '" << file << "'\n";
 			boost::intrusive_ptr<level> lvl(new level(file));
@@ -3035,7 +3035,7 @@ BENCHMARK(load_and_save_all_levels)
 
 			std::string data;
 			wml::write(lvl->write(), data);
-			sys::write_file("data/level/" + file, data);
+			sys::write_file(preferences::level_path() + file, data);
 		}
 	}
 }

@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <string>
 #include <SDL.h>
 
@@ -12,6 +13,8 @@ namespace preferences {
 		bool use_pretty_scaling_ = false;
 		bool fullscreen_ = false;
 		bool debug_ = true;
+
+		std::string level_path_ = "data/level/";
 		
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 		int virtual_screen_width_ = 960;
@@ -66,6 +69,10 @@ namespace preferences {
 	
 	bool no_sound() {
 		return no_sound_;
+	}
+
+	const std::string& level_path() {
+		return level_path_;
 	}
 	
 	const char *save_file_path() {
@@ -183,8 +190,18 @@ namespace preferences {
 	}
 	
 	bool parse_arg(const char* arg) {
-		std::string s(arg);
-		if(s == "--show_hitboxes") {
+		const std::string s(arg);
+
+		std::string arg_name, arg_value;
+		std::string::const_iterator equal = std::find(s.begin(), s.end(), '=');
+		if(equal != s.end()) {
+			arg_name = std::string(s.begin(), equal);
+			arg_value = std::string(equal+1, s.end());
+		}
+
+		if(arg_name == "--level_path") {
+			level_path_ = arg_value + "/";
+		} else if(s == "--show_hitboxes") {
 			show_debug_hitboxes_ = true;
 		} else if(s == "--scale") {
 			set_use_pretty_scaling(true);
