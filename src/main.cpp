@@ -33,6 +33,7 @@
 #include "graphical_font.hpp"
 #include "gui_section.hpp"
 #include "inventory.hpp"
+#include "iphone_device_info.h"
 #include "joystick.hpp"
 #include "key.hpp"
 #include "level.hpp"
@@ -65,40 +66,6 @@ bool show_title_screen(std::string& level_cfg)
 {
 	//currently the titlescreen is disabled.
 	return false;
-}
-
-void iphone_test ()
-{
-	graphics::texture img(graphics::texture::get("titlescreen.png"));
-	bool done = false;
-	while (!done)
-	{
-		SDL_Event event;
-		while (SDL_PollEvent(&event))
-		{
-			if (event.type == SDL_QUIT || event.type == SDL_MOUSEBUTTONDOWN)
-				done = true;
-		}
-		graphics::prepare_raster();
-		graphics::blit_texture(img, 0, 0, 200, 100);
-		std::cerr << gluErrorString(glGetError()) << "~1\n";
-		glDisable(GL_TEXTURE_2D);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		SDL_Rect rect = {10, 10, 50, 50};
-		glColor4f(1.0, 0.5, 0.0, 1.0);
-		GLfloat vertices[] = {
-			rect.x, rect.y,
-			rect.x+rect.w, rect.y,
-			rect.x, rect.y+rect.h,
-			rect.x+rect.w, rect.y+rect.h
-		};
-		glVertexPointer(2, GL_FLOAT, 0, vertices);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glEnable(GL_TEXTURE_2D);
-		SDL_GL_SwapBuffers();
-		SDL_Delay(500);
-	}
 }
 
 }
@@ -192,6 +159,14 @@ extern "C" int main(int argc, char** argv)
 	}
 	
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+	int width, height;
+	iphone_screen_res(&width, &height);
+	preferences::set_actual_screen_width(width);
+	preferences::set_actual_screen_height(height);
+	// set virtual screen size here
+	if (width > 320)
+		preferences::set_use_pretty_scaling(true);
+	
 	SDL_WindowID windowID = SDL_CreateWindow (NULL, 0, 0, preferences::actual_screen_width(), preferences::actual_screen_height(),
 		SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN |
 		SDL_WINDOW_BORDERLESS);
