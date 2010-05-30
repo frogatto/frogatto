@@ -163,9 +163,14 @@ extern "C" int main(int argc, char** argv)
 	iphone_screen_res(&width, &height);
 	preferences::set_actual_screen_width(width);
 	preferences::set_actual_screen_height(height);
-	// set virtual screen size here
+	int multiplier = 2;
 	if (width > 320)
+	{
 		preferences::set_use_pretty_scaling(true);
+		multiplier = 1;
+	}
+	preferences::set_virtual_screen_width(height*multiplier);
+	preferences::set_virtual_screen_height(width*multiplier);
 	
 	SDL_WindowID windowID = SDL_CreateWindow (NULL, 0, 0, preferences::actual_screen_width(), preferences::actual_screen_height(),
 		SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN |

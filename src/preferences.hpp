@@ -49,6 +49,8 @@ namespace preferences {
 	
 	void set_actual_screen_width(int width);
 	void set_actual_screen_height(int height);
+	void set_virtual_screen_width(int width);
+	void set_virtual_screen_height(int height);
 	
 	bool screen_rotated();
 	

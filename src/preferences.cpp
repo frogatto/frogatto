@@ -120,6 +120,17 @@ namespace preferences {
 		return virtual_screen_height_;
 	}
 	
+	void set_virtual_screen_width (int width)
+	{
+		virtual_screen_width_ = width;
+		recalculate_draw_mask();
+	}
+	
+	void set_virtual_screen_height (int height)
+	{
+		virtual_screen_height_ = height;
+	}
+	
 	int actual_screen_width()
 	{
 		return actual_screen_width_;
