@@ -1999,6 +1999,32 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		break;
 	}
 
+	case CUSTOM_OBJECT_COLLIDE_DIMENSIONS_IN:
+	case CUSTOM_OBJECT_COLLIDE_DIMENSIONS_NOT_IN: {
+		unsigned int solid = 0, weak = 0;
+		for(int n = 0; n != value.num_elements(); ++n) {
+			std::string str = value[n].as_string();
+			if(!str.empty() && str[0] == '~') {
+				str = std::string(str.begin() + 1, str.end());
+				const int id = get_solid_dimension_id(str);
+				weak |= 1 << id;
+			} else {
+				const int id = get_solid_dimension_id(value[n].as_string());
+				solid |= 1 << id;
+			}
+		}
+
+		if(slot == CUSTOM_OBJECT_COLLIDE_DIMENSIONS_NOT_IN) {
+			solid = ~solid;
+			weak = ~weak;
+		}
+
+		weak |= solid;
+
+		set_collide_dimensions(solid, weak);
+		break;
+	}
+
 	case CUSTOM_OBJECT_SOLID_DIMENSIONS_IN:
 	case CUSTOM_OBJECT_SOLID_DIMENSIONS_NOT_IN: {
 		unsigned int solid = 0, weak = 0;
