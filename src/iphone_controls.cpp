@@ -103,19 +103,20 @@ bool iphone_controls::hittest_button(const rect& area)
 		SDL_SelectMouse(i);
 		Uint8 button_state = SDL_GetMouseState(&x, &y);
 
-		if(preferences::virtual_screen_width() > preferences::actual_screen_width()) {
-			x *= 2;
-			y *= 2;
-		}
-
 		if(button_state & SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			//rotate the coordinates
 			if(preferences::screen_rotated()) {
 				x = preferences::actual_screen_width() - x;
 				std::swap(x, y);
 			}
+			
+			if(preferences::virtual_screen_width() >
+				(preferences::screen_rotated() ? preferences::actual_screen_height() : preferences::actual_screen_width())) {
+				x *= 2;
+				y *= 2;
+			}
 
-			const point mouse_pos(x*2, y*2);
+			const point mouse_pos(x, y);
 			if(point_in_rect(mouse_pos, area)) {
 				return true;
 			}
