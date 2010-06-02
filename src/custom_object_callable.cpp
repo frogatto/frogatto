@@ -1,6 +1,19 @@
 #include "asserts.hpp"
 #include "custom_object_callable.hpp"
 
+namespace {
+std::vector<custom_object_callable::entry>& entries() {
+	static std::vector<custom_object_callable::entry> instance;
+	return instance;
+}
+
+std::map<std::string, int>& keys_to_slots() {
+	static std::map<std::string, int> instance;
+	return instance;
+}
+
+}
+
 const custom_object_callable& custom_object_callable::instance()
 {
 	static const custom_object_callable obj;
@@ -35,39 +48,46 @@ custom_object_callable::custom_object_callable()
 };
 	ASSERT_EQ(NUM_CUSTOM_OBJECT_PROPERTIES, sizeof(CustomObjectProperties)/sizeof(*CustomObjectProperties));
 
-	for(int n = 0; n != sizeof(CustomObjectProperties)/sizeof(*CustomObjectProperties); ++n) {
-		entries_.push_back(entry(CustomObjectProperties[n]));
-	}
+	if(entries().empty()) {
+		for(int n = 0; n != sizeof(CustomObjectProperties)/sizeof(*CustomObjectProperties); ++n) {
+			entries().push_back(entry(CustomObjectProperties[n]));
+		}
 
-	for(int n = 0; n != entries_.size(); ++n) {
-		keys_to_slots_[entries_[n].id] = n;
+		for(int n = 0; n != entries().size(); ++n) {
+			keys_to_slots()[entries()[n].id] = n;
+		}
 	}
 }
 
-int custom_object_callable::get_slot(const std::string& key) const
+int custom_object_callable::get_key_slot(const std::string& key)
 {
-	std::map<std::string, int>::const_iterator itor = keys_to_slots_.find(key);
-	if(itor == keys_to_slots_.end()) {
+	std::map<std::string, int>::const_iterator itor = keys_to_slots().find(key);
+	if(itor == keys_to_slots().end()) {
 		return -1;
 	}
 
 	return itor->second;
 }
 
+int custom_object_callable::get_slot(const std::string& key) const
+{
+	return get_key_slot(key);
+}
+
 game_logic::formula_callable_definition::entry* custom_object_callable::get_entry(int slot)
 {
-	if(slot < 0 || slot >= entries_.size()) {
+	if(slot < 0 || slot >= entries().size()) {
 		return NULL;
 	}
 
-	return &entries_[slot];
+	return &entries()[slot];
 }
 
 const game_logic::formula_callable_definition::entry* custom_object_callable::get_entry(int slot) const
 {
-	if(slot < 0 || slot >= entries_.size()) {
+	if(slot < 0 || slot >= entries().size()) {
 		return NULL;
 	}
 
-	return &entries_[slot];
+	return &entries()[slot];
 }

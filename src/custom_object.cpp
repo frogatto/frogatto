@@ -1550,6 +1550,12 @@ void custom_object::get_inputs(std::vector<game_logic::formula_input>* inputs) c
 
 void custom_object::set_value(const std::string& key, const variant& value)
 {
+	const int slot = custom_object_callable::get_key_slot(key);
+	if(slot != -1) {
+		set_value_by_slot(slot, value);
+		return;
+	}
+
 	if(key == "animation") {
 		set_frame(value.as_string());
 	} else if(key == "time_in_animation") {

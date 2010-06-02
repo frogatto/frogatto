@@ -107,15 +107,14 @@ class custom_object_callable : public game_logic::formula_callable_definition
 public:
 	static const custom_object_callable& instance();
 
+	static int get_key_slot(const std::string& key);
+
 	custom_object_callable();
 
 	int get_slot(const std::string& key) const;
 	entry* get_entry(int slot);
 	const entry* get_entry(int slot) const;
 	int num_slots() const { return NUM_CUSTOM_OBJECT_PROPERTIES; }
-private:
-	std::vector<entry> entries_;
-	std::map<std::string, int> keys_to_slots_;
 };
 
 #endif
