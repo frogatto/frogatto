@@ -1957,6 +1957,7 @@ void editor::save_level()
 	if(lvl_->previous_level().empty() == false) {
 		try {
 			level prev(lvl_->previous_level());
+			prev.finish_loading();
 			if(prev.next_level() != lvl_->id()) {
 				prev.set_next_level(lvl_->id());
 				std::string data;
@@ -1970,6 +1971,7 @@ void editor::save_level()
 	if(lvl_->next_level().empty() == false) {
 		try {
 			level next(lvl_->next_level());
+			next.finish_loading();
 			if(next.previous_level() != lvl_->id()) {
 				next.set_previous_level(lvl_->id());
 				std::string data;
