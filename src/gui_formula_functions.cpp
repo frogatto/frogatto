@@ -140,11 +140,11 @@ public:
 
 class draw_animation_area_function : public function_expression {
 public:
-	draw_animation_area_function(gui_algorithm_ptr algo, const args_list& args)
+	draw_animation_area_function(gui_algorithm* algo, const args_list& args)
 	  : function_expression("draw_animation_area", args, 4, 7), algo_(algo)
 	{}
 
-	gui_algorithm_ptr algo_;
+	gui_algorithm* algo_;
 private:
 	variant execute(const formula_callable& variables) const {
 		variant anim = args()[0]->evaluate(variables);
@@ -192,11 +192,11 @@ public:
 
 class draw_animation_function : public function_expression {
 public:
-	draw_animation_function(gui_algorithm_ptr algo, const args_list& args)
+	draw_animation_function(gui_algorithm* algo, const args_list& args)
 	  : function_expression("draw_animation", args, 3, 3), algo_(algo)
 	{}
 
-	gui_algorithm_ptr algo_;
+	gui_algorithm* algo_;
 private:
 	variant execute(const formula_callable& variables) const {
 		variant anim = args()[0]->evaluate(variables);
@@ -240,9 +240,9 @@ private:
 
 class gui_command_function_symbol_table : public function_symbol_table
 {
-	gui_algorithm_ptr algo_;
+	gui_algorithm* algo_;
 public:
-	gui_command_function_symbol_table(gui_algorithm_ptr algo) : algo_(algo)
+	gui_command_function_symbol_table(gui_algorithm* algo) : algo_(algo)
 	{}
 
 	expression_ptr create_function(
@@ -324,7 +324,7 @@ gui_algorithm::gui_algorithm(wml::const_node_ptr node)
 	  process_formula_(formula::create_optional_formula(node->attr("on_process"), &get_custom_object_functions_symbol_table(), &gui_algorithm_definition::instance())),
 	  cycle_(0), object_(new custom_object("dummy_gui_object", 0, 0, true))
 {
-	gui_command_function_symbol_table symbols(gui_algorithm_ptr(this));
+	gui_command_function_symbol_table symbols(this);
 
 	object_->add_ref();
 	FOREACH_WML_CHILD(frame_node, node, "animation") {
