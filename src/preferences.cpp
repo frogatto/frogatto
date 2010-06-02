@@ -244,6 +244,14 @@ namespace preferences {
 			use_16bpp_textures_ = true;
 
 			recalculate_draw_mask();
+		} else if(s == "--simipad") {
+			virtual_screen_width_ = 1024;
+			virtual_screen_height_ = 768;
+		
+			actual_screen_width_ = 1024;
+			actual_screen_height_ = 768;
+
+			recalculate_draw_mask();
 		} else if(s == "--fps") {
 			show_fps_ = true;
 		} else if(s == "--no-fps") {
