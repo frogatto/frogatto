@@ -1099,7 +1099,7 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 			int xstart = std::max<int>(0, (x - blit_info.xbase)/TileSize);
 			int xend = std::min<int>(indexes.size(), (x + w - blit_info.xbase)/TileSize + 1);
 			for(; xstart < xend; ++xstart) {
-				if(indexes[xstart] != SHRT_MIN) {
+				if(indexes[xstart] != TILE_INDEX_TYPE_MAX) {
 					if(indexes[xstart] > 0) {
 						GLint index = indexes[xstart];
 						opaque_indexes.push_back(index);
@@ -1131,12 +1131,6 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 	if(blit_info.texture_id != GLuint(-1)) {
 		graphics::texture::set_current_texture(blit_info.texture_id);
 	}
-
-#if TARGET_OS_IPHONE
-	const GLenum index_type = GL_UNSIGNED_SHORT;
-#else
-	const GLenum index_type = GL_UNSIGNED_SHORT;
-#endif
 
 	if(!opaque_indexes.empty()) {
 		glVertexPointer(2, GL_SHORT, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
@@ -1277,7 +1271,7 @@ void level::prepare_tiles_for_drawing()
 			}
 
 			if(blit_info.indexes[ytile].size() <= xtile) {
-				blit_info.indexes[ytile].resize(xtile+1, SHRT_MIN);
+				blit_info.indexes[ytile].resize(xtile+1, TILE_INDEX_TYPE_MAX);
 			}
 
 			blit_info.indexes[ytile][xtile] = (blit_info.blit_vertexes.size() - 4) * (tiles_[n].object->is_opaque() ? 1 : -1);
