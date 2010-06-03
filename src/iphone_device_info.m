@@ -4,15 +4,6 @@
 
 void iphone_screen_res (int *w, int *h)
 {
-	UIScreen * screen = [UIScreen mainScreen];
-	if ([UIScreen instancesRespondToSelector:@selector(currentMode)])
-	{
-		UIScreenMode * mode = [screen currentMode];
-		CGSize size = [mode size];
-		*w = size.width;
-		*h = size.height;
-	} else {
-		*w = 320;
-		*h = 480;
-	}
+	*w = [UIScreen mainScreen].bounds.size.width;
+	*h = [UIScreen mainScreen].bounds.size.height;
 }
