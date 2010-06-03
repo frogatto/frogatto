@@ -11,21 +11,38 @@
 
 namespace
 {
-	const rect left_arrow(10, 640 - 84, 55*2, 34*2);
-	const rect right_arrow(184, 640 - 84, 55*2, 34*2);
-	const rect down_arrow(119, 640 - 66, 34*2, 42*2);
-	const rect up_arrow(119, 640 - 147, 34*2, 55*2);
-	const rect a_button(960 - 204, 640 - 120, 50*2*2, 60*2);
-//	const rect b_button(960 - 102, 640 - 300, 50*2, 60*2);
-	const rect c_button(960 - 104, 640 - 240, 50*2, 60*2);
-
-	const rect interact_button(960 - 300 - 30, 640 - 130, 50*2 + 60, 60*2);
+	rect left_arrow, right_arrow, down_arrow, up_arrow, a_button, c_button, interact_button;
 
 	const int underwater_circle_x = 120;
 	const int underwater_circle_y = 520;
 
 	bool is_underwater = false;
 	bool can_interact = false;
+	
+	//This is to keep track of whether the rects above have been modified
+	//by modify_rects() yet, to make them work on different resolutions
+	bool done_setup_rects = false;
+	static void setup_rects ()
+	{
+		if (done_setup_rects)
+		{
+			return;
+		}
+		done_setup_rects = true;
+		
+		int vw = preferences::virtual_screen_width();
+		int vh = preferences::virtual_screen_height();
+		
+		left_arrow = rect(10, vh - 84, 55*2, 34*2);
+		right_arrow = rect(184, vh - 84, 55*2, 34*2);
+		down_arrow = rect(119, vh - 66, 34*2, 42*2);
+		up_arrow = rect(119, vh - 147, 34*2, 55*2);
+		a_button = rect(vw - 204, vh - 120, 50*2*2, 60*2);
+		//	 b_button = rect(vw - 102, vh - 300, 50*2, 60*2);
+		c_button = rect(vw - 104, vh - 240, 50*2, 60*2);
+		
+		interact_button = rect(vw - 300, vh - 130, 34*2, 55*2);
+	}
 }
 
 void iphone_controls::set_underwater(bool value)
@@ -97,6 +114,7 @@ void iphone_controls::draw()
 
 bool iphone_controls::hittest_button(const rect& area)
 {
+	setup_rects();
 	static graphics::texture tex(graphics::texture::get("gui/iphone_controls.png"));
 	for(int i = 0; i < SDL_GetNumMice(); i++) {
 		int x, y;
