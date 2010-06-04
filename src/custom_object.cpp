@@ -449,7 +449,7 @@ wml::node_ptr custom_object::write() const
 	if(!particle_systems_.empty()) {
 		std::string systems;
 		for(std::map<std::string, particle_system_ptr>::const_iterator i = particle_systems_.begin(); i != particle_systems_.end(); ++i) {
-			if(systems.empty()) {
+			if(!systems.empty()) {
 				systems += ",";
 			}
 
