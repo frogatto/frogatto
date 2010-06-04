@@ -26,11 +26,6 @@
 
 namespace {
 
-int drawable_height() {
-	const int statusbar_height = 0;
-	return graphics::screen_height() - statusbar_height;
-}
-
 std::string& scene_title() {
 	static std::string title;
 	return title;
@@ -114,13 +109,15 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 		//if the level is larger than the screen (i.e. most cases)
 		const int x_screen_pad = std::max<int>(0, graphics::screen_width() - lvl.boundaries().w());
 
+		const int y_screen_pad = std::max<int>(0, graphics::screen_height() - lvl.boundaries().h());
+
 		//find the boundary values for the camera position based on the size
 		//of the level. These boundaries keep the camera from ever going out
 		//of the bounds of the level.
 		const int min_x = lvl.boundaries().x() + graphics::screen_width()/2 - x_screen_pad/2;
 		const int max_x = lvl.boundaries().x2() - graphics::screen_width()/2 + x_screen_pad/2;
-		const int min_y = lvl.boundaries().y() + drawable_height()/2;
-		const int max_y = lvl.boundaries().y2() - drawable_height()/2;
+		const int min_y = lvl.boundaries().y() + graphics::screen_height()/2 - y_screen_pad/2;
+		const int max_y = lvl.boundaries().y2() - graphics::screen_height()/2 + y_screen_pad/2;
 
 		//we look a certain number of frames ahead -- assuming the focus
 		//keeps moving at the current velocity, we converge toward the point
@@ -147,7 +144,7 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 		const int vertical_look = focus->vertical_look();
 
 		//find the y point for the camera to converge toward
-		int y = std::min(std::max(focus->feet_y() - drawable_height()/(5*lvl.zoom_level()) + displacement_y*PredictiveFramesVert + vertical_look, min_y), max_y);
+		int y = std::min(std::max(focus->feet_y() - graphics::screen_height()/(5*lvl.zoom_level()) + displacement_y*PredictiveFramesVert + vertical_look, min_y), max_y);
 
 		if(lvl.focus_override().empty() == false) {
 			std::vector<entity_ptr> v = lvl.focus_override();
@@ -175,7 +172,7 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 			}
 
 			x = std::min(std::max((left + right)/2, min_x), max_x);
-			y = std::min(std::max((top + bottom)/2 - drawable_height()/(5*lvl.zoom_level()), min_y), max_y);
+			y = std::min(std::max((top + bottom)/2 - graphics::screen_height()/(5*lvl.zoom_level()), min_y), max_y);
 		}
 
 		if(lvl.lock_screen()) {
@@ -189,7 +186,7 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 		//
 		//the actual camera position will converge toward this point
 		const int target_xpos = 100*(x - graphics::screen_width()/2);
-		const int target_ypos = 100*(y - drawable_height()/2);
+		const int target_ypos = 100*(y - graphics::screen_height()/2);
 
 		if(pos.init == false) {
 			pos.x = target_xpos;
@@ -279,7 +276,7 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 	glTranslatef(-xscroll, -yscroll, 0);
 	lvl.draw_background(xscroll, yscroll, camera_rotation);
 
-	lvl.draw(xscroll, yscroll, graphics::screen_width(), drawable_height());
+	lvl.draw(xscroll, yscroll, graphics::screen_width(), graphics::screen_height());
 	graphics::clear_raster_distortion();
 	glPopMatrix();
 
