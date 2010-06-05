@@ -13,8 +13,8 @@ namespace
 {
 	rect left_arrow, right_arrow, down_arrow, up_arrow, a_button, c_button, interact_button;
 
-	const int underwater_circle_x = 120;
-	const int underwater_circle_y = 520;
+	int underwater_circle_x = 120;
+	int underwater_circle_y = 0; //set by setup_rects()
 
 	bool is_underwater = false;
 	bool can_interact = false;
@@ -38,10 +38,26 @@ namespace
 		down_arrow = rect(119, vh - 66, 34*2, 42*2);
 		up_arrow = rect(119, vh - 147, 34*2, 55*2);
 		a_button = rect(vw - 204, vh - 120, 50*2*2, 60*2);
-		//	 b_button = rect(vw - 102, vh - 300, 50*2, 60*2);
+//		b_button = rect(vw - 102, vh - 300, 50*2, 60*2);
 		c_button = rect(vw - 104, vh - 240, 50*2, 60*2);
 		
 		interact_button = rect(vw - 300, vh - 130, 34*2, 55*2);
+		
+		underwater_circle_y = vh-120;
+	}
+	
+	static void translate_mouse_coords (int *x, int *y)
+	{
+		if(preferences::screen_rotated()) {
+			*x = preferences::actual_screen_width() - *x;
+			std::swap(*x, *y);
+		}
+		
+		if(preferences::virtual_screen_width() >
+		   (preferences::screen_rotated() ? preferences::actual_screen_height() : preferences::actual_screen_width())) {
+			*x *= 2;
+			*y *= 2;
+		}
 	}
 }
 
@@ -57,19 +73,16 @@ void iphone_controls::set_can_interact(bool value)
 
 bool iphone_controls::water_dir(float* xvalue, float* yvalue)
 {
+	setup_rects();
 	for(int i = 0; i < SDL_GetNumMice(); i++) {
 		int x, y;
 		SDL_SelectMouse(i);
 		Uint8 button_state = SDL_GetMouseState(&x, &y);
 		if (button_state & SDL_BUTTON(SDL_BUTTON_LEFT)) {
-			if (preferences::screen_rotated()) {
-				int tmp = x;
-				x = y;
-				y = preferences::actual_screen_width()-tmp;
-			}
+			translate_mouse_coords(&x, &y);
 
-			const int dx = x - underwater_circle_x/2;
-			const int dy = y - underwater_circle_y/2;
+			const int dx = x - underwater_circle_x;
+			const int dy = y - underwater_circle_y;
 
 			const int distance = sqrt(dx*dx + dy*dy);
 
@@ -123,16 +136,7 @@ bool iphone_controls::hittest_button(const rect& area)
 
 		if(button_state & SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			//rotate the coordinates
-			if(preferences::screen_rotated()) {
-				x = preferences::actual_screen_width() - x;
-				std::swap(x, y);
-			}
-			
-			if(preferences::virtual_screen_width() >
-				(preferences::screen_rotated() ? preferences::actual_screen_height() : preferences::actual_screen_width())) {
-				x *= 2;
-				y *= 2;
-			}
+			translate_mouse_coords(&x, &y);
 
 			const point mouse_pos(x, y);
 			if(point_in_rect(mouse_pos, area)) {
