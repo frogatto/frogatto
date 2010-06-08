@@ -311,7 +311,7 @@ private:
 		int damage;
 	};
 	std::vector<solid_rect> solid_rects_;
-	std::vector<level_tile> tiles_;
+	mutable std::vector<level_tile> tiles_;
 	std::set<int> layers_;
 	std::set<int> hidden_layers_; //layers hidden in the editor.
 	int highlight_layer_;

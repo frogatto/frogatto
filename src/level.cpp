@@ -286,7 +286,9 @@ void level::read_compiled_tiles(wml::const_node_ptr node, std::vector<level_tile
 	const char* i = tiles.c_str();
 	const char* end = tiles.c_str() + tiles.size();
 	while(i != end) {
-		if(*i == ',') {
+		if(*i == '|') {
+			++i;
+		} else if(*i == ',') {
 			x += TileSize;
 			++i;
 		} else if(*i == '\n') {
@@ -688,6 +690,7 @@ void level::rebuild_tiles_rect(const rect& r)
 
 wml::node_ptr level::write() const
 {
+	std::sort(tiles_.begin(), tiles_.end(), level_tile_zorder_pos_comparer());
 	game_logic::wml_formula_callable_serialization_scope serialization_scope;
 
 	wml::node_ptr res(new wml::node("level"));
@@ -794,17 +797,34 @@ wml::node_ptr level::write() const
 				last_x += TileSize;
 			}
 
+			ASSERT_EQ(last_x, tiles_[n].x);
+			ASSERT_EQ(last_y, tiles_[n].y);
+
 			if(tiles_[n].face_right) {
 				tiles_str += "~";
 			}
 
-			char buf[4];
-			tiles_[n].object->write_compiled_index(buf);
-			tiles_str += buf;
+			const int xpos = tiles_[n].x;
+			const int ypos = tiles_[n].y;
+			const int zpos = tiles_[n].zorder;
+			const int start_n = n;
+
+			while(n != tiles_.size() && tiles_[n].x == xpos && tiles_[n].y == ypos && tiles_[n].zorder == zpos) {
+				char buf[4];
+				tiles_[n].object->write_compiled_index(buf);
+				if(n != start_n) {
+					tiles_str += "|";
+				}
+				tiles_str += buf;
+				++n;
+				++num_tiles;
+			}
+
+			--n;
+
 			tiles_str += ",";
 
 			last_x += TileSize;
-			++num_tiles;
 		}
 
 		res->set_attr("num_compiled_tiles", formatter() << num_tiles);
