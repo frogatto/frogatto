@@ -334,15 +334,15 @@ private:
 // -- or at least XCode is saying GL_UNSIGNED_INT is undefined. So use shorts
 //on the iPhone. Since we compile tiles on the iPhone and solid colored tiles
 //are not counted, this is probably fine.
-#if TARGET_OS_IPHONE
+//#if TARGET_OS_IPHONE
 		typedef GLshort IndexType;
 #define TILE_INDEX_TYPE GL_UNSIGNED_SHORT
-#define TILE_INDEX_TYPE_MAX USHRT_MAX
-#else
-		typedef GLint IndexType;
-#define TILE_INDEX_TYPE GL_UNSIGNED_INT
-#define TILE_INDEX_TYPE_MAX UINT_MAX
-#endif
+#define TILE_INDEX_TYPE_MAX SHRT_MAX
+//#else
+//		typedef GLint IndexType;
+//#define TILE_INDEX_TYPE GL_UNSIGNED_INT
+//#define TILE_INDEX_TYPE_MAX UINT_MAX
+//#endif
 
 		//a two dimensional array of indexes into vertex_texture_ids,
 		//representing the tiles in a layer.
