@@ -1543,7 +1543,7 @@ void level::draw_debug_solid(int x, int y, int w, int h) const
 			const int ypixel = (tile_y + ypos)*TileSize;
 
 			if(info->all_solid) {
-				graphics::draw_rect(rect(xpixel, ypixel, TileSize, TileSize), graphics::color(255, 255, 255, 196));
+				graphics::draw_rect(rect(xpixel, ypixel, TileSize, TileSize), info->damage ? graphics::color(255, 0, 0, 196) : graphics::color(255, 255, 255, 196));
 			} else {
 				std::vector<GLshort> v;
 				glDisable(GL_TEXTURE_2D);
@@ -1558,7 +1558,12 @@ void level::draw_debug_solid(int x, int y, int w, int h) const
 				}
 
 				if(!v.empty()) {
-					glColor4ub(255, 255, 255, 196);
+					if(info->damage) {
+						glColor4ub(255, 0, 0, 196);
+					} else {
+						glColor4ub(255, 255, 255, 196);
+					}
+
 					glPointSize(1);
 					glVertexPointer(2, GL_SHORT, 0, &v[0]);
 					glDrawArrays(GL_POINTS, 0, v.size()/2);
@@ -1568,6 +1573,8 @@ void level::draw_debug_solid(int x, int y, int w, int h) const
 			}
 		}
 	}
+
+	glColor4ub(255, 255, 255, 255);
 }
 
 void level::draw_background(int x, int y, int rotation) const
@@ -2318,7 +2325,12 @@ void level::add_solid_rect(int x1, int y1, int x2, int y2, int friction, int tra
 			s.all_solid = true;
 			s.friction = friction;
 			s.traction = traction;
-			s.damage = damage;
+
+			if(s.damage >= 0) {
+				s.damage = std::min(s.damage, damage);
+			} else {
+				s.damage = damage;
+			}
 		}
 	}
 }
@@ -2350,10 +2362,15 @@ void level::set_solid(level_solid_map& map, int x, int y, int friction, int trac
 	const int index = y*TileSize + x;
 	tile_solid_info& info = map.insert_or_find(pos);
 
+	if(info.damage >= 0) {
+		info.damage = std::min(info.damage, damage);
+	} else {
+		info.damage = damage;
+	}
+
 	if(solid) {
 		info.friction = friction;
 		info.traction = traction;
-		info.damage = damage;
 		info.bitmap.set(index);
 	} else {
 		if(info.all_solid) {

@@ -11,7 +11,7 @@ typedef std::pair<int,int> tile_pos;
 typedef std::bitset<TileSize*TileSize> tile_bitmap;
 
 struct tile_solid_info {
-	tile_solid_info() : all_solid(false), friction(0), traction(0), damage(0)
+	tile_solid_info() : all_solid(false), friction(0), traction(0), damage(-1)
 	{}
 	tile_bitmap bitmap;
 	bool all_solid;
