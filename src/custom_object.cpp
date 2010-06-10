@@ -1347,6 +1347,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_Y:                 return variant(y());
 	case CUSTOM_OBJECT_Z:
 	case CUSTOM_OBJECT_ZORDER:            return variant(zorder_);
+	case CUSTOM_OBJECT_PREVIOUS_Y:        return variant(previous_y_);
 	case CUSTOM_OBJECT_X1:                return variant(solid_rect().x());
 	case CUSTOM_OBJECT_X2:                return variant(solid_rect().x2());
 	case CUSTOM_OBJECT_Y1:                return variant(solid_rect().y());
@@ -1412,12 +1413,20 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_DESTROYED:         return variant(destroyed());
 
 	case CUSTOM_OBJECT_IS_STANDING_ON_PLATFORM: {
+		if(standing_on_ && standing_on_->platform()) {
+			return variant(1);
+		}
+
 		collision_info info;
 		is_standing(level::current(), &info);
 		return variant(info.platform);
 	}
 
 	case CUSTOM_OBJECT_STANDING_ON: {
+		if(standing_on_) {
+			return variant(standing_on_.get());
+		}
+
 		entity_ptr stand_on;
 		collision_info info;
 		is_standing(level::current(), &info);
