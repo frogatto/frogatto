@@ -610,6 +610,7 @@ bool level_runner::play_cycle()
 
 void level_runner::show_debug_console()
 {
+#ifndef NO_EDITOR
 	pause_time_ -= SDL_GetTicks();
 	gui::text_entry_widget entry;
 	entry.set_loc(10, 200);
@@ -639,6 +640,7 @@ void level_runner::show_debug_console()
 	}
 
 	pause_time_ += SDL_GetTicks();
+#endif
 }
 
 namespace {
