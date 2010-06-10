@@ -21,6 +21,7 @@ public:
 	bool play_level();
 	bool play_cycle();
 private:
+	void show_debug_console();
 	boost::intrusive_ptr<level>& lvl_;
 	std::string& level_cfg_;
 

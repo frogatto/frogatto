@@ -8,6 +8,7 @@
 #include "collision_utils.hpp"
 #include "controls.hpp"
 #include "custom_object.hpp"
+#include "custom_object_functions.hpp"
 #include "draw_scene.hpp"
 #ifndef NO_EDITOR
 #include "editor.hpp"
@@ -28,6 +29,7 @@
 #include "sound.hpp"
 #include "stats.hpp"
 #include "surface_cache.hpp"
+#include "text_entry_widget.hpp"
 #include "wml_node.hpp"
 #include "wml_writer.hpp"
 #include "wml_utils.hpp"
@@ -473,6 +475,9 @@ bool level_runner::play_cycle()
 					done = true;
 					quit_ = true;
 					break;
+				} else if(key == SDLK_d && (mod&KMOD_CTRL)) {
+					show_debug_console();
+
 				} else if(key == SDLK_e && (mod&KMOD_CTRL)) {
 					#ifndef NO_EDITOR
 					pause_time_ -= SDL_GetTicks();
@@ -601,6 +606,39 @@ bool level_runner::play_cycle()
 	if (!paused) ++cycle;
 
 	return !quit_;
+}
+
+void level_runner::show_debug_console()
+{
+	pause_time_ -= SDL_GetTicks();
+	gui::text_entry_widget entry;
+	entry.set_loc(10, 200);
+
+	bool done = false;
+	while(!done) {
+		SDL_Event event;
+		while(SDL_PollEvent(&event)) {
+			if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
+				done = true;
+				break;
+			} else if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN) {
+				const std::string script = entry.text();
+				game_logic::formula f(script, &get_custom_object_functions_symbol_table());
+				variant v = f.execute(lvl_->player()->get_entity());
+				lvl_->player()->get_entity().execute_command(v);
+				entry.set_text("");
+			} else {
+				entry.process_event(event, false);
+			}
+		}
+
+		draw_scene(*lvl_, last_draw_position());
+		entry.draw();
+		SDL_GL_SwapBuffers();
+		SDL_Delay(20);
+	}
+
+	pause_time_ += SDL_GetTicks();
 }
 
 namespace {
