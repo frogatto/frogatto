@@ -863,26 +863,35 @@ wml::node_ptr level::write() const
 
 			//iterate over every opaque location, treating each one
 			//as a possible upper-left corner of our rectangle.
-			foreach(const OpaqueLoc& loc, opaque) {
+			for(std::set<OpaqueLoc>::const_iterator loc_itor = opaque.begin();
+			    loc_itor != opaque.end(); ++loc_itor) {
+				const OpaqueLoc& loc = *loc_itor;
+
 				std::vector<OpaqueLoc> v;
 				v.push_back(loc);
+
+				std::set<OpaqueLoc>::const_iterator find_itor = opaque.end();
+
+				int max_height = -1;
 
 				//try to build a top row of a rectangle. After adding each
 				//cell, we will try to expand the rectangle downwards, as
 				//far as it will go.
-				while(opaque.count(OpaqueLoc(v.back().first + TileSize, v.back().second))) {
+				while((find_itor = opaque.find(OpaqueLoc(v.back().first + TileSize, v.back().second))) != opaque.end()) {
 					v.push_back(OpaqueLoc(v.back().first + TileSize, v.back().second));
+
 					int rows = 0;
-					bool can_expand_downwards = true;
-					while(can_expand_downwards) {
-						foreach(const OpaqueLoc& down, v) {
-							if(opaque.count(OpaqueLoc(down.first, down.second + TileSize*(rows+1))) == 0) {
-								can_expand_downwards = false;
-								break;
-							}
+					while(max_height == -1 || rows < max_height) {
+						++find_itor;
+						if(find_itor == opaque.end() || find_itor->first != v.back().first || find_itor->second != v.back().second + TileSize*(rows+1)) {
+							break;
 						}
 
 						++rows;
+					}
+
+					if(rows < max_height || max_height == -1) {
+						max_height = rows;
 					}
 
 					rect r(v.front().first, v.front().second, v.size()*TileSize, rows*TileSize);
