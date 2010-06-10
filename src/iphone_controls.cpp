@@ -203,10 +203,6 @@ bool iphone_controls::jump()
 
 bool iphone_controls::tongue()
 {
-	if(is_underwater) {
-		return false;
-	}
-
 	return hittest_button(c_button);
 }
 
