@@ -40,6 +40,7 @@ struct custom_object_text {
 	const_graphical_font_ptr font;
 	int size;
 	rect dimensions;
+	int alpha;
 };
 
 custom_object::custom_object(wml::const_node_ptr node)
@@ -543,8 +544,10 @@ void custom_object::draw() const
 		i->second->draw(rect(last_draw_position().x/100, last_draw_position().y/100, graphics::screen_width(), graphics::screen_height()), *this);
 	}
 
-	if(text_ && text_->font) {
+	if(text_ && text_->font && text_->alpha) {
+		glColor4ub(255, 255, 255, text_->alpha);
 		text_->font->draw(draw_x, draw_y, text_->text, text_->size);
+		glColor4ub(255, 255, 255, 255);
 	}
 
 #ifndef SDL_VIDEO_OPENGL_ES
@@ -1381,6 +1384,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_GREEN:             return variant(draw_color().g());
 	case CUSTOM_OBJECT_BLUE:              return variant(draw_color().b());
 	case CUSTOM_OBJECT_ALPHA:             return variant(draw_color().a());
+	case CUSTOM_OBJECT_TEXT_ALPHA:        return variant(text_ ? text_->alpha : 255);
 	case CUSTOM_OBJECT_DAMAGE:            return variant(current_frame().damage()); case CUSTOM_OBJECT_HIT_BY:            return variant(last_hit_by_.get());
 	case CUSTOM_OBJECT_DISTORTION:        return variant(distortion_.get());
 	case CUSTOM_OBJECT_IS_STANDING:       return variant(standing_on_.get() || is_standing(level::current()));
@@ -1906,6 +1910,14 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	case CUSTOM_OBJECT_ALPHA:
 		make_draw_color();
 		draw_color_->buf()[3] = truncate_to_char(value.as_int());
+		break;
+
+	case CUSTOM_OBJECT_TEXT_ALPHA:
+		if(!text_) {
+			set_text("", "default", 10);
+		}
+
+		text_->alpha = value.as_int();
 		break;
 
 	case CUSTOM_OBJECT_BRIGHTNESS:
@@ -2547,6 +2559,7 @@ void custom_object::set_text(const std::string& text, const std::string& font, i
 	text_->text = text;
 	text_->font = graphical_font::get(font);
 	text_->size = size;
+	text_->alpha = 255;
 	ASSERT_LOG(text_->font, "UNKNOWN FONT: " << font);
 	text_->dimensions = text_->font->dimensions(text_->text);
 }
