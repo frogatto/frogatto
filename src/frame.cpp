@@ -217,6 +217,7 @@ void frame::set_palettes(unsigned int palettes)
 	}
 
 	texture_ = graphics::texture::get_palette_mapped(image_, npalette);
+	current_palette_ = npalette;
 }
 
 void frame::set_color_palette(unsigned int palettes)
@@ -237,7 +238,6 @@ void frame::play_sound(const void* object) const
 	if (sounds_.empty() == false){
 		int randomNum = rand()%sounds_.size();  //like a 1d-size die
 		if(sounds_[randomNum].empty() == false) {
-			std::cerr << "PLAY SOUND: '" << sounds_[randomNum] << "'\n";
 			sound::play(sounds_[randomNum], object);
 		}
 	}
