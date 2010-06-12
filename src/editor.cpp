@@ -1768,12 +1768,12 @@ void editor::move_object(entity_ptr e, int new_x, int new_y)
 			switch(var.type()) {
 			case editor_variable_info::XPOSITION:
 				if(value.is_int()) {
-					e->mutate_value(var.variable_name(), variant(value.as_int() + delta_x));
+					mutate_object_value(e, var.variable_name(), variant(value.as_int() + delta_x));
 				}
 				break;
 			case editor_variable_info::YPOSITION:
 				if(value.is_int()) {
-					e->mutate_value(var.variable_name(), variant(value.as_int() + delta_y));
+					mutate_object_value(e, var.variable_name(), variant(value.as_int() + delta_y));
 				}
 				break;
 			default:
