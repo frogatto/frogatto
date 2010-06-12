@@ -42,7 +42,7 @@ namespace preferences {
 		
 		bool screen_rotated_ = false;
 
-		bool show_fps_ = true;
+		bool show_fps_ = false;
 		
 		const char *save_file_path_ = "data/level/save.cfg";
 		const char *auto_save_file_path_ = "data/level/autosave.cfg";
