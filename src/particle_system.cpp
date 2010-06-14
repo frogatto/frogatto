@@ -240,7 +240,11 @@ void simple_particle_system::process(const level& lvl, const entity& e)
 		for(int n = 0; n != gen.members; ++n) {
 			p->pos[0] += p->velocity[0];
 			p->pos[1] += p->velocity[1];
-			p->velocity[0] += info_.accel_x_/1000.0;
+			if(e.face_right()) {
+				p->velocity[0] += info_.accel_x_/1000.0;
+			} else {
+				p->velocity[0] -= info_.accel_x_/1000.0;
+			}
 			p->velocity[1] += info_.accel_y_/1000.0;
 			++p;
 		}
@@ -266,7 +270,7 @@ void simple_particle_system::process(const level& lvl, const entity& e)
 
 	while(nspawn-- > 0) {
 		particle p;
-		p.pos[0] = e.x() + info_.min_x_;
+		p.pos[0] = e.face_right() ? (e.x() + info_.min_x_) : (e.x() + e.current_frame().width() - info_.max_x_);
 		p.pos[1] = e.y() + info_.min_y_;
 		p.velocity[0] = info_.velocity_x_/1000.0;
 		p.velocity[1] = info_.velocity_y_/1000.0;
@@ -309,6 +313,11 @@ void simple_particle_system::process(const level& lvl, const entity& e)
 			p.pos[1] += (rand()%(diff_y*1000))/1000.0;
 		}
 
+		if(!e.face_right()) {
+			p.velocity[0] = -p.velocity[0];
+		}
+			std::cerr << "RIGHT: " << p.velocity[0] << "\n";
+
 		particles_.push_back(p);
 	}
 }
@@ -326,6 +335,9 @@ void simple_particle_system::draw(const rect& area, const entity& e) const
 	std::vector<GLfloat>& varray = graphics::global_vertex_array();
 	std::vector<GLfloat>& tcarray = graphics::global_texcoords_array();
 	std::vector<GLbyte>& carray = graphics::global_vertex_color_array();
+
+	const int facing = e.face_right() ? 1 : -1;
+			
 
 	carray.clear();
 	varray.clear();
@@ -348,33 +360,33 @@ void simple_particle_system::draw(const rect& area, const entity& e) const
 			}
 			//draw the first point twice, to allow drawing all particles
 			//in one drawing operation.
-			
+
 			tcarray.push_back(graphics::texture::get_coord_x(f.u1));
 			tcarray.push_back(graphics::texture::get_coord_y(f.v1));
-			varray.push_back(p->pos[0] + f.x_adjust);
+			varray.push_back(p->pos[0] + f.x_adjust*facing);
 			varray.push_back(p->pos[1] + f.y_adjust);
 			tcarray.push_back(graphics::texture::get_coord_x(f.u1));
 			tcarray.push_back(graphics::texture::get_coord_y(f.v1));
-			varray.push_back(p->pos[0] + f.x_adjust);
+			varray.push_back(p->pos[0] + f.x_adjust*facing);
 			varray.push_back(p->pos[1] + f.y_adjust);
 
 			tcarray.push_back(graphics::texture::get_coord_x(f.u2));
 			tcarray.push_back(graphics::texture::get_coord_y(f.v1));
-			varray.push_back(p->pos[0] + anim->width() - f.x2_adjust);
+			varray.push_back(p->pos[0] + (anim->width() - f.x2_adjust)*facing);
 			varray.push_back(p->pos[1] + f.y_adjust);
 			tcarray.push_back(graphics::texture::get_coord_x(f.u1));
 			tcarray.push_back(graphics::texture::get_coord_y(f.v2));
-			varray.push_back(p->pos[0] + f.x_adjust);
+			varray.push_back(p->pos[0] + f.x_adjust*facing);
 			varray.push_back(p->pos[1] + anim->height() - f.y2_adjust);
 
 			//draw the last point twice.
 			tcarray.push_back(graphics::texture::get_coord_x(f.u2));
 			tcarray.push_back(graphics::texture::get_coord_y(f.v2));
-			varray.push_back(p->pos[0] + anim->width() - f.x2_adjust);
+			varray.push_back(p->pos[0] + (anim->width() - f.x2_adjust)*facing);
 			varray.push_back(p->pos[1] + anim->height() - f.y2_adjust);
 			tcarray.push_back(graphics::texture::get_coord_x(f.u2));
 			tcarray.push_back(graphics::texture::get_coord_y(f.v2));
-			varray.push_back(p->pos[0] + anim->width() - f.x2_adjust);
+			varray.push_back(p->pos[0] + (anim->width() - f.x2_adjust)*facing);
 			varray.push_back(p->pos[1] + anim->height() - f.y2_adjust);
 			++p;
 		}
