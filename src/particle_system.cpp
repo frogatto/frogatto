@@ -191,7 +191,6 @@ private:
 		} else if(key == "max_y") {
 			info_.max_y_ = value.as_int();
 		} else if(key == "velocity_x") {
-			std::cerr << "SET VELOCITY_X PARTICLES: " << value.as_int() << "\n";
 			info_.velocity_x_ = value.as_int();
 		} else if(key == "velocity_y") {
 			info_.velocity_y_ = value.as_int();
@@ -316,7 +315,6 @@ void simple_particle_system::process(const level& lvl, const entity& e)
 		if(!e.face_right()) {
 			p.velocity[0] = -p.velocity[0];
 		}
-			std::cerr << "RIGHT: " << p.velocity[0] << "\n";
 
 		particles_.push_back(p);
 	}
