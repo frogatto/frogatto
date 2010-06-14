@@ -251,6 +251,8 @@ level_runner::level_runner(boost::intrusive_ptr<level>& lvl, std::string& level_
 
 bool level_runner::play_level()
 {
+	sound::stop_looped_sounds(NULL);
+
 	lvl_->set_as_current_level();
 	while(!done && !quit_) {
 		bool res = play_cycle();
@@ -380,6 +382,8 @@ bool level_runner::play_cycle()
 				preload_level(level_cfg_);
 				transition_scene(*lvl_, last_draw_position(), true, fade_scene);
 			}
+
+			sound::stop_looped_sounds(NULL);
 
 			boost::intrusive_ptr<level> new_level(load_level(level_cfg_));
 			if (!preferences::load_compiled())
