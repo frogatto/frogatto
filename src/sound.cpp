@@ -407,10 +407,12 @@ void stop_looped_sounds(const void* object)
 {
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	for(int n = 0; n != channels_to_sounds_playing.size(); ++n) {
-		if((object == NULL || channels_to_sounds_playing[n].object == object) &&
+		if((object == NULL && channels_to_sounds_playing[n].object != NULL
+		   || channels_to_sounds_playing[n].object == object) &&
 		   (channels_to_sounds_playing[n].loops != 0)) {
 			fprintf(stderr, "HALTING SOUND: %s, LOOP VAlUE=%d, OBJECT=%p\n", channels_to_sounds_playing[n].file.c_str(),channels_to_sounds_playing[n].loops, channels_to_sounds_playing[n].object); 
 			Mix_HaltChannel(n);
+			channels_to_sounds_playing[n].object = NULL;
 		} else if(channels_to_sounds_playing[n].object == object) {
 			//this sound is a looped sound, but make sure it keeps going
 			//until it ends, since this function signals that the associated
