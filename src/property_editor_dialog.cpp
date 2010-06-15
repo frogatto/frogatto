@@ -96,7 +96,7 @@ void property_editor_dialog::init()
 				std::cerr << "CURRENT VALUE: " << current_value.as_bool() << "\n";
 				add_widget(widget_ptr(new button(
 				         widget_ptr(new label("toggle", graphics::color_white())),
-				         boost::bind(&property_editor_dialog::change_property, this, info.variable_name(), current_value.as_bool() ? -current_value.as_int() : 1))));
+				         boost::bind(&property_editor_dialog::toggle_property, this, info.variable_name()))));
 			} else {
 				grid_ptr buttons_grid(new grid(4));
 				buttons_grid->add_col(widget_ptr(new button(widget_ptr(new label("-10", graphics::color_white())), boost::bind(&property_editor_dialog::change_property, this, info.variable_name(), -10))));
@@ -113,6 +113,15 @@ void property_editor_dialog::set_entity(entity_ptr e)
 {
 	entity_ = e;
 	init();
+}
+
+void property_editor_dialog::toggle_property(const std::string& id)
+{
+	game_logic::formula_callable* vars = entity_->vars();
+	if(vars) {
+		vars->mutate_value(id, variant(!vars->query_value(id).as_bool()));
+		init();
+	}
 }
 
 void property_editor_dialog::change_property(const std::string& id, int change)
