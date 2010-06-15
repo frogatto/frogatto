@@ -1667,6 +1667,10 @@ void custom_object::set_value(const std::string& key, const variant& value)
 			vertex_shaders_.push_back(value[n].as_string());
 		}
 		shader_ = 0;
+	} else if(key == "always_active") {
+		
+		always_active_ = value.as_bool();
+		
 	} else if(key == "draw_area") {
 		if(value.is_list() && value.num_elements() == 4) {
 			draw_area_.reset(new rect(value[0].as_int(), value[1].as_int(), value[2].as_int(), value[3].as_int()));
