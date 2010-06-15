@@ -41,7 +41,7 @@ custom_object_callable::custom_object_callable()
 	"solid_dimensions_in", "solid_dimensions_not_in",
 	"collide_dimensions_in", "collide_dimensions_not_in",
 	"brightness", "current_generator", "tags", "draw_area", "activation_area",
-	"fall_through_platforms", "has_feet",
+	"always_active", "fall_through_platforms", "has_feet",
 	"x_schedule", "y_schedule", "rotation_schedule", "schedule_speed",
 	"ctrl_up", "ctrl_down", "ctrl_left", "ctrl_right",
 	"ctrl_attack", "ctrl_jump", "ctrl_tongue",
