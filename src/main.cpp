@@ -166,7 +166,7 @@ extern "C" int main(int argc, char** argv)
 	int multiplier = 2;
 	if (width > 320)
 	{
-		preferences::set_use_pretty_scaling(true);
+		//preferences::set_use_pretty_scaling(true);
 		multiplier = 1;
 	}
 	preferences::set_virtual_screen_width(height*multiplier);
