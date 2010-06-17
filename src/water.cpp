@@ -164,187 +164,93 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	glEnable(GL_POLYGON_SMOOTH);
 	#endif
 
-	bool draw_with_waves = false;
-	if(a.waves_.empty() == false) {
-
-		std::vector<GLfloat> heights(w);
-		foreach(const wave& wv, a.waves_) {
-			int begin_x = std::max<int>(wv.xpos - wv.length, x);
-			int end_x = std::min<int>(wv.xpos + wv.length + 1, x + w);
-			for(int xpos = begin_x; xpos < end_x; ++xpos) {
-				const int distance = abs(wv.xpos - xpos);
-				const double proportion = GLfloat(distance)/GLfloat(wv.length);
-
-				const int index = xpos - x;
-				ASSERT_INDEX_INTO_VECTOR(index, heights);
-				heights[index] += wv.height*cos(proportion*3.14*2.0)*(1.0 - proportion);
-
-				//see if the wave is close enough to the edge to reflect some of its force off it
-				const int distance_wrap_left = (wv.xpos - wv.left_bound) + (xpos - wv.left_bound);
-				if(distance_wrap_left < wv.length) {
-					const double proportion = GLfloat(distance_wrap_left)/GLfloat(wv.length);
-					heights[index] += wv.height*cos(proportion*3.14*2.0)*(1.0 - proportion);
-				}
-
-				const int distance_wrap_right = (wv.right_bound - wv.xpos) + (wv.right_bound - xpos);
-				if(distance_wrap_right < wv.length) {
-					const double proportion = GLfloat(distance_wrap_right)/GLfloat(wv.length);
-					heights[index] += wv.height*cos(proportion*3.14*2.0)*(1.0 - proportion);
-				}
-			}
-		}
-
-		const int begin_x = std::max(x, a.rect_.x());
-		const int end_x = std::min(x + w, a.rect_.x2());
-		if(false && end_x > begin_x+1) {
-			draw_with_waves = true;
-			glDisable(GL_TEXTURE_2D);
-			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-
-			glColor4ub(0, 51, 61, 153);
-			std::vector<GLfloat>& varray = graphics::global_vertex_array();
-			varray.clear();
-			for(int xpos = begin_x; xpos != end_x; ++xpos) {
-				const int index = xpos - x;
-				ASSERT_INDEX_INTO_VECTOR(index, heights);
-				const GLfloat ypos = a.rect_.y() - heights[index];
-
-				varray.push_back(xpos); varray.push_back(underwater_rect.y + 100);
-				varray.push_back(xpos); varray.push_back(ypos);
-			}
-			glVertexPointer(2, GL_FLOAT, 0, &varray.front());
-			glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
-
-			varray.clear();
-			varray.push_back(begin_x);
-			varray.push_back(underwater_rect.y + 100);
-			varray.push_back(end_x);
-			varray.push_back(underwater_rect.y + 100);
-			varray.push_back(begin_x);
-			varray.push_back(underwater_rect.y + underwater_rect.h);
-			varray.push_back(end_x);
-			varray.push_back(underwater_rect.y + underwater_rect.h);
-			glVertexPointer(2, GL_FLOAT, 0, &varray.front());
-			glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
-
-			glLineWidth(2.0);
-			varray.clear();
-			glColor4f(1.0, 1.0, 1.0, 1.0);
-			for(int xpos = begin_x; xpos != end_x; ++xpos) {
-				const int index = xpos - x;
-				ASSERT_INDEX_INTO_VECTOR(index, heights);
-				const GLfloat ypos = a.rect_.y() - heights[index];
-				varray.push_back(xpos);
-				varray.push_back(ypos);
-			}
-			glVertexPointer(2, GL_FLOAT, 0, &varray.front());
-			glDrawArrays(GL_LINE_STRIP, 0, varray.size()/2);
-
-			//draw a second line, in a different color, just below the first
-			glColor4f(0.0, 0.9, 0.75, 0.5);
-			varray.clear();
-			for(int xpos = begin_x; xpos != end_x; ++xpos) {
-				const int index = xpos - x;
-				ASSERT_INDEX_INTO_VECTOR(index, heights);
-				const GLfloat ypos = a.rect_.y() - heights[index] +2;
-				varray.push_back(xpos);
-				varray.push_back(ypos);
-			}
-			glVertexPointer(2, GL_FLOAT, 0, &varray.front());
-			glDrawArrays(GL_LINE_STRIP, 0, varray.size()/2);
-		}
+	unsigned char water_color[] = {a.color_[0], a.color_[1], a.color_[2], a.color_[3]};
+	
+	glBlendFunc(GL_ONE, GL_ONE);
+	#if GL_OES_blend_subtract
+	glBlendEquationOES(GL_FUNC_REVERSE_SUBTRACT_OES);
+	#else
+	if(GLEW_EXT_blend_equation_separate) {
+		glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
+	} else {
+		const int max_color = std::max(water_color[0], std::max(water_color[1], water_color[2]));
+		water_color[0] = (max_color - water_color[0])/8;
+		water_color[1] = (max_color - water_color[1])/8;
+		water_color[2] = (max_color - water_color[2])/8;
 	}
-
-	if(draw_with_waves == false) {
-
-		unsigned char water_color[] = {a.color_[0], a.color_[1], a.color_[2], a.color_[3]};
+	#endif
+	glDisable(GL_TEXTURE_2D);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	
+	GLfloat vertices[] = {
+		waterline_rect.x, waterline_rect.y, //shallow water colored
+		waterline_rect.x + waterline_rect.w, waterline_rect.y,
 		
-		glBlendFunc(GL_ONE, GL_ONE);
-		#if GL_OES_blend_subtract
-		glBlendEquationOES(GL_FUNC_REVERSE_SUBTRACT_OES);
-		#else
-		if(GLEW_EXT_blend_equation_separate) {
-			glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
-		} else {
-			const int max_color = std::max(water_color[0], std::max(water_color[1], water_color[2]));
-			water_color[0] = (max_color - water_color[0])/8;
-			water_color[1] = (max_color - water_color[1])/8;
-			water_color[2] = (max_color - water_color[2])/8;
-		}
-		#endif
-		glDisable(GL_TEXTURE_2D);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		
-		GLfloat vertices[] = {
-			waterline_rect.x, waterline_rect.y, //shallow water colored
-			waterline_rect.x + waterline_rect.w, waterline_rect.y,
-			
-			waterline_rect.x, waterline_rect.y + 100, //deep water colored
-			waterline_rect.x + waterline_rect.w, waterline_rect.y + 100,
-			waterline_rect.x, underwater_rect.y + underwater_rect.h,
-			waterline_rect.x + waterline_rect.w, underwater_rect.y + underwater_rect.h
+		waterline_rect.x, waterline_rect.y + 100, //deep water colored
+		waterline_rect.x + waterline_rect.w, waterline_rect.y + 100,
+		waterline_rect.x, underwater_rect.y + underwater_rect.h,
+		waterline_rect.x + waterline_rect.w, underwater_rect.y + underwater_rect.h
+	};
+	
+	glColor4ub(water_color[0], water_color[1], water_color[2], water_color[3]);
+	glVertexPointer(2, GL_FLOAT, 0, vertices);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, sizeof(vertices)/sizeof(GLfloat)/2);
+	#if GL_OES_blend_subtract
+	glBlendEquationOES(GL_FUNC_ADD_OES);
+	#else
+	if (GLEW_EXT_blend_equation_separate)
+		glBlendEquation(GL_FUNC_ADD);
+	#endif
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glDisable(GL_LINE_SMOOTH);
+
+	glLineWidth(2.0);
+
+	typedef std::pair<int, int> Segment;
+
+	glEnableClientState(GL_COLOR_ARRAY);
+
+	const int EndSegmentSize = 20;
+
+	foreach(const Segment& seg, a.surface_segments_) {
+		glColor4f(1.0, 1.0, 1.0, 1.0);
+		GLfloat varray[] = {
+			seg.first - EndSegmentSize, waterline_rect.y,
+			seg.first, waterline_rect.y,
+			seg.second, waterline_rect.y,
+			seg.second + EndSegmentSize, waterline_rect.y,
 		};
-		
-		glColor4ub(water_color[0], water_color[1], water_color[2], water_color[3]);
-		glVertexPointer(2, GL_FLOAT, 0, vertices);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, sizeof(vertices)/sizeof(GLfloat)/2);
-		#if GL_OES_blend_subtract
-		glBlendEquationOES(GL_FUNC_ADD_OES);
-		#else
-		if (GLEW_EXT_blend_equation_separate)
-			glBlendEquation(GL_FUNC_ADD);
-		#endif
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-		glDisable(GL_LINE_SMOOTH);
-
-		glLineWidth(2.0);
-
-		typedef std::pair<int, int> Segment;
-
-		glEnableClientState(GL_COLOR_ARRAY);
-
-		const int EndSegmentSize = 20;
-
-		foreach(const Segment& seg, a.surface_segments_) {
-			glColor4f(1.0, 1.0, 1.0, 1.0);
-			GLfloat varray[] = {
-				seg.first - EndSegmentSize, waterline_rect.y,
-				seg.first, waterline_rect.y,
-				seg.second, waterline_rect.y,
-				seg.second + EndSegmentSize, waterline_rect.y,
-			};
-			static const unsigned char vcolors[] = {
-				255, 255, 255, 0,
-				255, 255, 255, 255,
-				255, 255, 255, 255,
-				255, 255, 255, 0,
-			};
-			glVertexPointer(2, GL_FLOAT, 0, varray);
-			glColorPointer(4, GL_UNSIGNED_BYTE, 0, vcolors);
-			glDrawArrays(GL_LINE_STRIP, 0, 4);
-		
-			//draw a second line, in a different color, just below the first
-			glColor4f(0.0, 0.9, 0.75, 0.5);
-			GLfloat varray2[] = {
-				seg.first - EndSegmentSize, waterline_rect.y+2,
-				seg.first, waterline_rect.y+2,
-				seg.second, waterline_rect.y+2,
-				seg.second + EndSegmentSize, waterline_rect.y+2,
-			};
-			static const unsigned char vcolors2[] = {
-				0, 230, 200, 0,
-				0, 230, 200, 128,
-				0, 230, 200, 128,
-				0, 230, 200, 0,
-			};
-			glVertexPointer(2, GL_FLOAT, 0, varray2);
-			glColorPointer(4, GL_UNSIGNED_BYTE, 0, vcolors2);
-			glDrawArrays(GL_LINE_STRIP, 0, 4);
-		}
-
-		glDisableClientState(GL_COLOR_ARRAY);
+		static const unsigned char vcolors[] = {
+			255, 255, 255, 0,
+			255, 255, 255, 255,
+			255, 255, 255, 255,
+			255, 255, 255, 0,
+		};
+		glVertexPointer(2, GL_FLOAT, 0, varray);
+		glColorPointer(4, GL_UNSIGNED_BYTE, 0, vcolors);
+		glDrawArrays(GL_LINE_STRIP, 0, 4);
+	
+		//draw a second line, in a different color, just below the first
+		glColor4f(0.0, 0.9, 0.75, 0.5);
+		GLfloat varray2[] = {
+			seg.first - EndSegmentSize, waterline_rect.y+2,
+			seg.first, waterline_rect.y+2,
+			seg.second, waterline_rect.y+2,
+			seg.second + EndSegmentSize, waterline_rect.y+2,
+		};
+		static const unsigned char vcolors2[] = {
+			0, 230, 200, 0,
+			0, 230, 200, 128,
+			0, 230, 200, 128,
+			0, 230, 200, 0,
+		};
+		glVertexPointer(2, GL_FLOAT, 0, varray2);
+		glColorPointer(4, GL_UNSIGNED_BYTE, 0, vcolors2);
+		glDrawArrays(GL_LINE_STRIP, 0, 4);
 	}
+
+	glDisableClientState(GL_COLOR_ARRAY);
 
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
