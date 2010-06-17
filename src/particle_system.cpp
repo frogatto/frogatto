@@ -167,6 +167,7 @@ public:
 	~simple_particle_system() {}
 
 	bool is_destroyed() const { return info_.system_time_to_live_ == 0 || info_.spawn_rate_ < 0 && particles_.empty(); }
+	bool should_save() const { return info_.spawn_rate_ >= 0; }
 	void process(const level& lvl, const entity& e);
 	void draw(const rect& area, const entity& e) const;
 

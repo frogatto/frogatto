@@ -450,6 +450,10 @@ wml::node_ptr custom_object::write() const
 	if(!particle_systems_.empty()) {
 		std::string systems;
 		for(std::map<std::string, particle_system_ptr>::const_iterator i = particle_systems_.begin(); i != particle_systems_.end(); ++i) {
+			if(i->second->should_save() == false) {
+				continue;
+			}
+
 			if(!systems.empty()) {
 				systems += ",";
 			}
@@ -457,7 +461,9 @@ wml::node_ptr custom_object::write() const
 			systems += i->first;
 		}
 
-		res->set_attr("particles", systems);
+		if(!systems.empty()) {
+			res->set_attr("particles", systems);
+		}
 	}
 	
 	return res;
