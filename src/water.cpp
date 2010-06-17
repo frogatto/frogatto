@@ -159,11 +159,6 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	const SDL_Rect waterline_rect = {a.rect_.x(), a.rect_.y(), a.rect_.w(), 2};
 	const SDL_Rect underwater_rect = {a.rect_.x(), a.rect_.y(), a.rect_.w(), a.rect_.h()};
 
-	glEnable(GL_LINE_SMOOTH);
-	#ifdef GL_POLYGON_SMOOTH
-	glEnable(GL_POLYGON_SMOOTH);
-	#endif
-
 	unsigned char water_color[] = {a.color_[0], a.color_[1], a.color_[2], a.color_[3]};
 	
 	glBlendFunc(GL_ONE, GL_ONE);
@@ -202,8 +197,6 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 		glBlendEquation(GL_FUNC_ADD);
 	#endif
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glDisable(GL_LINE_SMOOTH);
 
 	glLineWidth(2.0);
 
@@ -255,11 +248,6 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);
-
-	glDisable(GL_LINE_SMOOTH);
-	#ifdef GL_POLYGON_SMOOTH
-	glDisable(GL_POLYGON_SMOOTH);
-	#endif
 
 	return true;
 }
