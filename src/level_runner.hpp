@@ -16,7 +16,7 @@ struct multiplayer_exception {
 
 class level_runner {
 public:
-	level_runner(boost::intrusive_ptr<level>& lvl, std::string& level_cfg);
+	level_runner(boost::intrusive_ptr<level>& lvl, std::string& level_cfg, std::string& original_level_cfg);
 
 	bool play_level();
 	bool play_cycle();
@@ -24,6 +24,7 @@ private:
 	void show_debug_console();
 	boost::intrusive_ptr<level>& lvl_;
 	std::string& level_cfg_;
+	std::string& original_level_cfg_;
 
 	bool quit_;
 	boost::intrusive_ptr<level> start_lvl_;

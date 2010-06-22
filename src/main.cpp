@@ -323,7 +323,7 @@ extern "C" int main(int argc, char** argv)
 			if(wait_lvl->player()) {
 				wait_lvl->player()->set_current_level(level_cfg);
 			}
-			level_runner runner(wait_lvl, level_cfg);
+			level_runner runner(wait_lvl, level_cfg, orig_level_cfg);
 
 			multiplayer::sync_start_time(*lvl, boost::bind(&level_runner::play_cycle, &runner));
 
@@ -342,7 +342,7 @@ extern "C" int main(int argc, char** argv)
 		set_scene_title(lvl->title());
 
 		try {
-			quit = level_runner(lvl, level_cfg).play_level();
+			quit = level_runner(lvl, level_cfg, orig_level_cfg).play_level();
 			level_cfg = orig_level_cfg;
 		} catch(multiplayer_exception&) {
 		}

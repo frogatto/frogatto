@@ -43,7 +43,7 @@ bool button::in_button(int xloc, int yloc) const
 
 void button::handle_draw() const
 {
-	label_->set_loc(x()+hpadding,y()+vpadding);
+	label_->set_loc(x()+width()/2 - label_->width()/2,y()+height()/2 - label_->height()/2);
 	current_button_image_set_->blit(x(),y(),width(),height());
 	label_->draw();
 }

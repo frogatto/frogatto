@@ -23,6 +23,7 @@
 #include "load_level.hpp"
 #include "message_dialog.hpp"
 #include "object_events.hpp"
+#include "pause_game_dialog.hpp"
 #include "player_info.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
@@ -219,8 +220,8 @@ void show_end_game()
 
 }
 
-level_runner::level_runner(boost::intrusive_ptr<level>& lvl, std::string& level_cfg)
-  : lvl_(lvl), level_cfg_(level_cfg)
+level_runner::level_runner(boost::intrusive_ptr<level>& lvl, std::string& level_cfg, std::string& original_level_cfg)
+  : lvl_(lvl), level_cfg_(level_cfg), original_level_cfg_(original_level_cfg)
 {
 	quit_ = false;
 
@@ -471,15 +472,23 @@ bool level_runner::play_cycle()
 				const SDLMod mod = SDL_GetModState();
 				const SDLKey key = event.key.keysym.sym;
 				if(key == SDLK_ESCAPE) {
-					//record a quit event in stats
-					if(lvl_->player()) {
-						lvl_->player()->get_entity().record_stats_movement();
-						stats::record_event(lvl_->id(), stats::record_ptr(new stats::quit_record(lvl_->player()->get_entity().midpoint())));
-					}
+					const PAUSE_GAME_RESULT result = show_pause_game_dialog();
 
-					done = true;
-					quit_ = true;
-					break;
+					if(result == PAUSE_GAME_QUIT) {
+						//record a quit event in stats
+						if(lvl_->player()) {
+							lvl_->player()->get_entity().record_stats_movement();
+							stats::record_event(lvl_->id(), stats::record_ptr(new stats::quit_record(lvl_->player()->get_entity().midpoint())));
+						}
+	
+						done = true;
+						quit_ = true;
+						break;
+					} else if(result == PAUSE_GAME_GO_TO_TITLESCREEN) {
+						done = true;
+						original_level_cfg_ = "titlescreen.cfg";
+						break;
+					}
 				} else if(key == SDLK_d && (mod&KMOD_CTRL)) {
 					show_debug_console();
 
