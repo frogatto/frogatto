@@ -471,7 +471,7 @@ void play_music(const std::string& file)
 		return;
 	}
 
-	if(file.empty() || file == current_music_name()) {
+	if(file == current_music_name()) {
 		return;
 	}
 
@@ -479,6 +479,10 @@ void play_music(const std::string& file)
 	if(current_music) {
 		next_music() = file;
 		Mix_FadeOutMusic(500);
+		return;
+	}
+
+	if(file.empty()) {
 		return;
 	}
 
@@ -495,6 +499,10 @@ void play_music(const std::string& file)
 	{
 		next_music() = file;
 		iphone_fade_out_music(350);
+		return;
+	}
+
+	if(file.empty()) {
 		return;
 	}
 	
@@ -528,6 +536,10 @@ void play_music_interrupt(const std::string& file)
 	//note that calling HaltMusic will result in on_music_finished being
 	//called, which releases the current_music pointer.
 	Mix_HaltMusic();
+	if(file.empty()) {
+		return;
+	}
+
 	current_music = Mix_LoadMUS(("music/" + file).c_str());
 	if(!current_music) {
 		std::cerr << "Mix_LoadMUS ERROR loading " << file << ": " << Mix_GetError() << "\n";
