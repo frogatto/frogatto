@@ -20,7 +20,7 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	PAUSE_GAME_RESULT result = PAUSE_GAME_QUIT;
 
 	using namespace gui;
-	dialog d(0, 0, preferences::actual_screen_width(), preferences::actual_screen_height());
+	dialog d(0, 0, preferences::virtual_screen_width(), preferences::virtual_screen_height());
 	widget_ptr b1(new button(widget_ptr(new graphical_font_label("Resume", "default", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_CONTINUE)));
 	widget_ptr b2(new button(widget_ptr(new graphical_font_label("Exit to Titlescreen", "default", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_GO_TO_TITLESCREEN)));
 	widget_ptr b3(new button(widget_ptr(new graphical_font_label("Exit Game", "default", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_QUIT)));

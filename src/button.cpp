@@ -11,6 +11,7 @@
    See the COPYING file for more details.
 */
 #include "button.hpp"
+#include "iphone_controls.hpp"
 #include "raster.hpp"
 #include "surface_cache.hpp"
 #include "framed_gui_element.hpp"
@@ -37,6 +38,7 @@ button::button(widget_ptr label, boost::function<void ()> onclick)
 
 bool button::in_button(int xloc, int yloc) const
 {
+	translate_mouse_coords(&xloc, &yloc);
 	return xloc > x() && xloc < x() + width() &&
 	       yloc > y() && yloc < y() + height();
 }
