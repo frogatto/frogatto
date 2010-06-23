@@ -27,6 +27,7 @@
 #include "player_info.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
+#include "settings_dialog.hpp"
 #include "sound.hpp"
 #include "stats.hpp"
 #include "surface_cache.hpp"
@@ -277,6 +278,7 @@ void load_level_thread(const std::string& lvl, level** res) {
 
 bool level_runner::play_cycle()
 {
+	static settings_dialog settings_dialog;
 	if(controls::first_invalid_cycle() >= 0) {
 		lvl_->replay_from_cycle(controls::first_invalid_cycle());
 		controls::mark_valid();
@@ -447,10 +449,12 @@ bool level_runner::play_cycle()
 	}
 
 	joystick::update();
+	bool should_pause = false;
 
 	if(message_dialog::get() == NULL) {
 		SDL_Event event;
 		while(SDL_PollEvent(&event)) {
+			should_pause = settings_dialog.handle_event(event);
 			switch(event.type) {
 			case SDL_QUIT:
 #ifdef TARGET_OS_IPHONE
@@ -472,23 +476,8 @@ bool level_runner::play_cycle()
 				const SDLMod mod = SDL_GetModState();
 				const SDLKey key = event.key.keysym.sym;
 				if(key == SDLK_ESCAPE) {
-					const PAUSE_GAME_RESULT result = show_pause_game_dialog();
-
-					if(result == PAUSE_GAME_QUIT) {
-						//record a quit event in stats
-						if(lvl_->player()) {
-							lvl_->player()->get_entity().record_stats_movement();
-							stats::record_event(lvl_->id(), stats::record_ptr(new stats::quit_record(lvl_->player()->get_entity().midpoint())));
-						}
-	
-						done = true;
-						quit_ = true;
-						break;
-					} else if(result == PAUSE_GAME_GO_TO_TITLESCREEN) {
-						done = true;
-						original_level_cfg_ = "titlescreen.cfg";
-						break;
-					}
+					should_pause = true;
+					break;
 				} else if(key == SDLK_d && (mod&KMOD_CTRL)) {
 					show_debug_console();
 
@@ -544,6 +533,26 @@ bool level_runner::play_cycle()
 				break;
 			}
 		}
+		
+		if (should_pause)
+		{
+			settings_dialog.reset();
+			const PAUSE_GAME_RESULT result = show_pause_game_dialog();
+			
+			if(result == PAUSE_GAME_QUIT) {
+				//record a quit event in stats
+				if(lvl_->player()) {
+					lvl_->player()->get_entity().record_stats_movement();
+					stats::record_event(lvl_->id(), stats::record_ptr(new stats::quit_record(lvl_->player()->get_entity().midpoint())));
+				}
+				
+				done = true;
+				quit_ = true;
+			} else if(result == PAUSE_GAME_GO_TO_TITLESCREEN) {
+				done = true;
+				original_level_cfg_ = "titlescreen.cfg";
+			}
+		}
 	}
 
 	if(message_dialog::get()) {
@@ -573,7 +582,8 @@ bool level_runner::play_cycle()
 		lvl_->process_draw();
 		draw_scene(*lvl_, last_draw_position());
 		performance_data perf = { current_fps_, current_cycles_, current_delay_, current_draw_, current_process_, current_flip_, cycle, current_events_, profiling_summary_ };
-
+		settings_dialog.draw();
+		
 		if(preferences::show_fps()) {
 			draw_fps(*lvl_, perf);
 		}
