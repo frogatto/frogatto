@@ -514,8 +514,9 @@ bool level_runner::play_cycle()
 					graphics::surface_cache::clear();
 					graphics::texture::clear_cache();
 				} else if(key == SDLK_i && lvl_->player()) {
-					pause_scope pauser;
-					show_inventory(*lvl_, lvl_->player()->get_entity());
+// INVENTORY CURRENTLY DISABLED
+//					pause_scope pauser;
+//					show_inventory(*lvl_, lvl_->player()->get_entity());
 				} else if(key == SDLK_m && mod & KMOD_CTRL) {
 					sound::mute(!sound::muted()); //toggle sound
 				} else if(key == SDLK_p && mod & KMOD_CTRL) {

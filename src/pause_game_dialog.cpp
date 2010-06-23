@@ -17,7 +17,7 @@ void end_dialog(gui::dialog* d, PAUSE_GAME_RESULT* result, PAUSE_GAME_RESULT val
 
 PAUSE_GAME_RESULT show_pause_game_dialog()
 {
-	PAUSE_GAME_RESULT result = PAUSE_GAME_CONTINUE;
+	PAUSE_GAME_RESULT result = PAUSE_GAME_QUIT;
 
 	using namespace gui;
 	dialog d(0, 0, preferences::actual_screen_width(), preferences::actual_screen_height());
@@ -35,8 +35,8 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 
 
 	d.show_modal();
-	if(d.cancelled() && result == PAUSE_GAME_CONTINUE) {
-		result = PAUSE_GAME_QUIT;
+	if(d.cancelled() && result == PAUSE_GAME_QUIT) {
+		result = PAUSE_GAME_CONTINUE;
 	}
 
 	return result;
