@@ -190,11 +190,7 @@ bool dialog::handle_event(const SDL_Event& event, bool claimed)
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP: {
 			int mousex, mousey;
-			#if SDL_MAJOR_VERSION == 1 && SDL_MINOR_VERSION == 3
-			SDL_GetMouseState(0, &mousex, &mousey);
-			#else
 			SDL_GetMouseState(&mousex, &mousey);
-			#endif
 			if(mousex >= x() && mousex < x() + width() &&
 			   mousey >= y() && mousey < y() + height()) {
 				claimed = true;

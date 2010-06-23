@@ -45,19 +45,19 @@ namespace
 		
 		underwater_circle_y = vh-120;
 	}
+}
+
+void translate_mouse_coords (int *x, int *y)
+{
+	if(preferences::screen_rotated()) {
+		*x = preferences::actual_screen_width() - *x;
+		std::swap(*x, *y);
+	}
 	
-	static void translate_mouse_coords (int *x, int *y)
-	{
-		if(preferences::screen_rotated()) {
-			*x = preferences::actual_screen_width() - *x;
-			std::swap(*x, *y);
-		}
-		
-		if(preferences::virtual_screen_width() >
-		   (preferences::screen_rotated() ? preferences::actual_screen_height() : preferences::actual_screen_width())) {
-			*x *= 2;
-			*y *= 2;
-		}
+	if(preferences::virtual_screen_width() >
+	   (preferences::screen_rotated() ? preferences::actual_screen_height() : preferences::actual_screen_width())) {
+		*x *= 2;
+		*y *= 2;
 	}
 }
 
@@ -207,6 +207,8 @@ bool iphone_controls::tongue()
 }
 
 #else // dummy functions for non-iPhone
+
+void translate_mouse_coords (int *x, int *y) {}
 
 void iphone_controls::draw() {}
 
