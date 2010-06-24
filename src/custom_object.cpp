@@ -119,6 +119,10 @@ custom_object::custom_object(wml::const_node_ptr node)
 		position_schedule_->rotation.resize(nints);
 	}
 
+	if(position_schedule_.get() != NULL && node->has_attr("schedule_speed")) {
+		position_schedule_->speed = wml::get_int(node, "schedule_speed");
+	}
+
 	if(node->has_attr("draw_area")) {
 		draw_area_.reset(new rect(node->attr("draw_area")));
 	}
@@ -297,6 +301,7 @@ wml::node_ptr custom_object::write() const
 	}
 
 	if(position_schedule_.get() != NULL) {
+		res->set_attr("schedule_speed", formatter() << position_schedule_->speed);
 		if(position_schedule_->x_pos.empty() == false) {
 			res->set_attr("x_schedule", util::join_ints(&position_schedule_->x_pos[0], position_schedule_->x_pos.size()));
 		}
