@@ -2162,8 +2162,10 @@ void custom_object::set_frame(const std::string& name)
 {
 	const std::string previous_animation = frame_name_;
 
+	const bool changing_anim = name != frame_name_;
+
 	//fire an event to say that we're leaving the current frame.
-	if(frame_ && name != frame_name_) {
+	if(frame_ && changing_anim) {
 		handle_event(frame_->leave_event_id());
 	}
 
@@ -2199,8 +2201,10 @@ void custom_object::set_frame(const std::string& name)
 		  "Object '" << type_->id() << "' has different solid areas when changing from frame " << previous_animation << " to " << frame_name_ << " and doesn't handle it properly");
 	}
 
-	handle_event(OBJECT_EVENT_ENTER_ANIM);
-	handle_event(frame_->enter_event_id());
+	if(changing_anim) {
+		handle_event(OBJECT_EVENT_ENTER_ANIM);
+		handle_event(frame_->enter_event_id());
+	}
 }
 
 rect custom_object::draw_rect() const
