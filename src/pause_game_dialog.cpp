@@ -29,7 +29,7 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	b2->set_dim(400, 100);
 	b3->set_dim(400, 100);
 
-	d.add_widget(b1, preferences::actual_screen_width()/2 - b1->width()/2, preferences::actual_screen_height()/2 - b1->height()*2);
+	d.add_widget(b1, preferences::virtual_screen_width()/2 - b1->width()/2, preferences::virtual_screen_height()/2 - b1->height()*1.5);
 	d.add_widget(b2);
 	d.add_widget(b3);
 
