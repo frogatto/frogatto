@@ -400,8 +400,6 @@ void simple_particle_system::draw(const rect& area, const entity& e) const
 	glTexCoordPointer(2, GL_FLOAT, 0, &tcarray.front());
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
 
-	std::cerr << "DRAW PARTICLES: " << varray.size()/2 << "\n";
-	
 	if(info_.delta_a_){
 		glDisableClientState(GL_COLOR_ARRAY);
 	}
