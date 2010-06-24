@@ -460,8 +460,8 @@ int get_collision_event_id(const std::string& area)
 void detect_user_collisions(level& lvl)
 {
 	std::vector<entity_ptr> chars;
-	chars.reserve(lvl.get_chars().size());
-	foreach(const entity_ptr& a, lvl.get_chars()) {
+	chars.reserve(lvl.get_active_chars().size());
+	foreach(const entity_ptr& a, lvl.get_active_chars()) {
 		if(a->weak_collide_dimensions() != 0 && a->current_frame().collision_areas().empty() == false) {
 			chars.push_back(a);
 		}

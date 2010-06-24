@@ -1672,13 +1672,12 @@ void level::do_processing()
 	++cycle_;
 
 	const int ticks = SDL_GetTicks();
+	detect_user_collisions(*this);
 	active_chars_.clear();
 
 	if(!player_) {
 		return;
 	}
-
-	detect_user_collisions(*this);
 
 	const int screen_left = last_draw_position().x/100;
 	const int screen_right = last_draw_position().x/100 + graphics::screen_width();

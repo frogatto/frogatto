@@ -217,6 +217,7 @@ public:
 
 	void get_all_labels(std::vector<std::string>& labels) const;
 
+	const std::vector<entity_ptr>& get_active_chars() const { return active_chars_; }
 	const std::vector<entity_ptr>& get_chars() const { return chars_; }
 	const std::vector<entity_ptr>& get_solid_chars() const;
 	void swap_chars(std::vector<entity_ptr>& v) { chars_.swap(v); solid_chars_.clear(); }
