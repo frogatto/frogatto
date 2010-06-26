@@ -8,6 +8,10 @@ namespace preferences {
 	bool parse_arg(const char* arg);
 	bool no_sound();
 
+	void set_preferences_path(const std::string& path);
+
+	bool setup_preferences_dir();
+
 	const std::string& level_path();
 	const char* user_data_path();
 	const char* save_file_path();

@@ -4,6 +4,7 @@
 #include <SDL.h>
 
 #include "preferences.hpp"
+#include "filesystem.hpp"
 
 namespace preferences {
 	namespace {
@@ -64,17 +65,6 @@ namespace preferences {
 		std::string auto_save_file_path_ = PREFERENCES_PATH AUTOSAVE_FILENAME;
 		
 		bool force_no_npot_textures_ = false;
-
-		void set_preferences_path(const std::string& path)
-		{
-			preferences_path_ = path;
-			if(preferences_path_[preferences_path_.length()-1] != '/') {
-				preferences_path_ += '/';
-			}
-
-			save_file_path_ = preferences_path_ + SAVE_FILENAME;
-			auto_save_file_path_ = preferences_path_ + AUTOSAVE_FILENAME;
-		}
 	}
 
 	int xypos_draw_mask = actual_screen_width_ < virtual_screen_width_ ? ~1 : ~0;
@@ -91,6 +81,22 @@ namespace preferences {
 	
 	bool no_sound() {
 		return no_sound_;
+	}
+
+	bool setup_preferences_dir()
+	{
+		return !sys::get_dir(user_data_path()).empty();
+	}
+
+	void set_preferences_path(const std::string& path)
+	{
+		preferences_path_ = path;
+		if(preferences_path_[preferences_path_.length()-1] != '/') {
+			preferences_path_ += '/';
+		}
+
+		save_file_path_ = preferences_path_ + SAVE_FILENAME;
+		auto_save_file_path_ = preferences_path_ + AUTOSAVE_FILENAME;	
 	}
 
 	const std::string& level_path() {
