@@ -435,9 +435,9 @@ std::string get_user_data_dir()
 	if (be_path.InitCheck() != B_OK) {
 		BPath tpath;
 		if (find_directory(B_USER_SETTINGS_DIRECTORY, &be_path, true) == B_OK) {
-			be_path.Append("silvertree");
+			be_path.Append("frogatto");
 		} else {
-			be_path.SetTo("/boot/home/config/settings/silvertree");
+			be_path.SetTo("/boot/home/config/settings/frogatto");
 		}
 		tpath = be_path;
 		create_directory(tpath.Path(), 0775);
