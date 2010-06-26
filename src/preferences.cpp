@@ -17,6 +17,11 @@ namespace preferences {
 		std::string level_path_ = "data/level/";
 		
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+		
+#ifndef SAVE_FILE_PATH
+#define SAVE_FILE_PATH "../Documents/"
+#endif
+
 		int virtual_screen_width_ = 960;
 		int virtual_screen_height_ = 640;
 		
@@ -34,6 +39,10 @@ namespace preferences {
 
 		bool use_16bpp_textures_ = true;
 #else
+
+#ifndef SAVE_FILE_PATH
+#define SAVE_FILE_PATH "data/level/"
+#endif
 		int virtual_screen_width_ = 800;
 		int virtual_screen_height_ = 600;
 		
@@ -43,14 +52,14 @@ namespace preferences {
 		bool screen_rotated_ = false;
 
 		bool show_fps_ = false;
-		
-		const char *save_file_path_ = "data/level/save.cfg";
-		const char *auto_save_file_path_ = "data/level/autosave.cfg";
 
 		bool load_compiled_ = false;
 
 		bool use_16bpp_textures_ = false;
 #endif
+
+		const char *save_file_path_ = SAVE_FILE_PATH "save.cfg";
+		const char *auto_save_file_path_ = SAVE_FILE_PATH "autosave.cfg";
 		
 		bool force_no_npot_textures_ = false;
 	}
