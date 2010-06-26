@@ -10,10 +10,18 @@
 
 #include "filesystem.hpp"
 #include "formatter.hpp"
+#include "preferences.hpp"
 #include "stats.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
 #include "wml_writer.hpp"
+
+namespace {
+std::string get_stats_dir() {
+	return sys::get_dir(std::string(preferences::user_data_path()) + "stats/") + "/";
+}
+
+}
 
 void http_upload(const std::string& payload, const std::string& script) {
 	using boost::asio::ip::tcp;
@@ -88,7 +96,7 @@ void send_stats(const std::map<std::string, std::vector<const_record_ptr> >& que
 
 		msg->add_child(cmd);
 
-		const std::string fname = "data/stats/" + i->first;
+		const std::string fname = get_stats_dir() + i->first;
 		if(sys::file_exists(fname)) {
 			commands = sys::read_file(fname) + commands;
 		}
@@ -198,7 +206,7 @@ bool download(const std::string& lvl) {
 
 	std::string stats_wml = std::string(payload.end() - len, payload.end());
 
-	sys::write_file("data/stats/" + lvl, stats_wml);
+	sys::write_file(get_stats_dir() + lvl, stats_wml);
 	return true;
 	} catch(...) {
 		fprintf(stderr, "STATS ERROR: ERROR PERFORMING STATS DOWNLOAD\n");

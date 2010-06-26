@@ -105,6 +105,9 @@ extern "C" int main(int argc, char** argv)
 	}
 #endif
 
+	//make sure that the user data path exists.
+	sys::get_dir(preferences::user_data_path());
+
 	for(int n = 1; n < argc; ++n) {
 		const std::string arg(argv[n]);
 		std::string arg_name, arg_value;

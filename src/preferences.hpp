@@ -9,6 +9,7 @@ namespace preferences {
 	bool no_sound();
 
 	const std::string& level_path();
+	const char* user_data_path();
 	const char* save_file_path();
 	const char* auto_save_file_path();
 	bool show_debug_hitboxes();

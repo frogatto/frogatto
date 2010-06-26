@@ -927,7 +927,7 @@ void editor::reset_dialog_positions()
 void editor::handle_key_press(const SDL_KeyboardEvent& key)
 {
 	if(key.keysym.sym == SDLK_s && (key.keysym.mod&KMOD_ALT)) {
-		IMG_SaveFrameBuffer("screenshot.png", 5);
+		IMG_SaveFrameBuffer((std::string(preferences::user_data_path()) + "screenshot.png").c_str(), 5);
 	}
 
 	if(key.keysym.sym == SDLK_u) {

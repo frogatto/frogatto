@@ -511,7 +511,7 @@ bool level_runner::play_cycle()
 					wml::write(lvl_node, data);
 					sys::write_file("data/level/save.cfg", data);
 				} else if(key == SDLK_s && (mod&KMOD_ALT)) {
-					IMG_SaveFrameBuffer("screenshot.png", 5);
+					IMG_SaveFrameBuffer((std::string(preferences::user_data_path()) + "screenshot.png").c_str(), 5);
 				} else if(key == SDLK_w && (mod&KMOD_CTRL)) {
 					//warp to another level.
 					std::vector<std::string> levels = get_known_levels();

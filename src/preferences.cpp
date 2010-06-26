@@ -32,16 +32,13 @@ namespace preferences {
 
 		bool show_fps_ = false;
 		
-		const char *save_file_path_ = "../Documents/save.cfg";
-		const char *auto_save_file_path_ = "../Documents/autosave.cfg";
-
 		bool load_compiled_ = true;
 
 		bool use_16bpp_textures_ = true;
 #else
 
 #ifndef SAVE_FILE_PATH
-#define SAVE_FILE_PATH "data/level/"
+#define SAVE_FILE_PATH "./"
 #endif
 		int virtual_screen_width_ = 800;
 		int virtual_screen_height_ = 600;
@@ -90,6 +87,10 @@ namespace preferences {
 
 	const char *auto_save_file_path() {
 		return auto_save_file_path_;
+	}
+
+	const char *user_data_path() {
+		return SAVE_FILE_PATH;
 	}
 	
 	bool show_debug_hitboxes() {
