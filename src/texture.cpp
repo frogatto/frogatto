@@ -595,9 +595,10 @@ void texture::ID::build_id()
 			++dst;
 			++src;
 		}
-
+#ifndef WIN32
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, s->w, s->h, 0, GL_RGBA,
 		             GL_UNSIGNED_SHORT_4_4_4_4, &buf[0]);
+#endif
 	} else {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, s->w, s->h, 0, GL_RGBA,
 			GL_UNSIGNED_BYTE, s->pixels);
