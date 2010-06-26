@@ -23,7 +23,9 @@ public:
 private:
 	//currently the stats thread (and thus stats) are disabled, due to
 	//causing crashes on the iPhone. Need to investigate.
-	//threading::thread background_thread_;
+#if !TARGET_OS_IPHONE
+	threading::thread background_thread_;
+#endif
 };
 
 class record;

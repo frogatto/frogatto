@@ -1547,7 +1547,7 @@ void editor::load_stats()
 {
 	stats_.clear();
 
-	const std::string fname = "data/stats/" + lvl_->id();
+	const std::string fname = formatter() << preferences::user_data_path() << "stats/" << lvl_->id();
 	if(!sys::file_exists(fname)) {
 		return;
 	}

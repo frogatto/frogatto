@@ -214,7 +214,10 @@ bool download(const std::string& lvl) {
 	}
 }
 
-manager::manager() // : background_thread_(send_stats_thread)
+manager::manager()
+#if !TARGET_OS_IPHONE
+  : background_thread_(send_stats_thread)
+#endif
 {}
 
 manager::~manager() {

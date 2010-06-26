@@ -5,6 +5,7 @@
 
 #include <boost/scoped_ptr.hpp>
 
+#include "geometry.hpp"
 #include "key.hpp"
 #include "level.hpp"
 
@@ -44,6 +45,9 @@ private:
 	bool done;
 	int start_time_;
 	int pause_time_;
+
+	point last_stats_point_;
+	std::string last_stats_point_level_;
 };
 
 class pause_scope

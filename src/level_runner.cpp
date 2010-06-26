@@ -301,6 +301,21 @@ bool level_runner::play_cycle()
 		}
 	}
 
+	//record player movement every 5 cycles.
+#if !TARGET_OS_IPHONE
+	if(cycle%5 == 0 && lvl_->player()) {
+		point p = lvl_->player()->get_entity().midpoint();
+
+		if(last_stats_point_level_ == lvl_->id()) {
+			stats::record_event(lvl_->id(), stats::record_ptr(
+			      new stats::player_move_record(last_stats_point_, p)));
+		}
+
+		last_stats_point_ = p;
+		last_stats_point_level_ = lvl_->id();
+	}
+#endif
+
 	if(die_at <= 0 && lvl_->players().size() == 1 && lvl_->player() && lvl_->player()->get_entity().hitpoints() <= 0) {
 		die_at = cycle;
 	}
@@ -311,6 +326,7 @@ bool level_runner::play_cycle()
 		//record stats of the player's death
 		lvl_->player()->get_entity().record_stats_movement();
 		stats::record_event(lvl_->id(), stats::record_ptr(new stats::die_record(lvl_->player()->get_entity().midpoint())));
+		last_stats_point_level_ = "";
 
 		entity_ptr save = lvl_->player()->get_entity().save_condition();
 		if(!save) {
