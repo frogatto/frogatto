@@ -12,6 +12,7 @@ namespace preferences {
 	const char* user_data_path();
 	const char* save_file_path();
 	const char* auto_save_file_path();
+	void expand_data_paths();
 	bool show_debug_hitboxes();
 	bool use_pretty_scaling();
 	void set_use_pretty_scaling(bool value);

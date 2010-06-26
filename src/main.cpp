@@ -150,6 +150,8 @@ extern "C" int main(int argc, char** argv)
 		}
 	}
 
+	preferences::expand_data_paths();
+
 	//make sure that the user data path exists.
 	sys::get_dir(preferences::user_data_path());
 

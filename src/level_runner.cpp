@@ -525,7 +525,7 @@ bool level_runner::play_cycle()
 						lvl_node->set_attr("music", sound::current_music());
 					}
 					wml::write(lvl_node, data);
-					sys::write_file("data/level/save.cfg", data);
+					sys::write_file(preferences::save_file_path(), data);
 				} else if(key == SDLK_s && (mod&KMOD_ALT)) {
 					IMG_SaveFrameBuffer((std::string(preferences::user_data_path()) + "screenshot.png").c_str(), 5);
 				} else if(key == SDLK_w && (mod&KMOD_CTRL)) {

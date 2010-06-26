@@ -1,3 +1,4 @@
+#include <iostream>
 #include <algorithm>
 #include <string>
 #include <SDL.h>
@@ -38,7 +39,7 @@ namespace preferences {
 #else
 
 #ifndef PREFERENCES_PATH
-#define PREFERENCES_PATH "./"
+#define PREFERENCES_PATH "~/.frogatto/"
 #endif
 		int virtual_screen_width_ = 800;
 		int virtual_screen_height_ = 600;
@@ -106,6 +107,22 @@ namespace preferences {
 
 	const char *user_data_path() {
 		return preferences_path_.c_str();
+	}
+
+	namespace {
+	void expand_path(std::string& str) {
+		if(!str.empty() && str[0] == '~') {
+			str = std::string(getenv("HOME")) + std::string(str.begin()+1, str.end());
+		}
+	}
+	}
+
+	void expand_data_paths() {
+		expand_path(level_path_);
+		expand_path(save_file_path_);
+		expand_path(auto_save_file_path_);
+		expand_path(preferences_path_);
+		std::cerr << "PATH: " << save_file_path_ << "\n";
 	}
 	
 	bool show_debug_hitboxes() {
