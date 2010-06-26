@@ -135,7 +135,7 @@ extern "C" int main(int argc, char** argv)
 			benchmarks_list = util::split(arg_value);
 		} else if(arg == "--tests") {
 			unit_tests_only = true;
-		} else if(arg == "--notests") {
+		} else if(arg == "--no-tests") {
 			skip_tests = true;
 		} else if(arg == "--width" && n+1 < argc) {
 			std::string w(argv[++n]);
@@ -150,7 +150,7 @@ extern "C" int main(int argc, char** argv)
 			server = argv[++n];
 		} else if(arg == "--compiled") {
 			preferences::set_load_compiled(true);
-		} else if(arg == "--nocompiled") {
+		} else if(arg == "--no-compiled") {
 			preferences::set_load_compiled(false);
 		} else {
 			const bool res = preferences::parse_arg(argv[n]);

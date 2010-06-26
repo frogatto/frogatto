@@ -226,7 +226,7 @@ namespace preferences {
 			show_debug_hitboxes_ = true;
 		} else if(s == "--scale") {
 			set_use_pretty_scaling(true);
-		} else if(s == "--nosound") {
+		} else if(s == "--no-sound") {
 			no_sound_ = true;
 		} else if(s == "--fullscreen") {
 			fullscreen_ = true;
@@ -243,7 +243,7 @@ namespace preferences {
 			use_16bpp_textures_ = false;
 		} else if(s == "--debug") {
 			debug_ = true;
-		} else if(s == "--nodebug") {
+		} else if(s == "--no-debug") {
 			debug_ = false;
 		} else if(s == "--simiphone") {
 			virtual_screen_width_ = 960;
