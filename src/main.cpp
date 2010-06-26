@@ -96,17 +96,7 @@ extern "C" int main(int argc, char** argv)
 	std::string profile_output_buf;
 
 	std::string orig_level_cfg = level_cfg;
-#ifdef TARGET_OS_IPHONE
-	//on the iPhone, try to restore the auto-save if it exists
-	if(sys::file_exists(preferences::auto_save_file_path()) && sys::read_file(std::string(preferences::auto_save_file_path()) + ".stat") == "1") {
-		level_cfg = "autosave.cfg";
-		sys::write_file(std::string(preferences::auto_save_file_path()) + ".stat", "0");
-		
-	}
-#endif
-
-	//make sure that the user data path exists.
-	sys::get_dir(preferences::user_data_path());
+	std::string override_level_cfg = "";
 
 	for(int n = 1; n < argc; ++n) {
 		const std::string arg(argv[n]);
@@ -144,8 +134,7 @@ extern "C" int main(int argc, char** argv)
 			std::string h(argv[++n]);
 			preferences::set_actual_screen_height(boost::lexical_cast<int>(h));
 		} else if(arg == "--level" && n+1 < argc) {
-			level_cfg = argv[++n];
-			orig_level_cfg = level_cfg;
+			override_level_cfg = argv[++n]
 		} else if(arg == "--host" && n+1 < argc) {
 			server = argv[++n];
 		} else if(arg == "--compiled") {
@@ -160,7 +149,24 @@ extern "C" int main(int argc, char** argv)
 			}
 		}
 	}
-	
+
+	//make sure that the user data path exists.
+	sys::get_dir(preferences::user_data_path());
+
+#ifdef TARGET_OS_IPHONE
+	//on the iPhone, try to restore the auto-save if it exists
+	if(sys::file_exists(preferences::auto_save_file_path()) && sys::read_file(std::string(preferences::auto_save_file_path()) + ".stat") == "1") {
+		level_cfg = "autosave.cfg";
+		sys::write_file(std::string(preferences::auto_save_file_path()) + ".stat", "0");
+
+	}
+#endif
+
+	if(override_level_cfg.empty() != true) {
+		level_cfg = override_level_cfg;
+		orig_level_cfg = level_cfg;
+	}
+
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 	int width, height;
 	iphone_screen_res(&width, &height);
