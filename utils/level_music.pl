@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 
 # This script shows a list of a levels each song is used in (for all songs that are used)
+# And a list of all songs not used in any level
 # When run, cwd should be the root of the repository
 
 use strict;
@@ -17,4 +18,11 @@ for (sort keys %music)
 {
 	print "$_".($_ eq '' ? '<none>' : '').":\n";
 	print "\t$_\n" for (@{$music{$_}});
+}
+
+print "\nMusic not used:\n";
+chdir("music");
+for (glob("*.ogg"))
+{
+	print "\t$_\n" if (!exists $music{$_});
 }
