@@ -220,9 +220,9 @@ namespace preferences {
 			arg_value = std::string(equal+1, s.end());
 		}
 
-		if(arg_name == "--level_path") {
+		if(arg_name == "--level-path") {
 			level_path_ = arg_value + "/";
-		} else if(s == "--show_hitboxes") {
+		} else if(s == "--show-hitboxes") {
 			show_debug_hitboxes_ = true;
 		} else if(s == "--scale") {
 			set_use_pretty_scaling(true);
