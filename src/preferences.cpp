@@ -18,8 +18,8 @@ namespace preferences {
 		
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 		
-#ifndef SAVE_FILE_PATH
-#define SAVE_FILE_PATH "../Documents/"
+#ifndef PREFERENCES_PATH
+#define PREFERENCES_PATH "../Documents/"
 #endif
 
 		int virtual_screen_width_ = 960;
@@ -37,8 +37,8 @@ namespace preferences {
 		bool use_16bpp_textures_ = true;
 #else
 
-#ifndef SAVE_FILE_PATH
-#define SAVE_FILE_PATH "./"
+#ifndef PREFERENCES_PATH
+#define PREFERENCES_PATH "./"
 #endif
 		int virtual_screen_width_ = 800;
 		int virtual_screen_height_ = 600;
@@ -55,10 +55,25 @@ namespace preferences {
 		bool use_16bpp_textures_ = false;
 #endif
 
-		const char *save_file_path_ = SAVE_FILE_PATH "save.cfg";
-		const char *auto_save_file_path_ = SAVE_FILE_PATH "autosave.cfg";
+#define SAVE_FILENAME					"save.cfg"
+#define AUTOSAVE_FILENAME				"autosave.cfg"
+
+		std::string preferences_path_ = PREFERENCES_PATH;
+		std::string save_file_path_ = PREFERENCES_PATH SAVE_FILENAME;
+		std::string auto_save_file_path_ = PREFERENCES_PATH AUTOSAVE_FILENAME;
 		
 		bool force_no_npot_textures_ = false;
+
+		void set_preferences_path(const std::string& path)
+		{
+			preferences_path_ = path;
+			if(preferences_path_[preferences_path_.length()-1] != '/') {
+				preferences_path_ += '/';
+			}
+
+			save_file_path_ = preferences_path_ + SAVE_FILENAME;
+			auto_save_file_path_ = preferences_path_ + AUTOSAVE_FILENAME;
+		}
 	}
 
 	int xypos_draw_mask = actual_screen_width_ < virtual_screen_width_ ? ~1 : ~0;
@@ -82,15 +97,15 @@ namespace preferences {
 	}
 	
 	const char *save_file_path() {
-		return save_file_path_;
+		return save_file_path_.c_str();
 	}
 
 	const char *auto_save_file_path() {
-		return auto_save_file_path_;
+		return auto_save_file_path_.c_str();
 	}
 
 	const char *user_data_path() {
-		return SAVE_FILE_PATH;
+		return preferences_path_.c_str();
 	}
 	
 	bool show_debug_hitboxes() {
@@ -266,6 +281,8 @@ namespace preferences {
 			show_fps_ = true;
 		} else if(s == "--no-fps") {
 			show_fps_ = false;
+		} else if(arg_name == "--config-path" && !arg_value.empty()) {
+			set_preferences_path(arg_value);
 		} else {
 			return false;
 		}
