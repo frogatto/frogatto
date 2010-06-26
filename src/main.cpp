@@ -152,6 +152,8 @@ extern "C" int main(int argc, char** argv)
 
 	preferences::expand_data_paths();
 
+	std::cerr << "Preferences dir: " << preferences::user_data_path() << '\n';
+
 	//make sure that the user data path exists.
 	if(!preferences::setup_preferences_dir()) {
 		std::cerr << "cannot create preferences dir!\n";
