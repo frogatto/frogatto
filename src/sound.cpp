@@ -47,7 +47,7 @@ std::string& next_music() {
 }
 
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
-Mix_Music* current_music = NULL;
+Mix_Music* current_mix_music = NULL;
 #else
 bool playing_music = false;
 #endif
@@ -57,8 +57,8 @@ bool playing_music = false;
 void on_music_finished()
 {
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
-	Mix_FreeMusic(current_music);
-	current_music = NULL;
+	Mix_FreeMusic(current_mix_music);
+	current_mix_music = NULL;
 #else
 	playing_music = false;
 #endif
@@ -476,7 +476,7 @@ void play_music(const std::string& file)
 	}
 
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
-	if(current_music) {
+	if(current_mix_music) {
 		next_music() = file;
 		Mix_FadeOutMusic(500);
 		return;
@@ -487,13 +487,13 @@ void play_music(const std::string& file)
 	}
 
 	current_music_name() = file;
-	current_music = Mix_LoadMUS(("music/" + file).c_str());
-	if(!current_music) {
+	current_mix_music = Mix_LoadMUS(("music/" + file).c_str());
+	if(!current_mix_music) {
 		std::cerr << "Mix_LoadMUS ERROR loading " << file << ": " << Mix_GetError() << "\n";
 		return;
 	}
 
-	Mix_FadeInMusic(current_music, -1, 500);
+	Mix_FadeInMusic(current_mix_music, -1, 500);
 #else
 	if (playing_music)
 	{
@@ -540,19 +540,23 @@ void play_music_interrupt(const std::string& file)
 		return;
 	}
 
-	current_music = Mix_LoadMUS(("music/" + file).c_str());
-	if(!current_music) {
+	current_mix_music = Mix_LoadMUS(("music/" + file).c_str());
+	if(!current_mix_music) {
 		std::cerr << "Mix_LoadMUS ERROR loading " << file << ": " << Mix_GetError() << "\n";
 		return;
 	}
 
-	Mix_PlayMusic(current_music, 1);
+	Mix_PlayMusic(current_mix_music, 1);
 #else
 	std::string aac_file = file;
 	aac_file.replace(aac_file.length()-3, aac_file.length(), "m4a");
 	iphone_play_music(("music_aac/" + aac_file).c_str(), 0);
 	playing_music = true;
 #endif
+}
+
+const std::string& current_music() {
+	return current_music_name();
 }
 
 }

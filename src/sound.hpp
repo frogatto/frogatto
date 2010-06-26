@@ -38,6 +38,8 @@ void cancel_looped(int handle);
 void play_music(const std::string& file);
 void play_music_interrupt(const std::string& file);
 
+const std::string& current_music();
+
 }
 
 #endif

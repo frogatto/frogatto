@@ -461,14 +461,20 @@ bool level_runner::play_cycle()
 		while(SDL_PollEvent(&event)) {
 			should_pause = settings_dialog.handle_event(event);
 			switch(event.type) {
-			case SDL_QUIT:
+			case SDL_QUIT: {
 #ifdef TARGET_OS_IPHONE
-				sys::write_file(preferences::auto_save_file_path(), wml::output(lvl_->write()));
+				wml::node_ptr node = wml::output(lvl_->write());
+				if(sound::current_music().empty() == false) {
+					node->set_attr("music", sound::current_music());
+				}
+
+				sys::write_file(preferences::auto_save_file_path(), node);
 				sys::write_file(std::string(preferences::auto_save_file_path()) + ".stat", "1");
 #endif
 				done = true;
 				quit_ = true;
 				break;
+			}
 			case SDL_VIDEORESIZE: {
 				const SDL_ResizeEvent* const resize = reinterpret_cast<SDL_ResizeEvent*>(&event);
 

@@ -109,7 +109,12 @@ public:
 	virtual void execute(level& lvl, entity& ob) const {
 		lvl.player()->get_entity().save_game();
 		if(persistent_) {
-			sys::write_file(preferences::save_file_path(), wml::output(lvl.write()));
+			wml::node_ptr node = lvl.write();
+			if(sound::current_music().empty() == false) {
+				node->set_attr("music", sound::current_music());
+			}
+
+			sys::write_file(preferences::save_file_path(), wml::output(node));
 		}
 	}
 };
