@@ -153,7 +153,9 @@ extern "C" int main(int argc, char** argv)
 	preferences::expand_data_paths();
 
 	//make sure that the user data path exists.
-	preferences::setup_preferences_dir();
+	if(!preferences::setup_preferences_dir()) {
+		std::cerr << "cannot create preferences dir!\n";
+	}
 
 #ifdef TARGET_OS_IPHONE
 	//on the iPhone, try to restore the auto-save if it exists
