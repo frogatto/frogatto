@@ -505,6 +505,9 @@ bool level_runner::play_cycle()
 					std::string data;
 					
 					wml::node_ptr lvl_node = wml::deep_copy(lvl_->write());
+					if(sound::current_music().empty() == false) {
+						lvl_node->set_attr("music", sound::current_music());
+					}
 					wml::write(lvl_node, data);
 					sys::write_file("data/level/save.cfg", data);
 				} else if(key == SDLK_s && (mod&KMOD_ALT)) {
