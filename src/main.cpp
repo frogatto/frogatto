@@ -134,7 +134,7 @@ extern "C" int main(int argc, char** argv)
 			std::string h(argv[++n]);
 			preferences::set_actual_screen_height(boost::lexical_cast<int>(h));
 		} else if(arg == "--level" && n+1 < argc) {
-			override_level_cfg = argv[++n]
+			override_level_cfg = argv[++n];
 		} else if(arg == "--host" && n+1 < argc) {
 			server = argv[++n];
 		} else if(arg == "--compiled") {
