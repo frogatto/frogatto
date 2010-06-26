@@ -333,7 +333,10 @@ extern "C" int main(int argc, char** argv)
 		last_draw_position() = screen_position();
 
 		assert(lvl.get());
-		sound::play_music(lvl->music());
+		if(!lvl->music().empty()) {
+			sound::play_music(lvl->music());
+		}
+
 		if(lvl->player() && level_cfg != "autosave.cfg") {
 			lvl->player()->set_current_level(level_cfg);
 			lvl->player()->get_entity().save_game();

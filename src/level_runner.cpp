@@ -323,7 +323,11 @@ bool level_runner::play_cycle()
 		transition_scene(*lvl_, last_draw_position(), true, fade_scene);
 		sound::stop_looped_sounds(NULL);
 		level* new_level = load_level(save->get_player_info()->current_level());
-		sound::play_music(new_level->music());
+
+		if(!new_level->music().empty()) {
+			sound::play_music(new_level->music());
+		}
+
 		set_scene_title(new_level->title());
 		new_level->add_player(save);
 		new_level->set_as_current_level();
@@ -370,7 +374,9 @@ bool level_runner::play_cycle()
 			if (preferences::load_compiled())
 			{
 				level::summary summary = level::get_summary(level_cfg_);
-				sound::play_music(summary.music);
+				if(!summary.music.empty()) {
+					sound::play_music(summary.music);
+				}
 			}
 
 			prepare_transition_scene(*lvl_, last_draw_position());
@@ -390,7 +396,7 @@ bool level_runner::play_cycle()
 			sound::stop_looped_sounds(NULL);
 
 			boost::intrusive_ptr<level> new_level(load_level(level_cfg_));
-			if (!preferences::load_compiled())
+			if (!preferences::load_compiled() && !new_level->music().empty())
 				sound::play_music(new_level->music());
 
 			if(portal->dest_label.empty() == false) {
@@ -405,7 +411,6 @@ bool level_runner::play_cycle()
 
 			new_level->set_as_current_level();
 
-			//sound::play_music(new_level->music());
 			set_scene_title(new_level->title());
 			point dest = portal->dest;
 			if(portal->dest_str.empty() == false) {
@@ -506,7 +511,11 @@ bool level_runner::play_cycle()
 					index = (index+1)%levels.size();
 					level* new_level = load_level(levels[index]);
 					new_level->set_as_current_level();
-					sound::play_music(new_level->music());
+
+					if(!new_level->music().empty()) {
+						sound::play_music(new_level->music());
+					}
+
 					set_scene_title(new_level->title());
 					lvl_.reset(new_level);
 				} else if(key == SDLK_l && (mod&KMOD_CTRL)) {
