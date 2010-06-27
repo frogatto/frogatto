@@ -475,10 +475,12 @@ bool level_runner::play_cycle()
 	if(message_dialog::get() == NULL) {
 		SDL_Event event;
 		while(SDL_PollEvent(&event)) {
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 			should_pause = settings_dialog.handle_event(event);
+#endif
 			switch(event.type) {
 			case SDL_QUIT: {
-#ifdef TARGET_OS_IPHONE
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 				wml::node_ptr node = wml::output(lvl_->write());
 				if(sound::current_music().empty() == false) {
 					node->set_attr("music", sound::current_music());
@@ -617,7 +619,9 @@ bool level_runner::play_cycle()
 		lvl_->process_draw();
 		draw_scene(*lvl_, last_draw_position());
 		performance_data perf = { current_fps_, current_cycles_, current_delay_, current_draw_, current_process_, current_flip_, cycle, current_events_, profiling_summary_ };
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 		settings_dialog.draw();
+#endif
 		
 		if(preferences::show_fps()) {
 			draw_fps(*lvl_, perf);
