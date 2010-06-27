@@ -8,6 +8,7 @@
 #include "geometry.hpp"
 #include "key.hpp"
 #include "level.hpp"
+#include "pause_game_dialog.hpp"
 
 //an exception which is thrown if we go through a portal which takes us
 //to a level with a different number of players, which indicates we are going
@@ -23,6 +24,7 @@ public:
 	bool play_cycle();
 private:
 	void show_debug_console();
+	void handle_pause_game_result(PAUSE_GAME_RESULT result);
 	boost::intrusive_ptr<level>& lvl_;
 	std::string& level_cfg_;
 	std::string& original_level_cfg_;

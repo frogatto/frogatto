@@ -20,6 +20,7 @@
 #include "level.hpp"
 #include "level_runner.hpp"
 #include "object_events.hpp"
+#include "pause_game_dialog.hpp"
 #include "player_info.hpp"
 #include "powerup.hpp"
 #include "raster.hpp"
@@ -1019,10 +1020,20 @@ private:
 					SDL_Event event;
 					while(SDL_PollEvent(&event)) {
 						switch(event.type) {
+						case SDL_QUIT:
+							throw interrupt_game_exception();
+						case SDL_KEYDOWN:
+							if(event.key.keysym.sym == SDLK_ESCAPE) {
+								PAUSE_GAME_RESULT result = show_pause_game_dialog();
+								if(result != PAUSE_GAME_CONTINUE) {
+									throw interrupt_game_exception(result);
+								}
+								break;
+							}
+
 						case SDL_MOUSEBUTTONDOWN:
 						case SDL_MOUSEBUTTONUP:
 						case SDL_MOUSEMOTION:
-						case SDL_KEYDOWN:
 							done = done || dialog_.key_press(event);
 							break;
 						}

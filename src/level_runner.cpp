@@ -575,20 +575,8 @@ bool level_runner::play_cycle()
 		{
 			settings_dialog.reset();
 			const PAUSE_GAME_RESULT result = show_pause_game_dialog();
-			
-			if(result == PAUSE_GAME_QUIT) {
-				//record a quit event in stats
-				if(lvl_->player()) {
-					lvl_->player()->get_entity().record_stats_movement();
-					stats::record_event(lvl_->id(), stats::record_ptr(new stats::quit_record(lvl_->player()->get_entity().midpoint())));
-				}
-				
-				done = true;
-				quit_ = true;
-			} else if(result == PAUSE_GAME_GO_TO_TITLESCREEN) {
-				done = true;
-				original_level_cfg_ = "titlescreen.cfg";
-			}
+
+			handle_pause_game_result(result);
 		}
 	}
 
@@ -598,7 +586,13 @@ bool level_runner::play_cycle()
 	} else {
 		if (!paused) {
 			const int start_process = SDL_GetTicks();
-			lvl_->process();
+
+			try {
+				lvl_->process();
+			} catch(interrupt_game_exception& e) {
+				handle_pause_game_result(e.result);
+			}
+
 			next_process_ += (SDL_GetTicks() - start_process);
 		} else {
 			pause_time_ += FrameTimeInMillis;
@@ -723,5 +717,22 @@ pause_scope::~pause_scope()
 		const int t = SDL_GetTicks() - ticks_;
 		global_pause_time += t;
 		pause_scope_active = false;
+	}
+}
+
+void level_runner::handle_pause_game_result(PAUSE_GAME_RESULT result)
+{
+	if(result == PAUSE_GAME_QUIT) {
+		//record a quit event in stats
+		if(lvl_->player()) {
+			lvl_->player()->get_entity().record_stats_movement();
+			stats::record_event(lvl_->id(), stats::record_ptr(new stats::quit_record(lvl_->player()->get_entity().midpoint())));
+		}
+		
+		done = true;
+		quit_ = true;
+	} else if(result == PAUSE_GAME_GO_TO_TITLESCREEN) {
+		done = true;
+		original_level_cfg_ = "titlescreen.cfg";
 	}
 }
