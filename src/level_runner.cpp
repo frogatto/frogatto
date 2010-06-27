@@ -481,12 +481,12 @@ bool level_runner::play_cycle()
 			switch(event.type) {
 			case SDL_QUIT: {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-				wml::node_ptr node = wml::output(lvl_->write());
+				wml::node_ptr node = lvl_->write();
 				if(sound::current_music().empty() == false) {
 					node->set_attr("music", sound::current_music());
 				}
 
-				sys::write_file(preferences::auto_save_file_path(), node);
+				sys::write_file(preferences::auto_save_file_path(), wml::output(node));
 				sys::write_file(std::string(preferences::auto_save_file_path()) + ".stat", "1");
 #endif
 				done = true;
