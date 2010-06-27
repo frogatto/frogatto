@@ -22,7 +22,7 @@ playable_custom_object::playable_custom_object(const playable_custom_object& obj
 }
 
 playable_custom_object::playable_custom_object(wml::const_node_ptr node)
-  : custom_object(node), player_info_(*this), vertical_look_(0),
+  : custom_object(node), player_info_(*this, node), vertical_look_(0),
     underwater_ctrl_x_(0), underwater_ctrl_y_(0),
 	underwater_controls_(wml::get_bool(node, "underwater_controls", false)),
 	can_interact_(0)
@@ -36,6 +36,7 @@ wml::node_ptr playable_custom_object::write() const
 	if(underwater_controls_) {
 		node->set_attr("underwater_controls", "true");
 	}
+	player_info_.write(node);
 	return node;
 }
 

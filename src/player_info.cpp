@@ -12,9 +12,9 @@ player_info::player_info(entity& e, wml::const_node_ptr node)
   : entity_(&e),
 	slot_(0)
 {
-	FOREACH_WML_CHILD(objects, node, "objects_destroyed") {
-		std::vector<int>& v = objects_destroyed_[node->attr("level")];
-		v = vector_lexical_cast<int>(util::split(node->attr("objects")));
+	FOREACH_WML_CHILD(objects_node, node, "objects_destroyed") {
+		std::vector<int>& v = objects_destroyed_[objects_node->attr("level")];
+		v = vector_lexical_cast<int>(util::split(objects_node->attr("objects")));
 	}
 }
 
