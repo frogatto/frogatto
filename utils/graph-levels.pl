@@ -22,7 +22,7 @@ foreach my $level (@levels) {
 	my $saves = 0;
 
 	while(my $line = <LVL>) {
-		if(my ($toilet) = $line =~ /type="save_toilet"/) {
+		if(my ($toilet) = $line =~ /type="(save_toilet|dungeon_save_door)"/) {
 			++$saves;
 		}
 
