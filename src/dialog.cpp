@@ -32,6 +32,9 @@ dialog::dialog(int x, int y, int w, int h)
 	set_dim(w,h);
 }
 
+dialog::~dialog()
+{}
+
 dialog& dialog::add_widget(widget_ptr w, dialog::MOVE_DIRECTION dir)
 {
 	add_widget(w, add_x_, add_y_, dir);

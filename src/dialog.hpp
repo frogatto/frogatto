@@ -27,7 +27,7 @@ public:
 	typedef std::vector<widget_ptr>::const_iterator child_iterator;
 
 	dialog(int x, int y, int w, int h);
-	virtual ~dialog() {}
+	virtual ~dialog();
 	virtual void show_modal();
 	void show();
 
