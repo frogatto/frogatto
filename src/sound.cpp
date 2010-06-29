@@ -2,6 +2,8 @@
 #include <map>
 #include <vector>
 
+#include <pthread.h>
+
 #include <boost/shared_ptr.hpp>
 
 #include "preferences.hpp"
@@ -66,6 +68,23 @@ void on_music_finished()
 		play_music(next_music());
 	}
 	next_music().clear();
+}
+
+//record which channels sounds are playing on, in case we
+//want to cancel a sound.
+struct sound_playing {
+	std::string file;
+	const void* object;
+	int	loops;		//not strictly boolean.  -1=true, 0=false
+};
+
+std::vector<sound_playing> channels_to_sounds_playing;
+
+void on_sound_finished(int channel)
+{
+	if(channel >= 0 && channel < channels_to_sounds_playing.size()) {
+		channels_to_sounds_playing[channel].object = NULL;
+	}
 }
 
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
@@ -266,6 +285,7 @@ manager::manager()
 	Mix_AllocateChannels(NumChannels);
 	sound_ok = true;
 
+	Mix_ChannelFinished(on_sound_finished);
 	Mix_HookMusicFinished(on_music_finished);
 	Mix_VolumeMusic(MIX_MAX_VOLUME);
 #else
@@ -318,16 +338,6 @@ void mute (bool flag)
 }
 
 namespace {
-
-//record which channels sounds are playing on, in case we
-//want to cancel a sound.
-struct sound_playing {
-	std::string file;
-	const void* object;
-	int	loops;		//not strictly boolean.  -1=true, 0=false
-};
-
-std::vector<sound_playing> channels_to_sounds_playing;
 
 int play_internal(const std::string& file, int loops, const void* object)
 {
@@ -395,6 +405,7 @@ void stop_sound(const std::string& file, const void* object)
 	for(int n = 0; n != channels_to_sounds_playing.size(); ++n) {
 		if(channels_to_sounds_playing[n].object == object &&
 		   channels_to_sounds_playing[n].file == file) {
+			channels_to_sounds_playing[n].object = NULL;
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 			Mix_HaltChannel(n);
 #else
@@ -410,7 +421,6 @@ void stop_looped_sounds(const void* object)
 		if((object == NULL && channels_to_sounds_playing[n].object != NULL
 		   || channels_to_sounds_playing[n].object == object) &&
 		   (channels_to_sounds_playing[n].loops != 0)) {
-			fprintf(stderr, "HALTING SOUND: %s, LOOP VAlUE=%d, OBJECT=%p\n", channels_to_sounds_playing[n].file.c_str(),channels_to_sounds_playing[n].loops, channels_to_sounds_playing[n].object); 
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 			Mix_HaltChannel(n);
 #else
@@ -461,6 +471,10 @@ void change_volume(const void* object, int volume)
 	
 void cancel_looped(int handle)
 {
+	if(handle >= 0 && handle < channels_to_sounds_playing.size()) {
+		channels_to_sounds_playing[handle].object = NULL;
+	}
+
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	Mix_HaltChannel(handle);
 #else
