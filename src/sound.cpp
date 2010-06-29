@@ -72,7 +72,7 @@ void on_music_finished()
 
 class sound; //so mixer can make pointers to it
 
-struct
+struct mixer
 {
 	/* channel array holds information about currently playing sounds */
 	struct
@@ -137,6 +137,7 @@ class sound
 	
 void sdl_stop_channel (int channel)
 {
+	if (mixer.channels[channel].position == NULL) return; // if the sound was playing in the first place
 	mixer.channels[channel].position = NULL;  /* indicates no sound playing on channel anymore */
 	mixer.numSoundsPlaying--;
 	if (mixer.numSoundsPlaying == 0)
