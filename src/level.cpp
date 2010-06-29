@@ -1727,7 +1727,7 @@ void level::do_processing()
 		}
 
 		if(c->destroyed() && !c->is_human()) {
-			if(player_ && c->get_id() != -1) {
+			if(player_ && !c->respawn() && c->get_id() != -1) {
 				player_->is_human()->object_destroyed(id(), c->get_id());
 			}
 

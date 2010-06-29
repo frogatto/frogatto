@@ -27,12 +27,15 @@ const std::vector<int>& player_info::get_objects_destroyed(const std::string& le
 {
 	std::vector<int>& v = objects_destroyed_[level_id];
 	std::sort(v.begin(), v.end());
+	v.erase(std::unique(v.begin(), v.end()), v.end());
 	return v;
 }
 
 void player_info::write(wml::node_ptr result) const
 {
 	for(std::map<std::string, std::vector<int> >::const_iterator i = objects_destroyed_.begin(); i != objects_destroyed_.end(); ++i) {
+		get_objects_destroyed(i->first); //remove duplicates.
+
 		wml::node_ptr objects(new wml::node("objects_destroyed"));
 		objects->set_attr("level", i->first);
 		std::ostringstream s;
