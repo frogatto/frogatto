@@ -114,6 +114,10 @@ void send_stats(const std::map<std::string, std::vector<const_record_ptr> >& que
 }
 
 void send_stats_thread() {
+	if(preferences::send_stats() == false) {
+		return;
+	}
+
 	for(;;) {
 		std::map<std::string, std::vector<const_record_ptr> > queue;
 		{

@@ -64,6 +64,8 @@ namespace preferences {
 
 	bool use_16bpp_textures();
 
+	bool send_stats();
+
 	class editor_screen_size_scope {
 		int width_, height_;
 	public:

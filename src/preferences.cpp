@@ -17,6 +17,8 @@ namespace preferences {
 		bool debug_ = true;
 
 		std::string level_path_ = "data/level/";
+
+		bool send_stats_ = true;
 		
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 		
@@ -306,6 +308,8 @@ namespace preferences {
 			show_fps_ = false;
 		} else if(arg_name == "--config-path" && !arg_value.empty()) {
 			set_preferences_path(arg_value);
+		} else if(s == "--no-send-stats") {
+			send_stats_ = false;
 		} else {
 			return false;
 		}
@@ -315,5 +319,9 @@ namespace preferences {
 
 	bool use_16bpp_textures() {
 		return use_16bpp_textures_;
+	}
+
+	bool send_stats() {
+		return send_stats_;
 	}
 }
