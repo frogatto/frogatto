@@ -296,10 +296,6 @@ extern "C" int main(int argc, char** argv)
 	long swapInterval = 1;
 	CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &swapInterval);
 #endif
-		
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-	//iphone_test();
-#endif
 
 #ifndef SDL_VIDEO_OPENGL_ES
 	GLenum glew_status = glewInit();
