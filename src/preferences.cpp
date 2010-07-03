@@ -130,7 +130,6 @@ namespace preferences {
 		expand_path(save_file_path_);
 		expand_path(auto_save_file_path_);
 		expand_path(preferences_path_);
-		std::cerr << "PATH: " << save_file_path_ << "\n";
 	}
 	
 	bool show_debug_hitboxes() {
