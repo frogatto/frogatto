@@ -7,11 +7,12 @@
 use strict;
 
 my %music = ();
-my $list = `grep -rP "music ?= ?" data/level/*.cfg`;
-while ($list =~ m#data/level/(.+?):music ?= ?"(.*?)"#g)
+my $list = `grep -rP '(music ?= ?|music(?:_onetime)?\\()' data/level/*.cfg`;
+while ($list =~ m#data/level/(.+?):(?:music ?= ?"(.*?)"|.*?music(?:_onetime)?\('(.*?)')#g)
 {
-	$music{$2} = [] if (!exists $music{$2});
-	push(@{$music{$2}}, $1);
+	my $music = $2 ? $2 : $3;
+	$music{$music} = [] if (!exists $music{$music});
+	push(@{$music{$music}}, $1);
 }
 
 for (sort keys %music)
