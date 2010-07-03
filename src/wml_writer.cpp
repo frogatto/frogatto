@@ -69,11 +69,6 @@ void write(const wml::const_node_ptr& node, std::string& res,
 	}
 	indent.push_back('\t');
 
-	std::cerr << "BASE ELEMENTS : " << node->base_elements().size() << "\n";
-	for(std::map<std::string, wml::const_node_ptr>::const_iterator i = node->base_elements().begin(); i != node->base_elements().end(); ++i) {
-		std::cerr << "'" << i->first << "'" << "\n";
-	}
-
 	std::set<std::string> base_written;
 	for(wml::node::const_all_child_iterator i = node->begin_children();
 	    i != node->end_children(); ++i) {
@@ -97,6 +92,5 @@ std::string output(const wml::const_node_ptr& node)
 	write(node, res);
 	return res;
 }
-
 
 }
