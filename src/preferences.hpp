@@ -7,6 +7,7 @@ namespace preferences {
 	
 	bool parse_arg(const char* arg);
 	bool no_sound();
+	bool no_music();
 
 	void set_preferences_path(const std::string& path);
 

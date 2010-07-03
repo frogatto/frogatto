@@ -11,6 +11,7 @@ namespace preferences {
 		int screen_editor_mode = 0;
 
 		bool no_sound_ = false;
+		bool no_music_ = false;
 		bool show_debug_hitboxes_ = false;
 		bool use_pretty_scaling_ = false;
 		bool fullscreen_ = false;
@@ -83,6 +84,10 @@ namespace preferences {
 	
 	bool no_sound() {
 		return no_sound_;
+	}
+
+	bool no_music() {
+		return no_music_;
 	}
 
 	bool setup_preferences_dir()
@@ -267,6 +272,8 @@ namespace preferences {
 			set_use_pretty_scaling(true);
 		} else if(s == "--no-sound") {
 			no_sound_ = true;
+		} else if(s == "--no-music") {
+			no_music_ = true;
 		} else if(s == "--fullscreen") {
 			fullscreen_ = true;
 		} else if(s == "--widescreen") {

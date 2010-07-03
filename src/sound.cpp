@@ -484,7 +484,7 @@ void cancel_looped(int handle)
 
 void play_music(const std::string& file)
 {
-	if(preferences::no_sound() || !sound_ok) {
+	if(preferences::no_sound() || preferences::no_music() || !sound_ok) {
 		return;
 	}
 
@@ -535,7 +535,7 @@ void play_music(const std::string& file)
 
 void play_music_interrupt(const std::string& file)
 {
-	if(preferences::no_sound()) {
+	if(preferences::no_sound() || preferences::no_music()) {
 		return;
 	}
 
