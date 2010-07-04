@@ -142,10 +142,41 @@ custom_object::custom_object(wml::const_node_ptr node)
 
 	vars_->read(node->get_child("vars"));
 
-	set_solid_dimensions(wml::get_int(node, "solid_dim", type_->solid_dimensions()),
-	                     wml::get_int(node, "weak_solid_dim", type_->weak_solid_dimensions()));
-	set_collide_dimensions(wml::get_int(node, "collide_dim", type_->collide_dimensions()),
-	                       wml::get_int(node, "weak_collide_dim", type_->weak_collide_dimensions()));
+	unsigned int solid_dim = type_->solid_dimensions();
+	unsigned int weak_solid_dim = type_->weak_solid_dimensions();
+	unsigned int collide_dim = type_->collide_dimensions();
+	unsigned int weak_collide_dim = type_->weak_collide_dimensions();
+
+	if(node->has_attr("solid_dim")) {
+		weak_solid_dim = solid_dim = 0;
+		std::vector<std::string> solid_dim_str = util::split(node->attr("solid_dim"));
+		foreach(const std::string& str, solid_dim_str) {
+			if(!str.empty() && str[0] == '~') {
+				const int id = get_solid_dimension_id(std::string(str.begin() + 1, str.end()));
+				weak_solid_dim |= 1 << id;
+			} else {
+				const int id = get_solid_dimension_id(str);
+				solid_dim |= 1 << id;
+			}
+		}
+	}
+
+	if(node->has_attr("collide_dim")) {
+		weak_collide_dim = collide_dim = 0;
+		std::vector<std::string> collide_dim_str = util::split(node->attr("collide_dim"));
+		foreach(const std::string& str, collide_dim_str) {
+			if(!str.empty() && str[0] == '~') {
+				const int id = get_solid_dimension_id(std::string(str.begin() + 1, str.end()));
+				weak_collide_dim |= 1 << id;
+			} else {
+				const int id = get_solid_dimension_id(str);
+				collide_dim |= 1 << id;
+			}
+		}
+	}
+
+	set_solid_dimensions(solid_dim, weak_solid_dim);
+	set_collide_dimensions(collide_dim, weak_collide_dim);
 
 	wml::const_node_ptr tags_node = node->get_child("tags");
 	if(tags_node) {
@@ -356,14 +387,52 @@ wml::node_ptr custom_object::write() const
 
 	if(solid_dimensions() != type_->solid_dimensions() ||
 	   weak_solid_dimensions() != type_->weak_solid_dimensions()) {
-		res->set_attr("solid_dim", formatter() << solid_dimensions());
-		res->set_attr("weak_solid_dim", formatter() << weak_solid_dimensions());
+		std::string solid_dim, weak_solid_dim;
+		for(int n = 0; n != 32; ++n) {
+			if(solid_dimensions()&(1 << n)) {
+				if(!solid_dim.empty()) {
+					solid_dim += ",";
+				}
+
+				solid_dim += get_solid_dimension_key(n);
+			}
+
+			if(weak_solid_dimensions()&(1 << n)) {
+				if(!weak_solid_dim.empty()) {
+					weak_solid_dim += ",";
+				}
+
+				weak_solid_dim += get_solid_dimension_key(n);
+			}
+		}
+
+		res->set_attr("solid_dim", solid_dim);
+		res->set_attr("weak_solid_dim", weak_solid_dim);
 	}
 
 	if(collide_dimensions() != type_->collide_dimensions() ||
 	   weak_collide_dimensions() != type_->weak_collide_dimensions()) {
-		res->set_attr("collide_dim", formatter() << collide_dimensions());
-		res->set_attr("weak_collide_dim", formatter() << weak_collide_dimensions());
+		std::string collide_dim, weak_collide_dim;
+		for(int n = 0; n != 32; ++n) {
+			if(collide_dimensions()&(1 << n)) {
+				if(!collide_dim.empty()) {
+					collide_dim += ",";
+				}
+
+				collide_dim += get_solid_dimension_key(n);
+			}
+
+			if(weak_collide_dimensions()&(1 << n)) {
+				if(!weak_collide_dim.empty()) {
+					weak_collide_dim += ",";
+				}
+
+				weak_collide_dim += get_solid_dimension_key(n);
+			}
+		}
+
+		res->set_attr("collide_dim", collide_dim);
+		res->set_attr("weak_collide_dim", weak_collide_dim);
 	}
 
 	if(hitpoints_ != type_->hitpoints() || max_hitpoints_ != type_->hitpoints()) {
