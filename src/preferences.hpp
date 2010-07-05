@@ -65,6 +65,8 @@ namespace preferences {
 
 	bool use_16bpp_textures();
 
+	bool sim_iphone();
+
 	bool send_stats();
 
 	class editor_screen_size_scope {

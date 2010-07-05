@@ -33,7 +33,7 @@ variant get_constant(const std::string& id)
 #if TARGET_OS_IPHONE
 		return variant(1);
 #else
-		return variant(0);
+		return variant(preferences::sim_iphone() ? 1 : 0);
 #endif
 	} else if(id == "HIGH_END_SYSTEM") {
 		return variant(!get_constant("LOW_END_SYSTEM").as_bool());

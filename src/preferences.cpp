@@ -27,6 +27,8 @@ namespace preferences {
 #define PREFERENCES_PATH "../Documents/"
 #endif
 
+		bool sim_iphone_ = true;
+
 		int virtual_screen_width_ = 960;
 		int virtual_screen_height_ = 640;
 		
@@ -41,6 +43,7 @@ namespace preferences {
 
 		bool use_16bpp_textures_ = true;
 #else
+		bool sim_iphone_ = false;
 
 #ifndef PREFERENCES_PATH
 #define PREFERENCES_PATH "~/.frogatto/"
@@ -292,6 +295,8 @@ namespace preferences {
 		} else if(s == "--no-debug") {
 			debug_ = false;
 		} else if(s == "--simiphone") {
+			sim_iphone_ = true;
+
 			virtual_screen_width_ = 960;
 			virtual_screen_height_ = 640;
 		
@@ -301,6 +306,8 @@ namespace preferences {
 
 			recalculate_draw_mask();
 		} else if(s == "--simipad") {
+			sim_iphone_ = true;
+
 			virtual_screen_width_ = 1024;
 			virtual_screen_height_ = 768;
 		
@@ -325,6 +332,10 @@ namespace preferences {
 
 	bool use_16bpp_textures() {
 		return use_16bpp_textures_;
+	}
+
+	bool sim_iphone() {
+		return sim_iphone_;
 	}
 
 	bool send_stats() {
