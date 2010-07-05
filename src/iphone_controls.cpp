@@ -13,8 +13,9 @@ namespace
 {
 	rect left_arrow, right_arrow, down_arrow, up_arrow, a_button, c_button, interact_button;
 
-	int underwater_circle_x = 120;
-	int underwater_circle_y = 0; //set by setup_rects()
+	const int underwater_circle_rad = 120;
+	int underwater_circle_x = 150;
+	int underwater_circle_y = 150; //changed to be relative to the bottom by setup_rects()
 
 	bool is_underwater = false;
 	bool can_interact = false;
@@ -43,7 +44,7 @@ namespace
 		
 		interact_button = rect(vw - 300, vh - 130, 34*2, 55*2);
 		
-		underwater_circle_y = vh-120;
+		underwater_circle_y = vh-underwater_circle_y;
 	}
 }
 
@@ -86,7 +87,7 @@ bool iphone_controls::water_dir(float* xvalue, float* yvalue)
 
 			const int distance = sqrt(dx*dx + dy*dy);
 
-			if(distance > 0 && distance < 90) {
+			if(distance > 0 && distance < underwater_circle_rad) {
 				*xvalue = float(dx)/float(distance);
 				*yvalue = float(dy)/float(distance);
 				return true;
@@ -104,13 +105,13 @@ void iphone_controls::draw()
 	}
 
 	glColor4ub(128, 128, 128, 128);
-	graphics::draw_circle(underwater_circle_x, underwater_circle_y, 90);
+	graphics::draw_circle(underwater_circle_x, underwater_circle_y, underwater_circle_rad);
 
 	GLfloat x, y;
 	if(water_dir(&x, &y)) {
 		GLfloat varray[] = {
 		  underwater_circle_x, underwater_circle_y,
-		  underwater_circle_x + x*90, underwater_circle_y + y*90
+		  underwater_circle_x + x*underwater_circle_rad, underwater_circle_y + y*underwater_circle_rad
 		};
 
 		glDisable(GL_TEXTURE_2D);
