@@ -42,7 +42,7 @@ namespace
 //		b_button = rect(vw - 102, vh - 300, 50*2, 60*2);
 		c_button = rect(vw - 104, vh - 240, 50*2, 60*2);
 		
-		interact_button = rect(vw - 300, vh - 130, 34*2, 55*2);
+		interact_button = rect(vw - 320, vh - 120, 50*2, 60*2);
 		
 		underwater_circle_y = vh-underwater_circle_y;
 	}
