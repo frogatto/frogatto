@@ -1949,7 +1949,11 @@ void editor::save_level()
 
 	const std::string path = preferences::level_path();
 	std::string data;
-	wml::write(lvl_->write(), data);
+	wml::node_ptr lvl_node = lvl_->write();
+	lvl_node->erase_attr("cycle"); //levels saved in the editor should never
+	                               //have a cycle attached to them so that
+								   //all levels start at cycle 0.
+	wml::write(lvl_node, data);
 	sys::write_file(path + filename_, data);
 
 	//see if we should write the next/previous levels also
