@@ -265,7 +265,8 @@ level::level(const std::string& level_cfg)
 	stats::record_event(id(), stats::const_record_ptr(new stats::load_level_record(time_taken_ms)));
 	std::cerr << "done level constructor: " << time_taken_ms << "\n";
 
-	gui_algorithm_ = gui_algorithm::get(wml::get_str(node, "gui", "default"));
+	gui_algo_str_ = wml::get_str(node, "gui", "default");
+	gui_algorithm_ = gui_algorithm::get(gui_algo_str_);
 	gui_algorithm_->new_level();
 
 }
@@ -696,6 +697,10 @@ wml::node_ptr level::write() const
 	wml::node_ptr res(new wml::node("level"));
 	res->set_attr("title", title_);
 	res->set_attr("music", music_);
+	if(gui_algo_str_ != "default") {
+		res->set_attr("gui", gui_algo_str_);
+	}
+
 	if(cycle_) {
 		res->set_attr("cycle", formatter() << cycle_);
 	}

@@ -457,6 +457,7 @@ private:
 
 	int editor_tile_updates_frozen_;
 
+	std::string gui_algo_str_;
 	gui_algorithm_ptr gui_algorithm_;
 
 	int zoom_level_;
