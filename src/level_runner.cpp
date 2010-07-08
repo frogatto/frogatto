@@ -501,6 +501,16 @@ bool level_runner::play_cycle()
 				SDL_SetVideoMode(resize->w,resize->h,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
 				continue;
 			}
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+			case SDL_WINDOWEVENT:
+				if (event.window.event == SDL_WINDOWEVENT_MINIMIZED)
+				{
+					paused = true;
+				} else if (event.window.event == SDL_WINDOWEVENT_RESTORED) {
+					paused = false;
+				}
+			break;
+#endif
 			case SDL_KEYDOWN: {
 				const SDLMod mod = SDL_GetModState();
 				const SDLKey key = event.key.keysym.sym;
