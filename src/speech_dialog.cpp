@@ -257,7 +257,7 @@ void speech_dialog::draw() const
 		//if the arrow to the speaker is within reasonable limits, then
 		//blit it.
 		if(speaker_xpos > top_corner->width() && speaker_xpos < graphics::screen_width() - top_corner->width() - arrow->width()) {
-			arrow->blit(speaker_xpos, pane_area_.y() - arrow->height() - 30);
+			arrow->blit(speaker_xpos, pane_area_.y() - arrow->height() - 32);
 		}
 	}
 
