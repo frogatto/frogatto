@@ -27,8 +27,8 @@ bool settings_dialog::handle_event (const SDL_Event& event)
 		int x = event.type == SDL_MOUSEMOTION ? event.motion.x : event.button.x;
 		int y = event.type == SDL_MOUSEMOTION ? event.motion.y : event.button.y;
 		translate_mouse_coords(&x, &y);
-		bool hittest = (x > menu_button_x && y > menu_button_y
-			&& x < menu_button_x+menu_button_normal_->width() && y < menu_button_y+menu_button_normal_->height());
+		bool hittest = (x > (menu_button_x-padding) && y >= 0
+			&& x < menu_button_x+menu_button_normal_->width()*2 && y < menu_button_y+menu_button_normal_->height()+padding);
 		if (hittest && (event.type == SDL_MOUSEBUTTONDOWN || (event.type == SDL_MOUSEMOTION && event.motion.state)))
 		{
 			menu_button_state_ = true;
