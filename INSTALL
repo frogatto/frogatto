@@ -9,6 +9,7 @@ You'll need to have these libraries with equivalent development versions to buil
  libsdl-image >= 1.2 (with png support)
  libsdl-mixer >= 1.2 (with Vorbis support)
  libsdl-ttf >= 2.0.8
+ ccache
  libz
 
 Building:
