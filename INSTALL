@@ -5,10 +5,14 @@ You'll need to have these libraries with equivalent development versions to buil
  boost_iostreams >= 1.35.0
  boost_regex >= 1.35.0
  boost_asio >= 1.35.0
+ boost_system >= 1.35.0
  libsdl >= 1.2.7
  libsdl-image >= 1.2 (with png support)
  libsdl-mixer >= 1.2 (with Vorbis support)
  libsdl-ttf >= 2.0.8
+ gl
+ glu
+ glew
  ccache
  libz
 
