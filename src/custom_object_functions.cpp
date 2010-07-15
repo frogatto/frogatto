@@ -1684,9 +1684,9 @@ UTILITY(document_object_functions) {
 	foreach(std::string s, function_helpstrings()) {
 		std::string::iterator i = std::find(s.begin(), s.end(), ':');
 		if(i != s.end()) {
-			s = "<b>" + std::string(s.begin(), i) + "</b>" + std::string(i, s.end());
+			s = "{{{ " + std::string(s.begin(), i) + " }}}" + std::string(i, s.end());
 		}
-		s = "<p>" + s + "</p>";
+		s = "  * " + s;
 		std::cout << s << "\n";
 	}
 }
