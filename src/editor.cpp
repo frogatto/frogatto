@@ -1560,6 +1560,13 @@ void editor::load_stats()
 			stats_.pop_back();
 		}
 	}
+
+	if(stats_.size() > 1000000) {
+		std::random_shuffle(stats_.begin(), stats_.end());
+		stats_.resize(1000000);
+	}
+
+	stats::prepare_draw(stats_);
 }
 
 void editor::show_stats()
@@ -2123,9 +2130,7 @@ void editor::draw() const
 	}
 
 	if(g_draw_stats) {
-		foreach(const stats::const_record_ptr& record, stats_) {
-			record->draw();
-		}
+		stats::draw_stats(stats_);
 	}
 
 	glPopMatrix();

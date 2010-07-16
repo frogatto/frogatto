@@ -39,6 +39,7 @@ public:
 	virtual ~record();
 	virtual const char* id() const = 0;
 	virtual wml::node_ptr write() const = 0;
+	virtual void prepare_draw() const {}
 	virtual void draw() const {}
 	virtual point location() const = 0;
 };
@@ -47,6 +48,7 @@ class die_record : public record {
 public:
 	explicit die_record(const point& p);
 	wml::node_ptr write() const;
+	void prepare_draw() const;
 	void draw() const;
 	const char* id() const { return "die"; }
 	point location() const { return p_; }
@@ -58,6 +60,7 @@ class quit_record : public record {
 public:
 	explicit quit_record(const point& p);
 	wml::node_ptr write() const;
+	void prepare_draw() const;
 	void draw() const;
 	const char* id() const { return "quit"; }
 	point location() const { return p_; }
@@ -79,12 +82,16 @@ class player_move_record : public record {
 public:
 	player_move_record(const point& src, const point& dst);
 	wml::node_ptr write() const;
+	void prepare_draw() const;
 	void draw() const;
 	const char* id() const { return "move"; }
 	point location() const { return src_; }
 private:
 	point src_, dst_;
 };
+
+void prepare_draw(const std::vector<record_ptr>& records);
+void draw_stats(const std::vector<record_ptr>& records);
 
 void record_event(const std::string& lvl, const_record_ptr r);
 void flush();

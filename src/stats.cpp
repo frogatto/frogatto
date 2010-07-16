@@ -258,8 +258,19 @@ wml::node_ptr die_record::write() const
 	return result;
 }
 
+namespace {
+std::vector<GLfloat> die_record_vertex_array;
+}
+
+void die_record::prepare_draw() const
+{
+	die_record_vertex_array.push_back(p_.x);
+	die_record_vertex_array.push_back(p_.y);
+}
+
 void die_record::draw() const
 {
+
 	glPointSize(5);
 	glDisable(GL_TEXTURE_2D);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -270,6 +281,7 @@ void die_record::draw() const
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);
 	glColor4ub(255, 255, 255, 255);
+
 }
 
 quit_record::quit_record(const point& p) : p_(p)
@@ -280,6 +292,16 @@ wml::node_ptr quit_record::write() const
 	wml::node_ptr result(new wml::node("quit"));
 	result->set_attr("pos", p_.to_string());
 	return result;
+}
+
+namespace {
+std::vector<GLfloat> quit_record_vertex_array;
+}
+
+void quit_record::prepare_draw() const
+{
+	quit_record_vertex_array.push_back(p_.x);
+	quit_record_vertex_array.push_back(p_.y);
 }
 
 void quit_record::draw() const
@@ -307,17 +329,24 @@ wml::node_ptr player_move_record::write() const
 	return result;
 }
 
+namespace {
+std::vector<GLfloat> player_move_record_vertex_array;
+}
+
+void player_move_record::prepare_draw() const
+{
+	player_move_record_vertex_array.push_back(src_.x);
+	player_move_record_vertex_array.push_back(src_.y);
+	player_move_record_vertex_array.push_back(dst_.x);
+	player_move_record_vertex_array.push_back(dst_.y);
+}
+
 void player_move_record::draw() const
 {
-	glDisable(GL_TEXTURE_2D);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glColor4ub(0, 0, 255, 128);
-	GLfloat varray[] = {src_.x, src_.y, dst_.x, dst_.y};
-	glVertexPointer(2, GL_FLOAT, 0, varray);
-	glDrawArrays(GL_LINES, 0, 4);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glEnable(GL_TEXTURE_2D);
-	glColor4ub(255, 255, 255, 255);
+	player_move_record_vertex_array.push_back(src_.x);
+	player_move_record_vertex_array.push_back(src_.y);
+	player_move_record_vertex_array.push_back(dst_.x);
+	player_move_record_vertex_array.push_back(dst_.y);
 }
 
 load_level_record::load_level_record(int ms) : ms_(ms)
@@ -328,6 +357,52 @@ wml::node_ptr load_level_record::write() const
 	wml::node_ptr result(new wml::node("load"));
 	result->set_attr("ms", formatter() << ms_);
 	return result;
+}
+
+void prepare_draw(const std::vector<record_ptr>& records)
+{
+	player_move_record_vertex_array.clear();
+	die_record_vertex_array.clear();
+	quit_record_vertex_array.clear();
+
+	foreach(const stats::const_record_ptr& record, records) {
+		record->prepare_draw();
+	}
+}
+
+namespace {
+void draw_points(int r, int g, int b, const std::vector<GLfloat>& v) {
+	if(v.empty()) {
+		return;
+	}
+
+	glPointSize(5);
+	glDisable(GL_TEXTURE_2D);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glColor4ub(r, g, b, 255);
+	glVertexPointer(2, GL_FLOAT, 0, &v[0]);
+	glDrawArrays(GL_POINTS, 0, v.size()/2);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnable(GL_TEXTURE_2D);
+	glColor4ub(255, 255, 255, 255);
+}
+}
+
+void draw_stats(const std::vector<record_ptr>& records)
+{
+	if(!player_move_record_vertex_array.empty()) {
+		glDisable(GL_TEXTURE_2D);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glColor4ub(0, 0, 255, 128);
+		glVertexPointer(2, GL_FLOAT, 0, &player_move_record_vertex_array[0]);
+		glDrawArrays(GL_LINES, 0, player_move_record_vertex_array.size()/2);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glEnable(GL_TEXTURE_2D);
+		glColor4ub(255, 255, 255, 255);
+	}
+
+	draw_points(255, 0, 0, die_record_vertex_array);
+	draw_points(255, 255, 0, quit_record_vertex_array);
 }
 
 void record_event(const std::string& lvl, const_record_ptr r)
