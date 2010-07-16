@@ -19,3 +19,7 @@ You'll need to have these libraries with equivalent development versions to buil
 Building:
 
 To build, type 'make'. The Makefile will probably work. :) If it doesn't you may have to tweak it for your platform. The executable 'game' will be created which you can run.
+
+To access the level editor, press CTRL-E during the game.
+
+Have fun!
