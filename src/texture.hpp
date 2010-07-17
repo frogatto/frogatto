@@ -82,19 +82,15 @@ public:
 	void initialize(const key&);
 	explicit texture(const key& surfs);
 
-private:
-	static texture get_no_cache(const key& k);
+	static void rebuild_all();
+	static void unbuild_all();
 
 	struct ID {
-		ID() : id(GLuint(-1)) {
-		}
-
-		explicit ID(GLuint id) : id(id) {
-		}
-
+		ID();
 		~ID();
 
 		void build_id();
+		void unbuild_id();
 		void destroy();
 
 		bool init() const { return id != GLuint(-1); }
@@ -104,7 +100,13 @@ private:
 		//before we've constructed the ID, we can store the
 		//surface in here.
 		surface s;
+
+		int width, height;
 	};
+
+private:
+	static texture get_no_cache(const key& k);
+
 	mutable boost::shared_ptr<ID> id_;
 	unsigned int width_, height_;
 	GLfloat ratio_w_, ratio_h_;

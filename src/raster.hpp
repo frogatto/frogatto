@@ -29,6 +29,8 @@ extern int xypos_draw_mask;
 namespace graphics
 {
 
+void set_video_mode(int w, int h);
+
 std::vector<GLfloat>& global_vertex_array();
 std::vector<GLfloat>& global_texcoords_array();
 std::vector<GLbyte>& global_vertex_color_array();

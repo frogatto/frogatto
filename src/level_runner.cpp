@@ -498,7 +498,8 @@ bool level_runner::play_cycle()
 
 				preferences::set_actual_screen_width(resize->w);
 				preferences::set_actual_screen_height(resize->h);
-				SDL_SetVideoMode(resize->w,resize->h,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+
+				graphics::set_video_mode(resize->w, resize->h);
 				continue;
 			}
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE

@@ -539,9 +539,40 @@ const unsigned char* texture::color_at(int x, int y) const
 	return pixels + (y*id_->s->w + x)*id_->s->format->BytesPerPixel;
 }
 
+namespace {
+std::set<texture::ID*>& texture_id_registry() {
+	static std::set<texture::ID*>* instance = new std::set<texture::ID*>;
+	return *instance;
+}
+}
+
+void texture::rebuild_all()
+{
+	for(std::set<texture::ID*>::iterator i = texture_id_registry().begin();
+	    i != texture_id_registry().end(); ++i) {
+		if((*i)->s.get() != NULL && (*i)->id != GLuint(-1)) {
+			(*i)->build_id();
+		}
+	}
+}
+
+void texture::unbuild_all()
+{
+	for(std::set<texture::ID*>::iterator i = texture_id_registry().begin();
+	    i != texture_id_registry().end(); ++i) {
+		(*i)->unbuild_id();
+	}
+}
+
+texture::ID::ID() : id(GLuint(-1)), width(0), height(0) {
+	texture_id_registry().insert(this);
+}
+
+
 texture::ID::~ID()
 {
 	destroy();
+	texture_id_registry().erase(this);
 }
 
 namespace {
@@ -606,9 +637,26 @@ void texture::ID::build_id()
 
 	//free the surface.
 	if(!preferences::compiling_tiles) {
-		std::cerr << "RELEASING SURFACE... " << s.get()->refcount << "\n";
+		width = s->w;
+		height = s->h;
 		s = surface();
 	}
+}
+
+void texture::ID::unbuild_id()
+{
+	if(id == GLuint(-1) || s) {
+		return;
+	}
+
+	if(width <= 0 || height <= 0) {
+		return;
+	}
+
+	s = surface(SDL_CreateRGBSurface(SDL_SWSURFACE,width,height,32,SURFACE_MASK));
+
+	glBindTexture(GL_TEXTURE_2D, id);
+	glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, s->pixels);
 }
 
 void texture::ID::destroy()

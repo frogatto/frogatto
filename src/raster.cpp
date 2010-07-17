@@ -27,6 +27,21 @@
 
 namespace graphics
 {
+
+void set_video_mode(int w, int h)
+{
+	graphics::texture::unbuild_all();
+	SDL_SetVideoMode(w,h,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+	graphics::texture::rebuild_all();
+
+	glShadeModel(GL_SMOOTH);
+	glEnable(GL_BLEND);
+	glEnable(GL_TEXTURE_2D);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
 	
 	/* unavoidable global variable to store global clip
 	 rectangle changes */
