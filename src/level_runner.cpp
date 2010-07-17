@@ -573,7 +573,7 @@ bool level_runner::play_cycle()
 					graphics::texture::clear_textures();
 				} else if(key == SDLK_f && mod & KMOD_CTRL) {
 					preferences::set_fullscreen(!preferences::fullscreen());
-					SDL_SetVideoMode(graphics::screen_width(),graphics::screen_height(),0,SDL_OPENGL|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+					graphics::set_video_mode(graphics::screen_width(), graphics::screen_height());
 				}
 				break;
 			}
