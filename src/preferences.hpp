@@ -4,7 +4,7 @@
 #include <string>
 
 namespace preferences {
-	
+
 	bool parse_arg(const char* arg);
 	bool no_sound();
 	bool no_music();
@@ -68,6 +68,9 @@ namespace preferences {
 	bool sim_iphone();
 
 	bool send_stats();
+
+	void load_preferences();
+	void save_preferences();
 
 	class editor_screen_size_scope {
 		int width_, height_;

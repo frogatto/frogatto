@@ -98,6 +98,8 @@ extern "C" int main(int argc, char** argv)
 	std::string orig_level_cfg = level_cfg;
 	std::string override_level_cfg = "";
 
+	preferences::load_preferences();
+
 	for(int n = 1; n < argc; ++n) {
 		const std::string arg(argv[n]);
 		std::string arg_name, arg_value;
@@ -373,6 +375,8 @@ extern "C" int main(int argc, char** argv)
 
 //	controls::debug_dump_controls();
 	SDL_Quit();
+	
+	preferences::save_preferences();
 	std::cerr << SDL_GetError() << "\n";
 	std::cerr << gluErrorString(glGetError()) << "\n";
 	return 0;

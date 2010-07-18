@@ -5,6 +5,10 @@
 
 #include "preferences.hpp"
 #include "filesystem.hpp"
+#include "wml_node.hpp"
+#include "wml_parser.hpp"
+#include "wml_utils.hpp"
+#include "wml_writer.hpp"
 
 namespace preferences {
 	namespace {
@@ -245,6 +249,31 @@ namespace preferences {
 		return show_fps_;
 	}
 
+	void load_preferences()
+	{
+		std::string path = PREFERENCES_PATH;
+		expand_path(path);
+		if(!sys::file_exists(path + "preferences.cfg")) {
+			return;
+		}
+
+		const wml::const_node_ptr node = wml::parse_wml_from_file(path + "preferences.cfg");
+		if(node.get() == NULL) {
+			return;
+		}
+
+		no_sound_ = wml::get_bool(node, "no_sound", no_sound_);
+		no_music_ = wml::get_bool(node, "no_music", no_music_);
+	}
+
+	void save_preferences()
+	{
+		wml::node_ptr node(new wml::node("preferences"));
+		node->set_attr("no_sound", no_sound_ ? "true" : "false");
+		node->set_attr("no_music", no_music_ ? "true" : "false");
+		sys::write_file(preferences_path_ + "preferences.cfg", wml::output(node));
+	}
+
 	editor_screen_size_scope::editor_screen_size_scope() : width_(virtual_screen_width_), height_(virtual_screen_height_) {
 		++screen_editor_mode;
 		virtual_screen_width_ = actual_screen_width_;
@@ -277,6 +306,10 @@ namespace preferences {
 			no_sound_ = true;
 		} else if(s == "--no-music") {
 			no_music_ = true;
+		} else if(s == "--sound") {
+			no_sound_ = false;
+		} else if(s == "--music") {
+			no_music_ = false;
 		} else if(s == "--fullscreen") {
 			fullscreen_ = true;
 		} else if(s == "--widescreen") {
