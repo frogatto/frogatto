@@ -1,10 +1,15 @@
+#include <boost/array.hpp>
 #include <inttypes.h>
 #include <iostream>
 #include <cassert>
 
+#include "asserts.hpp"
 #include "surface_cache.hpp"
 #include "surface.hpp"
 #include "unit_test.hpp"
+#include "wml_node.hpp"
+#include "wml_parser.hpp"
+#include "wml_utils.hpp"
 
 namespace graphics {
 
@@ -306,8 +311,44 @@ surface scale_surface_v1(surface input) {
 	return result;
 }
 
-
 surface scale_surface(surface input) {
+	surface result(surface::create(input->w*2, input->h*2));
+
+	const uint32_t* in = reinterpret_cast<const uint32_t*>(input->pixels);
+	uint32_t* out = reinterpret_cast<uint32_t*>(result->pixels);
+
+	for(int y = 0; y != input->h; ++y) {
+		for(int x = 0; x != input->w; ++x) {
+			uint32_t& out0 = out[y*2*result->w + x*2];
+			uint32_t& out1 = out[y*2*result->w + x*2+1];
+			uint32_t& out2 = out[(y*2+1)*result->w + x*2];
+			uint32_t& out3 = out[(y*2+1)*result->w + x*2+1];
+
+			out0 = out1 = out2 = out3 = in[y*input->w + x];
+
+
+			const uint32_t matrix[] = {
+x >= 2 && y >= 2 ? in[(y-2)*input->w + x-2] : 0, x >= 1 && y >= 2 ? in[(y-2)*input->w + x-1] : 0, y >= 2 ? in[(y-2)*input->w + x] : 0, x < input->w-1 && y >= 2 ? in[(y-2)*input->w + x+1] : 0, x < input->w-2 && y >= 2 ? in[(y-2)*input->w + x+2] : 0,
+x >= 2 && y >= 1 ? in[(y-1)*input->w + x-2] : 0, x >= 1 && y >= 2 ? in[(y-1)*input->w + x-1] : 0, y >= 1 ? in[(y-1)*input->w + x] : 0, x < input->w-1 && y >= 1 ? in[(y-1)*input->w + x+1] : 0, x < input->w-2 && y >= 1 ? in[(y-1)*input->w + x+2] : 0,
+x >= 2 ? in[(y)*input->w + x-2] : 0, x >= 1 ? in[(y)*input->w + x-1] : 0, in[(y)*input->w + x], x < input->w-1 ? in[(y)*input->w + x+1] : 0, x < input->w-2 ? in[(y)*input->w + x+2] : 0,
+x >= 2 && y < input->w-1 ? in[(y+1)*input->w + x-2] : 0, x >= 1 && y < input->w-1 ? in[(y+1)*input->w + x-1] : 0, y < input->w-1 ? in[(y+1)*input->w + x] : 0, x < input->w-1 && y < input->w-1 ? in[(y+1)*input->w + x+1] : 0, x < input->w-2 && y < input->w-1 ? in[(y+1)*input->w + x+2] : 0,
+x >= 2 && y < input->w-2 ? in[(y+2)*input->w + x-2] : 0, x >= 1 && y < input->w-2 ? in[(y+2)*input->w + x-1] : 0, y < input->w-2 ? in[(y+2)*input->w + x] : 0, x < input->w-1 && y < input->w-2 ? in[(y+2)*input->w + x+1] : 0, x < input->w-2 && y < input->w-2 ? in[(y+2)*input->w + x+2] : 0,
+			};
+
+	union PixelUnion {
+		uint32_t value;
+		uint8_t rgba[4];
+	};
+#include "surface_scaling_generated.hpp"
+		}
+	}
+
+	return result;
+}
+
+
+
+surface scale_surface_old(surface input) {
 	surface result(surface::create(input->w*2, input->h*2));
 
 	const uint32_t* in = reinterpret_cast<const uint32_t*>(input->pixels);
@@ -507,6 +548,167 @@ BENCHMARK(surface_scaling)
 	SDL_BlitSurface(s.get(), NULL, target.get(), NULL);
 	BENCHMARK_LOOP {
 		scale_surface(target);
+	}
+}
+
+namespace {
+	typedef boost::array<char, 4> OutputPixels;
+	typedef boost::array<char, 25> InputMatrix;
+
+	void flip_matrix(OutputPixels& pixels) {
+		std::swap(pixels[0], pixels[1]);
+		std::swap(pixels[2], pixels[3]);
+	}
+
+	void flop_matrix(OutputPixels& pixels) {
+		std::swap(pixels[0], pixels[2]);
+		std::swap(pixels[1], pixels[3]);
+	}
+
+	void flip_matrix(InputMatrix& pixels) {
+		for(int y = 0; y != 5; ++y) {
+			for(int x = 0; x < 5/2; ++x) {
+				std::swap(pixels[y*5 + x], pixels[y*5 + 4 - x]);
+			}
+		}
+	}
+
+	void flop_matrix(InputMatrix& pixels) {
+		for(int x = 0; x != 5; ++x) {
+			for(int y = 0; y < 5/2; ++y) {
+				std::swap(pixels[y*5 + x], pixels[((5-1) - y)*5 + x]);
+			}
+		}
+	}
+
+	struct ScalingOutput {
+		OutputPixels output;
+		InputMatrix input;
+	};
+
+	struct ScalingPattern {
+		InputMatrix input;
+		std::vector<ScalingOutput> output;
+	};
+
+	void flip_pattern(ScalingPattern& pattern) {
+		flip_matrix(pattern.input);
+		foreach(ScalingOutput& output, pattern.output) {
+			flip_matrix(output.output);
+			flip_matrix(output.input);
+		}
+	}
+
+	void flop_pattern(ScalingPattern& pattern) {
+		flop_matrix(pattern.input);
+		foreach(ScalingOutput& output, pattern.output) {
+			flop_matrix(output.output);
+			flop_matrix(output.input);
+		}
+	}
+
+}
+
+UTILITY(generate_scaling_code)
+{
+	wml::const_node_ptr node(wml::parse_wml_from_file("./surface_scaling.cfg"));
+
+	std::vector<ScalingPattern> patterns;
+	FOREACH_WML_CHILD(pattern_node, node, "pattern") {
+		ScalingPattern pattern;
+		const std::string& pattern_str = pattern_node->attr("pattern");
+		int n = 0;
+		foreach(char c, pattern_str) {
+			if(!isspace(c)) {
+				ASSERT_LOG(n < pattern.input.size(), "SURFACE SCALING PATTERN HAS TOO MANY CHARACTERS: " << pattern_str);
+				pattern.input[n++] = c;
+			}
+		}
+
+		ASSERT_LOG(n == 25, "SURFACE SCALING_PATTERN HAS TOO FEW CHARACTERS: " << pattern_str);
+
+		FOREACH_WML_CHILD(output_node, pattern_node, "output") {
+			ScalingOutput output;
+			const std::string& input_str = output_node->attr("input");
+			int n = 0;
+			foreach(char c, input_str) {
+				if(!isspace(c)) {
+					ASSERT_LOG(n < output.input.size(), "SURFACE SCALING INPUT HAS TOO MANY CHARACTERS: " << input_str);
+					output.input[n++] = c;
+				}
+			}
+
+			ASSERT_LOG(n == 25, "SURFACE SCALING INPUT HAS TOO FEW CHARACTERS: " << input_str);
+
+			const std::string& output_str = output_node->attr("output");
+			n = 0;
+			foreach(char c, output_str) {
+				if(!isspace(c)) {
+					ASSERT_LOG(n < output.output.size(), "SURFACE SCALING OUTPUT HAS TOO MANY CHARACTERS: " << output_str);
+					output.output[n++] = c;
+				}
+			}
+			
+			ASSERT_LOG(n == 4, "SURFACE SCALING OUTPUT HAS TOO FEW CHARACTERS: " << output_str);
+
+			pattern.output.push_back(output);
+		}
+
+		patterns.push_back(pattern);
+		flip_pattern(pattern);
+		patterns.push_back(pattern);
+		flop_pattern(pattern);
+		patterns.push_back(pattern);
+		flip_pattern(pattern);
+		patterns.push_back(pattern);
+	}
+
+	foreach(ScalingPattern& pattern, patterns) {
+		std::cout << "if(";
+		for(int n = 0; n != pattern.input.size(); ++n) {
+			if(pattern.input[n] != '*') {
+				for(int m = n+1; m != pattern.input.size(); ++m) {
+					if(pattern.input[n] == pattern.input[m]) {
+						pattern.input[m] = '*';
+
+						std::cout << "matrix[" << n << "] == matrix[" << m << "] &&\n";
+					}
+				}
+			}
+		}
+
+		std::cout << "true) {\n";
+		foreach(const ScalingOutput& output, pattern.output) {
+			std::cout << "\t{\n\tPixelUnion pu;\n\tint red = 0, green = 0, blue = 0, count = 0;\n";
+			int value_count = 0;
+			for(int n = 0; n != output.input.size(); ++n) {
+				if(isdigit(output.input[n]) && output.input[n] != '0') {
+					const int value = output.input[n] - '0';
+					value_count += value;
+					std::cout << "\tpu.value = matrix[" << n << "];\n";
+					std::cout << "\tred += pu.rgba[0]*" << value << "*pu.rgba[3];\n";
+					std::cout << "\tgreen += pu.rgba[1]*" << value << "*pu.rgba[3];\n";
+					std::cout << "\tblue += pu.rgba[2]*" << value << "*pu.rgba[3];\n";
+					std::cout << "\tcount += pu.rgba[3]* " << value << ";\n";
+				}
+			}
+
+			std::cout << "\tif(count > 0) {\n";
+			std::cout << "\t\tred /= count;\n";
+			std::cout << "\t\tgreen /= count;\n";
+			std::cout << "\t\tblue /= count;\n";
+			std::cout << "\t\tpu.rgba[0] = red; pu.rgba[1] = green; pu.rgba[2] = blue; pu.rgba[3] = 255;\n";
+
+			for(int n = 0; n != output.output.size(); ++n) {
+				if(output.output[n] != '0') {
+					std::cout << "\t\tout" << n << " = pu.value;\n";
+				}
+			}
+
+			std::cout << "\t}\n}\n";
+		}
+
+		std::cout << "\t}\n";
 	}
 }
 
