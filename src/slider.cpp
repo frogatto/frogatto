@@ -24,7 +24,7 @@ namespace gui {
 	: width_(width), onchange_(onchange), dragging_(false), position_(0.00),
 	slider_left_(gui_section::get("slider_side_left")),
 	slider_right_(gui_section::get("slider_side_right")),
-	slider_middle_(gui_section::get("slider_side_left")),
+	slider_middle_(gui_section::get("slider_middle")),
 	slider_button_(gui_section::get("slider_button"))
 	{
 		set_dim(width_+slider_left_->width()*2, slider_button_->height());
@@ -47,11 +47,11 @@ namespace gui {
 	
 	void slider::handle_draw() const
 	{
-		int slider_y = height()/2 - slider_middle_->height()/2;
+		int slider_y = y() + height()/2 - slider_middle_->height()/2;
 		slider_left_->blit(x(), slider_y);
 		slider_middle_->blit(x()+slider_left_->width(), slider_y, width_, slider_middle_->height());
 		slider_right_->blit(x()+slider_left_->width()+width_, slider_y);
-		slider_button_->blit(x()+slider_left_->width()+position_*width()-slider_button_->width()/2, y());
+		slider_button_->blit(x()+slider_left_->width()+position_*width_-slider_button_->width()/2, y());
 	}
 	
 	bool slider::handle_event(const SDL_Event& event, bool claimed)
@@ -65,7 +65,7 @@ namespace gui {
 			int rel_x = e.x - x() - slider_left_->width();
 			if (rel_x < 0) rel_x = 0;
 			if (rel_x > width_) rel_x = width_;
-			float pos = rel_x/width_;
+			float pos = (float)rel_x/width_;
 			if (pos != position_)
 			{
 				position_ = pos;
