@@ -331,8 +331,8 @@ surface scale_surface(surface input) {
 x >= 2 && y >= 2 ? in[(y-2)*input->w + x-2] : 0, x >= 1 && y >= 2 ? in[(y-2)*input->w + x-1] : 0, y >= 2 ? in[(y-2)*input->w + x] : 0, x < input->w-1 && y >= 2 ? in[(y-2)*input->w + x+1] : 0, x < input->w-2 && y >= 2 ? in[(y-2)*input->w + x+2] : 0,
 x >= 2 && y >= 1 ? in[(y-1)*input->w + x-2] : 0, x >= 1 && y >= 2 ? in[(y-1)*input->w + x-1] : 0, y >= 1 ? in[(y-1)*input->w + x] : 0, x < input->w-1 && y >= 1 ? in[(y-1)*input->w + x+1] : 0, x < input->w-2 && y >= 1 ? in[(y-1)*input->w + x+2] : 0,
 x >= 2 ? in[(y)*input->w + x-2] : 0, x >= 1 ? in[(y)*input->w + x-1] : 0, in[(y)*input->w + x], x < input->w-1 ? in[(y)*input->w + x+1] : 0, x < input->w-2 ? in[(y)*input->w + x+2] : 0,
-x >= 2 && y < input->w-1 ? in[(y+1)*input->w + x-2] : 0, x >= 1 && y < input->w-1 ? in[(y+1)*input->w + x-1] : 0, y < input->w-1 ? in[(y+1)*input->w + x] : 0, x < input->w-1 && y < input->w-1 ? in[(y+1)*input->w + x+1] : 0, x < input->w-2 && y < input->w-1 ? in[(y+1)*input->w + x+2] : 0,
-x >= 2 && y < input->w-2 ? in[(y+2)*input->w + x-2] : 0, x >= 1 && y < input->w-2 ? in[(y+2)*input->w + x-1] : 0, y < input->w-2 ? in[(y+2)*input->w + x] : 0, x < input->w-1 && y < input->w-2 ? in[(y+2)*input->w + x+1] : 0, x < input->w-2 && y < input->w-2 ? in[(y+2)*input->w + x+2] : 0,
+x >= 2 && y < input->h-1 ? in[(y+1)*input->w + x-2] : 0, x >= 1 && y < input->h-1 ? in[(y+1)*input->w + x-1] : 0, y < input->h-1 ? in[(y+1)*input->w + x] : 0, x < input->w-1 && y < input->h-1 ? in[(y+1)*input->w + x+1] : 0, x < input->w-2 && y < input->h-1 ? in[(y+1)*input->w + x+2] : 0,
+x >= 2 && y < input->h-2 ? in[(y+2)*input->w + x-2] : 0, x >= 1 && y < input->h-2 ? in[(y+2)*input->w + x-1] : 0, y < input->h-2 ? in[(y+2)*input->w + x] : 0, x < input->w-1 && y < input->h-2 ? in[(y+2)*input->w + x+1] : 0, x < input->w-2 && y < input->h-2 ? in[(y+2)*input->w + x+2] : 0,
 			};
 
 	union PixelUnion {
