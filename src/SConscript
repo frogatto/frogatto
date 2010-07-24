@@ -43,7 +43,8 @@ graphical_font.cpp
 graphical_font_label.cpp
 grid_widget.cpp
 group_property_editor_dialog.cpp
-gui_formula_functions.cpp gui_section.cpp
+gui_formula_functions.cpp
+gui_section.cpp
 image_widget.cpp
 input.cpp
 inventory.cpp
@@ -78,6 +79,7 @@ raster.cpp
 raster_distortion.cpp
 rectangle_rotator.cpp
 settings_dialog.cpp
+slider.cpp
 solid_map.cpp
 sound.cpp
 speech_dialog.cpp
