@@ -4,6 +4,7 @@
 
 #include <SDL.h>
 
+#include "foreach.hpp"
 #include "geometry.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
@@ -46,6 +47,14 @@ namespace
 		
 		underwater_circle_y = vh-underwater_circle_y;
 	}
+
+	struct Mouse {
+		bool active;
+		int x, y;
+		int starting_x, starting_y;
+	};
+
+	std::vector<Mouse> all_mice, active_mice;
 }
 
 void translate_mouse_coords (int *x, int *y)
@@ -62,6 +71,40 @@ void translate_mouse_coords (int *x, int *y)
 	}
 }
 
+void iphone_controls::read_controls()
+{
+	active_mice.clear();
+
+	const int nmice = SDL_GetNumMice();
+	if(all_mice.size() > nmice) {
+		all_mice.resize(nmice);
+	}
+
+	for(int i = 0; i < nmice; i++) {
+		int x, y;
+		SDL_SelectMouse(i);
+		Uint8 button_state = SDL_GetMouseState(&x, &y);
+		translate_mouse_coords(&x, &y);
+		if(all_mice.size() == i) {
+			all_mice.push_back(Mouse());
+			all_mice[i].active = false;
+		}
+
+		if(!all_mice[i].active) {
+			all_mice[i].starting_x = x;
+			all_mice[i].starting_y = y;
+		}
+
+		all_mice[i].x = x;
+		all_mice[i].y = y;
+		all_mice[i].active = button_state & SDL_BUTTON(SDL_BUTTON_LEFT);
+		if(all_mice[i].active) {
+			active_mice.push_back(all_mice[i]);
+		}
+	}
+	
+}
+
 void iphone_controls::set_underwater(bool value)
 {
 	is_underwater = value;
@@ -75,23 +118,21 @@ void iphone_controls::set_can_interact(bool value)
 bool iphone_controls::water_dir(float* xvalue, float* yvalue)
 {
 	setup_rects();
-	for(int i = 0; i < SDL_GetNumMice(); i++) {
-		int x, y;
-		SDL_SelectMouse(i);
-		Uint8 button_state = SDL_GetMouseState(&x, &y);
-		if (button_state & SDL_BUTTON(SDL_BUTTON_LEFT)) {
-			translate_mouse_coords(&x, &y);
+	foreach(const Mouse& mouse, active_mice) {
+		const int dx = mouse.starting_x - underwater_circle_x;
+		const int dy = mouse.starting_y - underwater_circle_y;
 
-			const int dx = x - underwater_circle_x;
-			const int dy = y - underwater_circle_y;
+		const int distance = sqrt(dx*dx + dy*dy);
+
+		if(distance > 0 && distance < underwater_circle_rad) {
+			const int dx = mouse.x - underwater_circle_x;
+			const int dy = mouse.y - underwater_circle_y;
 
 			const int distance = sqrt(dx*dx + dy*dy);
 
-			if(distance > 0 && distance < underwater_circle_rad) {
-				*xvalue = float(dx)/float(distance);
-				*yvalue = float(dy)/float(distance);
-				return true;
-			}
+			*xvalue = float(dx)/float(distance);
+			*yvalue = float(dy)/float(distance);
+			return true;
 		}
 	}
 
@@ -130,19 +171,10 @@ bool iphone_controls::hittest_button(const rect& area)
 {
 	setup_rects();
 	static graphics::texture tex(graphics::texture::get("gui/iphone_controls.png"));
-	for(int i = 0; i < SDL_GetNumMice(); i++) {
-		int x, y;
-		SDL_SelectMouse(i);
-		Uint8 button_state = SDL_GetMouseState(&x, &y);
-
-		if(button_state & SDL_BUTTON(SDL_BUTTON_LEFT)) {
-			//rotate the coordinates
-			translate_mouse_coords(&x, &y);
-
-			const point mouse_pos(x, y);
-			if(point_in_rect(mouse_pos, area)) {
-				return true;
-			}
+	foreach(const Mouse& mouse, active_mice) {
+		const point mouse_pos(mouse.x, mouse.y);
+		if(point_in_rect(mouse_pos, area)) {
+			return true;
 		}
 	}
 	return false;

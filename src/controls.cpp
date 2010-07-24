@@ -114,6 +114,7 @@ void read_local_controls()
 		return;
 	}
 
+	iphone_controls::read_controls();
 
 	unsigned char state = 0;
 	if(local_control_locks.empty()) {

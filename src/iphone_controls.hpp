@@ -23,6 +23,8 @@ public:
 	static void set_can_interact(bool value);
 
 	static void draw();
+
+	static void read_controls();
 	
 private:
 	static bool hittest_button (const rect& r);

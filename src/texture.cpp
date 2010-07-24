@@ -645,6 +645,7 @@ void texture::ID::build_id()
 
 void texture::ID::unbuild_id()
 {
+#if !TARGET_OS_IPHONE
 	if(id == GLuint(-1) || s) {
 		return;
 	}
@@ -657,6 +658,7 @@ void texture::ID::unbuild_id()
 
 	glBindTexture(GL_TEXTURE_2D, id);
 	glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, s->pixels);
+#endif
 }
 
 void texture::ID::destroy()
