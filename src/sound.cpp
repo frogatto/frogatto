@@ -22,6 +22,7 @@
 namespace sound {
 
 namespace {
+float recorded_music_volume = 1.0;
 const int SampleRate = 44100;
 // number of allocated channels, 
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
@@ -258,10 +259,13 @@ typedef std::map<std::string, sound> cache_map;
 #endif
 cache_map cache;
 
+bool sound_init = false;
+
 }
 
 manager::manager()
 {
+	sound_init = true;
 	if(preferences::no_sound()) {
 		return;
 	}
@@ -309,6 +313,8 @@ manager::manager()
 		sound_ok = false;
     }
 #endif
+
+	set_music_volume(recorded_music_volume);
 }
 
 manager::~manager()
@@ -492,11 +498,15 @@ float get_music_volume()
 
 void set_music_volume(float volume)
 {
+	recorded_music_volume = volume;
+
+	if(sound_init) {
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
-	Mix_VolumeMusic(volume*MIX_MAX_VOLUME);
+		Mix_VolumeMusic(volume*MIX_MAX_VOLUME);
 #else
-	iphone_set_music_volume(volume);
+		iphone_set_music_volume(volume);
 #endif
+	}
 }
 
 void cancel_looped(int handle)

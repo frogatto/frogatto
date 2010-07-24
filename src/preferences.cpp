@@ -3,8 +3,10 @@
 #include <string>
 #include <SDL.h>
 
-#include "preferences.hpp"
 #include "filesystem.hpp"
+#include "formatter.hpp"
+#include "preferences.hpp"
+#include "sound.hpp"
 #include "wml_node.hpp"
 #include "wml_parser.hpp"
 #include "wml_utils.hpp"
@@ -264,6 +266,9 @@ namespace preferences {
 
 		no_sound_ = wml::get_bool(node, "no_sound", no_sound_);
 		no_music_ = wml::get_bool(node, "no_music", no_music_);
+
+		sound::set_music_volume(wml::get_int(node, "music_volume", 1000)/1000.0);
+		sound::set_sound_volume(wml::get_int(node, "sound_volume", 1000)/1000.0);
 	}
 
 	void save_preferences()
@@ -271,6 +276,8 @@ namespace preferences {
 		wml::node_ptr node(new wml::node("preferences"));
 		node->set_attr("no_sound", no_sound_ ? "true" : "false");
 		node->set_attr("no_music", no_music_ ? "true" : "false");
+		node->set_attr("sound_volume", formatter() << static_cast<int>(sound::get_sound_volume()*1000));
+		node->set_attr("music_volume", formatter() << static_cast<int>(sound::get_music_volume()*1000));
 		sys::write_file(preferences_path_ + "preferences.cfg", wml::output(node));
 	}
 
