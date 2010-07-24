@@ -486,7 +486,7 @@ float get_music_volume()
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	return (float)Mix_VolumeMusic(-1)/MIX_MAX_VOLUME;
 #else
-	return 1.0;
+	return iphone_get_music_volume();
 #endif
 }
 
@@ -494,6 +494,8 @@ void set_music_volume(float volume)
 {
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	Mix_VolumeMusic(volume*MIX_MAX_VOLUME);
+#else
+	iphone_set_music_volume(volume);
 #endif
 }
 

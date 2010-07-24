@@ -20,8 +20,8 @@ namespace gui {
 	
 	
 	
-	slider::slider(int width, boost::function<void (float)> onchange)
-	: width_(width), onchange_(onchange), dragging_(false), position_(0.00),
+	slider::slider(int width, boost::function<void (float)> onchange, float position)
+	: width_(width), onchange_(onchange), dragging_(false), position_(position),
 	slider_left_(gui_section::get("slider_side_left")),
 	slider_right_(gui_section::get("slider_side_right")),
 	slider_middle_(gui_section::get("slider_middle")),

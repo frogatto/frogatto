@@ -6,6 +6,7 @@
 
 AVAudioPlayer *song = nil;
 const float fade_interval = 0.05;
+float master_volume = 1.0;
 void (*song_finished_callback)() = NULL;
 
 @interface AudioDelegate : NSObject <AVAudioPlayerDelegate>
@@ -40,7 +41,7 @@ void iphone_fade_in_music (int duration)
 {
 	if (song == nil || delegate == nil || delegate.fading) return;
 	song.volume = 0.0;
-	delegate.amount = 1.0/((duration/1000.0) * (1.0/fade_interval));
+	delegate.amount = master_volume/((duration/1000.0) * (1.0/fade_interval));
 	//NSLog(@"Starting fade in, volume=%f | amount=%f", song.volume, delegate.amount);
 	[delegate fadeInMusic:nil];
 }
@@ -48,7 +49,7 @@ void iphone_fade_in_music (int duration)
 void iphone_fade_out_music (int duration)
 {
 	if (song == nil || delegate == nil || delegate.fading) return;
-	delegate.amount = 1.0/((duration/1000.0) * (1.0/fade_interval));
+	delegate.amount = master_volume/((duration/1000.0) * (1.0/fade_interval));
 	[delegate fadeOutMusic:nil];
 }
 
@@ -61,13 +62,13 @@ void iphone_play_music (const char *file, int loops)
 		[song release];
 	}
 	song = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[NSString stringWithUTF8String: file]] error:NULL];
-	NSLog(@"Initializing the new song took %i ms", SDL_GetTicks()-timer);
+	//NSLog(@"Initializing the new song took %i ms", SDL_GetTicks()-timer);
 	song.delegate = delegate;
 	song.numberOfLoops = loops;
 	
 	timer = SDL_GetTicks();
 	[song play];
-	NSLog(@"Playing the new song (%s) took %i ms", file, SDL_GetTicks()-timer);
+	//NSLog(@"Playing the new song (%s) took %i ms", file, SDL_GetTicks()-timer);
 }
 
 void iphone_pause_music ()
@@ -92,6 +93,18 @@ void iphone_kill_music ()
 	delegate = nil;
 }
 
+float iphone_get_music_volume ()
+{
+	return master_volume;
+}
+
+void iphone_set_music_volume (float v)
+{
+	master_volume = v;
+	if (song != nil)
+		song.volume = master_volume;
+}
+
 @implementation AudioDelegate
 
 @synthesize amount;
@@ -99,11 +112,11 @@ void iphone_kill_music ()
 
 - (void) fadeInMusic:(id)obj
 {
-	if (song.volume + amount >= 1.0)
+	if (song.volume + amount >= master_volume)
 	{
 		//NSLog(@"Done fading in.");
 		fading = NO;
-		song.volume = 1.0; //fading is done, and the volume should be exactly 1.0
+		song.volume = master_volume; //fading is done
 	} else {
 		fading = YES;
 		song.volume += amount;

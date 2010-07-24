@@ -26,7 +26,7 @@ namespace gui {
 	class slider : public widget
 	{
 	public:
-		slider(int width, boost::function<void (float)> onchange);
+		slider(int width, boost::function<void (float)> onchange, float position=0.0);
 		float position() const {return position_;};
 		void set_position (float position) {position_ = position;};
 		

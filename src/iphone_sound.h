@@ -12,6 +12,8 @@ void iphone_play_music (const char *file, int loops);
 void iphone_pause_music ();
 void iphone_resume_music();
 void iphone_kill_music ();
+float iphone_get_music_volume ();
+void iphone_set_music_volume (float v);
 
 #ifdef __cplusplus
 } //extern "C"
