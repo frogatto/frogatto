@@ -28,11 +28,11 @@ void stop_sound(const std::string& file, const void* object=0);
 void stop_looped_sounds(const void* object=0);
 void change_volume(const void* object=0, int volume=-1);
 
-int get_sound_volume();
-void set_sound_volume(int volume);
+float get_sound_volume();
+void set_sound_volume(float volume);
 
-int get_music_volume();
-void set_music_volume(int volume);
+float get_music_volume();
+void set_music_volume(float volume);
 	
 // function to play a sound effect over and over in a loop. Will return
 // a handle to the sound effect. Will keep playing until cancel_looped()

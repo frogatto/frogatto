@@ -339,7 +339,7 @@ void mute (bool flag)
 
 namespace {
 
-int sfx_volume = MIX_MAX_VOLUME;
+float sfx_volume = 1.0;
 
 int play_internal(const std::string& file, int loops, const void* object)
 {
@@ -380,7 +380,7 @@ int play_internal(const std::string& file, int loops, const void* object)
 			channels_to_sounds_playing.resize(result + 1);
 		}
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
-		Mix_Volume(result, sfx_volume); //start sound at full volume
+		Mix_Volume(result, sfx_volume*MIX_MAX_VOLUME); //start sound at full volume
 #endif
 
 		channels_to_sounds_playing[result].file = file;
@@ -471,24 +471,30 @@ void change_volume(const void* object, int volume)
 	}
 }
 
-int get_sound_volume()
+float get_sound_volume()
 {
 	return sfx_volume;
 }
 
-void set_sound_volume(int volume)
+void set_sound_volume(float volume)
 {
 	sfx_volume = volume;
 }
 
-int get_music_volume()
+float get_music_volume()
 {
-	return Mix_VolumeMusic(-1);
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
+	return (float)Mix_VolumeMusic(-1)/MIX_MAX_VOLUME;
+#else
+	return 1.0;
+#endif
 }
 
-void set_music_volume(int volume)
+void set_music_volume(float volume)
 {
-	Mix_VolumeMusic(volume);
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
+	Mix_VolumeMusic(volume*MIX_MAX_VOLUME);
+#endif
 }
 
 void cancel_looped(int handle)
