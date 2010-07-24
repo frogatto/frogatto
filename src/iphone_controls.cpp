@@ -264,4 +264,6 @@ bool iphone_controls::jump() {return false;}
 
 bool iphone_controls::tongue() {return false;}
 
+void iphone_controls::read_controls() {}
+
 #endif
