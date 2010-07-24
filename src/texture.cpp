@@ -645,7 +645,7 @@ void texture::ID::build_id()
 
 void texture::ID::unbuild_id()
 {
-#if !TARGET_OS_IPHONE
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	if(id == GLuint(-1) || s) {
 		return;
 	}
