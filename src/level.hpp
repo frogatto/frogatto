@@ -253,6 +253,8 @@ public:
 	const std::vector<entity_ptr>& focus_override() const { return focus_override_; }
 
 	static const game_logic::formula_callable_definition& get_formula_definition();
+	
+	bool in_editor () {return editor_;}
 
 private:
 	level(const level&);
