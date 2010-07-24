@@ -35,8 +35,8 @@ namespace
 		int vw = preferences::virtual_screen_width();
 		int vh = preferences::virtual_screen_height();
 		
-		left_arrow = rect(0, vh - 100, 10 + 55*2, 100);
-		right_arrow = rect(244, vh - 100, 10 + 55*2, 100);
+		left_arrow = rect(0, vh - 130, 10 + 72*2, 130);
+		right_arrow = rect(244, vh - 130, 30 + 72*2, 130);
 		down_arrow = rect(159, vh - 66, 34*2, 66);
 		up_arrow = rect(159, vh - 184, 34*2, 55*2);
 		a_button = rect(vw - 204, vh - 120, 50*2*2, 60*2);
