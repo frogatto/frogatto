@@ -130,7 +130,7 @@ bool iphone_controls::water_dir(float* xvalue, float* yvalue)
 
 		const int distance = sqrt(dx*dx + dy*dy);
 
-		if(distance > 0 && distance < underwater_circle_rad) {
+		if(distance > 0 && distance < 1.7 * underwater_circle_rad) {
 			const int dx = mouse.x - underwater_circle_x;
 			const int dy = mouse.y - underwater_circle_y;
 
