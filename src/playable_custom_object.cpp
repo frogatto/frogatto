@@ -1,3 +1,4 @@
+#include "collision_utils.hpp"
 #include "iphone_controls.hpp"
 #include "joystick.hpp"
 #include "level.hpp"
@@ -61,6 +62,13 @@ bool playable_custom_object::is_active(const rect& screen_area) const
 	return true;
 }
 
+bool playable_custom_object::on_platform() const
+{
+	collision_info stand_info;
+	const bool standing = is_standing(level::current(), &stand_info);
+	return standing && stand_info.platform;
+}
+
 int playable_custom_object::walk_up_or_down_stairs() const
 {
 	return control_status(controls::CONTROL_DOWN) - control_status(controls::CONTROL_UP);
@@ -78,6 +86,7 @@ void playable_custom_object::process(level& lvl)
 
 	iphone_controls::set_underwater(underwater_controls_);
 	iphone_controls::set_can_interact(can_interact_ != 0);
+	iphone_controls::set_on_platform(on_platform());
 
 	float underwater_x, underwater_y;
 	if(underwater_controls_ && iphone_controls::water_dir(&underwater_x, &underwater_y)) {

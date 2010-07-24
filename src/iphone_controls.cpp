@@ -20,6 +20,7 @@ namespace
 
 	bool is_underwater = false;
 	bool can_interact = false;
+	bool on_platform = false;
 	
 	//This is to keep track of whether the rects above have been modified
 	//by modify_rects() yet, to make them work on different resolutions
@@ -113,6 +114,11 @@ void iphone_controls::set_underwater(bool value)
 void iphone_controls::set_can_interact(bool value)
 {
 	can_interact = value;
+}
+
+void iphone_controls::set_on_platform(bool value)
+{
+	on_platform = value;
 }
 
 bool iphone_controls::water_dir(float* xvalue, float* yvalue)
@@ -247,6 +253,7 @@ void iphone_controls::draw() {}
 
 void iphone_controls::set_underwater(bool value) {}
 void iphone_controls::set_can_interact(bool value) {}
+void iphone_controls::set_on_platform(bool value) {}
 
 bool iphone_controls::water_dir(float* xvalue, float* yvalue) { return false; }
 

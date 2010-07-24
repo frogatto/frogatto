@@ -152,6 +152,9 @@ protected:
 
 	const std::pair<int,int>* position_scale_millis() const { return position_scale_millis_.get(); }
 
+protected:
+	bool is_standing(const level& lvl, collision_info* info=NULL) const;
+
 private:
 	custom_object& operator=(const custom_object& o);
 	struct Accessor;
@@ -160,8 +163,6 @@ private:
 
 	const solid_info* calculate_solid() const;
 	const solid_info* calculate_platform() const;
-
-	bool is_standing(const level& lvl, collision_info* info=NULL) const;
 
 	void get_inputs(std::vector<game_logic::formula_input>* inputs) const;
 

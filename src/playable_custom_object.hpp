@@ -36,6 +36,8 @@ public:
 	bool can_interact() const { return can_interact_ != 0; }
 
 private:
+	bool on_platform() const;
+
 	int walk_up_or_down_stairs() const;
 
 	virtual void process(level& lvl);

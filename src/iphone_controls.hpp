@@ -21,6 +21,7 @@ public:
 
 	static void set_underwater(bool value);
 	static void set_can_interact(bool value);
+	static void set_on_platform(bool value);
 
 	static void draw();
 
