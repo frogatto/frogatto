@@ -21,6 +21,8 @@
 #include "surface_cache.hpp"
 #include "texture.hpp"
 #include "tooltip.hpp"
+#include "draw_scene.hpp"
+#include "level.hpp"
 
 namespace gui {
 
@@ -156,6 +158,11 @@ void dialog::handle_draw() const
 			graphics::blit_texture(bg_, x(), y(), width(), height(), 0.0, 0.0, 1.0, 1.0, 0.0);
 			glColor4f(1.0, 1.0, 1.0, 1.0);
 		}
+	}
+	if (!level::current().in_editor())
+	{
+		draw_scene(level::current(), last_draw_position());
+		
 	}
 	handle_draw_children();
 }

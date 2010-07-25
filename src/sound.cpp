@@ -22,6 +22,8 @@
 namespace sound {
 
 namespace {
+
+float sfx_volume = 1.0;
 float recorded_music_volume = 1.0;
 const int SampleRate = 44100;
 // number of allocated channels, 
@@ -185,7 +187,7 @@ void sdl_audio_callback (void *userdata, Uint8 * stream, int len)
 		copy_amt = mixer.channels[i].remaining < len ? mixer.channels[i].remaining : len;
 		
 		/* mix this sound effect with the output */
-		SDL_MixAudioFormat(stream, mixer.channels[i].position, mixer.outputSpec.format, copy_amt, mixer.channels[i].volume);
+		SDL_MixAudioFormat(stream, mixer.channels[i].position, mixer.outputSpec.format, copy_amt, sfx_volume * mixer.channels[i].volume);
 		
 		/* update buffer position in sound effect and the number of bytes left */
 		mixer.channels[i].position += copy_amt;
@@ -344,8 +346,6 @@ void mute (bool flag)
 }
 
 namespace {
-
-float sfx_volume = 1.0;
 
 int play_internal(const std::string& file, int loops, const void* object)
 {

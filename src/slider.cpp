@@ -33,9 +33,9 @@ namespace gui {
 	bool slider::in_button(int xloc, int yloc) const
 	{
 		translate_mouse_coords(&xloc, &yloc);
-		int button_x = x() + slider_left_->width() + position_*width_ - slider_button_->width()/2;
-		return xloc > button_x && xloc < button_x + slider_button_->width()+200 &&
-		yloc > y() && yloc < y() + height()+200;
+		int button_x = x() + slider_left_->width() + position_*width_;
+		return xloc > button_x-20 && xloc < button_x + slider_button_->width()+20 &&
+		yloc > y()-10 && yloc < y() + height()+10;
 	}
 	
 	bool slider::in_slider(int xloc, int yloc) const
