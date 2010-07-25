@@ -32,7 +32,6 @@ namespace gui {
 	
 	bool slider::in_button(int xloc, int yloc) const
 	{
-		translate_mouse_coords(&xloc, &yloc);
 		int button_x = x() + slider_left_->width() + position_*width_;
 		return xloc > button_x-20 && xloc < button_x + slider_button_->width()+20 &&
 		yloc > y()-10 && yloc < y() + height()+10;
@@ -40,7 +39,6 @@ namespace gui {
 	
 	bool slider::in_slider(int xloc, int yloc) const
 	{
-		translate_mouse_coords(&xloc, &yloc);
 		return xloc > x() && xloc < x() + width() &&
 		yloc > y() && yloc < y() + height();
 	}
@@ -64,7 +62,6 @@ namespace gui {
 			const SDL_MouseMotionEvent& e = event.motion;
 			int mouse_x = e.x;
 			int mouse_y = e.y;
-			translate_mouse_coords(&mouse_x, &mouse_y);
 
 			int rel_x = mouse_x - x() - slider_left_->width();
 			if (rel_x < 0) rel_x = 0;

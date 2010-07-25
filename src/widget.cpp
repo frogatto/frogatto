@@ -16,6 +16,7 @@
 #include "tooltip.hpp"
 #include "translate.hpp"
 #include "widget.hpp"
+#include "iphone_controls.hpp"
 
 #include <iostream>
 
@@ -28,21 +29,26 @@ widget::~widget()
 	}
 }
 
-void widget::normalize_event(SDL_Event* event)
+void widget::normalize_event(SDL_Event* event, bool translate_coords)
 {
+	int tx, ty; //temp x, y
 	switch(event->type) {
 	case SDL_MOUSEMOTION:
 		event->motion.x = (event->motion.x*graphics::screen_width())/preferences::virtual_screen_width();
 		event->motion.y = (event->motion.y*graphics::screen_height())/preferences::virtual_screen_height();
-		event->motion.x -= x();
-		event->motion.y -= y();
+		tx = event->motion.x; ty = event->motion.y;
+		translate_mouse_coords(&tx, &ty);
+		event->motion.x = tx-x();
+		event->motion.y = ty-y();
 		break;
 	case SDL_MOUSEBUTTONDOWN:
 	case SDL_MOUSEBUTTONUP:
 		event->button.x = (event->button.x*graphics::screen_width())/preferences::virtual_screen_width();
 		event->button.y = (event->button.y*graphics::screen_height())/preferences::virtual_screen_height();
-		event->button.x -= x();
-		event->button.y -= y();
+		tx = event->button.x; ty = event->button.y;
+		translate_mouse_coords(&tx, &ty);
+		event->button.x = tx-x();
+		event->button.y = ty-y();
 		break;
 	default:
 		break;

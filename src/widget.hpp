@@ -42,7 +42,7 @@ protected:
 	{}
 	virtual ~widget();
 
-	void normalize_event(SDL_Event* event);
+	void normalize_event(SDL_Event* event, bool translate_coords=false);
 private:
 	virtual void handle_draw() const = 0;
 	virtual bool handle_event(const SDL_Event& event, bool claimed) { return claimed; }

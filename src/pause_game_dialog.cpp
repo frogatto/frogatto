@@ -26,8 +26,6 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 	show_exit = false;
 #endif
-
-	bool upscale = true;
 	
 	using namespace gui;
 	dialog d(200, 40, preferences::virtual_screen_width()-400, preferences::virtual_screen_height()-80);

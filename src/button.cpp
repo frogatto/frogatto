@@ -40,7 +40,6 @@ button::button(widget_ptr label, boost::function<void ()> onclick, BUTTON_RESOLU
 
 bool button::in_button(int xloc, int yloc) const
 {
-	translate_mouse_coords(&xloc, &yloc);
 	return xloc > x() && xloc < x() + width() &&
 	       yloc > y() && yloc < y() + height();
 }
