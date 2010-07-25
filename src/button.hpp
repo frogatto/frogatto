@@ -26,13 +26,14 @@ namespace gui {
 class button : public widget
 {
 public:
-	button(widget_ptr label, boost::function<void ()> onclick);
+	button(widget_ptr label, boost::function<void ()> onclick, bool upscaled = 0);
 
 private:
 	bool in_button(int x, int y) const;
 	void handle_draw() const;
 	bool handle_event(const SDL_Event& event, bool claimed);
 
+	bool upscaled_;	//default 0 is like editor buttons.  1 means it matches the scale of game art.
 	widget_ptr label_;
 	boost::function<void ()> onclick_;
 	

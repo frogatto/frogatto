@@ -25,8 +25,8 @@ int hpadding = 10;
 
 }
 
-button::button(widget_ptr label, boost::function<void ()> onclick)
-  : label_(label), onclick_(onclick),
+button::button(widget_ptr label, boost::function<void ()> onclick, bool upscaled)
+  : label_(label), onclick_(onclick), upscaled_(upscaled),
 	normal_button_image_set_(framed_gui_element::get("regular_button")),
 	depressed_button_image_set_(framed_gui_element::get("regular_button_pressed")),
 	focus_button_image_set_(framed_gui_element::get("regular_button_focus")),
@@ -46,7 +46,7 @@ bool button::in_button(int xloc, int yloc) const
 void button::handle_draw() const
 {
 	label_->set_loc(x()+width()/2 - label_->width()/2,y()+height()/2 - label_->height()/2);
-	current_button_image_set_->blit(x(),y(),width(),height());
+	current_button_image_set_->blit(x(),y(),width(),height(), upscaled_);
 	label_->draw();
 }
 
