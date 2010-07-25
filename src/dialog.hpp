@@ -38,6 +38,7 @@ public:
 	void remove_widget(widget_ptr w);
 	void replace_widget(widget_ptr w_old, widget_ptr w_new);
 	void clear();
+	int padding() const { return padding_; }
 	void set_padding(int pad) { padding_ = pad; }
 	void close() { opened_ = false; }
 	void cancel() { cancelled_ = true; close(); }

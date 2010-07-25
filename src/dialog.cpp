@@ -23,6 +23,7 @@
 #include "tooltip.hpp"
 #include "draw_scene.hpp"
 #include "level.hpp"
+#include "framed_gui_element.hpp"
 
 namespace gui {
 
@@ -162,7 +163,11 @@ void dialog::handle_draw() const
 	if (!level::current().in_editor())
 	{
 		draw_scene(level::current(), last_draw_position());
-		
+		SDL_Rect rect = {x(),y(),width(),height()};
+		SDL_Color col = {0,0,0,0};
+		graphics::draw_rect(rect, col, 204);
+		const_framed_gui_element_ptr window(framed_gui_element::get("empty_window"));
+		window->blit(x(),y(),width(),height(), 1);
 	}
 	handle_draw_children();
 }
