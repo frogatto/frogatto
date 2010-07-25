@@ -22,18 +22,20 @@
 
 namespace gui {
 
+enum BUTTON_RESOLUTION { BUTTON_SIZE_NORMAL_RESOLUTION, BUTTON_SIZE_DOUBLE_RESOLUTION };
+
 //a button widget. Forwards to a given function whenever it is clicked.
 class button : public widget
 {
 public:
-	button(widget_ptr label, boost::function<void ()> onclick, bool upscaled = 0);
+	button(widget_ptr label, boost::function<void ()> onclick, BUTTON_RESOLUTION button_resolution = BUTTON_SIZE_NORMAL_RESOLUTION);
 
 private:
 	bool in_button(int x, int y) const;
 	void handle_draw() const;
 	bool handle_event(const SDL_Event& event, bool claimed);
 
-	bool upscaled_;	//default 0 is like editor buttons.  1 means it matches the scale of game art.
+	BUTTON_RESOLUTION button_resolution_;
 	widget_ptr label_;
 	boost::function<void ()> onclick_;
 	

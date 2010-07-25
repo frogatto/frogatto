@@ -35,9 +35,9 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	widget_ptr s1(new slider(200, boost::bind(sound::set_music_volume, _1), sound::get_music_volume()));
 	widget_ptr t2(new graphical_font_label("Sound Volume:", "door_label", 2));
 	widget_ptr s2(new slider(200, boost::bind(sound::set_sound_volume, _1), sound::get_sound_volume()));
-	widget_ptr b1(new button(widget_ptr(new graphical_font_label("Resume", "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_CONTINUE), upscale));
-	widget_ptr b2(new button(widget_ptr(new graphical_font_label("Return to Titlescreen", "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_GO_TO_TITLESCREEN), upscale));
-	widget_ptr b3(new button(widget_ptr(new graphical_font_label("Exit Game", "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_QUIT), upscale));
+	widget_ptr b1(new button(widget_ptr(new graphical_font_label("Resume", "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_CONTINUE), BUTTON_SIZE_DOUBLE_RESOLUTION));
+	widget_ptr b2(new button(widget_ptr(new graphical_font_label("Return to Titlescreen", "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_GO_TO_TITLESCREEN), BUTTON_SIZE_DOUBLE_RESOLUTION));
+	widget_ptr b3(new button(widget_ptr(new graphical_font_label("Exit Game", "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_QUIT), BUTTON_SIZE_DOUBLE_RESOLUTION));
 	
 	b1->set_dim(230, 60);
 	b2->set_dim(230, 60);
