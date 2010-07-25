@@ -38,6 +38,7 @@ private:
 	BUTTON_RESOLUTION button_resolution_;
 	widget_ptr label_;
 	boost::function<void ()> onclick_;
+	bool down_;
 	
 	const_framed_gui_element_ptr normal_button_image_set_,depressed_button_image_set_,focus_button_image_set_,current_button_image_set_;
 };

@@ -32,7 +32,8 @@ button::button(widget_ptr label, boost::function<void ()> onclick, BUTTON_RESOLU
 	normal_button_image_set_(framed_gui_element::get("regular_button")),
 	depressed_button_image_set_(framed_gui_element::get("regular_button_pressed")),
 	focus_button_image_set_(framed_gui_element::get("regular_button_focus")),
-	current_button_image_set_(normal_button_image_set_)
+	current_button_image_set_(normal_button_image_set_),
+	down_(false)
 	
 {
 	set_dim(label_->width()+hpadding*2,label_->height()+vpadding*2);
@@ -55,14 +56,13 @@ bool button::handle_event(const SDL_Event& event, bool claimed)
 {
     if(claimed) {
 		current_button_image_set_ = normal_button_image_set_;
+		down_ = false;
     }
 
 	if(event.type == SDL_MOUSEMOTION) {
 		const SDL_MouseMotionEvent& e = event.motion;
-		if(current_button_image_set_ == depressed_button_image_set_) {
-			//pass
-		} else if(in_button(e.x,e.y)) {
-			current_button_image_set_ = focus_button_image_set_;
+		if(in_button(e.x,e.y)) {
+			current_button_image_set_ = down_ ? depressed_button_image_set_ : focus_button_image_set_;
 		} else {
 			current_button_image_set_ = normal_button_image_set_;
 		}
@@ -70,8 +70,10 @@ bool button::handle_event(const SDL_Event& event, bool claimed)
 		const SDL_MouseButtonEvent& e = event.button;
 		if(in_button(e.x,e.y)) {
 			current_button_image_set_ = depressed_button_image_set_;
+			down_ = true;
 		}
 	} else if(event.type == SDL_MOUSEBUTTONUP) {
+		down_ = false;
 		const SDL_MouseButtonEvent& e = event.button;
 		if(current_button_image_set_ == depressed_button_image_set_) {
 			if(in_button(e.x,e.y)) {
