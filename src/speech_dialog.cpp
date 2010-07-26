@@ -302,9 +302,7 @@ void speech_dialog::draw() const
 		const_framed_gui_element_ptr options_panel = framed_gui_element::get("regular_window");
 		int xpos = graphics::screen_width() - OptionsX - OptionWidth - OptionsBorder*2;
 		int ypos = graphics::screen_height() - OptionsY - OptionHeight*options_.size() - OptionsBorder*2;
-		// the division by 2 (and lack of multiplication of OptionsBorder) here is
-		// because the last options specifies that it will multiply everything by 2
-		options_panel->blit(xpos, ypos, OptionsBorder + OptionWidth/2, OptionsBorder + (OptionHeight * options_.size())/2, 2);
+		options_panel->blit(xpos, ypos, OptionsBorder*2 + OptionWidth, OptionsBorder*2 + OptionHeight*options_.size(), true);
 
 		xpos += OptionsBorder + OptionXPad;
 		ypos += OptionsBorder;
