@@ -29,6 +29,7 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	
 	using namespace gui;
 	dialog d(200, 40, preferences::virtual_screen_width()-400, preferences::virtual_screen_height()-80);
+	d.set_padding(20);
 	widget_ptr t1(new graphical_font_label("Music Volume:", "door_label", 2));
 	widget_ptr s1(new slider(200, boost::bind(sound::set_music_volume, _1), sound::get_music_volume()));
 	widget_ptr t2(new graphical_font_label("Sound Volume:", "door_label", 2));
@@ -42,10 +43,15 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	if (show_exit) b3->set_dim(230, 60);
 	
 	int start_y = d.height()/2 - b1->height()*(show_exit ? 1.5 : 1) - t1->height() - s1->height() - d.padding()*3;
+	d.set_padding(5);
 	d.add_widget(t1, d.width()/2 - b1->width()/2, start_y);
+	d.set_padding(35);
 	d.add_widget(s1);
+	d.set_padding(5);
 	d.add_widget(t2);
+	d.set_padding(35);
 	d.add_widget(s2);
+	d.set_padding(20);
 	d.add_widget(b1);
 	d.add_widget(b2);
 	if (show_exit) d.add_widget(b3);

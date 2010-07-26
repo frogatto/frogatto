@@ -33,7 +33,7 @@ namespace gui {
 	bool slider::in_button(int xloc, int yloc) const
 	{
 		int button_x = x() + slider_left_->width() + position_*width_;
-		return xloc > button_x-20 && xloc < button_x + slider_button_->width()+20 &&
+		return xloc > button_x-40 && xloc < button_x + slider_button_->width()+40 &&
 		yloc > y()-10 && yloc < y() + height()+10;
 	}
 	
