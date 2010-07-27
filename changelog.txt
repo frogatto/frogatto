@@ -1,0 +1,11 @@
+Version 1.0+svn:
+ * Significantly improved controls, both functionally and graphically (iPhone).
+ * Fixed auto-saving on iOS4 where multitasking is supported (iPhone).
+ * Fixed bug where a dialog could repeat forever.
+ * Fixed crash in world map when you hold down while entering it.
+ * Fixed fullscreen mode (Mac/Windows).
+ * Added music and sound volume controls to pause screen.
+ * Added customizable controls.
+ * Added half-hearts.
+ * Added scons script for compiling.
+ * Minor level changes.
