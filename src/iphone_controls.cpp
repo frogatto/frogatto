@@ -36,15 +36,15 @@ namespace
 		int vw = preferences::virtual_screen_width();
 		int vh = preferences::virtual_screen_height();
 		
-		left_arrow = rect(0, vh - 160, 10 + 72*2, 160);
-		right_arrow = rect(244, vh - 160, 80 + 72*2, 160);
-		down_arrow = rect(159, vh - 66, 34*2, 66);
-		up_arrow = rect(159, vh - 264, 34*2, 80 + 55*2);
+		left_arrow = rect(0, vh - 200, 10 + 72*2, 200);
+		right_arrow = rect(244, vh - 200, 150 + 72*2, 200);
+		down_arrow = rect(159, vh - 66, 46*2, 66);
+		up_arrow = rect(159, vh - 264, 46*2, 80 + 55*2);
 		a_button = rect(vw - 204, vh - 120, 50*2*2, 60*2);
 //		b_button = rect(vw - 102, vh - 300, 50*2, 60*2);
 		c_button = rect(vw - 144, vh - 280, 50*2 + 40, 60*2 + 40);
 		
-		interact_button = rect(vw - 320 - 50, vh - 160, 50*2 + 50, 160);
+		interact_button = rect(vw - 320 - 50, vh - 200, 50*2 + 50, 200);
 		
 		underwater_circle_y = vh-underwater_circle_y;
 	}
@@ -130,7 +130,7 @@ bool iphone_controls::water_dir(float* xvalue, float* yvalue)
 
 		const int distance = sqrt(dx*dx + dy*dy);
 
-		if(distance > 0 && distance < 2.0 * underwater_circle_rad) {
+		if(distance > 0 && distance < 2.3 * underwater_circle_rad) {
 			const int dx = mouse.x - underwater_circle_x;
 			const int dy = mouse.y - underwater_circle_y;
 
