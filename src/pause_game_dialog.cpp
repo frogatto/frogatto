@@ -22,6 +22,9 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 {
 	PAUSE_GAME_RESULT result = PAUSE_GAME_QUIT;
 	
+	const int button_width = 232;
+	const int button_height = 60;
+	const int padding = 20;
 	bool show_exit = true;
 	bool show_controls = true;
 	
@@ -31,36 +34,40 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 #endif
 	
 	using namespace gui;
-	dialog d(200, 40, preferences::virtual_screen_width()-400, preferences::virtual_screen_height()-50);
-	d.set_padding(20);
 	widget_ptr t1(new graphical_font_label("Music Volume:", "door_label", 2));
 	widget_ptr s1(new slider(200, boost::bind(sound::set_music_volume, _1), sound::get_music_volume()));
 	widget_ptr t2(new graphical_font_label("Sound Volume:", "door_label", 2));
 	widget_ptr s2(new slider(200, boost::bind(sound::set_sound_volume, _1), sound::get_sound_volume()));
+	
+	const int num_buttons = 2 + show_exit + show_controls;
+	const int window_w = button_width + padding*4;
+	const int window_h = button_height * num_buttons + t1->height()*2 + s1->height()*2 + padding*(3+4+num_buttons);
+	dialog d((preferences::virtual_screen_width()/2 - window_w/2) & ~1, (preferences::virtual_screen_height()/2 - window_h/2) & ~1, window_w, window_h);
+	d.set_padding(padding);
+	
 	widget_ptr b1(new button(widget_ptr(new graphical_font_label("Resume", "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_CONTINUE), BUTTON_SIZE_DOUBLE_RESOLUTION));
-	widget_ptr b2(new button(widget_ptr(new graphical_font_label("Return to Titlescreen", "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_GO_TO_TITLESCREEN), BUTTON_SIZE_DOUBLE_RESOLUTION));
-	widget_ptr b3(new button(widget_ptr(new graphical_font_label("Exit Game", "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_QUIT), BUTTON_SIZE_DOUBLE_RESOLUTION));
-	widget_ptr b4(new button(widget_ptr(new graphical_font_label("Controls...", "door_label", 2)), show_controls_dialog, BUTTON_SIZE_DOUBLE_RESOLUTION));
+	widget_ptr b2(new button(widget_ptr(new graphical_font_label("Controls...", "door_label", 2)), show_controls_dialog, BUTTON_SIZE_DOUBLE_RESOLUTION));
+	widget_ptr b3(new button(widget_ptr(new graphical_font_label("Return to Titlescreen", "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_GO_TO_TITLESCREEN), BUTTON_SIZE_DOUBLE_RESOLUTION));
+	widget_ptr b4(new button(widget_ptr(new graphical_font_label("Exit Game", "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_QUIT), BUTTON_SIZE_DOUBLE_RESOLUTION));
 	
-	b1->set_dim(230, 60);
-	b2->set_dim(230, 60);
-	if (show_exit) b3->set_dim(230, 60);
-	if (show_controls) b4->set_dim(230, 60);
+	b1->set_dim(button_width, button_height);
+	b2->set_dim(button_width, button_height);
+	b3->set_dim(button_width, button_height);
+	b4->set_dim(button_width, button_height);
 	
-	int start_y = d.height()/2 - b1->height()*(show_exit ? 2 : 1.5) - t1->height() - s1->height() - d.padding()*4;
-	d.set_padding(5);
-	d.add_widget(t1, d.width()/2 - b1->width()/2, start_y);
-	d.set_padding(35);
+	d.set_padding(padding-16);
+	d.add_widget(t1, padding*2, padding*2);
+	d.set_padding(padding+16);
 	d.add_widget(s1);
-	d.set_padding(5);
+	d.set_padding(padding-16);
 	d.add_widget(t2);
-	d.set_padding(35);
+	d.set_padding(padding+16);
 	d.add_widget(s2);
-	d.set_padding(20);
+	d.set_padding(padding);
 	d.add_widget(b1);
-	d.add_widget(b2);
-	if (show_exit) d.add_widget(b3);
-	if (show_controls) d.add_widget(b4);
+	if (show_controls) d.add_widget(b2);
+	d.add_widget(b3);
+	if (show_exit) d.add_widget(b4);
 
 
 	d.show_modal();
