@@ -17,6 +17,7 @@ editor_variable_info.cpp
 collision_utils.cpp
 color_utils.cpp
 controls.cpp
+controls_dialog.cpp
 custom_object.cpp
 custom_object_callable.cpp
 custom_object_functions.cpp
@@ -51,6 +52,7 @@ inventory.cpp
 iphone_controls.cpp
 joystick.cpp
 key.cpp
+key_button.cpp
 label.cpp
 level.cpp
 level_logic.cpp
