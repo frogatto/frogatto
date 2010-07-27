@@ -81,8 +81,8 @@ extern "C" int main(int argc, char** argv)
 //	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 1);
 
 	#ifdef NO_STDERR
-	//std::freopen("/dev/null", "w", stderr);
-	//std::cerr.sync_with_stdio(true);
+	std::freopen("/dev/null", "w", stderr);
+	std::cerr.sync_with_stdio(true);
 	#endif
 	std::string level_cfg = "titlescreen.cfg";
 	bool unit_tests_only = false, skip_tests = false;
