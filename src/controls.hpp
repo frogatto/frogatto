@@ -32,6 +32,7 @@ public:
 };
 
 void read_local_controls();
+void ignore_current_keypresses();
 
 void get_control_status(int cycle, int player, bool* output);
 

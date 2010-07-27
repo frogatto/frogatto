@@ -116,6 +116,23 @@ local_controls_lock::local_controls_lock(unsigned char state)
 local_controls_lock::~local_controls_lock()
 {
 	local_control_locks.pop();
+
+	if(local_control_locks.empty()) {
+		ignore_current_keypresses();
+	}
+}
+
+namespace {
+//array of keys which we are ignoring. We ignore keys on the end of a dialog.
+//keys will be unignored as soon as they are no longer depressed.
+bool key_ignore[NUM_CONTROLS];
+}
+
+void ignore_current_keypresses()
+{
+	for(int n = 0; n < NUM_CONTROLS; ++n) {
+		key_ignore[n] = keyboard()[sdlk[n]];
+	}
 }
 
 void read_local_controls()
@@ -128,8 +145,16 @@ void read_local_controls()
 
 	unsigned char state = 0;
 	if(local_control_locks.empty()) {
-		for(int n = 0; n < NUM_CONTROLS; ++n)
-			if(keyboard()[sdlk[n]]) { state |= (1 << n); }
+		for(int n = 0; n < NUM_CONTROLS; ++n) {
+			if(keyboard()[sdlk[n]]) {
+				if(!key_ignore[n]) {
+					state |= (1 << n);
+				}
+			} else {
+				key_ignore[n] = false;
+			}
+		}
+
 		if(joystick::up() || iphone_controls::up()) { state |= (1 << CONTROL_UP); }
 		if(joystick::down() || iphone_controls::down()) { state |= (1 << CONTROL_DOWN); }
 		if(joystick::left() || iphone_controls::left()) { state |= (1 << CONTROL_LEFT); }
