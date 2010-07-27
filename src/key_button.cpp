@@ -82,10 +82,7 @@ bool key_button::handle_event(const SDL_Event& event, bool claimed)
 
 	if(event.type == SDL_KEYDOWN && grab_keys_) {
 		key_ = event.key.keysym.sym;
-		if ((key_ >= SDLK_a && key_ <= SDLK_z) ||
-		    (key_ >= SDLK_SPACE && key_ <= SDLK_AT) ||
-		    (key_ >= SDLK_UP && key_ <= SDLK_PAGEDOWN) ||
-		    key_ == SDLK_BACKSPACE || key_ == SDLK_TAB || key_ == SDLK_DELETE) {
+		if(key_ != SDLK_RETURN && key_ != SDLK_ESCAPE) {
 			dynamic_cast<graphical_font_label*>(label_.get())->set_text(SDL_GetKeyName(key_));
 			claimed = true;
 			current_button_image_set_ = normal_button_image_set_;
