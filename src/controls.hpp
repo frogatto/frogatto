@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include <SDL_keysym.h>
+
 namespace controls {
 
 enum CONTROL_ITEM {
@@ -15,6 +17,9 @@ enum CONTROL_ITEM {
 	CONTROL_TONGUE,
 	NUM_CONTROLS,
 };
+
+void set_sdlkey (CONTROL_ITEM item, SDLKey key);
+SDLKey get_sdlkey (CONTROL_ITEM item);
 
 void new_level(int starting_cycle, int nplayers, int local_player);
 

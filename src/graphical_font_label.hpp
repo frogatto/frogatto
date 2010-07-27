@@ -11,6 +11,7 @@ class graphical_font_label : public widget
 public:
 	graphical_font_label(const std::string& text, const std::string& font, int size=1);
 
+	void set_text(const std::string& text);
 private:
 	void handle_draw() const;
 

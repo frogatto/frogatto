@@ -17,4 +17,11 @@ void graphical_font_label::handle_draw() const
 	font_->draw(x(), y(), text_, size_);
 }
 
+void graphical_font_label::set_text(const std::string& text)
+{
+	text_ = text;
+	rect dim = font_->dimensions(text_, size_);
+	widget::set_dim(dim.w(), dim.h());
+}
+
 }

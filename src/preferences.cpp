@@ -3,6 +3,7 @@
 #include <string>
 #include <SDL.h>
 
+#include "controls.hpp"
 #include "filesystem.hpp"
 #include "formatter.hpp"
 #include "preferences.hpp"
@@ -269,6 +270,14 @@ namespace preferences {
 
 		sound::set_music_volume(wml::get_int(node, "music_volume", 1000)/1000.0);
 		sound::set_sound_volume(wml::get_int(node, "sound_volume", 1000)/1000.0);
+
+		controls::set_sdlkey(controls::CONTROL_UP, static_cast<SDLKey>(wml::get_int(node, "key_up", SDLK_UP)));
+		controls::set_sdlkey(controls::CONTROL_DOWN, static_cast<SDLKey>(wml::get_int(node, "key_down", SDLK_DOWN)));
+		controls::set_sdlkey(controls::CONTROL_LEFT, static_cast<SDLKey>(wml::get_int(node, "key_left", SDLK_LEFT)));
+		controls::set_sdlkey(controls::CONTROL_RIGHT, static_cast<SDLKey>(wml::get_int(node, "key_right", SDLK_RIGHT)));
+		controls::set_sdlkey(controls::CONTROL_ATTACK, static_cast<SDLKey>(wml::get_int(node, "key_attack", SDLK_d)));
+		controls::set_sdlkey(controls::CONTROL_JUMP, static_cast<SDLKey>(wml::get_int(node, "key_jump", SDLK_a)));
+		controls::set_sdlkey(controls::CONTROL_TONGUE, static_cast<SDLKey>(wml::get_int(node, "key_tongue", SDLK_s)));
 	}
 
 	void save_preferences()
@@ -278,6 +287,13 @@ namespace preferences {
 		node->set_attr("no_music", no_music_ ? "true" : "false");
 		node->set_attr("sound_volume", formatter() << static_cast<int>(sound::get_sound_volume()*1000));
 		node->set_attr("music_volume", formatter() << static_cast<int>(sound::get_music_volume()*1000));
+		node->set_attr("key_up", formatter() << controls::get_sdlkey(controls::CONTROL_UP));
+		node->set_attr("key_down", formatter() << controls::get_sdlkey(controls::CONTROL_DOWN));
+		node->set_attr("key_left", formatter() << controls::get_sdlkey(controls::CONTROL_LEFT));
+		node->set_attr("key_right", formatter() << controls::get_sdlkey(controls::CONTROL_RIGHT));
+		node->set_attr("key_attack", formatter() << controls::get_sdlkey(controls::CONTROL_ATTACK));
+		node->set_attr("key_jump", formatter() << controls::get_sdlkey(controls::CONTROL_JUMP));
+		node->set_attr("key_tongue", formatter() << controls::get_sdlkey(controls::CONTROL_TONGUE));
 		sys::write_file(preferences_path_ + "preferences.cfg", wml::output(node));
 	}
 

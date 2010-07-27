@@ -43,6 +43,16 @@ int local_player;
 
 int first_invalid_cycle_var = -1;
 
+SDLKey sdlk[NUM_CONTROLS] = {
+	SDLK_UP,
+	SDLK_DOWN,
+	SDLK_LEFT,
+	SDLK_RIGHT,
+	SDLK_d,
+	SDLK_a,
+	SDLK_s
+};
+
 int32_t our_highest_confirmed() {
 	int32_t res = -1;
 	for(int n = 0; n != nplayers; ++n) {
@@ -118,13 +128,15 @@ void read_local_controls()
 
 	unsigned char state = 0;
 	if(local_control_locks.empty()) {
-		if(keyboard()[SDLK_UP] || joystick::up() || iphone_controls::up()) { state |= (1 << CONTROL_UP); }
-		if(keyboard()[SDLK_DOWN] || joystick::down() || iphone_controls::down()) { state |= (1 << CONTROL_DOWN); }
-		if(keyboard()[SDLK_LEFT] || joystick::left() || iphone_controls::left()) { state |= (1 << CONTROL_LEFT); }
-		if(keyboard()[SDLK_RIGHT] || joystick::right() || iphone_controls::right()) { state |= (1 << CONTROL_RIGHT); }
-		if(keyboard()[SDLK_d] || joystick::button(0) || iphone_controls::attack()) { state |= (1 << CONTROL_ATTACK); }
-		if(keyboard()[SDLK_a] || joystick::button(1) || iphone_controls::jump()) { state |= (1 << CONTROL_JUMP); }
-		if(keyboard()[SDLK_s] || joystick::button(2) || iphone_controls::tongue()) { state |= (1 << CONTROL_TONGUE); }
+		for(int n = 0; n < NUM_CONTROLS; ++n)
+			if(keyboard()[sdlk[n]]) { state |= (1 << n); }
+		if(joystick::up() || iphone_controls::up()) { state |= (1 << CONTROL_UP); }
+		if(joystick::down() || iphone_controls::down()) { state |= (1 << CONTROL_DOWN); }
+		if(joystick::left() || iphone_controls::left()) { state |= (1 << CONTROL_LEFT); }
+		if(joystick::right() || iphone_controls::right()) { state |= (1 << CONTROL_RIGHT); }
+		if(joystick::button(0) || iphone_controls::attack()) { state |= (1 << CONTROL_ATTACK); }
+		if(joystick::button(1) || iphone_controls::jump()) { state |= (1 << CONTROL_JUMP); }
+		if(joystick::button(2) || iphone_controls::tongue()) { state |= (1 << CONTROL_TONGUE); }
 	} else {
 		//we have the controls locked into a specific state.
 		state = local_control_locks.top();
@@ -357,6 +369,17 @@ void debug_dump_controls()
 			fprintf(stderr, "\n");
 		}
 	}
+}
+
+void set_sdlkey (CONTROL_ITEM item, SDLKey key) {
+	if (item < NUM_CONTROLS)
+		sdlk[item] = key;
+}
+
+SDLKey get_sdlkey (CONTROL_ITEM item) {
+	if (item < NUM_CONTROLS)
+		return sdlk[item];
+	return SDLK_UNKNOWN;
 }
 
 }

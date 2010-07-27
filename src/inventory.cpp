@@ -3,6 +3,7 @@
 
 #include "SDL.h"
 
+#include "controls.hpp"
 #include "draw_scene.hpp"
 #include "entity.hpp"
 #include "gui_section.hpp"
@@ -40,15 +41,15 @@ void show_inventory(const level& lvl, entity& c)
 				if(event.key.keysym.sym == SDLK_ESCAPE || event.key.keysym.sym == SDLK_SPACE) {
 					return;
 				}
-
-				switch(event.key.keysym.sym) {
-				case SDLK_UP:
+				if(event.key.keysym.sym == get_sdlkey(controls::CONTROL_UP)) {
 					selected_powerup = (selected_powerup + 9)%NumPowerupSlots;
 					break;
-				case SDLK_DOWN:
+				}
+				if(event.key.keysym.sym == get_sdlkey(controls::CONTROL_DOWN)) {
 					selected_powerup = (selected_powerup + 3)%NumPowerupSlots;
 					break;
-				case SDLK_LEFT:
+				}
+				if(event.key.keysym.sym == get_sdlkey(controls::CONTROL_LEFT)) {
 					selected_powerup--;
 					if(selected_powerup == 2) {
 						selected_powerup = 5;
@@ -56,7 +57,8 @@ void show_inventory(const level& lvl, entity& c)
 						selected_powerup = 2;
 					}
 					break;
-				case SDLK_RIGHT:
+				}
+				if(event.key.keysym.sym == get_sdlkey(controls::CONTROL_RIGHT)) {
 					selected_powerup++;
 					if(selected_powerup == 3) {
 						selected_powerup = 0;
@@ -64,7 +66,8 @@ void show_inventory(const level& lvl, entity& c)
 						selected_powerup = 3;
 					}
 					break;
-				case SDLK_a: {
+				}
+				if(event.key.keysym.sym == get_sdlkey(controls::CONTROL_JUMP)) {
 					//move the selected powerup to the front.
 					assert(selected_powerup >= 0 && selected_powerup < powerups.size());
 					const_powerup_ptr powerup = powerups[selected_powerup];
@@ -77,7 +80,6 @@ void show_inventory(const level& lvl, entity& c)
 						selected_powerup = 0;
 					}
 					break;
-				}
 				}
 				break;
 			}

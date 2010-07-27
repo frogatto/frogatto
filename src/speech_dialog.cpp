@@ -2,6 +2,7 @@
 #include <stack>
 #include <limits.h>
 
+#include "controls.hpp"
 #include "color_utils.hpp"
 #include "draw_scene.hpp"
 #include "foreach.hpp"
@@ -91,20 +92,14 @@ bool speech_dialog::key_press(const SDL_Event& event)
 	if(text_char_ == num_chars() && options_.empty() == false) {
 		if(event.type == SDL_KEYDOWN)
 		{
-			switch(event.key.keysym.sym) {
-			case SDLK_UP:
+			if(event.key.keysym.sym == get_sdlkey(controls::CONTROL_UP)) {
 				move_up();
-				break;
-			case SDLK_DOWN:
+			} else if(event.key.keysym.sym == get_sdlkey(controls::CONTROL_DOWN)) {
 				move_down();
-				break;
-			case SDLK_RETURN:
-			case SDLK_SPACE:
-			case SDLK_a:
-			case SDLK_s:
+			} else if(event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_SPACE ||
+			   event.key.keysym.sym == get_sdlkey(controls::CONTROL_JUMP) ||
+			   event.key.keysym.sym == get_sdlkey(controls::CONTROL_TONGUE)) {
 				return true;
-			default:
-				break;
 			}
 		}
 	
