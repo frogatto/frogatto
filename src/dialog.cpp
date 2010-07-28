@@ -173,6 +173,8 @@ void dialog::handle_draw() const
 }
 
 bool dialog::process_event(const SDL_Event& ev, bool claimed) {
+	if (ev.type == SDL_QUIT && on_quit_)
+		on_quit_();
     return widget::process_event(ev, claimed);
 }
 

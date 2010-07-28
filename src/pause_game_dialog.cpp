@@ -69,7 +69,7 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	d.add_widget(b3);
 	if (show_exit) d.add_widget(b4);
 
-
+	d.set_on_quit(boost::bind(end_dialog, &d, &result, PAUSE_GAME_QUIT));
 	d.show_modal();
 	if(d.cancelled() && result == PAUSE_GAME_QUIT) {
 		result = PAUSE_GAME_CONTINUE;

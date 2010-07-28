@@ -16,6 +16,8 @@
 #include "texture.hpp"
 #include "widget.hpp"
 
+#include <boost/function.hpp>
+
 #include <string>
 #include <vector>
 
@@ -51,6 +53,8 @@ public:
 	child_iterator begin_children() const { return widgets_.begin(); }
 	child_iterator end_children() const { return widgets_.end(); }
     bool process_event(const SDL_Event& e, bool claimed);
+	
+	void set_on_quit(boost::function<void ()> onquit) { on_quit_ = onquit; }
 protected:
 	virtual bool handle_event(const SDL_Event& event, bool claimed);
 	virtual bool handle_event_children(const SDL_Event& event, bool claimed);
@@ -65,6 +69,8 @@ private:
 	bool opened_;
 	bool cancelled_;
 	bool clear_bg_;
+	
+	boost::function<void ()> on_quit_;
 
 	//default padding between widgets
 	int padding_;
