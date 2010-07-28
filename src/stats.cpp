@@ -84,7 +84,26 @@ void send_stats(const std::map<std::string, std::vector<const_record_ptr> >& que
 	}
 
 	wml::node_ptr msg(new wml::node("stats"));
+	msg->set_attr("version", preferences::version());
 	for(std::map<std::string, std::vector<const_record_ptr> >::const_iterator i = queue.begin(); i != queue.end(); ++i) {
+
+		wml::node_ptr summary(new wml::node("level"));
+		summary->set_attr("id", i->first);
+		summary->set_attr("type", "summary");
+
+		wml::node_ptr summary_data(new wml::node("summary"));
+		summary_data->set_attr("user_id", formatter() << preferences::get_unique_user_id());
+		std::map<std::string, int> record_counts;
+		foreach(const_record_ptr r, i->second) {
+			record_counts[r->id()]++;
+		}
+
+		for(std::map<std::string, int>::const_iterator j = record_counts.begin(); j != record_counts.end(); ++j) {
+			summary_data->set_attr(j->first, formatter() << j->second);
+		}
+		summary->add_child(summary_data);
+		msg->add_child(summary);
+
 		std::string commands;
 		wml::node_ptr cmd(new wml::node("level"));
 		cmd->set_attr("id", i->first);
@@ -123,7 +142,7 @@ void send_stats_thread() {
 		{
 			threading::lock lck(write_queue_mutex());
 			if(!send_stats_done && write_queue.empty()) {
-				send_stats_signal().wait_timeout(write_queue_mutex(), 60000);
+				send_stats_signal().wait_timeout(write_queue_mutex(), 600000);
 			}
 
 			if(send_stats_done && write_queue.empty()) {

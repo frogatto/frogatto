@@ -9,12 +9,21 @@
 #include "preferences.hpp"
 #include "sound.hpp"
 #include "wml_node.hpp"
+#include <time.h>
+
 #include "wml_parser.hpp"
 #include "wml_utils.hpp"
 #include "wml_writer.hpp"
 
 namespace preferences {
+	const std::string& version() {
+		static const std::string Version = "1.0.1";
+		return Version;
+	}
+
 	namespace {
+		int unique_user_id = 0;
+
 		int screen_editor_mode = 0;
 
 		bool no_sound_ = false;
@@ -78,6 +87,17 @@ namespace preferences {
 		std::string auto_save_file_path_ = PREFERENCES_PATH AUTOSAVE_FILENAME;
 		
 		bool force_no_npot_textures_ = false;
+	}
+
+	int get_unique_user_id() {
+		if(unique_user_id == 0) {
+			time_t t1;
+			time(&t1);
+			int tm = t1;
+			unique_user_id = tm^rand();
+		}
+
+		return unique_user_id;
 	}
 
 	int xypos_draw_mask = actual_screen_width_ < virtual_screen_width_ ? ~1 : ~0;
@@ -265,6 +285,8 @@ namespace preferences {
 			return;
 		}
 
+		unique_user_id = wml::get_int(node, "user_id", 0);
+
 		no_sound_ = wml::get_bool(node, "no_sound", no_sound_);
 		no_music_ = wml::get_bool(node, "no_music", no_music_);
 
@@ -283,6 +305,7 @@ namespace preferences {
 	void save_preferences()
 	{
 		wml::node_ptr node(new wml::node("preferences"));
+		node->set_attr("user_id", formatter() << get_unique_user_id());
 		node->set_attr("no_sound", no_sound_ ? "true" : "false");
 		node->set_attr("no_music", no_music_ ? "true" : "false");
 		node->set_attr("sound_volume", formatter() << static_cast<int>(sound::get_sound_volume()*1000));

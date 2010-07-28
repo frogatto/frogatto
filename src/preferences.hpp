@@ -5,6 +5,9 @@
 
 namespace preferences {
 
+	const std::string& version();
+	int get_unique_user_id();
+
 	bool parse_arg(const char* arg);
 	bool no_sound();
 	bool no_music();
