@@ -37,12 +37,12 @@ namespace
 		int vh = preferences::virtual_screen_height();
 		
 		left_arrow = rect(0, vh - 200, 10 + 72*2, 200);
-		right_arrow = rect(244, vh - 200, 150 + 72*2, 200);
-		down_arrow = rect(159, vh - 66, 46*2, 66);
-		up_arrow = rect(159, vh - 264, 46*2, 80 + 55*2);
-		a_button = rect(vw - 204, vh - 120, 50*2*2, 60*2);
+		right_arrow = rect(252, vh - 200, 150 + 72*2, 200);
+		down_arrow = rect(154, vh - 74, 46*2 + 6, 74);
+		up_arrow = rect(154, vh - 264, 46*2 + 6, 80 + 55*2);
+		a_button = rect(vw - 220, vh - 120, 50*2*2 + 20, 60*2);
 //		b_button = rect(vw - 102, vh - 300, 50*2, 60*2);
-		c_button = rect(vw - 144, vh - 280, 50*2 + 40, 60*2 + 40);
+		c_button = rect(vw - 144, vh - 360, 50*2 + 40 + 4, 60*2*2);
 		
 		interact_button = rect(vw - 320 - 50, vh - 200, 50*2 + 50, 200);
 		
@@ -148,6 +148,15 @@ bool iphone_controls::water_dir(float* xvalue, float* yvalue)
 void iphone_controls::draw()
 {
 	if(!is_underwater) {
+		/*
+		graphics::draw_rect(left_arrow, graphics::color(255, 0, 0, 64));
+		graphics::draw_rect(right_arrow, graphics::color(255, 0, 0, 64));
+		graphics::draw_rect(up_arrow, graphics::color(0, 255, 0, 64));
+		graphics::draw_rect(down_arrow, graphics::color(0, 0, 255, 64));
+		graphics::draw_rect(a_button, graphics::color(255, 0, 0, 64));
+		graphics::draw_rect(c_button, graphics::color(0, 255, 0, 64));
+		graphics::draw_rect(interact_button, graphics::color(0, 0, 255, 64));
+		*/
 		return;
 	}
 
