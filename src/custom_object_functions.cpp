@@ -1540,6 +1540,12 @@ FUNCTION_DEF(end_script, 0, 0, "end_script(): ends the most recent script to hav
 	return variant(new end_script_command);
 END_FUNCTION_DEF(end_script)
 
+FUNCTION_DEF(circle_light, 2, 2, "circle_light(object, radius): creates a circle of light with the given radius")
+	return variant(new circle_light(
+	          *args()[0]->evaluate(variables).convert_to<custom_object>(),
+			  args()[1]->evaluate(variables).as_int()));
+END_FUNCTION_DEF(circle_light)
+
 class add_particles_command : public custom_object_command_callable {
 public:
 	add_particles_command(const std::string& id, const std::string& type)

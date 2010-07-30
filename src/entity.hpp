@@ -13,6 +13,7 @@
 #include "formula_fwd.hpp"
 #include "geometry.hpp"
 #include "key.hpp"
+#include "light.hpp"
 #include "powerup_fwd.hpp"
 #include "solid_map_fwd.hpp"
 #include "wml_formula_callable.hpp"
@@ -225,6 +226,8 @@ public:
 	void set_attached_objects(const std::vector<entity_ptr>& v);
 
 	virtual bool allow_level_collisions() const { return false; }
+
+	virtual const std::vector<light_ptr>& lights() const = 0;
 
 protected:
 

@@ -227,6 +227,13 @@ custom_object::custom_object(wml::const_node_ptr node)
 			add_particle_system(p, p);
 		}
 	}
+
+	FOREACH_WML_CHILD(light_node, node, "light") {
+		light_ptr new_light(light::create_light(*this, light_node));
+		if(new_light) {
+			lights_.push_back(new_light);
+		}
+	}
 }
 
 custom_object::custom_object(const std::string& type, int x, int y, bool face_right)
@@ -552,6 +559,10 @@ wml::node_ptr custom_object::write() const
 		if(!systems.empty()) {
 			res->set_attr("particles", systems);
 		}
+	}
+
+	foreach(const light_ptr& p, lights_) {
+		res->add_child(p->write());
 	}
 	
 	return res;
@@ -1228,6 +1239,10 @@ void custom_object::process(level& lvl)
 			blur_.reset();
 		}
 	}
+
+	foreach(const light_ptr& p, lights_) {
+		p->process();
+	}
 }
 
 void custom_object::set_driver_position()
@@ -1590,6 +1605,15 @@ variant custom_object::get_value_by_slot(int slot) const
 
 	case CUSTOM_OBJECT_CALL_STACK: {
 		return call_stack(*this);
+	}
+
+	case CUSTOM_OBJECT_LIGHTS: {
+		std::vector<variant> result;
+		foreach(const light_ptr& p, lights_) {
+			result.push_back(variant(p.get()));
+		}
+
+		return variant(&result);
 	}
 
 	case CUSTOM_OBJECT_ALWAYS_ACTIVE: return variant(always_active_);
@@ -2148,6 +2172,17 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		weak |= solid;
 
 		set_collide_dimensions(solid, weak);
+		break;
+	}
+
+	case CUSTOM_OBJECT_LIGHTS: {
+		lights_.clear();
+		for(int n = 0; n != value.num_elements(); ++n) {
+			light* p = value[n].try_convert<light>();
+			if(p) {
+				lights_.push_back(light_ptr(p));
+			}
+		}
 		break;
 	}
 

@@ -427,6 +427,8 @@ private:
 
 	bool show_foreground_, show_background_;
 
+	bool dark_;
+
 	point auto_move_camera_;
 	int air_resistance_;
 	int water_resistance_;

@@ -16,6 +16,7 @@
 #include "gui_formula_functions.hpp"
 #include "level.hpp"
 #include "level_object.hpp"
+#include "light.hpp"
 #include "load_level.hpp"
 #include "multiplayer.hpp"
 #include "object_events.hpp"
@@ -82,7 +83,7 @@ level::level(const std::string& level_cfg)
 	: id_(level_cfg), highlight_layer_(INT_MIN),
 	  num_compiled_tiles_(0),
 	  entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
-	  editor_(false), show_foreground_(true), show_background_(true), air_resistance_(0), water_resistance_(7), end_game_(false),
+	  editor_(false), show_foreground_(true), show_background_(true), dark_(false), air_resistance_(0), water_resistance_(7), end_game_(false),
       editor_tile_updates_frozen_(0), zoom_level_(1),
 	  palettes_used_(0),
 	  background_palette_(-1)
@@ -92,6 +93,10 @@ level::level(const std::string& level_cfg)
 
 	wml::const_node_ptr node = load_level_wml(level_cfg);
 	ASSERT_LOG(node.get() != NULL, "LOAD LEVEL WML FOR " << level_cfg << " FAILED");
+
+	if(wml::get_bool(node, "dark", false)) {
+		dark_ = true;
+	}
 
 	music_ = node->attr("music");
 	replay_data_ = node->attr("replay_data");
@@ -699,6 +704,10 @@ wml::node_ptr level::write() const
 	res->set_attr("music", music_);
 	if(gui_algo_str_ != "default") {
 		res->set_attr("gui", gui_algo_str_);
+	}
+
+	if(dark_) {
+		res->set_attr("dark", "yes");
 	}
 
 	if(cycle_) {
@@ -1524,6 +1533,120 @@ void level::draw(int x, int y, int w, int h) const
 
 	if(background_) {
 		background_->draw_foreground(start_x, start_y, 0.0, cycle());
+	}
+
+	if(dark_ && !editor_) {
+		const int strip_height = 2;
+		static std::vector<darkness_strip> strips, new_strips;
+		strips.clear();
+
+		for(int ypos = y; ypos < y + h; ypos += strip_height) {
+			new_strips.clear();
+			darkness_strip s;
+			s.alpha_left = s.alpha_right = 255;
+			s.area = rect(x, ypos, w, strip_height);
+			new_strips.push_back(s);
+			foreach(const entity_ptr& c, active_chars_) {
+				foreach(const light_ptr& lt, c->lights()) {
+					static std::vector<darkness_strip> swap_strips;
+					swap_strips.resize(4);
+					for(int n = 0; n != new_strips.size(); ++n) {
+						const int result = lt->split_strip(new_strips[n], &swap_strips[swap_strips.size()-4]);
+						if(result == -1) {
+							swap_strips[swap_strips.size()-4] = new_strips[n];
+							swap_strips.resize(swap_strips.size()+1);
+						} else {
+							swap_strips.resize(swap_strips.size()+result);
+						}
+					}
+
+					swap_strips.resize(swap_strips.size()-4);
+
+					swap_strips.swap(new_strips);
+				}
+			}
+
+			if(!strips.empty() && new_strips.size() == 1 && strips.back().area.x() == new_strips.back().area.x() && strips.back().area.x2() == new_strips.back().area.x2() && new_strips.back().alpha_left == 255 && new_strips.back().alpha_right == 255) {
+				strips.back().area = rect(strips.back().area.x(), strips.back().area.y(), strips.back().area.w(), strips.back().area.h() + new_strips.back().area.h());
+			} else {
+				foreach(const darkness_strip& s, new_strips) {
+					strips.push_back(s);
+				}
+			}
+		}
+
+		
+		if(strips.empty() == false) {
+			std::cerr << "DRAW STRIPS: " << strips.size() << "\n";
+			glDisable(GL_TEXTURE_2D);
+			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+			glColor4f(0.0, 0.0, 0.0, 1.0);
+
+			static std::vector<GLshort> vertexes, alpha_vertexes;
+			static std::vector<unsigned char> colors;
+			vertexes.clear();
+			alpha_vertexes.clear();
+			colors.clear();
+			foreach(const darkness_strip& s, strips) {
+				if(s.alpha_left == 255 && s.alpha_right == 255) {
+					vertexes.push_back(s.area.x());
+					vertexes.push_back(s.area.y());
+					vertexes.push_back(s.area.x2());
+					vertexes.push_back(s.area.y());
+					vertexes.push_back(s.area.x());
+					vertexes.push_back(s.area.y2());
+					vertexes.push_back(s.area.x2());
+					vertexes.push_back(s.area.y());
+					vertexes.push_back(s.area.x2());
+					vertexes.push_back(s.area.y2());
+					vertexes.push_back(s.area.x());
+					vertexes.push_back(s.area.y2());
+				} else {
+					alpha_vertexes.push_back(s.area.x());
+					alpha_vertexes.push_back(s.area.y());
+					alpha_vertexes.push_back(s.area.x2());
+					alpha_vertexes.push_back(s.area.y());
+					alpha_vertexes.push_back(s.area.x());
+					alpha_vertexes.push_back(s.area.y2());
+					alpha_vertexes.push_back(s.area.x2());
+					alpha_vertexes.push_back(s.area.y());
+					alpha_vertexes.push_back(s.area.x2());
+					alpha_vertexes.push_back(s.area.y2());
+					alpha_vertexes.push_back(s.area.x());
+					alpha_vertexes.push_back(s.area.y2());
+
+#define ADD_COLOR(alpha) \
+	colors.push_back(0); \
+	colors.push_back(0); \
+	colors.push_back(0); \
+	colors.push_back(alpha);
+
+					ADD_COLOR(s.alpha_left);
+					ADD_COLOR(s.alpha_right);
+					ADD_COLOR(s.alpha_left);
+					ADD_COLOR(s.alpha_right);
+					ADD_COLOR(s.alpha_right);
+					ADD_COLOR(s.alpha_left);
+#undef ADD_COLOR
+				}
+			}
+
+			glVertexPointer(2, GL_SHORT, 0, &vertexes[0]);
+			glDrawArrays(GL_TRIANGLES, 0, vertexes.size()/2);
+
+			glShadeModel(GL_SMOOTH);
+			glEnableClientState(GL_COLOR_ARRAY);
+			glColorPointer(4, GL_UNSIGNED_BYTE, 0, &colors.front());
+			glVertexPointer(2, GL_SHORT, 0, &alpha_vertexes[0]);
+			glDrawArrays(GL_TRIANGLES, 0, alpha_vertexes.size()/2);
+			glDisableClientState(GL_COLOR_ARRAY);
+			glShadeModel(GL_FLAT);
+
+			glColor4f(1.0, 1.0, 1.0, 1.0);
+			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+			glEnable(GL_TEXTURE_2D);
+		}
 	}
 }
 

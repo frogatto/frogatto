@@ -311,7 +311,7 @@ surface scale_surface_v1(surface input) {
 	return result;
 }
 
-surface scale_surface(surface input) {
+surface scale_surface_newer(surface input) {
 	surface result(surface::create(input->w*2, input->h*2));
 
 	const uint32_t* in = reinterpret_cast<const uint32_t*>(input->pixels);
@@ -348,7 +348,7 @@ x >= 2 && y < input->h-2 ? in[(y+2)*input->w + x-2] : 0, x >= 1 && y < input->h-
 
 
 
-surface scale_surface_old(surface input) {
+surface scale_surface(surface input) {
 	surface result(surface::create(input->w*2, input->h*2));
 
 	const uint32_t* in = reinterpret_cast<const uint32_t*>(input->pixels);

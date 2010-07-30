@@ -37,7 +37,7 @@ custom_object_callable::custom_object_callable()
 	"driver", "is_human", "invincible",
 	"sound_volume", "destroyed", "is_standing_on_platform", "standing_on",
 	"fragment_shaders", "vertex_shaders", "shader", "variations",
-	"attached_objects", "call_stack",
+	"attached_objects", "call_stack", "lights",
 	"solid_dimensions_in", "solid_dimensions_not_in",
 	"collide_dimensions_in", "collide_dimensions_not_in",
 	"brightness", "current_generator", "tags", "draw_area", "activation_area",

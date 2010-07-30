@@ -12,6 +12,7 @@
 #include "formula.hpp"
 #include "formula_callable.hpp"
 #include "formula_variable_storage.hpp"
+#include "light.hpp"
 #include "particle_system.hpp"
 #include "raster_distortion.hpp"
 #include "variant.hpp"
@@ -135,6 +136,8 @@ public:
 	//statistic on how many FFL events are handled every second.
 	static int events_handled_per_second;
 
+	const std::vector<light_ptr>& lights() const { return lights_; }
+
 protected:
 	virtual void control(const level& lvl);
 	variant get_value(const std::string& key) const;
@@ -152,7 +155,6 @@ protected:
 
 	const std::pair<int,int>* position_scale_millis() const { return position_scale_millis_.get(); }
 
-protected:
 	bool is_standing(const level& lvl, collision_info* info=NULL) const;
 
 private:
@@ -261,6 +263,8 @@ private:
 	};
 
 	boost::scoped_ptr<position_schedule> position_schedule_;
+
+	std::vector<light_ptr> lights_;
 };
 
 #endif

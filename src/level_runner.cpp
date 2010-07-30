@@ -301,9 +301,9 @@ bool level_runner::play_cycle()
 		}
 	}
 
-	//record player movement every 5 cycles.
+	//record player movement every 500 cycles on average.
 #if !TARGET_OS_IPHONE
-	if(cycle%5 == 0 && lvl_->player()) {
+	if(rand()%500 == 0 && lvl_->player()) {
 		point p = lvl_->player()->get_entity().midpoint();
 
 		if(last_stats_point_level_ == lvl_->id()) {
@@ -480,6 +480,7 @@ bool level_runner::play_cycle()
 #endif
 			switch(event.type) {
 			case SDL_QUIT: {
+				stats::record_event(lvl_->id(), stats::record_ptr(new stats::quit_record(lvl_->player()->get_entity().midpoint())));
 				done = true;
 				quit_ = true;
 				break;
