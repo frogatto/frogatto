@@ -37,10 +37,12 @@ bool settings_dialog::handle_event (const SDL_Event& event)
 		}
 		if (hittest && event.type == SDL_MOUSEBUTTONUP)
 		{
-			show_window_ = true;
+			//show_window_ = true;
+			return true;
 		}
 	}
-	return show_window_;
+	return false;
+	//return show_window_;
 }
 
 void settings_dialog::reset ()
