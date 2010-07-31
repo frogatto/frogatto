@@ -1540,11 +1540,13 @@ void level::draw(int x, int y, int w, int h) const
 		static std::vector<darkness_strip> strips, new_strips;
 		strips.clear();
 
+		const int x_threshhold = 64;
+
 		for(int ypos = y; ypos < y + h; ypos += strip_height) {
 			new_strips.clear();
 			darkness_strip s;
 			s.alpha_left = s.alpha_right = 255;
-			s.area = rect(x, ypos, w, strip_height);
+			s.area = rect(x - x_threshhold, ypos, w + x_threshhold*2, strip_height);
 			new_strips.push_back(s);
 			foreach(const entity_ptr& c, active_chars_) {
 				foreach(const light_ptr& lt, c->lights()) {
@@ -1561,7 +1563,6 @@ void level::draw(int x, int y, int w, int h) const
 					}
 
 					swap_strips.resize(swap_strips.size()-4);
-
 					swap_strips.swap(new_strips);
 				}
 			}
