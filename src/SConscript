@@ -59,6 +59,7 @@ level_logic.cpp
 level_object.cpp
 level_runner.cpp
 level_solid_map.cpp
+light.cpp
 load_level_nothread.cpp
 main.cpp
 message_dialog.cpp
