@@ -394,6 +394,14 @@ namespace preferences {
 			actual_screen_height_ = 768;
 
 			recalculate_draw_mask();
+		} else if(s == "--wvga") {
+			virtual_screen_width_ = 800;
+			virtual_screen_height_ = 480;
+
+			actual_screen_width_ = 800;
+			actual_screen_height_ = 480;
+
+			recalculate_draw_mask();
 		} else if(s == "--fps") {
 			show_fps_ = true;
 		} else if(s == "--no-fps") {

@@ -3087,6 +3087,12 @@ void level::add_speech_dialog(boost::shared_ptr<speech_dialog> d)
 	speech_dialogs_.push(d);
 }
 
+void level::remove_speech_dialog()
+{
+	if(speech_dialogs_.empty() == false)
+		speech_dialogs_.pop();
+}
+
 boost::shared_ptr<const speech_dialog> level::current_speech_dialog() const
 {
 	if(speech_dialogs_.empty()) {

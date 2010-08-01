@@ -963,13 +963,16 @@ public:
 private:
 	void execute_commands(level& lvl, custom_object& ob, const std::vector<variant>& commands) const {
 		in_speech_dialog_tracker dialog_tracker;
-	
+
+		boost::shared_ptr<speech_dialog> d(new speech_dialog());
+		lvl.add_speech_dialog(d);
+
 		foreach(variant var, commands) {
 			if(var.is_callable()) {
 				const_entity_ptr e = var.try_convert<entity>();
 				if(e) {
 					std::cerr << "set speaker...\n";
-					dialog_.set_speaker_and_flip_side(e);
+					d->set_speaker_and_flip_side(e);
 				}
 
 				const entity_command_callable* entity_cmd = var.try_convert<const entity_command_callable>();
@@ -1007,8 +1010,8 @@ private:
 					}
 				}
 
-				dialog_.set_text(message);
-				dialog_.set_options(options);
+				d->set_text(message);
+				d->set_options(options);
 
 				bool done = false;
 				while(!done) {
@@ -1034,32 +1037,35 @@ private:
 						case SDL_MOUSEBUTTONDOWN:
 						case SDL_MOUSEBUTTONUP:
 						case SDL_MOUSEMOTION:
-							done = done || dialog_.key_press(event);
+							done = done || d->key_press(event);
 							break;
 						}
 					}
 
-					done = done || dialog_.process();
+					if(paused_)
+						done = done || d->process();
+					else if(!lvl.current_speech_dialog())
+						done = true;
 					draw(lvl);
 				}
 
 				if(options.empty() == false) {
-					const int index = dialog_.option_selected();
+					const int index = d->option_selected();
 					if(index >= 0 && index < option_commands.size()) {
 						dialog_tracker.cancel();
 						ob.execute_command(option_commands[index]);
 					}
 				}
 
-				dialog_.set_options(std::vector<std::string>());
+				d->set_options(std::vector<std::string>());
 			}
 		}
+
+		lvl.remove_speech_dialog();
 	}
 
 	void draw(const level& lvl) const {
 		draw_scene(lvl, last_draw_position(), &lvl.player()->get_entity());
-
-		dialog_.draw();
 
 		SDL_GL_SwapBuffers();
 		SDL_Delay(20);
@@ -1067,7 +1073,6 @@ private:
 
 	std::vector<variant> args_;
 
-	mutable speech_dialog dialog_;
 	bool paused_;
 };
 

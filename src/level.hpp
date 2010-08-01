@@ -248,6 +248,7 @@ public:
 	int zoom_level() const { return zoom_level_; }
 
 	void add_speech_dialog(boost::shared_ptr<speech_dialog> d);
+	void remove_speech_dialog();
 	boost::shared_ptr<const speech_dialog> current_speech_dialog() const;
 
 	const std::vector<entity_ptr>& focus_override() const { return focus_override_; }

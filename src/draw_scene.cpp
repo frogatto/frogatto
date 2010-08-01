@@ -180,6 +180,11 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 			y = lvl.lock_screen()->y;
 		}
 
+		//for small screens the speech dialog arrows cover the entities they are
+		//pointing to. adjust to that by looking up a little bit.
+		if (lvl.current_speech_dialog() && preferences::virtual_screen_height() < 600)
+			y = std::min(y + (600 - graphics::screen_height())/(2*lvl.zoom_level()), max_y);
+
 		//find the target x,y position of the camera in centi-pixels. Note that
 		//(x,y) represents the position the camera should center on, while
 		//now we're calculating the top-left point.

@@ -40,8 +40,14 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	widget_ptr s2(new slider(200, boost::bind(sound::set_sound_volume, _1), sound::get_sound_volume()));
 	
 	const int num_buttons = 2 + show_exit + show_controls;
-	const int window_w = button_width + padding*4;
-	const int window_h = button_height * num_buttons + t1->height()*2 + s1->height()*2 + padding*(3+4+num_buttons);
+	int window_w, window_h;
+	if(preferences::virtual_screen_height() >= 600) {
+		window_w = button_width + padding*4;
+		window_h = button_height * num_buttons + t1->height()*2 + s1->height()*2 + padding*(3+4+num_buttons);
+	} else {
+		window_w = button_width*2 + padding*5;
+		window_h = button_height * num_buttons/2 + t1->height() + s1->height() + padding*(3+2+num_buttons/2);
+	}
 	dialog d((preferences::virtual_screen_width()/2 - window_w/2) & ~1, (preferences::virtual_screen_height()/2 - window_h/2) & ~1, window_w, window_h);
 	d.set_padding(padding);
 	
@@ -59,15 +65,29 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	d.add_widget(t1, padding*2, padding*2);
 	d.set_padding(padding+16);
 	d.add_widget(s1);
-	d.set_padding(padding-16);
-	d.add_widget(t2);
-	d.set_padding(padding+16);
-	d.add_widget(s2);
-	d.set_padding(padding);
-	d.add_widget(b1);
-	if (show_controls) d.add_widget(b2);
-	d.add_widget(b3);
-	if (show_exit) d.add_widget(b4);
+
+	if(preferences::virtual_screen_height() >= 600) {
+		d.set_padding(padding-16);
+		d.add_widget(t2);
+		d.set_padding(padding+16);
+		d.add_widget(s2);
+		d.set_padding(padding);
+		d.add_widget(b1);
+		if (show_controls) d.add_widget(b2);
+		d.add_widget(b3);
+		if (show_exit) d.add_widget(b4);
+	} else {
+		d.set_padding(padding);
+		d.add_widget(b1);
+		if (show_controls) d.add_widget(b2);
+		d.set_padding(padding-16);
+		d.add_widget(t2, padding*3 + button_width, padding*2);
+		d.set_padding(padding+16);
+		d.add_widget(s2);
+		d.set_padding(padding);
+		d.add_widget(b3);
+		if (show_exit) d.add_widget(b4);
+	}
 
 	d.set_on_quit(boost::bind(end_dialog, &d, &result, PAUSE_GAME_QUIT));
 	d.show_modal();
