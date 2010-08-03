@@ -20,6 +20,7 @@
 #include "level.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
+#include "string_utils.hpp"
 #include "unit_test.hpp"
 #include "wml_node.hpp"
 #include "wml_parser.hpp"
@@ -333,6 +334,11 @@ gui_algorithm::gui_algorithm(wml::const_node_ptr node)
 	}
 
 	draw_formula_ = formula::create_optional_formula(node->attr("on_draw"), &symbols, &gui_algorithm_definition::instance());
+
+	std::vector<std::string> includes = util::split(node->attr("includes"));
+	foreach(const std::string& inc, includes) {
+		includes_.push_back(get(inc));
+	}
 }
 
 gui_algorithm::~gui_algorithm()
@@ -362,6 +368,10 @@ void gui_algorithm::process(level& lvl) {
 		variant result = process_formula_->execute(*this);
 		object_->execute_command(result);
 	}
+
+	foreach(gui_algorithm_ptr p, includes_) {
+		p->process(lvl);
+	}
 }
 
 void gui_algorithm::draw(const level& lvl) {
@@ -379,7 +389,9 @@ void gui_algorithm::draw(const level& lvl) {
 
 	glColor4ub(255, 255, 255, 255);
 
-	iphone_controls::draw();
+	foreach(gui_algorithm_ptr p, includes_) {
+		p->draw(lvl);
+	}
 }
 
 void gui_algorithm::execute_command(variant v) {

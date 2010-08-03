@@ -14,6 +14,7 @@
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "gui_formula_functions.hpp"
+#include "iphone_controls.hpp"
 #include "level.hpp"
 #include "level_object.hpp"
 #include "light.hpp"
@@ -1370,6 +1371,7 @@ void level::draw_status() const
 {
 	if(gui_algorithm_) {
 		gui_algorithm_->draw(*this);
+		iphone_controls::draw();
 	}
 
 	if(current_speech_dialog()) {

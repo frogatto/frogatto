@@ -53,6 +53,8 @@ private:
 	boost::intrusive_ptr<custom_object> object_;
 
 	variant cached_draw_commands_;
+
+	std::vector<gui_algorithm_ptr> includes_;
 };
 
 #endif
