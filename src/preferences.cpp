@@ -54,6 +54,7 @@ namespace preferences {
 		bool screen_rotated_ = true;
 
 		bool show_fps_ = false;
+		bool use_joystick_ = false;
 		
 		bool load_compiled_ = true;
 
@@ -73,6 +74,7 @@ namespace preferences {
 		bool screen_rotated_ = false;
 
 		bool show_fps_ = false;
+		bool use_joystick_ = true;
 
 		bool load_compiled_ = false;
 
@@ -272,6 +274,11 @@ namespace preferences {
 		return show_fps_;
 	}
 
+	bool use_joystick()
+	{
+		return use_joystick_;
+	}
+
 	void load_preferences()
 	{
 		std::string path = PREFERENCES_PATH;
@@ -286,6 +293,8 @@ namespace preferences {
 		}
 
 		unique_user_id = wml::get_int(node, "user_id", 0);
+
+		use_joystick_ = wml::get_bool(node, "joystick", use_joystick_);
 
 		no_sound_ = wml::get_bool(node, "no_sound", no_sound_);
 		no_music_ = wml::get_bool(node, "no_music", no_music_);
@@ -308,6 +317,7 @@ namespace preferences {
 		node->set_attr("user_id", formatter() << get_unique_user_id());
 		node->set_attr("no_sound", no_sound_ ? "true" : "false");
 		node->set_attr("no_music", no_music_ ? "true" : "false");
+		node->set_attr("joystick", use_joystick_ ? "true" : "false");
 		node->set_attr("sound_volume", formatter() << static_cast<int>(sound::get_sound_volume()*1000));
 		node->set_attr("music_volume", formatter() << static_cast<int>(sound::get_music_volume()*1000));
 		node->set_attr("key_up", formatter() << controls::get_sdlkey(controls::CONTROL_UP));
@@ -410,6 +420,10 @@ namespace preferences {
 			set_preferences_path(arg_value);
 		} else if(s == "--no-send-stats") {
 			send_stats_ = false;
+		} else if(s == "--joystick") {
+			use_joystick_ = true;
+		} else if(s == "--no-joystick") {
+			use_joystick_ = false;
 		} else {
 			return false;
 		}

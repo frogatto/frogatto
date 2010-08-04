@@ -41,6 +41,8 @@ namespace preferences {
 	//whether to show the fps display at the top
 	bool show_fps();
 
+	bool use_joystick();
+
 	//load compiled data from data/compiled/
 	bool load_compiled();
 

@@ -5,6 +5,7 @@
 
 #include "foreach.hpp"
 #include "joystick.hpp"
+#include "preferences.hpp"
 
 namespace joystick {
 
@@ -33,17 +34,17 @@ manager::~manager() {
 }
 
 void update() {
-	SDL_JoystickUpdate();
+	if(preferences::use_joystick()) {
+		SDL_JoystickUpdate();
+	}
 }
 
 bool up() {
-	foreach(SDL_Joystick* j, joysticks) {
-		if(SDL_JoystickGetAxis(j, 1) < -threshold ||
-		   SDL_JoystickGetAxis(j, 3) < -threshold ||
-		   SDL_JoystickGetAxis(j, 5) < -threshold) {
-			return true;
-		}
+	if(!preferences::use_joystick()) {
+		return false;
+	}
 
+	foreach(SDL_Joystick* j, joysticks) {
 		const int nhats = SDL_JoystickNumHats(j);
 		for(int n = 0; n != nhats; ++n) {
 			const Uint8 state = SDL_JoystickGetHat(j, n);
@@ -61,13 +62,11 @@ bool up() {
 }
 
 bool down() {
-	foreach(SDL_Joystick* j, joysticks) {
-		if(SDL_JoystickGetAxis(j, 1) > threshold ||
-		   SDL_JoystickGetAxis(j, 3) > threshold ||
-		   SDL_JoystickGetAxis(j, 5) > threshold) {
-			return true;
-		}
+	if(!preferences::use_joystick()) {
+		return false;
+	}
 
+	foreach(SDL_Joystick* j, joysticks) {
 		const int nhats = SDL_JoystickNumHats(j);
 		for(int n = 0; n != nhats; ++n) {
 			const Uint8 state = SDL_JoystickGetHat(j, n);
@@ -85,13 +84,11 @@ bool down() {
 }
 
 bool left() {
-	foreach(SDL_Joystick* j, joysticks) {
-		if(SDL_JoystickGetAxis(j, 0) < -threshold ||
-		   SDL_JoystickGetAxis(j, 2) < -threshold ||
-		   SDL_JoystickGetAxis(j, 4) < -threshold) {
-			return true;
-		}
+	if(!preferences::use_joystick()) {
+		return false;
+	}
 
+	foreach(SDL_Joystick* j, joysticks) {
 		const int nhats = SDL_JoystickNumHats(j);
 		for(int n = 0; n != nhats; ++n) {
 			const Uint8 state = SDL_JoystickGetHat(j, n);
@@ -109,13 +106,11 @@ bool left() {
 }
 
 bool right() {
-	foreach(SDL_Joystick* j, joysticks) {
-		if(SDL_JoystickGetAxis(j, 0) > threshold ||
-		   SDL_JoystickGetAxis(j, 2) > threshold ||
-		   SDL_JoystickGetAxis(j, 4) > threshold) {
-			return true;
-		}
+	if(!preferences::use_joystick()) {
+		return false;
+	}
 
+	foreach(SDL_Joystick* j, joysticks) {
 		const int nhats = SDL_JoystickNumHats(j);
 		for(int n = 0; n != nhats; ++n) {
 			const Uint8 state = SDL_JoystickGetHat(j, n);
@@ -132,6 +127,10 @@ bool right() {
 }
 
 bool button(int n) {
+	if(!preferences::use_joystick()) {
+		return false;
+	}
+
 	foreach(SDL_Joystick* j, joysticks) {
 		if(SDL_JoystickGetButton(j, n)) {
 			return true;
