@@ -80,6 +80,10 @@ custom_object::custom_object(wml::const_node_ptr node)
 	always_active_(wml::get_bool(node, "always_active", false)),
 	last_cycle_active_(0)
 {
+	if(node->has_attr("platform_area")) {
+		set_platform_area(rect(node->attr("platform_area")));
+	}
+
 	if(node->has_attr("x_schedule")) {
 		if(position_schedule_.get() == NULL) {
 			position_schedule_.reset(new position_schedule);
@@ -344,6 +348,10 @@ wml::node_ptr custom_object::write() const
 	if(position_scale_millis_.get() != NULL) {
 		res->set_attr("position_scale_x", formatter() << position_scale_millis_->first);
 		res->set_attr("position_scale_y", formatter() << position_scale_millis_->second);
+	}
+
+	if(platform_area_.get() != NULL) {
+		res->set_attr("platform_area", platform_area_->to_string());
 	}
 
 	if(position_schedule_.get() != NULL) {
@@ -1403,6 +1411,10 @@ const solid_info* custom_object::calculate_solid() const
 
 const solid_info* custom_object::calculate_platform() const
 {
+	if(platform_solid_info_.get()) {
+		return platform_solid_info_.get();
+	}
+
 	return type_->platform().get();
 }
 
@@ -2270,6 +2282,15 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		break;
 	}
 
+	case CUSTOM_OBJECT_PLATFORM_AREA: {
+		ASSERT_GE(value.num_elements(), 3);
+		ASSERT_LE(value.num_elements(), 4);
+
+		set_platform_area(rect(value[0].as_int(), value[1].as_int(), value[2].as_int(), 1));
+		calculate_solid_rect();
+		break;
+	}
+
 	default:
 		break;
 
@@ -2784,6 +2805,17 @@ void custom_object::set_sound_volume(const int sound_volume)
 bool custom_object::allow_level_collisions() const
 {
 	return type_->use_image_for_collisions();
+}
+
+void custom_object::set_platform_area(const rect& area)
+{
+	if(area.w() <= 0 || area.h() <= 0) {
+		platform_area_.reset();
+		platform_solid_info_ = const_solid_info_ptr();
+	} else {
+		platform_area_.reset(new rect(area));
+		platform_solid_info_ = solid_info::create_platform(area);
+	}
 }
 
 BENCHMARK(custom_object_spike) {

@@ -70,16 +70,11 @@ void solid_map::create_object_solid_maps(wml::const_node_ptr node, std::vector<c
 	}
 }
 
-void solid_map::create_object_platform_maps(wml::const_node_ptr node, std::vector<const_solid_map_ptr>& v)
+void solid_map::create_object_platform_maps(const rect& area_ref, std::vector<const_solid_map_ptr>& v)
 {
-	if(!node->has_attr("platform_area")) {
-		return;
-	}
-
-	rect area(node->attr("platform_area"));
 
 	//intentionally do NOT double the height of the area.
-	area = rect(area.x()*2, area.y()*2, area.w()*2, 1);
+	rect area(area_ref.x()*2, area_ref.y()*2, area_ref.w()*2, 1);
 
 	ASSERT_EQ(area.h(), 1);
 
@@ -272,7 +267,20 @@ const_solid_info_ptr solid_info::create(wml::const_node_ptr node)
 const_solid_info_ptr solid_info::create_platform(wml::const_node_ptr node)
 {
 	std::vector<const_solid_map_ptr> platform;
-	solid_map::create_object_platform_maps(node, platform);
+
+	if(!node->has_attr("platform_area")) {
+		return const_solid_info_ptr();
+	}
+
+	rect area(node->attr("platform_area"));
+	solid_map::create_object_platform_maps(area, platform);
+	return create_from_solid_maps(platform);
+}
+
+const_solid_info_ptr solid_info::create_platform(const rect& area)
+{
+	std::vector<const_solid_map_ptr> platform;
+	solid_map::create_object_platform_maps(area, platform);
 	return create_from_solid_maps(platform);
 }
 

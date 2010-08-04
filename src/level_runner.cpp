@@ -487,11 +487,37 @@ bool level_runner::play_cycle()
 			}
 			case SDL_VIDEORESIZE: {
 				const SDL_ResizeEvent* const resize = reinterpret_cast<SDL_ResizeEvent*>(&event);
+				int width = resize->w;
+				int height = resize->h;
 
-				preferences::set_actual_screen_width(resize->w);
-				preferences::set_actual_screen_height(resize->h);
+				const int aspect = (preferences::actual_screen_width()*1000)/preferences::actual_screen_height();
 
-				graphics::set_video_mode(resize->w, resize->h);
+				if(preferences::actual_screen_width()*preferences::actual_screen_height() < width*height) {
+					//making the window larger
+					if((height*aspect)/1000 > width) {
+						width = (height*aspect)/1000;
+					} else if((height*aspect)/1000 < width) {
+						height = (width*1000)/aspect;
+					}
+				} else {
+					//making the window smaller
+					if((height*aspect)/1000 > width) {
+						height = (width*1000)/aspect;
+					} else if((height*aspect)/1000 < width) {
+						width = (height*aspect)/1000;
+					}
+				}
+
+				//make sure we don't have some ugly fractional aspect ratio
+				while((width*1000)/height != aspect) {
+					++width;
+					height = (width*1000)/aspect;
+				}
+
+				preferences::set_actual_screen_width(width);
+				preferences::set_actual_screen_height(height);
+
+				graphics::set_video_mode(width, height);
 				continue;
 			}
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE

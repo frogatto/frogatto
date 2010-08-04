@@ -265,6 +265,11 @@ private:
 	boost::scoped_ptr<position_schedule> position_schedule_;
 
 	std::vector<light_ptr> lights_;
+
+	boost::scoped_ptr<rect> platform_area_;
+	const_solid_info_ptr platform_solid_info_;
+
+	void set_platform_area(const rect& area);
 };
 
 #endif
