@@ -328,6 +328,13 @@ gui_algorithm::gui_algorithm(wml::const_node_ptr node)
 	gui_command_function_symbol_table symbols(this);
 
 	object_->add_ref();
+	std::vector<std::string> includes = util::split(node->attr("includes"));
+	foreach(const std::string& inc, includes) {
+		includes_.push_back(get(inc));
+	}
+
+	set_object(object_);
+
 	FOREACH_WML_CHILD(frame_node, node, "animation") {
 		frame_ptr f(new frame(frame_node));
 		frames_[frame_node->attr("id")] = f;
@@ -335,10 +342,6 @@ gui_algorithm::gui_algorithm(wml::const_node_ptr node)
 
 	draw_formula_ = formula::create_optional_formula(node->attr("on_draw"), &symbols, &gui_algorithm_definition::instance());
 
-	std::vector<std::string> includes = util::split(node->attr("includes"));
-	foreach(const std::string& inc, includes) {
-		includes_.push_back(get(inc));
-	}
 }
 
 gui_algorithm::~gui_algorithm()
@@ -355,9 +358,16 @@ gui_algorithm_ptr gui_algorithm::get(const std::string& key) {
 	return ptr;
 }
 
+void gui_algorithm::set_object(boost::intrusive_ptr<custom_object> obj) {
+	object_ = obj;
+	foreach(gui_algorithm_ptr inc, includes_) {
+		inc->set_object(obj);
+	}
+}
+
 void gui_algorithm::new_level() {
 	cycle_ = 0;
-	object_ = boost::intrusive_ptr<custom_object>(new custom_object("dummy_gui_object", 0, 0, true));
+	set_object(boost::intrusive_ptr<custom_object>(new custom_object("dummy_gui_object", 0, 0, true)));
 }
 
 void gui_algorithm::process(level& lvl) {

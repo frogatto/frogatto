@@ -468,7 +468,7 @@ private:
 	int zoom_level_;
 	std::vector<entity_ptr> focus_override_;
 
-	std::queue<boost::shared_ptr<speech_dialog> > speech_dialogs_;
+	std::stack<boost::shared_ptr<speech_dialog> > speech_dialogs_;
 
 	//color palettes that the level has set.
 	unsigned int palettes_used_;

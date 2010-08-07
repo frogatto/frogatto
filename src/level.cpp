@@ -1580,7 +1580,6 @@ void level::draw(int x, int y, int w, int h) const
 
 		
 		if(strips.empty() == false) {
-			std::cerr << "DRAW STRIPS: " << strips.size() << "\n";
 			glDisable(GL_TEXTURE_2D);
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
@@ -1778,7 +1777,7 @@ void level::process()
 	do_processing();
 
 	if(speech_dialogs_.empty() == false) {
-		if(speech_dialogs_.front()->process()) {
+		if(speech_dialogs_.top()->process()) {
 			speech_dialogs_.pop();
 		}
 	}
@@ -3091,8 +3090,9 @@ void level::add_speech_dialog(boost::shared_ptr<speech_dialog> d)
 
 void level::remove_speech_dialog()
 {
-	if(speech_dialogs_.empty() == false)
+	if(speech_dialogs_.empty() == false) {
 		speech_dialogs_.pop();
+	}
 }
 
 boost::shared_ptr<const speech_dialog> level::current_speech_dialog() const
@@ -3101,7 +3101,7 @@ boost::shared_ptr<const speech_dialog> level::current_speech_dialog() const
 		return boost::shared_ptr<const speech_dialog>();
 	}
 
-	return speech_dialogs_.front();
+	return speech_dialogs_.top();
 }
 
 bool entity_in_current_level(const entity* e)

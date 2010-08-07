@@ -36,6 +36,8 @@ public:
 	const custom_object* get_object() const { return object_.get(); }
 
 private:
+	void set_object(boost::intrusive_ptr<custom_object> obj);
+
 	gui_algorithm(const gui_algorithm&);
 	void operator=(const gui_algorithm&);
 

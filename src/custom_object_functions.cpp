@@ -925,12 +925,14 @@ END_FUNCTION_DEF(transient_speech_dialog)
 
 namespace {
 struct in_dialog_setter {
+	bool was_in_dialog_;
 	level& lvl_;
 	in_dialog_setter(level& lvl) : lvl_(lvl) { 
+		was_in_dialog_ = lvl_.in_dialog();
 		lvl_.set_in_dialog(true);
 	}
 	~in_dialog_setter() {
-		lvl_.set_in_dialog(false);
+		lvl_.set_in_dialog(was_in_dialog_);
 	}
 };
 }
@@ -943,12 +945,10 @@ public:
 	virtual void execute(level& lvl, custom_object& ob) const {
 //		pause_scope pauser;
 
-		if(g_in_speech_dialog) {
-			return;
-		}
-
-		foreach(const entity_ptr& e, lvl.get_chars()) {
-			e->handle_event(OBJECT_EVENT_BEGIN_DIALOG);
+		if(!g_in_speech_dialog) {
+			foreach(const entity_ptr& e, lvl.get_chars()) {
+				e->handle_event(OBJECT_EVENT_BEGIN_DIALOG);
+			}
 		}
 
 		formula_profiler::suspend_scope profiler_suspend;
