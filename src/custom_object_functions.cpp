@@ -920,6 +920,10 @@ FUNCTION_DEF(transient_speech_dialog, 1, -1, "transient_speech_dialog(...): sche
 		}
 	}
 
+	//we add the dialogs in reverse order to the level to make it get
+	//said in the correct order.
+	std::reverse(result.begin(), result.end());
+
 	return variant(&result);
 END_FUNCTION_DEF(transient_speech_dialog)
 
