@@ -275,6 +275,22 @@ level::level(const std::string& level_cfg)
 	gui_algorithm_ = gui_algorithm::get(gui_algo_str_);
 	gui_algorithm_->new_level();
 
+	sub_level_str_ = node->attr("sub_levels");
+	foreach(const std::string& sub_lvl, util::split(node->attr("sub_levels"))) {
+		sub_level_data& data = sub_levels_[sub_lvl];
+		data.lvl = boost::intrusive_ptr<level>(new level(sub_lvl + ".cfg"));
+		foreach(int layer, data.lvl->layers_) {
+			layers_.insert(layer);
+		}
+
+		data.active = false;
+		data.xoffset = data.yoffset = 0;
+	}
+
+	if(sub_levels_.empty() == false) {
+		solid_base_ = solid_;
+		standable_base_ = standable_;
+	}
 }
 
 level::~level()
@@ -714,6 +730,11 @@ wml::node_ptr level::write() const
 	if(cycle_) {
 		res->set_attr("cycle", formatter() << cycle_);
 	}
+
+	if(!sub_level_str_.empty()) {
+		res->set_attr("sub_levels", sub_level_str_);
+	}
+
 	res->set_attr("dimensions", boundaries().to_string());
 
 	res->set_attr("xscale", formatter() << xscale_);
@@ -1071,6 +1092,15 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 		return;
 	}
 
+	for(std::map<std::string, sub_level_data>::const_iterator i = sub_levels_.begin(); i != sub_levels_.end(); ++i) {
+		if(i->second.active) {
+			glPushMatrix();
+			glTranslatef(i->second.xoffset, i->second.yoffset, 0.0);
+			i->second.lvl->draw_layer(layer, x - i->second.xoffset, y - i->second.yoffset, w, h);
+			glPopMatrix();
+		}
+	}
+
 	if(editor_ && layer == highlight_layer_) {
 		const GLfloat alpha = 0.3 + (1.0+sin(draw_count/5.0))*0.35;
 		glColor4f(1.0, 1.0, 1.0, alpha);
@@ -1256,6 +1286,10 @@ void level::prepare_tiles_for_drawing()
 			continue;
 		}
 
+		if(tiles_[n].x <= boundaries().x() - TileSize || tiles_[n].y <= boundaries().y() - TileSize || tiles_[n].x >= boundaries().x2() || tiles_[n].y >= boundaries().y2()) {
+			continue;
+		}
+
 		layer_blit_info& blit_info = blit_cache_[tiles_[n].zorder];
 		if(blit_info.xbase == -1) {
 			blit_info.texture_id = tiles_[n].object->texture().get_id();
@@ -1273,6 +1307,9 @@ void level::prepare_tiles_for_drawing()
 	}
 
 	for(int n = 0; n != tiles_.size(); ++n) {
+		if(tiles_[n].x <= boundaries().x() - TileSize || tiles_[n].y <= boundaries().y() - TileSize || tiles_[n].x >= boundaries().x2() || tiles_[n].y >= boundaries().y2()) {
+			continue;
+		}
 
 		if(tiles_[n].object->solid_color()) {
 			tiles_[n].draw_disabled = true;
@@ -3108,6 +3145,66 @@ bool entity_in_current_level(const entity* e)
 {
 	const level& lvl = level::current();
 	return std::find(lvl.get_chars().begin(), lvl.get_chars().end(), e) != lvl.get_chars().end();
+}
+
+void level::add_sub_level(const std::string& lvl, int xoffset, int yoffset)
+{
+	const std::map<std::string, sub_level_data>::iterator itor = sub_levels_.find(lvl);
+	ASSERT_LOG(itor != sub_levels_.end(), "SUB LEVEL NOT FOUND: " << lvl);
+
+	const int xdiff = xoffset - itor->second.xoffset;
+	const int ydiff = yoffset - itor->second.yoffset;
+
+	itor->second.xoffset = xoffset;
+	itor->second.yoffset = yoffset;
+
+	itor->second.active = true;
+	level& sub = *itor->second.lvl;
+
+	for(std::map<int, layer_blit_info>::iterator i = blit_cache_.begin();
+	    i != blit_cache_.end(); ++i) {
+//		i->second.xbase += xdiff;
+//		i->second.ybase += ydiff;
+		foreach(tile_corner& c, i->second.blit_vertexes) {
+//			c.vertex[0] += xdiff;
+//			c.vertex[1] += ydiff;
+		}
+	}
+
+	foreach(solid_color_rect& r, sub.solid_color_rects_) {
+		r.area = rect(r.area.x() + xdiff, r.area.y() + ydiff, r.area.w(), r.area.h());
+	}
+
+	solid_ = solid_base_;
+	standable_ = standable_base_;
+
+	for(std::map<std::string, sub_level_data>::const_iterator i = sub_levels_.begin(); i != sub_levels_.end(); ++i) {
+		if(!i->second.active) {
+			continue;
+		}
+
+		const int xoffset = i->second.xoffset/TileSize;
+		const int yoffset = i->second.yoffset/TileSize;
+		solid_.merge(i->second.lvl->solid_, xoffset, yoffset);
+		standable_.merge(i->second.lvl->standable_, xoffset, yoffset);
+	}
+}
+
+void level::remove_sub_level(const std::string& lvl)
+{
+	const std::map<std::string, sub_level_data>::iterator itor = sub_levels_.find(lvl);
+	ASSERT_LOG(itor != sub_levels_.end(), "SUB LEVEL NOT FOUND: " << lvl);
+
+	itor->second.active = false;
+}
+
+void level::adjust_level_offset(int xoffset, int yoffset)
+{
+	foreach(entity_ptr e, chars_) {
+		e->set_pos(e->x() - xoffset, e->y() - yoffset);
+	}
+
+
 }
 
 UTILITY(correct_solidity)

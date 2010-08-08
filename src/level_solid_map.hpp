@@ -28,10 +28,9 @@ public:
 	const tile_solid_info* find(const tile_pos& pos) const;
 	void erase(const tile_pos& pos);
 	void clear();
-private:
-	level_solid_map(const level_solid_map&);
-	void operator=(const level_solid_map&);
 
+	void merge(const level_solid_map& m, int xoffset, int yoffset);
+private:
 	tile_solid_info** insert_raw(const tile_pos& pos);
 
 	struct row {

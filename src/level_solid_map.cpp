@@ -120,3 +120,82 @@ void level_solid_map::clear()
 	positive_rows_.clear();
 	negative_rows_.clear();
 }
+
+void level_solid_map::merge(const level_solid_map& map, int xoffset, int yoffset)
+{
+
+	for(int n = 0; n != map.negative_rows_.size(); ++n) {
+
+		for(int m = 0; m != map.negative_rows_[n].negative_cells.size(); ++m) {
+			const tile_pos pos(-m - 1 + xoffset, -n - 1 + yoffset);
+			tile_solid_info& dst = insert_or_find(pos);
+			const tile_solid_info* src = map.negative_rows_[n].negative_cells[m];
+			if(!src) {
+				continue;
+			}
+
+			dst.all_solid = dst.all_solid || src->all_solid;
+			dst.friction = std::max<int>(src->friction, dst.friction);
+			dst.traction = std::max<int>(src->traction, dst.traction);
+			dst.damage = std::max<int>(src->damage, dst.damage);
+			if(!dst.all_solid) {
+				dst.bitmap = dst.bitmap | src->bitmap;
+			}
+		}
+
+		for(int m = 0; m != map.negative_rows_[n].positive_cells.size(); ++m) {
+			const tile_pos pos(m + xoffset, -n - 1 + yoffset);
+			tile_solid_info& dst = insert_or_find(pos);
+			const tile_solid_info* src = map.negative_rows_[n].positive_cells[m];
+			if(!src) {
+				continue;
+			}
+
+			dst.all_solid = dst.all_solid || src->all_solid;
+			dst.friction = std::max<int>(src->friction, dst.friction);
+			dst.traction = std::max<int>(src->traction, dst.traction);
+			dst.damage = std::max<int>(src->damage, dst.damage);
+			if(!dst.all_solid) {
+				dst.bitmap = dst.bitmap | src->bitmap;
+			}
+		}
+	}
+
+	for(int n = 0; n != map.positive_rows_.size(); ++n) {
+		for(int m = 0; m != map.positive_rows_[n].negative_cells.size(); ++m) {
+			const tile_pos pos(-m - 1 + xoffset, n + yoffset);
+			tile_solid_info& dst = insert_or_find(pos);
+			const tile_solid_info* src = map.positive_rows_[n].negative_cells[m];
+			if(!src) {
+				continue;
+			}
+
+			dst.all_solid = dst.all_solid || src->all_solid;
+			dst.friction = std::max<int>(src->friction, dst.friction);
+			dst.traction = std::max<int>(src->traction, dst.traction);
+			dst.damage = std::max<int>(src->damage, dst.damage);
+			if(!dst.all_solid) {
+				dst.bitmap = dst.bitmap | src->bitmap;
+			}
+		}
+
+		for(int m = 0; m != map.positive_rows_[n].positive_cells.size(); ++m) {
+			const tile_pos pos(m + xoffset, n + yoffset);
+			const tile_solid_info* src = map.positive_rows_[n].positive_cells[m];
+			if(!src) {
+				continue;
+			}
+
+			tile_solid_info& dst = insert_or_find(pos);
+
+			dst.all_solid = dst.all_solid || src->all_solid;
+			dst.friction = std::max<int>(src->friction, dst.friction);
+			dst.traction = std::max<int>(src->traction, dst.traction);
+			dst.damage = std::max<int>(src->damage, dst.damage);
+			if(!dst.all_solid) {
+				dst.bitmap = dst.bitmap | src->bitmap;
+			}
+		}
+	}
+
+}

@@ -257,6 +257,10 @@ public:
 	
 	bool in_editor () {return editor_;}
 
+	void add_sub_level(const std::string& lvl, int xoffset, int yoffset);
+	void remove_sub_level(const std::string& lvl);
+	void adjust_level_offset(int xoffset, int yoffset);
+
 private:
 	level(const level&);
 	void operator=(const level&);
@@ -294,6 +298,9 @@ private:
 	
 	level_solid_map solid_;
 	level_solid_map standable_;
+
+	level_solid_map solid_base_;
+	level_solid_map standable_base_;
 
 	bool is_solid(const level_solid_map& map, int x, int y, int* friction, int* traction, int* damage) const;
 	bool is_solid(const level_solid_map& map, const entity& e, const std::vector<point>& points, int* friction, int* traction, int* damage) const;
@@ -474,6 +481,15 @@ private:
 	unsigned int palettes_used_;
 
 	int background_palette_;
+
+	struct sub_level_data {
+		boost::intrusive_ptr<level> lvl;
+		int xoffset, yoffset;
+		bool active;
+	};
+
+	std::string sub_level_str_;
+	std::map<std::string, sub_level_data> sub_levels_;
 };
 
 bool entity_in_current_level(const entity* e);

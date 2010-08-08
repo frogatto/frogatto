@@ -1638,6 +1638,38 @@ FUNCTION_DEF(swallow_event, 0, 0, "swallow_event(): when used in an instance-spe
 	return variant(new swallow_object_command_callable);
 END_FUNCTION_DEF(swallow_event)
 
+class add_level_module_command : public entity_command_callable {
+	std::string lvl_;
+	int x_, y_;
+public:
+	add_level_module_command(const std::string& lvl, int x, int y)
+	  : lvl_(lvl), x_(x), y_(y)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		lvl.add_sub_level(lvl_, x_, y_);
+	}
+};
+
+FUNCTION_DEF(add_level_module, 3, 3, "add_level_module(string lvl, int xoffset, int yoffset): adds the level module with the given level id at the given offset")
+	return variant(new add_level_module_command(args()[0]->evaluate(variables).as_string(), args()[1]->evaluate(variables).as_int(), args()[2]->evaluate(variables).as_int()));
+END_FUNCTION_DEF(add_level_module)
+
+class remove_level_module_command : public entity_command_callable {
+	std::string lvl_;
+public:
+	explicit remove_level_module_command(const std::string& lvl) : lvl_(lvl)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		lvl.remove_sub_level(lvl_);
+	}
+};
+
+FUNCTION_DEF(remove_level_module, 1, 1, "remove_level_module(string lvl): removes the given level module")
+	return variant(new remove_level_module_command(args()[0]->evaluate(variables).as_string()));
+END_FUNCTION_DEF(remove_level_module)
+
 class custom_object_function_symbol_table : public function_symbol_table
 {
 public:
