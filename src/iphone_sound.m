@@ -65,6 +65,7 @@ void iphone_play_music (const char *file, int loops)
 	//NSLog(@"Initializing the new song took %i ms", SDL_GetTicks()-timer);
 	song.delegate = delegate;
 	song.numberOfLoops = loops;
+	song.volume = master_volume;
 	
 	timer = SDL_GetTicks();
 	[song play];
