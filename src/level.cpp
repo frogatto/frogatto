@@ -3175,6 +3175,19 @@ void level::add_sub_level(const std::string& lvl, int xoffset, int yoffset)
 		r.area = rect(r.area.x() + xdiff, r.area.y() + ydiff, r.area.w(), r.area.h());
 	}
 
+	build_solid_data_from_sub_levels();
+}
+
+void level::remove_sub_level(const std::string& lvl)
+{
+	const std::map<std::string, sub_level_data>::iterator itor = sub_levels_.find(lvl);
+	ASSERT_LOG(itor != sub_levels_.end(), "SUB LEVEL NOT FOUND: " << lvl);
+
+	itor->second.active = false;
+}
+
+void level::build_solid_data_from_sub_levels()
+{
 	solid_ = solid_base_;
 	standable_ = standable_base_;
 
@@ -3190,21 +3203,18 @@ void level::add_sub_level(const std::string& lvl, int xoffset, int yoffset)
 	}
 }
 
-void level::remove_sub_level(const std::string& lvl)
-{
-	const std::map<std::string, sub_level_data>::iterator itor = sub_levels_.find(lvl);
-	ASSERT_LOG(itor != sub_levels_.end(), "SUB LEVEL NOT FOUND: " << lvl);
-
-	itor->second.active = false;
-}
-
 void level::adjust_level_offset(int xoffset, int yoffset)
 {
 	foreach(entity_ptr e, chars_) {
 		e->set_pos(e->x() - xoffset, e->y() - yoffset);
 	}
 
-
+	for(std::map<std::string, sub_level_data>::iterator i = sub_levels_.begin();
+	    i != sub_levels_.end(); ++i) {
+		if(i->second.active) {
+			add_sub_level(i->first, i->second.xoffset - xoffset, i->second.yoffset - yoffset);
+		}
+	}
 }
 
 UTILITY(correct_solidity)

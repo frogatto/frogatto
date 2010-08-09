@@ -939,6 +939,22 @@ struct in_dialog_setter {
 		lvl_.set_in_dialog(was_in_dialog_);
 	}
 };
+
+struct speech_dialog_scope {
+	level& lvl_;
+	boost::shared_ptr<speech_dialog> dialog_;
+
+	speech_dialog_scope(level& lvl, boost::shared_ptr<speech_dialog> dialog)
+	  : lvl_(lvl), dialog_(dialog)
+	{
+		lvl_.add_speech_dialog(dialog_);
+	}
+
+	~speech_dialog_scope()
+	{
+		lvl_.remove_speech_dialog();
+	}
+};
 }
 
 class speech_dialog_command : public custom_object_command_callable {
@@ -969,7 +985,7 @@ private:
 		in_speech_dialog_tracker dialog_tracker;
 
 		boost::shared_ptr<speech_dialog> d(new speech_dialog());
-		lvl.add_speech_dialog(d);
+		speech_dialog_scope dialog_scope(lvl, d);
 
 		foreach(variant var, commands) {
 			if(var.is_callable()) {
@@ -1064,8 +1080,6 @@ private:
 				d->set_options(std::vector<std::string>());
 			}
 		}
-
-		lvl.remove_speech_dialog();
 	}
 
 	void draw(const level& lvl) const {
@@ -1669,6 +1683,22 @@ public:
 FUNCTION_DEF(remove_level_module, 1, 1, "remove_level_module(string lvl): removes the given level module")
 	return variant(new remove_level_module_command(args()[0]->evaluate(variables).as_string()));
 END_FUNCTION_DEF(remove_level_module)
+
+class shift_level_position_command : public entity_command_callable {
+	int xoffset_, yoffset_;
+public:
+
+	shift_level_position_command(int xoffset, int yoffset)
+	  : xoffset_(xoffset), yoffset_(yoffset) {}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		lvl.adjust_level_offset(xoffset_, yoffset_);
+	}
+};
+
+FUNCTION_DEF(shift_level_position, 2, 2, "shift_level_position(int xoffset, int yoffet): adjust position of all objects and tiles in the level by the given offset")
+	return variant(new shift_level_position_command(args()[0]->evaluate(variables).as_int(), args()[1]->evaluate(variables).as_int()));
+END_FUNCTION_DEF(shift_level_position)
 
 class custom_object_function_symbol_table : public function_symbol_table
 {

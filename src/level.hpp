@@ -488,6 +488,8 @@ private:
 		bool active;
 	};
 
+	void build_solid_data_from_sub_levels();
+
 	std::string sub_level_str_;
 	std::map<std::string, sub_level_data> sub_levels_;
 };
