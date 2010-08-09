@@ -3205,16 +3205,26 @@ void level::build_solid_data_from_sub_levels()
 
 void level::adjust_level_offset(int xoffset, int yoffset)
 {
+	game_logic::map_formula_callable* callable(new game_logic::map_formula_callable);
+	variant holder(callable);
+	callable->add("xshift", variant(xoffset));
+	callable->add("yshift", variant(yoffset));
 	foreach(entity_ptr e, chars_) {
-		e->set_pos(e->x() - xoffset, e->y() - yoffset);
+		e->shift_position(xoffset, yoffset);
+		e->handle_event(OBJECT_EVENT_COSMIC_SHIFT, callable);
 	}
 
 	for(std::map<std::string, sub_level_data>::iterator i = sub_levels_.begin();
 	    i != sub_levels_.end(); ++i) {
 		if(i->second.active) {
-			add_sub_level(i->first, i->second.xoffset - xoffset, i->second.yoffset - yoffset);
+			add_sub_level(i->first, i->second.xoffset + xoffset, i->second.yoffset + yoffset);
 		}
 	}
+
+	last_draw_position().x += xoffset*100;
+	last_draw_position().y += yoffset*100;
+	last_draw_position().focus_x += xoffset;
+	last_draw_position().focus_y += yoffset;
 }
 
 UTILITY(correct_solidity)

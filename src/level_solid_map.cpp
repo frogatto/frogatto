@@ -197,5 +197,4 @@ void level_solid_map::merge(const level_solid_map& map, int xoffset, int yoffset
 			}
 		}
 	}
-
 }

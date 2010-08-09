@@ -1696,9 +1696,9 @@ public:
 	}
 };
 
-FUNCTION_DEF(shift_level_position, 2, 2, "shift_level_position(int xoffset, int yoffet): adjust position of all objects and tiles in the level by the given offset")
+FUNCTION_DEF(cosmic_shift, 2, 2, "cosmic_shift(int xoffset, int yoffet): adjust position of all objects and tiles in the level by the given offset")
 	return variant(new shift_level_position_command(args()[0]->evaluate(variables).as_int(), args()[1]->evaluate(variables).as_int()));
-END_FUNCTION_DEF(shift_level_position)
+END_FUNCTION_DEF(cosmic_shift)
 
 class custom_object_function_symbol_table : public function_symbol_table
 {

@@ -48,6 +48,8 @@ public:
 	const std::string& label() const { return label_; }
 	void set_label(const std::string& lb) { label_ = lb; }
 	void set_distinct_label();
+
+	void shift_position(int x, int y) { x_ += x*100; y_ += y*100; prev_feet_x_ += x; prev_feet_y_ += y; }
 	
 	void set_pos(const point& p) { x_ = p.x*100; y_ = p.y*100; calculate_solid_rect(); }
 	void set_pos(int x, int y) { x_ = x*100; y_ = y*100; calculate_solid_rect(); }
