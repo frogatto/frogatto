@@ -22,7 +22,7 @@ public:
 	void operator()() {
 		static const std::string path = preferences::load_compiled() ? "data/compiled/level/" : preferences::level_path();
 		const std::string filename = path + lvl_;
-		wml::const_node_ptr node(wml::parse_wml(preprocess(sys::read_file(filename))));
+		wml::const_node_ptr node(wml::parse_wml_from_file(filename));
 		wml_cache().put(lvl_, node);
 	}
 };

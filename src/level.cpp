@@ -2829,6 +2829,13 @@ variant level::get_value(const std::string& key) const
 		return variant(&v);
 	} else if(key == "id") {
 		return variant(id());
+	} else if(key == "dimensions") {
+		std::vector<variant> v;
+		v.push_back(variant(boundaries_.x()));
+		v.push_back(variant(boundaries_.y()));
+		v.push_back(variant(boundaries_.x2()));
+		v.push_back(variant(boundaries_.y2()));
+		return variant(&v);
 	} else {
 		const_entity_ptr e = get_entity_by_label(key);
 		if(e) {
@@ -2876,6 +2883,9 @@ void level::set_value(const std::string& key, const variant& value)
 				chars_immune_from_time_freeze_.push_back(e);
 			}
 		}
+	} else if(key == "dimensions") {
+		ASSERT_EQ(value.num_elements(), 4);
+		boundaries_ = rect(value[0].as_int(), value[1].as_int(), value[2].as_int() - value[0].as_int(), value[3].as_int() - value[1].as_int());
 	} else {
 		vars_[key] = value;
 	}
