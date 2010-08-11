@@ -30,6 +30,9 @@ class button : public widget
 public:
 	button(widget_ptr label, boost::function<void ()> onclick, BUTTON_RESOLUTION button_resolution = BUTTON_SIZE_NORMAL_RESOLUTION);
 
+protected:
+	void set_label(widget_ptr label);
+
 private:
 	bool in_button(int x, int y) const;
 	void handle_draw() const;

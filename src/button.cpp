@@ -18,8 +18,6 @@
 
 namespace gui {
 
-
-	
 namespace {
 
 int vpadding = 4;
@@ -36,6 +34,12 @@ button::button(widget_ptr label, boost::function<void ()> onclick, BUTTON_RESOLU
 	down_(false)
 	
 {
+	set_label(label);
+}
+
+void button::set_label(widget_ptr label)
+{
+	label_ = label;
 	set_dim(label_->width()+hpadding*2,label_->height()+vpadding*2);
 }
 
