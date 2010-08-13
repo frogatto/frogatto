@@ -7,6 +7,7 @@
 
 #include "background.hpp"
 #include "button.hpp"
+#include "checkbox.hpp"
 #include "editor.hpp"
 #include "editor_dialogs.hpp"
 #include "editor_level_properties_dialog.hpp"
@@ -20,6 +21,17 @@
 
 namespace editor_dialogs
 {
+
+namespace {
+void set_segmented_level(level* lvl, bool value)
+{
+	if(value) {
+		lvl->set_segment_width(lvl->boundaries().w());
+	} else {
+		lvl->set_segment_width(0);
+	}
+}
+}
 
 editor_level_properties_dialog::editor_level_properties_dialog(editor& e)
   : dialog(0, 0, graphics::screen_width(), graphics::screen_height()), editor_(e)
@@ -59,6 +71,9 @@ void editor_level_properties_dialog::init()
 	g->add_col(widget_ptr(new label(editor_.get_level().previous_level(), graphics::color_white())));
 	g->add_col(widget_ptr(new button(widget_ptr(new label("Set", graphics::color_white())), boost::bind(&editor_level_properties_dialog::change_previous_level, this))));
 	add_widget(g);
+
+	checkbox* segmented_checkbox = new checkbox("Segmented Level", editor_.get_level().segment_width() != 0, boost::bind(set_segmented_level, &editor_.get_level(), _1));
+	add_widget(widget_ptr(segmented_checkbox));
 }
 
 void editor_level_properties_dialog::change_title()

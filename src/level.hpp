@@ -60,6 +60,8 @@ public:
 	const std::string& id() const { return id_; }
 	const std::string& music() const { return music_; }
 
+	std::string package() const;
+
 	wml::node_ptr write() const;
 	void draw(int x, int y, int w, int h) const;
 	void draw_status() const;
@@ -257,13 +259,23 @@ public:
 	
 	bool in_editor () {return editor_;}
 
-	void add_sub_level(const std::string& lvl, int xoffset, int yoffset);
+	void add_sub_level(const std::string& lvl, int xoffset, int yoffset, bool add_objects=true);
 	void remove_sub_level(const std::string& lvl);
 	void adjust_level_offset(int xoffset, int yoffset);
 
+	bool relocate_object(entity_ptr e, int x, int y);
+
+	int segment_width() const { return segment_width_; }
+	void set_segment_width(int width) { segment_width_ = width; }
+
+	variant get_var(const std::string& str) const {
+		std::map<std::string, variant>::const_iterator itor = vars_.find(str);
+		if(itor != vars_.end()) return itor->second;
+		return variant();
+	}
+	void set_var(const std::string& str, variant value) { vars_[str] = value; }
+
 private:
-	level(const level&);
-	void operator=(const level&);
 
 	void read_compiled_tiles(wml::const_node_ptr node, std::vector<level_tile>::iterator& out);
 
@@ -446,12 +458,12 @@ private:
 
 	std::vector<std::string> preloads_; //future levels to preload
 
-	boost::scoped_ptr<water> water_;
+	boost::shared_ptr<water> water_;
 
 	std::map<std::string, movement_script> movement_scripts_;
 	std::vector<active_movement_script_ptr> active_movement_scripts_;
 
-	boost::scoped_ptr<point> lock_screen_;
+	boost::shared_ptr<point> lock_screen_;
 
 	struct backup_snapshot {
 		unsigned int rng_seed;
@@ -482,10 +494,14 @@ private:
 
 	int background_palette_;
 
+	int segment_width_;
+
 	struct sub_level_data {
 		boost::intrusive_ptr<level> lvl;
+		int xbase, ybase;
 		int xoffset, yoffset;
 		bool active;
+		std::vector<entity_ptr> objects;
 	};
 
 	void build_solid_data_from_sub_levels();

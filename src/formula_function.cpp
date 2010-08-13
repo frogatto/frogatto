@@ -110,6 +110,20 @@ private:
 	}
 };
 
+class query_function : public function_expression {
+public:
+	explicit query_function(const args_list& args)
+	  : function_expression("query", args, 2, 2)
+	{}
+	
+private:
+	variant execute(const formula_callable& variables) const {
+		variant callable = args()[0]->evaluate(variables);
+		variant str = args()[1]->evaluate(variables);
+		return callable.as_callable()->query_value(str.as_string());
+	}
+};
+
 class rgb_function : public function_expression {
 public:
 	explicit rgb_function(const args_list& args)
@@ -897,6 +911,7 @@ functions_map& get_functions_map() {
 		FUNCTION(dir);
 		FUNCTION(if);
 		FUNCTION(switch);
+		FUNCTION(query);
 		FUNCTION(abs);
 		FUNCTION(min);
 		FUNCTION(max);

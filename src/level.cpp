@@ -55,6 +55,10 @@ std::map<std::string, level::summary> load_level_summaries() {
 	return result;
 }
 
+bool level_tile_not_in_rect(const rect& r, const level_tile& t) {
+	return t.x < r.x() || t.y < r.y() || t.x >= r.x2() || t.y >= r.y2();
+}
+
 }
 
 level::summary level::get_summary(const std::string& id)
@@ -87,7 +91,8 @@ level::level(const std::string& level_cfg)
 	  editor_(false), show_foreground_(true), show_background_(true), dark_(false), air_resistance_(0), water_resistance_(7), end_game_(false),
       editor_tile_updates_frozen_(0), zoom_level_(1),
 	  palettes_used_(0),
-	  background_palette_(-1)
+	  background_palette_(-1),
+	  segment_width_(0)
 {
 	std::cerr << "in level constructor...\n";
 	const int start_time = SDL_GetTicks();
@@ -98,6 +103,16 @@ level::level(const std::string& level_cfg)
 	if(wml::get_bool(node, "dark", false)) {
 		dark_ = true;
 	}
+
+	if(node->get_child("vars")) {
+		wml::const_node_ptr vars = node->get_child("vars");
+		for(wml::node::const_attr_iterator i = vars->begin_attr();
+		    i != vars->end_attr(); ++i) {
+			vars_[i->first].serialize_from_string(i->second);
+		}
+	}
+
+	segment_width_ = wml::get_int(node, "segment_width");
 
 	music_ = node->attr("music");
 	replay_data_ = node->attr("replay_data");
@@ -287,10 +302,6 @@ level::level(const std::string& level_cfg)
 		data.xoffset = data.yoffset = 0;
 	}
 
-	if(sub_levels_.empty() == false) {
-		solid_base_ = solid_;
-		standable_base_ = standable_;
-	}
 }
 
 level::~level()
@@ -374,6 +385,56 @@ void level::load_character(wml::const_node_ptr c)
 
 void level::finish_loading()
 {
+	std::vector<sub_level_data> sub_levels;
+	if(segment_width_ > 0 && !editor_) {
+		int segment_number = 0;
+		for(int x = boundaries_.x(); x < boundaries_.x2(); x += segment_width_) {
+			level* sub_level = new level(*this);
+			const rect bounds(x, boundaries_.y(), segment_width_, boundaries_.h());
+
+			sub_level->boundaries_ = bounds;
+			sub_level->tiles_.erase(std::remove_if(sub_level->tiles_.begin(), sub_level->tiles_.end(), boost::bind(level_tile_not_in_rect, bounds, _1)), sub_level->tiles_.end());
+			sub_level->solid_.clear();
+			sub_level->standable_.clear();
+			foreach(const level_tile& t, sub_level->tiles_) {
+				sub_level->add_tile_solid(t);
+			}
+			sub_level->prepare_tiles_for_drawing();
+
+			sub_level_data data;
+			data.lvl.reset(sub_level);
+			data.xbase = x - boundaries_.x();
+			data.ybase = 0;
+			data.xoffset = data.yoffset = 0;
+			data.active = false;
+			sub_levels.push_back(data);
+			++segment_number;
+		}
+
+		const std::vector<entity_ptr> objects = get_chars();
+		foreach(const entity_ptr& obj, objects) {
+			if(!obj->is_human()) {
+				remove_character(obj);
+			}
+		}
+
+		solid_.clear();
+		standable_.clear();
+		tiles_.clear();
+		prepare_tiles_for_drawing();
+
+		int index = 0;
+		foreach(const sub_level_data& data, sub_levels) {
+			sub_levels_[formatter() << index] = data;
+			++index;
+		}
+	}
+
+	if(sub_levels_.empty() == false) {
+		solid_base_ = solid_;
+		standable_base_ = standable_;
+	}
+
 	graphics::texture::build_textures_from_worker_threads();
 
 	game_logic::wml_formula_callable_read_scope read_scope;
@@ -429,6 +490,21 @@ void level::finish_loading()
 
 	if(!next_level().empty()) {
 		preload_level_wml(next_level());
+	}
+
+	if(!sub_levels.empty()) {
+		int segment_number = 0;
+		for(int x = boundaries_.x(); x < boundaries_.x2(); x += segment_width_) {
+			const std::vector<entity_ptr> objects = get_chars();
+			foreach(const entity_ptr& obj, objects) {
+				if(!obj->is_human() && obj->midpoint().x >= x && obj->midpoint().x < x + segment_width_ && obj->midpoint().y >= boundaries_.y() && obj->midpoint().y < boundaries_.y2()) {
+					sub_levels[segment_number].lvl->add_character(obj);
+					remove_character(obj);
+				}
+			}
+
+			++segment_number;
+		}
 	}
 }
 
@@ -711,6 +787,16 @@ void level::rebuild_tiles_rect(const rect& r)
 	prepare_tiles_for_drawing();
 }
 
+std::string level::package() const
+{
+	std::string::const_iterator i = std::find(id_.begin(), id_.end(), '/');
+	if(i == id_.end()) {
+		return "";
+	}
+
+	return std::string(id_.begin(), i);
+}
+
 wml::node_ptr level::write() const
 {
 	std::sort(tiles_.begin(), tiles_.end(), level_tile_zorder_pos_comparer());
@@ -719,6 +805,7 @@ wml::node_ptr level::write() const
 	wml::node_ptr res(new wml::node("level"));
 	res->set_attr("title", title_);
 	res->set_attr("music", music_);
+	res->set_attr("segment_width", formatter() << segment_width_);
 	if(gui_algo_str_ != "default") {
 		res->set_attr("gui", gui_algo_str_);
 	}
@@ -1035,6 +1122,18 @@ wml::node_ptr level::write() const
 
 	if(background_palette_ != -1) {
 		res->set_attr("background_palette", graphics::get_palette_name(background_palette_));
+	}
+
+	if(!vars_.empty()) {
+		wml::node_ptr vars(new wml::node("vars"));
+		for(std::map<std::string, variant>::const_iterator i = vars_.begin();
+		    i != vars_.end(); ++i) {
+			std::string value;
+			i->second.serialize_to_string(value);
+			vars->set_attr(i->first, value);
+		}
+
+		res->add_child(vars);
 	}
 
 	return res;
@@ -2836,6 +2935,10 @@ variant level::get_value(const std::string& key) const
 		v.push_back(variant(boundaries_.x2()));
 		v.push_back(variant(boundaries_.y2()));
 		return variant(&v);
+	} else if(key == "segment_width") {
+		return variant(segment_width_);
+	} else if(key == "num_segments") {
+		return variant(sub_levels_.size());
 	} else {
 		const_entity_ptr e = get_entity_by_label(key);
 		if(e) {
@@ -3157,27 +3260,40 @@ bool entity_in_current_level(const entity* e)
 	return std::find(lvl.get_chars().begin(), lvl.get_chars().end(), e) != lvl.get_chars().end();
 }
 
-void level::add_sub_level(const std::string& lvl, int xoffset, int yoffset)
+void level::add_sub_level(const std::string& lvl, int xoffset, int yoffset, bool add_objects)
 {
+
 	const std::map<std::string, sub_level_data>::iterator itor = sub_levels_.find(lvl);
 	ASSERT_LOG(itor != sub_levels_.end(), "SUB LEVEL NOT FOUND: " << lvl);
+
+	if(itor->second.active && add_objects) {
+		remove_sub_level(lvl);
+	}
 
 	const int xdiff = xoffset - itor->second.xoffset;
 	const int ydiff = yoffset - itor->second.yoffset;
 
-	itor->second.xoffset = xoffset;
-	itor->second.yoffset = yoffset;
+	itor->second.xoffset = xoffset - itor->second.xbase;
+	itor->second.yoffset = yoffset - itor->second.ybase;
 
 	itor->second.active = true;
 	level& sub = *itor->second.lvl;
 
-	for(std::map<int, layer_blit_info>::iterator i = blit_cache_.begin();
-	    i != blit_cache_.end(); ++i) {
-//		i->second.xbase += xdiff;
-//		i->second.ybase += ydiff;
-		foreach(tile_corner& c, i->second.blit_vertexes) {
-//			c.vertex[0] += xdiff;
-//			c.vertex[1] += ydiff;
+	if(add_objects) {
+		foreach(entity_ptr e, sub.chars_) {
+			if(e->is_human()) {
+				continue;
+			}
+	
+			entity_ptr c = e->clone();
+			if(!c) {
+				continue;
+			}
+
+			relocate_object(c, c->x() + itor->second.xoffset, c->y() + itor->second.yoffset);
+			add_character(c);
+
+			itor->second.objects.push_back(c);
 		}
 	}
 
@@ -3193,6 +3309,16 @@ void level::remove_sub_level(const std::string& lvl)
 	const std::map<std::string, sub_level_data>::iterator itor = sub_levels_.find(lvl);
 	ASSERT_LOG(itor != sub_levels_.end(), "SUB LEVEL NOT FOUND: " << lvl);
 
+	if(itor->second.active) {
+		foreach(entity_ptr& e, itor->second.objects) {
+			if(std::find(active_chars_.begin(), active_chars_.end(), e) == active_chars_.end()) {
+				remove_character(e);
+			}
+		}
+
+		itor->second.objects.clear();
+	}
+
 	itor->second.active = false;
 }
 
@@ -3200,6 +3326,8 @@ void level::build_solid_data_from_sub_levels()
 {
 	solid_ = solid_base_;
 	standable_ = standable_base_;
+	solid_.clear();
+	standable_.clear();
 
 	for(std::map<std::string, sub_level_data>::const_iterator i = sub_levels_.begin(); i != sub_levels_.end(); ++i) {
 		if(!i->second.active) {
@@ -3224,10 +3352,12 @@ void level::adjust_level_offset(int xoffset, int yoffset)
 		e->handle_event(OBJECT_EVENT_COSMIC_SHIFT, callable);
 	}
 
+	boundaries_ = rect(boundaries_.x() + xoffset, boundaries_.y() + yoffset, boundaries_.w(), boundaries_.h());
+
 	for(std::map<std::string, sub_level_data>::iterator i = sub_levels_.begin();
 	    i != sub_levels_.end(); ++i) {
 		if(i->second.active) {
-			add_sub_level(i->first, i->second.xoffset + xoffset, i->second.yoffset + yoffset);
+			add_sub_level(i->first, i->second.xoffset + xoffset + i->second.xbase, i->second.yoffset + yoffset, false);
 		}
 	}
 
@@ -3235,6 +3365,53 @@ void level::adjust_level_offset(int xoffset, int yoffset)
 	last_draw_position().y += yoffset*100;
 	last_draw_position().focus_x += xoffset;
 	last_draw_position().focus_y += yoffset;
+}
+
+bool level::relocate_object(entity_ptr e, int new_x, int new_y)
+{
+	const int orig_x = e->x();
+	const int orig_y = e->y();
+
+	const int delta_x = e->x() - orig_x;
+	const int delta_y = e->y() - orig_y;
+
+	e->set_pos(new_x, new_y);
+
+	if(!place_entity_in_level(*this, *e)) {
+		//if we can't place the object due to solidity, then cancel
+		//the movement.
+		e->set_pos(orig_x, orig_y);
+		return false;
+	}
+
+
+	//update any x/y co-ordinates to be the same relative to the object's
+	//new position.
+	if(e->editor_info()) {
+		foreach(const editor_variable_info& var, e->editor_info()->vars()) {
+			const variant value = e->query_value(var.variable_name());
+			switch(var.type()) {
+			case editor_variable_info::XPOSITION:
+				if(value.is_int()) {
+					e->handle_event("editor_changing_variable");
+					e->mutate_value(var.variable_name(), variant(value.as_int() + delta_x));
+					e->handle_event("editor_changed_variable");
+				}
+				break;
+			case editor_variable_info::YPOSITION:
+				if(value.is_int()) {
+					e->handle_event("editor_changing_variable");
+					e->mutate_value(var.variable_name(), variant(value.as_int() + delta_y));
+					e->handle_event("editor_changed_variable");
+				}
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+	return true;
 }
 
 UTILITY(correct_solidity)

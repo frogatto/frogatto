@@ -5,6 +5,15 @@ level_solid_map::level_solid_map()
 {
 }
 
+level_solid_map::level_solid_map(const level_solid_map& m)
+{
+}
+
+level_solid_map& level_solid_map::operator=(const level_solid_map& m)
+{
+	return *this;
+}
+
 level_solid_map::~level_solid_map()
 {
 	clear();

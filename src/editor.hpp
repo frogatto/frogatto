@@ -79,11 +79,12 @@ public:
 	int get_object() const { return cur_object_; }
 	void set_object(int index);
 
-	enum EDIT_TOOL { TOOL_ADD_RECT, TOOL_SELECT_RECT, TOOL_MAGIC_WAND, TOOL_PENCIL, TOOL_PICKER, TOOL_ADD_OBJECT, TOOL_SELECT_OBJECT, NUM_TOOLS };
+	enum EDIT_TOOL { TOOL_ADD_RECT, TOOL_SELECT_RECT, TOOL_MAGIC_WAND, TOOL_PENCIL, TOOL_PICKER, TOOL_ADD_OBJECT, TOOL_SELECT_OBJECT, TOOL_EDIT_SEGMENTS, NUM_TOOLS };
 	EDIT_TOOL tool() const;
 	void change_tool(EDIT_TOOL tool);
 
 	level& get_level() { return *lvl_; }
+	const level& get_level() const { return *lvl_; }
 
 	void save_level();
 	void save_level_as(const std::string& filename);
@@ -227,6 +228,7 @@ private:
 	std::vector<stats::record_ptr> stats_;
 
 	int level_changed_;
+	int selected_segment_;
 };
 
 #endif

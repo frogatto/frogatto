@@ -23,6 +23,8 @@ struct tile_solid_info {
 class level_solid_map {
 public:
 	level_solid_map();
+	level_solid_map(const level_solid_map& m);
+	level_solid_map& operator=(const level_solid_map& m);
 	~level_solid_map();
 	tile_solid_info& insert_or_find(const tile_pos& pos);
 	const tile_solid_info* find(const tile_pos& pos) const;
@@ -31,6 +33,7 @@ public:
 
 	void merge(const level_solid_map& m, int xoffset, int yoffset);
 private:
+
 	tile_solid_info** insert_raw(const tile_pos& pos);
 
 	struct row {

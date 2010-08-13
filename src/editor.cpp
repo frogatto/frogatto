@@ -12,6 +12,7 @@
 #include "button.hpp"
 #include "character_editor_dialog.hpp"
 #include "collision_utils.hpp"
+#include "color_utils.hpp"
 #include "draw_tile.hpp"
 #include "debug_console.hpp"
 #include "editor.hpp"
@@ -36,6 +37,7 @@
 #include "level_object.hpp"
 #include "load_level.hpp"
 #include "object_events.hpp"
+#include "package.hpp"
 #include "player_info.hpp"
 #include "preferences.hpp"
 #include "property_editor_dialog.hpp"
@@ -288,9 +290,10 @@ const char* ToolStrings[] = {
   "Pick tiles or objects",
   "Add Objects",
   "Select Objects",
+  "Edit Level Segments",
 };
 
-const char* ToolIcons[] = {"editor_draw_rect", "editor_rect_select", "editor_wand", "editor_pencil", "editor_eyedropper", "editor_add_object", "editor_select_object",};
+const char* ToolIcons[] = {"editor_draw_rect", "editor_rect_select", "editor_wand", "editor_pencil", "editor_eyedropper", "editor_add_object", "editor_select_object", "editor_rect_select", };
 }
 
 class editor_mode_dialog : public gui::dialog
@@ -346,6 +349,10 @@ public:
 
 		grid_ptr grid(new gui::grid(3));
 		for(int n = 0; n != editor::NUM_TOOLS; ++n) {
+			if(n == editor::TOOL_EDIT_SEGMENTS && editor_.get_level().segment_width() == 0) {
+				continue;
+			}
+
 			button_ptr tool_button(
 			  new button(widget_ptr(new gui_section_widget(ToolIcons[n], 26, 26)),
 			             boost::bind(&editor_mode_dialog::select_tool, this, n)));
@@ -440,17 +447,27 @@ bool resizing_left_level_edge = false,
      resizing_top_level_edge = false,
      resizing_bottom_level_edge = false;
 
-rect modify_selected_rect(rect boundaries, int xpos, int ypos) {
+rect modify_selected_rect(const editor& e, rect boundaries, int xpos, int ypos) {
 
 	const int x = round_tile_size(xpos);
 	const int y = round_tile_size(ypos);
 
 	if(resizing_left_level_edge) {
 		boundaries = rect::from_coordinates(x, boundaries.y(), boundaries.x2(), boundaries.y2());
+		if(e.get_level().segment_width() > 0) {
+			while(boundaries.w()%e.get_level().segment_width() != 0) {
+				boundaries = rect(boundaries.x()-1, boundaries.y(), boundaries.w()+1, boundaries.h());
+			}
+		}
 	}
 
 	if(resizing_right_level_edge) {
 		boundaries = rect::from_coordinates(boundaries.x(), boundaries.y(), x, boundaries.y2());
+		if(e.get_level().segment_width() > 0) {
+			while(boundaries.w()%e.get_level().segment_width() != 0) {
+				boundaries = rect(boundaries.x(), boundaries.y(), boundaries.w()+1, boundaries.h());
+			}
+		}
 	}
 
 	if(resizing_top_level_edge) {
@@ -587,11 +604,9 @@ editor::editor(const char* level_cfg)
     done_(false), face_right_(true),
 	cur_tileset_(0), cur_object_(0),
     current_dialog_(NULL),
-	drawing_rect_(false), dragging_(false), level_changed_(0)
+	drawing_rect_(false), dragging_(false), level_changed_(0),
+	selected_segment_(-1)
 {
-	editor_menu_dialog_.reset(new editor_menu_dialog(*this));
-	editor_mode_dialog_.reset(new editor_mode_dialog(*this));
-
 	static bool first_time = true;
 	if(first_time) {
 		wml::const_node_ptr editor_cfg = wml::parse_wml(sys::read_file("data/editor.cfg"));
@@ -603,9 +618,12 @@ editor::editor(const char* level_cfg)
 
 	assert(!tilesets.empty());
 	lvl_.reset(new level(level_cfg));
-	lvl_->finish_loading();
 	lvl_->set_editor();
+	lvl_->finish_loading();
 	lvl_->set_as_current_level();
+
+	editor_menu_dialog_.reset(new editor_menu_dialog(*this));
+	editor_mode_dialog_.reset(new editor_mode_dialog(*this));
 
 	group_property_dialog_.reset(new editor_dialogs::group_property_editor_dialog(*this));
 	property_dialog_.reset(new editor_dialogs::property_editor_dialog(*this));
@@ -1193,7 +1211,37 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 
 	dragging_ = drawing_rect_ = false;
 
-	if(tool() == TOOL_PICKER) {
+	if(tool() == TOOL_EDIT_SEGMENTS) {
+		if(point_in_rect(point(anchorx_, anchory_), lvl_->boundaries())) {
+			const int xpos = anchorx_ - lvl_->boundaries().x();
+			const int segment = xpos/lvl_->segment_width();
+
+			if(selected_segment_ == -1) {
+				selected_segment_ = segment;
+			} else if(buttons&SDL_BUTTON_RIGHT) {
+				if(segment != selected_segment_ && selected_segment_ >= 0) {
+					variant next = lvl_->get_var(formatter() << "segments_after_" << selected_segment_);
+					std::vector<variant> v;
+					if(next.is_list()) {
+						for(int n = 0; n != next.num_elements(); ++n) {
+							v.push_back(next[n]);
+						}
+					}
+
+					std::vector<variant>::iterator i = std::find(v.begin(), v.end(), variant(segment));
+					if(i != v.end()) {
+						v.erase(i);
+					} else {
+						v.push_back(variant(segment));
+					}
+
+					lvl_->set_var(formatter() << "segments_after_" << selected_segment_, variant(&v));
+				}
+			}
+		} else {
+			selected_segment_ = -1;
+		}
+	} else if(tool() == TOOL_PICKER) {
 		if(lvl_->editor_highlight()) {
 			change_tool(TOOL_ADD_OBJECT);
 
@@ -1367,7 +1415,7 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 	}
 
 	if(resizing_left_level_edge || resizing_right_level_edge ||resizing_top_level_edge || resizing_bottom_level_edge) {
-		rect boundaries = modify_selected_rect(lvl_->boundaries(), xpos, ypos);
+		rect boundaries = modify_selected_rect(*this, lvl_->boundaries(), xpos, ypos);
 
 		resizing_left_level_edge = resizing_right_level_edge = resizing_top_level_edge = resizing_bottom_level_edge = false;
 
@@ -1752,42 +1800,7 @@ void editor::set_selection(const tile_selection& s)
 
 void editor::move_object(entity_ptr e, int new_x, int new_y)
 {
-	const int orig_x = e->x();
-	const int orig_y = e->y();
-
-	e->set_pos(new_x, new_y);
-
-	if(!place_entity_in_level(*lvl_, *e)) {
-		//if we can't place the object due to solidity, then cancel
-		//the movement.
-		e->set_pos(orig_x, orig_y);
-		return;
-	}
-
-	const int delta_x = e->x() - orig_x;
-	const int delta_y = e->y() - orig_y;
-
-	//update any x/y co-ordinates to be the same relative to the object's
-	//new position.
-	if(e->editor_info()) {
-		foreach(const editor_variable_info& var, e->editor_info()->vars()) {
-			const variant value = e->query_value(var.variable_name());
-			switch(var.type()) {
-			case editor_variable_info::XPOSITION:
-				if(value.is_int()) {
-					mutate_object_value(e, var.variable_name(), variant(value.as_int() + delta_x));
-				}
-				break;
-			case editor_variable_info::YPOSITION:
-				if(value.is_int()) {
-					mutate_object_value(e, var.variable_name(), variant(value.as_int() + delta_y));
-				}
-				break;
-			default:
-				break;
-			}
-		}
-	}
+	lvl_->relocate_object(e, new_x, new_y);
 }
 
 const std::vector<editor::tileset>& editor::all_tilesets() const
@@ -1850,6 +1863,7 @@ editor::EDIT_TOOL editor::tool() const
 void editor::change_tool(EDIT_TOOL tool)
 {
 	tool_ = tool;
+	selected_segment_ = -1;
 
 	std::cerr << "CHANGE TOOL: " << (int)tool << "\n";
 
@@ -1954,14 +1968,14 @@ void editor::save_level()
 	remove_ghost_objects();
 	ghost_objects_.clear();
 
-	const std::string path = preferences::level_path();
 	std::string data;
 	wml::node_ptr lvl_node = lvl_->write();
 	lvl_node->erase_attr("cycle"); //levels saved in the editor should never
 	                               //have a cycle attached to them so that
 								   //all levels start at cycle 0.
 	wml::write(lvl_node, data);
-	sys::write_file(path + filename_, data);
+	std::cerr << "GET LEVEL FILENAME: " << filename_ << "\n";
+	sys::write_file(package::get_level_filename(filename_), data);
 
 	//see if we should write the next/previous levels also
 	//based on them having changed.
@@ -1973,7 +1987,7 @@ void editor::save_level()
 				prev.set_next_level(lvl_->id());
 				std::string data;
 				wml::write(prev.write(), data);
-				sys::write_file(path + prev.id(), data);
+				sys::write_file(package::get_level_filename(prev.id()), data);
 			}
 		} catch(...) {
 		}
@@ -1987,7 +2001,7 @@ void editor::save_level()
 				next.set_previous_level(lvl_->id());
 				std::string data;
 				wml::write(next.write(), data);
-				sys::write_file(path + next.id(), data);
+				sys::write_file(package::get_level_filename(next.id()), data);
 			}
 		} catch(...) {
 		}
@@ -2140,12 +2154,12 @@ void editor::draw() const
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	varray.clear();
 	glColor4ub(255, 255, 255, 64);
-	for(int x = TileSize - (xpos_/zoom_)%TileSize; x < graphics::screen_width(); x += 32/zoom_) {
+	for(int x = -TileSize - (xpos_/zoom_)%TileSize; x < graphics::screen_width(); x += 32/zoom_) {
 		varray.push_back(x); varray.push_back(0);
 		varray.push_back(x); varray.push_back(graphics::screen_height());
 	}
 
-	for(int y = TileSize - (ypos_/zoom_)%TileSize; y < graphics::screen_height(); y += 32/zoom_) {
+	for(int y = -TileSize - (ypos_/zoom_)%TileSize; y < graphics::screen_height(); y += 32/zoom_) {
 		varray.push_back(0); varray.push_back(y);
 		varray.push_back(graphics::screen_width()); varray.push_back(y);
 	}
@@ -2157,7 +2171,7 @@ void editor::draw() const
 		varray.clear();
 		std::vector<GLfloat>& carray = graphics::global_texcoords_array(); //reusing texcoords array for colors
 		carray.clear();
-		rect boundaries = modify_selected_rect(lvl_->boundaries(), selectx, selecty);
+		rect boundaries = modify_selected_rect(*this, lvl_->boundaries(), selectx, selecty);
 		const int x1 = boundaries.x()/zoom_;
 		const int x2 = boundaries.x2()/zoom_;
 		const int y1 = boundaries.y()/zoom_;
@@ -2209,6 +2223,17 @@ void editor::draw() const
 		
 		varray.push_back(x1 - xpos_/zoom_); varray.push_back(y2 - ypos_/zoom_);
 		varray.push_back(x2 - xpos_/zoom_); varray.push_back(y2 - ypos_/zoom_);
+
+		if(lvl_->segment_width() > 0) {
+			for(int xpos = boundaries.x() + lvl_->segment_width(); xpos < boundaries.x2(); xpos += lvl_->segment_width()) {
+				varray.push_back((xpos - xpos_)/zoom_);
+				varray.push_back(y1 - ypos_/zoom_);
+				varray.push_back((xpos - xpos_)/zoom_);
+				varray.push_back(y2 - ypos_/zoom_);
+				normal_color.add_to_vector(&carray);
+				normal_color.add_to_vector(&carray);
+			}
+		}
 		
 		glEnableClientState(GL_COLOR_ARRAY);
 		glVertexPointer(2, GL_FLOAT, 0, &varray.front());
@@ -2226,6 +2251,24 @@ void editor::draw() const
 		if(diffx != 0 || diffy != 0) {
 			std::cerr << "DRAW DIFF: " << diffx << "," << diffy << "\n";
 			draw_selection(diffx*TileSize, diffy*TileSize);
+		}
+	}
+
+	if(tool() == TOOL_EDIT_SEGMENTS && selected_segment_ >= 0) {
+		rect area = rect(lvl_->boundaries().x() + selected_segment_*lvl_->segment_width(), lvl_->boundaries().y(), lvl_->segment_width(), lvl_->boundaries().h());
+		area = rect((area.x() - xpos_)/zoom_, (area.y() - ypos_)/zoom_,
+		            area.w()/zoom_, area.h()/zoom_);
+		graphics::draw_rect(area, graphics::color(255, 255, 0, 64));
+
+		variant next = lvl_->get_var(formatter() << "segments_after_" << selected_segment_);
+		if(next.is_list()) {
+			for(int n = 0; n != next.num_elements(); ++n) {
+				const int segment = next[n].as_int();
+				rect area = rect(lvl_->boundaries().x() + segment*lvl_->segment_width(), lvl_->boundaries().y(), lvl_->segment_width(), lvl_->boundaries().h());
+				area = rect((area.x() - xpos_)/zoom_, (area.y() - ypos_)/zoom_,
+				            area.w()/zoom_, area.h()/zoom_);
+				graphics::draw_rect(area, graphics::color(255, 0, 0, 64));
+			}
 		}
 	}
 	

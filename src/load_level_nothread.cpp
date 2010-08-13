@@ -1,10 +1,13 @@
 #include "asserts.hpp"
 #include "concurrent_cache.hpp"
 #include "filesystem.hpp"
+#include "foreach.hpp"
 #include "level.hpp"
 #include "load_level.hpp"
+#include "package.hpp"
 #include "preferences.hpp"
 #include "preprocessor.hpp"
+#include "string_utils.hpp"
 #include "wml_parser.hpp"
 
 namespace {
@@ -20,10 +23,15 @@ public:
 	wml_loader(const std::string& lvl) : lvl_(lvl)
 	{}
 	void operator()() {
-		static const std::string path = preferences::load_compiled() ? "data/compiled/level/" : preferences::level_path();
-		const std::string filename = path + lvl_;
-		wml::const_node_ptr node(wml::parse_wml_from_file(filename));
-		wml_cache().put(lvl_, node);
+		const std::string filename = package::get_level_filename(lvl_);
+
+		try {
+			wml::const_node_ptr node(wml::parse_wml(preprocess(sys::read_file(filename))));
+			wml_cache().put(lvl_, node);
+		} catch(...) {
+			std::cerr << "FAILED TO LOAD " << lvl_ << " -> " << filename << "\n";
+			ASSERT_LOG(false, "FAILED TO LOAD");
+		}
 	}
 };
 }
@@ -104,5 +112,12 @@ std::vector<std::string> get_known_levels()
 	std::vector<std::string> files;
 	sys::get_files_in_dir(preferences::level_path(), &files);
 	files.erase(std::remove_if(files.begin(), files.end(), not_cfg_file), files.end());
+	foreach(const std::string& pkg, package::all_packages()) {
+		std::vector<std::string> v = package::package_levels(pkg);
+		files.insert(files.end(), v.begin(), v.end());
+	}
+
+	std::sort(files.begin(), files.end());
+
 	return files;
 }

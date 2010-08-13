@@ -1666,7 +1666,7 @@ public:
 };
 
 FUNCTION_DEF(add_level_module, 3, 3, "add_level_module(string lvl, int xoffset, int yoffset): adds the level module with the given level id at the given offset")
-	return variant(new add_level_module_command(args()[0]->evaluate(variables).as_string(), args()[1]->evaluate(variables).as_int(), args()[2]->evaluate(variables).as_int()));
+	return variant(new add_level_module_command(args()[0]->evaluate(variables).string_cast(), args()[1]->evaluate(variables).as_int(), args()[2]->evaluate(variables).as_int()));
 END_FUNCTION_DEF(add_level_module)
 
 class remove_level_module_command : public entity_command_callable {
@@ -1681,7 +1681,7 @@ public:
 };
 
 FUNCTION_DEF(remove_level_module, 1, 1, "remove_level_module(string lvl): removes the given level module")
-	return variant(new remove_level_module_command(args()[0]->evaluate(variables).as_string()));
+	return variant(new remove_level_module_command(args()[0]->evaluate(variables).string_cast()));
 END_FUNCTION_DEF(remove_level_module)
 
 class shift_level_position_command : public entity_command_callable {

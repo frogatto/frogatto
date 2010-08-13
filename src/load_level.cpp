@@ -5,6 +5,7 @@
 #include "filesystem.hpp"
 #include "level.hpp"
 #include "load_level.hpp"
+#include "package.hpp"
 #include "preferences.hpp"
 #include "preprocessor.hpp"
 #include "texture.hpp"
@@ -30,8 +31,19 @@ public:
 	wml_loader(const std::string& lvl) : lvl_(lvl)
 	{}
 	void operator()() {
-		static const std::string path = preferences::load_compiled() ? "data/compiled/level/" : preferences::level_path();
-		const std::string filename = path + lvl_;
+		static const std::string global_path = preferences::load_compiled() ? "data/compiled/level/" : preferences::level_path();
+
+		std::string filename;
+
+		std::vector<std::string> components = util::split(lvl_, '/');
+		if(components.size() == 1) {
+			filename = global_path + lvl_;
+		} else if(components.size() == 2) {
+			filename = std::string(preferences::user_data_path()) + "/packages/" + components.front() + "/" + components.back();
+		} else {
+			ASSERT_LOG(false, "UNRECOGNIZED LEVEL PATH FORMAT: " << lvl_);
+		}
+
 		try {
 			wml::const_node_ptr node(wml::parse_wml(preprocess(sys::read_file(filename))));
 			wml_cache().put(lvl_, node);
@@ -188,5 +200,13 @@ std::vector<std::string> get_known_levels()
 	std::vector<std::string> files;
 	sys::get_files_in_dir(preferences::level_path(), &files);
 	files.erase(std::remove_if(files.begin(), files.end(), hidden_file), files.end());
+
+	foreach(const std::string& pkg, package::all_packages()) {
+		std::vector<std::string> v = package::package_levels(pkg);
+		files.insert(files.end(), v.begin(), v.end());
+	}
+
+	std::sort(files.begin(), files.end());
+	
 	return files;
 }
