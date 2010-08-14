@@ -92,11 +92,6 @@ bool calculate_stencil_buffer_available() {
 	return stencil_buffer_bits > 0;	
 }
 
-bool is_stencil_buffer_available() {
-	static const bool result = calculate_stencil_buffer_available();
-	return result;
-}
-
 void iris_scene(const level& lvl, screen_position& screen_pos, float amount) {
 	if(lvl.player() == NULL) {
 		return;
@@ -340,7 +335,7 @@ bool level_runner::play_cycle()
 				transition_scene(*lvl_, last_draw_position(), true, flip_scene);
 			} else if(transition == "instant") {
 				//do nothing
-			} else if(transition != "fade" && is_stencil_buffer_available()) {
+			} else if(transition != "fade") {
 				transition_scene(*lvl_, last_draw_position(), true, iris_scene);
 			} else {
 				preload_level(level_cfg_);
