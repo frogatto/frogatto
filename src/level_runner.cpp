@@ -20,6 +20,7 @@
 #include "inventory.hpp"
 #include "joystick.hpp"
 #include "level_runner.hpp"
+#include "light.hpp"
 #include "load_level.hpp"
 #include "message_dialog.hpp"
 #include "object_events.hpp"
@@ -97,90 +98,27 @@ bool is_stencil_buffer_available() {
 }
 
 void iris_scene(const level& lvl, screen_position& screen_pos, float amount) {
-	if(!is_stencil_buffer_available()) {
-		//there's no stencil buffer available, so resort to a fade
-		//effect instead.
-		fade_scene(lvl, screen_pos, amount);
-		return;
-	}
-
 	if(lvl.player() == NULL) {
 		return;
 	}
+	
+	const_entity_ptr player = &lvl.player()->get_entity();
+	std::map<const_entity_ptr, std::vector<light_ptr> > lights;
+	lights[player].push_back(light_ptr(new circle_light(*dynamic_cast<const custom_object*>(player.get()), (1.0-amount)*500)));
 
-	//Enable the stencil buffer.
-	glEnable(GL_STENCIL_TEST);
-	glClear(GL_STENCIL_BUFFER_BIT);
-
-	//Set things up so we will draw to the stencil buffer, not to the screen.
-	glStencilFunc(GL_NEVER, 1, 1);
-	glStencilOp(GL_REPLACE, GL_KEEP, GL_KEEP);
-
-	glPushMatrix();
-
-	glTranslatef(-screen_pos.x/100, -screen_pos.y/100, 0);
-
-	point pos = lvl.player()->get_entity().midpoint();
-
-	//we want to make the circle shrink quickly at first, but then slow
-	//as it gets smaller, so we use the square of the amount to achieve this.
-	amount = (1.0 - amount)*(1.0 - amount);
-
-	//Draw a circle.
-	const float radius = amount*500;
-	std::vector<GLfloat>& varray = graphics::global_vertex_array();
-	varray.clear();
-	varray.push_back(pos.x);
-	varray.push_back(pos.y);
-	for(double angle = 0; angle < 3.1459*2.0; angle += 0.01) {
-		const double x = pos.x + radius*cos(angle);
-		const double y = pos.y + radius*sin(angle);
-		varray.push_back(x);
-		varray.push_back(y);
+	foreach(entity_ptr e, lvl.get_active_chars()) {
+		e->swap_lights(lights[e]);
 	}
 
-	glVertexPointer(2, GL_FLOAT, 0, &varray.front());
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDrawArrays(GL_TRIANGLE_FAN, 0, varray.size()/2);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	const bool dark_value = const_cast<level&>(lvl).set_dark(true);
 
-	glPopMatrix();
-
-	//Now we've set the stencil to a circle, set things up so that the stencil
-	//will be used to draw only within the circle.
-	glStencilFunc(GL_EQUAL, 1, 1);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-	
 	draw_scene(lvl, screen_pos);
 
-	//Now, reverse the rule; use the stencil to draw everything outside the circle - in this case, jet black.
-	glStencilFunc(GL_NOTEQUAL, 1, 1);
-	
-	GLfloat varray2[8];
+	const_cast<level&>(lvl).set_dark(dark_value);
 
-	//populate the four screen corners
-	varray2[0] = 0;
-	varray2[1] = 0;
-	
-	varray2[2] = graphics::screen_width();
-	varray2[3] = 0;
-	
-	varray2[4] = 0;
-	varray2[5] = graphics::screen_height();
-	
-	varray2[6] = graphics::screen_width();
-	varray2[7] = graphics::screen_height();
-	
-	glVertexPointer(2, GL_FLOAT, 0, &varray2);
-	glColor4ub(0, 0, 0, 255);
-	glDisable(GL_TEXTURE_2D);
-
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, sizeof(varray2)/sizeof(GLfloat)/2);
-
-	glEnable(GL_TEXTURE_2D);
-
-	
-	glDisable(GL_STENCIL_TEST);
+	foreach(entity_ptr e, lvl.get_active_chars()) {
+		e->swap_lights(lights[e]);
+	}
 }
 
 void show_end_game()

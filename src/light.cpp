@@ -21,11 +21,11 @@ light::light(const custom_object& obj) : obj_(obj)
 light::~light() {}
 
 circle_light::circle_light(const custom_object& obj, wml::const_node_ptr node)
-  : light(obj), radius_(wml::get_int(node, "radius"))
+  : light(obj), center_(obj.midpoint()), radius_(wml::get_int(node, "radius"))
 {}
 
 circle_light::circle_light(const custom_object& obj, int radius)
-  : light(obj), radius_(radius)
+  : light(obj), center_(obj.midpoint()), radius_(radius)
 {}
 
 variant light::get_value(const std::string& key) const

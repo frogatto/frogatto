@@ -275,6 +275,8 @@ public:
 	}
 	void set_var(const std::string& str, variant value) { vars_[str] = value; }
 
+	bool set_dark(bool value) { bool res = dark_; dark_ = value; return res; }
+
 private:
 
 	void read_compiled_tiles(wml::const_node_ptr node, std::vector<level_tile>::iterator& out);

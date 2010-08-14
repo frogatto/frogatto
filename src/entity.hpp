@@ -230,6 +230,7 @@ public:
 	virtual bool allow_level_collisions() const { return false; }
 
 	virtual const std::vector<light_ptr>& lights() const = 0;
+	virtual void swap_lights(std::vector<light_ptr>& lights) = 0;
 
 protected:
 

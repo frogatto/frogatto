@@ -137,6 +137,7 @@ public:
 	static int events_handled_per_second;
 
 	const std::vector<light_ptr>& lights() const { return lights_; }
+	void swap_lights(std::vector<light_ptr>& lights) { lights_.swap(lights); }
 
 protected:
 	virtual void control(const level& lvl);
