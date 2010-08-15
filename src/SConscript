@@ -14,6 +14,7 @@ editor_formula_functions.cpp
 editor_layers_dialog.cpp
 editor_stats_dialog.cpp
 editor_variable_info.cpp
+checkbox.cpp
 collision_utils.cpp
 color_utils.cpp
 controls.cpp
@@ -68,6 +69,7 @@ multi_tile_pattern.cpp
 multiplayer.cpp
 object_events.cpp
 options_dialog.cpp
+package.cpp
 particle_system.cpp
 pause_game_dialog.cpp
 playable_custom_object.cpp
