@@ -61,5 +61,9 @@ public:
 	~pause_scope();
 };
 
+void begin_skipping_game();
+void end_skipping_game();
+bool is_skipping_game();
+
 
 #endif

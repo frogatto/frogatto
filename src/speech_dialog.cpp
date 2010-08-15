@@ -143,8 +143,14 @@ bool speech_dialog::key_press(const SDL_Event& event)
 	return true;
 }
 
+bool is_skipping_game();
+
 bool speech_dialog::process()
 {
+	if(is_skipping_game()) {
+		return true;
+	}
+
 	++cycle_;
 
 	if(text_char_ < num_chars()) {

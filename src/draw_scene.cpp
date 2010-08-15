@@ -63,9 +63,7 @@ void set_scene_title(const std::string& msg, int duration) {
 }
 
 GLfloat hp_ratio = -1.0;
-void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
-	static int frame_num = 0;
-	++frame_num;
+void draw_scene(const level& lvl, screen_position& pos, const entity* focus, bool do_draw) {
 	if(focus == NULL && lvl.player()) {
 		focus = &lvl.player()->get_entity();
 	}
@@ -74,9 +72,8 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 
 	//flag which gets set to false if we abort drawing, due to the
 	//screen position being initialized now.
-	const bool draw_level = pos.init;
+	const bool draw_level = do_draw && pos.init;
 
-	const int start_time = SDL_GetTicks();
 	graphics::prepare_raster();
 	glPushMatrix();
 
@@ -352,9 +349,7 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus) {
 		glEnable(GL_TEXTURE_2D);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glColor4ub(255, 255, 255, 255);
-
 	}
-	
 }
 
 void draw_fps(const level& lvl, const performance_data& data)

@@ -928,6 +928,10 @@ FUNCTION_DEF(transient_speech_dialog, 1, -1, "transient_speech_dialog(...): sche
 END_FUNCTION_DEF(transient_speech_dialog)
 
 namespace {
+//if this variable is set we are in a controlled dialog sequence skipping
+//scope and the end of dialog shouldn't automatically end skipping dialog.
+bool skipping_dialog_sequence = false;
+
 struct in_dialog_setter {
 	bool was_in_dialog_;
 	level& lvl_;
@@ -937,6 +941,9 @@ struct in_dialog_setter {
 	}
 	~in_dialog_setter() {
 		lvl_.set_in_dialog(was_in_dialog_);
+		if(!was_in_dialog_ && !skipping_dialog_sequence) {
+			end_skipping_game();
+		}
 	}
 };
 
@@ -955,7 +962,32 @@ struct speech_dialog_scope {
 		lvl_.remove_speech_dialog();
 	}
 };
+
 }
+
+class skip_sequence_command : public custom_object_command_callable {
+	bool skip_on_;
+public:
+	explicit skip_sequence_command(bool skip_on)
+	  : skip_on_(skip_on)
+	{}
+
+	virtual void execute(level& lvl, custom_object& ob) const {
+		skipping_dialog_sequence = skip_on_;
+		if(!skip_on_) {
+			end_skipping_game();
+		}
+	}
+};
+
+FUNCTION_DEF(begin_skip_dialog_sequence, 0, 0, "begin_skip_dialog_sequence(): command that will cause everything up until the next time end_skip_dialog_sequence() is called to be considered a single storyline sequence. If the player selects to skip the sequence between now and then everything up until the call to end_skip_dialog_sequence() will be skipped.")
+	return variant(new skip_sequence_command(true));
+END_FUNCTION_DEF(begin_skip_dialog_sequence)
+
+FUNCTION_DEF(end_skip_dialog_sequence, 0, 0, "end_skip_dialog_sequence(): ends the sequence begun with begin_skip_dialog_sequence().")
+	std::cerr << "ENDDIALOG\n";
+	return variant(new skip_sequence_command(false));
+END_FUNCTION_DEF(end_skip_dialog_sequence)
 
 class speech_dialog_command : public custom_object_command_callable {
 public:
@@ -1047,10 +1079,14 @@ private:
 							throw interrupt_game_exception();
 						case SDL_KEYDOWN:
 							if(event.key.keysym.sym == SDLK_ESCAPE) {
+								begin_skipping_game();
+								/* -- for now make escape skip the dialog
+								      sequence. Later we might change this.
 								PAUSE_GAME_RESULT result = show_pause_game_dialog();
 								if(result != PAUSE_GAME_CONTINUE) {
 									throw interrupt_game_exception(result);
 								}
+								*/
 								break;
 							}
 

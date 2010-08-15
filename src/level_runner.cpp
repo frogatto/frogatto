@@ -40,6 +40,7 @@
 
 namespace {
 const int FrameTimeInMillis = 20;
+int skipping_game = 0;
 
 int global_pause_time;
 
@@ -152,6 +153,18 @@ void show_end_game()
 	}
 }
 
+}
+
+void begin_skipping_game() {
+	++skipping_game;
+}
+
+void end_skipping_game() {
+	skipping_game = 0;
+}
+
+bool is_skipping_game() {
+	return skipping_game > 0;
 }
 
 level_runner::level_runner(boost::intrusive_ptr<level>& lvl, std::string& level_cfg, std::string& original_level_cfg)
@@ -573,20 +586,25 @@ bool level_runner::play_cycle()
 	const int start_draw = SDL_GetTicks();
 	if(start_draw < desired_end_time || nskip_draw_ >= MaxSkips) {
 		lvl_->process_draw();
-		draw_scene(*lvl_, last_draw_position());
+
+		draw_scene(*lvl_, last_draw_position(), NULL, !is_skipping_game());
+
 		performance_data perf = { current_fps_, current_cycles_, current_delay_, current_draw_, current_process_, current_flip_, cycle, current_events_, profiling_summary_ };
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 		settings_dialog.draw();
 #endif
 		
-		if(preferences::show_fps()) {
+		if(!is_skipping_game() && preferences::show_fps()) {
 			draw_fps(*lvl_, perf);
 		}
 
 		next_draw_ += (SDL_GetTicks() - start_draw);
 
 		const int start_flip = SDL_GetTicks();
-		SDL_GL_SwapBuffers();
+		if(!is_skipping_game()) {
+			SDL_GL_SwapBuffers();
+		}
+
 		next_flip_ += (SDL_GetTicks() - start_flip);
 		++next_fps_;
 		nskip_draw_ = 0;
@@ -620,7 +638,16 @@ bool level_runner::play_cycle()
 	const int raw_wait_time = desired_end_time - SDL_GetTicks();
 	const int wait_time = std::max<int>(1, desired_end_time - SDL_GetTicks());
 	next_delay_ += wait_time;
-	if (wait_time != 1) SDL_Delay(wait_time);
+	if (wait_time != 1 && !is_skipping_game()) {
+		SDL_Delay(wait_time);
+	}
+	
+	if(is_skipping_game()) {
+		const int adjust_time = desired_end_time - SDL_GetTicks();
+		if(adjust_time > 0) {
+			pause_time_ -= adjust_time;
+		}
+	}
 
 	if (!paused) ++cycle;
 
