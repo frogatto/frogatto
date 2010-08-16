@@ -13,6 +13,7 @@
 #include "boost/scoped_ptr.hpp"
 
 #include "background.hpp"
+#include "color_utils.hpp"
 #include "entity.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
@@ -450,6 +451,7 @@ private:
 	bool show_foreground_, show_background_;
 
 	bool dark_;
+	graphics::color_transform dark_color_;
 
 	point auto_move_camera_;
 	int air_resistance_;

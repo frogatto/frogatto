@@ -84,11 +84,17 @@ void level::set_as_current_level()
 	frame::set_color_palette(palettes_used_);
 }
 
+namespace {
+graphics::color_transform default_dark_color() {
+	return graphics::color_transform(8, 22, 35, 255);
+}
+}
+
 level::level(const std::string& level_cfg)
 	: id_(level_cfg), highlight_layer_(INT_MIN),
 	  num_compiled_tiles_(0),
 	  entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
-	  editor_(false), show_foreground_(true), show_background_(true), dark_(false), air_resistance_(0), water_resistance_(7), end_game_(false),
+	  editor_(false), show_foreground_(true), show_background_(true), dark_(false), dark_color_(default_dark_color()), air_resistance_(0), water_resistance_(7), end_game_(false),
       editor_tile_updates_frozen_(0), zoom_level_(1),
 	  palettes_used_(0),
 	  background_palette_(-1),
@@ -102,6 +108,10 @@ level::level(const std::string& level_cfg)
 
 	if(wml::get_bool(node, "dark", false)) {
 		dark_ = true;
+	}
+
+	if(node->has_attr("dark_color")) {
+		dark_color_ = graphics::color_transform(node->attr("dark_color"));
 	}
 
 	if(node->get_child("vars")) {
@@ -812,6 +822,10 @@ wml::node_ptr level::write() const
 
 	if(dark_) {
 		res->set_attr("dark", "yes");
+	}
+
+	if(dark_color_.to_string() != default_dark_color().to_string()) {
+		res->set_attr("dark_color", dark_color_.to_string());
 	}
 
 	if(cycle_) {
@@ -1719,7 +1733,7 @@ void level::draw(int x, int y, int w, int h) const
 			glDisable(GL_TEXTURE_2D);
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
-			glColor4f(0.0, 0.0, 0.0, 1.0);
+			glColor4ub(dark_color_.r(), dark_color_.g(), dark_color_.b(), dark_color_.a());
 
 			static std::vector<GLshort> vertexes, alpha_vertexes;
 			static std::vector<unsigned char> colors;
@@ -1755,10 +1769,10 @@ void level::draw(int x, int y, int w, int h) const
 					alpha_vertexes.push_back(s.area.y2());
 
 #define ADD_COLOR(alpha) \
-	colors.push_back(0); \
-	colors.push_back(0); \
-	colors.push_back(0); \
-	colors.push_back(alpha);
+	colors.push_back(dark_color_.r()); \
+	colors.push_back(dark_color_.g()); \
+	colors.push_back(dark_color_.b()); \
+	colors.push_back((alpha*dark_color_.a())/255);
 
 					ADD_COLOR(s.alpha_left);
 					ADD_COLOR(s.alpha_right);
