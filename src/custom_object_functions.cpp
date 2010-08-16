@@ -1079,14 +1079,14 @@ private:
 							throw interrupt_game_exception();
 						case SDL_KEYDOWN:
 							if(event.key.keysym.sym == SDLK_ESCAPE) {
-								begin_skipping_game();
-								/* -- for now make escape skip the dialog
-								      sequence. Later we might change this.
-								PAUSE_GAME_RESULT result = show_pause_game_dialog();
-								if(result != PAUSE_GAME_CONTINUE) {
-									throw interrupt_game_exception(result);
+								if(!paused_) {
+									begin_skipping_game();
+								} else {
+									PAUSE_GAME_RESULT result = show_pause_game_dialog();
+									if(result != PAUSE_GAME_CONTINUE) {
+										throw interrupt_game_exception(result);
+									}
 								}
-								*/
 								break;
 							}
 
