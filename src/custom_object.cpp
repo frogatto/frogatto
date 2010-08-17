@@ -354,6 +354,10 @@ wml::node_ptr custom_object::write() const
 		res->set_attr("platform_area", platform_area_->to_string());
 	}
 
+	if(always_active_) {
+		res->set_attr("always_active", "yes");
+	}
+
 	if(position_schedule_.get() != NULL) {
 		res->set_attr("schedule_speed", formatter() << position_schedule_->speed);
 		if(position_schedule_->x_pos.empty() == false) {
