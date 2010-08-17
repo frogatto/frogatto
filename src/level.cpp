@@ -1210,7 +1210,7 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 		if(i->second.active) {
 			glPushMatrix();
 			glTranslatef(i->second.xoffset, i->second.yoffset, 0.0);
-			i->second.lvl->draw_layer(layer, x - i->second.xoffset, y - i->second.yoffset, w, h);
+			i->second.lvl->draw_layer(layer, x - i->second.xoffset, y - i->second.yoffset - TileSize, w, h + TileSize);
 			glPopMatrix();
 		}
 	}
