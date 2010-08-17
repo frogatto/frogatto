@@ -49,7 +49,7 @@ void show_controls_dialog()
 	widget_ptr b6(key_buttons[CONTROL_TONGUE]);
 	widget_ptr t4(new graphical_font_label("Attack", "door_label", 2));
 	widget_ptr b7(key_buttons[CONTROL_ATTACK]);
-	widget_ptr b8(new button(widget_ptr(new graphical_font_label("Back", "door_label", 2)), boost::bind(end_dialog, &d), BUTTON_SIZE_DOUBLE_RESOLUTION));
+	widget_ptr b8(new button(widget_ptr(new graphical_font_label("Back", "door_label", 2)), boost::bind(end_dialog, &d), BUTTON_STYLE_DEFAULT, BUTTON_SIZE_DOUBLE_RESOLUTION));
 	b8->set_dim(230, 60);
 
 	int start_y = (d.height() - 4*b1->height() - 2*t1->height() - 7*d.padding())/2;

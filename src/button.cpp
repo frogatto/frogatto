@@ -25,15 +25,22 @@ int hpadding = 10;
 
 }
 
-button::button(widget_ptr label, boost::function<void ()> onclick, BUTTON_RESOLUTION button_resolution)
-  : label_(label), onclick_(onclick), button_resolution_(button_resolution),
-	normal_button_image_set_(framed_gui_element::get("regular_button")),
-	depressed_button_image_set_(framed_gui_element::get("regular_button_pressed")),
-	focus_button_image_set_(framed_gui_element::get("regular_button_focus")),
-	current_button_image_set_(normal_button_image_set_),
+button::button(widget_ptr label, boost::function<void ()> onclick, BUTTON_STYLE button_style, BUTTON_RESOLUTION button_resolution)
+  : label_(label), onclick_(onclick), button_resolution_(button_resolution), button_style_(button_style),
 	down_(false)
 	
 {
+	if(button_style_ == BUTTON_STYLE_DEFAULT){
+		normal_button_image_set_ = framed_gui_element::get("default_button");
+		depressed_button_image_set_ = framed_gui_element::get("default_button_pressed");
+		focus_button_image_set_ = framed_gui_element::get("default_button_focus");
+	}else{
+		normal_button_image_set_ = framed_gui_element::get("regular_button");
+		depressed_button_image_set_ = framed_gui_element::get("regular_button_pressed");
+		focus_button_image_set_ = framed_gui_element::get("regular_button_focus");
+	}
+	current_button_image_set_ = normal_button_image_set_;
+	
 	set_label(label);
 }
 

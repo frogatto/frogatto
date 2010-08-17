@@ -23,12 +23,13 @@
 namespace gui {
 
 enum BUTTON_RESOLUTION { BUTTON_SIZE_NORMAL_RESOLUTION, BUTTON_SIZE_DOUBLE_RESOLUTION };
+enum BUTTON_STYLE { BUTTON_STYLE_NORMAL, BUTTON_STYLE_DEFAULT };	//"default" means a visually fat-edged button - the one that gets pressed by hitting enter.  This is standard gui lingo, it's what the dialogue "defaults" to doing when you press return.
 
 //a button widget. Forwards to a given function whenever it is clicked.
 class button : public widget
 {
 public:
-	button(widget_ptr label, boost::function<void ()> onclick, BUTTON_RESOLUTION button_resolution = BUTTON_SIZE_NORMAL_RESOLUTION);
+	button(widget_ptr label, boost::function<void ()> onclick, BUTTON_STYLE button_style = BUTTON_STYLE_NORMAL, BUTTON_RESOLUTION button_resolution = BUTTON_SIZE_NORMAL_RESOLUTION);
 
 protected:
 	void set_label(widget_ptr label);
@@ -39,6 +40,7 @@ private:
 	bool handle_event(const SDL_Event& event, bool claimed);
 
 	BUTTON_RESOLUTION button_resolution_;
+	BUTTON_STYLE button_style_;
 	widget_ptr label_;
 	boost::function<void ()> onclick_;
 	bool down_;
