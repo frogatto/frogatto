@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "foreach.hpp"
 #include "level_solid_map.hpp"
 
@@ -132,9 +134,7 @@ void level_solid_map::clear()
 
 void level_solid_map::merge(const level_solid_map& map, int xoffset, int yoffset)
 {
-
 	for(int n = 0; n != map.negative_rows_.size(); ++n) {
-
 		for(int m = 0; m != map.negative_rows_[n].negative_cells.size(); ++m) {
 			const tile_pos pos(-m - 1 + xoffset, -n - 1 + yoffset);
 			tile_solid_info& dst = insert_or_find(pos);

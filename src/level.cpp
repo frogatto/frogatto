@@ -310,6 +310,7 @@ level::level(const std::string& level_cfg)
 
 		data.active = false;
 		data.xoffset = data.yoffset = 0;
+		data.xbase = data.ybase = 0;
 	}
 
 }
