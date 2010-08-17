@@ -339,7 +339,6 @@ custom_object::custom_object(const custom_object& o) :
 custom_object::~custom_object()
 {
 	sound::stop_looped_sounds(this);
-	//std::cerr << "Object died:" << type_->id() << " " << this << " \n";
 }
 
 wml::node_ptr custom_object::write() const
@@ -898,7 +897,6 @@ void custom_object::process(level& lvl)
 
 	bool is_stuck = false;
 
-	//std::cerr << "velocity_y: " << velocity_y_ << "\n";
 	collide = false;
 	int move_left;
 	for(move_left = std::abs(effective_velocity_y); move_left > 0 && !collide && !type_->ignore_collide(); move_left -= 100) {
@@ -960,7 +958,6 @@ void custom_object::process(level& lvl)
 		}
 
 		if(collide) {
-			std::cerr << "collide y!\n";
 			break;
 		}
 	}
@@ -1125,7 +1122,6 @@ void custom_object::process(level& lvl)
 					//and one pixel below is walkable, then we move down by
 					//one pixel.
 					is_standing(lvl, &slope_standing_info);
-					std::cerr << "TRYING TO MOVE DOWN\n";
 					if(slope_standing_info.platform) {
 						set_y(y()+1);
 						if(!is_standing(lvl) || detect_collisions && entity_collides(lvl, *this, MOVE_DOWN)) {
@@ -1710,7 +1706,6 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		time_in_frame_ = value.as_int()%frame_->duration();
 	} else if(key == "time_in_animation_delta") {
 		time_in_frame_delta_ = value.as_int();
-		std::cerr << "SET TIME IN ANIMATION_DELTA: " << time_in_frame_delta_ << "\n";
 	} else if(key == "x") {
 		const int start_x = centi_x();
 		set_x(value.as_int());
@@ -1939,7 +1934,6 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		break;
 	case CUSTOM_OBJECT_TIME_IN_ANIMATION_DELTA:
 		time_in_frame_delta_ = value.as_int();
-		std::cerr << "SET TIME IN ANIMATION_DELTA: " << time_in_frame_delta_ << "\n";
 		break;
 	case CUSTOM_OBJECT_ANIMATION:
 		set_frame(value.as_string());
@@ -2472,7 +2466,6 @@ void custom_object::move_to_standing(level& lvl)
 	}
 	
 	set_pos(x(), start_y);
-	std::cerr << "MOVE_TO_STANDING FAILED\n";
 }
 
 
