@@ -20,7 +20,7 @@
 #include "color_utils.hpp"
 
 namespace {
-	const int WaterZorder = 3;
+	const int WaterZorder = 15;
 }
 
 water::water()
