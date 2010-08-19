@@ -146,8 +146,8 @@ rect intersection_rect(const rect& a, const rect& b)
 {
 	const int x = std::max(a.x(), b.x());
 	const int y = std::max(a.y(), b.y());
-	const int w = std::min(a.x2(), b.x2()) - x;
-	const int h = std::min(a.y2(), b.y2()) - y;
+	const int w = std::max(0, std::min(a.x2(), b.x2()) - x);
+	const int h = std::max(0, std::min(a.y2(), b.y2()) - y);
 	return rect(x, y, w, h);
 }
 
@@ -276,6 +276,16 @@ UNIT_TEST(rect_difference)
 
 	CHECK_EQ(rect_difference(rect(0, 891, 800, 1491), rect(-32, 1344, 1120, 2432), buf), 1);
 	CHECK_EQ(buf[0], rect(0, 891, 800, 453));
+}
+
+UNIT_TEST(rect_intersect)
+{
+	rect r1(0, 0, 802, 610);
+	rect r2(0, -128, 800, 64);
+	rect r3 = intersection_rect(r1, r2);
+	CHECK_EQ(r3.h(), 0);
+
+	CHECK_EQ(r3, intersection_rect(r2, r1));
 }
 
 BENCHMARK(benchmark_rect_str)
