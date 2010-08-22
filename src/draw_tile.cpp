@@ -18,6 +18,8 @@ int get_tile_corners(tile_corner* result, const graphics::texture& t, const rect
 	}
 
 	const int width = std::max<int>(t.width(), t.height());
+	if (width == 0) return 0;
+	
 	const int xpos = 16*(tile_num%(width/16)) + area.x();
 	const int ypos = 16*(tile_num/(width/16)) + area.y();
 
