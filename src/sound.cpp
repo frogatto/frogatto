@@ -469,9 +469,9 @@ void change_volume(const void* object, int volume)
 	for(int n = 0; n != channels_to_sounds_playing.size(); ++n) {
 		if(channels_to_sounds_playing[n].object == object) {
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
-			Mix_Volume(n, (sfx_volume*volume)/MIX_MAX_VOLUME);
+			Mix_Volume(n, sfx_volume*volume);
 #else
-			mixer.channels[n].volume = volume;
+			mixer.channels[n].volume = sfx_volume*volume;
 #endif
 		} //else, we just do nothing
 	}
