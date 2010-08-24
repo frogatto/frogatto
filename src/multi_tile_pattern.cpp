@@ -246,6 +246,8 @@ multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr const_node)
 			obj_node = base_nodes[obj_node->name()];
 		}
 
+		ASSERT_LOG(obj_node->attr("image").empty() == false, "object node has no image\n" << wml::output(obj_node) << "\n");
+
 		objects[obj_node->name()].reset(new level_object(obj_node));
 		if(obj_node->has_attr("zorder")) {
 			object_zorders[obj_node->name()] = wml::get_int(obj_node, "zorder");
