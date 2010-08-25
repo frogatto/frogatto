@@ -32,6 +32,7 @@ namespace preferences {
 		bool use_pretty_scaling_ = false;
 		bool fullscreen_ = false;
 		bool debug_ = true;
+		bool reverse_ab_ = false;
 
 		std::string level_path_ = "data/level/";
 
@@ -189,6 +190,14 @@ namespace preferences {
 		fullscreen_ = value;
 	}
 	
+	bool reverse_ab() {
+		return reverse_ab_;
+	}
+	
+	void set_reverse_ab(bool value) {
+		reverse_ab_ = value;
+	}
+	
 	void set_widescreen()
 	{
 		virtual_screen_width_ = (virtual_screen_height_*16)/9;
@@ -298,6 +307,7 @@ namespace preferences {
 
 		no_sound_ = wml::get_bool(node, "no_sound", no_sound_);
 		no_music_ = wml::get_bool(node, "no_music", no_music_);
+		reverse_ab_ = wml::get_bool(node, "reverse_ab", reverse_ab_);
 
 		sound::set_music_volume(wml::get_int(node, "music_volume", 1000)/1000.0);
 		sound::set_sound_volume(wml::get_int(node, "sound_volume", 1000)/1000.0);
@@ -317,6 +327,7 @@ namespace preferences {
 		node->set_attr("user_id", formatter() << get_unique_user_id());
 		node->set_attr("no_sound", no_sound_ ? "true" : "false");
 		node->set_attr("no_music", no_music_ ? "true" : "false");
+		node->set_attr("reverse_ab", reverse_ab_ ? "true" : "false");
 		node->set_attr("joystick", use_joystick_ ? "true" : "false");
 		node->set_attr("sound_volume", formatter() << static_cast<int>(sound::get_sound_volume()*1000));
 		node->set_attr("music_volume", formatter() << static_cast<int>(sound::get_music_volume()*1000));

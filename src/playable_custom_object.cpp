@@ -1,4 +1,5 @@
 #include "collision_utils.hpp"
+#include "preferences.hpp"
 #include "iphone_controls.hpp"
 #include "joystick.hpp"
 #include "level.hpp"
@@ -96,6 +97,8 @@ void playable_custom_object::process(level& lvl)
 		underwater_ctrl_x_ = 0;
 		underwater_ctrl_y_ = 0;
 	}
+	
+	reverse_ab_ = preferences::reverse_ab();
 
 	bool controls[controls::NUM_CONTROLS];
 	for(int n = 0; n != controls::NUM_CONTROLS; ++n) {
@@ -135,6 +138,8 @@ variant playable_custom_object::get_value(const std::string& key) const
 		return variant(underwater_ctrl_x_);
 	} else if(key == "ctrl_y") {
 		return variant(underwater_ctrl_y_);
+	} else if(key == "ctrl_reverse_ab") {
+		return variant(reverse_ab_);
 	}
 
 	for(int n = 0; n < sizeof(ctrl)/sizeof(*ctrl); ++n) {

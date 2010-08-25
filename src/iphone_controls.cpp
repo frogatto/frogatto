@@ -246,12 +246,12 @@ bool iphone_controls::jump()
 		return false;
 	}
 
-	return hittest_button(a_button);
+	return hittest_button(preferences::reverse_ab() ? c_button : a_button);
 }
 
 bool iphone_controls::tongue()
 {
-	return hittest_button(c_button);
+	return hittest_button(preferences::reverse_ab() ? a_button : c_button);
 }
 
 #else // dummy functions for non-iPhone

@@ -3,6 +3,7 @@
 #include "button.hpp"
 #include "controls_dialog.hpp"
 #include "slider.hpp"
+#include "checkbox.hpp"
 #include "dialog.hpp"
 #include "graphical_font_label.hpp"
 #include "pause_game_dialog.hpp"
@@ -27,10 +28,12 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	const int padding = 20;
 	bool show_exit = true;
 	bool show_controls = true;
+	bool show_button_swap = false;
 	
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 	show_exit = false;
 	show_controls = false;
+	show_button_swap = true;
 #endif
 	
 	using namespace gui;
@@ -39,7 +42,7 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	widget_ptr t2(new graphical_font_label("Sound Volume:", "door_label", 2));
 	widget_ptr s2(new slider(200, boost::bind(sound::set_sound_volume, _1), sound::get_sound_volume()));
 	
-	const int num_buttons = 2 + show_exit + show_controls;
+	const int num_buttons = 2 + show_exit + show_controls + show_button_swap;
 	int window_w, window_h;
 	if(preferences::virtual_screen_height() >= 600) {
 		window_w = button_width + padding*4;
@@ -55,11 +58,13 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	widget_ptr b2(new button(widget_ptr(new graphical_font_label("Controls...", "door_label", 2)), show_controls_dialog, BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
 	widget_ptr b3(new button(widget_ptr(new graphical_font_label("Return to Titlescreen", "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_GO_TO_TITLESCREEN), BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
 	widget_ptr b4(new button(widget_ptr(new graphical_font_label("Exit Game", "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_QUIT), BUTTON_STYLE_DEFAULT, BUTTON_SIZE_DOUBLE_RESOLUTION));
+	widget_ptr b5(new checkbox("Reverse A and B", preferences::reverse_ab(), boost::bind(preferences::set_reverse_ab, _1), BUTTON_SIZE_DOUBLE_RESOLUTION));
 	
 	b1->set_dim(button_width, button_height);
 	b2->set_dim(button_width, button_height);
 	b3->set_dim(button_width, button_height);
 	b4->set_dim(button_width, button_height);
+	b5->set_dim(button_width, button_height);
 	
 	d.set_padding(padding-16);
 	d.add_widget(t1, padding*2, padding*2);
@@ -72,6 +77,7 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 		d.set_padding(padding+16);
 		d.add_widget(s2);
 		d.set_padding(padding);
+		if (show_button_swap) d.add_widget(b5);
 		d.add_widget(b1);
 		if (show_controls) d.add_widget(b2);
 		d.add_widget(b3);

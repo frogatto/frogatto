@@ -42,7 +42,7 @@ private:
 class gui_section_widget : public widget
 {
 public:
-	explicit gui_section_widget(const std::string& id, int w=-1, int h=-1);
+	explicit gui_section_widget(const std::string& id, int w=-1, int h=-1, int scale=1);
 
 	//sets the GUI section. The dimensions of the widget will not change;
 	//you should set a GUI section that is the same size.
@@ -51,6 +51,7 @@ public:
 private:
 	void handle_draw() const;
 	const_gui_section_ptr section_;
+	int scale_;
 };
 
 }

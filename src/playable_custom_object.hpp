@@ -55,6 +55,8 @@ private:
 	bool underwater_controls_;
 
 	int can_interact_;
+	
+	bool reverse_ab_;
 
 	boost::scoped_ptr<controls::local_controls_lock> control_lock_;
 

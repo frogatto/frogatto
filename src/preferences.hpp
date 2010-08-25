@@ -27,6 +27,10 @@ namespace preferences {
 	bool fullscreen();
 	void set_fullscreen(bool value);
 	
+	// Reverse A and B buttons for iPhone
+	bool reverse_ab();
+	void set_reverse_ab(bool value);
+	
 	void set_widescreen();
 	
 	int virtual_screen_width();

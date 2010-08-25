@@ -58,11 +58,11 @@ void image_widget::handle_draw() const
 	}
 }
 
-gui_section_widget::gui_section_widget(const std::string& id, int w, int h)
-  : section_(gui_section::get(id))
+gui_section_widget::gui_section_widget(const std::string& id, int w, int h, int scale)
+  : section_(gui_section::get(id)), scale_(scale)
 {
 	if(section_ && w == -1) {
-		set_dim(section_->width()/2, section_->height()/2);
+		set_dim((section_->width()/2)*scale_, (section_->height()/2)*scale_);
 	} else {
 		set_dim(w,h);
 	}
@@ -77,8 +77,8 @@ void gui_section_widget::handle_draw() const
 {
 	if(section_) {
 		//draw without stretching, in the middle of the widget.
-		const int w = section_->width()/2;
-		const int h = section_->height()/2;
+		const int w = (section_->width()/2)*scale_;
+		const int h = (section_->height()/2)*scale_;
 
 		section_->blit(x() + (width() - w)/2, y() + (height() - h)/2, w, h);
 	}

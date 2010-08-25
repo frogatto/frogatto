@@ -11,7 +11,7 @@ namespace {
 widget_ptr create_checkbox_widget(const std::string& text, bool checked) {
 	grid_ptr g(new grid(2));
 	g->set_hpad(12);
-	g->add_col(widget_ptr(new gui_section_widget(checked ? "checkbox_ticked" : "checkbox_unticked")));
+	g->add_col(widget_ptr(new gui_section_widget(checked ? "checkbox_ticked" : "checkbox_unticked", -1, -1, 2)));
 
 	g->add_col(widget_ptr(new graphical_font_label(text, "door_label", 2)));
 
