@@ -1,4 +1,17 @@
-Version 1.0+svn:
+Version 1.0.1+svn:
+ * Added support for "darkness" in levels.
+ * Added support for WVGA.
+ * Made player status not show on the titlescreen or world map.
+ * Made golden ants less ambiguous.
+ * Fixed bug making certain music always play at full volume (iPhone).
+ * Added support for repeating levels (for arcade modes).
+ * Pressing jump while in the air pressing against a wall now makes you cling to the wall.
+ * Made it so you can skip dialogs sequences.
+ * Fixed some z-order issues.
+ * Fixed bug causing ambient sounds to not work.
+ * Improved forest background, and made it go upwards infinitely.
+
+Version 1.0.1 (iPhone only):
  * Significantly improved controls, both functionally and graphically (iPhone).
  * Fixed auto-saving on iOS4 where multitasking is supported (iPhone).
  * Fixed bug where a dialog could repeat forever.
