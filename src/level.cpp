@@ -94,7 +94,7 @@ level::level(const std::string& level_cfg)
 	: id_(level_cfg), highlight_layer_(INT_MIN),
 	  num_compiled_tiles_(0),
 	  entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
-	  editor_(false), show_foreground_(true), show_background_(true), dark_(false), dark_color_(default_dark_color()), air_resistance_(0), water_resistance_(7), end_game_(false),
+	  editor_(false), show_foreground_(true), show_background_(true), dark_(false), dark_color_(graphics::color_transform(0, 0, 0, 255)), air_resistance_(0), water_resistance_(7), end_game_(false),
       editor_tile_updates_frozen_(0), zoom_level_(1),
 	  palettes_used_(0),
 	  background_palette_(-1),
@@ -108,6 +108,7 @@ level::level(const std::string& level_cfg)
 
 	if(wml::get_bool(node, "dark", false)) {
 		dark_ = true;
+		dark_color_ = default_dark_color();
 	}
 
 	if(node->has_attr("dark_color")) {
