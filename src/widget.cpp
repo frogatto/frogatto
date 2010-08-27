@@ -34,8 +34,8 @@ void widget::normalize_event(SDL_Event* event, bool translate_coords)
 	int tx, ty; //temp x, y
 	switch(event->type) {
 	case SDL_MOUSEMOTION:
-		event->motion.x = (event->motion.x*graphics::screen_width())/preferences::virtual_screen_width();
-		event->motion.y = (event->motion.y*graphics::screen_height())/preferences::virtual_screen_height();
+		event->motion.x = (event->motion.x*preferences::virtual_screen_width())/preferences::actual_screen_width();
+		event->motion.y = (event->motion.y*preferences::virtual_screen_height())/preferences::actual_screen_height();
 		tx = event->motion.x; ty = event->motion.y;
 		translate_mouse_coords(&tx, &ty);
 		event->motion.x = tx-x();
@@ -43,8 +43,8 @@ void widget::normalize_event(SDL_Event* event, bool translate_coords)
 		break;
 	case SDL_MOUSEBUTTONDOWN:
 	case SDL_MOUSEBUTTONUP:
-		event->button.x = (event->button.x*graphics::screen_width())/preferences::virtual_screen_width();
-		event->button.y = (event->button.y*graphics::screen_height())/preferences::virtual_screen_height();
+		event->button.x = (event->button.x*preferences::virtual_screen_width())/preferences::actual_screen_width();
+		event->button.y = (event->button.y*preferences::virtual_screen_height())/preferences::actual_screen_height();
 		tx = event->button.x; ty = event->button.y;
 		translate_mouse_coords(&tx, &ty);
 		event->button.x = tx-x();
