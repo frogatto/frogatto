@@ -31,7 +31,7 @@ namespace graphics
 void set_video_mode(int w, int h)
 {
 	graphics::texture::unbuild_all();
-	SDL_SetVideoMode(w,h,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+	SDL_SetVideoMode(w,h,0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
 	graphics::texture::rebuild_all();
 
 	glShadeModel(GL_SMOOTH);

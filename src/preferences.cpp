@@ -31,6 +31,7 @@ namespace preferences {
 		bool show_debug_hitboxes_ = false;
 		bool use_pretty_scaling_ = false;
 		bool fullscreen_ = false;
+		bool resizable_ = false;
 		bool debug_ = true;
 		bool reverse_ab_ = false;
 
@@ -188,6 +189,10 @@ namespace preferences {
 	
 	void set_fullscreen(bool value) {
 		fullscreen_ = value;
+	}
+
+	bool resizable() {
+		return resizable_;
 	}
 	
 	bool reverse_ab() {
@@ -379,6 +384,10 @@ namespace preferences {
 			no_music_ = false;
 		} else if(s == "--fullscreen") {
 			fullscreen_ = true;
+		} else if(s == "--resizable") {
+			resizable_ = true;
+		} else if(s == "--no-resizable") {
+			resizable_ = false;
 		} else if(s == "--widescreen") {
 			set_widescreen();
 		} else if(s == "--bigscreen") {

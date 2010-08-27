@@ -180,7 +180,7 @@ bool dialog::process_event(const SDL_Event& ev, bool claimed) {
 
 bool dialog::handle_event_children(const SDL_Event &event, bool claimed) {
 	SDL_Event ev = event;
-	normalize_event(&ev, true);
+	normalize_event(&ev, false);
     return input::listener_container::process_event(ev, claimed);
 }
 
