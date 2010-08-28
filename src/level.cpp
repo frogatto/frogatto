@@ -1786,16 +1786,20 @@ void level::draw(int x, int y, int w, int h) const
 				}
 			}
 
-			glVertexPointer(2, GL_SHORT, 0, &vertexes[0]);
-			glDrawArrays(GL_TRIANGLES, 0, vertexes.size()/2);
+			if(!vertexes.empty()) {
+				glVertexPointer(2, GL_SHORT, 0, &vertexes[0]);
+				glDrawArrays(GL_TRIANGLES, 0, vertexes.size()/2);
+			}
 
-			glShadeModel(GL_SMOOTH);
-			glEnableClientState(GL_COLOR_ARRAY);
-			glColorPointer(4, GL_UNSIGNED_BYTE, 0, &colors.front());
-			glVertexPointer(2, GL_SHORT, 0, &alpha_vertexes[0]);
-			glDrawArrays(GL_TRIANGLES, 0, alpha_vertexes.size()/2);
-			glDisableClientState(GL_COLOR_ARRAY);
-			glShadeModel(GL_FLAT);
+			if(!alpha_vertexes.empty()) {
+				glShadeModel(GL_SMOOTH);
+				glEnableClientState(GL_COLOR_ARRAY);
+				glColorPointer(4, GL_UNSIGNED_BYTE, 0, &colors.front());
+				glVertexPointer(2, GL_SHORT, 0, &alpha_vertexes[0]);
+				glDrawArrays(GL_TRIANGLES, 0, alpha_vertexes.size()/2);
+				glDisableClientState(GL_COLOR_ARRAY);
+				glShadeModel(GL_FLAT);
+			}
 
 			glColor4f(1.0, 1.0, 1.0, 1.0);
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
