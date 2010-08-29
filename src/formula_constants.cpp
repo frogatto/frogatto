@@ -1,8 +1,10 @@
 #include <ctype.h>
 
 #include "asserts.hpp"
+#include "controls.hpp"
 #include "foreach.hpp"
 #include "formula_constants.hpp"
+#include "key_button.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "wml_node.hpp"
@@ -37,6 +39,20 @@ variant get_constant(const std::string& id)
 #endif
 	} else if(id == "HIGH_END_SYSTEM") {
 		return variant(!get_constant("LOW_END_SYSTEM").as_bool());
+	} else if(id == "UP_KEY") {
+		return variant(gui::get_key_name(controls::get_sdlkey(controls::CONTROL_UP)));
+	} else if(id == "DOWN_KEY") {
+		return variant(gui::get_key_name(controls::get_sdlkey(controls::CONTROL_DOWN)));
+	} else if(id == "LEFT_KEY") {
+		return variant(gui::get_key_name(controls::get_sdlkey(controls::CONTROL_LEFT)));
+	} else if(id == "RIGHT_KEY") {
+		return variant(gui::get_key_name(controls::get_sdlkey(controls::CONTROL_RIGHT)));
+	} else if(id == "JUMP_KEY") {
+		return variant(gui::get_key_name(controls::get_sdlkey(controls::CONTROL_JUMP)));
+	} else if(id == "TONGUE_KEY") {
+		return variant(gui::get_key_name(controls::get_sdlkey(controls::CONTROL_TONGUE)));
+	} else if(id == "ATTACK_KEY") {
+		return variant(gui::get_key_name(controls::get_sdlkey(controls::CONTROL_ATTACK)));
 	}
 
 	if(constants_stack.empty() == false) {
