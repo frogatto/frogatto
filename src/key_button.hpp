@@ -11,6 +11,8 @@
 
 namespace gui {
 
+std::string get_key_name(SDLKey key);
+
 //a key selection button widget. Does not derive from button as we don't need the onclick event.
 class key_button : public widget
 {
