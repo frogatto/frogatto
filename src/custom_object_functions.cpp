@@ -1,6 +1,7 @@
 #include <boost/bind.hpp>
 #include <iostream>
 #include <map>
+#include <vector>
 #include <string>
 #include <time.h>
 
@@ -194,18 +195,29 @@ class sound_command : public entity_command_callable
 {
 public:
 	explicit sound_command(const std::string& name, const bool loops)
-	  : name_(name), loops_(loops)
+	  : names_(util::split(name)), loops_(loops)
 	{}
 	virtual void execute(level& lvl, entity& ob) const {
 		if(loops_){
-			sound::play_looped(name_, &ob);
+			if (names_.empty() == false){
+				int randomNum = rand()%names_.size();  //like a 1d-size die
+				if(names_[randomNum].empty() == false) {
+					sound::play_looped(names_[randomNum], &ob);
+				}
+			}
+			
 		}else{
-			std::cerr << "PLAY SOUND COMMAND: " << name_ << "\n";
-			sound::play(name_, &ob);
+			//std::cerr << "PLAY SOUND COMMAND: " << name_ << "\n";
+			if (names_.empty() == false){
+				int randomNum = rand()%names_.size();  //like a 1d-size die
+				if(names_[randomNum].empty() == false) {
+					sound::play(names_[randomNum], &ob);
+				}
+			}
 		}
 	}
 private:
-	std::string name_;
+	std::vector<std::string> names_;
 	bool loops_;
 };
 
