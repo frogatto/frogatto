@@ -2324,7 +2324,7 @@ void custom_object::set_frame(const std::string& name)
 
 	frame_->play_sound(this);
 
-	if(false && entity_collides(level::current(), *this, MOVE_NONE) && entity_in_current_level(this)) {
+	if(entity_collides(level::current(), *this, MOVE_NONE) && entity_in_current_level(this)) {
 		game_logic::map_formula_callable* callable(new game_logic::map_formula_callable);
 		callable->add("previous_animation", variant(previous_animation));
 		game_logic::formula_callable_ptr callable_ptr(callable);
