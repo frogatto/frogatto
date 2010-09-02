@@ -17,7 +17,7 @@
 
 namespace preferences {
 	const std::string& version() {
-		static const std::string Version = "1.0.1";
+		static const std::string Version = "1.0.2";
 		return Version;
 	}
 
