@@ -154,7 +154,7 @@ void grid::recalculate_dimensions()
 void grid::handle_draw() const
 {
 	glPushMatrix();
-	glTranslatef(x(), y(), 0.0);
+	glTranslatef(x() & ~1, y() & ~1, 0.0);
 	if(show_background_) {
 		const SDL_Color bg = {0,0,0};
 		SDL_Rect rect = {0,0,width(),height()};
