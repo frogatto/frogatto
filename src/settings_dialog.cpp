@@ -5,6 +5,8 @@
 #include "preferences.hpp"
 #include "raster.hpp"
 
+#include <string>
+
 namespace
 {
 	const int sw = graphics::screen_width();
@@ -12,23 +14,24 @@ namespace
 	const int padding = 20;
 }
 
-void settings_dialog::draw () const
+void settings_dialog::draw (bool in_speech_dialog) const
 {
-	const const_gui_section_ptr menu_button = menu_button_state_ ? menu_button_down_ : menu_button_normal_;
-	menu_button->blit(sw - menu_button->width() - padding, padding);
+	const const_gui_section_ptr button = gui_section::get(std::string(in_speech_dialog ? "skip" : "menu") + "_button_" + std::string(menu_button_state_ ? "down" : "normal"));
+	button->blit(sw - button->width() - padding, padding);
 }
 
 bool settings_dialog::handle_event (const SDL_Event& event)
 {
+	const const_gui_section_ptr button = gui_section::get("menu_button_normal");
 	if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP)
 	{
-		const int menu_button_x = sw - menu_button_normal_->width() - padding;
+		const int menu_button_x = sw - button->width() - padding;
 		const int menu_button_y = padding;
 		int x = event.type == SDL_MOUSEMOTION ? event.motion.x : event.button.x;
 		int y = event.type == SDL_MOUSEMOTION ? event.motion.y : event.button.y;
 		translate_mouse_coords(&x, &y);
 		bool hittest = (x > (menu_button_x-padding) && y >= 0
-			&& x < menu_button_x+menu_button_normal_->width()*2 && y < menu_button_y+menu_button_normal_->height()+padding);
+			&& x < menu_button_x+button->width()*2 && y < menu_button_y+button->height()+padding);
 		if (hittest && (event.type == SDL_MOUSEBUTTONDOWN || (event.type == SDL_MOUSEMOTION && event.motion.state)))
 		{
 			menu_button_state_ = true;
@@ -51,9 +54,7 @@ void settings_dialog::reset ()
 	menu_button_state_ = false;
 }
 
-settings_dialog::settings_dialog () : show_window_(false), menu_button_state_(false),
-	menu_button_normal_(gui_section::get("menu_button_normal")),
-	menu_button_down_(gui_section::get("menu_button_down"))
+settings_dialog::settings_dialog () : show_window_(false), menu_button_state_(false)
 {
 }
 

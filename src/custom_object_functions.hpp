@@ -13,6 +13,8 @@ class custom_object;
 class entity;
 class level;
 
+bool in_speech_dialog ();
+
 using game_logic::function_symbol_table;
 function_symbol_table& get_custom_object_functions_symbol_table();
 void init_custom_object_functions(wml::const_node_ptr node);

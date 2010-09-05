@@ -43,6 +43,7 @@
 #include "wml_utils.hpp"
 #include "wml_writer.hpp"
 #include "preferences.hpp"
+#include "settings_dialog.hpp"
 
 using namespace game_logic;
 
@@ -1025,7 +1026,10 @@ public:
 	}
 
 private:
+	static settings_dialog menu_button_;
+	
 	void execute_commands(level& lvl, custom_object& ob, const std::vector<variant>& commands) const {
+		menu_button_.reset();
 		in_speech_dialog_tracker dialog_tracker;
 
 		boost::shared_ptr<speech_dialog> d(new speech_dialog());
@@ -1086,11 +1090,19 @@ private:
 
 					SDL_Event event;
 					while(SDL_PollEvent(&event)) {
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+						// the user event gets handled the same as pressing escape
+						if (menu_button_.handle_event(event))
+						{
+							event.type = SDL_USEREVENT;
+						}
+#endif
 						switch(event.type) {
 						case SDL_QUIT:
 							throw interrupt_game_exception();
+						case SDL_USEREVENT:
 						case SDL_KEYDOWN:
-							if(event.key.keysym.sym == SDLK_ESCAPE) {
+							if(event.key.keysym.sym == SDLK_ESCAPE || event.type == SDL_USEREVENT) {
 								if(!paused_) {
 									begin_skipping_game();
 								} else {
@@ -1132,6 +1144,9 @@ private:
 
 	void draw(const level& lvl) const {
 		draw_scene(lvl, last_draw_position(), &lvl.player()->get_entity());
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+		menu_button_.draw(in_speech_dialog());
+#endif
 
 		SDL_GL_SwapBuffers();
 		SDL_Delay(20);
@@ -1141,6 +1156,8 @@ private:
 
 	bool paused_;
 };
+
+settings_dialog speech_dialog_command::menu_button_ = settings_dialog();
 
 FUNCTION_DEF(speech_dialog, 1, -1, "speech_dialog(...): schedules a sequence of speech dialogs to be shown modally. Arguments may include a list of strings, which contain text. An integer which sets the duration of the dialog. An object which sets the speaker. A string by itself indicates an option that should be shown for the player to select from. A string should be followed by a list of commands that will be executed should the player choose that option.")
 	std::vector<variant> v;
@@ -1777,6 +1794,8 @@ expression_ptr custom_object_function_symbol_table::create_function(
 }
 
 } //namespace
+
+bool in_speech_dialog () {return g_in_speech_dialog > 0;}
 
 function_symbol_table& get_custom_object_functions_symbol_table()
 {
