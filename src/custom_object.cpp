@@ -2815,6 +2815,17 @@ void custom_object::set_platform_area(const rect& area)
 	}
 }
 
+void custom_object::shift_position(int x, int y)
+{
+	entity::shift_position(x, y);
+	if(activation_area_.get() != NULL) {
+		activation_area_.reset(new rect(activation_area_->x() + x,
+		                                activation_area_->y() + y,
+										activation_area_->w(),
+										activation_area_->h()));
+	}
+}
+
 BENCHMARK(custom_object_spike) {
 	static level* lvl = NULL;
 	if(!lvl) {	

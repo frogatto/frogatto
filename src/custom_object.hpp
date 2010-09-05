@@ -139,6 +139,8 @@ public:
 	const std::vector<light_ptr>& lights() const { return lights_; }
 	void swap_lights(std::vector<light_ptr>& lights) { lights_.swap(lights); }
 
+	void shift_position(int x, int y);
+
 protected:
 	virtual void control(const level& lvl);
 	variant get_value(const std::string& key) const;
