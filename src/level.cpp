@@ -3312,6 +3312,7 @@ void level::add_sub_level(const std::string& lvl, int xoffset, int yoffset, bool
 
 			relocate_object(c, c->x() + itor->second.xoffset, c->y() + itor->second.yoffset);
 			add_character(c);
+			c->handle_event(OBJECT_EVENT_START_LEVEL);
 
 			itor->second.objects.push_back(c);
 		}
