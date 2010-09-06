@@ -37,6 +37,8 @@ gui_section::gui_section(wml::const_node_ptr node)
     area_(node->attr("rect")),
 	x_adjust_(0), y_adjust_(0), x2_adjust_(0), y2_adjust_(0)
 {
+	draw_area_ = area_;
+
 	if(node->has_attr("frame_info")) {
 		int buf[8];
 		int num_values = 8;
@@ -46,17 +48,19 @@ gui_section::gui_section(wml::const_node_ptr node)
 			y_adjust_ = buf[1];
 			x2_adjust_ = buf[2];
 			y2_adjust_ = buf[3];
-			area_ = rect(buf[4], buf[5], buf[6], buf[7]);
+			draw_area_ = rect(buf[4], buf[5], buf[6], buf[7]);
 		}
 	}
 }
 
 void gui_section::blit(int x, int y, int w, int h) const
 {
+	const int scale = w/area_.w();
+
 	const GLfloat TextureEpsilon = 0.1;
-	graphics::blit_texture(texture_, x+x_adjust_, y+y_adjust_, w-x_adjust_ + x2_adjust_, h-y_adjust_ + y2_adjust_, 0.0,
-	                       GLfloat(area_.x()+TextureEpsilon)/GLfloat(texture_.width()),
-	                       GLfloat(area_.y()+TextureEpsilon)/GLfloat(texture_.height()),
-	                       GLfloat(area_.x2()-TextureEpsilon)/GLfloat(texture_.width()),
-	                       GLfloat(area_.y2()-TextureEpsilon)/GLfloat(texture_.height()));
+	graphics::blit_texture(texture_, x+x_adjust_*scale, y+y_adjust_*scale, w - x_adjust_*scale - x2_adjust_*scale, h - y_adjust_*scale - y2_adjust_*scale, 0.0,
+	                       GLfloat(draw_area_.x()+TextureEpsilon)/GLfloat(texture_.width()),
+	                       GLfloat(draw_area_.y()+TextureEpsilon)/GLfloat(texture_.height()),
+	                       GLfloat(draw_area_.x2()-TextureEpsilon)/GLfloat(texture_.width()),
+	                       GLfloat(draw_area_.y2()-TextureEpsilon)/GLfloat(texture_.height()));
 }

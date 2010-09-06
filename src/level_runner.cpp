@@ -61,13 +61,21 @@ void transition_scene(level& lvl, screen_position& screen_pos, bool transition_o
 		lvl.player()->get_entity().set_invisible(true);
 	}
 
+	const int start_time = SDL_GetTicks();
+
 	for(int n = 0; n <= 20; ++n) {
 //		lvl.process();
 
 		draw_fn(lvl, screen_pos, transition_out ? (n/20.0) : (1 - n/20.0));
 
 		SDL_GL_SwapBuffers();
-		SDL_Delay(FrameTimeInMillis);
+
+		const int target_end_time = start_time + (n+1)*FrameTimeInMillis;
+		const int current_time = SDL_GetTicks();
+		const int skip_time = target_end_time - current_time;
+		if(skip_time > 0) {
+			SDL_Delay(skip_time);
+		}
 	}
 	
 	if(lvl.player()) {
@@ -108,7 +116,12 @@ void iris_scene(const level& lvl, screen_position& screen_pos, float amount) {
 
 	const bool dark_value = const_cast<level&>(lvl).set_dark(true);
 
-	draw_scene(lvl, screen_pos);
+	if(amount >= 0.99) {
+		SDL_Rect rect = {0, 0, graphics::screen_width(), graphics::screen_height()};
+		graphics::draw_rect(rect, graphics::color_black());
+	} else {
+		draw_scene(lvl, screen_pos);
+	}
 
 	const_cast<level&>(lvl).set_dark(dark_value);
 
