@@ -27,6 +27,7 @@ public:
 	void set_expiration(int time) { expiration_ = time; }
 
 	int option_selected() const { return option_selected_; }
+	void set_option_selected(int n) { option_selected_ = n; }
 private:
 	bool handle_mouse_move(int x, int y);
 	void move_up();

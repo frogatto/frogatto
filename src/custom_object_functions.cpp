@@ -1065,11 +1065,21 @@ private:
 					continue;
 				}
 
+				bool is_default = false;
+				int default_option = -1;
+
 				std::vector<variant> option_commands;
 				std::vector<std::string> options;
 				std::vector<std::string> message;
 				for(int n = 0; n != var.num_elements(); ++n) {
-					if(message.empty() == false && var[n].is_list()) {
+					if(var[n].is_string() && var[n].as_string() == "default_skip") {
+						is_default = true;
+					} else if(message.empty() == false && var[n].is_list()) {
+						if(is_default) {
+							default_option = n;
+							is_default = false;
+						}
+
 						options.push_back(message.back());
 						message.pop_back();
 						option_commands.push_back(var[n]);
@@ -1103,13 +1113,9 @@ private:
 						case SDL_USEREVENT:
 						case SDL_KEYDOWN:
 							if(event.key.keysym.sym == SDLK_ESCAPE || event.type == SDL_USEREVENT) {
-								if(!paused_) {
-									begin_skipping_game();
-								} else {
-									PAUSE_GAME_RESULT result = show_pause_game_dialog();
-									if(result != PAUSE_GAME_CONTINUE) {
-										throw interrupt_game_exception(result);
-									}
+								begin_skipping_game();
+								if(default_option != -1) {
+									d->set_option_selected(default_option);
 								}
 								break;
 							}
