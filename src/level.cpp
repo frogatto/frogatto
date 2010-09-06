@@ -131,7 +131,9 @@ level::level(const std::string& level_cfg)
 					wml::const_node_ptr lvl_info = load_level_wml(file);
 					if(lvl_info->attr("title").str() == node->attr("title").str()) {
 						node = lvl_info;
-						break;
+						if(lvl_info->attr("dimensions").str() == node->attr("dimensions").str()) {
+							break;
+						}
 					}
 				}
 			}
