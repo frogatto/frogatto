@@ -27,6 +27,8 @@ public:
 private:
 	graphics::texture texture_;
 	rect area_;
+
+	int x_adjust_, y_adjust_, x2_adjust_, y2_adjust_;
 };
 
 #endif
