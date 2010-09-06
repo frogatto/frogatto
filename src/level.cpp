@@ -104,7 +104,39 @@ level::level(const std::string& level_cfg)
 	const int start_time = SDL_GetTicks();
 
 	wml::const_node_ptr node = load_level_wml(level_cfg);
+	wml::const_node_ptr player_save_node;
 	ASSERT_LOG(node.get() != NULL, "LOAD LEVEL WML FOR " << level_cfg << " FAILED");
+	if(node->has_attr("id")) {
+		id_ = node->attr("id");
+	}
+
+	if(preferences::load_compiled() && (level_cfg == "save.cfg" || level_cfg == "autosave.cfg")) {
+		if(preferences::version() != node->attr("version").str()) {
+			std::cerr << "DIFFERENT VERSION LEVEL\n";
+			FOREACH_WML_CHILD(obj_node, node, "character") {
+				if(wml::get_bool(obj_node, "is_human", false)) {
+					player_save_node = obj_node;
+					break;
+				}
+			}
+
+			if(node->has_attr("id")) {
+				node = load_level_wml(node->attr("id"));
+			} else {
+				//this save was made before we saved level ID's. The best
+				//we can do is get a level with a matching title.
+				std::vector<std::string> files;
+				sys::get_files_in_dir(preferences::level_path(), &files);
+				foreach(const std::string& file, files) {
+					wml::const_node_ptr lvl_info = load_level_wml(file);
+					if(lvl_info->attr("title").str() == node->attr("title").str()) {
+						node = lvl_info;
+						break;
+					}
+				}
+			}
+		}
+	}
 
 	if(wml::get_bool(node, "dark", false)) {
 		dark_ = true;
@@ -238,8 +270,16 @@ level::level(const std::string& level_cfg)
 	wml::node::const_child_iterator c1 = node->begin_child("character");
 	wml::node::const_child_iterator c2 = node->end_child("character");
 	for(; c1 != c2; ++c1) {
+		if(player_save_node.get() != NULL && wml::get_bool(c1->second, "is_human", false)) {
+			continue;
+		}
+
 		wml_chars_.push_back(c1->second);
 		continue;
+	}
+
+	if(player_save_node.get() != NULL) {
+		wml_chars_.push_back(player_save_node);
 	}
 
 	wml::const_node_ptr serialized_objects = node->get_child("serialized_objects");
@@ -815,6 +855,8 @@ wml::node_ptr level::write() const
 	game_logic::wml_formula_callable_serialization_scope serialization_scope;
 
 	wml::node_ptr res(new wml::node("level"));
+	res->set_attr("id", id_);
+	res->set_attr("version", preferences::version());
 	res->set_attr("title", title_);
 	res->set_attr("music", music_);
 	res->set_attr("segment_width", formatter() << segment_width_);
