@@ -126,14 +126,21 @@ level::level(const std::string& level_cfg)
 				//this save was made before we saved level ID's. The best
 				//we can do is get a level with a matching title.
 				std::vector<std::string> files;
-				sys::get_files_in_dir(preferences::level_path(), &files);
+				sys::get_files_in_dir("data/compiled/level/", &files);
 				foreach(const std::string& file, files) {
 					wml::const_node_ptr lvl_info = load_level_wml(file);
 					if(lvl_info->attr("title").str() == node->attr("title").str()) {
-						node = lvl_info;
 						if(lvl_info->attr("dimensions").str() == node->attr("dimensions").str()) {
+							//the dimensions match so we're sure this is
+							//the right one.
+							node = lvl_info;
 							break;
 						}
+
+						//tenatively guess this is the level, but keep
+						//searching in case one with an exact dimensional
+						//match is found.
+						node = lvl_info;
 					}
 				}
 			}
