@@ -21,7 +21,7 @@ namespace {
 	const int OptionWidth = 200;
 	const int OptionXPad = 20;
 #else
-	const int OptionHeight = 45;
+	const int OptionHeight = 50;
 	const int OptionWidth = 150;
 	const int OptionXPad = 10;
 #endif
@@ -286,9 +286,11 @@ void speech_dialog::draw() const
 		                  std::min<int>(nchars, text_[n].size()));
 		//currently the color of speech is hard coded.
 		glColor4ub(255, 187, 10, 255);
-		rect area = font->draw(text_left_align[n], ypos, str);
+		//move the first line slightly up so that accents don't mess up centering
+		rect area = font->draw(text_left_align[n], ypos - 2, str);
 		glColor4f(1.0, 1.0, 1.0, 1.0);
-		ypos = area.y2();
+		//add some space between the lines
+		ypos = area.y2() + 4;
 		nchars -= text_[n].size();
 	}
 
@@ -318,7 +320,7 @@ void speech_dialog::draw() const
 			}
 #endif
 			rect area = font->dimensions(option);
-			area = font->draw(xpos, ypos+(OptionHeight/2-area.h()/4), option);
+			area = font->draw(xpos, ypos+(OptionHeight/3-area.h()/4), option);
 
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 			if(index == option_selected_) {
