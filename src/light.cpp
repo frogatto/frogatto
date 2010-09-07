@@ -57,7 +57,7 @@ int circle_light::split_strip(const darkness_strip& darkness, darkness_strip* ou
 	int fade_length = 64;
 
 	const rect& area = darkness.area;
-	if(area.y() < center_.y - radius_ - fade_length || area.y() > center_.y + radius_ + fade_length ||
+	if(area.y() < center_.y - radius_ || area.y() > center_.y + radius_ ||
 	   area.x2() < center_.x - radius_ - fade_length || area.x() > center_.x + radius_ + fade_length) {
 		return -1;
 	}
