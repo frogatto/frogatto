@@ -128,6 +128,10 @@ level::level(const std::string& level_cfg)
 				std::vector<std::string> files;
 				sys::get_files_in_dir("data/compiled/level/", &files);
 				foreach(const std::string& file, files) {
+					if(file == "save.cfg" || file == "autosave.cfg") {
+						continue;
+					}
+
 					wml::const_node_ptr lvl_info = load_level_wml(file);
 					if(lvl_info->attr("title").str() == node->attr("title").str()) {
 						if(lvl_info->attr("dimensions").str() == node->attr("dimensions").str()) {
