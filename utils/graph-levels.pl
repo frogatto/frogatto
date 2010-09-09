@@ -34,6 +34,10 @@ foreach my $level (@levels) {
 			push @adj, [$level, $next_level, 'next_level'];
 		}
 
+		if(my ($previous_level) = $line =~ /previous_level="(.*)"/) {
+			push @adj, [$level, $previous_level, 'prev_level'];
+		}
+
 		if(my ($dest_level) = $line =~ /dest_level="'(.*)'"/) {
 			push @adj, [$level, $dest_level, $door];
 		}
