@@ -14,6 +14,7 @@
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "level.hpp"
+#include "preferences.hpp"
 #include "raster.hpp"
 #include "surface_palette.hpp"
 #include "wml_node.hpp"
@@ -201,7 +202,7 @@ void background::draw(int x, int y, const rect& area, const std::vector<rect>& o
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 		glScissor(dist_from_bottom/2, 0, (graphics::screen_height() - dist_from_bottom)/2, graphics::screen_width()/2);
 #else
-		glScissor(0, dist_from_bottom, graphics::screen_width(), graphics::screen_height() - dist_from_bottom);
+		glScissor(0, dist_from_bottom, preferences::actual_screen_width(), preferences::actual_screen_width()*(1-dist_from_bottom/600));
 #endif
 		glClearColor(top_.r/255.0, top_.g/255.0, top_.b/255.0, 0.0);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -209,7 +210,7 @@ void background::draw(int x, int y, const rect& area, const std::vector<rect>& o
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 		glScissor(0, 0, dist_from_bottom/2, graphics::screen_width()/2);
 #else
-		glScissor(0, 0, graphics::screen_width(), dist_from_bottom);
+		glScissor(0, 0, preferences::actual_screen_width(), dist_from_bottom);
 #endif
 		glClearColor(bot_.r/255.0, bot_.g/255.0, bot_.b/255.0, 0.0);
 		glClear(GL_COLOR_BUFFER_BIT);
