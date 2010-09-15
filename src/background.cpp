@@ -123,6 +123,7 @@ background::background(const wml::const_node_ptr& node, int palette) : palette_(
 		bg.y2 = wml::get_attr<int>(layer_node, "y2");
 
 		bg.foreground = wml::get_bool(layer_node, "foreground", false);
+		bg.tile_vertically = wml::get_bool(layer_node, "tile_vertically", false);
 		layers_.push_back(bg);
 	}
 }
@@ -166,6 +167,10 @@ wml::node_ptr background::write() const
 		}
 		if(bg.foreground) {
 			node->set_attr("foreground", "true");
+		}
+
+		if(bg.tile_vertically) {
+			node->set_attr("tile_vertically", "true");
 		}
 
 		res->add_child(node);
@@ -309,11 +314,11 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 	GLshort y1 = y + (bg.yoffset+offset_.y)*ScaleImage - (y*bg.yscale)/100;
 	GLshort y2 = y1 + (bg.y2 - bg.y1)*ScaleImage;
 
-	if(y2 <= y || y2 <= area.y()) {
+	if(!bg.tile_vertically && (y2 <= y || y2 <= area.y())) {
 		return;
 	}
 
-	if(y1 > area.y2()) {
+	if(!bg.tile_vertically && y1 > area.y2()) {
 		return;
 	}
 
@@ -344,7 +349,10 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 		y1 = area.y();
 	}
 
-	if(bg.color_above && y1 > area.y()) {
+	if(bg.tile_vertically && y1 > area.y()) {
+		v1 -= (GLfloat(y1 - area.y())/GLfloat(y2 - y1))*(v2 - v1);
+		y1 = area.y();
+	} else if(bg.color_above && y1 > area.y()) {
 		glEnable(GL_SCISSOR_TEST);
 
 		const int xpos = area.x() - x;
@@ -361,7 +369,10 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 		glDisable(GL_SCISSOR_TEST);
 	}
 
-	if(bg.color_below && y2 < area.y() + area.h()) {
+	if(bg.tile_vertically && y2 < area.y() + area.h()) {
+		v2 += (GLfloat((area.y() + area.h()) - y2)/GLfloat(y2 - y1))*(v2 - v1);
+		y2 = area.y() + area.h();
+	} else if(bg.color_below && y2 < area.y() + area.h()) {
 		glEnable(GL_SCISSOR_TEST);
 
 		const int xpos = area.x() - x;
@@ -387,6 +398,20 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 
 	if(v1 > v2) {
 		return;
+	}
+
+	//clamp [v1, v2] into the [0.0, 1.0] range
+	if(v1 > 1.0) {
+		const GLfloat f = floor(v1);
+		v1 -= f;
+		v2 -= f;
+	}
+
+	if(v1 < 0.0) {
+		const GLfloat diff = v2 - v1;
+		const GLfloat f = floor(-v1);
+		v1 = 1.0 - (-v1 - f);
+		v2 = v1 + diff;
 	}
 
 	int screen_width = area.w();

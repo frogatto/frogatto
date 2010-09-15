@@ -67,6 +67,8 @@ private:
 
 		//if false we can disable blending while this is drawn
 		bool blend;
+
+		bool tile_vertically;
 	};
 
 	void draw_layer(int x, int y, const rect& area, int rotation, const layer& bg, int cycle) const;
