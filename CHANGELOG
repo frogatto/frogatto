@@ -1,3 +1,7 @@
+Version 1.0.3:
+ * Fixed crash when picking up max heart pieces.
+ * Other small bug fixes.
+
 Version 1.0.2:
  * Added support for "darkness" in levels.
  * Added support for WVGA.
