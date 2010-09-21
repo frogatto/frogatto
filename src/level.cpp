@@ -169,6 +169,7 @@ level::level(const std::string& level_cfg)
 	}
 
 	segment_width_ = wml::get_int(node, "segment_width");
+	ASSERT_LOG(segment_width_%32 == 0, "segment_width in " << id_ << " is not divisible by 32");
 
 	music_ = node->attr("music");
 	replay_data_ = node->attr("replay_data");
