@@ -220,6 +220,13 @@ std::string parse_value(std::string::const_iterator& i1,
 			while(i1 != i2 && *i1 != '"') {
 				if(*i1 == '\\' && i1+1 != i2) {
 					++i1;
+					// if "\\n" is encountered, push a
+					// newline character '\n' instead
+					if (*i1 == 'n') {
+						res.push_back('\n');
+						++i1;
+						continue;
+					}
 				}
 				if(util::isnewline(*i1)) {
 					++line_number;

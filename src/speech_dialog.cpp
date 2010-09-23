@@ -2,6 +2,8 @@
 #include <stack>
 #include <limits.h>
 
+#include <boost/tokenizer.hpp>
+
 #include "controls.hpp"
 #include "color_utils.hpp"
 #include "draw_scene.hpp"
@@ -361,7 +363,15 @@ void speech_dialog::set_side(bool left_side)
 
 void speech_dialog::set_text(const std::vector<std::string>& text)
 {
-	text_ = text;
+	text_.clear();
+	for (int i = 0; i < text.size(); i++) {
+		typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
+		//split texŧ[i] at newline characters, add each line separately
+		tokenizer lines(text[i], boost::char_separator<char> ("\n"));
+		for (tokenizer::iterator iter = lines.begin(); iter != lines.end(); ++iter) {
+			text_.push_back(*iter);
+		}
+	}
 	text_char_ = 0;
 }
 
