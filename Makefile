@@ -32,7 +32,24 @@ wml_modify_test: $(wml_modify_test_objects)
 
 wml_schema_test: $(wml_schema_test_objects)
 	g++ -O2 -g -framework Cocoa -I/usr/local/include/boost-1_34 -I/sw/include/SDL -I/usr/X11R6/include -Isrc/ -I/usr/include/SDL -D_GNU_SOURCE=1 -D_REENTRANT -DUNIT_TEST_WML_SCHEMA -Wnon-virtual-dtor -Wreturn-type -L/usr/lib -lboost_regex src/wml_schema.cpp $(wml_schema_test_objects) -o test
-	
+
+update-pot:
+	utils/make-pot.sh > po/frogatto.pot
+
+%.po: po/frogatto.pot
+	msgmerge $@ po/frogatto.pot -o $@.part
+	mv $@.part $@
+
+update-po:
+	(for lang in ${LINGUAS}; do \
+		${MAKE} po/$$lang.po ; \
+	done)
+
+update-mo:
+	(for lang in ${LINGUAS}; do \
+		mkdir -p locale/$$lang/LC_MESSAGES ; \
+		msgfmt po/$$lang.po -o locale/$$lang/LC_MESSAGES/frogatto.mo ; \
+	done)
 
 clean:
 	rm -f *.o game
