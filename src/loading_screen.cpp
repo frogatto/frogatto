@@ -8,6 +8,7 @@
 #include "raster.hpp"
 #include "graphical_font.hpp"
 #include "geometry.hpp"
+#include "i18n.hpp"
 #include "texture.hpp"
 
 loading_screen::loading_screen (int items) : items_(items), status_(0)
@@ -54,8 +55,9 @@ void loading_screen::draw (const std::string& message)
 	graphics::draw_rect(bar, graphics::color(255, 255, 255, 255));
 	
 	const_graphical_font_ptr font = graphical_font::get("door_label");
-	rect text_size = font->dimensions(message);
-	font->draw(screen_w/2 - text_size.w()/2, screen_h/2 + bar_height/2 + 5, message);
+	//explicitly translate loading messages
+	rect text_size = font->dimensions(i18n::tr(message));
+	font->draw(screen_w/2 - text_size.w()/2, screen_h/2 + bar_height/2 + 5, i18n::tr(message));
 	
 	SDL_GL_SwapBuffers();
 	//SDL_Delay(500); //make it possible to see on fast computers; for debugging

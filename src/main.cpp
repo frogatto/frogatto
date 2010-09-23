@@ -281,7 +281,7 @@ extern "C" int main(int argc, char** argv)
 		return 0;
 	}
 	
-	loader.draw("Loading level");
+	loader.draw(_("Loading level"));
 
 	if(!skip_tests && !test::run_tests()) {
 		return -1;
