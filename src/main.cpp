@@ -32,6 +32,7 @@
 #include "framed_gui_element.hpp"
 #include "graphical_font.hpp"
 #include "gui_section.hpp"
+#include "i18n.hpp"
 #include "inventory.hpp"
 #include "iphone_device_info.h"
 #include "joystick.hpp"
@@ -77,6 +78,7 @@ extern "C" int main(int argc, char** argv)
 		return -1;
 	}
 
+	i18n::init ();
 
 //	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 1);
 
