@@ -356,14 +356,14 @@ private:
 
 		int xbase, ybase;
 
-//the iPhone doesn't seem to support ints being used as indexes in glDrawElements
-// -- or at least XCode is saying GL_UNSIGNED_INT is undefined. So use shorts
-//on the iPhone. Since we compile tiles on the iPhone and solid colored tiles
-//are not counted, this is probably fine.
-#if TARGET_OS_IPHONE
+//OpenGL ES 1.1 only supports indices of the types GL_UNSIGNED_BYTE and
+//GL_UNSIGNED_SHORT in the glDrawElements call. So use shorts on ES 1.1
+//platforms. Since we compile tiles on them and solid colored tiles are
+//not counted, this is probably fine.
+#ifdef SDL_VIDEO_OPENGL_ES
 		typedef GLshort IndexType;
 #define TILE_INDEX_TYPE GL_UNSIGNED_SHORT
-#define TILE_INDEX_TYPE_MAX SHRT_MAX
+#define TILE_INDEX_TYPE_MAX USHRT_MAX
 #else
 		typedef GLint IndexType;
 #define TILE_INDEX_TYPE GL_UNSIGNED_INT
