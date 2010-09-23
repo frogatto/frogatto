@@ -1,5 +1,6 @@
 #include "iphone_controls.hpp"
 #include "graphical_font_label.hpp"
+#include "i18n.hpp"
 #include "key_button.hpp"
 #include "raster.hpp"
 #include "surface_cache.hpp"
@@ -57,6 +58,15 @@ std::string get_key_name(SDLKey key) {
 		return std::string("PGDN");
 	case SDLK_PAGEUP:
 		return std::string("PGUP");
+	// these are added to make them translatable
+	case SDLK_LEFT:
+		return std::string(_("LEFT"));
+	case SDLK_RIGHT:
+		return std::string(_("RIGHT"));
+	case SDLK_UP:
+		return std::string(_("UP"));
+	case SDLK_DOWN:
+		return std::string(_("DOWN"));
 	// other names can be shortened by taking only the
 	// first letter of the first word, i.e. "LEFT SHIFT" --> "LSHIFT"
 	default:
