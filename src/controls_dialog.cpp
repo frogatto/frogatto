@@ -5,6 +5,7 @@
 #include "controls_dialog.hpp"
 #include "dialog.hpp"
 #include "graphical_font_label.hpp"
+#include "i18n.hpp"
 #include "key_button.hpp"
 #include "preferences.hpp"
 
@@ -38,18 +39,18 @@ void show_controls_dialog()
 		key_buttons[item]->set_dim(70, 60);
 	}
 
-	widget_ptr t1(new graphical_font_label("Directions", "door_label", 2));
+	widget_ptr t1(new graphical_font_label(_("Directions"), "door_label", 2));
 	widget_ptr b1(key_buttons[CONTROL_UP]);
 	widget_ptr b2(key_buttons[CONTROL_DOWN]);
 	widget_ptr b3(key_buttons[CONTROL_LEFT]);
 	widget_ptr b4(key_buttons[CONTROL_RIGHT]);
-	widget_ptr t2(new graphical_font_label("Jump", "door_label", 2));
+	widget_ptr t2(new graphical_font_label(_("Jump"), "door_label", 2));
 	widget_ptr b5(key_buttons[CONTROL_JUMP]);
-	widget_ptr t3(new graphical_font_label("Tongue", "door_label", 2));
+	widget_ptr t3(new graphical_font_label(_("Tongue"), "door_label", 2));
 	widget_ptr b6(key_buttons[CONTROL_TONGUE]);
-	widget_ptr t4(new graphical_font_label("Attack", "door_label", 2));
+	widget_ptr t4(new graphical_font_label(_("Attack"), "door_label", 2));
 	widget_ptr b7(key_buttons[CONTROL_ATTACK]);
-	widget_ptr b8(new button(widget_ptr(new graphical_font_label("Back", "door_label", 2)), boost::bind(end_dialog, &d), BUTTON_STYLE_DEFAULT, BUTTON_SIZE_DOUBLE_RESOLUTION));
+	widget_ptr b8(new button(widget_ptr(new graphical_font_label(_("Back"), "door_label", 2)), boost::bind(end_dialog, &d), BUTTON_STYLE_DEFAULT, BUTTON_SIZE_DOUBLE_RESOLUTION));
 	b8->set_dim(230, 60);
 
 	int start_y = (d.height() - 4*b1->height() - 2*t1->height() - 7*d.padding())/2;

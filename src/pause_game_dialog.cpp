@@ -6,6 +6,7 @@
 #include "checkbox.hpp"
 #include "dialog.hpp"
 #include "graphical_font_label.hpp"
+#include "i18n.hpp"
 #include "pause_game_dialog.hpp"
 #include "preferences.hpp"
 #include "sound.hpp"
@@ -37,9 +38,9 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 #endif
 	
 	using namespace gui;
-	widget_ptr t1(new graphical_font_label("Music Volume:", "door_label", 2));
+	widget_ptr t1(new graphical_font_label(_("Music Volume:"), "door_label", 2));
 	widget_ptr s1(new slider(200, boost::bind(sound::set_music_volume, _1), sound::get_music_volume()));
-	widget_ptr t2(new graphical_font_label("Sound Volume:", "door_label", 2));
+	widget_ptr t2(new graphical_font_label(_("Sound Volume:"), "door_label", 2));
 	widget_ptr s2(new slider(200, boost::bind(sound::set_sound_volume, _1), sound::get_sound_volume()));
 	
 	const int num_buttons = 2 + show_exit + show_controls + show_button_swap;
@@ -54,11 +55,11 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	dialog d((preferences::virtual_screen_width()/2 - window_w/2) & ~1, (preferences::virtual_screen_height()/2 - window_h/2) & ~1, window_w, window_h);
 	d.set_padding(padding);
 	
-	widget_ptr b1(new button(widget_ptr(new graphical_font_label("Resume", "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_CONTINUE), BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
-	widget_ptr b2(new button(widget_ptr(new graphical_font_label("Controls...", "door_label", 2)), show_controls_dialog, BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
-	widget_ptr b3(new button(widget_ptr(new graphical_font_label("Return to Titlescreen", "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_GO_TO_TITLESCREEN), BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
-	widget_ptr b4(new button(widget_ptr(new graphical_font_label("Exit Game", "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_QUIT), BUTTON_STYLE_DEFAULT, BUTTON_SIZE_DOUBLE_RESOLUTION));
-	widget_ptr b5(new checkbox("Reverse A and B", preferences::reverse_ab(), boost::bind(preferences::set_reverse_ab, _1), BUTTON_SIZE_DOUBLE_RESOLUTION));
+	widget_ptr b1(new button(widget_ptr(new graphical_font_label(_("Resume"), "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_CONTINUE), BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
+	widget_ptr b2(new button(widget_ptr(new graphical_font_label(_("Controls..."), "door_label", 2)), show_controls_dialog, BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
+	widget_ptr b3(new button(widget_ptr(new graphical_font_label(_("Return to Titlescreen"), "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_GO_TO_TITLESCREEN), BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
+	widget_ptr b4(new button(widget_ptr(new graphical_font_label(_("Exit Game"), "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_QUIT), BUTTON_STYLE_DEFAULT, BUTTON_SIZE_DOUBLE_RESOLUTION));
+	widget_ptr b5(new checkbox(_("Reverse A and B"), preferences::reverse_ab(), boost::bind(preferences::set_reverse_ab, _1), BUTTON_SIZE_DOUBLE_RESOLUTION));
 	
 	b1->set_dim(button_width, button_height);
 	b2->set_dim(button_width, button_height);
