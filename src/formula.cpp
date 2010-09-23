@@ -27,6 +27,7 @@
 #include "formula_constants.hpp"
 #include "formula_function.hpp"
 #include "formula_tokenizer.hpp"
+#include "i18n.hpp"
 #include "map_utils.hpp"
 #include "random.hpp"
 #include "unit_test.hpp"
@@ -743,8 +744,12 @@ private:
 
 class string_expression : public formula_expression {
 public:
-	explicit string_expression(std::string str) : formula_expression("_string")
+	explicit string_expression(std::string str, bool translate = false) : formula_expression("_string")
 	{
+		if (translate) {
+			str = i18n::tr(str);
+		}
+
 		std::string::iterator i;
 		while((i = std::find(str.begin(), str.end(), '{')) != str.end()) {
 			std::string::iterator j = std::find(i, str.end(), '}');
@@ -1241,7 +1246,8 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 				int n = strtol(std::string(i1->begin,i1->end).c_str(), NULL, 0);
 				return expression_ptr(new integer_expression(n));
 			} else if(i1->type == TOKEN_STRING_LITERAL) {
-				return expression_ptr(new string_expression(std::string(i1->begin+1,i1->end-1)));
+				bool translate = *(i1->begin) == '~';
+				return expression_ptr(new string_expression(std::string(i1->begin+1,i1->end-1), translate));
 			}
 		} else if(i1->type == TOKEN_IDENTIFIER &&
 				  (i1+1)->type == TOKEN_LPARENS &&
