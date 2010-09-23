@@ -645,7 +645,7 @@ void texture::ID::build_id()
 
 void texture::ID::unbuild_id()
 {
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
+#ifndef SDL_VIDEO_OPENGL_ES
 	if(id == GLuint(-1) || s) {
 		return;
 	}
