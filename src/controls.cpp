@@ -49,8 +49,13 @@ SDLKey sdlk[NUM_CONTROLS] = {
 	SDLK_LEFT,
 	SDLK_RIGHT,
 	SDLK_d,
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 	SDLK_a,
 	SDLK_s
+#else
+	SDLK_b,
+	SDLK_a
+#endif
 };
 
 int32_t our_highest_confirmed() {

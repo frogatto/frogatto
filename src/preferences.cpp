@@ -317,6 +317,7 @@ namespace preferences {
 		sound::set_music_volume(wml::get_int(node, "music_volume", 1000)/1000.0);
 		sound::set_sound_volume(wml::get_int(node, "sound_volume", 1000)/1000.0);
 
+#if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
 		controls::set_sdlkey(controls::CONTROL_UP, static_cast<SDLKey>(wml::get_int(node, "key_up", SDLK_UP)));
 		controls::set_sdlkey(controls::CONTROL_DOWN, static_cast<SDLKey>(wml::get_int(node, "key_down", SDLK_DOWN)));
 		controls::set_sdlkey(controls::CONTROL_LEFT, static_cast<SDLKey>(wml::get_int(node, "key_left", SDLK_LEFT)));
@@ -324,6 +325,7 @@ namespace preferences {
 		controls::set_sdlkey(controls::CONTROL_ATTACK, static_cast<SDLKey>(wml::get_int(node, "key_attack", SDLK_d)));
 		controls::set_sdlkey(controls::CONTROL_JUMP, static_cast<SDLKey>(wml::get_int(node, "key_jump", SDLK_a)));
 		controls::set_sdlkey(controls::CONTROL_TONGUE, static_cast<SDLKey>(wml::get_int(node, "key_tongue", SDLK_s)));
+#endif
 	}
 
 	void save_preferences()
