@@ -527,7 +527,7 @@ wml::node_ptr custom_object::write() const
 		res->add_child(wml::deep_copy(custom_type_));
 	}
 
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
+#ifndef NO_EDITOR
 	if(editor_info()) {
 		res->add_child(editor_info()->write());
 	}
