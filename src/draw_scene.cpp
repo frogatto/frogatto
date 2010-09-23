@@ -16,6 +16,7 @@
 #include "font.hpp"
 #include "foreach.hpp"
 #include "graphical_font.hpp"
+#include "i18n.hpp"
 #include "level.hpp"
 #include "message_dialog.hpp"
 #include "player_info.hpp"
@@ -58,7 +59,8 @@ void screen_color_flash(const graphics::color_transform& color, const graphics::
 }
 
 void set_scene_title(const std::string& msg, int duration) {
-	scene_title() = msg;
+	//explicitly translate all level titles
+	scene_title() = (msg.size() > 0) ? _(msg) : msg;
 	scene_title_duration_ = duration;
 }
 
