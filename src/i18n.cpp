@@ -40,11 +40,24 @@ const std::string& tr(const std::string& msgid) {
 }
 
 void init() {
-	std::string locale = getenv("LANG");
+	std::string locale;
+	char *cstr = getenv("LANG");
+	if (cstr != NULL)
+		locale = cstr;
+	if (locale.size() < 2)
+	{
+		cstr = getenv("LC_ALL");
+		if (cstr != NULL)
+			locale = cstr;
+	}
+	if (locale.size() < 2)
+		return;
+	
+	/*std::string locale = getenv("LANG");
 	if (locale.size() < 2)
 		locale = getenv("LC_ALL");
 	if (locale.size() < 2)
-		return;
+		return;*/
 	//only consider the country code, e.g. "de_DE.UTF8" --> "de"
 	locale = locale.substr(0, 2);
 	const std::string filename = "./locale/" + locale + "/LC_MESSAGES/frogatto.mo";
