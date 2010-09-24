@@ -38,8 +38,10 @@
 #include "text_entry_widget.hpp"
 #include "thread.hpp"
 #include "unit_test.hpp"
+#include "wml_formula_adapter.hpp"
 #include "wml_parser.hpp"
 #include "wml_node.hpp"
+#include "wml_schema.hpp"
 #include "wml_utils.hpp"
 #include "wml_writer.hpp"
 #include "preferences.hpp"
@@ -1770,6 +1772,42 @@ public:
 FUNCTION_DEF(cosmic_shift, 2, 2, "cosmic_shift(int xoffset, int yoffet): adjust position of all objects and tiles in the level by the given offset")
 	return variant(new shift_level_position_command(args()[0]->evaluate(variables).as_int(), args()[1]->evaluate(variables).as_int()));
 END_FUNCTION_DEF(cosmic_shift)
+
+namespace {
+bool consecutive_periods(char a, char b) {
+	return a == '.' && b == '.';
+}
+}
+
+FUNCTION_DEF(get_document, 1, 2, "get_document(string doc, [string schema]): return reference to the given WML document, optionally using the given schema")
+	const std::string docname = args()[0]->evaluate(variables).as_string();
+	std::string schema;
+	if(args().size() > 1) {
+		schema = args()[1]->evaluate(variables).as_string();
+	}
+
+	static std::map<std::pair<std::string,std::string>, variant> cache;
+	std::pair<std::string, std::string> key(docname, schema);
+	variant& v = cache[key];
+	if(v.is_null() == false) {
+		return v;
+	}
+
+	ASSERT_LOG(docname.empty() == false, "DOCUMENT NAME GIVEN TO get_document() IS EMPTY");
+	ASSERT_LOG(docname[0] != '/', "DOCUMENT NAME BEGINS WITH / " << docname);
+	ASSERT_LOG(std::adjacent_find(docname.begin(), docname.end(), consecutive_periods) == docname.end(), "DOCUMENT NAME CONTAINS ADJACENT PERIODS " << docname);
+
+	const wml::schema* sch = NULL;
+	if(schema.empty() == false) {
+		sch = wml::schema::get(schema);
+		ASSERT_LOG(sch != NULL, "COULD NOT FIND SCHEMA: " << schema);
+	}
+
+	const wml::node_ptr doc = wml::parse_wml_from_file(docname, sch);
+
+	v = variant(new wml::node_callable(doc));
+	return v;
+END_FUNCTION_DEF(get_document)
 
 class custom_object_function_symbol_table : public function_symbol_table
 {
