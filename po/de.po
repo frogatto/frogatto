@@ -131,7 +131,7 @@ msgstr ""
 #: data/level/chopple-shop-interior.cfg:7
 #: data/level/chopple-shop.cfg:11
 msgid "Chopple's General Store"
-msgstr ""
+msgstr "Chopples Gemischtwarenladen"
 
 #: data/level/conveyance.cfg:9
 msgid "The Conveyance"
@@ -258,7 +258,7 @@ msgstr ""
 msgid ""
 "Without this key,\n"
 "you're not getting anywhere."
-msgstr "Ohne diesen Schlüssel,kommst du nirgendwo hin."
+msgstr "Ohne diesen Schlüssel kommst du nirgendwo hin."
 
 #: data/level/crevice-village-cave.cfg:827
 msgid ""
@@ -286,7 +286,7 @@ msgstr "Versteckte Höhle."
 msgid ""
 "Ahh, good, you made it\n"
 "through there in one piece!"
-msgstr ""
+msgstr "Ah, sehr gut, Sie sind wohlbehalten hier angekommen!"
 
 #: data/level/crevice-village-central.cfg:1369
 msgid ""
@@ -296,7 +296,7 @@ msgstr ""
 
 #: data/level/crevice-village-central.cfg:1371
 msgid "So, now what?"
-msgstr ""
+msgstr "Und was nun?"
 
 #: data/level/crevice-village-central.cfg:1372
 msgid ""
@@ -320,7 +320,7 @@ msgstr ""
 
 #: data/level/crevice-village-central.cfg:1376
 msgid "Makes sense."
-msgstr ""
+msgstr "Klingt logisch."
 
 #: data/level/crevice-village-central.cfg:1377
 msgid ""
@@ -1097,15 +1097,15 @@ msgstr "Hey, wie geht's mit dem Frühstück voran?"
 
 #: data/level/frogatto-grotto-inside.cfg:1151
 msgid "Breakfast? ..bud, we're on lunch."
-msgstr "Frühstück? ..Mann, wir haben mittag."
+msgstr "Frühstück? ..Es ist Mittagszeit, Kollege."
 
 #: data/level/frogatto-grotto-inside.cfg:1152
 msgid "You need to get up earlier."
-msgstr "Du solltest früher aufstehen."
+msgstr "Du solltest mal früher aufstehen."
 
 #: data/level/frogatto-grotto-inside.cfg:1155
 msgid "Okay, then how's lunch coming?"
-msgstr "Okay, wie sieht's dann mit Mittag aus?"
+msgstr "Ok, wann ist das Mittagessen fertig?"
 
 #: data/level/frogatto-grotto-inside.cfg:1156
 msgid ""
@@ -1117,7 +1117,7 @@ msgstr ""
 
 #: data/level/frogatto-grotto-inside.cfg:1158
 msgid "I'll check back later, then."
-msgstr "Dann schau' ich später nochmal vorbei."
+msgstr "Dann komm ich später nochmal wieder."
 
 #: data/level/frogatto-grotto-inside.cfg:1161
 msgid "So, what happened to lunch?"
@@ -1128,7 +1128,7 @@ msgid ""
 "I got tired of waiting,\n"
 "and ate by myself."
 msgstr ""
-"Ich bin es leid geworden, zu warten,\n"
+"Ich hatte keine Lust mehr zu warten,\n"
 "und habe allein gegessen."
 
 #: data/level/frogatto-grotto-inside.cfg:1163
@@ -1979,6 +1979,9 @@ msgid ""
 "A pleasure to meet you.\n"
 "I am Mortimer."
 msgstr ""
+"Es ist mir eine wahre\n"
+"Freude sie kennenzulernen.\n"
+"Ich bin Mortimer."
 
 #: data/level/secluded-hut-interior.cfg:711
 #: data/level/wm-town.cfg:2474
@@ -1990,16 +1993,20 @@ msgid ""
 "Uhm, I hope you don't mind my asking,\n"
 "but what on earth ARE you, anyway?"
 msgstr ""
+"Ich will ja nicht unfreundlich sein,\n"
+"aber was SIND sie überhaupt?"
 
 #: data/level/secluded-hut-interior.cfg:714
 msgid "Ostensibly, I am a mole."
-msgstr ""
+msgstr "Augenscheinlich bin ich ein Maulwurf"
 
 #: data/level/secluded-hut-interior.cfg:716
 msgid ""
 "...\n"
 "Okay."
 msgstr ""
+"...\n"
+"Okay."
 
 #: data/level/secluded-hut-interior.cfg:717
 msgid ""
@@ -2109,10 +2116,12 @@ msgid ""
 "Yeah.\n"
 "Who WAS that guy?!"
 msgstr ""
+"Jo.\n"
+"Was war denn das?!"
 
 #: data/level/secluded-hut.cfg:1210
 msgid "One of Milgram's henchmen, no doubt."
-msgstr ""
+msgstr "Zweifellos einer von Milgrams Schergen."
 
 #: data/level/secluded-hut.cfg:1211
 msgid ""
@@ -2135,7 +2144,7 @@ msgstr ""
 
 #: data/level/secluded-hut.cfg:1215
 msgid "Dang.  That was fast."
-msgstr ""
+msgstr "Mannomann!  Das ging aber fix."
 
 #: data/level/secluded-hut.cfg:1216
 msgid ""
@@ -2157,7 +2166,7 @@ msgstr ""
 
 #: data/level/secluded-hut.cfg:1220
 msgid "And I get up there... how?"
-msgstr ""
+msgstr "Und wie soll ich da hochkommen?"
 
 #: data/level/secluded-hut.cfg:1224
 msgid "Simple, just take to the air!"
@@ -2165,7 +2174,7 @@ msgstr ""
 
 #: data/level/secluded-hut.cfg:1227
 msgid "You ... do realize I can't fly?"
-msgstr ""
+msgstr "Sie wissen schon, dass ICH nicht fliegen kann?"
 
 #: data/level/senic-beach.cfg:12
 msgid "Geautatha Point"
@@ -2649,7 +2658,7 @@ msgstr ""
 
 #: data/level/to-nenes-house-inside.cfg:421
 msgid "Nah, I'd better get to town."
-msgstr "Näh, ich muss in die Stadt."
+msgstr "Nee, ich muss in die Stadt."
 
 #: data/level/to-nenes-house-inside.cfg:423
 msgid "I have serious business to attend to."
@@ -2660,8 +2669,8 @@ msgid ""
 "Oh, well maybe before you go\n"
 "you could look at my basement."
 msgstr ""
-"Oh, könntest du dann, bevor du gehst,\n"
-"einen Blick in meinen Keller werfen?"
+"Oh, könntest du kurz einen Blick\n"
+"in meinen Keller werfen, bevor du gehst?"
 
 #: data/level/to-nenes-house-inside.cfg:429
 msgid "Your basement?"
@@ -2681,17 +2690,17 @@ msgstr "Die machen mich Wahnsinnig."
 
 #: data/level/to-nenes-house-inside.cfg:438
 msgid "Sure thing. I need a job!"
-msgstr "Sicher, ich brauche einen Job!"
+msgstr  Na klar!\n"
+"Ich war auf der Suche nach einem Job!"
 
 #: data/level/to-nenes-house-inside.cfg:440
 msgid ""
 "How much were you figuring on\n"
 "paying for a pest exterminator?"
 msgstr ""
-"Wieviel meinst du hättest du\n"
-"einem Kammerjäger bezahlt?"
-
-#: data/level/to-nenes-house-inside.cfg:441
+"Wieviel hättest du denn einem\n"
+"professionellen Kammerjäger gezahlt?"
+: data/level/to-nenes-house-inside.cfg:441
 msgid ""
 "Well sheesh, I thought you'd\n"
 "do it for free for a friend!"
@@ -2760,7 +2769,7 @@ msgstr "Hah!"
 
 #: data/level/to-nenes-house.cfg:1903
 msgid "There's Nene's house, right up there!"
-msgstr "Da ist schon Nenes Haus!"
+msgstr "Da vorne ist schon Nenes Haus!"
 
 #: data/level/to-nenes-house.cfg:1916
 msgid "A moment of your time sir?"
@@ -2798,9 +2807,9 @@ msgid ""
 "No... but,\n"
 "I think I see where this is going."
 msgstr ""
-"Nein... aber,\n"
-"ich denke ich sehe worauf das\n"
-"hinaus läuft."
+"Nein... \n"
+"aber ich ahne schon\n"
+"worauf das hinausläuft."
 
 #: data/level/to-nenes-house.cfg:1925
 msgid ""
@@ -2818,7 +2827,7 @@ msgstr ""
 
 #: data/level/to-nenes-house.cfg:1927
 msgid "Yeesh. Sounds awful."
-msgstr "Yeesh, klingt furchtbar."
+msgstr "Yeesh, Klingt ja fürchterlich."
 
 #: data/level/to-nenes-house.cfg:1928
 msgid ""
@@ -2831,7 +2840,7 @@ msgstr ""
 
 #: data/level/to-nenes-house.cfg:1930
 msgid "I'll accept that offer!"
-msgstr "Dieses Angebot nehme ich an!"
+msgstr "Das Angebot nehm' ich an!"
 
 #: data/level/to-nenes-house.cfg:1931
 msgid "Er... I'm not sure I .."
