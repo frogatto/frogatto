@@ -1475,15 +1475,16 @@ formula::formula(const wml::value& val, function_symbol_table* symbols, const fo
 				++begin_line;
 			}
 
-			std::string whitespace;
-			for(int n = 0; n < tok.begin - begin_line; ++n) {
-				whitespace += " ";
-			}
+			std::string whitespace(begin_line, tok.begin);
+			std::fill(whitespace.begin(), whitespace.end(), ' ');
+
+			std::cerr << std::string(begin_line, tok.begin) << "\n";
 
 			ASSERT_LOG(false, "ERROR WHILE PARSING FORMULA AT "
 			  << (filename_ ? *filename_ : "UNKNOWN") << ":"
 			  << (line_ + nline) << " " << error_msg << "\n"
-			  << std::string(begin_line, end_line) << "\n" << "^\n");
+			  << std::string(begin_line, end_line) << "\n"
+			  << whitespace << "^\n");
 		}
 	}
 	
