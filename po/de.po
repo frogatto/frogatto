@@ -4,12 +4,12 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-09-23 19:46+0200\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Philipp Zabel <philipp.zabel@gmail.com>\n"
+"Last-Translator: Joooo\n"
 "Language-Team: \n"
-"Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-15\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 
 #: data/level/airplane-boss.cfg:11
 msgid "Stonepipe Bridge"
@@ -17,15 +17,15 @@ msgstr ""
 
 #: data/level/airplane-boss.cfg:356
 msgid "Ambush!"
-msgstr ""
+msgstr "Hinterhalt!"
 
 #: data/level/airplane-boss.cfg:365
 msgid "Victory!"
-msgstr ""
+msgstr "Sieg!"
 
 #: data/level/ant-farm-minigame.cfg:10
 msgid "Ant Farm"
-msgstr ""
+msgstr "Ameisenfarm"
 
 #: data/level/ant-farm-minigame.cfg:798
 msgid ""
@@ -194,11 +194,11 @@ msgstr ""
 
 #: data/level/crevice-village-cave.cfg:815
 msgid "What the..."
-msgstr ""
+msgstr "Was zum..."
 
 #: data/level/crevice-village-cave.cfg:815
 msgid "You!!"
-msgstr ""
+msgstr "Du!!"
 
 #: data/level/crevice-village-cave.cfg:816
 #: data/level/wm-town.cfg:2416
@@ -209,11 +209,11 @@ msgstr "Ja"
 
 #: data/level/crevice-village-cave.cfg:816
 msgid "You're an intruder, aren't you?!"
-msgstr ""
+msgstr "Du bist ein Eindringling, oder nicht?"
 
 #: data/level/crevice-village-cave.cfg:817
 msgid "I thought so!"
-msgstr ""
+msgstr "Dachte ich mir!"
 
 #: data/level/crevice-village-cave.cfg:818
 #: data/level/wm-town.cfg:2423
@@ -224,53 +224,63 @@ msgstr "Nein"
 
 #: data/level/crevice-village-cave.cfg:819
 msgid "There's no fooling me."
-msgstr ""
+msgstr "Du kannst mich nicht täuschen."
 
 #: data/level/crevice-village-cave.cfg:819
 msgid ""
 "You look like a very\n"
 "suspicious character."
 msgstr ""
+"Du siehst sehr\n"
+"verdächtig aus!"
 
 #: data/level/crevice-village-cave.cfg:821
 msgid "Could you just step aside?"
-msgstr ""
+msgstr "Könntest du einfach beiseite gehen?"
 
 #: data/level/crevice-village-cave.cfg:823
 msgid ""
 "I need to take care\n"
 "of something in town."
 msgstr ""
+"Ich muss mich um etwas\n"
+"in der Stadt kümmern!"
 
 #: data/level/crevice-village-cave.cfg:824
 msgid ""
 "Well, I can't let anyone\n"
 "past this gate."
 msgstr ""
+"Nun, ich darf niemanden\n"
+"durch dieses Tor lassen."
 
 #: data/level/crevice-village-cave.cfg:825
 msgid ""
 "Without this key,\n"
 "you're not getting anywhere."
-msgstr ""
+msgstr "Ohne diesen Schlüssel,kommst du nirgendwo hin."
 
 #: data/level/crevice-village-cave.cfg:827
 msgid ""
 "Okay.  Will you please lend\n"
 "me that key?"
 msgstr ""
+"In Ordnung, Kannst du mir diesen\n"
+"Schlüssel Bitte ausleihen?"
 
 #: data/level/crevice-village-cave.cfg:828
 msgid "No way!  Over my dead body!"
 msgstr ""
+"Auf keinen Fall!\n"
+"Nur über meine Leiche!"
 
 #: data/level/crevice-village-cave.cfg:830
 msgid "We can do that."
-msgstr ""
+msgstr "Das lässt sich einrichten."
 
 #: data/level/crevice-village-central-side-cave.cfg:11
 msgid "Hidden Cave"
-msgstr ""
+msgstr "Versteckte Höhle."
 
 #: data/level/crevice-village-central.cfg:1367
 msgid ""
@@ -2627,7 +2637,7 @@ msgstr "Nenes Haus"
 
 #: data/level/to-nenes-house-inside.cfg:418
 msgid "Hey Nene, what's cooking?"
-msgstr "Hallo Nene, was geht?"
+msgstr "Hallo Nene, wie geht's?"
 
 #: data/level/to-nenes-house-inside.cfg:419
 msgid ""
@@ -2821,7 +2831,7 @@ msgstr ""
 
 #: data/level/to-nenes-house.cfg:1930
 msgid "I'll accept that offer!"
-msgstr "Dieses Angebot akzeptiere ich!"
+msgstr "Dieses Angebot nehme ich an!"
 
 #: data/level/to-nenes-house.cfg:1931
 msgid "Er... I'm not sure I .."
@@ -2833,8 +2843,8 @@ msgid ""
 "be prepared to pay ANY reward I ask."
 msgstr ""
 "Wenn ich euch tatsächlich rette,\n"
-"will ich JEGLICHE Belohnung bezahlt\n"
-"bekommen, die ich fordere."
+"will ich JEGLICHE Belohnung die ich,\n"
+"fordere bezahlt bekommen."
 
 #: data/level/to-nenes-house.cfg:1936
 msgid ""
@@ -3197,15 +3207,17 @@ msgstr ""
 
 #: data/level/wm-town.cfg:2361
 msgid "Oh."
-msgstr ""
+msgstr "Oh."
 
 #: data/level/wm-town.cfg:2367
 msgid "... It's gone. Sorry."
 msgstr ""
+"... Es ist weg.\n"
+"Tut mir Leid."
 
 #: data/level/wm-town.cfg:2368
 msgid "See you."
-msgstr ""
+msgstr "Bis dann."
 
 #: data/level/wm-town.cfg:2376
 msgid ""
@@ -3251,7 +3263,7 @@ msgstr ""
 
 #: data/level/wm-town.cfg:2394
 msgid "Turtle"
-msgstr ""
+msgstr "Schildkröte"
 
 #: data/level/wm-town.cfg:2396
 msgid ""
@@ -3262,7 +3274,7 @@ msgstr ""
 
 #: data/level/wm-town.cfg:2400
 msgid "Heart"
-msgstr ""
+msgstr "Herz"
 
 #: data/level/wm-town.cfg:2402
 msgid ""
@@ -3283,7 +3295,7 @@ msgstr ""
 
 #: data/level/wm-town.cfg:2407
 msgid "Fruit"
-msgstr ""
+msgstr "Frucht"
 
 #: data/level/wm-town.cfg:2409
 msgid "It's foreign, but it ships well."
@@ -3349,7 +3361,7 @@ msgstr ""
 
 #: data/level/wm-town.cfg:2449
 msgid "More"
-msgstr ""
+msgstr "Mehr"
 
 #: data/level/wm-town.cfg:2451
 msgid "3: Odd table you have there."
@@ -3384,15 +3396,16 @@ msgstr ""
 #: data/object_prototypes/buyable_item.cfg:19
 #: data/object_prototypes/buyable_item.cfg:22
 msgid "The price is {final_price} coins."
-msgstr ""
+msgstr "Der preis sind {final_price} Münzen."
 
 #: data/object_prototypes/buyable_item.cfg:19
 msgid "You don't have enough money."
-msgstr ""
+msgstr "Dafür hast du nicht genug Geld."
 
 #: data/object_prototypes/buyable_item.cfg:23
+#, fuzzy
 msgid "Do you want to buy the {consts.name}?"
-msgstr ""
+msgstr "{consts.name} kaufen?"
 
 #: data/objects/items/max_heart_object.cfg:18
 msgid ""
@@ -3404,54 +3417,73 @@ msgstr ""
 "hat sich um eins erhöht!"
 
 #: data/objects/items/partial_max_heart_object.cfg:22
+#, fuzzy
 msgid ""
 "You've found part of a heart capsule.\n"
 "Collect another three to increase\n"
 " your maximum HP by one!"
 msgstr ""
+"Du hast einen Teil einer neuen Herzkapsel\n"
+"gefunden. Sammle drei weitere um dein\n"
+"maximales Leben zu erhöhen."
 
 #: data/objects/items/partial_max_heart_object.cfg:24
+#, fuzzy
 msgid ""
 "You've found part of a heart capsule.\n"
 "Collect another two to increase\n"
 " your maximum HP by one!"
 msgstr ""
+"Du hast einen Teil einer neuen Herzkapsel\n"
+"gefunden. Sammle zwei weitere um dein\n"
+"maximales Leben zu erhöhen."
 
 #: data/objects/items/partial_max_heart_object.cfg:26
+#, fuzzy
 msgid ""
 "You've found part of a heart capsule.\n"
 "Collect another one to increase\n"
 " your maximum HP by one!"
 msgstr ""
+"Du hast einen Teil einer neuen Herzkapsel\n"
+"gefunden. Sammle ein weiteres um dein\n"
+"maximales Leben zu erhöhen."
 
 #: data/objects/items/partial_max_heart_object.cfg:30
+#, fuzzy
 msgid ""
 "You've collected enough parts to\n"
 "make a whole new heart capsule!\n"
 "Your maximum HP has increased by one!"
 msgstr ""
+"Du hast genügend Teile für eine neue\n"
+"Herzkapsel gesammelt. Dein maximales\n"
+"Leben hat sich um eins erhöht!"
 
 #: data/objects/npcs/chopple_npc.cfg:7
 msgid "Hi, Chopple."
-msgstr ""
+msgstr "Hi, Chopple."
 
 #: data/objects/npcs/chopple_npc.cfg:8
 msgid ""
 "Hey.\n"
 "Welcome to the store."
 msgstr ""
+"Hallo.\n"
+"Willkommen in meinem Laden."
 
 #: data/objects/npcs/chopple_npc.cfg:9
 msgid "Take your time, look around."
-msgstr ""
+msgstr "Nimm dir Zeit, schau dich um."
 
 #: data/objects/npcs/kinguin_npc.cfg:26
 msgid "Hi, Kinguin, what's up?"
-msgstr ""
+msgstr "Hi, Kinguin, wie geht's?"
 
 #: data/objects/playable/map-selector.cfg:21
+#, fuzzy
 msgid "Milgram's Castle"
-msgstr ""
+msgstr "Milgrams Burg"
 
 #: data/objects/props-interactive/save_toilet.cfg:16
 msgid "Do you want to save the game?"
@@ -3466,26 +3498,32 @@ msgid ""
 "The gliding wings will allow\n"
 "you to glide through the air."
 msgstr ""
+"Mit den Gleitflügeln kannst\n"
+"du durch die Luft gleiten."
 
 #: data/objects/store-items/buyable_heart_container.cfg:11
 msgid "heart"
-msgstr ""
+msgstr "Herz"
 
 #: data/objects/store-items/buyable_heart_container.cfg:13
 msgid ""
 "The heart will give you\n"
 "an extra health point."
 msgstr ""
+"Herzen geben dir einen\n"
+"extra Lebenspunkt."
 
 #: data/objects/store-items/buyable_jumping_boots.cfg:13
 msgid ""
 "The power boots will\n"
 "make you jump higher."
 msgstr ""
+"Mit den Kraftschuhen\n"
+"kannst du höher springen."
 
 #: data/objects/store-items/buyable_powerup_invincible.cfg:11
 msgid "invincibility crystal"
-msgstr ""
+msgstr "Unsichtbarkeitskristall"
 
 #: data/objects/store-items/buyable_powerup_invincible.cfg:13
 msgid ""
@@ -3494,6 +3532,9 @@ msgid ""
 "powerups will make you\n"
 "invincible for a short time."
 msgstr ""
+"Der Unsichtbarkeitskristall aktiviert\n"
+"Unsichtbarkeits-Powerups die dich\n"
+"kurz unsichtbar machen."
 
 #: data/objects/store-items/buyable_powerup_reflexes.cfg:11
 msgid "hyper crystal"
@@ -3510,7 +3551,7 @@ msgstr ""
 
 #: data/objects/store-items/buyable_powerup_shooting.cfg:11
 msgid "energy crystal"
-msgstr ""
+msgstr "Energiekristall"
 
 #: data/objects/store-items/buyable_powerup_shooting.cfg:13
 msgid ""
@@ -3519,18 +3560,25 @@ msgid ""
 "powerups will allow you\n"
 "to shoot bolts of energy."
 msgstr ""
+"Der Energiekristall aktiviert\n"
+"Energie-Powerups die dich\n"
+"Energiebälle schießen lassen."
 
 #: data/objects/store-items/buyable_shield.cfg:13
 msgid ""
 "The energy shield protects you\n"
 "from damage when you crouch."
 msgstr ""
+"Das Energieschild schützt dich\n"
+"vor Schaden wenn du dich duckst"
 
 #: data/objects/store-items/buyable_speed_boots.cfg:13
 msgid ""
 "The speed boots will make\n"
 "you faster."
 msgstr ""
+"Die Laufschuhe machen\n"
+"dich schneller."
 
 #: data/objects/store-items/buyable_spit_strengthener.cfg:11
 msgid "spit strengthener"
@@ -3543,14 +3591,18 @@ msgid ""
 msgstr ""
 
 #: data/objects/store-items/buyable_tongue_extension.cfg:11
+#, fuzzy
 msgid "tongue extender"
-msgstr ""
+msgstr "Zungenverlängerung"
 
 #: data/objects/store-items/buyable_tongue_extension.cfg:13
+#, fuzzy
 msgid ""
 "The tongue extender will extend\n"
 "the length of your tongue."
 msgstr ""
+"Die Zungerverlängerung macht\n"
+"deine Zunge länger."
 
 #: data/preload.cfg:4
 #: data/preload.cfg:9
@@ -3628,7 +3680,7 @@ msgstr "Tastenbelegung..."
 
 #: src/pause_game_dialog.cpp:60
 msgid "Return to Titlescreen"
-msgstr "Zurück zum Titelbild"
+msgstr "Zurück zum Titelbildschirm"
 
 #: src/pause_game_dialog.cpp:61
 msgid "Exit Game"
