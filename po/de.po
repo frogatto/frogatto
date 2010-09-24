@@ -17,7 +17,7 @@ msgstr ""
 
 #: data/level/airplane-boss.cfg:356
 msgid "Ambush!"
-msgstr "Hinterhalt!"
+msgstr "Ein Hinterhalt!"
 
 #: data/level/airplane-boss.cfg:365
 msgid "Victory!"
@@ -32,28 +32,32 @@ msgid ""
 "I can feel the ants coming to\n"
 "investigate. Go get their points."
 msgstr ""
+"Die Ameisen scheinen zu kommen\n"
+"Hol dir die Punkte!"
 
 #: data/level/ant-farm-minigame.cfg:800
 msgid " points."
-msgstr ""
+msgstr " Punkte erreicht."
 
 #: data/level/ant-farm-minigame.cfg:800
 msgid ""
 "Here's a 100 points in reward.\n"
 "We'll just leave now."
 msgstr ""
+"Hier sind 100 Punkte für dich.\n"
+"Wir gehen jetzt."
 
 #: data/level/ant-farm-minigame.cfg:800
 msgid "Not bad. You scored a total of"
-msgstr ""
+msgstr "Nicht schlecht, du hast "
 
 #: data/level/ant-farm-minigame.cfg:800
 msgid "Time: "
-msgstr ""
+msgstr "Zeit: "
 
 #: data/level/ant-farm-minigame.cfg:800
 msgid "Well, that's that."
-msgstr ""
+msgstr "So, das war's."
 
 #: data/level/autumn-town.cfg:11
 msgid "Autumn Town"
@@ -1080,12 +1084,12 @@ msgid ""
 "Ahh, what a beautiful ..\n"
 "..Afternoon?!"
 msgstr ""
-"Ahh, was für ein wunderschöner ..\n"
+"Aah, was für ein wunderschöner ..\n"
 "..Nachmittag?!"
 
 #: data/level/frogatto-grotto-frogattos-room.cfg:907
 msgid "Oh geez! I overslept!"
-msgstr "Oh mist! Ich habe verschlafen!"
+msgstr "Oh mist! Ich hab' verschlafen!"
 
 #: data/level/frogatto-grotto-inside.cfg:9
 msgid "Frogatto's House"
@@ -1105,7 +1109,7 @@ msgstr "Du solltest mal früher aufstehen."
 
 #: data/level/frogatto-grotto-inside.cfg:1155
 msgid "Okay, then how's lunch coming?"
-msgstr "Ok, wann ist das Mittagessen fertig?"
+msgstr "Ok, wann ist dann das Mittagessen fertig?"
 
 #: data/level/frogatto-grotto-inside.cfg:1156
 msgid ""
@@ -1165,7 +1169,7 @@ msgstr "Jaa, ich weiss. Ich werd's versuchen."
 
 #: data/level/frogatto-grotto-inside.cfg:1522
 msgid "See to it."
-msgstr "Sieh zu."
+msgstr "Gib dir Mühe!"
 
 #: data/level/frogatto-grotto-inside.cfg:1535
 msgid "Not like I need to be up,"
@@ -1173,7 +1177,7 @@ msgstr "Nicht dass ich auf sein müsste,"
 
 #: data/level/frogatto-grotto-inside.cfg:1535
 msgid "but it's the principle of the thing."
-msgstr "aber hier geht's um das Prinzip."
+msgstr "aber hier geht's um's Prinzip."
 
 # data/level/frogatto-grotto-patos-room.cfg:9
 #: data/level/frogatto-grotto-patos-room.cfg:9
@@ -1325,8 +1329,9 @@ msgid ""
 "Whilst you are clinging to the wall,\n"
 "pressing jump will make you rebound off."
 msgstr ""
-"Solange du an der Wand hängst, kannst du\n"
-"mit der Sprungtaste von dort abspringen."
+"Solange du an der Wand hängst,\n"
+"kannst du mit der Sprungtaste\n"
+"von dort abspringen."
 
 #: data/level/grassy-path.cfg:1236
 msgid ""
@@ -1387,8 +1392,7 @@ msgid ""
 "and then will flip upright again."
 msgstr ""
 "Wenn sie nichts treffen werden sie\n"
-"einen Moment betäubt liegen bleiben,\n"
-"und sich dann wieder richtig herum drehen."
+"einen Moment betäubt liegen bleiben,"
 
 #: data/level/grassy-path.cfg:1276
 msgid ""
@@ -1428,7 +1432,7 @@ msgid ""
 "is that you can control the direction\n"
 "in which enemies are spat."
 msgstr ""
-"Ein sehr nützlicher Fakt ist, dass du\n"
+"Nützlich ist auch, dass du\n"
 "die Richtung, in die Gegner gespuckt\n"
 "werden, wählen kannst."
 
@@ -1450,7 +1454,7 @@ msgid ""
 msgstr ""
 "Wenn du {DOWN_KEY} gedrückt hältst\n"
 "während du {TONGUE_KEY} drückst\n"
-"wirst Du nur sehr schwach spucken."
+"wirst du nur sehr schwach spucken."
 
 #: data/level/grassy-path.cfg:1361
 msgid ""
@@ -1491,8 +1495,8 @@ msgid ""
 "Fountains, and other water dispensers,\n"
 "are very helpful."
 msgstr ""
-"Springbrunnen und andere Wasser-\n"
-"quellen sind sehr hilfreich."
+"Springbrunnen und andere\n"
+"Wasserquellen sind sehr hilfreich."
 
 #: data/level/grassy-path.cfg:1417
 msgid ""
@@ -1632,7 +1636,7 @@ msgid ""
 "you learn on your own."
 msgstr ""
 "Auch wenn es noch einiges\n"
-"zum Spiel zu sagen gäbe,\n"
+"im Spiel zu sagen gibt,\n"
 "den Rest können wir dich guten\n"
 "Gewissens selbst lernen lassen."
 
@@ -2622,7 +2626,7 @@ msgstr "Drücke {LEFT_KEY} oder {RIGHT_KEY} um zu gehen."
 #: data/level/titlescreen.cfg:389
 #: data/level/titlescreen.cfg:405
 msgid "Press {UP_KEY} to talk, and use things like doors."
-msgstr "Drücke {UP_KEY} um zu sprechen oder Türen u.a. zu benutzen."
+msgstr "Drücke {UP_KEY} um zu sprechen oder Gegenstände wie Türen zu benutzen."
 
 #: data/level/titlescreen.cfg:390
 msgid "Press {DOWN_KEY} to crouch."
@@ -2638,7 +2642,7 @@ msgstr "Drücke {JUMP_KEY} um zu springen."
 
 #: data/level/titlescreen.cfg:393
 msgid "Press {TONGUE_KEY} to use a character's attacks."
-msgstr "Drücke {TONGUE_KEY} um einen Angriff auszuführen."
+msgstr "Drücke {TONGUE_KEY} um anzugreifen."
 
 #: data/level/to-nenes-house-inside.cfg:9
 msgid "Nene's House"
@@ -2690,7 +2694,8 @@ msgstr "Die machen mich Wahnsinnig."
 
 #: data/level/to-nenes-house-inside.cfg:438
 msgid "Sure thing. I need a job!"
-msgstr  Na klar!\n"
+msgstr ""
+"Na klar!\n"
 "Ich war auf der Suche nach einem Job!"
 
 #: data/level/to-nenes-house-inside.cfg:440
@@ -2700,7 +2705,8 @@ msgid ""
 msgstr ""
 "Wieviel hättest du denn einem\n"
 "professionellen Kammerjäger gezahlt?"
-: data/level/to-nenes-house-inside.cfg:441
+
+#: data/level/to-nenes-house-inside.cfg:441
 msgid ""
 "Well sheesh, I thought you'd\n"
 "do it for free for a friend!"
@@ -2714,9 +2720,9 @@ msgid ""
 "I think I left a health capsule down there.\n"
 "If you can clear it out, it's yours."
 msgstr ""
-"Aber wenn du's so willst, ich glaube\n"
-"ich habe eine Herzkapsel unten im\n"
-"Keller liegen gelassen.\n"
+"Aber wenn du es so willst, ich\n"
+"glaube, ich habe eine Herzkapsel\n"
+"unten im Keller liegen gelassen.\n"
 "Wenn du da ausmistest, gehört sie dir."
 
 #: data/level/to-nenes-house-inside.cfg:444
@@ -2797,18 +2803,16 @@ msgid ""
 "You may remember him loaning a bunch\n"
 "of money to the elder, back in the day."
 msgstr ""
-"Es ist Milgram!\n"
-"Vielleicht erinnern Sie sich,\n"
-"er hatte damals dem Ältesten\n"
-"eine Menge Geld geliehen."
+"Es ist Milgram! - Vielleicht erinnern\n"
+"Sie sich, er hatte damals dem\n"
+"Ältesten eine Menge Geld geliehen."
 
 #: data/level/to-nenes-house.cfg:1924
 msgid ""
 "No... but,\n"
 "I think I see where this is going."
 msgstr ""
-"Nein... \n"
-"aber ich ahne schon\n"
+"Nein... aber ich ahne schon\n"
 "worauf das hinausläuft."
 
 #: data/level/to-nenes-house.cfg:1925
@@ -2844,7 +2848,7 @@ msgstr "Das Angebot nehm' ich an!"
 
 #: data/level/to-nenes-house.cfg:1931
 msgid "Er... I'm not sure I .."
-msgstr "Äh... Ich bin nicht sicher, dass .."
+msgstr "Äh... Ich bin nicht sicher .."
 
 #: data/level/to-nenes-house.cfg:1934
 msgid ""
