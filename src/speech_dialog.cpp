@@ -16,6 +16,7 @@
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "speech_dialog.hpp"
+#include "iphone_controls.hpp"
 
 namespace {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
@@ -50,12 +51,7 @@ speech_dialog::~speech_dialog()
 
 bool speech_dialog::handle_mouse_move(int x, int y)
 {
-	if(preferences::screen_rotated()) {
-		x = preferences::actual_screen_width() - x;
-		std::swap(x, y);
-		x *= 2;
-		y *= 2;
-	}
+	translate_mouse_coords(&x, &y);
 	rect box(
 		preferences::virtual_screen_width() - OptionsX - OptionWidth - OptionsBorder,
 		preferences::virtual_screen_height() - OptionsY - OptionHeight*options_.size() - OptionsBorder,
