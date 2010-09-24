@@ -746,6 +746,16 @@ class string_expression : public formula_expression {
 public:
 	explicit string_expression(std::string str, bool translate = false) : formula_expression("_string")
 	{
+		size_t pos = 0;
+		//replace \\n sequences with newlines
+		while((pos = str.find("\\n", pos)) != std::string::npos) {
+			str = str.replace(pos, 2, "\n");
+		}
+		pos = 0;
+		//and remove tabs
+		while((pos = str.find("\t", pos)) != std::string::npos) {
+			str = str.replace(pos, 2, "");
+		}
 		if (translate) {
 			str = i18n::tr(str);
 		}
