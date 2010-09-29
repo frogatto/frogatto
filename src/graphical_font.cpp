@@ -57,9 +57,6 @@ graphical_font::graphical_font(wml::const_node_ptr node)
 		}
 		for(std::string::const_iterator i = chars.begin(); i != chars.end(); ++i) {
 			const unsigned char c = *i;
-			if(char_rect_map_.size() <= c) {
-				char_rect_map_.resize(c + 1);
-			}
 
 			char_rect_map_[c] = current_rect;
 
@@ -104,11 +101,11 @@ rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_te
 		}
 
 		const unsigned char c = *i;
-		if(c >= char_rect_map_.size() || char_rect_map_[c].w() == 0) {
+		char_rect_map::const_iterator it = char_rect_map_.find (c);
+		if (it == char_rect_map_.end())
 			continue;
-		}
 
-		const rect& r = char_rect_map_[c];
+		const rect& r = it->second;
 
 		if(draw_text) {
 			const GLfloat TextureEpsilon = 0.1;

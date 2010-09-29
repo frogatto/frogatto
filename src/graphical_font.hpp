@@ -2,6 +2,7 @@
 #define GRAPHICAL_FONT_HPP_INCLUDED
 
 #include <boost/shared_ptr.hpp>
+#include <boost/unordered_map.hpp>
 
 #include <string>
 #include <vector>
@@ -30,7 +31,9 @@ private:
 	std::string id_;
 
 	graphics::texture texture_;
-	std::vector<rect> char_rect_map_;
+	//hashmap to map characters to rectangles in the texture
+	typedef boost::unordered_map<char, rect> char_rect_map;
+	char_rect_map char_rect_map_;
 	int kerning_;
 };
 
