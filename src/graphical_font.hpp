@@ -32,7 +32,7 @@ private:
 
 	graphics::texture texture_;
 	//hashmap to map characters to rectangles in the texture
-	typedef boost::unordered_map<char, rect> char_rect_map;
+	typedef boost::unordered_map<unsigned int, rect> char_rect_map;
 	char_rect_map char_rect_map_;
 	int kerning_;
 };

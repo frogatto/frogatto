@@ -8,6 +8,53 @@
 namespace {
 typedef std::map<std::string, graphical_font_ptr> cache_map;
 cache_map cache;
+
+unsigned int utf8_to_codepoint(std::string::const_iterator& i, std::string::const_iterator end) {
+	unsigned int codepoint = 0;
+
+	if((*i & 0xc0) == 0x80) {
+		return 0;
+	}
+	if((*i & 0xc0) == 0xc0) {
+		//*i is the start of an UTF-8 encoded multi-byte character.
+		//we only support the basic multilingual plane (that is, up to three-byte characters).
+		if ((*i & 0xe0) == 0xc0) {
+			//two byte sequence: 110xxxyy 10yyyyyy
+			codepoint = (*i & 0x1f) << 6;
+			if (++i == end) {
+				return 0;
+			}
+			if ((*i & 0xc0) == 0x80) {
+				codepoint |= *i & 0x3f;
+			} else {
+				codepoint = 0xfffd; // U+FFFD is the replacement character
+			}
+		} else if ((*i & 0xf0) == 0xe0) {
+			//three byte sequence: 1110xxxx 10xxxxyy 10yyyyyy
+			codepoint = (*i & 0x0f) << 12;
+			if (++i == end) {
+				return 0;
+			}
+			if (*i & 0xc0 != 0x80) {
+				codepoint |= (*i & 0x3f) << 6;
+				if (++i != end) {
+					return 0;
+				}
+				if ((*i & 0xc0) == 0x80) {
+					codepoint |= *i & 0x3f;
+				} else {
+					codepoint = 0xfffd;
+				}
+			} else {
+				codepoint = 0xfffd;
+			}
+		}
+	} else {
+		//c is an ASCII character
+		codepoint = *i;
+	}
+	return codepoint;	
+}
 }
 
 void graphical_font::init(wml::const_node_ptr node)
@@ -56,9 +103,11 @@ graphical_font::graphical_font(wml::const_node_ptr node)
 			current_rect = rect(i1->second->attr("rect"));
 		}
 		for(std::string::const_iterator i = chars.begin(); i != chars.end(); ++i) {
-			const unsigned char c = *i;
+			unsigned int codepoint = utf8_to_codepoint(i, chars.end());
+			if (codepoint == 0)
+				break;
 
-			char_rect_map_[c] = current_rect;
+			char_rect_map_[codepoint] = current_rect;
 
 			current_rect = rect(current_rect.x() + current_rect.w() + pad,
 			                    current_rect.y(),
@@ -100,8 +149,11 @@ rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_te
 			continue;
 		}
 
-		const unsigned char c = *i;
-		char_rect_map::const_iterator it = char_rect_map_.find (c);
+		unsigned int codepoint = utf8_to_codepoint(i, text.end());
+		if (codepoint == 0)
+			break;
+
+		char_rect_map::const_iterator it = char_rect_map_.find (codepoint);
 		if (it == char_rect_map_.end())
 			continue;
 
