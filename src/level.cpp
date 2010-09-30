@@ -3451,8 +3451,8 @@ bool level::relocate_object(entity_ptr e, int new_x, int new_y)
 	const int orig_x = e->x();
 	const int orig_y = e->y();
 
-	const int delta_x = e->x() - orig_x;
-	const int delta_y = e->y() - orig_y;
+	const int delta_x = new_x - orig_x;
+	const int delta_y = new_y - orig_y;
 
 	e->set_pos(new_x, new_y);
 
