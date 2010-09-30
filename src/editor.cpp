@@ -239,7 +239,7 @@ public:
 		dialog d(0, 0, graphics::screen_width(), graphics::screen_height());
 		d.add_widget(widget_ptr(new label("New Level", graphics::color_white(), 48)));
 		text_entry_widget* entry = new text_entry_widget;
-		d.add_widget(widget_ptr(new label("Name:", graphics::color_white())))
+		d.add_widget(widget_ptr(new label("Filename:", graphics::color_white())))
 		 .add_widget(widget_ptr(entry));
 		d.show_modal();
 		
