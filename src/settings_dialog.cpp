@@ -9,19 +9,21 @@
 
 namespace
 {
-	const int sw = graphics::screen_width();
-	const int sh = graphics::screen_height();
 	const int padding = 20;
 }
 
 void settings_dialog::draw (bool in_speech_dialog) const
 {
+	int sw = graphics::screen_width();
+	int sh = graphics::screen_height();
 	const const_gui_section_ptr button = gui_section::get(std::string(in_speech_dialog ? "skip" : "menu") + "_button_" + std::string(menu_button_state_ ? "down" : "normal"));
 	button->blit(sw - button->width() - padding, padding);
 }
 
 bool settings_dialog::handle_event (const SDL_Event& event)
 {
+	int sw = graphics::screen_width();
+	int sh = graphics::screen_height();
 	const const_gui_section_ptr button = gui_section::get("menu_button_normal");
 	if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP)
 	{
