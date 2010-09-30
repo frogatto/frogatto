@@ -120,14 +120,14 @@ level::level(const std::string& level_cfg)
 				}
 			}
 
+			wml::const_node_ptr n = node;
 			if(node->has_attr("id")) {
-				node = load_level_wml(node->attr("id"));
+				n = load_level_wml(node->attr("id"));
 			} else {
 				//this save was made before we saved level ID's. The best
 				//we can do is get a level with a matching title.
 				std::vector<std::string> files;
 				sys::get_files_in_dir("data/compiled/level/", &files);
-				wml::const_node_ptr n = node;
 				foreach(const std::string& file, files) {
 					if(file == "save.cfg" || file == "autosave.cfg") {
 						continue;
@@ -148,8 +148,20 @@ level::level(const std::string& level_cfg)
 						n = lvl_info;
 					}
 				}
-				node = n;
 			}
+			//in case the player had swallowed an object, copy it
+			//over from the savegame.
+			wml::node::const_child_iterator i1 = node->begin_child("serialized_objects");
+			wml::node::const_child_iterator i2 = n->begin_child("serialized_objects");
+			if(i1 != node->end_child("serialized_objects") && i2 != n->end_child("serialized_objects")) {
+				wml::node::const_child_iterator j1 = (i1->second)->begin_child("character");
+				wml::node::const_child_iterator j2 = (i1->second)->end_child("character");
+				while(j1 != j2) {
+					(i2->second)->add_child(j1->second);
+					++j1;
+				}
+			}
+			node = n;
 		}
 	}
 
