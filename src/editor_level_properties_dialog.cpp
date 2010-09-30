@@ -26,7 +26,14 @@ namespace {
 void set_segmented_level(level* lvl, bool value)
 {
 	if(value) {
-		lvl->set_segment_width(lvl->boundaries().w());
+		//make sure the segment width is divisible by the tile size.
+		int width = lvl->boundaries().w();
+		while(width%32) {
+			++width;
+		}
+		lvl->set_segment_width(width);
+		lvl->set_boundaries(rect(lvl->boundaries().x(), lvl->boundaries().y(),
+		                         width, lvl->boundaries().h()));
 	} else {
 		lvl->set_segment_width(0);
 	}
