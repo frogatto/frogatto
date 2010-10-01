@@ -106,6 +106,9 @@ public:
 	int last_move_x() const;
 	int last_move_y() const;
 
+	void set_platform_motion_x(int value);
+	int platform_motion_x() const;
+
 	bool face_right() const { return face_right_; }
 	virtual void set_face_right(bool facing);
 
@@ -294,6 +297,8 @@ private:
 	rect solid_rect_, frame_rect_, platform_rect_;
 	const solid_info* solid_;
 	const solid_info* platform_;
+
+	int platform_motion_x_;
 };
 
 #endif

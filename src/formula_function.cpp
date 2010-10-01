@@ -637,18 +637,21 @@ private:
 class range_function : public function_expression {
 public:
 	explicit range_function(const args_list& args)
-	  : function_expression("range", args, 1, 1)
+	  : function_expression("range", args, 1, 2)
 	{}
 private:
 	variant execute(const formula_callable& variables) const {
-		const int nelem = args()[0]->evaluate(variables).as_int();
+		const int start = args().size() > 1 ? args()[0]->evaluate(variables).as_int() : 0;
+		const int end = args()[args().size() > 1 ? 1 : 0]->evaluate(variables).as_int();
+		const int nelem = end - start;
+
 		std::vector<variant> v;
 
 		if(nelem > 0) {
 			v.reserve(nelem);
 
 			for(int n = 0; n < nelem; ++n) {
-				v.push_back(variant(n));
+				v.push_back(variant(start+n));
 			}
 		}
 

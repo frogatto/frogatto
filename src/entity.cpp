@@ -19,7 +19,8 @@ entity::entity(wml::const_node_ptr node)
 	group_(wml::get_int(node, "group", -1)),
     id_(-1), respawn_(wml::get_bool(node, "respawn", true)),
 	solid_dimensions_(0), collide_dimensions_(0),
-	weak_solid_dimensions_(0), weak_collide_dimensions_(0)
+	weak_solid_dimensions_(0), weak_collide_dimensions_(0),
+	platform_motion_x_(wml::get_int(node, "platform_motion_x"))
 {
 	foreach(bool& b, controls_) {
 		b = false;
@@ -30,7 +31,8 @@ entity::entity(int x, int y, bool face_right)
   : x_(x*100), y_(y*100), prev_feet_x_(INT_MIN), prev_feet_y_(INT_MIN),
     face_right_(face_right), upside_down_(false), group_(-1), id_(-1),
 	solid_dimensions_(0), collide_dimensions_(0),
-	weak_solid_dimensions_(0), weak_collide_dimensions_(0)
+	weak_solid_dimensions_(0), weak_collide_dimensions_(0),
+	platform_motion_x_(0)
 {
 	foreach(bool& b, controls_) {
 		b = false;
@@ -84,6 +86,16 @@ int entity::last_move_y() const
 	}
 
 	return feet_y() - prev_feet_y_;
+}
+
+void entity::set_platform_motion_x(int value)
+{
+	platform_motion_x_ = value;
+}
+
+int entity::platform_motion_x() const
+{
+	return platform_motion_x_;
 }
 
 void entity::process(level& lvl)

@@ -410,6 +410,10 @@ wml::node_ptr custom_object::write() const
 	res->set_attr("y", formatter() << y());
 	res->set_attr("velocity_x", formatter() << velocity_x_);
 	res->set_attr("velocity_y", formatter() << velocity_y_);
+	
+	if(platform_motion_x()) {
+		res->set_attr("platform_motion_x", formatter() << platform_motion_x());
+	}
 
 	if(solid_dimensions() != type_->solid_dimensions() ||
 	   weak_solid_dimensions() != type_->weak_solid_dimensions()) {
@@ -861,7 +865,7 @@ void custom_object::process(level& lvl)
 	}
 
 	if(standing_on_) {
-		effective_velocity_x += (standing_on_->feet_x() - standing_on_prev_x_)*100;
+		effective_velocity_x += (standing_on_->feet_x() - standing_on_prev_x_)*100 + standing_on_->platform_motion_x();
 		effective_velocity_y += (standing_on_->feet_y() - standing_on_prev_y_)*100;
 	}
 
@@ -1191,14 +1195,14 @@ void custom_object::process(level& lvl)
 	if(standing_on_ && standing_on_ != stand_info.collide_with) {
 		//we were previously standing on an object and we're not anymore.
 		//add the object we were standing on's velocity to ours
-		velocity_x_ += standing_on_->last_move_x()*100;
+		velocity_x_ += standing_on_->last_move_x()*100 + standing_on_->platform_motion_x();
 		velocity_y_ += standing_on_->last_move_y()*100;
 	}
 
 	if(stand_info.collide_with && standing_on_ != stand_info.collide_with) {
 		//we are standing on a new object. Adjust our velocity relative to
 		//the object we're standing on
-		velocity_x_ -= stand_info.collide_with->last_move_x()*100;
+		velocity_x_ -= stand_info.collide_with->last_move_x()*100 + stand_info.collide_with->platform_motion_x();
 		velocity_y_ = 0;
 
 		game_logic::map_formula_callable* callable(new game_logic::map_formula_callable(this));
@@ -1495,6 +1499,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_VELOCITY_Y:        return variant(velocity_y_);
 	case CUSTOM_OBJECT_ACCEL_X:           return variant(accel_x_);
 	case CUSTOM_OBJECT_ACCEL_Y:           return variant(accel_y_);
+	case CUSTOM_OBJECT_PLATFORM_MOTION_X: return variant(platform_motion_x());
 	case CUSTOM_OBJECT_VARS:              return variant(vars_.get());
 	case CUSTOM_OBJECT_TMP:               return variant(tmp_vars_.get());
 	case CUSTOM_OBJECT_GROUP:             return variant(group());
@@ -2015,6 +2020,10 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 
 	case CUSTOM_OBJECT_ACCEL_Y:
 		accel_y_ = value.as_int();
+		break;
+
+	case CUSTOM_OBJECT_PLATFORM_MOTION_X:
+		set_platform_motion_x(value.as_int());
 		break;
 
 	case CUSTOM_OBJECT_ROTATE:
