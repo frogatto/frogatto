@@ -51,4 +51,12 @@ private:
 	int radius_;
 };
 
+class light_fade_length_setter
+{
+	int old_value_;
+public:
+	explicit light_fade_length_setter(int value);
+	~light_fade_length_setter();
+};
+
 #endif

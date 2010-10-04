@@ -52,10 +52,23 @@ bool circle_light::on_screen(const rect& screen_area) const
 	return true;
 }
 
+namespace {
+	int fade_length = 64;
+}
+
+light_fade_length_setter::light_fade_length_setter(int value)
+  : old_value_(fade_length)
+{
+	fade_length = value;
+}
+
+light_fade_length_setter::~light_fade_length_setter()
+{
+	fade_length = old_value_;
+}
+
 int circle_light::split_strip(const darkness_strip& darkness, darkness_strip* output) const
 {
-	int fade_length = 64;
-
 	const rect& area = darkness.area;
 	if(area.y() < center_.y - radius_ || area.y() > center_.y + radius_ ||
 	   area.x2() < center_.x - radius_ - fade_length || area.x() > center_.x + radius_ + fade_length) {
@@ -73,7 +86,7 @@ int circle_light::split_strip(const darkness_strip& darkness, darkness_strip* ou
 
 	const int distance_from_vertical_edge = std::min(area.y() - (center_.y - radius_), (center_.y + radius_) - area.y());
 
-	const int fade_alpha = distance_from_vertical_edge >= fade_length ? 0 : 255*(fade_length - distance_from_vertical_edge)/fade_length;
+	const int fade_alpha = fade_length ? (distance_from_vertical_edge >= fade_length ? 0 : 255*(fade_length - distance_from_vertical_edge)/fade_length) : 0;
 
 
 	const darkness_strip* start_output = output;
@@ -99,7 +112,7 @@ int circle_light::split_strip(const darkness_strip& darkness, darkness_strip* ou
 			if(darkness.alpha_left != darkness.alpha_right) {
 				output->alpha_left = fade_width*(darkness.alpha_right*std::max(0, non_fade_width) + darkness.alpha_left*(darkness.area.w() - std::max(0, non_fade_width)))/(darkness.area.w()*fade_length);
 			} else {
-				output->alpha_left = (darkness.alpha_left*fade_width)/fade_length;
+				output->alpha_left = fade_length ? (darkness.alpha_left*fade_width)/fade_length : 0;
 			}
 
 			output->alpha_right = 0;
@@ -131,7 +144,7 @@ int circle_light::split_strip(const darkness_strip& darkness, darkness_strip* ou
 			if(darkness.alpha_left != darkness.alpha_right) {
 				output->alpha_right = fade_width*(darkness.alpha_left*std::max(0, non_fade_width) + darkness.alpha_right*(area.w() - std::max(0, non_fade_width)))/(area.w()*fade_length);
 			} else {
-				output->alpha_right = (darkness.alpha_right*fade_width)/fade_length;
+				output->alpha_right = fade_length ? (darkness.alpha_right*fade_width)/fade_length : 0;
 			}
 
 			output->alpha_left = 0;

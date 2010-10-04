@@ -105,6 +105,8 @@ void iris_scene(const level& lvl, screen_position& screen_pos, float amount) {
 	if(lvl.player() == NULL) {
 		return;
 	}
+
+	light_fade_length_setter fade_disable(0);
 	
 	const_entity_ptr player = &lvl.player()->get_entity();
 	std::map<const_entity_ptr, std::vector<light_ptr> > lights;
