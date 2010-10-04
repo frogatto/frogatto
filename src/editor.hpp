@@ -21,6 +21,7 @@ class character_editor_dialog;
 class editor_layers_dialog;
 class group_property_editor_dialog;
 class property_editor_dialog;
+class segment_editor_dialog;
 class tileset_editor_dialog;
 }
 
@@ -198,6 +199,8 @@ private:
 	boost::scoped_ptr<editor_dialogs::group_property_editor_dialog> group_property_dialog_;
 	boost::scoped_ptr<editor_dialogs::property_editor_dialog> property_dialog_;
 	boost::scoped_ptr<editor_dialogs::tileset_editor_dialog> tileset_dialog_;
+
+	boost::scoped_ptr<editor_dialogs::segment_editor_dialog> segment_dialog_;
 
 	gui::dialog* current_dialog_;
 

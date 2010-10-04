@@ -42,6 +42,7 @@
 #include "preferences.hpp"
 #include "property_editor_dialog.hpp"
 #include "raster.hpp"
+#include "segment_editor_dialog.hpp"
 #include "stats.hpp"
 #include "texture.hpp"
 #include "text_entry_widget.hpp"
@@ -1218,6 +1219,7 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 
 			if(selected_segment_ == -1) {
 				selected_segment_ = segment;
+				segment_dialog_->set_segment(segment);
 			} else if(buttons&SDL_BUTTON_RIGHT) {
 				if(segment != selected_segment_ && selected_segment_ >= 0) {
 					variant next = lvl_->get_var(formatter() << "segments_after_" << selected_segment_);
@@ -1240,6 +1242,7 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 			}
 		} else {
 			selected_segment_ = -1;
+			segment_dialog_->set_segment(selected_segment_);
 		}
 	} else if(tool() == TOOL_PICKER) {
 		if(lvl_->editor_highlight()) {
@@ -1892,6 +1895,16 @@ void editor::change_tool(EDIT_TOOL tool)
 		current_dialog_ = property_dialog_.get();
 		break;
 	}
+	case TOOL_EDIT_SEGMENTS: {
+
+		if(!segment_dialog_) {
+			segment_dialog_.reset(new editor_dialogs::segment_editor_dialog(*this));
+		}
+	
+		current_dialog_ = segment_dialog_.get();
+		segment_dialog_->set_segment(selected_segment_);
+		break;
+	}
 	}
 
 	if(editor_mode_dialog_) {
@@ -2148,6 +2161,21 @@ void editor::draw() const
 	}
 
 	glPopMatrix();
+
+	//draw the difficulties of segments.
+	if(lvl_->segment_width() > 0) {
+		rect boundaries = modify_selected_rect(*this, lvl_->boundaries(), selectx, selecty);
+		const int y1 = boundaries.y()/zoom_;
+		int seg = 0;
+		for(int xpos = boundaries.x(); xpos < boundaries.x2(); xpos += lvl_->segment_width()) {
+			const int difficulty = lvl_->get_var(formatter() << "segment_difficulty_start_" << seg).as_int();
+//			if(difficulty) {
+				graphics::blit_texture(font::render_text(formatter() << "Difficulty: " << difficulty, graphics::color_white(), 14), (xpos - xpos_)/zoom_, y1 - 20 - ypos_/zoom_);
+//			}
+			
+			++seg;
+		}
+	}
 
 	//draw grid
 	glDisable(GL_TEXTURE_2D);
