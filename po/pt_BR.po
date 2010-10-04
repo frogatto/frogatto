@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Frogatto & Friends 1.0.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-09-23 19:46+0200\n"
-"PO-Revision-Date: 2010-10-03 04:27-0300\n"
+"PO-Revision-Date: 2010-10-04 04:20-0300\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Brazilian Portuguese\n"
 "MIME-Version: 1.0\n"
@@ -43,28 +43,32 @@ msgid ""
 "I can feel the ants coming to\n"
 "investigate. Go get their points."
 msgstr ""
+"As formigas estão vindo investigar.\n"
+"Pegue os pontos delas!"
 
 #: data/level/ant-farm-minigame.cfg:800
 msgid " points."
-msgstr ""
+msgstr " pontos."
 
 #: data/level/ant-farm-minigame.cfg:800
 msgid ""
 "Here's a 100 points in reward.\n"
 "We'll just leave now."
 msgstr ""
+"Aqui vão 100 pontos de recompensa.\n"
+"Agora vamos embora."
 
 #: data/level/ant-farm-minigame.cfg:800
 msgid "Not bad. You scored a total of"
-msgstr ""
+msgstr "Nada mau. Você acumulou"
 
 #: data/level/ant-farm-minigame.cfg:800
 msgid "Time: "
-msgstr ""
+msgstr "Tempo: "
 
 #: data/level/ant-farm-minigame.cfg:800
 msgid "Well, that's that."
-msgstr ""
+msgstr "Bem, por hoje é só."
 
 #: data/level/autumn-town.cfg:11
 msgid "Autumn Town"
@@ -87,6 +91,12 @@ msgid ""
 "be an entry way directly into Milgram's\n"
 "compound from the caverns."
 msgstr ""
+"Opa, você chegou! Logo à frente\n"
+"tem um portão. Se você conseguir\n"
+"passar por ele, vai chegar\n"
+"nas cavernas de calcário.\n"
+"Ouvi dizer que tem uma saída que leva\n"
+"direto ao castelo do Milgram lá dentro."
 
 #: data/level/bon-bosque.cfg:1361
 msgid ""
@@ -94,6 +104,9 @@ msgid ""
 "This seems like it's harder than\n"
 "what the elder led me to believe!"
 msgstr ""
+"Epa, agora tem um monte de cavernas?\n"
+"Isso tudo tá parecendo mais difícil\n"
+"do que o prefeito me fez entender!"
 
 #: data/level/bon-bosque.cfg:1362
 msgid ""
@@ -101,12 +114,18 @@ msgid ""
 "infested over the years. Hopefully\n"
 "the caverns won't be too much worse!"
 msgstr ""
+"Eu acho que as florestas ficaram\n"
+"infestadas com o passar dos anos.\n"
+"Mas as cavernas não devem ser\n"
+"muito pior do que isso!"
 
 #: data/level/bon-bosque.cfg:1364
 msgid ""
 "I hope not. Thank you for guiding me\n"
 "and meeting me here."
 msgstr ""
+"Espero que não... Bom, obrigado\n"
+"por me guiar e me encontrar aqui."
 
 #: data/level/bon-bosque.cfg:1365
 msgid ""
@@ -116,6 +135,11 @@ msgid ""
 "see of me. Take care and teach Milgram\n"
 "a lesson for us all!"
 msgstr ""
+"Não há o que agradecer, amigo.\n"
+"Naturalmente, eu não posso voar nas\n"
+"cavernas, então você não vai mais me\n"
+"ver de agora em diante. Tome cuidado\n"
+"e dê uma lição no Milgram por nós!"
 
 #: data/level/bug-mining.cfg:10
 msgid "Bug Mining"
@@ -134,6 +158,9 @@ msgid ""
 "I need to go up... There must be\n"
 "a way to activate this elevator."
 msgstr ""
+"Eu preciso ir lá em cima...\n"
+"Deve ter um jeito\n"
+"de eu acionar esse elevador."
 
 #: data/level/caverns-of-holes.cfg:11
 msgid "Caverns of Holes"
@@ -205,79 +232,89 @@ msgstr ""
 
 #: data/level/crevice-village-cave.cfg:815
 msgid "What the..."
-msgstr ""
+msgstr "Mas o que..."
 
 #: data/level/crevice-village-cave.cfg:815
 msgid "You!!"
-msgstr ""
+msgstr "Você!!"
 
 #: data/level/crevice-village-cave.cfg:816
 #: data/level/wm-town.cfg:2416
 #: data/object_prototypes/buyable_item.cfg:24
 #: data/objects/props-interactive/save_toilet.cfg:17
 msgid "Yes"
-msgstr ""
+msgstr "Sim"
 
 #: data/level/crevice-village-cave.cfg:816
 msgid "You're an intruder, aren't you?!"
-msgstr ""
+msgstr "Você é um intruso, não é?"
 
 #: data/level/crevice-village-cave.cfg:817
 msgid "I thought so!"
-msgstr ""
+msgstr "Foi o que eu pensei!"
 
 #: data/level/crevice-village-cave.cfg:818
 #: data/level/wm-town.cfg:2423
 #: data/object_prototypes/buyable_item.cfg:25
 #: data/objects/props-interactive/save_toilet.cfg:22
 msgid "No"
-msgstr ""
+msgstr "Não"
 
 #: data/level/crevice-village-cave.cfg:819
 msgid "There's no fooling me."
-msgstr ""
+msgstr "Não tente me ludibriar!"
 
 #: data/level/crevice-village-cave.cfg:819
 msgid ""
 "You look like a very\n"
 "suspicious character."
-msgstr ""
+msgstr "Você me parece muito suspeito."
 
 #: data/level/crevice-village-cave.cfg:821
 msgid "Could you just step aside?"
-msgstr ""
+msgstr "Poderia me dar licença?"
 
 #: data/level/crevice-village-cave.cfg:823
 msgid ""
 "I need to take care\n"
 "of something in town."
 msgstr ""
+"Eu tenho um assunto importante\n"
+"pra tratar na vila."
 
 #: data/level/crevice-village-cave.cfg:824
 msgid ""
 "Well, I can't let anyone\n"
 "past this gate."
 msgstr ""
+"Bom, eu não posso deixar\n"
+"ninguém passar por esse portão."
 
 #: data/level/crevice-village-cave.cfg:825
 msgid ""
 "Without this key,\n"
 "you're not getting anywhere."
 msgstr ""
+"Sem essa chave,\n"
+"você não vai a lugar nenhum."
 
 #: data/level/crevice-village-cave.cfg:827
 msgid ""
 "Okay.  Will you please lend\n"
 "me that key?"
 msgstr ""
+"Hmm, certo. Você poderia me\n"
+"emprestar essa chave?"
 
 #: data/level/crevice-village-cave.cfg:828
 msgid "No way!  Over my dead body!"
 msgstr ""
+"De modo algum!\n"
+"Só por cima de meu cadáver!"
 
 #: data/level/crevice-village-cave.cfg:830
 msgid "We can do that."
-msgstr ""
+msgstr "Combinado, então!"
 
 #: data/level/crevice-village-central-side-cave.cfg:11
 msgid "Hidden Cave"
@@ -288,22 +325,28 @@ msgid ""
 "Ahh, good, you made it\n"
 "through there in one piece!"
 msgstr ""
+"Ah, que bom, você conseguiu\n"
+"sair de lá inteiro!"
 
 #: data/level/crevice-village-central.cfg:1369
 msgid ""
 "Yeah, those goons\n"
 "had a little ambush set up."
 msgstr ""
+"É, aqueles valentões tinham\n"
+"preparado uma recepção e tanto."
 
 #: data/level/crevice-village-central.cfg:1371
 msgid "So, now what?"
-msgstr ""
+msgstr "Então, e agora?"
 
 #: data/level/crevice-village-central.cfg:1372
 msgid ""
 "Well, as you know, the town\n"
 "is split into two halves."
 msgstr ""
+"Bom, como você sabe, esta vila\n"
+"é dividida em duas partes."
 
 #: data/level/crevice-village-central.cfg:1373
 msgid ""
@@ -311,6 +354,9 @@ msgid ""
 "locked down tight, and he has\n"
 "most of the residents held prisoner."
 msgstr ""
+"O Milgram tem esta metade aqui\n"
+"da vila totalmente bloqueada,\n"
+"e prendeu a maioria dos moradores."
 
 #: data/level/crevice-village-central.cfg:1374
 msgid ""
@@ -318,10 +364,13 @@ msgid ""
 "under guard. If you free them,\n"
 "I'm sure they can help you."
 msgstr ""
+"Eles estão enjaulados nas casas,\n"
+"sob guarda. Se você puder libertá-los,\n"
+"creio que consigam te ajudar."
 
 #: data/level/crevice-village-central.cfg:1376
 msgid "Makes sense."
-msgstr ""
+msgstr "Faz sentido."
 
 #: data/level/crevice-village-central.cfg:1377
 msgid ""
@@ -329,24 +378,34 @@ msgid ""
 "the gate connecting the two halves\n"
 "of town has been locked."
 msgstr ""
+"O maior problema é que o portão\n"
+"que separa as duas metades\n"
+"da vila foi trancado."
 
 #: data/level/crevice-village-central.cfg:1378
 msgid ""
 "And I don't think there's a guard next\n"
 "to it, whom you can steal the key from."
 msgstr ""
+"E eu não acho que vá ter algum guarda\n"
+"próximo a ele, de quem você pudesse\n"
+"pegar a chave."
 
 #: data/level/crevice-village-central.cfg:1379
 msgid ""
 "They've probably hidden it in one of\n"
 "the houses, but I don't know which one."
 msgstr ""
+"Ela deve estar escondida em uma\n"
+"das casas, mas não sei qual delas."
 
 #: data/level/crevice-village-central.cfg:1380
 msgid ""
 "Asking one of the prisoners is probably\n"
 "our best bet for a clue."
 msgstr ""
+"Perguntar a um dos prisioneiros\n"
+"pode ser a solução."
 
 #: data/level/crevice-village-central.cfg:1576
 #: data/level/crevice-village-house-2.cfg:3160
@@ -354,21 +413,23 @@ msgstr ""
 #: data/level/crevice-village-house-4.cfg:3189
 #: data/level/killer-bunnies.cfg:4611
 msgid "Nope, it's locked."
-msgstr ""
+msgstr "Não dá, tá trancada."
 
 #: data/level/crevice-village-central.cfg:2295
 msgid "Hey! Over here!"
-msgstr ""
+msgstr "Ei! Por aqui!"
 
 #: data/level/crevice-village-heights.cfg:1088
 msgid "So!  I've unlocked this gate, here."
-msgstr ""
+msgstr "Então! Eu abri o portão, aqui."
 
 #: data/level/crevice-village-heights.cfg:1091
 msgid ""
 "Through there,\n"
 "is the way to where Milgram lives."
 msgstr ""
+"Por aqui é o caminho\n"
+"pra onde vive o Milgram."
 
 #: data/level/crevice-village-heights.cfg:1093
 msgid ""
@@ -376,94 +437,117 @@ msgid ""
 "and I would explain it,\n"
 "but as a matter of fact, I don't need to."
 msgstr ""
+"É tudo meio complicado,\n"
+"e eu poderia explicar melhor,\n"
+"mas, na verdade, eu não preciso."
 
 #: data/level/crevice-village-heights.cfg:1095
 msgid "Huh?"
-msgstr ""
+msgstr "Hã?"
 
 #: data/level/crevice-village-heights.cfg:1098
 msgid ""
 "Yes, that blue fellow you ran into..\n"
 "Berd was his name."
 msgstr ""
+"Sabe, aquele camarada azul que\n"
+"você encontrou... Berd é o nome dele."
 
 #: data/level/crevice-village-heights.cfg:1100
 msgid ""
 "He'll follow you from above,\n"
 "and will keep you informed."
 msgstr ""
+"Ele vai te acompanhar lá de cima,\n"
+"e vai te manter informado."
 
 #: data/level/crevice-village-heights.cfg:1102
 msgid "He's a good boy, that one."
-msgstr ""
+msgstr "É um bom rapaz, ele."
 
 #: data/level/crevice-village-heights.cfg:1104
 msgid "Okay, that'll help!"
-msgstr ""
+msgstr "Ótimo, isso vai ajudar!"
 
 #: data/level/crevice-village-heights.cfg:1106
 msgid ""
 "Now, this'll take you over a bridge,\n"
 "then through an underground passage."
 msgstr ""
+"Então, esse caminho vai te levar\n"
+"por uma ponte, e depois por\n"
+"uma passagem subterrânea."
 
 #: data/level/crevice-village-heights.cfg:1108
 msgid "Watch your head in there."
-msgstr ""
+msgstr "Cuide pra não bater a cabeça."
 
 #: data/level/crevice-village-heights.cfg:1110
 msgid "Past that, and you come to the forest."
-msgstr ""
+msgstr "Depois disso, você chega na floresta."
 
 #: data/level/crevice-village-heights.cfg:1112
 msgid ""
 "I haven't been there in a long time,\n"
 "so I'm not sure what's become of it."
 msgstr ""
+"Já faz muito tempo\n"
+"que eu não vou lá, então não sei\n"
+"mais como estão as coisas."
 
 #: data/level/crevice-village-heights.cfg:1114
 msgid "Right, I'll watch my back."
-msgstr ""
+msgstr "Certo, eu vou me cuidar."
 
 #: data/level/crevice-village-heights.cfg:1116
 msgid ""
 "Best of luck, my boy.\n"
 "Milgram won't know what hit him!"
 msgstr ""
+"Boa sorte, meu rapaz.\n"
+"O Milgram nem vai saber o que\n"
+"aconteceu!"
 
 #: data/level/crevice-village-heights.cfg:1118
 msgid "You bet!"
-msgstr ""
+msgstr "Pode apostar!"
 
 #: data/level/crevice-village-heights.cfg:1120
 msgid ""
 "Say, uh... by the way,\n"
 "what's going to happen to town, here?"
 msgstr ""
+"Ah, e... quanto à vila,\n"
+"o que vai acontecer com ela?"
 
 #: data/level/crevice-village-heights.cfg:1122
 msgid "Eh, don't worry about that."
-msgstr ""
+msgstr "Ah, não se preocupe com isso."
 
 #: data/level/crevice-village-heights.cfg:1124
 msgid ""
 "With their leader gone, Milgram's goons\n"
 "will probably pack up and leave."
 msgstr ""
+"Agora que o líder deles foi embora,\n"
+"os capangas do Milgram vão arrumar\n"
+"as coisas e voltar também."
 
 #: data/level/crevice-village-heights.cfg:1126
 msgid "And good riddance!"
-msgstr ""
+msgstr "E que fiquem por lá mesmo!"
 
 #: data/level/crevice-village-heights.cfg:1128
 msgid ""
 "Well, I'm off.\n"
 "Thanks for the advice!"
 msgstr ""
+"Bem, estou indo.\n"
+"Obrigado pelos conselhos!"
 
 #: data/level/crevice-village-heights.cfg:1130
 msgid "Likewise.  Good luck!"
-msgstr ""
+msgstr "Eu é que agradeço. Boa sorte!"
 
 #: data/level/crevice-village-house-1.cfg:9
 #: data/level/liberated-crevice-village-house-1.cfg:9
@@ -472,17 +556,19 @@ msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2502
 msgid "Who are you?"
-msgstr ""
+msgstr "Quem é você?"
 
 #: data/level/crevice-village-house-1.cfg:2504
 msgid ""
 "I'm the hero.\n"
 "I'm gonna save this town!"
 msgstr ""
+"Eu sou o herói.\n"
+"Vou salvar essa vila!"
 
 #: data/level/crevice-village-house-1.cfg:2506
 msgid "That's my new job."
-msgstr ""
+msgstr "Esse é o meu novo emprego."
 
 #: data/level/crevice-village-house-1.cfg:2507
 #: data/level/crevice-village-house-1.cfg:2512
@@ -492,29 +578,31 @@ msgstr ""
 #: data/level/crevice-village-house-elder.cfg:1510
 #: data/level/crevice-village-house-elder.cfg:1641
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #: data/level/crevice-village-house-1.cfg:2507
 msgid "That's nutty."
-msgstr ""
+msgstr "Você tá brincando, né?"
 
 #: data/level/crevice-village-house-1.cfg:2509
 msgid ""
 "Nevertheless, let's pretend that\n"
 "I might actually pull it off."
 msgstr ""
+"Talvez, mas vamos supor que\n"
+"eu consiga dar conta do recado."
 
 #: data/level/crevice-village-house-1.cfg:2511
 msgid "Got any advice?"
-msgstr ""
+msgstr "Tem alguma dica?"
 
 #: data/level/crevice-village-house-1.cfg:2512
 msgid "Keep an eye out for it!"
-msgstr ""
+msgstr "Fique de olho!"
 
 #: data/level/crevice-village-house-1.cfg:2512
 msgid "Maybe."
-msgstr ""
+msgstr "Quem sabe."
 
 #: data/level/crevice-village-house-1.cfg:2512
 msgid ""
@@ -522,6 +610,9 @@ msgid ""
 "the key that opens the town gate\n"
 "is a SILVER key."
 msgstr ""
+"Ah! Tem mais uma coisa...\n"
+"a chave que abre o portão da\n"
+"vila é uma de PRATA."
 
 #: data/level/crevice-village-house-1.cfg:2512
 msgid ""
@@ -529,6 +620,10 @@ msgid ""
 "I think that unlocks a house that\n"
 "has the key to the town gate."
 msgstr ""
+"Aham, essa chave aí do seu lado -\n"
+"eu acho que ela abre uma casa,\n"
+"e AQUELA casa tem a chave\n"
+"pra abrir o portão da vila."
 
 #: data/level/crevice-village-house-1.cfg:2514
 msgid "Will do.  Catch ya around."
@@ -536,19 +631,23 @@ msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2515
 msgid "HEY, WAIT!  What about me?!"
-msgstr ""
+msgstr "EI, ESPERE! E quanto a mim?!"
 
 #: data/level/crevice-village-house-1.cfg:2517
 msgid ""
 "Do I look like I have a key\n"
 "for your cage?"
 msgstr ""
+"Eu tenho cara de quem\n"
+"tem a chave da tua gaiola?"
 
 #: data/level/crevice-village-house-1.cfg:2518
 msgid ""
 "Ah, I see..\n"
 "carry on then."
 msgstr ""
+"Ah, é verdade...\n"
+"até mais, então."
 
 #: data/level/crevice-village-house-1.cfg:2542
 msgid "Thank god it's you!"
@@ -1224,7 +1323,7 @@ msgstr "O quintal tá meio vazio..."
 
 #: data/level/gloomy-glade.cfg:11
 msgid "Gloomy Glade"
-msgstr ""
+msgstr "Clareira Traiçoeira"
 
 #: data/level/gnarled-knoll.cfg:13
 msgid "Gnarled Knoll"
@@ -1663,6 +1762,9 @@ msgid ""
 "Well, I guess I'm entering Milgram's\n"
 "castle now. I made it through the caves!"
 msgstr ""
+"É, estou chegando\n"
+"no castelo do Milgram...\n"
+"Consegui atravessar as cavernas!"
 
 #: data/level/hidden-depths.cfg:11
 msgid "Hidden Depths"
@@ -1670,15 +1772,17 @@ msgstr "Profundezas Ocultas"
 
 #: data/level/hidden-depths.cfg:3780
 msgid "I'd better be careful."
-msgstr ""
+msgstr "É melhor eu ter cuidado."
 
 #: data/level/hidden-depths.cfg:3780
 msgid "This is a very deep chasm..."
 msgstr ""
+"Nem consigo ver o fundo\n"
+"desse abismo..."
 
 #: data/level/hidden-depths.cfg:4589
 msgid "AAAAAAH! I CAN'T FLY!"
-msgstr ""
+msgstr "AAAAAAH! EU NÃO SEI VOAR!"
 
 #: data/level/killer-bunnies.cfg:10
 msgid "Killer Bunnies"
@@ -1689,12 +1793,16 @@ msgid ""
 "That guy sure doesn't look\n"
 "glad to meet me!"
 msgstr ""
+"Esse cara não parece muito\n"
+"feliz em me ver!"
 
 #: data/level/killer-bunnies.cfg:4611
 msgid ""
 "It's locked. Of course...\n"
 "It couldn't be easier to get out of here!"
 msgstr ""
+"Tá trancada. É, imaginei\n"
+"que não seria fácil sair daqui!"
 
 #: data/level/liberated-crevice-village-house-1.cfg:1242
 msgid ""
