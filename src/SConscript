@@ -84,6 +84,7 @@ random.cpp
 raster.cpp
 raster_distortion.cpp
 rectangle_rotator.cpp
+segment_editor_dialog.cpp
 settings_dialog.cpp
 slider.cpp
 solid_map.cpp
