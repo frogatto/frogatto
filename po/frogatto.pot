@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-06 01:53-0300\n"
+"POT-Creation-Date: 2010-10-06 18:55+0200\\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2727,6 +2727,14 @@ msgstr ""
 msgid "Lower Ascent"
 msgstr ""
 
+#: data/level/wm-ascent-1.cfg:1152
+msgid "This Way To Squirrel Mining."
+msgstr ""
+
+#: data/level/wm-ascent-1.cfg:1184
+msgid "Caution: Sudden Dropoffs."
+msgstr ""
+
 #: data/level/wm-ascent-2.cfg:13
 msgid "Upper Ascent"
 msgstr ""
@@ -3579,6 +3587,10 @@ msgstr ""
 
 #: data/objects/props-interactive/save_toilet.cfg:21
 msgid "The game has been saved."
+msgstr ""
+
+#: data/objects/store-items/buyable_gliding_wings.cfg:11
+msgid "gliding wings"
 msgstr ""
 
 #: data/objects/store-items/buyable_gliding_wings.cfg:13
