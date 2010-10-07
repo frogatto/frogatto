@@ -1779,6 +1779,23 @@ bool consecutive_periods(char a, char b) {
 }
 }
 
+FUNCTION_DEF(eval, 1, 2, "eval(string formula, [obj context]): evaluate the given formula in the given context")
+	std::map<std::string, game_logic::formula_ptr> cache;
+	const std::string fml = args()[0]->evaluate(variables).as_string();
+	game_logic::formula_ptr& f = cache[fml];
+	if(f.get() == NULL) {
+		f = game_logic::formula::create_optional_formula(fml);
+	}
+
+	ASSERT_LOG(f.get() != NULL, "INVALID FORMULA PASSED TO EVAL: " << fml);
+
+	if(args().size() > 1) {
+		return f->execute(*args()[1]->evaluate(variables).as_callable());
+	} else {
+		return f->execute();
+	}
+END_FUNCTION_DEF(eval)
+
 FUNCTION_DEF(get_document, 1, 2, "get_document(string doc, [string schema]): return reference to the given WML document, optionally using the given schema")
 	const std::string docname = args()[0]->evaluate(variables).as_string();
 	std::string schema;
