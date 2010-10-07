@@ -1234,7 +1234,7 @@ msgstr "Wir brauchen hier etwas Hilfe."
 
 #: data/level/frogatto-grotto-inside.cfg:1521
 msgid "Yeah, I know.  I'll try."
-msgstr "Jaa, ich weiss. Ich werd's versuchen."
+msgstr "Jaa, ich weiß. Ich werd's versuchen."
 
 #: data/level/frogatto-grotto-inside.cfg:1522
 msgid "See to it."
@@ -1275,7 +1275,7 @@ msgstr "Frogattos Grotte"
 
 #: data/level/frogatto-grotto.cfg:590
 msgid "I know!"
-msgstr "Ich weiss!"
+msgstr "Ich weiß!"
 
 #: data/level/frogatto-grotto.cfg:591
 msgid ""
@@ -1378,7 +1378,7 @@ msgid ""
 "and slowly slide down."
 msgstr ""
 "Wenn du am Scheitelpunkt des\n"
-"Sprungs gegen die Wand stösst,\n"
+"Sprungs gegen die Wand stößt,\n"
 "wird Frogatto an der Wand haften\n"
 "und langsam hinab rutschen."
 
@@ -1642,7 +1642,7 @@ msgid ""
 "As you would expect, stepping on these\n"
 "will hurt a bit."
 msgstr ""
-"Erwartungsgemäss tut da\n"
+"Erwartungsgemäß tut da\n"
 "drauf zu treten etwas weh."
 
 #: data/level/grassy-path.cfg:1570
@@ -1720,7 +1720,7 @@ msgstr ""
 
 #: data/level/grassy-path.cfg:1781
 msgid "Have fun!"
-msgstr "Viel Spass!"
+msgstr "Viel Spaß!"
 
 #: data/level/hanging-platforms.cfg:11
 msgid "Hanging Platforms"
