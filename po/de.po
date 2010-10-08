@@ -1460,7 +1460,7 @@ msgid ""
 "they'll be stunned for a moment,\n"
 "and then will flip upright again."
 msgstr ""
-"Wenn sie nichts treffen werden sie\n"
+"Wenn sie nichts treffen, werden sie\n"
 "einen Moment betäubt liegen bleiben,"
 
 #: data/level/grassy-path.cfg:1276
@@ -1476,8 +1476,8 @@ msgid ""
 "Sticking out the tongue and spitting,\n"
 "are both done with the attack key."
 msgstr ""
-"Zum Zunge herausstrecken und spucken,\n"
-" drücke die Angriffstaste."
+"Zum Herausstrecken der Zunge und zum\n"
+"Spucken, drücke die Angriffstaste."
 
 #: data/level/grassy-path.cfg:1278
 msgid ""
@@ -1512,7 +1512,7 @@ msgid ""
 "you'll spit in a high arc."
 msgstr ""
 "Wenn du {UP_KEY} gedrückt hältst\n"
-"während du {TONGUE_KEY} drückst\n"
+"während du {TONGUE_KEY} drückst,\n"
 "wirst du in einem hohen Bogen spucken."
 
 #: data/level/grassy-path.cfg:1360
@@ -1522,7 +1522,7 @@ msgid ""
 "you'll spit with very little force."
 msgstr ""
 "Wenn du {DOWN_KEY} gedrückt hältst\n"
-"während du {TONGUE_KEY} drückst\n"
+"während du {TONGUE_KEY} drückst,\n"
 "wirst du nur sehr schwach spucken."
 
 #: data/level/grassy-path.cfg:1361
@@ -2757,7 +2757,7 @@ msgstr ""
 
 #: data/level/to-nenes-house-inside.cfg:436
 msgid "They're freaking me out."
-msgstr "Die machen mich Wahnsinnig."
+msgstr "Die machen mich wahnsinnig."
 
 #: data/level/to-nenes-house-inside.cfg:438
 msgid "Sure thing. I need a job!"
@@ -4074,7 +4074,7 @@ msgstr "Tastenbelegung..."
 
 #: src/pause_game_dialog.cpp:60
 msgid "Return to Titlescreen"
-msgstr "Zurück zum Titelbildschirm"
+msgstr "Zurück zum Titelbild"
 
 #: src/pause_game_dialog.cpp:61
 msgid "Exit Game"
