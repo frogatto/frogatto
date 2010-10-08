@@ -78,9 +78,9 @@ def checkwidth(line, widths):
 			
 def getmessage(line):
 	if line[0] == "m":
-		return line.replace('\\n','').replace('\n','').split(' ',1)[1][1:-1]
+		return line.replace('\\n','').replace('\r','').replace('\n','').split(' ',1)[1][1:-1]
 	else:
-		return line.replace('\\n','').replace('\n','')[1:-1]
+		return line.replace('\\n','').replace('\r','').replace('\n','')[1:-1]
 	
 if __name__ == "__main__":
 	if len(sys.argv) > 1:
