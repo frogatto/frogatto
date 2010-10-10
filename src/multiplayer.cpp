@@ -3,6 +3,7 @@
 
 #include <inttypes.h>
 #include <stdio.h>
+#include <unistd.h>
 
 #include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
@@ -10,6 +11,7 @@
 #include "controls.hpp"
 #include "level.hpp"
 #include "multiplayer.hpp"
+#include "unit_test.hpp"
 
 using boost::asio::ip::tcp;
 using boost::asio::ip::udp;
@@ -200,4 +202,65 @@ void send_and_receive()
 	}
 }
 
+}
+
+namespace {
+struct Peer {
+	std::string host, port;
+};
+}
+
+UTILITY(hole_punch_test) {
+	boost::asio::io_service io_service;
+	udp::resolver udp_resolver(io_service);
+
+	const char* server_hostname = "wesnoth.org";
+	const char* server_port = "17001";
+
+	udp::resolver::query udp_query(udp::v4(), server_hostname, server_port);
+	udp::endpoint udp_endpoint;
+	udp_endpoint = *udp_resolver.resolve(udp_query);
+
+	udp::socket udp_socket(io_service);
+	udp_socket.open(udp::v4());
+
+	udp_socket.send_to(boost::asio::buffer("hello"), udp_endpoint);
+
+	std::vector<Peer> peers;
+
+	boost::array<char, 1024> buf;
+	for(;;) {
+		udp_socket.receive(boost::asio::buffer(buf));
+		fprintf(stderr, "RECEIVED {{{%s}}}\n", &buf[0]);
+
+		char* beg = &buf[0];
+		char* mid = strchr(beg, ' ');
+		if(mid) {
+			*mid = 0;
+			const char* port = mid+1;
+
+			Peer peer;
+			peer.host = beg;
+			peer.port = port;
+	
+			peers.push_back(peer);
+		}
+
+		for(int m = 0; m != 10; ++m) {
+			for(int n = 0; n != peers.size(); ++n) {
+				const std::string host = peers[n].host;
+				const std::string port = peers[n].port;
+				fprintf(stderr, "sending to %s %s\n", host.c_str(), port.c_str());
+				udp::resolver::query peer_query(udp::v4(), host, port);
+				udp::endpoint peer_endpoint;
+				peer_endpoint = *udp_resolver.resolve(peer_query);
+
+				udp_socket.send_to(boost::asio::buffer("peer"), peer_endpoint);
+			}
+
+			sleep(1);
+		}
+	}
+
+	io_service.run();
 }
