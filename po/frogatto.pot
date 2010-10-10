@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-07 01:52-0300\n"
+"POT-Creation-Date: 2010-10-10 01:27-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -345,7 +345,7 @@ msgid ""
 msgstr ""
 
 #: data/level/crevice-village-central.cfg:1576
-#: data/level/crevice-village-house-2.cfg:3160
+#: data/level/crevice-village-house-2.cfg:3265
 #: data/level/crevice-village-house-4.cfg:3148
 #: data/level/crevice-village-house-4.cfg:3189
 #: data/level/killer-bunnies.cfg:4611
@@ -626,60 +626,60 @@ msgid ""
 msgstr ""
 
 #: data/level/crevice-village-house-2-basement.cfg:9
-#: data/level/crevice-village-house-2.cfg:9
+#: data/level/crevice-village-house-2.cfg:12
 #: data/level/liberated-crevice-village-house-2.cfg:9
 msgid "Central House"
 msgstr ""
 
-#: data/level/crevice-village-house-2.cfg:3105
+#: data/level/crevice-village-house-2.cfg:3211
 msgid "Something's odd about this fireplace."
 msgstr ""
 
-#: data/level/crevice-village-house-2.cfg:3420
+#: data/level/crevice-village-house-2.cfg:3525
 msgid "Wow, you guys look exactly alike."
 msgstr ""
 
-#: data/level/crevice-village-house-2.cfg:3421
+#: data/level/crevice-village-house-2.cfg:3526
 msgid "We're twins."
 msgstr ""
 
-#: data/level/crevice-village-house-2.cfg:3422
+#: data/level/crevice-village-house-2.cfg:3527
 msgid ""
 "Is there anything\n"
 "you can do to help us?"
 msgstr ""
 
-#: data/level/crevice-village-house-2.cfg:3424
+#: data/level/crevice-village-house-2.cfg:3529
 msgid ""
 "Not yet.\n"
 "Sorry."
 msgstr ""
 
-#: data/level/crevice-village-house-2.cfg:3455
+#: data/level/crevice-village-house-2.cfg:3560
 msgid ""
 "Hey,\n"
 "I'm trying to help save the town."
 msgstr ""
 
-#: data/level/crevice-village-house-2.cfg:3457
+#: data/level/crevice-village-house-2.cfg:3562
 msgid "Can you give me any advice?"
 msgstr ""
 
-#: data/level/crevice-village-house-2.cfg:3458
+#: data/level/crevice-village-house-2.cfg:3563
 msgid "Yeah."
 msgstr ""
 
-#: data/level/crevice-village-house-2.cfg:3459
+#: data/level/crevice-village-house-2.cfg:3564
 msgid ""
 "The elder's house is off to the east,\n"
 "past the town gate."
 msgstr ""
 
-#: data/level/crevice-village-house-2.cfg:3460
+#: data/level/crevice-village-house-2.cfg:3565
 msgid "We saw Milgram's lieutenant go in there"
 msgstr ""
 
-#: data/level/crevice-village-house-2.cfg:3462 data/level/rock-a-fort.cfg:4418
+#: data/level/crevice-village-house-2.cfg:3567 data/level/rock-a-fort.cfg:4418
 msgid "How interesting."
 msgstr ""
 
@@ -1665,7 +1665,7 @@ msgid "No!  You can't be..."
 msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:627
-#: data/level/secluded-hut-interior.cfg:708
+#: data/level/secluded-hut-interior.cfg:919
 msgid "Hi, I'm Frogatto."
 msgstr ""
 
@@ -1838,70 +1838,70 @@ msgstr ""
 msgid "There must be a way around it."
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:9 data/level/secluded-hut.cfg:11
+#: data/level/secluded-hut-interior.cfg:12 data/level/secluded-hut.cfg:11
 msgid "Secluded Hut"
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:706
+#: data/level/secluded-hut-interior.cfg:917
 msgid "Hello there."
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:709
+#: data/level/secluded-hut-interior.cfg:920
 msgid ""
 "A pleasure to meet you.\n"
 "I am Mortimer."
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:711 data/level/wm-town.cfg:2503
+#: data/level/secluded-hut-interior.cfg:922 data/level/wm-town.cfg:2503
 msgid "That's nice."
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:713
+#: data/level/secluded-hut-interior.cfg:924
 msgid ""
 "Uhm, I hope you don't mind my asking,\n"
 "but what on earth ARE you, anyway?"
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:714
+#: data/level/secluded-hut-interior.cfg:925
 msgid "Ostensibly, I am a mole."
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:716
+#: data/level/secluded-hut-interior.cfg:927
 msgid ""
 "...\n"
 "Okay."
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:717
+#: data/level/secluded-hut-interior.cfg:928
 msgid ""
 "Perhaps more importantly, I am a bit of\n"
 "an astronomer and biologist, by trade."
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:718
+#: data/level/secluded-hut-interior.cfg:929
 msgid ""
 "That is why I live all the way up here.\n"
 "You can see quite a bit from this height."
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:720
+#: data/level/secluded-hut-interior.cfg:931
 msgid ""
 "...and I guess you have these\n"
 "ants in cages to study them?"
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:721
+#: data/level/secluded-hut-interior.cfg:932
 msgid ""
 "That's right. Unfortunately, my\n"
 "collection lacks the rarer\n"
 "golden ant."
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:723
+#: data/level/secluded-hut-interior.cfg:934
 msgid "Oh, what a shame."
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:724
+#: data/level/secluded-hut-interior.cfg:935
 msgid ""
 "You know, you look rather well-traveled.\n"
 "If you could bring me a golden ant\n"
@@ -1909,65 +1909,65 @@ msgid ""
 "I'd reward you handsomely."
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:726
+#: data/level/secluded-hut-interior.cfg:937
 msgid ""
 "Handsomely you say?\n"
 "I'm on it!"
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:729
+#: data/level/secluded-hut-interior.cfg:940
 msgid ""
 "Oh! You got the golden ant for me.\n"
 "It's beautiful, beautiful!"
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:731
+#: data/level/secluded-hut-interior.cfg:942
 msgid ""
 "Mmmmmhmmmm. Now you were talking\n"
 "about a reward?"
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:732
+#: data/level/secluded-hut-interior.cfg:943
 msgid ""
 "Oh yes, a reward!\n"
 "Here you go..."
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:737
+#: data/level/secluded-hut-interior.cfg:948
 msgid ""
 "What's that you say? The golden ant\n"
 "is in your stomach? Quick, spit it\n"
 "out into the cage!"
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:738
+#: data/level/secluded-hut-interior.cfg:949
 msgid ""
 "I don't suppose you've had any\n"
 "luck with getting a golden ant yet?"
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:740
+#: data/level/secluded-hut-interior.cfg:951
 msgid ""
 "I'm working on it.\n"
 "Those things pack a pretty mean\n"
 "bite, you know."
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:743
+#: data/level/secluded-hut-interior.cfg:954
 msgid ""
 "I do hope you are enjoying exploring\n"
 "the island. There are so many\n"
 "wonderful creatures on it."
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:745
+#: data/level/secluded-hut-interior.cfg:956
 msgid ""
 "I'm assuming you're talking about\n"
 "all the creatures that keep trying\n"
 "to kill me."
 msgstr ""
 
-#: data/level/secluded-hut-interior.cfg:946
+#: data/level/secluded-hut-interior.cfg:1157
 msgid "I say! Who's there?"
 msgstr ""
 
@@ -2495,100 +2495,100 @@ msgstr ""
 msgid "Press {TONGUE_KEY} to use a character's attacks."
 msgstr ""
 
-#: data/level/to-nenes-house-inside.cfg:9
+#: data/level/to-nenes-house-inside.cfg:12
 msgid "Nene's House"
 msgstr ""
 
-#: data/level/to-nenes-house-inside.cfg:418
+#: data/level/to-nenes-house-inside.cfg:490
 msgid "Hey Nene, what's cooking?"
 msgstr ""
 
-#: data/level/to-nenes-house-inside.cfg:419
+#: data/level/to-nenes-house-inside.cfg:491
 msgid ""
 "I'm making a cake.\n"
 "Would you like to have some?"
 msgstr ""
 
-#: data/level/to-nenes-house-inside.cfg:421
+#: data/level/to-nenes-house-inside.cfg:493
 msgid "Nah, I'd better get to town."
 msgstr ""
 
-#: data/level/to-nenes-house-inside.cfg:423
+#: data/level/to-nenes-house-inside.cfg:495
 msgid "I have serious business to attend to."
 msgstr ""
 
-#: data/level/to-nenes-house-inside.cfg:427
+#: data/level/to-nenes-house-inside.cfg:499
 msgid ""
 "Oh, well maybe before you go\n"
 "you could look at my basement."
 msgstr ""
 
-#: data/level/to-nenes-house-inside.cfg:429
+#: data/level/to-nenes-house-inside.cfg:501
 msgid "Your basement?"
 msgstr ""
 
-#: data/level/to-nenes-house-inside.cfg:435
+#: data/level/to-nenes-house-inside.cfg:507
 msgid ""
 "Yes, here's the key.\n"
 "There're some ants down there."
 msgstr ""
 
-#: data/level/to-nenes-house-inside.cfg:436
+#: data/level/to-nenes-house-inside.cfg:508
 msgid "They're freaking me out."
 msgstr ""
 
-#: data/level/to-nenes-house-inside.cfg:438
+#: data/level/to-nenes-house-inside.cfg:510
 msgid "Sure thing. I need a job!"
 msgstr ""
 
-#: data/level/to-nenes-house-inside.cfg:440
+#: data/level/to-nenes-house-inside.cfg:512
 msgid ""
 "How much were you figuring on\n"
 "paying for a pest exterminator?"
 msgstr ""
 
-#: data/level/to-nenes-house-inside.cfg:441
+#: data/level/to-nenes-house-inside.cfg:513
 msgid ""
 "Well sheesh, I thought you'd\n"
 "do it for free for a friend!"
 msgstr ""
 
-#: data/level/to-nenes-house-inside.cfg:442
+#: data/level/to-nenes-house-inside.cfg:514
 msgid ""
 "But if you're going to be like that\n"
 "I think I left a health capsule down there.\n"
 "If you can clear it out, it's yours."
 msgstr ""
 
-#: data/level/to-nenes-house-inside.cfg:444
+#: data/level/to-nenes-house-inside.cfg:516
 msgid ""
 "So, did you end up taking care\n"
 "of those ants down there?"
 msgstr ""
 
-#: data/level/to-nenes-house-inside.cfg:446
+#: data/level/to-nenes-house-inside.cfg:518
 msgid ""
 "Of course.\n"
 "I don't disappoint!"
 msgstr ""
 
-#: data/level/to-nenes-house-inside.cfg:448
+#: data/level/to-nenes-house-inside.cfg:520
 msgid ""
 "And thanks for the gift,\n"
 "by the way."
 msgstr ""
 
-#: data/level/to-nenes-house-inside.cfg:449
+#: data/level/to-nenes-house-inside.cfg:521
 msgid "You're welcome."
 msgstr ""
 
-#: data/level/to-nenes-house-inside.cfg:736
+#: data/level/to-nenes-house-inside.cfg:843
 msgid ""
 "Can't a guy sneak into his neighbor's\n"
 "basement uninvited these days?"
 msgstr ""
 
-#: data/level/to-nenes-house-inside.cfg:736
+#: data/level/to-nenes-house-inside.cfg:843
 msgid "Well, dangit, this door is locked."
 msgstr ""
 
