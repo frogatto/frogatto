@@ -38,6 +38,7 @@ namespace preferences {
 		std::string level_path_ = "data/level/";
 
 		bool send_stats_ = true;
+		bool relay_through_server_ = false;
 		
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 		
@@ -446,6 +447,8 @@ namespace preferences {
 			use_joystick_ = true;
 		} else if(s == "--no-joystick") {
 			use_joystick_ = false;
+		} else if(s == "--relay") {
+			relay_through_server_ = true;
 		} else {
 			return false;
 		}
@@ -463,5 +466,13 @@ namespace preferences {
 
 	bool send_stats() {
 		return send_stats_;
+	}
+
+	bool relay_through_server() {
+		return relay_through_server_;
+	}
+
+	void set_relay_through_server(bool value) {
+		relay_through_server_ = value;
 	}
 }

@@ -13,6 +13,7 @@
 #include "controls.hpp"
 #include "level.hpp"
 #include "multiplayer.hpp"
+#include "preferences.hpp"
 #include "unit_test.hpp"
 
 using boost::asio::ip::tcp;
@@ -166,8 +167,9 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 			}
 		}
 
-		std::vector<char> send_buf(4);
-		memcpy(&send_buf[0], &id, 4);
+		std::vector<char> send_buf(5);
+		send_buf[0] = 'Z';
+		memcpy(&send_buf[1], &id, 5);
 		udp_socket->send_to(boost::asio::buffer(send_buf), *udp_endpoint);
 	}
 
@@ -211,6 +213,10 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 		if(n != player_slot) {
 			udp_endpoint_peers.push_back(boost::shared_ptr<udp::endpoint>(new udp::endpoint));
 			*udp_endpoint_peers.back() = *udp_resolver.resolve(peer_query);
+
+			if(preferences::relay_through_server()) {
+				*udp_endpoint_peers.back() = *udp_endpoint;
+			}
 		} else {
 			//this is ourself, don't record our endpoint.
 			udp_endpoint_peers.push_back(boost::shared_ptr<udp::endpoint>());
@@ -224,8 +230,11 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 
 	for(int m = 0; m != 10000 && confirmed_players.size() < nplayers || m < 500; ++m) {
 		boost::array<char, 4096> udp_msg;
-		std::string msg = "AA";
-		msg[1] = player_slot;
+		std::vector<char> msg(6);
+		msg[0] = 'A';
+		memcpy(&msg[1], &id, 4);
+		msg.back() = player_slot;
+
 		for(int n = 0; n != nplayers; ++n) {
 			if(n == player_slot) {
 				continue;
@@ -237,9 +246,9 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 
 		while(udp_packet_waiting()) {
 			size_t len = udp_socket->receive(boost::asio::buffer(udp_msg));
-			if(len == 2 && udp_msg[0] == 'A') {
-				confirmed_players.insert(udp_msg[1]);
-				std::cerr << "CONFIRMED PLAYER: " << static_cast<int>(udp_msg[1]) << "/ " << player_slot << "\n";
+			if(len == 6 && udp_msg[0] == 'A') {
+				confirmed_players.insert(udp_msg[5]);
+				std::cerr << "CONFIRMED PLAYER: " << static_cast<int>(udp_msg[5]) << "/ " << player_slot << "\n";
 			}
 		}
 
@@ -252,6 +261,8 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 	}
 
 	controls::set_delay(3);
+
+	std::cerr << "HANDSHAKING...\n";
 
 	if(player_slot == 0) {
 		int ping_id = 0;
@@ -287,22 +298,24 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 
 				fprintf(stderr, "SENDING ADVISORY TO START IN %d - %d\n", start_in, (start_in - start_advisory));
 
-				sprintf(buf, "P%d %d", ping_id, start_advisory);
+				const int buf_len = sprintf(buf, "PXXXX%d %d", ping_id, start_advisory);
+				memcpy(&buf[1], &id, 4);
 
-				std::string msg(buf);
+				std::string msg(buf, buf + buf_len);
 				udp_socket->send_to(boost::asio::buffer(msg), *udp_endpoint_peers[n]);
 				ping_sent_at[ping_id] = ticks;
-				contents_ping[msg] = ping_id;
+				contents_ping[std::string(msg.begin()+5, msg.end())] = ping_id;
 				ping_player[ping_id] = n;
 				ping_id++;
 			}
 
 			while(udp_packet_waiting()) {
 				size_t len = udp_socket->receive(boost::asio::buffer(receive_buf));
-				if(len > 1 && receive_buf[0] == 'P') {
+				if(len > 5 && receive_buf[0] == 'P') {
 					std::string msg(&receive_buf[0], &receive_buf[0] + len);
-					ASSERT_LOG(contents_ping.count(msg), "UNRECOGNIZED PING: " << msg);
-					const int ping = contents_ping[msg];
+					std::string msg_content(msg.begin()+5, msg.end());
+					ASSERT_LOG(contents_ping.count(msg_content), "UNRECOGNIZED PING: " << msg);
+					const int ping = contents_ping[msg_content];
 					const int latency = ticks - ping_sent_at[ping];
 					const int nplayer = ping_player[ping];
 
@@ -321,10 +334,12 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 		for(;;) {
 			while(udp_packet_waiting()) {
 				size_t len = udp_socket->receive(boost::asio::buffer(buf));
-				if(len > 1 && buf[0] == 'P') {
+				std::cerr << "GOT MESSAGE: " << buf[0] << "\n";
+				if(len > 5 && buf[0] == 'P') {
+					memcpy(&buf[1], &id, 4); //write our ID for the return msg.
 					const std::string s(&buf[0], &buf[0] + len);
 
-					std::string::const_iterator i = std::find(s.begin(), s.end(), ' ');
+					std::string::const_iterator i = std::find(s.begin() + 5, s.end(), ' ');
 					ASSERT_LOG(i != s.end(), "NO WHITE SPACE FOUND IN PING MESSAGE: " << s);
 					const std::string start_in(i+1, s.end());
 					const int start_in_num = atoi(start_in.c_str());

@@ -185,17 +185,16 @@ private:
 	void handle_udp_receive(udp_endpoint_ptr endpoint, const boost::system::error_code& error, size_t len)
 	{
 		fprintf(stderr, "RECEIVED UDP PACKET: %d\n", len);
-		if(len >= 4) {
+		if(len >= 5) {
 			uint32_t id;
-			memcpy(&id, &udp_buf_[0], 4);
+			memcpy(&id, &udp_buf_[1], 4);
 			std::map<uint32_t, socket_ptr>::iterator socket_it = id_to_socket_.find(id);
 			if(socket_it != id_to_socket_.end()) {
 				assert(sockets_info_.count(socket_it->second));
 				sockets_info_[socket_it->second].udp_endpoint = endpoint;
-				fprintf(stderr, "SET ENDPOINT: %p TO %p %d\n", socket_it->second.get(), endpoint.get(), endpoint->port());
 
 				GameInfoPtr& game = sockets_info_[socket_it->second].game;
-				if(game.get() != NULL && !game->started && game->players.size() >= game->nplayers) {
+				if(udp_buf_[0] == 'Z' && game.get() != NULL && !game->started && game->players.size() >= game->nplayers) {
 					bool have_sockets = true;
 					foreach(const socket_ptr& sock, game->players) {
 						const SocketInfo& info = sockets_info_[sock];
@@ -231,16 +230,25 @@ private:
 					}
 				}
 
-				/*
-				GameInfoPtr game = sockets_info_[socket_it->second].game;
+				if(udp_buf_[0] != 'Z') {
+					GameInfoPtr game = sockets_info_[socket_it->second].game;
+	
+					if(game.get() != NULL) {
+						for(int n = 0; n != game->players.size(); ++n) {
+							if(game->players[n] == socket_it->second) {
+								continue;
+							}
 
-				for(std::map<socket_ptr, SocketInfo>::iterator i = sockets_info_.begin(); i != sockets_info_.end(); ++i) {
-					if(i->first != socket_it->second && i->second.game == game && i->second.udp_endpoint) {
-						udp_socket_.async_send_to(boost::asio::buffer(&udp_buf_[0], len), *i->second.udp_endpoint,
-						    boost::bind(&server::handle_udp_send, this, i->second.udp_endpoint, _1, _2));
+							std::cerr << "GOT FROM: " << endpoint->port() << " RELAYING TO...\n";
+							std::map<socket_ptr, SocketInfo>::iterator socket_info = sockets_info_.find(game->players[n]);
+							if(socket_info != sockets_info_.end()) {
+								std::cerr << "  RELAY TO " << socket_info->second.udp_endpoint->port() << "\n";
+								udp_socket_.async_send_to(boost::asio::buffer(&udp_buf_[0], len), *socket_info->second.udp_endpoint,
+								    boost::bind(&server::handle_udp_send, this, socket_info->second.udp_endpoint, _1, _2));
+							}
+						}
 					}
 				}
-				*/
 			}
 		}
 		start_udp_receive();

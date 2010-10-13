@@ -80,6 +80,9 @@ namespace preferences {
 
 	bool send_stats();
 
+	bool relay_through_server();
+	void set_relay_through_server(bool value);
+
 	void load_preferences();
 	void save_preferences();
 
