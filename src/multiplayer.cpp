@@ -228,7 +228,7 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 
 	std::cerr << "PLAYER " << player_slot << " CONFIRMING...\n";
 
-	for(int m = 0; m != 10000 && confirmed_players.size() < nplayers || m < 500; ++m) {
+	for(int m = 0; m != 10000 && confirmed_players.size() < nplayers || m < 50; ++m) {
 		boost::array<char, 4096> udp_msg;
 		std::vector<char> msg(6);
 		msg[0] = 'A';
@@ -252,7 +252,7 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 			}
 		}
 
-		SDL_Delay(1);
+		SDL_Delay(10);
 	}
 
 	if(confirmed_players.size() < nplayers) {
@@ -274,6 +274,7 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 		std::map<int, int> player_latency;
 
 		int delay = 0;
+		int last_send = -1;
 
 		const int game_start = SDL_GetTicks() + 1000;
 		boost::array<char, 1024> receive_buf;
@@ -303,35 +304,43 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 				}
 			}
 
-			for(int n = 0; n != nplayers; ++n) {
-				if(n == player_slot) {
-					continue;
-				}
+			std::cerr << "A TOOK " << (SDL_GetTicks() - ticks) << "\n";
 
-				char buf[128];
-
-				int start_advisory = start_in;
-				const int player_responses = player_nresponses[n];
-				if(player_responses) {
-					const int avg_latency = player_latency[n]/player_responses;
-					start_advisory -= avg_latency/2;
-					if(start_advisory < 0) {
-						start_advisory = 0;
+			if(last_send == -1 || ticks >= last_send+10) {
+				last_send = ticks;
+				for(int n = 0; n != nplayers; ++n) {
+					if(n == player_slot) {
+						continue;
 					}
+
+					char buf[256];
+
+					int start_advisory = start_in;
+					const int player_responses = player_nresponses[n];
+					if(player_responses) {
+						const int avg_latency = player_latency[n]/player_responses;
+						start_advisory -= avg_latency/2;
+						if(start_advisory < 0) {
+							start_advisory = 0;
+						}
+					}
+
+					fprintf(stderr, "SENDING ADVISORY TO START IN %d - %d\n", start_in, (start_in - start_advisory));
+
+					const int buf_len = sprintf(buf, "PXXXX%d %d %d", ping_id, start_advisory, delay);
+					memcpy(&buf[1], &id, 4);
+
+					std::string msg(buf, buf + buf_len);
+				std::cerr << "B1 TOOK " << buf_len << "/" << (SDL_GetTicks() - ticks) << "\n";
+					udp_socket->send_to(boost::asio::buffer(msg), *udp_endpoint_peers[n]);
+					std::cerr << "B2 TOOK " << (SDL_GetTicks() - ticks) << "\n";
+					ping_sent_at[ping_id] = ticks;
+					contents_ping[std::string(msg.begin()+5, msg.end())] = ping_id;
+					ping_player[ping_id] = n;
+					ping_id++;
 				}
-
-				fprintf(stderr, "SENDING ADVISORY TO START IN %d - %d\n", start_in, (start_in - start_advisory));
-
-				const int buf_len = sprintf(buf, "PXXXX%d %d %d", ping_id, start_advisory, delay);
-				memcpy(&buf[1], &id, 4);
-
-				std::string msg(buf, buf + buf_len);
-				udp_socket->send_to(boost::asio::buffer(msg), *udp_endpoint_peers[n]);
-				ping_sent_at[ping_id] = ticks;
-				contents_ping[std::string(msg.begin()+5, msg.end())] = ping_id;
-				ping_player[ping_id] = n;
-				ping_id++;
 			}
+			std::cerr << "B TOOK " << (SDL_GetTicks() - ticks) << "\n";
 
 			while(udp_packet_waiting()) {
 				size_t len = udp_socket->receive(boost::asio::buffer(receive_buf));
@@ -347,10 +356,16 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 					player_latency[nplayer] += latency;
 
 					fprintf(stderr, "RECEIVED PING FROM %d IN %d AVG LATENCY %d\n", nplayer, latency, player_latency[nplayer]/player_nresponses[nplayer]);
+				} else {
+					fprintf(stderr, "RECEIVED UDP PACKET: %d/%c\n", len, (len > 0 ? receive_buf[0] : '-'));
 				}
 			}
+			std::cerr << "C TOOK " << (SDL_GetTicks() - ticks) << "\n";
+
+			std::cerr << "DELAYING WITH " << (game_start - SDL_GetTicks()) << "\n";
 			
 			SDL_Delay(1);
+			std::cerr << "DONE DELAY " << (game_start - SDL_GetTicks()) << "\n";
 		}
 	} else {
 		std::vector<int> start_time;
