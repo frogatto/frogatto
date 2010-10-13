@@ -13,6 +13,7 @@
 #include <iostream>
 #include <inttypes.h>
 
+#include "asserts.hpp"
 #include "foreach.hpp"
 
 using boost::asio::ip::tcp;
@@ -194,7 +195,7 @@ private:
 				fprintf(stderr, "SET ENDPOINT: %p TO %p %d\n", socket_it->second.get(), endpoint.get(), endpoint->port());
 
 				GameInfoPtr& game = sockets_info_[socket_it->second].game;
-				if(!game->started && game->players.size() >= game->nplayers) {
+				if(game.get() != NULL && !game->started && game->players.size() >= game->nplayers) {
 					bool have_sockets = true;
 					foreach(const socket_ptr& sock, game->players) {
 						const SocketInfo& info = sockets_info_[sock];

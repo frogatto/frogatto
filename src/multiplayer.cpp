@@ -368,6 +368,11 @@ void send_and_receive()
 		udp_socket->send_to(boost::asio::buffer(send_buf), *udp_endpoint_peers[n]);
 	}
 
+	receive();
+}
+
+void receive()
+{
 	while(udp_packet_waiting()) {
 		udp::endpoint sender_endpoint;
 		boost::array<char, 4096> udp_msg;
