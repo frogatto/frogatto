@@ -273,11 +273,35 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 		std::map<int, int> player_nresponses;
 		std::map<int, int> player_latency;
 
+		int delay = 0;
+
 		const int game_start = SDL_GetTicks() + 1000;
 		boost::array<char, 1024> receive_buf;
 		while(SDL_GetTicks() < game_start) {
 			const int ticks = SDL_GetTicks();
 			const int start_in = game_start - ticks;
+
+			if(start_in < 500 && delay == 0) {
+				//calculate what the delay should be
+				for(int n = 0; n != nplayers; ++n) {
+					if(n == player_slot) {
+						continue;
+					}
+
+					if(player_nresponses[n]) {
+						const int avg_latency = player_latency[n]/player_nresponses[n];
+						const int delay_time = avg_latency/(20*2) + 2;
+						if(delay_time > delay) {
+							delay = delay_time;
+						}
+					}
+				}
+
+				if(delay) {
+					std::cerr << "SET DELAY TO " << delay << "\n";
+					controls::set_delay(delay);
+				}
+			}
 
 			for(int n = 0; n != nplayers; ++n) {
 				if(n == player_slot) {
@@ -298,7 +322,7 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 
 				fprintf(stderr, "SENDING ADVISORY TO START IN %d - %d\n", start_in, (start_in - start_advisory));
 
-				const int buf_len = sprintf(buf, "PXXXX%d %d", ping_id, start_advisory);
+				const int buf_len = sprintf(buf, "PXXXX%d %d %d", ping_id, start_advisory, delay);
 				memcpy(&buf[1], &id, 4);
 
 				std::string msg(buf, buf + buf_len);
@@ -339,13 +363,23 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 					memcpy(&buf[1], &id, 4); //write our ID for the return msg.
 					const std::string s(&buf[0], &buf[0] + len);
 
-					std::string::const_iterator i = std::find(s.begin() + 5, s.end(), ' ');
-					ASSERT_LOG(i != s.end(), "NO WHITE SPACE FOUND IN PING MESSAGE: " << s);
-					const std::string start_in(i+1, s.end());
+					std::string::const_iterator begin_start_time = std::find(s.begin() + 5, s.end(), ' ');
+					ASSERT_LOG(begin_start_time != s.end(), "NO WHITE SPACE FOUND IN PING MESSAGE: " << s);
+					std::string::const_iterator begin_delay = std::find(begin_start_time + 1, s.end(), ' ');
+					ASSERT_LOG(begin_delay != s.end(), "NO WHITE SPACE FOUND IN PING MESSAGE: " << s);
+
+					const std::string start_in(begin_start_time+1, begin_delay);
+					const std::string delay_time(begin_delay+1, s.end());
 					const int start_in_num = atoi(start_in.c_str());
+					const int delay = atoi(delay_time.c_str());
 					start_time.push_back(SDL_GetTicks() + start_in_num);
 					while(start_time.size() > 5) {
 						start_time.erase(start_time.begin());
+					}
+
+					if(delay) {
+						std::cerr << "SET DELAY TO " << delay << "\n";
+						controls::set_delay(delay);
 					}
 					udp_socket->send_to(boost::asio::buffer(s), *udp_endpoint_peers[0]);
 				}

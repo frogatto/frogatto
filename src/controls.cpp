@@ -19,6 +19,7 @@
 #include "foreach.hpp"
 #include "joystick.hpp"
 #include "key.hpp"
+#include "level_runner.hpp"
 #include "multiplayer.hpp"
 #include "iphone_controls.hpp"
 
@@ -209,6 +210,8 @@ void get_control_status(int cycle, int player, bool* output)
 			std::cerr << "DELAYING AND WAITING\n";
 			const int max_delay = 1000;
 			const int end_time = SDL_GetTicks() + max_delay;
+
+			const pause_scope pause;
 			while(cycle > highest_confirmed[player] && SDL_GetTicks() < end_time) {
 				multiplayer::receive();
 			}
