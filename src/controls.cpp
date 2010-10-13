@@ -19,6 +19,7 @@
 #include "foreach.hpp"
 #include "joystick.hpp"
 #include "key.hpp"
+#include "multiplayer.hpp"
 #include "iphone_controls.hpp"
 
 namespace controls {
@@ -40,6 +41,8 @@ int32_t remote_highest_confirmed[MAX_PLAYERS];
 int starting_cycles;
 int nplayers = 1;
 int local_player;
+
+int delay;
 
 int first_invalid_cycle_var = -1;
 
@@ -194,6 +197,25 @@ void get_control_status(int cycle, int player, bool* output)
 	--cycle;
 	cycle -= starting_cycles;
 
+	cycle -= delay;
+	if(cycle < 0) {
+		return;
+	}
+
+	if(player != local_player) {
+		const int breathing_room = highest_confirmed[player] - cycle;
+		std::cerr << "BREATHING ROOM: " << breathing_room << "\n";
+
+		if(cycle > highest_confirmed[player]) {
+			std::cerr << "DELAYING AND WAITING\n";
+			const int max_delay = 40;
+			const int end_time = SDL_GetTicks() + max_delay;
+			while(cycle > highest_confirmed[player] && SDL_GetTicks() < end_time) {
+				multiplayer::send_and_receive();
+			}
+		}
+	}
+
 	ASSERT_INDEX_INTO_VECTOR(cycle, controls[player]);
 
 	unsigned char state = controls[player][cycle];
@@ -201,6 +223,11 @@ void get_control_status(int cycle, int player, bool* output)
 	for(int n = 0; n != NUM_CONTROLS; ++n) {
 		output[n] = (state&(1 << n)) ? true : false;
 	}
+}
+
+void set_delay(int value)
+{
+	delay = value;
 }
 
 void read_control_packet(const char* buf, size_t len)
@@ -299,7 +326,6 @@ void read_control_packet(const char* buf, size_t len)
 
 	assert(buf == end_buf);
 
-	fprintf(stderr, "PROCESSED REMOTE PACKET OKAY\n");
 	++ngood_packets;
 }
 

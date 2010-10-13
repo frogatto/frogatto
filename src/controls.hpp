@@ -35,6 +35,7 @@ void read_local_controls();
 void ignore_current_keypresses();
 
 void get_control_status(int cycle, int player, bool* output);
+void set_delay(int delay);
 
 void read_control_packet(const char* buf, size_t len);
 void write_control_packet(std::vector<char>& v);

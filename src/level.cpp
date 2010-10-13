@@ -1987,8 +1987,6 @@ void level::process()
 		gui_algorithm_->process(*this);
 	}
 
-	multiplayer::send_and_receive();
-
 	const int LevelPreloadFrequency = 500; //10 seconds
 	//see if we have levels to pre-load. Load one periodically.
 	if((cycle_%LevelPreloadFrequency) == 0) {
@@ -1999,6 +1997,8 @@ void level::process()
 	}
 
 	controls::read_local_controls();
+
+	multiplayer::send_and_receive();
 
 	do_processing();
 
@@ -3216,6 +3216,7 @@ bool level::can_interact(const rect& body) const
 
 void level::replay_from_cycle(int ncycle)
 {
+	return;
 	const int cycles_ago = cycle_ - ncycle;
 	if(cycles_ago <= 0) {
 		return;
@@ -3236,6 +3237,8 @@ void level::replay_from_cycle(int ncycle)
 
 void level::backup()
 {
+	return;
+
 	std::map<entity_ptr, entity_ptr> entity_map;
 
 	std::cerr << "BACKUP " << cycle_ << ": ";

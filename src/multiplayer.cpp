@@ -2,12 +2,14 @@
 #include <string>
 
 #include <inttypes.h>
+#include <numeric>
 #include <stdio.h>
 #include <unistd.h>
 
 #include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
 
+#include "asserts.hpp"
 #include "controls.hpp"
 #include "level.hpp"
 #include "multiplayer.hpp"
@@ -23,6 +25,8 @@ boost::shared_ptr<boost::asio::io_service> asio_service;
 boost::shared_ptr<tcp::socket> tcp_socket;
 boost::shared_ptr<udp::socket> udp_socket;
 boost::shared_ptr<udp::endpoint> udp_endpoint;
+
+std::vector<boost::shared_ptr<udp::endpoint> > udp_endpoint_peers;
 
 int32_t id;
 int player_slot;
@@ -75,7 +79,7 @@ void setup_networked_game(const std::string& server)
 	boost::asio::io_service& io_service = *asio_service;
 	tcp::resolver resolver(io_service);
 
-	tcp::resolver::query query(server, "17000");
+	tcp::resolver::query query(server, "17002");
 
 	tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
 	tcp::resolver::iterator end;
@@ -161,6 +165,10 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 				throw multiplayer::error();
 			}
 		}
+
+		std::vector<char> send_buf(4);
+		memcpy(&send_buf[0], &id, 4);
+		udp_socket->send_to(boost::asio::buffer(send_buf), *udp_endpoint);
 	}
 
 	boost::array<char, 1024> response;
@@ -171,9 +179,172 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 	}
 
 	std::string str(&response[0], &response[0] + len);
-	if(str != "START") {
+	if(std::string(str.begin(), str.begin() + 5) != "START") {
 		fprintf(stderr, "UNEXPECTED RESPONSE: '%s'\n", str.c_str());
 		throw multiplayer::error();
+	}
+
+	const char* ptr = str.c_str() + 6;
+	char* end_ptr = NULL;
+	const int nplayers = strtol(ptr, &end_ptr, 10);
+	ptr = end_ptr;
+	ASSERT_EQ(*ptr, '\n');
+	++ptr;
+
+	boost::asio::io_service& io_service = *asio_service;
+    udp::resolver udp_resolver(io_service);
+
+	udp_endpoint_peers.clear();
+
+	for(int n = 0; n != nplayers; ++n) {
+		const char* end = strchr(ptr, ' ');
+		ASSERT_LOG(end != NULL, "ERROR PARSING RESPONSE: " << str);
+		std::string host(ptr, end);
+		ptr = end+1;
+		end = strchr(ptr, '\n');
+		ASSERT_LOG(end != NULL, "ERROR PARSING RESPONSE: " << str);
+		std::string port(ptr, end);
+		ptr = end+1;
+
+		udp::resolver::query peer_query(udp::v4(), host, port);
+
+		if(n != player_slot) {
+			udp_endpoint_peers.push_back(boost::shared_ptr<udp::endpoint>(new udp::endpoint));
+			*udp_endpoint_peers.back() = *udp_resolver.resolve(peer_query);
+		} else {
+			//this is ourself, don't record our endpoint.
+			udp_endpoint_peers.push_back(boost::shared_ptr<udp::endpoint>());
+		}
+	}
+
+	std::set<int> confirmed_players;
+	confirmed_players.insert(player_slot);
+
+	std::cerr << "PLAYER " << player_slot << " CONFIRMING...\n";
+
+	for(int m = 0; m != 10000 && confirmed_players.size() < nplayers || m < 500; ++m) {
+		boost::array<char, 4096> udp_msg;
+		std::string msg = "AA";
+		msg[1] = player_slot;
+		for(int n = 0; n != nplayers; ++n) {
+			if(n == player_slot) {
+				continue;
+			}
+
+			std::cerr << "SENDING CONFIRM TO " << udp_endpoint_peers[n]->port() << "\n";
+			udp_socket->send_to(boost::asio::buffer(msg), *udp_endpoint_peers[n]);
+		}
+
+		while(udp_packet_waiting()) {
+			size_t len = udp_socket->receive(boost::asio::buffer(udp_msg));
+			if(len == 2 && udp_msg[0] == 'A') {
+				confirmed_players.insert(udp_msg[1]);
+				std::cerr << "CONFIRMED PLAYER: " << static_cast<int>(udp_msg[1]) << "/ " << player_slot << "\n";
+			}
+		}
+
+		SDL_Delay(1);
+	}
+
+	if(confirmed_players.size() < nplayers) {
+		std::cerr << "COULD NOT CONFIRM NETWORK CONNECTION TO ALL PEERS\n";
+		throw multiplayer::error();
+	}
+
+	controls::set_delay(2);
+
+	if(player_slot == 0) {
+		int ping_id = 0;
+		std::map<int, int> ping_sent_at;
+		std::map<int, int> ping_player;
+		std::map<std::string, int> contents_ping;
+
+		std::map<int, int> player_nresponses;
+		std::map<int, int> player_latency;
+
+		const int game_start = SDL_GetTicks() + 1000;
+		boost::array<char, 1024> receive_buf;
+		while(SDL_GetTicks() < game_start) {
+			const int ticks = SDL_GetTicks();
+			const int start_in = game_start - ticks;
+
+			for(int n = 0; n != nplayers; ++n) {
+				if(n == player_slot) {
+					continue;
+				}
+
+				char buf[128];
+
+				int start_advisory = start_in;
+				const int player_responses = player_nresponses[n];
+				if(player_responses) {
+					const int avg_latency = player_latency[n]/player_responses;
+					start_advisory -= avg_latency/2;
+					if(start_advisory < 0) {
+						start_advisory = 0;
+					}
+				}
+
+				fprintf(stderr, "SENDING ADVISORY TO START IN %d - %d\n", start_in, (start_in - start_advisory));
+
+				sprintf(buf, "P%d %d", ping_id, start_advisory);
+
+				std::string msg(buf);
+				udp_socket->send_to(boost::asio::buffer(msg), *udp_endpoint_peers[n]);
+				ping_sent_at[ping_id] = ticks;
+				contents_ping[msg] = ping_id;
+				ping_player[ping_id] = n;
+				ping_id++;
+			}
+
+			while(udp_packet_waiting()) {
+				size_t len = udp_socket->receive(boost::asio::buffer(receive_buf));
+				if(len > 1 && receive_buf[0] == 'P') {
+					std::string msg(&receive_buf[0], &receive_buf[0] + len);
+					ASSERT_LOG(contents_ping.count(msg), "UNRECOGNIZED PING: " << msg);
+					const int ping = contents_ping[msg];
+					const int latency = ticks - ping_sent_at[ping];
+					const int nplayer = ping_player[ping];
+
+					player_nresponses[nplayer]++;
+					player_latency[nplayer] += latency;
+
+					fprintf(stderr, "RECEIVED PING FROM %d IN %d AVG LATENCY %d\n", nplayer, latency, player_latency[nplayer]/player_nresponses[nplayer]);
+				}
+			}
+			
+			SDL_Delay(1);
+		}
+	} else {
+		std::vector<int> start_time;
+		boost::array<char, 1024> buf;
+		for(;;) {
+			while(udp_packet_waiting()) {
+				size_t len = udp_socket->receive(boost::asio::buffer(buf));
+				if(len > 1 && buf[0] == 'P') {
+					const std::string s(&buf[0], &buf[0] + len);
+
+					std::string::const_iterator i = std::find(s.begin(), s.end(), ' ');
+					ASSERT_LOG(i != s.end(), "NO WHITE SPACE FOUND IN PING MESSAGE: " << s);
+					const std::string start_in(i+1, s.end());
+					const int start_in_num = atoi(start_in.c_str());
+					start_time.push_back(SDL_GetTicks() + start_in_num);
+					while(start_time.size() > 5) {
+						start_time.erase(start_time.begin());
+					}
+					udp_socket->send_to(boost::asio::buffer(s), *udp_endpoint_peers[0]);
+				}
+			}
+
+			if(start_time.size() > 0) {
+				const int start_time_avg = std::accumulate(start_time.begin(), start_time.end(), 0)/start_time.size();
+				if(SDL_GetTicks() >= start_time_avg) {
+					break;
+				}
+			}
+
+			SDL_Delay(1);
+		}
 	}
 }
 
@@ -184,21 +355,33 @@ void send_and_receive()
 	}
 
 	//send our ID followed by the send packet.
-	std::vector<char> send_buf(4);
-	memcpy(&send_buf[0], &id, 4);
+	std::vector<char> send_buf(5);
+	send_buf[0] = 'C';
+	memcpy(&send_buf[1], &id, 4);
 	controls::write_control_packet(send_buf);
-	udp_socket->send_to(boost::asio::buffer(send_buf), *udp_endpoint);
+
+	for(int n = 0; n != udp_endpoint_peers.size(); ++n) {
+		if(n == player_slot) {
+			continue;
+		}
+
+		udp_socket->send_to(boost::asio::buffer(send_buf), *udp_endpoint_peers[n]);
+	}
 
 	while(udp_packet_waiting()) {
 		udp::endpoint sender_endpoint;
 		boost::array<char, 4096> udp_msg;
-		size_t len = udp_socket->receive_from(boost::asio::buffer(udp_msg), sender_endpoint);
-		if(len < 4) {
+		size_t len = udp_socket->receive(boost::asio::buffer(udp_msg));
+		if(len == 0 || udp_msg[0] != 'C') {
+			continue;
+		}
+
+		if(len < 5) {
 			fprintf(stderr, "UDP PACKET TOO SHORT: %d\n", (int)len);
 			continue;
 		}
 
-		controls::read_control_packet(&udp_msg[4], len - 4);
+		controls::read_control_packet(&udp_msg[5], len - 5);
 	}
 }
 

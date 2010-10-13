@@ -341,10 +341,13 @@ extern "C" int main(int argc, char** argv)
 			last_draw_position() = screen_position();
 			std::string level_cfg = "waiting-room.cfg";
 			boost::intrusive_ptr<level> wait_lvl(load_level(level_cfg));
+			wait_lvl->finish_loading();
 			wait_lvl->set_multiplayer_slot(0);
 			if(wait_lvl->player()) {
 				wait_lvl->player()->set_current_level(level_cfg);
 			}
+			wait_lvl->set_as_current_level();
+
 			level_runner runner(wait_lvl, level_cfg, orig_level_cfg);
 
 			multiplayer::sync_start_time(*lvl, boost::bind(&level_runner::play_cycle, &runner));

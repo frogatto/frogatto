@@ -2392,6 +2392,12 @@ void custom_object::die()
 
 bool custom_object::is_active(const rect& screen_area) const
 {
+	if(controls::num_players() > 1) {
+		//in multiplayer, make all objects always active
+		//TODO: review this behavior
+		return true;
+	}
+
 	if(always_active()) {
 		return true;
 	}
