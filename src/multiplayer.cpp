@@ -251,7 +251,7 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 		throw multiplayer::error();
 	}
 
-	controls::set_delay(2);
+	controls::set_delay(3);
 
 	if(player_slot == 0) {
 		int ping_id = 0;
