@@ -206,6 +206,7 @@ void get_control_status(int cycle, int player, bool* output)
 		const int breathing_room = highest_confirmed[player] - cycle;
 
 		if(cycle > highest_confirmed[player]) {
+			std::cerr << "DELAYING AND WAITING\n";
 			const int max_delay = 40;
 			const int end_time = SDL_GetTicks() + max_delay;
 			while(cycle > highest_confirmed[player] && SDL_GetTicks() < end_time) {
