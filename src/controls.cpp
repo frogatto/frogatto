@@ -207,11 +207,16 @@ void get_control_status(int cycle, int player, bool* output)
 
 		if(cycle > highest_confirmed[player]) {
 			std::cerr << "DELAYING AND WAITING\n";
-			const int max_delay = 40;
+			const int max_delay = 1000;
 			const int end_time = SDL_GetTicks() + max_delay;
 			while(cycle > highest_confirmed[player] && SDL_GetTicks() < end_time) {
 				multiplayer::receive();
 			}
+		}
+
+		if(cycle > highest_confirmed[player]) {
+			std::cerr << "ERROR: REMOTE HOST TIMED OUT. GAME ABORTED.\n";
+			throw multiplayer::error();
 		}
 	}
 
