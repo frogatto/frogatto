@@ -2187,7 +2187,7 @@ msgstr ""
 
 #: data/level/secluded-hut.cfg:1207
 msgid "Are you quite alright?"
-msgstr ""
+msgstr "Geht es Ihnen gut?"
 
 #: data/level/secluded-hut.cfg:1209
 msgid ""
@@ -2207,18 +2207,26 @@ msgid ""
 "of us already, or if that was coincidence,\n"
 "but you'd better watch your back."
 msgstr ""
+"Ich weiß nicht, ob sie uns schon bemerkt\n"
+"haben, oder ob das Zufall war,\n"
+"aber geben Sie besser acht."
 
 #: data/level/secluded-hut.cfg:1212
 msgid ""
 "Especially if you're going further east,\n"
 "which is towards the town."
 msgstr ""
+"Besonders wenn Sie weiter nach Osten gehen,\n"
+"wo die Stadt liegt."
 
 #: data/level/secluded-hut.cfg:1213
 msgid ""
 "Anyhow, you'll be happy to know\n"
 "we've patched up that bridge."
 msgstr ""
+"Wie auch immer, Sie werden froh\n"
+"sein, zu erfahren, dass wir die\n"
+"Brücke wieder repariert haben."
 
 #: data/level/secluded-hut.cfg:1215
 msgid "Dang.  That was fast."
@@ -2229,6 +2237,9 @@ msgid ""
 "Yes, yes.  Modular construction and all.\n"
 "Impressive what they can do these days."
 msgstr ""
+"Ja, ja. Modulare Konstruktion, das.\n"
+"Schon beeindruckend, was heutzutage\n"
+"möglich ist."
 
 #: data/level/secluded-hut.cfg:1217
 msgid ""
@@ -2241,6 +2252,9 @@ msgid ""
 "Bit of a recluse, but he's quite sharp.\n"
 "He lives on top of this rock column."
 msgstr ""
+"Ein bisschen einsiedlerisch, aber er\n"
+"ist ziemlich helle. Er wohnt oben auf\n"
+"dieser Steinsäule."
 
 #: data/level/secluded-hut.cfg:1220
 msgid "And I get up there... how?"
@@ -2249,10 +2263,14 @@ msgstr "Und wie soll ich da hochkommen?"
 #: data/level/secluded-hut.cfg:1224
 msgid "Simple, just take to the air!"
 msgstr ""
+"Ganz einfach,\n"
+"schwingen Sie sich in die Lüfte!"
 
 #: data/level/secluded-hut.cfg:1227
 msgid "You ... do realize I can't fly?"
-msgstr "Sie wissen schon, dass ICH nicht fliegen kann?"
+msgstr ""
+"Du weißt schon,\n"
+"dass ich nicht fliegen kann?"
 
 #: data/level/senic-beach.cfg:12
 msgid "Geautatha Point"
@@ -2260,7 +2278,7 @@ msgstr ""
 
 #: data/level/splash-hop.cfg:11
 msgid "Splash, Hop"
-msgstr ""
+msgstr "Platsch, Hüpf"
 
 #: data/level/stairway-to-heaven.cfg:9
 msgid "Stairway to Heaven"
@@ -2272,7 +2290,7 @@ msgstr ""
 
 #: data/level/stonepipe-meadow.cfg:11
 msgid "Stonepipe Meadow"
-msgstr ""
+msgstr "Steinpfeifen-Aue"
 
 #: data/level/tea-with-milgram.cfg:169
 msgid "Webmaster"
