@@ -144,6 +144,23 @@ void setup_networked_game(const std::string& server)
 	}
 }
 
+namespace {
+void send_confirm_packet(int nplayer, std::vector<char>& msg, bool has_confirm) {
+	boost::array<char, 4096> udp_msg;
+	msg.resize(6);
+	msg[0] = has_confirm ? 'a' : 'A';
+	memcpy(&msg[1], &id, 4);
+	msg.back() = player_slot;
+
+	if(nplayer == player_slot) {
+		return;
+	}
+
+	std::cerr << "SENDING CONFIRM TO " << udp_endpoint_peers[nplayer]->port() << "\n";
+	udp_socket->send_to(boost::asio::buffer(msg), *udp_endpoint_peers[nplayer]);
+}
+}
+
 void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 {
 	if(!tcp_socket) {
@@ -232,27 +249,23 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 	int confirmation_point = 1000;
 
 	for(int m = 0; m != 1000 && confirmed_players.size() < nplayers || m < confirmation_point + 50; ++m) {
-		boost::array<char, 4096> udp_msg;
-		std::vector<char> msg(6);
-		msg[0] = 'A';
-		memcpy(&msg[1], &id, 4);
-		msg.back() = player_slot;
+
+		std::vector<char> msg;
 
 		for(int n = 0; n != nplayers; ++n) {
-			if(n == player_slot) {
-				continue;
-			}
-
-			std::cerr << "SENDING CONFIRM TO " << udp_endpoint_peers[n]->port() << "\n";
-			udp_socket->send_to(boost::asio::buffer(msg), *udp_endpoint_peers[n]);
+			send_confirm_packet(n, msg, confirmed_players.count(n) != 0);
 		}
 
 		while(udp_packet_waiting()) {
+			boost::array<char, 4096> udp_msg;
 			udp::endpoint endpoint;
 			size_t len = udp_socket->receive_from(boost::asio::buffer(udp_msg), endpoint);
-			if(len == 6 && udp_msg[0] == 'A') {
+			if(len == 6 && toupper(udp_msg[0]) == 'A') {
 				confirmed_players.insert(udp_msg[5]);
 				if(udp_msg[5] >= 0 && udp_msg[5] < udp_endpoint_peers.size()) {
+					if(endpoint.port() != udp_endpoint_peers[udp_msg[5]]->port()) {
+						std::cerr << "REASSIGNING PORT " << endpoint.port() << " TO " << udp_endpoint_peers[udp_msg[5]]->port() << "\n";
+					}
 					*udp_endpoint_peers[udp_msg[5]] = endpoint;
 				}
 
@@ -274,7 +287,7 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 
 				std::cerr << "PORTSCANNING FOR PORTS...\n";
 
-				for(int port_offset=-10000; port_offset != 40000; ++port_offset) {
+				for(int port_offset=-1000; port_offset != 4000; ++port_offset) {
 					udp::endpoint peer_endpoint;
 					const int port = udp_endpoint_peers[n]->port() + port_offset;
 					if(port <= 1024 || port >= 65536) {
@@ -390,6 +403,12 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 
 					fprintf(stderr, "RECEIVED PING FROM %d IN %d AVG LATENCY %d\n", nplayer, latency, player_latency[nplayer]/player_nresponses[nplayer]);
 				} else {
+					if(len == 6 && receive_buf[0] == 'A') {
+						std::vector<char> msg;
+						const int player_num = receive_buf[5];
+						send_confirm_packet(player_num, msg, true);
+					}
+
 					fprintf(stderr, "RECEIVED UDP PACKET: %d/%c\n", len, (len > 0 ? receive_buf[0] : '-'));
 				}
 			}
@@ -426,6 +445,12 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 						controls::set_delay(delay);
 					}
 					udp_socket->send_to(boost::asio::buffer(s), *udp_endpoint_peers[0]);
+				} else {
+					if(len == 6 && buf[0] == 'A') {
+						std::vector<char> msg;
+						const int player_num = buf[5];
+						send_confirm_packet(player_num, msg, true);
+					}
 				}
 			}
 
