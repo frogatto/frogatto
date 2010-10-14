@@ -187,7 +187,7 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 
 		std::vector<char> send_buf(5);
 		send_buf[0] = 'Z';
-		memcpy(&send_buf[1], &id, 5);
+		memcpy(&send_buf[1], &id, 4);
 		udp_socket->send_to(boost::asio::buffer(send_buf), *udp_endpoint);
 	}
 
