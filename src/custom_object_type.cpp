@@ -360,7 +360,8 @@ custom_object_type::custom_object_type(wml::const_node_ptr node, const custom_ob
 	solid_dimensions_(has_solid_ || platform_ ? 0xFFFFFFFF : 0),
 	collide_dimensions_(0xFFFFFFFF),
 	weak_solid_dimensions_(has_solid_ || platform_ ? 0xFFFFFFFF : 0),
-	weak_collide_dimensions_(0xFFFFFFFF)
+	weak_collide_dimensions_(0xFFFFFFFF),
+	activation_border_(wml::get_int(node, "activation_border", 100))
 {
 #ifndef NO_EDITOR
 	if(node->get_child("editor_info")) {

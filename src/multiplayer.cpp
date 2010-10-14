@@ -287,7 +287,7 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 
 				std::cerr << "PORTSCANNING FOR PORTS...\n";
 
-				for(int port_offset=-1000; port_offset != 4000; ++port_offset) {
+				for(int port_offset=0; port_offset != 100; ++port_offset) {
 					udp::endpoint peer_endpoint;
 					const int port = udp_endpoint_peers[n]->port() + port_offset;
 					if(port <= 1024 || port >= 65536) {

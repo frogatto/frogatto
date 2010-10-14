@@ -142,6 +142,8 @@ public:
 
 	wml::const_node_ptr node() const { return node_; }
 
+	int activation_border() const { return activation_border_; }
+
 private:
 	custom_object_callable callable_definition_;
 
@@ -211,6 +213,8 @@ private:
 
 	unsigned int solid_dimensions_, collide_dimensions_;
 	unsigned int weak_solid_dimensions_, weak_collide_dimensions_;
+
+	int activation_border_;
 
 	std::map<std::string, wml::const_modifier_ptr> variations_;
 	mutable std::map<std::vector<std::string>, const_custom_object_type_ptr> variations_cache_;
