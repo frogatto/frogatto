@@ -152,7 +152,7 @@ void send_confirm_packet(int nplayer, std::vector<char>& msg, bool has_confirm) 
 	memcpy(&msg[1], &id, 4);
 	msg.back() = player_slot;
 
-	if(nplayer == player_slot) {
+	if(nplayer == player_slot || nplayer < 0 || nplayer >= udp_endpoint_peers.size()) {
 		return;
 	}
 
