@@ -11,6 +11,7 @@
 
 #include "asserts.hpp"
 #include "controls.hpp"
+#include "formatter.hpp"
 #include "level.hpp"
 #include "multiplayer.hpp"
 #include "preferences.hpp"
@@ -280,7 +281,9 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 						continue;
 					}
 
-					udp::resolver::query peer_query(udp::v4(), udp_endpoint_peers[n]->address().to_string(), port);
+					std::string port_str = formatter() << port;
+
+					udp::resolver::query peer_query(udp::v4(), udp_endpoint_peers[n]->address().to_string(), port_str.c_str());
 					peer_endpoint = *udp_resolver.resolve(peer_query);
 					udp_socket->send_to(boost::asio::buffer(msg), peer_endpoint);
 				}
