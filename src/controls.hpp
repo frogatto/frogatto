@@ -51,6 +51,8 @@ int cycles_behind();
 int their_highest_confirmed();
 int last_packet_size();
 
+void set_checksum(int cycle, int sum);
+
 void debug_dump_controls();
 
 }

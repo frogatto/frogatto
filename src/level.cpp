@@ -2070,6 +2070,22 @@ void level::do_processing()
 	active_chars_.erase(std::unique(active_chars_.begin(), active_chars_.end()), active_chars_.end());
 	std::sort(active_chars_.begin(), active_chars_.end(), sort_entity_drawing_pos);
 
+/*
+	std::cerr << "SUMMARY " << cycle_ << ": ";
+	foreach(const entity_ptr& e, chars_) {
+		std::cerr << e->debug_description() << "(" << (e->is_human() ? "HUMAN," : "") << e->centi_x() << "," << e->centi_y() << "):";
+	}
+
+	std::cerr << "\n";
+	*/
+
+	int checksum = 0;
+	foreach(const entity_ptr& e, chars_) {
+		checksum += e->x() + e->y();
+	}
+
+	controls::set_checksum(cycle_, checksum);
+
 	const int ActivationDistance = 700;
 
 	std::vector<entity_ptr> active_chars = active_chars_;
@@ -3246,6 +3262,7 @@ void level::backup()
 	snapshot->rng_seed = rng::get_seed();
 	snapshot->cycle = cycle_;
 	snapshot->chars.reserve(chars_.size());
+
 	foreach(const entity_ptr& e, chars_) {
 		std::cerr << e->debug_description() << "(" << (e->is_human() ? "HUMAN," : "") << e->centi_x() << "," << e->centi_y() << "):";
 		snapshot->chars.push_back(e->backup());

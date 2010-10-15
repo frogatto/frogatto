@@ -16,6 +16,7 @@
 #include "level.hpp"
 #include "multiplayer.hpp"
 #include "preferences.hpp"
+#include "random.hpp"
 #include "regex_utils.hpp"
 #include "unit_test.hpp"
 
@@ -469,6 +470,8 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 			SDL_Delay(1);
 		}
 	}
+
+	rng::set_seed(0);
 }
 
 void send_and_receive()

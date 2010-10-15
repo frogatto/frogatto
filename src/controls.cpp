@@ -39,6 +39,8 @@ int32_t highest_confirmed[MAX_PLAYERS];
 //for each player, the highest confirmed cycle of ours that they have
 int32_t remote_highest_confirmed[MAX_PLAYERS];
 
+std::map<int, int> our_checksums;
+
 int starting_cycles;
 int nplayers = 1;
 int local_player;
@@ -270,6 +272,20 @@ void read_control_packet(const char* buf, size_t len)
 		return;
 	}
 
+	int32_t checksum;
+	memcpy(&checksum, buf, 4);
+	checksum = ntohl(checksum);
+	buf += 4;
+
+	if(checksum && our_checksums[current_cycle-1]) {
+		if(checksum == our_checksums[current_cycle-1]) {
+			std::cerr << "CHECKSUM MATCH FOR " << current_cycle << ": " << checksum << "\n";
+		} else {
+			std::cerr << "CHECKSUM DID NOT MATCH FOR " << current_cycle << ": " << checksum << " VS " << our_checksums[current_cycle-1] << "\n";
+		}
+
+	}
+
 	int32_t highest_cycle;
 	memcpy(&highest_cycle, buf, 4);
 	highest_cycle = ntohl(highest_cycle);
@@ -352,6 +368,12 @@ void write_control_packet(std::vector<char>& v)
 	v.resize(v.size() + 4);
 	memcpy(&v[v.size()-4], &current_cycle_net, 4);
 
+	//write our checksum of game state
+	int32_t checksum = our_checksums[current_cycle-1];
+	int32_t checksum_net = htonl(checksum);
+	v.resize(v.size() + 4);
+	memcpy(&v[v.size()-4], &checksum_net, 4);
+
 	//write our highest confirmed cycle
 	int32_t highest_cycle = htonl(our_highest_confirmed());
 	v.resize(v.size() + 4);
@@ -408,6 +430,11 @@ int cycles_behind()
 int last_packet_size()
 {
 	return last_packet_size_;
+}
+
+void set_checksum(int cycle, int sum)
+{
+	our_checksums[cycle] = sum;
 }
 
 void debug_dump_controls()
