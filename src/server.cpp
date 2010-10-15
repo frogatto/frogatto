@@ -27,7 +27,7 @@ class server
 public:
 	explicit server(boost::asio::io_service& io_service)
 	  : acceptor_(io_service, tcp::endpoint(tcp::v4(), 17002)),
-	    next_id_(0), slots_(0),
+	    next_id_(0),
 		udp_socket_(io_service, udp::endpoint(udp::v4(), 17001))
 	{
 		start_accept();
@@ -46,16 +46,9 @@ private:
 		if(!error) {
 			SocketInfo info;
 			info.id = next_id_++;
-			info.slot = 0;
-			while(slots_&(1 << info.slot)) {
-				++info.slot;
-			}
 
-			slots_ |= (1 << info.slot);
-
-			boost::array<char, 5> buf;
+			boost::array<char, 4> buf;
 			memcpy(&buf[0], &info.id, 4);
-			buf[4] = info.slot;
 
 			boost::asio::async_write(*socket, boost::asio::buffer(buf),
 			                         boost::bind(&server::handle_send, this, socket, _1, _2));
@@ -138,9 +131,6 @@ private:
 		id_to_socket_.erase(sockets_info_[socket].id);
 		sockets_.erase(std::remove(sockets_.begin(), sockets_.end(), socket), sockets_.end());
 
-		std::cerr << sockets_info_[socket].id << " " << slots_ << " -> ";
-		slots_ &= ~(1LL << sockets_info_[socket].slot);
-		std::cerr << slots_ << "\n";
 		sockets_info_.erase(socket);
 	}
 
@@ -155,7 +145,6 @@ private:
 
 	struct SocketInfo {
 		uint32_t id;
-		uint8_t slot;
 		udp_endpoint_ptr udp_endpoint;
 		GameInfoPtr game;
 	};
@@ -173,7 +162,6 @@ private:
 	std::map<std::string, GameInfoPtr> games_;
 
 	uint32_t next_id_;
-	uint64_t slots_;
 
 	void start_udp_receive() {
 		udp_endpoint_ptr endpoint(new udp::endpoint);
@@ -205,18 +193,22 @@ private:
 
 					if(have_sockets) {
 
-						std::ostringstream msg;
-						msg << "START " << game->players.size() << "\n";
 						foreach(socket_ptr socket, game->players) {
-							const SocketInfo& sock_info = sockets_info_[socket];
-							msg << sock_info.udp_endpoint->address().to_string().c_str() << " " << sock_info.udp_endpoint->port() << "\n";
-						}
 
-						const std::string msg_str = msg.str();
+							std::ostringstream msg;
+							msg << "START " << game->players.size() << "\n";
+							foreach(socket_ptr s, game->players) {
+								if(s == socket) {
+									msg << "SLOT\n";
+									continue;
+								}
 
-						std::cerr << "SENDING PEERS: " << msg_str << "\n";
+								const SocketInfo& sock_info = sockets_info_[s];
+								msg << sock_info.udp_endpoint->address().to_string().c_str() << " " << sock_info.udp_endpoint->port() << "\n";
+							}
 
-						foreach(socket_ptr socket, game->players) {
+							const std::string msg_str = msg.str();
+
 							boost::asio::async_write(*socket, boost::asio::buffer(msg_str),
 				                         boost::bind(&server::handle_send, this, socket, _1, _2));
 						}

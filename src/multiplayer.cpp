@@ -7,6 +7,7 @@
 #include <unistd.h>
 
 #include <boost/asio.hpp>
+#include <boost/regex.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include "asserts.hpp"
@@ -15,6 +16,7 @@
 #include "level.hpp"
 #include "multiplayer.hpp"
 #include "preferences.hpp"
+#include "regex_utils.hpp"
 #include "unit_test.hpp"
 
 using boost::asio::ip::tcp;
@@ -99,22 +101,21 @@ void setup_networked_game(const std::string& server)
 		throw multiplayer::error();
 	}
 
-	boost::array<char, 5> initial_response;
+	boost::array<char, 4> initial_response;
 	size_t len = socket.read_some(boost::asio::buffer(initial_response), error);
 	if(error) {
 		fprintf(stderr, "ERROR READING INITIAL RESPONSE\n");
 		throw multiplayer::error();
 	}
 
-	if(len != 5) {
+	if(len != 4) {
 		fprintf(stderr, "INITIAL RESPONSE HAS THE WRONG SIZE: %d\n", (int)len);
 		throw multiplayer::error();
 	}
 
 	memcpy(&id, &initial_response[0], 4);
-	player_slot = initial_response[4];
 
-	fprintf(stderr, "ID: %d; SLOT: %d\n", id, player_slot);
+	fprintf(stderr, "ID: %d\n", id);
 
     udp::resolver udp_resolver(io_service);
     udp::resolver::query udp_query(udp::v4(), server, "17001");
@@ -156,7 +157,7 @@ void send_confirm_packet(int nplayer, std::vector<char>& msg, bool has_confirm) 
 		return;
 	}
 
-	std::cerr << "SENDING CONFIRM TO " << udp_endpoint_peers[nplayer]->port() << "\n";
+	std::cerr << "SENDING CONFIRM TO " << udp_endpoint_peers[nplayer]->port() << ": " << nplayer << "\n";
 	udp_socket->send_to(boost::asio::buffer(msg), *udp_endpoint_peers[nplayer]);
 }
 }
@@ -217,27 +218,31 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 	udp_endpoint_peers.clear();
 
 	for(int n = 0; n != nplayers; ++n) {
-		const char* end = strchr(ptr, ' ');
+		const char* end = strchr(ptr, '\n');
 		ASSERT_LOG(end != NULL, "ERROR PARSING RESPONSE: " << str);
-		std::string host(ptr, end);
-		ptr = end+1;
-		end = strchr(ptr, '\n');
-		ASSERT_LOG(end != NULL, "ERROR PARSING RESPONSE: " << str);
-		std::string port(ptr, end);
+		std::string line(ptr, end);
 		ptr = end+1;
 
-		if(n != player_slot) {
-			udp_endpoint_peers.push_back(boost::shared_ptr<udp::endpoint>(new udp::endpoint));
-			udp::resolver::query peer_query(udp::v4(), host, port);
-
-			*udp_endpoint_peers.back() = *udp_resolver.resolve(peer_query);
-
-			if(preferences::relay_through_server()) {
-				*udp_endpoint_peers.back() = *udp_endpoint;
-			}
-		} else {
-			//this is ourself, don't record our endpoint.
+		if(line == "SLOT") {
+			player_slot = n;
 			udp_endpoint_peers.push_back(boost::shared_ptr<udp::endpoint>());
+
+			std::cerr << "SLOT: " << player_slot << "\n";
+			continue;
+		}
+
+		static boost::regex pattern("(.*?) (.*?)");
+
+		std::string host, port;
+		match_regex(line, pattern, &host, &port);
+
+		udp_endpoint_peers.push_back(boost::shared_ptr<udp::endpoint>(new udp::endpoint));
+		udp::resolver::query peer_query(udp::v4(), host, port);
+
+		*udp_endpoint_peers.back() = *udp_resolver.resolve(peer_query);
+
+		if(preferences::relay_through_server()) {
+			*udp_endpoint_peers.back() = *udp_endpoint;
 		}
 	}
 
@@ -287,7 +292,7 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 
 				std::cerr << "PORTSCANNING FOR PORTS...\n";
 
-				for(int port_offset=0; port_offset != 100; ++port_offset) {
+				for(int port_offset=0; port_offset != 10; ++port_offset) {
 					udp::endpoint peer_endpoint;
 					const int port = udp_endpoint_peers[n]->port() + port_offset;
 					if(port <= 1024 || port >= 65536) {
