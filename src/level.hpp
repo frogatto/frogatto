@@ -102,6 +102,7 @@ public:
 	player_info* player() { return player_ ? player_->get_player_info() : NULL; }
 	std::vector<entity_ptr>& players() { return players_; }
 	const std::vector<entity_ptr>& players() const { return players_; }
+	void add_multi_player(entity_ptr p);
 	void add_player(entity_ptr p);
 	void add_character(entity_ptr p);
 

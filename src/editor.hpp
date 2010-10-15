@@ -166,6 +166,7 @@ private:
 
 	//functions which add and remove an object from a level, as well as
 	//sending the object appropriate events.
+	void add_multi_object_to_level(entity_ptr e);
 	void add_object_to_level(entity_ptr e);
 	void remove_object_from_level(entity_ptr e);
 

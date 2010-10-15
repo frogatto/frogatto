@@ -1382,9 +1382,15 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 			//clicked in an illegal position to place an object.
 
 		} else if(c->is_human() && lvl_->player()) {
-			execute_command(
-			  boost::bind(&editor::add_object_to_level, this, c),
-			  boost::bind(&editor::add_object_to_level, this, &lvl_->player()->get_entity()));
+			if(!shift_pressed) {
+				execute_command(
+				  boost::bind(&editor::add_object_to_level, this, c),
+				  boost::bind(&editor::add_object_to_level, this, &lvl_->player()->get_entity()));
+			} else {
+				execute_command(
+				  boost::bind(&editor::add_multi_object_to_level, this, c),
+				  boost::bind(&editor::add_object_to_level, this, &lvl_->player()->get_entity()));
+			}
 
 		} else {
 			execute_command(
@@ -2495,6 +2501,12 @@ void editor::edit_level_properties()
 {
 	editor_dialogs::editor_level_properties_dialog prop_dialog(*this);
 	prop_dialog.show_modal();
+}
+
+void editor::add_multi_object_to_level(entity_ptr e)
+{
+	lvl_->add_multi_player(e);
+	e->handle_event("editor_added");
 }
 
 void editor::add_object_to_level(entity_ptr e)

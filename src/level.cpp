@@ -2753,6 +2753,18 @@ void level::set_solid(level_solid_map& map, int x, int y, int friction, int trac
 	}
 }
 
+void level::add_multi_player(entity_ptr p)
+{
+	last_touched_player_ = p;
+	p->get_player_info()->set_player_slot(players_.size());
+	players_.push_back(p);
+	chars_.push_back(p);
+	if(p->label().empty() == false) {
+		chars_by_label_[p->label()] = p;
+	}
+	layers_.insert(p->zorder());
+}
+
 void level::add_player(entity_ptr p)
 {
 	chars_.erase(std::remove(chars_.begin(), chars_.end(), player_), chars_.end());
