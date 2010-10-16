@@ -83,7 +83,7 @@ private:
 			std::string str(buf->data(), buf->data() + nbytes);
 			std::cerr << "RECEIVE {{{" << str << "}}}\n";
 
-			static boost::regex ready("READY/(.+)/(\\d+)");
+			static boost::regex ready("READY/(.+)/(\\d+)/(.* \\d+)");
 
 			boost::cmatch match;
 			if(boost::regex_match(str.c_str(), match, ready)) {
@@ -95,6 +95,7 @@ private:
 				}
 
 				SocketInfo& info = sockets_info_[socket];
+				info.local_addr = std::string(match[3].first, match[3].second);
 				if(info.game) {
 					//if the player is already in a game, remove them from it.
 					std::vector<socket_ptr>& v = info.game->players;
@@ -147,6 +148,7 @@ private:
 		uint32_t id;
 		udp_endpoint_ptr udp_endpoint;
 		GameInfoPtr game;
+		std::string local_addr;
 	};
 
 	std::map<socket_ptr, SocketInfo> sockets_info_;
@@ -194,6 +196,7 @@ private:
 					if(have_sockets) {
 
 						foreach(socket_ptr socket, game->players) {
+							const SocketInfo& send_socket_info = sockets_info_[socket];
 
 							std::ostringstream msg;
 							msg << "START " << game->players.size() << "\n";
@@ -204,7 +207,17 @@ private:
 								}
 
 								const SocketInfo& sock_info = sockets_info_[s];
-								msg << sock_info.udp_endpoint->address().to_string().c_str() << " " << sock_info.udp_endpoint->port() << "\n";
+								if(send_socket_info.udp_endpoint->address().to_string() != sock_info.udp_endpoint->address().to_string()) {
+									//the hosts are not from the same address,
+									//so send them each other's network address.
+									msg << sock_info.udp_endpoint->address().to_string().c_str() << " " << sock_info.udp_endpoint->port() << "\n";
+								} else {
+									//the hosts are from the same address,
+									//which means they are likely behind the
+									//same NAT device. Send them their local
+									//addresses, behind their devices.
+									msg << sock_info.local_addr << "\n";
+								}
 							}
 
 							const std::string msg_str = msg.str();

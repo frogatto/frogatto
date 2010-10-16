@@ -169,8 +169,27 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 		return;
 	}
 
+	//find our host and port number within our NAT and tell the server
+	//about it, so if two servers from behind the same NAT connect to
+	//the server, it can tell them how to connect directly to each other.
+	std::string local_host;
+	int local_port = 0;
+
+	{
+	//send something on the UDP socket, just so that we get a port.
+	std::vector<char> send_buf;
+	send_buf.push_back('.');
+	udp_socket->send_to(boost::asio::buffer(send_buf), *udp_endpoint);
+
+	tcp::endpoint local_endpoint = tcp_socket->local_endpoint();
+	local_host = local_endpoint.address().to_string();
+	local_port = udp_socket->local_endpoint().port();
+
+	std::cerr << "LOCAL ENDPOINT: " << local_host << ":" << local_port << "\n";
+	}
+
 	std::ostringstream s;
-	s << "READY/" << lvl.id() << "/" << lvl.players().size();
+	s << "READY/" << lvl.id() << "/" << lvl.players().size() << "/" << local_host << " " << local_port;
 	boost::system::error_code error = boost::asio::error::host_not_found;
 	tcp_socket->write_some(boost::asio::buffer(s.str()), error);
 	if(error) {
@@ -236,6 +255,8 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 
 		std::string host, port;
 		match_regex(line, pattern, &host, &port);
+
+		std::cerr << "SLOT " << n << " = " << host << " " << port << "\n";
 
 		udp_endpoint_peers.push_back(boost::shared_ptr<udp::endpoint>(new udp::endpoint));
 		udp::resolver::query peer_query(udp::v4(), host, port);
