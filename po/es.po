@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto v1.0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-16 22:44-0300\n"
+"POT-Creation-Date: 2010-10-17 03:55-0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ricardo A. Hermosilla Carrillo <ra.hermosillac@gmail.com>\n"
 "Language-Team: \n"
@@ -233,7 +233,7 @@ msgid "Crevice Bridge"
 msgstr "Puente La Grieta"
 
 #: data/level/crevice-village-cave.cfg:11
-#: data/level/crevice-village-central.cfg:12
+#: data/level/crevice-village-central.cfg:13
 #: data/level/crevice-village-heights.cfg:11 data/level/crevice-village.cfg:13
 msgid "Crevice Village"
 msgstr "Aldea La Grieta"
@@ -326,7 +326,7 @@ msgstr "Podemos hacerlo."
 msgid "Hidden Cave"
 msgstr "Cueva oculta"
 
-#: data/level/crevice-village-central.cfg:1367
+#: data/level/crevice-village-central.cfg:1341
 msgid ""
 "Ahh, good, you made it\n"
 "through there in one piece!"
@@ -334,7 +334,7 @@ msgstr ""
 "Ahh, bien, ¡lo has hecho\n"
 "en usa sola pieza!"
 
-#: data/level/crevice-village-central.cfg:1369
+#: data/level/crevice-village-central.cfg:1343
 msgid ""
 "Yeah, those goons\n"
 "had a little ambush set up."
@@ -342,11 +342,11 @@ msgstr ""
 "Sí, esos matones tienen una\n"
 "pequeña emboscada preparada."
 
-#: data/level/crevice-village-central.cfg:1371
+#: data/level/crevice-village-central.cfg:1345
 msgid "So, now what?"
 msgstr "Así que, ¿ahora qué?"
 
-#: data/level/crevice-village-central.cfg:1372
+#: data/level/crevice-village-central.cfg:1346
 msgid ""
 "Well, as you know, the town\n"
 "is split into two halves."
@@ -354,7 +354,7 @@ msgstr ""
 "Bueno, como sabes, el pueblo\n"
 "está separado en dos mitades."
 
-#: data/level/crevice-village-central.cfg:1373
+#: data/level/crevice-village-central.cfg:1347
 msgid ""
 "Milgram has this half of the town\n"
 "locked down tight, and he has\n"
@@ -364,7 +364,7 @@ msgstr ""
 "cerrada y tiene la mayor parte de los\n"
 "residentes aprisionados."
 
-#: data/level/crevice-village-central.cfg:1374
+#: data/level/crevice-village-central.cfg:1348
 msgid ""
 "They're tied up inside the houses,\n"
 "under guard. If you free them,\n"
@@ -374,11 +374,11 @@ msgstr ""
 "casas, bajo guardia. Si los liberas,\n"
 "Estoy seguro de que podrán ayudarte."
 
-#: data/level/crevice-village-central.cfg:1376
+#: data/level/crevice-village-central.cfg:1350
 msgid "Makes sense."
 msgstr "Tiene sentido."
 
-#: data/level/crevice-village-central.cfg:1377
+#: data/level/crevice-village-central.cfg:1351
 msgid ""
 "Your big problem will be that\n"
 "the gate connecting the two halves\n"
@@ -388,7 +388,7 @@ msgstr ""
 "que conecta las dos mitades del pueblo\n"
 "está bloqueada."
 
-#: data/level/crevice-village-central.cfg:1378
+#: data/level/crevice-village-central.cfg:1352
 msgid ""
 "And I don't think there's a guard next\n"
 "to it, whom you can steal the key from."
@@ -396,7 +396,7 @@ msgstr ""
 "Y no pienso que haya un guardia junto\n"
 "a ella a quien le puedan robar la llave."
 
-#: data/level/crevice-village-central.cfg:1379
+#: data/level/crevice-village-central.cfg:1353
 msgid ""
 "They've probably hidden it in one of\n"
 "the houses, but I don't know which one."
@@ -404,7 +404,7 @@ msgstr ""
 "Probablemente la escondieron en una\n"
 "de las casas, pero no sé cuál es."
 
-#: data/level/crevice-village-central.cfg:1380
+#: data/level/crevice-village-central.cfg:1354
 msgid ""
 "Asking one of the prisoners is probably\n"
 "our best bet for a clue."
@@ -412,7 +412,7 @@ msgstr ""
 "Preguntándole a uno de los prisioneros es,\n"
 "probablemente, nuestra mejor apuesta para una pista."
 
-#: data/level/crevice-village-central.cfg:1576
+#: data/level/crevice-village-central.cfg:1550
 #: data/level/crevice-village-house-2.cfg:3265
 #: data/level/crevice-village-house-4.cfg:3148
 #: data/level/crevice-village-house-4.cfg:3189
@@ -420,7 +420,7 @@ msgstr ""
 msgid "Nope, it's locked."
 msgstr "No, está bloqueada."
 
-#: data/level/crevice-village-central.cfg:2295
+#: data/level/crevice-village-central.cfg:2269
 msgid "Hey! Over here!"
 msgstr "¡Hey! ¡Por aquí!"
 
@@ -2644,15 +2644,6 @@ msgstr ""
 msgid "(Level Template)"
 msgstr ""
 
-#: data/level/test-levelcutoff.cfg:13 data/level/test-missingBasket.cfg:13
-#: data/level/wither-wind.cfg:14
-msgid "Wither Wind"
-msgstr ""
-
-#: data/level/test2.cfg:12
-msgid "(Test Level)"
-msgstr ""
-
 #: data/level/titlescreen-arcade.cfg:169
 msgid "These don't affect story-mode.  Enjoy!"
 msgstr ""
@@ -2907,6 +2898,10 @@ msgstr ""
 
 #: data/level/watery-alley.cfg:11
 msgid "Watery Alley"
+msgstr ""
+
+#: data/level/wither-wind.cfg:14
+msgid "Wither Wind"
 msgstr ""
 
 #: data/level/wm-ascent-1.cfg:12
