@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto v1.0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-15 23:59-0300\n"
+"POT-Creation-Date: 2010-10-16 22:44-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ricardo A. Hermosilla Carrillo <ra.hermosillac@gmail.com>\n"
 "Language-Team: \n"
@@ -804,7 +804,8 @@ msgstr ""
 "más allá de la puerta de la ciudad."
 
 #: data/level/crevice-village-house-2.cfg:3565
-msgid "We saw Milgram's lieutenant go in there"
+#, fuzzy
+msgid "We saw Milgram's lieutenant go in there."
 msgstr "Vimos al teniente de Milgram ir hacia allá"
 
 #: data/level/crevice-village-house-2.cfg:3567 data/level/rock-a-fort.cfg:4418

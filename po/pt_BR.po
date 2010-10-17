@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto & Friends 1.0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-15 23:59-0300\n"
-"PO-Revision-Date: 2010-10-10 01:19-0300\n"
+"POT-Creation-Date: 2010-10-16 22:44-0300\n"
+"PO-Revision-Date: 2010-10-16 22:44-0300\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Brazilian Portuguese\n"
 "Language: \n"
@@ -747,51 +747,62 @@ msgstr ""
 
 #: data/level/crevice-village-house-2.cfg:3211
 msgid "Something's odd about this fireplace."
-msgstr ""
+msgstr "Essa lareira me parece estranha..."
 
 #: data/level/crevice-village-house-2.cfg:3525
 msgid "Wow, you guys look exactly alike."
-msgstr ""
+msgstr "Uou, vocês dois são iguais."
 
 #: data/level/crevice-village-house-2.cfg:3526
 msgid "We're twins."
-msgstr ""
+msgstr "Nós somos gêmeos."
 
 #: data/level/crevice-village-house-2.cfg:3527
 msgid ""
 "Is there anything\n"
 "you can do to help us?"
 msgstr ""
+"Não tem como\n"
+"você nos ajudar?"
 
 #: data/level/crevice-village-house-2.cfg:3529
 msgid ""
 "Not yet.\n"
 "Sorry."
 msgstr ""
+"Ainda não.\n"
+"Me desculpe."
 
 #: data/level/crevice-village-house-2.cfg:3560
 msgid ""
 "Hey,\n"
 "I'm trying to help save the town."
 msgstr ""
+"Oi,\n"
+"eu tô tentando salvar a vila."
 
 #: data/level/crevice-village-house-2.cfg:3562
 msgid "Can you give me any advice?"
-msgstr ""
+msgstr "Pode me dar alguma dica?"
 
 #: data/level/crevice-village-house-2.cfg:3563
 msgid "Yeah."
-msgstr ""
+msgstr "Posso."
 
 #: data/level/crevice-village-house-2.cfg:3564
 msgid ""
 "The elder's house is off to the east,\n"
 "past the town gate."
 msgstr ""
+"A casa do prefeito é pro leste,\n"
+"depois do portão da vila."
 
 #: data/level/crevice-village-house-2.cfg:3565
-msgid "We saw Milgram's lieutenant go in there"
+#, fuzzy
+msgid "We saw Milgram's lieutenant go in there."
 msgstr ""
+"Nós vimos o chefe do bando\n"
+"do Milgram entrar lá."
 
 #: data/level/crevice-village-house-2.cfg:3567 data/level/rock-a-fort.cfg:4418
 msgid "How interesting."
@@ -2744,17 +2755,19 @@ msgstr ""
 
 #: data/level/to-nenes-house-inside.cfg:12
 msgid "Nene's House"
-msgstr ""
+msgstr "Casa da Nenê"
 
 #: data/level/to-nenes-house-inside.cfg:490
 msgid "Hey Nene, what's cooking?"
-msgstr ""
+msgstr "Oi Nenê, assando o quê?"
 
 #: data/level/to-nenes-house-inside.cfg:491
 msgid ""
 "I'm making a cake.\n"
 "Would you like to have some?"
 msgstr ""
+"Fazendo um bolo.\n"
+"Quer um pedaço?"
 
 #: data/level/to-nenes-house-inside.cfg:493
 msgid "Nah, I'd better get to town."
@@ -2845,7 +2858,7 @@ msgstr ""
 
 #: data/level/to-nenes-house.cfg:1902
 msgid "Hah!"
-msgstr ""
+msgstr "Hah!"
 
 #: data/level/to-nenes-house.cfg:1903
 msgid "There's Nene's house, right up there!"

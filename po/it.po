@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto IT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-15 23:59-0300\n"
+"POT-Creation-Date: 2010-10-16 22:44-0300\n"
 "PO-Revision-Date: 2010-10-08 12:01+0100\n"
 "Last-Translator: Lorenzo Nerini <nero17@simail.it>\n"
 "Language-Team:  <nero17@simail.it>\n"
@@ -836,7 +836,8 @@ msgstr ""
 "fuori dal cancello della città."
 
 #: data/level/crevice-village-house-2.cfg:3565
-msgid "We saw Milgram's lieutenant go in there"
+#, fuzzy
+msgid "We saw Milgram's lieutenant go in there."
 msgstr ""
 "Abbiamo visto il tenente\n"
 " di Milgram andare là"

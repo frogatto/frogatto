@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-15 23:59-0300\n"
+"POT-Creation-Date: 2010-10-16 22:44-0300\n"
 "PO-Revision-Date: 2010-09-25 01:51+0500\n"
 "Last-Translator: Azamat H. Hackimov <azamat.hackimov@gmail.com>\n"
 "Language-Team: Russian\n"
@@ -680,7 +680,7 @@ msgid ""
 msgstr ""
 
 #: data/level/crevice-village-house-2.cfg:3565
-msgid "We saw Milgram's lieutenant go in there"
+msgid "We saw Milgram's lieutenant go in there."
 msgstr ""
 
 #: data/level/crevice-village-house-2.cfg:3567 data/level/rock-a-fort.cfg:4418

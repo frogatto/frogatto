@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-15 23:59-0300\n"
+"POT-Creation-Date: 2010-10-16 22:44-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Philipp Zabel <philipp.zabel@gmail.com>\n"
 "Language-Team: \n"
@@ -715,7 +715,8 @@ msgstr ""
 "gleich hinter dem Stadttor."
 
 #: data/level/crevice-village-house-2.cfg:3565
-msgid "We saw Milgram's lieutenant go in there"
+#, fuzzy
+msgid "We saw Milgram's lieutenant go in there."
 msgstr "Wir haben Milgrams Leutnant da rein gehen gesehen"
 
 #: data/level/crevice-village-house-2.cfg:3567 data/level/rock-a-fort.cfg:4418
