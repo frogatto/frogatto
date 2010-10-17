@@ -1173,7 +1173,7 @@ void custom_object::process(level& lvl)
 			}
 		}
 
-		handle_event(collide ? OBJECT_EVENT_COLLIDE : OBJECT_EVENT_COLLIDE_FEET, callable);
+		handle_event(collide ? OBJECT_EVENT_COLLIDE_SIDE : OBJECT_EVENT_COLLIDE_FEET, callable);
 		if(collide_info.damage) {
 			game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
 			callable->add("surface_damage", variant(collide_info.damage));

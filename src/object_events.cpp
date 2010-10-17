@@ -22,7 +22,7 @@ std::vector<std::string> create_object_event_names()
 	res.push_back("collide_head");
 	res.push_back("collide_feet");
 	res.push_back("collide_damage");
-	res.push_back("collide");
+	res.push_back("collide_side");
 	res.push_back("stuck");
 	res.push_back("jumped_on");
 	res.push_back("get_hit");
