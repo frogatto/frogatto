@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-18 00:22-0200\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Philipp Zabel <philipp.zabel@gmail.com>\n"
+"Last-Translator: Joooo\n"
 "Language-Team: \n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -158,7 +158,8 @@ msgstr ""
 msgid "Caverns of Holes"
 msgstr "Hölen aus Löchern"
 
-#: data/level/chopple-shop-interior.cfg:7 data/level/chopple-shop.cfg:11
+#: data/level/chopple-shop-interior.cfg:7
+#: data/level/chopple-shop.cfg:11
 msgid "Chopple's General Store"
 msgstr "Chopples Gemischtwarenladen"
 
@@ -216,7 +217,8 @@ msgstr "Erdspalt-Brücke"
 
 #: data/level/crevice-village-cave.cfg:11
 #: data/level/crevice-village-central.cfg:13
-#: data/level/crevice-village-heights.cfg:11 data/level/crevice-village.cfg:13
+#: data/level/crevice-village-heights.cfg:11
+#: data/level/crevice-village.cfg:13
 msgid "Crevice Village"
 msgstr "Erdspalt-Dorf"
 
@@ -228,7 +230,8 @@ msgstr "Was zum..."
 msgid "You!!"
 msgstr "Du!!"
 
-#: data/level/crevice-village-cave.cfg:816 data/level/wm-town.cfg:2309
+#: data/level/crevice-village-cave.cfg:816
+#: data/level/wm-town.cfg:2309
 #: data/object_prototypes/buyable_item.cfg:24
 #: data/objects/props-interactive/save_toilet.cfg:17
 msgid "Yes"
@@ -242,7 +245,8 @@ msgstr "Du bist ein Eindringling, oder nicht?"
 msgid "I thought so!"
 msgstr "Dachte ich mir!"
 
-#: data/level/crevice-village-cave.cfg:818 data/level/wm-town.cfg:2316
+#: data/level/crevice-village-cave.cfg:818
+#: data/level/wm-town.cfg:2316
 #: data/object_prototypes/buyable_item.cfg:25
 #: data/objects/props-interactive/save_toilet.cfg:22
 msgid "No"
@@ -604,7 +608,8 @@ msgstr ""
 msgid "So I'm stuck here, huh?"
 msgstr "Also sitze ich hier fest, hm?"
 
-#: data/level/crevice-village-house-1.cfg:2550 data/level/wm-town.cfg:2245
+#: data/level/crevice-village-house-1.cfg:2550
+#: data/level/wm-town.cfg:2245
 msgid "Yep."
 msgstr "Jep."
 
@@ -719,7 +724,8 @@ msgstr ""
 msgid "We saw Milgram's lieutenant go in there."
 msgstr "Wir haben Milgrams Leutnant da rein gehen gesehen"
 
-#: data/level/crevice-village-house-2.cfg:3567 data/level/rock-a-fort.cfg:4418
+#: data/level/crevice-village-house-2.cfg:3567
+#: data/level/rock-a-fort.cfg:4418
 msgid "How interesting."
 msgstr "Wie interessant."
 
@@ -1085,7 +1091,8 @@ msgstr ""
 msgid "In fact, I'll even show you the way!"
 msgstr "Ich werde dir sogar den Weg weisen!"
 
-#: data/level/crevice-village.cfg:658 data/level/to-nenes-house.cfg:1354
+#: data/level/crevice-village.cfg:658
+#: data/level/to-nenes-house.cfg:1354
 msgid "I better leave this key here."
 msgstr "Den Schlüssel lasse ich besser hier."
 
@@ -2018,7 +2025,8 @@ msgstr "Diese verrückten Bomber sind überall!"
 msgid "Yikes!"
 msgstr ""
 
-#: data/level/rock-a-fort-cave.cfg:15 data/level/rock-a-fort.cfg:11
+#: data/level/rock-a-fort-cave.cfg:15
+#: data/level/rock-a-fort.cfg:11
 msgid "Rock-a-Fort"
 msgstr ""
 
@@ -2042,7 +2050,8 @@ msgstr "Bäh. Eine verschlossene Tür."
 msgid "There must be a way around it."
 msgstr "Da muss es einen Weg drum herum geben."
 
-#: data/level/secluded-hut-interior.cfg:12 data/level/secluded-hut.cfg:11
+#: data/level/secluded-hut-interior.cfg:12
+#: data/level/secluded-hut.cfg:11
 msgid "Secluded Hut"
 msgstr "Abgelegene Hütte"
 
@@ -2059,7 +2068,8 @@ msgstr ""
 "Freude sie kennenzulernen.\n"
 "Ich bin Mortimer."
 
-#: data/level/secluded-hut-interior.cfg:922 data/level/wm-town.cfg:2372
+#: data/level/secluded-hut-interior.cfg:922
+#: data/level/wm-town.cfg:2372
 msgid "That's nice."
 msgstr ""
 
@@ -2301,7 +2311,8 @@ msgstr ""
 msgid "Programmer (esp. helping with iPhone integration)"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:172 data/level/tea-with-milgram.cfg:181
+#: data/level/tea-with-milgram.cfg:172
+#: data/level/tea-with-milgram.cfg:181
 msgid "Minor Object Scripter and Level Designer"
 msgstr ""
 
@@ -2313,7 +2324,8 @@ msgstr ""
 msgid "Scripting Language Designer"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:177 data/level/tea-with-milgram.cfg:204
+#: data/level/tea-with-milgram.cfg:177
+#: data/level/tea-with-milgram.cfg:204
 msgid "Object Scripter"
 msgstr ""
 
@@ -2325,7 +2337,8 @@ msgstr ""
 msgid "Creative Director - created characters/setting/story"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:192 data/level/tea-with-milgram.cfg:368
+#: data/level/tea-with-milgram.cfg:192
+#: data/level/tea-with-milgram.cfg:368
 msgid "Artist - Characters, Monsters, and Props"
 msgstr ""
 
@@ -2719,15 +2732,15 @@ msgstr "Nenes Haus"
 
 #: data/level/to-nenes-house-inside.cfg:490
 msgid "Hey Nene, what's cooking?"
-msgstr "Hallo Nene, wie geht's?"
+msgstr "Hallo Nene, was gibt's?"
 
 #: data/level/to-nenes-house-inside.cfg:491
 msgid ""
 "I'm making a cake.\n"
 "Would you like to have some?"
 msgstr ""
-"Ich backe einen Kuchen.\n"
-"Möchtest du ein Stück?"
+"Kuchen.\n"
+"Magst du auch ein Stück?"
 
 #: data/level/to-nenes-house-inside.cfg:493
 msgid "Nah, I'd better get to town."
@@ -3017,7 +3030,8 @@ msgstr "Knapp daneben."
 msgid "Lift House"
 msgstr "Aufzughaus"
 
-#: data/level/wm-h0.0-lift.cfg:566 data/level/wm-h0.0-lift.cfg:573
+#: data/level/wm-h0.0-lift.cfg:566
+#: data/level/wm-h0.0-lift.cfg:573
 msgid ""
 "Hi, I am E. I run the elevator here.\n"
 "It is not verkink at the moment."
@@ -3086,7 +3100,8 @@ msgstr ""
 msgid "Oh, yes. Here are the coins."
 msgstr "Oh, ja. Hier sind die Münzen."
 
-#: data/level/wm-h0.0-lift.cfg:595 data/level/wm-ll.cfg:1434
+#: data/level/wm-h0.0-lift.cfg:595
+#: data/level/wm-ll.cfg:1434
 msgid "Thanks."
 msgstr "Danke."
 
@@ -3129,21 +3144,30 @@ msgid ""
 "2: Woodenhead? What's that?"
 msgstr ""
 
-#: data/level/wm-ll.cfg:1389 data/level/wm-ll.cfg:1465
-#: data/level/wm-town.cfg:1172 data/level/wm-town.cfg:2218
-#: data/level/wm-town.cfg:2223 data/level/wm-town.cfg:2271
+#: data/level/wm-ll.cfg:1389
+#: data/level/wm-ll.cfg:1465
+#: data/level/wm-town.cfg:1172
+#: data/level/wm-town.cfg:2218
+#: data/level/wm-town.cfg:2223
+#: data/level/wm-town.cfg:2271
 msgid "Opt. 1"
 msgstr ""
 
-#: data/level/wm-ll.cfg:1390 data/level/wm-ll.cfg:1466
-#: data/level/wm-town.cfg:1180 data/level/wm-town.cfg:2238
-#: data/level/wm-town.cfg:2266 data/level/wm-town.cfg:2332
+#: data/level/wm-ll.cfg:1390
+#: data/level/wm-ll.cfg:1466
+#: data/level/wm-town.cfg:1180
+#: data/level/wm-town.cfg:2238
+#: data/level/wm-town.cfg:2266
+#: data/level/wm-town.cfg:2332
 msgid "Opt. 2"
 msgstr ""
 
-#: data/level/wm-ll.cfg:1391 data/level/wm-ll.cfg:1419
-#: data/level/wm-ll.cfg:1468 data/level/wm-town.cfg:1207
-#: data/level/wm-town.cfg:2256 data/level/wm-town.cfg:2356
+#: data/level/wm-ll.cfg:1391
+#: data/level/wm-ll.cfg:1419
+#: data/level/wm-ll.cfg:1468
+#: data/level/wm-town.cfg:1207
+#: data/level/wm-town.cfg:2256
+#: data/level/wm-town.cfg:2356
 #: data/level/wm-town.cfg:2370
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -3201,7 +3225,8 @@ msgid ""
 "4: What are those grey things?"
 msgstr ""
 
-#: data/level/wm-ll.cfg:1416 data/level/wm-town.cfg:1198
+#: data/level/wm-ll.cfg:1416
+#: data/level/wm-town.cfg:1198
 #: data/level/wm-town.cfg:2348
 msgid "Opt. 3"
 msgstr ""
@@ -3338,7 +3363,8 @@ msgid ""
 "2: Pay me."
 msgstr ""
 
-#: data/level/wm-ll.cfg:1467 data/level/wm-town.cfg:2345
+#: data/level/wm-ll.cfg:1467
+#: data/level/wm-town.cfg:2345
 msgid "More"
 msgstr "Mehr"
 
@@ -4006,7 +4032,9 @@ msgstr ""
 "Die Zungerverlängerung macht\n"
 "deine Zunge länger."
 
-#: data/preload.cfg:4 data/preload.cfg:9 data/preload.cfg:14
+#: data/preload.cfg:4
+#: data/preload.cfg:9
+#: data/preload.cfg:14
 msgid "Loading textures"
 msgstr "Lade Texturen"
 
