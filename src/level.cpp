@@ -1471,7 +1471,7 @@ void level::prepare_tiles_for_drawing()
 			continue;
 		}
 
-		if(tiles_[n].x <= boundaries().x() - TileSize || tiles_[n].y <= boundaries().y() - TileSize || tiles_[n].x >= boundaries().x2() || tiles_[n].y >= boundaries().y2()) {
+		if(!editor_ && (tiles_[n].x <= boundaries().x() - TileSize || tiles_[n].y <= boundaries().y() - TileSize || tiles_[n].x >= boundaries().x2() || tiles_[n].y >= boundaries().y2())) {
 			continue;
 		}
 
@@ -1492,7 +1492,7 @@ void level::prepare_tiles_for_drawing()
 	}
 
 	for(int n = 0; n != tiles_.size(); ++n) {
-		if(tiles_[n].x <= boundaries().x() - TileSize || tiles_[n].y <= boundaries().y() - TileSize || tiles_[n].x >= boundaries().x2() || tiles_[n].y >= boundaries().y2()) {
+		if(!editor_ && (tiles_[n].x <= boundaries().x() - TileSize || tiles_[n].y <= boundaries().y() - TileSize || tiles_[n].x >= boundaries().x2() || tiles_[n].y >= boundaries().y2())) {
 			continue;
 		}
 

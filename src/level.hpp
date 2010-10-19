@@ -142,7 +142,7 @@ public:
 	void set_character_group(entity_ptr c, int group_num);
 	int add_group();
 
-	void set_editor() { editor_ = true; }
+	void set_editor() { editor_ = true; prepare_tiles_for_drawing(); }
 	void set_editor_highlight(entity_ptr c) { editor_highlight_ = c; }
 	entity_ptr editor_highlight() const { return editor_highlight_; }
 
