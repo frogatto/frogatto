@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-18 00:22-0200\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Joooo\n"
+"Last-Translator: EELuminatus\n"
 "Language-Team: \n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -88,7 +88,7 @@ msgstr ""
 "dort oben ist ein Tor. Sie können dadurch\n"
 "die Kalksteinhölen erreichen. Es heißt\n"
 "dort gäbe es einen direkten Weg zu Milgrams\n"
-"eingang in die Hölen."
+"Eingang in die Hölen."
 
 #: data/level/bon-bosque.cfg:1361
 msgid ""
@@ -129,10 +129,10 @@ msgid ""
 "a lesson for us all!"
 msgstr ""
 "Jederzeit, mein Freund. Naturgemäß\n"
-"kann ich nicht in die Hölen fliegen,\n"
+"kann ich nicht in die Höhlen fliegen,\n"
 "dies ist also das Letzte was Sie von\n"
 "mir sehen werden. Seien Sie vorsichtig\n"
-"und lassen sie Milgram das eine Lehre sein."
+"und erteilen Sie Milgram eine Lektion von uns!"
 
 #: data/level/bug-mining.cfg:10
 msgid "Bug Mining"
@@ -156,7 +156,7 @@ msgstr ""
 
 #: data/level/caverns-of-holes.cfg:11
 msgid "Caverns of Holes"
-msgstr "Hölen aus Löchern"
+msgstr "Höhlen aus Löchern"
 
 #: data/level/chopple-shop-interior.cfg:7
 #: data/level/chopple-shop.cfg:11
@@ -323,6 +323,8 @@ msgid ""
 "Yeah, those goons\n"
 "had a little ambush set up."
 msgstr ""
+"Jap, nur ein paar von Milgrams Schlägertypen\n"
+"haben mir aufgelauert."
 
 #: data/level/crevice-village-central.cfg:1345
 msgid "So, now what?"
@@ -333,6 +335,8 @@ msgid ""
 "Well, as you know, the town\n"
 "is split into two halves."
 msgstr ""
+"Tja, wie Sie wissen ist die Stadt\n"
+"in zwei Hälften geteilt."
 
 #: data/level/crevice-village-central.cfg:1347
 msgid ""
