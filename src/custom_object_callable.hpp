@@ -121,6 +121,9 @@ public:
 	entry* get_entry(int slot);
 	const entry* get_entry(int slot) const;
 	int num_slots() const { return NUM_CUSTOM_OBJECT_PROPERTIES; }
+
+private:
+	std::vector<entry> entries_;
 };
 
 #endif

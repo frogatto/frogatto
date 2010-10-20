@@ -2,7 +2,7 @@
 #include "custom_object_callable.hpp"
 
 namespace {
-std::vector<custom_object_callable::entry>& entries() {
+std::vector<custom_object_callable::entry>& global_entries() {
 	static std::vector<custom_object_callable::entry> instance;
 	return instance;
 }
@@ -50,15 +50,17 @@ custom_object_callable::custom_object_callable()
 };
 	ASSERT_EQ(NUM_CUSTOM_OBJECT_PROPERTIES, sizeof(CustomObjectProperties)/sizeof(*CustomObjectProperties));
 
-	if(entries().empty()) {
+	if(global_entries().empty()) {
 		for(int n = 0; n != sizeof(CustomObjectProperties)/sizeof(*CustomObjectProperties); ++n) {
-			entries().push_back(entry(CustomObjectProperties[n]));
+			global_entries().push_back(entry(CustomObjectProperties[n]));
 		}
 
-		for(int n = 0; n != entries().size(); ++n) {
-			keys_to_slots()[entries()[n].id] = n;
+		for(int n = 0; n != global_entries().size(); ++n) {
+			keys_to_slots()[global_entries()[n].id] = n;
 		}
 	}
+
+	entries_ = global_entries();
 }
 
 int custom_object_callable::get_key_slot(const std::string& key)
@@ -78,18 +80,18 @@ int custom_object_callable::get_slot(const std::string& key) const
 
 game_logic::formula_callable_definition::entry* custom_object_callable::get_entry(int slot)
 {
-	if(slot < 0 || slot >= entries().size()) {
+	if(slot < 0 || slot >= entries_.size()) {
 		return NULL;
 	}
 
-	return &entries()[slot];
+	return &entries_[slot];
 }
 
 const game_logic::formula_callable_definition::entry* custom_object_callable::get_entry(int slot) const
 {
-	if(slot < 0 || slot >= entries().size()) {
+	if(slot < 0 || slot >= entries_.size()) {
 		return NULL;
 	}
 
-	return &entries()[slot];
+	return &entries_[slot];
 }
