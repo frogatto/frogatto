@@ -317,3 +317,14 @@ void entity::read_controls(int cycle)
 		info->read_controls(cycle);
 	}
 }
+
+point entity::pivot(const std::string& name) const
+{
+	const frame& f = current_frame();
+	const point pos = f.pivot(name, time_in_frame());
+	if(face_right()) {
+		return point(x() + pos.x, y() + pos.y);
+	} else {
+		return point(x() + f.width() - pos.x, y() + pos.y);
+	}
+}

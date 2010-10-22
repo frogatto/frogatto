@@ -160,6 +160,8 @@ protected:
 
 	bool is_standing(const level& lvl, collision_info* info=NULL) const;
 
+	void set_parent(entity_ptr e, const std::string& pivot_point);
+
 private:
 	custom_object& operator=(const custom_object& o);
 	struct Accessor;
@@ -271,6 +273,12 @@ private:
 
 	boost::scoped_ptr<rect> platform_area_;
 	const_solid_info_ptr platform_solid_info_;
+
+	point parent_position() const;
+
+	entity_ptr parent_;
+	std::string parent_pivot_;
+	int parent_prev_x_, parent_prev_y_;
 
 	void set_platform_area(const rect& area);
 };

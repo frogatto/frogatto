@@ -184,6 +184,39 @@ frame::frame(wml::const_node_ptr node)
 			set_palettes(current_palette_mask);
 		}
 	}
+
+	for(wml::node::const_attr_iterator i = node->begin_attr(); i != node->end_attr(); ++i) {
+		static const std::string PivotPrefix = "pivot_";
+		const std::string& attr = i->first;
+		if(attr.size() > PivotPrefix.size() && std::equal(PivotPrefix.begin(), PivotPrefix.end(), attr.begin())) {
+			pivot_schedule schedule;
+			schedule.name = std::string(attr.begin() + PivotPrefix.size(), attr.end());
+
+			int buf[1024];
+			int buf_size = 1024;
+			util::split_into_ints(i->second.str().c_str(), buf, &buf_size);
+			ASSERT_LOG(buf_size%2 == 0, "PIVOT POINTS IN INCORRECT FORMAT, ODD NUMBER OF INTEGERS");
+			const int num_points = buf_size/2;
+
+			int repeat = std::max<int>(1, (nframes_*frame_time_)/std::max<int>(1, num_points));
+			for(int n = 0; n != num_points; ++n) {
+				point p(buf[n*2], buf[n*2+1]);
+				for(int m = 0; m != repeat; ++m) {
+					schedule.points.push_back(p);
+				}
+			}
+
+			if(reverse_frame_) {
+				std::vector<point> v = schedule.points;
+				std::reverse(v.begin(), v.end());
+				schedule.points.insert(schedule.points.end(), v.begin(), v.end());
+			}
+
+			if(schedule.points.empty() == false) {
+				pivots_.push_back(schedule);
+			}
+		}
+	}
 }
 
 frame::~frame()
@@ -559,4 +592,25 @@ const std::string* frame::get_event(int time_in_frame) const
 	}
 
 	return &event_names_[i - event_frames_.begin()];
+}
+
+point frame::pivot(const std::string& name, int time_in_frame) const
+{
+	if(time_in_frame < 0) {
+		return point(0,0);
+	}
+
+	foreach(const pivot_schedule& s, pivots_) {
+		if(s.name != name) {
+			continue;
+		}
+
+		if(time_in_frame >= s.points.size()) {
+			return s.points.back();
+		}
+
+		return s.points[time_in_frame];
+	}
+
+	return point(0,0);
 }

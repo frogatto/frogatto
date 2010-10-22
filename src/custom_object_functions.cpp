@@ -1329,11 +1329,20 @@ FUNCTION_DEF(fire_event, 1, 3, "fire_event((optional) object target, string id, 
 	const_formula_callable_ptr callable;
 
 	if(args().size() == 3) {
-		target = args()[0]->evaluate(variables).convert_to<entity>();
+		variant v1 = args()[0]->evaluate(variables);
+		if(v1.is_null()) {
+			return variant();
+		}
+
+		target = v1.convert_to<entity>();
 		event = args()[1]->evaluate(variables).as_string();
 		callable = args()[2]->evaluate(variables).as_callable();
 	} else if(args().size() == 2) {
 		variant v1 = args()[0]->evaluate(variables);
+		if(v1.is_null()) {
+			return variant();
+		}
+
 		variant v2 = args()[1]->evaluate(variables);
 		if(v1.is_string()) {
 			event = v1.as_string();

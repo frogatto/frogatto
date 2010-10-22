@@ -99,6 +99,8 @@ public:
 	};
 
 	const std::vector<frame_info>& frame_layout() const { return frames_; }
+
+	point pivot(const std::string& name, int time_in_frame) const;
 private:
 	int frame_number(int time_in_frame) const;
 
@@ -150,6 +152,13 @@ private:
 
 	std::vector<int> palettes_recognized_;
 	int current_palette_;
+
+	struct pivot_schedule {
+		std::string name;
+		std::vector<point> points;
+	};
+
+	std::vector<pivot_schedule> pivots_;
 
 	void set_palettes(unsigned int palettes);
 };

@@ -235,6 +235,8 @@ public:
 	virtual const std::vector<light_ptr>& lights() const = 0;
 	virtual void swap_lights(std::vector<light_ptr>& lights) = 0;
 
+	point pivot(const std::string& name) const;
+
 protected:
 
 	virtual const solid_info* calculate_solid() const = 0;

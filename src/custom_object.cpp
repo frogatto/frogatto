@@ -78,7 +78,9 @@ custom_object::custom_object(wml::const_node_ptr node)
 	vertex_shaders_(util::split(node->attr("vertex_shaders"))),
 	shader_(0),
 	always_active_(wml::get_bool(node, "always_active", false)),
-	last_cycle_active_(0)
+	last_cycle_active_(0),
+	parent_pivot_(node->attr("pivot")),
+	parent_prev_x_(0), parent_prev_y_(0)
 {
 	if(node->has_attr("platform_area")) {
 		set_platform_area(rect(node->attr("platform_area")));
@@ -265,7 +267,8 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	loaded_(false), fall_through_platforms_(0),
 	shader_(0),
 	always_active_(false),
-	last_cycle_active_(0)
+	last_cycle_active_(0),
+	parent_prev_x_(0), parent_prev_y_(0)
 {
 	set_solid_dimensions(type_->solid_dimensions(),
 	                     type_->weak_solid_dimensions());
@@ -332,7 +335,11 @@ custom_object::custom_object(const custom_object& o) :
 	vertex_shaders_(o.vertex_shaders_),
 	shader_(o.shader_),
 	always_active_(o.always_active_),
-	last_cycle_active_(0)
+	last_cycle_active_(0),
+	parent_(o.parent_),
+	parent_pivot_(o.parent_pivot_),
+	parent_prev_x_(parent_prev_x_),
+	parent_prev_y_(parent_prev_y_)
 {
 }
 
@@ -376,6 +383,10 @@ wml::node_ptr custom_object::write() const
 		std::string s;
 
 		foreach(const entity_ptr& e, attached_objects()) {
+			if(s.empty() == false) {
+				s += ",";
+			}
+
 			char buf[256];
 			sprintf(buf, "%p", e.get());
 			s += buf;
@@ -579,6 +590,16 @@ wml::node_ptr custom_object::write() const
 	foreach(const light_ptr& p, lights_) {
 		res->add_child(p->write());
 	}
+
+	if(parent_.get() != NULL) {
+		char buf[256];
+		sprintf(buf, "%p", parent_.get());
+		res->set_attr("parent", buf);
+	}
+
+	if(parent_pivot_.empty() == false) {
+		res->set_attr("pivot", parent_pivot_);
+	}
 	
 	return res;
 }
@@ -694,6 +715,17 @@ void custom_object::process(level& lvl)
 		//anything that uses their image for collisions is a static,
 		//un-moving object that will stay immobile.
 		return;
+	}
+
+	if(parent_.get() != NULL) {
+		const point pos = parent_position();
+		const int move_x = pos.x - parent_prev_x_;
+		const int move_y = pos.y - parent_prev_y_;
+
+		move_centipixels(move_x*100, move_y*100);
+
+		parent_prev_x_ = pos.x;
+		parent_prev_y_ = pos.y;
 	}
 
 	if(last_cycle_active_ < lvl.cycle() - 5) {
@@ -1475,6 +1507,10 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_Y:                 return variant(y());
 	case CUSTOM_OBJECT_Z:
 	case CUSTOM_OBJECT_ZORDER:            return variant(zorder_);
+	case CUSTOM_OBJECT_RELATIVE_X:        return variant(x() - parent_position().x);
+	case CUSTOM_OBJECT_RELATIVE_Y:        return variant(y() - parent_position().y);
+	case CUSTOM_OBJECT_PARENT:            return variant(parent_.get());
+	case CUSTOM_OBJECT_PIVOT:             return variant(parent_pivot_);
 	case CUSTOM_OBJECT_PREVIOUS_Y:        return variant(previous_y_);
 	case CUSTOM_OBJECT_X1:                return variant(solid_rect().x());
 	case CUSTOM_OBJECT_X2:                return variant(solid_rect().x2());
@@ -1968,6 +2004,29 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	case CUSTOM_OBJECT_ZORDER:
 		zorder_ = value.as_int();
 		break;
+	
+	case CUSTOM_OBJECT_RELATIVE_X: {
+		const point p = parent_position();
+		set_value_by_slot(CUSTOM_OBJECT_X, variant(p.x + value.as_int()));
+		break;
+	}
+
+	case CUSTOM_OBJECT_RELATIVE_Y: {
+		const point p = parent_position();
+		set_value_by_slot(CUSTOM_OBJECT_Y, variant(p.y + value.as_int()));
+		break;
+	}
+
+	case CUSTOM_OBJECT_PARENT: {
+		entity_ptr e(value.try_convert<entity>());
+		set_parent(e, parent_pivot_);
+		break;
+	}
+
+	case CUSTOM_OBJECT_PIVOT: {
+		set_parent(parent_, value.as_string());
+		break;
+	}
 	
 	case CUSTOM_OBJECT_MIDPOINT_X: {
 		const int current_x = x() + current_frame().width()/2;
@@ -2840,6 +2899,25 @@ void custom_object::shift_position(int x, int y)
 										activation_area_->w(),
 										activation_area_->h()));
 	}
+}
+
+void custom_object::set_parent(entity_ptr e, const std::string& pivot_point)
+{
+	parent_ = e;
+	parent_pivot_ = pivot_point;
+
+	const point pos = parent_position();
+	parent_prev_x_ = pos.x;
+	parent_prev_y_ = pos.y;
+}
+
+point custom_object::parent_position() const
+{
+	if(parent_.get() == NULL) {
+		return point(0,0);
+	}
+
+	return parent_->pivot(parent_pivot_);
 }
 
 BENCHMARK(custom_object_spike) {
