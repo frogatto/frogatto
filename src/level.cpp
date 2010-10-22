@@ -2267,6 +2267,24 @@ bool level::is_solid(const level_solid_map& map, int x, int y, int* friction, in
 	return false;
 }
 
+bool level::standable(const rect& r, int* friction, int* traction, int* damage) const
+{
+	const int ybegin = r.y();
+	const int yend = r.y2();
+	const int xbegin = r.x();
+	const int xend = r.x2();
+
+	for(int y = ybegin; y != yend; ++y) {
+		for(int x = xbegin; x != xend; ++x) {
+			if(standable(x, y, friction, traction, damage)) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
 bool level::standable(int x, int y, int* friction, int* traction, int* damage) const
 {
 	if(is_solid(solid_, x, y, friction, traction, damage) ||

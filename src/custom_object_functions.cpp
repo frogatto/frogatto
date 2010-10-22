@@ -787,6 +787,19 @@ FUNCTION_DEF(solid, 3, 5, "solid(level, int x, int y, (optional)int w=1, (option
 	return variant(lvl->solid(r));
 END_FUNCTION_DEF(solid)
 
+FUNCTION_DEF(standable, 3, 5, "standable(level, int x, int y, (optional)int w=1, (optional) int h=1) -> boolean: returns true iff the level contains standable space within the given (x,y,w,h) rectangle")
+	level* lvl = args()[0]->evaluate(variables).convert_to<level>();
+	const int x = args()[1]->evaluate(variables).as_int();
+	const int y = args()[2]->evaluate(variables).as_int();
+
+	int w = args().size() >= 4 ? args()[3]->evaluate(variables).as_int() : 1;
+	int h = args().size() >= 5 ? args()[4]->evaluate(variables).as_int() : 1;
+
+	rect r(x, y, w, h);
+
+	return variant(lvl->standable(r));
+END_FUNCTION_DEF(standable)
+
 class set_solid_command : public entity_command_callable {
 	rect r_;
 	bool is_solid_;
