@@ -206,11 +206,13 @@ void background::draw(int x, int y, const rect& area, const std::vector<rect>& o
 
 		glEnable(GL_SCISSOR_TEST);
 
+		const int scissor_scale = preferences::double_scale() ? 2 : 1;
+
 		//the scissor test does not respect any rotations etc. We use a rotation
 		//to transform the iPhone's display, which is fine normally, but
 		//here we have to accomodate the iPhone being "on its side"
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-		glScissor(dist_from_bottom/2, 0, (graphics::screen_height() - dist_from_bottom)/2, graphics::screen_width()/2);
+		glScissor(dist_from_bottom/scissor_scale, 0, (graphics::screen_height() - dist_from_bottom)/scissor_scale, graphics::screen_width()/scissor_scale);
 #else
 		glScissor(0, dist_from_bottom, preferences::actual_screen_width(), preferences::actual_screen_width()*(1-dist_from_bottom/600));
 #endif
@@ -218,7 +220,7 @@ void background::draw(int x, int y, const rect& area, const std::vector<rect>& o
 		glClear(GL_COLOR_BUFFER_BIT);
 
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-		glScissor(0, 0, dist_from_bottom/2, graphics::screen_width()/2);
+		glScissor(0, 0, dist_from_bottom/scissor_scale, graphics::screen_width()/scissor_scale);
 #else
 		glScissor(0, 0, preferences::actual_screen_width(), dist_from_bottom);
 #endif
