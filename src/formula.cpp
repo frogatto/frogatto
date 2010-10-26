@@ -577,7 +577,7 @@ public:
 			case OP_ADD: return expression_ptr(new add_integer_operator_expression(left_, v.as_int()));
 			case OP_SUB: return expression_ptr(new sub_integer_operator_expression(left_, v.as_int()));
 			case OP_MUL: return expression_ptr(new mul_integer_operator_expression(left_, v.as_int()));
-			case OP_DIV: if(v.as_int() != 0) { return expression_ptr(new div_integer_operator_expression(left_, v.as_int())); }
+			case OP_DIV: if(v.as_int() != 0) { return expression_ptr(new div_integer_operator_expression(left_, v.as_int())); } break;
 			case OP_EQ: return expression_ptr(new eq_integer_operator_expression(left_, v.as_int()));
 			case OP_NEQ: return expression_ptr(new ne_integer_operator_expression(left_, v.as_int()));
 			case OP_LT: return expression_ptr(new lt_integer_operator_expression(left_, v.as_int()));
