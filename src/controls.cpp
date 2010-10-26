@@ -434,7 +434,6 @@ int last_packet_size()
 
 void set_checksum(int cycle, int sum)
 {
-	std::cerr << "CHECKSUM: " << cycle << " = " << sum << "\n";
 	our_checksums[cycle] = sum;
 }
 
