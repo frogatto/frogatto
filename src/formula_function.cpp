@@ -381,8 +381,9 @@ private:
 	variant execute(const formula_callable& variables) const {
 		const int value = args()[0]->evaluate(variables).as_int();
 		const double angle = (static_cast<double>(value));
-		std::cerr << "gave: " << sin(angle/100)*100 << "\n";
-		return variant(static_cast<int>(sin(angle/100)*100));
+		std::cerr << "got: " << value <<"\n";
+		std::cerr << "ret: " << sin(angle) <<"\n";
+		return variant(static_cast<int>(sin(angle)*100));
 	}
 };
 
