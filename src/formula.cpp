@@ -17,6 +17,8 @@
 #include <stdio.h>
 #include <iostream>
 #include <vector>
+#include <limits.h>
+
 
 //#include "foreach.hpp"
 #include "asserts.hpp"
@@ -625,7 +627,14 @@ private:
 			case OP_MUL: 
 				return left * right;
 			case OP_DIV: 
-				return left / right;
+				//this is a very unorthodox hack to guard against divide-by-zero errors.  It returns positive or negative infinity instead of asserting, which (hopefully!) works out for most of the physical calculations that are using this.  We tentatively view this behavior as much more preferable to the game apparently crashing for a user.  This is of course not rigorous outside of a videogame setting.
+				if(right.as_int() == 0) { 
+					if(left.as_int() > 0){
+						return variant(INT_MAX); 
+					}else{
+						return variant(INT_MIN);
+					}
+				}else{return left / right;}
 			case OP_POW: 
 				return left ^ right;
 			case OP_EQ:  
