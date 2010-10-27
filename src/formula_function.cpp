@@ -381,7 +381,7 @@ private:
 	variant execute(const formula_callable& variables) const {
 		const int value = args()[0]->evaluate(variables).as_int();
 		const double angle = (static_cast<double>(value));
-		std::cerr << "got: " << value << "\n" << "ret: " << sin(angle/57.3)*36 << "\n";
+		//std::cerr << "got: " << value << "\n" << "ret: " << sin(angle/57.3)*36 << "\n";
 		return variant(static_cast<int>(sin(angle/57.3)*100));
 	}
 };
@@ -396,7 +396,7 @@ private:
 	variant execute(const formula_callable& variables) const {
 		const int value = args()[0]->evaluate(variables).as_int();
 		const double angle = (static_cast<double>(value));
-		std::cerr << "got: " << value << "\n" << "ret: " << cos(angle/57.3)*36 << "\n";
+		//std::cerr << "got: " << value << "\n" << "ret: " << cos(angle/57.3)*36 << "\n";
 		return variant(static_cast<int>(cos(angle/57.3)*100));
 	}
 };
@@ -411,8 +411,21 @@ private:
 	variant execute(const formula_callable& variables) const {
 		const int value = args()[0]->evaluate(variables).as_int();
 		const double angle = (static_cast<double>(value));
-		std::cerr << "got: " << value << "\n" << "ret: " << tan(angle/57.3)*36 << "\n";
+		//std::cerr << "got: " << value << "\n" << "ret: " << tan(angle/57.3)*36 << "\n";
 		return variant(static_cast<int>(tan(angle/57.3)*100));
+	}
+};
+
+class sqrt_function : public function_expression {	//Interprets two least significant digits as after decimal.
+public:
+	explicit sqrt_function(const args_list& args)
+	     : function_expression("sqrt", args, 1, 1)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		const int value = args()[0]->evaluate(variables).as_int();
+		return variant(static_cast<int>(sqrt(value)));
 	}
 };
 
@@ -968,6 +981,7 @@ functions_map& get_functions_map() {
 		FUNCTION(sin);
 		FUNCTION(cos);
 		FUNCTION(tan);
+		FUNCTION(sqrt);
 		FUNCTION(sort);
 		FUNCTION(filter);
 		FUNCTION(mapping);
