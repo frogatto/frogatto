@@ -416,7 +416,7 @@ private:
 	}
 };
 
-class sqrt_function : public function_expression {	//Interprets two least significant digits as after decimal.
+class sqrt_function : public function_expression {
 public:
 	explicit sqrt_function(const args_list& args)
 	     : function_expression("sqrt", args, 1, 1)
@@ -426,6 +426,24 @@ private:
 	variant execute(const formula_callable& variables) const {
 		const int value = args()[0]->evaluate(variables).as_int();
 		return variant(static_cast<int>(sqrt(value)));
+	}
+};
+
+class p_angle_to_function : public function_expression {	//Takes opposite and hypotenuse.
+public:														//Helper function to angle_to.
+	explicit p_angle_to_function(const args_list& args)
+	     : function_expression("p_angle_to", args, 2, 2)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		const float a = args()[0]->evaluate(variables).as_int();
+		const float b = args()[1]->evaluate(variables).as_int();
+		if (a == 0 || b == 0){
+			return variant(static_cast<int>(0));
+		}
+		std::cerr << "got: " << a << ", " << b << "\n" << "prc: " << sin(a/b)*100 << "\n";
+		return variant(static_cast<int>(sin(a/b)*100));
 	}
 };
 
@@ -982,6 +1000,7 @@ functions_map& get_functions_map() {
 		FUNCTION(cos);
 		FUNCTION(tan);
 		FUNCTION(sqrt);
+		FUNCTION(p_angle_to);
 		FUNCTION(sort);
 		FUNCTION(filter);
 		FUNCTION(mapping);
