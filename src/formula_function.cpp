@@ -371,6 +371,21 @@ private:
 	}
 };
 
+class sin_function : public function_expression {	//Interprets two least significant digits as after decimal.
+public:
+	explicit sin_function(const args_list& args)
+	     : function_expression("sin", args, 1, 1)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		const int value = args()[0]->evaluate(variables).as_int();
+		const double angle = (static_cast<double>(value));
+		std::cerr << "gave: " << sin(angle/100)*100 << "\n";
+		return variant(static_cast<int>(sin(angle/100)*100));
+	}
+};
+
 namespace {
 class variant_comparator : public formula_callable {
 	expression_ptr expr_;
@@ -920,6 +935,7 @@ functions_map& get_functions_map() {
 		FUNCTION(max);
 		FUNCTION(choose);
 		FUNCTION(wave);
+		FUNCTION(sin);
 		FUNCTION(sort);
 		FUNCTION(filter);
 		FUNCTION(mapping);
