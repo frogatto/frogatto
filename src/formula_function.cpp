@@ -381,9 +381,38 @@ private:
 	variant execute(const formula_callable& variables) const {
 		const int value = args()[0]->evaluate(variables).as_int();
 		const double angle = (static_cast<double>(value));
-		std::cerr << "got: " << value <<"\n";
-		std::cerr << "ret: " << sin(angle) <<"\n";
-		return variant(static_cast<int>(sin(angle)*100));
+		std::cerr << "got: " << value << "\n" << "ret: " << sin(angle/57.3)*36 << "\n";
+		return variant(static_cast<int>(sin(angle/57.3)*100));
+	}
+};
+
+class cos_function : public function_expression {	//Interprets two least significant digits as after decimal.
+public:
+	explicit cos_function(const args_list& args)
+	     : function_expression("cos", args, 1, 1)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		const int value = args()[0]->evaluate(variables).as_int();
+		const double angle = (static_cast<double>(value));
+		std::cerr << "got: " << value << "\n" << "ret: " << cos(angle/57.3)*36 << "\n";
+		return variant(static_cast<int>(cos(angle/57.3)*100));
+	}
+};
+
+class tan_function : public function_expression {	//Interprets two least significant digits as after decimal.
+public:
+	explicit tan_function(const args_list& args)
+	     : function_expression("tan", args, 1, 1)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		const int value = args()[0]->evaluate(variables).as_int();
+		const double angle = (static_cast<double>(value));
+		std::cerr << "got: " << value << "\n" << "ret: " << tan(angle/57.3)*36 << "\n";
+		return variant(static_cast<int>(tan(angle/57.3)*100));
 	}
 };
 
@@ -937,6 +966,8 @@ functions_map& get_functions_map() {
 		FUNCTION(choose);
 		FUNCTION(wave);
 		FUNCTION(sin);
+		FUNCTION(cos);
+		FUNCTION(tan);
 		FUNCTION(sort);
 		FUNCTION(filter);
 		FUNCTION(mapping);
