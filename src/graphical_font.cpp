@@ -35,9 +35,9 @@ unsigned int utf8_to_codepoint(std::string::const_iterator& i, std::string::cons
 			if (++i == end) {
 				return 0;
 			}
-			if (*i & 0xc0 != 0x80) {
+			if ((*i & 0xc0) == 0x80) {
 				codepoint |= (*i & 0x3f) << 6;
-				if (++i != end) {
+				if (++i == end) {
 					return 0;
 				}
 				if ((*i & 0xc0) == 0x80) {
