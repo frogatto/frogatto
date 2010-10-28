@@ -13,11 +13,11 @@ unsigned int utf8_to_codepoint(std::string::const_iterator& i, std::string::cons
 	unsigned int codepoint = 0;
 
 	if((*i & 0xc0) == 0x80) {
+		//*i is an unexpected following byte
 		return 0;
 	}
 	if((*i & 0xc0) == 0xc0) {
-		//*i is the start of an UTF-8 encoded multi-byte character.
-		//we only support the basic multilingual plane (that is, up to three-byte characters).
+		//*i is the leading byte of an UTF-8 encoded multi-byte character.
 		if ((*i & 0xe0) == 0xc0) {
 			//two byte sequence: 110xxxyy 10yyyyyy
 			codepoint = (*i & 0x1f) << 6;
@@ -42,6 +42,33 @@ unsigned int utf8_to_codepoint(std::string::const_iterator& i, std::string::cons
 				}
 				if ((*i & 0xc0) == 0x80) {
 					codepoint |= *i & 0x3f;
+				} else {
+					codepoint = 0xfffd;
+				}
+			} else {
+				codepoint = 0xfffd;
+			}
+		} else if ((*i & 0xf8) == 0xf0) {
+			//four byte sequence: 11110xxx 10xxyyyy 10yyyyzz 10zzzzzz
+			codepoint = (*i & 0x07) << 18;
+			if (++i == end) {
+				return 0;
+			}
+			if ((*i & 0xc0) == 0x80) {
+				codepoint |= (*i & 0x3f) << 12;
+				if (++i == end) {
+					return 0;
+				}
+				if ((*i & 0xc0) == 0x80) {
+					codepoint |= (*i & 0x3f) << 6;
+					if (++i == end) {
+						return 0;
+					}
+					if ((*i & 0xc0) == 0x80) {
+						codepoint |= *i & 0x3f;
+					} else {
+						codepoint = 0xfffd;
+					}
 				} else {
 					codepoint = 0xfffd;
 				}
