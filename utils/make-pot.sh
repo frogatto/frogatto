@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 EOF
-echo '"POT-Creation-Date: '$(date +"%Y-%m-%d %H:%M%z")'\\n"'
+echo '"POT-Creation-Date: '$(date +"%Y-%m-%d %H:%M%z")"\\n\""
 cat <<EOF
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
