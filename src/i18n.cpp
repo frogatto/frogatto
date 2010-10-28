@@ -50,27 +50,30 @@ void init() {
 		if (cstr != NULL)
 			locale = cstr;
 	}
+	
+	//strip the charset part of the country and language code,
+	//e.g. "pt_BR.UTF8" --> "pt_BR"
+	size_t found = locale.find(".");
+	if (found != std::string::npos) {
+		locale = locale.substr(0, found);
+	}
 	if (locale.size() < 2)
 		return;
 	
-	//only consider the country and language code,
-	//e.g. "pt_BR.UTF8" --> "pt_BR" or "de_DE.UTF8" --> "de"
-	std::string filename;
-	if (locale.size() >= 5) {
-		locale = locale.substr(0, 5);
+	std::string filename = "./locale/" + locale + "/LC_MESSAGES/frogatto.mo";
+	found = locale.find("@");
+	if (!sys::file_exists(filename) && found != std::string::npos) {
+		locale = locale.substr(0, found);
 		filename = "./locale/" + locale + "/LC_MESSAGES/frogatto.mo";
-		if (!sys::file_exists(filename)) {
-			locale = locale.substr(0, 2);
-			filename = "./locale/" + locale + "/LC_MESSAGES/frogatto.mo";
-			if (!sys::file_exists(filename))
-				return;
-		}
-	} else {
-		locale = locale.substr(0, 2);
-		filename = "./locale/" + locale + "/LC_MESSAGES/frogatto.mo";
-		if (!sys::file_exists(filename))
-			return;
 	}
+	//strip the country code, e.g. "de_DE" --> "de"
+	found = locale.find("_");
+	if (!sys::file_exists(filename) && found != std::string::npos) {
+		locale = locale.substr(0, found);
+		filename = "./locale/" + locale + "/LC_MESSAGES/frogatto.mo";
+	}
+	if (!sys::file_exists(filename))
+		return;
 	const std::string content = sys::read_file(filename);
 	size_t size = content.size();
 	if (size < sizeof(mo_header))
