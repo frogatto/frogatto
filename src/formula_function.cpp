@@ -442,8 +442,27 @@ private:
 		if (a == 0 || b == 0){
 			return variant(static_cast<int>(0));
 		}
-		std::cerr << "got: " << a << ", " << b << "\n" << "prc: " << sin(a/b)*100 << "\n";
+		//std::cerr << "got: " << a << ", " << b << "\n" << "prc: " << sin(a/b)*100 << "\n";
 		return variant(static_cast<int>(sin(a/b)*100));
+	}
+};
+
+class orbit_function : public function_expression {	//Takes x1, y1, distance from, angle from, returns x2, y2.
+public:
+	explicit orbit_function(const args_list& args)
+	     : function_expression("orbit", args, 4,4)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		const float a = args()[0]->evaluate(variables).as_int();
+		const float b = args()[1]->evaluate(variables).as_int();
+		const float ang = args()[1]->evaluate(variables).as_int();
+		const float dst = args()[1]->evaluate(variables).as_int();
+		const float x = -1;
+		const float y = -1;
+		std::cerr << "got: " << a << ", " << b << ", " << ang << ", " << dst << "\n" << "prc: " << 0 << "\n";
+		return variant(static_cast<int>(0));
 	}
 };
 
@@ -1001,6 +1020,7 @@ functions_map& get_functions_map() {
 		FUNCTION(tan);
 		FUNCTION(sqrt);
 		FUNCTION(p_angle_to);
+		FUNCTION(orbit);
 		FUNCTION(sort);
 		FUNCTION(filter);
 		FUNCTION(mapping);
