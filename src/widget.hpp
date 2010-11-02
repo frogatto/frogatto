@@ -21,7 +21,7 @@
 
 namespace gui {
 
-class widget: public virtual input::listener
+class widget : public virtual input::listener
 {
 public:
 	bool process_event(const SDL_Event& event, bool claimed);

@@ -2,6 +2,7 @@
 
 #include "dialog.hpp"
 #include "editor_dialogs.hpp"
+#include "foreach.hpp"
 #include "grid_widget.hpp"
 #include "label.hpp"
 #include "load_level.hpp"
@@ -24,26 +25,18 @@ std::string show_choose_level_dialog(const std::string& prompt)
 	d.add_widget(widget_ptr(new label(prompt, graphics::color_white(), 48)));
 
 	std::string result;
-	const int levels_per_col = 20;
 	std::vector<std::string> levels = get_known_levels();
-	gui::grid* parent_grid = new gui::grid(levels.size()/levels_per_col + (levels.size()%levels_per_col ? 1 : 0));
-	int index = 0;
-	while(index < levels.size()) {
-		const int end = std::min(index + levels_per_col, static_cast<int>(levels.size()));
-		gui::grid* grid = new gui::grid(1);
-		grid->set_show_background(true);
-		grid->allow_selection();
+	gui::grid* grid = new gui::grid(1);
+	grid->set_max_height(graphics::screen_height() - 80);
+	grid->set_show_background(true);
+	grid->allow_selection();
 
-		std::vector<std::string> levels_portion(levels.begin() + index, levels.end());
-		grid->register_selection_callback(boost::bind(&do_select_level, &d, levels_portion, _1, &result));
-		while(index != end) {
-			grid->add_col(widget_ptr(new label(levels[index], graphics::color_white())));
-			++index;
-		}
-		parent_grid->add_col(widget_ptr(grid));
+	grid->register_selection_callback(boost::bind(&do_select_level, &d, levels, _1, &result));
+	foreach(const std::string& lvl, levels) {
+		grid->add_col(widget_ptr(new label(lvl, graphics::color_white())));
 	}
 
-	d.add_widget(widget_ptr(parent_grid));
+	d.add_widget(widget_ptr(grid));
 	d.show_modal();
 	return result;
 }

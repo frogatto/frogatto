@@ -22,7 +22,8 @@ grid::grid(int ncols)
   : ncols_(ncols), col_widths_(ncols, 0),
     col_aligns_(ncols, grid::ALIGN_LEFT), row_height_(0),
 	selected_row_(-1), allow_selection_(false), must_select_(false),
-    swallow_clicks_(false), hpad_(0), show_background_(false)
+    swallow_clicks_(false), hpad_(0), show_background_(false),
+	max_height_(-1)
 {
 	set_dim(0,0);
 }
@@ -107,7 +108,7 @@ int grid::row_at(int xpos, int ypos) const
 {
 	if(xpos > x() && xpos < x() + width() &&
 	   ypos > y() && ypos < y() + height()) {
-		return (ypos - y()) / row_height_;
+		return (ypos + yscroll() - y()) / row_height_;
 	} else {
 		return -1;
 	}
@@ -115,12 +116,25 @@ int grid::row_at(int xpos, int ypos) const
 
 void grid::recalculate_dimensions()
 {
+	visible_cells_.clear();
+
 	int w = 0;
 	foreach(int width, col_widths_) {
 		w += width;
 	}
 
-	set_dim(w, row_height_*nrows());
+	int desired_height = row_height_*nrows();
+	set_virtual_height(desired_height);
+	set_scroll_step(row_height_);
+
+	if(max_height_ > 0 && desired_height > max_height_) {
+		desired_height = max_height_;
+		while(desired_height%row_height_) {
+			--desired_height;
+		}
+	}
+
+	set_dim(w, desired_height);
 
 	int y = 0;
 	for(int n = 0; n != nrows(); ++n) {
@@ -141,7 +155,10 @@ void grid::recalculate_dimensions()
 					break;
 				}
 
-				widget->set_loc(x+align,y+row_height_/2 - widget->height()/2);
+				widget->set_loc(x+align,y+row_height_/2 - widget->height()/2 - yscroll());
+				if(widget->y() >= 0 && widget->y() < height()) {
+					visible_cells_.push_back(widget);
+				}
 			}
 
 			x += col_widths_[m];
@@ -149,6 +166,13 @@ void grid::recalculate_dimensions()
 
 		y += row_height_;
 	}
+
+	update_scrollbar();
+}
+
+void grid::on_set_yscroll(int old_value, int value)
+{
+	recalculate_dimensions();
 }
 
 void grid::handle_draw() const
@@ -162,20 +186,23 @@ void grid::handle_draw() const
 	}
 
 	if(selected_row_ >= 0 && selected_row_ < nrows()) {
-		SDL_Rect rect = {0,row_height_*selected_row_,width(),row_height_};
+		SDL_Rect rect = {0,row_height_*selected_row_ - yscroll(),width(),row_height_};
 		const SDL_Color col = {0xFF,0x00,0x00,0x00};
 		graphics::draw_rect(rect,col,128);
 	}
-	foreach(const widget_ptr& widget, cells_) {
+	foreach(const widget_ptr& widget, visible_cells_) {
 		if(widget) {
 			widget->draw();
 		}
 	}
 	glPopMatrix();
+
+	scrollable_widget::handle_draw();
 }
 
 bool grid::handle_event(const SDL_Event& event, bool claimed)
 {
+	claimed = scrollable_widget::handle_event(event, claimed);
     if(claimed) {
         return claimed; 
     }
@@ -231,7 +258,7 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 
 	SDL_Event ev = event;
 	normalize_event(&ev);
-	foreach(const widget_ptr& widget, cells_) {
+	foreach(const widget_ptr& widget, visible_cells_) {
 		if(widget) {
 			claimed = widget->process_event(ev, claimed);
 		}

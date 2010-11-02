@@ -18,11 +18,12 @@
 #include <vector>
 
 #include "grid_widget_fwd.hpp"
+#include "scrollable_widget.hpp"
 #include "widget.hpp"
 
 namespace gui {
 
-class grid : public widget
+class grid : public scrollable_widget
 {
 public:
 	typedef boost::function<void (int)> callback_type;
@@ -51,6 +52,10 @@ public:
 	void register_mouseover_callback(callback_type cb);
 	void register_selection_callback(callback_type cb);
 	void register_row_selection_callback(boost::function<void()> cb);
+
+	void set_max_height(int amount) { max_height_ = amount; }
+
+	void on_set_yscroll(int old_value, int value);
 private:
 	int row_at(int x, int y) const;
 	void recalculate_dimensions();
@@ -60,6 +65,7 @@ private:
 	int nrows() const { return cells_.size()/ncols_; }
 	int ncols_;
 	std::vector<widget_ptr> cells_;
+	std::vector<widget_ptr> visible_cells_;
 	std::vector<int> col_widths_;
 	std::vector<COLUMN_ALIGN> col_aligns_;
 	int row_height_;
@@ -74,6 +80,8 @@ private:
 	callback_type on_select_;
 	int hpad_;
 	bool show_background_;
+
+	int max_height_;
 };
 
 typedef boost::shared_ptr<grid> grid_ptr;

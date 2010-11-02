@@ -76,11 +76,7 @@ void gui_section_widget::set_gui_section(const std::string& id)
 void gui_section_widget::handle_draw() const
 {
 	if(section_) {
-		//draw without stretching, in the middle of the widget.
-		const int w = (section_->width()/2)*scale_;
-		const int h = (section_->height()/2)*scale_;
-
-		section_->blit(x() + (width() - w)/2, y() + (height() - h)/2, w, h);
+		section_->blit(x(), y(), width(), height());
 	}
 }
 
