@@ -84,6 +84,8 @@ random.cpp
 raster.cpp
 raster_distortion.cpp
 rectangle_rotator.cpp
+scrollable_widget.cpp
+scrollbar_widget.cpp
 segment_editor_dialog.cpp
 settings_dialog.cpp
 slider.cpp
