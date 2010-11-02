@@ -593,7 +593,7 @@ UTILITY(hole_punch_test) {
 				udp_socket.send_to(boost::asio::buffer("peer"), peer_endpoint);
 			}
 
-			sleep(1);
+			SDL_Delay(1000);
 		}
 	}
 

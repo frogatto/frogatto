@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <boost/unordered_map.hpp>
+#include "stdint.h"
 
 #include "filesystem.hpp"
 

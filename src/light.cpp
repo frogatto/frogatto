@@ -75,14 +75,14 @@ int circle_light::split_strip(const darkness_strip& darkness, darkness_strip* ou
 		return -1;
 	}
 
-	const int width = sqrt(radius_*radius_ - (center_.y - darkness.area.y())*(center_.y - darkness.area.y()));
+	const int width = sqrt(static_cast<float>(radius_*radius_ - (center_.y - darkness.area.y())*(center_.y - darkness.area.y())));
 
 	if(area.x2() < center_.x - width - fade_length || area.x() > center_.x + width + fade_length) {
 		return -1;
 	}
 
 	const int radius_inner = radius_ - fade_length;
-	const int width_inner = sqrt(std::max(0, radius_inner*radius_inner - (center_.y - darkness.area.y())*(center_.y - darkness.area.y())));
+	const int width_inner = sqrt(static_cast<float>(std::max(0, radius_inner*radius_inner - (center_.y - darkness.area.y())*(center_.y - darkness.area.y()))));
 
 	const int distance_from_vertical_edge = std::min(area.y() - (center_.y - radius_), (center_.y + radius_) - area.y());
 
