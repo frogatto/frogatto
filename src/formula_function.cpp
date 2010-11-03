@@ -416,6 +416,36 @@ private:
 	}
 };
 
+class asin_function : public function_expression {	//Interprets two least significant digits as after decimal.
+public:
+	explicit asin_function(const args_list& args)
+	     : function_expression("asin", args, 1, 1)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		const int value = args()[0]->evaluate(variables).as_int();
+		const double angle = (static_cast<double>(value)/100.0);
+		//std::cerr << "got: " << angle << "\n" << "ret: " << asin(angle)*100 << "\n";
+		return variant(static_cast<int>(asin(angle)*100));
+	}
+};
+
+class acos_function : public function_expression {	//Interprets two least significant digits as after decimal.
+public:
+	explicit acos_function(const args_list& args)
+	     : function_expression("acos", args, 1, 1)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		const int value = args()[0]->evaluate(variables).as_int();
+		const double angle = (static_cast<double>(value)/100.0);
+		//std::cerr << "got: " << angle << "\n" << "ret: " << asin(angle)*100 << "\n";
+		return variant(static_cast<int>(acos(angle)*100));
+	}
+};
+
 class sqrt_function : public function_expression {
 public:
 	explicit sqrt_function(const args_list& args)
@@ -443,7 +473,7 @@ private:
 			return variant(static_cast<int>(0));
 		}
 		//std::cerr << "got: " << a << ", " << b << "\n" << "prc: " << sin(a/b)*100 << "\n";
-		return variant(static_cast<int>(sin(a/b)*100));
+		return variant(static_cast<int>(sin(a/b)*100)); //asin()?
 	}
 };
 
@@ -1018,6 +1048,8 @@ functions_map& get_functions_map() {
 		FUNCTION(sin);
 		FUNCTION(cos);
 		FUNCTION(tan);
+		FUNCTION(asin);
+		FUNCTION(acos);
 		FUNCTION(sqrt);
 		FUNCTION(p_angle_to);
 		FUNCTION(orbit);
