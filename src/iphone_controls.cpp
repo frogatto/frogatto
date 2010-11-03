@@ -9,6 +9,9 @@
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "texture.hpp"
+#include "wml_parser.hpp"
+#include "wml_utils.hpp"
+#include "formula.hpp"
 
 namespace
 {
@@ -22,8 +25,6 @@ namespace
 	bool can_interact = false;
 	bool on_platform = false;
 	
-	//This is to keep track of whether the rects above have been modified
-	//by modify_rects() yet, to make them work on different resolutions
 	bool done_setup_rects = false;
 	static void setup_rects ()
 	{
@@ -33,20 +34,33 @@ namespace
 		}
 		done_setup_rects = true;
 		
-		int vw = preferences::virtual_screen_width();
-		int vh = preferences::virtual_screen_height();
+		underwater_circle_y = preferences::virtual_screen_height()-underwater_circle_y;
 		
-		left_arrow = rect(0, vh - 200, 10 + 72*2, 200);
-		right_arrow = rect(252, vh - 200, 150 + 72*2, 200);
-		down_arrow = rect(154, vh - 74, 46*2 + 6, 74);
-		up_arrow = rect(154, vh - 264, 46*2 + 6, 80 + 55*2);
-		a_button = rect(vw - 220, vh - 120, 50*2*2 + 20, 60*2);
+		wml::node_ptr schemes = wml::parse_wml_from_file("data/control_schemes.cfg");
+		wml::node_ptr scheme = wml::find_child_by_attribute(schemes, "control_scheme", "id", "iphone_classic");
+		FOREACH_WML_CHILD(node, scheme, "button")
+		{
+			variant r = game_logic::formula(wml::get_str(node, "hit_rect")).execute();
+			rect hit_rect(r[0].as_int(), r[1].as_int(), r[2].as_int(), r[3].as_int());
+			std::string id = wml::get_str(node, "id");
+			if (id == "left") {
+				left_arrow = hit_rect;
+			} else if (id == "right") {
+				right_arrow = hit_rect;
+			} else if (id == "up") {
+				up_arrow = hit_rect;
+			} else if (id == "down") {
+				down_arrow = hit_rect;
+			} else if (id == "b") {
+				c_button = hit_rect;
+			} else if (id == "a") {
+				a_button = hit_rect;
+			} else if (id == "interact") {
+				interact_button = hit_rect;
+			}
+		}
+		
 //		b_button = rect(vw - 102, vh - 300, 50*2, 60*2);
-		c_button = rect(vw - 144, vh - 360, 50*2 + 40 + 4, 60*2*2);
-		
-		interact_button = rect(vw - 320 - 50, vh - 200, 50*2 + 50, 200);
-		
-		underwater_circle_y = vh-underwater_circle_y;
 	}
 
 	struct Mouse {
