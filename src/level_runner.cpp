@@ -37,6 +37,7 @@
 #include "wml_writer.hpp"
 #include "wml_utils.hpp"
 #include "IMG_savepng.h"
+#include "globals.h"
 
 namespace {
 const int FrameTimeInMillis = 20;
@@ -574,7 +575,7 @@ bool level_runner::play_cycle()
 		message_dialog::get()->process();
 		pause_time_ += FrameTimeInMillis;
 	} else {
-		if (!paused) {
+		if (!paused && pause_stack == 0) {
 			const int start_process = SDL_GetTicks();
 
 			try {
@@ -664,7 +665,7 @@ bool level_runner::play_cycle()
 		}
 	}
 
-	if (!paused) ++cycle;
+	if (!paused && pause_stack == 0) ++cycle;
 
 	
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE

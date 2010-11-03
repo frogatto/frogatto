@@ -4,10 +4,10 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 
-AVAudioPlayer *song = nil;
-const float fade_interval = 0.05;
-float master_volume = 1.0;
-void (*song_finished_callback)() = NULL;
+static AVAudioPlayer *song = nil;
+static const float fade_interval = 0.05;
+static float master_volume = 1.0;
+static void (*song_finished_callback)() = NULL;
 
 @interface AudioDelegate : NSObject <AVAudioPlayerDelegate>
 {
@@ -24,11 +24,11 @@ void (*song_finished_callback)() = NULL;
 - (void) audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag;
 @end
 
-AudioDelegate *delegate;
+AudioDelegate *music_delegate;
 
 void iphone_init_music (void (*callback)())
 {
-	delegate = [[AudioDelegate alloc] init];
+	music_delegate = [[AudioDelegate alloc] init];
 	song_finished_callback = callback;
 	
 	AudioSessionInitialize (NULL, NULL, NULL, NULL);
@@ -39,18 +39,18 @@ void iphone_init_music (void (*callback)())
 
 void iphone_fade_in_music (int duration)
 {
-	if (song == nil || delegate == nil || delegate.fading) return;
+	if (song == nil || music_delegate == nil || music_delegate.fading) return;
 	song.volume = 0.0;
-	delegate.amount = master_volume/((duration/1000.0) * (1.0/fade_interval));
-	//NSLog(@"Starting fade in, volume=%f | amount=%f", song.volume, delegate.amount);
-	[delegate fadeInMusic:nil];
+	music_delegate.amount = master_volume/((duration/1000.0) * (1.0/fade_interval));
+	//NSLog(@"Starting fade in, volume=%f | amount=%f", song.volume, music_delegate.amount);
+	[music_delegate fadeInMusic:nil];
 }
 
 void iphone_fade_out_music (int duration)
 {
-	if (song == nil || delegate == nil || delegate.fading) return;
-	delegate.amount = master_volume/((duration/1000.0) * (1.0/fade_interval));
-	[delegate fadeOutMusic:nil];
+	if (song == nil || music_delegate == nil || music_delegate.fading) return;
+	music_delegate.amount = master_volume/((duration/1000.0) * (1.0/fade_interval));
+	[music_delegate fadeOutMusic:nil];
 }
 
 void iphone_play_music (const char *file, int loops)
@@ -63,7 +63,7 @@ void iphone_play_music (const char *file, int loops)
 	}
 	song = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[NSString stringWithUTF8String: file]] error:NULL];
 	//NSLog(@"Initializing the new song took %i ms", SDL_GetTicks()-timer);
-	song.delegate = delegate;
+	song.delegate = music_delegate;
 	song.numberOfLoops = loops;
 	song.volume = master_volume;
 	
@@ -90,8 +90,8 @@ void iphone_kill_music ()
 		[song release];
 		song = nil;
 	}
-	[delegate release];
-	delegate = nil;
+	[music_delegate release];
+	music_delegate = nil;
 }
 
 float iphone_get_music_volume ()
