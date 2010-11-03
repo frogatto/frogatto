@@ -36,6 +36,7 @@ void character_editor_dialog::init()
 	add_widget(widget_ptr(category_button), 10, 10);
 
 	grid_ptr grid(new gui::grid(3));
+	grid->set_max_height(height() - 50);
 	int index = 0;
 	first_index_ = -1;
 	foreach(const editor::enemy_type& c, editor_.all_characters()) {
@@ -45,7 +46,7 @@ void character_editor_dialog::init()
 			}
 
 			image_widget* preview = new image_widget(c.preview_frame->img());
-			preview->set_dim(40, 40);
+			preview->set_dim(36, 36);
 			preview->set_area(c.preview_frame->area());
 			button_ptr char_button(new button(widget_ptr(preview), boost::bind(&character_editor_dialog::set_character, this, index)));
 
@@ -55,7 +56,7 @@ void character_editor_dialog::init()
 				tooltip_str += "\n" + editor_info->help();
 			}
 			char_button->set_tooltip(tooltip_str);
-			char_button->set_dim(44, 44);
+			char_button->set_dim(40, 40);
 			grid->add_col(gui::widget_ptr(new gui::border_widget(char_button, index == editor_.get_object() ? graphics::color(255,255,255,255) : graphics::color(0,0,0,0))));
 		}
 
