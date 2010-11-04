@@ -5,6 +5,7 @@
 #include <string>
 #include <time.h>
 
+#include "achievements.hpp"
 #include "asserts.hpp"
 #include "blur.hpp"
 #include "collision_utils.hpp"
@@ -1209,6 +1210,28 @@ public:
 FUNCTION_DEF(end_game, 0, 0, "end_game(): exits the game")
 	return variant(new end_game_command());
 END_FUNCTION_DEF(end_game)
+
+class achievement_command : public entity_command_callable
+{
+public:
+	explicit achievement_command(const std::string& str) : str_(str)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		if(attain_achievement(str_)) {
+			achievement_ptr a = achievement::get(str_);
+			if(a) {
+				set_scene_title("Achievement Unlocked: " + a->name());
+			}
+		}
+	}
+private:
+	std::string str_;
+};
+
+FUNCTION_DEF(achievement, 1, 1, "achievement(id): unlocks the achievement with the given id")
+	return variant(new achievement_command(args()[0]->evaluate(variables).as_string()));
+END_FUNCTION_DEF(achievement)
 
 class debug_command : public entity_command_callable
 {
