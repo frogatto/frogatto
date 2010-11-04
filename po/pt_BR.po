@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Frogatto & Friends 1.0.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-26 08:00+0200\n"
-"PO-Revision-Date: 2010-10-17 23:33-0300\n"
+"PO-Revision-Date: 2010-10-20 02:01-0300\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Brazilian Portuguese\n"
 "Language: \n"
@@ -1015,122 +1015,154 @@ msgid ""
 "That went better than expected."
 msgstr ""
 "Bom,\n"
-"isso foi melhor do que eu esperava!"
+"até que não fui tão mal!"
 
 #: data/level/crevice-village-house-elder.cfg:1610
 msgid ""
 "Say ...\n"
 "What happened to the elder?"
 msgstr ""
+"Mas...\n"
+"Cadê o prefeito?"
 
 #: data/level/crevice-village-house-elder.cfg:1615
 msgid ""
 "Whoa...\n"
 "... is that what I think it is?"
 msgstr ""
+"Opa... isso aí é\n"
+"o que eu acho que é?"
 
 #: data/level/crevice-village-house-elder.cfg:1629
 msgid "It is indeed, my boy!"
-msgstr ""
+msgstr "Exatamente, meu jovem!"
 
 #: data/level/crevice-village-house-elder.cfg:1631
 msgid "It's my very own safe room."
-msgstr ""
+msgstr "É a minha própria sala secreta."
 
 #: data/level/crevice-village-house-elder.cfg:1633
 msgid "Wow."
-msgstr ""
+msgstr "Uau."
 
 #: data/level/crevice-village-house-elder.cfg:1635
 msgid "Built it for exactly this sort of crisis."
 msgstr ""
+"Eu a construí justamente\n"
+"para esse tipo de problema."
 
 #: data/level/crevice-village-house-elder.cfg:1637
 msgid "It's a shame I can't trust people."
 msgstr ""
+"É uma pena, mas não consigo\n"
+"confiar nas pessoas."
 
 #: data/level/crevice-village-house-elder.cfg:1639
 msgid ""
 "Quite expensive, but if it protects me,\n"
 "and all my stuff, then it's worth it!"
 msgstr ""
+"Foi meio cara, mas se ela protege\n"
+"a minha vida e meus pertences,\n"
+"é claro que vale a pena!"
 
 #: data/level/crevice-village-house-elder.cfg:1641
 msgid ""
 "I've got everything I couldn't stand\n"
 "losing back there."
 msgstr ""
+"Eu guardo tudo o que eu não\n"
+"aguentaria perder aqui dentro."
 
 #: data/level/crevice-village-house-elder.cfg:1643
 msgid ""
 "Isn't it true that's not all yours, though?\n"
 "Don't you owe some of it to Milgram?"
 msgstr ""
+"Mas nem tudo que está aí\n"
+"é seu, não é verdade?\n"
+"Você não está devendo pro Milgram?"
 
 #: data/level/crevice-village-house-elder.cfg:1645
 msgid ""
 "Bah!  And what if I do?\n"
 "He's got no respect."
 msgstr ""
+"Bah! E se eu estiver?\n"
+"Ele não tem respeito."
 
 #: data/level/crevice-village-house-elder.cfg:1647
 msgid ""
 "He should be thankful for everything\n"
 "I've done for him."
 msgstr ""
+"Ele deveria me agradecer\n"
+"por tudo o que eu fiz por ele."
 
 #: data/level/crevice-village-house-elder.cfg:1649
 msgid "Such as?"
-msgstr ""
+msgstr "Como assim?"
 
 #: data/level/crevice-village-house-elder.cfg:1651
 msgid "Well, you know..."
-msgstr ""
+msgstr "Como assim, como assim?!Ora, eu..."
 
 #: data/level/crevice-village-house-elder.cfg:1653
 msgid "I am the mayor after all."
 msgstr ""
+"Eu sou o prefeito,\n"
+"pra começo de conversa."
 
 #: data/level/crevice-village-house-elder.cfg:1655
 #: data/level/tea-with-milgram.cfg:233
 msgid "That's right!"
-msgstr ""
+msgstr "Tem razão!"
 
 #: data/level/crevice-village-house-elder.cfg:1657
 msgid "Anyhow, I'm proud of you."
 msgstr ""
+"De qualquer maneira,\n"
+"estou orgulhoso de você."
 
 #: data/level/crevice-village-house-elder.cfg:1659
 msgid ""
 "You're a real hero,\n"
 "scaring that hooligan away."
 msgstr ""
+"Você é um herói,\n"
+"mandando aquele vândalo embora."
 
 #: data/level/crevice-village-house-elder.cfg:1661
 msgid "Is there any way I can thank you?"
-msgstr ""
+msgstr "Como que eu poderia te agradecer?"
 
 #: data/level/crevice-village-house-elder.cfg:1663
 msgid ""
 "Actually, yes.\n"
 "I have a crazy idea in mind."
 msgstr ""
+"Na verdade, sim.\n"
+"Eu tenho uma ideia maluca em mente..."
 
 #: data/level/crevice-village-house-elder.cfg:1665
 msgid ""
 "I'm wondering if you can be my patron,\n"
 "in this little scheme of mine."
 msgstr ""
+"Eu tava pensando se você poderia\n"
+"financiar um plano que eu tenho."
 
 #: data/level/crevice-village-house-elder.cfg:1667
 msgid "Hm?"
-msgstr ""
+msgstr "Hmm?"
 
 #: data/level/crevice-village-house-elder.cfg:1669
 msgid ""
 "See, I think this stuff with Milgram\n"
 "has gone on long enough."
 msgstr ""
+"Veja bem, essa confusão com\n"
+"o Milgram já foi longe demais."
 
 #: data/level/crevice-village-house-elder.cfg:1671
 msgid ""
