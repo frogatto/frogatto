@@ -30,6 +30,9 @@ grep -Hn 'message="[^"][^"]*"' data/preload.cfg | \
 # find level titles
 grep -Hn '^title="[^"][^"]*"' data/level/*.cfg | \
 	sed -ne 's/^\(.*:[0-9]*\):title="/#: \1\n"/;s/"\([^"]*\)".*/msgid "\1"\nmsgstr ""\n/gp'
+# find achievements
+grep -Hn '\(name\|description\)="[^"][^"]*"' data/achievements.cfg | \
+	sed -ne 's/^\(.*:[0-9]*\):.*\(name\|description\)="/#: \1\n"/;s/"\([^"]*\)".*/msgid "\1"\nmsgstr ""\n/gp'
 # find marked strings ~...~ in data files
 grep -Hnr --exclude-dir=".svn" "~[^~][^~]*~" data/level/ data/objects/ data/object_prototypes/ | \
 	sed -ne ":A;s/\([a-z0-9/\._-]*:[0-9]*\):[^~]*~\([^~][^~]*\)~/\n#: \1\nmsgid \"\2\"\nmsgstr \"\"\n\1:/;tA;s/\n\([a-z0-9/\._-]*:[0-9]*\):[^\n]*//;p"

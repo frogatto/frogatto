@@ -3,6 +3,7 @@
 
 #include "achievements.hpp"
 #include "filesystem.hpp"
+#include "i18n.hpp"
 #include "preferences.hpp"
 #include "string_utils.hpp"
 #include "wml_node.hpp"
@@ -33,8 +34,8 @@ achievement_ptr achievement::get(const std::string& id)
 }
 
 achievement::achievement(wml::const_node_ptr node)
-  : id_(node->attr("id")), name_(node->attr("name")),
-    description_(node->attr("description")),
+  : id_(node->attr("id")), name_(i18n::tr(node->attr("name"))),
+    description_(i18n::tr(node->attr("description"))),
 	points_(wml::get_int(node, "points"))
 {
 }

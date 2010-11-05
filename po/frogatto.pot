@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-26 08:00+0200\n"
+"POT-Creation-Date: 2010-11-05 18:19+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,14 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: data/achievements.cfg:4
+msgid "Pocket Money"
+msgstr ""
+
+#: data/achievements.cfg:5
+msgid "Collect ten coins"
+msgstr ""
 
 #: data/level/airplane-boss.cfg:11
 msgid "Stonepipe Bridge"
@@ -66,19 +74,19 @@ msgstr ""
 msgid "The Long Haul"
 msgstr ""
 
-#: data/level/autumn-town.cfg:11
+#: data/level/autumn-town.cfg:14
 msgid "Autumn Town"
 msgstr ""
 
-#: data/level/bombing-fools.cfg:11
+#: data/level/bombing-fools.cfg:14
 msgid "Bombing Fools"
 msgstr ""
 
-#: data/level/bon-bosque.cfg:10
+#: data/level/bon-bosque.cfg:13
 msgid "Bon Bosque"
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1359
+#: data/level/bon-bosque.cfg:1434
 msgid ""
 "Well, you made it! Now just up ahead\n"
 "there is a gate. If you can get\n"
@@ -88,27 +96,27 @@ msgid ""
 "compound from the caverns."
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1361
+#: data/level/bon-bosque.cfg:1436
 msgid ""
 "Whoah, a bunch of caverns now?\n"
 "This seems like it's harder than\n"
 "what the elder led me to believe!"
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1362
+#: data/level/bon-bosque.cfg:1437
 msgid ""
 "I guess the forests have become\n"
 "infested over the years. Hopefully\n"
 "the caverns won't be too much worse!"
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1364
+#: data/level/bon-bosque.cfg:1439
 msgid ""
 "I hope not. Thank you for guiding me\n"
 "and meeting me here."
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1365
+#: data/level/bon-bosque.cfg:1440
 msgid ""
 "You're welcome, friend. Naturally I\n"
 "won't be able to fly into the\n"
@@ -117,7 +125,7 @@ msgid ""
 "a lesson for us all!"
 msgstr ""
 
-#: data/level/bug-mining.cfg:10
+#: data/level/bug-mining.cfg:13
 msgid "Bug Mining"
 msgstr ""
 
@@ -135,7 +143,7 @@ msgid ""
 "a way to activate this elevator."
 msgstr ""
 
-#: data/level/caverns-of-holes.cfg:11
+#: data/level/caverns-of-holes.cfg:14
 msgid "Caverns of Holes"
 msgstr ""
 
@@ -1017,7 +1025,7 @@ msgstr ""
 msgid "Now what?"
 msgstr ""
 
-#: data/level/darkness-central.cfg:11
+#: data/level/darkness-central.cfg:14
 msgid "Darkness Central"
 msgstr ""
 
@@ -1041,11 +1049,11 @@ msgstr ""
 msgid "The Entrance"
 msgstr ""
 
-#: data/level/eerie-arbor.cfg:11
+#: data/level/eerie-arbor.cfg:14
 msgid "Eerie Arbor"
 msgstr ""
 
-#: data/level/fast-lane.cfg:10
+#: data/level/fast-lane.cfg:13
 msgid "Fast Lane"
 msgstr ""
 
@@ -1199,7 +1207,7 @@ msgstr ""
 msgid "Gloomy Glade"
 msgstr ""
 
-#: data/level/gnarled-knoll.cfg:13
+#: data/level/gnarled-knoll.cfg:14
 msgid "Gnarled Knoll"
 msgstr ""
 
@@ -1515,29 +1523,29 @@ msgstr ""
 msgid "Have fun!"
 msgstr ""
 
-#: data/level/hanging-platforms.cfg:11
+#: data/level/hanging-platforms.cfg:14
 msgid "Hanging Platforms"
 msgstr ""
 
-#: data/level/hanging-platforms.cfg:3737
+#: data/level/hanging-platforms.cfg:3662
 msgid ""
 "Well, I guess I'm entering Milgram's\n"
 "castle now. I made it through the caves!"
 msgstr ""
 
-#: data/level/hidden-depths.cfg:11
+#: data/level/hidden-depths.cfg:14
 msgid "Hidden Depths"
 msgstr ""
 
-#: data/level/hidden-depths.cfg:3780
+#: data/level/hidden-depths.cfg:3806
 msgid "I'd better be careful."
 msgstr ""
 
-#: data/level/hidden-depths.cfg:3780
+#: data/level/hidden-depths.cfg:3806
 msgid "This is a very deep chasm..."
 msgstr ""
 
-#: data/level/hidden-depths.cfg:4589
+#: data/level/hidden-depths.cfg:4615
 msgid "AAAAAAH! I CAN'T FLY!"
 msgstr ""
 
@@ -1798,19 +1806,19 @@ msgstr ""
 msgid "Aimless Souls"
 msgstr ""
 
-#: data/level/pinecone-park.cfg:11
+#: data/level/pinecone-park.cfg:14
 msgid "Pinecone Park"
 msgstr ""
 
-#: data/level/plagued-mine.cfg:11
+#: data/level/plagued-mine.cfg:14
 msgid "Plagued Mine"
 msgstr ""
 
-#: data/level/plagued-mine.cfg:3563
+#: data/level/plagued-mine.cfg:3613
 msgid "These crazy bombers are everywhere!"
 msgstr ""
 
-#: data/level/plagued-mine.cfg:3706
+#: data/level/plagued-mine.cfg:3756
 msgid "Yikes!"
 msgstr ""
 
@@ -1826,15 +1834,15 @@ msgstr ""
 msgid "Woah! A flying plant!"
 msgstr ""
 
-#: data/level/rocky-roots.cfg:10
+#: data/level/rocky-roots.cfg:13
 msgid "Rocky Roots"
 msgstr ""
 
-#: data/level/rocky-roots.cfg:1152
+#: data/level/rocky-roots.cfg:1178
 msgid "Bleh. A locked door."
 msgstr ""
 
-#: data/level/rocky-roots.cfg:1152
+#: data/level/rocky-roots.cfg:1178
 msgid "There must be a way around it."
 msgstr ""
 
@@ -2720,11 +2728,11 @@ msgstr ""
 msgid "Hidden Room"
 msgstr ""
 
-#: data/level/twisted-trees.cfg:13
+#: data/level/twisted-trees.cfg:14
 msgid "Twisted Trees"
 msgstr ""
 
-#: data/level/underground-pool.cfg:12
+#: data/level/underground-pool.cfg:14
 msgid "Underground Pool"
 msgstr ""
 
@@ -2736,7 +2744,7 @@ msgstr ""
 msgid "Wandering Passage"
 msgstr ""
 
-#: data/level/watery-alley.cfg:11
+#: data/level/watery-alley.cfg:14
 msgid "Watery Alley"
 msgstr ""
 
@@ -3546,6 +3554,18 @@ msgstr ""
 msgid "Do you want to buy the {consts.name}?"
 msgstr ""
 
+#: data/objects/crazy-stuff/jb-background.cfg:7
+msgid "error"
+msgstr ""
+
+#: data/objects/crazy-stuff/jb-background.cfg:18
+msgid "Runtime: "
+msgstr ""
+
+#: data/objects/crazy-stuff/jb-background.cfg:27
+msgid " -- paused -- "
+msgstr ""
+
 #: data/objects/items/max_heart_object.cfg:18
 msgid ""
 "You have acquired a heart capsule.\n"
@@ -3741,6 +3761,10 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
+#: src/custom_object_functions.cpp:1225
+msgid "Achievement Unlocked: "
+msgstr ""
+
 #: src/key_button.cpp:63
 msgid "LEFT"
 msgstr ""
@@ -3757,34 +3781,38 @@ msgstr ""
 msgid "DOWN"
 msgstr ""
 
-#: src/main.cpp:284
+#: src/main.cpp:287
 msgid "Loading level"
 msgstr ""
 
-#: src/pause_game_dialog.cpp:41
+#: src/pause_game_dialog.cpp:44
 msgid "Music Volume:"
 msgstr ""
 
-#: src/pause_game_dialog.cpp:43
+#: src/pause_game_dialog.cpp:46
 msgid "Sound Volume:"
 msgstr ""
 
-#: src/pause_game_dialog.cpp:58
+#: src/pause_game_dialog.cpp:61
 msgid "Resume"
 msgstr ""
 
-#: src/pause_game_dialog.cpp:59
+#: src/pause_game_dialog.cpp:62
 msgid "Controls..."
 msgstr ""
 
-#: src/pause_game_dialog.cpp:60
+#: src/pause_game_dialog.cpp:63
 msgid "Return to Titlescreen"
 msgstr ""
 
-#: src/pause_game_dialog.cpp:61
+#: src/pause_game_dialog.cpp:64
 msgid "Exit Game"
 msgstr ""
 
-#: src/pause_game_dialog.cpp:62
+#: src/pause_game_dialog.cpp:65
 msgid "Reverse A and B"
+msgstr ""
+
+#: src/pause_game_dialog.cpp:67
+msgid "OpenFeint"
 msgstr ""

@@ -19,6 +19,7 @@
 #include "filesystem.hpp"
 #include "formula_callable_definition.hpp"
 #include "formula_profiler.hpp"
+#include "i18n.hpp"
 #include "level.hpp"
 #include "level_runner.hpp"
 #include "object_events.hpp"
@@ -1221,7 +1222,7 @@ public:
 		if(attain_achievement(str_)) {
 			achievement_ptr a = achievement::get(str_);
 			if(a) {
-				set_scene_title("Achievement Unlocked: " + a->name());
+				set_scene_title(_("Achievement Unlocked: ") + a->name());
 			}
 		}
 	}
