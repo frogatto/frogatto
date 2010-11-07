@@ -472,7 +472,7 @@ struct point_particle_info
 class point_particle_system : public particle_system
 {
 public:
-	point_particle_system(const entity& obj, const point_particle_info& info) : obj_(obj), info_(info), particle_generation_(0), generation_rate_millis_(info.generation_rate_millis) {
+	point_particle_system(const entity& obj, const point_particle_info& info) : obj_(obj), info_(info), particle_generation_(0), generation_rate_millis_(info.generation_rate_millis), pos_x_(info.pos_x), pos_x_rand_(info.pos_x_rand), pos_y_(info.pos_y), pos_y_rand_(info.pos_y_rand) {
 	}
 
 	void process(const level& lvl, const entity& e) {
@@ -492,6 +492,7 @@ public:
 		}
 
 		while(particle_generation_ >= 1000) {
+			//std::cerr << "PARTICLE X ORIGIN: " << pos_x_;
 			particles_.push_back(particle());
 			particle& p = particles_.back();
 			p.ttl = info_.time_to_live;
@@ -510,15 +511,15 @@ public:
 				p.velocity_y += rand()%info_.velocity_y_rand;
 			}
 
-			p.pos_x = e.x()*1024 + info_.pos_x;
-			p.pos_y = e.y()*1024 + info_.pos_y;
+			p.pos_x = e.x()*1024 + pos_x_;
+			p.pos_y = e.y()*1024 + pos_y_;
 
-			if(info_.pos_x_rand) {
-				p.pos_x += rand()%info_.pos_x_rand;
+			if(pos_x_rand_) {
+				p.pos_x += rand()%pos_x_rand_;
 			}
 			
-			if(info_.pos_y_rand) {
-				p.pos_y += rand()%info_.pos_y_rand;
+			if(pos_y_rand_) {
+				p.pos_y += rand()%pos_y_rand_;
 			}
 
 			p.rgba[0] = info_.rgba[0];
@@ -601,6 +602,7 @@ private:
 
 	int particle_generation_;
 	int generation_rate_millis_;
+	int pos_x_, pos_x_rand_, pos_y_, pos_y_rand_;
 	std::vector<particle> particles_;
 
 	variant get_value(const std::string& key) const {
@@ -610,6 +612,14 @@ private:
 	void set_value(const std::string& key, const variant& value) {
 		if(key == "generation_rate") {
 			generation_rate_millis_ = value.as_int();
+		} else if (key == "pos_x") {
+			pos_x_ = value.as_int();
+		} else if (key == "pos_x_rand") {
+			pos_x_rand_ = value.as_int();
+		} else if (key == "pos_y") {
+			pos_y_ = value.as_int();
+		} else if (key == "pos_y_rand") {
+			pos_y_rand_ = value.as_int();
 		}
 	}
 };
