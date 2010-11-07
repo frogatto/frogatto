@@ -3563,6 +3563,13 @@ bool level::relocate_object(entity_ptr e, int new_x, int new_y)
 	return true;
 }
 
+void level::record_zorders()
+{
+	foreach(const level_tile& t, tiles_) {
+		t.object->record_zorder(t.zorder);
+	}
+}
+
 UTILITY(correct_solidity)
 {
 	std::vector<std::string> files;
@@ -3605,6 +3612,7 @@ UTILITY(compile_levels)
 		std::cerr << "LOADING LEVEL '" << file << "'\n";
 		boost::intrusive_ptr<level> lvl(new level(file));
 		lvl->finish_loading();
+		lvl->record_zorders();
 		std::string data;
 		wml::write(lvl->write(), data);
 		sys::write_file("data/compiled/level/" + file, data);

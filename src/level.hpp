@@ -280,6 +280,8 @@ public:
 
 	bool set_dark(bool value) { bool res = dark_; dark_ = value; return res; }
 
+	void record_zorders();
+
 private:
 
 	void read_compiled_tiles(wml::const_node_ptr node, std::vector<level_tile>::iterator& out);

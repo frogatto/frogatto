@@ -50,7 +50,12 @@ level_tile level_object::build_tile(wml::const_node_ptr node)
 }
 
 namespace {
-std::vector<wml::const_node_ptr> level_object_index;
+std::vector<wml::node_ptr> level_object_index;
+std::vector<wml::const_node_ptr> original_level_object_nodes;
+std::map<std::pair<wml::const_node_ptr, int>, level_object_ptr> secondary_zorder_objects;
+
+std::map<wml::node_ptr, int> tile_nodes_to_zorders;
+
 
 typedef std::pair<std::string, int> filename_palette_pair;
 
@@ -66,6 +71,44 @@ void set_alpha_for_transparent_colors_in_rgba_surface(SDL_Surface* s);
 
 void create_compiled_tiles_image()
 {
+	//the number of tiles that can fit in a tiesheet.
+	const int TilesInSheet = (1024*1024)/(16*16);
+
+	//calculate how many tiles are in each zorder
+	std::map<int, int> zorder_to_num_tiles;
+	for(std::map<wml::node_ptr, int>::const_iterator i = tile_nodes_to_zorders.begin(); i != tile_nodes_to_zorders.end(); ++i) {
+		zorder_to_num_tiles[i->second]++;
+	}
+
+	//now work out which zorders should go in which tilesheets.
+	//all tiles of the same zorder always go in the same sheet.
+	std::map<int, int> zorder_to_sheet_number;
+	std::vector<int> tiles_in_sheet;
+	std::vector<graphics::surface> sheets;
+	std::vector<int> sheet_next_image_index;
+
+	for(std::map<int, int>::const_iterator i = zorder_to_num_tiles.begin();
+	    i != zorder_to_num_tiles.end(); ++i) {
+		int sheet = 0;
+		for(; sheet != tiles_in_sheet.size(); ++sheet) {
+			if(tiles_in_sheet[sheet] + i->second <= TilesInSheet) {
+				break;
+			}
+		}
+
+		if(sheet == tiles_in_sheet.size()) {
+			tiles_in_sheet.push_back(0);
+			sheet_next_image_index.push_back(0);
+			sheets.push_back(graphics::surface(SDL_CreateRGBSurface(SDL_SWSURFACE, 1024, 1024, 32, SURFACE_MASK)));
+		}
+
+		tiles_in_sheet[sheet] += i->second;
+		zorder_to_sheet_number[i->first] = sheet;
+	}
+
+	std::cerr << "NUM_TILES: " << tile_nodes_to_zorders.size() << " / " << TilesInSheet << "\n";
+
+
 	graphics::surface s(SDL_CreateRGBSurface(SDL_SWSURFACE, 1024, (compiled_tile_ids.size()/64 + 1)*16, 32, SURFACE_MASK));
 	for(std::map<tile_id, int>::const_iterator itor = compiled_tile_ids.begin();
 	    itor != compiled_tile_ids.end(); ++itor) {
@@ -98,7 +141,47 @@ void create_compiled_tiles_image()
 
 	graphics::set_alpha_for_transparent_colors_in_rgba_surface(s.get());
 
-	IMG_SavePNG("images/tiles-compiled.png", s.get(), 5);
+//  don't need to save the main compiled tile anymore.
+//	IMG_SavePNG("images/tiles-compiled.png", s.get(), 5);
+
+	SDL_SetAlpha(s.get(), 0, SDL_ALPHA_OPAQUE);
+
+	for(std::map<wml::node_ptr, int>::const_iterator i = tile_nodes_to_zorders.begin(); i != tile_nodes_to_zorders.end(); ++i) {
+		const int sheet = zorder_to_sheet_number[i->second];
+		wml::node_ptr node = i->first;
+		const std::string& tiles_str = node->attr("tiles").str();
+		ASSERT_EQ(tiles_str[0], '+');
+
+		const int tile_num = atoi(tiles_str.c_str() + 1);
+		const int src_x = (tile_num%64) * 16;
+		const int src_y = (tile_num/64) * 16;
+
+		const int dst_tile = sheet_next_image_index[sheet]++;
+		const int dst_x = (dst_tile%64) * 16;
+		const int dst_y = (dst_tile/64) * 16;
+
+		SDL_Rect src_rect = { src_x, src_y, 16, 16 };
+		SDL_Rect dst_rect = { dst_x, dst_y, 16, 16 };
+
+		std::cerr << "MAPPING: " << src_x << ", " << src_y << " -> " << dst_x << ", " << dst_y << " / " << sheet << "\n";
+
+		SDL_BlitSurface(s.get(), &src_rect, sheets[sheet].get(), &dst_rect);
+
+		char buf[64];
+		sprintf(buf, "+%d", dst_tile);
+		node->set_attr("tiles", buf);
+
+		sprintf(buf, "tiles-compiled-%d.png", sheet);
+
+		node->set_attr("image", buf);
+	}
+
+	for(int n = 0; n != sheets.size(); ++n) {
+		char buf[64];
+		sprintf(buf, "images/tiles-compiled-%d.png", n);
+
+		IMG_SavePNG(buf, sheets[n], 5);
+	}
 }
 
 namespace {
@@ -382,6 +465,7 @@ level_object::level_object(wml::const_node_ptr node)
 			node_copy->set_attr("tiles", tiles_str);
 	
 			level_object_index.push_back(node_copy);
+			original_level_object_nodes.push_back(node);
 		}
 	}
 
@@ -453,6 +537,8 @@ int base64_unencode(const char* begin, const char* end)
 
 void level_object::write_compiled()
 {
+	create_compiled_tiles_image();
+
 	for(int n = 0; n <= level_object_index.size()/64; ++n) {
 		char buf[128];
 		sprintf(buf, "%d", n);
@@ -466,8 +552,6 @@ void level_object::write_compiled()
 		wml::write(tiles_node, data);
 		sys::write_file("data/compiled/tiles/" + filename, data);
 	}
-
-	create_compiled_tiles_image();
 }
 
 namespace {
@@ -501,6 +585,44 @@ const_level_object_ptr level_object::get_compiled(const char* buf)
 	ASSERT_LOG(index >= compiled_tiles.size() || compiled_tiles[index], "COULD NOT LOAD COMPILED TILE: " << std::string(buf, buf+3) << " -> " << index);
 
 	return compiled_tiles[index];
+}
+
+level_object_ptr level_object::record_zorder(int zorder) const
+{
+	std::vector<int>::const_iterator i = std::find(zorders_.begin(), zorders_.end(), zorder);
+	if(i == zorders_.end()) {
+		zorders_.push_back(zorder);
+		if(zorders_.size() > 1) {
+			level_object_ptr result(new level_object(original_level_object_nodes[tile_index_]));
+			result->zorders_.push_back(zorder);
+			std::pair<wml::const_node_ptr, int> key(original_level_object_nodes[tile_index_], zorder);
+
+			secondary_zorder_objects[key] = result;
+
+			std::vector<int> palettes;
+			palettes.push_back(-1);
+			result->get_palettes_used(palettes);
+
+			for(int n = 0; n != palettes.size(); ++n) {
+				tile_nodes_to_zorders[level_object_index[result->tile_index_ + n]] = zorder;
+			}
+
+			return result;
+		} else {
+			std::vector<int> palettes;
+			palettes.push_back(-1);
+			get_palettes_used(palettes);
+
+			for(int n = 0; n != palettes.size(); ++n) {
+				tile_nodes_to_zorders[level_object_index[tile_index_ + n]] = zorder;
+			}
+		}
+	} else if(i != zorders_.begin()) {
+		std::pair<wml::const_node_ptr, int> key(original_level_object_nodes[tile_index_], zorder);
+		return secondary_zorder_objects[key];
+	}
+
+	return level_object_ptr();
 }
 
 void level_object::write_compiled_index(char* buf) const

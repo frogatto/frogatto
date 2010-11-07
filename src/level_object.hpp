@@ -107,6 +107,10 @@ public:
 	//at least 3 chars.
 	static const_level_object_ptr get_compiled(const char* buf);
 
+	//only used when compiling: notifies the object it is used at the
+	//given zorder.
+	level_object_ptr record_zorder(int zorder) const;
+
 private:
 	std::string id_;
 	std::string image_;
@@ -127,6 +131,9 @@ private:
 	boost::intrusive_ptr<graphics::color> solid_color_;
 
 	int tile_index_;
+
+	//only used when compiling: records all possible zorders for the object.
+	mutable std::vector<int> zorders_;
 
 	unsigned int palettes_recognized_;
 	unsigned int current_palettes_;
