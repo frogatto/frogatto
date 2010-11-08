@@ -425,6 +425,7 @@ struct point_particle_info
 	    velocity_x_rand(wml::get_int(node, "velocity_x_rand")),
 	    velocity_y_rand(wml::get_int(node, "velocity_y_rand")),
 		dot_size(wml::get_int(node, "dot_size", 1)*(preferences::double_scale() ? 2 : 1)),
+		dot_rounded(wml::get_bool(node, "dot_rounded", false)),
 	    time_to_live(wml::get_int(node, "time_to_live")),
 	    time_to_live_max(wml::get_int(node, "time_to_live_rand") + time_to_live) {
 		std::vector<std::string> colors_str;
@@ -464,6 +465,7 @@ struct point_particle_info
 	unsigned char rgba_rand[4];
 	char rgba_delta[4];
 	int dot_size;
+	bool dot_rounded;
 
 	std::vector<unsigned int> colors;
 	int ttl_divisor;
@@ -575,6 +577,9 @@ public:
 		glDisable(GL_TEXTURE_2D);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnableClientState(GL_COLOR_ARRAY);
+		if(info_.dot_rounded){
+			glEnable( GL_POINT_SMOOTH );
+		}
 		glPointSize(info_.dot_size);
 
 		glVertexPointer(2, GL_SHORT, 0, &vertex[0]);
@@ -584,7 +589,9 @@ public:
 		glDisableClientState(GL_COLOR_ARRAY);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
-
+		if(info_.dot_rounded){
+			glDisable( GL_POINT_SMOOTH );
+		}
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 	}
 private:
