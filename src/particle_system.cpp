@@ -511,8 +511,8 @@ public:
 				p.velocity_y += rand()%info_.velocity_y_rand;
 			}
 
-			p.pos_x = (e.x() + pos_x_)*1024;
-			p.pos_y = (e.y() + pos_y_)*1024;
+			p.pos_x = e.x()*1024 + pos_x_;
+			p.pos_y = e.y()*1024 + pos_y_;
 
 			if(pos_x_rand_) {
 				p.pos_x += rand()%pos_x_rand_;
@@ -613,13 +613,13 @@ private:
 		if(key == "generation_rate") {
 			generation_rate_millis_ = value.as_int();
 		} else if (key == "pos_x") {
-			pos_x_ = value.as_int();
+			pos_x_ = value.as_int()*1024;
 		} else if (key == "pos_x_rand") {
-			pos_x_rand_ = value.as_int();
+			pos_x_rand_ = value.as_int()*1024;
 		} else if (key == "pos_y") {
-			pos_y_ = value.as_int();
+			pos_y_ = value.as_int()*1024;
 		} else if (key == "pos_y_rand") {
-			pos_y_rand_ = value.as_int();
+			pos_y_rand_ = value.as_int()*1024;
 		}
 	}
 };
