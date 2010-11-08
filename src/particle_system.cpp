@@ -511,8 +511,9 @@ public:
 				p.velocity_y += rand()%info_.velocity_y_rand;
 			}
 
-			p.pos_x = e.x()*1024 + pos_x_;
-			p.pos_y = e.y()*1024 + pos_y_;
+			p.pos_x = (e.x() + pos_x_)*1024;
+			p.pos_y = (e.y() + pos_y_)*1024;
+			std::cerr << "New particle at " << p.pos_x << " (" << pos_x_ << ")\n";
 
 			if(pos_x_rand_) {
 				p.pos_x += rand()%pos_x_rand_;
