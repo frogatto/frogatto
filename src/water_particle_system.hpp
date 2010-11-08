@@ -63,6 +63,8 @@ private:
 	
 	GLfloat direction[2];
 	GLfloat base_velocity;
+	int velocity_x_, velocity_y_;
+	
 	
 	std::vector<particle> particles_;
 };

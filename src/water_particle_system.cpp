@@ -36,12 +36,12 @@ particle_system_ptr water_particle_system_factory::create(const entity& e) const
 
 
 water_particle_system::water_particle_system(const entity& e, const water_particle_system_factory& factory)
- : factory_(factory), info_(factory.info), cycle_(0)
+ : factory_(factory), info_(factory.info), velocity_x_(factory.info.velocity_x), velocity_y_(factory.info.velocity_y), cycle_(0)
 {
 	area_ = rect("0,0,1,1");
 	base_velocity = sqrtf(info_.velocity_x*info_.velocity_x + info_.velocity_y*info_.velocity_y);
-	direction[0] = info_.velocity_x / base_velocity;
-	direction[1] = info_.velocity_y / base_velocity;
+	direction[0] = velocity_x_ / base_velocity;
+	direction[1] = velocity_y_ / base_velocity;
 	particles_.reserve(info_.number_of_particles);
 	for (int i = 0; i < info_.number_of_particles; i++)
 	{
@@ -59,6 +59,7 @@ void water_particle_system::process(const level& lvl, const entity& e)
 	
 	foreach(particle& p, particles_)
 	{
+		
 		p.pos[0] = static_cast<int>(p.pos[0]+direction[0] * p.velocity) % info_.repeat_period;
 		p.pos[1] = static_cast<int>(p.pos[1]+direction[1] * p.velocity) % info_.repeat_period;
 	}
@@ -133,5 +134,15 @@ void water_particle_system::set_value(const std::string& key, const variant& val
 		} else if(value.is_list() && value.num_elements() == 4) {
 			area_ = rect::from_coordinates(value[0].as_int(), value[1].as_int(), value[2].as_int(), value[3].as_int());
 		}		
+	} else if(key=="velocity_x") {
+		velocity_x_ = value.as_int();
+		direction[0] = velocity_x_ / base_velocity;
+		direction[1] = velocity_y_ / base_velocity;
+
+	} else if(key=="velocity_y") {
+		velocity_y_ = value.as_int();
+		direction[0] = velocity_x_ / base_velocity;
+		direction[1] = velocity_y_ / base_velocity;
+
 	}
 }
