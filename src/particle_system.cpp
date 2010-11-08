@@ -513,7 +513,6 @@ public:
 
 			p.pos_x = (e.x() + pos_x_)*1024;
 			p.pos_y = (e.y() + pos_y_)*1024;
-			std::cerr << "New particle at " << p.pos_x << " (" << pos_x_ << ")\n";
 
 			if(pos_x_rand_) {
 				p.pos_x += rand()%pos_x_rand_;
