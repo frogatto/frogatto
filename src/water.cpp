@@ -300,7 +300,12 @@ void water::get_current(const entity& e, int* velocity_x, int* velocity_y) const
 
 bool water::is_underwater(const rect& r, rect* result_water_area, variant* e) const
 {
-	const point p((r.x() + r.x2())/2, (r.y() + r.y2())/2);
+	//we don't take the vertical midpoint, because doing so can cause problems
+	//when objects change their animations and flip between not being
+	//underwater. Instead we take the bottom and subtract a hardcoded amount.
+	//TODO: potentially review this way of determinining if something is
+	//underwater.
+	const point p((r.x() + r.x2())/2, r.y2() - 20);
 	foreach(const area& a, areas_) {
 		if(point_in_rect(p, a.rect_)) {
 			if(result_water_area) {
