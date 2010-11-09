@@ -1759,86 +1759,105 @@ void level::draw(int x, int y, int w, int h) const
 		background_->draw_foreground(start_x, start_y, 0.0, cycle());
 	}
 
-	if(dark_ && !editor_) {
-		const int strip_height = 2;
-		static std::vector<darkness_strip> strips, new_strips;
-		strips.clear();
+	calculate_lighting(x, y, w, h);
+}
 
-		const int x_threshhold = 64;
+void level::calculate_lighting(int x, int y, int w, int h) const
+{
+	if(!dark_ || editor_) {
+		return;
+	}
 
-		for(int ypos = y; ypos < y + h; ypos += strip_height) {
-			new_strips.clear();
-			darkness_strip s;
-			s.alpha_left = s.alpha_right = 255;
-			s.area = rect(x - x_threshhold, ypos, w + x_threshhold*2, strip_height);
-			new_strips.push_back(s);
-			foreach(const entity_ptr& c, active_chars_) {
-				foreach(const light_ptr& lt, c->lights()) {
-					static std::vector<darkness_strip> swap_strips;
-					swap_strips.resize(4);
-					for(int n = 0; n != new_strips.size(); ++n) {
-						const int result = lt->split_strip(new_strips[n], &swap_strips[swap_strips.size()-4]);
-						if(result == -1) {
-							swap_strips[swap_strips.size()-4] = new_strips[n];
-							swap_strips.resize(swap_strips.size()+1);
-						} else {
-							swap_strips.resize(swap_strips.size()+result);
-						}
-					}
+	//find all the lights in the level
+	static std::vector<const light*> lights;
+	lights.clear();
+	foreach(const entity_ptr& c, active_chars_) {
+		foreach(const light_ptr& lt, c->lights()) {
+			lights.push_back(lt.get());
+		}
+	}
 
-					swap_strips.resize(swap_strips.size()-4);
-					swap_strips.swap(new_strips);
+	const int strip_height = 2;
+	static std::vector<darkness_strip> strips, new_strips;
+	strips.clear();
+
+	const int x_threshhold = 64;
+
+	for(int ypos = y; ypos < y + h; ypos += strip_height) {
+		new_strips.clear();
+		darkness_strip s;
+		s.alpha_left = s.alpha_right = 255;
+		s.x = x - x_threshhold;
+		s.y = ypos;
+		s.w = w + x_threshhold*2;
+		s.h = strip_height;
+
+		new_strips.push_back(s);
+
+		foreach(const light* lt, lights) {
+			static std::vector<darkness_strip> swap_strips;
+			swap_strips.resize(4);
+			for(int n = 0; n != new_strips.size(); ++n) {
+				const int result = lt->split_strip(new_strips[n], &swap_strips[swap_strips.size()-4]);
+				if(result == -1) {
+					swap_strips[swap_strips.size()-4] = new_strips[n];
+					swap_strips.resize(swap_strips.size()+1);
+				} else {
+					swap_strips.resize(swap_strips.size()+result);
 				}
 			}
 
-			if(!strips.empty() && new_strips.size() == 1 && strips.back().area.x() == new_strips.back().area.x() && strips.back().area.x2() == new_strips.back().area.x2() && new_strips.back().alpha_left == 255 && new_strips.back().alpha_right == 255) {
-				strips.back().area = rect(strips.back().area.x(), strips.back().area.y(), strips.back().area.w(), strips.back().area.h() + new_strips.back().area.h());
-			} else {
-				foreach(const darkness_strip& s, new_strips) {
-					strips.push_back(s);
-				}
-			}
+			swap_strips.resize(swap_strips.size()-4);
+			swap_strips.swap(new_strips);
 		}
 
-		
-		if(strips.empty() == false) {
-			glDisable(GL_TEXTURE_2D);
-			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		if(!strips.empty() && new_strips.size() == 1 && strips.back().x == new_strips.back().x && strips.back().w == new_strips.back().w && new_strips.back().alpha_left == 255 && new_strips.back().alpha_right == 255) {
+			strips.back().h += new_strips.back().h;
+		} else {
+			foreach(const darkness_strip& s, new_strips) {
+				strips.push_back(s);
+			}
+		}
+	}
 
-			glColor4ub(dark_color_.r(), dark_color_.g(), dark_color_.b(), dark_color_.a());
+	if(strips.empty() == false) {
+		glDisable(GL_TEXTURE_2D);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
-			static std::vector<GLshort> vertexes, alpha_vertexes;
-			static std::vector<unsigned char> colors;
-			vertexes.clear();
-			alpha_vertexes.clear();
-			colors.clear();
-			foreach(const darkness_strip& s, strips) {
-				if(s.alpha_left == 255 && s.alpha_right == 255) {
-					vertexes.push_back(s.area.x());
-					vertexes.push_back(s.area.y());
-					vertexes.push_back(s.area.x2());
-					vertexes.push_back(s.area.y());
-					vertexes.push_back(s.area.x());
-					vertexes.push_back(s.area.y2());
-					vertexes.push_back(s.area.x2());
-					vertexes.push_back(s.area.y());
-					vertexes.push_back(s.area.x2());
-					vertexes.push_back(s.area.y2());
-					vertexes.push_back(s.area.x());
-					vertexes.push_back(s.area.y2());
-				} else {
-					alpha_vertexes.push_back(s.area.x());
-					alpha_vertexes.push_back(s.area.y());
-					alpha_vertexes.push_back(s.area.x2());
-					alpha_vertexes.push_back(s.area.y());
-					alpha_vertexes.push_back(s.area.x());
-					alpha_vertexes.push_back(s.area.y2());
-					alpha_vertexes.push_back(s.area.x2());
-					alpha_vertexes.push_back(s.area.y());
-					alpha_vertexes.push_back(s.area.x2());
-					alpha_vertexes.push_back(s.area.y2());
-					alpha_vertexes.push_back(s.area.x());
-					alpha_vertexes.push_back(s.area.y2());
+		glColor4ub(dark_color_.r(), dark_color_.g(), dark_color_.b(), dark_color_.a());
+
+		static std::vector<GLshort> vertexes, alpha_vertexes;
+		static std::vector<unsigned char> colors;
+		vertexes.clear();
+		alpha_vertexes.clear();
+		colors.clear();
+		foreach(const darkness_strip& s, strips) {
+			if(s.alpha_left == 255 && s.alpha_right == 255) {
+				vertexes.push_back(s.x);
+				vertexes.push_back(s.y);
+				vertexes.push_back(s.x + s.w);
+				vertexes.push_back(s.y);
+				vertexes.push_back(s.x);
+				vertexes.push_back(s.y + s.h);
+				vertexes.push_back(s.x + s.w);
+				vertexes.push_back(s.y);
+				vertexes.push_back(s.x + s.w);
+				vertexes.push_back(s.y + s.h);
+				vertexes.push_back(s.x);
+				vertexes.push_back(s.y + s.h);
+			} else {
+				alpha_vertexes.push_back(s.x);
+				alpha_vertexes.push_back(s.y);
+				alpha_vertexes.push_back(s.x + s.w);
+				alpha_vertexes.push_back(s.y);
+				alpha_vertexes.push_back(s.x);
+				alpha_vertexes.push_back(s.y + s.h);
+				alpha_vertexes.push_back(s.x + s.w);
+				alpha_vertexes.push_back(s.y);
+				alpha_vertexes.push_back(s.x + s.w);
+				alpha_vertexes.push_back(s.y + s.h);
+				alpha_vertexes.push_back(s.x);
+				alpha_vertexes.push_back(s.y + s.h);
 
 #define ADD_COLOR(alpha) \
 	colors.push_back(dark_color_.r()); \
@@ -1846,35 +1865,34 @@ void level::draw(int x, int y, int w, int h) const
 	colors.push_back(dark_color_.b()); \
 	colors.push_back((alpha*dark_color_.a())/255);
 
-					ADD_COLOR(s.alpha_left);
-					ADD_COLOR(s.alpha_right);
-					ADD_COLOR(s.alpha_left);
-					ADD_COLOR(s.alpha_right);
-					ADD_COLOR(s.alpha_right);
-					ADD_COLOR(s.alpha_left);
+				ADD_COLOR(s.alpha_left);
+				ADD_COLOR(s.alpha_right);
+				ADD_COLOR(s.alpha_left);
+				ADD_COLOR(s.alpha_right);
+				ADD_COLOR(s.alpha_right);
+				ADD_COLOR(s.alpha_left);
 #undef ADD_COLOR
-				}
 			}
-
-			if(!vertexes.empty()) {
-				glVertexPointer(2, GL_SHORT, 0, &vertexes[0]);
-				glDrawArrays(GL_TRIANGLES, 0, vertexes.size()/2);
-			}
-
-			if(!alpha_vertexes.empty()) {
-				glShadeModel(GL_SMOOTH);
-				glEnableClientState(GL_COLOR_ARRAY);
-				glColorPointer(4, GL_UNSIGNED_BYTE, 0, &colors.front());
-				glVertexPointer(2, GL_SHORT, 0, &alpha_vertexes[0]);
-				glDrawArrays(GL_TRIANGLES, 0, alpha_vertexes.size()/2);
-				glDisableClientState(GL_COLOR_ARRAY);
-				glShadeModel(GL_FLAT);
-			}
-
-			glColor4f(1.0, 1.0, 1.0, 1.0);
-			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-			glEnable(GL_TEXTURE_2D);
 		}
+
+		if(!vertexes.empty()) {
+			glVertexPointer(2, GL_SHORT, 0, &vertexes[0]);
+			glDrawArrays(GL_TRIANGLES, 0, vertexes.size()/2);
+		}
+
+		if(!alpha_vertexes.empty()) {
+			glShadeModel(GL_SMOOTH);
+			glEnableClientState(GL_COLOR_ARRAY);
+			glColorPointer(4, GL_UNSIGNED_BYTE, 0, &colors.front());
+			glVertexPointer(2, GL_SHORT, 0, &alpha_vertexes[0]);
+			glDrawArrays(GL_TRIANGLES, 0, alpha_vertexes.size()/2);
+			glDisableClientState(GL_COLOR_ARRAY);
+			glShadeModel(GL_FLAT);
+		}
+
+		glColor4f(1.0, 1.0, 1.0, 1.0);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glEnable(GL_TEXTURE_2D);
 	}
 }
 

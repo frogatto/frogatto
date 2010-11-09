@@ -8,7 +8,7 @@
 #include <boost/intrusive_ptr.hpp>
 
 struct darkness_strip {
-	rect area;
+	int x, y, w, h;
 	unsigned char alpha_left, alpha_right;
 };
 

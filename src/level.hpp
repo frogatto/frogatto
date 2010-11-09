@@ -291,6 +291,8 @@ private:
 
 	void do_processing();
 
+	void calculate_lighting(int x, int y, int w, int h) const;
+
 	bool add_tile_rect_vector_internal(int zorder, int x1, int y1, int x2, int y2, const std::vector<std::string>& tiles);
 
 	void draw_layer(int layer, int x, int y, int w, int h) const;
