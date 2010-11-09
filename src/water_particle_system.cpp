@@ -12,7 +12,7 @@ repeat_period(wml::get_int(node, "repeat_period", 1000)),
 velocity_x(wml::get_int(node, "velocity_x")),
 velocity_y(wml::get_int(node, "velocity_y", -5)),
 velocity_rand(wml::get_int(node, "velocity_rand", 3)),
-dot_size(wml::get_int(node, "dot_size", 1))
+dot_size(wml::get_int(node, "dot_size", 1)*(preferences::double_scale() ? 2 : 1))
 {
 	irgba = graphics::color(node->attr("color")).value();
 
