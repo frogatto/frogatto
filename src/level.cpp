@@ -86,7 +86,7 @@ void level::set_as_current_level()
 
 namespace {
 graphics::color_transform default_dark_color() {
-	return graphics::color_transform(8, 22, 35, 255);
+	return graphics::color_transform(0, 0, 0, 255);
 }
 }
 
