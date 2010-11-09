@@ -7,6 +7,7 @@
 #include "color_utils.hpp"
 #include "entity.hpp"
 #include "foreach.hpp"
+#include "formula.hpp"
 #include "frame.hpp"
 #include "particle_system.hpp"
 #include "preferences.hpp"
@@ -437,6 +438,19 @@ struct point_particle_info
 			std::reverse(c, c+4);
 #endif
 			colors.push_back(val);
+		}
+
+		if(node->has_attr("colors_expression")) {
+			const variant v = game_logic::formula(node->attr("colors_expression")).execute();
+			for(int n = 0; n != v.num_elements(); ++n) {
+				const variant u = v[n];
+				ASSERT_LOG(u.num_elements() == 4, "UNEXPECTED colors_expression: " << u.to_debug_string());
+				const unsigned int r = u[0].as_int();
+				const unsigned int g = u[1].as_int();
+				const unsigned int b = u[2].as_int();
+				const unsigned int a = u[3].as_int();
+				colors.push_back((r << 24) + (g << 16) + (b << 8) + a);
+			}
 		}
 
 		std::reverse(colors.begin(), colors.end());
