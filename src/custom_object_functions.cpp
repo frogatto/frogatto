@@ -1222,7 +1222,7 @@ public:
 		if(attain_achievement(str_)) {
 			achievement_ptr a = achievement::get(str_);
 			if(a) {
-				set_scene_title(_("Achievement Unlocked: ") + a->name());
+				set_displayed_achievement(a);
 			}
 		}
 	}

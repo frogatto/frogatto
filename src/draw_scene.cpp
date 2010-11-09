@@ -16,6 +16,7 @@
 #include "font.hpp"
 #include "foreach.hpp"
 #include "graphical_font.hpp"
+#include "gui_section.hpp"
 #include "i18n.hpp"
 #include "level.hpp"
 #include "message_dialog.hpp"
@@ -31,6 +32,9 @@ std::string& scene_title() {
 	static std::string title;
 	return title;
 }
+
+achievement_ptr current_achievement;
+int current_achievement_duration = 0;
 
 struct screen_flash {
 	graphics::color_transform color, delta;
@@ -62,6 +66,12 @@ void set_scene_title(const std::string& msg, int duration) {
 	//explicitly translate all level titles
 	scene_title() = (msg.size() > 0) ? _(msg) : msg;
 	scene_title_duration_ = duration;
+}
+
+void set_displayed_achievement(achievement_ptr a)
+{
+	current_achievement = a;
+	current_achievement_duration = 250;
 }
 
 GLfloat hp_ratio = -1.0;
@@ -325,6 +335,44 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus, boo
 		}
 	}
 	
+	if(current_achievement && current_achievement_duration > 0) {
+		--current_achievement_duration;
+
+		const_gui_section_ptr left = gui_section::get("achievements_left");
+		const_gui_section_ptr right = gui_section::get("achievements_right");
+		const_gui_section_ptr main = gui_section::get("achievements_main");
+
+		const const_graphical_font_ptr title_font = graphical_font::get("white_outline");
+		const const_graphical_font_ptr main_font = graphical_font::get("door_label");
+
+		const std::string title_text = "Achievement Unlocked!";
+		const std::string name = current_achievement->name();
+		const std::string description = "(" + current_achievement->description() + ")";
+		const int width = std::max<int>(std::max<int>(
+		  title_font->dimensions(title_text).w(),
+		  main_font->dimensions(name).w()),
+		  main_font->dimensions(description).w()
+		  ) + 8;
+		
+		const int xpos = graphics::screen_width() - 16 - left->width() - right->width() - width;
+		const int ypos = 16;
+
+		const GLfloat alpha = current_achievement_duration > 10 ? 1.0 : current_achievement_duration/10.0;
+
+		glColor4f(1.0, 1.0, 1.0, alpha);
+
+		left->blit(xpos, ypos);
+		main->blit(xpos + left->width(), ypos, width, main->height());
+		right->blit(xpos + left->width() + width, ypos);
+
+		title_font->draw(xpos + left->width(), ypos - 10, title_text);
+		main_font->draw(xpos + left->width(), ypos + 24, name);
+
+		glColor4f(0.0, 1.0, 0.0, alpha);
+		main_font->draw(xpos + left->width(), ypos + 48, description);
+		glColor4f(1.0, 1.0, 1.0, 1.0);
+		
+	}
 	
 	if(pos.flip_rotate) {
 		const SDL_Surface* fb = SDL_GetVideoSurface();
