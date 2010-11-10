@@ -451,7 +451,7 @@ struct point_particle_info
 				const unsigned int a = u[3].as_int();
 				unsigned int val = (r << 24) + (g << 16) + (b << 8) + a;
 
-#if SDL_BYTEORDER == SDL_LIL_ENDIAN
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
 				unsigned char* c = reinterpret_cast<unsigned char*>(&val);
 				std::reverse(c, c+4);
 #endif
