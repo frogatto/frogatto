@@ -449,7 +449,13 @@ struct point_particle_info
 				const unsigned int g = u[1].as_int();
 				const unsigned int b = u[2].as_int();
 				const unsigned int a = u[3].as_int();
-				colors.push_back((r << 24) + (g << 16) + (b << 8) + a);
+				unsigned int val = (r << 24) + (g << 16) + (b << 8) + a;
+
+#if SDL_BYTEORDER == SDL_LIL_ENDIAN
+				unsigned char* c = reinterpret_cast<unsigned char*>(&val);
+				std::reverse(c, c+4);
+#endif
+				colors.push_back(val);
 			}
 		}
 
