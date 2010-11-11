@@ -1222,6 +1222,7 @@ public:
 		if(attain_achievement(str_)) {
 			achievement_ptr a = achievement::get(str_);
 			if(a) {
+				sound::play("achievement-attained.wav");
 				set_displayed_achievement(a);
 			}
 		}
