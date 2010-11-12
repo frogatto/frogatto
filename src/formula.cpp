@@ -829,6 +829,7 @@ int operator_precedence(const token& t)
 	static std::map<std::string,int> precedence_map;
 	if(precedence_map.empty()) {
 		int n = 0;
+		precedence_map["->"] = ++n;
 		precedence_map["not"] = ++n;
 		precedence_map["where"] = ++n;
 		precedence_map["or"]    = ++n;
@@ -1186,7 +1187,7 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 			fn_call = NULL;
 		}
 		
-		if(i->type == TOKEN_LPARENS || i->type == TOKEN_LSQUARE) {
+		if(i->type == TOKEN_LPARENS || i->type == TOKEN_LSQUARE || i->type == TOKEN_LBRACKET) {
 			if(i->type == TOKEN_LPARENS && parens == 0 && i != i1) {
 				fn_call = i;
 			} else if(i->type == TOKEN_LSQUARE && parens == 0 && i != i1 && (i-1)->type != TOKEN_OPERATOR && (op == NULL || operator_precedence(*op) >= operator_precedence(*i))) {
@@ -1195,7 +1196,7 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 			}
 			
 			++parens;
-		} else if(i->type == TOKEN_RPARENS || i->type == TOKEN_RSQUARE) {
+		} else if(i->type == TOKEN_RPARENS || i->type == TOKEN_RSQUARE || i->type == TOKEN_RBRACKET) {
 			--parens;
 			
 			if(parens == 0 && i+1 != i2) {
