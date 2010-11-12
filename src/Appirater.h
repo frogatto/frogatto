@@ -121,7 +121,7 @@ extern NSString *const kAppiraterDeclinedToRate;
  'YES' will show the Appirater alert everytime. Useful for testing how your message
  looks and making sure the link to your app's review page works.
  */
-#define APPIRATER_DEBUG				1
+#define APPIRATER_DEBUG				0
 
 @interface Appirater : NSObject <UIAlertViewDelegate> {
 
