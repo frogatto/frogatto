@@ -10,6 +10,7 @@
 #include "wml_parser.hpp"
 #include "wml_utils.hpp"
 #include "wml_writer.hpp"
+#include "of_bridge.h"
 
 namespace {
 std::map<std::string, achievement_ptr> cache;
@@ -36,7 +37,8 @@ achievement_ptr achievement::get(const std::string& id)
 achievement::achievement(wml::const_node_ptr node)
   : id_(node->attr("id")), name_(i18n::tr(node->attr("name"))),
     description_(i18n::tr(node->attr("description"))),
-	points_(wml::get_int(node, "points"))
+	points_(wml::get_int(node, "points")),
+	of_id_(wml::get_int(node, "of_id"))
 {
 }
 
@@ -62,6 +64,11 @@ bool attain_achievement(const std::string& id)
 	if(std::binary_search(achievements->begin(), achievements->end(), id)) {
 		return false;
 	}
+	
+	#ifdef ENABLE_OPENFEINT
+	achievement_ptr a = achievement::get(id);
+	of_earn_achievement(a->of_id());
+	#endif
 
 	achievements->push_back(id);
 	std::sort(achievements->begin(), achievements->end());

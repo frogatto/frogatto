@@ -3,5 +3,6 @@
 
 void of_init ();
 void of_dashboard ();
+void of_earn_achievement (int of_id);
 
 #endif

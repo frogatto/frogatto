@@ -40,11 +40,17 @@ void of_dashboard ()
 	[pool release];
 }
 
+void of_earn_achievement (int of_id)
+{
+	[[OFAchievement achievement: [NSString stringWithFormat:@"%d", of_id]] updateProgressionComplete: 100.0f andShowNotification: NO];
+}
+
 #else
 
 //Dummy functions for if OpenFeint isn't enabled
 
 void of_init () {}
 void of_dashboard () {}
+void of_earn_achievement (int of_id) {}
 
 #endif
