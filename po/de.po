@@ -2,8 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-13 02:21-0200PO-Revision-Date: YEAR-MO-DA HO:MI"
-"+ZONE\n"
+"POT-Creation-Date: 2010-11-13 12:42+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Philipp Zabel <philipp.zabel@gmail.com>\n"
 "Language-Team: \n"
@@ -2406,7 +2405,7 @@ msgstr ""
 msgid "Creative Director - created characters/setting/story"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:192 data/level/tea-with-milgram.cfg:368
+#: data/level/tea-with-milgram.cfg:192 data/level/tea-with-milgram.cfg:370
 msgid "Artist - Characters, Monsters, and Props"
 msgstr ""
 
@@ -2709,11 +2708,11 @@ msgid ""
 "in exchange for a small consideration."
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:349
+#: data/level/tea-with-milgram.cfg:350
 msgid "A small consideration eh?"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:352
+#: data/level/tea-with-milgram.cfg:353
 msgid "Yes - a quarter of what we get from him."
 msgstr ""
 
@@ -2724,41 +2723,49 @@ msgid ""
 "Very well frog, let's do business."
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:357
+#: data/level/tea-with-milgram.cfg:358
 msgid "All's well that ends well then, huh?"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:359
+#: data/level/tea-with-milgram.cfg:361
 msgid ""
 "Yeah, I do think everyone's\n"
 "made out pretty well."
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:362
+#: data/level/tea-with-milgram.cfg:364
 msgid "Except the elder."
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:367
+#: data/level/tea-with-milgram.cfg:369
 msgid "Lead Content Wrangler and Object Scripter, Programmer"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:369
+#: data/level/tea-with-milgram.cfg:371
 msgid "Artist - Terrain (seaside, forest, cave, and dungeon)"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:370
+#: data/level/tea-with-milgram.cfg:372
 msgid "Level Designer (esp. seaside, town, and forest stages)"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:373
+#: data/level/tea-with-milgram.cfg:375
+msgid "Translation Support"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:376
+msgid "Object Scripting"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:381
 msgid "Musician"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:374
+#: data/level/tea-with-milgram.cfg:382
 msgid "Sound Effect Designer"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:378
+#: data/level/tea-with-milgram.cfg:386
 msgid "SPECIAL THANKS:"
 msgstr ""
 
@@ -4172,6 +4179,10 @@ msgstr "Angriff"
 msgid "Back"
 msgstr "Zurück"
 
+#: src/draw_scene.cpp:348
+msgid "Achievement Unlocked!"
+msgstr "Erfolg freigeschaltet!"
+
 #: src/key_button.cpp:63
 msgid "LEFT"
 msgstr "LINKS"
@@ -4188,7 +4199,7 @@ msgstr "HOCH"
 msgid "DOWN"
 msgstr "RUNTER"
 
-#: src/main.cpp:285
+#: src/main.cpp:287
 msgid "Loading level"
 msgstr "Lade Level"
 
@@ -4223,6 +4234,3 @@ msgstr "A und B vertauschen"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
-
-#~ msgid "Achievement Unlocked: "
-#~ msgstr "Erfolg freigeschaltet: "
