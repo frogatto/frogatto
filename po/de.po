@@ -2,7 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-05 18:19+0100\n"
+"POT-Creation-Date: 2010-11-13 02:21-0200PO-Revision-Date: YEAR-MO-DA HO:MI"
+"+ZONE\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Philipp Zabel <philipp.zabel@gmail.com>\n"
 "Language-Team: \n"
@@ -2349,6 +2350,10 @@ msgstr ""
 msgid "Geautatha Point"
 msgstr ""
 
+#: data/level/silky-silence.cfg:13
+msgid "Silky Silence"
+msgstr ""
+
 #: data/level/splash-hop.cfg:11
 msgid "Splash, Hop"
 msgstr "Platsch, Hüpf"
@@ -2761,7 +2766,7 @@ msgstr ""
 msgid "(Level Template)"
 msgstr ""
 
-#: data/level/test2.cfg:14
+#: data/level/test2.cfg:13
 msgid "(Test Level)"
 msgstr ""
 
@@ -4167,10 +4172,6 @@ msgstr "Angriff"
 msgid "Back"
 msgstr "Zurück"
 
-#: src/custom_object_functions.cpp:1225
-msgid "Achievement Unlocked: "
-msgstr "Erfolg freigeschaltet: "
-
 #: src/key_button.cpp:63
 msgid "LEFT"
 msgstr "LINKS"
@@ -4187,7 +4188,7 @@ msgstr "HOCH"
 msgid "DOWN"
 msgstr "RUNTER"
 
-#: src/main.cpp:287
+#: src/main.cpp:285
 msgid "Loading level"
 msgstr "Lade Level"
 
@@ -4222,3 +4223,6 @@ msgstr "A und B vertauschen"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
+
+#~ msgid "Achievement Unlocked: "
+#~ msgstr "Erfolg freigeschaltet: "

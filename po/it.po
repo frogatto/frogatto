@@ -7,7 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto IT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-26 08:00+0200\n"
+"POT-Creation-Date: 2010-11-13 02:21-0200PO-Revision-Date: YEAR-MO-DA HO:MI"
+"+ZONE\n"
 "PO-Revision-Date: 2010-10-08 12:01+0100\n"
 "Last-Translator: Lorenzo Nerini <nero17@simail.it>\n"
 "Language-Team:  <nero17@simail.it>\n"
@@ -17,6 +18,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Italian\n"
 "X-Poedit-SourceCharset: utf-8\n"
+
+#: data/achievements.cfg:4
+msgid "Pocket Money"
+msgstr ""
+
+#: data/achievements.cfg:5
+msgid "Collect ten coins"
+msgstr ""
 
 #: data/level/airplane-boss.cfg:11
 #, fuzzy
@@ -73,21 +82,21 @@ msgstr "Bene, questo è tutto."
 msgid "The Long Haul"
 msgstr ""
 
-#: data/level/autumn-town.cfg:11
+#: data/level/autumn-town.cfg:14
 #, fuzzy
 msgid "Autumn Town"
 msgstr "Città d'Autunno"
 
-#: data/level/bombing-fools.cfg:11
+#: data/level/bombing-fools.cfg:14
 #, fuzzy
 msgid "Bombing Fools"
 msgstr "Folli da Bombardamento"
 
-#: data/level/bon-bosque.cfg:10
+#: data/level/bon-bosque.cfg:13
 msgid "Bon Bosque"
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1359
+#: data/level/bon-bosque.cfg:1434
 msgid ""
 "Well, you made it! Now just up ahead\n"
 "there is a gate. If you can get\n"
@@ -102,7 +111,7 @@ msgstr ""
 "Si dice ci sia una porta di entrata diretta\n"
 "per il recinto di Milgram dentro le caverne."
 
-#: data/level/bon-bosque.cfg:1361
+#: data/level/bon-bosque.cfg:1436
 msgid ""
 "Whoah, a bunch of caverns now?\n"
 "This seems like it's harder than\n"
@@ -112,7 +121,7 @@ msgstr ""
 "Questo sembra più difficile di quanto\n"
 "mi abbia fatto credere l'anziano!"
 
-#: data/level/bon-bosque.cfg:1362
+#: data/level/bon-bosque.cfg:1437
 msgid ""
 "I guess the forests have become\n"
 "infested over the years. Hopefully\n"
@@ -122,7 +131,7 @@ msgstr ""
 "infestate nel corso degli anni. Speriamo\n"
 "che le caverne non siano peggio!"
 
-#: data/level/bon-bosque.cfg:1364
+#: data/level/bon-bosque.cfg:1439
 msgid ""
 "I hope not. Thank you for guiding me\n"
 "and meeting me here."
@@ -130,7 +139,7 @@ msgstr ""
 "Spero di no. Grazie per avermi guidato\n"
 "ed incotrato qui."
 
-#: data/level/bon-bosque.cfg:1365
+#: data/level/bon-bosque.cfg:1440
 #, fuzzy
 msgid ""
 "You're welcome, friend. Naturally I\n"
@@ -145,7 +154,7 @@ msgstr ""
 "vedremo. State attento e date a Milgram\n"
 "una lezione per tutti noi!"
 
-#: data/level/bug-mining.cfg:10
+#: data/level/bug-mining.cfg:13
 #, fuzzy
 msgid "Bug Mining"
 msgstr "Miniera degli Insetti"
@@ -168,7 +177,7 @@ msgstr ""
 "Devo salire... Ci deve essere un \n"
 "modo per attivare questo ascensore."
 
-#: data/level/caverns-of-holes.cfg:11
+#: data/level/caverns-of-holes.cfg:14
 #, fuzzy
 msgid "Caverns of Holes"
 msgstr "Caverna dei Buchi"
@@ -1229,7 +1238,7 @@ msgstr ""
 msgid "Now what?"
 msgstr ""
 
-#: data/level/darkness-central.cfg:11
+#: data/level/darkness-central.cfg:14
 msgid "Darkness Central"
 msgstr ""
 
@@ -1253,11 +1262,11 @@ msgstr ""
 msgid "The Entrance"
 msgstr ""
 
-#: data/level/eerie-arbor.cfg:11
+#: data/level/eerie-arbor.cfg:14
 msgid "Eerie Arbor"
 msgstr ""
 
-#: data/level/fast-lane.cfg:10
+#: data/level/fast-lane.cfg:13
 msgid "Fast Lane"
 msgstr ""
 
@@ -1417,7 +1426,7 @@ msgstr ""
 msgid "Gloomy Glade"
 msgstr ""
 
-#: data/level/gnarled-knoll.cfg:13
+#: data/level/gnarled-knoll.cfg:14
 msgid "Gnarled Knoll"
 msgstr ""
 
@@ -1733,29 +1742,29 @@ msgstr ""
 msgid "Have fun!"
 msgstr ""
 
-#: data/level/hanging-platforms.cfg:11
+#: data/level/hanging-platforms.cfg:14
 msgid "Hanging Platforms"
 msgstr ""
 
-#: data/level/hanging-platforms.cfg:3737
+#: data/level/hanging-platforms.cfg:3662
 msgid ""
 "Well, I guess I'm entering Milgram's\n"
 "castle now. I made it through the caves!"
 msgstr ""
 
-#: data/level/hidden-depths.cfg:11
+#: data/level/hidden-depths.cfg:14
 msgid "Hidden Depths"
 msgstr ""
 
-#: data/level/hidden-depths.cfg:3780
+#: data/level/hidden-depths.cfg:3806
 msgid "I'd better be careful."
 msgstr ""
 
-#: data/level/hidden-depths.cfg:3780
+#: data/level/hidden-depths.cfg:3806
 msgid "This is a very deep chasm..."
 msgstr ""
 
-#: data/level/hidden-depths.cfg:4589
+#: data/level/hidden-depths.cfg:4615
 msgid "AAAAAAH! I CAN'T FLY!"
 msgstr ""
 
@@ -2016,19 +2025,19 @@ msgstr ""
 msgid "Aimless Souls"
 msgstr ""
 
-#: data/level/pinecone-park.cfg:11
+#: data/level/pinecone-park.cfg:14
 msgid "Pinecone Park"
 msgstr ""
 
-#: data/level/plagued-mine.cfg:11
+#: data/level/plagued-mine.cfg:14
 msgid "Plagued Mine"
 msgstr ""
 
-#: data/level/plagued-mine.cfg:3563
+#: data/level/plagued-mine.cfg:3613
 msgid "These crazy bombers are everywhere!"
 msgstr ""
 
-#: data/level/plagued-mine.cfg:3706
+#: data/level/plagued-mine.cfg:3756
 msgid "Yikes!"
 msgstr ""
 
@@ -2044,15 +2053,15 @@ msgstr ""
 msgid "Woah! A flying plant!"
 msgstr ""
 
-#: data/level/rocky-roots.cfg:10
+#: data/level/rocky-roots.cfg:13
 msgid "Rocky Roots"
 msgstr ""
 
-#: data/level/rocky-roots.cfg:1152
+#: data/level/rocky-roots.cfg:1178
 msgid "Bleh. A locked door."
 msgstr ""
 
-#: data/level/rocky-roots.cfg:1152
+#: data/level/rocky-roots.cfg:1178
 msgid "There must be a way around it."
 msgstr ""
 
@@ -2258,6 +2267,10 @@ msgstr ""
 
 #: data/level/senic-beach.cfg:12
 msgid "Geautatha Point"
+msgstr ""
+
+#: data/level/silky-silence.cfg:13
+msgid "Silky Silence"
 msgstr ""
 
 #: data/level/splash-hop.cfg:11
@@ -2672,7 +2685,7 @@ msgstr "RINGRAZIAMENTI:"
 msgid "(Level Template)"
 msgstr ""
 
-#: data/level/test2.cfg:14
+#: data/level/test2.cfg:13
 msgid "(Test Level)"
 msgstr ""
 
@@ -2970,12 +2983,12 @@ msgstr ""
 msgid "Hidden Room"
 msgstr "Stanza Nascosta"
 
-#: data/level/twisted-trees.cfg:13
+#: data/level/twisted-trees.cfg:14
 #, fuzzy
 msgid "Twisted Trees"
 msgstr "Alberi Storti"
 
-#: data/level/underground-pool.cfg:12
+#: data/level/underground-pool.cfg:14
 #, fuzzy
 msgid "Underground Pool"
 msgstr "Stagno Sotterraneo"
@@ -2990,7 +3003,7 @@ msgstr "Sala d'Attesa"
 msgid "Wandering Passage"
 msgstr "Passaggio Errante"
 
-#: data/level/watery-alley.cfg:11
+#: data/level/watery-alley.cfg:14
 #, fuzzy
 msgid "Watery Alley"
 msgstr "Vicolo Acquoso"
@@ -3805,6 +3818,19 @@ msgstr "Non hai abbastanza denaro."
 msgid "Do you want to buy the {consts.name}?"
 msgstr ""
 
+#: data/objects/crazy-stuff/jb-background.cfg:7
+msgid "error"
+msgstr ""
+
+#: data/objects/crazy-stuff/jb-background.cfg:18
+#, fuzzy
+msgid "Runtime: "
+msgstr "Tempo:"
+
+#: data/objects/crazy-stuff/jb-background.cfg:27
+msgid " -- paused -- "
+msgstr ""
+
 #: data/objects/items/max_heart_object.cfg:18
 #, fuzzy
 msgid ""
@@ -4060,36 +4086,40 @@ msgstr "SU"
 msgid "DOWN"
 msgstr "GIU"
 
-#: src/main.cpp:284
+#: src/main.cpp:285
 msgid "Loading level"
 msgstr "Caricamento Livello"
 
-#: src/pause_game_dialog.cpp:41
+#: src/pause_game_dialog.cpp:44
 msgid "Music Volume:"
 msgstr "Volume Musica:"
 
-#: src/pause_game_dialog.cpp:43
+#: src/pause_game_dialog.cpp:46
 msgid "Sound Volume:"
 msgstr "Volume Effetti:"
 
-#: src/pause_game_dialog.cpp:58
+#: src/pause_game_dialog.cpp:61
 msgid "Resume"
 msgstr ""
 
-#: src/pause_game_dialog.cpp:59
+#: src/pause_game_dialog.cpp:62
 msgid "Controls..."
 msgstr "Controlli..."
 
-#: src/pause_game_dialog.cpp:60
+#: src/pause_game_dialog.cpp:63
 #, fuzzy
 msgid "Return to Titlescreen"
 msgstr "Ritorno ai Titoli"
 
-#: src/pause_game_dialog.cpp:61
+#: src/pause_game_dialog.cpp:64
 msgid "Exit Game"
 msgstr "Esci"
 
-#: src/pause_game_dialog.cpp:62
+#: src/pause_game_dialog.cpp:65
 #, fuzzy
 msgid "Reverse A and B"
 msgstr "Inverti A e B"
+
+#: src/pause_game_dialog.cpp:67
+msgid "OpenFeint"
+msgstr ""

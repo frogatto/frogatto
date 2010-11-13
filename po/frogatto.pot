@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-05 18:19+0100\n"
+"POT-Creation-Date: 2010-11-13 02:21-0200"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2050,6 +2050,10 @@ msgstr ""
 msgid "Geautatha Point"
 msgstr ""
 
+#: data/level/silky-silence.cfg:13
+msgid "Silky Silence"
+msgstr ""
+
 #: data/level/splash-hop.cfg:11
 msgid "Splash, Hop"
 msgstr ""
@@ -2462,7 +2466,7 @@ msgstr ""
 msgid "(Level Template)"
 msgstr ""
 
-#: data/level/test2.cfg:14
+#: data/level/test2.cfg:13
 msgid "(Test Level)"
 msgstr ""
 
@@ -3761,10 +3765,6 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: src/custom_object_functions.cpp:1225
-msgid "Achievement Unlocked: "
-msgstr ""
-
 #: src/key_button.cpp:63
 msgid "LEFT"
 msgstr ""
@@ -3781,7 +3781,7 @@ msgstr ""
 msgid "DOWN"
 msgstr ""
 
-#: src/main.cpp:287
+#: src/main.cpp:285
 msgid "Loading level"
 msgstr ""
 
