@@ -345,7 +345,7 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus, boo
 		const const_graphical_font_ptr title_font = graphical_font::get("white_outline");
 		const const_graphical_font_ptr main_font = graphical_font::get("door_label");
 
-		const std::string title_text = "Achievement Unlocked!";
+		const std::string title_text = _("Achievement Unlocked!");
 		const std::string name = current_achievement->name();
 		const std::string description = "(" + current_achievement->description() + ")";
 		const int width = std::max<int>(std::max<int>(
