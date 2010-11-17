@@ -72,6 +72,12 @@ bool g_draw_stats = false;
 void toggle_draw_stats() {
 	g_draw_stats = !g_draw_stats;
 }
+
+bool g_draw_grid = true;
+
+void toggle_draw_grid() {
+	g_draw_grid = !g_draw_grid;
+}
 }
 
 class editor_menu_dialog : public gui::dialog
@@ -129,7 +135,8 @@ class editor_menu_dialog : public gui::dialog
 			"Zoom In", "z", boost::bind(&editor::zoom_in, &editor_),
 			editor_.get_level().show_foreground() ? "Hide Foreground" : "Show Foreground", "f", boost::bind(&level::set_show_foreground, &editor_.get_level(), !editor_.get_level().show_foreground()),
 			editor_.get_level().show_background() ? "Hide Background" : "Show Background", "b", boost::bind(&level::set_show_background, &editor_.get_level(), !editor_.get_level().show_background()),
-			g_draw_stats ? "Hide Stats" : "Show Stats", "", toggle_draw_stats
+			g_draw_stats ? "Hide Stats" : "Show Stats", "", toggle_draw_stats,
+			g_draw_grid ? "Hide Grid" : "Show Grid", "", toggle_draw_grid
 		};
 
 		std::vector<menu_item> res;
@@ -2184,14 +2191,16 @@ void editor::draw() const
 	}
 
 	//draw grid
-	glDisable(GL_TEXTURE_2D);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	varray.clear();
-	glColor4ub(255, 255, 255, 64);
-	for(int x = -TileSize - (xpos_/zoom_)%TileSize; x < graphics::screen_width(); x += 32/zoom_) {
-		varray.push_back(x); varray.push_back(0);
-		varray.push_back(x); varray.push_back(graphics::screen_height());
-	}
+	if(g_draw_grid){
+	   glDisable(GL_TEXTURE_2D);
+	   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	   varray.clear();
+	   glColor4ub(255, 255, 255, 64);
+	   for(int x = -TileSize - (xpos_/zoom_)%TileSize; x < graphics::screen_width(); x += 32/zoom_) {
+		   varray.push_back(x); varray.push_back(0);
+		   varray.push_back(x); varray.push_back(graphics::screen_height());
+	   }
+	}   
 
 	for(int y = -TileSize - (ypos_/zoom_)%TileSize; y < graphics::screen_height(); y += 32/zoom_) {
 		varray.push_back(0); varray.push_back(y);
