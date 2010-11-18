@@ -17,9 +17,7 @@ namespace
 {
 	rect left_arrow, right_arrow, down_arrow, up_arrow, a_button, c_button, interact_button;
 
-	const int underwater_circle_rad = 120;
-	int underwater_circle_x = 150;
-	int underwater_circle_y = 150; //changed to be relative to the bottom by setup_rects()
+	int underwater_circle_rad, underwater_circle_x, underwater_circle_y;
 
 	bool is_underwater = false;
 	bool can_interact = false;
@@ -38,6 +36,11 @@ namespace
 		
 		wml::node_ptr schemes = wml::parse_wml_from_file("data/control_schemes.cfg");
 		wml::node_ptr scheme = wml::find_child_by_attribute(schemes, "control_scheme", "id", "iphone_classic");
+		
+		underwater_circle_x = game_logic::formula(wml::get_str(scheme, "underwater_circle_x")).execute().as_int();
+		underwater_circle_y = game_logic::formula(wml::get_str(scheme, "underwater_circle_y")).execute().as_int();
+		underwater_circle_rad = game_logic::formula(wml::get_str(scheme, "underwater_circle_rad")).execute().as_int();
+		
 		FOREACH_WML_CHILD(node, scheme, "button")
 		{
 			variant r = game_logic::formula(wml::get_str(node, "hit_rect")).execute();
