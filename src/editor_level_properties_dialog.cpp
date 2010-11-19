@@ -23,7 +23,8 @@ namespace editor_dialogs
 {
 
 namespace {
-void set_segmented_level(level* lvl, bool value)
+
+void set_segmented_level_width(editor_level_properties_dialog* d, level* lvl, bool value)
 {
 	if(value) {
 		//make sure the segment width is divisible by the tile size.
@@ -37,7 +38,28 @@ void set_segmented_level(level* lvl, bool value)
 	} else {
 		lvl->set_segment_width(0);
 	}
+
+	d->init();
 }
+
+void set_segmented_level_height(editor_level_properties_dialog* d, level* lvl, bool value)
+{
+	if(value) {
+		//make sure the segment height is divisible by the tile size.
+		int height = lvl->boundaries().h();
+		while(height%32) {
+			++height;
+		}
+		lvl->set_segment_height(height);
+		lvl->set_boundaries(rect(lvl->boundaries().x(), lvl->boundaries().y(),
+		                         lvl->boundaries().w(), height));
+	} else {
+		lvl->set_segment_height(0);
+	}
+	
+	d->init();
+}
+
 }
 
 editor_level_properties_dialog::editor_level_properties_dialog(editor& e)
@@ -79,8 +101,22 @@ void editor_level_properties_dialog::init()
 	g->add_col(widget_ptr(new button(widget_ptr(new label("Set", graphics::color_white())), boost::bind(&editor_level_properties_dialog::change_previous_level, this))));
 	add_widget(g);
 
-	checkbox* segmented_checkbox = new checkbox("Segmented Level", editor_.get_level().segment_width() != 0, boost::bind(set_segmented_level, &editor_.get_level(), _1));
-	add_widget(widget_ptr(segmented_checkbox));
+	checkbox* hz_segmented_checkbox = new checkbox("Horizontally Segmented Level", editor_.get_level().segment_width() != 0, boost::bind(set_segmented_level_width, this, &editor_.get_level(), _1));
+	widget_ptr hz_checkbox(hz_segmented_checkbox);
+	add_widget(hz_checkbox);
+
+	checkbox* vt_segmented_checkbox = new checkbox("Vertically Segmented Level", editor_.get_level().segment_height() != 0, boost::bind(set_segmented_level_height, this, &editor_.get_level(), _1));
+	widget_ptr vt_checkbox(vt_segmented_checkbox);
+	add_widget(vt_checkbox);
+
+	if(editor_.get_level().segment_height() != 0) {
+		remove_widget(hz_checkbox);
+	}
+
+	if(editor_.get_level().segment_width() != 0) {
+		remove_widget(vt_checkbox);
+	}
+
 }
 
 void editor_level_properties_dialog::change_title()

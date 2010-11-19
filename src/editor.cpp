@@ -357,7 +357,7 @@ public:
 
 		grid_ptr grid(new gui::grid(3));
 		for(int n = 0; n != editor::NUM_TOOLS; ++n) {
-			if(n == editor::TOOL_EDIT_SEGMENTS && editor_.get_level().segment_width() == 0) {
+			if(n == editor::TOOL_EDIT_SEGMENTS && editor_.get_level().segment_width() == 0 && editor_.get_level().segment_height() == 0) {
 				continue;
 			}
 
@@ -480,10 +480,20 @@ rect modify_selected_rect(const editor& e, rect boundaries, int xpos, int ypos) 
 
 	if(resizing_top_level_edge) {
 		boundaries = rect::from_coordinates(boundaries.x(), y, boundaries.x2(), boundaries.y2());
+		if(e.get_level().segment_height() > 0) {
+			while(boundaries.h()%e.get_level().segment_height() != 0) {
+				boundaries = rect(boundaries.x(), boundaries.y()-1, boundaries.w(), boundaries.h()+1);
+			}
+		}
 	}
 
 	if(resizing_bottom_level_edge) {
 		boundaries = rect::from_coordinates(boundaries.x(), boundaries.y(), boundaries.x2(), y);
+		if(e.get_level().segment_height() > 0) {
+			while(boundaries.h()%e.get_level().segment_height() != 0) {
+				boundaries = rect(boundaries.x(), boundaries.y(), boundaries.w(), boundaries.h()+1);
+			}
+		}
 	}
 
 	return boundaries;
@@ -1222,7 +1232,8 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 	if(tool() == TOOL_EDIT_SEGMENTS) {
 		if(point_in_rect(point(anchorx_, anchory_), lvl_->boundaries())) {
 			const int xpos = anchorx_ - lvl_->boundaries().x();
-			const int segment = xpos/lvl_->segment_width();
+			const int ypos = anchory_ - lvl_->boundaries().y();
+			const int segment = lvl_->segment_width() ? xpos/lvl_->segment_width() : ypos/lvl_->segment_height();
 
 			if(selected_segment_ == -1) {
 				selected_segment_ = segment;
@@ -2176,17 +2187,21 @@ void editor::draw() const
 	glPopMatrix();
 
 	//draw the difficulties of segments.
-	if(lvl_->segment_width() > 0) {
+	if(lvl_->segment_width() > 0 || lvl_->segment_height() > 0) {
+		const int seg_width = lvl_->segment_width() ? lvl_->segment_width() : lvl_->boundaries().w();
+		const int seg_height = lvl_->segment_height() ? lvl_->segment_height() : lvl_->boundaries().h();
 		rect boundaries = modify_selected_rect(*this, lvl_->boundaries(), selectx, selecty);
-		const int y1 = boundaries.y()/zoom_;
 		int seg = 0;
-		for(int xpos = boundaries.x(); xpos < boundaries.x2(); xpos += lvl_->segment_width()) {
-			const int difficulty = lvl_->get_var(formatter() << "segment_difficulty_start_" << seg).as_int();
-//			if(difficulty) {
-				graphics::blit_texture(font::render_text(formatter() << "Difficulty: " << difficulty, graphics::color_white(), 14), (xpos - xpos_)/zoom_, y1 - 20 - ypos_/zoom_);
-//			}
+		for(int ypos = boundaries.y(); ypos < boundaries.y2(); ypos += seg_height) {
+			const int y1 = ypos/zoom_;
+			for(int xpos = boundaries.x(); xpos < boundaries.x2(); xpos += seg_width) {
+				const int difficulty = lvl_->get_var(formatter() << "segment_difficulty_start_" << seg).as_int();
+//				if(difficulty) {
+					graphics::blit_texture(font::render_text(formatter() << "Difficulty: " << difficulty, graphics::color_white(), 14), (xpos - xpos_)/zoom_, y1 - 20 - ypos_/zoom_);
+//				}
 			
-			++seg;
+				++seg;
+			}
 		}
 	}
 
@@ -2277,6 +2292,17 @@ void editor::draw() const
 				normal_color.add_to_vector(&carray);
 			}
 		}
+
+		if(lvl_->segment_height() > 0) {
+			for(int ypos = boundaries.y() + lvl_->segment_height(); ypos < boundaries.y2(); ypos += lvl_->segment_height()) {
+				varray.push_back(x1 - xpos_/zoom_);
+				varray.push_back((ypos - ypos_)/zoom_);
+				varray.push_back(x2 - xpos_/zoom_);
+				varray.push_back((ypos - ypos_)/zoom_);
+				normal_color.add_to_vector(&carray);
+				normal_color.add_to_vector(&carray);
+			}
+		}
 		
 		glEnableClientState(GL_COLOR_ARRAY);
 		glVertexPointer(2, GL_FLOAT, 0, &varray.front());
@@ -2298,7 +2324,9 @@ void editor::draw() const
 	}
 
 	if(tool() == TOOL_EDIT_SEGMENTS && selected_segment_ >= 0) {
-		rect area = rect(lvl_->boundaries().x() + selected_segment_*lvl_->segment_width(), lvl_->boundaries().y(), lvl_->segment_width(), lvl_->boundaries().h());
+		rect area = rect(lvl_->boundaries().x() + selected_segment_*lvl_->segment_width(), lvl_->boundaries().y() + selected_segment_*lvl_->segment_height(),
+		lvl_->segment_width() ? lvl_->segment_width() : lvl_->boundaries().w(),
+		lvl_->segment_height() ? lvl_->segment_height() : lvl_->boundaries().h());
 		area = rect((area.x() - xpos_)/zoom_, (area.y() - ypos_)/zoom_,
 		            area.w()/zoom_, area.h()/zoom_);
 		graphics::draw_rect(area, graphics::color(255, 255, 0, 64));
@@ -2307,7 +2335,9 @@ void editor::draw() const
 		if(next.is_list()) {
 			for(int n = 0; n != next.num_elements(); ++n) {
 				const int segment = next[n].as_int();
-				rect area = rect(lvl_->boundaries().x() + segment*lvl_->segment_width(), lvl_->boundaries().y(), lvl_->segment_width(), lvl_->boundaries().h());
+				rect area = rect(lvl_->boundaries().x() + segment*lvl_->segment_width(), lvl_->boundaries().y() + selected_segment_*lvl_->segment_height(),
+				lvl_->segment_width() ? lvl_->segment_width() : lvl_->boundaries().w(),
+				lvl_->segment_height() ? lvl_->segment_height() : lvl_->boundaries().h());
 				area = rect((area.x() - xpos_)/zoom_, (area.y() - ypos_)/zoom_,
 				            area.w()/zoom_, area.h()/zoom_);
 				graphics::draw_rect(area, graphics::color(255, 0, 0, 64));

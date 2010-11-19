@@ -98,7 +98,7 @@ level::level(const std::string& level_cfg)
       editor_tile_updates_frozen_(0), zoom_level_(1),
 	  palettes_used_(0),
 	  background_palette_(-1),
-	  segment_width_(0)
+	  segment_width_(0), segment_height_(0)
 {
 	std::cerr << "in level constructor...\n";
 	const int start_time = SDL_GetTicks();
@@ -184,6 +184,9 @@ level::level(const std::string& level_cfg)
 
 	segment_width_ = wml::get_int(node, "segment_width");
 	ASSERT_LOG(segment_width_%32 == 0, "segment_width in " << id_ << " is not divisible by 32");
+
+	segment_height_ = wml::get_int(node, "segment_height");
+	ASSERT_LOG(segment_height_%32 == 0, "segment_height in " << id_ << " is not divisible by 32");
 
 	music_ = node->attr("music");
 	replay_data_ = node->attr("replay_data");
@@ -466,29 +469,35 @@ void level::load_character(wml::const_node_ptr c)
 void level::finish_loading()
 {
 	std::vector<sub_level_data> sub_levels;
-	if(segment_width_ > 0 && !editor_) {
+	if((segment_width_ > 0 || segment_height_ > 0) && !editor_) {
+
+		const int seg_width = segment_width_ > 0 ? segment_width_ : boundaries_.w();
+		const int seg_height = segment_height_ > 0 ? segment_height_ : boundaries_.h();
+
 		int segment_number = 0;
-		for(int x = boundaries_.x(); x < boundaries_.x2(); x += segment_width_) {
-			level* sub_level = new level(*this);
-			const rect bounds(x, boundaries_.y(), segment_width_, boundaries_.h());
+		for(int y = boundaries_.y(); y < boundaries_.y2(); y += seg_height) {
+			for(int x = boundaries_.x(); x < boundaries_.x2(); x += seg_width) {
+				level* sub_level = new level(*this);
+				const rect bounds(x, y, seg_width, seg_height);
 
-			sub_level->boundaries_ = bounds;
-			sub_level->tiles_.erase(std::remove_if(sub_level->tiles_.begin(), sub_level->tiles_.end(), boost::bind(level_tile_not_in_rect, bounds, _1)), sub_level->tiles_.end());
-			sub_level->solid_.clear();
-			sub_level->standable_.clear();
-			foreach(const level_tile& t, sub_level->tiles_) {
-				sub_level->add_tile_solid(t);
+				sub_level->boundaries_ = bounds;
+				sub_level->tiles_.erase(std::remove_if(sub_level->tiles_.begin(), sub_level->tiles_.end(), boost::bind(level_tile_not_in_rect, bounds, _1)), sub_level->tiles_.end());
+				sub_level->solid_.clear();
+				sub_level->standable_.clear();
+				foreach(const level_tile& t, sub_level->tiles_) {
+					sub_level->add_tile_solid(t);
+				}
+				sub_level->prepare_tiles_for_drawing();
+
+				sub_level_data data;
+				data.lvl.reset(sub_level);
+				data.xbase = x - boundaries_.x();
+				data.ybase = 0;
+				data.xoffset = data.yoffset = 0;
+				data.active = false;
+				sub_levels.push_back(data);
+				++segment_number;
 			}
-			sub_level->prepare_tiles_for_drawing();
-
-			sub_level_data data;
-			data.lvl.reset(sub_level);
-			data.xbase = x - boundaries_.x();
-			data.ybase = 0;
-			data.xoffset = data.yoffset = 0;
-			data.active = false;
-			sub_levels.push_back(data);
-			++segment_number;
 		}
 
 		const std::vector<entity_ptr> objects = get_chars();
@@ -573,17 +582,21 @@ void level::finish_loading()
 	}
 
 	if(!sub_levels.empty()) {
+		const int seg_width = segment_width_ > 0 ? segment_width_ : boundaries_.w();
+		const int seg_height = segment_height_ > 0 ? segment_height_ : boundaries_.h();
 		int segment_number = 0;
-		for(int x = boundaries_.x(); x < boundaries_.x2(); x += segment_width_) {
-			const std::vector<entity_ptr> objects = get_chars();
-			foreach(const entity_ptr& obj, objects) {
-				if(!obj->is_human() && obj->midpoint().x >= x && obj->midpoint().x < x + segment_width_ && obj->midpoint().y >= boundaries_.y() && obj->midpoint().y < boundaries_.y2()) {
-					sub_levels[segment_number].lvl->add_character(obj);
-					remove_character(obj);
+		for(int y = boundaries_.y(); y < boundaries_.y2(); y += seg_height) {
+			for(int x = boundaries_.x(); x < boundaries_.x2(); x += seg_width) {
+				const std::vector<entity_ptr> objects = get_chars();
+				foreach(const entity_ptr& obj, objects) {
+					if(!obj->is_human() && obj->midpoint().x >= x && obj->midpoint().x < x + segment_width_ && obj->midpoint().y >= boundaries_.y() && obj->midpoint().y < boundaries_.y2()) {
+						sub_levels[segment_number].lvl->add_character(obj);
+						remove_character(obj);
+					}
 				}
-			}
 
-			++segment_number;
+				++segment_number;
+			}
 		}
 	}
 }
@@ -888,6 +901,7 @@ wml::node_ptr level::write() const
 	res->set_attr("title", title_);
 	res->set_attr("music", music_);
 	res->set_attr("segment_width", formatter() << segment_width_);
+	res->set_attr("segment_height", formatter() << segment_height_);
 	if(gui_algo_str_ != "default") {
 		res->set_attr("gui", gui_algo_str_);
 	}
@@ -3099,6 +3113,8 @@ variant level::get_value(const std::string& key) const
 		return variant(&v);
 	} else if(key == "segment_width") {
 		return variant(segment_width_);
+	} else if(key == "segment_height") {
+		return variant(segment_height_);
 	} else if(key == "num_segments") {
 		return variant(sub_levels_.size());
 	} else {

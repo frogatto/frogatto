@@ -271,6 +271,9 @@ public:
 	int segment_width() const { return segment_width_; }
 	void set_segment_width(int width) { segment_width_ = width; }
 
+	int segment_height() const { return segment_height_; }
+	void set_segment_height(int height) { segment_height_ = height; }
+
 	variant get_var(const std::string& str) const {
 		std::map<std::string, variant>::const_iterator itor = vars_.find(str);
 		if(itor != vars_.end()) return itor->second;
@@ -504,7 +507,7 @@ private:
 
 	int background_palette_;
 
-	int segment_width_;
+	int segment_width_, segment_height_;
 
 	struct sub_level_data {
 		boost::intrusive_ptr<level> lvl;
