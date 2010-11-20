@@ -491,8 +491,8 @@ void level::finish_loading()
 
 				sub_level_data data;
 				data.lvl.reset(sub_level);
-				data.xbase = x - boundaries_.x();
-				data.ybase = 0;
+				data.xbase = x;
+				data.ybase = y;
 				data.xoffset = data.yoffset = 0;
 				data.active = false;
 				sub_levels.push_back(data);
@@ -3457,6 +3457,8 @@ void level::add_sub_level(const std::string& lvl, int xoffset, int yoffset, bool
 
 	itor->second.xoffset = xoffset - itor->second.xbase;
 	itor->second.yoffset = yoffset - itor->second.ybase;
+
+	std::cerr << "ADDING SUB LEVEL: " << lvl << "(" << itor->second.lvl->boundaries() << ") " << itor->second.xbase << ", " << itor->second.ybase << " -> " << itor->second.xoffset << ", " << itor->second.yoffset << "\n";
 
 	itor->second.active = true;
 	level& sub = *itor->second.lvl;

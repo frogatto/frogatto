@@ -2335,7 +2335,7 @@ void editor::draw() const
 		if(next.is_list()) {
 			for(int n = 0; n != next.num_elements(); ++n) {
 				const int segment = next[n].as_int();
-				rect area = rect(lvl_->boundaries().x() + segment*lvl_->segment_width(), lvl_->boundaries().y() + selected_segment_*lvl_->segment_height(),
+				rect area = rect(lvl_->boundaries().x() + segment*lvl_->segment_width(), lvl_->boundaries().y() + segment*lvl_->segment_height(),
 				lvl_->segment_width() ? lvl_->segment_width() : lvl_->boundaries().w(),
 				lvl_->segment_height() ? lvl_->segment_height() : lvl_->boundaries().h());
 				area = rect((area.x() - xpos_)/zoom_, (area.y() - ypos_)/zoom_,
