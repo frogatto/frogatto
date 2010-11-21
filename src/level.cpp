@@ -3542,7 +3542,7 @@ void level::adjust_level_offset(int xoffset, int yoffset)
 	for(std::map<std::string, sub_level_data>::iterator i = sub_levels_.begin();
 	    i != sub_levels_.end(); ++i) {
 		if(i->second.active) {
-			add_sub_level(i->first, i->second.xoffset + xoffset + i->second.xbase, i->second.yoffset + yoffset, false);
+			add_sub_level(i->first, i->second.xoffset + xoffset + i->second.xbase, i->second.yoffset + yoffset + i->second.ybase, false);
 		}
 	}
 
