@@ -473,7 +473,7 @@ private:
 			return variant(static_cast<int>(0));
 		}
 		//std::cerr << "got: " << a << ", " << b << "\n" << "prc: " << sin(a/b)*100 << "\n";
-		return variant(static_cast<int>(sin(a/b)*100)); //asin()?
+		return variant(static_cast<int>(round(sin(a/b)*100))); //asin()?
 	}
 };
 
@@ -491,7 +491,7 @@ private:
 		const float dst = args()[1]->evaluate(variables).as_int();
 		const float x = -1;
 		const float y = -1;
-		std::cerr << "got: " << a << ", " << b << ", " << ang << ", " << dst << "\n" << "prc: " << 0 << "\n";
+		//std::cerr << "got: " << a << ", " << b << ", " << ang << ", " << dst << "\n" << "prc: " << 0 << "\n";
 		return variant(static_cast<int>(0));
 	}
 };
