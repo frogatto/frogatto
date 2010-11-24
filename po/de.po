@@ -2,7 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-13 12:42+0100\n"
+"POT-Creation-Date: 2010-11-24 00:18-0200PO-Revision-Date: YEAR-MO-DA HO:MI"
+"+ZONE\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Philipp Zabel <philipp.zabel@gmail.com>\n"
 "Language-Team: \n"
@@ -2276,51 +2277,81 @@ msgstr "Zweifellos einer von Milgrams Schergen."
 
 #: data/level/secluded-hut.cfg:1211
 msgid ""
-"I don't know if they've taken notice\n"
-"of us already, or if that was coincidence,\n"
-"but you'd better watch your back."
+"They may have seen me talking to you,\n"
+"I can't be sure."
 msgstr ""
-"Ich weiß nicht, ob sie uns schon bemerkt\n"
-"haben, oder ob das Zufall war,\n"
-"aber geben Sie besser acht."
-
-#: data/level/secluded-hut.cfg:1212
-msgid ""
-"Especially if you're going further east,\n"
-"which is towards the town."
-msgstr ""
-"Besonders wenn Sie weiter nach Osten gehen,\n"
-"wo die Stadt liegt."
 
 #: data/level/secluded-hut.cfg:1213
-msgid ""
-"Anyhow, you'll be happy to know\n"
-"we've patched up that bridge."
+msgid "Wait, what?  Milgram?"
 msgstr ""
-"Wie auch immer, Sie werden froh\n"
-"sein, zu erfahren, dass wir die\n"
-"Brücke wieder repariert haben."
 
 #: data/level/secluded-hut.cfg:1215
-msgid "Dang.  That was fast."
-msgstr "Mannomann!  Das ging aber fix."
+msgid ""
+"What's he doing\n"
+"on this side of the island?"
+msgstr ""
 
 #: data/level/secluded-hut.cfg:1216
-msgid ""
-"Yes, yes.  Modular construction and all.\n"
-"Impressive what they can do these days."
+msgid "You still haven't heard, then."
 msgstr ""
-"Ja, ja. Modulare Konstruktion, das.\n"
-"Schon beeindruckend, was heutzutage\n"
-"möglich ist."
 
 #: data/level/secluded-hut.cfg:1217
 msgid ""
-"By the way, there's a fellow who lives\n"
-"here whom you might want to visit."
+"Milgram's men showed up\n"
+"early this morning, in town.\n"
+"They've taken the whole place hostage;\n"
+"something about \"collecting on a debt.\""
 msgstr ""
 
 #: data/level/secluded-hut.cfg:1218
+msgid ""
+"I don't know the details.\n"
+"I flew out of there as soon as I could,\n"
+"looking for anyone who could help."
+msgstr ""
+
+#: data/level/secluded-hut.cfg:1220
+msgid ""
+"That certainly...\n"
+"changes my plans for the day."
+msgstr ""
+
+#: data/level/secluded-hut.cfg:1222
+msgid "Wow, uhm..."
+msgstr ""
+
+#: data/level/secluded-hut.cfg:1224
+msgid ""
+"I don't think I can promise anything,\n"
+"but if the opportunity presents itself,\n"
+"who knows?"
+msgstr ""
+
+#: data/level/secluded-hut.cfg:1225
+msgid ""
+"Yes, it's unreasonable to expect\n"
+"someone to just charge in there."
+msgstr ""
+
+#: data/level/secluded-hut.cfg:1226
+msgid "I'm at a loss for a plan, myself."
+msgstr ""
+
+#: data/level/secluded-hut.cfg:1227
+msgid ""
+"Nevertheless, I'd better be going.\n"
+"Hopefully, we'll fix that bridge soon.\n"
+"Impressive how fast they can do that,\n"
+"with modular construction and all."
+msgstr ""
+
+#: data/level/secluded-hut.cfg:1228
+msgid ""
+"In the meantime, you might benefit from\n"
+"visiting the fellow who lives here."
+msgstr ""
+
+#: data/level/secluded-hut.cfg:1229
 msgid ""
 "Bit of a recluse, but he's quite sharp.\n"
 "He lives on top of this rock column."
@@ -2329,17 +2360,17 @@ msgstr ""
 "ist ziemlich helle. Er wohnt oben auf\n"
 "dieser Steinsäule."
 
-#: data/level/secluded-hut.cfg:1220
+#: data/level/secluded-hut.cfg:1231
 msgid "And I get up there... how?"
 msgstr "Und wie soll ich da hochkommen?"
 
-#: data/level/secluded-hut.cfg:1224
+#: data/level/secluded-hut.cfg:1235
 msgid "Simple, just take to the air!"
 msgstr ""
 "Ganz einfach,\n"
 "schwingen Sie sich in die Lüfte!"
 
-#: data/level/secluded-hut.cfg:1227
+#: data/level/secluded-hut.cfg:1238
 msgid "You ... do realize I can't fly?"
 msgstr ""
 "Du weißt schon,\n"
@@ -2773,7 +2804,7 @@ msgstr ""
 msgid "(Level Template)"
 msgstr ""
 
-#: data/level/test2.cfg:13
+#: data/level/test2.cfg:11 data/level/test3.cfg:13 data/level/test4.cfg:11
 msgid "(Test Level)"
 msgstr ""
 
@@ -2977,110 +3008,36 @@ msgstr ""
 "Kein Interesse!"
 
 #: data/level/to-nenes-house.cfg:1919
-msgid "But the town is under attack!"
-msgstr "Aber die Stadt wird angegriffen!"
+msgid "But the town, you see ..."
+msgstr ""
 
 #: data/level/to-nenes-house.cfg:1921
-msgid "Wait .. WHAT?"
-msgstr "Warte .. WAS?"
-
-#: data/level/to-nenes-house.cfg:1922
 msgid ""
-"It's Milgram!\n"
-"You may remember him loaning a bunch\n"
-"of money to the elder, back in the day."
+"Not. Interested.\n"
+"Buzz off."
 msgstr ""
-"Es ist Milgram! - Vielleicht erinnern\n"
-"Sie sich, er hatte damals dem\n"
-"Ältesten eine Menge Geld geliehen."
+
+#: data/level/to-nenes-house.cfg:1923
+msgid ""
+"I don't care what you're preaching,\n"
+"go sell it to someone else."
+msgstr ""
 
 #: data/level/to-nenes-house.cfg:1924
-msgid ""
-"No... but,\n"
-"I think I see where this is going."
-msgstr ""
-"Nein... aber ich ahne schon\n"
-"worauf das hinausläuft."
-
-#: data/level/to-nenes-house.cfg:1925
-msgid ""
-"He's cordoned off the town, and won't\n"
-"let anyone leave until he's paid in full."
-msgstr ""
-"Er hat die Stadt abgeriegelt und lässt\n"
-"niemanden gehen bis er ausbezahlt wird."
-
-#: data/level/to-nenes-house.cfg:1925
-msgid "Milgram came to collect!"
-msgstr ""
-"Milgram ist gekommen um die\n"
-"Schulden einzufordern!"
+#, fuzzy
+msgid "Very well."
+msgstr "Ziemlich gutt."
 
 #: data/level/to-nenes-house.cfg:1927
-msgid "Yeesh. Sounds awful."
-msgstr "Yeesh, Klingt ja fürchterlich."
-
-#: data/level/to-nenes-house.cfg:1928
 msgid ""
-"Yes, we're desperate!\n"
-"We'd give ANYTHING if you can help!"
+"Someday, those door-to-door people\n"
+"will realize that kind of hard-sell tactic\n"
+"just annoys people."
 msgstr ""
-"Ja, wir sind verzweifelt!\n"
-"Wir würden ALLES dafür geben\n"
-"wenn Sie helfen können!"
 
-#: data/level/to-nenes-house.cfg:1930
-msgid "I'll accept that offer!"
-msgstr "Das Angebot nehm' ich an!"
-
-#: data/level/to-nenes-house.cfg:1931
-msgid "Er... I'm not sure I .."
-msgstr "Äh... Ich bin nicht sicher .."
-
-#: data/level/to-nenes-house.cfg:1934
-msgid ""
-"If I actually manage to save you,\n"
-"be prepared to pay ANY reward I ask."
+#: data/level/to-nenes-house.cfg:1929
+msgid "The sooner, the better."
 msgstr ""
-"Wenn ich euch tatsächlich rette,\n"
-"will ich JEGLICHE Belohnung die ich,\n"
-"fordere bezahlt bekommen."
-
-#: data/level/to-nenes-house.cfg:1936
-msgid ""
-"Yes, it's an absurd price,\n"
-"but you're asking the impossible."
-msgstr ""
-"Ja, es ist ein absurder Preis,\n"
-"aber ihr verlangt das Unmögliche."
-
-#: data/level/to-nenes-house.cfg:1937
-msgid ""
-"I suppose I can't say no,\n"
-"though, can I?"
-msgstr ""
-"Es scheint mir,\n"
-"ich habe keine Wahl..."
-
-#: data/level/to-nenes-house.cfg:1937
-msgid "Oh dear me..."
-msgstr "Oh je..."
-
-#: data/level/to-nenes-house.cfg:1937
-msgid ""
-"Very well.\n"
-"Please do whatever you can."
-msgstr ""
-"Na gut.\n"
-"Bitte tun Sie was immer Sie können."
-
-#: data/level/to-nenes-house.cfg:1939
-msgid "Don't worry, I don't disappoint!"
-msgstr "Keine Sorge, ich enttäusche nicht!"
-
-#: data/level/to-nenes-house.cfg:1940
-msgid "Right then.  I'll be seeing you."
-msgstr "In Ordnung, bis zum nächsten Mal."
 
 #: data/level/toasty-torches.cfg:10
 msgid "Hidden Room"
@@ -3943,6 +3900,25 @@ msgstr "Zeit: "
 msgid " -- paused -- "
 msgstr ""
 
+#: data/objects/crazy-stuff/walker-1-dbg.cfg:33
+#: data/objects/crazy-stuff/walker-1.cfg:33
+msgid "init walker-1"
+msgstr ""
+
+#: data/objects/crazy-stuff/walker-1-dbg.cfg:134
+#: data/objects/crazy-stuff/walker-1.cfg:122
+msgid ":"
+msgstr ""
+
+#: data/objects/crazy-stuff/walker-1-dbg.cfg:134
+#: data/objects/crazy-stuff/walker-1.cfg:122
+msgid "Leg #"
+msgstr ""
+
+#: data/objects/crazy-stuff/walker-1.cfg:71
+msgid "legs:"
+msgstr ""
+
 #: data/objects/items/max_heart_object.cfg:18
 msgid ""
 "You have acquired a heart capsule.\n"
@@ -4199,7 +4175,7 @@ msgstr "HOCH"
 msgid "DOWN"
 msgstr "RUNTER"
 
-#: src/main.cpp:287
+#: src/main.cpp:285
 msgid "Loading level"
 msgstr "Lade Level"
 
@@ -4234,3 +4210,127 @@ msgstr "A und B vertauschen"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
+
+#~ msgid ""
+#~ "I don't know if they've taken notice\n"
+#~ "of us already, or if that was coincidence,\n"
+#~ "but you'd better watch your back."
+#~ msgstr ""
+#~ "Ich weiß nicht, ob sie uns schon bemerkt\n"
+#~ "haben, oder ob das Zufall war,\n"
+#~ "aber geben Sie besser acht."
+
+#~ msgid ""
+#~ "Especially if you're going further east,\n"
+#~ "which is towards the town."
+#~ msgstr ""
+#~ "Besonders wenn Sie weiter nach Osten gehen,\n"
+#~ "wo die Stadt liegt."
+
+#~ msgid ""
+#~ "Anyhow, you'll be happy to know\n"
+#~ "we've patched up that bridge."
+#~ msgstr ""
+#~ "Wie auch immer, Sie werden froh\n"
+#~ "sein, zu erfahren, dass wir die\n"
+#~ "Brücke wieder repariert haben."
+
+#~ msgid "Dang.  That was fast."
+#~ msgstr "Mannomann!  Das ging aber fix."
+
+#~ msgid ""
+#~ "Yes, yes.  Modular construction and all.\n"
+#~ "Impressive what they can do these days."
+#~ msgstr ""
+#~ "Ja, ja. Modulare Konstruktion, das.\n"
+#~ "Schon beeindruckend, was heutzutage\n"
+#~ "möglich ist."
+
+#~ msgid "But the town is under attack!"
+#~ msgstr "Aber die Stadt wird angegriffen!"
+
+#~ msgid "Wait .. WHAT?"
+#~ msgstr "Warte .. WAS?"
+
+#~ msgid ""
+#~ "It's Milgram!\n"
+#~ "You may remember him loaning a bunch\n"
+#~ "of money to the elder, back in the day."
+#~ msgstr ""
+#~ "Es ist Milgram! - Vielleicht erinnern\n"
+#~ "Sie sich, er hatte damals dem\n"
+#~ "Ältesten eine Menge Geld geliehen."
+
+#~ msgid ""
+#~ "No... but,\n"
+#~ "I think I see where this is going."
+#~ msgstr ""
+#~ "Nein... aber ich ahne schon\n"
+#~ "worauf das hinausläuft."
+
+#~ msgid ""
+#~ "He's cordoned off the town, and won't\n"
+#~ "let anyone leave until he's paid in full."
+#~ msgstr ""
+#~ "Er hat die Stadt abgeriegelt und lässt\n"
+#~ "niemanden gehen bis er ausbezahlt wird."
+
+#~ msgid "Milgram came to collect!"
+#~ msgstr ""
+#~ "Milgram ist gekommen um die\n"
+#~ "Schulden einzufordern!"
+
+#~ msgid "Yeesh. Sounds awful."
+#~ msgstr "Yeesh, Klingt ja fürchterlich."
+
+#~ msgid ""
+#~ "Yes, we're desperate!\n"
+#~ "We'd give ANYTHING if you can help!"
+#~ msgstr ""
+#~ "Ja, wir sind verzweifelt!\n"
+#~ "Wir würden ALLES dafür geben\n"
+#~ "wenn Sie helfen können!"
+
+#~ msgid "I'll accept that offer!"
+#~ msgstr "Das Angebot nehm' ich an!"
+
+#~ msgid "Er... I'm not sure I .."
+#~ msgstr "Äh... Ich bin nicht sicher .."
+
+#~ msgid ""
+#~ "If I actually manage to save you,\n"
+#~ "be prepared to pay ANY reward I ask."
+#~ msgstr ""
+#~ "Wenn ich euch tatsächlich rette,\n"
+#~ "will ich JEGLICHE Belohnung die ich,\n"
+#~ "fordere bezahlt bekommen."
+
+#~ msgid ""
+#~ "Yes, it's an absurd price,\n"
+#~ "but you're asking the impossible."
+#~ msgstr ""
+#~ "Ja, es ist ein absurder Preis,\n"
+#~ "aber ihr verlangt das Unmögliche."
+
+#~ msgid ""
+#~ "I suppose I can't say no,\n"
+#~ "though, can I?"
+#~ msgstr ""
+#~ "Es scheint mir,\n"
+#~ "ich habe keine Wahl..."
+
+#~ msgid "Oh dear me..."
+#~ msgstr "Oh je..."
+
+#~ msgid ""
+#~ "Very well.\n"
+#~ "Please do whatever you can."
+#~ msgstr ""
+#~ "Na gut.\n"
+#~ "Bitte tun Sie was immer Sie können."
+
+#~ msgid "Don't worry, I don't disappoint!"
+#~ msgstr "Keine Sorge, ich enttäusche nicht!"
+
+#~ msgid "Right then.  I'll be seeing you."
+#~ msgstr "In Ordnung, bis zum nächsten Mal."

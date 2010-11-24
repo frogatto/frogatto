@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto v1.0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-13 02:21-0200PO-Revision-Date: YEAR-MO-DA HO:MI"
+"POT-Creation-Date: 2010-11-24 00:18-0200PO-Revision-Date: YEAR-MO-DA HO:MI"
 "+ZONE\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ricardo A. Hermosilla Carrillo <ra.hermosillac@gmail.com>\n"
@@ -2182,54 +2182,95 @@ msgstr ""
 
 #: data/level/secluded-hut.cfg:1211
 msgid ""
-"I don't know if they've taken notice\n"
-"of us already, or if that was coincidence,\n"
-"but you'd better watch your back."
-msgstr ""
-
-#: data/level/secluded-hut.cfg:1212
-msgid ""
-"Especially if you're going further east,\n"
-"which is towards the town."
+"They may have seen me talking to you,\n"
+"I can't be sure."
 msgstr ""
 
 #: data/level/secluded-hut.cfg:1213
-msgid ""
-"Anyhow, you'll be happy to know\n"
-"we've patched up that bridge."
+msgid "Wait, what?  Milgram?"
 msgstr ""
 
 #: data/level/secluded-hut.cfg:1215
-msgid "Dang.  That was fast."
+msgid ""
+"What's he doing\n"
+"on this side of the island?"
 msgstr ""
 
 #: data/level/secluded-hut.cfg:1216
-msgid ""
-"Yes, yes.  Modular construction and all.\n"
-"Impressive what they can do these days."
+msgid "You still haven't heard, then."
 msgstr ""
 
 #: data/level/secluded-hut.cfg:1217
 msgid ""
-"By the way, there's a fellow who lives\n"
-"here whom you might want to visit."
+"Milgram's men showed up\n"
+"early this morning, in town.\n"
+"They've taken the whole place hostage;\n"
+"something about \"collecting on a debt.\""
 msgstr ""
 
 #: data/level/secluded-hut.cfg:1218
+msgid ""
+"I don't know the details.\n"
+"I flew out of there as soon as I could,\n"
+"looking for anyone who could help."
+msgstr ""
+
+#: data/level/secluded-hut.cfg:1220
+msgid ""
+"That certainly...\n"
+"changes my plans for the day."
+msgstr ""
+
+#: data/level/secluded-hut.cfg:1222
+msgid "Wow, uhm..."
+msgstr ""
+
+#: data/level/secluded-hut.cfg:1224
+msgid ""
+"I don't think I can promise anything,\n"
+"but if the opportunity presents itself,\n"
+"who knows?"
+msgstr ""
+
+#: data/level/secluded-hut.cfg:1225
+msgid ""
+"Yes, it's unreasonable to expect\n"
+"someone to just charge in there."
+msgstr ""
+
+#: data/level/secluded-hut.cfg:1226
+msgid "I'm at a loss for a plan, myself."
+msgstr ""
+
+#: data/level/secluded-hut.cfg:1227
+msgid ""
+"Nevertheless, I'd better be going.\n"
+"Hopefully, we'll fix that bridge soon.\n"
+"Impressive how fast they can do that,\n"
+"with modular construction and all."
+msgstr ""
+
+#: data/level/secluded-hut.cfg:1228
+msgid ""
+"In the meantime, you might benefit from\n"
+"visiting the fellow who lives here."
+msgstr ""
+
+#: data/level/secluded-hut.cfg:1229
 msgid ""
 "Bit of a recluse, but he's quite sharp.\n"
 "He lives on top of this rock column."
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1220
+#: data/level/secluded-hut.cfg:1231
 msgid "And I get up there... how?"
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1224
+#: data/level/secluded-hut.cfg:1235
 msgid "Simple, just take to the air!"
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1227
+#: data/level/secluded-hut.cfg:1238
 msgid "You ... do realize I can't fly?"
 msgstr ""
 
@@ -2293,7 +2334,7 @@ msgstr ""
 msgid "Creative Director - created characters/setting/story"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:192 data/level/tea-with-milgram.cfg:368
+#: data/level/tea-with-milgram.cfg:192 data/level/tea-with-milgram.cfg:370
 msgid "Artist - Characters, Monsters, and Props"
 msgstr ""
 
@@ -2596,11 +2637,11 @@ msgid ""
 "in exchange for a small consideration."
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:349
+#: data/level/tea-with-milgram.cfg:350
 msgid "A small consideration eh?"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:352
+#: data/level/tea-with-milgram.cfg:353
 msgid "Yes - a quarter of what we get from him."
 msgstr ""
 
@@ -2611,41 +2652,49 @@ msgid ""
 "Very well frog, let's do business."
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:357
+#: data/level/tea-with-milgram.cfg:358
 msgid "All's well that ends well then, huh?"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:359
+#: data/level/tea-with-milgram.cfg:361
 msgid ""
 "Yeah, I do think everyone's\n"
 "made out pretty well."
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:362
+#: data/level/tea-with-milgram.cfg:364
 msgid "Except the elder."
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:367
+#: data/level/tea-with-milgram.cfg:369
 msgid "Lead Content Wrangler and Object Scripter, Programmer"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:369
+#: data/level/tea-with-milgram.cfg:371
 msgid "Artist - Terrain (seaside, forest, cave, and dungeon)"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:370
+#: data/level/tea-with-milgram.cfg:372
 msgid "Level Designer (esp. seaside, town, and forest stages)"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:373
+#: data/level/tea-with-milgram.cfg:375
+msgid "Translation Support"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:376
+msgid "Object Scripting"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:381
 msgid "Musician"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:374
+#: data/level/tea-with-milgram.cfg:382
 msgid "Sound Effect Designer"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:378
+#: data/level/tea-with-milgram.cfg:386
 msgid "SPECIAL THANKS:"
 msgstr ""
 
@@ -2653,7 +2702,7 @@ msgstr ""
 msgid "(Level Template)"
 msgstr ""
 
-#: data/level/test2.cfg:13
+#: data/level/test2.cfg:11 data/level/test3.cfg:13 data/level/test4.cfg:11
 msgid "(Test Level)"
 msgstr ""
 
@@ -2831,88 +2880,34 @@ msgid ""
 msgstr ""
 
 #: data/level/to-nenes-house.cfg:1919
-msgid "But the town is under attack!"
+msgid "But the town, you see ..."
 msgstr ""
 
 #: data/level/to-nenes-house.cfg:1921
-msgid "Wait .. WHAT?"
+msgid ""
+"Not. Interested.\n"
+"Buzz off."
 msgstr ""
 
-#: data/level/to-nenes-house.cfg:1922
+#: data/level/to-nenes-house.cfg:1923
 msgid ""
-"It's Milgram!\n"
-"You may remember him loaning a bunch\n"
-"of money to the elder, back in the day."
+"I don't care what you're preaching,\n"
+"go sell it to someone else."
 msgstr ""
 
 #: data/level/to-nenes-house.cfg:1924
-msgid ""
-"No... but,\n"
-"I think I see where this is going."
-msgstr ""
-
-#: data/level/to-nenes-house.cfg:1925
-msgid ""
-"He's cordoned off the town, and won't\n"
-"let anyone leave until he's paid in full."
-msgstr ""
-
-#: data/level/to-nenes-house.cfg:1925
-msgid "Milgram came to collect!"
+msgid "Very well."
 msgstr ""
 
 #: data/level/to-nenes-house.cfg:1927
-msgid "Yeesh. Sounds awful."
-msgstr ""
-
-#: data/level/to-nenes-house.cfg:1928
 msgid ""
-"Yes, we're desperate!\n"
-"We'd give ANYTHING if you can help!"
+"Someday, those door-to-door people\n"
+"will realize that kind of hard-sell tactic\n"
+"just annoys people."
 msgstr ""
 
-#: data/level/to-nenes-house.cfg:1930
-msgid "I'll accept that offer!"
-msgstr ""
-
-#: data/level/to-nenes-house.cfg:1931
-msgid "Er... I'm not sure I .."
-msgstr ""
-
-#: data/level/to-nenes-house.cfg:1934
-msgid ""
-"If I actually manage to save you,\n"
-"be prepared to pay ANY reward I ask."
-msgstr ""
-
-#: data/level/to-nenes-house.cfg:1936
-msgid ""
-"Yes, it's an absurd price,\n"
-"but you're asking the impossible."
-msgstr ""
-
-#: data/level/to-nenes-house.cfg:1937
-msgid ""
-"I suppose I can't say no,\n"
-"though, can I?"
-msgstr ""
-
-#: data/level/to-nenes-house.cfg:1937
-msgid "Oh dear me..."
-msgstr ""
-
-#: data/level/to-nenes-house.cfg:1937
-msgid ""
-"Very well.\n"
-"Please do whatever you can."
-msgstr ""
-
-#: data/level/to-nenes-house.cfg:1939
-msgid "Don't worry, I don't disappoint!"
-msgstr ""
-
-#: data/level/to-nenes-house.cfg:1940
-msgid "Right then.  I'll be seeing you."
+#: data/level/to-nenes-house.cfg:1929
+msgid "The sooner, the better."
 msgstr ""
 
 #: data/level/toasty-torches.cfg:10
@@ -3760,6 +3755,25 @@ msgstr "Tiempo: "
 msgid " -- paused -- "
 msgstr ""
 
+#: data/objects/crazy-stuff/walker-1-dbg.cfg:33
+#: data/objects/crazy-stuff/walker-1.cfg:33
+msgid "init walker-1"
+msgstr ""
+
+#: data/objects/crazy-stuff/walker-1-dbg.cfg:134
+#: data/objects/crazy-stuff/walker-1.cfg:122
+msgid ":"
+msgstr ""
+
+#: data/objects/crazy-stuff/walker-1-dbg.cfg:134
+#: data/objects/crazy-stuff/walker-1.cfg:122
+msgid "Leg #"
+msgstr ""
+
+#: data/objects/crazy-stuff/walker-1.cfg:71
+msgid "legs:"
+msgstr ""
+
 #: data/objects/items/max_heart_object.cfg:18
 msgid ""
 "You have acquired a heart capsule.\n"
@@ -3962,6 +3976,10 @@ msgstr "Atacar"
 #: src/controls_dialog.cpp:53
 msgid "Back"
 msgstr "Atrás"
+
+#: src/draw_scene.cpp:348
+msgid "Achievement Unlocked!"
+msgstr ""
 
 #: src/key_button.cpp:63
 msgid "LEFT"
