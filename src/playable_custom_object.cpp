@@ -1,4 +1,5 @@
 #include "collision_utils.hpp"
+#include "formatter.hpp"
 #include "preferences.hpp"
 #include "iphone_controls.hpp"
 #include "joystick.hpp"
@@ -8,14 +9,14 @@
 #include "wml_utils.hpp"
 
 playable_custom_object::playable_custom_object(const custom_object& obj)
-  : custom_object(obj), player_info_(*this), vertical_look_(0),
+  : custom_object(obj), player_info_(*this), difficulty_(0), vertical_look_(0),
     underwater_ctrl_x_(0), underwater_ctrl_y_(0), underwater_controls_(false),
 	can_interact_(0)
 {
 }
 
 playable_custom_object::playable_custom_object(const playable_custom_object& obj)
-  : custom_object(obj), player_info_(obj.player_info_),
+  : custom_object(obj), player_info_(obj.player_info_), difficulty_(0),
     save_condition_(obj.save_condition_), vertical_look_(0),
     underwater_ctrl_x_(0), underwater_ctrl_y_(0), underwater_controls_(false),
 	can_interact_(0)
@@ -24,8 +25,9 @@ playable_custom_object::playable_custom_object(const playable_custom_object& obj
 }
 
 playable_custom_object::playable_custom_object(wml::const_node_ptr node)
-  : custom_object(node), player_info_(*this, node), vertical_look_(0),
-    underwater_ctrl_x_(0), underwater_ctrl_y_(0),
+  : custom_object(node), player_info_(*this, node),
+    difficulty_(wml::get_int(node, "difficulty", 0)),
+    vertical_look_(0), underwater_ctrl_x_(0), underwater_ctrl_y_(0),
 	underwater_controls_(wml::get_bool(node, "underwater_controls", false)),
 	can_interact_(0)
 {
@@ -35,6 +37,10 @@ wml::node_ptr playable_custom_object::write() const
 {
 	wml::node_ptr node = custom_object::write();
 	node->set_attr("is_human", "true");
+	if(difficulty_) {
+		node->set_attr("difficulty", formatter() << difficulty_);
+	}
+
 	if(underwater_controls_) {
 		node->set_attr("underwater_controls", "true");
 	}
@@ -128,7 +134,9 @@ namespace {
 
 variant playable_custom_object::get_value(const std::string& key) const
 {
-	if(key == "can_interact") {
+	if(key == "difficulty") {
+		return variant(difficulty_);
+	} else if(key == "can_interact") {
 		return variant(can_interact_);
 	} else if(key == "underwater_controls") {
 		return variant(underwater_controls_);
@@ -159,7 +167,9 @@ variant playable_custom_object::get_value(const std::string& key) const
 
 void playable_custom_object::set_value(const std::string& key, const variant& value)
 {
-	if(key == "can_interact") {
+	if(key == "difficulty") {
+		difficulty_ = value.as_int();
+	} else if(key == "can_interact") {
 		can_interact_ = value.as_int();
 	} else if(key == "underwater_controls") {
 		underwater_controls_ = value.as_bool();

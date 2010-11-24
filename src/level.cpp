@@ -22,6 +22,7 @@
 #include "multiplayer.hpp"
 #include "object_events.hpp"
 #include "player_info.hpp"
+#include "playable_custom_object.hpp"
 #include "preferences.hpp"
 #include "preprocessor.hpp"
 #include "random.hpp"
@@ -3464,6 +3465,7 @@ void level::add_sub_level(const std::string& lvl, int xoffset, int yoffset, bool
 	level& sub = *itor->second.lvl;
 
 	if(add_objects) {
+		const int difficulty = current_difficulty();
 		foreach(entity_ptr e, sub.chars_) {
 			if(e->is_human()) {
 				continue;
@@ -3475,10 +3477,12 @@ void level::add_sub_level(const std::string& lvl, int xoffset, int yoffset, bool
 			}
 
 			relocate_object(c, c->x() + itor->second.xoffset, c->y() + itor->second.yoffset);
-			add_character(c);
-			c->handle_event(OBJECT_EVENT_START_LEVEL);
+			if(c->appears_at_difficulty(difficulty)) {
+				add_character(c);
+				c->handle_event(OBJECT_EVENT_START_LEVEL);
 
-			itor->second.objects.push_back(c);
+				itor->second.objects.push_back(c);
+			}
 		}
 	}
 
@@ -3604,6 +3608,20 @@ void level::record_zorders()
 	foreach(const level_tile& t, tiles_) {
 		t.object->record_zorder(t.zorder);
 	}
+}
+
+int level::current_difficulty() const
+{
+	if(!last_touched_player_) {
+		return 0;
+	}
+
+	playable_custom_object* p = dynamic_cast<playable_custom_object*>(last_touched_player_.get());
+	if(!p) {
+		return 0;
+	}
+
+	return p->difficulty();
 }
 
 UTILITY(correct_solidity)

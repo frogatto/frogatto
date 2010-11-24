@@ -285,6 +285,8 @@ public:
 
 	void record_zorders();
 
+	int current_difficulty() const;
+
 private:
 
 	void read_compiled_tiles(wml::const_node_ptr node, std::vector<level_tile>::iterator& out);

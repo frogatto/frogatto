@@ -35,6 +35,8 @@ public:
 
 	bool can_interact() const { return can_interact_ != 0; }
 
+	int difficulty() const { return difficulty_; }
+
 private:
 	bool on_platform() const;
 
@@ -45,6 +47,8 @@ private:
 	void set_value(const std::string& key, const variant& value);
 
 	player_info player_info_;
+
+	int difficulty_;
 
 	entity_ptr save_condition_;
 

@@ -141,6 +141,8 @@ public:
 
 	void shift_position(int x, int y);
 
+	bool appears_at_difficulty(int difficulty) const;
+
 protected:
 	virtual void control(const level& lvl);
 	variant get_value(const std::string& key) const;
@@ -188,6 +190,7 @@ private:
 
 	int velocity_x_, velocity_y_;
 	int accel_x_, accel_y_;
+	int gravity_shift_;
 	int rotate_;
 
 	boost::scoped_ptr<std::pair<int, int> > position_scale_millis_;
@@ -279,6 +282,8 @@ private:
 	entity_ptr parent_;
 	std::string parent_pivot_;
 	int parent_prev_x_, parent_prev_y_;
+
+	int min_difficulty_, max_difficulty_;
 
 	void set_platform_area(const rect& area);
 };

@@ -59,6 +59,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 	velocity_y_(wml::get_int(node, "velocity_y")),
 	accel_x_(wml::get_int(node, "accel_x")),
 	accel_y_(wml::get_int(node, "accel_y")),
+	gravity_shift_(wml::get_int(node, "gravity_shift", 0)),
 	rotate_(0), zorder_(wml::get_int(node, "zorder", type_->zorder())),
 	hitpoints_(wml::get_int(node, "hitpoints", type_->hitpoints())),
 	max_hitpoints_(wml::get_int(node, "max_hitpoints", type_->hitpoints())),
@@ -80,7 +81,9 @@ custom_object::custom_object(wml::const_node_ptr node)
 	always_active_(wml::get_bool(node, "always_active", false)),
 	last_cycle_active_(0),
 	parent_pivot_(node->attr("pivot")),
-	parent_prev_x_(0), parent_prev_y_(0)
+	parent_prev_x_(0), parent_prev_y_(0),
+	min_difficulty_(wml::get_int(node, "min_difficulty", -1)),
+	max_difficulty_(wml::get_int(node, "max_difficulty", -1))
 {
 	if(node->has_attr("platform_area")) {
 		set_platform_area(rect(node->attr("platform_area")));
@@ -251,7 +254,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
     frame_name_("normal"),
 	time_in_frame_(0), time_in_frame_delta_(1),
 	velocity_x_(0), velocity_y_(0),
-	accel_x_(0), accel_y_(0),
+	accel_x_(0), accel_y_(0), gravity_shift_(0),
 	rotate_(0), zorder_(type_->zorder()),
 	hitpoints_(type_->hitpoints()),
 	max_hitpoints_(type_->hitpoints()),
@@ -268,7 +271,8 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	shader_(0),
 	always_active_(false),
 	last_cycle_active_(0),
-	parent_prev_x_(0), parent_prev_y_(0)
+	parent_prev_x_(0), parent_prev_y_(0),
+	min_difficulty_(-1), max_difficulty_(-1)
 {
 	set_solid_dimensions(type_->solid_dimensions(),
 	                     type_->weak_solid_dimensions());
@@ -301,6 +305,7 @@ custom_object::custom_object(const custom_object& o) :
 	time_in_frame_delta_(o.time_in_frame_delta_),
 	velocity_x_(o.velocity_x_), velocity_y_(o.velocity_y_),
 	accel_x_(o.accel_x_), accel_y_(o.accel_y_),
+	gravity_shift_(o.gravity_shift_),
 	rotate_(o.rotate_),
 	zorder_(o.zorder_),
 	hitpoints_(o.hitpoints_),
@@ -339,7 +344,9 @@ custom_object::custom_object(const custom_object& o) :
 	parent_(o.parent_),
 	parent_pivot_(o.parent_pivot_),
 	parent_prev_x_(parent_prev_x_),
-	parent_prev_y_(parent_prev_y_)
+	parent_prev_y_(parent_prev_y_),
+	min_difficulty_(o.min_difficulty_),
+	max_difficulty_(o.max_difficulty_)
 {
 }
 
@@ -599,6 +606,14 @@ wml::node_ptr custom_object::write() const
 
 	if(parent_pivot_.empty() == false) {
 		res->set_attr("pivot", parent_pivot_);
+	}
+
+	if(min_difficulty_ != -1) {
+		res->set_attr("min_difficulty", formatter() << min_difficulty_);
+	}
+
+	if(max_difficulty_ != -1) {
+		res->set_attr("max_difficulty", formatter() << max_difficulty_);
 	}
 	
 	return res;
@@ -862,7 +877,7 @@ void custom_object::process(level& lvl)
 	velocity_x_ += (accel_x_ * (stand_info.traction ? traction_from_surface : (is_underwater?type_->traction_in_water() :type_->traction_in_air())) * (face_right() ? 1 : -1))/1000;
 	if(!standing_on_ && !started_standing || accel_y_ < 0) {
 		//do not accelerate downwards if standing on something.
-		velocity_y_ += accel_y_ * (is_underwater ? type_->traction_in_water() : 1000)/1000;
+		velocity_y_ += accel_y_ * (gravity_shift_ + (is_underwater ? type_->traction_in_water() : 1000))/1000;
 	}
 
 	if(type_->friction()) {
@@ -1535,6 +1550,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_VELOCITY_Y:        return variant(velocity_y_);
 	case CUSTOM_OBJECT_ACCEL_X:           return variant(accel_x_);
 	case CUSTOM_OBJECT_ACCEL_Y:           return variant(accel_y_);
+	case CUSTOM_OBJECT_GRAVITY_SHIFT:     return variant(gravity_shift_);
 	case CUSTOM_OBJECT_PLATFORM_MOTION_X: return variant(platform_motion_x());
 	case CUSTOM_OBJECT_VARS:              return variant(vars_.get());
 	case CUSTOM_OBJECT_TMP:               return variant(tmp_vars_.get());
@@ -2079,6 +2095,10 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 
 	case CUSTOM_OBJECT_ACCEL_Y:
 		accel_y_ = value.as_int();
+		break;
+
+	case CUSTOM_OBJECT_GRAVITY_SHIFT:
+		gravity_shift_ = value.as_int();
 		break;
 
 	case CUSTOM_OBJECT_PLATFORM_MOTION_X:
@@ -2899,6 +2919,12 @@ void custom_object::shift_position(int x, int y)
 										activation_area_->w(),
 										activation_area_->h()));
 	}
+}
+
+bool custom_object::appears_at_difficulty(int difficulty) const
+{
+	return (min_difficulty_ == -1 || difficulty >= min_difficulty_) &&
+	       (max_difficulty_ == -1 || difficulty <= max_difficulty_);
 }
 
 void custom_object::set_parent(entity_ptr e, const std::string& pivot_point)
