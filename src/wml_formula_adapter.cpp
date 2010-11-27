@@ -72,6 +72,10 @@ variant node_callable::get_value(const std::string& key) const
 	if(schema) {
 		return schema->attribute_to_variant(key, value);
 	} else {
+		if(value.empty()) {
+			return variant();
+		}
+		
 		return variant(value);
 	}
 }
