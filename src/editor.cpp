@@ -461,7 +461,7 @@ rect modify_selected_rect(const editor& e, rect boundaries, int xpos, int ypos) 
 	const int y = round_tile_size(ypos);
 
 	if(resizing_left_level_edge) {
-		boundaries = rect::from_coordinates(x, boundaries.y(), boundaries.x2(), boundaries.y2());
+		boundaries = rect(x, boundaries.y(), boundaries.w() + (boundaries.x() - x), boundaries.h());
 		if(e.get_level().segment_width() > 0) {
 			while(boundaries.w()%e.get_level().segment_width() != 0) {
 				boundaries = rect(boundaries.x()-1, boundaries.y(), boundaries.w()+1, boundaries.h());
@@ -470,7 +470,7 @@ rect modify_selected_rect(const editor& e, rect boundaries, int xpos, int ypos) 
 	}
 
 	if(resizing_right_level_edge) {
-		boundaries = rect::from_coordinates(boundaries.x(), boundaries.y(), x, boundaries.y2());
+		boundaries = rect(boundaries.x(), boundaries.y(), x - boundaries.x(), boundaries.h());
 		if(e.get_level().segment_width() > 0) {
 			while(boundaries.w()%e.get_level().segment_width() != 0) {
 				boundaries = rect(boundaries.x(), boundaries.y(), boundaries.w()+1, boundaries.h());
@@ -479,7 +479,7 @@ rect modify_selected_rect(const editor& e, rect boundaries, int xpos, int ypos) 
 	}
 
 	if(resizing_top_level_edge) {
-		boundaries = rect::from_coordinates(boundaries.x(), y, boundaries.x2(), boundaries.y2());
+		boundaries = rect(boundaries.x(), y, boundaries.w(), boundaries.h() + (boundaries.y() - y));
 		if(e.get_level().segment_height() > 0) {
 			while(boundaries.h()%e.get_level().segment_height() != 0) {
 				boundaries = rect(boundaries.x(), boundaries.y()-1, boundaries.w(), boundaries.h()+1);
@@ -488,7 +488,7 @@ rect modify_selected_rect(const editor& e, rect boundaries, int xpos, int ypos) 
 	}
 
 	if(resizing_bottom_level_edge) {
-		boundaries = rect::from_coordinates(boundaries.x(), boundaries.y(), boundaries.x2(), y);
+		boundaries = rect(boundaries.x(), boundaries.y(), boundaries.w(), y - boundaries.y());
 		if(e.get_level().segment_height() > 0) {
 			while(boundaries.h()%e.get_level().segment_height() != 0) {
 				boundaries = rect(boundaries.x(), boundaries.y(), boundaries.w(), boundaries.h()+1);
