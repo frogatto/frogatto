@@ -40,6 +40,8 @@ namespace preferences {
 		bool send_stats_ = true;
 		bool relay_through_server_ = false;
 		
+		std::string control_scheme_ = "iphone_classic";
+		
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 		
 #ifndef PREFERENCES_PATH
@@ -202,6 +204,16 @@ namespace preferences {
 	
 	void set_reverse_ab(bool value) {
 		reverse_ab_ = value;
+	}
+	
+	const std::string& control_scheme()
+	{
+		return control_scheme_;
+	}
+	
+	void set_control_scheme(const std::string& scheme)
+	{
+		control_scheme_ = scheme;
 	}
 	
 	void set_widescreen()

@@ -33,6 +33,10 @@ namespace preferences {
 	bool reverse_ab();
 	void set_reverse_ab(bool value);
 	
+	// Control scheme to use on iOS or other touch systems
+	const std::string& control_scheme();
+	void set_control_scheme(const std::string& scheme);
+	
 	void set_widescreen();
 	
 	int virtual_screen_width();

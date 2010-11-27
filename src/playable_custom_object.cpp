@@ -148,6 +148,8 @@ variant playable_custom_object::get_value(const std::string& key) const
 		return variant(underwater_ctrl_y_);
 	} else if(key == "ctrl_reverse_ab") {
 		return variant(reverse_ab_);
+	} else if(key == "control_scheme") {
+		return variant(preferences::control_scheme());
 	}
 
 	for(int n = 0; n < sizeof(ctrl)/sizeof(*ctrl); ++n) {
