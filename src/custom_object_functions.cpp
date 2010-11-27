@@ -1510,10 +1510,6 @@ public:
 	virtual void execute(level& lvl, entity& ob) const {
 		level::portal p;
 		p.level_dest = level_;
-		if(p.level_dest.empty()) {
-			p.level_dest = lvl.id();
-		}
-
 		p.dest_starting_pos = true;
 		p.dest_label = label_;
 		p.automatic = true;
