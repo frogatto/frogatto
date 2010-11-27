@@ -29,6 +29,10 @@ variant node_elements_callable::get_value(const std::string& key) const
 			++i1;
 		}
 
+		if(items.empty() && node_->get_schema() == NULL) {
+			return variant();
+		}
+
 		return variant(&items);
 	} else {
 		wml::const_node_ptr child = node_->get_child(key);
