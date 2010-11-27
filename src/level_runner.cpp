@@ -345,6 +345,7 @@ bool level_runner::play_cycle()
 			player_info* player = lvl_->player();
 			if(player) {
 				player->get_entity().set_pos(portal->dest);
+				player->get_entity().move_to_standing(*lvl_);
 			}
 		} else {
 			//the portal is to another level
