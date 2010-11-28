@@ -399,6 +399,8 @@ namespace preferences {
 			no_music_ = false;
 		} else if(s == "--fullscreen") {
 			fullscreen_ = true;
+		} else if(s == "--windowed") {
+			fullscreen_ = false;
 		} else if(s == "--resizable") {
 			resizable_ = true;
 		} else if(s == "--no-resizable") {
