@@ -150,7 +150,7 @@ extern "C" int main(int argc, char** argv)
 			const bool res = preferences::parse_arg(argv[n]);
 			if(!res) {
 				std::cerr << "unrecognized arg: '" << arg << "'\n";
-				return 0;
+				return -1;
 			}
 		}
 	}
