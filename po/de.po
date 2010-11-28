@@ -2,8 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-24 00:18-0200PO-Revision-Date: YEAR-MO-DA HO:MI"
-"+ZONE\n"
+"POT-Creation-Date: 2010-11-28 12:32+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Philipp Zabel <philipp.zabel@gmail.com>\n"
 "Language-Team: \n"
@@ -71,6 +70,10 @@ msgstr "So, das war's."
 #: data/level/arcade-the-long-haul.cfg:10
 msgid "The Long Haul"
 msgstr "Die Lange Strecke"
+
+#: data/level/arcade-wild-new-wonder.cfg:12
+msgid "arcade-wild-blue-wonder"
+msgstr ""
 
 #: data/level/autumn-town.cfg:14
 msgid "Autumn Town"
@@ -1156,9 +1159,157 @@ msgstr ""
 msgid "In fact, I'll even show you the way!"
 msgstr "Ich werde dir sogar den Weg weisen!"
 
-#: data/level/crevice-village.cfg:658 data/level/to-nenes-house.cfg:1354
+#: data/level/crevice-village.cfg:717 data/level/to-nenes-house.cfg:1354
 msgid "I better leave this key here."
 msgstr "Den Schlüssel lasse ich besser hier."
+
+#: data/level/crevice-village.cfg:916
+msgid "Hey!"
+msgstr "He!"
+
+#: data/level/crevice-village.cfg:961
+msgid ""
+"Glad I caught you!\n"
+"You'd better be aware of this..."
+msgstr ""
+"Gut dass ich Sie hier treffe!\n"
+"Das sollten Sie besser noch wissen..."
+
+#: data/level/crevice-village.cfg:962
+msgid ""
+"The cave that leads into the town,\n"
+"has a sentry posted in it."
+msgstr ""
+"In der Höhle, die in die Stadt führt,\n"
+"ist ein Wachposten stationiert."
+
+#: data/level/crevice-village.cfg:963
+msgid ""
+"Milgram's trying to seal off the town,\n"
+" so no one gets in or out."
+msgstr ""
+"Milgram versucht die Stadt abzuriegeln,\n"
+"so dass niemand hinein\n"
+"oder heraus kommt."
+
+#: data/level/crevice-village.cfg:964
+msgid ""
+"That might have been why\n"
+"he tried to take out that bridge."
+msgstr ""
+"Vielleicht ist das der Grund für seinen\n"
+"Versuch, die Brücke zu demolieren."
+
+#: data/level/crevice-village.cfg:965
+msgid ""
+"If you're thinking to go in there,\n"
+"you might reconsider."
+msgstr ""
+"Wenn Sie vor haben, da rein\n"
+"zu gehen, überlegen Sie sich das\n"
+"vielleicht besser noch einmal."
+
+#: data/level/crevice-village.cfg:967
+msgid ""
+"Well, yeah,\n"
+"I was gonna go in there."
+msgstr ""
+"Nun, ja,\n"
+"da wollte ich schon rein gehen."
+
+#: data/level/crevice-village.cfg:969
+msgid ""
+"I mean, what are we gonna do,\n"
+"sit on our butts here?"
+msgstr ""
+"Ich meine, was machen wir sonst.\n"
+"Hier auf unseren Hintern herumsitzen?"
+
+#: data/level/crevice-village.cfg:970
+msgid ""
+"No, no...\n"
+"but I was hoping we'd go in in force."
+msgstr ""
+"Nein, nein...\n"
+"aber ich hatte gehofft, dass wir in\n"
+"voller Stärke einmarschieren würden."
+
+#: data/level/crevice-village.cfg:972
+msgid "Against Milgram? Really?"
+msgstr "Gegen Milgram? Wirklich?"
+
+#: data/level/crevice-village.cfg:974
+msgid ""
+"I thought he like ... \"mass-produces\"\n"
+"his followers, or something."
+msgstr ""
+"Ich dachte er ... stellt seine Anhänger\n"
+"\"in Massenproduktion\" her oder so."
+
+#: data/level/crevice-village.cfg:976
+msgid ""
+"I mean, it's very bizarre,\n"
+"but if there's any truth to it..."
+msgstr ""
+"Ich meine, das ist ziemlich bizarr,\n"
+"aber wenn da was Wahres dran ist..."
+
+#: data/level/crevice-village.cfg:977
+msgid ""
+"Yes... oh dear.\n"
+"I see what you mean."
+msgstr ""
+"Ja... oh je.\n"
+"Ich sehe, was Sie meinen."
+
+#: data/level/crevice-village.cfg:979
+msgid ""
+"There's got to be something\n"
+"we can use to our advantage,\n"
+"but \"numerical superiority\" isn't it."
+msgstr ""
+"Es muss irgendwas geben, das wir\n"
+"zu unserem Vorteil nutzen können,\n"
+"aber \"zahlenmäßige Überlegenheit\"\n"
+"ist es nicht."
+
+#: data/level/crevice-village.cfg:981
+msgid ""
+"\"Doing the unexpected\"\n"
+"might be our best bet, for now."
+msgstr ""
+"\"Überraschungseffekt\" ist momentan\n"
+"vielleicht der beste Plan."
+
+#: data/level/crevice-village.cfg:983
+msgid "Anyways, it's just one guy, right?"
+msgstr "Wie auch immer, da ist nur ein Typ, richtig?"
+
+#: data/level/crevice-village.cfg:984
+msgid "To my knowledge, yes."
+msgstr "Nach meiner Kenntnis, ja."
+
+#: data/level/crevice-village.cfg:986
+msgid "Maybe I can talk my way around him?"
+msgstr ""
+"Vielleicht kann ich mich\n"
+"an ihm vorbei argumentieren."
+
+#: data/level/crevice-village.cfg:988
+msgid ""
+"Worse comes to worse,\n"
+"I can just run for it.  Right?"
+msgstr ""
+"Schlimmstenfalls kann ich\n"
+"immer noch abhauen.  Richtig?"
+
+#: data/level/crevice-village.cfg:989
+msgid ""
+"I do hope so.\n"
+"Good luck!"
+msgstr ""
+"Das hoffe ich sehr.\n"
+"Viel Glück!"
 
 #: data/level/dark-corridor.cfg:7
 msgid "Dark Corridor"
@@ -2257,7 +2408,7 @@ msgstr ""
 
 #: data/level/secluded-hut-interior.cfg:1157
 msgid "I say! Who's there?"
-msgstr ""
+msgstr "Ich muss schon sagen! Wer da?"
 
 #: data/level/secluded-hut.cfg:1207
 msgid "Are you quite alright?"
@@ -2302,6 +2453,8 @@ msgid ""
 "They've taken the whole place hostage;\n"
 "something about \"collecting on a debt.\""
 msgstr ""
+"Übrigens, da lebt jemand hier,\n"
+"den Sie vielleicht besuchen wollen."
 
 #: data/level/secluded-hut.cfg:1218
 msgid ""
@@ -2382,7 +2535,7 @@ msgstr ""
 
 #: data/level/silky-silence.cfg:13
 msgid "Silky Silence"
-msgstr ""
+msgstr "Seidene Stille"
 
 #: data/level/splash-hop.cfg:11
 msgid "Splash, Hop"
@@ -2814,11 +2967,11 @@ msgstr ""
 
 #: data/level/titlescreen-arcade.cfg:137
 msgid "Each machine has a different arcade-style challenge."
-msgstr ""
+msgstr "Jeder Spielautomat enthält eine andere Herausforderung."
 
 #: data/level/titlescreen-arcade.cfg:169
 msgid "These don't affect story-mode.  Enjoy!"
-msgstr ""
+msgstr "Der Story-Modus wird davon nicht beeinflusst. Viel Spaß!"
 
 #: data/level/titlescreen-arcade.cfg:201
 msgid "EXIT"
@@ -3892,7 +4045,6 @@ msgid "error"
 msgstr ""
 
 #: data/objects/crazy-stuff/jb-background.cfg:18
-#, fuzzy
 msgid "Runtime: "
 msgstr "Zeit: "
 
@@ -4175,7 +4327,7 @@ msgstr "HOCH"
 msgid "DOWN"
 msgstr "RUNTER"
 
-#: src/main.cpp:285
+#: src/main.cpp:354
 msgid "Loading level"
 msgstr "Lade Level"
 
