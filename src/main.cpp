@@ -86,7 +86,8 @@ void print_help(const std::string& argv0)
 "                                relative to the level path\n" <<
 "      --level-path=PATH        sets the path to the game level files\n" <<
 "      --[no-]music             enables/disables game music\n" <<
-//"      --relay                  FIXME\n" <<
+"      --relay                  use the server as a relay in multiplayer rather\n" <<
+"                                than trying to initiate direct connections\n" <<
 "      --[no-]resizable         allows/disallows to resize the game window\n" <<
 "      --scale                  enables an experimental pixel art interpolation\n" <<
 "                                algorithm for scaling the game graphics (some\n" <<
