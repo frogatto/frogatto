@@ -79,26 +79,26 @@ void print_help(const std::string& argv0)
 "      --config-path=PATH       sets the path to the user config dir\n" <<
 "      --fullscreen             starts in fullscreen mode\n" <<
 "      --height NUM             sets the game window height to which contents\n" <<
-"                                are scaled\n" <<
+"                                 are scaled\n" <<
 "      --host                   set the game server host address\n" <<
 "      --[no-]joystick          enables/disables joystick support\n" <<
 "      --level LEVEL_FILE       starts the game using the specified level file,\n" <<
-"                                relative to the level path\n" <<
+"                                 relative to the level path\n" <<
 "      --level-path=PATH        sets the path to the game level files\n" <<
 "      --[no-]music             enables/disables game music\n" <<
 "      --relay                  use the server as a relay in multiplayer rather\n" <<
-"                                than trying to initiate direct connections\n" <<
+"                                 than trying to initiate direct connections\n" <<
 "      --[no-]resizable         allows/disallows to resize the game window\n" <<
 "      --scale                  enables an experimental pixel art interpolation\n" <<
-"                                algorithm for scaling the game graphics (some\n" <<
-"                                issues with this still have to be solved)\n" <<
+"                                 algorithm for scaling the game graphics (some\n" <<
+"                                 issues with this still have to be solved)\n" <<
 "      --no-send-stats          disables sending game statistics over the\n" <<
-"                                network\n" <<
+"                                 network\n" <<
 "      --[no-]sound             enables/disables sound and music support\n" <<
 "      --widescreen             sets widescreen mode, increasing the game view\n" <<
-"                                area for wide screen displays\n" <<
+"                                 area for wide screen displays\n" <<
 "      --width NUM              sets the game window width to which contents are\n" <<
-"                                scaled\n" <<
+"                                 scaled\n" <<
 "      --windowed               starts in windowed mode\n" <<
 "      --wvga                   sets the display size to 800x480\n" <<
 "\n" <<
@@ -112,24 +112,24 @@ void print_help(const std::string& argv0)
 "\n" <<
 "Developer options:\n" <<
 "      --benchmarks             runs all the engine's benchmarks (intended to\n" <<
-"                                measure the speed of certain low-level\n" <<
-"                                functions), only useful if you're actually\n" <<
-"                                hacking on the engine to optimize the speed\n" <<
-"                                of these\n" <<
+"                                 measure the speed of certain low-level\n" <<
+"                                 functions), only useful if you're actually\n" <<
+"                                 hacking on the engine to optimize the speed\n" <<
+"                                 of these\n" <<
 "      --benchmarks=NAME        runs a single named benchmark code\n" <<
 "      --[no-]compiled          enable or disable precompiled game data\n" <<
 //"      --profile                FIXME\n" <<
 //"      --profile=FILE           FIXME\n" <<
 "      --show-hitboxes          turns on the display of object hitboxes\n" <<
 "      --simipad                changes various options to emulate an iPad\n" <<
-"                                environment\n" <<
+"                                 environment\n" <<
 "      --simiphone              changes various options to emulate an iPhone\n" <<
-"                                environment\n" <<
+"                                 environment\n" <<
 "      --tests                  runs the game's unit tests and exits\n" <<
 "      --no-tests               skips the execution of unit tests on startup\n"
 "      --utility=NAME           runs the specified UTILITY( NAME ) code block,\n" <<
-"                                such as compile_levels, with the specified\n" <<
-"                                arguments\n"
+"                                 such as compile_levels, with the specified\n" <<
+"                                 arguments\n"
 	;
 }
 
