@@ -84,7 +84,7 @@ void print_help(const std::string& argv0)
 "      --[no-]joystick          enables/disables joystick support\n" <<
 "      --level LEVEL_FILE       starts the game using the specified level file,\n" <<
 "                                relative to the level path\n" <<
-"      --level-path             sets the path to the game level files\n" <<
+"      --level-path=PATH        sets the path to the game level files\n" <<
 "      --[no-]music             enables/disables game music\n" <<
 //"      --relay                  FIXME\n" <<
 "      --[no-]resizable         allows/disallows to resize the game window\n" <<
