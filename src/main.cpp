@@ -80,7 +80,6 @@ void print_help(const std::string& argv0)
 "      --fullscreen             starts in fullscreen mode\n" <<
 "      --height NUM             sets the game window height to which contents\n" <<
 "                                are scaled\n" <<
-"  -h, --help                   this help text\n" <<
 "      --host                   set the game server host address\n" <<
 "      --[no-]joystick          enables/disables joystick support\n" <<
 "      --level LEVEL_FILE       starts the game using the specified level file,\n" <<
