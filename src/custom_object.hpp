@@ -143,6 +143,11 @@ public:
 
 	bool appears_at_difficulty(int difficulty) const;
 
+	int min_difficulty() const { return min_difficulty_; }
+	int max_difficulty() const { return max_difficulty_; }
+
+	void set_difficulty(int min, int max) { min_difficulty_ = min; max_difficulty_ = max; }
+
 protected:
 	virtual void control(const level& lvl);
 	variant get_value(const std::string& key) const;

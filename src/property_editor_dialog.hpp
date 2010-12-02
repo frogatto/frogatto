@@ -20,6 +20,8 @@ public:
 	void set_entity(entity_ptr e);
 	void set_label_dialog();
 private:
+	void change_min_difficulty(int amount);
+	void change_max_difficulty(int amount);
 	void toggle_property(const std::string& id);
 	void change_property(const std::string& id, int change);
 	void change_level_property(const std::string& id);

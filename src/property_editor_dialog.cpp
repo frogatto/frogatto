@@ -5,6 +5,7 @@
 #include "button.hpp"
 #include "editor_dialogs.hpp"
 #include "foreach.hpp"
+#include "formatter.hpp"
 #include "grid_widget.hpp"
 #include "image_widget.hpp"
 #include "label.hpp"
@@ -33,11 +34,65 @@ void property_editor_dialog::init()
 
 	set_padding(5);
 
+
+
 	const frame& frame = entity_->current_frame();
 	image_widget* preview = new image_widget(frame.img());
 	preview->set_dim(frame.width(), frame.height());
 	preview->set_area(frame.area());
-	add_widget(widget_ptr(preview), 10, 10);
+
+	grid_ptr preview_grid(new grid(2));
+	preview_grid->add_col(widget_ptr(preview));
+
+	//draw the object's difficulty settings.
+	grid_ptr difficulty_grid(new grid(4));
+	const custom_object* obj = dynamic_cast<const custom_object*>(entity_.get());
+	ASSERT_LOG(obj, "ENTITY IS NOT AN OBJECT");
+	std::string min_difficulty = "-", max_difficulty = "-";
+	if(obj->min_difficulty() != -1) {
+		min_difficulty = formatter() << obj->min_difficulty();
+	}
+
+	if(obj->max_difficulty() != -1) {
+		max_difficulty = formatter() << obj->max_difficulty();
+	}
+
+	if(min_difficulty.size() == 1) {
+		min_difficulty = " " + min_difficulty;
+	}
+
+	if(max_difficulty.size() == 1) {
+		max_difficulty = " " + max_difficulty;
+	}
+
+	difficulty_grid->add_col(widget_ptr(new label("mn", graphics::color_white())));
+	difficulty_grid->add_col(widget_ptr(new label(min_difficulty, graphics::color_white())));
+
+	button_ptr difficulty_button;
+	difficulty_button.reset(new button(widget_ptr(new label("-", graphics::color_white())), boost::bind(&property_editor_dialog::change_min_difficulty, this, -1)));
+	difficulty_button->set_tooltip("Decrease minimum difficulty");
+	difficulty_button->set_dim(difficulty_button->width()-10, difficulty_button->height()-4);
+	difficulty_grid->add_col(difficulty_button);
+	difficulty_button.reset(new button(widget_ptr(new label("+", graphics::color_white())), boost::bind(&property_editor_dialog::change_min_difficulty, this, 1)));
+	difficulty_button->set_tooltip("Increase minimum difficulty");
+	difficulty_button->set_dim(difficulty_button->width()-10, difficulty_button->height()-4);
+	difficulty_grid->add_col(difficulty_button);
+
+	difficulty_grid->add_col(widget_ptr(new label("mx", graphics::color_white())));
+	difficulty_grid->add_col(widget_ptr(new label(max_difficulty, graphics::color_white())));
+	difficulty_button.reset(new button(widget_ptr(new label("-", graphics::color_white())), boost::bind(&property_editor_dialog::change_max_difficulty, this, -1)));
+	difficulty_button->set_tooltip("Decrease maximum difficulty");
+	difficulty_button->set_dim(difficulty_button->width()-10, difficulty_button->height()-4);
+	difficulty_grid->add_col(difficulty_button);
+	difficulty_button.reset(new button(widget_ptr(new label("+", graphics::color_white())), boost::bind(&property_editor_dialog::change_max_difficulty, this, 1)));
+	difficulty_button->set_tooltip("Increase maximum difficulty");
+	difficulty_button->set_dim(difficulty_button->width()-10, difficulty_button->height()-4);
+	difficulty_grid->add_col(difficulty_button);
+
+
+	preview_grid->add_col(difficulty_grid);
+	
+	add_widget(preview_grid, 10, 10);
 
 	if(entity_->label().empty() == false) {
 		add_widget(widget_ptr(new label(entity_->label(), graphics::color_white())));
@@ -112,6 +167,26 @@ void property_editor_dialog::init()
 void property_editor_dialog::set_entity(entity_ptr e)
 {
 	entity_ = e;
+	init();
+}
+
+void property_editor_dialog::change_min_difficulty(int amount)
+{
+	custom_object* obj = dynamic_cast<custom_object*>(entity_.get());
+	ASSERT_LOG(obj, "ENTITY IS NOT AN OBJECT");
+
+	const int new_difficulty = std::max<int>(-1, obj->min_difficulty() + amount);
+	obj->set_difficulty(new_difficulty, obj->max_difficulty());
+	init();
+}
+
+void property_editor_dialog::change_max_difficulty(int amount)
+{
+	custom_object* obj = dynamic_cast<custom_object*>(entity_.get());
+	ASSERT_LOG(obj, "ENTITY IS NOT AN OBJECT");
+
+	const int new_difficulty = std::max<int>(-1, obj->max_difficulty() + amount);
+	obj->set_difficulty(obj->min_difficulty(), new_difficulty);
 	init();
 }
 
