@@ -3,20 +3,19 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Frogatto v1.0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-28 12:32+0100\n"
+"POT-Creation-Date: 2010-12-02 19:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: data/achievements.cfg:4
 msgid "Pocket Money"
@@ -70,12 +69,19 @@ msgstr ""
 msgid "Well, that's that."
 msgstr ""
 
+#: data/level/arcade-maintenance-shaft.cfg:12
+#: data/level/titlescreen-arcade.cfg:228
+msgid "Maintenance Shaft"
+msgstr ""
+
 #: data/level/arcade-the-long-haul.cfg:10
+#: data/level/titlescreen-arcade.cfg:256
 msgid "The Long Haul"
 msgstr ""
 
 #: data/level/arcade-wild-new-wonder.cfg:12
-msgid "arcade-wild-blue-wonder"
+#: data/level/titlescreen-arcade.cfg:227
+msgid "Wild New Wonder"
 msgstr ""
 
 #: data/level/autumn-town.cfg:14
@@ -2638,16 +2644,20 @@ msgstr ""
 msgid "The North Tower"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:137
-msgid "Each machine has a different arcade-style challenge."
-msgstr ""
-
 #: data/level/titlescreen-arcade.cfg:169
 msgid "These don't affect story-mode.  Enjoy!"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:201
-msgid "EXIT"
+#: data/level/titlescreen-arcade.cfg:226 data/level/titlescreen-arcade.cfg:255
+msgid "Select a level:"
+msgstr ""
+
+#: data/level/titlescreen-arcade.cfg:229 data/level/titlescreen-arcade.cfg:258
+msgid "(cancel)"
+msgstr ""
+
+#: data/level/titlescreen-arcade.cfg:257
+msgid "Down the RabbitHall"
 msgstr ""
 
 #: data/level/titlescreen-test.cfg:373 data/level/titlescreen.cfg:348
