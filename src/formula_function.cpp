@@ -427,7 +427,7 @@ private:
 		const int value = args()[0]->evaluate(variables).as_int();
 		const double angle = (static_cast<double>(value)/100.0);
 		//std::cerr << "got: " << angle << "\n" << "ret: " << asin(angle)*100 << "\n";
-		return variant(static_cast<int>(asin(angle)*100));
+		return variant(static_cast<int>(asin(angle)*57.29577951308232087));
 	}
 };
 
@@ -441,8 +441,7 @@ private:
 	variant execute(const formula_callable& variables) const {
 		const int value = args()[0]->evaluate(variables).as_int();
 		const double angle = (static_cast<double>(value)/100.0);
-		//std::cerr << "got: " << angle << "\n" << "ret: " << asin(angle)*100 << "\n";
-		return variant(static_cast<int>(acos(angle)*100));
+		return variant(static_cast<int>(acos(angle)*57.29577951308232087));
 	}
 };
 
