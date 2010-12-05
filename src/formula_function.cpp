@@ -458,9 +458,9 @@ private:
 	}
 };
 
-class p_angle_to_function : public function_expression {	//Takes opposite and hypotenuse.
-public:														//Helper function to angle_to.
-	explicit p_angle_to_function(const args_list& args)
+class private_angle_to_function : public function_expression {	//Takes opposite and hypotenuse.
+public:															//Helper function to angle_to and angle, please access through them.
+	explicit private_angle_to_function(const args_list& args)
 	     : function_expression("p_angle_to", args, 2, 2)
 	{}
 
@@ -1050,7 +1050,7 @@ functions_map& get_functions_map() {
 		FUNCTION(asin);
 		FUNCTION(acos);
 		FUNCTION(sqrt);
-		FUNCTION(p_angle_to);
+		FUNCTION(private_angle_to);
 		FUNCTION(orbit);
 		FUNCTION(sort);
 		FUNCTION(filter);
