@@ -818,8 +818,8 @@ private:
 		if(list.num_elements() == 0) {
 			return variant();
 		}
-		int begin_index = args()[1]->evaluate(variables).as_int()%list.num_elements();
-		int end_index = args()[2]->evaluate(variables).as_int()%list.num_elements();
+		int begin_index = args()[1]->evaluate(variables).as_int()%(list.num_elements()+1);
+		int end_index = args()[2]->evaluate(variables).as_int()%(list.num_elements()+1);
 		if(end_index >= begin_index) {
 			std::vector<variant> result;
 			result.reserve(end_index - begin_index);
