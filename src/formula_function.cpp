@@ -458,24 +458,6 @@ private:
 	}
 };
 
-class private_angle_to_function : public function_expression {	//Takes opposite and hypotenuse.
-public:															//Helper function to angle_to and angle, please access through them.
-	explicit private_angle_to_function(const args_list& args)
-	     : function_expression("p_angle_to", args, 2, 2)
-	{}
-
-private:
-	variant execute(const formula_callable& variables) const {
-		const float a = args()[0]->evaluate(variables).as_int();
-		const float b = args()[1]->evaluate(variables).as_int();
-		if (a == 0 || b == 0){
-			return variant(static_cast<int>(0));
-		}
-		//std::cerr << "got: " << a << ", " << b << "\n" << "prc: " << sin(a/b)*100 << "\n";
-		return variant(static_cast<int>(round(sin(a/b)*100))); //asin()?
-	}
-};
-
 class angle_function : public function_expression {
 public:
 	explicit angle_function(const args_list& args)
@@ -1066,7 +1048,6 @@ functions_map& get_functions_map() {
 		FUNCTION(asin);
 		FUNCTION(acos);
 		FUNCTION(sqrt);
-		FUNCTION(private_angle_to);
 		FUNCTION(angle);
 		FUNCTION(orbit);
 		FUNCTION(sort);
