@@ -476,6 +476,22 @@ private:
 	}
 };
 
+class angle_function : public function_expression {
+public:
+	explicit angle_function(const args_list& args)
+	     : function_expression("angle", args, 4, 4)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		const float a = args()[0]->evaluate(variables).as_int();
+		const float b = args()[1]->evaluate(variables).as_int();
+		const float c = args()[2]->evaluate(variables).as_int();
+		const float d = args()[3]->evaluate(variables).as_int();
+		return variant(static_cast<int>(round(atan2(a-c, b-d)*57.29577951308232087+90)*-1));
+	}
+};
+
 class orbit_function : public function_expression {	//Takes x1, y1, distance from, angle from, returns x2, y2.
 public:
 	explicit orbit_function(const args_list& args)
@@ -1051,6 +1067,7 @@ functions_map& get_functions_map() {
 		FUNCTION(acos);
 		FUNCTION(sqrt);
 		FUNCTION(private_angle_to);
+		FUNCTION(angle);
 		FUNCTION(orbit);
 		FUNCTION(sort);
 		FUNCTION(filter);
