@@ -43,6 +43,7 @@ private:
 
 	std::vector<std::string> options_;
 	int option_selected_;
+	int option_width_;
 
 	bool joystick_button_pressed_, joystick_up_pressed_, joystick_down_pressed_;
 

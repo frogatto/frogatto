@@ -21,11 +21,11 @@
 namespace {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 	const int OptionHeight = 70;
-	const int OptionWidth = 200;
+	const int OptionMinWidth = 200;
 	const int OptionXPad = 20;
 #else
 	const int OptionHeight = 50;
-	const int OptionWidth = 150;
+	const int OptionMinWidth = 150;
 	const int OptionXPad = 10;
 #endif
 	const int OptionsBorder = 20; // size of the border around the options window
@@ -53,9 +53,9 @@ bool speech_dialog::handle_mouse_move(int x, int y)
 {
 	translate_mouse_coords(&x, &y);
 	rect box(
-		preferences::virtual_screen_width() - OptionsX - OptionWidth - OptionsBorder,
+		preferences::virtual_screen_width() - OptionsX - option_width_ - OptionsBorder,
 		preferences::virtual_screen_height() - OptionsY - OptionHeight*options_.size() - OptionsBorder,
-		OptionWidth + OptionsBorder*2, OptionHeight*options_.size() + OptionsBorder*2
+		option_width_ + OptionsBorder*2, OptionHeight*options_.size() + OptionsBorder*2
 	);
 	//std::cerr << "Options box: " << box << " : " << x << " : " << y << "\n";
 	if (point_in_rect(point(x, y), box))
@@ -301,9 +301,9 @@ void speech_dialog::draw() const
 	if(text_char_ == num_chars() && options_.empty() == false) {
 		//const_gui_section_ptr options_panel = gui_section::get("speech_portrait_pane");
 		const_framed_gui_element_ptr options_panel = framed_gui_element::get("regular_window");
-		int xpos = graphics::screen_width() - OptionsX - OptionWidth - OptionsBorder*2;
+		int xpos = graphics::screen_width() - OptionsX - option_width_ - OptionsBorder*2;
 		int ypos = graphics::screen_height() - OptionsY - OptionHeight*options_.size() - OptionsBorder*2;
-		options_panel->blit(xpos, ypos, OptionsBorder*2 + OptionWidth, OptionsBorder*2 + OptionHeight*options_.size(), true);
+		options_panel->blit(xpos, ypos, OptionsBorder*2 + option_width_, OptionsBorder*2 + OptionHeight*options_.size(), true);
 
 		xpos += OptionsBorder + OptionXPad;
 		ypos += OptionsBorder;
@@ -379,6 +379,13 @@ void speech_dialog::set_options(const std::vector<std::string>& options)
 #else
 	option_selected_ = 0;
 #endif
+	option_width_ = OptionMinWidth;
+	const_graphical_font_ptr font = graphical_font::get("default");
+	foreach(const std::string& option, options_) {
+		rect area = font->dimensions(option);
+		if (area.w()+OptionXPad*2 > option_width_)
+			option_width_ = area.w()+OptionXPad*2;
+	}
 }
 
 int speech_dialog::num_chars() const
