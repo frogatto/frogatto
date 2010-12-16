@@ -478,6 +478,43 @@ private:
 	expression_ptr left_, key_;
 };
 
+class slice_square_bracket_expression : public formula_expression {
+public:
+	slice_square_bracket_expression(expression_ptr left, expression_ptr start, expression_ptr end)
+	: formula_expression("_slice_sqbr"), left_(left), start_(start), end_(end)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		const variant left = left_->evaluate(variables);
+		int begin_index = start_->evaluate(variables).as_int()%(left.num_elements()+1);
+		int end_index = end_->evaluate(variables).as_int()%(left.num_elements()+1);
+		
+		if(left.is_list()) {
+			if(left.num_elements() == 0) {
+				return variant();
+			}
+			if(end_index >= begin_index) {
+				std::vector<variant> result;
+				result.reserve(end_index - begin_index);
+				while(begin_index != end_index) {
+					result.push_back(left[begin_index++]);
+				}
+				
+				return variant(&result);
+			} else {
+				return variant();
+			}
+			
+		} else {
+			std::cerr << "illegal usage of operator [:]'\n";
+			throw formula_error();
+		}
+	}
+	
+	expression_ptr left_, start_, end_;
+};
+	
+	
 #define OPTIMIZED_INT_BINARY_OP(name, op) \
 class name##_integer_operator_expression : public formula_expression { \
 public: \
@@ -1237,10 +1274,41 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 					parse_args(i1+1,i2-1,&args,symbols, callable_def, can_optimize);
 					return expression_ptr(new list_expression(args));
 				} else {
-					//execute operator [ ]
-					return expression_ptr(new square_bracket_expression(
-																		parse_expression(i1,tok,symbols, callable_def, can_optimize),
-																		parse_expression(tok+1,i2-1,symbols, callable_def, can_optimize)));
+					//determine if it's an array-style access of a single list element, or a slice.
+					const token* tok2 = i2-2;
+					int bracket_parens_count = 0;
+					const token* colon_tok = NULL;
+					while ( (tok2->type != TOKEN_LSQUARE) && tok2 != tok){
+						if (tok2->type == TOKEN_RSQUARE || tok2->type == TOKEN_RPARENS) {
+							bracket_parens_count++;
+						} else if (tok2->type == TOKEN_LSQUARE || tok2->type == TOKEN_LPARENS){
+							bracket_parens_count--;
+						} else if (tok2->type == TOKEN_COLON){
+							if(bracket_parens_count != 0){
+									//TODO - handle error - mismatching brackets
+									std::cerr << "mismatching brackets or parentheses inside [ ]: '" << std::string((i1+1)->begin, (i2-1)->end) << "'\n";
+							} else if (colon_tok != NULL){
+									//TODO - handle error - more than one colon.
+									std::cerr << "more than one colon inside a slice [:]: '" << std::string((i1+1)->begin, (i2-1)->end) << "'\n";
+							} else {
+								colon_tok = tok2;
+							}
+						}
+						--tok2;	
+					}
+					
+					if(colon_tok != NULL){
+						//it's a slice.  execute operator [ : ]
+						return expression_ptr(new slice_square_bracket_expression(
+																			parse_expression(i1,tok,symbols, callable_def, can_optimize),
+																			parse_expression(tok+1,colon_tok,symbols, callable_def, can_optimize),
+																			parse_expression(colon_tok+1,i2-1,symbols, callable_def, can_optimize)));
+					}else{	
+						//execute operator [ ]
+						return expression_ptr(new square_bracket_expression(
+																			parse_expression(i1,tok,symbols, callable_def, can_optimize),
+																			parse_expression(tok+1,i2-1,symbols, callable_def, can_optimize)));
+					}
 				}
 			}
 		} else if(i1->type == TOKEN_LBRACKET && (i2-1)->type == TOKEN_RBRACKET) {
@@ -1552,6 +1620,13 @@ variant formula::execute() const
 	return execute(*null_callable);
 }
 
+UNIT_TEST(formula_slice) {
+	CHECK(formula("myList[2:4] where myList = [1,2,3,4,5,6]").execute() == formula("[3,4]").execute(), "test failed");
+	CHECK(formula("myList[0:2] where myList = [1,2,3,4,5,6]").execute() == formula("[1,2]").execute(), "test failed");
+	CHECK(formula("myList[1:4] where myList = [0,2,4,6,8,10,12,14]").execute() == formula("[2,4,6]").execute(), "test failed");
+}
+	
+	
 UNIT_TEST(formula_in) {
 	CHECK(formula("1 in [4,5,6]").execute() == variant(0), "test failed");
 	CHECK(formula("5 in [4,5,6]").execute() == variant(1), "test failed");

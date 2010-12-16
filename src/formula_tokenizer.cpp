@@ -34,6 +34,7 @@ const FFL_TOKEN_TYPE* create_single_char_tokens() {
 	chars['}'] = TOKEN_RBRACKET;
 	chars[','] = TOKEN_COMMA;
 	chars[';'] = TOKEN_SEMICOLON;
+	chars[':'] = TOKEN_COLON;
 	chars['.'] = TOKEN_OPERATOR;
 	chars['+'] = TOKEN_OPERATOR;
 	chars['*'] = TOKEN_OPERATOR;
