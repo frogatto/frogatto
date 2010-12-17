@@ -313,7 +313,7 @@ void speech_dialog::draw() const
 		foreach(const std::string& option, options_) {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 			if(index == option_selected_) {
-				graphics::draw_rect(rect(xpos-OptionXPad, ypos, OptionWidth, OptionHeight), graphics::color(0xC74545FF));
+				graphics::draw_rect(rect(xpos-OptionXPad, ypos, option_width_, OptionHeight), graphics::color(0xC74545FF));
 				glColor4ub(255, 187, 10, 255); //reset color to what it was, since draw_rect changes it
 			}
 #endif

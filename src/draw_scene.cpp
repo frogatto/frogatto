@@ -15,6 +15,7 @@
 #include "draw_scene.hpp"
 #include "font.hpp"
 #include "foreach.hpp"
+#include "globals.h"
 #include "graphical_font.hpp"
 #include "gui_section.hpp"
 #include "i18n.hpp"
@@ -315,7 +316,7 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus, boo
 
 	debug_console::draw();
 
-	lvl.draw_status();
+	if (!pause_stack) lvl.draw_status();
 
 	if(scene_title_duration_ > 0) {
 		--scene_title_duration_;
