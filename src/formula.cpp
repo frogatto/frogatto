@@ -1278,7 +1278,7 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 					const token* tok2 = i2-2;
 					int bracket_parens_count = 0;
 					const token* colon_tok = NULL;
-					while ( (tok2->type != TOKEN_LSQUARE) && tok2 != tok){
+					while (tok2 != tok){
 						if (tok2->type == TOKEN_RSQUARE || tok2->type == TOKEN_RPARENS) {
 							bracket_parens_count++;
 						} else if (tok2->type == TOKEN_LSQUARE || tok2->type == TOKEN_LPARENS){
