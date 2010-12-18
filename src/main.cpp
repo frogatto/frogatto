@@ -257,7 +257,7 @@ extern "C" int main(int argc, char** argv)
 	}
 	preferences::set_virtual_screen_width(height*multiplier);
 	preferences::set_virtual_screen_height(width*multiplier);
-	preferences::set_control_scheme(width % 1024 ? "iphone_classic" : "ipad_classic");
+	preferences::set_control_scheme(height % 1024 ? "iphone_classic" : "ipad_classic");
 	
 	SDL_WindowID windowID = SDL_CreateWindow (NULL, 0, 0, preferences::actual_screen_width(), preferences::actual_screen_height(),
 		SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN |

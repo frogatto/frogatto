@@ -23,19 +23,20 @@ namespace
 	bool can_interact = false;
 	bool on_platform = false;
 	
-	bool done_setup_rects = false;
+	std::string loaded_control_scheme = "";
 	static void setup_rects ()
 	{
-		if (done_setup_rects)
+		const std::string& scheme_name = preferences::control_scheme();
+		if (loaded_control_scheme == scheme_name)
 		{
 			return;
 		}
-		done_setup_rects = true;
+		loaded_control_scheme = scheme_name;
 		
 		underwater_circle_y = preferences::virtual_screen_height()-underwater_circle_y;
 		
 		wml::node_ptr schemes = wml::parse_wml_from_file("data/control_schemes.cfg");
-		wml::node_ptr scheme = wml::find_child_by_attribute(schemes, "control_scheme", "id", "iphone_classic");
+		wml::node_ptr scheme = wml::find_child_by_attribute(schemes, "control_scheme", "id", scheme_name);
 		
 		underwater_circle_x = game_logic::formula(wml::get_str(scheme, "underwater_circle_x")).execute().as_int();
 		underwater_circle_y = game_logic::formula(wml::get_str(scheme, "underwater_circle_y")).execute().as_int();
