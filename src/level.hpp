@@ -376,11 +376,11 @@ private:
 #ifdef SDL_VIDEO_OPENGL_ES
 		typedef GLshort IndexType;
 #define TILE_INDEX_TYPE GL_UNSIGNED_SHORT
-#define TILE_INDEX_TYPE_MAX USHRT_MAX
+#define TILE_INDEX_TYPE_MAX SHRT_MAX
 #else
 		typedef GLint IndexType;
 #define TILE_INDEX_TYPE GL_UNSIGNED_INT
-#define TILE_INDEX_TYPE_MAX UINT_MAX
+#define TILE_INDEX_TYPE_MAX INT_MAX
 #endif
 
 		//a two dimensional array of indexes into vertex_texture_ids,
