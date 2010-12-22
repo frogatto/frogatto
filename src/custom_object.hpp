@@ -66,6 +66,7 @@ public:
 	//etc etc.
 	void set_frame_no_adjustments(const std::string& name);
 	void die();
+	void die_with_no_event();
 	virtual bool is_active(const rect& screen_area) const;
 	bool dies_on_inactive() const;
 	bool always_active() const;

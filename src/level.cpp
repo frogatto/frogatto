@@ -2089,6 +2089,7 @@ void level::do_processing()
 		} else { //char is inactive
 			if( c->dies_on_inactive() ){
 				if(c->label().empty() == false) {
+					c->die_with_no_event();
 					chars_by_label_.erase(c->label());
 				}
 				

@@ -2469,6 +2469,12 @@ void custom_object::die()
 	handle_event(OBJECT_EVENT_DIE);
 }
 
+void custom_object::die_with_no_event()
+{
+	hitpoints_ = 0;
+}
+
+
 bool custom_object::is_active(const rect& screen_area) const
 {
 	if(controls::num_players() > 1) {
