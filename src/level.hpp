@@ -274,6 +274,8 @@ public:
 	int segment_height() const { return segment_height_; }
 	void set_segment_height(int height) { segment_height_ = height; }
 
+	bool is_arcade_level() const { return segment_height_ != 0 || segment_width_ != 0; }
+
 	variant get_var(const std::string& str) const {
 		std::map<std::string, variant>::const_iterator itor = vars_.find(str);
 		if(itor != vars_.end()) return itor->second;

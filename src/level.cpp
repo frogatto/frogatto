@@ -470,7 +470,7 @@ void level::load_character(wml::const_node_ptr c)
 void level::finish_loading()
 {
 	std::vector<sub_level_data> sub_levels;
-	if((segment_width_ > 0 || segment_height_ > 0) && !editor_) {
+	if((segment_width_ > 0 || segment_height_ > 0) && !editor_ && !preferences::compiling_tiles) {
 
 		const int seg_width = segment_width_ > 0 ? segment_width_ : boundaries_.w();
 		const int seg_height = segment_height_ > 0 ? segment_height_ : boundaries_.h();
@@ -1482,7 +1482,7 @@ void level::prepare_tiles_for_drawing()
 	blit_cache_.clear();
 
 	for(int n = 0; n != tiles_.size(); ++n) {
-		if(tiles_[n].object->solid_color()) {
+		if(!is_arcade_level() && tiles_[n].object->solid_color()) {
 			continue;
 		}
 
@@ -1511,7 +1511,7 @@ void level::prepare_tiles_for_drawing()
 			continue;
 		}
 
-		if(tiles_[n].object->solid_color()) {
+		if(!is_arcade_level() && tiles_[n].object->solid_color()) {
 			tiles_[n].draw_disabled = true;
 			if(!solid_color_rects_.empty()) {
 				solid_color_rect& r = solid_color_rects_.back();
