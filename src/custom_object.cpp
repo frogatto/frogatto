@@ -1958,6 +1958,7 @@ void custom_object::set_value(const std::string& key, const variant& value)
 			game_logic::formula_variable_storage_ptr old_vars = vars_, old_tmp_vars_ = tmp_vars_;
 
 			type_ = p;
+			has_feet_ = type_->has_feet();
 			vars_.reset(new game_logic::formula_variable_storage(type_->variables())),
 			tmp_vars_.reset(new game_logic::formula_variable_storage(type_->tmp_variables())),
 
@@ -1978,6 +1979,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 			game_logic::formula_variable_storage_ptr old_vars = vars_, old_tmp_vars_ = tmp_vars_;
 
 			type_ = p;
+			has_feet_ = type_->has_feet();
 			vars_.reset(new game_logic::formula_variable_storage(type_->variables())),
 			tmp_vars_.reset(new game_logic::formula_variable_storage(type_->tmp_variables())),
 
