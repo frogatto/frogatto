@@ -131,6 +131,10 @@ bool entity_collides_with_entity(const entity& e, const entity& other, collision
 		return false;
 	}
 
+	if(other.destroyed()) {
+		return false;
+	}
+
 	const rect area = intersection_rect(our_rect, other_rect);
 
 	const solid_info* our_solid = e.solid();
