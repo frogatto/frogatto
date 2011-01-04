@@ -1964,6 +1964,9 @@ void custom_object::set_value(const std::string& key, const variant& value)
 
 			vars_->add(*old_vars);
 			tmp_vars_->add(*old_tmp_vars_);
+
+			//set the animation to the default animation for the new type.
+			set_frame(type_->default_frame().id());
 		}
 	} else {
 		vars_->add(key, value);
@@ -1985,6 +1988,9 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 
 			vars_->add(*old_vars);
 			tmp_vars_->add(*old_tmp_vars_);
+
+			//set the animation to the default animation for the new type.
+			set_frame(type_->default_frame().id());
 		}
 	}
 		break;
