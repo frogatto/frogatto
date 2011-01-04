@@ -26,6 +26,7 @@
 #include "raster.hpp"
 #include "speech_dialog.hpp"
 #include "texture.hpp"
+#include "texture_frame_buffer.hpp"
 
 namespace {
 

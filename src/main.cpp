@@ -54,6 +54,7 @@
 #include "string_utils.hpp"
 #include "surface_cache.hpp"
 #include "texture.hpp"
+#include "texture_frame_buffer.hpp"
 #include "tile_map.hpp"
 #include "unit_test.hpp"
 #include "wml_node.hpp"
@@ -392,6 +393,7 @@ extern "C" int main(int argc, char** argv)
 	}
 
 	formula_profiler::manager profiler(profile_output);
+	texture_frame_buffer::init();
 
 	bool quit = false;
 	bool of_initialized = false;

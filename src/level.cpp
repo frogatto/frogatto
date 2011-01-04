@@ -30,6 +30,7 @@
 #include "stats.hpp"
 #include "string_utils.hpp"
 #include "surface_palette.hpp"
+#include "texture_frame_buffer.hpp"
 #include "thread.hpp"
 #include "tile_map.hpp"
 #include "unit_test.hpp"
@@ -87,7 +88,7 @@ void level::set_as_current_level()
 
 namespace {
 graphics::color_transform default_dark_color() {
-	return graphics::color_transform(0, 0, 0, 255);
+	return graphics::color_transform(0, 0, 0, 0);
 }
 }
 
@@ -1624,6 +1625,8 @@ void level::draw(int x, int y, int w, int h) const
 
 	const int start_x = x;
 	const int start_y = y;
+	const int start_w = w;
+	const int start_h = h;
 
 	const int ticks = SDL_GetTicks();
 	x -= widest_tile_;
@@ -1774,7 +1777,7 @@ void level::draw(int x, int y, int w, int h) const
 		background_->draw_foreground(start_x, start_y, 0.0, cycle());
 	}
 
-	calculate_lighting(x, y, w, h);
+	calculate_lighting(start_x, start_y, start_w, start_h);
 }
 
 void level::calculate_lighting(int x, int y, int w, int h) const
@@ -1792,123 +1795,29 @@ void level::calculate_lighting(int x, int y, int w, int h) const
 		}
 	}
 
-	const int strip_height = 2;
-	static std::vector<darkness_strip> strips, new_strips;
-	strips.clear();
+	{
+		glBlendFunc(GL_ONE, GL_ONE);
+		rect screen_area(x, y, w, h);
+		const texture_frame_buffer::render_scope scope;
 
-	const int x_threshhold = 64;
-
-	for(int ypos = y; ypos < y + h; ypos += strip_height) {
-		new_strips.clear();
-		darkness_strip s;
-		s.alpha_left = s.alpha_right = 255;
-		s.x = x - x_threshhold;
-		s.y = ypos;
-		s.w = w + x_threshhold*2;
-		s.h = strip_height;
-
-		new_strips.push_back(s);
-
+		glClearColor(dark_color_.r()/255.0, dark_color_.g()/255.0, dark_color_.b()/255.0, dark_color_.a()/255.0);
+		glClear(GL_COLOR_BUFFER_BIT);
+		const unsigned char color[] = { dark_color_.r(), dark_color_.g(), dark_color_.b(), dark_color_.a() };
 		foreach(const light* lt, lights) {
-			static std::vector<darkness_strip> swap_strips;
-			swap_strips.resize(4);
-			for(int n = 0; n != new_strips.size(); ++n) {
-				const int result = lt->split_strip(new_strips[n], &swap_strips[swap_strips.size()-4]);
-				if(result == -1) {
-					swap_strips[swap_strips.size()-4] = new_strips[n];
-					swap_strips.resize(swap_strips.size()+1);
-				} else {
-					swap_strips.resize(swap_strips.size()+result);
-				}
-			}
-
-			swap_strips.resize(swap_strips.size()-4);
-			swap_strips.swap(new_strips);
-		}
-
-		if(!strips.empty() && new_strips.size() == 1 && strips.back().x == new_strips.back().x && strips.back().w == new_strips.back().w && new_strips.back().alpha_left == 255 && new_strips.back().alpha_right == 255) {
-			strips.back().h += new_strips.back().h;
-		} else {
-			foreach(const darkness_strip& s, new_strips) {
-				strips.push_back(s);
-			}
+			lt->draw(screen_area, color);
 		}
 	}
 
-	if(strips.empty() == false) {
-		glDisable(GL_TEXTURE_2D);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-
-		glColor4ub(dark_color_.r(), dark_color_.g(), dark_color_.b(), dark_color_.a());
-
-		static std::vector<GLshort> vertexes, alpha_vertexes;
-		static std::vector<unsigned char> colors;
-		vertexes.clear();
-		alpha_vertexes.clear();
-		colors.clear();
-		foreach(const darkness_strip& s, strips) {
-			if(s.alpha_left == 255 && s.alpha_right == 255) {
-				vertexes.push_back(s.x);
-				vertexes.push_back(s.y);
-				vertexes.push_back(s.x + s.w);
-				vertexes.push_back(s.y);
-				vertexes.push_back(s.x);
-				vertexes.push_back(s.y + s.h);
-				vertexes.push_back(s.x + s.w);
-				vertexes.push_back(s.y);
-				vertexes.push_back(s.x + s.w);
-				vertexes.push_back(s.y + s.h);
-				vertexes.push_back(s.x);
-				vertexes.push_back(s.y + s.h);
-			} else {
-				alpha_vertexes.push_back(s.x);
-				alpha_vertexes.push_back(s.y);
-				alpha_vertexes.push_back(s.x + s.w);
-				alpha_vertexes.push_back(s.y);
-				alpha_vertexes.push_back(s.x);
-				alpha_vertexes.push_back(s.y + s.h);
-				alpha_vertexes.push_back(s.x + s.w);
-				alpha_vertexes.push_back(s.y);
-				alpha_vertexes.push_back(s.x + s.w);
-				alpha_vertexes.push_back(s.y + s.h);
-				alpha_vertexes.push_back(s.x);
-				alpha_vertexes.push_back(s.y + s.h);
-
-#define ADD_COLOR(alpha) \
-	colors.push_back(dark_color_.r()); \
-	colors.push_back(dark_color_.g()); \
-	colors.push_back(dark_color_.b()); \
-	colors.push_back((alpha*dark_color_.a())/255);
-
-				ADD_COLOR(s.alpha_left);
-				ADD_COLOR(s.alpha_right);
-				ADD_COLOR(s.alpha_left);
-				ADD_COLOR(s.alpha_right);
-				ADD_COLOR(s.alpha_right);
-				ADD_COLOR(s.alpha_left);
-#undef ADD_COLOR
-			}
-		}
-
-		if(!vertexes.empty()) {
-			glVertexPointer(2, GL_SHORT, 0, &vertexes[0]);
-			glDrawArrays(GL_TRIANGLES, 0, vertexes.size()/2);
-		}
-
-		if(!alpha_vertexes.empty()) {
-			glShadeModel(GL_SMOOTH);
-			glEnableClientState(GL_COLOR_ARRAY);
-			glColorPointer(4, GL_UNSIGNED_BYTE, 0, &colors.front());
-			glVertexPointer(2, GL_SHORT, 0, &alpha_vertexes[0]);
-			glDrawArrays(GL_TRIANGLES, 0, alpha_vertexes.size()/2);
-			glDisableClientState(GL_COLOR_ARRAY);
-			glShadeModel(GL_FLAT);
-		}
-
-		glColor4f(1.0, 1.0, 1.0, 1.0);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glEnable(GL_TEXTURE_2D);
-	}
+	const GLfloat tc_w = GLfloat(graphics::screen_width())/GLfloat(texture_frame_buffer::width());
+	const GLfloat tc_h = GLfloat(graphics::screen_height())/GLfloat(texture_frame_buffer::height());
+	texture_frame_buffer::set_as_current_texture();
+	GLfloat tcarray[] = { 0, 0, 0, tc_h, tc_w, 0, tc_w, tc_h };
+	GLfloat varray[] = { x, y + h, x, y, x + w, y + h, x + w, y };
+	glVertexPointer(2, GL_FLOAT, 0, varray);
+	glTexCoordPointer(2, GL_FLOAT, 0, tcarray);
+	glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void level::draw_debug_solid(int x, int y, int w, int h) const

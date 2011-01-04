@@ -1967,6 +1967,7 @@ void custom_object::set_value(const std::string& key, const variant& value)
 
 			//set the animation to the default animation for the new type.
 			set_frame(type_->default_frame().id());
+			std::cerr << "SET TYPE WHEN CHANGING TO '" << type_->id() << "'\n";
 		}
 	} else {
 		vars_->add(key, value);
@@ -1991,6 +1992,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 
 			//set the animation to the default animation for the new type.
 			set_frame(type_->default_frame().id());
+			std::cerr << "SET TYPE WHEN CHANGING TO '" << type_->id() << "'\n";
 		}
 	}
 		break;

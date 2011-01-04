@@ -7,11 +7,6 @@
 
 #include <boost/intrusive_ptr.hpp>
 
-struct darkness_strip {
-	int x, y, w, h;
-	unsigned char alpha_left, alpha_right;
-};
-
 class custom_object;
 class light;
 
@@ -29,7 +24,7 @@ public:
 	virtual ~light();
 	virtual void process() = 0;
 	virtual bool on_screen(const rect& screen_area) const = 0;
-	virtual int split_strip(const darkness_strip& darkness, darkness_strip* output) const = 0;
+	virtual void draw(const rect& screen_area, const unsigned char* color) const = 0;
 protected:
 	const custom_object& object() const { return obj_; }
 private:
@@ -45,7 +40,7 @@ public:
 	wml::node_ptr write() const;
 	void process();
 	bool on_screen(const rect& screen_area) const;
-	int split_strip(const darkness_strip& darkness, darkness_strip* output) const;
+	void draw(const rect& screen_area, const unsigned char* color) const;
 private:
 	point center_;
 	int radius_;
