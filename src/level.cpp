@@ -167,9 +167,9 @@ level::level(const std::string& level_cfg)
 		}
 	}
 
+	dark_color_ = default_dark_color();
 	if(wml::get_bool(node, "dark", false)) {
 		dark_ = true;
-		dark_color_ = default_dark_color();
 	}
 
 	if(node->has_attr("dark_color")) {
@@ -1808,13 +1808,15 @@ void level::calculate_lighting(int x, int y, int w, int h) const
 		}
 	}
 
-	const GLfloat tc_w = GLfloat(graphics::screen_width())/GLfloat(texture_frame_buffer::width());
-	const GLfloat tc_h = GLfloat(graphics::screen_height())/GLfloat(texture_frame_buffer::height());
+	//now blit the light buffer onto the screen
 	texture_frame_buffer::set_as_current_texture();
-	GLfloat tcarray[] = { 0, 0, 0, tc_h, tc_w, 0, tc_w, tc_h };
+
+	const GLfloat tcarray[] = { 0, 0, 0, 1, 1, 0, 1, 1 };
+	const GLfloat tcarray_rotated[] = { 0, 1, 1, 1, 0, 0, 1, 0 };
 	GLfloat varray[] = { x, y + h, x, y, x + w, y + h, x + w, y };
 	glVertexPointer(2, GL_FLOAT, 0, varray);
-	glTexCoordPointer(2, GL_FLOAT, 0, tcarray);
+	glTexCoordPointer(2, GL_FLOAT, 0,
+	               preferences::screen_rotated() ? tcarray_rotated : tcarray);
 	glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
