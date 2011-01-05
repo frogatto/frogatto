@@ -10,7 +10,6 @@ namespace texture_frame_buffer {
 
 namespace {
 GLuint texture_id;  //ID of the texture which the frame buffer is stored in
-GLuint renderbuffer_id; //renderbuffer object
 GLuint framebuffer_id; //framebuffer object
 }
 
@@ -28,13 +27,6 @@ void init()
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 
-	// create a renderbuffer object to store depth info
-	glGenRenderbuffers(1, &renderbuffer_id);
-	glBindRenderbuffer(GL_RENDERBUFFER_EXT, renderbuffer_id);
-	glRenderbufferStorage(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT,
-	                         width(), height());
-	glBindRenderbuffer(GL_RENDERBUFFER_EXT, 0);
-
 	// create a framebuffer object
 	glGenFramebuffers(1, &framebuffer_id);
 	glBindFramebuffer(GL_FRAMEBUFFER_EXT, framebuffer_id);
@@ -42,10 +34,6 @@ void init()
 	// attach the texture to FBO color attachment point
 	glFramebufferTexture2D(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,
                           GL_TEXTURE_2D, texture_id, 0);
-
-	// attach the renderbuffer to depth attachment point
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,
-                             GL_RENDERBUFFER_EXT, renderbuffer_id);
 
 	// check FBO status
 	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER_EXT);
