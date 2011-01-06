@@ -15,8 +15,8 @@
 #define EXT_CALL(call) call##EXT
 #define EXT_MACRO(macro) macro##_EXT
 #else
-#define EXT_CALL(call) call
-#define EXT_MACRO(macro) macro
+#define EXT_CALL(call) call##EXT
+#define EXT_MACRO(macro) macro##_EXT
 #endif
 
 namespace texture_frame_buffer {
