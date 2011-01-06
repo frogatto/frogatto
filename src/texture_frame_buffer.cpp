@@ -36,9 +36,12 @@ bool unsupported()
 void init()
 {
 	if(!GLEW_EXT_framebuffer_object) {
+		fprintf(stderr, "FRAME BUFFER OBJECT NOT SUPPORTED\n");
 		supported = false;
 		return;
 	}
+
+	fprintf(stderr, "FRAME BUFFER OBJECT IS SUPPORTED\n");
 
 	glGetIntegerv(EXT_MACRO(GL_FRAMEBUFFER_BINDING), &video_framebuffer_id);
 
