@@ -1782,7 +1782,7 @@ void level::draw(int x, int y, int w, int h) const
 
 void level::calculate_lighting(int x, int y, int w, int h) const
 {
-	if(!dark_ || editor_) {
+	if(!dark_ || editor_ || texture_frame_buffer::unsupported()) {
 		return;
 	}
 
