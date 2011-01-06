@@ -22,13 +22,24 @@
 namespace texture_frame_buffer {
 
 namespace {
+bool supported = true;
 GLuint texture_id = 0;  //ID of the texture which the frame buffer is stored in
 GLuint framebuffer_id = 0; //framebuffer object
 GLint video_framebuffer_id = 0; //the original frame buffer object
 }
 
+bool unsupported()
+{
+	return !supported;
+}
+
 void init()
 {
+	if(!GLEW_EXT_framebuffer_object) {
+		supported = false;
+		return;
+	}
+
 	glGetIntegerv(EXT_MACRO(GL_FRAMEBUFFER_BINDING), &video_framebuffer_id);
 
 	ASSERT_EQ(glGetError(), GL_NO_ERROR);
