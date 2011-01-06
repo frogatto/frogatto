@@ -26,6 +26,7 @@
 #include "level_logic.hpp"
 #include "object_events.hpp"
 #include "playable_custom_object.hpp"
+#include "preferences.hpp"
 #include "raster.hpp"
 #include "string_utils.hpp"
 #include "surface_formula.hpp"
@@ -34,6 +35,14 @@
 #include "unit_test.hpp"
 #include "utils.hpp"
 #include "sound.hpp"
+
+namespace {
+const game_logic::formula_variable_storage_ptr& global_vars()
+{
+	static game_logic::formula_variable_storage_ptr obj(new game_logic::formula_variable_storage);
+	return obj;
+}
+}
 
 struct custom_object_text {
 	std::string text;
@@ -1552,6 +1561,8 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_ACCEL_Y:           return variant(accel_y_);
 	case CUSTOM_OBJECT_GRAVITY_SHIFT:     return variant(gravity_shift_);
 	case CUSTOM_OBJECT_PLATFORM_MOTION_X: return variant(platform_motion_x());
+	case CUSTOM_OBJECT_REGISTRY:          return variant(preferences::registry());
+	case CUSTOM_OBJECT_GLOBALS:           return variant(global_vars().get());
 	case CUSTOM_OBJECT_VARS:              return variant(vars_.get());
 	case CUSTOM_OBJECT_TMP:               return variant(tmp_vars_.get());
 	case CUSTOM_OBJECT_GROUP:             return variant(group());

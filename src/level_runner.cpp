@@ -285,6 +285,10 @@ bool level_runner::play_cycle()
 	if(die_at > 0 && cycle >= die_at + 30) {
 		die_at = -1;
 
+		foreach(entity_ptr e, lvl_->get_chars()) {
+			e->handle_event(OBJECT_EVENT_PLAYER_DEATH);
+		}
+
 		//record stats of the player's death
 		lvl_->player()->get_entity().record_stats_movement();
 		stats::record_event(lvl_->id(), stats::record_ptr(new stats::die_record(lvl_->player()->get_entity().midpoint())));

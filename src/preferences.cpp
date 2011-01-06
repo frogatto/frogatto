@@ -6,6 +6,7 @@
 #include "controls.hpp"
 #include "filesystem.hpp"
 #include "formatter.hpp"
+#include "formula_callable.hpp"
 #include "preferences.hpp"
 #include "sound.hpp"
 #include "wml_node.hpp"
@@ -306,6 +307,13 @@ namespace preferences {
 		return use_joystick_;
 	}
 
+	game_logic::map_formula_callable* registry()
+	{
+		static game_logic::map_formula_callable* obj = new game_logic::map_formula_callable;
+		static game_logic::formula_callable_ptr holder(obj);
+		return obj;
+	}
+
 	void load_preferences()
 	{
 		std::string path = PREFERENCES_PATH;
@@ -329,6 +337,11 @@ namespace preferences {
 
 		sound::set_music_volume(wml::get_int(node, "music_volume", 1000)/1000.0);
 		sound::set_sound_volume(wml::get_int(node, "sound_volume", 1000)/1000.0);
+
+		const wml::const_node_ptr registry_node = node->get_child("registry");
+		if(registry_node) {
+			*registry() = game_logic::map_formula_callable(registry_node);
+		}
 
 #if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
 		controls::set_sdlkey(controls::CONTROL_UP, static_cast<SDLKey>(wml::get_int(node, "key_up", SDLK_UP)));
@@ -358,6 +371,10 @@ namespace preferences {
 		node->set_attr("key_attack", formatter() << controls::get_sdlkey(controls::CONTROL_ATTACK));
 		node->set_attr("key_jump", formatter() << controls::get_sdlkey(controls::CONTROL_JUMP));
 		node->set_attr("key_tongue", formatter() << controls::get_sdlkey(controls::CONTROL_TONGUE));
+
+		wml::node_ptr registry_node(new wml::node("registry"));
+		registry()->write(registry_node);
+		node->add_child(registry_node);
 		sys::write_file(preferences_path_ + "preferences.cfg", wml::output(node));
 	}
 

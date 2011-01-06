@@ -3,6 +3,10 @@
 
 #include <string>
 
+namespace game_logic {
+class map_formula_callable;
+}
+
 namespace preferences {
 
 	const std::string& version();
@@ -86,6 +90,8 @@ namespace preferences {
 
 	bool relay_through_server();
 	void set_relay_through_server(bool value);
+
+	game_logic::map_formula_callable* registry();
 
 	void load_preferences();
 	void save_preferences();
