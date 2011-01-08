@@ -2,8 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-08 12:59+0100\\nPO-Revision-Date: YEAR-MO-DA HO:MI"
-"+ZONE\n"
+"POT-Creation-Date: 2011-01-08 14:09-0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Philipp Zabel <philipp.zabel@gmail.com>\n"
 "Language-Team: \n"
@@ -145,17 +144,21 @@ msgstr "So, das war's."
 msgid "Maintenance Shaft"
 msgstr "Wartungsschacht"
 
+#: data/level/arcade-maintenance-shaft.cfg:1543
+#: data/level/arcade-maintenance-shaft.cfg:1546
+msgid "You made it {level.player.vars.score} feet up the maintenance shaft!"
+msgstr ""
+"Du bist den Wartungsschacht {level.player.vars.score} Fuß weit hinauf "
+"gekommen!"
+
 #: data/level/arcade-maintenance-shaft.cfg:1544
 msgid "This is a new high score!"
 msgstr "Das ist eine neue High-Score!"
 
-#: data/level/arcade-maintenance-shaft.cfg:1546
-msgid "You made it {level.player.vars.score} feet up the maintenance shaft!"
-msgstr "Du bist den Wartungsschacht {level.player.vars.score} Fuß weit hinauf gekommen!"
-
 #: data/level/arcade-maintenance-shaft.cfg:1547
 msgid "The high score is {registry.arcade_maintenance_shaft_high_score} feet."
-msgstr "Die High-Score sind {registry.arcade_maintenance_shaft_high_score} Fuß."
+msgstr ""
+"Die High-Score sind {registry.arcade_maintenance_shaft_high_score} Fuß."
 
 #: data/level/arcade-the-long-haul.cfg:10
 #: data/level/titlescreen-arcade.cfg:256
@@ -4425,7 +4428,7 @@ msgstr "HOCH"
 msgid "DOWN"
 msgstr "RUNTER"
 
-#: src/main.cpp:355
+#: src/main.cpp:353
 msgid "Loading level"
 msgstr "Lade Level"
 

@@ -8,9 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto & Friends 1.0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-08 12:59+0100\\nPO-Revision-Date: YEAR-MO-DA HO:MI"
-"+ZONE\n"
-"PO-Revision-Date: 2010-12-12 15:36-0300\n"
+"POT-Creation-Date: 2011-01-08 14:09-0200\n"
+"PO-Revision-Date: 2011-01-08 14:02-0300\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Brazilian Portuguese\n"
 "Language: \n"
@@ -25,11 +24,11 @@ msgstr ""
 
 #: data/achievements.cfg:4
 msgid "Pocket Money"
-msgstr ""
+msgstr "Trocadinho"
 
 #: data/achievements.cfg:5
 msgid "Collect ten coins."
-msgstr ""
+msgstr "Consiga dez moedas."
 
 #: data/achievements.cfg:12
 msgid "Nature Boy"
@@ -85,7 +84,7 @@ msgstr ""
 
 #: data/achievements.cfg:61
 msgid "Kill 5 enemies in 10 seconds."
-msgstr ""
+msgstr "Mate cinco inimigos em 10 segundos."
 
 #: data/achievements.cfg:68
 msgid "Cube Chain"
@@ -156,12 +155,13 @@ msgstr "Bem, por hoje é só."
 msgid "Maintenance Shaft"
 msgstr ""
 
-#: data/level/arcade-maintenance-shaft.cfg:1544
-msgid "This is a new high score!"
-msgstr ""
-
+#: data/level/arcade-maintenance-shaft.cfg:1543
 #: data/level/arcade-maintenance-shaft.cfg:1546
 msgid "You made it {level.player.vars.score} feet up the maintenance shaft!"
+msgstr ""
+
+#: data/level/arcade-maintenance-shaft.cfg:1544
+msgid "This is a new high score!"
 msgstr ""
 
 #: data/level/arcade-maintenance-shaft.cfg:1547
@@ -1334,56 +1334,72 @@ msgstr "É melhor eu deixar esta chave aqui."
 
 #: data/level/crevice-village.cfg:916
 msgid "Hey!"
-msgstr ""
+msgstr "Ei!"
 
 #: data/level/crevice-village.cfg:961
 msgid ""
 "Glad I caught you!\n"
 "You'd better be aware of this..."
 msgstr ""
+"Bom que eu te achei!\n"
+"É melhor você saber disso..."
 
 #: data/level/crevice-village.cfg:962
 msgid ""
 "The cave that leads into the town,\n"
 "has a sentry posted in it."
 msgstr ""
+"Tem um guarda na caverna\n"
+"que leva até a vila."
 
 #: data/level/crevice-village.cfg:963
 msgid ""
 "Milgram's trying to seal off the town,\n"
 " so no one gets in or out."
 msgstr ""
+"O Milgram está tentando bloquear\n"
+"a cidade, pra ninguém entrar nem sair."
 
 #: data/level/crevice-village.cfg:964
 msgid ""
 "That might have been why\n"
 "he tried to take out that bridge."
 msgstr ""
+"Deve ser por isso que ele\n"
+"tentou destruir aquela ponte."
 
 #: data/level/crevice-village.cfg:965
 msgid ""
 "If you're thinking to go in there,\n"
 "you might reconsider."
 msgstr ""
+"Se você estava tentando ir lá,\n"
+"é melhor pensar duas vezes..."
 
 #: data/level/crevice-village.cfg:967
-#, fuzzy
 msgid ""
 "Well, yeah,\n"
 "I was gonna go in there."
-msgstr "Opa, o que tá acontecendo aqui?"
+msgstr ""
+"Bom, é,\n"
+"O plano era entrar lá dentro."
 
 #: data/level/crevice-village.cfg:969
 msgid ""
 "I mean, what are we gonna do,\n"
 "sit on our butts here?"
 msgstr ""
+"Pois, francamente, vamos fazer\n"
+"o quê? Esperar sentados?"
 
 #: data/level/crevice-village.cfg:970
 msgid ""
 "No, no...\n"
 "but I was hoping we'd go in in force."
 msgstr ""
+"Não, claro que não...\n"
+"Mas eu esperava que pudéssemos\n"
+"preparar um ataque em massa."
 
 #: data/level/crevice-village.cfg:972
 msgid "Against Milgram? Really?"
@@ -2816,7 +2832,7 @@ msgstr ""
 
 #: data/level/tea-with-milgram.cfg:181
 msgid "So let me get this straight..."
-msgstr ""
+msgstr "Então, deixa eu entender..."
 
 #: data/level/tea-with-milgram.cfg:184
 msgid ""
@@ -4363,7 +4379,8 @@ msgid ""
 "Your maximum HP has increased by one!"
 msgstr ""
 "Você conseguiu partes suficientes\n"
-"pra formar uma nova cápsula de energia!A sua energia máxima aumentou\n"
+"pra formar uma nova cápsula de energia!\n"
+"A sua energia máxima aumentou\n"
 "em um ponto!"
 
 #: data/objects/npcs/chopple_npc.cfg:7
@@ -4499,15 +4516,15 @@ msgstr "Carregando texturas"
 
 #: data/preload.cfg:19
 msgid "Loading Frogatto character"
-msgstr ""
+msgstr "Carregando personagens"
 
 #: data/preload.cfg:24
 msgid "Loading door object"
-msgstr ""
+msgstr "Carregando objetos"
 
 #: data/preload.cfg:29
 msgid "Loading energy shot"
-msgstr ""
+msgstr "Carregando ataques especiais"
 
 #: src/controls_dialog.cpp:42
 msgid "Directions"
@@ -4549,7 +4566,7 @@ msgstr "↑"
 msgid "DOWN"
 msgstr "↓"
 
-#: src/main.cpp:355
+#: src/main.cpp:353
 msgid "Loading level"
 msgstr "Carregando fase"
 

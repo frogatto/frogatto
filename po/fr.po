@@ -8,8 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-08 12:59+0100\\nPO-Revision-Date: YEAR-MO-DA HO:MI"
-"+ZONE\n"
+"POT-Creation-Date: 2011-01-08 14:09-0200\n"
 "PO-Revision-Date: 2010-12-19 03:22-0300\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: French <>\n"
@@ -155,12 +154,13 @@ msgstr "Eh bien. voilà."
 msgid "Maintenance Shaft"
 msgstr "Conduit de maintenance"
 
-#: data/level/arcade-maintenance-shaft.cfg:1544
-msgid "This is a new high score!"
-msgstr ""
-
+#: data/level/arcade-maintenance-shaft.cfg:1543
 #: data/level/arcade-maintenance-shaft.cfg:1546
 msgid "You made it {level.player.vars.score} feet up the maintenance shaft!"
+msgstr ""
+
+#: data/level/arcade-maintenance-shaft.cfg:1544
+msgid "This is a new high score!"
 msgstr ""
 
 #: data/level/arcade-maintenance-shaft.cfg:1547
@@ -5032,7 +5032,7 @@ msgstr "HAUT"
 msgid "DOWN"
 msgstr "BAS"
 
-#: src/main.cpp:355
+#: src/main.cpp:353
 msgid "Loading level"
 msgstr "Chargement du niveau"
 
