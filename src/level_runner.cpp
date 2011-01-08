@@ -512,6 +512,15 @@ bool level_runner::play_cycle()
 					editor::edit(lvl_->id().c_str(), last_draw_position().x/100, last_draw_position().y/100);
 					lvl_.reset(load_level(editor::last_edited_level().c_str()));
 					lvl_->set_as_current_level();
+					if(lvl_->player()) {
+						//we want to save the game after leaving the editor
+						//so the game is restored to here if we die, rather
+						//than going to some other level. We must run
+						//the level through a process cycle just to make
+						//sure everything is set properly for the player.
+						lvl_->process();
+						lvl_->player()->get_entity().save_game();
+					}
 					pause_time_ += SDL_GetTicks();
 					#endif
 				} else if(key == SDLK_s && (mod&KMOD_CTRL)) {
