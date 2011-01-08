@@ -102,6 +102,7 @@ surface_palette.cpp
 surface_scaling.cpp
 surface.cpp
 texture.cpp
+texture_frame_buffer.cpp
 text_entry_widget.cpp
 thread.cpp
 tile_map.cpp
