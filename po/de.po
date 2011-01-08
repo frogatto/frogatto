@@ -2,7 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-19 04:09-0200\n"
+"POT-Creation-Date: 2011-01-08 12:59+0100\\nPO-Revision-Date: YEAR-MO-DA HO:MI"
+"+ZONE\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Philipp Zabel <philipp.zabel@gmail.com>\n"
 "Language-Team: \n"
@@ -16,34 +17,32 @@ msgid "Pocket Money"
 msgstr "Taschengeld"
 
 #: data/achievements.cfg:5
-#, fuzzy
 msgid "Collect ten coins."
-msgstr "Sammle zehn Münzen"
+msgstr "Zehn Münzen sammeln."
 
 #: data/achievements.cfg:12
 msgid "Nature Boy"
-msgstr ""
+msgstr "Naturbursche"
 
 #: data/achievements.cfg:13
 msgid "Put a water beetle back in water."
-msgstr ""
+msgstr "Einen Wasserkäfer ins Wasser zurücksetzen."
 
 #: data/achievements.cfg:20
 msgid "Nice Try..."
-msgstr ""
+msgstr "Netter Versuch..."
 
 #: data/achievements.cfg:21
 msgid "but that's not a secret area."
-msgstr ""
+msgstr "aber das ist kein Geheimversteck."
 
 #: data/achievements.cfg:28
 msgid "Gold Hoarder"
-msgstr ""
+msgstr "Goldhamsterer"
 
 #: data/achievements.cfg:29
-#, fuzzy
 msgid "Collect all the coins."
-msgstr "Sammle zehn Münzen"
+msgstr "Alle Münzen sammeln."
 
 #: data/achievements.cfg:36
 msgid "Speed Trader"
@@ -59,39 +58,39 @@ msgstr ""
 
 #: data/achievements.cfg:45
 msgid "Complete the game within 2 hours."
-msgstr ""
+msgstr "Das Spiel in 2 Stunden durchspielen."
 
 #: data/achievements.cfg:52
 msgid "Win!"
-msgstr ""
+msgstr "Sieg!"
 
 #: data/achievements.cfg:53
 msgid "Congratulations, you just won the game!"
-msgstr ""
+msgstr "Glückwunsch, du hast gerade das Spiel gewonnen!"
 
 #: data/achievements.cfg:60
 msgid "Rampage!"
-msgstr ""
+msgstr "Amoklauf!"
 
 #: data/achievements.cfg:61
 msgid "Kill 5 enemies in 10 seconds."
-msgstr ""
+msgstr "5 Gegner in 10 Sekunden töten."
 
 #: data/achievements.cfg:68
 msgid "Cube Chain"
-msgstr ""
+msgstr "Würfelkette"
 
 #: data/achievements.cfg:69
 msgid "Collect 15 points cubes in a row."
-msgstr ""
+msgstr "15 Punktewürfel in Folge sammeln."
 
 #: data/achievements.cfg:76
 msgid "Grudge"
-msgstr ""
+msgstr "Groll"
 
 #: data/achievements.cfg:77
 msgid "Kill 10 of the same type of enemy in a row."
-msgstr ""
+msgstr "10 Gegner vom gleichen Typ in Folge töten."
 
 #: data/level/airplane-boss.cfg:11
 msgid "Stonepipe Bridge"
@@ -141,18 +140,30 @@ msgstr "Zeit: "
 msgid "Well, that's that."
 msgstr "So, das war's."
 
-#: data/level/arcade-maintenance-shaft.cfg:12
-#: data/level/titlescreen-arcade.cfg:228
+#: data/level/arcade-maintenance-shaft.cfg:13
+#: data/level/titlescreen-arcade.cfg:234
 msgid "Maintenance Shaft"
-msgstr ""
+msgstr "Wartungsschacht"
+
+#: data/level/arcade-maintenance-shaft.cfg:1544
+msgid "This is a new high score!"
+msgstr "Das ist eine neue High-Score!"
+
+#: data/level/arcade-maintenance-shaft.cfg:1546
+msgid "You made it {level.player.vars.score} feet up the maintenance shaft!"
+msgstr "Du bist den Wartungsschacht {level.player.vars.score} Fuß weit hinauf gekommen!"
+
+#: data/level/arcade-maintenance-shaft.cfg:1547
+msgid "The high score is {registry.arcade_maintenance_shaft_high_score} feet."
+msgstr "Die High-Score sind {registry.arcade_maintenance_shaft_high_score} Fuß."
 
 #: data/level/arcade-the-long-haul.cfg:10
-#: data/level/titlescreen-arcade.cfg:250
+#: data/level/titlescreen-arcade.cfg:256
 msgid "The Long Haul"
 msgstr "Die Lange Strecke"
 
 #: data/level/arcade-wild-new-wonder.cfg:12
-#: data/level/titlescreen-arcade.cfg:227
+#: data/level/titlescreen-arcade.cfg:233
 msgid "Wild New Wonder"
 msgstr ""
 
@@ -786,7 +797,7 @@ msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2557
 msgid "Good luck!"
-msgstr ""
+msgstr "Viel Glück!"
 
 #: data/level/crevice-village-house-1.cfg:2581
 msgid ""
@@ -3038,55 +3049,88 @@ msgstr ""
 msgid "(Level Template)"
 msgstr ""
 
-#: data/level/test2.cfg:11 data/level/test3.cfg:13 data/level/test4.cfg:12
+#: data/level/test2.cfg:12 data/level/test3.cfg:12 data/level/test4.cfg:12
 #: data/level/test5.cfg:12
 msgid "(Test Level)"
+msgstr ""
+
+#: data/level/test6.cfg:14
+msgid "(test level)"
 msgstr ""
 
 #: data/level/the-north-tower.cfg:12
 msgid "The North Tower"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:169
+#: data/level/titlescreen-arcade.cfg:140
+msgid "Each machine has a different arcade-style challenge."
+msgstr "Jeder Spielautomat enthält eine andere Herausforderung."
+
+#: data/level/titlescreen-arcade.cfg:175
 msgid "These don't affect story-mode.  Enjoy!"
 msgstr "Der Story-Modus wird davon nicht beeinflusst. Viel Spaß!"
 
-#: data/level/titlescreen-arcade.cfg:226 data/level/titlescreen-arcade.cfg:249
+#: data/level/titlescreen-arcade.cfg:207
+msgid "EXIT"
+msgstr "AUSGANG"
+
+#: data/level/titlescreen-arcade.cfg:232 data/level/titlescreen-arcade.cfg:255
 msgid "Select a level:"
-msgstr ""
+msgstr "Wähle ein Level:"
 
-#: data/level/titlescreen-arcade.cfg:229 data/level/titlescreen-arcade.cfg:252
-#, fuzzy
+#: data/level/titlescreen-arcade.cfg:235 data/level/titlescreen-arcade.cfg:258
 msgid "(cancel)"
-msgstr "Abbrechen"
+msgstr "(abbrechen)"
 
-#: data/level/titlescreen-arcade.cfg:251
+#: data/level/titlescreen-arcade.cfg:257
 msgid "Down the RabbitHall"
 msgstr ""
 
-#: data/level/titlescreen-test.cfg:373 data/level/titlescreen.cfg:373
+#: data/level/titlescreen-arcade.cfg:285
+msgid "CLIMB"
+msgstr "KLETTERN"
+
+#: data/level/titlescreen-arcade.cfg:317
+msgid "RUN"
+msgstr "RENNEN"
+
+#: data/level/titlescreen-test.cfg:373 data/level/titlescreen.cfg:349
+#: data/level/titlescreen.cfg:374
 msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
 msgstr "Verwende {LEFT_KEY} und {RIGHT_KEY} um zu gehen."
 
-#: data/level/titlescreen-test.cfg:374 data/level/titlescreen.cfg:374
+#: data/level/titlescreen-test.cfg:374 data/level/titlescreen.cfg:375
+#: data/level/titlescreen.cfg:391
 msgid "Press {UP_KEY} to talk, and use things like doors."
 msgstr "Drücke {UP_KEY} um etwas zu benutzen."
 
-#: data/level/titlescreen-test.cfg:375 data/level/titlescreen.cfg:375
+#: data/level/titlescreen-test.cfg:375 data/level/titlescreen.cfg:376
 msgid "Press {DOWN_KEY} to crouch."
 msgstr "Drücke {DOWN_KEY} um dich zu ducken."
 
-#: data/level/titlescreen-test.cfg:376 data/level/titlescreen.cfg:376
+#: data/level/titlescreen-test.cfg:376 data/level/titlescreen.cfg:377
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
 msgstr "Drücke schnell zweimal {LEFT_KEY} oder {RIGHT_KEY} um zu rennen."
 
-#: data/level/titlescreen-test.cfg:377 data/level/titlescreen.cfg:377
+#: data/level/titlescreen-test.cfg:377 data/level/titlescreen.cfg:378
 msgid "Press {JUMP_KEY} to jump."
 msgstr "Drücke {JUMP_KEY} um zu springen."
 
-#: data/level/titlescreen-test.cfg:378 data/level/titlescreen.cfg:378
+#: data/level/titlescreen-test.cfg:378 data/level/titlescreen.cfg:379
 msgid "Press {TONGUE_KEY} to use a character's attacks."
 msgstr "Drücke {TONGUE_KEY} um anzugreifen."
+
+#: data/level/titlescreen.cfg:284
+msgid "LOAD GAME"
+msgstr "SPIEL LADEN"
+
+#: data/level/titlescreen.cfg:316
+msgid "NEW GAME"
+msgstr "NEUES SPIEL"
+
+#: data/level/titlescreen.cfg:423
+msgid "ARCADE"
+msgstr "SPIELHALLE"
 
 #: data/level/to-nenes-house-inside.cfg:12
 msgid "Nene's House"
@@ -4125,29 +4169,6 @@ msgstr "Zeit: "
 msgid " -- paused -- "
 msgstr ""
 
-#: data/objects/crazy-stuff/walker-1-dbg.cfg:33
-#: data/objects/crazy-stuff/walker-1.cfg:33
-msgid "init walker-1"
-msgstr ""
-
-#: data/objects/crazy-stuff/walker-1-dbg.cfg:134
-#: data/objects/crazy-stuff/walker-1.cfg:122
-msgid ":"
-msgstr ""
-
-#: data/objects/crazy-stuff/walker-1-dbg.cfg:134
-#: data/objects/crazy-stuff/walker-1.cfg:122
-msgid "Leg #"
-msgstr ""
-
-#: data/objects/crazy-stuff/walker-1.cfg:71
-msgid "legs:"
-msgstr ""
-
-#: data/objects/crazy-stuff/walker-2.cfg:342
-msgid "ok"
-msgstr ""
-
 #: data/objects/items/max_heart_object.cfg:18
 msgid ""
 "You have acquired a heart capsule.\n"
@@ -4278,7 +4299,7 @@ msgstr ""
 
 #: data/objects/store-items/buyable_powerup_reflexes.cfg:11
 msgid "hyper crystal"
-msgstr ""
+msgstr "Hyperkristall"
 
 #: data/objects/store-items/buyable_powerup_reflexes.cfg:13
 msgid ""
@@ -4384,7 +4405,7 @@ msgstr "Angriff"
 msgid "Back"
 msgstr "Zurück"
 
-#: src/draw_scene.cpp:349
+#: src/draw_scene.cpp:350
 msgid "Achievement Unlocked!"
 msgstr "Erfolg freigeschaltet!"
 
@@ -4404,7 +4425,7 @@ msgstr "HOCH"
 msgid "DOWN"
 msgstr "RUNTER"
 
-#: src/main.cpp:352
+#: src/main.cpp:355
 msgid "Loading level"
 msgstr "Lade Level"
 
@@ -4439,25 +4460,6 @@ msgstr "A und B vertauschen"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
-
-#, fuzzy
-#~ msgid "Collect over 750 coins."
-#~ msgstr "Sammle zehn Münzen"
-
-#~ msgid "Each machine has a different arcade-style challenge."
-#~ msgstr "Jeder Spielautomat enthält eine andere Herausforderung."
-
-#~ msgid "EXIT"
-#~ msgstr "AUSGANG"
-
-#~ msgid "LOAD GAME"
-#~ msgstr "SPIEL LADEN"
-
-#~ msgid "NEW GAME"
-#~ msgstr "NEUES SPIEL"
-
-#~ msgid "ARCADE"
-#~ msgstr "SPIELHALLE"
 
 #~ msgid ""
 #~ "I don't know if they've taken notice\n"
