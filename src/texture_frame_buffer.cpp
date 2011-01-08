@@ -35,11 +35,13 @@ bool unsupported()
 
 void init()
 {
+#if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
 	if(!GLEW_EXT_framebuffer_object) {
 		fprintf(stderr, "FRAME BUFFER OBJECT NOT SUPPORTED\n");
 		supported = false;
 		return;
 	}
+#endif
 
 	fprintf(stderr, "FRAME BUFFER OBJECT IS SUPPORTED\n");
 
