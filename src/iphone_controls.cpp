@@ -166,15 +166,16 @@ bool iphone_controls::water_dir(float* xvalue, float* yvalue)
 void iphone_controls::draw()
 {
 	if(!is_underwater) {
-		/*
-		graphics::draw_rect(left_arrow, graphics::color(255, 0, 0, 64));
-		graphics::draw_rect(right_arrow, graphics::color(255, 0, 0, 64));
-		graphics::draw_rect(up_arrow, graphics::color(0, 255, 0, 64));
-		graphics::draw_rect(down_arrow, graphics::color(0, 0, 255, 64));
-		graphics::draw_rect(a_button, graphics::color(255, 0, 0, 64));
-		graphics::draw_rect(c_button, graphics::color(0, 255, 0, 64));
-		graphics::draw_rect(interact_button, graphics::color(0, 0, 255, 64));
-		*/
+		if (preferences::show_iphone_controls())
+		{
+			graphics::draw_rect(left_arrow, graphics::color(255, 0, 0, 64));
+			graphics::draw_rect(right_arrow, graphics::color(255, 0, 0, 64));
+			graphics::draw_rect(up_arrow, graphics::color(0, 255, 0, 64));
+			graphics::draw_rect(down_arrow, graphics::color(0, 0, 255, 64));
+			graphics::draw_rect(a_button, graphics::color(255, 0, 0, 64));
+			graphics::draw_rect(c_button, graphics::color(0, 255, 0, 64));
+			graphics::draw_rect(interact_button, graphics::color(0, 0, 255, 64));
+		}
 		return;
 	}
 

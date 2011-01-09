@@ -30,6 +30,7 @@ namespace preferences {
 		bool no_sound_ = false;
 		bool no_music_ = false;
 		bool show_debug_hitboxes_ = false;
+		bool show_iphone_controls_ = false;
 		bool use_pretty_scaling_ = false;
 		bool fullscreen_ = false;
 		bool resizable_ = false;
@@ -177,6 +178,10 @@ namespace preferences {
 	
 	bool show_debug_hitboxes() {
 		return show_debug_hitboxes_;
+	}
+	
+	bool show_iphone_controls() {
+		return show_iphone_controls_;
 	}
 	
 	bool use_pretty_scaling() {
@@ -404,6 +409,8 @@ namespace preferences {
 			level_path_ = arg_value + "/";
 		} else if(s == "--show-hitboxes") {
 			show_debug_hitboxes_ = true;
+		} else if(s == "--show-controls") {
+			show_iphone_controls_ = true;
 		} else if(s == "--scale") {
 			set_use_pretty_scaling(true);
 		} else if(s == "--no-sound") {
