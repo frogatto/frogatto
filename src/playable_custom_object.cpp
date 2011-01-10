@@ -140,6 +140,38 @@ variant playable_custom_object::get_value(const std::string& key) const
 		return variant(can_interact_);
 	} else if(key == "underwater_controls") {
 		return variant(underwater_controls_);
+	} else if(key == "ctrl_mice") {
+		std::vector<variant> result;
+
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+		const int nmice = SDL_GetNumMice();
+#else
+		const int nmice = 1;
+#endif
+		for(int n = 0; n != nmice; ++n) {
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+			SDL_SelectMouse(n);
+#endif
+			std::vector<variant> info;
+			int x, y;
+			Uint8 button_state = SDL_GetMouseState(&x, &y);
+			translate_mouse_coords(&x, &y);
+
+			info.push_back(variant(x));
+			info.push_back(variant(y));
+
+			if(button_state & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+				info.push_back(variant("left"));
+			}
+
+			if(button_state & SDL_BUTTON(SDL_BUTTON_RIGHT)) {
+				info.push_back(variant("right"));
+			}
+
+			result.push_back(variant(&info));
+		}
+
+		return variant(&result);
 	} else if(key == "ctrl_tilt") {
 		return variant(-joystick::iphone_tilt());
 	} else if(key == "ctrl_x") {
