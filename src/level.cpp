@@ -3030,6 +3030,14 @@ variant level::get_value(const std::string& key) const
 		return variant(segment_height_);
 	} else if(key == "num_segments") {
 		return variant(sub_levels_.size());
+	} else if(key == "camera_position") {
+		std::vector<variant> pos;
+		pos.reserve(4);
+		pos.push_back(variant(last_draw_position().x/100));
+		pos.push_back(variant(last_draw_position().y/100));
+		pos.push_back(variant(graphics::screen_width()));
+		pos.push_back(variant(graphics::screen_height()));
+		return variant(&pos);
 	} else {
 		const_entity_ptr e = get_entity_by_label(key);
 		if(e) {
