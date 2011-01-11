@@ -482,14 +482,20 @@ public:
 
 private:
 	variant execute(const formula_callable& variables) const {
-		const float a = args()[0]->evaluate(variables).as_int();
-		const float b = args()[1]->evaluate(variables).as_int();
-		const float ang = args()[1]->evaluate(variables).as_int();
-		const float dst = args()[1]->evaluate(variables).as_int();
-		const float x = -1;
-		const float y = -1;
-		//std::cerr << "got: " << a << ", " << b << ", " << ang << ", " << dst << "\n" << "prc: " << 0 << "\n";
-		return variant(static_cast<int>(0));
+		const float x = args()[0]->evaluate(variables).as_int();
+		const float y = args()[1]->evaluate(variables).as_int();
+		const float ang = args()[2]->evaluate(variables).as_int();
+		const float dist = args()[3]->evaluate(variables).as_int();
+		
+		const float u = (dist * cos((ang/57.29577951308232087)/1000)) + x;
+		const float v = (dist * sin((ang/57.29577951308232087)/1000)) + y;
+
+		std::vector<variant> result;
+		result.reserve(2);
+		result.push_back(variant(static_cast<int>(u)));
+		result.push_back(variant(static_cast<int>(v)));
+		
+		return variant(&result);
 	}
 };
 
