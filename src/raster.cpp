@@ -480,7 +480,7 @@ void queue_blit_texture(const texture& tex, int x, int y, int w, int h,
 	blit_vqueue.push_back(y + h);
 }
 
-void queue_blit_texture(const texture& tex, int x, int y, int w, int h, int rotate,
+void queue_blit_texture(const texture& tex, int x, int y, int w, int h, GLfloat rotate,
 						GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2)
 {
 	x &= preferences::xypos_draw_mask;

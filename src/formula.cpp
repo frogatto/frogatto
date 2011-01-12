@@ -523,7 +523,9 @@ public: \
 	{} \
 private: \
 	variant execute(const formula_callable& variables) const { \
-		return variant(left_->evaluate(variables).as_int() op value_); \
+		variant v = left_->evaluate(variables); \
+		if(v.is_decimal()) { return variant(v op variant(value_)); } \
+		return variant(v.as_int() op value_); \
 	} \
 	expression_ptr left_; \
 	int value_; \
@@ -786,6 +788,18 @@ private:
 	}
 	
 	variant i_;
+};
+
+class decimal_expression : public formula_expression {
+public:
+	explicit decimal_expression(int i, int f) : formula_expression("_decimal"), v_(i*VARIANT_DECIMAL_PRECISION + f, variant::DECIMAL_VARIANT)
+	{}
+private:
+	variant execute(const formula_callable& /*variables*/) const {
+		return v_;
+	}
+	
+	variant v_;
 };
 
 class string_expression : public formula_expression {
@@ -1333,6 +1347,22 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 			} else if(i1->type == TOKEN_INTEGER) {
 				int n = strtol(std::string(i1->begin,i1->end).c_str(), NULL, 0);
 				return expression_ptr(new integer_expression(n));
+			} else if(i1->type == TOKEN_DECIMAL) {
+				char* endptr = NULL;
+				char* enddec = NULL;
+				int n = strtol(std::string(i1->begin,i1->end).c_str(), &endptr, 0);
+				int m = strtol(endptr+1, &enddec, 0);
+				int dist = enddec - endptr;
+				while(dist > 4) {
+					m /= 10;
+					--dist;
+				}
+				while(dist < 4) {
+					m *= 10;
+					++dist;
+				}
+
+				return expression_ptr(new decimal_expression(n, m));
 			} else if(i1->type == TOKEN_STRING_LITERAL) {
 				bool translate = *(i1->begin) == '~';
 				return expression_ptr(new string_expression(std::string(i1->begin+1,i1->end-1), translate));
@@ -1661,12 +1691,19 @@ UNIT_TEST(dot_precedence) {
 }
 
 UNIT_TEST(short_circuit) {
-	return;
 	map_formula_callable* callable = new map_formula_callable;
 	variant ref(callable);
 	callable->add("x", variant(0));
 	formula f("x and (5/x)");
 	f.execute(*callable);
+}
+
+UNIT_TEST(formula_decimal) {
+	CHECK_EQ(formula("0.0005").execute().string_cast(), "0.000");
+	CHECK_EQ(formula("0.005").execute().string_cast(), "0.005");
+	CHECK_EQ(formula("0.05").execute().string_cast(), "0.050");
+	CHECK_EQ(formula("0.5").execute().string_cast(), "0.500");
+	CHECK_EQ(formula("8.5 + 0.5").execute().string_cast(), "9.000");
 }
 
 BENCHMARK(formula_if) {

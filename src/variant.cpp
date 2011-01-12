@@ -11,6 +11,7 @@
 #include "formatter.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
+#include "unit_test.hpp"
 #include "variant.hpp"
 #include "wml_formula_callable.hpp"
 
@@ -23,6 +24,8 @@ std::string variant_type_to_string(variant::TYPE type) {
 		return "null";
 	case variant::TYPE_INT: 
 		return "int";
+	case variant::TYPE_DECIMAL: 
+		return "decimal";
 	case variant::TYPE_CALLABLE: 
 		return "object";
 	case variant::TYPE_CALLABLE_LOADING: 
@@ -375,6 +378,8 @@ bool variant::as_bool() const
 		return false;
 	case TYPE_INT:
 		return int_value_ != 0;
+	case TYPE_DECIMAL:
+		return decimal_value_ != 0;
 	case TYPE_CALLABLE_LOADING:
 		return true;
 	case TYPE_CALLABLE:
@@ -402,6 +407,10 @@ const std::string& variant::as_string() const
 
 variant variant::operator+(const variant& v) const
 {
+	if(type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL) {
+		return variant(as_decimal() + v.as_decimal(), DECIMAL_VARIANT);
+	}
+
 	if(type_ == TYPE_INT) {
 		return variant(int_value_ + v.as_int());
 	}
@@ -464,11 +473,23 @@ variant variant::operator+(const variant& v) const
 
 variant variant::operator-(const variant& v) const
 {
+	if(type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL) {
+		return variant(as_decimal() - v.as_decimal(), DECIMAL_VARIANT);
+	}
+
 	return variant(as_int() - v.as_int());
 }
 
 variant variant::operator*(const variant& v) const
 {
+	if(type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL) {
+		int64_t long_int = as_decimal();
+		long_int *= v.as_decimal();
+		long_int /= VARIANT_DECIMAL_PRECISION;
+
+		return variant(static_cast<int>(long_int), DECIMAL_VARIANT);
+	}
+
 	if(type_ == TYPE_LIST) {
 		int ncopies = v.as_int();
 		if(ncopies < 0) {
@@ -491,6 +512,19 @@ variant variant::operator*(const variant& v) const
 
 variant variant::operator/(const variant& v) const
 {
+	if(type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL) {
+		const int denominator = v.as_decimal();
+		if(denominator == 0) {
+			throw type_error((formatter() << "divide by zero error").str());
+		}
+
+		int64_t long_int = as_decimal();
+		long_int *= VARIANT_DECIMAL_PRECISION;
+		long_int /= denominator;
+
+		return variant(static_cast<int>(long_int), variant::DECIMAL_VARIANT);
+	}
+
 	const int numerator = as_int();
 	const int denominator = v.as_int();
 	if(denominator == 0) {
@@ -513,17 +547,32 @@ variant variant::operator%(const variant& v) const
 
 variant variant::operator^(const variant& v) const
 {
+	if( type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL ) {
+		double res = pow( as_decimal()/double(VARIANT_DECIMAL_PRECISION),
+		                v.as_decimal()/double(VARIANT_DECIMAL_PRECISION));		
+		res *= 1000;
+		return variant(static_cast<int>(res), DECIMAL_VARIANT);
+	}
+
 	return variant(static_cast<int>(pow(static_cast<double>(as_int()), v.as_int())));
 }
 
 variant variant::operator-() const
 {
+	if(type_ == TYPE_DECIMAL) {
+		return variant(-decimal_value_, variant::DECIMAL_VARIANT);
+	}
+
 	return variant(-as_int());
 }
 
 bool variant::operator==(const variant& v) const
 {
 	if(type_ != v.type_) {
+		if(type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL) {
+			return as_decimal() == v.as_decimal();
+		}
+
 		return false;
 	}
 
@@ -579,6 +628,10 @@ bool variant::operator!=(const variant& v) const
 bool variant::operator<=(const variant& v) const
 {
 	if(type_ != v.type_) {
+		if(type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL) {
+			return as_decimal() <= v.as_decimal();
+		}
+
 		return type_ < v.type_;
 	}
 
@@ -653,6 +706,15 @@ void variant::serialize_to_string(std::string& str) const
 	case TYPE_INT:
 		str += boost::lexical_cast<std::string>(int_value_);
 		break;
+	case TYPE_DECIMAL: {
+		int fractional = decimal_value_ % VARIANT_DECIMAL_PRECISION;
+		int integer = (decimal_value_ - fractional) / VARIANT_DECIMAL_PRECISION;
+
+		char buf[256];
+		sprintf(buf, "%d.%03d", integer, fractional);
+		str += buf;
+		break;
+	}
 	case TYPE_CALLABLE_LOADING: {
 		ASSERT_LOG(false, "TRIED TO SERIALIZE A VARIANT LOADING");
 		break;
@@ -763,6 +825,11 @@ std::string variant::string_cast() const
 		return "0";
 	case TYPE_INT:
 		return boost::lexical_cast<std::string>(int_value_);
+	case TYPE_DECIMAL: {
+		std::string res;
+		serialize_to_string(res);
+		return res;
+	}
 	case TYPE_CALLABLE_LOADING:
 		return "(object loading)";
 	case TYPE_CALLABLE:
@@ -814,6 +881,9 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 		s << "(null)";
 	case TYPE_INT:
 		s << int_value_;
+		break;
+	case TYPE_DECIMAL:
+		s << string_cast();
 		break;
 	case TYPE_LIST: {
 		s << "[";
@@ -884,4 +954,14 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 	}
 
 	return s.str();
+}
+
+UNIT_TEST(variant_decimal)
+{
+	variant d(9876, variant::DECIMAL_VARIANT);
+	variant d2(4, variant::DECIMAL_VARIANT);
+	CHECK_EQ(d.as_decimal(), 9876);
+	CHECK_EQ(d.as_int(), 9);
+	CHECK_EQ(d.string_cast(), "9.876");
+	CHECK_EQ((d + d2).as_decimal(), 9880);
 }

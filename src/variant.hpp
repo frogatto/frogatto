@@ -42,10 +42,15 @@ struct type_error {
 	std::string message;
 };
 
+static const int VARIANT_DECIMAL_PRECISION = 1000;
+
 class variant {
 public:
+	enum DECIMAL_VARIANT_TYPE { DECIMAL_VARIANT };
+
 	variant() : type_(TYPE_NULL), int_value_(0) {}
 	explicit variant(int n) : type_(TYPE_INT), int_value_(n) {}
+	variant(int n, DECIMAL_VARIANT_TYPE) : type_(TYPE_DECIMAL), decimal_value_(n) {}
 	explicit variant(const game_logic::formula_callable* callable);
 	explicit variant(std::vector<variant>* array);
 	explicit variant(const std::string& str);
@@ -78,9 +83,11 @@ public:
 	bool is_string() const { return type_ == TYPE_STRING; }
 	bool is_null() const { return type_ == TYPE_NULL; }
 	bool is_int() const { return type_ == TYPE_INT; }
+	bool is_decimal() const { return type_ == TYPE_DECIMAL; }
 	bool is_map() const { return type_ == TYPE_MAP; }
 	bool is_function() const { return type_ == TYPE_FUNCTION; }
-	int as_int() const { if(type_ == TYPE_NULL) { return 0; } must_be(TYPE_INT); return int_value_; }
+	int as_int() const { if(type_ == TYPE_NULL) { return 0; } if(type_ == TYPE_DECIMAL) { return decimal_value_/VARIANT_DECIMAL_PRECISION; } must_be(TYPE_INT); return int_value_; }
+	int as_decimal() const { if(type_ == TYPE_NULL) { return 0; } if(type_ == TYPE_INT) { return int_value_*VARIANT_DECIMAL_PRECISION; } must_be(TYPE_DECIMAL); return decimal_value_; }
 	bool as_bool() const;
 
 	bool is_list() const { return type_ == TYPE_LIST; }
@@ -142,7 +149,8 @@ public:
 	std::string to_debug_string(std::vector<const game_logic::formula_callable*>* seen=NULL) const;
 
 	std::vector<variant>& initialize_list();
-	enum TYPE { TYPE_NULL, TYPE_INT, TYPE_CALLABLE, TYPE_CALLABLE_LOADING, TYPE_LIST, TYPE_STRING, TYPE_MAP, TYPE_FUNCTION };
+	enum TYPE { TYPE_NULL, TYPE_INT, TYPE_DECIMAL, TYPE_CALLABLE, TYPE_CALLABLE_LOADING, TYPE_LIST, TYPE_STRING, TYPE_MAP, TYPE_FUNCTION };
+
 private:
 	void must_be(TYPE t) const {
 #if !TARGET_OS_IPHONE
@@ -157,6 +165,7 @@ private:
 	TYPE type_;
 	union {
 		int int_value_;
+		int decimal_value_;
 		const game_logic::formula_callable* callable_;
 		game_logic::formula_callable* mutable_callable_;
 		intptr_t callable_loading_;

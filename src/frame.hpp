@@ -47,8 +47,8 @@ public:
 	std::vector<bool>::const_iterator alpha_row(int x, int y, int time, bool face_right) const;
 	bool is_alpha(int x, int y, int time, bool face_right) const;
 	void draw_into_blit_queue(graphics::blit_queue& blit, int x, int y, bool face_right=true, bool upside_down=false, int time=0) const;
-	void draw(int x, int y, bool face_right=true, bool upside_down=false, int time=0, int rotate=0) const;
-	void draw(int x, int y, const rect& area, bool face_right=true, bool upside_down=false, int time=0, int rotate=0) const;
+	void draw(int x, int y, bool face_right=true, bool upside_down=false, int time=0, GLfloat rotate=0) const;
+	void draw(int x, int y, const rect& area, bool face_right=true, bool upside_down=false, int time=0, GLfloat rotate=0) const;
 	void set_image_as_solid();
 	const_solid_info_ptr solid() const { return solid_; }
 	int collide_x() const { return collide_rect_.x()*scale_; }

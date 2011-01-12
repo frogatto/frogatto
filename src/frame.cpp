@@ -454,7 +454,7 @@ void frame::draw_into_blit_queue(graphics::blit_queue& blit, int x, int y, bool 
 	blit.add(x + w, y + h, rect[2], rect[3]);
 }
 
-void frame::draw(int x, int y, bool face_right, bool upside_down, int time, int rotate) const
+void frame::draw(int x, int y, bool face_right, bool upside_down, int time, GLfloat rotate) const
 {
 	const frame_info* info = NULL;
 	GLfloat rect[4];
@@ -476,7 +476,7 @@ void frame::draw(int x, int y, bool face_right, bool upside_down, int time, int 
 	graphics::flush_blit_texture();
 }
 
-void frame::draw(int x, int y, const rect& area, bool face_right, bool upside_down, int time, int rotate) const
+void frame::draw(int x, int y, const rect& area, bool face_right, bool upside_down, int time, GLfloat rotate) const
 {
 	const frame_info* info = NULL;
 	GLfloat rect[4];

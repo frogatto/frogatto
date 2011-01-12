@@ -470,7 +470,7 @@ private:
 		const float b = args()[1]->evaluate(variables).as_int();
 		const float c = args()[2]->evaluate(variables).as_int();
 		const float d = args()[3]->evaluate(variables).as_int();
-		return variant(static_cast<int>(round(atan2(a-c, b-d)*57.29577951308232087+90)*-1));
+		return variant(static_cast<int>(round((atan2(a-c, b-d)*57.29577951308232087+90)*VARIANT_DECIMAL_PRECISION)*-1), variant::DECIMAL_VARIANT);
 	}
 };
 
@@ -492,8 +492,8 @@ private:
 
 		std::vector<variant> result;
 		result.reserve(2);
-		result.push_back(variant(static_cast<int>(u)));
-		result.push_back(variant(static_cast<int>(v)));
+		result.push_back(variant(static_cast<int>(u*VARIANT_DECIMAL_PRECISION), variant::DECIMAL_VARIANT));
+		result.push_back(variant(static_cast<int>(v*VARIANT_DECIMAL_PRECISION), variant::DECIMAL_VARIANT));
 		
 		return variant(&result);
 	}

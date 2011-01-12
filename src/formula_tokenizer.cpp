@@ -135,6 +135,15 @@ token get_token(iterator& i1, iterator i2) {
 			++i1;
 		}
 
+		if(i1 != i2 && *i1 == '.') {
+			t.type = TOKEN_DECIMAL;
+
+			++i1;
+			while(i1 != i2 && isdigit(*i1)) {
+				++i1;
+			}
+		}
+
 		t.end = i1;
 		return t;
 	}

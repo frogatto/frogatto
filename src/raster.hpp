@@ -51,7 +51,7 @@ void blit_texture(const texture& tex, int x, int y, int w, int h, GLfloat rotate
 
 void queue_blit_texture(const texture& tex, int x, int y, int w, int h,
                         GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2);
-void queue_blit_texture(const texture& tex, int x, int y, int w, int h, int rotate,
+void queue_blit_texture(const texture& tex, int x, int y, int w, int h, GLfloat rotate,
 						GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2);
 void flush_blit_texture();
 
