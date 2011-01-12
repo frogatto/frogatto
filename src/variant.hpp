@@ -9,6 +9,7 @@
 
 #include <string.h>
 
+#include "decimal.hpp"
 #include "formula_fwd.hpp"
 
 namespace game_logic {
@@ -42,7 +43,7 @@ struct type_error {
 	std::string message;
 };
 
-static const int VARIANT_DECIMAL_PRECISION = 1000;
+static const int VARIANT_DECIMAL_PRECISION = DECIMAL_PRECISION;
 
 class variant {
 public:
@@ -50,6 +51,7 @@ public:
 
 	variant() : type_(TYPE_NULL), int_value_(0) {}
 	explicit variant(int n) : type_(TYPE_INT), int_value_(n) {}
+	explicit variant(decimal d) : type_(TYPE_DECIMAL), decimal_value_(d.value()) {}
 	variant(int n, DECIMAL_VARIANT_TYPE) : type_(TYPE_DECIMAL), decimal_value_(n) {}
 	explicit variant(const game_logic::formula_callable* callable);
 	explicit variant(std::vector<variant>* array);
@@ -87,7 +89,7 @@ public:
 	bool is_map() const { return type_ == TYPE_MAP; }
 	bool is_function() const { return type_ == TYPE_FUNCTION; }
 	int as_int() const { if(type_ == TYPE_NULL) { return 0; } if(type_ == TYPE_DECIMAL) { return decimal_value_/VARIANT_DECIMAL_PRECISION; } must_be(TYPE_INT); return int_value_; }
-	int as_decimal() const { if(type_ == TYPE_NULL) { return 0; } if(type_ == TYPE_INT) { return int_value_*VARIANT_DECIMAL_PRECISION; } must_be(TYPE_DECIMAL); return decimal_value_; }
+	decimal as_decimal() const { if(type_ == TYPE_NULL) { return decimal(0); } if(type_ == TYPE_INT) { return decimal(int_value_*VARIANT_DECIMAL_PRECISION); } must_be(TYPE_DECIMAL); return decimal(decimal_value_); }
 	bool as_bool() const;
 
 	bool is_list() const { return type_ == TYPE_LIST; }

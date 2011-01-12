@@ -674,9 +674,9 @@ void custom_object::draw() const
 	const int draw_y = y();
 
 	if(!draw_area_.get()) {
-		frame_->draw(draw_x, draw_y, face_right(), upside_down(), time_in_frame_, GLfloat(rotate_)/GLfloat(VARIANT_DECIMAL_PRECISION));
+		frame_->draw(draw_x, draw_y, face_right(), upside_down(), time_in_frame_, rotate_.as_float());
 	} else {
-		frame_->draw(draw_x, draw_y, *draw_area_, face_right(), upside_down(), time_in_frame_, GLfloat(rotate_)/GLfloat(VARIANT_DECIMAL_PRECISION));
+		frame_->draw(draw_x, draw_y, *draw_area_, face_right(), upside_down(), time_in_frame_, rotate_.as_float());
 	}
 
 	if(blur_) {
@@ -690,7 +690,7 @@ void custom_object::draw() const
 			while(!transform.fits_in_color()) {
 				transform = transform - transform.to_color();
 				transform.to_color().set_as_current_color();
-				frame_->draw(draw_x, draw_y, face_right(), upside_down(), time_in_frame_, GLfloat(rotate_)/1000.0);
+				frame_->draw(draw_x, draw_y, face_right(), upside_down(), time_in_frame_, rotate_.as_float());
 			}
 
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -836,9 +836,9 @@ void custom_object::process(level& lvl)
 		}
 
 		if(position_schedule_->rotation.empty() == false) {
-			rotate_ = position_schedule_->rotation[pos%position_schedule_->rotation.size()];
+			rotate_ = decimal(position_schedule_->rotation[pos%position_schedule_->rotation.size()]);
 			if(next_fraction) {
-				rotate_ = (rotate_*this_fraction + next_fraction*position_schedule_->rotation[(pos+1)%position_schedule_->rotation.size()])/position_schedule_->speed;
+				rotate_ = decimal((rotate_*this_fraction + next_fraction*position_schedule_->rotation[(pos+1)%position_schedule_->rotation.size()])/position_schedule_->speed);
 			}
 		}
 	}
@@ -1302,7 +1302,7 @@ void custom_object::process(level& lvl)
 	set_driver_position();
 
 	if(blur_) {
-		blur_->next_frame(start_x, start_y, x(), y(), frame_, time_in_frame_, face_right(), upside_down(), rotate_);
+		blur_->next_frame(start_x, start_y, x(), y(), frame_, time_in_frame_, face_right(), upside_down(), rotate_.value());
 		if(blur_->destroyed()) {
 			blur_.reset();
 		}
@@ -1566,7 +1566,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_VARS:              return variant(vars_.get());
 	case CUSTOM_OBJECT_TMP:               return variant(tmp_vars_.get());
 	case CUSTOM_OBJECT_GROUP:             return variant(group());
-	case CUSTOM_OBJECT_ROTATE:            return variant(rotate_, variant::DECIMAL_VARIANT);
+	case CUSTOM_OBJECT_ROTATE:            return variant(rotate_);
 	case CUSTOM_OBJECT_ME:
 	case CUSTOM_OBJECT_SELF:              return variant(this);
 	case CUSTOM_OBJECT_RED:               return variant(draw_color().r());
@@ -1821,8 +1821,6 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		accel_y_ = value.as_int();
 	} else if(key == "rotate") {
 		rotate_ = value.as_decimal();
-	} else if(key == "rotate_millis") {
-		rotate_ = value.as_int();
 	} else if(key == "red") {
 		make_draw_color();
 		draw_color_->buf()[0] = truncate_to_char(value.as_int());

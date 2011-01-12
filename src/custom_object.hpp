@@ -8,6 +8,7 @@
 #include "blur.hpp"
 #include "color_utils.hpp"
 #include "custom_object_type.hpp"
+#include "decimal.hpp"
 #include "entity.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
@@ -197,7 +198,7 @@ private:
 	int velocity_x_, velocity_y_;
 	int accel_x_, accel_y_;
 	int gravity_shift_;
-	int rotate_;
+	decimal rotate_;
 
 	boost::scoped_ptr<std::pair<int, int> > position_scale_millis_;
 

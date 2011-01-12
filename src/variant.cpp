@@ -408,7 +408,7 @@ const std::string& variant::as_string() const
 variant variant::operator+(const variant& v) const
 {
 	if(type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL) {
-		return variant(as_decimal() + v.as_decimal(), DECIMAL_VARIANT);
+		return variant(as_decimal() + v.as_decimal());
 	}
 
 	if(type_ == TYPE_INT) {
@@ -474,7 +474,7 @@ variant variant::operator+(const variant& v) const
 variant variant::operator-(const variant& v) const
 {
 	if(type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL) {
-		return variant(as_decimal() - v.as_decimal(), DECIMAL_VARIANT);
+		return variant(as_decimal() - v.as_decimal());
 	}
 
 	return variant(as_int() - v.as_int());
@@ -483,11 +483,7 @@ variant variant::operator-(const variant& v) const
 variant variant::operator*(const variant& v) const
 {
 	if(type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL) {
-		int64_t long_int = as_decimal();
-		long_int *= v.as_decimal();
-		long_int /= VARIANT_DECIMAL_PRECISION;
-
-		return variant(static_cast<int>(long_int), DECIMAL_VARIANT);
+		return variant(as_decimal() * v.as_decimal());
 	}
 
 	if(type_ == TYPE_LIST) {
@@ -513,16 +509,11 @@ variant variant::operator*(const variant& v) const
 variant variant::operator/(const variant& v) const
 {
 	if(type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL) {
-		const int denominator = v.as_decimal();
-		if(denominator == 0) {
+		if(v.as_decimal().value() == 0) {
 			throw type_error((formatter() << "divide by zero error").str());
 		}
 
-		int64_t long_int = as_decimal();
-		long_int *= VARIANT_DECIMAL_PRECISION;
-		long_int /= denominator;
-
-		return variant(static_cast<int>(long_int), variant::DECIMAL_VARIANT);
+		return variant(as_decimal() / v.as_decimal());
 	}
 
 	const int numerator = as_int();
@@ -548,8 +539,8 @@ variant variant::operator%(const variant& v) const
 variant variant::operator^(const variant& v) const
 {
 	if( type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL ) {
-		double res = pow( as_decimal()/double(VARIANT_DECIMAL_PRECISION),
-		                v.as_decimal()/double(VARIANT_DECIMAL_PRECISION));		
+		double res = pow( as_decimal().value()/double(VARIANT_DECIMAL_PRECISION),
+		                v.as_decimal().value()/double(VARIANT_DECIMAL_PRECISION));		
 		res *= 1000;
 		return variant(static_cast<int>(res), DECIMAL_VARIANT);
 	}
@@ -960,8 +951,8 @@ UNIT_TEST(variant_decimal)
 {
 	variant d(9876, variant::DECIMAL_VARIANT);
 	variant d2(4, variant::DECIMAL_VARIANT);
-	CHECK_EQ(d.as_decimal(), 9876);
+	CHECK_EQ(d.as_decimal().value(), 9876);
 	CHECK_EQ(d.as_int(), 9);
 	CHECK_EQ(d.string_cast(), "9.876");
-	CHECK_EQ((d + d2).as_decimal(), 9880);
+	CHECK_EQ((d + d2).as_decimal().value(), 9880);
 }
