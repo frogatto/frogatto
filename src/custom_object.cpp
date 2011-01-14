@@ -1746,6 +1746,10 @@ variant custom_object::get_value(const std::string& key) const
 	}
 
 	if(backup_callable_stack_.empty() == false && backup_callable_stack_.top()) {
+		if(key == "arg") {
+			return variant(backup_callable_stack_.top());
+		}
+
 		return backup_callable_stack_.top()->query_value(key);
 	}
 
