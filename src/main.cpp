@@ -152,7 +152,7 @@ extern "C" int main(int argc, char** argv)
 	std::cerr.sync_with_stdio(true);
 	#endif
 
-	std::cerr << "Frogatto engine version " << preferences::version() << "\n\n";
+	std::cerr << "Frogatto engine version " << preferences::version() << "\n";
 
 	std::string level_cfg = "titlescreen.cfg";
 	bool unit_tests_only = false, skip_tests = false;
@@ -233,6 +233,8 @@ extern "C" int main(int argc, char** argv)
 	if(!preferences::setup_preferences_dir()) {
 		std::cerr << "cannot create preferences dir!\n";
 	}
+
+	std::cerr << "\n";
 
 #ifdef TARGET_OS_IPHONE
 	//on the iPhone, try to restore the auto-save if it exists
