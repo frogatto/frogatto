@@ -151,6 +151,9 @@ extern "C" int main(int argc, char** argv)
 	std::freopen("/dev/null", "w", stderr);
 	std::cerr.sync_with_stdio(true);
 	#endif
+
+	std::cerr << "Frogatto engine version " << preferences::version() << "\n\n";
+
 	std::string level_cfg = "titlescreen.cfg";
 	bool unit_tests_only = false, skip_tests = false;
 	bool run_benchmarks = false;
