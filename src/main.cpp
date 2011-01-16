@@ -302,8 +302,8 @@ extern "C" int main(int argc, char** argv)
 
 	std::cerr
 		<< "\n"
-		<< "OpenGL vendor: " << reinterpret_cast<const char *>(glGetString(GL_VERSION)) << "\n"
-		<< "OpenGL version: " << reinterpret_cast<const char *>(glGetString(GL_VENDOR)) << "\n"
+		<< "OpenGL vendor: " << reinterpret_cast<const char *>(glGetString(GL_VENDOR)) << "\n"
+		<< "OpenGL version: " << reinterpret_cast<const char *>(glGetString(GL_VERSION)) << "\n"
 		<< "OpenGL extensions: " << reinterpret_cast<const char *>(glGetString(GL_EXTENSIONS)) << "\n"
 		<< "\n";
 	glShadeModel(GL_SMOOTH);
