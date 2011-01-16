@@ -2755,6 +2755,13 @@ void level::add_player(entity_ptr p)
 		}
 	}
 
+	const int difficulty = current_difficulty();
+	for(int n = 0; n != chars_.size(); ++n) {
+		if(!chars_[n]->appears_at_difficulty(difficulty)) {
+			chars_[n] = entity_ptr();
+		}
+	}
+
 	chars_.erase(std::remove(chars_.begin(), chars_.end(), entity_ptr()), chars_.end());
 }
 

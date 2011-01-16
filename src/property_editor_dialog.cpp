@@ -45,7 +45,7 @@ void property_editor_dialog::init()
 	preview_grid->add_col(widget_ptr(preview));
 
 	//draw the object's difficulty settings.
-	grid_ptr difficulty_grid(new grid(4));
+	grid_ptr difficulty_grid(new grid(3));
 	const custom_object* obj = dynamic_cast<const custom_object*>(entity_.get());
 	ASSERT_LOG(obj, "ENTITY IS NOT AN OBJECT");
 	std::string min_difficulty = "-", max_difficulty = "-";
@@ -65,7 +65,6 @@ void property_editor_dialog::init()
 		max_difficulty = " " + max_difficulty;
 	}
 
-	difficulty_grid->add_col(widget_ptr(new label("mn", graphics::color_white())));
 	difficulty_grid->add_col(widget_ptr(new label(min_difficulty, graphics::color_white())));
 
 	button_ptr difficulty_button;
@@ -78,7 +77,6 @@ void property_editor_dialog::init()
 	difficulty_button->set_dim(difficulty_button->width()-10, difficulty_button->height()-4);
 	difficulty_grid->add_col(difficulty_button);
 
-	difficulty_grid->add_col(widget_ptr(new label("mx", graphics::color_white())));
 	difficulty_grid->add_col(widget_ptr(new label(max_difficulty, graphics::color_white())));
 	difficulty_button.reset(new button(widget_ptr(new label("-", graphics::color_white())), boost::bind(&property_editor_dialog::change_max_difficulty, this, -1)));
 	difficulty_button->set_tooltip("Decrease maximum difficulty");
