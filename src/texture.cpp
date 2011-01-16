@@ -137,10 +137,6 @@ namespace {
 		const char *version = reinterpret_cast<const char *>(glGetString(GL_VERSION));
 		const char *vendor = reinterpret_cast<const char *>(glGetString(GL_VENDOR));
 
-		std::cerr << "OpenGL version: " << version << "\n";
-		std::cerr << "OpenGL vendor: " << vendor << "\n";
-		std::cerr << "OpenGL extensions: " << supported << "\n";
-
 		// OpenGL >= 2.0 drivers must support NPOT textures
 		bool version_2 = (version[0] >= '2');
 		npot = version_2;

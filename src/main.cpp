@@ -299,7 +299,13 @@ extern "C" int main(int argc, char** argv)
 //	srand(time(NULL));
 
 	const stats::manager stats_manager;
-	
+
+	std::cerr
+		<< "\n"
+		<< "OpenGL vendor: " << reinterpret_cast<const char *>(glGetString(GL_VERSION)) << "\n"
+		<< "OpenGL version: " << reinterpret_cast<const char *>(glGetString(GL_VENDOR)) << "\n"
+		<< "OpenGL extensions: " << reinterpret_cast<const char *>(glGetString(GL_EXTENSIONS)) << "\n"
+		<< "\n";
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_BLEND);
 	glEnable(GL_TEXTURE_2D);
