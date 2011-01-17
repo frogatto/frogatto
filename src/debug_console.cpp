@@ -23,7 +23,12 @@ void add_message(const std::string& msg)
 	}
 
 	const SDL_Color col = {255, 255, 255, 255};
-	messages().push_back(font::render_text(msg, col, 14));
+	try {
+		messages().push_back(font::render_text(msg, col, 14));
+	} catch(font::error& e) {
+		std::cerr << "FAILED TO ADD MESSAGE DUE TO FONT RENDERING FAILURE\n";
+		return;
+	}
 	if(messages().size() > 8) {
 		messages().pop_front();
 	}

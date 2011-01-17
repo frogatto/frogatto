@@ -29,6 +29,9 @@ struct manager {
 	~manager();
 };
 
+struct error {
+};
+
 graphics::texture render_text(const std::string& text,
                               const SDL_Color& color, int size);
 

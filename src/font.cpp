@@ -96,6 +96,11 @@ graphics::texture render_text(const std::string& text,
 		int height = 0, width = 0;
 		foreach(const std::string& line, lines) {
 			parts.push_back(graphics::surface(TTF_RenderUTF8_Blended(font, line.c_str(), color)));
+			if(parts.back().get() == NULL) {
+				std::cerr << "FAILED TO RENDER STRING: '" << line << "'\n";
+				throw error();
+			}
+
 			if(parts.back()->w > width) {
 				width = parts.back()->w;
 			}
