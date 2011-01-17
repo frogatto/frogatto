@@ -22,10 +22,18 @@ void add_message(const std::string& msg)
 		return;
 	}
 
+	if(msg.size() > 100) {
+		std::string trunc_msg(msg.begin(), msg.begin() + 90);
+		trunc_msg += "...";
+		add_message(trunc_msg);
+		return;
+	}
+
 	const SDL_Color col = {255, 255, 255, 255};
 	try {
 		messages().push_back(font::render_text(msg, col, 14));
 	} catch(font::error& e) {
+
 		std::cerr << "FAILED TO ADD MESSAGE DUE TO FONT RENDERING FAILURE\n";
 		return;
 	}
