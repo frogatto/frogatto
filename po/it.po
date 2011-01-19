@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2011-01-08 14:09-0200\n"
-"PO-Revision-Date: 2010-12-20 00:26+0000\n"
-"Last-Translator: torpedo48 <emanuele.cassioli@gmail.com>\n"
+"PO-Revision-Date: 2011-01-19 16:54+0000\n"
+"Last-Translator: TheJoe <asbruff@gmail.com>\n"
 "Language-Team: Italian <>\n"
-"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: data/achievements.cfg:4
@@ -22,82 +22,80 @@ msgid "Pocket Money"
 msgstr "Soldi"
 
 #: data/achievements.cfg:5
-#, fuzzy
 msgid "Collect ten coins."
-msgstr "Trova 10 monete"
+msgstr "Raccogli dieci monete."
 
 #: data/achievements.cfg:12
 msgid "Nature Boy"
-msgstr ""
+msgstr "Nature Boy"
 
 #: data/achievements.cfg:13
 msgid "Put a water beetle back in water."
-msgstr ""
+msgstr "Rimetti un coleottero in acqua."
 
 #: data/achievements.cfg:20
 msgid "Nice Try..."
-msgstr ""
+msgstr "Bel tentativo..."
 
 #: data/achievements.cfg:21
 msgid "but that's not a secret area."
-msgstr ""
+msgstr "ma questa non è un'area segreta."
 
 #: data/achievements.cfg:28
 msgid "Gold Hoarder"
-msgstr ""
+msgstr "Gold Hoarder"
 
 #: data/achievements.cfg:29
-#, fuzzy
 msgid "Collect all the coins."
-msgstr "Trova 10 monete"
+msgstr "Raccogli tutte le monete."
 
 #: data/achievements.cfg:36
 msgid "Speed Trader"
-msgstr ""
+msgstr "Commerciante Veloce"
 
 #: data/achievements.cfg:37
 msgid "Too bad you can't do this afk too."
-msgstr ""
+msgstr "Peccato che non si può fare questo afk."
 
 #: data/achievements.cfg:44
 msgid "Speedrun"
-msgstr ""
+msgstr "Corri"
 
 #: data/achievements.cfg:45
 msgid "Complete the game within 2 hours."
-msgstr ""
+msgstr "Completa il gioco entro 2 ore."
 
 #: data/achievements.cfg:52
 msgid "Win!"
-msgstr ""
+msgstr "Vinto!"
 
 #: data/achievements.cfg:53
 msgid "Congratulations, you just won the game!"
-msgstr ""
+msgstr "Congratulazioni, hai appena vinto il gioco!"
 
 #: data/achievements.cfg:60
 msgid "Rampage!"
-msgstr ""
+msgstr "Furia!"
 
 #: data/achievements.cfg:61
 msgid "Kill 5 enemies in 10 seconds."
-msgstr ""
+msgstr "Uccidi 5 nemici in 10 secondi."
 
 #: data/achievements.cfg:68
 msgid "Cube Chain"
-msgstr ""
+msgstr "Catena Cubica"
 
 #: data/achievements.cfg:69
 msgid "Collect 15 points cubes in a row."
-msgstr ""
+msgstr "Raccogli 15 punti cubi di fila."
 
 #: data/achievements.cfg:76
 msgid "Grudge"
-msgstr ""
+msgstr "Astio"
 
 #: data/achievements.cfg:77
 msgid "Kill 10 of the same type of enemy in a row."
-msgstr ""
+msgstr "Uccidi 10 nemici dello stesso tipo di fila."
 
 #: data/level/airplane-boss.cfg:11
 msgid "Stonepipe Bridge"
@@ -150,30 +148,30 @@ msgstr "Bene, questo è tutto."
 #: data/level/arcade-maintenance-shaft.cfg:13
 #: data/level/titlescreen-arcade.cfg:234
 msgid "Maintenance Shaft"
-msgstr ""
+msgstr "Pozzo di Manutenzione"
 
 #: data/level/arcade-maintenance-shaft.cfg:1543
 #: data/level/arcade-maintenance-shaft.cfg:1546
 msgid "You made it {level.player.vars.score} feet up the maintenance shaft!"
-msgstr ""
+msgstr "L'hai mandato {level.player.vars.score} piedi sull'albero di manutenzione! "
 
 #: data/level/arcade-maintenance-shaft.cfg:1544
 msgid "This is a new high score!"
-msgstr ""
+msgstr "Questo è un nuovo record!"
 
 #: data/level/arcade-maintenance-shaft.cfg:1547
 msgid "The high score is {registry.arcade_maintenance_shaft_high_score} feet."
-msgstr ""
+msgstr "Il punteggio è di {registry.arcade_maintenance_shaft_high_score} piedi."
 
 #: data/level/arcade-the-long-haul.cfg:10
 #: data/level/titlescreen-arcade.cfg:256
 msgid "The Long Haul"
-msgstr ""
+msgstr "La Lunga Camminata"
 
 #: data/level/arcade-wild-new-wonder.cfg:12
 #: data/level/titlescreen-arcade.cfg:233
 msgid "Wild New Wonder"
-msgstr ""
+msgstr "Stupore Selvaggio"
 
 #: data/level/autumn-town.cfg:14
 msgid "Autumn Town"
@@ -3243,9 +3241,8 @@ msgid "(Test Level)"
 msgstr "(Livello di Test)"
 
 #: data/level/test6.cfg:14
-#, fuzzy
 msgid "(test level)"
-msgstr "(Livello di Test)"
+msgstr "(Livello di prova)"
 
 #: data/level/the-north-tower.cfg:12
 msgid "The North Tower"
@@ -3253,7 +3250,7 @@ msgstr "La Torre Nord"
 
 #: data/level/titlescreen-arcade.cfg:140
 msgid "Each machine has a different arcade-style challenge."
-msgstr ""
+msgstr "Ogni macchina ha una diversa sfida di tipo arcade."
 
 #: data/level/titlescreen-arcade.cfg:175
 msgid "These don't affect story-mode.  Enjoy!"
@@ -3263,7 +3260,7 @@ msgstr ""
 
 #: data/level/titlescreen-arcade.cfg:207
 msgid "EXIT"
-msgstr ""
+msgstr "ESCI"
 
 #: data/level/titlescreen-arcade.cfg:232 data/level/titlescreen-arcade.cfg:255
 msgid "Select a level:"
@@ -3279,11 +3276,11 @@ msgstr "Giù nella TanaDelConiglio"
 
 #: data/level/titlescreen-arcade.cfg:285
 msgid "CLIMB"
-msgstr ""
+msgstr "SALITA"
 
 #: data/level/titlescreen-arcade.cfg:317
 msgid "RUN"
-msgstr ""
+msgstr "CORSA"
 
 #: data/level/titlescreen-test.cfg:373 data/level/titlescreen.cfg:349
 #: data/level/titlescreen.cfg:374
@@ -3958,8 +3955,7 @@ msgstr ""
 "è una piccola città sulle cime\n"
 "degli alberi. Dovresti chiedere ai cittadini.\n"
 "Per arrivarci, vai a sinistra, poi in alto\n"
-"a destra. Gli ascensori più piccoli làfunzionano ancora bene, è solo questa "
-"l'area\n"
+"a destra. Gli ascensori più piccoli làfunzionano ancora bene, è solo questa l'area\n"
 "che è stata danneggiata.\n"
 "Quindi, andrai a Woodenhead?"
 
@@ -4233,6 +4229,21 @@ msgid ""
 "lower-grade timber. Still, it\n"
 "is a bit worrying."
 msgstr ""
+"Le cose al momento stanno andando\n"
+"molto bene. Siamo un piccolo villaggio,\n"
+"quindi i problemi vengono risolti\n"
+"velocemente. Anche se, a dire il vero\n"
+"siamo un po' preoccupati per i nostri\n"
+"lavori, al momento. Con l'infestazione\n"
+"di funghi, la gente non compra più\n"
+"le opere in legno, come prima. Stiamo\n"
+"vendendo solo cose come legno economico,\n"
+"trucioli, assi. La gente sta scappando,\n"
+"avrai visto anche tu che non siamo rimasti\n"
+"in tanti a giro. Tuttavia, non credo che\n"
+"andremo in bancarotta. Stiamo ancora\n"
+"vendendo molto del legname di minor pregio;\n"
+"ma la preoccupazione rimane."
 
 #: data/level/wm-town.cfg:2228
 msgid ""
@@ -4241,6 +4252,10 @@ msgid ""
 "annoying right before potential\n"
 "layoffs?"
 msgstr ""
+"In altre parole, Jove, i\n"
+"lavoratori non vogliono essere\n"
+"seccanti subito prima un potenziale\n"
+"licenziamento di massa?"
 
 #: data/level/wm-town.cfg:2230
 msgid ""
@@ -4248,12 +4263,18 @@ msgid ""
 "By the way, how is the town\n"
 "holding out?"
 msgstr ""
+"Precisamente.\n"
+"Un'altra cosa: come fa la città\n"
+"a tirare avanti?"
 
 #: data/level/wm-town.cfg:2233
 msgid ""
 "Most of them are staying,\n"
 "for now. It's not too bad."
 msgstr ""
+"La maggior parte delle persone\n"
+"sta rimanendo, per ora.\n"
+"Non siamo messi così male."
 
 #: data/level/wm-town.cfg:2235
 msgid ""
@@ -4280,6 +4301,8 @@ msgid ""
 "I guess you'd mind me looking\n"
 "around then, wouldn't you."
 msgstr ""
+"Immagino che non ti dia fastidio\n"
+"se do un occhiata in giro, giusto?"
 
 #: data/level/wm-town.cfg:2250
 msgid ""
@@ -4289,6 +4312,11 @@ msgid ""
 "knows it, and everyone who doesn't\n"
 "isn't a threat to us, business-wise!"
 msgstr ""
+"Per niente. Vai dove vuoi.\n"
+"Questo è un segreto COMMERCIALE,\n"
+"chiunque raccolga legno lo conosce,\n"
+"e chi non lo fa è un pericolo per noi,\n"
+"nel commercio."
 
 #: data/level/wm-town.cfg:2253
 msgid "Oh."
@@ -4296,7 +4324,7 @@ msgstr "Oh."
 
 #: data/level/wm-town.cfg:2259
 msgid "... It's gone. Sorry."
-msgstr ""
+msgstr "... Andato. Mi dispiace."
 
 #: data/level/wm-town.cfg:2260
 msgid "See you."
@@ -4309,12 +4337,17 @@ msgid ""
 "one of those restaurants for sissies!\n"
 "Anyway, what can I get for you?"
 msgstr ""
+"Serviamo cibo da uomini, montagne di\n"
+"cibo da uomini! Non è uno di quei\n"
+"ristorantini da femminucce!"
 
 #: data/level/wm-town.cfg:2270
 msgid ""
 "1: Food Menu\n"
 "2: <*Guess restaurant name.*>"
 msgstr ""
+"1: Menu delle Cibarie\n"
+"2: <*Indovina il nome del ristorante.*>"
 
 #: data/level/wm-town.cfg:2274
 msgid "I'll have the..."
@@ -4322,7 +4355,7 @@ msgstr "Avrò il..."
 
 #: data/level/wm-town.cfg:2275
 msgid "Slow Moe"
-msgstr ""
+msgstr "Slow Moe"
 
 #: data/level/wm-town.cfg:2277
 msgid ""
@@ -4333,20 +4366,28 @@ msgid ""
 "\n"
 "What?"
 msgstr ""
+"Uno Slow Moe, arriva subito.\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"Cosa?"
 
 #: data/level/wm-town.cfg:2281
 msgid "Shooter"
-msgstr ""
+msgstr "Pistolero"
 
 #: data/level/wm-town.cfg:2283
 msgid ""
 "Shooter. Never know how they\n"
 "make these things. *shakes head*"
 msgstr ""
+"Pistolero. Mai saputo come fanno\n"
+"questa roba. *scuote la testa*"
 
 #: data/level/wm-town.cfg:2287
 msgid "Turtle"
-msgstr ""
+msgstr "Tartaruga"
 
 #: data/level/wm-town.cfg:2289
 msgid ""
@@ -4371,20 +4412,28 @@ msgid ""
 "\n"
 "*That exists in this restaurant."
 msgstr ""
+"Il cuore lo vuoi senza tracce di\n"
+"mercurio, o senza residui di piombo?\n"
+"Nah, stavo solo scherzando, servo\n"
+"solo il meglio*.\n"
+"\n"
+"*Disponibile in questo ristorante."
 
 #: data/level/wm-town.cfg:2296
 msgid ""
 "Oh, just pass the buckshot,\n"
 "would you?"
-msgstr ""
+msgstr "Oh, mi passeresti i pallettoni?"
 
 #: data/level/wm-town.cfg:2300
 msgid "Fruit"
-msgstr ""
+msgstr "Frutta"
 
 #: data/level/wm-town.cfg:2302
 msgid "It's foreign, but it ships well."
 msgstr ""
+"Roba straniera, ma la spediscono\n"
+"in quantità."
 
 #: data/level/wm-town.cfg:2306
 msgid "Special"
@@ -4399,18 +4448,27 @@ msgid ""
 "you 35 coins. Would you still\n"
 "like to buy it?"
 msgstr ""
+"Oggi lo speciale  è parte di\n"
+"un cuore grande. Al contrario delle\n"
+"altre cose, tuttavia, ti costerà 35\n"
+"monete, perché è una delicatezza. Lo\n"
+"vuoi ancora comprare?"
 
 #: data/level/wm-town.cfg:2311
 msgid ""
 "Great! You wouldn't believe the\n"
 "trouble I've had selling this!"
 msgstr ""
+"Ottimo! Non crederesti a quanti\n"
+"guai ho passato per venderlo!"
 
 #: data/level/wm-town.cfg:2318
 msgid ""
 "Probably the best choice, given how\n"
 "long it's been sitting around."
 msgstr ""
+"Probabilmente la scelta migliore, visto\n"
+"da quanto è stato qui in giro."
 
 #: data/level/wm-town.cfg:2324
 msgid "Nothing"
@@ -4425,6 +4483,8 @@ msgid ""
 "Is your restaurant called\n"
 "'That's good food, by J--"
 msgstr ""
+"Il tuo ristorante si chiama\n"
+"'Che buon cibo, per J--"
 
 #: data/level/wm-town.cfg:2337
 msgid ""
@@ -4433,6 +4493,9 @@ msgid ""
 "If you want to find out,\n"
 "keep talking."
 msgstr ""
+"Scommettiamo che riesco a buttarti\n"
+"di sotto dalla città da qui?\n"
+"Continua a parlare e lo faccio."
 
 #: data/level/wm-town.cfg:2340
 msgid "Yeesh, I was just asking."
@@ -4443,10 +4506,12 @@ msgid ""
 "You wouldn't believe how much\n"
 "I get that."
 msgstr ""
+"Se ti dicessi quanto l'ho capita\n"
+"non ci crederesti."
 
 #: data/level/wm-town.cfg:2347
 msgid "3: Odd table you have there."
-msgstr ""
+msgstr "3: Che strano tavolo laggiù."
 
 #: data/level/wm-town.cfg:2350
 msgid ""
@@ -4457,22 +4522,32 @@ msgid ""
 "one-size-fits-none. I mean,\n"
 "I could WALK under it!"
 msgstr ""
+"Già, gli ho segato le gambe e\n"
+"l'ho attaccato al bancone.\n"
+"Quella roba è incredibilmente\n"
+"alta, non trovi? Non credo servirà\n"
+"mai a nessuno. Voglio dire, posso\n"
+"CAMMINARCI sotto!"
 
 #: data/level/wm-town.cfg:2353
 msgid ""
 "I should do the same. I've\n"
 "got the same model at home."
 msgstr ""
+"Dovrei fare lo stesso. Ho lo\n"
+"stesso modello a casa."
 
 #: data/level/wm-town.cfg:2359
 msgid "Sorry, I'm kind of full."
-msgstr ""
+msgstr "Scusami, sono piuttosto pieno."
 
 #: data/level/wm-town.cfg:2361
 msgid ""
 "Happens to the best of us.\n"
 "I remember I was full, once."
 msgstr ""
+"Succede anche ai migliori.\n"
+"Ricordo di essere stato pieno, una volta."
 
 #: data/object_prototypes/buyable_item.cfg:19
 #: data/object_prototypes/buyable_item.cfg:22
@@ -4493,7 +4568,7 @@ msgstr "errore"
 
 #: data/objects/crazy-stuff/jb-background.cfg:18
 msgid "Runtime: "
-msgstr ""
+msgstr "Tempo di gioco: "
 
 #: data/objects/crazy-stuff/jb-background.cfg:27
 msgid " -- paused -- "
@@ -4503,7 +4578,9 @@ msgstr "-- in pausa --"
 msgid ""
 "You have acquired a heart capsule.\n"
 "Your maximum HP has increased by one!"
-msgstr "Hai trovato una capsula di vita. I tuoi punti salute aumentano di uno!"
+msgstr ""
+"Hai trovato una capsula di vita.\n"
+"I tuoi punti salute aumentano di uno!"
 
 #: data/objects/items/partial_max_heart_object.cfg:22
 msgid ""
@@ -4511,8 +4588,9 @@ msgid ""
 "Collect another three to increase\n"
 "your maximum HP by one!"
 msgstr ""
-"Hai trovato parte di una capsula di vita. Trovane altre tre per aumentare i "
-"tuoi punti salute di uno!"
+"Hai trovato parte di una capsula di vita.\n"
+"Trovane altre tre per aumentare i tuoi punti\n"
+"salute di uno!"
 
 #: data/objects/items/partial_max_heart_object.cfg:24
 msgid ""
@@ -4520,8 +4598,9 @@ msgid ""
 "Collect another two to increase\n"
 "your maximum HP by one!"
 msgstr ""
-"Hai trovato parte di una capsula di vita. Trovane altre due per aumentare i "
-"tuoi punti salute di uno!"
+"Hai trovato parte di una capsula di vita.\n"
+"Trovane altre due per aumentare i tuoi punti\n"
+"salute di uno!"
 
 #: data/objects/items/partial_max_heart_object.cfg:26
 msgid ""
@@ -4529,8 +4608,9 @@ msgid ""
 "Collect another one to increase\n"
 "your maximum HP by one!"
 msgstr ""
-"Hai trovato parte di una capsula di vita. Trovane un'altra per aumentare i "
-"tuoi punti salute di uno!"
+"Hai trovato parte di una capsula di vita.\n"
+"Trovane un'altra per aumentare i tuoi punti\n"
+"salute di uno!"
 
 #: data/objects/items/partial_max_heart_object.cfg:30
 msgid ""
@@ -4551,10 +4631,12 @@ msgid ""
 "Hey.\n"
 "Welcome to the store."
 msgstr ""
+"Hey.\n"
+"Benvenuto nel negozio."
 
 #: data/objects/npcs/chopple_npc.cfg:9
 msgid "Take your time, look around."
-msgstr ""
+msgstr "Guardati pure intorno con calma."
 
 #: data/objects/npcs/kinguin_npc.cfg:26
 msgid "Hi, Kinguin, what's up?"
@@ -4566,25 +4648,27 @@ msgstr "Castello di Milgram"
 
 #: data/objects/props-interactive/save_toilet.cfg:16
 msgid "Do you want to save the game?"
-msgstr ""
+msgstr "Vuoi salvare il gioco?"
 
 #: data/objects/props-interactive/save_toilet.cfg:21
 msgid "The game has been saved."
-msgstr ""
+msgstr "Il gioco è stato salvato."
 
 #: data/objects/store-items/buyable_gliding_wings.cfg:11
 msgid "gliding wings"
-msgstr ""
+msgstr "ali plananti"
 
 #: data/objects/store-items/buyable_gliding_wings.cfg:13
 msgid ""
 "The gliding wings will allow\n"
 "you to glide through the air."
 msgstr ""
+"Le ali plananti ti permetteranno\n"
+"di planare nell'aria."
 
 #: data/objects/store-items/buyable_heart_container.cfg:11
 msgid "heart"
-msgstr ""
+msgstr "cuore"
 
 #: data/objects/store-items/buyable_heart_container.cfg:13
 msgid ""
@@ -4599,10 +4683,12 @@ msgid ""
 "The power boots will\n"
 "make you jump higher."
 msgstr ""
+"Gli stivali della potenza\n"
+"ti faranno saltare più in alto."
 
 #: data/objects/store-items/buyable_powerup_invincible.cfg:11
 msgid "invincibility crystal"
-msgstr ""
+msgstr "cristallo dell'invulnerabilità"
 
 #: data/objects/store-items/buyable_powerup_invincible.cfg:13
 msgid ""
@@ -4611,13 +4697,13 @@ msgid ""
 "powerups will make you\n"
 "invincible for a short time."
 msgstr ""
-"Il cristallo dell'invincibilità sblocca\n"
+"Il cristallo dell'invulnerabilità sblocca\n"
 "i potenziamenti invincibilità. I potenziamenti\n"
 "invincibilità ti rendono invincibile per un certo periodo."
 
 #: data/objects/store-items/buyable_powerup_reflexes.cfg:11
 msgid "hyper crystal"
-msgstr ""
+msgstr "iper cristallo"
 
 #: data/objects/store-items/buyable_powerup_reflexes.cfg:13
 msgid ""
@@ -4627,10 +4713,15 @@ msgid ""
 "reflexes, making the world\n"
 "seem to slow down around you."
 msgstr ""
+"L'iper cristallo sblocca\n"
+"gli iper potenziamenti. Gli iper\n"
+"potenziamenti aumenteranno i tuoi\n"
+"riflessi, facendo sembrare il mondo\n"
+"circostante più lento."
 
 #: data/objects/store-items/buyable_powerup_shooting.cfg:11
 msgid "energy crystal"
-msgstr ""
+msgstr "cristallo energetico"
 
 #: data/objects/store-items/buyable_powerup_shooting.cfg:13
 msgid ""
@@ -4639,38 +4730,50 @@ msgid ""
 "powerups will allow you\n"
 "to shoot bolts of energy."
 msgstr ""
+"Il cristallo energetico sblocca\n"
+"i potenziamenti energetici. I\n"
+"potenziamenti energetici ti permettono\n"
+"di sparare fulmini energetici."
 
 #: data/objects/store-items/buyable_shield.cfg:13
 msgid ""
 "The energy shield protects you\n"
 "from damage when you crouch."
 msgstr ""
+"Lo scudo energetico ti protegge\n"
+"dai danni quando ti accovacci."
 
 #: data/objects/store-items/buyable_speed_boots.cfg:13
 msgid ""
 "The speed boots will make\n"
 "you faster."
 msgstr ""
+"Gli stivali della velocità\n"
+"ti faranno correre più veloce."
 
 #: data/objects/store-items/buyable_spit_strengthener.cfg:11
 msgid "spit strengthener"
-msgstr ""
+msgstr "potenziamento lingua"
 
 #: data/objects/store-items/buyable_spit_strengthener.cfg:13
 msgid ""
 "The spit strengthener will extend\n"
 "the range you can spit."
 msgstr ""
+"Il potenziamento lingua ti farà\n"
+"sputare più lontano."
 
 #: data/objects/store-items/buyable_tongue_extension.cfg:11
 msgid "tongue extender"
-msgstr ""
+msgstr "allungamento lingua"
 
 #: data/objects/store-items/buyable_tongue_extension.cfg:13
 msgid ""
 "The tongue extender will extend\n"
 "the length of your tongue."
 msgstr ""
+"L'allungamento lingua renderà\n"
+"la tua lingua più lunga."
 
 #: data/preload.cfg:4 data/preload.cfg:9 data/preload.cfg:14
 msgid "Loading textures"
@@ -4694,7 +4797,7 @@ msgstr "Direzioni"
 
 #: src/controls_dialog.cpp:47
 msgid "Jump"
-msgstr ""
+msgstr "Salto"
 
 #: src/controls_dialog.cpp:49
 msgid "Tongue"
@@ -4710,7 +4813,7 @@ msgstr "Indietro"
 
 #: src/draw_scene.cpp:350
 msgid "Achievement Unlocked!"
-msgstr ""
+msgstr "Obiettivo Sbloccato!"
 
 #: src/key_button.cpp:63
 msgid "LEFT"
@@ -4750,7 +4853,7 @@ msgstr "Controlli..."
 
 #: src/pause_game_dialog.cpp:63
 msgid "Return to Titlescreen"
-msgstr ""
+msgstr "Ritorna al menu titoli"
 
 #: src/pause_game_dialog.cpp:64
 msgid "Exit Game"
@@ -4758,8 +4861,8 @@ msgstr "Esci"
 
 #: src/pause_game_dialog.cpp:65
 msgid "Reverse A and B"
-msgstr ""
+msgstr "Inverti A e B"
 
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
-msgstr ""
+msgstr "OpenFeint"
