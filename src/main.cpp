@@ -122,6 +122,7 @@ void print_help(const std::string& argv0)
 //"      --profile                FIXME\n" <<
 //"      --profile=FILE           FIXME\n" <<
 "      --show-hitboxes          turns on the display of object hitboxes\n" <<
+"      --show-controls          turns on the display of iPhone control hitboxes\n" <<
 "      --simipad                changes various options to emulate an iPad\n" <<
 "                                 environment\n" <<
 "      --simiphone              changes various options to emulate an iPhone\n" <<
@@ -263,7 +264,7 @@ extern "C" int main(int argc, char** argv)
 	}
 	preferences::set_virtual_screen_width(height*multiplier);
 	preferences::set_virtual_screen_height(width*multiplier);
-	preferences::set_control_scheme(height % 1024 ? "iphone_2d" : "ipad_classic");
+	preferences::set_control_scheme(height % 1024 ? "iphone_2d" : "ipad_2d");
 	
 	SDL_WindowID windowID = SDL_CreateWindow (NULL, 0, 0, preferences::actual_screen_width(), preferences::actual_screen_height(),
 		SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN |
