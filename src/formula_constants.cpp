@@ -4,6 +4,7 @@
 #include "controls.hpp"
 #include "foreach.hpp"
 #include "formula_constants.hpp"
+#include "i18n.hpp"
 #include "key_button.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
@@ -53,6 +54,8 @@ variant get_constant(const std::string& id)
 		return variant(gui::get_key_name(controls::get_sdlkey(controls::CONTROL_TONGUE)));
 	} else if(id == "ATTACK_KEY") {
 		return variant(gui::get_key_name(controls::get_sdlkey(controls::CONTROL_ATTACK)));
+	} else if(id == "LOCALE") {
+		return variant(i18n::get_locale());
 	}
 
 	if(constants_stack.empty() == false) {
