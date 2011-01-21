@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto v1.0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-08 14:09-0200\n"
+"POT-Creation-Date: 2011-01-21 19:53+0100\\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -142,25 +142,26 @@ msgid "Well, that's that."
 msgstr ""
 
 #: data/level/arcade-maintenance-shaft.cfg:13
-#: data/level/titlescreen-arcade.cfg:234
+#: data/level/titlescreen-arcade.cfg:235
 msgid "Maintenance Shaft"
 msgstr ""
 
-#: data/level/arcade-maintenance-shaft.cfg:1543
-#: data/level/arcade-maintenance-shaft.cfg:1546
+#: data/level/arcade-maintenance-shaft.cfg:1536
+#: data/level/arcade-maintenance-shaft.cfg:1539
 msgid "You made it {level.player.vars.score} feet up the maintenance shaft!"
 msgstr ""
 
-#: data/level/arcade-maintenance-shaft.cfg:1544
+#: data/level/arcade-maintenance-shaft.cfg:1537
+#: data/objects/scene-fx/level_controller_coin_race.cfg:31
 msgid "This is a new high score!"
 msgstr ""
 
-#: data/level/arcade-maintenance-shaft.cfg:1547
+#: data/level/arcade-maintenance-shaft.cfg:1540
 msgid "The high score is {registry.arcade_maintenance_shaft_high_score} feet."
 msgstr ""
 
 #: data/level/arcade-the-long-haul.cfg:10
-#: data/level/titlescreen-arcade.cfg:256
+#: data/level/titlescreen-arcade.cfg:257
 msgid "The Long Haul"
 msgstr ""
 
@@ -169,7 +170,11 @@ msgstr ""
 msgid "Wild New Wonder"
 msgstr ""
 
-#: data/level/autumn-town.cfg:14
+#: data/level/arcade_upper_deck.cfg:12 data/level/titlescreen-arcade.cfg:234
+msgid "Upper Deck"
+msgstr ""
+
+#: data/level/autumn-town.cfg:16
 msgid "Autumn Town"
 msgstr ""
 
@@ -177,11 +182,11 @@ msgstr ""
 msgid "Bombing Fools"
 msgstr ""
 
-#: data/level/bon-bosque.cfg:13
+#: data/level/bon-bosque.cfg:15
 msgid "Bon Bosque"
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1434
+#: data/level/bon-bosque.cfg:1459
 msgid ""
 "Well, you made it! Now just up ahead\n"
 "there is a gate. If you can get\n"
@@ -191,27 +196,27 @@ msgid ""
 "compound from the caverns."
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1436
+#: data/level/bon-bosque.cfg:1461
 msgid ""
 "Whoah, a bunch of caverns now?\n"
 "This seems like it's harder than\n"
 "what the elder led me to believe!"
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1437
+#: data/level/bon-bosque.cfg:1462
 msgid ""
 "I guess the forests have become\n"
 "infested over the years. Hopefully\n"
 "the caverns won't be too much worse!"
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1439
+#: data/level/bon-bosque.cfg:1464
 msgid ""
 "I hope not. Thank you for guiding me\n"
 "and meeting me here."
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1440
+#: data/level/bon-bosque.cfg:1465
 msgid ""
 "You're welcome, friend. Naturally I\n"
 "won't be able to fly into the\n"
@@ -1255,7 +1260,7 @@ msgstr ""
 msgid "The Entrance"
 msgstr ""
 
-#: data/level/eerie-arbor.cfg:14
+#: data/level/eerie-arbor.cfg:16
 msgid "Eerie Arbor"
 msgstr ""
 
@@ -1409,7 +1414,7 @@ msgstr ""
 msgid "Nothing to see in my backyard."
 msgstr ""
 
-#: data/level/gloomy-glade.cfg:11
+#: data/level/gloomy-glade.cfg:16
 msgid "Gloomy Glade"
 msgstr ""
 
@@ -2721,8 +2726,7 @@ msgstr ""
 msgid "(Level Template)"
 msgstr ""
 
-#: data/level/test2.cfg:12 data/level/test3.cfg:12 data/level/test4.cfg:12
-#: data/level/test5.cfg:12
+#: data/level/test3.cfg:12 data/level/test4.cfg:12 data/level/test5.cfg:12
 msgid "(Test Level)"
 msgstr ""
 
@@ -2746,23 +2750,27 @@ msgstr ""
 msgid "EXIT"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:232 data/level/titlescreen-arcade.cfg:255
+#: data/level/titlescreen-arcade.cfg:232 data/level/titlescreen-arcade.cfg:256
 msgid "Select a level:"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:235 data/level/titlescreen-arcade.cfg:258
+#: data/level/titlescreen-arcade.cfg:236 data/level/titlescreen-arcade.cfg:260
 msgid "(cancel)"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:257
+#: data/level/titlescreen-arcade.cfg:258
 msgid "Down the RabbitHall"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:285
+#: data/level/titlescreen-arcade.cfg:259
+msgid "Coin Race"
+msgstr ""
+
+#: data/level/titlescreen-arcade.cfg:287
 msgid "CLIMB"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:317
+#: data/level/titlescreen-arcade.cfg:319
 msgid "RUN"
 msgstr ""
 
@@ -3860,6 +3868,20 @@ msgstr ""
 msgid "The game has been saved."
 msgstr ""
 
+#: data/objects/scene-fx/level_controller_coin_race.cfg:30
+msgid "You made it to level {level.player.difficulty} of the coin race!"
+msgstr ""
+
+#: data/objects/scene-fx/level_controller_coin_race.cfg:32
+msgid "You made it to level {level.player.difficulty} of the coin race."
+msgstr ""
+
+#: data/objects/scene-fx/level_controller_coin_race.cfg:33
+msgid ""
+"The furthest that has been reached is level {registry."
+"arcade_coin_race_high_score}."
+msgstr ""
+
 #: data/objects/store-items/buyable_gliding_wings.cfg:11
 msgid "gliding wings"
 msgstr ""
@@ -4011,7 +4033,7 @@ msgstr ""
 msgid "DOWN"
 msgstr ""
 
-#: src/main.cpp:353
+#: src/main.cpp:370
 msgid "Loading level"
 msgstr ""
 
