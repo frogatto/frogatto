@@ -28,6 +28,8 @@ struct mo_entry {
 typedef boost::unordered_map<std::string, std::string> map;
 map hashmap;
 
+std::string locale;
+
 }
 
 namespace i18n {
@@ -40,8 +42,11 @@ const std::string& tr(const std::string& msgid) {
 	return msgid;
 }
 
+const std::string& get_locale() {
+	return locale;
+}
+
 void init() {
-	std::string locale;
 	char *cstr = getenv("LANG");
 	if (cstr != NULL)
 		locale = cstr;
