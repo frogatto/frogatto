@@ -340,7 +340,12 @@ extern "C" int main(int argc, char** argv)
 	
 	try {
 		wml::schema::init(wml::parse_wml_from_file("data/schema.cfg"));
-		graphical_font::init(wml::parse_wml_from_file("data/fonts.cfg"));
+
+		std::string filename = "data/fonts." + i18n::get_locale() + ".cfg";
+		if (!sys::file_exists(filename))
+			filename = "data/fonts.cfg";
+		graphical_font::init(wml::parse_wml_from_file(filename));
+
 		preloads = wml::parse_wml_from_file("data/preload.cfg");
 		int preload_items = std::distance(preloads->begin_child("preload"), preloads->end_child("preload"));
 		loader.set_number_of_items(preload_items+7); // 7 is the number of items that will be loaded below
