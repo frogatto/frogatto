@@ -1745,23 +1745,25 @@ END_FUNCTION_DEF(blur)
 
 class text_command : public custom_object_command_callable {
 public:
-	text_command(const std::string& text, const std::string& font, int size)
-	  : text_(text), font_(font), size_(size) {
+	text_command(const std::string& text, const std::string& font, int size, bool centered)
+	  : text_(text), font_(font), size_(size), centered_(centered) {
 	}
 
 	virtual void execute(level& lvl, custom_object& ob) const {
-		ob.set_text(text_, font_, size_*2);
+		ob.set_text(text_, font_, size_*2, centered_);
 	}
 private:
 	std::string text_, font_;
 	int size_;
+	bool centered_;
 };
 
-FUNCTION_DEF(text, 1, 3, "text(string text, (optional)string font='default', (optional)int size=1): adds text for the current object")
+FUNCTION_DEF(text, 1, 4, "text(string text, (optional)string font='default', (optional)int size=1, (optional)bool centered=false): adds text for the current object")
 	const std::string text = args()[0]->evaluate(variables).as_string();
 	const std::string font = args().size() > 1 ? args()[1]->evaluate(variables).as_string() : "default";
 	const int size = args().size() > 2 ? args()[2]->evaluate(variables).as_int() : 1;
-	return variant(new text_command(text, font, size));
+	const bool centered = args().size() > 3 ? args()[3]->evaluate(variables).as_bool() : false;
+	return variant(new text_command(text, font, size, centered));
 END_FUNCTION_DEF(text)
 
 FUNCTION_DEF(swallow_event, 0, 0, "swallow_event(): when used in an instance-specific event handler, this causes the event to be swallowed and not passed to the object's main event handler.")

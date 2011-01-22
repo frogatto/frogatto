@@ -48,6 +48,7 @@ struct custom_object_text {
 	std::string text;
 	const_graphical_font_ptr font;
 	int size;
+	bool centered;
 	rect dimensions;
 	int alpha;
 };
@@ -236,7 +237,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 
 	wml::const_node_ptr text_node = node->get_child("text");
 	if(text_node) {
-		set_text(text_node->attr("text"), text_node->attr("font"), wml::get_int(text_node, "size", 2));
+		set_text(text_node->attr("text"), text_node->attr("font"), wml::get_int(text_node, "size", 2), wml::get_bool(text_node, "centered", false));
 	}
 
 	if(node->has_attr("particles")) {
@@ -711,7 +712,10 @@ void custom_object::draw() const
 
 	if(text_ && text_->font && text_->alpha) {
 		glColor4ub(255, 255, 255, text_->alpha);
-		text_->font->draw(draw_x, draw_y, text_->text, text_->size);
+		if (text_->centered)
+			text_->font->draw(draw_x-text_->dimensions.w()/2, draw_y, text_->text, text_->size);
+		else
+			text_->font->draw(draw_x, draw_y, text_->text, text_->size);
 		glColor4ub(255, 255, 255, 255);
 	}
 
@@ -2167,7 +2171,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 
 	case CUSTOM_OBJECT_TEXT_ALPHA:
 		if(!text_) {
-			set_text("", "default", 10);
+			set_text("", "default", 10, false);
 		}
 
 		text_->alpha = value.as_int();
@@ -2844,12 +2848,13 @@ void custom_object::remove_particle_system(const std::string& key)
 	particle_systems_.erase(key);
 }
 
-void custom_object::set_text(const std::string& text, const std::string& font, int size)
+void custom_object::set_text(const std::string& text, const std::string& font, int size, bool centered)
 {
 	text_.reset(new custom_object_text);
 	text_->text = text;
 	text_->font = graphical_font::get(font);
 	text_->size = size;
+	text_->centered = centered;
 	text_->alpha = 255;
 	ASSERT_LOG(text_->font, "UNKNOWN FONT: " << font);
 	text_->dimensions = text_->font->dimensions(text_->text);
