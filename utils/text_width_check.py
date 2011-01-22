@@ -2,12 +2,25 @@
 # -*- coding: utf-8 -*-
 import os, sys, codecs
 #usage: from frogatto's base folder, run:
-#utils/text_width_check.py po/(desired file(s))
+#utils/text_width_check.py po/(desired file, with a "po" or "pot" extension)
 global MAXWIDTH
 MAXWIDTH = 350
 
-def main(filenames):
-	fontdata = codecs.open("data/fonts.cfg", encoding="utf-8").readlines()
+def main(catalog):
+	if catalog.split('.')[-1] == "pot":
+		check = "msgid"
+		font = "dialog_font.cfg"
+	elif catalog.split('.')[-1] == "po":
+		check = "msgstr"
+		#look for a specific dialog_font definition for that locale;
+		#if unavailable, select the default one
+		font = "dialog_font." + catalog.split('.')[0].split('/')[1] + ".cfg"
+		if font not in os.listdir('data'):
+			font = "dialog_font.cfg"
+	else: return
+	print "File: " + catalog
+	
+	fontdata = codecs.open("data/" + font, encoding="utf-8").readlines()
 	fontdata = [x.strip() for x in fontdata]
 	charwidths = {}
 	i = 0
@@ -36,30 +49,26 @@ def main(filenames):
 				i += 1
 		i+=1
 	
-	for x in filenames:
-		if x.split('.')[-1] == "pot": check = "msgid"
-		elif x.split('.')[-1] == "po": check = "msgstr"
-		else: continue
-		print "File: " + x
-		f = codecs.open(x, encoding="utf-8").readlines()
-		#start from the first message line, i. e., the first with a #:
-		l = [x[:2] for x in f].index("#:")
-		msgline = 0
-		while l < len(f):
-			if "#:" in f[l] and "#:" not in f[l-1]:
-				msgline = l
-			if check in f[l]:
-				linewidth = checkwidth(getmessage(f[l]), charwidths)
-				if linewidth > MAXWIDTH:
-					printline(f, msgline, linewidth)
-				if len(getmessage(f[l])) == 0:
+	
+	f = codecs.open(catalog, encoding="utf-8").readlines()
+	#start from the first message line, i. e., the first with a #:
+	l = [x[:2] for x in f].index("#:")
+	msgline = 0
+	while l < len(f):
+		if "#:" in f[l] and "#:" not in f[l-1]:
+			msgline = l
+		if check in f[l]:
+			linewidth = checkwidth(getmessage(f[l]), charwidths)
+			if linewidth > MAXWIDTH:
+				printline(f, msgline, linewidth)
+			if len(getmessage(f[l])) == 0:
+				l += 1
+				while l < len(f) and '"' in f[l] and f[l][0] != "m":
+					linewidth = checkwidth(getmessage(f[l]), charwidths)
+					if linewidth > MAXWIDTH:
+						printline(f, msgline, linewidth)
 					l += 1
-					while l < len(f) and '"' in f[l] and f[l][0] != "m":
-						linewidth = checkwidth(getmessage(f[l]), charwidths)
-						if linewidth > MAXWIDTH:
-							printline(f, msgline, linewidth)
-						l += 1
-			l += 1
+		l += 1
 		
 def printline(f, start, width):
 	line = start
@@ -83,6 +92,6 @@ def getmessage(line):
 		return line.replace('\\n','').replace('\r','').replace('\n','')[1:-1]
 	
 if __name__ == "__main__":
-	if len(sys.argv) > 1:
-		main(sys.argv[1:])
+	if len(sys.argv) == 2:
+		main(sys.argv[1])
 
