@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
-"Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-01-08 14:09-0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-01-23 00:37-0200\n"
 "PO-Revision-Date: 2011-01-19 16:54+0000\n"
 "Last-Translator: TheJoe <asbruff@gmail.com>\n"
 "Language-Team: Italian <>\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: data/achievements.cfg:4
@@ -146,34 +146,42 @@ msgid "Well, that's that."
 msgstr "Bene, questo è tutto."
 
 #: data/level/arcade-maintenance-shaft.cfg:13
-#: data/level/titlescreen-arcade.cfg:234
+#: data/level/titlescreen-arcade.cfg:247
 msgid "Maintenance Shaft"
 msgstr "Pozzo di Manutenzione"
 
-#: data/level/arcade-maintenance-shaft.cfg:1543
-#: data/level/arcade-maintenance-shaft.cfg:1546
+#: data/level/arcade-maintenance-shaft.cfg:1536
+#: data/level/arcade-maintenance-shaft.cfg:1539
 msgid "You made it {level.player.vars.score} feet up the maintenance shaft!"
-msgstr "L'hai mandato {level.player.vars.score} piedi sull'albero di manutenzione! "
+msgstr ""
+"L'hai mandato {level.player.vars.score} piedi sull'albero di manutenzione! "
 
-#: data/level/arcade-maintenance-shaft.cfg:1544
+#: data/level/arcade-maintenance-shaft.cfg:1537
+#: data/objects/scene-fx/level_controller_coin_race.cfg:31
 msgid "This is a new high score!"
 msgstr "Questo è un nuovo record!"
 
-#: data/level/arcade-maintenance-shaft.cfg:1547
+#: data/level/arcade-maintenance-shaft.cfg:1540
 msgid "The high score is {registry.arcade_maintenance_shaft_high_score} feet."
-msgstr "Il punteggio è di {registry.arcade_maintenance_shaft_high_score} piedi."
+msgstr ""
+"Il punteggio è di {registry.arcade_maintenance_shaft_high_score} piedi."
 
 #: data/level/arcade-the-long-haul.cfg:10
-#: data/level/titlescreen-arcade.cfg:256
+#: data/level/titlescreen-arcade.cfg:269
 msgid "The Long Haul"
 msgstr "La Lunga Camminata"
 
 #: data/level/arcade-wild-new-wonder.cfg:12
-#: data/level/titlescreen-arcade.cfg:233
+#: data/level/titlescreen-arcade.cfg:245
 msgid "Wild New Wonder"
 msgstr "Stupore Selvaggio"
 
-#: data/level/autumn-town.cfg:14
+#: data/level/arcade_upper_deck.cfg:12 data/level/titlescreen-arcade.cfg:246
+#, fuzzy
+msgid "Upper Deck"
+msgstr "La Risalita Superiore"
+
+#: data/level/autumn-town.cfg:16
 msgid "Autumn Town"
 msgstr "Città d'Autunno"
 
@@ -181,11 +189,11 @@ msgstr "Città d'Autunno"
 msgid "Bombing Fools"
 msgstr "Buffoni al Bombardamento"
 
-#: data/level/bon-bosque.cfg:13
+#: data/level/bon-bosque.cfg:15
 msgid "Bon Bosque"
 msgstr "Il Buon Bosco"
 
-#: data/level/bon-bosque.cfg:1434
+#: data/level/bon-bosque.cfg:1459
 msgid ""
 "Well, you made it! Now just up ahead\n"
 "there is a gate. If you can get\n"
@@ -200,7 +208,7 @@ msgstr ""
 "sia un passaggio che porta direttamente\n"
 "al campo di Milgram."
 
-#: data/level/bon-bosque.cfg:1436
+#: data/level/bon-bosque.cfg:1461
 msgid ""
 "Whoah, a bunch of caverns now?\n"
 "This seems like it's harder than\n"
@@ -210,7 +218,7 @@ msgstr ""
 "Sembra più difficile di quanto\n"
 "mi abbia fatto credere l'anziano!"
 
-#: data/level/bon-bosque.cfg:1437
+#: data/level/bon-bosque.cfg:1462
 msgid ""
 "I guess the forests have become\n"
 "infested over the years. Hopefully\n"
@@ -220,7 +228,7 @@ msgstr ""
 "infestate nel corso degli anni. Speriamo\n"
 "che le caverne non siano peggio!"
 
-#: data/level/bon-bosque.cfg:1439
+#: data/level/bon-bosque.cfg:1464
 msgid ""
 "I hope not. Thank you for guiding me\n"
 "and meeting me here."
@@ -228,7 +236,7 @@ msgstr ""
 "Spero di no. Grazie per avermi guidato\n"
 "ed incontrato qui."
 
-#: data/level/bon-bosque.cfg:1440
+#: data/level/bon-bosque.cfg:1465
 msgid ""
 "You're welcome, friend. Naturally I\n"
 "won't be able to fly into the\n"
@@ -1463,7 +1471,7 @@ msgstr "A Carponi nel Sotterraneo"
 msgid "The Entrance"
 msgstr "L'Entrata"
 
-#: data/level/eerie-arbor.cfg:14
+#: data/level/eerie-arbor.cfg:16
 msgid "Eerie Arbor"
 msgstr "L'Albero Misterioso"
 
@@ -1627,7 +1635,7 @@ msgstr "Che bel panorama che c'è qui."
 msgid "Nothing to see in my backyard."
 msgstr "Niente da vedere nel mio cortile."
 
-#: data/level/gloomy-glade.cfg:11
+#: data/level/gloomy-glade.cfg:16
 msgid "Gloomy Glade"
 msgstr "La Radura Triste"
 
@@ -3235,8 +3243,7 @@ msgstr "RINGRAZIAMENTI SPECIALI:"
 msgid "(Level Template)"
 msgstr "(Level Template)"
 
-#: data/level/test2.cfg:12 data/level/test3.cfg:12 data/level/test4.cfg:12
-#: data/level/test5.cfg:12
+#: data/level/test3.cfg:12 data/level/test4.cfg:12 data/level/test5.cfg:12
 msgid "(Test Level)"
 msgstr "(Livello di Test)"
 
@@ -3248,75 +3255,79 @@ msgstr "(Livello di prova)"
 msgid "The North Tower"
 msgstr "La Torre Nord"
 
-#: data/level/titlescreen-arcade.cfg:140
+#: data/level/titlescreen-arcade.cfg:141
 msgid "Each machine has a different arcade-style challenge."
 msgstr "Ogni macchina ha una diversa sfida di tipo arcade."
 
-#: data/level/titlescreen-arcade.cfg:175
+#: data/level/titlescreen-arcade.cfg:182
 msgid "These don't affect story-mode.  Enjoy!"
 msgstr ""
 "La modalità storia non verrà influenzata.\n"
 "Divertiti!"
 
-#: data/level/titlescreen-arcade.cfg:207
+#: data/level/titlescreen-arcade.cfg:219
 msgid "EXIT"
 msgstr "ESCI"
 
-#: data/level/titlescreen-arcade.cfg:232 data/level/titlescreen-arcade.cfg:255
+#: data/level/titlescreen-arcade.cfg:244 data/level/titlescreen-arcade.cfg:268
 msgid "Select a level:"
 msgstr "Seleziona un livello:"
 
-#: data/level/titlescreen-arcade.cfg:235 data/level/titlescreen-arcade.cfg:258
+#: data/level/titlescreen-arcade.cfg:248 data/level/titlescreen-arcade.cfg:272
 msgid "(cancel)"
 msgstr "(annulla)"
 
-#: data/level/titlescreen-arcade.cfg:257
+#: data/level/titlescreen-arcade.cfg:270
 msgid "Down the RabbitHall"
 msgstr "Giù nella TanaDelConiglio"
 
-#: data/level/titlescreen-arcade.cfg:285
+#: data/level/titlescreen-arcade.cfg:271
+msgid "Coin Race"
+msgstr ""
+
+#: data/level/titlescreen-arcade.cfg:299
 msgid "CLIMB"
 msgstr "SALITA"
 
-#: data/level/titlescreen-arcade.cfg:317
+#: data/level/titlescreen-arcade.cfg:331
 msgid "RUN"
 msgstr "CORSA"
 
-#: data/level/titlescreen-test.cfg:373 data/level/titlescreen.cfg:349
-#: data/level/titlescreen.cfg:374
+#: data/level/titlescreen-test.cfg:373 data/level/titlescreen.cfg:361
+#: data/level/titlescreen.cfg:386
 msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
 msgstr "Premi {LEFT_KEY} o {RIGHT_KEY} per camminare."
 
-#: data/level/titlescreen-test.cfg:374 data/level/titlescreen.cfg:375
-#: data/level/titlescreen.cfg:391
+#: data/level/titlescreen-test.cfg:374 data/level/titlescreen.cfg:387
+#: data/level/titlescreen.cfg:403
 msgid "Press {UP_KEY} to talk, and use things like doors."
 msgstr "Premi {UP_KEY} per parlare, o usare oggetti come porte."
 
-#: data/level/titlescreen-test.cfg:375 data/level/titlescreen.cfg:376
+#: data/level/titlescreen-test.cfg:375 data/level/titlescreen.cfg:388
 msgid "Press {DOWN_KEY} to crouch."
 msgstr "Premi {DOWN_KEY} per accovacciarti."
 
-#: data/level/titlescreen-test.cfg:376 data/level/titlescreen.cfg:377
+#: data/level/titlescreen-test.cfg:376 data/level/titlescreen.cfg:389
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
 msgstr "Premi velocemente {LEFT_KEY} o {RIGHT_KEY} due volte per correre."
 
-#: data/level/titlescreen-test.cfg:377 data/level/titlescreen.cfg:378
+#: data/level/titlescreen-test.cfg:377 data/level/titlescreen.cfg:390
 msgid "Press {JUMP_KEY} to jump."
 msgstr "Premi {JUMP_KEY} per saltare."
 
-#: data/level/titlescreen-test.cfg:378 data/level/titlescreen.cfg:379
+#: data/level/titlescreen-test.cfg:378 data/level/titlescreen.cfg:391
 msgid "Press {TONGUE_KEY} to use a character's attacks."
 msgstr "Premi {TONGUE_KEY} per usare un attacco del personaggio."
 
-#: data/level/titlescreen.cfg:284
+#: data/level/titlescreen.cfg:285
 msgid "LOAD GAME"
 msgstr "CARICA GIOCO"
 
-#: data/level/titlescreen.cfg:316
+#: data/level/titlescreen.cfg:323
 msgid "NEW GAME"
 msgstr "NUOVO GIOCO"
 
-#: data/level/titlescreen.cfg:423
+#: data/level/titlescreen.cfg:436
 msgid "ARCADE"
 msgstr "ARCADE"
 
@@ -3955,7 +3966,8 @@ msgstr ""
 "è una piccola città sulle cime\n"
 "degli alberi. Dovresti chiedere ai cittadini.\n"
 "Per arrivarci, vai a sinistra, poi in alto\n"
-"a destra. Gli ascensori più piccoli làfunzionano ancora bene, è solo questa l'area\n"
+"a destra. Gli ascensori più piccoli làfunzionano ancora bene, è solo questa "
+"l'area\n"
 "che è stata danneggiata.\n"
 "Quindi, andrai a Woodenhead?"
 
@@ -4654,6 +4666,26 @@ msgstr "Vuoi salvare il gioco?"
 msgid "The game has been saved."
 msgstr "Il gioco è stato salvato."
 
+#: data/objects/scene-fx/level_controller_coin_race.cfg:30
+#, fuzzy
+msgid "You made it to level {level.player.difficulty} of the coin race!"
+msgstr ""
+"L'hai mandato {level.player.vars.score} piedi sull'albero di manutenzione! "
+
+#: data/objects/scene-fx/level_controller_coin_race.cfg:32
+#, fuzzy
+msgid "You made it to level {level.player.difficulty} of the coin race."
+msgstr ""
+"L'hai mandato {level.player.vars.score} piedi sull'albero di manutenzione! "
+
+#: data/objects/scene-fx/level_controller_coin_race.cfg:33
+#, fuzzy
+msgid ""
+"The furthest that has been reached is level {registry."
+"arcade_coin_race_high_score}."
+msgstr ""
+"Il punteggio è di {registry.arcade_maintenance_shaft_high_score} piedi."
+
 #: data/objects/store-items/buyable_gliding_wings.cfg:11
 msgid "gliding wings"
 msgstr "ali plananti"
@@ -4831,7 +4863,7 @@ msgstr "SU"
 msgid "DOWN"
 msgstr "GIU"
 
-#: src/main.cpp:353
+#: src/main.cpp:370
 msgid "Loading level"
 msgstr "Caricamento Livello"
 

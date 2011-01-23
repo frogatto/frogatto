@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto v1.0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-21 19:53+0100\\n"
+"POT-Creation-Date: 2011-01-23 00:37-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -142,7 +142,7 @@ msgid "Well, that's that."
 msgstr ""
 
 #: data/level/arcade-maintenance-shaft.cfg:13
-#: data/level/titlescreen-arcade.cfg:235
+#: data/level/titlescreen-arcade.cfg:247
 msgid "Maintenance Shaft"
 msgstr ""
 
@@ -161,16 +161,16 @@ msgid "The high score is {registry.arcade_maintenance_shaft_high_score} feet."
 msgstr ""
 
 #: data/level/arcade-the-long-haul.cfg:10
-#: data/level/titlescreen-arcade.cfg:257
+#: data/level/titlescreen-arcade.cfg:269
 msgid "The Long Haul"
 msgstr ""
 
 #: data/level/arcade-wild-new-wonder.cfg:12
-#: data/level/titlescreen-arcade.cfg:233
+#: data/level/titlescreen-arcade.cfg:245
 msgid "Wild New Wonder"
 msgstr ""
 
-#: data/level/arcade_upper_deck.cfg:12 data/level/titlescreen-arcade.cfg:234
+#: data/level/arcade_upper_deck.cfg:12 data/level/titlescreen-arcade.cfg:246
 msgid "Upper Deck"
 msgstr ""
 
@@ -2738,77 +2738,77 @@ msgstr ""
 msgid "The North Tower"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:140
+#: data/level/titlescreen-arcade.cfg:141
 msgid "Each machine has a different arcade-style challenge."
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:175
+#: data/level/titlescreen-arcade.cfg:182
 msgid "These don't affect story-mode.  Enjoy!"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:207
+#: data/level/titlescreen-arcade.cfg:219
 msgid "EXIT"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:232 data/level/titlescreen-arcade.cfg:256
+#: data/level/titlescreen-arcade.cfg:244 data/level/titlescreen-arcade.cfg:268
 msgid "Select a level:"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:236 data/level/titlescreen-arcade.cfg:260
+#: data/level/titlescreen-arcade.cfg:248 data/level/titlescreen-arcade.cfg:272
 msgid "(cancel)"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:258
+#: data/level/titlescreen-arcade.cfg:270
 msgid "Down the RabbitHall"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:259
+#: data/level/titlescreen-arcade.cfg:271
 msgid "Coin Race"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:287
+#: data/level/titlescreen-arcade.cfg:299
 msgid "CLIMB"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:319
+#: data/level/titlescreen-arcade.cfg:331
 msgid "RUN"
 msgstr ""
 
-#: data/level/titlescreen-test.cfg:373 data/level/titlescreen.cfg:349
-#: data/level/titlescreen.cfg:374
+#: data/level/titlescreen-test.cfg:373 data/level/titlescreen.cfg:361
+#: data/level/titlescreen.cfg:386
 msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
 msgstr ""
 
-#: data/level/titlescreen-test.cfg:374 data/level/titlescreen.cfg:375
-#: data/level/titlescreen.cfg:391
+#: data/level/titlescreen-test.cfg:374 data/level/titlescreen.cfg:387
+#: data/level/titlescreen.cfg:403
 msgid "Press {UP_KEY} to talk, and use things like doors."
 msgstr ""
 
-#: data/level/titlescreen-test.cfg:375 data/level/titlescreen.cfg:376
+#: data/level/titlescreen-test.cfg:375 data/level/titlescreen.cfg:388
 msgid "Press {DOWN_KEY} to crouch."
 msgstr ""
 
-#: data/level/titlescreen-test.cfg:376 data/level/titlescreen.cfg:377
+#: data/level/titlescreen-test.cfg:376 data/level/titlescreen.cfg:389
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
 msgstr ""
 
-#: data/level/titlescreen-test.cfg:377 data/level/titlescreen.cfg:378
+#: data/level/titlescreen-test.cfg:377 data/level/titlescreen.cfg:390
 msgid "Press {JUMP_KEY} to jump."
 msgstr ""
 
-#: data/level/titlescreen-test.cfg:378 data/level/titlescreen.cfg:379
+#: data/level/titlescreen-test.cfg:378 data/level/titlescreen.cfg:391
 msgid "Press {TONGUE_KEY} to use a character's attacks."
 msgstr ""
 
-#: data/level/titlescreen.cfg:284
+#: data/level/titlescreen.cfg:285
 msgid "LOAD GAME"
 msgstr ""
 
-#: data/level/titlescreen.cfg:316
+#: data/level/titlescreen.cfg:323
 msgid "NEW GAME"
 msgstr ""
 
-#: data/level/titlescreen.cfg:423
+#: data/level/titlescreen.cfg:436
 msgid "ARCADE"
 msgstr ""
 
