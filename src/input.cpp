@@ -51,8 +51,8 @@ namespace input {
     bool listener_container::process_event(const SDL_Event& event, bool claimed) {
         {
             scoped_int_stack stack_fixer(&(++process_event_stack_));
-            std::vector<listener*>::iterator raw_itor;
-            for(raw_itor = raw_listeners_.begin(); raw_itor != raw_listeners_.end(); ++raw_itor) {
+            std::vector<listener*>::reverse_iterator raw_itor;
+            for(raw_itor = raw_listeners_.rbegin(); raw_itor != raw_listeners_.rend(); ++raw_itor) {
                 claimed |= (*raw_itor)->process_event(event, claimed);
             }
         }

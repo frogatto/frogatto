@@ -78,6 +78,7 @@ void character_editor_dialog::show_category_menu()
 {
 	using namespace gui;
 	gui::grid* grid = new gui::grid(2);
+	grid->set_max_height(height());
 	grid->set_show_background(true);
 	grid->set_hpad(10);
 	grid->allow_selection();
@@ -114,7 +115,7 @@ void character_editor_dialog::show_category_menu()
 
 	remove_widget(context_menu_);
 	context_menu_.reset(grid);
-	add_widget(context_menu_, mousex, mousey);
+	add_widget(context_menu_, mousex - 20, mousey);
 }
 
 void character_editor_dialog::set_character(int index)
