@@ -66,7 +66,8 @@ public:
 	~variant() { if(type_ > TYPE_INT) { release(); } }
 
 	variant(const variant& v) {
-		memcpy(this, &v, sizeof(v));
+		type_ = v.type_;
+		value_ = v.value_;
 		if(type_ > TYPE_INT) {
 			increment_refcount();
 		}
@@ -81,6 +82,11 @@ public:
 	variant operator()(const std::vector<variant>& args) const;
 
 	variant get_member(const std::string& str) const;
+
+	//unsafe function which is called on an integer variant and returns
+	//direct access to the underlying integer. Should only be used
+	//when high performance is needed.
+	int& int_addr() { must_be(TYPE_INT); return int_value_; }
 
 	bool is_string() const { return type_ == TYPE_STRING; }
 	bool is_null() const { return type_ == TYPE_NULL; }
@@ -175,6 +181,8 @@ private:
 		variant_string* string_;
 		variant_map* map_;
 		variant_fn* fn_;
+
+		intptr_t value_;
 	};
 
 	//function to initialize the variant as a list, returning the

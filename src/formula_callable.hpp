@@ -160,6 +160,11 @@ public:
 	void write(wml::node_ptr node) const;
 	map_formula_callable& add(const std::string& key, const variant& value);
 	void set_fallback(const formula_callable* fallback) { fallback_ = fallback; }
+
+	//adds an entry and gets direct access to the variant. Use with caution
+	//and for cases where calling add() repeatedy isn't efficient enough.
+	variant& add_direct_access(const std::string& key);
+
 	bool empty() const { return values_.empty(); }
 	void clear() { values_.clear(); }
 	bool contains(const std::string& key) const { return values_.count(key); }

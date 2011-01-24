@@ -20,6 +20,7 @@
 #include "formula_callable.hpp"
 #include "formula_callable_utils.hpp"
 #include "formula_function.hpp"
+#include "unit_test.hpp"
 
 #include "SDL.h"
 
@@ -726,17 +727,24 @@ private:
 			}
 		} else {
 			static const std::string index_str = "index";
+			static const std::string context_str = "context";
 			map_formula_callable* self_callable = new map_formula_callable;
 			formula_callable_ptr callable_ref(self_callable);
-			self_callable->add("context", variant(&variables));
+			self_callable->add(context_str, variant(&variables));
 			const std::string self = args()[1]->evaluate(variables).as_string();
-			for(size_t n = 0; n != items.num_elements(); ++n) {
-				self_callable->add(self, items[n]);
-				self_callable->add(index_str, variant(n));
 
-				formula_callable_ptr callable_backup(new formula_callable_with_backup(*self_callable, variables));
-				const variant val = args().back()->evaluate(*callable_backup);
-				vars.push_back(val);
+			variant& self_variant = self_callable->add_direct_access(self);
+
+			//the variant representing the index we are currently at.
+			variant& index_variant = self_callable->add_direct_access(index_str);
+			index_variant = variant(0);
+
+			formula_callable_ptr callable_backup(new formula_callable_with_backup(*self_callable, variables));
+
+			const int nelements = items.num_elements();
+			for(int& n = index_variant.int_addr(); n != nelements; ++n) {
+				self_variant = items[n];
+				vars.push_back(args().back()->evaluate(*callable_backup));
 			}
 		}
 
@@ -1153,4 +1161,31 @@ function_expression::function_expression(
 }
 
 
+}
+
+BENCHMARK(map_function) {
+	using namespace game_logic;
+
+	static map_formula_callable* callable = NULL;
+	static variant callable_var;
+	static variant main_callable_var;
+	static std::vector<variant> v;
+	
+	if(callable == NULL) {
+		callable = new map_formula_callable;
+		callable_var = variant(callable);
+		callable->add("x", variant(0));
+		for(int n = 0; n != 1000; ++n) {
+			v.push_back(callable_var);
+		}
+
+		callable = new map_formula_callable;
+		main_callable_var = variant(callable);
+		callable->add("items", variant(&v));
+	}
+
+	static formula f("map(items, 'obj', 0)");
+	BENCHMARK_LOOP {
+		f.execute(*callable);
+	}
 }

@@ -106,6 +106,11 @@ namespace game_logic
 		values_[key] = value;
 		return *this;
 	}
+
+	variant& map_formula_callable::add_direct_access(const std::string& key)
+	{
+		return values_[key];
+	}
 	
 	variant map_formula_callable::get_value(const std::string& key) const
 	{

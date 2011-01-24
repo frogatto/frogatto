@@ -259,7 +259,9 @@ const variant& variant::operator=(const variant& v)
 		if(type_ > TYPE_INT) {
 			release();
 		}
-		memcpy(this, &v, sizeof(v));
+
+		type_ = v.type_;
+		value_ = v.value_;
 		if(type_ > TYPE_INT) {
 			increment_refcount();
 		}
@@ -955,4 +957,15 @@ UNIT_TEST(variant_decimal)
 	CHECK_EQ(d.as_int(), 9);
 	CHECK_EQ(d.string_cast(), "9.876");
 	CHECK_EQ((d + d2).as_decimal().value(), 9880);
+}
+
+BENCHMARK(variant_assign)
+{
+	variant v(4);
+	std::vector<variant> vec(1000);
+	BENCHMARK_LOOP {
+		for(int n = 0; n != vec.size(); ++n) {
+			vec[n] = v;
+		}
+	}
 }
