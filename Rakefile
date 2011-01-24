@@ -3,27 +3,25 @@ LANGUAGES = {
   'zh_CN' => 'myuppygb-medium.ttf'
 }
 
-BACKGROUND_COLOR = '#6f6d51' 
 # Command template to generate glyph images for each font style
 FONT_STYLES = {
-  :dialog =>  "convert -background '#{BACKGROUND_COLOR}' \
-                       -font '%{font}' -pointsize 16 \
-                       -fill '#f5f5f5' label:'%{character}' %{glyph}",
+  :dialog =>  "convert -background transparent -font '%{font}' -pointsize 16 \
+                       -fill '#f5f5f5' label:'%{character}' png32:%{glyph}",
 
-  :outline => "convert -size 300x300 xc:#{BACKGROUND_COLOR} \
+  :outline => "convert -size 300x300 xc:transparent \
                        -font '%{font}' -pointsize 12 \
-            +antialias -fill '#550b0b' -annotate +51+49 '%{character}' \
+                       -fill '#550b0b' -annotate +51+49 '%{character}' \
                                        -annotate +49+51 '%{character}' \
                                        -annotate +51+51 '%{character}' \
                                        -annotate +49+49 '%{character}' \
-            -antialias -fill '#e9f9f9' -annotate +50+50 '%{character}' \
-                       -trim %{glyph}",
+                       -fill '#e9f9f9' -annotate +50+50 '%{character}' \
+                       -trim png32:%{glyph}",
 
-  :label =>   "convert -size 300x300 xc:'#{BACKGROUND_COLOR}' \
+  :label =>   "convert -size 300x300 xc:transparent \
                        -font '%{font}' -pointsize 12 \
-            +antialias -fill '#000000' -annotate +50+51 '%{character}' \
-            -antialias -fill '#ffffff' -annotate +50+50 '%{character}' \
-                       -trim %{glyph}"
+                       -fill '#000000' -annotate +50+51 '%{character}' \
+                       -fill '#ffffff' -annotate +50+50 '%{character}' \
+                       -trim png32:%{glyph}"
 }
 
 FONT_CFG_IDS = {
@@ -157,8 +155,8 @@ LANGUAGES.each_pair do |language, font|
     task font_task(style, language) => [work_path, glyphs_task] do
       font_texture = font_texture(style, language)
       sh <<-COMMAND
-        montage -background '#6f6d51' -label '' \
-                -geometry '1x1+0+0<' #{glyphs.keys.join(' ')} #{font_texture}
+        montage -label '' -background transparent \
+                -geometry '1x1+0+0<' #{glyphs.keys.join(' ')} png32:#{font_texture}
       COMMAND
       (texture_width, texture_height) = image_size(font_texture)
 
