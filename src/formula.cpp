@@ -475,7 +475,8 @@ private:
 		if(left.is_list() || left.is_map()) {
 			return left[ key ];
 		} else {
-			std::cerr << "illegal usage of operator []'\n";
+			output_formula_error_info();
+			std::cerr << "illegal usage of operator []: called on " << left.to_debug_string() << " value: " << left_->str() << "'\n";
 			throw formula_error();
 		}
 	}
