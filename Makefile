@@ -43,7 +43,7 @@ update-pot:
 	msgmerge $@ po/frogatto.pot -o $@.part
 	mv $@.part $@
 
-LINGUAS=de es fr it pt_BR ru
+LINGUAS=de es fr it pt_BR ru zh_CN
 
 update-po:
 	(for lang in ${LINGUAS}; do \

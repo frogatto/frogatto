@@ -1,0 +1,4815 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Frogatto\n"
+"Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
+"POT-Creation-Date: 2011-01-08 14:09-0200\n"
+"PO-Revision-Date: 2011-01-21 16:33+0000\n"
+"Last-Translator: CloudiDust <cloudidust@gmail.com>\n"
+"Language-Team: Chinese (China) <None>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+
+#: data/achievements.cfg:4
+msgid "Pocket Money"
+msgstr "零花钱"
+
+#: data/achievements.cfg:5
+msgid "Collect ten coins."
+msgstr "收集十枚硬币。"
+
+#: data/achievements.cfg:12
+msgid "Nature Boy"
+msgstr "自然之子"
+
+#: data/achievements.cfg:13
+msgid "Put a water beetle back in water."
+msgstr "把一只水甲虫丢回水里。"
+
+#: data/achievements.cfg:20
+msgid "Nice Try..."
+msgstr "想得美……"
+
+#: data/achievements.cfg:21
+msgid "but that's not a secret area."
+msgstr "不过这可不是秘密地点口牙。"
+
+#: data/achievements.cfg:28
+msgid "Gold Hoarder"
+msgstr "贮金人"
+
+#: data/achievements.cfg:29
+msgid "Collect all the coins."
+msgstr "集齐全部硬币。"
+
+#: data/achievements.cfg:36
+msgid "Speed Trader"
+msgstr "交易快手"
+
+#: data/achievements.cfg:37
+msgid "Too bad you can't do this afk too."
+msgstr "可惜啊，AFK的时候你不能这么干呀。"
+
+#: data/achievements.cfg:44
+msgid "Speedrun"
+msgstr "快跑通关"
+
+#: data/achievements.cfg:45
+msgid "Complete the game within 2 hours."
+msgstr "在两小时之内打通游戏。"
+
+#: data/achievements.cfg:52
+msgid "Win!"
+msgstr "胜利！"
+
+#: data/achievements.cfg:53
+msgid "Congratulations, you just won the game!"
+msgstr "恭喜恭喜，你打通了游戏！"
+
+#: data/achievements.cfg:60
+msgid "Rampage!"
+msgstr "横行霸道！"
+
+#: data/achievements.cfg:61
+msgid "Kill 5 enemies in 10 seconds."
+msgstr "在10秒钟之内做掉5个敌人。"
+
+#: data/achievements.cfg:68
+msgid "Cube Chain"
+msgstr "连环方块"
+
+#: data/achievements.cfg:69
+msgid "Collect 15 points cubes in a row."
+msgstr "连续收集15点数的方块。"
+
+#: data/achievements.cfg:76
+msgid "Grudge"
+msgstr "怨念"
+
+#: data/achievements.cfg:77
+msgid "Kill 10 of the same type of enemy in a row."
+msgstr "连续做掉10个相同类型的敌人。"
+
+#: data/level/airplane-boss.cfg:11
+msgid "Stonepipe Bridge"
+msgstr "石管桥"
+
+#: data/level/airplane-boss.cfg:356
+msgid "Ambush!"
+msgstr "伏击！"
+
+#: data/level/airplane-boss.cfg:365
+msgid "Victory!"
+msgstr "胜利！"
+
+#: data/level/ant-farm-minigame.cfg:10
+msgid "Ant Farm"
+msgstr "蚂蚁农场"
+
+#: data/level/ant-farm-minigame.cfg:798
+msgid ""
+"I can feel the ants coming to\n"
+"investigate. Go get their points."
+msgstr ""
+"我感觉到啦！蚂蚁们正跑过来\n"
+"围观呢。把它们的点数拿到手！"
+
+#: data/level/ant-farm-minigame.cfg:800
+msgid " points."
+msgstr " 点。"
+
+#: data/level/ant-farm-minigame.cfg:800
+msgid ""
+"Here's a 100 points in reward.\n"
+"We'll just leave now."
+msgstr ""
+"这是100点奖励。\n"
+"现在咱们该撤了。"
+
+#: data/level/ant-farm-minigame.cfg:800
+msgid "Not bad. You scored a total of"
+msgstr "不错。你一共得到了"
+
+#: data/level/ant-farm-minigame.cfg:800
+msgid "Time: "
+msgstr "时间："
+
+#: data/level/ant-farm-minigame.cfg:800
+msgid "Well, that's that."
+msgstr "嘛，就这样了。"
+
+#: data/level/arcade-maintenance-shaft.cfg:13
+#: data/level/titlescreen-arcade.cfg:234
+msgid "Maintenance Shaft"
+msgstr "维修管道"
+
+#: data/level/arcade-maintenance-shaft.cfg:1543
+#: data/level/arcade-maintenance-shaft.cfg:1546
+msgid "You made it {level.player.vars.score} feet up the maintenance shaft!"
+msgstr "你在维修管道里成功前进了 {level.player.vars.score} 英尺！ "
+
+#: data/level/arcade-maintenance-shaft.cfg:1544
+msgid "This is a new high score!"
+msgstr "这是一个新纪录！"
+
+#: data/level/arcade-maintenance-shaft.cfg:1547
+msgid "The high score is {registry.arcade_maintenance_shaft_high_score} feet."
+msgstr "最高纪录是 {registry.arcade_maintenance_shaft_high_score} 英尺。 "
+
+#: data/level/arcade-the-long-haul.cfg:10
+#: data/level/titlescreen-arcade.cfg:256
+msgid "The Long Haul"
+msgstr "长途运输"
+
+#: data/level/arcade-wild-new-wonder.cfg:12
+#: data/level/titlescreen-arcade.cfg:233
+msgid "Wild New Wonder"
+msgstr "荒野奇观"
+
+#: data/level/autumn-town.cfg:14
+msgid "Autumn Town"
+msgstr "秋日小镇"
+
+#: data/level/bombing-fools.cfg:14
+msgid "Bombing Fools"
+msgstr "爆破笨蛋"
+
+#: data/level/bon-bosque.cfg:13
+msgid "Bon Bosque"
+msgstr "给力树丛"
+
+#: data/level/bon-bosque.cfg:1434
+msgid ""
+"Well, you made it! Now just up ahead\n"
+"there is a gate. If you can get\n"
+"through it you'll make it to the\n"
+"limestone caverns. There is said to\n"
+"be an entry way directly into Milgram's\n"
+"compound from the caverns."
+msgstr ""
+"嘛，干得不赖！现在你面前\n"
+"有个门。如果你能通过的话，\n"
+"就会到达石灰岩洞穴。貌似\n"
+"洞穴里有条道儿直接通往\n"
+"米格拉姆的庭院。"
+
+#: data/level/bon-bosque.cfg:1436
+msgid ""
+"Whoah, a bunch of caverns now?\n"
+"This seems like it's harder than\n"
+"what the elder led me to believe!"
+msgstr ""
+"喔哈！现在是一堆洞穴么？\n"
+"貌似这比老前辈告诉我的\n"
+"要难那么一点点啊！"
+
+#: data/level/bon-bosque.cfg:1437
+msgid ""
+"I guess the forests have become\n"
+"infested over the years. Hopefully\n"
+"the caverns won't be too much worse!"
+msgstr ""
+"我猜这些年来森林已经被侵蚀了。\n"
+"但愿那些洞穴里的情况不会糟糕太多！"
+
+#: data/level/bon-bosque.cfg:1439
+msgid ""
+"I hope not. Thank you for guiding me\n"
+"and meeting me here."
+msgstr ""
+"但愿吧。谢谢你为我指路还\n"
+"在这儿等我。"
+
+#: data/level/bon-bosque.cfg:1440
+msgid ""
+"You're welcome, friend. Naturally I\n"
+"won't be able to fly into the\n"
+"caverns, so this is the last you will\n"
+"see of me. Take care and teach Milgram\n"
+"a lesson for us all!"
+msgstr ""
+"不客气，朋友。我当然不能够\n"
+"飞进洞穴里，所以这是你最后\n"
+"一次见到我了。小心点儿，\n"
+"替我们大家给米格拉姆一点教训！"
+
+#: data/level/bug-mining.cfg:13
+msgid "Bug Mining"
+msgstr "虫虫大收集"
+
+#: data/level/burn-and-bubble.cfg:14
+msgid "Burn and Bubble"
+msgstr "火焰与水泡"
+
+#: data/level/burning-stone.cfg:7
+msgid "Burning Stone"
+msgstr "灼烧之岩"
+
+#: data/level/burning-stone.cfg:2179
+msgid ""
+"I need to go up... There must be\n"
+"a way to activate this elevator."
+msgstr ""
+"我得往上走……一定有个办法\n"
+"可以启动升降梯的。"
+
+#: data/level/caverns-of-holes.cfg:14
+msgid "Caverns of Holes"
+msgstr "洞之洞穴"
+
+#: data/level/chopple-shop-interior.cfg:7 data/level/chopple-shop.cfg:11
+msgid "Chopple's General Store"
+msgstr "巧比的万能商店"
+
+#: data/level/conveyance.cfg:9
+msgid "The Conveyance"
+msgstr "运输器"
+
+#: data/level/conveyance.cfg:1829
+msgid ""
+"Enjoy your trip on the CONVEYANCE!\n"
+"Just don't let the bugs scare you off!"
+msgstr ""
+"享受*运输器*带来的惬意旅行吧！\n"
+"只要别被虫子们吓得摔下来就好！"
+
+#: data/level/conveyance.cfg:1831
+msgid ""
+"Hi there sonny, have you come here\n"
+"to ride on the CONVEYANCE?"
+msgstr ""
+"嗨，孩子，你来这里是要\n"
+"搭乘运输器的吧？"
+
+#: data/level/conveyance.cfg:1832
+msgid "Actually I was just hoping to get to town."
+msgstr "事实上我只是想到镇子上去而已。"
+
+#: data/level/conveyance.cfg:1833
+msgid ""
+"Oh is that so? Well after what Milgram's\n"
+"men did to the bridge..."
+msgstr ""
+"哦，是吗？那啥，自从米格拉姆的\n"
+"小弟们对桥动了手脚之后……"
+
+#: data/level/conveyance.cfg:1834
+msgid "the CONVEYANCE is the only way!"
+msgstr "这运输器已经是唯一的去路了！"
+
+#: data/level/conveyance.cfg:1835
+msgid ""
+"So I have to use this conveyance thing\n"
+"to get to town? Okay, well, let's go..."
+msgstr ""
+"所以我得搭这啥“运输器”\n"
+"去镇上？好吧，那么，出发……"
+
+#: data/level/conveyance.cfg:1836
+msgid ""
+"Yessir, climb aboard the CONVEYANCE\n"
+"for the ride of your life!"
+msgstr ""
+"遵命！爬上运输器，\n"
+"为了你的小命前进吧！"
+
+#: data/level/conveyance.cfg:1837
+msgid ""
+"Why they said my grandfather was crazy\n"
+"when he built it. But whose crazy now, eh?"
+msgstr ""
+"为啥他们要说我爷爷造这货是疯了？\n"
+"现在谁才是疯子，哈？"
+
+#: data/level/crevice-bridge.cfg:13
+msgid "Crevice Bridge"
+msgstr "裂口桥"
+
+#: data/level/crevice-village-cave.cfg:11
+#: data/level/crevice-village-central.cfg:13
+#: data/level/crevice-village-heights.cfg:11 data/level/crevice-village.cfg:13
+msgid "Crevice Village"
+msgstr "裂口村"
+
+#: data/level/crevice-village-cave.cfg:815
+msgid "What the..."
+msgstr "这什么鬼……"
+
+#: data/level/crevice-village-cave.cfg:815
+msgid "You!!"
+msgstr "你！！"
+
+#: data/level/crevice-village-cave.cfg:816 data/level/wm-town.cfg:2309
+#: data/object_prototypes/buyable_item.cfg:24
+#: data/objects/props-interactive/save_toilet.cfg:17
+msgid "Yes"
+msgstr "是"
+
+#: data/level/crevice-village-cave.cfg:816
+msgid "You're an intruder, aren't you?!"
+msgstr "你是个入侵者，不是吗？"
+
+#: data/level/crevice-village-cave.cfg:817
+msgid "I thought so!"
+msgstr "我想是的！"
+
+#: data/level/crevice-village-cave.cfg:818 data/level/wm-town.cfg:2316
+#: data/object_prototypes/buyable_item.cfg:25
+#: data/objects/props-interactive/save_toilet.cfg:22
+msgid "No"
+msgstr "否"
+
+#: data/level/crevice-village-cave.cfg:819
+msgid "There's no fooling me."
+msgstr "别跟我耍花招。"
+
+#: data/level/crevice-village-cave.cfg:819
+msgid ""
+"You look like a very\n"
+"suspicious character."
+msgstr ""
+"你看起来是个\n"
+"很可疑的角色。"
+
+#: data/level/crevice-village-cave.cfg:821
+msgid "Could you just step aside?"
+msgstr "能不能请你让一边就好？"
+
+#: data/level/crevice-village-cave.cfg:823
+msgid ""
+"I need to take care\n"
+"of something in town."
+msgstr ""
+"我得到镇上\n"
+"搞定一些事情。"
+
+#: data/level/crevice-village-cave.cfg:824
+msgid ""
+"Well, I can't let anyone\n"
+"past this gate."
+msgstr ""
+"呃，我不能让任何人\n"
+"通过这扇门。"
+
+#: data/level/crevice-village-cave.cfg:825
+msgid ""
+"Without this key,\n"
+"you're not getting anywhere."
+msgstr ""
+"没这把钥匙，\n"
+"你哪儿都去不了。"
+
+#: data/level/crevice-village-cave.cfg:827
+msgid ""
+"Okay.  Will you please lend\n"
+"me that key?"
+msgstr ""
+"好吧。您能不能把钥匙\n"
+"借给我呢？"
+
+#: data/level/crevice-village-cave.cfg:828
+msgid "No way!  Over my dead body!"
+msgstr "没门！除非我挂了！"
+
+#: data/level/crevice-village-cave.cfg:830
+msgid "We can do that."
+msgstr "我们会这么干的。"
+
+#: data/level/crevice-village-central-side-cave.cfg:15
+msgid "Hidden Cave"
+msgstr "隐秘洞穴"
+
+#: data/level/crevice-village-central.cfg:1341
+msgid ""
+"Ahh, good, you made it\n"
+"through there in one piece!"
+msgstr ""
+"啊，很好，你完好无损地\n"
+"通过了！"
+
+#: data/level/crevice-village-central.cfg:1343
+msgid ""
+"Yeah, those goons\n"
+"had a little ambush set up."
+msgstr ""
+"是啊，那些蠢蛋\n"
+"准备了一场小小的伏击。"
+
+#: data/level/crevice-village-central.cfg:1345
+msgid "So, now what?"
+msgstr "那现在咋办？"
+
+#: data/level/crevice-village-central.cfg:1346
+msgid ""
+"Well, as you know, the town\n"
+"is split into two halves."
+msgstr ""
+"呃，你懂的，小镇是\n"
+"分成两半的。"
+
+#: data/level/crevice-village-central.cfg:1347
+msgid ""
+"Milgram has this half of the town\n"
+"locked down tight, and he has\n"
+"most of the residents held prisoner."
+msgstr ""
+"米格拉姆把小镇的这一半\n"
+"封锁得严严实实，他还抓了\n"
+"大多数居民做人质。"
+
+#: data/level/crevice-village-central.cfg:1348
+msgid ""
+"They're tied up inside the houses,\n"
+"under guard. If you free them,\n"
+"I'm sure they can help you."
+msgstr ""
+"他们被捆在屋子里面，\n"
+"还附送看守。如果你能解救他们，\n"
+"我相信他们会帮助你的。"
+
+#: data/level/crevice-village-central.cfg:1350
+msgid "Makes sense."
+msgstr "有道理。"
+
+#: data/level/crevice-village-central.cfg:1351
+msgid ""
+"Your big problem will be that\n"
+"the gate connecting the two halves\n"
+"of town has been locked."
+msgstr ""
+"最大的问题是连接着小镇两半的\n"
+"大门被锁上了。"
+
+#: data/level/crevice-village-central.cfg:1352
+msgid ""
+"And I don't think there's a guard next\n"
+"to it, whom you can steal the key from."
+msgstr ""
+"而且我不认为门边上会有个守卫\n"
+"等着你从他身上偷走钥匙。"
+
+#: data/level/crevice-village-central.cfg:1353
+msgid ""
+"They've probably hidden it in one of\n"
+"the houses, but I don't know which one."
+msgstr ""
+"他们也许把钥匙藏在某一间屋子里了，\n"
+"但我不知道是哪一间。"
+
+#: data/level/crevice-village-central.cfg:1354
+msgid ""
+"Asking one of the prisoners is probably\n"
+"our best bet for a clue."
+msgstr "去问问人质也许是我们获得线索的最好方法。"
+
+#: data/level/crevice-village-central.cfg:1550
+#: data/level/crevice-village-house-2.cfg:3265
+#: data/level/crevice-village-house-4.cfg:3148
+#: data/level/crevice-village-house-4.cfg:3189
+#: data/level/killer-bunnies.cfg:4611
+msgid "Nope, it's locked."
+msgstr "没用，锁住了。"
+
+#: data/level/crevice-village-central.cfg:2269
+msgid "Hey! Over here!"
+msgstr "嘿！在这里！"
+
+#: data/level/crevice-village-heights.cfg:1088
+msgid "So!  I've unlocked this gate, here."
+msgstr "终于！我打开了这扇门！"
+
+#: data/level/crevice-village-heights.cfg:1091
+msgid ""
+"Through there,\n"
+"is the way to where Milgram lives."
+msgstr ""
+"通过这儿，\n"
+"便是前往米格拉姆居所的路了。"
+
+#: data/level/crevice-village-heights.cfg:1093
+msgid ""
+"It's all a bit convoluted,\n"
+"and I would explain it,\n"
+"but as a matter of fact, I don't need to."
+msgstr ""
+"这路有点弯来弯去的，\n"
+"原因我可以解释给你听，\n"
+"但事实上我不需要这么做。"
+
+#: data/level/crevice-village-heights.cfg:1095
+msgid "Huh?"
+msgstr "哈？"
+
+#: data/level/crevice-village-heights.cfg:1098
+msgid ""
+"Yes, that blue fellow you ran into..\n"
+"Berd was his name."
+msgstr ""
+"恩，你撞见的那个蓝色的家伙……\n"
+"他的名字是博德。"
+
+#: data/level/crevice-village-heights.cfg:1100
+msgid ""
+"He'll follow you from above,\n"
+"and will keep you informed."
+msgstr ""
+"他会在天上跟随你，\n"
+"随时向你提供信息。"
+
+#: data/level/crevice-village-heights.cfg:1102
+msgid "He's a good boy, that one."
+msgstr "是个好孩子，那家伙。"
+
+#: data/level/crevice-village-heights.cfg:1104
+msgid "Okay, that'll help!"
+msgstr "OK，帮大忙了！"
+
+#: data/level/crevice-village-heights.cfg:1106
+msgid ""
+"Now, this'll take you over a bridge,\n"
+"then through an underground passage."
+msgstr ""
+"现在这东西会带着你通过一座桥，\n"
+"而后是一段地下通道。"
+
+#: data/level/crevice-village-heights.cfg:1108
+msgid "Watch your head in there."
+msgstr "在那里面小心撞脑袋。"
+
+#: data/level/crevice-village-heights.cfg:1110
+msgid "Past that, and you come to the forest."
+msgstr "通过之后，你会到达丛林里。"
+
+#: data/level/crevice-village-heights.cfg:1112
+msgid ""
+"I haven't been there in a long time,\n"
+"so I'm not sure what's become of it."
+msgstr ""
+"我有很长时间没去那儿了，\n"
+"所以不清楚那里现在成了什么样子。"
+
+#: data/level/crevice-village-heights.cfg:1114
+msgid "Right, I'll watch my back."
+msgstr "好的，我会注意的。"
+
+#: data/level/crevice-village-heights.cfg:1116
+msgid ""
+"Best of luck, my boy.\n"
+"Milgram won't know what hit him!"
+msgstr ""
+"祝你好运，孩子。\n"
+"米格拉姆不会知道是谁做掉了他的！"
+
+#: data/level/crevice-village-heights.cfg:1118
+msgid "You bet!"
+msgstr "当然！"
+
+#: data/level/crevice-village-heights.cfg:1120
+msgid ""
+"Say, uh... by the way,\n"
+"what's going to happen to town, here?"
+msgstr ""
+"那个，呃……顺带一问，\n"
+"这镇子会变什么样，这镇子？"
+
+#: data/level/crevice-village-heights.cfg:1122
+msgid "Eh, don't worry about that."
+msgstr "呃，别担心这个。"
+
+#: data/level/crevice-village-heights.cfg:1124
+msgid ""
+"With their leader gone, Milgram's goons\n"
+"will probably pack up and leave."
+msgstr ""
+"没了带头的，米格拉姆的小弟们\n"
+"也许就会卷铺盖走人了。"
+
+#: data/level/crevice-village-heights.cfg:1126
+msgid "And good riddance!"
+msgstr "谢天谢地！"
+
+#: data/level/crevice-village-heights.cfg:1128
+msgid ""
+"Well, I'm off.\n"
+"Thanks for the advice!"
+msgstr ""
+"啊，那我出动了。\n"
+"感谢您的忠告。"
+
+#: data/level/crevice-village-heights.cfg:1130
+msgid "Likewise.  Good luck!"
+msgstr "同样谢谢你。好运！"
+
+#: data/level/crevice-village-house-1.cfg:9
+#: data/level/liberated-crevice-village-house-1.cfg:9
+msgid "The Elevator House"
+msgstr "升降梯小屋"
+
+#: data/level/crevice-village-house-1.cfg:2502
+msgid "Who are you?"
+msgstr "你是谁？"
+
+#: data/level/crevice-village-house-1.cfg:2504
+msgid ""
+"I'm the hero.\n"
+"I'm gonna save this town!"
+msgstr ""
+"我是英雄。\n"
+"我要拯救小镇！"
+
+#: data/level/crevice-village-house-1.cfg:2506
+msgid "That's my new job."
+msgstr "这是我的新工作。"
+
+#: data/level/crevice-village-house-1.cfg:2507
+#: data/level/crevice-village-house-1.cfg:2512
+#: data/level/crevice-village-house-1.cfg:2518
+#: data/level/crevice-village-house-1.cfg:2551
+#: data/level/crevice-village-house-elder.cfg:1499
+#: data/level/crevice-village-house-elder.cfg:1510
+#: data/level/crevice-village-house-elder.cfg:1612
+msgid "..."
+msgstr "……"
+
+#: data/level/crevice-village-house-1.cfg:2507
+msgid "That's nutty."
+msgstr "真蛋疼。"
+
+#: data/level/crevice-village-house-1.cfg:2509
+msgid ""
+"Nevertheless, let's pretend that\n"
+"I might actually pull it off."
+msgstr ""
+"甭管了，就假装\n"
+"我能把这事儿搞定就是了。"
+
+#: data/level/crevice-village-house-1.cfg:2511
+msgid "Got any advice?"
+msgstr "有啥忠告没？"
+
+#: data/level/crevice-village-house-1.cfg:2512
+msgid "Keep an eye out for it!"
+msgstr "小心点儿！"
+
+#: data/level/crevice-village-house-1.cfg:2512
+msgid "Maybe."
+msgstr "啊，也许吧。"
+
+#: data/level/crevice-village-house-1.cfg:2512
+msgid ""
+"OH! One other thing..\n"
+"the key that opens the town gate\n"
+"is a SILVER key."
+msgstr ""
+"哦！还有件事……\n"
+"能打开镇子大门的\n"
+"是一把“银色”钥匙。"
+
+#: data/level/crevice-village-house-1.cfg:2512
+msgid ""
+"Yeah, that key right next to you -\n"
+"I think that unlocks a house that\n"
+"has the key to the town gate."
+msgstr ""
+"是啊，你身边那钥匙——\n"
+"我想是能打开某屋子的门的，\n"
+"那屋子里有小镇大门的钥匙。"
+
+#: data/level/crevice-village-house-1.cfg:2514
+msgid "Will do.  Catch ya around."
+msgstr "好咧。回头见！"
+
+#: data/level/crevice-village-house-1.cfg:2515
+msgid "HEY, WAIT!  What about me?!"
+msgstr "嘿，等等！那我怎么办？！"
+
+#: data/level/crevice-village-house-1.cfg:2517
+msgid ""
+"Do I look like I have a key\n"
+"for your cage?"
+msgstr ""
+"我看上去像是拿着\n"
+"你那笼子的钥匙么？"
+
+#: data/level/crevice-village-house-1.cfg:2518
+msgid ""
+"Ah, I see..\n"
+"carry on then."
+msgstr ""
+"啊，我知道了……\n"
+"那您继续吧。"
+
+#: data/level/crevice-village-house-1.cfg:2542
+msgid "Thank God it's you!"
+msgstr "谢天谢地！是你！"
+
+#: data/level/crevice-village-house-1.cfg:2544
+msgid "Hey, Hedge, you alright?"
+msgstr "嘿，海吉，你还好不？"
+
+#: data/level/crevice-village-house-1.cfg:2545
+msgid "Besides the obvious cage situation."
+msgstr ""
+"很明显我给关笼子里了，\n"
+"除此之外还不错。"
+
+#: data/level/crevice-village-house-1.cfg:2545
+msgid "Eh, I've been better, but yeah, I'm okay."
+msgstr ""
+"呃，之前可比这境况好多了，不过呢，\n"
+"是了，我挺好的。"
+
+#: data/level/crevice-village-house-1.cfg:2547
+msgid ""
+"Yeah.\n"
+"Sad to say, I can't pick locks.\n"
+"I got nothing."
+msgstr ""
+"不错。\n"
+"残念的是我打不开这锁。\n"
+"我啥都没有。"
+
+#: data/level/crevice-village-house-1.cfg:2548
+msgid "So I'm stuck here, huh?"
+msgstr "就是说我给困在这里了，哈？"
+
+#: data/level/crevice-village-house-1.cfg:2550 data/level/wm-town.cfg:2245
+msgid "Yep."
+msgstr "对头。"
+
+#: data/level/crevice-village-house-1.cfg:2551
+msgid ""
+"Hmm, you know, I know one thing\n"
+"that might help you.."
+msgstr ""
+"恩，你懂的，我知道点东西\n"
+"也许可以帮上忙。"
+
+#: data/level/crevice-village-house-1.cfg:2551
+msgid "Phooey."
+msgstr "呸。"
+
+#: data/level/crevice-village-house-1.cfg:2551
+msgid ""
+"There's supposedly\n"
+"a secret room in this house."
+msgstr ""
+"这屋子里不是应该有个\n"
+"秘密房间的么。"
+
+#: data/level/crevice-village-house-1.cfg:2553
+msgid "Oh really?  Where at?"
+msgstr "哦？真的？哪里？"
+
+#: data/level/crevice-village-house-1.cfg:2554
+msgid ""
+"If I knew that, it wouldn't\n"
+"be much of a secret, would it?"
+msgstr ""
+"我要是知道了，那这就不是\n"
+"什么秘密了，是吧？"
+
+#: data/level/crevice-village-house-1.cfg:2556
+msgid ""
+"Figures.\n"
+"Well, thanks for the help!"
+msgstr ""
+"了解了。\n"
+"恩，谢谢你帮忙！"
+
+#: data/level/crevice-village-house-1.cfg:2557
+msgid "Good luck!"
+msgstr "祝你好运！"
+
+#: data/level/crevice-village-house-1.cfg:2581
+msgid ""
+"Jeez, I *swear* this house\n"
+"didn't look THIS big from the outside!"
+msgstr ""
+"呀，我*发誓*这屋子从外面看\n"
+"完全没有这么大大大大大啊啊！"
+
+#: data/level/crevice-village-house-1.cfg:2628
+msgid ""
+"Uh, oh,\n"
+"I can hear a lot of feet tromping around..."
+msgstr ""
+"啊哦，\n"
+"我听到附近有好多脚步声……"
+
+#: data/level/crevice-village-house-2-basement.cfg:13
+#: data/level/crevice-village-house-2.cfg:12
+#: data/level/liberated-crevice-village-house-2.cfg:9
+msgid "Central House"
+msgstr "中央屋子"
+
+#: data/level/crevice-village-house-2.cfg:3211
+msgid "Something's odd about this fireplace."
+msgstr "这壁炉有点诡异。"
+
+#: data/level/crevice-village-house-2.cfg:3525
+msgid "Wow, you guys look exactly alike."
+msgstr "喔～你们俩家伙看上去完全一样。"
+
+#: data/level/crevice-village-house-2.cfg:3526
+msgid "We're twins."
+msgstr "我们是双胞胎。"
+
+#: data/level/crevice-village-house-2.cfg:3527
+msgid ""
+"Is there anything\n"
+"you can do to help us?"
+msgstr ""
+"你能做些什么\n"
+"来帮帮我们么？"
+
+#: data/level/crevice-village-house-2.cfg:3529
+msgid ""
+"Not yet.\n"
+"Sorry."
+msgstr ""
+"还不能。\n"
+"抱歉。"
+
+#: data/level/crevice-village-house-2.cfg:3560
+msgid ""
+"Hey,\n"
+"I'm trying to help save the town."
+msgstr ""
+"嘿，\n"
+"我正试着帮忙保卫小镇。"
+
+#: data/level/crevice-village-house-2.cfg:3562
+msgid "Can you give me any advice?"
+msgstr "你能给我些忠告不？"
+
+#: data/level/crevice-village-house-2.cfg:3563
+msgid "Yeah."
+msgstr "可以。"
+
+#: data/level/crevice-village-house-2.cfg:3564
+msgid ""
+"The elder's house is off to the east,\n"
+"past the town gate."
+msgstr ""
+"老前辈的屋子在东边，\n"
+"过镇子的门往东去。"
+
+#: data/level/crevice-village-house-2.cfg:3565
+msgid "We saw Milgram's lieutenant go in there."
+msgstr "我们看到米格拉姆的副官进去了。"
+
+#: data/level/crevice-village-house-2.cfg:3567 data/level/rock-a-fort.cfg:4418
+msgid "How interesting."
+msgstr "真有趣。"
+
+#: data/level/crevice-village-house-3-backroom.cfg:12
+#: data/level/crevice-village-house-3.cfg:9
+#: data/level/liberated-crevice-village-house-3.cfg:9
+msgid "The Danger House"
+msgstr "危险之屋"
+
+#: data/level/crevice-village-house-4-backroom.cfg:7
+#: data/level/crevice-village-house-4.cfg:7
+#: data/level/liberated-crevice-village-house-4.cfg:7
+msgid "Fan House"
+msgstr "风扇之屋"
+
+#: data/level/crevice-village-house-4-backroom.cfg:1293
+msgid ""
+"Argh! Who in the world would\n"
+"design a house like this?"
+msgstr ""
+"啊！这世上有哪个家伙\n"
+"会设计出这种屋子来啊？"
+
+#: data/level/crevice-village-house-4.cfg:3091
+msgid "Hmmm..."
+msgstr "唔……"
+
+#: data/level/crevice-village-house-4.cfg:3092
+msgid ""
+"It seems I'm trapped\n"
+"inside this house."
+msgstr ""
+"看起来我似乎\n"
+"被困在这屋子里了。"
+
+#: data/level/crevice-village-house-4.cfg:3093
+msgid ""
+"I guess the only way out\n"
+"is in!"
+msgstr ""
+"我猜出去的唯一方法就是——\n"
+"进去！"
+
+#: data/level/crevice-village-house-4.cfg:3395
+msgid "This is decidedly unpleasant."
+msgstr "这显然很让人不爽啊。"
+
+#: data/level/crevice-village-house-4.cfg:3397
+#: data/level/crevice-village-house-4.cfg:3407
+msgid "You don't say."
+msgstr "真的吗？！"
+
+#: data/level/crevice-village-house-4.cfg:3399
+msgid ""
+"When I stepped in the door,\n"
+"it locked behind me."
+msgstr ""
+"我进来的时候，\n"
+"门在我背后关上了。"
+
+#: data/level/crevice-village-house-4.cfg:3400
+msgid ""
+"That's actually a rather clever\n"
+"way to round everyone up."
+msgstr ""
+"实话说这倒是一个把所有人\n"
+"都围起来的好办法呢。"
+
+#: data/level/crevice-village-house-4.cfg:3402
+msgid ""
+"Know anything helpful\n"
+"about this house?"
+msgstr ""
+"关于这屋子，\n"
+"你知道什么有用的东西不？"
+
+#: data/level/crevice-village-house-4.cfg:3403
+msgid ""
+"Unfortunately I don't.\n"
+"I was just visiting."
+msgstr ""
+"很不幸我不知道。\n"
+"我只是来参观的。"
+
+#: data/level/crevice-village-house-4.cfg:3404
+msgid "The floorplan is quite loony."
+msgstr "这平面图真是骨骼精奇呀。"
+
+#: data/level/crevice-village-house-4.cfg:3406
+msgid "Marvelous ventilation, though."
+msgstr "不过通风设备倒是超给力的。"
+
+#: data/level/crevice-village-house-4.cfg:3409
+msgid ""
+"Anyways, I'd better be off.\n"
+"I'm trying to sort out this mess."
+msgstr ""
+"不管咋说，我还是得出发了。\n"
+"我得把这烂摊子搞定了。"
+
+#: data/level/crevice-village-house-4.cfg:3410
+msgid "Good luck."
+msgstr "好运。"
+
+#: data/level/crevice-village-house-elder.cfg:9
+msgid "The Elder's House"
+msgstr "老前辈之屋"
+
+#: data/level/crevice-village-house-elder.cfg:1316
+msgid "How's that business with Milgram going?"
+msgstr "对付米格拉姆的事情进行得如何了？"
+
+#: data/level/crevice-village-house-elder.cfg:1318
+msgid "I'm working on it."
+msgstr "我正在做着呢。"
+
+#: data/level/crevice-village-house-elder.cfg:1320
+msgid "That's good to hear!"
+msgstr "真是个好消息！"
+
+#: data/level/crevice-village-house-elder.cfg:1479
+msgid "Ugh."
+msgstr "啊。"
+
+#: data/level/crevice-village-house-elder.cfg:1480
+msgid ""
+"For the last time, we *know* you've\n"
+"got the money somewhere."
+msgstr ""
+"我最后说一遍，我们*知道*你\n"
+"把钱藏在某个地方了。"
+
+#: data/level/crevice-village-house-elder.cfg:1481
+msgid "Make this easy on yourself."
+msgstr "你最好放聪明点儿。"
+
+#: data/level/crevice-village-house-elder.cfg:1483
+msgid "I have no idea what you're talking about."
+msgstr "我完全不知道你在说什么。"
+
+#: data/level/crevice-village-house-elder.cfg:1485
+msgid "*ahem*"
+msgstr "*咳咳*"
+
+#: data/level/crevice-village-house-elder.cfg:1487
+msgid "Er..  Right, uh, it's over here.."
+msgstr "呃……好吧，钱就在那边……"
+
+#: data/level/crevice-village-house-elder.cfg:1495
+msgid "Oh, no you don't!"
+msgstr "哦，你不能这么干！"
+
+#: data/level/crevice-village-house-elder.cfg:1496
+msgid "If you don't tell...  uh..."
+msgstr "你别告诉……啊……"
+
+#: data/level/crevice-village-house-elder.cfg:1496
+msgid ""
+"You're not going anywhere, buster!\n"
+"Now, listen up,\n"
+"You're SERIOUSLY testing my patience."
+msgstr ""
+"别想溜走，大块头！\n"
+"现在给我听好了，\n"
+"你现在正在考验本大爷的耐心！"
+
+#: data/level/crevice-village-house-elder.cfg:1501
+msgid "Oh, hi, what's going on here?"
+msgstr "哦，嗨，这儿怎么了？"
+
+#: data/level/crevice-village-house-elder.cfg:1505
+msgid "Who the hell are you?"
+msgstr "你他妈的是谁？"
+
+#: data/level/crevice-village-house-elder.cfg:1508
+msgid "Frogatto, at your service."
+msgstr "阿托，竭诚为您服务。"
+
+#: data/level/crevice-village-house-elder.cfg:1511
+msgid "I don't have to put up with this."
+msgstr "我可没必要忍受这种事。"
+
+#: data/level/crevice-village-house-elder.cfg:1513
+msgid "Excuse me whilst I vent a little frustration."
+msgstr "抱歉我得宣泄一下挫折感。"
+
+#: data/level/crevice-village-house-elder.cfg:1550
+msgid "-ouch-"
+msgstr "-哇-"
+
+#: data/level/crevice-village-house-elder.cfg:1551
+msgid "Okay, I've had enough!  I'm going home."
+msgstr "好了，我受够了！该回家了。"
+
+#: data/level/crevice-village-house-elder.cfg:1607
+msgid ""
+"Well!\n"
+"That went better than expected."
+msgstr ""
+"嘛，\n"
+"这展开可比我原想的要好呢。"
+
+#: data/level/crevice-village-house-elder.cfg:1610
+msgid ""
+"Say ...\n"
+"What happened to the elder?"
+msgstr ""
+"那个……\n"
+"老前辈咋了？"
+
+#: data/level/crevice-village-house-elder.cfg:1615
+msgid ""
+"Whoa...\n"
+"... is that what I think it is?"
+msgstr ""
+"啊哈……\n"
+"……这是我所想的那个东西么？"
+
+#: data/level/crevice-village-house-elder.cfg:1629
+msgid "It is indeed, my boy!"
+msgstr "确实是，孩子！"
+
+#: data/level/crevice-village-house-elder.cfg:1631
+msgid "It's my very own safe room."
+msgstr "这是我自己的安全屋。"
+
+#: data/level/crevice-village-house-elder.cfg:1633
+msgid "Wow."
+msgstr "喔～"
+
+#: data/level/crevice-village-house-elder.cfg:1635
+msgid "Built it for exactly this sort of crisis."
+msgstr "正是为了这种危机而建的。"
+
+#: data/level/crevice-village-house-elder.cfg:1637
+msgid "It's a shame I can't trust people."
+msgstr "我不能信任别人，真可惜啊。"
+
+#: data/level/crevice-village-house-elder.cfg:1639
+msgid ""
+"Quite expensive, but if it protects me,\n"
+"and all my stuff, then it's worth it!"
+msgstr ""
+"这货很贵，不过要是它能保护我，\n"
+"还有我所有的家当，那就值了！"
+
+#: data/level/crevice-village-house-elder.cfg:1641
+msgid ""
+"I've got everything I couldn't stand\n"
+"losing back there."
+msgstr ""
+"我把我丢不起的东西全都\n"
+"放在那边了。"
+
+#: data/level/crevice-village-house-elder.cfg:1643
+msgid ""
+"Isn't it true that's not all yours, though?\n"
+"Don't you owe some of it to Milgram?"
+msgstr ""
+"不过，事实上这些不都是你的吧？\n"
+"这里面没有你欠米格拉姆的东西么？"
+
+#: data/level/crevice-village-house-elder.cfg:1645
+msgid ""
+"Bah!  And what if I do?\n"
+"He's got no respect."
+msgstr ""
+"呸！就算我欠他了又如何？\n"
+"他一点都不值得尊敬。"
+
+#: data/level/crevice-village-house-elder.cfg:1647
+msgid ""
+"He should be thankful for everything\n"
+"I've done for him."
+msgstr "他应该感谢我为他做的一切！"
+
+#: data/level/crevice-village-house-elder.cfg:1649
+msgid "Such as?"
+msgstr "比如？"
+
+#: data/level/crevice-village-house-elder.cfg:1651
+msgid "Well, you know..."
+msgstr "呃，你懂的……"
+
+#: data/level/crevice-village-house-elder.cfg:1653
+msgid "I am the mayor after all."
+msgstr "我毕竟是镇长。"
+
+#: data/level/crevice-village-house-elder.cfg:1655
+#: data/level/tea-with-milgram.cfg:197
+msgid "That's right!"
+msgstr "不错！"
+
+#: data/level/crevice-village-house-elder.cfg:1657
+msgid "Anyhow, I'm proud of you."
+msgstr "不管怎么说，我为你自豪。"
+
+#: data/level/crevice-village-house-elder.cfg:1659
+msgid ""
+"You're a real hero,\n"
+"scaring that hooligan away."
+msgstr ""
+"你是个真正的英雄，\n"
+"把那流氓给吓跑了。"
+
+#: data/level/crevice-village-house-elder.cfg:1661
+msgid "Is there any way I can thank you?"
+msgstr "有什么方式可以表达我的谢意吗？"
+
+#: data/level/crevice-village-house-elder.cfg:1663
+msgid ""
+"Actually, yes.\n"
+"I have a crazy idea in mind."
+msgstr ""
+"事实上，有的。\n"
+"我脑子里有个疯狂的点子。"
+
+#: data/level/crevice-village-house-elder.cfg:1665
+msgid ""
+"I'm wondering if you can be my patron,\n"
+"in this little scheme of mine."
+msgstr ""
+"我想知道您能不能做我这个小小计划的\n"
+"赞助人。"
+
+#: data/level/crevice-village-house-elder.cfg:1667
+msgid "Hm?"
+msgstr "哈？"
+
+#: data/level/crevice-village-house-elder.cfg:1669
+msgid ""
+"See, I think this stuff with Milgram\n"
+"has gone on long enough."
+msgstr ""
+"你看，我觉得吧，米格拉姆的事儿\n"
+"也有些年头了。"
+
+#: data/level/crevice-village-house-elder.cfg:1671
+msgid ""
+"I'd like to go give him\n"
+"a piece of my mind."
+msgstr ""
+"我很乐意去把他骂个\n"
+"狗血淋头的。"
+
+#: data/level/crevice-village-house-elder.cfg:1673
+msgid "Oh my."
+msgstr "哦，我的天。"
+
+#: data/level/crevice-village-house-elder.cfg:1675
+msgid ""
+"Are you serious?\n"
+"Because I'd give ANYTHING to\n"
+"stop him from hassling me!"
+msgstr ""
+"你是认真的？\n"
+"为了让他不再来骚扰，\n"
+"我可是愿意付出任何东西的！"
+
+#: data/level/crevice-village-house-elder.cfg:1677
+msgid "...Anything?"
+msgstr "……任何东西？"
+
+#: data/level/crevice-village-house-elder.cfg:1679
+msgid ""
+"Why, I'll give you a mountain of gold,\n"
+"if that's what it takes.  Anything!"
+msgstr ""
+"哎呀，我会给你一座金山的，\n"
+"如果这就是你想要的。什么都可以！"
+
+#: data/level/crevice-village-house-elder.cfg:1681
+msgid "In fact, I'll even show you the way!"
+msgstr "事实上，我甚至还要告诉你怎么走！"
+
+#: data/level/crevice-village.cfg:717 data/level/to-nenes-house.cfg:1354
+msgid "I better leave this key here."
+msgstr "我最好还是把这钥匙留在这里。"
+
+#: data/level/crevice-village.cfg:916
+msgid "Hey!"
+msgstr "嘿！"
+
+#: data/level/crevice-village.cfg:961
+msgid ""
+"Glad I caught you!\n"
+"You'd better be aware of this..."
+msgstr ""
+"谢天谢地我追上你了！\n"
+"你最好注意点……"
+
+#: data/level/crevice-village.cfg:962
+msgid ""
+"The cave that leads into the town,\n"
+"has a sentry posted in it."
+msgstr ""
+"通往小镇的洞穴里\n"
+"驻扎着哨兵。"
+
+#: data/level/crevice-village.cfg:963
+msgid ""
+"Milgram's trying to seal off the town,\n"
+" so no one gets in or out."
+msgstr ""
+"米格拉姆试图封锁小镇，\n"
+"不让任何人进出。"
+
+#: data/level/crevice-village.cfg:964
+msgid ""
+"That might have been why\n"
+"he tried to take out that bridge."
+msgstr ""
+"这也许就是他企图毁掉桥的\n"
+"原因吧。"
+
+#: data/level/crevice-village.cfg:965
+msgid ""
+"If you're thinking to go in there,\n"
+"you might reconsider."
+msgstr ""
+"如果你正打算要进去，\n"
+"最好还是再考虑一下。"
+
+#: data/level/crevice-village.cfg:967
+msgid ""
+"Well, yeah,\n"
+"I was gonna go in there."
+msgstr ""
+"呃，对，\n"
+"我确实是要进去。"
+
+#: data/level/crevice-village.cfg:969
+msgid ""
+"I mean, what are we gonna do,\n"
+"sit on our butts here?"
+msgstr ""
+"我的意思是，要不我们该干嘛？\n"
+"在这儿傻坐着？"
+
+#: data/level/crevice-village.cfg:970
+msgid ""
+"No, no...\n"
+"but I was hoping we'd go in in force."
+msgstr ""
+"不，不……\n"
+"只是我希望我们有一大群人一起进去。"
+
+#: data/level/crevice-village.cfg:972
+msgid "Against Milgram? Really?"
+msgstr "对付米格拉姆？真的？"
+
+#: data/level/crevice-village.cfg:974
+msgid ""
+"I thought he like ... \"mass-produces\"\n"
+"his followers, or something."
+msgstr ""
+"我觉得他喜欢……\n"
+"“量产”他的小弟之类的。"
+
+#: data/level/crevice-village.cfg:976
+msgid ""
+"I mean, it's very bizarre,\n"
+"but if there's any truth to it..."
+msgstr ""
+"我的意思是，这太荒诞了，\n"
+"但如果这事不全是胡说……"
+
+#: data/level/crevice-village.cfg:977
+msgid ""
+"Yes... oh dear.\n"
+"I see what you mean."
+msgstr ""
+"啊……老天爷。\n"
+"我明白你的意思了。"
+
+#: data/level/crevice-village.cfg:979
+msgid ""
+"There's got to be something\n"
+"we can use to our advantage,\n"
+"but \"numerical superiority\" isn't it."
+msgstr ""
+"一定有什么东西可以成为我们的优势，\n"
+"但不是“数量优势”。"
+
+#: data/level/crevice-village.cfg:981
+msgid ""
+"\"Doing the unexpected\"\n"
+"might be our best bet, for now."
+msgstr ""
+"现在，“出其不意”也许是\n"
+"最好的法子了。"
+
+#: data/level/crevice-village.cfg:983
+msgid "Anyways, it's just one guy, right?"
+msgstr "不管咋说，他只是一人而已，是吧？"
+
+#: data/level/crevice-village.cfg:984
+msgid "To my knowledge, yes."
+msgstr "就我所知道的，是的。"
+
+#: data/level/crevice-village.cfg:986
+msgid "Maybe I can talk my way around him?"
+msgstr "说不定我可以说动他？"
+
+#: data/level/crevice-village.cfg:988
+msgid ""
+"Worse comes to worse,\n"
+"I can just run for it.  Right?"
+msgstr ""
+"要是出现最糟糕的情况了，\n"
+"我也只要开溜就好。对吧？"
+
+#: data/level/crevice-village.cfg:989
+msgid ""
+"I do hope so.\n"
+"Good luck!"
+msgstr ""
+"但愿如此。\n"
+"祝你好运！"
+
+#: data/level/dark-corridor.cfg:7
+msgid "Dark Corridor"
+msgstr "黑暗长廊"
+
+#: data/level/dark-corridor.cfg:1406
+msgid "Now what?"
+msgstr "现在咋办？"
+
+#: data/level/darkness-central.cfg:14
+msgid "Darkness Central"
+msgstr "暗黑中心"
+
+#: data/level/descent-to-town.cfg:11
+msgid "Descent to Town"
+msgstr "落入小镇"
+
+#: data/level/downhill.cfg:11
+msgid "Downhill"
+msgstr "下坡"
+
+#: data/level/dungeon-blocks.cfg:8
+msgid "Dungeon Blocks"
+msgstr "地牢区域"
+
+#: data/level/dungeon-crawling.cfg:7
+msgid "Dungeon Crawling"
+msgstr "挪过地牢"
+
+#: data/level/dungeon-entrance.cfg:9
+msgid "The Entrance"
+msgstr "入口"
+
+#: data/level/eerie-arbor.cfg:14
+msgid "Eerie Arbor"
+msgstr "阴森树林"
+
+#: data/level/fast-lane.cfg:13
+msgid "Fast Lane"
+msgstr "捷径"
+
+#: data/level/flooded-caverns.cfg:11
+msgid "Flooded Caverns"
+msgstr "淹没之穴"
+
+#: data/level/foreboding-forest.cfg:13
+msgid "Foreboding Forest"
+msgstr "不详之森"
+
+#: data/level/frogatto-grotto-frogattos-room.cfg:10
+msgid "Frogatto's Room"
+msgstr "阿托的房间"
+
+#: data/level/frogatto-grotto-frogattos-room.cfg:915
+msgid ""
+"Ahh, what a beautiful ..\n"
+"..Afternoon?!"
+msgstr ""
+"啊，多么美妙的……\n"
+"……我去！下午了？！"
+
+#: data/level/frogatto-grotto-frogattos-room.cfg:916
+msgid "Oh geez! I overslept!"
+msgstr "哦该死！我睡过头了！"
+
+#: data/level/frogatto-grotto-inside.cfg:9
+msgid "Frogatto's House"
+msgstr "阿托的小屋"
+
+#: data/level/frogatto-grotto-inside.cfg:1150
+msgid "Hey, how's breakfast coming?"
+msgstr "嘿，早饭准备得咋样了？"
+
+#: data/level/frogatto-grotto-inside.cfg:1151
+msgid "Breakfast? ..bud, we're on lunch."
+msgstr "早饭？……老兄，我们该吃午饭了。"
+
+#: data/level/frogatto-grotto-inside.cfg:1152
+msgid "You need to get up earlier."
+msgstr "你得早点起床才是。"
+
+#: data/level/frogatto-grotto-inside.cfg:1155
+msgid "Okay, then how's lunch coming?"
+msgstr "好吧，那午饭准备得咋样了？"
+
+#: data/level/frogatto-grotto-inside.cfg:1156
+msgid ""
+"Getting there.\n"
+"It's gonna be a while, though."
+msgstr ""
+"正煮着呢。\n"
+"不过还得等会儿才能好。"
+
+#: data/level/frogatto-grotto-inside.cfg:1158
+msgid "I'll check back later, then."
+msgstr "那我待会儿再回来看看。"
+
+#: data/level/frogatto-grotto-inside.cfg:1161
+msgid "So, what happened to lunch?"
+msgstr "呃，午饭哪里去了？"
+
+#: data/level/frogatto-grotto-inside.cfg:1162
+msgid ""
+"I got tired of waiting,\n"
+"and ate by myself."
+msgstr ""
+"我等得不耐烦了，\n"
+"所以自己一个人吃了。"
+
+#: data/level/frogatto-grotto-inside.cfg:1163
+msgid "Leftovers are in the fridge."
+msgstr "剩下来的都丢冰箱了。"
+
+#: data/level/frogatto-grotto-inside.cfg:1166
+msgid "Okay, uhm, thanks."
+msgstr "好吧，呃，谢谢。"
+
+#: data/level/frogatto-grotto-inside.cfg:1514
+msgid "Hey, Frogatto."
+msgstr "嘿，阿托。"
+
+#: data/level/frogatto-grotto-inside.cfg:1517
+msgid "Uhm... yes?"
+msgstr "啊哈……啥事？"
+
+#: data/level/frogatto-grotto-inside.cfg:1518
+msgid ""
+"At least TRY to get a job today,\n"
+"alright?"
+msgstr ""
+"今天至少*试着*去找个工作，\n"
+"行么？"
+
+#: data/level/frogatto-grotto-inside.cfg:1519
+msgid "We need some help around here."
+msgstr "我们这儿要个人帮把手。"
+
+#: data/level/frogatto-grotto-inside.cfg:1521
+msgid "Yeah, I know.  I'll try."
+msgstr "哦，我懂的。我试试看。"
+
+#: data/level/frogatto-grotto-inside.cfg:1522
+msgid "See to it."
+msgstr "期待你的表现。"
+
+#: data/level/frogatto-grotto-inside.cfg:1535
+msgid "Not like I need to be up,"
+msgstr "并不是说我一定得起来，"
+
+#: data/level/frogatto-grotto-inside.cfg:1535
+msgid "but it's the principle of the thing."
+msgstr "不过这就是世间的准则。"
+
+#: data/level/frogatto-grotto-patos-room.cfg:9
+msgid "Pato's Room"
+msgstr "帕托的房间"
+
+#: data/level/frogatto-grotto-patos-room.cfg:900
+msgid "Ahh, what a beautiful .."
+msgstr "啊，多么美妙的……"
+
+#: data/level/frogatto-grotto-patos-room.cfg:901
+msgid "..Afternoon?!"
+msgstr "……我去，中午了？"
+
+#: data/level/frogatto-grotto-patos-room.cfg:902
+msgid "Yowzers, I overslept!"
+msgstr "我个去，我睡过头了！"
+
+#: data/level/frogatto-grotto-patos-room.cfg:914
+msgid "it's the principle of the thing."
+msgstr "这是世间的准则。"
+
+#: data/level/frogatto-grotto.cfg:13
+msgid "Frogatto Grotto"
+msgstr "阿托的洞穴"
+
+#: data/level/frogatto-grotto.cfg:594
+msgid "I know!"
+msgstr "我懂的！"
+
+#: data/level/frogatto-grotto.cfg:595
+msgid ""
+"I can stop in at Nene's house\n"
+"on the way to town!"
+msgstr ""
+"去小镇的路上我会路过\n"
+"奈奈的家的！"
+
+#: data/level/frogatto-grotto.cfg:642
+msgid "Such a beautiful view from here."
+msgstr "这里的景色多美妙啊。"
+
+#: data/level/frogatto-grotto.cfg:959
+msgid "Nothing to see in my backyard."
+msgstr "我的后院里没啥东西可看。"
+
+#: data/level/gloomy-glade.cfg:11
+msgid "Gloomy Glade"
+msgstr "阴暗空地"
+
+#: data/level/gnarled-knoll.cfg:14
+msgid "Gnarled Knoll"
+msgstr "糙砺土丘"
+
+#: data/level/grassy-path.cfg:14
+msgid "Grassy Path"
+msgstr "青草小道"
+
+#: data/level/grassy-path.cfg:1161
+msgid ""
+"On this level,\n"
+"we give advice on how to play."
+msgstr ""
+"在本关，\n"
+"我们会告诉你如何玩本游戏。"
+
+#: data/level/grassy-path.cfg:1162
+msgid ""
+"Each question mark\n"
+"has its own hint."
+msgstr ""
+"每个问号里都有\n"
+"一条提示。"
+
+#: data/level/grassy-path.cfg:1163
+msgid ""
+"If you already know how to play,\n"
+"then just walk to the next level."
+msgstr ""
+"如果你已经知道如何操作，\n"
+"直接走到下一关就行了。"
+
+#: data/level/grassy-path.cfg:1196
+msgid ""
+"To save the game,\n"
+"use one of these convenient restrooms."
+msgstr ""
+"要保存游戏的话，\n"
+"可以在这些方便的洗手间里选一个解决。"
+
+#: data/level/grassy-path.cfg:1197
+msgid ""
+"There is only one save file,\n"
+"so be careful not to overwrite it!"
+msgstr ""
+"游戏只有一个存档文件，\n"
+"要当心别无意中覆盖掉了！"
+
+#: data/level/grassy-path.cfg:1230
+msgid ""
+"Some jumps are too high to clear\n"
+"with just a normal jump."
+msgstr ""
+"有些地方太高了，\n"
+"普通跳跃根本上不去。"
+
+#: data/level/grassy-path.cfg:1231
+msgid ""
+"Fortunately,\n"
+"Frogatto can jump off of walls, too!"
+msgstr ""
+"幸运的是，\n"
+"阿托也可以在岩壁之间跳跃！"
+
+#: data/level/grassy-path.cfg:1232
+msgid ""
+"To do this,\n"
+"do a walking jump into the wall."
+msgstr ""
+"要做到这点，\n"
+"先向着墙跳过去。"
+
+#: data/level/grassy-path.cfg:1233
+msgid ""
+"If you bump into the wall\n"
+"at the crest of the jump,\n"
+"Frogatto will cling to the wall\n"
+"and slowly slide down."
+msgstr ""
+"如果你在跳到最高点时\n"
+"碰到岩壁，那么阿托会\n"
+"贴在岩壁上，并缓缓\n"
+"下滑。"
+
+#: data/level/grassy-path.cfg:1234
+msgid ""
+"If you don't get a running start\n"
+"you can still cling on, if you tap the\n"
+"arrow toward the wall, and press jump."
+msgstr ""
+"就算你开始时没有跑向岩壁，\n"
+"也仍然可以贴上去，只要向着\n"
+"岩壁按方向键和跳跃键即可。"
+
+#: data/level/grassy-path.cfg:1235
+msgid ""
+"Whilst you are clinging to the wall,\n"
+"pressing jump will make you rebound off."
+msgstr ""
+"在贴住岩壁的时候，\n"
+"按下跳跃键就可以跳下来。"
+
+#: data/level/grassy-path.cfg:1236
+msgid ""
+"If two walls are facing each other,\n"
+"this is very useful, because then you can\n"
+"rebound over and over between them."
+msgstr ""
+"当两个岩壁紧邻时，这个技巧很有用。\n"
+"因为此时你可以在两壁之间来回跳跃。"
+
+#: data/level/grassy-path.cfg:1237
+msgid "This lets you ascend vertical columns."
+msgstr "这使得你可以垂直行进到达上层。"
+
+#: data/level/grassy-path.cfg:1270
+msgid "Frogatto's world is a dangerous place."
+msgstr "阿托的世界是个很危险的地方。"
+
+#: data/level/grassy-path.cfg:1271
+msgid ""
+"You will encounter many creatures\n"
+"who want to hurt you."
+msgstr "你会遇到很多想要对你不利的生物。"
+
+#: data/level/grassy-path.cfg:1272
+msgid ""
+"It's often fine to just avoid them,\n"
+"but if you have to fight,\n"
+"Frogatto's best defense is his tongue."
+msgstr ""
+"通常只要躲开它们就好，\n"
+"但如果必须战斗，\n"
+"那么阿托的舌头就是最好的防御武器。"
+
+#: data/level/grassy-path.cfg:1273
+msgid ""
+"You can grab enemies with the tongue,\n"
+"and then spit them back out."
+msgstr ""
+"你可以用舌头卷住敌人吞下去，\n"
+"而后再将它们吐出去。"
+
+#: data/level/grassy-path.cfg:1274
+msgid ""
+"Once spat out,\n"
+"they become a deadly projectile."
+msgstr ""
+"一旦被吐出去，\n"
+"它们便会成为致命的炮弹。"
+
+#: data/level/grassy-path.cfg:1275
+msgid ""
+"If they don't hit anything,\n"
+"they'll be stunned for a moment,\n"
+"and then will flip upright again."
+msgstr ""
+"如果它们没有命中任何东西，\n"
+"便会暂时陷入晕眩状态，\n"
+"过一会后便会恢复正常。"
+
+#: data/level/grassy-path.cfg:1276
+msgid ""
+"Whilst on their backs,\n"
+"they're vulnerable to being stomped on."
+msgstr ""
+"当它们四脚朝天时，\n"
+"很容易受到踩击的伤害。"
+
+#: data/level/grassy-path.cfg:1277
+msgid ""
+"Sticking out the tongue and spitting,\n"
+"are both done with the attack key."
+msgstr "吐舌和吐敌人都是按攻击键来进行的。"
+
+#: data/level/grassy-path.cfg:1278
+msgid ""
+"There are a few ants just ahead.\n"
+"Feel free to try this on them."
+msgstr ""
+"前面不远处有些蚂蚁。\n"
+"请随意拿它们练练手吧。"
+
+#: data/level/grassy-path.cfg:1279
+msgid ""
+"And don't worry - if you die,\n"
+"you'll restart right here."
+msgstr ""
+"不用担心——要是你挂了，\n"
+"会在这里重新开始。"
+
+#: data/level/grassy-path.cfg:1358
+msgid ""
+"A very useful fact,\n"
+"is that you can control the direction\n"
+"in which enemies are spat."
+msgstr ""
+"给个很有用的提示，\n"
+"你可以控制向哪个方向吐出敌人。"
+
+#: data/level/grassy-path.cfg:1359
+msgid ""
+"If you hold down the up key\n"
+"while pressing the attack button,\n"
+"you'll spit in a high arc."
+msgstr ""
+"如果在按攻击键的同时\n"
+"按下上方向键，那么你会\n"
+"吐出一条高高的弧线。"
+
+#: data/level/grassy-path.cfg:1360
+msgid ""
+"If you hold down the down key\n"
+"while pressing the attack button,\n"
+"you'll spit with very little force."
+msgstr ""
+"如果在按攻击键的同时\n"
+"按下下方向键，那么你\n"
+"只会用很少的力气吐出敌人。"
+
+#: data/level/grassy-path.cfg:1361
+msgid ""
+"Also beware that not all enemies\n"
+"can be grabbed with the tongue,\n"
+"and many can't be hurt by it either."
+msgstr ""
+"此外要注意并不是所有的敌人\n"
+"都可以被舌头卷进去，\n"
+"很多敌人也不能被舌头所伤。"
+
+#: data/level/grassy-path.cfg:1362
+msgid ""
+"You'll need to get creative\n"
+"to deal with those enemies."
+msgstr ""
+"对付这些敌人的时候，\n"
+"你得有点创造力。"
+
+#: data/level/grassy-path.cfg:1363
+msgid ""
+"Last but not least,\n"
+"the tongue can grab useful items too."
+msgstr ""
+"最后但并非最不重要的一点是，\n"
+"舌头也可以卷起有用的物品。"
+
+#: data/level/grassy-path.cfg:1364
+msgid ""
+"It's what you use to carry something\n"
+"from one place to another."
+msgstr ""
+"这就是你把物品从某地带到别处的\n"
+"方法。"
+
+#: data/level/grassy-path.cfg:1416
+msgid ""
+"Fountains, and other water dispensers,\n"
+"are very helpful."
+msgstr "喷泉和其他吐水的地方是很有用的。"
+
+#: data/level/grassy-path.cfg:1417
+msgid ""
+"If you drink from them,\n"
+"you will restore all of your health!"
+msgstr ""
+"如果在那里饮水的话，\n"
+"你的生命值便会完全回复！"
+
+#: data/level/grassy-path.cfg:1451
+msgid ""
+"Certain wooden bridges and stairways,\n"
+"like the one just up ahead,\n"
+"are built so you can jump up,\n"
+"and pass through them."
+msgstr ""
+"某些木桥和木楼梯在你往上跳的时候\n"
+"可以被穿过，比如你眼前的这一座。"
+
+#: data/level/grassy-path.cfg:1452
+msgid "You can also jump down through them."
+msgstr "你也同样可以向下跳穿过它们。"
+
+#: data/level/grassy-path.cfg:1453
+msgid ""
+"To do so, hold down the down key,\n"
+"and then press jump."
+msgstr ""
+"要向下跳，只需按住下方向键，\n"
+"而后按跳跃键。"
+
+#: data/level/grassy-path.cfg:1532
+msgid ""
+"As you've played through this level,\n"
+"you've probably noticed the gold coins."
+msgstr ""
+"通过本场景的时候，\n"
+"你也许已经注意到了那些金币。"
+
+#: data/level/grassy-path.cfg:1533
+msgid ""
+"You can collect these\n"
+"and any other golden objects,\n"
+"and then use them to buy stuff!"
+msgstr ""
+"你可以收集金币\n"
+"以及其他金质物品，\n"
+"而后用来购买装备！"
+
+#: data/level/grassy-path.cfg:1534
+msgid ""
+"There is a store conveniently located\n"
+"outside of the town."
+msgstr "在小镇外面有个商店，很方便的。"
+
+#: data/level/grassy-path.cfg:1568
+msgid ""
+"Sometimes, you'll run into rather\n"
+"dangerous-looking terrain,\n"
+"such as these brambles."
+msgstr ""
+"有时候你会遇到看上去很危险的\n"
+"地形，例如这些荆棘。"
+
+#: data/level/grassy-path.cfg:1569
+msgid ""
+"As you would expect, stepping on these\n"
+"will hurt a bit."
+msgstr ""
+"正如你所想的，踩到它们的话\n"
+"会有点痛的哦。"
+
+#: data/level/grassy-path.cfg:1570
+msgid "However, this also hurts the bugs!"
+msgstr "但是，它们同样也会伤害到虫子！"
+
+#: data/level/grassy-path.cfg:1571
+msgid ""
+"Leading or spitting them onto it\n"
+"is an excellent way to dispatch them."
+msgstr ""
+"把虫子引到或者吐到荆棘上\n"
+"是消灭它们的好方法。"
+
+#: data/level/grassy-path.cfg:1572
+msgid ""
+"Beware also,\n"
+"any bottomless pits you encounter."
+msgstr ""
+"还要注意的是，\n"
+"你遇到的任何无底洞，"
+
+#: data/level/grassy-path.cfg:1573
+msgid "These are immediately fatal."
+msgstr "都会秒杀你。"
+
+#: data/level/grassy-path.cfg:1742
+msgid ""
+"Up ahead, you'll notice an anthill,\n"
+"which ants constantly come out of."
+msgstr ""
+"在前方你会看到一座蚁丘，\n"
+"那里会源源不断地跑出蚂蚁。"
+
+#: data/level/grassy-path.cfg:1743
+msgid ""
+"There is no way to stop this;\n"
+"you can't destroy the anthill."
+msgstr ""
+"这是没办法停止的：\n"
+"你不可能摧毁蚁丘。"
+
+#: data/level/grassy-path.cfg:1744
+msgid ""
+"Some hazards are like this.\n"
+"You simply have to work around them."
+msgstr ""
+"有些危险就是如此。\n"
+"你只能绕过它们。"
+
+#: data/level/grassy-path.cfg:1778
+msgid "That's it for this tutorial."
+msgstr "教程到此结束。"
+
+#: data/level/grassy-path.cfg:1779
+msgid ""
+"Although there's a bit more\n"
+"to playing the game,\n"
+"the rest we can safely let\n"
+"you learn on your own."
+msgstr ""
+"尽管要玩好本游戏\n"
+"还需要一些别的技能，\n"
+"但我们已经可以放心地\n"
+"让你去自学了。"
+
+#: data/level/grassy-path.cfg:1780
+msgid ""
+"Feel free to come back here,\n"
+"if you want to read a hint again."
+msgstr ""
+"如果你想要重读任何一条提示的话，\n"
+"随时都可以回到这里。"
+
+#: data/level/grassy-path.cfg:1781
+msgid "Have fun!"
+msgstr "祝你玩得开心！"
+
+#: data/level/hanging-platforms.cfg:14
+msgid "Hanging Platforms"
+msgstr "悬挂平台"
+
+#: data/level/hanging-platforms.cfg:3662
+msgid ""
+"Well, I guess I'm entering Milgram's\n"
+"castle now. I made it through the caves!"
+msgstr ""
+"好吧，我猜我正走进米格拉姆的\n"
+"城堡。我算是通过洞穴了啊！"
+
+#: data/level/hidden-depths.cfg:14
+msgid "Hidden Depths"
+msgstr "隐秘深处"
+
+#: data/level/hidden-depths.cfg:3806
+msgid "I'd better be careful."
+msgstr "我最好小心点。"
+
+#: data/level/hidden-depths.cfg:3806
+msgid "This is a very deep chasm..."
+msgstr "这是个很深很深的裂口……"
+
+#: data/level/hidden-depths.cfg:4615
+msgid "AAAAAAH! I CAN'T FLY!"
+msgstr "啊啊啊啊啊！我不会飞啊！"
+
+#: data/level/killer-bunnies.cfg:10
+msgid "Killer Bunnies"
+msgstr "杀手兔兔"
+
+#: data/level/killer-bunnies.cfg:4273
+msgid ""
+"That guy sure doesn't look\n"
+"glad to meet me!"
+msgstr ""
+"这家伙看上去很显然\n"
+"不怎么欢迎我！"
+
+#: data/level/killer-bunnies.cfg:4611
+msgid ""
+"It's locked. Of course...\n"
+"It couldn't be easier to get out of here!"
+msgstr ""
+"锁上了。当然……\n"
+"要离开这儿真是最简单了！"
+
+#: data/level/liberated-crevice-village-house-1.cfg:1242
+msgid ""
+"Well I guess I have to give it to you,\n"
+"kid, you saved us!"
+msgstr ""
+"呃，我想我必须把这个给你，\n"
+"孩子，你救了我们！"
+
+#: data/level/liberated-crevice-village-house-1.cfg:1244
+msgid ""
+"Give it to me? Give what to me?\n"
+"Money?"
+msgstr ""
+"把这个给我？把什么给我？\n"
+"钱么？"
+
+#: data/level/liberated-crevice-village-house-1.cfg:1245
+msgid ""
+"Sheesh, so mercenary!\n"
+"It's just an expression."
+msgstr ""
+"啧，真唯利是图！\n"
+"这不过是一种表达方式而已。"
+
+#: data/level/liberated-crevice-village-house-1.cfg:1247
+msgid "I know, I'm just poking fun at you."
+msgstr "我知道，我不过是和你开玩笑而已。"
+
+#: data/level/liberated-crevice-village-house-1.cfg:1249
+msgid "I am glad things worked out, though."
+msgstr "不过事情解决了，我很开心。"
+
+#: data/level/liberated-crevice-village-house-1.cfg:1873
+msgid "Hey, what's new?"
+msgstr "嘿，有啥新闻？"
+
+#: data/level/liberated-crevice-village-house-1.cfg:1874
+msgid "Oh, just cleaning up after that ruckus."
+msgstr "哦，只不过是在收拾吵闹后的烂摊子。"
+
+#: data/level/liberated-crevice-village-house-1.cfg:1875
+msgid "So nice to have things back to normal."
+msgstr "日常又回来了，真好。"
+
+#: data/level/liberated-crevice-village-house-1.cfg:1877
+msgid "You bet."
+msgstr "当然。"
+
+#: data/level/liberated-crevice-village-house-1.cfg:1879
+msgid ""
+"Speaking of which, am I imagining it\n"
+"or is this house actually smaller now?"
+msgstr ""
+"说到“日常”，是我的错觉呢，\n"
+"还是这屋子真的变小了？"
+
+#: data/level/liberated-crevice-village-house-1.cfg:1880
+msgid ""
+"Of course not.\n"
+"That's just nutty."
+msgstr ""
+"当然没变小。\n"
+"你真蛋疼。"
+
+#: data/level/liberated-crevice-village-house-2.cfg:1591
+msgid "Hey, thanks for saving the town!"
+msgstr "嘿，谢谢你拯救了小镇！"
+
+#: data/level/liberated-crevice-village-house-2.cfg:1593
+msgid "All in a day's work."
+msgstr "只是一天的活儿而已。"
+
+#: data/level/liberated-crevice-village-house-2.cfg:1595
+msgid "Where's your sibling, by the way?"
+msgstr "顺便一提，你兄弟呢？"
+
+#: data/level/liberated-crevice-village-house-2.cfg:1596
+msgid "At the store."
+msgstr "在商店里。"
+
+#: data/level/liberated-crevice-village-house-2.cfg:1598
+msgid "I see."
+msgstr "我知道了。"
+
+#: data/level/lobby.cfg:9
+msgid "Lobby"
+msgstr "大厅"
+
+#: data/level/main-map.cfg:10
+msgid "World Map"
+msgstr "世界地图"
+
+#: data/level/milgrams-throne-room-entrance.cfg:332
+msgid ""
+"This looks kinda ominous. I bet\n"
+"Milgram is right up there!\n"
+"I guess this is my last chance to\n"
+"go back if there's anything I want to\n"
+"do before I confront him."
+msgstr ""
+"这看上去不是啥好兆头。\n"
+"我打赌米格拉姆就在上面。\n"
+"我猜如果在对付他之前我还有\n"
+"别的事想做的话，现在是最后\n"
+"一次回头的机会了。"
+
+#: data/level/milgrams-throne-room.cfg:10
+msgid "Milgram's Throne Room"
+msgstr "米格拉姆的王座之间"
+
+#: data/level/milgrams-throne-room.cfg:625
+msgid "No!  You can't be..."
+msgstr "不！你难道是……"
+
+#: data/level/milgrams-throne-room.cfg:627
+#: data/level/secluded-hut-interior.cfg:919
+msgid "Hi, I'm Frogatto."
+msgstr "嗨，我是阿托。"
+
+#: data/level/milgrams-throne-room.cfg:638
+msgid ""
+"Oh crap, oh crap!\n"
+"Boss! He's here!"
+msgstr ""
+"去他妈的，去他妈的！\n"
+"老大！他来了！"
+
+#: data/level/milgrams-throne-room.cfg:640
+msgid "Who's here?"
+msgstr "谁来了？"
+
+#: data/level/milgrams-throne-room.cfg:641
+msgid ""
+"Frogatto!\n"
+"He's RIGHT HERE!"
+msgstr ""
+"阿托！\n"
+"他就在这里！"
+
+#: data/level/milgrams-throne-room.cfg:643
+msgid "This had better be some kind of joke."
+msgstr "你最好是在讲什么笑话……"
+
+#: data/level/milgrams-throne-room.cfg:644
+msgid "We... We tried to stop him, but he's..."
+msgstr ""
+"我们……我们努力阻止他了……\n"
+"但他……"
+
+#: data/level/milgrams-throne-room.cfg:646
+msgid ""
+"Bah, what's the point in subordinates\n"
+"if I have to deal with everything myself?!"
+msgstr ""
+"呸，要是啥事都得我来搞定\n"
+"我他妈还要小弟搞毛啊！"
+
+#: data/level/milgrams-throne-room.cfg:648
+msgid "Get out of the way, it's clobbering time!"
+msgstr "让出道儿来！现在是揍人的时间啦！"
+
+#: data/level/milgrams-throne-room.cfg:698
+msgid ""
+"Ugh!\n"
+"You do put up quite a fight!"
+msgstr ""
+"啊！\n"
+"你倒确实很能打嘛！"
+
+#: data/level/milgrams-throne-room.cfg:700
+msgid "Will you hear me out now?"
+msgstr "现在你能听我问话么？"
+
+#: data/level/milgrams-throne-room.cfg:702
+msgid "Yes."
+msgstr "可以。"
+
+#: data/level/milgrams-throne-room.cfg:704
+msgid "What was it you wanted?"
+msgstr "你到底想要什么？"
+
+#: data/level/milgrams-throne-room.cfg:707
+msgid ""
+"I want you to call your goons off!\n"
+"Stop harassing the town folk and all!"
+msgstr ""
+"我要求你撤走你的小弟们！\n"
+"不要再骚扰小镇上的人了！"
+
+#: data/level/milgrams-throne-room.cfg:709
+msgid "The town folk?"
+msgstr "小镇上的人？"
+
+#: data/level/milgrams-throne-room.cfg:711
+msgid ""
+"*That's* what this is all about?\n"
+"Well, perhaps we could talk it over?"
+msgstr ""
+"*这*就是你来这儿的全部原因？\n"
+"好吧，也许我们可以谈谈？"
+
+#: data/level/milgrams-throne-room.cfg:713
+msgid "Talk it over? Like gentlemen?"
+msgstr "谈谈？像绅士一样？"
+
+#: data/level/milgrams-throne-room.cfg:715
+msgid "Yes, like gentlemen. Over tea."
+msgstr ""
+"是啊，像绅士一样。\n"
+"一边喝茶一边谈。"
+
+#: data/level/milgrams-throne-room.cfg:722
+msgid "Wait a minute, it's you, isn't it?"
+msgstr "等一下，你就是阿托？"
+
+#: data/level/milgrams-throne-room.cfg:724
+msgid "Yup, I'm Frogatto!"
+msgstr "对头，我就是阿托！"
+
+#: data/level/milgrams-throne-room.cfg:726
+msgid "Uhh.."
+msgstr "呃……"
+
+#: data/level/milgrams-throne-room.cfg:728
+msgid "I was expecting something a bit more ..."
+msgstr "我还以为会是更那啥一点的……"
+
+#: data/level/milgrams-throne-room.cfg:730
+msgid ""
+"Threatening?\n"
+"I can do threatening!"
+msgstr ""
+"更有威胁一点的？\n"
+"我知道怎么威胁！"
+
+#: data/level/milgrams-throne-room.cfg:732
+msgid "I'm here to teach you a lesson!"
+msgstr "我是来这里教训你的！"
+
+#: data/level/milgrams-throne-room.cfg:734
+msgid ""
+"HAHAHA!\n"
+"Why, I like you already, little frog.\n"
+"You're quite a laugh."
+msgstr ""
+"哈哈哈！\n"
+"哎哟，我喜欢上你了，小青蛙。\n"
+"你真是够搞笑的。"
+
+#: data/level/milgrams-throne-room.cfg:736
+msgid ""
+"Hey, I'm serious, here!\n"
+"Will you hear me out?"
+msgstr ""
+"嘿，我是认真的！\n"
+"你要听我说话吗？"
+
+#: data/level/milgrams-throne-room.cfg:738
+msgid "Nope."
+msgstr "不"
+
+#: data/level/milgrams-throne-room.cfg:740
+msgid ""
+"Either you get off my property,\n"
+"or I clean your clock."
+msgstr ""
+"要么你别碰我的东西，\n"
+"要么我把你轰杀至渣！"
+
+#: data/level/milgrams-throne-room.cfg:744
+msgid "Fine."
+msgstr "好吧。"
+
+#: data/level/murky-mire.cfg:15
+msgid "Murky Mire"
+msgstr "浑浊泥潭"
+
+#: data/level/nene-and-frogatto.cfg:12
+msgid "Aimless Souls"
+msgstr "迷茫之魂"
+
+#: data/level/pinecone-park.cfg:14
+msgid "Pinecone Park"
+msgstr "松果公园"
+
+#: data/level/plagued-mine.cfg:14
+msgid "Plagued Mine"
+msgstr "瘟疫矿井"
+
+#: data/level/plagued-mine.cfg:3613
+msgid "These crazy bombers are everywhere!"
+msgstr "到处都是疯狂的炸弹客！"
+
+#: data/level/plagued-mine.cfg:3756
+msgid "Yikes!"
+msgstr "呀！"
+
+#: data/level/rock-a-fort-cave.cfg:15 data/level/rock-a-fort.cfg:11
+msgid "Rock-a-Fort"
+msgstr "摇滚要塞"
+
+#: data/level/rock-a-fort.cfg:1823
+msgid "ACME(tm) FLOATING TEXT SIGN"
+msgstr "“给力”牌浮动标签"
+
+#: data/level/rock-a-fort.cfg:4417
+msgid "Woah! A flying plant!"
+msgstr "喔哈！飞在天上的植物！"
+
+#: data/level/rocky-roots.cfg:13
+msgid "Rocky Roots"
+msgstr "岩石树根"
+
+#: data/level/rocky-roots.cfg:1178
+msgid "Bleh. A locked door."
+msgstr "啊，门锁住了。"
+
+#: data/level/rocky-roots.cfg:1178
+msgid "There must be a way around it."
+msgstr "一定有个办法进去的。"
+
+#: data/level/secluded-hut-interior.cfg:12 data/level/secluded-hut.cfg:11
+msgid "Secluded Hut"
+msgstr "隐居小屋"
+
+#: data/level/secluded-hut-interior.cfg:917
+msgid "Hello there."
+msgstr "哈罗～"
+
+#: data/level/secluded-hut-interior.cfg:920
+msgid ""
+"A pleasure to meet you.\n"
+"I am Mortimer."
+msgstr ""
+"很高兴见到你。\n"
+"我是摩塔莫。"
+
+#: data/level/secluded-hut-interior.cfg:922 data/level/wm-town.cfg:2372
+msgid "That's nice."
+msgstr "好极了。"
+
+#: data/level/secluded-hut-interior.cfg:924
+msgid ""
+"Uhm, I hope you don't mind my asking,\n"
+"but what on earth ARE you, anyway?"
+msgstr ""
+"咳咳，但愿你别介意我的问题，\n"
+"不过你到底是何方神圣啊？"
+
+#: data/level/secluded-hut-interior.cfg:925
+msgid "Ostensibly, I am a mole."
+msgstr "很明显，我是只鼹鼠。"
+
+#: data/level/secluded-hut-interior.cfg:927
+msgid ""
+"...\n"
+"Okay."
+msgstr ""
+"……\n"
+"好吧。"
+
+#: data/level/secluded-hut-interior.cfg:928
+msgid ""
+"Perhaps more importantly, I am a bit of\n"
+"an astronomer and biologist, by trade."
+msgstr ""
+"也许更要紧的是，我基本算是个\n"
+"职业的天文学家兼生物学家。"
+
+#: data/level/secluded-hut-interior.cfg:929
+msgid ""
+"That is why I live all the way up here.\n"
+"You can see quite a bit from this height."
+msgstr ""
+"这就是我住得那么高的原因啦。\n"
+"在这么高的地方你能看到很多东西。"
+
+#: data/level/secluded-hut-interior.cfg:931
+msgid ""
+"...and I guess you have these\n"
+"ants in cages to study them?"
+msgstr ""
+"……我猜你把这些蚂蚁关在\n"
+"笼子里是为了搞研究？"
+
+#: data/level/secluded-hut-interior.cfg:932
+msgid ""
+"That's right. Unfortunately, my\n"
+"collection lacks the rarer\n"
+"golden ant."
+msgstr ""
+"是的。不幸的是，我的收藏里\n"
+"还缺了稀有的金蚂蚁。"
+
+#: data/level/secluded-hut-interior.cfg:934
+msgid "Oh, what a shame."
+msgstr "哦，真是可惜。"
+
+#: data/level/secluded-hut-interior.cfg:935
+msgid ""
+"You know, you look rather well-traveled.\n"
+"If you could bring me a golden ant\n"
+"and stick it in one of my cages,\n"
+"I'd reward you handsomely."
+msgstr ""
+"你知道不，你看着像个云游四方的人。\n"
+"如果你能给我搞到只金蚂蚁放笼子里，\n"
+"我会好好地答谢你的。"
+
+#: data/level/secluded-hut-interior.cfg:937
+msgid ""
+"Handsomely you say?\n"
+"I'm on it!"
+msgstr ""
+"你说“好好的”？\n"
+"我这就去！"
+
+#: data/level/secluded-hut-interior.cfg:940
+msgid ""
+"Oh! You got the golden ant for me.\n"
+"It's beautiful, beautiful!"
+msgstr ""
+"哦！你替我抓来了金蚂蚁！\n"
+"它真是太美了！太美了！"
+
+#: data/level/secluded-hut-interior.cfg:942
+msgid ""
+"Mmmmmhmmmm. Now you were talking\n"
+"about a reward?"
+msgstr "唔。貌似你说过有啥答谢的？"
+
+#: data/level/secluded-hut-interior.cfg:943
+msgid ""
+"Oh yes, a reward!\n"
+"Here you go..."
+msgstr ""
+"哦对，答谢！\n"
+"喏，给你……"
+
+#: data/level/secluded-hut-interior.cfg:948
+msgid ""
+"What's that you say? The golden ant\n"
+"is in your stomach? Quick, spit it\n"
+"out into the cage!"
+msgstr ""
+"你说啥？金蚂蚁在你胃里？\n"
+"快，把它吐到笼子里去！"
+
+#: data/level/secluded-hut-interior.cfg:949
+msgid ""
+"I don't suppose you've had any\n"
+"luck with getting a golden ant yet?"
+msgstr "我猜你还没能搞到金蚂蚁是吧？"
+
+#: data/level/secluded-hut-interior.cfg:951
+msgid ""
+"I'm working on it.\n"
+"Those things pack a pretty mean\n"
+"bite, you know."
+msgstr ""
+"我在努力呢。\n"
+"你知道，这些家伙咬人还挺狠的。"
+
+#: data/level/secluded-hut-interior.cfg:954
+msgid ""
+"I do hope you are enjoying exploring\n"
+"the island. There are so many\n"
+"wonderful creatures on it."
+msgstr ""
+"我期望你会喜欢岛上的探索之旅。\n"
+"这儿有太多太多神奇的生物了。"
+
+#: data/level/secluded-hut-interior.cfg:956
+msgid ""
+"I'm assuming you're talking about\n"
+"all the creatures that keep trying\n"
+"to kill me."
+msgstr ""
+"我猜你是在说那些不断企图\n"
+"杀掉我的生物吧。"
+
+#: data/level/secluded-hut-interior.cfg:1157
+msgid "I say! Who's there?"
+msgstr "我说！是谁？！"
+
+#: data/level/secluded-hut.cfg:1207
+msgid "Are you quite alright?"
+msgstr "你还好吗？"
+
+#: data/level/secluded-hut.cfg:1209
+msgid ""
+"Yeah.\n"
+"Who WAS that guy?!"
+msgstr ""
+"恩。\n"
+"刚才那家伙是谁？"
+
+#: data/level/secluded-hut.cfg:1210
+msgid "One of Milgram's henchmen, no doubt."
+msgstr "是米格拉姆的一个小弟，毫无疑问。"
+
+#: data/level/secluded-hut.cfg:1211
+msgid ""
+"They may have seen me talking to you,\n"
+"I can't be sure."
+msgstr ""
+"他们也许看到我在和你说话了，\n"
+"我不确定。"
+
+#: data/level/secluded-hut.cfg:1213
+msgid "Wait, what?  Milgram?"
+msgstr "等等，你说啥？米格拉姆？"
+
+#: data/level/secluded-hut.cfg:1215
+msgid ""
+"What's he doing\n"
+"on this side of the island?"
+msgstr "他在小岛的这边搞什么？"
+
+#: data/level/secluded-hut.cfg:1216
+msgid "You still haven't heard, then."
+msgstr "这么说你还没听说啊。"
+
+#: data/level/secluded-hut.cfg:1217
+msgid ""
+"Milgram's men showed up\n"
+"early this morning, in town.\n"
+"They've taken the whole place hostage;\n"
+"something about \"collecting on a debt.\""
+msgstr ""
+"今天早些时候米格拉姆的小弟们\n"
+"出现在镇子上，他们抓住了所有人，\n"
+"是要“讨债”啥的。"
+
+#: data/level/secluded-hut.cfg:1218
+msgid ""
+"I don't know the details.\n"
+"I flew out of there as soon as I could,\n"
+"looking for anyone who could help."
+msgstr ""
+"我也不知道具体咋了，\n"
+"只是尽快地逃了出来，\n"
+"找人帮忙而已。"
+
+#: data/level/secluded-hut.cfg:1220
+msgid ""
+"That certainly...\n"
+"changes my plans for the day."
+msgstr ""
+"这确实……\n"
+"打乱了我今天的计划。"
+
+#: data/level/secluded-hut.cfg:1222
+msgid "Wow, uhm..."
+msgstr "喔，呃……"
+
+#: data/level/secluded-hut.cfg:1224
+msgid ""
+"I don't think I can promise anything,\n"
+"but if the opportunity presents itself,\n"
+"who knows?"
+msgstr ""
+"我可不能做什么保证，\n"
+"不过机会可能会出现吧，\n"
+"谁知道呢？"
+
+#: data/level/secluded-hut.cfg:1225
+msgid ""
+"Yes, it's unreasonable to expect\n"
+"someone to just charge in there."
+msgstr ""
+"是啊，期望有什么救星驾到，\n"
+"本就是不靠谱的。"
+
+#: data/level/secluded-hut.cfg:1226
+msgid "I'm at a loss for a plan, myself."
+msgstr "我也想不出什么计划呀。"
+
+#: data/level/secluded-hut.cfg:1227
+msgid ""
+"Nevertheless, I'd better be going.\n"
+"Hopefully, we'll fix that bridge soon.\n"
+"Impressive how fast they can do that,\n"
+"with modular construction and all."
+msgstr ""
+"不管怎么说，我最好还是走先。\n"
+"如果顺利的话，桥很快就能修好了。\n"
+"这速度真让人印象深刻，\n"
+"什么模块化建造之类的。"
+
+#: data/level/secluded-hut.cfg:1228
+msgid ""
+"In the meantime, you might benefit from\n"
+"visiting the fellow who lives here."
+msgstr ""
+"在这期间，去拜访一下这边的居民\n"
+"对你也许有帮助。"
+
+#: data/level/secluded-hut.cfg:1229
+msgid ""
+"Bit of a recluse, but he's quite sharp.\n"
+"He lives on top of this rock column."
+msgstr ""
+"他算半个隐士，不过倒是很尖刻。\n"
+"他住在这石崖的上面。"
+
+#: data/level/secluded-hut.cfg:1231
+msgid "And I get up there... how?"
+msgstr "那我得上去……怎么上？"
+
+#: data/level/secluded-hut.cfg:1235
+msgid "Simple, just take to the air!"
+msgstr "简单得很，飞过去就是了！"
+
+#: data/level/secluded-hut.cfg:1238
+msgid "You ... do realize I can't fly?"
+msgstr "你……知道我不会飞么？"
+
+#: data/level/senic-beach.cfg:12
+msgid "Geautatha Point"
+msgstr "戈塔沙之尖"
+
+#: data/level/silky-silence.cfg:13
+msgid "Silky Silence"
+msgstr "恬静之地"
+
+#: data/level/splash-hop.cfg:11
+msgid "Splash, Hop"
+msgstr "飞溅与蹦跳"
+
+#: data/level/stairway-to-heaven.cfg:9
+msgid "Stairway to Heaven"
+msgstr "天堂的阶梯"
+
+#: data/level/starlit-cave.cfg:11
+msgid "Starlit Cave"
+msgstr "星光洞穴"
+
+#: data/level/stonepipe-meadow.cfg:11
+msgid "Stonepipe Meadow"
+msgstr "石管洼地"
+
+#: data/level/tea-with-milgram.cfg:173
+msgid "Webmaster"
+msgstr "网站管理员"
+
+#: data/level/tea-with-milgram.cfg:174
+msgid "Mac/Windows/iPhone Packager"
+msgstr "Mac/Windows/iPhone 打包者"
+
+#: data/level/tea-with-milgram.cfg:175
+msgid "Programmer (esp. helping with iPhone integration)"
+msgstr "程序员（特别是协助进行iPhone集成工作）"
+
+#: data/level/tea-with-milgram.cfg:176 data/level/tea-with-milgram.cfg:337
+msgid "Minor Object Scripter and Level Designer"
+msgstr "助理对象脚本师/关卡设计师"
+
+#: data/level/tea-with-milgram.cfg:181
+msgid "So let me get this straight..."
+msgstr "就让我直说了吧……"
+
+#: data/level/tea-with-milgram.cfg:184
+msgid ""
+"What you're saying, is that the elder\n"
+"borrowed all this money from you,"
+msgstr ""
+"你的意思是，这些钱是老前辈\n"
+"问你借的，"
+
+#: data/level/tea-with-milgram.cfg:186
+msgid ""
+"and it was meant to be used on\n"
+"civil projects for the town?"
+msgstr "本来是要用来在镇上搞建设的？"
+
+#: data/level/tea-with-milgram.cfg:188
+msgid "Exactly!"
+msgstr "正是如此！"
+
+#: data/level/tea-with-milgram.cfg:190
+msgid ""
+"In fact, I came to him with the idea.\n"
+"It was meant to be philanthropy."
+msgstr ""
+"实际上是我带着这点子去找他的。\n"
+"这本该算是慈善事业的。"
+
+#: data/level/tea-with-milgram.cfg:192
+msgid ""
+"I thought a 'mayor' would be responsible,\n"
+"but instead he's spending it all on himself!"
+msgstr ""
+"我本以为一个“镇长”会很有责任感，\n"
+"但他却把钱都花在自己身上了！"
+
+#: data/level/tea-with-milgram.cfg:194
+msgid "And now he's refusing to repay you?"
+msgstr "而现在他拒绝还你钱？"
+
+#: data/level/tea-with-milgram.cfg:199
+msgid ""
+"I never thought him\n"
+"to be the charismatic type,"
+msgstr ""
+"我可从不觉得他是\n"
+"那么有魅力的类型。"
+
+#: data/level/tea-with-milgram.cfg:202
+msgid ""
+"In fact,\n"
+"I rather thought him to be a buffoon."
+msgstr ""
+"实际上，\n"
+"我倒觉得他是个蠢货。"
+
+#: data/level/tea-with-milgram.cfg:205
+msgid "Ah, there we are..."
+msgstr "啊，我们到了……"
+
+#: data/level/tea-with-milgram.cfg:209
+msgid ""
+"Fetch some for our guest,\n"
+"would you, kindly?"
+msgstr ""
+"能不能麻烦你，\n"
+"为我们的客人取一些来？"
+
+#: data/level/tea-with-milgram.cfg:212
+msgid ""
+"As I was saying,\n"
+"he doesn't seem to be the type,"
+msgstr ""
+"就像我说的，\n"
+"他可不像是什么有魅力的类型，"
+
+#: data/level/tea-with-milgram.cfg:214
+msgid ""
+"But somehow,\n"
+"he's turned the entire town against me,"
+msgstr ""
+"但不知为啥，\n"
+"他让整个镇子都与我为敌了，"
+
+#: data/level/tea-with-milgram.cfg:217
+msgid ""
+"He convinced them that I'm running\n"
+"some sort of protection racket."
+msgstr "他说得他们相信了我是个收保护费的。"
+
+#: data/level/tea-with-milgram.cfg:219
+msgid ""
+"Which I'll admit...\n"
+"...isn't too hard to believe."
+msgstr ""
+"我得承认……\n"
+"……这不是太难以置信的。"
+
+#: data/level/tea-with-milgram.cfg:221
+msgid "Uh.. yeah."
+msgstr "啊……是的。"
+
+#: data/level/tea-with-milgram.cfg:223
+msgid ""
+"I mean, you did send thugs in to\n"
+"shake him down."
+msgstr ""
+"我是说，你确实派小弟去\n"
+"恐吓他了。"
+
+#: data/level/tea-with-milgram.cfg:225
+msgid "That REALLY does look bad."
+msgstr "这看上去*真的*很糟糕。"
+
+#: data/level/tea-with-milgram.cfg:228
+msgid ""
+"Oh absolutely!\n"
+"It makes me look beastly!"
+msgstr ""
+"哦当然！\n"
+"这让我看上去像个野兽！"
+
+#: data/level/tea-with-milgram.cfg:230
+msgid ""
+"But consider this...\n"
+"What other option did I have?"
+msgstr ""
+"不过想想吧……\n"
+"我还有什么别的办法？"
+
+#: data/level/tea-with-milgram.cfg:233
+msgid ""
+"I'd have sent the police in, but..\n"
+"..there AREN'T ANY police!"
+msgstr ""
+"我可以去找警察的，但是……\n"
+"这儿根本没有什么警察！"
+
+#: data/level/tea-with-milgram.cfg:235
+msgid "There's not even any government!"
+msgstr "甚至连政府都没有！"
+
+#: data/level/tea-with-milgram.cfg:237
+msgid ""
+"The town elder wasn't VOTED as mayor,\n"
+"he just decided he's old enough that\n"
+"everyone should just do what he says."
+msgstr ""
+"那老家伙不是被选上镇长的，\n"
+"他只不过是觉得自己年纪够大\n"
+"所以所有人都得照他说的做。"
+
+#: data/level/tea-with-milgram.cfg:239
+msgid "Not that anyone listens to him anyways."
+msgstr "不过倒不是说真有谁会听他的。"
+
+#: data/level/tea-with-milgram.cfg:241
+msgid ""
+"They don't have a fire department,\n"
+"they don't have any schools,\n"
+"it's all just this absurd mess!"
+msgstr ""
+"镇上没有消防局，\n"
+"没有学校，\n"
+"只有一个荒唐的烂摊子！"
+
+#: data/level/tea-with-milgram.cfg:243
+msgid "This ... is true."
+msgstr "这……确实。"
+
+#: data/level/tea-with-milgram.cfg:246
+msgid "Blast it all!"
+msgstr "坑爹啊！"
+
+#: data/level/tea-with-milgram.cfg:248
+msgid ""
+"Where I run things,\n"
+"there's some actual law and order.\n"
+"Decent, civilized society!"
+msgstr ""
+"我管事儿的地方，\n"
+"一定会有点儿法制和秩序。\n"
+"一定是又体面又文明的社会啊！"
+
+#: data/level/tea-with-milgram.cfg:255
+msgid "Thank you Jeeves, that will do nicely."
+msgstr "谢谢你吉福斯，这个很不错。"
+
+#: data/level/tea-with-milgram.cfg:259
+msgid ""
+"So, anyhow, when I finally\n"
+"sent the lads to deal with things,\n"
+"it got rather messy."
+msgstr ""
+"呃，不管咋说，等我终于\n"
+"派小伙子们去解决问题的时候，\n"
+"却弄得一团糟。"
+
+#: data/level/tea-with-milgram.cfg:261
+msgid ""
+"But you'll note, you'll note carefully..\n"
+"..besides being manhandled,\n"
+"no one did actually get hurt."
+msgstr ""
+"不过你会发现，仔细点就会发现……\n"
+"……除了手段粗暴些，\n"
+"没有人是真的受伤了。"
+
+#: data/level/tea-with-milgram.cfg:263
+msgid ""
+"I *did* notice that.\n"
+"That kind of piqued my suspicions."
+msgstr ""
+"我*确实*注意到了。\n"
+"这多少引起了我的好奇。"
+
+#: data/level/tea-with-milgram.cfg:265
+msgid ""
+"Now, you on the other hand...\n"
+"You've really clobbered a few people!"
+msgstr ""
+"现在呢，另一方面来说，你……\n"
+"你倒是结结实实地揍了人！"
+
+#: data/level/tea-with-milgram.cfg:269
+msgid "Yeah..  uhm.."
+msgstr "啊……呃……"
+
+#: data/level/tea-with-milgram.cfg:271
+msgid "I'm really kinda sorry about that now!"
+msgstr "现在我真觉得有些抱歉了！"
+
+#: data/level/tea-with-milgram.cfg:274
+msgid ""
+"I appreciate the apology.\n"
+"And don't worry about the kitties."
+msgstr ""
+"感谢你的道歉。\n"
+"不用担心那些小猫仔。"
+
+#: data/level/tea-with-milgram.cfg:276
+msgid ""
+"They'll bounce back just fine;\n"
+"They are mass-produced after all."
+msgstr ""
+"他们会蹦蹦跳跳地回来，\n"
+"啥事都没有。\n"
+"咋说他们都是量产的嘛。"
+
+#: data/level/tea-with-milgram.cfg:278
+msgid "I ... see."
+msgstr "我……明白了。"
+
+#: data/level/tea-with-milgram.cfg:280
+msgid ""
+"Well, now that I know the whole story,\n"
+"I think I can help you out, big time."
+msgstr ""
+"呃，既然我已经知道了来龙去脉，\n"
+"我想我可以帮你，帮你大忙。"
+
+#: data/level/tea-with-milgram.cfg:282
+msgid ""
+"See,\n"
+"I think I know where all the money is,"
+msgstr ""
+"你看，\n"
+"我想我知道钱都藏在哪里了。"
+
+#: data/level/tea-with-milgram.cfg:284
+msgid ""
+"I'm hoping we can come to some\n"
+"mutually beneficial arrangement,\n"
+"regarding it."
+msgstr ""
+"关于钱么，\n"
+"我希望我们能有个双赢的协议。"
+
+#: data/level/tea-with-milgram.cfg:287
+msgid "An arrangement, hmmm? Do tell."
+msgstr "协议，恩？说说看。"
+
+#: data/level/tea-with-milgram.cfg:290
+msgid ""
+"Well, I actually suspect that rather than\n"
+"spending all your money, he's hoarding it."
+msgstr ""
+"呃，其实我怀疑他没有把你的钱花光，\n"
+"而是积蓄了起来。"
+
+#: data/level/tea-with-milgram.cfg:292
+msgid "How bizarre."
+msgstr "真奇怪。"
+
+#: data/level/tea-with-milgram.cfg:294
+msgid "Yeah, it's crazy.  He's... a bit crazy."
+msgstr "是啊，挺疯狂的。他有点……疯了。"
+
+#: data/level/tea-with-milgram.cfg:297
+msgid ""
+"But it's good news, because I think\n"
+"he still has all your money\n"
+"and a bunch more besides!"
+msgstr ""
+"不过这可是好消息，我觉得\n"
+"你的钱都还在，他还有额外的呢！"
+
+#: data/level/tea-with-milgram.cfg:300
+msgid "So I propose that we go and get it!"
+msgstr "所以我建议我们去把钱取回来！"
+
+#: data/level/tea-with-milgram.cfg:303
+msgid ""
+"Plus a hefty bit of interest.\n"
+"Penalty Fees.\n"
+"Late Fees.\n"
+"Any other fees banks normally charge."
+msgstr ""
+"再加上大笔的利息。\n"
+"违约金。\n"
+"滞纳金。\n"
+"还有银行通常会收的所有其他的钱！"
+
+#: data/level/tea-with-milgram.cfg:306
+msgid "I like your way of thinking!"
+msgstr "我喜欢你思考的方式！"
+
+#: data/level/tea-with-milgram.cfg:309
+msgid ""
+"Yup, and I can show you where it all is\n"
+"in exchange for a small consideration."
+msgstr ""
+"哈，而我可以告诉你钱在哪里，\n"
+"只要用一点小小的报酬来交换。"
+
+#: data/level/tea-with-milgram.cfg:312
+msgid "A small consideration eh?"
+msgstr "小小的报酬，恩？"
+
+#: data/level/tea-with-milgram.cfg:315
+msgid "Yes - a quarter of what we get from him."
+msgstr ""
+"是的 - 从他那里拿到的钱，\n"
+"四分之一归我。"
+
+#: data/level/tea-with-milgram.cfg:317
+msgid ""
+"*sigh*\n"
+"I knew you didn't really mean small.\n"
+"Very well frog, let's do business."
+msgstr ""
+"唉。\n"
+"我知道你要的可不是“小小的”。\n"
+"好吧青蛙，成交了。"
+
+#: data/level/tea-with-milgram.cfg:320
+msgid "All's well that ends well then, huh?"
+msgstr "那么皆大欢喜了，哈？"
+
+#: data/level/tea-with-milgram.cfg:323
+msgid ""
+"Yeah, I do think everyone's\n"
+"made out pretty well."
+msgstr "对头，我想大家都会高兴的。"
+
+#: data/level/tea-with-milgram.cfg:326
+msgid "Except the elder."
+msgstr "除了那老家伙。"
+
+#: data/level/tea-with-milgram.cfg:331
+msgid "Lead Programmer"
+msgstr "主程序员"
+
+#: data/level/tea-with-milgram.cfg:332
+msgid "Scripting Language Designer"
+msgstr "脚本语言设计师"
+
+#: data/level/tea-with-milgram.cfg:333 data/level/tea-with-milgram.cfg:360
+msgid "Object Scripter"
+msgstr "对象脚本师"
+
+#: data/level/tea-with-milgram.cfg:334
+msgid "Minor Level Designer"
+msgstr "助理关卡设计师"
+
+#: data/level/tea-with-milgram.cfg:347
+msgid "Creative Director - created characters/setting/story"
+msgstr "设定监督 - 角色/背景/故事设定"
+
+#: data/level/tea-with-milgram.cfg:348 data/level/tea-with-milgram.cfg:378
+msgid "Artist - Characters, Monsters, and Props"
+msgstr "美工 - 角色、怪物、小道具"
+
+#: data/level/tea-with-milgram.cfg:349
+msgid "Artist - Terrain (house interiors and exteriors, seaside background)"
+msgstr "美工 - 地形（房屋内外，海滨背景）"
+
+#: data/level/tea-with-milgram.cfg:359
+msgid "Level Designer (esp. forest, cave, and dungeon levels)"
+msgstr "关卡设计师（特别是森林、洞穴和地牢关卡）"
+
+#: data/level/tea-with-milgram.cfg:364
+msgid "The IRC Crew"
+msgstr "IRC众"
+
+#: data/level/tea-with-milgram.cfg:365
+msgid "Bug Reports/Fixes"
+msgstr "Bug报告/修正"
+
+#: data/level/tea-with-milgram.cfg:366
+msgid "Technical Advice"
+msgstr "技术指导"
+
+#: data/level/tea-with-milgram.cfg:367
+msgid "Level Design and Object Scripting"
+msgstr "关卡设计和对象脚本编写"
+
+#: data/level/tea-with-milgram.cfg:368
+msgid "Devil's Advocacy"
+msgstr "魔鬼代言人"
+
+#: data/level/tea-with-milgram.cfg:371
+msgid "Translation Support"
+msgstr "翻译支持"
+
+#: data/level/tea-with-milgram.cfg:372
+msgid "Object Scripting"
+msgstr "对象脚本编写"
+
+#: data/level/tea-with-milgram.cfg:377
+msgid "Lead Content Wrangler and Object Scripter, Programmer"
+msgstr "主力游戏内容设定者，对象脚本师，程序员"
+
+#: data/level/tea-with-milgram.cfg:379
+msgid "Artist - Terrain (seaside, forest, cave, and dungeon)"
+msgstr "美工 - 地形（海滨、森林、洞穴和地牢）"
+
+#: data/level/tea-with-milgram.cfg:380
+msgid "Level Designer (esp. seaside, town, and forest stages)"
+msgstr "关卡设计师（特别是海滨，小镇以及森林关卡）"
+
+#: data/level/tea-with-milgram.cfg:383
+msgid "Musician"
+msgstr "音乐师"
+
+#: data/level/tea-with-milgram.cfg:384
+msgid "Sound Effect Designer"
+msgstr "声效设计师"
+
+#: data/level/tea-with-milgram.cfg:388
+msgid "SPECIAL THANKS:"
+msgstr "鸣谢："
+
+#: data/level/template.cfg:9
+msgid "(Level Template)"
+msgstr "（关卡模板）"
+
+#: data/level/test2.cfg:12 data/level/test3.cfg:12 data/level/test4.cfg:12
+#: data/level/test5.cfg:12
+msgid "(Test Level)"
+msgstr "（测试关卡）"
+
+#: data/level/test6.cfg:14
+msgid "(test level)"
+msgstr "（测试关卡）"
+
+#: data/level/the-north-tower.cfg:12
+msgid "The North Tower"
+msgstr "北国塔楼"
+
+#: data/level/titlescreen-arcade.cfg:140
+msgid "Each machine has a different arcade-style challenge."
+msgstr "每台机器中都有一个不同的街机风格的挑战关卡。"
+
+#: data/level/titlescreen-arcade.cfg:175
+msgid "These don't affect story-mode.  Enjoy!"
+msgstr "这不会对故事模式产生影响。尽情享受吧！"
+
+#: data/level/titlescreen-arcade.cfg:207
+msgid "EXIT"
+msgstr "退出"
+
+#: data/level/titlescreen-arcade.cfg:232 data/level/titlescreen-arcade.cfg:255
+msgid "Select a level:"
+msgstr "选择一个关卡："
+
+#: data/level/titlescreen-arcade.cfg:235 data/level/titlescreen-arcade.cfg:258
+msgid "(cancel)"
+msgstr "（取消）"
+
+#: data/level/titlescreen-arcade.cfg:257
+msgid "Down the RabbitHall"
+msgstr "深入兔兔大厅"
+
+#: data/level/titlescreen-arcade.cfg:285
+msgid "CLIMB"
+msgstr "攀爬"
+
+#: data/level/titlescreen-arcade.cfg:317
+msgid "RUN"
+msgstr "奔跑"
+
+#: data/level/titlescreen-test.cfg:373 data/level/titlescreen.cfg:349
+#: data/level/titlescreen.cfg:374
+msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
+msgstr "按 {LEFT_KEY} 或者 {RIGHT_KEY} 左右走动。"
+
+#: data/level/titlescreen-test.cfg:374 data/level/titlescreen.cfg:375
+#: data/level/titlescreen.cfg:391
+msgid "Press {UP_KEY} to talk, and use things like doors."
+msgstr "按 {UP_KEY} 说话和使用物品，例如门。"
+
+#: data/level/titlescreen-test.cfg:375 data/level/titlescreen.cfg:376
+msgid "Press {DOWN_KEY} to crouch."
+msgstr "按 {DOWN_KEY} 趴下。"
+
+#: data/level/titlescreen-test.cfg:376 data/level/titlescreen.cfg:377
+msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
+msgstr "连按两下 {LEFT_KEY} 或者 {RIGHT_KEY} 可以奔跑。"
+
+#: data/level/titlescreen-test.cfg:377 data/level/titlescreen.cfg:378
+msgid "Press {JUMP_KEY} to jump."
+msgstr "按 {JUMP_KEY} 跳跃。"
+
+#: data/level/titlescreen-test.cfg:378 data/level/titlescreen.cfg:379
+msgid "Press {TONGUE_KEY} to use a character's attacks."
+msgstr "按 {TONGUE_KEY} 进行角色特有的攻击。"
+
+#: data/level/titlescreen.cfg:284
+msgid "LOAD GAME"
+msgstr "读取游戏"
+
+#: data/level/titlescreen.cfg:316
+msgid "NEW GAME"
+msgstr "新游戏"
+
+#: data/level/titlescreen.cfg:423
+msgid "ARCADE"
+msgstr "街机模式"
+
+#: data/level/to-nenes-house-inside.cfg:12
+msgid "Nene's House"
+msgstr "奈奈的小屋"
+
+#: data/level/to-nenes-house-inside.cfg:490
+msgid "Hey Nene, what's cooking?"
+msgstr "嘿奈奈，你在做什么？"
+
+#: data/level/to-nenes-house-inside.cfg:491
+msgid ""
+"I'm making a cake.\n"
+"Would you like to have some?"
+msgstr ""
+"我在做蛋糕。\n"
+"想拿一点么？"
+
+#: data/level/to-nenes-house-inside.cfg:493
+msgid "Nah, I'd better get to town."
+msgstr "不了，我得去镇子上。"
+
+#: data/level/to-nenes-house-inside.cfg:495
+msgid "I have serious business to attend to."
+msgstr "我有点正经事要处理。"
+
+#: data/level/to-nenes-house-inside.cfg:499
+msgid ""
+"Oh, well maybe before you go\n"
+"you could look at my basement."
+msgstr ""
+"哦，好吧，在你出发之前\n"
+"也许可以去看看我的地窖。"
+
+#: data/level/to-nenes-house-inside.cfg:501
+msgid "Your basement?"
+msgstr "你的地窖？"
+
+#: data/level/to-nenes-house-inside.cfg:507
+msgid ""
+"Yes, here's the key.\n"
+"There're some ants down there."
+msgstr ""
+"是啊，这是钥匙。\n"
+"下面有些蚂蚁爬来爬去的。"
+
+#: data/level/to-nenes-house-inside.cfg:508
+msgid "They're freaking me out."
+msgstr "它们弄得我快疯了。"
+
+#: data/level/to-nenes-house-inside.cfg:510
+msgid "Sure thing. I need a job!"
+msgstr "没问题。我正好要找工作！"
+
+#: data/level/to-nenes-house-inside.cfg:512
+msgid ""
+"How much were you figuring on\n"
+"paying for a pest exterminator?"
+msgstr "你准备为杀虫专家出多少钱呢？"
+
+#: data/level/to-nenes-house-inside.cfg:513
+msgid ""
+"Well sheesh, I thought you'd\n"
+"do it for free for a friend!"
+msgstr ""
+"呃，我还以为你会免费\n"
+"帮朋友的忙呢！"
+
+#: data/level/to-nenes-house-inside.cfg:514
+msgid ""
+"But if you're going to be like that\n"
+"I think I left a health capsule down there.\n"
+"If you can clear it out, it's yours."
+msgstr ""
+"但如果你非要不可，\n"
+"我记得在那下面留了一个生命胶囊。\n"
+"要是把蚂蚁清理干净，那胶囊就是你的了。"
+
+#: data/level/to-nenes-house-inside.cfg:516
+msgid ""
+"So, did you end up taking care\n"
+"of those ants down there?"
+msgstr ""
+"呃，你把下面的蚂蚁\n"
+"解决掉了没？"
+
+#: data/level/to-nenes-house-inside.cfg:518
+msgid ""
+"Of course.\n"
+"I don't disappoint!"
+msgstr ""
+"当然。\n"
+"我从不让人失望！"
+
+#: data/level/to-nenes-house-inside.cfg:520
+msgid ""
+"And thanks for the gift,\n"
+"by the way."
+msgstr "顺便说，谢谢你的礼物。"
+
+#: data/level/to-nenes-house-inside.cfg:521
+msgid "You're welcome."
+msgstr "不客气。"
+
+#: data/level/to-nenes-house-inside.cfg:843
+msgid ""
+"Can't a guy sneak into his neighbor's\n"
+"basement uninvited these days?"
+msgstr ""
+"现如今已经不可能不请自来\n"
+"悄悄溜进邻居家的地下室了么？"
+
+#: data/level/to-nenes-house-inside.cfg:843
+msgid "Well, dangit, this door is locked."
+msgstr "呃，我去，这门锁上了。"
+
+#: data/level/to-nenes-house.cfg:11
+msgid "To Nene's House"
+msgstr "去奈奈小屋之路"
+
+#: data/level/to-nenes-house.cfg:1902
+msgid "Hah!"
+msgstr "哈！"
+
+#: data/level/to-nenes-house.cfg:1903
+msgid "There's Nene's house, right up there!"
+msgstr "奈奈的家，就在那边！"
+
+#: data/level/to-nenes-house.cfg:1916
+msgid "A moment of your time sir?"
+msgstr "可以打扰一下么，先生？"
+
+#: data/level/to-nenes-house.cfg:1918
+msgid ""
+"Sorry, I'm off to town!\n"
+"Not interested!"
+msgstr ""
+"抱歉，我得去镇上！\n"
+"我不感兴趣！"
+
+#: data/level/to-nenes-house.cfg:1919
+msgid "But the town, you see ..."
+msgstr "但是镇上……你知道……"
+
+#: data/level/to-nenes-house.cfg:1921
+msgid ""
+"Not. Interested.\n"
+"Buzz off."
+msgstr ""
+"不-感-兴-趣！\n"
+"我说完了。"
+
+#: data/level/to-nenes-house.cfg:1923
+msgid ""
+"I don't care what you're preaching,\n"
+"go sell it to someone else."
+msgstr ""
+"我不关心你在卖啥东西。\n"
+"去卖给别人吧。"
+
+#: data/level/to-nenes-house.cfg:1924
+msgid "Very well."
+msgstr "很好。"
+
+#: data/level/to-nenes-house.cfg:1927
+msgid ""
+"Someday, those door-to-door people\n"
+"will realize that kind of hard-sell tactic\n"
+"just annoys people."
+msgstr ""
+"总有一天这些搞推销的家伙会知道\n"
+"这种强买强卖的策略只会讨人厌。"
+
+#: data/level/to-nenes-house.cfg:1929
+msgid "The sooner, the better."
+msgstr "越早越好。"
+
+#: data/level/toasty-torches.cfg:10
+msgid "Hidden Room"
+msgstr "隐藏房间"
+
+#: data/level/twisted-trees.cfg:14
+msgid "Twisted Trees"
+msgstr "缠绕绿树"
+
+#: data/level/underground-pool.cfg:14
+msgid "Underground Pool"
+msgstr "地下水池"
+
+#: data/level/waiting-room.cfg:9
+msgid "Waiting Room"
+msgstr "接待室"
+
+#: data/level/wandering-passage.cfg:15
+msgid "Wandering Passage"
+msgstr "蜿蜒过道"
+
+#: data/level/watery-alley.cfg:14
+msgid "Watery Alley"
+msgstr "过水小径"
+
+#: data/level/wither-wind.cfg:14
+msgid "Wither Wind"
+msgstr "枯萎之风"
+
+#: data/level/wm-ascent-1.cfg:12
+msgid "Lower Ascent"
+msgstr "下段上坡道"
+
+#: data/level/wm-ascent-1.cfg:1152
+msgid "This Way To Squirrel Mining."
+msgstr "此路通往松鼠矿区"
+
+#: data/level/wm-ascent-1.cfg:1184
+msgid "Caution: Sudden Dropoffs."
+msgstr "警告：有突然坠物"
+
+#: data/level/wm-ascent-2.cfg:13
+msgid "Upper Ascent"
+msgstr "上段上坡道"
+
+#: data/level/wm-ascent-2.cfg:1104
+msgid "Close call."
+msgstr "就差一点。"
+
+#: data/level/wm-h0.0-lift.cfg:12
+msgid "Lift House"
+msgstr "升降梯小屋"
+
+#: data/level/wm-h0.0-lift.cfg:566 data/level/wm-h0.0-lift.cfg:573
+msgid ""
+"Hi, I am E. I run the elevator here.\n"
+"It is not verkink at the moment."
+msgstr ""
+"嗨，俺是伊，操作升降梯的索。\n"
+"这家伙现在脏态不咋样的索。"
+
+#: data/level/wm-h0.0-lift.cfg:568
+msgid ""
+"I brought you a long rope.\n"
+"Will that help?"
+msgstr ""
+"我带来了一条长绳。\n"
+"这有用么？"
+
+#: data/level/wm-h0.0-lift.cfg:569
+msgid ""
+"Yes, it certainly vill! Come back\n"
+"in\ta few seconds, I don't verk vell ven\n"
+"I'm beink vaached."
+msgstr ""
+"恩哈，当然。过会儿再肥来的索。\n"
+"被人看着俺可做不好工作的索。"
+
+#: data/level/wm-h0.0-lift.cfg:575
+msgid "Can I help?"
+msgstr "有啥能帮忙的不？"
+
+#: data/level/wm-h0.0-lift.cfg:576
+msgid ""
+"There's a fellow on the ground\n"
+"beneath here, who's called Rajit.\n"
+"He's been tryink to get a cable up\n"
+"here to fix the car."
+msgstr ""
+"这下面的地上有个老兄叫垃圾特\n"
+"的索。他正要送根缆子桑来\n"
+"修电梯的索。"
+
+#: data/level/wm-h0.0-lift.cfg:577
+msgid ""
+"The lazy bum von't valk it up here,\n"
+"which is what he needs to do.\n"
+"If you'd be villink to get it,\n"
+"I would be villink to pay you\n"
+"a 10 coin bounty. I can charge Rajit\n"
+"that for delays, at least."
+msgstr ""
+"那懒银才不会桑来的索，\n"
+"虽索他应该怎么做的索。\n"
+"要是你高兴七拿的索，\n"
+"我高兴付给你10个币的索。\n"
+"自扫我可以罚垃圾特辞到的索。"
+
+#: data/level/wm-h0.0-lift.cfg:579
+msgid "Sounds good. I'll see what I can do."
+msgstr "听上去不错。我看看我能做啥。"
+
+#: data/level/wm-h0.0-lift.cfg:585
+msgid "The elevator is verkink. Hop on."
+msgstr "升降梯坏掉的索。继续走的索。"
+
+#: data/level/wm-h0.0-lift.cfg:589
+msgid "Does the elevator work?"
+msgstr "升降梯好了没？"
+
+#: data/level/wm-h0.0-lift.cfg:590
+msgid "Pretty vell."
+msgstr "好极了的索。"
+
+#: data/level/wm-h0.0-lift.cfg:592
+msgid "So, about the bounty..?"
+msgstr "那，赏金呢……？"
+
+#: data/level/wm-h0.0-lift.cfg:593
+msgid "Oh, yes. Here are the coins."
+msgstr "哦对的索。金币给你的索。"
+
+#: data/level/wm-h0.0-lift.cfg:595 data/level/wm-ll.cfg:1434
+msgid "Thanks."
+msgstr "谢谢。"
+
+#: data/level/wm-ll.cfg:12
+msgid "The Lower Landing"
+msgstr "下层平台"
+
+#: data/level/wm-ll.cfg:1370
+msgid ""
+"Hi, I'm Frogatto.\n"
+"What are you doing?"
+msgstr ""
+"嗨，我是阿托。\n"
+"你在干啥？"
+
+#: data/level/wm-ll.cfg:1371
+msgid ""
+"Oh, a bit of a storm through here.\n"
+"I'm cleaning up and repairing\n"
+"the place. But, I'm be- ...\n"
+"Are you going up to Woodenhead?"
+msgstr ""
+"哦，刚刮过去一阵风暴。\n"
+"我正在清理整修。\n"
+"不过我……\n"
+"你是不是要去木头脑袋那边？"
+
+#: data/level/wm-ll.cfg:1375
+msgid ""
+"Hi, Frogatto. I'm just rebuilding\n"
+"the bridges down here, now.\n"
+"It'll take a while."
+msgstr ""
+"嗨，阿托。\n"
+"我正在修前面那桥。\n"
+"得花点儿时间。"
+
+#: data/level/wm-ll.cfg:1379
+msgid ""
+"Oh, by the way, thanks for taking\n"
+"that rope up. Here's the 5 coins."
+msgstr ""
+"哦，顺便说，谢谢你带来的绳子.\n"
+"这是5个金币。"
+
+#: data/level/wm-ll.cfg:1388
+msgid ""
+"1: Yes. What's up?\n"
+"2: Woodenhead? What's that?"
+msgstr ""
+"1：恩，怎么了？\n"
+"2：木头脑袋？这是啥？"
+
+#: data/level/wm-ll.cfg:1389 data/level/wm-ll.cfg:1465
+#: data/level/wm-town.cfg:1172 data/level/wm-town.cfg:2218
+#: data/level/wm-town.cfg:2223 data/level/wm-town.cfg:2271
+msgid "Opt. 1"
+msgstr "选择 1"
+
+#: data/level/wm-ll.cfg:1390 data/level/wm-ll.cfg:1466
+#: data/level/wm-town.cfg:1180 data/level/wm-town.cfg:2238
+#: data/level/wm-town.cfg:2266 data/level/wm-town.cfg:2332
+msgid "Opt. 2"
+msgstr "选择 2"
+
+#: data/level/wm-ll.cfg:1391 data/level/wm-ll.cfg:1419
+#: data/level/wm-ll.cfg:1468 data/level/wm-town.cfg:1207
+#: data/level/wm-town.cfg:2256 data/level/wm-town.cfg:2356
+#: data/level/wm-town.cfg:2370
+msgid "Cancel"
+msgstr "取消"
+
+#: data/level/wm-ll.cfg:1392
+msgid "Test"
+msgstr "测试"
+
+#: data/level/wm-ll.cfg:1397
+msgid "It's a secret!"
+msgstr "这是秘密！"
+
+#: data/level/wm-ll.cfg:1401
+msgid "I'm afraid I'm not going that way."
+msgstr "恐怕我不往那边走。"
+
+#: data/level/wm-ll.cfg:1402
+msgid ""
+"Sorry to have bothered you, then.\n"
+"Have a nice day."
+msgstr ""
+"那么抱歉打扰了。\n"
+"祝你过得愉快。"
+
+#: data/level/wm-ll.cfg:1405
+msgid ""
+"Those are hoverpads. We use them\n"
+"for temporary stairs and small elevators."
+msgstr ""
+"是浮空板，我们用来做临时的梯子\n"
+"和升降梯的。"
+
+#: data/level/wm-ll.cfg:1407
+msgid ""
+"Why not just use one of those to\n"
+"take the medium rope up?"
+msgstr ""
+"为什么不直接用一块浮空板\n"
+"来把绳子运上去呢？"
+
+#: data/level/wm-ll.cfg:1408
+msgid ""
+"Tried it. They only get about 60\n"
+"feet off the ground before they\n"
+"run out of steam."
+msgstr ""
+"已经试过了。它们在耗尽蒸汽之前\n"
+"只能飞到离地60英尺的地方。"
+
+#: data/level/wm-ll.cfg:1410
+msgid "Oh, too bad."
+msgstr "哦，真糟糕。"
+
+#: data/level/wm-ll.cfg:1411
+msgid "So, will you take the rope up?"
+msgstr "所以能请你把绳子送上去么？"
+
+#: data/level/wm-ll.cfg:1415
+msgid ""
+"3: What's your name?\n"
+"4: What are those grey things?"
+msgstr ""
+"3：你叫啥？\n"
+"4：这些灰色的东西是啥？"
+
+#: data/level/wm-ll.cfg:1416 data/level/wm-town.cfg:1198
+#: data/level/wm-town.cfg:2348
+msgid "Opt. 3"
+msgstr "选择 3"
+
+#: data/level/wm-ll.cfg:1417
+msgid "Opt. 4"
+msgstr "选择 4"
+
+#: data/level/wm-ll.cfg:1418
+msgid "Less"
+msgstr "更少"
+
+#: data/level/wm-ll.cfg:1423
+msgid "I am Rajit. And you?"
+msgstr "我是拉吉特。你呢？"
+
+#: data/level/wm-ll.cfg:1425
+msgid "I am Frogatto, myself."
+msgstr "我是，我就是阿托。"
+
+#: data/level/wm-ll.cfg:1426
+msgid ""
+"So, Frogatto, will you take this\n"
+"rope up to Woodenhead?"
+msgstr ""
+"那么，阿托，能请你把这条绳子\n"
+"送上木头脑袋那里去么？"
+
+#: data/level/wm-ll.cfg:1430
+msgid ""
+"Great! Here is the rope.\n"
+"*Rajit hands you the rope.*"
+msgstr ""
+"好极了！这是绳子。\n"
+"* 拉吉特把绳子递给了你。"
+
+#: data/level/wm-ll.cfg:1433
+msgid "I'll have this up there soon."
+msgstr "我马上把这送上去。"
+
+#: data/level/wm-ll.cfg:1437
+msgid ""
+"Sir! I am but a humble working\n"
+"man! How am I supposed to pay you?"
+msgstr ""
+"先生！我只是个卑微的工人而已！\n"
+"我该如何报答你呢？"
+
+#: data/level/wm-ll.cfg:1439
+msgid ""
+"I notice a distinct absence of\n"
+"coins around here..."
+msgstr ""
+"我发现这附近半个金币\n"
+"都没有……"
+
+#: data/level/wm-ll.cfg:1440
+msgid ""
+"Eh... I suppose I can let you\n"
+"have 5 coins for the service.\n"
+"There weren't many around."
+msgstr ""
+"呃……我想我可以付你5个\n"
+"金币的服务费。这附近确实\n"
+"没多少金币。"
+
+#: data/level/wm-ll.cfg:1442
+msgid "Done!"
+msgstr "成交！"
+
+#: data/level/wm-ll.cfg:1446
+msgid ""
+"I'm *trying* to fix the elevator.\n"
+"The cable got tangled with a tree\n"
+"during the storm, and it had to be"
+msgstr ""
+"我正*试着*修好升降梯。\n"
+"在风暴里缆绳缠在树上了，"
+
+#: data/level/wm-ll.cfg:1448
+msgid ""
+"cut loose. The idea was that I'd\n"
+"fly up with a small, light rope,\n"
+"then I'd attach that to a heavier\n"
+"rope and they'd pull that one up,\n"
+"and then the heavier rope could be\n"
+"used to pull the steel elevator\n"
+"cable up."
+msgstr ""
+"我必须弄松它。方法是：\n"
+"我带着一条又小又轻的绳子\n"
+"飞上去，而后把小绳子系在\n"
+"重点儿的绳子上。上面的人\n"
+"会把这绳子拉上去，而后它\n"
+"就可以把铁制升降梯的缆绳\n"
+"拉上去了。"
+
+#: data/level/wm-ll.cfg:1450
+msgid "So? What's holding you up?"
+msgstr "然后？为啥停“下”来？"
+
+#: data/level/wm-ll.cfg:1452
+msgid ""
+"Or, in this case...\n"
+"holding you down?"
+msgstr ""
+"或者说是……\n"
+"为啥不“上”去？"
+
+#: data/level/wm-ll.cfg:1453
+msgid ""
+"That's not funny.\n"
+"Anyhow, I can get the light rope\n"
+"up just fine. It's just that...\n"
+"well... I didn't pack a light\n"
+"enough medium rope."
+msgstr ""
+"这不好玩。\n"
+"不管咋说，我可以把轻绳子\n"
+"弄上去。只是……\n"
+"好吧，我选了一条不够轻的\n"
+"中等绳子……"
+
+#: data/level/wm-ll.cfg:1455
+msgid "You've lost me. Again..?"
+msgstr "你又没在听我说话？"
+
+#: data/level/wm-ll.cfg:1456
+msgid ""
+"In short, the light rope isn't\n"
+"strong enough to lift the medium\n"
+"rope. Someone will have to walk\n"
+"the medium rope up there."
+msgstr ""
+"简单说，轻绳子不足以\n"
+"把中绳子拉上去。得有个\n"
+"人走着把中绳子送上去。"
+
+#: data/level/wm-ll.cfg:1457
+msgid ""
+"I've checked out the path ahead,\n"
+"but\tI can't get through it."
+msgstr ""
+"我已经查看过了前面的路，\n"
+"但我通过不了。"
+
+#: data/level/wm-ll.cfg:1459
+msgid ""
+"So, for the good of the town,\n"
+"you want me to take up the medium\n"
+"rope?"
+msgstr ""
+"所以，为了小镇的大义，\n"
+"你想让我把中绳子送上去？"
+
+#: data/level/wm-ll.cfg:1460
+msgid ""
+"You know it. If you tell the\n"
+"guard there I sent you, he'll\n"
+"let you through."
+msgstr ""
+"你懂的。如果你告诉守卫说\n"
+"是我让你去的，他会让你\n"
+"通过的。"
+
+#: data/level/wm-ll.cfg:1464
+msgid ""
+"1: Sure, I'm on it!\n"
+"2: Pay me."
+msgstr ""
+"1：当然了，我会做的！\n"
+"2：付我钱我就干。"
+
+#: data/level/wm-ll.cfg:1467 data/level/wm-town.cfg:2345
+msgid "More"
+msgstr "更多"
+
+#: data/level/wm-ll.cfg:1472
+msgid ""
+"You don't know of it? Hmh. Well,\n"
+"it's a small town in the tops of\n"
+"the trees. You should ask the locals.\n"
+"To get to it, you just head left,\n"
+"then you go up-right. The shorter\n"
+"elevators there still work fine,\n"
+"it's just this area which got the\n"
+"damage, really. So, are you walking\n"
+"to Woodenhead?"
+msgstr ""
+"你不知道“木头脑袋”？呃，\n"
+"那是个树顶上的小镇。你应该\n"
+"去问问本地人。要去那里，\n"
+"先往左走，然后往右上。\n"
+"那边的短途升降梯还是好的，\n"
+"其实只有这片区域才受损了。\n"
+"好了，你要走去木头脑袋么？"
+
+#: data/level/wm-town.cfg:12
+msgid "Company Town"
+msgstr "公司的小镇"
+
+#: data/level/wm-town.cfg:1159
+msgid ""
+"Welcome to Woodenhead.\n"
+"I'm the town guard."
+msgstr ""
+"欢迎来到木头脑袋。\n"
+"我是镇上的卫兵。"
+
+#: data/level/wm-town.cfg:1162
+msgid ""
+"That's nice. Why does the\n"
+"town need a guard?"
+msgstr ""
+"很好。\n"
+"为啥这镇子需要卫兵？"
+
+#: data/level/wm-town.cfg:1164
+msgid ""
+"I operate the lift, mostly.\n"
+"But, guarding pays less.\n"
+"So, I'm a guard.\n"
+"It's still good money."
+msgstr ""
+"我主要是操作升降梯的。\n"
+"但是，卫兵工资低些。\n"
+"所以我才是卫兵啊。\n"
+"不过报酬还是不错的。"
+
+#: data/level/wm-town.cfg:1167
+msgid ""
+"It looks like an easy job,\n"
+"though a bit slow.\n"
+"Can you tell me a\n"
+"bit about Woodenhead?"
+msgstr ""
+"看着像个轻松差事嘛，\n"
+"虽然慢了点。\n"
+"啊能给我介绍下这啥\n"
+"木头脑袋？"
+
+#: data/level/wm-town.cfg:1169
+msgid ""
+"Sure, nothing else doing.\n"
+"What do you want to know?"
+msgstr ""
+"当然，反正没别的事可干。\n"
+"你想知道什么？"
+
+#: data/level/wm-town.cfg:1171
+msgid ""
+"1: Why is it called Woodenhead?\n"
+"2: Why's the town here?"
+msgstr "1：为啥叫“木头脑袋”？2：为啥这儿有镇子？"
+
+#: data/level/wm-town.cfg:1174
+msgid ""
+"I think it's got something to\n"
+"do with 'minehead' and the\n"
+"fact we're in the woods."
+msgstr ""
+"我猜和矿石脑袋（指英国城市\n"
+"Minehead）有关吧，而我们是\n"
+"住在木头上的（Woodenhead）。"
+
+#: data/level/wm-town.cfg:1177
+msgid "Reasonable enough."
+msgstr "挺有道理的。"
+
+#: data/level/wm-town.cfg:1182
+msgid ""
+"The town was built by the\n"
+"company to mine the trees\n"
+"around these parts. We\n"
+"export wood products to most\n"
+"of the country. Wood blocks,\n"
+"wood shavings, carvings, most\n"
+"of it came from here.\n"
+"It's too dangerous to fell\n"
+"trees here, what with the\n"
+"bugs and all those things\n"
+"crawling around. Even up\n"
+"here, the bugs are pretty bad."
+msgstr ""
+"公司建了这个小镇来采集\n"
+"附近的树木。我们向国内\n"
+"大部分地区出口木产品。\n"
+"木块，木刨花，木雕刻，\n"
+"大部分都是出自这里。"
+
+#: data/level/wm-town.cfg:1185
+msgid ""
+"I've been around, you'd\n"
+"never get any work done."
+msgstr ""
+"我一直在这儿，\n"
+"你啥事都没做成。"
+
+#: data/level/wm-town.cfg:1187
+msgid ""
+"But the worst of it is,\n"
+"there is some sort of...\n"
+"FUNGUS growing all over the\n"
+"forest now. It didn't use\n"
+"to be there when I started.\n"
+"We had a camp over in\n"
+"Westhailia which got totally\n"
+"engulfed by the stuff. I\n"
+"expect that even this camp\n"
+"will be run over eventually.\n"
+"But that won't be for\n"
+"a while yet. We can\n"
+"always break camp and move\n"
+"on, but this fungus is\n"
+"hurting sales too! Still, I\n"
+"guess it could be worse."
+msgstr ""
+"但最糟糕的是，\n"
+"现在森林里到处都\n"
+"长满了某种*真菌*。\n"
+"我开始干活的时候\n"
+"根本没这种东西。\n"
+"我们在威斯特哈里亚\n"
+"有个营地完全被真菌\n"
+"吞没了。我认为这个\n"
+"营地最后也都会被\n"
+"淹没的。但这还得\n"
+"过段时间。我们随时\n"
+"可以撤掉营地到别处，\n"
+"但这真菌也损害了\n"
+"我们的生意。\n"
+"而且，我猜情况可能\n"
+"变得更糟糕。"
+
+#: data/level/wm-town.cfg:1190
+msgid ""
+"Yeah, the town is in trouble.\n"
+"You could work there."
+msgstr ""
+"啊对，小镇有麻烦了。\n"
+"你可以在那儿工作。"
+
+#: data/level/wm-town.cfg:1192
+msgid ""
+"Oh, I hadn't heard.\n"
+"I have some family over there.\n"
+"I'll send them some money\n"
+"if they have to relocate.\n"
+"I hope they don't."
+msgstr ""
+"哦，我没听说这事。\n"
+"那边住着我的家人。\n"
+"要是他们得搬迁的话\n"
+"我会寄些钱过去的。\n"
+"但愿他们不会搬走。"
+
+#: data/level/wm-town.cfg:1195
+msgid "More..."
+msgstr "更多……"
+
+#: data/level/wm-town.cfg:1197
+msgid "3: Could you start the lift?"
+msgstr "3：可以启动升降梯么？"
+
+#: data/level/wm-town.cfg:1200
+msgid "Sure, no problem."
+msgstr "当然，没问题。"
+
+#: data/level/wm-town.cfg:1203
+msgid "How'd you do that?"
+msgstr "你要怎么启动啊？"
+
+#: data/level/wm-town.cfg:1210
+msgid "Uh, I forgot. Sorry."
+msgstr "呃，我忘了，抱歉。"
+
+#: data/level/wm-town.cfg:1962
+msgid ""
+"Oh, hello down there.\n"
+"Just a sec, I'll start the lift."
+msgstr ""
+"哦，你好啊！\n"
+"稍等一下，我来开动梯子。"
+
+#: data/level/wm-town.cfg:2210
+msgid "Hello there. I am Jove."
+msgstr "你好啊，我是吉夫。"
+
+#: data/level/wm-town.cfg:2213
+msgid ""
+"Hi. I'm Frogatto.\n"
+"What do you do here?"
+msgstr ""
+"嗨，我是阿托。\n"
+"你在这儿做啥？"
+
+#: data/level/wm-town.cfg:2215
+msgid ""
+"I am the manager of this mining\n"
+"camp, and the proprietor of\n"
+"the only restaurant in town.\n"
+"I hope you'll understand if all\n"
+"we have to offer is outdoor\n"
+"seating, things are a bit cramped\n"
+"in back."
+msgstr ""
+"我是这个采矿场的经理，\n"
+"也是镇上唯一一家餐馆的\n"
+"所有人。我希望您能理解\n"
+"我们只能提供室外座位的\n"
+"苦衷，屋里实在是有点\n"
+"狭窄。"
+
+#: data/level/wm-town.cfg:2217
+msgid ""
+"1: Tell me about the mines.\n"
+"2: Tell me about the restaurant."
+msgstr "1：说说矿产的事吧。2：说说餐馆的事吧。"
+
+#: data/level/wm-town.cfg:2220
+msgid "What would you like to know?"
+msgstr "您想要知道什么？"
+
+#: data/level/wm-town.cfg:2222
+msgid ""
+"1: How are labour relations?\n"
+"2: How do you mine wood?"
+msgstr "1：劳资关系如何？2：怎样“采”树木的？"
+
+#: data/level/wm-town.cfg:2225
+msgid ""
+"Things are surprisingly good,\n"
+"actually. We're a pretty small\n"
+"outfit, so complaints get dealt\n"
+"with quickly. That, and I think\n"
+"we're all a little scared for\n"
+"our jobs right now. With the\n"
+"fungus infestation, people aren't buying\n"
+"as much art-wood as they\n"
+"used to. I'll be honest, we\n"
+"sell all sorts of stuff,\n"
+"but the fine old-growth was\n"
+"our cash cow. Right now, people\n"
+"are buying cheap wood, planks,\n"
+"shavings, stuff like that. They're\n"
+"moving away from this fungus\n"
+"stuff. Building new houses, putting\n"
+"stuff in storage, etc. I mean, you\n"
+"noticed there weren't very\n"
+"many people around of late.\n"
+"Still, I don't think we'll\n"
+"go broke or anything. We\n"
+"are still selling plenty of the\n"
+"lower-grade timber. Still, it\n"
+"is a bit worrying."
+msgstr ""
+"事实上，情况好得出奇。\n"
+"我们是个很小的集体，\n"
+"所以抱怨什么的很快就\n"
+"解决了。这是一点，\n"
+"而且最近我们都有点怕\n"
+"自己的工作了。因为\n"
+"真菌感染的缘故，人们\n"
+"买的木工艺品比以前少\n"
+"了。老实说，我们什么\n"
+"都卖，但长势良好的\n"
+"老树是主要财源。最近\n"
+"人们买的都是便宜的木材\n"
+"木板，刨花之类。他们\n"
+"才不要有菌的东西。\n"
+"他们在建造房子，贮藏\n"
+"材料。我是说，你也该\n"
+"注意到了，现在这儿没\n"
+"什么人。不过我不觉得\n"
+"我们会破产什么的。\n"
+"低等的木料还是卖得\n"
+"不错。但这还是让人\n"
+"担心。"
+
+#: data/level/wm-town.cfg:2228
+msgid ""
+"In other words, Jove, the\n"
+"workers don't want to be\n"
+"annoying right before potential\n"
+"layoffs?"
+msgstr ""
+"换句话说，吉夫，\n"
+"工人们是不愿意冒着\n"
+"被解雇的风险来\n"
+"讨你厌么？"
+
+#: data/level/wm-town.cfg:2230
+msgid ""
+"Dead on.\n"
+"By the way, how is the town\n"
+"holding out?"
+msgstr ""
+"完全正确。\n"
+"顺便一问，镇子上情况如何？"
+
+#: data/level/wm-town.cfg:2233
+msgid ""
+"Most of them are staying,\n"
+"for now. It's not too bad."
+msgstr ""
+"大部分人留下来了，\n"
+"现在是如此。\n"
+"不算太糟糕。"
+
+#: data/level/wm-town.cfg:2235
+msgid ""
+"Good. Where there's life,\n"
+"there's hope."
+msgstr ""
+"不错。有生活的地方\n"
+"就有希望。"
+
+#: data/level/wm-town.cfg:2240
+msgid ""
+"We use the normal stuff.\n"
+"Axes, saws, brooms, teleporters."
+msgstr ""
+"我们就用常见的工具啊，\n"
+"斧子，锯子，扫帚，传送器什么的。"
+
+#: data/level/wm-town.cfg:2243
+msgid "Trade secret?"
+msgstr "商业机密？"
+
+#: data/level/wm-town.cfg:2248
+msgid ""
+"I guess you'd mind me looking\n"
+"around then, wouldn't you."
+msgstr ""
+"我猜你不会让我四处去\n"
+"逛逛了，是吧？"
+
+#: data/level/wm-town.cfg:2250
+msgid ""
+"No, not at all. Go wherever\n"
+"you like. It's a TRADE\n"
+"\tsecret, everyone who mines wood\n"
+"knows it, and everyone who doesn't\n"
+"isn't a threat to us, business-wise!"
+msgstr ""
+"不，我完全不在意。\n"
+"你想去哪儿就去哪儿，\n"
+"这是个*商业*机密，\n"
+"所有采伐树木的人\n"
+"都知道，所有不采\n"
+"的人从商业角度说，\n"
+"都是对我们的威胁！"
+
+#: data/level/wm-town.cfg:2253
+msgid "Oh."
+msgstr "哦。"
+
+#: data/level/wm-town.cfg:2259
+msgid "... It's gone. Sorry."
+msgstr "……没了，抱歉。"
+
+#: data/level/wm-town.cfg:2260
+msgid "See you."
+msgstr "再见～"
+
+#: data/level/wm-town.cfg:2268
+msgid ""
+"We serve rough, good food-\n"
+"and lots of it! It's not\n"
+"one of those restaurants for sissies!\n"
+"Anyway, what can I get for you?"
+msgstr ""
+"我们提供粗糙但是上好的\n"
+"食物，很多这样的食物！\n"
+"这可不是给女人气的家伙\n"
+"服务的餐馆！\n"
+"好啦，您需要什么？"
+
+#: data/level/wm-town.cfg:2270
+msgid ""
+"1: Food Menu\n"
+"2: <*Guess restaurant name.*>"
+msgstr ""
+"1：菜单\n"
+"2：<*猜猜餐馆的名字*>"
+
+#: data/level/wm-town.cfg:2274
+msgid "I'll have the..."
+msgstr "我想要……"
+
+#: data/level/wm-town.cfg:2275
+msgid "Slow Moe"
+msgstr "斯洛·莫伊"
+
+#: data/level/wm-town.cfg:2277
+msgid ""
+"One Slow Moe, coming right up.\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"What?"
+msgstr ""
+"一个斯洛·莫伊（某片里的僵尸）\n"
+"马上来到面前……\n"
+"\n"
+"\n"
+"\n"
+"啥？"
+
+#: data/level/wm-town.cfg:2281
+msgid "Shooter"
+msgstr "大枪"
+
+#: data/level/wm-town.cfg:2283
+msgid ""
+"Shooter. Never know how they\n"
+"make these things. *shakes head*"
+msgstr ""
+"大枪。我一直搞不清楚\n"
+"这些是咋制造出来的。\n"
+"*点头*"
+
+#: data/level/wm-town.cfg:2287
+msgid "Turtle"
+msgstr "海龟"
+
+#: data/level/wm-town.cfg:2289
+msgid ""
+"I once tried to make a soup out\n"
+"of this stuff. I had to throw\n"
+"out the pot."
+msgstr ""
+"我曾经试过用这东西做汤。\n"
+"最后我不得不把罐子扔了。"
+
+#: data/level/wm-town.cfg:2293
+msgid "Heart"
+msgstr "红心"
+
+#: data/level/wm-town.cfg:2295
+msgid ""
+"Would you like the heart without\n"
+"any traceable mercury, or the\n"
+"heart without any detectable\n"
+"lead? Nah, just kidding, I\n"
+"serve only the finest*.\n"
+"\n"
+"*That exists in this restaurant."
+msgstr ""
+"你是想要那种测不出汞的\n"
+"红心呢，还是要那种检不出\n"
+"铅的红心呢？啊，我开玩笑的。\n"
+"我只提供最好的产品*。\n"
+"\n"
+"* 当然是在店里找得到的。"
+
+#: data/level/wm-town.cfg:2296
+msgid ""
+"Oh, just pass the buckshot,\n"
+"would you?"
+msgstr ""
+"哦，直接把那铅弹递过来\n"
+"就好，行不？"
+
+#: data/level/wm-town.cfg:2300
+msgid "Fruit"
+msgstr "水果"
+
+#: data/level/wm-town.cfg:2302
+msgid "It's foreign, but it ships well."
+msgstr "这是进口水果，不过卖相不错。"
+
+#: data/level/wm-town.cfg:2306
+msgid "Special"
+msgstr "特别物品"
+
+#: data/level/wm-town.cfg:2308
+msgid ""
+"The special today is the\n"
+"partial maximum heart. This is\n"
+"a delicacy, though, so unlike most\n"
+"of the stuff here it'll run\n"
+"you 35 coins. Would you still\n"
+"like to buy it?"
+msgstr ""
+"今天的特别产品是\n"
+"半颗生命心。这东西有点棘手，\n"
+"所以不像别的货物，这货得卖\n"
+"35个金币。你还想买不？"
+
+#: data/level/wm-town.cfg:2311
+msgid ""
+"Great! You wouldn't believe the\n"
+"trouble I've had selling this!"
+msgstr ""
+"太棒了！你是不会相信要卖掉这东西\n"
+"有多麻烦的！"
+
+#: data/level/wm-town.cfg:2318
+msgid ""
+"Probably the best choice, given how\n"
+"long it's been sitting around."
+msgstr ""
+"也许是最好的选项吧，\n"
+"想想这东西都放在这儿多久了。"
+
+#: data/level/wm-town.cfg:2324
+msgid "Nothing"
+msgstr "啥都不要"
+
+#: data/level/wm-town.cfg:2326
+msgid "Sorry Jove, maybe later."
+msgstr "抱歉吉夫，以后再来买吧。"
+
+#: data/level/wm-town.cfg:2335
+msgid ""
+"Is your restaurant called\n"
+"'That's good food, by J--"
+msgstr ""
+"你的餐馆是不是叫\n"
+"“来吃好吃的吧！by 吉……"
+
+#: data/level/wm-town.cfg:2337
+msgid ""
+"I bet I can throw you off the\n"
+"edge of this town from here.\n"
+"If you want to find out,\n"
+"keep talking."
+msgstr ""
+"我打赌我可以把你从这儿扔到\n"
+"镇子外面去。要是你想试试，\n"
+"就继续说吧。"
+
+#: data/level/wm-town.cfg:2340
+msgid "Yeesh, I was just asking."
+msgstr "哎呀，我只是问问而已。"
+
+#: data/level/wm-town.cfg:2342
+msgid ""
+"You wouldn't believe how much\n"
+"I get that."
+msgstr ""
+"你绝对不会相信我花了多少钱才\n"
+"买到这个的。"
+
+#: data/level/wm-town.cfg:2347
+msgid "3: Odd table you have there."
+msgstr "3：你这儿的桌子真够奇怪的。"
+
+#: data/level/wm-town.cfg:2350
+msgid ""
+"Yeah, I took the legs off\n"
+"and screwed it to the deck.\n"
+"That model is oddly tall,\n"
+"don't you think? It's like\n"
+"one-size-fits-none. I mean,\n"
+"I could WALK under it!"
+msgstr ""
+"对头，我把桌腿锯了下来\n"
+"钉在了桌面上。\n"
+"这个型号的桌子高得出奇，\n"
+"你不觉得么？这个大小\n"
+"放哪里都不合适。我是说，\n"
+"我都可以在那下面*走*过了！"
+
+#: data/level/wm-town.cfg:2353
+msgid ""
+"I should do the same. I've\n"
+"got the same model at home."
+msgstr ""
+"我也该走那么一下。\n"
+"我家里有个一样型号的。"
+
+#: data/level/wm-town.cfg:2359
+msgid "Sorry, I'm kind of full."
+msgstr "抱歉，我有点饱了。"
+
+#: data/level/wm-town.cfg:2361
+msgid ""
+"Happens to the best of us.\n"
+"I remember I was full, once."
+msgstr ""
+"我们都一样。\n"
+"我记得以前也曾经吃饱过一次。"
+
+#: data/object_prototypes/buyable_item.cfg:19
+#: data/object_prototypes/buyable_item.cfg:22
+msgid "The price is {final_price} coins."
+msgstr "价格是 {final_price} 金币。"
+
+#: data/object_prototypes/buyable_item.cfg:19
+msgid "You don't have enough money."
+msgstr "你的钱不够。"
+
+#: data/object_prototypes/buyable_item.cfg:23
+msgid "Do you want to buy the {consts.name}?"
+msgstr "想要买 {consts.name} 吗？"
+
+#: data/objects/crazy-stuff/jb-background.cfg:7
+msgid "error"
+msgstr "错误"
+
+#: data/objects/crazy-stuff/jb-background.cfg:18
+msgid "Runtime: "
+msgstr "运行时："
+
+#: data/objects/crazy-stuff/jb-background.cfg:27
+msgid " -- paused -- "
+msgstr " -- 暂停 --"
+
+#: data/objects/items/max_heart_object.cfg:18
+msgid ""
+"You have acquired a heart capsule.\n"
+"Your maximum HP has increased by one!"
+msgstr ""
+"你得到了一个红心胶囊。\n"
+"你的最大生命值增加了一！"
+
+#: data/objects/items/partial_max_heart_object.cfg:22
+msgid ""
+"You've found part of a heart capsule.\n"
+"Collect another three to increase\n"
+"your maximum HP by one!"
+msgstr ""
+"你找到了红心胶囊的一部分。\n"
+"再收集三块碎片就可以使\n"
+"你的最大生命值增加一！"
+
+#: data/objects/items/partial_max_heart_object.cfg:24
+msgid ""
+"You've found part of a heart capsule.\n"
+"Collect another two to increase\n"
+"your maximum HP by one!"
+msgstr ""
+"你找到了红心胶囊的一部分。\n"
+"再收集两块碎片就可以使\n"
+"你的最大生命值增加一！"
+
+#: data/objects/items/partial_max_heart_object.cfg:26
+msgid ""
+"You've found part of a heart capsule.\n"
+"Collect another one to increase\n"
+"your maximum HP by one!"
+msgstr ""
+"你找到了红心胶囊的一部分。\n"
+"再收集一块碎片就可以使\n"
+"你的最大生命值增加一！"
+
+#: data/objects/items/partial_max_heart_object.cfg:30
+msgid ""
+"You've collected enough parts to\n"
+"make a whole new heart capsule!\n"
+"Your maximum HP has increased by one!"
+msgstr ""
+"你收集齐了碎片，足以组成完整的红心胶囊！\n"
+"你的最大生命值增加了一！"
+
+#: data/objects/npcs/chopple_npc.cfg:7
+msgid "Hi, Chopple."
+msgstr "嗨，巧比。"
+
+#: data/objects/npcs/chopple_npc.cfg:8
+msgid ""
+"Hey.\n"
+"Welcome to the store."
+msgstr ""
+"嘿。\n"
+"欢迎光临小店。"
+
+#: data/objects/npcs/chopple_npc.cfg:9
+msgid "Take your time, look around."
+msgstr "随便看看吧。"
+
+#: data/objects/npcs/kinguin_npc.cfg:26
+msgid "Hi, Kinguin, what's up?"
+msgstr "嗨，金古林，有啥事不？"
+
+#: data/objects/playable/map-selector.cfg:21
+msgid "Milgram's Castle"
+msgstr "米格拉姆的城堡"
+
+#: data/objects/props-interactive/save_toilet.cfg:16
+msgid "Do you want to save the game?"
+msgstr "想要存档么？"
+
+#: data/objects/props-interactive/save_toilet.cfg:21
+msgid "The game has been saved."
+msgstr "游戏已存档。"
+
+#: data/objects/store-items/buyable_gliding_wings.cfg:11
+msgid "gliding wings"
+msgstr "滑翔翼"
+
+#: data/objects/store-items/buyable_gliding_wings.cfg:13
+msgid ""
+"The gliding wings will allow\n"
+"you to glide through the air."
+msgstr "滑翔翼使得你可以在空中滑翔。"
+
+#: data/objects/store-items/buyable_heart_container.cfg:11
+msgid "heart"
+msgstr "红心"
+
+#: data/objects/store-items/buyable_heart_container.cfg:13
+msgid ""
+"The heart will give you\n"
+"an extra health point."
+msgstr ""
+"红心会赐予你一点额外的\n"
+"生命值。"
+
+#: data/objects/store-items/buyable_jumping_boots.cfg:13
+msgid ""
+"The power boots will\n"
+"make you jump higher."
+msgstr "动力靴让你跳得更高。"
+
+#: data/objects/store-items/buyable_powerup_invincible.cfg:11
+msgid "invincibility crystal"
+msgstr "无敌水晶"
+
+#: data/objects/store-items/buyable_powerup_invincible.cfg:13
+msgid ""
+"The invincibility crystal unlocks\n"
+"invincibility powerups. Invincibility\n"
+"powerups will make you\n"
+"invincible for a short time."
+msgstr ""
+"无敌水晶启动无敌加护。\n"
+"无敌加护会让你\n"
+"无敌一小会儿。"
+
+#: data/objects/store-items/buyable_powerup_reflexes.cfg:11
+msgid "hyper crystal"
+msgstr "反应水晶"
+
+#: data/objects/store-items/buyable_powerup_reflexes.cfg:13
+msgid ""
+"The hyper crystal unlocks\n"
+"hyper powerups. Hyper\n"
+"powerups will heighten your\n"
+"reflexes, making the world\n"
+"seem to slow down around you."
+msgstr ""
+"反应水晶启动反应加护。\n"
+"反应加护会提高你的\n"
+"反应能力，使得你周围的\n"
+"一切似乎都变慢。"
+
+#: data/objects/store-items/buyable_powerup_shooting.cfg:11
+msgid "energy crystal"
+msgstr "能量水晶"
+
+#: data/objects/store-items/buyable_powerup_shooting.cfg:13
+msgid ""
+"The energy crystal unlocks\n"
+"energy powerups. Energy\n"
+"powerups will allow you\n"
+"to shoot bolts of energy."
+msgstr ""
+"能量水晶启动能量加护。\n"
+"能量加护让你能够射出\n"
+"能量弹。"
+
+#: data/objects/store-items/buyable_shield.cfg:13
+msgid ""
+"The energy shield protects you\n"
+"from damage when you crouch."
+msgstr ""
+"当你蹲下时，能量护盾\n"
+"会保护你不受伤害。"
+
+#: data/objects/store-items/buyable_speed_boots.cfg:13
+msgid ""
+"The speed boots will make\n"
+"you faster."
+msgstr "加速靴让你跑得更快。"
+
+#: data/objects/store-items/buyable_spit_strengthener.cfg:11
+msgid "spit strengthener"
+msgstr "喷吐加强"
+
+#: data/objects/store-items/buyable_spit_strengthener.cfg:13
+msgid ""
+"The spit strengthener will extend\n"
+"the range you can spit."
+msgstr "增加喷吐的射程。"
+
+#: data/objects/store-items/buyable_tongue_extension.cfg:11
+msgid "tongue extender"
+msgstr "舌头加长"
+
+#: data/objects/store-items/buyable_tongue_extension.cfg:13
+msgid ""
+"The tongue extender will extend\n"
+"the length of your tongue."
+msgstr "增加舌头的长度。"
+
+#: data/preload.cfg:4 data/preload.cfg:9 data/preload.cfg:14
+msgid "Loading textures"
+msgstr "正在读取贴图"
+
+#: data/preload.cfg:19
+msgid "Loading Frogatto character"
+msgstr "正在读取角色：阿托"
+
+#: data/preload.cfg:24
+msgid "Loading door object"
+msgstr "正在读取对象：门"
+
+#: data/preload.cfg:29
+msgid "Loading energy shot"
+msgstr "正在读取对象：能量弹"
+
+#: src/controls_dialog.cpp:42
+msgid "Directions"
+msgstr "方向"
+
+#: src/controls_dialog.cpp:47
+msgid "Jump"
+msgstr "跳跃"
+
+#: src/controls_dialog.cpp:49
+msgid "Tongue"
+msgstr "吐舌"
+
+#: src/controls_dialog.cpp:51
+msgid "Attack"
+msgstr "攻击"
+
+#: src/controls_dialog.cpp:53
+msgid "Back"
+msgstr "返回"
+
+#: src/draw_scene.cpp:350
+msgid "Achievement Unlocked!"
+msgstr "成就达成！"
+
+#: src/key_button.cpp:63
+msgid "LEFT"
+msgstr "左"
+
+#: src/key_button.cpp:65
+msgid "RIGHT"
+msgstr "右"
+
+#: src/key_button.cpp:67
+msgid "UP"
+msgstr "上"
+
+#: src/key_button.cpp:69
+msgid "DOWN"
+msgstr "下"
+
+#: src/main.cpp:353
+msgid "Loading level"
+msgstr "正在读取关卡"
+
+#: src/pause_game_dialog.cpp:44
+msgid "Music Volume:"
+msgstr "音乐音量："
+
+#: src/pause_game_dialog.cpp:46
+msgid "Sound Volume:"
+msgstr "音效音量："
+
+#: src/pause_game_dialog.cpp:61
+msgid "Resume"
+msgstr "返回游戏"
+
+#: src/pause_game_dialog.cpp:62
+msgid "Controls..."
+msgstr "控制键..."
+
+#: src/pause_game_dialog.cpp:63
+msgid "Return to Titlescreen"
+msgstr "回到标题画面"
+
+#: src/pause_game_dialog.cpp:64
+msgid "Exit Game"
+msgstr "退出游戏"
+
+#: src/pause_game_dialog.cpp:65
+msgid "Reverse A and B"
+msgstr "交换A/B键"
+
+#: src/pause_game_dialog.cpp:67
+msgid "OpenFeint"
+msgstr "OpenFeint"
