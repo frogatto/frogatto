@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-23 00:37-0200\n"
+"POT-Creation-Date: 2011-01-24 01:50-0200\n"
 "PO-Revision-Date: 2011-01-19 16:54+0000\n"
 "Last-Translator: TheJoe <asbruff@gmail.com>\n"
 "Language-Team: Italian <>\n"
@@ -157,7 +157,7 @@ msgstr ""
 "L'hai mandato {level.player.vars.score} piedi sull'albero di manutenzione! "
 
 #: data/level/arcade-maintenance-shaft.cfg:1537
-#: data/objects/scene-fx/level_controller_coin_race.cfg:31
+#: data/objects/scene-fx/level_controller_coin_race.cfg:32
 msgid "This is a new high score!"
 msgstr "Questo è un nuovo record!"
 
@@ -189,7 +189,7 @@ msgstr "Città d'Autunno"
 msgid "Bombing Fools"
 msgstr "Buffoni al Bombardamento"
 
-#: data/level/bon-bosque.cfg:15
+#: data/level/bon-bosque.cfg:15 data/objects/playable/map-selector.cfg:20
 msgid "Bon Bosque"
 msgstr "Il Buon Bosco"
 
@@ -345,6 +345,7 @@ msgstr "Ponte della Crepa"
 #: data/level/crevice-village-cave.cfg:11
 #: data/level/crevice-village-central.cfg:13
 #: data/level/crevice-village-heights.cfg:11 data/level/crevice-village.cfg:13
+#: data/objects/playable/map-selector.cfg:18
 msgid "Crevice Village"
 msgstr "Villaggio della Crepa"
 
@@ -1484,6 +1485,7 @@ msgid "Flooded Caverns"
 msgstr "Caverne Sommerse"
 
 #: data/level/foreboding-forest.cfg:13
+#: data/objects/playable/map-selector.cfg:19
 msgid "Foreboding Forest"
 msgstr "La Foresta del Presagio"
 
@@ -1611,7 +1613,7 @@ msgstr "Oh cavolo! Ho dormito troppo!"
 msgid "it's the principle of the thing."
 msgstr "almeno è un inizio"
 
-#: data/level/frogatto-grotto.cfg:13
+#: data/level/frogatto-grotto.cfg:13 data/objects/playable/map-selector.cfg:16
 msgid "Frogatto Grotto"
 msgstr "Grotta di Frogatto"
 
@@ -2435,6 +2437,7 @@ msgid "There must be a way around it."
 msgstr "Ci deve essere un modo per passarla."
 
 #: data/level/secluded-hut-interior.cfg:12 data/level/secluded-hut.cfg:11
+#: data/objects/playable/map-selector.cfg:17
 msgid "Secluded Hut"
 msgstr "La Capanna Isolata"
 
@@ -4666,19 +4669,19 @@ msgstr "Vuoi salvare il gioco?"
 msgid "The game has been saved."
 msgstr "Il gioco è stato salvato."
 
-#: data/objects/scene-fx/level_controller_coin_race.cfg:30
+#: data/objects/scene-fx/level_controller_coin_race.cfg:31
 #, fuzzy
 msgid "You made it to level {level.player.difficulty} of the coin race!"
 msgstr ""
 "L'hai mandato {level.player.vars.score} piedi sull'albero di manutenzione! "
 
-#: data/objects/scene-fx/level_controller_coin_race.cfg:32
+#: data/objects/scene-fx/level_controller_coin_race.cfg:33
 #, fuzzy
 msgid "You made it to level {level.player.difficulty} of the coin race."
 msgstr ""
 "L'hai mandato {level.player.vars.score} piedi sull'albero di manutenzione! "
 
-#: data/objects/scene-fx/level_controller_coin_race.cfg:33
+#: data/objects/scene-fx/level_controller_coin_race.cfg:34
 #, fuzzy
 msgid ""
 "The furthest that has been reached is level {registry."

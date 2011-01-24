@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-23 00:37-0200\n"
+"POT-Creation-Date: 2011-01-24 01:50-0200\n"
 "PO-Revision-Date: 2011-01-19 16:54+0000\n"
 "Last-Translator: manu <emmanuel.fujioka@free.fr>\n"
 "Language-Team: French <>\n"
@@ -159,7 +159,7 @@ msgstr ""
 "maintenance!"
 
 #: data/level/arcade-maintenance-shaft.cfg:1537
-#: data/objects/scene-fx/level_controller_coin_race.cfg:31
+#: data/objects/scene-fx/level_controller_coin_race.cfg:32
 msgid "This is a new high score!"
 msgstr "C'est un nouveau record!"
 
@@ -190,7 +190,7 @@ msgstr "Ville de l'Automne"
 msgid "Bombing Fools"
 msgstr "Les Bombardiers Fous"
 
-#: data/level/bon-bosque.cfg:15
+#: data/level/bon-bosque.cfg:15 data/objects/playable/map-selector.cfg:20
 msgid "Bon Bosque"
 msgstr "Bon Bosquet"
 
@@ -354,6 +354,7 @@ msgstr "Pont de la Crevasse"
 #: data/level/crevice-village-cave.cfg:11
 #: data/level/crevice-village-central.cfg:13
 #: data/level/crevice-village-heights.cfg:11 data/level/crevice-village.cfg:13
+#: data/objects/playable/map-selector.cfg:18
 msgid "Crevice Village"
 msgstr "Village de la Crevasse"
 
@@ -1533,6 +1534,7 @@ msgid "Flooded Caverns"
 msgstr "Cavernes Inondées"
 
 #: data/level/foreboding-forest.cfg:13
+#: data/objects/playable/map-selector.cfg:19
 msgid "Foreboding Forest"
 msgstr "Forêt des Mauvais Pressentiments "
 
@@ -1664,7 +1666,7 @@ msgstr "Zut! J'ai trop dormi!"
 msgid "it's the principle of the thing."
 msgstr "Je le fais par principe."
 
-#: data/level/frogatto-grotto.cfg:13
+#: data/level/frogatto-grotto.cfg:13 data/objects/playable/map-selector.cfg:16
 msgid "Frogatto Grotto"
 msgstr "Grotte de Frogatto"
 
@@ -2510,6 +2512,7 @@ msgid "There must be a way around it."
 msgstr "Je devrais pouvoir la contourner."
 
 #: data/level/secluded-hut-interior.cfg:12 data/level/secluded-hut.cfg:11
+#: data/objects/playable/map-selector.cfg:17
 msgid "Secluded Hut"
 msgstr "Maison du Reclus"
 
@@ -4858,21 +4861,21 @@ msgstr "Souhaitez-vous sauvegarder votre partie?"
 msgid "The game has been saved."
 msgstr "La partie a été sauvegardée."
 
-#: data/objects/scene-fx/level_controller_coin_race.cfg:30
+#: data/objects/scene-fx/level_controller_coin_race.cfg:31
 #, fuzzy
 msgid "You made it to level {level.player.difficulty} of the coin race!"
 msgstr ""
 "Vous avez monté {level.player.vars.score} pieds dans le conduit de "
 "maintenance!"
 
-#: data/objects/scene-fx/level_controller_coin_race.cfg:32
+#: data/objects/scene-fx/level_controller_coin_race.cfg:33
 #, fuzzy
 msgid "You made it to level {level.player.difficulty} of the coin race."
 msgstr ""
 "Vous avez monté {level.player.vars.score} pieds dans le conduit de "
 "maintenance!"
 
-#: data/objects/scene-fx/level_controller_coin_race.cfg:33
+#: data/objects/scene-fx/level_controller_coin_race.cfg:34
 #, fuzzy
 msgid ""
 "The furthest that has been reached is level {registry."

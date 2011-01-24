@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto & Friends 1.0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-23 00:37-0200\n"
-"PO-Revision-Date: 2011-01-16 18:53-0300\n"
+"POT-Creation-Date: 2011-01-24 01:50-0200\n"
+"PO-Revision-Date: 2011-01-23 05:15-0300\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Brazilian Portuguese\n"
 "Language: \n"
@@ -36,15 +36,15 @@ msgstr "Escoteiro"
 
 #: data/achievements.cfg:13
 msgid "Put a water beetle back in water."
-msgstr "Devolver à água um besouro anfíbio."
+msgstr "Jogue n'água um besouro nadador."
 
 #: data/achievements.cfg:20
 msgid "Nice Try..."
-msgstr ""
+msgstr "Curioso, hein?"
 
 #: data/achievements.cfg:21
 msgid "but that's not a secret area."
-msgstr ""
+msgstr "mas não tem nenhuma área secreta aí."
 
 #: data/achievements.cfg:28
 msgid "Gold Hoarder"
@@ -161,7 +161,7 @@ msgid "You made it {level.player.vars.score} feet up the maintenance shaft!"
 msgstr ""
 
 #: data/level/arcade-maintenance-shaft.cfg:1537
-#: data/objects/scene-fx/level_controller_coin_race.cfg:31
+#: data/objects/scene-fx/level_controller_coin_race.cfg:32
 msgid "This is a new high score!"
 msgstr ""
 
@@ -191,7 +191,7 @@ msgstr ""
 msgid "Bombing Fools"
 msgstr ""
 
-#: data/level/bon-bosque.cfg:15
+#: data/level/bon-bosque.cfg:15 data/objects/playable/map-selector.cfg:20
 msgid "Bon Bosque"
 msgstr ""
 
@@ -277,11 +277,11 @@ msgstr ""
 
 #: data/level/caverns-of-holes.cfg:14
 msgid "Caverns of Holes"
-msgstr ""
+msgstr "Gruta Furada"
 
 #: data/level/chopple-shop-interior.cfg:7 data/level/chopple-shop.cfg:11
 msgid "Chopple's General Store"
-msgstr ""
+msgstr "Empório do Chopple"
 
 #: data/level/conveyance.cfg:9
 msgid "The Conveyance"
@@ -356,6 +356,7 @@ msgstr ""
 #: data/level/crevice-village-cave.cfg:11
 #: data/level/crevice-village-central.cfg:13
 #: data/level/crevice-village-heights.cfg:11 data/level/crevice-village.cfg:13
+#: data/objects/playable/map-selector.cfg:18
 msgid "Crevice Village"
 msgstr ""
 
@@ -1528,6 +1529,7 @@ msgid "Flooded Caverns"
 msgstr ""
 
 #: data/level/foreboding-forest.cfg:13
+#: data/objects/playable/map-selector.cfg:19
 msgid "Foreboding Forest"
 msgstr ""
 
@@ -1657,7 +1659,7 @@ msgstr "Ih! Dormi demais!"
 msgid "it's the principle of the thing."
 msgstr "é o princípio da coisa."
 
-#: data/level/frogatto-grotto.cfg:13
+#: data/level/frogatto-grotto.cfg:13 data/objects/playable/map-selector.cfg:16
 msgid "Frogatto Grotto"
 msgstr "Gruta do Frogatto"
 
@@ -2508,6 +2510,7 @@ msgstr ""
 "pra chegar do outro lado."
 
 #: data/level/secluded-hut-interior.cfg:12 data/level/secluded-hut.cfg:11
+#: data/objects/playable/map-selector.cfg:17
 msgid "Secluded Hut"
 msgstr ""
 
@@ -4566,15 +4569,15 @@ msgstr "Você quer salvar o jogo?"
 msgid "The game has been saved."
 msgstr "O jogo foi salvo com sucesso."
 
-#: data/objects/scene-fx/level_controller_coin_race.cfg:30
+#: data/objects/scene-fx/level_controller_coin_race.cfg:31
 msgid "You made it to level {level.player.difficulty} of the coin race!"
 msgstr ""
 
-#: data/objects/scene-fx/level_controller_coin_race.cfg:32
+#: data/objects/scene-fx/level_controller_coin_race.cfg:33
 msgid "You made it to level {level.player.difficulty} of the coin race."
 msgstr ""
 
-#: data/objects/scene-fx/level_controller_coin_race.cfg:33
+#: data/objects/scene-fx/level_controller_coin_race.cfg:34
 msgid ""
 "The furthest that has been reached is level {registry."
 "arcade_coin_race_high_score}."

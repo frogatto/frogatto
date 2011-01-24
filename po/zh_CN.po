@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
-"Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-01-08 14:09-0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-01-24 01:50-0200\n"
 "PO-Revision-Date: 2011-01-21 16:33+0000\n"
 "Last-Translator: CloudiDust <cloudidust@gmail.com>\n"
 "Language-Team: Chinese (China) <None>\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: data/achievements.cfg:4
@@ -146,34 +146,40 @@ msgid "Well, that's that."
 msgstr "嘛，就这样了。"
 
 #: data/level/arcade-maintenance-shaft.cfg:13
-#: data/level/titlescreen-arcade.cfg:234
+#: data/level/titlescreen-arcade.cfg:247
 msgid "Maintenance Shaft"
 msgstr "维修管道"
 
-#: data/level/arcade-maintenance-shaft.cfg:1543
-#: data/level/arcade-maintenance-shaft.cfg:1546
+#: data/level/arcade-maintenance-shaft.cfg:1536
+#: data/level/arcade-maintenance-shaft.cfg:1539
 msgid "You made it {level.player.vars.score} feet up the maintenance shaft!"
 msgstr "你在维修管道里成功前进了 {level.player.vars.score} 英尺！ "
 
-#: data/level/arcade-maintenance-shaft.cfg:1544
+#: data/level/arcade-maintenance-shaft.cfg:1537
+#: data/objects/scene-fx/level_controller_coin_race.cfg:32
 msgid "This is a new high score!"
 msgstr "这是一个新纪录！"
 
-#: data/level/arcade-maintenance-shaft.cfg:1547
+#: data/level/arcade-maintenance-shaft.cfg:1540
 msgid "The high score is {registry.arcade_maintenance_shaft_high_score} feet."
 msgstr "最高纪录是 {registry.arcade_maintenance_shaft_high_score} 英尺。 "
 
 #: data/level/arcade-the-long-haul.cfg:10
-#: data/level/titlescreen-arcade.cfg:256
+#: data/level/titlescreen-arcade.cfg:269
 msgid "The Long Haul"
 msgstr "长途运输"
 
 #: data/level/arcade-wild-new-wonder.cfg:12
-#: data/level/titlescreen-arcade.cfg:233
+#: data/level/titlescreen-arcade.cfg:245
 msgid "Wild New Wonder"
 msgstr "荒野奇观"
 
-#: data/level/autumn-town.cfg:14
+#: data/level/arcade_upper_deck.cfg:12 data/level/titlescreen-arcade.cfg:246
+#, fuzzy
+msgid "Upper Deck"
+msgstr "上段上坡道"
+
+#: data/level/autumn-town.cfg:16
 msgid "Autumn Town"
 msgstr "秋日小镇"
 
@@ -181,11 +187,11 @@ msgstr "秋日小镇"
 msgid "Bombing Fools"
 msgstr "爆破笨蛋"
 
-#: data/level/bon-bosque.cfg:13
+#: data/level/bon-bosque.cfg:15 data/objects/playable/map-selector.cfg:20
 msgid "Bon Bosque"
 msgstr "给力树丛"
 
-#: data/level/bon-bosque.cfg:1434
+#: data/level/bon-bosque.cfg:1459
 msgid ""
 "Well, you made it! Now just up ahead\n"
 "there is a gate. If you can get\n"
@@ -200,7 +206,7 @@ msgstr ""
 "洞穴里有条道儿直接通往\n"
 "米格拉姆的庭院。"
 
-#: data/level/bon-bosque.cfg:1436
+#: data/level/bon-bosque.cfg:1461
 msgid ""
 "Whoah, a bunch of caverns now?\n"
 "This seems like it's harder than\n"
@@ -210,7 +216,7 @@ msgstr ""
 "貌似这比老前辈告诉我的\n"
 "要难那么一点点啊！"
 
-#: data/level/bon-bosque.cfg:1437
+#: data/level/bon-bosque.cfg:1462
 msgid ""
 "I guess the forests have become\n"
 "infested over the years. Hopefully\n"
@@ -219,7 +225,7 @@ msgstr ""
 "我猜这些年来森林已经被侵蚀了。\n"
 "但愿那些洞穴里的情况不会糟糕太多！"
 
-#: data/level/bon-bosque.cfg:1439
+#: data/level/bon-bosque.cfg:1464
 msgid ""
 "I hope not. Thank you for guiding me\n"
 "and meeting me here."
@@ -227,7 +233,7 @@ msgstr ""
 "但愿吧。谢谢你为我指路还\n"
 "在这儿等我。"
 
-#: data/level/bon-bosque.cfg:1440
+#: data/level/bon-bosque.cfg:1465
 msgid ""
 "You're welcome, friend. Naturally I\n"
 "won't be able to fly into the\n"
@@ -335,6 +341,7 @@ msgstr "裂口桥"
 #: data/level/crevice-village-cave.cfg:11
 #: data/level/crevice-village-central.cfg:13
 #: data/level/crevice-village-heights.cfg:11 data/level/crevice-village.cfg:13
+#: data/objects/playable/map-selector.cfg:18
 msgid "Crevice Village"
 msgstr "裂口村"
 
@@ -1459,7 +1466,7 @@ msgstr "挪过地牢"
 msgid "The Entrance"
 msgstr "入口"
 
-#: data/level/eerie-arbor.cfg:14
+#: data/level/eerie-arbor.cfg:16
 msgid "Eerie Arbor"
 msgstr "阴森树林"
 
@@ -1472,6 +1479,7 @@ msgid "Flooded Caverns"
 msgstr "淹没之穴"
 
 #: data/level/foreboding-forest.cfg:13
+#: data/objects/playable/map-selector.cfg:19
 msgid "Foreboding Forest"
 msgstr "不详之森"
 
@@ -1599,7 +1607,7 @@ msgstr "我个去，我睡过头了！"
 msgid "it's the principle of the thing."
 msgstr "这是世间的准则。"
 
-#: data/level/frogatto-grotto.cfg:13
+#: data/level/frogatto-grotto.cfg:13 data/objects/playable/map-selector.cfg:16
 msgid "Frogatto Grotto"
 msgstr "阿托的洞穴"
 
@@ -1623,7 +1631,7 @@ msgstr "这里的景色多美妙啊。"
 msgid "Nothing to see in my backyard."
 msgstr "我的后院里没啥东西可看。"
 
-#: data/level/gloomy-glade.cfg:11
+#: data/level/gloomy-glade.cfg:16
 msgid "Gloomy Glade"
 msgstr "阴暗空地"
 
@@ -2404,6 +2412,7 @@ msgid "There must be a way around it."
 msgstr "一定有个办法进去的。"
 
 #: data/level/secluded-hut-interior.cfg:12 data/level/secluded-hut.cfg:11
+#: data/objects/playable/map-selector.cfg:17
 msgid "Secluded Hut"
 msgstr "隐居小屋"
 
@@ -3199,8 +3208,7 @@ msgstr "鸣谢："
 msgid "(Level Template)"
 msgstr "（关卡模板）"
 
-#: data/level/test2.cfg:12 data/level/test3.cfg:12 data/level/test4.cfg:12
-#: data/level/test5.cfg:12
+#: data/level/test3.cfg:12 data/level/test4.cfg:12 data/level/test5.cfg:12
 msgid "(Test Level)"
 msgstr "（测试关卡）"
 
@@ -3212,73 +3220,77 @@ msgstr "（测试关卡）"
 msgid "The North Tower"
 msgstr "北国塔楼"
 
-#: data/level/titlescreen-arcade.cfg:140
+#: data/level/titlescreen-arcade.cfg:141
 msgid "Each machine has a different arcade-style challenge."
 msgstr "每台机器中都有一个不同的街机风格的挑战关卡。"
 
-#: data/level/titlescreen-arcade.cfg:175
+#: data/level/titlescreen-arcade.cfg:182
 msgid "These don't affect story-mode.  Enjoy!"
 msgstr "这不会对故事模式产生影响。尽情享受吧！"
 
-#: data/level/titlescreen-arcade.cfg:207
+#: data/level/titlescreen-arcade.cfg:219
 msgid "EXIT"
 msgstr "退出"
 
-#: data/level/titlescreen-arcade.cfg:232 data/level/titlescreen-arcade.cfg:255
+#: data/level/titlescreen-arcade.cfg:244 data/level/titlescreen-arcade.cfg:268
 msgid "Select a level:"
 msgstr "选择一个关卡："
 
-#: data/level/titlescreen-arcade.cfg:235 data/level/titlescreen-arcade.cfg:258
+#: data/level/titlescreen-arcade.cfg:248 data/level/titlescreen-arcade.cfg:272
 msgid "(cancel)"
 msgstr "（取消）"
 
-#: data/level/titlescreen-arcade.cfg:257
+#: data/level/titlescreen-arcade.cfg:270
 msgid "Down the RabbitHall"
 msgstr "深入兔兔大厅"
 
-#: data/level/titlescreen-arcade.cfg:285
+#: data/level/titlescreen-arcade.cfg:271
+msgid "Coin Race"
+msgstr ""
+
+#: data/level/titlescreen-arcade.cfg:299
 msgid "CLIMB"
 msgstr "攀爬"
 
-#: data/level/titlescreen-arcade.cfg:317
+#: data/level/titlescreen-arcade.cfg:331
 msgid "RUN"
 msgstr "奔跑"
 
-#: data/level/titlescreen-test.cfg:373 data/level/titlescreen.cfg:349
-#: data/level/titlescreen.cfg:374
+#: data/level/titlescreen-test.cfg:373 data/level/titlescreen.cfg:361
+#: data/level/titlescreen.cfg:386
 msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
 msgstr "按 {LEFT_KEY} 或者 {RIGHT_KEY} 左右走动。"
 
-#: data/level/titlescreen-test.cfg:374 data/level/titlescreen.cfg:375
-#: data/level/titlescreen.cfg:391
+#: data/level/titlescreen-test.cfg:374 data/level/titlescreen.cfg:387
+#: data/level/titlescreen.cfg:403
 msgid "Press {UP_KEY} to talk, and use things like doors."
 msgstr "按 {UP_KEY} 说话和使用物品，例如门。"
 
-#: data/level/titlescreen-test.cfg:375 data/level/titlescreen.cfg:376
+#: data/level/titlescreen-test.cfg:375 data/level/titlescreen.cfg:388
 msgid "Press {DOWN_KEY} to crouch."
 msgstr "按 {DOWN_KEY} 趴下。"
 
-#: data/level/titlescreen-test.cfg:376 data/level/titlescreen.cfg:377
+#: data/level/titlescreen-test.cfg:376 data/level/titlescreen.cfg:389
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
 msgstr "连按两下 {LEFT_KEY} 或者 {RIGHT_KEY} 可以奔跑。"
 
-#: data/level/titlescreen-test.cfg:377 data/level/titlescreen.cfg:378
+#: data/level/titlescreen-test.cfg:377 data/level/titlescreen.cfg:390
 msgid "Press {JUMP_KEY} to jump."
 msgstr "按 {JUMP_KEY} 跳跃。"
 
-#: data/level/titlescreen-test.cfg:378 data/level/titlescreen.cfg:379
+#: data/level/titlescreen-test.cfg:378 data/level/titlescreen.cfg:391
 msgid "Press {TONGUE_KEY} to use a character's attacks."
 msgstr "按 {TONGUE_KEY} 进行角色特有的攻击。"
 
-#: data/level/titlescreen.cfg:284
+#: data/level/titlescreen.cfg:285
 msgid "LOAD GAME"
 msgstr "读取游戏"
 
-#: data/level/titlescreen.cfg:316
+#: data/level/titlescreen.cfg:323
 msgid "NEW GAME"
 msgstr "新游戏"
 
-#: data/level/titlescreen.cfg:423
+#: data/level/titlescreen.cfg:436
 msgid "ARCADE"
 msgstr "街机模式"
 
@@ -4613,6 +4625,23 @@ msgstr "想要存档么？"
 msgid "The game has been saved."
 msgstr "游戏已存档。"
 
+#: data/objects/scene-fx/level_controller_coin_race.cfg:31
+#, fuzzy
+msgid "You made it to level {level.player.difficulty} of the coin race!"
+msgstr "你在维修管道里成功前进了 {level.player.vars.score} 英尺！ "
+
+#: data/objects/scene-fx/level_controller_coin_race.cfg:33
+#, fuzzy
+msgid "You made it to level {level.player.difficulty} of the coin race."
+msgstr "你在维修管道里成功前进了 {level.player.vars.score} 英尺！ "
+
+#: data/objects/scene-fx/level_controller_coin_race.cfg:34
+#, fuzzy
+msgid ""
+"The furthest that has been reached is level {registry."
+"arcade_coin_race_high_score}."
+msgstr "最高纪录是 {registry.arcade_maintenance_shaft_high_score} 英尺。 "
+
 #: data/objects/store-items/buyable_gliding_wings.cfg:11
 msgid "gliding wings"
 msgstr "滑翔翼"
@@ -4778,7 +4807,7 @@ msgstr "上"
 msgid "DOWN"
 msgstr "下"
 
-#: src/main.cpp:353
+#: src/main.cpp:370
 msgid "Loading level"
 msgstr "正在读取关卡"
 
