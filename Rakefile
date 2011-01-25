@@ -106,7 +106,9 @@ task :fonts => (LANGUAGES.keys.map do |language|
   desc "Generate #{language} font textures and fonts.cfg snippets"
   task language => (
     FONT_STYLES.keys.map do |style|
-      [glyphs_task(style, language), font_task(style, language)]
+      [
+      # glyphs_task(style, language), 
+       font_texture(style, language), font_cfg_snippet(style, language)]
     end.flatten
   )
 end)
@@ -147,17 +149,23 @@ LANGUAGES.each_pair do |language, font|
       File.read(character_list).chars.each do |character|
         glyph = glyph_image(style, language, character)
         glyphs[glyph] = character
-        task font_task(style, language) => glyph
+        file font_texture(style, language) => glyph
+        file font_cfg_snippet(style, language) => glyph
       end
     end
 
-    desc "Generate #{language} #{style} font texture and fonts.cfg snippet"
-    task font_task(style, language) => [work_path, glyphs_task] do
-      font_texture = font_texture(style, language)
+    font_texture = font_texture(style, language)
+    desc "Generate #{language} #{style} font texture"
+    file font_texture => [work_path, glyphs_task] do
       sh <<-COMMAND
         montage -label '' -background transparent -gravity SouthWest \
                 -geometry '1x1+0+0<' #{glyphs.keys.join(' ')} png32:#{font_texture}
       COMMAND
+    end
+
+    font_cfg_snippet = font_cfg_snippet(style, language)
+    desc "Generate #{language} #{style} font data"
+    file font_cfg_snippet => [work_path, font_texture, glyphs_task] do
       (texture_width, texture_height) = image_size(font_texture)
 
       widths = {}
@@ -169,7 +177,6 @@ LANGUAGES.each_pair do |language, font|
       (grid_width, grid_height) = [widths, heights].map {|h| h.values.max}
       columns = texture_width / grid_width
 
-      font_cfg_snippet = font_cfg_snippet(style, language)
       File.open(font_cfg_snippet, 'w') do |cfg|
         cfg.write <<-HEAD
           [font]
