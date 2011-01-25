@@ -1,6 +1,7 @@
 # Languages to generate font texture for
 LANGUAGES = {
-  'zh_CN' => 'myuppygb-medium.ttf'
+  'zh_CN' => 'myuppygb-medium.ttf',
+  'ja'    => 'ipag.ttf'
 }
 
 # Command template to generate glyph images for each font style
@@ -140,7 +141,6 @@ LANGUAGES.each_pair do |language, font|
     directory work_path
 
     glyphs = {}
-    sizes = {}
 
     glyphs_task = glyphs_task(style, language) 
     task glyphs_task => character_list do 
@@ -155,14 +155,19 @@ LANGUAGES.each_pair do |language, font|
     task font_task(style, language) => [work_path, glyphs_task] do
       font_texture = font_texture(style, language)
       sh <<-COMMAND
-        montage -label '' -background transparent \
+        montage -label '' -background transparent -gravity SouthWest \
                 -geometry '1x1+0+0<' #{glyphs.keys.join(' ')} png32:#{font_texture}
       COMMAND
       (texture_width, texture_height) = image_size(font_texture)
 
-      glyphs.each_key {|glyph| sizes[glyph] = image_size(glyph)}
-      (glyph_width, glyph_height) = sizes.values.transpose.map &:max
-      columns = texture_width / glyph_width
+      widths = {}
+      heights = {}
+
+      glyphs.each_pair do |glyph, character|
+        (widths[character], heights[character]) = image_size(glyph)
+      end
+      (grid_width, grid_height) = [widths, heights].map {|h| h.values.max}
+      columns = texture_width / grid_width
 
       font_cfg_snippet = font_cfg_snippet(style, language)
       File.open(font_cfg_snippet, 'w') do |cfg|
@@ -175,13 +180,14 @@ LANGUAGES.each_pair do |language, font|
          
         glyphs.values.each_slice(columns).each_with_index do |characters, row|
           characters.each_with_index do |character, column|
-            left = column * glyph_width
-            top = row * glyph_height
-            rect = [left, top, left + glyph_width, top + glyph_height]
+            left = column * grid_width
+            top = row * grid_height
+            right = left + widths[character] - 1
+            bottom = top + grid_width - 1
             cfg.write <<-CHARS
               [chars]
               chars=#{fml_quote(character)}
-              rect=#{left},#{top},#{left + glyph_width - 1},#{top + glyph_height - 1}
+              rect=#{left},#{top},#{right},#{bottom}
               [/chars]
             CHARS
           end
