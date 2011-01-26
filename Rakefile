@@ -44,6 +44,10 @@ def font_texture(style, language)
   "images/gui/#{style}_font.#{language}.png"
 end
 
+# Naming scheme of locale specific fonts.cfg
+def fonts_cfg(language)
+  "data/fonts.#{language}.cfg"
+end
 # Naming scheme of fonts.cfg snippets
 def font_cfg_snippet(style, language)
   "data/#{style}_font.#{language}.cfg"
@@ -112,13 +116,14 @@ task :default => :fonts
 desc 'Generate all font textures and fonts.cfg snippets'
 task :fonts => (LANGUAGES.keys.map do |language|
   desc "Generate #{language} font textures and fonts.cfg snippets"
-  task language => (
-    FONT_STYLES.keys.map do |style|
+  task language => [
+    fonts_cfg(language),
+    *FONT_STYLES.keys.map do |style|
       [
       # glyphs_task(style, language), 
        font_texture(style, language), font_cfg_snippet(style, language)]
     end.flatten
-  )
+  ]
 end)
 
 # We need to generate a texture and snippet for each pair of (language, font style)
@@ -136,6 +141,19 @@ LANGUAGES.each_pair do |language, font|
       cat #{msgstr_text} | utils/strip_po_markup.sh \
                          | utils/uniq_chars.rb > #{character_list}
     SCRIPT
+  end
+
+  file fonts_cfg(language) do |t|
+    File.open(t.name, 'w') do |file|
+      file.write <<-EOF
+[fonts]
+	@include "data/number_font.cfg"
+	@include "data/outline_font.#{language}.cfg"
+	@include "data/label_font.#{language}.cfg"
+	@include "data/dialog_font.#{language}.cfg"
+[/fonts]
+      EOF
+    end
   end
 
   FONT_STYLES.each_pair do |style, command|
