@@ -26,6 +26,8 @@
 namespace game_logic
 {
 
+void set_verbatim_string_expressions(bool verbatim);
+
 class formula_callable;
 class formula_expression;
 class function_symbol_table;

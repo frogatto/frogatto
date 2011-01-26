@@ -528,6 +528,9 @@ void level::finish_loading()
 
 	graphics::texture::build_textures_from_worker_threads();
 
+	if (editor_ || preferences::compiling_tiles)
+		game_logic::set_verbatim_string_expressions (true);
+
 	game_logic::wml_formula_callable_read_scope read_scope;
 	foreach(wml::const_node_ptr node, wml_chars_) {
 		if(node->name() != "serialized_objects") {
@@ -569,6 +572,8 @@ void level::finish_loading()
 			chars_.back()->set_attached_objects(attached);
 		}
 	}
+
+	game_logic::set_verbatim_string_expressions (false);
 
 	wml_chars_.clear();
 

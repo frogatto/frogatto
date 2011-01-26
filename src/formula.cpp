@@ -38,6 +38,8 @@
 namespace {
 	//the last formula that was executed; used for outputting debugging info.
 	const game_logic::formula* last_executed_formula;
+
+	bool _verbatim_string_expressions = false;
 }
 
 void output_formula_error_info() {
@@ -48,6 +50,9 @@ void output_formula_error_info() {
 
 namespace game_logic
 {
+	void set_verbatim_string_expressions(bool verbatim) {
+		_verbatim_string_expressions = verbatim;
+	}
 	
 	formula_error::formula_error()
 	{
@@ -812,38 +817,42 @@ class string_expression : public formula_expression {
 public:
 	explicit string_expression(std::string str, bool translate = false) : formula_expression("_string")
 	{
-		size_t pos = 0;
-		//replace \\n sequences with newlines
-		while((pos = str.find("\\n", pos)) != std::string::npos) {
-			str = str.replace(pos, 2, "\n");
-		}
-		pos = 0;
-		//and remove tabs
-		while((pos = str.find("\t", pos)) != std::string::npos) {
-			str = str.replace(pos, 2, "");
-		}
-		if (translate) {
-			str = i18n::tr(str);
-		}
-
-		std::string::iterator i;
-		while((i = std::find(str.begin(), str.end(), '{')) != str.end()) {
-			std::string::iterator j = std::find(i, str.end(), '}');
-			if(j == str.end()) {
-				break;
+		if (!_verbatim_string_expressions) {
+			size_t pos = 0;
+			//replace \\n sequences with newlines
+			while((pos = str.find("\\n", pos)) != std::string::npos) {
+				str = str.replace(pos, 2, "\n");
 			}
+			pos = 0;
+			//and remove tabs
+			while((pos = str.find("\t", pos)) != std::string::npos) {
+				str = str.replace(pos, 2, "");
+			}
+			if (translate) {
+				str = i18n::tr(str);
+			}
+
+			std::string::iterator i;
+			while((i = std::find(str.begin(), str.end(), '{')) != str.end()) {
+				std::string::iterator j = std::find(i, str.end(), '}');
+				if(j == str.end()) {
+					break;
+				}
 			
-			const std::string formula_str(i+1, j);
-			const int pos = i - str.begin();
-			str.erase(i, j+1);
+				const std::string formula_str(i+1, j);
+				const int pos = i - str.begin();
+				str.erase(i, j+1);
 			
-			substitution sub;
-			sub.pos = pos;
-			sub.calculation.reset(new formula(formula_str));
-			subs_.push_back(sub);
-		}
+				substitution sub;
+				sub.pos = pos;
+				sub.calculation.reset(new formula(formula_str));
+				subs_.push_back(sub);
+			}
 		
-		std::reverse(subs_.begin(), subs_.end());
+			std::reverse(subs_.begin(), subs_.end());
+		} else if (translate) {
+			str = std::string("~") + str + std::string("~");
+		}
 		
 		str_ = variant(str);
 	}
