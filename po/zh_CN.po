@@ -7,7 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-24 01:50-0200\n"
+"POT-Creation-Date: 2011-01-26 13:44-0500\\nPO-Revision-Date: YEAR-MO-DA HO:MI"
+"+ZONE\n"
 "PO-Revision-Date: 2011-01-21 16:33+0000\n"
 "Last-Translator: CloudiDust <cloudidust@gmail.com>\n"
 "Language-Team: Chinese (China) <None>\n"
@@ -156,7 +157,7 @@ msgid "You made it {level.player.vars.score} feet up the maintenance shaft!"
 msgstr "你在维修管道里成功前进了 {level.player.vars.score} 英尺！ "
 
 #: data/level/arcade-maintenance-shaft.cfg:1537
-#: data/objects/scene-fx/level_controller_coin_race.cfg:32
+#: data/objects/scene-fx/level_controller_coin_race.cfg:33
 msgid "This is a new high score!"
 msgstr "这是一个新纪录！"
 
@@ -175,9 +176,8 @@ msgid "Wild New Wonder"
 msgstr "荒野奇观"
 
 #: data/level/arcade_upper_deck.cfg:12 data/level/titlescreen-arcade.cfg:246
-#, fuzzy
 msgid "Upper Deck"
-msgstr "上段上坡道"
+msgstr "上段甲板"
 
 #: data/level/autumn-town.cfg:16
 msgid "Autumn Town"
@@ -3246,7 +3246,7 @@ msgstr "深入兔兔大厅"
 
 #: data/level/titlescreen-arcade.cfg:271
 msgid "Coin Race"
-msgstr ""
+msgstr "硬币采集赛"
 
 #: data/level/titlescreen-arcade.cfg:299
 msgid "CLIMB"
@@ -4625,22 +4625,19 @@ msgstr "想要存档么？"
 msgid "The game has been saved."
 msgstr "游戏已存档。"
 
-#: data/objects/scene-fx/level_controller_coin_race.cfg:31
-#, fuzzy
+#: data/objects/scene-fx/level_controller_coin_race.cfg:32
 msgid "You made it to level {level.player.difficulty} of the coin race!"
-msgstr "你在维修管道里成功前进了 {level.player.vars.score} 英尺！ "
-
-#: data/objects/scene-fx/level_controller_coin_race.cfg:33
-#, fuzzy
-msgid "You made it to level {level.player.difficulty} of the coin race."
-msgstr "你在维修管道里成功前进了 {level.player.vars.score} 英尺！ "
+msgstr "你达到了硬币采集赛的第 {level.player.difficulty} 关！"
 
 #: data/objects/scene-fx/level_controller_coin_race.cfg:34
-#, fuzzy
+msgid "You made it to level {level.player.difficulty} of the coin race."
+msgstr "你达到了硬币采集赛到第 {level.player.difficulty} 关。"
+
+#: data/objects/scene-fx/level_controller_coin_race.cfg:35
 msgid ""
 "The furthest that has been reached is level {registry."
 "arcade_coin_race_high_score}."
-msgstr "最高纪录是 {registry.arcade_maintenance_shaft_high_score} 英尺。 "
+msgstr "最高纪录是第 {registry.arcade_coin_race_high_score} 关。 "
 
 #: data/objects/store-items/buyable_gliding_wings.cfg:11
 msgid "gliding wings"
@@ -4806,6 +4803,22 @@ msgstr "上"
 #: src/key_button.cpp:69
 msgid "DOWN"
 msgstr "下"
+
+#: src/main.cpp:353
+msgid "Initializing custom object"
+msgstr "初始化自定义对象"
+
+#: src/main.cpp:355
+msgid "Initializing custom object functions"
+msgstr "初始化自定义对象函数"
+
+#: src/main.cpp:357
+msgid "Initializing tiles"
+msgstr "初始化图块"
+
+#: src/main.cpp:360 src/main.cpp:364
+msgid "Initializing GUI"
+msgstr "初始化界面"
 
 #: src/main.cpp:370
 msgid "Loading level"

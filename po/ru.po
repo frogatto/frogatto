@@ -7,7 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-24 01:50-0200\n"
+"POT-Creation-Date: 2011-01-26 13:44-0500\\nPO-Revision-Date: YEAR-MO-DA HO:MI"
+"+ZONE\n"
 "PO-Revision-Date: 2010-12-20 00:27+0000\n"
 "Last-Translator: boobaloo <koptev.oleg@gmail.com>\n"
 "Language-Team: Russian <None>\n"
@@ -157,7 +158,7 @@ msgid "You made it {level.player.vars.score} feet up the maintenance shaft!"
 msgstr ""
 
 #: data/level/arcade-maintenance-shaft.cfg:1537
-#: data/objects/scene-fx/level_controller_coin_race.cfg:32
+#: data/objects/scene-fx/level_controller_coin_race.cfg:33
 msgid "This is a new high score!"
 msgstr ""
 
@@ -4100,15 +4101,15 @@ msgstr "Сохранить игру?"
 msgid "The game has been saved."
 msgstr "Игра сохранена."
 
-#: data/objects/scene-fx/level_controller_coin_race.cfg:31
+#: data/objects/scene-fx/level_controller_coin_race.cfg:32
 msgid "You made it to level {level.player.difficulty} of the coin race!"
 msgstr ""
 
-#: data/objects/scene-fx/level_controller_coin_race.cfg:33
+#: data/objects/scene-fx/level_controller_coin_race.cfg:34
 msgid "You made it to level {level.player.difficulty} of the coin race."
 msgstr ""
 
-#: data/objects/scene-fx/level_controller_coin_race.cfg:34
+#: data/objects/scene-fx/level_controller_coin_race.cfg:35
 msgid ""
 "The furthest that has been reached is level {registry."
 "arcade_coin_race_high_score}."
@@ -4264,6 +4265,22 @@ msgstr "ВВЕРХ"
 #: src/key_button.cpp:69
 msgid "DOWN"
 msgstr "ВНИЗ"
+
+#: src/main.cpp:353
+msgid "Initializing custom object"
+msgstr ""
+
+#: src/main.cpp:355
+msgid "Initializing custom object functions"
+msgstr ""
+
+#: src/main.cpp:357
+msgid "Initializing tiles"
+msgstr ""
+
+#: src/main.cpp:360 src/main.cpp:364
+msgid "Initializing GUI"
+msgstr ""
 
 #: src/main.cpp:370
 msgid "Loading level"

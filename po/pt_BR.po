@@ -8,7 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto & Friends 1.0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-24 01:50-0200\n"
+"POT-Creation-Date: 2011-01-26 13:44-0500\\nPO-Revision-Date: YEAR-MO-DA HO:MI"
+"+ZONE\n"
 "PO-Revision-Date: 2011-01-25 01:55-0300\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -161,7 +162,7 @@ msgid "You made it {level.player.vars.score} feet up the maintenance shaft!"
 msgstr "Você escalou {level.players.vars.score} pés no poço de manutenção!"
 
 #: data/level/arcade-maintenance-shaft.cfg:1537
-#: data/objects/scene-fx/level_controller_coin_race.cfg:32
+#: data/objects/scene-fx/level_controller_coin_race.cfg:33
 msgid "This is a new high score!"
 msgstr "É um novo recorde!"
 
@@ -179,8 +180,7 @@ msgstr ""
 msgid "Wild New Wonder"
 msgstr ""
 
-#: data/level/arcade_upper_deck.cfg:12
-#: data/level/titlescreen-arcade.cfg:246
+#: data/level/arcade_upper_deck.cfg:12 data/level/titlescreen-arcade.cfg:246
 msgid "Upper Deck"
 msgstr ""
 
@@ -192,8 +192,7 @@ msgstr ""
 msgid "Bombing Fools"
 msgstr ""
 
-#: data/level/bon-bosque.cfg:15
-#: data/objects/playable/map-selector.cfg:20
+#: data/level/bon-bosque.cfg:15 data/objects/playable/map-selector.cfg:20
 msgid "Bon Bosque"
 msgstr ""
 
@@ -281,8 +280,7 @@ msgstr ""
 msgid "Caverns of Holes"
 msgstr "Gruta Furada"
 
-#: data/level/chopple-shop-interior.cfg:7
-#: data/level/chopple-shop.cfg:11
+#: data/level/chopple-shop-interior.cfg:7 data/level/chopple-shop.cfg:11
 msgid "Chopple's General Store"
 msgstr "Empório do Chopple"
 
@@ -358,8 +356,7 @@ msgstr ""
 
 #: data/level/crevice-village-cave.cfg:11
 #: data/level/crevice-village-central.cfg:13
-#: data/level/crevice-village-heights.cfg:11
-#: data/level/crevice-village.cfg:13
+#: data/level/crevice-village-heights.cfg:11 data/level/crevice-village.cfg:13
 #: data/objects/playable/map-selector.cfg:18
 msgid "Crevice Village"
 msgstr ""
@@ -372,8 +369,7 @@ msgstr "Mas o que..."
 msgid "You!!"
 msgstr "Você!!"
 
-#: data/level/crevice-village-cave.cfg:816
-#: data/level/wm-town.cfg:2309
+#: data/level/crevice-village-cave.cfg:816 data/level/wm-town.cfg:2309
 #: data/object_prototypes/buyable_item.cfg:24
 #: data/objects/props-interactive/save_toilet.cfg:17
 msgid "Yes"
@@ -387,8 +383,7 @@ msgstr "Você é um intruso, não é?!"
 msgid "I thought so!"
 msgstr "Foi o que eu pensei!"
 
-#: data/level/crevice-village-cave.cfg:818
-#: data/level/wm-town.cfg:2316
+#: data/level/crevice-village-cave.cfg:818 data/level/wm-town.cfg:2316
 #: data/object_prototypes/buyable_item.cfg:25
 #: data/objects/props-interactive/save_toilet.cfg:22
 msgid "No"
@@ -813,8 +808,7 @@ msgstr ""
 msgid "So I'm stuck here, huh?"
 msgstr "Então eu vou ficar preso aqui?"
 
-#: data/level/crevice-village-house-1.cfg:2550
-#: data/level/wm-town.cfg:2245
+#: data/level/crevice-village-house-1.cfg:2550 data/level/wm-town.cfg:2245
 msgid "Yep."
 msgstr "É."
 
@@ -942,8 +936,7 @@ msgstr ""
 "Nós vimos o chefe do bando\n"
 "do Milgram entrar lá."
 
-#: data/level/crevice-village-house-2.cfg:3567
-#: data/level/rock-a-fort.cfg:4418
+#: data/level/crevice-village-house-2.cfg:3567 data/level/rock-a-fort.cfg:4418
 msgid "How interesting."
 msgstr "Que interessante."
 
@@ -1342,8 +1335,7 @@ msgstr ""
 msgid "In fact, I'll even show you the way!"
 msgstr "Aliás, vou até te mostrar o caminho!"
 
-#: data/level/crevice-village.cfg:717
-#: data/level/to-nenes-house.cfg:1354
+#: data/level/crevice-village.cfg:717 data/level/to-nenes-house.cfg:1354
 msgid "I better leave this key here."
 msgstr "É melhor eu deixar esta chave aqui."
 
@@ -1668,8 +1660,7 @@ msgstr "Ih! Dormi demais!"
 msgid "it's the principle of the thing."
 msgstr "é o princípio da coisa."
 
-#: data/level/frogatto-grotto.cfg:13
-#: data/objects/playable/map-selector.cfg:16
+#: data/level/frogatto-grotto.cfg:13 data/objects/playable/map-selector.cfg:16
 msgid "Frogatto Grotto"
 msgstr "Gruta do Frogatto"
 
@@ -2493,8 +2484,7 @@ msgstr ""
 msgid "Yikes!"
 msgstr "Eita!"
 
-#: data/level/rock-a-fort-cave.cfg:15
-#: data/level/rock-a-fort.cfg:11
+#: data/level/rock-a-fort-cave.cfg:15 data/level/rock-a-fort.cfg:11
 msgid "Rock-a-Fort"
 msgstr ""
 
@@ -2520,8 +2510,7 @@ msgstr ""
 "Deve ter um outro caminho\n"
 "pra chegar do outro lado."
 
-#: data/level/secluded-hut-interior.cfg:12
-#: data/level/secluded-hut.cfg:11
+#: data/level/secluded-hut-interior.cfg:12 data/level/secluded-hut.cfg:11
 #: data/objects/playable/map-selector.cfg:17
 msgid "Secluded Hut"
 msgstr ""
@@ -2538,8 +2527,7 @@ msgstr ""
 "É um prazer conhecê-lo.\n"
 "Eu sou o Mortimer."
 
-#: data/level/secluded-hut-interior.cfg:922
-#: data/level/wm-town.cfg:2372
+#: data/level/secluded-hut-interior.cfg:922 data/level/wm-town.cfg:2372
 msgid "That's nice."
 msgstr "Muito bom."
 
@@ -2887,8 +2875,7 @@ msgstr "Criador de pacotes (Mac/Windows/iPhone)"
 msgid "Programmer (esp. helping with iPhone integration)"
 msgstr "Programador (especialmente integração com iPhone)"
 
-#: data/level/tea-with-milgram.cfg:176
-#: data/level/tea-with-milgram.cfg:337
+#: data/level/tea-with-milgram.cfg:176 data/level/tea-with-milgram.cfg:337
 msgid "Minor Object Scripter and Level Designer"
 msgstr "Desenvolvedor auxiliar (fases, objetos)"
 
@@ -3303,8 +3290,7 @@ msgstr "Programador Principal"
 msgid "Scripting Language Designer"
 msgstr "Desenvolvedor da Linguagem de Scripts"
 
-#: data/level/tea-with-milgram.cfg:333
-#: data/level/tea-with-milgram.cfg:360
+#: data/level/tea-with-milgram.cfg:333 data/level/tea-with-milgram.cfg:360
 msgid "Object Scripter"
 msgstr "Programador de Objetos"
 
@@ -3316,8 +3302,7 @@ msgstr "Designer Auxiliar de Fases"
 msgid "Creative Director - created characters/setting/story"
 msgstr "Diretor de Criação - personagens/ambientes/história"
 
-#: data/level/tea-with-milgram.cfg:348
-#: data/level/tea-with-milgram.cfg:378
+#: data/level/tea-with-milgram.cfg:348 data/level/tea-with-milgram.cfg:378
 msgid "Artist - Characters, Monsters, and Props"
 msgstr "Artista - Personagens, Inimigos e Objetos"
 
@@ -3385,9 +3370,7 @@ msgstr "AGRADECIMENTOS ESPECIAIS:"
 msgid "(Level Template)"
 msgstr "(Modelo de Fase)"
 
-#: data/level/test3.cfg:12
-#: data/level/test4.cfg:12
-#: data/level/test5.cfg:12
+#: data/level/test3.cfg:12 data/level/test4.cfg:12 data/level/test5.cfg:12
 msgid "(Test Level)"
 msgstr "(Fase de teste)"
 
@@ -3411,13 +3394,11 @@ msgstr "Esses desafios não afetam o jogo normal. Divirta-se!"
 msgid "EXIT"
 msgstr "SAÍDA"
 
-#: data/level/titlescreen-arcade.cfg:244
-#: data/level/titlescreen-arcade.cfg:268
+#: data/level/titlescreen-arcade.cfg:244 data/level/titlescreen-arcade.cfg:268
 msgid "Select a level:"
 msgstr "Escolha uma fase:"
 
-#: data/level/titlescreen-arcade.cfg:248
-#: data/level/titlescreen-arcade.cfg:272
+#: data/level/titlescreen-arcade.cfg:248 data/level/titlescreen-arcade.cfg:272
 msgid "(cancel)"
 msgstr "(cancelar)"
 
@@ -3437,35 +3418,29 @@ msgstr "ESCALAR"
 msgid "RUN"
 msgstr "CORRER"
 
-#: data/level/titlescreen-test.cfg:373
-#: data/level/titlescreen.cfg:361
+#: data/level/titlescreen-test.cfg:373 data/level/titlescreen.cfg:361
 #: data/level/titlescreen.cfg:386
 msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
 msgstr "Pressione {LEFT_KEY} ou {RIGHT_KEY} para andar."
 
-#: data/level/titlescreen-test.cfg:374
-#: data/level/titlescreen.cfg:387
+#: data/level/titlescreen-test.cfg:374 data/level/titlescreen.cfg:387
 #: data/level/titlescreen.cfg:403
 msgid "Press {UP_KEY} to talk, and use things like doors."
 msgstr "Aperte {UP_KEY} para conversar, abrir portas, etc."
 
-#: data/level/titlescreen-test.cfg:375
-#: data/level/titlescreen.cfg:388
+#: data/level/titlescreen-test.cfg:375 data/level/titlescreen.cfg:388
 msgid "Press {DOWN_KEY} to crouch."
 msgstr "Aperte {DOWN_KEY} para se abaixar."
 
-#: data/level/titlescreen-test.cfg:376
-#: data/level/titlescreen.cfg:389
+#: data/level/titlescreen-test.cfg:376 data/level/titlescreen.cfg:389
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
 msgstr "Aperte {LEFT_KEY} ou {RIGHT_KEY} duas vezes, rapidamente, para correr."
 
-#: data/level/titlescreen-test.cfg:377
-#: data/level/titlescreen.cfg:390
+#: data/level/titlescreen-test.cfg:377 data/level/titlescreen.cfg:390
 msgid "Press {JUMP_KEY} to jump."
 msgstr "Aperte {JUMP_KEY} para pular."
 
-#: data/level/titlescreen-test.cfg:378
-#: data/level/titlescreen.cfg:391
+#: data/level/titlescreen-test.cfg:378 data/level/titlescreen.cfg:391
 msgid "Press {TONGUE_KEY} to use a character's attacks."
 msgstr "Aperte {TONGUE_KEY} para usar os ataques do personagem."
 
@@ -3720,8 +3695,7 @@ msgstr ""
 msgid "Lift House"
 msgstr ""
 
-#: data/level/wm-h0.0-lift.cfg:566
-#: data/level/wm-h0.0-lift.cfg:573
+#: data/level/wm-h0.0-lift.cfg:566 data/level/wm-h0.0-lift.cfg:573
 msgid ""
 "Hi, I am E. I run the elevator here.\n"
 "It is not verkink at the moment."
@@ -3786,8 +3760,7 @@ msgstr ""
 msgid "Oh, yes. Here are the coins."
 msgstr ""
 
-#: data/level/wm-h0.0-lift.cfg:595
-#: data/level/wm-ll.cfg:1434
+#: data/level/wm-h0.0-lift.cfg:595 data/level/wm-ll.cfg:1434
 msgid "Thanks."
 msgstr ""
 
@@ -3830,30 +3803,21 @@ msgid ""
 "2: Woodenhead? What's that?"
 msgstr ""
 
-#: data/level/wm-ll.cfg:1389
-#: data/level/wm-ll.cfg:1465
-#: data/level/wm-town.cfg:1172
-#: data/level/wm-town.cfg:2218
-#: data/level/wm-town.cfg:2223
-#: data/level/wm-town.cfg:2271
+#: data/level/wm-ll.cfg:1389 data/level/wm-ll.cfg:1465
+#: data/level/wm-town.cfg:1172 data/level/wm-town.cfg:2218
+#: data/level/wm-town.cfg:2223 data/level/wm-town.cfg:2271
 msgid "Opt. 1"
 msgstr ""
 
-#: data/level/wm-ll.cfg:1390
-#: data/level/wm-ll.cfg:1466
-#: data/level/wm-town.cfg:1180
-#: data/level/wm-town.cfg:2238
-#: data/level/wm-town.cfg:2266
-#: data/level/wm-town.cfg:2332
+#: data/level/wm-ll.cfg:1390 data/level/wm-ll.cfg:1466
+#: data/level/wm-town.cfg:1180 data/level/wm-town.cfg:2238
+#: data/level/wm-town.cfg:2266 data/level/wm-town.cfg:2332
 msgid "Opt. 2"
 msgstr ""
 
-#: data/level/wm-ll.cfg:1391
-#: data/level/wm-ll.cfg:1419
-#: data/level/wm-ll.cfg:1468
-#: data/level/wm-town.cfg:1207
-#: data/level/wm-town.cfg:2256
-#: data/level/wm-town.cfg:2356
+#: data/level/wm-ll.cfg:1391 data/level/wm-ll.cfg:1419
+#: data/level/wm-ll.cfg:1468 data/level/wm-town.cfg:1207
+#: data/level/wm-town.cfg:2256 data/level/wm-town.cfg:2356
 #: data/level/wm-town.cfg:2370
 msgid "Cancel"
 msgstr ""
@@ -3909,8 +3873,7 @@ msgid ""
 "4: What are those grey things?"
 msgstr ""
 
-#: data/level/wm-ll.cfg:1416
-#: data/level/wm-town.cfg:1198
+#: data/level/wm-ll.cfg:1416 data/level/wm-town.cfg:1198
 #: data/level/wm-town.cfg:2348
 msgid "Opt. 3"
 msgstr ""
@@ -4045,8 +4008,7 @@ msgid ""
 "2: Pay me."
 msgstr ""
 
-#: data/level/wm-ll.cfg:1467
-#: data/level/wm-town.cfg:2345
+#: data/level/wm-ll.cfg:1467 data/level/wm-town.cfg:2345
 msgid "More"
 msgstr ""
 
@@ -4610,16 +4572,18 @@ msgstr "Você quer salvar o jogo?"
 msgid "The game has been saved."
 msgstr "O jogo foi salvo com sucesso."
 
-#: data/objects/scene-fx/level_controller_coin_race.cfg:31
+#: data/objects/scene-fx/level_controller_coin_race.cfg:32
 msgid "You made it to level {level.player.difficulty} of the coin race!"
 msgstr "Você alcançou a {level.player.difficulty}ª fase da corrida das moedas!"
 
-#: data/objects/scene-fx/level_controller_coin_race.cfg:33
+#: data/objects/scene-fx/level_controller_coin_race.cfg:34
 msgid "You made it to level {level.player.difficulty} of the coin race."
 msgstr "Você alcançou a {level.player.difficulty}ª fase da corrida das moedas."
 
-#: data/objects/scene-fx/level_controller_coin_race.cfg:34
-msgid "The furthest that has been reached is level {registry.arcade_coin_race_high_score}."
+#: data/objects/scene-fx/level_controller_coin_race.cfg:35
+msgid ""
+"The furthest that has been reached is level {registry."
+"arcade_coin_race_high_score}."
 msgstr "O recorde atual é a {registry.arcade_coin_race_high_score}ª fase."
 
 #: data/objects/store-items/buyable_gliding_wings.cfg:11
@@ -4740,9 +4704,7 @@ msgstr ""
 "O extensor de língua irá aumentar\n"
 "o comprimento da sua língua."
 
-#: data/preload.cfg:4
-#: data/preload.cfg:9
-#: data/preload.cfg:14
+#: data/preload.cfg:4 data/preload.cfg:9 data/preload.cfg:14
 msgid "Loading textures"
 msgstr "Carregando texturas"
 
@@ -4798,6 +4760,22 @@ msgstr "↑"
 msgid "DOWN"
 msgstr "↓"
 
+#: src/main.cpp:353
+msgid "Initializing custom object"
+msgstr ""
+
+#: src/main.cpp:355
+msgid "Initializing custom object functions"
+msgstr ""
+
+#: src/main.cpp:357
+msgid "Initializing tiles"
+msgstr ""
+
+#: src/main.cpp:360 src/main.cpp:364
+msgid "Initializing GUI"
+msgstr ""
+
 #: src/main.cpp:370
 msgid "Loading level"
 msgstr "Carregando fase"
@@ -4842,10 +4820,10 @@ msgstr "OpenFeint"
 #~ "Eu não sei se eles já nos perceberam,\n"
 #~ "ou se isso foi uma coincidência,\n"
 #~ "mas é melhor você tomar cuidado."
+
 #~ msgid ""
 #~ "Especially if you're going further east,\n"
 #~ "which is towards the town."
 #~ msgstr ""
 #~ "Principalmente se estiver indo\n"
 #~ "pra leste, no caminho pra vila."
-

@@ -7,7 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-24 01:50-0200\n"
+"POT-Creation-Date: 2011-01-26 13:44-0500\\nPO-Revision-Date: YEAR-MO-DA HO:MI"
+"+ZONE\n"
 "PO-Revision-Date: 2011-01-19 16:54+0000\n"
 "Last-Translator: manu <emmanuel.fujioka@free.fr>\n"
 "Language-Team: French <>\n"
@@ -159,7 +160,7 @@ msgstr ""
 "maintenance!"
 
 #: data/level/arcade-maintenance-shaft.cfg:1537
-#: data/objects/scene-fx/level_controller_coin_race.cfg:32
+#: data/objects/scene-fx/level_controller_coin_race.cfg:33
 msgid "This is a new high score!"
 msgstr "C'est un nouveau record!"
 
@@ -4861,21 +4862,21 @@ msgstr "Souhaitez-vous sauvegarder votre partie?"
 msgid "The game has been saved."
 msgstr "La partie a été sauvegardée."
 
-#: data/objects/scene-fx/level_controller_coin_race.cfg:31
+#: data/objects/scene-fx/level_controller_coin_race.cfg:32
 #, fuzzy
 msgid "You made it to level {level.player.difficulty} of the coin race!"
 msgstr ""
 "Vous avez monté {level.player.vars.score} pieds dans le conduit de "
 "maintenance!"
 
-#: data/objects/scene-fx/level_controller_coin_race.cfg:33
+#: data/objects/scene-fx/level_controller_coin_race.cfg:34
 #, fuzzy
 msgid "You made it to level {level.player.difficulty} of the coin race."
 msgstr ""
 "Vous avez monté {level.player.vars.score} pieds dans le conduit de "
 "maintenance!"
 
-#: data/objects/scene-fx/level_controller_coin_race.cfg:34
+#: data/objects/scene-fx/level_controller_coin_race.cfg:35
 #, fuzzy
 msgid ""
 "The furthest that has been reached is level {registry."
@@ -5062,6 +5063,22 @@ msgstr "HAUT"
 #: src/key_button.cpp:69
 msgid "DOWN"
 msgstr "BAS"
+
+#: src/main.cpp:353
+msgid "Initializing custom object"
+msgstr ""
+
+#: src/main.cpp:355
+msgid "Initializing custom object functions"
+msgstr ""
+
+#: src/main.cpp:357
+msgid "Initializing tiles"
+msgstr ""
+
+#: src/main.cpp:360 src/main.cpp:364
+msgid "Initializing GUI"
+msgstr ""
 
 #: src/main.cpp:370
 msgid "Loading level"
