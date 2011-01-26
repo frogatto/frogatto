@@ -158,8 +158,7 @@ LANGUAGES.each_pair do |language, font|
       File.read(character_list).chars.each do |character|
         glyph = glyph_image(style, language, character)
         glyphs[glyph] = character
-        file font_texture(style, language) => glyph
-        file font_cfg_snippet(style, language) => glyph
+        Rake::Task[glyph].invoke
       end
     end
 
