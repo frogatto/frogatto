@@ -4,6 +4,10 @@ LANGUAGES = {
   'ja'    => 'ipag.ttf'
 }
 
+EXTRA_FML = Hash.new('').merge({
+  'ja' => "kerning=-1",
+})
+
 # Command template to generate glyph images for each font style
 FONT_STYLES = {
   :dialog => <<-DIALOG, 
@@ -209,6 +213,7 @@ LANGUAGES.each_pair do |language, font|
           id="#{FONT_CFG_IDS[style]}"
           texture=#{font_texture.sub %r'^images/', ''}
           pad=0
+          #{EXTRA_FML[language]}
         HEAD
          
         glyphs.values.each_slice(columns).each_with_index do |characters, row|
