@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-26 13:44-0500\\nPO-Revision-Date: YEAR-MO-DA HO:MI"
+"POT-Creation-Date: 2011-01-26 18:29-0500\\nPO-Revision-Date: YEAR-MO-DA HO:MI"
 "+ZONE\n"
 "PO-Revision-Date: 2011-01-21 16:33+0000\n"
 "Last-Translator: CloudiDust <cloudidust@gmail.com>\n"
@@ -355,6 +355,8 @@ msgstr "你！！"
 
 #: data/level/crevice-village-cave.cfg:816 data/level/wm-town.cfg:2309
 #: data/object_prototypes/buyable_item.cfg:24
+#: data/objects/buildings/dungeon_save_door.cfg:24
+#: data/objects/buildings/world_1_interior_save_door.cfg:24
 #: data/objects/props-interactive/save_toilet.cfg:17
 msgid "Yes"
 msgstr "是"
@@ -369,6 +371,8 @@ msgstr "我想是的！"
 
 #: data/level/crevice-village-cave.cfg:818 data/level/wm-town.cfg:2316
 #: data/object_prototypes/buyable_item.cfg:25
+#: data/objects/buildings/dungeon_save_door.cfg:29
+#: data/objects/buildings/world_1_interior_save_door.cfg:29
 #: data/objects/props-interactive/save_toilet.cfg:22
 msgid "No"
 msgstr "否"
@@ -3208,7 +3212,7 @@ msgstr "鸣谢："
 msgid "(Level Template)"
 msgstr "（关卡模板）"
 
-#: data/level/test3.cfg:12 data/level/test4.cfg:12 data/level/test5.cfg:12
+#: data/level/test3.cfg:14 data/level/test4.cfg:12 data/level/test5.cfg:12
 msgid "(Test Level)"
 msgstr "（测试关卡）"
 
@@ -4534,6 +4538,12 @@ msgstr "你的钱不够。"
 msgid "Do you want to buy the {consts.name}?"
 msgstr "想要买 {consts.name} 吗？"
 
+#: data/objects/buildings/dungeon_save_door.cfg:23
+#: data/objects/buildings/world_1_interior_save_door.cfg:23
+#: data/objects/props-interactive/save_toilet.cfg:16
+msgid "Do you want to save the game?"
+msgstr "想要存档么？"
+
 #: data/objects/crazy-stuff/jb-background.cfg:7
 msgid "error"
 msgstr "错误"
@@ -4616,10 +4626,6 @@ msgstr "嗨，金古林，有啥事不？"
 #: data/objects/playable/map-selector.cfg:21
 msgid "Milgram's Castle"
 msgstr "米格拉姆的城堡"
-
-#: data/objects/props-interactive/save_toilet.cfg:16
-msgid "Do you want to save the game?"
-msgstr "想要存档么？"
 
 #: data/objects/props-interactive/save_toilet.cfg:21
 msgid "The game has been saved."

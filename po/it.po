@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-26 13:44-0500\\nPO-Revision-Date: YEAR-MO-DA HO:MI"
+"POT-Creation-Date: 2011-01-26 18:29-0500\\nPO-Revision-Date: YEAR-MO-DA HO:MI"
 "+ZONE\n"
 "PO-Revision-Date: 2011-01-19 16:54+0000\n"
 "Last-Translator: TheJoe <asbruff@gmail.com>\n"
@@ -360,6 +360,8 @@ msgstr "Tu!!"
 
 #: data/level/crevice-village-cave.cfg:816 data/level/wm-town.cfg:2309
 #: data/object_prototypes/buyable_item.cfg:24
+#: data/objects/buildings/dungeon_save_door.cfg:24
+#: data/objects/buildings/world_1_interior_save_door.cfg:24
 #: data/objects/props-interactive/save_toilet.cfg:17
 msgid "Yes"
 msgstr "Si"
@@ -374,6 +376,8 @@ msgstr "Io penso di sì!"
 
 #: data/level/crevice-village-cave.cfg:818 data/level/wm-town.cfg:2316
 #: data/object_prototypes/buyable_item.cfg:25
+#: data/objects/buildings/dungeon_save_door.cfg:29
+#: data/objects/buildings/world_1_interior_save_door.cfg:29
 #: data/objects/props-interactive/save_toilet.cfg:22
 msgid "No"
 msgstr "No"
@@ -3247,7 +3251,7 @@ msgstr "RINGRAZIAMENTI SPECIALI:"
 msgid "(Level Template)"
 msgstr "(Level Template)"
 
-#: data/level/test3.cfg:12 data/level/test4.cfg:12 data/level/test5.cfg:12
+#: data/level/test3.cfg:14 data/level/test4.cfg:12 data/level/test5.cfg:12
 msgid "(Test Level)"
 msgstr "(Livello di Test)"
 
@@ -4578,6 +4582,12 @@ msgstr "Non hai abbastanza denaro."
 msgid "Do you want to buy the {consts.name}?"
 msgstr "Vuoi comprare il/la {consts.name}?"
 
+#: data/objects/buildings/dungeon_save_door.cfg:23
+#: data/objects/buildings/world_1_interior_save_door.cfg:23
+#: data/objects/props-interactive/save_toilet.cfg:16
+msgid "Do you want to save the game?"
+msgstr "Vuoi salvare il gioco?"
+
 #: data/objects/crazy-stuff/jb-background.cfg:7
 msgid "error"
 msgstr "errore"
@@ -4661,10 +4671,6 @@ msgstr "Ciao, Kinguin, cosa succede?"
 #: data/objects/playable/map-selector.cfg:21
 msgid "Milgram's Castle"
 msgstr "Castello di Milgram"
-
-#: data/objects/props-interactive/save_toilet.cfg:16
-msgid "Do you want to save the game?"
-msgstr "Vuoi salvare il gioco?"
 
 #: data/objects/props-interactive/save_toilet.cfg:21
 msgid "The game has been saved."

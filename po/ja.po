@@ -1,23 +1,21 @@
-# Spanish Translation File.
-# Copyright (C) 2010
-# This file is distributed under the same license as the Frogatto package.
-# Ricardo A. Hermosilla Carrillo <ra.hermosillac@gmail.com>, 2010
-#
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Frogatto v1.0.3\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-26 18:29-0500\\nPO-Revision-Date: YEAR-MO-DA HO:MI"
-"+ZONE\n"
-"PO-Revision-Date: \n"
-"Last-Translator: Ricardo A. Hermosilla Carrillo <ra.hermosillac@gmail.com>\n"
-"Language-Team: \n"
-"Language: \n"
+"Project-Id-Version: Frogatto\n"
+"Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
+"POT-Creation-Date: 2011-01-08 14:09-0200\n"
+"PO-Revision-Date: 2011-01-26 06:33+0000\n"
+"Last-Translator: hagabaka <yaohan.chen@gmail.com>\n"
+"Language-Team: Japanese <>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Spanish\n"
-"X-Poedit-SourceCharset: UTF-8\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 
 #: data/achievements.cfg:4
 msgid "Pocket Money"
@@ -89,7 +87,7 @@ msgstr ""
 
 #: data/achievements.cfg:69
 msgid "Collect 15 points cubes in a row."
-msgstr ""
+msgstr "一気に15個のキューブを見つける"
 
 #: data/achievements.cfg:76
 msgid "Grudge"
@@ -105,83 +103,73 @@ msgstr ""
 
 #: data/level/airplane-boss.cfg:356
 msgid "Ambush!"
-msgstr "¡Emboscada!"
+msgstr ""
 
 #: data/level/airplane-boss.cfg:365
 msgid "Victory!"
-msgstr "¡Victoria!"
+msgstr "勝利！"
 
 #: data/level/ant-farm-minigame.cfg:10
 msgid "Ant Farm"
-msgstr "Granja de Hormigas"
+msgstr ""
 
 #: data/level/ant-farm-minigame.cfg:798
 msgid ""
 "I can feel the ants coming to\n"
 "investigate. Go get their points."
 msgstr ""
-"Puedo sentir a las hormigas viniendo a\n"
-"investigar. Ve a obtener sus puntos."
 
 #: data/level/ant-farm-minigame.cfg:800
 msgid " points."
-msgstr " puntos."
+msgstr "点。"
 
 #: data/level/ant-farm-minigame.cfg:800
 msgid ""
 "Here's a 100 points in reward.\n"
 "We'll just leave now."
 msgstr ""
-"Aquí tienes 100 puntos como recompensa.\n"
-"Debemos salir ahora."
 
 #: data/level/ant-farm-minigame.cfg:800
 msgid "Not bad. You scored a total of"
-msgstr "Nada mal. Has obtenido una puntuación total de"
+msgstr ""
 
 #: data/level/ant-farm-minigame.cfg:800
 msgid "Time: "
-msgstr "Tiempo: "
+msgstr "時間："
 
 #: data/level/ant-farm-minigame.cfg:800
 msgid "Well, that's that."
-msgstr "Bien, eso es todo."
+msgstr ""
 
 #: data/level/arcade-maintenance-shaft.cfg:13
-#: data/level/titlescreen-arcade.cfg:247
+#: data/level/titlescreen-arcade.cfg:234
 msgid "Maintenance Shaft"
 msgstr ""
 
-#: data/level/arcade-maintenance-shaft.cfg:1536
-#: data/level/arcade-maintenance-shaft.cfg:1539
+#: data/level/arcade-maintenance-shaft.cfg:1543
+#: data/level/arcade-maintenance-shaft.cfg:1546
 msgid "You made it {level.player.vars.score} feet up the maintenance shaft!"
 msgstr ""
 
-#: data/level/arcade-maintenance-shaft.cfg:1537
-#: data/objects/scene-fx/level_controller_coin_race.cfg:33
+#: data/level/arcade-maintenance-shaft.cfg:1544
 msgid "This is a new high score!"
 msgstr ""
 
-#: data/level/arcade-maintenance-shaft.cfg:1540
+#: data/level/arcade-maintenance-shaft.cfg:1547
 msgid "The high score is {registry.arcade_maintenance_shaft_high_score} feet."
 msgstr ""
 
 #: data/level/arcade-the-long-haul.cfg:10
-#: data/level/titlescreen-arcade.cfg:269
-#, fuzzy
+#: data/level/titlescreen-arcade.cfg:256
 msgid "The Long Haul"
-msgstr "La Casa del Peligro"
+msgstr ""
 
 #: data/level/arcade-wild-new-wonder.cfg:12
-#: data/level/titlescreen-arcade.cfg:245
+#: data/level/titlescreen-arcade.cfg:233
 msgid "Wild New Wonder"
 msgstr ""
 
-#: data/level/arcade_upper_deck.cfg:12 data/level/titlescreen-arcade.cfg:246
-msgid "Upper Deck"
-msgstr ""
-
-#: data/level/autumn-town.cfg:16
+#: data/level/autumn-town.cfg:14
 msgid "Autumn Town"
 msgstr ""
 
@@ -189,11 +177,11 @@ msgstr ""
 msgid "Bombing Fools"
 msgstr ""
 
-#: data/level/bon-bosque.cfg:15 data/objects/playable/map-selector.cfg:20
+#: data/level/bon-bosque.cfg:13
 msgid "Bon Bosque"
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1459
+#: data/level/bon-bosque.cfg:1434
 msgid ""
 "Well, you made it! Now just up ahead\n"
 "there is a gate. If you can get\n"
@@ -202,41 +190,28 @@ msgid ""
 "be an entry way directly into Milgram's\n"
 "compound from the caverns."
 msgstr ""
-"Bien, ¡Lo has hecho! Ahora sólo más adelante\n"
-"hay una puerta. Si puedes pasar a través de ella\n"
-"podrás hacerlo por las cavernas de piedra caliza.\n"
-"Se dice que es una puerta de entrada directa al\n"
-"recinto de Milgram desde las cavernas."
 
-#: data/level/bon-bosque.cfg:1461
+#: data/level/bon-bosque.cfg:1436
 msgid ""
 "Whoah, a bunch of caverns now?\n"
 "This seems like it's harder than\n"
 "what the elder led me to believe!"
 msgstr ""
-"Whoah, ¿un grupo de cavernas ahora?\n"
-"¡Eso parece ser más difícil de lo que el\n"
-"anciano me hizo creer!"
 
-#: data/level/bon-bosque.cfg:1462
+#: data/level/bon-bosque.cfg:1437
 msgid ""
 "I guess the forests have become\n"
 "infested over the years. Hopefully\n"
 "the caverns won't be too much worse!"
 msgstr ""
-"Supongo que los bosques han sido\n"
-"infectados con los años. ¡Espero que\n"
-"las cavernas no sean peores!"
 
-#: data/level/bon-bosque.cfg:1464
+#: data/level/bon-bosque.cfg:1439
 msgid ""
 "I hope not. Thank you for guiding me\n"
 "and meeting me here."
 msgstr ""
-"Espero que no. Gracias por guiarme y\n"
-"dejarme aquí."
 
-#: data/level/bon-bosque.cfg:1465
+#: data/level/bon-bosque.cfg:1440
 msgid ""
 "You're welcome, friend. Naturally I\n"
 "won't be able to fly into the\n"
@@ -244,11 +219,6 @@ msgid ""
 "see of me. Take care and teach Milgram\n"
 "a lesson for us all!"
 msgstr ""
-"No hay de qué, amigo mío. Naturalmente\n"
-"no estoy capacitado para volar dentro de\n"
-"las cavernas, así que esta es la última vez\n"
-"que me verás. ¡Cuidate mucho y enseñale\n"
-"una lección a Milgram por todos nosotros!"
 
 #: data/level/bug-mining.cfg:13
 msgid "Bug Mining"
@@ -260,214 +230,189 @@ msgstr ""
 
 #: data/level/burning-stone.cfg:7
 msgid "Burning Stone"
-msgstr "Piedra Ardiente"
+msgstr ""
 
 #: data/level/burning-stone.cfg:2179
 msgid ""
 "I need to go up... There must be\n"
 "a way to activate this elevator."
 msgstr ""
-"Necesito ir hacia arriba... Debe haber\n"
-"una forma de activar este elevador."
 
 #: data/level/caverns-of-holes.cfg:14
 msgid "Caverns of Holes"
-msgstr "Cavernas de Agujeros"
+msgstr ""
 
 #: data/level/chopple-shop-interior.cfg:7 data/level/chopple-shop.cfg:11
 msgid "Chopple's General Store"
-msgstr "Tienda General de Chopple"
+msgstr ""
 
 #: data/level/conveyance.cfg:9
 msgid "The Conveyance"
-msgstr "El Transporte"
+msgstr ""
 
 #: data/level/conveyance.cfg:1829
 msgid ""
 "Enjoy your trip on the CONVEYANCE!\n"
 "Just don't let the bugs scare you off!"
 msgstr ""
-"¡Disfrute su viaje en el Transporte!\n"
-"¡No deje que los bichos lo asusten!"
 
 #: data/level/conveyance.cfg:1831
 msgid ""
 "Hi there sonny, have you come here\n"
 "to ride on the CONVEYANCE?"
 msgstr ""
-"Hola hijo, ¿has venido hasta aquí para\n"
-"montar el Transporte?"
 
 #: data/level/conveyance.cfg:1832
 msgid "Actually I was just hoping to get to town."
-msgstr "En realidad tenía la esperanza de llevar a la ciudad."
+msgstr ""
 
 #: data/level/conveyance.cfg:1833
 msgid ""
 "Oh is that so? Well after what Milgram's\n"
 "men did to the bridge..."
 msgstr ""
-"Oh, ¿eso es? Bueno, después de lo que los\n"
-"hombres de Milgram le hicieron al puente... "
 
 #: data/level/conveyance.cfg:1834
 msgid "the CONVEYANCE is the only way!"
-msgstr "¡el Transporte es la única vía!"
+msgstr ""
 
 #: data/level/conveyance.cfg:1835
 msgid ""
 "So I have to use this conveyance thing\n"
 "to get to town? Okay, well, let's go..."
 msgstr ""
-"¿Así que tengo que usar esta cosa de\n"
-"transporte para ir a la ciudad? Bueno, vamos..."
 
 #: data/level/conveyance.cfg:1836
 msgid ""
 "Yessir, climb aboard the CONVEYANCE\n"
 "for the ride of your life!"
 msgstr ""
-"Si señor, ¡suba a bordo del Transporte\n"
-"para el viaje de su vida!"
 
 #: data/level/conveyance.cfg:1837
 msgid ""
 "Why they said my grandfather was crazy\n"
 "when he built it. But whose crazy now, eh?"
 msgstr ""
-"¿Porqué decían que mi abuelo estaba loco\n"
-"cuando lo construyó?. ¿Ahora quién es el loco?"
 
 #: data/level/crevice-bridge.cfg:13
 msgid "Crevice Bridge"
-msgstr "Puente La Grieta"
+msgstr ""
 
 #: data/level/crevice-village-cave.cfg:11
 #: data/level/crevice-village-central.cfg:13
 #: data/level/crevice-village-heights.cfg:11 data/level/crevice-village.cfg:13
-#: data/objects/playable/map-selector.cfg:18
 msgid "Crevice Village"
-msgstr "Aldea La Grieta"
+msgstr ""
 
 #: data/level/crevice-village-cave.cfg:815
 msgid "What the..."
-msgstr "Qué ra..."
+msgstr ""
 
 #: data/level/crevice-village-cave.cfg:815
 msgid "You!!"
-msgstr "¡¡Tú!!"
+msgstr "おまえ！！"
 
 #: data/level/crevice-village-cave.cfg:816 data/level/wm-town.cfg:2309
 #: data/object_prototypes/buyable_item.cfg:24
-#: data/objects/buildings/dungeon_save_door.cfg:24
-#: data/objects/buildings/world_1_interior_save_door.cfg:24
 #: data/objects/props-interactive/save_toilet.cfg:17
 msgid "Yes"
-msgstr "Sí"
+msgstr "はい"
 
 #: data/level/crevice-village-cave.cfg:816
 msgid "You're an intruder, aren't you?!"
-msgstr "Eres un intruso, ¿no?"
+msgstr "侵入者だな！"
 
 #: data/level/crevice-village-cave.cfg:817
 msgid "I thought so!"
-msgstr "Ya me lo imaginaba"
+msgstr "やっぱりそうだ！"
 
 #: data/level/crevice-village-cave.cfg:818 data/level/wm-town.cfg:2316
 #: data/object_prototypes/buyable_item.cfg:25
-#: data/objects/buildings/dungeon_save_door.cfg:29
-#: data/objects/buildings/world_1_interior_save_door.cfg:29
 #: data/objects/props-interactive/save_toilet.cfg:22
 msgid "No"
-msgstr "No"
+msgstr "いいえ"
 
 #: data/level/crevice-village-cave.cfg:819
 msgid "There's no fooling me."
-msgstr "No hay quien me engañe."
+msgstr "ばかするんじゃねえ。"
 
 #: data/level/crevice-village-cave.cfg:819
 msgid ""
 "You look like a very\n"
 "suspicious character."
 msgstr ""
-"Te ves como un personaje\n"
-"muy sospechoso."
+"お前はとても怪しい\n"
+"人物みたいだ。"
 
 #: data/level/crevice-village-cave.cfg:821
 msgid "Could you just step aside?"
-msgstr "¿Podría hacerse a un lado?"
+msgstr "通してくれないか。"
 
 #: data/level/crevice-village-cave.cfg:823
 msgid ""
 "I need to take care\n"
 "of something in town."
-msgstr ""
-"Necesito tener cuidado de\n"
-"algo en el pueblo."
+msgstr "町に用事があるんだ。"
 
 #: data/level/crevice-village-cave.cfg:824
 msgid ""
 "Well, I can't let anyone\n"
 "past this gate."
 msgstr ""
-"Bueno, no puedo dejar pasar\n"
-"a nadie por esta puerta."
+"いや、誰にもこの門を通す\n"
+"わけにはいかない。"
 
 #: data/level/crevice-village-cave.cfg:825
 msgid ""
 "Without this key,\n"
 "you're not getting anywhere."
 msgstr ""
-"Sin esta llave, no llegará\n"
-"a ningún lado."
+"この鍵がなけりゃ、\n"
+"どこにもいけないんだよ。"
 
 #: data/level/crevice-village-cave.cfg:827
 msgid ""
 "Okay.  Will you please lend\n"
 "me that key?"
-msgstr ""
-"Está bien. ¿Haga el favor de\n"
-"prestarme esa llave?"
+msgstr "なら、鍵を貸してもらえないか。"
 
 #: data/level/crevice-village-cave.cfg:828
 msgid "No way!  Over my dead body!"
-msgstr "¡De ninguna manera! ¡Sobre mi cadáver!"
+msgstr ""
 
 #: data/level/crevice-village-cave.cfg:830
 msgid "We can do that."
-msgstr "Podemos hacerlo."
+msgstr ""
 
 #: data/level/crevice-village-central-side-cave.cfg:15
 msgid "Hidden Cave"
-msgstr "Cueva oculta"
+msgstr ""
 
 #: data/level/crevice-village-central.cfg:1341
 msgid ""
 "Ahh, good, you made it\n"
 "through there in one piece!"
 msgstr ""
-"Ahh, bien, ¡lo has hecho\n"
-"en usa sola pieza!"
+"おお、よくご無事に\n"
+"入りましたか！"
 
 #: data/level/crevice-village-central.cfg:1343
 msgid ""
 "Yeah, those goons\n"
 "had a little ambush set up."
 msgstr ""
-"Sí, esos matones tienen una\n"
-"pequeña emboscada preparada."
 
 #: data/level/crevice-village-central.cfg:1345
 msgid "So, now what?"
-msgstr "Así que, ¿ahora qué?"
+msgstr "で、これからは？"
 
 #: data/level/crevice-village-central.cfg:1346
 msgid ""
 "Well, as you know, the town\n"
 "is split into two halves."
 msgstr ""
-"Bueno, como sabes, el pueblo\n"
-"está separado en dos mitades."
+"そうですね。ご存知どうり、\n"
+"町は二つ分に分かれている。"
 
 #: data/level/crevice-village-central.cfg:1347
 msgid ""
@@ -475,9 +420,6 @@ msgid ""
 "locked down tight, and he has\n"
 "most of the residents held prisoner."
 msgstr ""
-"Milgram tiene esta parte del pueblo\n"
-"cerrada y tiene la mayor parte de los\n"
-"residentes aprisionados."
 
 #: data/level/crevice-village-central.cfg:1348
 msgid ""
@@ -485,13 +427,10 @@ msgid ""
 "under guard. If you free them,\n"
 "I'm sure they can help you."
 msgstr ""
-"Ellos están amarrados dentro de sus\n"
-"casas, bajo guardia. Si los liberas,\n"
-"Estoy seguro de que podrán ayudarte."
 
 #: data/level/crevice-village-central.cfg:1350
 msgid "Makes sense."
-msgstr "Tiene sentido."
+msgstr "なるほど。"
 
 #: data/level/crevice-village-central.cfg:1351
 msgid ""
@@ -499,33 +438,30 @@ msgid ""
 "the gate connecting the two halves\n"
 "of town has been locked."
 msgstr ""
-"Tu gran problema será que la puerta\n"
-"que conecta las dos mitades del pueblo\n"
-"está bloqueada."
+"一番の問題は、町の二分を繋がる\n"
+"町門は鍵を掛かっています。"
 
 #: data/level/crevice-village-central.cfg:1352
 msgid ""
 "And I don't think there's a guard next\n"
 "to it, whom you can steal the key from."
 msgstr ""
-"Y no pienso que haya un guardia junto\n"
-"a ella a quien le puedan robar la llave."
 
 #: data/level/crevice-village-central.cfg:1353
 msgid ""
 "They've probably hidden it in one of\n"
 "the houses, but I don't know which one."
 msgstr ""
-"Probablemente la escondieron en una\n"
-"de las casas, pero no sé cuál es."
+"鍵はどれかの家に隠されている\n"
+"でしょうが、どれかは分かりません。"
 
 #: data/level/crevice-village-central.cfg:1354
 msgid ""
 "Asking one of the prisoners is probably\n"
 "our best bet for a clue."
 msgstr ""
-"Preguntándole a uno de los prisioneros es,\n"
-"probablemente, nuestra mejor apuesta para una pista."
+"囚人たちを聞けば、\n"
+"手がかりが浮かぶかもしれません。"
 
 #: data/level/crevice-village-central.cfg:1550
 #: data/level/crevice-village-house-2.cfg:3265
@@ -533,23 +469,23 @@ msgstr ""
 #: data/level/crevice-village-house-4.cfg:3189
 #: data/level/killer-bunnies.cfg:4611
 msgid "Nope, it's locked."
-msgstr "No, está bloqueada."
+msgstr "いや、鍵が掛かっている。"
 
 #: data/level/crevice-village-central.cfg:2269
 msgid "Hey! Over here!"
-msgstr "¡Hey! ¡Por aquí!"
+msgstr "おおい！ここだ！"
 
 #: data/level/crevice-village-heights.cfg:1088
 msgid "So!  I've unlocked this gate, here."
-msgstr "¡Ajá! He abierto esta puerta, aquí."
+msgstr "やった！この門の鍵を解けた。"
 
 #: data/level/crevice-village-heights.cfg:1091
 msgid ""
 "Through there,\n"
 "is the way to where Milgram lives."
 msgstr ""
-"Por allí,\n"
-"es la vía por donde vive Milgram."
+"ここからは、\n"
+"ミルグラムの住む場所への道じゃ。"
 
 #: data/level/crevice-village-heights.cfg:1093
 msgid ""
@@ -557,134 +493,123 @@ msgid ""
 "and I would explain it,\n"
 "but as a matter of fact, I don't need to."
 msgstr ""
-"Todo es un poco complicado y\n"
-"lo explicaré, pero de hecho, no lo\n"
-"necesito."
+"少し複雑じゃが、\n"
+"実はわしが説明する必要はない。"
 
 #: data/level/crevice-village-heights.cfg:1095
 msgid "Huh?"
-msgstr "¿Eh?"
+msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1098
 msgid ""
 "Yes, that blue fellow you ran into..\n"
 "Berd was his name."
 msgstr ""
-"Sí, ese hombre azul que se encontró con...\n"
-"Berd era su nombre."
 
 #: data/level/crevice-village-heights.cfg:1100
 msgid ""
 "He'll follow you from above,\n"
 "and will keep you informed."
 msgstr ""
-"Él te seguirá desde arriba y te\n"
-"mantendrá informado."
 
 #: data/level/crevice-village-heights.cfg:1102
 msgid "He's a good boy, that one."
-msgstr "Es un buen chico."
+msgstr "いい子じゃぞ、あの子は。"
 
 #: data/level/crevice-village-heights.cfg:1104
 msgid "Okay, that'll help!"
-msgstr "¡Muy bien, eso ayudará!"
+msgstr "そんなら助かる！"
 
 #: data/level/crevice-village-heights.cfg:1106
 msgid ""
 "Now, this'll take you over a bridge,\n"
 "then through an underground passage."
 msgstr ""
-"Ahora, esto te llevará sobre un puente,\n"
-"luego a través de un pasaje subterráneo."
+"この道を歩けば、橋を越える。\n"
+"それで地下通路がある。"
 
 #: data/level/crevice-village-heights.cfg:1108
 msgid "Watch your head in there."
-msgstr "Cuidado con la cabeza ahí."
+msgstr "あそこに頭は気を付けなさい。"
 
 #: data/level/crevice-village-heights.cfg:1110
 msgid "Past that, and you come to the forest."
-msgstr "Pasado eso se llega al bosque."
+msgstr "地下通路の向こうは、森になる。"
 
 #: data/level/crevice-village-heights.cfg:1112
 msgid ""
 "I haven't been there in a long time,\n"
 "so I'm not sure what's become of it."
 msgstr ""
-"No he estado ahí en un tiempo largo,\n"
-"así que no estoy seguro en lo que se ha convertido."
+"あそこは久し振りじゃからのう、\n"
+"いまはどんな状態か、知らんじゃ。"
 
 #: data/level/crevice-village-heights.cfg:1114
 msgid "Right, I'll watch my back."
-msgstr "Correcto, me cuidaré la espalda."
+msgstr "そうか、気を付けよう。"
 
 #: data/level/crevice-village-heights.cfg:1116
 msgid ""
 "Best of luck, my boy.\n"
 "Milgram won't know what hit him!"
 msgstr ""
-"La mejor de las suertes, mi chico.\n"
-"¡Milgram no sabrá que lo golpeó!"
 
 #: data/level/crevice-village-heights.cfg:1118
 msgid "You bet!"
-msgstr "¡Por supuesto!"
+msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1120
 msgid ""
 "Say, uh... by the way,\n"
 "what's going to happen to town, here?"
 msgstr ""
-"Decir, eh... por cierto, ¿qué va a\n"
-"pasar con la ciudad?"
+"ええっと、ところで、\n"
+"この町はどうなる？"
 
 #: data/level/crevice-village-heights.cfg:1122
 msgid "Eh, don't worry about that."
-msgstr "Eh, no te preocupes por eso."
+msgstr "え？それは心配いらん。"
 
 #: data/level/crevice-village-heights.cfg:1124
 msgid ""
 "With their leader gone, Milgram's goons\n"
 "will probably pack up and leave."
 msgstr ""
-"Con su líder desaparecido, los matones de Milgram\n"
-"probablemente recogerán sus cosas y se marcharán."
 
 #: data/level/crevice-village-heights.cfg:1126
 msgid "And good riddance!"
-msgstr "Y bueno ¡Que se vayan!"
+msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1128
 msgid ""
 "Well, I'm off.\n"
 "Thanks for the advice!"
 msgstr ""
-"Bueno, me voy.\n"
-"¡Gracias por el consejo!"
 
 #: data/level/crevice-village-heights.cfg:1130
 msgid "Likewise.  Good luck!"
-msgstr "También. ¡Buena suerte!"
+msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:9
 #: data/level/liberated-crevice-village-house-1.cfg:9
 msgid "The Elevator House"
-msgstr "La Casa del Ascensor"
+msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2502
 msgid "Who are you?"
-msgstr "¿Quién eres tu?"
+msgstr "あなたは誰？"
 
 #: data/level/crevice-village-house-1.cfg:2504
 msgid ""
 "I'm the hero.\n"
 "I'm gonna save this town!"
 msgstr ""
-"Soy el héroe.\n"
-"¡Salvaré a este pueblo!"
+"俺は英雄だ。\n"
+"この町を救う！"
 
 #: data/level/crevice-village-house-1.cfg:2506
 msgid "That's my new job."
-msgstr "Ese es mi nuevo trabajo."
+msgstr "それは新しい仕事だ。"
 
 #: data/level/crevice-village-house-1.cfg:2507
 #: data/level/crevice-village-house-1.cfg:2512
@@ -694,7 +619,7 @@ msgstr "Ese es mi nuevo trabajo."
 #: data/level/crevice-village-house-elder.cfg:1510
 #: data/level/crevice-village-house-elder.cfg:1612
 msgid "..."
-msgstr "..."
+msgstr "…"
 
 #: data/level/crevice-village-house-1.cfg:2507
 msgid "That's nutty."
@@ -705,12 +630,10 @@ msgid ""
 "Nevertheless, let's pretend that\n"
 "I might actually pull it off."
 msgstr ""
-"Sin embargo, vamos a pretender que\n"
-"yo podría llevarlo a cabo."
 
 #: data/level/crevice-village-house-1.cfg:2511
 msgid "Got any advice?"
-msgstr "¿Tiene algún consejo?"
+msgstr "何か助言でも？"
 
 #: data/level/crevice-village-house-1.cfg:2512
 msgid "Keep an eye out for it!"
@@ -718,7 +641,7 @@ msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2512
 msgid "Maybe."
-msgstr "Quizá."
+msgstr "そうかもしれない。"
 
 #: data/level/crevice-village-house-1.cfg:2512
 msgid ""
@@ -726,9 +649,8 @@ msgid ""
 "the key that opens the town gate\n"
 "is a SILVER key."
 msgstr ""
-"OH! Una otra cosa...\n"
-"la llave que abre la puerta del pueblo\n"
-"es una llave PLATEADA."
+"そうだ！もうひとつ…\n"
+"町門"
 
 #: data/level/crevice-village-house-1.cfg:2512
 msgid ""
@@ -736,9 +658,9 @@ msgid ""
 "I think that unlocks a house that\n"
 "has the key to the town gate."
 msgstr ""
-"Sí, esa llave que está a tu lado -\n"
-"Pienso que abre una casa que tiene\n"
-"la llave para la puerta de la ciudad."
+"お前のそばにあるかぎは\n"
+"町門を開く鍵がある\n"
+"家の鍵だと思う。"
 
 #: data/level/crevice-village-house-1.cfg:2514
 msgid "Will do.  Catch ya around."
@@ -746,291 +668,271 @@ msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2515
 msgid "HEY, WAIT!  What about me?!"
-msgstr "¡HEY! ¡ESPERA! ¿Qué hay de mí?"
+msgstr "おい待て！俺はどうなるよ？！"
 
 #: data/level/crevice-village-house-1.cfg:2517
 msgid ""
 "Do I look like I have a key\n"
 "for your cage?"
 msgstr ""
-"¿Me veo como si tuviera una llave\n"
-"para su jaula?"
+"俺がそのケージの鍵を持っている\n"
+"にも見えるか？"
 
 #: data/level/crevice-village-house-1.cfg:2518
 msgid ""
 "Ah, I see..\n"
 "carry on then."
 msgstr ""
-"Ah, ya veo...\n"
-"continúa  entonces."
+"あ、そうだった…\n"
+"行ってらっしゃい。"
 
 #: data/level/crevice-village-house-1.cfg:2542
-#, fuzzy
 msgid "Thank God it's you!"
-msgstr "¡Gracias a Dios que eres tú!"
+msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2544
 msgid "Hey, Hedge, you alright?"
-msgstr "Hey, Hedge, ¿estás bien?"
+msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2545
 msgid "Besides the obvious cage situation."
-msgstr "Además de la obvia situación de la jaula."
+msgstr "閉じ込まれていること以外は。"
 
 #: data/level/crevice-village-house-1.cfg:2545
 msgid "Eh, I've been better, but yeah, I'm okay."
-msgstr "Eh, estaré mejor, pero sí, estoy bien."
+msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2547
 msgid ""
 "Yeah.\n"
 "Sad to say, I can't pick locks.\n"
 "I got nothing."
-msgstr ""
-"Sí.\n"
-"Es triste, no puedo abrir las cerraduras.\n"
-"No tengo nada."
+msgstr "残念だが、"
 
 #: data/level/crevice-village-house-1.cfg:2548
 msgid "So I'm stuck here, huh?"
-msgstr "Así que estoy atrapado aquí, ¿eh?"
+msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2550 data/level/wm-town.cfg:2245
 msgid "Yep."
-msgstr "Sí."
+msgstr "そう。"
 
 #: data/level/crevice-village-house-1.cfg:2551
-#, fuzzy
 msgid ""
 "Hmm, you know, I know one thing\n"
 "that might help you.."
 msgstr ""
-"Hmm, sabes, sé una cosa que te\n"
-"puede ayudar."
 
 #: data/level/crevice-village-house-1.cfg:2551
 msgid "Phooey."
-msgstr "Phooey."
+msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2551
 msgid ""
 "There's supposedly\n"
 "a secret room in this house."
 msgstr ""
-"Supuestamente hay un\n"
-"cuarto secreto en esta casa."
+"この家には\n"
+"隠し部屋があるらしいぜ。"
 
 #: data/level/crevice-village-house-1.cfg:2553
 msgid "Oh really?  Where at?"
-msgstr "Oh, ¿De verdad? ¿Dónde?"
+msgstr "本当？どこ？"
 
 #: data/level/crevice-village-house-1.cfg:2554
 msgid ""
 "If I knew that, it wouldn't\n"
 "be much of a secret, would it?"
 msgstr ""
-"Si lo supiera, no sería un secreto\n"
-"¿lo sería?"
+"俺が知ったんなら、\n"
+"隠しじゃなくなるだろう。"
 
 #: data/level/crevice-village-house-1.cfg:2556
 msgid ""
 "Figures.\n"
 "Well, thanks for the help!"
 msgstr ""
-"Bueno,\n"
-"¡gracias por la ayuda!"
 
 #: data/level/crevice-village-house-1.cfg:2557
 msgid "Good luck!"
-msgstr "¡Buena suerte!"
+msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2581
 msgid ""
 "Jeez, I *swear* this house\n"
 "didn't look THIS big from the outside!"
 msgstr ""
-"Por Dios, ¡*juro* que esta casa no\n"
-"se veía ASÍ de grande desde el exterior!"
+"おいおい、この家は外から\n"
+"コンナにも大きく見えなかったぜ！"
 
 #: data/level/crevice-village-house-1.cfg:2628
 msgid ""
 "Uh, oh,\n"
 "I can hear a lot of feet tromping around..."
 msgstr ""
-"Uh, oh,\n"
-"Puedo escuchar un montón de pasos pisoteando alrededor..."
 
 #: data/level/crevice-village-house-2-basement.cfg:13
 #: data/level/crevice-village-house-2.cfg:12
 #: data/level/liberated-crevice-village-house-2.cfg:9
 msgid "Central House"
-msgstr "Casa Central"
+msgstr ""
 
 #: data/level/crevice-village-house-2.cfg:3211
 msgid "Something's odd about this fireplace."
-msgstr "Hay algo raro en esa chimenea."
+msgstr "暖炉は何か変だ。"
 
 #: data/level/crevice-village-house-2.cfg:3525
 msgid "Wow, you guys look exactly alike."
-msgstr "Wow, ustedes se ven exactamente igual."
+msgstr "うぇー、お前らはそっくりだ。"
 
 #: data/level/crevice-village-house-2.cfg:3526
 msgid "We're twins."
-msgstr "Somos gemelos."
+msgstr "双子なんだ。"
 
 #: data/level/crevice-village-house-2.cfg:3527
 msgid ""
 "Is there anything\n"
 "you can do to help us?"
-msgstr ""
-"¿Hay algo que puedas\n"
-"hacer para ayudarnos?"
+msgstr "助ける方法あるの？"
 
 #: data/level/crevice-village-house-2.cfg:3529
 msgid ""
 "Not yet.\n"
 "Sorry."
 msgstr ""
-"Aún no.\n"
-"Lo siento."
+"まだなにも。\n"
+"すまない。"
 
 #: data/level/crevice-village-house-2.cfg:3560
 msgid ""
 "Hey,\n"
 "I'm trying to help save the town."
 msgstr ""
-"Hey, \n"
-"Estoy tratando de ayudar a salvar la ciudad."
+"やあ、\n"
+"俺は町を救おうとしてるんだ。"
 
 #: data/level/crevice-village-house-2.cfg:3562
 msgid "Can you give me any advice?"
-msgstr "¿Pueden darme algún consejo?"
+msgstr "何かアドバイスある？"
 
 #: data/level/crevice-village-house-2.cfg:3563
 msgid "Yeah."
-msgstr "Por supuesto."
+msgstr "ええ。"
 
 #: data/level/crevice-village-house-2.cfg:3564
 msgid ""
 "The elder's house is off to the east,\n"
 "past the town gate."
 msgstr ""
-"La casa del anciano es hacia el este,\n"
-"más allá de la puerta de la ciudad."
+"町長の家は東に、\n"
+"町門の向こうにある。"
 
 #: data/level/crevice-village-house-2.cfg:3565
-#, fuzzy
 msgid "We saw Milgram's lieutenant go in there."
-msgstr "Vimos al teniente de Milgram ir hacia allá"
+msgstr "ミルグラムの中尉が入るのを見た。"
 
 #: data/level/crevice-village-house-2.cfg:3567 data/level/rock-a-fort.cfg:4418
 msgid "How interesting."
-msgstr "Qué interesante."
+msgstr "面白い。"
 
 #: data/level/crevice-village-house-3-backroom.cfg:12
 #: data/level/crevice-village-house-3.cfg:9
 #: data/level/liberated-crevice-village-house-3.cfg:9
 msgid "The Danger House"
-msgstr "La Casa del Peligro"
+msgstr "危険な家"
 
 #: data/level/crevice-village-house-4-backroom.cfg:7
 #: data/level/crevice-village-house-4.cfg:7
 #: data/level/liberated-crevice-village-house-4.cfg:7
 msgid "Fan House"
-msgstr ""
+msgstr "ファンの家"
 
 #: data/level/crevice-village-house-4-backroom.cfg:1293
 msgid ""
 "Argh! Who in the world would\n"
 "design a house like this?"
 msgstr ""
-"¡Argh! ¿Quién en el mundo puede\n"
-"construir una casa como esta?"
+"ああ！いったい誰が\n"
+"こんな家をデザインした？"
 
 #: data/level/crevice-village-house-4.cfg:3091
 msgid "Hmmm..."
-msgstr "Hmmm..."
+msgstr "ふむ…"
 
 #: data/level/crevice-village-house-4.cfg:3092
 msgid ""
 "It seems I'm trapped\n"
 "inside this house."
 msgstr ""
-"Parece que estoy atrapado\n"
-"en esta casa."
+"どうやらこの家に\n"
+"閉じ込まれたようだ。"
 
 #: data/level/crevice-village-house-4.cfg:3093
 msgid ""
 "I guess the only way out\n"
 "is in!"
 msgstr ""
-"¡Supongo que la única salida\n"
-"es entrar!"
 
 #: data/level/crevice-village-house-4.cfg:3395
 msgid "This is decidedly unpleasant."
-msgstr "Esto es definitivamente desagradable."
+msgstr "明らかに不愉快だ。"
 
 #: data/level/crevice-village-house-4.cfg:3397
 #: data/level/crevice-village-house-4.cfg:3407
 msgid "You don't say."
-msgstr "Usted no dijo."
+msgstr "確かに。"
 
 #: data/level/crevice-village-house-4.cfg:3399
 msgid ""
 "When I stepped in the door,\n"
 "it locked behind me."
 msgstr ""
-"Cuando entré por la puerta,\n"
-"se cerró detrás de mí."
+"ドアから入ると、\n"
+"後ろに鍵が掛かれた。"
 
 #: data/level/crevice-village-house-4.cfg:3400
 msgid ""
 "That's actually a rather clever\n"
 "way to round everyone up."
 msgstr ""
-"Eso es realmente una manera\n"
-"bastante inteligente para asaltar a todos."
+"それは皆を閉じ込む\n"
+"いい方法だ。"
 
 #: data/level/crevice-village-house-4.cfg:3402
 msgid ""
 "Know anything helpful\n"
 "about this house?"
 msgstr ""
-"¿Sabe algo útil acerca de\n"
-"esta casa?"
 
 #: data/level/crevice-village-house-4.cfg:3403
 msgid ""
 "Unfortunately I don't.\n"
 "I was just visiting."
 msgstr ""
-"Desafortunadamente, no.\n"
-"Sólo estaba de visita."
+"残念ながら。\n"
+"一応観光に来ただけだし。"
 
 #: data/level/crevice-village-house-4.cfg:3404
 msgid "The floorplan is quite loony."
-msgstr "El plano es bastante loco."
+msgstr ""
 
 #: data/level/crevice-village-house-4.cfg:3406
 msgid "Marvelous ventilation, though."
-msgstr "Aunque maravillosa ventilación."
+msgstr ""
 
 #: data/level/crevice-village-house-4.cfg:3409
 msgid ""
 "Anyways, I'd better be off.\n"
 "I'm trying to sort out this mess."
 msgstr ""
-"De todas formas, será mejor que me\n"
-"vaya. Estoy tratando de resolver este lío."
 
 #: data/level/crevice-village-house-4.cfg:3410
 msgid "Good luck."
-msgstr "Buena suerte."
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:9
 msgid "The Elder's House"
-msgstr "La Casa del Anciano"
+msgstr "町長の家"
 
 #: data/level/crevice-village-house-elder.cfg:1316
 msgid "How's that business with Milgram going?"
@@ -1038,47 +940,45 @@ msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1318
 msgid "I'm working on it."
-msgstr "Estoy trabajando en ello."
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1320
 msgid "That's good to hear!"
-msgstr "¡Es bueno escuchar eso!"
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1479
 msgid "Ugh."
-msgstr "Ugh."
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1480
 msgid ""
 "For the last time, we *know* you've\n"
 "got the money somewhere."
 msgstr ""
-"Por última vez, *sabemos* que tienes\n"
-"dinero en alguna parte."
 
 #: data/level/crevice-village-house-elder.cfg:1481
 msgid "Make this easy on yourself."
-msgstr "No hagas esto más difícil."
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1483
 msgid "I have no idea what you're talking about."
-msgstr "No tengo idea de qué me están hablando."
+msgstr "何を言ってるかさっぱり分からん。"
 
 #: data/level/crevice-village-house-elder.cfg:1485
 msgid "*ahem*"
-msgstr "*ejem*"
+msgstr "ゴホン"
 
 #: data/level/crevice-village-house-elder.cfg:1487
 msgid "Er..  Right, uh, it's over here.."
-msgstr "Em... Correcto, uh, es por aquí..."
+msgstr "ええっと、そう、ここです。"
 
 #: data/level/crevice-village-house-elder.cfg:1495
 msgid "Oh, no you don't!"
-msgstr "¡Oh, no, no!"
+msgstr "そうは行かないぜ！"
 
 #: data/level/crevice-village-house-elder.cfg:1496
 msgid "If you don't tell...  uh..."
-msgstr "Si no lo dices... uh..."
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1496
 msgid ""
@@ -1086,182 +986,161 @@ msgid ""
 "Now, listen up,\n"
 "You're SERIOUSLY testing my patience."
 msgstr ""
-"¡No irás a ninguna parte!\n"
-"Ahora, escucha,\n"
-"Estás SERIAMENTE probando mi paciencia."
 
 #: data/level/crevice-village-house-elder.cfg:1501
 msgid "Oh, hi, what's going on here?"
-msgstr "Oh, hola, ¿Qué está pasando aquí?"
+msgstr "あの、今日は。何が起こってる"
 
 #: data/level/crevice-village-house-elder.cfg:1505
 msgid "Who the hell are you?"
-msgstr "¿Quién demonios eres?"
+msgstr "何だてめえ？"
 
 #: data/level/crevice-village-house-elder.cfg:1508
 msgid "Frogatto, at your service."
-msgstr "Frogatto, a sus servicios."
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1511
 msgid "I don't have to put up with this."
-msgstr "No tengo que aguantar esto."
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1513
 msgid "Excuse me whilst I vent a little frustration."
-msgstr "Perdonen mientras ventilo una pequeña frustración."
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1550
 msgid "-ouch-"
-msgstr "- ay -"
+msgstr "いたっ"
 
 #: data/level/crevice-village-house-elder.cfg:1551
 msgid "Okay, I've had enough!  I'm going home."
-msgstr "Bien, ¡he tenido suficiente! Me voy a casa."
+msgstr "ちっ、付き合ってられない！もう帰るわ。"
 
 #: data/level/crevice-village-house-elder.cfg:1607
 msgid ""
 "Well!\n"
 "That went better than expected."
 msgstr ""
-"¡Bien!\n"
-"Eso fue mejor de lo esperado."
+"いいぜ！\n"
+"予想よりうまくいった。"
 
 #: data/level/crevice-village-house-elder.cfg:1610
 msgid ""
 "Say ...\n"
 "What happened to the elder?"
 msgstr ""
-"Dime ...\n"
-"¿Qué pasó con el anciano?"
+"あれ…\n"
+"町長はどうした？"
 
 #: data/level/crevice-village-house-elder.cfg:1615
 msgid ""
 "Whoa...\n"
 "... is that what I think it is?"
 msgstr ""
-"Whoa...\n"
-"... ¿es lo que creo que es?"
+"うおー\n"
+"…これはもしかして…"
 
 #: data/level/crevice-village-house-elder.cfg:1629
 msgid "It is indeed, my boy!"
-msgstr "¡Es verdad, hijo mío!"
+msgstr "いかにも、少年！"
 
 #: data/level/crevice-village-house-elder.cfg:1631
 msgid "It's my very own safe room."
-msgstr "Es mi propia habitación segura."
+msgstr "わしのセーフルームじゃ。"
 
 #: data/level/crevice-village-house-elder.cfg:1633
 msgid "Wow."
-msgstr "Wow."
+msgstr "すっげえ。"
 
 #: data/level/crevice-village-house-elder.cfg:1635
 msgid "Built it for exactly this sort of crisis."
-msgstr "Construida exactamente para este tipo de crisis."
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1637
 msgid "It's a shame I can't trust people."
-msgstr "Es una lástima que no se pueda confiar en la gente."
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1639
 msgid ""
 "Quite expensive, but if it protects me,\n"
 "and all my stuff, then it's worth it!"
 msgstr ""
-"Bastante caro, pero me protege,\n"
-"y a todas mis cosas, ¡entonces vale la pena!"
 
 #: data/level/crevice-village-house-elder.cfg:1641
 msgid ""
 "I've got everything I couldn't stand\n"
 "losing back there."
 msgstr ""
-"Tengo todo lo que no puedo soportar\n"
-"perder."
 
 #: data/level/crevice-village-house-elder.cfg:1643
 msgid ""
 "Isn't it true that's not all yours, though?\n"
 "Don't you owe some of it to Milgram?"
 msgstr ""
-"¿No es cierto que todo no es tuyo?\n"
-"¿No le debe nada de eso a Milgram?"
 
 #: data/level/crevice-village-house-elder.cfg:1645
 msgid ""
 "Bah!  And what if I do?\n"
 "He's got no respect."
 msgstr ""
-"¡Bah! ¿Y si fuera cierto?\n"
-"Él no tiene respeto."
 
 #: data/level/crevice-village-house-elder.cfg:1647
 msgid ""
 "He should be thankful for everything\n"
 "I've done for him."
 msgstr ""
-"Debería estar agradecido por todo\n"
-"lo que he hecho por él."
 
 #: data/level/crevice-village-house-elder.cfg:1649
 msgid "Such as?"
-msgstr "¿Como qué?"
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1651
 msgid "Well, you know..."
-msgstr "Bueno, tu sabes..."
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1653
 msgid "I am the mayor after all."
-msgstr "Yo soy el alcalde, después de todo."
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1655
 #: data/level/tea-with-milgram.cfg:197
 msgid "That's right!"
-msgstr "¡Eso es cierto!"
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1657
 msgid "Anyhow, I'm proud of you."
-msgstr "De todos modos, estoy orgulloso de ti."
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1659
 msgid ""
 "You're a real hero,\n"
 "scaring that hooligan away."
 msgstr ""
-"Eres un verdadero héroe,\n"
-"asustando de esa manera."
 
 #: data/level/crevice-village-house-elder.cfg:1661
 msgid "Is there any way I can thank you?"
-msgstr "¿Hay alguna forma de poder agradecerte?"
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1663
 msgid ""
 "Actually, yes.\n"
 "I have a crazy idea in mind."
 msgstr ""
-"En realidad, sí.\n"
-"Tengo una loca idea en mente."
 
 #: data/level/crevice-village-house-elder.cfg:1665
 msgid ""
 "I'm wondering if you can be my patron,\n"
 "in this little scheme of mine."
 msgstr ""
-"Me pregunto si puedes ser mi mecenas,\n"
-"en este pequeño proyecto mío."
 
 #: data/level/crevice-village-house-elder.cfg:1667
 msgid "Hm?"
-msgstr "¿Hm?"
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1669
 msgid ""
 "See, I think this stuff with Milgram\n"
 "has gone on long enough."
 msgstr ""
-"Verás, creo que estas cosas con Milgram\n"
-"han ido demasiado lejos."
 
 #: data/level/crevice-village-house-elder.cfg:1671
 msgid ""
@@ -1271,7 +1150,7 @@ msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1673
 msgid "Oh my."
-msgstr "Oh mi..."
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1675
 msgid ""
@@ -1279,30 +1158,24 @@ msgid ""
 "Because I'd give ANYTHING to\n"
 "stop him from hassling me!"
 msgstr ""
-"¿Hablas en serio?\n"
-"¡Porque yo daría CUALQUIER cosa\n"
-"para que me dejara de fastidiar!"
 
 #: data/level/crevice-village-house-elder.cfg:1677
-#, fuzzy
 msgid "...Anything?"
-msgstr " ... ¿Cualquier cosa?"
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1679
 msgid ""
 "Why, I'll give you a mountain of gold,\n"
 "if that's what it takes.  Anything!"
 msgstr ""
-"¿Por qué?, te daré una montaña de oro,\n"
-"si eso es lo que toma hacerlo.  ¡Cualquier cosa!"
 
 #: data/level/crevice-village-house-elder.cfg:1681
 msgid "In fact, I'll even show you the way!"
-msgstr "De hecho, ¡incluso te mostraré el camino!"
+msgstr ""
 
 #: data/level/crevice-village.cfg:717 data/level/to-nenes-house.cfg:1354
 msgid "I better leave this key here."
-msgstr "Será mejor que deje esta llave aquí."
+msgstr ""
 
 #: data/level/crevice-village.cfg:916
 msgid "Hey!"
@@ -1339,11 +1212,10 @@ msgid ""
 msgstr ""
 
 #: data/level/crevice-village.cfg:967
-#, fuzzy
 msgid ""
 "Well, yeah,\n"
 "I was gonna go in there."
-msgstr "Oh, hola, ¿Qué está pasando aquí?"
+msgstr ""
 
 #: data/level/crevice-village.cfg:969
 msgid ""
@@ -1418,23 +1290,23 @@ msgstr ""
 
 #: data/level/dark-corridor.cfg:7
 msgid "Dark Corridor"
-msgstr "Corredor Obscuro"
+msgstr ""
 
 #: data/level/dark-corridor.cfg:1406
 msgid "Now what?"
-msgstr "¿Ahora qué?"
+msgstr ""
 
 #: data/level/darkness-central.cfg:14
 msgid "Darkness Central"
-msgstr "Oscuridad Central"
+msgstr ""
 
 #: data/level/descent-to-town.cfg:11
 msgid "Descent to Town"
-msgstr "Descenso a la Ciudad"
+msgstr ""
 
 #: data/level/downhill.cfg:11
 msgid "Downhill"
-msgstr "Cuesta abajo"
+msgstr ""
 
 #: data/level/dungeon-blocks.cfg:8
 msgid "Dungeon Blocks"
@@ -1446,114 +1318,111 @@ msgstr ""
 
 #: data/level/dungeon-entrance.cfg:9
 msgid "The Entrance"
-msgstr "La Entrada"
+msgstr ""
 
-#: data/level/eerie-arbor.cfg:16
+#: data/level/eerie-arbor.cfg:14
 msgid "Eerie Arbor"
-msgstr "Árbol Misterioso"
+msgstr ""
 
 #: data/level/fast-lane.cfg:13
 msgid "Fast Lane"
-msgstr "Vía rápida"
+msgstr ""
 
 #: data/level/flooded-caverns.cfg:11
 msgid "Flooded Caverns"
-msgstr "Cavernas inundadas"
+msgstr ""
 
 #: data/level/foreboding-forest.cfg:13
-#: data/objects/playable/map-selector.cfg:19
 msgid "Foreboding Forest"
 msgstr ""
 
 #: data/level/frogatto-grotto-frogattos-room.cfg:10
 msgid "Frogatto's Room"
-msgstr "Habitación de Frogatto"
+msgstr "フロッガットの部屋"
 
 #: data/level/frogatto-grotto-frogattos-room.cfg:915
 msgid ""
 "Ahh, what a beautiful ..\n"
 "..Afternoon?!"
 msgstr ""
-"Ahh, que hermosura de...\n"
-"...¿Atardecer?"
+"それは美しい ..\n"
+"..午後？！"
 
 #: data/level/frogatto-grotto-frogattos-room.cfg:916
 msgid "Oh geez! I overslept!"
-msgstr ""
+msgstr "もぉ、介して眠っていた。"
 
 #: data/level/frogatto-grotto-inside.cfg:9
 msgid "Frogatto's House"
-msgstr "Casa de Frogatto"
+msgstr "フロッガットの家"
 
 #: data/level/frogatto-grotto-inside.cfg:1150
 msgid "Hey, how's breakfast coming?"
-msgstr "Hey, ¿Cómo es el desayuno?"
+msgstr "おい、朝食を準備したか？"
 
 #: data/level/frogatto-grotto-inside.cfg:1151
 msgid "Breakfast? ..bud, we're on lunch."
-msgstr "¿Desayuno?... Estamos en el almuerzo."
+msgstr "朝食か？ ..お前、昼食の時間です。"
 
 #: data/level/frogatto-grotto-inside.cfg:1152
 msgid "You need to get up earlier."
-msgstr "Necesitas levantarte más temprano."
+msgstr "もっと早く起きろ。"
 
 #: data/level/frogatto-grotto-inside.cfg:1155
 msgid "Okay, then how's lunch coming?"
-msgstr "Bueno, entonces ¿Cómo es el almuerzo?"
+msgstr "じゃあ、昼ご飯は？"
 
 #: data/level/frogatto-grotto-inside.cfg:1156
 msgid ""
 "Getting there.\n"
 "It's gonna be a while, though."
 msgstr ""
+"作ってるよ。\n"
+"もう少しかかるけどね。"
 
 #: data/level/frogatto-grotto-inside.cfg:1158
 msgid "I'll check back later, then."
-msgstr "Entonces comprobaré de nuevo más tarde."
+msgstr ""
 
 #: data/level/frogatto-grotto-inside.cfg:1161
 msgid "So, what happened to lunch?"
-msgstr "Entonces, ¿qué pasó con el almuerzo?"
+msgstr ""
 
 #: data/level/frogatto-grotto-inside.cfg:1162
 msgid ""
 "I got tired of waiting,\n"
 "and ate by myself."
 msgstr ""
-"Me cansé de esperar,\n"
-"comeré por mí mismo."
 
 #: data/level/frogatto-grotto-inside.cfg:1163
 msgid "Leftovers are in the fridge."
-msgstr "Las sobras están en la nevera."
+msgstr ""
 
 #: data/level/frogatto-grotto-inside.cfg:1166
 msgid "Okay, uhm, thanks."
-msgstr "Bueno, uhm, gracias."
+msgstr ""
 
 #: data/level/frogatto-grotto-inside.cfg:1514
 msgid "Hey, Frogatto."
-msgstr "Hey, Frogatto."
+msgstr "おい、フロッガット。"
 
 #: data/level/frogatto-grotto-inside.cfg:1517
 msgid "Uhm... yes?"
-msgstr "Uhm ... ¿Si?"
+msgstr "は…はい？"
 
 #: data/level/frogatto-grotto-inside.cfg:1518
 msgid ""
 "At least TRY to get a job today,\n"
 "alright?"
 msgstr ""
-"Por lo menos INTENTA conseguir\n"
-"un trabajo hoy, ¿bien?"
 
 #: data/level/frogatto-grotto-inside.cfg:1519
 msgid "We need some help around here."
-msgstr "Necesitamos ayuda aquí."
+msgstr ""
 
 #: data/level/frogatto-grotto-inside.cfg:1521
 msgid "Yeah, I know.  I'll try."
-msgstr "Sí, lo sé. Lo intentaré."
+msgstr ""
 
 #: data/level/frogatto-grotto-inside.cfg:1522
 msgid "See to it."
@@ -1561,55 +1430,59 @@ msgstr ""
 
 #: data/level/frogatto-grotto-inside.cfg:1535
 msgid "Not like I need to be up,"
-msgstr "No es que tengo que estar,"
+msgstr ""
+"どうしても起きなきゃ\n"
+"ならないわけでもないけど、"
 
 #: data/level/frogatto-grotto-inside.cfg:1535
 msgid "but it's the principle of the thing."
-msgstr "pero es el principio de la cosa."
+msgstr "これは、原理について。"
 
 #: data/level/frogatto-grotto-patos-room.cfg:9
 msgid "Pato's Room"
-msgstr "Habitación de Pato"
+msgstr ""
 
 #: data/level/frogatto-grotto-patos-room.cfg:900
 msgid "Ahh, what a beautiful .."
-msgstr "Ahh, qué hermosura de ..."
+msgstr "あぁ、なんと美しい…"
 
 #: data/level/frogatto-grotto-patos-room.cfg:901
 msgid "..Afternoon?!"
-msgstr "... ¿atardecer?"
+msgstr "午後？！"
 
 #: data/level/frogatto-grotto-patos-room.cfg:902
 msgid "Yowzers, I overslept!"
-msgstr ""
+msgstr "やべー、寝過ぎちゃった！"
 
 #: data/level/frogatto-grotto-patos-room.cfg:914
 msgid "it's the principle of the thing."
-msgstr "es el principio de la cosa."
+msgstr ""
 
-#: data/level/frogatto-grotto.cfg:13 data/objects/playable/map-selector.cfg:16
+#: data/level/frogatto-grotto.cfg:13
 msgid "Frogatto Grotto"
-msgstr "Frogatto Grotto"
+msgstr ""
 
 #: data/level/frogatto-grotto.cfg:594
 msgid "I know!"
-msgstr "¡Lo sé!"
+msgstr "そうだ！"
 
 #: data/level/frogatto-grotto.cfg:595
 msgid ""
 "I can stop in at Nene's house\n"
 "on the way to town!"
 msgstr ""
+"町への途中にネネの家に\n"
+"訪ねよう！"
 
 #: data/level/frogatto-grotto.cfg:642
 msgid "Such a beautiful view from here."
-msgstr ""
+msgstr "ここの景色は奇麗だな。"
 
 #: data/level/frogatto-grotto.cfg:959
 msgid "Nothing to see in my backyard."
 msgstr ""
 
-#: data/level/gloomy-glade.cfg:16
+#: data/level/gloomy-glade.cfg:11
 msgid "Gloomy Glade"
 msgstr ""
 
@@ -1626,6 +1499,8 @@ msgid ""
 "On this level,\n"
 "we give advice on how to play."
 msgstr ""
+"このレベルには、\n"
+"アドバイスをおいております。"
 
 #: data/level/grassy-path.cfg:1162
 msgid ""
@@ -1644,6 +1519,8 @@ msgid ""
 "To save the game,\n"
 "use one of these convenient restrooms."
 msgstr ""
+"ゲームをセーブするには、\n"
+"こんな便利なトイレをお使いください。"
 
 #: data/level/grassy-path.cfg:1197
 msgid ""
@@ -1703,7 +1580,7 @@ msgstr ""
 
 #: data/level/grassy-path.cfg:1270
 msgid "Frogatto's world is a dangerous place."
-msgstr ""
+msgstr "フロッガットの世界は危険な所です。"
 
 #: data/level/grassy-path.cfg:1271
 msgid ""
@@ -2253,7 +2130,6 @@ msgid "There must be a way around it."
 msgstr ""
 
 #: data/level/secluded-hut-interior.cfg:12 data/level/secluded-hut.cfg:11
-#: data/objects/playable/map-selector.cfg:17
 msgid "Secluded Hut"
 msgstr ""
 
@@ -2922,7 +2798,8 @@ msgstr ""
 msgid "(Level Template)"
 msgstr ""
 
-#: data/level/test3.cfg:14 data/level/test4.cfg:12 data/level/test5.cfg:12
+#: data/level/test2.cfg:12 data/level/test3.cfg:12 data/level/test4.cfg:12
+#: data/level/test5.cfg:12
 msgid "(Test Level)"
 msgstr ""
 
@@ -2934,137 +2811,139 @@ msgstr ""
 msgid "The North Tower"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:141
+#: data/level/titlescreen-arcade.cfg:140
 msgid "Each machine has a different arcade-style challenge."
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:182
+#: data/level/titlescreen-arcade.cfg:175
 msgid "These don't affect story-mode.  Enjoy!"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:219
+#: data/level/titlescreen-arcade.cfg:207
 msgid "EXIT"
-msgstr ""
+msgstr "出口"
 
-#: data/level/titlescreen-arcade.cfg:244 data/level/titlescreen-arcade.cfg:268
+#: data/level/titlescreen-arcade.cfg:232 data/level/titlescreen-arcade.cfg:255
 msgid "Select a level:"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:248 data/level/titlescreen-arcade.cfg:272
+#: data/level/titlescreen-arcade.cfg:235 data/level/titlescreen-arcade.cfg:258
 msgid "(cancel)"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:270
+#: data/level/titlescreen-arcade.cfg:257
 msgid "Down the RabbitHall"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:271
-msgid "Coin Race"
-msgstr ""
-
-#: data/level/titlescreen-arcade.cfg:299
+#: data/level/titlescreen-arcade.cfg:285
 msgid "CLIMB"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:331
+#: data/level/titlescreen-arcade.cfg:317
 msgid "RUN"
 msgstr ""
 
-#: data/level/titlescreen-test.cfg:373 data/level/titlescreen.cfg:361
-#: data/level/titlescreen.cfg:386
+#: data/level/titlescreen-test.cfg:373 data/level/titlescreen.cfg:349
+#: data/level/titlescreen.cfg:374
 msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
-msgstr ""
+msgstr "移動するには、{LEFT_KEY}キーまたは{RIGHT_KEY}キーを押します。"
 
-#: data/level/titlescreen-test.cfg:374 data/level/titlescreen.cfg:387
-#: data/level/titlescreen.cfg:403
+#: data/level/titlescreen-test.cfg:374 data/level/titlescreen.cfg:375
+#: data/level/titlescreen.cfg:391
 msgid "Press {UP_KEY} to talk, and use things like doors."
-msgstr ""
+msgstr "話すには、ドアを開くには、{UP_KEY}キーを押します。"
 
-#: data/level/titlescreen-test.cfg:375 data/level/titlescreen.cfg:388
+#: data/level/titlescreen-test.cfg:375 data/level/titlescreen.cfg:376
 msgid "Press {DOWN_KEY} to crouch."
 msgstr ""
 
-#: data/level/titlescreen-test.cfg:376 data/level/titlescreen.cfg:389
+#: data/level/titlescreen-test.cfg:376 data/level/titlescreen.cfg:377
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
 msgstr ""
 
-#: data/level/titlescreen-test.cfg:377 data/level/titlescreen.cfg:390
+#: data/level/titlescreen-test.cfg:377 data/level/titlescreen.cfg:378
 msgid "Press {JUMP_KEY} to jump."
 msgstr ""
 
-#: data/level/titlescreen-test.cfg:378 data/level/titlescreen.cfg:391
+#: data/level/titlescreen-test.cfg:378 data/level/titlescreen.cfg:379
 msgid "Press {TONGUE_KEY} to use a character's attacks."
 msgstr ""
 
-#: data/level/titlescreen.cfg:285
+#: data/level/titlescreen.cfg:284
 msgid "LOAD GAME"
-msgstr ""
+msgstr "ﾛｰﾄﾞｹﾞｰﾑ"
 
-#: data/level/titlescreen.cfg:323
+#: data/level/titlescreen.cfg:316
 msgid "NEW GAME"
-msgstr ""
+msgstr "新しいｹﾞｰﾑ"
 
-#: data/level/titlescreen.cfg:436
+#: data/level/titlescreen.cfg:423
 msgid "ARCADE"
-msgstr ""
+msgstr "ｱｰｹｰﾄﾞ"
 
 #: data/level/to-nenes-house-inside.cfg:12
 msgid "Nene's House"
-msgstr ""
+msgstr "ネネの家"
 
 #: data/level/to-nenes-house-inside.cfg:490
 msgid "Hey Nene, what's cooking?"
-msgstr ""
+msgstr "よー、ネネ、何を作ってる？"
 
 #: data/level/to-nenes-house-inside.cfg:491
 msgid ""
 "I'm making a cake.\n"
 "Would you like to have some?"
 msgstr ""
+"ケーキを作ってるの。\n"
+"少し食べない？"
 
 #: data/level/to-nenes-house-inside.cfg:493
 msgid "Nah, I'd better get to town."
-msgstr ""
+msgstr "いや、町に行かなきゃいけないんだ。"
 
 #: data/level/to-nenes-house-inside.cfg:495
 msgid "I have serious business to attend to."
-msgstr ""
+msgstr "大切な用事があってな。"
 
 #: data/level/to-nenes-house-inside.cfg:499
 msgid ""
 "Oh, well maybe before you go\n"
 "you could look at my basement."
 msgstr ""
+"そう。じゃあ行く前に\n"
+"私の地下室を見てもらえないかしら。"
 
 #: data/level/to-nenes-house-inside.cfg:501
 msgid "Your basement?"
-msgstr ""
+msgstr "地下室？"
 
 #: data/level/to-nenes-house-inside.cfg:507
 msgid ""
 "Yes, here's the key.\n"
 "There're some ants down there."
-msgstr ""
+msgstr "はい。かぎです。地下室にはアリがいるの。"
 
 #: data/level/to-nenes-house-inside.cfg:508
 msgid "They're freaking me out."
-msgstr ""
+msgstr "私、そんなの苦手だわ。"
 
 #: data/level/to-nenes-house-inside.cfg:510
 msgid "Sure thing. I need a job!"
-msgstr ""
+msgstr "了解。ちょうど仕事がいるところだ。"
 
 #: data/level/to-nenes-house-inside.cfg:512
 msgid ""
 "How much were you figuring on\n"
 "paying for a pest exterminator?"
-msgstr ""
+msgstr "アリ退治のためにいくら払おうか。"
 
 #: data/level/to-nenes-house-inside.cfg:513
 msgid ""
 "Well sheesh, I thought you'd\n"
 "do it for free for a friend!"
 msgstr ""
+"そんな、友達のためならただで\n"
+"手伝ってくれると思ったのに！"
 
 #: data/level/to-nenes-house-inside.cfg:514
 msgid ""
@@ -3072,70 +2951,77 @@ msgid ""
 "I think I left a health capsule down there.\n"
 "If you can clear it out, it's yours."
 msgstr ""
+"いいわ、どヘルス・キャップスルを\n"
+"地下室に置いてるとお思うの。\n"
+"アリを退治してくれれば、あげる。"
 
 #: data/level/to-nenes-house-inside.cfg:516
 msgid ""
 "So, did you end up taking care\n"
 "of those ants down there?"
-msgstr ""
+msgstr "アリを退治してくれたの？"
 
 #: data/level/to-nenes-house-inside.cfg:518
 msgid ""
 "Of course.\n"
 "I don't disappoint!"
 msgstr ""
+"もちろんさ。\n"
+"俺は失望させないぜ！"
 
 #: data/level/to-nenes-house-inside.cfg:520
 msgid ""
 "And thanks for the gift,\n"
 "by the way."
-msgstr ""
+msgstr "ところで、プレゼントありがとう。"
 
 #: data/level/to-nenes-house-inside.cfg:521
 msgid "You're welcome."
-msgstr ""
+msgstr "どういたしまして。"
 
 #: data/level/to-nenes-house-inside.cfg:843
 msgid ""
 "Can't a guy sneak into his neighbor's\n"
 "basement uninvited these days?"
 msgstr ""
+"なんだ、今頃は近所さんの地下室に\n"
+"忍びこむこともできないか？"
 
 #: data/level/to-nenes-house-inside.cfg:843
 msgid "Well, dangit, this door is locked."
-msgstr ""
+msgstr "だめだ、鍵がかかってる。"
 
 #: data/level/to-nenes-house.cfg:11
 msgid "To Nene's House"
-msgstr ""
+msgstr "ネネの家へ"
 
 #: data/level/to-nenes-house.cfg:1902
 msgid "Hah!"
-msgstr ""
+msgstr "あった！"
 
 #: data/level/to-nenes-house.cfg:1903
 msgid "There's Nene's house, right up there!"
-msgstr ""
+msgstr "ネネの家は、すぐそこだ！"
 
 #: data/level/to-nenes-house.cfg:1916
 msgid "A moment of your time sir?"
-msgstr ""
+msgstr "お兄さん、話を聞いてくれませんか。"
 
 #: data/level/to-nenes-house.cfg:1918
 msgid ""
 "Sorry, I'm off to town!\n"
 "Not interested!"
-msgstr ""
+msgstr "ごめん、町へ行ってるんだ！興味ねえ！"
 
 #: data/level/to-nenes-house.cfg:1919
 msgid "But the town, you see ..."
-msgstr ""
+msgstr "しかし、町が…"
 
 #: data/level/to-nenes-house.cfg:1921
 msgid ""
 "Not. Interested.\n"
 "Buzz off."
-msgstr ""
+msgstr "きょ・う・み・ね・え。どけ。"
 
 #: data/level/to-nenes-house.cfg:1923
 msgid ""
@@ -3145,7 +3031,7 @@ msgstr ""
 
 #: data/level/to-nenes-house.cfg:1924
 msgid "Very well."
-msgstr ""
+msgstr "わかりました。"
 
 #: data/level/to-nenes-house.cfg:1927
 msgid ""
@@ -3207,9 +3093,8 @@ msgid "Close call."
 msgstr ""
 
 #: data/level/wm-h0.0-lift.cfg:12
-#, fuzzy
 msgid "Lift House"
-msgstr "Casa Central"
+msgstr ""
 
 #: data/level/wm-h0.0-lift.cfg:566 data/level/wm-h0.0-lift.cfg:573
 msgid ""
@@ -3285,11 +3170,10 @@ msgid "The Lower Landing"
 msgstr ""
 
 #: data/level/wm-ll.cfg:1370
-#, fuzzy
 msgid ""
 "Hi, I'm Frogatto.\n"
 "What are you doing?"
-msgstr "¿Quién eres tu?"
+msgstr ""
 
 #: data/level/wm-ll.cfg:1371
 msgid ""
@@ -3990,20 +3874,13 @@ msgstr ""
 msgid "Do you want to buy the {consts.name}?"
 msgstr ""
 
-#: data/objects/buildings/dungeon_save_door.cfg:23
-#: data/objects/buildings/world_1_interior_save_door.cfg:23
-#: data/objects/props-interactive/save_toilet.cfg:16
-msgid "Do you want to save the game?"
-msgstr ""
-
 #: data/objects/crazy-stuff/jb-background.cfg:7
 msgid "error"
 msgstr ""
 
 #: data/objects/crazy-stuff/jb-background.cfg:18
-#, fuzzy
 msgid "Runtime: "
-msgstr "Tiempo: "
+msgstr ""
 
 #: data/objects/crazy-stuff/jb-background.cfg:27
 msgid " -- paused -- "
@@ -4051,7 +3928,7 @@ msgstr ""
 msgid ""
 "Hey.\n"
 "Welcome to the store."
-msgstr ""
+msgstr "いらっしゃいませ。"
 
 #: data/objects/npcs/chopple_npc.cfg:9
 msgid "Take your time, look around."
@@ -4065,22 +3942,12 @@ msgstr ""
 msgid "Milgram's Castle"
 msgstr ""
 
+#: data/objects/props-interactive/save_toilet.cfg:16
+msgid "Do you want to save the game?"
+msgstr ""
+
 #: data/objects/props-interactive/save_toilet.cfg:21
 msgid "The game has been saved."
-msgstr ""
-
-#: data/objects/scene-fx/level_controller_coin_race.cfg:32
-msgid "You made it to level {level.player.difficulty} of the coin race!"
-msgstr ""
-
-#: data/objects/scene-fx/level_controller_coin_race.cfg:34
-msgid "You made it to level {level.player.difficulty} of the coin race."
-msgstr ""
-
-#: data/objects/scene-fx/level_controller_coin_race.cfg:35
-msgid ""
-"The furthest that has been reached is level {registry."
-"arcade_coin_race_high_score}."
 msgstr ""
 
 #: data/objects/store-items/buyable_gliding_wings.cfg:11
@@ -4145,26 +4012,18 @@ msgid ""
 "powerups will allow you\n"
 "to shoot bolts of energy."
 msgstr ""
-"El cristal de energía desbloquea\n"
-"potenciadores de energía. Éstos le\n"
-"permitirán disparar rayos de\n"
-"energía."
 
 #: data/objects/store-items/buyable_shield.cfg:13
 msgid ""
 "The energy shield protects you\n"
 "from damage when you crouch."
 msgstr ""
-"El escudo de energía lo protegerá\n"
-"del daño cuando se agache."
 
 #: data/objects/store-items/buyable_speed_boots.cfg:13
 msgid ""
 "The speed boots will make\n"
 "you faster."
 msgstr ""
-"Las botas de velocidad lo harán\n"
-"más rápido."
 
 #: data/objects/store-items/buyable_spit_strengthener.cfg:11
 msgid "spit strengthener"
@@ -4178,7 +4037,7 @@ msgstr ""
 
 #: data/objects/store-items/buyable_tongue_extension.cfg:11
 msgid "tongue extender"
-msgstr "extensor de lengua"
+msgstr ""
 
 #: data/objects/store-items/buyable_tongue_extension.cfg:13
 msgid ""
@@ -4188,39 +4047,39 @@ msgstr ""
 
 #: data/preload.cfg:4 data/preload.cfg:9 data/preload.cfg:14
 msgid "Loading textures"
-msgstr "Cargando texturas"
+msgstr ""
 
 #: data/preload.cfg:19
 msgid "Loading Frogatto character"
-msgstr "Cargando personaje Frogatto"
+msgstr ""
 
 #: data/preload.cfg:24
 msgid "Loading door object"
-msgstr "Cargando objeto: puerta"
+msgstr ""
 
 #: data/preload.cfg:29
 msgid "Loading energy shot"
-msgstr "Cargando energía de disparo"
+msgstr ""
 
 #: src/controls_dialog.cpp:42
 msgid "Directions"
-msgstr "Direcciones"
+msgstr "方向"
 
 #: src/controls_dialog.cpp:47
 msgid "Jump"
-msgstr "Saltar"
+msgstr "ジャンプ"
 
 #: src/controls_dialog.cpp:49
 msgid "Tongue"
-msgstr "Lengua"
+msgstr "舌"
 
 #: src/controls_dialog.cpp:51
 msgid "Attack"
-msgstr "Atacar"
+msgstr "アタック"
 
 #: src/controls_dialog.cpp:53
 msgid "Back"
-msgstr "Atrás"
+msgstr "戻る"
 
 #: src/draw_scene.cpp:350
 msgid "Achievement Unlocked!"
@@ -4228,63 +4087,47 @@ msgstr ""
 
 #: src/key_button.cpp:63
 msgid "LEFT"
-msgstr "IZQUIERDA"
+msgstr "←"
 
 #: src/key_button.cpp:65
 msgid "RIGHT"
-msgstr "DERECHA"
+msgstr "→"
 
 #: src/key_button.cpp:67
 msgid "UP"
-msgstr "ARRIBA"
+msgstr "↑"
 
 #: src/key_button.cpp:69
 msgid "DOWN"
-msgstr "ABAJO"
+msgstr "↓"
 
 #: src/main.cpp:353
-msgid "Initializing custom object"
-msgstr ""
-
-#: src/main.cpp:355
-msgid "Initializing custom object functions"
-msgstr ""
-
-#: src/main.cpp:357
-msgid "Initializing tiles"
-msgstr ""
-
-#: src/main.cpp:360 src/main.cpp:364
-msgid "Initializing GUI"
-msgstr ""
-
-#: src/main.cpp:370
 msgid "Loading level"
-msgstr "Cargando nivel"
+msgstr ""
 
 #: src/pause_game_dialog.cpp:44
 msgid "Music Volume:"
-msgstr "Volumen de la Música:"
+msgstr "音楽の音量:"
 
 #: src/pause_game_dialog.cpp:46
 msgid "Sound Volume:"
-msgstr "Volumen del Sonido:"
+msgstr "効果音の音量:"
 
 #: src/pause_game_dialog.cpp:61
 msgid "Resume"
-msgstr "Resumir"
+msgstr "再開する"
 
 #: src/pause_game_dialog.cpp:62
 msgid "Controls..."
-msgstr "Controles..."
+msgstr "ｺﾝﾄﾛｰﾙ…"
 
 #: src/pause_game_dialog.cpp:63
 msgid "Return to Titlescreen"
-msgstr "Volver a la Pantalla de Títulos"
+msgstr "ﾀｲﾄﾙ画面に戻る"
 
 #: src/pause_game_dialog.cpp:64
 msgid "Exit Game"
-msgstr "Salir del Juego"
+msgstr "ｹﾞｰﾑを終了する"
 
 #: src/pause_game_dialog.cpp:65
 msgid "Reverse A and B"
@@ -4293,9 +4136,3 @@ msgstr ""
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr ""
-
-#~ msgid "Let's just get down to business!"
-#~ msgstr "¡Vamos al grano!"
-
-#~ msgid "Thank god it's you!"
-#~ msgstr "¡Gracias a Dios que eres tú!"

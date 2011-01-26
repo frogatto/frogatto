@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto v1.0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-26 13:44-0500\\n"
+"POT-Creation-Date: 2011-01-26 18:29-0500\\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -320,6 +320,8 @@ msgstr ""
 
 #: data/level/crevice-village-cave.cfg:816 data/level/wm-town.cfg:2309
 #: data/object_prototypes/buyable_item.cfg:24
+#: data/objects/buildings/dungeon_save_door.cfg:24
+#: data/objects/buildings/world_1_interior_save_door.cfg:24
 #: data/objects/props-interactive/save_toilet.cfg:17
 msgid "Yes"
 msgstr ""
@@ -334,6 +336,8 @@ msgstr ""
 
 #: data/level/crevice-village-cave.cfg:818 data/level/wm-town.cfg:2316
 #: data/object_prototypes/buyable_item.cfg:25
+#: data/objects/buildings/dungeon_save_door.cfg:29
+#: data/objects/buildings/world_1_interior_save_door.cfg:29
 #: data/objects/props-interactive/save_toilet.cfg:22
 msgid "No"
 msgstr ""
@@ -2729,7 +2733,7 @@ msgstr ""
 msgid "(Level Template)"
 msgstr ""
 
-#: data/level/test3.cfg:12 data/level/test4.cfg:12 data/level/test5.cfg:12
+#: data/level/test3.cfg:14 data/level/test4.cfg:12 data/level/test5.cfg:12
 msgid "(Test Level)"
 msgstr ""
 
@@ -3795,6 +3799,12 @@ msgstr ""
 msgid "Do you want to buy the {consts.name}?"
 msgstr ""
 
+#: data/objects/buildings/dungeon_save_door.cfg:23
+#: data/objects/buildings/world_1_interior_save_door.cfg:23
+#: data/objects/props-interactive/save_toilet.cfg:16
+msgid "Do you want to save the game?"
+msgstr ""
+
 #: data/objects/crazy-stuff/jb-background.cfg:7
 msgid "error"
 msgstr ""
@@ -3861,10 +3871,6 @@ msgstr ""
 
 #: data/objects/playable/map-selector.cfg:21
 msgid "Milgram's Castle"
-msgstr ""
-
-#: data/objects/props-interactive/save_toilet.cfg:16
-msgid "Do you want to save the game?"
 msgstr ""
 
 #: data/objects/props-interactive/save_toilet.cfg:21

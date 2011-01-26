@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-26 13:44-0500\\nPO-Revision-Date: YEAR-MO-DA HO:MI"
+"POT-Creation-Date: 2011-01-26 18:29-0500\\nPO-Revision-Date: YEAR-MO-DA HO:MI"
 "+ZONE\n"
 "PO-Revision-Date: 2011-01-19 16:54+0000\n"
 "Last-Translator: manu <emmanuel.fujioka@free.fr>\n"
@@ -369,6 +369,8 @@ msgstr "Et toi!!"
 
 #: data/level/crevice-village-cave.cfg:816 data/level/wm-town.cfg:2309
 #: data/object_prototypes/buyable_item.cfg:24
+#: data/objects/buildings/dungeon_save_door.cfg:24
+#: data/objects/buildings/world_1_interior_save_door.cfg:24
 #: data/objects/props-interactive/save_toilet.cfg:17
 msgid "Yes"
 msgstr "Oui"
@@ -383,6 +385,8 @@ msgstr "C'est ce que je pensais!"
 
 #: data/level/crevice-village-cave.cfg:818 data/level/wm-town.cfg:2316
 #: data/object_prototypes/buyable_item.cfg:25
+#: data/objects/buildings/dungeon_save_door.cfg:29
+#: data/objects/buildings/world_1_interior_save_door.cfg:29
 #: data/objects/props-interactive/save_toilet.cfg:22
 msgid "No"
 msgstr "Non"
@@ -3369,7 +3373,7 @@ msgstr "REMERCIEMENTS SPECIAUX :"
 msgid "(Level Template)"
 msgstr "(Modèle de Niveau)"
 
-#: data/level/test3.cfg:12 data/level/test4.cfg:12 data/level/test5.cfg:12
+#: data/level/test3.cfg:14 data/level/test4.cfg:12 data/level/test5.cfg:12
 msgid "(Test Level)"
 msgstr "(Niveau de Test)"
 
@@ -4759,6 +4763,12 @@ msgstr "Vous n'avez pas suffisamment d'argent."
 msgid "Do you want to buy the {consts.name}?"
 msgstr "Voulez-vous acheter {consts.name}?"
 
+#: data/objects/buildings/dungeon_save_door.cfg:23
+#: data/objects/buildings/world_1_interior_save_door.cfg:23
+#: data/objects/props-interactive/save_toilet.cfg:16
+msgid "Do you want to save the game?"
+msgstr "Souhaitez-vous sauvegarder votre partie?"
+
 #: data/objects/crazy-stuff/jb-background.cfg:7
 msgid "error"
 msgstr "erreur"
@@ -4853,10 +4863,6 @@ msgstr "Salut, Kinguin, comment va ?"
 #: data/objects/playable/map-selector.cfg:21
 msgid "Milgram's Castle"
 msgstr "Château de Milgram"
-
-#: data/objects/props-interactive/save_toilet.cfg:16
-msgid "Do you want to save the game?"
-msgstr "Souhaitez-vous sauvegarder votre partie?"
 
 #: data/objects/props-interactive/save_toilet.cfg:21
 msgid "The game has been saved."
