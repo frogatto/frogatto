@@ -26,10 +26,13 @@ void solid_map::create_object_solid_maps(wml::const_node_ptr node, std::vector<c
 	rect area(node->attr("solid_area"));
 	area = rect(area.x()*2, area.y()*2, area.w()*2, area.h()*2);
 
-	int legs_height = area.w()/2 + 1;
-	if(wml::get_bool(node, "has_feet", true) == false || node->attr("solid_shape").str() == "rect") {
+	const int feet_width = wml::get_int(node, "feet_width", 0);
+
+	int legs_height = area.w()/2 + 1 - feet_width*2;
+	if(wml::get_bool(node, "has_feet", true) == false || node->attr("solid_shape").str() == "rect" || legs_height < 0) {
 		legs_height = 0;
 	}
+
 
 	//flat is a special case which says the solid area is to be
 	//precisely one pixel high.
@@ -63,7 +66,7 @@ void solid_map::create_object_solid_maps(wml::const_node_ptr node, std::vector<c
 		legs_map->id_ = "legs";
 		legs_map->area_ = legs;
 		legs_map->solid_.resize(legs.w()*legs.h(), false);
-		for(int y = 0; y != legs.h(); ++y) {
+		for(int y = 0; y < legs.h()-1; ++y) {
 			for(int x = y; x < legs.w() - y; ++x) {
 				legs_map->set_solid(x, y);
 			}
