@@ -15,7 +15,7 @@
 
 namespace
 {
-	rect left_arrow, right_arrow, down_arrow, up_arrow, a_button, c_button, interact_button;
+	rect left_arrow, right_arrow, down_arrow, up_arrow, a_button, c_button, interact_button, jumpdown_button;
 
 	int underwater_circle_rad, underwater_circle_x, underwater_circle_y;
 
@@ -61,6 +61,8 @@ namespace
 				a_button = hit_rect;
 			} else if (id == "interact") {
 				interact_button = hit_rect;
+			} else if (id == "jump_down") {
+				jumpdown_button = hit_rect;
 			}
 		}
 		
@@ -175,6 +177,7 @@ void iphone_controls::draw()
 			graphics::draw_rect(a_button, graphics::color(255, 0, 0, 64));
 			graphics::draw_rect(c_button, graphics::color(0, 255, 0, 64));
 			graphics::draw_rect(interact_button, graphics::color(0, 0, 255, 64));
+			graphics::draw_rect(jumpdown_button, graphics::color(255, 0, 255, 64));
 		}
 		return;
 	}
@@ -204,7 +207,7 @@ void iphone_controls::draw()
 bool iphone_controls::hittest_button(const rect& area)
 {
 	setup_rects();
-	static graphics::texture tex(graphics::texture::get("gui/iphone_controls.png"));
+	//static graphics::texture tex(graphics::texture::get("gui/iphone_controls.png"));
 	foreach(const Mouse& mouse, active_mice) {
 		const point mouse_pos(mouse.x, mouse.y);
 		if(point_in_rect(mouse_pos, area)) {
@@ -233,7 +236,7 @@ bool iphone_controls::down()
 		return false;
 	}
 
-	return hittest_button(down_arrow);
+	return hittest_button(down_arrow) || (on_platform && hittest_button(jumpdown_button));
 }
 
 bool iphone_controls::left()
@@ -265,7 +268,7 @@ bool iphone_controls::jump()
 		return false;
 	}
 
-	return hittest_button(preferences::reverse_ab() ? c_button : a_button);
+	return hittest_button(preferences::reverse_ab() ? c_button : a_button) || (on_platform && hittest_button(jumpdown_button));
 }
 
 bool iphone_controls::tongue()
