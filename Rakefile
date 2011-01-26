@@ -6,23 +6,31 @@ LANGUAGES = {
 
 # Command template to generate glyph images for each font style
 FONT_STYLES = {
-  :dialog =>  "convert -background transparent -font '%{font}' -pointsize 16 \
-                       -fill '#f5f5f5' label:'%{character}' png32:%{glyph}",
+  :dialog => <<-DIALOG, 
+convert -background transparent -font '%{font}' -pointsize 16 \
+        -fill '#f5f5f5' label:'%{character}' png32:%{glyph}
+  DIALOG
 
-  :outline => "convert -size 300x300 xc:transparent \
-                       -font '%{font}' -pointsize 12 \
-                       -fill '#550b0b' -annotate +51+49 '%{character}' \
-                                       -annotate +49+51 '%{character}' \
-                                       -annotate +51+51 '%{character}' \
-                                       -annotate +49+49 '%{character}' \
-                       -fill '#e9f9f9' -annotate +50+50 '%{character}' \
-                       -trim png32:%{glyph}",
-
-  :label =>   "convert -size 300x300 xc:transparent \
-                       -font '%{font}' -pointsize 12 \
-                       -fill '#000000' -annotate +50+51 '%{character}' \
-                       -fill '#ffffff' -annotate +50+50 '%{character}' \
-                       -trim png32:%{glyph}"
+  :outline => <<-'OUTLINE',
+convert \( -background transparent -fill '#550b0b' -font '%{font}' label:'%{character}' \) \
+        \( -background transparent -fill '#e9f9f9' -font '%{font}' label:'%{character}' \) \
+        -background transparent \
+        -page -1-1 -clone 0 \
+        -page -1+1 -clone 0 \
+        -page +1+1 -clone 0 \
+        -page +1-1 -clone 0 \
+        -page +0+0 -clone 1 \
+        -delete 0,1 -layers merge +repage png32:%{glyph}
+  OUTLINE
+  
+  :label => <<-'LABEL'
+convert \( -background transparent -fill '#000000' -font '%{font}' label:'%{character}' \) \
+        \( -background transparent -fill '#ffffff' -font '%{font}' label:'%{character}' \) \
+        -background transparent \
+        -page -0-1 -clone 0 \
+        -page +0+0 -clone 1 \
+        -delete 0,1 -layers merge +repage png32:%{glyph}
+  LABEL
 }
 
 FONT_CFG_IDS = {
@@ -131,16 +139,17 @@ LANGUAGES.each_pair do |language, font|
   end
 
   FONT_STYLES.each_pair do |style, command|
-    glyph_pattern = 
-      Regexp.new(Regexp.escape(glyph_image(style, language, 'a')).sub(/\d+/, '.+'))
-    rule glyph_pattern do |t|
-      glyph = t.name
-      character = character_with_codepoint(Integer(glyph[/(\d+)/, 1]))
-      sh(command % {:font => font, :character => character, :glyph => glyph})
-    end
-
     work_path = work_path(style, language)
     directory work_path
+
+    glyph_pattern = 
+      Regexp.new(Regexp.escape(glyph_image(style, language, 'a')).sub(/\d+/, '.+'))
+    rule glyph_pattern => work_path do |t|
+      glyph = t.name
+      character = character_with_codepoint(Integer(glyph[/(\d+)/, 1]))
+      sh(command % {:font => font, :character => character,
+                    :glyph => glyph, :work_path => work_path})
+    end
 
     glyphs = {}
 
