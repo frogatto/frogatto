@@ -2631,17 +2631,42 @@ std::vector<entity_ptr> level::get_characters_in_rect(const rect& r) const
 	return res;
 }
 
-entity_ptr level::get_character_at_point(int x, int y) const
+std::vector<entity_ptr> level::get_characters_at_point(int x, int y) const
 {
+	std::vector<entity_ptr> result;
 	foreach(entity_ptr c, chars_) {
 		const int xpos = x - c->x();
 		const int ypos = y - c->y();
 		if(!c->is_alpha(x, y)) {
-			return c;
+			result.push_back(c);
 		}
 	}
 	
-	return entity_ptr();
+	return result;
+}
+
+entity_ptr level::get_next_character_at_point(int x, int y) const
+{
+	std::vector<entity_ptr> v = get_characters_at_point(x, y);
+	if(v.empty()) {
+		return entity_ptr();
+	}
+
+	if(editor_selection_.empty()) {
+		return v.front();
+	}
+
+	std::vector<entity_ptr>::iterator itor = std::find(v.begin(), v.end(), editor_selection_.back());
+	if(itor == v.end()) {
+		return v.front();
+	}
+
+	++itor;
+	if(itor == v.end()) {
+		itor = v.begin();
+	}
+
+	return *itor;
 }
 
 void level::add_solid_rect(int x1, int y1, int x2, int y2, int friction, int traction, int damage)
