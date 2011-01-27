@@ -5,6 +5,10 @@
 
 #include "filesystem.hpp"
 
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+#include <CoreFoundation/CoreFoundation.h>
+#endif
+
 namespace {
 
 //header structure of the MO file format, as described on
@@ -46,7 +50,20 @@ const std::string& get_locale() {
 	return locale;
 }
 
-void init() {
+	void init() {
+		
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+		CFArrayRef localeIDs = CFLocaleCopyPreferredLanguages();
+		if (localeIDs)
+		{
+			CFStringRef localeID = (CFStringRef)CFArrayGetValueAtIndex(localeIDs, 0);
+			char tmp[16];
+			if (CFStringGetCString(localeID, tmp, 16, kCFStringEncodingUTF8))
+				locale = std::string(tmp);
+			CFRelease(localeIDs);
+		}
+#endif
+		
 	char *cstr = getenv("LANG");
 	if (cstr != NULL)
 		locale = cstr;
@@ -56,6 +73,11 @@ void init() {
 		if (cstr != NULL)
 			locale = cstr;
 	}
+	
+	if (locale == "zh-Hans") locale = "zh_CN"; //hack to make it work on iOS
+	if (locale == "zh-Hant") locale = "zh_TW";
+	
+	std::cerr << "Locale: " << locale << "\n";
 	
 	//strip the charset part of the country and language code,
 	//e.g. "pt_BR.UTF8" --> "pt_BR"
