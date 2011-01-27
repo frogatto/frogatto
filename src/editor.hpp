@@ -112,6 +112,8 @@ public:
 	//switch the current facing.
 	void toggle_facing();
 
+	void duplicate_selected_objects();
+
 	void run_script(const std::string& id);
 
 	//function which gets the expected layer at which a certain tile id appears.

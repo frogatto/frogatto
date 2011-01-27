@@ -122,10 +122,17 @@ class editor_menu_dialog : public gui::dialog
 			"New Object...", "", boost::bind(&editor::new_object_type, &editor_),
 		};
 
+		menu_item duplicate_item = { "Duplicate Object(s)", "ctrl+d", boost::bind(&editor::duplicate_selected_objects, &editor_) };
+
 		std::vector<menu_item> res;
 		foreach(const menu_item& m, items) {
 			res.push_back(m);
 		}
+
+		if(editor_.get_level().editor_selection().empty() == false) {
+			res.push_back(duplicate_item);
+		}
+
 		show_menu(res);
 	}
 
@@ -674,6 +681,28 @@ void editor::toggle_facing()
 	}
 }
 
+void editor::duplicate_selected_objects()
+{
+	std::vector<boost::function<void()> > redo, undo;
+	foreach(const entity_ptr& c, lvl_->editor_selection()) {
+		entity_ptr duplicate_obj = c->clone();
+
+		int repeats = 1000;
+		if(!place_entity_in_level_with_large_displacement(*lvl_, *duplicate_obj)) {
+			continue;
+		}
+		
+		redo.push_back(boost::bind(&editor::add_object_to_level, this, duplicate_obj));
+		undo.push_back(boost::bind(&editor::remove_object_from_level, this, duplicate_obj));
+
+
+	}
+
+	execute_command(
+	  boost::bind(execute_functions, redo),
+	  boost::bind(execute_functions, undo));
+}
+
 void editor::process_ghost_objects()
 {
 	lvl_->swap_chars(ghost_objects_);
@@ -964,6 +993,10 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 {
 	if(key.keysym.sym == SDLK_s && (key.keysym.mod&KMOD_ALT)) {
 		IMG_SaveFrameBuffer((std::string(preferences::user_data_path()) + "screenshot.png").c_str(), 5);
+	}
+
+	if(key.keysym.sym == SDLK_d && key.keysym.mod&KMOD_CTRL) {
+		duplicate_selected_objects();
 	}
 
 	if(key.keysym.sym == SDLK_u) {

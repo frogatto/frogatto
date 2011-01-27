@@ -299,6 +299,39 @@ bool place_entity_in_level(level& lvl, entity& e)
 	return false;
 }
 
+bool place_entity_in_level_with_large_displacement(level& lvl, entity& e)
+{
+	if(!place_entity_in_level(lvl, e)) {
+		//the object can't immediately/easily be placed in the level
+		//due to a solid collision. Try to incrementally push it in
+		//different directions and try to place it until we find
+		//a direction that works.
+		const int xpos = e.x();
+		const int ypos = e.y();
+
+		bool found = false;
+		for(int distance = 4; distance < 256 && !found; distance *= 2) {
+			const point points[] = { point(xpos-distance, ypos),
+			                         point(xpos+distance, ypos),
+			                         point(xpos, ypos-distance),
+			                         point(xpos, ypos+distance), };
+			foreach(const point& p, points) {
+				e.set_pos(p);
+				if(place_entity_in_level(lvl, e)) {
+					found = true;
+					break;
+				}
+			}
+		}
+
+		if(!found) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
 int entity_user_collision(const entity& a, const entity& b, collision_pair* areas_colliding, int buf_size)
 {
 	if(!rects_intersect(a.frame_rect(), b.frame_rect())) {
