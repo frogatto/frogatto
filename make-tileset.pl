@@ -496,7 +496,7 @@ $solid
 pattern="
    ,$friend,$friend,
 $friend,$tilename,$friend,
- .*,$friend, .*"
+ .*,   , .*"
 [/tile_pattern]
 ~, &coord($base, 5, 7);
 
@@ -510,7 +510,7 @@ $solid
 pattern="
 $friend,$friend,   ,
 $friend,$tilename,$friend,
- .*,$friend, .*"
+ .*,   , .*"
 [/tile_pattern]
 ~, &coord($base, 5, 6);
 
