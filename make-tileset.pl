@@ -75,9 +75,9 @@ image=$image
 tiles=%s
 %s
 pattern="
-.* ,   ,.*  ,
+   ,$friend,    ,
 $friend,$tilename,$friend,
-   ,$friend,   "
+.* ,   , .*"
 [/tile_pattern]
 ~, &coord($base, 2, 5), $solid;
 
