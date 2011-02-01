@@ -1494,7 +1494,7 @@ bool custom_object::is_standing(const level& lvl, collision_info* info) const
 
 	const int width = type_->feet_width();
 
-	if(width > 1) {
+	if(width >= 1) {
 		return point_standable(lvl, *this, feet_x() - width, feet_y(), info, fall_through_platforms_ ? SOLID_ONLY : SOLID_AND_PLATFORMS) ||
 		       point_standable(lvl, *this, feet_x() + width, feet_y(), info, fall_through_platforms_ ? SOLID_ONLY : SOLID_AND_PLATFORMS);
 	}
