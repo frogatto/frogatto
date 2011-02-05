@@ -98,7 +98,7 @@ void setup_networked_game(const std::string& server)
 	}
 
 	if(error) {
-		fprintf(stderr, "NETWORK ERROR: Can't resolve host\n");
+		fprintf(stderr, "NETWORK ERROR: Can't connect to host: %s\n", server.c_str());
 		throw multiplayer::error();
 	}
 
