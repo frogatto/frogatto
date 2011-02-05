@@ -176,7 +176,7 @@ void iris_scene(const level& lvl, screen_position& screen_pos, float amount) {
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 		glVertexPointer(2, GL_FLOAT, 0, &varray.front());
-		glDrawArrays(GL_QUAD_STRIP, 0, varray.size()/2);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
 
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
