@@ -107,29 +107,81 @@ void iris_scene(const level& lvl, screen_position& screen_pos, float amount) {
 		return;
 	}
 
-	light_fade_length_setter fade_disable(0);
-	
 	const_entity_ptr player = &lvl.player()->get_entity();
-	std::map<const_entity_ptr, std::vector<light_ptr> > lights;
-	lights[player].push_back(light_ptr(new circle_light(*dynamic_cast<const custom_object*>(player.get()), (1.0-amount)*500)));
-
-	foreach(entity_ptr e, lvl.get_active_chars()) {
-		e->swap_lights(lights[e]);
-	}
-
-	const bool dark_value = const_cast<level&>(lvl).set_dark(true);
+	const point light_pos = player->midpoint();
 
 	if(amount >= 0.99) {
 		SDL_Rect rect = {0, 0, graphics::screen_width(), graphics::screen_height()};
 		graphics::draw_rect(rect, graphics::color_black());
 	} else {
 		draw_scene(lvl, screen_pos);
-	}
 
-	const_cast<level&>(lvl).set_dark(dark_value);
+		const int screen_x = screen_pos.x/100;
+		const int screen_y = screen_pos.y/100;
 
-	foreach(entity_ptr e, lvl.get_active_chars()) {
-		e->swap_lights(lights[e]);
+		float radius_scale = 1.0 - amount;
+		const int radius = radius_scale*radius_scale*500;
+		const int center_x = -screen_x + light_pos.x;
+		const int center_y = -screen_y + light_pos.y;
+		SDL_Rect center_rect = {center_x - radius, center_y - radius, radius*2, radius*2 };
+
+		if(center_rect.y > 0) {
+			SDL_Rect top_rect = {0, 0, graphics::screen_width(), center_rect.y};
+			graphics::draw_rect(top_rect, graphics::color_black());
+		}
+
+		const int bot_rect_height = graphics::screen_height() - (center_rect.y + center_rect.h);
+		if(bot_rect_height > 0) {
+			SDL_Rect bot_rect = {0, graphics::screen_height() - bot_rect_height, graphics::screen_width(), bot_rect_height};
+			graphics::draw_rect(bot_rect, graphics::color_black());
+		}
+
+		if(center_rect.x > 0) {
+			SDL_Rect left_rect = {0, 0, center_rect.x, graphics::screen_height()};
+			graphics::draw_rect(left_rect, graphics::color_black());
+		}
+
+		const int right_rect_width = graphics::screen_width() - (center_rect.x + center_rect.w);
+		if(right_rect_width > 0) {
+			SDL_Rect right_rect = {graphics::screen_width() - right_rect_width, 0, right_rect_width, graphics::screen_height()};
+			graphics::draw_rect(right_rect, graphics::color_black());
+		}
+
+		static std::vector<float> x_angles;
+		static std::vector<float> y_angles;
+
+		if(x_angles.empty()) {
+			for(float angle = 0; angle < 3.1459*2.0; angle += 0.2) {
+				x_angles.push_back(cos(angle));
+				y_angles.push_back(sin(angle));
+			}
+		}
+
+
+		std::vector<GLfloat> varray;
+		for(int n = 0; n != x_angles.size(); ++n) {
+			const float xpos1 = center_x + radius*x_angles[n];
+			const float ypos1 = center_y + radius*y_angles[n];
+			const float xpos2 = center_x + (center_rect.w + radius)*x_angles[n];
+			const float ypos2 = center_y + (center_rect.h + radius)*y_angles[n];
+			varray.push_back(xpos1);
+			varray.push_back(ypos1);
+			varray.push_back(xpos2);
+			varray.push_back(ypos2);
+		}
+
+		glColor4ub(0, 0, 0, 255);
+
+		glDisable(GL_TEXTURE_2D);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+		glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+		glDrawArrays(GL_QUAD_STRIP, 0, varray.size()/2);
+
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glEnable(GL_TEXTURE_2D);
+
+		glColor4ub(255, 255, 255, 255);
 	}
 }
 
