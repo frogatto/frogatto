@@ -336,7 +336,7 @@ void speech_dialog::draw() const
 
 void speech_dialog::set_speaker_and_flip_side(const_entity_ptr e)
 {
-	std::cerr << "set speaker\n";
+	//std::cerr << "set speaker\n";
 	left_side_speaking_ = !left_side_speaking_;
 	set_speaker(e, left_side_speaking_);
 }

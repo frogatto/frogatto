@@ -2611,12 +2611,12 @@ const level_tile* level::get_tile_at(int x, int y) const
 
 void level::remove_character(entity_ptr e)
 {
-	std::cerr << "removing char: '" << e->label() << "'\n";
+	//std::cerr << "removing char: '" << e->label() << "'\n";
 	if(e->label().empty() == false) {
 		chars_by_label_.erase(e->label());
 	}
 	chars_.erase(std::remove(chars_.begin(), chars_.end(), e), chars_.end());
-	std::cerr << "removed char: '" << e->label() << "'\n";
+	//std::cerr << "removed char: '" << e->label() << "'\n";
 }
 
 std::vector<entity_ptr> level::get_characters_in_rect(const rect& r) const

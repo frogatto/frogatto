@@ -500,7 +500,7 @@ custom_object_type::custom_object_type(wml::const_node_ptr node, const custom_ob
 		entry->type_definition = entry->type_definition_holder.get();
 	}
 
-	std::cerr << "TMP_VARIABLES: '" << id_ << "' -> " << tmp_variables_.size() << "\n";
+	//std::cerr << "TMP_VARIABLES: '" << id_ << "' -> " << tmp_variables_.size() << "\n";
 
 	consts_.reset(new game_logic::map_formula_callable);
 	wml::const_node_ptr consts = node->get_child("consts");

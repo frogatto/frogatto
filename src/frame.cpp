@@ -176,7 +176,7 @@ frame::frame(wml::const_node_ptr node)
 		palettes_recognized_.push_back(graphics::get_palette_id(p));
 	}
 
-	std::cerr << "PALETTES: " << node->attr("palettes").str() << " " << palettes_recognized_.size() << "\n";
+	//std::cerr << "PALETTES: " << node->attr("palettes").str() << " " << palettes_recognized_.size() << "\n";
 
 	if(palettes_recognized_.empty() == false) {
 		palette_frames().insert(this);

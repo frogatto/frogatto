@@ -106,7 +106,7 @@ constants_loader::constants_loader(wml::const_node_ptr node) : same_as_base_(fal
 		std::cerr << "\n";
 	}
 
-	std::cerr << "ADD CONSTANTS_STACK ";
+	//std::cerr << "ADD CONSTANTS_STACK ";
 	for(constants_map::const_iterator i = m.begin(); i != m.end(); ++i) {
 		std::cerr << i->first << " ";
 	}
@@ -120,7 +120,7 @@ constants_loader::~constants_loader()
 {
 	ASSERT_EQ(constants_stack.empty(), false);
 	constants_stack.pop_back();
-	std::cerr << "REMOVE CONSTANTS_STACK\n";
+	//std::cerr << "REMOVE CONSTANTS_STACK\n";
 }
 
 }

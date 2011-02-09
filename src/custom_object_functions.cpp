@@ -1032,7 +1032,7 @@ private:
 			if(var.is_callable()) {
 				const_entity_ptr e = var.try_convert<entity>();
 				if(e) {
-					std::cerr << "set speaker...\n";
+					//std::cerr << "set speaker...\n";
 					d->set_speaker_and_flip_side(e);
 				}
 
