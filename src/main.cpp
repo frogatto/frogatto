@@ -106,6 +106,7 @@ void print_help(const std::string& argv0)
 "Diagnostic options:\n" <<
 "      --[no-]debug             enables/disables debug mode\n" <<
 "      --[no-]fps               enables/disables framerate display\n" <<
+"      --set-fps=FPS            sets the framerate to FPS\n" <<
 "      --potonly                use power of two-sized textures only\n" <<
 "      --textures16             use 16 bpp textures only (default on iPhone)\n" <<
 "      --textures32             use 32 bpp textures (default on PC/Mac)\n" <<
@@ -130,8 +131,8 @@ void print_help(const std::string& argv0)
 "      --tests                  runs the game's unit tests and exits\n" <<
 "      --no-tests               skips the execution of unit tests on startup\n"
 "      --utility=NAME           runs the specified UTILITY( NAME ) code block,\n" <<
-"                                 such as compile_levels, with the specified\n" <<
-"                                 arguments\n"
+"                                 such as compile_levels or object_compiler,\n" <<
+"                                 with the specified arguments\n"
 	;
 }
 

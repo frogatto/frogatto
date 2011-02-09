@@ -40,7 +40,6 @@
 #include "globals.h"
 
 namespace {
-const int FrameTimeInMillis = 20;
 int skipping_game = 0;
 
 int global_pause_time;
@@ -71,7 +70,7 @@ void transition_scene(level& lvl, screen_position& screen_pos, bool transition_o
 
 		SDL_GL_SwapBuffers();
 
-		const int target_end_time = start_time + (n+1)*FrameTimeInMillis;
+		const int target_end_time = start_time + (n+1)*preferences::frame_time_millis();
 		const int current_time = SDL_GetTicks();
 		const int skip_time = target_end_time - current_time;
 		if(skip_time > 0) {
@@ -304,12 +303,12 @@ bool level_runner::play_cycle()
 
 	const bool is_multiplayer = controls::num_players() > 1;
 
-	int desired_end_time = start_time_ + pause_time_ + global_pause_time + cycle*FrameTimeInMillis + FrameTimeInMillis;
+	int desired_end_time = start_time_ + pause_time_ + global_pause_time + cycle*preferences::frame_time_millis() + preferences::frame_time_millis();
 
 	if(!is_multiplayer) {
 		const int ticks = SDL_GetTicks();
 		if(desired_end_time < ticks) {
-			const int new_desired_end_time = ticks + FrameTimeInMillis;
+			const int new_desired_end_time = ticks + preferences::frame_time_millis();
 			pause_time_ += new_desired_end_time - desired_end_time;
 			desired_end_time = new_desired_end_time;
 		}
@@ -639,7 +638,7 @@ bool level_runner::play_cycle()
 
 	if(message_dialog::get()) {
 		message_dialog::get()->process();
-		pause_time_ += FrameTimeInMillis;
+		pause_time_ += preferences::frame_time_millis();
 	} else {
 		if (!paused && pause_stack == 0) {
 			const int start_process = SDL_GetTicks();
@@ -652,7 +651,7 @@ bool level_runner::play_cycle()
 
 			next_process_ += (SDL_GetTicks() - start_process);
 		} else {
-			pause_time_ += FrameTimeInMillis;
+			pause_time_ += preferences::frame_time_millis();
 		}
 	}
 

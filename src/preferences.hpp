@@ -52,6 +52,8 @@ namespace preferences {
 
 	//whether we are debugging
 	bool debug();
+	
+	int frame_time_millis();
 
 	//whether to show the fps display at the top
 	bool show_fps();

@@ -3,6 +3,8 @@
 #include <string>
 #include <SDL.h>
 
+#include <boost/lexical_cast.hpp>
+
 #include "controls.hpp"
 #include "filesystem.hpp"
 #include "formatter.hpp"
@@ -36,6 +38,8 @@ namespace preferences {
 		bool resizable_ = false;
 		bool debug_ = true;
 		bool reverse_ab_ = false;
+		bool show_fps_ = false;
+		int frame_time_millis_ = 20;
 
 		std::string level_path_ = "data/level/";
 
@@ -59,8 +63,7 @@ namespace preferences {
 		int actual_screen_height_ = 480;
 
 		bool screen_rotated_ = true;
-
-		bool show_fps_ = false;
+		
 		bool use_joystick_ = false;
 		
 		bool load_compiled_ = true;
@@ -79,8 +82,7 @@ namespace preferences {
 		int actual_screen_height_ = 600;
 		
 		bool screen_rotated_ = false;
-
-		bool show_fps_ = false;
+		
 		bool use_joystick_ = true;
 
 		bool load_compiled_ = false;
@@ -306,6 +308,11 @@ namespace preferences {
 	{
 		return show_fps_;
 	}
+	
+	int frame_time_millis()
+	{
+		return frame_time_millis_;
+	}
 
 	bool use_joystick()
 	{
@@ -477,6 +484,9 @@ namespace preferences {
 			show_fps_ = true;
 		} else if(s == "--no-fps") {
 			show_fps_ = false;
+		} else if(arg_name == "--set-fps" && !arg_value.empty()) {
+			frame_time_millis_ = 1000/boost::lexical_cast<int, std::string>(arg_value);
+			std::cerr << "FPS: " << arg_value << " = " << frame_time_millis_ << "ms/frame\n";
 		} else if(arg_name == "--config-path" && !arg_value.empty()) {
 			set_preferences_path(arg_value);
 		} else if(s == "--no-send-stats") {
