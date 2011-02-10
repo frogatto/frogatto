@@ -94,6 +94,7 @@ void playable_custom_object::process(level& lvl)
 	iphone_controls::set_underwater(underwater_controls_);
 	iphone_controls::set_can_interact(can_interact_ != 0);
 	iphone_controls::set_on_platform(on_platform());
+	iphone_controls::set_standing(is_standing(level::current()));
 
 	float underwater_x, underwater_y;
 	if(underwater_controls_ && iphone_controls::water_dir(&underwater_x, &underwater_y)) {

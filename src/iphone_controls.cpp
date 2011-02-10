@@ -15,13 +15,14 @@
 
 namespace
 {
-	rect left_arrow, right_arrow, down_arrow, up_arrow, a_button, c_button, interact_button, jumpdown_button;
+	rect left_arrow, right_arrow, down_arrow, up_arrow, a_button, c_button, interact_button, jumpdown_button, spin_button;
 
 	int underwater_circle_rad, underwater_circle_x, underwater_circle_y;
 
 	bool is_underwater = false;
 	bool can_interact = false;
 	bool on_platform = false;
+	bool is_standing = false;
 	
 	std::string loaded_control_scheme = "";
 	static void setup_rects ()
@@ -63,6 +64,8 @@ namespace
 				interact_button = hit_rect;
 			} else if (id == "jump_down") {
 				jumpdown_button = hit_rect;
+			} else if (id == "spin") {
+				spin_button = hit_rect;
 			}
 		}
 		
@@ -139,6 +142,11 @@ void iphone_controls::set_can_interact(bool value)
 void iphone_controls::set_on_platform(bool value)
 {
 	on_platform = value;
+}
+
+void iphone_controls::set_standing(bool value)
+{
+	is_standing = value;
 }
 
 bool iphone_controls::water_dir(float* xvalue, float* yvalue)
@@ -236,7 +244,9 @@ bool iphone_controls::down()
 		return false;
 	}
 
-	return hittest_button(down_arrow) || (on_platform && hittest_button(jumpdown_button));
+	return hittest_button(down_arrow) ||
+		(on_platform && hittest_button(jumpdown_button)) ||
+		(!is_standing && hittest_button(spin_button));
 }
 
 bool iphone_controls::left()
@@ -285,6 +295,7 @@ void iphone_controls::draw() {}
 void iphone_controls::set_underwater(bool value) {}
 void iphone_controls::set_can_interact(bool value) {}
 void iphone_controls::set_on_platform(bool value) {}
+void iphone_controls::set_standing(bool value) {}
 
 bool iphone_controls::water_dir(float* xvalue, float* yvalue) { return false; }
 
