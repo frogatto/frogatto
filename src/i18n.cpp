@@ -77,8 +77,6 @@ const std::string& get_locale() {
 	if (locale == "zh-Hans") locale = "zh_CN"; //hack to make it work on iOS
 	if (locale == "zh-Hant") locale = "zh_TW";
 	
-	std::cerr << "Locale: " << locale << "\n";
-	
 	//strip the charset part of the country and language code,
 	//e.g. "pt_BR.UTF8" --> "pt_BR"
 	size_t found = locale.find(".");
