@@ -18,6 +18,7 @@
 #include "weather_particle_system.hpp"
 #include "water_particle_system.hpp"
 #include "raster.hpp"
+#include "level.hpp"
 
 namespace {
 
@@ -122,6 +123,7 @@ struct simple_particle_system_info {
 		velocity_rotate_rand_(wml::get_int(node, "velocity_rotate_random", 0)),
 		accel_x_(wml::get_int(node, "accel_x", 0)),
 		accel_y_(wml::get_int(node, "accel_y", 0)),
+		pre_pump_cycles_(wml::get_int(node, "pre_pump_cycles", 0)),
 		delta_r_(wml::get_int(node, "delta_r", 0)),
 		delta_g_(wml::get_int(node, "delta_g", 0)),
 		delta_b_(wml::get_int(node, "delta_b", 0)),
@@ -137,6 +139,8 @@ struct simple_particle_system_info {
 	int velocity_magnitude_, velocity_magnitude_rand_;
 	int velocity_rotate_, velocity_rotate_rand_;
 	int accel_x_, accel_y_;
+	
+	int pre_pump_cycles_;  //# of cycles to pre-emptively simulate so the particle system appears to have been running for a while, rather than visibly starting to emit particles just when the player walks onscreen
 
 	int delta_r_, delta_g_, delta_b_, delta_a_;
 };
@@ -224,6 +228,15 @@ private:
 simple_particle_system::simple_particle_system(const entity& e, const simple_particle_system_factory& factory)
   : factory_(factory), info_(factory.info_), cycle_(0), spawn_buildup_(0)
 {
+	//cosmetic thing for very slow-moving particles:
+	//it looks weird when you walk into a scene, with, say, a column of smoke that's presumably been rising for quite some time,
+	//but it only begins rising the moment you arrive.  To overcome this, we can optionally have particle systems pre-simulate their particles
+	//for the short period of time (often as low as 4 seconds) needed to eliminate that implementation artifact
+	for( int i = 0; i < info_.pre_pump_cycles_; ++i)
+	{
+		this->process(level::current(), e);
+	}
+	
 }
 
 void simple_particle_system::process(const level& lvl, const entity& e)
