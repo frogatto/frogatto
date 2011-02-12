@@ -1295,7 +1295,7 @@ void custom_object::process(level& lvl)
 	}
 
 	for(std::map<std::string, particle_system_ptr>::iterator i = particle_systems_.begin(); i != particle_systems_.end(); ) {
-		i->second->process(lvl, *this);
+		i->second->process(*this);
 		if(i->second->is_destroyed()) {
 			particle_systems_.erase(i++);
 		} else {

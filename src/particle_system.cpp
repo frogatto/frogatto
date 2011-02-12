@@ -18,7 +18,6 @@
 #include "weather_particle_system.hpp"
 #include "water_particle_system.hpp"
 #include "raster.hpp"
-#include "level.hpp"
 
 namespace {
 
@@ -173,7 +172,7 @@ public:
 
 	bool is_destroyed() const { return info_.system_time_to_live_ == 0 || info_.spawn_rate_ < 0 && particles_.empty(); }
 	bool should_save() const { return info_.spawn_rate_ >= 0; }
-	void process(const level& lvl, const entity& e);
+	void process(const entity& e);
 	void draw(const rect& area, const entity& e) const;
 
 private:
@@ -234,12 +233,12 @@ simple_particle_system::simple_particle_system(const entity& e, const simple_par
 	//for the short period of time (often as low as 4 seconds) needed to eliminate that implementation artifact
 	for( int i = 0; i < info_.pre_pump_cycles_; ++i)
 	{
-		this->process(level::current(), e);
+		this->process(e);
 	}
 	
 }
 
-void simple_particle_system::process(const level& lvl, const entity& e)
+void simple_particle_system::process(const entity& e)
 {
 	--info_.system_time_to_live_;
 	++cycle_;
@@ -510,7 +509,7 @@ public:
 	point_particle_system(const entity& obj, const point_particle_info& info) : obj_(obj), info_(info), particle_generation_(0), generation_rate_millis_(info.generation_rate_millis), pos_x_(info.pos_x), pos_x_rand_(info.pos_x_rand), pos_y_(info.pos_y), pos_y_rand_(info.pos_y_rand) {
 	}
 
-	void process(const level& lvl, const entity& e) {
+	void process(const entity& e) {
 		particle_generation_ += generation_rate_millis_;
 
 		particles_.erase(std::remove_if(particles_.begin(), particles_.end(), particle_destroyed), particles_.end());

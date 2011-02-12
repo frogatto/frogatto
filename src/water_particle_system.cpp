@@ -53,7 +53,7 @@ water_particle_system::water_particle_system(const entity& e, const water_partic
 	}
 }
 
-void water_particle_system::process(const level& lvl, const entity& e)
+void water_particle_system::process(const entity& e)
 {
 	++cycle_;
 	

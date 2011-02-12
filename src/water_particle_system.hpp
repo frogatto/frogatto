@@ -42,7 +42,7 @@ public:
 	water_particle_system(const entity& e, const water_particle_system_factory& factory);
 	
 	bool is_destroyed() const { return false; }
-	void process(const level& lvl, const entity& e);
+	void process(const entity& e);
 	void draw(const rect& area, const entity& e) const;
 	
 private:

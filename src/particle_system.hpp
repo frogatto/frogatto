@@ -9,7 +9,6 @@
 #include "wml_node_fwd.hpp"
 
 class entity;
-class level;
 class particle_system;
 typedef boost::intrusive_ptr<particle_system> particle_system_ptr;
 typedef boost::intrusive_ptr<const particle_system> const_particle_system_ptr;
@@ -32,7 +31,7 @@ public:
 	virtual ~particle_system();
 	virtual bool is_destroyed() const { return false; }
 	virtual bool should_save() const { return true; }
-	virtual void process(const level& lvl, const entity& e) = 0;
+	virtual void process(const entity& e) = 0;
 	virtual void draw(const rect& area, const entity& e) const = 0;
 private:
 };
