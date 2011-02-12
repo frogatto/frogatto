@@ -1234,7 +1234,7 @@ FUNCTION_DEF(debug, 1, -1, "debug(...): outputs arguments to the console")
 		str += args()[n]->evaluate(variables).to_debug_string();
 	}
 
-	fprintf(stderr, "DEBUG FUNCTION: %s\n", str.c_str());
+	//fprintf(stderr, "DEBUG FUNCTION: %s\n", str.c_str());
 
 	return variant(new debug_command(str));
 END_FUNCTION_DEF(debug)
