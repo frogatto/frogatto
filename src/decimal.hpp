@@ -58,8 +58,8 @@ inline decimal operator*(const decimal& a, const decimal& b) {
 
 inline decimal operator/(const decimal& a, const decimal& b) {
 	int64_t val = a.value();
-	val /= b.value();
 	val *= DECIMAL_PRECISION;
+	val /= b.value();
 	return decimal(static_cast<int>(val));
 }
 
