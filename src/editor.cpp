@@ -1757,6 +1757,11 @@ void editor::add_tile_rect(int x1, int y1, int x2, int y2)
 
 void editor::remove_tile_rect(int x1, int y1, int x2, int y2)
 {
+	x1 += ((100 - tilesets[cur_tileset_].x_speed)*xpos_)/100;
+	x2 += ((100 - tilesets[cur_tileset_].x_speed)*xpos_)/100;
+	y1 += ((100 - tilesets[cur_tileset_].y_speed)*ypos_)/100;
+	y2 += ((100 - tilesets[cur_tileset_].y_speed)*ypos_)/100;
+
 	if(x2 < x1) {
 		std::swap(x1, x2);
 	}
