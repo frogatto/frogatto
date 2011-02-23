@@ -1622,6 +1622,32 @@ void level::draw_status() const
 	}
 }
 
+namespace {
+void draw_entity(const entity& obj, int x, int y, bool editor) {
+	const std::pair<int,int>* scroll_speed = obj.position_scale_millis();
+
+	if(scroll_speed) {
+		glPushMatrix();
+		const int scrollx = scroll_speed->first;
+		const int scrolly = scroll_speed->second;
+
+		const int diffx = ((scrollx - 1000)*x)/1000;
+		const int diffy = ((scrolly - 1000)*y)/1000;
+
+		glTranslatef(diffx, diffy, 0.0);
+	}
+
+	obj.draw();
+	if(editor) {
+		obj.draw_group();
+	}
+
+	if(scroll_speed) {
+		glPopMatrix();
+	}
+}
+}
+
 extern std::vector<rect> background_rects_drawn;
 
 void level::draw(int x, int y, int w, int h) const
@@ -1677,27 +1703,7 @@ void level::draw(int x, int y, int w, int h) const
 
 		while(entity_itor != chars.end() && (*entity_itor)->zorder() <= *layer) {
 			if(!(*entity_itor)->is_human()) {
-				const std::pair<int,int>* scroll_speed = (*entity_itor)->position_scale_millis();
-
-				if(scroll_speed) {
-					glPushMatrix();
-					const int scrollx = scroll_speed->first;
-					const int scrolly = scroll_speed->second;
-
-					const int diffx = ((scrollx - 1000)*x)/1000;
-					const int diffy = ((scrolly - 1000)*y)/1000;
-
-					glTranslatef(diffx, diffy, 0.0);
-				}
-
-				(*entity_itor)->draw();
-				if(editor_) {
-					(*entity_itor)->draw_group();
-				}
-
-				if(scroll_speed) {
-					glPopMatrix();
-				}
+				draw_entity(**entity_itor, x, y, editor_);
 			}
 			++entity_itor;
 		}
@@ -1717,10 +1723,7 @@ void level::draw(int x, int y, int w, int h) const
 
 		while(entity_itor != chars.end() && (*entity_itor)->zorder() <= *layer) {
 			if(!(*entity_itor)->is_human()) {
-				(*entity_itor)->draw();
-				if(editor_) {
-					(*entity_itor)->draw_group();
-				}
+				draw_entity(**entity_itor, x, y, editor_);
 			}
 			++entity_itor;
 		}
@@ -1735,11 +1738,7 @@ void level::draw(int x, int y, int w, int h) const
 
 	while(entity_itor != chars.end()) {
 		if(!(*entity_itor)->is_human()) {
-			(*entity_itor)->draw();
-			if(editor_) {
-
-				(*entity_itor)->draw_group();
-			}
+			draw_entity(**entity_itor, x, y, editor_);
 		}
 		++entity_itor;
 	}
