@@ -58,15 +58,14 @@ std::string get_key_name(SDLKey key) {
 		return std::string("PGDN");
 	case SDLK_PAGEUP:
 		return std::string("PGUP");
-	// these are added to make them translatable
 	case SDLK_LEFT:
-		return std::string(_("LEFT"));
+		return std::string(("←"));
 	case SDLK_RIGHT:
-		return std::string(_("RIGHT"));
+		return std::string(("→"));
 	case SDLK_UP:
-		return std::string(_("UP"));
+		return std::string(("↑"));
 	case SDLK_DOWN:
-		return std::string(_("DOWN"));
+		return std::string(("↓"));
 	// other names can be shortened by taking only the
 	// first letter of the first word, i.e. "LEFT SHIFT" --> "LSHIFT"
 	default:
