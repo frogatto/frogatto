@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-26 01:43-0300\n"
+"POT-Creation-Date: 2011-02-26 02:42-0300\n"
 "PO-Revision-Date: 2011-01-21 16:33+0000\n"
 "Last-Translator: CloudiDust <cloudidust@gmail.com>\n"
 "Language-Team: Chinese (China) <None>\n"
@@ -1380,7 +1380,7 @@ msgstr "对付米格拉姆？真的？"
 #: data/level/crevice-village.cfg:973
 #, fuzzy
 msgid ""
-"I thought he like ... mass-produces\n"
+"I thought he like ... \"mass-produces\"\n"
 "his followers, or something."
 msgstr ""
 "我觉得他喜欢……\n"
@@ -1407,7 +1407,7 @@ msgstr ""
 msgid ""
 "There's got to be something\n"
 "we can use to our advantage,\n"
-"but numerical superiority isn't it."
+"but \"numerical superiority\" isn't it."
 msgstr ""
 "一定有什么东西可以成为我们的优势，\n"
 "但不是“数量优势”。"
@@ -1415,7 +1415,7 @@ msgstr ""
 #: data/level/crevice-village.cfg:980
 #, fuzzy
 msgid ""
-"Doing the unexpected\n"
+"\"Doing the unexpected\"\n"
 "might be our best bet, for now."
 msgstr ""
 "现在，“出其不意”也许是\n"
@@ -4921,22 +4921,6 @@ msgstr "返回"
 msgid "Achievement Unlocked!"
 msgstr "成就达成！"
 
-#: src/key_button.cpp:63
-msgid "LEFT"
-msgstr "左"
-
-#: src/key_button.cpp:65
-msgid "RIGHT"
-msgstr "右"
-
-#: src/key_button.cpp:67
-msgid "UP"
-msgstr "上"
-
-#: src/key_button.cpp:69
-msgid "DOWN"
-msgstr "下"
-
 #: src/main.cpp:354
 msgid "Initializing custom object"
 msgstr "初始化自定义对象"
@@ -4988,6 +4972,18 @@ msgstr "交换A/B键"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
+
+#~ msgid "LEFT"
+#~ msgstr "左"
+
+#~ msgid "RIGHT"
+#~ msgstr "右"
+
+#~ msgid "UP"
+#~ msgstr "上"
+
+#~ msgid "DOWN"
+#~ msgstr "下"
 
 #~ msgid "ACME(tm) FLOATING TEXT SIGN"
 #~ msgstr "“给力”牌浮动标签"

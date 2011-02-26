@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-26 01:43-0300\n"
+"POT-Creation-Date: 2011-02-26 02:42-0300\n"
 "PO-Revision-Date: 2011-01-26 06:33+0000\n"
 "Last-Translator: hagabaka <yaohan.chen@gmail.com>\n"
 "Language-Team: Japanese <>\n"
@@ -1347,7 +1347,7 @@ msgstr ""
 
 #: data/level/crevice-village.cfg:973
 msgid ""
-"I thought he like ... mass-produces\n"
+"I thought he like ... \"mass-produces\"\n"
 "his followers, or something."
 msgstr ""
 
@@ -1367,12 +1367,12 @@ msgstr ""
 msgid ""
 "There's got to be something\n"
 "we can use to our advantage,\n"
-"but numerical superiority isn't it."
+"but \"numerical superiority\" isn't it."
 msgstr ""
 
 #: data/level/crevice-village.cfg:980
 msgid ""
-"Doing the unexpected\n"
+"\"Doing the unexpected\"\n"
 "might be our best bet, for now."
 msgstr ""
 
@@ -4645,22 +4645,6 @@ msgstr "戻る"
 msgid "Achievement Unlocked!"
 msgstr ""
 
-#: src/key_button.cpp:63
-msgid "LEFT"
-msgstr "←"
-
-#: src/key_button.cpp:65
-msgid "RIGHT"
-msgstr "→"
-
-#: src/key_button.cpp:67
-msgid "UP"
-msgstr "↑"
-
-#: src/key_button.cpp:69
-msgid "DOWN"
-msgstr "↓"
-
 #: src/main.cpp:354
 msgid "Initializing custom object"
 msgstr ""
@@ -4712,3 +4696,15 @@ msgstr ""
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr ""
+
+#~ msgid "LEFT"
+#~ msgstr "←"
+
+#~ msgid "RIGHT"
+#~ msgstr "→"
+
+#~ msgid "UP"
+#~ msgstr "↑"
+
+#~ msgid "DOWN"
+#~ msgstr "↓"

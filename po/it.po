@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-26 01:43-0300\n"
+"POT-Creation-Date: 2011-02-26 02:42-0300\n"
 "PO-Revision-Date: 2011-01-19 16:54+0000\n"
 "Last-Translator: TheJoe <asbruff@gmail.com>\n"
 "Language-Team: Italian <>\n"
@@ -1388,7 +1388,7 @@ msgstr "Contro Milgram? Davvero?"
 #: data/level/crevice-village.cfg:973
 #, fuzzy
 msgid ""
-"I thought he like ... mass-produces\n"
+"I thought he like ... \"mass-produces\"\n"
 "his followers, or something."
 msgstr ""
 "Pensavo che i suoi scagnozzi fossero,\n"
@@ -1413,7 +1413,7 @@ msgstr "Sì... Capisco cosa vuoi dire."
 msgid ""
 "There's got to be something\n"
 "we can use to our advantage,\n"
-"but numerical superiority isn't it."
+"but \"numerical superiority\" isn't it."
 msgstr ""
 "Dobbiamo trovare qualcosa a nostro\n"
 "vantaggio, ma la \"superiorità numerica\"\n"
@@ -1422,7 +1422,7 @@ msgstr ""
 #: data/level/crevice-village.cfg:980
 #, fuzzy
 msgid ""
-"Doing the unexpected\n"
+"\"Doing the unexpected\"\n"
 "might be our best bet, for now."
 msgstr ""
 "Una \"tattica imprevedibile\" dovrebbe\n"
@@ -4984,22 +4984,6 @@ msgstr "Indietro"
 msgid "Achievement Unlocked!"
 msgstr "Obiettivo Sbloccato!"
 
-#: src/key_button.cpp:63
-msgid "LEFT"
-msgstr "SINISTRA"
-
-#: src/key_button.cpp:65
-msgid "RIGHT"
-msgstr "DESTRA"
-
-#: src/key_button.cpp:67
-msgid "UP"
-msgstr "SU"
-
-#: src/key_button.cpp:69
-msgid "DOWN"
-msgstr "GIU"
-
 #: src/main.cpp:354
 msgid "Initializing custom object"
 msgstr ""
@@ -5051,6 +5035,18 @@ msgstr "Inverti A e B"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
+
+#~ msgid "LEFT"
+#~ msgstr "SINISTRA"
+
+#~ msgid "RIGHT"
+#~ msgstr "DESTRA"
+
+#~ msgid "UP"
+#~ msgstr "SU"
+
+#~ msgid "DOWN"
+#~ msgstr "GIU"
 
 #~ msgid "ACME(tm) FLOATING TEXT SIGN"
 #~ msgstr "TESTO FLUTTUANTE ACME(tm)"

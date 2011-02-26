@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-26 01:43-0300\n"
+"POT-Creation-Date: 2011-02-26 02:42-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Philipp Zabel <philipp.zabel@gmail.com>\n"
 "Language-Team: \n"
@@ -1358,7 +1358,7 @@ msgstr "Gegen Milgram? Wirklich?"
 #: data/level/crevice-village.cfg:973
 #, fuzzy
 msgid ""
-"I thought he like ... mass-produces\n"
+"I thought he like ... \"mass-produces\"\n"
 "his followers, or something."
 msgstr ""
 "Ich dachte er ... stellt seine Anhänger\n"
@@ -1385,7 +1385,7 @@ msgstr ""
 msgid ""
 "There's got to be something\n"
 "we can use to our advantage,\n"
-"but numerical superiority isn't it."
+"but \"numerical superiority\" isn't it."
 msgstr ""
 "Es muss irgendwas geben, das wir\n"
 "zu unserem Vorteil nutzen können,\n"
@@ -1395,7 +1395,7 @@ msgstr ""
 #: data/level/crevice-village.cfg:980
 #, fuzzy
 msgid ""
-"Doing the unexpected\n"
+"\"Doing the unexpected\"\n"
 "might be our best bet, for now."
 msgstr ""
 "\"Überraschungseffekt\" ist momentan\n"
@@ -4606,22 +4606,6 @@ msgstr "Zurück"
 msgid "Achievement Unlocked!"
 msgstr "Erfolg freigeschaltet!"
 
-#: src/key_button.cpp:63
-msgid "LEFT"
-msgstr "LINKS"
-
-#: src/key_button.cpp:65
-msgid "RIGHT"
-msgstr "RECHTS"
-
-#: src/key_button.cpp:67
-msgid "UP"
-msgstr "HOCH"
-
-#: src/key_button.cpp:69
-msgid "DOWN"
-msgstr "RUNTER"
-
 #: src/main.cpp:354
 msgid "Initializing custom object"
 msgstr ""
@@ -4673,6 +4657,18 @@ msgstr "A und B vertauschen"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
+
+#~ msgid "LEFT"
+#~ msgstr "LINKS"
+
+#~ msgid "RIGHT"
+#~ msgstr "RECHTS"
+
+#~ msgid "UP"
+#~ msgstr "HOCH"
+
+#~ msgid "DOWN"
+#~ msgstr "RUNTER"
 
 #~ msgid "ACME(tm) FLOATING TEXT SIGN"
 #~ msgstr "ACME(tm) SCHWEBENDES TEXTSCHILD"

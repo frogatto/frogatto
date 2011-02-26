@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-26 01:43-0300\n"
+"POT-Creation-Date: 2011-02-26 02:42-0300\n"
 "PO-Revision-Date: 2011-01-19 16:54+0000\n"
 "Last-Translator: manu <emmanuel.fujioka@free.fr>\n"
 "Language-Team: French <>\n"
@@ -1433,7 +1433,7 @@ msgstr "Contre Milgram? Vraiment?"
 #: data/level/crevice-village.cfg:973
 #, fuzzy
 msgid ""
-"I thought he like ... mass-produces\n"
+"I thought he like ... \"mass-produces\"\n"
 "his followers, or something."
 msgstr ""
 "Je pensais qu'il produit ses sujets\n"
@@ -1460,7 +1460,7 @@ msgstr ""
 msgid ""
 "There's got to be something\n"
 "we can use to our advantage,\n"
-"but numerical superiority isn't it."
+"but \"numerical superiority\" isn't it."
 msgstr ""
 "Il doit bien y avoir quelque chose\n"
 "dont on pourrait se servir,\n"
@@ -1470,7 +1470,7 @@ msgstr ""
 #: data/level/crevice-village.cfg:980
 #, fuzzy
 msgid ""
-"Doing the unexpected\n"
+"\"Doing the unexpected\"\n"
 "might be our best bet, for now."
 msgstr ""
 "\"Faire ce qu'on attend de nous\"\n"
@@ -5181,22 +5181,6 @@ msgstr "Retour"
 msgid "Achievement Unlocked!"
 msgstr "Accomplissement débloqué !"
 
-#: src/key_button.cpp:63
-msgid "LEFT"
-msgstr "GAUCHE"
-
-#: src/key_button.cpp:65
-msgid "RIGHT"
-msgstr "DROITE"
-
-#: src/key_button.cpp:67
-msgid "UP"
-msgstr "HAUT"
-
-#: src/key_button.cpp:69
-msgid "DOWN"
-msgstr "BAS"
-
 #: src/main.cpp:354
 msgid "Initializing custom object"
 msgstr ""
@@ -5248,6 +5232,18 @@ msgstr "Inverser A et B"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "FeinteOuverte"
+
+#~ msgid "LEFT"
+#~ msgstr "GAUCHE"
+
+#~ msgid "RIGHT"
+#~ msgstr "DROITE"
+
+#~ msgid "UP"
+#~ msgstr "HAUT"
+
+#~ msgid "DOWN"
+#~ msgstr "BAS"
 
 #~ msgid "ACME(tm) FLOATING TEXT SIGN"
 #~ msgstr "ACME(tm) BULLE DE TEXTE"
