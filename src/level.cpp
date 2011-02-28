@@ -1694,26 +1694,6 @@ void level::draw(int x, int y, int w, int h) const
 		player_zorder = players_.front()->zorder();
 	}
 
-	for(; layer != layers_.end() && *layer < player_zorder; ++layer) {
-
-		if(!water_drawn && *layer > water_zorder) {
-			water_->draw(x, y, w, h);
-			water_drawn = true;
-		}
-
-		while(entity_itor != chars.end() && (*entity_itor)->zorder() <= *layer) {
-			if(!(*entity_itor)->is_human()) {
-				draw_entity(**entity_itor, x, y, editor_);
-			}
-			++entity_itor;
-		}
-
-		draw_layer(*layer, x, y, w, h);
-	}
-
-	foreach(const const_entity_ptr& p, players_) {
-		p->draw();
-	}
 
 	for(; layer != layers_.end(); ++layer) {
 		if(!water_drawn && *layer > water_zorder) {
@@ -1722,9 +1702,7 @@ void level::draw(int x, int y, int w, int h) const
 		}
 
 		while(entity_itor != chars.end() && (*entity_itor)->zorder() <= *layer) {
-			if(!(*entity_itor)->is_human()) {
-				draw_entity(**entity_itor, x, y, editor_);
-			}
+			draw_entity(**entity_itor, x, y, editor_);
 			++entity_itor;
 		}
 
