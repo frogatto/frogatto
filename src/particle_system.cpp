@@ -179,6 +179,54 @@ private:
 	variant get_value(const std::string& key) const {
 		if(key == "spawn_rate") {
 			return variant(info_.spawn_rate_);
+		} else if(key == "spawn_rate_random") {
+			return variant(info_.spawn_rate_random_);
+		} else if(key == "system_time_to_live") {
+			return variant(info_.system_time_to_live_);
+		} else if(key == "time_to_live") {
+			return variant(info_.time_to_live_);
+		} else if(key == "min_x") {
+			return variant(info_.min_x_);
+		} else if(key == "max_x") {
+			return variant(info_.max_x_);
+		} else if(key == "min_y") {
+			return variant(info_.min_y_);
+		} else if(key == "max_y") {
+			return variant(info_.max_y_);
+		} else if(key == "velocity_x") {
+			return variant(info_.velocity_x_);
+		} else if(key == "velocity_y") {
+			return variant(info_.velocity_y_);
+		} else if(key == "velocity_x_random") {
+			return variant(info_.velocity_x_rand_);
+		} else if(key == "velocity_y_random") {
+			return variant(info_.velocity_y_rand_);
+		} else if(key == "velocity_magnitude") {
+			return variant(info_.velocity_magnitude_);
+		} else if(key == "velocity_magnitude_random") {
+			return variant(info_.velocity_magnitude_rand_);
+		} else if(key == "velocity_rotate") {
+			return variant(info_.velocity_rotate_);
+		} else if(key == "velocity_rotate_random") {
+			return variant(info_.velocity_rotate_rand_);
+		} else if(key == "velocity_rotate") {
+			return variant(info_.velocity_rotate_);
+		} else if(key == "velocity_rotate_random") {
+			return variant(info_.velocity_rotate_rand_);
+		} else if(key == "accel_x") {
+			return variant(info_.accel_x_);
+		} else if(key == "accel_y") {
+			return variant(info_.accel_y_);
+		} else if(key == "pre_pump_cycles") {
+			return variant(info_.pre_pump_cycles_);
+		} else if(key == "delta_r") {
+			return variant(info_.delta_r_);
+		} else if(key == "delta_g") {
+			return variant(info_.delta_g_);
+		} else if(key == "delta_b") {
+			return variant(info_.delta_b_);
+		} else if(key == "delta_a") {
+			return variant(info_.delta_a_);
 		} else {
 			return variant();
 		}
@@ -187,6 +235,12 @@ private:
 	void set_value(const std::string& key, const variant& value) {
 		if(key == "spawn_rate") {
 			info_.spawn_rate_ = value.as_int();
+		} else if(key == "spawn_rate_random") {
+			info_.spawn_rate_random_ = value.as_int();
+		} else if(key == "system_time_to_live") {
+			info_.system_time_to_live_ = value.as_int();
+		} else if(key == "time_to_live") {
+			info_.time_to_live_ = value.as_int();
 		} else if(key == "min_x") {
 			info_.min_x_ = value.as_int();
 		} else if(key == "max_x") {
@@ -199,7 +253,38 @@ private:
 			info_.velocity_x_ = value.as_int();
 		} else if(key == "velocity_y") {
 			info_.velocity_y_ = value.as_int();
+		} else if(key == "velocity_x_random") {
+			info_.velocity_x_rand_ = value.as_int();
+		} else if(key == "velocity_y_random") {
+			info_.velocity_y_rand_ = value.as_int();
+		} else if(key == "velocity_magnitude") {
+			info_.velocity_magnitude_ = value.as_int();
+		} else if(key == "velocity_magnitude_random") {
+			info_.velocity_magnitude_rand_ = value.as_int();
+		} else if(key == "velocity_rotate") {
+			info_.velocity_rotate_ = value.as_int();
+		} else if(key == "velocity_rotate_random") {
+			info_.velocity_rotate_rand_ = value.as_int();
+		} else if(key == "velocity_rotate") {
+			info_.velocity_rotate_ = value.as_int();
+		} else if(key == "velocity_rotate_random") {
+			info_.velocity_rotate_rand_ = value.as_int();
+		} else if(key == "accel_x") {
+			info_.accel_x_ = value.as_int();
+		} else if(key == "accel_y") {
+			info_.accel_y_ = value.as_int();
+		} else if(key == "pre_pump_cycles") {
+			info_.pre_pump_cycles_ = value.as_int();
+		} else if(key == "delta_r") {
+			info_.delta_r_ = value.as_int();
+		} else if(key == "delta_g") {
+			info_.delta_g_ = value.as_int();
+		} else if(key == "delta_b") {
+			info_.delta_b_ = value.as_int();
+		} else if(key == "delta_a") {
+			info_.delta_a_ = value.as_int();
 		}
+		
 	}
 
 	const simple_particle_system_factory& factory_;
