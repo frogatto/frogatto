@@ -1715,9 +1715,7 @@ void level::draw(int x, int y, int w, int h) const
 	}
 
 	while(entity_itor != chars.end()) {
-		if(!(*entity_itor)->is_human()) {
-			draw_entity(**entity_itor, x, y, editor_);
-		}
+		draw_entity(**entity_itor, x, y, editor_);
 		++entity_itor;
 	}
 
