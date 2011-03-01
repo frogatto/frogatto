@@ -678,9 +678,9 @@ void custom_object::draw() const
 	const int draw_y = y();
 
 	if(!draw_area_.get()) {
-		frame_->draw(draw_x, draw_y, face_right(), upside_down(), time_in_frame_, rotate_.as_float());
+		frame_->draw(draw_x-draw_x%2, draw_y-draw_y%2, face_right(), upside_down(), time_in_frame_, rotate_.as_float());
 	} else {
-		frame_->draw(draw_x, draw_y, *draw_area_, face_right(), upside_down(), time_in_frame_, rotate_.as_float());
+		frame_->draw(draw_x-draw_x%2, draw_y-draw_y%2, *draw_area_, face_right(), upside_down(), time_in_frame_, rotate_.as_float());
 	}
 
 	if(blur_) {
@@ -694,7 +694,7 @@ void custom_object::draw() const
 			while(!transform.fits_in_color()) {
 				transform = transform - transform.to_color();
 				transform.to_color().set_as_current_color();
-				frame_->draw(draw_x, draw_y, face_right(), upside_down(), time_in_frame_, rotate_.as_float());
+				frame_->draw(draw_x-draw_x%2, draw_y-draw_y%2, face_right(), upside_down(), time_in_frame_, rotate_.as_float());
 			}
 
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
