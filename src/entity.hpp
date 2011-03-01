@@ -62,6 +62,7 @@ public:
 	int x() const { return x_/100 - (x_ < 0 && x_%100 ? 1 : 0); }
 	int y() const { return y_/100 - (y_ < 0 && y_%100 ? 1 : 0); }
 	virtual int zorder() const { return 0; }
+	virtual int zsub_order() const { return 0; }
 
 	virtual const std::pair<int,int>* position_scale_millis() const { return 0; }
 

@@ -1604,9 +1604,9 @@ void level::prepare_tiles_for_drawing()
 namespace {
 bool sort_entity_drawing_pos(const entity_ptr& a, const entity_ptr& b) {
 	return a->zorder() < b->zorder() ||
-	       a->zorder() == b->zorder() && a->y() < b->y() ||
-		   a->zorder() == b->zorder() && a->y() < b->y() ||
-		   a->zorder() == b->zorder() && a->y() == b->y() && a->x() < b->x();
+		   a->zorder() == b->zorder() && a->zsub_order() < b->zsub_order() ||
+		   a->zorder() == b->zorder() && a->zsub_order() == b->zsub_order() && a->y() < b->y() ||
+		   a->zorder() == b->zorder() && a->zsub_order() == b->zsub_order() && a->y() == b->y() && a->x() < b->x();
 }
 }
 
@@ -1680,6 +1680,14 @@ void level::draw(int x, int y, int w, int h) const
 
 	std::vector<entity_ptr>::const_iterator entity_itor = chars.begin();
 
+	
+	/*std::cerr << "SUMMARY " << cycle_ << ": ";
+	foreach(const entity_ptr& e, chars_) {
+		std::cerr << e->debug_description() << "(" << e->zsub_order() << "):";
+	}
+	
+	std::cerr << "\n";*/
+	
 	bool water_drawn = true;
 	int water_zorder = 0;
 	if(water_) {
@@ -1688,12 +1696,6 @@ void level::draw(int x, int y, int w, int h) const
 	}
 
 	std::set<int>::const_iterator layer = layers_.begin();
-
-	int player_zorder = 0;
-	if(players_.empty() == false) {
-		player_zorder = players_.front()->zorder();
-	}
-
 
 	for(; layer != layers_.end(); ++layer) {
 		if(!water_drawn && *layer > water_zorder) {
@@ -1994,7 +1996,7 @@ void level::do_processing()
 	std::sort(active_chars_.begin(), active_chars_.end());
 	active_chars_.erase(std::unique(active_chars_.begin(), active_chars_.end()), active_chars_.end());
 	std::sort(active_chars_.begin(), active_chars_.end(), sort_entity_drawing_pos);
-
+	
 /*
 	std::cerr << "SUMMARY " << cycle_ << ": ";
 	foreach(const entity_ptr& e, chars_) {

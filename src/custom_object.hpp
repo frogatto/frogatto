@@ -41,6 +41,7 @@ public:
 	void set_level(level& lvl) { }
 
 	virtual int zorder() const;
+	virtual int zsub_order() const;
 
 	virtual int velocity_x() const;
 	virtual int velocity_y() const;
@@ -203,7 +204,8 @@ private:
 	boost::scoped_ptr<std::pair<int, int> > position_scale_millis_;
 
 	int zorder_;
-
+	int zsub_order_;
+	
 	int hitpoints_, max_hitpoints_;
 	bool was_underwater_;
 

@@ -71,6 +71,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 	accel_y_(wml::get_int(node, "accel_y")),
 	gravity_shift_(wml::get_int(node, "gravity_shift", 0)),
 	rotate_(0), zorder_(wml::get_int(node, "zorder", type_->zorder())),
+	zsub_order_(wml::get_int(node, "zsub_order", 0)),
 	hitpoints_(wml::get_int(node, "hitpoints", type_->hitpoints())),
 	max_hitpoints_(wml::get_int(node, "max_hitpoints", type_->hitpoints())),
 	was_underwater_(false),
@@ -266,6 +267,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	velocity_x_(0), velocity_y_(0),
 	accel_x_(0), accel_y_(0), gravity_shift_(0),
 	rotate_(0), zorder_(type_->zorder()),
+	zsub_order_(0),
 	hitpoints_(type_->hitpoints()),
 	max_hitpoints_(type_->hitpoints()),
 	was_underwater_(false),
@@ -318,6 +320,7 @@ custom_object::custom_object(const custom_object& o) :
 	gravity_shift_(o.gravity_shift_),
 	rotate_(o.rotate_),
 	zorder_(o.zorder_),
+	zsub_order_(o.zsub_order_),
 	hitpoints_(o.hitpoints_),
 	max_hitpoints_(o.max_hitpoints_),
 	was_underwater_(o.was_underwater_),
@@ -1336,6 +1339,11 @@ const_editor_entity_info_ptr custom_object::editor_info() const
 int custom_object::zorder() const
 {
 	return zorder_;
+}
+
+int custom_object::zsub_order() const
+{
+	return zsub_order_;
 }
 
 int custom_object::velocity_x() const
