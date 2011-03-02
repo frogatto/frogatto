@@ -519,6 +519,10 @@ wml::node_ptr custom_object::write() const
 		res->set_attr("zorder", formatter() << zorder_);
 	}
 
+	if(zsub_order_ != 0) {
+		res->set_attr("zsub_order", formatter() << zsub_order_);
+	}
+	
 	res->set_attr("face_right", face_right() ? "yes" : "no");
 	if(upside_down()) {
 		res->set_attr("upside_down", "yes");
