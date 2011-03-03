@@ -893,16 +893,14 @@ void editor::edit_level()
 				
 				if(c->zsub_order() > lvl_->editor_selection().front()->zsub_order()){
 					lvl_->editor_selection().front()->set_zsub_order( c->zsub_order() +1);
-					std::cerr << "yo frankie!\n";
+					std::cerr << "object zsub_order changed\n";
 				
 				}
 				std::cerr << lvl_->editor_selection().front()->zsub_order() <<":editor selection zorder, after\n";
 				std::cerr << c->zsub_order() <<":editor other object zorder, after\n";
 			}
 			
-			//std::cerr << "plus pressed?" << plus_pressed << "\n";
 		
-			
 			
 		}else if(object_mode && lvl_->editor_highlight()) {
 			//we're handling objects, and a button is down, and we have an
