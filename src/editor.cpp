@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <iostream>
 #include <cmath>
+#include <algorithm>
 
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
@@ -799,6 +800,7 @@ void editor::edit_level()
 
 		int mousex, mousey;
 		const unsigned int buttons = get_mouse_state(mousex, mousey);
+		const Uint8* keystate = SDL_GetKeyState(NULL); 
 
 		if(buttons == 0) {
 			drawing_rect_ = false;
@@ -815,6 +817,7 @@ void editor::edit_level()
 		prev_mousex = mousex;
 		prev_mousey = mousey;
 
+		
 		const int selectx = round_tile_size(xpos_ + mousex*zoom_);
 		const int selecty = round_tile_size(ypos_ + mousey*zoom_);
 
@@ -873,9 +876,40 @@ void editor::edit_level()
 				remove_ghost_objects();
 				ghost_objects_.clear();
 			}
-		} else if(object_mode && lvl_->editor_highlight()) {
+		}else if(editing_objects() && keystate[SDLK_EQUALS] && lvl_->editor_selection().empty() == false){
+			//we are telling an object to change its zsub_order
+			//The UI for this is:  if you have an object selected, 
+			//if you hold down either plus/minus, and click on another object, 
+			//it will change the zsub_order of the selected object 
+			//to in-front-of/behind that other object, respectively.
+			
+
+			entity_ptr c = lvl_->get_next_character_at_point(xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
+			//make sure this isn't the same object as the selected object
+			if(c && std::find(lvl_->editor_selection().begin(), lvl_->editor_selection().end(), c) == lvl_->editor_selection().end()){
+
+				std::cerr << lvl_->editor_selection().front()->zsub_order() <<":editor selection zorder\n";
+				std::cerr << c->zsub_order() <<":editor other object zorder\n";
+				
+				if(c->zsub_order() > lvl_->editor_selection().front()->zsub_order()){
+					lvl_->editor_selection().front()->set_zsub_order( c->zsub_order() +1);
+					std::cerr << "yo frankie!\n";
+				
+				}
+				std::cerr << lvl_->editor_selection().front()->zsub_order() <<":editor selection zorder, after\n";
+				std::cerr << c->zsub_order() <<":editor other object zorder, after\n";
+			}
+			
+			//std::cerr << "plus pressed?" << plus_pressed << "\n";
+		
+			
+			
+		}else if(object_mode && lvl_->editor_highlight()) {
 			//we're handling objects, and a button is down, and we have an
 			//object under the mouse. This means we are dragging something.
+
+			
+			
 			handle_object_dragging(mousex, mousey);
 		} else if(drawing_rect_) {
 			handle_drawing_rect(mousex, mousey);

@@ -131,6 +131,7 @@ public:
 
 	void set_blur(const blur_info* blur);
 	void set_sound_volume(const int volume);
+	void set_zsub_order(const int zsub_order) {zsub_order_ = zsub_order;}
 	
 	bool execute_command(const variant& var);
 
