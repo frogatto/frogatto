@@ -1027,25 +1027,29 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 	
 	if(key.keysym.sym == SDLK_KP8) {
 		foreach(const entity_ptr& e, lvl_->editor_selection()){
-			e->set_y(e->y()-2);
+			execute_command(boost::bind(&editor::move_object, this, e, e->x(),e->y()-2),
+							boost::bind(&editor::move_object,this,e,e->x(),e->y()));
 		}
 	}
 
 	if(key.keysym.sym == SDLK_KP5) {
 		foreach(const entity_ptr& e, lvl_->editor_selection()){
-			e->set_y(e->y()+2);
+			execute_command(boost::bind(&editor::move_object, this, e, e->x(),e->y()+2),
+							boost::bind(&editor::move_object,this,e,e->x(),e->y()));
 		}
 	}
 	
 	if(key.keysym.sym == SDLK_KP4) {
 		foreach(const entity_ptr& e, lvl_->editor_selection()){
-			e->set_x(e->x()-2);
+			execute_command(boost::bind(&editor::move_object, this, e, e->x()-2,e->y()),
+							boost::bind(&editor::move_object,this,e,e->x(),e->y()));
 		}
 	}
 	
 	if(key.keysym.sym == SDLK_KP6) {
 		foreach(const entity_ptr& e, lvl_->editor_selection()){
-			e->set_x(e->x()+2);
+			execute_command(boost::bind(&editor::move_object, this, e, e->x()+2,e->y()),
+							boost::bind(&editor::move_object,this,e,e->x(),e->y()));
 		}
 	}
 	
