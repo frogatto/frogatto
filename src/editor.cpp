@@ -876,41 +876,6 @@ void editor::edit_level()
 				remove_ghost_objects();
 				ghost_objects_.clear();
 			}
-		}else if(editing_objects() && keystate[SDLK_EQUALS] && lvl_->editor_selection().empty() == false){
-			//we are telling an object to change its zsub_order
-			//The UI for this is:  if you have an object selected, 
-			//if you hold down either plus/minus, and click on another object, 
-			//it will change the zsub_order of the selected object 
-			//to in-front-of/behind that other object, respectively.
-
-			remove_ghost_objects();
-			entity_ptr c = lvl_->get_next_character_at_point(xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
-			foreach(const entity_ptr& ghost, ghost_objects_) {
-				lvl_->add_character(ghost);
-			}
-			
-
-			//make sure this isn't the same object as the selected object
-			std::cerr << lvl_->editor_selection().size() << " = size of editor selection\n";
-			fprintf(stderr, "%p \n",c.get());
-			fprintf(stderr, "%p \n",lvl_->editor_selection().front().get());
-			if(c && std::find(lvl_->editor_selection().begin(), lvl_->editor_selection().end(), c) == lvl_->editor_selection().end()){
-
-				std::cerr << lvl_->editor_selection().front()->zsub_order() <<":editor selection zorder\n";
-				std::cerr << c->zsub_order() <<":editor other object zorder\n";
-				
-				
-				if(c->zsub_order() > lvl_->editor_selection().front()->zsub_order()){
-					lvl_->editor_selection().front()->set_zsub_order( c->zsub_order() +1);
-					std::cerr << "object zsub_order changed\n";
-				
-				}
-				std::cerr << lvl_->editor_selection().front()->zsub_order() <<":editor selection zorder, after\n";
-				std::cerr << c->zsub_order() <<":editor other object zorder, after\n";
-			}
-			
-		
-			
 		}else if(object_mode && lvl_->editor_highlight()) {
 			//we're handling objects, and a button is down, and we have an
 			//object under the mouse. This means we are dragging something.
@@ -1030,6 +995,13 @@ void editor::reset_dialog_positions()
 #undef SET_DIALOG_POS
 }
 
+namespace {
+	bool sort_entity_zsub_orders(const entity_ptr& a, const entity_ptr& b) {
+	return a->zsub_order() < b->zsub_order();
+}
+}
+
+
 void editor::handle_key_press(const SDL_KeyboardEvent& key)
 {
 	if(key.keysym.sym == SDLK_s && (key.keysym.mod&KMOD_ALT)) {
@@ -1052,7 +1024,29 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 	if(key.keysym.sym == SDLK_z) {
 		zoom_in();
 	}
-
+	
+	if(key.keysym.sym == SDLK_EQUALS || key.keysym.sym == SDLK_MINUS ) {
+		if(lvl_->editor_selection().size() > 1){
+			
+			//store them in a new container
+			std::vector <entity_ptr> v2;
+			foreach(const entity_ptr& e, lvl_->editor_selection()){
+				v2.push_back(e.get());
+			}
+			//sort this container in ascending zsub_order
+			std::sort(v2.begin(),v2.end(), sort_entity_zsub_orders);
+					
+			//if it was +, then move the backmost object in front of the frontmost object.
+			//if it was -, do vice versa (frontmost object goes behind backmost objet)
+			if(key.keysym.sym == SDLK_EQUALS){
+				v2.front()->set_zsub_order( v2.back()->zsub_order() +1);
+			}else if(key.keysym.sym == SDLK_MINUS){
+				v2.back()->set_zsub_order( v2.front()->zsub_order() -1);
+			}
+		}
+	}
+	
+	
 	if(key.keysym.sym == SDLK_x) {
 		zoom_out();
 	}
