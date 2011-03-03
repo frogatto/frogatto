@@ -67,8 +67,9 @@ void solid_map::create_object_solid_maps(wml::const_node_ptr node, std::vector<c
 		legs_map->id_ = "legs";
 		legs_map->area_ = legs;
 		legs_map->solid_.resize(legs.w()*legs.h(), false);
-		for(int y = 0; y < legs.h(); ++y) {
+		for(int y = 0; y < legs.h()-1; ++y) {
 			for(int x = y; x < legs.w() - y; ++x) {
+				std::cerr << "LEGS_SOLID: " << x << ", " << y << "\n";
 				legs_map->set_solid(x, y);
 			}
 		}

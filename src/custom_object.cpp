@@ -752,6 +752,8 @@ void custom_object::process(level& lvl)
 		return;
 	}
 
+	ASSERT_EQ(entity_collides(level::current(), *this, MOVE_NONE), false);
+
 	if(parent_.get() != NULL) {
 		const point pos = parent_position();
 		const int move_x = pos.x - parent_prev_x_;
