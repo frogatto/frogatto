@@ -882,14 +882,23 @@ void editor::edit_level()
 			//if you hold down either plus/minus, and click on another object, 
 			//it will change the zsub_order of the selected object 
 			//to in-front-of/behind that other object, respectively.
+
+			remove_ghost_objects();
+			entity_ptr c = lvl_->get_next_character_at_point(xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
+			foreach(const entity_ptr& ghost, ghost_objects_) {
+				lvl_->add_character(ghost);
+			}
 			
 
-			entity_ptr c = lvl_->get_next_character_at_point(xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
 			//make sure this isn't the same object as the selected object
+			std::cerr << lvl_->editor_selection().size() << " = size of editor selection\n";
+			fprintf(stderr, "%p \n",c.get());
+			fprintf(stderr, "%p \n",lvl_->editor_selection().front().get());
 			if(c && std::find(lvl_->editor_selection().begin(), lvl_->editor_selection().end(), c) == lvl_->editor_selection().end()){
 
 				std::cerr << lvl_->editor_selection().front()->zsub_order() <<":editor selection zorder\n";
 				std::cerr << c->zsub_order() <<":editor other object zorder\n";
+				
 				
 				if(c->zsub_order() > lvl_->editor_selection().front()->zsub_order()){
 					lvl_->editor_selection().front()->set_zsub_order( c->zsub_order() +1);

@@ -254,6 +254,9 @@ custom_object::custom_object(wml::const_node_ptr node)
 			lights_.push_back(new_light);
 		}
 	}
+	
+	fprintf(stderr, "object address= %p, ", this);
+	fprintf(stderr, "zsub_order=%d,", zsub_order_);
 }
 
 custom_object::custom_object(const std::string& type, int x, int y, bool face_right)
