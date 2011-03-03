@@ -1025,6 +1025,30 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 		zoom_in();
 	}
 	
+	if(key.keysym.sym == SDLK_KP8) {
+		foreach(const entity_ptr& e, lvl_->editor_selection()){
+			e->set_y(e->y()-2);
+		}
+	}
+
+	if(key.keysym.sym == SDLK_KP5) {
+		foreach(const entity_ptr& e, lvl_->editor_selection()){
+			e->set_y(e->y()+2);
+		}
+	}
+	
+	if(key.keysym.sym == SDLK_KP4) {
+		foreach(const entity_ptr& e, lvl_->editor_selection()){
+			e->set_x(e->x()-2);
+		}
+	}
+	
+	if(key.keysym.sym == SDLK_KP6) {
+		foreach(const entity_ptr& e, lvl_->editor_selection()){
+			e->set_x(e->x()+2);
+		}
+	}
+	
 	if(key.keysym.sym == SDLK_EQUALS || key.keysym.sym == SDLK_MINUS ) {
 		if(lvl_->editor_selection().size() > 1){
 			
