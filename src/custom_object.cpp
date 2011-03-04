@@ -780,6 +780,12 @@ void custom_object::process(level& lvl)
 //	assert(!entity_collides_with_level(lvl, *this, MOVE_NONE));
 //	assert(!entity_collides(lvl, *this, MOVE_NONE));
 
+	//this is a flag which tracks whether we've fired a collide_feet
+	//event. If we don't fire a collide_feet event through normal collision
+	//detection, but we change the object we're standing on, we should
+	//still fire a collide_feet event.
+	bool fired_collide_feet = false;
+
 	collision_info stand_info;
 	const bool started_standing = is_standing(lvl, &stand_info);
 	if(!started_standing && standing_on_) {
@@ -1069,6 +1075,7 @@ void custom_object::process(level& lvl)
 			}
 
 			handle_event(effective_velocity_y < 0 ? OBJECT_EVENT_COLLIDE_HEAD : OBJECT_EVENT_COLLIDE_FEET, callable);
+			fired_collide_feet = true;
 		}
 
 		if(collide_info.damage || jump_on_info.damage) {
@@ -1246,6 +1253,7 @@ void custom_object::process(level& lvl)
 		}
 
 		handle_event(collide ? OBJECT_EVENT_COLLIDE_SIDE : OBJECT_EVENT_COLLIDE_FEET, callable);
+		fired_collide_feet = true;
 		if(collide_info.damage) {
 			game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
 			callable->add("surface_damage", variant(collide_info.damage));
@@ -1272,6 +1280,9 @@ void custom_object::process(level& lvl)
 	}
 
 	if(stand_info.collide_with && standing_on_ != stand_info.collide_with) {
+		if(!fired_collide_feet) {
+		}
+
 		//we are standing on a new object. Adjust our velocity relative to
 		//the object we're standing on
 		velocity_x_ -= stand_info.collide_with->last_move_x()*100 + stand_info.collide_with->platform_motion_x();
