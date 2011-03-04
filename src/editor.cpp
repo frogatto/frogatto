@@ -1067,9 +1067,15 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 			//if it was +, then move the backmost object in front of the frontmost object.
 			//if it was -, do vice versa (frontmost object goes behind backmost objet)
 			if(key.keysym.sym == SDLK_EQUALS){
-				v2.front()->set_zsub_order( v2.back()->zsub_order() +1);
+				execute_command(boost::bind(&entity::set_zsub_order, v2.front(), v2.back()->zsub_order()+1),
+								boost::bind(&entity::set_zsub_order, v2.front(), v2.front()->zsub_order() ));
+				
+				//v2.front()->set_zsub_order( v2.back()->zsub_order() +1);
 			}else if(key.keysym.sym == SDLK_MINUS){
-				v2.back()->set_zsub_order( v2.front()->zsub_order() -1);
+				execute_command(boost::bind(&entity::set_zsub_order, v2.back(), v2.front()->zsub_order()-1),
+								boost::bind(&entity::set_zsub_order, v2.back(), v2.back()->zsub_order() ));
+				
+				//v2.back()->set_zsub_order( v2.front()->zsub_order() -1);
 			}
 		}
 	}
