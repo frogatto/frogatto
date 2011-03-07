@@ -18,8 +18,9 @@ namespace editor_dialogs
 {
 
 property_editor_dialog::property_editor_dialog(editor& e)
-  : gui::dialog(graphics::screen_width() - 160, 160, 160, 440), editor_(e)
+  : gui::dialog(graphics::screen_width() - EDITOR_SIDEBAR_WIDTH, 160, EDITOR_SIDEBAR_WIDTH, 440), editor_(e)
 {
+	set_clear_bg_amount(255);
 	init();
 }
 

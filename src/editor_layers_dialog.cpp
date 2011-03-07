@@ -13,8 +13,9 @@ namespace editor_dialogs
 {
 
 editor_layers_dialog::editor_layers_dialog(editor& e)
-  : dialog(graphics::screen_width() - 200, 40, 40, graphics::screen_height() - 40), editor_(e)
+  : dialog(graphics::screen_width() - 200, LAYERS_DIALOG_WIDTH, 40, graphics::screen_height() - 40), editor_(e)
 {
+	set_clear_bg_amount(255);
 	init();
 }
 

@@ -63,12 +63,13 @@ protected:
 	void prepare_draw();
 	void complete_draw();
 	void set_clear_bg(bool clear) { clear_bg_ = clear; };
-	bool clear_bg() const { return clear_bg_; };
+	void set_clear_bg_amount(int amount) { clear_bg_ = amount; }
+	int clear_bg() const { return clear_bg_; };
 private:
 	std::vector<widget_ptr> widgets_;
 	bool opened_;
 	bool cancelled_;
-	bool clear_bg_;
+	int clear_bg_;
 	
 	boost::function<void ()> on_quit_;
 

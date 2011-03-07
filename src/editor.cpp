@@ -58,6 +58,7 @@
 #include "IMG_savepng.h"
 
 namespace {
+
 //keep a map of editors so that when we edit a level and then later
 //come back to it we'll save all the state we had previously
 std::map<std::string, editor*> all_editors;
@@ -217,8 +218,9 @@ class editor_menu_dialog : public gui::dialog
 	gui::widget_ptr context_menu_;
 public:
 	explicit editor_menu_dialog(editor& e)
-	  : gui::dialog(0, 0, graphics::screen_width() - 160, 40), editor_(e)
+	  : gui::dialog(0, 0, preferences::actual_screen_width() - EDITOR_SIDEBAR_WIDTH, EDITOR_MENUBAR_HEIGHT), editor_(e)
 	{
+		set_clear_bg_amount(255);
 		init();
 	}
 
@@ -351,8 +353,9 @@ class editor_mode_dialog : public gui::dialog
 
 public:
 	explicit editor_mode_dialog(editor& e)
-	  : gui::dialog(graphics::screen_width() - 160, 0, 160, 160), editor_(e)
+	  : gui::dialog(graphics::screen_width() - EDITOR_SIDEBAR_WIDTH, 0, EDITOR_SIDEBAR_WIDTH, 160), editor_(e)
 	{
+		set_clear_bg_amount(255);
 		init();
 	}
 
@@ -745,11 +748,50 @@ unsigned int get_mouse_state(int& mousex, int& mousey) {
 
 	return res;
 }
+
+int editor_resolution_manager_count = 0;
+
+int editor_x_resolution = 0, editor_y_resolution = 0;
+
+struct editor_resolution_manager
+{
+	editor_resolution_manager() :
+	   original_width_(preferences::actual_screen_width()),
+	   original_height_(preferences::actual_screen_height()) {
+		if(!editor_x_resolution) {
+			editor_x_resolution = preferences::actual_screen_width() + EDITOR_SIDEBAR_WIDTH + editor_dialogs::LAYERS_DIALOG_WIDTH;
+			editor_y_resolution = preferences::actual_screen_height() + EDITOR_MENUBAR_HEIGHT;
+		}
+
+		if(++editor_resolution_manager_count == 1) {
+			SDL_Surface* result = SDL_SetVideoMode(editor_x_resolution,editor_y_resolution,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+			if(result) {
+				preferences::set_actual_screen_width(editor_x_resolution);
+				preferences::set_actual_screen_height(editor_y_resolution);
+			} else {
+				editor_x_resolution = preferences::actual_screen_width();
+				editor_y_resolution = preferences::actual_screen_height();
+			}
+		}
+	}
+
+	~editor_resolution_manager() {
+		if(--editor_resolution_manager_count == 0) {
+			preferences::set_actual_screen_width(original_width_);
+			preferences::set_actual_screen_height(original_height_);
+			SDL_SetVideoMode(original_width_,original_height_,0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+		}
+	}
+
+	int original_width_, original_height_;
+};
+
 }
 
 void editor::edit_level()
 {
-	reset_dialog_positions();
+	editor_resolution_manager resolution_manager;
+
 	stats::flush();
 	try {
 		load_stats();
@@ -961,11 +1003,16 @@ void editor::edit_level()
 			case SDL_VIDEORESIZE: {
 				const SDL_ResizeEvent* const resize = reinterpret_cast<SDL_ResizeEvent*>(&event);
 
-				preferences::set_actual_screen_width(resize->w);
-				preferences::set_actual_screen_height(resize->h);
-				SDL_SetVideoMode(resize->w,resize->h,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+				SDL_Surface* result = SDL_SetVideoMode(resize->w,resize->h,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
 				
-				reset_dialog_positions();
+				if(result) {
+					editor_x_resolution = resize->w;
+					editor_y_resolution = resize->h;
+					preferences::set_actual_screen_width(resize->w);
+					preferences::set_actual_screen_height(resize->h);
+				
+					reset_dialog_positions();
+				}
 
 				continue;
 			}
@@ -984,15 +1031,30 @@ void editor::edit_level()
 
 void editor::reset_dialog_positions()
 {
+	if(editor_mode_dialog_) {
+		editor_mode_dialog_->set_loc(graphics::screen_width() - editor_mode_dialog_->width(), editor_mode_dialog_->y());
+	}
 
-#define SET_DIALOG_POS(d) if(d) { d->set_loc(graphics::screen_width() - d->width(), d->y()); }
-				SET_DIALOG_POS(editor_mode_dialog_);
+#define SET_DIALOG_POS(d) if(d) { \
+	d->set_loc(graphics::screen_width() - d->width(), d->y()); \
+	\
+	d->set_dim(d->width(), \
+	 std::max<int>(10, preferences::actual_screen_height() - d->y())); \
+}
 				SET_DIALOG_POS(character_dialog_);
-				SET_DIALOG_POS(layers_dialog_);
 				SET_DIALOG_POS(group_property_dialog_);
 				SET_DIALOG_POS(property_dialog_);
 				SET_DIALOG_POS(tileset_dialog_);
 #undef SET_DIALOG_POS
+
+				if(layers_dialog_ && editor_mode_dialog_) {
+					layers_dialog_->set_loc(editor_mode_dialog_->x() - layers_dialog_->width(), EDITOR_MENUBAR_HEIGHT);
+					layers_dialog_->set_dim(layers_dialog_->width(), preferences::actual_screen_height() - EDITOR_MENUBAR_HEIGHT);
+				}
+
+				if(editor_menu_dialog_ && editor_mode_dialog_) {
+					editor_menu_dialog_->set_dim(preferences::actual_screen_width() - editor_mode_dialog_->width(), editor_menu_dialog_->height());
+				}
 }
 
 namespace {
@@ -2041,6 +2103,8 @@ void editor::change_tool(EDIT_TOOL tool)
 	if(editor_mode_dialog_) {
 		editor_mode_dialog_->init();
 	}
+
+	reset_dialog_positions();
 }
 
 void editor::save_level_as(const std::string& fname)

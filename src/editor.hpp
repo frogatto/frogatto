@@ -12,6 +12,9 @@
 #include "level_object.hpp"
 #include "stats.hpp"
 
+static const int EDITOR_MENUBAR_HEIGHT = 40;
+static const int EDITOR_SIDEBAR_WIDTH = 220;
+
 namespace gui {
 class dialog;
 }

@@ -10,6 +10,8 @@
 namespace editor_dialogs
 {
 
+static const int LAYERS_DIALOG_WIDTH = 40;
+
 class editor_layers_dialog : public gui::dialog
 {
 public:

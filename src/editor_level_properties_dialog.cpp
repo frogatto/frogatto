@@ -65,6 +65,7 @@ void set_segmented_level_height(editor_level_properties_dialog* d, level* lvl, b
 editor_level_properties_dialog::editor_level_properties_dialog(editor& e)
   : dialog(0, 0, graphics::screen_width(), graphics::screen_height()), editor_(e)
 {
+	set_clear_bg_amount(255);
 	init();
 }
 
