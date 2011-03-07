@@ -30,8 +30,13 @@ namespace graphics
 
 void set_video_mode(int w, int h)
 {
+	set_video_mode(w,h,0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+}
+
+SDL_Surface* set_video_mode(int w, int h, int bitsperpixel, int flags)
+{
 	graphics::texture::unbuild_all();
-	SDL_SetVideoMode(w,h,0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+	SDL_Surface* result = SDL_SetVideoMode(w,h,bitsperpixel,flags);
 	graphics::texture::rebuild_all();
 
 	glShadeModel(GL_SMOOTH);
@@ -41,6 +46,7 @@ void set_video_mode(int w, int h)
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	return result;
 }
 	
 	/* unavoidable global variable to store global clip

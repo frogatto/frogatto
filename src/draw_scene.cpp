@@ -130,6 +130,8 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus, boo
 		const int min_y = lvl.boundaries().y() + graphics::screen_height()/2 - y_screen_pad/2;
 		const int max_y = lvl.boundaries().y2() - graphics::screen_height()/2 + y_screen_pad/2;
 
+		std::cerr << "BOUNDARIES: " << lvl.boundaries().x() << ", " << lvl.boundaries().x2() << " WIDTH: " << graphics::screen_width() << " PAD: " << x_screen_pad << "\n";
+
 		//we look a certain number of frames ahead -- assuming the focus
 		//keeps moving at the current velocity, we converge toward the point
 		//they will be at in x frames.
@@ -156,6 +158,8 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus, boo
 
 		//find the y point for the camera to converge toward
 		int y = std::min(std::max(focus->feet_y() - graphics::screen_height()/(5*lvl.zoom_level()) + displacement_y*PredictiveFramesVert + vertical_look, min_y), max_y);
+
+		std::cerr << "POSITION: " << x << "," << y << " IN " << min_x << "," << min_y << "," << max_x << "," << max_y << "\n";
 
 		if(lvl.focus_override().empty() == false) {
 			std::vector<entity_ptr> v = lvl.focus_override();
@@ -186,10 +190,13 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus, boo
 			y = std::min(std::max((top + bottom)/2 - graphics::screen_height()/(5*lvl.zoom_level()), min_y), max_y);
 		}
 
+
+		std::cerr << "POSITION2: " << x << "," << y << " IN " << min_x << "," << min_y << "," << max_x << "," << max_y << "\n";
 		if(lvl.lock_screen()) {
 			x = lvl.lock_screen()->x;
 			y = lvl.lock_screen()->y;
 		}
+		std::cerr << "POSITION3: " << x << "," << y << " IN " << min_x << "," << min_y << "," << max_x << "," << max_y << "\n";
 
 		//for small screens the speech dialog arrows cover the entities they are
 		//pointing to. adjust to that by looking up a little bit.

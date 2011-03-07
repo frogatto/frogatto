@@ -29,6 +29,8 @@ extern int xypos_draw_mask;
 namespace graphics
 {
 
+SDL_Surface* set_video_mode(int w, int h, int bitsperpixel, int flags);
+
 void set_video_mode(int w, int h);
 
 std::vector<GLfloat>& global_vertex_array();

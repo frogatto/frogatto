@@ -764,7 +764,8 @@ struct editor_resolution_manager
 		}
 
 		if(++editor_resolution_manager_count == 1) {
-			SDL_Surface* result = SDL_SetVideoMode(editor_x_resolution,editor_y_resolution,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+			SDL_Surface* result = graphics::set_video_mode(editor_x_resolution,editor_y_resolution,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+
 			if(result) {
 				preferences::set_actual_screen_width(editor_x_resolution);
 				preferences::set_actual_screen_height(editor_y_resolution);
@@ -779,7 +780,7 @@ struct editor_resolution_manager
 		if(--editor_resolution_manager_count == 0) {
 			preferences::set_actual_screen_width(original_width_);
 			preferences::set_actual_screen_height(original_height_);
-			SDL_SetVideoMode(original_width_,original_height_,0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+			graphics::set_video_mode(original_width_,original_height_,0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
 		}
 	}
 
@@ -1003,7 +1004,7 @@ void editor::edit_level()
 			case SDL_VIDEORESIZE: {
 				const SDL_ResizeEvent* const resize = reinterpret_cast<SDL_ResizeEvent*>(&event);
 
-				SDL_Surface* result = SDL_SetVideoMode(resize->w,resize->h,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+				SDL_Surface* result = graphics::set_video_mode(resize->w,resize->h,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
 				
 				if(result) {
 					editor_x_resolution = resize->w;
