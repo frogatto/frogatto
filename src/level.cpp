@@ -84,6 +84,34 @@ void level::set_as_current_level()
 {
 	current_level = this;
 	frame::set_color_palette(palettes_used_);
+
+#if !TARGET_OS_IPHONE
+	static const int starting_x_resolution = preferences::actual_screen_width();
+	static const int starting_y_resolution = preferences::actual_screen_height();
+	static const int starting_virtual_x_resolution = preferences::virtual_screen_width();
+	static const int starting_virtual_y_resolution = preferences::virtual_screen_height();
+
+	if(starting_x_resolution == starting_virtual_x_resolution) {
+		if(!x_resolution_) {
+			x_resolution_ = starting_x_resolution;
+		}
+
+		if(!y_resolution_) {
+			y_resolution_ = starting_y_resolution;
+		}
+
+		if(x_resolution_ != preferences::actual_screen_width() || y_resolution_ != preferences::actual_screen_height()) {
+			const bool result = graphics::set_video_mode(x_resolution_, y_resolution_);
+			if(result) {
+				preferences::set_actual_screen_width(x_resolution_);
+				preferences::set_actual_screen_height(y_resolution_);
+				preferences::set_virtual_screen_width(x_resolution_);
+				preferences::set_virtual_screen_height(y_resolution_);
+			}
+		}
+	}
+	
+#endif
 }
 
 namespace {
@@ -93,7 +121,9 @@ graphics::color_transform default_dark_color() {
 }
 
 level::level(const std::string& level_cfg)
-	: id_(level_cfg), highlight_layer_(INT_MIN),
+	: id_(level_cfg),
+	  x_resolution_(0), y_resolution_(0),
+	  highlight_layer_(INT_MIN),
 	  num_compiled_tiles_(0),
 	  entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
 	  editor_(false), show_foreground_(true), show_background_(true), dark_(false), dark_color_(graphics::color_transform(0, 0, 0, 255)), air_resistance_(0), water_resistance_(7), end_game_(false),
@@ -194,6 +224,8 @@ level::level(const std::string& level_cfg)
 	replay_data_ = node->attr("replay_data");
 	cycle_ = wml::get_int(node, "cycle");
 	time_freeze_ = 0;
+	x_resolution_ = wml::get_int(node, "x_resolution");
+	y_resolution_ = wml::get_int(node, "y_resolution");
 	in_dialog_ = false;
 	title_ = node->attr("title");
 	if(node->has_attr("dimensions")) {
@@ -909,6 +941,12 @@ wml::node_ptr level::write() const
 	res->set_attr("music", music_);
 	res->set_attr("segment_width", formatter() << segment_width_);
 	res->set_attr("segment_height", formatter() << segment_height_);
+
+	if(x_resolution_ || y_resolution_) {
+		res->set_attr("x_resolution", formatter() << x_resolution_);
+		res->set_attr("y_resolution", formatter() << y_resolution_);
+	}
+
 	if(gui_algo_str_ != "default") {
 		res->set_attr("gui", gui_algo_str_);
 	}

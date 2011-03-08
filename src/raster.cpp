@@ -28,9 +28,9 @@
 namespace graphics
 {
 
-void set_video_mode(int w, int h)
+bool set_video_mode(int w, int h)
 {
-	set_video_mode(w,h,0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+	return set_video_mode(w,h,0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) != NULL;
 }
 
 SDL_Surface* set_video_mode(int w, int h, int bitsperpixel, int flags)

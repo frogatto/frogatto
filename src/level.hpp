@@ -290,6 +290,9 @@ public:
 
 	int current_difficulty() const;
 
+	int x_resolution() const { return x_resolution_; }
+	int y_resolution() const { return y_resolution_; }
+
 private:
 
 	void read_compiled_tiles(wml::const_node_ptr node, std::vector<level_tile>::iterator& out);
@@ -322,6 +325,9 @@ private:
 	int time_freeze_;
 
 	bool in_dialog_;
+
+	//preferred screen dimensions to play the level on.
+	int x_resolution_, y_resolution_;
 
 	std::map<std::string, variant> vars_;
 	
