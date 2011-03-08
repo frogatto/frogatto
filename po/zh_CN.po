@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-26 02:42-0300\n"
+"POT-Creation-Date: 2011-03-08 15:36-0300\n"
 "PO-Revision-Date: 2011-01-21 16:33+0000\n"
 "Last-Translator: CloudiDust <cloudidust@gmail.com>\n"
 "Language-Team: Chinese (China) <None>\n"
@@ -286,7 +286,7 @@ msgstr "巧比的万能商店"
 msgid "The Conveyance"
 msgstr "运输器"
 
-#: data/level/conveyance.cfg:1822
+#: data/level/conveyance.cfg:1128
 msgid ""
 "Enjoy your trip on the CONVEYANCE!\n"
 "Just don't let the bugs scare you off!"
@@ -294,39 +294,42 @@ msgstr ""
 "享受*运输器*带来的惬意旅行吧！\n"
 "只要别被虫子们吓得摔下来就好！"
 
-#: data/level/conveyance.cfg:1824
+#: data/level/conveyance.cfg:1130
+msgid "Hi there, sonny!"
+msgstr ""
+
+#: data/level/conveyance.cfg:1131
+#, fuzzy
 msgid ""
-"Hi there sonny, have you come here\n"
+"Have you come here\n"
 "to ride on the CONVEYANCE?"
 msgstr ""
 "嗨，孩子，你来这里是要\n"
 "搭乘运输器的吧？"
 
-#: data/level/conveyance.cfg:1825
-msgid "Actually I was just hoping to get to town."
-msgstr "事实上我只是想到镇子上去而已。"
-
-#: data/level/conveyance.cfg:1826
+#: data/level/conveyance.cfg:1133
 msgid ""
-"Oh is that so? Well after what Milgram's\n"
-"men did to the bridge..."
+"Uhh...\n"
+"Will this get me across the river?"
 msgstr ""
-"哦，是吗？那啥，自从米格拉姆的\n"
-"小弟们对桥动了手脚之后……"
 
-#: data/level/conveyance.cfg:1827
-msgid "the CONVEYANCE is the only way!"
-msgstr "这运输器已经是唯一的去路了！"
+#: data/level/conveyance.cfg:1134
+msgid "Sure thing it will!"
+msgstr ""
 
-#: data/level/conveyance.cfg:1828
+#: data/level/conveyance.cfg:1135
 msgid ""
-"So I have to use this conveyance thing\n"
-"to get to town? Okay, well, let's go..."
+"In fact, since it's the only way at\n"
+"the moment, I'm doing a public service\n"
+"by making it free."
 msgstr ""
-"所以我得搭这啥“运输器”\n"
-"去镇上？好吧，那么，出发……"
 
-#: data/level/conveyance.cfg:1829
+#: data/level/conveyance.cfg:1137 data/level/secluded-hut-interior.cfg:922
+#: data/level/wm-town.cfg:2285
+msgid "That's nice."
+msgstr "好极了。"
+
+#: data/level/conveyance.cfg:1138
 msgid ""
 "Yessir, climb aboard the CONVEYANCE\n"
 "for the ride of your life!"
@@ -334,13 +337,72 @@ msgstr ""
 "遵命！爬上运输器，\n"
 "为了你的小命前进吧！"
 
-#: data/level/conveyance.cfg:1830
+#: data/level/conveyance.cfg:1140
 msgid ""
-"Why they said my grandfather was crazy\n"
-"when he built it. But whose crazy now, eh?"
+"Wha...\n"
+"What's up with this 'carnival' act?"
+msgstr ""
+
+#: data/level/conveyance.cfg:1142
+msgid "Are you some kind of amateur showman?"
+msgstr ""
+
+#: data/level/conveyance.cfg:1143
+msgid ""
+"Ho!\n"
+"Not at all, not at all."
+msgstr ""
+
+#: data/level/conveyance.cfg:1144
+msgid ""
+"You see, my family has passed down\n"
+"a long-standing trade."
+msgstr ""
+
+#: data/level/conveyance.cfg:1145
+msgid "We build rides for amusment parks!"
+msgstr ""
+
+#: data/level/conveyance.cfg:1147
+msgid "..oh god, please no."
+msgstr ""
+
+#: data/level/conveyance.cfg:1148
+msgid ""
+"That's right!\n"
+"We wouldn't just build a bridge -\n"
+"not without some of\n"
+"our trademark EXCITEMENT!"
+msgstr ""
+
+#: data/level/conveyance.cfg:1149 data/level/crevice-village-house-1.cfg:2557
+#: data/level/crevice-village-house-1.cfg:2562
+#: data/level/crevice-village-house-1.cfg:2568
+#: data/level/crevice-village-house-1.cfg:2601
+#: data/level/crevice-village-house-elder.cfg:1480
+#: data/level/crevice-village-house-elder.cfg:1491
+#: data/level/crevice-village-house-elder.cfg:1593
+msgid "..."
+msgstr "……"
+
+#: data/level/conveyance.cfg:1151
+msgid ""
+"With all due respect, sir...\n"
+"I think you're insane."
+msgstr ""
+
+#: data/level/conveyance.cfg:1152
+#, fuzzy
+msgid ""
+"Ha! They said my grandfather\n"
+"was crazy, when he built it."
 msgstr ""
 "为啥他们要说我爷爷造这货是疯了？\n"
 "现在谁才是疯子，哈？"
+
+#: data/level/conveyance.cfg:1153
+msgid "But who's crazy now, eh?"
+msgstr ""
 
 #: data/level/crevice-bridge.cfg:13
 msgid "Crevice Bridge"
@@ -688,16 +750,6 @@ msgid "That's my new job."
 msgstr "这是我的新工作。"
 
 #: data/level/crevice-village-house-1.cfg:2557
-#: data/level/crevice-village-house-1.cfg:2562
-#: data/level/crevice-village-house-1.cfg:2568
-#: data/level/crevice-village-house-1.cfg:2601
-#: data/level/crevice-village-house-elder.cfg:1480
-#: data/level/crevice-village-house-elder.cfg:1491
-#: data/level/crevice-village-house-elder.cfg:1593
-msgid "..."
-msgstr "……"
-
-#: data/level/crevice-village-house-1.cfg:2557
 msgid "That's nutty."
 msgstr "真蛋疼。"
 
@@ -925,7 +977,7 @@ msgstr ""
 msgid "We saw Milgram's lieutenant go in there."
 msgstr "我们看到米格拉姆的副官进去了。"
 
-#: data/level/crevice-village-house-2.cfg:3567 data/level/rock-a-fort.cfg:4351
+#: data/level/crevice-village-house-2.cfg:3567 data/level/rock-a-fort.cfg:4373
 msgid "How interesting."
 msgstr "真有趣。"
 
@@ -2416,7 +2468,7 @@ msgstr "呀！"
 msgid "Rock-a-Fort"
 msgstr "摇滚要塞"
 
-#: data/level/rock-a-fort.cfg:4350
+#: data/level/rock-a-fort.cfg:4372
 msgid "Woah! A flying plant!"
 msgstr "喔哈！飞在天上的植物！"
 
@@ -2448,10 +2500,6 @@ msgid ""
 msgstr ""
 "很高兴见到你。\n"
 "我是摩塔莫。"
-
-#: data/level/secluded-hut-interior.cfg:922 data/level/wm-town.cfg:2285
-msgid "That's nice."
-msgstr "好极了。"
 
 #: data/level/secluded-hut-interior.cfg:924
 msgid ""
@@ -3228,6 +3276,134 @@ msgstr "鸣谢："
 #: data/level/template.cfg:12
 msgid "(Level Template)"
 msgstr "（关卡模板）"
+
+#: data/level/tempo-outskirts-inside.cfg:103
+msgid "Oh my, a visitor!"
+msgstr ""
+
+#: data/level/tempo-outskirts-inside.cfg:104
+msgid ""
+"Hey, I'm sorry to barge in and all,\n"
+"but what happened to that bridge?"
+msgstr ""
+
+#: data/level/tempo-outskirts-inside.cfg:105
+msgid ""
+"Yes, I've had a few people come in \n"
+"to ask about that."
+msgstr ""
+
+#: data/level/tempo-outskirts-inside.cfg:106
+msgid ""
+"There was a storm a few weeks ago, \n"
+"and a big swell of water washed it out."
+msgstr ""
+
+#: data/level/tempo-outskirts-inside.cfg:107
+msgid ""
+"You've probably seen this yourself, but\n"
+"just to be sure... don't go into the water."
+msgstr ""
+
+#: data/level/tempo-outskirts-inside.cfg:108
+msgid ""
+"Current that hard will just smash you\n"
+"against the rocks."
+msgstr ""
+
+#: data/level/tempo-outskirts-inside.cfg:109
+msgid ""
+"Yeah... crap.  I'm actually a bit confused\n"
+" about how to get where I'm going."
+msgstr ""
+
+#: data/level/tempo-outskirts-inside.cfg:110
+msgid ""
+"See, I'm trying to make it to\n"
+"Milgram's castle."
+msgstr ""
+
+#: data/level/tempo-outskirts-inside.cfg:111
+msgid ""
+"Yes, he's quite the businessman.\n"
+"It'd be nice if he could help us, here."
+msgstr ""
+
+#: data/level/tempo-outskirts-inside.cfg:112
+msgid "Hmm?"
+msgstr ""
+
+#: data/level/tempo-outskirts-inside.cfg:113
+msgid ""
+"Well, for one thing, it'd be nice if\n"
+"anyone could help get this bridge fixed."
+msgstr ""
+
+#: data/level/tempo-outskirts-inside.cfg:114
+msgid ""
+"I sent in a request shortly after it fell,\n"
+"and they've been too busy to do anything."
+msgstr ""
+
+#: data/level/tempo-outskirts-inside.cfg:115
+msgid ""
+"Anyways, the best way for you to go\n"
+"would be to head to Tempo Village."
+msgstr ""
+
+#: data/level/tempo-outskirts-inside.cfg:116
+msgid ""
+"There's a way from there to get to\n"
+"Milgram's Castle."
+msgstr ""
+
+#: data/level/tempo-outskirts-inside.cfg:117
+msgid "Now, unfortunately, the easiest way..."
+msgstr ""
+
+#: data/level/tempo-outskirts-inside.cfg:118
+msgid ""
+"...would have been to cross the\n"
+" bridge next to this house."
+msgstr ""
+
+#: data/level/tempo-outskirts-inside.cfg:119
+msgid "Figures."
+msgstr ""
+
+#: data/level/tempo-outskirts-inside.cfg:120
+msgid ""
+"Fortunately, you're not completely\n"
+"out of luck."
+msgstr ""
+
+#: data/level/tempo-outskirts-inside.cfg:121
+msgid ""
+"If you hike back a ways, you should\n"
+"see a shortcut through the trees."
+msgstr ""
+
+#: data/level/tempo-outskirts-inside.cfg:122
+msgid ""
+"Taking that will get you to an\n"
+"odd contraption called \"the conveyance\"."
+msgstr ""
+
+#: data/level/tempo-outskirts-inside.cfg:123
+msgid ""
+"It's a ... little odd, but it is\n"
+"a way across the river."
+msgstr ""
+
+#: data/level/tempo-outskirts-inside.cfg:124
+msgid ""
+"Yeah - sure beats \"nothing\", though.\n"
+"Thanks a lot!"
+msgstr ""
+
+#: data/level/tempo-outskirts-inside.cfg:125
+msgid "No problem.  Best of luck."
+msgstr ""
 
 #: data/level/tempo-outskirts.cfg:12
 msgid "Tempo Outskirts"
@@ -4917,7 +5093,7 @@ msgstr "攻击"
 msgid "Back"
 msgstr "返回"
 
-#: src/draw_scene.cpp:350
+#: src/draw_scene.cpp:357
 msgid "Achievement Unlocked!"
 msgstr "成就达成！"
 
@@ -4972,6 +5148,26 @@ msgstr "交换A/B键"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
+
+#~ msgid "Actually I was just hoping to get to town."
+#~ msgstr "事实上我只是想到镇子上去而已。"
+
+#~ msgid ""
+#~ "Oh is that so? Well after what Milgram's\n"
+#~ "men did to the bridge..."
+#~ msgstr ""
+#~ "哦，是吗？那啥，自从米格拉姆的\n"
+#~ "小弟们对桥动了手脚之后……"
+
+#~ msgid "the CONVEYANCE is the only way!"
+#~ msgstr "这运输器已经是唯一的去路了！"
+
+#~ msgid ""
+#~ "So I have to use this conveyance thing\n"
+#~ "to get to town? Okay, well, let's go..."
+#~ msgstr ""
+#~ "所以我得搭这啥“运输器”\n"
+#~ "去镇上？好吧，那么，出发……"
 
 #~ msgid "LEFT"
 #~ msgstr "左"
