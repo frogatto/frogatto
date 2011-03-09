@@ -102,12 +102,12 @@ void level::set_as_current_level()
 
 		if(x_resolution_ != preferences::actual_screen_width() || y_resolution_ != preferences::actual_screen_height()) {
 			const bool result = graphics::set_video_mode(x_resolution_, y_resolution_);
-			if(result) {
+//			if(result) {
 				preferences::set_actual_screen_width(x_resolution_);
 				preferences::set_actual_screen_height(y_resolution_);
 				preferences::set_virtual_screen_width(x_resolution_);
 				preferences::set_virtual_screen_height(y_resolution_);
-			}
+//			}
 		}
 	}
 	
