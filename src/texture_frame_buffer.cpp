@@ -5,6 +5,7 @@
 
 #include "asserts.hpp"
 #include "preferences.hpp"
+#include "texture.hpp"
 #include "texture_frame_buffer.hpp"
 
 //define macros that make it easy to make the OpenGL calls in this file.
@@ -91,7 +92,7 @@ render_scope::~render_scope()
 
 void set_as_current_texture()
 {
-	glBindTexture(GL_TEXTURE_2D, texture_id);
+	graphics::texture::set_current_texture(texture_id);
 }
 
 } // namespace texture_frame_buffer
