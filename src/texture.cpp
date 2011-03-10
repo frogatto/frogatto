@@ -76,16 +76,16 @@ namespace {
 	}
 
 	const size_t TextureBufSize = 128;
-	GLuint texture_buf[TextureBufSize];
+	unsigned int texture_buf[TextureBufSize];
 	size_t texture_buf_pos = TextureBufSize;
-	std::vector<GLuint> avail_textures;
+	std::vector<unsigned int> avail_textures;
 	bool graphics_initialized = false;
 
-	GLuint current_texture = 0;
+	unsigned int current_texture = 0;
 
-	GLuint get_texture_id() {
+	unsigned int get_texture_id() {
 		if(!avail_textures.empty()) {
-			const GLuint res = avail_textures.back();
+			const unsigned int res = avail_textures.back();
 			avail_textures.pop_back();
 			return res;
 		}
@@ -382,7 +382,7 @@ namespace {
 threading::mutex id_to_build_mutex;
 }
 
-GLuint texture::get_id() const
+unsigned int texture::get_id() const
 {
 	if(!valid()) {
 		return 0;
@@ -416,7 +416,7 @@ void texture::build_textures_from_worker_threads()
 	id_to_build_.clear();
 }
 
-void texture::set_current_texture(GLuint id)
+void texture::set_current_texture(unsigned int id)
 {
 	if(!id || current_texture == id) {
 		return;
@@ -431,7 +431,7 @@ void texture::set_as_current_texture() const
 	width_multiplier = ratio_w_;
 	height_multiplier = ratio_h_;
 
-	const GLuint id = get_id();
+	const unsigned int id = get_id();
 	if(!id || current_texture == id) {
 		return;
 	}
@@ -546,7 +546,7 @@ void texture::rebuild_all()
 {
 	for(std::set<texture::ID*>::iterator i = texture_id_registry().begin();
 	    i != texture_id_registry().end(); ++i) {
-		if((*i)->s.get() != NULL && (*i)->id != GLuint(-1)) {
+		if((*i)->s.get() != NULL && (*i)->id != static_cast<unsigned int>(-1)) {
 			(*i)->build_id();
 		}
 	}
@@ -560,7 +560,7 @@ void texture::unbuild_all()
 	}
 }
 
-texture::ID::ID() : id(GLuint(-1)), width(0), height(0) {
+texture::ID::ID() : id(static_cast<unsigned int>(-1)), width(0), height(0) {
 	texture_id_registry().insert(this);
 }
 
@@ -600,10 +600,10 @@ void texture::ID::build_id()
 
 	if(preferences::use_16bpp_textures()) {
 		std::vector<GLushort> buf(s->w*s->h);
-		const GLuint* src = reinterpret_cast<const GLuint*>(s->pixels);
+		const unsigned int* src = reinterpret_cast<const unsigned int*>(s->pixels);
 		GLushort* dst = &*buf.begin();
 		for(int n = 0; n != s->w*s->h; ++n) {
-			const GLuint p =
+			const unsigned int p =
 			  table_8bits_to_4bits[(*src >> 24)&0xFF] << 28 |
 			  table_8bits_to_4bits[(*src >> 16)&0xFF] << 20 |
 			  table_8bits_to_4bits[(*src >> 8)&0xFF] << 12 |
@@ -642,7 +642,7 @@ void texture::ID::build_id()
 void texture::ID::unbuild_id()
 {
 #ifndef SDL_VIDEO_OPENGL_ES
-	if(id == GLuint(-1) || s) {
+	if(id == static_cast<unsigned int>(-1) || s) {
 		return;
 	}
 
@@ -663,7 +663,7 @@ void texture::ID::destroy()
 		avail_textures.push_back(id);
 	}
 
-	id = GLuint(-1);
+	id = static_cast<unsigned int>(-1);
 	s = surface();
 }
 

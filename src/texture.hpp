@@ -52,8 +52,8 @@ public:
 
 	typedef std::vector<surface> key;
 
-	GLuint get_id() const;
-	static void set_current_texture(GLuint id);
+	unsigned int get_id() const;
+	static void set_current_texture(unsigned int id);
 	void set_as_current_texture() const;
 	bool valid() const { return id_; }
 
@@ -93,9 +93,9 @@ public:
 		void unbuild_id();
 		void destroy();
 
-		bool init() const { return id != GLuint(-1); }
+		bool init() const { return id != static_cast<unsigned int>(-1); }
 
-		GLuint id;
+		unsigned int id;
 
 		//before we've constructed the ID, we can store the
 		//surface in here.
