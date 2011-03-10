@@ -243,6 +243,7 @@ namespace preferences {
 	
 	void set_virtual_screen_width (int width)
 	{
+		std::cerr << "RESDBG SET VIRTUAL SCREEN WIDTH: " << width << "\n";
 		virtual_screen_width_ = width;
 		recalculate_draw_mask();
 	}
@@ -264,6 +265,7 @@ namespace preferences {
 	
 	void set_actual_screen_width(int width)
 	{
+		std::cerr << "RESDBG SET ACTUAL SCREEN WIDTH: " << width << "\n";
 		actual_screen_width_ = width;
 		if(screen_editor_mode) {
 			virtual_screen_width_ = actual_screen_width_;

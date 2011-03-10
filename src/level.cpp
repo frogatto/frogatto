@@ -100,6 +100,8 @@ void level::set_as_current_level()
 			y_resolution_ = starting_y_resolution;
 		}
 
+		std::cerr << "RESDBG SETTING LEVEL RESOLUTION FOR '" << id_ << "': " << x_resolution_ << " x " << y_resolution_ << "\n";
+
 		if(x_resolution_ != preferences::actual_screen_width() || y_resolution_ != preferences::actual_screen_height()) {
 			const bool result = graphics::set_video_mode(x_resolution_, y_resolution_);
 //			if(result) {
@@ -1690,6 +1692,7 @@ extern std::vector<rect> background_rects_drawn;
 
 void level::draw(int x, int y, int w, int h) const
 {
+	std::cerr << "RESDBG DRAW LEVEL: " << preferences::actual_screen_width() << "/" << preferences::virtual_screen_width() << "\n";
 	++draw_count;
 
 	const int start_x = x;
