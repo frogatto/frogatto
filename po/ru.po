@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-08 15:36-0300\n"
+"POT-Creation-Date: 2011-03-11 00:37-0300\n"
 "PO-Revision-Date: 2010-12-20 00:27+0000\n"
 "Last-Translator: boobaloo <koptev.oleg@gmail.com>\n"
 "Language-Team: Russian <None>\n"
@@ -3169,6 +3169,10 @@ msgstr ""
 msgid "(test level)"
 msgstr ""
 
+#: data/level/that-rising-water-arcade-level.cfg:12
+msgid "Acid Accident"
+msgstr ""
+
 #: data/level/the-north-tower.cfg:10
 msgid "The North Tower"
 msgstr ""
@@ -3210,41 +3214,41 @@ msgstr ""
 msgid "RUN"
 msgstr ""
 
-#: data/level/titlescreen-test.cfg:284 data/level/titlescreen.cfg:284
+#: data/level/titlescreen-test.cfg:284 data/level/titlescreen.cfg:286
 msgid "LOAD GAME"
 msgstr "ЗАГРУЗИТЬ ИГРУ"
 
-#: data/level/titlescreen-test.cfg:322 data/level/titlescreen.cfg:322
+#: data/level/titlescreen-test.cfg:322 data/level/titlescreen.cfg:324
 msgid "NEW GAME"
 msgstr "НОВАЯ ИГРА"
 
 #: data/level/titlescreen-test.cfg:361 data/level/titlescreen-test.cfg:391
-#: data/level/titlescreen.cfg:361 data/level/titlescreen.cfg:391
+#: data/level/titlescreen.cfg:363 data/level/titlescreen.cfg:393
 msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
 msgstr "Нажмите {LEFT_KEY} или {RIGHT_KEY} для ходьбы."
 
 #: data/level/titlescreen-test.cfg:392 data/level/titlescreen-test.cfg:409
-#: data/level/titlescreen.cfg:392 data/level/titlescreen.cfg:409
+#: data/level/titlescreen.cfg:394 data/level/titlescreen.cfg:411
 msgid "Press {UP_KEY} to talk, and use things like doors."
 msgstr "Нажмите {UP_KEY} для общения и использования дверей и предметов."
 
-#: data/level/titlescreen-test.cfg:393 data/level/titlescreen.cfg:393
+#: data/level/titlescreen-test.cfg:393 data/level/titlescreen.cfg:395
 msgid "Press {DOWN_KEY} to crouch."
 msgstr "Нажмите {DOWN_KEY}, чтобы нагнуться."
 
-#: data/level/titlescreen-test.cfg:394 data/level/titlescreen.cfg:394
+#: data/level/titlescreen-test.cfg:394 data/level/titlescreen.cfg:396
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
 msgstr "Дважды нажмите {LEFT_KEY} или {RIGHT_KEY} для бега."
 
-#: data/level/titlescreen-test.cfg:395 data/level/titlescreen.cfg:395
+#: data/level/titlescreen-test.cfg:395 data/level/titlescreen.cfg:397
 msgid "Press {JUMP_KEY} to jump."
 msgstr "Нажмите {JUMP_KEY} для прыжка."
 
-#: data/level/titlescreen-test.cfg:396 data/level/titlescreen.cfg:396
+#: data/level/titlescreen-test.cfg:396 data/level/titlescreen.cfg:398
 msgid "Press {TONGUE_KEY} to use a character's attacks."
 msgstr "Нажмите {TONGUE_KEY} для атаки."
 
-#: data/level/titlescreen-test.cfg:447 data/level/titlescreen.cfg:447
+#: data/level/titlescreen-test.cfg:447 data/level/titlescreen.cfg:449
 msgid "ARCADE"
 msgstr ""
 
