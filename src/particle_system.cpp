@@ -520,6 +520,8 @@ struct point_particle_info
 	    pos_y_rand(wml::get_int(node, "pos_y_rand")*1024),
 	    velocity_x(wml::get_int(node, "velocity_x")),
 	    velocity_y(wml::get_int(node, "velocity_y")),
+		accel_x(wml::get_int(node, "accel_x")),
+		accel_y(wml::get_int(node, "accel_y")),
 	    velocity_x_rand(wml::get_int(node, "velocity_x_rand")),
 	    velocity_y_rand(wml::get_int(node, "velocity_y_rand")),
 		dot_size(wml::get_int(node, "dot_size", 1)*(preferences::double_scale() ? 2 : 1)),
@@ -577,6 +579,7 @@ struct point_particle_info
 	int generation_rate_millis;
 	int pos_x, pos_y, pos_x_rand, pos_y_rand;
 	int velocity_x, velocity_y, velocity_x_rand, velocity_y_rand;
+	int accel_x, accel_y;
 	int time_to_live, time_to_live_max;
 	unsigned char rgba[4];
 	unsigned char rgba_rand[4];
@@ -603,6 +606,12 @@ public:
 		    p != particles_.end(); ++p) {
 			p->pos_x += p->velocity_x;
 			p->pos_y += p->velocity_y;
+			if(e.face_right()) {
+				p->velocity_x += info_.accel_x/1000.0;
+			} else {
+				p->velocity_x -= info_.accel_x/1000.0;
+			}
+			p->velocity_y += info_.accel_y/1000.0;
 			p->rgba[0] += info_.rgba_delta[0];
 			p->rgba[1] += info_.rgba_delta[1];
 			p->rgba[2] += info_.rgba_delta[2];
