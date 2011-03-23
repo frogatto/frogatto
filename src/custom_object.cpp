@@ -765,7 +765,7 @@ void custom_object::process(level& lvl)
 		return;
 	}
 
-	ASSERT_EQ(entity_collides(level::current(), *this, MOVE_NONE), false);
+	ASSERT_LOG(!entity_collides(level::current(), *this, MOVE_NONE), "ENTITY " << type_->id() << " COLLIDES AT START OF PROCESS");
 
 	if(parent_.get() != NULL) {
 		const point pos = parent_position();
@@ -1747,6 +1747,13 @@ variant custom_object::get_value_by_slot(int slot) const
 		}
 
 		return variant(&result);
+	}
+
+	case CUSTOM_OBJECT_SOLID_DIMENSIONS_IN: {
+		std::vector<variant> v;
+		v.push_back(variant(solid_dimensions()));
+		v.push_back(variant(weak_solid_dimensions()));
+		return variant(&v);
 	}
 
 	case CUSTOM_OBJECT_ALWAYS_ACTIVE: return variant(always_active_);
