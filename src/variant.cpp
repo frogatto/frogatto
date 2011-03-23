@@ -700,7 +700,7 @@ void variant::serialize_to_string(std::string& str) const
 		str += boost::lexical_cast<std::string>(int_value_);
 		break;
 	case TYPE_DECIMAL: {
-		int fractional = decimal_value_ % VARIANT_DECIMAL_PRECISION;
+		int fractional = abs(decimal_value_) % VARIANT_DECIMAL_PRECISION;
 		int integer = (decimal_value_ - fractional) / VARIANT_DECIMAL_PRECISION;
 
 		char buf[256];
