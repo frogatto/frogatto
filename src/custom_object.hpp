@@ -277,7 +277,7 @@ private:
 		int speed;
 		std::vector<int> x_pos;
 		std::vector<int> y_pos;
-		std::vector<int> rotation;
+		std::vector<decimal> rotation;
 	};
 
 	boost::scoped_ptr<position_schedule> position_schedule_;

@@ -134,9 +134,14 @@ custom_object::custom_object(wml::const_node_ptr node)
 		const std::string& s = node->attr("rotation_schedule").str();
 
 		int nints = std::count(s.begin(), s.end(), ',')+1;
+		std::vector<int> rotation_ints(nints);
+		util::split_into_ints(s.c_str(), &rotation_ints[0], &nints);
 		position_schedule_->rotation.resize(nints);
-		util::split_into_ints(s.c_str(), &position_schedule_->rotation[0], &nints);
-		position_schedule_->rotation.resize(nints);
+		rotation_ints.resize(nints);
+		for(int n = 0; n != nints; ++n) {
+			position_schedule_->rotation[n] = decimal(rotation_ints[n]);
+		}
+
 	}
 
 	if(position_schedule_.get() != NULL && node->has_attr("schedule_speed")) {
@@ -398,7 +403,12 @@ wml::node_ptr custom_object::write() const
 		}
 
 		if(position_schedule_->rotation.empty() == false) {
-			res->set_attr("rotation_schedule", util::join_ints(&position_schedule_->rotation[0], position_schedule_->rotation.size()));
+			std::vector<int> v(position_schedule_->rotation.size());
+			for(int n = 0; n != v.size(); ++n) {
+				v[n] = position_schedule_->rotation[n].value();
+			}
+
+			res->set_attr("rotation_schedule", util::join_ints(&v[0], v.size()));
 		}
 	}
 
@@ -2421,7 +2431,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 
 		position_schedule_->rotation.clear();
 		for(int n = 0; n != value.num_elements(); ++n) {
-			position_schedule_->rotation.push_back(value[n].as_int());
+			position_schedule_->rotation.push_back(value[n].as_decimal());
 		}
 		break;
 	}

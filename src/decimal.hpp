@@ -10,6 +10,7 @@ class decimal
 {
 public:
 	static decimal from_int(int v) { return decimal(v*DECIMAL_PRECISION); }
+	decimal() : value_(0) {}
 	explicit decimal(int value) : value_(value) {}
 	explicit decimal(double value) : value_(value*DECIMAL_PRECISION) {}
 
