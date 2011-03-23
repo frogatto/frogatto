@@ -1719,6 +1719,7 @@ UNIT_TEST(formula_decimal) {
 	CHECK_EQ(formula("0.05").execute().string_cast(), "0.050");
 	CHECK_EQ(formula("0.5").execute().string_cast(), "0.500");
 	CHECK_EQ(formula("8.5 + 0.5").execute().string_cast(), "9.000");
+	CHECK_EQ(formula("4 * (-1.1)").execute().string_cast(), "-4.400");
 }
 
 BENCHMARK(formula_if) {
