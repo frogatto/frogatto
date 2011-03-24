@@ -51,13 +51,13 @@ surface get_no_cache(const std::string& key)
 {
 	const std::string fname = path + key;
 	surface surf = surface(IMG_Load(sys::find_file(fname).c_str()));
-	std::cerr << "loading image '" << fname << "'\n";
+	//std::cerr << "loading image '" << fname << "'\n";
 	if(surf.get() == false) {
-		std::cerr << "failed to load image '" << key << "'\n";
+		//std::cerr << "failed to load image '" << key << "'\n";
 		return surface();
 	}
 
-	std::cerr << "IMAGE SIZE: " << (surf->w*surf->h) << "\n";
+	//std::cerr << "IMAGE SIZE: " << (surf->w*surf->h) << "\n";
 	return surf;
 }
 
@@ -67,16 +67,16 @@ void clear_unused()
 	std::map<std::string, surface>& map = lck.map();
 	std::map<std::string, surface>::iterator i = map.begin();
 	while(i != map.end()) {
-		std::cerr << "CACHE REF " << i->first << " -> " << i->second->refcount << "\n";
+		//std::cerr << "CACHE REF " << i->first << " -> " << i->second->refcount << "\n";
 		if(i->second->refcount == 1) {
-			std::cerr << "CACHE FREE " << i->first << "\n";
+			//std::cerr << "CACHE FREE " << i->first << "\n";
 			map.erase(i++);
 		} else {
 			++i;
 		}
 	}
 
-	std::cerr << "CACHE ITEMS: " << map.size() << "\n";
+	//std::cerr << "CACHE ITEMS: " << map.size() << "\n";
 }
 
 void clear()

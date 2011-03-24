@@ -387,7 +387,7 @@ void gui_algorithm::process(level& lvl) {
 void gui_algorithm::draw(const level& lvl) {
 	lvl_ = &lvl;
 
-	fprintf(stderr, "GUI_DRAW: %p %d\n", this, cycle_);
+	//fprintf(stderr, "GUI_DRAW: %p %d\n", this, cycle_);
 	if((cycle_%2) == 0) {
 		cached_draw_commands_ = variant();
 	}

@@ -14,7 +14,7 @@ editor_variable_info::editor_variable_info(wml::const_node_ptr node)
 	const std::string& type = node->attr("type");
 	if(type == "x") {
 		type_ = XPOSITION;
-		std::cerr << "XPOS VARIABLE\n";
+		//std::cerr << "XPOS VARIABLE\n";
 	} else if(type == "y") {
 		type_ = YPOSITION;
 	} else if(type == "level") {
@@ -63,7 +63,7 @@ editor_entity_info::editor_entity_info(wml::const_node_ptr node)
   : category_(node->attr("category")), help_(node->attr("help"))
 {
 	FOREACH_WML_CHILD(var_node, node, "var") {
-		std::cerr << "CREATE VAR INFO...\n";	
+		//std::cerr << "CREATE VAR INFO...\n";	
 		vars_.push_back(editor_variable_info(var_node));
 	}
 }

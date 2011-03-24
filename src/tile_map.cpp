@@ -236,7 +236,7 @@ void tile_map::load(const std::string& fname)
 
 	const int start = multi_tile_pattern::get_all().size();
 	multi_tile_pattern::load(node);
-	std::cerr << "TILE_MAP_LOAD: " << fname << " -> " << (multi_tile_pattern::get_all().size() - start) << ": " << multi_tile_pattern::get_all().size() << "\n";
+	//std::cerr << "TILE_MAP_LOAD: " << fname << " -> " << (multi_tile_pattern::get_all().size() - start) << ": " << multi_tile_pattern::get_all().size() << "\n";
 
 	++current_patterns_version;
 }
@@ -700,7 +700,7 @@ void tile_map::apply_matching_multi_pattern(int& x, int y,
 void tile_map::build_tiles(std::vector<level_tile>* tiles, const rect* r) const
 {
 	const int begin_time = SDL_GetTicks();
-	std::cerr << "build tiles... " << patterns_.size() << "/" << patterns.size() << "\n";
+	//std::cerr << "build tiles... " << patterns_.size() << "/" << patterns.size() << "\n";
 	int width = 0;
 	foreach(const std::vector<int>& row, map_) {
 		if(row.size() > width) {
@@ -711,7 +711,7 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles, const rect* r) const
 	point_map<level_object_ptr> multi_pattern_matches;
 	std::map<point_zorder, level_object_ptr> different_zorder_multi_pattern_matches;
 
-	std::cerr << "MULTIPATTERNS: " << multi_patterns_.size() << "/" << multi_tile_pattern::get_all().size() << "\n";
+	//std::cerr << "MULTIPATTERNS: " << multi_patterns_.size() << "/" << multi_tile_pattern::get_all().size() << "\n";
 	foreach(const multi_tile_pattern* p, multi_patterns_) {
 		for(int y = -p->height(); y < static_cast<int>(map_.size()) + p->height(); ++y) {
 			const int ypos = ypos_ + y*TileSize;
@@ -804,7 +804,7 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles, const rect* r) const
 			tiles->push_back(t);
 
 			foreach(const tile_pattern::added_tile& a, p->added_tiles) {
-				std::cerr << "added_tile\n";
+				//std::cerr << "added_tile\n";
 				level_tile t;
 				t.x = xpos;
 				t.y = ypos;
@@ -823,7 +823,7 @@ void tile_map::build_tiles(std::vector<level_tile>* tiles, const rect* r) const
 			}
 		}
 	}
-	std::cerr << "done build tiles: " << ntiles << " " << (SDL_GetTicks() - begin_time) << "\n";
+	//std::cerr << "done build tiles: " << ntiles << " " << (SDL_GetTicks() - begin_time) << "\n";
 }
 
 const tile_pattern* tile_map::get_matching_pattern(int x, int y, tile_pattern_cache& cache, bool* face_right) const

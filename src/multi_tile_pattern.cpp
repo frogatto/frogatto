@@ -126,7 +126,7 @@ multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr const_node)
 {
 	wml::node_ptr node = wml::deep_copy(const_node);
 
-	std::cerr << "INIT MTP: " << id_ << "\n";
+	//std::cerr << "INIT MTP: " << id_ << "\n";
 	FOREACH_WML_CHILD(alternative_node, node, "alternative") {
 		wml::node_ptr merged(new wml::node("multi_tile_pattern"));
 		wml::merge_attr_over(node, merged);
@@ -223,7 +223,7 @@ multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr const_node)
 	}
 
 	if(const_node->get_child("range")) {
-		std::cerr << "PARSE MTP: " << wml::output(node) << "\n";
+		//std::cerr << "PARSE MTP: " << wml::output(node) << "\n";
 	}
 
 	for(int n = 0; n != cells.size(); ++n) {

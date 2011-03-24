@@ -61,7 +61,7 @@ void solid_map::create_object_solid_maps(wml::const_node_ptr node, std::vector<c
 	}
 
 	if(legs_height) {
-		std::cerr << "LEGS_HEIGHT: " << node->attr("id") << " " << legs_height << ", FEET_WIDTH: " << feet_width << "\n";
+		//std::cerr << "LEGS_HEIGHT: " << node->attr("id") << " " << legs_height << ", FEET_WIDTH: " << feet_width << "\n";
 		rect legs(area.x(), area.y2() - legs_height, area.w(), legs_height);
 		solid_map_ptr legs_map(new solid_map);
 		legs_map->id_ = "legs";
@@ -69,7 +69,7 @@ void solid_map::create_object_solid_maps(wml::const_node_ptr node, std::vector<c
 		legs_map->solid_.resize(legs.w()*legs.h(), false);
 		for(int y = 0; y < legs.h()-1; ++y) {
 			for(int x = y; x < legs.w() - y; ++x) {
-				std::cerr << "LEGS_SOLID: " << x << ", " << y << "\n";
+				//std::cerr << "LEGS_SOLID: " << x << ", " << y << "\n";
 				legs_map->set_solid(x, y);
 			}
 		}

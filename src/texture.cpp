@@ -205,17 +205,17 @@ texture::manager::~manager() {
 
 void texture::clear_textures()
 {
-	std::cerr << "TEXTURES LOADING...\n";
+	//std::cerr << "TEXTURES LOADING...\n";
 	texture_map::lock lck(texture_cache());
 	for(texture_map::map_type::const_iterator i = lck.map().begin(); i != lck.map().end(); ++i) {
 		if(!i->second.id_) {
 			continue;
 		}
 
-		std::cerr << "TEXTURE: '" << i->first << "': " << (i->second.id_->init() ? "INIT" : "UNINIT") << "\n";
+		//std::cerr << "TEXTURE: '" << i->first << "': " << (i->second.id_->init() ? "INIT" : "UNINIT") << "\n";
 	}
 
-	std::cerr << "DONE TEXTURES LOADING\n";
+	//std::cerr << "DONE TEXTURES LOADING\n";
 /*
 	//go through all the textures and clear out the ID's. We only want to
 	//re-initialize each shared ID once.
@@ -450,7 +450,7 @@ texture texture::get(const std::string& str)
 		surfs.push_back(surface_cache::get_no_cache(str));
 		result = texture(surfs);
 		texture_cache().put(str, result);
-		std::cerr << (next_power_of_2(result.width())*next_power_of_2(result.height())*2)/1024 << "KB TEXTURE " << str << ": " << result.width() << "x" << result.height() << "\n";
+		//std::cerr << (next_power_of_2(result.width())*next_power_of_2(result.height())*2)/1024 << "KB TEXTURE " << str << ": " << result.width() << "x" << result.height() << "\n";
 	}
 
 	return result;
@@ -476,7 +476,7 @@ texture texture::get(const std::string& str, const std::string& algorithm)
 
 texture texture::get_palette_mapped(const std::string& str, int palette)
 {
-	std::cerr << "get palette mapped: " << str << "," << palette << "\n";
+	//std::cerr << "get palette mapped: " << str << "," << palette << "\n";
 	std::pair<std::string,int> k(str, palette);
 	texture result = palette_texture_cache().get(k);
 	if(!result.valid()) {
