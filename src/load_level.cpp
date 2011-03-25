@@ -49,7 +49,9 @@ public:
 		try {
 			wml::const_node_ptr node(wml::parse_wml(preprocess(sys::read_file(filename))));
 			wml_cache().put(lvl_, node);
-		} catch(...) {
+		} catch(wml::parse_error& e) {
+			ASSERT_LOG(false, "ERROR PARSING LEVEL WML: " << e.message);
+		}catch(...) {
 			std::cerr << "FAILED TO LOAD " << filename << "\n";
 			ASSERT_LOG(false, "FAILED TO LOAD");
 		}
