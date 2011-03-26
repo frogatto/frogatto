@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto & Friends 1.0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-24 23:46-0300\n"
-"PO-Revision-Date: 2011-03-11 01:26-0300\n"
+"POT-Creation-Date: 2011-03-26 04:37-0300\n"
+"PO-Revision-Date: 2011-03-26 04:20-0300\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Brazilian Portuguese\n"
 "Language: \n"
@@ -1322,7 +1322,7 @@ msgstr ""
 #: data/level/crevice-village-house-elder.cfg:1636
 #: data/level/tea-with-milgram.cfg:197
 msgid "That's right!"
-msgstr "Tem razão!"
+msgstr "Pois é!"
 
 #: data/level/crevice-village-house-elder.cfg:1638
 msgid "Anyhow, I'm proud of you."
@@ -1578,6 +1578,18 @@ msgstr "Central do Vazio"
 #: data/level/descent-to-town.cfg:16
 msgid "Descent to Town"
 msgstr "Descida à Vila"
+
+#: data/level/descent-to-town.cfg:1025
+#, fuzzy
+msgid ""
+"It says,\n"
+"\"Chopple's General Store,\n"
+"just ahead."
+msgstr "Empório do Chopple"
+
+#: data/level/descent-to-town.cfg:1027
+msgid "Honest trade and thrifty prices!\""
+msgstr ""
 
 #: data/level/downhill.cfg:16
 msgid "Downhill"
@@ -3028,13 +3040,13 @@ msgstr ""
 "mas em vez disso ele torrou\n"
 "tudo com ele mesmo!"
 
-#: data/level/tea-with-milgram.cfg:194
+#: data/level/tea-with-milgram.cfg:195
 msgid "And now he's refusing to repay you?"
 msgstr ""
 "E agora ele não quer\n"
 "te devolver o dinheiro?"
 
-#: data/level/tea-with-milgram.cfg:199
+#: data/level/tea-with-milgram.cfg:200
 msgid ""
 "I never thought him\n"
 "to be the charismatic type,"
@@ -3070,7 +3082,7 @@ msgstr ""
 "Como eu ia dizendo,\n"
 "ele não parece ser capaz disso,"
 
-#: data/level/tea-with-milgram.cfg:214
+#: data/level/tea-with-milgram.cfg:215
 msgid ""
 "But somehow,\n"
 "he's turned the entire town against me,"
@@ -3078,7 +3090,7 @@ msgstr ""
 "mas de algum jeito ele\n"
 "jogou a vila inteira contra mim."
 
-#: data/level/tea-with-milgram.cfg:217
+#: data/level/tea-with-milgram.cfg:218
 msgid ""
 "He convinced them that I'm running\n"
 "some sort of protection racket."
@@ -3086,7 +3098,7 @@ msgstr ""
 "Convenceu as pessoas de que eu\n"
 "chefio um esquema de extorsão."
 
-#: data/level/tea-with-milgram.cfg:219
+#: data/level/tea-with-milgram.cfg:221
 msgid ""
 "Which I'll admit...\n"
 "...isn't too hard to believe."
@@ -3094,11 +3106,11 @@ msgstr ""
 "O que... bom, tenho que admitir...\n"
 "não é difícil de acreditar."
 
-#: data/level/tea-with-milgram.cfg:221
+#: data/level/tea-with-milgram.cfg:224
 msgid "Uh.. yeah."
 msgstr "Hã... é."
 
-#: data/level/tea-with-milgram.cfg:223
+#: data/level/tea-with-milgram.cfg:226
 msgid ""
 "I mean, you did send thugs in to\n"
 "shake him down."
@@ -3106,11 +3118,11 @@ msgstr ""
 "Já que você mandou mesmo\n"
 "uns capangas pra assustá-lo."
 
-#: data/level/tea-with-milgram.cfg:225
+#: data/level/tea-with-milgram.cfg:228
 msgid "That REALLY does look bad."
 msgstr "Isso ficou BEM suspeito."
 
-#: data/level/tea-with-milgram.cfg:228
+#: data/level/tea-with-milgram.cfg:231
 msgid ""
 "Oh absolutely!\n"
 "It makes me look beastly!"
@@ -3118,7 +3130,7 @@ msgstr ""
 "Ah, mas é claro!\n"
 "Fiquei parecendo um monstro!"
 
-#: data/level/tea-with-milgram.cfg:230
+#: data/level/tea-with-milgram.cfg:233
 msgid ""
 "But consider this...\n"
 "What other option did I have?"
@@ -3126,7 +3138,7 @@ msgstr ""
 "Mas, pense bem...\n"
 "Eu tinha escolha?"
 
-#: data/level/tea-with-milgram.cfg:233
+#: data/level/tea-with-milgram.cfg:236
 msgid ""
 "I'd have sent the police in, but..\n"
 "..there AREN'T ANY police!"
@@ -3134,11 +3146,11 @@ msgstr ""
 "Eu poderia chamar a polícia, mas...\n"
 "não tem polícia nenhuma!"
 
-#: data/level/tea-with-milgram.cfg:235
+#: data/level/tea-with-milgram.cfg:238
 msgid "There's not even any government!"
 msgstr "Não tem nem governo!"
 
-#: data/level/tea-with-milgram.cfg:237
+#: data/level/tea-with-milgram.cfg:241
 msgid ""
 "The town elder wasn't VOTED as mayor,\n"
 "he just decided he's old enough that\n"
@@ -3150,29 +3162,29 @@ msgstr ""
 "e que todo mundo deveria\n"
 "fazer o que ele disser."
 
-#: data/level/tea-with-milgram.cfg:239
+#: data/level/tea-with-milgram.cfg:244
 msgid "Not that anyone listens to him anyways."
 msgstr "Não que alguém escute ele."
 
-#: data/level/tea-with-milgram.cfg:241
+#: data/level/tea-with-milgram.cfg:246
 msgid ""
 "They don't have a fire department,\n"
 "they don't have any schools,\n"
 "it's all just this absurd mess!"
 msgstr ""
-"A vila não tem departamento\n"
+"A vila não tem corpo\n"
 "de bombeiros, não tem escolas,\n"
 "é tudo uma baderna sem fim!"
 
-#: data/level/tea-with-milgram.cfg:243
+#: data/level/tea-with-milgram.cfg:248
 msgid "This ... is true."
 msgstr "Isso... isso é verdade."
 
-#: data/level/tea-with-milgram.cfg:246
+#: data/level/tea-with-milgram.cfg:252
 msgid "Blast it all!"
 msgstr "Mas que droga!"
 
-#: data/level/tea-with-milgram.cfg:248
+#: data/level/tea-with-milgram.cfg:254
 msgid ""
 "Where I run things,\n"
 "there's some actual law and order.\n"
@@ -3183,13 +3195,13 @@ msgstr ""
 "Existe uma sociedade\n"
 "decente, civilizada!"
 
-#: data/level/tea-with-milgram.cfg:255
+#: data/level/tea-with-milgram.cfg:262
 msgid "Thank you Jeeves, that will do nicely."
 msgstr ""
 "Obrigado, Jarbas,\n"
 "por enquanto é só."
 
-#: data/level/tea-with-milgram.cfg:259
+#: data/level/tea-with-milgram.cfg:266
 msgid ""
 "So, anyhow, when I finally\n"
 "sent the lads to deal with things,\n"
@@ -3200,7 +3212,7 @@ msgstr ""
 "cuidarem da situação, a coisa\n"
 "ficou feia."
 
-#: data/level/tea-with-milgram.cfg:261
+#: data/level/tea-with-milgram.cfg:269
 msgid ""
 "But you'll note, you'll note carefully..\n"
 "..besides being manhandled,\n"
@@ -3210,7 +3222,7 @@ msgstr ""
 "do tratamento um pouco grosseiro,\n"
 "ninguém foi machucado."
 
-#: data/level/tea-with-milgram.cfg:263
+#: data/level/tea-with-milgram.cfg:271
 msgid ""
 "I *did* notice that.\n"
 "That kind of piqued my suspicions."
@@ -3218,7 +3230,7 @@ msgstr ""
 "É, eu até tinha percebido isso...\n"
 "Eu tinha achado isso meio estranho."
 
-#: data/level/tea-with-milgram.cfg:265
+#: data/level/tea-with-milgram.cfg:274
 msgid ""
 "Now, you on the other hand...\n"
 "You've really clobbered a few people!"
@@ -3227,17 +3239,17 @@ msgstr ""
 "Você deu uma surra\n"
 "num monte de gente!"
 
-#: data/level/tea-with-milgram.cfg:269
+#: data/level/tea-with-milgram.cfg:278
 msgid "Yeah..  uhm.."
 msgstr "É, bom..."
 
-#: data/level/tea-with-milgram.cfg:271
+#: data/level/tea-with-milgram.cfg:281
 msgid "I'm really kinda sorry about that now!"
 msgstr ""
 "Tô me sentindo meio\n"
 "mal por isso agora!"
 
-#: data/level/tea-with-milgram.cfg:274
+#: data/level/tea-with-milgram.cfg:284
 msgid ""
 "I appreciate the apology.\n"
 "And don't worry about the kitties."
@@ -3245,7 +3257,7 @@ msgstr ""
 "Ah, não tem problema.\n"
 "E não se preocupe com os gatinhos."
 
-#: data/level/tea-with-milgram.cfg:276
+#: data/level/tea-with-milgram.cfg:287
 msgid ""
 "They'll bounce back just fine;\n"
 "They are mass-produced after all."
@@ -3254,20 +3266,20 @@ msgstr ""
 "já vai sair uma leva prontinha\n"
 "da minha fábrica amanhã."
 
-#: data/level/tea-with-milgram.cfg:278
+#: data/level/tea-with-milgram.cfg:289
 msgid "I ... see."
 msgstr "Hum... entendi."
 
-#: data/level/tea-with-milgram.cfg:280
+#: data/level/tea-with-milgram.cfg:292
 msgid ""
 "Well, now that I know the whole story,\n"
 "I think I can help you out, big time."
 msgstr ""
 "Bom, agora que eu conheço\n"
-"o outro lado da história,\n"
-"acho que posso te ajudar, e bem."
+"o outro lado da história, acho\n"
+"que posso te ajudar, e bastante."
 
-#: data/level/tea-with-milgram.cfg:282
+#: data/level/tea-with-milgram.cfg:294
 msgid ""
 "See,\n"
 "I think I know where all the money is,"
@@ -3275,7 +3287,7 @@ msgstr ""
 "Veja bem, eu sei onde está\n"
 "todo o dinheiro."
 
-#: data/level/tea-with-milgram.cfg:284
+#: data/level/tea-with-milgram.cfg:297
 msgid ""
 "I'm hoping we can come to some\n"
 "mutually beneficial arrangement,\n"
@@ -3285,11 +3297,11 @@ msgstr ""
 "num acordo interessante pra\n"
 "nós dois, quanto a isso."
 
-#: data/level/tea-with-milgram.cfg:287
+#: data/level/tea-with-milgram.cfg:300
 msgid "An arrangement, hmmm? Do tell."
 msgstr "Um acordo, hein? Fale mais."
 
-#: data/level/tea-with-milgram.cfg:290
+#: data/level/tea-with-milgram.cfg:303
 msgid ""
 "Well, I actually suspect that rather than\n"
 "spending all your money, he's hoarding it."
@@ -3298,17 +3310,17 @@ msgstr ""
 "em vez de gastar, ele deve é\n"
 "estar escondendo o dinheiro, mesmo."
 
-#: data/level/tea-with-milgram.cfg:292
+#: data/level/tea-with-milgram.cfg:306
 msgid "How bizarre."
 msgstr "Que estranho."
 
-#: data/level/tea-with-milgram.cfg:294
+#: data/level/tea-with-milgram.cfg:309
 msgid "Yeah, it's crazy.  He's... a bit crazy."
 msgstr ""
 "É, é uma maluquice...\n"
 "Ele é meio doido mesmo."
 
-#: data/level/tea-with-milgram.cfg:297
+#: data/level/tea-with-milgram.cfg:312
 msgid ""
 "But it's good news, because I think\n"
 "he still has all your money\n"
@@ -3319,13 +3331,13 @@ msgstr ""
 "seu dinheiro todo bem guardado\n"
 "e até um tanto a mais!"
 
-#: data/level/tea-with-milgram.cfg:300
+#: data/level/tea-with-milgram.cfg:315
 msgid "So I propose that we go and get it!"
 msgstr ""
 "Então a minha proposta é\n"
 "irmos lá e pegá-lo de volta!"
 
-#: data/level/tea-with-milgram.cfg:303
+#: data/level/tea-with-milgram.cfg:318
 msgid ""
 "Plus a hefty bit of interest.\n"
 "Penalty Fees.\n"
@@ -3336,11 +3348,11 @@ msgstr ""
 "E juros de mora! Custas de protesto!\n"
 "Além de uma bela multa pelo atraso!"
 
-#: data/level/tea-with-milgram.cfg:306
+#: data/level/tea-with-milgram.cfg:321
 msgid "I like your way of thinking!"
 msgstr "Eu gosto do seu jeito de pensar!"
 
-#: data/level/tea-with-milgram.cfg:309
+#: data/level/tea-with-milgram.cfg:324
 msgid ""
 "Yup, and I can show you where it all is\n"
 "in exchange for a small consideration."
@@ -3349,17 +3361,17 @@ msgstr ""
 "guardou tudo, em troca de um\n"
 "pequeno agrado."
 
-#: data/level/tea-with-milgram.cfg:312
+#: data/level/tea-with-milgram.cfg:327
 msgid "A small consideration eh?"
 msgstr "Um agrado, é?"
 
-#: data/level/tea-with-milgram.cfg:315
+#: data/level/tea-with-milgram.cfg:330
 msgid "Yes - a quarter of what we get from him."
 msgstr ""
 "Sim - um quarto do que conseguirmos\n"
 "recuperar dele."
 
-#: data/level/tea-with-milgram.cfg:317
+#: data/level/tea-with-milgram.cfg:332
 msgid ""
 "*sigh*\n"
 "I knew you didn't really mean small.\n"
@@ -3369,13 +3381,13 @@ msgstr ""
 "Eu sabia que você não pensava pequeno.\n"
 "Muito bem, sapo, temos um acordo."
 
-#: data/level/tea-with-milgram.cfg:320
+#: data/level/tea-with-milgram.cfg:335
 msgid "All's well that ends well then, huh?"
 msgstr ""
 "Tudo bem quando termina bem,\n"
 "não é mesmo?"
 
-#: data/level/tea-with-milgram.cfg:323
+#: data/level/tea-with-milgram.cfg:338
 msgid ""
 "Yeah, I do think everyone's\n"
 "made out pretty well."
@@ -3383,92 +3395,124 @@ msgstr ""
 "É, acho que todo mundo\n"
 "se deu muito bem nessa."
 
-#: data/level/tea-with-milgram.cfg:326
+#: data/level/tea-with-milgram.cfg:341
 msgid "Except the elder."
 msgstr "Menos o prefeito."
 
-#: data/level/tea-with-milgram.cfg:331
+#: data/level/tea-with-milgram.cfg:346
 msgid "Lead Programmer"
 msgstr "Programador Principal"
 
-#: data/level/tea-with-milgram.cfg:332
+#: data/level/tea-with-milgram.cfg:347
 msgid "Scripting Language Designer"
 msgstr "Desenvolvedor da Linguagem de Scripts"
 
-#: data/level/tea-with-milgram.cfg:333 data/level/tea-with-milgram.cfg:337
-#: data/level/tea-with-milgram.cfg:360
+#: data/level/tea-with-milgram.cfg:348 data/level/tea-with-milgram.cfg:352
+#: data/level/tea-with-milgram.cfg:375 data/level/tea-with-milgram.cfg:387
 msgid "Object Scripter"
 msgstr "Programador de Objetos"
 
-#: data/level/tea-with-milgram.cfg:334
+#: data/level/tea-with-milgram.cfg:349
 msgid "Minor Level Designer"
 msgstr "Designer Auxiliar de Fases"
 
-#: data/level/tea-with-milgram.cfg:347
+#: data/level/tea-with-milgram.cfg:353
+#, fuzzy
+msgid "Achievements"
+msgstr "Novo Troféu!"
+
+#: data/level/tea-with-milgram.cfg:354
+msgid "Physics & Geometries"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:355
+#, fuzzy
+msgid "Minor Programmer"
+msgstr "Programador Principal"
+
+#: data/level/tea-with-milgram.cfg:359
+#, fuzzy
+msgid "The End"
+msgstr "A Entrada"
+
+#: data/level/tea-with-milgram.cfg:362
 msgid "Creative Director - created characters/setting/story"
 msgstr "Diretor de Criação - personagens/ambientes/história"
 
-#: data/level/tea-with-milgram.cfg:348 data/level/tea-with-milgram.cfg:378
+#: data/level/tea-with-milgram.cfg:363 data/level/tea-with-milgram.cfg:401
 msgid "Artist - Characters, Monsters, and Props"
 msgstr "Artista - Personagens, Inimigos e Objetos"
 
-#: data/level/tea-with-milgram.cfg:349
+#: data/level/tea-with-milgram.cfg:364
 msgid "Artist - Terrain (house interiors and exteriors, seaside background)"
 msgstr "Artista - Cenários (interior e exterior das casas, imagens de fundo)"
 
-#: data/level/tea-with-milgram.cfg:359
+#: data/level/tea-with-milgram.cfg:374
 msgid "Level Designer (esp. forest, cave, and dungeon levels)"
 msgstr "Designer de Fases (esp. da floresta, masmorra e cavernas)"
 
-#: data/level/tea-with-milgram.cfg:364
+#: data/level/tea-with-milgram.cfg:379
 msgid "The IRC Crew"
 msgstr "A Turma do IRC"
 
-#: data/level/tea-with-milgram.cfg:365
+#: data/level/tea-with-milgram.cfg:380
 msgid "Bug Reports/Fixes"
 msgstr "Reporte/Correção de Bugs"
 
-#: data/level/tea-with-milgram.cfg:366
+#: data/level/tea-with-milgram.cfg:381
 msgid "Technical Advice"
 msgstr "Conselhos Técnicos"
 
-#: data/level/tea-with-milgram.cfg:367
+#: data/level/tea-with-milgram.cfg:382
 msgid "Level Design and Object Scripting"
 msgstr "Design de Fases/Programação de Objetos"
 
-#: data/level/tea-with-milgram.cfg:368
+#: data/level/tea-with-milgram.cfg:383
 msgid "Devil's Advocacy"
 msgstr "Crítica Construtiva"
 
-#: data/level/tea-with-milgram.cfg:371
-msgid "Translation Support"
+#: data/level/tea-with-milgram.cfg:386
+#, fuzzy
+msgid "Translation Coordinator"
 msgstr "Suporte a Traduções"
 
-#: data/level/tea-with-milgram.cfg:372
-msgid "Object Scripting"
-msgstr "Programação de Objetos"
+#: data/level/tea-with-milgram.cfg:388
+msgid "Minor Bug Fixer"
+msgstr ""
 
-#: data/level/tea-with-milgram.cfg:377
+#: data/level/tea-with-milgram.cfg:393
+msgid "Translation Code and Coordination"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:394
+msgid "Key Remapping Code/Interface"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:395
+msgid "OpenPandora Port"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:400
 msgid "Lead Content Wrangler and Object Scripter, Programmer"
 msgstr "Gerenciador do Conteúdo do Jogo, Programador"
 
-#: data/level/tea-with-milgram.cfg:379
+#: data/level/tea-with-milgram.cfg:402
 msgid "Artist - Terrain (seaside, forest, cave, and dungeon)"
 msgstr "Artista - Cenários (beira-mar, floresta, caverna e masmorra)"
 
-#: data/level/tea-with-milgram.cfg:380
+#: data/level/tea-with-milgram.cfg:403
 msgid "Level Designer (esp. seaside, town, and forest stages)"
 msgstr "Designer de Fases (esp. fases da beira-mar, vila e floresta)"
 
-#: data/level/tea-with-milgram.cfg:383
+#: data/level/tea-with-milgram.cfg:406
 msgid "Musician"
 msgstr "Compositor"
 
-#: data/level/tea-with-milgram.cfg:384
+#: data/level/tea-with-milgram.cfg:407
 msgid "Sound Effect Designer"
 msgstr "Desenvolvedor de Efeitos Sonoros"
 
-#: data/level/tea-with-milgram.cfg:388
+#: data/level/tea-with-milgram.cfg:411
 msgid "SPECIAL THANKS:"
 msgstr "AGRADECIMENTOS ESPECIAIS:"
 
@@ -5157,6 +5201,9 @@ msgstr "Inverter A e B"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
+
+#~ msgid "Object Scripting"
+#~ msgstr "Programação de Objetos"
 
 #~ msgid "Actually I was just hoping to get to town."
 #~ msgstr ""

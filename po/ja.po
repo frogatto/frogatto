@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-24 23:46-0300\n"
+"POT-Creation-Date: 2011-03-26 04:37-0300\n"
 "PO-Revision-Date: 2011-01-26 06:33+0000\n"
 "Last-Translator: hagabaka <yaohan.chen@gmail.com>\n"
 "Language-Team: Japanese <>\n"
@@ -1488,6 +1488,18 @@ msgstr "暗闇の中心"
 msgid "Descent to Town"
 msgstr "街への下山道"
 
+#: data/level/descent-to-town.cfg:1025
+#, fuzzy
+msgid ""
+"It says,\n"
+"\"Chopple's General Store,\n"
+"just ahead."
+msgstr "チョップルの雑貨屋"
+
+#: data/level/descent-to-town.cfg:1027
+msgid "Honest trade and thrifty prices!\""
+msgstr ""
+
 #: data/level/downhill.cfg:16
 msgid "Downhill"
 msgstr "下り坂"
@@ -2847,13 +2859,13 @@ msgstr ""
 "関わらずやつは自分自身のためだけにその\n"
 "権利を得ている！"
 
-#: data/level/tea-with-milgram.cfg:194
+#: data/level/tea-with-milgram.cfg:195
 msgid "And now he's refusing to repay you?"
 msgstr ""
 "で、今も町長さんはキミにお金を返すのを\n"
 "拒否しているの？"
 
-#: data/level/tea-with-milgram.cfg:199
+#: data/level/tea-with-milgram.cfg:200
 msgid ""
 "I never thought him\n"
 "to be the charismatic type,"
@@ -2888,7 +2900,7 @@ msgstr ""
 "…俺が提言したときは、\n"
 "そんなやつには思えなかった。"
 
-#: data/level/tea-with-milgram.cfg:214
+#: data/level/tea-with-milgram.cfg:215
 msgid ""
 "But somehow,\n"
 "he's turned the entire town against me,"
@@ -2896,7 +2908,7 @@ msgstr ""
 "しかしやつはどういうことか、俺を\n"
 "町全体の敵に仕立て上げた。"
 
-#: data/level/tea-with-milgram.cfg:217
+#: data/level/tea-with-milgram.cfg:218
 msgid ""
 "He convinced them that I'm running\n"
 "some sort of protection racket."
@@ -2904,17 +2916,17 @@ msgstr ""
 "やつは俺が金をゆすりとってくると言って、\n"
 "住民を騙したのだ"
 
-#: data/level/tea-with-milgram.cfg:219
+#: data/level/tea-with-milgram.cfg:221
 msgid ""
 "Which I'll admit...\n"
 "...isn't too hard to believe."
 msgstr "あまりにも……許しがたい"
 
-#: data/level/tea-with-milgram.cfg:221
+#: data/level/tea-with-milgram.cfg:224
 msgid "Uh.. yeah."
 msgstr "…そっか"
 
-#: data/level/tea-with-milgram.cfg:223
+#: data/level/tea-with-milgram.cfg:226
 msgid ""
 "I mean, you did send thugs in to\n"
 "shake him down."
@@ -2922,11 +2934,11 @@ msgstr ""
 "それでキミは、部下を悪意を持つ彼のもとへ\n"
 "送り込んだんだ"
 
-#: data/level/tea-with-milgram.cfg:225
+#: data/level/tea-with-milgram.cfg:228
 msgid "That REALLY does look bad."
 msgstr "本当に、本当に残念だね"
 
-#: data/level/tea-with-milgram.cfg:228
+#: data/level/tea-with-milgram.cfg:231
 msgid ""
 "Oh absolutely!\n"
 "It makes me look beastly!"
@@ -2934,7 +2946,7 @@ msgstr ""
 "ああ、そうとも！そのせいで俺は残忍な\n"
 "やつだと思われている"
 
-#: data/level/tea-with-milgram.cfg:230
+#: data/level/tea-with-milgram.cfg:233
 msgid ""
 "But consider this...\n"
 "What other option did I have?"
@@ -2942,7 +2954,7 @@ msgstr ""
 "だが考えてもみろ…他にやりようが\n"
 "あったか？他に俺にできることはあったか？"
 
-#: data/level/tea-with-milgram.cfg:233
+#: data/level/tea-with-milgram.cfg:236
 msgid ""
 "I'd have sent the police in, but..\n"
 "..there AREN'T ANY police!"
@@ -2950,11 +2962,11 @@ msgstr ""
 "俺は警察も送り込もうとした…だが…\n"
 "警察など、どこにも、いやしなかった！"
 
-#: data/level/tea-with-milgram.cfg:235
+#: data/level/tea-with-milgram.cfg:238
 msgid "There's not even any government!"
 msgstr "ここには政府すら無いのだ！"
 
-#: data/level/tea-with-milgram.cfg:237
+#: data/level/tea-with-milgram.cfg:241
 msgid ""
 "The town elder wasn't VOTED as mayor,\n"
 "he just decided he's old enough that\n"
@@ -2964,11 +2976,11 @@ msgstr ""
 "やつはただ皆を従わせることのできる年齢だ\n"
 "から、自分でそう決めただけだ！"
 
-#: data/level/tea-with-milgram.cfg:239
+#: data/level/tea-with-milgram.cfg:244
 msgid "Not that anyone listens to him anyways."
 msgstr "やつの言うことを聞かない人間はいない…"
 
-#: data/level/tea-with-milgram.cfg:241
+#: data/level/tea-with-milgram.cfg:246
 msgid ""
 "They don't have a fire department,\n"
 "they don't have any schools,\n"
@@ -2977,15 +2989,15 @@ msgstr ""
 "国の政府もない、学校もない。ばかげている\n"
 "…めちゃくちゃだ！"
 
-#: data/level/tea-with-milgram.cfg:243
+#: data/level/tea-with-milgram.cfg:248
 msgid "This ... is true."
 msgstr "それは…真実だよ"
 
-#: data/level/tea-with-milgram.cfg:246
+#: data/level/tea-with-milgram.cfg:252
 msgid "Blast it all!"
 msgstr "全てを作り直す！"
 
-#: data/level/tea-with-milgram.cfg:248
+#: data/level/tea-with-milgram.cfg:254
 msgid ""
 "Where I run things,\n"
 "there's some actual law and order.\n"
@@ -2994,11 +3006,11 @@ msgstr ""
 "法と秩序がある世界を作る。\n"
 "整合された文明社会だ！"
 
-#: data/level/tea-with-milgram.cfg:255
+#: data/level/tea-with-milgram.cfg:262
 msgid "Thank you Jeeves, that will do nicely."
 msgstr "ありがとうジーヴス。いいお茶だろう"
 
-#: data/level/tea-with-milgram.cfg:259
+#: data/level/tea-with-milgram.cfg:266
 msgid ""
 "So, anyhow, when I finally\n"
 "sent the lads to deal with things,\n"
@@ -3008,7 +3020,7 @@ msgstr ""
 "ために若者たちを送り込んだときには、\n"
 "随分と複雑な事態になってしまっていた"
 
-#: data/level/tea-with-milgram.cfg:261
+#: data/level/tea-with-milgram.cfg:269
 msgid ""
 "But you'll note, you'll note carefully..\n"
 "..besides being manhandled,\n"
@@ -3019,13 +3031,13 @@ msgstr ""
 "手荒く扱いはしたが、住民は誰一人怪我を\n"
 "していない"
 
-#: data/level/tea-with-milgram.cfg:263
+#: data/level/tea-with-milgram.cfg:271
 msgid ""
 "I *did* notice that.\n"
 "That kind of piqued my suspicions."
 msgstr "うん、おかしいと思ったよ"
 
-#: data/level/tea-with-milgram.cfg:265
+#: data/level/tea-with-milgram.cfg:274
 msgid ""
 "Now, you on the other hand...\n"
 "You've really clobbered a few people!"
@@ -3033,15 +3045,15 @@ msgstr ""
 "そしてその一方で、お前はここまで実際に\n"
 "人々を倒し進んできた！"
 
-#: data/level/tea-with-milgram.cfg:269
+#: data/level/tea-with-milgram.cfg:278
 msgid "Yeah..  uhm.."
 msgstr "いや…まぁ…"
 
-#: data/level/tea-with-milgram.cfg:271
+#: data/level/tea-with-milgram.cfg:281
 msgid "I'm really kinda sorry about that now!"
 msgstr "…そのことについては…本当にごめんなさい！"
 
-#: data/level/tea-with-milgram.cfg:274
+#: data/level/tea-with-milgram.cfg:284
 msgid ""
 "I appreciate the apology.\n"
 "And don't worry about the kitties."
@@ -3049,7 +3061,7 @@ msgstr ""
 "お前の謝罪、ありがたく思う。それと、\n"
 "部下の子猫たちについては心配するな"
 
-#: data/level/tea-with-milgram.cfg:276
+#: data/level/tea-with-milgram.cfg:287
 msgid ""
 "They'll bounce back just fine;\n"
 "They are mass-produced after all."
@@ -3057,11 +3069,11 @@ msgstr ""
 "みんな今じゃ元気になっている。\n"
 "なんといっても大量に産まれてくるしな"
 
-#: data/level/tea-with-milgram.cfg:278
+#: data/level/tea-with-milgram.cfg:289
 msgid "I ... see."
 msgstr "なるほど"
 
-#: data/level/tea-with-milgram.cfg:280
+#: data/level/tea-with-milgram.cfg:292
 msgid ""
 "Well, now that I know the whole story,\n"
 "I think I can help you out, big time."
@@ -3069,24 +3081,24 @@ msgstr ""
 "ところで、その話を聞いた今、ぼくは心から\n"
 "キミに協力したいと思ってる"
 
-#: data/level/tea-with-milgram.cfg:282
+#: data/level/tea-with-milgram.cfg:294
 msgid ""
 "See,\n"
 "I think I know where all the money is,"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:284
+#: data/level/tea-with-milgram.cfg:297
 msgid ""
 "I'm hoping we can come to some\n"
 "mutually beneficial arrangement,\n"
 "regarding it."
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:287
+#: data/level/tea-with-milgram.cfg:300
 msgid "An arrangement, hmmm? Do tell."
 msgstr "取引…だと？話してみろ"
 
-#: data/level/tea-with-milgram.cfg:290
+#: data/level/tea-with-milgram.cfg:303
 msgid ""
 "Well, I actually suspect that rather than\n"
 "spending all your money, he's hoarding it."
@@ -3095,17 +3107,17 @@ msgstr ""
 "しまったのではなく、そうせずに貯めておいて\n"
 "あると思うんだ"
 
-#: data/level/tea-with-milgram.cfg:292
+#: data/level/tea-with-milgram.cfg:306
 msgid "How bizarre."
 msgstr "奇妙な話だな"
 
-#: data/level/tea-with-milgram.cfg:294
+#: data/level/tea-with-milgram.cfg:309
 msgid "Yeah, it's crazy.  He's... a bit crazy."
 msgstr ""
 "そうだね、確かに変だ。でも、あの人自体が\n"
 "少しおかしいんだ"
 
-#: data/level/tea-with-milgram.cfg:297
+#: data/level/tea-with-milgram.cfg:312
 msgid ""
 "But it's good news, because I think\n"
 "he still has all your money\n"
@@ -3115,13 +3127,13 @@ msgstr ""
 "全てのお金や財産を隠し持っているってこと\n"
 "なんだから！"
 
-#: data/level/tea-with-milgram.cfg:300
+#: data/level/tea-with-milgram.cfg:315
 msgid "So I propose that we go and get it!"
 msgstr ""
 "だから、キミと２人でお金を奪い返しに\n"
 "いきたいんだ"
 
-#: data/level/tea-with-milgram.cfg:303
+#: data/level/tea-with-milgram.cfg:318
 msgid ""
 "Plus a hefty bit of interest.\n"
 "Penalty Fees.\n"
@@ -3131,11 +3143,11 @@ msgstr ""
 "そしてさらに。罰金。延滞料。あらゆる金を\n"
 "順当に請求する"
 
-#: data/level/tea-with-milgram.cfg:306
+#: data/level/tea-with-milgram.cfg:321
 msgid "I like your way of thinking!"
 msgstr "いい考えではないか！"
 
-#: data/level/tea-with-milgram.cfg:309
+#: data/level/tea-with-milgram.cfg:324
 msgid ""
 "Yup, and I can show you where it all is\n"
 "in exchange for a small consideration."
@@ -3143,17 +3155,17 @@ msgstr ""
 "うん、ちょっとした見返りさえ約束してくれる\n"
 "のなら、財産の隠し場所を教えてあげるよ"
 
-#: data/level/tea-with-milgram.cfg:312
+#: data/level/tea-with-milgram.cfg:327
 msgid "A small consideration eh?"
 msgstr "ちょっとした見返りとは？"
 
-#: data/level/tea-with-milgram.cfg:315
+#: data/level/tea-with-milgram.cfg:330
 msgid "Yes - a quarter of what we get from him."
 msgstr ""
 "それは───ぼくたちが彼から手に入れた\n"
 "お金の、1/4"
 
-#: data/level/tea-with-milgram.cfg:317
+#: data/level/tea-with-milgram.cfg:332
 msgid ""
 "*sigh*\n"
 "I knew you didn't really mean small.\n"
@@ -3163,102 +3175,131 @@ msgstr ""
 "見返りではないと思うぞ…\n"
 "承知した、カエルよ。手を打とう"
 
-#: data/level/tea-with-milgram.cfg:320
+#: data/level/tea-with-milgram.cfg:335
 msgid "All's well that ends well then, huh?"
 msgstr "これで全部、上手くいくのかな？"
 
-#: data/level/tea-with-milgram.cfg:323
+#: data/level/tea-with-milgram.cfg:338
 msgid ""
 "Yeah, I do think everyone's\n"
 "made out pretty well."
 msgstr "ああ、みんなも解かってくれるだろう"
 
-#: data/level/tea-with-milgram.cfg:326
+#: data/level/tea-with-milgram.cfg:341
 msgid "Except the elder."
 msgstr "町長を除いて、な"
 
-#: data/level/tea-with-milgram.cfg:331
+#: data/level/tea-with-milgram.cfg:346
 msgid "Lead Programmer"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:332
+#: data/level/tea-with-milgram.cfg:347
 msgid "Scripting Language Designer"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:333 data/level/tea-with-milgram.cfg:337
-#: data/level/tea-with-milgram.cfg:360
+#: data/level/tea-with-milgram.cfg:348 data/level/tea-with-milgram.cfg:352
+#: data/level/tea-with-milgram.cfg:375 data/level/tea-with-milgram.cfg:387
 msgid "Object Scripter"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:334
+#: data/level/tea-with-milgram.cfg:349
 msgid "Minor Level Designer"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:347
-msgid "Creative Director - created characters/setting/story"
+#: data/level/tea-with-milgram.cfg:353
+msgid "Achievements"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:348 data/level/tea-with-milgram.cfg:378
-msgid "Artist - Characters, Monsters, and Props"
+#: data/level/tea-with-milgram.cfg:354
+msgid "Physics & Geometries"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:349
-msgid "Artist - Terrain (house interiors and exteriors, seaside background)"
+#: data/level/tea-with-milgram.cfg:355
+msgid "Minor Programmer"
 msgstr ""
 
 #: data/level/tea-with-milgram.cfg:359
-msgid "Level Designer (esp. forest, cave, and dungeon levels)"
+#, fuzzy
+msgid "The End"
+msgstr "入り口"
+
+#: data/level/tea-with-milgram.cfg:362
+msgid "Creative Director - created characters/setting/story"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:363 data/level/tea-with-milgram.cfg:401
+msgid "Artist - Characters, Monsters, and Props"
 msgstr ""
 
 #: data/level/tea-with-milgram.cfg:364
-msgid "The IRC Crew"
+msgid "Artist - Terrain (house interiors and exteriors, seaside background)"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:365
-msgid "Bug Reports/Fixes"
-msgstr ""
-
-#: data/level/tea-with-milgram.cfg:366
-msgid "Technical Advice"
-msgstr ""
-
-#: data/level/tea-with-milgram.cfg:367
-msgid "Level Design and Object Scripting"
-msgstr ""
-
-#: data/level/tea-with-milgram.cfg:368
-msgid "Devil's Advocacy"
-msgstr ""
-
-#: data/level/tea-with-milgram.cfg:371
-msgid "Translation Support"
-msgstr ""
-
-#: data/level/tea-with-milgram.cfg:372
-msgid "Object Scripting"
-msgstr ""
-
-#: data/level/tea-with-milgram.cfg:377
-msgid "Lead Content Wrangler and Object Scripter, Programmer"
+#: data/level/tea-with-milgram.cfg:374
+msgid "Level Designer (esp. forest, cave, and dungeon levels)"
 msgstr ""
 
 #: data/level/tea-with-milgram.cfg:379
-msgid "Artist - Terrain (seaside, forest, cave, and dungeon)"
+msgid "The IRC Crew"
 msgstr ""
 
 #: data/level/tea-with-milgram.cfg:380
-msgid "Level Designer (esp. seaside, town, and forest stages)"
+msgid "Bug Reports/Fixes"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:381
+msgid "Technical Advice"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:382
+msgid "Level Design and Object Scripting"
 msgstr ""
 
 #: data/level/tea-with-milgram.cfg:383
-msgid "Musician"
+msgid "Devil's Advocacy"
 msgstr ""
 
-#: data/level/tea-with-milgram.cfg:384
-msgid "Sound Effect Designer"
+#: data/level/tea-with-milgram.cfg:386
+msgid "Translation Coordinator"
 msgstr ""
 
 #: data/level/tea-with-milgram.cfg:388
+msgid "Minor Bug Fixer"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:393
+msgid "Translation Code and Coordination"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:394
+msgid "Key Remapping Code/Interface"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:395
+msgid "OpenPandora Port"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:400
+msgid "Lead Content Wrangler and Object Scripter, Programmer"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:402
+msgid "Artist - Terrain (seaside, forest, cave, and dungeon)"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:403
+msgid "Level Designer (esp. seaside, town, and forest stages)"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:406
+msgid "Musician"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:407
+msgid "Sound Effect Designer"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:411
 msgid "SPECIAL THANKS:"
 msgstr ""
 
