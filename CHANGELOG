@@ -1,3 +1,10 @@
+Version 1.1 (beta):
+ * Added arcade mode.
+ * Redid graphics for forest trees.
+ * Added new palettes to forest and seaside areas.
+ * Added some unique enemies to the forest.
+ * Refactored damage and monster type systems to make behavior more consistent and eliminate some rare buggy behavior.
+
 Version 1.0.3:
  * Fixed crash when picking up max heart pieces.
  * Other small bug fixes.
