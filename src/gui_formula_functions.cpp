@@ -401,7 +401,7 @@ void gui_algorithm::draw(const level& lvl) {
 	glColor4ub(255, 255, 255, 255);
 
 	foreach(gui_algorithm_ptr p, includes_) {
-		fprintf(stderr, "DRAW CHILD: %p -> %p\n", this, p.get());
+		//fprintf(stderr, "DRAW CHILD: %p -> %p\n", this, p.get());
 		p->draw(lvl);
 	}
 }
