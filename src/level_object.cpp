@@ -329,6 +329,26 @@ level_object::level_object(wml::const_node_ptr node)
 		}
 	}
 	
+	if(std::find(solid_attr.begin(), solid_attr.end(), "upward_diagonal") != solid_attr.end()) {
+		solid_.resize(width()*height());
+		for(int x = 0; x < width(); ++x) {
+			for(int y = 0; y < height(); ++y) {
+				const int index = y*width() + x;
+				solid_[index] = solid_[index] || (passthrough_? (y==x) : (y <= x));
+			}
+		}
+	}
+
+	if(std::find(solid_attr.begin(), solid_attr.end(), "upward_reverse_diagonal") != solid_attr.end()) {
+		solid_.resize(width()*height());
+		for(int x = 0; x < width(); ++x) {
+			for(int y = 0; y < height(); ++y) {
+				const int index = y*width() + x;
+				solid_[index] = solid_[index] || (passthrough_? (y == (width() - (x+1))) : (y <= (width() - (x+1))));
+			}
+		}
+	}
+
 	if(std::find(solid_attr.begin(), solid_attr.end(), "quarter_diagonal_lower") != solid_attr.end()) {
 		solid_.resize(width()*height());
 		for(int x = 0; x < width(); ++x) {
