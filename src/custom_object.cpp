@@ -3005,6 +3005,24 @@ void custom_object::set_platform_area(const rect& area)
 void custom_object::shift_position(int x, int y)
 {
 	entity::shift_position(x, y);
+	if(standing_on_prev_x_ != INT_MIN) {
+		standing_on_prev_x_ += x;
+	}
+
+	if(standing_on_prev_y_ != INT_MIN) {
+		standing_on_prev_y_ += y;
+	}
+
+	if(position_schedule_.get() != NULL) {
+		foreach(int& xpos, position_schedule_->x_pos) {
+			xpos += x;
+		}
+
+		foreach(int& ypos, position_schedule_->y_pos) {
+			ypos += y;
+		}
+	}
+
 	if(activation_area_.get() != NULL) {
 		activation_area_.reset(new rect(activation_area_->x() + x,
 		                                activation_area_->y() + y,

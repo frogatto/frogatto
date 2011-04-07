@@ -2934,14 +2934,14 @@ namespace {
 const std::string LevelProperties[] = {
   "cycle", "player", "in_dialog",
   "local_player", "num_active", "active_chars", "chars", "players",
-  "in_editor", "zoom", "focus", "gui", "id",
+  "in_editor", "zoom", "focus", "gui", "id", "dimensions",
 };
 
 enum LEVEL_PROPERTY_ID {
 	LEVEL_CYCLE, LEVEL_PLAYER, LEVEL_IN_DIALOG,
 	LEVEL_LOCAL_PLAYER, LEVEL_NUM_ACTIVE,
 	LEVEL_ACTIVE_CHARS, LEVEL_CHARS, LEVEL_PLAYERS, LEVEL_IN_EDITOR, LEVEL_ZOOM,
-	LEVEL_FOCUS, LEVEL_GUI, LEVEL_ID
+	LEVEL_FOCUS, LEVEL_GUI, LEVEL_ID, LEVEL_DIMENSIONS,
 };
 }
 
@@ -3009,6 +3009,14 @@ variant level::get_value_by_slot(int slot) const
 	}
 	case LEVEL_ID: {
 		return variant(id_);
+	}
+	case LEVEL_DIMENSIONS: {
+		std::vector<variant> v;
+		v.push_back(variant(boundaries_.x()));
+		v.push_back(variant(boundaries_.y()));
+		v.push_back(variant(boundaries_.x2()));
+		v.push_back(variant(boundaries_.y2()));
+		return variant(&v);
 	}
 	}
 

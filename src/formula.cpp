@@ -497,8 +497,8 @@ public:
 private:
 	variant execute(const formula_callable& variables) const {
 		const variant left = left_->evaluate(variables);
-		int begin_index = start_->evaluate(variables).as_int()%(left.num_elements()+1);
-		int end_index = end_->evaluate(variables).as_int()%(left.num_elements()+1);
+		int begin_index = start_ ? start_->evaluate(variables).as_int()%(left.num_elements()+1) : 0;
+		int end_index = end_ ? end_->evaluate(variables).as_int()%(left.num_elements()+1) : left.num_elements();
 		
 		if(left.is_list()) {
 			if(left.num_elements() == 0) {
@@ -1327,11 +1327,18 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 					}
 					
 					if(colon_tok != NULL){
+						expression_ptr start, end;
+						if(tok+1 < colon_tok) {
+							start = parse_expression(tok+1, colon_tok, symbols, callable_def, can_optimize);
+						}
+
+						if(colon_tok+1 < i2-1) {
+							end = parse_expression(colon_tok+1, i2-1, symbols, callable_def, can_optimize);
+						}
+
 						//it's a slice.  execute operator [ : ]
 						return expression_ptr(new slice_square_bracket_expression(
-																			parse_expression(i1,tok,symbols, callable_def, can_optimize),
-																			parse_expression(tok+1,colon_tok,symbols, callable_def, can_optimize),
-																			parse_expression(colon_tok+1,i2-1,symbols, callable_def, can_optimize)));
+																			parse_expression(i1,tok,symbols, callable_def, can_optimize), start, end));
 					}else{	
 						//execute operator [ ]
 						return expression_ptr(new square_bracket_expression(
