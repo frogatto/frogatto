@@ -1,7 +1,11 @@
 #ifndef water_PARTICLE_SYSTEM_H
 #define water_PARTICLE_SYSTEM_H
 
+#ifdef TARGET_PANDORA
+#include <GLES/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 
 #include <deque>
 

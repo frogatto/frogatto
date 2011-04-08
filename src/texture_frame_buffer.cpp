@@ -8,8 +8,18 @@
 #include "texture.hpp"
 #include "texture_frame_buffer.hpp"
 
+#if defined(TARGET_PANDORA)
+#include <EGL/egl.h>
+#include <GLES/gl.h>
+#include <GLES/glext.h>
+PFNGLGENFRAMEBUFFERSOESPROC         glGenFramebuffersOES;
+PFNGLBINDFRAMEBUFFEROESPROC         glBindFramebufferOES;
+PFNGLFRAMEBUFFERTEXTURE2DOESPROC    glFramebufferTexture2DOES;
+PFNGLCHECKFRAMEBUFFERSTATUSOESPROC  glCheckFramebufferStatusOES;
+#endif
+
 //define macros that make it easy to make the OpenGL calls in this file.
-#if TARGET_OS_IPHONE
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_PANDORA)
 #define EXT_CALL(call) call##OES
 #define EXT_MACRO(macro) macro##_OES
 #elif defined(__APPLE__)
@@ -37,13 +47,43 @@ bool unsupported()
 void init()
 {
 #if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
-	if(!GLEW_EXT_framebuffer_object) {
+#if !defined(TARGET_PANDORA)
+	if(!GLEW_EXT_framebuffer_object)
+    {
 		fprintf(stderr, "FRAME BUFFER OBJECT NOT SUPPORTED\n");
 		supported = false;
 		return;
 	}
-#endif
+#else
+    const GLubyte* pszGLExtensions;
 
+	if(preferences::use_fbo())
+    {
+        /* Retrieve GL extension string */
+        pszGLExtensions = glGetString(GL_EXTENSIONS);
+
+        /* GL_OES_framebuffer_object */
+        if (strstr((char *)pszGLExtensions, "GL_OES_framebuffer_object"))
+        {
+            glGenFramebuffersOES        = (PFNGLGENFRAMEBUFFERSOESPROC)eglGetProcAddress("glGenFramebuffersOES");
+            glBindFramebufferOES        = (PFNGLBINDFRAMEBUFFEROESPROC)eglGetProcAddress("glBindFramebufferOES");
+            glFramebufferTexture2DOES   = (PFNGLFRAMEBUFFERTEXTURE2DOESPROC)eglGetProcAddress("glFramebufferTexture2DOES");
+            glCheckFramebufferStatusOES = (PFNGLCHECKFRAMEBUFFERSTATUSOESPROC)eglGetProcAddress("glCheckFramebufferStatusOES");
+            supported = true;
+        }
+        else
+        {
+            supported = false;
+            return;
+        }
+    }
+    else
+    {
+        supported = false;
+        return;
+    }
+#endif
+#endif
 	fprintf(stderr, "FRAME BUFFER OBJECT IS SUPPORTED\n");
 
 	glGetIntegerv(EXT_MACRO(GL_FRAMEBUFFER_BINDING), &video_framebuffer_id);

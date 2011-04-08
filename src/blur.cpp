@@ -1,4 +1,8 @@
+#ifdef TARGET_PANDORA
+#include <GLES/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 
 #include "blur.hpp"
 #include "foreach.hpp"

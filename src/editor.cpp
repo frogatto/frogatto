@@ -1,5 +1,10 @@
+#ifdef TARGET_PANDORA
+#include <GLES/gl.h>
+#include <GLES/glues.h>
+#else
 #include <GL/gl.h>
 #include <GL/glu.h>
+#endif
 #include <SDL.h>
 #include <iostream>
 #include <cmath>
@@ -2557,8 +2562,10 @@ void editor::draw_selection(int xoffset, int yoffset) const
 	const uint16_t stipple_mask = (stipple_bits&0xFFFF) | ((stipple_bits&0xFFFF0000) >> 16);
 	
 	glColor4ub(255, 255, 255, 255);
+#ifndef SDL_VIDEO_OPENGL_ES
 	glEnable(GL_LINE_STIPPLE);
 	glLineStipple(1, stipple_mask);
+#endif
 	std::vector<GLfloat>& varray = graphics::global_vertex_array();
 	varray.clear();
 	foreach(const point& p, tile_selection_.tiles) {
@@ -2588,8 +2595,10 @@ void editor::draw_selection(int xoffset, int yoffset) const
 	}
 	glVertexPointer(2, GL_FLOAT, 0, &varray.front());
 	glDrawArrays(GL_LINES, 0, varray.size()/2);
+#ifndef SDL_VIDEO_OPENGL_ES
 	glDisable(GL_LINE_STIPPLE);
 	glLineStipple(1, 0xFFFF);
+#endif
 }
 
 void editor::run_script(const std::string& id)

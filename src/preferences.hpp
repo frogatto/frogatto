@@ -65,6 +65,13 @@ namespace preferences {
 
 	void set_load_compiled(bool value);
 
+#if defined(TARGET_PANDORA)
+    bool use_fbo();
+    bool use_bequ();
+    void set_fbo( bool value );
+    void set_bequ( bool value );
+#endif
+
 	//this is the mask which we apply to all x,y values before drawing, to
 	//avoid drawing things at "half pixels" when the actual screen dimensions
 	//are lower than the virtual screen dimensions.

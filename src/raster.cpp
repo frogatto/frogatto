@@ -10,8 +10,13 @@
  
  See the COPYING file for more details.
  */
+#ifdef TARGET_PANDORA
+#include <GLES/gl.h>
+#include <GLES/glues.h>
+#else
 #include <GL/gl.h>
 #include <GL/glu.h>
+#endif
 #include <SDL.h>
 
 #include "asserts.hpp"

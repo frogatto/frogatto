@@ -87,6 +87,11 @@ namespace preferences {
 
 		bool load_compiled_ = false;
 
+#if defined(TARGET_PANDORA)
+        bool use_fbo_ = true;
+        bool use_bequ_ = true;
+#endif
+
 		bool use_16bpp_textures_ = false;
 #endif
 
@@ -166,7 +171,11 @@ namespace preferences {
 	namespace {
 	void expand_path(std::string& str) {
 		if(!str.empty() && str[0] == '~') {
+#if defined(TARGET_PANDORA)
+			str = std::string(getenv("PWD")) + std::string(str.begin()+1, str.end());
+#else
 			str = std::string(getenv("HOME")) + std::string(str.begin()+1, str.end());
+#endif
 		}
 	}
 	}
@@ -289,6 +298,28 @@ namespace preferences {
 		load_compiled_ = value;
 	}
 	
+#if defined(TARGET_PANDORA)
+	bool use_fbo()
+	{
+		return use_fbo_;
+	}
+
+	bool use_bequ()
+	{
+		return use_bequ_;
+	}
+
+    void set_fbo( bool value )
+    {
+		use_fbo_ = value;
+    }
+
+    void set_bequ( bool value )
+    {
+		use_bequ_ = value;
+    }
+#endif
+
 	bool force_no_npot_textures()
 	{
 		return force_no_npot_textures_;

@@ -1,7 +1,11 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#ifdef TARGET_PANDORA
+#include <GLES/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 
 #include "color_utils.hpp"
 #include "string_utils.hpp"

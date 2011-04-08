@@ -1,7 +1,11 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "GL/gl.h"
+#ifdef TARGET_PANDORA
+#include <GLES/gl.h>
+#else
+#include <GL/gl.h>
+#endif
 
 #include "raster_distortion.hpp"
 

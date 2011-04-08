@@ -1,7 +1,11 @@
 #ifndef RASTER_DISTORTION_HPP_INCLUDED
 #define RASTER_DISTORTION_HPP_INCLUDED
 
-#include "GL/gl.h"
+#ifdef TARGET_PANDORA
+#include <GLES/gl.h>
+#else
+#include <GL/gl.h>
+#endif
 
 #include "formula_callable.hpp"
 #include "geometry.hpp"

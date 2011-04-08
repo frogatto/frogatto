@@ -2,8 +2,13 @@
 #ifndef SDL_VIDEO_OPENGL_ES
 #include <GL/glew.h>
 #endif
+#ifdef TARGET_PANDORA
+#include <GLES/gl.h>
+#include <GLES/glues.h>
+#else
 #include <GL/gl.h>
 #include <GL/glu.h>
+#endif
 #if defined(__APPLE__) && !(TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE)
 #include <OpenGL/OpenGL.h>
 #endif
@@ -62,6 +67,10 @@
 #include "wml_schema.hpp"
 #include "wml_utils.hpp"
 #include "wml_writer.hpp"
+
+#if defined(TARGET_PANDORA)
+#include "eglport.h"
+#endif
 
 namespace {
 
@@ -140,6 +149,10 @@ void print_help(const std::string& argv0)
 
 extern "C" int main(int argc, char** argv)
 {
+#if defined(TARGET_PANDORA)
+    EGL_Open();
+#endif
+
 	if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_JOYSTICK) < 0) {
 		std::cerr << "could not init SDL\n";
 		return -1;
@@ -215,6 +228,12 @@ extern "C" int main(int argc, char** argv)
 			preferences::set_load_compiled(true);
 		} else if(arg == "--no-compiled") {
 			preferences::set_load_compiled(false);
+#if defined(TARGET_PANDORA)
+		} else if(arg == "--no-fbo") {
+			preferences::set_fbo(false);
+		} else if(arg == "--no-bequ") {
+			preferences::set_bequ(false);
+#endif
 		} else if(arg == "--help" || arg == "-h") {
 			print_help(std::string(argv[0]));
 			return 0;
@@ -292,10 +311,19 @@ extern "C" int main(int argc, char** argv)
 	}
 #endif
 
+#if defined(TARGET_PANDORA)
+	if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),16,SDL_FULLSCREEN) == NULL) {
+		std::cerr << "could not set video mode\n";
+		return -1;
+	}
+    EGL_Init();
+#else
 	if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) == NULL) {
 		std::cerr << "could not set video mode\n";
 		return -1;
 	}
+#endif
+
 #endif
 
 //	srand(time(NULL));
@@ -476,6 +504,10 @@ extern "C" int main(int argc, char** argv)
 	} //end manager scope, make managers destruct before calling SDL_Quit
 
 //	controls::debug_dump_controls();
+#if defined(TARGET_PANDORA)
+    EGL_Destroy();
+#endif
+
 	SDL_Quit();
 	
 	preferences::save_preferences();

@@ -4,7 +4,11 @@
 #include <string>
 #include <vector>
 
+#ifdef TARGET_PANDORA
+#include <GLES/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 
 #include "surface.hpp"
 

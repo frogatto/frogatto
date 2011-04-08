@@ -31,7 +31,11 @@
 
 #include <stdlib.h>
 #include <SDL/SDL.h>
+#ifdef TARGET_PANDORA
+#include <GLES/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 
 #include <string>
 

@@ -6,6 +6,7 @@
 #include <iostream>
 #include <math.h>
 
+#include "preferences.hpp"
 #include "asserts.hpp"
 #include "color_utils.hpp"
 #include "foreach.hpp"
@@ -25,13 +26,21 @@ namespace {
 
 water::water()
   : zorder_(WaterZorder)
-{}
+{
+#if defined(TARGET_PANDORA)
+    init_oes();
+#endif
+}
 
 water::water(wml::const_node_ptr water_node) :
   zorder_(wml::get_int(water_node, "zorder", WaterZorder)),
   current_x_formula_(game_logic::formula::create_optional_formula(water_node->attr("current_x_formula"))),
   current_y_formula_(game_logic::formula::create_optional_formula(water_node->attr("current_y_formula")))
 {
+#if defined(TARGET_PANDORA)
+    init_oes();
+#endif
+
 	FOREACH_WML_CHILD(area_node, water_node, "area") {
 		const rect r(area_node->attr("rect"));
 		std::vector<std::string> str = util::split(area_node->attr("color"));
@@ -72,6 +81,33 @@ wml::node_ptr water::write() const
 
 	return result;
 }
+
+#if defined(TARGET_PANDORA)
+void water::init_oes( void )
+{
+    const GLubyte* pszGLExtensions;
+
+	if(preferences::use_bequ())
+    {
+        /* Retrieve GL extension string */
+        pszGLExtensions = glGetString(GL_EXTENSIONS);
+
+        /* GL_OES_framebuffer_object */
+        if (strstr((char *)pszGLExtensions, "GL_OES_blend_subtract"))
+        {
+            glBlendEquationOES = (PFNGLBLENDEQUATIONOESPROC)eglGetProcAddress("glBlendEquationOES");
+        }
+        else
+        {
+            glBlendEquationOES = NULL;
+        }
+    }
+    else
+    {
+        glBlendEquationOES = NULL;
+    }
+}
+#endif
 
 void water::add_rect(const rect& r, const unsigned char* color, variant obj)
 {
@@ -162,8 +198,11 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	unsigned char water_color[] = {a.color_[0], a.color_[1], a.color_[2], a.color_[3]};
 	
 	glBlendFunc(GL_ONE, GL_ONE);
-	#if GL_OES_blend_subtract
+	#if defined(GL_OES_blend_subtract)
 	glBlendEquationOES(GL_FUNC_REVERSE_SUBTRACT_OES);
+	#elif defined(TARGET_PANDORA)
+	if (glBlendEquationOES)
+        glBlendEquationOES(GL_FUNC_REVERSE_SUBTRACT_OES);
 	#else
 	if(GLEW_EXT_blend_equation_separate && GLEW_ARB_imaging) {
 		glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
@@ -190,8 +229,11 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	glColor4ub(water_color[0], water_color[1], water_color[2], water_color[3]);
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, sizeof(vertices)/sizeof(GLfloat)/2);
-	#if GL_OES_blend_subtract
+	#if defined(GL_OES_blend_subtract)
 	glBlendEquationOES(GL_FUNC_ADD_OES);
+    #elif defined(TARGET_PANDORA)
+	if (glBlendEquationOES)
+        glBlendEquationOES(GL_FUNC_ADD);
 	#else
 	if (GLEW_EXT_blend_equation_separate && GLEW_ARB_imaging)
 		glBlendEquation(GL_FUNC_ADD);

@@ -10,6 +10,12 @@
 #include "variant.hpp"
 #include "wml_node_fwd.hpp"
 
+#if defined(TARGET_PANDORA)
+#include <EGL/egl.h>
+#include <GLES/gl.h>
+#include <GLES/glext.h>
+#endif
+
 class level;
 
 class water
@@ -92,6 +98,11 @@ private:
 	enum { BadOffset = -100000 };
 
 	game_logic::const_formula_ptr current_x_formula_, current_y_formula_;
+
+#if defined(TARGET_PANDORA)
+    void init_oes( void );
+    PFNGLBLENDEQUATIONOESPROC glBlendEquationOES;
+#endif
 };
 
 #endif

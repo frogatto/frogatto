@@ -448,6 +448,9 @@ std::string get_user_data_dir()
 #ifndef __AMIGAOS4__
 	static const char* const current_dir = ".";
 	const char* home_str = getenv("HOME");
+#elif defined(TARGET_PANDORA)
+	static const char* const current_dir = ".";
+	const char* home_str = getenv("PWD");
 #else
 	static const char* const current_dir = " ";
 	const char* home_str = "PROGDIR:";

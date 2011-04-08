@@ -1,7 +1,11 @@
 #ifndef WEATHER_PARTICLE_SYSTEM_HPP_INCLUDED
 #define WEATHER_PARTICLE_SYSTEM_HPP_INCLUDED
 
+#ifdef TARGET_PANDORA
+#include <GLES/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 
 #include <deque>
 
