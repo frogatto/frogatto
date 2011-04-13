@@ -509,7 +509,6 @@ void level::finish_loading()
 		const int seg_width = segment_width_ > 0 ? segment_width_ : boundaries_.w();
 		const int seg_height = segment_height_ > 0 ? segment_height_ : boundaries_.h();
 
-		int segment_number = 0;
 		for(int y = boundaries_.y(); y < boundaries_.y2(); y += seg_height) {
 			for(int x = boundaries_.x(); x < boundaries_.x2(); x += seg_width) {
 				level* sub_level = new level(*this);
@@ -531,7 +530,6 @@ void level::finish_loading()
 				data.xoffset = data.yoffset = 0;
 				data.active = false;
 				sub_levels.push_back(data);
-				++segment_number;
 			}
 		}
 
@@ -629,7 +627,7 @@ void level::finish_loading()
 			for(int x = boundaries_.x(); x < boundaries_.x2(); x += seg_width) {
 				const std::vector<entity_ptr> objects = get_chars();
 				foreach(const entity_ptr& obj, objects) {
-					if(!obj->is_human() && obj->midpoint().x >= x && obj->midpoint().x < x + segment_width_ && obj->midpoint().y >= boundaries_.y() && obj->midpoint().y < boundaries_.y2()) {
+					if(!obj->is_human() && obj->midpoint().x >= x && obj->midpoint().x < x + seg_width && obj->midpoint().y >= y && obj->midpoint().y < y + seg_height) {
 						sub_levels[segment_number].lvl->add_character(obj);
 						remove_character(obj);
 					}
@@ -637,6 +635,8 @@ void level::finish_loading()
 
 				++segment_number;
 			}
+
+			++segment_number;
 		}
 	}
 }
