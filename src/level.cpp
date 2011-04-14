@@ -628,6 +628,7 @@ void level::finish_loading()
 				const std::vector<entity_ptr> objects = get_chars();
 				foreach(const entity_ptr& obj, objects) {
 					if(!obj->is_human() && obj->midpoint().x >= x && obj->midpoint().x < x + seg_width && obj->midpoint().y >= y && obj->midpoint().y < y + seg_height) {
+						ASSERT_INDEX_INTO_VECTOR(segment_number, sub_levels);
 						sub_levels[segment_number].lvl->add_character(obj);
 						remove_character(obj);
 					}
@@ -635,8 +636,6 @@ void level::finish_loading()
 
 				++segment_number;
 			}
-
-			++segment_number;
 		}
 	}
 }
