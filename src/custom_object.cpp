@@ -2130,16 +2130,24 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	}
 	
 	case CUSTOM_OBJECT_MIDPOINT_X: {
+		const int start_x = centi_x();
 		const int current_x = x() + current_frame().width()/2;
 		const int xdiff = current_x - x();
 		set_pos(value.as_int() - xdiff, y());
+		if(entity_collides(level::current(), *this, MOVE_NONE) && entity_in_current_level(this)) {
+			set_centi_x(start_x);
+		}
 		break;
 	}
 
 	case CUSTOM_OBJECT_MIDPOINT_Y: {
+		const int start_y = centi_y();
 		const int current_y = y() + current_frame().height()/2;
 		const int ydiff = current_y - y();
 		set_pos(x(), value.as_int() - ydiff);
+		if(entity_collides(level::current(), *this, MOVE_NONE) && entity_in_current_level(this)) {
+			set_centi_y(start_y);
+		}
 		break;
 	}
 
