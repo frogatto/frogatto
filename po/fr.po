@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-26 04:37-0300\n"
+"POT-Creation-Date: 2011-04-16 02:02-0300\n"
 "PO-Revision-Date: 2011-01-19 16:54+0000\n"
 "Last-Translator: manu <emmanuel.fujioka@free.fr>\n"
 "Language-Team: French <>\n"
@@ -107,18 +107,26 @@ msgid "Bound, bound, bound and rebound!"
 msgstr ""
 
 #: data/achievements.cfg:92
-msgid "Dream on..."
+msgid "Frogourmet"
 msgstr ""
 
 #: data/achievements.cfg:93
-msgid "aka. The infinite cage."
+msgid "Try to eat all kinds of enemies."
 msgstr ""
 
 #: data/achievements.cfg:100
-msgid "Geosynchronous Orbit Achieved"
+msgid "Dream on..."
 msgstr ""
 
 #: data/achievements.cfg:101
+msgid "aka. The infinite cage."
+msgstr ""
+
+#: data/achievements.cfg:108
+msgid "Geosynchronous Orbit Achieved"
+msgstr ""
+
+#: data/achievements.cfg:109
 msgid "Now applying artificial gravity."
 msgstr ""
 
@@ -171,24 +179,56 @@ msgstr "Temps:"
 msgid "Well, that's that."
 msgstr "Eh bien. voilà."
 
+#: data/level/arcade-blocks.cfg:217
+#, fuzzy
+msgid "You got {level.player.score} points in the Blocks Run!"
+msgstr ""
+"Vous avez monté {level.player.vars.score} pieds dans le conduit de "
+"maintenance!"
+
+#: data/level/arcade-blocks.cfg:218
+#: data/level/arcade-down-the-rabbithall.cfg:821
+#: data/level/arcade-maintenance-shaft.cfg:2088
+#: data/level/arcade-the-long-haul.cfg:632
+#: data/objects/effects/control/level_controller_coin_race.cfg:33
+msgid "This is a new high score!"
+msgstr "C'est un nouveau record!"
+
+#: data/level/arcade-blocks.cfg:219
+msgid "You got {level.player.score} points in the Blocks Run."
+msgstr ""
+
+#: data/level/arcade-blocks.cfg:220
+#, fuzzy
+msgid "The high score is {registry.arcade_blocks_high_score}."
+msgstr "Le record est de {registry.arcade_maintenance_shaft_high_score} pieds."
+
+#: data/level/arcade-down-the-rabbithall.cfg:820
+#: data/level/arcade-down-the-rabbithall.cfg:823
+#, fuzzy
+msgid "You made it {level.player.vars.score} cm down the rabbithall!"
+msgstr ""
+"Vous avez monté {level.player.vars.score} pieds dans le conduit de "
+"maintenance!"
+
+#: data/level/arcade-down-the-rabbithall.cfg:824
+#, fuzzy
+msgid "The high score is {registry.arcade_down_the_rabbithall_high_score} cm."
+msgstr "Le record est de {registry.arcade_maintenance_shaft_high_score} pieds."
+
 #: data/level/arcade-maintenance-shaft.cfg:13
 #: data/level/titlescreen-arcade.cfg:253
 msgid "Maintenance Shaft"
 msgstr "Conduit de maintenance"
 
-#: data/level/arcade-maintenance-shaft.cfg:1665
-#: data/level/arcade-maintenance-shaft.cfg:1668
+#: data/level/arcade-maintenance-shaft.cfg:2087
+#: data/level/arcade-maintenance-shaft.cfg:2090
 msgid "You made it {level.player.vars.score} feet up the maintenance shaft!"
 msgstr ""
 "Vous avez monté {level.player.vars.score} pieds dans le conduit de "
 "maintenance!"
 
-#: data/level/arcade-maintenance-shaft.cfg:1666
-#: data/objects/effects/control/level_controller_coin_race.cfg:33
-msgid "This is a new high score!"
-msgstr "C'est un nouveau record!"
-
-#: data/level/arcade-maintenance-shaft.cfg:1669
+#: data/level/arcade-maintenance-shaft.cfg:2091
 msgid "The high score is {registry.arcade_maintenance_shaft_high_score} feet."
 msgstr "Le record est de {registry.arcade_maintenance_shaft_high_score} pieds."
 
@@ -197,15 +237,63 @@ msgstr "Le record est de {registry.arcade_maintenance_shaft_high_score} pieds."
 msgid "The Long Haul"
 msgstr "La Longue Traversée"
 
+#: data/level/arcade-the-long-haul.cfg:631
+#: data/level/arcade-the-long-haul.cfg:634
+#, fuzzy
+msgid "You scored {level.player.vars.score} points in the long haul!"
+msgstr ""
+"Vous avez monté {level.player.vars.score} pieds dans le conduit de "
+"maintenance!"
+
+#: data/level/arcade-the-long-haul.cfg:635
+#, fuzzy
+msgid "The high score is {registry.arcade_the_long_haul_high_score} points."
+msgstr "Le record est de {registry.arcade_maintenance_shaft_high_score} pieds."
+
 #: data/level/arcade-wild-new-wonder.cfg:12
 #: data/level/titlescreen-arcade.cfg:251
 msgid "Wild New Wonder"
 msgstr "Nouvelle Merveille Sauvage"
 
+#: data/level/arcade-wild-new-wonder.cfg:2520
+#: data/level/arcade-wild-new-wonder.cfg:2523
+#, fuzzy
+msgid "You climbed {level.player.vars.score} dm in the Wild New Wonder!"
+msgstr ""
+"Vous avez monté {level.player.vars.score} pieds dans le conduit de "
+"maintenance!"
+
+#: data/level/arcade-wild-new-wonder.cfg:2521
+#, fuzzy
+msgid "This is a new high!"
+msgstr "C'est un nouveau record!"
+
+#: data/level/arcade-wild-new-wonder.cfg:2524
+#, fuzzy
+msgid "The highest climbed is {registry.arcade_wild_new_wonder_high_score} dm."
+msgstr "Le record est de {registry.arcade_maintenance_shaft_high_score} pieds."
+
 #: data/level/arcade_upper_deck.cfg:12 data/level/titlescreen-arcade.cfg:252
 #, fuzzy
 msgid "Upper Deck"
 msgstr "Fin de l'Ascension"
+
+#: data/level/arcade_upper_deck.cfg:2081 data/level/arcade_upper_deck.cfg:2084
+#, fuzzy
+msgid "You climbed {level.player.vars.score} dm on the Upper Deck!"
+msgstr ""
+"Vous avez monté {level.player.vars.score} pieds dans le conduit de "
+"maintenance!"
+
+#: data/level/arcade_upper_deck.cfg:2082
+#, fuzzy
+msgid "This is a new record!"
+msgstr "C'est un nouveau record!"
+
+#: data/level/arcade_upper_deck.cfg:2085
+#, fuzzy
+msgid "The highest climbed is {registry.arcade_upper_deck_high_score} dm."
+msgstr "Le record est de {registry.arcade_maintenance_shaft_high_score} pieds."
 
 #: data/level/autumn-town.cfg:16
 msgid "Autumn Town"
@@ -3417,11 +3505,11 @@ msgstr "Concepteur de Niveaux Mineurs"
 
 #: data/level/tea-with-milgram.cfg:353
 #, fuzzy
-msgid "Achievements"
+msgid "Achievement Programming"
 msgstr "Accomplissement débloqué !"
 
 #: data/level/tea-with-milgram.cfg:354
-msgid "Physics & Geometries"
+msgid "Physics, Geometry Scripting"
 msgstr ""
 
 #: data/level/tea-with-milgram.cfg:355
@@ -3651,13 +3739,35 @@ msgstr ""
 msgid "Tempo Outskirts"
 msgstr ""
 
-#: data/level/tempo-outskirts.cfg:1737
+#: data/level/tempo-outskirts.cfg:1860
+msgid ""
+"It says, Beaver Bridge.\n"
+"Tempo Village is just down the road."
+msgstr ""
+
+#: data/level/tempo-outskirts.cfg:2236
+msgid ""
+"It says,\n"
+"\"Storage.  Keep out!\""
+msgstr ""
+
+#: data/level/tempo-outskirts.cfg:2238
+msgid "Must refer to this tree-house ... thing."
+msgstr ""
+
+#: data/level/tempo-outskirts.cfg:2240
+msgid ""
+"I don't see a way in, so I guess\n"
+"that won't be hard to abide by."
+msgstr ""
+
+#: data/level/tempo-outskirts.cfg:2273
 msgid ""
 "Whoa..\n"
 "That river is out of control."
 msgstr ""
 
-#: data/level/tempo-outskirts.cfg:1739
+#: data/level/tempo-outskirts.cfg:2275
 msgid ""
 "If I dive in there,\n"
 "I'll get smashed to bits!"
@@ -3685,20 +3795,20 @@ msgid "Each machine has a different arcade-style challenge."
 msgstr "Relevez un défi de type arcade différent sur chaque machine."
 
 #: data/level/titlescreen-arcade.cfg:182
-msgid "These don't affect story-mode.  Enjoy!"
+msgid "Show us what you can do!"
 msgstr ""
-"Ils n'affectent pas le jeu en mode histoire.\n"
-"Profitez-en !"
 
 #: data/level/titlescreen-arcade.cfg:220
 msgid "EXIT"
 msgstr "SORTIR"
 
 #: data/level/titlescreen-arcade.cfg:250 data/level/titlescreen-arcade.cfg:274
+#: data/level/titlescreen-arcade.cfg:419
 msgid "Select a level:"
 msgstr "Choisissez un niveau:"
 
 #: data/level/titlescreen-arcade.cfg:254 data/level/titlescreen-arcade.cfg:278
+#: data/level/titlescreen-arcade.cfg:421
 msgid "(cancel)"
 msgstr "(annuler)"
 
@@ -3707,7 +3817,7 @@ msgid "Down the RabbitHall"
 msgstr "La Couloir du Lapin"
 
 #: data/level/titlescreen-arcade.cfg:277
-msgid "Coin Race"
+msgid "Block Run"
 msgstr ""
 
 #: data/level/titlescreen-arcade.cfg:306
@@ -3717,6 +3827,10 @@ msgstr "GRIMPER"
 #: data/level/titlescreen-arcade.cfg:344
 msgid "RUN"
 msgstr "COURIR"
+
+#: data/level/titlescreen-arcade.cfg:420
+msgid "Coin Race"
+msgstr ""
 
 #: data/level/titlescreen-test.cfg:284 data/level/titlescreen.cfg:284
 msgid "LOAD GAME"
@@ -3972,6 +4086,15 @@ msgstr "À Contre Vent"
 msgid "Lower Ascent"
 msgstr "Début de l'Ascension"
 
+#: data/level/wm-ascent-1.cfg:2207
+#, fuzzy
+msgid "This Way to Squirrel Mining"
+msgstr "Dans cette direction, la Mine des Écureuils."
+
+#: data/level/wm-ascent-1.cfg:2208
+msgid "Caution: Rough Trail"
+msgstr ""
+
 #: data/level/wm-ascent-2.cfg:13
 msgid "Upper Ascent"
 msgstr "Fin de l'Ascension"
@@ -4070,7 +4193,7 @@ msgstr "Alors, et cette prime...?"
 msgid "Oh, yes. Here are the coins."
 msgstr "Oh oui, foilà les pièzes"
 
-#: data/level/wm-h0.0-lift.cfg:584 data/level/wm-ll.cfg:1445
+#: data/level/wm-h0.0-lift.cfg:584 data/level/wm-ll.cfg:1460
 msgid "Thanks."
 msgstr "Merci."
 
@@ -4078,7 +4201,7 @@ msgstr "Merci."
 msgid "The Lower Landing"
 msgstr "Le Palier Inférieur"
 
-#: data/level/wm-ll.cfg:1381
+#: data/level/wm-ll.cfg:1396
 msgid ""
 "Hi, I'm Frogatto.\n"
 "What are you doing?"
@@ -4086,7 +4209,7 @@ msgstr ""
 "Salut, moi c'est Frogatto.\n"
 "Qu'est-ce que tu fais?"
 
-#: data/level/wm-ll.cfg:1382
+#: data/level/wm-ll.cfg:1397
 msgid ""
 "Oh, a bit of a storm through here.\n"
 "I'm cleaning up and repairing\n"
@@ -4098,7 +4221,7 @@ msgstr ""
 "Mais, je...\n"
 "Allez-vous la Tête de Bois ?\""
 
-#: data/level/wm-ll.cfg:1386
+#: data/level/wm-ll.cfg:1401
 msgid ""
 "Hi, Frogatto. I'm just rebuilding\n"
 "the bridges down here, now.\n"
@@ -4108,7 +4231,7 @@ msgstr ""
 "reconstruire les ponts en contrebas.\n"
 "Cela va prendre un peu de temps."
 
-#: data/level/wm-ll.cfg:1390
+#: data/level/wm-ll.cfg:1405
 msgid ""
 "Oh, by the way, thanks for taking\n"
 "that rope up. Here's the 5 coins."
@@ -4116,7 +4239,7 @@ msgstr ""
 "Oh, au fait, merci d'avoir amener\n"
 "la corde en haut. Voilà  tes 5 pièces."
 
-#: data/level/wm-ll.cfg:1399
+#: data/level/wm-ll.cfg:1414
 msgid ""
 "1: Yes. What's up?\n"
 "2: Woodenhead? What's that?"
@@ -4124,38 +4247,38 @@ msgstr ""
 "1 : Oui. Qu'y a-t-il ?\n"
 "2 : La Tête de Bois ? C'est quoi ?"
 
-#: data/level/wm-ll.cfg:1400 data/level/wm-ll.cfg:1476
+#: data/level/wm-ll.cfg:1415 data/level/wm-ll.cfg:1491
 #: data/level/wm-town.cfg:1085 data/level/wm-town.cfg:2131
 #: data/level/wm-town.cfg:2136 data/level/wm-town.cfg:2184
 msgid "Opt. 1"
 msgstr "Opt. 1"
 
-#: data/level/wm-ll.cfg:1401 data/level/wm-ll.cfg:1477
+#: data/level/wm-ll.cfg:1416 data/level/wm-ll.cfg:1492
 #: data/level/wm-town.cfg:1093 data/level/wm-town.cfg:2151
 #: data/level/wm-town.cfg:2179 data/level/wm-town.cfg:2245
 msgid "Opt. 2"
 msgstr "Opt. 2"
 
-#: data/level/wm-ll.cfg:1402 data/level/wm-ll.cfg:1430
-#: data/level/wm-ll.cfg:1479 data/level/wm-town.cfg:1120
+#: data/level/wm-ll.cfg:1417 data/level/wm-ll.cfg:1445
+#: data/level/wm-ll.cfg:1494 data/level/wm-town.cfg:1120
 #: data/level/wm-town.cfg:2169 data/level/wm-town.cfg:2269
 #: data/level/wm-town.cfg:2283
 msgid "Cancel"
 msgstr "Annuler"
 
-#: data/level/wm-ll.cfg:1403
+#: data/level/wm-ll.cfg:1418
 msgid "Test"
 msgstr "Test"
 
-#: data/level/wm-ll.cfg:1408
+#: data/level/wm-ll.cfg:1423
 msgid "It's a secret!"
 msgstr "C'est un secret !"
 
-#: data/level/wm-ll.cfg:1412
+#: data/level/wm-ll.cfg:1427
 msgid "I'm afraid I'm not going that way."
 msgstr "J'ai bien peur de ne pas aller par là."
 
-#: data/level/wm-ll.cfg:1413
+#: data/level/wm-ll.cfg:1428
 msgid ""
 "Sorry to have bothered you, then.\n"
 "Have a nice day."
@@ -4163,7 +4286,7 @@ msgstr ""
 "Désolé de t'avoir déranger, alors.\n"
 "Bonne journée."
 
-#: data/level/wm-ll.cfg:1416
+#: data/level/wm-ll.cfg:1431
 msgid ""
 "Those are hoverpads. We use them\n"
 "for temporary stairs and small elevators."
@@ -4173,7 +4296,7 @@ msgstr ""
 "escaliers temporaires\n"
 "et petits ascenseurs."
 
-#: data/level/wm-ll.cfg:1418
+#: data/level/wm-ll.cfg:1433
 msgid ""
 "Why not just use one of those to\n"
 "take the medium rope up?"
@@ -4181,7 +4304,7 @@ msgstr ""
 "Pourquoi ne pas simplement en utiliser un\n"
 "pour monter la corde moyenne?"
 
-#: data/level/wm-ll.cfg:1419
+#: data/level/wm-ll.cfg:1434
 msgid ""
 "Tried it. They only get about 60\n"
 "feet off the ground before they\n"
@@ -4191,17 +4314,17 @@ msgstr ""
 "\"une vingtaine de mètres avant d'être\n"
 "\"à cours de vapeur."
 
-#: data/level/wm-ll.cfg:1421
+#: data/level/wm-ll.cfg:1436
 msgid "Oh, too bad."
 msgstr "Oh, dommage."
 
-#: data/level/wm-ll.cfg:1422
+#: data/level/wm-ll.cfg:1437
 msgid "So, will you take the rope up?"
 msgstr ""
 "Alors, est-ce que\n"
 "tu peux monter cette corde ?"
 
-#: data/level/wm-ll.cfg:1426
+#: data/level/wm-ll.cfg:1441
 msgid ""
 "3: What's your name?\n"
 "4: What are those grey things?"
@@ -4209,28 +4332,28 @@ msgstr ""
 "3 : Quel est ton nom ?\n"
 "4 : Que sont ces choses grises ?"
 
-#: data/level/wm-ll.cfg:1427 data/level/wm-town.cfg:1111
+#: data/level/wm-ll.cfg:1442 data/level/wm-town.cfg:1111
 #: data/level/wm-town.cfg:2261
 msgid "Opt. 3"
 msgstr "Opt. 3"
 
-#: data/level/wm-ll.cfg:1428
+#: data/level/wm-ll.cfg:1443
 msgid "Opt. 4"
 msgstr "Opt. 4"
 
-#: data/level/wm-ll.cfg:1429
+#: data/level/wm-ll.cfg:1444
 msgid "Less"
 msgstr "Moins"
 
-#: data/level/wm-ll.cfg:1434
+#: data/level/wm-ll.cfg:1449
 msgid "I am Rajit. And you?"
 msgstr "Je m'appelle Rajit. Et toi ?"
 
-#: data/level/wm-ll.cfg:1436
+#: data/level/wm-ll.cfg:1451
 msgid "I am Frogatto, myself."
 msgstr "Moi c'est Frogatto."
 
-#: data/level/wm-ll.cfg:1437
+#: data/level/wm-ll.cfg:1452
 msgid ""
 "So, Frogatto, will you take this\n"
 "rope up to Woodenhead?"
@@ -4239,7 +4362,7 @@ msgstr ""
 "monter cette corde\n"
 "jusqu'à la Tête de Bois ?"
 
-#: data/level/wm-ll.cfg:1441
+#: data/level/wm-ll.cfg:1456
 msgid ""
 "Great! Here is the rope.\n"
 "*Rajit hands you the rope.*"
@@ -4247,13 +4370,13 @@ msgstr ""
 "Super ! Voilà  la corde.\n"
 "*Rajit vous donne la corde.*"
 
-#: data/level/wm-ll.cfg:1444
+#: data/level/wm-ll.cfg:1459
 msgid "I'll have this up there soon."
 msgstr ""
 "Ça sera fait en deux coups\n"
 "de cuillère à  pot."
 
-#: data/level/wm-ll.cfg:1448
+#: data/level/wm-ll.cfg:1463
 msgid ""
 "Sir! I am but a humble working\n"
 "man! How am I supposed to pay you?"
@@ -4262,7 +4385,7 @@ msgstr ""
 "qu'un modeste ouvrier !\n"
 "Comment pourrais-je vous payer ?"
 
-#: data/level/wm-ll.cfg:1450
+#: data/level/wm-ll.cfg:1465
 msgid ""
 "I notice a distinct absence of\n"
 "coins around here..."
@@ -4270,7 +4393,7 @@ msgstr ""
 "Je remarque une absence visible\n"
 "de pièces par ici..."
 
-#: data/level/wm-ll.cfg:1451
+#: data/level/wm-ll.cfg:1466
 msgid ""
 "Eh... I suppose I can let you\n"
 "have 5 coins for the service.\n"
@@ -4280,11 +4403,11 @@ msgstr ""
 "vous laisser 5 pièces pour le service.\n"
 "Il n'y en avait pas beaucoup par ici."
 
-#: data/level/wm-ll.cfg:1453
+#: data/level/wm-ll.cfg:1468
 msgid "Done!"
 msgstr "C'est fait !"
 
-#: data/level/wm-ll.cfg:1457
+#: data/level/wm-ll.cfg:1472
 msgid ""
 "I'm *trying* to fix the elevator.\n"
 "The cable got tangled with a tree\n"
@@ -4294,7 +4417,7 @@ msgstr ""
 "Le câble s'est emmêlé dans un arbre\n"
 "durant la tempête, et il a dû"
 
-#: data/level/wm-ll.cfg:1459
+#: data/level/wm-ll.cfg:1474
 msgid ""
 "cut loose. The idea was that I'd\n"
 "fly up with a small, light rope,\n"
@@ -4314,17 +4437,17 @@ msgstr ""
 "cette corde plus solide\n"
 "pour tirer le câble en acier de l'ascenseur."
 
-#: data/level/wm-ll.cfg:1461
+#: data/level/wm-ll.cfg:1476
 msgid "So? What's holding you up?"
 msgstr "Et? Qu'est-ce qui t'en empêche?"
 
-#: data/level/wm-ll.cfg:1463
+#: data/level/wm-ll.cfg:1478
 msgid ""
 "Or, in this case...\n"
 "holding you down?"
 msgstr "Faudrait que tu te dépêches!"
 
-#: data/level/wm-ll.cfg:1464
+#: data/level/wm-ll.cfg:1479
 msgid ""
 "That's not funny.\n"
 "Anyhow, I can get the light rope\n"
@@ -4339,11 +4462,11 @@ msgstr ""
 "je n'ai pas pris une corde moyenne\n"
 "assez légère."
 
-#: data/level/wm-ll.cfg:1466
+#: data/level/wm-ll.cfg:1481
 msgid "You've lost me. Again..?"
 msgstr "Tu m'as perdu. Répète?"
 
-#: data/level/wm-ll.cfg:1467
+#: data/level/wm-ll.cfg:1482
 msgid ""
 "In short, the light rope isn't\n"
 "strong enough to lift the medium\n"
@@ -4355,7 +4478,7 @@ msgstr ""
 "moyenne. Quelqu'un va devoir monter\n"
 "cette corde-là à pied."
 
-#: data/level/wm-ll.cfg:1468
+#: data/level/wm-ll.cfg:1483
 msgid ""
 "I've checked out the path ahead,\n"
 "but\tI can't get through it."
@@ -4363,7 +4486,7 @@ msgstr ""
 "J'ai vérifier le chemin un peu plus loin,\n"
 "mais\tje n'arrive pas à traverser."
 
-#: data/level/wm-ll.cfg:1470
+#: data/level/wm-ll.cfg:1485
 msgid ""
 "So, for the good of the town,\n"
 "you want me to take up the medium\n"
@@ -4372,7 +4495,7 @@ msgstr ""
 "Donc, pour le bien de la ville,\n"
 "tu veux que je monte la corde moyenne ?"
 
-#: data/level/wm-ll.cfg:1471
+#: data/level/wm-ll.cfg:1486
 msgid ""
 "You know it. If you tell the\n"
 "guard there I sent you, he'll\n"
@@ -4382,7 +4505,7 @@ msgstr ""
 "que c'est moi qui t'envoie,\n"
 "il te laissera passer."
 
-#: data/level/wm-ll.cfg:1475
+#: data/level/wm-ll.cfg:1490
 msgid ""
 "1: Sure, I'm on it!\n"
 "2: Pay me."
@@ -4390,11 +4513,11 @@ msgstr ""
 "1 : Bien sûr. Je m'y mets !\n"
 "2 : Paie moi."
 
-#: data/level/wm-ll.cfg:1478 data/level/wm-town.cfg:2258
+#: data/level/wm-ll.cfg:1493 data/level/wm-town.cfg:2258
 msgid "More"
 msgstr "Plus"
 
-#: data/level/wm-ll.cfg:1483
+#: data/level/wm-ll.cfg:1498
 msgid ""
 "You don't know of it? Hmh. Well,\n"
 "it's a small town in the tops of\n"
@@ -5140,47 +5263,47 @@ msgid "(+"
 msgstr ""
 
 #: data/objects/experimental/civ/civ_board.cfg:203
-#: data/objects/experimental/civ/civ_board.cfg:295
+#: data/objects/experimental/civ/civ_board.cfg:299
 msgid "(+?) VS "
 msgstr ""
 
 #: data/objects/experimental/civ/civ_board.cfg:203
-#: data/objects/experimental/civ/civ_board.cfg:316
 #: data/objects/experimental/civ/civ_board.cfg:320
+#: data/objects/experimental/civ/civ_board.cfg:324
 msgid ")"
 msgstr ""
 
 #: data/objects/experimental/civ/civ_board.cfg:203
-#: data/objects/experimental/civ/civ_board.cfg:295
+#: data/objects/experimental/civ/civ_board.cfg:299
 msgid "Armies:"
 msgstr ""
 
-#: data/objects/experimental/civ/civ_board.cfg:294
+#: data/objects/experimental/civ/civ_board.cfg:298
 msgid " VS "
 msgstr ""
 
-#: data/objects/experimental/civ/civ_board.cfg:295
+#: data/objects/experimental/civ/civ_board.cfg:299
 msgid "(+0)"
 msgstr ""
 
-#: data/objects/experimental/civ/civ_board.cfg:316
 #: data/objects/experimental/civ/civ_board.cfg:320
+#: data/objects/experimental/civ/civ_board.cfg:324
 msgid " to "
 msgstr ""
 
-#: data/objects/experimental/civ/civ_board.cfg:316
+#: data/objects/experimental/civ/civ_board.cfg:320
 msgid "'s warriors have fled! ("
 msgstr ""
 
-#: data/objects/experimental/civ/civ_board.cfg:320
+#: data/objects/experimental/civ/civ_board.cfg:324
 msgid " was destroyed by "
 msgstr ""
 
-#: data/objects/experimental/civ/civ_board.cfg:320
+#: data/objects/experimental/civ/civ_board.cfg:324
 msgid "'s warriors! ("
 msgstr ""
 
-#: data/objects/experimental/civ/civ_board.cfg:320
+#: data/objects/experimental/civ/civ_board.cfg:324
 msgid "A "
 msgstr ""
 
@@ -5450,27 +5573,27 @@ msgstr "Attaque"
 msgid "Back"
 msgstr "Retour"
 
-#: src/draw_scene.cpp:357
+#: src/draw_scene.cpp:362
 msgid "Achievement Unlocked!"
 msgstr "Accomplissement débloqué !"
 
-#: src/main.cpp:354
+#: src/main.cpp:382
 msgid "Initializing custom object"
 msgstr ""
 
-#: src/main.cpp:356
+#: src/main.cpp:384
 msgid "Initializing custom object functions"
 msgstr ""
 
-#: src/main.cpp:358
+#: src/main.cpp:386
 msgid "Initializing tiles"
 msgstr ""
 
-#: src/main.cpp:361 src/main.cpp:365
+#: src/main.cpp:389 src/main.cpp:393
 msgid "Initializing GUI"
 msgstr ""
 
-#: src/main.cpp:371
+#: src/main.cpp:399
 msgid "Loading level"
 msgstr "Chargement du niveau"
 
@@ -5505,6 +5628,11 @@ msgstr "Inverser A et B"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "FeinteOuverte"
+
+#~ msgid "These don't affect story-mode.  Enjoy!"
+#~ msgstr ""
+#~ "Ils n'affectent pas le jeu en mode histoire.\n"
+#~ "Profitez-en !"
 
 #~ msgid "Object Scripting"
 #~ msgstr "Scripteur d'objets"
@@ -5544,9 +5672,6 @@ msgstr "FeinteOuverte"
 
 #~ msgid "ACME(tm) FLOATING TEXT SIGN"
 #~ msgstr "ACME(tm) BULLE DE TEXTE"
-
-#~ msgid "This Way To Squirrel Mining."
-#~ msgstr "Dans cette direction, la Mine des Écureuils."
 
 #~ msgid "Caution: Sudden Dropoffs."
 #~ msgstr "Attention: Trouées Subites"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-26 04:37-0300\n"
+"POT-Creation-Date: 2011-04-16 02:02-0300\n"
 "PO-Revision-Date: 2011-01-21 16:33+0000\n"
 "Last-Translator: CloudiDust <cloudidust@gmail.com>\n"
 "Language-Team: Chinese (China) <None>\n"
@@ -107,18 +107,26 @@ msgid "Bound, bound, bound and rebound!"
 msgstr ""
 
 #: data/achievements.cfg:92
-msgid "Dream on..."
+msgid "Frogourmet"
 msgstr ""
 
 #: data/achievements.cfg:93
-msgid "aka. The infinite cage."
+msgid "Try to eat all kinds of enemies."
 msgstr ""
 
 #: data/achievements.cfg:100
-msgid "Geosynchronous Orbit Achieved"
+msgid "Dream on..."
 msgstr ""
 
 #: data/achievements.cfg:101
+msgid "aka. The infinite cage."
+msgstr ""
+
+#: data/achievements.cfg:108
+msgid "Geosynchronous Orbit Achieved"
+msgstr ""
+
+#: data/achievements.cfg:109
 msgid "Now applying artificial gravity."
 msgstr ""
 
@@ -170,22 +178,50 @@ msgstr "时间："
 msgid "Well, that's that."
 msgstr "嘛，就这样了。"
 
+#: data/level/arcade-blocks.cfg:217
+#, fuzzy
+msgid "You got {level.player.score} points in the Blocks Run!"
+msgstr "你在维修管道里成功前进了 {level.player.vars.score} 英尺！ "
+
+#: data/level/arcade-blocks.cfg:218
+#: data/level/arcade-down-the-rabbithall.cfg:821
+#: data/level/arcade-maintenance-shaft.cfg:2088
+#: data/level/arcade-the-long-haul.cfg:632
+#: data/objects/effects/control/level_controller_coin_race.cfg:33
+msgid "This is a new high score!"
+msgstr "这是一个新纪录！"
+
+#: data/level/arcade-blocks.cfg:219
+msgid "You got {level.player.score} points in the Blocks Run."
+msgstr ""
+
+#: data/level/arcade-blocks.cfg:220
+#, fuzzy
+msgid "The high score is {registry.arcade_blocks_high_score}."
+msgstr "最高纪录是 {registry.arcade_maintenance_shaft_high_score} 英尺。 "
+
+#: data/level/arcade-down-the-rabbithall.cfg:820
+#: data/level/arcade-down-the-rabbithall.cfg:823
+#, fuzzy
+msgid "You made it {level.player.vars.score} cm down the rabbithall!"
+msgstr "你在维修管道里成功前进了 {level.player.vars.score} 英尺！ "
+
+#: data/level/arcade-down-the-rabbithall.cfg:824
+#, fuzzy
+msgid "The high score is {registry.arcade_down_the_rabbithall_high_score} cm."
+msgstr "最高纪录是 {registry.arcade_maintenance_shaft_high_score} 英尺。 "
+
 #: data/level/arcade-maintenance-shaft.cfg:13
 #: data/level/titlescreen-arcade.cfg:253
 msgid "Maintenance Shaft"
 msgstr "维修管道"
 
-#: data/level/arcade-maintenance-shaft.cfg:1665
-#: data/level/arcade-maintenance-shaft.cfg:1668
+#: data/level/arcade-maintenance-shaft.cfg:2087
+#: data/level/arcade-maintenance-shaft.cfg:2090
 msgid "You made it {level.player.vars.score} feet up the maintenance shaft!"
 msgstr "你在维修管道里成功前进了 {level.player.vars.score} 英尺！ "
 
-#: data/level/arcade-maintenance-shaft.cfg:1666
-#: data/objects/effects/control/level_controller_coin_race.cfg:33
-msgid "This is a new high score!"
-msgstr "这是一个新纪录！"
-
-#: data/level/arcade-maintenance-shaft.cfg:1669
+#: data/level/arcade-maintenance-shaft.cfg:2091
 msgid "The high score is {registry.arcade_maintenance_shaft_high_score} feet."
 msgstr "最高纪录是 {registry.arcade_maintenance_shaft_high_score} 英尺。 "
 
@@ -194,14 +230,56 @@ msgstr "最高纪录是 {registry.arcade_maintenance_shaft_high_score} 英尺。
 msgid "The Long Haul"
 msgstr "长途运输"
 
+#: data/level/arcade-the-long-haul.cfg:631
+#: data/level/arcade-the-long-haul.cfg:634
+#, fuzzy
+msgid "You scored {level.player.vars.score} points in the long haul!"
+msgstr "你在维修管道里成功前进了 {level.player.vars.score} 英尺！ "
+
+#: data/level/arcade-the-long-haul.cfg:635
+#, fuzzy
+msgid "The high score is {registry.arcade_the_long_haul_high_score} points."
+msgstr "最高纪录是 {registry.arcade_maintenance_shaft_high_score} 英尺。 "
+
 #: data/level/arcade-wild-new-wonder.cfg:12
 #: data/level/titlescreen-arcade.cfg:251
 msgid "Wild New Wonder"
 msgstr "荒野奇观"
 
+#: data/level/arcade-wild-new-wonder.cfg:2520
+#: data/level/arcade-wild-new-wonder.cfg:2523
+#, fuzzy
+msgid "You climbed {level.player.vars.score} dm in the Wild New Wonder!"
+msgstr "你在维修管道里成功前进了 {level.player.vars.score} 英尺！ "
+
+#: data/level/arcade-wild-new-wonder.cfg:2521
+#, fuzzy
+msgid "This is a new high!"
+msgstr "这是一个新纪录！"
+
+#: data/level/arcade-wild-new-wonder.cfg:2524
+#, fuzzy
+msgid "The highest climbed is {registry.arcade_wild_new_wonder_high_score} dm."
+msgstr "最高纪录是 {registry.arcade_maintenance_shaft_high_score} 英尺。 "
+
 #: data/level/arcade_upper_deck.cfg:12 data/level/titlescreen-arcade.cfg:252
 msgid "Upper Deck"
 msgstr "上段甲板"
+
+#: data/level/arcade_upper_deck.cfg:2081 data/level/arcade_upper_deck.cfg:2084
+#, fuzzy
+msgid "You climbed {level.player.vars.score} dm on the Upper Deck!"
+msgstr "你在维修管道里成功前进了 {level.player.vars.score} 英尺！ "
+
+#: data/level/arcade_upper_deck.cfg:2082
+#, fuzzy
+msgid "This is a new record!"
+msgstr "这是一个新纪录！"
+
+#: data/level/arcade_upper_deck.cfg:2085
+#, fuzzy
+msgid "The highest climbed is {registry.arcade_upper_deck_high_score} dm."
+msgstr "最高纪录是 {registry.arcade_maintenance_shaft_high_score} 英尺。 "
 
 #: data/level/autumn-town.cfg:16
 msgid "Autumn Town"
@@ -3257,11 +3335,11 @@ msgstr "助理关卡设计师"
 
 #: data/level/tea-with-milgram.cfg:353
 #, fuzzy
-msgid "Achievements"
+msgid "Achievement Programming"
 msgstr "成就达成！"
 
 #: data/level/tea-with-milgram.cfg:354
-msgid "Physics & Geometries"
+msgid "Physics, Geometry Scripting"
 msgstr ""
 
 #: data/level/tea-with-milgram.cfg:355
@@ -3491,13 +3569,35 @@ msgstr ""
 msgid "Tempo Outskirts"
 msgstr ""
 
-#: data/level/tempo-outskirts.cfg:1737
+#: data/level/tempo-outskirts.cfg:1860
+msgid ""
+"It says, Beaver Bridge.\n"
+"Tempo Village is just down the road."
+msgstr ""
+
+#: data/level/tempo-outskirts.cfg:2236
+msgid ""
+"It says,\n"
+"\"Storage.  Keep out!\""
+msgstr ""
+
+#: data/level/tempo-outskirts.cfg:2238
+msgid "Must refer to this tree-house ... thing."
+msgstr ""
+
+#: data/level/tempo-outskirts.cfg:2240
+msgid ""
+"I don't see a way in, so I guess\n"
+"that won't be hard to abide by."
+msgstr ""
+
+#: data/level/tempo-outskirts.cfg:2273
 msgid ""
 "Whoa..\n"
 "That river is out of control."
 msgstr ""
 
-#: data/level/tempo-outskirts.cfg:1739
+#: data/level/tempo-outskirts.cfg:2275
 msgid ""
 "If I dive in there,\n"
 "I'll get smashed to bits!"
@@ -3525,18 +3625,20 @@ msgid "Each machine has a different arcade-style challenge."
 msgstr "每台机器中都有一个不同的街机风格的挑战关卡。"
 
 #: data/level/titlescreen-arcade.cfg:182
-msgid "These don't affect story-mode.  Enjoy!"
-msgstr "这不会对故事模式产生影响。尽情享受吧！"
+msgid "Show us what you can do!"
+msgstr ""
 
 #: data/level/titlescreen-arcade.cfg:220
 msgid "EXIT"
 msgstr "退出"
 
 #: data/level/titlescreen-arcade.cfg:250 data/level/titlescreen-arcade.cfg:274
+#: data/level/titlescreen-arcade.cfg:419
 msgid "Select a level:"
 msgstr "选择一个关卡："
 
 #: data/level/titlescreen-arcade.cfg:254 data/level/titlescreen-arcade.cfg:278
+#: data/level/titlescreen-arcade.cfg:421
 msgid "(cancel)"
 msgstr "（取消）"
 
@@ -3545,8 +3647,8 @@ msgid "Down the RabbitHall"
 msgstr "深入兔兔大厅"
 
 #: data/level/titlescreen-arcade.cfg:277
-msgid "Coin Race"
-msgstr "硬币采集赛"
+msgid "Block Run"
+msgstr ""
 
 #: data/level/titlescreen-arcade.cfg:306
 msgid "CLIMB"
@@ -3555,6 +3657,10 @@ msgstr "攀爬"
 #: data/level/titlescreen-arcade.cfg:344
 msgid "RUN"
 msgstr "奔跑"
+
+#: data/level/titlescreen-arcade.cfg:420
+msgid "Coin Race"
+msgstr "硬币采集赛"
 
 #: data/level/titlescreen-test.cfg:284 data/level/titlescreen.cfg:284
 msgid "LOAD GAME"
@@ -3801,6 +3907,15 @@ msgstr "枯萎之风"
 msgid "Lower Ascent"
 msgstr "下段上坡道"
 
+#: data/level/wm-ascent-1.cfg:2207
+#, fuzzy
+msgid "This Way to Squirrel Mining"
+msgstr "此路通往松鼠矿区"
+
+#: data/level/wm-ascent-1.cfg:2208
+msgid "Caution: Rough Trail"
+msgstr ""
+
 #: data/level/wm-ascent-2.cfg:13
 msgid "Upper Ascent"
 msgstr "上段上坡道"
@@ -3892,7 +4007,7 @@ msgstr "那，赏金呢……？"
 msgid "Oh, yes. Here are the coins."
 msgstr "哦对的索。金币给你的索。"
 
-#: data/level/wm-h0.0-lift.cfg:584 data/level/wm-ll.cfg:1445
+#: data/level/wm-h0.0-lift.cfg:584 data/level/wm-ll.cfg:1460
 msgid "Thanks."
 msgstr "谢谢。"
 
@@ -3900,7 +4015,7 @@ msgstr "谢谢。"
 msgid "The Lower Landing"
 msgstr "下层平台"
 
-#: data/level/wm-ll.cfg:1381
+#: data/level/wm-ll.cfg:1396
 msgid ""
 "Hi, I'm Frogatto.\n"
 "What are you doing?"
@@ -3908,7 +4023,7 @@ msgstr ""
 "嗨，我是阿托。\n"
 "你在干啥？"
 
-#: data/level/wm-ll.cfg:1382
+#: data/level/wm-ll.cfg:1397
 msgid ""
 "Oh, a bit of a storm through here.\n"
 "I'm cleaning up and repairing\n"
@@ -3920,7 +4035,7 @@ msgstr ""
 "不过我……\n"
 "你是不是要去木头脑袋那边？"
 
-#: data/level/wm-ll.cfg:1386
+#: data/level/wm-ll.cfg:1401
 msgid ""
 "Hi, Frogatto. I'm just rebuilding\n"
 "the bridges down here, now.\n"
@@ -3930,7 +4045,7 @@ msgstr ""
 "我正在修前面那桥。\n"
 "得花点儿时间。"
 
-#: data/level/wm-ll.cfg:1390
+#: data/level/wm-ll.cfg:1405
 msgid ""
 "Oh, by the way, thanks for taking\n"
 "that rope up. Here's the 5 coins."
@@ -3938,7 +4053,7 @@ msgstr ""
 "哦，顺便说，谢谢你带来的绳子.\n"
 "这是5个金币。"
 
-#: data/level/wm-ll.cfg:1399
+#: data/level/wm-ll.cfg:1414
 msgid ""
 "1: Yes. What's up?\n"
 "2: Woodenhead? What's that?"
@@ -3946,38 +4061,38 @@ msgstr ""
 "1：恩，怎么了？\n"
 "2：木头脑袋？这是啥？"
 
-#: data/level/wm-ll.cfg:1400 data/level/wm-ll.cfg:1476
+#: data/level/wm-ll.cfg:1415 data/level/wm-ll.cfg:1491
 #: data/level/wm-town.cfg:1085 data/level/wm-town.cfg:2131
 #: data/level/wm-town.cfg:2136 data/level/wm-town.cfg:2184
 msgid "Opt. 1"
 msgstr "选择 1"
 
-#: data/level/wm-ll.cfg:1401 data/level/wm-ll.cfg:1477
+#: data/level/wm-ll.cfg:1416 data/level/wm-ll.cfg:1492
 #: data/level/wm-town.cfg:1093 data/level/wm-town.cfg:2151
 #: data/level/wm-town.cfg:2179 data/level/wm-town.cfg:2245
 msgid "Opt. 2"
 msgstr "选择 2"
 
-#: data/level/wm-ll.cfg:1402 data/level/wm-ll.cfg:1430
-#: data/level/wm-ll.cfg:1479 data/level/wm-town.cfg:1120
+#: data/level/wm-ll.cfg:1417 data/level/wm-ll.cfg:1445
+#: data/level/wm-ll.cfg:1494 data/level/wm-town.cfg:1120
 #: data/level/wm-town.cfg:2169 data/level/wm-town.cfg:2269
 #: data/level/wm-town.cfg:2283
 msgid "Cancel"
 msgstr "取消"
 
-#: data/level/wm-ll.cfg:1403
+#: data/level/wm-ll.cfg:1418
 msgid "Test"
 msgstr "测试"
 
-#: data/level/wm-ll.cfg:1408
+#: data/level/wm-ll.cfg:1423
 msgid "It's a secret!"
 msgstr "这是秘密！"
 
-#: data/level/wm-ll.cfg:1412
+#: data/level/wm-ll.cfg:1427
 msgid "I'm afraid I'm not going that way."
 msgstr "恐怕我不往那边走。"
 
-#: data/level/wm-ll.cfg:1413
+#: data/level/wm-ll.cfg:1428
 msgid ""
 "Sorry to have bothered you, then.\n"
 "Have a nice day."
@@ -3985,7 +4100,7 @@ msgstr ""
 "那么抱歉打扰了。\n"
 "祝你过得愉快。"
 
-#: data/level/wm-ll.cfg:1416
+#: data/level/wm-ll.cfg:1431
 msgid ""
 "Those are hoverpads. We use them\n"
 "for temporary stairs and small elevators."
@@ -3993,7 +4108,7 @@ msgstr ""
 "是浮空板，我们用来做临时的梯子\n"
 "和升降梯的。"
 
-#: data/level/wm-ll.cfg:1418
+#: data/level/wm-ll.cfg:1433
 msgid ""
 "Why not just use one of those to\n"
 "take the medium rope up?"
@@ -4001,7 +4116,7 @@ msgstr ""
 "为什么不直接用一块浮空板\n"
 "来把绳子运上去呢？"
 
-#: data/level/wm-ll.cfg:1419
+#: data/level/wm-ll.cfg:1434
 msgid ""
 "Tried it. They only get about 60\n"
 "feet off the ground before they\n"
@@ -4010,15 +4125,15 @@ msgstr ""
 "已经试过了。它们在耗尽蒸汽之前\n"
 "只能飞到离地60英尺的地方。"
 
-#: data/level/wm-ll.cfg:1421
+#: data/level/wm-ll.cfg:1436
 msgid "Oh, too bad."
 msgstr "哦，真糟糕。"
 
-#: data/level/wm-ll.cfg:1422
+#: data/level/wm-ll.cfg:1437
 msgid "So, will you take the rope up?"
 msgstr "所以能请你把绳子送上去么？"
 
-#: data/level/wm-ll.cfg:1426
+#: data/level/wm-ll.cfg:1441
 msgid ""
 "3: What's your name?\n"
 "4: What are those grey things?"
@@ -4026,28 +4141,28 @@ msgstr ""
 "3：你叫啥？\n"
 "4：这些灰色的东西是啥？"
 
-#: data/level/wm-ll.cfg:1427 data/level/wm-town.cfg:1111
+#: data/level/wm-ll.cfg:1442 data/level/wm-town.cfg:1111
 #: data/level/wm-town.cfg:2261
 msgid "Opt. 3"
 msgstr "选择 3"
 
-#: data/level/wm-ll.cfg:1428
+#: data/level/wm-ll.cfg:1443
 msgid "Opt. 4"
 msgstr "选择 4"
 
-#: data/level/wm-ll.cfg:1429
+#: data/level/wm-ll.cfg:1444
 msgid "Less"
 msgstr "更少"
 
-#: data/level/wm-ll.cfg:1434
+#: data/level/wm-ll.cfg:1449
 msgid "I am Rajit. And you?"
 msgstr "我是拉吉特。你呢？"
 
-#: data/level/wm-ll.cfg:1436
+#: data/level/wm-ll.cfg:1451
 msgid "I am Frogatto, myself."
 msgstr "我是，我就是阿托。"
 
-#: data/level/wm-ll.cfg:1437
+#: data/level/wm-ll.cfg:1452
 msgid ""
 "So, Frogatto, will you take this\n"
 "rope up to Woodenhead?"
@@ -4055,7 +4170,7 @@ msgstr ""
 "那么，阿托，能请你把这条绳子\n"
 "送上木头脑袋那里去么？"
 
-#: data/level/wm-ll.cfg:1441
+#: data/level/wm-ll.cfg:1456
 msgid ""
 "Great! Here is the rope.\n"
 "*Rajit hands you the rope.*"
@@ -4063,11 +4178,11 @@ msgstr ""
 "好极了！这是绳子。\n"
 "* 拉吉特把绳子递给了你。"
 
-#: data/level/wm-ll.cfg:1444
+#: data/level/wm-ll.cfg:1459
 msgid "I'll have this up there soon."
 msgstr "我马上把这送上去。"
 
-#: data/level/wm-ll.cfg:1448
+#: data/level/wm-ll.cfg:1463
 msgid ""
 "Sir! I am but a humble working\n"
 "man! How am I supposed to pay you?"
@@ -4075,7 +4190,7 @@ msgstr ""
 "先生！我只是个卑微的工人而已！\n"
 "我该如何报答你呢？"
 
-#: data/level/wm-ll.cfg:1450
+#: data/level/wm-ll.cfg:1465
 msgid ""
 "I notice a distinct absence of\n"
 "coins around here..."
@@ -4083,7 +4198,7 @@ msgstr ""
 "我发现这附近半个金币\n"
 "都没有……"
 
-#: data/level/wm-ll.cfg:1451
+#: data/level/wm-ll.cfg:1466
 msgid ""
 "Eh... I suppose I can let you\n"
 "have 5 coins for the service.\n"
@@ -4093,11 +4208,11 @@ msgstr ""
 "金币的服务费。这附近确实\n"
 "没多少金币。"
 
-#: data/level/wm-ll.cfg:1453
+#: data/level/wm-ll.cfg:1468
 msgid "Done!"
 msgstr "成交！"
 
-#: data/level/wm-ll.cfg:1457
+#: data/level/wm-ll.cfg:1472
 msgid ""
 "I'm *trying* to fix the elevator.\n"
 "The cable got tangled with a tree\n"
@@ -4106,7 +4221,7 @@ msgstr ""
 "我正*试着*修好升降梯。\n"
 "在风暴里缆绳缠在树上了，"
 
-#: data/level/wm-ll.cfg:1459
+#: data/level/wm-ll.cfg:1474
 msgid ""
 "cut loose. The idea was that I'd\n"
 "fly up with a small, light rope,\n"
@@ -4124,11 +4239,11 @@ msgstr ""
 "就可以把铁制升降梯的缆绳\n"
 "拉上去了。"
 
-#: data/level/wm-ll.cfg:1461
+#: data/level/wm-ll.cfg:1476
 msgid "So? What's holding you up?"
 msgstr "然后？为啥停“下”来？"
 
-#: data/level/wm-ll.cfg:1463
+#: data/level/wm-ll.cfg:1478
 msgid ""
 "Or, in this case...\n"
 "holding you down?"
@@ -4136,7 +4251,7 @@ msgstr ""
 "或者说是……\n"
 "为啥不“上”去？"
 
-#: data/level/wm-ll.cfg:1464
+#: data/level/wm-ll.cfg:1479
 msgid ""
 "That's not funny.\n"
 "Anyhow, I can get the light rope\n"
@@ -4150,11 +4265,11 @@ msgstr ""
 "好吧，我选了一条不够轻的\n"
 "中等绳子……"
 
-#: data/level/wm-ll.cfg:1466
+#: data/level/wm-ll.cfg:1481
 msgid "You've lost me. Again..?"
 msgstr "你又没在听我说话？"
 
-#: data/level/wm-ll.cfg:1467
+#: data/level/wm-ll.cfg:1482
 msgid ""
 "In short, the light rope isn't\n"
 "strong enough to lift the medium\n"
@@ -4165,7 +4280,7 @@ msgstr ""
 "把中绳子拉上去。得有个\n"
 "人走着把中绳子送上去。"
 
-#: data/level/wm-ll.cfg:1468
+#: data/level/wm-ll.cfg:1483
 msgid ""
 "I've checked out the path ahead,\n"
 "but\tI can't get through it."
@@ -4173,7 +4288,7 @@ msgstr ""
 "我已经查看过了前面的路，\n"
 "但我通过不了。"
 
-#: data/level/wm-ll.cfg:1470
+#: data/level/wm-ll.cfg:1485
 msgid ""
 "So, for the good of the town,\n"
 "you want me to take up the medium\n"
@@ -4182,7 +4297,7 @@ msgstr ""
 "所以，为了小镇的大义，\n"
 "你想让我把中绳子送上去？"
 
-#: data/level/wm-ll.cfg:1471
+#: data/level/wm-ll.cfg:1486
 msgid ""
 "You know it. If you tell the\n"
 "guard there I sent you, he'll\n"
@@ -4192,7 +4307,7 @@ msgstr ""
 "是我让你去的，他会让你\n"
 "通过的。"
 
-#: data/level/wm-ll.cfg:1475
+#: data/level/wm-ll.cfg:1490
 msgid ""
 "1: Sure, I'm on it!\n"
 "2: Pay me."
@@ -4200,11 +4315,11 @@ msgstr ""
 "1：当然了，我会做的！\n"
 "2：付我钱我就干。"
 
-#: data/level/wm-ll.cfg:1478 data/level/wm-town.cfg:2258
+#: data/level/wm-ll.cfg:1493 data/level/wm-town.cfg:2258
 msgid "More"
 msgstr "更多"
 
-#: data/level/wm-ll.cfg:1483
+#: data/level/wm-ll.cfg:1498
 msgid ""
 "You don't know of it? Hmh. Well,\n"
 "it's a small town in the tops of\n"
@@ -4909,47 +5024,47 @@ msgid "(+"
 msgstr ""
 
 #: data/objects/experimental/civ/civ_board.cfg:203
-#: data/objects/experimental/civ/civ_board.cfg:295
+#: data/objects/experimental/civ/civ_board.cfg:299
 msgid "(+?) VS "
 msgstr ""
 
 #: data/objects/experimental/civ/civ_board.cfg:203
-#: data/objects/experimental/civ/civ_board.cfg:316
 #: data/objects/experimental/civ/civ_board.cfg:320
+#: data/objects/experimental/civ/civ_board.cfg:324
 msgid ")"
 msgstr ""
 
 #: data/objects/experimental/civ/civ_board.cfg:203
-#: data/objects/experimental/civ/civ_board.cfg:295
+#: data/objects/experimental/civ/civ_board.cfg:299
 msgid "Armies:"
 msgstr ""
 
-#: data/objects/experimental/civ/civ_board.cfg:294
+#: data/objects/experimental/civ/civ_board.cfg:298
 msgid " VS "
 msgstr ""
 
-#: data/objects/experimental/civ/civ_board.cfg:295
+#: data/objects/experimental/civ/civ_board.cfg:299
 msgid "(+0)"
 msgstr ""
 
-#: data/objects/experimental/civ/civ_board.cfg:316
 #: data/objects/experimental/civ/civ_board.cfg:320
+#: data/objects/experimental/civ/civ_board.cfg:324
 msgid " to "
 msgstr ""
 
-#: data/objects/experimental/civ/civ_board.cfg:316
+#: data/objects/experimental/civ/civ_board.cfg:320
 msgid "'s warriors have fled! ("
 msgstr ""
 
-#: data/objects/experimental/civ/civ_board.cfg:320
+#: data/objects/experimental/civ/civ_board.cfg:324
 msgid " was destroyed by "
 msgstr ""
 
-#: data/objects/experimental/civ/civ_board.cfg:320
+#: data/objects/experimental/civ/civ_board.cfg:324
 msgid "'s warriors! ("
 msgstr ""
 
-#: data/objects/experimental/civ/civ_board.cfg:320
+#: data/objects/experimental/civ/civ_board.cfg:324
 msgid "A "
 msgstr ""
 
@@ -5191,27 +5306,27 @@ msgstr "攻击"
 msgid "Back"
 msgstr "返回"
 
-#: src/draw_scene.cpp:357
+#: src/draw_scene.cpp:362
 msgid "Achievement Unlocked!"
 msgstr "成就达成！"
 
-#: src/main.cpp:354
+#: src/main.cpp:382
 msgid "Initializing custom object"
 msgstr "初始化自定义对象"
 
-#: src/main.cpp:356
+#: src/main.cpp:384
 msgid "Initializing custom object functions"
 msgstr "初始化自定义对象函数"
 
-#: src/main.cpp:358
+#: src/main.cpp:386
 msgid "Initializing tiles"
 msgstr "初始化图块"
 
-#: src/main.cpp:361 src/main.cpp:365
+#: src/main.cpp:389 src/main.cpp:393
 msgid "Initializing GUI"
 msgstr "初始化界面"
 
-#: src/main.cpp:371
+#: src/main.cpp:399
 msgid "Loading level"
 msgstr "正在读取关卡"
 
@@ -5246,6 +5361,9 @@ msgstr "交换A/B键"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
+
+#~ msgid "These don't affect story-mode.  Enjoy!"
+#~ msgstr "这不会对故事模式产生影响。尽情享受吧！"
 
 #~ msgid "Object Scripting"
 #~ msgstr "对象脚本编写"
@@ -5284,9 +5402,6 @@ msgstr "OpenFeint"
 
 #~ msgid "ACME(tm) FLOATING TEXT SIGN"
 #~ msgstr "“给力”牌浮动标签"
-
-#~ msgid "This Way To Squirrel Mining."
-#~ msgstr "此路通往松鼠矿区"
 
 #~ msgid "Caution: Sudden Dropoffs."
 #~ msgstr "警告：有突然坠物"
