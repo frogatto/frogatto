@@ -49,8 +49,10 @@ public:
 
 	int teleport_offset_x() const { return type_->teleport_offset_x(); }
 	int teleport_offset_y() const { return type_->teleport_offset_y(); }
+	bool no_move_to_standing() const { return type_->no_move_to_standing(); };
 
 	bool has_feet() const;
+
 	
 	virtual bool is_standable(int x, int y, int* friction=NULL, int* traction=NULL, int* adjust_y=NULL) const;
 

@@ -400,7 +400,9 @@ bool level_runner::play_cycle()
 			player_info* player = lvl_->player();
 			if(player) {
 				player->get_entity().set_pos(portal->dest);
-				player->get_entity().move_to_standing(*lvl_);
+				if(!player->get_entity().no_move_to_standing()){
+					player->get_entity().move_to_standing(*lvl_);
+				}
 			}
 		} else {
 			//the portal is to another level
@@ -460,7 +462,9 @@ bool level_runner::play_cycle()
 			if(player && portal->saved_game == false) {
 				player->get_entity().set_pos(dest);
 				new_level->add_player(&player->get_entity());
-				player->get_entity().move_to_standing(*new_level);
+				if(!player->get_entity().no_move_to_standing()){
+					player->get_entity().move_to_standing(*new_level);
+				}
 				player->get_entity().handle_event("enter_level");
 			} else {
 				player = new_level->player();

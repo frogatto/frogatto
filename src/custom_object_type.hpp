@@ -109,6 +109,7 @@ public:
 
 	int teleport_offset_x() const { return teleport_offset_x_; }
 	int teleport_offset_y() const { return teleport_offset_y_; }
+	bool no_move_to_standing() const { return no_move_to_standing_; }
 
 	bool use_image_for_collisions() const { return use_image_for_collisions_; }
 	bool has_feet() const { return has_feet_; }
@@ -205,6 +206,7 @@ private:
 	std::map<std::string, game_logic::const_formula_ptr> properties_;
 
 	int teleport_offset_x_, teleport_offset_y_;
+	bool no_move_to_standing_;
 
 	const_solid_info_ptr solid_, platform_;
 
