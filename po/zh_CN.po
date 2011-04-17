@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2011-04-16 02:02-0300\n"
-"PO-Revision-Date: 2011-01-21 16:33+0000\n"
+"PO-Revision-Date: 2011-04-17 00:27+0000\n"
 "Last-Translator: CloudiDust <cloudidust@gmail.com>\n"
-"Language-Team: Chinese (China) <None>\n"
-"Language: zh_CN\n"
+"Language-Team: Chinese (China) <>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: data/achievements.cfg:4
@@ -38,9 +38,8 @@ msgid "Nice Try..."
 msgstr "想得美……"
 
 #: data/achievements.cfg:21
-#, fuzzy
 msgid "But that's not a secret area."
-msgstr "不过这可不是秘密地点口牙。"
+msgstr "不过这可不是啥秘密地点。"
 
 #: data/achievements.cfg:28
 msgid "Gold Hoarder"
@@ -179,9 +178,8 @@ msgid "Well, that's that."
 msgstr "嘛，就这样了。"
 
 #: data/level/arcade-blocks.cfg:217
-#, fuzzy
 msgid "You got {level.player.score} points in the Blocks Run!"
-msgstr "你在维修管道里成功前进了 {level.player.vars.score} 英尺！ "
+msgstr ""
 
 #: data/level/arcade-blocks.cfg:218
 #: data/level/arcade-down-the-rabbithall.cfg:821
@@ -196,20 +194,17 @@ msgid "You got {level.player.score} points in the Blocks Run."
 msgstr ""
 
 #: data/level/arcade-blocks.cfg:220
-#, fuzzy
 msgid "The high score is {registry.arcade_blocks_high_score}."
-msgstr "最高纪录是 {registry.arcade_maintenance_shaft_high_score} 英尺。 "
+msgstr ""
 
 #: data/level/arcade-down-the-rabbithall.cfg:820
 #: data/level/arcade-down-the-rabbithall.cfg:823
-#, fuzzy
 msgid "You made it {level.player.vars.score} cm down the rabbithall!"
-msgstr "你在维修管道里成功前进了 {level.player.vars.score} 英尺！ "
+msgstr ""
 
 #: data/level/arcade-down-the-rabbithall.cfg:824
-#, fuzzy
 msgid "The high score is {registry.arcade_down_the_rabbithall_high_score} cm."
-msgstr "最高纪录是 {registry.arcade_maintenance_shaft_high_score} 英尺。 "
+msgstr ""
 
 #: data/level/arcade-maintenance-shaft.cfg:13
 #: data/level/titlescreen-arcade.cfg:253
@@ -232,14 +227,12 @@ msgstr "长途运输"
 
 #: data/level/arcade-the-long-haul.cfg:631
 #: data/level/arcade-the-long-haul.cfg:634
-#, fuzzy
 msgid "You scored {level.player.vars.score} points in the long haul!"
-msgstr "你在维修管道里成功前进了 {level.player.vars.score} 英尺！ "
+msgstr ""
 
 #: data/level/arcade-the-long-haul.cfg:635
-#, fuzzy
 msgid "The high score is {registry.arcade_the_long_haul_high_score} points."
-msgstr "最高纪录是 {registry.arcade_maintenance_shaft_high_score} 英尺。 "
+msgstr ""
 
 #: data/level/arcade-wild-new-wonder.cfg:12
 #: data/level/titlescreen-arcade.cfg:251
@@ -248,38 +241,33 @@ msgstr "荒野奇观"
 
 #: data/level/arcade-wild-new-wonder.cfg:2520
 #: data/level/arcade-wild-new-wonder.cfg:2523
-#, fuzzy
 msgid "You climbed {level.player.vars.score} dm in the Wild New Wonder!"
-msgstr "你在维修管道里成功前进了 {level.player.vars.score} 英尺！ "
+msgstr ""
 
 #: data/level/arcade-wild-new-wonder.cfg:2521
-#, fuzzy
 msgid "This is a new high!"
-msgstr "这是一个新纪录！"
+msgstr ""
 
 #: data/level/arcade-wild-new-wonder.cfg:2524
-#, fuzzy
-msgid "The highest climbed is {registry.arcade_wild_new_wonder_high_score} dm."
-msgstr "最高纪录是 {registry.arcade_maintenance_shaft_high_score} 英尺。 "
+msgid ""
+"The highest climbed is {registry.arcade_wild_new_wonder_high_score} dm."
+msgstr ""
 
 #: data/level/arcade_upper_deck.cfg:12 data/level/titlescreen-arcade.cfg:252
 msgid "Upper Deck"
 msgstr "上段甲板"
 
 #: data/level/arcade_upper_deck.cfg:2081 data/level/arcade_upper_deck.cfg:2084
-#, fuzzy
 msgid "You climbed {level.player.vars.score} dm on the Upper Deck!"
-msgstr "你在维修管道里成功前进了 {level.player.vars.score} 英尺！ "
+msgstr ""
 
 #: data/level/arcade_upper_deck.cfg:2082
-#, fuzzy
 msgid "This is a new record!"
-msgstr "这是一个新纪录！"
+msgstr ""
 
 #: data/level/arcade_upper_deck.cfg:2085
-#, fuzzy
 msgid "The highest climbed is {registry.arcade_upper_deck_high_score} dm."
-msgstr "最高纪录是 {registry.arcade_maintenance_shaft_high_score} 英尺。 "
+msgstr ""
 
 #: data/level/autumn-town.cfg:16
 msgid "Autumn Town"
@@ -393,13 +381,10 @@ msgid "Hi there, sonny!"
 msgstr ""
 
 #: data/level/conveyance.cfg:1131
-#, fuzzy
 msgid ""
 "Have you come here\n"
 "to ride on the CONVEYANCE?"
 msgstr ""
-"嗨，孩子，你来这里是要\n"
-"搭乘运输器的吧？"
 
 #: data/level/conveyance.cfg:1133
 msgid ""
@@ -483,16 +468,13 @@ msgstr "……"
 msgid ""
 "With all due respect, sir...\n"
 "I think you're insane."
-msgstr ""
+msgstr "无意冒犯，先生……我想您疯了。"
 
 #: data/level/conveyance.cfg:1152
-#, fuzzy
 msgid ""
 "Ha! They said my grandfather\n"
 "was crazy, when he built it."
 msgstr ""
-"为啥他们要说我爷爷造这货是疯了？\n"
-"现在谁才是疯子，哈？"
 
 #: data/level/conveyance.cfg:1153
 msgid "But who's crazy now, eh?"
@@ -1524,7 +1506,6 @@ msgid "Against Milgram? Really?"
 msgstr "对付米格拉姆？真的？"
 
 #: data/level/crevice-village.cfg:975
-#, fuzzy
 msgid ""
 "I thought he like ... \"mass-produces\"\n"
 "his followers, or something."
@@ -1549,7 +1530,6 @@ msgstr ""
 "我明白你的意思了。"
 
 #: data/level/crevice-village.cfg:980
-#, fuzzy
 msgid ""
 "There's got to be something\n"
 "we can use to our advantage,\n"
@@ -1559,7 +1539,6 @@ msgstr ""
 "但不是“数量优势”。"
 
 #: data/level/crevice-village.cfg:982
-#, fuzzy
 msgid ""
 "\"Doing the unexpected\"\n"
 "might be our best bet, for now."
@@ -1612,12 +1591,11 @@ msgid "Descent to Town"
 msgstr "落入小镇"
 
 #: data/level/descent-to-town.cfg:1025
-#, fuzzy
 msgid ""
 "It says,\n"
 "\"Chopple's General Store,\n"
 "just ahead."
-msgstr "巧比的万能商店"
+msgstr ""
 
 #: data/level/descent-to-town.cfg:1027
 msgid "Honest trade and thrifty prices!\""
@@ -1649,13 +1627,13 @@ msgstr "捷径"
 
 #: data/level/fc_test.cfg:13
 msgid "Impurity"
-msgstr ""
+msgstr "不纯"
 
 #: data/level/fc_test.cfg:667
 msgid ""
 "Hello, traveller. What brings you to\n"
 "this miserable little hole?"
-msgstr ""
+msgstr "嗨，旅行者。是什么风把你吹到这悲催的小洞里来了？"
 
 #: data/level/flooded-caverns.cfg:16
 msgid "Flooded Caverns"
@@ -3334,23 +3312,20 @@ msgid "Minor Level Designer"
 msgstr "助理关卡设计师"
 
 #: data/level/tea-with-milgram.cfg:353
-#, fuzzy
 msgid "Achievement Programming"
-msgstr "成就达成！"
+msgstr ""
 
 #: data/level/tea-with-milgram.cfg:354
 msgid "Physics, Geometry Scripting"
 msgstr ""
 
 #: data/level/tea-with-milgram.cfg:355
-#, fuzzy
 msgid "Minor Programmer"
-msgstr "主程序员"
+msgstr ""
 
 #: data/level/tea-with-milgram.cfg:359
-#, fuzzy
 msgid "The End"
-msgstr "入口"
+msgstr ""
 
 #: data/level/tea-with-milgram.cfg:362
 msgid "Creative Director - created characters/setting/story"
@@ -3389,9 +3364,8 @@ msgid "Devil's Advocacy"
 msgstr "魔鬼代言人"
 
 #: data/level/tea-with-milgram.cfg:386
-#, fuzzy
 msgid "Translation Coordinator"
-msgstr "翻译支持"
+msgstr ""
 
 #: data/level/tea-with-milgram.cfg:388
 msgid "Minor Bug Fixer"
@@ -3439,7 +3413,7 @@ msgstr "（关卡模板）"
 
 #: data/level/tempo-outskirts-inside.cfg:103
 msgid "Oh my, a visitor!"
-msgstr ""
+msgstr "哦，老天！"
 
 #: data/level/tempo-outskirts-inside.cfg:104
 msgid ""
@@ -3567,7 +3541,7 @@ msgstr ""
 
 #: data/level/tempo-outskirts.cfg:12
 msgid "Tempo Outskirts"
-msgstr ""
+msgstr "节奏之郊"
 
 #: data/level/tempo-outskirts.cfg:1860
 msgid ""
@@ -3908,9 +3882,8 @@ msgid "Lower Ascent"
 msgstr "下段上坡道"
 
 #: data/level/wm-ascent-1.cfg:2207
-#, fuzzy
 msgid "This Way to Squirrel Mining"
-msgstr "此路通往松鼠矿区"
+msgstr ""
 
 #: data/level/wm-ascent-1.cfg:2208
 msgid "Caution: Rough Trail"
@@ -4943,7 +4916,7 @@ msgstr "想要买 {consts.name} 吗？"
 
 #: data/object_prototypes/crazy-stuff/civ-tile.cfg:57
 msgid "This is a blank tile. It doesn't do anything."
-msgstr ""
+msgstr "这是个空白图块，啥用都没有。"
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:32
 msgid "You made it to level {level.player.difficulty} of the coin race!"
@@ -4955,21 +4928,21 @@ msgstr "你达到了硬币采集赛到第 {level.player.difficulty} 关。"
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level {registry."
-"arcade_coin_race_high_score}."
+"The furthest that has been reached is level "
+"{registry.arcade_coin_race_high_score}."
 msgstr "最高纪录是第 {registry.arcade_coin_race_high_score} 关。 "
 
 #: data/objects/experimental/civ/civ-tile_farm.cfg:11
 msgid "Farm Tile: Feeds all connected tiles."
-msgstr ""
+msgstr "农场图块：滋养所有邻接的图块。"
 
 #: data/objects/experimental/civ/civ-tile_mine.cfg:11
 msgid "Mine Tile: Place on mountains. Get ore for a nice bonus."
-msgstr ""
+msgstr "矿场图块：放在山上即可。可以产出价值很高的矿物。"
 
 #: data/objects/experimental/civ/civ-tile_settle.cfg:11
 msgid "Settlement: This is where your citizens gather. 2x2 square = city."
-msgstr ""
+msgstr "定居点：这是你的市民们聚集的地方。2×2的正方形 = 城市。"
 
 #: data/objects/experimental/civ/civ-tile_war.cfg:11
 msgid "Warrior: Kingdom strength is warriors, plus any played from hand."
@@ -4977,96 +4950,96 @@ msgstr ""
 
 #: data/objects/experimental/civ/civ_board.cfg:36
 msgid "Black"
-msgstr ""
+msgstr "黑色"
 
 #: data/objects/experimental/civ/civ_board.cfg:36
 msgid "Gold"
-msgstr ""
+msgstr "金色"
 
 #: data/objects/experimental/civ/civ_board.cfg:36
 msgid "Mysterious Stranger"
-msgstr ""
+msgstr "神秘的陌生人"
 
 #: data/objects/experimental/civ/civ_board.cfg:36
 msgid "Silver"
-msgstr ""
+msgstr "银色"
 
 #: data/objects/experimental/civ/civ_board.cfg:36
 msgid "White"
-msgstr ""
+msgstr "白色"
 
 #: data/objects/experimental/civ/civ_board.cfg:37
 msgid "claim"
-msgstr ""
+msgstr "占据"
 
 #: data/objects/experimental/civ/civ_board.cfg:37
 msgid "farm"
-msgstr ""
+msgstr "农场"
 
 #: data/objects/experimental/civ/civ_board.cfg:37
 msgid "mine"
-msgstr ""
+msgstr "矿场"
 
 #: data/objects/experimental/civ/civ_board.cfg:37
 msgid "settlement"
-msgstr ""
+msgstr "定居点"
 
 #: data/objects/experimental/civ/civ_board.cfg:37
 msgid "warrior camp"
-msgstr ""
+msgstr "武士营地"
 
 #: data/objects/experimental/civ/civ_board.cfg:185
 msgid "Drag a tile to the board to play. Right-click for help."
-msgstr ""
+msgstr "把图块拖到版上即可开始游戏。点击鼠标右键可以查看帮助。"
 
 #: data/objects/experimental/civ/civ_board.cfg:203
 msgid "(+"
-msgstr ""
+msgstr "(+"
 
 #: data/objects/experimental/civ/civ_board.cfg:203
 #: data/objects/experimental/civ/civ_board.cfg:299
 msgid "(+?) VS "
-msgstr ""
+msgstr "(+?) VS "
 
 #: data/objects/experimental/civ/civ_board.cfg:203
 #: data/objects/experimental/civ/civ_board.cfg:320
 #: data/objects/experimental/civ/civ_board.cfg:324
 msgid ")"
-msgstr ""
+msgstr ")"
 
 #: data/objects/experimental/civ/civ_board.cfg:203
 #: data/objects/experimental/civ/civ_board.cfg:299
 msgid "Armies:"
-msgstr ""
+msgstr "军队："
 
 #: data/objects/experimental/civ/civ_board.cfg:298
 msgid " VS "
-msgstr ""
+msgstr "VS "
 
 #: data/objects/experimental/civ/civ_board.cfg:299
 msgid "(+0)"
-msgstr ""
+msgstr "(+0)"
 
 #: data/objects/experimental/civ/civ_board.cfg:320
 #: data/objects/experimental/civ/civ_board.cfg:324
 msgid " to "
-msgstr ""
+msgstr "到"
 
 #: data/objects/experimental/civ/civ_board.cfg:320
 msgid "'s warriors have fled! ("
-msgstr ""
+msgstr "的武士们四散而逃了！("
 
 #: data/objects/experimental/civ/civ_board.cfg:324
 msgid " was destroyed by "
-msgstr ""
+msgstr "被消灭了！搞定他的是"
 
 #: data/objects/experimental/civ/civ_board.cfg:324
 msgid "'s warriors! ("
-msgstr ""
+msgstr "的武士们！("
 
 #: data/objects/experimental/civ/civ_board.cfg:324
 msgid "A "
-msgstr ""
+msgstr "A "
 
 #: data/objects/experimental/jb-background.cfg:7
 msgid "error"
@@ -5361,47 +5334,3 @@ msgstr "交换A/B键"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
-
-#~ msgid "These don't affect story-mode.  Enjoy!"
-#~ msgstr "这不会对故事模式产生影响。尽情享受吧！"
-
-#~ msgid "Object Scripting"
-#~ msgstr "对象脚本编写"
-
-#~ msgid "Actually I was just hoping to get to town."
-#~ msgstr "事实上我只是想到镇子上去而已。"
-
-#~ msgid ""
-#~ "Oh is that so? Well after what Milgram's\n"
-#~ "men did to the bridge..."
-#~ msgstr ""
-#~ "哦，是吗？那啥，自从米格拉姆的\n"
-#~ "小弟们对桥动了手脚之后……"
-
-#~ msgid "the CONVEYANCE is the only way!"
-#~ msgstr "这运输器已经是唯一的去路了！"
-
-#~ msgid ""
-#~ "So I have to use this conveyance thing\n"
-#~ "to get to town? Okay, well, let's go..."
-#~ msgstr ""
-#~ "所以我得搭这啥“运输器”\n"
-#~ "去镇上？好吧，那么，出发……"
-
-#~ msgid "LEFT"
-#~ msgstr "左"
-
-#~ msgid "RIGHT"
-#~ msgstr "右"
-
-#~ msgid "UP"
-#~ msgstr "上"
-
-#~ msgid "DOWN"
-#~ msgstr "下"
-
-#~ msgid "ACME(tm) FLOATING TEXT SIGN"
-#~ msgstr "“给力”牌浮动标签"
-
-#~ msgid "Caution: Sudden Dropoffs."
-#~ msgstr "警告：有突然坠物"

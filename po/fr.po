@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2011-04-16 02:02-0300\n"
-"PO-Revision-Date: 2011-01-19 16:54+0000\n"
+"PO-Revision-Date: 2011-04-17 00:27+0000\n"
 "Last-Translator: manu <emmanuel.fujioka@free.fr>\n"
 "Language-Team: French <>\n"
-"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
 #: data/achievements.cfg:4
@@ -38,7 +38,6 @@ msgid "Nice Try..."
 msgstr "Bien tenté..."
 
 #: data/achievements.cfg:21
-#, fuzzy
 msgid "But that's not a secret area."
 msgstr "mais ce n'est pas une zone secrète"
 
@@ -100,11 +99,11 @@ msgstr "Tuer 10 ennemis du même type de suite."
 
 #: data/achievements.cfg:84
 msgid "Jackalope"
-msgstr ""
+msgstr "Jackalope"
 
 #: data/achievements.cfg:85
 msgid "Bound, bound, bound and rebound!"
-msgstr ""
+msgstr "Faire des bonds, des bonds et encore des bonds!"
 
 #: data/achievements.cfg:92
 msgid "Frogourmet"
@@ -180,11 +179,8 @@ msgid "Well, that's that."
 msgstr "Eh bien. voilà."
 
 #: data/level/arcade-blocks.cfg:217
-#, fuzzy
 msgid "You got {level.player.score} points in the Blocks Run!"
 msgstr ""
-"Vous avez monté {level.player.vars.score} pieds dans le conduit de "
-"maintenance!"
 
 #: data/level/arcade-blocks.cfg:218
 #: data/level/arcade-down-the-rabbithall.cfg:821
@@ -199,22 +195,17 @@ msgid "You got {level.player.score} points in the Blocks Run."
 msgstr ""
 
 #: data/level/arcade-blocks.cfg:220
-#, fuzzy
 msgid "The high score is {registry.arcade_blocks_high_score}."
-msgstr "Le record est de {registry.arcade_maintenance_shaft_high_score} pieds."
+msgstr ""
 
 #: data/level/arcade-down-the-rabbithall.cfg:820
 #: data/level/arcade-down-the-rabbithall.cfg:823
-#, fuzzy
 msgid "You made it {level.player.vars.score} cm down the rabbithall!"
 msgstr ""
-"Vous avez monté {level.player.vars.score} pieds dans le conduit de "
-"maintenance!"
 
 #: data/level/arcade-down-the-rabbithall.cfg:824
-#, fuzzy
 msgid "The high score is {registry.arcade_down_the_rabbithall_high_score} cm."
-msgstr "Le record est de {registry.arcade_maintenance_shaft_high_score} pieds."
+msgstr ""
 
 #: data/level/arcade-maintenance-shaft.cfg:13
 #: data/level/titlescreen-arcade.cfg:253
@@ -225,12 +216,13 @@ msgstr "Conduit de maintenance"
 #: data/level/arcade-maintenance-shaft.cfg:2090
 msgid "You made it {level.player.vars.score} feet up the maintenance shaft!"
 msgstr ""
-"Vous avez monté {level.player.vars.score} pieds dans le conduit de "
+"Vous avez monté {level.player.vars.score*0.3} mètres dans le conduit de "
 "maintenance!"
 
 #: data/level/arcade-maintenance-shaft.cfg:2091
 msgid "The high score is {registry.arcade_maintenance_shaft_high_score} feet."
-msgstr "Le record est de {registry.arcade_maintenance_shaft_high_score} pieds."
+msgstr ""
+"Le record est de {registry.arcade_maintenance_shaft_high_score*0.3} mètres."
 
 #: data/level/arcade-the-long-haul.cfg:10
 #: data/level/titlescreen-arcade.cfg:275
@@ -239,16 +231,12 @@ msgstr "La Longue Traversée"
 
 #: data/level/arcade-the-long-haul.cfg:631
 #: data/level/arcade-the-long-haul.cfg:634
-#, fuzzy
 msgid "You scored {level.player.vars.score} points in the long haul!"
 msgstr ""
-"Vous avez monté {level.player.vars.score} pieds dans le conduit de "
-"maintenance!"
 
 #: data/level/arcade-the-long-haul.cfg:635
-#, fuzzy
 msgid "The high score is {registry.arcade_the_long_haul_high_score} points."
-msgstr "Le record est de {registry.arcade_maintenance_shaft_high_score} pieds."
+msgstr ""
 
 #: data/level/arcade-wild-new-wonder.cfg:12
 #: data/level/titlescreen-arcade.cfg:251
@@ -257,43 +245,33 @@ msgstr "Nouvelle Merveille Sauvage"
 
 #: data/level/arcade-wild-new-wonder.cfg:2520
 #: data/level/arcade-wild-new-wonder.cfg:2523
-#, fuzzy
 msgid "You climbed {level.player.vars.score} dm in the Wild New Wonder!"
 msgstr ""
-"Vous avez monté {level.player.vars.score} pieds dans le conduit de "
-"maintenance!"
 
 #: data/level/arcade-wild-new-wonder.cfg:2521
-#, fuzzy
 msgid "This is a new high!"
-msgstr "C'est un nouveau record!"
+msgstr ""
 
 #: data/level/arcade-wild-new-wonder.cfg:2524
-#, fuzzy
-msgid "The highest climbed is {registry.arcade_wild_new_wonder_high_score} dm."
-msgstr "Le record est de {registry.arcade_maintenance_shaft_high_score} pieds."
+msgid ""
+"The highest climbed is {registry.arcade_wild_new_wonder_high_score} dm."
+msgstr ""
 
 #: data/level/arcade_upper_deck.cfg:12 data/level/titlescreen-arcade.cfg:252
-#, fuzzy
 msgid "Upper Deck"
-msgstr "Fin de l'Ascension"
+msgstr "Étage supérieur"
 
 #: data/level/arcade_upper_deck.cfg:2081 data/level/arcade_upper_deck.cfg:2084
-#, fuzzy
 msgid "You climbed {level.player.vars.score} dm on the Upper Deck!"
 msgstr ""
-"Vous avez monté {level.player.vars.score} pieds dans le conduit de "
-"maintenance!"
 
 #: data/level/arcade_upper_deck.cfg:2082
-#, fuzzy
 msgid "This is a new record!"
-msgstr "C'est un nouveau record!"
+msgstr ""
 
 #: data/level/arcade_upper_deck.cfg:2085
-#, fuzzy
 msgid "The highest climbed is {registry.arcade_upper_deck_high_score} dm."
-msgstr "Le record est de {registry.arcade_maintenance_shaft_high_score} pieds."
+msgstr ""
 
 #: data/level/autumn-town.cfg:16
 msgid "Autumn Town"
@@ -411,10 +389,9 @@ msgstr ""
 
 #: data/level/conveyance.cfg:1130
 msgid "Hi there, sonny!"
-msgstr ""
+msgstr "Salut, fiston!"
 
 #: data/level/conveyance.cfg:1131
-#, fuzzy
 msgid ""
 "Have you come here\n"
 "to ride on the CONVEYANCE?"
@@ -427,10 +404,12 @@ msgid ""
 "Uhh...\n"
 "Will this get me across the river?"
 msgstr ""
+"Heu...\n"
+"Je peux traverser la rivière avec ça?"
 
 #: data/level/conveyance.cfg:1134
 msgid "Sure thing it will!"
-msgstr ""
+msgstr "Bien sûr!"
 
 #: data/level/conveyance.cfg:1135
 msgid ""
@@ -438,6 +417,10 @@ msgid ""
 "the moment, I'm doing a public service\n"
 "by making it free."
 msgstr ""
+"En fait, vu que c'est le seul moyen\n"
+"de traverser en ce moment,\n"
+"je rends un service publique\n"
+"en ne demandant pas d'argent."
 
 #: data/level/conveyance.cfg:1137 data/level/secluded-hut-interior.cfg:922
 #: data/level/wm-town.cfg:2285
@@ -458,30 +441,38 @@ msgid ""
 "Wha...\n"
 "What's up with this 'carnival' act?"
 msgstr ""
+"Qu...\n"
+"C'est quoi cette scène de 'carnaval'?"
 
 #: data/level/conveyance.cfg:1142
 msgid "Are you some kind of amateur showman?"
-msgstr ""
+msgstr "T'es une sorte d'artiste?"
 
 #: data/level/conveyance.cfg:1143
 msgid ""
 "Ho!\n"
 "Not at all, not at all."
 msgstr ""
+"Ho!\n"
+"Non, pas du tout."
 
 #: data/level/conveyance.cfg:1144
 msgid ""
 "You see, my family has passed down\n"
 "a long-standing trade."
 msgstr ""
+"Il y a un métier qu'on se transmet\n"
+"de pères en fils dans ma famille, vois-tu."
 
 #: data/level/conveyance.cfg:1145
 msgid "We build rides for amusment parks!"
 msgstr ""
+"On construits des manèges\n"
+"pour parcs d'attractions!"
 
 #: data/level/conveyance.cfg:1147
 msgid "..oh god, please no."
-msgstr ""
+msgstr "... oh mon dieu, tout mais pas ça."
 
 #: data/level/conveyance.cfg:1148
 msgid ""
@@ -490,6 +481,11 @@ msgid ""
 "not without some of\n"
 "our trademark EXCITEMENT!"
 msgstr ""
+"Et oui!\n"
+"On ne se contenterait pas de\n"
+"construire un pont - pas sans\n"
+"y ajouter de SENSATIONS\n"
+"dont on a le secret."
 
 #: data/level/conveyance.cfg:1149 data/level/crevice-village-house-1.cfg:2557
 #: data/level/crevice-village-house-1.cfg:2562
@@ -506,9 +502,11 @@ msgid ""
 "With all due respect, sir...\n"
 "I think you're insane."
 msgstr ""
+"Monsieur, avec tout le respect\n"
+"que je te dois...\n"
+"Je pense que tu es fou."
 
 #: data/level/conveyance.cfg:1152
-#, fuzzy
 msgid ""
 "Ha! They said my grandfather\n"
 "was crazy, when he built it."
@@ -519,7 +517,7 @@ msgstr ""
 
 #: data/level/conveyance.cfg:1153
 msgid "But who's crazy now, eh?"
-msgstr ""
+msgstr "Mais c'est qui le cinglé maintenant, hein?"
 
 #: data/level/crevice-bridge.cfg:15
 msgid "Crevice Bridge"
@@ -1586,7 +1584,6 @@ msgid "Against Milgram? Really?"
 msgstr "Contre Milgram? Vraiment?"
 
 #: data/level/crevice-village.cfg:975
-#, fuzzy
 msgid ""
 "I thought he like ... \"mass-produces\"\n"
 "his followers, or something."
@@ -1611,7 +1608,6 @@ msgstr ""
 "Je vois ce que vous voulez dire."
 
 #: data/level/crevice-village.cfg:980
-#, fuzzy
 msgid ""
 "There's got to be something\n"
 "we can use to our advantage,\n"
@@ -1623,7 +1619,6 @@ msgstr ""
 "n'est pas la \"supériorité numérique\"."
 
 #: data/level/crevice-village.cfg:982
-#, fuzzy
 msgid ""
 "\"Doing the unexpected\"\n"
 "might be our best bet, for now."
@@ -1677,12 +1672,11 @@ msgid "Descent to Town"
 msgstr "Descente en ville"
 
 #: data/level/descent-to-town.cfg:1025
-#, fuzzy
 msgid ""
 "It says,\n"
 "\"Chopple's General Store,\n"
 "just ahead."
-msgstr "Boutique de Chopple"
+msgstr ""
 
 #: data/level/descent-to-town.cfg:1027
 msgid "Honest trade and thrifty prices!\""
@@ -1714,13 +1708,16 @@ msgstr "Voie Rapide"
 
 #: data/level/fc_test.cfg:13
 msgid "Impurity"
-msgstr ""
+msgstr "Impureté"
 
 #: data/level/fc_test.cfg:667
 msgid ""
 "Hello, traveller. What brings you to\n"
 "this miserable little hole?"
 msgstr ""
+"Bonjour voyageur. Qu'est-ce qui\n"
+"vous amène dans ce misérable\n"
+"trou perdu?"
 
 #: data/level/flooded-caverns.cfg:16
 msgid "Flooded Caverns"
@@ -3504,23 +3501,20 @@ msgid "Minor Level Designer"
 msgstr "Concepteur de Niveaux Mineurs"
 
 #: data/level/tea-with-milgram.cfg:353
-#, fuzzy
 msgid "Achievement Programming"
-msgstr "Accomplissement débloqué !"
+msgstr ""
 
 #: data/level/tea-with-milgram.cfg:354
 msgid "Physics, Geometry Scripting"
 msgstr ""
 
 #: data/level/tea-with-milgram.cfg:355
-#, fuzzy
 msgid "Minor Programmer"
-msgstr "Programmeur Principal"
+msgstr ""
 
 #: data/level/tea-with-milgram.cfg:359
-#, fuzzy
 msgid "The End"
-msgstr "L'entrée"
+msgstr ""
 
 #: data/level/tea-with-milgram.cfg:362
 msgid "Creative Director - created characters/setting/story"
@@ -3536,7 +3530,8 @@ msgstr "Artiste - Terrain (maisons, arrière plan du bord de mer)"
 
 #: data/level/tea-with-milgram.cfg:374
 msgid "Level Designer (esp. forest, cave, and dungeon levels)"
-msgstr "Concepteur de niveaux (surtout forêt, grotte et les niveaux du donjon)"
+msgstr ""
+"Concepteur de niveaux (surtout forêt, grotte et les niveaux du donjon)"
 
 #: data/level/tea-with-milgram.cfg:379
 msgid "The IRC Crew"
@@ -3559,9 +3554,8 @@ msgid "Devil's Advocacy"
 msgstr "Avocat du Diable"
 
 #: data/level/tea-with-milgram.cfg:386
-#, fuzzy
 msgid "Translation Coordinator"
-msgstr "Support pour la Traduction"
+msgstr ""
 
 #: data/level/tea-with-milgram.cfg:388
 msgid "Minor Bug Fixer"
@@ -3609,135 +3603,176 @@ msgstr "(Modèle de Niveau)"
 
 #: data/level/tempo-outskirts-inside.cfg:103
 msgid "Oh my, a visitor!"
-msgstr ""
+msgstr "Oh, un visiteur!"
 
 #: data/level/tempo-outskirts-inside.cfg:104
 msgid ""
 "Hey, I'm sorry to barge in and all,\n"
 "but what happened to that bridge?"
 msgstr ""
+"Hé, je suis désolé de m'incruster\n"
+"comme ça, mais qu'est-ce qui est\n"
+"arrivé au pont?"
 
 #: data/level/tempo-outskirts-inside.cfg:105
 msgid ""
 "Yes, I've had a few people come in \n"
 "to ask about that."
 msgstr ""
+"Oui, quelques personnes sont venues\n"
+"me voir à ce sujet."
 
 #: data/level/tempo-outskirts-inside.cfg:106
 msgid ""
 "There was a storm a few weeks ago, \n"
 "and a big swell of water washed it out."
 msgstr ""
+"On a eu une tempête il y a\n"
+"quelques semaines et\n"
+"une grosse vague l'a emporté."
 
 #: data/level/tempo-outskirts-inside.cfg:107
 msgid ""
 "You've probably seen this yourself, but\n"
 "just to be sure... don't go into the water."
 msgstr ""
+"Vous l'avez probablement\n"
+"vu vous-même, mais\n"
+"juste pour être sûr... n'allez pas dans l'eau."
 
 #: data/level/tempo-outskirts-inside.cfg:108
 msgid ""
 "Current that hard will just smash you\n"
 "against the rocks."
 msgstr ""
+"Un tel courant vous écraserait\n"
+"sur les rochers."
 
 #: data/level/tempo-outskirts-inside.cfg:109
 msgid ""
 "Yeah... crap.  I'm actually a bit confused\n"
 " about how to get where I'm going."
 msgstr ""
+"Ouais... mince, je suis un peu perdu\n"
+"quant à la façon de me rendre où je vais."
 
 #: data/level/tempo-outskirts-inside.cfg:110
 msgid ""
 "See, I'm trying to make it to\n"
 "Milgram's castle."
 msgstr ""
+"Tu vois, j'essaye d'aller\n"
+"au château de Milgram."
 
 #: data/level/tempo-outskirts-inside.cfg:111
 msgid ""
 "Yes, he's quite the businessman.\n"
 "It'd be nice if he could help us, here."
 msgstr ""
+"Oui, c'est un vrai homme d'affaire.\n"
+"Ça serait bien s'il pouvait nous aider."
 
 #: data/level/tempo-outskirts-inside.cfg:112
 msgid "Hmm?"
-msgstr ""
+msgstr "Hein?"
 
 #: data/level/tempo-outskirts-inside.cfg:113
 msgid ""
 "Well, for one thing, it'd be nice if\n"
 "anyone could help get this bridge fixed."
 msgstr ""
+"Bon, il faut admettre que ça serait bien\n"
+"si n'importe qui pouvait\n"
+"nous aider à réparer ce pont."
 
 #: data/level/tempo-outskirts-inside.cfg:114
 msgid ""
 "I sent in a request shortly after it fell,\n"
 "and they've been too busy to do anything."
 msgstr ""
+"J'ai envoyé une demander peu de temps\n"
+"après qu'il soit tombé, mais ils sont\n"
+"trop occupé pour faire quoi que ce soit."
 
 #: data/level/tempo-outskirts-inside.cfg:115
 msgid ""
 "Anyways, the best way for you to go\n"
 "would be to head to Tempo Village."
 msgstr ""
+"Bon, le meilleurs moyen pour vous\n"
+"serait de passer par le village de Tempo."
 
 #: data/level/tempo-outskirts-inside.cfg:116
 msgid ""
 "There's a way from there to get to\n"
 "Milgram's Castle."
 msgstr ""
+"Il y a une façon d'aller\n"
+"au château de Milgram."
 
 #: data/level/tempo-outskirts-inside.cfg:117
 msgid "Now, unfortunately, the easiest way..."
-msgstr ""
+msgstr "Alors, malheureusement, la meilleure façon..."
 
 #: data/level/tempo-outskirts-inside.cfg:118
 msgid ""
 "...would have been to cross the\n"
 " bridge next to this house."
 msgstr ""
+"... aurait été d'emprunter le pont\n"
+"près de cette maison."
 
 #: data/level/tempo-outskirts-inside.cfg:119
 msgid "Figures."
-msgstr ""
+msgstr "Logique."
 
 #: data/level/tempo-outskirts-inside.cfg:120
 msgid ""
 "Fortunately, you're not completely\n"
 "out of luck."
 msgstr ""
+"Par chance, vous n'êtes pas\n"
+"complètement sans option."
 
 #: data/level/tempo-outskirts-inside.cfg:121
 msgid ""
 "If you hike back a ways, you should\n"
 "see a shortcut through the trees."
 msgstr ""
+"Si vous revenez sur vos pas vous devriez\n"
+"voir un raccourci à travers les arbres."
 
 #: data/level/tempo-outskirts-inside.cfg:122
 msgid ""
 "Taking that will get you to an\n"
 "odd contraption called \"the conveyance\"."
 msgstr ""
+"Il vous mènera à une machine\n"
+"étrange appelée \"le transporteur\"."
 
 #: data/level/tempo-outskirts-inside.cfg:123
 msgid ""
 "It's a ... little odd, but it is\n"
 "a way across the river."
 msgstr ""
+"C'est... un peu étrange, mais c'est\n"
+"un moyen de traverser la rivière."
 
 #: data/level/tempo-outskirts-inside.cfg:124
 msgid ""
 "Yeah - sure beats \"nothing\", though.\n"
 "Thanks a lot!"
 msgstr ""
+"Ouais - mais c'est toujours mieux\n"
+"que \"rien\". Merci pour tout!"
 
 #: data/level/tempo-outskirts-inside.cfg:125
 msgid "No problem.  Best of luck."
-msgstr ""
+msgstr "Pas de problème. Bonne chance."
 
 #: data/level/tempo-outskirts.cfg:12
 msgid "Tempo Outskirts"
-msgstr ""
+msgstr "Environs de Tempo"
 
 #: data/level/tempo-outskirts.cfg:1860
 msgid ""
@@ -3830,7 +3865,7 @@ msgstr "COURIR"
 
 #: data/level/titlescreen-arcade.cfg:420
 msgid "Coin Race"
-msgstr ""
+msgstr "Course aux pièces"
 
 #: data/level/titlescreen-test.cfg:284 data/level/titlescreen.cfg:284
 msgid "LOAD GAME"
@@ -4087,9 +4122,8 @@ msgid "Lower Ascent"
 msgstr "Début de l'Ascension"
 
 #: data/level/wm-ascent-1.cfg:2207
-#, fuzzy
 msgid "This Way to Squirrel Mining"
-msgstr "Dans cette direction, la Mine des Écureuils."
+msgstr ""
 
 #: data/level/wm-ascent-1.cfg:2208
 msgid "Caution: Rough Trail"
@@ -5175,40 +5209,36 @@ msgstr "Voulez-vous acheter {consts.name}?"
 
 #: data/object_prototypes/crazy-stuff/civ-tile.cfg:57
 msgid "This is a blank tile. It doesn't do anything."
-msgstr ""
+msgstr "Cette case est une case neutre. Elle ne sert à rien."
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:32
-#, fuzzy
 msgid "You made it to level {level.player.difficulty} of the coin race!"
 msgstr ""
-"Vous avez monté {level.player.vars.score} pieds dans le conduit de "
-"maintenance!"
+"Vous êtes arrivé au niveau {level.player.difficulty} de la course aux pièce!"
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:34
-#, fuzzy
 msgid "You made it to level {level.player.difficulty} of the coin race."
 msgstr ""
-"Vous avez monté {level.player.vars.score} pieds dans le conduit de "
-"maintenance!"
+"Vous êtes arrivé au niveau {level.player.difficulty} de la course aux pièce."
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
-#, fuzzy
 msgid ""
-"The furthest that has been reached is level {registry."
-"arcade_coin_race_high_score}."
-msgstr "Le record est de {registry.arcade_maintenance_shaft_high_score} pieds."
+"The furthest that has been reached is level "
+"{registry.arcade_coin_race_high_score}."
+msgstr ""
+"Le niveau record est le niveau {registry.arcade_coin_race_high_score}."
 
 #: data/objects/experimental/civ/civ-tile_farm.cfg:11
 msgid "Farm Tile: Feeds all connected tiles."
-msgstr ""
+msgstr "Ferme: alimente les cases connectées."
 
 #: data/objects/experimental/civ/civ-tile_mine.cfg:11
 msgid "Mine Tile: Place on mountains. Get ore for a nice bonus."
-msgstr ""
+msgstr "Mine: à placer sur une montagne. Génère des minerais en bonus."
 
 #: data/objects/experimental/civ/civ-tile_settle.cfg:11
 msgid "Settlement: This is where your citizens gather. 2x2 square = city."
-msgstr ""
+msgstr "Colonie: là où vos citoyens se regroupent. Carré de 2x2 = ville."
 
 #: data/objects/experimental/civ/civ-tile_war.cfg:11
 msgid "Warrior: Kingdom strength is warriors, plus any played from hand."
@@ -5216,23 +5246,23 @@ msgstr ""
 
 #: data/objects/experimental/civ/civ_board.cfg:36
 msgid "Black"
-msgstr ""
+msgstr "Noir"
 
 #: data/objects/experimental/civ/civ_board.cfg:36
 msgid "Gold"
-msgstr ""
+msgstr "Or"
 
 #: data/objects/experimental/civ/civ_board.cfg:36
 msgid "Mysterious Stranger"
-msgstr ""
+msgstr "Étranger mystérieux"
 
 #: data/objects/experimental/civ/civ_board.cfg:36
 msgid "Silver"
-msgstr ""
+msgstr "Argent"
 
 #: data/objects/experimental/civ/civ_board.cfg:36
 msgid "White"
-msgstr ""
+msgstr "Blanc"
 
 #: data/objects/experimental/civ/civ_board.cfg:37
 msgid "claim"
@@ -5240,19 +5270,19 @@ msgstr ""
 
 #: data/objects/experimental/civ/civ_board.cfg:37
 msgid "farm"
-msgstr ""
+msgstr "ferme"
 
 #: data/objects/experimental/civ/civ_board.cfg:37
 msgid "mine"
-msgstr ""
+msgstr "mine"
 
 #: data/objects/experimental/civ/civ_board.cfg:37
 msgid "settlement"
-msgstr ""
+msgstr "colonie"
 
 #: data/objects/experimental/civ/civ_board.cfg:37
 msgid "warrior camp"
-msgstr ""
+msgstr "camp de guerriers"
 
 #: data/objects/experimental/civ/civ_board.cfg:185
 msgid "Drag a tile to the board to play. Right-click for help."
@@ -5276,11 +5306,11 @@ msgstr ""
 #: data/objects/experimental/civ/civ_board.cfg:203
 #: data/objects/experimental/civ/civ_board.cfg:299
 msgid "Armies:"
-msgstr ""
+msgstr "Armées"
 
 #: data/objects/experimental/civ/civ_board.cfg:298
 msgid " VS "
-msgstr ""
+msgstr "VS"
 
 #: data/objects/experimental/civ/civ_board.cfg:299
 msgid "(+0)"
@@ -5579,19 +5609,19 @@ msgstr "Accomplissement débloqué !"
 
 #: src/main.cpp:382
 msgid "Initializing custom object"
-msgstr ""
+msgstr "Initialisation de l'objet sur mesure"
 
 #: src/main.cpp:384
 msgid "Initializing custom object functions"
-msgstr ""
+msgstr "Initialisation des fonctions de l'objet sur mesure"
 
 #: src/main.cpp:386
 msgid "Initializing tiles"
-msgstr ""
+msgstr "Initialisation des cases"
 
 #: src/main.cpp:389 src/main.cpp:393
 msgid "Initializing GUI"
-msgstr ""
+msgstr "Initialisation de l'interface graphique"
 
 #: src/main.cpp:399
 msgid "Loading level"
@@ -5628,50 +5658,3 @@ msgstr "Inverser A et B"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "FeinteOuverte"
-
-#~ msgid "These don't affect story-mode.  Enjoy!"
-#~ msgstr ""
-#~ "Ils n'affectent pas le jeu en mode histoire.\n"
-#~ "Profitez-en !"
-
-#~ msgid "Object Scripting"
-#~ msgstr "Scripteur d'objets"
-
-#~ msgid "Actually I was just hoping to get to town."
-#~ msgstr "En fait j'espérais aller en ville."
-
-#~ msgid ""
-#~ "Oh is that so? Well after what Milgram's\n"
-#~ "men did to the bridge..."
-#~ msgstr ""
-#~ "Ah vraiment? Après ce que les hommes\n"
-#~ "de Milgram ont fait au pont..."
-
-#~ msgid "the CONVEYANCE is the only way!"
-#~ msgstr "le TRANSPORTEUR est le seul moyen!"
-
-#~ msgid ""
-#~ "So I have to use this conveyance thing\n"
-#~ "to get to town? Okay, well, let's go..."
-#~ msgstr ""
-#~ "Je dois donc utiliser ce transporteur\n"
-#~ "pour me rendre en ville?\n"
-#~ "D'accord alors, en route..."
-
-#~ msgid "LEFT"
-#~ msgstr "GAUCHE"
-
-#~ msgid "RIGHT"
-#~ msgstr "DROITE"
-
-#~ msgid "UP"
-#~ msgstr "HAUT"
-
-#~ msgid "DOWN"
-#~ msgstr "BAS"
-
-#~ msgid "ACME(tm) FLOATING TEXT SIGN"
-#~ msgstr "ACME(tm) BULLE DE TEXTE"
-
-#~ msgid "Caution: Sudden Dropoffs."
-#~ msgstr "Attention: Trouées Subites"

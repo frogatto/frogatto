@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2011-04-16 02:02-0300\n"
-"PO-Revision-Date: 2011-01-19 16:54+0000\n"
+"PO-Revision-Date: 2011-04-17 00:27+0000\n"
 "Last-Translator: TheJoe <asbruff@gmail.com>\n"
 "Language-Team: Italian <>\n"
-"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: data/achievements.cfg:4
@@ -38,9 +38,8 @@ msgid "Nice Try..."
 msgstr "Bel tentativo..."
 
 #: data/achievements.cfg:21
-#, fuzzy
 msgid "But that's not a secret area."
-msgstr "ma questa non è un'area segreta."
+msgstr ""
 
 #: data/achievements.cfg:28
 msgid "Gold Hoarder"
@@ -179,10 +178,8 @@ msgid "Well, that's that."
 msgstr "Bene, questo è tutto."
 
 #: data/level/arcade-blocks.cfg:217
-#, fuzzy
 msgid "You got {level.player.score} points in the Blocks Run!"
 msgstr ""
-"L'hai mandato {level.player.vars.score} piedi sull'albero di manutenzione! "
 
 #: data/level/arcade-blocks.cfg:218
 #: data/level/arcade-down-the-rabbithall.cfg:821
@@ -197,23 +194,17 @@ msgid "You got {level.player.score} points in the Blocks Run."
 msgstr ""
 
 #: data/level/arcade-blocks.cfg:220
-#, fuzzy
 msgid "The high score is {registry.arcade_blocks_high_score}."
 msgstr ""
-"Il punteggio è di {registry.arcade_maintenance_shaft_high_score} piedi."
 
 #: data/level/arcade-down-the-rabbithall.cfg:820
 #: data/level/arcade-down-the-rabbithall.cfg:823
-#, fuzzy
 msgid "You made it {level.player.vars.score} cm down the rabbithall!"
 msgstr ""
-"L'hai mandato {level.player.vars.score} piedi sull'albero di manutenzione! "
 
 #: data/level/arcade-down-the-rabbithall.cfg:824
-#, fuzzy
 msgid "The high score is {registry.arcade_down_the_rabbithall_high_score} cm."
 msgstr ""
-"Il punteggio è di {registry.arcade_maintenance_shaft_high_score} piedi."
 
 #: data/level/arcade-maintenance-shaft.cfg:13
 #: data/level/titlescreen-arcade.cfg:253
@@ -238,16 +229,12 @@ msgstr "La Lunga Camminata"
 
 #: data/level/arcade-the-long-haul.cfg:631
 #: data/level/arcade-the-long-haul.cfg:634
-#, fuzzy
 msgid "You scored {level.player.vars.score} points in the long haul!"
 msgstr ""
-"L'hai mandato {level.player.vars.score} piedi sull'albero di manutenzione! "
 
 #: data/level/arcade-the-long-haul.cfg:635
-#, fuzzy
 msgid "The high score is {registry.arcade_the_long_haul_high_score} points."
 msgstr ""
-"Il punteggio è di {registry.arcade_maintenance_shaft_high_score} piedi."
 
 #: data/level/arcade-wild-new-wonder.cfg:12
 #: data/level/titlescreen-arcade.cfg:251
@@ -256,43 +243,33 @@ msgstr "Stupore Selvaggio"
 
 #: data/level/arcade-wild-new-wonder.cfg:2520
 #: data/level/arcade-wild-new-wonder.cfg:2523
-#, fuzzy
 msgid "You climbed {level.player.vars.score} dm in the Wild New Wonder!"
 msgstr ""
-"L'hai mandato {level.player.vars.score} piedi sull'albero di manutenzione! "
 
 #: data/level/arcade-wild-new-wonder.cfg:2521
-#, fuzzy
 msgid "This is a new high!"
-msgstr "Questo è un nuovo record!"
+msgstr ""
 
 #: data/level/arcade-wild-new-wonder.cfg:2524
-#, fuzzy
-msgid "The highest climbed is {registry.arcade_wild_new_wonder_high_score} dm."
+msgid ""
+"The highest climbed is {registry.arcade_wild_new_wonder_high_score} dm."
 msgstr ""
-"Il punteggio è di {registry.arcade_maintenance_shaft_high_score} piedi."
 
 #: data/level/arcade_upper_deck.cfg:12 data/level/titlescreen-arcade.cfg:252
-#, fuzzy
 msgid "Upper Deck"
-msgstr "La Risalita Superiore"
+msgstr ""
 
 #: data/level/arcade_upper_deck.cfg:2081 data/level/arcade_upper_deck.cfg:2084
-#, fuzzy
 msgid "You climbed {level.player.vars.score} dm on the Upper Deck!"
 msgstr ""
-"L'hai mandato {level.player.vars.score} piedi sull'albero di manutenzione! "
 
 #: data/level/arcade_upper_deck.cfg:2082
-#, fuzzy
 msgid "This is a new record!"
-msgstr "Questo è un nuovo record!"
+msgstr ""
 
 #: data/level/arcade_upper_deck.cfg:2085
-#, fuzzy
 msgid "The highest climbed is {registry.arcade_upper_deck_high_score} dm."
 msgstr ""
-"Il punteggio è di {registry.arcade_maintenance_shaft_high_score} piedi."
 
 #: data/level/autumn-town.cfg:16
 msgid "Autumn Town"
@@ -408,13 +385,10 @@ msgid "Hi there, sonny!"
 msgstr ""
 
 #: data/level/conveyance.cfg:1131
-#, fuzzy
 msgid ""
 "Have you come here\n"
 "to ride on the CONVEYANCE?"
 msgstr ""
-"Ciao figliolo, sei venuto per montare\n"
-"sul MEZZO?"
 
 #: data/level/conveyance.cfg:1133
 msgid ""
@@ -501,13 +475,10 @@ msgid ""
 msgstr ""
 
 #: data/level/conveyance.cfg:1152
-#, fuzzy
 msgid ""
 "Ha! They said my grandfather\n"
 "was crazy, when he built it."
 msgstr ""
-"Dicevano che mio nonno era pazzo quando\n"
-"l'ha costruito. Ma chi è il pazzo ora, eh?"
 
 #: data/level/conveyance.cfg:1153
 msgid "But who's crazy now, eh?"
@@ -1542,7 +1513,6 @@ msgid "Against Milgram? Really?"
 msgstr "Contro Milgram? Davvero?"
 
 #: data/level/crevice-village.cfg:975
-#, fuzzy
 msgid ""
 "I thought he like ... \"mass-produces\"\n"
 "his followers, or something."
@@ -1565,7 +1535,6 @@ msgid ""
 msgstr "Sì... Capisco cosa vuoi dire."
 
 #: data/level/crevice-village.cfg:980
-#, fuzzy
 msgid ""
 "There's got to be something\n"
 "we can use to our advantage,\n"
@@ -1576,7 +1545,6 @@ msgstr ""
 "non è ciò che cerchiamo."
 
 #: data/level/crevice-village.cfg:982
-#, fuzzy
 msgid ""
 "\"Doing the unexpected\"\n"
 "might be our best bet, for now."
@@ -1629,12 +1597,11 @@ msgid "Descent to Town"
 msgstr "Discesa alla Città"
 
 #: data/level/descent-to-town.cfg:1025
-#, fuzzy
 msgid ""
 "It says,\n"
 "\"Chopple's General Store,\n"
 "just ahead."
-msgstr "Il negozio di Chopple"
+msgstr ""
 
 #: data/level/descent-to-town.cfg:1027
 msgid "Honest trade and thrifty prices!\""
@@ -3383,23 +3350,20 @@ msgid "Minor Level Designer"
 msgstr "Minor Level Designer"
 
 #: data/level/tea-with-milgram.cfg:353
-#, fuzzy
 msgid "Achievement Programming"
-msgstr "Obiettivo Sbloccato!"
+msgstr ""
 
 #: data/level/tea-with-milgram.cfg:354
 msgid "Physics, Geometry Scripting"
 msgstr ""
 
 #: data/level/tea-with-milgram.cfg:355
-#, fuzzy
 msgid "Minor Programmer"
-msgstr "Capo Programmatore"
+msgstr ""
 
 #: data/level/tea-with-milgram.cfg:359
-#, fuzzy
 msgid "The End"
-msgstr "L'Entrata"
+msgstr ""
 
 #: data/level/tea-with-milgram.cfg:362
 msgid "Creative Director - created characters/setting/story"
@@ -3438,9 +3402,8 @@ msgid "Devil's Advocacy"
 msgstr "Avvocato del Diavolo"
 
 #: data/level/tea-with-milgram.cfg:386
-#, fuzzy
 msgid "Translation Coordinator"
-msgstr "Supporto Traduzione"
+msgstr ""
 
 #: data/level/tea-with-milgram.cfg:388
 msgid "Minor Bug Fixer"
@@ -3962,9 +3925,8 @@ msgid "Lower Ascent"
 msgstr "La Risalita Inferiore"
 
 #: data/level/wm-ascent-1.cfg:2207
-#, fuzzy
 msgid "This Way to Squirrel Mining"
-msgstr "Questa è la strada per le Miniere dello Scoiattolo."
+msgstr ""
 
 #: data/level/wm-ascent-1.cfg:2208
 msgid "Caution: Rough Trail"
@@ -4385,8 +4347,7 @@ msgstr ""
 "è una piccola città sulle cime\n"
 "degli alberi. Dovresti chiedere ai cittadini.\n"
 "Per arrivarci, vai a sinistra, poi in alto\n"
-"a destra. Gli ascensori più piccoli làfunzionano ancora bene, è solo questa "
-"l'area\n"
+"a destra. Gli ascensori più piccoli làfunzionano ancora bene, è solo questa l'area\n"
 "che è stata danneggiata.\n"
 "Quindi, andrai a Woodenhead?"
 
@@ -4998,24 +4959,18 @@ msgid "This is a blank tile. It doesn't do anything."
 msgstr ""
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:32
-#, fuzzy
 msgid "You made it to level {level.player.difficulty} of the coin race!"
 msgstr ""
-"L'hai mandato {level.player.vars.score} piedi sull'albero di manutenzione! "
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:34
-#, fuzzy
 msgid "You made it to level {level.player.difficulty} of the coin race."
 msgstr ""
-"L'hai mandato {level.player.vars.score} piedi sull'albero di manutenzione! "
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
-#, fuzzy
 msgid ""
-"The furthest that has been reached is level {registry."
-"arcade_coin_race_high_score}."
+"The furthest that has been reached is level "
+"{registry.arcade_coin_race_high_score}."
 msgstr ""
-"Il punteggio è di {registry.arcade_maintenance_shaft_high_score} piedi."
 
 #: data/objects/experimental/civ/civ-tile_farm.cfg:11
 msgid "Farm Tile: Feeds all connected tiles."
@@ -5432,49 +5387,3 @@ msgstr "Inverti A e B"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
-
-#~ msgid "These don't affect story-mode.  Enjoy!"
-#~ msgstr ""
-#~ "La modalità storia non verrà influenzata.\n"
-#~ "Divertiti!"
-
-#~ msgid "Object Scripting"
-#~ msgstr "Object Scripting"
-
-#~ msgid "Actually I was just hoping to get to town."
-#~ msgstr "In realtà speravo solo di arrivare in città."
-
-#~ msgid ""
-#~ "Oh is that so? Well after what Milgram's\n"
-#~ "men did to the bridge..."
-#~ msgstr ""
-#~ "Oh è così? Beh, dopo quello che gli uomini \n"
-#~ "di Milgram hanno fatto al ponte..."
-
-#~ msgid "the CONVEYANCE is the only way!"
-#~ msgstr "il MEZZO è l'unico modo!"
-
-#~ msgid ""
-#~ "So I have to use this conveyance thing\n"
-#~ "to get to town? Okay, well, let's go..."
-#~ msgstr ""
-#~ "Quindi devo usare questo mezzo per\n"
-#~ "arrivare in città? Ok, va bene, andiamo..."
-
-#~ msgid "LEFT"
-#~ msgstr "SINISTRA"
-
-#~ msgid "RIGHT"
-#~ msgstr "DESTRA"
-
-#~ msgid "UP"
-#~ msgstr "SU"
-
-#~ msgid "DOWN"
-#~ msgstr "GIU"
-
-#~ msgid "ACME(tm) FLOATING TEXT SIGN"
-#~ msgstr "TESTO FLUTTUANTE ACME(tm)"
-
-#~ msgid "Caution: Sudden Dropoffs."
-#~ msgstr "Attenzione: Frane Improvvise"

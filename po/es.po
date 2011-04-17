@@ -1,22 +1,21 @@
-# Spanish Translation File.
-# Copyright (C) 2010
-# This file is distributed under the same license as the Frogatto package.
-# Ricardo A. Hermosilla Carrillo <ra.hermosillac@gmail.com>, 2010
-#
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Frogatto v1.0.3\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: Frogatto\n"
+"Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2011-04-16 02:02-0300\n"
-"PO-Revision-Date: \n"
-"Last-Translator: Ricardo A. Hermosilla Carrillo <ra.hermosillac@gmail.com>\n"
-"Language-Team: \n"
-"Language: \n"
+"PO-Revision-Date: 2011-04-17 00:27+0000\n"
+"Last-Translator: pH5 <pzabel@gmx.de>\n"
+"Language-Team: Spanish (Castilian) <None>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Spanish\n"
-"X-Poedit-SourceCharset: UTF-8\n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: data/achievements.cfg:4
 msgid "Pocket Money"
@@ -131,9 +130,8 @@ msgid "Now applying artificial gravity."
 msgstr ""
 
 #: data/level/airplane-boss.cfg:14
-#, fuzzy
 msgid "Stonepipe Bridge"
-msgstr "Puente La Grieta"
+msgstr ""
 
 #: data/level/airplane-boss.cfg:360
 msgid "Ambush!"
@@ -224,9 +222,8 @@ msgstr ""
 
 #: data/level/arcade-the-long-haul.cfg:10
 #: data/level/titlescreen-arcade.cfg:275
-#, fuzzy
 msgid "The Long Haul"
-msgstr "La Casa del Peligro"
+msgstr ""
 
 #: data/level/arcade-the-long-haul.cfg:631
 #: data/level/arcade-the-long-haul.cfg:634
@@ -252,7 +249,8 @@ msgid "This is a new high!"
 msgstr ""
 
 #: data/level/arcade-wild-new-wonder.cfg:2524
-msgid "The highest climbed is {registry.arcade_wild_new_wonder_high_score} dm."
+msgid ""
+"The highest climbed is {registry.arcade_wild_new_wonder_high_score} dm."
 msgstr ""
 
 #: data/level/arcade_upper_deck.cfg:12 data/level/titlescreen-arcade.cfg:252
@@ -385,13 +383,10 @@ msgid "Hi there, sonny!"
 msgstr ""
 
 #: data/level/conveyance.cfg:1131
-#, fuzzy
 msgid ""
 "Have you come here\n"
 "to ride on the CONVEYANCE?"
 msgstr ""
-"Hola hijo, ¿has venido hasta aquí para\n"
-"montar el Transporte?"
 
 #: data/level/conveyance.cfg:1133
 msgid ""
@@ -412,9 +407,8 @@ msgstr ""
 
 #: data/level/conveyance.cfg:1137 data/level/secluded-hut-interior.cfg:922
 #: data/level/wm-town.cfg:2285
-#, fuzzy
 msgid "That's nice."
-msgstr "Ese es mi nuevo trabajo."
+msgstr ""
 
 #: data/level/conveyance.cfg:1138
 msgid ""
@@ -479,13 +473,10 @@ msgid ""
 msgstr ""
 
 #: data/level/conveyance.cfg:1152
-#, fuzzy
 msgid ""
 "Ha! They said my grandfather\n"
 "was crazy, when he built it."
 msgstr ""
-"¿Porqué decían que mi abuelo estaba loco\n"
-"cuando lo construyó?. ¿Ahora quién es el loco?"
 
 #: data/level/conveyance.cfg:1153
 msgid "But who's crazy now, eh?"
@@ -840,9 +831,8 @@ msgid "That's my new job."
 msgstr "Ese es mi nuevo trabajo."
 
 #: data/level/crevice-village-house-1.cfg:2557
-#, fuzzy
 msgid "That's nutty."
-msgstr "¡Eso es cierto!"
+msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2559
 msgid ""
@@ -909,9 +899,8 @@ msgstr ""
 "continúa  entonces."
 
 #: data/level/crevice-village-house-1.cfg:2592
-#, fuzzy
 msgid "Thank God it's you!"
-msgstr "¡Gracias a Dios que eres tú!"
+msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2594
 msgid "Hey, Hedge, you alright?"
@@ -944,13 +933,10 @@ msgid "Yep."
 msgstr "Sí."
 
 #: data/level/crevice-village-house-1.cfg:2601
-#, fuzzy
 msgid ""
 "Hmm, you know, I know one thing\n"
 "that might help you.."
 msgstr ""
-"Hmm, sabes, sé una cosa que te\n"
-"puede ayudar."
 
 #: data/level/crevice-village-house-1.cfg:2601
 msgid "Phooey."
@@ -1063,9 +1049,8 @@ msgstr ""
 "más allá de la puerta de la ciudad."
 
 #: data/level/crevice-village-house-2.cfg:3565
-#, fuzzy
 msgid "We saw Milgram's lieutenant go in there."
-msgstr "Vimos al teniente de Milgram ir hacia allá"
+msgstr ""
 
 #: data/level/crevice-village-house-2.cfg:3567 data/level/rock-a-fort.cfg:4375
 msgid "How interesting."
@@ -1080,9 +1065,8 @@ msgstr "La Casa del Peligro"
 #: data/level/crevice-village-house-4-backroom.cfg:10
 #: data/level/crevice-village-house-4.cfg:10
 #: data/level/liberated-crevice-village-house-4.cfg:10
-#, fuzzy
 msgid "Fan House"
-msgstr "La Casa del Peligro"
+msgstr ""
 
 #: data/level/crevice-village-house-4-backroom.cfg:1266
 msgid ""
@@ -1429,9 +1413,8 @@ msgstr ""
 "para que me dejara de fastidiar!"
 
 #: data/level/crevice-village-house-elder.cfg:1658
-#, fuzzy
 msgid "...Anything?"
-msgstr " ... ¿Cualquier cosa?"
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1660
 msgid ""
@@ -1484,11 +1467,10 @@ msgid ""
 msgstr ""
 
 #: data/level/crevice-village.cfg:968
-#, fuzzy
 msgid ""
 "Well, yeah,\n"
 "I was gonna go in there."
-msgstr "Oh, hola, ¿Qué está pasando aquí?"
+msgstr ""
 
 #: data/level/crevice-village.cfg:970
 msgid ""
@@ -1578,12 +1560,11 @@ msgid "Descent to Town"
 msgstr "Descenso a la Ciudad"
 
 #: data/level/descent-to-town.cfg:1025
-#, fuzzy
 msgid ""
 "It says,\n"
 "\"Chopple's General Store,\n"
 "just ahead."
-msgstr "Tienda General de Chopple"
+msgstr ""
 
 #: data/level/descent-to-town.cfg:1027
 msgid "Honest trade and thrifty prices!\""
@@ -2128,9 +2109,8 @@ msgid ""
 msgstr ""
 
 #: data/level/hidden-depths.cfg:14
-#, fuzzy
 msgid "Hidden Depths"
-msgstr "Cueva oculta"
+msgstr ""
 
 #: data/level/hidden-depths.cfg:3737
 msgid "I'd better be careful."
@@ -2179,9 +2159,8 @@ msgid ""
 msgstr ""
 
 #: data/level/liberated-crevice-village-house-1.cfg:1217
-#, fuzzy
 msgid "I know, I'm just poking fun at you."
-msgstr "De todos modos, estoy orgulloso de ti."
+msgstr ""
 
 #: data/level/liberated-crevice-village-house-1.cfg:1219
 msgid "I am glad things worked out, though."
@@ -2200,9 +2179,8 @@ msgid "So nice to have things back to normal."
 msgstr ""
 
 #: data/level/liberated-crevice-village-house-1.cfg:1867
-#, fuzzy
 msgid "You bet."
-msgstr "¡Por supuesto!"
+msgstr ""
 
 #: data/level/liberated-crevice-village-house-1.cfg:1869
 msgid ""
@@ -2217,11 +2195,8 @@ msgid ""
 msgstr ""
 
 #: data/level/liberated-crevice-village-house-2.cfg:1541
-#, fuzzy
 msgid "Hey, thanks for saving the town!"
 msgstr ""
-"Hey, \n"
-"Estoy tratando de ayudar a salvar la ciudad."
 
 #: data/level/liberated-crevice-village-house-2.cfg:1543
 msgid "All in a day's work."
@@ -2266,9 +2241,8 @@ msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:588
 #: data/level/secluded-hut-interior.cfg:919
-#, fuzzy
 msgid "Hi, I'm Frogatto."
-msgstr "Hey, Frogatto."
+msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:599
 msgid ""
@@ -2351,9 +2325,8 @@ msgid "Wait a minute, it's you, isn't it?"
 msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:684
-#, fuzzy
 msgid "Yup, I'm Frogatto!"
-msgstr "Hey, Frogatto."
+msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:686
 msgid "Uhh.."
@@ -2575,9 +2548,8 @@ msgid "I say! Who's there?"
 msgstr ""
 
 #: data/level/secluded-hut.cfg:1242
-#, fuzzy
 msgid "Are you quite alright?"
-msgstr "Hey, Hedge, ¿estás bien?"
+msgstr ""
 
 #: data/level/secluded-hut.cfg:1244
 msgid ""
@@ -2806,9 +2778,8 @@ msgid ""
 msgstr ""
 
 #: data/level/tea-with-milgram.cfg:224
-#, fuzzy
 msgid "Uh.. yeah."
-msgstr "Uhm ... ¿Si?"
+msgstr ""
 
 #: data/level/tea-with-milgram.cfg:226
 msgid ""
@@ -3054,9 +3025,8 @@ msgid "Minor Programmer"
 msgstr ""
 
 #: data/level/tea-with-milgram.cfg:359
-#, fuzzy
 msgid "The End"
-msgstr "La Entrada"
+msgstr ""
 
 #: data/level/tea-with-milgram.cfg:362
 msgid "Creative Director - created characters/setting/story"
@@ -3406,9 +3376,8 @@ msgid "ARCADE"
 msgstr ""
 
 #: data/level/to-nenes-house-inside.cfg:10
-#, fuzzy
 msgid "Nene's House"
-msgstr "La Casa del Anciano"
+msgstr ""
 
 #: data/level/to-nenes-house-inside.cfg:488
 msgid "Hey Nene, what's cooking?"
@@ -3445,9 +3414,8 @@ msgid ""
 msgstr ""
 
 #: data/level/to-nenes-house-inside.cfg:506
-#, fuzzy
 msgid "They're freaking me out."
-msgstr "No hay quien me engañe."
+msgstr ""
 
 #: data/level/to-nenes-house-inside.cfg:508
 msgid "Sure thing. I need a job!"
@@ -3505,9 +3473,8 @@ msgid "Well, dangit, this door is locked."
 msgstr ""
 
 #: data/level/to-nenes-house.cfg:14
-#, fuzzy
 msgid "To Nene's House"
-msgstr "La Casa del Anciano"
+msgstr ""
 
 #: data/level/to-nenes-house.cfg:1926
 msgid "Hah!"
@@ -3559,9 +3526,8 @@ msgid "The sooner, the better."
 msgstr ""
 
 #: data/level/toasty-torches.cfg:12
-#, fuzzy
 msgid "Hidden Room"
-msgstr "Cueva oculta"
+msgstr ""
 
 #: data/level/twisted-trees.cfg:14
 msgid "Twisted Trees"
@@ -3572,9 +3538,8 @@ msgid "Underground Pool"
 msgstr ""
 
 #: data/level/waiting-room.cfg:12
-#, fuzzy
 msgid "Waiting Room"
-msgstr "Habitación de Pato"
+msgstr ""
 
 #: data/level/wandering-passage.cfg:16
 msgid "Wandering Passage"
@@ -3609,9 +3574,8 @@ msgid "Close call."
 msgstr ""
 
 #: data/level/wm-h0.0-lift.cfg:12
-#, fuzzy
 msgid "Lift House"
-msgstr "Casa Central"
+msgstr ""
 
 #: data/level/wm-h0.0-lift.cfg:555 data/level/wm-h0.0-lift.cfg:562
 msgid ""
@@ -3687,11 +3651,10 @@ msgid "The Lower Landing"
 msgstr ""
 
 #: data/level/wm-ll.cfg:1396
-#, fuzzy
 msgid ""
 "Hi, I'm Frogatto.\n"
 "What are you doing?"
-msgstr "¿Quién eres tu?"
+msgstr ""
 
 #: data/level/wm-ll.cfg:1397
 msgid ""
@@ -4059,9 +4022,8 @@ msgid "More..."
 msgstr ""
 
 #: data/level/wm-town.cfg:1110
-#, fuzzy
 msgid "3: Could you start the lift?"
-msgstr "¿Podría hacerse a un lado?"
+msgstr ""
 
 #: data/level/wm-town.cfg:1113
 msgid "Sure, no problem."
@@ -4086,11 +4048,10 @@ msgid "Hello there. I am Jove."
 msgstr ""
 
 #: data/level/wm-town.cfg:2126
-#, fuzzy
 msgid ""
 "Hi. I'm Frogatto.\n"
 "What do you do here?"
-msgstr "¿Quién eres tu?"
+msgstr ""
 
 #: data/level/wm-town.cfg:2128
 msgid ""
@@ -4200,9 +4161,8 @@ msgid ""
 msgstr ""
 
 #: data/level/wm-town.cfg:2166
-#, fuzzy
 msgid "Oh."
-msgstr "Oh mi..."
+msgstr ""
 
 #: data/level/wm-town.cfg:2172
 msgid "... It's gone. Sorry."
@@ -4227,9 +4187,8 @@ msgid ""
 msgstr ""
 
 #: data/level/wm-town.cfg:2187
-#, fuzzy
 msgid "I'll have the..."
-msgstr "Qué ra..."
+msgstr ""
 
 #: data/level/wm-town.cfg:2188
 msgid "Slow Moe"
@@ -4389,9 +4348,8 @@ msgid "The price is {final_price} coins."
 msgstr ""
 
 #: data/object_prototypes/buyable_item.cfg:19
-#, fuzzy
 msgid "You don't have enough money."
-msgstr "Usted no dijo."
+msgstr ""
 
 #: data/object_prototypes/buyable_item.cfg:23
 msgid "Do you want to buy the {consts.name}?"
@@ -4411,8 +4369,8 @@ msgstr ""
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level {registry."
-"arcade_coin_race_high_score}."
+"The furthest that has been reached is level "
+"{registry.arcade_coin_race_high_score}."
 msgstr ""
 
 #: data/objects/experimental/civ/civ-tile_farm.cfg:11
@@ -4529,9 +4487,8 @@ msgid "error"
 msgstr ""
 
 #: data/objects/experimental/jb-background.cfg:18
-#, fuzzy
 msgid "Runtime: "
-msgstr "Tiempo: "
+msgstr ""
 
 #: data/objects/experimental/jb-background.cfg:27
 msgid " -- paused -- "
@@ -4592,37 +4549,28 @@ msgid ""
 msgstr ""
 
 #: data/objects/items/store-items/buyable_jumping_boots.cfg:13
-#, fuzzy
 msgid ""
 "The power boots will\n"
 "make you jump higher."
 msgstr ""
-"Las botas de velocidad lo harán\n"
-"más rápido."
 
 #: data/objects/items/store-items/buyable_powerup_invincible.cfg:11
 msgid "invincibility crystal"
 msgstr ""
 
 #: data/objects/items/store-items/buyable_powerup_invincible.cfg:13
-#, fuzzy
 msgid ""
 "The invincibility crystal unlocks\n"
 "invincibility powerups. Invincibility\n"
 "powerups will make you\n"
 "invincible for a short time."
 msgstr ""
-"El cristal de energía desbloquea\n"
-"potenciadores de energía. Éstos le\n"
-"permitirán disparar rayos de\n"
-"energía."
 
 #: data/objects/items/store-items/buyable_powerup_reflexes.cfg:11
 msgid "hyper crystal"
 msgstr ""
 
 #: data/objects/items/store-items/buyable_powerup_reflexes.cfg:13
-#, fuzzy
 msgid ""
 "The hyper crystal unlocks\n"
 "hyper powerups. Hyper\n"
@@ -4630,10 +4578,6 @@ msgid ""
 "reflexes, making the world\n"
 "seem to slow down around you."
 msgstr ""
-"El cristal de energía desbloquea\n"
-"potenciadores de energía. Éstos le\n"
-"permitirán disparar rayos de\n"
-"energía."
 
 #: data/objects/items/store-items/buyable_powerup_shooting.cfg:11
 msgid "energy crystal"
@@ -4810,41 +4754,3 @@ msgstr ""
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr ""
-
-#~ msgid "Actually I was just hoping to get to town."
-#~ msgstr "En realidad tenía la esperanza de llevar a la ciudad."
-
-#~ msgid ""
-#~ "Oh is that so? Well after what Milgram's\n"
-#~ "men did to the bridge..."
-#~ msgstr ""
-#~ "Oh, ¿eso es? Bueno, después de lo que los\n"
-#~ "hombres de Milgram le hicieron al puente... "
-
-#~ msgid "the CONVEYANCE is the only way!"
-#~ msgstr "¡el Transporte es la única vía!"
-
-#~ msgid ""
-#~ "So I have to use this conveyance thing\n"
-#~ "to get to town? Okay, well, let's go..."
-#~ msgstr ""
-#~ "¿Así que tengo que usar esta cosa de\n"
-#~ "transporte para ir a la ciudad? Bueno, vamos..."
-
-#~ msgid "LEFT"
-#~ msgstr "IZQUIERDA"
-
-#~ msgid "RIGHT"
-#~ msgstr "DERECHA"
-
-#~ msgid "UP"
-#~ msgstr "ARRIBA"
-
-#~ msgid "DOWN"
-#~ msgstr "ABAJO"
-
-#~ msgid "Let's just get down to business!"
-#~ msgstr "¡Vamos al grano!"
-
-#~ msgid "Thank god it's you!"
-#~ msgstr "¡Gracias a Dios que eres tú!"
