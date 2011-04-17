@@ -847,14 +847,14 @@ void custom_object::process(level& lvl)
 		int xpos = INT_MIN, ypos = INT_MIN;
 		if(position_schedule_->x_pos.empty() == false) {
 			xpos = position_schedule_->x_pos[pos%position_schedule_->x_pos.size()];
-			if(next_fraction) {
+			if(next_fraction && pos+1 != position_schedule_->x_pos.size()) {
 				xpos = (xpos*this_fraction + next_fraction*position_schedule_->x_pos[(pos+1)%position_schedule_->x_pos.size()])/position_schedule_->speed;
 			}
 		}
 
 		if(position_schedule_->y_pos.empty() == false) {
 			ypos = position_schedule_->y_pos[pos%position_schedule_->y_pos.size()];
-			if(next_fraction) {
+			if(next_fraction && pos+1 != position_schedule_->y_pos.size()) {
 				ypos = (ypos*this_fraction + next_fraction*position_schedule_->y_pos[(pos+1)%position_schedule_->y_pos.size()])/position_schedule_->speed;
 			}
 		}
@@ -2150,6 +2150,10 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		}
 		break;
 	}
+
+	case CUSTOM_OBJECT_CYCLE:
+		cycle_ = value.as_int();
+		break;
 
 	case CUSTOM_OBJECT_FACING:
 		set_face_right(value.as_int() > 0);

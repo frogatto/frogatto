@@ -779,8 +779,15 @@ public:
 	{}
 private:
 	variant execute(const formula_callable& variables) const {
-		const int start = args().size() > 1 ? args()[0]->evaluate(variables).as_int() : 0;
-		const int end = args()[args().size() > 1 ? 1 : 0]->evaluate(variables).as_int();
+		int start = args().size() > 1 ? args()[0]->evaluate(variables).as_int() : 0;
+		int end = args()[args().size() > 1 ? 1 : 0]->evaluate(variables).as_int();
+		bool reverse = false;
+		if(end < start) {
+			std::swap(start, end);
+			++start;
+			++end;
+			reverse = true;
+		}
 		const int nelem = end - start;
 
 		std::vector<variant> v;
@@ -791,6 +798,10 @@ private:
 			for(int n = 0; n < nelem; ++n) {
 				v.push_back(variant(start+n));
 			}
+		}
+
+		if(reverse) {
+			std::reverse(v.begin(), v.end());
 		}
 
 		return variant(&v);
