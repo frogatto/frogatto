@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto v1.0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-16 02:02-0300\n"
+"POT-Creation-Date: 2011-04-19 01:18-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -173,7 +173,11 @@ msgstr ""
 msgid "Well, that's that."
 msgstr ""
 
-#: data/level/arcade-blocks.cfg:217
+#: data/level/arcade-blocks.cfg:11
+msgid "Blocks Run"
+msgstr ""
+
+#: data/level/arcade-blocks.cfg:217 data/level/arcade-blocks.cfg:219
 msgid "You got {level.player.score} points in the Blocks Run!"
 msgstr ""
 
@@ -181,12 +185,9 @@ msgstr ""
 #: data/level/arcade-down-the-rabbithall.cfg:821
 #: data/level/arcade-maintenance-shaft.cfg:2088
 #: data/level/arcade-the-long-haul.cfg:632
+#: data/level/arcade-wild-new-wonder.cfg:2521
 #: data/objects/effects/control/level_controller_coin_race.cfg:33
 msgid "This is a new high score!"
-msgstr ""
-
-#: data/level/arcade-blocks.cfg:219
-msgid "You got {level.player.score} points in the Blocks Run."
 msgstr ""
 
 #: data/level/arcade-blocks.cfg:220
@@ -195,11 +196,12 @@ msgstr ""
 
 #: data/level/arcade-down-the-rabbithall.cfg:820
 #: data/level/arcade-down-the-rabbithall.cfg:823
-msgid "You made it {level.player.vars.score} cm down the rabbithall!"
+msgid "You got {level.player.vars.score} points going down the rabbithall!"
 msgstr ""
 
 #: data/level/arcade-down-the-rabbithall.cfg:824
-msgid "The high score is {registry.arcade_down_the_rabbithall_high_score} cm."
+msgid ""
+"The high score is {registry.arcade_down_the_rabbithall_high_score} points."
 msgstr ""
 
 #: data/level/arcade-maintenance-shaft.cfg:13
@@ -209,11 +211,12 @@ msgstr ""
 
 #: data/level/arcade-maintenance-shaft.cfg:2087
 #: data/level/arcade-maintenance-shaft.cfg:2090
-msgid "You made it {level.player.vars.score} feet up the maintenance shaft!"
+msgid "You got {level.player.vars.score} points in the maintenance shaft!"
 msgstr ""
 
 #: data/level/arcade-maintenance-shaft.cfg:2091
-msgid "The high score is {registry.arcade_maintenance_shaft_high_score} feet."
+msgid ""
+"The high score is {registry.arcade_maintenance_shaft_high_score} points."
 msgstr ""
 
 #: data/level/arcade-the-long-haul.cfg:10
@@ -223,7 +226,7 @@ msgstr ""
 
 #: data/level/arcade-the-long-haul.cfg:631
 #: data/level/arcade-the-long-haul.cfg:634
-msgid "You scored {level.player.vars.score} points in the long haul!"
+msgid "You got {level.player.vars.score} points in the long haul!"
 msgstr ""
 
 #: data/level/arcade-the-long-haul.cfg:635
@@ -237,15 +240,11 @@ msgstr ""
 
 #: data/level/arcade-wild-new-wonder.cfg:2520
 #: data/level/arcade-wild-new-wonder.cfg:2523
-msgid "You climbed {level.player.vars.score} dm in the Wild New Wonder!"
-msgstr ""
-
-#: data/level/arcade-wild-new-wonder.cfg:2521
-msgid "This is a new high!"
+msgid "You got {level.player.vars.score} points in the Wild New Wonder!"
 msgstr ""
 
 #: data/level/arcade-wild-new-wonder.cfg:2524
-msgid "The highest climbed is {registry.arcade_wild_new_wonder_high_score} dm."
+msgid "The high score is {registry.arcade_wild_new_wonder_high_score} points."
 msgstr ""
 
 #: data/level/arcade_upper_deck.cfg:12 data/level/titlescreen-arcade.cfg:252
@@ -253,7 +252,7 @@ msgid "Upper Deck"
 msgstr ""
 
 #: data/level/arcade_upper_deck.cfg:2081 data/level/arcade_upper_deck.cfg:2084
-msgid "You climbed {level.player.vars.score} dm on the Upper Deck!"
+msgid "You got {level.player.vars.score} points on the Upper Deck!"
 msgstr ""
 
 #: data/level/arcade_upper_deck.cfg:2082
@@ -261,10 +260,10 @@ msgid "This is a new record!"
 msgstr ""
 
 #: data/level/arcade_upper_deck.cfg:2085
-msgid "The highest climbed is {registry.arcade_upper_deck_high_score} dm."
+msgid "The high score is {registry.arcade_upper_deck_high_score} points."
 msgstr ""
 
-#: data/level/autumn-town.cfg:16
+#: data/level/autumn-town.cfg:16 data/level/autumn-town.cfg:3367
 msgid "Autumn Town"
 msgstr ""
 
@@ -1324,54 +1323,90 @@ msgstr ""
 
 #: data/level/crevice-village.cfg:975
 msgid ""
-"I thought he like ... \"mass-produces\"\n"
-"his followers, or something."
+"I mean... on paper,\n"
+" that sounds like a good enough plan,"
 msgstr ""
 
 #: data/level/crevice-village.cfg:977
 msgid ""
-"I mean, it's very bizarre,\n"
-"but if there's any truth to it..."
+"but I'm gonna be a jerk here,\n"
+" and poke some holes in it."
 msgstr ""
 
 #: data/level/crevice-village.cfg:978
+msgid ""
+"Fair enough.\n"
+"I'm not particularly fond of it, myself."
+msgstr ""
+
+#: data/level/crevice-village.cfg:980
+msgid ""
+"Firstly, Milgram's got LOTS of followers.\n"
+"Tons of em.  He runs an entire city."
+msgstr ""
+
+#: data/level/crevice-village.cfg:982
+msgid ""
+"I mean, even if we armed the whole town,\n"
+" they'd grossly outnumber us."
+msgstr ""
+
+#: data/level/crevice-village.cfg:984
+msgid ""
+"Plus, they're pretty mobile, too.\n"
+" Planes and such."
+msgstr ""
+
+#: data/level/crevice-village.cfg:986
+msgid ""
+"We might get the drop on them for a bit,\n"
+" but we'd get surrounded in no time."
+msgstr ""
+
+#: data/level/crevice-village.cfg:988
+msgid "Brute force against brute force won't work."
+msgstr ""
+
+#: data/level/crevice-village.cfg:990
+msgid ""
+"We'd be like ... \n"
+"a bull butting heads with a freight train."
+msgstr ""
+
+#: data/level/crevice-village.cfg:991
 msgid ""
 "Yes... oh dear.\n"
 "I see what you mean."
 msgstr ""
 
-#: data/level/crevice-village.cfg:980
+#: data/level/crevice-village.cfg:993
 msgid ""
 "There's got to be something\n"
 "we can use to our advantage,\n"
 "but \"numerical superiority\" isn't it."
 msgstr ""
 
-#: data/level/crevice-village.cfg:982
+#: data/level/crevice-village.cfg:995
 msgid ""
-"\"Doing the unexpected\"\n"
-"might be our best bet, for now."
+"Anyways, about the cave ahead...\n"
+"it's just one guy, right?"
 msgstr ""
 
-#: data/level/crevice-village.cfg:984
-msgid "Anyways, it's just one guy, right?"
-msgstr ""
-
-#: data/level/crevice-village.cfg:985
+#: data/level/crevice-village.cfg:996
 msgid "To my knowledge, yes."
 msgstr ""
 
-#: data/level/crevice-village.cfg:987
+#: data/level/crevice-village.cfg:998
 msgid "Maybe I can talk my way around him?"
 msgstr ""
 
-#: data/level/crevice-village.cfg:989
+#: data/level/crevice-village.cfg:1000
 msgid ""
 "Worse comes to worse,\n"
 "I can just run for it.  Right?"
 msgstr ""
 
-#: data/level/crevice-village.cfg:990
+#: data/level/crevice-village.cfg:1001
 msgid ""
 "I do hope so.\n"
 "Good luck!"
@@ -2245,6 +2280,14 @@ msgstr ""
 msgid "There must be a way around it."
 msgstr ""
 
+#: data/level/rpg-trail2.cfg:5912
+msgid "There's nothing to the west."
+msgstr ""
+
+#: data/level/rpg-trail2.cfg:5950
+msgid "I hope you enjoy the scenery, because that's it..."
+msgstr ""
+
 #: data/level/secluded-hut-interior.cfg:12 data/level/secluded-hut.cfg:16
 #: data/objects/playable/map-selector.cfg:17
 msgid "Secluded Hut"
@@ -2431,7 +2474,10 @@ msgid ""
 msgstr ""
 
 #: data/level/secluded-hut.cfg:1257
-msgid "Wow, uhm..."
+msgid ""
+"Wow, uhm... \n"
+"I'd sure like to help, but ...\n"
+"I just don't see what I could do."
 msgstr ""
 
 #: data/level/secluded-hut.cfg:1259
