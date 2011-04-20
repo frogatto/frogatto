@@ -46,7 +46,7 @@ namespace preferences {
 		bool send_stats_ = true;
 		bool relay_through_server_ = false;
 		
-		std::string control_scheme_ = "iphone_classic";
+		std::string control_scheme_ = "iphone_2d";
 		
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 		
@@ -495,6 +495,7 @@ namespace preferences {
 			recalculate_draw_mask();
 		} else if(s == "--simipad") {
 			sim_iphone_ = true;
+			control_scheme_ = "ipad_2d";
 
 			virtual_screen_width_ = 1024;
 			virtual_screen_height_ = 768;
