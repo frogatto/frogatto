@@ -555,6 +555,39 @@ private:
 	}
 };
 
+namespace {
+	void flatten_items( variant items, std::vector<variant>* output){
+		for(size_t n = 0; n != items.num_elements(); ++n) {
+			
+			if( items[n].is_list() ){
+				flatten_items(items[n], output);
+			} else {
+				output->push_back(items[n]);
+			}
+			
+		}
+	}
+	
+}
+	
+class flatten_function : public function_expression {
+public:
+	explicit flatten_function(const args_list& args)
+	: function_expression("flatten", args, 1, 1)
+	{}
+	
+private:
+	variant execute(const formula_callable& variables) const {
+		variant input = args()[0]->evaluate(variables);
+		std::vector<variant> output;
+
+		flatten_items(input, &output);
+		
+		return variant(&output);
+	}
+};
+	
+	
 class filter_function : public function_expression {
 public:
 	explicit filter_function(const args_list& args)
@@ -1078,6 +1111,7 @@ functions_map& get_functions_map() {
 		FUNCTION(angle);
 		FUNCTION(orbit);
 		FUNCTION(sort);
+		FUNCTION(flatten);
 		FUNCTION(filter);
 		FUNCTION(mapping);
 		FUNCTION(find);
@@ -1173,6 +1207,14 @@ function_expression::function_expression(
 
 
 }
+
+UNIT_TEST(flatten_function) {
+	CHECK(game_logic::formula("flatten([1,[2,3]])").execute() == game_logic::formula("[1,2,3]").execute(), "test failed");
+	CHECK(game_logic::formula("flatten([1,2,3,[[4,5],6]])").execute() == game_logic::formula("[1,2,3,4,5,6]").execute(), "test failed");
+	CHECK(game_logic::formula("flatten([[1,2,3,4],5,6])").execute() == game_logic::formula("[1,2,3,4,5,6]").execute(), "test failed");
+	CHECK(game_logic::formula("flatten([[[0,2,4],6,8],10,[12,14]])").execute() == game_logic::formula("[0,2,4,6,8,10,12,14]").execute(), "test failed");
+}
+
 
 BENCHMARK(map_function) {
 	using namespace game_logic;
