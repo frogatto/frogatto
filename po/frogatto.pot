@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto v1.0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-19 01:18-0300\n"
+"POT-Creation-Date: 2011-04-22 02:01-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -141,38 +141,6 @@ msgstr ""
 msgid "Victory!"
 msgstr ""
 
-#: data/level/ant-farm-minigame.cfg:13
-msgid "Ant Farm"
-msgstr ""
-
-#: data/level/ant-farm-minigame.cfg:862
-msgid ""
-"I can feel the ants coming to\n"
-"investigate. Go get their points."
-msgstr ""
-
-#: data/level/ant-farm-minigame.cfg:864
-msgid " points."
-msgstr ""
-
-#: data/level/ant-farm-minigame.cfg:864
-msgid ""
-"Here's a 100 points in reward.\n"
-"We'll just leave now."
-msgstr ""
-
-#: data/level/ant-farm-minigame.cfg:864
-msgid "Not bad. You scored a total of"
-msgstr ""
-
-#: data/level/ant-farm-minigame.cfg:864
-msgid "Time: "
-msgstr ""
-
-#: data/level/ant-farm-minigame.cfg:864
-msgid "Well, that's that."
-msgstr ""
-
 #: data/level/arcade-blocks.cfg:11
 msgid "Blocks Run"
 msgstr ""
@@ -233,6 +201,22 @@ msgstr ""
 msgid "The high score is {registry.arcade_the_long_haul_high_score} points."
 msgstr ""
 
+#: data/level/arcade-upper-deck.cfg:12 data/level/titlescreen-arcade.cfg:252
+msgid "Upper Deck"
+msgstr ""
+
+#: data/level/arcade-upper-deck.cfg:2326 data/level/arcade-upper-deck.cfg:2329
+msgid "You got {level.player.vars.score} points on the Upper Deck!"
+msgstr ""
+
+#: data/level/arcade-upper-deck.cfg:2327
+msgid "This is a new record!"
+msgstr ""
+
+#: data/level/arcade-upper-deck.cfg:2330
+msgid "The high score is {registry.arcade_upper_deck_high_score} points."
+msgstr ""
+
 #: data/level/arcade-wild-new-wonder.cfg:12
 #: data/level/titlescreen-arcade.cfg:251
 msgid "Wild New Wonder"
@@ -245,22 +229,6 @@ msgstr ""
 
 #: data/level/arcade-wild-new-wonder.cfg:2524
 msgid "The high score is {registry.arcade_wild_new_wonder_high_score} points."
-msgstr ""
-
-#: data/level/arcade_upper_deck.cfg:12 data/level/titlescreen-arcade.cfg:252
-msgid "Upper Deck"
-msgstr ""
-
-#: data/level/arcade_upper_deck.cfg:2081 data/level/arcade_upper_deck.cfg:2084
-msgid "You got {level.player.vars.score} points on the Upper Deck!"
-msgstr ""
-
-#: data/level/arcade_upper_deck.cfg:2082
-msgid "This is a new record!"
-msgstr ""
-
-#: data/level/arcade_upper_deck.cfg:2085
-msgid "The high score is {registry.arcade_upper_deck_high_score} points."
 msgstr ""
 
 #: data/level/autumn-town.cfg:16 data/level/autumn-town.cfg:3367
@@ -340,118 +308,6 @@ msgstr ""
 msgid "Chopple's General Store"
 msgstr ""
 
-#: data/level/conveyance.cfg:12
-msgid "The Conveyance"
-msgstr ""
-
-#: data/level/conveyance.cfg:1128
-msgid ""
-"Enjoy your trip on the CONVEYANCE!\n"
-"Just don't let the bugs scare you off!"
-msgstr ""
-
-#: data/level/conveyance.cfg:1130
-msgid "Hi there, sonny!"
-msgstr ""
-
-#: data/level/conveyance.cfg:1131
-msgid ""
-"Have you come here\n"
-"to ride on the CONVEYANCE?"
-msgstr ""
-
-#: data/level/conveyance.cfg:1133
-msgid ""
-"Uhh...\n"
-"Will this get me across the river?"
-msgstr ""
-
-#: data/level/conveyance.cfg:1134
-msgid "Sure thing it will!"
-msgstr ""
-
-#: data/level/conveyance.cfg:1135
-msgid ""
-"In fact, since it's the only way at\n"
-"the moment, I'm doing a public service\n"
-"by making it free."
-msgstr ""
-
-#: data/level/conveyance.cfg:1137 data/level/secluded-hut-interior.cfg:922
-#: data/level/wm-town.cfg:2285
-msgid "That's nice."
-msgstr ""
-
-#: data/level/conveyance.cfg:1138
-msgid ""
-"Yessir, climb aboard the CONVEYANCE\n"
-"for the ride of your life!"
-msgstr ""
-
-#: data/level/conveyance.cfg:1140
-msgid ""
-"Wha...\n"
-"What's up with this 'carnival' act?"
-msgstr ""
-
-#: data/level/conveyance.cfg:1142
-msgid "Are you some kind of amateur showman?"
-msgstr ""
-
-#: data/level/conveyance.cfg:1143
-msgid ""
-"Ho!\n"
-"Not at all, not at all."
-msgstr ""
-
-#: data/level/conveyance.cfg:1144
-msgid ""
-"You see, my family has passed down\n"
-"a long-standing trade."
-msgstr ""
-
-#: data/level/conveyance.cfg:1145
-msgid "We build rides for amusment parks!"
-msgstr ""
-
-#: data/level/conveyance.cfg:1147
-msgid "..oh god, please no."
-msgstr ""
-
-#: data/level/conveyance.cfg:1148
-msgid ""
-"That's right!\n"
-"We wouldn't just build a bridge -\n"
-"not without some of\n"
-"our trademark EXCITEMENT!"
-msgstr ""
-
-#: data/level/conveyance.cfg:1149 data/level/crevice-village-house-1.cfg:2557
-#: data/level/crevice-village-house-1.cfg:2562
-#: data/level/crevice-village-house-1.cfg:2568
-#: data/level/crevice-village-house-1.cfg:2601
-#: data/level/crevice-village-house-elder.cfg:1480
-#: data/level/crevice-village-house-elder.cfg:1491
-#: data/level/crevice-village-house-elder.cfg:1593
-msgid "..."
-msgstr ""
-
-#: data/level/conveyance.cfg:1151
-msgid ""
-"With all due respect, sir...\n"
-"I think you're insane."
-msgstr ""
-
-#: data/level/conveyance.cfg:1152
-msgid ""
-"Ha! They said my grandfather\n"
-"was crazy, when he built it."
-msgstr ""
-
-#: data/level/conveyance.cfg:1153
-msgid "But who's crazy now, eh?"
-msgstr ""
-
 #: data/level/crevice-bridge.cfg:15
 msgid "Crevice Bridge"
 msgstr ""
@@ -471,7 +327,7 @@ msgstr ""
 msgid "You!!"
 msgstr ""
 
-#: data/level/crevice-village-cave.cfg:812 data/level/wm-town.cfg:2222
+#: data/level/crevice-village-cave.cfg:812
 #: data/object_prototypes/buyable_item.cfg:24
 #: data/objects/props-interactive/interactive/save_toilet.cfg:17
 #: data/objects/props-interactive/portals/dungeon_save_door.cfg:24
@@ -487,7 +343,7 @@ msgstr ""
 msgid "I thought so!"
 msgstr ""
 
-#: data/level/crevice-village-cave.cfg:814 data/level/wm-town.cfg:2229
+#: data/level/crevice-village-cave.cfg:814
 #: data/object_prototypes/buyable_item.cfg:25
 #: data/objects/props-interactive/interactive/save_toilet.cfg:22
 #: data/objects/props-interactive/portals/dungeon_save_door.cfg:29
@@ -747,6 +603,16 @@ msgid "That's my new job."
 msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2557
+#: data/level/crevice-village-house-1.cfg:2562
+#: data/level/crevice-village-house-1.cfg:2568
+#: data/level/crevice-village-house-1.cfg:2601
+#: data/level/crevice-village-house-elder.cfg:1480
+#: data/level/crevice-village-house-elder.cfg:1491
+#: data/level/crevice-village-house-elder.cfg:1593
+msgid "..."
+msgstr ""
+
+#: data/level/crevice-village-house-1.cfg:2557
 msgid "That's nutty."
 msgstr ""
 
@@ -829,7 +695,7 @@ msgstr ""
 msgid "So I'm stuck here, huh?"
 msgstr ""
 
-#: data/level/crevice-village-house-1.cfg:2600 data/level/wm-town.cfg:2158
+#: data/level/crevice-village-house-1.cfg:2600
 msgid "Yep."
 msgstr ""
 
@@ -1461,16 +1327,6 @@ msgstr ""
 
 #: data/level/fast-lane.cfg:13
 msgid "Fast Lane"
-msgstr ""
-
-#: data/level/fc_test.cfg:13
-msgid "Impurity"
-msgstr ""
-
-#: data/level/fc_test.cfg:667
-msgid ""
-"Hello, traveller. What brings you to\n"
-"this miserable little hole?"
 msgstr ""
 
 #: data/level/flooded-caverns.cfg:16
@@ -2236,14 +2092,6 @@ msgstr ""
 msgid "Fine."
 msgstr ""
 
-#: data/level/murky-mire.cfg:15
-msgid "Murky Mire"
-msgstr ""
-
-#: data/level/nene-and-frogatto.cfg:12
-msgid "Aimless Souls"
-msgstr ""
-
 #: data/level/pinecone-park.cfg:14
 msgid "Pinecone Park"
 msgstr ""
@@ -2301,6 +2149,10 @@ msgstr ""
 msgid ""
 "A pleasure to meet you.\n"
 "I am Mortimer."
+msgstr ""
+
+#: data/level/secluded-hut-interior.cfg:922
+msgid "That's nice."
 msgstr ""
 
 #: data/level/secluded-hut-interior.cfg:924
@@ -2529,20 +2381,8 @@ msgstr ""
 msgid "You ... do realize I can't fly?"
 msgstr ""
 
-#: data/level/senic-beach.cfg:12
-msgid "Geautatha Point"
-msgstr ""
-
-#: data/level/silky-silence.cfg:14
-msgid "Silky Silence"
-msgstr ""
-
 #: data/level/splash-hop.cfg:14
 msgid "Splash, Hop"
-msgstr ""
-
-#: data/level/stairway-to-heaven.cfg:12
-msgid "Stairway to Heaven"
 msgstr ""
 
 #: data/level/starlit-cave.cfg:14
@@ -3161,14 +3001,6 @@ msgstr ""
 msgid "(test level)"
 msgstr ""
 
-#: data/level/that-rising-water-arcade-level.cfg:12
-msgid "Acid Accident"
-msgstr ""
-
-#: data/level/the-north-tower.cfg:10
-msgid "The North Tower"
-msgstr ""
-
 #: data/level/titlescreen-arcade.cfg:141
 msgid "Each machine has a different arcade-style challenge."
 msgstr ""
@@ -3399,10 +3231,6 @@ msgstr ""
 msgid "The sooner, the better."
 msgstr ""
 
-#: data/level/toasty-torches.cfg:12
-msgid "Hidden Room"
-msgstr ""
-
 #: data/level/twisted-trees.cfg:14
 msgid "Twisted Trees"
 msgstr ""
@@ -3423,797 +3251,8 @@ msgstr ""
 msgid "Watery Alley"
 msgstr ""
 
-#: data/level/wither-wind.cfg:14
+#: data/level/wither-wind.cfg:12
 msgid "Wither Wind"
-msgstr ""
-
-#: data/level/wm-ascent-1.cfg:12
-msgid "Lower Ascent"
-msgstr ""
-
-#: data/level/wm-ascent-1.cfg:2207
-msgid "This Way to Squirrel Mining"
-msgstr ""
-
-#: data/level/wm-ascent-1.cfg:2208
-msgid "Caution: Rough Trail"
-msgstr ""
-
-#: data/level/wm-ascent-2.cfg:13
-msgid "Upper Ascent"
-msgstr ""
-
-#: data/level/wm-ascent-2.cfg:1089
-msgid "Close call."
-msgstr ""
-
-#: data/level/wm-h0.0-lift.cfg:12
-msgid "Lift House"
-msgstr ""
-
-#: data/level/wm-h0.0-lift.cfg:555 data/level/wm-h0.0-lift.cfg:562
-msgid ""
-"Hi, I am E. I run the elevator here.\n"
-"It is not verkink at the moment."
-msgstr ""
-
-#: data/level/wm-h0.0-lift.cfg:557
-msgid ""
-"I brought you a long rope.\n"
-"Will that help?"
-msgstr ""
-
-#: data/level/wm-h0.0-lift.cfg:558
-msgid ""
-"Yes, it certainly vill! Come back\n"
-"in\ta few seconds, I don't verk vell ven\n"
-"I'm beink vaached."
-msgstr ""
-
-#: data/level/wm-h0.0-lift.cfg:564
-msgid "Can I help?"
-msgstr ""
-
-#: data/level/wm-h0.0-lift.cfg:565
-msgid ""
-"There's a fellow on the ground\n"
-"beneath here, who's called Rajit.\n"
-"He's been tryink to get a cable up\n"
-"here to fix the car."
-msgstr ""
-
-#: data/level/wm-h0.0-lift.cfg:566
-msgid ""
-"The lazy bum von't valk it up here,\n"
-"which is what he needs to do.\n"
-"If you'd be villink to get it,\n"
-"I would be villink to pay you\n"
-"a 10 coin bounty. I can charge Rajit\n"
-"that for delays, at least."
-msgstr ""
-
-#: data/level/wm-h0.0-lift.cfg:568
-msgid "Sounds good. I'll see what I can do."
-msgstr ""
-
-#: data/level/wm-h0.0-lift.cfg:574
-msgid "The elevator is verkink. Hop on."
-msgstr ""
-
-#: data/level/wm-h0.0-lift.cfg:578
-msgid "Does the elevator work?"
-msgstr ""
-
-#: data/level/wm-h0.0-lift.cfg:579
-msgid "Pretty vell."
-msgstr ""
-
-#: data/level/wm-h0.0-lift.cfg:581
-msgid "So, about the bounty..?"
-msgstr ""
-
-#: data/level/wm-h0.0-lift.cfg:582
-msgid "Oh, yes. Here are the coins."
-msgstr ""
-
-#: data/level/wm-h0.0-lift.cfg:584 data/level/wm-ll.cfg:1460
-msgid "Thanks."
-msgstr ""
-
-#: data/level/wm-ll.cfg:12
-msgid "The Lower Landing"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1396
-msgid ""
-"Hi, I'm Frogatto.\n"
-"What are you doing?"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1397
-msgid ""
-"Oh, a bit of a storm through here.\n"
-"I'm cleaning up and repairing\n"
-"the place. But, I'm be- ...\n"
-"Are you going up to Woodenhead?"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1401
-msgid ""
-"Hi, Frogatto. I'm just rebuilding\n"
-"the bridges down here, now.\n"
-"It'll take a while."
-msgstr ""
-
-#: data/level/wm-ll.cfg:1405
-msgid ""
-"Oh, by the way, thanks for taking\n"
-"that rope up. Here's the 5 coins."
-msgstr ""
-
-#: data/level/wm-ll.cfg:1414
-msgid ""
-"1: Yes. What's up?\n"
-"2: Woodenhead? What's that?"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1415 data/level/wm-ll.cfg:1491
-#: data/level/wm-town.cfg:1085 data/level/wm-town.cfg:2131
-#: data/level/wm-town.cfg:2136 data/level/wm-town.cfg:2184
-msgid "Opt. 1"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1416 data/level/wm-ll.cfg:1492
-#: data/level/wm-town.cfg:1093 data/level/wm-town.cfg:2151
-#: data/level/wm-town.cfg:2179 data/level/wm-town.cfg:2245
-msgid "Opt. 2"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1417 data/level/wm-ll.cfg:1445
-#: data/level/wm-ll.cfg:1494 data/level/wm-town.cfg:1120
-#: data/level/wm-town.cfg:2169 data/level/wm-town.cfg:2269
-#: data/level/wm-town.cfg:2283
-msgid "Cancel"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1418
-msgid "Test"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1423
-msgid "It's a secret!"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1427
-msgid "I'm afraid I'm not going that way."
-msgstr ""
-
-#: data/level/wm-ll.cfg:1428
-msgid ""
-"Sorry to have bothered you, then.\n"
-"Have a nice day."
-msgstr ""
-
-#: data/level/wm-ll.cfg:1431
-msgid ""
-"Those are hoverpads. We use them\n"
-"for temporary stairs and small elevators."
-msgstr ""
-
-#: data/level/wm-ll.cfg:1433
-msgid ""
-"Why not just use one of those to\n"
-"take the medium rope up?"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1434
-msgid ""
-"Tried it. They only get about 60\n"
-"feet off the ground before they\n"
-"run out of steam."
-msgstr ""
-
-#: data/level/wm-ll.cfg:1436
-msgid "Oh, too bad."
-msgstr ""
-
-#: data/level/wm-ll.cfg:1437
-msgid "So, will you take the rope up?"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1441
-msgid ""
-"3: What's your name?\n"
-"4: What are those grey things?"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1442 data/level/wm-town.cfg:1111
-#: data/level/wm-town.cfg:2261
-msgid "Opt. 3"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1443
-msgid "Opt. 4"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1444
-msgid "Less"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1449
-msgid "I am Rajit. And you?"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1451
-msgid "I am Frogatto, myself."
-msgstr ""
-
-#: data/level/wm-ll.cfg:1452
-msgid ""
-"So, Frogatto, will you take this\n"
-"rope up to Woodenhead?"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1456
-msgid ""
-"Great! Here is the rope.\n"
-"*Rajit hands you the rope.*"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1459
-msgid "I'll have this up there soon."
-msgstr ""
-
-#: data/level/wm-ll.cfg:1463
-msgid ""
-"Sir! I am but a humble working\n"
-"man! How am I supposed to pay you?"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1465
-msgid ""
-"I notice a distinct absence of\n"
-"coins around here..."
-msgstr ""
-
-#: data/level/wm-ll.cfg:1466
-msgid ""
-"Eh... I suppose I can let you\n"
-"have 5 coins for the service.\n"
-"There weren't many around."
-msgstr ""
-
-#: data/level/wm-ll.cfg:1468
-msgid "Done!"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1472
-msgid ""
-"I'm *trying* to fix the elevator.\n"
-"The cable got tangled with a tree\n"
-"during the storm, and it had to be"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1474
-msgid ""
-"cut loose. The idea was that I'd\n"
-"fly up with a small, light rope,\n"
-"then I'd attach that to a heavier\n"
-"rope and they'd pull that one up,\n"
-"and then the heavier rope could be\n"
-"used to pull the steel elevator\n"
-"cable up."
-msgstr ""
-
-#: data/level/wm-ll.cfg:1476
-msgid "So? What's holding you up?"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1478
-msgid ""
-"Or, in this case...\n"
-"holding you down?"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1479
-msgid ""
-"That's not funny.\n"
-"Anyhow, I can get the light rope\n"
-"up just fine. It's just that...\n"
-"well... I didn't pack a light\n"
-"enough medium rope."
-msgstr ""
-
-#: data/level/wm-ll.cfg:1481
-msgid "You've lost me. Again..?"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1482
-msgid ""
-"In short, the light rope isn't\n"
-"strong enough to lift the medium\n"
-"rope. Someone will have to walk\n"
-"the medium rope up there."
-msgstr ""
-
-#: data/level/wm-ll.cfg:1483
-msgid ""
-"I've checked out the path ahead,\n"
-"but\tI can't get through it."
-msgstr ""
-
-#: data/level/wm-ll.cfg:1485
-msgid ""
-"So, for the good of the town,\n"
-"you want me to take up the medium\n"
-"rope?"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1486
-msgid ""
-"You know it. If you tell the\n"
-"guard there I sent you, he'll\n"
-"let you through."
-msgstr ""
-
-#: data/level/wm-ll.cfg:1490
-msgid ""
-"1: Sure, I'm on it!\n"
-"2: Pay me."
-msgstr ""
-
-#: data/level/wm-ll.cfg:1493 data/level/wm-town.cfg:2258
-msgid "More"
-msgstr ""
-
-#: data/level/wm-ll.cfg:1498
-msgid ""
-"You don't know of it? Hmh. Well,\n"
-"it's a small town in the tops of\n"
-"the trees. You should ask the locals.\n"
-"To get to it, you just head left,\n"
-"then you go up-right. The shorter\n"
-"elevators there still work fine,\n"
-"it's just this area which got the\n"
-"damage, really. So, are you walking\n"
-"to Woodenhead?"
-msgstr ""
-
-#: data/level/wm-town.cfg:12
-msgid "Company Town"
-msgstr ""
-
-#: data/level/wm-town.cfg:1072
-msgid ""
-"Welcome to Woodenhead.\n"
-"I'm the town guard."
-msgstr ""
-
-#: data/level/wm-town.cfg:1075
-msgid ""
-"That's nice. Why does the\n"
-"town need a guard?"
-msgstr ""
-
-#: data/level/wm-town.cfg:1077
-msgid ""
-"I operate the lift, mostly.\n"
-"But, guarding pays less.\n"
-"So, I'm a guard.\n"
-"It's still good money."
-msgstr ""
-
-#: data/level/wm-town.cfg:1080
-msgid ""
-"It looks like an easy job,\n"
-"though a bit slow.\n"
-"Can you tell me a\n"
-"bit about Woodenhead?"
-msgstr ""
-
-#: data/level/wm-town.cfg:1082
-msgid ""
-"Sure, nothing else doing.\n"
-"What do you want to know?"
-msgstr ""
-
-#: data/level/wm-town.cfg:1084
-msgid ""
-"1: Why is it called Woodenhead?\n"
-"2: Why's the town here?"
-msgstr ""
-
-#: data/level/wm-town.cfg:1087
-msgid ""
-"I think it's got something to\n"
-"do with 'minehead' and the\n"
-"fact we're in the woods."
-msgstr ""
-
-#: data/level/wm-town.cfg:1090
-msgid "Reasonable enough."
-msgstr ""
-
-#: data/level/wm-town.cfg:1095
-msgid ""
-"The town was built by the\n"
-"company to mine the trees\n"
-"around these parts. We\n"
-"export wood products to most\n"
-"of the country. Wood blocks,\n"
-"wood shavings, carvings, most\n"
-"of it came from here.\n"
-"It's too dangerous to fell\n"
-"trees here, what with the\n"
-"bugs and all those things\n"
-"crawling around. Even up\n"
-"here, the bugs are pretty bad."
-msgstr ""
-
-#: data/level/wm-town.cfg:1098
-msgid ""
-"I've been around, you'd\n"
-"never get any work done."
-msgstr ""
-
-#: data/level/wm-town.cfg:1100
-msgid ""
-"But the worst of it is,\n"
-"there is some sort of...\n"
-"FUNGUS growing all over the\n"
-"forest now. It didn't use\n"
-"to be there when I started.\n"
-"We had a camp over in\n"
-"Westhailia which got totally\n"
-"engulfed by the stuff. I\n"
-"expect that even this camp\n"
-"will be run over eventually.\n"
-"But that won't be for\n"
-"a while yet. We can\n"
-"always break camp and move\n"
-"on, but this fungus is\n"
-"hurting sales too! Still, I\n"
-"guess it could be worse."
-msgstr ""
-
-#: data/level/wm-town.cfg:1103
-msgid ""
-"Yeah, the town is in trouble.\n"
-"You could work there."
-msgstr ""
-
-#: data/level/wm-town.cfg:1105
-msgid ""
-"Oh, I hadn't heard.\n"
-"I have some family over there.\n"
-"I'll send them some money\n"
-"if they have to relocate.\n"
-"I hope they don't."
-msgstr ""
-
-#: data/level/wm-town.cfg:1108
-msgid "More..."
-msgstr ""
-
-#: data/level/wm-town.cfg:1110
-msgid "3: Could you start the lift?"
-msgstr ""
-
-#: data/level/wm-town.cfg:1113
-msgid "Sure, no problem."
-msgstr ""
-
-#: data/level/wm-town.cfg:1116
-msgid "How'd you do that?"
-msgstr ""
-
-#: data/level/wm-town.cfg:1123
-msgid "Uh, I forgot. Sorry."
-msgstr ""
-
-#: data/level/wm-town.cfg:1875
-msgid ""
-"Oh, hello down there.\n"
-"Just a sec, I'll start the lift."
-msgstr ""
-
-#: data/level/wm-town.cfg:2123
-msgid "Hello there. I am Jove."
-msgstr ""
-
-#: data/level/wm-town.cfg:2126
-msgid ""
-"Hi. I'm Frogatto.\n"
-"What do you do here?"
-msgstr ""
-
-#: data/level/wm-town.cfg:2128
-msgid ""
-"I am the manager of this mining\n"
-"camp, and the proprietor of\n"
-"the only restaurant in town.\n"
-"I hope you'll understand if all\n"
-"we have to offer is outdoor\n"
-"seating, things are a bit cramped\n"
-"in back."
-msgstr ""
-
-#: data/level/wm-town.cfg:2130
-msgid ""
-"1: Tell me about the mines.\n"
-"2: Tell me about the restaurant."
-msgstr ""
-
-#: data/level/wm-town.cfg:2133
-msgid "What would you like to know?"
-msgstr ""
-
-#: data/level/wm-town.cfg:2135
-msgid ""
-"1: How are labour relations?\n"
-"2: How do you mine wood?"
-msgstr ""
-
-#: data/level/wm-town.cfg:2138
-msgid ""
-"Things are surprisingly good,\n"
-"actually. We're a pretty small\n"
-"outfit, so complaints get dealt\n"
-"with quickly. That, and I think\n"
-"we're all a little scared for\n"
-"our jobs right now. With the\n"
-"fungus infestation, people aren't buying\n"
-"as much art-wood as they\n"
-"used to. I'll be honest, we\n"
-"sell all sorts of stuff,\n"
-"but the fine old-growth was\n"
-"our cash cow. Right now, people\n"
-"are buying cheap wood, planks,\n"
-"shavings, stuff like that. They're\n"
-"moving away from this fungus\n"
-"stuff. Building new houses, putting\n"
-"stuff in storage, etc. I mean, you\n"
-"noticed there weren't very\n"
-"many people around of late.\n"
-"Still, I don't think we'll\n"
-"go broke or anything. We\n"
-"are still selling plenty of the\n"
-"lower-grade timber. Still, it\n"
-"is a bit worrying."
-msgstr ""
-
-#: data/level/wm-town.cfg:2141
-msgid ""
-"In other words, Jove, the\n"
-"workers don't want to be\n"
-"annoying right before potential\n"
-"layoffs?"
-msgstr ""
-
-#: data/level/wm-town.cfg:2143
-msgid ""
-"Dead on.\n"
-"By the way, how is the town\n"
-"holding out?"
-msgstr ""
-
-#: data/level/wm-town.cfg:2146
-msgid ""
-"Most of them are staying,\n"
-"for now. It's not too bad."
-msgstr ""
-
-#: data/level/wm-town.cfg:2148
-msgid ""
-"Good. Where there's life,\n"
-"there's hope."
-msgstr ""
-
-#: data/level/wm-town.cfg:2153
-msgid ""
-"We use the normal stuff.\n"
-"Axes, saws, brooms, teleporters."
-msgstr ""
-
-#: data/level/wm-town.cfg:2156
-msgid "Trade secret?"
-msgstr ""
-
-#: data/level/wm-town.cfg:2161
-msgid ""
-"I guess you'd mind me looking\n"
-"around then, wouldn't you."
-msgstr ""
-
-#: data/level/wm-town.cfg:2163
-msgid ""
-"No, not at all. Go wherever\n"
-"you like. It's a TRADE\n"
-"\tsecret, everyone who mines wood\n"
-"knows it, and everyone who doesn't\n"
-"isn't a threat to us, business-wise!"
-msgstr ""
-
-#: data/level/wm-town.cfg:2166
-msgid "Oh."
-msgstr ""
-
-#: data/level/wm-town.cfg:2172
-msgid "... It's gone. Sorry."
-msgstr ""
-
-#: data/level/wm-town.cfg:2173
-msgid "See you."
-msgstr ""
-
-#: data/level/wm-town.cfg:2181
-msgid ""
-"We serve rough, good food-\n"
-"and lots of it! It's not\n"
-"one of those restaurants for sissies!\n"
-"Anyway, what can I get for you?"
-msgstr ""
-
-#: data/level/wm-town.cfg:2183
-msgid ""
-"1: Food Menu\n"
-"2: <*Guess restaurant name.*>"
-msgstr ""
-
-#: data/level/wm-town.cfg:2187
-msgid "I'll have the..."
-msgstr ""
-
-#: data/level/wm-town.cfg:2188
-msgid "Slow Moe"
-msgstr ""
-
-#: data/level/wm-town.cfg:2190
-msgid ""
-"One Slow Moe, coming right up.\n"
-"\n"
-"\n"
-"\n"
-"\n"
-"What?"
-msgstr ""
-
-#: data/level/wm-town.cfg:2194
-msgid "Shooter"
-msgstr ""
-
-#: data/level/wm-town.cfg:2196
-msgid ""
-"Shooter. Never know how they\n"
-"make these things. *shakes head*"
-msgstr ""
-
-#: data/level/wm-town.cfg:2200
-msgid "Turtle"
-msgstr ""
-
-#: data/level/wm-town.cfg:2202
-msgid ""
-"I once tried to make a soup out\n"
-"of this stuff. I had to throw\n"
-"out the pot."
-msgstr ""
-
-#: data/level/wm-town.cfg:2206
-msgid "Heart"
-msgstr ""
-
-#: data/level/wm-town.cfg:2208
-msgid ""
-"Would you like the heart without\n"
-"any traceable mercury, or the\n"
-"heart without any detectable\n"
-"lead? Nah, just kidding, I\n"
-"serve only the finest*.\n"
-"\n"
-"*That exists in this restaurant."
-msgstr ""
-
-#: data/level/wm-town.cfg:2209
-msgid ""
-"Oh, just pass the buckshot,\n"
-"would you?"
-msgstr ""
-
-#: data/level/wm-town.cfg:2213
-msgid "Fruit"
-msgstr ""
-
-#: data/level/wm-town.cfg:2215
-msgid "It's foreign, but it ships well."
-msgstr ""
-
-#: data/level/wm-town.cfg:2219
-msgid "Special"
-msgstr ""
-
-#: data/level/wm-town.cfg:2221
-msgid ""
-"The special today is the\n"
-"partial maximum heart. This is\n"
-"a delicacy, though, so unlike most\n"
-"of the stuff here it'll run\n"
-"you 35 coins. Would you still\n"
-"like to buy it?"
-msgstr ""
-
-#: data/level/wm-town.cfg:2224
-msgid ""
-"Great! You wouldn't believe the\n"
-"trouble I've had selling this!"
-msgstr ""
-
-#: data/level/wm-town.cfg:2231
-msgid ""
-"Probably the best choice, given how\n"
-"long it's been sitting around."
-msgstr ""
-
-#: data/level/wm-town.cfg:2237
-msgid "Nothing"
-msgstr ""
-
-#: data/level/wm-town.cfg:2239
-msgid "Sorry Jove, maybe later."
-msgstr ""
-
-#: data/level/wm-town.cfg:2248
-msgid ""
-"Is your restaurant called\n"
-"'That's good food, by J--"
-msgstr ""
-
-#: data/level/wm-town.cfg:2250
-msgid ""
-"I bet I can throw you off the\n"
-"edge of this town from here.\n"
-"If you want to find out,\n"
-"keep talking."
-msgstr ""
-
-#: data/level/wm-town.cfg:2253
-msgid "Yeesh, I was just asking."
-msgstr ""
-
-#: data/level/wm-town.cfg:2255
-msgid ""
-"You wouldn't believe how much\n"
-"I get that."
-msgstr ""
-
-#: data/level/wm-town.cfg:2260
-msgid "3: Odd table you have there."
-msgstr ""
-
-#: data/level/wm-town.cfg:2263
-msgid ""
-"Yeah, I took the legs off\n"
-"and screwed it to the deck.\n"
-"That model is oddly tall,\n"
-"don't you think? It's like\n"
-"one-size-fits-none. I mean,\n"
-"I could WALK under it!"
-msgstr ""
-
-#: data/level/wm-town.cfg:2266
-msgid ""
-"I should do the same. I've\n"
-"got the same model at home."
-msgstr ""
-
-#: data/level/wm-town.cfg:2272
-msgid "Sorry, I'm kind of full."
-msgstr ""
-
-#: data/level/wm-town.cfg:2274
-msgid ""
-"Happens to the best of us.\n"
-"I remember I was full, once."
 msgstr ""
 
 #: data/object_prototypes/buyable_item.cfg:19
@@ -4229,7 +3268,7 @@ msgstr ""
 msgid "Do you want to buy the {consts.name}?"
 msgstr ""
 
-#: data/object_prototypes/crazy-stuff/civ-tile.cfg:57
+#: data/object_prototypes/crazy-stuff/civ-tile.cfg:58
 msgid "This is a blank tile. It doesn't do anything."
 msgstr ""
 
@@ -4245,127 +3284,6 @@ msgstr ""
 msgid ""
 "The furthest that has been reached is level {registry."
 "arcade_coin_race_high_score}."
-msgstr ""
-
-#: data/objects/experimental/civ/civ-tile_farm.cfg:11
-msgid "Farm Tile: Feeds all connected tiles."
-msgstr ""
-
-#: data/objects/experimental/civ/civ-tile_mine.cfg:11
-msgid "Mine Tile: Place on mountains. Get ore for a nice bonus."
-msgstr ""
-
-#: data/objects/experimental/civ/civ-tile_settle.cfg:11
-msgid "Settlement: This is where your citizens gather. 2x2 square = city."
-msgstr ""
-
-#: data/objects/experimental/civ/civ-tile_war.cfg:11
-msgid "Warrior: Kingdom strength is warriors, plus any played from hand."
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:36
-msgid "Black"
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:36
-msgid "Gold"
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:36
-msgid "Mysterious Stranger"
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:36
-msgid "Silver"
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:36
-msgid "White"
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:37
-msgid "claim"
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:37
-msgid "farm"
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:37
-msgid "mine"
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:37
-msgid "settlement"
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:37
-msgid "warrior camp"
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:185
-msgid "Drag a tile to the board to play. Right-click for help."
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:203
-msgid "(+"
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:203
-#: data/objects/experimental/civ/civ_board.cfg:299
-msgid "(+?) VS "
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:203
-#: data/objects/experimental/civ/civ_board.cfg:320
-#: data/objects/experimental/civ/civ_board.cfg:324
-msgid ")"
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:203
-#: data/objects/experimental/civ/civ_board.cfg:299
-msgid "Armies:"
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:298
-msgid " VS "
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:299
-msgid "(+0)"
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:320
-#: data/objects/experimental/civ/civ_board.cfg:324
-msgid " to "
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:320
-msgid "'s warriors have fled! ("
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:324
-msgid " was destroyed by "
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:324
-msgid "'s warriors! ("
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:324
-msgid "A "
-msgstr ""
-
-#: data/objects/experimental/jb-background.cfg:7
-msgid "error"
-msgstr ""
-
-#: data/objects/experimental/jb-background.cfg:18
-msgid "Runtime: "
-msgstr ""
-
-#: data/objects/experimental/jb-background.cfg:27
-msgid " -- paused -- "
 msgstr ""
 
 #: data/objects/items/max_heart_object.cfg:18
