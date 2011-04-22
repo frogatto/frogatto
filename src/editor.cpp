@@ -928,9 +928,10 @@ void editor::edit_level()
 			//we're handling objects, and a button is down, and we have an
 			//object under the mouse. This means we are dragging something.
 
-			
-			
-			handle_object_dragging(mousex, mousey);
+			// check if cursor is not in the sidebar!
+			if (mousex < editor_mode_dialog_->x()) {
+				handle_object_dragging(mousex, mousey);
+			}
 		} else if(drawing_rect_) {
 			handle_drawing_rect(mousex, mousey);
 		}
