@@ -59,7 +59,7 @@ SDLKey sdlk[NUM_CONTROLS] = {
 	SDLK_a,
 	SDLK_b
 #else
-	SDLK_b,
+	SDLK_a,
 	SDLK_s
 #endif
 };
