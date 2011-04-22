@@ -32,8 +32,11 @@ grep -Hn '^title="[^"][^"]*"' data/level/*.cfg | \
 # find achievements
 grep -Hn '\(name\|description\)="[^"][^"]*"' data/achievements.cfg | \
 	sed -ne 's/^\(.*:[0-9]*\):.*\(name\|description\)="/#: \1\n"/;s/"\([^"]*\)".*/msgid "\1"\nmsgstr ""\n/gp'
-# find marked strings ~...~ in data files
-grep -Hnr --exclude-dir=".svn" "~[^~][^~]*~" data/level/ data/objects/ data/object_prototypes/ | \
+# find marked strings ~...~ in level files
+grep -Hn --exclude-dir=".svn" "~[^~][^~]*~" data/level/*.cfg | \
+	sed -ne ":A;s/\([a-z0-9/\._-]*:[0-9]*\):[^~]*~\([^~][^~]*\)~/\n#: \1\nmsgid \"\2\"\nmsgstr \"\"\n\1:/;tA;s/\n\([a-z0-9/\._-]*:[0-9]*\):[^\n]*//;p"
+# find marked strings ~...~ in data files; files in data/*/experimental are ignored
+grep -Hnr --exclude-dir=".svn" --exclude-dir="experimental" "~[^~][^~]*~" data/objects/ data/object_prototypes/ | \
 	sed -ne ":A;s/\([a-z0-9/\._-]*:[0-9]*\):[^~]*~\([^~][^~]*\)~/\n#: \1\nmsgid \"\2\"\nmsgstr \"\"\n\1:/;tA;s/\n\([a-z0-9/\._-]*:[0-9]*\):[^\n]*//;p"
 # find marked strings _("...") in source files
 grep -Hn '[^a-z]_("[^"]*")' src/*.cpp | \
