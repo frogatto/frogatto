@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-04-19 01:18-0300\n"
-"PO-Revision-Date: 2011-04-19 04:38+0000\n"
+"POT-Creation-Date: 2011-04-22 02:01-0300\n"
+"PO-Revision-Date: 2011-04-22 05:14+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Chinese (China) <>\n"
 "MIME-Version: 1.0\n"
@@ -141,42 +141,6 @@ msgstr "伏击！"
 msgid "Victory!"
 msgstr "胜利！"
 
-#: data/level/ant-farm-minigame.cfg:13
-msgid "Ant Farm"
-msgstr "蚂蚁农场"
-
-#: data/level/ant-farm-minigame.cfg:862
-msgid ""
-"I can feel the ants coming to\n"
-"investigate. Go get their points."
-msgstr ""
-"我感觉到啦！蚂蚁们正跑过来\n"
-"围观呢。把它们的点数拿到手！"
-
-#: data/level/ant-farm-minigame.cfg:864
-msgid " points."
-msgstr " 点。"
-
-#: data/level/ant-farm-minigame.cfg:864
-msgid ""
-"Here's a 100 points in reward.\n"
-"We'll just leave now."
-msgstr ""
-"这是100点奖励。\n"
-"现在咱们该撤了。"
-
-#: data/level/ant-farm-minigame.cfg:864
-msgid "Not bad. You scored a total of"
-msgstr "不错。你一共得到了"
-
-#: data/level/ant-farm-minigame.cfg:864
-msgid "Time: "
-msgstr "时间："
-
-#: data/level/ant-farm-minigame.cfg:864
-msgid "Well, that's that."
-msgstr "嘛，就这样了。"
-
 #: data/level/arcade-blocks.cfg:11
 msgid "Blocks Run"
 msgstr ""
@@ -237,6 +201,22 @@ msgstr ""
 msgid "The high score is {registry.arcade_the_long_haul_high_score} points."
 msgstr ""
 
+#: data/level/arcade-upper-deck.cfg:12 data/level/titlescreen-arcade.cfg:252
+msgid "Upper Deck"
+msgstr "上段甲板"
+
+#: data/level/arcade-upper-deck.cfg:2326 data/level/arcade-upper-deck.cfg:2329
+msgid "You got {level.player.vars.score} points on the Upper Deck!"
+msgstr ""
+
+#: data/level/arcade-upper-deck.cfg:2327
+msgid "This is a new record!"
+msgstr ""
+
+#: data/level/arcade-upper-deck.cfg:2330
+msgid "The high score is {registry.arcade_upper_deck_high_score} points."
+msgstr ""
+
 #: data/level/arcade-wild-new-wonder.cfg:12
 #: data/level/titlescreen-arcade.cfg:251
 msgid "Wild New Wonder"
@@ -249,22 +229,6 @@ msgstr ""
 
 #: data/level/arcade-wild-new-wonder.cfg:2524
 msgid "The high score is {registry.arcade_wild_new_wonder_high_score} points."
-msgstr ""
-
-#: data/level/arcade_upper_deck.cfg:12 data/level/titlescreen-arcade.cfg:252
-msgid "Upper Deck"
-msgstr "上段甲板"
-
-#: data/level/arcade_upper_deck.cfg:2081 data/level/arcade_upper_deck.cfg:2084
-msgid "You got {level.player.vars.score} points on the Upper Deck!"
-msgstr ""
-
-#: data/level/arcade_upper_deck.cfg:2082
-msgid "This is a new record!"
-msgstr ""
-
-#: data/level/arcade_upper_deck.cfg:2085
-msgid "The high score is {registry.arcade_upper_deck_high_score} points."
 msgstr ""
 
 #: data/level/autumn-town.cfg:16 data/level/autumn-town.cfg:3367
@@ -362,122 +326,6 @@ msgstr "洞之洞穴"
 msgid "Chopple's General Store"
 msgstr "巧比的万能商店"
 
-#: data/level/conveyance.cfg:12
-msgid "The Conveyance"
-msgstr "运输器"
-
-#: data/level/conveyance.cfg:1128
-msgid ""
-"Enjoy your trip on the CONVEYANCE!\n"
-"Just don't let the bugs scare you off!"
-msgstr ""
-"享受*运输器*带来的惬意旅行吧！\n"
-"只要别被虫子们吓得摔下来就好！"
-
-#: data/level/conveyance.cfg:1130
-msgid "Hi there, sonny!"
-msgstr ""
-
-#: data/level/conveyance.cfg:1131
-msgid ""
-"Have you come here\n"
-"to ride on the CONVEYANCE?"
-msgstr ""
-
-#: data/level/conveyance.cfg:1133
-msgid ""
-"Uhh...\n"
-"Will this get me across the river?"
-msgstr ""
-
-#: data/level/conveyance.cfg:1134
-msgid "Sure thing it will!"
-msgstr ""
-
-#: data/level/conveyance.cfg:1135
-msgid ""
-"In fact, since it's the only way at\n"
-"the moment, I'm doing a public service\n"
-"by making it free."
-msgstr ""
-
-#: data/level/conveyance.cfg:1137 data/level/secluded-hut-interior.cfg:922
-#: data/level/wm-town.cfg:2285
-msgid "That's nice."
-msgstr "好极了。"
-
-#: data/level/conveyance.cfg:1138
-msgid ""
-"Yessir, climb aboard the CONVEYANCE\n"
-"for the ride of your life!"
-msgstr ""
-"遵命！爬上运输器，\n"
-"为了你的小命前进吧！"
-
-#: data/level/conveyance.cfg:1140
-msgid ""
-"Wha...\n"
-"What's up with this 'carnival' act?"
-msgstr ""
-
-#: data/level/conveyance.cfg:1142
-msgid "Are you some kind of amateur showman?"
-msgstr ""
-
-#: data/level/conveyance.cfg:1143
-msgid ""
-"Ho!\n"
-"Not at all, not at all."
-msgstr ""
-
-#: data/level/conveyance.cfg:1144
-msgid ""
-"You see, my family has passed down\n"
-"a long-standing trade."
-msgstr ""
-
-#: data/level/conveyance.cfg:1145
-msgid "We build rides for amusment parks!"
-msgstr ""
-
-#: data/level/conveyance.cfg:1147
-msgid "..oh god, please no."
-msgstr ""
-
-#: data/level/conveyance.cfg:1148
-msgid ""
-"That's right!\n"
-"We wouldn't just build a bridge -\n"
-"not without some of\n"
-"our trademark EXCITEMENT!"
-msgstr ""
-
-#: data/level/conveyance.cfg:1149 data/level/crevice-village-house-1.cfg:2557
-#: data/level/crevice-village-house-1.cfg:2562
-#: data/level/crevice-village-house-1.cfg:2568
-#: data/level/crevice-village-house-1.cfg:2601
-#: data/level/crevice-village-house-elder.cfg:1480
-#: data/level/crevice-village-house-elder.cfg:1491
-#: data/level/crevice-village-house-elder.cfg:1593
-msgid "..."
-msgstr "……"
-
-#: data/level/conveyance.cfg:1151
-msgid ""
-"With all due respect, sir...\n"
-"I think you're insane."
-msgstr "无意冒犯，先生……我想您疯了。"
-
-#: data/level/conveyance.cfg:1152
-msgid ""
-"Ha! They said my grandfather\n"
-"was crazy, when he built it."
-msgstr ""
-
-#: data/level/conveyance.cfg:1153
-msgid "But who's crazy now, eh?"
-msgstr ""
-
 #: data/level/crevice-bridge.cfg:15
 msgid "Crevice Bridge"
 msgstr "裂口桥"
@@ -497,7 +345,7 @@ msgstr "这什么鬼……"
 msgid "You!!"
 msgstr "你！！"
 
-#: data/level/crevice-village-cave.cfg:812 data/level/wm-town.cfg:2222
+#: data/level/crevice-village-cave.cfg:812
 #: data/object_prototypes/buyable_item.cfg:24
 #: data/objects/props-interactive/interactive/save_toilet.cfg:17
 #: data/objects/props-interactive/portals/dungeon_save_door.cfg:24
@@ -513,7 +361,7 @@ msgstr "你是个入侵者，不是吗？"
 msgid "I thought so!"
 msgstr "我想是的！"
 
-#: data/level/crevice-village-cave.cfg:814 data/level/wm-town.cfg:2229
+#: data/level/crevice-village-cave.cfg:814
 #: data/object_prototypes/buyable_item.cfg:25
 #: data/objects/props-interactive/interactive/save_toilet.cfg:22
 #: data/objects/props-interactive/portals/dungeon_save_door.cfg:29
@@ -824,6 +672,16 @@ msgid "That's my new job."
 msgstr "这是我的新工作。"
 
 #: data/level/crevice-village-house-1.cfg:2557
+#: data/level/crevice-village-house-1.cfg:2562
+#: data/level/crevice-village-house-1.cfg:2568
+#: data/level/crevice-village-house-1.cfg:2601
+#: data/level/crevice-village-house-elder.cfg:1480
+#: data/level/crevice-village-house-elder.cfg:1491
+#: data/level/crevice-village-house-elder.cfg:1593
+msgid "..."
+msgstr "……"
+
+#: data/level/crevice-village-house-1.cfg:2557
 msgid "That's nutty."
 msgstr "真蛋疼。"
 
@@ -925,7 +783,7 @@ msgstr ""
 msgid "So I'm stuck here, huh?"
 msgstr "就是说我给困在这里了，哈？"
 
-#: data/level/crevice-village-house-1.cfg:2600 data/level/wm-town.cfg:2158
+#: data/level/crevice-village-house-1.cfg:2600
 msgid "Yep."
 msgstr "对头。"
 
@@ -1652,16 +1510,6 @@ msgstr "阴森树林"
 #: data/level/fast-lane.cfg:13
 msgid "Fast Lane"
 msgstr "捷径"
-
-#: data/level/fc_test.cfg:13
-msgid "Impurity"
-msgstr "不纯"
-
-#: data/level/fc_test.cfg:667
-msgid ""
-"Hello, traveller. What brings you to\n"
-"this miserable little hole?"
-msgstr "嗨，旅行者。是什么风把你吹到这悲催的小洞里来了？"
 
 #: data/level/flooded-caverns.cfg:16
 msgid "Flooded Caverns"
@@ -2573,14 +2421,6 @@ msgstr ""
 msgid "Fine."
 msgstr "好吧。"
 
-#: data/level/murky-mire.cfg:15
-msgid "Murky Mire"
-msgstr "浑浊泥潭"
-
-#: data/level/nene-and-frogatto.cfg:12
-msgid "Aimless Souls"
-msgstr "迷茫之魂"
-
 #: data/level/pinecone-park.cfg:14
 msgid "Pinecone Park"
 msgstr "松果公园"
@@ -2641,6 +2481,10 @@ msgid ""
 msgstr ""
 "很高兴见到你。\n"
 "我是摩塔莫。"
+
+#: data/level/secluded-hut-interior.cfg:922
+msgid "That's nice."
+msgstr "好极了。"
 
 #: data/level/secluded-hut-interior.cfg:924
 msgid ""
@@ -2922,21 +2766,9 @@ msgstr "简单得很，飞过去就是了！"
 msgid "You ... do realize I can't fly?"
 msgstr "你……知道我不会飞么？"
 
-#: data/level/senic-beach.cfg:12
-msgid "Geautatha Point"
-msgstr "戈塔沙之尖"
-
-#: data/level/silky-silence.cfg:14
-msgid "Silky Silence"
-msgstr "恬静之地"
-
 #: data/level/splash-hop.cfg:14
 msgid "Splash, Hop"
 msgstr "飞溅与蹦跳"
-
-#: data/level/stairway-to-heaven.cfg:12
-msgid "Stairway to Heaven"
-msgstr "天堂的阶梯"
 
 #: data/level/starlit-cave.cfg:14
 msgid "Starlit Cave"
@@ -3625,14 +3457,6 @@ msgstr "（测试关卡）"
 msgid "(test level)"
 msgstr "（测试关卡）"
 
-#: data/level/that-rising-water-arcade-level.cfg:12
-msgid "Acid Accident"
-msgstr ""
-
-#: data/level/the-north-tower.cfg:10
-msgid "The North Tower"
-msgstr "北国塔楼"
-
 #: data/level/titlescreen-arcade.cfg:141
 msgid "Each machine has a different arcade-style challenge."
 msgstr "每台机器中都有一个不同的街机风格的挑战关卡。"
@@ -3888,10 +3712,6 @@ msgstr ""
 msgid "The sooner, the better."
 msgstr "越早越好。"
 
-#: data/level/toasty-torches.cfg:12
-msgid "Hidden Room"
-msgstr "隐藏房间"
-
 #: data/level/twisted-trees.cfg:14
 msgid "Twisted Trees"
 msgstr "缠绕绿树"
@@ -3912,1033 +3732,9 @@ msgstr "蜿蜒过道"
 msgid "Watery Alley"
 msgstr "过水小径"
 
-#: data/level/wither-wind.cfg:14
+#: data/level/wither-wind.cfg:12
 msgid "Wither Wind"
 msgstr "枯萎之风"
-
-#: data/level/wm-ascent-1.cfg:12
-msgid "Lower Ascent"
-msgstr "下段上坡道"
-
-#: data/level/wm-ascent-1.cfg:2207
-msgid "This Way to Squirrel Mining"
-msgstr ""
-
-#: data/level/wm-ascent-1.cfg:2208
-msgid "Caution: Rough Trail"
-msgstr ""
-
-#: data/level/wm-ascent-2.cfg:13
-msgid "Upper Ascent"
-msgstr "上段上坡道"
-
-#: data/level/wm-ascent-2.cfg:1089
-msgid "Close call."
-msgstr "就差一点。"
-
-#: data/level/wm-h0.0-lift.cfg:12
-msgid "Lift House"
-msgstr "升降梯小屋"
-
-#: data/level/wm-h0.0-lift.cfg:555 data/level/wm-h0.0-lift.cfg:562
-msgid ""
-"Hi, I am E. I run the elevator here.\n"
-"It is not verkink at the moment."
-msgstr ""
-"嗨，俺是伊，操作升降梯的索。\n"
-"这家伙现在脏态不咋样的索。"
-
-#: data/level/wm-h0.0-lift.cfg:557
-msgid ""
-"I brought you a long rope.\n"
-"Will that help?"
-msgstr ""
-"我带来了一条长绳。\n"
-"这有用么？"
-
-#: data/level/wm-h0.0-lift.cfg:558
-msgid ""
-"Yes, it certainly vill! Come back\n"
-"in\ta few seconds, I don't verk vell ven\n"
-"I'm beink vaached."
-msgstr ""
-"恩哈，当然。过会儿再肥来的索。\n"
-"被人看着俺可做不好工作的索。"
-
-#: data/level/wm-h0.0-lift.cfg:564
-msgid "Can I help?"
-msgstr "有啥能帮忙的不？"
-
-#: data/level/wm-h0.0-lift.cfg:565
-msgid ""
-"There's a fellow on the ground\n"
-"beneath here, who's called Rajit.\n"
-"He's been tryink to get a cable up\n"
-"here to fix the car."
-msgstr ""
-"这下面的地上有个老兄叫垃圾特\n"
-"的索。他正要送根缆子桑来\n"
-"修电梯的索。"
-
-#: data/level/wm-h0.0-lift.cfg:566
-msgid ""
-"The lazy bum von't valk it up here,\n"
-"which is what he needs to do.\n"
-"If you'd be villink to get it,\n"
-"I would be villink to pay you\n"
-"a 10 coin bounty. I can charge Rajit\n"
-"that for delays, at least."
-msgstr ""
-"那懒银才不会桑来的索，\n"
-"虽索他应该怎么做的索。\n"
-"要是你高兴七拿的索，\n"
-"我高兴付给你10个币的索。\n"
-"自扫我可以罚垃圾特辞到的索。"
-
-#: data/level/wm-h0.0-lift.cfg:568
-msgid "Sounds good. I'll see what I can do."
-msgstr "听上去不错。我看看我能做啥。"
-
-#: data/level/wm-h0.0-lift.cfg:574
-msgid "The elevator is verkink. Hop on."
-msgstr "升降梯坏掉的索。继续走的索。"
-
-#: data/level/wm-h0.0-lift.cfg:578
-msgid "Does the elevator work?"
-msgstr "升降梯好了没？"
-
-#: data/level/wm-h0.0-lift.cfg:579
-msgid "Pretty vell."
-msgstr "好极了的索。"
-
-#: data/level/wm-h0.0-lift.cfg:581
-msgid "So, about the bounty..?"
-msgstr "那，赏金呢……？"
-
-#: data/level/wm-h0.0-lift.cfg:582
-msgid "Oh, yes. Here are the coins."
-msgstr "哦对的索。金币给你的索。"
-
-#: data/level/wm-h0.0-lift.cfg:584 data/level/wm-ll.cfg:1460
-msgid "Thanks."
-msgstr "谢谢。"
-
-#: data/level/wm-ll.cfg:12
-msgid "The Lower Landing"
-msgstr "下层平台"
-
-#: data/level/wm-ll.cfg:1396
-msgid ""
-"Hi, I'm Frogatto.\n"
-"What are you doing?"
-msgstr ""
-"嗨，我是阿托。\n"
-"你在干啥？"
-
-#: data/level/wm-ll.cfg:1397
-msgid ""
-"Oh, a bit of a storm through here.\n"
-"I'm cleaning up and repairing\n"
-"the place. But, I'm be- ...\n"
-"Are you going up to Woodenhead?"
-msgstr ""
-"哦，刚刮过去一阵风暴。\n"
-"我正在清理整修。\n"
-"不过我……\n"
-"你是不是要去木头脑袋那边？"
-
-#: data/level/wm-ll.cfg:1401
-msgid ""
-"Hi, Frogatto. I'm just rebuilding\n"
-"the bridges down here, now.\n"
-"It'll take a while."
-msgstr ""
-"嗨，阿托。\n"
-"我正在修前面那桥。\n"
-"得花点儿时间。"
-
-#: data/level/wm-ll.cfg:1405
-msgid ""
-"Oh, by the way, thanks for taking\n"
-"that rope up. Here's the 5 coins."
-msgstr ""
-"哦，顺便说，谢谢你带来的绳子.\n"
-"这是5个金币。"
-
-#: data/level/wm-ll.cfg:1414
-msgid ""
-"1: Yes. What's up?\n"
-"2: Woodenhead? What's that?"
-msgstr ""
-"1：恩，怎么了？\n"
-"2：木头脑袋？这是啥？"
-
-#: data/level/wm-ll.cfg:1415 data/level/wm-ll.cfg:1491
-#: data/level/wm-town.cfg:1085 data/level/wm-town.cfg:2131
-#: data/level/wm-town.cfg:2136 data/level/wm-town.cfg:2184
-msgid "Opt. 1"
-msgstr "选择 1"
-
-#: data/level/wm-ll.cfg:1416 data/level/wm-ll.cfg:1492
-#: data/level/wm-town.cfg:1093 data/level/wm-town.cfg:2151
-#: data/level/wm-town.cfg:2179 data/level/wm-town.cfg:2245
-msgid "Opt. 2"
-msgstr "选择 2"
-
-#: data/level/wm-ll.cfg:1417 data/level/wm-ll.cfg:1445
-#: data/level/wm-ll.cfg:1494 data/level/wm-town.cfg:1120
-#: data/level/wm-town.cfg:2169 data/level/wm-town.cfg:2269
-#: data/level/wm-town.cfg:2283
-msgid "Cancel"
-msgstr "取消"
-
-#: data/level/wm-ll.cfg:1418
-msgid "Test"
-msgstr "测试"
-
-#: data/level/wm-ll.cfg:1423
-msgid "It's a secret!"
-msgstr "这是秘密！"
-
-#: data/level/wm-ll.cfg:1427
-msgid "I'm afraid I'm not going that way."
-msgstr "恐怕我不往那边走。"
-
-#: data/level/wm-ll.cfg:1428
-msgid ""
-"Sorry to have bothered you, then.\n"
-"Have a nice day."
-msgstr ""
-"那么抱歉打扰了。\n"
-"祝你过得愉快。"
-
-#: data/level/wm-ll.cfg:1431
-msgid ""
-"Those are hoverpads. We use them\n"
-"for temporary stairs and small elevators."
-msgstr ""
-"是浮空板，我们用来做临时的梯子\n"
-"和升降梯的。"
-
-#: data/level/wm-ll.cfg:1433
-msgid ""
-"Why not just use one of those to\n"
-"take the medium rope up?"
-msgstr ""
-"为什么不直接用一块浮空板\n"
-"来把绳子运上去呢？"
-
-#: data/level/wm-ll.cfg:1434
-msgid ""
-"Tried it. They only get about 60\n"
-"feet off the ground before they\n"
-"run out of steam."
-msgstr ""
-"已经试过了。它们在耗尽蒸汽之前\n"
-"只能飞到离地60英尺的地方。"
-
-#: data/level/wm-ll.cfg:1436
-msgid "Oh, too bad."
-msgstr "哦，真糟糕。"
-
-#: data/level/wm-ll.cfg:1437
-msgid "So, will you take the rope up?"
-msgstr "所以能请你把绳子送上去么？"
-
-#: data/level/wm-ll.cfg:1441
-msgid ""
-"3: What's your name?\n"
-"4: What are those grey things?"
-msgstr ""
-"3：你叫啥？\n"
-"4：这些灰色的东西是啥？"
-
-#: data/level/wm-ll.cfg:1442 data/level/wm-town.cfg:1111
-#: data/level/wm-town.cfg:2261
-msgid "Opt. 3"
-msgstr "选择 3"
-
-#: data/level/wm-ll.cfg:1443
-msgid "Opt. 4"
-msgstr "选择 4"
-
-#: data/level/wm-ll.cfg:1444
-msgid "Less"
-msgstr "更少"
-
-#: data/level/wm-ll.cfg:1449
-msgid "I am Rajit. And you?"
-msgstr "我是拉吉特。你呢？"
-
-#: data/level/wm-ll.cfg:1451
-msgid "I am Frogatto, myself."
-msgstr "我是，我就是阿托。"
-
-#: data/level/wm-ll.cfg:1452
-msgid ""
-"So, Frogatto, will you take this\n"
-"rope up to Woodenhead?"
-msgstr ""
-"那么，阿托，能请你把这条绳子\n"
-"送上木头脑袋那里去么？"
-
-#: data/level/wm-ll.cfg:1456
-msgid ""
-"Great! Here is the rope.\n"
-"*Rajit hands you the rope.*"
-msgstr ""
-"好极了！这是绳子。\n"
-"* 拉吉特把绳子递给了你。"
-
-#: data/level/wm-ll.cfg:1459
-msgid "I'll have this up there soon."
-msgstr "我马上把这送上去。"
-
-#: data/level/wm-ll.cfg:1463
-msgid ""
-"Sir! I am but a humble working\n"
-"man! How am I supposed to pay you?"
-msgstr ""
-"先生！我只是个卑微的工人而已！\n"
-"我该如何报答你呢？"
-
-#: data/level/wm-ll.cfg:1465
-msgid ""
-"I notice a distinct absence of\n"
-"coins around here..."
-msgstr ""
-"我发现这附近半个金币\n"
-"都没有……"
-
-#: data/level/wm-ll.cfg:1466
-msgid ""
-"Eh... I suppose I can let you\n"
-"have 5 coins for the service.\n"
-"There weren't many around."
-msgstr ""
-"呃……我想我可以付你5个\n"
-"金币的服务费。这附近确实\n"
-"没多少金币。"
-
-#: data/level/wm-ll.cfg:1468
-msgid "Done!"
-msgstr "成交！"
-
-#: data/level/wm-ll.cfg:1472
-msgid ""
-"I'm *trying* to fix the elevator.\n"
-"The cable got tangled with a tree\n"
-"during the storm, and it had to be"
-msgstr ""
-"我正*试着*修好升降梯。\n"
-"在风暴里缆绳缠在树上了，"
-
-#: data/level/wm-ll.cfg:1474
-msgid ""
-"cut loose. The idea was that I'd\n"
-"fly up with a small, light rope,\n"
-"then I'd attach that to a heavier\n"
-"rope and they'd pull that one up,\n"
-"and then the heavier rope could be\n"
-"used to pull the steel elevator\n"
-"cable up."
-msgstr ""
-"我必须弄松它。方法是：\n"
-"我带着一条又小又轻的绳子\n"
-"飞上去，而后把小绳子系在\n"
-"重点儿的绳子上。上面的人\n"
-"会把这绳子拉上去，而后它\n"
-"就可以把铁制升降梯的缆绳\n"
-"拉上去了。"
-
-#: data/level/wm-ll.cfg:1476
-msgid "So? What's holding you up?"
-msgstr "然后？为啥停“下”来？"
-
-#: data/level/wm-ll.cfg:1478
-msgid ""
-"Or, in this case...\n"
-"holding you down?"
-msgstr ""
-"或者说是……\n"
-"为啥不“上”去？"
-
-#: data/level/wm-ll.cfg:1479
-msgid ""
-"That's not funny.\n"
-"Anyhow, I can get the light rope\n"
-"up just fine. It's just that...\n"
-"well... I didn't pack a light\n"
-"enough medium rope."
-msgstr ""
-"这不好玩。\n"
-"不管咋说，我可以把轻绳子\n"
-"弄上去。只是……\n"
-"好吧，我选了一条不够轻的\n"
-"中等绳子……"
-
-#: data/level/wm-ll.cfg:1481
-msgid "You've lost me. Again..?"
-msgstr "你又没在听我说话？"
-
-#: data/level/wm-ll.cfg:1482
-msgid ""
-"In short, the light rope isn't\n"
-"strong enough to lift the medium\n"
-"rope. Someone will have to walk\n"
-"the medium rope up there."
-msgstr ""
-"简单说，轻绳子不足以\n"
-"把中绳子拉上去。得有个\n"
-"人走着把中绳子送上去。"
-
-#: data/level/wm-ll.cfg:1483
-msgid ""
-"I've checked out the path ahead,\n"
-"but\tI can't get through it."
-msgstr ""
-"我已经查看过了前面的路，\n"
-"但我通过不了。"
-
-#: data/level/wm-ll.cfg:1485
-msgid ""
-"So, for the good of the town,\n"
-"you want me to take up the medium\n"
-"rope?"
-msgstr ""
-"所以，为了小镇的大义，\n"
-"你想让我把中绳子送上去？"
-
-#: data/level/wm-ll.cfg:1486
-msgid ""
-"You know it. If you tell the\n"
-"guard there I sent you, he'll\n"
-"let you through."
-msgstr ""
-"你懂的。如果你告诉守卫说\n"
-"是我让你去的，他会让你\n"
-"通过的。"
-
-#: data/level/wm-ll.cfg:1490
-msgid ""
-"1: Sure, I'm on it!\n"
-"2: Pay me."
-msgstr ""
-"1：当然了，我会做的！\n"
-"2：付我钱我就干。"
-
-#: data/level/wm-ll.cfg:1493 data/level/wm-town.cfg:2258
-msgid "More"
-msgstr "更多"
-
-#: data/level/wm-ll.cfg:1498
-msgid ""
-"You don't know of it? Hmh. Well,\n"
-"it's a small town in the tops of\n"
-"the trees. You should ask the locals.\n"
-"To get to it, you just head left,\n"
-"then you go up-right. The shorter\n"
-"elevators there still work fine,\n"
-"it's just this area which got the\n"
-"damage, really. So, are you walking\n"
-"to Woodenhead?"
-msgstr ""
-"你不知道“木头脑袋”？呃，\n"
-"那是个树顶上的小镇。你应该\n"
-"去问问本地人。要去那里，\n"
-"先往左走，然后往右上。\n"
-"那边的短途升降梯还是好的，\n"
-"其实只有这片区域才受损了。\n"
-"好了，你要走去木头脑袋么？"
-
-#: data/level/wm-town.cfg:12
-msgid "Company Town"
-msgstr "公司的小镇"
-
-#: data/level/wm-town.cfg:1072
-msgid ""
-"Welcome to Woodenhead.\n"
-"I'm the town guard."
-msgstr ""
-"欢迎来到木头脑袋。\n"
-"我是镇上的卫兵。"
-
-#: data/level/wm-town.cfg:1075
-msgid ""
-"That's nice. Why does the\n"
-"town need a guard?"
-msgstr ""
-"很好。\n"
-"为啥这镇子需要卫兵？"
-
-#: data/level/wm-town.cfg:1077
-msgid ""
-"I operate the lift, mostly.\n"
-"But, guarding pays less.\n"
-"So, I'm a guard.\n"
-"It's still good money."
-msgstr ""
-"我主要是操作升降梯的。\n"
-"但是，卫兵工资低些。\n"
-"所以我才是卫兵啊。\n"
-"不过报酬还是不错的。"
-
-#: data/level/wm-town.cfg:1080
-msgid ""
-"It looks like an easy job,\n"
-"though a bit slow.\n"
-"Can you tell me a\n"
-"bit about Woodenhead?"
-msgstr ""
-"看着像个轻松差事嘛，\n"
-"虽然慢了点。\n"
-"啊能给我介绍下这啥\n"
-"木头脑袋？"
-
-#: data/level/wm-town.cfg:1082
-msgid ""
-"Sure, nothing else doing.\n"
-"What do you want to know?"
-msgstr ""
-"当然，反正没别的事可干。\n"
-"你想知道什么？"
-
-#: data/level/wm-town.cfg:1084
-msgid ""
-"1: Why is it called Woodenhead?\n"
-"2: Why's the town here?"
-msgstr "1：为啥叫“木头脑袋”？2：为啥这儿有镇子？"
-
-#: data/level/wm-town.cfg:1087
-msgid ""
-"I think it's got something to\n"
-"do with 'minehead' and the\n"
-"fact we're in the woods."
-msgstr ""
-"我猜和矿石脑袋（指英国城市\n"
-"Minehead）有关吧，而我们是\n"
-"住在木头上的（Woodenhead）。"
-
-#: data/level/wm-town.cfg:1090
-msgid "Reasonable enough."
-msgstr "挺有道理的。"
-
-#: data/level/wm-town.cfg:1095
-msgid ""
-"The town was built by the\n"
-"company to mine the trees\n"
-"around these parts. We\n"
-"export wood products to most\n"
-"of the country. Wood blocks,\n"
-"wood shavings, carvings, most\n"
-"of it came from here.\n"
-"It's too dangerous to fell\n"
-"trees here, what with the\n"
-"bugs and all those things\n"
-"crawling around. Even up\n"
-"here, the bugs are pretty bad."
-msgstr ""
-"公司建了这个小镇来采集\n"
-"附近的树木。我们向国内\n"
-"大部分地区出口木产品。\n"
-"木块，木刨花，木雕刻，\n"
-"大部分都是出自这里。"
-
-#: data/level/wm-town.cfg:1098
-msgid ""
-"I've been around, you'd\n"
-"never get any work done."
-msgstr ""
-"我一直在这儿，\n"
-"你啥事都没做成。"
-
-#: data/level/wm-town.cfg:1100
-msgid ""
-"But the worst of it is,\n"
-"there is some sort of...\n"
-"FUNGUS growing all over the\n"
-"forest now. It didn't use\n"
-"to be there when I started.\n"
-"We had a camp over in\n"
-"Westhailia which got totally\n"
-"engulfed by the stuff. I\n"
-"expect that even this camp\n"
-"will be run over eventually.\n"
-"But that won't be for\n"
-"a while yet. We can\n"
-"always break camp and move\n"
-"on, but this fungus is\n"
-"hurting sales too! Still, I\n"
-"guess it could be worse."
-msgstr ""
-"但最糟糕的是，\n"
-"现在森林里到处都\n"
-"长满了某种*真菌*。\n"
-"我开始干活的时候\n"
-"根本没这种东西。\n"
-"我们在威斯特哈里亚\n"
-"有个营地完全被真菌\n"
-"吞没了。我认为这个\n"
-"营地最后也都会被\n"
-"淹没的。但这还得\n"
-"过段时间。我们随时\n"
-"可以撤掉营地到别处，\n"
-"但这真菌也损害了\n"
-"我们的生意。\n"
-"而且，我猜情况可能\n"
-"变得更糟糕。"
-
-#: data/level/wm-town.cfg:1103
-msgid ""
-"Yeah, the town is in trouble.\n"
-"You could work there."
-msgstr ""
-"啊对，小镇有麻烦了。\n"
-"你可以在那儿工作。"
-
-#: data/level/wm-town.cfg:1105
-msgid ""
-"Oh, I hadn't heard.\n"
-"I have some family over there.\n"
-"I'll send them some money\n"
-"if they have to relocate.\n"
-"I hope they don't."
-msgstr ""
-"哦，我没听说这事。\n"
-"那边住着我的家人。\n"
-"要是他们得搬迁的话\n"
-"我会寄些钱过去的。\n"
-"但愿他们不会搬走。"
-
-#: data/level/wm-town.cfg:1108
-msgid "More..."
-msgstr "更多……"
-
-#: data/level/wm-town.cfg:1110
-msgid "3: Could you start the lift?"
-msgstr "3：可以启动升降梯么？"
-
-#: data/level/wm-town.cfg:1113
-msgid "Sure, no problem."
-msgstr "当然，没问题。"
-
-#: data/level/wm-town.cfg:1116
-msgid "How'd you do that?"
-msgstr "你要怎么启动啊？"
-
-#: data/level/wm-town.cfg:1123
-msgid "Uh, I forgot. Sorry."
-msgstr "呃，我忘了，抱歉。"
-
-#: data/level/wm-town.cfg:1875
-msgid ""
-"Oh, hello down there.\n"
-"Just a sec, I'll start the lift."
-msgstr ""
-"哦，你好啊！\n"
-"稍等一下，我来开动梯子。"
-
-#: data/level/wm-town.cfg:2123
-msgid "Hello there. I am Jove."
-msgstr "你好啊，我是吉夫。"
-
-#: data/level/wm-town.cfg:2126
-msgid ""
-"Hi. I'm Frogatto.\n"
-"What do you do here?"
-msgstr ""
-"嗨，我是阿托。\n"
-"你在这儿做啥？"
-
-#: data/level/wm-town.cfg:2128
-msgid ""
-"I am the manager of this mining\n"
-"camp, and the proprietor of\n"
-"the only restaurant in town.\n"
-"I hope you'll understand if all\n"
-"we have to offer is outdoor\n"
-"seating, things are a bit cramped\n"
-"in back."
-msgstr ""
-"我是这个采矿场的经理，\n"
-"也是镇上唯一一家餐馆的\n"
-"所有人。我希望您能理解\n"
-"我们只能提供室外座位的\n"
-"苦衷，屋里实在是有点\n"
-"狭窄。"
-
-#: data/level/wm-town.cfg:2130
-msgid ""
-"1: Tell me about the mines.\n"
-"2: Tell me about the restaurant."
-msgstr "1：说说矿产的事吧。2：说说餐馆的事吧。"
-
-#: data/level/wm-town.cfg:2133
-msgid "What would you like to know?"
-msgstr "您想要知道什么？"
-
-#: data/level/wm-town.cfg:2135
-msgid ""
-"1: How are labour relations?\n"
-"2: How do you mine wood?"
-msgstr "1：劳资关系如何？2：怎样“采”树木的？"
-
-#: data/level/wm-town.cfg:2138
-msgid ""
-"Things are surprisingly good,\n"
-"actually. We're a pretty small\n"
-"outfit, so complaints get dealt\n"
-"with quickly. That, and I think\n"
-"we're all a little scared for\n"
-"our jobs right now. With the\n"
-"fungus infestation, people aren't buying\n"
-"as much art-wood as they\n"
-"used to. I'll be honest, we\n"
-"sell all sorts of stuff,\n"
-"but the fine old-growth was\n"
-"our cash cow. Right now, people\n"
-"are buying cheap wood, planks,\n"
-"shavings, stuff like that. They're\n"
-"moving away from this fungus\n"
-"stuff. Building new houses, putting\n"
-"stuff in storage, etc. I mean, you\n"
-"noticed there weren't very\n"
-"many people around of late.\n"
-"Still, I don't think we'll\n"
-"go broke or anything. We\n"
-"are still selling plenty of the\n"
-"lower-grade timber. Still, it\n"
-"is a bit worrying."
-msgstr ""
-"事实上，情况好得出奇。\n"
-"我们是个很小的集体，\n"
-"所以抱怨什么的很快就\n"
-"解决了。这是一点，\n"
-"而且最近我们都有点怕\n"
-"自己的工作了。因为\n"
-"真菌感染的缘故，人们\n"
-"买的木工艺品比以前少\n"
-"了。老实说，我们什么\n"
-"都卖，但长势良好的\n"
-"老树是主要财源。最近\n"
-"人们买的都是便宜的木材\n"
-"木板，刨花之类。他们\n"
-"才不要有菌的东西。\n"
-"他们在建造房子，贮藏\n"
-"材料。我是说，你也该\n"
-"注意到了，现在这儿没\n"
-"什么人。不过我不觉得\n"
-"我们会破产什么的。\n"
-"低等的木料还是卖得\n"
-"不错。但这还是让人\n"
-"担心。"
-
-#: data/level/wm-town.cfg:2141
-msgid ""
-"In other words, Jove, the\n"
-"workers don't want to be\n"
-"annoying right before potential\n"
-"layoffs?"
-msgstr ""
-"换句话说，吉夫，\n"
-"工人们是不愿意冒着\n"
-"被解雇的风险来\n"
-"讨你厌么？"
-
-#: data/level/wm-town.cfg:2143
-msgid ""
-"Dead on.\n"
-"By the way, how is the town\n"
-"holding out?"
-msgstr ""
-"完全正确。\n"
-"顺便一问，镇子上情况如何？"
-
-#: data/level/wm-town.cfg:2146
-msgid ""
-"Most of them are staying,\n"
-"for now. It's not too bad."
-msgstr ""
-"大部分人留下来了，\n"
-"现在是如此。\n"
-"不算太糟糕。"
-
-#: data/level/wm-town.cfg:2148
-msgid ""
-"Good. Where there's life,\n"
-"there's hope."
-msgstr ""
-"不错。有生活的地方\n"
-"就有希望。"
-
-#: data/level/wm-town.cfg:2153
-msgid ""
-"We use the normal stuff.\n"
-"Axes, saws, brooms, teleporters."
-msgstr ""
-"我们就用常见的工具啊，\n"
-"斧子，锯子，扫帚，传送器什么的。"
-
-#: data/level/wm-town.cfg:2156
-msgid "Trade secret?"
-msgstr "商业机密？"
-
-#: data/level/wm-town.cfg:2161
-msgid ""
-"I guess you'd mind me looking\n"
-"around then, wouldn't you."
-msgstr ""
-"我猜你不会让我四处去\n"
-"逛逛了，是吧？"
-
-#: data/level/wm-town.cfg:2163
-msgid ""
-"No, not at all. Go wherever\n"
-"you like. It's a TRADE\n"
-"\tsecret, everyone who mines wood\n"
-"knows it, and everyone who doesn't\n"
-"isn't a threat to us, business-wise!"
-msgstr ""
-"不，我完全不在意。\n"
-"你想去哪儿就去哪儿，\n"
-"这是个*商业*机密，\n"
-"所有采伐树木的人\n"
-"都知道，所有不采\n"
-"的人从商业角度说，\n"
-"都是对我们的威胁！"
-
-#: data/level/wm-town.cfg:2166
-msgid "Oh."
-msgstr "哦。"
-
-#: data/level/wm-town.cfg:2172
-msgid "... It's gone. Sorry."
-msgstr "……没了，抱歉。"
-
-#: data/level/wm-town.cfg:2173
-msgid "See you."
-msgstr "再见～"
-
-#: data/level/wm-town.cfg:2181
-msgid ""
-"We serve rough, good food-\n"
-"and lots of it! It's not\n"
-"one of those restaurants for sissies!\n"
-"Anyway, what can I get for you?"
-msgstr ""
-"我们提供粗糙但是上好的\n"
-"食物，很多这样的食物！\n"
-"这可不是给女人气的家伙\n"
-"服务的餐馆！\n"
-"好啦，您需要什么？"
-
-#: data/level/wm-town.cfg:2183
-msgid ""
-"1: Food Menu\n"
-"2: <*Guess restaurant name.*>"
-msgstr ""
-"1：菜单\n"
-"2：<*猜猜餐馆的名字*>"
-
-#: data/level/wm-town.cfg:2187
-msgid "I'll have the..."
-msgstr "我想要……"
-
-#: data/level/wm-town.cfg:2188
-msgid "Slow Moe"
-msgstr "斯洛·莫伊"
-
-#: data/level/wm-town.cfg:2190
-msgid ""
-"One Slow Moe, coming right up.\n"
-"\n"
-"\n"
-"\n"
-"\n"
-"What?"
-msgstr ""
-"一个斯洛·莫伊（某片里的僵尸）\n"
-"马上来到面前……\n"
-"\n"
-"\n"
-"\n"
-"啥？"
-
-#: data/level/wm-town.cfg:2194
-msgid "Shooter"
-msgstr "大枪"
-
-#: data/level/wm-town.cfg:2196
-msgid ""
-"Shooter. Never know how they\n"
-"make these things. *shakes head*"
-msgstr ""
-"大枪。我一直搞不清楚\n"
-"这些是咋制造出来的。\n"
-"*点头*"
-
-#: data/level/wm-town.cfg:2200
-msgid "Turtle"
-msgstr "海龟"
-
-#: data/level/wm-town.cfg:2202
-msgid ""
-"I once tried to make a soup out\n"
-"of this stuff. I had to throw\n"
-"out the pot."
-msgstr ""
-"我曾经试过用这东西做汤。\n"
-"最后我不得不把罐子扔了。"
-
-#: data/level/wm-town.cfg:2206
-msgid "Heart"
-msgstr "红心"
-
-#: data/level/wm-town.cfg:2208
-msgid ""
-"Would you like the heart without\n"
-"any traceable mercury, or the\n"
-"heart without any detectable\n"
-"lead? Nah, just kidding, I\n"
-"serve only the finest*.\n"
-"\n"
-"*That exists in this restaurant."
-msgstr ""
-"你是想要那种测不出汞的\n"
-"红心呢，还是要那种检不出\n"
-"铅的红心呢？啊，我开玩笑的。\n"
-"我只提供最好的产品*。\n"
-"\n"
-"* 当然是在店里找得到的。"
-
-#: data/level/wm-town.cfg:2209
-msgid ""
-"Oh, just pass the buckshot,\n"
-"would you?"
-msgstr ""
-"哦，直接把那铅弹递过来\n"
-"就好，行不？"
-
-#: data/level/wm-town.cfg:2213
-msgid "Fruit"
-msgstr "水果"
-
-#: data/level/wm-town.cfg:2215
-msgid "It's foreign, but it ships well."
-msgstr "这是进口水果，不过卖相不错。"
-
-#: data/level/wm-town.cfg:2219
-msgid "Special"
-msgstr "特别物品"
-
-#: data/level/wm-town.cfg:2221
-msgid ""
-"The special today is the\n"
-"partial maximum heart. This is\n"
-"a delicacy, though, so unlike most\n"
-"of the stuff here it'll run\n"
-"you 35 coins. Would you still\n"
-"like to buy it?"
-msgstr ""
-"今天的特别产品是\n"
-"半颗生命心。这东西有点棘手，\n"
-"所以不像别的货物，这货得卖\n"
-"35个金币。你还想买不？"
-
-#: data/level/wm-town.cfg:2224
-msgid ""
-"Great! You wouldn't believe the\n"
-"trouble I've had selling this!"
-msgstr ""
-"太棒了！你是不会相信要卖掉这东西\n"
-"有多麻烦的！"
-
-#: data/level/wm-town.cfg:2231
-msgid ""
-"Probably the best choice, given how\n"
-"long it's been sitting around."
-msgstr ""
-"也许是最好的选项吧，\n"
-"想想这东西都放在这儿多久了。"
-
-#: data/level/wm-town.cfg:2237
-msgid "Nothing"
-msgstr "啥都不要"
-
-#: data/level/wm-town.cfg:2239
-msgid "Sorry Jove, maybe later."
-msgstr "抱歉吉夫，以后再来买吧。"
-
-#: data/level/wm-town.cfg:2248
-msgid ""
-"Is your restaurant called\n"
-"'That's good food, by J--"
-msgstr ""
-"你的餐馆是不是叫\n"
-"“来吃好吃的吧！by 吉……"
-
-#: data/level/wm-town.cfg:2250
-msgid ""
-"I bet I can throw you off the\n"
-"edge of this town from here.\n"
-"If you want to find out,\n"
-"keep talking."
-msgstr ""
-"我打赌我可以把你从这儿扔到\n"
-"镇子外面去。要是你想试试，\n"
-"就继续说吧。"
-
-#: data/level/wm-town.cfg:2253
-msgid "Yeesh, I was just asking."
-msgstr "哎呀，我只是问问而已。"
-
-#: data/level/wm-town.cfg:2255
-msgid ""
-"You wouldn't believe how much\n"
-"I get that."
-msgstr ""
-"你绝对不会相信我花了多少钱才\n"
-"买到这个的。"
-
-#: data/level/wm-town.cfg:2260
-msgid "3: Odd table you have there."
-msgstr "3：你这儿的桌子真够奇怪的。"
-
-#: data/level/wm-town.cfg:2263
-msgid ""
-"Yeah, I took the legs off\n"
-"and screwed it to the deck.\n"
-"That model is oddly tall,\n"
-"don't you think? It's like\n"
-"one-size-fits-none. I mean,\n"
-"I could WALK under it!"
-msgstr ""
-"对头，我把桌腿锯了下来\n"
-"钉在了桌面上。\n"
-"这个型号的桌子高得出奇，\n"
-"你不觉得么？这个大小\n"
-"放哪里都不合适。我是说，\n"
-"我都可以在那下面*走*过了！"
-
-#: data/level/wm-town.cfg:2266
-msgid ""
-"I should do the same. I've\n"
-"got the same model at home."
-msgstr ""
-"我也该走那么一下。\n"
-"我家里有个一样型号的。"
-
-#: data/level/wm-town.cfg:2272
-msgid "Sorry, I'm kind of full."
-msgstr "抱歉，我有点饱了。"
-
-#: data/level/wm-town.cfg:2274
-msgid ""
-"Happens to the best of us.\n"
-"I remember I was full, once."
-msgstr ""
-"我们都一样。\n"
-"我记得以前也曾经吃饱过一次。"
 
 #: data/object_prototypes/buyable_item.cfg:19
 #: data/object_prototypes/buyable_item.cfg:22
@@ -4953,7 +3749,7 @@ msgstr "你的钱不够。"
 msgid "Do you want to buy the {consts.name}?"
 msgstr "想要买 {consts.name} 吗？"
 
-#: data/object_prototypes/crazy-stuff/civ-tile.cfg:57
+#: data/object_prototypes/crazy-stuff/civ-tile.cfg:58
 msgid "This is a blank tile. It doesn't do anything."
 msgstr "这是个空白图块，啥用都没有。"
 
@@ -4970,127 +3766,6 @@ msgid ""
 "The furthest that has been reached is level "
 "{registry.arcade_coin_race_high_score}."
 msgstr "最高纪录是第 {registry.arcade_coin_race_high_score} 关。 "
-
-#: data/objects/experimental/civ/civ-tile_farm.cfg:11
-msgid "Farm Tile: Feeds all connected tiles."
-msgstr "农场图块：滋养所有邻接的图块。"
-
-#: data/objects/experimental/civ/civ-tile_mine.cfg:11
-msgid "Mine Tile: Place on mountains. Get ore for a nice bonus."
-msgstr "矿场图块：放在山上即可。可以产出价值很高的矿物。"
-
-#: data/objects/experimental/civ/civ-tile_settle.cfg:11
-msgid "Settlement: This is where your citizens gather. 2x2 square = city."
-msgstr "定居点：这是你的市民们聚集的地方。2×2的正方形 = 城市。"
-
-#: data/objects/experimental/civ/civ-tile_war.cfg:11
-msgid "Warrior: Kingdom strength is warriors, plus any played from hand."
-msgstr ""
-
-#: data/objects/experimental/civ/civ_board.cfg:36
-msgid "Black"
-msgstr "黑色"
-
-#: data/objects/experimental/civ/civ_board.cfg:36
-msgid "Gold"
-msgstr "金色"
-
-#: data/objects/experimental/civ/civ_board.cfg:36
-msgid "Mysterious Stranger"
-msgstr "神秘的陌生人"
-
-#: data/objects/experimental/civ/civ_board.cfg:36
-msgid "Silver"
-msgstr "银色"
-
-#: data/objects/experimental/civ/civ_board.cfg:36
-msgid "White"
-msgstr "白色"
-
-#: data/objects/experimental/civ/civ_board.cfg:37
-msgid "claim"
-msgstr "占据"
-
-#: data/objects/experimental/civ/civ_board.cfg:37
-msgid "farm"
-msgstr "农场"
-
-#: data/objects/experimental/civ/civ_board.cfg:37
-msgid "mine"
-msgstr "矿场"
-
-#: data/objects/experimental/civ/civ_board.cfg:37
-msgid "settlement"
-msgstr "定居点"
-
-#: data/objects/experimental/civ/civ_board.cfg:37
-msgid "warrior camp"
-msgstr "武士营地"
-
-#: data/objects/experimental/civ/civ_board.cfg:185
-msgid "Drag a tile to the board to play. Right-click for help."
-msgstr "把图块拖到版上即可开始游戏。点击鼠标右键可以查看帮助。"
-
-#: data/objects/experimental/civ/civ_board.cfg:203
-msgid "(+"
-msgstr "(+"
-
-#: data/objects/experimental/civ/civ_board.cfg:203
-#: data/objects/experimental/civ/civ_board.cfg:299
-msgid "(+?) VS "
-msgstr "(+?) VS "
-
-#: data/objects/experimental/civ/civ_board.cfg:203
-#: data/objects/experimental/civ/civ_board.cfg:320
-#: data/objects/experimental/civ/civ_board.cfg:324
-msgid ")"
-msgstr ")"
-
-#: data/objects/experimental/civ/civ_board.cfg:203
-#: data/objects/experimental/civ/civ_board.cfg:299
-msgid "Armies:"
-msgstr "军队："
-
-#: data/objects/experimental/civ/civ_board.cfg:298
-msgid " VS "
-msgstr "VS "
-
-#: data/objects/experimental/civ/civ_board.cfg:299
-msgid "(+0)"
-msgstr "(+0)"
-
-#: data/objects/experimental/civ/civ_board.cfg:320
-#: data/objects/experimental/civ/civ_board.cfg:324
-msgid " to "
-msgstr "到"
-
-#: data/objects/experimental/civ/civ_board.cfg:320
-msgid "'s warriors have fled! ("
-msgstr "的武士们四散而逃了！("
-
-#: data/objects/experimental/civ/civ_board.cfg:324
-msgid " was destroyed by "
-msgstr "被消灭了！搞定他的是"
-
-#: data/objects/experimental/civ/civ_board.cfg:324
-msgid "'s warriors! ("
-msgstr "的武士们！("
-
-#: data/objects/experimental/civ/civ_board.cfg:324
-msgid "A "
-msgstr "A "
-
-#: data/objects/experimental/jb-background.cfg:7
-msgid "error"
-msgstr "错误"
-
-#: data/objects/experimental/jb-background.cfg:18
-msgid "Runtime: "
-msgstr "运行时："
-
-#: data/objects/experimental/jb-background.cfg:27
-msgid " -- paused -- "
-msgstr " -- 暂停 --"
 
 #: data/objects/items/max_heart_object.cfg:18
 msgid ""
