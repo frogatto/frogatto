@@ -57,10 +57,10 @@ SDLKey sdlk[NUM_CONTROLS] = {
 	SDLK_d,
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 	SDLK_a,
-	SDLK_s
+	SDLK_b
 #else
 	SDLK_b,
-	SDLK_a
+	SDLK_s
 #endif
 };
 
