@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto v1.0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-24 05:39-0300\n"
+"POT-Creation-Date: 2011-04-25 18:54-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -150,7 +150,7 @@ msgid "You got {level.player.score} points in the Blocks Run!"
 msgstr ""
 
 #: data/level/arcade-blocks.cfg:218
-#: data/level/arcade-down-the-rabbithall.cfg:821
+#: data/level/arcade-down-the-rabbithall.cfg:849
 #: data/level/arcade-maintenance-shaft.cfg:2580
 #: data/level/arcade-the-long-haul.cfg:632
 #: data/level/arcade-wild-new-wonder.cfg:2521
@@ -162,12 +162,12 @@ msgstr ""
 msgid "The high score is {registry.arcade_blocks_high_score}."
 msgstr ""
 
-#: data/level/arcade-down-the-rabbithall.cfg:820
-#: data/level/arcade-down-the-rabbithall.cfg:823
+#: data/level/arcade-down-the-rabbithall.cfg:848
+#: data/level/arcade-down-the-rabbithall.cfg:851
 msgid "You got {level.player.vars.score} points going down the rabbithall!"
 msgstr ""
 
-#: data/level/arcade-down-the-rabbithall.cfg:824
+#: data/level/arcade-down-the-rabbithall.cfg:852
 msgid ""
 "The high score is {registry.arcade_down_the_rabbithall_high_score} points."
 msgstr ""

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-04-24 05:39-0300\n"
-"PO-Revision-Date: 2011-04-24 08:46+0000\n"
+"POT-Creation-Date: 2011-04-25 18:54-0300\n"
+"PO-Revision-Date: 2011-04-25 23:16+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Portuguese (Brazilian) <None>\n"
 "MIME-Version: 1.0\n"
@@ -150,7 +150,7 @@ msgid "You got {level.player.score} points in the Blocks Run!"
 msgstr "Você conseguiu {level.player.score} pontos na Corrida dos Blocos!"
 
 #: data/level/arcade-blocks.cfg:218
-#: data/level/arcade-down-the-rabbithall.cfg:821
+#: data/level/arcade-down-the-rabbithall.cfg:849
 #: data/level/arcade-maintenance-shaft.cfg:2580
 #: data/level/arcade-the-long-haul.cfg:632
 #: data/level/arcade-wild-new-wonder.cfg:2521
@@ -162,13 +162,13 @@ msgstr "É um novo recorde!"
 msgid "The high score is {registry.arcade_blocks_high_score}."
 msgstr "O recorde é de {registry.arcade_blocks_high_score} pontos."
 
-#: data/level/arcade-down-the-rabbithall.cfg:820
-#: data/level/arcade-down-the-rabbithall.cfg:823
+#: data/level/arcade-down-the-rabbithall.cfg:848
+#: data/level/arcade-down-the-rabbithall.cfg:851
 msgid "You got {level.player.vars.score} points going down the rabbithall!"
 msgstr ""
 "Você conseguiu {level.player.score} pontos descendo A Toca sem Coelho!"
 
-#: data/level/arcade-down-the-rabbithall.cfg:824
+#: data/level/arcade-down-the-rabbithall.cfg:852
 msgid ""
 "The high score is {registry.arcade_down_the_rabbithall_high_score} points."
 msgstr ""
@@ -1557,7 +1557,7 @@ msgstr ""
 #: data/level/descent-to-town.cfg:1027
 msgid "Honest trade and thrifty prices!\""
 msgstr ""
-"Atendimento honesto e\n"
+"\"Atendimento honesto e\n"
 "preços camaradas!\""
 
 #: data/level/downhill.cfg:16
@@ -3643,7 +3643,9 @@ msgstr ""
 msgid ""
 "Yeah - sure beats \"nothing\", though.\n"
 "Thanks a lot!"
-msgstr "É... melhor que nada.Bom, muito obrigado!"
+msgstr ""
+"É... melhor que nada.\n"
+"Bom, muito obrigado!"
 
 #: data/level/tempo-outskirts-inside.cfg:125
 msgid "No problem.  Best of luck."
