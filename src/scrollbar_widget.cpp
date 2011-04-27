@@ -8,7 +8,9 @@ namespace gui {
 namespace {
 const std::string UpArrow = "scrollbar-vertical-up-arrow";
 const std::string DownArrow = "scrollbar-vertical-down-arrow";
-const std::string VerticalHandle = "scrollbar-vertical-handle";
+const std::string VerticalHandle = "scrollbar-vertical-handle-middle";
+const std::string VerticalHandleBot = "scrollbar-vertical-handle-bottom";
+const std::string VerticalHandleTop = "scrollbar-vertical-handle-top";
 const std::string VerticalBackground = "scrollbar-vertical-background";
 }
 
@@ -17,6 +19,8 @@ scrollbar_widget::scrollbar_widget(boost::function<void(int)> handler)
     up_arrow_(new gui_section_widget(UpArrow)),
     down_arrow_(new gui_section_widget(DownArrow)),
 	handle_(new gui_section_widget(VerticalHandle)),
+	handle_bot_(new gui_section_widget(VerticalHandleBot)),
+	handle_top_(new gui_section_widget(VerticalHandleTop)),
 	background_(new gui_section_widget(VerticalBackground)),
 	
 	window_pos_(0), window_size_(0), range_(0), step_(0),
@@ -52,8 +56,12 @@ void scrollbar_widget::set_dim(int w, int h)
 	if(range_) {
 		handle_->set_loc(x(), y() + up_arrow_->height() + (window_pos_*bar_height)/range_);
 		handle_->set_dim(handle_->width(), (window_size_*bar_height)/range_);
+		handle_top_->set_loc(x(), y()+ up_arrow_->height() + (window_pos_*bar_height)/range_);
+		handle_bot_->set_loc(x(), y()+ down_arrow_->height() + (window_pos_*bar_height)/range_ + (window_size_*bar_height)/range_ - handle_bot_->height() +1);
 	}
 
+	//TODO:  handle range < heightOfEndcaps
+	
 	widget::set_dim(w, h);
 }
 
@@ -71,6 +79,8 @@ void scrollbar_widget::handle_draw() const
 	down_arrow_->draw();
 	background_->draw();
 	handle_->draw();
+	handle_bot_->draw();
+	handle_top_->draw();
 }
 
 bool scrollbar_widget::handle_event(const SDL_Event& event, bool claimed)

@@ -28,7 +28,7 @@ private:
 	void up_button_pressed();
 
 	boost::function<void(int)> handler_;
-	widget_ptr up_arrow_, down_arrow_, handle_, background_;
+	widget_ptr up_arrow_, down_arrow_, handle_, handle_bot_, handle_top_, background_;
 	int window_pos_, window_size_, range_, step_;
 
 	bool dragging_handle_;
