@@ -1116,7 +1116,7 @@ void custom_object::process(level& lvl)
 				handle_event(OBJECT_EVENT_COLLIDE_LEVEL);
 			}
 
-			const bool previous_standing = is_standing(lvl);
+			const STANDING_STATUS previous_standing = is_standing(lvl);
 
 			const int dir = effective_velocity_x > 0 ? 1 : -1;
 			const int original_centi_y = centi_y();
@@ -1133,8 +1133,8 @@ void custom_object::process(level& lvl)
 			//move the character up or down as appropriate to try to keep
 			//them standing.
 
-			const bool standing = is_standing(lvl);
-			if(previous_standing && !standing) {
+			const STANDING_STATUS standing = is_standing(lvl);
+			if(previous_standing && standing != previous_standing) {
 
 				//we were standing, but we're not now. We want to look for
 				//slopes that will enable us to still be standing. We see
@@ -1152,7 +1152,7 @@ void custom_object::process(level& lvl)
 							break;
 						}
 
-						if(is_standing(lvl)) {
+						if(is_standing(lvl) == previous_standing) {
 							resolved = true;
 							break;
 						}
@@ -1524,22 +1524,32 @@ void custom_object::control(const level& lvl)
 {
 }
 
-bool custom_object::is_standing(const level& lvl, collision_info* info) const
+custom_object::STANDING_STATUS custom_object::is_standing(const level& lvl, collision_info* info) const
 {
 	if(!has_feet()) {
-		return false;
+		return NOT_STANDING;
 	}
 
 	const int width = type_->feet_width();
 
 	if(width >= 1) {
-		return point_standable(lvl, *this, feet_x() - width, feet_y(), info, fall_through_platforms_ ? SOLID_ONLY : SOLID_AND_PLATFORMS) ||
-		       point_standable(lvl, *this, feet_x() + width, feet_y(), info, fall_through_platforms_ ? SOLID_ONLY : SOLID_AND_PLATFORMS);
+		const int facing = face_right() ? 1 : -1;
+		if(point_standable(lvl, *this, feet_x() + width*facing, feet_y(), info, fall_through_platforms_ ? SOLID_ONLY : SOLID_AND_PLATFORMS)) {
+			return STANDING_FRONT_FOOT;
+		}
+
+		if(point_standable(lvl, *this, feet_x() - width*facing, feet_y(), info, fall_through_platforms_ ? SOLID_ONLY : SOLID_AND_PLATFORMS)) {
+			return STANDING_BACK_FOOT;
+		}
+
+		return NOT_STANDING;
 	}
 
-	const bool result =
-	       point_standable(lvl, *this, feet_x(), feet_y(), info, fall_through_platforms_ ? SOLID_ONLY : SOLID_AND_PLATFORMS);
-	return result;
+	if(point_standable(lvl, *this, feet_x(), feet_y(), info, fall_through_platforms_ ? SOLID_ONLY : SOLID_AND_PLATFORMS)) {
+		return STANDING_FRONT_FOOT;
+	} else {
+		return NOT_STANDING;
+	}
 }
 
 namespace {
