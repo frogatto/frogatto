@@ -1627,7 +1627,8 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_BLUE:              return variant(draw_color().b());
 	case CUSTOM_OBJECT_ALPHA:             return variant(draw_color().a());
 	case CUSTOM_OBJECT_TEXT_ALPHA:        return variant(text_ ? text_->alpha : 255);
-	case CUSTOM_OBJECT_DAMAGE:            return variant(current_frame().damage()); case CUSTOM_OBJECT_HIT_BY:            return variant(last_hit_by_.get());
+	case CUSTOM_OBJECT_DAMAGE:            return variant(current_frame().damage());
+	case CUSTOM_OBJECT_HIT_BY:            return variant(last_hit_by_.get());
 	case CUSTOM_OBJECT_DISTORTION:        return variant(distortion_.get());
 	case CUSTOM_OBJECT_IS_STANDING:       return variant(standing_on_.get() || is_standing(level::current()));
 	case CUSTOM_OBJECT_NEAR_CLIFF_EDGE:   return variant(is_standing(level::current()) && cliff_edge_within(level::current(), feet_x(), feet_y(), face_dir()*15));
