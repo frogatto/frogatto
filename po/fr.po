@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-04-25 18:54-0300\n"
-"PO-Revision-Date: 2011-04-25 23:10+0000\n"
+"POT-Creation-Date: 2011-04-29 01:06-0300\n"
+"PO-Revision-Date: 2011-04-29 04:08+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: French <>\n"
 "MIME-Version: 1.0\n"
@@ -87,7 +87,7 @@ msgstr "Cube à la Chaine"
 
 #: data/achievements.cfg:69
 msgid "Collect 15 points cubes in a row."
-msgstr "Ramasser 15 cubes de points de suite."
+msgstr "Ramasser 15 points de cubes de suite."
 
 #: data/achievements.cfg:76
 msgid "Grudge"
@@ -151,9 +151,9 @@ msgstr ""
 "Vous avez obtenu {level.player.score} points lors de la Course aux Blocs !"
 
 #: data/level/arcade-blocks.cfg:218
-#: data/level/arcade-down-the-rabbithall.cfg:849
+#: data/level/arcade-down-the-rabbit-hall.cfg:863
 #: data/level/arcade-maintenance-shaft.cfg:2580
-#: data/level/arcade-the-long-haul.cfg:632
+#: data/level/arcade-the-long-haul.cfg:646
 #: data/level/arcade-wild-new-wonder.cfg:2521
 #: data/objects/effects/control/level_controller_coin_race.cfg:33
 msgid "This is a new high score!"
@@ -163,18 +163,20 @@ msgstr "C'est un nouveau record!"
 msgid "The high score is {registry.arcade_blocks_high_score}."
 msgstr "Le meilleur score est de {registry.arcade_blocks_high_score}."
 
-#: data/level/arcade-down-the-rabbithall.cfg:848
-#: data/level/arcade-down-the-rabbithall.cfg:851
-msgid "You got {level.player.vars.score} points going down the rabbithall!"
+#: data/level/arcade-down-the-rabbit-hall.cfg:12
+#: data/level/titlescreen-arcade.cfg:276
+msgid "Down the Rabbit Hall"
 msgstr ""
-"Vous avez obtenu {level.player.vars.score} points dans le terrier du lapin !"
 
-#: data/level/arcade-down-the-rabbithall.cfg:852
-msgid ""
-"The high score is {registry.arcade_down_the_rabbithall_high_score} points."
+#: data/level/arcade-down-the-rabbit-hall.cfg:862
+#: data/level/arcade-down-the-rabbit-hall.cfg:865
+msgid "You got {level.player.vars.score} points going down the rabbit hall!"
 msgstr ""
-"Le meilleur score est de {registry.arcade_down_the_rabbithall_high_score} "
-"points."
+
+#: data/level/arcade-down-the-rabbit-hall.cfg:866
+msgid ""
+"The high score is {registry.arcade_down_the_rabbit_hall_high_score} points."
+msgstr ""
 
 #: data/level/arcade-maintenance-shaft.cfg:13
 #: data/level/titlescreen-arcade.cfg:253
@@ -200,13 +202,13 @@ msgstr ""
 msgid "The Long Haul"
 msgstr "La Longue Traversée"
 
-#: data/level/arcade-the-long-haul.cfg:631
-#: data/level/arcade-the-long-haul.cfg:634
+#: data/level/arcade-the-long-haul.cfg:645
+#: data/level/arcade-the-long-haul.cfg:648
 msgid "You got {level.player.vars.score} points in the long haul!"
 msgstr ""
 "Vous avez obtenu {level.player.vars.score} points dans le long-courrier !"
 
-#: data/level/arcade-the-long-haul.cfg:635
+#: data/level/arcade-the-long-haul.cfg:649
 msgid "The high score is {registry.arcade_the_long_haul_high_score} points."
 msgstr ""
 "Le meilleur score est de {registry.arcade_the_long_haul_high_score} points."
@@ -1006,7 +1008,7 @@ msgid ""
 msgstr ""
 "Lorsque je suis entré,\n"
 "la porte s'est refermée\n"
-"derrière moi."
+"derrière moi.\""
 
 #: data/level/crevice-village-house-4.cfg:3316
 msgid ""
@@ -1513,7 +1515,7 @@ msgid ""
 "Anyways, about the cave ahead...\n"
 "it's just one guy, right?"
 msgstr ""
-"En tout cas, à propos de la grotte plus loin ...\n"
+"Bon, à propos de la grotte plus loin ...\n"
 "c'est juste un type, c'est ça ?"
 
 #: data/level/crevice-village.cfg:996
@@ -1562,7 +1564,7 @@ msgid ""
 "\"Chopple's General Store,\n"
 "just ahead."
 msgstr ""
-"Ca dit,\n"
+"Ça dit,\n"
 "\"Magasin de Chopple\",\n"
 "juste devant."
 
@@ -1854,7 +1856,7 @@ msgstr ""
 "Si vous ne partez pas bien\n"
 "vous pouvez toujours vous accrocher\n"
 "si vous appuyez sur la touche en direction\n"
-"du mur et sur la touche de saut."
+"du mur et sur la touche de saut.\""
 
 #: data/level/grassy-path.cfg:1237
 msgid ""
@@ -2069,6 +2071,12 @@ msgstr ""
 
 #: data/level/grassy-path.cfg:1455
 msgid ""
+"A special button will appear,\n"
+"whenever this is possible."
+msgstr ""
+
+#: data/level/grassy-path.cfg:1456
+msgid ""
 "To do so, hold down the down key,\n"
 "and then press jump."
 msgstr ""
@@ -2076,7 +2084,7 @@ msgstr ""
 "gardez la touche bas appuyée,\n"
 "et appuyez sur la touche saut."
 
-#: data/level/grassy-path.cfg:1534
+#: data/level/grassy-path.cfg:1535
 msgid ""
 "As you've played through this level,\n"
 "you've probably noticed the gold coins."
@@ -2085,7 +2093,7 @@ msgstr ""
 "vous avez probablement\n"
 "remarqué les pièces d'or."
 
-#: data/level/grassy-path.cfg:1535
+#: data/level/grassy-path.cfg:1536
 msgid ""
 "You can collect these\n"
 "and any other golden objects,\n"
@@ -2095,7 +2103,7 @@ msgstr ""
 "ainsi que tout autre objet doré,\n"
 "et les utiliser pour acheter des trucs!"
 
-#: data/level/grassy-path.cfg:1536
+#: data/level/grassy-path.cfg:1537
 msgid ""
 "There is a store conveniently located\n"
 "outside of the town."
@@ -2103,7 +2111,7 @@ msgstr ""
 "Il y a une boutique\n"
 "juste en dehors de la ville."
 
-#: data/level/grassy-path.cfg:1570
+#: data/level/grassy-path.cfg:1571
 msgid ""
 "Sometimes, you'll run into rather\n"
 "dangerous-looking terrain,\n"
@@ -2113,7 +2121,7 @@ msgstr ""
 "qui sembleront dangereux,\n"
 "comme ces ronces."
 
-#: data/level/grassy-path.cfg:1571
+#: data/level/grassy-path.cfg:1572
 msgid ""
 "As you would expect, stepping on these\n"
 "will hurt a bit."
@@ -2121,11 +2129,11 @@ msgstr ""
 "Comme vous l'aurez deviné\n"
 "marcher dessus fait un peu mal."
 
-#: data/level/grassy-path.cfg:1572
+#: data/level/grassy-path.cfg:1573
 msgid "However, this also hurts the bugs!"
 msgstr "Mais ça fait aussi mal aux insectes!"
 
-#: data/level/grassy-path.cfg:1573
+#: data/level/grassy-path.cfg:1574
 msgid ""
 "Leading or spitting them onto it\n"
 "is an excellent way to dispatch them."
@@ -2134,7 +2142,7 @@ msgstr ""
 "est une très bonne façon\n"
 "de s'en débarrasser."
 
-#: data/level/grassy-path.cfg:1574
+#: data/level/grassy-path.cfg:1575
 msgid ""
 "Beware also,\n"
 "any bottomless pits you encounter."
@@ -2142,11 +2150,11 @@ msgstr ""
 "Faites aussi attention aux puits\n"
 "sans fonds que vous rencontrerez."
 
-#: data/level/grassy-path.cfg:1575
+#: data/level/grassy-path.cfg:1576
 msgid "These are immediately fatal."
 msgstr "Vous y mourriez instantanément."
 
-#: data/level/grassy-path.cfg:1750
+#: data/level/grassy-path.cfg:1751
 msgid ""
 "Up ahead, you'll notice an anthill,\n"
 "which ants constantly come out of."
@@ -2155,7 +2163,7 @@ msgstr ""
 "une fourmilière en hauteur,\n"
 "dont des fourmis sortent en continu."
 
-#: data/level/grassy-path.cfg:1751
+#: data/level/grassy-path.cfg:1752
 msgid ""
 "There is no way to stop this;\n"
 "you can't destroy the anthill."
@@ -2164,7 +2172,7 @@ msgstr ""
 "vous ne pouvez pas détruire\n"
 "la fourmilière."
 
-#: data/level/grassy-path.cfg:1752
+#: data/level/grassy-path.cfg:1753
 msgid ""
 "Some hazards are like this.\n"
 "You simply have to work around them."
@@ -2172,11 +2180,11 @@ msgstr ""
 "Certains obstacles sont ainsi.\n"
 "Vous devez faire avec."
 
-#: data/level/grassy-path.cfg:1786
+#: data/level/grassy-path.cfg:1787
 msgid "That's it for this tutorial."
 msgstr "C'en est fini du tutoriel."
 
-#: data/level/grassy-path.cfg:1787
+#: data/level/grassy-path.cfg:1788
 msgid ""
 "Although there's a bit more\n"
 "to playing the game,\n"
@@ -2188,7 +2196,7 @@ msgstr ""
 "nous pouvons vous laisser\n"
 "découvrir le reste par vous même."
 
-#: data/level/grassy-path.cfg:1788
+#: data/level/grassy-path.cfg:1789
 msgid ""
 "Feel free to come back here,\n"
 "if you want to read a hint again."
@@ -2196,11 +2204,11 @@ msgstr ""
 "N'hésitez pas à revenir ici\n"
 "si vous souhaitez relire une astuce."
 
-#: data/level/grassy-path.cfg:1789
+#: data/level/grassy-path.cfg:1790
 msgid "Have fun!"
 msgstr "Amusez-vous bien!"
 
-#: data/level/grassy-path.cfg:1853
+#: data/level/grassy-path.cfg:1854
 msgid ""
 "If you've seen a conversation before\n"
 "you might be annoyed by\n"
@@ -2210,7 +2218,7 @@ msgstr ""
 "cela pourrait t'ennuyer\n"
 "d'avoir à la relire une fois encore."
 
-#: data/level/grassy-path.cfg:1854
+#: data/level/grassy-path.cfg:1855
 msgid ""
 "You can skip a conversation,\n"
 "including parts of cutscenes,\n"
@@ -2220,7 +2228,7 @@ msgstr ""
 "ainsi qu'une partie des cinématiques,\n"
 "en appuyant su la touche \"échap\"."
 
-#: data/level/grassy-path.cfg:1855
+#: data/level/grassy-path.cfg:1856
 msgid ""
 "And yes,\n"
 "this applies to the question marks\n"
@@ -2277,7 +2285,7 @@ msgid ""
 "It couldn't be easy to get out of here!"
 msgstr ""
 "C'est fermé à clef. bien sûr ...\n"
-"Ca ne pourrait pas être simple de sortir d'ici !"
+"Ça ne pouvait pas être simple de sortir d'ici !"
 
 #: data/level/liberated-crevice-village-house-1.cfg:1201
 msgid ""
@@ -3730,10 +3738,6 @@ msgstr "Choisissez un niveau:"
 #: data/level/titlescreen-arcade.cfg:421
 msgid "(cancel)"
 msgstr "(annuler)"
-
-#: data/level/titlescreen-arcade.cfg:276
-msgid "Down the RabbitHall"
-msgstr "La Couloir du Lapin"
 
 #: data/level/titlescreen-arcade.cfg:277
 msgid "Block Run"

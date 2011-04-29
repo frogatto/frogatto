@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-04-24 05:39-0300\n"
-"PO-Revision-Date: 2011-04-24 08:45+0000\n"
+"POT-Creation-Date: 2011-04-29 01:06-0300\n"
+"PO-Revision-Date: 2011-04-29 04:09+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Chinese (China) <>\n"
 "MIME-Version: 1.0\n"
@@ -150,9 +150,9 @@ msgid "You got {level.player.score} points in the Blocks Run!"
 msgstr ""
 
 #: data/level/arcade-blocks.cfg:218
-#: data/level/arcade-down-the-rabbithall.cfg:821
+#: data/level/arcade-down-the-rabbit-hall.cfg:863
 #: data/level/arcade-maintenance-shaft.cfg:2580
-#: data/level/arcade-the-long-haul.cfg:632
+#: data/level/arcade-the-long-haul.cfg:646
 #: data/level/arcade-wild-new-wonder.cfg:2521
 #: data/objects/effects/control/level_controller_coin_race.cfg:33
 msgid "This is a new high score!"
@@ -162,14 +162,19 @@ msgstr "这是一个新纪录！"
 msgid "The high score is {registry.arcade_blocks_high_score}."
 msgstr ""
 
-#: data/level/arcade-down-the-rabbithall.cfg:820
-#: data/level/arcade-down-the-rabbithall.cfg:823
-msgid "You got {level.player.vars.score} points going down the rabbithall!"
+#: data/level/arcade-down-the-rabbit-hall.cfg:12
+#: data/level/titlescreen-arcade.cfg:276
+msgid "Down the Rabbit Hall"
 msgstr ""
 
-#: data/level/arcade-down-the-rabbithall.cfg:824
+#: data/level/arcade-down-the-rabbit-hall.cfg:862
+#: data/level/arcade-down-the-rabbit-hall.cfg:865
+msgid "You got {level.player.vars.score} points going down the rabbit hall!"
+msgstr ""
+
+#: data/level/arcade-down-the-rabbit-hall.cfg:866
 msgid ""
-"The high score is {registry.arcade_down_the_rabbithall_high_score} points."
+"The high score is {registry.arcade_down_the_rabbit_hall_high_score} points."
 msgstr ""
 
 #: data/level/arcade-maintenance-shaft.cfg:13
@@ -192,12 +197,12 @@ msgstr ""
 msgid "The Long Haul"
 msgstr "长途运输"
 
-#: data/level/arcade-the-long-haul.cfg:631
-#: data/level/arcade-the-long-haul.cfg:634
+#: data/level/arcade-the-long-haul.cfg:645
+#: data/level/arcade-the-long-haul.cfg:648
 msgid "You got {level.player.vars.score} points in the long haul!"
 msgstr ""
 
-#: data/level/arcade-the-long-haul.cfg:635
+#: data/level/arcade-the-long-haul.cfg:649
 msgid "The high score is {registry.arcade_the_long_haul_high_score} points."
 msgstr ""
 
@@ -1956,13 +1961,19 @@ msgstr "你也同样可以向下跳穿过它们。"
 
 #: data/level/grassy-path.cfg:1455
 msgid ""
+"A special button will appear,\n"
+"whenever this is possible."
+msgstr ""
+
+#: data/level/grassy-path.cfg:1456
+msgid ""
 "To do so, hold down the down key,\n"
 "and then press jump."
 msgstr ""
 "要向下跳，只需按住下方向键，\n"
 "而后按跳跃键。"
 
-#: data/level/grassy-path.cfg:1534
+#: data/level/grassy-path.cfg:1535
 msgid ""
 "As you've played through this level,\n"
 "you've probably noticed the gold coins."
@@ -1970,7 +1981,7 @@ msgstr ""
 "通过本场景的时候，\n"
 "你也许已经注意到了那些金币。"
 
-#: data/level/grassy-path.cfg:1535
+#: data/level/grassy-path.cfg:1536
 msgid ""
 "You can collect these\n"
 "and any other golden objects,\n"
@@ -1980,13 +1991,13 @@ msgstr ""
 "以及其他金质物品，\n"
 "而后用来购买装备！"
 
-#: data/level/grassy-path.cfg:1536
+#: data/level/grassy-path.cfg:1537
 msgid ""
 "There is a store conveniently located\n"
 "outside of the town."
 msgstr "在小镇外面有个商店，很方便的。"
 
-#: data/level/grassy-path.cfg:1570
+#: data/level/grassy-path.cfg:1571
 msgid ""
 "Sometimes, you'll run into rather\n"
 "dangerous-looking terrain,\n"
@@ -1995,7 +2006,7 @@ msgstr ""
 "有时候你会遇到看上去很危险的\n"
 "地形，例如这些荆棘。"
 
-#: data/level/grassy-path.cfg:1571
+#: data/level/grassy-path.cfg:1572
 msgid ""
 "As you would expect, stepping on these\n"
 "will hurt a bit."
@@ -2003,11 +2014,11 @@ msgstr ""
 "正如你所想的，踩到它们的话\n"
 "会有点痛的哦。"
 
-#: data/level/grassy-path.cfg:1572
+#: data/level/grassy-path.cfg:1573
 msgid "However, this also hurts the bugs!"
 msgstr "但是，它们同样也会伤害到虫子！"
 
-#: data/level/grassy-path.cfg:1573
+#: data/level/grassy-path.cfg:1574
 msgid ""
 "Leading or spitting them onto it\n"
 "is an excellent way to dispatch them."
@@ -2015,7 +2026,7 @@ msgstr ""
 "把虫子引到或者吐到荆棘上\n"
 "是消灭它们的好方法。"
 
-#: data/level/grassy-path.cfg:1574
+#: data/level/grassy-path.cfg:1575
 msgid ""
 "Beware also,\n"
 "any bottomless pits you encounter."
@@ -2023,11 +2034,11 @@ msgstr ""
 "还要注意的是，\n"
 "你遇到的任何无底洞，"
 
-#: data/level/grassy-path.cfg:1575
+#: data/level/grassy-path.cfg:1576
 msgid "These are immediately fatal."
 msgstr "都会秒杀你。"
 
-#: data/level/grassy-path.cfg:1750
+#: data/level/grassy-path.cfg:1751
 msgid ""
 "Up ahead, you'll notice an anthill,\n"
 "which ants constantly come out of."
@@ -2035,7 +2046,7 @@ msgstr ""
 "在前方你会看到一座蚁丘，\n"
 "那里会源源不断地跑出蚂蚁。"
 
-#: data/level/grassy-path.cfg:1751
+#: data/level/grassy-path.cfg:1752
 msgid ""
 "There is no way to stop this;\n"
 "you can't destroy the anthill."
@@ -2043,7 +2054,7 @@ msgstr ""
 "这是没办法停止的：\n"
 "你不可能摧毁蚁丘。"
 
-#: data/level/grassy-path.cfg:1752
+#: data/level/grassy-path.cfg:1753
 msgid ""
 "Some hazards are like this.\n"
 "You simply have to work around them."
@@ -2051,11 +2062,11 @@ msgstr ""
 "有些危险就是如此。\n"
 "你只能绕过它们。"
 
-#: data/level/grassy-path.cfg:1786
+#: data/level/grassy-path.cfg:1787
 msgid "That's it for this tutorial."
 msgstr "教程到此结束。"
 
-#: data/level/grassy-path.cfg:1787
+#: data/level/grassy-path.cfg:1788
 msgid ""
 "Although there's a bit more\n"
 "to playing the game,\n"
@@ -2067,7 +2078,7 @@ msgstr ""
 "但我们已经可以放心地\n"
 "让你去自学了。"
 
-#: data/level/grassy-path.cfg:1788
+#: data/level/grassy-path.cfg:1789
 msgid ""
 "Feel free to come back here,\n"
 "if you want to read a hint again."
@@ -2075,25 +2086,25 @@ msgstr ""
 "如果你想要重读任何一条提示的话，\n"
 "随时都可以回到这里。"
 
-#: data/level/grassy-path.cfg:1789
+#: data/level/grassy-path.cfg:1790
 msgid "Have fun!"
 msgstr "祝你玩得开心！"
 
-#: data/level/grassy-path.cfg:1853
+#: data/level/grassy-path.cfg:1854
 msgid ""
 "If you've seen a conversation before\n"
 "you might be annoyed by\n"
 "having to read it again."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1854
+#: data/level/grassy-path.cfg:1855
 msgid ""
 "You can skip a conversation,\n"
 "including parts of cutscenes,\n"
 "by pressing the \"escape\" key."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1855
+#: data/level/grassy-path.cfg:1856
 msgid ""
 "And yes,\n"
 "this applies to the question marks\n"
@@ -3476,10 +3487,6 @@ msgstr "选择一个关卡："
 #: data/level/titlescreen-arcade.cfg:421
 msgid "(cancel)"
 msgstr "（取消）"
-
-#: data/level/titlescreen-arcade.cfg:276
-msgid "Down the RabbitHall"
-msgstr "深入兔兔大厅"
 
 #: data/level/titlescreen-arcade.cfg:277
 msgid "Block Run"
