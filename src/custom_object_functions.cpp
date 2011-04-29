@@ -1231,6 +1231,10 @@ FUNCTION_DEF(debug, 1, -1, "debug(...): outputs arguments to the console")
 
 	std::string str;
 	for(int n = 0; n != args().size(); ++n) {
+		if(n > 0) {
+			str += " ";
+		}
+
 		str += args()[n]->evaluate(variables).to_debug_string();
 	}
 
