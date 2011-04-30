@@ -450,6 +450,8 @@ void texture::set_as_current_texture() const
 texture texture::get(const std::string& str)
 {
 	texture result = texture_cache().get(str);
+	ASSERT_LOG(result.width() % 2 == 0, "\nIMAGE WIDTH IS NOT AN EVEN NUMBER OF PIXELS:" << str);
+	
 	if(!result.valid()) {
 		key surfs;
 		surfs.push_back(surface_cache::get_no_cache(str));
