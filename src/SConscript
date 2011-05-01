@@ -42,6 +42,7 @@ formula_variable_storage.cpp
 frame.cpp
 framed_gui_element.cpp
 geometry.cpp
+game_registry.cpp
 globals.cpp
 graphical_font.cpp
 graphical_font_label.cpp
