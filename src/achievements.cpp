@@ -3,6 +3,7 @@
 
 #include "achievements.hpp"
 #include "filesystem.hpp"
+#include "formula_callable.hpp"
 #include "i18n.hpp"
 #include "preferences.hpp"
 #include "string_utils.hpp"
@@ -11,6 +12,7 @@
 #include "wml_utils.hpp"
 #include "wml_writer.hpp"
 #include "of_bridge.h"
+#include "variant.hpp"
 
 namespace {
 std::map<std::string, achievement_ptr> cache;
@@ -44,19 +46,15 @@ achievement::achievement(wml::const_node_ptr node)
 
 namespace {
 std::vector<std::string>* achievements = NULL;
-
-std::string achievements_file() {
-	return std::string(preferences::user_data_path()) + "/achievements.cfg";
-}
 }
 
 bool attain_achievement(const std::string& id)
 {
 	if(achievements == NULL) {
 		achievements = new std::vector<std::string>;
-		if(!sys::read_file(achievements_file()).empty()) {
-			wml::node_ptr node = wml::parse_wml_from_file(achievements_file());
-			*achievements = util::split(node->attr("achievements"));
+		variant val = preferences::registry()->query_value("achievements");
+		if(val.is_string()) {
+			*achievements = util::split(val.as_string());
 			std::sort(achievements->begin(), achievements->end());
 		}
 	}
@@ -73,9 +71,7 @@ bool attain_achievement(const std::string& id)
 	achievements->push_back(id);
 	std::sort(achievements->begin(), achievements->end());
 
-	wml::node_ptr node(new wml::node("achievements"));
-	node->set_attr("achievements", util::join(*achievements));
-	sys::write_file(achievements_file(), wml::output(node));
+	preferences::registry()->mutate_value("achievements", variant(util::join(*achievements)));
 
 	return true;
 }
