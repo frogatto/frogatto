@@ -9,7 +9,7 @@
 
 namespace
 {
-	const int padding = 20;
+	const int padding = 10;
 }
 
 void settings_dialog::draw (bool in_speech_dialog) const
