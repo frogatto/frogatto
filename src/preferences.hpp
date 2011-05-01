@@ -4,7 +4,7 @@
 #include <string>
 
 namespace game_logic {
-class map_formula_callable;
+class formula_callable;
 }
 
 namespace preferences {
@@ -101,7 +101,7 @@ namespace preferences {
 	bool relay_through_server();
 	void set_relay_through_server(bool value);
 
-	game_logic::map_formula_callable* registry();
+	game_logic::formula_callable* registry();
 
 	void load_preferences();
 	void save_preferences();

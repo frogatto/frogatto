@@ -9,6 +9,7 @@
 #include "filesystem.hpp"
 #include "formatter.hpp"
 #include "formula_callable.hpp"
+#include "game_registry.hpp"
 #include "preferences.hpp"
 #include "sound.hpp"
 #include "wml_node.hpp"
@@ -350,11 +351,9 @@ namespace preferences {
 		return use_joystick_;
 	}
 
-	game_logic::map_formula_callable* registry()
+	game_logic::formula_callable* registry()
 	{
-		static game_logic::map_formula_callable* obj = new game_logic::map_formula_callable;
-		static game_logic::formula_callable_ptr holder(obj);
-		return obj;
+		return &game_registry::instance();
 	}
 
 	void load_preferences()
@@ -383,7 +382,7 @@ namespace preferences {
 
 		const wml::const_node_ptr registry_node = node->get_child("registry");
 		if(registry_node) {
-			*registry() = game_logic::map_formula_callable(registry_node);
+			game_registry::instance().set_contents(registry_node);
 		}
 
 #if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
@@ -416,7 +415,7 @@ namespace preferences {
 		node->set_attr("key_tongue", formatter() << controls::get_sdlkey(controls::CONTROL_TONGUE));
 
 		wml::node_ptr registry_node(new wml::node("registry"));
-		registry()->write(registry_node);
+		game_registry::instance().write_contents(registry_node);
 		node->add_child(registry_node);
 		sys::write_file(preferences_path_ + "preferences.cfg", wml::output(node));
 	}
