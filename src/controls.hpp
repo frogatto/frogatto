@@ -2,6 +2,7 @@
 #define CONTROLS_HPP_INCLUDED
 
 #include <vector>
+#include <cstddef>
 
 #include <SDL_keysym.h>
 
