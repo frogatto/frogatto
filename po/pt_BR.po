@@ -2906,8 +2906,8 @@ msgstr ""
 #: data/level/secluded-hut.cfg:1261
 msgid "I'm at a loss for a plan, myself."
 msgstr ""
-"Realmente, não sei\n"
-"como é que eu vou fazer isso."
+"É, tenho que admitir que\n"
+"ainda não temos um plano."
 
 #: data/level/secluded-hut.cfg:1262
 msgid ""
