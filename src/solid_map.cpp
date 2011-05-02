@@ -28,7 +28,7 @@ void solid_map::create_object_solid_maps(wml::const_node_ptr node, std::vector<c
 
 	const int feet_width = wml::get_int(node, "feet_width", 0);
 
-	int legs_height = area.w()/2 + 1 - feet_width;
+	int legs_height = area.w()/2 + 1 /*- feet_width*/;  //don't do feet_width here, it messes up descending from slopes.
 	if(wml::get_bool(node, "has_feet", true) == false || node->attr("solid_shape").str() == "rect" || legs_height < 0) {
 		legs_height = 0;
 	}
