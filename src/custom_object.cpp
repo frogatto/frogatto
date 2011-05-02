@@ -1134,7 +1134,7 @@ void custom_object::process(level& lvl)
 			//them standing.
 
 			const STANDING_STATUS standing = is_standing(lvl);
-			if(previous_standing && standing != previous_standing) {
+			if(previous_standing && standing < previous_standing) {
 
 				//we were standing, but we're not now. We want to look for
 				//slopes that will enable us to still be standing. We see
@@ -1152,7 +1152,7 @@ void custom_object::process(level& lvl)
 							break;
 						}
 
-						if(is_standing(lvl) == previous_standing) {
+						if(is_standing(lvl) >= previous_standing) {
 							resolved = true;
 							break;
 						}
@@ -1535,13 +1535,16 @@ custom_object::STANDING_STATUS custom_object::is_standing(const level& lvl, coll
 	if(width >= 1) {
 		const int facing = face_right() ? 1 : -1;
 		if(point_standable(lvl, *this, feet_x() + width*facing, feet_y(), info, fall_through_platforms_ ? SOLID_ONLY : SOLID_AND_PLATFORMS)) {
+			std::cerr << "FRONT\n";
 			return STANDING_FRONT_FOOT;
 		}
 
 		if(point_standable(lvl, *this, feet_x() - width*facing, feet_y(), info, fall_through_platforms_ ? SOLID_ONLY : SOLID_AND_PLATFORMS)) {
+			std::cerr << "BACK\n";
 			return STANDING_BACK_FOOT;
 		}
 
+			std::cerr << "NOT\n";
 		return NOT_STANDING;
 	}
 

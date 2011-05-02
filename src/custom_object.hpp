@@ -171,7 +171,7 @@ protected:
 
 	const std::pair<int,int>* position_scale_millis() const { return position_scale_millis_.get(); }
 
-	enum STANDING_STATUS { NOT_STANDING, STANDING_FRONT_FOOT, STANDING_BACK_FOOT };
+	enum STANDING_STATUS { NOT_STANDING, STANDING_BACK_FOOT, STANDING_FRONT_FOOT };
 	STANDING_STATUS is_standing(const level& lvl, collision_info* info=NULL) const;
 
 	void set_parent(entity_ptr e, const std::string& pivot_point);
