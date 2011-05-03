@@ -33,6 +33,7 @@ screen_position& last_draw_position();
 void screen_color_flash(const graphics::color_transform& color, const graphics::color_transform& color_delta, int duration);
 void set_scene_title(const std::string& msg, int duration=150);
 void set_displayed_achievement(achievement_ptr a);
+bool is_achievement_displayed();
 void draw_scene(const level& lvl, screen_position& pos, const entity* focus=NULL, bool do_draw=true);
 
 struct performance_data {

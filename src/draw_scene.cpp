@@ -43,6 +43,7 @@ std::string& scene_title() {
 achievement_ptr current_achievement;
 int current_achievement_duration = 0;
 
+	
 struct screen_flash {
 	graphics::color_transform color, delta;
 	int duration;
@@ -56,6 +57,10 @@ std::vector<screen_flash>& flashes() {
 int scene_title_duration_;
 
 screen_position last_position;
+}
+
+bool is_achievement_displayed() {
+	return current_achievement && current_achievement_duration > 0;
 }
 
 screen_position& last_draw_position()

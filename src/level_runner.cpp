@@ -676,7 +676,9 @@ bool level_runner::play_cycle()
 
 		performance_data perf = { current_fps_, current_cycles_, current_delay_, current_draw_, current_process_, current_flip_, cycle, current_events_, profiling_summary_ };
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-		settings_dialog.draw(in_speech_dialog());
+		if( ! is_achievement_displayed() ){
+			settings_dialog.draw(in_speech_dialog());
+		}
 #endif
 		
 		if(!is_skipping_game() && preferences::show_fps()) {
