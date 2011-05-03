@@ -3574,7 +3574,7 @@ msgstr "硬币采集赛"
 
 #: data/level/titlescreen-arcade.cfg:449
 msgid "COIN RACE"
-msgstr ""
+msgstr "硬币采集赛"
 
 #: data/level/titlescreen-test.cfg:284 data/level/titlescreen.cfg:284
 msgid "LOAD GAME"
