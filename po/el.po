@@ -2,19 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-04-29 01:06-0300\n"
+"POT-Creation-Date: 2011-05-03 11:44-0400\\nPO-Revision-Date: YEAR-MO-DA HO:MI"
+"+ZONE\n"
 "PO-Revision-Date: 2011-04-29 04:09+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Greek <None>\n"
+"Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: el\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: data/achievements.cfg:4
@@ -153,7 +154,7 @@ msgstr ""
 #: data/level/arcade-down-the-rabbit-hall.cfg:863
 #: data/level/arcade-maintenance-shaft.cfg:2580
 #: data/level/arcade-the-long-haul.cfg:646
-#: data/level/arcade-wild-new-wonder.cfg:2521
+#: data/level/arcade-wild-new-wonder.cfg:2520
 #: data/objects/effects/control/level_controller_coin_race.cfg:33
 msgid "This is a new high score!"
 msgstr ""
@@ -227,16 +228,16 @@ msgstr ""
 msgid "Wild New Wonder"
 msgstr ""
 
-#: data/level/arcade-wild-new-wonder.cfg:2520
-#: data/level/arcade-wild-new-wonder.cfg:2523
+#: data/level/arcade-wild-new-wonder.cfg:2519
+#: data/level/arcade-wild-new-wonder.cfg:2522
 msgid "You got {level.player.vars.score} points in the Wild New Wonder!"
 msgstr ""
 
-#: data/level/arcade-wild-new-wonder.cfg:2524
+#: data/level/arcade-wild-new-wonder.cfg:2523
 msgid "The high score is {registry.arcade_wild_new_wonder_high_score} points."
 msgstr ""
 
-#: data/level/autumn-town.cfg:16 data/level/autumn-town.cfg:3367
+#: data/level/autumn-town.cfg:16
 msgid "Autumn Town"
 msgstr "Φθινοπωρούπολη"
 
@@ -3058,6 +3059,10 @@ msgstr ""
 msgid "Coin Race"
 msgstr ""
 
+#: data/level/titlescreen-arcade.cfg:449
+msgid "COIN RACE"
+msgstr ""
+
 #: data/level/titlescreen-test.cfg:284 data/level/titlescreen.cfg:284
 msgid "LOAD GAME"
 msgstr ""
@@ -3297,8 +3302,8 @@ msgstr ""
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level "
-"{registry.arcade_coin_race_high_score}."
+"The furthest that has been reached is level {registry."
+"arcade_coin_race_high_score}."
 msgstr ""
 
 #: data/objects/items/max_heart_object.cfg:18
@@ -3498,7 +3503,7 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: src/draw_scene.cpp:362
+#: src/draw_scene.cpp:367
 msgid "Achievement Unlocked!"
 msgstr ""
 

@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto v1.0.3\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-29 01:06-0300\n"
+"Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
+"POT-Creation-Date: 2011-05-03 11:44-0400\\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -153,7 +153,7 @@ msgstr ""
 #: data/level/arcade-down-the-rabbit-hall.cfg:863
 #: data/level/arcade-maintenance-shaft.cfg:2580
 #: data/level/arcade-the-long-haul.cfg:646
-#: data/level/arcade-wild-new-wonder.cfg:2521
+#: data/level/arcade-wild-new-wonder.cfg:2520
 #: data/objects/effects/control/level_controller_coin_race.cfg:33
 msgid "This is a new high score!"
 msgstr ""
@@ -227,16 +227,16 @@ msgstr ""
 msgid "Wild New Wonder"
 msgstr ""
 
-#: data/level/arcade-wild-new-wonder.cfg:2520
-#: data/level/arcade-wild-new-wonder.cfg:2523
+#: data/level/arcade-wild-new-wonder.cfg:2519
+#: data/level/arcade-wild-new-wonder.cfg:2522
 msgid "You got {level.player.vars.score} points in the Wild New Wonder!"
 msgstr ""
 
-#: data/level/arcade-wild-new-wonder.cfg:2524
+#: data/level/arcade-wild-new-wonder.cfg:2523
 msgid "The high score is {registry.arcade_wild_new_wonder_high_score} points."
 msgstr ""
 
-#: data/level/autumn-town.cfg:16 data/level/autumn-town.cfg:3367
+#: data/level/autumn-town.cfg:16
 msgid "Autumn Town"
 msgstr ""
 
@@ -3050,6 +3050,10 @@ msgstr ""
 msgid "Coin Race"
 msgstr ""
 
+#: data/level/titlescreen-arcade.cfg:449
+msgid "COIN RACE"
+msgstr ""
+
 #: data/level/titlescreen-test.cfg:284 data/level/titlescreen.cfg:284
 msgid "LOAD GAME"
 msgstr ""
@@ -3490,7 +3494,7 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: src/draw_scene.cpp:362
+#: src/draw_scene.cpp:367
 msgid "Achievement Unlocked!"
 msgstr ""
 

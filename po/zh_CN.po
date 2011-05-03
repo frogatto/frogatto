@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-03 05:27-0400\\nPO-Revision-Date: YEAR-MO-DA HO:MI"
+"Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
+"POT-Creation-Date: 2011-05-03 11:44-0400\\nPO-Revision-Date: YEAR-MO-DA HO:MI"
 "+ZONE\n"
 "PO-Revision-Date: 2011-05-03 08:02+0000\n"
 "Last-Translator: hagabaka <yaohan.chen@gmail.com>\n"
@@ -3571,6 +3571,10 @@ msgstr "奔跑"
 #: data/level/titlescreen-arcade.cfg:420
 msgid "Coin Race"
 msgstr "硬币采集赛"
+
+#: data/level/titlescreen-arcade.cfg:449
+msgid "COIN RACE"
+msgstr ""
 
 #: data/level/titlescreen-test.cfg:284 data/level/titlescreen.cfg:284
 msgid "LOAD GAME"
