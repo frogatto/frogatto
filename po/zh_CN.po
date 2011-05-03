@@ -2,19 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
-"Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-04-29 01:06-0300\n"
-"PO-Revision-Date: 2011-04-29 04:09+0000\n"
-"Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-05-03 05:27-0400\\nPO-Revision-Date: YEAR-MO-DA HO:MI"
+"+ZONE\n"
+"PO-Revision-Date: 2011-05-03 08:02+0000\n"
+"Last-Translator: hagabaka <yaohan.chen@gmail.com>\n"
 "Language-Team: Chinese (China) <>\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: data/achievements.cfg:4
@@ -55,7 +56,7 @@ msgstr "交易快手"
 
 #: data/achievements.cfg:37
 msgid "Playing the economy game, eh?"
-msgstr ""
+msgstr "玩经济的游戏，是吗？"
 
 #: data/achievements.cfg:44
 msgid "Speedrun"
@@ -63,7 +64,7 @@ msgstr "快跑通关"
 
 #: data/achievements.cfg:45
 msgid "Complete the game within 1 hour."
-msgstr ""
+msgstr "1小时内完成游戏。"
 
 #: data/achievements.cfg:52
 msgid "Win!"
@@ -99,35 +100,35 @@ msgstr "连续做掉10个相同类型的敌人。"
 
 #: data/achievements.cfg:84
 msgid "Jackalope"
-msgstr ""
+msgstr "鹿角兔"
 
 #: data/achievements.cfg:85
 msgid "Bound, bound, bound and rebound!"
-msgstr ""
+msgstr "弹，弹，弹，回弹！"
 
 #: data/achievements.cfg:92
 msgid "Frogourmet"
-msgstr ""
+msgstr "青蛙美食"
 
 #: data/achievements.cfg:93
 msgid "Try to eat all kinds of enemies."
-msgstr ""
+msgstr "尝试吃所有种类的敌人。"
 
 #: data/achievements.cfg:100
 msgid "Dream on..."
-msgstr ""
+msgstr "做美梦吧…"
 
 #: data/achievements.cfg:101
 msgid "That's the infinite cage."
-msgstr ""
+msgstr "那是无限的笼子。"
 
 #: data/achievements.cfg:108
 msgid "Geosynchronous Orbit Achieved"
-msgstr ""
+msgstr "地球同步轨道达标"
 
 #: data/achievements.cfg:109
 msgid "Now applying artificial gravity."
-msgstr ""
+msgstr "正在启动人工重力。"
 
 #: data/level/airplane-boss.cfg:14
 msgid "Stonepipe Bridge"
@@ -143,39 +144,39 @@ msgstr "胜利！"
 
 #: data/level/arcade-blocks.cfg:11
 msgid "Blocks Run"
-msgstr ""
+msgstr "方块跑"
 
 #: data/level/arcade-blocks.cfg:217 data/level/arcade-blocks.cfg:219
 msgid "You got {level.player.score} points in the Blocks Run!"
-msgstr ""
+msgstr "你在方块跑里得了{level.player.score}分！"
 
 #: data/level/arcade-blocks.cfg:218
 #: data/level/arcade-down-the-rabbit-hall.cfg:863
 #: data/level/arcade-maintenance-shaft.cfg:2580
 #: data/level/arcade-the-long-haul.cfg:646
-#: data/level/arcade-wild-new-wonder.cfg:2521
+#: data/level/arcade-wild-new-wonder.cfg:2520
 #: data/objects/effects/control/level_controller_coin_race.cfg:33
 msgid "This is a new high score!"
 msgstr "这是一个新纪录！"
 
 #: data/level/arcade-blocks.cfg:220
 msgid "The high score is {registry.arcade_blocks_high_score}."
-msgstr ""
+msgstr "最高记录是{registry.arcade_blocks_high_score}。"
 
 #: data/level/arcade-down-the-rabbit-hall.cfg:12
 #: data/level/titlescreen-arcade.cfg:276
 msgid "Down the Rabbit Hall"
-msgstr ""
+msgstr "深入兔兔大厅"
 
 #: data/level/arcade-down-the-rabbit-hall.cfg:862
 #: data/level/arcade-down-the-rabbit-hall.cfg:865
 msgid "You got {level.player.vars.score} points going down the rabbit hall!"
-msgstr ""
+msgstr "你在深入兔兔大厅里得了{level.player.vars.score}分！"
 
 #: data/level/arcade-down-the-rabbit-hall.cfg:866
 msgid ""
 "The high score is {registry.arcade_down_the_rabbit_hall_high_score} points."
-msgstr ""
+msgstr "最高纪录是{registry.arcade_down_the_rabbit_hall_high_score} 分。"
 
 #: data/level/arcade-maintenance-shaft.cfg:13
 #: data/level/titlescreen-arcade.cfg:253
@@ -185,12 +186,12 @@ msgstr "维修管道"
 #: data/level/arcade-maintenance-shaft.cfg:2579
 #: data/level/arcade-maintenance-shaft.cfg:2582
 msgid "You got {level.player.vars.score} points in the maintenance shaft!"
-msgstr ""
+msgstr "你在维修管道里得了{level.player.vars.score}分！"
 
 #: data/level/arcade-maintenance-shaft.cfg:2583
 msgid ""
 "The high score is {registry.arcade_maintenance_shaft_high_score} points."
-msgstr ""
+msgstr "最高记录是{registry.arcade_maintenance_shaft_high_score}分。"
 
 #: data/level/arcade-the-long-haul.cfg:10
 #: data/level/titlescreen-arcade.cfg:275
@@ -200,11 +201,11 @@ msgstr "长途运输"
 #: data/level/arcade-the-long-haul.cfg:645
 #: data/level/arcade-the-long-haul.cfg:648
 msgid "You got {level.player.vars.score} points in the long haul!"
-msgstr ""
+msgstr "你在长途运输里得了{level.player.vars.score}分！"
 
 #: data/level/arcade-the-long-haul.cfg:649
 msgid "The high score is {registry.arcade_the_long_haul_high_score} points."
-msgstr ""
+msgstr "最高记录是{registry.arcade_the_long_haul_high_score}。"
 
 #: data/level/arcade-upper-deck.cfg:12 data/level/titlescreen-arcade.cfg:252
 msgid "Upper Deck"
@@ -212,31 +213,31 @@ msgstr "上段甲板"
 
 #: data/level/arcade-upper-deck.cfg:2949 data/level/arcade-upper-deck.cfg:2952
 msgid "You got {level.player.vars.score} points on the Upper Deck!"
-msgstr ""
+msgstr "你在上段甲板里得了{level.player.vars.score}分！"
 
 #: data/level/arcade-upper-deck.cfg:2950
 msgid "This is a new record!"
-msgstr ""
+msgstr "这是一个新纪录！"
 
 #: data/level/arcade-upper-deck.cfg:2953
 msgid "The high score is {registry.arcade_upper_deck_high_score} points."
-msgstr ""
+msgstr "最高记录是{registry.arcade_upper_deck_high_score}分。"
 
 #: data/level/arcade-wild-new-wonder.cfg:12
 #: data/level/titlescreen-arcade.cfg:251
 msgid "Wild New Wonder"
 msgstr "荒野奇观"
 
-#: data/level/arcade-wild-new-wonder.cfg:2520
-#: data/level/arcade-wild-new-wonder.cfg:2523
+#: data/level/arcade-wild-new-wonder.cfg:2519
+#: data/level/arcade-wild-new-wonder.cfg:2522
 msgid "You got {level.player.vars.score} points in the Wild New Wonder!"
-msgstr ""
+msgstr "你在荒野奇观里得了{level.player.vars.score}分！"
 
-#: data/level/arcade-wild-new-wonder.cfg:2524
+#: data/level/arcade-wild-new-wonder.cfg:2523
 msgid "The high score is {registry.arcade_wild_new_wonder_high_score} points."
-msgstr ""
+msgstr "最高记录是{registry.arcade_wild_new_wonder_high_score}分。"
 
-#: data/level/autumn-town.cfg:16 data/level/autumn-town.cfg:3367
+#: data/level/autumn-town.cfg:16
 msgid "Autumn Town"
 msgstr "秋日小镇"
 
@@ -1371,52 +1372,68 @@ msgid ""
 "I mean... on paper,\n"
 " that sounds like a good enough plan,"
 msgstr ""
+"我的意思是...在纸面上，\n"
+"听起来像一个挺好的计划，"
 
 #: data/level/crevice-village.cfg:977
 msgid ""
 "but I'm gonna be a jerk here,\n"
 " and poke some holes in it."
 msgstr ""
+"但我在这里做一个多事鬼，\n"
+"给你挑一些刺。"
 
 #: data/level/crevice-village.cfg:978
 msgid ""
 "Fair enough.\n"
 "I'm not particularly fond of it, myself."
 msgstr ""
+"没问题。\n"
+"我本人也不是特别喜欢它。"
 
 #: data/level/crevice-village.cfg:980
 msgid ""
 "Firstly, Milgram's got LOTS of followers.\n"
 "Tons of em.  He runs an entire city."
 msgstr ""
+"首先，米格拉姆有*很多*手下，\n"
+"成千上万。整个城市都是他管的。"
 
 #: data/level/crevice-village.cfg:982
 msgid ""
 "I mean, even if we armed the whole town,\n"
 " they'd grossly outnumber us."
 msgstr ""
+"我是说，即使我们全镇武装起来，\n"
+"也远远比不上他们的数量啊。"
 
 #: data/level/crevice-village.cfg:984
 msgid ""
 "Plus, they're pretty mobile, too.\n"
 " Planes and such."
 msgstr ""
+"而且，他们的机动性也很强，\n"
+"飞机什么的都有。"
 
 #: data/level/crevice-village.cfg:986
 msgid ""
 "We might get the drop on them for a bit,\n"
 " but we'd get surrounded in no time."
 msgstr ""
+"我们一开始可能能突进一点，\n"
+"但是没有多久就会被包围的。"
 
 #: data/level/crevice-village.cfg:988
 msgid "Brute force against brute force won't work."
-msgstr ""
+msgstr "强打是没有用的。"
 
 #: data/level/crevice-village.cfg:990
 msgid ""
 "We'd be like ... \n"
 "a bull butting heads with a freight train."
 msgstr ""
+"就像是…\n"
+"公牛和火车顶头。"
 
 #: data/level/crevice-village.cfg:991
 msgid ""
@@ -1440,6 +1457,8 @@ msgid ""
 "Anyways, about the cave ahead...\n"
 "it's just one guy, right?"
 msgstr ""
+"不管怎么说，关于前面的洞穴…\n"
+"只有一个人守着，对不对？"
 
 #: data/level/crevice-village.cfg:996
 msgid "To my knowledge, yes."
@@ -1487,10 +1506,13 @@ msgid ""
 "\"Chopple's General Store,\n"
 "just ahead."
 msgstr ""
+"上面写着：\n"
+"“巧比的万能商店，\n"
+"就在前方，"
 
 #: data/level/descent-to-town.cfg:1027
 msgid "Honest trade and thrifty prices!\""
-msgstr ""
+msgstr "贸易诚信和价格优惠！“"
 
 #: data/level/downhill.cfg:16
 msgid "Downhill"
@@ -1964,6 +1986,8 @@ msgid ""
 "A special button will appear,\n"
 "whenever this is possible."
 msgstr ""
+"当这可能的时候，\n"
+"一个专门的按钮就会出现。"
 
 #: data/level/grassy-path.cfg:1456
 msgid ""
@@ -2096,6 +2120,8 @@ msgid ""
 "you might be annoyed by\n"
 "having to read it again."
 msgstr ""
+"如果以前看过一段对话，\n"
+"可能再看一遍会烦。"
 
 #: data/level/grassy-path.cfg:1855
 msgid ""
@@ -2103,6 +2129,8 @@ msgid ""
 "including parts of cutscenes,\n"
 "by pressing the \"escape\" key."
 msgstr ""
+"可以按Esc键跳过对话，\n"
+"包括插入情节。"
 
 #: data/level/grassy-path.cfg:1856
 msgid ""
@@ -2110,6 +2138,8 @@ msgid ""
 "this applies to the question marks\n"
 "on this level, too."
 msgstr ""
+"对，本关里的问号也\n"
+"包括在内。"
 
 #: data/level/hanging-platforms.cfg:14
 msgid "Hanging Platforms"
@@ -2156,6 +2186,8 @@ msgid ""
 "It's locked. Of course...\n"
 "It couldn't be easy to get out of here!"
 msgstr ""
+"锁着的。当然…\n"
+"从这里出去不肯能容易！"
 
 #: data/level/liberated-crevice-village-house-1.cfg:1201
 msgid ""
@@ -2468,11 +2500,11 @@ msgstr "一定有个办法进去的。"
 
 #: data/level/rpg-trail2.cfg:5912
 msgid "There's nothing to the west."
-msgstr ""
+msgstr "西面什么也没有。"
 
 #: data/level/rpg-trail2.cfg:5950
 msgid "I hope you enjoy the scenery, because that's it..."
-msgstr ""
+msgstr "希望您欣赏这景色，因为这有这些…"
 
 #: data/level/secluded-hut-interior.cfg:12 data/level/secluded-hut.cfg:16
 #: data/objects/playable/map-selector.cfg:17
@@ -2712,6 +2744,9 @@ msgid ""
 "I'd sure like to help, but ...\n"
 "I just don't see what I could do."
 msgstr ""
+"哇，嗯...\n"
+"我确实想帮助，但是...\n"
+"我不明白自己能做什么。"
 
 #: data/level/secluded-hut.cfg:1259
 msgid ""
@@ -3193,19 +3228,19 @@ msgstr "助理关卡设计师"
 
 #: data/level/tea-with-milgram.cfg:353
 msgid "Achievement Programming"
-msgstr ""
+msgstr "成就编程"
 
 #: data/level/tea-with-milgram.cfg:354
 msgid "Physics, Geometry Scripting"
-msgstr ""
+msgstr "物理，几何脚本"
 
 #: data/level/tea-with-milgram.cfg:355
 msgid "Minor Programmer"
-msgstr ""
+msgstr "小程序员"
 
 #: data/level/tea-with-milgram.cfg:359
 msgid "The End"
-msgstr ""
+msgstr "终"
 
 #: data/level/tea-with-milgram.cfg:362
 msgid "Creative Director - created characters/setting/story"
@@ -3245,23 +3280,23 @@ msgstr "魔鬼代言人"
 
 #: data/level/tea-with-milgram.cfg:386
 msgid "Translation Coordinator"
-msgstr ""
+msgstr "翻译协调员"
 
 #: data/level/tea-with-milgram.cfg:388
 msgid "Minor Bug Fixer"
-msgstr ""
+msgstr "小错误调试员"
 
 #: data/level/tea-with-milgram.cfg:393
 msgid "Translation Code and Coordination"
-msgstr ""
+msgstr "翻译支持程序和协调"
 
 #: data/level/tea-with-milgram.cfg:394
 msgid "Key Remapping Code/Interface"
-msgstr ""
+msgstr "键盘重映代码/界面"
 
 #: data/level/tea-with-milgram.cfg:395
 msgid "OpenPandora Port"
-msgstr ""
+msgstr "OpenPandora移植"
 
 #: data/level/tea-with-milgram.cfg:400
 msgid "Lead Content Wrangler and Object Scripter, Programmer"
@@ -3300,162 +3335,195 @@ msgid ""
 "Hey, I'm sorry to barge in and all,\n"
 "but what happened to that bridge?"
 msgstr ""
+"你好，我很抱歉打搅，\n"
+"但那座桥是怎么回事？"
 
 #: data/level/tempo-outskirts-inside.cfg:105
 msgid ""
 "Yes, I've had a few people come in \n"
 "to ask about that."
-msgstr ""
+msgstr "嗯，已经有几个人来问了。"
 
 #: data/level/tempo-outskirts-inside.cfg:106
 msgid ""
 "There was a storm a few weeks ago, \n"
 "and a big swell of water washed it out."
-msgstr ""
+msgstr "几星期前发大水把桥冲散了。"
 
 #: data/level/tempo-outskirts-inside.cfg:107
 msgid ""
 "You've probably seen this yourself, but\n"
 "just to be sure... don't go into the water."
 msgstr ""
+"你自己大概也看见了，但我还是\n"
+"警告一句，不要下水。"
 
 #: data/level/tempo-outskirts-inside.cfg:108
 msgid ""
 "Current that hard will just smash you\n"
 "against the rocks."
 msgstr ""
+"那么急的水流，\n"
+"会把你冲到岩石上撞得粉碎。"
 
 #: data/level/tempo-outskirts-inside.cfg:109
 msgid ""
 "Yeah... crap.  I'm actually a bit confused\n"
 " about how to get where I'm going."
 msgstr ""
+"是啊…糟糕。\n"
+"这样我不知道怎么去我的目的地。"
 
 #: data/level/tempo-outskirts-inside.cfg:110
 msgid ""
 "See, I'm trying to make it to\n"
 "Milgram's castle."
 msgstr ""
+"你看，我正打算去\n"
+"米格拉姆的城堡。"
 
 #: data/level/tempo-outskirts-inside.cfg:111
 msgid ""
 "Yes, he's quite the businessman.\n"
 "It'd be nice if he could help us, here."
 msgstr ""
+"哦，他是个大商人。\n"
+"如果他能帮我们的忙就好了。"
 
 #: data/level/tempo-outskirts-inside.cfg:112
 msgid "Hmm?"
-msgstr ""
+msgstr "嗯？"
 
 #: data/level/tempo-outskirts-inside.cfg:113
 msgid ""
 "Well, for one thing, it'd be nice if\n"
 "anyone could help get this bridge fixed."
 msgstr ""
+"嗯，首先，不管是谁\n"
+"能帮忙把这做桥修好就太好了。"
 
 #: data/level/tempo-outskirts-inside.cfg:114
 msgid ""
 "I sent in a request shortly after it fell,\n"
 "and they've been too busy to do anything."
 msgstr ""
+"桥坏了不久我就发了维修请求，\n"
+"但是负责的人一直太忙，\n"
+"什么忙也帮不成。"
 
 #: data/level/tempo-outskirts-inside.cfg:115
 msgid ""
 "Anyways, the best way for you to go\n"
 "would be to head to Tempo Village."
-msgstr ""
+msgstr "总之，你最好的方法是去节奏村。"
 
 #: data/level/tempo-outskirts-inside.cfg:116
 msgid ""
 "There's a way from there to get to\n"
 "Milgram's Castle."
-msgstr ""
+msgstr "从那里可以到达米格拉姆的城堡。"
 
 #: data/level/tempo-outskirts-inside.cfg:117
 msgid "Now, unfortunately, the easiest way..."
-msgstr ""
+msgstr "不幸的是，最简单的方法…"
 
 #: data/level/tempo-outskirts-inside.cfg:118
 msgid ""
 "...would have been to cross the\n"
 " bridge next to this house."
-msgstr ""
+msgstr "…是过这座屋子旁边的桥。"
 
 #: data/level/tempo-outskirts-inside.cfg:119
 msgid "Figures."
-msgstr ""
+msgstr "我猜也是。"
 
 #: data/level/tempo-outskirts-inside.cfg:120
 msgid ""
 "Fortunately, you're not completely\n"
 "out of luck."
-msgstr ""
+msgstr "幸运的是，你还不是完全没辙。"
 
 #: data/level/tempo-outskirts-inside.cfg:121
 msgid ""
 "If you hike back a ways, you should\n"
 "see a shortcut through the trees."
 msgstr ""
+"如果你往回走一点，应该\n"
+"可以看到树丛里的一条小路。"
 
 #: data/level/tempo-outskirts-inside.cfg:122
 msgid ""
 "Taking that will get you to an\n"
 "odd contraption called \"the conveyance\"."
 msgstr ""
+"沿着那条路走，你会见到一个\n"
+"叫“运输器”的玩艺。"
 
 #: data/level/tempo-outskirts-inside.cfg:123
 msgid ""
 "It's a ... little odd, but it is\n"
 "a way across the river."
 msgstr ""
+"这个东西有点…奇怪，\n"
+"但是总算是过河的方法。"
 
 #: data/level/tempo-outskirts-inside.cfg:124
 msgid ""
 "Yeah - sure beats \"nothing\", though.\n"
 "Thanks a lot!"
-msgstr ""
+msgstr "是，比“没法”好多了。多谢！"
 
 #: data/level/tempo-outskirts-inside.cfg:125
 msgid "No problem.  Best of luck."
-msgstr ""
+msgstr "没问题。一路顺风！"
 
 #: data/level/tempo-outskirts.cfg:12
 msgid "Tempo Outskirts"
-msgstr "节奏之郊"
+msgstr "节奏村外郊"
 
 #: data/level/tempo-outskirts.cfg:1860
 msgid ""
 "It says, Beaver Bridge.\n"
 "Tempo Village is just down the road."
 msgstr ""
+"上面说，海狸桥。\n"
+"节奏村就在路前面。"
 
 #: data/level/tempo-outskirts.cfg:2236
 msgid ""
 "It says,\n"
 "\"Storage.  Keep out!\""
 msgstr ""
+"上面写着：\n"
+"“仓库 闲人免进！”"
 
 #: data/level/tempo-outskirts.cfg:2238
 msgid "Must refer to this tree-house ... thing."
-msgstr ""
+msgstr "肯定是指这个树房…东西。"
 
 #: data/level/tempo-outskirts.cfg:2240
 msgid ""
 "I don't see a way in, so I guess\n"
 "that won't be hard to abide by."
 msgstr ""
+"我也看不出来怎么进去，\n"
+"所以那个规定倒不难遵守。"
 
 #: data/level/tempo-outskirts.cfg:2273
 msgid ""
 "Whoa..\n"
 "That river is out of control."
 msgstr ""
+"哇…\n"
+"这条河真是失控。"
 
 #: data/level/tempo-outskirts.cfg:2275
 msgid ""
 "If I dive in there,\n"
 "I'll get smashed to bits!"
 msgstr ""
+"如果我跳进去，\n"
+"会冲成碎片的！"
 
 #: data/level/test3.cfg:14 data/level/test4.cfg:12 data/level/test5.cfg:12
 #: data/level/test7-surf.cfg:12
@@ -3472,7 +3540,7 @@ msgstr "每台机器中都有一个不同的街机风格的挑战关卡。"
 
 #: data/level/titlescreen-arcade.cfg:182
 msgid "Show us what you can do!"
-msgstr ""
+msgstr "展示你的技巧吧！"
 
 #: data/level/titlescreen-arcade.cfg:220
 msgid "EXIT"
@@ -3490,7 +3558,7 @@ msgstr "（取消）"
 
 #: data/level/titlescreen-arcade.cfg:277
 msgid "Block Run"
-msgstr ""
+msgstr "方块跑"
 
 #: data/level/titlescreen-arcade.cfg:306
 msgid "CLIMB"
@@ -3768,8 +3836,8 @@ msgstr "你达到了硬币采集赛到第 {level.player.difficulty} 关。"
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level "
-"{registry.arcade_coin_race_high_score}."
+"The furthest that has been reached is level {registry."
+"arcade_coin_race_high_score}."
 msgstr "最高纪录是第 {registry.arcade_coin_race_high_score} 关。 "
 
 #: data/objects/items/max_heart_object.cfg:18
@@ -3998,7 +4066,7 @@ msgstr "攻击"
 msgid "Back"
 msgstr "返回"
 
-#: src/draw_scene.cpp:362
+#: src/draw_scene.cpp:367
 msgid "Achievement Unlocked!"
 msgstr "成就达成！"
 
