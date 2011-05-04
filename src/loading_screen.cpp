@@ -33,7 +33,7 @@ void loading_screen::load (wml::const_node_ptr node)
 
 void loading_screen::draw (const std::string& message)
 {
-	std::cerr << "*** Drawing loading screen with message: " << message << "\n";
+	//std::cerr << "*** Drawing loading screen with message: " << message << "\n";
 	const int bar_width = 100;
 	const int bar_height = 10;
 	int screen_w = graphics::screen_width();
