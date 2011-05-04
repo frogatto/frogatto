@@ -7,8 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-05-03 11:44-0400\\nPO-Revision-Date: YEAR-MO-DA HO:MI"
-"+ZONE\n"
+"POT-Creation-Date: 2011-05-03 23:26-0300\n"
 "PO-Revision-Date: 2011-05-03 08:02+0000\n"
 "Last-Translator: hagabaka <yaohan.chen@gmail.com>\n"
 "Language-Team: Chinese (China) <>\n"
@@ -1919,7 +1918,7 @@ msgstr ""
 "按下下方向键，那么你\n"
 "只会用很少的力气吐出敌人。"
 
-#: data/level/grassy-path.cfg:1363
+#: data/level/grassy-path.cfg:1364
 msgid ""
 "Also beware that not all enemies\n"
 "can be grabbed with the tongue,\n"
@@ -1929,7 +1928,7 @@ msgstr ""
 "都可以被舌头卷进去，\n"
 "很多敌人也不能被舌头所伤。"
 
-#: data/level/grassy-path.cfg:1364
+#: data/level/grassy-path.cfg:1365
 msgid ""
 "You'll need to get creative\n"
 "to deal with those enemies."
@@ -1937,7 +1936,7 @@ msgstr ""
 "对付这些敌人的时候，\n"
 "你得有点创造力。"
 
-#: data/level/grassy-path.cfg:1365
+#: data/level/grassy-path.cfg:1366
 msgid ""
 "Last but not least,\n"
 "the tongue can grab useful items too."
@@ -1945,7 +1944,7 @@ msgstr ""
 "最后但并非最不重要的一点是，\n"
 "舌头也可以卷起有用的物品。"
 
-#: data/level/grassy-path.cfg:1366
+#: data/level/grassy-path.cfg:1367
 msgid ""
 "It's what you use to carry something\n"
 "from one place to another."
@@ -1953,13 +1952,13 @@ msgstr ""
 "这就是你把物品从某地带到别处的\n"
 "方法。"
 
-#: data/level/grassy-path.cfg:1418
+#: data/level/grassy-path.cfg:1419
 msgid ""
 "Fountains, and other water dispensers,\n"
 "are very helpful."
 msgstr "喷泉和其他吐水的地方是很有用的。"
 
-#: data/level/grassy-path.cfg:1419
+#: data/level/grassy-path.cfg:1420
 msgid ""
 "If you drink from them,\n"
 "you will restore all of your health!"
@@ -1967,7 +1966,7 @@ msgstr ""
 "如果在那里饮水的话，\n"
 "你的生命值便会完全回复！"
 
-#: data/level/grassy-path.cfg:1453
+#: data/level/grassy-path.cfg:1454
 msgid ""
 "Certain wooden bridges and stairways,\n"
 "like the one just up ahead,\n"
@@ -1977,11 +1976,11 @@ msgstr ""
 "某些木桥和木楼梯在你往上跳的时候\n"
 "可以被穿过，比如你眼前的这一座。"
 
-#: data/level/grassy-path.cfg:1454
+#: data/level/grassy-path.cfg:1455
 msgid "You can also jump down through them."
 msgstr "你也同样可以向下跳穿过它们。"
 
-#: data/level/grassy-path.cfg:1455
+#: data/level/grassy-path.cfg:1456
 msgid ""
 "A special button will appear,\n"
 "whenever this is possible."
@@ -1989,7 +1988,7 @@ msgstr ""
 "当这可能的时候，\n"
 "一个专门的按钮就会出现。"
 
-#: data/level/grassy-path.cfg:1456
+#: data/level/grassy-path.cfg:1457
 msgid ""
 "To do so, hold down the down key,\n"
 "and then press jump."
@@ -1997,7 +1996,7 @@ msgstr ""
 "要向下跳，只需按住下方向键，\n"
 "而后按跳跃键。"
 
-#: data/level/grassy-path.cfg:1535
+#: data/level/grassy-path.cfg:1536
 msgid ""
 "As you've played through this level,\n"
 "you've probably noticed the gold coins."
@@ -2005,7 +2004,7 @@ msgstr ""
 "通过本场景的时候，\n"
 "你也许已经注意到了那些金币。"
 
-#: data/level/grassy-path.cfg:1536
+#: data/level/grassy-path.cfg:1537
 msgid ""
 "You can collect these\n"
 "and any other golden objects,\n"
@@ -2015,13 +2014,13 @@ msgstr ""
 "以及其他金质物品，\n"
 "而后用来购买装备！"
 
-#: data/level/grassy-path.cfg:1537
+#: data/level/grassy-path.cfg:1538
 msgid ""
 "There is a store conveniently located\n"
 "outside of the town."
 msgstr "在小镇外面有个商店，很方便的。"
 
-#: data/level/grassy-path.cfg:1571
+#: data/level/grassy-path.cfg:1572
 msgid ""
 "Sometimes, you'll run into rather\n"
 "dangerous-looking terrain,\n"
@@ -2030,7 +2029,7 @@ msgstr ""
 "有时候你会遇到看上去很危险的\n"
 "地形，例如这些荆棘。"
 
-#: data/level/grassy-path.cfg:1572
+#: data/level/grassy-path.cfg:1573
 msgid ""
 "As you would expect, stepping on these\n"
 "will hurt a bit."
@@ -2038,11 +2037,11 @@ msgstr ""
 "正如你所想的，踩到它们的话\n"
 "会有点痛的哦。"
 
-#: data/level/grassy-path.cfg:1573
+#: data/level/grassy-path.cfg:1574
 msgid "However, this also hurts the bugs!"
 msgstr "但是，它们同样也会伤害到虫子！"
 
-#: data/level/grassy-path.cfg:1574
+#: data/level/grassy-path.cfg:1575
 msgid ""
 "Leading or spitting them onto it\n"
 "is an excellent way to dispatch them."
@@ -2050,7 +2049,7 @@ msgstr ""
 "把虫子引到或者吐到荆棘上\n"
 "是消灭它们的好方法。"
 
-#: data/level/grassy-path.cfg:1575
+#: data/level/grassy-path.cfg:1576
 msgid ""
 "Beware also,\n"
 "any bottomless pits you encounter."
@@ -2058,11 +2057,11 @@ msgstr ""
 "还要注意的是，\n"
 "你遇到的任何无底洞，"
 
-#: data/level/grassy-path.cfg:1576
+#: data/level/grassy-path.cfg:1577
 msgid "These are immediately fatal."
 msgstr "都会秒杀你。"
 
-#: data/level/grassy-path.cfg:1751
+#: data/level/grassy-path.cfg:1752
 msgid ""
 "Up ahead, you'll notice an anthill,\n"
 "which ants constantly come out of."
@@ -2070,7 +2069,7 @@ msgstr ""
 "在前方你会看到一座蚁丘，\n"
 "那里会源源不断地跑出蚂蚁。"
 
-#: data/level/grassy-path.cfg:1752
+#: data/level/grassy-path.cfg:1753
 msgid ""
 "There is no way to stop this;\n"
 "you can't destroy the anthill."
@@ -2078,7 +2077,7 @@ msgstr ""
 "这是没办法停止的：\n"
 "你不可能摧毁蚁丘。"
 
-#: data/level/grassy-path.cfg:1753
+#: data/level/grassy-path.cfg:1754
 msgid ""
 "Some hazards are like this.\n"
 "You simply have to work around them."
@@ -2086,11 +2085,11 @@ msgstr ""
 "有些危险就是如此。\n"
 "你只能绕过它们。"
 
-#: data/level/grassy-path.cfg:1787
+#: data/level/grassy-path.cfg:1788
 msgid "That's it for this tutorial."
 msgstr "教程到此结束。"
 
-#: data/level/grassy-path.cfg:1788
+#: data/level/grassy-path.cfg:1789
 msgid ""
 "Although there's a bit more\n"
 "to playing the game,\n"
@@ -2102,7 +2101,7 @@ msgstr ""
 "但我们已经可以放心地\n"
 "让你去自学了。"
 
-#: data/level/grassy-path.cfg:1789
+#: data/level/grassy-path.cfg:1790
 msgid ""
 "Feel free to come back here,\n"
 "if you want to read a hint again."
@@ -2110,11 +2109,11 @@ msgstr ""
 "如果你想要重读任何一条提示的话，\n"
 "随时都可以回到这里。"
 
-#: data/level/grassy-path.cfg:1790
+#: data/level/grassy-path.cfg:1791
 msgid "Have fun!"
 msgstr "祝你玩得开心！"
 
-#: data/level/grassy-path.cfg:1854
+#: data/level/grassy-path.cfg:1855
 msgid ""
 "If you've seen a conversation before\n"
 "you might be annoyed by\n"
@@ -2123,7 +2122,7 @@ msgstr ""
 "如果以前看过一段对话，\n"
 "可能再看一遍会烦。"
 
-#: data/level/grassy-path.cfg:1855
+#: data/level/grassy-path.cfg:1856
 msgid ""
 "You can skip a conversation,\n"
 "including parts of cutscenes,\n"
@@ -2132,7 +2131,7 @@ msgstr ""
 "可以按Esc键跳过对话，\n"
 "包括插入情节。"
 
-#: data/level/grassy-path.cfg:1856
+#: data/level/grassy-path.cfg:1857
 msgid ""
 "And yes,\n"
 "this applies to the question marks\n"

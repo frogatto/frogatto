@@ -7,8 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-05-03 11:44-0400\\nPO-Revision-Date: YEAR-MO-DA HO:MI"
-"+ZONE\n"
+"POT-Creation-Date: 2011-05-03 23:26-0300\n"
 "PO-Revision-Date: 2011-04-29 04:09+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Japanese <>\n"
@@ -1870,7 +1869,7 @@ msgstr ""
 "下キーを押しながら攻撃ボタンを押せば、\n"
 "すぐ近くに吐き出す"
 
-#: data/level/grassy-path.cfg:1363
+#: data/level/grassy-path.cfg:1364
 msgid ""
 "Also beware that not all enemies\n"
 "can be grabbed with the tongue,\n"
@@ -1881,13 +1880,13 @@ msgstr ""
 "つまり、殆どダメージも与えられないという\n"
 "ことだ"
 
-#: data/level/grassy-path.cfg:1364
+#: data/level/grassy-path.cfg:1365
 msgid ""
 "You'll need to get creative\n"
 "to deal with those enemies."
 msgstr "キミには色んな敵の詳細を知る必要がある"
 
-#: data/level/grassy-path.cfg:1365
+#: data/level/grassy-path.cfg:1366
 msgid ""
 "Last but not least,\n"
 "the tongue can grab useful items too."
@@ -1895,7 +1894,7 @@ msgstr ""
 "最後に重要なことを。その舌は役立つ\n"
 "アイテムを捕らえることもできるぞ"
 
-#: data/level/grassy-path.cfg:1366
+#: data/level/grassy-path.cfg:1367
 msgid ""
 "It's what you use to carry something\n"
 "from one place to another."
@@ -1903,7 +1902,7 @@ msgstr ""
 "アイテムを他の場所に移動させるときに\n"
 "使える手段だ"
 
-#: data/level/grassy-path.cfg:1418
+#: data/level/grassy-path.cfg:1419
 msgid ""
 "Fountains, and other water dispensers,\n"
 "are very helpful."
@@ -1911,13 +1910,13 @@ msgstr ""
 "噴水や、その他給水ができる場所はとても\n"
 "有難いものだ"
 
-#: data/level/grassy-path.cfg:1419
+#: data/level/grassy-path.cfg:1420
 msgid ""
 "If you drink from them,\n"
 "you will restore all of your health!"
 msgstr "これを飲めば、キミの体調は全回復するぞ！"
 
-#: data/level/grassy-path.cfg:1453
+#: data/level/grassy-path.cfg:1454
 msgid ""
 "Certain wooden bridges and stairways,\n"
 "like the one just up ahead,\n"
@@ -1928,19 +1927,19 @@ msgstr ""
 "橋や階段は、ジャンプですり抜けることが\n"
 "できるぞ"
 
-#: data/level/grassy-path.cfg:1454
+#: data/level/grassy-path.cfg:1455
 msgid "You can also jump down through them."
 msgstr ""
 "また、橋の上から下方向へ\n"
 "すり抜けることも可能だ"
 
-#: data/level/grassy-path.cfg:1455
+#: data/level/grassy-path.cfg:1456
 msgid ""
 "A special button will appear,\n"
 "whenever this is possible."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1456
+#: data/level/grassy-path.cfg:1457
 msgid ""
 "To do so, hold down the down key,\n"
 "and then press jump."
@@ -1948,7 +1947,7 @@ msgstr ""
 "下キーを押しながらジャンプボタン、\n"
 "とやればいい"
 
-#: data/level/grassy-path.cfg:1535
+#: data/level/grassy-path.cfg:1536
 msgid ""
 "As you've played through this level,\n"
 "you've probably noticed the gold coins."
@@ -1956,7 +1955,7 @@ msgstr ""
 "ここまできたキミなら、たぶんその金貨に\n"
 "気づいているよね"
 
-#: data/level/grassy-path.cfg:1536
+#: data/level/grassy-path.cfg:1537
 msgid ""
 "You can collect these\n"
 "and any other golden objects,\n"
@@ -1965,7 +1964,7 @@ msgstr ""
 "その金貨や、他にも金で出来たものを\n"
 "集めれば、アイテムを買うことができるぞ"
 
-#: data/level/grassy-path.cfg:1537
+#: data/level/grassy-path.cfg:1538
 msgid ""
 "There is a store conveniently located\n"
 "outside of the town."
@@ -1973,7 +1972,7 @@ msgstr ""
 "好都合なことに、お店は\n"
 "町の端っこに建っている"
 
-#: data/level/grassy-path.cfg:1571
+#: data/level/grassy-path.cfg:1572
 msgid ""
 "Sometimes, you'll run into rather\n"
 "dangerous-looking terrain,\n"
@@ -1982,7 +1981,7 @@ msgstr ""
 "時々、キミはこのイバラのように\n"
 "危険そうな場所に出くわすだろう"
 
-#: data/level/grassy-path.cfg:1572
+#: data/level/grassy-path.cfg:1573
 msgid ""
 "As you would expect, stepping on these\n"
 "will hurt a bit."
@@ -1990,13 +1989,13 @@ msgstr ""
 "触れると少しダメージを受けてしまうので、\n"
 "見つけたら飛び越えてしまおう"
 
-#: data/level/grassy-path.cfg:1573
+#: data/level/grassy-path.cfg:1574
 msgid "However, this also hurts the bugs!"
 msgstr ""
 "しかし、コレはキミだけではなく敵にも\n"
 "ダメージを与えるぞ！"
 
-#: data/level/grassy-path.cfg:1574
+#: data/level/grassy-path.cfg:1575
 msgid ""
 "Leading or spitting them onto it\n"
 "is an excellent way to dispatch them."
@@ -2005,7 +2004,7 @@ msgstr ""
 "吐き出すのは、ザコを片付けるのには最高の\n"
 "方法だ"
 
-#: data/level/grassy-path.cfg:1575
+#: data/level/grassy-path.cfg:1576
 msgid ""
 "Beware also,\n"
 "any bottomless pits you encounter."
@@ -2013,13 +2012,13 @@ msgstr ""
 "また、キミが遭遇するであろう\n"
 "底なしのには要注意だ"
 
-#: data/level/grassy-path.cfg:1576
+#: data/level/grassy-path.cfg:1577
 msgid "These are immediately fatal."
 msgstr ""
 "一度落ちてしまえばそれだけですぐに\n"
 "致命傷となるだろう"
 
-#: data/level/grassy-path.cfg:1751
+#: data/level/grassy-path.cfg:1752
 msgid ""
 "Up ahead, you'll notice an anthill,\n"
 "which ants constantly come out of."
@@ -2028,7 +2027,7 @@ msgstr ""
 "気づいただろう。アリたちはあそこから\n"
 "定期的に這い出てくるぞ"
 
-#: data/level/grassy-path.cfg:1752
+#: data/level/grassy-path.cfg:1753
 msgid ""
 "There is no way to stop this;\n"
 "you can't destroy the anthill."
@@ -2036,7 +2035,7 @@ msgstr ""
 "それを止めることはできないし、\n"
 "アリの巣を破壊することも不可能だ"
 
-#: data/level/grassy-path.cfg:1753
+#: data/level/grassy-path.cfg:1754
 msgid ""
 "Some hazards are like this.\n"
 "You simply have to work around them."
@@ -2045,11 +2044,11 @@ msgstr ""
 "キミはその周辺では冷静に立ち回らなければ\n"
 "ならない"
 
-#: data/level/grassy-path.cfg:1787
+#: data/level/grassy-path.cfg:1788
 msgid "That's it for this tutorial."
 msgstr "これでこのチュートリアルは終わりだ"
 
-#: data/level/grassy-path.cfg:1788
+#: data/level/grassy-path.cfg:1789
 msgid ""
 "Although there's a bit more\n"
 "to playing the game,\n"
@@ -2059,7 +2058,7 @@ msgstr ""
 "まだテクニックは少し残っているが、\n"
 "残りはキミ自身の手で見つけてみてくれ"
 
-#: data/level/grassy-path.cfg:1789
+#: data/level/grassy-path.cfg:1790
 msgid ""
 "Feel free to come back here,\n"
 "if you want to read a hint again."
@@ -2067,25 +2066,25 @@ msgstr ""
 "もう一度ヒントを聞きたければ、\n"
 "一度戻ってみるのもキミの自由だ"
 
-#: data/level/grassy-path.cfg:1790
+#: data/level/grassy-path.cfg:1791
 msgid "Have fun!"
 msgstr "このゲームを楽しんでいってくれ！"
 
-#: data/level/grassy-path.cfg:1854
+#: data/level/grassy-path.cfg:1855
 msgid ""
 "If you've seen a conversation before\n"
 "you might be annoyed by\n"
 "having to read it again."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1855
+#: data/level/grassy-path.cfg:1856
 msgid ""
 "You can skip a conversation,\n"
 "including parts of cutscenes,\n"
 "by pressing the \"escape\" key."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1856
+#: data/level/grassy-path.cfg:1857
 msgid ""
 "And yes,\n"
 "this applies to the question marks\n"

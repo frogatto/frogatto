@@ -7,8 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-05-03 11:44-0400\\nPO-Revision-Date: YEAR-MO-DA HO:MI"
-"+ZONE\n"
+"POT-Creation-Date: 2011-05-03 23:26-0300\n"
 "PO-Revision-Date: 2011-04-29 04:08+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: French <>\n"
@@ -1998,7 +1997,7 @@ msgstr ""
 "et appuyez sur la touche attaque,\n"
 "vous recracherez avec moins de force."
 
-#: data/level/grassy-path.cfg:1363
+#: data/level/grassy-path.cfg:1364
 msgid ""
 "Also beware that not all enemies\n"
 "can be grabbed with the tongue,\n"
@@ -2010,7 +2009,7 @@ msgstr ""
 "de plus, nombreux sont ceux que\n"
 "votre langue ne peut pas blesser."
 
-#: data/level/grassy-path.cfg:1364
+#: data/level/grassy-path.cfg:1365
 msgid ""
 "You'll need to get creative\n"
 "to deal with those enemies."
@@ -2018,7 +2017,7 @@ msgstr ""
 "Vous devrez vous montrer créatif\n"
 "pour vous débarrasser de ces ennemis."
 
-#: data/level/grassy-path.cfg:1365
+#: data/level/grassy-path.cfg:1366
 msgid ""
 "Last but not least,\n"
 "the tongue can grab useful items too."
@@ -2026,7 +2025,7 @@ msgstr ""
 "Et pour finir, vous pouvez également\n"
 "attraper des objet utiles."
 
-#: data/level/grassy-path.cfg:1366
+#: data/level/grassy-path.cfg:1367
 msgid ""
 "It's what you use to carry something\n"
 "from one place to another."
@@ -2035,7 +2034,7 @@ msgstr ""
 "que vous pouvez transporter\n"
 "quelque chose d'un endroit à un autre."
 
-#: data/level/grassy-path.cfg:1418
+#: data/level/grassy-path.cfg:1419
 msgid ""
 "Fountains, and other water dispensers,\n"
 "are very helpful."
@@ -2043,7 +2042,7 @@ msgstr ""
 "Les fontaines, ainsi que les autres\n"
 "distributeurs d'eau, sont très utiles."
 
-#: data/level/grassy-path.cfg:1419
+#: data/level/grassy-path.cfg:1420
 msgid ""
 "If you drink from them,\n"
 "you will restore all of your health!"
@@ -2051,7 +2050,7 @@ msgstr ""
 "Si vous y buvez,\n"
 "vous récupérerez toute votre vie!"
 
-#: data/level/grassy-path.cfg:1453
+#: data/level/grassy-path.cfg:1454
 msgid ""
 "Certain wooden bridges and stairways,\n"
 "like the one just up ahead,\n"
@@ -2063,19 +2062,19 @@ msgstr ""
 "sont construits de telle façon\n"
 "que vous pouvez sauter à travers."
 
-#: data/level/grassy-path.cfg:1454
+#: data/level/grassy-path.cfg:1455
 msgid "You can also jump down through them."
 msgstr ""
 "Vous pouvez également passer\n"
 "à travers en sautant vers le bas."
 
-#: data/level/grassy-path.cfg:1455
+#: data/level/grassy-path.cfg:1456
 msgid ""
 "A special button will appear,\n"
 "whenever this is possible."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1456
+#: data/level/grassy-path.cfg:1457
 msgid ""
 "To do so, hold down the down key,\n"
 "and then press jump."
@@ -2084,7 +2083,7 @@ msgstr ""
 "gardez la touche bas appuyée,\n"
 "et appuyez sur la touche saut."
 
-#: data/level/grassy-path.cfg:1535
+#: data/level/grassy-path.cfg:1536
 msgid ""
 "As you've played through this level,\n"
 "you've probably noticed the gold coins."
@@ -2093,7 +2092,7 @@ msgstr ""
 "vous avez probablement\n"
 "remarqué les pièces d'or."
 
-#: data/level/grassy-path.cfg:1536
+#: data/level/grassy-path.cfg:1537
 msgid ""
 "You can collect these\n"
 "and any other golden objects,\n"
@@ -2103,7 +2102,7 @@ msgstr ""
 "ainsi que tout autre objet doré,\n"
 "et les utiliser pour acheter des trucs!"
 
-#: data/level/grassy-path.cfg:1537
+#: data/level/grassy-path.cfg:1538
 msgid ""
 "There is a store conveniently located\n"
 "outside of the town."
@@ -2111,7 +2110,7 @@ msgstr ""
 "Il y a une boutique\n"
 "juste en dehors de la ville."
 
-#: data/level/grassy-path.cfg:1571
+#: data/level/grassy-path.cfg:1572
 msgid ""
 "Sometimes, you'll run into rather\n"
 "dangerous-looking terrain,\n"
@@ -2121,7 +2120,7 @@ msgstr ""
 "qui sembleront dangereux,\n"
 "comme ces ronces."
 
-#: data/level/grassy-path.cfg:1572
+#: data/level/grassy-path.cfg:1573
 msgid ""
 "As you would expect, stepping on these\n"
 "will hurt a bit."
@@ -2129,11 +2128,11 @@ msgstr ""
 "Comme vous l'aurez deviné\n"
 "marcher dessus fait un peu mal."
 
-#: data/level/grassy-path.cfg:1573
+#: data/level/grassy-path.cfg:1574
 msgid "However, this also hurts the bugs!"
 msgstr "Mais ça fait aussi mal aux insectes!"
 
-#: data/level/grassy-path.cfg:1574
+#: data/level/grassy-path.cfg:1575
 msgid ""
 "Leading or spitting them onto it\n"
 "is an excellent way to dispatch them."
@@ -2142,7 +2141,7 @@ msgstr ""
 "est une très bonne façon\n"
 "de s'en débarrasser."
 
-#: data/level/grassy-path.cfg:1575
+#: data/level/grassy-path.cfg:1576
 msgid ""
 "Beware also,\n"
 "any bottomless pits you encounter."
@@ -2150,11 +2149,11 @@ msgstr ""
 "Faites aussi attention aux puits\n"
 "sans fonds que vous rencontrerez."
 
-#: data/level/grassy-path.cfg:1576
+#: data/level/grassy-path.cfg:1577
 msgid "These are immediately fatal."
 msgstr "Vous y mourriez instantanément."
 
-#: data/level/grassy-path.cfg:1751
+#: data/level/grassy-path.cfg:1752
 msgid ""
 "Up ahead, you'll notice an anthill,\n"
 "which ants constantly come out of."
@@ -2163,7 +2162,7 @@ msgstr ""
 "une fourmilière en hauteur,\n"
 "dont des fourmis sortent en continu."
 
-#: data/level/grassy-path.cfg:1752
+#: data/level/grassy-path.cfg:1753
 msgid ""
 "There is no way to stop this;\n"
 "you can't destroy the anthill."
@@ -2172,7 +2171,7 @@ msgstr ""
 "vous ne pouvez pas détruire\n"
 "la fourmilière."
 
-#: data/level/grassy-path.cfg:1753
+#: data/level/grassy-path.cfg:1754
 msgid ""
 "Some hazards are like this.\n"
 "You simply have to work around them."
@@ -2180,11 +2179,11 @@ msgstr ""
 "Certains obstacles sont ainsi.\n"
 "Vous devez faire avec."
 
-#: data/level/grassy-path.cfg:1787
+#: data/level/grassy-path.cfg:1788
 msgid "That's it for this tutorial."
 msgstr "C'en est fini du tutoriel."
 
-#: data/level/grassy-path.cfg:1788
+#: data/level/grassy-path.cfg:1789
 msgid ""
 "Although there's a bit more\n"
 "to playing the game,\n"
@@ -2196,7 +2195,7 @@ msgstr ""
 "nous pouvons vous laisser\n"
 "découvrir le reste par vous même."
 
-#: data/level/grassy-path.cfg:1789
+#: data/level/grassy-path.cfg:1790
 msgid ""
 "Feel free to come back here,\n"
 "if you want to read a hint again."
@@ -2204,11 +2203,11 @@ msgstr ""
 "N'hésitez pas à revenir ici\n"
 "si vous souhaitez relire une astuce."
 
-#: data/level/grassy-path.cfg:1790
+#: data/level/grassy-path.cfg:1791
 msgid "Have fun!"
 msgstr "Amusez-vous bien!"
 
-#: data/level/grassy-path.cfg:1854
+#: data/level/grassy-path.cfg:1855
 msgid ""
 "If you've seen a conversation before\n"
 "you might be annoyed by\n"
@@ -2218,7 +2217,7 @@ msgstr ""
 "cela pourrait t'ennuyer\n"
 "d'avoir à la relire une fois encore."
 
-#: data/level/grassy-path.cfg:1855
+#: data/level/grassy-path.cfg:1856
 msgid ""
 "You can skip a conversation,\n"
 "including parts of cutscenes,\n"
@@ -2228,7 +2227,7 @@ msgstr ""
 "ainsi qu'une partie des cinématiques,\n"
 "en appuyant su la touche \"échap\"."
 
-#: data/level/grassy-path.cfg:1856
+#: data/level/grassy-path.cfg:1857
 msgid ""
 "And yes,\n"
 "this applies to the question marks\n"
