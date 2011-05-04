@@ -5,7 +5,7 @@
 
 #include "filesystem.hpp"
 
-#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+#ifdef __APPLE__
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
@@ -52,7 +52,7 @@ const std::string& get_locale() {
 
 	void init() {
 		
-#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+#ifdef __APPLE__
 		CFArrayRef localeIDs = CFLocaleCopyPreferredLanguages();
 		if (localeIDs)
 		{
