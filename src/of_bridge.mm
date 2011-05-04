@@ -1,10 +1,12 @@
 #include "of_bridge.h"
+#include "globals.h"
 
 #ifdef ENABLE_OPENFEINT
 
 #include "OpenFeint.h"
 #include "OFAchievementService.h"
 #include "OFAchievement.h"
+#include "OFLeaderboard.h"
 #include "SampleOFDelegate.h"
 #include "Appirater.h"
 
@@ -37,12 +39,23 @@ void of_dashboard ()
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[OpenFeint launchDashboard];
+	while (of_dashboard_visible)
+	{ 
+        CFRunLoopRunInMode(kCFRunLoopDefaultMode, 1, TRUE); 
+    }
 	[pool release];
 }
 
 void of_earn_achievement (int of_id)
 {
 	[[OFAchievement achievement: [NSString stringWithFormat:@"%d", of_id]] updateProgressionComplete: 100.0f andShowNotification: NO];
+}
+
+void of_submit_score (int of_leaderboard_id, long score)
+{
+	OFLeaderboard* leaderboard = [OFLeaderboard leaderboard:[NSString stringWithFormat: @"%d", of_leaderboard_id]];
+	OFHighScore* hs = [[OFHighScore alloc] initForSubmissionWithScore: score];
+	[hs submitTo: leaderboard];
 }
 
 #else
@@ -52,5 +65,6 @@ void of_earn_achievement (int of_id)
 void of_init () {}
 void of_dashboard () {}
 void of_earn_achievement (int of_id) {}
+void of_submit_score (int of_leaderboard_id, long score) {}
 
 #endif
