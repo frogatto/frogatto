@@ -204,7 +204,7 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	if (glBlendEquationOES)
         glBlendEquationOES(GL_FUNC_REVERSE_SUBTRACT_OES);
 	#else
-	if(GLEW_EXT_blend_equation_separate && GLEW_ARB_imaging) {
+	if(GLEW_EXT_blend_equation_separate && (GLEW_ARB_imaging || GLEW_VERSION_1_4)) {
 		glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
 	} else {
 		const int max_color = std::max(water_color[0], std::max(water_color[1], water_color[2]));
@@ -235,7 +235,7 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	if (glBlendEquationOES)
         glBlendEquationOES(GL_FUNC_ADD);
 	#else
-	if (GLEW_EXT_blend_equation_separate && GLEW_ARB_imaging)
+	if (GLEW_EXT_blend_equation_separate && (GLEW_ARB_imaging || GLEW_VERSION_1_4))
 		glBlendEquation(GL_FUNC_ADD);
 	#endif
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
