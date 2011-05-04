@@ -33,6 +33,7 @@
 #include "stats.hpp"
 #include "surface_cache.hpp"
 #include "text_entry_widget.hpp"
+#include "utils.hpp"
 #include "wml_node.hpp"
 #include "wml_writer.hpp"
 #include "wml_utils.hpp"
@@ -543,12 +544,16 @@ bool level_runner::play_cycle()
 				continue;
 			}
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+			// make sure nothing happens while the app is supposed to be "inactive"
 			case SDL_WINDOWEVENT:
 				if (event.window.event == SDL_WINDOWEVENT_MINIMIZED)
 				{
-					paused = true;
-				} else if (event.window.event == SDL_WINDOWEVENT_RESTORED) {
-					paused = false;
+					SDL_Event e;
+					while (SDL_WaitEvent(&e))
+					{
+						if (e.type == SDL_WINDOWEVENT && e.window.event == SDL_WINDOWEVENT_RESTORED)
+							break;
+					}
 				}
 			break;
 #endif
@@ -742,13 +747,8 @@ bool level_runner::play_cycle()
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 	if (quit_)
 	{
-		wml::node_ptr node = lvl_->write();
-		if(sound::current_music().empty() == false) {
-			node->set_attr("music", sound::current_music());
-		}
-		
-		sys::write_file(preferences::auto_save_file_path(), wml::output(node));
-		sys::write_file(std::string(preferences::auto_save_file_path()) + ".stat", "1");
+		write_autosave();
+		preferences::save_preferences();
 	}
 #endif
 	

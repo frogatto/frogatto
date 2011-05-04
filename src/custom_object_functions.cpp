@@ -150,7 +150,7 @@ FUNCTION_DEF(load_game, 0, 0, "load_game(): loads the saved game")
 	return variant(new load_game_command());
 END_FUNCTION_DEF(load_game)
 
-FUNCTION_DEF(can_load_game, 0, 0, "can_load_game(): returns true iff there is a saved game available to load")
+FUNCTION_DEF(can_load_game, 0, 0, "can_load_game(): returns true if there is a saved game available to load")
 	return variant(sys::file_exists(preferences::save_file_path()));
 END_FUNCTION_DEF(can_load_game)
 
@@ -1101,6 +1101,20 @@ private:
 						}
 #endif
 						switch(event.type) {
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+						// make sure nothing happens while the app is supposed to be "inactive"
+						case SDL_WINDOWEVENT:
+						if (event.window.event == SDL_WINDOWEVENT_MINIMIZED)
+						{
+							SDL_Event e;
+							while (SDL_WaitEvent(&e))
+							{
+								if (e.type == SDL_WINDOWEVENT && e.window.event == SDL_WINDOWEVENT_RESTORED)
+									break;
+							}
+						}
+						break;
+#endif
 						case SDL_QUIT:
 							throw interrupt_game_exception();
 						case SDL_USEREVENT:

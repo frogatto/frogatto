@@ -28,6 +28,20 @@ namespace input {
                 claimed = true;
                 SDL_PushEvent(&event);
                 break;
+
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+				case SDL_WINDOWEVENT:
+				if (event.window.event == SDL_WINDOWEVENT_MINIMIZED)
+				{
+					SDL_Event e;
+					while (SDL_WaitEvent(&e))
+					{
+						if (e.type == SDL_WINDOWEVENT && e.window.event == SDL_WINDOWEVENT_RESTORED)
+							break;
+					}
+				}
+				break;
+#endif
             case SDL_USEREVENT:
                 if(event.user.code == ST_EVENT_NESTED_DEATH) {
                     reset();

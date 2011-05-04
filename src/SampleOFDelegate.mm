@@ -8,6 +8,7 @@
 - (void)dashboardWillAppear
 {
 	pause_stack++;
+	of_dashboard_visible = true;
 }
 
 - (void)dashboardDidAppear
@@ -21,6 +22,7 @@
 - (void)dashboardDidDisappear
 {
 	pause_stack--;
+	of_dashboard_visible = false;
 }
 
 - (void)offlineUserLoggedIn:(NSString*)userId
