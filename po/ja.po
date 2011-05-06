@@ -3574,7 +3574,7 @@ msgstr "(テストレベル)"
 #: data/level/titlescreen-arcade.cfg:141
 msgid "Each machine has a different arcade-style challenge."
 msgstr 
-"各マシンには、それぞれのアーケードモードがあります"
+"各ﾏｼﾝには、それぞれのｱｰｹｰﾄﾞﾓｰﾄﾞがあります"
 
 #: data/level/titlescreen-arcade.cfg:182
 msgid "Show us what you can do!"
