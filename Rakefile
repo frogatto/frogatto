@@ -5,7 +5,7 @@ LANGUAGES = {
 }
 
 EXTRA_FML = Hash.new('').merge({
-  'ja' => "kerning=-1",
+#  'ja' => "kerning=-1",
 })
 
 # Command template to generate glyph images for each font style
