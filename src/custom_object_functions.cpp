@@ -463,9 +463,7 @@ FUNCTION_DEF(spawn_player, 4, 5, "spawn_player(string type_id, int midpoint_x, i
 END_FUNCTION_DEF(spawn_player)
 
 FUNCTION_DEF(object, 4, 5, "object(string type_id, int midpoint_x, int midpoint_y, int facing, (optional) map properties) -> object: constructs and returns a new object. Note that the difference between this and spawn is that spawn returns a command to actually place the object in the level. object only creates the object and returns it. It may be stored for later use.")
-	//generate a random number just so we mark this as being a
-	//function which shouldn't have its result cached.
-	rng::generate();
+	formula::fail_if_static_context();
 
 	const std::string type = args()[0]->evaluate(variables).as_string();
 	const int x = args()[1]->evaluate(variables).as_int();

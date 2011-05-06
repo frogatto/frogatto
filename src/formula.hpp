@@ -35,6 +35,10 @@ typedef boost::shared_ptr<formula_expression> expression_ptr;
 
 class formula {
 public:
+	//a function which makes the current executing formula fail if
+	//it's attempting to evaluate in a static context.
+	static void fail_if_static_context();
+
 	static variant evaluate(const const_formula_ptr& f,
 	                    const formula_callable& variables,
 						variant default_res=variant(0)) {

@@ -1127,6 +1127,13 @@ namespace {
 	};
 }
 
+int in_static_context = 0;
+struct static_context {
+	static_context() { ++in_static_context; }
+	~static_context() { --in_static_context; }
+};
+		
+
 expression_ptr optimize_expression(expression_ptr result, function_symbol_table* symbols, const formula_callable_definition* callable_def, bool reduce_to_static)
 {
 	const std::string str = result->str();
@@ -1138,7 +1145,14 @@ expression_ptr optimize_expression(expression_ptr result, function_symbol_table*
 		try {
 			const unsigned int rng_seed = rng::get_seed();
 			formula_callable_ptr static_callable(new static_formula_callable);
-			variant res = result->static_evaluate(*static_callable);
+
+			variant res;
+			
+			{
+				const static_context ctx;
+				res = result->static_evaluate(*static_callable);
+			}
+
 			if(rng_seed == rng::get_seed() && static_callable->refcount() == 1) {
 				//this expression is static. Reduce it to its result.
 				result = expression_ptr(new variant_expression(res));
@@ -1494,7 +1508,13 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 												  op_name, parse_expression(i1,op,symbols, callable_def, can_optimize),
 												  parse_expression(op+1,i2,symbols, callable_def, can_optimize)));
 }
-		
+}
+
+void formula::fail_if_static_context()
+{
+	if(in_static_context) {
+		throw non_static_expression_exception();
+	}
 }
 	
 formula_ptr formula::create_string_formula(const std::string& str)
