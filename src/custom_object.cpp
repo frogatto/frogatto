@@ -1535,16 +1535,13 @@ custom_object::STANDING_STATUS custom_object::is_standing(const level& lvl, coll
 	if(width >= 1) {
 		const int facing = face_right() ? 1 : -1;
 		if(point_standable(lvl, *this, feet_x() + width*facing, feet_y(), info, fall_through_platforms_ ? SOLID_ONLY : SOLID_AND_PLATFORMS)) {
-			//std::cerr << "FRONT\n";
 			return STANDING_FRONT_FOOT;
 		}
 
 		if(point_standable(lvl, *this, feet_x() - width*facing, feet_y(), info, fall_through_platforms_ ? SOLID_ONLY : SOLID_AND_PLATFORMS)) {
-			//std::cerr << "BACK\n";
 			return STANDING_BACK_FOOT;
 		}
 
-			//std::cerr << "NOT\n";
 		return NOT_STANDING;
 	}
 
