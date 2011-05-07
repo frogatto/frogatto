@@ -25,6 +25,21 @@ void write(const wml::const_node_ptr& node, std::string& res)
 	write(node,res,indent);
 }
 
+namespace {
+std::string escape_quotes(const std::string& s) {
+	std::string res;
+	foreach(char c, s) {
+		if(c == '"') {
+			res.push_back('\\');
+		}
+
+		res.push_back(c);
+	}
+
+	return res;
+}
+}
+
 void write(const wml::const_node_ptr& node, std::string& res,
            std::string& indent, wml::const_node_ptr base)
 {
@@ -48,7 +63,7 @@ void write(const wml::const_node_ptr& node, std::string& res,
 		if(comment.empty() == false) {
 			write_comment(comment, indent, res);
 		}
-		res += indent + attr + "=\"" + node->attr(attr).str() + "\"\n";
+		res += indent + attr + "=\"" + escape_quotes(node->attr(attr).str()) + "\"\n";
 	}
 
 	for(wml::node::const_attr_iterator i = node->begin_attr();
