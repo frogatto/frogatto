@@ -295,6 +295,7 @@ private:
 	entity_ptr parent_;
 	std::string parent_pivot_;
 	int parent_prev_x_, parent_prev_y_;
+	bool parent_prev_facing_;
 
 	int min_difficulty_, max_difficulty_;
 

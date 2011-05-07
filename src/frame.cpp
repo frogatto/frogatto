@@ -597,7 +597,7 @@ const std::string* frame::get_event(int time_in_frame) const
 point frame::pivot(const std::string& name, int time_in_frame) const
 {
 	if(time_in_frame < 0) {
-		return point(0,0);
+		return point(feet_x(),feet_y());
 	}
 
 	foreach(const pivot_schedule& s, pivots_) {
@@ -612,5 +612,5 @@ point frame::pivot(const std::string& name, int time_in_frame) const
 		return s.points[time_in_frame];
 	}
 
-	return point(0,0);
+	return point(feet_x(),feet_y()); //default is to pivot around feet.
 }

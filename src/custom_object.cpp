@@ -92,7 +92,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 	always_active_(wml::get_bool(node, "always_active", false)),
 	last_cycle_active_(0),
 	parent_pivot_(node->attr("pivot")),
-	parent_prev_x_(0), parent_prev_y_(0),
+	parent_prev_x_(0), parent_prev_y_(0), parent_prev_facing_(true),
 	min_difficulty_(wml::get_int(node, "min_difficulty", -1)),
 	max_difficulty_(wml::get_int(node, "max_difficulty", -1))
 {
@@ -291,7 +291,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	shader_(0),
 	always_active_(false),
 	last_cycle_active_(0),
-	parent_prev_x_(0), parent_prev_y_(0),
+	parent_prev_x_(0), parent_prev_y_(0), parent_prev_facing_(true),
 	min_difficulty_(-1), max_difficulty_(-1)
 {
 	set_solid_dimensions(type_->solid_dimensions(),
@@ -364,8 +364,9 @@ custom_object::custom_object(const custom_object& o) :
 	last_cycle_active_(0),
 	parent_(o.parent_),
 	parent_pivot_(o.parent_pivot_),
-	parent_prev_x_(parent_prev_x_),
-	parent_prev_y_(parent_prev_y_),
+	parent_prev_x_(o.parent_prev_x_),
+	parent_prev_y_(o.parent_prev_y_),
+	parent_prev_facing_(o.parent_prev_facing_),
 	min_difficulty_(o.min_difficulty_),
 	max_difficulty_(o.max_difficulty_)
 {
@@ -772,10 +773,18 @@ void custom_object::process(level& lvl)
 		const int move_x = pos.x - parent_prev_x_;
 		const int move_y = pos.y - parent_prev_y_;
 
-		move_centipixels(move_x*100, move_y*100);
+
+		const bool parent_facing = parent_->face_right();
+		if(parent_facing != parent_prev_facing_) {
+			const int relative_x = x() + current_frame().width()/2 - parent_position().x;
+			move_centipixels(-relative_x*200, 0);
+		} else {
+			move_centipixels(move_x*100, move_y*100);
+		}
 
 		parent_prev_x_ = pos.x;
 		parent_prev_y_ = pos.y;
+		parent_prev_facing_ = parent_facing;
 	}
 
 	if(last_cycle_active_ < lvl.cycle() - 5) {
@@ -3068,6 +3077,10 @@ void custom_object::set_parent(entity_ptr e, const std::string& pivot_point)
 	const point pos = parent_position();
 	parent_prev_x_ = pos.x;
 	parent_prev_y_ = pos.y;
+
+	if(parent_.get() != NULL) {
+		parent_prev_facing_ = parent_->face_right();
+	}
 }
 
 point custom_object::parent_position() const
