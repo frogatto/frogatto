@@ -170,7 +170,7 @@ msgstr "Descendo a Toca Sem Coelho"
 #: data/level/arcade-down-the-rabbit-hall.cfg:862
 #: data/level/arcade-down-the-rabbit-hall.cfg:865
 msgid "You got {level.player.vars.score} points going down the rabbit hall!"
-msgstr "Você conseguiu {level.player.vars.score} Descendo A Toca Sem Coelho!"
+msgstr "Você conseguiu {level.player.vars.score} pontos Descendo A Toca Sem Coelho!"
 
 #: data/level/arcade-down-the-rabbit-hall.cfg:866
 msgid ""
