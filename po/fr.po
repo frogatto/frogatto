@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2011-05-03 23:26-0300\n"
-"PO-Revision-Date: 2011-04-29 04:08+0000\n"
-"Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
-"Language-Team: French <>\n"
-"Language: fr\n"
+"PO-Revision-Date: 2011-05-07 19:04+0000\n"
+"Last-Translator: arikel <arikel@free.fr>\n"
+"Language-Team: French (http://www.transifex.net/projects/p/Frogatto/team/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
 #: data/achievements.cfg:4
@@ -166,17 +166,20 @@ msgstr "Le meilleur score est de {registry.arcade_blocks_high_score}."
 #: data/level/arcade-down-the-rabbit-hall.cfg:12
 #: data/level/titlescreen-arcade.cfg:276
 msgid "Down the Rabbit Hall"
-msgstr ""
+msgstr "Le Couloir du Lapin"
 
 #: data/level/arcade-down-the-rabbit-hall.cfg:862
 #: data/level/arcade-down-the-rabbit-hall.cfg:865
 msgid "You got {level.player.vars.score} points going down the rabbit hall!"
 msgstr ""
+"Vous obtenez {level.player.vars.score} points dans le couloir du lapin!"
 
 #: data/level/arcade-down-the-rabbit-hall.cfg:866
 msgid ""
 "The high score is {registry.arcade_down_the_rabbit_hall_high_score} points."
 msgstr ""
+"Le meilleur score est de {registry.arcade_down_the_rabbit_hall_high_score} "
+"points."
 
 #: data/level/arcade-maintenance-shaft.cfg:13
 #: data/level/titlescreen-arcade.cfg:253
@@ -240,13 +243,14 @@ msgstr "Nouvelle Merveille Sauvage"
 #: data/level/arcade-wild-new-wonder.cfg:2522
 msgid "You got {level.player.vars.score} points in the Wild New Wonder!"
 msgstr ""
-"Vous avez obtenu {level.player.vars.score} points dans la Nouvelle Merveille "
-"sauvage !"
+"Vous avez obtenu {level.player.vars.score} points dans la Nouvelle Merveille"
+" sauvage !"
 
 #: data/level/arcade-wild-new-wonder.cfg:2523
 msgid "The high score is {registry.arcade_wild_new_wonder_high_score} points."
 msgstr ""
-"Le meilleur score est de {registry.arcade_wild_new_wonder_high_score} points."
+"Le meilleur score est de {registry.arcade_wild_new_wonder_high_score} "
+"points."
 
 #: data/level/autumn-town.cfg:16
 msgid "Autumn Town"
@@ -2072,7 +2076,7 @@ msgstr ""
 msgid ""
 "A special button will appear,\n"
 "whenever this is possible."
-msgstr ""
+msgstr "Un bouton spécial apparaîtra, chaque fois que ce sera possible."
 
 #: data/level/grassy-path.cfg:1457
 msgid ""
@@ -3419,7 +3423,8 @@ msgstr "Artiste - Terrain (maisons, arrière plan du bord de mer)"
 
 #: data/level/tea-with-milgram.cfg:374
 msgid "Level Designer (esp. forest, cave, and dungeon levels)"
-msgstr "Concepteur de niveaux (surtout forêt, grotte et les niveaux du donjon)"
+msgstr ""
+"Concepteur de niveaux (surtout forêt, grotte et les niveaux du donjon)"
 
 #: data/level/tea-with-milgram.cfg:379
 msgid "The IRC Crew"
@@ -3755,7 +3760,7 @@ msgstr "Course aux pièces"
 
 #: data/level/titlescreen-arcade.cfg:449
 msgid "COIN RACE"
-msgstr ""
+msgstr "COURSE AUX PIÈCES"
 
 #: data/level/titlescreen-test.cfg:284 data/level/titlescreen.cfg:284
 msgid "LOAD GAME"
@@ -4032,9 +4037,10 @@ msgstr ""
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level {registry."
-"arcade_coin_race_high_score}."
-msgstr "Le niveau record est le niveau {registry.arcade_coin_race_high_score}."
+"The furthest that has been reached is level "
+"{registry.arcade_coin_race_high_score}."
+msgstr ""
+"Le niveau record est le niveau {registry.arcade_coin_race_high_score}."
 
 #: data/objects/items/max_heart_object.cfg:18
 msgid ""
