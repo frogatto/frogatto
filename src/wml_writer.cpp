@@ -80,7 +80,7 @@ void write(const wml::const_node_ptr& node, std::string& res,
 		if(comment.empty() == false) {
 			write_comment(comment, indent, res);
 		}
-		res += indent + i->first + "=\"" + i->second.str() + "\"\n";
+		res += indent + i->first + "=\"" + escape_quotes(i->second.str()) + "\"\n";
 	}
 	indent.push_back('\t');
 
