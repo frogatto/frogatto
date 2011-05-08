@@ -2,19 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-05-03 23:26-0300\n"
+"POT-Creation-Date: 2011-05-08 01:56-0300\n"
 "PO-Revision-Date: 2011-05-08 04:18+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
-"Language-Team: Portuguese (Brazilian) (http://www.transifex.net/projects/p/Frogatto/team/pt_BR/)\n"
+"Language-Team: Portuguese (Brazilian) (http://www.transifex.net/projects/p/"
+"Frogatto/team/pt_BR/)\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
 #: data/achievements.cfg:4
@@ -152,7 +153,7 @@ msgstr "Você conseguiu {level.player.score} pontos na Corrida dos Blocos!"
 #: data/level/arcade-blocks.cfg:218
 #: data/level/arcade-down-the-rabbit-hall.cfg:863
 #: data/level/arcade-maintenance-shaft.cfg:2580
-#: data/level/arcade-the-long-haul.cfg:646
+#: data/level/arcade-the-long-haul.cfg:703
 #: data/level/arcade-wild-new-wonder.cfg:2520
 #: data/objects/effects/control/level_controller_coin_race.cfg:33
 msgid "This is a new high score!"
@@ -199,12 +200,12 @@ msgstr "O recorde é de {registry.arcade_maintenance_shaft_high_score} pontos."
 msgid "The Long Haul"
 msgstr "O Longo Caminho"
 
-#: data/level/arcade-the-long-haul.cfg:645
-#: data/level/arcade-the-long-haul.cfg:648
+#: data/level/arcade-the-long-haul.cfg:702
+#: data/level/arcade-the-long-haul.cfg:705
 msgid "You got {level.player.vars.score} points in the long haul!"
 msgstr "Você conseguiu {level.player.score} pontos em O Longo Caminho!"
 
-#: data/level/arcade-the-long-haul.cfg:649
+#: data/level/arcade-the-long-haul.cfg:706
 msgid "The high score is {registry.arcade_the_long_haul_high_score} points."
 msgstr "O recorde é de {registry.arcade_the_long_haul_high_score} pontos."
 
@@ -3790,8 +3791,7 @@ msgstr "Aperte {DOWN_KEY} para se abaixar."
 
 #: data/level/titlescreen-test.cfg:394 data/level/titlescreen.cfg:394
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
-msgstr ""
-"Aperte {LEFT_KEY} ou {RIGHT_KEY} duas vezes, rapidamente, para correr."
+msgstr "Aperte {LEFT_KEY} ou {RIGHT_KEY} duas vezes, rapidamente, para correr."
 
 #: data/level/titlescreen-test.cfg:395 data/level/titlescreen.cfg:395
 msgid "Press {JUMP_KEY} to jump."
@@ -4037,18 +4037,16 @@ msgstr "Essa célula é vazia. Ela não faz nada."
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:32
 msgid "You made it to level {level.player.difficulty} of the coin race!"
-msgstr ""
-"Você alcançou a {level.player.difficulty}ª fase da corrida das moedas!"
+msgstr "Você alcançou a {level.player.difficulty}ª fase da corrida das moedas!"
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:34
 msgid "You made it to level {level.player.difficulty} of the coin race."
-msgstr ""
-"Você alcançou a {level.player.difficulty}ª fase da corrida das moedas."
+msgstr "Você alcançou a {level.player.difficulty}ª fase da corrida das moedas."
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level "
-"{registry.arcade_coin_race_high_score}."
+"The furthest that has been reached is level {registry."
+"arcade_coin_race_high_score}."
 msgstr "O recorde atual é a {registry.arcade_coin_race_high_score}ª fase."
 
 #: data/objects/items/max_heart_object.cfg:18

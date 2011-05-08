@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-05-03 23:26-0300\n"
+"POT-Creation-Date: 2011-05-08 01:56-0300\n"
 "PO-Revision-Date: 2011-04-29 04:09+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Italian <>\n"
@@ -152,7 +152,7 @@ msgstr ""
 #: data/level/arcade-blocks.cfg:218
 #: data/level/arcade-down-the-rabbit-hall.cfg:863
 #: data/level/arcade-maintenance-shaft.cfg:2580
-#: data/level/arcade-the-long-haul.cfg:646
+#: data/level/arcade-the-long-haul.cfg:703
 #: data/level/arcade-wild-new-wonder.cfg:2520
 #: data/objects/effects/control/level_controller_coin_race.cfg:33
 msgid "This is a new high score!"
@@ -197,12 +197,12 @@ msgstr ""
 msgid "The Long Haul"
 msgstr "La Lunga Camminata"
 
-#: data/level/arcade-the-long-haul.cfg:645
-#: data/level/arcade-the-long-haul.cfg:648
+#: data/level/arcade-the-long-haul.cfg:702
+#: data/level/arcade-the-long-haul.cfg:705
 msgid "You got {level.player.vars.score} points in the long haul!"
 msgstr ""
 
-#: data/level/arcade-the-long-haul.cfg:649
+#: data/level/arcade-the-long-haul.cfg:706
 msgid "The high score is {registry.arcade_the_long_haul_high_score} points."
 msgstr ""
 
