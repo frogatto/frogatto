@@ -295,12 +295,12 @@ NSString *templateReviewURLIpad = @"itms-apps://ax.itunes.apple.com/WebObjects/M
 	 multitasking devices also get a usage call when they come
 	 into the foreground and we don't want to count app launches
 	 as two uses on multitasking devices. */
-	UIDevice *device = [UIDevice currentDevice];
-	if ([device respondsToSelector:@selector(multitaskingSupported)] &&
-		[device multitaskingSupported])
-	{
-		return;
-	}
+	//UIDevice *device = [UIDevice currentDevice];
+	//if ([device respondsToSelector:@selector(multitaskingSupported)] &&
+	//	[device multitaskingSupported])
+	//{
+	//	return;
+	//}
 	
 	NSNumber *_canPromptForRating = [[NSNumber alloc] initWithBool:canPromptForRating];
 	[NSThread detachNewThreadSelector:@selector(incrementAndRate:)
