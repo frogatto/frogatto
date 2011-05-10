@@ -1,6 +1,11 @@
-Version 1.1 (beta):
+Version 1.1:
  * Added arcade mode.
  * Redid graphics for forest trees.
+ * Redid graphics for forest background
+ * Redid graphics for dungeon wall tiles
+ * Redid graphics for basement wall tiles
+ * Added a bunch of interior props
+ * Reworked "darkness" for improved appearance
  * Added new palettes to forest and seaside areas.
  * Added some unique enemies to the forest.
  * Refactored damage and monster type systems to make behavior more consistent and eliminate some rare buggy behavior.
