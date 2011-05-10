@@ -9,6 +9,7 @@ Version 1.1:
  * Added new palettes to forest and seaside areas.
  * Added some unique enemies to the forest.
  * Refactored damage and monster type systems to make behavior more consistent and eliminate some rare buggy behavior.
+ * Added translation support, with 4 complete translations: French, Brazilian Portuguese, Chinese (Simplified), and Japanese.
 
 Version 1.0.3:
  * Fixed crash when picking up max heart pieces.
