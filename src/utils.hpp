@@ -18,6 +18,7 @@
 
 int truncate_to_char(int value);
 void write_autosave();
+void toggle_fullscreen();
 
 
 #endif

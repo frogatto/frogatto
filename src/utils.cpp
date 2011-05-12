@@ -19,6 +19,7 @@
 #include "wml_writer.hpp"
 #include "filesystem.hpp"
 #include "preferences.hpp"
+#include "raster.hpp"
 #include "sound.hpp"
 
 int truncate_to_char(int value) { return std::min(std::max(value, 0), 255); }
@@ -32,4 +33,10 @@ void write_autosave ()
 	
 	sys::write_file(preferences::auto_save_file_path(), wml::output(node));
 	sys::write_file(std::string(preferences::auto_save_file_path()) + ".stat", "1");
+}
+
+void toggle_fullscreen ()
+{
+	preferences::set_fullscreen(!preferences::fullscreen());
+	graphics::set_video_mode(graphics::screen_width(), graphics::screen_height());
 }
