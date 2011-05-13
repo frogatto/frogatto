@@ -198,11 +198,11 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	unsigned char water_color[] = {a.color_[0], a.color_[1], a.color_[2], a.color_[3]};
 	
 	glBlendFunc(GL_ONE, GL_ONE);
-	#if defined(GL_OES_blend_subtract)
-	glBlendEquationOES(GL_FUNC_REVERSE_SUBTRACT_OES);
-	#elif defined(TARGET_PANDORA)
+	#if defined(TARGET_PANDORA)
 	if (glBlendEquationOES)
-        glBlendEquationOES(GL_FUNC_REVERSE_SUBTRACT_OES);
+		glBlendEquationOES(GL_FUNC_REVERSE_SUBTRACT_OES);
+	#elif defined(GL_OES_blend_subtract)
+	glBlendEquationOES(GL_FUNC_REVERSE_SUBTRACT_OES);
 	#else
 	if(GLEW_EXT_blend_equation_separate && (GLEW_ARB_imaging || GLEW_VERSION_1_4)) {
 		glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
@@ -229,11 +229,11 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	glColor4ub(water_color[0], water_color[1], water_color[2], water_color[3]);
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, sizeof(vertices)/sizeof(GLfloat)/2);
-	#if defined(GL_OES_blend_subtract)
-	glBlendEquationOES(GL_FUNC_ADD_OES);
-    #elif defined(TARGET_PANDORA)
+	#if defined(TARGET_PANDORA)
 	if (glBlendEquationOES)
-        glBlendEquationOES(GL_FUNC_ADD);
+		glBlendEquationOES(GL_FUNC_ADD_OES);
+	#elif defined(GL_OES_blend_subtract)
+	glBlendEquationOES(GL_FUNC_ADD_OES);
 	#else
 	if (GLEW_EXT_blend_equation_separate && (GLEW_ARB_imaging || GLEW_VERSION_1_4))
 		glBlendEquation(GL_FUNC_ADD);
