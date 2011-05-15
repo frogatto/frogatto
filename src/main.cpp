@@ -317,6 +317,7 @@ extern "C" int main(int argc, char** argv)
 		return -1;
 	}
     EGL_Init();
+    preferences::init_oes();
 #else
 	if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) == NULL) {
 		std::cerr << "could not set video mode\n";

@@ -3,6 +3,12 @@
 
 #include <string>
 
+#if defined(TARGET_PANDORA)
+#include <EGL/egl.h>
+#include <GLES/gl.h>
+#include <GLES/glext.h>
+#endif
+
 namespace game_logic {
 class formula_callable;
 }
@@ -66,10 +72,10 @@ namespace preferences {
 	void set_load_compiled(bool value);
 
 #if defined(TARGET_PANDORA)
-    bool use_fbo();
-    bool use_bequ();
-    void set_fbo( bool value );
-    void set_bequ( bool value );
+bool use_fbo();
+bool use_bequ();
+void set_fbo( bool value );
+void set_bequ( bool value );
 #endif
 
 	//this is the mask which we apply to all x,y values before drawing, to
@@ -112,6 +118,15 @@ namespace preferences {
 		editor_screen_size_scope();
 		~editor_screen_size_scope();
 	};
+
+#if defined(TARGET_PANDORA)
+	void init_oes( void );
+	extern PFNGLBLENDEQUATIONOESPROC           glBlendEquationOES;
+	extern PFNGLGENFRAMEBUFFERSOESPROC         glGenFramebuffersOES;
+	extern PFNGLBINDFRAMEBUFFEROESPROC         glBindFramebufferOES;
+	extern PFNGLFRAMEBUFFERTEXTURE2DOESPROC    glFramebufferTexture2DOES;
+	extern PFNGLCHECKFRAMEBUFFERSTATUSOESPROC  glCheckFramebufferStatusOES;
+#endif
 }
 
 #endif

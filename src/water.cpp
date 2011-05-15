@@ -20,6 +20,13 @@
 #include "wml_utils.hpp"
 #include "color_utils.hpp"
 
+#if defined(TARGET_PANDORA)
+#include <EGL/egl.h>
+#include <GLES/gl.h>
+#include <GLES/glext.h>
+#define glBlendEquationOES          preferences::glBlendEquationOES
+#endif
+
 namespace {
 	const int WaterZorder = 15;
 }
@@ -27,9 +34,6 @@ namespace {
 water::water()
   : zorder_(WaterZorder)
 {
-#if defined(TARGET_PANDORA)
-    init_oes();
-#endif
 }
 
 water::water(wml::const_node_ptr water_node) :
@@ -37,10 +41,6 @@ water::water(wml::const_node_ptr water_node) :
   current_x_formula_(game_logic::formula::create_optional_formula(water_node->attr("current_x_formula"))),
   current_y_formula_(game_logic::formula::create_optional_formula(water_node->attr("current_y_formula")))
 {
-#if defined(TARGET_PANDORA)
-    init_oes();
-#endif
-
 	FOREACH_WML_CHILD(area_node, water_node, "area") {
 		const rect r(area_node->attr("rect"));
 		std::vector<std::string> str = util::split(area_node->attr("color"));
@@ -81,33 +81,6 @@ wml::node_ptr water::write() const
 
 	return result;
 }
-
-#if defined(TARGET_PANDORA)
-void water::init_oes( void )
-{
-    const GLubyte* pszGLExtensions;
-
-	if(preferences::use_bequ())
-    {
-        /* Retrieve GL extension string */
-        pszGLExtensions = glGetString(GL_EXTENSIONS);
-
-        /* GL_OES_framebuffer_object */
-        if (strstr((char *)pszGLExtensions, "GL_OES_blend_subtract"))
-        {
-            glBlendEquationOES = (PFNGLBLENDEQUATIONOESPROC)eglGetProcAddress("glBlendEquationOES");
-        }
-        else
-        {
-            glBlendEquationOES = NULL;
-        }
-    }
-    else
-    {
-        glBlendEquationOES = NULL;
-    }
-}
-#endif
 
 void water::add_rect(const rect& r, const unsigned char* color, variant obj)
 {

@@ -12,10 +12,10 @@
 #include <EGL/egl.h>
 #include <GLES/gl.h>
 #include <GLES/glext.h>
-PFNGLGENFRAMEBUFFERSOESPROC         glGenFramebuffersOES;
-PFNGLBINDFRAMEBUFFEROESPROC         glBindFramebufferOES;
-PFNGLFRAMEBUFFERTEXTURE2DOESPROC    glFramebufferTexture2DOES;
-PFNGLCHECKFRAMEBUFFERSTATUSOESPROC  glCheckFramebufferStatusOES;
+#define glGenFramebuffersOES        preferences::glGenFramebuffersOES
+#define glBindFramebufferOES        preferences::glBindFramebufferOES
+#define glFramebufferTexture2DOES   preferences::glFramebufferTexture2DOES
+#define glCheckFramebufferStatusOES preferences::glCheckFramebufferStatusOES
 #endif
 
 //define macros that make it easy to make the OpenGL calls in this file.
@@ -46,43 +46,27 @@ bool unsupported()
 
 void init()
 {
-#if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
-#if !defined(TARGET_PANDORA)
+#if defined(TARGET_PANDORA)
+	if (glGenFramebuffersOES        != NULL &&
+		glBindFramebufferOES        != NULL &&
+		glFramebufferTexture2DOES   != NULL &&
+		glCheckFramebufferStatusOES != NULL)
+	{
+		supported = true;
+	}
+	else
+	{
+		fprintf(stderr, "FRAME BUFFER OBJECT NOT SUPPORTED\n");
+		supported = false;
+		return;
+	}
+#elif !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
 	if(!GLEW_EXT_framebuffer_object)
     {
 		fprintf(stderr, "FRAME BUFFER OBJECT NOT SUPPORTED\n");
 		supported = false;
 		return;
 	}
-#else
-    const GLubyte* pszGLExtensions;
-
-	if(preferences::use_fbo())
-    {
-        /* Retrieve GL extension string */
-        pszGLExtensions = glGetString(GL_EXTENSIONS);
-
-        /* GL_OES_framebuffer_object */
-        if (strstr((char *)pszGLExtensions, "GL_OES_framebuffer_object"))
-        {
-            glGenFramebuffersOES        = (PFNGLGENFRAMEBUFFERSOESPROC)eglGetProcAddress("glGenFramebuffersOES");
-            glBindFramebufferOES        = (PFNGLBINDFRAMEBUFFEROESPROC)eglGetProcAddress("glBindFramebufferOES");
-            glFramebufferTexture2DOES   = (PFNGLFRAMEBUFFERTEXTURE2DOESPROC)eglGetProcAddress("glFramebufferTexture2DOES");
-            glCheckFramebufferStatusOES = (PFNGLCHECKFRAMEBUFFERSTATUSOESPROC)eglGetProcAddress("glCheckFramebufferStatusOES");
-            supported = true;
-        }
-        else
-        {
-            supported = false;
-            return;
-        }
-    }
-    else
-    {
-        supported = false;
-        return;
-    }
-#endif
 #endif
 	fprintf(stderr, "FRAME BUFFER OBJECT IS SUPPORTED\n");
 

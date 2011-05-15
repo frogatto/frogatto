@@ -554,4 +554,127 @@ namespace preferences {
 	void set_relay_through_server(bool value) {
 		relay_through_server_ = value;
 	}
-}
+
+#if defined(TARGET_PANDORA)
+	PFNGLBLENDEQUATIONOESPROC           glBlendEquationOES;
+	PFNGLGENFRAMEBUFFERSOESPROC         glGenFramebuffersOES;
+	PFNGLBINDFRAMEBUFFEROESPROC         glBindFramebufferOES;
+	PFNGLFRAMEBUFFERTEXTURE2DOESPROC    glFramebufferTexture2DOES;
+	PFNGLCHECKFRAMEBUFFERSTATUSOESPROC  glCheckFramebufferStatusOES;
+
+	void init_oes( void )
+	{
+		int retry;
+		const GLubyte* pszGLExtensions = NULL;
+		
+		glBlendEquationOES          = NULL;
+		glGenFramebuffersOES        = NULL;
+		glBindFramebufferOES        = NULL;
+		glFramebufferTexture2DOES   = NULL;
+		glCheckFramebufferStatusOES = NULL;
+		
+		/* Retrieve GL extension string */
+		pszGLExtensions = glGetString(GL_EXTENSIONS);
+		
+		// Blend subtract Functions
+		if(preferences::use_bequ())
+		{
+			/* GL_OES_framebuffer_object */
+			if (strstr((char *)pszGLExtensions, "GL_OES_blend_subtract"))
+			{
+				for (retry=1; retry<4; retry++)
+				{
+					glBlendEquationOES = (PFNGLBLENDEQUATIONOESPROC)eglGetProcAddress("glBlendEquationOES");
+					if (glBlendEquationOES!=NULL) {
+						std::cerr << "glBlendEquationOES was set correctly\n";
+						break;
+					}
+					else
+					{
+						std::cerr << "glBlendEquationOES was set to NULL by eglGetProcAddress retry #" << retry << "\n";
+					}
+				}
+			}
+			else
+			{
+				glBlendEquationOES = NULL;
+			}
+		}
+		else
+		{
+			glBlendEquationOES = NULL;
+		}
+		
+		// FBO Functions
+		if(preferences::use_fbo())
+		{
+			/* GL_OES_framebuffer_object */
+			if (strstr((char *)pszGLExtensions, "GL_OES_framebuffer_object"))
+			{
+				for (retry=1; retry<4; retry++)
+				{
+					glGenFramebuffersOES        = (PFNGLGENFRAMEBUFFERSOESPROC)eglGetProcAddress("glGenFramebuffersOES");
+					if (glGenFramebuffersOES!=NULL) {
+						std::cerr << "glGenFramebuffersOES was set correctly\n";
+						break;
+					}
+					else
+					{
+						std::cerr << "glGenFramebuffersOES was set to NULL by eglGetProcAddress retry #" << retry << "\n";
+					}
+				}
+				for (retry=1; retry<4; retry++)
+				{
+					glBindFramebufferOES        = (PFNGLBINDFRAMEBUFFEROESPROC)eglGetProcAddress("glBindFramebufferOES");
+					if (glBindFramebufferOES!=NULL) {
+						std::cerr << "glBindFramebufferOES was set correctly\n";
+						break;
+					}
+					else
+					{
+						std::cerr << "glBindFramebufferOES was set to NULL by eglGetProcAddress retry #" << retry << "\n";
+					}
+				}
+				for (retry=1; retry<4; retry++)
+				{
+					glFramebufferTexture2DOES   = (PFNGLFRAMEBUFFERTEXTURE2DOESPROC)eglGetProcAddress("glFramebufferTexture2DOES");
+					if (glFramebufferTexture2DOES!=NULL) {
+						std::cerr << "glFramebufferTexture2DOES was set correctly\n";
+						break;
+					}
+					else
+					{
+						std::cerr << "glFramebufferTexture2DOES was set to NULL by eglGetProcAddress retry #" << retry << "\n";
+					}
+				}
+				for (retry=1; retry<4; retry++)
+				{
+					glCheckFramebufferStatusOES = (PFNGLCHECKFRAMEBUFFERSTATUSOESPROC)eglGetProcAddress("glCheckFramebufferStatusOES");
+					if (glCheckFramebufferStatusOES!=NULL) {
+						std::cerr << "glCheckFramebufferStatusOES was set correctly\n";
+						break;
+					}
+					else
+					{
+						std::cerr << "glCheckFramebufferStatusOES was set to NULL by eglGetProcAddress retry #" << retry << "\n";
+					}
+				}
+			}
+			else
+			{
+				glGenFramebuffersOES        = NULL;
+				glBindFramebufferOES        = NULL;
+				glFramebufferTexture2DOES   = NULL;
+				glCheckFramebufferStatusOES = NULL;
+			}
+		}
+		else
+		{
+			glGenFramebuffersOES        = NULL;
+			glBindFramebufferOES        = NULL;
+			glFramebufferTexture2DOES   = NULL;
+			glCheckFramebufferStatusOES = NULL;
+		}
+	}
+#endif
+	}
