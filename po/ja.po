@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-05-08 01:56-0300\n"
+"POT-Creation-Date: 2011-05-16 01:06-0300\n"
 "PO-Revision-Date: 2011-05-08 04:45+0000\n"
 "Last-Translator: hagabaka <yaohan.chen@gmail.com>\n"
 "Language-Team: Japanese (http://www.transifex.net/projects/p/Frogatto/team/"
@@ -4117,23 +4117,23 @@ msgstr "戻る"
 msgid "Achievement Unlocked!"
 msgstr "実績が解除されていない！"
 
-#: src/main.cpp:382
+#: src/main.cpp:383
 msgid "Initializing custom object"
 msgstr "カスタムオブジェクトの初期化"
 
-#: src/main.cpp:384
+#: src/main.cpp:385
 msgid "Initializing custom object functions"
 msgstr "カスタムオブジェクト機能の初期化"
 
-#: src/main.cpp:386
+#: src/main.cpp:387
 msgid "Initializing tiles"
 msgstr "タイトルの初期化"
 
-#: src/main.cpp:389 src/main.cpp:393
+#: src/main.cpp:390 src/main.cpp:394
 msgid "Initializing GUI"
 msgstr "GUIの初期化"
 
-#: src/main.cpp:399
+#: src/main.cpp:400
 msgid "Loading level"
 msgstr "レベル読み込み中"
 

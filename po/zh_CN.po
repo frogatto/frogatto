@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-05-08 01:56-0300\n"
+"POT-Creation-Date: 2011-05-16 01:06-0300\n"
 "PO-Revision-Date: 2011-05-03 08:02+0000\n"
 "Last-Translator: hagabaka <yaohan.chen@gmail.com>\n"
 "Language-Team: Chinese (China) <>\n"
@@ -4073,23 +4073,23 @@ msgstr "返回"
 msgid "Achievement Unlocked!"
 msgstr "成就达成！"
 
-#: src/main.cpp:382
+#: src/main.cpp:383
 msgid "Initializing custom object"
 msgstr "初始化自定义对象"
 
-#: src/main.cpp:384
+#: src/main.cpp:385
 msgid "Initializing custom object functions"
 msgstr "初始化自定义对象函数"
 
-#: src/main.cpp:386
+#: src/main.cpp:387
 msgid "Initializing tiles"
 msgstr "初始化图块"
 
-#: src/main.cpp:389 src/main.cpp:393
+#: src/main.cpp:390 src/main.cpp:394
 msgid "Initializing GUI"
 msgstr "初始化界面"
 
-#: src/main.cpp:399
+#: src/main.cpp:400
 msgid "Loading level"
 msgstr "正在读取关卡"
 

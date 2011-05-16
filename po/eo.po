@@ -8,10 +8,11 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2011-05-16 01:06-0300\n"
-"PO-Revision-Date: 2011-04-29 04:09+0000\n"
-"Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
-"Language-Team: Greek <None>\n"
-"Language: el\n"
+"PO-Revision-Date: 2011-05-15 21:22+0000\n"
+"Last-Translator: Viliam <viliam@bur.sk>\n"
+"Language-Team: Esperanto (http://www.transifex.net/projects/p/Frogatto/team/"
+"eo/)\n"
+"Language: eo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,7 +20,7 @@ msgstr ""
 
 #: data/achievements.cfg:4
 msgid "Pocket Money"
-msgstr "Χαρτζιλίκι"
+msgstr "Poŝ-mono"
 
 #: data/achievements.cfg:5
 msgid "Collect ten coins."
@@ -135,11 +136,11 @@ msgstr ""
 
 #: data/level/airplane-boss.cfg:360
 msgid "Ambush!"
-msgstr "Αιφνιδίασμος!"
+msgstr "Embusko!"
 
 #: data/level/airplane-boss.cfg:369
 msgid "Victory!"
-msgstr "Νίκη!"
+msgstr "Venko!"
 
 #: data/level/arcade-blocks.cfg:11
 msgid "Blocks Run"
@@ -238,7 +239,7 @@ msgstr ""
 
 #: data/level/autumn-town.cfg:16
 msgid "Autumn Town"
-msgstr "Φθινοπωρούπολη"
+msgstr "Aŭtuna urbo"
 
 #: data/level/bombing-fools.cfg:14
 msgid "Bombing Fools"
@@ -257,6 +258,12 @@ msgid ""
 "be an entry way directly into Milgram's\n"
 "compound from the caverns."
 msgstr ""
+"Do, vi sukcesis! Nun tuj antaŭ vi\n"
+"estas la pordego. Se vi trairos,\n"
+"vi aliros al la kavernoj de kalkoŝtono.\n"
+"Onidire ekzistas enirvojo direkte\n"
+"al la fortikaĵo de Milgram ekde\n"
+"la kavernoj."
 
 #: data/level/bon-bosque.cfg:1461
 msgid ""
@@ -297,7 +304,7 @@ msgstr ""
 
 #: data/level/burning-stone.cfg:10
 msgid "Burning Stone"
-msgstr "Φλεγόμενη Πέτρα"
+msgstr "Brulanta ŝtono"
 
 #: data/level/burning-stone.cfg:2156
 msgid ""
@@ -326,11 +333,11 @@ msgstr ""
 
 #: data/level/crevice-village-cave.cfg:811
 msgid "What the..."
-msgstr "Τι στο..."
+msgstr "Kion la..."
 
 #: data/level/crevice-village-cave.cfg:811
 msgid "You!!"
-msgstr "Εσύ!!"
+msgstr "Vi!!"
 
 #: data/level/crevice-village-cave.cfg:812
 #: data/object_prototypes/buyable_item.cfg:24
@@ -338,7 +345,7 @@ msgstr "Εσύ!!"
 #: data/objects/props-interactive/portals/dungeon_save_door.cfg:24
 #: data/objects/props-interactive/portals/world_1_interior_save_door.cfg:24
 msgid "Yes"
-msgstr "Ναι"
+msgstr "Jes"
 
 #: data/level/crevice-village-cave.cfg:812
 msgid "You're an intruder, aren't you?!"
@@ -346,7 +353,7 @@ msgstr ""
 
 #: data/level/crevice-village-cave.cfg:813
 msgid "I thought so!"
-msgstr "Το περίμενα!"
+msgstr ""
 
 #: data/level/crevice-village-cave.cfg:814
 #: data/object_prototypes/buyable_item.cfg:25
@@ -354,17 +361,19 @@ msgstr "Το περίμενα!"
 #: data/objects/props-interactive/portals/dungeon_save_door.cfg:29
 #: data/objects/props-interactive/portals/world_1_interior_save_door.cfg:29
 msgid "No"
-msgstr "Όχι"
+msgstr "Ne"
 
 #: data/level/crevice-village-cave.cfg:815
 msgid "There's no fooling me."
-msgstr "Δεν ξεγελιέμαι εύκολα."
+msgstr "Vi ne trompos min."
 
 #: data/level/crevice-village-cave.cfg:815
 msgid ""
 "You look like a very\n"
 "suspicious character."
 msgstr ""
+"Vi aspektas kiel unu tre\n"
+"suspekta ulo."
 
 #: data/level/crevice-village-cave.cfg:817
 msgid "Could you just step aside?"
@@ -404,7 +413,7 @@ msgstr ""
 
 #: data/level/crevice-village-central-side-cave.cfg:15
 msgid "Hidden Cave"
-msgstr "Κρυφή Σπυλιά"
+msgstr "Kaŝita kaverno"
 
 #: data/level/crevice-village-central.cfg:1365
 msgid ""
@@ -420,7 +429,7 @@ msgstr ""
 
 #: data/level/crevice-village-central.cfg:1369
 msgid "So, now what?"
-msgstr "Και τώρα;"
+msgstr "Do kion nun?"
 
 #: data/level/crevice-village-central.cfg:1370
 msgid ""
@@ -502,7 +511,7 @@ msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1070
 msgid "Huh?"
-msgstr "Ε;"
+msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1073
 msgid ""
@@ -522,7 +531,7 @@ msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1079
 msgid "Okay, that'll help!"
-msgstr ""
+msgstr "Bone, tio helpos!"
 
 #: data/level/crevice-village-heights.cfg:1081
 msgid ""
@@ -556,7 +565,7 @@ msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1093
 msgid "You bet!"
-msgstr "Απολύτως!"
+msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1095
 msgid ""
@@ -566,7 +575,7 @@ msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1097
 msgid "Eh, don't worry about that."
-msgstr "Μην ανησυχείς γι'αυτό."
+msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1099
 msgid ""
@@ -595,19 +604,17 @@ msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2505
 msgid "Who are you?"
-msgstr "Ποιος είσαι;"
+msgstr "Kiu vi estas?"
 
 #: data/level/crevice-village-house-1.cfg:2507
 msgid ""
 "I'm the hero.\n"
 "I'm gonna save this town!"
 msgstr ""
-"Είμαι ο ήρωας.\n"
-"Θα διασώσω αυτήν την πόλη!"
 
 #: data/level/crevice-village-house-1.cfg:2509
 msgid "That's my new job."
-msgstr "Είναι η νέα μου δουλειά."
+msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2510
 #: data/level/crevice-village-house-1.cfg:2515
@@ -621,15 +628,13 @@ msgstr "..."
 
 #: data/level/crevice-village-house-1.cfg:2510
 msgid "That's nutty."
-msgstr "Είσαι τρελός."
+msgstr "Tio estas freneza."
 
 #: data/level/crevice-village-house-1.cfg:2512
 msgid ""
 "Nevertheless, let's pretend that\n"
 "I might actually pull it off."
 msgstr ""
-"Έτσι κι αλλιώς, ας προσποιηθούμε ότι\n"
-"μπορεί και να τα καταφέρω."
 
 #: data/level/crevice-village-house-1.cfg:2514
 msgid "Got any advice?"
@@ -641,7 +646,7 @@ msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2515
 msgid "Maybe."
-msgstr "Πιθανών."
+msgstr "Eble."
 
 #: data/level/crevice-village-house-1.cfg:2515
 msgid ""
@@ -663,7 +668,7 @@ msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2518
 msgid "HEY, WAIT!  What about me?!"
-msgstr "ΠΕΡΙΜΕΝΕ ΚΑΛΕ!  Τι θα γίνει με εμένα;;"
+msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2520
 msgid ""
@@ -676,12 +681,10 @@ msgid ""
 "Ah, I see..\n"
 "carry on then."
 msgstr ""
-"Α, κατάλαβα..\n"
-"Περάστε."
 
 #: data/level/crevice-village-house-1.cfg:2545
 msgid "Thank God it's you!"
-msgstr "Δόξα το Θεό, εσύ είσαι!"
+msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2547
 msgid "Hey, Hedge, you alright?"
@@ -744,7 +747,7 @@ msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2560
 msgid "Good luck!"
-msgstr ""
+msgstr "Feliĉon!"
 
 #: data/level/crevice-village-house-1.cfg:2584
 msgid ""
@@ -774,7 +777,7 @@ msgstr ""
 
 #: data/level/crevice-village-house-2.cfg:3472
 msgid "We're twins."
-msgstr ""
+msgstr "Ni estas ĝemeloj."
 
 #: data/level/crevice-village-house-2.cfg:3473
 msgid ""
@@ -814,13 +817,13 @@ msgstr ""
 
 #: data/level/crevice-village-house-2.cfg:3513 data/level/rock-a-fort.cfg:4375
 msgid "How interesting."
-msgstr "Πολύ ενδιαφέρον."
+msgstr ""
 
 #: data/level/crevice-village-house-3-backroom.cfg:10
 #: data/level/crevice-village-house-3.cfg:10
 #: data/level/liberated-crevice-village-house-3.cfg:10
 msgid "The Danger House"
-msgstr "Το Σπίτι Κινδύνου"
+msgstr "La danĝera domo"
 
 #: data/level/crevice-village-house-4-backroom.cfg:10
 #: data/level/crevice-village-house-4.cfg:10
@@ -833,12 +836,10 @@ msgid ""
 "Argh! Who in the world would\n"
 "design a house like this?"
 msgstr ""
-"Γκρρ... Ποιος στο καλό θα \n"
-"σχεδίαζε σπίτι σαν κι αυτό;"
 
 #: data/level/crevice-village-house-4.cfg:3007
 msgid "Hmmm..."
-msgstr "Χμμμ..."
+msgstr ""
 
 #: data/level/crevice-village-house-4.cfg:3008
 msgid ""
@@ -859,7 +860,7 @@ msgstr ""
 #: data/level/crevice-village-house-4.cfg:3313
 #: data/level/crevice-village-house-4.cfg:3323
 msgid "You don't say."
-msgstr "Α μπα;"
+msgstr ""
 
 #: data/level/crevice-village-house-4.cfg:3315
 msgid ""
@@ -901,7 +902,7 @@ msgstr ""
 
 #: data/level/crevice-village-house-4.cfg:3326
 msgid "Good luck."
-msgstr ""
+msgstr "Feliĉon."
 
 #: data/level/crevice-village-house-elder.cfg:10
 msgid "The Elder's House"
@@ -966,7 +967,7 @@ msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1486
 msgid "Who the hell are you?"
-msgstr "Ποιος στο καλό είσαι εσύ;"
+msgstr "Kiu je diablo estas vi?"
 
 #: data/level/crevice-village-house-elder.cfg:1489
 msgid "Frogatto, at your service."
@@ -982,7 +983,7 @@ msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1531
 msgid "-ouch-"
-msgstr "-άουτς-"
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1532
 msgid "Okay, I've had enough!  I'm going home."
@@ -1016,7 +1017,7 @@ msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1614
 msgid "Wow."
-msgstr "Γουάου."
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1616
 msgid "Built it for exactly this sort of crisis."
@@ -1198,7 +1199,7 @@ msgstr ""
 
 #: data/level/crevice-village.cfg:973
 msgid "Against Milgram? Really?"
-msgstr ""
+msgstr "Kontraŭ Milgram? Ĉu vere?"
 
 #: data/level/crevice-village.cfg:975
 msgid ""
@@ -1273,7 +1274,7 @@ msgstr ""
 
 #: data/level/crevice-village.cfg:996
 msgid "To my knowledge, yes."
-msgstr ""
+msgstr "Laŭ mia scio, jes."
 
 #: data/level/crevice-village.cfg:998
 msgid "Maybe I can talk my way around him?"
@@ -1297,7 +1298,7 @@ msgstr ""
 
 #: data/level/dark-corridor.cfg:1356
 msgid "Now what?"
-msgstr ""
+msgstr "Kion nun?"
 
 #: data/level/darkness-central.cfg:14
 msgid "Darkness Central"
@@ -1353,7 +1354,7 @@ msgstr ""
 
 #: data/level/frogatto-grotto-frogattos-room.cfg:10
 msgid "Frogatto's Room"
-msgstr ""
+msgstr "Ĉambro de Frogatto"
 
 #: data/level/frogatto-grotto-frogattos-room.cfg:952
 msgid ""
@@ -1367,23 +1368,23 @@ msgstr ""
 
 #: data/level/frogatto-grotto-inside.cfg:10
 msgid "Frogatto's House"
-msgstr ""
+msgstr "Domo de Frogatto"
 
 #: data/level/frogatto-grotto-inside.cfg:1134
 msgid "Hey, how's breakfast coming?"
-msgstr ""
+msgstr "Sal, kiel 'stas la matenmanĝo?"
 
 #: data/level/frogatto-grotto-inside.cfg:1135
 msgid "Breakfast? ..bud, we're on lunch."
-msgstr ""
+msgstr "Matenmanĝo? ...amiko, jen la tagmanĝo."
 
 #: data/level/frogatto-grotto-inside.cfg:1136
 msgid "You need to get up earlier."
-msgstr ""
+msgstr "Vi devas ellitiĝi pli frue."
 
 #: data/level/frogatto-grotto-inside.cfg:1139
 msgid "Okay, then how's lunch coming?"
-msgstr ""
+msgstr "Bone, do kiel 'stas la tagmanĝo?"
 
 #: data/level/frogatto-grotto-inside.cfg:1140
 msgid ""
@@ -1397,7 +1398,7 @@ msgstr ""
 
 #: data/level/frogatto-grotto-inside.cfg:1145
 msgid "So, what happened to lunch?"
-msgstr ""
+msgstr "Do kio okazis kun la tagmanĝo?"
 
 #: data/level/frogatto-grotto-inside.cfg:1146
 msgid ""
@@ -1449,15 +1450,15 @@ msgstr ""
 
 #: data/level/frogatto-grotto-patos-room.cfg:10
 msgid "Pato's Room"
-msgstr ""
+msgstr "Ĉambro de Pato"
 
 #: data/level/frogatto-grotto-patos-room.cfg:877
 msgid "Ahh, what a beautiful .."
-msgstr ""
+msgstr "O, kiel ĉarma..."
 
 #: data/level/frogatto-grotto-patos-room.cfg:878
 msgid "..Afternoon?!"
-msgstr ""
+msgstr "...posttagmezo?!"
 
 #: data/level/frogatto-grotto-patos-room.cfg:879
 msgid "Yowzers, I overslept!"
@@ -1473,7 +1474,7 @@ msgstr ""
 
 #: data/level/frogatto-grotto.cfg:594
 msgid "I know!"
-msgstr ""
+msgstr "Mi scias!"
 
 #: data/level/frogatto-grotto.cfg:595
 msgid ""
