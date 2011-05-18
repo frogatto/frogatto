@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-05-16 01:06-0300\n"
-"PO-Revision-Date: 2011-04-29 04:08+0000\n"
+"POT-Creation-Date: 2011-05-17 22:02-0300\n"
+"PO-Revision-Date: 2011-05-18 02:37+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: data/achievements.cfg:4
@@ -3375,7 +3375,7 @@ msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
 msgstr "Verwende {LEFT_KEY} und {RIGHT_KEY} um zu gehen."
 
 #: data/level/titlescreen-test.cfg:392 data/level/titlescreen-test.cfg:409
-#: data/level/titlescreen.cfg:392 data/level/titlescreen.cfg:409
+#: data/level/titlescreen.cfg:394
 msgid "Press {UP_KEY} to talk, and use things like doors."
 msgstr "Drücke {UP_KEY} um etwas zu benutzen."
 
@@ -3383,7 +3383,8 @@ msgstr "Drücke {UP_KEY} um etwas zu benutzen."
 msgid "Press {DOWN_KEY} to crouch."
 msgstr "Drücke {DOWN_KEY} um dich zu ducken."
 
-#: data/level/titlescreen-test.cfg:394 data/level/titlescreen.cfg:394
+#: data/level/titlescreen-test.cfg:394 data/level/titlescreen.cfg:392
+#: data/level/titlescreen.cfg:409
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
 msgstr "Drücke schnell zweimal {LEFT_KEY} oder {RIGHT_KEY} um zu rennen."
 
@@ -3398,6 +3399,14 @@ msgstr "Drücke {TONGUE_KEY} um anzugreifen."
 #: data/level/titlescreen-test.cfg:447 data/level/titlescreen.cfg:447
 msgid "ARCADE"
 msgstr "SPIELHALLE"
+
+#: data/level/titlescreen.cfg:393
+msgid "Walk in front of a door or person, and press"
+msgstr ""
+
+#: data/level/titlescreen.cfg:394
+msgid "the button that appears to interact with them."
+msgstr ""
 
 #: data/level/to-nenes-house-inside.cfg:10
 msgid "Nene's House"
@@ -3626,8 +3635,8 @@ msgstr ""
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level {registry."
-"arcade_coin_race_high_score}."
+"The furthest that has been reached is level "
+"{registry.arcade_coin_race_high_score}."
 msgstr ""
 
 #: data/objects/items/max_heart_object.cfg:18

@@ -2,20 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-05-16 01:06-0300\n"
-"PO-Revision-Date: 2011-05-15 12:32+0000\n"
-"Last-Translator: nem <simone.m@gmx.com>\n"
-"Language-Team: Italian (http://www.transifex.net/projects/p/Frogatto/team/"
-"it/)\n"
-"Language: it\n"
+"POT-Creation-Date: 2011-05-17 22:02-0300\n"
+"PO-Revision-Date: 2011-05-18 02:37+0000\n"
+"Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
+"Language-Team: Italian (http://www.transifex.net/projects/p/Frogatto/team/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: data/achievements.cfg:4
@@ -193,7 +192,8 @@ msgstr ""
 msgid ""
 "The high score is {registry.arcade_maintenance_shaft_high_score} points."
 msgstr ""
-"Il punteggio migliore è {registry.arcade_maintenance_shaft_high_score} punti."
+"Il punteggio migliore è {registry.arcade_maintenance_shaft_high_score} "
+"punti."
 
 #: data/level/arcade-the-long-haul.cfg:10
 #: data/level/titlescreen-arcade.cfg:275
@@ -224,7 +224,8 @@ msgstr "Questo è un nuovo record!"
 
 #: data/level/arcade-upper-deck.cfg:2953
 msgid "The high score is {registry.arcade_upper_deck_high_score} points."
-msgstr "Il punteggio migliore è {registry.arcade_upper_deck_high_score} punti."
+msgstr ""
+"Il punteggio migliore è {registry.arcade_upper_deck_high_score} punti."
 
 #: data/level/arcade-wild-new-wonder.cfg:12
 #: data/level/titlescreen-arcade.cfg:251
@@ -3635,7 +3636,7 @@ msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
 msgstr "Premi {LEFT_KEY} o {RIGHT_KEY} per camminare."
 
 #: data/level/titlescreen-test.cfg:392 data/level/titlescreen-test.cfg:409
-#: data/level/titlescreen.cfg:392 data/level/titlescreen.cfg:409
+#: data/level/titlescreen.cfg:394
 msgid "Press {UP_KEY} to talk, and use things like doors."
 msgstr "Premi {UP_KEY} per parlare, o usare oggetti come porte."
 
@@ -3643,7 +3644,8 @@ msgstr "Premi {UP_KEY} per parlare, o usare oggetti come porte."
 msgid "Press {DOWN_KEY} to crouch."
 msgstr "Premi {DOWN_KEY} per accovacciarti."
 
-#: data/level/titlescreen-test.cfg:394 data/level/titlescreen.cfg:394
+#: data/level/titlescreen-test.cfg:394 data/level/titlescreen.cfg:392
+#: data/level/titlescreen.cfg:409
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
 msgstr "Premi velocemente {LEFT_KEY} o {RIGHT_KEY} due volte per correre."
 
@@ -3658,6 +3660,14 @@ msgstr "Premi {TONGUE_KEY} per usare un attacco del personaggio."
 #: data/level/titlescreen-test.cfg:447 data/level/titlescreen.cfg:447
 msgid "ARCADE"
 msgstr "ARCADE"
+
+#: data/level/titlescreen.cfg:393
+msgid "Walk in front of a door or person, and press"
+msgstr ""
+
+#: data/level/titlescreen.cfg:394
+msgid "the button that appears to interact with them."
+msgstr ""
 
 #: data/level/to-nenes-house-inside.cfg:10
 msgid "Nene's House"
@@ -3892,8 +3902,8 @@ msgstr ""
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level {registry."
-"arcade_coin_race_high_score}."
+"The furthest that has been reached is level "
+"{registry.arcade_coin_race_high_score}."
 msgstr ""
 "Il livello più alto raggiunto è {registry.arcade_coin_race_high_score}."
 
