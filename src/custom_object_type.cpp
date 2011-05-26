@@ -364,11 +364,9 @@ custom_object_type::custom_object_type(wml::const_node_ptr node, const custom_ob
 	weak_collide_dimensions_(0xFFFFFFFF),
 	activation_border_(wml::get_int(node, "activation_border", 100))
 {
-#ifndef NO_EDITOR
 	if(node->get_child("editor_info")) {
 		editor_info_.reset(new editor_entity_info(node->get_child("editor_info")));
 	}
-#endif
 
 	const bool is_variation = base_type != NULL;
 
