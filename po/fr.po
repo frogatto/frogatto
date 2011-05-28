@@ -1,20 +1,25 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
+#   <arikel@free.fr>, 2011
+# arikel <arikel@free.fr>, 2011
+# Marcos Avila Isidoro <marcavis@yahoo.com.br>, 2011
+# manu <emmanuel.fujioka@free.fr>, 2011
+# Philipp Zabel <pzabel@gmx.de>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-05-17 22:02-0300\n"
-"PO-Revision-Date: 2011-05-18 02:37+0000\n"
-"Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
-"Language-Team: French (http://www.transifex.net/projects/p/Frogatto/team/fr/)\n"
+"POT-Creation-Date: 2011-05-28 14:10-0300\n"
+"PO-Revision-Date: 2011-05-28 15:26+0000\n"
+"Last-Translator: arikel <arikel@free.fr>\n"
+"Language-Team: French (http://www.transifex.net/projects/p/Frogatto/team/"
+"fr/)\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
 #: data/achievements.cfg:4
@@ -145,12 +150,12 @@ msgstr "Victoire!"
 msgid "Blocks Run"
 msgstr "Course aux Blocs"
 
-#: data/level/arcade-blocks.cfg:217 data/level/arcade-blocks.cfg:219
+#: data/level/arcade-blocks.cfg:218 data/level/arcade-blocks.cfg:220
 msgid "You got {level.player.score} points in the Blocks Run!"
 msgstr ""
 "Vous avez obtenu {level.player.score} points lors de la Course aux Blocs !"
 
-#: data/level/arcade-blocks.cfg:218
+#: data/level/arcade-blocks.cfg:219
 #: data/level/arcade-down-the-rabbit-hall.cfg:863
 #: data/level/arcade-maintenance-shaft.cfg:2580
 #: data/level/arcade-the-long-haul.cfg:703
@@ -159,7 +164,7 @@ msgstr ""
 msgid "This is a new high score!"
 msgstr "C'est un nouveau record!"
 
-#: data/level/arcade-blocks.cfg:220
+#: data/level/arcade-blocks.cfg:221
 msgid "The high score is {registry.arcade_blocks_high_score}."
 msgstr "Le meilleur score est de {registry.arcade_blocks_high_score}."
 
@@ -243,14 +248,13 @@ msgstr "Nouvelle Merveille Sauvage"
 #: data/level/arcade-wild-new-wonder.cfg:2522
 msgid "You got {level.player.vars.score} points in the Wild New Wonder!"
 msgstr ""
-"Vous avez obtenu {level.player.vars.score} points dans la Nouvelle Merveille"
-" sauvage !"
+"Vous avez obtenu {level.player.vars.score} points dans la Nouvelle Merveille "
+"sauvage !"
 
 #: data/level/arcade-wild-new-wonder.cfg:2523
 msgid "The high score is {registry.arcade_wild_new_wonder_high_score} points."
 msgstr ""
-"Le meilleur score est de {registry.arcade_wild_new_wonder_high_score} "
-"points."
+"Le meilleur score est de {registry.arcade_wild_new_wonder_high_score} points."
 
 #: data/level/autumn-town.cfg:16
 msgid "Autumn Town"
@@ -2238,8 +2242,8 @@ msgid ""
 "on this level, too."
 msgstr ""
 "Et oui,\n"
-"cela s'applique aussi aux signes d'interrogation\n"
-"dans ce niveau."
+"cela s'applique aussi aux points\n"
+"d'interrogation dans ce niveau."
 
 #: data/level/hanging-platforms.cfg:14
 msgid "Hanging Platforms"
@@ -2872,9 +2876,10 @@ msgid ""
 "I'd sure like to help, but ...\n"
 "I just don't see what I could do."
 msgstr ""
-"Wow, hum ... \n"
-"j'aimerai aider, pour sûr, mais ... \n"
-"je ne vois simplement pas ce que je pourrais faire."
+"Whah, hum... \n"
+"j'aimerais aider, pour sûr, mais... \n"
+"je ne vois vraiment pas\n"
+"ce que je pourrais faire."
 
 #: data/level/secluded-hut.cfg:1259
 msgid ""
@@ -3423,8 +3428,7 @@ msgstr "Artiste - Terrain (maisons, arrière plan du bord de mer)"
 
 #: data/level/tea-with-milgram.cfg:374
 msgid "Level Designer (esp. forest, cave, and dungeon levels)"
-msgstr ""
-"Concepteur de niveaux (surtout forêt, grotte et les niveaux du donjon)"
+msgstr "Concepteur de niveaux (surtout forêt, grotte et les niveaux du donjon)"
 
 #: data/level/tea-with-milgram.cfg:379
 msgid "The IRC Crew"
@@ -3785,7 +3789,7 @@ msgid "Press {DOWN_KEY} to crouch."
 msgstr "Appuyez sur {DOWN_KEY} pour vous accroupir."
 
 #: data/level/titlescreen-test.cfg:394 data/level/titlescreen.cfg:392
-#: data/level/titlescreen.cfg:409
+#: data/level/titlescreen.cfg:407
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
 msgstr "Appuyez deux fois sur {LEFT_KEY} / {RIGHT_KEY} pour courir."
 
@@ -3797,17 +3801,21 @@ msgstr "Appuyez sur {JUMP_KEY} pour sauter."
 msgid "Press {TONGUE_KEY} to use a character's attacks."
 msgstr "Appuyez sur {TONGUE_KEY} pour attaquer."
 
-#: data/level/titlescreen-test.cfg:447 data/level/titlescreen.cfg:447
+#: data/level/titlescreen-test.cfg:447 data/level/titlescreen.cfg:445
 msgid "ARCADE"
 msgstr "ARCADE"
 
 #: data/level/titlescreen.cfg:393
 msgid "Walk in front of a door or person, and press"
 msgstr ""
+"Placez-vous en face d'une personne\n"
+"ou d'une porte et appuyez sur"
 
 #: data/level/titlescreen.cfg:394
 msgid "the button that appears to interact with them."
 msgstr ""
+"le bouton qui apparaît pour\n"
+"interagir avec eux."
 
 #: data/level/to-nenes-house-inside.cfg:10
 msgid "Nene's House"
@@ -4046,10 +4054,9 @@ msgstr ""
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level "
-"{registry.arcade_coin_race_high_score}."
-msgstr ""
-"Le niveau record est le niveau {registry.arcade_coin_race_high_score}."
+"The furthest that has been reached is level {registry."
+"arcade_coin_race_high_score}."
+msgstr "Le niveau record est le niveau {registry.arcade_coin_race_high_score}."
 
 #: data/objects/items/max_heart_object.cfg:18
 msgid ""
