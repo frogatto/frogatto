@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Евгений Лежнин <z_lezhnin@mail2000.ru>, 2011
 # oleg koptev <koptev.oleg@gmail.com>, 2011
 # Philipp Zabel <pzabel@gmx.de>, 2011
@@ -10,17 +10,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-05-28 22:46-0300\n"
-"PO-Revision-Date: 2011-05-26 16:16+0000\n"
-"Last-Translator: ZLv <z_lezhnin@mail2000.ru>\n"
-"Language-Team: Russian (http://www.transifex.net/projects/p/Frogatto/team/"
-"ru/)\n"
-"Language: ru\n"
+"POT-Creation-Date: 2011-05-29 02:13-0300\n"
+"PO-Revision-Date: 2011-05-29 05:15+0000\n"
+"Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
+"Language-Team: Russian (http://www.transifex.net/projects/p/Frogatto/team/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
 #: data/achievements.cfg:4
 msgid "Pocket Money"
@@ -976,6 +974,7 @@ msgstr "Это очень неприятно."
 
 #: data/level/crevice-village-house-4.cfg:3313
 #: data/level/crevice-village-house-4.cfg:3323
+#: data/level/liberated-crevice-village-house-4.cfg:2072
 msgid "You don't say."
 msgstr "Ничего не говорите."
 
@@ -2252,6 +2251,20 @@ msgstr ""
 #: data/level/liberated-crevice-village-house-2.cfg:1551
 msgid "I see."
 msgstr "Понятно."
+
+#: data/level/liberated-crevice-village-house-4.cfg:2070
+msgid ""
+"Sure is nice\n"
+"to have things back to normal."
+msgstr ""
+
+#: data/level/liberated-crevice-village-house-4.cfg:2073
+msgid "Pity to lose all those fans, though."
+msgstr ""
+
+#: data/level/liberated-crevice-village-house-4.cfg:2074
+msgid "I prefer things nice and cool."
+msgstr ""
 
 #: data/level/lobby.cfg:12
 msgid "Lobby"
@@ -3798,8 +3811,8 @@ msgstr "Bы дошли до уровня {level.player.difficulty} в игре �
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level {registry."
-"arcade_coin_race_high_score}."
+"The furthest that has been reached is level "
+"{registry.arcade_coin_race_high_score}."
 msgstr "Максимальный уровень {registry.arcade_coin_race_high_score}"
 
 #: data/objects/items/max_heart_object.cfg:18
@@ -3890,7 +3903,8 @@ msgid ""
 "invincibility powerups. Invincibility\n"
 "powerups will make you\n"
 "invincible for a short time."
-msgstr "кристалл невидимости даст вам возможностьсделаться невидимым на время."
+msgstr ""
+"кристалл невидимости даст вам возможностьсделаться невидимым на время."
 
 #: data/objects/items/store-items/buyable_powerup_reflexes.cfg:11
 msgid "hyper crystal"
@@ -4089,5 +4103,4 @@ msgstr "Поменять A и B местами"
 msgid "OpenFeint"
 msgstr "OpenFeint"
 
-#~ msgid "Block Run"
-#~ msgstr "Бег по блокам"
+

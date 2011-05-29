@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 #   <simone.m@gmx.com>, 2011
 # nem <simone.m@gmx.com>, 2011
 # TheJoe <asbruff@gmail.com>, 2011
@@ -11,15 +11,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-05-28 22:46-0300\n"
-"PO-Revision-Date: 2011-05-25 20:50+0000\n"
-"Last-Translator: nem <simone.m@gmx.com>\n"
-"Language-Team: Italian (http://www.transifex.net/projects/p/Frogatto/team/"
-"it/)\n"
-"Language: it\n"
+"POT-Creation-Date: 2011-05-29 02:13-0300\n"
+"PO-Revision-Date: 2011-05-29 05:15+0000\n"
+"Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
+"Language-Team: Italian (http://www.transifex.net/projects/p/Frogatto/team/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: data/achievements.cfg:4
@@ -978,6 +977,7 @@ msgstr "Questo è decisamente sgradevole."
 
 #: data/level/crevice-village-house-4.cfg:3313
 #: data/level/crevice-village-house-4.cfg:3323
+#: data/level/liberated-crevice-village-house-4.cfg:2072
 msgid "You don't say."
 msgstr "Non dirmelo."
 
@@ -2310,6 +2310,20 @@ msgstr "Al negozio."
 #: data/level/liberated-crevice-village-house-2.cfg:1551
 msgid "I see."
 msgstr "Capisco..."
+
+#: data/level/liberated-crevice-village-house-4.cfg:2070
+msgid ""
+"Sure is nice\n"
+"to have things back to normal."
+msgstr ""
+
+#: data/level/liberated-crevice-village-house-4.cfg:2073
+msgid "Pity to lose all those fans, though."
+msgstr ""
+
+#: data/level/liberated-crevice-village-house-4.cfg:2074
+msgid "I prefer things nice and cool."
+msgstr ""
 
 #: data/level/lobby.cfg:12
 msgid "Lobby"
@@ -3908,8 +3922,8 @@ msgstr ""
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level {registry."
-"arcade_coin_race_high_score}."
+"The furthest that has been reached is level "
+"{registry.arcade_coin_race_high_score}."
 msgstr "Il livello più alto è {registry.arcade_coin_race_high_score}."
 
 #: data/objects/items/max_heart_object.cfg:18
@@ -4207,8 +4221,4 @@ msgstr "Inverti A e B"
 msgid "OpenFeint"
 msgstr "OpenFeint"
 
-#~ msgid "Block Run"
-#~ msgstr "Corsa dei Blocchi"
 
-#~ msgid "(test level)"
-#~ msgstr "(Livello di prova)"

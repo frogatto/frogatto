@@ -1,22 +1,21 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Marcos Avila Isidoro <marcavis@yahoo.com.br>, 2011
 # Philipp Zabel <pzabel@gmx.de>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-05-28 22:46-0300\n"
-"PO-Revision-Date: 2011-05-25 03:32+0000\n"
+"POT-Creation-Date: 2011-05-29 02:13-0300\n"
+"PO-Revision-Date: 2011-05-29 05:15+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
-"Language-Team: Portuguese (Brazilian) (http://www.transifex.net/projects/p/"
-"Frogatto/team/pt_BR/)\n"
-"Language: pt_BR\n"
+"Language-Team: Portuguese (Brazilian) (http://www.transifex.net/projects/p/Frogatto/team/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
 #: data/achievements.cfg:4
@@ -982,6 +981,7 @@ msgstr "Isto é definitivamente desagradável."
 
 #: data/level/crevice-village-house-4.cfg:3313
 #: data/level/crevice-village-house-4.cfg:3323
+#: data/level/liberated-crevice-village-house-4.cfg:2072
 msgid "You don't say."
 msgstr "Não me diga."
 
@@ -2371,6 +2371,20 @@ msgstr "Tá no empório."
 #: data/level/liberated-crevice-village-house-2.cfg:1551
 msgid "I see."
 msgstr "Ah, sim."
+
+#: data/level/liberated-crevice-village-house-4.cfg:2070
+msgid ""
+"Sure is nice\n"
+"to have things back to normal."
+msgstr ""
+
+#: data/level/liberated-crevice-village-house-4.cfg:2073
+msgid "Pity to lose all those fans, though."
+msgstr ""
+
+#: data/level/liberated-crevice-village-house-4.cfg:2074
+msgid "I prefer things nice and cool."
+msgstr ""
 
 #: data/level/lobby.cfg:12
 msgid "Lobby"
@@ -3785,7 +3799,8 @@ msgstr "Aperte {DOWN_KEY} para se abaixar."
 #: data/level/titlescreen-test.cfg:394 data/level/titlescreen.cfg:392
 #: data/level/titlescreen.cfg:407
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
-msgstr "Aperte {LEFT_KEY} ou {RIGHT_KEY} duas vezes, rapidamente, para correr."
+msgstr ""
+"Aperte {LEFT_KEY} ou {RIGHT_KEY} duas vezes, rapidamente, para correr."
 
 #: data/level/titlescreen-test.cfg:395 data/level/titlescreen.cfg:395
 msgid "Press {JUMP_KEY} to jump."
@@ -4039,16 +4054,18 @@ msgstr "Essa célula é vazia. Ela não faz nada."
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:32
 msgid "You made it to level {level.player.difficulty} of the coin race!"
-msgstr "Você alcançou a {level.player.difficulty}ª fase da corrida das moedas!"
+msgstr ""
+"Você alcançou a {level.player.difficulty}ª fase da corrida das moedas!"
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:34
 msgid "You made it to level {level.player.difficulty} of the coin race."
-msgstr "Você alcançou a {level.player.difficulty}ª fase da corrida das moedas."
+msgstr ""
+"Você alcançou a {level.player.difficulty}ª fase da corrida das moedas."
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level {registry."
-"arcade_coin_race_high_score}."
+"The furthest that has been reached is level "
+"{registry.arcade_coin_race_high_score}."
 msgstr "O recorde atual é a {registry.arcade_coin_race_high_score}ª fase."
 
 #: data/objects/items/max_heart_object.cfg:18
@@ -4356,8 +4373,4 @@ msgstr "Inverter A e B"
 msgid "OpenFeint"
 msgstr "OpenFeint"
 
-#~ msgid "Block Run"
-#~ msgstr "Corrida dos Blocos"
 
-#~ msgid "(test level)"
-#~ msgstr "(Fase de teste)"

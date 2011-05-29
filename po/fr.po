@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 #   <arikel@free.fr>, 2011
 # arikel <arikel@free.fr>, 2011
 # Marcos Avila Isidoro <marcavis@yahoo.com.br>, 2011
@@ -11,15 +11,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-05-28 22:46-0300\n"
-"PO-Revision-Date: 2011-05-28 15:26+0000\n"
-"Last-Translator: arikel <arikel@free.fr>\n"
-"Language-Team: French (http://www.transifex.net/projects/p/Frogatto/team/"
-"fr/)\n"
-"Language: fr\n"
+"POT-Creation-Date: 2011-05-29 02:13-0300\n"
+"PO-Revision-Date: 2011-05-29 05:15+0000\n"
+"Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
+"Language-Team: French (http://www.transifex.net/projects/p/Frogatto/team/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
 #: data/achievements.cfg:4
@@ -248,13 +247,14 @@ msgstr "Nouvelle Merveille Sauvage"
 #: data/level/arcade-wild-new-wonder.cfg:2522
 msgid "You got {level.player.vars.score} points in the Wild New Wonder!"
 msgstr ""
-"Vous avez obtenu {level.player.vars.score} points dans la Nouvelle Merveille "
-"sauvage !"
+"Vous avez obtenu {level.player.vars.score} points dans la Nouvelle Merveille"
+" sauvage !"
 
 #: data/level/arcade-wild-new-wonder.cfg:2523
 msgid "The high score is {registry.arcade_wild_new_wonder_high_score} points."
 msgstr ""
-"Le meilleur score est de {registry.arcade_wild_new_wonder_high_score} points."
+"Le meilleur score est de {registry.arcade_wild_new_wonder_high_score} "
+"points."
 
 #: data/level/autumn-town.cfg:16
 msgid "Autumn Town"
@@ -1005,6 +1005,7 @@ msgstr "C'est décidément déplaisant."
 
 #: data/level/crevice-village-house-4.cfg:3313
 #: data/level/crevice-village-house-4.cfg:3323
+#: data/level/liberated-crevice-village-house-4.cfg:2072
 msgid "You don't say."
 msgstr "Je ne te le fais pas dire."
 
@@ -2383,6 +2384,20 @@ msgstr "Au magasin."
 msgid "I see."
 msgstr "Je vois."
 
+#: data/level/liberated-crevice-village-house-4.cfg:2070
+msgid ""
+"Sure is nice\n"
+"to have things back to normal."
+msgstr ""
+
+#: data/level/liberated-crevice-village-house-4.cfg:2073
+msgid "Pity to lose all those fans, though."
+msgstr ""
+
+#: data/level/liberated-crevice-village-house-4.cfg:2074
+msgid "I prefer things nice and cool."
+msgstr ""
+
 #: data/level/lobby.cfg:12
 msgid "Lobby"
 msgstr "Vestibule"
@@ -3428,7 +3443,8 @@ msgstr "Artiste - Terrain (maisons, arrière plan du bord de mer)"
 
 #: data/level/tea-with-milgram.cfg:374
 msgid "Level Designer (esp. forest, cave, and dungeon levels)"
-msgstr "Concepteur de niveaux (surtout forêt, grotte et les niveaux du donjon)"
+msgstr ""
+"Concepteur de niveaux (surtout forêt, grotte et les niveaux du donjon)"
 
 #: data/level/tea-with-milgram.cfg:379
 msgid "The IRC Crew"
@@ -4046,9 +4062,10 @@ msgstr ""
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level {registry."
-"arcade_coin_race_high_score}."
-msgstr "Le niveau record est le niveau {registry.arcade_coin_race_high_score}."
+"The furthest that has been reached is level "
+"{registry.arcade_coin_race_high_score}."
+msgstr ""
+"Le niveau record est le niveau {registry.arcade_coin_race_high_score}."
 
 #: data/objects/items/max_heart_object.cfg:18
 msgid ""
@@ -4360,8 +4377,4 @@ msgstr "Inverser A et B"
 msgid "OpenFeint"
 msgstr "FeinteOuverte"
 
-#~ msgid "Block Run"
-#~ msgstr "La Course aux Blocs"
 
-#~ msgid "(test level)"
-#~ msgstr "(Niveau de Test)"
