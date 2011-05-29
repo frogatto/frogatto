@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-05-28 14:10-0300\n"
+"POT-Creation-Date: 2011-05-28 22:46-0300\n"
 "PO-Revision-Date: 2011-05-25 03:32+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Portuguese (Brazilian) (http://www.transifex.net/projects/p/"
@@ -143,7 +143,7 @@ msgstr "Armadilha!"
 msgid "Victory!"
 msgstr "Vitória!"
 
-#: data/level/arcade-blocks.cfg:11
+#: data/level/arcade-blocks.cfg:11 data/level/titlescreen-arcade.cfg:277
 msgid "Blocks Run"
 msgstr "Corrida dos Blocos"
 
@@ -3718,12 +3718,8 @@ msgstr ""
 "vou virar picadinho!"
 
 #: data/level/test3.cfg:14 data/level/test4.cfg:12 data/level/test5.cfg:12
-#: data/level/test7-surf.cfg:12
+#: data/level/test6.cfg:14 data/level/test7-surf.cfg:12
 msgid "(Test Level)"
-msgstr "(Fase de teste)"
-
-#: data/level/test6.cfg:14
-msgid "(test level)"
 msgstr "(Fase de teste)"
 
 #: data/level/titlescreen-arcade.cfg:141
@@ -3747,10 +3743,6 @@ msgstr "Escolha uma fase:"
 #: data/level/titlescreen-arcade.cfg:421
 msgid "(cancel)"
 msgstr "(cancelar)"
-
-#: data/level/titlescreen-arcade.cfg:277
-msgid "Block Run"
-msgstr "Corrida dos Blocos"
 
 #: data/level/titlescreen-arcade.cfg:306
 msgid "CLIMB"
@@ -4041,7 +4033,7 @@ msgstr ""
 "Você quer comprar\n"
 "o {consts.name}?"
 
-#: data/object_prototypes/crazy-stuff/civ-tile.cfg:58
+#: data/object_prototypes/crazy-stuff/civ-tile.cfg:59
 msgid "This is a blank tile. It doesn't do anything."
 msgstr "Essa célula é vazia. Ela não faz nada."
 
@@ -4363,3 +4355,9 @@ msgstr "Inverter A e B"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
+
+#~ msgid "Block Run"
+#~ msgstr "Corrida dos Blocos"
+
+#~ msgid "(test level)"
+#~ msgstr "(Fase de teste)"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-05-28 14:10-0300\n"
+"POT-Creation-Date: 2011-05-28 22:46-0300\n"
 "PO-Revision-Date: 2011-05-18 02:37+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -141,7 +141,7 @@ msgstr "Ein Hinterhalt!"
 msgid "Victory!"
 msgstr "Sieg!"
 
-#: data/level/arcade-blocks.cfg:11
+#: data/level/arcade-blocks.cfg:11 data/level/titlescreen-arcade.cfg:277
 msgid "Blocks Run"
 msgstr ""
 
@@ -3311,12 +3311,8 @@ msgid ""
 msgstr ""
 
 #: data/level/test3.cfg:14 data/level/test4.cfg:12 data/level/test5.cfg:12
-#: data/level/test7-surf.cfg:12
+#: data/level/test6.cfg:14 data/level/test7-surf.cfg:12
 msgid "(Test Level)"
-msgstr ""
-
-#: data/level/test6.cfg:14
-msgid "(test level)"
 msgstr ""
 
 #: data/level/titlescreen-arcade.cfg:141
@@ -3340,10 +3336,6 @@ msgstr "Wähle ein Level:"
 #: data/level/titlescreen-arcade.cfg:421
 msgid "(cancel)"
 msgstr "(abbrechen)"
-
-#: data/level/titlescreen-arcade.cfg:277
-msgid "Block Run"
-msgstr ""
 
 #: data/level/titlescreen-arcade.cfg:306
 msgid "CLIMB"
@@ -3621,7 +3613,7 @@ msgstr "Dafür hast du nicht genug Geld."
 msgid "Do you want to buy the {consts.name}?"
 msgstr "{consts.name} kaufen?"
 
-#: data/object_prototypes/crazy-stuff/civ-tile.cfg:58
+#: data/object_prototypes/crazy-stuff/civ-tile.cfg:59
 msgid "This is a blank tile. It doesn't do anything."
 msgstr ""
 

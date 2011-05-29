@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-05-28 14:10-0300\n"
+"POT-Creation-Date: 2011-05-28 22:46-0300\n"
 "PO-Revision-Date: 2011-05-28 15:26+0000\n"
 "Last-Translator: arikel <arikel@free.fr>\n"
 "Language-Team: French (http://www.transifex.net/projects/p/Frogatto/team/"
@@ -146,7 +146,7 @@ msgstr "Embuscade!"
 msgid "Victory!"
 msgstr "Victoire!"
 
-#: data/level/arcade-blocks.cfg:11
+#: data/level/arcade-blocks.cfg:11 data/level/titlescreen-arcade.cfg:277
 msgid "Blocks Run"
 msgstr "Course aux Blocs"
 
@@ -3716,12 +3716,8 @@ msgstr ""
 "je vais me faire broyer en morceaux !"
 
 #: data/level/test3.cfg:14 data/level/test4.cfg:12 data/level/test5.cfg:12
-#: data/level/test7-surf.cfg:12
+#: data/level/test6.cfg:14 data/level/test7-surf.cfg:12
 msgid "(Test Level)"
-msgstr "(Niveau de Test)"
-
-#: data/level/test6.cfg:14
-msgid "(test level)"
 msgstr "(Niveau de Test)"
 
 #: data/level/titlescreen-arcade.cfg:141
@@ -3745,10 +3741,6 @@ msgstr "Choisissez un niveau:"
 #: data/level/titlescreen-arcade.cfg:421
 msgid "(cancel)"
 msgstr "(annuler)"
-
-#: data/level/titlescreen-arcade.cfg:277
-msgid "Block Run"
-msgstr "La Course aux Blocs"
 
 #: data/level/titlescreen-arcade.cfg:306
 msgid "CLIMB"
@@ -4038,7 +4030,7 @@ msgstr "Vous n'avez pas suffisamment d'argent."
 msgid "Do you want to buy the {consts.name}?"
 msgstr "Voulez-vous acheter {consts.name}?"
 
-#: data/object_prototypes/crazy-stuff/civ-tile.cfg:58
+#: data/object_prototypes/crazy-stuff/civ-tile.cfg:59
 msgid "This is a blank tile. It doesn't do anything."
 msgstr "Cette case est une case neutre. Elle ne sert à rien."
 
@@ -4367,3 +4359,9 @@ msgstr "Inverser A et B"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "FeinteOuverte"
+
+#~ msgid "Block Run"
+#~ msgstr "La Course aux Blocs"
+
+#~ msgid "(test level)"
+#~ msgstr "(Niveau de Test)"
