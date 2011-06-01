@@ -1,0 +1,16 @@
+  ┌─────────────┐
+  │ Known Bugs: │
+╔═╧═════════════╧═══════════════════════════════════════════════════════════════╗
+║ Red:                                                                          ║
+║  ▶ A tile accepts any nearby farm as feeding it, regardless of team.          ║
+║  ▶                                                                            ║
+║                                                                               ║
+║ Yellow:                                                                       ║
+║  ▶ Z-levels not set correctly (or at all).                                    ║
+║  ▶                                                                            ║
+║                                                                               ║
+║ Green:                                                                        ║
+║  ▶ More comprehensive context help needed.                                    ║
+║  ▶                                                                            ║
+║                                                          ▷ fixed  ▶ not fixed ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
