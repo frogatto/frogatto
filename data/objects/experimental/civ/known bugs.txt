@@ -3,10 +3,11 @@
 ╔═╧═════════════╧═══════════════════════════════════════════════════════════════╗
 ║ Red:                                                                          ║
 ║  ▶ A tile accepts any nearby farm as feeding it, regardless of team.          ║
+║  ▷ Going to war makes some tiles untradeable.                                 ║
 ║  ▶                                                                            ║
 ║                                                                               ║
 ║ Yellow:                                                                       ║
-║  ▶ Z-levels not set correctly (or at all).                                    ║
+║  ▷ Z-levels not set correctly (or at all).                                    ║
 ║  ▶                                                                            ║
 ║                                                                               ║
 ║ Green:                                                                        ║
