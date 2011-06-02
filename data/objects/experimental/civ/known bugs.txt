@@ -5,16 +5,20 @@
 ║  ▶ A tile accepts any nearby farm as feeding it, regardless of team.          ║
 ║  ▷ Going to war makes some tiles untradeable.                                 ║
 ║  ▶ Some tiles untradeable sometimes                                           ║
-║  ▶ end turn function does not handle multiple starves & camps right?          ║
+║  ▶ End turn function does not handle multiple starves & camps right?          ║
+║  ▶ Ghost tiles sometimes exist when a tile is deleted.                        ║
 ║  ▶                                                                            ║
 ║                                                                               ║
 ║ Cosmetic:                                                                     ║
 ║  ▷ Z-levels not set correctly (or at all).                                    ║
 ║  ▶ Starvation skull sometimes fires twice.                                    ║
+║  ▶ Replace help should say tiles in hand less spent tiles, not just tiles in  ║
+║    hand.                                                                      ║
 ║  ▶                                                                            ║
 ║                                                                               ║
 ║ Minor:                                                                        ║
 ║  ▶ More comprehensive context help needed.                                    ║
+║  ▶ War screen text sometimes is too wide and shows up in normal mode.         ║
 ║  ▶                                                                            ║
 ║                                                          ▷ fixed  ▶ not fixed ║
 ╚═══════════════════════════════════════════════════════════════════════════════╝
