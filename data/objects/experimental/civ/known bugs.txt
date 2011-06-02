@@ -1,16 +1,19 @@
   ┌─────────────┐
   │ Known Bugs: │
 ╔═╧═════════════╧═══════════════════════════════════════════════════════════════╗
-║ Red:                                                                          ║
+║ Critical:                                                                     ║
 ║  ▶ A tile accepts any nearby farm as feeding it, regardless of team.          ║
 ║  ▷ Going to war makes some tiles untradeable.                                 ║
+║  ▶ Some tiles untradeable sometimes                                           ║
+║  ▶ end turn function does not handle multiple starves & camps right?          ║
 ║  ▶                                                                            ║
 ║                                                                               ║
-║ Yellow:                                                                       ║
+║ Cosmetic:                                                                     ║
 ║  ▷ Z-levels not set correctly (or at all).                                    ║
+║  ▶ Starvation skull sometimes fires twice.                                    ║
 ║  ▶                                                                            ║
 ║                                                                               ║
-║ Green:                                                                        ║
+║ Minor:                                                                        ║
 ║  ▶ More comprehensive context help needed.                                    ║
 ║  ▶                                                                            ║
 ║                                                          ▷ fixed  ▶ not fixed ║
