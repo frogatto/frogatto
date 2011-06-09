@@ -3,10 +3,11 @@
 ╔═╧═════════════╧═══════════════════════════════════════════════════════════════╗
 ║ Critical:                                                                     ║
 ║  ▶ A tile accepts any nearby farm as feeding it, regardless of team.          ║
-║  ▷ Going to war makes some tiles untradeable.                                 ║
+║  ▶ Going to war makes some tiles untradeable.                                 ║
 ║  ▶ Some tiles untradeable sometimes                                           ║
 ║  ▶ End turn function does not handle multiple starves & camps right?          ║
 ║  ▶ Ghost tiles sometimes exist when a tile is deleted.                        ║
+║  ▶ Tiles can occasionally be dragged off board.                               ║
 ║  ▶                                                                            ║
 ║                                                                               ║
 ║ Cosmetic:                                                                     ║
