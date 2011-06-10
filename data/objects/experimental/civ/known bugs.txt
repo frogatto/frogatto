@@ -20,6 +20,7 @@
 ║ Minor:                                                                        ║
 ║  ▶ More comprehensive context help needed.                                    ║
 ║  ▶ War screen text sometimes is too wide and shows up in normal mode.         ║
+║  ▶ Turn indicator would be nice.                                              ║
 ║  ▶                                                                            ║
 ║                                                          ▷ fixed  ▶ not fixed ║
 ╚═══════════════════════════════════════════════════════════════════════════════╝
