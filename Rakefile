@@ -1,7 +1,7 @@
 # Languages to generate font texture for
 LANGUAGES = {
-  'zh_CN' => 'wqy-zenhei.ttc',
-  'ja'    => 'TakaoPGothic.ttf'
+  'zh_CN' => 'wqy-zenhei.ttc',       # http://wenq.org/enindex.cgi
+  'ja'    => 'TakaoPGothic.ttf'      # https://launchpad.net/takao-fonts
 }
 
 EXTRA_FML = Hash.new('').merge({
