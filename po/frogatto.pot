@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto v1.0.3\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-05-29 02:13-0300\n"
+"POT-Creation-Date: 2011-06-11 14:51-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1871,55 +1871,55 @@ msgid ""
 "It couldn't be easy to get out of here!"
 msgstr ""
 
-#: data/level/liberated-crevice-village-house-1.cfg:1201
+#: data/level/liberated-crevice-village-house-1.cfg:1056
 msgid ""
 "Well I guess I have to give it to you,\n"
 "kid, you saved us!"
 msgstr ""
 
-#: data/level/liberated-crevice-village-house-1.cfg:1203
+#: data/level/liberated-crevice-village-house-1.cfg:1058
 msgid ""
 "Give it to me? Give what to me?\n"
 "Money?"
 msgstr ""
 
-#: data/level/liberated-crevice-village-house-1.cfg:1204
+#: data/level/liberated-crevice-village-house-1.cfg:1059
 msgid ""
 "Sheesh, so mercenary!\n"
 "It's just an expression."
 msgstr ""
 
-#: data/level/liberated-crevice-village-house-1.cfg:1206
+#: data/level/liberated-crevice-village-house-1.cfg:1061
 msgid "I know, I'm just poking fun at you."
 msgstr ""
 
-#: data/level/liberated-crevice-village-house-1.cfg:1208
+#: data/level/liberated-crevice-village-house-1.cfg:1063
 msgid "I am glad things worked out, though."
 msgstr ""
 
-#: data/level/liberated-crevice-village-house-1.cfg:1834
+#: data/level/liberated-crevice-village-house-1.cfg:1477
 msgid "Hey, what's new?"
 msgstr ""
 
-#: data/level/liberated-crevice-village-house-1.cfg:1835
+#: data/level/liberated-crevice-village-house-1.cfg:1478
 msgid "Oh, just cleaning up after that ruckus."
 msgstr ""
 
-#: data/level/liberated-crevice-village-house-1.cfg:1836
+#: data/level/liberated-crevice-village-house-1.cfg:1479
 msgid "So nice to have things back to normal."
 msgstr ""
 
-#: data/level/liberated-crevice-village-house-1.cfg:1838
+#: data/level/liberated-crevice-village-house-1.cfg:1481
 msgid "You bet."
 msgstr ""
 
-#: data/level/liberated-crevice-village-house-1.cfg:1840
+#: data/level/liberated-crevice-village-house-1.cfg:1483
 msgid ""
 "Speaking of which, am I imagining it\n"
 "or is this house actually smaller now?"
 msgstr ""
 
-#: data/level/liberated-crevice-village-house-1.cfg:1841
+#: data/level/liberated-crevice-village-house-1.cfg:1484
 msgid ""
 "Of course not.\n"
 "That's just nutty."
@@ -2852,131 +2852,131 @@ msgstr ""
 msgid "(Level Template)"
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:103
+#: data/level/tempo-outskirts-inside.cfg:184
 msgid "Oh my, a visitor!"
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:104
+#: data/level/tempo-outskirts-inside.cfg:185
 msgid ""
 "Hey, I'm sorry to barge in and all,\n"
 "but what happened to that bridge?"
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:105
+#: data/level/tempo-outskirts-inside.cfg:186
 msgid ""
 "Yes, I've had a few people come in \n"
 "to ask about that."
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:106
+#: data/level/tempo-outskirts-inside.cfg:187
 msgid ""
 "There was a storm a few weeks ago, \n"
 "and a big swell of water washed it out."
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:107
+#: data/level/tempo-outskirts-inside.cfg:188
 msgid ""
 "You've probably seen this yourself, but\n"
 "just to be sure... don't go into the water."
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:108
+#: data/level/tempo-outskirts-inside.cfg:189
 msgid ""
 "Current that hard will just smash you\n"
 "against the rocks."
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:109
+#: data/level/tempo-outskirts-inside.cfg:190
 msgid ""
 "Yeah... crap.  I'm actually a bit confused\n"
 " about how to get where I'm going."
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:110
+#: data/level/tempo-outskirts-inside.cfg:191
 msgid ""
 "See, I'm trying to make it to\n"
 "Milgram's castle."
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:111
+#: data/level/tempo-outskirts-inside.cfg:192
 msgid ""
 "Yes, he's quite the businessman.\n"
 "It'd be nice if he could help us, here."
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:112
+#: data/level/tempo-outskirts-inside.cfg:193
 msgid "Hmm?"
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:113
+#: data/level/tempo-outskirts-inside.cfg:194
 msgid ""
 "Well, for one thing, it'd be nice if\n"
 "anyone could help get this bridge fixed."
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:114
+#: data/level/tempo-outskirts-inside.cfg:195
 msgid ""
 "I sent in a request shortly after it fell,\n"
 "and they've been too busy to do anything."
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:115
+#: data/level/tempo-outskirts-inside.cfg:196
 msgid ""
 "Anyways, the best way for you to go\n"
 "would be to head to Tempo Village."
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:116
+#: data/level/tempo-outskirts-inside.cfg:197
 msgid ""
 "There's a way from there to get to\n"
 "Milgram's Castle."
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:117
+#: data/level/tempo-outskirts-inside.cfg:198
 msgid "Now, unfortunately, the easiest way..."
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:118
+#: data/level/tempo-outskirts-inside.cfg:199
 msgid ""
 "...would have been to cross the\n"
 " bridge next to this house."
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:119
+#: data/level/tempo-outskirts-inside.cfg:200
 msgid "Figures."
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:120
+#: data/level/tempo-outskirts-inside.cfg:201
 msgid ""
 "Fortunately, you're not completely\n"
 "out of luck."
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:121
+#: data/level/tempo-outskirts-inside.cfg:202
 msgid ""
 "If you hike back a ways, you should\n"
 "see a shortcut through the trees."
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:122
+#: data/level/tempo-outskirts-inside.cfg:203
 msgid ""
 "Taking that will get you to an\n"
 "odd contraption called \"the conveyance\"."
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:123
+#: data/level/tempo-outskirts-inside.cfg:204
 msgid ""
 "It's a ... little odd, but it is\n"
 "a way across the river."
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:124
+#: data/level/tempo-outskirts-inside.cfg:205
 msgid ""
 "Yeah - sure beats \"nothing\", though.\n"
 "Thanks a lot!"
 msgstr ""
 
-#: data/level/tempo-outskirts-inside.cfg:125
+#: data/level/tempo-outskirts-inside.cfg:206
 msgid "No problem.  Best of luck."
 msgstr ""
 

@@ -1,22 +1,23 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
-# CloudiDust <cloudidust@gmail.com>, 2011
-# Yaohan Chen <yaohan.chen@gmail.com>, 2011
-# Marcos Avila Isidoro <marcavis@yahoo.com.br>, 2011
+#
+# CloudiDust <cloudidust@gmail.com>, 2011.
+# Yaohan Chen <yaohan.chen@gmail.com>, 2011.
+# Marcos Avila Isidoro <marcavis@yahoo.com.br>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-05-29 02:13-0300\n"
-"PO-Revision-Date: 2011-05-29 05:15+0000\n"
-"Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
-"Language-Team: Chinese (China) (http://www.transifex.net/projects/p/Frogatto/team/zh_CN/)\n"
+"POT-Creation-Date: 2011-06-11 14:51-0300\n"
+"PO-Revision-Date: 2011-06-06 05:55+0000\n"
+"Last-Translator: CloudiDust <cloudidust@gmail.com>\n"
+"Language-Team: Chinese (China) (http://www.transifex.net/projects/p/Frogatto/"
+"team/zh_CN/)\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: data/achievements.cfg:4
@@ -1291,7 +1292,7 @@ msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1662
 msgid "In fact, I'll even show you the way!"
-msgstr "事实上，我甚至还要告诉你怎么走！"
+msgstr "事实上，我甚至还要告诉你怎么去！"
 
 #: data/level/crevice-village.cfg:720 data/level/to-nenes-house.cfg:1360
 msgid "I better leave this key here."
@@ -1427,15 +1428,15 @@ msgstr ""
 
 #: data/level/crevice-village.cfg:988
 msgid "Brute force against brute force won't work."
-msgstr "强打是没有用的。"
+msgstr "强攻是没有用的。"
 
 #: data/level/crevice-village.cfg:990
 msgid ""
 "We'd be like ... \n"
 "a bull butting heads with a freight train."
 msgstr ""
-"就像是…\n"
-"公牛和火车顶头。"
+"就像是……\n"
+"公牛和货运火车顶头。"
 
 #: data/level/crevice-village.cfg:991
 msgid ""
@@ -1459,7 +1460,7 @@ msgid ""
 "Anyways, about the cave ahead...\n"
 "it's just one guy, right?"
 msgstr ""
-"不管怎么说，关于前面的洞穴…\n"
+"不管怎么说，关于前面的洞穴……\n"
 "只有一个人守着，对不对？"
 
 #: data/level/crevice-village.cfg:996
@@ -1514,7 +1515,7 @@ msgstr ""
 
 #: data/level/descent-to-town.cfg:1027
 msgid "Honest trade and thrifty prices!\""
-msgstr "贸易诚信和价格优惠！“"
+msgstr "童叟无欺，价廉物美！“"
 
 #: data/level/downhill.cfg:16
 msgid "Downhill"
@@ -1623,7 +1624,7 @@ msgstr "嘿，阿托。"
 
 #: data/level/frogatto-grotto-inside.cfg:1537
 msgid "Uhm... yes?"
-msgstr "啊哈……啥事？"
+msgstr "啊……啥事？"
 
 #: data/level/frogatto-grotto-inside.cfg:1538
 msgid ""
@@ -2191,7 +2192,7 @@ msgstr ""
 "锁着的。当然…\n"
 "从这里出去不肯能容易！"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1201
+#: data/level/liberated-crevice-village-house-1.cfg:1056
 msgid ""
 "Well I guess I have to give it to you,\n"
 "kid, you saved us!"
@@ -2199,7 +2200,7 @@ msgstr ""
 "呃，我想我必须把这个给你，\n"
 "孩子，你救了我们！"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1203
+#: data/level/liberated-crevice-village-house-1.cfg:1058
 msgid ""
 "Give it to me? Give what to me?\n"
 "Money?"
@@ -2207,7 +2208,7 @@ msgstr ""
 "把这个给我？把什么给我？\n"
 "钱么？"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1204
+#: data/level/liberated-crevice-village-house-1.cfg:1059
 msgid ""
 "Sheesh, so mercenary!\n"
 "It's just an expression."
@@ -2215,31 +2216,31 @@ msgstr ""
 "啧，真唯利是图！\n"
 "这不过是一种表达方式而已。"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1206
+#: data/level/liberated-crevice-village-house-1.cfg:1061
 msgid "I know, I'm just poking fun at you."
 msgstr "我知道，我不过是和你开玩笑而已。"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1208
+#: data/level/liberated-crevice-village-house-1.cfg:1063
 msgid "I am glad things worked out, though."
 msgstr "不过事情解决了，我很开心。"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1834
+#: data/level/liberated-crevice-village-house-1.cfg:1477
 msgid "Hey, what's new?"
 msgstr "嘿，有啥新闻？"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1835
+#: data/level/liberated-crevice-village-house-1.cfg:1478
 msgid "Oh, just cleaning up after that ruckus."
 msgstr "哦，只不过是在收拾吵闹后的烂摊子。"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1836
+#: data/level/liberated-crevice-village-house-1.cfg:1479
 msgid "So nice to have things back to normal."
 msgstr "日常又回来了，真好。"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1838
+#: data/level/liberated-crevice-village-house-1.cfg:1481
 msgid "You bet."
 msgstr "当然。"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1840
+#: data/level/liberated-crevice-village-house-1.cfg:1483
 msgid ""
 "Speaking of which, am I imagining it\n"
 "or is this house actually smaller now?"
@@ -2247,7 +2248,7 @@ msgstr ""
 "说到“日常”，是我的错觉呢，\n"
 "还是这屋子真的变小了？"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1841
+#: data/level/liberated-crevice-village-house-1.cfg:1484
 msgid ""
 "Of course not.\n"
 "That's just nutty."
@@ -2280,14 +2281,16 @@ msgid ""
 "Sure is nice\n"
 "to have things back to normal."
 msgstr ""
+"一切都恢复正常\n"
+"当然是很不错啦。"
 
 #: data/level/liberated-crevice-village-house-4.cfg:2073
 msgid "Pity to lose all those fans, though."
-msgstr ""
+msgstr "就是弄坏这些风扇有点可惜了，嘛。"
 
 #: data/level/liberated-crevice-village-house-4.cfg:2074
 msgid "I prefer things nice and cool."
-msgstr ""
+msgstr "我喜欢又好又酷的东东啊！"
 
 #: data/level/lobby.cfg:12
 msgid "Lobby"
@@ -2437,8 +2440,8 @@ msgid ""
 "Threatening?\n"
 "I can do threatening!"
 msgstr ""
-"更有威胁一点的？\n"
-"我知道怎么威胁！"
+"更有“威胁”一点的？\n"
+"我知道怎么“威胁”你！"
 
 #: data/level/milgrams-throne-room.cfg:692
 msgid "I'm here to teach you a lesson!"
@@ -2464,7 +2467,7 @@ msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:698
 msgid "Nope."
-msgstr "不"
+msgstr "不。"
 
 #: data/level/milgrams-throne-room.cfg:700
 msgid ""
@@ -2520,7 +2523,7 @@ msgstr "西面什么也没有。"
 
 #: data/level/rpg-trail2.cfg:5950
 msgid "I hope you enjoy the scenery, because that's it..."
-msgstr "希望您欣赏这景色，因为这有这些…"
+msgstr "希望你喜欢这景色，因为就只有这些了……"
 
 #: data/level/secluded-hut-interior.cfg:12 data/level/secluded-hut.cfg:16
 #: data/objects/playable/map-selector.cfg:17
@@ -2576,7 +2579,7 @@ msgid ""
 "That is why I live all the way up here.\n"
 "You can see quite a bit from this height."
 msgstr ""
-"这就是我住得那么高的原因啦。\n"
+"这就是我住得这么高的原因啦。\n"
 "在这么高的地方你能看到很多东西。"
 
 #: data/level/secluded-hut-interior.cfg:931
@@ -2723,7 +2726,7 @@ msgstr "他在小岛的这边搞什么？"
 
 #: data/level/secluded-hut.cfg:1251
 msgid "You still haven't heard, then."
-msgstr "这么说你还没听说啊。"
+msgstr "这么说来，你还没听说啊。"
 
 #: data/level/secluded-hut.cfg:1252
 msgid ""
@@ -3248,15 +3251,15 @@ msgstr "成就编程"
 
 #: data/level/tea-with-milgram.cfg:354
 msgid "Physics, Geometry Scripting"
-msgstr "物理，几何脚本"
+msgstr "物理、几何脚本编写"
 
 #: data/level/tea-with-milgram.cfg:355
 msgid "Minor Programmer"
-msgstr "小程序员"
+msgstr "辅助程序员"
 
 #: data/level/tea-with-milgram.cfg:359
 msgid "The End"
-msgstr "终"
+msgstr "剧终"
 
 #: data/level/tea-with-milgram.cfg:362
 msgid "Creative Director - created characters/setting/story"
@@ -3324,7 +3327,7 @@ msgstr "美工 - 地形（海滨、森林、洞穴和地牢）"
 
 #: data/level/tea-with-milgram.cfg:403
 msgid "Level Designer (esp. seaside, town, and forest stages)"
-msgstr "关卡设计师（特别是海滨，小镇以及森林关卡）"
+msgstr "关卡设计师（特别是海滨、小镇以及森林关卡）"
 
 #: data/level/tea-with-milgram.cfg:406
 msgid "Musician"
@@ -3342,39 +3345,41 @@ msgstr "鸣谢："
 msgid "(Level Template)"
 msgstr "（关卡模板）"
 
-#: data/level/tempo-outskirts-inside.cfg:103
+#: data/level/tempo-outskirts-inside.cfg:184
 msgid "Oh my, a visitor!"
 msgstr "哦，老天！"
 
-#: data/level/tempo-outskirts-inside.cfg:104
+#: data/level/tempo-outskirts-inside.cfg:185
 msgid ""
 "Hey, I'm sorry to barge in and all,\n"
 "but what happened to that bridge?"
 msgstr ""
-"你好，我很抱歉打搅，\n"
+"你好，我很抱歉打搅你，\n"
 "但那座桥是怎么回事？"
 
-#: data/level/tempo-outskirts-inside.cfg:105
+#: data/level/tempo-outskirts-inside.cfg:186
 msgid ""
 "Yes, I've had a few people come in \n"
 "to ask about that."
 msgstr "嗯，已经有几个人来问了。"
 
-#: data/level/tempo-outskirts-inside.cfg:106
+#: data/level/tempo-outskirts-inside.cfg:187
 msgid ""
 "There was a storm a few weeks ago, \n"
 "and a big swell of water washed it out."
-msgstr "几星期前发大水把桥冲散了。"
+msgstr ""
+"几星期来了场大风暴，\n"
+"还发了大水把桥冲散了。"
 
-#: data/level/tempo-outskirts-inside.cfg:107
+#: data/level/tempo-outskirts-inside.cfg:188
 msgid ""
 "You've probably seen this yourself, but\n"
 "just to be sure... don't go into the water."
 msgstr ""
-"你自己大概也看见了，但我还是\n"
+"你自己大概也看见了，但我还是……\n"
 "警告一句，不要下水。"
 
-#: data/level/tempo-outskirts-inside.cfg:108
+#: data/level/tempo-outskirts-inside.cfg:189
 msgid ""
 "Current that hard will just smash you\n"
 "against the rocks."
@@ -3382,15 +3387,15 @@ msgstr ""
 "那么急的水流，\n"
 "会把你冲到岩石上撞得粉碎。"
 
-#: data/level/tempo-outskirts-inside.cfg:109
+#: data/level/tempo-outskirts-inside.cfg:190
 msgid ""
 "Yeah... crap.  I'm actually a bit confused\n"
 " about how to get where I'm going."
 msgstr ""
-"是啊…糟糕。\n"
-"这样我不知道怎么去我的目的地。"
+"是啊…我了个去。\n"
+"实际上我有点儿不清楚该怎么去目的地了。"
 
-#: data/level/tempo-outskirts-inside.cfg:110
+#: data/level/tempo-outskirts-inside.cfg:191
 msgid ""
 "See, I'm trying to make it to\n"
 "Milgram's castle."
@@ -3398,7 +3403,7 @@ msgstr ""
 "你看，我正打算去\n"
 "米格拉姆的城堡。"
 
-#: data/level/tempo-outskirts-inside.cfg:111
+#: data/level/tempo-outskirts-inside.cfg:192
 msgid ""
 "Yes, he's quite the businessman.\n"
 "It'd be nice if he could help us, here."
@@ -3406,68 +3411,67 @@ msgstr ""
 "哦，他是个大商人。\n"
 "如果他能帮我们的忙就好了。"
 
-#: data/level/tempo-outskirts-inside.cfg:112
+#: data/level/tempo-outskirts-inside.cfg:193
 msgid "Hmm?"
 msgstr "嗯？"
 
-#: data/level/tempo-outskirts-inside.cfg:113
+#: data/level/tempo-outskirts-inside.cfg:194
 msgid ""
 "Well, for one thing, it'd be nice if\n"
 "anyone could help get this bridge fixed."
 msgstr ""
 "嗯，首先，不管是谁\n"
-"能帮忙把这做桥修好就太好了。"
+"能帮忙把这座桥修好就太好了。"
 
-#: data/level/tempo-outskirts-inside.cfg:114
+#: data/level/tempo-outskirts-inside.cfg:195
 msgid ""
 "I sent in a request shortly after it fell,\n"
 "and they've been too busy to do anything."
 msgstr ""
-"桥坏了不久我就发了维修请求，\n"
-"但是负责的人一直太忙，\n"
-"什么忙也帮不成。"
+"桥刚坏我就请他们来修了，\n"
+"但他们好像一直忙得没空做别的事。"
 
-#: data/level/tempo-outskirts-inside.cfg:115
+#: data/level/tempo-outskirts-inside.cfg:196
 msgid ""
 "Anyways, the best way for you to go\n"
 "would be to head to Tempo Village."
-msgstr "总之，你最好的方法是去节奏村。"
+msgstr "总之，你最好的选择是去节奏村。"
 
-#: data/level/tempo-outskirts-inside.cfg:116
+#: data/level/tempo-outskirts-inside.cfg:197
 msgid ""
 "There's a way from there to get to\n"
 "Milgram's Castle."
 msgstr "从那里可以到达米格拉姆的城堡。"
 
-#: data/level/tempo-outskirts-inside.cfg:117
+#: data/level/tempo-outskirts-inside.cfg:198
 msgid "Now, unfortunately, the easiest way..."
-msgstr "不幸的是，最简单的方法…"
+msgstr "不过，不幸的是，最简单的方法…"
 
-#: data/level/tempo-outskirts-inside.cfg:118
+#: data/level/tempo-outskirts-inside.cfg:199
 msgid ""
 "...would have been to cross the\n"
 " bridge next to this house."
-msgstr "…是过这座屋子旁边的桥。"
+msgstr "……是通过这座屋子旁边的桥。"
 
-#: data/level/tempo-outskirts-inside.cfg:119
+#: data/level/tempo-outskirts-inside.cfg:200
 msgid "Figures."
 msgstr "我猜也是。"
 
-#: data/level/tempo-outskirts-inside.cfg:120
+#: data/level/tempo-outskirts-inside.cfg:201
 msgid ""
 "Fortunately, you're not completely\n"
 "out of luck."
 msgstr "幸运的是，你还不是完全没辙。"
 
-#: data/level/tempo-outskirts-inside.cfg:121
+#: data/level/tempo-outskirts-inside.cfg:202
 msgid ""
 "If you hike back a ways, you should\n"
 "see a shortcut through the trees."
 msgstr ""
 "如果你往回走一点，应该\n"
-"可以看到树丛里的一条小路。"
+"可以看到树丛里的一条捷径。"
 
-#: data/level/tempo-outskirts-inside.cfg:122
+#: data/level/tempo-outskirts-inside.cfg:203
 msgid ""
 "Taking that will get you to an\n"
 "odd contraption called \"the conveyance\"."
@@ -3475,21 +3479,21 @@ msgstr ""
 "沿着那条路走，你会见到一个\n"
 "叫“运输器”的玩艺。"
 
-#: data/level/tempo-outskirts-inside.cfg:123
+#: data/level/tempo-outskirts-inside.cfg:204
 msgid ""
 "It's a ... little odd, but it is\n"
 "a way across the river."
 msgstr ""
-"这个东西有点…奇怪，\n"
-"但是总算是过河的方法。"
+"这个东西有点……奇怪，\n"
+"但总算是过河的方法。"
 
-#: data/level/tempo-outskirts-inside.cfg:124
+#: data/level/tempo-outskirts-inside.cfg:205
 msgid ""
 "Yeah - sure beats \"nothing\", though.\n"
 "Thanks a lot!"
 msgstr "是，比“没法”好多了。多谢！"
 
-#: data/level/tempo-outskirts-inside.cfg:125
+#: data/level/tempo-outskirts-inside.cfg:206
 msgid "No problem.  Best of luck."
 msgstr "没问题。一路顺风！"
 
@@ -3502,7 +3506,7 @@ msgid ""
 "It says, Beaver Bridge.\n"
 "Tempo Village is just down the road."
 msgstr ""
-"上面说，海狸桥。\n"
+"上面写着：海狸桥。\n"
 "节奏村就在路前面。"
 
 #: data/level/tempo-outskirts.cfg:2236
@@ -3515,7 +3519,7 @@ msgstr ""
 
 #: data/level/tempo-outskirts.cfg:2238
 msgid "Must refer to this tree-house ... thing."
-msgstr "肯定是指这个树房…东西。"
+msgstr "肯定是指这个树屋……之类的东西吧。"
 
 #: data/level/tempo-outskirts.cfg:2240
 msgid ""
@@ -3530,7 +3534,7 @@ msgid ""
 "Whoa..\n"
 "That river is out of control."
 msgstr ""
-"哇…\n"
+"哇……\n"
 "这条河真是失控。"
 
 #: data/level/tempo-outskirts.cfg:2275
@@ -3539,7 +3543,7 @@ msgid ""
 "I'll get smashed to bits!"
 msgstr ""
 "如果我跳进去，\n"
-"会冲成碎片的！"
+"会被冲成碎片的！"
 
 #: data/level/test3.cfg:14 data/level/test4.cfg:12 data/level/test5.cfg:12
 #: data/level/test6.cfg:14 data/level/test7-surf.cfg:12
@@ -3595,21 +3599,21 @@ msgstr "新游戏"
 #: data/level/titlescreen-test.cfg:361 data/level/titlescreen-test.cfg:391
 #: data/level/titlescreen.cfg:361 data/level/titlescreen.cfg:391
 msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
-msgstr "按 {LEFT_KEY} 或者 {RIGHT_KEY} 左右走动。"
+msgstr "按 左箭头键 或者 右箭头键 左右走动。"
 
 #: data/level/titlescreen-test.cfg:392 data/level/titlescreen-test.cfg:409
 #: data/level/titlescreen.cfg:394
 msgid "Press {UP_KEY} to talk, and use things like doors."
-msgstr "按 {UP_KEY} 说话和使用物品，例如门。"
+msgstr "按 上箭头键 说话和使用物品，例如门。"
 
 #: data/level/titlescreen-test.cfg:393 data/level/titlescreen.cfg:393
 msgid "Press {DOWN_KEY} to crouch."
-msgstr "按 {DOWN_KEY} 趴下。"
+msgstr "按 下箭头键 趴下。"
 
 #: data/level/titlescreen-test.cfg:394 data/level/titlescreen.cfg:392
 #: data/level/titlescreen.cfg:407
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
-msgstr "连按两下 {LEFT_KEY} 或者 {RIGHT_KEY} 可以奔跑。"
+msgstr "连按两下 左箭头键 或者 右箭头键 可以奔跑。"
 
 #: data/level/titlescreen-test.cfg:395 data/level/titlescreen.cfg:395
 msgid "Press {JUMP_KEY} to jump."
@@ -3625,11 +3629,11 @@ msgstr "街机模式"
 
 #: data/level/titlescreen.cfg:393
 msgid "Walk in front of a door or person, and press"
-msgstr "走在门或人的前面，再按下"
+msgstr "走到门或人的前面，再按下"
 
 #: data/level/titlescreen.cfg:394
 msgid "the button that appears to interact with them."
-msgstr "出现的按钮，就可以开门或交谈。"
+msgstr "画面上出现的按钮，就可以开门或交谈。"
 
 #: data/level/to-nenes-house-inside.cfg:10
 msgid "Nene's House"
@@ -3857,8 +3861,8 @@ msgstr "你达到了硬币采集赛到第 {level.player.difficulty} 关。"
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level "
-"{registry.arcade_coin_race_high_score}."
+"The furthest that has been reached is level {registry."
+"arcade_coin_race_high_score}."
 msgstr "最高纪录是第 {registry.arcade_coin_race_high_score} 关。 "
 
 #: data/objects/items/max_heart_object.cfg:18
@@ -4142,5 +4146,3 @@ msgstr "交换A/B键"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
-
-

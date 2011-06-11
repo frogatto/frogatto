@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # suzukijake <jake.suzuki2@gmail.com>, 2011
 # Yaohan Chen <yaohan.chen@gmail.com>, 2011
 # Philipp Zabel <pzabel@gmx.de>, 2011
@@ -9,14 +9,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-05-29 02:13-0300\n"
+"POT-Creation-Date: 2011-06-11 14:51-0300\n"
 "PO-Revision-Date: 2011-05-29 05:15+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
-"Language-Team: Japanese (http://www.transifex.net/projects/p/Frogatto/team/ja/)\n"
+"Language-Team: Japanese (http://www.transifex.net/projects/p/Frogatto/team/"
+"ja/)\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: data/achievements.cfg:4
@@ -2215,7 +2216,7 @@ msgstr ""
 "ここから離れるのは簡単なことでは\n"
 "ないだろう"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1201
+#: data/level/liberated-crevice-village-house-1.cfg:1056
 msgid ""
 "Well I guess I have to give it to you,\n"
 "kid, you saved us!"
@@ -2223,13 +2224,13 @@ msgstr ""
 "坊主、俺たちを救ってくれたお前には、\n"
 "贈り物をやらにゃならんだろう"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1203
+#: data/level/liberated-crevice-village-house-1.cfg:1058
 msgid ""
 "Give it to me? Give what to me?\n"
 "Money?"
 msgstr "ぼくになにかくれるの？何？お金？"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1204
+#: data/level/liberated-crevice-village-house-1.cfg:1059
 msgid ""
 "Sheesh, so mercenary!\n"
 "It's just an expression."
@@ -2237,37 +2238,37 @@ msgstr ""
 "やれやれ、本当にがめついな！そういうの\n"
 "ではなく、ただの感謝の言葉だぜ"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1206
+#: data/level/liberated-crevice-village-house-1.cfg:1061
 msgid "I know, I'm just poking fun at you."
 msgstr ""
 "解かってる、\n"
 "ちょっとからかってみただけだよ"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1208
+#: data/level/liberated-crevice-village-house-1.cfg:1063
 msgid "I am glad things worked out, though."
 msgstr "でも、事件が解決してよかったよ"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1834
+#: data/level/liberated-crevice-village-house-1.cfg:1477
 msgid "Hey, what's new?"
 msgstr "やあ、どう？"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1835
+#: data/level/liberated-crevice-village-house-1.cfg:1478
 msgid "Oh, just cleaning up after that ruckus."
 msgstr ""
 "あら、騒ぎが終わって、\n"
 "今は掃除しているところよ"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1836
+#: data/level/liberated-crevice-village-house-1.cfg:1479
 msgid "So nice to have things back to normal."
 msgstr ""
 "みんな散らかっているから、\n"
 "もとの状態に戻したほうがいいわ"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1838
+#: data/level/liberated-crevice-village-house-1.cfg:1481
 msgid "You bet."
 msgstr "だね"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1840
+#: data/level/liberated-crevice-village-house-1.cfg:1483
 msgid ""
 "Speaking of which, am I imagining it\n"
 "or is this house actually smaller now?"
@@ -2275,7 +2276,7 @@ msgstr ""
 "そういえば、この家、なんか前より小さく\n"
 "なってる気がするんだけど…"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1841
+#: data/level/liberated-crevice-village-house-1.cfg:1484
 msgid ""
 "Of course not.\n"
 "That's just nutty."
@@ -3372,11 +3373,11 @@ msgstr "SPECIAL THANKS:"
 msgid "(Level Template)"
 msgstr "(レベルテンプレート)"
 
-#: data/level/tempo-outskirts-inside.cfg:103
+#: data/level/tempo-outskirts-inside.cfg:184
 msgid "Oh my, a visitor!"
 msgstr "おおっと、訪問者だ！"
 
-#: data/level/tempo-outskirts-inside.cfg:104
+#: data/level/tempo-outskirts-inside.cfg:185
 msgid ""
 "Hey, I'm sorry to barge in and all,\n"
 "but what happened to that bridge?"
@@ -3384,13 +3385,13 @@ msgstr ""
 "やあ、口出しして悪いけど\n"
 "あの橋に何があったの？"
 
-#: data/level/tempo-outskirts-inside.cfg:105
+#: data/level/tempo-outskirts-inside.cfg:186
 msgid ""
 "Yes, I've had a few people come in \n"
 "to ask about that."
 msgstr "はい、ここの住人に聞いてきたのですが…"
 
-#: data/level/tempo-outskirts-inside.cfg:106
+#: data/level/tempo-outskirts-inside.cfg:187
 msgid ""
 "There was a storm a few weeks ago, \n"
 "and a big swell of water washed it out."
@@ -3398,7 +3399,7 @@ msgstr ""
 "数週間前に嵐があって、\n"
 "水かさが増えてしまったようです"
 
-#: data/level/tempo-outskirts-inside.cfg:107
+#: data/level/tempo-outskirts-inside.cfg:188
 msgid ""
 "You've probably seen this yourself, but\n"
 "just to be sure... don't go into the water."
@@ -3406,7 +3407,7 @@ msgstr ""
 "解かっているとおもうけど、念のため…。\n"
 "水の中には入らないでください"
 
-#: data/level/tempo-outskirts-inside.cfg:108
+#: data/level/tempo-outskirts-inside.cfg:189
 msgid ""
 "Current that hard will just smash you\n"
 "against the rocks."
@@ -3414,7 +3415,7 @@ msgstr ""
 "激流によって岩に叩き\n"
 "つけられてしまいますよ"
 
-#: data/level/tempo-outskirts-inside.cfg:109
+#: data/level/tempo-outskirts-inside.cfg:190
 msgid ""
 "Yeah... crap.  I'm actually a bit confused\n"
 " about how to get where I'm going."
@@ -3423,7 +3424,7 @@ msgstr ""
 "どうやって目的地まで行けばいいのか、\n"
 "わかんなくなってきた"
 
-#: data/level/tempo-outskirts-inside.cfg:110
+#: data/level/tempo-outskirts-inside.cfg:191
 msgid ""
 "See, I'm trying to make it to\n"
 "Milgram's castle."
@@ -3431,7 +3432,7 @@ msgstr ""
 "解かった、ミルグラムの城まで間に合うよう\n"
 "頑張るよ"
 
-#: data/level/tempo-outskirts-inside.cfg:111
+#: data/level/tempo-outskirts-inside.cfg:192
 msgid ""
 "Yes, he's quite the businessman.\n"
 "It'd be nice if he could help us, here."
@@ -3439,17 +3440,17 @@ msgstr ""
 "はい、彼はかなりのビジネスマンです。\n"
 "彼が私たちを助けてくれたらいいのに…"
 
-#: data/level/tempo-outskirts-inside.cfg:112
+#: data/level/tempo-outskirts-inside.cfg:193
 msgid "Hmm?"
 msgstr "んん？"
 
-#: data/level/tempo-outskirts-inside.cfg:113
+#: data/level/tempo-outskirts-inside.cfg:194
 msgid ""
 "Well, for one thing, it'd be nice if\n"
 "anyone could help get this bridge fixed."
 msgstr "誰かがこの橋を直してくれたらいいのに･･･"
 
-#: data/level/tempo-outskirts-inside.cfg:114
+#: data/level/tempo-outskirts-inside.cfg:195
 msgid ""
 "I sent in a request shortly after it fell,\n"
 "and they've been too busy to do anything."
@@ -3457,13 +3458,13 @@ msgstr ""
 "壊れたあと、すぐに依頼しました。\n"
 "しかし彼らは今とても忙しいです"
 
-#: data/level/tempo-outskirts-inside.cfg:115
+#: data/level/tempo-outskirts-inside.cfg:196
 msgid ""
 "Anyways, the best way for you to go\n"
 "would be to head to Tempo Village."
 msgstr "とにかくテンポ村に行くのが最善です"
 
-#: data/level/tempo-outskirts-inside.cfg:116
+#: data/level/tempo-outskirts-inside.cfg:197
 msgid ""
 "There's a way from there to get to\n"
 "Milgram's Castle."
@@ -3471,11 +3472,11 @@ msgstr ""
 "あそこにはミルグラムの城へ\n"
 "行く方法があります"
 
-#: data/level/tempo-outskirts-inside.cfg:117
+#: data/level/tempo-outskirts-inside.cfg:198
 msgid "Now, unfortunately, the easiest way..."
 msgstr "最も簡単な方法は･･･"
 
-#: data/level/tempo-outskirts-inside.cfg:118
+#: data/level/tempo-outskirts-inside.cfg:199
 msgid ""
 "...would have been to cross the\n"
 " bridge next to this house."
@@ -3484,11 +3485,11 @@ msgstr ""
 "思います。不幸なことに、今、\n"
 "橋は渡れませんが"
 
-#: data/level/tempo-outskirts-inside.cfg:119
+#: data/level/tempo-outskirts-inside.cfg:200
 msgid "Figures."
 msgstr "図"
 
-#: data/level/tempo-outskirts-inside.cfg:120
+#: data/level/tempo-outskirts-inside.cfg:201
 msgid ""
 "Fortunately, you're not completely\n"
 "out of luck."
@@ -3496,7 +3497,7 @@ msgstr ""
 "幸運なことに、まだ運の尽きというわけでは\n"
 "ありません"
 
-#: data/level/tempo-outskirts-inside.cfg:121
+#: data/level/tempo-outskirts-inside.cfg:202
 msgid ""
 "If you hike back a ways, you should\n"
 "see a shortcut through the trees."
@@ -3505,13 +3506,13 @@ msgstr ""
 "木の中に隠れているショートカットを\n"
 "見つけるべきです"
 
-#: data/level/tempo-outskirts-inside.cfg:122
+#: data/level/tempo-outskirts-inside.cfg:203
 msgid ""
 "Taking that will get you to an\n"
 "odd contraption called \"the conveyance\"."
 msgstr "それを見つければ、あなたはワープできます"
 
-#: data/level/tempo-outskirts-inside.cfg:123
+#: data/level/tempo-outskirts-inside.cfg:204
 msgid ""
 "It's a ... little odd, but it is\n"
 "a way across the river."
@@ -3519,7 +3520,7 @@ msgstr ""
 "少し変ですが、それは川の向こうに\n"
 "繋がっています"
 
-#: data/level/tempo-outskirts-inside.cfg:124
+#: data/level/tempo-outskirts-inside.cfg:205
 msgid ""
 "Yeah - sure beats \"nothing\", though.\n"
 "Thanks a lot!"
@@ -3527,7 +3528,7 @@ msgstr ""
 "うん、深く気にしないでおこう。\n"
 "ありがとう！"
 
-#: data/level/tempo-outskirts-inside.cfg:125
+#: data/level/tempo-outskirts-inside.cfg:206
 msgid "No problem.  Best of luck."
 msgstr ""
 "問題ありません。\n"
@@ -3892,8 +3893,8 @@ msgstr "コインレースで{level.player.difficulty} を達成しました"
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level "
-"{registry.arcade_coin_race_high_score}."
+"The furthest that has been reached is level {registry."
+"arcade_coin_race_high_score}."
 msgstr "レベル{registry.arcade_coin_race_high_score}まではまだまだ遠い"
 
 #: data/objects/items/max_heart_object.cfg:18
@@ -4185,5 +4186,3 @@ msgstr "AとBを裏返す"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "オープンフェイント"
-
-

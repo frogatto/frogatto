@@ -1,24 +1,25 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
-#   <simone.m@gmx.com>, 2011
-# nem <simone.m@gmx.com>, 2011
-# TheJoe <asbruff@gmail.com>, 2011
-# Emanuele Cassioli <emanuele.cassioli@gmail.com>, 2011
-# Philipp Zabel <pzabel@gmx.de>, 2011
+#
+#   <simone.m@gmx.com>, 2011.
+# nem <simone.m@gmx.com>, 2011.
+# TheJoe <asbruff@gmail.com>, 2011.
+# Emanuele Cassioli <emanuele.cassioli@gmail.com>, 2011.
+# Philipp Zabel <pzabel@gmx.de>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-05-29 02:13-0300\n"
-"PO-Revision-Date: 2011-05-29 05:15+0000\n"
-"Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
-"Language-Team: Italian (http://www.transifex.net/projects/p/Frogatto/team/it/)\n"
+"POT-Creation-Date: 2011-06-11 14:51-0300\n"
+"PO-Revision-Date: 2011-05-29 19:05+0000\n"
+"Last-Translator: nem <simone.m@gmx.com>\n"
+"Language-Team: Italian (http://www.transifex.net/projects/p/Frogatto/team/"
+"it/)\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: data/achievements.cfg:4
@@ -2223,7 +2224,7 @@ msgstr ""
 "Chiuso. Ovviamente...\n"
 "Uscire da qui non potrebbe che essere più complicato!"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1201
+#: data/level/liberated-crevice-village-house-1.cfg:1056
 msgid ""
 "Well I guess I have to give it to you,\n"
 "kid, you saved us!"
@@ -2231,13 +2232,13 @@ msgstr ""
 "Beh, penso di dovertelo, ragazzo,\n"
 "ci hai salvato!"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1203
+#: data/level/liberated-crevice-village-house-1.cfg:1058
 msgid ""
 "Give it to me? Give what to me?\n"
 "Money?"
 msgstr "Dovermi cosa? Soldi?"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1204
+#: data/level/liberated-crevice-village-house-1.cfg:1059
 msgid ""
 "Sheesh, so mercenary!\n"
 "It's just an expression."
@@ -2245,37 +2246,37 @@ msgstr ""
 "Accidenti, tu sì che sei un mercenario!\n"
 "Era solo un modo di dire."
 
-#: data/level/liberated-crevice-village-house-1.cfg:1206
+#: data/level/liberated-crevice-village-house-1.cfg:1061
 msgid "I know, I'm just poking fun at you."
 msgstr "Lo so, vi stavo prendendo in giro."
 
-#: data/level/liberated-crevice-village-house-1.cfg:1208
+#: data/level/liberated-crevice-village-house-1.cfg:1063
 msgid "I am glad things worked out, though."
 msgstr ""
 "Comunque sono contento che tutto\n"
 "sia andato per il meglio."
 
-#: data/level/liberated-crevice-village-house-1.cfg:1834
+#: data/level/liberated-crevice-village-house-1.cfg:1477
 msgid "Hey, what's new?"
 msgstr "Hey, novità?"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1835
+#: data/level/liberated-crevice-village-house-1.cfg:1478
 msgid "Oh, just cleaning up after that ruckus."
 msgstr ""
 "Oh, sto solo mettendo tutto a posto,\n"
 "dopo quel putiferio."
 
-#: data/level/liberated-crevice-village-house-1.cfg:1836
+#: data/level/liberated-crevice-village-house-1.cfg:1479
 msgid "So nice to have things back to normal."
 msgstr ""
 "Sono così contento che tutto sia tornato\n"
 "alla normalità."
 
-#: data/level/liberated-crevice-village-house-1.cfg:1838
+#: data/level/liberated-crevice-village-house-1.cfg:1481
 msgid "You bet."
 msgstr "Ci puoi scommettere."
 
-#: data/level/liberated-crevice-village-house-1.cfg:1840
+#: data/level/liberated-crevice-village-house-1.cfg:1483
 msgid ""
 "Speaking of which, am I imagining it\n"
 "or is this house actually smaller now?"
@@ -2283,7 +2284,7 @@ msgstr ""
 "A proposito, me lo sto solo immaginando\n"
 "o questa casa è diventata più piccola?"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1841
+#: data/level/liberated-crevice-village-house-1.cfg:1484
 msgid ""
 "Of course not.\n"
 "That's just nutty."
@@ -2315,15 +2316,15 @@ msgstr "Capisco..."
 msgid ""
 "Sure is nice\n"
 "to have things back to normal."
-msgstr ""
+msgstr "Certamente è bello ritornare alla normalità."
 
 #: data/level/liberated-crevice-village-house-4.cfg:2073
 msgid "Pity to lose all those fans, though."
-msgstr ""
+msgstr "E' pure un peccato perdere tutti questi fans."
 
 #: data/level/liberated-crevice-village-house-4.cfg:2074
 msgid "I prefer things nice and cool."
-msgstr ""
+msgstr "Preferisco le cose belle e fiche."
 
 #: data/level/lobby.cfg:12
 msgid "Lobby"
@@ -3387,11 +3388,11 @@ msgstr "RINGRAZIAMENTI SPECIALI:"
 msgid "(Level Template)"
 msgstr "(Level Template)"
 
-#: data/level/tempo-outskirts-inside.cfg:103
+#: data/level/tempo-outskirts-inside.cfg:184
 msgid "Oh my, a visitor!"
 msgstr "Oh, un visitatore!"
 
-#: data/level/tempo-outskirts-inside.cfg:104
+#: data/level/tempo-outskirts-inside.cfg:185
 msgid ""
 "Hey, I'm sorry to barge in and all,\n"
 "but what happened to that bridge?"
@@ -3399,7 +3400,7 @@ msgstr ""
 "Hey, scusa se irrompo,\n"
 "ma cosa è successo a quel ponte?"
 
-#: data/level/tempo-outskirts-inside.cfg:105
+#: data/level/tempo-outskirts-inside.cfg:186
 msgid ""
 "Yes, I've had a few people come in \n"
 "to ask about that."
@@ -3407,7 +3408,7 @@ msgstr ""
 "Si, sono passate altre persone \n"
 "a chiedere informazioni."
 
-#: data/level/tempo-outskirts-inside.cfg:106
+#: data/level/tempo-outskirts-inside.cfg:187
 msgid ""
 "There was a storm a few weeks ago, \n"
 "and a big swell of water washed it out."
@@ -3415,7 +3416,7 @@ msgstr ""
 "C'è stata una tempesta alcuni giorni fa,\n"
 "ed è stato spazzato via da una grande onda."
 
-#: data/level/tempo-outskirts-inside.cfg:107
+#: data/level/tempo-outskirts-inside.cfg:188
 msgid ""
 "You've probably seen this yourself, but\n"
 "just to be sure... don't go into the water."
@@ -3423,7 +3424,7 @@ msgstr ""
 "Probabilmente l'hai già notato, ma\n"
 "solo per essere sicuro... non andare in acqua."
 
-#: data/level/tempo-outskirts-inside.cfg:108
+#: data/level/tempo-outskirts-inside.cfg:189
 msgid ""
 "Current that hard will just smash you\n"
 "against the rocks."
@@ -3431,7 +3432,7 @@ msgstr ""
 "Quella corrente è così forte che ti schiaccerà\n"
 "contro le pietre."
 
-#: data/level/tempo-outskirts-inside.cfg:109
+#: data/level/tempo-outskirts-inside.cfg:190
 msgid ""
 "Yeah... crap.  I'm actually a bit confused\n"
 " about how to get where I'm going."
@@ -3439,7 +3440,7 @@ msgstr ""
 "Si... merda. Attualmente sono un po confuso\n"
 "sul come raggiungere la mia destinazione."
 
-#: data/level/tempo-outskirts-inside.cfg:110
+#: data/level/tempo-outskirts-inside.cfg:191
 msgid ""
 "See, I'm trying to make it to\n"
 "Milgram's castle."
@@ -3447,7 +3448,7 @@ msgstr ""
 "Vedi, sto cercando di raggiungere\n"
 "il castello di Milgram."
 
-#: data/level/tempo-outskirts-inside.cfg:111
+#: data/level/tempo-outskirts-inside.cfg:192
 msgid ""
 "Yes, he's quite the businessman.\n"
 "It'd be nice if he could help us, here."
@@ -3455,11 +3456,11 @@ msgstr ""
 "Si, è un uomo d'affari.\n"
 "Sarebbe bello se ci aiutasse."
 
-#: data/level/tempo-outskirts-inside.cfg:112
+#: data/level/tempo-outskirts-inside.cfg:193
 msgid "Hmm?"
 msgstr "Hmm?"
 
-#: data/level/tempo-outskirts-inside.cfg:113
+#: data/level/tempo-outskirts-inside.cfg:194
 msgid ""
 "Well, for one thing, it'd be nice if\n"
 "anyone could help get this bridge fixed."
@@ -3467,7 +3468,7 @@ msgstr ""
 "Beh, per una volta, sarebbe bello se\n"
 "qualcuno possa aiutare a riparare questo ponte."
 
-#: data/level/tempo-outskirts-inside.cfg:114
+#: data/level/tempo-outskirts-inside.cfg:195
 msgid ""
 "I sent in a request shortly after it fell,\n"
 "and they've been too busy to do anything."
@@ -3475,7 +3476,7 @@ msgstr ""
 "Ho inviato una richiesta subito dopo che è caduto,\n"
 "ma erano troppo occupati per poter far qualcosa."
 
-#: data/level/tempo-outskirts-inside.cfg:115
+#: data/level/tempo-outskirts-inside.cfg:196
 msgid ""
 "Anyways, the best way for you to go\n"
 "would be to head to Tempo Village."
@@ -3483,7 +3484,7 @@ msgstr ""
 "Comunque, il miglior modo per andartene\n"
 "sarebbe seguendo la strada per Tempo Village."
 
-#: data/level/tempo-outskirts-inside.cfg:116
+#: data/level/tempo-outskirts-inside.cfg:197
 msgid ""
 "There's a way from there to get to\n"
 "Milgram's Castle."
@@ -3491,11 +3492,11 @@ msgstr ""
 "C'è una via laggiù per raggiungere\n"
 "il castello di Milgram"
 
-#: data/level/tempo-outskirts-inside.cfg:117
+#: data/level/tempo-outskirts-inside.cfg:198
 msgid "Now, unfortunately, the easiest way..."
 msgstr "Ora, sfortunatamente, la strada più corta..."
 
-#: data/level/tempo-outskirts-inside.cfg:118
+#: data/level/tempo-outskirts-inside.cfg:199
 msgid ""
 "...would have been to cross the\n"
 " bridge next to this house."
@@ -3503,11 +3504,11 @@ msgstr ""
 "... sarebbe stata quella di attraversare il\n"
 "ponte vicino a questa casa."
 
-#: data/level/tempo-outskirts-inside.cfg:119
+#: data/level/tempo-outskirts-inside.cfg:200
 msgid "Figures."
 msgstr "Figurati."
 
-#: data/level/tempo-outskirts-inside.cfg:120
+#: data/level/tempo-outskirts-inside.cfg:201
 msgid ""
 "Fortunately, you're not completely\n"
 "out of luck."
@@ -3515,7 +3516,7 @@ msgstr ""
 "Non sei completamente\n"
 "sfortunato."
 
-#: data/level/tempo-outskirts-inside.cfg:121
+#: data/level/tempo-outskirts-inside.cfg:202
 msgid ""
 "If you hike back a ways, you should\n"
 "see a shortcut through the trees."
@@ -3523,7 +3524,7 @@ msgstr ""
 "Se ritorni un po' indietro, dovresti\n"
 "vedere una scorciatoia tra gli alberi."
 
-#: data/level/tempo-outskirts-inside.cfg:122
+#: data/level/tempo-outskirts-inside.cfg:203
 msgid ""
 "Taking that will get you to an\n"
 "odd contraption called \"the conveyance\"."
@@ -3531,7 +3532,7 @@ msgstr ""
 "Da là si va ad un\n"
 "aggeggio strano chiamato \"il trasporto\"."
 
-#: data/level/tempo-outskirts-inside.cfg:123
+#: data/level/tempo-outskirts-inside.cfg:204
 msgid ""
 "It's a ... little odd, but it is\n"
 "a way across the river."
@@ -3539,7 +3540,7 @@ msgstr ""
 "é un ... po' strano, ma \n"
 "permette di attraversare il fiume."
 
-#: data/level/tempo-outskirts-inside.cfg:124
+#: data/level/tempo-outskirts-inside.cfg:205
 msgid ""
 "Yeah - sure beats \"nothing\", though.\n"
 "Thanks a lot!"
@@ -3547,7 +3548,7 @@ msgstr ""
 "Si ... sicuramente meglio di niente.\n"
 "Grazie mille!"
 
-#: data/level/tempo-outskirts-inside.cfg:125
+#: data/level/tempo-outskirts-inside.cfg:206
 msgid "No problem.  Best of luck."
 msgstr "Nessun problema. In bocca al lupo."
 
@@ -3922,8 +3923,8 @@ msgstr ""
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level "
-"{registry.arcade_coin_race_high_score}."
+"The furthest that has been reached is level {registry."
+"arcade_coin_race_high_score}."
 msgstr "Il livello più alto è {registry.arcade_coin_race_high_score}."
 
 #: data/objects/items/max_heart_object.cfg:18
@@ -4220,5 +4221,3 @@ msgstr "Inverti A e B"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
-
-
