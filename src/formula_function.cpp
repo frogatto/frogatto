@@ -24,6 +24,10 @@
 
 #include "SDL.h"
 
+namespace {
+	const float radians_to_degrees = 57.29577951308232087;
+}
+
 namespace game_logic {
 
 variant formula_expression::execute_member(const formula_callable& variables, std::string& id) const
@@ -445,7 +449,21 @@ private:
 		return variant(static_cast<int>(acos(angle)*57.29577951308232087));
 	}
 };
-
+	
+class atan2_function : public function_expression {
+public:
+	explicit atan2_function(const args_list& args)
+	: function_expression("atan2", args, 2, 2)
+	{}
+	
+private:
+	variant execute(const formula_callable& variables) const {
+		const float x = args()[0]->evaluate(variables).as_decimal().as_float();
+		const float y = args()[1]->evaluate(variables).as_decimal().as_float();
+		return variant(static_cast<decimal>(atan2(y,x)*radians_to_degrees + 180));
+	}
+};
+	
 class sqrt_function : public function_expression {
 public:
 	explicit sqrt_function(const args_list& args)
@@ -1107,6 +1125,7 @@ functions_map& get_functions_map() {
 		FUNCTION(tan);
 		FUNCTION(asin);
 		FUNCTION(acos);
+		FUNCTION(atan2);
 		FUNCTION(sqrt);
 		FUNCTION(angle);
 		FUNCTION(orbit);
