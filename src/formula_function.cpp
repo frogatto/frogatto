@@ -451,7 +451,7 @@ private:
 	variant execute(const formula_callable& variables) const {
 		const float x = args()[0]->evaluate(variables).as_decimal().as_float();
 		const float y = args()[1]->evaluate(variables).as_decimal().as_float();
-		return variant(static_cast<decimal>(atan2(y,x)*radians_to_degrees + 180));
+		return variant(static_cast<decimal>(atan2(y,x)*radians_to_degrees));
 	}
 };
 	
