@@ -1,7 +1,7 @@
 # Languages to generate font texture for
 LANGUAGES = {
-  'zh_CN' => 'myuppygb-medium.ttf',
-  'ja'    => 'ipagp.ttf'
+  'zh_CN' => 'wqy-zenhei.ttc',
+  'ja'    => 'TakaoPGothic.ttf'
 }
 
 EXTRA_FML = Hash.new('').merge({
