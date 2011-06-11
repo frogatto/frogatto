@@ -497,8 +497,8 @@ private:
 		const float ang = args()[2]->evaluate(variables).as_int();
 		const float dist = args()[3]->evaluate(variables).as_int();
 		
-		const float u = (dist * cos((ang/57.29577951308232087)/1000)) + x;
-		const float v = (dist * sin((ang/57.29577951308232087)/1000)) + y;
+		const float u = (dist * cos(ang/radians_to_degrees)) + x;
+		const float v = (dist * sin(ang/radians_to_degrees)) + y;
 
 		std::vector<variant> result;
 		result.reserve(2);
