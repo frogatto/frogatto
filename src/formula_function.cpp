@@ -384,14 +384,12 @@ public:
 
 private:
 	variant execute(const formula_callable& variables) const {
-		const int value = args()[0]->evaluate(variables).as_int();
-		const double angle = (static_cast<double>(value));
-		//std::cerr << "got: " << value << "\n" << "ret: " << sin(angle/57.3)*36 << "\n";
-		return variant(static_cast<int>(sin(angle/57.3)*100));
+		const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
+		return variant(static_cast<decimal>(sin(angle/radians_to_degrees)));
 	}
 };
 
-class cos_function : public function_expression {	//Interprets two least significant digits as after decimal.
+class cos_function : public function_expression {	
 public:
 	explicit cos_function(const args_list& args)
 	     : function_expression("cos", args, 1, 1)
@@ -399,14 +397,12 @@ public:
 
 private:
 	variant execute(const formula_callable& variables) const {
-		const int value = args()[0]->evaluate(variables).as_int();
-		const double angle = (static_cast<double>(value));
-		//std::cerr << "got: " << value << "\n" << "ret: " << cos(angle/57.3)*36 << "\n";
-		return variant(static_cast<int>(cos(angle/57.3)*100));
+		const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
+		return variant(static_cast<decimal>(cos(angle/radians_to_degrees)));
 	}
 };
 
-class tan_function : public function_expression {	//Interprets two least significant digits as after decimal.
+class tan_function : public function_expression {
 public:
 	explicit tan_function(const args_list& args)
 	     : function_expression("tan", args, 1, 1)
@@ -414,14 +410,12 @@ public:
 
 private:
 	variant execute(const formula_callable& variables) const {
-		const int value = args()[0]->evaluate(variables).as_int();
-		const double angle = (static_cast<double>(value));
-		//std::cerr << "got: " << value << "\n" << "ret: " << tan(angle/57.3)*36 << "\n";
-		return variant(static_cast<int>(tan(angle/57.3)*100));
+		const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
+		return variant(static_cast<decimal>(tan(angle/radians_to_degrees)));
 	}
 };
 
-class asin_function : public function_expression {	//Interprets two least significant digits as after decimal.
+class asin_function : public function_expression {
 public:
 	explicit asin_function(const args_list& args)
 	     : function_expression("asin", args, 1, 1)
@@ -429,14 +423,12 @@ public:
 
 private:
 	variant execute(const formula_callable& variables) const {
-		const int value = args()[0]->evaluate(variables).as_int();
-		const double angle = (static_cast<double>(value)/100.0);
-		//std::cerr << "got: " << angle << "\n" << "ret: " << asin(angle)*100 << "\n";
-		return variant(static_cast<int>(asin(angle)*57.29577951308232087));
+		const float ratio = args()[0]->evaluate(variables).as_decimal().as_float();
+		return variant(static_cast<decimal>(asin(ratio)*radians_to_degrees));
 	}
 };
 
-class acos_function : public function_expression {	//Interprets two least significant digits as after decimal.
+class acos_function : public function_expression {
 public:
 	explicit acos_function(const args_list& args)
 	     : function_expression("acos", args, 1, 1)
@@ -444,9 +436,8 @@ public:
 
 private:
 	variant execute(const formula_callable& variables) const {
-		const int value = args()[0]->evaluate(variables).as_int();
-		const double angle = (static_cast<double>(value)/100.0);
-		return variant(static_cast<int>(acos(angle)*57.29577951308232087));
+		const float ratio = args()[0]->evaluate(variables).as_decimal().as_float();
+		return variant(static_cast<decimal>(acos(ratio)*radians_to_degrees));
 	}
 };
 	
