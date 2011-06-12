@@ -6,7 +6,7 @@
 ║  ▶ Going to war makes some tiles untradeable.                                 ║
 ║  ▶ Some tiles untradeable sometimes                                           ║
 ║  ▶ End turn function does not handle multiple starves & camps right?          ║
-║  ▶ Ghost tiles sometimes exist when a tile is deleted.                        ║
+║  ▷ Ghost tiles sometimes exist when a tile is deleted.                        ║
 ║  ▶ Tiles can occasionally be dragged off board.                               ║
 ║  ▶                                                                            ║
 ║                                                                               ║
