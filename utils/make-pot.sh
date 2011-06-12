@@ -23,6 +23,8 @@ cat <<EOF
 
 EOF
 (
+# find metadata files
+python utils/parse-metadata.py
 # find preload messages
 grep -Hn 'message="[^"][^"]*"' data/preload.cfg | \
 	sed -ne 's/^\(.*:[0-9]*\):.*message="/#: \1\n"/;s/"\([^"]*\)".*/msgid "\1"\nmsgstr ""\n/gp'

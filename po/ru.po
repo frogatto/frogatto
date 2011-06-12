@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-06-11 14:51-0300\n"
+"POT-Creation-Date: 2011-06-12 02:54-0300\n"
 "PO-Revision-Date: 2011-05-29 05:15+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Russian (http://www.transifex.net/projects/p/Frogatto/team/"
@@ -21,6 +21,212 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+
+#: CHANGELOG:1
+msgid "Version 1.1:"
+msgstr ""
+
+#: CHANGELOG:2
+msgid "Added arcade mode."
+msgstr ""
+
+#: CHANGELOG:3
+msgid "Redid graphics for forest trees."
+msgstr ""
+
+#: CHANGELOG:4
+msgid "Redid graphics for forest background"
+msgstr ""
+
+#: CHANGELOG:5
+msgid "Redid graphics for dungeon wall tiles"
+msgstr ""
+
+#: CHANGELOG:6
+msgid "Redid graphics for basement wall tiles"
+msgstr ""
+
+#: CHANGELOG:7
+msgid "Added a bunch of interior props"
+msgstr ""
+
+#: CHANGELOG:8
+msgid "Reworked \"darkness\" for improved appearance"
+msgstr ""
+
+#: CHANGELOG:9
+msgid "Added new palettes to forest and seaside areas."
+msgstr ""
+
+#: CHANGELOG:10
+msgid "Added some unique enemies to the forest."
+msgstr ""
+
+#: CHANGELOG:11
+msgid ""
+"Refactored damage and monster type systems to make behavior more consistent "
+"and eliminate some rare buggy behavior."
+msgstr ""
+
+#: CHANGELOG:12
+msgid ""
+"Added translation support, with 4 complete translations: French, Brazilian "
+"Portuguese, Chinese (Simplified), and Japanese."
+msgstr ""
+
+#: CHANGELOG:14
+msgid "Version 1.0.3:"
+msgstr ""
+
+#: CHANGELOG:15
+msgid "Fixed crash when picking up max heart pieces."
+msgstr ""
+
+#: CHANGELOG:16
+msgid "Other small bug fixes."
+msgstr ""
+
+#: CHANGELOG:18
+msgid "Version 1.0.2:"
+msgstr ""
+
+#: CHANGELOG:19
+msgid "Added support for \"darkness\" in levels."
+msgstr ""
+
+#: CHANGELOG:20
+msgid "Added support for WVGA."
+msgstr ""
+
+#: CHANGELOG:21
+msgid "Made player status not show on the titlescreen or world map."
+msgstr ""
+
+#: CHANGELOG:22
+msgid "Made golden ants less ambiguous."
+msgstr ""
+
+#: CHANGELOG:23
+msgid "Fixed bug making certain music always play at full volume (iPhone)."
+msgstr ""
+
+#: CHANGELOG:24
+msgid "Added option to reverse positions of A and B buttons (iPhone)."
+msgstr ""
+
+#: CHANGELOG:25
+msgid "Added support for repeating levels (for arcade modes)."
+msgstr ""
+
+#: CHANGELOG:26
+msgid ""
+"Pressing jump while in the air pressing against a wall now makes you cling "
+"to the wall."
+msgstr ""
+
+#: CHANGELOG:27
+msgid "Made it so you can skip dialogs sequences."
+msgstr ""
+
+#: CHANGELOG:28
+msgid "Fixed lots of z-order issues."
+msgstr ""
+
+#: CHANGELOG:29
+msgid "Fixed bug causing ambient sounds to not work."
+msgstr ""
+
+#: CHANGELOG:30
+msgid "Improved forest background, and made it go upwards infinitely."
+msgstr ""
+
+#: CHANGELOG:31
+msgid "Made hearts heal a full heart, rather than just half."
+msgstr ""
+
+#: CHANGELOG:32
+msgid "Changed tilesets to make water look better."
+msgstr ""
+
+#: CHANGELOG:33
+msgid "Many small bug fixes."
+msgstr ""
+
+#: CHANGELOG:35
+msgid "Version 1.0.1 (iPhone only):"
+msgstr ""
+
+#: CHANGELOG:36
+msgid ""
+"Significantly improved controls, both functionally and graphically (iPhone)."
+msgstr ""
+
+#: CHANGELOG:37
+msgid "Fixed auto-saving on iOS4 where multitasking is supported (iPhone)."
+msgstr ""
+
+#: CHANGELOG:38
+msgid "Fixed bug where a dialog could repeat forever."
+msgstr ""
+
+#: CHANGELOG:39
+msgid "Fixed crash in world map when you hold down while entering it."
+msgstr ""
+
+#: CHANGELOG:40
+msgid "Fixed fullscreen mode (Mac/Windows)."
+msgstr ""
+
+#: CHANGELOG:41
+msgid "Fixed controlpad issues for computers."
+msgstr ""
+
+#: CHANGELOG:42
+msgid "Added music and sound volume controls to pause screen."
+msgstr ""
+
+#: CHANGELOG:43
+msgid "Added customizable controls."
+msgstr ""
+
+#: CHANGELOG:44
+msgid "Added half-hearts."
+msgstr ""
+
+#: CHANGELOG:45
+msgid "Added scons script for compiling."
+msgstr ""
+
+#: CHANGELOG:46
+#, fuzzy
+msgid "Minor level changes."
+msgstr "Второй дизайнер уровней"
+
+#: CHANGELOG:47
+msgid "Updated music."
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:1 iOS_APP_STORE_METADATA:1
+msgid ""
+"An old-school 2d platformer game, starring a certain quixotic frog. From the "
+"creators of Battle for Wesnoth comes this exciting jump-and-run platformer. "
+"Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all the "
+"gameplay nuance of a classic console title. Run and jump over pits and "
+"enemies. Grab enemies with your tongue, swallow them, and then spit them out "
+"at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
+"puzzles. Collect coins and use them to buy upgrades and new abilities in the "
+"store. Talk to characters in game, and work to unravel Big Bad Milgram's "
+"plot against the townsfolk! At over 30 levels set in 4 different "
+"environments, Frogatto is not a flash in the pan, and has the play-time "
+"you'd expect from a real videogame."
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:3
+msgid ""
+"Frogatto was made by a group of big-time fans of classic videogames, who are "
+"hoping to bring back the magic in a new, original game design with "
+"unconventional gameplay mechanics - a fun break from the usual clones."
+msgstr ""
 
 #: data/achievements.cfg:4
 msgid "Pocket Money"
@@ -4027,6 +4233,21 @@ msgstr "Загрузка дверей"
 #: data/preload.cfg:29
 msgid "Loading energy shot"
 msgstr "Загрузка выстрела энергии"
+
+#: iOS_APP_STORE_METADATA:3
+msgid ""
+"Frogatto was made by a group of big-time fans of classic videogames, who are "
+"hoping to bring back the magic in a new, original game design with "
+"unconventional gameplay mechanics - a fun break from the usual clones. We're "
+"a small group of indie developers, hoping this game becomes one of the "
+"definitive platform games on iOS - and you can make that happen!"
+msgstr ""
+
+#: iOS_APP_STORE_METADATA:5
+msgid ""
+"To find out more about the game or to play the PC/Mac version for free, "
+"please visit http://www.frogatto.com/"
+msgstr ""
 
 #: src/controls_dialog.cpp:42
 msgid "Directions"
