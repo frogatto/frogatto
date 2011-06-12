@@ -480,7 +480,7 @@ private:
 		const float b = args()[1]->evaluate(variables).as_int();
 		const float c = args()[2]->evaluate(variables).as_int();
 		const float d = args()[3]->evaluate(variables).as_int();
-		return variant(static_cast<int>(round((atan2(a-c, b-d)*57.29577951308232087+90)*VARIANT_DECIMAL_PRECISION)*-1), variant::DECIMAL_VARIANT);
+		return variant(static_cast<int>(round((atan2(a-c, b-d)*radians_to_degrees+90)*VARIANT_DECIMAL_PRECISION)*-1), variant::DECIMAL_VARIANT);
 	}
 };
 
@@ -492,18 +492,18 @@ public:
 
 private:
 	variant execute(const formula_callable& variables) const {
-		const float x = args()[0]->evaluate(variables).as_int();
-		const float y = args()[1]->evaluate(variables).as_int();
-		const float ang = args()[2]->evaluate(variables).as_int();
-		const float dist = args()[3]->evaluate(variables).as_int();
+		const float x = args()[0]->evaluate(variables).as_decimal().as_float();
+		const float y = args()[1]->evaluate(variables).as_decimal().as_float();
+		const float ang = args()[2]->evaluate(variables).as_decimal().as_float();
+		const float dist = args()[3]->evaluate(variables).as_decimal().as_float();
 		
 		const float u = (dist * cos(ang/radians_to_degrees)) + x;
 		const float v = (dist * sin(ang/radians_to_degrees)) + y;
 
 		std::vector<variant> result;
 		result.reserve(2);
-		result.push_back(variant(static_cast<int>(u*VARIANT_DECIMAL_PRECISION), variant::DECIMAL_VARIANT));
-		result.push_back(variant(static_cast<int>(v*VARIANT_DECIMAL_PRECISION), variant::DECIMAL_VARIANT));
+		result.push_back(variant(decimal(u)));
+		result.push_back(variant(decimal(v)));
 		
 		return variant(&result);
 	}
