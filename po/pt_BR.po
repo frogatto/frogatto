@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-06-12 02:54-0300\n"
+"POT-Creation-Date: 2011-06-12 17:53-0300\n"
 "PO-Revision-Date: 2011-06-12 02:54-0300\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Portuguese (Brazilian) (http://www.transifex.net/projects/p/"
@@ -4519,6 +4519,27 @@ msgstr ""
 msgid ""
 "To find out more about the game or to play the PC/Mac version for free, "
 "please visit http://www.frogatto.com/"
+msgstr ""
+
+#: iOS_CHANGELOG:1
+msgid "Version 1.1.1:"
+msgstr ""
+
+#: iOS_CHANGELOG:2
+msgid "Fixed some crashing bugs."
+msgstr ""
+
+#: iOS_CHANGELOG:3
+msgid "Fixed The Long Haul (arcade level)"
+msgstr ""
+
+#: iOS_CHANGELOG:4
+#, fuzzy
+msgid "Fixed instructions on titlescreen"
+msgstr "Voltar à Tela Inicial"
+
+#: iOS_CHANGELOG:5
+msgid "New translation: Italian"
 msgstr ""
 
 #: src/controls_dialog.cpp:42
