@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 import os, sys, codecs
 #usage: from frogatto's base folder, run:
-#utils/text_width_check.py po/(desired file, with a "po" or "pot" extension)
+#utils/text_width_check.py po/(desired file, with a "po" or "pot" extension) [optional:max width]
+#e.g.:
+#utils/text_width_check.py po/frogatto.pot 360
 global MAXWIDTH
 MAXWIDTH = 350
 
@@ -18,7 +20,6 @@ def main(catalog):
 		if font not in os.listdir('data'):
 			font = "dialog_font.cfg"
 	else: return
-	print "File: " + catalog
 	
 	fontdata = codecs.open("data/" + font, encoding="utf-8").readlines()
 	fontdata = [x.strip() for x in fontdata]
@@ -93,5 +94,8 @@ def getmessage(line):
 	
 if __name__ == "__main__":
 	if len(sys.argv) == 2:
+		main(sys.argv[1])
+	elif len(sys.argv) == 3:
+		MAXWIDTH = int(sys.argv[2])
 		main(sys.argv[1])
 
