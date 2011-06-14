@@ -1,26 +1,24 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
-# Евгений Лежнин <z_lezhnin@mail2000.ru>, 2011
-# oleg koptev <koptev.oleg@gmail.com>, 2011
-# Philipp Zabel <pzabel@gmx.de>, 2011
-# Azamat Hackimov <azamat.hackimov@gmail.com>, 2011
+# 
+# Евгений Лежнин <z_lezhnin@mail2000.ru>, 2011.
+# oleg koptev <koptev.oleg@gmail.com>, 2011.
+# Philipp Zabel <pzabel@gmx.de>, 2011.
+# Azamat Hackimov <azamat.hackimov@gmail.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-06-12 17:53-0300\n"
-"PO-Revision-Date: 2011-05-29 05:15+0000\n"
+"POT-Creation-Date: 2011-06-14 02:08-0300\n"
+"PO-Revision-Date: 2011-06-14 05:13+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
-"Language-Team: Russian (http://www.transifex.net/projects/p/Frogatto/team/"
-"ru/)\n"
-"Language: ru\n"
+"Language-Team: Russian (http://www.transifex.net/projects/p/Frogatto/team/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
 #: CHANGELOG:1
 msgid "Version 1.1:"
@@ -198,9 +196,8 @@ msgid "Added scons script for compiling."
 msgstr ""
 
 #: CHANGELOG:46
-#, fuzzy
 msgid "Minor level changes."
-msgstr "Второй дизайнер уровней"
+msgstr ""
 
 #: CHANGELOG:47
 msgid "Updated music."
@@ -208,14 +205,14 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:1 iOS_APP_STORE_METADATA:1
 msgid ""
-"An old-school 2d platformer game, starring a certain quixotic frog. From the "
-"creators of Battle for Wesnoth comes this exciting jump-and-run platformer. "
-"Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all the "
-"gameplay nuance of a classic console title. Run and jump over pits and "
-"enemies. Grab enemies with your tongue, swallow them, and then spit them out "
-"at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
-"puzzles. Collect coins and use them to buy upgrades and new abilities in the "
-"store. Talk to characters in game, and work to unravel Big Bad Milgram's "
+"An old-school 2d platformer game, starring a certain quixotic frog. From the"
+" creators of Battle for Wesnoth comes this exciting jump-and-run platformer."
+" Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all "
+"the gameplay nuance of a classic console title. Run and jump over pits and "
+"enemies. Grab enemies with your tongue, swallow them, and then spit them out"
+" at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
+"puzzles. Collect coins and use them to buy upgrades and new abilities in the"
+" store. Talk to characters in game, and work to unravel Big Bad Milgram's "
 "plot against the townsfolk! At over 30 levels set in 4 different "
 "environments, Frogatto is not a flash in the pan, and has the play-time "
 "you'd expect from a real videogame."
@@ -223,8 +220,8 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are "
-"hoping to bring back the magic in a new, original game design with "
+"Frogatto was made by a group of big-time fans of classic videogames, who are"
+" hoping to bring back the magic in a new, original game design with "
 "unconventional gameplay mechanics - a fun break from the usual clones."
 msgstr ""
 
@@ -2691,14 +2688,6 @@ msgstr "Эх. Запертая дверь."
 msgid "There must be a way around it."
 msgstr "Её можно как-то обойти."
 
-#: data/level/rpg-trail2.cfg:5912
-msgid "There's nothing to the west."
-msgstr ""
-
-#: data/level/rpg-trail2.cfg:5950
-msgid "I hope you enjoy the scenery, because that's it..."
-msgstr ""
-
 #: data/level/secluded-hut-interior.cfg:12 data/level/secluded-hut.cfg:16
 #: data/objects/playable/map-selector.cfg:17
 msgid "Secluded Hut"
@@ -4019,8 +4008,8 @@ msgstr "Bы дошли до уровня {level.player.difficulty} в игре �
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level {registry."
-"arcade_coin_race_high_score}."
+"The furthest that has been reached is level "
+"{registry.arcade_coin_race_high_score}."
 msgstr "Максимальный уровень {registry.arcade_coin_race_high_score}"
 
 #: data/objects/items/max_heart_object.cfg:18
@@ -4111,7 +4100,8 @@ msgid ""
 "invincibility powerups. Invincibility\n"
 "powerups will make you\n"
 "invincible for a short time."
-msgstr "кристалл невидимости даст вам возможностьсделаться невидимым на время."
+msgstr ""
+"кристалл невидимости даст вам возможностьсделаться невидимым на время."
 
 #: data/objects/items/store-items/buyable_powerup_reflexes.cfg:11
 msgid "hyper crystal"
@@ -4236,10 +4226,10 @@ msgstr "Загрузка выстрела энергии"
 
 #: iOS_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are "
-"hoping to bring back the magic in a new, original game design with "
-"unconventional gameplay mechanics - a fun break from the usual clones. We're "
-"a small group of indie developers, hoping this game becomes one of the "
+"Frogatto was made by a group of big-time fans of classic videogames, who are"
+" hoping to bring back the magic in a new, original game design with "
+"unconventional gameplay mechanics - a fun break from the usual clones. We're"
+" a small group of indie developers, hoping this game becomes one of the "
 "definitive platform games on iOS - and you can make that happen!"
 msgstr ""
 
@@ -4262,9 +4252,8 @@ msgid "Fixed The Long Haul (arcade level)"
 msgstr ""
 
 #: iOS_CHANGELOG:4
-#, fuzzy
 msgid "Fixed instructions on titlescreen"
-msgstr "Назад в главный экран"
+msgstr ""
 
 #: iOS_CHANGELOG:5
 msgid "New translation: Italian"
@@ -4345,3 +4334,5 @@ msgstr "Поменять A и B местами"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
+
+

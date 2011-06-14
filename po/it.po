@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 #   <simone.m@gmx.com>, 2011.
 # nem <simone.m@gmx.com>, 2011.
 # TheJoe <asbruff@gmail.com>, 2011.
@@ -11,222 +11,258 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-06-12 17:53-0300\n"
-"PO-Revision-Date: 2011-05-29 19:05+0000\n"
-"Last-Translator: nem <simone.m@gmx.com>\n"
-"Language-Team: Italian (http://www.transifex.net/projects/p/Frogatto/team/"
-"it/)\n"
-"Language: it\n"
+"POT-Creation-Date: 2011-06-14 02:08-0300\n"
+"PO-Revision-Date: 2011-06-14 05:13+0000\n"
+"Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
+"Language-Team: Italian (http://www.transifex.net/projects/p/Frogatto/team/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: CHANGELOG:1
 msgid "Version 1.1:"
-msgstr ""
+msgstr "Versione 1.1:"
 
 #: CHANGELOG:2
 msgid "Added arcade mode."
-msgstr ""
+msgstr "Aggiunta la modalità arcade."
 
 #: CHANGELOG:3
 msgid "Redid graphics for forest trees."
-msgstr ""
+msgstr "Alberi della foresta ridisegnati."
 
 #: CHANGELOG:4
 msgid "Redid graphics for forest background"
-msgstr ""
+msgstr "Sfondo foresta ridisegnato"
 
 #: CHANGELOG:5
 msgid "Redid graphics for dungeon wall tiles"
-msgstr ""
+msgstr "Muri del dungeon ridisegnati"
 
 #: CHANGELOG:6
 msgid "Redid graphics for basement wall tiles"
-msgstr ""
+msgstr "Muri del seminterrato ridisegnati"
 
 #: CHANGELOG:7
 msgid "Added a bunch of interior props"
-msgstr ""
+msgstr "Aggiunto parecchi oggetti d'interno"
 
 #: CHANGELOG:8
 msgid "Reworked \"darkness\" for improved appearance"
-msgstr ""
+msgstr "Rielaborato \"buio\" per migliorare l'aspetto"
 
 #: CHANGELOG:9
 msgid "Added new palettes to forest and seaside areas."
-msgstr ""
+msgstr "Aggiunte nuove tavolozze per le aree foresta e mare."
 
 #: CHANGELOG:10
 msgid "Added some unique enemies to the forest."
-msgstr ""
+msgstr "Aggiunti alcuni nemici unici alla foresta."
 
 #: CHANGELOG:11
 msgid ""
 "Refactored damage and monster type systems to make behavior more consistent "
 "and eliminate some rare buggy behavior."
 msgstr ""
+"Refactoring della gestione dei danni e del tipo di mostro per rendere il "
+"comportamento più coerente e di eliminare alcuni rari bugs."
 
 #: CHANGELOG:12
 msgid ""
 "Added translation support, with 4 complete translations: French, Brazilian "
 "Portuguese, Chinese (Simplified), and Japanese."
 msgstr ""
+"Aggiunto il supporto di traduzione, con 4 traduzioni complete: francese, "
+"portoghese brasiliano, cinese (semplificato) e giapponese."
 
 #: CHANGELOG:14
 msgid "Version 1.0.3:"
-msgstr ""
+msgstr "Versione 1.0.3:"
 
 #: CHANGELOG:15
 msgid "Fixed crash when picking up max heart pieces."
 msgstr ""
+"Corretto il crash che avveniva quando si raccoglieva i pezzi di cuore max."
 
 #: CHANGELOG:16
 msgid "Other small bug fixes."
-msgstr ""
+msgstr "Altre piccole correzioni dei bug."
 
 #: CHANGELOG:18
 msgid "Version 1.0.2:"
-msgstr ""
+msgstr "Versione 1.0.2:"
 
 #: CHANGELOG:19
 msgid "Added support for \"darkness\" in levels."
-msgstr ""
+msgstr "Aggiunto il supporto per l' \"oscurità\" nei livelli."
 
 #: CHANGELOG:20
 msgid "Added support for WVGA."
-msgstr ""
+msgstr "Aggiunto il supporto per WVGA."
 
 #: CHANGELOG:21
 msgid "Made player status not show on the titlescreen or world map."
 msgstr ""
+"Reso non visibile lo stato del giocatore nella schermata principale e la "
+"mappa del mondo."
 
 #: CHANGELOG:22
 msgid "Made golden ants less ambiguous."
-msgstr ""
+msgstr "Madalità formiche d'oro meno ambigua."
 
 #: CHANGELOG:23
 msgid "Fixed bug making certain music always play at full volume (iPhone)."
 msgstr ""
+"Corretto il bug che impostava sempre al massimo il volume alcuni brani "
+"(iPhone)."
 
 #: CHANGELOG:24
 msgid "Added option to reverse positions of A and B buttons (iPhone)."
 msgstr ""
+"Aggiunta l'opzione per invertire le posizioni dei pulsanti A e B (iPhone)."
 
 #: CHANGELOG:25
 msgid "Added support for repeating levels (for arcade modes)."
-msgstr ""
+msgstr "Aggiunto il supporto per ripetere i livelli (per le modalità arcade)."
 
 #: CHANGELOG:26
 msgid ""
 "Pressing jump while in the air pressing against a wall now makes you cling "
 "to the wall."
-msgstr ""
+msgstr "Saltando contro un muro vi farà ora aggrappate alla parete."
 
 #: CHANGELOG:27
 msgid "Made it so you can skip dialogs sequences."
-msgstr ""
+msgstr "Reso così si può saltare sequenze di dialoghi."
 
 #: CHANGELOG:28
 msgid "Fixed lots of z-order issues."
-msgstr ""
+msgstr "Risolti un sacco di problemi di z-order."
 
 #: CHANGELOG:29
 msgid "Fixed bug causing ambient sounds to not work."
-msgstr ""
+msgstr "Corretto il bug che impediva ai suoni ambientali di funzionare."
 
 #: CHANGELOG:30
 msgid "Improved forest background, and made it go upwards infinitely."
 msgstr ""
+"Lo sfondo della foresta è stato migliorato notevolmente portandola ad una "
+"elevata qualità."
 
 #: CHANGELOG:31
 msgid "Made hearts heal a full heart, rather than just half."
 msgstr ""
+"Si è fatto in modo che i couri un cuore pieno, piuttosto che solo la metà."
 
 #: CHANGELOG:32
 msgid "Changed tilesets to make water look better."
-msgstr ""
+msgstr "Tileset modificato per donare all'acqua un aspetto migliore."
 
 #: CHANGELOG:33
 msgid "Many small bug fixes."
-msgstr ""
+msgstr "Molte piccole correzioni dei bug."
 
 #: CHANGELOG:35
 msgid "Version 1.0.1 (iPhone only):"
-msgstr ""
+msgstr "Versione 1.0.1 (solo iPhone):"
 
 #: CHANGELOG:36
 msgid ""
 "Significantly improved controls, both functionally and graphically (iPhone)."
 msgstr ""
+"Migliorati significativamente i controlli, sia funzionale che grafico "
+"(iPhone)."
 
 #: CHANGELOG:37
 msgid "Fixed auto-saving on iOS4 where multitasking is supported (iPhone)."
 msgstr ""
+"Corretto auto salvataggio sul iOS4 dove è supportato il multitasking "
+"(iPhone)."
 
 #: CHANGELOG:38
 msgid "Fixed bug where a dialog could repeat forever."
-msgstr ""
+msgstr "Corretto errore che poteva far ripetere all'infinito un dialogo."
 
 #: CHANGELOG:39
 msgid "Fixed crash in world map when you hold down while entering it."
 msgstr ""
+"Corretto il crash nella mappa del mondo quando si tiene premuto mentre si "
+"entra."
 
 #: CHANGELOG:40
 msgid "Fixed fullscreen mode (Mac/Windows)."
-msgstr ""
+msgstr "Corretta modalità a schermo intero (Mac / Windows)."
 
 #: CHANGELOG:41
 msgid "Fixed controlpad issues for computers."
-msgstr ""
+msgstr "Risolti i problemi con il ControlPad per computer."
 
 #: CHANGELOG:42
 msgid "Added music and sound volume controls to pause screen."
 msgstr ""
+"Aggiunti, gioco in pausa, i controlli per il volume della musica e dei "
+"suoni."
 
 #: CHANGELOG:43
 msgid "Added customizable controls."
-msgstr ""
+msgstr "Aggiunta personalizzazione controlli."
 
 #: CHANGELOG:44
 msgid "Added half-hearts."
-msgstr ""
+msgstr "Aggiunti mezzi cuori."
 
 #: CHANGELOG:45
 msgid "Added scons script for compiling."
-msgstr ""
+msgstr "Aggiunto scons script per la compilazione."
 
 #: CHANGELOG:46
-#, fuzzy
 msgid "Minor level changes."
-msgstr "Minor Level Designer"
+msgstr "Cambiamenti minori ai livelli."
 
 #: CHANGELOG:47
 msgid "Updated music."
-msgstr ""
+msgstr "Aggiornamento musica."
 
 #: MAC_APP_STORE_METADATA:1 iOS_APP_STORE_METADATA:1
 msgid ""
-"An old-school 2d platformer game, starring a certain quixotic frog. From the "
-"creators of Battle for Wesnoth comes this exciting jump-and-run platformer. "
-"Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all the "
-"gameplay nuance of a classic console title. Run and jump over pits and "
-"enemies. Grab enemies with your tongue, swallow them, and then spit them out "
-"at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
-"puzzles. Collect coins and use them to buy upgrades and new abilities in the "
-"store. Talk to characters in game, and work to unravel Big Bad Milgram's "
+"An old-school 2d platformer game, starring a certain quixotic frog. From the"
+" creators of Battle for Wesnoth comes this exciting jump-and-run platformer."
+" Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all "
+"the gameplay nuance of a classic console title. Run and jump over pits and "
+"enemies. Grab enemies with your tongue, swallow them, and then spit them out"
+" at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
+"puzzles. Collect coins and use them to buy upgrades and new abilities in the"
+" store. Talk to characters in game, and work to unravel Big Bad Milgram's "
 "plot against the townsfolk! At over 30 levels set in 4 different "
 "environments, Frogatto is not a flash in the pan, and has the play-time "
 "you'd expect from a real videogame."
 msgstr ""
+"Una gioco platform 2d con stile vecchia scuola, avente come protagonista una"
+" rana donchisciottesca. Dai creatori di Battle for Wesnoth nasce questo "
+"emozionante platform 'jump-and-run'. Frogatto è bellissimo, elevata qualità "
+"pixel art, meravigliosi brani arcade, e tutte le sfumature di gioco come in "
+"un classico titolo per console. Correre e saltare oltre box e nemici. "
+"Afferra i nemici con la tua lingua, ingoiali, e poi sputali fuori addosso ad"
+" altri nemici come proiettili! Lotta contro boss pericolosi, e risolvi "
+"complicati puzzle. Raccogli le monete e usarle nel negozio per acquistare "
+"potenziamenti e nuove abilità. Parla con i personaggi nel gioco, e lavora "
+"per svelare la malvagia trama di Milgram contro gli abitanti! Con oltre 30 "
+"livelli in 4 diversi ambienti, Frogatto non è un fuoco di paglia, e ha "
+"tuttle le caratteristiche che ci si aspetterebbe da un videogioco vero e "
+"proprio."
 
 #: MAC_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are "
-"hoping to bring back the magic in a new, original game design with "
+"Frogatto was made by a group of big-time fans of classic videogames, who are"
+" hoping to bring back the magic in a new, original game design with "
 "unconventional gameplay mechanics - a fun break from the usual clones."
 msgstr ""
+"Frogatto è stata realizzato da un gruppo di appassionati di videogiochi "
+"classici con elevata conoscenza sul campo, che sperano di riportare la magia"
+" dei tempi passati con un nuovo design del gioco originale e con meccaniche "
+"di gioco non convenzionale - una pausa divertente dai soliti cloni."
 
 #: data/achievements.cfg:4
 msgid "Pocket Money"
@@ -2753,14 +2789,6 @@ msgstr "Bleh. Una porta chiusa."
 msgid "There must be a way around it."
 msgstr "Ci deve essere un modo per passarla."
 
-#: data/level/rpg-trail2.cfg:5912
-msgid "There's nothing to the west."
-msgstr "Non c'è niente a ovest."
-
-#: data/level/rpg-trail2.cfg:5950
-msgid "I hope you enjoy the scenery, because that's it..."
-msgstr "Spero ti piaccia il paesaggio, perché è quello ..."
-
 #: data/level/secluded-hut-interior.cfg:12 data/level/secluded-hut.cfg:16
 #: data/objects/playable/map-selector.cfg:17
 msgid "Secluded Hut"
@@ -4129,8 +4157,8 @@ msgstr ""
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level {registry."
-"arcade_coin_race_high_score}."
+"The furthest that has been reached is level "
+"{registry.arcade_coin_race_high_score}."
 msgstr "Il livello più alto è {registry.arcade_coin_race_high_score}."
 
 #: data/objects/items/max_heart_object.cfg:18
@@ -4354,39 +4382,46 @@ msgstr "Caricamento proiettile d'energia"
 
 #: iOS_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are "
-"hoping to bring back the magic in a new, original game design with "
-"unconventional gameplay mechanics - a fun break from the usual clones. We're "
-"a small group of indie developers, hoping this game becomes one of the "
+"Frogatto was made by a group of big-time fans of classic videogames, who are"
+" hoping to bring back the magic in a new, original game design with "
+"unconventional gameplay mechanics - a fun break from the usual clones. We're"
+" a small group of indie developers, hoping this game becomes one of the "
 "definitive platform games on iOS - and you can make that happen!"
 msgstr ""
+"Frogatto è stato realizzato da un gruppo di appassionati da gran-tempo di "
+"videogiochi classici, che sperano di riportare la magia tramite un nuovo "
+"design del gioco originale con meccaniche di gioco non convenzionale - una "
+"pausa divertente dal cloni solito. Siamo un piccolo gruppo di sviluppatori "
+"indipendenti, sperando che questo gioco diventa uno dei giochi di "
+"piattaforma definitiva a Ios - e si può fare che questo accada!"
 
 #: iOS_APP_STORE_METADATA:5
 msgid ""
 "To find out more about the game or to play the PC/Mac version for free, "
 "please visit http://www.frogatto.com/"
 msgstr ""
+"Per saperne di più sul gioco o per giocare la versione gratuita PC / Mac, si"
+" prega di visitare http://www.frogatto.com/"
 
 #: iOS_CHANGELOG:1
 msgid "Version 1.1.1:"
-msgstr ""
+msgstr "Versione 1.1.1:"
 
 #: iOS_CHANGELOG:2
 msgid "Fixed some crashing bugs."
-msgstr ""
+msgstr "Correzione di alcuni crash."
 
 #: iOS_CHANGELOG:3
 msgid "Fixed The Long Haul (arcade level)"
-msgstr ""
+msgstr "Corretto Il lungo raggio (livello arcade)"
 
 #: iOS_CHANGELOG:4
-#, fuzzy
 msgid "Fixed instructions on titlescreen"
-msgstr "Ritorna al menu titoli"
+msgstr "Corrette le istruzioni nella schermata principale"
 
 #: iOS_CHANGELOG:5
 msgid "New translation: Italian"
-msgstr ""
+msgstr "Nuova traduzione: Italiano"
 
 #: src/controls_dialog.cpp:42
 msgid "Directions"
@@ -4463,3 +4498,5 @@ msgstr "Inverti A e B"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
+
+

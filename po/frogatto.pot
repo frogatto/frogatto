@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto v1.0.3\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-06-12 17:53-0300\n"
+"POT-Creation-Date: 2011-06-14 02:08-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2357,14 +2357,6 @@ msgstr ""
 
 #: data/level/rocky-roots.cfg:1136
 msgid "There must be a way around it."
-msgstr ""
-
-#: data/level/rpg-trail2.cfg:5912
-msgid "There's nothing to the west."
-msgstr ""
-
-#: data/level/rpg-trail2.cfg:5950
-msgid "I hope you enjoy the scenery, because that's it..."
 msgstr ""
 
 #: data/level/secluded-hut-interior.cfg:12 data/level/secluded-hut.cfg:16
