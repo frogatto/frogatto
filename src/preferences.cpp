@@ -44,7 +44,6 @@ namespace preferences {
 
 		std::string level_path_ = "data/level/";
 
-		bool send_stats_ = true;
 		bool relay_through_server_ = false;
 		
 		std::string control_scheme_ = "iphone_2d";
@@ -54,7 +53,7 @@ namespace preferences {
 #ifndef PREFERENCES_PATH
 #define PREFERENCES_PATH "../Documents/"
 #endif
-		send_stats_ = false;
+		bool send_stats_ = false;
 		
 		bool sim_iphone_ = true;
 
@@ -72,6 +71,9 @@ namespace preferences {
 
 		bool use_16bpp_textures_ = true;
 #else
+		
+		bool send_stats_ = true;
+		
 		bool sim_iphone_ = false;
 
 #ifndef PREFERENCES_PATH
