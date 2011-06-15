@@ -21,7 +21,7 @@
 
 namespace preferences {
 	const std::string& version() {
-		static const std::string Version = "1.1";
+		static const std::string Version = "1.1.1";
 		return Version;
 	}
 
@@ -54,7 +54,8 @@ namespace preferences {
 #ifndef PREFERENCES_PATH
 #define PREFERENCES_PATH "../Documents/"
 #endif
-
+		send_stats_ = false;
+		
 		bool sim_iphone_ = true;
 
 		int virtual_screen_width_ = 960;
