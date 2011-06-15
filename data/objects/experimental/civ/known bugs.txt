@@ -1,27 +1,28 @@
-  ┌─────────────┐
-  │ Known Bugs: │
-╔═╧═════════════╧═══════════════════════════════════════════════════════════════╗
-║ Critical:                                                                     ║
-║  ▶ A tile accepts any nearby farm as feeding it, regardless of team.          ║
-║  ▶ Going to war makes some tiles untradeable.                                 ║
-║  ▶ Some tiles untradeable sometimes                                           ║
-║  ▶ End turn function does not handle multiple starves & camps right?          ║
-║  ▷ Ghost tiles sometimes exist when a tile is deleted.                        ║
-║  ▶ Tiles can occasionally be dragged off board.                               ║
-║  ▶ Game slows down and freezes when the board fills up.                       ║
-║  ▶                                                                            ║
-║                                                                               ║
-║ Cosmetic:                                                                     ║
-║  ▷ Z-levels not set correctly (or at all).                                    ║
-║  ▶ Starvation skull sometimes fires twice.                                    ║
-║  ▶ Replace help should say tiles in hand less spent tiles, not just tiles in  ║
-║    hand.                                                                      ║
-║  ▶                                                                            ║
-║                                                                               ║
-║ Minor:                                                                        ║
-║  ▶ More comprehensive context help needed.                                    ║
-║  ▶ War screen text sometimes is too wide and shows up in normal mode.         ║
-║  ▶ Turn indicator would be nice.                                              ║
-║  ▶                                                                            ║
-║                                                          ▷ fixed  ▶ not fixed ║
-╚═══════════════════════════════════════════════════════════════════════════════╝
+	  
+	  ┌─────────────┐
+	  │ Known Bugs: │
+	╔═╧═════════════╧═══════════════════════════════════════════════════════════════╗
+	║ Critical:                                                                     ║
+	║  ▶ A tile accepts any nearby farm as feeding it, regardless of team.          ║
+	║  ▷ Going to war makes some tiles untradeable.                                 ║
+	║  ▶ End turn function might not handle multiple starves & camps right.         ║
+	║  ▷ Ghost tiles sometimes exist when a tile is deleted.                        ║
+	║  ▷ Tiles can occasionally be dragged off board.                               ║
+	║  ▶ Game slows down and freezes when the board fills up.                       ║
+	║  ▶                                                                            ║
+	║                                                                               ║
+	║ Cosmetic:                                                                     ║
+	║  ▷ Z-levels not set correctly (or at all).                                    ║
+	║  ▷ Starvation skull sometimes fires twice.                                    ║	Can't reproduce, may be AI related.
+	║  ▶ Replace help should say tiles in hand less spent tiles, not just tiles in  ║
+	║    hand.                                                                      ║
+	║  ▶                                                                            ║
+	║                                                                               ║
+	║ Minor:                                                                        ║
+	║  ▶ More comprehensive context help needed.                                    ║
+	║  ▶ War screen text sometimes is too wide and shows up in normal mode.         ║
+	║  ▶ Turn indicator would be nice.                                              ║
+	║  ▶                                                                            ║
+	║                                                          ▷ fixed  ▶ not fixed ║
+	╚═══════════════════════════════════════════════════════════════════════════════╝
+	
