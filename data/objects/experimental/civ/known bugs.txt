@@ -8,6 +8,7 @@
 ║  ▶ End turn function does not handle multiple starves & camps right?          ║
 ║  ▷ Ghost tiles sometimes exist when a tile is deleted.                        ║
 ║  ▶ Tiles can occasionally be dragged off board.                               ║
+║  ▶ Game slows down and freezes when the board fills up.                       ║
 ║  ▶                                                                            ║
 ║                                                                               ║
 ║ Cosmetic:                                                                     ║
