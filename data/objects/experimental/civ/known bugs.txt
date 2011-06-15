@@ -13,7 +13,7 @@
 	║                                                                               ║
 	║ Cosmetic:                                                                     ║
 	║  ▷ Z-levels not set correctly (or at all).                                    ║
-	║  ▷ Starvation skull sometimes fires twice.                                    ║	Can't reproduce, may be AI related.
+	║  ▶ Starvation skull sometimes fires twice.                                    ║	Caused when two starves at once. The end turn function double-writes the vars.play data, re-writing one of the previous tiles into it.
 	║  ▶ Replace help should say tiles in hand less spent tiles, not just tiles in  ║
 	║    hand.                                                                      ║
 	║  ▶                                                                            ║
