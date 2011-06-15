@@ -1255,6 +1255,18 @@ FUNCTION_DEF(debug, 1, -1, "debug(...): outputs arguments to the console")
 	return variant(new debug_command(str));
 END_FUNCTION_DEF(debug)
 
+FUNCTION_DEF(debug_fn, 2, 2, "debug(msg, expr): evaluates and returns expr. Will print 'msg' to stderr")
+	variant res = args()[1]->evaluate(variables);
+	if(preferences::debug()) {
+		variant msg = args()[0]->evaluate(variables);
+		std::string s = msg.to_debug_string();
+		debug_console::add_message(s);
+		std::cerr << "CONSOLE: " << s << "\n";
+	}
+
+	return res;
+END_FUNCTION_DEF(debug_fn)
+
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 class debug_console_command : public entity_command_callable
 {
