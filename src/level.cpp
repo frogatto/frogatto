@@ -3609,6 +3609,10 @@ UTILITY(correct_solidity)
 	std::vector<std::string> files;
 	sys::get_files_in_dir(preferences::level_path(), &files);
 	foreach(const std::string& file, files) {
+		if(file.size() <= 4 || std::string(file.end()-4, file.end()) != ".cfg") {
+			continue;
+		}
+
 		boost::intrusive_ptr<level> lvl(new level(file));
 		lvl->finish_loading();
 		lvl->set_as_current_level();
@@ -3634,8 +3638,11 @@ UTILITY(correct_solidity)
 
 UTILITY(compile_levels)
 {
-	std::cerr << "COMPILING LEVELS...\n";
 	preferences::compiling_tiles = true;
+
+	UTILITY_correct_solidity(args);
+
+	std::cerr << "COMPILING LEVELS...\n";
 
 	std::vector<std::string> files;
 	sys::get_files_in_dir(preferences::level_path(), &files);
