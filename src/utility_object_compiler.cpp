@@ -156,6 +156,11 @@ UTILITY(object_compiler)
 		for(wml::node::child_iterator i = obj_node->begin_child("particle_system"); i != obj_node->end_child("particle_system"); ++i) {
 			animation_containing_nodes.push_back(i->second);
 		}
+
+		//add nested objects
+		for(wml::node::child_iterator i = obj_node->begin_child("object_type"); i != obj_node->end_child("object_type"); ++i) {
+			animation_containing_nodes.push_back(i->second);
+		}
 	}
 
 	foreach(wml::node_ptr& node, animation_containing_nodes) {
