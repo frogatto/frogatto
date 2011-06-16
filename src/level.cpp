@@ -3640,8 +3640,6 @@ UTILITY(compile_levels)
 {
 	preferences::compiling_tiles = true;
 
-	UTILITY_correct_solidity(args);
-
 	std::cerr << "COMPILING LEVELS...\n";
 
 	std::vector<std::string> files;
