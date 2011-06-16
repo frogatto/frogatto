@@ -164,10 +164,12 @@ UTILITY(object_compiler)
 			animation_containing_nodes.push_back(i->second);
 		}
 
-		//add nested objects
+		//add nested objects -- disabled for now until we find bugs in it.
+		/*
 		for(wml::node::child_iterator i = obj_node->begin_child("object_type"); i != obj_node->end_child("object_type"); ++i) {
 			animation_containing_nodes.push_back(i->second);
 		}
+		*/
 	}
 
 	foreach(wml::node_ptr& node, animation_containing_nodes) {
