@@ -21,7 +21,7 @@
 	║                                                                               ║
 	║ Minor:                                                                        ║
 	║  ▶ More comprehensive context help needed.                                    ║
-	║  ▶ Turn indicator would be nice.                                              ║
+	║  ▷ Turn indicator would be nice.                                              ║
 	║  ▶                                                                            ║
 	║                                                          ▷ fixed  ▶ not fixed ║
 	╚═══════════════════════════════════════════════════════════════════════════════╝
