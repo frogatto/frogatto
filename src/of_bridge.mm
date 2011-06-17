@@ -12,6 +12,17 @@
 
 static SampleOFDelegate* delegate;
 
+namespace
+{
+	void of_wait ()
+	{
+		while (of_dashboard_visible)
+		{ 
+			CFRunLoopRunInMode(kCFRunLoopDefaultMode, 1, TRUE); 
+		}
+	}
+}
+
 void of_init ()
 {
 	NSDictionary* settings = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -32,6 +43,8 @@ void of_init ()
 		andSettings: settings
 		andDelegates: delegates];
 	
+	of_wait(); // in case it shows up for the first time to login
+	
 	[Appirater appLaunched];
 }
 
@@ -39,10 +52,7 @@ void of_dashboard ()
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[OpenFeint launchDashboard];
-	while (of_dashboard_visible)
-	{ 
-        CFRunLoopRunInMode(kCFRunLoopDefaultMode, 1, TRUE); 
-    }
+	of_wait();
 	[pool release];
 }
 
