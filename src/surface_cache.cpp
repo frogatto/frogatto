@@ -52,7 +52,7 @@ surface get_no_cache(const std::string& key)
 	const std::string fname = path + key;
 	surface surf = surface(IMG_Load(sys::find_file(fname).c_str()));
 	//std::cerr << "loading image '" << fname << "'\n";
-	if(surf.get() == false) {
+	if(surf.get() == false || surf->w == 0) {
 		//std::cerr << "failed to load image '" << key << "'\n";
 		return surface();
 	}
