@@ -51,6 +51,17 @@ const std::string& get_locale() {
 }
 
 	void init() {
+#ifdef _WIN32
+	{
+		char c[1024];
+		GetLocaleInfoA(LOCALE_USER_DEFAULT,LOCALE_SISO639LANGNAME,c,1024);
+		if(c[0]!='\0'){
+			locale=c;
+			GetLocaleInfoA(LOCALE_USER_DEFAULT,LOCALE_SISO3166CTRYNAME,c,1024);
+			if(c[0]!='\0') locale+=std::string("_")+c;
+		}
+	}
+#endif
 		
 #ifdef __APPLE__
 		CFArrayRef localeIDs = CFLocaleCopyPreferredLanguages();
