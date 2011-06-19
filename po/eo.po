@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-06-14 02:08-0300\n"
-"PO-Revision-Date: 2011-06-14 05:13+0000\n"
+"POT-Creation-Date: 2011-06-19 19:34-0300\n"
+"PO-Revision-Date: 2011-06-19 22:35+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Esperanto (http://www.transifex.net/projects/p/Frogatto/team/eo/)\n"
 "MIME-Version: 1.0\n"
@@ -17,186 +17,210 @@ msgstr ""
 "Language: eo\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: CHANGELOG:1
-msgid "Version 1.1:"
+#: CHANGELOG:1 iOS_CHANGELOG:1
+msgid "Version 1.1.1:"
 msgstr ""
 
-#: CHANGELOG:2
-msgid "Added arcade mode."
+#: CHANGELOG:2 iOS_CHANGELOG:2
+msgid "Fixed some crashing bugs."
 msgstr ""
 
 #: CHANGELOG:3
-msgid "Redid graphics for forest trees."
+msgid "Fixed The Long Haul (compiled mode)"
 msgstr ""
 
 #: CHANGELOG:4
-msgid "Redid graphics for forest background"
+msgid "Fixed instructions on titlescreen (iOS)"
 msgstr ""
 
-#: CHANGELOG:5
-msgid "Redid graphics for dungeon wall tiles"
+#: CHANGELOG:5 iOS_CHANGELOG:5
+msgid "New translation: Italian"
 msgstr ""
 
 #: CHANGELOG:6
-msgid "Redid graphics for basement wall tiles"
-msgstr ""
-
-#: CHANGELOG:7
-msgid "Added a bunch of interior props"
+msgid "Added automatic language selection for Windows"
 msgstr ""
 
 #: CHANGELOG:8
-msgid "Reworked \"darkness\" for improved appearance"
+msgid "Version 1.1:"
 msgstr ""
 
 #: CHANGELOG:9
-msgid "Added new palettes to forest and seaside areas."
+msgid "Added arcade mode."
 msgstr ""
 
 #: CHANGELOG:10
-msgid "Added some unique enemies to the forest."
+msgid "Redid graphics for forest trees."
 msgstr ""
 
 #: CHANGELOG:11
+msgid "Redid graphics for forest background"
+msgstr ""
+
+#: CHANGELOG:12
+msgid "Redid graphics for dungeon wall tiles"
+msgstr ""
+
+#: CHANGELOG:13
+msgid "Redid graphics for basement wall tiles"
+msgstr ""
+
+#: CHANGELOG:14
+msgid "Added a bunch of interior props"
+msgstr ""
+
+#: CHANGELOG:15
+msgid "Reworked \"darkness\" for improved appearance"
+msgstr ""
+
+#: CHANGELOG:16
+msgid "Added new palettes to forest and seaside areas."
+msgstr ""
+
+#: CHANGELOG:17
+msgid "Added some unique enemies to the forest."
+msgstr ""
+
+#: CHANGELOG:18
 msgid ""
 "Refactored damage and monster type systems to make behavior more consistent "
 "and eliminate some rare buggy behavior."
 msgstr ""
 
-#: CHANGELOG:12
+#: CHANGELOG:19
 msgid ""
 "Added translation support, with 4 complete translations: French, Brazilian "
 "Portuguese, Chinese (Simplified), and Japanese."
 msgstr ""
 
-#: CHANGELOG:14
+#: CHANGELOG:21
 msgid "Version 1.0.3:"
 msgstr ""
 
-#: CHANGELOG:15
+#: CHANGELOG:22
 msgid "Fixed crash when picking up max heart pieces."
 msgstr ""
 
-#: CHANGELOG:16
+#: CHANGELOG:23
 msgid "Other small bug fixes."
 msgstr ""
 
-#: CHANGELOG:18
+#: CHANGELOG:25
 msgid "Version 1.0.2:"
 msgstr ""
 
-#: CHANGELOG:19
+#: CHANGELOG:26
 msgid "Added support for \"darkness\" in levels."
 msgstr ""
 
-#: CHANGELOG:20
+#: CHANGELOG:27
 msgid "Added support for WVGA."
 msgstr ""
 
-#: CHANGELOG:21
+#: CHANGELOG:28
 msgid "Made player status not show on the titlescreen or world map."
 msgstr ""
 
-#: CHANGELOG:22
+#: CHANGELOG:29
 msgid "Made golden ants less ambiguous."
 msgstr ""
 
-#: CHANGELOG:23
+#: CHANGELOG:30
 msgid "Fixed bug making certain music always play at full volume (iPhone)."
 msgstr ""
 
-#: CHANGELOG:24
+#: CHANGELOG:31
 msgid "Added option to reverse positions of A and B buttons (iPhone)."
 msgstr ""
 
-#: CHANGELOG:25
+#: CHANGELOG:32
 msgid "Added support for repeating levels (for arcade modes)."
 msgstr ""
 
-#: CHANGELOG:26
+#: CHANGELOG:33
 msgid ""
 "Pressing jump while in the air pressing against a wall now makes you cling "
 "to the wall."
 msgstr ""
 
-#: CHANGELOG:27
+#: CHANGELOG:34
 msgid "Made it so you can skip dialogs sequences."
 msgstr ""
 
-#: CHANGELOG:28
+#: CHANGELOG:35
 msgid "Fixed lots of z-order issues."
 msgstr ""
 
-#: CHANGELOG:29
+#: CHANGELOG:36
 msgid "Fixed bug causing ambient sounds to not work."
 msgstr ""
 
-#: CHANGELOG:30
+#: CHANGELOG:37
 msgid "Improved forest background, and made it go upwards infinitely."
 msgstr ""
 
-#: CHANGELOG:31
+#: CHANGELOG:38
 msgid "Made hearts heal a full heart, rather than just half."
 msgstr ""
 
-#: CHANGELOG:32
+#: CHANGELOG:39
 msgid "Changed tilesets to make water look better."
 msgstr ""
 
-#: CHANGELOG:33
+#: CHANGELOG:40
 msgid "Many small bug fixes."
 msgstr ""
 
-#: CHANGELOG:35
+#: CHANGELOG:42
 msgid "Version 1.0.1 (iPhone only):"
 msgstr ""
 
-#: CHANGELOG:36
+#: CHANGELOG:43
 msgid ""
 "Significantly improved controls, both functionally and graphically (iPhone)."
 msgstr ""
 
-#: CHANGELOG:37
+#: CHANGELOG:44
 msgid "Fixed auto-saving on iOS4 where multitasking is supported (iPhone)."
 msgstr ""
 
-#: CHANGELOG:38
+#: CHANGELOG:45
 msgid "Fixed bug where a dialog could repeat forever."
 msgstr ""
 
-#: CHANGELOG:39
+#: CHANGELOG:46
 msgid "Fixed crash in world map when you hold down while entering it."
 msgstr ""
 
-#: CHANGELOG:40
+#: CHANGELOG:47
 msgid "Fixed fullscreen mode (Mac/Windows)."
 msgstr ""
 
-#: CHANGELOG:41
+#: CHANGELOG:48
 msgid "Fixed controlpad issues for computers."
 msgstr ""
 
-#: CHANGELOG:42
+#: CHANGELOG:49
 msgid "Added music and sound volume controls to pause screen."
 msgstr ""
 
-#: CHANGELOG:43
+#: CHANGELOG:50
 msgid "Added customizable controls."
 msgstr ""
 
-#: CHANGELOG:44
+#: CHANGELOG:51
 msgid "Added half-hearts."
 msgstr ""
 
-#: CHANGELOG:45
+#: CHANGELOG:52
 msgid "Added scons script for compiling."
 msgstr ""
 
-#: CHANGELOG:46
+#: CHANGELOG:53
 msgid "Minor level changes."
 msgstr ""
 
-#: CHANGELOG:47
+#: CHANGELOG:54
 msgid "Updated music."
 msgstr ""
 
@@ -220,6 +244,15 @@ msgid ""
 "Frogatto was made by a group of big-time fans of classic videogames, who are"
 " hoping to bring back the magic in a new, original game design with "
 "unconventional gameplay mechanics - a fun break from the usual clones."
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:5 iOS_APP_STORE_METADATA:7
+msgid "keywords:"
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:6 iOS_APP_STORE_METADATA:8
+msgid ""
+"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
 msgstr ""
 
 #: data/achievements.cfg:4
@@ -3500,7 +3533,7 @@ msgstr ""
 msgid "Do you want to buy the {consts.name}?"
 msgstr ""
 
-#: data/object_prototypes/crazy-stuff/civ-tile.cfg:59
+#: data/object_prototypes/crazy-stuff/civ-tile.cfg:60
 msgid "This is a blank tile. It doesn't do anything."
 msgstr ""
 
@@ -3710,24 +3743,12 @@ msgid ""
 "please visit http://www.frogatto.com/"
 msgstr ""
 
-#: iOS_CHANGELOG:1
-msgid "Version 1.1.1:"
-msgstr ""
-
-#: iOS_CHANGELOG:2
-msgid "Fixed some crashing bugs."
-msgstr ""
-
 #: iOS_CHANGELOG:3
 msgid "Fixed The Long Haul (arcade level)"
 msgstr ""
 
 #: iOS_CHANGELOG:4
 msgid "Fixed instructions on titlescreen"
-msgstr ""
-
-#: iOS_CHANGELOG:5
-msgid "New translation: Italian"
 msgstr ""
 
 #: src/controls_dialog.cpp:42
