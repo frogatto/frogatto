@@ -1,3 +1,10 @@
+Version 1.1.1:
+ * Fixed some crashing bugs.
+ * Fixed The Long Haul (compiled mode)
+ * Fixed instructions on titlescreen (iOS)
+ * New translation: Italian
+ * Added automatic language selection for Windows
+
 Version 1.1:
  * Added arcade mode.
  * Redid graphics for forest trees.
