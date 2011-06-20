@@ -1643,8 +1643,8 @@ namespace {
 bool sort_entity_drawing_pos(const entity_ptr& a, const entity_ptr& b) {
 	return a->zorder() < b->zorder() ||
 		   a->zorder() == b->zorder() && a->zsub_order() < b->zsub_order() ||
-		   a->zorder() == b->zorder() && a->zsub_order() == b->zsub_order() && a->y() < b->y() ||
-		   a->zorder() == b->zorder() && a->zsub_order() == b->zsub_order() && a->y() == b->y() && a->x() < b->x();
+		   a->zorder() == b->zorder() && a->zsub_order() == b->zsub_order() && a->midpoint().y < b->midpoint().y ||
+		   a->zorder() == b->zorder() && a->zsub_order() == b->zsub_order() && a->midpoint().y == b->midpoint().y && a->midpoint().x < b->midpoint().x;
 }
 }
 
