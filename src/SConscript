@@ -131,4 +131,4 @@ loading_screen.cpp
 utility_object_compiler.cpp
 utility_object_editor.cpp
 """)
-env.Program("#/frogatto", sources)
+env.Program("#/game", sources)
