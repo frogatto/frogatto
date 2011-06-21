@@ -1,0 +1,5 @@
+game
+server
+test
+*.o
+*.a
