@@ -1,0 +1,15 @@
+[object_type]
+	id=civ_starve
+	prototype=civ_skull
+	
+	[animation]
+		id=normal
+		image=experimental/civ-stuff.png
+		x=118
+		y=191
+		w=25
+		h=37
+		duration=50
+		accel_y=-2
+	[/animation]
+[/object_type]
