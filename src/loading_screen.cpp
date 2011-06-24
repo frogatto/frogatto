@@ -11,9 +11,16 @@
 #include "i18n.hpp"
 #include "texture.hpp"
 
-loading_screen::loading_screen (int items) : items_(items), status_(0)
+loading_screen::loading_screen (int items) : items_(items), status_(0),
+                                             started_at_(SDL_GetTicks())
 {
 	background_ = graphics::texture::get("backgrounds/loading_screen.png");
+
+	if(graphics::screen_height() > 0 && float(graphics::screen_width())/float(graphics::screen_height()) <= 1.4) {
+		splash_ = graphics::texture::get("splash.jpg");
+	} else {
+		splash_ = graphics::texture::get("splash-wide.jpg");
+	}
 }
 
 void loading_screen::load (wml::const_node_ptr node)
@@ -34,15 +41,29 @@ void loading_screen::load (wml::const_node_ptr node)
 void loading_screen::draw (const std::string& message)
 {
 	//std::cerr << "*** Drawing loading screen with message: " << message << "\n";
-	const int bar_width = 100;
-	const int bar_height = 10;
-	int screen_w = graphics::screen_width();
-	int screen_h = graphics::screen_height();
 	
 	graphics::prepare_raster();
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	if(splash_.valid()) {
+		//draw the splash screen while loading
+		graphics::blit_texture(splash_, 0, 0, graphics::screen_width(), graphics::screen_height());
+	} else {
+		draw_internal(message);
+	}
 	
+	SDL_GL_SwapBuffers();
+	//SDL_Delay(500); //make it possible to see on fast computers; for debugging
+}
+
+void loading_screen::draw_internal (const std::string& message)
+{
+	const int bar_width = 100;
+	const int bar_height = 10;
+	int screen_w = graphics::screen_width();
+	int screen_h = graphics::screen_height();
+
 	int bg_w = background_.width();
 	int bg_h = background_.height();
 	graphics::blit_texture(background_, screen_w/2-bg_w, screen_h/2-bg_h, bg_w*2, bg_h*2);
@@ -58,9 +79,6 @@ void loading_screen::draw (const std::string& message)
 	//explicitly translate loading messages
 	rect text_size = font->dimensions(i18n::tr(message));
 	font->draw(screen_w/2 - text_size.w()/2, screen_h/2 + bar_height/2 + 5, i18n::tr(message));
-	
-	SDL_GL_SwapBuffers();
-	//SDL_Delay(500); //make it possible to see on fast computers; for debugging
 }
 
 void loading_screen::increment_status ()
@@ -71,4 +89,17 @@ void loading_screen::increment_status ()
 void loading_screen::set_number_of_items (int items)
 {
 	items_ = items;
+}
+
+void loading_screen::finish_loading()
+{
+	//display the splash screen for a minimum amount of time, if there is one.
+	if(!splash_.valid()) {
+		return;
+	}
+
+	while(started_at_ + 3000 > SDL_GetTicks()) {
+		draw_and_increment("Loading");
+		SDL_Delay(20);
+	}
 }

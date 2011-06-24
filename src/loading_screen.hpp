@@ -16,11 +16,17 @@ class loading_screen
 	void increment_status ();
 	void draw_and_increment (const std::string& message) {draw(message); increment_status();}
 	void set_number_of_items (int items);
+
+	void finish_loading();
 	
 	private:
+	void draw_internal(const std::string& message);
 	int items_; // number of items we'll load
 	int status_; // how many items we've loaded so far
 	graphics::texture background_;
+	graphics::texture splash_;
+
+	int started_at_;
 };
 
 #endif

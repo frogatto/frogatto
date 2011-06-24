@@ -429,6 +429,8 @@ extern "C" int main(int argc, char** argv)
 	ASSERT_EQ(glew_status, GLEW_OK);
 #endif
 
+	loader.finish_loading();
+
 	//look to see if we got any quit events while loading.
 	{
 	SDL_Event event;
