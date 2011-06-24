@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 #   <arikel@free.fr>, 2011.
 # arikel <arikel@free.fr>, 2011.
 # Marcos Avila Isidoro <marcavis@yahoo.com.br>, 2011.
@@ -11,14 +11,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-06-19 19:34-0300\n"
+"POT-Creation-Date: 2011-06-23 18:13-0300\n"
 "PO-Revision-Date: 2011-06-19 22:35+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
-"Language-Team: French (http://www.transifex.net/projects/p/Frogatto/team/fr/)\n"
+"Language-Team: French (http://www.transifex.net/projects/p/Frogatto/team/"
+"fr/)\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
 #: CHANGELOG:1 iOS_CHANGELOG:1
@@ -230,14 +231,14 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:1 iOS_APP_STORE_METADATA:1
 msgid ""
-"An old-school 2d platformer game, starring a certain quixotic frog. From the"
-" creators of Battle for Wesnoth comes this exciting jump-and-run platformer."
-" Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all "
-"the gameplay nuance of a classic console title. Run and jump over pits and "
-"enemies. Grab enemies with your tongue, swallow them, and then spit them out"
-" at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
-"puzzles. Collect coins and use them to buy upgrades and new abilities in the"
-" store. Talk to characters in game, and work to unravel Big Bad Milgram's "
+"An old-school 2d platformer game, starring a certain quixotic frog. From the "
+"creators of Battle for Wesnoth comes this exciting jump-and-run platformer. "
+"Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all the "
+"gameplay nuance of a classic console title. Run and jump over pits and "
+"enemies. Grab enemies with your tongue, swallow them, and then spit them out "
+"at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
+"puzzles. Collect coins and use them to buy upgrades and new abilities in the "
+"store. Talk to characters in game, and work to unravel Big Bad Milgram's "
 "plot against the townsfolk! At over 30 levels set in 4 different "
 "environments, Frogatto is not a flash in the pan, and has the play-time "
 "you'd expect from a real videogame."
@@ -245,8 +246,8 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are"
-" hoping to bring back the magic in a new, original game design with "
+"Frogatto was made by a group of big-time fans of classic videogames, who are "
+"hoping to bring back the magic in a new, original game design with "
 "unconventional gameplay mechanics - a fun break from the usual clones."
 msgstr ""
 
@@ -256,7 +257,8 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:6 iOS_APP_STORE_METADATA:8
 msgid ""
-"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
+"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,"
+"frog"
 msgstr ""
 
 #: data/achievements.cfg:4
@@ -485,14 +487,13 @@ msgstr "Nouvelle Merveille Sauvage"
 #: data/level/arcade-wild-new-wonder.cfg:2522
 msgid "You got {level.player.vars.score} points in the Wild New Wonder!"
 msgstr ""
-"Vous avez obtenu {level.player.vars.score} points dans la Nouvelle Merveille"
-" Sauvage!"
+"Vous avez obtenu {level.player.vars.score} points dans la Nouvelle Merveille "
+"Sauvage!"
 
 #: data/level/arcade-wild-new-wonder.cfg:2523
 msgid "The high score is {registry.arcade_wild_new_wonder_high_score} points."
 msgstr ""
-"Le meilleur score est de {registry.arcade_wild_new_wonder_high_score} "
-"points."
+"Le meilleur score est de {registry.arcade_wild_new_wonder_high_score} points."
 
 #: data/level/autumn-town.cfg:16
 msgid "Autumn Town"
@@ -2852,11 +2853,11 @@ msgstr "Parc des Pommes de Pin"
 msgid "Plagued Mine"
 msgstr "Mine du Fléau"
 
-#: data/level/plagued-mine.cfg:3578
+#: data/level/plagued-mine.cfg:2790
 msgid "These crazy bombers are everywhere!"
 msgstr "Ces bombardiers fous sont partout !"
 
-#: data/level/plagued-mine.cfg:3721
+#: data/level/plagued-mine.cfg:2867
 msgid "Yikes!"
 msgstr "Oula!"
 
@@ -3693,8 +3694,7 @@ msgstr "Artiste - Terrain (maisons, arrière-plan du bord de mer)"
 
 #: data/level/tea-with-milgram.cfg:374
 msgid "Level Designer (esp. forest, cave, and dungeon levels)"
-msgstr ""
-"Concepteur de niveaux (surtout forêt, grotte et les niveaux du donjon)"
+msgstr "Concepteur de niveaux (surtout forêt, grotte et les niveaux du donjon)"
 
 #: data/level/tea-with-milgram.cfg:379
 msgid "The IRC Crew"
@@ -3746,8 +3746,7 @@ msgstr "Artiste - Terrain (bord de mer, forêt, caverne, et donjon)"
 
 #: data/level/tea-with-milgram.cfg:403
 msgid "Level Designer (esp. seaside, town, and forest stages)"
-msgstr ""
-"Concepteur de Niveaux (surtout niveaux de bord de mer, ville et forêt)"
+msgstr "Concepteur de Niveaux (surtout niveaux de bord de mer, ville et forêt)"
 
 #: data/level/tea-with-milgram.cfg:406
 msgid "Musician"
@@ -4308,21 +4307,18 @@ msgstr "Cette case est une case neutre. Elle ne sert à rien."
 #: data/objects/effects/control/level_controller_coin_race.cfg:32
 msgid "You made it to level {level.player.difficulty} of the coin race!"
 msgstr ""
-"Vous êtes arrivé au niveau {level.player.difficulty} de la course aux "
-"pièces!"
+"Vous êtes arrivé au niveau {level.player.difficulty} de la course aux pièces!"
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:34
 msgid "You made it to level {level.player.difficulty} of the coin race."
 msgstr ""
-"Vous êtes arrivé au niveau {level.player.difficulty} de la course aux "
-"pièces."
+"Vous êtes arrivé au niveau {level.player.difficulty} de la course aux pièces."
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level "
-"{registry.arcade_coin_race_high_score}."
-msgstr ""
-"Le niveau record est le niveau {registry.arcade_coin_race_high_score}."
+"The furthest that has been reached is level {registry."
+"arcade_coin_race_high_score}."
+msgstr "Le niveau record est le niveau {registry.arcade_coin_race_high_score}."
 
 #: data/objects/items/max_heart_object.cfg:18
 msgid ""
@@ -4514,6 +4510,8 @@ msgid "Do you want to save the game?"
 msgstr "Souhaitez-vous sauvegarder votre partie?"
 
 #: data/objects/props-interactive/interactive/save_toilet.cfg:21
+#: data/objects/props-interactive/portals/dungeon_save_door.cfg:28
+#: data/objects/props-interactive/portals/world_1_interior_save_door.cfg:28
 msgid "The game has been saved."
 msgstr "La partie a été sauvegardée."
 
@@ -4557,10 +4555,10 @@ msgstr "Chargement des traits d'énergie"
 
 #: iOS_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are"
-" hoping to bring back the magic in a new, original game design with "
-"unconventional gameplay mechanics - a fun break from the usual clones. We're"
-" a small group of indie developers, hoping this game becomes one of the "
+"Frogatto was made by a group of big-time fans of classic videogames, who are "
+"hoping to bring back the magic in a new, original game design with "
+"unconventional gameplay mechanics - a fun break from the usual clones. We're "
+"a small group of indie developers, hoping this game becomes one of the "
 "definitive platform games on iOS - and you can make that happen!"
 msgstr ""
 
@@ -4653,5 +4651,3 @@ msgstr "Inverser A et B"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
-
-
