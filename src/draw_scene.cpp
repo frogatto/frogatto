@@ -35,6 +35,8 @@
 
 namespace {
 
+std::vector<rect> current_debug_rects;
+
 std::string& scene_title() {
 	static std::string title;
 	return title;
@@ -310,6 +312,13 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus, boo
 	lvl.draw_background(xscroll, yscroll, camera_rotation);
 
 	lvl.draw(xscroll, yscroll, graphics::screen_width(), graphics::screen_height());
+
+	foreach(const rect& r, current_debug_rects) {
+		graphics::draw_rect(r, graphics::color(0, 0, 255, 255));
+	}
+
+	current_debug_rects.clear();
+
 	graphics::clear_raster_distortion();
 	glPopMatrix();
 
@@ -447,4 +456,9 @@ void draw_fps(const level& lvl, const performance_data& data)
 	if(!data.profiling_info.empty()) {
 		font->draw(10, area.y2() + 5, data.profiling_info);
 	}
+}
+
+void add_debug_rect(const rect& r)
+{
+	current_debug_rects.push_back(r);
 }

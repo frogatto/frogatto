@@ -750,7 +750,7 @@ private:
 	mutable boost::intrusive_ptr<add_by_slot_command> cmd_;
 };
 
-FUNCTION_DEF(solid, 3, 5, "solid(level, int x, int y, (optional)int w=1, (optional) int h=1) -> boolean: returns true iff the level contains solid space within the given (x,y,w,h) rectangle")
+FUNCTION_DEF(solid, 3, 6, "solid(level, int x, int y, (optional)int w=1, (optional) int h=1, (optional) int debug=0) -> boolean: returns true iff the level contains solid space within the given (x,y,w,h) rectangle. If 'debug' is set, then the tested area will be displayed on-screen.")
 	level* lvl = args()[0]->evaluate(variables).convert_to<level>();
 	const int x = args()[1]->evaluate(variables).as_int();
 	const int y = args()[2]->evaluate(variables).as_int();
@@ -759,6 +759,11 @@ FUNCTION_DEF(solid, 3, 5, "solid(level, int x, int y, (optional)int w=1, (option
 	int h = args().size() >= 5 ? args()[4]->evaluate(variables).as_int() : 1;
 
 	rect r(x, y, w, h);
+
+	if(args().size() >= 6) {
+		//debugging so set the debug rect
+		add_debug_rect(r);
+	}
 
 	return variant(lvl->solid(r));
 END_FUNCTION_DEF(solid)

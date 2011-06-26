@@ -11,6 +11,7 @@ class color_transform;
 }
 
 class entity;
+class rect;
 class level;
 
 struct screen_position {
@@ -50,5 +51,7 @@ struct performance_data {
 };
 
 void draw_fps(const level& lvl, const performance_data& data);
+
+void add_debug_rect(const rect& r);
 
 #endif
