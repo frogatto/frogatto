@@ -16,6 +16,8 @@ import sys
 # (.*)				->	[\1]		make it a list
 
 def main(rawFile, radius):
+	border = [10,10]
+	
 	radius = int(radius)
 	points = []
 
@@ -30,8 +32,7 @@ def main(rawFile, radius):
 			sys.stdout.flush()
 		if dst and dst.group(2):
 			points.append([int(dst.group(1)), int(dst.group(2))])
-
-	border = [10,10]
+	print ""
 
 	def samplemat(dims, points, offset):
 		"""Write points into dims."""
@@ -90,7 +91,9 @@ def main(rawFile, radius):
 	points = normaliseArray(minPoints, points)
 
 	print "Starting render..."
-	matshow(samplemat(size, points, [border[0]/2, border[1]/2]), interpolation='bicubic', cmap=cm.Reds)
+	fig = plt.figure()
+	matshow(samplemat(size, points, [border[0]/2, border[1]/2]), fignum=0, interpolation='bicubic', cmap=cm.gist_gray)
+	fig.canvas.set_window_title('Matrix-Heat : ' + rawFile) 
 	print "Done."
 
 	# Display a random matrix with a specified figure number and a grayscale colormap
