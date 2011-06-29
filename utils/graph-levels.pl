@@ -1,3 +1,5 @@
+#!/usr/bin/perl
+
 use strict;
 
 my @levels = glob("data/level/*");
