@@ -116,6 +116,8 @@ Quality: How big of a brush to use. The bigger the brush, the longer it takes
 Notes:
 This utility requires matplotlib to run, in addition to Python. You can down-
 load the stats files from http://wesnoth.org/files/dave/frogatto-stats/.
+You can change the palette by changing the cmap variable in the matshow
+function to these: http://www.scipy.org/Cookbook/Matplotlib/Show_colormaps.
 For further details, write to http://www.frogatto.com/forum/index.php. Have
 a nice day. :)
 """
