@@ -20,6 +20,8 @@ def main(rawFile, radius):
 	
 	radius = int(radius)
 	points = []
+	
+	shortFileName = re.match(r".*/(.*).cfg", rawFile).group(1)
 
 	print "reading data",
 	sys.stdout.flush()
@@ -45,8 +47,7 @@ def main(rawFile, radius):
 			newPercent = round((i+1.0)/pts, 3)*100
 			if percentage != newPercent:
 				percentage = newPercent
-				print "Mapping point " + str(i+1) + " of " + str(pts) + ". (" + str(percentage) + "%)"
-			
+				print "  Mapping point " + str(i+1) + " of " + str(pts) + ". (" + str(percentage) + "%)"
 			for x in range(ptSize):
 				tX = pt[0]+x-ptSize/2
 				for y in range(ptSize):
@@ -55,7 +56,8 @@ def main(rawFile, radius):
 					if 0 <= tX < dims[0] and 0 <= tY < dims[1] :
 						aa[tX,tY] = floor(aa[tX, tY] + ceil(ptSize/2-math.hypot(tX-pt[0], tY-pt[1]), 0), 400)
 						
-		print "Scaling map."
+		print "Scaling colours."
+		sys.stdout.flush()
 		newMap = zeros(dims)
 		for x in range(len(aa)):
 			for y in range(len(aa[x])):
@@ -90,10 +92,13 @@ def main(rawFile, radius):
 	print "Normalising all data."
 	points = normaliseArray(minPoints, points)
 
-	print "Starting render..."
+	print "Rendering."
 	fig = plt.figure()
-	matshow(samplemat(size, points, [border[0]/2, border[1]/2]), fignum=0, interpolation='bicubic', cmap=cm.gist_gray)
-	fig.canvas.set_window_title('Matrix-Heat : ' + rawFile) 
+	matshow(samplemat(size, points, [border[0]/2, border[1]/2]), fignum=0, interpolation='bicubic', cmap=cm.gist_heat)
+	print "Postprocessing."
+	sys.stdout.flush()
+	fig.canvas.set_window_title('Matrix-Heat : ' + shortFileName)
+	savefig("../" + shortFileName + ".png", dpi=720)
 	print "Done."
 
 	# Display a random matrix with a specified figure number and a grayscale colormap
