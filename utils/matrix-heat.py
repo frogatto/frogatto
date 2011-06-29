@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Plots player's position points."""
+"""Plots player's position points.
+Requires matplotlib for output. See end of file for details."""
 
 from matplotlib.pylab import *
 from math import *
