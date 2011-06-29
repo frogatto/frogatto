@@ -98,8 +98,9 @@ def main(rawFile, radius):
 	print "Postprocessing."
 	sys.stdout.flush()
 	fig.canvas.set_window_title('Matrix-Heat : ' + shortFileName)
-	savefig("../" + shortFileName + ".png", dpi=720)
-	print "Done."
+	saveName = "mh-" + shortFileName + ".png"
+	savefig(saveName, dpi=720)
+	print "Done, saved file as " + saveName
 
 	# Display a random matrix with a specified figure number and a grayscale colormap
 	# matshow(rand(64,64),fignum=100,cmap=cm.gray)
@@ -116,8 +117,8 @@ if __name__ == "__main__":
 == Matrix-Heat Quick Guide ==
 
 Run: python matrix-heat.py string Relative_File [optional int Quality]
-Relative_File: This is a relative path to the Frogatto statistics .cfg file
-	to analyze.
+Relative_File: This is a path to the Frogatto statistics .cfg file to ana-
+	lyze.
 Quality: How big of a brush to use. The bigger the brush, the longer it takes
 	to draw a data point. Defaults to 10. Minimum is 5. It probaby doesn't
 	need to be set larger than 25.
