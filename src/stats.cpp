@@ -62,6 +62,8 @@ void http_upload(const std::string& payload, const std::string& script) {
 		fprintf(stderr, "STATS ERROR: Couldn't upload stats buffer\n");
 		return;
 	}
+
+	std::cerr << "STATS UPLOADED TO " << script << ": \n" << payload << "\n";
 }
 
 namespace stats {

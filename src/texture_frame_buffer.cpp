@@ -37,15 +37,23 @@ bool supported = true;
 GLuint texture_id = 0;  //ID of the texture which the frame buffer is stored in
 GLuint framebuffer_id = 0; //framebuffer object
 GLint video_framebuffer_id = 0; //the original frame buffer object
+int frame_buffer_texture_width = 128;
+int frame_buffer_texture_height = 128;
 }
+
+int width() { return frame_buffer_texture_width; }
+int height() { return frame_buffer_texture_height; }
 
 bool unsupported()
 {
 	return !supported;
 }
 
-void init()
+void init(int buffer_width, int buffer_height)
 {
+	frame_buffer_texture_width = buffer_width;
+	frame_buffer_texture_height = buffer_height;
+
 #if defined(TARGET_PANDORA)
 	if (glGenFramebuffersOES        != NULL &&
 		glBindFramebufferOES        != NULL &&

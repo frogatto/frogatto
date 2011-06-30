@@ -4,11 +4,11 @@
 namespace texture_frame_buffer {
 
 bool unsupported();
-void init();
+void init(int width=128, int height=128);
 
 void set_as_current_texture();
-inline int width() { return 128; }
-inline int height() { return 128; }
+int width();
+int height();
 
 struct render_scope {
 	render_scope();

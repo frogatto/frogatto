@@ -4,6 +4,7 @@
 #include <iostream>
 #include <math.h>
 
+#include "IMG_savepng.h"
 #include "asserts.hpp"
 #include "collision_utils.hpp"
 #include "controls.hpp"

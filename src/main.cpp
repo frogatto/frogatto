@@ -407,18 +407,6 @@ extern "C" int main(int argc, char** argv)
 		return 0;
 	}
 
-	if(run_benchmarks) {
-		if(benchmarks_list.empty() == false) {
-			test::run_benchmarks(&benchmarks_list);
-		} else {
-			test::run_benchmarks();
-		}
-		return 0;
-	} else if(utility_program.empty() == false) {
-		test::run_utility(utility_program, util_args);
-		return 0;
-	}
-
 #if defined(__APPLE__) && !(TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE)
 	long swapInterval = 1;
 	CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &swapInterval);
@@ -443,6 +431,18 @@ extern "C" int main(int argc, char** argv)
 
 	formula_profiler::manager profiler(profile_output);
 	texture_frame_buffer::init();
+
+	if(run_benchmarks) {
+		if(benchmarks_list.empty() == false) {
+			test::run_benchmarks(&benchmarks_list);
+		} else {
+			test::run_benchmarks();
+		}
+		return 0;
+	} else if(utility_program.empty() == false) {
+		test::run_utility(utility_program, util_args);
+		return 0;
+	}
 
 	bool quit = false;
 	bool of_initialized = false;
