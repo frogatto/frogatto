@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Plots player's position points.
-Requires matplotlib for output. See end of file for details."""
+"""args: <file to analyze> <optional int quality>
+Plots player's position points. Requires matplotlib for output.
+See end of file for more details."""
 
 from matplotlib.pylab import *
 from math import *
@@ -101,11 +102,8 @@ def main(rawFile, radius):
 	saveName = "mh-" + shortFileName + ".png"
 	savefig(saveName, dpi=720)
 	print "Done, saved file as " + saveName
-
-	# Display a random matrix with a specified figure number and a grayscale colormap
-	# matshow(rand(64,64),fignum=100,cmap=cm.gray)
-
-	show()
+	
+	#show()		#the interactive gui
 
 if __name__ == "__main__":
 	if len(sys.argv) == 2:
@@ -117,18 +115,9 @@ if __name__ == "__main__":
 == Matrix-Heat Quick Guide ==
 
 Run: python matrix-heat.py string Relative_File [optional int Quality]
-Relative_File: This is a path to the Frogatto statistics .cfg file to ana-
-	lyze.
-Quality: How big of a brush to use. The bigger the brush, the longer it takes
-	to draw a data point. Defaults to 10. Minimum is 5. It probaby doesn't
-	need to be set larger than 25.
+Relative_File: This is a path to the Frogatto statistics .cfg file to analyze.
+Quality: How big of a brush to use. The bigger the brush, the longer it takes to draw a data point. Defaults to 10. Minimum is 5. It probaby doesn't need to be set larger than 25.
 
 Notes:
-This utility requires matplotlib to run, in addition to Python. You can down-
-load the stats files from http://wesnoth.org/files/dave/frogatto-stats/.
-You can change the palette by changing the cmap variable in the matshow
-function to these: http://www.scipy.org/Cookbook/Matplotlib/Show_colormaps.
-For further details, write to http://www.frogatto.com/forum/index.php. Have
-a nice day. :)
-"""
+This utility requires matplotlib to run, in addition to Python. You can download the stats files from http://wesnoth.org/files/dave/frogatto-stats/. You can change the palette by changing the cmap variable in the matshow function to these: http://www.scipy.org/Cookbook/Matplotlib/Show_colormaps. Uncomment 'show()' to enable the interactive GUI. For further details, write to http://www.frogatto.com/forum/index.php. Have a nice day. :)"""
 		
