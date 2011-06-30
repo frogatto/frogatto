@@ -1,3 +1,5 @@
+#!/usr/bin/perl
+
 use strict;
 
 die "usage: $0 <tilename> <base> <image>" if @ARGV < 3;
