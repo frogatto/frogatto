@@ -111,7 +111,9 @@ constants_loader::constants_loader(wml::const_node_ptr node) : same_as_base_(fal
 		std::cerr << i->first << " ";
 	}
 
-	std::cerr << "\n";
+	if(m.begin() != m.end()) {
+		std::cerr << "\n";
+	}
 
 	constants_stack.push_back(m);
 }
