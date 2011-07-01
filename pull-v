@@ -1,0 +1,3 @@
+#!/bin/sh
+git pull
+git log --shortstat --name-only
