@@ -71,8 +71,12 @@ namespace preferences {
 
 		bool use_16bpp_textures_ = true;
 #else
-		
+
+#ifndef NO_UPLOAD_STATS
 		bool send_stats_ = true;
+#else
+		bool send_stats_ = false;
+#endif
 		
 		bool sim_iphone_ = false;
 
@@ -523,6 +527,8 @@ namespace preferences {
 			std::cerr << "FPS: " << arg_value << " = " << frame_time_millis_ << "ms/frame\n";
 		} else if(arg_name == "--config-path" && !arg_value.empty()) {
 			set_preferences_path(arg_value);
+		} else if(s == "--send-stats") {
+			send_stats_ = true;
 		} else if(s == "--no-send-stats") {
 			send_stats_ = false;
 		} else if(s == "--joystick") {

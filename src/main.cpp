@@ -102,7 +102,7 @@ void print_help(const std::string& argv0)
 "      --scale                  enables an experimental pixel art interpolation\n" <<
 "                                 algorithm for scaling the game graphics (some\n" <<
 "                                 issues with this still have to be solved)\n" <<
-"      --no-send-stats          disables sending game statistics over the\n" <<
+"      --[no-]send-stats        enables/disables sending game statistics over the\n" <<
 "                                 network\n" <<
 "      --[no-]sound             enables/disables sound and music support\n" <<
 "      --widescreen             sets widescreen mode, increasing the game view\n" <<
