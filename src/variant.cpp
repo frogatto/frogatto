@@ -582,6 +582,10 @@ bool variant::operator==(const variant& v) const
 		return int_value_ == v.int_value_;
 	}
 
+	case TYPE_DECIMAL: {
+		return decimal_value_ == v.decimal_value_;
+	}
+
 	case TYPE_LIST: {
 		if(num_elements() != v.num_elements()) {
 			return false;

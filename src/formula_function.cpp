@@ -247,26 +247,28 @@ public:
 
 private:
 	variant execute(const formula_callable& variables) const {
+
 		bool found = false;
-		int res = 0;
+		variant res;
 		for(size_t n = 0; n != args().size(); ++n) {
 			const variant v = args()[n]->evaluate(variables);
 			if(v.is_list()) {
 				for(size_t m = 0; m != v.num_elements(); ++m) {
-					if(!found || v[m].as_int() < res) {
-						res = v[m].as_int();
+					if(!found || v[m] < res) {
+						res = v[m];
 						found = true;
 					}
 				}
-			} else if(v.is_int()) {
-				if(!found || v.as_int() < res) {
-					res = v.as_int();
+			} else if(v.is_int() || v.is_decimal()) {
+				if(!found || v < res) {
+					res = v;
 					found = true;
 				}
 			}
 		}
 
-		return variant(res);
+		return res;
+
 	}
 };
 
@@ -279,27 +281,31 @@ public:
 private:
 	variant execute(const formula_callable& variables) const {
 		bool found = false;
-		int res = 0;
+		variant res;
 		for(size_t n = 0; n != args().size(); ++n) {
 			const variant v = args()[n]->evaluate(variables);
 			if(v.is_list()) {
 				for(size_t m = 0; m != v.num_elements(); ++m) {
-					if(!found || v[m].as_int() > res) {
-						res = v[m].as_int();
+					if(!found || v[m] > res) {
+						res = v[m];
 						found = true;
 					}
 				}
-			} else if(v.is_int()) {
-				if(!found || v.as_int() > res) {
-					res = v.as_int();
+			} else if(v.is_int() || v.is_decimal()) {
+				if(!found || v > res) {
+					res = v;
 					found = true;
 				}
 			}
 		}
 
-		return variant(res);
+		return res;
 	}
 };
+
+UNIT_TEST(min_max_decimal) {
+	CHECK(game_logic::formula("max(1,1.4)").execute() == game_logic::formula("1.4").execute(), "test failed");
+}
 
 class keys_function : public function_expression {
 public:
