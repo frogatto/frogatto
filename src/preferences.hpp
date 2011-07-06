@@ -107,6 +107,8 @@ void set_bequ( bool value );
 	bool relay_through_server();
 	void set_relay_through_server(bool value);
 
+	bool run_failing_unit_tests();
+
 	game_logic::formula_callable* registry();
 
 	void load_preferences();

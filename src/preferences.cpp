@@ -111,6 +111,8 @@ namespace preferences {
 		std::string auto_save_file_path_ = PREFERENCES_PATH AUTOSAVE_FILENAME;
 		
 		bool force_no_npot_textures_ = false;
+
+		bool run_failing_unit_tests_ = false;
 	}
 
 	int get_unique_user_id() {
@@ -537,6 +539,8 @@ namespace preferences {
 			use_joystick_ = false;
 		} else if(s == "--relay") {
 			relay_through_server_ = true;
+		} else if(s == "--failing-tests") {
+			run_failing_unit_tests_ = true;
 		} else {
 			return false;
 		}
@@ -562,6 +566,10 @@ namespace preferences {
 
 	void set_relay_through_server(bool value) {
 		relay_through_server_ = value;
+	}
+
+	bool run_failing_unit_tests() {
+		return run_failing_unit_tests_;
 	}
 
 #if defined(TARGET_PANDORA)

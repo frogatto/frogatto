@@ -4,6 +4,7 @@
 
 #include "asserts.hpp"
 #include "foreach.hpp"
+#include "preferences.hpp"
 #include "unit_test.hpp"
 
 #include "SDL.h"
@@ -66,6 +67,10 @@ bool run_tests(const std::vector<std::string>* tests)
 
 	int npass = 0, nfail = 0;
 	foreach(const std::string& test, *tests) {
+		if(preferences::run_failing_unit_tests() == false && test.size() > 5 && std::string(test.end()-5, test.end()) == "FAILS") {
+			continue;
+		}
+
 		try {
 			get_test_map()[test]();
 			std::cerr << "TEST " << test << " PASSED\n";
