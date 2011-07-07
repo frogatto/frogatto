@@ -23,6 +23,7 @@
 #include "unit_test.hpp"
 
 #include "SDL.h"
+#include <boost/regex.hpp>
 
 namespace {
 	const float radians_to_degrees = 57.29577951308232087;
@@ -512,6 +513,32 @@ private:
 		result.push_back(variant(decimal(v)));
 		
 		return variant(&result);
+	}
+};
+
+class regex_function : public function_expression { //regular expressions
+public:
+	explicit regex_function(const args_list& args)
+	     : function_expression("regex", args, 2,2)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		boost::regex filter(args()[0]->evaluate(variables).as_string());
+		boost::smatch out;
+		const std::string subject = args()[1]->evaluate(variables).as_string();
+		std::string result = "";
+		
+		std::cerr << " == REGEX == \nFilter: " << filter << "\nSubject: " << subject << "\n";
+		
+		if(boost::regex_match(subject, out, filter)){
+			result = "success";
+		}
+		else {
+			result = "failure";
+		}
+		
+		return variant(result);
 	}
 };
 
@@ -1126,6 +1153,7 @@ functions_map& get_functions_map() {
 		FUNCTION(sqrt);
 		FUNCTION(angle);
 		FUNCTION(orbit);
+		FUNCTION(regex);
 		FUNCTION(sort);
 		FUNCTION(flatten);
 		FUNCTION(filter);

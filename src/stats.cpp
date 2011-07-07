@@ -63,7 +63,7 @@ void http_upload(const std::string& payload, const std::string& script) {
 		return;
 	}
 
-	std::cerr << "STATS UPLOADED TO " << script << ": \n" << payload << "\n";
+	//std::cerr << "STATS UPLOADED TO " << script << ": \n" << payload << "\n";
 }
 
 namespace stats {
