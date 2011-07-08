@@ -524,21 +524,18 @@ public:
 
 private:
 	variant execute(const formula_callable& variables) const {
-		boost::regex filter(args()[0]->evaluate(variables).as_string());
+		const boost::regex filter(".*" + args()[0]->evaluate(variables).as_string() + ".*");
 		boost::smatch out;
 		const std::string subject = args()[1]->evaluate(variables).as_string();
-		std::string result = "";
-		
-		std::cerr << " == REGEX == \nFilter: " << filter << "\nSubject: " << subject << "\n";
+		std::string results;
 		
 		if(boost::regex_match(subject, out, filter)){
-			result = "success";
-		}
-		else {
-			result = "failure";
+			std::cerr << "Test = " << out.size() << "\n";
+			results = out[1];
+			
 		}
 		
-		return variant(result);
+		return variant(results);
 	}
 };
 
