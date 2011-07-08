@@ -10,6 +10,8 @@
 	║  ▷ Tiles can occasionally be dragged off board.                               ║
 	║  ▷ Game slows down and freezes when the board fills up.                       ║
 	║  ▶ Replacing tiles when no tiles in hand replaces less one tile.              ║
+	║  ▶ Farm, then village, then warrior blocking food for village but connecting  ║
+	║    to farm, starves village when it should bring food to it.                  ║
 	║  ▶                                                                            ║
 	║                                                                               ║
 	║ Cosmetic:                                                                     ║
