@@ -529,9 +529,12 @@ private:
 		const std::string subject = args()[1]->evaluate(variables).as_string();
 		std::string results;
 		
-		if(boost::regex_match(subject, out, filter)){
+		if(boost::regex_match(subject, out, filter, boost::match_extra)){
 			std::cerr << "Test = " << out.size() << "\n";
-			results = out[1];
+			int i;
+			for(i = 1; i <= out.size(); ++i){
+				results += out[i];
+			}
 			
 		}
 		
