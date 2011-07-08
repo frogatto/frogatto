@@ -524,20 +524,23 @@ public:
 
 private:
 	variant execute(const formula_callable& variables) const {
-		const boost::regex filter(".*" + args()[0]->evaluate(variables).as_string() + ".*");
+		const boost::regex filter(args()[0]->evaluate(variables).as_string());
 		boost::smatch out;
 		const std::string subject = args()[1]->evaluate(variables).as_string();
 		std::string results;
 		
+		std::cerr << "Matching regex: " << filter << " on string " << subject << ".\n";
 		if(boost::regex_match(subject, out, filter, boost::match_extra)){
-			std::cerr << "Test = " << out.size() << "\n";
+			std::cerr << "# of matches: " << out.size() -1 << "\n";
 			int i;
-			for(i = 1; i <= out.size(); ++i){
+			for(i = 1; i < out.size(); ++i){
+				std::cerr << "match " << i << ": " << out[i] << "\n";
 				results += out[i];
 			}
 			
 		}
 		
+		std::cerr << "Returning: " << results << "\n";
 		return variant(results);
 	}
 };
