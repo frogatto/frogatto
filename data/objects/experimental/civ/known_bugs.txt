@@ -12,6 +12,7 @@
 	║  ▶ Replacing tiles when no tiles in hand replaces less one tile.              ║
 	║  ▷ Farm, then village, then warrior blocking food for village but connecting  ║
 	║    to farm, starves village when it should bring food to it.                  ║
+	║  ▶ Warrior continue plays do not dissallow building superstructures.          ║
 	║  ▶                                                                            ║
 	║                                                                               ║
 	║ Cosmetic:                                                                     ║
