@@ -1866,6 +1866,8 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		}
 	} else if(key == "z" || key == "zorder") {
 		zorder_ = value.as_int();
+	} else if(key == "zsuborder") {
+		zsub_order_ = value.as_int();
 	} else if(key == "midpoint_x") {
 		const int current_x = x() + current_frame().width()/2;
 		const int xdiff = current_x - x();
