@@ -520,6 +520,10 @@ namespace preferences {
 			actual_screen_height_ = 480;
 
 			recalculate_draw_mask();
+		} else if(s == "--native") {
+			virtual_screen_width_ = (actual_screen_width_) * 2;
+			virtual_screen_height_ = (actual_screen_height_) * 2;
+			recalculate_draw_mask();
 		} else if(s == "--fps") {
 			show_fps_ = true;
 		} else if(s == "--no-fps") {

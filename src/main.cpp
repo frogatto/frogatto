@@ -95,6 +95,7 @@ void print_help(const std::string& argv0)
 "      --level LEVEL_FILE       starts the game using the specified level file,\n" <<
 "                                 relative to the level path\n" <<
 "      --level-path=PATH        sets the path to the game level files\n" <<
+"      --native			        one pixel in-game equals one pixel on monitor." <<
 "      --[no-]music             enables/disables game music\n" <<
 "      --relay                  use the server as a relay in multiplayer rather\n" <<
 "                                 than trying to initiate direct connections\n" <<
