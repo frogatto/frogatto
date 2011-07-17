@@ -361,8 +361,7 @@ custom_record::custom_record(const std::string& key, const std::string& value, c
 wml::node_ptr custom_record::write() const
 {
 	wml::node_ptr result(new wml::node("custom"));
-	result->set_attr("key", key_);
-	result->set_attr("value", value_);
+	result->set_attr(key_, value_);
 	result->set_attr("pos", src_.to_string());
 	return result;
 }
