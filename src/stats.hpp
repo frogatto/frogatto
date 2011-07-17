@@ -90,6 +90,17 @@ private:
 	point src_, dst_;
 };
 
+class custom_record : public record {
+public:
+	custom_record(const std::string& key, const std::string& value, const point& src);
+	wml::node_ptr write() const;
+	const char* id() const { return "custom"; }
+	point location() const { return src_; }
+private:
+	const std::string key_, value_;
+	point src_;
+};
+
 void prepare_draw(const std::vector<record_ptr>& records);
 void draw_stats(const std::vector<record_ptr>& records);
 

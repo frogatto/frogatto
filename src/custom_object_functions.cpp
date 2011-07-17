@@ -36,6 +36,7 @@
 #include "raster_distortion.hpp"
 #include "sound.hpp"
 #include "speech_dialog.hpp"
+#include "stats.hpp"
 #include "string_utils.hpp"
 #include "text_entry_widget.hpp"
 #include "thread.hpp"
@@ -105,6 +106,16 @@ FUNCTION_DEF(time, 0, 0, "time() -> timestamp: returns the current real time")
 	time(&t1);
 	return variant(t1);
 END_FUNCTION_DEF(time)
+	
+FUNCTION_DEF(report_, 4, 4, "report() -> boolean: Write a key and a value into [custom] in the stats.")
+		level* lvl = args()[0]->evaluate(variables).convert_to<level>();
+		entity_ptr obj = args()[1]->evaluate(variables).convert_to<entity>();
+		const std::string key = args()[2]->evaluate(variables).as_string();
+		const std::string value = args()[3]->evaluate(variables).as_string();
+		//std::cerr << "Reporting '" << key << "' at '" << value << "' in " << lvl->id() << ".\n";
+		stats::record_event(lvl -> id(), stats::record_ptr(new stats::custom_record(key, value, obj->midpoint())));
+		return variant(true);
+END_FUNCTION_DEF(report_)
 
 class save_game_command : public entity_command_callable
 {

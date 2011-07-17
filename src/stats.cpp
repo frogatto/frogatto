@@ -261,6 +261,8 @@ record_ptr record::read(wml::const_node_ptr node) {
 		return record_ptr(new quit_record(point(node->attr("pos"))));
 	} else if(node->name() == "move") {
 		return record_ptr(new player_move_record(point(node->attr("src")), point(node->attr("dst"))));
+	} else if(node->name() == "custom") {
+		return record_ptr(new custom_record(std::string(node->attr("key")), std::string(node->attr("value")), point(node->attr("src"))));
 	} else if(node->name() == "load") {
 		return record_ptr(new load_level_record(wml::get_int(node, "ms")));
 	} else {
@@ -350,6 +352,18 @@ wml::node_ptr player_move_record::write() const
 	wml::node_ptr result(new wml::node("move"));
 	result->set_attr("src", src_.to_string());
 	result->set_attr("dst", dst_.to_string());
+	return result;
+}
+
+custom_record::custom_record(const std::string& key, const std::string& value, const point& src) : key_(key), value_(value), src_(src)
+{}
+
+wml::node_ptr custom_record::write() const
+{
+	wml::node_ptr result(new wml::node("custom"));
+	result->set_attr("key", key_);
+	result->set_attr("value", value_);
+	result->set_attr("pos", src_.to_string());
 	return result;
 }
 
