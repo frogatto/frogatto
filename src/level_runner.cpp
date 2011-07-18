@@ -498,6 +498,7 @@ bool level_runner::play_cycle()
 	if(message_dialog::get() == NULL) {
 		SDL_Event event;
 		while(SDL_PollEvent(&event)) {
+		//std::cerr << "Got event (level_runner 502): " << (int) event.type << ".\n";
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 			should_pause = settings_dialog.handle_event(event);
 #endif
@@ -560,6 +561,7 @@ bool level_runner::play_cycle()
 			case SDL_KEYDOWN: {
 				const SDLMod mod = SDL_GetModState();
 				const SDLKey key = event.key.keysym.sym;
+				//std::cerr << "Key #" << (int) key << ".\n";
 				if(key == SDLK_ESCAPE) {
 					should_pause = true;
 					break;
