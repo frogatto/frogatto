@@ -104,7 +104,7 @@ void playable_custom_object::process(level& lvl)
 		underwater_ctrl_x_ = 0;
 		underwater_ctrl_y_ = 0;
 	}
-	
+
 	reverse_ab_ = preferences::reverse_ab();
 
 	bool controls[controls::NUM_CONTROLS];
@@ -114,7 +114,7 @@ void playable_custom_object::process(level& lvl)
 
 	clear_control_status();
 	read_controls(lvl.cycle());
-	static const std::string keys[] = { "up", "down", "left", "right", "attack", "jump", "tongue" };	
+	static const std::string keys[] = { "up", "down", "left", "right", "attack", "jump", "tongue" };
 	for(int n = 0; n != controls::NUM_CONTROLS; ++n) {
 		if(controls[n] != control_status(static_cast<controls::CONTROL_ITEM>(n))) {
 			if(controls[n]) {
@@ -165,28 +165,32 @@ variant playable_custom_object::get_value(const std::string& key) const
 				info.push_back(variant("left"));
 			}
 
-			if(button_state & SDL_BUTTON(SDL_BUTTON_RIGHT)) {
+			else if(button_state & SDL_BUTTON(SDL_BUTTON_RIGHT)) {
 				info.push_back(variant("right"));
 			}
 
-			if(button_state & SDL_BUTTON(SDL_BUTTON_MIDDLE)) {
+			else if(button_state & SDL_BUTTON(SDL_BUTTON_MIDDLE)) {
 				info.push_back(variant("middle"));
 			}
 
-			if(button_state & SDL_BUTTON(SDL_BUTTON_X1)) { //these aren't tested
+			else if(button_state & SDL_BUTTON(SDL_BUTTON_X1)) { //these aren't tested
 				info.push_back(variant("x1"));
 			}
 
-			if(button_state & SDL_BUTTON(SDL_BUTTON_X2)) {
+			else if(button_state & SDL_BUTTON(SDL_BUTTON_X2)) {
 				info.push_back(variant("x2"));
 			}
 
-			if(button_state & SDL_BUTTON(SDL_BUTTON_WHEELUP)) { //and these don't work
+			else if(button_state & SDL_BUTTON(SDL_BUTTON_WHEELUP)) { //and these don't work
 				info.push_back(variant("up"));
 			}
 
-			if(button_state & SDL_BUTTON(SDL_BUTTON_WHEELDOWN)) {
+			else if(button_state & SDL_BUTTON(SDL_BUTTON_WHEELDOWN)) {
 				info.push_back(variant("down"));
+			}
+
+			else {
+				info.push_back(variant("none"));
 			}
 
 			result.push_back(variant(&info));
