@@ -473,15 +473,23 @@ FUNCTION_DEF(spawn_player, 4, 5, "spawn_player(string type_id, int midpoint_x, i
 					 true));
 END_FUNCTION_DEF(spawn_player)
 
-FUNCTION_DEF(object, 4, 5, "object(string type_id, int midpoint_x, int midpoint_y, int facing, (optional) map properties) -> object: constructs and returns a new object. Note that the difference between this and spawn is that spawn returns a command to actually place the object in the level. object only creates the object and returns it. It may be stored for later use.")
+FUNCTION_DEF(object, 1, 5, "object(string type_id, int midpoint_x, int midpoint_y, int facing, (optional) map properties) -> object: constructs and returns a new object. Note that the difference between this and spawn is that spawn returns a command to actually place the object in the level. object only creates the object and returns it. It may be stored for later use.")
 	formula::fail_if_static_context();
-
 	const std::string type = args()[0]->evaluate(variables).as_string();
-	const int x = args()[1]->evaluate(variables).as_int();
-	const int y = args()[2]->evaluate(variables).as_int();
-	const bool face_right = args()[3]->evaluate(variables).as_int() > 0;
-	custom_object* obj = new custom_object(type, x, y, face_right);
-
+	custom_object* obj;
+	
+	if(args().size() > 3) {
+		const int x = args()[1]->evaluate(variables).as_int();
+		const int y = args()[2]->evaluate(variables).as_int();
+		const bool face_right = args()[3]->evaluate(variables).as_int() > 0;
+		obj = new custom_object(type, x, y, face_right);
+	} else {
+		const int x = 0;
+		const int y = 0;
+		const bool face_right = false;
+		obj = new custom_object(type, x, y, face_right);
+	}
+		
 	//adjust so the object's x/y is its midpoint.
 	obj->set_pos(obj->x() - obj->current_frame().width() / 2 , obj->y() - obj->current_frame().height() / 2);
 
