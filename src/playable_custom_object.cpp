@@ -169,6 +169,26 @@ variant playable_custom_object::get_value(const std::string& key) const
 				info.push_back(variant("right"));
 			}
 
+			if(button_state & SDL_BUTTON(SDL_BUTTON_MIDDLE)) {
+				info.push_back(variant("middle"));
+			}
+
+			if(button_state & SDL_BUTTON(SDL_BUTTON_X1)) { //these aren't tested
+				info.push_back(variant("x1"));
+			}
+
+			if(button_state & SDL_BUTTON(SDL_BUTTON_X2)) {
+				info.push_back(variant("x2"));
+			}
+
+			if(button_state & SDL_BUTTON(SDL_BUTTON_WHEELUP)) { //and these don't work
+				info.push_back(variant("up"));
+			}
+
+			if(button_state & SDL_BUTTON(SDL_BUTTON_WHEELDOWN)) {
+				info.push_back(variant("down"));
+			}
+
 			result.push_back(variant(&info));
 		}
 
