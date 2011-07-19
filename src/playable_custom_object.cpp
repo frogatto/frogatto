@@ -148,12 +148,12 @@ variant playable_custom_object::get_value(const std::string& key) const
 		#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 			return variant(&result);
 		#else
-		short int count = 10;
+		long int count = 10;
 		Uint8* key_state = SDL_GetKeyState(NULL);
 		for (count = SDLK_FIRST; count < SDLK_LAST; count++) {
 			if(key_state[count]) {
 				if(31 < count && count < 127) {
-					const char chr = (char) count;
+					const char chr = count;
 					std::string str = &chr;
 					result.push_back(variant(str));
 				}
