@@ -150,7 +150,7 @@ variant playable_custom_object::get_value(const std::string& key) const
 		Uint8* key_state = SDL_GetKeyState(NULL);
 		for (int count = SDLK_FIRST; count < SDLK_LAST; count++) {
 			if(key_state[count]) {
-				if(31 < count && count < 127) {
+				if(std::isprint(count)) {
 					std::string str(1,(char) count);
 					result.push_back(variant(str));
 				} else {
