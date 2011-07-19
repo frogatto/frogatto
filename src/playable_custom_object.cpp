@@ -154,7 +154,7 @@ variant playable_custom_object::get_value(const std::string& key) const
 			if(key_state[count]) {
 				if(31 < count && count < 127) {
 					const char chr = count;
-					std::string str = &chr;
+					std::string str(1, chr);
 					result.push_back(variant(str));
 				}
 				else {
