@@ -141,8 +141,32 @@ variant playable_custom_object::get_value(const std::string& key) const
 		return variant(can_interact_);
 	} else if(key == "underwater_controls") {
 		return variant(underwater_controls_);
+	} else if(key == "ctrl_mod_key") {
+		return variant(SDL_GetModState());
+	} else if(key == "ctrl_keys") {
+		std::vector<variant> result;
+		#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+			return variant(&result);
+		#else
+		int count = 10;
+		Uint8* key_state = SDL_GetKeyState(NULL);
+		for (count = SDLK_FIRST; count < SDLK_LAST; count++) {
+			if(key_state[count]) {
+				if(31 < count && count < 127) {
+					const char chr = (char) count;
+					std::string str = &chr;
+					result.push_back(variant(str));
+				}
+				else {
+					result.push_back(variant((int) count));
+				}
+			}
+		}
+		return variant(&result);
+		#endif
 	} else if(key == "ctrl_mice") {
 		std::vector<variant> result;
+		
 
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 		const int nmice = SDL_GetNumMice();
@@ -188,7 +212,7 @@ variant playable_custom_object::get_value(const std::string& key) const
 			if(button_state & SDL_BUTTON(SDL_BUTTON_WHEELDOWN)) {
 				info.push_back(variant("down"));
 			}
-
+			
 			result.push_back(variant(&info));
 		}
 
