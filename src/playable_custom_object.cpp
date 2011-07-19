@@ -146,24 +146,20 @@ variant playable_custom_object::get_value(const std::string& key) const
 	} else if(key == "ctrl_keys") {
 		std::vector<variant> result;
 		#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-			return variant(&result);
 		#else
-		long int count = 10;
 		Uint8* key_state = SDL_GetKeyState(NULL);
-		for (count = SDLK_FIRST; count < SDLK_LAST; count++) {
+		for (int count = SDLK_FIRST; count < SDLK_LAST; count++) {
 			if(key_state[count]) {
 				if(31 < count && count < 127) {
-					const char chr = count;
-					std::string str(1, chr);
+					std::string str(1,(char) count);
 					result.push_back(variant(str));
-				}
-				else {
-					result.push_back(variant((int) count));
+				} else {
+					result.push_back(variant(count));
 				}
 			}
 		}
-		return variant(&result);
 		#endif
+		return variant(&result);
 	} else if(key == "ctrl_mice") {
 		std::vector<variant> result;
 		
