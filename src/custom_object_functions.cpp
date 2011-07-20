@@ -478,7 +478,7 @@ FUNCTION_DEF(object, 1, 5, "object(string type_id, int midpoint_x, int midpoint_
 	const std::string type = args()[0]->evaluate(variables).as_string();
 	custom_object* obj;
 	
-	if(args().size() > 3) {
+	if(args().size() > 1) {
 		const int x = args()[1]->evaluate(variables).as_int();
 		const int y = args()[2]->evaluate(variables).as_int();
 		const bool face_right = args()[3]->evaluate(variables).as_int() > 0;
@@ -486,7 +486,7 @@ FUNCTION_DEF(object, 1, 5, "object(string type_id, int midpoint_x, int midpoint_
 	} else {
 		const int x = 0;
 		const int y = 0;
-		const bool face_right = false;
+		const bool face_right = true;
 		obj = new custom_object(type, x, y, face_right);
 	}
 		
