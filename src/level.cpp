@@ -1643,7 +1643,7 @@ void level::prepare_tiles_for_drawing()
 namespace {
 bool sort_entity_drawing_pos(const entity_ptr& a, const entity_ptr& b) {
 	return a->zorder() < b->zorder() ||
-		   a->zorder() == b->zorder() && a->zsub_order() < b->zsub_order() ||
+		   a->zorder() == b->zorder() && (a->zsub_order() + a->midpoint().y) < (b->zsub_order() + b->midpoint().y) ||
 		   a->zorder() == b->zorder() && a->zsub_order() == b->zsub_order() && a->midpoint().y < b->midpoint().y ||
 		   a->zorder() == b->zorder() && a->zsub_order() == b->zsub_order() && a->midpoint().y == b->midpoint().y && a->midpoint().x < b->midpoint().x;
 }
