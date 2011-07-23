@@ -66,6 +66,8 @@ UNIT_TEST(formula)
 		CHECK_EQ(formula("not 0").execute(c).as_int(), 1);
 		CHECK_EQ(formula("abs(5)").execute(c).as_int(), 5);
 		CHECK_EQ(formula("abs(-5)").execute(c).as_int(), 5);
+		CHECK_EQ(formula("sign(5)").execute(c).as_int(), 1);
+		CHECK_EQ(formula("sign(-5)").execute(c).as_int(), -1);
 		CHECK_EQ(formula("min(3,5)").execute(c).as_int(), 3);
 		CHECK_EQ(formula("min(5,2)").execute(c).as_int(), 2);
 		CHECK_EQ(formula("max(3,5)").execute(c).as_int(), 5);

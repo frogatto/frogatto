@@ -240,6 +240,19 @@ private:
 	}
 };
 
+class sign_function : public function_expression {
+public:
+	explicit sign_function(const args_list& args)
+	     : function_expression("sign", args, 1, 1)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		const int n = args()[0]->evaluate(variables).as_int();
+		return variant(n >= 0 ? 1 : -1);
+	}
+};
+
 class min_function : public function_expression {
 public:
 	explicit min_function(const args_list& args)
@@ -1144,6 +1157,7 @@ functions_map& get_functions_map() {
 		FUNCTION(switch);
 		FUNCTION(query);
 		FUNCTION(abs);
+		FUNCTION(sign);
 		FUNCTION(min);
 		FUNCTION(max);
 		FUNCTION(choose);
