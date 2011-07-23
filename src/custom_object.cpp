@@ -1597,6 +1597,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_Y:                 return variant(y());
 	case CUSTOM_OBJECT_Z:
 	case CUSTOM_OBJECT_ZORDER:            return variant(zorder_);
+	case CUSTOM_OBJECT_ZSUB_ORDER:        return variant(zsub_order_);
 	case CUSTOM_OBJECT_RELATIVE_X:        return variant(x() - parent_position().x);
 	case CUSTOM_OBJECT_RELATIVE_Y:        return variant(y() - parent_position().y);
 	case CUSTOM_OBJECT_PARENT:            return variant(parent_.get());
@@ -2120,6 +2121,10 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	case CUSTOM_OBJECT_Z:
 	case CUSTOM_OBJECT_ZORDER:
 		zorder_ = value.as_int();
+		break;
+		
+	case CUSTOM_OBJECT_ZSUB_ORDER:
+		zsub_order_ = value.as_int();
 		break;
 	
 	case CUSTOM_OBJECT_RELATIVE_X: {
