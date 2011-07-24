@@ -66,6 +66,7 @@ public:
 	game_logic::const_formula_ptr get_event_handler(int event) const;
 
 	int zorder() const { return zorder_; }
+	int zsub_order() const { return zsub_order_; }
 	bool is_human() const { return is_human_;}
 	bool goes_inactive_only_when_standing() const { return goes_inactive_only_when_standing_; }
 	bool dies_on_inactive() const { return dies_on_inactive_;}
@@ -164,6 +165,7 @@ private:
 	boost::shared_ptr<game_logic::function_symbol_table> object_functions_;
 
 	int zorder_;
+	int zsub_order_;
 
 	bool is_human_;
 	bool goes_inactive_only_when_standing_;
