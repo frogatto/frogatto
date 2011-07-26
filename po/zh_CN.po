@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # CloudiDust <cloudidust@gmail.com>, 2011.
 # Yaohan Chen <yaohan.chen@gmail.com>, 2011.
 # Marcos Avila Isidoro <marcavis@yahoo.com.br>, 2011.
@@ -9,15 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-06-23 18:13-0300\n"
-"PO-Revision-Date: 2011-06-19 22:35+0000\n"
+"POT-Creation-Date: 2011-07-26 13:47-0300\n"
+"PO-Revision-Date: 2011-07-26 16:47+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
-"Language-Team: Chinese (China) (http://www.transifex.net/projects/p/Frogatto/"
-"team/zh_CN/)\n"
-"Language: zh_CN\n"
+"Language-Team: Chinese (China) (http://www.transifex.net/projects/p/Frogatto/team/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: CHANGELOG:1 iOS_CHANGELOG:1
@@ -229,14 +228,14 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:1 iOS_APP_STORE_METADATA:1
 msgid ""
-"An old-school 2d platformer game, starring a certain quixotic frog. From the "
-"creators of Battle for Wesnoth comes this exciting jump-and-run platformer. "
-"Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all the "
-"gameplay nuance of a classic console title. Run and jump over pits and "
-"enemies. Grab enemies with your tongue, swallow them, and then spit them out "
-"at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
-"puzzles. Collect coins and use them to buy upgrades and new abilities in the "
-"store. Talk to characters in game, and work to unravel Big Bad Milgram's "
+"An old-school 2d platformer game, starring a certain quixotic frog. From the"
+" creators of Battle for Wesnoth comes this exciting jump-and-run platformer."
+" Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all "
+"the gameplay nuance of a classic console title. Run and jump over pits and "
+"enemies. Grab enemies with your tongue, swallow them, and then spit them out"
+" at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
+"puzzles. Collect coins and use them to buy upgrades and new abilities in the"
+" store. Talk to characters in game, and work to unravel Big Bad Milgram's "
 "plot against the townsfolk! At over 30 levels set in 4 different "
 "environments, Frogatto is not a flash in the pan, and has the play-time "
 "you'd expect from a real videogame."
@@ -244,8 +243,8 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are "
-"hoping to bring back the magic in a new, original game design with "
+"Frogatto was made by a group of big-time fans of classic videogames, who are"
+" hoping to bring back the magic in a new, original game design with "
 "unconventional gameplay mechanics - a fun break from the usual clones."
 msgstr ""
 
@@ -255,8 +254,7 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:6 iOS_APP_STORE_METADATA:8
 msgid ""
-"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,"
-"frog"
+"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
 msgstr ""
 
 #: data/achievements.cfg:4
@@ -394,6 +392,7 @@ msgstr "你在方块跑里得了{level.player.score}分！"
 #: data/level/arcade-blocks.cfg:219
 #: data/level/arcade-down-the-rabbit-hall.cfg:863
 #: data/level/arcade-maintenance-shaft.cfg:2580
+#: data/level/arcade-nutty-factory.cfg:381
 #: data/level/arcade-the-long-haul.cfg:703
 #: data/level/arcade-wild-new-wonder.cfg:2520
 #: data/objects/effects/control/level_controller_coin_race.cfg:33
@@ -433,6 +432,15 @@ msgstr "你在维修管道里得了{level.player.vars.score}分！"
 msgid ""
 "The high score is {registry.arcade_maintenance_shaft_high_score} points."
 msgstr "最高记录是{registry.arcade_maintenance_shaft_high_score}分。"
+
+#: data/level/arcade-nutty-factory.cfg:380
+#: data/level/arcade-nutty-factory.cfg:383
+msgid "You got {level.player.vars.score} points in the Nutty Factory!"
+msgstr ""
+
+#: data/level/arcade-nutty-factory.cfg:384
+msgid "The high score is {registry.arcade_nutty_factory_high_score} points."
+msgstr ""
 
 #: data/level/arcade-the-long-haul.cfg:10
 #: data/level/titlescreen-arcade.cfg:275
@@ -482,7 +490,7 @@ msgstr "最高记录是{registry.arcade_wild_new_wonder_high_score}分。"
 msgid "Autumn Town"
 msgstr "秋日小镇"
 
-#: data/level/bombing-fools.cfg:14
+#: data/level/bombing-fools.cfg:18
 msgid "Bombing Fools"
 msgstr "爆破笨蛋"
 
@@ -545,7 +553,7 @@ msgstr ""
 "一次见到我了。小心点儿，\n"
 "替我们大家给米格拉姆一点教训！"
 
-#: data/level/bug-mining.cfg:13
+#: data/level/bug-mining.cfg:17
 msgid "Bug Mining"
 msgstr "虫虫大收集"
 
@@ -1156,7 +1164,7 @@ msgstr ""
 msgid "We saw Milgram's lieutenant go in there."
 msgstr "我们看到米格拉姆的副官进去了。"
 
-#: data/level/crevice-village-house-2.cfg:3513 data/level/rock-a-fort.cfg:4375
+#: data/level/crevice-village-house-2.cfg:3513 data/level/rock-a-fort.cfg:3231
 msgid "How interesting."
 msgstr "真有趣。"
 
@@ -1726,15 +1734,15 @@ msgstr ""
 "但愿如此。\n"
 "祝你好运！"
 
-#: data/level/dark-corridor.cfg:10
+#: data/level/dark-corridor.cfg:12
 msgid "Dark Corridor"
 msgstr "黑暗长廊"
 
-#: data/level/dark-corridor.cfg:1356
+#: data/level/dark-corridor.cfg:1082
 msgid "Now what?"
 msgstr "现在咋办？"
 
-#: data/level/darkness-central.cfg:14
+#: data/level/darkness-central.cfg:18
 msgid "Darkness Central"
 msgstr "暗黑中心"
 
@@ -1776,7 +1784,7 @@ msgstr "入口"
 msgid "Eerie Arbor"
 msgstr "阴森树林"
 
-#: data/level/fast-lane.cfg:13
+#: data/level/fast-lane.cfg:15
 msgid "Fast Lane"
 msgstr "捷径"
 
@@ -1949,7 +1957,7 @@ msgstr "糙砺土丘"
 msgid "Grassy Path"
 msgstr "青草小道"
 
-#: data/level/grassy-path.cfg:1163
+#: data/level/grassy-path.cfg:1007
 msgid ""
 "On this level,\n"
 "we give advice on how to play."
@@ -1957,7 +1965,7 @@ msgstr ""
 "在本关，\n"
 "我们会告诉你如何玩本游戏。"
 
-#: data/level/grassy-path.cfg:1164
+#: data/level/grassy-path.cfg:1008
 msgid ""
 "Each question mark\n"
 "has its own hint."
@@ -1965,7 +1973,7 @@ msgstr ""
 "每个问号里都有\n"
 "一条提示。"
 
-#: data/level/grassy-path.cfg:1165
+#: data/level/grassy-path.cfg:1009
 msgid ""
 "If you already know how to play,\n"
 "then just walk to the next level."
@@ -1973,7 +1981,7 @@ msgstr ""
 "如果你已经知道如何操作，\n"
 "直接走到下一关就行了。"
 
-#: data/level/grassy-path.cfg:1198
+#: data/level/grassy-path.cfg:1028
 msgid ""
 "To save the game,\n"
 "use one of these convenient restrooms."
@@ -1981,7 +1989,7 @@ msgstr ""
 "要保存游戏的话，\n"
 "可以在这些方便的洗手间里选一个解决。"
 
-#: data/level/grassy-path.cfg:1199
+#: data/level/grassy-path.cfg:1029
 msgid ""
 "There is only one save file,\n"
 "so be careful not to overwrite it!"
@@ -1989,7 +1997,7 @@ msgstr ""
 "游戏只有一个存档文件，\n"
 "要当心别无意中覆盖掉了！"
 
-#: data/level/grassy-path.cfg:1232
+#: data/level/grassy-path.cfg:1048
 msgid ""
 "Some jumps are too high to clear\n"
 "with just a normal jump."
@@ -1997,7 +2005,7 @@ msgstr ""
 "有些地方太高了，\n"
 "普通跳跃根本上不去。"
 
-#: data/level/grassy-path.cfg:1233
+#: data/level/grassy-path.cfg:1049
 msgid ""
 "Fortunately,\n"
 "Frogatto can jump off of walls, too!"
@@ -2005,7 +2013,7 @@ msgstr ""
 "幸运的是，\n"
 "阿托也可以在岩壁之间跳跃！"
 
-#: data/level/grassy-path.cfg:1234
+#: data/level/grassy-path.cfg:1050
 msgid ""
 "To do this,\n"
 "do a walking jump into the wall."
@@ -2013,7 +2021,7 @@ msgstr ""
 "要做到这点，\n"
 "先向着墙跳过去。"
 
-#: data/level/grassy-path.cfg:1235
+#: data/level/grassy-path.cfg:1051
 msgid ""
 "If you bump into the wall\n"
 "at the crest of the jump,\n"
@@ -2025,7 +2033,7 @@ msgstr ""
 "贴在岩壁上，并缓缓\n"
 "下滑。"
 
-#: data/level/grassy-path.cfg:1236
+#: data/level/grassy-path.cfg:1052
 msgid ""
 "If you don't get a running start\n"
 "you can still cling on, if you tap the\n"
@@ -2035,7 +2043,7 @@ msgstr ""
 "也仍然可以贴上去，只要向着\n"
 "岩壁按方向键和跳跃键即可。"
 
-#: data/level/grassy-path.cfg:1237
+#: data/level/grassy-path.cfg:1053
 msgid ""
 "Whilst you are clinging to the wall,\n"
 "pressing jump will make you rebound off."
@@ -2043,7 +2051,7 @@ msgstr ""
 "在贴住岩壁的时候，\n"
 "按下跳跃键就可以跳下来。"
 
-#: data/level/grassy-path.cfg:1238
+#: data/level/grassy-path.cfg:1054
 msgid ""
 "If two walls are facing each other,\n"
 "this is very useful, because then you can\n"
@@ -2052,21 +2060,21 @@ msgstr ""
 "当两个岩壁紧邻时，这个技巧很有用。\n"
 "因为此时你可以在两壁之间来回跳跃。"
 
-#: data/level/grassy-path.cfg:1239
+#: data/level/grassy-path.cfg:1055
 msgid "This lets you ascend vertical columns."
 msgstr "这使得你可以垂直行进到达上层。"
 
-#: data/level/grassy-path.cfg:1272
+#: data/level/grassy-path.cfg:1074
 msgid "Frogatto's world is a dangerous place."
 msgstr "阿托的世界是个很危险的地方。"
 
-#: data/level/grassy-path.cfg:1273
+#: data/level/grassy-path.cfg:1075
 msgid ""
 "You will encounter many creatures\n"
 "who want to hurt you."
 msgstr "你会遇到很多想要对你不利的生物。"
 
-#: data/level/grassy-path.cfg:1274
+#: data/level/grassy-path.cfg:1076
 msgid ""
 "It's often fine to just avoid them,\n"
 "but if you have to fight,\n"
@@ -2076,7 +2084,7 @@ msgstr ""
 "但如果必须战斗，\n"
 "那么阿托的舌头就是最好的防御武器。"
 
-#: data/level/grassy-path.cfg:1275
+#: data/level/grassy-path.cfg:1077
 msgid ""
 "You can grab enemies with the tongue,\n"
 "and then spit them back out."
@@ -2084,7 +2092,7 @@ msgstr ""
 "你可以用舌头卷住敌人吞下去，\n"
 "而后再将它们吐出去。"
 
-#: data/level/grassy-path.cfg:1276
+#: data/level/grassy-path.cfg:1078
 msgid ""
 "Once spat out,\n"
 "they become a deadly projectile."
@@ -2092,7 +2100,7 @@ msgstr ""
 "一旦被吐出去，\n"
 "它们便会成为致命的炮弹。"
 
-#: data/level/grassy-path.cfg:1277
+#: data/level/grassy-path.cfg:1079
 msgid ""
 "If they don't hit anything,\n"
 "they'll be stunned for a moment,\n"
@@ -2102,7 +2110,7 @@ msgstr ""
 "便会暂时陷入晕眩状态，\n"
 "过一会后便会恢复正常。"
 
-#: data/level/grassy-path.cfg:1278
+#: data/level/grassy-path.cfg:1080
 msgid ""
 "Whilst on their backs,\n"
 "they're vulnerable to being stomped on."
@@ -2110,13 +2118,13 @@ msgstr ""
 "当它们四脚朝天时，\n"
 "很容易受到踩击的伤害。"
 
-#: data/level/grassy-path.cfg:1279
+#: data/level/grassy-path.cfg:1081
 msgid ""
 "Sticking out the tongue and spitting,\n"
 "are both done with the attack key."
 msgstr "吐舌和吐敌人都是按攻击键来进行的。"
 
-#: data/level/grassy-path.cfg:1280
+#: data/level/grassy-path.cfg:1082
 msgid ""
 "There are a few ants just ahead.\n"
 "Feel free to try this on them."
@@ -2124,7 +2132,7 @@ msgstr ""
 "前面不远处有些蚂蚁。\n"
 "请随意拿它们练练手吧。"
 
-#: data/level/grassy-path.cfg:1281
+#: data/level/grassy-path.cfg:1083
 msgid ""
 "And don't worry - if you die,\n"
 "you'll restart right here."
@@ -2132,7 +2140,7 @@ msgstr ""
 "不用担心——要是你挂了，\n"
 "会在这里重新开始。"
 
-#: data/level/grassy-path.cfg:1360
+#: data/level/grassy-path.cfg:1124
 msgid ""
 "A very useful fact,\n"
 "is that you can control the direction\n"
@@ -2141,7 +2149,7 @@ msgstr ""
 "给个很有用的提示，\n"
 "你可以控制向哪个方向吐出敌人。"
 
-#: data/level/grassy-path.cfg:1361
+#: data/level/grassy-path.cfg:1125
 msgid ""
 "If you hold down the up key\n"
 "while pressing the attack button,\n"
@@ -2151,7 +2159,7 @@ msgstr ""
 "按下上方向键，那么你会\n"
 "吐出一条高高的弧线。"
 
-#: data/level/grassy-path.cfg:1362
+#: data/level/grassy-path.cfg:1126
 msgid ""
 "If you hold down the down key\n"
 "while pressing the attack button,\n"
@@ -2161,7 +2169,7 @@ msgstr ""
 "按下下方向键，那么你\n"
 "只会用很少的力气吐出敌人。"
 
-#: data/level/grassy-path.cfg:1364
+#: data/level/grassy-path.cfg:1128
 msgid ""
 "Also beware that not all enemies\n"
 "can be grabbed with the tongue,\n"
@@ -2171,7 +2179,7 @@ msgstr ""
 "都可以被舌头卷进去，\n"
 "很多敌人也不能被舌头所伤。"
 
-#: data/level/grassy-path.cfg:1365
+#: data/level/grassy-path.cfg:1129
 msgid ""
 "You'll need to get creative\n"
 "to deal with those enemies."
@@ -2179,7 +2187,7 @@ msgstr ""
 "对付这些敌人的时候，\n"
 "你得有点创造力。"
 
-#: data/level/grassy-path.cfg:1366
+#: data/level/grassy-path.cfg:1130
 msgid ""
 "Last but not least,\n"
 "the tongue can grab useful items too."
@@ -2187,7 +2195,7 @@ msgstr ""
 "最后但并非最不重要的一点是，\n"
 "舌头也可以卷起有用的物品。"
 
-#: data/level/grassy-path.cfg:1367
+#: data/level/grassy-path.cfg:1131
 msgid ""
 "It's what you use to carry something\n"
 "from one place to another."
@@ -2195,13 +2203,13 @@ msgstr ""
 "这就是你把物品从某地带到别处的\n"
 "方法。"
 
-#: data/level/grassy-path.cfg:1419
+#: data/level/grassy-path.cfg:1165
 msgid ""
 "Fountains, and other water dispensers,\n"
 "are very helpful."
 msgstr "喷泉和其他吐水的地方是很有用的。"
 
-#: data/level/grassy-path.cfg:1420
+#: data/level/grassy-path.cfg:1166
 msgid ""
 "If you drink from them,\n"
 "you will restore all of your health!"
@@ -2209,7 +2217,7 @@ msgstr ""
 "如果在那里饮水的话，\n"
 "你的生命值便会完全回复！"
 
-#: data/level/grassy-path.cfg:1454
+#: data/level/grassy-path.cfg:1186
 msgid ""
 "Certain wooden bridges and stairways,\n"
 "like the one just up ahead,\n"
@@ -2219,11 +2227,11 @@ msgstr ""
 "某些木桥和木楼梯在你往上跳的时候\n"
 "可以被穿过，比如你眼前的这一座。"
 
-#: data/level/grassy-path.cfg:1455
+#: data/level/grassy-path.cfg:1187
 msgid "You can also jump down through them."
 msgstr "你也同样可以向下跳穿过它们。"
 
-#: data/level/grassy-path.cfg:1456
+#: data/level/grassy-path.cfg:1188
 msgid ""
 "A special button will appear,\n"
 "whenever this is possible."
@@ -2231,7 +2239,7 @@ msgstr ""
 "当这可能的时候，\n"
 "一个专门的按钮就会出现。"
 
-#: data/level/grassy-path.cfg:1457
+#: data/level/grassy-path.cfg:1189
 msgid ""
 "To do so, hold down the down key,\n"
 "and then press jump."
@@ -2239,7 +2247,7 @@ msgstr ""
 "要向下跳，只需按住下方向键，\n"
 "而后按跳跃键。"
 
-#: data/level/grassy-path.cfg:1536
+#: data/level/grassy-path.cfg:1230
 msgid ""
 "As you've played through this level,\n"
 "you've probably noticed the gold coins."
@@ -2247,7 +2255,7 @@ msgstr ""
 "通过本场景的时候，\n"
 "你也许已经注意到了那些金币。"
 
-#: data/level/grassy-path.cfg:1537
+#: data/level/grassy-path.cfg:1231
 msgid ""
 "You can collect these\n"
 "and any other golden objects,\n"
@@ -2257,13 +2265,13 @@ msgstr ""
 "以及其他金质物品，\n"
 "而后用来购买装备！"
 
-#: data/level/grassy-path.cfg:1538
+#: data/level/grassy-path.cfg:1232
 msgid ""
 "There is a store conveniently located\n"
 "outside of the town."
 msgstr "在小镇外面有个商店，很方便的。"
 
-#: data/level/grassy-path.cfg:1572
+#: data/level/grassy-path.cfg:1252
 msgid ""
 "Sometimes, you'll run into rather\n"
 "dangerous-looking terrain,\n"
@@ -2272,7 +2280,7 @@ msgstr ""
 "有时候你会遇到看上去很危险的\n"
 "地形，例如这些荆棘。"
 
-#: data/level/grassy-path.cfg:1573
+#: data/level/grassy-path.cfg:1253
 msgid ""
 "As you would expect, stepping on these\n"
 "will hurt a bit."
@@ -2280,11 +2288,11 @@ msgstr ""
 "正如你所想的，踩到它们的话\n"
 "会有点痛的哦。"
 
-#: data/level/grassy-path.cfg:1574
+#: data/level/grassy-path.cfg:1254
 msgid "However, this also hurts the bugs!"
 msgstr "但是，它们同样也会伤害到虫子！"
 
-#: data/level/grassy-path.cfg:1575
+#: data/level/grassy-path.cfg:1255
 msgid ""
 "Leading or spitting them onto it\n"
 "is an excellent way to dispatch them."
@@ -2292,7 +2300,7 @@ msgstr ""
 "把虫子引到或者吐到荆棘上\n"
 "是消灭它们的好方法。"
 
-#: data/level/grassy-path.cfg:1576
+#: data/level/grassy-path.cfg:1256
 msgid ""
 "Beware also,\n"
 "any bottomless pits you encounter."
@@ -2300,11 +2308,11 @@ msgstr ""
 "还要注意的是，\n"
 "你遇到的任何无底洞，"
 
-#: data/level/grassy-path.cfg:1577
+#: data/level/grassy-path.cfg:1257
 msgid "These are immediately fatal."
 msgstr "都会秒杀你。"
 
-#: data/level/grassy-path.cfg:1752
+#: data/level/grassy-path.cfg:1371
 msgid ""
 "Up ahead, you'll notice an anthill,\n"
 "which ants constantly come out of."
@@ -2312,7 +2320,7 @@ msgstr ""
 "在前方你会看到一座蚁丘，\n"
 "那里会源源不断地跑出蚂蚁。"
 
-#: data/level/grassy-path.cfg:1753
+#: data/level/grassy-path.cfg:1372
 msgid ""
 "There is no way to stop this;\n"
 "you can't destroy the anthill."
@@ -2320,7 +2328,7 @@ msgstr ""
 "这是没办法停止的：\n"
 "你不可能摧毁蚁丘。"
 
-#: data/level/grassy-path.cfg:1754
+#: data/level/grassy-path.cfg:1373
 msgid ""
 "Some hazards are like this.\n"
 "You simply have to work around them."
@@ -2328,11 +2336,11 @@ msgstr ""
 "有些危险就是如此。\n"
 "你只能绕过它们。"
 
-#: data/level/grassy-path.cfg:1788
+#: data/level/grassy-path.cfg:1393
 msgid "That's it for this tutorial."
 msgstr "教程到此结束。"
 
-#: data/level/grassy-path.cfg:1789
+#: data/level/grassy-path.cfg:1394
 msgid ""
 "Although there's a bit more\n"
 "to playing the game,\n"
@@ -2344,7 +2352,7 @@ msgstr ""
 "但我们已经可以放心地\n"
 "让你去自学了。"
 
-#: data/level/grassy-path.cfg:1790
+#: data/level/grassy-path.cfg:1395
 msgid ""
 "Feel free to come back here,\n"
 "if you want to read a hint again."
@@ -2352,11 +2360,11 @@ msgstr ""
 "如果你想要重读任何一条提示的话，\n"
 "随时都可以回到这里。"
 
-#: data/level/grassy-path.cfg:1791
+#: data/level/grassy-path.cfg:1396
 msgid "Have fun!"
 msgstr "祝你玩得开心！"
 
-#: data/level/grassy-path.cfg:1855
+#: data/level/grassy-path.cfg:1437
 msgid ""
 "If you've seen a conversation before\n"
 "you might be annoyed by\n"
@@ -2365,7 +2373,7 @@ msgstr ""
 "如果以前看过一段对话，\n"
 "可能再看一遍会烦。"
 
-#: data/level/grassy-path.cfg:1856
+#: data/level/grassy-path.cfg:1438
 msgid ""
 "You can skip a conversation,\n"
 "including parts of cutscenes,\n"
@@ -2374,7 +2382,7 @@ msgstr ""
 "可以按Esc键跳过对话，\n"
 "包括插入情节。"
 
-#: data/level/grassy-path.cfg:1857
+#: data/level/grassy-path.cfg:1439
 msgid ""
 "And yes,\n"
 "this applies to the question marks\n"
@@ -2383,11 +2391,11 @@ msgstr ""
 "对，本关里的问号也\n"
 "包括在内。"
 
-#: data/level/hanging-platforms.cfg:14
+#: data/level/hanging-platforms.cfg:16
 msgid "Hanging Platforms"
 msgstr "悬挂平台"
 
-#: data/level/hanging-platforms.cfg:3563
+#: data/level/hanging-platforms.cfg:3565
 msgid ""
 "Well, I guess I'm entering Milgram's\n"
 "castle now. I made it through the caves!"
@@ -2395,19 +2403,19 @@ msgstr ""
 "好吧，我猜我正走进米格拉姆的\n"
 "城堡。我算是通过洞穴了啊！"
 
-#: data/level/hidden-depths.cfg:14
+#: data/level/hidden-depths.cfg:18
 msgid "Hidden Depths"
 msgstr "隐秘深处"
 
-#: data/level/hidden-depths.cfg:3737
+#: data/level/hidden-depths.cfg:3741
 msgid "I'd better be careful."
 msgstr "我最好小心点。"
 
-#: data/level/hidden-depths.cfg:3737
+#: data/level/hidden-depths.cfg:3741
 msgid "This is a very deep chasm..."
 msgstr "这是个很深很深的裂口……"
 
-#: data/level/hidden-depths.cfg:4559
+#: data/level/hidden-depths.cfg:4563
 msgid "AAAAAAH! I CAN'T FLY!"
 msgstr "啊啊啊啊啊！我不会飞啊！"
 
@@ -2724,15 +2732,15 @@ msgstr "好吧。"
 msgid "Pinecone Park"
 msgstr "松果公园"
 
-#: data/level/plagued-mine.cfg:14
+#: data/level/plagued-mine.cfg:18
 msgid "Plagued Mine"
 msgstr "瘟疫矿井"
 
-#: data/level/plagued-mine.cfg:2790
+#: data/level/plagued-mine.cfg:2794
 msgid "These crazy bombers are everywhere!"
 msgstr "到处都是疯狂的炸弹客！"
 
-#: data/level/plagued-mine.cfg:2867
+#: data/level/plagued-mine.cfg:2871
 msgid "Yikes!"
 msgstr "呀！"
 
@@ -2740,7 +2748,7 @@ msgstr "呀！"
 msgid "Rock-a-Fort"
 msgstr "摇滚要塞"
 
-#: data/level/rock-a-fort.cfg:4374
+#: data/level/rock-a-fort.cfg:3230
 msgid "Woah! A flying plant!"
 msgstr "喔哈！飞在天上的植物！"
 
@@ -3059,6 +3067,18 @@ msgstr "简单得很，飞过去就是了！"
 #: data/level/secluded-hut.cfg:1273
 msgid "You ... do realize I can't fly?"
 msgstr "你……知道我不会飞么？"
+
+#: data/level/shadowm-forest-1.cfg:15
+msgid "Forest 1"
+msgstr ""
+
+#: data/level/shadowm-forest-2.cfg:16
+msgid "Forest 2"
+msgstr ""
+
+#: data/level/shadowm-forest-3.cfg:15
+msgid "Forest 3"
+msgstr ""
 
 #: data/level/splash-hop.cfg:14
 msgid "Splash, Hop"
@@ -4045,7 +4065,7 @@ msgstr "越早越好。"
 msgid "Twisted Trees"
 msgstr "缠绕绿树"
 
-#: data/level/underground-pool.cfg:14
+#: data/level/underground-pool.cfg:16
 msgid "Underground Pool"
 msgstr "地下水池"
 
@@ -4057,7 +4077,7 @@ msgstr "接待室"
 msgid "Wandering Passage"
 msgstr "蜿蜒过道"
 
-#: data/level/watery-alley.cfg:14
+#: data/level/watery-alley.cfg:18
 msgid "Watery Alley"
 msgstr "过水小径"
 
@@ -4092,8 +4112,8 @@ msgstr "你达到了硬币采集赛到第 {level.player.difficulty} 关。"
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level {registry."
-"arcade_coin_race_high_score}."
+"The furthest that has been reached is level "
+"{registry.arcade_coin_race_high_score}."
 msgstr "最高纪录是第 {registry.arcade_coin_race_high_score} 关。 "
 
 #: data/objects/items/max_heart_object.cfg:18
@@ -4306,15 +4326,13 @@ msgstr "正在读取对象：能量弹"
 
 #: iOS_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are "
-"hoping to bring back the magic in a new, original game design with "
-"unconventional gameplay mechanics - a fun break from the usual clones. We're "
-"a small group of indie developers, hoping this game becomes one of the "
+"Frogatto was made by a group of big-time fans of classic videogames, who are"
+" hoping to bring back the magic in a new, original game design with "
+"unconventional gameplay mechanics - a fun break from the usual clones. We're"
+" a small group of indie developers, hoping this game becomes one of the "
 "definitive platform games on iOS - and you can make that happen!"
 msgstr ""
-"《青蛙阿托》为一组经典游戏爱好者作成，他们希望带回那种魔力，作出一款创新，独"
-"特的游戏，突破通常的模式。我们是一个小型独立开发组，希望本游戏成为iOS的终极平"
-"台游戏之一。您可以帮助作到这一点！"
+"《青蛙阿托》为一组经典游戏爱好者作成，他们希望带回那种魔力，作出一款创新，独特的游戏，突破通常的模式。我们是一个小型独立开发组，希望本游戏成为iOS的终极平台游戏之一。您可以帮助作到这一点！"
 
 #: iOS_APP_STORE_METADATA:5
 msgid ""
@@ -4350,27 +4368,27 @@ msgstr "攻击"
 msgid "Back"
 msgstr "返回"
 
-#: src/draw_scene.cpp:367
+#: src/draw_scene.cpp:376
 msgid "Achievement Unlocked!"
 msgstr "成就达成！"
 
-#: src/main.cpp:383
+#: src/main.cpp:384
 msgid "Initializing custom object"
 msgstr "初始化自定义对象"
 
-#: src/main.cpp:385
+#: src/main.cpp:386
 msgid "Initializing custom object functions"
 msgstr "初始化自定义对象函数"
 
-#: src/main.cpp:387
+#: src/main.cpp:388
 msgid "Initializing tiles"
 msgstr "初始化图块"
 
-#: src/main.cpp:390 src/main.cpp:394
+#: src/main.cpp:391 src/main.cpp:395
 msgid "Initializing GUI"
 msgstr "初始化界面"
 
-#: src/main.cpp:400
+#: src/main.cpp:401
 msgid "Loading level"
 msgstr "正在读取关卡"
 
@@ -4405,3 +4423,5 @@ msgstr "交换A/B键"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
+
+

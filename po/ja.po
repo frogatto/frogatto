@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # suzukijake <jake.suzuki2@gmail.com>, 2011.
 # Yaohan Chen <yaohan.chen@gmail.com>, 2011.
 # Philipp Zabel <pzabel@gmx.de>, 2011.
@@ -9,15 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-06-23 18:13-0300\n"
-"PO-Revision-Date: 2011-06-19 22:35+0000\n"
+"POT-Creation-Date: 2011-07-26 13:47-0300\n"
+"PO-Revision-Date: 2011-07-26 16:47+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
-"Language-Team: Japanese (http://www.transifex.net/projects/p/Frogatto/team/"
-"ja/)\n"
-"Language: ja\n"
+"Language-Team: Japanese (http://www.transifex.net/projects/p/Frogatto/team/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: CHANGELOG:1 iOS_CHANGELOG:1
@@ -229,14 +228,14 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:1 iOS_APP_STORE_METADATA:1
 msgid ""
-"An old-school 2d platformer game, starring a certain quixotic frog. From the "
-"creators of Battle for Wesnoth comes this exciting jump-and-run platformer. "
-"Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all the "
-"gameplay nuance of a classic console title. Run and jump over pits and "
-"enemies. Grab enemies with your tongue, swallow them, and then spit them out "
-"at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
-"puzzles. Collect coins and use them to buy upgrades and new abilities in the "
-"store. Talk to characters in game, and work to unravel Big Bad Milgram's "
+"An old-school 2d platformer game, starring a certain quixotic frog. From the"
+" creators of Battle for Wesnoth comes this exciting jump-and-run platformer."
+" Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all "
+"the gameplay nuance of a classic console title. Run and jump over pits and "
+"enemies. Grab enemies with your tongue, swallow them, and then spit them out"
+" at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
+"puzzles. Collect coins and use them to buy upgrades and new abilities in the"
+" store. Talk to characters in game, and work to unravel Big Bad Milgram's "
 "plot against the townsfolk! At over 30 levels set in 4 different "
 "environments, Frogatto is not a flash in the pan, and has the play-time "
 "you'd expect from a real videogame."
@@ -244,13 +243,12 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are "
-"hoping to bring back the magic in a new, original game design with "
+"Frogatto was made by a group of big-time fans of classic videogames, who are"
+" hoping to bring back the magic in a new, original game design with "
 "unconventional gameplay mechanics - a fun break from the usual clones."
 msgstr ""
 "このゲームは、レトロゲームの大ファンの者たちによって作られました。\n"
-"しかし私達は今までのゲームに囚われず、オリジナリティのあるゲームを目指しまし"
-"た。"
+"しかし私達は今までのゲームに囚われず、オリジナリティのあるゲームを目指しました。"
 
 #: MAC_APP_STORE_METADATA:5 iOS_APP_STORE_METADATA:7
 msgid "keywords:"
@@ -258,8 +256,7 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:6 iOS_APP_STORE_METADATA:8
 msgid ""
-"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,"
-"frog"
+"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
 msgstr ""
 
 #: data/achievements.cfg:4
@@ -401,6 +398,7 @@ msgstr "ブロックランで{level.player.score}ポイントを手に入れた�
 #: data/level/arcade-blocks.cfg:219
 #: data/level/arcade-down-the-rabbit-hall.cfg:863
 #: data/level/arcade-maintenance-shaft.cfg:2580
+#: data/level/arcade-nutty-factory.cfg:381
 #: data/level/arcade-the-long-haul.cfg:703
 #: data/level/arcade-wild-new-wonder.cfg:2520
 #: data/objects/effects/control/level_controller_coin_race.cfg:33
@@ -440,6 +438,15 @@ msgstr "メンテナンスシャフトで{level.player.vars.score}ポイント�
 msgid ""
 "The high score is {registry.arcade_maintenance_shaft_high_score} points."
 msgstr "ハイスコアは{registry.arcade_maintenance_shaft_high_score}です"
+
+#: data/level/arcade-nutty-factory.cfg:380
+#: data/level/arcade-nutty-factory.cfg:383
+msgid "You got {level.player.vars.score} points in the Nutty Factory!"
+msgstr ""
+
+#: data/level/arcade-nutty-factory.cfg:384
+msgid "The high score is {registry.arcade_nutty_factory_high_score} points."
+msgstr ""
 
 #: data/level/arcade-the-long-haul.cfg:10
 #: data/level/titlescreen-arcade.cfg:275
@@ -489,7 +496,7 @@ msgstr "ハイスコアは{registry.arcade_wild_new_wonder_high_score}です"
 msgid "Autumn Town"
 msgstr "秋の町"
 
-#: data/level/bombing-fools.cfg:14
+#: data/level/bombing-fools.cfg:18
 msgid "Bombing Fools"
 msgstr "愚者への爆撃"
 
@@ -550,7 +557,7 @@ msgstr ""
 "ください、そして住民たちのために\n"
 "ミルグラムを戒めてください！"
 
-#: data/level/bug-mining.cfg:13
+#: data/level/bug-mining.cfg:17
 msgid "Bug Mining"
 msgstr "虫地雷"
 
@@ -1162,7 +1169,7 @@ msgstr ""
 "ミルグラムの偉い部下の人が、\n"
 "そこに行くのを見たよ"
 
-#: data/level/crevice-village-house-2.cfg:3513 data/level/rock-a-fort.cfg:4375
+#: data/level/crevice-village-house-2.cfg:3513 data/level/rock-a-fort.cfg:3231
 msgid "How interesting."
 msgstr "興味深いね…"
 
@@ -1742,15 +1749,15 @@ msgstr ""
 "うん、大丈夫だよ。\n"
 "頑張って！"
 
-#: data/level/dark-corridor.cfg:10
+#: data/level/dark-corridor.cfg:12
 msgid "Dark Corridor"
 msgstr "闇の廊下"
 
-#: data/level/dark-corridor.cfg:1356
+#: data/level/dark-corridor.cfg:1082
 msgid "Now what?"
 msgstr "今度はなに！？"
 
-#: data/level/darkness-central.cfg:14
+#: data/level/darkness-central.cfg:18
 msgid "Darkness Central"
 msgstr "暗闇の中心"
 
@@ -1789,7 +1796,7 @@ msgstr "入り口"
 msgid "Eerie Arbor"
 msgstr "恐ろしげな木陰"
 
-#: data/level/fast-lane.cfg:13
+#: data/level/fast-lane.cfg:15
 msgid "Fast Lane"
 msgstr "最前線"
 
@@ -1965,13 +1972,13 @@ msgstr "老木の丘"
 msgid "Grassy Path"
 msgstr "草原"
 
-#: data/level/grassy-path.cfg:1163
+#: data/level/grassy-path.cfg:1007
 msgid ""
 "On this level,\n"
 "we give advice on how to play."
 msgstr "ここではゲームの操作方法を教えるぞ"
 
-#: data/level/grassy-path.cfg:1164
+#: data/level/grassy-path.cfg:1008
 msgid ""
 "Each question mark\n"
 "has its own hint."
@@ -1979,7 +1986,7 @@ msgstr ""
 "こんな感じのハテナマークには、それぞれ\n"
 "ヒントが込められている"
 
-#: data/level/grassy-path.cfg:1165
+#: data/level/grassy-path.cfg:1009
 msgid ""
 "If you already know how to play,\n"
 "then just walk to the next level."
@@ -1987,7 +1994,7 @@ msgstr ""
 "もし既に操作方法を知っているなら、ただ\n"
 "次のエリアへ進んでくれ"
 
-#: data/level/grassy-path.cfg:1198
+#: data/level/grassy-path.cfg:1028
 msgid ""
 "To save the game,\n"
 "use one of these convenient restrooms."
@@ -1995,7 +2002,7 @@ msgstr ""
 "ゲームをセーブするには、このような便利な\n"
 "休憩所を使いなさい"
 
-#: data/level/grassy-path.cfg:1199
+#: data/level/grassy-path.cfg:1029
 msgid ""
 "There is only one save file,\n"
 "so be careful not to overwrite it!"
@@ -2003,7 +2010,7 @@ msgstr ""
 "セーブファイルはひとつしかないので、\n"
 "上書きの際には気をつけて！"
 
-#: data/level/grassy-path.cfg:1232
+#: data/level/grassy-path.cfg:1048
 msgid ""
 "Some jumps are too high to clear\n"
 "with just a normal jump."
@@ -2011,7 +2018,7 @@ msgstr ""
 "高すぎて普通のジャンプで飛べられない\n"
 "ところもある"
 
-#: data/level/grassy-path.cfg:1233
+#: data/level/grassy-path.cfg:1049
 msgid ""
 "Fortunately,\n"
 "Frogatto can jump off of walls, too!"
@@ -2019,7 +2026,7 @@ msgstr ""
 "幸い、\n"
 "キミは壁から飛び降りることもできるぞ！"
 
-#: data/level/grassy-path.cfg:1234
+#: data/level/grassy-path.cfg:1050
 msgid ""
 "To do this,\n"
 "do a walking jump into the wall."
@@ -2027,7 +2034,7 @@ msgstr ""
 "そのためには、歩きながら壁に向かって\n"
 "ジャンプするんだ"
 
-#: data/level/grassy-path.cfg:1235
+#: data/level/grassy-path.cfg:1051
 msgid ""
 "If you bump into the wall\n"
 "at the crest of the jump,\n"
@@ -2039,7 +2046,7 @@ msgstr ""
 "できる。そしてゆっくりずり\n"
 "落ちていくだろう"
 
-#: data/level/grassy-path.cfg:1236
+#: data/level/grassy-path.cfg:1052
 msgid ""
 "If you don't get a running start\n"
 "you can still cling on, if you tap the\n"
@@ -2049,7 +2056,7 @@ msgstr ""
 "できるぞ。壁に向かってその方向キーを\n"
 "押しながらジャンプボタンを押すんだ"
 
-#: data/level/grassy-path.cfg:1237
+#: data/level/grassy-path.cfg:1053
 msgid ""
 "Whilst you are clinging to the wall,\n"
 "pressing jump will make you rebound off."
@@ -2058,7 +2065,7 @@ msgstr ""
 "押すことで、壁とは反対方向にジャンプ\n"
 "するぞ"
 
-#: data/level/grassy-path.cfg:1238
+#: data/level/grassy-path.cfg:1054
 msgid ""
 "If two walls are facing each other,\n"
 "this is very useful, because then you can\n"
@@ -2069,21 +2076,21 @@ msgstr ""
 "キミはその二つの壁の間で何度も何度も\n"
 "ジャンプすることが出来るからだ。"
 
-#: data/level/grassy-path.cfg:1239
+#: data/level/grassy-path.cfg:1055
 msgid "This lets you ascend vertical columns."
 msgstr "これで垂直な柱などを登ることもできるぞ"
 
-#: data/level/grassy-path.cfg:1272
+#: data/level/grassy-path.cfg:1074
 msgid "Frogatto's world is a dangerous place."
 msgstr "このゲームの世界は危険な場所だ"
 
-#: data/level/grassy-path.cfg:1273
+#: data/level/grassy-path.cfg:1075
 msgid ""
 "You will encounter many creatures\n"
 "who want to hurt you."
 msgstr "多くの怪物がキミを襲ってくるだろう"
 
-#: data/level/grassy-path.cfg:1274
+#: data/level/grassy-path.cfg:1076
 msgid ""
 "It's often fine to just avoid them,\n"
 "but if you have to fight,\n"
@@ -2094,7 +2101,7 @@ msgstr ""
 "ならなくなったとき、キミの最大の守りは\n"
 "その舌だ"
 
-#: data/level/grassy-path.cfg:1275
+#: data/level/grassy-path.cfg:1077
 msgid ""
 "You can grab enemies with the tongue,\n"
 "and then spit them back out."
@@ -2102,7 +2109,7 @@ msgstr ""
 "キミは自分の舌で敵を捕まえ、そして\n"
 "その敵を吐き戻すことができる"
 
-#: data/level/grassy-path.cfg:1276
+#: data/level/grassy-path.cfg:1078
 msgid ""
 "Once spat out,\n"
 "they become a deadly projectile."
@@ -2110,7 +2117,7 @@ msgstr ""
 "一度吐き戻すと、その敵はほとんど\n"
 "動けなくなる"
 
-#: data/level/grassy-path.cfg:1277
+#: data/level/grassy-path.cfg:1079
 msgid ""
 "If they don't hit anything,\n"
 "they'll be stunned for a moment,\n"
@@ -2120,7 +2127,7 @@ msgstr ""
 "その敵は少しの間気絶し、少し経つと\n"
 "また起き上がってくるぞ"
 
-#: data/level/grassy-path.cfg:1278
+#: data/level/grassy-path.cfg:1080
 msgid ""
 "Whilst on their backs,\n"
 "they're vulnerable to being stomped on."
@@ -2128,7 +2135,7 @@ msgstr ""
 "敵がひっくり返っているときは、踏みつけ\n"
 "攻撃でダメージを与えることができる"
 
-#: data/level/grassy-path.cfg:1279
+#: data/level/grassy-path.cfg:1081
 msgid ""
 "Sticking out the tongue and spitting,\n"
 "are both done with the attack key."
@@ -2136,7 +2143,7 @@ msgstr ""
 "舌を伸ばすのも吐き出すのも、\n"
 "攻撃ボタンで行う"
 
-#: data/level/grassy-path.cfg:1280
+#: data/level/grassy-path.cfg:1082
 msgid ""
 "There are a few ants just ahead.\n"
 "Feel free to try this on them."
@@ -2144,7 +2151,7 @@ msgstr ""
 "目の前に蟻が２、３匹いる。今教えたことを\n"
 "あいつらに自由に試してみてくれ"
 
-#: data/level/grassy-path.cfg:1281
+#: data/level/grassy-path.cfg:1083
 msgid ""
 "And don't worry - if you die,\n"
 "you'll restart right here."
@@ -2152,7 +2159,7 @@ msgstr ""
 "ああ、それと…心配はいらない。キミが\n"
 "死んでも、すぐここから再会されるから。"
 
-#: data/level/grassy-path.cfg:1360
+#: data/level/grassy-path.cfg:1124
 msgid ""
 "A very useful fact,\n"
 "is that you can control the direction\n"
@@ -2162,7 +2169,7 @@ msgstr ""
 "敵を吐き出すときその方向を\n"
 "コントロールすることができる"
 
-#: data/level/grassy-path.cfg:1361
+#: data/level/grassy-path.cfg:1125
 msgid ""
 "If you hold down the up key\n"
 "while pressing the attack button,\n"
@@ -2171,7 +2178,7 @@ msgstr ""
 "上キーを押しながら攻撃ボタンを押せば、\n"
 "敵を上方向に弓なりに吐き出すぞ"
 
-#: data/level/grassy-path.cfg:1362
+#: data/level/grassy-path.cfg:1126
 msgid ""
 "If you hold down the down key\n"
 "while pressing the attack button,\n"
@@ -2180,7 +2187,7 @@ msgstr ""
 "下キーを押しながら攻撃ボタンを押せば、\n"
 "すぐ近くに吐き出す"
 
-#: data/level/grassy-path.cfg:1364
+#: data/level/grassy-path.cfg:1128
 msgid ""
 "Also beware that not all enemies\n"
 "can be grabbed with the tongue,\n"
@@ -2191,13 +2198,13 @@ msgstr ""
 "つまり、殆どダメージも与えられないという\n"
 "ことだ"
 
-#: data/level/grassy-path.cfg:1365
+#: data/level/grassy-path.cfg:1129
 msgid ""
 "You'll need to get creative\n"
 "to deal with those enemies."
 msgstr "キミには色んな敵の詳細を知る必要がある"
 
-#: data/level/grassy-path.cfg:1366
+#: data/level/grassy-path.cfg:1130
 msgid ""
 "Last but not least,\n"
 "the tongue can grab useful items too."
@@ -2205,7 +2212,7 @@ msgstr ""
 "最後に重要なことを。その舌は役立つ\n"
 "アイテムを捕らえることもできるぞ"
 
-#: data/level/grassy-path.cfg:1367
+#: data/level/grassy-path.cfg:1131
 msgid ""
 "It's what you use to carry something\n"
 "from one place to another."
@@ -2213,7 +2220,7 @@ msgstr ""
 "アイテムを他の場所に移動させるときに\n"
 "使える手段だ"
 
-#: data/level/grassy-path.cfg:1419
+#: data/level/grassy-path.cfg:1165
 msgid ""
 "Fountains, and other water dispensers,\n"
 "are very helpful."
@@ -2221,13 +2228,13 @@ msgstr ""
 "噴水や、その他給水ができる場所はとても\n"
 "有難いものだ"
 
-#: data/level/grassy-path.cfg:1420
+#: data/level/grassy-path.cfg:1166
 msgid ""
 "If you drink from them,\n"
 "you will restore all of your health!"
 msgstr "これを飲めば、キミの体調は全回復するぞ！"
 
-#: data/level/grassy-path.cfg:1454
+#: data/level/grassy-path.cfg:1186
 msgid ""
 "Certain wooden bridges and stairways,\n"
 "like the one just up ahead,\n"
@@ -2238,13 +2245,13 @@ msgstr ""
 "橋や階段は、ジャンプですり抜けることが\n"
 "できるぞ"
 
-#: data/level/grassy-path.cfg:1455
+#: data/level/grassy-path.cfg:1187
 msgid "You can also jump down through them."
 msgstr ""
 "また、橋の上から下方向へ\n"
 "すり抜けることも可能だ"
 
-#: data/level/grassy-path.cfg:1456
+#: data/level/grassy-path.cfg:1188
 msgid ""
 "A special button will appear,\n"
 "whenever this is possible."
@@ -2252,7 +2259,7 @@ msgstr ""
 "この時なら、常時スペシャルボタンが\n"
 "現れます"
 
-#: data/level/grassy-path.cfg:1457
+#: data/level/grassy-path.cfg:1189
 msgid ""
 "To do so, hold down the down key,\n"
 "and then press jump."
@@ -2260,7 +2267,7 @@ msgstr ""
 "下キーを押しながらジャンプボタン、\n"
 "とやればいい"
 
-#: data/level/grassy-path.cfg:1536
+#: data/level/grassy-path.cfg:1230
 msgid ""
 "As you've played through this level,\n"
 "you've probably noticed the gold coins."
@@ -2268,7 +2275,7 @@ msgstr ""
 "ここまできたキミなら、たぶんその金貨に\n"
 "気づいているよね"
 
-#: data/level/grassy-path.cfg:1537
+#: data/level/grassy-path.cfg:1231
 msgid ""
 "You can collect these\n"
 "and any other golden objects,\n"
@@ -2277,7 +2284,7 @@ msgstr ""
 "その金貨や、他にも金で出来たものを\n"
 "集めれば、アイテムを買うことができるぞ"
 
-#: data/level/grassy-path.cfg:1538
+#: data/level/grassy-path.cfg:1232
 msgid ""
 "There is a store conveniently located\n"
 "outside of the town."
@@ -2285,7 +2292,7 @@ msgstr ""
 "好都合なことに、お店は\n"
 "町の端っこに建っている"
 
-#: data/level/grassy-path.cfg:1572
+#: data/level/grassy-path.cfg:1252
 msgid ""
 "Sometimes, you'll run into rather\n"
 "dangerous-looking terrain,\n"
@@ -2294,7 +2301,7 @@ msgstr ""
 "時々、キミはこのイバラのように\n"
 "危険そうな場所に出くわすだろう"
 
-#: data/level/grassy-path.cfg:1573
+#: data/level/grassy-path.cfg:1253
 msgid ""
 "As you would expect, stepping on these\n"
 "will hurt a bit."
@@ -2302,13 +2309,13 @@ msgstr ""
 "触れると少しダメージを受けてしまうので、\n"
 "見つけたら飛び越えてしまおう"
 
-#: data/level/grassy-path.cfg:1574
+#: data/level/grassy-path.cfg:1254
 msgid "However, this also hurts the bugs!"
 msgstr ""
 "しかし、コレはキミだけではなく敵にも\n"
 "ダメージを与えるぞ！"
 
-#: data/level/grassy-path.cfg:1575
+#: data/level/grassy-path.cfg:1255
 msgid ""
 "Leading or spitting them onto it\n"
 "is an excellent way to dispatch them."
@@ -2317,7 +2324,7 @@ msgstr ""
 "吐き出すのは、ザコを片付けるのには最高の\n"
 "方法だ"
 
-#: data/level/grassy-path.cfg:1576
+#: data/level/grassy-path.cfg:1256
 msgid ""
 "Beware also,\n"
 "any bottomless pits you encounter."
@@ -2325,13 +2332,13 @@ msgstr ""
 "また、キミが遭遇するであろう\n"
 "底なしのには要注意だ"
 
-#: data/level/grassy-path.cfg:1577
+#: data/level/grassy-path.cfg:1257
 msgid "These are immediately fatal."
 msgstr ""
 "一度落ちてしまえばそれだけですぐに\n"
 "致命傷となるだろう"
 
-#: data/level/grassy-path.cfg:1752
+#: data/level/grassy-path.cfg:1371
 msgid ""
 "Up ahead, you'll notice an anthill,\n"
 "which ants constantly come out of."
@@ -2340,7 +2347,7 @@ msgstr ""
 "気づいただろう。アリたちはあそこから\n"
 "定期的に這い出てくるぞ"
 
-#: data/level/grassy-path.cfg:1753
+#: data/level/grassy-path.cfg:1372
 msgid ""
 "There is no way to stop this;\n"
 "you can't destroy the anthill."
@@ -2348,7 +2355,7 @@ msgstr ""
 "それを止めることはできないし、\n"
 "アリの巣を破壊することも不可能だ"
 
-#: data/level/grassy-path.cfg:1754
+#: data/level/grassy-path.cfg:1373
 msgid ""
 "Some hazards are like this.\n"
 "You simply have to work around them."
@@ -2357,11 +2364,11 @@ msgstr ""
 "ある。キミはその周辺では冷静に\n"
 "立ち回らなければならない"
 
-#: data/level/grassy-path.cfg:1788
+#: data/level/grassy-path.cfg:1393
 msgid "That's it for this tutorial."
 msgstr "これでこのチュートリアルは終わりだ"
 
-#: data/level/grassy-path.cfg:1789
+#: data/level/grassy-path.cfg:1394
 msgid ""
 "Although there's a bit more\n"
 "to playing the game,\n"
@@ -2371,7 +2378,7 @@ msgstr ""
 "まだテクニックは少し残っているが、\n"
 "残りはキミ自身の手で見つけてみてくれ"
 
-#: data/level/grassy-path.cfg:1790
+#: data/level/grassy-path.cfg:1395
 msgid ""
 "Feel free to come back here,\n"
 "if you want to read a hint again."
@@ -2379,11 +2386,11 @@ msgstr ""
 "もう一度ヒントを聞きたければ、\n"
 "一度戻ってみるのもキミの自由だ"
 
-#: data/level/grassy-path.cfg:1791
+#: data/level/grassy-path.cfg:1396
 msgid "Have fun!"
 msgstr "このゲームを楽しんでいってくれ！"
 
-#: data/level/grassy-path.cfg:1855
+#: data/level/grassy-path.cfg:1437
 msgid ""
 "If you've seen a conversation before\n"
 "you might be annoyed by\n"
@@ -2393,25 +2400,25 @@ msgstr ""
 "もう一度読むのが面倒だと思う\n"
 "かもしれません"
 
-#: data/level/grassy-path.cfg:1856
+#: data/level/grassy-path.cfg:1438
 msgid ""
 "You can skip a conversation,\n"
 "including parts of cutscenes,\n"
 "by pressing the \"escape\" key."
 msgstr "あなたはESCキーで会話をスキップできます"
 
-#: data/level/grassy-path.cfg:1857
+#: data/level/grassy-path.cfg:1439
 msgid ""
 "And yes,\n"
 "this applies to the question marks\n"
 "on this level, too."
 msgstr "そして、クエスチョンマークでも同様です"
 
-#: data/level/hanging-platforms.cfg:14
+#: data/level/hanging-platforms.cfg:16
 msgid "Hanging Platforms"
 msgstr "吊るされた乗降段"
 
-#: data/level/hanging-platforms.cfg:3563
+#: data/level/hanging-platforms.cfg:3565
 msgid ""
 "Well, I guess I'm entering Milgram's\n"
 "castle now. I made it through the caves!"
@@ -2419,19 +2426,19 @@ msgstr ""
 "よし、ここはもうミルグラムの城の\n"
 "入り口だ。洞窟を抜けたんだ！"
 
-#: data/level/hidden-depths.cfg:14
+#: data/level/hidden-depths.cfg:18
 msgid "Hidden Depths"
 msgstr "最深"
 
-#: data/level/hidden-depths.cfg:3737
+#: data/level/hidden-depths.cfg:3741
 msgid "I'd better be careful."
 msgstr "これはより一層気をつけないと"
 
-#: data/level/hidden-depths.cfg:3737
+#: data/level/hidden-depths.cfg:3741
 msgid "This is a very deep chasm..."
 msgstr "随分深い裂け目だなぁ…"
 
-#: data/level/hidden-depths.cfg:4559
+#: data/level/hidden-depths.cfg:4563
 msgid "AAAAAAH! I CAN'T FLY!"
 msgstr ""
 "うわあああああ！！\n"
@@ -2748,15 +2755,15 @@ msgstr "ああもう！"
 msgid "Pinecone Park"
 msgstr "松かさの公園"
 
-#: data/level/plagued-mine.cfg:14
+#: data/level/plagued-mine.cfg:18
 msgid "Plagued Mine"
 msgstr "苦痛の地雷原"
 
-#: data/level/plagued-mine.cfg:2790
+#: data/level/plagued-mine.cfg:2794
 msgid "These crazy bombers are everywhere!"
 msgstr "どこもかしこも爆弾だらけだー！"
 
-#: data/level/plagued-mine.cfg:2867
+#: data/level/plagued-mine.cfg:2871
 msgid "Yikes!"
 msgstr "ひゃああ！"
 
@@ -2764,7 +2771,7 @@ msgstr "ひゃああ！"
 msgid "Rock-a-Fort"
 msgstr "岩の砦"
 
-#: data/level/rock-a-fort.cfg:4374
+#: data/level/rock-a-fort.cfg:3230
 msgid "Woah! A flying plant!"
 msgstr "わぁ、植物が飛んでる！凄いなあ…"
 
@@ -3088,6 +3095,18 @@ msgid "You ... do realize I can't fly?"
 msgstr ""
 "キミ…ぼくが飛べないってことに\n"
 "気づいてないの？"
+
+#: data/level/shadowm-forest-1.cfg:15
+msgid "Forest 1"
+msgstr ""
+
+#: data/level/shadowm-forest-2.cfg:16
+msgid "Forest 2"
+msgstr ""
+
+#: data/level/shadowm-forest-3.cfg:15
+msgid "Forest 3"
+msgstr ""
 
 #: data/level/splash-hop.cfg:14
 msgid "Splash, Hop"
@@ -4080,7 +4099,7 @@ msgstr "早ければ早いほどいい"
 msgid "Twisted Trees"
 msgstr "捻れた木々"
 
-#: data/level/underground-pool.cfg:14
+#: data/level/underground-pool.cfg:16
 msgid "Underground Pool"
 msgstr "地下水"
 
@@ -4092,7 +4111,7 @@ msgstr "待合室"
 msgid "Wandering Passage"
 msgstr "不思議な通り道"
 
-#: data/level/watery-alley.cfg:14
+#: data/level/watery-alley.cfg:18
 msgid "Watery Alley"
 msgstr "水路地"
 
@@ -4127,8 +4146,8 @@ msgstr "コインレースで{level.player.difficulty} を達成しました"
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level {registry."
-"arcade_coin_race_high_score}."
+"The furthest that has been reached is level "
+"{registry.arcade_coin_race_high_score}."
 msgstr "レベル{registry.arcade_coin_race_high_score}まではまだまだ遠い"
 
 #: data/objects/items/max_heart_object.cfg:18
@@ -4349,15 +4368,14 @@ msgstr "エナジーショット読み込み中"
 
 #: iOS_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are "
-"hoping to bring back the magic in a new, original game design with "
-"unconventional gameplay mechanics - a fun break from the usual clones. We're "
-"a small group of indie developers, hoping this game becomes one of the "
+"Frogatto was made by a group of big-time fans of classic videogames, who are"
+" hoping to bring back the magic in a new, original game design with "
+"unconventional gameplay mechanics - a fun break from the usual clones. We're"
+" a small group of indie developers, hoping this game becomes one of the "
 "definitive platform games on iOS - and you can make that happen!"
 msgstr ""
 "このゲームは、レトロゲームの大ファンの者たちによって作られました。\n"
-"しかし私達は今までのゲームに囚われず、オリジナリティのあるゲームを目指しまし"
-"た。\n"
+"しかし私達は今までのゲームに囚われず、オリジナリティのあるゲームを目指しました。\n"
 "\n"
 "私達は独立した小規模な開発チームのグループです。\n"
 "このゲームがiOSの代表的なプラットフォームになれることを願っています。\n"
@@ -4397,27 +4415,27 @@ msgstr "アタック"
 msgid "Back"
 msgstr "戻る"
 
-#: src/draw_scene.cpp:367
+#: src/draw_scene.cpp:376
 msgid "Achievement Unlocked!"
 msgstr "実績が解除されていない！"
 
-#: src/main.cpp:383
+#: src/main.cpp:384
 msgid "Initializing custom object"
 msgstr "カスタムオブジェクトの初期化"
 
-#: src/main.cpp:385
+#: src/main.cpp:386
 msgid "Initializing custom object functions"
 msgstr "カスタムオブジェクト機能の初期化"
 
-#: src/main.cpp:387
+#: src/main.cpp:388
 msgid "Initializing tiles"
 msgstr "タイトルの初期化"
 
-#: src/main.cpp:390 src/main.cpp:394
+#: src/main.cpp:391 src/main.cpp:395
 msgid "Initializing GUI"
 msgstr "GUIの初期化"
 
-#: src/main.cpp:400
+#: src/main.cpp:401
 msgid "Loading level"
 msgstr "レベル読み込み中"
 
@@ -4452,3 +4470,5 @@ msgstr "AとBを裏返す"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "オープンフェイント"
+
+
