@@ -3,14 +3,7 @@ CXX = ccache g++
 
 OPT = -O2 -fno-inline-functions
 
-objects = IMG_savepng.o achievements.o background.o blur.o border_widget.o button.o character_editor_dialog.o checkbox.o current_generator.o decimal.o editor_dialogs.o editor_formula_functions.o editor_layers_dialog.o editor_stats_dialog.o editor_variable_info.o collision_utils.o color_utils.o controls.o controls_dialog.o custom_object.o custom_object_callable.o custom_object_functions.o custom_object_type.o debug_console.o dialog.o draw_number.o draw_scene.o draw_tile.o editor.o editor_level_properties_dialog.o entity.o filesystem.o font.o formula.o formula_callable_definition.o formula_constants.o formula_function.o formula_profiler.o formula_tokenizer.o formula_variable_storage.o frame.o framed_gui_element.o game_registry.o geometry.o globals.o graphical_font.o graphical_font_label.o grid_widget.o group_property_editor_dialog.o gui_formula_functions.o gui_section.o i18n.o image_widget.o input.o inventory.o iphone_controls.o joystick.o key.o key_button.o label.o level.o level_logic.o level_object.o level_runner.o level_solid_map.o light.o load_level.o main.o message_dialog.o movement_script.o multi_tile_pattern.o multiplayer.o object_events.o options_dialog.o package.o particle_system.o pause_game_dialog.o playable_custom_object.o player_info.o powerup.o preferences.o preprocessor.o preview_tileset_widget.o property_editor_dialog.o random.o raster.o raster_distortion.o rectangle_rotator.o scrollbar_widget.o scrollable_widget.o segment_editor_dialog.o settings_dialog.o slider.o solid_map.o sound.o speech_dialog.o stats.o string_utils.o surface_cache.o surface_formula.o surface_palette.o surface_scaling.o surface.o texture.o texture_frame_buffer.o text_entry_widget.o thread.o tile_map.o tileset_editor_dialog.o tooltip.o translate.o utils.o variant.o water.o water_particle_system.o weather_particle_system.o widget.o wml_formula_adapter.o wml_formula_callable.o wml_modify.o wml_node.o wml_parser.o wml_schema.o wml_utils.o wml_writer.o unit_test.o formula_test.o wml_parser_test.o loading_screen.o utility_object_compiler.o utility_object_editor.o utility_render_level.o
-
-server_objects = server.o simple_wml.o
-
-formula_test_objects = filesystem.o formula_function.o formula_tokenizer.o string_utils.o variant.o wml_node.o wml_parser.o wml_utils.o wml_writer.o
-
-wml_modify_test_objects = filesystem.o string_utils.o wml_node.o wml_parser.o wml_utils.o
-wml_schema_test_objects = filesystem.o string_utils.o wml_node.o wml_parser.o wml_utils.o
+include Makefile.common
 
 %.o : src/%.cpp
 	$(CXX) -DIMPLEMENT_SAVE_PNG -fno-inline-functions -g $(OPT) `sdl-config --cflags` -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -fthreadsafe-statics -c $<
