@@ -5,8 +5,8 @@
 # -> Put the name of the htm or html files you want to compare in the LeftView and RightView variables.
 # -> The right scrollbars effect only their window, the left scrollbars effect both windows.
 
-LeftView = "it.po.html"
-RightView = "pt_BR.po.html"
+LeftView = "/home/david/Documents/pots/it.po.html"
+RightView = "/home/david/Documents/pots/pt_BR.po.html"
 
 
 
@@ -82,7 +82,7 @@ class MyHtmlSynchWindow(html.HtmlWindow):
 class Example(wx.Frame):
 	def __init__(self, parent, title):
 		super(Example, self).__init__(parent, title=title, 
-			size=(800, 600))
+			size=(1200, 800))
 			
 		self.InitUI()
 		self.Show()	 
@@ -117,7 +117,7 @@ class Example(wx.Frame):
 		self.html.SetSynch(self.html_)
 		self.html_.SetSynch(self.html)
 		
-		splitter.SetMinimumPaneSize(400)
+		splitter.SetMinimumPaneSize(500)
 		splitter.SplitVertically(p1, p2, -100)
 		
 		
@@ -126,5 +126,5 @@ class Example(wx.Frame):
 if __name__ == '__main__':
   
 	app = wx.App()
-	Example(None, title='Border')
+	Example(None, title='HtmHtm')
 	app.MainLoop()
