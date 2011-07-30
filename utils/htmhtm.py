@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # -> htmhtm - the synched .htm file viewing utility
 # -> To run this you will require wxPython.
