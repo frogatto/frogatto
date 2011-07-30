@@ -9,6 +9,10 @@
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 namespace {
 
 //header structure of the MO file format, as described on
