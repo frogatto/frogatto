@@ -6,7 +6,7 @@ void main()
 {
 	vec4 color = texture2D(tex,gl_TexCoord[0].st);
 	ivec4 icolor = ivec4(color[0]*255.0, color[1]*255.0, color[2]*255.0, color[3]*255.0);
-	if(icolor.a > 128) {
+	if(icolor.a > 200) {
 		if(icolor.r <= 2) { icolor = ivec4(100, 45, 85, 255); }
 		else if(icolor.r <= 29) { icolor = ivec4(143, 44, 106, 255); }
 		else if(icolor.r <= 50) { icolor = ivec4(168, 85, 0, 255); }
@@ -22,7 +22,6 @@ void main()
 		else if(icolor.r <= 249) { icolor = ivec4(255, 249, 189, 255); }
 
 		color[0] = src_factor*color[0] + dst_factor*float(icolor[0])/255.0;
-		//no green here, it messes with edge alpha
 		color[2] = src_factor*color[2] + dst_factor*float(icolor[2])/255.0;
 		color[3] = src_factor*color[3] + dst_factor*float(icolor[3])/255.0;
 	}
