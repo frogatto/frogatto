@@ -3149,6 +3149,10 @@ void level::set_value(const std::string& key, const variant& value)
 	} else if(key == "dimensions") {
 		ASSERT_EQ(value.num_elements(), 4);
 		boundaries_ = rect(value[0].as_int(), value[1].as_int(), value[2].as_int() - value[0].as_int(), value[3].as_int() - value[1].as_int());
+	} else if(key == "camera_position") {
+		ASSERT_EQ(value.num_elements(), 2);
+		last_draw_position().x = value[0].as_int();
+		last_draw_position().y = value[1].as_int();
 	} else {
 		vars_[key] = value;
 	}
