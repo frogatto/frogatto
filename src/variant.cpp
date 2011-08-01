@@ -645,6 +645,10 @@ bool variant::operator<=(const variant& v) const
 		return int_value_ <= v.int_value_;
 	}
 
+	case TYPE_DECIMAL: {
+		return decimal_value_ <= v.decimal_value_;
+	}
+
 	case TYPE_LIST: {
 		for(size_t n = 0; n != num_elements() && n != v.num_elements(); ++n) {
 			if((*this)[n] < v[n]) {
