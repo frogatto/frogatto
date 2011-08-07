@@ -43,10 +43,10 @@ custom_object_callable::custom_object_callable()
 	"attached_objects", "call_stack", "lights",
 	"solid_dimensions_in", "solid_dimensions_not_in",
 	"collide_dimensions_in", "collide_dimensions_not_in",
-	"brightness", "current_generator", "tags", "draw_area", "activation_area",
+	"brightness", "current_generator", "tags", "draw_area", "activation_area", "clip_area",
 	"always_active", "fall_through_platforms", "has_feet",
 	"x_schedule", "y_schedule", "rotation_schedule", "schedule_speed",
-	"platform_area", "clip_area",
+	"platform_area",
 	"ctrl_up", "ctrl_down", "ctrl_left", "ctrl_right",
 	"ctrl_attack", "ctrl_jump", "ctrl_tongue",
 };
