@@ -156,6 +156,10 @@ custom_object::custom_object(wml::const_node_ptr node)
 		activation_area_.reset(new rect(node->attr("activation_area")));
 	}
 
+	if(node->has_attr("clip_area")) {
+		clip_area_.reset(new rect(node->attr("clip_area")));
+	}
+
 	if(node->has_attr("variations")) {
 		current_variation_ = util::split(node->attr("variations"));
 		type_ = base_type_->get_variation(current_variation_);
@@ -600,6 +604,10 @@ wml::node_ptr custom_object::write() const
 		res->set_attr("activation_area", activation_area_->to_string());
 	}
 
+	if(clip_area_) {
+		res->set_attr("clip_area", clip_area_->to_string());
+	}
+
 	if(!particle_systems_.empty()) {
 		std::string systems;
 		for(std::map<std::string, particle_system_ptr>::const_iterator i = particle_systems_.begin(); i != particle_systems_.end(); ++i) {
@@ -674,6 +682,10 @@ void custom_object::draw() const
 	}
 #endif
 
+	if(clip_area_) {
+		graphics::push_clip(clip_area_->sdl_rect());
+	}
+
 	if(driver_) {
 		driver_->draw();
 	}
@@ -732,6 +744,10 @@ void custom_object::draw() const
 		else
 			text_->font->draw(draw_x, draw_y, text_->text, text_->size);
 		glColor4ub(255, 255, 255, 255);
+	}
+
+	if(clip_area_) {
+		graphics::pop_clip();
 	}
 
 #ifndef SDL_VIDEO_OPENGL_ES
@@ -1733,6 +1749,19 @@ variant custom_object::get_value_by_slot(int slot) const
 		}
 	}
 
+	case CUSTOM_OBJECT_CLIP_AREA: {
+		if(clip_area_.get() != NULL) {
+			std::vector<variant> v(4);
+			v[0] = variant(clip_area_->x());
+			v[1] = variant(clip_area_->y());
+			v[2] = variant(clip_area_->w());
+			v[3] = variant(clip_area_->h());
+			return variant(&v);
+		} else {
+			return variant();
+		}
+	}
+
 	case CUSTOM_OBJECT_VARIATIONS: {
 		std::vector<variant> result;
 		foreach(const std::string& s, current_variation_) {
@@ -1958,6 +1987,13 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		} else {
 			ASSERT_LOG(value.is_null(), "BAD ACTIVATION AREA: " << value.to_debug_string());
 			activation_area_.reset();
+		}
+	} else if(key == "clip_area") {
+		if(value.is_list() && value.num_elements() == 4) {
+			clip_area_.reset(new rect(value[0].as_int(), value[1].as_int(), value[2].as_int(), value[3].as_int()));
+		} else {
+			ASSERT_LOG(value.is_null(), "BAD CLIP AREA: " << value.to_debug_string());
+			clip_area_.reset();
 		}
 	} else if(key == "variations") {
 		handle_event("reset_variations");
@@ -2323,6 +2359,16 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		} else {
 			ASSERT_LOG(value.is_null(), "BAD ACTIVATION AREA: " << value.to_debug_string());
 			activation_area_.reset();
+		}
+
+		break;
+	
+	case CUSTOM_OBJECT_CLIP_AREA:
+		if(value.is_list() && value.num_elements() == 4) {
+			clip_area_.reset(new rect(value[0].as_int(), value[1].as_int(), value[2].as_int(), value[3].as_int()));
+		} else {
+			ASSERT_LOG(value.is_null(), "BAD CLIP AREA: " << value.to_debug_string());
+			clip_area_.reset();
 		}
 
 		break;
