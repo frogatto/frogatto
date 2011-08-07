@@ -81,15 +81,15 @@ manager::~manager() {
 
 void setup_networked_game(const std::string& server)
 {
-	boost::asio::io_service& get_io_service = *asio_service;
-	tcp::resolver resolver(get_io_service);
+	boost::asio::io_service& io_service = *asio_service;
+	tcp::resolver resolver(io_service);
 
 	tcp::resolver::query query(server, "17002");
 
 	tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
 	tcp::resolver::iterator end;
 
-	tcp_socket.reset(new tcp::socket(get_io_service));
+	tcp_socket.reset(new tcp::socket(io_service));
 	tcp::socket& socket = *tcp_socket;
 	boost::system::error_code error = boost::asio::error::host_not_found;
 	while(error && endpoint_iterator != end) {
@@ -118,13 +118,13 @@ void setup_networked_game(const std::string& server)
 
 	fprintf(stderr, "ID: %d\n", id);
 
-    udp::resolver udp_resolver(get_io_service);
+    udp::resolver udp_resolver(io_service);
     udp::resolver::query udp_query(udp::v4(), server, "17001");
 	udp_endpoint.reset(new udp::endpoint);
     *udp_endpoint = *udp_resolver.resolve(udp_query);
     udp::endpoint& receiver_endpoint = *udp_endpoint;
 
-	udp_socket.reset(new udp::socket(get_io_service));
+	udp_socket.reset(new udp::socket(io_service));
     udp_socket->open(udp::v4());
 
 	boost::array<char, 4> udp_msg;
@@ -232,8 +232,8 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 	ASSERT_EQ(*ptr, '\n');
 	++ptr;
 
-	boost::asio::io_service& get_io_service = *asio_service;
-    udp::resolver udp_resolver(get_io_service);
+	boost::asio::io_service& io_service = *asio_service;
+    udp::resolver udp_resolver(io_service);
 
 	udp_endpoint_peers.clear();
 
@@ -546,8 +546,8 @@ struct Peer {
 }
 
 UTILITY(hole_punch_test) {
-	boost::asio::io_service get_io_service;
-	udp::resolver udp_resolver(get_io_service);
+	boost::asio::io_service io_service;
+	udp::resolver udp_resolver(io_service);
 
 	const char* server_hostname = "wesnoth.org";
 	const char* server_port = "17001";
@@ -556,7 +556,7 @@ UTILITY(hole_punch_test) {
 	udp::endpoint udp_endpoint;
 	udp_endpoint = *udp_resolver.resolve(udp_query);
 
-	udp::socket udp_socket(get_io_service);
+	udp::socket udp_socket(io_service);
 	udp_socket.open(udp::v4());
 
 	udp_socket.send_to(boost::asio::buffer("hello"), udp_endpoint);
@@ -597,5 +597,5 @@ UTILITY(hole_punch_test) {
 		}
 	}
 
-	get_io_service.run();
+	io_service.run();
 }
