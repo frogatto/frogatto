@@ -38,14 +38,14 @@ void http_upload(const std::string& payload, const std::string& script) {
 	s << header << "Content-length: " << payload.size() << "\n\n" << payload;
 	std::string msg = s.str();
 
-	boost::asio::io_service io_service;
-	tcp::resolver resolver(io_service);
+	boost::asio::io_service get_io_service;
+	tcp::resolver resolver(get_io_service);
 	tcp::resolver::query query("www.wesnoth.org", "80");
 
 	tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
 	tcp::resolver::iterator end;
 
-	tcp::socket socket(io_service);
+	tcp::socket socket(get_io_service);
 	boost::system::error_code error = boost::asio::error::host_not_found;
 	while(error && endpoint_iterator != end) {
 		socket.close();
@@ -167,14 +167,14 @@ bool download(const std::string& lvl) {
 	try {
 	using boost::asio::ip::tcp;
 
-	boost::asio::io_service io_service;
-	tcp::resolver resolver(io_service);
+	boost::asio::io_service get_io_service;
+	tcp::resolver resolver(get_io_service);
 	tcp::resolver::query query("www.wesnoth.org", "80");
 
 	tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
 	tcp::resolver::iterator end;
 
-	tcp::socket socket(io_service);
+	tcp::socket socket(get_io_service);
 	boost::system::error_code error = boost::asio::error::host_not_found;
 	while(error && endpoint_iterator != end) {
 		socket.close();
