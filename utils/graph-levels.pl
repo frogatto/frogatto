@@ -2,6 +2,8 @@
 
 use strict;
 
+#run using "perl utils/graph-levels.pl | dot -Tpng > out.png" in the root frogatto folder. Outputs to out.png to cwd.
+
 my @levels = glob("data/level/*");
 
 my %index = ();
