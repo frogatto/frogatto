@@ -37,7 +37,7 @@ public:
 private:
 	void start_accept()
 	{
-		socket_ptr socket(new tcp::socket(acceptor_.io_service()));
+		socket_ptr socket(new tcp::socket(acceptor_.get_io_service()));
 		acceptor_.async_accept(*socket, boost::bind(&server::handle_accept, this, socket, boost::asio::placeholders::error));
 	}
 
