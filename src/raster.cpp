@@ -10,9 +10,11 @@
  
  See the COPYING file for more details.
  */
-#ifdef TARGET_PANDORA
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA)
 #include <GLES/gl.h>
+#ifdef TARGET_PANDORA
 #include <GLES/glues.h>
+#endif
 #else
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -35,7 +37,12 @@ namespace graphics
 
 bool set_video_mode(int w, int h)
 {
+#ifdef TARGET_OS_HARMATTAN
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1);
+	return set_video_mode(w,h,0,SDL_OPENGLES | SDL_FULLSCREEN);
+#else
 	return set_video_mode(w,h,0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) != NULL;
+#endif
 }
 
 SDL_Surface* set_video_mode(int w, int h, int bitsperpixel, int flags)
@@ -728,21 +735,20 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
 	}
-	
+
+#ifndef SDL_VIDEO_OPENGL_ES
 	void coords_to_screen(GLdouble sx, GLdouble sy, GLdouble sz,
 						  GLdouble* dx, GLdouble* dy, GLdouble* dz) {
 		GLdouble model[16], proj[16];
 		GLint view[4];
 		
-#ifndef SDL_VIDEO_OPENGL_ES
 		glGetDoublev(GL_MODELVIEW_MATRIX, model);
 		glGetDoublev(GL_PROJECTION_MATRIX, proj);
 		glGetIntegerv(GL_VIEWPORT, view);
-#endif
 		
 		gluProject(sx, sy, sz, model, proj, view, dx, dy, dz);
 	}
-	
+
 	void push_clip(const SDL_Rect& r)
 	{
 		const bool was_enabled_clip = glIsEnabled(GL_SCISSOR_TEST);
@@ -805,6 +811,7 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 			glDisable(GL_SCISSOR_TEST);
 		}
 	}
+#endif
 	
 	namespace {
 		int zoom_level = 1;

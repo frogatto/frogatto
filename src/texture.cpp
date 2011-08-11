@@ -10,9 +10,11 @@
    See the COPYING file for more details.
 */
 
-#ifdef TARGET_PANDORA
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA)
 #include <GLES/gl.h>
+#ifdef TARGET_PANDORA
 #include <GLES/glues.h>
+#endif
 #else
 #include <GL/gl.h>
 #include <GL/glu.h>

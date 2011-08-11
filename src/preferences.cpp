@@ -70,6 +70,31 @@ namespace preferences {
 		bool load_compiled_ = true;
 
 		bool use_16bpp_textures_ = true;
+#elif defined(TARGET_OS_HARMATTAN)
+
+		bool send_stats_ = false;
+
+		bool sim_iphone_ = false;
+
+#ifndef PREFERENCES_PATH
+#define PREFERENCES_PATH "~/.frogatto/"
+#endif
+		int virtual_screen_width_ = 854;
+		int virtual_screen_height_ = 480;
+
+		int actual_screen_width_ = 854;
+		int actual_screen_height_ = 480;
+
+		bool screen_rotated_ = false;
+
+		bool use_joystick_ = true;
+
+		bool load_compiled_ = true;
+
+		bool use_fbo_ = true;
+		bool use_bequ_ = true;
+
+		bool use_16bpp_textures_ = true;
 #else
 
 #ifndef NO_UPLOAD_STATS
@@ -308,7 +333,7 @@ namespace preferences {
 		load_compiled_ = value;
 	}
 	
-#if defined(TARGET_PANDORA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA)
 	bool use_fbo()
 	{
 		return use_fbo_;
@@ -576,7 +601,7 @@ namespace preferences {
 		return run_failing_unit_tests_;
 	}
 
-#if defined(TARGET_PANDORA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA)
 	PFNGLBLENDEQUATIONOESPROC           glBlendEquationOES;
 	PFNGLGENFRAMEBUFFERSOESPROC         glGenFramebuffersOES;
 	PFNGLBINDFRAMEBUFFEROESPROC         glBindFramebufferOES;

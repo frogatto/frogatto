@@ -39,8 +39,8 @@ void run_utility(const std::string& utility_name, const std::vector<std::string>
 #define CHECK_LT(a, b) CHECK_CMP(a, b, <)
 #define CHECK_GT(a, b) CHECK_CMP(a, b, >)
 
-//on the iPhone we don't do unit tests or benchmarks.
-#if TARGET_OS_IPHONE
+//on mobile phones we don't do unit tests or benchmarks.
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_OS_HARMATTAN)
 
 #define UNIT_TEST(name) \
 	void TEST_##name()

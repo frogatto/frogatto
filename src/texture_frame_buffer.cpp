@@ -8,7 +8,7 @@
 #include "texture.hpp"
 #include "texture_frame_buffer.hpp"
 
-#if defined(TARGET_PANDORA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA)
 #include <EGL/egl.h>
 #include <GLES/gl.h>
 #include <GLES/glext.h>
@@ -19,7 +19,7 @@
 #endif
 
 //define macros that make it easy to make the OpenGL calls in this file.
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_PANDORA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_OS_IPHONE) || defined(TARGET_PANDORA)
 #define EXT_CALL(call) call##OES
 #define EXT_MACRO(macro) macro##_OES
 #elif defined(__APPLE__)
@@ -54,7 +54,7 @@ void init(int buffer_width, int buffer_height)
 	frame_buffer_texture_width = buffer_width;
 	frame_buffer_texture_height = buffer_height;
 
-#if defined(TARGET_PANDORA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA)
 	if (glGenFramebuffersOES        != NULL &&
 		glBindFramebufferOES        != NULL &&
 		glFramebufferTexture2DOES   != NULL &&

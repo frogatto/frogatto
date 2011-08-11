@@ -1115,7 +1115,7 @@ private:
 
 					SDL_Event event;
 					while(SDL_PollEvent(&event)) {
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_HARMATTAN || TARGET_OS_IPHONE
 						// the user event gets handled the same as pressing escape
 						if (menu_button_.handle_event(event))
 						{
@@ -1132,6 +1132,19 @@ private:
 							while (SDL_WaitEvent(&e))
 							{
 								if (e.type == SDL_WINDOWEVENT && e.window.event == SDL_WINDOWEVENT_RESTORED)
+									break;
+							}
+						}
+						break;
+#elif TARGET_OS_HARMATTAN
+						// make sure nothing happens while the app is supposed to be "inactive"
+						case SDL_ACTIVEEVENT:
+						if (event.active.state & SDL_APPINPUTFOCUS && event.active.gain == 0)
+						{
+							SDL_Event e;
+							while (SDL_WaitEvent(&e))
+							{
+								if (e.type == SDL_ACTIVEEVENT && e.active.gain == 1)
 									break;
 							}
 						}

@@ -1,4 +1,4 @@
-#ifdef TARGET_PANDORA
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA)
 #include <GLES/gl.h>
 #else
 #include <GL/gl.h>

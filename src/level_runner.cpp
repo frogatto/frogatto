@@ -316,7 +316,7 @@ bool level_runner::play_cycle()
 	}
 
 	//record player movement every 50 cycles on average.
-#if !TARGET_OS_IPHONE
+#if !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE
 	if(rand()%50 == 0 && lvl_->player()) {
 		point p = lvl_->player()->get_entity().midpoint();
 
@@ -499,7 +499,7 @@ bool level_runner::play_cycle()
 		SDL_Event event;
 		while(SDL_PollEvent(&event)) {
 		//std::cerr << "Got event (level_runner 502): " << (int) event.type << ".\n";
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_HARMATTAN || TARGET_OS_IPHONE
 			should_pause = settings_dialog.handle_event(event);
 #endif
 			switch(event.type) {
@@ -553,6 +553,19 @@ bool level_runner::play_cycle()
 					while (SDL_WaitEvent(&e))
 					{
 						if (e.type == SDL_WINDOWEVENT && e.window.event == SDL_WINDOWEVENT_RESTORED)
+							break;
+					}
+				}
+			break;
+#elif TARGET_OS_HARMATTAN
+			// make sure nothing happens while the app is supposed to be "inactive"
+			case SDL_ACTIVEEVENT:
+				if (event.active.state & SDL_APPINPUTFOCUS && event.active.gain == 0)
+				{
+					SDL_Event e;
+					while (SDL_WaitEvent(&e))
+					{
+						if (e.type == SDL_ACTIVEEVENT && e.active.state & SDL_APPINPUTFOCUS && e.active.gain == 1)
 							break;
 					}
 				}
@@ -682,7 +695,7 @@ bool level_runner::play_cycle()
 		draw_scene(*lvl_, last_draw_position(), NULL, !is_skipping_game());
 
 		performance_data perf = { current_fps_, current_cycles_, current_delay_, current_draw_, current_process_, current_flip_, cycle, current_events_, profiling_summary_ };
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_HARMATTAN || TARGET_OS_IPHONE
 		if( ! is_achievement_displayed() ){
 			settings_dialog.draw(in_speech_dialog());
 		}

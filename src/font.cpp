@@ -10,7 +10,7 @@
 	The only thing one will normally need to use is render_text(), and possibly char_width(), char_height() if you need to know the size of the resulting text. */
 
 namespace font {
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_HARMATTAN || TARGET_OS_IPHONE
 class TTF_Font;
 #endif
 
@@ -21,7 +21,7 @@ std::map<int, TTF_Font*> font_table;
 
 TTF_Font* get_font(int size)
 {
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE
 	TTF_Font*& font = font_table[size];
 	if(font == NULL) {
 		font = TTF_OpenFont(FontFile, size);
@@ -58,7 +58,7 @@ int cache_index = 0;
 
 manager::manager()
 {
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE
 	const int res = TTF_Init();
 	if(res == -1) {
 		std::cerr << "Could not initialize ttf\n";
@@ -71,7 +71,7 @@ manager::manager()
 
 manager::~manager()
 {
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE
 	TTF_Quit();
 #endif
 }
@@ -84,7 +84,7 @@ graphics::texture render_text(const std::string& text,
 			return cache()[n].texture;
 		}
 	}
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE
 	TTF_Font* font = get_font(size);
 
 	graphics::surface s;

@@ -3,7 +3,7 @@
 
 #include <string>
 
-#if defined(TARGET_PANDORA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA)
 #include <EGL/egl.h>
 #include <GLES/gl.h>
 #include <GLES/glext.h>
@@ -71,7 +71,7 @@ namespace preferences {
 
 	void set_load_compiled(bool value);
 
-#if defined(TARGET_PANDORA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA)
 bool use_fbo();
 bool use_bequ();
 void set_fbo( bool value );
@@ -121,7 +121,7 @@ void set_bequ( bool value );
 		~editor_screen_size_scope();
 	};
 
-#if defined(TARGET_PANDORA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA)
 	void init_oes( void );
 	extern PFNGLBLENDEQUATIONOESPROC           glBlendEquationOES;
 	extern PFNGLGENFRAMEBUFFERSOESPROC         glGenFramebuffersOES;

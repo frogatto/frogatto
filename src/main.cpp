@@ -2,9 +2,11 @@
 #ifndef SDL_VIDEO_OPENGL_ES
 #include <GL/glew.h>
 #endif
-#ifdef TARGET_PANDORA
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA)
 #include <GLES/gl.h>
+#ifdef TARGET_PANDORA
 #include <GLES/glues.h>
+#endif
 #else
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -305,6 +307,16 @@ extern "C" int main(int argc, char** argv)
 	}
 	
 #else
+#ifdef TARGET_OS_HARMATTAN
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1);
+	if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_OPENGLES | SDL_FULLSCREEN) == NULL) {
+		std::cerr << "could not set video mode\n";
+		return -1;
+	}
+
+	preferences::init_oes();
+	SDL_ShowCursor(0);
+#else
 #ifndef __APPLE__
 	graphics::surface wm_icon = graphics::surface_cache::get("window-icon.png");
 	if(!wm_icon.null()) {
@@ -324,6 +336,7 @@ extern "C" int main(int argc, char** argv)
 		std::cerr << "could not set video mode\n";
 		return -1;
 	}
+#endif
 #endif
 
 #endif
@@ -516,6 +529,8 @@ extern "C" int main(int argc, char** argv)
 	
 	preferences::save_preferences();
 	std::cerr << SDL_GetError() << "\n";
+#ifndef TARGET_OS_HARMATTAN
 	std::cerr << gluErrorString(glGetError()) << "\n";
+#endif
 	return 0;
 }
