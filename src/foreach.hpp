@@ -202,8 +202,8 @@ inline boost::mpl::or_<Bool1, Bool2> *or_(Bool1 *, Bool2 *) { return 0; }
 template<typename Bool1, typename Bool2, typename Bool3>
 inline boost::mpl::or_<Bool1, Bool2, Bool3> *or_(Bool1 *, Bool2 *, Bool3 *) { return 0; }
 
-template<typename Bool>
-inline boost::mpl::not_<Bool> *not_(Bool *) { return 0; }
+template<typename Bool1>
+inline boost::mpl::not_<Bool1> *not_(Bool1 *) { return 0; }
 
 template<typename T>
 inline boost::mpl::false_ *is_rvalue(T &, int) { return 0; }
