@@ -18,6 +18,9 @@
 #include "foreach.hpp"
 #include "formula_profiler.hpp"
 #include "inventory.hpp"
+#ifdef TARGET_OS_HARMATTAN
+#include "iphone_controls.hpp"
+#endif
 #include "joystick.hpp"
 #include "level_runner.hpp"
 #include "light.hpp"
@@ -646,6 +649,13 @@ bool level_runner::play_cycle()
 				}
 				break;
 			}
+#ifdef TARGET_OS_HARMATTAN
+			case SDL_MOUSEMOTION:
+			case SDL_MOUSEBUTTONDOWN:
+			case SDL_MOUSEBUTTONUP:
+				iphone_controls::handle_event(event);
+				break;
+#endif
 			default:
 				break;
 			}

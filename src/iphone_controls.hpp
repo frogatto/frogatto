@@ -27,7 +27,10 @@ public:
 	static void draw();
 
 	static void read_controls();
-	
+#ifdef TARGET_OS_HARMATTAN
+	static void handle_event(const SDL_Event& event);
+#endif
+
 private:
 	static bool hittest_button (const rect& r);
 };

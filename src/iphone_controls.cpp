@@ -1,8 +1,12 @@
 #include "iphone_controls.hpp"
 
-#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+#if TARGET_OS_HARMATTAN || TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 
 #include <SDL.h>
+
+#ifdef TARGET_OS_HARMATTAN
+#include <math.h> // sqrt
+#endif
 
 #include "foreach.hpp"
 #include "geometry.hpp"
@@ -99,6 +103,11 @@ void iphone_controls::read_controls()
 {
 	active_mice.clear();
 
+#ifdef TARGET_OS_HARMATTAN
+	// there is no SDL_Get_NumMice and SDL_SelectMouse support on
+	// Harmattan, so all_mice has been updated via calls to handle_event
+	const int nmice = all_mice.size();
+#else
 	const int nmice = SDL_GetNumMice();
 	if(all_mice.size() > nmice) {
 		all_mice.resize(nmice);
@@ -122,12 +131,37 @@ void iphone_controls::read_controls()
 		all_mice[i].x = x;
 		all_mice[i].y = y;
 		all_mice[i].active = button_state & SDL_BUTTON(SDL_BUTTON_LEFT);
+	}
+#endif
+	for(int i = 0; i < nmice; i++) {
 		if(all_mice[i].active) {
 			active_mice.push_back(all_mice[i]);
 		}
 	}
-	
 }
+
+#ifdef TARGET_OS_HARMATTAN
+void iphone_controls::handle_event (const SDL_Event& event)
+{
+	int x = event.type == SDL_MOUSEMOTION ? event.motion.x : event.button.x;
+	int y = event.type == SDL_MOUSEMOTION ? event.motion.y : event.button.y;
+	int i = event.type == SDL_MOUSEMOTION ? event.motion.which : event.button.which;
+	translate_mouse_coords(&x, &y);
+	while(all_mice.size() <= i) {
+		all_mice.push_back(Mouse());
+		all_mice[i].active = false;
+	}
+
+	if(!all_mice[i].active) {
+		all_mice[i].starting_x = x;
+		all_mice[i].starting_y = y;
+	}
+
+	all_mice[i].x = x;
+	all_mice[i].y = y;
+	all_mice[i].active = event.type != SDL_MOUSEBUTTONUP;
+}
+#endif
 
 void iphone_controls::set_underwater(bool value)
 {
