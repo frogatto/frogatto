@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-07-26 13:47-0300\n"
-"PO-Revision-Date: 2011-07-26 16:47+0000\n"
+"POT-Creation-Date: 2011-08-13 05:02-0300\n"
+"PO-Revision-Date: 2011-08-13 08:03+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Portuguese (Brazilian) (http://www.transifex.net/projects/p/Frogatto/team/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -389,11 +389,11 @@ msgid "You got {level.player.score} points in the Blocks Run!"
 msgstr "Você conseguiu {level.player.score} pontos na Corrida dos Blocos!"
 
 #: data/level/arcade-blocks.cfg:219
-#: data/level/arcade-down-the-rabbit-hall.cfg:863
+#: data/level/arcade-down-the-rabbit-hall.cfg:864
 #: data/level/arcade-maintenance-shaft.cfg:2580
 #: data/level/arcade-nutty-factory.cfg:381
-#: data/level/arcade-the-long-haul.cfg:703
-#: data/level/arcade-wild-new-wonder.cfg:2520
+#: data/level/arcade-the-long-haul.cfg:704
+#: data/level/arcade-wild-new-wonder.cfg:2521
 #: data/objects/effects/control/level_controller_coin_race.cfg:33
 msgid "This is a new high score!"
 msgstr "É um novo recorde!"
@@ -402,18 +402,18 @@ msgstr "É um novo recorde!"
 msgid "The high score is {registry.arcade_blocks_high_score}."
 msgstr "O recorde é de {registry.arcade_blocks_high_score} pontos."
 
-#: data/level/arcade-down-the-rabbit-hall.cfg:12
+#: data/level/arcade-down-the-rabbit-hall.cfg:13
 #: data/level/titlescreen-arcade.cfg:276
 msgid "Down the Rabbit Hall"
 msgstr "Descendo a Toca Sem Coelho"
 
-#: data/level/arcade-down-the-rabbit-hall.cfg:862
-#: data/level/arcade-down-the-rabbit-hall.cfg:865
+#: data/level/arcade-down-the-rabbit-hall.cfg:863
+#: data/level/arcade-down-the-rabbit-hall.cfg:866
 msgid "You got {level.player.vars.score} points going down the rabbit hall!"
 msgstr ""
 "Você conseguiu {level.player.vars.score} pontos Descendo A Toca Sem Coelho!"
 
-#: data/level/arcade-down-the-rabbit-hall.cfg:866
+#: data/level/arcade-down-the-rabbit-hall.cfg:867
 msgid ""
 "The high score is {registry.arcade_down_the_rabbit_hall_high_score} points."
 msgstr ""
@@ -443,47 +443,47 @@ msgstr ""
 msgid "The high score is {registry.arcade_nutty_factory_high_score} points."
 msgstr ""
 
-#: data/level/arcade-the-long-haul.cfg:10
+#: data/level/arcade-the-long-haul.cfg:11
 #: data/level/titlescreen-arcade.cfg:275
 msgid "The Long Haul"
 msgstr "O Longo Caminho"
 
-#: data/level/arcade-the-long-haul.cfg:702
-#: data/level/arcade-the-long-haul.cfg:705
+#: data/level/arcade-the-long-haul.cfg:703
+#: data/level/arcade-the-long-haul.cfg:706
 msgid "You got {level.player.vars.score} points in the long haul!"
 msgstr "Você conseguiu {level.player.score} pontos em O Longo Caminho!"
 
-#: data/level/arcade-the-long-haul.cfg:706
+#: data/level/arcade-the-long-haul.cfg:707
 msgid "The high score is {registry.arcade_the_long_haul_high_score} points."
 msgstr "O recorde é de {registry.arcade_the_long_haul_high_score} pontos."
 
-#: data/level/arcade-upper-deck.cfg:12 data/level/titlescreen-arcade.cfg:252
+#: data/level/arcade-upper-deck.cfg:13 data/level/titlescreen-arcade.cfg:252
 msgid "Upper Deck"
 msgstr "Escadaria Infinita"
 
-#: data/level/arcade-upper-deck.cfg:2949 data/level/arcade-upper-deck.cfg:2952
+#: data/level/arcade-upper-deck.cfg:2950 data/level/arcade-upper-deck.cfg:2953
 msgid "You got {level.player.vars.score} points on the Upper Deck!"
 msgstr "Você conseguiu {level.player.score} pontos na Escadaria Infinita!"
 
-#: data/level/arcade-upper-deck.cfg:2950
+#: data/level/arcade-upper-deck.cfg:2951
 msgid "This is a new record!"
 msgstr "É um novo recorde!"
 
-#: data/level/arcade-upper-deck.cfg:2953
+#: data/level/arcade-upper-deck.cfg:2954
 msgid "The high score is {registry.arcade_upper_deck_high_score} points."
 msgstr "O recorde é de {registry.arcade_upper_deck_high_score} pontos."
 
-#: data/level/arcade-wild-new-wonder.cfg:12
+#: data/level/arcade-wild-new-wonder.cfg:13
 #: data/level/titlescreen-arcade.cfg:251
 msgid "Wild New Wonder"
 msgstr "Maravilha Selvagem"
 
-#: data/level/arcade-wild-new-wonder.cfg:2519
-#: data/level/arcade-wild-new-wonder.cfg:2522
+#: data/level/arcade-wild-new-wonder.cfg:2520
+#: data/level/arcade-wild-new-wonder.cfg:2523
 msgid "You got {level.player.vars.score} points in the Wild New Wonder!"
 msgstr "Você conseguiu {level.player.score} pontos na Maravilha Selvagem!"
 
-#: data/level/arcade-wild-new-wonder.cfg:2523
+#: data/level/arcade-wild-new-wonder.cfg:2524
 msgid "The high score is {registry.arcade_wild_new_wonder_high_score} points."
 msgstr "O recorde é de {registry.arcade_wild_new_wonder_high_score} pontos."
 
@@ -571,7 +571,7 @@ msgstr "Plantas Atiradoras"
 msgid "Burning Stone"
 msgstr "Fogo de Chão"
 
-#: data/level/burning-stone.cfg:2156
+#: data/level/burning-stone.cfg:1568
 msgid ""
 "I need to go up... There must be\n"
 "a way to activate this elevator."
@@ -783,7 +783,7 @@ msgstr ""
 #: data/level/crevice-village-house-2.cfg:3211
 #: data/level/crevice-village-house-4.cfg:3064
 #: data/level/crevice-village-house-4.cfg:3105
-#: data/level/killer-bunnies.cfg:4606
+#: data/level/killer-bunnies.cfg:3548
 msgid "Nope, it's locked."
 msgstr "Não dá, tá trancada."
 
@@ -1827,7 +1827,7 @@ msgstr "Desafio dos Blocos"
 msgid "Dungeon Crawling"
 msgstr "Caminhos da Masmorra"
 
-#: data/level/dungeon-entrance.cfg:12
+#: data/level/dungeon-entrance.cfg:17
 msgid "The Entrance"
 msgstr "A Entrada"
 
@@ -2505,11 +2505,11 @@ msgstr ""
 msgid "AAAAAAH! I CAN'T FLY!"
 msgstr "AAAAAAH! EU NÃO SEI VOAR!"
 
-#: data/level/killer-bunnies.cfg:13
+#: data/level/killer-bunnies.cfg:14
 msgid "Killer Bunnies"
 msgstr "Coelhos Bombardeiros"
 
-#: data/level/killer-bunnies.cfg:4268
+#: data/level/killer-bunnies.cfg:3321
 msgid ""
 "That guy sure doesn't look\n"
 "glad to meet me!"
@@ -2517,7 +2517,7 @@ msgstr ""
 "Esse cara não parece muito\n"
 "feliz em me ver!"
 
-#: data/level/killer-bunnies.cfg:4606
+#: data/level/killer-bunnies.cfg:3548
 msgid ""
 "It's locked. Of course...\n"
 "It couldn't be easy to get out of here!"
@@ -3989,8 +3989,13 @@ msgstr ""
 
 #: data/level/test3.cfg:14 data/level/test4.cfg:12 data/level/test5.cfg:12
 #: data/level/test6.cfg:14 data/level/test7-surf.cfg:12
+#: data/level/test9.cfg:12
 msgid "(Test Level)"
 msgstr "(Fase de teste)"
+
+#: data/level/testa10.cfg:12
+msgid "Test Level 10"
+msgstr ""
 
 #: data/level/titlescreen-arcade.cfg:141
 msgid "Each machine has a different arcade-style challenge."
@@ -4030,51 +4035,51 @@ msgstr "Corrida das Moedas"
 msgid "COIN RACE"
 msgstr "CORRIDA DAS MOEDAS"
 
-#: data/level/titlescreen-test.cfg:284 data/level/titlescreen.cfg:284
+#: data/level/titlescreen-test.cfg:284 data/level/titlescreen.cfg:254
 msgid "LOAD GAME"
 msgstr "CONTINUAR"
 
-#: data/level/titlescreen-test.cfg:322 data/level/titlescreen.cfg:322
+#: data/level/titlescreen-test.cfg:322 data/level/titlescreen.cfg:274
 msgid "NEW GAME"
 msgstr "NOVO JOGO"
 
 #: data/level/titlescreen-test.cfg:361 data/level/titlescreen-test.cfg:391
-#: data/level/titlescreen.cfg:361 data/level/titlescreen.cfg:391
+#: data/level/titlescreen.cfg:295 data/level/titlescreen.cfg:307
 msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
 msgstr "Pressione {LEFT_KEY} ou {RIGHT_KEY} para andar."
 
 #: data/level/titlescreen-test.cfg:392 data/level/titlescreen-test.cfg:409
-#: data/level/titlescreen.cfg:394
+#: data/level/titlescreen.cfg:310
 msgid "Press {UP_KEY} to talk, and use things like doors."
 msgstr "Aperte {UP_KEY} para conversar, abrir portas, etc."
 
-#: data/level/titlescreen-test.cfg:393 data/level/titlescreen.cfg:393
+#: data/level/titlescreen-test.cfg:393 data/level/titlescreen.cfg:309
 msgid "Press {DOWN_KEY} to crouch."
 msgstr "Aperte {DOWN_KEY} para se abaixar."
 
-#: data/level/titlescreen-test.cfg:394 data/level/titlescreen.cfg:392
-#: data/level/titlescreen.cfg:407
+#: data/level/titlescreen-test.cfg:394 data/level/titlescreen.cfg:308
+#: data/level/titlescreen.cfg:323
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
 msgstr ""
 "Aperte {LEFT_KEY} ou {RIGHT_KEY} duas vezes, rapidamente, para correr."
 
-#: data/level/titlescreen-test.cfg:395 data/level/titlescreen.cfg:395
+#: data/level/titlescreen-test.cfg:395 data/level/titlescreen.cfg:311
 msgid "Press {JUMP_KEY} to jump."
 msgstr "Aperte {JUMP_KEY} para pular."
 
-#: data/level/titlescreen-test.cfg:396 data/level/titlescreen.cfg:396
+#: data/level/titlescreen-test.cfg:396 data/level/titlescreen.cfg:312
 msgid "Press {TONGUE_KEY} to use a character's attacks."
 msgstr "Aperte {TONGUE_KEY} para usar os ataques do personagem."
 
-#: data/level/titlescreen-test.cfg:447 data/level/titlescreen.cfg:445
+#: data/level/titlescreen-test.cfg:447 data/level/titlescreen.cfg:343
 msgid "ARCADE"
 msgstr "FLIPERAMA"
 
-#: data/level/titlescreen.cfg:393
+#: data/level/titlescreen.cfg:309
 msgid "Walk in front of a door or person, and press"
 msgstr "Você pode interagir com pessoas ou objetos como portas,"
 
-#: data/level/titlescreen.cfg:394
+#: data/level/titlescreen.cfg:310
 msgid "the button that appears to interact with them."
 msgstr "tocando no botão que aparecer na tela."
 
@@ -4307,6 +4312,10 @@ msgstr ""
 #: data/object_prototypes/crazy-stuff/civ-tile.cfg:60
 msgid "This is a blank tile. It doesn't do anything."
 msgstr "Essa célula é vazia. Ela não faz nada."
+
+#: data/object_prototypes/ct-cursor.cfg:73
+msgid "'"
+msgstr ""
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:32
 msgid "You made it to level {level.player.difficulty} of the coin race!"
@@ -4598,27 +4607,27 @@ msgstr "Ataque"
 msgid "Back"
 msgstr "Voltar"
 
-#: src/draw_scene.cpp:376
+#: src/draw_scene.cpp:378
 msgid "Achievement Unlocked!"
 msgstr "Novo Troféu!"
 
-#: src/main.cpp:384
+#: src/main.cpp:397
 msgid "Initializing custom object"
 msgstr "Inicializando objetos"
 
-#: src/main.cpp:386
+#: src/main.cpp:399
 msgid "Initializing custom object functions"
 msgstr "Inicializando funções de objetos"
 
-#: src/main.cpp:388
+#: src/main.cpp:401
 msgid "Initializing tiles"
 msgstr "Inicializando tiles"
 
-#: src/main.cpp:391 src/main.cpp:395
+#: src/main.cpp:404 src/main.cpp:408
 msgid "Initializing GUI"
 msgstr "Inicializando interface"
 
-#: src/main.cpp:401
+#: src/main.cpp:414
 msgid "Loading level"
 msgstr "Carregando fase"
 

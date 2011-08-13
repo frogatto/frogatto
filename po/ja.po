@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-07-26 13:47-0300\n"
-"PO-Revision-Date: 2011-07-26 16:47+0000\n"
+"POT-Creation-Date: 2011-08-13 05:02-0300\n"
+"PO-Revision-Date: 2011-08-13 08:03+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Japanese (http://www.transifex.net/projects/p/Frogatto/team/ja/)\n"
 "MIME-Version: 1.0\n"
@@ -396,11 +396,11 @@ msgid "You got {level.player.score} points in the Blocks Run!"
 msgstr "ブロックランで{level.player.score}ポイントを手に入れた！"
 
 #: data/level/arcade-blocks.cfg:219
-#: data/level/arcade-down-the-rabbit-hall.cfg:863
+#: data/level/arcade-down-the-rabbit-hall.cfg:864
 #: data/level/arcade-maintenance-shaft.cfg:2580
 #: data/level/arcade-nutty-factory.cfg:381
-#: data/level/arcade-the-long-haul.cfg:703
-#: data/level/arcade-wild-new-wonder.cfg:2520
+#: data/level/arcade-the-long-haul.cfg:704
+#: data/level/arcade-wild-new-wonder.cfg:2521
 #: data/objects/effects/control/level_controller_coin_race.cfg:33
 msgid "This is a new high score!"
 msgstr "レコード更新！"
@@ -409,17 +409,17 @@ msgstr "レコード更新！"
 msgid "The high score is {registry.arcade_blocks_high_score}."
 msgstr "ハイスコアは{registry.arcade_blocks_high_score}です"
 
-#: data/level/arcade-down-the-rabbit-hall.cfg:12
+#: data/level/arcade-down-the-rabbit-hall.cfg:13
 #: data/level/titlescreen-arcade.cfg:276
 msgid "Down the Rabbit Hall"
 msgstr "ダウンラビットホール"
 
-#: data/level/arcade-down-the-rabbit-hall.cfg:862
-#: data/level/arcade-down-the-rabbit-hall.cfg:865
+#: data/level/arcade-down-the-rabbit-hall.cfg:863
+#: data/level/arcade-down-the-rabbit-hall.cfg:866
 msgid "You got {level.player.vars.score} points going down the rabbit hall!"
 msgstr "ダウンラビットホールで{level.player.vars.score}ポイントを手に入れた！"
 
-#: data/level/arcade-down-the-rabbit-hall.cfg:866
+#: data/level/arcade-down-the-rabbit-hall.cfg:867
 msgid ""
 "The high score is {registry.arcade_down_the_rabbit_hall_high_score} points."
 msgstr "ハイスコ​​アは{registry.arcade_down_the_rabbit_hall_high_score}です"
@@ -448,47 +448,47 @@ msgstr ""
 msgid "The high score is {registry.arcade_nutty_factory_high_score} points."
 msgstr ""
 
-#: data/level/arcade-the-long-haul.cfg:10
+#: data/level/arcade-the-long-haul.cfg:11
 #: data/level/titlescreen-arcade.cfg:275
 msgid "The Long Haul"
 msgstr "長い道のり"
 
-#: data/level/arcade-the-long-haul.cfg:702
-#: data/level/arcade-the-long-haul.cfg:705
+#: data/level/arcade-the-long-haul.cfg:703
+#: data/level/arcade-the-long-haul.cfg:706
 msgid "You got {level.player.vars.score} points in the long haul!"
 msgstr "ロングホールで{level.player.vars.score}ポイント手に入れた！"
 
-#: data/level/arcade-the-long-haul.cfg:706
+#: data/level/arcade-the-long-haul.cfg:707
 msgid "The high score is {registry.arcade_the_long_haul_high_score} points."
 msgstr "ハイスコアは{registry.arcade_the_long_haul_high_score}です"
 
-#: data/level/arcade-upper-deck.cfg:12 data/level/titlescreen-arcade.cfg:252
+#: data/level/arcade-upper-deck.cfg:13 data/level/titlescreen-arcade.cfg:252
 msgid "Upper Deck"
 msgstr "アッパーデッキ"
 
-#: data/level/arcade-upper-deck.cfg:2949 data/level/arcade-upper-deck.cfg:2952
+#: data/level/arcade-upper-deck.cfg:2950 data/level/arcade-upper-deck.cfg:2953
 msgid "You got {level.player.vars.score} points on the Upper Deck!"
 msgstr "アッパーデックで{level.player.vars.score}ポイント手に入れた！"
 
-#: data/level/arcade-upper-deck.cfg:2950
+#: data/level/arcade-upper-deck.cfg:2951
 msgid "This is a new record!"
 msgstr "レコード更新！"
 
-#: data/level/arcade-upper-deck.cfg:2953
+#: data/level/arcade-upper-deck.cfg:2954
 msgid "The high score is {registry.arcade_upper_deck_high_score} points."
 msgstr "ハイスコ​​アは{registry.arcade_upper_deck_high_score}です"
 
-#: data/level/arcade-wild-new-wonder.cfg:12
+#: data/level/arcade-wild-new-wonder.cfg:13
 #: data/level/titlescreen-arcade.cfg:251
 msgid "Wild New Wonder"
 msgstr "ワイルドニューワンダー"
 
-#: data/level/arcade-wild-new-wonder.cfg:2519
-#: data/level/arcade-wild-new-wonder.cfg:2522
+#: data/level/arcade-wild-new-wonder.cfg:2520
+#: data/level/arcade-wild-new-wonder.cfg:2523
 msgid "You got {level.player.vars.score} points in the Wild New Wonder!"
 msgstr "ワイルドニューワンダーで{level.player.vars.score}ポイント手に入れた！"
 
-#: data/level/arcade-wild-new-wonder.cfg:2523
+#: data/level/arcade-wild-new-wonder.cfg:2524
 msgid "The high score is {registry.arcade_wild_new_wonder_high_score} points."
 msgstr "ハイスコアは{registry.arcade_wild_new_wonder_high_score}です"
 
@@ -569,7 +569,7 @@ msgstr "燃焼と泡"
 msgid "Burning Stone"
 msgstr "燃え盛る石"
 
-#: data/level/burning-stone.cfg:2156
+#: data/level/burning-stone.cfg:1568
 msgid ""
 "I need to go up... There must be\n"
 "a way to activate this elevator."
@@ -779,7 +779,7 @@ msgstr ""
 #: data/level/crevice-village-house-2.cfg:3211
 #: data/level/crevice-village-house-4.cfg:3064
 #: data/level/crevice-village-house-4.cfg:3105
-#: data/level/killer-bunnies.cfg:4606
+#: data/level/killer-bunnies.cfg:3548
 msgid "Nope, it's locked."
 msgstr "ダメだ、鍵がかかってるよ"
 
@@ -1788,7 +1788,7 @@ msgstr "ブロックのダンジョン"
 msgid "Dungeon Crawling"
 msgstr "敵だらけのダンジョン"
 
-#: data/level/dungeon-entrance.cfg:12
+#: data/level/dungeon-entrance.cfg:17
 msgid "The Entrance"
 msgstr "入り口"
 
@@ -2444,11 +2444,11 @@ msgstr ""
 "うわあああああ！！\n"
 "僕は飛べないんだよおおお！！"
 
-#: data/level/killer-bunnies.cfg:13
+#: data/level/killer-bunnies.cfg:14
 msgid "Killer Bunnies"
 msgstr "殺人ウサギの群れ"
 
-#: data/level/killer-bunnies.cfg:4268
+#: data/level/killer-bunnies.cfg:3321
 msgid ""
 "That guy sure doesn't look\n"
 "glad to meet me!"
@@ -2456,7 +2456,7 @@ msgstr ""
 "あの人、ぼくに会えて喜んでいるようには…\n"
 "見えないよねえ！"
 
-#: data/level/killer-bunnies.cfg:4606
+#: data/level/killer-bunnies.cfg:3548
 msgid ""
 "It's locked. Of course...\n"
 "It couldn't be easy to get out of here!"
@@ -3835,8 +3835,13 @@ msgstr ""
 
 #: data/level/test3.cfg:14 data/level/test4.cfg:12 data/level/test5.cfg:12
 #: data/level/test6.cfg:14 data/level/test7-surf.cfg:12
+#: data/level/test9.cfg:12
 msgid "(Test Level)"
 msgstr "(テストレベル)"
+
+#: data/level/testa10.cfg:12
+msgid "Test Level 10"
+msgstr ""
 
 #: data/level/titlescreen-arcade.cfg:141
 msgid "Each machine has a different arcade-style challenge."
@@ -3876,50 +3881,50 @@ msgstr "コインレース"
 msgid "COIN RACE"
 msgstr "コインレース"
 
-#: data/level/titlescreen-test.cfg:284 data/level/titlescreen.cfg:284
+#: data/level/titlescreen-test.cfg:284 data/level/titlescreen.cfg:254
 msgid "LOAD GAME"
 msgstr "ロード"
 
-#: data/level/titlescreen-test.cfg:322 data/level/titlescreen.cfg:322
+#: data/level/titlescreen-test.cfg:322 data/level/titlescreen.cfg:274
 msgid "NEW GAME"
 msgstr "ニューゲーム"
 
 #: data/level/titlescreen-test.cfg:361 data/level/titlescreen-test.cfg:391
-#: data/level/titlescreen.cfg:361 data/level/titlescreen.cfg:391
+#: data/level/titlescreen.cfg:295 data/level/titlescreen.cfg:307
 msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
 msgstr "移動するには、{LEFT_KEY}または{RIGHT_KEY}を押します。"
 
 #: data/level/titlescreen-test.cfg:392 data/level/titlescreen-test.cfg:409
-#: data/level/titlescreen.cfg:394
+#: data/level/titlescreen.cfg:310
 msgid "Press {UP_KEY} to talk, and use things like doors."
 msgstr "話したり、ドアを開いたりするには、{UP_KEY}を押します。"
 
-#: data/level/titlescreen-test.cfg:393 data/level/titlescreen.cfg:393
+#: data/level/titlescreen-test.cfg:393 data/level/titlescreen.cfg:309
 msgid "Press {DOWN_KEY} to crouch."
 msgstr "しゃがむには、{DOWN_KEY}を押します。"
 
-#: data/level/titlescreen-test.cfg:394 data/level/titlescreen.cfg:392
-#: data/level/titlescreen.cfg:407
+#: data/level/titlescreen-test.cfg:394 data/level/titlescreen.cfg:308
+#: data/level/titlescreen.cfg:323
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
 msgstr "走るには、{LEFT_KEY}または{RIGHT_KEY}を素早く2回押します"
 
-#: data/level/titlescreen-test.cfg:395 data/level/titlescreen.cfg:395
+#: data/level/titlescreen-test.cfg:395 data/level/titlescreen.cfg:311
 msgid "Press {JUMP_KEY} to jump."
 msgstr "ジャンプするには、ジャンプキーを押します"
 
-#: data/level/titlescreen-test.cfg:396 data/level/titlescreen.cfg:396
+#: data/level/titlescreen-test.cfg:396 data/level/titlescreen.cfg:312
 msgid "Press {TONGUE_KEY} to use a character's attacks."
 msgstr "攻撃するには、舌キーを押します"
 
-#: data/level/titlescreen-test.cfg:447 data/level/titlescreen.cfg:445
+#: data/level/titlescreen-test.cfg:447 data/level/titlescreen.cfg:343
 msgid "ARCADE"
 msgstr "アーケード"
 
-#: data/level/titlescreen.cfg:393
+#: data/level/titlescreen.cfg:309
 msgid "Walk in front of a door or person, and press"
 msgstr ""
 
-#: data/level/titlescreen.cfg:394
+#: data/level/titlescreen.cfg:310
 msgid "the button that appears to interact with them."
 msgstr ""
 
@@ -4135,6 +4140,10 @@ msgstr "{const.name}をを買いますか？"
 #: data/object_prototypes/crazy-stuff/civ-tile.cfg:60
 msgid "This is a blank tile. It doesn't do anything."
 msgstr "空のファイルです。なにもできません"
+
+#: data/object_prototypes/ct-cursor.cfg:73
+msgid "'"
+msgstr ""
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:32
 msgid "You made it to level {level.player.difficulty} of the coin race!"
@@ -4415,27 +4424,27 @@ msgstr "アタック"
 msgid "Back"
 msgstr "戻る"
 
-#: src/draw_scene.cpp:376
+#: src/draw_scene.cpp:378
 msgid "Achievement Unlocked!"
 msgstr "実績が解除されていない！"
 
-#: src/main.cpp:384
+#: src/main.cpp:397
 msgid "Initializing custom object"
 msgstr "カスタムオブジェクトの初期化"
 
-#: src/main.cpp:386
+#: src/main.cpp:399
 msgid "Initializing custom object functions"
 msgstr "カスタムオブジェクト機能の初期化"
 
-#: src/main.cpp:388
+#: src/main.cpp:401
 msgid "Initializing tiles"
 msgstr "タイトルの初期化"
 
-#: src/main.cpp:391 src/main.cpp:395
+#: src/main.cpp:404 src/main.cpp:408
 msgid "Initializing GUI"
 msgstr "GUIの初期化"
 
-#: src/main.cpp:401
+#: src/main.cpp:414
 msgid "Loading level"
 msgstr "レベル読み込み中"
 
