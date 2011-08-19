@@ -409,6 +409,29 @@ const std::string& variant::as_string() const
 
 variant variant::operator+(const variant& v) const
 {
+	if(type_ == TYPE_INT && v.type_ == TYPE_INT) {
+		//strictly an optimization -- this is handled below, but the case
+		//of adding two integers is the most common so we want it to be fast.
+		return variant(int_value_ + v.int_value_);
+	}
+
+	if(type_ == TYPE_STRING) {
+		if(v.type_ == TYPE_MAP) {
+			return variant(as_string() + v.as_string());
+		} else if(v.type_ == TYPE_STRING) {
+			return variant(as_string() + v.as_string());
+		}
+
+		std::string s;
+		v.serialize_to_string(s);
+		return variant(as_string() + s);
+	}
+
+	if(v.type_ == TYPE_STRING) {
+		std::string s;
+		serialize_to_string(s);
+		return variant(s + v.as_string());
+	}
 	if(type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL) {
 		return variant(as_decimal() + v.as_decimal());
 	}
@@ -450,24 +473,6 @@ variant variant::operator+(const variant& v) const
 
 			return variant(&res);
 		}
-	}
-
-	if(type_ == TYPE_STRING) {
-		if(v.type_ == TYPE_MAP) {
-			return variant(as_string() + v.as_string());
-		} else if(v.type_ == TYPE_STRING) {
-			return variant(as_string() + v.as_string());
-		}
-
-		std::string s;
-		v.serialize_to_string(s);
-		return variant(as_string() + s);
-	}
-
-	if(v.type_ == TYPE_STRING) {
-		std::string s;
-		serialize_to_string(s);
-		return variant(s + v.as_string());
 	}
 
 	return variant(as_int() + v.as_int());
