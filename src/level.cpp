@@ -2398,7 +2398,7 @@ int round_tile_size(int n)
 	if(n >= 0) {
 		return n - n%TileSize;
 	} else {
-		n = -n + 32;
+		n = -n + 31;
 		return -(n - n%TileSize);
 	}
 }
