@@ -1611,6 +1611,12 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_LABEL:             return variant(label());
 	case CUSTOM_OBJECT_X:                 return variant(x());
 	case CUSTOM_OBJECT_Y:                 return variant(y());
+	case CUSTOM_OBJECT_XY:                {
+			 				 				std::vector<variant> v;
+											v.push_back(variant(x()));
+											v.push_back(variant(y()));
+											return variant(&v);
+										  }
 	case CUSTOM_OBJECT_Z:
 	case CUSTOM_OBJECT_ZORDER:            return variant(zorder_);
 	case CUSTOM_OBJECT_ZSUB_ORDER:        return variant(zsub_order_);
@@ -1894,6 +1900,15 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		if(entity_collides(level::current(), *this, MOVE_NONE) && entity_in_current_level(this)) {
 			set_centi_y(start_y);
 		}
+	} else if(key == "xy") {
+		const int start_x = centi_x();
+		const int start_y = centi_y();
+		set_x(value[0].as_int());
+		set_y(value[1].as_int());
+		if(entity_collides(level::current(), *this, MOVE_NONE) && entity_in_current_level(this)) {
+			set_centi_x(start_x);
+			set_centi_y(start_y);
+		}
 	} else if(key == "z" || key == "zorder") {
 		zorder_ = value.as_int();
 	} else if(key == "zsub_order") {
@@ -2148,6 +2163,20 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		const int start_y = centi_y();
 		set_y(value.as_int());
 		if(entity_collides(level::current(), *this, MOVE_NONE) && entity_in_current_level(this)) {
+			set_centi_y(start_y);
+		}
+
+		break;
+	}
+	
+	case CUSTOM_OBJECT_XY: {
+		ASSERT_LOG(value.is_list() && value.num_elements() == 2, "set xy value of object to a value in incorrect format ([x,y] expected): " << value.to_debug_string());
+		const int start_x = centi_x();
+		const int start_y = centi_y();
+		set_x(value[0].as_int());
+		set_y(value[1].as_int());
+		if(entity_collides(level::current(), *this, MOVE_NONE) && entity_in_current_level(this)) {
+			set_centi_x(start_x);
 			set_centi_y(start_y);
 		}
 
