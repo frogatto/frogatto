@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE language SYSTEM "language.dtd">
+
+<language name="Frogatto FML-FFL"  priority="2" section="Markup" extensions="*.cfg" version="0.0" kateversion="3.4.5" casesensitive="yes" author="DDR (robertsdavidddr@gmail.com)" license="Frogatto">
+	<highlighting>
+		<list name="fml_keys">
+			<item> #include </item>
+		</list>
+		<list name="ffl_keys">
+			<item> and </item>
+			<item> or </item>
+			<item> not </item>
+			<item> in </item>
+		</list>
+		<list name="mutators">
+			<item> set </item>
+			<item> add </item>
+		</list>
+		
+		<contexts>
+			<context attribute="Normal Text" lineEndContext="#pop" name="FML" >
+				<keyword attribute="Keyword" context="#stay" String="fml_keys" />
+				<DetectChar attribute="String" context="ffl_string" char="'" />
+				<DetectChar attribute="String" context="translatable string" char="~" />
+				<DetectChar attribute="Normal Text" context="formula language" char="&quot;" />
+				<DetectChar attribute="Comment" context="fml comment" char="#" />
+				<StringDetect attribute="Event" context="on_" String=" on_" />		<!-- space/tab versions -->
+				<StringDetect attribute="Event" context="on_" String="	on_" />
+				<RegExpr attribute="Number" String="\b(?:[\d.]*)\b"/>
+				<StringDetect attribute="Normal Text" context="animation" String="[animation]" />
+				<StringDetect attribute="Normal Text" context="editor info" String="[editor_info]" />
+			</context>
+			
+			<!-- Each context calls contexts further down the file, not including returns. --> 
+			
+			<context attribute="Comment" lineEndContext="#pop" name="fml comment" />
+			
+			<context attribute="Animation" lineEndContext="an_attr" name="animation" />
+			<context attribute="Animation" lineEndContext="#pop" name="an_attr">
+				<DetectChar attribute="Animation" context="FML" char="=" />
+				<DetectChar attribute="Comment" context="fml comment" char="#" />
+				<StringDetect attribute="Normal Text" context="#pop#pop" String="[/animation]" />
+			</context>
+			
+			<context attribute="Editor Info" lineEndContext="ed_attr" name="editor info" />
+			<context attribute="Editor Info" lineEndContext="#pop" name="ed_attr">
+				<DetectChar attribute="Editor Info" context="FML" char="=" />
+				<DetectChar attribute="Comment" context="fml comment" char="#" />
+				<StringDetect attribute="Normal Text" context="#pop#pop" String="[/editor_info]" />
+			</context>
+			
+			<context attribute="Formula Language2" lineEndContext="#stay" name="formula language">
+				<keyword attribute="Operator" context="#stay" String="ffl_keys" />
+				<keyword attribute="Mutator" context="#stay" String="mutators" />
+				<StringDetect attribute="Keyword" String=" where " />
+				<DetectChar attribute="Normal Text" context="#pop" char="&quot;" />
+				<DetectChar attribute="String" context="ffl_string" char="'" />
+				<DetectChar attribute="String" context="translatable string" char="~" />
+				<DetectChar attribute="Comment" context="ffl comment" char="#" />
+				<StringDetect attribute="Event" context="def" String="def(" />
+				<RegExpr attribute="Number" String="\b(?:[0-9.]*)\b"/>		<!-- This should really only accept decimals in the middle of the number. -->
+				<AnyChar attribute="Operator" String="^%/*+-&lt;&gt;" />
+			</context>
+			
+			<context attribute="String" lineEndContext="#stay" name="ffl_string">
+				<DetectChar attribute="String" context="#pop" char="'" />
+			</context>
+			
+			<context attribute="String" lineEndContext="#stay" name="translatable string">
+				<DetectChar attribute="String" context="#pop" char="~" />
+			</context>
+			
+			<context attribute="Comment" lineEndContext="#stay" name="ffl comment">
+				<DetectChar attribute="Comment" context="#pop" char="#" />
+			</context>
+			
+			<context attribute="Event" lineEndContext="#stay" name="on_">
+				<DetectChar attribute="Normal Text" context="#pop" char="=" />
+			</context>
+			
+			<context attribute="Event" lineEndContext="#stay" name="def">
+				<DetectChar attribute="Event" context="#pop" char=")" />
+			</context>
+			
+			<context attribute="Number" lineEndContext="#stay" name="number">
+				<RegExpr attribute="Number" context="#pop" String="\b(?:[0-9.]*)\b" />
+			</context>
+		</contexts>
+		
+		<itemDatas>
+			<itemData name="Normal Text" 		defStyleNum="dsNormal"						/>
+			<itemData name="Keyword" 			defStyleNum="dsKeyword"		color="#006030"	/>
+			<itemData name="String" 			defStyleNum="dsString"						/>
+			<itemData name="Formula Language" 	defStyleNum="dsNormal" 		color="#0000A0"	/> <!-- color="#4e1f08" />  :: This is the brown I want, but I keep getting a lighter tone of brown regardless of what I do.-->
+			<itemData name="Formula Language2" 	defStyleNum="dsNormal" 		color="#401000"	/>
+			<itemData name="Comment" 			defStyleNum="dsComment"						/>
+			<itemData name="Number" 			defStyleNum="dsDecVal"						/>
+			<itemData name="Event" 				defStyleNum="dsFunction"					/>
+			<itemData name="Animation" 			defStyleNum="dsNormal" 		color="#0FF002"	/>
+			<itemData name="Editor Info" 		defStyleNum="dsNormal" 		color="#8080F0"	/>
+			<itemData name="Operator" 			defStyleNum="dsNormal" 		color="#0000B0"	/>
+			<itemData name="Mutator" 			defStyleNum="dsNormal"		color="#008000"	/>
+		</itemDatas>
+	</highlighting>
+	
+	<general>
+		<keywords casesensitive="1"/>
+		<folding indentationsensitive="1"/>
+	</general>
+</language>
