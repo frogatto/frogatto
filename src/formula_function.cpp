@@ -396,6 +396,18 @@ private:
 	}
 };
 
+class decimal_function : public function_expression {
+public:
+	explicit decimal_function(const args_list& args)
+	    : function_expression("decimal", args, 1, 1)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(args()[0]->evaluate(variables).as_decimal());
+	}
+};
+
 class sin_function : public function_expression {	//Interprets two least significant digits as after decimal.
 public:
 	explicit sin_function(const args_list& args)
@@ -1162,6 +1174,7 @@ functions_map& get_functions_map() {
 		FUNCTION(max);
 		FUNCTION(choose);
 		FUNCTION(wave);
+		FUNCTION(decimal);
 		FUNCTION(sin);
 		FUNCTION(cos);
 		FUNCTION(tan);
