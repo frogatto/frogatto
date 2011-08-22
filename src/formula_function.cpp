@@ -971,6 +971,11 @@ public:
 private:
 	variant execute(const formula_callable& variables) const {
 		const variant item = args()[0]->evaluate(variables);
+		if(item.is_string()) {
+			//just return as-is for something that's already a string.
+			return item;
+		}
+
 		std::string str;
 		item.serialize_to_string(str);
 		return variant(str);
