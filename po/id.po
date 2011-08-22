@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2011-08-13 05:02-0300\n"
-"PO-Revision-Date: 2011-08-13 08:03+0000\n"
-"Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
+"PO-Revision-Date: 2011-08-22 00:01+0000\n"
+"Last-Translator: radifar <m_radifar05@yahoo.com>\n"
 "Language-Team: Indonesian (http://www.transifex.net/projects/p/Frogatto/team/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -60,7 +60,7 @@ msgstr "Grafis untuk latar belakang hutan didekor-ulang"
 
 #: CHANGELOG:12
 msgid "Redid graphics for dungeon wall tiles"
-msgstr "Grafis untuk kastil didekor-ulang"
+msgstr "Grafis untuk dinding kastil didekor-ulang"
 
 #: CHANGELOG:13
 msgid "Redid graphics for basement wall tiles"
@@ -541,11 +541,11 @@ msgstr ""
 
 #: data/level/autumn-town.cfg:16
 msgid "Autumn Town"
-msgstr "Kota Autumn"
+msgstr "Kota Musim Gugur"
 
 #: data/level/bombing-fools.cfg:18
 msgid "Bombing Fools"
-msgstr "Mengebom Orang Bodoh"
+msgstr "Pengebom Gila"
 
 #: data/level/bon-bosque.cfg:15 data/objects/playable/map-selector.cfg:20
 msgid "Bon Bosque"
@@ -617,7 +617,7 @@ msgstr "Penambangan Serangga"
 
 #: data/level/burn-and-bubble.cfg:14
 msgid "Burn and Bubble"
-msgstr "Bakar dan Bergelembung"
+msgstr "Bakar dan Berbuih"
 
 #: data/level/burning-stone.cfg:10
 msgid "Burning Stone"
@@ -656,7 +656,7 @@ msgstr "Apa yang..."
 
 #: data/level/crevice-village-cave.cfg:811
 msgid "You!!"
-msgstr "Kamu!"
+msgstr "Kau!"
 
 #: data/level/crevice-village-cave.cfg:812
 #: data/object_prototypes/buyable_item.cfg:24
@@ -672,7 +672,7 @@ msgstr "Kamu ini penyusup ya?"
 
 #: data/level/crevice-village-cave.cfg:813
 msgid "I thought so!"
-msgstr "Aku pikir begitu!"
+msgstr "Sudah kuduga!"
 
 #: data/level/crevice-village-cave.cfg:814
 #: data/object_prototypes/buyable_item.cfg:25
@@ -711,8 +711,8 @@ msgid ""
 "Well, I can't let anyone\n"
 "past this gate."
 msgstr ""
-"Oh ya, aku tidak bisa membiarkan\n"
-"semua orang melewati gerbang ini."
+"Begitukah, aku tidak bisa membiarkan\n"
+"siapapun melewati gerbang ini."
 
 #: data/level/crevice-village-cave.cfg:821
 msgid ""
@@ -733,12 +733,12 @@ msgstr ""
 #: data/level/crevice-village-cave.cfg:824
 msgid "No way!  Over my dead body!"
 msgstr ""
-"Yang benar saja!  Langkahi dulu\n"
-"mayatku!"
+"Yang benar saja!\n"
+"Langkahi dulu mayatku!"
 
 #: data/level/crevice-village-cave.cfg:826
 msgid "We can do that."
-msgstr "Boleh saja."
+msgstr "Aku bisa lakukan itu."
 
 #: data/level/crevice-village-central-side-cave.cfg:15
 msgid "Hidden Cave"
@@ -778,9 +778,9 @@ msgid ""
 "locked down tight, and he has\n"
 "most of the residents held prisoner."
 msgstr ""
-"Milgram memiliki separuh kota dan\n"
-"menguncinya dengan rapat, dan dia\n"
-"telah menyandra hampir semua\n"
+"Milgram telah mengunci kota bagian\n"
+"ini dengan rapat, dan dia telah\n"
+"menyandera hampir semua\n"
 "penduduk kota."
 
 #: data/level/crevice-village-central.cfg:1372
@@ -879,7 +879,7 @@ msgid ""
 "Yes, that blue fellow you ran into..\n"
 "Berd was his name."
 msgstr ""
-"Ya, si biru yang kau tuju..\n"
+"Ya, si biru yang kau temui..\n"
 "Namanya adalah Berd."
 
 #: data/level/crevice-village-heights.cfg:1075
@@ -938,9 +938,8 @@ msgid ""
 "Milgram won't know what hit him!"
 msgstr ""
 "Semoga beruntung, nak.\n"
-"Milgram tak akan tahu \n"
-"kesialan apa yang akan\n"
-"menimpanya!"
+"Milgram tak akan tahu kesialan\n"
+"apa yang akan menimpanya!"
 
 #: data/level/crevice-village-heights.cfg:1093
 msgid "You bet!"
@@ -970,7 +969,7 @@ msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1101
 msgid "And good riddance!"
-msgstr "Baguslah kalau mereka pergi!"
+msgstr "Dan kabur secepatnya!"
 
 #: data/level/crevice-village-heights.cfg:1103
 msgid ""
@@ -1029,7 +1028,7 @@ msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2514
 msgid "Got any advice?"
-msgstr "Ada saran."
+msgstr "Ada saran?"
 
 #: data/level/crevice-village-house-1.cfg:2515
 msgid "Keep an eye out for it!"
@@ -1381,9 +1380,9 @@ msgid ""
 "For the last time, we *know* you've\n"
 "got the money somewhere."
 msgstr ""
-"Untuk terakhir kalinya, kita \"tahu\"\n"
-"kau telah mendapatkan uang itu\n"
-"di suatu tempat."
+"Ini adalah kali terakhir,\n"
+"kami \"tahu\" kau menyimpan\n"
+"uang itu di suatu tempat."
 
 #: data/level/crevice-village-house-elder.cfg:1462
 msgid "Make this easy on yourself."
@@ -1557,7 +1556,7 @@ msgstr "Ya, kau tahu..."
 msgid "I am the mayor after all."
 msgstr ""
 "Bagaimanapun juga aku ini khan\n"
-"sang gubernur."
+"sang walikota."
 
 #: data/level/crevice-village-house-elder.cfg:1636
 #: data/level/tea-with-milgram.cfg:197
@@ -1677,7 +1676,7 @@ msgid ""
 "has a sentry posted in it."
 msgstr ""
 "Di gua yang menuju ke kota,\n"
-"ada prajurit yang menjaganya."
+"ada penjaga di dalamnya."
 
 #: data/level/crevice-village.cfg:964
 msgid ""
@@ -1686,7 +1685,7 @@ msgid ""
 msgstr ""
 "Orang-orang Milgram mencoba\n"
 "mengisolasi kota itu, jadi tidak\n"
-"ada yang keluar-masuk."
+"ada yang bisa keluar-masuk."
 
 #: data/level/crevice-village.cfg:965
 msgid ""
@@ -1750,17 +1749,17 @@ msgid ""
 "but I'm gonna be a jerk here,\n"
 " and poke some holes in it."
 msgstr ""
-"Tapi aku akan jadi orang bodoh,\n"
-" dan mencoba mencari kesalahan\n"
-"dalam rencana ini."
+"Tapi aku tidak suka rencana itu,\n"
+"besar kemungkinan rencana itu\n"
+"tidak akan berhasil."
 
 #: data/level/crevice-village.cfg:978
 msgid ""
 "Fair enough.\n"
 "I'm not particularly fond of it, myself."
 msgstr ""
-"Silahkan saja.\n"
-"Aku sendiri juga tidak menyukainya."
+"Baiklah. Aku sendiri juga\n"
+"tidak menyukai rencana itu."
 
 #: data/level/crevice-village.cfg:980
 msgid ""
@@ -1769,7 +1768,7 @@ msgid ""
 msgstr ""
 "Pertama, Milgram memiliki BANYAK\n"
 "pengikut. Luar biasa banyaknya.\n"
-"  Dia mengendalikan seisi kota."
+"Dia mengendalikan seisi kota."
 
 #: data/level/crevice-village.cfg:982
 msgid ""
@@ -1785,8 +1784,8 @@ msgid ""
 "Plus, they're pretty mobile, too.\n"
 " Planes and such."
 msgstr ""
-"Ditambah lagi, mereka mudah\n"
-"berpindah tempat, juga.\n"
+"Ditambah lagi, mereka cepat\n"
+"bergerak pula.\n"
 " Berkat pesawat dll."
 
 #: data/level/crevice-village.cfg:986
@@ -1811,7 +1810,8 @@ msgid ""
 "a bull butting heads with a freight train."
 msgstr ""
 "Perumpaannya seperti ...\n"
-"Banteng beradu dengan kereta barang."
+"Kita ini adalah banteng yang beradu\n"
+"dengan kereta barang."
 
 #: data/level/crevice-village.cfg:991
 msgid ""
@@ -1854,8 +1854,8 @@ msgid ""
 "Worse comes to worse,\n"
 "I can just run for it.  Right?"
 msgstr ""
-"Keadaan semakin buruk saja,\n"
-"Aku bisa saja kabur.  Bukan begitu?"
+"Jika keadaan semakin buruk,\n"
+"aku bisa saja kabur.  Bukan begitu?"
 
 #: data/level/crevice-village.cfg:1001
 msgid ""
@@ -1913,7 +1913,7 @@ msgstr "Jalan Masuk"
 
 #: data/level/eerie-arbor.cfg:16
 msgid "Eerie Arbor"
-msgstr "Teduh & Menyeramkan"
+msgstr "Teduh dan Menyeramkan"
 
 #: data/level/fast-lane.cfg:15
 msgid "Fast Lane"
@@ -1942,7 +1942,7 @@ msgstr ""
 
 #: data/level/frogatto-grotto-frogattos-room.cfg:953
 msgid "Oh geez! I overslept!"
-msgstr "Ya ampun! Aku ketiduran!"
+msgstr "Ya ampun! Aku kesiangan!"
 
 #: data/level/frogatto-grotto-inside.cfg:10
 msgid "Frogatto's House"
@@ -2015,12 +2015,12 @@ msgid ""
 "At least TRY to get a job today,\n"
 "alright?"
 msgstr ""
-"Setidaknya COBA dapatkan pekerjaan\n"
-"hari ini, oke?"
+"Setidaknya COBALAH dapatkan\n"
+"pekerjaan hari ini, oke?"
 
 #: data/level/frogatto-grotto-inside.cfg:1539
 msgid "We need some help around here."
-msgstr "Kita butuh bantuan di sekitar sini."
+msgstr "Kita di sini harus bekerjasama."
 
 #: data/level/frogatto-grotto-inside.cfg:1541
 msgid "Yeah, I know.  I'll try."
@@ -2028,7 +2028,7 @@ msgstr "Yah, aku tahu.  Akan kucoba."
 
 #: data/level/frogatto-grotto-inside.cfg:1542
 msgid "See to it."
-msgstr "Aku masih berusaha."
+msgstr "Pokoknya aku tunggu."
 
 #: data/level/frogatto-grotto-inside.cfg:1555
 msgid "Not like I need to be up,"
@@ -2101,7 +2101,7 @@ msgid ""
 "On this level,\n"
 "we give advice on how to play."
 msgstr ""
-"Pada level ini,\n"
+"Pada tingkat ini,\n"
 "kami akan memberikan saran tentang\n"
 "bagaimana cara bermain."
 
@@ -2245,7 +2245,7 @@ msgid ""
 "and then spit them back out."
 msgstr ""
 "Kamu bisa menangkap musuh-musuhmu\n"
-"dengan lidah, kemudian melemparkan\n"
+"dengan lidah, kemudian memuntahkan\n"
 "mereka keluar."
 
 #: data/level/grassy-path.cfg:1078
@@ -2253,7 +2253,7 @@ msgid ""
 "Once spat out,\n"
 "they become a deadly projectile."
 msgstr ""
-"Begitu mereka terlempar keluar,\n"
+"Begitu mereka dimuntahkan,\n"
 "mereka akan menjadi peluru mematikan."
 
 #: data/level/grassy-path.cfg:1079
@@ -2280,7 +2280,7 @@ msgid ""
 "Sticking out the tongue and spitting,\n"
 "are both done with the attack key."
 msgstr ""
-"Memanjangkan lidah dan melemparkan,\n"
+"Memanjangkan lidah dan memuntahkan,\n"
 "keduanya dilakukan dengan tombol\n"
 "menyerang."
 
@@ -2306,7 +2306,7 @@ msgid ""
 "is that you can control the direction\n"
 "in which enemies are spat."
 msgstr ""
-"Sebuah fakta yang sangat bermanfaat,\n"
+"Satu info yang sangat bermanfaat,\n"
 "yakni kamu bisa mengontrol ke arah\n"
 "mana musuh dilemparkan."
 
@@ -2617,7 +2617,7 @@ msgid ""
 "That guy sure doesn't look\n"
 "glad to meet me!"
 msgstr ""
-"Dia benar-benar nampak\n"
+"Dia benar-benar terlihat\n"
 "tidak suka bertemu denganku!"
 
 #: data/level/killer-bunnies.cfg:3548
@@ -2799,7 +2799,7 @@ msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:604
 msgid "This had better be some kind of joke."
-msgstr "Sebaiknya ini hanya keisengan saja."
+msgstr "Seseorang pasti bercanda."
 
 #: data/level/milgrams-throne-room.cfg:605
 msgid "We... We tried to stop him, but he's..."
@@ -2828,7 +2828,7 @@ msgid ""
 "You do put up quite a fight!"
 msgstr ""
 "Uh!\n"
-"Kau benar-benar ingin berkelahi ya!"
+"Kau ternyata sangat hebat!"
 
 #: data/level/milgrams-throne-room.cfg:660
 msgid "Will you hear me out now?"
@@ -2862,7 +2862,8 @@ msgid ""
 "Well, perhaps we could talk it over?"
 msgstr ""
 "Semua ini tentang *itu*?\n"
-"Mungkin kita berdiskusi tentang itu?"
+"Mungkin,\n"
+"kita bisa berdiskusi tentang itu?"
 
 #: data/level/milgrams-throne-room.cfg:673
 msgid "Talk it over? Like gentlemen?"
@@ -2948,9 +2949,7 @@ msgstr "Tambang Bencana"
 
 #: data/level/plagued-mine.cfg:2794
 msgid "These crazy bombers are everywhere!"
-msgstr ""
-"Pengebom-pengebom gila ini\n"
-"ada dimana-mana!"
+msgstr "Para Pengebom Gila"
 
 #: data/level/plagued-mine.cfg:2871
 msgid "Yikes!"
@@ -2958,7 +2957,7 @@ msgstr "Yaiks!"
 
 #: data/level/rock-a-fort-cave.cfg:16 data/level/rock-a-fort.cfg:16
 msgid "Rock-a-Fort"
-msgstr "Mengguncang Benteng"
+msgstr "Benteng Karang"
 
 #: data/level/rock-a-fort.cfg:3230
 msgid "Woah! A flying plant!"
@@ -3035,7 +3034,7 @@ msgstr ""
 "Makanya aku tinggal di tempat\n"
 "yang sangat tinggi seperti ini.\n"
 "Ada banyak hal yang bisa\n"
-"kau lihat dari ketinggian ini."
+"dilihat dari ketinggian ini."
 
 #: data/level/secluded-hut-interior.cfg:931
 msgid ""
@@ -3211,11 +3210,10 @@ msgid ""
 "They've taken the whole place hostage;\n"
 "something about \"collecting on a debt.\""
 msgstr ""
-"Pengikutnya Milgram menampakkan\n"
-"batang hidungnya pagi ini,\n"
-"di kota ini.\n"
+"Anak buah Milgram menampakkan\n"
+"batang hidungnya pagi ini,di kota.\n"
 "Mereka telah menyandera semuanya;\n"
-"katanya tentang \"menagih hutang.\""
+"sesuatu terkait \"menagih hutang.\""
 
 #: data/level/secluded-hut.cfg:1253
 msgid ""
@@ -3267,8 +3265,8 @@ msgstr ""
 #: data/level/secluded-hut.cfg:1261
 msgid "I'm at a loss for a plan, myself."
 msgstr ""
-"Aku sendiri sudah tidak tertarik\n"
-"pada rencanaku."
+"Aku sendiri sudah kehabisan\n"
+"akal."
 
 #: data/level/secluded-hut.cfg:1262
 msgid ""
@@ -3360,7 +3358,9 @@ msgstr "Perancang Obyek Minor dan Perancang Level"
 
 #: data/level/tea-with-milgram.cfg:181
 msgid "So let me get this straight..."
-msgstr "Jadi biar kuluruskan masalah ini..."
+msgstr ""
+"Jadi langsung saja ke\n"
+"pokok permasalahan..."
 
 #: data/level/tea-with-milgram.cfg:184
 msgid ""
@@ -3397,7 +3397,7 @@ msgid ""
 "I thought a 'mayor' would be responsible,\n"
 "but instead he's spending it all on himself!"
 msgstr ""
-"Aku pikir seorang 'gubernur' akan\n"
+"Aku pikir seorang 'walikota' akan\n"
 "bertanggungjawab, tapi kenyataannya\n"
 "dia justru menghamburkan semua\n"
 "uang itu untuk dirinya sendiri."
@@ -3521,8 +3521,8 @@ msgid ""
 "he just decided he's old enough that\n"
 "everyone should just do what he says."
 msgstr ""
-"Tetua kota tidaklah DIPILIH sebagai\n"
-"gubernur,\n"
+"Tetua kota tidaklah DIPILIH\n"
+"orang-orang sebagai walikota,\n"
 "dia diangkat hanya karena dialah\n"
 "yang paling tua sehingga semua orang\n"
 "menuruti semua yang dia katakan."
@@ -3896,8 +3896,7 @@ msgid ""
 "Hey, I'm sorry to barge in and all,\n"
 "but what happened to that bridge?"
 msgstr ""
-"Hei, maaf telah datang tanpa\n"
-"diundang,\n"
+"Hei, maaf datang tanpa diundang,\n"
 "tapi ada apa dengan jembatan itu?"
 
 #: data/level/tempo-outskirts-inside.cfg:186
@@ -4018,8 +4017,8 @@ msgid ""
 "Fortunately, you're not completely\n"
 "out of luck."
 msgstr ""
-"Untungnya, kau tidak benar-benar\n"
-"sedang sial."
+"Untungnya, masih ada\n"
+"jalan keluar untukmu."
 
 #: data/level/tempo-outskirts-inside.cfg:202
 msgid ""
@@ -4113,17 +4112,15 @@ msgstr ""
 #: data/level/test6.cfg:14 data/level/test7-surf.cfg:12
 #: data/level/test9.cfg:12
 msgid "(Test Level)"
-msgstr "(Level Uji Coba)"
+msgstr "(Uji Coba Level)"
 
 #: data/level/testa10.cfg:12
 msgid "Test Level 10"
-msgstr ""
+msgstr "Uji Coba Level 10"
 
 #: data/level/titlescreen-arcade.cfg:141
 msgid "Each machine has a different arcade-style challenge."
-msgstr ""
-"Setiap mesin memiliki tantangan\n"
-"gaya-arcade yang berbeda-beda."
+msgstr "Setiap mesin memiliki tantangan gaya-arcade tersendiri."
 
 #: data/level/titlescreen-arcade.cfg:182
 msgid "Show us what you can do!"
@@ -4180,7 +4177,7 @@ msgstr ""
 
 #: data/level/titlescreen-test.cfg:393 data/level/titlescreen.cfg:309
 msgid "Press {DOWN_KEY} to crouch."
-msgstr "Tekan {DOWN_KEY} untuk membungkuk."
+msgstr "Tekan {DOWN_KEY} untuk tiarap."
 
 #: data/level/titlescreen-test.cfg:394 data/level/titlescreen.cfg:308
 #: data/level/titlescreen.cfg:323
@@ -4226,11 +4223,13 @@ msgstr ""
 
 #: data/level/to-nenes-house-inside.cfg:491
 msgid "Nah, I'd better get to town."
-msgstr "Gak, aku harus ke kota."
+msgstr "Nggak ah, aku harus ke kota."
 
 #: data/level/to-nenes-house-inside.cfg:493
 msgid "I have serious business to attend to."
-msgstr "Aku sedang ada urusan serius."
+msgstr ""
+"Aku ada urusan serius yang\n"
+"musti kuselesaikan."
 
 #: data/level/to-nenes-house-inside.cfg:497
 msgid ""
@@ -4275,8 +4274,8 @@ msgid ""
 "do it for free for a friend!"
 msgstr ""
 "Ya ampuun, aku pikir kamu akan\n"
-"melakukannya cuma-cuma untuk\n"
-"temanmu ini!"
+"melakukannya secara cuma-cuma\n"
+"untuk temanmu ini!"
 
 #: data/level/to-nenes-house-inside.cfg:512
 msgid ""
@@ -4324,8 +4323,9 @@ msgid ""
 "basement uninvited these days?"
 msgstr ""
 "Jaman sekarang tidak bolehkah\n"
-"seseorang masuk ke ruang bawah-\n"
-"tanah tetangga secara diam-diam?"
+"seseorang mengendap-endap\n"
+"masuk ke ruang bawah-tanah\n"
+"milik tetangga?"
 
 #: data/level/to-nenes-house-inside.cfg:841
 msgid "Well, dangit, this door is locked."
@@ -4372,7 +4372,7 @@ msgid ""
 "I don't care what you're preaching,\n"
 "go sell it to someone else."
 msgstr ""
-"Aku tidak peduli kau mau kutbah apa,\n"
+"Aku tidak peduli kau mau omong apa,\n"
 "tawarkan ke orang lain saja."
 
 #: data/level/to-nenes-house.cfg:1948
@@ -4433,11 +4433,11 @@ msgstr "Anda ingin membeli {consts.name}?"
 
 #: data/object_prototypes/crazy-stuff/civ-tile.cfg:60
 msgid "This is a blank tile. It doesn't do anything."
-msgstr "Ini adalah jubin kosong. Ini bukan apa-apa."
+msgstr "Ini adalah ubin kosong. Ini bukan apa-apa."
 
 #: data/object_prototypes/ct-cursor.cfg:73
 msgid "'"
-msgstr ""
+msgstr "'"
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:32
 msgid "You made it to level {level.player.difficulty} of the coin race!"
@@ -4594,7 +4594,7 @@ msgid ""
 "from damage when you crouch."
 msgstr ""
 "Tameng energi menjagamu dari\n"
-"kerusakan saat kamu membungkuk."
+"kerusakan saat kamu tiarap."
 
 #: data/objects/items/store-items/buyable_speed_boots.cfg:13
 msgid ""
@@ -4658,7 +4658,7 @@ msgstr ""
 
 #: data/objects/props/interactive/chopple_npc.cfg:9
 msgid "Take your time, look around."
-msgstr "Silahkan, lihat-lihat."
+msgstr "Silahkan lihat-lihat."
 
 #: data/objects/props/interactive/kinguin_npc.cfg:26
 msgid "Hi, Kinguin, what's up?"
@@ -4746,7 +4746,7 @@ msgstr "Memulai fungsi-fungsi obyek kostum"
 
 #: src/main.cpp:401
 msgid "Initializing tiles"
-msgstr "Memulai jubin"
+msgstr "Memulai ubin"
 
 #: src/main.cpp:404 src/main.cpp:408
 msgid "Initializing GUI"
