@@ -145,6 +145,7 @@ public:
 	wml::const_node_ptr node() const { return node_; }
 
 	int activation_border() const { return activation_border_; }
+	const variant& available_frames() const { return available_frames_; }
 
 private:
 	custom_object_callable callable_definition_;
@@ -156,6 +157,7 @@ private:
 
 	typedef std::map<std::string, std::vector<boost::shared_ptr<frame> > > frame_map;
 	frame_map frames_;
+	variant available_frames_;
 
 	boost::shared_ptr<frame> default_frame_;
 

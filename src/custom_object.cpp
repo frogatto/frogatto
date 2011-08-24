@@ -1605,6 +1605,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_TIME_IN_ANIMATION_DELTA: return variant(time_in_frame_delta_);
 	case CUSTOM_OBJECT_LEVEL:             return variant(&level::current());
 	case CUSTOM_OBJECT_ANIMATION:         return frame_->variant_id();
+	case CUSTOM_OBJECT_AVAILABLE_ANIMATIONS: return type_->available_frames();
 	case CUSTOM_OBJECT_HITPOINTS:         return variant(hitpoints_);
 	case CUSTOM_OBJECT_MAX_HITPOINTS:     return variant(max_hitpoints_);
 	case CUSTOM_OBJECT_MASS:              return variant(type_->mass());
