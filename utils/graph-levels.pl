@@ -5,6 +5,19 @@ use strict;
 #This util generates a graph of all the levels in the levels folder.
 #run using "perl utils/graph-levels.pl | dot -Tpng > out.png" in the root frogatto folder. Outputs to out.png to cwd.
 
+my $show_music = 0;
+
+while(my $arg = shift @ARGV) {
+	if($arg eq '--show_music') {
+		$show_music = 1;
+	} else {
+		die "Unrecognized argument: $arg";
+	}
+}
+
+
+
+
 my @levels = glob("data/level/*");
 
 my %index = ();
@@ -25,6 +38,7 @@ foreach my $level (@levels) {
 
 	my $door = '';
 	my $saves = 0;
+	my $music = '';
 
 	while(my $line = <LVL>) {
 		if(my ($toilet) = $line =~ /type="(save_toilet|dungeon_save_door)"/) {
@@ -33,6 +47,10 @@ foreach my $level (@levels) {
 
 		if(my ($label) = $line =~ /label="(.*)"/) {
 			$door = $label;
+		}
+
+		if(my ($song_name) = $line =~ /music="(.*)"/) {
+			$music = $song_name;
 		}
 
 		if(my ($next_level) = $line =~ /next_level="(.*)"/) {
@@ -53,6 +71,10 @@ foreach my $level (@levels) {
 	my $label = $level;
 	$label .= " (save)" if $saves == 1;
 	$label .= " ($saves saves)" if $saves > 1;
+	if($show_music){
+		$label .= "\\n";
+		$label .= $music;
+	}
 
 	print qq~N$index [label="$label",shape=box,fontsize=12];\n~;
 
