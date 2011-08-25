@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Marcos Avila Isidoro <marcavis@yahoo.com.br>, 2011.
 # Philipp Zabel <pzabel@gmx.de>, 2011.
 msgid ""
@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2011-08-13 05:02-0300\n"
-"PO-Revision-Date: 2011-08-13 08:03+0000\n"
-"Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
+"PO-Revision-Date: 2011-08-24 23:42-0300\n"
+"Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Portuguese (Brazilian) (http://www.transifex.net/projects/p/Frogatto/team/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,11 +18,13 @@ msgstr ""
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
-#: CHANGELOG:1 iOS_CHANGELOG:1
+#: CHANGELOG:1
+#: iOS_CHANGELOG:1
 msgid "Version 1.1.1:"
 msgstr ""
 
-#: CHANGELOG:2 iOS_CHANGELOG:2
+#: CHANGELOG:2
+#: iOS_CHANGELOG:2
 msgid "Fixed some crashing bugs."
 msgstr ""
 
@@ -34,7 +36,8 @@ msgstr ""
 msgid "Fixed instructions on titlescreen (iOS)"
 msgstr ""
 
-#: CHANGELOG:5 iOS_CHANGELOG:5
+#: CHANGELOG:5
+#: iOS_CHANGELOG:5
 msgid "New translation: Italian"
 msgstr ""
 
@@ -83,15 +86,11 @@ msgid "Added some unique enemies to the forest."
 msgstr ""
 
 #: CHANGELOG:18
-msgid ""
-"Refactored damage and monster type systems to make behavior more consistent "
-"and eliminate some rare buggy behavior."
+msgid "Refactored damage and monster type systems to make behavior more consistent and eliminate some rare buggy behavior."
 msgstr ""
 
 #: CHANGELOG:19
-msgid ""
-"Added translation support, with 4 complete translations: French, Brazilian "
-"Portuguese, Chinese (Simplified), and Japanese."
+msgid "Added translation support, with 4 complete translations: French, Brazilian Portuguese, Chinese (Simplified), and Japanese."
 msgstr ""
 
 #: CHANGELOG:21
@@ -139,9 +138,7 @@ msgid "Added support for repeating levels (for arcade modes)."
 msgstr ""
 
 #: CHANGELOG:33
-msgid ""
-"Pressing jump while in the air pressing against a wall now makes you cling "
-"to the wall."
+msgid "Pressing jump while in the air pressing against a wall now makes you cling to the wall."
 msgstr ""
 
 #: CHANGELOG:34
@@ -177,8 +174,7 @@ msgid "Version 1.0.1 (iPhone only):"
 msgstr ""
 
 #: CHANGELOG:43
-msgid ""
-"Significantly improved controls, both functionally and graphically (iPhone)."
+msgid "Significantly improved controls, both functionally and graphically (iPhone)."
 msgstr ""
 
 #: CHANGELOG:44
@@ -225,35 +221,23 @@ msgstr ""
 msgid "Updated music."
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:1 iOS_APP_STORE_METADATA:1
-msgid ""
-"An old-school 2d platformer game, starring a certain quixotic frog. From the"
-" creators of Battle for Wesnoth comes this exciting jump-and-run platformer."
-" Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all "
-"the gameplay nuance of a classic console title. Run and jump over pits and "
-"enemies. Grab enemies with your tongue, swallow them, and then spit them out"
-" at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
-"puzzles. Collect coins and use them to buy upgrades and new abilities in the"
-" store. Talk to characters in game, and work to unravel Big Bad Milgram's "
-"plot against the townsfolk! At over 30 levels set in 4 different "
-"environments, Frogatto is not a flash in the pan, and has the play-time "
-"you'd expect from a real videogame."
+#: MAC_APP_STORE_METADATA:1
+#: iOS_APP_STORE_METADATA:1
+msgid "An old-school 2d platformer game, starring a certain quixotic frog. From the creators of Battle for Wesnoth comes this exciting jump-and-run platformer. Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all the gameplay nuance of a classic console title. Run and jump over pits and enemies. Grab enemies with your tongue, swallow them, and then spit them out at other enemies as projectiles! Fight dangerous bosses, and solve vexing puzzles. Collect coins and use them to buy upgrades and new abilities in the store. Talk to characters in game, and work to unravel Big Bad Milgram's plot against the townsfolk! At over 30 levels set in 4 different environments, Frogatto is not a flash in the pan, and has the play-time you'd expect from a real videogame."
 msgstr ""
 
 #: MAC_APP_STORE_METADATA:3
-msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are"
-" hoping to bring back the magic in a new, original game design with "
-"unconventional gameplay mechanics - a fun break from the usual clones."
+msgid "Frogatto was made by a group of big-time fans of classic videogames, who are hoping to bring back the magic in a new, original game design with unconventional gameplay mechanics - a fun break from the usual clones."
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:5 iOS_APP_STORE_METADATA:7
+#: MAC_APP_STORE_METADATA:5
+#: iOS_APP_STORE_METADATA:7
 msgid "keywords:"
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:6 iOS_APP_STORE_METADATA:8
-msgid ""
-"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
+#: MAC_APP_STORE_METADATA:6
+#: iOS_APP_STORE_METADATA:8
+msgid "platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
 msgstr ""
 
 #: data/achievements.cfg:4
@@ -380,11 +364,13 @@ msgstr "Armadilha!"
 msgid "Victory!"
 msgstr "Vitória!"
 
-#: data/level/arcade-blocks.cfg:11 data/level/titlescreen-arcade.cfg:277
+#: data/level/arcade-blocks.cfg:11
+#: data/level/titlescreen-arcade.cfg:277
 msgid "Blocks Run"
 msgstr "Corrida dos Blocos"
 
-#: data/level/arcade-blocks.cfg:218 data/level/arcade-blocks.cfg:220
+#: data/level/arcade-blocks.cfg:218
+#: data/level/arcade-blocks.cfg:220
 msgid "You got {level.player.score} points in the Blocks Run!"
 msgstr "Você conseguiu {level.player.score} pontos na Corrida dos Blocos!"
 
@@ -410,14 +396,11 @@ msgstr "Descendo a Toca Sem Coelho"
 #: data/level/arcade-down-the-rabbit-hall.cfg:863
 #: data/level/arcade-down-the-rabbit-hall.cfg:866
 msgid "You got {level.player.vars.score} points going down the rabbit hall!"
-msgstr ""
-"Você conseguiu {level.player.vars.score} pontos Descendo A Toca Sem Coelho!"
+msgstr "Você conseguiu {level.player.vars.score} pontos Descendo A Toca Sem Coelho!"
 
 #: data/level/arcade-down-the-rabbit-hall.cfg:867
-msgid ""
-"The high score is {registry.arcade_down_the_rabbit_hall_high_score} points."
-msgstr ""
-"O recorde é de {registry.arcade_down_the_rabbit_hall_high_score} pontos."
+msgid "The high score is {registry.arcade_down_the_rabbit_hall_high_score} points."
+msgstr "O recorde é de {registry.arcade_down_the_rabbit_hall_high_score} pontos."
 
 #: data/level/arcade-maintenance-shaft.cfg:13
 #: data/level/titlescreen-arcade.cfg:253
@@ -430,8 +413,7 @@ msgid "You got {level.player.vars.score} points in the maintenance shaft!"
 msgstr "Você conseguiu {level.player.score} pontos no Poço de Manutenção!"
 
 #: data/level/arcade-maintenance-shaft.cfg:2583
-msgid ""
-"The high score is {registry.arcade_maintenance_shaft_high_score} points."
+msgid "The high score is {registry.arcade_maintenance_shaft_high_score} points."
 msgstr "O recorde é de {registry.arcade_maintenance_shaft_high_score} pontos."
 
 #: data/level/arcade-nutty-factory.cfg:380
@@ -457,11 +439,13 @@ msgstr "Você conseguiu {level.player.score} pontos em O Longo Caminho!"
 msgid "The high score is {registry.arcade_the_long_haul_high_score} points."
 msgstr "O recorde é de {registry.arcade_the_long_haul_high_score} pontos."
 
-#: data/level/arcade-upper-deck.cfg:13 data/level/titlescreen-arcade.cfg:252
+#: data/level/arcade-upper-deck.cfg:13
+#: data/level/titlescreen-arcade.cfg:252
 msgid "Upper Deck"
 msgstr "Escadaria Infinita"
 
-#: data/level/arcade-upper-deck.cfg:2950 data/level/arcade-upper-deck.cfg:2953
+#: data/level/arcade-upper-deck.cfg:2950
+#: data/level/arcade-upper-deck.cfg:2953
 msgid "You got {level.player.vars.score} points on the Upper Deck!"
 msgstr "Você conseguiu {level.player.score} pontos na Escadaria Infinita!"
 
@@ -495,7 +479,8 @@ msgstr "Vila do Outono"
 msgid "Bombing Fools"
 msgstr "Bombas à Beça"
 
-#: data/level/bon-bosque.cfg:15 data/objects/playable/map-selector.cfg:20
+#: data/level/bon-bosque.cfg:15
+#: data/objects/playable/map-selector.cfg:20
 msgid "Bon Bosque"
 msgstr "Bom Bosque"
 
@@ -584,7 +569,8 @@ msgstr ""
 msgid "Caverns of Holes"
 msgstr "Gruta Furada"
 
-#: data/level/chopple-shop-interior.cfg:10 data/level/chopple-shop.cfg:16
+#: data/level/chopple-shop-interior.cfg:10
+#: data/level/chopple-shop.cfg:16
 msgid "Chopple's General Store"
 msgstr "Empório do Chopple"
 
@@ -594,7 +580,8 @@ msgstr "Ponte da Fenda"
 
 #: data/level/crevice-village-cave.cfg:14
 #: data/level/crevice-village-central.cfg:15
-#: data/level/crevice-village-heights.cfg:16 data/level/crevice-village.cfg:15
+#: data/level/crevice-village-heights.cfg:16
+#: data/level/crevice-village.cfg:15
 #: data/objects/playable/map-selector.cfg:18
 msgid "Crevice Village"
 msgstr "Vila da Fenda"
@@ -1179,7 +1166,8 @@ msgstr ""
 "Nós vimos o capataz\n"
 "do Milgram entrar lá."
 
-#: data/level/crevice-village-house-2.cfg:3513 data/level/rock-a-fort.cfg:3231
+#: data/level/crevice-village-house-2.cfg:3513
+#: data/level/rock-a-fort.cfg:3231
 msgid "How interesting."
 msgstr "Que interessante."
 
@@ -1579,7 +1567,8 @@ msgstr ""
 msgid "In fact, I'll even show you the way!"
 msgstr "Aliás, vou até te mostrar o caminho!"
 
-#: data/level/crevice-village.cfg:720 data/level/to-nenes-house.cfg:1360
+#: data/level/crevice-village.cfg:720
+#: data/level/to-nenes-house.cfg:1360
 msgid "I better leave this key here."
 msgstr "É melhor eu deixar esta chave aqui."
 
@@ -1974,7 +1963,8 @@ msgstr "Ih! Dormi demais!"
 msgid "it's the principle of the thing."
 msgstr "é o princípio da coisa."
 
-#: data/level/frogatto-grotto.cfg:13 data/objects/playable/map-selector.cfg:16
+#: data/level/frogatto-grotto.cfg:13
+#: data/objects/playable/map-selector.cfg:16
 msgid "Frogatto Grotto"
 msgstr "Gruta do Frogatto"
 
@@ -2161,8 +2151,8 @@ msgid ""
 "Once spat out,\n"
 "they become a deadly projectile."
 msgstr ""
-"Quando cuspidos,\n"
-"eles se tornam um projétil fatal."
+"Quando cuspidos, eles podem\n"
+"destruir os inimigos que atingirem."
 
 #: data/level/grassy-path.cfg:1079
 msgid ""
@@ -2850,7 +2840,8 @@ msgstr ""
 msgid "Yikes!"
 msgstr "Eita!"
 
-#: data/level/rock-a-fort-cave.cfg:16 data/level/rock-a-fort.cfg:16
+#: data/level/rock-a-fort-cave.cfg:16
+#: data/level/rock-a-fort.cfg:16
 msgid "Rock-a-Fort"
 msgstr "Rocha-forte"
 
@@ -2872,7 +2863,8 @@ msgstr ""
 "Deve ter um outro caminho\n"
 "pra chegar do outro lado."
 
-#: data/level/secluded-hut-interior.cfg:12 data/level/secluded-hut.cfg:16
+#: data/level/secluded-hut-interior.cfg:12
+#: data/level/secluded-hut.cfg:16
 #: data/objects/playable/map-selector.cfg:17
 msgid "Secluded Hut"
 msgstr "Observatório"
@@ -3658,8 +3650,10 @@ msgstr "Programador Principal"
 msgid "Scripting Language Designer"
 msgstr "Desenvolvedor da Linguagem de Scripts"
 
-#: data/level/tea-with-milgram.cfg:348 data/level/tea-with-milgram.cfg:352
-#: data/level/tea-with-milgram.cfg:375 data/level/tea-with-milgram.cfg:387
+#: data/level/tea-with-milgram.cfg:348
+#: data/level/tea-with-milgram.cfg:352
+#: data/level/tea-with-milgram.cfg:375
+#: data/level/tea-with-milgram.cfg:387
 msgid "Object Scripter"
 msgstr "Programador de Objetos"
 
@@ -3687,7 +3681,8 @@ msgstr "Fim"
 msgid "Creative Director - created characters/setting/story"
 msgstr "Diretor de Criação - personagens/ambientes/história"
 
-#: data/level/tea-with-milgram.cfg:363 data/level/tea-with-milgram.cfg:401
+#: data/level/tea-with-milgram.cfg:363
+#: data/level/tea-with-milgram.cfg:401
 msgid "Artist - Characters, Monsters, and Props"
 msgstr "Artista - Personagens, Inimigos e Objetos"
 
@@ -3987,8 +3982,11 @@ msgstr ""
 "Se eu mergulhar ali,\n"
 "vou virar picadinho!"
 
-#: data/level/test3.cfg:14 data/level/test4.cfg:12 data/level/test5.cfg:12
-#: data/level/test6.cfg:14 data/level/test7-surf.cfg:12
+#: data/level/test3.cfg:14
+#: data/level/test4.cfg:12
+#: data/level/test5.cfg:12
+#: data/level/test6.cfg:14
+#: data/level/test7-surf.cfg:12
 #: data/level/test9.cfg:12
 msgid "(Test Level)"
 msgstr "(Fase de teste)"
@@ -4009,12 +4007,14 @@ msgstr "Mostre-nos o que pode fazer!"
 msgid "EXIT"
 msgstr "SAÍDA"
 
-#: data/level/titlescreen-arcade.cfg:250 data/level/titlescreen-arcade.cfg:274
+#: data/level/titlescreen-arcade.cfg:250
+#: data/level/titlescreen-arcade.cfg:274
 #: data/level/titlescreen-arcade.cfg:419
 msgid "Select a level:"
 msgstr "Escolha uma fase:"
 
-#: data/level/titlescreen-arcade.cfg:254 data/level/titlescreen-arcade.cfg:278
+#: data/level/titlescreen-arcade.cfg:254
+#: data/level/titlescreen-arcade.cfg:278
 #: data/level/titlescreen-arcade.cfg:421
 msgid "(cancel)"
 msgstr "(cancelar)"
@@ -4035,43 +4035,52 @@ msgstr "Corrida das Moedas"
 msgid "COIN RACE"
 msgstr "CORRIDA DAS MOEDAS"
 
-#: data/level/titlescreen-test.cfg:284 data/level/titlescreen.cfg:254
+#: data/level/titlescreen-test.cfg:284
+#: data/level/titlescreen.cfg:254
 msgid "LOAD GAME"
 msgstr "CONTINUAR"
 
-#: data/level/titlescreen-test.cfg:322 data/level/titlescreen.cfg:274
+#: data/level/titlescreen-test.cfg:322
+#: data/level/titlescreen.cfg:274
 msgid "NEW GAME"
 msgstr "NOVO JOGO"
 
-#: data/level/titlescreen-test.cfg:361 data/level/titlescreen-test.cfg:391
-#: data/level/titlescreen.cfg:295 data/level/titlescreen.cfg:307
+#: data/level/titlescreen-test.cfg:361
+#: data/level/titlescreen-test.cfg:391
+#: data/level/titlescreen.cfg:295
+#: data/level/titlescreen.cfg:307
 msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
 msgstr "Pressione {LEFT_KEY} ou {RIGHT_KEY} para andar."
 
-#: data/level/titlescreen-test.cfg:392 data/level/titlescreen-test.cfg:409
+#: data/level/titlescreen-test.cfg:392
+#: data/level/titlescreen-test.cfg:409
 #: data/level/titlescreen.cfg:310
 msgid "Press {UP_KEY} to talk, and use things like doors."
 msgstr "Aperte {UP_KEY} para conversar, abrir portas, etc."
 
-#: data/level/titlescreen-test.cfg:393 data/level/titlescreen.cfg:309
+#: data/level/titlescreen-test.cfg:393
+#: data/level/titlescreen.cfg:309
 msgid "Press {DOWN_KEY} to crouch."
 msgstr "Aperte {DOWN_KEY} para se abaixar."
 
-#: data/level/titlescreen-test.cfg:394 data/level/titlescreen.cfg:308
+#: data/level/titlescreen-test.cfg:394
+#: data/level/titlescreen.cfg:308
 #: data/level/titlescreen.cfg:323
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
-msgstr ""
-"Aperte {LEFT_KEY} ou {RIGHT_KEY} duas vezes, rapidamente, para correr."
+msgstr "Aperte {LEFT_KEY} ou {RIGHT_KEY} duas vezes, rapidamente, para correr."
 
-#: data/level/titlescreen-test.cfg:395 data/level/titlescreen.cfg:311
+#: data/level/titlescreen-test.cfg:395
+#: data/level/titlescreen.cfg:311
 msgid "Press {JUMP_KEY} to jump."
 msgstr "Aperte {JUMP_KEY} para pular."
 
-#: data/level/titlescreen-test.cfg:396 data/level/titlescreen.cfg:312
+#: data/level/titlescreen-test.cfg:396
+#: data/level/titlescreen.cfg:312
 msgid "Press {TONGUE_KEY} to use a character's attacks."
 msgstr "Aperte {TONGUE_KEY} para usar os ataques do personagem."
 
-#: data/level/titlescreen-test.cfg:447 data/level/titlescreen.cfg:343
+#: data/level/titlescreen-test.cfg:447
+#: data/level/titlescreen.cfg:343
 msgid "ARCADE"
 msgstr "FLIPERAMA"
 
@@ -4319,18 +4328,14 @@ msgstr ""
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:32
 msgid "You made it to level {level.player.difficulty} of the coin race!"
-msgstr ""
-"Você alcançou a {level.player.difficulty}ª fase da corrida das moedas!"
+msgstr "Você alcançou a {level.player.difficulty}ª fase da corrida das moedas!"
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:34
 msgid "You made it to level {level.player.difficulty} of the coin race."
-msgstr ""
-"Você alcançou a {level.player.difficulty}ª fase da corrida das moedas."
+msgstr "Você alcançou a {level.player.difficulty}ª fase da corrida das moedas."
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
-msgid ""
-"The furthest that has been reached is level "
-"{registry.arcade_coin_race_high_score}."
+msgid "The furthest that has been reached is level {registry.arcade_coin_race_high_score}."
 msgstr "O recorde atual é a {registry.arcade_coin_race_high_score}ª fase."
 
 #: data/objects/items/max_heart_object.cfg:18
@@ -4548,7 +4553,9 @@ msgstr "Pode olhar, fique à vontade."
 msgid "Hi, Kinguin, what's up?"
 msgstr "Oi, Kinguim, como vai?"
 
-#: data/preload.cfg:4 data/preload.cfg:9 data/preload.cfg:14
+#: data/preload.cfg:4
+#: data/preload.cfg:9
+#: data/preload.cfg:14
 msgid "Loading textures"
 msgstr "Carregando texturas"
 
@@ -4565,18 +4572,11 @@ msgid "Loading energy shot"
 msgstr "Carregando ataques especiais"
 
 #: iOS_APP_STORE_METADATA:3
-msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are"
-" hoping to bring back the magic in a new, original game design with "
-"unconventional gameplay mechanics - a fun break from the usual clones. We're"
-" a small group of indie developers, hoping this game becomes one of the "
-"definitive platform games on iOS - and you can make that happen!"
+msgid "Frogatto was made by a group of big-time fans of classic videogames, who are hoping to bring back the magic in a new, original game design with unconventional gameplay mechanics - a fun break from the usual clones. We're a small group of indie developers, hoping this game becomes one of the definitive platform games on iOS - and you can make that happen!"
 msgstr ""
 
 #: iOS_APP_STORE_METADATA:5
-msgid ""
-"To find out more about the game or to play the PC/Mac version for free, "
-"please visit http://www.frogatto.com/"
+msgid "To find out more about the game or to play the PC/Mac version for free, please visit http://www.frogatto.com/"
 msgstr ""
 
 #: iOS_CHANGELOG:3
@@ -4623,7 +4623,8 @@ msgstr "Inicializando funções de objetos"
 msgid "Initializing tiles"
 msgstr "Inicializando tiles"
 
-#: src/main.cpp:404 src/main.cpp:408
+#: src/main.cpp:404
+#: src/main.cpp:408
 msgid "Initializing GUI"
 msgstr "Inicializando interface"
 
@@ -4662,5 +4663,4 @@ msgstr "Inverter A e B"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
-
 
