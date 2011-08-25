@@ -5,7 +5,7 @@ use strict;
 #This util generates a graph of all the levels in the levels folder.
 #run using "perl utils/graph-levels.pl | dot -Tpng > out.png" in the root frogatto folder. Outputs to out.png to cwd.
 
-# appending --show_music will write the song used in each level, under the level's name
+# appending --show_music after utils/graph-levels.pl will write the song used in each level, under the level's name
 
 my $show_music = 0;
 
