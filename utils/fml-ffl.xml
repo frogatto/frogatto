@@ -1,10 +1,66 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.1" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 
-<language name="Frogatto FML-FFL"  priority="2" section="Markup" extensions="*.cfg" version="0.0" kateversion="3.4.5" casesensitive="yes" author="DDR (robertsdavidddr@gmail.com)" license="Frogatto">
+<!-- I a Kate syntax highlighting file.
+	To use me, put me in with the rest of your Kate highlighting files. (eg, /usr/share/apps/katepart/syntax/)
+	I add an entry under 'markup', and cause .cfg files to default to using me.-->
+
+<language name="Frogatto FML-FFL"  priority="2" section="Markup" extensions="*.cfg" version="1.2" kateversion="3.4.5" casesensitive="yes" author="DDR (robertsdavidddr@gmail.com)" license="Frogatto">
 	<highlighting>
+		<list name="fml_tags">
+			<item> prototype </item>
+			<item> object </item>
+			<item> object_type </item>
+			<item> properties </item>
+			<item> vars </item>
+			<item> consts </item>
+			<item> animation </item>
+			<item> control_schemes </item>
+			<item> button </item>
+			<item> font </item>
+			<item> chars </item>
+			<item> editor </item>
+			<item> tileset </item>
+			<item> preview </item>
+			<item> functions </item>
+			<item> function </item>
+			<item> gui </item>
+			<item> section </item>
+			<item> framed_gui_element </item>
+			<item> leaderboards </item>
+			<item> leaderboard </item>
+			<item> level </item>
+			<item> character </item>
+			<item> portal </item>
+			<item> background </item>
+			<item> tile_map </item>
+			<item> serialized_objects </item>
+			<item> water </item>
+			<item> powerups </item>
+			<item> powerup </item>
+			<item> icon </item>
+			<item> set_str </item>
+			<item> children </item>
+			<item> preloads </item>
+			<item> preload </item>
+			<item> schema </item>
+			<item> test </item>
+			<item> characters </item>
+			<item> frames </item>
+			<item> current_generator </item>
+			<item> tiles </item>
+			<item> achievements </item>
+			<item> achievement </item>
+			<item> level_index </item>
+			<item> compiled_tiles </item>
+			<item> particle_system </item>
+			<item> editor_info </item>
+			<item> var </item>
+			<item> tile_pattern </item>
+			<item> tmp </item>
+		</list>
 		<list name="fml_keys">
-			<item> #include </item>
+			<item> @include </item>
 		</list>
 		<list name="ffl_keys">
 			<item> and </item>
@@ -20,13 +76,16 @@
 		<contexts>
 			<context attribute="Normal Text" lineEndContext="#pop" name="FML" >
 				<keyword attribute="Keyword" context="#stay" String="fml_keys" />
+				<Detect2Chars attribute="Normal Text" context="tag" char="[" char1="/" endRegion="in_tag" firstNonSpace="true" />
+				<DetectChar attribute="Normal Text" context="tag" char="[" beginRegion="in_tag" firstNonSpace="true" />
 				<DetectChar attribute="String" context="ffl_string" char="'" />
 				<DetectChar attribute="String" context="translatable string" char="~" />
-				<DetectChar attribute="Normal Text" context="formula language" char="&quot;" />
+				<DetectChar attribute="Normal Text" context="formula language" char="&quot;" beginRegion="ffl" />
 				<DetectChar attribute="Comment" context="fml comment" char="#" />
 				<StringDetect attribute="Event" context="on_" String=" on_" />		<!-- space/tab versions -->
 				<StringDetect attribute="Event" context="on_" String="	on_" />
-				<RegExpr attribute="Number" String="\b(?:[\d.]*)\b"/>
+				<Float attribute="Number" context="#stay"/>
+				<Int attribute="Number" context="#stay"/>
 				<StringDetect attribute="Normal Text" context="animation" String="[animation]" />
 				<StringDetect attribute="Normal Text" context="editor info" String="[editor_info]" />
 			</context>
@@ -34,6 +93,12 @@
 			<!-- Each context calls contexts further down the file, not including returns. --> 
 			
 			<context attribute="Comment" lineEndContext="#pop" name="fml comment" />
+			
+			<context attribute="Error" lineEndContext="#stay" name="tag">
+				<keyword attribute="Normal Text" context="#stay" String="fml_tags" />
+				<DetectChar attribute="Normal Text" context="#stay" char="/" />
+				<DetectChar attribute="Normal Text" context="#pop" char="]" />
+			</context>
 			
 			<context attribute="Animation" lineEndContext="an_attr" name="animation" />
 			<context attribute="Animation" lineEndContext="#pop" name="an_attr">
@@ -53,25 +118,35 @@
 				<keyword attribute="Operator" context="#stay" String="ffl_keys" />
 				<keyword attribute="Mutator" context="#stay" String="mutators" />
 				<StringDetect attribute="Keyword" String=" where " />
-				<DetectChar attribute="Normal Text" context="#pop" char="&quot;" />
+				<DetectChar attribute="Normal Text" context="#pop" char="&quot;" endRegion="ffl" />
 				<DetectChar attribute="String" context="ffl_string" char="'" />
 				<DetectChar attribute="String" context="translatable string" char="~" />
-				<DetectChar attribute="Comment" context="ffl comment" char="#" />
+				<DetectChar attribute="Comment" context="ffl comment" char="#" beginRegion="comment" />
 				<StringDetect attribute="Event" context="def" String="def(" />
-				<RegExpr attribute="Number" String="\b(?:[0-9.]*)\b"/>		<!-- This should really only accept decimals in the middle of the number. -->
-				<AnyChar attribute="Operator" String="^%/*+-&lt;&gt;" />
+				<!--<RegExpr attribute="Number" String="\b(?:[0-9.]*)\b"/>		 This should really only accept decimals in the middle of the number. -->
+				<Float attribute="Number" context="#stay"/>
+				<Int attribute="Number" context="#stay"/>
+				<AnyChar attribute="Operator" String="^%/*+-&lt;&gt;=" />
+		<!--	<DetectChar attribute="Formula Language2" context="formula language" char="[" beginRegion="square bracket" />
+				<DetectChar attribute="Formula Language2" context="#pop" char="]"   endRegion="square bracket" />
+				<DetectChar attribute="Formula Language2" context="formula language" char="(" beginRegion="round bracket" />
+				<DetectChar attribute="Formula Language2" context="#pop" char=")"   endRegion="round bracket" />
+				<DetectChar attribute="Formula Language2" context="formula language" char="{" beginRegion="curly bracket" />
+				<DetectChar attribute="Formula Language2" context="#pop" char="}"   endRegion="curly bracket" />	-->
 			</context>
 			
 			<context attribute="String" lineEndContext="#stay" name="ffl_string">
 				<DetectChar attribute="String" context="#pop" char="'" />
+				<DetectChar attribute="String" context="#pop#pop" char="&quot;" endRegion="ffl" />
 			</context>
 			
 			<context attribute="String" lineEndContext="#stay" name="translatable string">
 				<DetectChar attribute="String" context="#pop" char="~" />
+				<DetectChar attribute="String" context="#pop#pop" char="&quot;" endRegion="ffl" />
 			</context>
 			
 			<context attribute="Comment" lineEndContext="#stay" name="ffl comment">
-				<DetectChar attribute="Comment" context="#pop" char="#" />
+				<DetectChar attribute="Comment" context="#pop" char="#" endRegion="comment" />
 			</context>
 			
 			<context attribute="Event" lineEndContext="#stay" name="on_">
@@ -91,20 +166,21 @@
 			<itemData name="Normal Text" 		defStyleNum="dsNormal"						/>
 			<itemData name="Keyword" 			defStyleNum="dsKeyword"		color="#006030"	/>
 			<itemData name="String" 			defStyleNum="dsString"						/>
-			<itemData name="Formula Language" 	defStyleNum="dsNormal" 		color="#0000A0"	/> <!-- color="#4e1f08" />  :: This is the brown I want, but I keep getting a lighter tone of brown regardless of what I do.-->
+			<itemData name="Formula Language" 	defStyleNum="dsNormal" 		color="#0000A0"	/> <!-- Does not work, is brown instead of blue. -->
 			<itemData name="Formula Language2" 	defStyleNum="dsNormal" 		color="#401000"	/>
 			<itemData name="Comment" 			defStyleNum="dsComment"						/>
-			<itemData name="Number" 			defStyleNum="dsDecVal"						/>
+			<itemData name="Number" 			defStyleNum="dsInteger"						/>
 			<itemData name="Event" 				defStyleNum="dsFunction"					/>
 			<itemData name="Animation" 			defStyleNum="dsNormal" 		color="#0FF002"	/>
 			<itemData name="Editor Info" 		defStyleNum="dsNormal" 		color="#8080F0"	/>
 			<itemData name="Operator" 			defStyleNum="dsNormal" 		color="#0000B0"	/>
 			<itemData name="Mutator" 			defStyleNum="dsNormal"		color="#008000"	/>
+			<itemData name="Error" 				defStyleNum="dsError" 		color="#FF0000"	/>
 		</itemDatas>
 	</highlighting>
 	
 	<general>
 		<keywords casesensitive="1"/>
-		<folding indentationsensitive="1"/>
+		<folding indentationsensitive="0"/>
 	</general>
 </language>
