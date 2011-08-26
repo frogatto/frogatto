@@ -112,6 +112,8 @@ public:
 	int teleport_offset_y() const { return teleport_offset_y_; }
 	bool no_move_to_standing() const { return no_move_to_standing_; }
 
+	bool serializable() const { return serializable_; }
+
 	bool use_image_for_collisions() const { return use_image_for_collisions_; }
 	bool has_feet() const { return has_feet_; }
 	bool adjust_feet_on_animation_change() const { return adjust_feet_on_animation_change_; }
@@ -211,6 +213,8 @@ private:
 
 	int teleport_offset_x_, teleport_offset_y_;
 	bool no_move_to_standing_;
+
+	bool serializable_;
 
 	const_solid_info_ptr solid_, platform_;
 

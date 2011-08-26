@@ -1203,6 +1203,10 @@ wml::node_ptr level::write() const
 	} //end if preferences::compiling
 
 	foreach(entity_ptr ch, chars_) {
+		if(!ch->serializable()) {
+			continue;
+		}
+
 		wml::node_ptr node(ch->write());
 		res->add_child(node);
 		game_logic::wml_formula_callable_serialization_scope::register_serialized_object(ch, node);

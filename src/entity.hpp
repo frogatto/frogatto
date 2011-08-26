@@ -178,6 +178,8 @@ public:
 	//talk to or enter the object.
 	virtual bool can_interact_with() const { return false; }
 
+	virtual bool serializable() const { return true; }
+
 	virtual std::string debug_description() const = 0;
 
 	//a function call which tells us to get any references to other entities

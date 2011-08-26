@@ -131,6 +131,8 @@ public:
 	virtual void handle_event(const std::string& event, const formula_callable* context=NULL);
 	virtual void handle_event(int event, const formula_callable* context=NULL);
 
+	virtual bool serializable() const;
+
 	void set_blur(const blur_info* blur);
 	void set_sound_volume(const int volume);
 	void set_zsub_order(const int zsub_order) {zsub_order_ = zsub_order;}

@@ -381,6 +381,11 @@ custom_object::~custom_object()
 	sound::stop_looped_sounds(this);
 }
 
+bool custom_object::serializable() const
+{
+	return type_->serializable();
+}
+
 wml::node_ptr custom_object::write() const
 {
 	wml::node_ptr res(new wml::node("character"));
