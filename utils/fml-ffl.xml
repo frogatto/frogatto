@@ -1,11 +1,11 @@
 <?xml version="1.1" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 
-<!-- I a Kate syntax highlighting file.
+<!-- I am a Kate syntax highlighting file.
 	To use me, put me in with the rest of your Kate highlighting files. (eg, /usr/share/apps/katepart/syntax/)
 	I add an entry under 'markup', and cause .cfg files to default to using me.-->
 
-<language name="Frogatto FML-FFL"  priority="2" section="Markup" extensions="*.cfg" version="1.2" kateversion="3.4.5" casesensitive="yes" author="DDR (robertsdavidddr@gmail.com)" license="Frogatto">
+<language name="Frogatto FML-FFL"  priority="2" section="Markup" extensions="*.cfg" version="1.2.1" kateversion="3.4.5" casesensitive="yes" author="DDR (robertsdavidddr@gmail.com)" license="Frogatto">
 	<highlighting>
 		<list name="fml_tags">
 			<item> prototype </item>
@@ -58,6 +58,7 @@
 			<item> var </item>
 			<item> tile_pattern </item>
 			<item> tmp </item>
+			<item> object_prototype </item>
 		</list>
 		<list name="fml_keys">
 			<item> @include </item>
