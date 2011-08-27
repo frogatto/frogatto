@@ -5,7 +5,7 @@
 	To use me, put me in with the rest of your Kate highlighting files. (eg, /usr/share/apps/katepart/syntax/)
 	I add an entry under 'markup', and cause .cfg files to default to using me.-->
 
-<language name="Frogatto FML-FFL"  priority="2" section="Markup" extensions="*.cfg" version="1.2.1" kateversion="3.4.5" casesensitive="yes" author="DDR (robertsdavidddr@gmail.com)" license="Frogatto">
+<language name="Frogatto FML-FFL"  priority="2" section="Markup" extensions="*.cfg" version="1.3.0" kateversion="3.4.5" casesensitive="yes" author="DDR (robertsdavidddr@gmail.com)" license="Frogatto">
 	<highlighting>
 		<list name="fml_tags">
 			<item> prototype </item>
@@ -59,6 +59,49 @@
 			<item> tile_pattern </item>
 			<item> tmp </item>
 			<item> object_prototype </item>
+			<item> object_variation </item>
+			<item> base </item>
+		</list>
+		<list name="engine events">
+			<item> on_start_level </item>
+			<item> on_player_death </item>
+			<item> on_load </item>
+			<item> on_load_checkpoint </item>
+			<item> on_create </item>
+			<item> on_done_create </item>
+			<item> on_become_active </item>
+			<item> on_surface_damage </item>
+			<item> on_enter_anim </item>
+			<item> on_end_anim </item>
+			<item> on_collide_level </item>
+			<item> on_collide_head </item>
+			<item> on_collide_feet </item>
+			<item> on_collide_damage </item>
+			<item> on_collide_side </item>
+			<item> on_stuck </item>
+			<item> on_jumped_on </item>
+			<item> on_get_hit </item>
+			<item> on_process </item>
+			<item> on_timer </item>
+			<item> on_enter_water </item>
+			<item> on_exit_water </item>
+			<item> on_change_solid_dimensions_fail </item>
+			<item> on_add_object_fail </item>
+			<item> on_change_animation_failure </item>
+			<item> on_die </item>
+			<!--<item> on_interact </item> Probably not engine.-->
+			<item> on_child_spawned </item>
+			<item> on_spawned </item>
+			<item> on_draw </item>
+			<item> on_begin_dialog </item>
+			<item> on_cosmic_shift </item>
+			<item> on_ctrl_up </item>
+			<item> on_ctrl_down </item>
+			<item> on_ctrl_left </item>
+			<item> on_ctrl_right </item>
+			<item> on_ctrl_jump </item>
+			<item> on_ctrl_tongue </item>
+			<item> on_ctrl_debug </item>
 		</list>
 		<list name="fml_keys">
 			<item> @include </item>
@@ -77,18 +120,24 @@
 		<contexts>
 			<context attribute="Normal Text" lineEndContext="#pop" name="FML" >
 				<keyword attribute="Keyword" context="#stay" String="fml_keys" />
-				<Detect2Chars attribute="Normal Text" context="tag" char="[" char1="/" endRegion="in_tag" firstNonSpace="true" />
-				<DetectChar attribute="Normal Text" context="tag" char="[" beginRegion="in_tag" firstNonSpace="true" />
 				<DetectChar attribute="String" context="ffl_string" char="'" />
 				<DetectChar attribute="String" context="translatable string" char="~" />
 				<DetectChar attribute="Normal Text" context="formula language" char="&quot;" beginRegion="ffl" />
 				<DetectChar attribute="Comment" context="fml comment" char="#" />
-				<StringDetect attribute="Event" context="on_" String=" on_" />		<!-- space/tab versions -->
-				<StringDetect attribute="Event" context="on_" String="	on_" />
+				<keyword attribute="Engine Event" context="#stay" String="engine events" />
+				<StringDetect attribute="Engine Event" context="on_engine" String="on_end_" firstNonSpace="true" />
+				<StringDetect attribute="Engine Event" context="on_engine" String="on_enter_" firstNonSpace="true" />
+				<StringDetect attribute="Engine Event" context="on_engine" String="on_leave_" firstNonSpace="true" />
+				<StringDetect attribute="Engine Event" context="on_engine" String="on_process_" firstNonSpace="true" />
+				<StringDetect attribute="Event" context="on_" String="on_" firstNonSpace="true" />
+				<!-- <RegExpr attribute="Engine Event" String="on_leave_[!\w]*_anim" /> --> <!-- And this doesn't work /why/? -->
+				<!-- <RegExpr attribute="Engine Event" String="on_end_[!\w]*_anim" /> -->
 				<Float attribute="Number" context="#stay"/>
 				<Int attribute="Number" context="#stay"/>
-				<StringDetect attribute="Normal Text" context="animation" String="[animation]" />
-				<StringDetect attribute="Normal Text" context="editor info" String="[editor_info]" />
+				<StringDetect attribute="Normal Text" context="animation" String="[animation]" beginRegion="in_tag" />
+				<StringDetect attribute="Normal Text" context="editor info" String="[editor_info]" beginRegion="in_tag" />
+				<Detect2Chars attribute="Normal Text" context="tag" char="[" char1="/" endRegion="in_tag" firstNonSpace="true" />
+				<DetectChar attribute="Normal Text" context="tag" char="[" beginRegion="in_tag" firstNonSpace="true" />
 			</context>
 			
 			<!-- Each context calls contexts further down the file, not including returns. --> 
@@ -98,6 +147,7 @@
 			<context attribute="Error" lineEndContext="#stay" name="tag">
 				<keyword attribute="Normal Text" context="#stay" String="fml_tags" />
 				<DetectChar attribute="Normal Text" context="#stay" char="/" />
+				<DetectChar attribute="Normal Text" context="#stay" char=":" />
 				<DetectChar attribute="Normal Text" context="#pop" char="]" />
 			</context>
 			
@@ -105,14 +155,22 @@
 			<context attribute="Animation" lineEndContext="#pop" name="an_attr">
 				<DetectChar attribute="Animation" context="FML" char="=" />
 				<DetectChar attribute="Comment" context="fml comment" char="#" />
-				<StringDetect attribute="Normal Text" context="#pop#pop" String="[/animation]" />
+				<StringDetect attribute="Normal Text" context="#pop#pop" String="[/animation]" endRegion="in_tag" />
 			</context>
 			
 			<context attribute="Editor Info" lineEndContext="ed_attr" name="editor info" />
 			<context attribute="Editor Info" lineEndContext="#pop" name="ed_attr">
 				<DetectChar attribute="Editor Info" context="FML" char="=" />
 				<DetectChar attribute="Comment" context="fml comment" char="#" />
-				<StringDetect attribute="Normal Text" context="#pop#pop" String="[/editor_info]" />
+				<StringDetect attribute="Normal Text" context="#pop#pop" String="[/editor_info]" endRegion="in_tag" />
+			</context>
+			
+			<context attribute="Event" lineEndContext="#stay" name="on_">
+				<DetectChar attribute="Normal Text" context="#pop" char="=" />
+			</context>
+			
+			<context attribute="Engine Event" lineEndContext="#stay" name="on_engine">
+				<DetectChar attribute="Normal Text" context="#pop" char="=" />
 			</context>
 			
 			<context attribute="Formula Language2" lineEndContext="#stay" name="formula language">
@@ -150,10 +208,6 @@
 				<DetectChar attribute="Comment" context="#pop" char="#" endRegion="comment" />
 			</context>
 			
-			<context attribute="Event" lineEndContext="#stay" name="on_">
-				<DetectChar attribute="Normal Text" context="#pop" char="=" />
-			</context>
-			
 			<context attribute="Event" lineEndContext="#stay" name="def">
 				<DetectChar attribute="Event" context="#pop" char=")" />
 			</context>
@@ -171,7 +225,8 @@
 			<itemData name="Formula Language2" 	defStyleNum="dsNormal" 		color="#401000"	/>
 			<itemData name="Comment" 			defStyleNum="dsComment"						/>
 			<itemData name="Number" 			defStyleNum="dsInteger"						/>
-			<itemData name="Event" 				defStyleNum="dsFunction"					/>
+			<itemData name="Event" 				defStyleNum="dsFunction"	color="#CC3096"	/> <!-- These events are fired by the user, and are a brighter pink than events fired automatically by the engine. -->
+			<itemData name="Engine Event" 		defStyleNum="dsFunction"					/>
 			<itemData name="Animation" 			defStyleNum="dsNormal" 		color="#0FF002"	/>
 			<itemData name="Editor Info" 		defStyleNum="dsNormal" 		color="#8080F0"	/>
 			<itemData name="Operator" 			defStyleNum="dsNormal" 		color="#0000B0"	/>
