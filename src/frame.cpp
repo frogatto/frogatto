@@ -73,6 +73,7 @@ frame::frame(wml::const_node_ptr node)
 	 rotate_on_slope_(wml::get_bool(node, "rotate_on_slope")),
 	 damage_(wml::get_int(node, "damage")),
 	 sounds_(util::split(node->attr("sound"))),
+	 no_remove_alpha_borders_(wml::get_bool(node, "no_remove_alpha_borders", false)),
 	 current_palette_(-1)
 {
 	std::vector<std::string> hit_frames = util::split((*node)["hit_frames"]);
@@ -337,6 +338,11 @@ void frame::build_alpha()
 		//is smaller than the outer rectangle, so we can save on drawing space
 		frame_info& f = frames_[n];
 		f.area = rect(xbase, ybase, img_rect_.w(), img_rect_.h());
+
+		if(no_remove_alpha_borders_) {
+			continue;
+		}
+		
 		int top;
 		for(top = 0; top != img_rect_.h(); ++top) {
 			const std::vector<bool>::const_iterator a = texture_.get_alpha_row(xbase, ybase + top);

@@ -150,6 +150,8 @@ private:
 	void build_alpha();
 	std::vector<bool> alpha_;
 
+	bool no_remove_alpha_borders_;
+
 	std::vector<int> palettes_recognized_;
 	int current_palette_;
 
