@@ -616,6 +616,9 @@ bool variant::operator==(const variant& v) const
 	case TYPE_CALLABLE: {
 		return callable_->equals(v.callable_);
 	}
+	case TYPE_FUNCTION: {
+		return fn_ == v.fn_;
+	}
 	}
 
 	assert(false);
