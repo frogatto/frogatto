@@ -626,6 +626,27 @@ private:
 	}
 };
 
+class shuffle_function : public function_expression {
+public:
+	explicit shuffle_function(const args_list& args)
+	     : function_expression("shuffle", args, 1, 1)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		variant list = args()[0]->evaluate(variables);
+		std::vector<variant> vars;
+		vars.reserve(list.num_elements());
+		for(size_t n = 0; n != list.num_elements(); ++n) {
+			vars.push_back(list[n]);
+		}
+
+		std::random_shuffle(vars.begin(), vars.end());
+
+		return variant(&vars);
+	}
+};
+
 namespace {
 	void flatten_items( variant items, std::vector<variant>* output){
 		for(size_t n = 0; n != items.num_elements(); ++n) {
@@ -1191,6 +1212,7 @@ functions_map& get_functions_map() {
 		FUNCTION(orbit);
 		FUNCTION(regex);
 		FUNCTION(sort);
+		FUNCTION(shuffle);
 		FUNCTION(flatten);
 		FUNCTION(filter);
 		FUNCTION(mapping);
