@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2011-08-13 05:02-0300\n"
-"PO-Revision-Date: 2011-08-13 08:03+0000\n"
-"Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
+"PO-Revision-Date: 2011-08-23 16:10+0000\n"
+"Last-Translator: arikel <arikel@free.fr>\n"
 "Language-Team: French (http://www.transifex.net/projects/p/Frogatto/team/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,210 +23,229 @@ msgstr ""
 
 #: CHANGELOG:1 iOS_CHANGELOG:1
 msgid "Version 1.1.1:"
-msgstr ""
+msgstr "Version 1.1.1:"
 
 #: CHANGELOG:2 iOS_CHANGELOG:2
 msgid "Fixed some crashing bugs."
-msgstr ""
+msgstr "Réparé quelques bugs de crash."
 
 #: CHANGELOG:3
 msgid "Fixed The Long Haul (compiled mode)"
-msgstr ""
+msgstr "Réparé La Grande Traversée (mode compilé)"
 
 #: CHANGELOG:4
 msgid "Fixed instructions on titlescreen (iOS)"
-msgstr ""
+msgstr "Réparé les instructions sur l'écran-titre (iOS)"
 
 #: CHANGELOG:5 iOS_CHANGELOG:5
 msgid "New translation: Italian"
-msgstr ""
+msgstr "Nouvelle traduction : Italien"
 
 #: CHANGELOG:6
 msgid "Added automatic language selection for Windows"
-msgstr ""
+msgstr "Ajouté la sélection automatique de la langue pour Windows"
 
 #: CHANGELOG:8
 msgid "Version 1.1:"
-msgstr ""
+msgstr "Version 1.1:"
 
 #: CHANGELOG:9
 msgid "Added arcade mode."
-msgstr ""
+msgstr "Ajouté le mode arcade."
 
 #: CHANGELOG:10
 msgid "Redid graphics for forest trees."
-msgstr ""
+msgstr "Refait des graphiques pour les arbres de la forêt."
 
 #: CHANGELOG:11
 msgid "Redid graphics for forest background"
-msgstr ""
+msgstr "Refait des graphiques pour l'image de fond de la forêt."
 
 #: CHANGELOG:12
 msgid "Redid graphics for dungeon wall tiles"
-msgstr ""
+msgstr "Refait des graphiques pour les tiles de murs de donjon"
 
 #: CHANGELOG:13
 msgid "Redid graphics for basement wall tiles"
-msgstr ""
+msgstr "Refait des graphiques pour les tiles de murs de cave"
 
 #: CHANGELOG:14
 msgid "Added a bunch of interior props"
-msgstr ""
+msgstr "Ajouté quelques éléments de décor pour l'intérieur"
 
 #: CHANGELOG:15
 msgid "Reworked \"darkness\" for improved appearance"
-msgstr ""
+msgstr "Retravaillé \"ténèbres\" pour une meilleure apparence."
 
 #: CHANGELOG:16
 msgid "Added new palettes to forest and seaside areas."
-msgstr ""
+msgstr "Ajouté de nouvelles palettes aux zones de la forêt et du bord de mer."
 
 #: CHANGELOG:17
 msgid "Added some unique enemies to the forest."
-msgstr ""
+msgstr "Ajouté quelques éléments uniques pour la forêt."
 
 #: CHANGELOG:18
 msgid ""
 "Refactored damage and monster type systems to make behavior more consistent "
 "and eliminate some rare buggy behavior."
 msgstr ""
+"Refonte des systèmes de dégâts et de type de monstres pour rendre le "
+"comportement plus cohérent et éliminer quelques rares bugs de comportement."
 
 #: CHANGELOG:19
 msgid ""
 "Added translation support, with 4 complete translations: French, Brazilian "
 "Portuguese, Chinese (Simplified), and Japanese."
 msgstr ""
+"Ajouté le support pour traduction, avec 4 traductions complètes : Français, "
+"Brésilien Portugais, Chinois (simplifié), et Japonais."
 
 #: CHANGELOG:21
 msgid "Version 1.0.3:"
-msgstr ""
+msgstr "Version 1.0.3:"
 
 #: CHANGELOG:22
 msgid "Fixed crash when picking up max heart pieces."
-msgstr ""
+msgstr "Réparé le crash quand on ramasse le maximum de morceaux de cœur."
 
 #: CHANGELOG:23
 msgid "Other small bug fixes."
-msgstr ""
+msgstr "Réparé quelques autres petits bugs"
 
 #: CHANGELOG:25
 msgid "Version 1.0.2:"
-msgstr ""
+msgstr "Version 1.0.2:"
 
 #: CHANGELOG:26
 msgid "Added support for \"darkness\" in levels."
-msgstr ""
+msgstr "Ajouté le support pour des \"ténèbres\" dans les niveaux."
 
 #: CHANGELOG:27
 msgid "Added support for WVGA."
-msgstr ""
+msgstr "Ajouté le support pour WVGA."
 
 #: CHANGELOG:28
 msgid "Made player status not show on the titlescreen or world map."
 msgstr ""
+"Le statut du joueur n'est plus visible sur l'écran titre ou la carte du "
+"monde."
 
 #: CHANGELOG:29
 msgid "Made golden ants less ambiguous."
-msgstr ""
+msgstr "Rendu les fourmis dorées moins ambigues."
 
 #: CHANGELOG:30
 msgid "Fixed bug making certain music always play at full volume (iPhone)."
 msgstr ""
+"Réparé un bug qui faisaient jouer certaines musiques à volume maximal "
+"(iPhone)."
 
 #: CHANGELOG:31
 msgid "Added option to reverse positions of A and B buttons (iPhone)."
-msgstr ""
+msgstr "Ajouté l'option d'inverser les positions des boutons A et B (iPhone)."
 
 #: CHANGELOG:32
 msgid "Added support for repeating levels (for arcade modes)."
-msgstr ""
+msgstr "Ajouté le support pour niveaux redondants (pour les modes arcade)."
 
 #: CHANGELOG:33
 msgid ""
 "Pressing jump while in the air pressing against a wall now makes you cling "
 "to the wall."
 msgstr ""
+"Appuyer sur saut quand on est dans les airs et qu'on frotte un mur vous fait"
+" maintenant vous accrocher au mur."
 
 #: CHANGELOG:34
 msgid "Made it so you can skip dialogs sequences."
-msgstr ""
+msgstr "Les séquences de dialogues peuvent maintenant être passées."
 
 #: CHANGELOG:35
 msgid "Fixed lots of z-order issues."
-msgstr ""
+msgstr "Réparé plein de problèmes de z-order."
 
 #: CHANGELOG:36
 msgid "Fixed bug causing ambient sounds to not work."
-msgstr ""
+msgstr "Réparé le bug qui empêchait le fonctionnement des sons d'ambiance."
 
 #: CHANGELOG:37
 msgid "Improved forest background, and made it go upwards infinitely."
 msgstr ""
+"Amélioré l'image de fond de la forêt, elle va maintenant vers le haut à "
+"l'infini."
 
 #: CHANGELOG:38
 msgid "Made hearts heal a full heart, rather than just half."
-msgstr ""
+msgstr "Les cœurs soignent un cœur de santé complet, plutôt qu'une moitié."
 
 #: CHANGELOG:39
 msgid "Changed tilesets to make water look better."
-msgstr ""
+msgstr "Changé des tilesets pour rendre l'eau plus jolie."
 
 #: CHANGELOG:40
 msgid "Many small bug fixes."
-msgstr ""
+msgstr "De nombreux petits bugs réparés"
 
 #: CHANGELOG:42
 msgid "Version 1.0.1 (iPhone only):"
-msgstr ""
+msgstr "Version 1.0.1 (iPhone uniquement):"
 
 #: CHANGELOG:43
 msgid ""
 "Significantly improved controls, both functionally and graphically (iPhone)."
 msgstr ""
+"Amélioration significative des contrôles, aussi bien dans le fonctionnement "
+"que l'apparence (iPhone)."
 
 #: CHANGELOG:44
 msgid "Fixed auto-saving on iOS4 where multitasking is supported (iPhone)."
 msgstr ""
+"Réparé la sauvegarde automatique sur iOS4 quand le multi-tâches est supporté"
+" (iPhone)."
 
 #: CHANGELOG:45
 msgid "Fixed bug where a dialog could repeat forever."
-msgstr ""
+msgstr "Réparé un bug où un dialogue pouvait se répéter à l'infini."
 
 #: CHANGELOG:46
 msgid "Fixed crash in world map when you hold down while entering it."
 msgstr ""
+"Réparé un crash de la carte du monde quand on maintient bas appuyée en y "
+"entrant."
 
 #: CHANGELOG:47
 msgid "Fixed fullscreen mode (Mac/Windows)."
-msgstr ""
+msgstr "Réparé le mode plein-écran (Mac/Windows)."
 
 #: CHANGELOG:48
 msgid "Fixed controlpad issues for computers."
-msgstr ""
+msgstr "Réparé le problème de manette pour les ordinateurs."
 
 #: CHANGELOG:49
 msgid "Added music and sound volume controls to pause screen."
 msgstr ""
+"Ajouté contrôles pour volume du son et de la musique à l'écran de pause."
 
 #: CHANGELOG:50
 msgid "Added customizable controls."
-msgstr ""
+msgstr "Ajouté contrôles personnalisables."
 
 #: CHANGELOG:51
 msgid "Added half-hearts."
-msgstr ""
+msgstr "Ajout des demi-cœurs"
 
 #: CHANGELOG:52
 msgid "Added scons script for compiling."
-msgstr ""
+msgstr "Ajouté un script scons pour la compilation."
 
 #: CHANGELOG:53
 msgid "Minor level changes."
-msgstr ""
+msgstr "Changements mineurs de niveaux."
 
 #: CHANGELOG:54
 msgid "Updated music."
-msgstr ""
+msgstr "Mise-à-jour de la musique."
 
 #: MAC_APP_STORE_METADATA:1 iOS_APP_STORE_METADATA:1
 msgid ""
@@ -242,6 +261,19 @@ msgid ""
 "environments, Frogatto is not a flash in the pan, and has the play-time "
 "you'd expect from a real videogame."
 msgstr ""
+"Un jeu de plate-formes 2D old school, avec pour héros une grenouille "
+"idéaliste. Cet excellent \"jump-and-run\" nous provient des créateurs de "
+"\"Battle for Wesnoth\". Frogatto a un pixel art de très haute qualité, une "
+"bande-son arcade entraînante, et toute la variété de gameplay d'un classique"
+" pour console. Courez et sautez au-dessus des fosses et des ennemis. "
+"Attrapez des ennemis avec votre langue, et recrachez-les sur d'autres "
+"ennemis comme des projectiles! Combattez de dangereux boss, et résolvez des "
+"énigmes tordues. Récoltez des pièces et utilisez-les pour acheter des "
+"améliorations et de nouvelles capacités au magasin. Parlez à des personnages"
+" dans le jeu, et œuvrez à dévoiler le plan du Grand Méchant Milgram contre "
+"les villageois! Avec plus de 30 niveaux répartis sur 4 environnements "
+"différents, Frogatto n'est pas un mini jeu dont on a vite fait le tour, mais"
+" offre la durée de vie que l'on peut attendre d'un vrai jeu vidéo."
 
 #: MAC_APP_STORE_METADATA:3
 msgid ""
@@ -249,15 +281,21 @@ msgid ""
 " hoping to bring back the magic in a new, original game design with "
 "unconventional gameplay mechanics - a fun break from the usual clones."
 msgstr ""
+"Frogatto a été fait par un groupe de grands fans de jeux vidéos classiques, "
+"qui espèrent en ramener la magie dans un nouveau jeu, original, et aux "
+"mécaniques de gameplay peu conventionnelles - une bonne pause par rapport "
+"aux clones habituels."
 
 #: MAC_APP_STORE_METADATA:5 iOS_APP_STORE_METADATA:7
 msgid "keywords:"
-msgstr ""
+msgstr "mots-clés:"
 
 #: MAC_APP_STORE_METADATA:6 iOS_APP_STORE_METADATA:8
 msgid ""
 "platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
 msgstr ""
+"jeu,plate-"
+"formes,pixelart,oldschool,pixel,action,aventure,arcade,grenouille,plate,plates,formes,forme"
 
 #: data/achievements.cfg:4
 msgid "Pocket Money"
@@ -325,7 +363,7 @@ msgstr "Tuez 5 ennemis en 10 secondes."
 
 #: data/achievements.cfg:68
 msgid "Cube Chain"
-msgstr "Cube à la Chaîne"
+msgstr "Cube en Chaîne"
 
 #: data/achievements.cfg:69
 msgid "Collect 15 points cubes in a row."
@@ -345,7 +383,7 @@ msgstr "Jackalope"
 
 #: data/achievements.cfg:85
 msgid "Bound, bound, bound and rebound!"
-msgstr "Faire des bonds, des bonds et encore des bonds!"
+msgstr "Faire des bonds, encore des bonds et toujours des bonds!"
 
 #: data/achievements.cfg:92
 msgid "Frogourmet"
@@ -365,11 +403,11 @@ msgstr "C'est la cage infinie."
 
 #: data/achievements.cfg:108
 msgid "Geosynchronous Orbit Achieved"
-msgstr "Orbite géosynchronisée atteinte"
+msgstr "Orbite Géosynchrone Atteinte"
 
 #: data/achievements.cfg:109
 msgid "Now applying artificial gravity."
-msgstr "Application de la gravité artificielle en cours."
+msgstr "Activation de la gravité artificielle en cours."
 
 #: data/level/airplane-boss.cfg:14
 msgid "Stonepipe Bridge"
@@ -404,7 +442,7 @@ msgstr "C'est un nouveau record!"
 
 #: data/level/arcade-blocks.cfg:221
 msgid "The high score is {registry.arcade_blocks_high_score}."
-msgstr "Le meilleur score est de {registry.arcade_blocks_high_score}."
+msgstr "Le record est de {registry.arcade_blocks_high_score}."
 
 #: data/level/arcade-down-the-rabbit-hall.cfg:13
 #: data/level/titlescreen-arcade.cfg:276
@@ -421,8 +459,7 @@ msgstr ""
 msgid ""
 "The high score is {registry.arcade_down_the_rabbit_hall_high_score} points."
 msgstr ""
-"Le meilleur score est de {registry.arcade_down_the_rabbit_hall_high_score} "
-"points."
+"Le record est de {registry.arcade_down_the_rabbit_hall_high_score} points."
 
 #: data/level/arcade-maintenance-shaft.cfg:13
 #: data/level/titlescreen-arcade.cfg:253
@@ -440,17 +477,16 @@ msgstr ""
 msgid ""
 "The high score is {registry.arcade_maintenance_shaft_high_score} points."
 msgstr ""
-"Le meilleur score est de {registry.arcade_maintenance_shaft_high_score} "
-"points."
+"Le record est de {registry.arcade_maintenance_shaft_high_score} points."
 
 #: data/level/arcade-nutty-factory.cfg:380
 #: data/level/arcade-nutty-factory.cfg:383
 msgid "You got {level.player.vars.score} points in the Nutty Factory!"
-msgstr ""
+msgstr "Vous avez {level.player.vars.score} points dans l'Usine de Noix!"
 
 #: data/level/arcade-nutty-factory.cfg:384
 msgid "The high score is {registry.arcade_nutty_factory_high_score} points."
-msgstr ""
+msgstr "Le record est de {registry.arcade_nutty_factory_high_score} points"
 
 #: data/level/arcade-the-long-haul.cfg:11
 #: data/level/titlescreen-arcade.cfg:275
@@ -465,12 +501,11 @@ msgstr ""
 
 #: data/level/arcade-the-long-haul.cfg:707
 msgid "The high score is {registry.arcade_the_long_haul_high_score} points."
-msgstr ""
-"Le meilleur score est de {registry.arcade_the_long_haul_high_score} points."
+msgstr "Le record est de {registry.arcade_the_long_haul_high_score} points."
 
 #: data/level/arcade-upper-deck.cfg:13 data/level/titlescreen-arcade.cfg:252
 msgid "Upper Deck"
-msgstr "Étage supérieur"
+msgstr "Pont supérieur"
 
 #: data/level/arcade-upper-deck.cfg:2950 data/level/arcade-upper-deck.cfg:2953
 msgid "You got {level.player.vars.score} points on the Upper Deck!"
@@ -483,8 +518,7 @@ msgstr "C'est un nouveau record!"
 
 #: data/level/arcade-upper-deck.cfg:2954
 msgid "The high score is {registry.arcade_upper_deck_high_score} points."
-msgstr ""
-"Le meilleur score est de {registry.arcade_upper_deck_high_score} points."
+msgstr "Le record est de {registry.arcade_upper_deck_high_score} points."
 
 #: data/level/arcade-wild-new-wonder.cfg:13
 #: data/level/titlescreen-arcade.cfg:251
@@ -500,9 +534,7 @@ msgstr ""
 
 #: data/level/arcade-wild-new-wonder.cfg:2524
 msgid "The high score is {registry.arcade_wild_new_wonder_high_score} points."
-msgstr ""
-"Le meilleur score est de {registry.arcade_wild_new_wonder_high_score} "
-"points."
+msgstr "Le record est de {registry.arcade_wild_new_wonder_high_score} points."
 
 #: data/level/autumn-town.cfg:16
 msgid "Autumn Town"
@@ -525,7 +557,7 @@ msgid ""
 "be an entry way directly into Milgram's\n"
 "compound from the caverns."
 msgstr ""
-"Bien, vous êtes arrivé jusque ici!\n"
+"Bien, vous êtes arrivé jusqu'ici!\n"
 "Bon, il y a un portail juste devant.\n"
 "Si vous pouvez le passer vous\n"
 "arriverez aux cavernes de calcaire.\n"
@@ -600,7 +632,7 @@ msgstr ""
 
 #: data/level/caverns-of-holes.cfg:14
 msgid "Caverns of Holes"
-msgstr "Cavernes de Trous"
+msgstr "Cavernes des Trous"
 
 #: data/level/chopple-shop-interior.cfg:10 data/level/chopple-shop.cfg:16
 msgid "Chopple's General Store"
@@ -639,7 +671,7 @@ msgstr "T'es un intrus?!"
 
 #: data/level/crevice-village-cave.cfg:813
 msgid "I thought so!"
-msgstr "C'est ce que je pensais!"
+msgstr "C'est bien ce que je pensais!"
 
 #: data/level/crevice-village-cave.cfg:814
 #: data/object_prototypes/buyable_item.cfg:25
@@ -680,7 +712,7 @@ msgid ""
 "Well, I can't let anyone\n"
 "past this gate."
 msgstr ""
-"Bon, je ne peux laisser\n"
+"Bon, je ne dois laisser\n"
 "personne passer ce portail."
 
 #: data/level/crevice-village-cave.cfg:821
@@ -1055,7 +1087,7 @@ msgstr "Salut Hedge, tout va comme tu veux?"
 
 #: data/level/crevice-village-house-1.cfg:2548
 msgid "Besides the obvious cage situation."
-msgstr "A part cette cage, évidemment."
+msgstr "À part cette cage, évidemment."
 
 #: data/level/crevice-village-house-1.cfg:2548
 msgid "Eh, I've been better, but yeah, I'm okay."
@@ -1245,11 +1277,11 @@ msgid ""
 "is in!"
 msgstr ""
 "Je suppose que le seul chemin\n"
-"vers l'extérieur est à  l'intérieur!"
+"vers l'extérieur est à l'intérieur!"
 
 #: data/level/crevice-village-house-4.cfg:3311
 msgid "This is decidedly unpleasant."
-msgstr "C'est décidément déplaisant."
+msgstr "C'est vraiment déplaisant."
 
 #: data/level/crevice-village-house-4.cfg:3313
 #: data/level/crevice-village-house-4.cfg:3323
@@ -1342,7 +1374,7 @@ msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1462
 msgid "Make this easy on yourself."
-msgstr "Rends toi les choses plus faciles."
+msgstr "Rends-toi les choses plus faciles."
 
 #: data/level/crevice-village-house-elder.cfg:1464
 msgid "I have no idea what you're talking about."
@@ -1411,7 +1443,7 @@ msgid ""
 "That went better than expected."
 msgstr ""
 "Bon!\n"
-"Ça c'est bien passé finalement."
+"Ça s'est bien passé finalement."
 
 #: data/level/crevice-village-house-elder.cfg:1591
 msgid ""
@@ -1602,7 +1634,7 @@ msgstr ""
 msgid "In fact, I'll even show you the way!"
 msgstr ""
 "En fait je vais même te montrer\n"
-"la route!"
+"le chemin!"
 
 #: data/level/crevice-village.cfg:720 data/level/to-nenes-house.cfg:1360
 msgid "I better leave this key here."
@@ -1642,8 +1674,8 @@ msgid ""
 "That might have been why\n"
 "he tried to take out that bridge."
 msgstr ""
-"C'est peut-être pourquoi\n"
-"il a voulu détruire ce pont."
+"C'est peut-être pour cela\n"
+"qu'il a voulu détruire ce pont."
 
 #: data/level/crevice-village.cfg:966
 msgid ""
@@ -1720,8 +1752,8 @@ msgid ""
 " they'd grossly outnumber us."
 msgstr ""
 "Je veux dire, même si nous armions\n"
-"la ville entière, ils nous dépasseraient\n"
-"sans grand ménagement."
+"la ville entière, ils seraient encore\n"
+"largement plus que nous."
 
 #: data/level/crevice-village.cfg:984
 msgid ""
@@ -2482,7 +2514,7 @@ msgid ""
 msgstr ""
 "Si tu as lu un dialogue auparavant\n"
 "cela pourrait t'ennuyer\n"
-"d'avoir à la relire une fois encore."
+"d'avoir à le relire une fois encore."
 
 #: data/level/grassy-path.cfg:1438
 msgid ""
@@ -2567,7 +2599,7 @@ msgid ""
 "Money?"
 msgstr ""
 "Me devoir quelque chose?\n"
-"Me devoir quoi? \n"
+"Me devoir quoi?\n"
 "De l'argent?"
 
 #: data/level/liberated-crevice-village-house-1.cfg:1059
@@ -2760,7 +2792,7 @@ msgstr "Oui."
 
 #: data/level/milgrams-throne-room.cfg:664
 msgid "What was it you wanted?"
-msgstr "Que veux-tu?"
+msgstr "Que voulais-tu déjà?"
 
 #: data/level/milgrams-throne-room.cfg:667
 msgid ""
@@ -2868,7 +2900,7 @@ msgstr "Ces bombardiers fous sont partout !"
 
 #: data/level/plagued-mine.cfg:2871
 msgid "Yikes!"
-msgstr "Oula!"
+msgstr "Houla!"
 
 #: data/level/rock-a-fort-cave.cfg:16 data/level/rock-a-fort.cfg:16
 msgid "Rock-a-Fort"
@@ -2982,10 +3014,10 @@ msgid ""
 "I'd reward you handsomely."
 msgstr ""
 "Vous savez, vous avez l'air\n"
-"d'avoir voyagé.\n"
-"Si vous pouvez me ramener\n"
+"d'avoir bourlingué.\n"
+"Si vous me ramenez\n"
 "une fourmi dorée\n"
-"et la mettre dans une de mes cages,\n"
+"et la mettez dans une de mes cages,\n"
 "je vous récompenserai généreusement."
 
 #: data/level/secluded-hut-interior.cfg:937
@@ -3029,7 +3061,7 @@ msgid ""
 msgstr ""
 "Que dites-vous? La fourmi dorée\n"
 "est dans votre estomac?\n"
-"Vite, recrachez la dans la cage!"
+"Vite, recrachez-la dans la cage!"
 
 #: data/level/secluded-hut-interior.cfg:949
 msgid ""
@@ -3056,7 +3088,7 @@ msgid ""
 "the island. There are so many\n"
 "wonderful creatures on it."
 msgstr ""
-"J'espère que vous appréciez explorer\n"
+"J'espère que vous appréciez d'explorer\n"
 "cette île. Il y a tant\n"
 "de créatures merveilleuses."
 
@@ -3227,15 +3259,15 @@ msgstr ""
 
 #: data/level/shadowm-forest-1.cfg:15
 msgid "Forest 1"
-msgstr ""
+msgstr "Forêt 1"
 
 #: data/level/shadowm-forest-2.cfg:16
 msgid "Forest 2"
-msgstr ""
+msgstr "Forêt 2"
 
 #: data/level/shadowm-forest-3.cfg:15
 msgid "Forest 3"
-msgstr ""
+msgstr "Forêt 3"
 
 #: data/level/splash-hop.cfg:14
 msgid "Splash, Hop"
@@ -3283,7 +3315,7 @@ msgid ""
 "civil projects for the town?"
 msgstr ""
 "et qu'il était censé être utilisé pour\n"
-"des projets d'intérêts communs?"
+"des travaux d'intérêt général?"
 
 #: data/level/tea-with-milgram.cfg:188
 msgid "Exactly!"
@@ -3398,7 +3430,7 @@ msgid ""
 "Oh absolutely!\n"
 "It makes me look beastly!"
 msgstr ""
-"Oh tout à  fait ! Cela m'a vraiment\n"
+"Oh tout à fait ! Cela m'a vraiment\n"
 "fait passer pour une bête !"
 
 #: data/level/tea-with-milgram.cfg:233
@@ -3478,10 +3510,10 @@ msgid ""
 "sent the lads to deal with things,\n"
 "it got rather messy."
 msgstr ""
-"Mais reprenons, lorsque j'envoyai\n"
-"finalement mes hommes pour\n"
+"Mais reprenons, lorsque j'ai finalement\n"
+"envoyé mes hommes pour\n"
 "s'occuper de cette affaire,\n"
-"les choses s'envenimèrent."
+"les choses se sont envenimées."
 
 #: data/level/tea-with-milgram.cfg:269
 msgid ""
@@ -3490,7 +3522,7 @@ msgid ""
 "no one did actually get hurt."
 msgstr ""
 "Mais vous remarquerez...\n"
-"... les agressions mises à  part,\n"
+"... les agressions mises à part,\n"
 "personne n'a été blessé."
 
 #: data/level/tea-with-milgram.cfg:271
@@ -3507,7 +3539,7 @@ msgid ""
 "You've really clobbered a few people!"
 msgstr ""
 "Mais vous d'un autre côté...\n"
-"Vous avez vraiment blessé\n"
+"Vous avez vraiment tabassé\n"
 "un bon nombre de personnes."
 
 #: data/level/tea-with-milgram.cfg:278
@@ -3526,8 +3558,8 @@ msgid ""
 "And don't worry about the kitties."
 msgstr ""
 "J'apprécie les excuses.\n"
-"Et ne vous inquiétez pas pour\n"
-"les petits chats."
+"Et ne vous inquiétez pas\n"
+"pour les chatons."
 
 #: data/level/tea-with-milgram.cfg:287
 msgid ""
@@ -3639,7 +3671,7 @@ msgstr "Une petite marque de considération?"
 msgid "Yes - a quarter of what we get from him."
 msgstr ""
 "Oui, le quart de tout ce que\n"
-"vous lui prendrez."
+"nous obtiendrons de lui."
 
 #: data/level/tea-with-milgram.cfg:332
 msgid ""
@@ -3648,9 +3680,9 @@ msgid ""
 "Very well frog, let's do business."
 msgstr ""
 "*soupir*\n"
-"Je savais qu'elle ne serait pas si petite\n"
+"Je savais qu'elle ne serait pas si petite,\n"
 "cette marque de considération.\n"
-"Très bien grenouille, parlons affaire."
+"Très bien grenouille, topons la."
 
 #: data/level/tea-with-milgram.cfg:335
 msgid "All's well that ends well then, huh?"
@@ -3724,7 +3756,7 @@ msgstr "L'équipe IRC"
 
 #: data/level/tea-with-milgram.cfg:380
 msgid "Bug Reports/Fixes"
-msgstr "Report et Correction de Bugs"
+msgstr "Rapport et Correction de Bugs"
 
 #: data/level/tea-with-milgram.cfg:381
 msgid "Technical Advice"
@@ -3894,7 +3926,7 @@ msgid ""
 "There's a way from there to get to\n"
 "Milgram's Castle."
 msgstr ""
-"Il y a une façon d'aller\n"
+"Par là on peut aller\n"
 "au château de Milgram."
 
 #: data/level/tempo-outskirts-inside.cfg:198
@@ -3982,7 +4014,7 @@ msgstr ""
 
 #: data/level/tempo-outskirts.cfg:2238
 msgid "Must refer to this tree-house ... thing."
-msgstr "Ca doit avoir un rapport à cette ... maison-arbre."
+msgstr "Ca doit être à propos de cette... maison-arbre."
 
 #: data/level/tempo-outskirts.cfg:2240
 msgid ""
@@ -4016,7 +4048,7 @@ msgstr "(Niveau de Test)"
 
 #: data/level/testa10.cfg:12
 msgid "Test Level 10"
-msgstr ""
+msgstr "Test Niveau 10"
 
 #: data/level/titlescreen-arcade.cfg:141
 msgid "Each machine has a different arcade-style challenge."
@@ -4282,7 +4314,7 @@ msgid ""
 "will realize that kind of hard-sell tactic\n"
 "just annoys people."
 msgstr ""
-"Un jour, ces gens du porte-à -porte\n"
+"Un jour, ces gens du porte-à-porte\n"
 "comprendront que ce genre de\n"
 "technique de vente agressive\n"
 "ne fait qu'énerver les gens."
@@ -4334,7 +4366,7 @@ msgstr "Cette case est une case neutre. Elle ne sert à rien."
 
 #: data/object_prototypes/ct-cursor.cfg:73
 msgid "'"
-msgstr ""
+msgstr "'"
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:32
 msgid "You made it to level {level.player.difficulty} of the coin race!"
@@ -4372,7 +4404,7 @@ msgid ""
 msgstr ""
 "Vous avez trouvé un morceau\n"
 "de capsule de santé.\n"
-"Ramassez en trois autres pour\n"
+"Ramassez-en trois autres pour\n"
 "augmenter vos points de vie maximaux\n"
 "de un!"
 
@@ -4384,7 +4416,7 @@ msgid ""
 msgstr ""
 "Vous avez trouvé un morceau\n"
 "de capsule de santé.\n"
-"Ramassez en deux autres pour\n"
+"Ramassez-en deux autres pour\n"
 "augmenter vos points de vie maximaux\n"
 "de un!"
 
@@ -4396,7 +4428,7 @@ msgid ""
 msgstr ""
 "Vous avez trouvé un morceau\n"
 "de capsule de santé.\n"
-"Ramassez en une autre pour\n"
+"Ramassez-en une autre pour\n"
 "augmenter vos points de vie maximaux\n"
 "de un!"
 
@@ -4560,7 +4592,7 @@ msgid ""
 "Welcome to the store."
 msgstr ""
 "Salut.\n"
-"Bienvenu dans mon magasin."
+"Bienvenue dans mon magasin."
 
 #: data/objects/props/interactive/chopple_npc.cfg:9
 msgid "Take your time, look around."
@@ -4596,20 +4628,28 @@ msgid ""
 " a small group of indie developers, hoping this game becomes one of the "
 "definitive platform games on iOS - and you can make that happen!"
 msgstr ""
+"Frogatto a été fait par un groupe de grands fans de jeux vidéos classiques, "
+"qui espèrent en ramener la magie dans un nouveau jeu, original, et aux "
+"mécaniques peu conventionnelles - une bonne pause par rapport aux clones "
+"habituels. Nous sommes un petit groupe de développeurs indépendants, et "
+"espérons que ce jeu deviendra un des grands titres du jeu de plate-formes "
+"sur IOs - et cela peut arriver grâce à vous!"
 
 #: iOS_APP_STORE_METADATA:5
 msgid ""
 "To find out more about the game or to play the PC/Mac version for free, "
 "please visit http://www.frogatto.com/"
 msgstr ""
+"Pour en savoir plus à propos du jeu, ou jouer gratuitement à la version pour"
+" PC/Mac, rendez-vous sur http://www.frogatto.com/"
 
 #: iOS_CHANGELOG:3
 msgid "Fixed The Long Haul (arcade level)"
-msgstr ""
+msgstr "Réparé La Grande Traversée (niveau d'arcade)"
 
 #: iOS_CHANGELOG:4
 msgid "Fixed instructions on titlescreen"
-msgstr ""
+msgstr "Réparé les instructions sur l'écran-titre"
 
 #: src/controls_dialog.cpp:42
 msgid "Directions"

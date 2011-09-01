@@ -2,6 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # 
+# Michał  Środulski <michalsrodulski@gmail.com>, 2011.
 # Mariusz Bielski <message@marb.pl>, 2011.
 # marb <message@marb.pl>, 2011.
 # Paweł  <pawel.wierzbicki.pl@gmail.com>, 2011.
@@ -10,8 +11,8 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2011-08-13 05:02-0300\n"
-"PO-Revision-Date: 2011-08-13 08:03+0000\n"
-"Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
+"PO-Revision-Date: 2011-08-30 20:43+0000\n"
+"Last-Translator: msrodulski <michalsrodulski@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.net/projects/p/Frogatto/team/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,35 +22,35 @@ msgstr ""
 
 #: CHANGELOG:1 iOS_CHANGELOG:1
 msgid "Version 1.1.1:"
-msgstr ""
+msgstr "Wersja 1.1.1:"
 
 #: CHANGELOG:2 iOS_CHANGELOG:2
 msgid "Fixed some crashing bugs."
-msgstr ""
+msgstr "Poprawiono błędy odpowiedzialne za zawieszanie się gry."
 
 #: CHANGELOG:3
 msgid "Fixed The Long Haul (compiled mode)"
-msgstr ""
+msgstr "Poprawiono poziom Długa Podróż (wersja skompilowana)"
 
 #: CHANGELOG:4
 msgid "Fixed instructions on titlescreen (iOS)"
-msgstr ""
+msgstr "Poprawiono instrukcje na ekranie tytułowych (iOS)"
 
 #: CHANGELOG:5 iOS_CHANGELOG:5
 msgid "New translation: Italian"
-msgstr ""
+msgstr "Nowe tłumaczenie: Język włoski"
 
 #: CHANGELOG:6
 msgid "Added automatic language selection for Windows"
-msgstr ""
+msgstr "Dodano automatyczny wybór języka dla Windows"
 
 #: CHANGELOG:8
 msgid "Version 1.1:"
-msgstr ""
+msgstr "Wersja 1.1:"
 
 #: CHANGELOG:9
 msgid "Added arcade mode."
-msgstr ""
+msgstr "Dodano tryb arcade."
 
 #: CHANGELOG:10
 msgid "Redid graphics for forest trees."
@@ -73,15 +74,15 @@ msgstr ""
 
 #: CHANGELOG:15
 msgid "Reworked \"darkness\" for improved appearance"
-msgstr ""
+msgstr " Przerobiono \"ciemność\" w celu poprawienia wyglądu"
 
 #: CHANGELOG:16
 msgid "Added new palettes to forest and seaside areas."
-msgstr ""
+msgstr "Dodano nowe palety dla terenów leśnych i nadmorskich."
 
 #: CHANGELOG:17
 msgid "Added some unique enemies to the forest."
-msgstr ""
+msgstr "Dodano nowych wrogów, charakterystycznych dla terenów leśnych."
 
 #: CHANGELOG:18
 msgid ""
@@ -94,34 +95,38 @@ msgid ""
 "Added translation support, with 4 complete translations: French, Brazilian "
 "Portuguese, Chinese (Simplified), and Japanese."
 msgstr ""
+"Dodano obsługę 4 języków: francuski, portugalski (norma brazylijska), "
+"chiński uproszczony oraz japoński."
 
 #: CHANGELOG:21
 msgid "Version 1.0.3:"
-msgstr ""
+msgstr "Wersja 1.0.3:"
 
 #: CHANGELOG:22
 msgid "Fixed crash when picking up max heart pieces."
 msgstr ""
+"Poprawiono bład wieszania się gry podczas zbierania ostatniego kawałka "
+"serca."
 
 #: CHANGELOG:23
 msgid "Other small bug fixes."
-msgstr ""
+msgstr "Inne mniejsze poprawki."
 
 #: CHANGELOG:25
 msgid "Version 1.0.2:"
-msgstr ""
+msgstr "Wersja 1.0.2:"
 
 #: CHANGELOG:26
 msgid "Added support for \"darkness\" in levels."
-msgstr ""
+msgstr "Dodane obsługę \"ciemności\" w poziomach."
 
 #: CHANGELOG:27
 msgid "Added support for WVGA."
-msgstr ""
+msgstr "Dodano obsługę WVGA."
 
 #: CHANGELOG:28
 msgid "Made player status not show on the titlescreen or world map."
-msgstr ""
+msgstr "Usunięto status gracza z menu oraz mapy świata."
 
 #: CHANGELOG:29
 msgid "Made golden ants less ambiguous."
@@ -130,24 +135,28 @@ msgstr ""
 #: CHANGELOG:30
 msgid "Fixed bug making certain music always play at full volume (iPhone)."
 msgstr ""
+"Poprawiono błąd powodujący odtwarzanie niektórych utworów zawsze na "
+"maksymalnym poziomie głośności (iPhone)."
 
 #: CHANGELOG:31
 msgid "Added option to reverse positions of A and B buttons (iPhone)."
-msgstr ""
+msgstr "Dodano opcję zamiany funkcji klawiszy A oraz B (iPhone)."
 
 #: CHANGELOG:32
 msgid "Added support for repeating levels (for arcade modes)."
-msgstr ""
+msgstr "Dodano obsługę zapętlonych poziomów (tryb arcade)."
 
 #: CHANGELOG:33
 msgid ""
 "Pressing jump while in the air pressing against a wall now makes you cling "
 "to the wall."
 msgstr ""
+"Naciśnięcie skoku w trakcie lotu w powietrzu powoduje przylgnięcie do "
+"najbliższej ściany."
 
 #: CHANGELOG:34
 msgid "Made it so you can skip dialogs sequences."
-msgstr ""
+msgstr "Dodano możliwość pominięcia dialogów wypowiadanych przez postaci."
 
 #: CHANGELOG:35
 msgid "Fixed lots of z-order issues."
@@ -155,7 +164,7 @@ msgstr ""
 
 #: CHANGELOG:36
 msgid "Fixed bug causing ambient sounds to not work."
-msgstr ""
+msgstr "Poprawiono błąd braku dźwięków otoczenia."
 
 #: CHANGELOG:37
 msgid "Improved forest background, and made it go upwards infinitely."
@@ -171,48 +180,52 @@ msgstr ""
 
 #: CHANGELOG:40
 msgid "Many small bug fixes."
-msgstr ""
+msgstr "Mnóstwo mniejszych poprawek."
 
 #: CHANGELOG:42
 msgid "Version 1.0.1 (iPhone only):"
-msgstr ""
+msgstr "Wersja 1.0.1 (tylko iPhone):"
 
 #: CHANGELOG:43
 msgid ""
 "Significantly improved controls, both functionally and graphically (iPhone)."
-msgstr ""
+msgstr "W znaczący sposób poprawiono sterowanie.  (iPhone)."
 
 #: CHANGELOG:44
 msgid "Fixed auto-saving on iOS4 where multitasking is supported (iPhone)."
 msgstr ""
+"Poprawiono automatyczny zapis na iOS4 dla urządzeń z obsługą "
+"wielozadaniowości. (iPhone)."
 
 #: CHANGELOG:45
 msgid "Fixed bug where a dialog could repeat forever."
 msgstr ""
+"Poprawiono błąd powodujący nieskończone otwieranie się tego samego okna "
+"dialogowego."
 
 #: CHANGELOG:46
 msgid "Fixed crash in world map when you hold down while entering it."
-msgstr ""
+msgstr "Poprawiono błąd wieszania się gry podczas ładowania mapy świata."
 
 #: CHANGELOG:47
 msgid "Fixed fullscreen mode (Mac/Windows)."
-msgstr ""
+msgstr "Poprawiono tryb pełnoekranowy (Mac/Windows)"
 
 #: CHANGELOG:48
 msgid "Fixed controlpad issues for computers."
-msgstr ""
+msgstr "Poprawiono obsługę gamepad'ów na komputerach PC."
 
 #: CHANGELOG:49
 msgid "Added music and sound volume controls to pause screen."
-msgstr ""
+msgstr "Dodano kontrolki głośności muzyki oraz dźwięków do ekranu pauzy."
 
 #: CHANGELOG:50
 msgid "Added customizable controls."
-msgstr ""
+msgstr "Dodano możliwość zmiany klawiszy."
 
 #: CHANGELOG:51
 msgid "Added half-hearts."
-msgstr ""
+msgstr "Dodano połówki serc."
 
 #: CHANGELOG:52
 msgid "Added scons script for compiling."
@@ -220,11 +233,11 @@ msgstr ""
 
 #: CHANGELOG:53
 msgid "Minor level changes."
-msgstr ""
+msgstr "Drobne poprawki poziomów."
 
 #: CHANGELOG:54
 msgid "Updated music."
-msgstr ""
+msgstr "Zaaktualizowano muzykę."
 
 #: MAC_APP_STORE_METADATA:1 iOS_APP_STORE_METADATA:1
 msgid ""
@@ -250,7 +263,7 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:5 iOS_APP_STORE_METADATA:7
 msgid "keywords:"
-msgstr ""
+msgstr "słowa kluczowe:"
 
 #: MAC_APP_STORE_METADATA:6 iOS_APP_STORE_METADATA:8
 msgid ""
@@ -295,7 +308,7 @@ msgstr ""
 
 #: data/achievements.cfg:37
 msgid "Playing the economy game, eh?"
-msgstr ""
+msgstr "Czy grasz w grę ekonomiczną?"
 
 #: data/achievements.cfg:44
 msgid "Speedrun"
@@ -343,7 +356,7 @@ msgstr ""
 
 #: data/achievements.cfg:85
 msgid "Bound, bound, bound and rebound!"
-msgstr ""
+msgstr "Skok, skok, skok i odbicie!"
 
 #: data/achievements.cfg:92
 msgid "Frogourmet"
@@ -355,7 +368,7 @@ msgstr "Zjedz wszystkie rodzaje przeciwników."
 
 #: data/achievements.cfg:100
 msgid "Dream on..."
-msgstr ""
+msgstr "Śnij..."
 
 #: data/achievements.cfg:101
 msgid "That's the infinite cage."
@@ -363,11 +376,11 @@ msgstr ""
 
 #: data/achievements.cfg:108
 msgid "Geosynchronous Orbit Achieved"
-msgstr ""
+msgstr "Orbita Geosynchroniczna została osiągnięta."
 
 #: data/achievements.cfg:109
 msgid "Now applying artificial gravity."
-msgstr ""
+msgstr "Uruchamianie sztucznej grawitacji."
 
 #: data/level/airplane-boss.cfg:14
 msgid "Stonepipe Bridge"
@@ -383,11 +396,11 @@ msgstr "Zwycięstwo!"
 
 #: data/level/arcade-blocks.cfg:11 data/level/titlescreen-arcade.cfg:277
 msgid "Blocks Run"
-msgstr ""
+msgstr "Bieg po Blokach"
 
 #: data/level/arcade-blocks.cfg:218 data/level/arcade-blocks.cfg:220
 msgid "You got {level.player.score} points in the Blocks Run!"
-msgstr ""
+msgstr "Zdobyłeś {level.player.score} punktów w biegu po blokach!"
 
 #: data/level/arcade-blocks.cfg:219
 #: data/level/arcade-down-the-rabbit-hall.cfg:864
@@ -406,7 +419,7 @@ msgstr "Najlepszy wynik wynosi {registry.arcade_blocks_high_score}."
 #: data/level/arcade-down-the-rabbit-hall.cfg:13
 #: data/level/titlescreen-arcade.cfg:276
 msgid "Down the Rabbit Hall"
-msgstr ""
+msgstr "Poprzez Króliczą Norę"
 
 #: data/level/arcade-down-the-rabbit-hall.cfg:863
 #: data/level/arcade-down-the-rabbit-hall.cfg:866
@@ -423,7 +436,7 @@ msgstr ""
 #: data/level/arcade-maintenance-shaft.cfg:13
 #: data/level/titlescreen-arcade.cfg:253
 msgid "Maintenance Shaft"
-msgstr ""
+msgstr "Kanał Serwisowy"
 
 #: data/level/arcade-maintenance-shaft.cfg:2579
 #: data/level/arcade-maintenance-shaft.cfg:2582
@@ -440,7 +453,7 @@ msgstr ""
 #: data/level/arcade-nutty-factory.cfg:380
 #: data/level/arcade-nutty-factory.cfg:383
 msgid "You got {level.player.vars.score} points in the Nutty Factory!"
-msgstr ""
+msgstr "Zdobyłeś {level.player.vars.score} punktów w zwariowanej fabryce!"
 
 #: data/level/arcade-nutty-factory.cfg:384
 msgid "The high score is {registry.arcade_nutty_factory_high_score} points."
@@ -450,12 +463,12 @@ msgstr ""
 #: data/level/arcade-the-long-haul.cfg:11
 #: data/level/titlescreen-arcade.cfg:275
 msgid "The Long Haul"
-msgstr ""
+msgstr "Długa podróż"
 
 #: data/level/arcade-the-long-haul.cfg:703
 #: data/level/arcade-the-long-haul.cfg:706
 msgid "You got {level.player.vars.score} points in the long haul!"
-msgstr ""
+msgstr "Zdobyłeś {level.player.vars.score} punktów w długiej podróży!"
 
 #: data/level/arcade-the-long-haul.cfg:707
 msgid "The high score is {registry.arcade_the_long_haul_high_score} points."
@@ -496,7 +509,7 @@ msgstr ""
 
 #: data/level/autumn-town.cfg:16
 msgid "Autumn Town"
-msgstr "Jesienne Miasto"
+msgstr "Jesienne Miasteczko"
 
 #: data/level/bombing-fools.cfg:18
 msgid "Bombing Fools"
@@ -567,7 +580,7 @@ msgstr ""
 
 #: data/level/bug-mining.cfg:17
 msgid "Bug Mining"
-msgstr ""
+msgstr "Kopalnia Owadów"
 
 #: data/level/burn-and-bubble.cfg:14
 msgid "Burn and Bubble"
@@ -588,11 +601,11 @@ msgstr ""
 
 #: data/level/caverns-of-holes.cfg:14
 msgid "Caverns of Holes"
-msgstr ""
+msgstr "Dziurawe Jaskinie"
 
 #: data/level/chopple-shop-interior.cfg:10 data/level/chopple-shop.cfg:16
 msgid "Chopple's General Store"
-msgstr "Sklep Ogólny Chopple'a"
+msgstr "Sklep Wielobranżowy Chopple'a"
 
 #: data/level/crevice-bridge.cfg:15
 msgid "Crevice Bridge"
@@ -851,6 +864,8 @@ msgid ""
 "Now, this'll take you over a bridge,\n"
 "then through an underground passage."
 msgstr ""
+"To pomoże ci pokonać most,\n"
+"a następnie poprzez podziemne przejście."
 
 #: data/level/crevice-village-heights.cfg:1083
 msgid "Watch your head in there."
@@ -1762,7 +1777,7 @@ msgstr ""
 
 #: data/level/dark-corridor.cfg:12
 msgid "Dark Corridor"
-msgstr ""
+msgstr "Ciemny Korytarz"
 
 #: data/level/dark-corridor.cfg:1082
 msgid "Now what?"
@@ -1770,7 +1785,7 @@ msgstr "Co teraz?"
 
 #: data/level/darkness-central.cfg:18
 msgid "Darkness Central"
-msgstr ""
+msgstr "Centrum Mroku"
 
 #: data/level/descent-to-town.cfg:16
 msgid "Descent to Town"
@@ -1792,7 +1807,7 @@ msgstr "Uczciwy handel i niskie ceny!\""
 
 #: data/level/downhill.cfg:16
 msgid "Downhill"
-msgstr ""
+msgstr "Downhill"
 
 #: data/level/dungeon-blocks.cfg:11
 msgid "Dungeon Blocks"
@@ -1812,7 +1827,7 @@ msgstr "Altana Erie"
 
 #: data/level/fast-lane.cfg:15
 msgid "Fast Lane"
-msgstr ""
+msgstr "Droga Szybkiego Ruchu"
 
 #: data/level/flooded-caverns.cfg:16
 msgid "Flooded Caverns"
@@ -2462,7 +2477,7 @@ msgstr ""
 
 #: data/level/hidden-depths.cfg:18
 msgid "Hidden Depths"
-msgstr ""
+msgstr "Ukryte Głębiny"
 
 #: data/level/hidden-depths.cfg:3741
 msgid "I'd better be careful."
@@ -2518,6 +2533,8 @@ msgid ""
 "Sheesh, so mercenary!\n"
 "It's just an expression."
 msgstr ""
+"Mówisz jak sprzedawca!\n"
+"To tylko wyrażenie."
 
 #: data/level/liberated-crevice-village-house-1.cfg:1061
 msgid "I know, I'm just poking fun at you."
@@ -2568,7 +2585,7 @@ msgstr "Hej, dzięki za uratowanie miasta!"
 
 #: data/level/liberated-crevice-village-house-2.cfg:1546
 msgid "All in a day's work."
-msgstr ""
+msgstr "Wszystko w jeden pracowity dzień."
 
 #: data/level/liberated-crevice-village-house-2.cfg:1548
 msgid "Where's your sibling, by the way?"
@@ -2587,6 +2604,8 @@ msgid ""
 "Sure is nice\n"
 "to have things back to normal."
 msgstr ""
+"Oczywiście, że jest dobrze\n"
+"gdy wszystko wróciło do normy."
 
 #: data/level/liberated-crevice-village-house-4.cfg:2073
 msgid "Pity to lose all those fans, though."
@@ -2803,7 +2822,7 @@ msgstr "Aj!"
 
 #: data/level/rock-a-fort-cave.cfg:16 data/level/rock-a-fort.cfg:16
 msgid "Rock-a-Fort"
-msgstr ""
+msgstr "Rock-a-Fort"
 
 #: data/level/rock-a-fort.cfg:3230
 msgid "Woah! A flying plant!"
@@ -2811,7 +2830,7 @@ msgstr "Łoa! Latająca roślina!"
 
 #: data/level/rocky-roots.cfg:13
 msgid "Rocky Roots"
-msgstr ""
+msgstr "Kamieniste Korzenie"
 
 #: data/level/rocky-roots.cfg:1136
 msgid "Bleh. A locked door."
@@ -2824,7 +2843,7 @@ msgstr "Musi być jakaś inna droga."
 #: data/level/secluded-hut-interior.cfg:12 data/level/secluded-hut.cfg:16
 #: data/objects/playable/map-selector.cfg:17
 msgid "Secluded Hut"
-msgstr ""
+msgstr "Pustelnia"
 
 #: data/level/secluded-hut-interior.cfg:917
 msgid "Hello there."
@@ -3156,7 +3175,7 @@ msgstr "Las 3"
 
 #: data/level/splash-hop.cfg:14
 msgid "Splash, Hop"
-msgstr ""
+msgstr "Plusk, Hop"
 
 #: data/level/starlit-cave.cfg:14
 msgid "Starlit Cave"
@@ -3429,6 +3448,8 @@ msgid ""
 "They'll bounce back just fine;\n"
 "They are mass-produced after all."
 msgstr ""
+"Nic im nie będzie;\n"
+"W końcu są produkowane masowo."
 
 #: data/level/tea-with-milgram.cfg:289
 msgid "I ... see."
@@ -3573,7 +3594,7 @@ msgstr "Skrypty Obiektów"
 
 #: data/level/tea-with-milgram.cfg:349
 msgid "Minor Level Designer"
-msgstr ""
+msgstr "Pomniejszy Projektant Poziomów"
 
 #: data/level/tea-with-milgram.cfg:353
 msgid "Achievement Programming"
@@ -3585,7 +3606,7 @@ msgstr "Fizyka, Skrypty Geometrii"
 
 #: data/level/tea-with-milgram.cfg:355
 msgid "Minor Programmer"
-msgstr ""
+msgstr "Młodszy Programista"
 
 #: data/level/tea-with-milgram.cfg:359
 msgid "The End"
@@ -3653,19 +3674,20 @@ msgstr ""
 
 #: data/level/tea-with-milgram.cfg:402
 msgid "Artist - Terrain (seaside, forest, cave, and dungeon)"
-msgstr ""
+msgstr "Artysta - Rzeźba Terenu (wybrzeże morskie, las, jaskinia i lochy)"
 
 #: data/level/tea-with-milgram.cfg:403
 msgid "Level Designer (esp. seaside, town, and forest stages)"
 msgstr ""
+"Projektant Poziomów (głównie wybrzeży morskich, miasteczek oraz lasów)"
 
 #: data/level/tea-with-milgram.cfg:406
 msgid "Musician"
-msgstr ""
+msgstr "Muzyk"
 
 #: data/level/tea-with-milgram.cfg:407
 msgid "Sound Effect Designer"
-msgstr ""
+msgstr "Projektant Efektów Dźwiękowych"
 
 #: data/level/tea-with-milgram.cfg:411
 msgid "SPECIAL THANKS:"
@@ -3673,11 +3695,11 @@ msgstr "PODZIĘKOWANIA DLA:"
 
 #: data/level/template.cfg:12
 msgid "(Level Template)"
-msgstr ""
+msgstr "(Wzór Poziomu)"
 
 #: data/level/tempo-outskirts-inside.cfg:184
 msgid "Oh my, a visitor!"
-msgstr ""
+msgstr "O jeju, przybysz!"
 
 #: data/level/tempo-outskirts-inside.cfg:185
 msgid ""
@@ -3689,13 +3711,15 @@ msgstr ""
 msgid ""
 "Yes, I've had a few people come in \n"
 "to ask about that."
-msgstr ""
+msgstr "Tak, wiele osób przyszło do mnie o to zapytać."
 
 #: data/level/tempo-outskirts-inside.cfg:187
 msgid ""
 "There was a storm a few weeks ago, \n"
 "and a big swell of water washed it out."
 msgstr ""
+"Kilka tygodni temu była burza i\n"
+"wielka fala wody go zmyła."
 
 #: data/level/tempo-outskirts-inside.cfg:188
 msgid ""
@@ -3720,6 +3744,8 @@ msgid ""
 "See, I'm trying to make it to\n"
 "Milgram's castle."
 msgstr ""
+"Widzisz, próbuje się dostać do\n"
+"zamku Milgrama."
 
 #: data/level/tempo-outskirts-inside.cfg:192
 msgid ""
@@ -3729,7 +3755,7 @@ msgstr ""
 
 #: data/level/tempo-outskirts-inside.cfg:193
 msgid "Hmm?"
-msgstr ""
+msgstr "Hmm?"
 
 #: data/level/tempo-outskirts-inside.cfg:194
 msgid ""
@@ -3754,16 +3780,20 @@ msgid ""
 "There's a way from there to get to\n"
 "Milgram's Castle."
 msgstr ""
+"Stamtąd jest droga do\n"
+"zamku Milgrama."
 
 #: data/level/tempo-outskirts-inside.cfg:198
 msgid "Now, unfortunately, the easiest way..."
-msgstr ""
+msgstr "Niestety, najprostsza droga..."
 
 #: data/level/tempo-outskirts-inside.cfg:199
 msgid ""
 "...would have been to cross the\n"
 " bridge next to this house."
 msgstr ""
+"...prowadziła poprzez most\n"
+"zaraz za tym domem."
 
 #: data/level/tempo-outskirts-inside.cfg:200
 msgid "Figures."
@@ -3798,10 +3828,12 @@ msgid ""
 "Yeah - sure beats \"nothing\", though.\n"
 "Thanks a lot!"
 msgstr ""
+"Oczywiście, lepsze to niż nic.\n"
+"Wielkie dzięki!"
 
 #: data/level/tempo-outskirts-inside.cfg:206
 msgid "No problem.  Best of luck."
-msgstr ""
+msgstr "Nie ma problemu.  Życzę powodzenia."
 
 #: data/level/tempo-outskirts.cfg:12
 msgid "Tempo Outskirts"
@@ -3834,60 +3866,64 @@ msgid ""
 "Whoa..\n"
 "That river is out of control."
 msgstr ""
+"Whoa..\n"
+"Ta rzeka wymkneła się spod kontroli."
 
 #: data/level/tempo-outskirts.cfg:2275
 msgid ""
 "If I dive in there,\n"
 "I'll get smashed to bits!"
 msgstr ""
+"Jeśli tu zanurkuję\n"
+"to zostanę całkowicie zmiażdzony!"
 
 #: data/level/test3.cfg:14 data/level/test4.cfg:12 data/level/test5.cfg:12
 #: data/level/test6.cfg:14 data/level/test7-surf.cfg:12
 #: data/level/test9.cfg:12
 msgid "(Test Level)"
-msgstr ""
+msgstr "(Poziom Testowy)"
 
 #: data/level/testa10.cfg:12
 msgid "Test Level 10"
-msgstr ""
+msgstr "Poziom Testowy 10"
 
 #: data/level/titlescreen-arcade.cfg:141
 msgid "Each machine has a different arcade-style challenge."
-msgstr ""
+msgstr "Każda maszyna zawiera inne wyzwanie."
 
 #: data/level/titlescreen-arcade.cfg:182
 msgid "Show us what you can do!"
-msgstr ""
+msgstr "Pokaż nam co potrafisz!"
 
 #: data/level/titlescreen-arcade.cfg:220
 msgid "EXIT"
-msgstr ""
+msgstr "WYJDŹ"
 
 #: data/level/titlescreen-arcade.cfg:250 data/level/titlescreen-arcade.cfg:274
 #: data/level/titlescreen-arcade.cfg:419
 msgid "Select a level:"
-msgstr ""
+msgstr "Wybierz poziom:"
 
 #: data/level/titlescreen-arcade.cfg:254 data/level/titlescreen-arcade.cfg:278
 #: data/level/titlescreen-arcade.cfg:421
 msgid "(cancel)"
-msgstr ""
+msgstr "(anuluj)"
 
 #: data/level/titlescreen-arcade.cfg:306
 msgid "CLIMB"
-msgstr ""
+msgstr "WSPINACZKA"
 
 #: data/level/titlescreen-arcade.cfg:344
 msgid "RUN"
-msgstr ""
+msgstr "BIEG"
 
 #: data/level/titlescreen-arcade.cfg:420
 msgid "Coin Race"
-msgstr ""
+msgstr "Wyścig po monety"
 
 #: data/level/titlescreen-arcade.cfg:449
 msgid "COIN RACE"
-msgstr ""
+msgstr "WYŚCIG PO MONETY"
 
 #: data/level/titlescreen-test.cfg:284 data/level/titlescreen.cfg:254
 msgid "LOAD GAME"
@@ -3900,29 +3936,21 @@ msgstr "NOWA GRA"
 #: data/level/titlescreen-test.cfg:361 data/level/titlescreen-test.cfg:391
 #: data/level/titlescreen.cfg:295 data/level/titlescreen.cfg:307
 msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
-msgstr ""
-"Wciśnij {LEFT_KEY} lub\n"
-"{RIGHT_KEY} aby iść."
+msgstr "Wciśnij {LEFT_KEY} lub {RIGHT_KEY} aby chodzić."
 
 #: data/level/titlescreen-test.cfg:392 data/level/titlescreen-test.cfg:409
 #: data/level/titlescreen.cfg:310
 msgid "Press {UP_KEY} to talk, and use things like doors."
-msgstr ""
-"Wciśnij {UP_KEY} \n"
-"aby rozmawiać i używać drzwi."
+msgstr "Wciśnij {UP_KEY} aby rozmawiać i używać drzwi."
 
 #: data/level/titlescreen-test.cfg:393 data/level/titlescreen.cfg:309
 msgid "Press {DOWN_KEY} to crouch."
-msgstr ""
-"Wciśnij {DOWN_KEY} \n"
-"aby się czołgać."
+msgstr "Wciśnij {DOWN_KEY} aby się czołgać."
 
 #: data/level/titlescreen-test.cfg:394 data/level/titlescreen.cfg:308
 #: data/level/titlescreen.cfg:323
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
-msgstr ""
-"Wciśnij dwa razy {LEFT_KEY} \n"
-"lub {RIGHT_KEY} aby biec."
+msgstr "Wciśnij dwa razy {LEFT_KEY} lub {RIGHT_KEY} aby biec."
 
 #: data/level/titlescreen-test.cfg:395 data/level/titlescreen.cfg:311
 msgid "Press {JUMP_KEY} to jump."
@@ -3938,11 +3966,11 @@ msgstr ""
 
 #: data/level/titlescreen.cfg:309
 msgid "Walk in front of a door or person, and press"
-msgstr ""
+msgstr "Podejdź do drzwi lub postaci i naciśnij"
 
 #: data/level/titlescreen.cfg:310
 msgid "the button that appears to interact with them."
-msgstr ""
+msgstr "przycisk odpowiedzialny za interakcję z nimi. "
 
 #: data/level/to-nenes-house-inside.cfg:10
 msgid "Nene's House"
@@ -3950,57 +3978,65 @@ msgstr "Dom Nene"
 
 #: data/level/to-nenes-house-inside.cfg:488
 msgid "Hey Nene, what's cooking?"
-msgstr ""
+msgstr "Cześć Nene, co się gotuje?"
 
 #: data/level/to-nenes-house-inside.cfg:489
 msgid ""
 "I'm making a cake.\n"
 "Would you like to have some?"
 msgstr ""
+"Robię tort.\n"
+"Czy chciałbyś spróbować?"
 
 #: data/level/to-nenes-house-inside.cfg:491
 msgid "Nah, I'd better get to town."
-msgstr ""
+msgstr "Nie, lepiej pójdę już do miasteczka."
 
 #: data/level/to-nenes-house-inside.cfg:493
 msgid "I have serious business to attend to."
-msgstr ""
+msgstr "Mam pilną sprawę do załatwienia."
 
 #: data/level/to-nenes-house-inside.cfg:497
 msgid ""
 "Oh, well maybe before you go\n"
 "you could look at my basement."
-msgstr ""
+msgstr "Oh, zanim pójdziesz mógłbyś sprawdzić moją piwnicę."
 
 #: data/level/to-nenes-house-inside.cfg:499
 msgid "Your basement?"
-msgstr ""
+msgstr "Twoją piwnicę?"
 
 #: data/level/to-nenes-house-inside.cfg:505
 msgid ""
 "Yes, here's the key.\n"
 "There're some ants down there."
 msgstr ""
+"Tak, tu masz klucz.\n"
+"Tam są jakieś mrówki."
 
 #: data/level/to-nenes-house-inside.cfg:506
 msgid "They're freaking me out."
-msgstr ""
+msgstr "One mnie przerażają."
 
 #: data/level/to-nenes-house-inside.cfg:508
 msgid "Sure thing. I need a job!"
-msgstr ""
+msgstr "Oczywiście. Przyda mi się zajęcie!"
 
 #: data/level/to-nenes-house-inside.cfg:510
 msgid ""
 "How much were you figuring on\n"
 "paying for a pest exterminator?"
 msgstr ""
+"Ile zamierzałaś zapłacić\n"
+"dezynsektorowi?"
 
 #: data/level/to-nenes-house-inside.cfg:511
 msgid ""
 "Well sheesh, I thought you'd\n"
 "do it for free for a friend!"
 msgstr ""
+"Myślałam, że od przyjaciół\n"
+"nie będziesz oczekiwał zapłaty!"
 
 #: data/level/to-nenes-house-inside.cfg:512
 msgid ""
@@ -4008,28 +4044,35 @@ msgid ""
 "I think I left a health capsule down there.\n"
 "If you can clear it out, it's yours."
 msgstr ""
+"Skoro tak stawiasz sprawę to \n"
+"w piwnicy znajduje się kapsułka zdrowia.\n"
+"Jeśli posprzątasz, będzie twoja."
 
 #: data/level/to-nenes-house-inside.cfg:514
 msgid ""
 "So, did you end up taking care\n"
 "of those ants down there?"
 msgstr ""
+"Czy uporałeś się już z tymi \n"
+"mrówkami w piwnicy?"
 
 #: data/level/to-nenes-house-inside.cfg:516
 msgid ""
 "Of course.\n"
 "I don't disappoint!"
 msgstr ""
+"Oczywiście.\n"
+"Ja nigdy nie zawodzę!"
 
 #: data/level/to-nenes-house-inside.cfg:518
 msgid ""
 "And thanks for the gift,\n"
 "by the way."
-msgstr ""
+msgstr "Przy okazji dzięki za prezent."
 
 #: data/level/to-nenes-house-inside.cfg:519
 msgid "You're welcome."
-msgstr ""
+msgstr "Nie ma za co."
 
 #: data/level/to-nenes-house-inside.cfg:841
 msgid ""
@@ -4043,11 +4086,11 @@ msgstr ""
 
 #: data/level/to-nenes-house.cfg:14
 msgid "To Nene's House"
-msgstr ""
+msgstr "Droga do Domu Nene"
 
 #: data/level/to-nenes-house.cfg:1926
 msgid "Hah!"
-msgstr ""
+msgstr "Aha!"
 
 #: data/level/to-nenes-house.cfg:1927
 msgid "There's Nene's house, right up there!"
@@ -4072,6 +4115,8 @@ msgid ""
 "Not. Interested.\n"
 "Buzz off."
 msgstr ""
+"Nie jestem zainteresowany.\n"
+"Spływaj."
 
 #: data/level/to-nenes-house.cfg:1947
 msgid ""
@@ -4081,7 +4126,7 @@ msgstr ""
 
 #: data/level/to-nenes-house.cfg:1948
 msgid "Very well."
-msgstr ""
+msgstr "Dobrze."
 
 #: data/level/to-nenes-house.cfg:1951
 msgid ""
@@ -4092,19 +4137,19 @@ msgstr ""
 
 #: data/level/to-nenes-house.cfg:1953
 msgid "The sooner, the better."
-msgstr ""
+msgstr "Czym prędzej, tym lepiej."
 
 #: data/level/twisted-trees.cfg:14
 msgid "Twisted Trees"
-msgstr ""
+msgstr "Poskręcane Drzewa"
 
 #: data/level/underground-pool.cfg:16
 msgid "Underground Pool"
-msgstr ""
+msgstr "Podziemny Basen"
 
 #: data/level/waiting-room.cfg:12
 msgid "Waiting Room"
-msgstr ""
+msgstr "Poczekalnia"
 
 #: data/level/wandering-passage.cfg:16
 msgid "Wandering Passage"
@@ -4112,7 +4157,7 @@ msgstr ""
 
 #: data/level/watery-alley.cfg:18
 msgid "Watery Alley"
-msgstr ""
+msgstr "Wodna Aleja"
 
 #: data/level/wither-wind.cfg:12
 msgid "Wither Wind"
@@ -4121,15 +4166,15 @@ msgstr ""
 #: data/object_prototypes/buyable_item.cfg:19
 #: data/object_prototypes/buyable_item.cfg:22
 msgid "The price is {final_price} coins."
-msgstr ""
+msgstr "Cena wynosi {final_price} monet."
 
 #: data/object_prototypes/buyable_item.cfg:19
 msgid "You don't have enough money."
-msgstr ""
+msgstr "Nie masz wystarczająco pieniędzy."
 
 #: data/object_prototypes/buyable_item.cfg:23
 msgid "Do you want to buy the {consts.name}?"
-msgstr ""
+msgstr "Czy chesz kupić {consts.name}?"
 
 #: data/object_prototypes/crazy-stuff/civ-tile.cfg:60
 msgid "This is a blank tile. It doesn't do anything."
@@ -4137,15 +4182,19 @@ msgstr ""
 
 #: data/object_prototypes/ct-cursor.cfg:73
 msgid "'"
-msgstr ""
+msgstr "'"
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:32
 msgid "You made it to level {level.player.difficulty} of the coin race!"
 msgstr ""
+"Dotarłeś do poziomu {level.player.difficulty} w wyścigu\n"
+"po monety!"
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:34
 msgid "You made it to level {level.player.difficulty} of the coin race."
 msgstr ""
+"Dotarłeś do poziomu {level.player.difficulty} w wyścigu\n"
+"po monety."
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
@@ -4199,13 +4248,13 @@ msgstr ""
 
 #: data/objects/items/store-items/buyable_heart_container.cfg:11
 msgid "heart"
-msgstr ""
+msgstr "serce"
 
 #: data/objects/items/store-items/buyable_heart_container.cfg:13
 msgid ""
 "The heart will give you\n"
 "an extra health point."
-msgstr ""
+msgstr "Serce doda ci ekstra punkt zdrowia."
 
 #: data/objects/items/store-items/buyable_jumping_boots.cfg:13
 msgid ""
@@ -4274,39 +4323,41 @@ msgstr ""
 
 #: data/objects/items/store-items/buyable_tongue_extension.cfg:11
 msgid "tongue extender"
-msgstr ""
+msgstr "przedłużacz języka"
 
 #: data/objects/items/store-items/buyable_tongue_extension.cfg:13
 msgid ""
 "The tongue extender will extend\n"
 "the length of your tongue."
-msgstr ""
+msgstr "Przedłużacz języka zwiększy długość twojego języka."
 
 #: data/objects/playable/map-selector.cfg:21
 msgid "Milgram's Castle"
-msgstr ""
+msgstr "Zamek Milgrama"
 
 #: data/objects/props-interactive/interactive/save_toilet.cfg:16
 #: data/objects/props-interactive/portals/dungeon_save_door.cfg:23
 #: data/objects/props-interactive/portals/world_1_interior_save_door.cfg:23
 msgid "Do you want to save the game?"
-msgstr ""
+msgstr "Czy chcesz zapisać grę?"
 
 #: data/objects/props-interactive/interactive/save_toilet.cfg:21
 #: data/objects/props-interactive/portals/dungeon_save_door.cfg:28
 #: data/objects/props-interactive/portals/world_1_interior_save_door.cfg:28
 msgid "The game has been saved."
-msgstr ""
+msgstr "Gra została zapisana."
 
 #: data/objects/props/interactive/chopple_npc.cfg:7
 msgid "Hi, Chopple."
-msgstr ""
+msgstr "Cześć Chopple."
 
 #: data/objects/props/interactive/chopple_npc.cfg:8
 msgid ""
 "Hey.\n"
 "Welcome to the store."
 msgstr ""
+"Hej.\n"
+"Witaj w sklepie."
 
 #: data/objects/props/interactive/chopple_npc.cfg:9
 msgid "Take your time, look around."
@@ -4314,7 +4365,7 @@ msgstr ""
 
 #: data/objects/props/interactive/kinguin_npc.cfg:26
 msgid "Hi, Kinguin, what's up?"
-msgstr ""
+msgstr "Cześć, Kinguin, co słychać?"
 
 #: data/preload.cfg:4 data/preload.cfg:9 data/preload.cfg:14
 msgid "Loading textures"
@@ -4346,14 +4397,16 @@ msgid ""
 "To find out more about the game or to play the PC/Mac version for free, "
 "please visit http://www.frogatto.com/"
 msgstr ""
+"Aby dowiedzieć się więcej o grze lub pobrać darmową wersję dla PC/Mac "
+"odwiedź stronę http://www.frogatto.com/"
 
 #: iOS_CHANGELOG:3
 msgid "Fixed The Long Haul (arcade level)"
-msgstr ""
+msgstr "Poprawiono poziom Długa Podróż (tryb arcade)"
 
 #: iOS_CHANGELOG:4
 msgid "Fixed instructions on titlescreen"
-msgstr ""
+msgstr "Poprawiono instrukcje w menu głównym."
 
 #: src/controls_dialog.cpp:42
 msgid "Directions"
@@ -4381,7 +4434,7 @@ msgstr "Osiągnięcie Odblokowane!"
 
 #: src/main.cpp:397
 msgid "Initializing custom object"
-msgstr ""
+msgstr "Inicjalizacja objektów"
 
 #: src/main.cpp:399
 msgid "Initializing custom object functions"
@@ -4389,11 +4442,11 @@ msgstr ""
 
 #: src/main.cpp:401
 msgid "Initializing tiles"
-msgstr ""
+msgstr "Inicjalizacja tła"
 
 #: src/main.cpp:404 src/main.cpp:408
 msgid "Initializing GUI"
-msgstr ""
+msgstr "Inicjalizacja interfejsu użytkownika"
 
 #: src/main.cpp:414
 msgid "Loading level"
@@ -4417,7 +4470,7 @@ msgstr "Sterowanie"
 
 #: src/pause_game_dialog.cpp:63
 msgid "Return to Titlescreen"
-msgstr ""
+msgstr "Powrót do menu."
 
 #: src/pause_game_dialog.cpp:64
 msgid "Exit Game"
@@ -4425,7 +4478,7 @@ msgstr "Opuść Grę"
 
 #: src/pause_game_dialog.cpp:65
 msgid "Reverse A and B"
-msgstr ""
+msgstr "Zamień A oraz B"
 
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"

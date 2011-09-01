@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2011-08-13 05:02-0300\n"
-"PO-Revision-Date: 2011-08-17 21:14+0000\n"
+"PO-Revision-Date: 2011-08-26 11:09+0000\n"
 "Last-Translator: nem <simone.m@gmx.com>\n"
 "Language-Team: Italian (http://www.transifex.net/projects/p/Frogatto/team/it/)\n"
 "MIME-Version: 1.0\n"
@@ -4208,7 +4208,7 @@ msgstr "Questo è una piastrella vuota. Non fa nulla."
 
 #: data/object_prototypes/ct-cursor.cfg:73
 msgid "'"
-msgstr ""
+msgstr "'"
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:32
 msgid "You made it to level {level.player.difficulty} of the coin race!"

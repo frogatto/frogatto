@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2011-08-13 05:02-0300\n"
-"PO-Revision-Date: 2011-08-24 23:42-0300\n"
+"PO-Revision-Date: 2011-08-31 23:51-0300\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Portuguese (Brazilian) (http://www.transifex.net/projects/p/Frogatto/team/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -419,11 +419,11 @@ msgstr "O recorde é de {registry.arcade_maintenance_shaft_high_score} pontos."
 #: data/level/arcade-nutty-factory.cfg:380
 #: data/level/arcade-nutty-factory.cfg:383
 msgid "You got {level.player.vars.score} points in the Nutty Factory!"
-msgstr ""
+msgstr "Você conseguiu {level.player.score} pontos na Corporação Casca de Noz!"
 
 #: data/level/arcade-nutty-factory.cfg:384
 msgid "The high score is {registry.arcade_nutty_factory_high_score} points."
-msgstr ""
+msgstr "O recorde é de {registry.arcade_nutty_factory_high_score} pontos."
 
 #: data/level/arcade-the-long-haul.cfg:11
 #: data/level/titlescreen-arcade.cfg:275
@@ -2440,9 +2440,9 @@ msgid ""
 "you might be annoyed by\n"
 "having to read it again."
 msgstr ""
-"Se você já viu alguma conversa\n"
-"antes, pode ficar incomodado de\n"
-"ter que lê-las de novo."
+"Se você já leu alguma conversa\n"
+"entre os personagens antes,\n"
+"não é necessário lê-la de novo."
 
 #: data/level/grassy-path.cfg:1438
 msgid ""
