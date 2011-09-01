@@ -5,7 +5,7 @@
 	To use me, put me in with the rest of your Kate highlighting files. (eg, /usr/share/apps/katepart/syntax/)
 	I add an entry under 'markup', and cause .cfg files to default to using me.-->
 
-<language name="Frogatto FML-FFL"  priority="2" section="Markup" extensions="*.cfg" version="1.3.2" kateversion="3.4.5" casesensitive="yes" author="DDR (robertsdavidddr@gmail.com)" license="Frogatto">
+<language name="Frogatto FML-FFL"  priority="2" section="Markup" extensions="*.cfg" version="1.3.3" kateversion="3.4.5" casesensitive="yes" author="DDR (robertsdavidddr@gmail.com)" license="Frogatto">
 	<highlighting>
 		<list name="fml_tags">
 			<item> prototype </item>
@@ -184,6 +184,7 @@
 				<keyword attribute="Operator" context="#stay" String="ffl_keys" />
 				<keyword attribute="Mutator" context="#stay" String="mutators" />
 				<StringDetect attribute="Keyword" String=" where " />
+				<StringDetect attribute="Keyword" String="	where " />
 				<DetectChar attribute="Normal Text" context="#pop" char="&quot;" endRegion="ffl" />
 				<DetectChar attribute="String" context="ffl_string" char="'" />
 				<DetectChar attribute="String" context="translatable string" char="~" />
