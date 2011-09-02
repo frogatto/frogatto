@@ -1051,6 +1051,102 @@ private:
 	}
 };
 
+class is_string_function : public function_expression {
+public:
+	explicit is_string_function(const args_list& args)
+	     : function_expression("is_string", args, 1, 1)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(args()[0]->evaluate(variables).is_string());
+	}
+};
+
+class is_null_function : public function_expression {
+public:
+	explicit is_null_function(const args_list& args)
+	     : function_expression("is_null", args, 1, 1)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(args()[0]->evaluate(variables).is_null());
+	}
+};
+
+class is_int_function : public function_expression {
+public:
+	explicit is_int_function(const args_list& args)
+	     : function_expression("is_int", args, 1, 1)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(args()[0]->evaluate(variables).is_int());
+	}
+};
+
+class is_decimal_function : public function_expression {
+public:
+	explicit is_decimal_function(const args_list& args)
+	     : function_expression("is_decimal", args, 1, 1)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(args()[0]->evaluate(variables).is_decimal());
+	}
+};
+
+class is_map_function : public function_expression {
+public:
+	explicit is_map_function(const args_list& args)
+	     : function_expression("is_map", args, 1, 1)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(args()[0]->evaluate(variables).is_map());
+	}
+};
+
+class is_function_function : public function_expression {
+public:
+	explicit is_function_function(const args_list& args)
+	     : function_expression("is_function", args, 1, 1)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(args()[0]->evaluate(variables).is_function());
+	}
+};
+
+class is_list_function : public function_expression {
+public:
+	explicit is_list_function(const args_list& args)
+	     : function_expression("is_list", args, 1, 1)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(args()[0]->evaluate(variables).is_list());
+	}
+};
+
+class is_callable_function : public function_expression {
+public:
+	explicit is_callable_function(const args_list& args)
+	     : function_expression("is_callable", args, 1, 1)
+	{}
+
+private:
+	variant execute(const formula_callable& variables) const {
+		return variant(args()[0]->evaluate(variables).is_callable());
+	}
+};
+
 }
 
 formula_function_expression::formula_function_expression(const std::string& name, const args_list& args, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& arg_names)
@@ -1234,6 +1330,14 @@ functions_map& get_functions_map() {
 		FUNCTION(keys);
 		FUNCTION(values);
 		FUNCTION(deserialize);
+		FUNCTION(is_string);
+		FUNCTION(is_null);
+		FUNCTION(is_int);
+		FUNCTION(is_decimal);
+		FUNCTION(is_map);
+		FUNCTION(is_function);
+		FUNCTION(is_list);
+		FUNCTION(is_callable);
 #undef FUNCTION
 	}
 
