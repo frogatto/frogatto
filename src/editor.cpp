@@ -2180,6 +2180,8 @@ bool editor::confirm_quit()
 
 void editor::save_level()
 {
+	lvl_->set_id(filename_);
+
 	level_changed_ = 0;
 
 	remove_ghost_objects();

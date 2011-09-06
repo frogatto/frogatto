@@ -59,6 +59,7 @@ public:
 	void set_save_point(int x, int y) { save_point_x_ = x; save_point_y_ = y; }
 
 	const std::string& id() const { return id_; }
+	void set_id(const std::string& s) { id_ = s; }
 	const std::string& music() const { return music_; }
 
 	std::string package() const;
