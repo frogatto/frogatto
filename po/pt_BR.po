@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-09-10 14:36-0300\n"
-"PO-Revision-Date: 2011-09-10 17:36+0000\n"
+"POT-Creation-Date: 2011-09-11 03:48-0300\n"
+"PO-Revision-Date: 2011-09-11 06:50+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Portuguese (Brazilian) (http://www.transifex.net/projects/p/Frogatto/team/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -616,6 +616,30 @@ msgstr "Gruta Furada"
 #: data/level/chopple-shop-interior.cfg:10 data/level/chopple-shop.cfg:16
 msgid "Chopple's General Store"
 msgstr "Empório do Chopple"
+
+#: data/level/chopple-shop-interior.cfg:547
+msgid "Oh hey, I hadn't seen you here before."
+msgstr ""
+
+#: data/level/chopple-shop-interior.cfg:548
+msgid ""
+"Ah, yeah, I help Chopple at taking care of the store.\n"
+"He had asked me to go to the village\n"
+"to know what was going on, with all that noise\n"
+"that was coming from beyond the cave."
+msgstr ""
+
+#: data/level/chopple-shop-interior.cfg:550
+msgid ""
+"Then I suppose that Milgram's guards saw you\n"
+"and locked you up?"
+msgstr ""
+
+#: data/level/chopple-shop-interior.cfg:551
+msgid ""
+"Yeah! And to think that I thought\n"
+"that the day was going to be boring!"
+msgstr ""
 
 #: data/level/crevice-bridge.cfg:15
 msgid "Crevice Bridge"
@@ -2292,25 +2316,25 @@ msgstr "Ih! Dormi demais!"
 msgid "Frogatto's House"
 msgstr "Casa do Frogatto"
 
-#: data/level/frogatto-grotto-inside.cfg:1134
+#: data/level/frogatto-grotto-inside.cfg:991
 msgid "Hey, how's breakfast coming?"
 msgstr "Opa, o café da manhã já tá pronto?"
 
-#: data/level/frogatto-grotto-inside.cfg:1135
+#: data/level/frogatto-grotto-inside.cfg:992
 msgid "Breakfast? ..bud, we're on lunch."
 msgstr ""
 "Café da manhã?\n"
 "...cara, já estamos no almoço."
 
-#: data/level/frogatto-grotto-inside.cfg:1136
+#: data/level/frogatto-grotto-inside.cfg:993
 msgid "You need to get up earlier."
 msgstr "Você tem que acordar mais cedo."
 
-#: data/level/frogatto-grotto-inside.cfg:1139
+#: data/level/frogatto-grotto-inside.cfg:996
 msgid "Okay, then how's lunch coming?"
 msgstr "Certo, então como tá indo o almoço?"
 
-#: data/level/frogatto-grotto-inside.cfg:1140
+#: data/level/frogatto-grotto-inside.cfg:997
 msgid ""
 "Getting there.\n"
 "It's gonna be a while, though."
@@ -2318,15 +2342,15 @@ msgstr ""
 "Tô fazendo.\n"
 "Mas ainda vai demorar um pouco..."
 
-#: data/level/frogatto-grotto-inside.cfg:1142
+#: data/level/frogatto-grotto-inside.cfg:999
 msgid "I'll check back later, then."
 msgstr "Depois eu vejo, então."
 
-#: data/level/frogatto-grotto-inside.cfg:1145
+#: data/level/frogatto-grotto-inside.cfg:1002
 msgid "So, what happened to lunch?"
 msgstr "Então, e o almoço?"
 
-#: data/level/frogatto-grotto-inside.cfg:1146
+#: data/level/frogatto-grotto-inside.cfg:1003
 msgid ""
 "I got tired of waiting,\n"
 "and ate by myself."
@@ -2334,23 +2358,23 @@ msgstr ""
 "Cansei de esperar,\n"
 "daí almocei sozinho."
 
-#: data/level/frogatto-grotto-inside.cfg:1147
+#: data/level/frogatto-grotto-inside.cfg:1004
 msgid "Leftovers are in the fridge."
 msgstr "Deixei o que sobrou na geladeira."
 
-#: data/level/frogatto-grotto-inside.cfg:1150
+#: data/level/frogatto-grotto-inside.cfg:1007
 msgid "Okay, uhm, thanks."
 msgstr "Hmm, valeu."
 
-#: data/level/frogatto-grotto-inside.cfg:1534
+#: data/level/frogatto-grotto-inside.cfg:1287
 msgid "Hey, Frogatto."
 msgstr "Opa, Frogatto."
 
-#: data/level/frogatto-grotto-inside.cfg:1537
+#: data/level/frogatto-grotto-inside.cfg:1290
 msgid "Uhm... yes?"
 msgstr "Hã... sim?"
 
-#: data/level/frogatto-grotto-inside.cfg:1538
+#: data/level/frogatto-grotto-inside.cfg:1291
 msgid ""
 "At least TRY to get a job today,\n"
 "alright?"
@@ -2358,23 +2382,23 @@ msgstr ""
 "Ao menos TENTE arranjar um trabalho\n"
 "hoje, tá?"
 
-#: data/level/frogatto-grotto-inside.cfg:1539
+#: data/level/frogatto-grotto-inside.cfg:1292
 msgid "We need some help around here."
 msgstr "Precisamos de uma ajuda aqui."
 
-#: data/level/frogatto-grotto-inside.cfg:1541
+#: data/level/frogatto-grotto-inside.cfg:1294
 msgid "Yeah, I know.  I'll try."
 msgstr "É, eu sei. Eu vou tentar."
 
-#: data/level/frogatto-grotto-inside.cfg:1542
+#: data/level/frogatto-grotto-inside.cfg:1295
 msgid "See to it."
 msgstr "Acho bom."
 
-#: data/level/frogatto-grotto-inside.cfg:1555
+#: data/level/frogatto-grotto-inside.cfg:1308
 msgid "Not like I need to be up,"
 msgstr "Não que eu tenha que acordar cedo,"
 
-#: data/level/frogatto-grotto-inside.cfg:1555
+#: data/level/frogatto-grotto-inside.cfg:1308
 msgid "but it's the principle of the thing."
 msgstr "mas é o princípio da coisa."
 
@@ -4211,53 +4235,52 @@ msgstr "Corrida das Moedas"
 msgid "COIN RACE"
 msgstr "CORRIDA DAS MOEDAS"
 
-#: data/level/titlescreen-test.cfg:284 data/level/titlescreen.cfg:254
+#: data/level/titlescreen-test.cfg:259 data/level/titlescreen.cfg:254
 msgid "LOAD GAME"
 msgstr "CONTINUAR"
 
-#: data/level/titlescreen-test.cfg:322 data/level/titlescreen.cfg:274
+#: data/level/titlescreen-test.cfg:279 data/level/titlescreen.cfg:274
 msgid "NEW GAME"
 msgstr "NOVO JOGO"
 
-#: data/level/titlescreen-test.cfg:361 data/level/titlescreen-test.cfg:391
+#: data/level/titlescreen-test.cfg:300 data/level/titlescreen-test.cfg:312
 #: data/level/titlescreen.cfg:295 data/level/titlescreen.cfg:307
 msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
 msgstr "Pressione {LEFT_KEY} ou {RIGHT_KEY} para andar."
 
-#: data/level/titlescreen-test.cfg:392 data/level/titlescreen-test.cfg:409
-#: data/level/titlescreen.cfg:310
-msgid "Press {UP_KEY} to talk, and use things like doors."
-msgstr "Aperte {UP_KEY} para conversar, abrir portas, etc."
-
-#: data/level/titlescreen-test.cfg:393 data/level/titlescreen.cfg:309
-msgid "Press {DOWN_KEY} to crouch."
-msgstr "Aperte {DOWN_KEY} para se abaixar."
-
-#: data/level/titlescreen-test.cfg:394 data/level/titlescreen.cfg:308
-#: data/level/titlescreen.cfg:323
+#: data/level/titlescreen-test.cfg:313 data/level/titlescreen-test.cfg:328
+#: data/level/titlescreen.cfg:308 data/level/titlescreen.cfg:323
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
 msgstr ""
 "Aperte {LEFT_KEY} ou {RIGHT_KEY} duas vezes, rapidamente, para correr."
 
-#: data/level/titlescreen-test.cfg:395 data/level/titlescreen.cfg:311
-msgid "Press {JUMP_KEY} to jump."
-msgstr "Aperte {JUMP_KEY} para pular."
+#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:309
+msgid "Press {DOWN_KEY} to crouch."
+msgstr "Aperte {DOWN_KEY} para se abaixar."
 
-#: data/level/titlescreen-test.cfg:396 data/level/titlescreen.cfg:312
-msgid "Press {TONGUE_KEY} to use a character's attacks."
-msgstr "Aperte {TONGUE_KEY} para usar os ataques do personagem."
-
-#: data/level/titlescreen-test.cfg:447 data/level/titlescreen.cfg:343
-msgid "ARCADE"
-msgstr "FLIPERAMA"
-
-#: data/level/titlescreen.cfg:309
+#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:309
 msgid "Walk in front of a door or person, and press"
 msgstr "Você pode interagir com pessoas ou objetos como portas,"
 
-#: data/level/titlescreen.cfg:310
+#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:310
+msgid "Press {UP_KEY} to talk, and use things like doors."
+msgstr "Aperte {UP_KEY} para conversar, abrir portas, etc."
+
+#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:310
 msgid "the button that appears to interact with them."
 msgstr "tocando no botão que aparecer na tela."
+
+#: data/level/titlescreen-test.cfg:316 data/level/titlescreen.cfg:311
+msgid "Press {JUMP_KEY} to jump."
+msgstr "Aperte {JUMP_KEY} para pular."
+
+#: data/level/titlescreen-test.cfg:317 data/level/titlescreen.cfg:312
+msgid "Press {TONGUE_KEY} to use a character's attacks."
+msgstr "Aperte {TONGUE_KEY} para usar os ataques do personagem."
+
+#: data/level/titlescreen-test.cfg:348 data/level/titlescreen.cfg:343
+msgid "ARCADE"
+msgstr "FLIPERAMA"
 
 #: data/level/to-nenes-house-inside.cfg:10
 msgid "Nene's House"
@@ -4687,6 +4710,18 @@ msgid ""
 msgstr ""
 "O extensor de língua irá aumentar\n"
 "o comprimento da sua língua."
+
+#: data/objects/playable/difficulty-selector.cfg:16
+msgid "Casual"
+msgstr ""
+
+#: data/objects/playable/difficulty-selector.cfg:17
+msgid "Intense"
+msgstr ""
+
+#: data/objects/playable/difficulty-selector.cfg:18
+msgid "Unfair"
+msgstr ""
 
 #: data/objects/playable/map-selector.cfg:21
 msgid "Milgram's Castle"
