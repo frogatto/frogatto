@@ -152,6 +152,10 @@ custom_object::custom_object(wml::const_node_ptr node)
 		draw_area_.reset(new rect(node->attr("draw_area")));
 	}
 
+	if(node->has_attr("draw_scale")) {
+		draw_scale_.reset(new decimal(wml::get_int(node, "draw_scale")));
+	}
+
 	if(node->has_attr("activation_area")) {
 		activation_area_.reset(new rect(node->attr("activation_area")));
 	}
@@ -605,6 +609,10 @@ wml::node_ptr custom_object::write() const
 		res->set_attr("draw_area", draw_area_->to_string());
 	}
 
+	if(draw_scale_) {
+		res->set_attr("draw_scale", formatter() << draw_scale_->value());
+	}
+
 	if(activation_area_) {
 		res->set_attr("activation_area", activation_area_->to_string());
 	}
@@ -706,7 +714,9 @@ void custom_object::draw() const
 	const int draw_x = x();
 	const int draw_y = y();
 
-	if(!draw_area_.get()) {
+	if(draw_scale_) {
+		frame_->draw(draw_x-draw_x%2, draw_y-draw_y%2, face_right(), upside_down(), time_in_frame_, rotate_.as_float(), draw_scale_->as_float());
+	} else if(!draw_area_.get()) {
 		frame_->draw(draw_x-draw_x%2, draw_y-draw_y%2, face_right(), upside_down(), time_in_frame_, rotate_.as_float());
 	} else {
 		frame_->draw(draw_x-draw_x%2, draw_y-draw_y%2, *draw_area_, face_right(), upside_down(), time_in_frame_, rotate_.as_float());
@@ -1814,6 +1824,12 @@ variant custom_object::get_value_by_slot(int slot) const
 
 	case CUSTOM_OBJECT_ALWAYS_ACTIVE: return variant(always_active_);
 	case CUSTOM_OBJECT_TAGS: return variant(tags_.get());
+	case CUSTOM_OBJECT_SCALE:
+		if(draw_scale_) {
+			return variant(*draw_scale_);
+		} else {
+			return variant(decimal::from_int(1));
+		}
 	case CUSTOM_OBJECT_HAS_FEET: return variant(has_feet_);
 
 	case CUSTOM_OBJECT_CTRL_UP:
@@ -2001,6 +2017,11 @@ void custom_object::set_value(const std::string& key, const variant& value)
 			draw_area_.reset(new rect(value[0].as_int(), value[1].as_int(), value[2].as_int(), value[3].as_int()));
 		} else {
 			draw_area_.reset();
+		}
+	} else if(key == "scale") {
+		draw_scale_.reset(new decimal(value.as_decimal()));
+		if(draw_scale_->as_int() == 1 && draw_scale_->fractional() == 0) {
+			draw_scale_.reset();
 		}
 	} else if(key == "activation_area") {
 		if(value.is_list() && value.num_elements() == 4) {
@@ -2384,6 +2405,14 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 			draw_area_.reset(new rect(value[0].as_int(), value[1].as_int(), value[2].as_int(), value[3].as_int()));
 		} else {
 			draw_area_.reset();
+		}
+
+		break;
+
+	case CUSTOM_OBJECT_SCALE:
+		draw_scale_.reset(new decimal(value.as_decimal()));
+		if(draw_scale_->as_int() == 1 && draw_scale_->fractional() == 0) {
+			draw_scale_.reset();
 		}
 
 		break;

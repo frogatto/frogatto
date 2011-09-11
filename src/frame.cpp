@@ -482,6 +482,34 @@ void frame::draw(int x, int y, bool face_right, bool upside_down, int time, GLfl
 	graphics::flush_blit_texture();
 }
 
+void frame::draw(int x, int y, bool face_right, bool upside_down, int time, GLfloat rotate, GLfloat scale) const
+{
+	const frame_info* info = NULL;
+	GLfloat rect[4];
+	get_rect_in_texture(time, &rect[0], info);
+
+	x += (face_right ? info->x_adjust : info->x2_adjust)*scale_;
+	y += info->y_adjust*scale_;
+	const int w = info->area.w()*scale_*scale*(face_right ? 1 : -1);
+	const int h = info->area.h()*scale_*scale*(upside_down ? -1 : 1);
+
+	//adjust x,y to accomodate scaling so that we scale from the center.
+	const int width_delta = img_rect_.w()*scale_*scale - img_rect_.w()*scale_;
+	const int height_delta = img_rect_.h()*scale_*scale - img_rect_.h()*scale_;
+	x -= width_delta/2;
+	y -= height_delta/2;
+
+	if(rotate == 0) {
+		//if there is no rotation, then we can make a much simpler call
+		graphics::queue_blit_texture(texture_, x, y, w, h, rect[0], rect[1], rect[2], rect[3]);
+		graphics::flush_blit_texture();
+		return;
+	}
+
+	graphics::queue_blit_texture(texture_, x, y, w, h, rotate, rect[0], rect[1], rect[2], rect[3]);
+	graphics::flush_blit_texture();
+}
+
 void frame::draw(int x, int y, const rect& area, bool face_right, bool upside_down, int time, GLfloat rotate) const
 {
 	const frame_info* info = NULL;

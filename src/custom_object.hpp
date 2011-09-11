@@ -248,6 +248,7 @@ private:
 	const graphics::color_transform& draw_color() const;
 	boost::shared_ptr<graphics::color_transform> draw_color_;
 
+	boost::shared_ptr<decimal> draw_scale_;
 	boost::shared_ptr<rect> draw_area_, activation_area_, clip_area_;
 
 	bool can_interact_with_;
