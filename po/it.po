@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-09-11 03:48-0300\n"
-"PO-Revision-Date: 2011-09-11 06:50+0000\n"
+"POT-Creation-Date: 2011-09-11 20:47-0300\n"
+"PO-Revision-Date: 2011-09-11 23:47+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Italian (http://www.transifex.net/projects/p/Frogatto/team/it/)\n"
 "MIME-Version: 1.0\n"
@@ -687,6 +687,274 @@ msgstr ""
 msgid "Crevice Bridge"
 msgstr "Ponte della Crepa"
 
+#: data/level/crevice-bridge.cfg:719
+msgid "Hi, again."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:720
+msgid "So, how did it go?"
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:722
+msgid "Could've been worse."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:724
+msgid ""
+"That ... uh, \"captain\" cat, or whoever he was,\n"
+"tried to dice me up."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:726
+msgid ""
+"Naturally, we wouldn't be having\n"
+"this conversation if I hadn't gotten\n"
+"the better of him."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:728
+msgid ""
+"So all's well\n"
+"that ends well, I suppose."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:730
+msgid ""
+"I did find out what was going on, at least,\n"
+"that is, what the elder *says* is going on."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:732
+msgid ""
+"I wouldn't mind running this by a few people,\n"
+"since I have no idea what's true, or not."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:734
+msgid "Go right ahead."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:737
+msgid ""
+"So... uhm... loosely speaking, he says\n"
+"that Milgram loaned him money, and this whole\n"
+"incident was Milgram coming to shake him down."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:739
+msgid "Trying to get his money back."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:741
+msgid ""
+"So then he tells this oddball story\n"
+"about how it's all some plot where\n"
+"Milgram's gonna take over the town."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:743
+#: data/level/crevice-village-house-elder.cfg:1614
+msgid "Wow."
+msgstr "Wow."
+
+#: data/level/crevice-bridge.cfg:744
+msgid "I've never heard of any of this."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:747
+msgid ""
+"Really?\n"
+"He's never talked about this?"
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:749
+msgid "Never."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:752
+msgid ""
+"Has he ever shown any signs of ... suddenly\n"
+"having way more spending money than usual?"
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:754
+msgid ""
+"Well, he's *bragged* about being rich,\n"
+"but that's just his \"dignified family\" schtick."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:755
+msgid ""
+"He's such a miser, you know -\n"
+"the man would probably burn his\n"
+"furniture just to save on firewood."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:756
+msgid ""
+"So, no, he's never seemed\n"
+"to have a dime to spare."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:757
+msgid ""
+"He does brag about being known by important\n"
+"people, but you know how he is."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:760
+msgid ""
+"Yeah.  Geez.\n"
+" So, uh, here's what I think we know:"
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:762
+msgid ""
+"We know he's clearly run afoul\n"
+"of Milgram, somehow."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:764
+msgid ""
+"We also know Milgram's not interested\n"
+"in taking over the town, because he\n"
+"essentially just did, and gave it up."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:766
+msgid ""
+"We don't know if the money thing\n"
+"is true, but we know if it is,\n"
+"he certainly hasn't put it to use."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:768
+msgid ""
+"Oh yeah, I forgot to mention;\n"
+"he said it was some kind of \"investment\""
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:770
+msgid ""
+"Which I assume would be for the town.\n"
+"Building things."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:772
+msgid "Naturally, we know that didn't happen."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:774
+msgid "So other than that, it's a mystery."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:776
+msgid ""
+"So, dare I ask:\n"
+"What do we do now?"
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:779
+msgid ""
+"Ah, that.  I went and decided that\n"
+"it's probably a very good idea to\n"
+"do a little diplomacy."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:781
+msgid ""
+"*Someone* needs to go talk to Milgram,\n"
+"and ask what was wrong, so nothing bad happens."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:783
+msgid ""
+"So for a lack of any other willing parties,\n"
+"I decided to go."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:785
+msgid "That's very noble of you."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:788
+msgid ""
+"Ha, well, we're also going to find out\n"
+"if it's very foolish, as well."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:791
+msgid ""
+"But nothing ventured, nothing gained, you know?\n"
+"I guess I'm just tired of bumming around."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:793
+msgid ""
+"Speaking of which, I'd been meaning\n"
+"to thank you for your help thus far."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:795
+msgid ""
+"I've really appreciated the \"eyes in the sky\".\n"
+"It's very helpful."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:797
+msgid ""
+"To spare your asking,\n"
+"yes, I'd be happy to continue."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:800
+msgid "Hey, thanks, that's really nice of you!"
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:802
+msgid ""
+"It's the least I can do.\n"
+"I'd offer to carry you, even,\n"
+"but I'm afraid that's physically impossible."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:803
+msgid ""
+"I'm as curious as you are, about this,\n"
+"and we're more likely to get to the\n"
+"bottom of things if we work together."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:806
+msgid "Awesome!"
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:809
+msgid ""
+"Anyways, I was planning to go through\n"
+"the forest, to start with."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:811
+msgid "Does that sound like a good idea?"
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:813
+msgid ""
+"Yes... it is the only path I know of,\n"
+"but be careful in there."
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:816
+msgid ""
+"Yeah, no kidding.\n"
+"Well, see you soon!  Thanks again!"
+msgstr ""
+
+#: data/level/crevice-bridge.cfg:828
+msgid "Ahh, there you are!"
+msgstr ""
+
 #: data/level/crevice-village-cave.cfg:14
 #: data/level/crevice-village-central.cfg:15
 #: data/level/crevice-village-heights.cfg:16 data/level/crevice-village.cfg:15
@@ -704,7 +972,7 @@ msgstr "Tu!!"
 
 #: data/level/crevice-village-cave.cfg:812
 #: data/object_prototypes/buyable_item.cfg:24
-#: data/objects/props-interactive/interactive/save_toilet.cfg:17
+#: data/objects/props-interactive/misc/save_toilet.cfg:17
 #: data/objects/props-interactive/portals/dungeon_save_door.cfg:24
 #: data/objects/props-interactive/portals/world_1_interior_save_door.cfg:24
 msgid "Yes"
@@ -720,7 +988,7 @@ msgstr "Io penso di sì!"
 
 #: data/level/crevice-village-cave.cfg:814
 #: data/object_prototypes/buyable_item.cfg:25
-#: data/objects/props-interactive/interactive/save_toilet.cfg:22
+#: data/objects/props-interactive/misc/save_toilet.cfg:22
 #: data/objects/props-interactive/portals/dungeon_save_door.cfg:29
 #: data/objects/props-interactive/portals/world_1_interior_save_door.cfg:29
 msgid "No"
@@ -1729,10 +1997,6 @@ msgstr "Lo è infatti, ragazzo mio!"
 #: data/level/crevice-village-house-elder.cfg:1612
 msgid "It's my very own safe room."
 msgstr "Questa è la mia stanza segreta."
-
-#: data/level/crevice-village-house-elder.cfg:1614
-msgid "Wow."
-msgstr "Wow."
 
 #: data/level/crevice-village-house-elder.cfg:1616
 msgid "Built it for exactly this sort of crisis."
@@ -4215,11 +4479,17 @@ msgstr "ARCADE"
 msgid "Nene's House"
 msgstr "Casa di Nene"
 
-#: data/level/to-nenes-house-inside.cfg:488
+#: data/level/to-nenes-house-inside.cfg:485
+msgid ""
+"AIEEEEE!\n"
+"Get that thing out of here!"
+msgstr ""
+
+#: data/level/to-nenes-house-inside.cfg:490
 msgid "Hey Nene, what's cooking?"
 msgstr "Hey Nene, cosa stai cucinando?"
 
-#: data/level/to-nenes-house-inside.cfg:489
+#: data/level/to-nenes-house-inside.cfg:491
 msgid ""
 "I'm making a cake.\n"
 "Would you like to have some?"
@@ -4227,15 +4497,15 @@ msgstr ""
 "Sto preparando una torta.\n"
 "Ne vuoi un pezzo?"
 
-#: data/level/to-nenes-house-inside.cfg:491
+#: data/level/to-nenes-house-inside.cfg:493
 msgid "Nah, I'd better get to town."
 msgstr "Nah, devo andare in città."
 
-#: data/level/to-nenes-house-inside.cfg:493
+#: data/level/to-nenes-house-inside.cfg:495
 msgid "I have serious business to attend to."
 msgstr "Ho una questione urgente che mi attende."
 
-#: data/level/to-nenes-house-inside.cfg:497
+#: data/level/to-nenes-house-inside.cfg:499
 msgid ""
 "Oh, well maybe before you go\n"
 "you could look at my basement."
@@ -4243,11 +4513,11 @@ msgstr ""
 "Oh, magari prima di andare potresti\n"
 "dare un occhiata alla mia cantina."
 
-#: data/level/to-nenes-house-inside.cfg:499
+#: data/level/to-nenes-house-inside.cfg:501
 msgid "Your basement?"
 msgstr "La tua cantina?"
 
-#: data/level/to-nenes-house-inside.cfg:505
+#: data/level/to-nenes-house-inside.cfg:507
 msgid ""
 "Yes, here's the key.\n"
 "There're some ants down there."
@@ -4255,15 +4525,15 @@ msgstr ""
 "Sì, ecco le chiavi.\n"
 "Ci sono alcune formiche laggiù."
 
-#: data/level/to-nenes-house-inside.cfg:506
+#: data/level/to-nenes-house-inside.cfg:508
 msgid "They're freaking me out."
 msgstr "Mi stanno facendo impazzire."
 
-#: data/level/to-nenes-house-inside.cfg:508
+#: data/level/to-nenes-house-inside.cfg:510
 msgid "Sure thing. I need a job!"
 msgstr "Certo. Avevo proprio bisogno di un lavoro!"
 
-#: data/level/to-nenes-house-inside.cfg:510
+#: data/level/to-nenes-house-inside.cfg:512
 msgid ""
 "How much were you figuring on\n"
 "paying for a pest exterminator?"
@@ -4271,7 +4541,7 @@ msgstr ""
 "Quanto sei disposta a pagare\n"
 "per questa disinfestazione?"
 
-#: data/level/to-nenes-house-inside.cfg:511
+#: data/level/to-nenes-house-inside.cfg:513
 msgid ""
 "Well sheesh, I thought you'd\n"
 "do it for free for a friend!"
@@ -4279,7 +4549,7 @@ msgstr ""
 "Beh, pensavo tu potessi\n"
 "farlo gratis per un'amica! "
 
-#: data/level/to-nenes-house-inside.cfg:512
+#: data/level/to-nenes-house-inside.cfg:514
 msgid ""
 "But if you're going to be like that\n"
 "I think I left a health capsule down there.\n"
@@ -4289,7 +4559,7 @@ msgstr ""
 "di aver lasciato una capsula di vita laggiù.\n"
 "Se riesci a ripulire tutto, è tua."
 
-#: data/level/to-nenes-house-inside.cfg:514
+#: data/level/to-nenes-house-inside.cfg:516
 msgid ""
 "So, did you end up taking care\n"
 "of those ants down there?"
@@ -4297,7 +4567,7 @@ msgstr ""
 "Bene, hai finito di prenderti cura\n"
 "di quelle formiche laggiù?"
 
-#: data/level/to-nenes-house-inside.cfg:516
+#: data/level/to-nenes-house-inside.cfg:518
 msgid ""
 "Of course.\n"
 "I don't disappoint!"
@@ -4305,7 +4575,7 @@ msgstr ""
 "Certo.\n"
 "Io non deludo!"
 
-#: data/level/to-nenes-house-inside.cfg:518
+#: data/level/to-nenes-house-inside.cfg:520
 msgid ""
 "And thanks for the gift,\n"
 "by the way."
@@ -4313,11 +4583,11 @@ msgstr ""
 "Ed a proposito,\n"
 "grazie per il regalo."
 
-#: data/level/to-nenes-house-inside.cfg:519
+#: data/level/to-nenes-house-inside.cfg:521
 msgid "You're welcome."
 msgstr "Prego."
 
-#: data/level/to-nenes-house-inside.cfg:841
+#: data/level/to-nenes-house-inside.cfg:843
 msgid ""
 "Can't a guy sneak into his neighbor's\n"
 "basement uninvited these days?"
@@ -4325,7 +4595,7 @@ msgstr ""
 "Può uno non imbucarsi nella casa del vicino\n"
 "di questi giorni?"
 
-#: data/level/to-nenes-house-inside.cfg:841
+#: data/level/to-nenes-house-inside.cfg:843
 msgid "Well, dangit, this door is locked."
 msgstr "Accidenti, questa porta è chiusa."
 
@@ -4637,23 +4907,23 @@ msgstr ""
 msgid "Milgram's Castle"
 msgstr "Castello di Milgram"
 
-#: data/objects/props-interactive/interactive/save_toilet.cfg:16
+#: data/objects/props-interactive/misc/save_toilet.cfg:16
 #: data/objects/props-interactive/portals/dungeon_save_door.cfg:23
 #: data/objects/props-interactive/portals/world_1_interior_save_door.cfg:23
 msgid "Do you want to save the game?"
 msgstr "Vuoi salvare il gioco?"
 
-#: data/objects/props-interactive/interactive/save_toilet.cfg:21
+#: data/objects/props-interactive/misc/save_toilet.cfg:21
 #: data/objects/props-interactive/portals/dungeon_save_door.cfg:28
 #: data/objects/props-interactive/portals/world_1_interior_save_door.cfg:28
 msgid "The game has been saved."
 msgstr "Il gioco è stato salvato."
 
-#: data/objects/props/interactive/chopple_npc.cfg:7
+#: data/objects/props-interactive/npcs/chopple_npc.cfg:7
 msgid "Hi, Chopple."
 msgstr "Ciao, Chopple."
 
-#: data/objects/props/interactive/chopple_npc.cfg:8
+#: data/objects/props-interactive/npcs/chopple_npc.cfg:8
 msgid ""
 "Hey.\n"
 "Welcome to the store."
@@ -4661,11 +4931,11 @@ msgstr ""
 "Hey.\n"
 "Benvenuto nel negozio."
 
-#: data/objects/props/interactive/chopple_npc.cfg:9
+#: data/objects/props-interactive/npcs/chopple_npc.cfg:9
 msgid "Take your time, look around."
 msgstr "Guardati pure intorno con calma."
 
-#: data/objects/props/interactive/kinguin_npc.cfg:29
+#: data/objects/props-interactive/npcs/kinguin_npc.cfg:29
 msgid "Hi, Kinguin, what's up?"
 msgstr "Ciao, Kinguin, cosa succede?"
 
