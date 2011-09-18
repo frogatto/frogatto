@@ -1077,7 +1077,12 @@ msgid ""
 msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1407
+msgctxt "Response to 'They ... as in Milgram's kitties?'"
+msgid "Yeah."
+msgstr ""
+
 #: data/level/crevice-village-house-2.cfg:3509
+msgctxt "Response to 'Can you give me any advice?'"
 msgid "Yeah."
 msgstr ""
 
