@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-09-11 20:47-0300\n"
-"PO-Revision-Date: 2011-09-12 14:54+0000\n"
-"Last-Translator: daBascht <x-bascht@web.de>\n"
+"POT-Creation-Date: 2011-09-18 00:59-0300\n"
+"PO-Revision-Date: 2011-09-18 04:00+0000\n"
+"Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: German (http://www.transifex.net/projects/p/Frogatto/team/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -794,7 +794,7 @@ msgid ""
 "He does brag about being known by important\n"
 "people, but you know how he is."
 msgstr ""
-"Er brahte damit wichtige Persönlihckeiten zu kennen, aber die kennst ihn ja."
+"Er brahlte damit wichtige Persönlichkeiten zu kennen, aber du kennst ihn ja."
 
 #: data/level/crevice-bridge.cfg:760
 msgid ""
@@ -1160,7 +1160,7 @@ msgstr "Nein, das ist verschlossen."
 msgid "Hey! Over here!"
 msgstr "Hey! Hier drüben!"
 
-#: data/level/crevice-village-heights.cfg:1397
+#: data/level/crevice-village-heights.cfg:1400
 msgid ""
 "Wow, so they seriously just packed up and left?\n"
 "That's amazing!"
@@ -1169,30 +1169,30 @@ msgstr ""
 "Sachen gepackt und sind weggegangen?\n"
 "Das ist verblüffend!"
 
-#: data/level/crevice-village-heights.cfg:1398
+#: data/level/crevice-village-heights.cfg:1401
 msgid "Tell me about it."
 msgstr "Erzähl mir davon."
 
-#: data/level/crevice-village-heights.cfg:1400
+#: data/level/crevice-village-heights.cfg:1403
 msgid "So, how did you get out of your cage?"
 msgstr "Also, wie bist du aus deinem Käfig gekommen?"
 
-#: data/level/crevice-village-heights.cfg:1401
+#: data/level/crevice-village-heights.cfg:1404
 msgid "Well, they just let me out."
 msgstr "Die haben mich einfach rausgelassen."
 
-#: data/level/crevice-village-heights.cfg:1403
+#: data/level/crevice-village-heights.cfg:1406
 msgid ""
 "What?!\n"
 "They ... as in Milgram's kitties?"
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1404
+#: data/level/crevice-village-heights.cfg:1407
 #: data/level/crevice-village-house-2.cfg:3509
 msgid "Yeah."
 msgstr "Jah."
 
-#: data/level/crevice-village-heights.cfg:1406
+#: data/level/crevice-village-heights.cfg:1409
 msgid ""
 "Weird.. that doesn't make any sense!\n"
 "Why would they just let you go?"
@@ -1200,21 +1200,21 @@ msgstr ""
 "Seltsam.. das macht garkeinen sinn!\n"
 "Warum sollten sie dich gehen lassen?"
 
-#: data/level/crevice-village-heights.cfg:1408
+#: data/level/crevice-village-heights.cfg:1411
 msgid "That seems like an enormous waste of effort."
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1409
+#: data/level/crevice-village-heights.cfg:1412
 msgid "Yeah, this whole day has just been ... bizarre."
 msgstr "Ja, der ganze Tag war einfach nur ... bizarr."
 
-#: data/level/crevice-village-heights.cfg:1410
+#: data/level/crevice-village-heights.cfg:1413
 msgid ""
 "I've been thinking about that part,\n"
 "and I have a hunch."
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1411
+#: data/level/crevice-village-heights.cfg:1414
 msgid ""
 "I think the rank-and-file weren't\n"
 "given very specific orders."
@@ -1222,7 +1222,7 @@ msgstr ""
 "Ich denke die gewöhnlichen Soldaten\n"
 "haben keine klaren Befehle erhalten"
 
-#: data/level/crevice-village-heights.cfg:1412
+#: data/level/crevice-village-heights.cfg:1415
 msgid ""
 "I don't think they were told\n"
 "what they were looking for."
@@ -1231,31 +1231,31 @@ msgstr ""
 "erzählt bekommen,\n"
 "nach was sie suchen sollen."
 
-#: data/level/crevice-village-heights.cfg:1413
+#: data/level/crevice-village-heights.cfg:1416
 msgid ""
 "I think they were just told\n"
 "to secure the place."
 msgstr "Ich denke sie hatten nur den Befehl, den Platz zu sichern."
 
-#: data/level/crevice-village-heights.cfg:1414
+#: data/level/crevice-village-heights.cfg:1417
 msgid ""
 "Just arresting everyone is a strange way\n"
 "to do it, but I guess it's not so weird\n"
 "if you've got lots of manpower to spare."
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1415
+#: data/level/crevice-village-heights.cfg:1418
 msgid ""
 "If they were just looking for the elder\n"
 "and didn't care about ticking people off,\n"
 "it's one way to make sure he couldn't slip away."
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1417
+#: data/level/crevice-village-heights.cfg:1420
 msgid "Well, is that really who they were after?"
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1418
+#: data/level/crevice-village-heights.cfg:1421
 msgid ""
 "Yeah, one of their head guys showed me\n"
 "a drawing of him."
@@ -1263,25 +1263,25 @@ msgstr ""
 "Ja, einer ihrer Anführer zeigte\n"
 "mir ein Gemälde von ihm."
 
-#: data/level/crevice-village-heights.cfg:1419
+#: data/level/crevice-village-heights.cfg:1422
 msgid "He asked me if I knew who it was."
 msgstr "Er fragte mich, ob ich wisse wer das ist."
 
-#: data/level/crevice-village-heights.cfg:1421
+#: data/level/crevice-village-heights.cfg:1424
 msgid "That's very interesting..."
 msgstr "Das ist sehr interessant..."
 
-#: data/level/crevice-village-heights.cfg:1423
+#: data/level/crevice-village-heights.cfg:1426
 msgid ""
 "Suddenly their motives don't seem\n"
 "so cut and dry."
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1425
+#: data/level/crevice-village-heights.cfg:1428
 msgid "Strange.."
 msgstr "Seltsam.."
 
-#: data/level/crevice-village-heights.cfg:1427
+#: data/level/crevice-village-heights.cfg:1430
 msgid ""
 "Anyways, not sure if you heard this part,\n"
 "but I'm about to take a little trip."
@@ -1291,56 +1291,56 @@ msgstr ""
 "mitbekommen hast, dass\n"
 "ich eine kleine Reise mache."
 
-#: data/level/crevice-village-heights.cfg:1428
+#: data/level/crevice-village-heights.cfg:1431
 msgid "No, I didn't hear this."
 msgstr "Nein, das ist mir neu."
 
-#: data/level/crevice-village-heights.cfg:1430
+#: data/level/crevice-village-heights.cfg:1433
 msgid ""
 "Yeah, I'm a little worried about\n"
 "what might happen if someone doesn't\n"
 "get in touch with Milgram."
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1432
+#: data/level/crevice-village-heights.cfg:1435
 msgid ""
 "That old clown was just sabre-rattling\n"
 "about raising a militia."
 msgstr "Dieser alte Witzbold war wie versessen darauf, eine Miliz zu gründen."
 
-#: data/level/crevice-village-heights.cfg:1434
+#: data/level/crevice-village-heights.cfg:1437
 msgid ""
 "You don't think he could actually\n"
 "pull that off, do you?"
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1435
+#: data/level/crevice-village-heights.cfg:1438
 msgid ""
 "Nah, this town doesn't have the fire for that.\n"
 "Which is a shame in some ways, but ..."
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1436
+#: data/level/crevice-village-heights.cfg:1439
 msgid ""
 "It's probably for the best, really,\n"
 "I can't imagine the mess if people actually\n"
 "got to fighting over stuff they disagreed about."
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1438
+#: data/level/crevice-village-heights.cfg:1441
 msgid ""
 "I guess I'm also worried about the other end;\n"
 "what Milgram is doing, et cetera."
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1440
+#: data/level/crevice-village-heights.cfg:1443
 msgid ""
 "I don't know; it's a little crazy to do this,\n"
 "but I've kinda been itching for something\n"
 "worthwhile to do."
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1442
+#: data/level/crevice-village-heights.cfg:1445
 msgid ""
 "Good excuse to get out and travel a bit.\n"
 "See the island."
@@ -1349,29 +1349,29 @@ msgstr ""
 "heraus zu kommen und zu reisen.\n"
 "Auf der Insel umzusehen."
 
-#: data/level/crevice-village-heights.cfg:1443
+#: data/level/crevice-village-heights.cfg:1446
 msgid "Risky business, though, isn't it?"
 msgstr ""
 "Das ist ein gefährliches Unterfangen,\n"
 "denkst du nicht?"
 
-#: data/level/crevice-village-heights.cfg:1445
+#: data/level/crevice-village-heights.cfg:1448
 msgid "Oh, no question."
 msgstr "Oh, keine Frage."
 
-#: data/level/crevice-village-heights.cfg:1447
+#: data/level/crevice-village-heights.cfg:1450
 msgid ""
 "Can't be worse than the crap I have\n"
 "to deal with just coming into town, though."
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1449
+#: data/level/crevice-village-heights.cfg:1452
 msgid ""
 "Who knows?\n"
 "Maybe something good will come of it?"
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1450
+#: data/level/crevice-village-heights.cfg:1453
 msgid ""
 "Well, good luck!\n"
 "I'll be around."
@@ -1379,7 +1379,7 @@ msgstr ""
 "Gut, viel Glück!\n"
 "Ich bleibe in der Nähe."
 
-#: data/level/crevice-village-heights.cfg:1485
+#: data/level/crevice-village-heights.cfg:1488
 msgid ""
 "Hello, again!\n"
 "So ... what now?"
@@ -1387,7 +1387,7 @@ msgstr ""
 "Hallo nochmal!\n"
 "also ... was jetzt?"
 
-#: data/level/crevice-village-heights.cfg:1486
+#: data/level/crevice-village-heights.cfg:1489
 msgid ""
 "It seems like some of the kitties are\n"
 "packing up and leaving, actually."
@@ -1395,7 +1395,7 @@ msgstr ""
 "Es sieht aus, als ob einige Kätzchen\n"
 "zusammenpacken und wirklich aufbrechen."
 
-#: data/level/crevice-village-heights.cfg:1488
+#: data/level/crevice-village-heights.cfg:1491
 msgid ""
 "That's news to me!\n"
 "Where did you see that?"
@@ -1403,7 +1403,7 @@ msgstr ""
 "Das ist neu für mich!\n"
 "Wo hast du das gesehen?"
 
-#: data/level/crevice-village-heights.cfg:1490
+#: data/level/crevice-village-heights.cfg:1493
 msgid ""
 "Actually, nevermind - I'm just trying\n"
 "to figure out what their intentions are."
@@ -1411,14 +1411,14 @@ msgstr ""
 "Genau genommen vergiss es - Ich versuche\n"
 "gerade ihre Absichten zu durchschauen."
 
-#: data/level/crevice-village-heights.cfg:1491
+#: data/level/crevice-village-heights.cfg:1494
 msgid ""
 "Well, if you're game to find out,\n"
 "I just saw one of Milgram's lieutenants\n"
 "march up to the elder's house."
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1493
+#: data/level/crevice-village-heights.cfg:1496
 msgid ""
 "Weird.\n"
 "I wonder what they want with the elder?"
@@ -1426,30 +1426,30 @@ msgstr ""
 "Seltsam.\n"
 "Ich frage mich, was sie von den Ältesten wollen."
 
-#: data/level/crevice-village-heights.cfg:1494
+#: data/level/crevice-village-heights.cfg:1497
 msgid ""
 "I have a notion,\n"
 "but if you're going to go up there,\n"
 "you'd better go whilst the going's good."
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1496
+#: data/level/crevice-village-heights.cfg:1499
 msgid "Yeah, I'll check it out."
 msgstr "Ja, ich werde das überprüfen."
 
-#: data/level/crevice-village-heights.cfg:1509
+#: data/level/crevice-village-heights.cfg:1512
 msgid "So!  I've unlocked this gate, here."
 msgstr "Endlich!   Das Tor hier ist aufgeschlossen."
 
-#: data/level/crevice-village-heights.cfg:1513
+#: data/level/crevice-village-heights.cfg:1516
 msgid "Finally, a chance to use your degree..."
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1515
+#: data/level/crevice-village-heights.cfg:1518
 msgid "...Sorry."
 msgstr "...Entschuldigung"
 
-#: data/level/crevice-village-heights.cfg:1518
+#: data/level/crevice-village-heights.cfg:1521
 msgid ""
 "Through there,\n"
 "is the way to where Milgram lives."
@@ -1457,27 +1457,27 @@ msgstr ""
 "Dort entlang\n"
 "geht es zu dem Ort, an dem Milgram lebt."
 
-#: data/level/crevice-village-heights.cfg:1520
+#: data/level/crevice-village-heights.cfg:1523
 msgid ""
 "If I remember right,\n"
 "one way to his castle will take you... hmm."
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1522
+#: data/level/crevice-village-heights.cfg:1525
 msgid ""
 "Uh, this'll take you over a bridge,\n"
 "then through an underground passage."
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1524
+#: data/level/crevice-village-heights.cfg:1527
 msgid "Watch your head in there."
 msgstr "Paß auf deinen Kopf auf hier drinnen."
 
-#: data/level/crevice-village-heights.cfg:1526
+#: data/level/crevice-village-heights.cfg:1529
 msgid "Past that, and you come to the forest."
 msgstr "Dahinter kommst du zum Wald."
 
-#: data/level/crevice-village-heights.cfg:1528
+#: data/level/crevice-village-heights.cfg:1531
 msgid ""
 "I haven't been there in a long time,\n"
 "so I'm not sure what's become of it."
@@ -1486,19 +1486,19 @@ msgstr ""
 "also bin ich mir nicht sicher,\n"
 "was draus jetzt geworden ist."
 
-#: data/level/crevice-village-heights.cfg:1531
+#: data/level/crevice-village-heights.cfg:1534
 msgid ""
 "I'm rather out of date on my political geography,\n"
 " so you'll just have to ask people as you go."
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1534
+#: data/level/crevice-village-heights.cfg:1537
 msgid ""
 "Uhm... well, don't you have any maps or such?\n"
 "Are you going to help outfit me for this?"
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1536
+#: data/level/crevice-village-heights.cfg:1539
 msgid ""
 "Nope.\n"
 "You're on your own.  Good luck."
@@ -1507,11 +1507,11 @@ msgstr ""
 "Du bist auf dich alleingestellt.\n"
 "Viel Glück"
 
-#: data/level/crevice-village-heights.cfg:1539
+#: data/level/crevice-village-heights.cfg:1542
 msgid "Gee, thanks."
 msgstr "Na sowas, danke."
 
-#: data/level/crevice-village-heights.cfg:1541
+#: data/level/crevice-village-heights.cfg:1544
 msgid ""
 "Before we part ways, though,\n"
 "one question:"
@@ -1519,7 +1519,7 @@ msgstr ""
 "Bevor sich unsere Wege trennen\n"
 "habe ich noch eine Frage:"
 
-#: data/level/crevice-village-heights.cfg:1543
+#: data/level/crevice-village-heights.cfg:1546
 msgid ""
 "What are we planning to do about\n"
 "the rest of Milgram's army?"
@@ -1527,11 +1527,11 @@ msgstr ""
 "Was planen wir mit dem Rest\n"
 "von Milgrams Armee zu machen?"
 
-#: data/level/crevice-village-heights.cfg:1548
+#: data/level/crevice-village-heights.cfg:1551
 msgid "Hey guys!"
 msgstr "Hallo Leute!"
 
-#: data/level/crevice-village-heights.cfg:1551
+#: data/level/crevice-village-heights.cfg:1554
 msgid ""
 "Oh, hey there!\n"
 "Didn't see you coming."
@@ -1539,30 +1539,30 @@ msgstr ""
 "Oh, hallo!\n"
 "Habe dich garnicht kommen gesehen."
 
-#: data/level/crevice-village-heights.cfg:1553
+#: data/level/crevice-village-heights.cfg:1556
 msgid ""
 "Yeah, I couldn't help but overhear, and\n"
 "... good news: Your problem is solved!"
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1556
+#: data/level/crevice-village-heights.cfg:1559
 msgid "What do you mean?"
 msgstr "Was meinst du?"
 
-#: data/level/crevice-village-heights.cfg:1558
+#: data/level/crevice-village-heights.cfg:1561
 msgid ""
 "Milgram's crew.  When that captain-guy\n"
 "came out of the house here,\n"
 "they all hopped in his airship and left."
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1561
+#: data/level/crevice-village-heights.cfg:1564
 msgid ""
 "Amazing...  if you don't mind,\n"
 "I have a few questions for you."
 msgstr ""
 
-#: data/level/crevice-village-heights.cfg:1564
+#: data/level/crevice-village-heights.cfg:1567
 msgid ""
 "Well, that settles things for me.\n"
 "You two have fun."
@@ -1578,18 +1578,10 @@ msgid "Who are you?"
 msgstr "Wer bist du?"
 
 #: data/level/crevice-village-house-1.cfg:2507
-msgid ""
-"I'm the hero.\n"
-"I'm gonna save this town!"
+msgid "Whomever the occasion calls for."
 msgstr ""
-"Ich bin der Held.\n"
-"Ich werde dieses Dorf retten!"
 
-#: data/level/crevice-village-house-1.cfg:2509
-msgid "That's my new job."
-msgstr "Das ist mein neuer Job."
-
-#: data/level/crevice-village-house-1.cfg:2510
+#: data/level/crevice-village-house-1.cfg:2508
 #: data/level/crevice-village-house-1.cfg:2515
 #: data/level/crevice-village-house-1.cfg:2521
 #: data/level/crevice-village-house-1.cfg:2554
@@ -1600,17 +1592,21 @@ msgstr "Das ist mein neuer Job."
 msgid "..."
 msgstr "..."
 
-#: data/level/crevice-village-house-1.cfg:2510
+#: data/level/crevice-village-house-1.cfg:2508
 msgid "That's nutty."
 msgstr "Ist ja irre."
 
+#: data/level/crevice-village-house-1.cfg:2510
+msgid ""
+"Yes, well, at this particular juncture,\n"
+"who I am isn't very important."
+msgstr ""
+
 #: data/level/crevice-village-house-1.cfg:2512
 msgid ""
-"Nevertheless, let's pretend that\n"
-"I might actually pull it off."
+"What's important is that I'm not in a cage,\n"
+"so I might be able to do something to help."
 msgstr ""
-"Nichtsdestotrotz, tun wir mal so,\n"
-"als ob ich das schaffen könnte."
 
 #: data/level/crevice-village-house-1.cfg:2514
 msgid "Got any advice?"
@@ -1628,13 +1624,9 @@ msgstr "Vielleicht."
 
 #: data/level/crevice-village-house-1.cfg:2515
 msgid ""
-"OH! One other thing..\n"
-"the key that opens the town gate\n"
-"is a SILVER key."
+"OH!  One other thing..\n"
+"the key to the town gate is a SILVER key."
 msgstr ""
-"OH! Und noch was..\n"
-"der Schlüssel, der ins Stadttor\n"
-"passt, ist aus SILBER."
 
 #: data/level/crevice-village-house-1.cfg:2515
 msgid ""
@@ -1655,12 +1647,8 @@ msgid "HEY, WAIT!  What about me?!"
 msgstr "HEY, WARTE!  Was ist mit mir?!"
 
 #: data/level/crevice-village-house-1.cfg:2520
-msgid ""
-"Do I look like I have a key\n"
-"for your cage?"
+msgid "Does it look like I have a key for your cage?"
 msgstr ""
-"Sehe ich so aus als ob ich den\n"
-"Schlüssel zu deinem Käfig habe?"
 
 #: data/level/crevice-village-house-1.cfg:2521
 msgid ""
@@ -1757,12 +1745,8 @@ msgstr ""
 "das Haus nicht SO groß ausgesehen!"
 
 #: data/level/crevice-village-house-1.cfg:2631
-msgid ""
-"Uh, oh,\n"
-"I can hear a lot of feet tromping around..."
+msgid "Uh, oh, I hear ... trouble."
 msgstr ""
-"Oh je,\n"
-"ich höre ne Menge Füße herumtrampeln..."
 
 #: data/level/crevice-village-house-2-basement.cfg:12
 #: data/level/crevice-village-house-2.cfg:10
@@ -3719,13 +3703,9 @@ msgstr ""
 
 #: data/level/secluded-hut-interior.cfg:932
 msgid ""
-"That's right. Unfortunately, my\n"
-"collection lacks the rarer\n"
-"golden ant."
+"That's right.  Unfortunately,\n"
+"my collection lacks the rarer golden ant."
 msgstr ""
-"Das ist richtig. Leider fehlt mir die\n"
-"seltene Goldene Ameise noch\n"
-"in meiner Sammlung."
 
 #: data/level/secluded-hut-interior.cfg:934
 msgid "Oh, what a shame."
@@ -3777,13 +3757,9 @@ msgstr ""
 
 #: data/level/secluded-hut-interior.cfg:948
 msgid ""
-"What's that you say? The golden ant\n"
-"is in your stomach? Quick, spit it\n"
-"out into the cage!"
+"Oh my! If that's a golden ant in your stomach,\n"
+"then quick, spit it out into the cage!"
 msgstr ""
-"Was hast du gesagt? Die Goldene Ameise\n"
-"ist in deinem Magen? Schnell, spuck sie in\n"
-"den Käfig!"
 
 #: data/level/secluded-hut-interior.cfg:949
 msgid ""
@@ -3796,30 +3772,18 @@ msgstr ""
 #: data/level/secluded-hut-interior.cfg:951
 msgid ""
 "I'm working on it.\n"
-"Those things pack a pretty mean\n"
-"bite, you know."
+"Those things pack a pretty mean bite, you know."
 msgstr ""
-"Ich arbeite daran.\n"
-"Diese Viecher können ziemlich gemein zubeißen,\n"
-"weißt du."
 
 #: data/level/secluded-hut-interior.cfg:954
 msgid ""
-"I do hope you are enjoying exploring\n"
-"the island. There are so many\n"
-"wonderful creatures on it."
+"I do hope you are enjoying exploring the island.\n"
+"There are so many wonderful creatures on it."
 msgstr ""
-"Ich hoffe, du genießt es, die Insel zu erforschen.\n"
-"Es gibt so viele wundervolle Tiere hier."
 
 #: data/level/secluded-hut-interior.cfg:956
-msgid ""
-"I'm assuming you're talking about\n"
-"all the creatures that keep trying\n"
-"to kill me."
+msgid "... most of which seem inclined to kill me."
 msgstr ""
-"Ich vermute, du redest von all den Tieren,\n"
-"die versuchen mich umzubringen?"
 
 #: data/level/secluded-hut-interior.cfg:1229
 msgid "I say! Who's there?"
@@ -4810,7 +4774,7 @@ msgstr "{consts.name} kaufen?"
 msgid "This is a blank tile. It doesn't do anything."
 msgstr "Dies ist eine leere Kachel, sie macht einfach garnichts."
 
-#: data/object_prototypes/ct-cursor.cfg:74
+#: data/object_prototypes/ct-cursor.cfg:73
 msgid "'"
 msgstr "“"
 
