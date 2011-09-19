@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-09-18 00:59-0300\n"
-"PO-Revision-Date: 2011-09-18 04:00+0000\n"
+"POT-Creation-Date: 2011-09-19 00:34-0300\n"
+"PO-Revision-Date: 2011-09-19 04:12+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: German (http://www.transifex.net/projects/p/Frogatto/team/de/)\n"
 "MIME-Version: 1.0\n"
@@ -349,7 +349,7 @@ msgstr "Wolpertinger"
 
 #: data/achievements.cfg:85
 msgid "Bound, bound, bound and rebound!"
-msgstr ""
+msgstr "Hop, Hop, Hop, Hoppedihop!"
 
 #: data/achievements.cfg:92
 msgid "Frogourmet"
@@ -369,7 +369,7 @@ msgstr ""
 
 #: data/achievements.cfg:108
 msgid "Geosynchronous Orbit Achieved"
-msgstr ""
+msgstr "Geostabile Umlaufbahn erreicht"
 
 #: data/achievements.cfg:109
 msgid "Now applying artificial gravity."
@@ -1188,9 +1188,8 @@ msgid ""
 msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1407
-#: data/level/crevice-village-house-2.cfg:3509
-msgid "Yeah."
-msgstr "Jah."
+msgid "CONTEXT:They ... as in Milgram's kitties?^Yeah."
+msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1409
 msgid ""
@@ -1793,6 +1792,10 @@ msgstr ""
 #: data/level/crevice-village-house-2.cfg:3508
 msgid "Can you give me any advice?"
 msgstr "Hast du einen Tipp für mich?"
+
+#: data/level/crevice-village-house-2.cfg:3509
+msgid "CONTEXT:Can you give me any advice?^Yeah."
+msgstr ""
 
 #: data/level/crevice-village-house-2.cfg:3510
 msgid ""
@@ -4177,6 +4180,9 @@ msgid ""
 "..besides being manhandled,\n"
 "no one did actually get hurt."
 msgstr ""
+"Aber du hast sicherlich mitbekommen\n"
+"... abgesehen davon, dass wir etwas grob waren\n"
+"wurde zumindest niemand verletzt."
 
 #: data/level/tea-with-milgram.cfg:271
 msgid ""
@@ -4332,7 +4338,7 @@ msgstr "Dann ist ja nochmal alles gut ausgegangen, ne?"
 msgid ""
 "Yeah, I do think everyone's\n"
 "made out pretty well."
-msgstr ""
+msgstr "Ja, wir haben das alle gut überstanden."
 
 #: data/level/tea-with-milgram.cfg:341
 msgid "Except the elder."
@@ -4417,11 +4423,11 @@ msgstr ""
 
 #: data/level/tea-with-milgram.cfg:393
 msgid "Translation Code and Coordination"
-msgstr ""
+msgstr "Übersetzungscode und Coordination"
 
 #: data/level/tea-with-milgram.cfg:394
 msgid "Key Remapping Code/Interface"
-msgstr ""
+msgstr "Änderung der Tastaturbelegung ermöglicht"
 
 #: data/level/tea-with-milgram.cfg:395
 msgid "OpenPandora Port"
@@ -4728,6 +4734,9 @@ msgid ""
 "will realize that kind of hard-sell tactic\n"
 "just annoys people."
 msgstr ""
+"Eines Tages werden diese Hausierer\n"
+"verstehen, dass ihr aggressives Auftreten\n"
+"die Leute nur nervt."
 
 #: data/level/to-nenes-house.cfg:1986
 msgid "The sooner, the better."

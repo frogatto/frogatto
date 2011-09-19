@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-09-18 00:59-0300\n"
-"PO-Revision-Date: 2011-09-18 04:00+0000\n"
-"Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
+"POT-Creation-Date: 2011-09-19 00:34-0300\n"
+"PO-Revision-Date: 2011-09-19 04:12+0000\n"
+"Last-Translator: trans1in <transifex@nusaantara.umail.net>\n"
 "Language-Team: Malay (Malaysia) (http://www.transifex.net/projects/p/Frogatto/team/ms_MY/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -626,7 +626,7 @@ msgstr "Kedai Umum Chopple"
 
 #: data/level/chopple-shop-interior.cfg:547
 msgid "Oh hey, I hadn't seen you here before."
-msgstr "Oh hei, tak nampak awak di sini sebelum ni."
+msgstr "Tak nampak awak di sini sebelum ni."
 
 #: data/level/chopple-shop-interior.cfg:548
 msgid ""
@@ -635,18 +635,26 @@ msgid ""
 "to know what was going on, with all that noise\n"
 "that was coming from beyond the cave."
 msgstr ""
+"Ya, saya tolong Chopple jaga kedai.\n"
+"Dia minta saya ke kampung tu nak\n"
+"tahu apa yang berlaku, bunyi bising\n"
+"yang datang dari sebalik gua tu."
 
 #: data/level/chopple-shop-interior.cfg:550
 msgid ""
 "Then I suppose that Milgram's guards saw you\n"
 "and locked you up?"
 msgstr ""
+"Kemudian saya agak pengawal Milgram\n"
+"nampak awak dan kurung awak?"
 
 #: data/level/chopple-shop-interior.cfg:551
 msgid ""
 "Yeah! And to think that I thought\n"
 "that the day was going to be boring!"
 msgstr ""
+"Ya! Dan fikirkannya saya ingat\n"
+"yang hari tu akan jadi bosan!"
 
 #: data/level/crevice-bridge.cfg:15
 msgid "Crevice Bridge"
@@ -654,21 +662,23 @@ msgstr "Jambatan Rekah"
 
 #: data/level/crevice-bridge.cfg:719
 msgid "Hi, again."
-msgstr ""
+msgstr "Hai, sekali lagi."
 
 #: data/level/crevice-bridge.cfg:720
 msgid "So, how did it go?"
-msgstr ""
+msgstr "Jadi, macam mana?"
 
 #: data/level/crevice-bridge.cfg:722
 msgid "Could've been worse."
-msgstr ""
+msgstr "Boleh jadi lebih teruk."
 
 #: data/level/crevice-bridge.cfg:724
 msgid ""
 "That ... uh, \"captain\" cat, or whoever he was,\n"
 "tried to dice me up."
 msgstr ""
+"Si ... uh, \"kapten\" kucing, siapa\n"
+"saja dia tu, cuba nak mainkan aku."
 
 #: data/level/crevice-bridge.cfg:726
 msgid ""
@@ -676,28 +686,37 @@ msgid ""
 "this conversation if I hadn't gotten\n"
 "the better of him."
 msgstr ""
+"Sepatutnya, kita tak akan bercakap\n"
+"tentang ni jika saya mampu\n"
+"mengatasi dia."
 
 #: data/level/crevice-bridge.cfg:728
 msgid ""
 "So all's well\n"
 "that ends well, I suppose."
 msgstr ""
+"Jadi akhiran yang baik\n"
+"semuanya akan jadi baik, saya rasa."
 
 #: data/level/crevice-bridge.cfg:730
 msgid ""
 "I did find out what was going on, at least,\n"
 "that is, what the elder *says* is going on."
 msgstr ""
+"Saya tahu juga apa yang berlaku,\n"
+"setidaknya, apa penghulu *katalah*."
 
 #: data/level/crevice-bridge.cfg:732
 msgid ""
 "I wouldn't mind running this by a few people,\n"
 "since I have no idea what's true, or not."
 msgstr ""
+"Saya tak kisah akan kebenarannya,\n"
+"saya tak tahu apa betul, apa tidak."
 
 #: data/level/crevice-bridge.cfg:734
 msgid "Go right ahead."
-msgstr ""
+msgstr "Terus ke depan."
 
 #: data/level/crevice-bridge.cfg:737
 msgid ""
@@ -705,10 +724,13 @@ msgid ""
 "that Milgram loaned him money, and this whole\n"
 "incident was Milgram coming to shake him down."
 msgstr ""
+"Jadi... uhm... lebih kurang, katanya\n"
+"Milgram pinjamkannya duit, dan semua\n"
+"insiden ni disebab Milgram ugut dia."
 
 #: data/level/crevice-bridge.cfg:739
 msgid "Trying to get his money back."
-msgstr ""
+msgstr "Cuba nak dapat balik duit dia."
 
 #: data/level/crevice-bridge.cfg:741
 msgid ""
@@ -716,6 +738,9 @@ msgid ""
 "about how it's all some plot where\n"
 "Milgram's gonna take over the town."
 msgstr ""
+"Jadi diapun cerita kisah pelik ni\n"
+"yang mana semuanya ialah plot\n"
+"Milgram nak ambil alih pekan ni."
 
 #: data/level/crevice-bridge.cfg:743
 #: data/level/crevice-village-house-elder.cfg:1614
@@ -724,29 +749,35 @@ msgstr "Wau."
 
 #: data/level/crevice-bridge.cfg:744
 msgid "I've never heard of any of this."
-msgstr ""
+msgstr "Saya tak pernah dengar semua ni."
 
 #: data/level/crevice-bridge.cfg:747
 msgid ""
 "Really?\n"
 "He's never talked about this?"
 msgstr ""
+"Betulkah?\n"
+"Dia tak pernah ungkit tentang ni?"
 
 #: data/level/crevice-bridge.cfg:749
 msgid "Never."
-msgstr ""
+msgstr "Tak pernah."
 
 #: data/level/crevice-bridge.cfg:752
 msgid ""
 "Has he ever shown any signs of ... suddenly\n"
 "having way more spending money than usual?"
 msgstr ""
+"Tak pernah dia tunjuk ... tiba-tiba\n"
+"belanja wang lebih daripada selalu?"
 
 #: data/level/crevice-bridge.cfg:754
 msgid ""
 "Well, he's *bragged* about being rich,\n"
 "but that's just his \"dignified family\" schtick."
 msgstr ""
+"Dia ada *cakap gah* pasal jadi kaya,\n"
+"tu cuma shtik \"darjat famili\" dia."
 
 #: data/level/crevice-bridge.cfg:755
 msgid ""
@@ -754,30 +785,41 @@ msgid ""
 "the man would probably burn his\n"
 "furniture just to save on firewood."
 msgstr ""
+"Dia tu sangat bakhil, awak tahu -\n"
+"dia lagi sanggup bakar perabotnya\n"
+"sendiri semata nak jimat kayu api."
 
 #: data/level/crevice-bridge.cfg:756
 msgid ""
 "So, no, he's never seemed\n"
 "to have a dime to spare."
 msgstr ""
+"Jadi, tak, dia tak pernah nampak\n"
+"macam ada sesen pun."
 
 #: data/level/crevice-bridge.cfg:757
 msgid ""
 "He does brag about being known by important\n"
 "people, but you know how he is."
 msgstr ""
+"Dia cakap gah tentang dia dikenali\n"
+"orang penting, tapi awak tahulah."
 
 #: data/level/crevice-bridge.cfg:760
 msgid ""
 "Yeah.  Geez.\n"
 " So, uh, here's what I think we know:"
 msgstr ""
+"Yalah.  Ceh.\n"
+"Uh, ni apa saya fikir kita tahu:"
 
 #: data/level/crevice-bridge.cfg:762
 msgid ""
 "We know he's clearly run afoul\n"
 "of Milgram, somehow."
 msgstr ""
+"Kita tahu dia jelas berselisih\n"
+"dengan Milgram, macam manapun."
 
 #: data/level/crevice-bridge.cfg:764
 msgid ""
@@ -785,6 +827,9 @@ msgid ""
 "in taking over the town, because he\n"
 "essentially just did, and gave it up."
 msgstr ""
+"Kita juga tahu Milgram tak minat\n"
+"nak ambil alih pekan ni, sebab dia\n"
+"dasarnya dah cuba, tapi mengalah."
 
 #: data/level/crevice-bridge.cfg:766
 msgid ""
@@ -792,32 +837,41 @@ msgid ""
 "is true, but we know if it is,\n"
 "he certainly hasn't put it to use."
 msgstr ""
+"Kita tak tahu jika hal duit tu\n"
+"betul, tapi kita tahu jika ia betul,\n"
+"dia nyata sekali tak gunakannya."
 
 #: data/level/crevice-bridge.cfg:768
 msgid ""
 "Oh yeah, I forgot to mention;\n"
 "he said it was some kind of \"investment\""
 msgstr ""
+"Oh ya, saya lupa nak sebut;\n"
+"dia kata ia semacam \"pelaburan\""
 
 #: data/level/crevice-bridge.cfg:770
 msgid ""
 "Which I assume would be for the town.\n"
 "Building things."
 msgstr ""
+"Yang saya agak ianya untuk pekan ni.\n"
+"Bina sesuatu."
 
 #: data/level/crevice-bridge.cfg:772
 msgid "Naturally, we know that didn't happen."
-msgstr ""
+msgstr "Pastinya, kita tahu tu tak berlaku."
 
 #: data/level/crevice-bridge.cfg:774
 msgid "So other than that, it's a mystery."
-msgstr ""
+msgstr "Jadi selain dari tu, ianya misteri."
 
 #: data/level/crevice-bridge.cfg:776
 msgid ""
 "So, dare I ask:\n"
 "What do we do now?"
 msgstr ""
+"Jadi, biar saya tanya:\n"
+"Apa kita nak buat sekarang?"
 
 #: data/level/crevice-bridge.cfg:779
 msgid ""
@@ -825,56 +879,73 @@ msgid ""
 "it's probably a very good idea to\n"
 "do a little diplomacy."
 msgstr ""
+"Ah, itu.  Saya dahpun putuskan\n"
+"ianya mungkin idea yang bagus\n"
+"untuk buat sedikit diplomasi."
 
 #: data/level/crevice-bridge.cfg:781
 msgid ""
 "*Someone* needs to go talk to Milgram,\n"
 "and ask what was wrong, so nothing bad happens."
 msgstr ""
+"*Seseorang* perlu tanya Milgram, apa\n"
+"tak kena, tak jadi perkara buruk."
 
 #: data/level/crevice-bridge.cfg:783
 msgid ""
 "So for a lack of any other willing parties,\n"
 "I decided to go."
 msgstr ""
+"Sebab tak ada pihak yang sanggup,\n"
+"saya putuskan untuk pergi."
 
 #: data/level/crevice-bridge.cfg:785
 msgid "That's very noble of you."
-msgstr ""
+msgstr "Sungguh mulia awak ni."
 
 #: data/level/crevice-bridge.cfg:788
 msgid ""
 "Ha, well, we're also going to find out\n"
 "if it's very foolish, as well."
 msgstr ""
+"Ha, baik, kita juga akan tahu\n"
+"jika ianya kurang bijak, juga."
 
 #: data/level/crevice-bridge.cfg:791
 msgid ""
 "But nothing ventured, nothing gained, you know?\n"
 "I guess I'm just tired of bumming around."
 msgstr ""
+"Tak ada risiko, tak dapat apa, tahu?\n"
+"Saya rasa saya dah letih duduk saja."
 
 #: data/level/crevice-bridge.cfg:793
 msgid ""
 "Speaking of which, I'd been meaning\n"
 "to thank you for your help thus far."
 msgstr ""
+"Tentang tu, saya ucap terima kasih\n"
+"atas bantuan awak setakat ni."
 
 #: data/level/crevice-bridge.cfg:795
 msgid ""
 "I've really appreciated the \"eyes in the sky\".\n"
 "It's very helpful."
 msgstr ""
+"Saya menghargai \"mata di langit\".\n"
+"Ia sungguh membantu."
 
 #: data/level/crevice-bridge.cfg:797
 msgid ""
 "To spare your asking,\n"
 "yes, I'd be happy to continue."
 msgstr ""
+"Tak perlulah awak bertanya,\n"
+"ya, saya gembira untuk teruskan."
 
 #: data/level/crevice-bridge.cfg:800
 msgid "Hey, thanks, that's really nice of you!"
-msgstr ""
+msgstr "Hei, terima kasih, baik betul awak!"
 
 #: data/level/crevice-bridge.cfg:802
 msgid ""
@@ -882,6 +953,9 @@ msgid ""
 "I'd offer to carry you, even,\n"
 "but I'm afraid that's physically impossible."
 msgstr ""
+"Itulah yang saya boleh buat.\n"
+"Malah, saya nak dukung awak,\n"
+"tapi secara fizikalnya tak boleh."
 
 #: data/level/crevice-bridge.cfg:803
 msgid ""
@@ -889,36 +963,45 @@ msgid ""
 "and we're more likely to get to the\n"
 "bottom of things if we work together."
 msgstr ""
+"Saya juga ingin tahu, dalam hal ni,\n"
+"dan kita akan dapat kesudahannya\n"
+"jika kita bekerjasama."
 
 #: data/level/crevice-bridge.cfg:806
 msgid "Awesome!"
-msgstr ""
+msgstr "Bagus!"
 
 #: data/level/crevice-bridge.cfg:809
 msgid ""
 "Anyways, I was planning to go through\n"
 "the forest, to start with."
 msgstr ""
+"Apapun, saya bercadang nak melalui\n"
+"hutan tu, sebagai permualaan."
 
 #: data/level/crevice-bridge.cfg:811
 msgid "Does that sound like a good idea?"
-msgstr ""
+msgstr "Adakah bunyinya tu idea yang baik?"
 
 #: data/level/crevice-bridge.cfg:813
 msgid ""
 "Yes... it is the only path I know of,\n"
 "but be careful in there."
 msgstr ""
+"Ya... tu satunya jalan yang saya\n"
+"tahu, tapi hati-hati di sana."
 
 #: data/level/crevice-bridge.cfg:816
 msgid ""
 "Yeah, no kidding.\n"
 "Well, see you soon!  Thanks again!"
 msgstr ""
+"Ya, bukan main-main.\n"
+"Baik, jumpa nanti!  Terima kasih!"
 
 #: data/level/crevice-bridge.cfg:828
 msgid "Ahh, there you are!"
-msgstr ""
+msgstr "Ahh, tu pun awak!"
 
 #: data/level/crevice-village-cave.cfg:14
 #: data/level/crevice-village-central.cfg:15
@@ -1032,7 +1115,7 @@ msgid ""
 "Yeah, those goons\n"
 "had a little ambush set up."
 msgstr ""
-"Yelah, penyangak semua tu\n"
+"Yalah, penyangak semua tu\n"
 "buat serang hendap pula."
 
 #: data/level/crevice-village-central.cfg:1369
@@ -1146,9 +1229,8 @@ msgstr ""
 "Mereka ... anak kucing Milgram?"
 
 #: data/level/crevice-village-heights.cfg:1407
-#: data/level/crevice-village-house-2.cfg:3509
-msgid "Yeah."
-msgstr "Boleh."
+msgid "CONTEXT:They ... as in Milgram's kitties?^Yeah."
+msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1409
 msgid ""
@@ -1607,12 +1689,16 @@ msgid ""
 "Yes, well, at this particular juncture,\n"
 "who I am isn't very important."
 msgstr ""
+"Ya, baik, masa-masa begini,\n"
+"siapa saya tu tak penting."
 
 #: data/level/crevice-village-house-1.cfg:2512
 msgid ""
 "What's important is that I'm not in a cage,\n"
 "so I might be able to do something to help."
 msgstr ""
+"Yang penting saya tak dikurung,\n"
+"jadi saya mungkin boleh membantu."
 
 #: data/level/crevice-village-house-1.cfg:2514
 msgid "Got any advice?"
@@ -1631,6 +1717,8 @@ msgid ""
 "OH!  One other thing..\n"
 "the key to the town gate is a SILVER key."
 msgstr ""
+"OH!  Seperkara lagi...kunci\n"
+"gerbang pekan ialah kunci PERAK."
 
 #: data/level/crevice-village-house-1.cfg:2515
 msgid ""
@@ -1652,7 +1740,7 @@ msgstr "HEI, NANTI!  Macam mana dengan saya?!"
 
 #: data/level/crevice-village-house-1.cfg:2520
 msgid "Does it look like I have a key for your cage?"
-msgstr ""
+msgstr "Nampak macam saya ada kuncikah?"
 
 #: data/level/crevice-village-house-1.cfg:2521
 msgid ""
@@ -1684,7 +1772,7 @@ msgid ""
 "Sad to say, I can't pick locks.\n"
 "I got nothing."
 msgstr ""
-"Yelah.\n"
+"Yalah.\n"
 "Sedih, tak boleh cungkil mangga.\n"
 "Saya tak ada apa-apa."
 
@@ -1750,7 +1838,7 @@ msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2631
 msgid "Uh, oh, I hear ... trouble."
-msgstr ""
+msgstr "Uh, oh, saya dengar ... masalah."
 
 #: data/level/crevice-village-house-2-basement.cfg:12
 #: data/level/crevice-village-house-2.cfg:10
@@ -1797,6 +1885,10 @@ msgstr ""
 #: data/level/crevice-village-house-2.cfg:3508
 msgid "Can you give me any advice?"
 msgstr "Boleh beri saya sebarang nasihat?"
+
+#: data/level/crevice-village-house-2.cfg:3509
+msgid "CONTEXT:Can you give me any advice?^Yeah."
+msgstr ""
 
 #: data/level/crevice-village-house-2.cfg:3510
 msgid ""
@@ -1999,7 +2091,7 @@ msgstr "Maaf saya nak lepaskan kekecewaan ni."
 
 #: data/level/crevice-village-house-elder.cfg:1531
 msgid "-ouch-"
-msgstr "-ouc-"
+msgstr "-ouch-"
 
 #: data/level/crevice-village-house-elder.cfg:1532
 msgid "Okay, I've had enough!  I'm going home."
@@ -2419,7 +2511,7 @@ msgid ""
 "Cripes - I tell you what: I'll do it."
 msgstr ""
 "Saya pasti boleh!\n"
-"Ahak - Nak tahu: Saya akan buatnya."
+"Nak tahu tak: Saya akan buatnya."
 
 #: data/level/crevice-village-house-elder.cfg:1726
 msgid ""
@@ -2442,8 +2534,8 @@ msgid ""
 "Well, if you say so, I suppose I can't object.\n"
 "In fact, it might be a good stalling tactic."
 msgstr ""
-"Jika awak kata begitu, saya tak bantah.\n"
-"Saya rasa tu taktik melengah yang bagus."
+"Awak kata begitu, saya tak bantah.\n"
+"Malah tu taktik melengah yang bagus."
 
 #: data/level/crevice-village-house-elder.cfg:1732
 msgid "Why, I'll even show you the way..."
@@ -3655,7 +3747,7 @@ msgstr "Kubu Batu"
 
 #: data/level/rock-a-fort.cfg:3205
 msgid "Woah! A flying plant!"
-msgstr "Woh! Bunga terbang!"
+msgstr "Woh! Tumbuhan terbang!"
 
 #: data/level/rocky-roots.cfg:13
 msgid "Rocky Roots"
@@ -3739,6 +3831,8 @@ msgid ""
 "That's right.  Unfortunately,\n"
 "my collection lacks the rarer golden ant."
 msgstr ""
+"Betul tu.  Malangnya,\n"
+"semut emas tiada dalam koleksi saya."
 
 #: data/level/secluded-hut-interior.cfg:934
 msgid "Oh, what a shame."
@@ -3793,6 +3887,8 @@ msgid ""
 "Oh my! If that's a golden ant in your stomach,\n"
 "then quick, spit it out into the cage!"
 msgstr ""
+"Oh! Jika tu semut emas dalam perut\n"
+"awak, cepat ludahnya masuk kurungan!"
 
 #: data/level/secluded-hut-interior.cfg:949
 msgid ""
@@ -3807,16 +3903,20 @@ msgid ""
 "I'm working on it.\n"
 "Those things pack a pretty mean bite, you know."
 msgstr ""
+"Saya sedang usahakannya.\n"
+"Benda tu kuat menggigit, awak tahu."
 
 #: data/level/secluded-hut-interior.cfg:954
 msgid ""
 "I do hope you are enjoying exploring the island.\n"
 "There are so many wonderful creatures on it."
 msgstr ""
+"Saya harap awak suka jelajah pulau\n"
+"ni. Banyak makhluk comel di sini."
 
 #: data/level/secluded-hut-interior.cfg:956
 msgid "... most of which seem inclined to kill me."
-msgstr ""
+msgstr "... hampir semuanya nak bunuh saya."
 
 #: data/level/secluded-hut-interior.cfg:1229
 msgid "I say! Who's there?"
@@ -3831,7 +3931,7 @@ msgid ""
 "Yeah.\n"
 "Who WAS that guy?!"
 msgstr ""
-"Yelah,\n"
+"Yalah,\n"
 "SIAPA tadi tu?"
 
 #: data/level/secluded-hut.cfg:1245
@@ -4298,7 +4398,7 @@ msgstr "Pelik sungguh."
 
 #: data/level/tea-with-milgram.cfg:309
 msgid "Yeah, it's crazy.  He's... a bit crazy."
-msgstr "Yelah, gila.  Dia... sedikit gila."
+msgstr "Yalah, gila.  Dia... sedikit gila."
 
 #: data/level/tea-with-milgram.cfg:312
 msgid ""
@@ -4590,6 +4690,8 @@ msgid ""
 "AIEEEEE!\n"
 "Get that thing out of here!"
 msgstr ""
+"AIEEEEE!\n"
+"Bawa benda tu keluar dari sini!"
 
 #: data/level/to-nenes-house-inside.cfg:490
 msgid "Hey Nene, what's cooking?"
@@ -5000,15 +5102,15 @@ msgstr ""
 
 #: data/objects/playable/difficulty-selector.cfg:16
 msgid "Casual"
-msgstr ""
+msgstr "Kasual"
 
 #: data/objects/playable/difficulty-selector.cfg:17
 msgid "Intense"
-msgstr ""
+msgstr "Emosi Kuat"
 
 #: data/objects/playable/difficulty-selector.cfg:18
 msgid "Unfair"
-msgstr ""
+msgstr "Tak Adil"
 
 #: data/objects/playable/map-selector.cfg:21
 msgid "Milgram's Castle"
@@ -5084,6 +5186,8 @@ msgid ""
 "To find out more about the game or to play the PC/Mac version for free, "
 "please visit http://www.frogatto.com/"
 msgstr ""
+"Untuk mengetahui lebih lanjut tentang permainan ini atau main versi PC/MAC "
+"secara percuma, sila layari http://www.frogatto.com/"
 
 #: iOS_CHANGELOG:3
 msgid "Fixed The Long Haul (arcade level)"
