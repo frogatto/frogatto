@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto v1.0.3\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-09-19 00:34-0300\n"
+"POT-Creation-Date: 2011-09-18 00:59-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1077,7 +1077,13 @@ msgid ""
 msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1407
-msgid "CONTEXT:They ... as in Milgram's kitties?^Yeah."
+msgctxt "Response to 'They ... as in Milgram's kitties?'"
+msgid "Yeah."
+msgstr ""
+
+#: data/level/crevice-village-house-2.cfg:3509
+msgctxt "Response to 'Can you give me any advice?'"
+msgid "Yeah."
 msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1409
@@ -1610,10 +1616,6 @@ msgstr ""
 
 #: data/level/crevice-village-house-2.cfg:3508
 msgid "Can you give me any advice?"
-msgstr ""
-
-#: data/level/crevice-village-house-2.cfg:3509
-msgid "CONTEXT:Can you give me any advice?^Yeah."
 msgstr ""
 
 #: data/level/crevice-village-house-2.cfg:3510
