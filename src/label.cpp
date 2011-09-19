@@ -15,12 +15,12 @@
 #include "font.hpp"
 #include "label.hpp"
 #include "raster.hpp"
-#include "translate.hpp"
+#include "i18n.hpp"
 
 namespace gui {
 
 label::label(const std::string& text, const SDL_Color& color, int size)
-	: text_(i18n::translate(text)), color_(color), size_(size),
+	: text_(i18n::tr(text)), color_(color), size_(size),
 	  fixed_width_(false)
 {
 	recalculate_texture();
@@ -40,7 +40,7 @@ void label::set_font_size(int size)
 
 void label::set_text(const std::string& text)
 {
-	text_ = i18n::translate(text);
+	text_ = i18n::tr(text);
 	reformat_text();
 	recalculate_texture();
 }

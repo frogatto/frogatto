@@ -14,7 +14,7 @@
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "tooltip.hpp"
-#include "translate.hpp"
+#include "i18n.hpp"
 #include "widget.hpp"
 #include "iphone_controls.hpp"
 
@@ -71,7 +71,7 @@ void widget::set_tooltip(const std::string& str)
 		gui::remove_tooltip(tooltip_);
 		tooltip_displayed_ = false;
 	}
-	tooltip_.reset(new std::string(i18n::translate(str)));
+	tooltip_.reset(new std::string(i18n::tr(str)));
 }
 
 bool widget::process_event(const SDL_Event& event, bool claimed)
