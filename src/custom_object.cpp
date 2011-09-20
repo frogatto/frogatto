@@ -341,6 +341,7 @@ custom_object::custom_object(const custom_object& o) :
 	rotate_(o.rotate_),
 	zorder_(o.zorder_),
 	zsub_order_(o.zsub_order_),
+	position_scale_millis_(new std::pair<int, int>(*o.position_scale_millis_)),
 	hitpoints_(o.hitpoints_),
 	max_hitpoints_(o.max_hitpoints_),
 	was_underwater_(o.was_underwater_),
