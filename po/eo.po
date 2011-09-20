@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-09-19 00:34-0300\n"
-"PO-Revision-Date: 2011-09-19 04:12+0000\n"
+"POT-Creation-Date: 2011-09-19 22:52-0300\n"
+"PO-Revision-Date: 2011-09-19 15:33+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Esperanto (http://www.transifex.net/projects/p/Frogatto/team/eo/)\n"
 "MIME-Version: 1.0\n"
@@ -366,6 +366,14 @@ msgstr ""
 
 #: data/achievements.cfg:109
 msgid "Now applying artificial gravity."
+msgstr ""
+
+#: data/achievements.cfg:116
+msgid "Not Without My Hat!"
+msgstr ""
+
+#: data/achievements.cfg:117
+msgid "Start a level with no health left."
 msgstr ""
 
 #: data/level/after_summer.cfg:12 data/level/platform-peril.cfg:12
@@ -1085,7 +1093,8 @@ msgid ""
 msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1407
-msgid "CONTEXT:They ... as in Milgram's kitties?^Yeah."
+#: data/level/crevice-village-house-2.cfg:3509
+msgid "Yeah."
 msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1409
@@ -1618,10 +1627,6 @@ msgstr ""
 
 #: data/level/crevice-village-house-2.cfg:3508
 msgid "Can you give me any advice?"
-msgstr ""
-
-#: data/level/crevice-village-house-2.cfg:3509
-msgid "CONTEXT:Can you give me any advice?^Yeah."
 msgstr ""
 
 #: data/level/crevice-village-house-2.cfg:3510
@@ -4139,7 +4144,7 @@ msgstr ""
 msgid "This is a blank tile. It doesn't do anything."
 msgstr ""
 
-#: data/object_prototypes/ct-cursor.cfg:73
+#: data/object_prototypes/ct-cursor.cfg:78
 msgid "'"
 msgstr ""
 
