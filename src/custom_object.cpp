@@ -169,8 +169,10 @@ custom_object::custom_object(wml::const_node_ptr node)
 		type_ = base_type_->get_variation(current_variation_);
 	}
 
-	if(node->has_attr("position_scale_x")) {
-		position_scale_millis_.reset(new std::pair<int, int>(wml::get_int(node, "position_scale_x"), wml::get_int(node, "position_scale_y")));
+	if(node->has_attr("parallax_scale_x") || node->has_attr("parallax_scale_y")) {
+		position_scale_millis_.reset(new std::pair<int, int>(wml::get_int(node, "parallax_scale_x", type_->position_scale_millis_x()), wml::get_int(node, "parallax_scale_y", type_->position_scale_millis_y())));
+	} else {
+		position_scale_millis_.reset(new std::pair<int, int>(type_->position_scale_millis_x(), type_->position_scale_millis_y()));
 	}
 
 	vars_->read(node->get_child("vars"));
@@ -314,6 +316,8 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 		set_label(buf);
 	}
 
+	position_scale_millis_.reset(new std::pair<int, int>(type_->position_scale_millis_x(), type_->position_scale_millis_y()));
+
 	assert(type_.get());
 	set_frame_no_adjustments(frame_name_);
 
@@ -394,8 +398,8 @@ wml::node_ptr custom_object::write() const
 {
 	wml::node_ptr res(new wml::node("character"));
 	if(position_scale_millis_.get() != NULL) {
-		res->set_attr("position_scale_x", formatter() << position_scale_millis_->first);
-		res->set_attr("position_scale_y", formatter() << position_scale_millis_->second);
+		res->set_attr("parallax_scale_x", formatter() << position_scale_millis_->first);
+		res->set_attr("parallax_scale_y", formatter() << position_scale_millis_->second);
 	}
 
 	if(platform_area_.get() != NULL) {
@@ -546,6 +550,15 @@ wml::node_ptr custom_object::write() const
 		res->set_attr("zorder", formatter() << zorder_);
 	}
 
+	if(position_scale_millis_.get()) {
+		if(position_scale_millis_->first != type_->position_scale_millis_x() || position_scale_millis_->second != type_->position_scale_millis_y()){
+			res->set_attr("parallax_scale_x", formatter() << position_scale_millis_->first);
+			res->set_attr("parallax_scale_y", formatter() << position_scale_millis_->second);
+		}
+	}
+	   
+	
+	
 	if(zsub_order_ != 0) {
 		res->set_attr("zsub_order", formatter() << zsub_order_);
 	}
