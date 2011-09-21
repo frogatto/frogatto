@@ -899,7 +899,7 @@ void editor::edit_level()
 			//remove ghost objects and re-add them. This guarantees ghost
 			//objects always remain at the end of the level ordering.
 			remove_ghost_objects();
-			entity_ptr c = lvl_->get_next_character_at_point(xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
+			entity_ptr c = lvl_->get_next_character_at_point(xpos_ + mousex*zoom_, ypos_ + mousey*zoom_, xpos_, ypos_);
 			foreach(const entity_ptr& ghost, ghost_objects_) {
 				lvl_->add_character(ghost);
 			}
@@ -942,7 +942,7 @@ void editor::edit_level()
 			//not in object mode, the picker still highlights objects,
 			//though it won't create ghosts, so remove all ghosts.
 			if(tool() == TOOL_PICKER) {
-				entity_ptr c = lvl_->get_next_character_at_point(xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
+				entity_ptr c = lvl_->get_next_character_at_point(xpos_ + mousex*zoom_, ypos_ + mousey*zoom_, xpos_, ypos_);
 				lvl_->set_editor_highlight(c);
 			} else {
 				lvl_->set_editor_highlight(entity_ptr());

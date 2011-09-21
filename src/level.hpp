@@ -99,8 +99,8 @@ public:
 	const level_tile* get_tile_at(int x, int y) const;
 	void remove_character(entity_ptr e);
 	std::vector<entity_ptr> get_characters_in_rect(const rect& r) const;
-	std::vector<entity_ptr> get_characters_at_point(int x, int y) const;
-	entity_ptr get_next_character_at_point(int x, int y) const;
+	std::vector<entity_ptr> get_characters_at_point(int x, int y, int screen_xpos, int screen_ypos) const;
+	entity_ptr get_next_character_at_point(int x, int y, int screen_xpos, int screen_ypos) const;
 	const player_info* player() const { return player_ ? player_->get_player_info() : NULL; }
 	player_info* player() { return player_ ? player_->get_player_info() : NULL; }
 	std::vector<entity_ptr>& players() { return players_; }

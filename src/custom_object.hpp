@@ -40,6 +40,22 @@ public:
 	virtual void process(level& lvl);
 	void set_level(level& lvl) { }
 
+	int parallax_scale_millis_x() const {
+		if(parallax_scale_millis_.get() == NULL){
+			return type_->parallax_scale_millis_x();
+		}else{
+			return parallax_scale_millis_->first;
+		}
+	}
+	int parallax_scale_millis_y() const {
+		if(parallax_scale_millis_.get() == NULL){
+			return type_->parallax_scale_millis_y();
+		}else{
+			return parallax_scale_millis_->second;
+		}
+	}
+
+	
 	virtual int zorder() const;
 	virtual int zsub_order() const;
 
@@ -171,7 +187,7 @@ protected:
 		return was_underwater_;
 	}
 
-	const std::pair<int,int>* position_scale_millis() const { return position_scale_millis_.get(); }
+	const std::pair<int,int>* position_scale_millis() const { return parallax_scale_millis_.get(); }
 
 	enum STANDING_STATUS { NOT_STANDING, STANDING_BACK_FOOT, STANDING_FRONT_FOOT };
 	STANDING_STATUS is_standing(const level& lvl, collision_info* info=NULL) const;
@@ -207,7 +223,7 @@ private:
 	int gravity_shift_;
 	decimal rotate_;
 
-	boost::scoped_ptr<std::pair<int, int> > position_scale_millis_;
+	boost::scoped_ptr<std::pair<int, int> > parallax_scale_millis_;
 
 	int zorder_;
 	int zsub_order_;

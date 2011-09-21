@@ -1786,10 +1786,12 @@ void level::draw(int x, int y, int w, int h) const
 
 		if(editor_highlight_) {
 			editor_highlight_->draw();
+			//draw_entity(*editor_highlight_, editor_highlight_->x(), editor_highlight_->y(), true);
 		}
 
 		foreach(const entity_ptr& e, editor_selection_) {
 			e->draw();
+			//draw_entity(*e, e->x(), e->y(), true);
 		}
 
 		glColor4f(1.0, 1.0, 1.0, 1.0);
@@ -2651,13 +2653,14 @@ std::vector<entity_ptr> level::get_characters_in_rect(const rect& r) const
 	return res;
 }
 
-std::vector<entity_ptr> level::get_characters_at_point(int x, int y) const
+std::vector<entity_ptr> level::get_characters_at_point(int x, int y, int screen_xpos, int screen_ypos) const
 {
 	std::vector<entity_ptr> result;
 	foreach(entity_ptr c, chars_) {
-		const int xpos = x - c->x();
-		const int ypos = y - c->y();
-		if(!c->is_alpha(x, y)) {
+		const int xP = x + ((1000 - (c->parallax_scale_millis_x()))* screen_xpos )/1000;
+		const int yP = y + ((1000 - (c->parallax_scale_millis_y()))* screen_ypos )/1000;
+		
+		if(!c->is_alpha(xP, yP)) {
 			result.push_back(c);
 		}
 	}
@@ -2665,9 +2668,9 @@ std::vector<entity_ptr> level::get_characters_at_point(int x, int y) const
 	return result;
 }
 
-entity_ptr level::get_next_character_at_point(int x, int y) const
+entity_ptr level::get_next_character_at_point(int x, int y, int screen_xpos, int screen_ypos) const
 {
-	std::vector<entity_ptr> v = get_characters_at_point(x, y);
+	std::vector<entity_ptr> v = get_characters_at_point(x, y, screen_xpos, screen_ypos);
 	if(v.empty()) {
 		return entity_ptr();
 	}

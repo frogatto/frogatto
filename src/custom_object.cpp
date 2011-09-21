@@ -170,9 +170,9 @@ custom_object::custom_object(wml::const_node_ptr node)
 	}
 
 	if(node->has_attr("parallax_scale_x") || node->has_attr("parallax_scale_y")) {
-		position_scale_millis_.reset(new std::pair<int, int>(wml::get_int(node, "parallax_scale_x", type_->position_scale_millis_x()), wml::get_int(node, "parallax_scale_y", type_->position_scale_millis_y())));
+		parallax_scale_millis_.reset(new std::pair<int, int>(wml::get_int(node, "parallax_scale_x", type_->parallax_scale_millis_x()), wml::get_int(node, "parallax_scale_y", type_->parallax_scale_millis_y())));
 	} else {
-		position_scale_millis_.reset(new std::pair<int, int>(type_->position_scale_millis_x(), type_->position_scale_millis_y()));
+		parallax_scale_millis_.reset(new std::pair<int, int>(type_->parallax_scale_millis_x(), type_->parallax_scale_millis_y()));
 	}
 
 	vars_->read(node->get_child("vars"));
@@ -316,7 +316,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 		set_label(buf);
 	}
 
-	position_scale_millis_.reset(new std::pair<int, int>(type_->position_scale_millis_x(), type_->position_scale_millis_y()));
+	parallax_scale_millis_.reset(new std::pair<int, int>(type_->parallax_scale_millis_x(), type_->parallax_scale_millis_y()));
 
 	assert(type_.get());
 	set_frame_no_adjustments(frame_name_);
@@ -341,7 +341,7 @@ custom_object::custom_object(const custom_object& o) :
 	rotate_(o.rotate_),
 	zorder_(o.zorder_),
 	zsub_order_(o.zsub_order_),
-	position_scale_millis_(new std::pair<int, int>(*o.position_scale_millis_)),
+	parallax_scale_millis_(new std::pair<int, int>(*o.parallax_scale_millis_)),
 	hitpoints_(o.hitpoints_),
 	max_hitpoints_(o.max_hitpoints_),
 	was_underwater_(o.was_underwater_),
@@ -398,9 +398,9 @@ bool custom_object::serializable() const
 wml::node_ptr custom_object::write() const
 {
 	wml::node_ptr res(new wml::node("character"));
-	if(position_scale_millis_.get() != NULL) {
-		res->set_attr("parallax_scale_x", formatter() << position_scale_millis_->first);
-		res->set_attr("parallax_scale_y", formatter() << position_scale_millis_->second);
+	if(parallax_scale_millis_.get() != NULL) {
+		res->set_attr("parallax_scale_x", formatter() << parallax_scale_millis_->first);
+		res->set_attr("parallax_scale_y", formatter() << parallax_scale_millis_->second);
 	}
 
 	if(platform_area_.get() != NULL) {
@@ -551,10 +551,10 @@ wml::node_ptr custom_object::write() const
 		res->set_attr("zorder", formatter() << zorder_);
 	}
 
-	if(position_scale_millis_.get()) {
-		if(position_scale_millis_->first != type_->position_scale_millis_x() || position_scale_millis_->second != type_->position_scale_millis_y()){
-			res->set_attr("parallax_scale_x", formatter() << position_scale_millis_->first);
-			res->set_attr("parallax_scale_y", formatter() << position_scale_millis_->second);
+	if(parallax_scale_millis_.get()) {
+		if(parallax_scale_millis_->first != type_->parallax_scale_millis_x() || parallax_scale_millis_->second != type_->parallax_scale_millis_y()){
+			res->set_attr("parallax_scale_x", formatter() << parallax_scale_millis_->first);
+			res->set_attr("parallax_scale_y", formatter() << parallax_scale_millis_->second);
 		}
 	}
 	   
@@ -2119,22 +2119,22 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		}
 
 	} else if(key == "xscale" || key == "yscale") {
-		if(position_scale_millis_.get() == NULL) {
-			position_scale_millis_.reset(new std::pair<int,int>(1000,1000));
+		if(parallax_scale_millis_.get() == NULL) {
+			parallax_scale_millis_.reset(new std::pair<int,int>(1000,1000));
 		}
 
 		const int v = value.as_int();
 
 		if(key == "xscale") {
-			const int current = (position_scale_millis_->first*x())/1000;
+			const int current = (parallax_scale_millis_->first*x())/1000;
 			const int new_value = (v*current)/1000;
 			set_x(new_value);
-			position_scale_millis_->first = v;
+			parallax_scale_millis_->first = v;
 		} else {
-			const int current = (position_scale_millis_->second*y())/1000;
+			const int current = (parallax_scale_millis_->second*y())/1000;
 			const int new_value = (v*current)/1000;
 			set_y(new_value);
-			position_scale_millis_->second = v;
+			parallax_scale_millis_->second = v;
 		}
 	} else if(key == "type") {
 		const_custom_object_type_ptr p = custom_object_type::get(value.as_string());
@@ -2744,9 +2744,9 @@ bool custom_object::is_active(const rect& screen_area) const
 		}
 	}
 
-	if(position_scale_millis_.get() != NULL) {
-		const int diffx = ((position_scale_millis_->first - 1000)*screen_area.x())/1000;
-		const int diffy = ((position_scale_millis_->second - 1000)*screen_area.y())/1000;
+	if(parallax_scale_millis_.get() != NULL) {
+		const int diffx = ((parallax_scale_millis_->first - 1000)*screen_area.x())/1000;
+		const int diffy = ((parallax_scale_millis_->second - 1000)*screen_area.y())/1000;
 		rect screen(screen_area.x() - diffx, screen_area.y() - diffy,
 					screen_area.w(), screen_area.h());
 		const rect& area = frame_rect();

@@ -477,7 +477,7 @@ custom_object_type::custom_object_type(wml::const_node_ptr node, const custom_ob
 	}
 
 	if(node->has_attr("parallax_scale_x") || node->has_attr("parallax_scale_y")) {
-		position_scale_millis_.reset(new std::pair<int, int>(wml::get_int(node, "parallax_scale_x", 1000), wml::get_int(node, "parallax_scale_y", 1000)));
+		parallax_scale_millis_.reset(new std::pair<int, int>(wml::get_int(node, "parallax_scale_x", 1000), wml::get_int(node, "parallax_scale_y", 1000)));
 	}
 	
 	wml::const_node_ptr vars = node->get_child("vars");

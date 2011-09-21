@@ -64,18 +64,18 @@ public:
 	const game_logic::const_formula_ptr& next_animation_formula() const { return next_animation_formula_; }
 
 	game_logic::const_formula_ptr get_event_handler(int event) const;
-	int position_scale_millis_x() const {
-		if(position_scale_millis_.get() == NULL){
+	int parallax_scale_millis_x() const {
+		if(parallax_scale_millis_.get() == NULL){
 			return 1000;
 		}else{
-			return position_scale_millis_->first;
+			return parallax_scale_millis_->first;
 		}
 	}
-	int position_scale_millis_y() const {
-		if(position_scale_millis_.get() == NULL){
+	int parallax_scale_millis_y() const {
+		if(parallax_scale_millis_.get() == NULL){
 			return 1000;
 		}else{
-			return position_scale_millis_->second;
+			return parallax_scale_millis_->second;
 		}
 	}
 	
@@ -182,7 +182,7 @@ private:
 	event_handler_map event_handlers_;
 	boost::shared_ptr<game_logic::function_symbol_table> object_functions_;
 
-	boost::scoped_ptr<std::pair<int, int> > position_scale_millis_;
+	boost::scoped_ptr<std::pair<int, int> > parallax_scale_millis_;
 	
 	int zorder_;
 	int zsub_order_;
