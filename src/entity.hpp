@@ -69,7 +69,7 @@ public:
 	virtual int zorder() const { return 0; }
 	virtual int zsub_order() const { return 0; }
 
-	virtual const std::pair<int,int>* position_scale_millis() const { return 0; }
+	virtual const std::pair<int,int>* parallax_scale_millis() const { return 0; }
 
 	int centi_x() const { return x_; }
 	int centi_y() const { return y_; }

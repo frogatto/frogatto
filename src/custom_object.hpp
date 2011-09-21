@@ -187,7 +187,7 @@ protected:
 		return was_underwater_;
 	}
 
-	const std::pair<int,int>* position_scale_millis() const { return parallax_scale_millis_.get(); }
+	const std::pair<int,int>* parallax_scale_millis() const { return parallax_scale_millis_.get(); }
 
 	enum STANDING_STATUS { NOT_STANDING, STANDING_BACK_FOOT, STANDING_FRONT_FOOT };
 	STANDING_STATUS is_standing(const level& lvl, collision_info* info=NULL) const;

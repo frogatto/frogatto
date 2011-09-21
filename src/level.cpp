@@ -1667,7 +1667,7 @@ void level::draw_status() const
 
 namespace {
 void draw_entity(const entity& obj, int x, int y, bool editor) {
-	const std::pair<int,int>* scroll_speed = obj.position_scale_millis();
+	const std::pair<int,int>* scroll_speed = obj.parallax_scale_millis();
 
 	if(scroll_speed) {
 		glPushMatrix();
@@ -1786,12 +1786,19 @@ void level::draw(int x, int y, int w, int h) const
 
 		if(editor_highlight_) {
 			editor_highlight_->draw();
-			//draw_entity(*editor_highlight_, editor_highlight_->x(), editor_highlight_->y(), true);
+			
+			/*const int xP = editor_highlight_->x() + ((1000 - (editor_highlight_->parallax_scale_millis_x()))* start_x )/1000;
+			const int yP = editor_highlight_->y() + ((1000 - (editor_highlight_->parallax_scale_millis_y()))* start_y )/1000;
+			
+			draw_entity(*editor_highlight_, xP, yP, true);*/
 		}
 
 		foreach(const entity_ptr& e, editor_selection_) {
 			e->draw();
-			//draw_entity(*e, e->x(), e->y(), true);
+			/*const int xP = e->x() + ((1000 - (e->parallax_scale_millis_x()))* start_x )/1000;
+			const int yP = e->y() + ((1000 - (e->parallax_scale_millis_y()))* start_y )/1000;
+
+			draw_entity(*e, xP,yP, true);*/
 		}
 
 		glColor4f(1.0, 1.0, 1.0, 1.0);
