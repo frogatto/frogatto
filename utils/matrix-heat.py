@@ -22,7 +22,12 @@ def main(rawFile, radius):
 	radius = int(radius)
 	points = []
 	
-	shortFileName = re.match(r".*/(.*).cfg", rawFile).group(1)
+	shortFileName = "output"
+	parseName = re.match(r".*/(.*).cfg", rawFile)
+	if parseName is not None:
+		shortFileName = parseName.group(1)
+	else:
+		print "Error parsing " + rawFile
 
 	print "reading data",
 	sys.stdout.flush()
