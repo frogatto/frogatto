@@ -2744,16 +2744,23 @@ bool custom_object::is_active(const rect& screen_area) const
 		}
 	}
 
+	const rect& area = frame_rect();
+	if(draw_area_) {
+		rect draw_area(area.x(), area.y(), draw_area_->w()*2, draw_area_->h()*2);
+		return rects_intersect(draw_area, screen_area);
+	}
+	
 	if(parallax_scale_millis_.get() != NULL) {
-		const int diffx = ((parallax_scale_millis_->first - 1000)*screen_area.x())/1000;
-		const int diffy = ((parallax_scale_millis_->second - 1000)*screen_area.y())/1000;
-		rect screen(screen_area.x() - diffx, screen_area.y() - diffy,
-					screen_area.w(), screen_area.h());
-		const rect& area = frame_rect();
-		return rects_intersect(screen, area);
+		if(parallax_scale_millis_->first != 1000 || parallax_scale_millis_->second != 1000){
+			const int diffx = ((parallax_scale_millis_->first - 1000)*screen_area.x())/1000;
+			const int diffy = ((parallax_scale_millis_->second - 1000)*screen_area.y())/1000;
+			rect screen(screen_area.x() - diffx, screen_area.y() - diffy,
+						screen_area.w(), screen_area.h());
+			const rect& area = frame_rect();
+			return rects_intersect(screen, area);
+		}
 	}
 
-	const rect& area = frame_rect();
 	const int border = type_->activation_border();
 	if(area.x() < screen_area.x2() + border &&
 	   area.x2() > screen_area.x() - border &&
@@ -2762,11 +2769,7 @@ bool custom_object::is_active(const rect& screen_area) const
 		return true;
 	}
 
-	if(draw_area_) {
-		rect draw_area(area.x(), area.y(), draw_area_->w()*2, draw_area_->h()*2);
-		return rects_intersect(draw_area, screen_area);
-	}
-
+	
 	return false;
 }
 
