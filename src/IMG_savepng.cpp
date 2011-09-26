@@ -27,6 +27,7 @@
 
 #ifdef IMPLEMENT_SAVE_PNG
 #include <png.h>
+#include <zlib.h>
 #endif
 
 #include <stdlib.h>
