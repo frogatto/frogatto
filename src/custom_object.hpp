@@ -266,7 +266,8 @@ private:
 
 	boost::shared_ptr<decimal> draw_scale_;
 	boost::shared_ptr<rect> draw_area_, activation_area_, clip_area_;
-
+	int activation_border_;
+	
 	bool can_interact_with_;
 
 	std::map<std::string, particle_system_ptr> particle_systems_;

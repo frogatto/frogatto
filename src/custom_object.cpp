@@ -90,6 +90,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 	vertex_shaders_(util::split(node->attr("vertex_shaders"))),
 	shader_(0),
 	always_active_(wml::get_bool(node, "always_active", false)),
+	activation_border_(wml::get_int(node, "activation_border", type_->activation_border())),
 	last_cycle_active_(0),
 	parent_pivot_(node->attr("pivot")),
 	parent_prev_x_(0), parent_prev_y_(0), parent_prev_facing_(true),
@@ -300,6 +301,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	loaded_(false), fall_through_platforms_(0),
 	shader_(0),
 	always_active_(false),
+	activation_border_(type_->activation_border()),
 	last_cycle_active_(0),
 	parent_prev_x_(0), parent_prev_y_(0), parent_prev_facing_(true),
 	min_difficulty_(-1), max_difficulty_(-1)
@@ -374,6 +376,7 @@ custom_object::custom_object(const custom_object& o) :
 	vertex_shaders_(o.vertex_shaders_),
 	shader_(o.shader_),
 	always_active_(o.always_active_),
+	activation_border_(o.activation_border_),
 	last_cycle_active_(0),
 	parent_(o.parent_),
 	parent_pivot_(o.parent_pivot_),
@@ -411,6 +414,10 @@ wml::node_ptr custom_object::write() const
 		res->set_attr("always_active", "yes");
 	}
 
+	if(activation_border_ != type_->activation_border()) {
+		res->set_attr("activation_border", formatter() << activation_border_);
+	}
+	
 	if(position_schedule_.get() != NULL) {
 		res->set_attr("schedule_speed", formatter() << position_schedule_->speed);
 		if(position_schedule_->x_pos.empty() == false) {
@@ -1662,6 +1669,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_W:                 return variant(solid_rect().w());
 	case CUSTOM_OBJECT_H:                 return variant(solid_rect().h());
 
+	case CUSTOM_OBJECT_ACTIVATION_BORDER: return variant(activation_border_);
 	case CUSTOM_OBJECT_MIDPOINT_X:        return variant(x() + current_frame().width()/2);
 	case CUSTOM_OBJECT_MIDPOINT_Y:        return variant(y() + current_frame().height()/2);
 	case CUSTOM_OBJECT_SOLID_RECT:        return variant(solid_rect().callable());
@@ -2431,6 +2439,12 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 
 		break;
 	
+	case CUSTOM_OBJECT_ACTIVATION_BORDER:
+		activation_border_ = value.as_int();
+	
+		break;
+
+			
 	case CUSTOM_OBJECT_ACTIVATION_AREA:
 		if(value.is_list() && value.num_elements() == 4) {
 			activation_area_.reset(new rect(value[0].as_int(), value[1].as_int(), value[2].as_int(), value[3].as_int()));
@@ -2761,7 +2775,7 @@ bool custom_object::is_active(const rect& screen_area) const
 		}
 	}
 
-	const int border = type_->activation_border();
+	const int border = activation_border_;
 	if(area.x() < screen_area.x2() + border &&
 	   area.x2() > screen_area.x() - border &&
 	   area.y() < screen_area.y2() + border &&
