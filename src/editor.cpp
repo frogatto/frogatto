@@ -2324,15 +2324,26 @@ void editor::draw() const
 		glDisable(GL_TEXTURE_2D);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
+		//number of variables seen of each type, used to
+		//cycle through colors for each variable type.
+		std::map<editor_variable_info::VARIABLE_TYPE, int> nseen_variables;
+
 		const editor_variable_info* selected_var = variable_info_selected(property_dialog_->get_entity(), xpos_ + mousex*zoom_, ypos_ + mousey*zoom_, zoom_);
 		foreach(const editor_variable_info& var, property_dialog_->get_entity()->editor_info()->vars()) {
 			const std::string& name = var.variable_name();
 			const editor_variable_info::VARIABLE_TYPE type = var.type();
+			const int color_index = nseen_variables[type]++;
 			variant value = property_dialog_->get_entity()->query_value(name);
 			if(&var == selected_var) {
 				glColor4ub(255, 255, 0, 255);
 			} else {
-				glColor4ub(255, 0, 0, 255);
+				switch(color_index) {
+					case 0: glColor4ub(255, 0, 0, 255); break;
+					case 1: glColor4ub(0, 255, 0, 255); break;
+					case 2: glColor4ub(0, 0, 255, 255); break;
+					case 3: glColor4ub(255, 255, 0, 255); break;
+					default:glColor4ub(255, 0, 255, 255); break;
+				}
 			}
 
 			varray.clear();
