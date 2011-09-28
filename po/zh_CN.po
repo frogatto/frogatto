@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-09-25 02:31-0300\n"
-"PO-Revision-Date: 2011-09-25 05:32+0000\n"
+"POT-Creation-Date: 2011-09-28 02:00-0300\n"
+"PO-Revision-Date: 2011-09-28 05:03+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Chinese (China) (http://www.transifex.net/projects/p/Frogatto/team/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -383,19 +383,15 @@ msgid "After Summer"
 msgstr ""
 
 #: data/level/after_summer.cfg:1651
-msgid "We could use a break."
-msgstr ""
-
-#: data/level/after_summer.cfg:1651
-msgid "We're cleaning the fish tanks here!"
-msgstr ""
-
-#: data/level/after_summer.cfg:1652
-msgid "Now I SHALL KILL YOU!"
+msgid ""
+"We're cleaning the fish tanks here!\n"
+"We could use a break."
 msgstr ""
 
 #: data/level/after_summer.cfg:1652
-msgid "You killed Benny!"
+msgid ""
+"You killed Benny!\n"
+"Now I SHALL KILL YOU!"
 msgstr ""
 
 #: data/level/after_summer.cfg:2465 data/level/platform-peril.cfg:1656
@@ -410,11 +406,11 @@ msgstr ""
 msgid "Stonepipe Bridge"
 msgstr "石管桥"
 
-#: data/level/airplane-boss.cfg:360
+#: data/level/airplane-boss.cfg:358
 msgid "Ambush!"
 msgstr "伏击！"
 
-#: data/level/airplane-boss.cfg:369
+#: data/level/airplane-boss.cfg:367
 msgid "Victory!"
 msgstr "胜利！"
 
@@ -764,7 +760,7 @@ msgstr ""
 #: data/level/crevice-bridge.cfg:760
 msgid ""
 "Yeah.  Geez.\n"
-" So, uh, here's what I think we know:"
+"So, uh, here's what I think we know:"
 msgstr ""
 
 #: data/level/crevice-bridge.cfg:762
@@ -1402,7 +1398,7 @@ msgstr ""
 #: data/level/crevice-village-heights.cfg:1159
 msgid ""
 "I'm rather out of date on my political geography,\n"
-" so you'll just have to ask people as you go."
+"so you'll just have to ask people as you go."
 msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1162
@@ -1486,9 +1482,9 @@ msgid "Whomever the occasion calls for."
 msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2508
-#: data/level/crevice-village-house-1.cfg:2515
-#: data/level/crevice-village-house-1.cfg:2521
-#: data/level/crevice-village-house-1.cfg:2554
+#: data/level/crevice-village-house-1.cfg:2518
+#: data/level/crevice-village-house-1.cfg:2526
+#: data/level/crevice-village-house-1.cfg:2562
 #: data/level/crevice-village-house-elder.cfg:1480
 #: data/level/crevice-village-house-elder.cfg:1491
 #: data/level/crevice-village-house-elder.cfg:1593
@@ -1496,41 +1492,27 @@ msgstr ""
 msgid "..."
 msgstr "……"
 
-#: data/level/crevice-village-house-1.cfg:2508
+#: data/level/crevice-village-house-1.cfg:2509
 msgid "That's nutty."
 msgstr "真蛋疼。"
 
-#: data/level/crevice-village-house-1.cfg:2510
+#: data/level/crevice-village-house-1.cfg:2511
 msgid ""
 "Yes, well, at this particular juncture,\n"
 "who I am isn't very important."
 msgstr ""
 
-#: data/level/crevice-village-house-1.cfg:2512
+#: data/level/crevice-village-house-1.cfg:2513
 msgid ""
 "What's important is that I'm not in a cage,\n"
 "so I might be able to do something to help."
 msgstr ""
 
-#: data/level/crevice-village-house-1.cfg:2514
+#: data/level/crevice-village-house-1.cfg:2515
 msgid "Got any advice?"
 msgstr "有啥忠告没？"
 
-#: data/level/crevice-village-house-1.cfg:2515
-msgid "Keep an eye out for it!"
-msgstr "小心点儿！"
-
-#: data/level/crevice-village-house-1.cfg:2515
-msgid "Maybe."
-msgstr "啊，也许吧。"
-
-#: data/level/crevice-village-house-1.cfg:2515
-msgid ""
-"OH!  One other thing..\n"
-"the key to the town gate is a SILVER key."
-msgstr ""
-
-#: data/level/crevice-village-house-1.cfg:2515
+#: data/level/crevice-village-house-1.cfg:2516
 msgid ""
 "Yeah, that key right next to you -\n"
 "I think that unlocks a house that\n"
@@ -1541,18 +1523,32 @@ msgstr ""
 "那屋子里有小镇大门的钥匙。"
 
 #: data/level/crevice-village-house-1.cfg:2517
+msgid "Maybe."
+msgstr "啊，也许吧。"
+
+#: data/level/crevice-village-house-1.cfg:2519
+msgid ""
+"OH!  One other thing..\n"
+"the key to the town gate is a SILVER key."
+msgstr ""
+
+#: data/level/crevice-village-house-1.cfg:2520
+msgid "Keep an eye out for it!"
+msgstr "小心点儿！"
+
+#: data/level/crevice-village-house-1.cfg:2522
 msgid "Will do.  Catch ya around."
 msgstr "好咧。回头见！"
 
-#: data/level/crevice-village-house-1.cfg:2518
+#: data/level/crevice-village-house-1.cfg:2523
 msgid "HEY, WAIT!  What about me?!"
 msgstr "嘿，等等！那我怎么办？！"
 
-#: data/level/crevice-village-house-1.cfg:2520
+#: data/level/crevice-village-house-1.cfg:2525
 msgid "Does it look like I have a key for your cage?"
 msgstr ""
 
-#: data/level/crevice-village-house-1.cfg:2521
+#: data/level/crevice-village-house-1.cfg:2527
 msgid ""
 "Ah, I see..\n"
 "carry on then."
@@ -1560,27 +1556,27 @@ msgstr ""
 "啊，我知道了……\n"
 "那您继续吧。"
 
-#: data/level/crevice-village-house-1.cfg:2545
+#: data/level/crevice-village-house-1.cfg:2551
 msgid "Thank God it's you!"
 msgstr "谢天谢地！是你！"
 
-#: data/level/crevice-village-house-1.cfg:2547
+#: data/level/crevice-village-house-1.cfg:2553
 msgid "Hey, Hedge, you alright?"
 msgstr "嘿，海吉，你还好不？"
 
-#: data/level/crevice-village-house-1.cfg:2548
-msgid "Besides the obvious cage situation."
-msgstr ""
-"很明显我给关笼子里了，\n"
-"除此之外还不错。"
-
-#: data/level/crevice-village-house-1.cfg:2548
+#: data/level/crevice-village-house-1.cfg:2554
 msgid "Eh, I've been better, but yeah, I'm okay."
 msgstr ""
 "呃，之前可比这境况好多了，不过呢，\n"
 "是了，我挺好的。"
 
-#: data/level/crevice-village-house-1.cfg:2550
+#: data/level/crevice-village-house-1.cfg:2555
+msgid "Besides the obvious cage situation."
+msgstr ""
+"很明显我给关笼子里了，\n"
+"除此之外还不错。"
+
+#: data/level/crevice-village-house-1.cfg:2557
 msgid ""
 "Yeah.\n"
 "Sad to say, I can't pick locks.\n"
@@ -1590,15 +1586,19 @@ msgstr ""
 "残念的是我打不开这锁。\n"
 "我啥都没有。"
 
-#: data/level/crevice-village-house-1.cfg:2551
+#: data/level/crevice-village-house-1.cfg:2558
 msgid "So I'm stuck here, huh?"
 msgstr "就是说我给困在这里了，哈？"
 
-#: data/level/crevice-village-house-1.cfg:2553
+#: data/level/crevice-village-house-1.cfg:2560
 msgid "Yep."
 msgstr "对头。"
 
-#: data/level/crevice-village-house-1.cfg:2554
+#: data/level/crevice-village-house-1.cfg:2561
+msgid "Phooey."
+msgstr "呸。"
+
+#: data/level/crevice-village-house-1.cfg:2563
 msgid ""
 "Hmm, you know, I know one thing\n"
 "that might help you.."
@@ -1606,11 +1606,7 @@ msgstr ""
 "恩，你懂的，我知道点东西\n"
 "也许可以帮上忙。"
 
-#: data/level/crevice-village-house-1.cfg:2554
-msgid "Phooey."
-msgstr "呸。"
-
-#: data/level/crevice-village-house-1.cfg:2554
+#: data/level/crevice-village-house-1.cfg:2564
 msgid ""
 "There's supposedly\n"
 "a secret room in this house."
@@ -1618,11 +1614,11 @@ msgstr ""
 "这屋子里不是应该有个\n"
 "秘密房间的么。"
 
-#: data/level/crevice-village-house-1.cfg:2556
+#: data/level/crevice-village-house-1.cfg:2566
 msgid "Oh really?  Where at?"
 msgstr "哦？真的？哪里？"
 
-#: data/level/crevice-village-house-1.cfg:2557
+#: data/level/crevice-village-house-1.cfg:2567
 msgid ""
 "If I knew that, it wouldn't\n"
 "be much of a secret, would it?"
@@ -1630,7 +1626,7 @@ msgstr ""
 "我要是知道了，那这就不是\n"
 "什么秘密了，是吧？"
 
-#: data/level/crevice-village-house-1.cfg:2559
+#: data/level/crevice-village-house-1.cfg:2569
 msgid ""
 "Figures.\n"
 "Well, thanks for the help!"
@@ -1638,11 +1634,11 @@ msgstr ""
 "了解了。\n"
 "恩，谢谢你帮忙！"
 
-#: data/level/crevice-village-house-1.cfg:2560
+#: data/level/crevice-village-house-1.cfg:2570
 msgid "Good luck!"
 msgstr "祝你好运！"
 
-#: data/level/crevice-village-house-1.cfg:2584
+#: data/level/crevice-village-house-1.cfg:2594
 msgid ""
 "Jeez, I *swear* this house\n"
 "didn't look THIS big from the outside!"
@@ -1650,7 +1646,7 @@ msgstr ""
 "呀，我*发誓*这屋子从外面看\n"
 "完全没有这么大大大大大啊啊！"
 
-#: data/level/crevice-village-house-1.cfg:2631
+#: data/level/crevice-village-house-1.cfg:2641
 msgid "Uh, oh, I hear ... trouble."
 msgstr ""
 
@@ -1992,7 +1988,7 @@ msgstr ""
 #: data/level/crevice-village-house-elder.cfg:1636
 msgid ""
 "I set out for just a routine errand run,\n"
-" you know?"
+"you know?"
 msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1638
@@ -2085,7 +2081,7 @@ msgstr ""
 #: data/level/crevice-village-house-elder.cfg:1670
 msgid ""
 "I know you're trying to hide something,\n"
-" but throw me a line here."
+"but throw me a line here."
 msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1672
@@ -2180,7 +2176,7 @@ msgstr ""
 #: data/level/crevice-village-house-elder.cfg:1704
 msgid ""
 "He was going to use this as an excuse\n"
-" to take over the town."
+"to take over the town."
 msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1706
@@ -2292,10 +2288,8 @@ msgstr ""
 #: data/level/crevice-village.cfg:815
 msgid ""
 "Milgram's trying to seal off the town,\n"
-" so no one gets in or out."
+"so no one gets in or out."
 msgstr ""
-"米格拉姆试图封锁小镇，\n"
-"不让任何人进出。"
 
 #: data/level/crevice-village.cfg:816
 msgid ""
@@ -2344,18 +2338,14 @@ msgstr "对付米格拉姆？真的？"
 #: data/level/crevice-village.cfg:826
 msgid ""
 "I mean... on paper,\n"
-" that sounds like a good enough plan,"
+"that sounds like a good enough plan,"
 msgstr ""
-"我的意思是...在纸面上，\n"
-"听起来像一个挺好的计划，"
 
 #: data/level/crevice-village.cfg:828
 msgid ""
 "but I'm gonna be a jerk here,\n"
-" and poke some holes in it."
+"and poke some holes in it."
 msgstr ""
-"但我在这里做一个多事鬼，\n"
-"给你挑一些刺。"
 
 #: data/level/crevice-village.cfg:829
 msgid ""
@@ -2376,26 +2366,20 @@ msgstr ""
 #: data/level/crevice-village.cfg:833
 msgid ""
 "I mean, even if we armed the whole town,\n"
-" they'd grossly outnumber us."
+"they'd grossly outnumber us."
 msgstr ""
-"我是说，即使我们全镇武装起来，\n"
-"也远远比不上他们的数量啊。"
 
 #: data/level/crevice-village.cfg:835
 msgid ""
 "Plus, they're pretty mobile, too.\n"
-" Planes and such."
+"Planes and such."
 msgstr ""
-"而且，他们的机动性也很强，\n"
-"飞机什么的都有。"
 
 #: data/level/crevice-village.cfg:837
 msgid ""
 "We might get the drop on them for a bit,\n"
-" but we'd get surrounded in no time."
+"but we'd get surrounded in no time."
 msgstr ""
-"我们一开始可能能突进一点，\n"
-"但是没有多久就会被包围的。"
 
 #: data/level/crevice-village.cfg:839
 msgid "Brute force against brute force won't work."
@@ -2621,7 +2605,7 @@ msgstr "期待你的表现。"
 msgid "Not like I need to be up,"
 msgstr "并不是说我一定得起来，"
 
-#: data/level/frogatto-grotto-inside.cfg:1308
+#: data/level/frogatto-grotto-inside.cfg:1309
 msgid "but it's the principle of the thing."
 msgstr "不过这就是世间的准则。"
 
