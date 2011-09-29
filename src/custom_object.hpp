@@ -194,6 +194,8 @@ protected:
 
 	void set_parent(entity_ptr e, const std::string& pivot_point);
 
+	virtual int parent_depth(int cur_depth=0) const;
+
 private:
 	custom_object& operator=(const custom_object& o);
 	struct Accessor;

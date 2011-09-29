@@ -3225,6 +3225,15 @@ void custom_object::set_parent(entity_ptr e, const std::string& pivot_point)
 	}
 }
 
+int custom_object::parent_depth(int cur_depth) const
+{
+	if(!parent_ || cur_depth > 10) {
+		return cur_depth;
+	}
+
+	return parent_->parent_depth(cur_depth+1);
+}
+
 point custom_object::parent_position() const
 {
 	if(parent_.get() == NULL) {

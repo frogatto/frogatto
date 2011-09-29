@@ -249,6 +249,8 @@ public:
 
 	virtual bool appears_at_difficulty(int difficulty) const = 0;
 
+	virtual int parent_depth(int cur_depth=0) const { return 0; }
+
 protected:
 
 	virtual const solid_info* calculate_solid() const = 0;

@@ -1994,6 +1994,12 @@ void level::process_draw()
 	}
 }
 
+namespace {
+bool compare_entity_num_parents(const entity_ptr& a, const entity_ptr& b) {
+	return a->parent_depth() < b->parent_depth();
+}
+}
+
 void level::do_processing()
 {
 	if(cycle_ == 0) {
@@ -2068,6 +2074,7 @@ void level::do_processing()
 	const int ActivationDistance = 700;
 
 	std::vector<entity_ptr> active_chars = active_chars_;
+	std::sort(active_chars.begin(), active_chars.end(), compare_entity_num_parents);
 	if(time_freeze_ >= 1000) {
 		time_freeze_ -= 1000;
 		active_chars = chars_immune_from_time_freeze_;
