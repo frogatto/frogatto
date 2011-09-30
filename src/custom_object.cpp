@@ -714,11 +714,11 @@ void custom_object::draw() const
 			}
 		}
 	}
-#endif
 
 	if(clip_area_) {
 		graphics::push_clip(clip_area_->sdl_rect());
 	}
+#endif
 
 	if(driver_) {
 		driver_->draw();
@@ -781,12 +781,12 @@ void custom_object::draw() const
 			text_->font->draw(draw_x, draw_y, text_->text, text_->size);
 		glColor4ub(255, 255, 255, 255);
 	}
-
+	
+#ifndef SDL_VIDEO_OPENGL_ES
 	if(clip_area_) {
 		graphics::pop_clip();
 	}
 
-#ifndef SDL_VIDEO_OPENGL_ES
 	if(shader_) {
 		glUseProgram(0);
 	}
