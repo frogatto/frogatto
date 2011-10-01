@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto v1.0.3\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-09-30 00:46-0300\n"
+"POT-Creation-Date: 2011-10-01 03:55-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -530,42 +530,66 @@ msgid "Bon Bosque"
 msgstr ""
 
 #: data/level/bon-bosque.cfg:1459
+msgid "Well, you made it!"
+msgstr ""
+
+#: data/level/bon-bosque.cfg:1460
 msgid ""
-"Well, you made it! Now just up ahead\n"
-"there is a gate. If you can get\n"
-"through it you'll make it to the\n"
-"limestone caverns. There is said to\n"
-"be an entry way directly into Milgram's\n"
-"compound from the caverns."
+"Now just up ahead there is a gate.\n"
+"If you can get through it,\n"
+"you'll make it to the limestone caverns.\n"
+"There is said to be an way into the\n"
+"basement floors of Milgram's compound,\n"
+"somewhere in the caverns."
 msgstr ""
 
 #: data/level/bon-bosque.cfg:1461
 msgid ""
-"Whoah, a bunch of caverns now?\n"
-"This seems like it's harder than\n"
-"what the elder led me to believe!"
+"If you wanted a personal audience,\n"
+"sneaking in is probably the best bet.\n"
+"I doubt the entrance guards\n"
+"would give you the time of day."
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1462
+#: data/level/bon-bosque.cfg:1463
 msgid ""
-"I guess the forests have become\n"
-"infested over the years. Hopefully\n"
-"the caverns won't be too much worse!"
+"Yeah... geez though.  Caves, now?\n"
+"Are these caves long?"
 msgstr ""
 
 #: data/level/bon-bosque.cfg:1464
-msgid ""
-"I hope not. Thank you for guiding me\n"
-"and meeting me here."
+msgid "I'm afraid so."
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1465
+#: data/level/bon-bosque.cfg:1466
 msgid ""
-"You're welcome, friend. Naturally I\n"
-"won't be able to fly into the\n"
-"caverns, so this is the last you will\n"
-"see of me. Take care and teach Milgram\n"
-"a lesson for us all!"
+"Ugh.\n"
+"No sense in turning back now, though."
+msgstr ""
+
+#: data/level/bon-bosque.cfg:1467
+msgid ""
+"Are you really certain you want to do this?\n"
+"I'm afraid I can't follow you into the caverns,\n"
+"so this is the last you would see of me."
+msgstr ""
+
+#: data/level/bon-bosque.cfg:1469
+msgid ""
+"Yes, I am; I'd be twice the fool,\n"
+"to come this far and just give up."
+msgstr ""
+
+#: data/level/bon-bosque.cfg:1471
+msgid ""
+"Nevertheless,\n"
+"thank you very much for all your help!"
+msgstr ""
+
+#: data/level/bon-bosque.cfg:1472
+msgid ""
+"You're welcome, friend.\n"
+"I wish you the best!"
 msgstr ""
 
 #: data/level/bug-mining.cfg:17
