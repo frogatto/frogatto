@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-09-28 02:00-0300\n"
-"PO-Revision-Date: 2011-09-28 05:03+0000\n"
+"POT-Creation-Date: 2011-10-01 03:55-0300\n"
+"PO-Revision-Date: 2011-10-01 07:12+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Russian (http://www.transifex.net/projects/p/Frogatto/team/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -540,60 +540,67 @@ msgid "Bon Bosque"
 msgstr "Бон Боск"
 
 #: data/level/bon-bosque.cfg:1459
-msgid ""
-"Well, you made it! Now just up ahead\n"
-"there is a gate. If you can get\n"
-"through it you'll make it to the\n"
-"limestone caverns. There is said to\n"
-"be an entry way directly into Milgram's\n"
-"compound from the caverns."
+msgid "Well, you made it!"
 msgstr ""
-"Ты сделал это! Теперь только вперёд\n"
-"к воротам! Если ты пройдёшь через них,\n"
-"то окажешься в известковых пещерах,\n"
-"откуда прямой путь к логову Мильграма."
+
+#: data/level/bon-bosque.cfg:1460
+msgid ""
+"Now just up ahead there is a gate.\n"
+"If you can get through it,\n"
+"you'll make it to the limestone caverns.\n"
+"There is said to be an way into the\n"
+"basement floors of Milgram's compound,\n"
+"somewhere in the caverns."
+msgstr ""
 
 #: data/level/bon-bosque.cfg:1461
 msgid ""
-"Whoah, a bunch of caverns now?\n"
-"This seems like it's harder than\n"
-"what the elder led me to believe!"
+"If you wanted a personal audience,\n"
+"sneaking in is probably the best bet.\n"
+"I doubt the entrance guards\n"
+"would give you the time of day."
 msgstr ""
-"Ничего себе, целая куча пещер?\n"
-"По-моему это не совсем то,\n"
-"о чём говорил старейшина!"
 
-#: data/level/bon-bosque.cfg:1462
+#: data/level/bon-bosque.cfg:1463
 msgid ""
-"I guess the forests have become\n"
-"infested over the years. Hopefully\n"
-"the caverns won't be too much worse!"
+"Yeah... geez though.  Caves, now?\n"
+"Are these caves long?"
 msgstr ""
-"Я думаю, что лес разросся за эти годы.\n"
-"Надеюсь, что проходить через пещеры\n"
-"будет легче."
 
 #: data/level/bon-bosque.cfg:1464
-msgid ""
-"I hope not. Thank you for guiding me\n"
-"and meeting me here."
+msgid "I'm afraid so."
 msgstr ""
-"Надеюсь, что нет. Спасибо за то, что\n"
-"проводил и встретил меня здесь."
 
-#: data/level/bon-bosque.cfg:1465
+#: data/level/bon-bosque.cfg:1466
 msgid ""
-"You're welcome, friend. Naturally I\n"
-"won't be able to fly into the\n"
-"caverns, so this is the last you will\n"
-"see of me. Take care and teach Milgram\n"
-"a lesson for us all!"
+"Ugh.\n"
+"No sense in turning back now, though."
 msgstr ""
-"Добро пожаловать, друг мой.\n"
-"Естественно, я не смогу летать\n"
-"в пещерах, так что это последний\n"
-"раз, когда ты видишь меня. Будь\n"
-"осторожен и проучи Мильграма за всех нас!"
+
+#: data/level/bon-bosque.cfg:1467
+msgid ""
+"Are you really certain you want to do this?\n"
+"I'm afraid I can't follow you into the caverns,\n"
+"so this is the last you would see of me."
+msgstr ""
+
+#: data/level/bon-bosque.cfg:1469
+msgid ""
+"Yes, I am; I'd be twice the fool,\n"
+"to come this far and just give up."
+msgstr ""
+
+#: data/level/bon-bosque.cfg:1471
+msgid ""
+"Nevertheless,\n"
+"thank you very much for all your help!"
+msgstr ""
+
+#: data/level/bon-bosque.cfg:1472
+msgid ""
+"You're welcome, friend.\n"
+"I wish you the best!"
+msgstr ""
 
 #: data/level/bug-mining.cfg:17
 msgid "Bug Mining"
@@ -3672,21 +3679,15 @@ msgstr "Ты не дал мне тогда договорить."
 msgid ""
 "Milgram's men showed up\n"
 "early this morning, in town.\n"
-"They've taken the whole place hostage;\n"
-"something about \"collecting on a debt.\""
+"They've taken the whole place hostage!"
 msgstr ""
-"Люди Мильграма появились утром.\n"
-"Они взяли в заложники целый город;\n"
-"устроили что-то вроде \"собирания налогов\"."
 
 #: data/level/secluded-hut.cfg:1253
 msgid ""
-"I don't know the details.\n"
-"I flew out of there as soon as I could,\n"
+"Unfortunately, I don't know the details.\n"
+"I just flew out of there as soon as I could,\n"
 "looking for anyone who could help."
 msgstr ""
-"Я улетел искать помощь,\n"
-"поэтому это всё, что я знаю."
 
 #: data/level/secluded-hut.cfg:1255
 msgid ""

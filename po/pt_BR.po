@@ -10,16 +10,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-09-29 00:20-0300\n"
-"PO-Revision-Date: 2011-09-30 01:09-0300\n"
+"POT-Creation-Date: 2011-10-01 03:55-0300\n"
+"PO-Revision-Date: 2011-10-01 04:29-0300\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Portuguese (Brazilian) (http://www.transifex.net/projects/p/Frogatto/team/pt_BR/)\n"
-"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
-"X-Poedit-Basepath: ..\n"
 
 #: CHANGELOG:1
 #: iOS_CHANGELOG:1
@@ -523,64 +522,67 @@ msgid "Bon Bosque"
 msgstr "Bom Bosque"
 
 #: data/level/bon-bosque.cfg:1459
-msgid ""
-"Well, you made it! Now just up ahead\n"
-"there is a gate. If you can get\n"
-"through it you'll make it to the\n"
-"limestone caverns. There is said to\n"
-"be an entry way directly into Milgram's\n"
-"compound from the caverns."
+msgid "Well, you made it!"
 msgstr ""
-"Opa, você conseguiu chegar!\n"
-"Tem um portão ali na frente...\n"
-"Se você conseguir\n"
-"passar por ele, vai chegar\n"
-"nas cavernas de calcário.\n"
-"Ouvi dizer que tem uma saída que leva\n"
-"direto ao castelo do Milgram lá dentro."
+
+#: data/level/bon-bosque.cfg:1460
+msgid ""
+"Now just up ahead there is a gate.\n"
+"If you can get through it,\n"
+"you'll make it to the limestone caverns.\n"
+"There is said to be an way into the\n"
+"basement floors of Milgram's compound,\n"
+"somewhere in the caverns."
+msgstr ""
 
 #: data/level/bon-bosque.cfg:1461
 msgid ""
-"Whoah, a bunch of caverns now?\n"
-"This seems like it's harder than\n"
-"what the elder led me to believe!"
+"If you wanted a personal audience,\n"
+"sneaking in is probably the best bet.\n"
+"I doubt the entrance guards\n"
+"would give you the time of day."
 msgstr ""
-"Epa, agora tem um monte de cavernas?\n"
-"Isso tudo tá parecendo mais difícil\n"
-"do que o prefeito me fez entender!"
 
-#: data/level/bon-bosque.cfg:1462
+#: data/level/bon-bosque.cfg:1463
 msgid ""
-"I guess the forests have become\n"
-"infested over the years. Hopefully\n"
-"the caverns won't be too much worse!"
+"Yeah... geez though.  Caves, now?\n"
+"Are these caves long?"
 msgstr ""
-"Eu acho que as florestas ficaram\n"
-"infestadas com o passar dos anos.\n"
-"Mas as cavernas não devem ser\n"
-"muito pior do que isso!"
 
 #: data/level/bon-bosque.cfg:1464
-msgid ""
-"I hope not. Thank you for guiding me\n"
-"and meeting me here."
+msgid "I'm afraid so."
 msgstr ""
-"Espero que não... Bom, obrigado\n"
-"por me guiar e me encontrar aqui."
 
-#: data/level/bon-bosque.cfg:1465
+#: data/level/bon-bosque.cfg:1466
 msgid ""
-"You're welcome, friend. Naturally I\n"
-"won't be able to fly into the\n"
-"caverns, so this is the last you will\n"
-"see of me. Take care and teach Milgram\n"
-"a lesson for us all!"
+"Ugh.\n"
+"No sense in turning back now, though."
 msgstr ""
-"Não há o que agradecer, amigo.\n"
-"Naturalmente, eu não posso voar nas\n"
-"cavernas, então você não vai mais me\n"
-"ver de agora em diante. Tome cuidado\n"
-"e dê uma lição no Milgram por nós!"
+
+#: data/level/bon-bosque.cfg:1467
+msgid ""
+"Are you really certain you want to do this?\n"
+"I'm afraid I can't follow you into the caverns,\n"
+"so this is the last you would see of me."
+msgstr ""
+
+#: data/level/bon-bosque.cfg:1469
+msgid ""
+"Yes, I am; I'd be twice the fool,\n"
+"to come this far and just give up."
+msgstr ""
+
+#: data/level/bon-bosque.cfg:1471
+msgid ""
+"Nevertheless,\n"
+"thank you very much for all your help!"
+msgstr ""
+
+#: data/level/bon-bosque.cfg:1472
+msgid ""
+"You're welcome, friend.\n"
+"I wish you the best!"
+msgstr ""
 
 #: data/level/bug-mining.cfg:17
 msgid "Bug Mining"
@@ -798,9 +800,6 @@ msgid ""
 "Yeah.  Geez.\n"
 "So, uh, here's what I think we know:"
 msgstr ""
-"Sei...\n"
-"Bom, então, o que a gente sabe,\n"
-"ou acha que sabe, é que..."
 
 #: data/level/crevice-bridge.cfg:762
 msgid ""
@@ -1558,9 +1557,6 @@ msgid ""
 "I'm rather out of date on my political geography,\n"
 "so you'll just have to ask people as you go."
 msgstr ""
-"A minha memória da geografia da ilha\n"
-"já não é mais a mesma,\n"
-"então vá perguntando pelo caminho."
 
 #: data/level/crevice-village-heights.cfg:1162
 msgid ""
@@ -1714,8 +1710,6 @@ msgid ""
 "OH!  One other thing..\n"
 "the key to the town gate is a SILVER key."
 msgstr ""
-"Ah! Mais uma coisa...\n"
-"a chave que abre o portão da vila é PRATEADA."
 
 #: data/level/crevice-village-house-1.cfg:2520
 msgid "Keep an eye out for it!"
@@ -1731,14 +1725,14 @@ msgstr "EI, ESPERE! E quanto a mim?!"
 
 #: data/level/crevice-village-house-1.cfg:2525
 msgid "Does it look like I have a key for your cage?"
-msgstr "E eu tenho cara de quem tem a chave pra tua jaula?"
+msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2527
 msgid ""
 "Ah, I see..\n"
 "carry on then."
 msgstr ""
-"Ah, entendo...\n"
+"Ah, é verdade...\n"
 "até mais, então."
 
 #: data/level/crevice-village-house-1.cfg:2551
@@ -1879,7 +1873,7 @@ msgstr "Pode me dar alguma dica?"
 
 #: data/level/crevice-village-house-2.cfg:3509
 msgid "Yeah."
-msgstr "Posso."
+msgstr ""
 
 #: data/level/crevice-village-house-2.cfg:3510
 msgid ""
@@ -2141,50 +2135,42 @@ msgid ""
 "That's really amazing.\n"
 "Uh..."
 msgstr ""
-"Isso é incrível!\n"
-"Hã..."
 
 #: data/level/crevice-village-house-elder.cfg:1622
 msgid ""
 "I guess I have to ask:\n"
 "Whatever prompted you to build this?"
 msgstr ""
-"Mas eu tenho que perguntar...\n"
-"O que exatamente que te fez construir isso aí?"
 
 #: data/level/crevice-village-house-elder.cfg:1624
 msgid ""
 "This HAD to be expensive.\n"
 "I mean ... really ... expensive."
 msgstr ""
-"Deve ter sido caro.\n"
-"Quer dizer... muito caro."
 
 #: data/level/crevice-village-house-elder.cfg:1626
 msgid ""
 "Yes.\n"
 "Yes it was."
-msgstr "Ah, sim... Me custou uma nota."
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1628
 msgid "...And?"
-msgstr "...E?"
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1630
 msgid "And what?"
-msgstr "E o quê?"
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1632
 msgid ""
 "And ... I don't know...\n"
 "would you care to tell me what's going on?!"
 msgstr ""
-"E... sei lá...\n"
-"poderia me contar o que tá acontecendo?"
 
 #: data/level/crevice-village-house-elder.cfg:1634
 msgid "This has been a really crazy day!"
-msgstr "Esse dia tem sido bem maluco, ora bolas!"
+msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1636
 msgid ""
@@ -3932,23 +3918,15 @@ msgstr "Ah, então você ainda não soube."
 msgid ""
 "Milgram's men showed up\n"
 "early this morning, in town.\n"
-"They've taken the whole place hostage;\n"
-"something about \"collecting on a debt.\""
+"They've taken the whole place hostage!"
 msgstr ""
-"A tropa do Milgram apareceu de manhã\n"
-"cedo na vila. Eles prenderam todo mundo,\n"
-"falando numa tal \"cobrança de dívida\"."
 
 #: data/level/secluded-hut.cfg:1253
 msgid ""
-"I don't know the details.\n"
-"I flew out of there as soon as I could,\n"
+"Unfortunately, I don't know the details.\n"
+"I just flew out of there as soon as I could,\n"
 "looking for anyone who could help."
 msgstr ""
-"Eu não sei dos detalhes.\n"
-"Eu saí voando de lá o mais rápido\n"
-"que pude, pra ver se conseguia\n"
-"alguma ajuda."
 
 #: data/level/secluded-hut.cfg:1255
 msgid ""
@@ -4644,61 +4622,61 @@ msgid "COIN RACE"
 msgstr "CORRIDA DAS MOEDAS"
 
 #: data/level/titlescreen-test.cfg:259
-#: data/level/titlescreen.cfg:260
+#: data/level/titlescreen.cfg:254
 msgid "LOAD GAME"
 msgstr "CONTINUAR"
 
 #: data/level/titlescreen-test.cfg:279
-#: data/level/titlescreen.cfg:282
+#: data/level/titlescreen.cfg:274
 msgid "NEW GAME"
 msgstr "NOVO JOGO"
 
 #: data/level/titlescreen-test.cfg:300
 #: data/level/titlescreen-test.cfg:312
-#: data/level/titlescreen.cfg:305
-#: data/level/titlescreen.cfg:317
+#: data/level/titlescreen.cfg:295
+#: data/level/titlescreen.cfg:307
 msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
 msgstr "Pressione {LEFT_KEY} ou {RIGHT_KEY} para andar."
 
 #: data/level/titlescreen-test.cfg:313
 #: data/level/titlescreen-test.cfg:328
-#: data/level/titlescreen.cfg:318
-#: data/level/titlescreen.cfg:335
+#: data/level/titlescreen.cfg:308
+#: data/level/titlescreen.cfg:323
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
 msgstr "Aperte {LEFT_KEY} ou {RIGHT_KEY} duas vezes, rapidamente, para correr."
 
 #: data/level/titlescreen-test.cfg:314
-#: data/level/titlescreen.cfg:319
+#: data/level/titlescreen.cfg:309
 msgid "Press {DOWN_KEY} to crouch."
 msgstr "Aperte {DOWN_KEY} para se abaixar."
 
 #: data/level/titlescreen-test.cfg:314
-#: data/level/titlescreen.cfg:319
+#: data/level/titlescreen.cfg:309
 msgid "Walk in front of a door or person, and press"
 msgstr "Você pode interagir com pessoas ou objetos como portas,"
 
 #: data/level/titlescreen-test.cfg:315
-#: data/level/titlescreen.cfg:320
+#: data/level/titlescreen.cfg:310
 msgid "Press {UP_KEY} to talk, and use things like doors."
 msgstr "Aperte {UP_KEY} para conversar, abrir portas, etc."
 
 #: data/level/titlescreen-test.cfg:315
-#: data/level/titlescreen.cfg:320
+#: data/level/titlescreen.cfg:310
 msgid "the button that appears to interact with them."
 msgstr "tocando no botão que aparecer na tela."
 
 #: data/level/titlescreen-test.cfg:316
-#: data/level/titlescreen.cfg:321
+#: data/level/titlescreen.cfg:311
 msgid "Press {JUMP_KEY} to jump."
 msgstr "Aperte {JUMP_KEY} para pular."
 
 #: data/level/titlescreen-test.cfg:317
-#: data/level/titlescreen.cfg:322
+#: data/level/titlescreen.cfg:312
 msgid "Press {TONGUE_KEY} to use a character's attacks."
 msgstr "Aperte {TONGUE_KEY} para usar os ataques do personagem."
 
 #: data/level/titlescreen-test.cfg:348
-#: data/level/titlescreen.cfg:357
+#: data/level/titlescreen.cfg:343
 msgid "ARCADE"
 msgstr "FLIPERAMA"
 
@@ -4711,6 +4689,8 @@ msgid ""
 "AIEEEEE!\n"
 "Get that thing out of here!"
 msgstr ""
+"AIEEEEE!\n"
+"Tira esse bicho daqui!"
 
 #: data/level/to-nenes-house-inside.cfg:490
 msgid "Hey Nene, what's cooking?"

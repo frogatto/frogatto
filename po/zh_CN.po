@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-09-28 02:00-0300\n"
-"PO-Revision-Date: 2011-09-28 05:03+0000\n"
+"POT-Creation-Date: 2011-10-01 03:55-0300\n"
+"PO-Revision-Date: 2011-10-01 07:12+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Chinese (China) (http://www.transifex.net/projects/p/Frogatto/team/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -532,59 +532,67 @@ msgid "Bon Bosque"
 msgstr "给力树丛"
 
 #: data/level/bon-bosque.cfg:1459
-msgid ""
-"Well, you made it! Now just up ahead\n"
-"there is a gate. If you can get\n"
-"through it you'll make it to the\n"
-"limestone caverns. There is said to\n"
-"be an entry way directly into Milgram's\n"
-"compound from the caverns."
+msgid "Well, you made it!"
 msgstr ""
-"嘛，干得不赖！现在你面前\n"
-"有个门。如果你能通过的话，\n"
-"就会到达石灰岩洞穴。貌似\n"
-"洞穴里有条道儿直接通往\n"
-"米格拉姆的庭院。"
+
+#: data/level/bon-bosque.cfg:1460
+msgid ""
+"Now just up ahead there is a gate.\n"
+"If you can get through it,\n"
+"you'll make it to the limestone caverns.\n"
+"There is said to be an way into the\n"
+"basement floors of Milgram's compound,\n"
+"somewhere in the caverns."
+msgstr ""
 
 #: data/level/bon-bosque.cfg:1461
 msgid ""
-"Whoah, a bunch of caverns now?\n"
-"This seems like it's harder than\n"
-"what the elder led me to believe!"
+"If you wanted a personal audience,\n"
+"sneaking in is probably the best bet.\n"
+"I doubt the entrance guards\n"
+"would give you the time of day."
 msgstr ""
-"喔哈！现在是一堆洞穴么？\n"
-"貌似这比老前辈告诉我的\n"
-"要难那么一点点啊！"
 
-#: data/level/bon-bosque.cfg:1462
+#: data/level/bon-bosque.cfg:1463
 msgid ""
-"I guess the forests have become\n"
-"infested over the years. Hopefully\n"
-"the caverns won't be too much worse!"
+"Yeah... geez though.  Caves, now?\n"
+"Are these caves long?"
 msgstr ""
-"我猜这些年来森林已经被侵蚀了。\n"
-"但愿那些洞穴里的情况不会糟糕太多！"
 
 #: data/level/bon-bosque.cfg:1464
-msgid ""
-"I hope not. Thank you for guiding me\n"
-"and meeting me here."
+msgid "I'm afraid so."
 msgstr ""
-"但愿吧。谢谢你为我指路还\n"
-"在这儿等我。"
 
-#: data/level/bon-bosque.cfg:1465
+#: data/level/bon-bosque.cfg:1466
 msgid ""
-"You're welcome, friend. Naturally I\n"
-"won't be able to fly into the\n"
-"caverns, so this is the last you will\n"
-"see of me. Take care and teach Milgram\n"
-"a lesson for us all!"
+"Ugh.\n"
+"No sense in turning back now, though."
 msgstr ""
-"不客气，朋友。我当然不能够\n"
-"飞进洞穴里，所以这是你最后\n"
-"一次见到我了。小心点儿，\n"
-"替我们大家给米格拉姆一点教训！"
+
+#: data/level/bon-bosque.cfg:1467
+msgid ""
+"Are you really certain you want to do this?\n"
+"I'm afraid I can't follow you into the caverns,\n"
+"so this is the last you would see of me."
+msgstr ""
+
+#: data/level/bon-bosque.cfg:1469
+msgid ""
+"Yes, I am; I'd be twice the fool,\n"
+"to come this far and just give up."
+msgstr ""
+
+#: data/level/bon-bosque.cfg:1471
+msgid ""
+"Nevertheless,\n"
+"thank you very much for all your help!"
+msgstr ""
+
+#: data/level/bon-bosque.cfg:1472
+msgid ""
+"You're welcome, friend.\n"
+"I wish you the best!"
+msgstr ""
 
 #: data/level/bug-mining.cfg:17
 msgid "Bug Mining"
@@ -3646,22 +3654,15 @@ msgstr "这么说来，你还没听说啊。"
 msgid ""
 "Milgram's men showed up\n"
 "early this morning, in town.\n"
-"They've taken the whole place hostage;\n"
-"something about \"collecting on a debt.\""
+"They've taken the whole place hostage!"
 msgstr ""
-"今天早些时候米格拉姆的小弟们\n"
-"出现在镇子上，他们抓住了所有人，\n"
-"是要“讨债”啥的。"
 
 #: data/level/secluded-hut.cfg:1253
 msgid ""
-"I don't know the details.\n"
-"I flew out of there as soon as I could,\n"
+"Unfortunately, I don't know the details.\n"
+"I just flew out of there as soon as I could,\n"
 "looking for anyone who could help."
 msgstr ""
-"我也不知道具体咋了，\n"
-"只是尽快地逃了出来，\n"
-"找人帮忙而已。"
 
 #: data/level/secluded-hut.cfg:1255
 msgid ""
