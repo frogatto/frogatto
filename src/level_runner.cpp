@@ -319,8 +319,10 @@ bool level_runner::play_cycle()
 	}
 
 	//record player movement every 50 cycles on average.
+	//TODO: currently disabled, since this takes up way too much space.
+	//later work out a nicer way to do move events.
 #if !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE
-	if(rand()%50 == 0 && lvl_->player()) {
+	if(false && rand()%50 == 0 && lvl_->player()) {
 		point p = lvl_->player()->get_entity().midpoint();
 
 		if(last_stats_point_level_ == lvl_->id()) {
