@@ -209,8 +209,6 @@ bool download(const std::string& lvl) {
 		return false;
 	}
 
-	fprintf(stderr, "REQUEST: {{{%s}}}\n\nRESPONSE: {{{%s}}}\n", query_str.c_str(), payload.c_str());
-
 	const std::string expected_response = "HTTP/1.1 200 OK";
 	if(payload.size() < expected_response.size() || std::equal(expected_response.begin(), expected_response.end(), payload.begin()) == false) {
 		fprintf(stderr, "STATS ERROR: BAD HTTP RESPONSE\n");
