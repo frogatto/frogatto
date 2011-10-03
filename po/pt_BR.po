@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2011-10-01 03:55-0300\n"
-"PO-Revision-Date: 2011-10-03 03:28-0300\n"
+"PO-Revision-Date: 2011-10-03 04:42-0300\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Portuguese (Brazilian) (http://www.transifex.net/projects/p/Frogatto/team/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -253,7 +253,7 @@ msgstr "Consiga dez moedas."
 
 #: data/achievements.cfg:12
 msgid "Nature Boy"
-msgstr "Escoteiro"
+msgstr "Cientista Mirim"
 
 #: data/achievements.cfg:13
 msgid "Put a water beetle back in water."
@@ -802,7 +802,7 @@ msgid ""
 "furniture just to save on firewood."
 msgstr ""
 "Mas ele é tão avarento, sabe -\n"
-"acho que ele ia preferir queimar a própria cama\n"
+"acho que ele queimaria a própria cama\n"
 "pra não ter que gastar com lenha."
 
 #: data/level/crevice-bridge.cfg:756
@@ -1911,8 +1911,8 @@ msgid ""
 "The elder's house is off to the east,\n"
 "past the town gate."
 msgstr ""
-"A casa do prefeito é pro leste,\n"
-"depois do portão da vila."
+"A casa do ancião da vila é pro leste,\n"
+"depois do portão."
 
 #: data/level/crevice-village-house-2.cfg:3511
 msgid "We saw Milgram's lieutenant go in there."
@@ -2028,7 +2028,7 @@ msgstr "Boa sorte."
 
 #: data/level/crevice-village-house-elder.cfg:10
 msgid "The Elder's House"
-msgstr "Casa do Prefeito"
+msgstr "Casa do Ancião"
 
 #: data/level/crevice-village-house-elder.cfg:1297
 msgid "How's that business with Milgram going?"
@@ -2137,7 +2137,7 @@ msgid ""
 "What happened to the elder?"
 msgstr ""
 "Mas...\n"
-"Cadê o prefeito?"
+"Cadê o ancião?"
 
 #: data/level/crevice-village-house-elder.cfg:1596
 msgid ""
@@ -3041,7 +3041,7 @@ msgid ""
 msgstr ""
 "Há apenas um arquivo de gravação,\n"
 "então tenha cuidado para não\n"
-"sobrescrever sem querer!"
+"sobrescrevê-lo sem querer!"
 
 #: data/level/grassy-path.cfg:1208
 msgid ""
@@ -3049,8 +3049,7 @@ msgid ""
 "with just a normal jump."
 msgstr ""
 "Alguns obstáculos são altos demais\n"
-"para serem vencidos\n"
-"por um pulo qualquer."
+"para serem vencidos por um pulo qualquer."
 
 #: data/level/grassy-path.cfg:1209
 msgid ""
@@ -3118,9 +3117,7 @@ msgstr ""
 
 #: data/level/grassy-path.cfg:1236
 msgid "Frogatto's world is a dangerous place."
-msgstr ""
-"O mundo de Frogatto\n"
-"é um lugar perigoso."
+msgstr "O mundo de Frogatto é um lugar perigoso."
 
 #: data/level/grassy-path.cfg:1237
 msgid ""
@@ -4204,7 +4201,7 @@ msgid ""
 "borrowed all this money from you,"
 msgstr ""
 "O que você está dizendo, é que\n"
-"o prefeito pegou todo esse dinheiro\n"
+"o ancião da vila pegou todo esse dinheiro\n"
 "emprestado,"
 
 #: data/level/tea-with-milgram.cfg:186
@@ -4225,8 +4222,7 @@ msgid ""
 "It was meant to be philanthropy."
 msgstr ""
 "Aliás, eu que tive a ideia.\n"
-"Era pra ser uma coisa\n"
-"beneficente, mesmo."
+"Era pra ser um ato beneficente, mesmo."
 
 #: data/level/tea-with-milgram.cfg:192
 msgid ""
@@ -4240,9 +4236,7 @@ msgstr ""
 
 #: data/level/tea-with-milgram.cfg:195
 msgid "And now he's refusing to repay you?"
-msgstr ""
-"E agora ele não quer\n"
-"te devolver o dinheiro?"
+msgstr "E agora ele não quer te devolver o dinheiro?"
 
 #: data/level/tea-with-milgram.cfg:197
 msgid "That's right!"
@@ -4260,9 +4254,7 @@ msgstr ""
 msgid ""
 "In fact,\n"
 "I rather thought him to be a buffoon."
-msgstr ""
-"aliás, sempre achei ele\n"
-"meio fraco das ideias."
+msgstr "aliás, sempre achei ele meio fraco das ideias."
 
 #: data/level/tea-with-milgram.cfg:205
 msgid "Ah, there we are..."
@@ -4272,9 +4264,7 @@ msgstr "Opa, chegou..."
 msgid ""
 "Fetch some for our guest,\n"
 "would you, kindly?"
-msgstr ""
-"Sirva uma xícara ao nosso\n"
-"convidado, sim?"
+msgstr "Sirva uma xícara ao nosso convidado, sim?"
 
 #: data/level/tea-with-milgram.cfg:212
 msgid ""
@@ -4394,14 +4384,11 @@ msgid ""
 msgstr ""
 "Onde eu administro,\n"
 "existe ordem de verdade!\n"
-"Existe uma sociedade\n"
-"decente, civilizada!"
+"Existe uma sociedade decente, civilizada!"
 
 #: data/level/tea-with-milgram.cfg:262
 msgid "Thank you Jeeves, that will do nicely."
-msgstr ""
-"Obrigado, Jarbas,\n"
-"por enquanto é só."
+msgstr "Obrigado, Jarbas, por enquanto é só."
 
 #: data/level/tea-with-milgram.cfg:266
 msgid ""
@@ -4409,10 +4396,9 @@ msgid ""
 "sent the lads to deal with things,\n"
 "it got rather messy."
 msgstr ""
-"Então, continuando, quando eu\n"
-"finalmente mandei os rapazes\n"
-"cuidarem da situação, a coisa\n"
-"ficou feia."
+"Então, continuando, quando eu finalmente\n"
+"mandei os rapazes cuidarem da situação,\n"
+"a coisa ficou feia."
 
 #: data/level/tea-with-milgram.cfg:269
 msgid ""
@@ -4438,8 +4424,7 @@ msgid ""
 "You've really clobbered a few people!"
 msgstr ""
 "Mas, enquanto isso, você...\n"
-"Você deu uma surra\n"
-"num monte de gente!"
+"Você deu uma surra num monte de gente!"
 
 #: data/level/tea-with-milgram.cfg:278
 msgid "Yeah..  uhm.."
@@ -4486,8 +4471,8 @@ msgid ""
 "See,\n"
 "I think I know where all the money is,"
 msgstr ""
-"Veja bem, eu sei onde está\n"
-"todo o dinheiro."
+"Veja bem, eu acho que sei onde o\n"
+"dinheiro todo foi parar."
 
 #: data/level/tea-with-milgram.cfg:297
 msgid ""
@@ -4599,7 +4584,7 @@ msgstr ""
 
 #: data/level/tea-with-milgram.cfg:341
 msgid "Except the elder."
-msgstr "Menos o prefeito."
+msgstr "Menos o ancião."
 
 #: data/level/tea-with-milgram.cfg:346
 msgid "Lead Programmer"
