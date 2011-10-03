@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2011-10-01 03:55-0300\n"
-"PO-Revision-Date: 2011-10-01 04:29-0300\n"
+"PO-Revision-Date: 2011-10-01 05:08-0300\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Portuguese (Brazilian) (http://www.transifex.net/projects/p/Frogatto/team/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -19,6 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"X-Poedit-Basepath: ..\n"
 
 #: CHANGELOG:1
 #: iOS_CHANGELOG:1
@@ -523,7 +524,7 @@ msgstr "Bom Bosque"
 
 #: data/level/bon-bosque.cfg:1459
 msgid "Well, you made it!"
-msgstr ""
+msgstr "Opa, você conseguiu chegar!"
 
 #: data/level/bon-bosque.cfg:1460
 msgid ""
@@ -534,6 +535,11 @@ msgid ""
 "basement floors of Milgram's compound,\n"
 "somewhere in the caverns."
 msgstr ""
+"Bom, tem um portão mais à frente.\n"
+"Se conseguir passar por ele,\n"
+"você vai chegar nas cavernas de calcário.\n"
+"Dizem que tem um caminho até os subterrâneos\n"
+"do complexo do Milgram por lá."
 
 #: data/level/bon-bosque.cfg:1461
 msgid ""
@@ -542,22 +548,29 @@ msgid ""
 "I doubt the entrance guards\n"
 "would give you the time of day."
 msgstr ""
+"Se você quiser conversar diretamente com ele,\n"
+"acho que o modo mais fácil seria entrando escondido...\n"
+"Duvido que os guardas vão ter muita boa-vontade."
 
 #: data/level/bon-bosque.cfg:1463
 msgid ""
 "Yeah... geez though.  Caves, now?\n"
 "Are these caves long?"
 msgstr ""
+"Certo... mas que coisa, hein... Cavernas, agora?\n"
+"O caminho por elas é comprido?"
 
 #: data/level/bon-bosque.cfg:1464
 msgid "I'm afraid so."
-msgstr ""
+msgstr "Creio que sim."
 
 #: data/level/bon-bosque.cfg:1466
 msgid ""
 "Ugh.\n"
 "No sense in turning back now, though."
 msgstr ""
+"Pff.\n"
+"Bom, também não faz sentido tentar voltar agora."
 
 #: data/level/bon-bosque.cfg:1467
 msgid ""
@@ -565,24 +578,35 @@ msgid ""
 "I'm afraid I can't follow you into the caverns,\n"
 "so this is the last you would see of me."
 msgstr ""
+"Mas tem certeza que quer mesmo ir até lá?\n"
+"E eu não tenho como te seguir nas cavernas,\n"
+"então acho que você não vai mais me ver\n"
+"antes de ter voltado."
 
 #: data/level/bon-bosque.cfg:1469
 msgid ""
 "Yes, I am; I'd be twice the fool,\n"
 "to come this far and just give up."
 msgstr ""
+"É, tenho certeza...\n"
+"Seria loucura em dobro desistir agora,\n"
+"depois de ter chegado tão longe."
 
 #: data/level/bon-bosque.cfg:1471
 msgid ""
 "Nevertheless,\n"
 "thank you very much for all your help!"
 msgstr ""
+"Bom, de qualquer modo,\n"
+"muio obrigado pela sua ajuda!"
 
 #: data/level/bon-bosque.cfg:1472
 msgid ""
 "You're welcome, friend.\n"
 "I wish you the best!"
 msgstr ""
+"De nada, amigo.\n"
+"Te desejo toda a sorte do mundo!"
 
 #: data/level/bug-mining.cfg:17
 msgid "Bug Mining"
@@ -800,6 +824,8 @@ msgid ""
 "Yeah.  Geez.\n"
 "So, uh, here's what I think we know:"
 msgstr ""
+"É... droga.\n"
+"Então, o que eu acho que a gente sabe é que..."
 
 #: data/level/crevice-bridge.cfg:762
 msgid ""
@@ -1557,6 +1583,9 @@ msgid ""
 "I'm rather out of date on my political geography,\n"
 "so you'll just have to ask people as you go."
 msgstr ""
+"As minhas memórias da geografia da região\n"
+"já não são mais as mesmas,\n"
+"então vá perguntando pelo caminho."
 
 #: data/level/crevice-village-heights.cfg:1162
 msgid ""
@@ -1710,6 +1739,8 @@ msgid ""
 "OH!  One other thing..\n"
 "the key to the town gate is a SILVER key."
 msgstr ""
+"Ah! Mais uma coisa...\n"
+"a chave do portão da vila é PRATEADA."
 
 #: data/level/crevice-village-house-1.cfg:2520
 msgid "Keep an eye out for it!"
@@ -1725,7 +1756,7 @@ msgstr "EI, ESPERE! E quanto a mim?!"
 
 #: data/level/crevice-village-house-1.cfg:2525
 msgid "Does it look like I have a key for your cage?"
-msgstr ""
+msgstr "Tenho cara de quem tem a chave da sua jaula?"
 
 #: data/level/crevice-village-house-1.cfg:2527
 msgid ""
@@ -1823,7 +1854,7 @@ msgstr ""
 
 #: data/level/crevice-village-house-1.cfg:2641
 msgid "Uh, oh, I hear ... trouble."
-msgstr ""
+msgstr "Que tanto barulho de pegadas aqui dentro."
 
 #: data/level/crevice-village-house-2-basement.cfg:12
 #: data/level/crevice-village-house-2.cfg:10
@@ -1873,7 +1904,7 @@ msgstr "Pode me dar alguma dica?"
 
 #: data/level/crevice-village-house-2.cfg:3509
 msgid "Yeah."
-msgstr ""
+msgstr "Posso."
 
 #: data/level/crevice-village-house-2.cfg:3510
 msgid ""
@@ -2135,48 +2166,60 @@ msgid ""
 "That's really amazing.\n"
 "Uh..."
 msgstr ""
+"Isso é incrível!\n"
+"Bom..."
 
 #: data/level/crevice-village-house-elder.cfg:1622
 msgid ""
 "I guess I have to ask:\n"
 "Whatever prompted you to build this?"
 msgstr ""
+"Mas acho que eu tenho que perguntar:\n"
+"O que foi que fez você construir isso aí?"
 
 #: data/level/crevice-village-house-elder.cfg:1624
 msgid ""
 "This HAD to be expensive.\n"
 "I mean ... really ... expensive."
 msgstr ""
+"Deve ter sido caro.\n"
+"Quero dizer... bem caro."
 
 #: data/level/crevice-village-house-elder.cfg:1626
 msgid ""
 "Yes.\n"
 "Yes it was."
 msgstr ""
+"Ah, sim.\n"
+"Caro mesmo."
 
 #: data/level/crevice-village-house-elder.cfg:1628
 msgid "...And?"
-msgstr ""
+msgstr "...E?"
 
 #: data/level/crevice-village-house-elder.cfg:1630
 msgid "And what?"
-msgstr ""
+msgstr "E o quê?"
 
 #: data/level/crevice-village-house-elder.cfg:1632
 msgid ""
 "And ... I don't know...\n"
 "would you care to tell me what's going on?!"
 msgstr ""
+"E... não sei,\n"
+"pode me explicar o que tá acontecendo?"
 
 #: data/level/crevice-village-house-elder.cfg:1634
 msgid "This has been a really crazy day!"
-msgstr ""
+msgstr "Esse dia tem sido completamente maluco!"
 
 #: data/level/crevice-village-house-elder.cfg:1636
 msgid ""
 "I set out for just a routine errand run,\n"
 "you know?"
 msgstr ""
+"Eu saí de casa pra uma volta na vila,\n"
+"como sempre faço, certo?"
 
 #: data/level/crevice-village-house-elder.cfg:1638
 msgid "Just gonna run by town, check the news."
