@@ -495,8 +495,8 @@ namespace {
 
 	private:
 		variant execute(const formula_callable& variables) const {
-			const int value = args()[0]->evaluate(variables).as_int();
-			return variant(static_cast<int>(sqrt(value)));
+			const float value = args()[0]->evaluate(variables).as_decimal().as_float();
+			return variant(decimal(sqrt(value)));
 		}
 	};
 
@@ -529,7 +529,7 @@ namespace {
 			const float ang = args()[2]->evaluate(variables).as_decimal().as_float();
 			const float dist = args()[3]->evaluate(variables).as_decimal().as_float();
 			
-			const float u = (dist * cos(ang/radians_to_degrees)) + x;
+			const float u = (dist * cos(ang/radians_to_degrees)) + x;   //TODO Find out why whole number decimals are returned.
 			const float v = (dist * sin(ang/radians_to_degrees)) + y;
 
 			std::vector<variant> result;
