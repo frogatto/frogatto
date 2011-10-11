@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-10-01 03:55-0300\n"
-"PO-Revision-Date: 2011-10-01 07:12+0000\n"
+"POT-Creation-Date: 2011-10-11 16:44-0300\n"
+"PO-Revision-Date: 2011-10-11 19:45+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Chinese (China) (http://www.transifex.net/projects/p/Frogatto/team/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -382,24 +382,20 @@ msgstr ""
 msgid "After Summer"
 msgstr ""
 
-#: data/level/after_summer.cfg:1651
+#: data/level/after_summer.cfg:1633
 msgid ""
 "We're cleaning the fish tanks here!\n"
 "We could use a break."
 msgstr ""
 
-#: data/level/after_summer.cfg:1652
+#: data/level/after_summer.cfg:1634
 msgid ""
 "You killed Benny!\n"
 "Now I SHALL KILL YOU!"
 msgstr ""
 
-#: data/level/after_summer.cfg:2465 data/level/platform-peril.cfg:1656
+#: data/level/after_summer.cfg:2350 data/level/platform-peril.cfg:1641
 msgid "Move on!"
-msgstr ""
-
-#: data/level/after_summer.cfg:2533 data/level/platform-peril.cfg:1724
-msgid "Oops, shouldn't have left that there."
 msgstr ""
 
 #: data/level/airplane-boss.cfg:14
@@ -1102,8 +1098,8 @@ msgstr "去问问人质也许是我们获得线索的最好方法。"
 
 #: data/level/crevice-village-central.cfg:1448
 #: data/level/crevice-village-house-2.cfg:3211
-#: data/level/crevice-village-house-4.cfg:3064
-#: data/level/crevice-village-house-4.cfg:3105
+#: data/level/crevice-village-house-4.cfg:3019
+#: data/level/crevice-village-house-4.cfg:3060
 #: data/level/killer-bunnies.cfg:3313
 msgid "Nope, it's locked."
 msgstr "没用，锁住了。"
@@ -1744,11 +1740,11 @@ msgstr ""
 "啊！这世上有哪个家伙\n"
 "会设计出这种屋子来啊？"
 
-#: data/level/crevice-village-house-4.cfg:3007
+#: data/level/crevice-village-house-4.cfg:2962
 msgid "Hmmm..."
 msgstr "唔……"
 
-#: data/level/crevice-village-house-4.cfg:3008
+#: data/level/crevice-village-house-4.cfg:2963
 msgid ""
 "It seems I'm trapped\n"
 "inside this house."
@@ -1756,7 +1752,7 @@ msgstr ""
 "看起来我似乎\n"
 "被困在这屋子里了。"
 
-#: data/level/crevice-village-house-4.cfg:3009
+#: data/level/crevice-village-house-4.cfg:2964
 msgid ""
 "I guess the only way out\n"
 "is in!"
@@ -1764,16 +1760,16 @@ msgstr ""
 "我猜出去的唯一方法就是——\n"
 "进去！"
 
-#: data/level/crevice-village-house-4.cfg:3311
+#: data/level/crevice-village-house-4.cfg:3266
 msgid "This is decidedly unpleasant."
 msgstr "这显然很让人不爽啊。"
 
-#: data/level/crevice-village-house-4.cfg:3313
-#: data/level/crevice-village-house-4.cfg:3323
+#: data/level/crevice-village-house-4.cfg:3268
+#: data/level/crevice-village-house-4.cfg:3278
 msgid "You don't say."
 msgstr "真的吗？！"
 
-#: data/level/crevice-village-house-4.cfg:3315
+#: data/level/crevice-village-house-4.cfg:3270
 msgid ""
 "When I stepped in the door,\n"
 "it locked behind me."
@@ -1781,7 +1777,7 @@ msgstr ""
 "我进来的时候，\n"
 "门在我背后关上了。"
 
-#: data/level/crevice-village-house-4.cfg:3316
+#: data/level/crevice-village-house-4.cfg:3271
 msgid ""
 "That's actually a rather clever\n"
 "way to round everyone up."
@@ -1789,7 +1785,7 @@ msgstr ""
 "实话说这倒是一个把所有人\n"
 "都围起来的好办法呢。"
 
-#: data/level/crevice-village-house-4.cfg:3318
+#: data/level/crevice-village-house-4.cfg:3273
 msgid ""
 "Know anything helpful\n"
 "about this house?"
@@ -1797,7 +1793,7 @@ msgstr ""
 "关于这屋子，\n"
 "你知道什么有用的东西不？"
 
-#: data/level/crevice-village-house-4.cfg:3319
+#: data/level/crevice-village-house-4.cfg:3274
 msgid ""
 "Unfortunately I don't.\n"
 "I was just visiting."
@@ -1805,15 +1801,15 @@ msgstr ""
 "很不幸我不知道。\n"
 "我只是来参观的。"
 
-#: data/level/crevice-village-house-4.cfg:3320
+#: data/level/crevice-village-house-4.cfg:3275
 msgid "The floorplan is quite loony."
 msgstr "这平面图真是骨骼精奇呀。"
 
-#: data/level/crevice-village-house-4.cfg:3322
+#: data/level/crevice-village-house-4.cfg:3277
 msgid "Marvelous ventilation, though."
 msgstr "不过通风设备倒是超给力的。"
 
-#: data/level/crevice-village-house-4.cfg:3325
+#: data/level/crevice-village-house-4.cfg:3280
 msgid ""
 "Anyways, I'd better be off.\n"
 "I'm trying to sort out this mess."
@@ -1821,7 +1817,7 @@ msgstr ""
 "不管咋说，我还是得出发了。\n"
 "我得把这烂摊子搞定了。"
 
-#: data/level/crevice-village-house-4.cfg:3326
+#: data/level/crevice-village-house-4.cfg:3281
 msgid "Good luck."
 msgstr "好运。"
 
@@ -2675,21 +2671,11 @@ msgstr "青草小道"
 
 #: data/level/grassy-path.cfg:1163
 msgid ""
-"On this level,\n"
-"we give advice on how to play."
+"On this level, we give advice on how to play.\n"
+"Each question mark has its own hint."
 msgstr ""
-"在本关，\n"
-"我们会告诉你如何玩本游戏。"
 
 #: data/level/grassy-path.cfg:1164
-msgid ""
-"Each question mark\n"
-"has its own hint."
-msgstr ""
-"每个问号里都有\n"
-"一条提示。"
-
-#: data/level/grassy-path.cfg:1165
 msgid ""
 "If you already know how to play,\n"
 "then just walk to the next level."
@@ -2697,15 +2683,13 @@ msgstr ""
 "如果你已经知道如何操作，\n"
 "直接走到下一关就行了。"
 
-#: data/level/grassy-path.cfg:1186
+#: data/level/grassy-path.cfg:1185
 msgid ""
-"To save the game,\n"
+"To save your progress in the game,\n"
 "use one of these convenient restrooms."
 msgstr ""
-"要保存游戏的话，\n"
-"可以在这些方便的洗手间里选一个解决。"
 
-#: data/level/grassy-path.cfg:1187
+#: data/level/grassy-path.cfg:1186
 msgid ""
 "There is only one save file,\n"
 "so be careful not to overwrite it!"
@@ -2713,53 +2697,34 @@ msgstr ""
 "游戏只有一个存档文件，\n"
 "要当心别无意中覆盖掉了！"
 
-#: data/level/grassy-path.cfg:1208
+#: data/level/grassy-path.cfg:1207
 msgid ""
-"Some jumps are too high to clear\n"
-"with just a normal jump."
+"Some changes in elevation are too high\n"
+"to clear with just a normal jump."
 msgstr ""
-"有些地方太高了，\n"
-"普通跳跃根本上不去。"
+
+#: data/level/grassy-path.cfg:1208
+msgid "Fortunately, Frogatto can jump off of walls, too!"
+msgstr ""
 
 #: data/level/grassy-path.cfg:1209
-msgid ""
-"Fortunately,\n"
-"Frogatto can jump off of walls, too!"
+msgid "To do this, do a walking jump into the wall."
 msgstr ""
-"幸运的是，\n"
-"阿托也可以在岩壁之间跳跃！"
 
 #: data/level/grassy-path.cfg:1210
 msgid ""
-"To do this,\n"
-"do a walking jump into the wall."
+"If you bump into a wall at the crest of a jump,\n"
+"you will cling to the wall and slowly slide down."
 msgstr ""
-"要做到这点，\n"
-"先向着墙跳过去。"
 
 #: data/level/grassy-path.cfg:1211
 msgid ""
-"If you bump into the wall\n"
-"at the crest of the jump,\n"
-"Frogatto will cling to the wall\n"
-"and slowly slide down."
+"If you don't get a running start, you can still\n"
+"cling on, if you tap the arrow toward the wall,\n"
+"and press jump whilst it's held down."
 msgstr ""
-"如果你在跳到最高点时\n"
-"碰到岩壁，那么阿托会\n"
-"贴在岩壁上，并缓缓\n"
-"下滑。"
 
 #: data/level/grassy-path.cfg:1212
-msgid ""
-"If you don't get a running start\n"
-"you can still cling on, if you tap the\n"
-"arrow toward the wall, and press jump."
-msgstr ""
-"就算你开始时没有跑向岩壁，\n"
-"也仍然可以贴上去，只要向着\n"
-"岩壁按方向键和跳跃键即可。"
-
-#: data/level/grassy-path.cfg:1213
 msgid ""
 "Whilst you are clinging to the wall,\n"
 "pressing jump will make you rebound off."
@@ -2767,40 +2732,34 @@ msgstr ""
 "在贴住岩壁的时候，\n"
 "按下跳跃键就可以跳下来。"
 
-#: data/level/grassy-path.cfg:1214
+#: data/level/grassy-path.cfg:1213
 msgid ""
-"If two walls are facing each other,\n"
-"this is very useful, because then you can\n"
+"This is especially useful, if two walls are\n"
+"facing each other, because then you can\n"
 "rebound over and over between them."
 msgstr ""
-"当两个岩壁紧邻时，这个技巧很有用。\n"
-"因为此时你可以在两壁之间来回跳跃。"
 
-#: data/level/grassy-path.cfg:1215
+#: data/level/grassy-path.cfg:1214
 msgid "This lets you ascend vertical columns."
 msgstr "这使得你可以垂直行进到达上层。"
 
-#: data/level/grassy-path.cfg:1236
+#: data/level/grassy-path.cfg:1235
 msgid "Frogatto's world is a dangerous place."
 msgstr "阿托的世界是个很危险的地方。"
 
+#: data/level/grassy-path.cfg:1236
+msgid ""
+"In his travels, you'll encounter\n"
+"many creatures who want to hurt you."
+msgstr ""
+
 #: data/level/grassy-path.cfg:1237
 msgid ""
-"You will encounter many creatures\n"
-"who want to hurt you."
-msgstr "你会遇到很多想要对你不利的生物。"
+"It's often fine to just avoid them, but if you have\n"
+"to fight, Frogatto's best defense is his tongue."
+msgstr ""
 
 #: data/level/grassy-path.cfg:1238
-msgid ""
-"It's often fine to just avoid them,\n"
-"but if you have to fight,\n"
-"Frogatto's best defense is his tongue."
-msgstr ""
-"通常只要躲开它们就好，\n"
-"但如果必须战斗，\n"
-"那么阿托的舌头就是最好的防御武器。"
-
-#: data/level/grassy-path.cfg:1239
 msgid ""
 "You can grab enemies with the tongue,\n"
 "and then spit them back out."
@@ -2808,25 +2767,17 @@ msgstr ""
 "你可以用舌头卷住敌人吞下去，\n"
 "而后再将它们吐出去。"
 
+#: data/level/grassy-path.cfg:1239
+msgid "Once spat out, they become a deadly projectile."
+msgstr ""
+
 #: data/level/grassy-path.cfg:1240
 msgid ""
-"Once spat out,\n"
-"they become a deadly projectile."
+"If they don't hit anything, they'll be stunned\n"
+"momentarily, and then will flip upright again."
 msgstr ""
-"一旦被吐出去，\n"
-"它们便会成为致命的炮弹。"
 
 #: data/level/grassy-path.cfg:1241
-msgid ""
-"If they don't hit anything,\n"
-"they'll be stunned for a moment,\n"
-"and then will flip upright again."
-msgstr ""
-"如果它们没有命中任何东西，\n"
-"便会暂时陷入晕眩状态，\n"
-"过一会后便会恢复正常。"
-
-#: data/level/grassy-path.cfg:1242
 msgid ""
 "Whilst on their backs,\n"
 "they're vulnerable to being stomped on."
@@ -2834,13 +2785,13 @@ msgstr ""
 "当它们四脚朝天时，\n"
 "很容易受到踩击的伤害。"
 
-#: data/level/grassy-path.cfg:1243
+#: data/level/grassy-path.cfg:1242
 msgid ""
 "Sticking out the tongue and spitting,\n"
 "are both done with the attack key."
 msgstr "吐舌和吐敌人都是按攻击键来进行的。"
 
-#: data/level/grassy-path.cfg:1244
+#: data/level/grassy-path.cfg:1243
 msgid ""
 "There are a few ants just ahead.\n"
 "Feel free to try this on them."
@@ -2848,7 +2799,7 @@ msgstr ""
 "前面不远处有些蚂蚁。\n"
 "请随意拿它们练练手吧。"
 
-#: data/level/grassy-path.cfg:1245
+#: data/level/grassy-path.cfg:1244
 msgid ""
 "And don't worry - if you die,\n"
 "you'll restart right here."
@@ -2856,76 +2807,49 @@ msgstr ""
 "不用担心——要是你挂了，\n"
 "会在这里重新开始。"
 
+#: data/level/grassy-path.cfg:1289
+msgid ""
+"A very useful fact is that you can control\n"
+"the direction in which enemies are spat."
+msgstr ""
+
 #: data/level/grassy-path.cfg:1290
 msgid ""
-"A very useful fact,\n"
-"is that you can control the direction\n"
-"in which enemies are spat."
+"If you hold down the up key while pressing\n"
+"the attack button, you'll spit in a high arc."
 msgstr ""
-"给个很有用的提示，\n"
-"你可以控制向哪个方向吐出敌人。"
 
 #: data/level/grassy-path.cfg:1291
 msgid ""
-"If you hold down the up key\n"
-"while pressing the attack button,\n"
-"you'll spit in a high arc."
+"If you hold down the down key while pressing\n"
+"the attack button, you'll spit with very little force."
 msgstr ""
-"如果在按攻击键的同时\n"
-"按下上方向键，那么你会\n"
-"吐出一条高高的弧线。"
 
-#: data/level/grassy-path.cfg:1292
+#: data/level/grassy-path.cfg:1293
 msgid ""
-"If you hold down the down key\n"
-"while pressing the attack button,\n"
-"you'll spit with very little force."
+"You should also beware that not all enemies\n"
+"can be grabbed with the tongue."
 msgstr ""
-"如果在按攻击键的同时\n"
-"按下下方向键，那么你\n"
-"只会用很少的力气吐出敌人。"
 
 #: data/level/grassy-path.cfg:1294
 msgid ""
-"Also beware that not all enemies\n"
-"can be grabbed with the tongue,\n"
-"and many can't be hurt by it either."
+"Different enemies present different challenges,\n"
+"and you'll need to get creative to deal with them."
 msgstr ""
-"此外要注意并不是所有的敌人\n"
-"都可以被舌头卷进去，\n"
-"很多敌人也不能被舌头所伤。"
 
 #: data/level/grassy-path.cfg:1295
 msgid ""
-"You'll need to get creative\n"
-"to deal with those enemies."
+"Also, the tongue can grab useful items, like keys.\n"
+"This is how you carry them to the lock they open."
 msgstr ""
-"对付这些敌人的时候，\n"
-"你得有点创造力。"
 
-#: data/level/grassy-path.cfg:1296
-msgid ""
-"Last but not least,\n"
-"the tongue can grab useful items too."
-msgstr ""
-"最后但并非最不重要的一点是，\n"
-"舌头也可以卷起有用的物品。"
-
-#: data/level/grassy-path.cfg:1297
-msgid ""
-"It's what you use to carry something\n"
-"from one place to another."
-msgstr ""
-"这就是你把物品从某地带到别处的\n"
-"方法。"
-
-#: data/level/grassy-path.cfg:1335
+#: data/level/grassy-path.cfg:1333
 msgid ""
 "Fountains, and other water dispensers,\n"
 "are very helpful."
 msgstr "喷泉和其他吐水的地方是很有用的。"
 
-#: data/level/grassy-path.cfg:1336
+#: data/level/grassy-path.cfg:1334
 msgid ""
 "If you drink from them,\n"
 "you will restore all of your health!"
@@ -2933,21 +2857,17 @@ msgstr ""
 "如果在那里饮水的话，\n"
 "你的生命值便会完全回复！"
 
-#: data/level/grassy-path.cfg:1358
+#: data/level/grassy-path.cfg:1356
 msgid ""
-"Certain wooden bridges and stairways,\n"
-"like the one just up ahead,\n"
-"are built so you can jump up,\n"
-"and pass through them."
+"Certain bridges and stairways, like this one,\n"
+"allow you to jump up and pass through them."
 msgstr ""
-"某些木桥和木楼梯在你往上跳的时候\n"
-"可以被穿过，比如你眼前的这一座。"
 
-#: data/level/grassy-path.cfg:1359
+#: data/level/grassy-path.cfg:1357
 msgid "You can also jump down through them."
 msgstr "你也同样可以向下跳穿过它们。"
 
-#: data/level/grassy-path.cfg:1360
+#: data/level/grassy-path.cfg:1358
 msgid ""
 "A special button will appear,\n"
 "whenever this is possible."
@@ -2955,7 +2875,7 @@ msgstr ""
 "当这可能的时候，\n"
 "一个专门的按钮就会出现。"
 
-#: data/level/grassy-path.cfg:1361
+#: data/level/grassy-path.cfg:1359
 msgid ""
 "To do so, hold down the down key,\n"
 "and then press jump."
@@ -2963,7 +2883,7 @@ msgstr ""
 "要向下跳，只需按住下方向键，\n"
 "而后按跳跃键。"
 
-#: data/level/grassy-path.cfg:1406
+#: data/level/grassy-path.cfg:1404
 msgid ""
 "As you've played through this level,\n"
 "you've probably noticed the gold coins."
@@ -2971,7 +2891,7 @@ msgstr ""
 "通过本场景的时候，\n"
 "你也许已经注意到了那些金币。"
 
-#: data/level/grassy-path.cfg:1407
+#: data/level/grassy-path.cfg:1405
 msgid ""
 "You can collect these\n"
 "and any other golden objects,\n"
@@ -2981,54 +2901,39 @@ msgstr ""
 "以及其他金质物品，\n"
 "而后用来购买装备！"
 
-#: data/level/grassy-path.cfg:1408
+#: data/level/grassy-path.cfg:1406
 msgid ""
 "There is a store conveniently located\n"
 "outside of the town."
 msgstr "在小镇外面有个商店，很方便的。"
 
-#: data/level/grassy-path.cfg:1430
+#: data/level/grassy-path.cfg:1428
 msgid ""
-"Sometimes, you'll run into rather\n"
-"dangerous-looking terrain,\n"
-"such as these brambles."
+"Sometimes, you'll run into rather dangerous-\n"
+"looking terrain, such as these brambles."
 msgstr ""
-"有时候你会遇到看上去很危险的\n"
-"地形，例如这些荆棘。"
+
+#: data/level/grassy-path.cfg:1429
+msgid "As you'd expect, stepping on them would hurt a bit."
+msgstr ""
+
+#: data/level/grassy-path.cfg:1430
+msgid "However, they also hurt your enemies!"
+msgstr ""
 
 #: data/level/grassy-path.cfg:1431
 msgid ""
-"As you would expect, stepping on these\n"
-"will hurt a bit."
-msgstr ""
-"正如你所想的，踩到它们的话\n"
-"会有点痛的哦。"
-
-#: data/level/grassy-path.cfg:1432
-msgid "However, this also hurts the bugs!"
-msgstr "但是，它们同样也会伤害到虫子！"
-
-#: data/level/grassy-path.cfg:1433
-msgid ""
-"Leading or spitting them onto it\n"
+"Leading or spitting them onto harmful terrain\n"
 "is an excellent way to dispatch them."
 msgstr ""
-"把虫子引到或者吐到荆棘上\n"
-"是消灭它们的好方法。"
 
-#: data/level/grassy-path.cfg:1434
+#: data/level/grassy-path.cfg:1432
 msgid ""
-"Beware also,\n"
-"any bottomless pits you encounter."
+"Beware also, any bottomless pits you encounter.\n"
+"Those are immediately fatal."
 msgstr ""
-"还要注意的是，\n"
-"你遇到的任何无底洞，"
 
-#: data/level/grassy-path.cfg:1435
-msgid "These are immediately fatal."
-msgstr "都会秒杀你。"
-
-#: data/level/grassy-path.cfg:1563
+#: data/level/grassy-path.cfg:1560
 msgid ""
 "Up ahead, you'll notice an anthill,\n"
 "which ants constantly come out of."
@@ -3036,7 +2941,7 @@ msgstr ""
 "在前方你会看到一座蚁丘，\n"
 "那里会源源不断地跑出蚂蚁。"
 
-#: data/level/grassy-path.cfg:1564
+#: data/level/grassy-path.cfg:1561
 msgid ""
 "There is no way to stop this;\n"
 "you can't destroy the anthill."
@@ -3044,7 +2949,7 @@ msgstr ""
 "这是没办法停止的：\n"
 "你不可能摧毁蚁丘。"
 
-#: data/level/grassy-path.cfg:1565
+#: data/level/grassy-path.cfg:1562
 msgid ""
 "Some hazards are like this.\n"
 "You simply have to work around them."
@@ -3052,23 +2957,17 @@ msgstr ""
 "有些危险就是如此。\n"
 "你只能绕过它们。"
 
-#: data/level/grassy-path.cfg:1587
+#: data/level/grassy-path.cfg:1584
 msgid "That's it for this tutorial."
 msgstr "教程到此结束。"
 
-#: data/level/grassy-path.cfg:1588
+#: data/level/grassy-path.cfg:1585
 msgid ""
-"Although there's a bit more\n"
-"to playing the game,\n"
-"the rest we can safely let\n"
-"you learn on your own."
+"Although there's more to playing the game,\n"
+"the rest we can safely let you learn on your own."
 msgstr ""
-"尽管要玩好本游戏\n"
-"还需要一些别的技能，\n"
-"但我们已经可以放心地\n"
-"让你去自学了。"
 
-#: data/level/grassy-path.cfg:1589
+#: data/level/grassy-path.cfg:1586
 msgid ""
 "Feel free to come back here,\n"
 "if you want to read a hint again."
@@ -3076,36 +2975,55 @@ msgstr ""
 "如果你想要重读任何一条提示的话，\n"
 "随时都可以回到这里。"
 
-#: data/level/grassy-path.cfg:1590
+#: data/level/grassy-path.cfg:1587
 msgid "Have fun!"
 msgstr "祝你玩得开心！"
 
-#: data/level/grassy-path.cfg:1613
+#: data/level/grassy-path.cfg:1610
 msgid ""
-"If you've seen a conversation before\n"
-"you might be annoyed by\n"
-"having to read it again."
+"If you've seen a conversation before, it might\n"
+"be annoying to have to read it again."
 msgstr ""
-"如果以前看过一段对话，\n"
-"可能再看一遍会烦。"
 
-#: data/level/grassy-path.cfg:1614
+#: data/level/grassy-path.cfg:1611
 msgid ""
-"You can skip a conversation,\n"
-"including parts of cutscenes,\n"
-"by pressing the \"escape\" key."
+"You can skip a conversation, including parts\n"
+"of cutscenes, by pressing the \"escape\" key."
 msgstr ""
-"可以按Esc键跳过对话，\n"
-"包括插入情节。"
 
-#: data/level/grassy-path.cfg:1615
+#: data/level/grassy-path.cfg:1612
 msgid ""
-"And yes,\n"
-"this applies to the question marks\n"
-"on this level, too."
+"And yes, this applies to the question\n"
+"marks on this level, too."
 msgstr ""
-"对，本关里的问号也\n"
-"包括在内。"
+
+#: data/level/grassy-path.cfg:1859
+msgid ""
+"If you haven't already noticed, the round\n"
+"rocks you sometimes find nestled in\n"
+"the grass are spittable projectiles."
+msgstr ""
+
+#: data/level/grassy-path.cfg:1860
+msgid ""
+"You'll find many such objects of similar size\n"
+"in different areas of the game, such as crates\n"
+"inside of houses, or nuts hanging from trees."
+msgstr ""
+
+#: data/level/grassy-path.cfg:1861
+msgid ""
+"These are an ample source of ammunition,\n"
+"that's almost always available."
+msgstr ""
+
+#: data/level/grassy-path.cfg:1862
+msgid ""
+"Note that these have an unusual property;\n"
+"if you use them up, walk away from the screen\n"
+"where you found them, and then return again,\n"
+"there will often be a new one waiting to use."
+msgstr ""
 
 #: data/level/hanging-platforms.cfg:16
 msgid "Hanging Platforms"
@@ -4360,17 +4278,17 @@ msgstr "街机模式"
 msgid "Nene's House"
 msgstr "奈奈的小屋"
 
-#: data/level/to-nenes-house-inside.cfg:485
+#: data/level/to-nenes-house-inside.cfg:496
 msgid ""
 "AIEEEEE!\n"
 "Get that thing out of here!"
 msgstr ""
 
-#: data/level/to-nenes-house-inside.cfg:490
+#: data/level/to-nenes-house-inside.cfg:502
 msgid "Hey Nene, what's cooking?"
 msgstr "嘿奈奈，你在做什么？"
 
-#: data/level/to-nenes-house-inside.cfg:491
+#: data/level/to-nenes-house-inside.cfg:503
 msgid ""
 "I'm making a cake.\n"
 "Would you like to have some?"
@@ -4378,15 +4296,15 @@ msgstr ""
 "我在做蛋糕。\n"
 "想拿一点么？"
 
-#: data/level/to-nenes-house-inside.cfg:493
+#: data/level/to-nenes-house-inside.cfg:505
 msgid "Nah, I'd better get to town."
 msgstr "不了，我得去镇子上。"
 
-#: data/level/to-nenes-house-inside.cfg:495
+#: data/level/to-nenes-house-inside.cfg:507
 msgid "I have serious business to attend to."
 msgstr "我有点正经事要处理。"
 
-#: data/level/to-nenes-house-inside.cfg:499
+#: data/level/to-nenes-house-inside.cfg:511
 msgid ""
 "Oh, well maybe before you go\n"
 "you could look at my basement."
@@ -4394,11 +4312,11 @@ msgstr ""
 "哦，好吧，在你出发之前\n"
 "也许可以去看看我的地窖。"
 
-#: data/level/to-nenes-house-inside.cfg:501
+#: data/level/to-nenes-house-inside.cfg:513
 msgid "Your basement?"
 msgstr "你的地窖？"
 
-#: data/level/to-nenes-house-inside.cfg:507
+#: data/level/to-nenes-house-inside.cfg:519
 msgid ""
 "Yes, here's the key.\n"
 "There're some ants down there."
@@ -4406,21 +4324,21 @@ msgstr ""
 "是啊，这是钥匙。\n"
 "下面有些蚂蚁爬来爬去的。"
 
-#: data/level/to-nenes-house-inside.cfg:508
+#: data/level/to-nenes-house-inside.cfg:520
 msgid "They're freaking me out."
 msgstr "它们弄得我快疯了。"
 
-#: data/level/to-nenes-house-inside.cfg:510
+#: data/level/to-nenes-house-inside.cfg:522
 msgid "Sure thing. I need a job!"
 msgstr "没问题。我正好要找工作！"
 
-#: data/level/to-nenes-house-inside.cfg:512
+#: data/level/to-nenes-house-inside.cfg:524
 msgid ""
 "How much were you figuring on\n"
 "paying for a pest exterminator?"
 msgstr "你准备为杀虫专家出多少钱呢？"
 
-#: data/level/to-nenes-house-inside.cfg:513
+#: data/level/to-nenes-house-inside.cfg:525
 msgid ""
 "Well sheesh, I thought you'd\n"
 "do it for free for a friend!"
@@ -4428,7 +4346,7 @@ msgstr ""
 "呃，我还以为你会免费\n"
 "帮朋友的忙呢！"
 
-#: data/level/to-nenes-house-inside.cfg:514
+#: data/level/to-nenes-house-inside.cfg:526
 msgid ""
 "But if you're going to be like that\n"
 "I think I left a health capsule down there.\n"
@@ -4438,7 +4356,7 @@ msgstr ""
 "我记得在那下面留了一个生命胶囊。\n"
 "要是把蚂蚁清理干净，那胶囊就是你的了。"
 
-#: data/level/to-nenes-house-inside.cfg:516
+#: data/level/to-nenes-house-inside.cfg:528
 msgid ""
 "So, did you end up taking care\n"
 "of those ants down there?"
@@ -4446,7 +4364,7 @@ msgstr ""
 "呃，你把下面的蚂蚁\n"
 "解决掉了没？"
 
-#: data/level/to-nenes-house-inside.cfg:518
+#: data/level/to-nenes-house-inside.cfg:530
 msgid ""
 "Of course.\n"
 "I don't disappoint!"
@@ -4454,17 +4372,17 @@ msgstr ""
 "当然。\n"
 "我从不让人失望！"
 
-#: data/level/to-nenes-house-inside.cfg:520
+#: data/level/to-nenes-house-inside.cfg:532
 msgid ""
 "And thanks for the gift,\n"
 "by the way."
 msgstr "顺便说，谢谢你的礼物。"
 
-#: data/level/to-nenes-house-inside.cfg:521
+#: data/level/to-nenes-house-inside.cfg:533
 msgid "You're welcome."
 msgstr "不客气。"
 
-#: data/level/to-nenes-house-inside.cfg:843
+#: data/level/to-nenes-house-inside.cfg:696
 msgid ""
 "Can't a guy sneak into his neighbor's\n"
 "basement uninvited these days?"
@@ -4472,7 +4390,7 @@ msgstr ""
 "现如今已经不可能不请自来\n"
 "悄悄溜进邻居家的地下室了么？"
 
-#: data/level/to-nenes-house-inside.cfg:843
+#: data/level/to-nenes-house-inside.cfg:696
 msgid "Well, dangit, this door is locked."
 msgstr "呃，我去，这门锁上了。"
 

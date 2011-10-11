@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Marcos Avila Isidoro <marcavis@yahoo.com.br>, 2011.
 # Philipp Zabel <pzabel@gmx.de>, 2011.
@@ -10,24 +10,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-10-01 03:55-0300\n"
-"PO-Revision-Date: 2011-10-07 13:37-0300\n"
-"Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
+"POT-Creation-Date: 2011-10-11 16:44-0300\n"
+"PO-Revision-Date: 2011-10-11 19:45+0000\n"
+"Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Portuguese (Brazilian) (http://www.transifex.net/projects/p/Frogatto/team/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
-"X-Poedit-Basepath: ..\n"
 
-#: CHANGELOG:1
-#: iOS_CHANGELOG:1
+#: CHANGELOG:1 iOS_CHANGELOG:1
 msgid "Version 1.1.1:"
 msgstr "Versão 1.1.1:"
 
-#: CHANGELOG:2
-#: iOS_CHANGELOG:2
+#: CHANGELOG:2 iOS_CHANGELOG:2
 msgid "Fixed some crashing bugs."
 msgstr "Corrigidos alguns erros de conexão"
 
@@ -39,8 +36,7 @@ msgstr ""
 msgid "Fixed instructions on titlescreen (iOS)"
 msgstr ""
 
-#: CHANGELOG:5
-#: iOS_CHANGELOG:5
+#: CHANGELOG:5 iOS_CHANGELOG:5
 msgid "New translation: Italian"
 msgstr ""
 
@@ -89,11 +85,15 @@ msgid "Added some unique enemies to the forest."
 msgstr ""
 
 #: CHANGELOG:18
-msgid "Refactored damage and monster type systems to make behavior more consistent and eliminate some rare buggy behavior."
+msgid ""
+"Refactored damage and monster type systems to make behavior more consistent "
+"and eliminate some rare buggy behavior."
 msgstr ""
 
 #: CHANGELOG:19
-msgid "Added translation support, with 4 complete translations: French, Brazilian Portuguese, Chinese (Simplified), and Japanese."
+msgid ""
+"Added translation support, with 4 complete translations: French, Brazilian "
+"Portuguese, Chinese (Simplified), and Japanese."
 msgstr ""
 
 #: CHANGELOG:21
@@ -141,7 +141,9 @@ msgid "Added support for repeating levels (for arcade modes)."
 msgstr ""
 
 #: CHANGELOG:33
-msgid "Pressing jump while in the air pressing against a wall now makes you cling to the wall."
+msgid ""
+"Pressing jump while in the air pressing against a wall now makes you cling "
+"to the wall."
 msgstr ""
 
 #: CHANGELOG:34
@@ -177,7 +179,8 @@ msgid "Version 1.0.1 (iPhone only):"
 msgstr ""
 
 #: CHANGELOG:43
-msgid "Significantly improved controls, both functionally and graphically (iPhone)."
+msgid ""
+"Significantly improved controls, both functionally and graphically (iPhone)."
 msgstr ""
 
 #: CHANGELOG:44
@@ -224,23 +227,51 @@ msgstr ""
 msgid "Updated music."
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:1
-#: iOS_APP_STORE_METADATA:1
-msgid "An old-school 2d platformer game, starring a certain quixotic frog. From the creators of Battle for Wesnoth comes this exciting jump-and-run platformer. Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all the gameplay nuance of a classic console title. Run and jump over pits and enemies. Grab enemies with your tongue, swallow them, and then spit them out at other enemies as projectiles! Fight dangerous bosses, and solve vexing puzzles. Collect coins and use them to buy upgrades and new abilities in the store. Talk to characters in game, and work to unravel Big Bad Milgram's plot against the townsfolk! At over 30 levels set in 4 different environments, Frogatto is not a flash in the pan, and has the play-time you'd expect from a real videogame."
-msgstr "Um jogo de plataforma em duas dimensões no melhor estilo da era dos 16-bits. Dos criadores de \"Battle for Wesnoth\", Frogatto tem belos gráficos pixelados, uma grande trilha sonora e a mesma jogabilidade precisa dos clássicos dos videogames. Corra e pule através de abismos e armadilhas. Pegue inimigos com a língua, engula-os, e transforme-os em projéteis, cuspindo-os em outros inimigos! Lute contra chefões perigosos, e resolva complicados quebra-cabeças. Junte moedas e use-as para melhorar o personagem, e adquirir novas habilidades. Converse com os diversos personagens do jogo, tentando desbaratar o plano do malvado Milgram contra a população da vila! Com mais de 30 fases em 4 ambientes totalmente distintos, Frogatto não é fogo de palha, e garante a diversão que você espera de um verdadeiro videogame. "
+#: MAC_APP_STORE_METADATA:1 iOS_APP_STORE_METADATA:1
+msgid ""
+"An old-school 2d platformer game, starring a certain quixotic frog. From the"
+" creators of Battle for Wesnoth comes this exciting jump-and-run platformer."
+" Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all "
+"the gameplay nuance of a classic console title. Run and jump over pits and "
+"enemies. Grab enemies with your tongue, swallow them, and then spit them out"
+" at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
+"puzzles. Collect coins and use them to buy upgrades and new abilities in the"
+" store. Talk to characters in game, and work to unravel Big Bad Milgram's "
+"plot against the townsfolk! At over 30 levels set in 4 different "
+"environments, Frogatto is not a flash in the pan, and has the play-time "
+"you'd expect from a real videogame."
+msgstr ""
+"Um jogo de plataforma em duas dimensões no melhor estilo da era dos 16-bits."
+" Dos criadores de \"Battle for Wesnoth\", Frogatto tem belos gráficos "
+"pixelados, uma grande trilha sonora e a mesma jogabilidade precisa dos "
+"clássicos dos videogames. Corra e pule através de abismos e armadilhas. "
+"Pegue inimigos com a língua, engula-os, e transforme-os em projéteis, "
+"cuspindo-os em outros inimigos! Lute contra chefões perigosos, e resolva "
+"complicados quebra-cabeças. Junte moedas e use-as para melhorar o "
+"personagem, e adquirir novas habilidades. Converse com os diversos "
+"personagens do jogo, tentando desbaratar o plano do malvado Milgram contra a"
+" população da vila! Com mais de 30 fases em 4 ambientes totalmente "
+"distintos, Frogatto não é fogo de palha, e garante a diversão que você "
+"espera de um verdadeiro videogame. "
 
 #: MAC_APP_STORE_METADATA:3
-msgid "Frogatto was made by a group of big-time fans of classic videogames, who are hoping to bring back the magic in a new, original game design with unconventional gameplay mechanics - a fun break from the usual clones."
-msgstr "Frogatto foi produzido por um grupo de fãs de longa data de videogames clássicos, que esperam trazer de volta aquela mágica com um jogo novo, original, com jogabilidade fora do convencional - uma divertida mudança em comparação com os clones de sempre."
+msgid ""
+"Frogatto was made by a group of big-time fans of classic videogames, who are"
+" hoping to bring back the magic in a new, original game design with "
+"unconventional gameplay mechanics - a fun break from the usual clones."
+msgstr ""
+"Frogatto foi produzido por um grupo de fãs de longa data de videogames "
+"clássicos, que esperam trazer de volta aquela mágica com um jogo novo, "
+"original, com jogabilidade fora do convencional - uma divertida mudança em "
+"comparação com os clones de sempre."
 
-#: MAC_APP_STORE_METADATA:5
-#: iOS_APP_STORE_METADATA:7
+#: MAC_APP_STORE_METADATA:5 iOS_APP_STORE_METADATA:7
 msgid "keywords:"
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:6
-#: iOS_APP_STORE_METADATA:8
-msgid "platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
+#: MAC_APP_STORE_METADATA:6 iOS_APP_STORE_METADATA:8
+msgid ""
+"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
 msgstr ""
 
 #: data/achievements.cfg:4
@@ -363,31 +394,24 @@ msgstr "O Importante é Chegar Lá!"
 msgid "Start a level with no health left."
 msgstr "Começar uma fase sem nada de vida."
 
-#: data/level/after_summer.cfg:12
-#: data/level/platform-peril.cfg:12
+#: data/level/after_summer.cfg:12 data/level/platform-peril.cfg:12
 msgid "After Summer"
 msgstr ""
 
-#: data/level/after_summer.cfg:1651
+#: data/level/after_summer.cfg:1633
 msgid ""
 "We're cleaning the fish tanks here!\n"
 "We could use a break."
 msgstr ""
 
-#: data/level/after_summer.cfg:1652
+#: data/level/after_summer.cfg:1634
 msgid ""
 "You killed Benny!\n"
 "Now I SHALL KILL YOU!"
 msgstr ""
 
-#: data/level/after_summer.cfg:2465
-#: data/level/platform-peril.cfg:1656
+#: data/level/after_summer.cfg:2350 data/level/platform-peril.cfg:1641
 msgid "Move on!"
-msgstr ""
-
-#: data/level/after_summer.cfg:2533
-#: data/level/platform-peril.cfg:1724
-msgid "Oops, shouldn't have left that there."
 msgstr ""
 
 #: data/level/airplane-boss.cfg:14
@@ -402,13 +426,11 @@ msgstr "Armadilha!"
 msgid "Victory!"
 msgstr "Vitória!"
 
-#: data/level/arcade-blocks.cfg:11
-#: data/level/titlescreen-arcade.cfg:202
+#: data/level/arcade-blocks.cfg:11 data/level/titlescreen-arcade.cfg:202
 msgid "Blocks Run"
 msgstr "Corrida dos Blocos"
 
-#: data/level/arcade-blocks.cfg:218
-#: data/level/arcade-blocks.cfg:220
+#: data/level/arcade-blocks.cfg:218 data/level/arcade-blocks.cfg:220
 msgid "You got {level.player.score} points in the Blocks Run!"
 msgstr "Você conseguiu {level.player.score} pontos na Corrida dos Blocos!"
 
@@ -434,11 +456,14 @@ msgstr "Descendo a Toca Sem Coelho"
 #: data/level/arcade-down-the-rabbit-hall.cfg:863
 #: data/level/arcade-down-the-rabbit-hall.cfg:866
 msgid "You got {level.player.vars.score} points going down the rabbit hall!"
-msgstr "Você conseguiu {level.player.vars.score} pontos Descendo A Toca Sem Coelho!"
+msgstr ""
+"Você conseguiu {level.player.vars.score} pontos Descendo A Toca Sem Coelho!"
 
 #: data/level/arcade-down-the-rabbit-hall.cfg:867
-msgid "The high score is {registry.arcade_down_the_rabbit_hall_high_score} points."
-msgstr "O recorde é de {registry.arcade_down_the_rabbit_hall_high_score} pontos."
+msgid ""
+"The high score is {registry.arcade_down_the_rabbit_hall_high_score} points."
+msgstr ""
+"O recorde é de {registry.arcade_down_the_rabbit_hall_high_score} pontos."
 
 #: data/level/arcade-maintenance-shaft.cfg:13
 #: data/level/titlescreen-arcade.cfg:181
@@ -451,13 +476,15 @@ msgid "You got {level.player.vars.score} points in the maintenance shaft!"
 msgstr "Você conseguiu {level.player.score} pontos no Poço de Manutenção!"
 
 #: data/level/arcade-maintenance-shaft.cfg:2583
-msgid "The high score is {registry.arcade_maintenance_shaft_high_score} points."
+msgid ""
+"The high score is {registry.arcade_maintenance_shaft_high_score} points."
 msgstr "O recorde é de {registry.arcade_maintenance_shaft_high_score} pontos."
 
 #: data/level/arcade-nutty-factory.cfg:550
 #: data/level/arcade-nutty-factory.cfg:553
 msgid "You got {level.player.vars.score} points in the Nutty Factory!"
-msgstr "Você conseguiu {level.player.vars.score} pontos na Corporação Casca de Noz!"
+msgstr ""
+"Você conseguiu {level.player.vars.score} pontos na Corporação Casca de Noz!"
 
 #: data/level/arcade-nutty-factory.cfg:554
 msgid "The high score is {registry.arcade_nutty_factory_high_score} points."
@@ -477,13 +504,11 @@ msgstr "Você conseguiu {level.player.score} pontos em O Longo Caminho!"
 msgid "The high score is {registry.arcade_the_long_haul_high_score} points."
 msgstr "O recorde é de {registry.arcade_the_long_haul_high_score} pontos."
 
-#: data/level/arcade-upper-deck.cfg:13
-#: data/level/titlescreen-arcade.cfg:180
+#: data/level/arcade-upper-deck.cfg:13 data/level/titlescreen-arcade.cfg:180
 msgid "Upper Deck"
 msgstr "Escadaria Infinita"
 
-#: data/level/arcade-upper-deck.cfg:2950
-#: data/level/arcade-upper-deck.cfg:2953
+#: data/level/arcade-upper-deck.cfg:2950 data/level/arcade-upper-deck.cfg:2953
 msgid "You got {level.player.vars.score} points on the Upper Deck!"
 msgstr "Você conseguiu {level.player.score} pontos na Escadaria Infinita!"
 
@@ -517,8 +542,7 @@ msgstr "Vila do Outono"
 msgid "Bombing Fools"
 msgstr "Bombas à Beça"
 
-#: data/level/bon-bosque.cfg:15
-#: data/objects/playable/map-selector.cfg:20
+#: data/level/bon-bosque.cfg:15 data/objects/playable/map-selector.cfg:20
 msgid "Bon Bosque"
 msgstr "Bom Bosque"
 
@@ -633,8 +657,7 @@ msgstr ""
 msgid "Caverns of Holes"
 msgstr "Gruta Furada"
 
-#: data/level/chopple-shop-interior.cfg:10
-#: data/level/chopple-shop.cfg:16
+#: data/level/chopple-shop-interior.cfg:10 data/level/chopple-shop.cfg:16
 msgid "Chopple's General Store"
 msgstr "Empório do Chopple"
 
@@ -1018,8 +1041,7 @@ msgstr "Ah, aí está você!"
 
 #: data/level/crevice-village-cave.cfg:14
 #: data/level/crevice-village-central.cfg:15
-#: data/level/crevice-village-heights.cfg:16
-#: data/level/crevice-village.cfg:15
+#: data/level/crevice-village-heights.cfg:16 data/level/crevice-village.cfg:15
 #: data/objects/playable/map-selector.cfg:18
 msgid "Crevice Village"
 msgstr "Vila da Fenda"
@@ -1206,8 +1228,8 @@ msgstr ""
 
 #: data/level/crevice-village-central.cfg:1448
 #: data/level/crevice-village-house-2.cfg:3211
-#: data/level/crevice-village-house-4.cfg:3064
-#: data/level/crevice-village-house-4.cfg:3105
+#: data/level/crevice-village-house-4.cfg:3019
+#: data/level/crevice-village-house-4.cfg:3060
 #: data/level/killer-bunnies.cfg:3313
 msgid "Nope, it's locked."
 msgstr "Não dá, está trancada."
@@ -1920,8 +1942,7 @@ msgstr ""
 "Nós vimos o capataz\n"
 "do Milgram entrar lá."
 
-#: data/level/crevice-village-house-2.cfg:3513
-#: data/level/rock-a-fort.cfg:3459
+#: data/level/crevice-village-house-2.cfg:3513 data/level/rock-a-fort.cfg:3459
 msgid "How interesting."
 msgstr "Que interessante."
 
@@ -1945,11 +1966,11 @@ msgstr ""
 "Argh! Quem seria doido\n"
 "de construir uma casa assim?"
 
-#: data/level/crevice-village-house-4.cfg:3007
+#: data/level/crevice-village-house-4.cfg:2962
 msgid "Hmmm..."
 msgstr "Hmmm..."
 
-#: data/level/crevice-village-house-4.cfg:3008
+#: data/level/crevice-village-house-4.cfg:2963
 msgid ""
 "It seems I'm trapped\n"
 "inside this house."
@@ -1957,7 +1978,7 @@ msgstr ""
 "Parece que fiquei\n"
 "preso aqui dentro."
 
-#: data/level/crevice-village-house-4.cfg:3009
+#: data/level/crevice-village-house-4.cfg:2964
 msgid ""
 "I guess the only way out\n"
 "is in!"
@@ -1965,16 +1986,16 @@ msgstr ""
 "Talvez tenha outra saída\n"
 "mais à frente..."
 
-#: data/level/crevice-village-house-4.cfg:3311
+#: data/level/crevice-village-house-4.cfg:3266
 msgid "This is decidedly unpleasant."
 msgstr "Isto é definitivamente desagradável."
 
-#: data/level/crevice-village-house-4.cfg:3313
-#: data/level/crevice-village-house-4.cfg:3323
+#: data/level/crevice-village-house-4.cfg:3268
+#: data/level/crevice-village-house-4.cfg:3278
 msgid "You don't say."
 msgstr "Não me diga."
 
-#: data/level/crevice-village-house-4.cfg:3315
+#: data/level/crevice-village-house-4.cfg:3270
 msgid ""
 "When I stepped in the door,\n"
 "it locked behind me."
@@ -1982,7 +2003,7 @@ msgstr ""
 "Foi só eu entrar aqui e a porta\n"
 "fechou atrás de mim."
 
-#: data/level/crevice-village-house-4.cfg:3316
+#: data/level/crevice-village-house-4.cfg:3271
 msgid ""
 "That's actually a rather clever\n"
 "way to round everyone up."
@@ -1990,7 +2011,7 @@ msgstr ""
 "Esse até que é um método\n"
 "interessante de prender todo mundo."
 
-#: data/level/crevice-village-house-4.cfg:3318
+#: data/level/crevice-village-house-4.cfg:3273
 msgid ""
 "Know anything helpful\n"
 "about this house?"
@@ -1998,7 +2019,7 @@ msgstr ""
 "Você sabe de alguma coisa dessa casa\n"
 "que poderia me ajudar?"
 
-#: data/level/crevice-village-house-4.cfg:3319
+#: data/level/crevice-village-house-4.cfg:3274
 msgid ""
 "Unfortunately I don't.\n"
 "I was just visiting."
@@ -2006,15 +2027,15 @@ msgstr ""
 "Infelizmente não.\n"
 "Eu estava só de visita."
 
-#: data/level/crevice-village-house-4.cfg:3320
+#: data/level/crevice-village-house-4.cfg:3275
 msgid "The floorplan is quite loony."
 msgstr "A planta da casa é bem estranha."
 
-#: data/level/crevice-village-house-4.cfg:3322
+#: data/level/crevice-village-house-4.cfg:3277
 msgid "Marvelous ventilation, though."
 msgstr "Mas a ventilação é excelente!"
 
-#: data/level/crevice-village-house-4.cfg:3325
+#: data/level/crevice-village-house-4.cfg:3280
 msgid ""
 "Anyways, I'd better be off.\n"
 "I'm trying to sort out this mess."
@@ -2022,7 +2043,7 @@ msgstr ""
 "Bom, é melhor eu ir em frente.\n"
 "Estou tentando arrumar essa bagunça."
 
-#: data/level/crevice-village-house-4.cfg:3326
+#: data/level/crevice-village-house-4.cfg:3281
 msgid "Good luck."
 msgstr "Boa sorte."
 
@@ -2572,8 +2593,7 @@ msgstr ""
 msgid "Why, I'll even show you the way..."
 msgstr "Aliás, até vou te mostrar o caminho..."
 
-#: data/level/crevice-village.cfg:652
-#: data/level/to-nenes-house.cfg:1301
+#: data/level/crevice-village.cfg:652 data/level/to-nenes-house.cfg:1301
 msgid "I better leave this key here."
 msgstr "É melhor eu deixar esta chave aqui."
 
@@ -2962,8 +2982,7 @@ msgstr "Ih! Dormi demais!"
 msgid "it's the principle of the thing."
 msgstr "é o princípio da coisa."
 
-#: data/level/frogatto-grotto.cfg:13
-#: data/objects/playable/map-selector.cfg:16
+#: data/level/frogatto-grotto.cfg:13 data/objects/playable/map-selector.cfg:16
 msgid "Frogatto Grotto"
 msgstr "Gruta do Frogatto"
 
@@ -3001,21 +3020,11 @@ msgstr "Caminho Verdejante"
 
 #: data/level/grassy-path.cfg:1163
 msgid ""
-"On this level,\n"
-"we give advice on how to play."
+"On this level, we give advice on how to play.\n"
+"Each question mark has its own hint."
 msgstr ""
-"Nesta fase,\n"
-"nós o ensinaremos como jogar."
 
 #: data/level/grassy-path.cfg:1164
-msgid ""
-"Each question mark\n"
-"has its own hint."
-msgstr ""
-"Cada ponto de interrogação\n"
-"tem sua própria dica."
-
-#: data/level/grassy-path.cfg:1165
 msgid ""
 "If you already know how to play,\n"
 "then just walk to the next level."
@@ -3023,15 +3032,13 @@ msgstr ""
 "Se você já sabe jogar, então\n"
 "continue até a fase seguinte."
 
-#: data/level/grassy-path.cfg:1186
+#: data/level/grassy-path.cfg:1185
 msgid ""
-"To save the game,\n"
+"To save your progress in the game,\n"
 "use one of these convenient restrooms."
 msgstr ""
-"Pra salvar o jogo, entre num desses\n"
-"convenientes banheiros."
 
-#: data/level/grassy-path.cfg:1187
+#: data/level/grassy-path.cfg:1186
 msgid ""
 "There is only one save file,\n"
 "so be careful not to overwrite it!"
@@ -3040,54 +3047,34 @@ msgstr ""
 "então tenha cuidado para não\n"
 "sobrescrevê-lo sem querer!"
 
-#: data/level/grassy-path.cfg:1208
+#: data/level/grassy-path.cfg:1207
 msgid ""
-"Some jumps are too high to clear\n"
-"with just a normal jump."
+"Some changes in elevation are too high\n"
+"to clear with just a normal jump."
 msgstr ""
-"Alguns obstáculos são altos demais\n"
-"para serem vencidos por um pulo qualquer."
+
+#: data/level/grassy-path.cfg:1208
+msgid "Fortunately, Frogatto can jump off of walls, too!"
+msgstr ""
 
 #: data/level/grassy-path.cfg:1209
-msgid ""
-"Fortunately,\n"
-"Frogatto can jump off of walls, too!"
+msgid "To do this, do a walking jump into the wall."
 msgstr ""
-"Felizmente, Frogatto\n"
-"pode pular das paredes, também!"
 
 #: data/level/grassy-path.cfg:1210
 msgid ""
-"To do this,\n"
-"do a walking jump into the wall."
+"If you bump into a wall at the crest of a jump,\n"
+"you will cling to the wall and slowly slide down."
 msgstr ""
-"Para fazer isso,\n"
-"pule em direção à parede."
 
 #: data/level/grassy-path.cfg:1211
 msgid ""
-"If you bump into the wall\n"
-"at the crest of the jump,\n"
-"Frogatto will cling to the wall\n"
-"and slowly slide down."
+"If you don't get a running start, you can still\n"
+"cling on, if you tap the arrow toward the wall,\n"
+"and press jump whilst it's held down."
 msgstr ""
-"Se você bater nela\n"
-"no início do pulo,\n"
-"Frogatto vai grudar na parede\n"
-"e escorregar, devagarinho."
 
 #: data/level/grassy-path.cfg:1212
-msgid ""
-"If you don't get a running start\n"
-"you can still cling on, if you tap the\n"
-"arrow toward the wall, and press jump."
-msgstr ""
-"Se você não começar com velocidade\n"
-"suficiente, ainda pode grudar na parede,\n"
-"apertando o botão do pulo, enquanto\n"
-"segura a seta direcional contra a parede."
-
-#: data/level/grassy-path.cfg:1213
 msgid ""
 "Whilst you are clinging to the wall,\n"
 "pressing jump will make you rebound off."
@@ -3096,45 +3083,36 @@ msgstr ""
 "você pode pular fora apertando o botão\n"
 "do pulo novamente."
 
-#: data/level/grassy-path.cfg:1214
+#: data/level/grassy-path.cfg:1213
 msgid ""
-"If two walls are facing each other,\n"
-"this is very useful, because then you can\n"
+"This is especially useful, if two walls are\n"
+"facing each other, because then you can\n"
 "rebound over and over between them."
 msgstr ""
-"Onde a parede for alta dos dois lados,\n"
-"isso é muito útil, porque você pode\n"
-"pular de um lado ao outro até o topo."
 
-#: data/level/grassy-path.cfg:1215
+#: data/level/grassy-path.cfg:1214
 msgid "This lets you ascend vertical columns."
 msgstr ""
 "Assim, você pode escalar\n"
 "os penhascos que encontrar."
 
-#: data/level/grassy-path.cfg:1236
+#: data/level/grassy-path.cfg:1235
 msgid "Frogatto's world is a dangerous place."
 msgstr "O mundo de Frogatto é um lugar perigoso."
 
+#: data/level/grassy-path.cfg:1236
+msgid ""
+"In his travels, you'll encounter\n"
+"many creatures who want to hurt you."
+msgstr ""
+
 #: data/level/grassy-path.cfg:1237
 msgid ""
-"You will encounter many creatures\n"
-"who want to hurt you."
+"It's often fine to just avoid them, but if you have\n"
+"to fight, Frogatto's best defense is his tongue."
 msgstr ""
-"Você encontrará muitas criaturas\n"
-"que querem te ferir."
 
 #: data/level/grassy-path.cfg:1238
-msgid ""
-"It's often fine to just avoid them,\n"
-"but if you have to fight,\n"
-"Frogatto's best defense is his tongue."
-msgstr ""
-"Normalmente, você pode simplesmente\n"
-"evitá-las, mas, se tiver que lutar,\n"
-"a melhor defesa de Frogatto é a língua."
-
-#: data/level/grassy-path.cfg:1239
 msgid ""
 "You can grab enemies with the tongue,\n"
 "and then spit them back out."
@@ -3142,25 +3120,17 @@ msgstr ""
 "Você pode pegar inimigos com a língua,\n"
 "e depois cuspi-los de volta."
 
+#: data/level/grassy-path.cfg:1239
+msgid "Once spat out, they become a deadly projectile."
+msgstr ""
+
 #: data/level/grassy-path.cfg:1240
 msgid ""
-"Once spat out,\n"
-"they become a deadly projectile."
+"If they don't hit anything, they'll be stunned\n"
+"momentarily, and then will flip upright again."
 msgstr ""
-"Quando cuspidos,\n"
-"eles se tornam um projétil fatal."
 
 #: data/level/grassy-path.cfg:1241
-msgid ""
-"If they don't hit anything,\n"
-"they'll be stunned for a moment,\n"
-"and then will flip upright again."
-msgstr ""
-"Se não acertarem nada, eles ficarão\n"
-"paralisados por uns instantes,\n"
-"até poderem se levantar de novo."
-
-#: data/level/grassy-path.cfg:1242
 msgid ""
 "Whilst on their backs,\n"
 "they're vulnerable to being stomped on."
@@ -3168,7 +3138,7 @@ msgstr ""
 "Enquanto estiverem paralisados,\n"
 "é fácil pisoteá-los."
 
-#: data/level/grassy-path.cfg:1243
+#: data/level/grassy-path.cfg:1242
 msgid ""
 "Sticking out the tongue and spitting,\n"
 "are both done with the attack key."
@@ -3176,7 +3146,7 @@ msgstr ""
 "As ações de soltar a língua e cuspir\n"
 "são feitas com o botão de ataque."
 
-#: data/level/grassy-path.cfg:1244
+#: data/level/grassy-path.cfg:1243
 msgid ""
 "There are a few ants just ahead.\n"
 "Feel free to try this on them."
@@ -3184,7 +3154,7 @@ msgstr ""
 "Há algumas formigas logo à frente.\n"
 "Fique à vontade em atacá-las."
 
-#: data/level/grassy-path.cfg:1245
+#: data/level/grassy-path.cfg:1244
 msgid ""
 "And don't worry - if you die,\n"
 "you'll restart right here."
@@ -3192,72 +3162,43 @@ msgstr ""
 "E não se preocupe - se você morrer,\n"
 "irá recomeçar daqui mesmo."
 
+#: data/level/grassy-path.cfg:1289
+msgid ""
+"A very useful fact is that you can control\n"
+"the direction in which enemies are spat."
+msgstr ""
+
 #: data/level/grassy-path.cfg:1290
 msgid ""
-"A very useful fact,\n"
-"is that you can control the direction\n"
-"in which enemies are spat."
+"If you hold down the up key while pressing\n"
+"the attack button, you'll spit in a high arc."
 msgstr ""
-"Você pode controlar a direção à qual\n"
-"cospe os inimigos."
 
 #: data/level/grassy-path.cfg:1291
 msgid ""
-"If you hold down the up key\n"
-"while pressing the attack button,\n"
-"you'll spit in a high arc."
+"If you hold down the down key while pressing\n"
+"the attack button, you'll spit with very little force."
 msgstr ""
-"Se você segurar a seta para cima\n"
-"ao apertar o botão de ataque,\n"
-"irá cuspir com força ao alto."
 
-#: data/level/grassy-path.cfg:1292
+#: data/level/grassy-path.cfg:1293
 msgid ""
-"If you hold down the down key\n"
-"while pressing the attack button,\n"
-"you'll spit with very little force."
+"You should also beware that not all enemies\n"
+"can be grabbed with the tongue."
 msgstr ""
-"Se segurar a seta para baixo\n"
-"ao apertar o botão de ataque,\n"
-"irá cuspir com pouca força."
 
 #: data/level/grassy-path.cfg:1294
 msgid ""
-"Also beware that not all enemies\n"
-"can be grabbed with the tongue,\n"
-"and many can't be hurt by it either."
+"Different enemies present different challenges,\n"
+"and you'll need to get creative to deal with them."
 msgstr ""
-"E note que nem todos os inimigos\n"
-"podem ser pegos com a língua,\n"
-"e nem mesmo ser feridos por ela."
 
 #: data/level/grassy-path.cfg:1295
 msgid ""
-"You'll need to get creative\n"
-"to deal with those enemies."
+"Also, the tongue can grab useful items, like keys.\n"
+"This is how you carry them to the lock they open."
 msgstr ""
-"Você terá que ser criativo\n"
-"ao enfrentar esses inimigos."
 
-#: data/level/grassy-path.cfg:1296
-msgid ""
-"Last but not least,\n"
-"the tongue can grab useful items too."
-msgstr ""
-"E por último, mas não menos\n"
-"importante, a língua pode também\n"
-"agarrar alguns objetos úteis."
-
-#: data/level/grassy-path.cfg:1297
-msgid ""
-"It's what you use to carry something\n"
-"from one place to another."
-msgstr ""
-"É assim que você pode carregar\n"
-"coisas como chaves de um lugar\n"
-"a outro."
-
-#: data/level/grassy-path.cfg:1335
+#: data/level/grassy-path.cfg:1333
 msgid ""
 "Fountains, and other water dispensers,\n"
 "are very helpful."
@@ -3265,7 +3206,7 @@ msgstr ""
 "Chafarizes e outras fontes de água\n"
 "são de grande ajuda."
 
-#: data/level/grassy-path.cfg:1336
+#: data/level/grassy-path.cfg:1334
 msgid ""
 "If you drink from them,\n"
 "you will restore all of your health!"
@@ -3273,25 +3214,19 @@ msgstr ""
 "Se você beber delas,\n"
 "terá toda a sua energia recuperada!"
 
-#: data/level/grassy-path.cfg:1358
+#: data/level/grassy-path.cfg:1356
 msgid ""
-"Certain wooden bridges and stairways,\n"
-"like the one just up ahead,\n"
-"are built so you can jump up,\n"
-"and pass through them."
+"Certain bridges and stairways, like this one,\n"
+"allow you to jump up and pass through them."
 msgstr ""
-"Algumas pontes e escadas de madeira,\n"
-"como essa aí à frente, são construídas\n"
-"de modo que você possa pular\n"
-"e passar pela frente delas."
 
-#: data/level/grassy-path.cfg:1359
+#: data/level/grassy-path.cfg:1357
 msgid "You can also jump down through them."
 msgstr ""
 "Você também pode descer\n"
 "através delas."
 
-#: data/level/grassy-path.cfg:1360
+#: data/level/grassy-path.cfg:1358
 msgid ""
 "A special button will appear,\n"
 "whenever this is possible."
@@ -3299,7 +3234,7 @@ msgstr ""
 "Um botão especial irá aparecer\n"
 "na tela, quando isso for possível."
 
-#: data/level/grassy-path.cfg:1361
+#: data/level/grassy-path.cfg:1359
 msgid ""
 "To do so, hold down the down key,\n"
 "and then press jump."
@@ -3307,7 +3242,7 @@ msgstr ""
 "Para fazer isso, segure a seta para\n"
 "baixo e aperte o botão do pulo."
 
-#: data/level/grassy-path.cfg:1406
+#: data/level/grassy-path.cfg:1404
 msgid ""
 "As you've played through this level,\n"
 "you've probably noticed the gold coins."
@@ -3315,7 +3250,7 @@ msgstr ""
 "Conforme você veio jogando esta fase,\n"
 "deve ter notado as moedas de ouro."
 
-#: data/level/grassy-path.cfg:1407
+#: data/level/grassy-path.cfg:1405
 msgid ""
 "You can collect these\n"
 "and any other golden objects,\n"
@@ -3325,7 +3260,7 @@ msgstr ""
 "assim como outros objetos dourados,\n"
 "e usá-los para comprar na loja."
 
-#: data/level/grassy-path.cfg:1408
+#: data/level/grassy-path.cfg:1406
 msgid ""
 "There is a store conveniently located\n"
 "outside of the town."
@@ -3333,50 +3268,33 @@ msgstr ""
 "Nesta região, há uma loja logo antes\n"
 "da vila mais à frente."
 
-#: data/level/grassy-path.cfg:1430
+#: data/level/grassy-path.cfg:1428
 msgid ""
-"Sometimes, you'll run into rather\n"
-"dangerous-looking terrain,\n"
-"such as these brambles."
+"Sometimes, you'll run into rather dangerous-\n"
+"looking terrain, such as these brambles."
 msgstr ""
-"Às vezes, você irá se deparar\n"
-"com terrenos que parecem perigosos,\n"
-"como aqueles espinhos."
+
+#: data/level/grassy-path.cfg:1429
+msgid "As you'd expect, stepping on them would hurt a bit."
+msgstr ""
+
+#: data/level/grassy-path.cfg:1430
+msgid "However, they also hurt your enemies!"
+msgstr ""
 
 #: data/level/grassy-path.cfg:1431
 msgid ""
-"As you would expect, stepping on these\n"
-"will hurt a bit."
-msgstr ""
-"Como você pode imaginar,\n"
-"pisar neles machucará Frogatto."
-
-#: data/level/grassy-path.cfg:1432
-msgid "However, this also hurts the bugs!"
-msgstr "Porém, eles também ferem os insetos!"
-
-#: data/level/grassy-path.cfg:1433
-msgid ""
-"Leading or spitting them onto it\n"
+"Leading or spitting them onto harmful terrain\n"
 "is an excellent way to dispatch them."
 msgstr ""
-"Uma ótima maneira de se livrar deles\n"
-"é cuspindo-os ou fazendo-os cair\n"
-"nos espinhos."
 
-#: data/level/grassy-path.cfg:1434
+#: data/level/grassy-path.cfg:1432
 msgid ""
-"Beware also,\n"
-"any bottomless pits you encounter."
+"Beware also, any bottomless pits you encounter.\n"
+"Those are immediately fatal."
 msgstr ""
-"Tome cuidado, também,\n"
-"quando encontrar algum abismo."
 
-#: data/level/grassy-path.cfg:1435
-msgid "These are immediately fatal."
-msgstr "Cair neles é fatal."
-
-#: data/level/grassy-path.cfg:1563
+#: data/level/grassy-path.cfg:1560
 msgid ""
 "Up ahead, you'll notice an anthill,\n"
 "which ants constantly come out of."
@@ -3385,7 +3303,7 @@ msgstr ""
 "formigueiro, de onde formigas\n"
 "saem sem parar."
 
-#: data/level/grassy-path.cfg:1564
+#: data/level/grassy-path.cfg:1561
 msgid ""
 "There is no way to stop this;\n"
 "you can't destroy the anthill."
@@ -3393,7 +3311,7 @@ msgstr ""
 "Não há como impedir isso;\n"
 "você não pode destruir o formigueiro."
 
-#: data/level/grassy-path.cfg:1565
+#: data/level/grassy-path.cfg:1562
 msgid ""
 "Some hazards are like this.\n"
 "You simply have to work around them."
@@ -3402,23 +3320,17 @@ msgstr ""
 "Você deve encontrar um modo\n"
 "de passar por eles."
 
-#: data/level/grassy-path.cfg:1587
+#: data/level/grassy-path.cfg:1584
 msgid "That's it for this tutorial."
 msgstr "E aqui terminamos o tutorial."
 
-#: data/level/grassy-path.cfg:1588
+#: data/level/grassy-path.cfg:1585
 msgid ""
-"Although there's a bit more\n"
-"to playing the game,\n"
-"the rest we can safely let\n"
-"you learn on your own."
+"Although there's more to playing the game,\n"
+"the rest we can safely let you learn on your own."
 msgstr ""
-"Embora isso não é tudo que\n"
-"se pode saber pra jogar o jogo,\n"
-"o resto deixaremos pra você\n"
-"aprender sozinho."
 
-#: data/level/grassy-path.cfg:1589
+#: data/level/grassy-path.cfg:1586
 msgid ""
 "Feel free to come back here,\n"
 "if you want to read a hint again."
@@ -3426,39 +3338,55 @@ msgstr ""
 "Fique à vontade para voltar,\n"
 "se quiser ler alguma dica novamente."
 
-#: data/level/grassy-path.cfg:1590
+#: data/level/grassy-path.cfg:1587
 msgid "Have fun!"
 msgstr "Divirta-se!"
 
-#: data/level/grassy-path.cfg:1613
+#: data/level/grassy-path.cfg:1610
 msgid ""
-"If you've seen a conversation before\n"
-"you might be annoyed by\n"
-"having to read it again."
+"If you've seen a conversation before, it might\n"
+"be annoying to have to read it again."
 msgstr ""
-"Se você já viu alguma conversa\n"
-"antes, pode ficar incomodado de\n"
-"ter que lê-las de novo."
 
-#: data/level/grassy-path.cfg:1614
+#: data/level/grassy-path.cfg:1611
 msgid ""
-"You can skip a conversation,\n"
-"including parts of cutscenes,\n"
-"by pressing the \"escape\" key."
+"You can skip a conversation, including parts\n"
+"of cutscenes, by pressing the \"escape\" key."
 msgstr ""
-"Você pode pular uma conversa,\n"
-"mesmo partes de cenas maiores,\n"
-"pressionando a tecla \"Esc\"."
 
-#: data/level/grassy-path.cfg:1615
+#: data/level/grassy-path.cfg:1612
 msgid ""
-"And yes,\n"
-"this applies to the question marks\n"
-"on this level, too."
+"And yes, this applies to the question\n"
+"marks on this level, too."
 msgstr ""
-"E sim, isso também vale\n"
-"para os pontos de interrogação\n"
-"que estão nesta fase."
+
+#: data/level/grassy-path.cfg:1859
+msgid ""
+"If you haven't already noticed, the round\n"
+"rocks you sometimes find nestled in\n"
+"the grass are spittable projectiles."
+msgstr ""
+
+#: data/level/grassy-path.cfg:1860
+msgid ""
+"You'll find many such objects of similar size\n"
+"in different areas of the game, such as crates\n"
+"inside of houses, or nuts hanging from trees."
+msgstr ""
+
+#: data/level/grassy-path.cfg:1861
+msgid ""
+"These are an ample source of ammunition,\n"
+"that's almost always available."
+msgstr ""
+
+#: data/level/grassy-path.cfg:1862
+msgid ""
+"Note that these have an unusual property;\n"
+"if you use them up, walk away from the screen\n"
+"where you found them, and then return again,\n"
+"there will often be a new one waiting to use."
+msgstr ""
 
 #: data/level/hanging-platforms.cfg:16
 msgid "Hanging Platforms"
@@ -3818,8 +3746,7 @@ msgstr ""
 msgid "Yikes!"
 msgstr "Eita!"
 
-#: data/level/rock-a-fort-cave.cfg:16
-#: data/level/rock-a-fort.cfg:16
+#: data/level/rock-a-fort-cave.cfg:16 data/level/rock-a-fort.cfg:16
 msgid "Rock-a-Fort"
 msgstr "Rocha-forte"
 
@@ -3841,8 +3768,7 @@ msgstr ""
 "Deve ter um outro caminho\n"
 "pra chegar do outro lado."
 
-#: data/level/secluded-hut-interior.cfg:12
-#: data/level/secluded-hut.cfg:16
+#: data/level/secluded-hut-interior.cfg:12 data/level/secluded-hut.cfg:16
 #: data/objects/playable/map-selector.cfg:17
 msgid "Secluded Hut"
 msgstr "Observatório"
@@ -4590,10 +4516,8 @@ msgstr "Programador Principal"
 msgid "Scripting Language Designer"
 msgstr "Desenvolvedor da Linguagem de Scripts"
 
-#: data/level/tea-with-milgram.cfg:348
-#: data/level/tea-with-milgram.cfg:354
-#: data/level/tea-with-milgram.cfg:375
-#: data/level/tea-with-milgram.cfg:387
+#: data/level/tea-with-milgram.cfg:348 data/level/tea-with-milgram.cfg:354
+#: data/level/tea-with-milgram.cfg:375 data/level/tea-with-milgram.cfg:387
 msgid "Object Scripter"
 msgstr "Programador de Objetos"
 
@@ -4621,8 +4545,7 @@ msgstr "Fim"
 msgid "Creative Director - created characters/setting/story"
 msgstr "Diretor de Criação - personagens/ambientes/história"
 
-#: data/level/tea-with-milgram.cfg:363
-#: data/level/tea-with-milgram.cfg:401
+#: data/level/tea-with-milgram.cfg:363 data/level/tea-with-milgram.cfg:401
 msgid "Artist - Characters, Monsters, and Props"
 msgstr "Artista - Personagens, Inimigos e Objetos"
 
@@ -4702,8 +4625,7 @@ msgstr "AGRADECIMENTOS ESPECIAIS:"
 msgid "(Level Template)"
 msgstr "(Modelo de Fase)"
 
-#: data/level/test-dungeon.cfg:12
-#: data/level/test-rpg.cfg:12
+#: data/level/test-dungeon.cfg:12 data/level/test-rpg.cfg:12
 msgid "(Test Level)"
 msgstr "(Fase de teste)"
 
@@ -4723,14 +4645,12 @@ msgstr "Mostre-nos o que pode fazer!"
 msgid "EXIT"
 msgstr "SAÍDA"
 
-#: data/level/titlescreen-arcade.cfg:178
-#: data/level/titlescreen-arcade.cfg:199
+#: data/level/titlescreen-arcade.cfg:178 data/level/titlescreen-arcade.cfg:199
 #: data/level/titlescreen-arcade.cfg:260
 msgid "Select a level:"
 msgstr "Escolha uma fase:"
 
-#: data/level/titlescreen-arcade.cfg:182
-#: data/level/titlescreen-arcade.cfg:203
+#: data/level/titlescreen-arcade.cfg:182 data/level/titlescreen-arcade.cfg:203
 #: data/level/titlescreen-arcade.cfg:262
 msgid "(cancel)"
 msgstr "(cancelar)"
@@ -4751,62 +4671,50 @@ msgstr "Corrida das Moedas"
 msgid "COIN RACE"
 msgstr "CORRIDA DAS MOEDAS"
 
-#: data/level/titlescreen-test.cfg:259
-#: data/level/titlescreen.cfg:254
+#: data/level/titlescreen-test.cfg:259 data/level/titlescreen.cfg:254
 msgid "LOAD GAME"
 msgstr "CONTINUAR"
 
-#: data/level/titlescreen-test.cfg:279
-#: data/level/titlescreen.cfg:274
+#: data/level/titlescreen-test.cfg:279 data/level/titlescreen.cfg:274
 msgid "NEW GAME"
 msgstr "NOVO JOGO"
 
-#: data/level/titlescreen-test.cfg:300
-#: data/level/titlescreen-test.cfg:312
-#: data/level/titlescreen.cfg:295
-#: data/level/titlescreen.cfg:307
+#: data/level/titlescreen-test.cfg:300 data/level/titlescreen-test.cfg:312
+#: data/level/titlescreen.cfg:295 data/level/titlescreen.cfg:307
 msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
 msgstr "Pressione {LEFT_KEY} ou {RIGHT_KEY} para andar."
 
-#: data/level/titlescreen-test.cfg:313
-#: data/level/titlescreen-test.cfg:328
-#: data/level/titlescreen.cfg:308
-#: data/level/titlescreen.cfg:323
+#: data/level/titlescreen-test.cfg:313 data/level/titlescreen-test.cfg:328
+#: data/level/titlescreen.cfg:308 data/level/titlescreen.cfg:323
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
-msgstr "Aperte {LEFT_KEY} ou {RIGHT_KEY} duas vezes, rapidamente, para correr."
+msgstr ""
+"Aperte {LEFT_KEY} ou {RIGHT_KEY} duas vezes, rapidamente, para correr."
 
-#: data/level/titlescreen-test.cfg:314
-#: data/level/titlescreen.cfg:309
+#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:309
 msgid "Press {DOWN_KEY} to crouch."
 msgstr "Aperte {DOWN_KEY} para se abaixar."
 
-#: data/level/titlescreen-test.cfg:314
-#: data/level/titlescreen.cfg:309
+#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:309
 msgid "Walk in front of a door or person, and press"
 msgstr "Você pode interagir com pessoas ou objetos como portas,"
 
-#: data/level/titlescreen-test.cfg:315
-#: data/level/titlescreen.cfg:310
+#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:310
 msgid "Press {UP_KEY} to talk, and use things like doors."
 msgstr "Aperte {UP_KEY} para conversar, abrir portas, etc."
 
-#: data/level/titlescreen-test.cfg:315
-#: data/level/titlescreen.cfg:310
+#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:310
 msgid "the button that appears to interact with them."
 msgstr "tocando no botão que aparecer na tela."
 
-#: data/level/titlescreen-test.cfg:316
-#: data/level/titlescreen.cfg:311
+#: data/level/titlescreen-test.cfg:316 data/level/titlescreen.cfg:311
 msgid "Press {JUMP_KEY} to jump."
 msgstr "Aperte {JUMP_KEY} para pular."
 
-#: data/level/titlescreen-test.cfg:317
-#: data/level/titlescreen.cfg:312
+#: data/level/titlescreen-test.cfg:317 data/level/titlescreen.cfg:312
 msgid "Press {TONGUE_KEY} to use a character's attacks."
 msgstr "Aperte {TONGUE_KEY} para usar os ataques do personagem."
 
-#: data/level/titlescreen-test.cfg:348
-#: data/level/titlescreen.cfg:343
+#: data/level/titlescreen-test.cfg:348 data/level/titlescreen.cfg:343
 msgid "ARCADE"
 msgstr "FLIPERAMA"
 
@@ -4814,7 +4722,7 @@ msgstr "FLIPERAMA"
 msgid "Nene's House"
 msgstr "Casa da Nenê"
 
-#: data/level/to-nenes-house-inside.cfg:485
+#: data/level/to-nenes-house-inside.cfg:496
 msgid ""
 "AIEEEEE!\n"
 "Get that thing out of here!"
@@ -4822,11 +4730,11 @@ msgstr ""
 "AIEEEEE!\n"
 "Tira esse bicho daqui!"
 
-#: data/level/to-nenes-house-inside.cfg:490
+#: data/level/to-nenes-house-inside.cfg:502
 msgid "Hey Nene, what's cooking?"
 msgstr "Oi Nenê, assando o quê?"
 
-#: data/level/to-nenes-house-inside.cfg:491
+#: data/level/to-nenes-house-inside.cfg:503
 msgid ""
 "I'm making a cake.\n"
 "Would you like to have some?"
@@ -4834,19 +4742,19 @@ msgstr ""
 "Fazendo um bolo.\n"
 "Quer um pedaço?"
 
-#: data/level/to-nenes-house-inside.cfg:493
+#: data/level/to-nenes-house-inside.cfg:505
 msgid "Nah, I'd better get to town."
 msgstr ""
 "Bom, é melhor eu chegar\n"
 "na vila logo..."
 
-#: data/level/to-nenes-house-inside.cfg:495
+#: data/level/to-nenes-house-inside.cfg:507
 msgid "I have serious business to attend to."
 msgstr ""
 "Eu tenho uns assuntos importantes\n"
 "pra resolver."
 
-#: data/level/to-nenes-house-inside.cfg:499
+#: data/level/to-nenes-house-inside.cfg:511
 msgid ""
 "Oh, well maybe before you go\n"
 "you could look at my basement."
@@ -4854,11 +4762,11 @@ msgstr ""
 "Bom, talvez você pudesse\n"
 "dar uma olhada no meu porão."
 
-#: data/level/to-nenes-house-inside.cfg:501
+#: data/level/to-nenes-house-inside.cfg:513
 msgid "Your basement?"
 msgstr "No porão?"
 
-#: data/level/to-nenes-house-inside.cfg:507
+#: data/level/to-nenes-house-inside.cfg:519
 msgid ""
 "Yes, here's the key.\n"
 "There're some ants down there."
@@ -4866,15 +4774,15 @@ msgstr ""
 "É, aqui está a chave.\n"
 "Tem umas formigas lá em baixo."
 
-#: data/level/to-nenes-house-inside.cfg:508
+#: data/level/to-nenes-house-inside.cfg:520
 msgid "They're freaking me out."
 msgstr "Elas me matam de medo!"
 
-#: data/level/to-nenes-house-inside.cfg:510
+#: data/level/to-nenes-house-inside.cfg:522
 msgid "Sure thing. I need a job!"
 msgstr "Claro! Eu preciso de um emprego!"
 
-#: data/level/to-nenes-house-inside.cfg:512
+#: data/level/to-nenes-house-inside.cfg:524
 msgid ""
 "How much were you figuring on\n"
 "paying for a pest exterminator?"
@@ -4883,7 +4791,7 @@ msgstr ""
 "por um serviço de eliminação\n"
 "de pestes?"
 
-#: data/level/to-nenes-house-inside.cfg:513
+#: data/level/to-nenes-house-inside.cfg:525
 msgid ""
 "Well sheesh, I thought you'd\n"
 "do it for free for a friend!"
@@ -4891,7 +4799,7 @@ msgstr ""
 "Ora bolas, eu achei que você\n"
 "faria isso de graça pra uma amiga!"
 
-#: data/level/to-nenes-house-inside.cfg:514
+#: data/level/to-nenes-house-inside.cfg:526
 msgid ""
 "But if you're going to be like that\n"
 "I think I left a health capsule down there.\n"
@@ -4901,7 +4809,7 @@ msgstr ""
 "deixei uma cápsula de vida lá em baixo.\n"
 "Se você conseguir limpar tudo, é sua."
 
-#: data/level/to-nenes-house-inside.cfg:516
+#: data/level/to-nenes-house-inside.cfg:528
 msgid ""
 "So, did you end up taking care\n"
 "of those ants down there?"
@@ -4909,7 +4817,7 @@ msgstr ""
 "Então, você já cuidou das\n"
 "formigas lá em baixo?"
 
-#: data/level/to-nenes-house-inside.cfg:518
+#: data/level/to-nenes-house-inside.cfg:530
 msgid ""
 "Of course.\n"
 "I don't disappoint!"
@@ -4917,17 +4825,17 @@ msgstr ""
 "Mas é claro.\n"
 "Eu nunca decepciono!"
 
-#: data/level/to-nenes-house-inside.cfg:520
+#: data/level/to-nenes-house-inside.cfg:532
 msgid ""
 "And thanks for the gift,\n"
 "by the way."
 msgstr "Ah, sim, e obrigado pelo presente."
 
-#: data/level/to-nenes-house-inside.cfg:521
+#: data/level/to-nenes-house-inside.cfg:533
 msgid "You're welcome."
 msgstr "Não foi nada."
 
-#: data/level/to-nenes-house-inside.cfg:843
+#: data/level/to-nenes-house-inside.cfg:696
 msgid ""
 "Can't a guy sneak into his neighbor's\n"
 "basement uninvited these days?"
@@ -4936,7 +4844,7 @@ msgstr ""
 "pode entrar no porão dos vizinhos\n"
 "sem permissão?"
 
-#: data/level/to-nenes-house-inside.cfg:843
+#: data/level/to-nenes-house-inside.cfg:696
 msgid "Well, dangit, this door is locked."
 msgstr "Bah, a porta está trancada."
 
@@ -5054,14 +4962,18 @@ msgstr ""
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:32
 msgid "You made it to level {level.player.difficulty} of the coin race!"
-msgstr "Você alcançou a {level.player.difficulty}ª fase da corrida das moedas!"
+msgstr ""
+"Você alcançou a {level.player.difficulty}ª fase da corrida das moedas!"
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:34
 msgid "You made it to level {level.player.difficulty} of the coin race."
-msgstr "Você alcançou a {level.player.difficulty}ª fase da corrida das moedas."
+msgstr ""
+"Você alcançou a {level.player.difficulty}ª fase da corrida das moedas."
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
-msgid "The furthest that has been reached is level {registry.arcade_coin_race_high_score}."
+msgid ""
+"The furthest that has been reached is level "
+"{registry.arcade_coin_race_high_score}."
 msgstr "O recorde atual é a {registry.arcade_coin_race_high_score}ª fase."
 
 #: data/objects/items/max_heart_object.cfg:18
@@ -5316,12 +5228,27 @@ msgid "Loading energy shot"
 msgstr "Carregando ataques especiais"
 
 #: iOS_APP_STORE_METADATA:3
-msgid "Frogatto was made by a group of big-time fans of classic videogames, who are hoping to bring back the magic in a new, original game design with unconventional gameplay mechanics - a fun break from the usual clones. We're a small group of indie developers, hoping this game becomes one of the definitive platform games on iOS - and you can make that happen!"
-msgstr "Frogatto foi produzido por um grupo de fãs de longa data de videogames clássicos, que esperam trazer de volta a mágica em um novo, original design de jogo com mecânica de jogabilidade não convencional - uma pausa divertida dos usais genéricos. Nós somos um pequeno grupo de desenvolvedores independentes, esperando que esse jogo se torne um dos jogos de plataforma definitivos no iOS - e você pode fazer isso acontecer!"
+msgid ""
+"Frogatto was made by a group of big-time fans of classic videogames, who are"
+" hoping to bring back the magic in a new, original game design with "
+"unconventional gameplay mechanics - a fun break from the usual clones. We're"
+" a small group of indie developers, hoping this game becomes one of the "
+"definitive platform games on iOS - and you can make that happen!"
+msgstr ""
+"Frogatto foi produzido por um grupo de fãs de longa data de videogames "
+"clássicos, que esperam trazer de volta a mágica em um novo, original design "
+"de jogo com mecânica de jogabilidade não convencional - uma pausa divertida "
+"dos usais genéricos. Nós somos um pequeno grupo de desenvolvedores "
+"independentes, esperando que esse jogo se torne um dos jogos de plataforma "
+"definitivos no iOS - e você pode fazer isso acontecer!"
 
 #: iOS_APP_STORE_METADATA:5
-msgid "To find out more about the game or to play the PC/Mac version for free, please visit http://www.frogatto.com/"
-msgstr "Para saber mais sobre o jogo ou para jogar a versão para PC/Mac de graça, por favor visite http://www.frogatto.com/"
+msgid ""
+"To find out more about the game or to play the PC/Mac version for free, "
+"please visit http://www.frogatto.com/"
+msgstr ""
+"Para saber mais sobre o jogo ou para jogar a versão para PC/Mac de graça, "
+"por favor visite http://www.frogatto.com/"
 
 #: iOS_CHANGELOG:3
 msgid "Fixed The Long Haul (arcade level)"
@@ -5367,8 +5294,7 @@ msgstr "Inicializando funções de objetos"
 msgid "Initializing tiles"
 msgstr "Inicializando tiles"
 
-#: src/main.cpp:404
-#: src/main.cpp:408
+#: src/main.cpp:404 src/main.cpp:408
 msgid "Initializing GUI"
 msgstr "Inicializando interface"
 
@@ -5407,4 +5333,5 @@ msgstr "Inverter A e B"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
+
 
