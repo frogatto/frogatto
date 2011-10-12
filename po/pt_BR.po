@@ -3997,8 +3997,7 @@ msgstr ""
 #: data/level/secluded-hut.cfg:1245
 msgid "One of Milgram's henchmen, no doubt."
 msgstr ""
-"Um dos capangas do Milgram,\n"
-"com certeza."
+"Um dos capangas do Milgram, sem dúvida."
 
 #: data/level/secluded-hut.cfg:1246
 msgid ""
