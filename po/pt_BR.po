@@ -3381,7 +3381,7 @@ msgid ""
 "of cutscenes, by pressing the \"escape\" key."
 msgstr ""
 "Mas você pode pular partes de conversas,\n"
-"ou mesmo diálogos inteiros, apertando a tecla \"ESC\""
+"ou mesmo diálogos inteiros, apertando a tecla \"ESC\"."
 
 #: data/level/grassy-path.cfg:1612
 msgid ""
@@ -4850,8 +4850,7 @@ msgid ""
 "paying for a pest exterminator?"
 msgstr ""
 "Aliás, quanto que você pagaria\n"
-"por um serviço de eliminação\n"
-"de pestes?"
+"por um serviço de eliminação de pestes?"
 
 #: data/level/to-nenes-house-inside.cfg:525
 msgid ""
@@ -4876,8 +4875,7 @@ msgid ""
 "So, did you end up taking care\n"
 "of those ants down there?"
 msgstr ""
-"Então, você já cuidou das\n"
-"formigas lá em baixo?"
+"Então, você já cuidou das formigas lá embaixo?"
 
 #: data/level/to-nenes-house-inside.cfg:530
 msgid ""
@@ -4971,9 +4969,7 @@ msgstr ""
 
 #: data/level/to-nenes-house.cfg:1717
 msgid "The sooner, the better."
-msgstr ""
-"E quanto antes perceberem,\n"
-"melhor!"
+msgstr "E quanto antes perceberem, melhor!"
 
 #: data/level/twisted-trees.cfg:14
 msgid "Twisted Trees"
