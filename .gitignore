@@ -6,3 +6,4 @@ test
 *~
 .sconsign.dblite
 .scons-option-cache
+.directory
