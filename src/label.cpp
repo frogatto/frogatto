@@ -20,7 +20,7 @@
 namespace gui {
 
 label::label(const std::string& text, const SDL_Color& color, int size)
-	: text_(text.empty() ? text : i18n::tr(text)), color_(color), size_(size),
+	: text_(i18n::tr(text)), color_(color), size_(size),
 	  fixed_width_(false)
 {
 	recalculate_texture();
