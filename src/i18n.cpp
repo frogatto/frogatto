@@ -43,6 +43,9 @@ std::string locale;
 namespace i18n {
 
 const std::string& tr(const std::string& msgid) {
+	//do not attempt to translate empty strings ("") since that returns metadata
+	if (msgid.empty())
+		return msgid;
 	map::iterator it = hashmap.find (msgid);
 	if (it != hashmap.end())
 		return it->second;
