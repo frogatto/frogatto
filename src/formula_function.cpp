@@ -20,6 +20,7 @@
 #include "formula_callable.hpp"
 #include "formula_callable_utils.hpp"
 #include "formula_function.hpp"
+#include "string_utils.hpp"
 #include "unit_test.hpp"
 
 #include "SDL.h"
@@ -957,6 +958,37 @@ namespace {
 		}
 	};
 
+	
+	class split_function : public function_expression {
+	public:
+		explicit split_function(const args_list& args)
+		: function_expression("split", args, 1, 2)
+		{}
+	private:
+		variant execute(const formula_callable& variables) const {
+			std::vector<std::string> chopped;
+			if(args().size() >= 2) {
+				const std::string& thestring = args()[0]->evaluate(variables).as_string();
+				const std::string& delimiter = args()[1]->evaluate(variables).as_string();
+				chopped = util::split(thestring, delimiter);
+			} else {
+				const std::string& thestring = args()[0]->evaluate(variables).as_string();
+				chopped = util::split(thestring);
+			}
+			
+
+		
+			std::vector<variant> res;
+			for(size_t i=0; i<chopped.size(); ++i) {
+				const std::string& part = chopped[i];
+				res.push_back(variant(part));
+			}
+			
+			return variant(&res);
+			
+		}
+	};
+	
 	class slice_function : public function_expression {
 	public:
 		explicit slice_function(const args_list& args)
@@ -1343,6 +1375,7 @@ namespace {
 			FUNCTION(transition);
 			FUNCTION(color_transition);
 			FUNCTION(size);
+			FUNCTION(split);
 			FUNCTION(slice);
 			FUNCTION(str);
 			FUNCTION(strstr);
