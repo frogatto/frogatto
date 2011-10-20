@@ -66,6 +66,7 @@ public:
 	int teleport_offset_x() const { return type_->teleport_offset_x(); }
 	int teleport_offset_y() const { return type_->teleport_offset_y(); }
 	bool no_move_to_standing() const { return type_->no_move_to_standing(); };
+	bool reverse_global_vertical_zordering() const { return type_->reverse_global_vertical_zordering(); };
 
 	bool has_feet() const;
 

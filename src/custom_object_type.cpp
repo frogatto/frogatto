@@ -356,6 +356,7 @@ custom_object_type::custom_object_type(wml::const_node_ptr node, const custom_ob
 	teleport_offset_x_(wml::get_int(node, "teleport_offset_x")),
 	teleport_offset_y_(wml::get_int(node, "teleport_offset_y")),
 	no_move_to_standing_(wml::get_bool(node, "no_move_to_standing")),
+	reverse_global_vertical_zordering_(wml::get_bool(node, "reverse_global_vertical_zordering", false)),
 	serializable_(wml::get_bool(node, "serializable", true)),
 	solid_(solid_info::create(node)),
 	platform_(solid_info::create_platform(node)),

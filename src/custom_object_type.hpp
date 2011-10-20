@@ -125,6 +125,7 @@ public:
 	int teleport_offset_x() const { return teleport_offset_x_; }
 	int teleport_offset_y() const { return teleport_offset_y_; }
 	bool no_move_to_standing() const { return no_move_to_standing_; }
+	bool reverse_global_vertical_zordering() const { return reverse_global_vertical_zordering_; }
 
 	bool serializable() const { return serializable_; }
 
@@ -229,7 +230,8 @@ private:
 
 	int teleport_offset_x_, teleport_offset_y_;
 	bool no_move_to_standing_;
-
+	bool reverse_global_vertical_zordering_;
+	
 	bool serializable_;
 
 	const_solid_info_ptr solid_, platform_;
