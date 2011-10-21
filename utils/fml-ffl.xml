@@ -1,11 +1,11 @@
-<?xml version="1.1" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 
 <!-- I am a Kate syntax highlighting file.
 	To use me, put me in with the rest of your Kate highlighting files. (eg, /usr/share/apps/katepart/syntax/)
 	I add an entry under 'markup', and cause .cfg files to default to using me.-->
 
-<language name="Frogatto FML-FFL"  priority="2" section="Markup" extensions="*.cfg" version="1.3.5" kateversion="3.4.5" casesensitive="yes" author="DDR (robertsdavidddr@gmail.com)" license="Frogatto">
+<language name="Frogatto FML-FFL"  priority="2" section="Markup" extensions="*.cfg" version="1.7.1" kateversion="3.4.5" casesensitive="yes" author="DDR (robertsdavidddr@gmail.com)" license="Frogatto">
 	<highlighting>
 		<list name="fml_tags">
 			<item> prototype </item>
@@ -157,7 +157,10 @@
 				<DetectChar attribute="Normal Text" context="#pop" char="]" />
 			</context>
 			
-			<context attribute="Animation" lineEndContext="an_attr" name="animation" />
+			<context attribute="Animation" lineEndContext="an_attr" name="animation">
+				<DetectChar attribute="Comment" context="fml comment" char="#" />
+			</context>
+			
 			<context attribute="Animation" lineEndContext="#pop" name="an_attr">
 				<DetectChar attribute="Animation" context="FML" char="=" />
 				<DetectChar attribute="Comment" context="fml comment" char="#" />
@@ -233,12 +236,12 @@
 			<itemData name="Keyword" 			defStyleNum="dsKeyword"		color="#006030"	/>
 			<itemData name="String" 			defStyleNum="dsString"						/>
 			<itemData name="Formula Language" 	defStyleNum="dsNormal" 		color="#0000A0"	/> <!-- Does not work, is brown instead of blue. -->
-			<itemData name="Formula Language2" 	defStyleNum="dsNormal" 		color="#401000"	/>
+			<itemData name="Formula Language2" 	defStyleNum="dsNormal" 		color="#503000"	/>
 			<itemData name="Comment" 			defStyleNum="dsComment"						/>
 			<itemData name="Number" 			defStyleNum="dsInteger"						/>
 			<itemData name="Event" 				defStyleNum="dsFunction"	color="#CC3096"	/> <!-- These events are fired by the user, and are a brighter pink than events fired automatically by the engine. -->
 			<itemData name="Engine Event" 		defStyleNum="dsFunction"					/>
-			<itemData name="Animation" 			defStyleNum="dsNormal" 		color="#0FF002"	/>
+			<itemData name="Animation" 			defStyleNum="dsNormal" 		color="#FFA002"	/>
 			<itemData name="Editor Info" 		defStyleNum="dsNormal" 		color="#8080F0"	/>
 			<itemData name="Operator" 			defStyleNum="dsNormal" 		color="#0000B0"	/>
 			<itemData name="Mutator" 			defStyleNum="dsNormal"		color="#008000"	/>
