@@ -66,7 +66,7 @@ void loading_screen::draw_internal (const std::string& message)
 
 	int bg_w = background_.width();
 	int bg_h = background_.height();
-	graphics::blit_texture(background_, screen_w/2-bg_w, screen_h/2-bg_h, bg_w*2, bg_h*2);
+	graphics::blit_texture(background_, screen_w/2-bg_w, std::max(screen_h/2-bg_h, 0), bg_w*2, bg_h*2);
 	
 	int bar_origin_x = graphics::screen_width()/2 - bar_width/2;
 	rect bg(screen_w/2 - bar_width/2, screen_h/2 - bar_height/2, bar_width, bar_height);
