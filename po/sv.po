@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-10-11 16:44-0300\n"
-"PO-Revision-Date: 2011-10-11 19:45+0000\n"
+"POT-Creation-Date: 2011-10-22 19:36-0200\n"
+"PO-Revision-Date: 2011-10-22 21:37+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Swedish (http://www.transifex.net/projects/p/Frogatto/team/sv/)\n"
 "MIME-Version: 1.0\n"
@@ -525,11 +525,11 @@ msgstr "Bombdårar"
 msgid "Bon Bosque"
 msgstr "Karamellbusken"
 
-#: data/level/bon-bosque.cfg:1459
+#: data/level/bon-bosque.cfg:1425
 msgid "Well, you made it!"
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1460
+#: data/level/bon-bosque.cfg:1426
 msgid ""
 "Now just up ahead there is a gate.\n"
 "If you can get through it,\n"
@@ -539,7 +539,7 @@ msgid ""
 "somewhere in the caverns."
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1461
+#: data/level/bon-bosque.cfg:1427
 msgid ""
 "If you wanted a personal audience,\n"
 "sneaking in is probably the best bet.\n"
@@ -547,42 +547,42 @@ msgid ""
 "would give you the time of day."
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1463
+#: data/level/bon-bosque.cfg:1429
 msgid ""
 "Yeah... geez though.  Caves, now?\n"
 "Are these caves long?"
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1464
+#: data/level/bon-bosque.cfg:1430
 msgid "I'm afraid so."
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1466
+#: data/level/bon-bosque.cfg:1432
 msgid ""
 "Ugh.\n"
 "No sense in turning back now, though."
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1467
+#: data/level/bon-bosque.cfg:1433
 msgid ""
 "Are you really certain you want to do this?\n"
 "I'm afraid I can't follow you into the caverns,\n"
 "so this is the last you would see of me."
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1469
+#: data/level/bon-bosque.cfg:1435
 msgid ""
 "Yes, I am; I'd be twice the fool,\n"
 "to come this far and just give up."
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1471
+#: data/level/bon-bosque.cfg:1437
 msgid ""
 "Nevertheless,\n"
 "thank you very much for all your help!"
 msgstr ""
 
-#: data/level/bon-bosque.cfg:1472
+#: data/level/bon-bosque.cfg:1438
 msgid ""
 "You're welcome, friend.\n"
 "I wish you the best!"
@@ -600,7 +600,7 @@ msgstr "Brinn och bubbla"
 msgid "Burning Stone"
 msgstr "Brännande sten"
 
-#: data/level/burning-stone.cfg:1470
+#: data/level/burning-stone.cfg:1488
 msgid ""
 "I need to go up... There must be\n"
 "a way to activate this elevator."
@@ -1013,7 +1013,7 @@ msgstr "Det kan vi inte göra."
 msgid "Hidden Cave"
 msgstr "Gömd grotta"
 
-#: data/level/crevice-village-central.cfg:1280
+#: data/level/crevice-village-central.cfg:1281
 msgid ""
 "Ahh, good, you made it\n"
 "through there in one piece!"
@@ -1021,17 +1021,17 @@ msgstr ""
 "Åh, bra! Du klarade⏎\n"
 "dig igenom i ett stycke"
 
-#: data/level/crevice-village-central.cfg:1282
+#: data/level/crevice-village-central.cfg:1283
 msgid ""
 "Yeah, those goons\n"
 "had a little ambush set up."
 msgstr "Ja, ."
 
-#: data/level/crevice-village-central.cfg:1284
+#: data/level/crevice-village-central.cfg:1285
 msgid "So, now what?"
 msgstr "Så, vad händer nu?"
 
-#: data/level/crevice-village-central.cfg:1285
+#: data/level/crevice-village-central.cfg:1286
 msgid ""
 "Well, as you know, the town\n"
 "is split into two halves."
@@ -1039,7 +1039,7 @@ msgstr ""
 "Tja, som du vet är staden⏎\n"
 "delad i två halvor."
 
-#: data/level/crevice-village-central.cfg:1286
+#: data/level/crevice-village-central.cfg:1287
 msgid ""
 "Milgram has this half of the town\n"
 "locked down tight, and he has\n"
@@ -1050,7 +1050,7 @@ msgstr ""
 "och håller de flesta⏎\n"
 "invånare som fångar."
 
-#: data/level/crevice-village-central.cfg:1287
+#: data/level/crevice-village-central.cfg:1288
 msgid ""
 "They're tied up inside the houses,\n"
 "under guard. If you free them,\n"
@@ -1061,11 +1061,11 @@ msgstr ""
 "Om du befriar dem⏎\n"
 "så hjälper de dig säkert."
 
-#: data/level/crevice-village-central.cfg:1289
+#: data/level/crevice-village-central.cfg:1290
 msgid "Makes sense."
 msgstr "Låter logiskt."
 
-#: data/level/crevice-village-central.cfg:1290
+#: data/level/crevice-village-central.cfg:1291
 msgid ""
 "Your big problem will be that\n"
 "the gate connecting the two halves\n"
@@ -1075,7 +1075,7 @@ msgstr ""
 "grinden som sammanbinder⏎\n"
 "de två halvorna är låst"
 
-#: data/level/crevice-village-central.cfg:1291
+#: data/level/crevice-village-central.cfg:1292
 msgid ""
 "And I don't think there's a guard next\n"
 "to it, whom you can steal the key from."
@@ -1084,7 +1084,7 @@ msgstr ""
 "vakt precis bredvid den du⏎\n"
 "kan stjäla en nyckel av."
 
-#: data/level/crevice-village-central.cfg:1292
+#: data/level/crevice-village-central.cfg:1293
 msgid ""
 "They've probably hidden it in one of\n"
 "the houses, but I don't know which one."
@@ -1093,7 +1093,7 @@ msgstr ""
 "i ett av husen.\n"
 "Tyvärr vet jag inte vilket.⏎"
 
-#: data/level/crevice-village-central.cfg:1293
+#: data/level/crevice-village-central.cfg:1294
 msgid ""
 "Asking one of the prisoners is probably\n"
 "our best bet for a clue."
@@ -1102,15 +1102,15 @@ msgstr ""
 "är vår bästa chans att⏎\n"
 "få en ledtråd."
 
-#: data/level/crevice-village-central.cfg:1448
+#: data/level/crevice-village-central.cfg:1449
 #: data/level/crevice-village-house-2.cfg:3211
 #: data/level/crevice-village-house-4.cfg:3019
 #: data/level/crevice-village-house-4.cfg:3060
-#: data/level/killer-bunnies.cfg:3313
+#: data/level/killer-bunnies.cfg:3563
 msgid "Nope, it's locked."
 msgstr "Nej, den är låst."
 
-#: data/level/crevice-village-central.cfg:1954
+#: data/level/crevice-village-central.cfg:2083
 msgid "Hey! Over here!"
 msgstr "Hallå! Här borta!"
 
@@ -1719,7 +1719,7 @@ msgstr ""
 msgid "We saw Milgram's lieutenant go in there."
 msgstr "Vi såg Milgrams löjtnant gå in där."
 
-#: data/level/crevice-village-house-2.cfg:3513 data/level/rock-a-fort.cfg:3459
+#: data/level/crevice-village-house-2.cfg:3513 data/level/rock-a-fort.cfg:3379
 msgid "How interesting."
 msgstr "Vad intressant."
 
@@ -2272,7 +2272,7 @@ msgstr "Bättre att lämna nyckeln här."
 msgid "Hey!"
 msgstr "Hallå!"
 
-#: data/level/crevice-village.cfg:813
+#: data/level/crevice-village.cfg:829
 msgid ""
 "Glad I caught you!\n"
 "You'd better be aware of this..."
@@ -2280,7 +2280,7 @@ msgstr ""
 "Vad bra att vi ses här!\n"
 "Det är bäst att du känner till.."
 
-#: data/level/crevice-village.cfg:814
+#: data/level/crevice-village.cfg:830
 msgid ""
 "The cave that leads into the town,\n"
 "has a sentry posted in it."
@@ -2288,19 +2288,19 @@ msgstr ""
 "Grottan som leder in till staden,\n"
 "det är en vakt posterad där."
 
-#: data/level/crevice-village.cfg:815
+#: data/level/crevice-village.cfg:831
 msgid ""
 "Milgram's trying to seal off the town,\n"
 "so no one gets in or out."
 msgstr ""
 
-#: data/level/crevice-village.cfg:816
+#: data/level/crevice-village.cfg:832
 msgid ""
 "That might have been why\n"
 "he tried to take out that bridge."
 msgstr "Det kan vara därför han försökte förstöra bron"
 
-#: data/level/crevice-village.cfg:817
+#: data/level/crevice-village.cfg:833
 msgid ""
 "If you're thinking to go in there,\n"
 "you might reconsider."
@@ -2308,7 +2308,7 @@ msgstr ""
 "Om du funderar på att gå in där,\n"
 "tänk om."
 
-#: data/level/crevice-village.cfg:819
+#: data/level/crevice-village.cfg:835
 msgid ""
 "Well, yeah,\n"
 "I was gonna go in there."
@@ -2316,7 +2316,7 @@ msgstr ""
 "Tja, jo,\n"
 "jag var på väg den vägen"
 
-#: data/level/crevice-village.cfg:821
+#: data/level/crevice-village.cfg:837
 msgid ""
 "I mean, what are we gonna do,\n"
 "sit on our butts here?"
@@ -2324,7 +2324,7 @@ msgstr ""
 "Jag menar, vad ska vi göra,\n"
 "sitta på våra still och ruttna bort?"
 
-#: data/level/crevice-village.cfg:822
+#: data/level/crevice-village.cfg:838
 msgid ""
 "No, no...\n"
 "but I was hoping we'd go in in force."
@@ -2332,11 +2332,11 @@ msgstr ""
 "Nej,nej..\n"
 "men jag hoppades på att slå mig in med kratt."
 
-#: data/level/crevice-village.cfg:824
+#: data/level/crevice-village.cfg:840
 msgid "Against Milgram? Really?"
 msgstr "Mot Milgram? Verkligen?"
 
-#: data/level/crevice-village.cfg:826
+#: data/level/crevice-village.cfg:842
 msgid ""
 "I mean... on paper,\n"
 "that sounds like a good enough plan,"
@@ -2344,53 +2344,53 @@ msgstr ""
 "Jag menar...\n"
 "på pappret låter det som en bra plan."
 
-#: data/level/crevice-village.cfg:828
+#: data/level/crevice-village.cfg:844
 msgid ""
 "but I'm gonna be a jerk here,\n"
 "and poke some holes in it."
 msgstr ""
 
-#: data/level/crevice-village.cfg:829
+#: data/level/crevice-village.cfg:845
 msgid ""
 "Fair enough.\n"
 "I'm not particularly fond of it, myself."
 msgstr ""
 
-#: data/level/crevice-village.cfg:831
+#: data/level/crevice-village.cfg:847
 msgid ""
 "Firstly, Milgram's got LOTS of followers.\n"
 "Tons of em.  He runs an entire city."
 msgstr ""
 
-#: data/level/crevice-village.cfg:833
+#: data/level/crevice-village.cfg:849
 msgid ""
 "I mean, even if we armed the whole town,\n"
 "they'd grossly outnumber us."
 msgstr ""
 
-#: data/level/crevice-village.cfg:835
+#: data/level/crevice-village.cfg:851
 msgid ""
 "Plus, they're pretty mobile, too.\n"
 "Planes and such."
 msgstr ""
 
-#: data/level/crevice-village.cfg:837
+#: data/level/crevice-village.cfg:853
 msgid ""
 "We might get the drop on them for a bit,\n"
 "but we'd get surrounded in no time."
 msgstr ""
 
-#: data/level/crevice-village.cfg:839
+#: data/level/crevice-village.cfg:855
 msgid "Brute force against brute force won't work."
 msgstr ""
 
-#: data/level/crevice-village.cfg:841
+#: data/level/crevice-village.cfg:857
 msgid ""
 "We'd be like ... \n"
 "a bull butting heads with a freight train."
 msgstr ""
 
-#: data/level/crevice-village.cfg:842
+#: data/level/crevice-village.cfg:858
 msgid ""
 "Yes... oh dear.\n"
 "I see what you mean."
@@ -2398,7 +2398,7 @@ msgstr ""
 "Ja ... kära du.\n"
 "Jag förstår vad du menar."
 
-#: data/level/crevice-village.cfg:844
+#: data/level/crevice-village.cfg:860
 msgid ""
 "There's got to be something\n"
 "we can use to our advantage,\n"
@@ -2408,21 +2408,21 @@ msgstr ""
 "kan använda till vår fördel,\n"
 "men \"numerär överlägsenhet\" är det inte."
 
-#: data/level/crevice-village.cfg:846
+#: data/level/crevice-village.cfg:862
 msgid ""
 "Anyways, about the cave ahead...\n"
 "it's just one guy, right?"
 msgstr ""
 
-#: data/level/crevice-village.cfg:847
+#: data/level/crevice-village.cfg:863
 msgid "To my knowledge, yes."
 msgstr "Vad jag vet, ja."
 
-#: data/level/crevice-village.cfg:849
+#: data/level/crevice-village.cfg:865
 msgid "Maybe I can talk my way around him?"
 msgstr "Kanske vi kan prata oss förbi honom?"
 
-#: data/level/crevice-village.cfg:851
+#: data/level/crevice-village.cfg:867
 msgid ""
 "Worse comes to worse,\n"
 "I can just run for it.  Right?"
@@ -2431,7 +2431,7 @@ msgstr ""
 "Jag kan inte göra annat än att köra på.\n"
 "Eller hur?"
 
-#: data/level/crevice-village.cfg:852
+#: data/level/crevice-village.cfg:868
 msgid ""
 "I do hope so.\n"
 "Good luck!"
@@ -2443,7 +2443,7 @@ msgstr ""
 msgid "Dark Corridor"
 msgstr "Mörk korridor"
 
-#: data/level/dark-corridor.cfg:1046
+#: data/level/dark-corridor.cfg:1078
 msgid "Now what?"
 msgstr "Och nu?"
 
@@ -2455,14 +2455,14 @@ msgstr "Mörkercentralen"
 msgid "Descent to Town"
 msgstr "Ner till byn."
 
-#: data/level/descent-to-town.cfg:963
+#: data/level/descent-to-town.cfg:947
 msgid ""
 "It says,\n"
 "\"Chopple's General Store,\n"
 "just ahead."
 msgstr ""
 
-#: data/level/descent-to-town.cfg:965
+#: data/level/descent-to-town.cfg:949
 msgid "Honest trade and thrifty prices!\""
 msgstr ""
 
@@ -2515,27 +2515,27 @@ msgstr ""
 msgid "Oh geez! I overslept!"
 msgstr "O jösses! Jag har försovit mig!"
 
-#: data/level/frogatto-grotto-inside.cfg:10
+#: data/level/frogatto-grotto-inside.cfg:12
 msgid "Frogatto's House"
 msgstr "Frogattos hus"
 
-#: data/level/frogatto-grotto-inside.cfg:991
+#: data/level/frogatto-grotto-inside.cfg:1167
 msgid "Hey, how's breakfast coming?"
 msgstr "När är frukosten färdig?"
 
-#: data/level/frogatto-grotto-inside.cfg:992
+#: data/level/frogatto-grotto-inside.cfg:1168
 msgid "Breakfast? ..bud, we're on lunch."
 msgstr "Frukost? .. det är dags för lunch kompis"
 
-#: data/level/frogatto-grotto-inside.cfg:993
+#: data/level/frogatto-grotto-inside.cfg:1169
 msgid "You need to get up earlier."
 msgstr "Du behöver gå upp tidigare"
 
-#: data/level/frogatto-grotto-inside.cfg:996
+#: data/level/frogatto-grotto-inside.cfg:1172
 msgid "Okay, then how's lunch coming?"
 msgstr "Okej, när är det lunch?"
 
-#: data/level/frogatto-grotto-inside.cfg:997
+#: data/level/frogatto-grotto-inside.cfg:1173
 msgid ""
 "Getting there.\n"
 "It's gonna be a while, though."
@@ -2543,15 +2543,15 @@ msgstr ""
 "Det är på gång.\n"
 "Men det kommer att ta en liten stund."
 
-#: data/level/frogatto-grotto-inside.cfg:999
+#: data/level/frogatto-grotto-inside.cfg:1175
 msgid "I'll check back later, then."
 msgstr "Jag kommer tillbaka senare"
 
-#: data/level/frogatto-grotto-inside.cfg:1002
+#: data/level/frogatto-grotto-inside.cfg:1178
 msgid "So, what happened to lunch?"
 msgstr "Så vad hände med lunchen?"
 
-#: data/level/frogatto-grotto-inside.cfg:1003
+#: data/level/frogatto-grotto-inside.cfg:1179
 msgid ""
 "I got tired of waiting,\n"
 "and ate by myself."
@@ -2559,47 +2559,47 @@ msgstr ""
 "Jag blev trött på att vänta\n"
 "och åt själv."
 
-#: data/level/frogatto-grotto-inside.cfg:1004
+#: data/level/frogatto-grotto-inside.cfg:1180
 msgid "Leftovers are in the fridge."
 msgstr "Resterna är i kylen."
 
-#: data/level/frogatto-grotto-inside.cfg:1007
+#: data/level/frogatto-grotto-inside.cfg:1183
 msgid "Okay, uhm, thanks."
 msgstr "aha, ahm, tack"
 
-#: data/level/frogatto-grotto-inside.cfg:1287
+#: data/level/frogatto-grotto-inside.cfg:1499
 msgid "Hey, Frogatto."
 msgstr "Hej, Frogatto"
 
-#: data/level/frogatto-grotto-inside.cfg:1290
+#: data/level/frogatto-grotto-inside.cfg:1502
 msgid "Uhm... yes?"
 msgstr "Uhm...ja?"
 
-#: data/level/frogatto-grotto-inside.cfg:1291
+#: data/level/frogatto-grotto-inside.cfg:1503
 msgid ""
 "At least TRY to get a job today,\n"
 "alright?"
 msgstr "Du kan väl åtminstone FÖRSÖKA få ett jobb idag"
 
-#: data/level/frogatto-grotto-inside.cfg:1292
+#: data/level/frogatto-grotto-inside.cfg:1504
 msgid "We need some help around here."
 msgstr "Vi behöver lite hjälp här."
 
-#: data/level/frogatto-grotto-inside.cfg:1294
+#: data/level/frogatto-grotto-inside.cfg:1506
 msgid "Yeah, I know.  I'll try."
 msgstr ""
 "Ja, jag vet.\n"
 "Jag försöker."
 
-#: data/level/frogatto-grotto-inside.cfg:1295
+#: data/level/frogatto-grotto-inside.cfg:1507
 msgid "See to it."
 msgstr "Se till att göra det!"
 
-#: data/level/frogatto-grotto-inside.cfg:1308
+#: data/level/frogatto-grotto-inside.cfg:1520
 msgid "Not like I need to be up,"
 msgstr "Inte för att jag måste,"
 
-#: data/level/frogatto-grotto-inside.cfg:1309
+#: data/level/frogatto-grotto-inside.cfg:1521
 msgid "but it's the principle of the thing."
 msgstr "men det är för principen"
 
@@ -2659,13 +2659,13 @@ msgstr ""
 msgid "Grassy Path"
 msgstr "Gräsiga vägen"
 
-#: data/level/grassy-path.cfg:1163
+#: data/level/grassy-path.cfg:1083
 msgid ""
 "On this level, we give advice on how to play.\n"
 "Each question mark has its own hint."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1164
+#: data/level/grassy-path.cfg:1084
 msgid ""
 "If you already know how to play,\n"
 "then just walk to the next level."
@@ -2674,13 +2674,13 @@ msgstr ""
 "man spelar är det bara\n"
 "att gå vidare till nästa bana"
 
-#: data/level/grassy-path.cfg:1185
+#: data/level/grassy-path.cfg:1105
 msgid ""
 "To save your progress in the game,\n"
 "use one of these convenient restrooms."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1186
+#: data/level/grassy-path.cfg:1106
 msgid ""
 "There is only one save file,\n"
 "so be careful not to overwrite it!"
@@ -2689,34 +2689,34 @@ msgstr ""
 "i taget så se till att inte\n"
 "spara över det."
 
-#: data/level/grassy-path.cfg:1207
+#: data/level/grassy-path.cfg:1127
 msgid ""
 "Some changes in elevation are too high\n"
 "to clear with just a normal jump."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1208
+#: data/level/grassy-path.cfg:1128
 msgid "Fortunately, Frogatto can jump off of walls, too!"
 msgstr ""
 
-#: data/level/grassy-path.cfg:1209
+#: data/level/grassy-path.cfg:1129
 msgid "To do this, do a walking jump into the wall."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1210
+#: data/level/grassy-path.cfg:1130
 msgid ""
 "If you bump into a wall at the crest of a jump,\n"
 "you will cling to the wall and slowly slide down."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1211
+#: data/level/grassy-path.cfg:1131
 msgid ""
 "If you don't get a running start, you can still\n"
 "cling on, if you tap the arrow toward the wall,\n"
 "and press jump whilst it's held down."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1212
+#: data/level/grassy-path.cfg:1132
 msgid ""
 "Whilst you are clinging to the wall,\n"
 "pressing jump will make you rebound off."
@@ -2725,36 +2725,36 @@ msgstr ""
 "tryck på hoppa för att\n"
 "komma loss."
 
-#: data/level/grassy-path.cfg:1213
+#: data/level/grassy-path.cfg:1133
 msgid ""
 "This is especially useful, if two walls are\n"
 "facing each other, because then you can\n"
 "rebound over and over between them."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1214
+#: data/level/grassy-path.cfg:1134
 msgid "This lets you ascend vertical columns."
 msgstr ""
 "På det viset kan du\n"
 "klättra uppåt"
 
-#: data/level/grassy-path.cfg:1235
+#: data/level/grassy-path.cfg:1155
 msgid "Frogatto's world is a dangerous place."
 msgstr "Frogattos värld är en farlig plats."
 
-#: data/level/grassy-path.cfg:1236
+#: data/level/grassy-path.cfg:1156
 msgid ""
 "In his travels, you'll encounter\n"
 "many creatures who want to hurt you."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1237
+#: data/level/grassy-path.cfg:1157
 msgid ""
 "It's often fine to just avoid them, but if you have\n"
 "to fight, Frogatto's best defense is his tongue."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1238
+#: data/level/grassy-path.cfg:1158
 msgid ""
 "You can grab enemies with the tongue,\n"
 "and then spit them back out."
@@ -2762,17 +2762,17 @@ msgstr ""
 "Du kan fånga motståndare med\n"
 "tungan och sedan spotta ut dem."
 
-#: data/level/grassy-path.cfg:1239
+#: data/level/grassy-path.cfg:1159
 msgid "Once spat out, they become a deadly projectile."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1240
+#: data/level/grassy-path.cfg:1160
 msgid ""
 "If they don't hit anything, they'll be stunned\n"
 "momentarily, and then will flip upright again."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1241
+#: data/level/grassy-path.cfg:1161
 msgid ""
 "Whilst on their backs,\n"
 "they're vulnerable to being stomped on."
@@ -2780,7 +2780,7 @@ msgstr ""
 "När de ligger på rygg tar\n"
 "de skada när du hoppar på dem."
 
-#: data/level/grassy-path.cfg:1242
+#: data/level/grassy-path.cfg:1162
 msgid ""
 "Sticking out the tongue and spitting,\n"
 "are both done with the attack key."
@@ -2788,7 +2788,7 @@ msgstr ""
 "Du både räcker ut tungan och\n"
 "spottar med attackknappen"
 
-#: data/level/grassy-path.cfg:1243
+#: data/level/grassy-path.cfg:1163
 msgid ""
 "There are a few ants just ahead.\n"
 "Feel free to try this on them."
@@ -2796,7 +2796,7 @@ msgstr ""
 "Du har några myror framför dig.\n"
 "Pröva attacker på dem om du vill."
 
-#: data/level/grassy-path.cfg:1244
+#: data/level/grassy-path.cfg:1164
 msgid ""
 "And don't worry - if you die,\n"
 "you'll restart right here."
@@ -2805,43 +2805,43 @@ msgstr ""
 "du skulle dö får du starta\n"
 "om här igen."
 
-#: data/level/grassy-path.cfg:1289
+#: data/level/grassy-path.cfg:1209
 msgid ""
 "A very useful fact is that you can control\n"
 "the direction in which enemies are spat."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1290
+#: data/level/grassy-path.cfg:1210
 msgid ""
 "If you hold down the up key while pressing\n"
 "the attack button, you'll spit in a high arc."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1291
+#: data/level/grassy-path.cfg:1211
 msgid ""
 "If you hold down the down key while pressing\n"
 "the attack button, you'll spit with very little force."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1293
+#: data/level/grassy-path.cfg:1213
 msgid ""
 "You should also beware that not all enemies\n"
 "can be grabbed with the tongue."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1294
+#: data/level/grassy-path.cfg:1214
 msgid ""
 "Different enemies present different challenges,\n"
 "and you'll need to get creative to deal with them."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1295
+#: data/level/grassy-path.cfg:1215
 msgid ""
 "Also, the tongue can grab useful items, like keys.\n"
 "This is how you carry them to the lock they open."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1333
+#: data/level/grassy-path.cfg:1253
 msgid ""
 "Fountains, and other water dispensers,\n"
 "are very helpful."
@@ -2849,31 +2849,31 @@ msgstr ""
 "Fontäner, och andra vattenkällor,\n"
 "är mycket hjälpsam."
 
-#: data/level/grassy-path.cfg:1334
+#: data/level/grassy-path.cfg:1254
 msgid ""
 "If you drink from them,\n"
 "you will restore all of your health!"
 msgstr "När du dricker av dem får du tillbaka hälsa."
 
-#: data/level/grassy-path.cfg:1356
+#: data/level/grassy-path.cfg:1276
 msgid ""
 "Certain bridges and stairways, like this one,\n"
-"allow you to jump up and pass through them."
+" allow you to jump up and pass through them."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1357
+#: data/level/grassy-path.cfg:1277
 msgid "You can also jump down through them."
 msgstr ""
 "Du kan också hoppa\n"
 "neråt igenom dem."
 
-#: data/level/grassy-path.cfg:1358
+#: data/level/grassy-path.cfg:1278
 msgid ""
 "A special button will appear,\n"
 "whenever this is possible."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1359
+#: data/level/grassy-path.cfg:1279
 msgid ""
 "To do so, hold down the down key,\n"
 "and then press jump."
@@ -2882,7 +2882,7 @@ msgstr ""
 "tryck ner {DOWN_KEY} och\n"
 "tryck sedan på {JUMP_KEY}."
 
-#: data/level/grassy-path.cfg:1404
+#: data/level/grassy-path.cfg:1324
 msgid ""
 "As you've played through this level,\n"
 "you've probably noticed the gold coins."
@@ -2890,7 +2890,7 @@ msgstr ""
 "Under tiden du spelat den här\n"
 "banan så har du säkert sätt guldpengar."
 
-#: data/level/grassy-path.cfg:1405
+#: data/level/grassy-path.cfg:1325
 msgid ""
 "You can collect these\n"
 "and any other golden objects,\n"
@@ -2899,7 +2899,7 @@ msgstr ""
 "Du kan samla på dessa, och andra\n"
 "guldobjekt och köpa saker för dem!"
 
-#: data/level/grassy-path.cfg:1406
+#: data/level/grassy-path.cfg:1326
 msgid ""
 "There is a store conveniently located\n"
 "outside of the town."
@@ -2907,33 +2907,33 @@ msgstr ""
 "Det finns en handelsbod,\n"
 "strax utanför staden."
 
-#: data/level/grassy-path.cfg:1428
+#: data/level/grassy-path.cfg:1348
 msgid ""
 "Sometimes, you'll run into rather dangerous-\n"
 "looking terrain, such as these brambles."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1429
+#: data/level/grassy-path.cfg:1349
 msgid "As you'd expect, stepping on them would hurt a bit."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1430
+#: data/level/grassy-path.cfg:1350
 msgid "However, they also hurt your enemies!"
 msgstr ""
 
-#: data/level/grassy-path.cfg:1431
+#: data/level/grassy-path.cfg:1351
 msgid ""
 "Leading or spitting them onto harmful terrain\n"
 "is an excellent way to dispatch them."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1432
+#: data/level/grassy-path.cfg:1352
 msgid ""
 "Beware also, any bottomless pits you encounter.\n"
 "Those are immediately fatal."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1560
+#: data/level/grassy-path.cfg:1480
 msgid ""
 "Up ahead, you'll notice an anthill,\n"
 "which ants constantly come out of."
@@ -2941,7 +2941,7 @@ msgstr ""
 "Där framme ser du en myrstack.\n"
 "Ur den kommer myror i en konstant ström."
 
-#: data/level/grassy-path.cfg:1561
+#: data/level/grassy-path.cfg:1481
 msgid ""
 "There is no way to stop this;\n"
 "you can't destroy the anthill."
@@ -2949,7 +2949,7 @@ msgstr ""
 "Du kan inte stoppa detta,\n"
 "en myrstack kan inte förstöras."
 
-#: data/level/grassy-path.cfg:1562
+#: data/level/grassy-path.cfg:1482
 msgid ""
 "Some hazards are like this.\n"
 "You simply have to work around them."
@@ -2957,17 +2957,17 @@ msgstr ""
 "Vissa risker är sådana,\n"
 "du måste helt enkelt arbeta dig runt dem."
 
-#: data/level/grassy-path.cfg:1584
+#: data/level/grassy-path.cfg:1504
 msgid "That's it for this tutorial."
 msgstr "Det var allt för denna handledning."
 
-#: data/level/grassy-path.cfg:1585
+#: data/level/grassy-path.cfg:1505
 msgid ""
 "Although there's more to playing the game,\n"
-"the rest we can safely let you learn on your own."
+"the rest, we can safely let you learn on your own."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1586
+#: data/level/grassy-path.cfg:1506
 msgid ""
 "Feel free to come back here,\n"
 "if you want to read a hint again."
@@ -2975,49 +2975,49 @@ msgstr ""
 "Välkommen tillbaka hit om\n"
 "du vill läsa tipsen igen."
 
-#: data/level/grassy-path.cfg:1587
+#: data/level/grassy-path.cfg:1507
 msgid "Have fun!"
 msgstr "Ha det så roligt!"
 
-#: data/level/grassy-path.cfg:1610
+#: data/level/grassy-path.cfg:1530
 msgid ""
 "If you've seen a conversation before, it might\n"
 "be annoying to have to read it again."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1611
+#: data/level/grassy-path.cfg:1531
 msgid ""
 "You can skip a conversation, including parts\n"
 "of cutscenes, by pressing the \"escape\" key."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1612
+#: data/level/grassy-path.cfg:1532
 msgid ""
 "And yes, this applies to the question\n"
 "marks on this level, too."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1859
+#: data/level/grassy-path.cfg:1730
 msgid ""
 "If you haven't already noticed, the round\n"
 "rocks you sometimes find nestled in\n"
 "the grass are spittable projectiles."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1860
+#: data/level/grassy-path.cfg:1731
 msgid ""
 "You'll find many such objects of similar size\n"
 "in different areas of the game, such as crates\n"
-"inside of houses, or nuts hanging from trees."
+" inside of houses, or nuts hanging from trees."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1861
+#: data/level/grassy-path.cfg:1732
 msgid ""
 "These are an ample source of ammunition,\n"
 "that's almost always available."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1862
+#: data/level/grassy-path.cfg:1733
 msgid ""
 "Note that these have an unusual property;\n"
 "if you use them up, walk away from the screen\n"
@@ -3029,7 +3029,7 @@ msgstr ""
 msgid "Hanging Platforms"
 msgstr "Hängande plattformar."
 
-#: data/level/hanging-platforms.cfg:3565
+#: data/level/hanging-platforms.cfg:3270
 msgid ""
 "Well, I guess I'm entering Milgram's\n"
 "castle now. I made it through the caves!"
@@ -3041,15 +3041,15 @@ msgstr ""
 msgid "Hidden Depths"
 msgstr "Gömda djup"
 
-#: data/level/hidden-depths.cfg:3741
+#: data/level/hidden-depths.cfg:3706
 msgid "I'd better be careful."
 msgstr "Bäst att vara försiktig"
 
-#: data/level/hidden-depths.cfg:3741
+#: data/level/hidden-depths.cfg:3706
 msgid "This is a very deep chasm..."
 msgstr "Det här är en mycket djup ravin..."
 
-#: data/level/hidden-depths.cfg:4563
+#: data/level/hidden-depths.cfg:4272
 msgid "AAAAAAH! I CAN'T FLY!"
 msgstr "AAAAAAH! Jag kan inte flyga!"
 
@@ -3057,13 +3057,13 @@ msgstr "AAAAAAH! Jag kan inte flyga!"
 msgid "Killer Bunnies"
 msgstr "Caerbannogs mördarkaniner."
 
-#: data/level/killer-bunnies.cfg:3086
+#: data/level/killer-bunnies.cfg:3308
 msgid ""
 "That guy sure doesn't look\n"
 "glad to meet me!"
 msgstr "Den killen ser verkligen inte ut att vara glad att möta mig."
 
-#: data/level/killer-bunnies.cfg:3313
+#: data/level/killer-bunnies.cfg:3563
 msgid ""
 "It's locked. Of course...\n"
 "It couldn't be easy to get out of here!"
@@ -3196,7 +3196,9 @@ msgid ""
 msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:604
-msgid "This had better be some kind of joke."
+msgid ""
+"The intruder?\n"
+"How did he get in here?"
 msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:605
@@ -3204,13 +3206,11 @@ msgid "We... We tried to stop him, but he's..."
 msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:607
-msgid ""
-"Bah, what's the point in subordinates\n"
-"if I have to deal with everything myself?!"
+msgid "Why do I have to deal with everything myself?!"
 msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:609
-msgid "Get out of the way, it's clobbering time!"
+msgid "Get out of the way!"
 msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:658
@@ -3232,19 +3232,19 @@ msgid "What was it you wanted?"
 msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:667
-msgid ""
-"I want you to call your goons off!\n"
-"Stop harassing the town folk and all!"
+msgid "I wanted to ask you about that incident in town."
 msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:669
-msgid "The town folk?"
+msgid ""
+"Remarkable.\n"
+"I really thought you'd come here to attack me."
 msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:671
 msgid ""
-"*That's* what this is all about?\n"
-"Well, perhaps we could talk it over?"
+"Well, if you really are here for an audience,\n"
+"perhaps I could be obliged.  Shall we?"
 msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:673
@@ -3264,48 +3264,41 @@ msgid "Yup, I'm Frogatto!"
 msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:686
-msgid "Uhh.."
+msgid ""
+"Uhh..\n"
+"I was expecting something a bit more ... robust."
 msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:688
-msgid "I was expecting something a bit more ..."
+msgid ""
+"So you're the one who's been causing\n"
+"all this trouble, eh?"
 msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:690
-msgid ""
-"Threatening?\n"
-"I can do threatening!"
+msgid "I am?"
 msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:692
-msgid "I'm here to teach you a lesson!"
+msgid ""
+"Yes, I've been getting some rather\n"
+"unpleasant reports about property damage."
 msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:694
 msgid ""
-"HAHAHA!\n"
-"Why, I like you already, little frog.\n"
-"You're quite a laugh."
+"Is there any chance I...\n"
+"can discuss something with you?"
 msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:696
-msgid ""
-"Hey, I'm serious, here!\n"
-"Will you hear me out?"
+msgid "Sure..."
 msgstr ""
 
 #: data/level/milgrams-throne-room.cfg:698
-msgid "Nope."
-msgstr ""
-
-#: data/level/milgrams-throne-room.cfg:700
 msgid ""
-"Either you get off my property,\n"
-"or I clean your clock."
-msgstr ""
-
-#: data/level/milgrams-throne-room.cfg:704
-msgid "Fine."
+"...but the subject's going to be:\n"
+"\"What happens to trespassers.\""
 msgstr ""
 
 #: data/level/pinecone-park.cfg:14
@@ -3316,11 +3309,11 @@ msgstr ""
 msgid "Plagued Mine"
 msgstr ""
 
-#: data/level/plagued-mine.cfg:2808
+#: data/level/plagued-mine.cfg:2960
 msgid "These crazy bombers are everywhere!"
 msgstr ""
 
-#: data/level/plagued-mine.cfg:2885
+#: data/level/plagued-mine.cfg:3045
 msgid "Yikes!"
 msgstr ""
 
@@ -3328,7 +3321,7 @@ msgstr ""
 msgid "Rock-a-Fort"
 msgstr ""
 
-#: data/level/rock-a-fort.cfg:3458
+#: data/level/rock-a-fort.cfg:3378
 msgid "Woah! A flying plant!"
 msgstr ""
 
@@ -3336,11 +3329,11 @@ msgstr ""
 msgid "Rocky Roots"
 msgstr ""
 
-#: data/level/rocky-roots.cfg:1025
+#: data/level/rocky-roots.cfg:1045
 msgid "Bleh. A locked door."
 msgstr ""
 
-#: data/level/rocky-roots.cfg:1025
+#: data/level/rocky-roots.cfg:1045
 msgid "There must be a way around it."
 msgstr ""
 
@@ -3471,85 +3464,85 @@ msgstr ""
 msgid "I say! Who's there?"
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1242
+#: data/level/secluded-hut.cfg:1093
 msgid "Are you quite alright?"
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1244
+#: data/level/secluded-hut.cfg:1095
 msgid ""
 "Yeah.\n"
 "Who WAS that guy?!"
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1245
+#: data/level/secluded-hut.cfg:1096
 msgid "One of Milgram's henchmen, no doubt."
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1246
+#: data/level/secluded-hut.cfg:1097
 msgid ""
 "They may have seen me talking to you,\n"
 "I can't be sure."
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1248
+#: data/level/secluded-hut.cfg:1099
 msgid "Wait, what?  Milgram?"
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1250
+#: data/level/secluded-hut.cfg:1101
 msgid ""
 "What's he doing\n"
 "on this side of the island?"
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1251
+#: data/level/secluded-hut.cfg:1102
 msgid "You still haven't heard, then."
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1252
+#: data/level/secluded-hut.cfg:1103
 msgid ""
 "Milgram's men showed up\n"
 "early this morning, in town.\n"
 "They've taken the whole place hostage!"
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1253
+#: data/level/secluded-hut.cfg:1104
 msgid ""
 "Unfortunately, I don't know the details.\n"
 "I just flew out of there as soon as I could,\n"
 "looking for anyone who could help."
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1255
+#: data/level/secluded-hut.cfg:1106
 msgid ""
 "That certainly...\n"
 "changes my plans for the day."
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1257
+#: data/level/secluded-hut.cfg:1108
 msgid ""
 "Wow, uhm... \n"
 "I'd sure like to help, but ...\n"
 "I just don't see what I could do."
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1259
+#: data/level/secluded-hut.cfg:1110
 msgid ""
 "I don't think I can promise anything,\n"
 "but if the opportunity presents itself,\n"
 "who knows?"
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1260
+#: data/level/secluded-hut.cfg:1111
 msgid ""
 "Yes, it's unreasonable to expect\n"
 "someone to just charge in there."
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1261
+#: data/level/secluded-hut.cfg:1112
 msgid "I'm at a loss for a plan, myself."
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1262
+#: data/level/secluded-hut.cfg:1113
 msgid ""
 "Nevertheless, I'd better be going.\n"
 "Hopefully, we'll fix that bridge soon.\n"
@@ -3557,27 +3550,27 @@ msgid ""
 "with modular construction and all."
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1263
+#: data/level/secluded-hut.cfg:1114
 msgid ""
 "In the meantime, you might benefit from\n"
 "visiting the fellow who lives here."
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1264
+#: data/level/secluded-hut.cfg:1115
 msgid ""
 "Bit of a recluse, but he's quite sharp.\n"
 "He lives on top of this rock column."
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1266
+#: data/level/secluded-hut.cfg:1117
 msgid "And I get up there... how?"
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1270
+#: data/level/secluded-hut.cfg:1121
 msgid "Simple, just take to the air!"
 msgstr ""
 
-#: data/level/secluded-hut.cfg:1273
+#: data/level/secluded-hut.cfg:1124
 msgid "You ... do realize I can't fly?"
 msgstr ""
 
@@ -4229,52 +4222,52 @@ msgstr ""
 msgid "To Nene's House"
 msgstr ""
 
-#: data/level/to-nenes-house.cfg:1690
+#: data/level/to-nenes-house.cfg:1866
 msgid "Hah!"
 msgstr ""
 
-#: data/level/to-nenes-house.cfg:1691
+#: data/level/to-nenes-house.cfg:1867
 msgid "There's Nene's house, right up there!"
 msgstr ""
 
-#: data/level/to-nenes-house.cfg:1704
+#: data/level/to-nenes-house.cfg:1880
 msgid "A moment of your time sir?"
 msgstr ""
 
-#: data/level/to-nenes-house.cfg:1706
+#: data/level/to-nenes-house.cfg:1882
 msgid ""
 "Sorry, I'm off to town!\n"
 "Not interested!"
 msgstr ""
 
-#: data/level/to-nenes-house.cfg:1707
+#: data/level/to-nenes-house.cfg:1883
 msgid "But the town, you see ..."
 msgstr ""
 
-#: data/level/to-nenes-house.cfg:1709
+#: data/level/to-nenes-house.cfg:1885
 msgid ""
 "Not. Interested.\n"
 "Buzz off."
 msgstr ""
 
-#: data/level/to-nenes-house.cfg:1711
+#: data/level/to-nenes-house.cfg:1887
 msgid ""
 "I don't care what you're preaching,\n"
 "go sell it to someone else."
 msgstr ""
 
-#: data/level/to-nenes-house.cfg:1712
+#: data/level/to-nenes-house.cfg:1888
 msgid "Very well."
 msgstr ""
 
-#: data/level/to-nenes-house.cfg:1715
+#: data/level/to-nenes-house.cfg:1891
 msgid ""
 "Someday, those door-to-door people\n"
 "will realize that kind of hard-sell tactic\n"
 "just annoys people."
 msgstr ""
 
-#: data/level/to-nenes-house.cfg:1717
+#: data/level/to-nenes-house.cfg:1893
 msgid "The sooner, the better."
 msgstr ""
 
@@ -4319,7 +4312,7 @@ msgstr ""
 msgid "This is a blank tile. It doesn't do anything."
 msgstr ""
 
-#: data/object_prototypes/ct-cursor.cfg:78
+#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:78
 msgid "'"
 msgstr ""
 
