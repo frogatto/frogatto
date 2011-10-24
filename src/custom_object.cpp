@@ -3174,6 +3174,8 @@ void custom_object::set_platform_area(const rect& area)
 		platform_area_.reset(new rect(area));
 		platform_solid_info_ = solid_info::create_platform(area);
 	}
+
+	calculate_solid_rect();
 }
 
 void custom_object::shift_position(int x, int y)
