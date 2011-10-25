@@ -3,9 +3,10 @@
 
 <!-- I am a Kate syntax highlighting file.
 	To use me, put me in with the rest of your Kate highlighting files. (eg, /usr/share/apps/katepart/syntax/)
-	I add an entry under 'markup', and cause .cfg files to default to using me.-->
+	I add an entry under 'markup', and cause .cfg files to default to using me.
+	In addition, I recommend using the 'python' indentation style. (tools -> indentation -> python) -->
 
-<language name="Frogatto FML-FFL"  priority="2" section="Markup" extensions="*.cfg" version="1.7.1" kateversion="3.4.5" casesensitive="yes" author="DDR (robertsdavidddr@gmail.com)" license="Frogatto">
+<language name="Frogatto FML-FFL"  priority="2" section="Markup" extensions="*.cfg" version="1.2.0" kateversion="3.4.5" casesensitive="yes" author="DDR (robertsdavidddr@gmail.com)" license="Frogatto">
 	<highlighting>
 		<list name="fml_tags">
 			<item> prototype </item>
@@ -250,6 +251,9 @@
 	</highlighting>
 	
 	<general>
+	    <comments>
+	      <comment name="singleLine" start="#" />
+	    </comments>
 		<keywords casesensitive="1"/>
 		<folding indentationsensitive="0"/>
 	</general>
