@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-10-22 19:36-0200\n"
-"PO-Revision-Date: 2011-10-22 21:36+0000\n"
+"POT-Creation-Date: 2011-10-26 00:02-0200\n"
+"PO-Revision-Date: 2011-10-26 02:03+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Italian (http://www.transifex.net/projects/p/Frogatto/team/it/)\n"
 "MIME-Version: 1.0\n"
@@ -2972,7 +2972,7 @@ msgstr ""
 #: data/level/grassy-path.cfg:1276
 msgid ""
 "Certain bridges and stairways, like this one,\n"
-" allow you to jump up and pass through them."
+"allow you to jump up and pass through them."
 msgstr ""
 
 #: data/level/grassy-path.cfg:1277
@@ -3124,7 +3124,7 @@ msgstr ""
 msgid ""
 "You'll find many such objects of similar size\n"
 "in different areas of the game, such as crates\n"
-" inside of houses, or nuts hanging from trees."
+"inside of houses, or nuts hanging from trees."
 msgstr ""
 
 #: data/level/grassy-path.cfg:1732
@@ -4334,49 +4334,49 @@ msgstr "Gara delle monete"
 msgid "COIN RACE"
 msgstr "CORSA DELLE MONETE"
 
-#: data/level/titlescreen-test.cfg:259 data/level/titlescreen.cfg:254
+#: data/level/titlescreen-test.cfg:259 data/level/titlescreen.cfg:260
 msgid "LOAD GAME"
 msgstr "CARICA GIOCO"
 
-#: data/level/titlescreen-test.cfg:279 data/level/titlescreen.cfg:274
+#: data/level/titlescreen-test.cfg:279 data/level/titlescreen.cfg:282
 msgid "NEW GAME"
 msgstr "NUOVO GIOCO"
 
 #: data/level/titlescreen-test.cfg:300 data/level/titlescreen-test.cfg:312
-#: data/level/titlescreen.cfg:295 data/level/titlescreen.cfg:307
+#: data/level/titlescreen.cfg:305 data/level/titlescreen.cfg:317
 msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
 msgstr "Premi {LEFT_KEY} o {RIGHT_KEY} per camminare."
 
 #: data/level/titlescreen-test.cfg:313 data/level/titlescreen-test.cfg:328
-#: data/level/titlescreen.cfg:308 data/level/titlescreen.cfg:323
+#: data/level/titlescreen.cfg:318 data/level/titlescreen.cfg:335
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
 msgstr "Premi velocemente {LEFT_KEY} o {RIGHT_KEY} due volte per correre."
 
-#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:309
+#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:319
 msgid "Press {DOWN_KEY} to crouch."
 msgstr "Premi {DOWN_KEY} per accovacciarti."
 
-#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:309
+#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:319
 msgid "Walk in front of a door or person, and press"
 msgstr "Cammina davanti a una porta o una persona, e premi"
 
-#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:310
+#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:320
 msgid "Press {UP_KEY} to talk, and use things like doors."
 msgstr "Premi {UP_KEY} per parlare, o usare oggetti come porte."
 
-#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:310
+#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:320
 msgid "the button that appears to interact with them."
 msgstr "il pulsante che compare per interagire con loro."
 
-#: data/level/titlescreen-test.cfg:316 data/level/titlescreen.cfg:311
+#: data/level/titlescreen-test.cfg:316 data/level/titlescreen.cfg:321
 msgid "Press {JUMP_KEY} to jump."
 msgstr "Premi {JUMP_KEY} per saltare."
 
-#: data/level/titlescreen-test.cfg:317 data/level/titlescreen.cfg:312
+#: data/level/titlescreen-test.cfg:317 data/level/titlescreen.cfg:322
 msgid "Press {TONGUE_KEY} to use a character's attacks."
 msgstr "Premi {TONGUE_KEY} per usare un attacco del personaggio."
 
-#: data/level/titlescreen-test.cfg:348 data/level/titlescreen.cfg:343
+#: data/level/titlescreen-test.cfg:348 data/level/titlescreen.cfg:357
 msgid "ARCADE"
 msgstr "ARCADE"
 
@@ -4607,7 +4607,7 @@ msgstr "Vuoi comprare il/la {consts.name}?"
 msgid "This is a blank tile. It doesn't do anything."
 msgstr "Questo è una piastrella vuota. Non fa nulla."
 
-#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:78
+#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:79
 msgid "'"
 msgstr "'"
 

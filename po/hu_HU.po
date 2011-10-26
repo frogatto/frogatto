@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-10-22 19:36-0200\n"
-"PO-Revision-Date: 2011-10-22 21:37+0000\n"
+"POT-Creation-Date: 2011-10-26 00:02-0200\n"
+"PO-Revision-Date: 2011-10-26 02:03+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.net/projects/p/Frogatto/team/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -2917,7 +2917,7 @@ msgstr ""
 #: data/level/grassy-path.cfg:1276
 msgid ""
 "Certain bridges and stairways, like this one,\n"
-" allow you to jump up and pass through them."
+"allow you to jump up and pass through them."
 msgstr ""
 
 #: data/level/grassy-path.cfg:1277
@@ -3068,7 +3068,7 @@ msgstr ""
 msgid ""
 "You'll find many such objects of similar size\n"
 "in different areas of the game, such as crates\n"
-" inside of houses, or nuts hanging from trees."
+"inside of houses, or nuts hanging from trees."
 msgstr ""
 
 #: data/level/grassy-path.cfg:1732
@@ -4254,52 +4254,52 @@ msgstr "Érme verseny"
 msgid "COIN RACE"
 msgstr "ÉRME VERSENY"
 
-#: data/level/titlescreen-test.cfg:259 data/level/titlescreen.cfg:254
+#: data/level/titlescreen-test.cfg:259 data/level/titlescreen.cfg:260
 msgid "LOAD GAME"
 msgstr "JÁTÉK BETÖLTÉSE"
 
-#: data/level/titlescreen-test.cfg:279 data/level/titlescreen.cfg:274
+#: data/level/titlescreen-test.cfg:279 data/level/titlescreen.cfg:282
 msgid "NEW GAME"
 msgstr "ÚJ JÁTÉK"
 
 #: data/level/titlescreen-test.cfg:300 data/level/titlescreen-test.cfg:312
-#: data/level/titlescreen.cfg:295 data/level/titlescreen.cfg:307
+#: data/level/titlescreen.cfg:305 data/level/titlescreen.cfg:317
 msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
 msgstr "'{LEFT_KEY}' vagy '{RIGHT_KEY}' segítségével tudsz sétálni."
 
 #: data/level/titlescreen-test.cfg:313 data/level/titlescreen-test.cfg:328
-#: data/level/titlescreen.cfg:308 data/level/titlescreen.cfg:323
+#: data/level/titlescreen.cfg:318 data/level/titlescreen.cfg:335
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
 msgstr ""
 "'{LEFT_KEY}' vagy '{RIGHT_KEY}' kétszeri gyors nyomásával tudsz futni."
 
-#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:309
+#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:319
 msgid "Press {DOWN_KEY} to crouch."
 msgstr "'{DOWN_KEY} segítségével tudsz guggolni."
 
-#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:309
+#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:319
 msgid "Walk in front of a door or person, and press"
 msgstr "Sétálj egy ajtóhoz vagy szeméylhez és nyomd"
 
-#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:310
+#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:320
 msgid "Press {UP_KEY} to talk, and use things like doors."
 msgstr ""
 "'{UP_KEY}' segítségével tudsz beszélni és használni dolgokat, mint az "
 "ajtókat."
 
-#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:310
+#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:320
 msgid "the button that appears to interact with them."
 msgstr "meg a megjelenő billentyűt, hogy kapcsolatba lépj vele."
 
-#: data/level/titlescreen-test.cfg:316 data/level/titlescreen.cfg:311
+#: data/level/titlescreen-test.cfg:316 data/level/titlescreen.cfg:321
 msgid "Press {JUMP_KEY} to jump."
 msgstr "'{JUMP_KEY}' segítségével ugrasz."
 
-#: data/level/titlescreen-test.cfg:317 data/level/titlescreen.cfg:312
+#: data/level/titlescreen-test.cfg:317 data/level/titlescreen.cfg:322
 msgid "Press {TONGUE_KEY} to use a character's attacks."
 msgstr "'{TONGUE_KEY}' segítségével tudsz a karaktereddel támadni."
 
-#: data/level/titlescreen-test.cfg:348 data/level/titlescreen.cfg:343
+#: data/level/titlescreen-test.cfg:348 data/level/titlescreen.cfg:357
 msgid "ARCADE"
 msgstr "ARCADE"
 
@@ -4532,7 +4532,7 @@ msgstr "Megszeretnéd venni a {consts.name} tárgyat?"
 msgid "This is a blank tile. It doesn't do anything."
 msgstr "Ez egy üres csempe. Nem csinál semmit."
 
-#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:78
+#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:79
 msgid "'"
 msgstr ""
 

@@ -7,12 +7,13 @@
 #   <munoz.basols@gmail.com>, 2011.
 # Philipp Zabel <pzabel@gmx.de>, 2011.
 # Ramiro Chaidez <ramirochaidez@gmail.com>, 2011.
+# Simon Pena <spenap@gmail.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-10-22 19:36-0200\n"
-"PO-Revision-Date: 2011-10-22 21:36+0000\n"
+"POT-Creation-Date: 2011-10-26 00:02-0200\n"
+"PO-Revision-Date: 2011-10-26 02:03+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Spanish (Castilian) (http://www.transifex.net/projects/p/Frogatto/team/es/)\n"
 "MIME-Version: 1.0\n"
@@ -364,7 +365,7 @@ msgstr ""
 
 #: data/achievements.cfg:101
 msgid "That's the infinite cage."
-msgstr "Esa es la jaula sinfín."
+msgstr "Esa es la jaula sin fin."
 
 #: data/achievements.cfg:108
 msgid "Geosynchronous Orbit Achieved"
@@ -2891,7 +2892,7 @@ msgstr ""
 #: data/level/grassy-path.cfg:1276
 msgid ""
 "Certain bridges and stairways, like this one,\n"
-" allow you to jump up and pass through them."
+"allow you to jump up and pass through them."
 msgstr ""
 
 #: data/level/grassy-path.cfg:1277
@@ -3040,7 +3041,7 @@ msgstr ""
 msgid ""
 "You'll find many such objects of similar size\n"
 "in different areas of the game, such as crates\n"
-" inside of houses, or nuts hanging from trees."
+"inside of houses, or nuts hanging from trees."
 msgstr ""
 
 #: data/level/grassy-path.cfg:1732
@@ -3477,6 +3478,10 @@ msgid ""
 "and stick it in one of my cages,\n"
 "I'd reward you handsomely."
 msgstr ""
+"¿Sabes? Parece que has viajado mucho.\n"
+"Si pudieras traerme una hormiga dorada\n"
+"y ponerla en una de mis jaulas,\n"
+"te recompensaría generosamente."
 
 #: data/level/secluded-hut-interior.cfg:937
 msgid ""
@@ -3491,6 +3496,8 @@ msgid ""
 "Oh! You got the golden ant for me.\n"
 "It's beautiful, beautiful!"
 msgstr ""
+"Oh! Me has conseguido la hormiga dorada.\n"
+"¡Es preciosa, preciosa!"
 
 #: data/level/secluded-hut-interior.cfg:942
 msgid ""
@@ -3519,6 +3526,8 @@ msgid ""
 "I don't suppose you've had any\n"
 "luck with getting a golden ant yet?"
 msgstr ""
+"¿Supongo que todavía no has tenido\n"
+"suerte consiguiendo la hormiga dorada?"
 
 #: data/level/secluded-hut-interior.cfg:951
 msgid ""
@@ -3601,6 +3610,8 @@ msgid ""
 "That certainly...\n"
 "changes my plans for the day."
 msgstr ""
+"Eso ciertamente...\n"
+"cambia mis planes para hoy."
 
 #: data/level/secluded-hut.cfg:1108
 msgid ""
@@ -3615,6 +3626,9 @@ msgid ""
 "but if the opportunity presents itself,\n"
 "who knows?"
 msgstr ""
+"No creo que pueda prometer nada,\n"
+"pero si la oportunidad se presenta,\n"
+"¿quién sabe?"
 
 #: data/level/secluded-hut.cfg:1111
 msgid ""
@@ -3870,7 +3884,7 @@ msgstr ""
 
 #: data/level/tea-with-milgram.cfg:248
 msgid "This ... is true."
-msgstr ""
+msgstr "Eso... es cierto."
 
 #: data/level/tea-with-milgram.cfg:252
 msgid "Blast it all!"
@@ -3935,7 +3949,7 @@ msgstr ""
 
 #: data/level/tea-with-milgram.cfg:289
 msgid "I ... see."
-msgstr ""
+msgstr "Ya... veo."
 
 #: data/level/tea-with-milgram.cfg:292
 msgid ""
@@ -4154,7 +4168,7 @@ msgstr ""
 
 #: data/level/tea-with-milgram.cfg:411
 msgid "SPECIAL THANKS:"
-msgstr ""
+msgstr "AGRADECIMIENTOS ESPECIALES:"
 
 #: data/level/template.cfg:12
 msgid "(Level Template)"
@@ -4183,7 +4197,7 @@ msgstr "SALIDA"
 #: data/level/titlescreen-arcade.cfg:178 data/level/titlescreen-arcade.cfg:199
 #: data/level/titlescreen-arcade.cfg:260
 msgid "Select a level:"
-msgstr ""
+msgstr "Selecciona un nivel:"
 
 #: data/level/titlescreen-arcade.cfg:182 data/level/titlescreen-arcade.cfg:203
 #: data/level/titlescreen-arcade.cfg:262
@@ -4206,55 +4220,55 @@ msgstr ""
 msgid "COIN RACE"
 msgstr ""
 
-#: data/level/titlescreen-test.cfg:259 data/level/titlescreen.cfg:254
+#: data/level/titlescreen-test.cfg:259 data/level/titlescreen.cfg:260
 msgid "LOAD GAME"
 msgstr ""
 
-#: data/level/titlescreen-test.cfg:279 data/level/titlescreen.cfg:274
+#: data/level/titlescreen-test.cfg:279 data/level/titlescreen.cfg:282
 msgid "NEW GAME"
 msgstr ""
 
 #: data/level/titlescreen-test.cfg:300 data/level/titlescreen-test.cfg:312
-#: data/level/titlescreen.cfg:295 data/level/titlescreen.cfg:307
+#: data/level/titlescreen.cfg:305 data/level/titlescreen.cfg:317
 msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
 msgstr "Oprima {LEFT_KEY} o {RIGHT_KEY} para caminar."
 
 #: data/level/titlescreen-test.cfg:313 data/level/titlescreen-test.cfg:328
-#: data/level/titlescreen.cfg:308 data/level/titlescreen.cfg:323
+#: data/level/titlescreen.cfg:318 data/level/titlescreen.cfg:335
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
 msgstr ""
 "Rápidamente oprima {LEFT_KEY} o\n"
 "{RIGHT_KEY} dos veces para correr."
 
-#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:309
+#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:319
 msgid "Press {DOWN_KEY} to crouch."
 msgstr "Oprima {DOWN_KEY} para agacharse."
 
-#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:309
+#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:319
 msgid "Walk in front of a door or person, and press"
 msgstr ""
 "Detente en frente de una puerta o una persona\n"
 "y oprime"
 
-#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:310
+#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:320
 msgid "Press {UP_KEY} to talk, and use things like doors."
 msgstr ""
 "Oprima {UP_KEY} para hablar, y para\n"
 "interactuar con cosas tal como puertas."
 
-#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:310
+#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:320
 msgid "the button that appears to interact with them."
 msgstr "el botón que aparece para interactuar con ellos."
 
-#: data/level/titlescreen-test.cfg:316 data/level/titlescreen.cfg:311
+#: data/level/titlescreen-test.cfg:316 data/level/titlescreen.cfg:321
 msgid "Press {JUMP_KEY} to jump."
 msgstr "Oprima {JUMP_KEY} para saltar."
 
-#: data/level/titlescreen-test.cfg:317 data/level/titlescreen.cfg:312
+#: data/level/titlescreen-test.cfg:317 data/level/titlescreen.cfg:322
 msgid "Press {TONGUE_KEY} to use a character's attacks."
 msgstr ""
 
-#: data/level/titlescreen-test.cfg:348 data/level/titlescreen.cfg:343
+#: data/level/titlescreen-test.cfg:348 data/level/titlescreen.cfg:357
 msgid "ARCADE"
 msgstr ""
 
@@ -4487,7 +4501,7 @@ msgstr "¿Quieres comprar {consts.name}?"
 msgid "This is a blank tile. It doesn't do anything."
 msgstr ""
 
-#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:78
+#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:79
 msgid "'"
 msgstr ""
 
