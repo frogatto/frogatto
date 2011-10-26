@@ -20,7 +20,7 @@
 #include "wml_utils.hpp"
 #include "color_utils.hpp"
 
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
 #include <EGL/egl.h>
 #include <GLES/gl.h>
 #include <GLES/glext.h>
@@ -171,7 +171,7 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	unsigned char water_color[] = {a.color_[0], a.color_[1], a.color_[2], a.color_[3]};
 	
 	glBlendFunc(GL_ONE, GL_ONE);
-	#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA)
+	#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
 	if (glBlendEquationOES)
 		glBlendEquationOES(GL_FUNC_REVERSE_SUBTRACT_OES);
 	#elif defined(GL_OES_blend_subtract)
@@ -198,11 +198,15 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 		waterline_rect.x, underwater_rect.y + underwater_rect.h,
 		waterline_rect.x + waterline_rect.w, underwater_rect.y + underwater_rect.h
 	};
-	
+
+#if defined(TARGET_TEGRA)	
+	glColor4ub (0,0,0,255); // tegra linux drivers have some issues
+#else
 	glColor4ub(water_color[0], water_color[1], water_color[2], water_color[3]);
+#endif	
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, sizeof(vertices)/sizeof(GLfloat)/2);
-	#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA)
+	#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
 	if (glBlendEquationOES)
 		glBlendEquationOES(GL_FUNC_ADD_OES);
 	#elif defined(GL_OES_blend_subtract)

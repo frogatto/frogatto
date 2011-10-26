@@ -108,17 +108,29 @@ namespace preferences {
 #ifndef PREFERENCES_PATH
 #define PREFERENCES_PATH "~/.frogatto/"
 #endif
+		bool screen_rotated_ = false;
+		
+		bool use_joystick_ = true;
+
+#if defined(TARGET_TEGRA)
+		int virtual_screen_width_ = 1024;
+		int virtual_screen_height_ = 600;
+		
+		int actual_screen_width_ = 1024;
+		int actual_screen_height_ = 600;
+	
+		bool load_compiled_ = true;
+		bool use_fbo_ = true;
+		bool use_bequ_ = true;
+#else
 		int virtual_screen_width_ = 800;
 		int virtual_screen_height_ = 600;
 		
 		int actual_screen_width_ = 800;
 		int actual_screen_height_ = 600;
-		
-		bool screen_rotated_ = false;
-		
-		bool use_joystick_ = true;
-
+	
 		bool load_compiled_ = false;
+#endif
 
 #if defined(TARGET_PANDORA)
         bool use_fbo_ = true;
@@ -333,7 +345,7 @@ namespace preferences {
 		load_compiled_ = value;
 	}
 	
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
 	bool use_fbo()
 	{
 		return use_fbo_;
@@ -601,7 +613,7 @@ namespace preferences {
 		return run_failing_unit_tests_;
 	}
 
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
 	PFNGLBLENDEQUATIONOESPROC           glBlendEquationOES;
 	PFNGLGENFRAMEBUFFERSOESPROC         glGenFramebuffersOES;
 	PFNGLBINDFRAMEBUFFEROESPROC         glBindFramebufferOES;
