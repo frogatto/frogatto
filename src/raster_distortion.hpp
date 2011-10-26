@@ -1,7 +1,7 @@
 #ifndef RASTER_DISTORTION_HPP_INCLUDED
 #define RASTER_DISTORTION_HPP_INCLUDED
 
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
 #include <GLES/gl.h>
 #else
 #include <GL/gl.h>

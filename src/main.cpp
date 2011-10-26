@@ -2,7 +2,7 @@
 #ifndef SDL_VIDEO_OPENGL_ES
 #include <GL/glew.h>
 #endif
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
 #include <GLES/gl.h>
 #ifdef TARGET_PANDORA
 #include <GLES/glues.h>
@@ -70,7 +70,7 @@
 #include "wml_utils.hpp"
 #include "wml_writer.hpp"
 
-#if defined(TARGET_PANDORA)
+#if defined(TARGET_PANDORA) | defined(TARGET_TEGRA)
 #include "eglport.h"
 #endif
 
@@ -332,10 +332,20 @@ extern "C" int main(int argc, char** argv)
     EGL_Init();
     preferences::init_oes();
 #else
+#if defined(TARGET_TEGRA)
+	//if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,preferences::resizable() ? SDL_RESIZABLE : 0|preferences::fullscreen() ? SDL_FULLSCREEN : 0) == NULL) {
+	if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_FULLSCREEN) == NULL) {
+		std::cerr << "could not set video mode\n";
+		return -1;
+	}
+    EGL_Init();
+    preferences::init_oes();
+#else
 	if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) == NULL) {
 		std::cerr << "could not set video mode\n";
 		return -1;
 	}
+#endif
 #endif
 #endif
 
@@ -521,7 +531,7 @@ extern "C" int main(int argc, char** argv)
 	} //end manager scope, make managers destruct before calling SDL_Quit
 
 //	controls::debug_dump_controls();
-#if defined(TARGET_PANDORA)
+#if defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
     EGL_Destroy();
 #endif
 
@@ -529,7 +539,7 @@ extern "C" int main(int argc, char** argv)
 	
 	preferences::save_preferences();
 	std::cerr << SDL_GetError() << "\n";
-#ifndef TARGET_OS_HARMATTAN
+#if !defined(TARGET_OS_HARMATTAN) && !defined(TARGET_TEGRA)
 	std::cerr << gluErrorString(glGetError()) << "\n";
 #endif
 	return 0;
