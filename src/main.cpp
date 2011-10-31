@@ -432,7 +432,7 @@ extern "C" int main(int argc, char** argv)
 	}
 
 #if defined(__APPLE__) && !(TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE)
-	long swapInterval = 1;
+	GLint swapInterval = 1;
 	CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &swapInterval);
 #endif
 

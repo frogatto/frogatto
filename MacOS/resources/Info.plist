@@ -29,7 +29,7 @@
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.arcade-games</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>© Ben Anderman, 2011</string>
+	<string>© Lost Pixel, 2011</string>
 	<key>NSMainNibFile</key>
 	<string>SDLMain</string>
 	<key>NSPrincipalClass</key>
