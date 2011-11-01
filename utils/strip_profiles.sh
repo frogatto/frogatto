@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 # script to remove all colorsync/image-calibration profiles from our PNGs, so they don't screw up our transparency (which is now respected by SDL, and wasn't before 1.2.14).
 
