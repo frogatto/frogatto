@@ -6,7 +6,7 @@
 	I add an entry under 'markup', and cause .cfg files to default to using me.
 	In addition, I recommend using the 'python' indentation style. (tools -> indentation -> python) -->
 
-<language name="Frogatto FML-FFL"  priority="2" section="Markup" extensions="*.cfg" version="1.2.0" kateversion="3.4.5" casesensitive="yes" author="DDR (robertsdavidddr@gmail.com)" license="Frogatto">
+<language name="Frogatto FML-FFL"  priority="2" section="Markup" extensions="*.cfg" version="1.2.1" kateversion="3.4.5" casesensitive="yes" author="DDR (robertsdavidddr@gmail.com)" license="Frogatto">
 	<highlighting>
 		<list name="fml_tags">
 			<item> prototype </item>
@@ -242,7 +242,7 @@
 			<itemData name="Number" 			defStyleNum="dsInteger"						/>
 			<itemData name="Event" 				defStyleNum="dsFunction"	color="#CC3096"	/> <!-- These events are fired by the user, and are a brighter pink than events fired automatically by the engine. -->
 			<itemData name="Engine Event" 		defStyleNum="dsFunction"					/>
-			<itemData name="Animation" 			defStyleNum="dsNormal" 		color="#FFA002"	/>
+			<itemData name="Animation" 			defStyleNum="dsNormal" 		color="#994002"	/>
 			<itemData name="Editor Info" 		defStyleNum="dsNormal" 		color="#8080F0"	/>
 			<itemData name="Operator" 			defStyleNum="dsNormal" 		color="#0000B0"	/>
 			<itemData name="Mutator" 			defStyleNum="dsNormal"		color="#008000"	/>
