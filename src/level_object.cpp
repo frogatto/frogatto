@@ -149,28 +149,46 @@ void create_compiled_tiles_image()
 	for(std::map<wml::node_ptr, int>::const_iterator i = tile_nodes_to_zorders.begin(); i != tile_nodes_to_zorders.end(); ++i) {
 		const int sheet = zorder_to_sheet_number[i->second];
 		wml::node_ptr node = i->first;
-		const std::string& tiles_str = node->attr("tiles").str();
-		ASSERT_EQ(tiles_str[0], '+');
+		std::map<int, int> dst_index_map;
 
-		const int tile_num = atoi(tiles_str.c_str() + 1);
-		const int src_x = (tile_num%64) * 16;
-		const int src_y = (tile_num/64) * 16;
+		std::vector<std::string> tiles_vec = util::split(node->attr("tiles").str(), '|');
+		std::string tiles_val;
 
-		const int dst_tile = sheet_next_image_index[sheet]++;
-		const int dst_x = (dst_tile%64) * 16;
-		const int dst_y = (dst_tile/64) * 16;
+		foreach(const std::string& tiles_str, tiles_vec) {
+			ASSERT_EQ(tiles_str[0], '+');
 
-		SDL_Rect src_rect = { src_x, src_y, 16, 16 };
-		SDL_Rect dst_rect = { dst_x, dst_y, 16, 16 };
+			const int tile_num = atoi(tiles_str.c_str() + 1);
+			const int src_x = (tile_num%64) * 16;
+			const int src_y = (tile_num/64) * 16;
 
-		std::cerr << "MAPPING: " << src_x << ", " << src_y << " -> " << dst_x << ", " << dst_y << " / " << sheet << "\n";
+			int dst_tile;
+			if(dst_index_map.count(tile_num)) {
+				dst_tile = dst_index_map[tile_num];
+			} else {
+				dst_tile = sheet_next_image_index[sheet]++;
+				dst_index_map[tile_num] = dst_tile;
 
-		SDL_BlitSurface(s.get(), &src_rect, sheets[sheet].get(), &dst_rect);
+				const int dst_x = (dst_tile%64) * 16;
+				const int dst_y = (dst_tile/64) * 16;
 
-		char buf[64];
-		sprintf(buf, "+%d", dst_tile);
-		node->set_attr("tiles", buf);
+				SDL_Rect src_rect = { src_x, src_y, 16, 16 };
+				SDL_Rect dst_rect = { dst_x, dst_y, 16, 16 };
 
+				SDL_BlitSurface(s.get(), &src_rect, sheets[sheet].get(), &dst_rect);
+			}
+
+			if(!tiles_val.empty()) {
+				tiles_val += "|";
+			}
+
+			char buf[128];
+			sprintf(buf, "+%d", dst_tile);
+			tiles_val += buf;
+		}
+
+		node->set_attr("tiles", tiles_val);
+
+		char buf[128];
 		sprintf(buf, "tiles-compiled-%d.png", sheet);
 
 		node->set_attr("image", buf);
