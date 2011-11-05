@@ -7,3 +7,6 @@ test
 .sconsign.dblite
 .scons-option-cache
 .directory
+*.blend1
+*.blend2
+*.blend3
