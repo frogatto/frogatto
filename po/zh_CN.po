@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # CloudiDust <cloudidust@gmail.com>, 2011.
 # Marcos Avila Isidoro <marcavis@yahoo.com.br>, 2011.
@@ -10,14 +10,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-10-26 00:02-0200\n"
+"POT-Creation-Date: 2011-11-07 00:18-0200\n"
 "PO-Revision-Date: 2011-10-26 02:03+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
-"Language-Team: Chinese (China) (http://www.transifex.net/projects/p/Frogatto/team/zh_CN/)\n"
+"Language-Team: Chinese (China) (http://www.transifex.net/projects/p/Frogatto/"
+"team/zh_CN/)\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: CHANGELOG:1 iOS_CHANGELOG:1
@@ -229,14 +230,14 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:1 iOS_APP_STORE_METADATA:1
 msgid ""
-"An old-school 2d platformer game, starring a certain quixotic frog. From the"
-" creators of Battle for Wesnoth comes this exciting jump-and-run platformer."
-" Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all "
-"the gameplay nuance of a classic console title. Run and jump over pits and "
-"enemies. Grab enemies with your tongue, swallow them, and then spit them out"
-" at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
-"puzzles. Collect coins and use them to buy upgrades and new abilities in the"
-" store. Talk to characters in game, and work to unravel Big Bad Milgram's "
+"An old-school 2d platformer game, starring a certain quixotic frog. From the "
+"creators of Battle for Wesnoth comes this exciting jump-and-run platformer. "
+"Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all the "
+"gameplay nuance of a classic console title. Run and jump over pits and "
+"enemies. Grab enemies with your tongue, swallow them, and then spit them out "
+"at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
+"puzzles. Collect coins and use them to buy upgrades and new abilities in the "
+"store. Talk to characters in game, and work to unravel Big Bad Milgram's "
 "plot against the townsfolk! At over 30 levels set in 4 different "
 "environments, Frogatto is not a flash in the pan, and has the play-time "
 "you'd expect from a real videogame."
@@ -244,8 +245,8 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are"
-" hoping to bring back the magic in a new, original game design with "
+"Frogatto was made by a group of big-time fans of classic videogames, who are "
+"hoping to bring back the magic in a new, original game design with "
 "unconventional gameplay mechanics - a fun break from the usual clones."
 msgstr ""
 
@@ -255,7 +256,8 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:6 iOS_APP_STORE_METADATA:8
 msgid ""
-"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
+"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,"
+"frog"
 msgstr ""
 
 #: data/achievements.cfg:4
@@ -402,11 +404,11 @@ msgstr ""
 msgid "Stonepipe Bridge"
 msgstr "石管桥"
 
-#: data/level/airplane-boss.cfg:358
+#: data/level/airplane-boss.cfg:366
 msgid "Ambush!"
 msgstr "伏击！"
 
-#: data/level/airplane-boss.cfg:367
+#: data/level/airplane-boss.cfg:375
 msgid "Victory!"
 msgstr "胜利！"
 
@@ -4474,7 +4476,7 @@ msgstr "想要买 {consts.name} 吗？"
 msgid "This is a blank tile. It doesn't do anything."
 msgstr "这是个空白图块，啥用都没有。"
 
-#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:79
+#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:75
 msgid "'"
 msgstr ""
 
@@ -4488,8 +4490,8 @@ msgstr "你达到了硬币采集赛到第 {level.player.difficulty} 关。"
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level "
-"{registry.arcade_coin_race_high_score}."
+"The furthest that has been reached is level {registry."
+"arcade_coin_race_high_score}."
 msgstr "最高纪录是第 {registry.arcade_coin_race_high_score} 关。 "
 
 #: data/objects/items/max_heart_object.cfg:18
@@ -4722,13 +4724,15 @@ msgstr "正在读取对象：能量弹"
 
 #: iOS_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are"
-" hoping to bring back the magic in a new, original game design with "
-"unconventional gameplay mechanics - a fun break from the usual clones. We're"
-" a small group of indie developers, hoping this game becomes one of the "
+"Frogatto was made by a group of big-time fans of classic videogames, who are "
+"hoping to bring back the magic in a new, original game design with "
+"unconventional gameplay mechanics - a fun break from the usual clones. We're "
+"a small group of indie developers, hoping this game becomes one of the "
 "definitive platform games on iOS - and you can make that happen!"
 msgstr ""
-"《青蛙阿托》为一组经典游戏爱好者作成，他们希望带回那种魔力，作出一款创新，独特的游戏，突破通常的模式。我们是一个小型独立开发组，希望本游戏成为iOS的终极平台游戏之一。您可以帮助作到这一点！"
+"《青蛙阿托》为一组经典游戏爱好者作成，他们希望带回那种魔力，作出一款创新，独"
+"特的游戏，突破通常的模式。我们是一个小型独立开发组，希望本游戏成为iOS的终极平"
+"台游戏之一。您可以帮助作到这一点！"
 
 #: iOS_APP_STORE_METADATA:5
 msgid ""
@@ -4768,23 +4772,23 @@ msgstr "返回"
 msgid "Achievement Unlocked!"
 msgstr "成就达成！"
 
-#: src/main.cpp:397
+#: src/main.cpp:407
 msgid "Initializing custom object"
 msgstr "初始化自定义对象"
 
-#: src/main.cpp:399
+#: src/main.cpp:409
 msgid "Initializing custom object functions"
 msgstr "初始化自定义对象函数"
 
-#: src/main.cpp:401
+#: src/main.cpp:411
 msgid "Initializing tiles"
 msgstr "初始化图块"
 
-#: src/main.cpp:404 src/main.cpp:408
+#: src/main.cpp:414 src/main.cpp:418
 msgid "Initializing GUI"
 msgstr "初始化界面"
 
-#: src/main.cpp:414
+#: src/main.cpp:424
 msgid "Loading level"
 msgstr "正在读取关卡"
 
@@ -4819,5 +4823,3 @@ msgstr "交换A/B键"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
-
-

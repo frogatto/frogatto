@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 #   <khaosoahk@gmail.com>, 2011.
 # Philipp Zabel <pzabel@gmx.de>, 2011.
@@ -11,14 +11,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-10-26 00:02-0200\n"
+"POT-Creation-Date: 2011-11-07 00:18-0200\n"
 "PO-Revision-Date: 2011-10-26 02:03+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
-"Language-Team: German (http://www.transifex.net/projects/p/Frogatto/team/de/)\n"
+"Language-Team: German (http://www.transifex.net/projects/p/Frogatto/team/"
+"de/)\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: CHANGELOG:1 iOS_CHANGELOG:1
@@ -96,8 +97,8 @@ msgid ""
 "Added translation support, with 4 complete translations: French, Brazilian "
 "Portuguese, Chinese (Simplified), and Japanese."
 msgstr ""
-"Unterstützung für Übersetzungen hinzugefügt, mit 4 kompletten Übersetzungen:"
-" Französisch, brasilianisches Portugiesisch, Chinesisch (einfach) und "
+"Unterstützung für Übersetzungen hinzugefügt, mit 4 kompletten Übersetzungen: "
+"Französisch, brasilianisches Portugiesisch, Chinesisch (einfach) und "
 "Japanisch."
 
 #: CHANGELOG:21
@@ -234,14 +235,14 @@ msgstr "Musik aktualisiert."
 
 #: MAC_APP_STORE_METADATA:1 iOS_APP_STORE_METADATA:1
 msgid ""
-"An old-school 2d platformer game, starring a certain quixotic frog. From the"
-" creators of Battle for Wesnoth comes this exciting jump-and-run platformer."
-" Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all "
-"the gameplay nuance of a classic console title. Run and jump over pits and "
-"enemies. Grab enemies with your tongue, swallow them, and then spit them out"
-" at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
-"puzzles. Collect coins and use them to buy upgrades and new abilities in the"
-" store. Talk to characters in game, and work to unravel Big Bad Milgram's "
+"An old-school 2d platformer game, starring a certain quixotic frog. From the "
+"creators of Battle for Wesnoth comes this exciting jump-and-run platformer. "
+"Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all the "
+"gameplay nuance of a classic console title. Run and jump over pits and "
+"enemies. Grab enemies with your tongue, swallow them, and then spit them out "
+"at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
+"puzzles. Collect coins and use them to buy upgrades and new abilities in the "
+"store. Talk to characters in game, and work to unravel Big Bad Milgram's "
 "plot against the townsfolk! At over 30 levels set in 4 different "
 "environments, Frogatto is not a flash in the pan, and has the play-time "
 "you'd expect from a real videogame."
@@ -249,8 +250,8 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are"
-" hoping to bring back the magic in a new, original game design with "
+"Frogatto was made by a group of big-time fans of classic videogames, who are "
+"hoping to bring back the magic in a new, original game design with "
 "unconventional gameplay mechanics - a fun break from the usual clones."
 msgstr ""
 
@@ -260,7 +261,8 @@ msgstr "Schlüsselbegriffe:"
 
 #: MAC_APP_STORE_METADATA:6 iOS_APP_STORE_METADATA:8
 msgid ""
-"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
+"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,"
+"frog"
 msgstr ""
 
 #: data/achievements.cfg:4
@@ -411,11 +413,11 @@ msgstr "Weiter!"
 msgid "Stonepipe Bridge"
 msgstr "Steinpfeifenbrücke"
 
-#: data/level/airplane-boss.cfg:358
+#: data/level/airplane-boss.cfg:366
 msgid "Ambush!"
 msgstr "Ein Hinterhalt!"
 
-#: data/level/airplane-boss.cfg:367
+#: data/level/airplane-boss.cfg:375
 msgid "Victory!"
 msgstr "Sieg!"
 
@@ -482,8 +484,7 @@ msgstr ""
 #: data/level/arcade-nutty-factory.cfg:553
 msgid "You got {level.player.vars.score} points in the Nutty Factory!"
 msgstr ""
-"Sie haben {level.player.vars.score} Punkte in der verrückten Fabrik "
-"erhalten!"
+"Sie haben {level.player.vars.score} Punkte in der verrückten Fabrik erhalten!"
 
 #: data/level/arcade-nutty-factory.cfg:554
 msgid "The high score is {registry.arcade_nutty_factory_high_score} points."
@@ -537,8 +538,7 @@ msgstr ""
 #: data/level/arcade-wild-new-wonder.cfg:2524
 msgid "The high score is {registry.arcade_wild_new_wonder_high_score} points."
 msgstr ""
-"Die Bestleistung beträgt {registry.arcade_wild_new_wonder_high_score} "
-"Punkte."
+"Die Bestleistung beträgt {registry.arcade_wild_new_wonder_high_score} Punkte."
 
 #: data/level/autumn-town.cfg:16
 msgid "Autumn Town"
@@ -774,8 +774,8 @@ msgid ""
 "Has he ever shown any signs of ... suddenly\n"
 "having way more spending money than usual?"
 msgstr ""
-"Hat er jemals irgendwelche Anzeichen von ... plötzlich weit höheren Ausgaben"
-" als sonst gezeigt?"
+"Hat er jemals irgendwelche Anzeichen von ... plötzlich weit höheren Ausgaben "
+"als sonst gezeigt?"
 
 #: data/level/crevice-bridge.cfg:754
 msgid ""
@@ -876,8 +876,8 @@ msgid ""
 "*Someone* needs to go talk to Milgram,\n"
 "and ask what was wrong, so nothing bad happens."
 msgstr ""
-"*Irgendwer* muss zu Milgram gehen und fragen, was schief gelaufen ist, damit"
-" nichts schlimmes passiert."
+"*Irgendwer* muss zu Milgram gehen und fragen, was schief gelaufen ist, damit "
+"nichts schlimmes passiert."
 
 #: data/level/crevice-bridge.cfg:783
 msgid ""
@@ -4678,7 +4678,7 @@ msgstr "{consts.name} kaufen?"
 msgid "This is a blank tile. It doesn't do anything."
 msgstr "Dies ist eine leere Kachel, sie macht einfach garnichts."
 
-#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:79
+#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:75
 msgid "'"
 msgstr "“"
 
@@ -4692,11 +4692,11 @@ msgstr "Sie haben Rang {level.player.difficulty} im Münzrennen erreicht."
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level "
-"{registry.arcade_coin_race_high_score}."
+"The furthest that has been reached is level {registry."
+"arcade_coin_race_high_score}."
 msgstr ""
-"Das höchste, was erreicht wurde, war Rang "
-"{registry.arcade_coin_race_high_score}."
+"Das höchste, was erreicht wurde, war Rang {registry."
+"arcade_coin_race_high_score}."
 
 #: data/objects/items/max_heart_object.cfg:18
 msgid ""
@@ -4940,10 +4940,10 @@ msgstr "Lade Energieprojektil"
 
 #: iOS_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are"
-" hoping to bring back the magic in a new, original game design with "
-"unconventional gameplay mechanics - a fun break from the usual clones. We're"
-" a small group of indie developers, hoping this game becomes one of the "
+"Frogatto was made by a group of big-time fans of classic videogames, who are "
+"hoping to bring back the magic in a new, original game design with "
+"unconventional gameplay mechanics - a fun break from the usual clones. We're "
+"a small group of indie developers, hoping this game becomes one of the "
 "definitive platform games on iOS - and you can make that happen!"
 msgstr ""
 
@@ -4985,23 +4985,23 @@ msgstr "Zurück"
 msgid "Achievement Unlocked!"
 msgstr "Erfolg freigeschaltet!"
 
-#: src/main.cpp:397
+#: src/main.cpp:407
 msgid "Initializing custom object"
 msgstr "Initialisiere benutzerdefiniertes Objekt"
 
-#: src/main.cpp:399
+#: src/main.cpp:409
 msgid "Initializing custom object functions"
 msgstr "Initialisiere benutzerdefinierte Objektfunktionen"
 
-#: src/main.cpp:401
+#: src/main.cpp:411
 msgid "Initializing tiles"
 msgstr "Initialisiere Kacheln"
 
-#: src/main.cpp:404 src/main.cpp:408
+#: src/main.cpp:414 src/main.cpp:418
 msgid "Initializing GUI"
 msgstr "Initialisiere grafische Benutzeroberfläche"
 
-#: src/main.cpp:414
+#: src/main.cpp:424
 msgid "Loading level"
 msgstr "Lade Level"
 
@@ -5036,5 +5036,3 @@ msgstr "A und B vertauschen"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
-
-

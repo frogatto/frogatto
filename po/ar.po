@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Circoficus  <mhaitham@gmail.com>, 2011.
 # M Al <mhaitham@gmail.com>, 2011.
@@ -9,15 +9,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-10-26 00:02-0200\n"
+"POT-Creation-Date: 2011-11-07 00:18-0200\n"
 "PO-Revision-Date: 2011-10-26 02:03+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
-"Language-Team: Arabic (http://www.transifex.net/projects/p/Frogatto/team/ar/)\n"
+"Language-Team: Arabic (http://www.transifex.net/projects/p/Frogatto/team/"
+"ar/)\n"
+"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ar\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5\n"
 
 #: CHANGELOG:1 iOS_CHANGELOG:1
 msgid "Version 1.1.1:"
@@ -88,8 +90,8 @@ msgid ""
 "Refactored damage and monster type systems to make behavior more consistent "
 "and eliminate some rare buggy behavior."
 msgstr ""
-"Refactored الضرر وأنظمة من نوع الوحش لجعل السلوك أكثر اتساقا والقضاء على بعض"
-" السلوكيات عربة نادرة."
+"Refactored الضرر وأنظمة من نوع الوحش لجعل السلوك أكثر اتساقا والقضاء على بعض "
+"السلوكيات عربة نادرة."
 
 #: CHANGELOG:19
 msgid ""
@@ -233,33 +235,33 @@ msgstr "تحديث الموسيقى."
 
 #: MAC_APP_STORE_METADATA:1 iOS_APP_STORE_METADATA:1
 msgid ""
-"An old-school 2d platformer game, starring a certain quixotic frog. From the"
-" creators of Battle for Wesnoth comes this exciting jump-and-run platformer."
-" Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all "
-"the gameplay nuance of a classic console title. Run and jump over pits and "
-"enemies. Grab enemies with your tongue, swallow them, and then spit them out"
-" at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
-"puzzles. Collect coins and use them to buy upgrades and new abilities in the"
-" store. Talk to characters in game, and work to unravel Big Bad Milgram's "
+"An old-school 2d platformer game, starring a certain quixotic frog. From the "
+"creators of Battle for Wesnoth comes this exciting jump-and-run platformer. "
+"Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all the "
+"gameplay nuance of a classic console title. Run and jump over pits and "
+"enemies. Grab enemies with your tongue, swallow them, and then spit them out "
+"at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
+"puzzles. Collect coins and use them to buy upgrades and new abilities in the "
+"store. Talk to characters in game, and work to unravel Big Bad Milgram's "
 "plot against the townsfolk! At over 30 levels set in 4 different "
 "environments, Frogatto is not a flash in the pan, and has the play-time "
 "you'd expect from a real videogame."
 msgstr ""
 "على منهاج 2D المدرسة القديمة لعبة ، وبطولة الضفدع معينة الوهمي. من المبدعين "
-"من معركة Wesnoth تأتي هذه القفزة المثيرة والفر منهاج. Frogatto ورائع ، والفن"
-" بكسل الراقية ، ضخ الإيقاعات الممرات ، وجميع الفوارق الدقيقة من اللعب عنوان "
+"من معركة Wesnoth تأتي هذه القفزة المثيرة والفر منهاج. Frogatto ورائع ، والفن "
+"بكسل الراقية ، ضخ الإيقاعات الممرات ، وجميع الفوارق الدقيقة من اللعب عنوان "
 "وحدة التحكم الكلاسيكية. تشغيل والقفز فوق الحفر والأعداء. الاستيلاء على "
 "الأعداء مع لسانك ، ابتلاعها ، ومن ثم يبصقون بها في غيرها من الاعداء "
 "والمقذوفات! قتال الرؤساء خطرة ، ويحل الألغاز المحيرة. جمع العملات المعدنية "
-"واستخدامها لشراء ترقيات وقدرات جديدة في المخزن. التحدث مع الشخصيات في اللعبة"
-" ، والعمل على كشف مؤامرة كبيرة Milgram سيئ ضد سكان المدينة! أكثر من 30 في "
-"المستويات التي سجلت في 4 بيئات مختلفة ، ليس Frogatto ومضة في عموم ، وتلعب في"
-" الوقت تتوقعها من لعبة فيديو حقيقي."
+"واستخدامها لشراء ترقيات وقدرات جديدة في المخزن. التحدث مع الشخصيات في "
+"اللعبة ، والعمل على كشف مؤامرة كبيرة Milgram سيئ ضد سكان المدينة! أكثر من 30 "
+"في المستويات التي سجلت في 4 بيئات مختلفة ، ليس Frogatto ومضة في عموم ، وتلعب "
+"في الوقت تتوقعها من لعبة فيديو حقيقي."
 
 #: MAC_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are"
-" hoping to bring back the magic in a new, original game design with "
+"Frogatto was made by a group of big-time fans of classic videogames, who are "
+"hoping to bring back the magic in a new, original game design with "
 "unconventional gameplay mechanics - a fun break from the usual clones."
 msgstr ""
 "وأدلى Frogatto من قبل مجموعة من المشجعين في الوقت كبيرة من ألعاب الفيديو "
@@ -273,7 +275,8 @@ msgstr "الكلمات الرئيسية :"
 
 #: MAC_APP_STORE_METADATA:6 iOS_APP_STORE_METADATA:8
 msgid ""
-"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
+"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,"
+"frog"
 msgstr ""
 "منهاج ، pixelart ، oldschool ، ومنصة ، لعبة ، بيكسل ، والممرات ، والعمل ، "
 "والمغامرة ، ضفدع"
@@ -422,11 +425,11 @@ msgstr "الانتقال!"
 msgid "Stonepipe Bridge"
 msgstr "جسر صخري"
 
-#: data/level/airplane-boss.cfg:358
+#: data/level/airplane-boss.cfg:366
 msgid "Ambush!"
 msgstr "مصيدة"
 
-#: data/level/airplane-boss.cfg:367
+#: data/level/airplane-boss.cfg:375
 msgid "Victory!"
 msgstr "نصر"
 
@@ -722,8 +725,8 @@ msgid ""
 "I wouldn't mind running this by a few people,\n"
 "since I have no idea what's true, or not."
 msgstr ""
-"وأود أن لا تمانع في تشغيل هذا من قبل عدد قليل من الناس ، لأن ليس لدي أي فكرة"
-" عما صحيح ، أم لا."
+"وأود أن لا تمانع في تشغيل هذا من قبل عدد قليل من الناس ، لأن ليس لدي أي فكرة "
+"عما صحيح ، أم لا."
 
 #: data/level/crevice-bridge.cfg:734
 msgid "Go right ahead."
@@ -735,8 +738,8 @@ msgid ""
 "that Milgram loaned him money, and this whole\n"
 "incident was Milgram coming to shake him down."
 msgstr ""
-"هكذا... أوم... يتحدث بشكل فضفاض ، يقول ان Milgram أعاره المال ، وهذا كله كان"
-" الحادث Milgram القادمة ليهز يديه وقدميه."
+"هكذا... أوم... يتحدث بشكل فضفاض ، يقول ان Milgram أعاره المال ، وهذا كله كان "
+"الحادث Milgram القادمة ليهز يديه وقدميه."
 
 #: data/level/crevice-bridge.cfg:739
 msgid "Trying to get his money back."
@@ -1112,8 +1115,7 @@ msgid ""
 "Your big problem will be that\n"
 "the gate connecting the two halves\n"
 "of town has been locked."
-msgstr ""
-"وسوف تكون المشكلة الكبرى التي تم تأمين البوابة التي تربط شطري المدينة."
+msgstr "وسوف تكون المشكلة الكبرى التي تم تأمين البوابة التي تربط شطري المدينة."
 
 #: data/level/crevice-village-central.cfg:1292
 msgid ""
@@ -1217,8 +1219,8 @@ msgid ""
 "to do it, but I guess it's not so weird\n"
 "if you've got lots of manpower to spare."
 msgstr ""
-"اعتقال عادل الجميع بطريقة غريبة للقيام بذلك ، ولكن اعتقد انها ليست غريبة حتى"
-" إذا كنت قد حصلت على الكثير من القوى العاملة لتجنيب."
+"اعتقال عادل الجميع بطريقة غريبة للقيام بذلك ، ولكن اعتقد انها ليست غريبة حتى "
+"إذا كنت قد حصلت على الكثير من القوى العاملة لتجنيب."
 
 #: data/level/crevice-village-heights.cfg:1040
 msgid ""
@@ -1401,8 +1403,8 @@ msgid ""
 "but if you're going to go up there,\n"
 "you'd better go whilst the going's good."
 msgstr ""
-"لدي فكرة ، ولكن اذا كنت ستذهب الى هناك ، وكنت تسير بصورة أفضل في حين أن تسير"
-" جيد."
+"لدي فكرة ، ولكن اذا كنت ستذهب الى هناك ، وكنت تسير بصورة أفضل في حين أن تسير "
+"جيد."
 
 #: data/level/crevice-village-heights.cfg:1113
 msgid "Yeah, I'll check it out."
@@ -1516,8 +1518,8 @@ msgid ""
 "came out of the house here,\n"
 "they all hopped in his airship and left."
 msgstr ""
-"طاقم Milgram ل. عند ذلك الكابتن غي خرج من البيت هنا ، وأنهم جميعا في المنطاد"
-" قافز له واليسار."
+"طاقم Milgram ل. عند ذلك الكابتن غي خرج من البيت هنا ، وأنهم جميعا في المنطاد "
+"قافز له واليسار."
 
 #: data/level/crevice-village-heights.cfg:1189
 msgid ""
@@ -1583,8 +1585,8 @@ msgid ""
 "I think that unlocks a house that\n"
 "has the key to the town gate."
 msgstr ""
-"نعم ، هذا حق أساسي إلى جانبك -- أعتقد أن يفتح البيت الذي لديه المفتاح لبوابة"
-" المدينة."
+"نعم ، هذا حق أساسي إلى جانبك -- أعتقد أن يفتح البيت الذي لديه المفتاح لبوابة "
+"المدينة."
 
 #: data/level/crevice-village-house-1.cfg:2517
 msgid "Maybe."
@@ -2056,8 +2058,7 @@ msgstr "حسنا ، أنا رئيس البلدية ، بعد كل شيء ، وك
 msgid ""
 "Baloney.  You're one of at least ten people\n"
 "who claim to run this town."
-msgstr ""
-"هراء. كنت واحدا من عشرة أشخاص على الأقل الذين يدعون لتشغيل هذه البلدة."
+msgstr "هراء. كنت واحدا من عشرة أشخاص على الأقل الذين يدعون لتشغيل هذه البلدة."
 
 #: data/level/crevice-village-house-elder.cfg:1658
 msgid "You're a gatekeeper, for crying out loud!"
@@ -2211,8 +2212,8 @@ msgid ""
 "If he wanted to take over the town,\n"
 "he could just ... do it."
 msgstr ""
-"أنا لا أرى لماذا عنيدا والحاجة عذر. إذا كان يريد الاستيلاء على البلدة ، وقال"
-" انه مجرد... تفعل ذلك."
+"أنا لا أرى لماذا عنيدا والحاجة عذر. إذا كان يريد الاستيلاء على البلدة ، وقال "
+"انه مجرد... تفعل ذلك."
 
 #: data/level/crevice-village-house-elder.cfg:1710
 msgid ""
@@ -2251,8 +2252,7 @@ msgstr ""
 msgid ""
 "Talk it over.  See if we can reach\n"
 "some mutually amicable agreement."
-msgstr ""
-"التحدث أكثر من ذلك. نرى اذا كنا نستطيع التوصل إلى اتفاق ودي بعض الآخر."
+msgstr "التحدث أكثر من ذلك. نرى اذا كنا نستطيع التوصل إلى اتفاق ودي بعض الآخر."
 
 #: data/level/crevice-village-house-elder.cfg:1722
 msgid "I don't think that would work."
@@ -2281,8 +2281,8 @@ msgid ""
 "Well, if you say so, I suppose I can't object.\n"
 "In fact, it might be a good stalling tactic."
 msgstr ""
-"حسنا ، إذا أنت تقول ذلك ، أنا لا أستطيع أن افترض الكائن. في الواقع ، قد يكون"
-" تكتيكا ناجحا المماطلة."
+"حسنا ، إذا أنت تقول ذلك ، أنا لا أستطيع أن افترض الكائن. في الواقع ، قد يكون "
+"تكتيكا ناجحا المماطلة."
 
 #: data/level/crevice-village-house-elder.cfg:1732
 msgid "Why, I'll even show you the way..."
@@ -2861,8 +2861,7 @@ msgid ""
 "You can collect these\n"
 "and any other golden objects,\n"
 "and then use them to buy stuff!"
-msgstr ""
-"يمكنك جمع هذه وأية كائنات أخرى ذهبية ، ومن ثم استخدامها لشراء الاشياء!"
+msgstr "يمكنك جمع هذه وأية كائنات أخرى ذهبية ، ومن ثم استخدامها لشراء الاشياء!"
 
 #: data/level/grassy-path.cfg:1326
 msgid ""
@@ -2900,8 +2899,7 @@ msgstr ""
 msgid ""
 "Up ahead, you'll notice an anthill,\n"
 "which ants constantly come out of."
-msgstr ""
-"حتى قبل ، فسوف تلاحظ وجود عش النمل ، والتي تأتي باستمرار النمل من أصل."
+msgstr "حتى قبل ، فسوف تلاحظ وجود عش النمل ، والتي تأتي باستمرار النمل من أصل."
 
 #: data/level/grassy-path.cfg:1481
 msgid ""
@@ -3330,16 +3328,15 @@ msgid ""
 "Perhaps more importantly, I am a bit of\n"
 "an astronomer and biologist, by trade."
 msgstr ""
-"وربما الأهم من ذلك ، وأنا قليلا من عالم الفلك وعلم الأحياء ، من خلال "
-"التجارة."
+"وربما الأهم من ذلك ، وأنا قليلا من عالم الفلك وعلم الأحياء ، من خلال التجارة."
 
 #: data/level/secluded-hut-interior.cfg:929
 msgid ""
 "That is why I live all the way up here.\n"
 "You can see quite a bit from this height."
 msgstr ""
-"هذا هو السبب في أنني أعيش على طول الطريق حتى هنا. يمكنك ان ترى قدرا كبيرا من"
-" هذا الارتفاع."
+"هذا هو السبب في أنني أعيش على طول الطريق حتى هنا. يمكنك ان ترى قدرا كبيرا من "
+"هذا الارتفاع."
 
 #: data/level/secluded-hut-interior.cfg:931
 msgid ""
@@ -3517,8 +3514,8 @@ msgid ""
 "Impressive how fast they can do that,\n"
 "with modular construction and all."
 msgstr ""
-"ومع ذلك ، كنت أفضل أن تكون عاملة. نأمل ، سوف نصلح هذا الجسر قريبا. إعجاب مدى"
-" السرعة التي يمكن أن نفعل ذلك ، مع وحدات البناء وجميع."
+"ومع ذلك ، كنت أفضل أن تكون عاملة. نأمل ، سوف نصلح هذا الجسر قريبا. إعجاب مدى "
+"السرعة التي يمكن أن نفعل ذلك ، مع وحدات البناء وجميع."
 
 #: data/level/secluded-hut.cfg:1114
 msgid ""
@@ -3599,14 +3596,14 @@ msgid ""
 "In fact, I came to him with the idea.\n"
 "It was meant to be philanthropy."
 msgstr ""
-"في الواقع ، لقد جئت إليه مع هذه الفكرة. وكان من المفترض أن يكون العمل "
-"الخيري."
+"في الواقع ، لقد جئت إليه مع هذه الفكرة. وكان من المفترض أن يكون العمل الخيري."
 
 #: data/level/tea-with-milgram.cfg:192
 msgid ""
 "I thought a 'mayor' would be responsible,\n"
 "but instead he's spending it all on himself!"
-msgstr "فكرت \"عمدة\" ستكون مسؤولة ، ولكن بدلا من ذلك هو انفاق كل شيء على نفسه!"
+msgstr ""
+"فكرت \"عمدة\" ستكون مسؤولة ، ولكن بدلا من ذلك هو انفاق كل شيء على نفسه!"
 
 #: data/level/tea-with-milgram.cfg:195
 msgid "And now he's refusing to repay you?"
@@ -3800,8 +3797,7 @@ msgid ""
 "Well, now that I know the whole story,\n"
 "I think I can help you out, big time."
 msgstr ""
-"حسنا ، أنا أعرف الآن أن القصة كلها ، وأعتقد أنني أستطيع مساعدتك ، وقتا "
-"كبيرا."
+"حسنا ، أنا أعرف الآن أن القصة كلها ، وأعتقد أنني أستطيع مساعدتك ، وقتا كبيرا."
 
 #: data/level/tea-with-milgram.cfg:294
 msgid ""
@@ -4179,8 +4175,8 @@ msgid ""
 "I think I left a health capsule down there.\n"
 "If you can clear it out, it's yours."
 msgstr ""
-"ولكن اذا كنت تريد الذهاب ليكون مثل ذلك أعتقد أنني تركت كبسولة الصحية بانخفاض"
-" هناك. إذا كان يمكنك مسح بها ، انها لك."
+"ولكن اذا كنت تريد الذهاب ليكون مثل ذلك أعتقد أنني تركت كبسولة الصحية بانخفاض "
+"هناك. إذا كان يمكنك مسح بها ، انها لك."
 
 #: data/level/to-nenes-house-inside.cfg:528
 msgid ""
@@ -4208,8 +4204,7 @@ msgstr "عفوا."
 msgid ""
 "Can't a guy sneak into his neighbor's\n"
 "basement uninvited these days?"
-msgstr ""
-"لا يمكن التسلل إلى الطابق السفلي الرجل جاره غير المدعوة في هذه الأيام؟"
+msgstr "لا يمكن التسلل إلى الطابق السفلي الرجل جاره غير المدعوة في هذه الأيام؟"
 
 #: data/level/to-nenes-house-inside.cfg:696
 msgid "Well, dangit, this door is locked."
@@ -4311,7 +4306,7 @@ msgstr "هل تريد شراء consts.name {}؟"
 msgid "This is a blank tile. It doesn't do anything."
 msgstr "هذا هو البلاط فارغة. لم تفعل أي شيء."
 
-#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:79
+#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:75
 msgid "'"
 msgstr "'"
 
@@ -4325,8 +4320,8 @@ msgstr "جعلتك على المستوى level.player.difficulty {} من الس�
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level "
-"{registry.arcade_coin_race_high_score}."
+"The furthest that has been reached is level {registry."
+"arcade_coin_race_high_score}."
 msgstr ""
 "أبعد الذي تم التوصل إليه هو مستوى registry.arcade_coin_race_high_score {}."
 
@@ -4360,8 +4355,7 @@ msgid ""
 "Collect another one to increase\n"
 "your maximum HP by one!"
 msgstr ""
-"كنت قد وجدت جزءا من كبسولة القلب. جمع واحد آخر لزيادة الحد الأقصى لحصان "
-"واحد!"
+"كنت قد وجدت جزءا من كبسولة القلب. جمع واحد آخر لزيادة الحد الأقصى لحصان واحد!"
 
 #: data/objects/items/partial_max_heart_object.cfg:30
 msgid ""
@@ -4545,18 +4539,18 @@ msgstr "تحميل بالرصاص الطاقة"
 
 #: iOS_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are"
-" hoping to bring back the magic in a new, original game design with "
-"unconventional gameplay mechanics - a fun break from the usual clones. We're"
-" a small group of indie developers, hoping this game becomes one of the "
+"Frogatto was made by a group of big-time fans of classic videogames, who are "
+"hoping to bring back the magic in a new, original game design with "
+"unconventional gameplay mechanics - a fun break from the usual clones. We're "
+"a small group of indie developers, hoping this game becomes one of the "
 "definitive platform games on iOS - and you can make that happen!"
 msgstr ""
 "وأدلى Frogatto من قبل مجموعة من المشجعين في الوقت كبيرة من ألعاب الفيديو "
 "الكلاسيكية ، والذين يأملون في اعادة السحر في استراتيجية جديدة ، وتصميم "
 "اللعبة الأصلية مع الميكانيكا اللعب غير تقليدية -- فاصل متعة من الحيوانات "
 "المستنسخة المعتاد. نحن مجموعة صغيرة من مطوري المستقلة ، وتأمل هذه اللعبة "
-"يصبح واحدا من منصة الألعاب نهائي بشأن دائرة الرقابة الداخلية -- ويمكنك تحقيق"
-" ذلك!"
+"يصبح واحدا من منصة الألعاب نهائي بشأن دائرة الرقابة الداخلية -- ويمكنك تحقيق "
+"ذلك!"
 
 #: iOS_APP_STORE_METADATA:5
 msgid ""
@@ -4598,23 +4592,23 @@ msgstr "ظهر"
 msgid "Achievement Unlocked!"
 msgstr "تحقيق مفتوح!"
 
-#: src/main.cpp:397
+#: src/main.cpp:407
 msgid "Initializing custom object"
 msgstr "تهيئة كائن مخصص"
 
-#: src/main.cpp:399
+#: src/main.cpp:409
 msgid "Initializing custom object functions"
 msgstr "تهيئة وظائف كائن مخصص"
 
-#: src/main.cpp:401
+#: src/main.cpp:411
 msgid "Initializing tiles"
 msgstr "تهيئة البلاط"
 
-#: src/main.cpp:404 src/main.cpp:408
+#: src/main.cpp:414 src/main.cpp:418
 msgid "Initializing GUI"
 msgstr "تهيئة واجهة المستخدم الرسومية"
 
-#: src/main.cpp:414
+#: src/main.cpp:424
 msgid "Loading level"
 msgstr "تحميل المستوى"
 
@@ -4649,5 +4643,3 @@ msgstr "عكس ألف وباء"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
-
-

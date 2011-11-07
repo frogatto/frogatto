@@ -1,20 +1,21 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-10-26 00:02-0200\n"
+"POT-Creation-Date: 2011-11-07 00:18-0200\n"
 "PO-Revision-Date: 2011-10-26 02:03+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
-"Language-Team: Hungarian (Hungary) (http://www.transifex.net/projects/p/Frogatto/team/hu_HU/)\n"
+"Language-Team: Hungarian (Hungary) (http://www.transifex.net/projects/p/"
+"Frogatto/team/hu_HU/)\n"
+"Language: hu_HU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: hu_HU\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: CHANGELOG:1 iOS_CHANGELOG:1
@@ -86,8 +87,8 @@ msgid ""
 "Refactored damage and monster type systems to make behavior more consistent "
 "and eliminate some rare buggy behavior."
 msgstr ""
-"A sebzés és szörny típusok újradolgozva, hogy a viselkedések konzisztensebbé"
-" váljanak és néhány ritka hibás viselkedést így elkerüljünk."
+"A sebzés és szörny típusok újradolgozva, hogy a viselkedések konzisztensebbé "
+"váljanak és néhány ritka hibás viselkedést így elkerüljünk."
 
 #: CHANGELOG:19
 msgid ""
@@ -200,14 +201,13 @@ msgstr ""
 #: CHANGELOG:45
 msgid "Fixed bug where a dialog could repeat forever."
 msgstr ""
-"Hiba kijavítva, amely egy beszélgetés végtelenségig folytatását "
-"eredményezte."
+"Hiba kijavítva, amely egy beszélgetés végtelenségig folytatását eredményezte."
 
 #: CHANGELOG:46
 msgid "Fixed crash in world map when you hold down while entering it."
 msgstr ""
-"Hiba kijavítva, ahol a a játék összeomlott amikor a világtérképre belépéskor"
-" a lefele gombot nyomva tartottuk."
+"Hiba kijavítva, ahol a a játék összeomlott amikor a világtérképre belépéskor "
+"a lefele gombot nyomva tartottuk."
 
 #: CHANGELOG:47
 msgid "Fixed fullscreen mode (Mac/Windows)."
@@ -245,14 +245,14 @@ msgstr "Zenék frissítve."
 
 #: MAC_APP_STORE_METADATA:1 iOS_APP_STORE_METADATA:1
 msgid ""
-"An old-school 2d platformer game, starring a certain quixotic frog. From the"
-" creators of Battle for Wesnoth comes this exciting jump-and-run platformer."
-" Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all "
-"the gameplay nuance of a classic console title. Run and jump over pits and "
-"enemies. Grab enemies with your tongue, swallow them, and then spit them out"
-" at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
-"puzzles. Collect coins and use them to buy upgrades and new abilities in the"
-" store. Talk to characters in game, and work to unravel Big Bad Milgram's "
+"An old-school 2d platformer game, starring a certain quixotic frog. From the "
+"creators of Battle for Wesnoth comes this exciting jump-and-run platformer. "
+"Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all the "
+"gameplay nuance of a classic console title. Run and jump over pits and "
+"enemies. Grab enemies with your tongue, swallow them, and then spit them out "
+"at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
+"puzzles. Collect coins and use them to buy upgrades and new abilities in the "
+"store. Talk to characters in game, and work to unravel Big Bad Milgram's "
 "plot against the townsfolk! At over 30 levels set in 4 different "
 "environments, Frogatto is not a flash in the pan, and has the play-time "
 "you'd expect from a real videogame."
@@ -262,8 +262,8 @@ msgstr ""
 "és-futás platformert. A Frogatto pompás, csúcsminőségű pixel grafikával "
 "jelenik meg, arcade dallamokat közvetít, és biztosítja a remek élményeket, "
 "amelyeket egy klasszikus konzol játéktól elvárhatunk. Fuss és ugorj át "
-"szakadékokat és ellenségeket. Fogd meg az ellenséget a nyelveddel, nyeld le,"
-" majd köpd vissza őket más ellenségekre, mintha lövedékek lennének! Harcolj "
+"szakadékokat és ellenségeket. Fogd meg az ellenséget a nyelveddel, nyeld le, "
+"majd köpd vissza őket más ellenségekre, mintha lövedékek lennének! Harcolj "
 "veszélyes vezérek ellen és oldj meg furfangos fejtörőket! Gyűjts érméket, "
 "melyekkel fejlesztéseket és új képességeket vehetsz az üzletben. Beszélj a "
 "játékban fellelhető karakterekkel és serénykedj, hogy leleplezd a Nagy "
@@ -274,12 +274,12 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are"
-" hoping to bring back the magic in a new, original game design with "
+"Frogatto was made by a group of big-time fans of classic videogames, who are "
+"hoping to bring back the magic in a new, original game design with "
 "unconventional gameplay mechanics - a fun break from the usual clones."
 msgstr ""
-"A Frogattot egy klasszikus videójátékokat kedvelő csoport hozta létre, azzal"
-" a szándékkal, hogy visszahozzák a régi varázst egy új, eredeti játék "
+"A Frogattot egy klasszikus videójátékokat kedvelő csoport hozta létre, azzal "
+"a szándékkal, hogy visszahozzák a régi varázst egy új, eredeti játék "
 "formájában, mely a megszokottól eltérő játékmenetet biztosít - a szokásos "
 "klónoktól egy kellemes szünetet biztosítva."
 
@@ -289,9 +289,11 @@ msgstr "kulcsszavak:"
 
 #: MAC_APP_STORE_METADATA:6 iOS_APP_STORE_METADATA:8
 msgid ""
-"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
+"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,"
+"frog"
 msgstr ""
-"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
+"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,"
+"frog"
 
 #: data/achievements.cfg:4
 msgid "Pocket Money"
@@ -437,11 +439,11 @@ msgstr ""
 msgid "Stonepipe Bridge"
 msgstr ""
 
-#: data/level/airplane-boss.cfg:358
+#: data/level/airplane-boss.cfg:366
 msgid "Ambush!"
 msgstr "Csapda!"
 
-#: data/level/airplane-boss.cfg:367
+#: data/level/airplane-boss.cfg:375
 msgid "Victory!"
 msgstr "Győzelem!"
 
@@ -481,8 +483,8 @@ msgstr ""
 msgid ""
 "The high score is {registry.arcade_down_the_rabbit_hall_high_score} points."
 msgstr ""
-"A jelenlegi legnagyobb pontszám "
-"{registry.arcade_down_the_rabbit_hall_high_score}."
+"A jelenlegi legnagyobb pontszám {registry."
+"arcade_down_the_rabbit_hall_high_score}."
 
 #: data/level/arcade-maintenance-shaft.cfg:13
 #: data/level/titlescreen-arcade.cfg:181
@@ -498,8 +500,8 @@ msgstr ""
 msgid ""
 "The high score is {registry.arcade_maintenance_shaft_high_score} points."
 msgstr ""
-"A jelenlegi legnagyobb pontszám "
-"{registry.arcade_maintenance_shaft_high_score}."
+"A jelenlegi legnagyobb pontszám {registry."
+"arcade_maintenance_shaft_high_score}."
 
 #: data/level/arcade-nutty-factory.cfg:550
 #: data/level/arcade-nutty-factory.cfg:553
@@ -556,8 +558,7 @@ msgstr ""
 #: data/level/arcade-wild-new-wonder.cfg:2524
 msgid "The high score is {registry.arcade_wild_new_wonder_high_score} points."
 msgstr ""
-"A jelenlegi legnagyobb pontszám "
-"{registry.arcade_wild_new_wonder_high_score}."
+"A jelenlegi legnagyobb pontszám {registry.arcade_wild_new_wonder_high_score}."
 
 #: data/level/autumn-town.cfg:16
 msgid "Autumn Town"
@@ -3676,7 +3677,8 @@ msgid ""
 msgstr ""
 "Mindenesetre jobb, ha megyek.\n"
 "Remélhetőleg nemsokára megjavítjuk\n"
-"azt a hídat. Lenyűgöző, hogy milyengyorsan rendbe tudják tenni akészelemeknek köszönhetően."
+"azt a hídat. Lenyűgöző, hogy milyengyorsan rendbe tudják tenni "
+"akészelemeknek köszönhetően."
 
 #: data/level/secluded-hut.cfg:1114
 msgid ""
@@ -4270,8 +4272,7 @@ msgstr "'{LEFT_KEY}' vagy '{RIGHT_KEY}' segítségével tudsz sétálni."
 #: data/level/titlescreen-test.cfg:313 data/level/titlescreen-test.cfg:328
 #: data/level/titlescreen.cfg:318 data/level/titlescreen.cfg:335
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
-msgstr ""
-"'{LEFT_KEY}' vagy '{RIGHT_KEY}' kétszeri gyors nyomásával tudsz futni."
+msgstr "'{LEFT_KEY}' vagy '{RIGHT_KEY}' kétszeri gyors nyomásával tudsz futni."
 
 #: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:319
 msgid "Press {DOWN_KEY} to crouch."
@@ -4532,7 +4533,7 @@ msgstr "Megszeretnéd venni a {consts.name} tárgyat?"
 msgid "This is a blank tile. It doesn't do anything."
 msgstr "Ez egy üres csempe. Nem csinál semmit."
 
-#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:79
+#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:75
 msgid "'"
 msgstr ""
 
@@ -4546,8 +4547,8 @@ msgstr ""
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level "
-"{registry.arcade_coin_race_high_score}."
+"The furthest that has been reached is level {registry."
+"arcade_coin_race_high_score}."
 msgstr ""
 
 #: data/objects/items/max_heart_object.cfg:18
@@ -4792,10 +4793,10 @@ msgstr "Energialövés betöltése"
 
 #: iOS_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are"
-" hoping to bring back the magic in a new, original game design with "
-"unconventional gameplay mechanics - a fun break from the usual clones. We're"
-" a small group of indie developers, hoping this game becomes one of the "
+"Frogatto was made by a group of big-time fans of classic videogames, who are "
+"hoping to bring back the magic in a new, original game design with "
+"unconventional gameplay mechanics - a fun break from the usual clones. We're "
+"a small group of indie developers, hoping this game becomes one of the "
 "definitive platform games on iOS - and you can make that happen!"
 msgstr ""
 
@@ -4839,23 +4840,23 @@ msgstr "Vissza"
 msgid "Achievement Unlocked!"
 msgstr "Achievement feloldva!"
 
-#: src/main.cpp:397
+#: src/main.cpp:407
 msgid "Initializing custom object"
 msgstr "Egyedi objektumok betöltése"
 
-#: src/main.cpp:399
+#: src/main.cpp:409
 msgid "Initializing custom object functions"
 msgstr "Egyedi objektumok működésének betöltése"
 
-#: src/main.cpp:401
+#: src/main.cpp:411
 msgid "Initializing tiles"
 msgstr "Csempék betöltése"
 
-#: src/main.cpp:404 src/main.cpp:408
+#: src/main.cpp:414 src/main.cpp:418
 msgid "Initializing GUI"
 msgstr "GUI betöltése"
 
-#: src/main.cpp:414
+#: src/main.cpp:424
 msgid "Loading level"
 msgstr "Pálya betöltése"
 
@@ -4890,5 +4891,3 @@ msgstr "A és B felcserélése"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr ""
-
-

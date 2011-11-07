@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 #   <daniel@danielsiegmund.nl>, 2011.
 # ronald, 2011.
@@ -9,14 +9,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-10-26 00:02-0200\n"
+"POT-Creation-Date: 2011-11-07 00:18-0200\n"
 "PO-Revision-Date: 2011-10-26 02:03+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
-"Language-Team: Dutch (http://www.transifex.net/projects/p/Frogatto/team/nl/)\n"
+"Language-Team: Dutch (http://www.transifex.net/projects/p/Frogatto/team/"
+"nl/)\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: CHANGELOG:1 iOS_CHANGELOG:1
@@ -228,14 +229,14 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:1 iOS_APP_STORE_METADATA:1
 msgid ""
-"An old-school 2d platformer game, starring a certain quixotic frog. From the"
-" creators of Battle for Wesnoth comes this exciting jump-and-run platformer."
-" Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all "
-"the gameplay nuance of a classic console title. Run and jump over pits and "
-"enemies. Grab enemies with your tongue, swallow them, and then spit them out"
-" at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
-"puzzles. Collect coins and use them to buy upgrades and new abilities in the"
-" store. Talk to characters in game, and work to unravel Big Bad Milgram's "
+"An old-school 2d platformer game, starring a certain quixotic frog. From the "
+"creators of Battle for Wesnoth comes this exciting jump-and-run platformer. "
+"Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all the "
+"gameplay nuance of a classic console title. Run and jump over pits and "
+"enemies. Grab enemies with your tongue, swallow them, and then spit them out "
+"at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
+"puzzles. Collect coins and use them to buy upgrades and new abilities in the "
+"store. Talk to characters in game, and work to unravel Big Bad Milgram's "
 "plot against the townsfolk! At over 30 levels set in 4 different "
 "environments, Frogatto is not a flash in the pan, and has the play-time "
 "you'd expect from a real videogame."
@@ -243,8 +244,8 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are"
-" hoping to bring back the magic in a new, original game design with "
+"Frogatto was made by a group of big-time fans of classic videogames, who are "
+"hoping to bring back the magic in a new, original game design with "
 "unconventional gameplay mechanics - a fun break from the usual clones."
 msgstr ""
 
@@ -254,7 +255,8 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:6 iOS_APP_STORE_METADATA:8
 msgid ""
-"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
+"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,"
+"frog"
 msgstr ""
 
 #: data/achievements.cfg:4
@@ -401,11 +403,11 @@ msgstr ""
 msgid "Stonepipe Bridge"
 msgstr ""
 
-#: data/level/airplane-boss.cfg:358
+#: data/level/airplane-boss.cfg:366
 msgid "Ambush!"
 msgstr "Hinderlaag!"
 
-#: data/level/airplane-boss.cfg:367
+#: data/level/airplane-boss.cfg:375
 msgid "Victory!"
 msgstr "Victorie!"
 
@@ -1532,8 +1534,8 @@ msgid ""
 "I think that unlocks a house that\n"
 "has the key to the town gate."
 msgstr ""
-"En ik denk dat die sleutel waar je nu naast staat de sleutel is van het huis"
-" waar de sleutel van de stadspoort verstopt is."
+"En ik denk dat die sleutel waar je nu naast staat de sleutel is van het huis "
+"waar de sleutel van de stadspoort verstopt is."
 
 #: data/level/crevice-village-house-1.cfg:2517
 msgid "Maybe."
@@ -4239,7 +4241,7 @@ msgstr ""
 msgid "This is a blank tile. It doesn't do anything."
 msgstr ""
 
-#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:79
+#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:75
 msgid "'"
 msgstr ""
 
@@ -4253,8 +4255,8 @@ msgstr ""
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level "
-"{registry.arcade_coin_race_high_score}."
+"The furthest that has been reached is level {registry."
+"arcade_coin_race_high_score}."
 msgstr ""
 
 #: data/objects/items/max_heart_object.cfg:18
@@ -4470,10 +4472,10 @@ msgstr "Laden: Energy shot"
 
 #: iOS_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are"
-" hoping to bring back the magic in a new, original game design with "
-"unconventional gameplay mechanics - a fun break from the usual clones. We're"
-" a small group of indie developers, hoping this game becomes one of the "
+"Frogatto was made by a group of big-time fans of classic videogames, who are "
+"hoping to bring back the magic in a new, original game design with "
+"unconventional gameplay mechanics - a fun break from the usual clones. We're "
+"a small group of indie developers, hoping this game becomes one of the "
 "definitive platform games on iOS - and you can make that happen!"
 msgstr ""
 
@@ -4517,23 +4519,23 @@ msgstr "Terug"
 msgid "Achievement Unlocked!"
 msgstr "Prestatie vrijgespeeld!"
 
-#: src/main.cpp:397
+#: src/main.cpp:407
 msgid "Initializing custom object"
 msgstr "Initialiseren: custom object"
 
-#: src/main.cpp:399
+#: src/main.cpp:409
 msgid "Initializing custom object functions"
 msgstr "Initialiseren: custom object functions"
 
-#: src/main.cpp:401
+#: src/main.cpp:411
 msgid "Initializing tiles"
 msgstr "Initialiseren: tegels"
 
-#: src/main.cpp:404 src/main.cpp:408
+#: src/main.cpp:414 src/main.cpp:418
 msgid "Initializing GUI"
 msgstr "Initialiseren: GUI "
 
-#: src/main.cpp:414
+#: src/main.cpp:424
 msgid "Loading level"
 msgstr "Laden: Level"
 
@@ -4568,5 +4570,3 @@ msgstr "A en B omdraaien"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
-
-

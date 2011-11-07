@@ -1,21 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 #   <transifex@nusaantara.umail.net>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-10-26 00:02-0200\n"
+"POT-Creation-Date: 2011-11-07 00:18-0200\n"
 "PO-Revision-Date: 2011-10-26 02:03+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
-"Language-Team: Malay (Malaysia) (http://www.transifex.net/projects/p/Frogatto/team/ms_MY/)\n"
+"Language-Team: Malay (Malaysia) (http://www.transifex.net/projects/p/"
+"Frogatto/team/ms_MY/)\n"
+"Language: ms_MY\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ms_MY\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: CHANGELOG:1 iOS_CHANGELOG:1
@@ -124,8 +125,7 @@ msgstr "Sokongan untuk WVGA ditambah."
 
 #: CHANGELOG:28
 msgid "Made player status not show on the titlescreen or world map."
-msgstr ""
-"Buatkan status pemain tidak dipapar pada skrin pemula atau peta dunia."
+msgstr "Buatkan status pemain tidak dipapar pada skrin pemula atau peta dunia."
 
 #: CHANGELOG:29
 msgid "Made golden ants less ambiguous."
@@ -150,8 +150,8 @@ msgid ""
 "Pressing jump while in the air pressing against a wall now makes you cling "
 "to the wall."
 msgstr ""
-"Tekan lompat ketika di udara sambil terkam dinding kini buatkan anda melekap"
-" pada dinding."
+"Tekan lompat ketika di udara sambil terkam dinding kini buatkan anda melekap "
+"pada dinding."
 
 #: CHANGELOG:34
 msgid "Made it so you can skip dialogs sequences."
@@ -237,25 +237,25 @@ msgstr "Muzik dikemaskini."
 
 #: MAC_APP_STORE_METADATA:1 iOS_APP_STORE_METADATA:1
 msgid ""
-"An old-school 2d platformer game, starring a certain quixotic frog. From the"
-" creators of Battle for Wesnoth comes this exciting jump-and-run platformer."
-" Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all "
-"the gameplay nuance of a classic console title. Run and jump over pits and "
-"enemies. Grab enemies with your tongue, swallow them, and then spit them out"
-" at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
-"puzzles. Collect coins and use them to buy upgrades and new abilities in the"
-" store. Talk to characters in game, and work to unravel Big Bad Milgram's "
+"An old-school 2d platformer game, starring a certain quixotic frog. From the "
+"creators of Battle for Wesnoth comes this exciting jump-and-run platformer. "
+"Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all the "
+"gameplay nuance of a classic console title. Run and jump over pits and "
+"enemies. Grab enemies with your tongue, swallow them, and then spit them out "
+"at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
+"puzzles. Collect coins and use them to buy upgrades and new abilities in the "
+"store. Talk to characters in game, and work to unravel Big Bad Milgram's "
 "plot against the townsfolk! At over 30 levels set in 4 different "
 "environments, Frogatto is not a flash in the pan, and has the play-time "
 "you'd expect from a real videogame."
 msgstr ""
-"Satu permainan platformer 2d gaya-dulu, dibintangi seekor katak yang sedikit"
-" quiksotik. Daripada pencipta Battle for Wesnoth keluarnya platformer "
-"lompat-dan-lari yang menarik ini. Frogatto tampil menyeronokkan, seni piksel"
-" high-end, tiun arked menarik, dan semua nuansa gameplay pada sebuah judul "
-"konsol klasik. Lompat dan lari lepasi lubang dan musuh. Cekup musuh guna "
-"lidah anda, telan mereka, kemudiannya ludah keluar mereka ke arah musuh lain"
-" sebagai projektil! Lawan bos raksasa merbahaya, dan selesaikan puzel "
+"Satu permainan platformer 2d gaya-dulu, dibintangi seekor katak yang sedikit "
+"quiksotik. Daripada pencipta Battle for Wesnoth keluarnya platformer lompat-"
+"dan-lari yang menarik ini. Frogatto tampil menyeronokkan, seni piksel high-"
+"end, tiun arked menarik, dan semua nuansa gameplay pada sebuah judul konsol "
+"klasik. Lompat dan lari lepasi lubang dan musuh. Cekup musuh guna lidah "
+"anda, telan mereka, kemudiannya ludah keluar mereka ke arah musuh lain "
+"sebagai projektil! Lawan bos raksasa merbahaya, dan selesaikan puzel "
 "membingungkan. Kumpul koin dan gunanya untuk beli upgrade dan abiliti baru "
 "di kedai. Bercakap dengan watak dalam permainan, dan usaha untuk merungkai "
 "plot Big Bad Milgram menentang penduduk pekan! Terdapat lebih daripada 30 "
@@ -265,8 +265,8 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are"
-" hoping to bring back the magic in a new, original game design with "
+"Frogatto was made by a group of big-time fans of classic videogames, who are "
+"hoping to bring back the magic in a new, original game design with "
 "unconventional gameplay mechanics - a fun break from the usual clones."
 msgstr ""
 "Frogatto dibuat oleh sekumpulan peminat yang begitu minat akan permainan "
@@ -280,7 +280,8 @@ msgstr "kata kunci:"
 
 #: MAC_APP_STORE_METADATA:6 iOS_APP_STORE_METADATA:8
 msgid ""
-"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
+"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,"
+"frog"
 msgstr ""
 "platformer,pixelart,gayadulu,platform,game,pixel,arked,aksi,adventure,katak"
 
@@ -428,11 +429,11 @@ msgstr "Jalan!"
 msgid "Stonepipe Bridge"
 msgstr "Jambatan Paip Batu"
 
-#: data/level/airplane-boss.cfg:358
+#: data/level/airplane-boss.cfg:366
 msgid "Ambush!"
 msgstr "Serang Hendap!"
 
-#: data/level/airplane-boss.cfg:367
+#: data/level/airplane-boss.cfg:375
 msgid "Victory!"
 msgstr "Berjaya!"
 
@@ -487,8 +488,7 @@ msgstr "Anda dapat {level.player.vars.score} poin dalam syaf selenggara!"
 #: data/level/arcade-maintenance-shaft.cfg:2583
 msgid ""
 "The high score is {registry.arcade_maintenance_shaft_high_score} points."
-msgstr ""
-"Skor tinggi ialah {registry.arcade_maintenance_shaft_high_score} poin."
+msgstr "Skor tinggi ialah {registry.arcade_maintenance_shaft_high_score} poin."
 
 #: data/level/arcade-nutty-factory.cfg:550
 #: data/level/arcade-nutty-factory.cfg:553
@@ -4792,7 +4792,7 @@ msgstr "Anda hendak beli {consts.name}?"
 msgid "This is a blank tile. It doesn't do anything."
 msgstr "Ini tail kosong. Ia tiada apa-apa."
 
-#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:79
+#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:75
 msgid "'"
 msgstr "'"
 
@@ -4806,8 +4806,8 @@ msgstr "Anda berjaya ke level {level.player.difficulty} lumba koin ini."
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level "
-"{registry.arcade_coin_race_high_score}."
+"The furthest that has been reached is level {registry."
+"arcade_coin_race_high_score}."
 msgstr ""
 "Pencapaian yang paling jauh ialah level\n"
 "{registry.arcade_coin_race_high_score}."
@@ -5056,18 +5056,18 @@ msgstr "Memuat bekalan tenaga"
 
 #: iOS_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are"
-" hoping to bring back the magic in a new, original game design with "
-"unconventional gameplay mechanics - a fun break from the usual clones. We're"
-" a small group of indie developers, hoping this game becomes one of the "
+"Frogatto was made by a group of big-time fans of classic videogames, who are "
+"hoping to bring back the magic in a new, original game design with "
+"unconventional gameplay mechanics - a fun break from the usual clones. We're "
+"a small group of indie developers, hoping this game becomes one of the "
 "definitive platform games on iOS - and you can make that happen!"
 msgstr ""
 "Frogatto dibuat oleh sekumpulan peminat yang begitu minat akan permainan "
 "video klasik, mereka berharap untuk membawa semula magis dalam rekaan "
 "permainan yang baru, asli dengan mekanik gameplay di luar kelaziman - "
 "perbezaan menyeronokkan daripada klon biasa. Kami merupakan kumpulan kecil "
-"pembangun indi, berharap permainan ini menjadi salah satu permainan platform"
-" definitif pada iOS - dan anda boleh merealisasikan itu!"
+"pembangun indi, berharap permainan ini menjadi salah satu permainan platform "
+"definitif pada iOS - dan anda boleh merealisasikan itu!"
 
 #: iOS_APP_STORE_METADATA:5
 msgid ""
@@ -5109,23 +5109,23 @@ msgstr "Kembali"
 msgid "Achievement Unlocked!"
 msgstr "Pencapaian Terungkai!"
 
-#: src/main.cpp:397
+#: src/main.cpp:407
 msgid "Initializing custom object"
 msgstr "Memulakan objek kustom"
 
-#: src/main.cpp:399
+#: src/main.cpp:409
 msgid "Initializing custom object functions"
 msgstr "Memulakan fungsi objek kustom"
 
-#: src/main.cpp:401
+#: src/main.cpp:411
 msgid "Initializing tiles"
 msgstr "Memulakan tail"
 
-#: src/main.cpp:404 src/main.cpp:408
+#: src/main.cpp:414 src/main.cpp:418
 msgid "Initializing GUI"
 msgstr "Memulakan GUI"
 
-#: src/main.cpp:414
+#: src/main.cpp:424
 msgid "Loading level"
 msgstr "Memuat Level"
 
@@ -5160,5 +5160,3 @@ msgstr "Pembalikan A dan B"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "Langkah Mengacah"
-
-
