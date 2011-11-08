@@ -409,6 +409,18 @@ namespace {
 		}
 	};
 
+	class integer_function : public function_expression {
+	public:
+		explicit integer_function(const args_list& args)
+			: function_expression("integer", args, 1, 1)
+		{}
+
+	private:
+		variant execute(const formula_callable& variables) const {
+			return variant(round(args()[0]->evaluate(variables).as_decimal()));
+		}
+	};
+
 	class sin_function : public function_expression {	//Interprets two least significant digits as after decimal.
 	public:
 		explicit sin_function(const args_list& args)
@@ -1350,6 +1362,7 @@ namespace {
 			FUNCTION(choose);
 			FUNCTION(wave);
 			FUNCTION(decimal);
+			FUNCTION(integer);
 			FUNCTION(sin);
 			FUNCTION(cos);
 			FUNCTION(tan);
