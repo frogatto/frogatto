@@ -417,7 +417,7 @@ namespace {
 
 	private:
 		variant execute(const formula_callable& variables) const {
-			return variant(round(args()[0]->evaluate(variables).as_decimal()));
+			return variant(args()[0]->evaluate(variables).as_int());
 		}
 	};
 
