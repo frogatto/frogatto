@@ -1372,7 +1372,6 @@ namespace {
 			FUNCTION(sqrt);
 			FUNCTION(angle);
 			FUNCTION(orbit);
-			FUNCTION(regex);
 			FUNCTION(sort);
 			FUNCTION(shuffle);
 			FUNCTION(flatten);
@@ -1489,9 +1488,9 @@ UNIT_TEST(flatten_function) {
 	CHECK(game_logic::formula("flatten([[[0,2,4],6,8],10,[12,14]])").execute() == game_logic::formula("[0,2,4,6,8,10,12,14]").execute(), "test failed");
 }
 
-UNIT_TEST(regex_function_FAILS) {
-	CHECK(game_logic::formula("regex('a(bc.)', 'abcd abce bbcf bacg')").execute() == game_logic::formula("['bcd', 'bce']").execute(), "regex failed")
-}
+// UNIT_TEST(regex_function_FAILS) {
+// 	CHECK(game_logic::formula("regex('a(bc.)', 'abcd abce bbcf bacg')").execute() == game_logic::formula("['bcd', 'bce']").execute(), "regex failed")
+//}
 
 BENCHMARK(map_function) {
 	using namespace game_logic;

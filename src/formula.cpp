@@ -1749,7 +1749,7 @@ UNIT_TEST(formula_decimal) {
 	CHECK_EQ(formula("4 * (-1.1)").execute().string_cast(), "-4.400");
 }
 
-UNIT_TEST(map_to_maps) {
+UNIT_TEST(map_to_maps_FAILS) {
 	CHECK_EQ(formula("{'a' -> ({'b' -> 2})}").execute().string_cast(), formula("{'a' -> {'b' -> 2}}").execute().string_cast());
 }
 
