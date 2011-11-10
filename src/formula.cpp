@@ -1749,6 +1749,10 @@ UNIT_TEST(formula_decimal) {
 	CHECK_EQ(formula("4 * (-1.1)").execute().string_cast(), "-4.400");
 }
 
+UNIT_TEST(map_to_maps) {
+	CHECK_EQ(formula("{'a' -> ({'b' -> 2})}").execute().string_cast(), formula("{'a' -> {'b' -> 2}}").execute().string_cast());
+}
+
 BENCHMARK(formula_if) {
 	static map_formula_callable* callable = new map_formula_callable;
 	callable->add("x", variant(1));
