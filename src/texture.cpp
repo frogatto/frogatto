@@ -491,8 +491,13 @@ texture texture::get_palette_mapped(const std::string& str, int palette)
 	if(!result.valid()) {
 		key surfs;
 		surface s = surface_cache::get_no_cache(str);
-		surfs.push_back(map_palette(s, palette));
-		result = texture(surfs);
+		if(s.get() != NULL) {
+			surfs.push_back(map_palette(s, palette));
+			result = texture(surfs);
+		} else {
+			std::cerr << "COULD NOT FIND IMAGE FOR PALETTE MAPPING: '" << str << "'\n";
+		}
+
 		palette_texture_cache().put(k, result);
 	}
 
