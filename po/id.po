@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 #   <m_radifar05@yahoo.com>, 2011.
 # Muhammad Radifar <m_radifar05@yahoo.com>, 2011.
@@ -9,82 +9,138 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-11-07 00:18-0200\n"
-"PO-Revision-Date: 2011-10-26 02:03+0000\n"
+"POT-Creation-Date: 2011-11-13 16:33-0200\n"
+"PO-Revision-Date: 2011-11-13 18:33+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
-"Language-Team: Indonesian (http://www.transifex.net/projects/p/Frogatto/team/"
-"id/)\n"
-"Language: id\n"
+"Language-Team: Indonesian (http://www.transifex.net/projects/p/Frogatto/team/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: id\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
-#: CHANGELOG:1 iOS_CHANGELOG:1
+#: CHANGELOG:1
+msgid "Version 1.2:"
+msgstr ""
+
+#: CHANGELOG:2
+msgid ""
+"Complete redo of iOS controls, switching to a 2-button dpad from a 4-button."
+"  Eliminates all problems with mispressed up or down keys interrupting other"
+" actions."
+msgstr ""
+
+#: CHANGELOG:3
+msgid ""
+"Complete redo of attack logic; frogatto now is free to walk around whilst he"
+" attacks, and in general is much more responsive."
+msgstr ""
+
+#: CHANGELOG:4
+msgid "Frogatto's tongue-grabbing is MUCH more forgiving"
+msgstr ""
+
+#: CHANGELOG:5
+msgid ""
+"Complete rewrite of damage handling; much more consistent now, and "
+"categorically eliminates some bugs where damage wouldn't get dealt."
+msgstr ""
+
+#: CHANGELOG:6
+msgid "Reworked some tilesets to eliminate tiling errors."
+msgstr ""
+
+#: CHANGELOG:7
+msgid "Further enhancements to dungeon wall graphics (added edges)."
+msgstr ""
+
+#: CHANGELOG:8
+msgid "New, more readable dialogue font."
+msgstr ""
+
+#: CHANGELOG:9
+msgid "Lots of small graphical tweaks."
+msgstr ""
+
+#: CHANGELOG:10
+msgid "Maps are now strewn with spittable props within easy reach."
+msgstr ""
+
+#: CHANGELOG:11
+msgid "Rewrote most of the dialogue."
+msgstr ""
+
+#: CHANGELOG:12
+msgid ""
+"Collectible items like coins can be collected by being touched by the "
+"tongue, besides just frogatto's body."
+msgstr ""
+
+#: CHANGELOG:14 iOS_CHANGELOG:1
 msgid "Version 1.1.1:"
 msgstr "Versi 1.1.1:"
 
-#: CHANGELOG:2 iOS_CHANGELOG:2
+#: CHANGELOG:15 iOS_CHANGELOG:2
 msgid "Fixed some crashing bugs."
 msgstr "Beberapa kesalahan fatal diperbaiki."
 
-#: CHANGELOG:3
+#: CHANGELOG:16
 msgid "Fixed The Long Haul (compiled mode)"
 msgstr "Perjalanan Panjang diperbaiki (mode terkompilasi)"
 
-#: CHANGELOG:4
+#: CHANGELOG:17
 msgid "Fixed instructions on titlescreen (iOS)"
 msgstr "Perbaikan instruksi pada layarjudul (iOS)"
 
-#: CHANGELOG:5 iOS_CHANGELOG:5
+#: CHANGELOG:18 iOS_CHANGELOG:5
 msgid "New translation: Italian"
 msgstr "Terjemahan baru: bahasa Itali"
 
-#: CHANGELOG:6
+#: CHANGELOG:19
 msgid "Added automatic language selection for Windows"
 msgstr "Penambahan pemilihan bahasa otomatis untuk Windows"
 
-#: CHANGELOG:8
+#: CHANGELOG:21
 msgid "Version 1.1:"
 msgstr "Versi 1.1:"
 
-#: CHANGELOG:9
+#: CHANGELOG:22
 msgid "Added arcade mode."
 msgstr "Mode arcade ditambahkan."
 
-#: CHANGELOG:10
+#: CHANGELOG:23
 msgid "Redid graphics for forest trees."
 msgstr "Grafis untuk pepohonan di hutan didekor-ulang"
 
-#: CHANGELOG:11
+#: CHANGELOG:24
 msgid "Redid graphics for forest background"
 msgstr "Grafis untuk latar belakang hutan didekor-ulang"
 
-#: CHANGELOG:12
+#: CHANGELOG:25
 msgid "Redid graphics for dungeon wall tiles"
 msgstr "Grafis untuk dinding kastil didekor-ulang"
 
-#: CHANGELOG:13
+#: CHANGELOG:26
 msgid "Redid graphics for basement wall tiles"
 msgstr "Grafis untuk ubin dinding bawah-tanah didekor-ulang"
 
-#: CHANGELOG:14
+#: CHANGELOG:27
 msgid "Added a bunch of interior props"
 msgstr "Banyak pendukung interior ditambahkan"
 
-#: CHANGELOG:15
+#: CHANGELOG:28
 msgid "Reworked \"darkness\" for improved appearance"
 msgstr "\"Kegelapan\" dikerjakan ulang untuk tampilan yang lebih baik"
 
-#: CHANGELOG:16
+#: CHANGELOG:29
 msgid "Added new palettes to forest and seaside areas."
 msgstr "Penambahan palet baru untuk area hutan dan sisi lautan."
 
-#: CHANGELOG:17
+#: CHANGELOG:30
 msgid "Added some unique enemies to the forest."
 msgstr "Penambahan beberapa musuh unik untuk hutan."
 
-#: CHANGELOG:18
+#: CHANGELOG:31
 msgid ""
 "Refactored damage and monster type systems to make behavior more consistent "
 "and eliminate some rare buggy behavior."
@@ -92,7 +148,7 @@ msgstr ""
 "Pemfaktoran-ulang sistem kerusakan dan tipe monster agar perilaku lebih "
 "konsisten dan menghilangkan beberapa kesalahan perilaku yang jarang terjadi."
 
-#: CHANGELOG:19
+#: CHANGELOG:32
 msgid ""
 "Added translation support, with 4 complete translations: French, Brazilian "
 "Portuguese, Chinese (Simplified), and Japanese."
@@ -100,52 +156,54 @@ msgstr ""
 "Penambahan dukungan terjemahan, dengan 4 terjemahan baru: Bahasa Prancis, "
 "Portugis Brazil, Cina (Disederhanakan), dan Jepang."
 
-#: CHANGELOG:21
+#: CHANGELOG:34
 msgid "Version 1.0.3:"
 msgstr "Versi 1.0.3:"
 
-#: CHANGELOG:22
+#: CHANGELOG:35
 msgid "Fixed crash when picking up max heart pieces."
-msgstr "Program berhenti saat mengambil potongan jantung maks telah diperbaiki"
+msgstr ""
+"Program berhenti saat mengambil potongan jantung maks telah diperbaiki"
 
-#: CHANGELOG:23
+#: CHANGELOG:36
 msgid "Other small bug fixes."
 msgstr "Perbaikan kesalahan-kesalahan kecil lainnya."
 
-#: CHANGELOG:25
+#: CHANGELOG:38
 msgid "Version 1.0.2:"
 msgstr "Versi 1.0.2:"
 
-#: CHANGELOG:26
+#: CHANGELOG:39
 msgid "Added support for \"darkness\" in levels."
 msgstr "Penambahan dukungan untuk \"kegelapan\" dalam level."
 
-#: CHANGELOG:27
+#: CHANGELOG:40
 msgid "Added support for WVGA."
 msgstr "Penambahan dukungan untuk WVGA."
 
-#: CHANGELOG:28
+#: CHANGELOG:41
 msgid "Made player status not show on the titlescreen or world map."
 msgstr "Status pemain tidak ditampilkan pada layarjudul atau peta dunia."
 
-#: CHANGELOG:29
+#: CHANGELOG:42
 msgid "Made golden ants less ambiguous."
 msgstr "Semut emas menjadi sedikit lebih rancu."
 
-#: CHANGELOG:30
+#: CHANGELOG:43
 msgid "Fixed bug making certain music always play at full volume (iPhone)."
 msgstr ""
-"Perbaikan kesalahan dimana musik selalu dimainkan pada volume penuh (iPhone)."
+"Perbaikan kesalahan dimana musik selalu dimainkan pada volume penuh "
+"(iPhone)."
 
-#: CHANGELOG:31
+#: CHANGELOG:44
 msgid "Added option to reverse positions of A and B buttons (iPhone)."
 msgstr "Penambahan pilihan untuk menukar posisi tombol A dan B (iPhone)."
 
-#: CHANGELOG:32
+#: CHANGELOG:45
 msgid "Added support for repeating levels (for arcade modes)."
 msgstr "Penambahan dukungan untuk mengulangi level (untuk mode arcade)."
 
-#: CHANGELOG:33
+#: CHANGELOG:46
 msgid ""
 "Pressing jump while in the air pressing against a wall now makes you cling "
 "to the wall."
@@ -153,130 +211,130 @@ msgstr ""
 "Menekan lompat saat di udara di dekat dinding akan membuatmu menempel di "
 "dinding."
 
-#: CHANGELOG:34
+#: CHANGELOG:47
 msgid "Made it so you can skip dialogs sequences."
 msgstr "Sekarang urutan dialog dapat dilewati."
 
-#: CHANGELOG:35
+#: CHANGELOG:48
 msgid "Fixed lots of z-order issues."
 msgstr "Banyak masalah z-order telah diperbaiki."
 
-#: CHANGELOG:36
+#: CHANGELOG:49
 msgid "Fixed bug causing ambient sounds to not work."
 msgstr ""
 "Kesalahan yang menyebabkan suara sekitar tidak bekerja telah diperbaiki."
 
-#: CHANGELOG:37
+#: CHANGELOG:50
 msgid "Improved forest background, and made it go upwards infinitely."
 msgstr ""
 "Latar belakang hutan telah ditingkatkan, dan telah dibuat supaya ikut ke "
 "atas tanpa batas."
 
-#: CHANGELOG:38
+#: CHANGELOG:51
 msgid "Made hearts heal a full heart, rather than just half."
 msgstr ""
 "Menjadikan jantung menyembuhkan satu jantung utuh, ketimbang hanya separuh."
 
-#: CHANGELOG:39
+#: CHANGELOG:52
 msgid "Changed tilesets to make water look better."
 msgstr "Merubah set ubin untuk mempercantik air."
 
-#: CHANGELOG:40
+#: CHANGELOG:53
 msgid "Many small bug fixes."
 msgstr "Banyak perbaikan kesalahan kecil."
 
-#: CHANGELOG:42
+#: CHANGELOG:55
 msgid "Version 1.0.1 (iPhone only):"
 msgstr "Versi 1.0.1 (hanya iPhone):"
 
-#: CHANGELOG:43
+#: CHANGELOG:56
 msgid ""
 "Significantly improved controls, both functionally and graphically (iPhone)."
 msgstr ""
 "Peningkatan kendali secara signifikan, baik dari segi fungsi maupun grafis "
 "(iPhone)."
 
-#: CHANGELOG:44
+#: CHANGELOG:57
 msgid "Fixed auto-saving on iOS4 where multitasking is supported (iPhone)."
 msgstr ""
 "Perbaikan pada auto-penyimpanan untuk iOS4 dimana multitasking didukung "
 "(iPhone)."
 
-#: CHANGELOG:45
+#: CHANGELOG:58
 msgid "Fixed bug where a dialog could repeat forever."
 msgstr "Kesalahan dimana dialog mengulang terus-menerus telah diperbaiki."
 
-#: CHANGELOG:46
+#: CHANGELOG:59
 msgid "Fixed crash in world map when you hold down while entering it."
 msgstr ""
 "Perbaikan kesalahan dimana program berhenti dalam peta dunia saat anda "
 "menekan bawah ketika memasukinya."
 
-#: CHANGELOG:47
+#: CHANGELOG:60
 msgid "Fixed fullscreen mode (Mac/Windows)."
 msgstr "Perbaikan mode layarpenuh (Mac/Windows)."
 
-#: CHANGELOG:48
+#: CHANGELOG:61
 msgid "Fixed controlpad issues for computers."
 msgstr "Perbaikan masalah tombol kendali untuk komputer."
 
-#: CHANGELOG:49
+#: CHANGELOG:62
 msgid "Added music and sound volume controls to pause screen."
 msgstr "Penambahan kendali volume musik dan suara pada layar jeda."
 
-#: CHANGELOG:50
+#: CHANGELOG:63
 msgid "Added customizable controls."
 msgstr "Penyetelan kendali ditambahkan."
 
-#: CHANGELOG:51
+#: CHANGELOG:64
 msgid "Added half-hearts."
 msgstr "Separuh-jantung ditambahkan."
 
-#: CHANGELOG:52
+#: CHANGELOG:65
 msgid "Added scons script for compiling."
 msgstr "Penambahan skrip scons untuk kompilasi."
 
-#: CHANGELOG:53
+#: CHANGELOG:66
 msgid "Minor level changes."
 msgstr "Perubahan tingkat minor."
 
-#: CHANGELOG:54
+#: CHANGELOG:67
 msgid "Updated music."
 msgstr "Musik di-update."
 
 #: MAC_APP_STORE_METADATA:1 iOS_APP_STORE_METADATA:1
 msgid ""
-"An old-school 2d platformer game, starring a certain quixotic frog. From the "
-"creators of Battle for Wesnoth comes this exciting jump-and-run platformer. "
-"Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all the "
-"gameplay nuance of a classic console title. Run and jump over pits and "
-"enemies. Grab enemies with your tongue, swallow them, and then spit them out "
-"at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
-"puzzles. Collect coins and use them to buy upgrades and new abilities in the "
-"store. Talk to characters in game, and work to unravel Big Bad Milgram's "
+"An old-school 2d platformer game, starring a certain quixotic frog. From the"
+" creators of Battle for Wesnoth comes this exciting jump-and-run platformer."
+" Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all "
+"the gameplay nuance of a classic console title. Run and jump over pits and "
+"enemies. Grab enemies with your tongue, swallow them, and then spit them out"
+" at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
+"puzzles. Collect coins and use them to buy upgrades and new abilities in the"
+" store. Talk to characters in game, and work to unravel Big Bad Milgram's "
 "plot against the townsfolk! At over 30 levels set in 4 different "
 "environments, Frogatto is not a flash in the pan, and has the play-time "
 "you'd expect from a real videogame."
 msgstr ""
 "Permainan platform jadul 2d, dibintangi kodok khayalan. Pencipta Battle for "
 "Wesnoth menghadirkan permainan lompat-dan-lari di atas platform yang "
-"menyenangkan ini. Frogatto menampilkan gambar yang enak dilihat, seni piksel "
-"yang canggih, setelan arcade bertingkat, serta suasana permainan seperti "
+"menyenangkan ini. Frogatto menampilkan gambar yang enak dilihat, seni piksel"
+" yang canggih, setelan arcade bertingkat, serta suasana permainan seperti "
 "permainan konsol klasik. Berlari dan melompati lubang dan musuh. Menangkap "
 "musuh dengan lidahmu, menelan mereka, dan memuntahkan mereka keluar sebagai "
 "peluru ke arah musuh lainnya! Bertarung melawan bos-bos berbahaya, dan "
 "memecahkan teka-teki yang menjengkelkan. Mengumpulkan koin dan "
 "menggunakannya untuk membeli upgrade dan kemampuan baru di toko. Berbicara "
 "pada karakter-karakter dalam permainan, dan menggagalkan rencana jahat "
-"Milgram terhadap penduduk kota! Ada lebih dari 30 level yang disiapkan dalam "
-"4 lingkungan berbeda, Frogatto bukanlah sekedar gembar-gembor tapi mlempem, "
-"dan memiliki waktu bermain seperti yang anda harapkan dari sebuah videogame "
-"sungguhan."
+"Milgram terhadap penduduk kota! Ada lebih dari 30 level yang disiapkan dalam"
+" 4 lingkungan berbeda, Frogatto bukanlah sekedar gembar-gembor tapi mlempem,"
+" dan memiliki waktu bermain seperti yang anda harapkan dari sebuah videogame"
+" sungguhan."
 
 #: MAC_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are "
-"hoping to bring back the magic in a new, original game design with "
+"Frogatto was made by a group of big-time fans of classic videogames, who are"
+" hoping to bring back the magic in a new, original game design with "
 "unconventional gameplay mechanics - a fun break from the usual clones."
 msgstr ""
 "Frogatto dibuat oleh sekelompok penggemar luar biasa dari videogame klasik, "
@@ -290,11 +348,9 @@ msgstr "kata kunci:"
 
 #: MAC_APP_STORE_METADATA:6 iOS_APP_STORE_METADATA:8
 msgid ""
-"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,"
-"frog"
+"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
 msgstr ""
-"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,"
-"frog"
+"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
 
 #: data/achievements.cfg:4
 msgid "Pocket Money"
@@ -493,7 +549,8 @@ msgstr ""
 msgid ""
 "The high score is {registry.arcade_down_the_rabbit_hall_high_score} points."
 msgstr ""
-"High score-nya adalah {registry.arcade_down_the_rabbit_hall_high_score} poin."
+"High score-nya adalah {registry.arcade_down_the_rabbit_hall_high_score} "
+"poin."
 
 #: data/level/arcade-maintenance-shaft.cfg:13
 #: data/level/titlescreen-arcade.cfg:181
@@ -518,7 +575,8 @@ msgstr "Kamu mendapat {level.player.vars.score} poin di Pabrik Kegilaan!"
 
 #: data/level/arcade-nutty-factory.cfg:554
 msgid "The high score is {registry.arcade_nutty_factory_high_score} points."
-msgstr "High score-nya adalah {registry.arcade_nutty_factory_high_score} poin."
+msgstr ""
+"High score-nya adalah {registry.arcade_nutty_factory_high_score} poin."
 
 #: data/level/arcade-the-long-haul.cfg:11
 #: data/level/titlescreen-arcade.cfg:200
@@ -532,7 +590,8 @@ msgstr "Kamu mendapat {level.player.vars.score} poin di perjalanan panjang!"
 
 #: data/level/arcade-the-long-haul.cfg:661
 msgid "The high score is {registry.arcade_the_long_haul_high_score} points."
-msgstr "High score-nya adalah {registry.arcade_the_long_haul_high_score} poin."
+msgstr ""
+"High score-nya adalah {registry.arcade_the_long_haul_high_score} poin."
 
 #: data/level/arcade-upper-deck.cfg:13 data/level/titlescreen-arcade.cfg:180
 msgid "Upper Deck"
@@ -697,271 +756,271 @@ msgstr ""
 msgid "Crevice Bridge"
 msgstr "Jembatan Crevice"
 
-#: data/level/crevice-bridge.cfg:719
+#: data/level/crevice-bridge.cfg:781
 msgid "Hi, again."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:720
+#: data/level/crevice-bridge.cfg:782
 msgid "So, how did it go?"
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:722
+#: data/level/crevice-bridge.cfg:784
 msgid "Could've been worse."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:724
+#: data/level/crevice-bridge.cfg:786
 msgid ""
 "That ... uh, \"captain\" cat, or whoever he was,\n"
 "tried to dice me up."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:726
+#: data/level/crevice-bridge.cfg:788
 msgid ""
 "Naturally, we wouldn't be having\n"
 "this conversation if I hadn't gotten\n"
 "the better of him."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:728
+#: data/level/crevice-bridge.cfg:790
 msgid ""
 "So all's well\n"
 "that ends well, I suppose."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:730
+#: data/level/crevice-bridge.cfg:792
 msgid ""
 "I did find out what was going on, at least,\n"
 "that is, what the elder *says* is going on."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:732
+#: data/level/crevice-bridge.cfg:794
 msgid ""
 "I wouldn't mind running this by a few people,\n"
 "since I have no idea what's true, or not."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:734
+#: data/level/crevice-bridge.cfg:796
 msgid "Go right ahead."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:737
+#: data/level/crevice-bridge.cfg:799
 msgid ""
 "So... uhm... loosely speaking, he says\n"
 "that Milgram loaned him money, and this whole\n"
 "incident was Milgram coming to shake him down."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:739
+#: data/level/crevice-bridge.cfg:801
 msgid "Trying to get his money back."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:741
+#: data/level/crevice-bridge.cfg:803
 msgid ""
 "So then he tells this oddball story\n"
 "about how it's all some plot where\n"
 "Milgram's gonna take over the town."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:743
+#: data/level/crevice-bridge.cfg:805
 #: data/level/crevice-village-house-elder.cfg:1614
 msgid "Wow."
 msgstr "Wow."
 
-#: data/level/crevice-bridge.cfg:744
+#: data/level/crevice-bridge.cfg:806
 msgid "I've never heard of any of this."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:747
+#: data/level/crevice-bridge.cfg:809
 msgid ""
 "Really?\n"
 "He's never talked about this?"
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:749
+#: data/level/crevice-bridge.cfg:811
 msgid "Never."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:752
+#: data/level/crevice-bridge.cfg:814
 msgid ""
 "Has he ever shown any signs of ... suddenly\n"
 "having way more spending money than usual?"
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:754
+#: data/level/crevice-bridge.cfg:816
 msgid ""
 "Well, he's *bragged* about being rich,\n"
 "but that's just his \"dignified family\" schtick."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:755
+#: data/level/crevice-bridge.cfg:817
 msgid ""
 "He's such a miser, you know -\n"
 "the man would probably burn his\n"
 "furniture just to save on firewood."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:756
+#: data/level/crevice-bridge.cfg:818
 msgid ""
 "So, no, he's never seemed\n"
 "to have a dime to spare."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:757
+#: data/level/crevice-bridge.cfg:819
 msgid ""
 "He does brag about being known by important\n"
 "people, but you know how he is."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:760
+#: data/level/crevice-bridge.cfg:822
 msgid ""
 "Yeah.  Geez.\n"
 "So, uh, here's what I think we know:"
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:762
+#: data/level/crevice-bridge.cfg:824
 msgid ""
 "We know he's clearly run afoul\n"
 "of Milgram, somehow."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:764
+#: data/level/crevice-bridge.cfg:826
 msgid ""
 "We also know Milgram's not interested\n"
 "in taking over the town, because he\n"
 "essentially just did, and gave it up."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:766
+#: data/level/crevice-bridge.cfg:828
 msgid ""
 "We don't know if the money thing\n"
 "is true, but we know if it is,\n"
 "he certainly hasn't put it to use."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:768
+#: data/level/crevice-bridge.cfg:830
 msgid ""
 "Oh yeah, I forgot to mention;\n"
 "he said it was some kind of \"investment\""
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:770
+#: data/level/crevice-bridge.cfg:832
 msgid ""
 "Which I assume would be for the town.\n"
 "Building things."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:772
+#: data/level/crevice-bridge.cfg:834
 msgid "Naturally, we know that didn't happen."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:774
+#: data/level/crevice-bridge.cfg:836
 msgid "So other than that, it's a mystery."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:776
+#: data/level/crevice-bridge.cfg:838
 msgid ""
 "So, dare I ask:\n"
 "What do we do now?"
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:779
+#: data/level/crevice-bridge.cfg:841
 msgid ""
 "Ah, that.  I went and decided that\n"
 "it's probably a very good idea to\n"
 "do a little diplomacy."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:781
+#: data/level/crevice-bridge.cfg:843
 msgid ""
 "*Someone* needs to go talk to Milgram,\n"
 "and ask what was wrong, so nothing bad happens."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:783
+#: data/level/crevice-bridge.cfg:845
 msgid ""
 "So for a lack of any other willing parties,\n"
 "I decided to go."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:785
+#: data/level/crevice-bridge.cfg:847
 msgid "That's very noble of you."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:788
+#: data/level/crevice-bridge.cfg:850
 msgid ""
 "Ha, well, we're also going to find out\n"
 "if it's very foolish, as well."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:791
+#: data/level/crevice-bridge.cfg:853
 msgid ""
 "But nothing ventured, nothing gained, you know?\n"
 "I guess I'm just tired of bumming around."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:793
+#: data/level/crevice-bridge.cfg:855
 msgid ""
 "Speaking of which, I'd been meaning\n"
 "to thank you for your help thus far."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:795
+#: data/level/crevice-bridge.cfg:857
 msgid ""
 "I've really appreciated the \"eyes in the sky\".\n"
 "It's very helpful."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:797
+#: data/level/crevice-bridge.cfg:859
 msgid ""
 "To spare your asking,\n"
 "yes, I'd be happy to continue."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:800
+#: data/level/crevice-bridge.cfg:862
 msgid "Hey, thanks, that's really nice of you!"
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:802
+#: data/level/crevice-bridge.cfg:864
 msgid ""
 "It's the least I can do.\n"
 "I'd offer to carry you, even,\n"
 "but I'm afraid that's physically impossible."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:803
+#: data/level/crevice-bridge.cfg:865
 msgid ""
 "I'm as curious as you are, about this,\n"
 "and we're more likely to get to the\n"
 "bottom of things if we work together."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:806
+#: data/level/crevice-bridge.cfg:868
 msgid "Awesome!"
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:809
+#: data/level/crevice-bridge.cfg:871
 msgid ""
 "Anyways, I was planning to go through\n"
 "the forest, to start with."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:811
+#: data/level/crevice-bridge.cfg:873
 msgid "Does that sound like a good idea?"
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:813
+#: data/level/crevice-bridge.cfg:875
 msgid ""
 "Yes... it is the only path I know of,\n"
 "but be careful in there."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:816
+#: data/level/crevice-bridge.cfg:878
 msgid ""
 "Yeah, no kidding.\n"
 "Well, see you soon!  Thanks again!"
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:828
+#: data/level/crevice-bridge.cfg:897
 msgid "Ahh, there you are!"
 msgstr ""
 
@@ -1150,9 +1209,9 @@ msgstr ""
 
 #: data/level/crevice-village-central.cfg:1449
 #: data/level/crevice-village-house-2.cfg:3211
-#: data/level/crevice-village-house-4.cfg:3019
-#: data/level/crevice-village-house-4.cfg:3060
-#: data/level/killer-bunnies.cfg:3563
+#: data/level/crevice-village-house-4.cfg:2607
+#: data/level/crevice-village-house-4.cfg:2635
+#: data/level/killer-bunnies.cfg:3521
 msgid "Nope, it's locked."
 msgstr "Tidak, masih terkunci."
 
@@ -1793,11 +1852,11 @@ msgstr ""
 "Aaahh! Siapa sih yang mendesain\n"
 "rumah kayak gini?"
 
-#: data/level/crevice-village-house-4.cfg:2962
+#: data/level/crevice-village-house-4.cfg:2572
 msgid "Hmmm..."
 msgstr "Hmmm..."
 
-#: data/level/crevice-village-house-4.cfg:2963
+#: data/level/crevice-village-house-4.cfg:2573
 msgid ""
 "It seems I'm trapped\n"
 "inside this house."
@@ -1805,7 +1864,7 @@ msgstr ""
 "Sepertinya aku terperangkap\n"
 "dalam rumah ini."
 
-#: data/level/crevice-village-house-4.cfg:2964
+#: data/level/crevice-village-house-4.cfg:2574
 msgid ""
 "I guess the only way out\n"
 "is in!"
@@ -1813,16 +1872,16 @@ msgstr ""
 "Aku rasa satu-satunya jalan keluar\n"
 "ada di dalam!"
 
-#: data/level/crevice-village-house-4.cfg:3266
+#: data/level/crevice-village-house-4.cfg:2737
 msgid "This is decidedly unpleasant."
 msgstr "Ini benar-benar menyebalkan."
 
-#: data/level/crevice-village-house-4.cfg:3268
-#: data/level/crevice-village-house-4.cfg:3278
+#: data/level/crevice-village-house-4.cfg:2739
+#: data/level/crevice-village-house-4.cfg:2749
 msgid "You don't say."
 msgstr "Jangan bilang."
 
-#: data/level/crevice-village-house-4.cfg:3270
+#: data/level/crevice-village-house-4.cfg:2741
 msgid ""
 "When I stepped in the door,\n"
 "it locked behind me."
@@ -1830,7 +1889,7 @@ msgstr ""
 "Saat aku masuk melewati pintu,\n"
 "tiba-tiba pintunya terkunci."
 
-#: data/level/crevice-village-house-4.cfg:3271
+#: data/level/crevice-village-house-4.cfg:2742
 msgid ""
 "That's actually a rather clever\n"
 "way to round everyone up."
@@ -1838,7 +1897,7 @@ msgstr ""
 "Itu sebenarnya adalah cara yang cukup\n"
 "pintar untuk mengurung orang."
 
-#: data/level/crevice-village-house-4.cfg:3273
+#: data/level/crevice-village-house-4.cfg:2744
 msgid ""
 "Know anything helpful\n"
 "about this house?"
@@ -1846,7 +1905,7 @@ msgstr ""
 "Tahu sesuatu yang berguna\n"
 "tentang rumah ini?"
 
-#: data/level/crevice-village-house-4.cfg:3274
+#: data/level/crevice-village-house-4.cfg:2745
 msgid ""
 "Unfortunately I don't.\n"
 "I was just visiting."
@@ -1854,17 +1913,17 @@ msgstr ""
 "Sayangnya tidak.\n"
 "Aku hanya berkunjung ke sini."
 
-#: data/level/crevice-village-house-4.cfg:3275
+#: data/level/crevice-village-house-4.cfg:2746
 msgid "The floorplan is quite loony."
 msgstr ""
 "Rancangan bangunan ini\n"
 "benar-benar gila."
 
-#: data/level/crevice-village-house-4.cfg:3277
+#: data/level/crevice-village-house-4.cfg:2748
 msgid "Marvelous ventilation, though."
 msgstr "Tapi, ventilasinya keren juga."
 
-#: data/level/crevice-village-house-4.cfg:3280
+#: data/level/crevice-village-house-4.cfg:2751
 msgid ""
 "Anyways, I'd better be off.\n"
 "I'm trying to sort out this mess."
@@ -1872,7 +1931,7 @@ msgstr ""
 "Pokoknya, aku musti keluar secepatnya.\n"
 "Ada urusan penting yang harus segera kubereskan."
 
-#: data/level/crevice-village-house-4.cfg:3281
+#: data/level/crevice-village-house-4.cfg:2752
 msgid "Good luck."
 msgstr "Semoga beruntung."
 
@@ -3084,27 +3143,27 @@ msgid ""
 "marks on this level, too."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1730
+#: data/level/grassy-path.cfg:1666
 msgid ""
-"If you haven't already noticed, the round\n"
-"rocks you sometimes find nestled in\n"
+"If you haven't already noticed, the red\n"
+"fruits you sometimes find nestled in\n"
 "the grass are spittable projectiles."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1731
+#: data/level/grassy-path.cfg:1667
 msgid ""
 "You'll find many such objects of similar size\n"
 "in different areas of the game, such as crates\n"
 "inside of houses, or nuts hanging from trees."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1732
+#: data/level/grassy-path.cfg:1668
 msgid ""
 "These are an ample source of ammunition,\n"
 "that's almost always available."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1733
+#: data/level/grassy-path.cfg:1669
 msgid ""
 "Note that these have an unusual property;\n"
 "if you use them up, walk away from the screen\n"
@@ -3145,7 +3204,7 @@ msgstr "AAAAAAH! AKU TIDAK BISA TERBANG!"
 msgid "Killer Bunnies"
 msgstr "Kelinci Pembunuh"
 
-#: data/level/killer-bunnies.cfg:3308
+#: data/level/killer-bunnies.cfg:3266
 msgid ""
 "That guy sure doesn't look\n"
 "glad to meet me!"
@@ -3153,7 +3212,7 @@ msgstr ""
 "Dia benar-benar terlihat\n"
 "tidak suka bertemu denganku!"
 
-#: data/level/killer-bunnies.cfg:3563
+#: data/level/killer-bunnies.cfg:3521
 msgid ""
 "It's locked. Of course...\n"
 "It couldn't be easy to get out of here!"
@@ -4349,7 +4408,8 @@ msgstr "Tekan {LEFT_KEY} atau {RIGHT_KEY} untuk berjalan."
 #: data/level/titlescreen-test.cfg:313 data/level/titlescreen-test.cfg:328
 #: data/level/titlescreen.cfg:318 data/level/titlescreen.cfg:335
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
-msgstr "Tekan dua kali {LEFT_KEY} atau {RIGHT_KEY} dengan cepat untuk berlari."
+msgstr ""
+"Tekan dua kali {LEFT_KEY} atau {RIGHT_KEY} dengan cepat untuk berlari."
 
 #: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:319
 msgid "Press {DOWN_KEY} to crouch."
@@ -4611,7 +4671,7 @@ msgstr "Anda ingin membeli {consts.name}?"
 msgid "This is a blank tile. It doesn't do anything."
 msgstr "Ini adalah ubin kosong. Ini bukan apa-apa."
 
-#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:75
+#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:79
 msgid "'"
 msgstr "'"
 
@@ -4625,11 +4685,11 @@ msgstr "Kamu telah mencapai level {level.player.difficulty} pada balap koin."
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level {registry."
-"arcade_coin_race_high_score}."
+"The furthest that has been reached is level "
+"{registry.arcade_coin_race_high_score}."
 msgstr ""
-"Level terjauh yang pernah dicapai adalah {registry."
-"arcade_coin_race_high_score}."
+"Level terjauh yang pernah dicapai adalah "
+"{registry.arcade_coin_race_high_score}."
 
 #: data/objects/items/max_heart_object.cfg:18
 msgid ""
@@ -4878,10 +4938,10 @@ msgstr "Memuat tembakan energi"
 
 #: iOS_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are "
-"hoping to bring back the magic in a new, original game design with "
-"unconventional gameplay mechanics - a fun break from the usual clones. We're "
-"a small group of indie developers, hoping this game becomes one of the "
+"Frogatto was made by a group of big-time fans of classic videogames, who are"
+" hoping to bring back the magic in a new, original game design with "
+"unconventional gameplay mechanics - a fun break from the usual clones. We're"
+" a small group of indie developers, hoping this game becomes one of the "
 "definitive platform games on iOS - and you can make that happen!"
 msgstr ""
 "Frogatto dibuat oleh sekelompok penggemar luar biasa dari videogame klasik, "
@@ -4897,8 +4957,8 @@ msgid ""
 "To find out more about the game or to play the PC/Mac version for free, "
 "please visit http://www.frogatto.com/"
 msgstr ""
-"Untuk info lebih lengkap tentang permainan ini atau bagaimana cara memainkan "
-"versi PC/Mac secara gratis, silahkan kunjungi http://www.frogatto.com/"
+"Untuk info lebih lengkap tentang permainan ini atau bagaimana cara memainkan"
+" versi PC/Mac secara gratis, silahkan kunjungi http://www.frogatto.com/"
 
 #: iOS_CHANGELOG:3
 msgid "Fixed The Long Haul (arcade level)"
@@ -4983,3 +5043,5 @@ msgstr "Tukar A dan B"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
+
+

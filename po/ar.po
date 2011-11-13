@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Circoficus  <mhaitham@gmail.com>, 2011.
 # M Al <mhaitham@gmail.com>, 2011.
@@ -9,91 +9,146 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-11-07 00:18-0200\n"
-"PO-Revision-Date: 2011-10-26 02:03+0000\n"
+"POT-Creation-Date: 2011-11-13 16:33-0200\n"
+"PO-Revision-Date: 2011-11-13 18:33+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
-"Language-Team: Arabic (http://www.transifex.net/projects/p/Frogatto/team/"
-"ar/)\n"
-"Language: ar\n"
+"Language-Team: Arabic (http://www.transifex.net/projects/p/Frogatto/team/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5\n"
+"Language: ar\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5\n"
 
-#: CHANGELOG:1 iOS_CHANGELOG:1
+#: CHANGELOG:1
+msgid "Version 1.2:"
+msgstr ""
+
+#: CHANGELOG:2
+msgid ""
+"Complete redo of iOS controls, switching to a 2-button dpad from a 4-button."
+"  Eliminates all problems with mispressed up or down keys interrupting other"
+" actions."
+msgstr ""
+
+#: CHANGELOG:3
+msgid ""
+"Complete redo of attack logic; frogatto now is free to walk around whilst he"
+" attacks, and in general is much more responsive."
+msgstr ""
+
+#: CHANGELOG:4
+msgid "Frogatto's tongue-grabbing is MUCH more forgiving"
+msgstr ""
+
+#: CHANGELOG:5
+msgid ""
+"Complete rewrite of damage handling; much more consistent now, and "
+"categorically eliminates some bugs where damage wouldn't get dealt."
+msgstr ""
+
+#: CHANGELOG:6
+msgid "Reworked some tilesets to eliminate tiling errors."
+msgstr ""
+
+#: CHANGELOG:7
+msgid "Further enhancements to dungeon wall graphics (added edges)."
+msgstr ""
+
+#: CHANGELOG:8
+msgid "New, more readable dialogue font."
+msgstr ""
+
+#: CHANGELOG:9
+msgid "Lots of small graphical tweaks."
+msgstr ""
+
+#: CHANGELOG:10
+msgid "Maps are now strewn with spittable props within easy reach."
+msgstr ""
+
+#: CHANGELOG:11
+msgid "Rewrote most of the dialogue."
+msgstr ""
+
+#: CHANGELOG:12
+msgid ""
+"Collectible items like coins can be collected by being touched by the "
+"tongue, besides just frogatto's body."
+msgstr ""
+
+#: CHANGELOG:14 iOS_CHANGELOG:1
 msgid "Version 1.1.1:"
 msgstr "الإصدار 1.1.1 :"
 
-#: CHANGELOG:2 iOS_CHANGELOG:2
+#: CHANGELOG:15 iOS_CHANGELOG:2
 msgid "Fixed some crashing bugs."
 msgstr "إصلاح بعض الخلل تحطمها."
 
-#: CHANGELOG:3
+#: CHANGELOG:16
 msgid "Fixed The Long Haul (compiled mode)"
 msgstr "ثابتة على المدى الطويل (وضع المترجمة)"
 
-#: CHANGELOG:4
+#: CHANGELOG:17
 msgid "Fixed instructions on titlescreen (iOS)"
 msgstr "تعليمات ثابتة على titlescreen (IOS)"
 
-#: CHANGELOG:5 iOS_CHANGELOG:5
+#: CHANGELOG:18 iOS_CHANGELOG:5
 msgid "New translation: Italian"
 msgstr "ترجمة جديدة : إيطالي"
 
-#: CHANGELOG:6
+#: CHANGELOG:19
 msgid "Added automatic language selection for Windows"
 msgstr "وأضاف اختيار اللغة التلقائي لنظام التشغيل Windows"
 
-#: CHANGELOG:8
+#: CHANGELOG:21
 msgid "Version 1.1:"
 msgstr "الإصدار 1.1 :"
 
-#: CHANGELOG:9
+#: CHANGELOG:22
 msgid "Added arcade mode."
 msgstr "واضاف وضع الممرات."
 
-#: CHANGELOG:10
+#: CHANGELOG:23
 msgid "Redid graphics for forest trees."
 msgstr "Redid رسومات لأشجار الغابات."
 
-#: CHANGELOG:11
+#: CHANGELOG:24
 msgid "Redid graphics for forest background"
 msgstr "Redid رسومات للخلفية للغابات"
 
-#: CHANGELOG:12
+#: CHANGELOG:25
 msgid "Redid graphics for dungeon wall tiles"
 msgstr "Redid الرسومات لبلاط الجدران زنزانة"
 
-#: CHANGELOG:13
+#: CHANGELOG:26
 msgid "Redid graphics for basement wall tiles"
 msgstr "Redid الرسومات لبلاط الجدران القبو"
 
-#: CHANGELOG:14
+#: CHANGELOG:27
 msgid "Added a bunch of interior props"
 msgstr "واضاف حفنة من الدعائم الداخلية"
 
-#: CHANGELOG:15
+#: CHANGELOG:28
 msgid "Reworked \"darkness\" for improved appearance"
 msgstr "إعادة صياغة \"الظلام\" لتحسين مظهر"
 
-#: CHANGELOG:16
+#: CHANGELOG:29
 msgid "Added new palettes to forest and seaside areas."
 msgstr "وأضاف لوحات جديدة لالغابات والمناطق الساحلية."
 
-#: CHANGELOG:17
+#: CHANGELOG:30
 msgid "Added some unique enemies to the forest."
 msgstr "واضاف فريد لبعض أعداء الغابة."
 
-#: CHANGELOG:18
+#: CHANGELOG:31
 msgid ""
 "Refactored damage and monster type systems to make behavior more consistent "
 "and eliminate some rare buggy behavior."
 msgstr ""
-"Refactored الضرر وأنظمة من نوع الوحش لجعل السلوك أكثر اتساقا والقضاء على بعض "
-"السلوكيات عربة نادرة."
+"Refactored الضرر وأنظمة من نوع الوحش لجعل السلوك أكثر اتساقا والقضاء على بعض"
+" السلوكيات عربة نادرة."
 
-#: CHANGELOG:19
+#: CHANGELOG:32
 msgid ""
 "Added translation support, with 4 complete translations: French, Brazilian "
 "Portuguese, Chinese (Simplified), and Japanese."
@@ -101,167 +156,167 @@ msgstr ""
 "إضافة دعم الترجمة ، ترجمة كاملة مع 4 : الفرنسية والبرتغالية البرازيلية "
 "والصينية (المبسطة) ، واليابانية."
 
-#: CHANGELOG:21
+#: CHANGELOG:34
 msgid "Version 1.0.3:"
 msgstr "الإصدار 1.0.3 :"
 
-#: CHANGELOG:22
+#: CHANGELOG:35
 msgid "Fixed crash when picking up max heart pieces."
 msgstr "تحطم الثابتة عند التقاط قطعة القلب كحد أقصى."
 
-#: CHANGELOG:23
+#: CHANGELOG:36
 msgid "Other small bug fixes."
 msgstr "إصلاحات الشوائب الأخرى الصغيرة."
 
-#: CHANGELOG:25
+#: CHANGELOG:38
 msgid "Version 1.0.2:"
 msgstr "الإصدار 1.0.2 :"
 
-#: CHANGELOG:26
+#: CHANGELOG:39
 msgid "Added support for \"darkness\" in levels."
 msgstr "واضاف لدعم \"الظلام\" في المستويات."
 
-#: CHANGELOG:27
+#: CHANGELOG:40
 msgid "Added support for WVGA."
 msgstr "إضافة دعم لمقاسها."
 
-#: CHANGELOG:28
+#: CHANGELOG:41
 msgid "Made player status not show on the titlescreen or world map."
 msgstr "قدم مركز لاعب لا تظهر على خريطة العالم أو titlescreen."
 
-#: CHANGELOG:29
+#: CHANGELOG:42
 msgid "Made golden ants less ambiguous."
 msgstr "أدلى النمل ذهبية أقل غموضا."
 
-#: CHANGELOG:30
+#: CHANGELOG:43
 msgid "Fixed bug making certain music always play at full volume (iPhone)."
 msgstr "علة ثابتة معينة جعل الموسيقى تلعب دائما في حجم كامل (اي فون)."
 
-#: CHANGELOG:31
+#: CHANGELOG:44
 msgid "Added option to reverse positions of A and B buttons (iPhone)."
 msgstr "واضاف الخيار لعكس مواقف A و B أزرار (اي فون)."
 
-#: CHANGELOG:32
+#: CHANGELOG:45
 msgid "Added support for repeating levels (for arcade modes)."
 msgstr "إضافة دعم لمستويات التكرار (لأوضاع الممرات)."
 
-#: CHANGELOG:33
+#: CHANGELOG:46
 msgid ""
 "Pressing jump while in the air pressing against a wall now makes you cling "
 "to the wall."
 msgstr ""
 "الضغط على القفز في الهواء في حين تضغط على الحائط يجعل لك الآن التشبث الجدار."
 
-#: CHANGELOG:34
+#: CHANGELOG:47
 msgid "Made it so you can skip dialogs sequences."
 msgstr "جعلت حتى تتمكن من تخطي الحوارات متواليات."
 
-#: CHANGELOG:35
+#: CHANGELOG:48
 msgid "Fixed lots of z-order issues."
 msgstr "إصلاح الكثير من القضايا ذات الترتيب ض."
 
-#: CHANGELOG:36
+#: CHANGELOG:49
 msgid "Fixed bug causing ambient sounds to not work."
 msgstr "ثابت الشوائب يسبب الأصوات المحيطة لا تعمل."
 
-#: CHANGELOG:37
+#: CHANGELOG:50
 msgid "Improved forest background, and made it go upwards infinitely."
 msgstr "تحسين الخلفية للغابات ، وجعله يذهب لانهائي صعودا."
 
-#: CHANGELOG:38
+#: CHANGELOG:51
 msgid "Made hearts heal a full heart, rather than just half."
 msgstr "جعل شفاء القلوب قلب كامل ، بدلا من النصف فقط."
 
-#: CHANGELOG:39
+#: CHANGELOG:52
 msgid "Changed tilesets to make water look better."
 msgstr "تغيير tilesets لجعل المياه تبدو أفضل."
 
-#: CHANGELOG:40
+#: CHANGELOG:53
 msgid "Many small bug fixes."
 msgstr "العديد من إصلاحات الشوائب الصغيرة."
 
-#: CHANGELOG:42
+#: CHANGELOG:55
 msgid "Version 1.0.1 (iPhone only):"
 msgstr "الإصدار 1.0.1 (فون فقط) :"
 
-#: CHANGELOG:43
+#: CHANGELOG:56
 msgid ""
 "Significantly improved controls, both functionally and graphically (iPhone)."
 msgstr "تحسن كبير في الضوابط ، على حد سواء وظيفيا وبيانيا (آي فون)."
 
-#: CHANGELOG:44
+#: CHANGELOG:57
 msgid "Fixed auto-saving on iOS4 where multitasking is supported (iPhone)."
 msgstr "إصلاح السيارات الموفرة في iOS4 حيث يتم اعتماد تعدد المهام (اي فون)."
 
-#: CHANGELOG:45
+#: CHANGELOG:58
 msgid "Fixed bug where a dialog could repeat forever."
 msgstr "علة ثابتة حيث يمكن تكرار الحوار إلى الأبد."
 
-#: CHANGELOG:46
+#: CHANGELOG:59
 msgid "Fixed crash in world map when you hold down while entering it."
 msgstr "تحطم الثابتة في خريطة العالم عندما كنت باستمرار في حين دخوله."
 
-#: CHANGELOG:47
+#: CHANGELOG:60
 msgid "Fixed fullscreen mode (Mac/Windows)."
 msgstr "وضع ملء الشاشة ثابتة (ماك / ويندوز)."
 
-#: CHANGELOG:48
+#: CHANGELOG:61
 msgid "Fixed controlpad issues for computers."
 msgstr "قضايا ثابتة controlpad لأجهزة الكمبيوتر."
 
-#: CHANGELOG:49
+#: CHANGELOG:62
 msgid "Added music and sound volume controls to pause screen."
 msgstr "الموسيقى المضافة ، وحجم الصوت الضوابط على الشاشة وقفة."
 
-#: CHANGELOG:50
+#: CHANGELOG:63
 msgid "Added customizable controls."
 msgstr "وأضاف ضوابط للتخصيص."
 
-#: CHANGELOG:51
+#: CHANGELOG:64
 msgid "Added half-hearts."
 msgstr "وأضاف نصف القلوب."
 
-#: CHANGELOG:52
+#: CHANGELOG:65
 msgid "Added scons script for compiling."
 msgstr "وأضاف scons النصي لتجميع."
 
-#: CHANGELOG:53
+#: CHANGELOG:66
 msgid "Minor level changes."
 msgstr "التغييرات على مستوى طفيفة."
 
-#: CHANGELOG:54
+#: CHANGELOG:67
 msgid "Updated music."
 msgstr "تحديث الموسيقى."
 
 #: MAC_APP_STORE_METADATA:1 iOS_APP_STORE_METADATA:1
 msgid ""
-"An old-school 2d platformer game, starring a certain quixotic frog. From the "
-"creators of Battle for Wesnoth comes this exciting jump-and-run platformer. "
-"Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all the "
-"gameplay nuance of a classic console title. Run and jump over pits and "
-"enemies. Grab enemies with your tongue, swallow them, and then spit them out "
-"at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
-"puzzles. Collect coins and use them to buy upgrades and new abilities in the "
-"store. Talk to characters in game, and work to unravel Big Bad Milgram's "
+"An old-school 2d platformer game, starring a certain quixotic frog. From the"
+" creators of Battle for Wesnoth comes this exciting jump-and-run platformer."
+" Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all "
+"the gameplay nuance of a classic console title. Run and jump over pits and "
+"enemies. Grab enemies with your tongue, swallow them, and then spit them out"
+" at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
+"puzzles. Collect coins and use them to buy upgrades and new abilities in the"
+" store. Talk to characters in game, and work to unravel Big Bad Milgram's "
 "plot against the townsfolk! At over 30 levels set in 4 different "
 "environments, Frogatto is not a flash in the pan, and has the play-time "
 "you'd expect from a real videogame."
 msgstr ""
 "على منهاج 2D المدرسة القديمة لعبة ، وبطولة الضفدع معينة الوهمي. من المبدعين "
-"من معركة Wesnoth تأتي هذه القفزة المثيرة والفر منهاج. Frogatto ورائع ، والفن "
-"بكسل الراقية ، ضخ الإيقاعات الممرات ، وجميع الفوارق الدقيقة من اللعب عنوان "
+"من معركة Wesnoth تأتي هذه القفزة المثيرة والفر منهاج. Frogatto ورائع ، والفن"
+" بكسل الراقية ، ضخ الإيقاعات الممرات ، وجميع الفوارق الدقيقة من اللعب عنوان "
 "وحدة التحكم الكلاسيكية. تشغيل والقفز فوق الحفر والأعداء. الاستيلاء على "
 "الأعداء مع لسانك ، ابتلاعها ، ومن ثم يبصقون بها في غيرها من الاعداء "
 "والمقذوفات! قتال الرؤساء خطرة ، ويحل الألغاز المحيرة. جمع العملات المعدنية "
-"واستخدامها لشراء ترقيات وقدرات جديدة في المخزن. التحدث مع الشخصيات في "
-"اللعبة ، والعمل على كشف مؤامرة كبيرة Milgram سيئ ضد سكان المدينة! أكثر من 30 "
-"في المستويات التي سجلت في 4 بيئات مختلفة ، ليس Frogatto ومضة في عموم ، وتلعب "
-"في الوقت تتوقعها من لعبة فيديو حقيقي."
+"واستخدامها لشراء ترقيات وقدرات جديدة في المخزن. التحدث مع الشخصيات في اللعبة"
+" ، والعمل على كشف مؤامرة كبيرة Milgram سيئ ضد سكان المدينة! أكثر من 30 في "
+"المستويات التي سجلت في 4 بيئات مختلفة ، ليس Frogatto ومضة في عموم ، وتلعب في"
+" الوقت تتوقعها من لعبة فيديو حقيقي."
 
 #: MAC_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are "
-"hoping to bring back the magic in a new, original game design with "
+"Frogatto was made by a group of big-time fans of classic videogames, who are"
+" hoping to bring back the magic in a new, original game design with "
 "unconventional gameplay mechanics - a fun break from the usual clones."
 msgstr ""
 "وأدلى Frogatto من قبل مجموعة من المشجعين في الوقت كبيرة من ألعاب الفيديو "
@@ -275,8 +330,7 @@ msgstr "الكلمات الرئيسية :"
 
 #: MAC_APP_STORE_METADATA:6 iOS_APP_STORE_METADATA:8
 msgid ""
-"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,"
-"frog"
+"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
 msgstr ""
 "منهاج ، pixelart ، oldschool ، ومنصة ، لعبة ، بيكسل ، والممرات ، والعمل ، "
 "والمغامرة ، ضفدع"
@@ -680,25 +734,25 @@ msgstr "نعم! وأعتقد أنني اعتقد أن اليوم الذي ستك
 msgid "Crevice Bridge"
 msgstr "شق الجسر"
 
-#: data/level/crevice-bridge.cfg:719
+#: data/level/crevice-bridge.cfg:781
 msgid "Hi, again."
 msgstr "مرحبا مرة أخرى."
 
-#: data/level/crevice-bridge.cfg:720
+#: data/level/crevice-bridge.cfg:782
 msgid "So, how did it go?"
 msgstr "لذا ، كيف ذهبت؟"
 
-#: data/level/crevice-bridge.cfg:722
+#: data/level/crevice-bridge.cfg:784
 msgid "Could've been worse."
 msgstr "يمكن لقد سوءا."
 
-#: data/level/crevice-bridge.cfg:724
+#: data/level/crevice-bridge.cfg:786
 msgid ""
 "That ... uh, \"captain\" cat, or whoever he was,\n"
 "tried to dice me up."
 msgstr "أن... اه ، حاول \"الكابتن\" القط ، أو أيا كان ، لنرد لي."
 
-#: data/level/crevice-bridge.cfg:726
+#: data/level/crevice-bridge.cfg:788
 msgid ""
 "Naturally, we wouldn't be having\n"
 "this conversation if I hadn't gotten\n"
@@ -706,13 +760,13 @@ msgid ""
 msgstr ""
 "بطبيعة الحال ، ونحن لن يكون لها هذا الحوار إذا لم أكن قد حصلت على أفضل منه."
 
-#: data/level/crevice-bridge.cfg:728
+#: data/level/crevice-bridge.cfg:790
 msgid ""
 "So all's well\n"
 "that ends well, I suppose."
 msgstr "كل ذلك بالاضافة الى ان تنتهي بشكل جيد ، وأفترض."
 
-#: data/level/crevice-bridge.cfg:730
+#: data/level/crevice-bridge.cfg:792
 msgid ""
 "I did find out what was going on, at least,\n"
 "that is, what the elder *says* is going on."
@@ -720,32 +774,32 @@ msgstr ""
 "فعلت معرفة ما كان يجري ، على الأقل ، وهذا هو ، على ما يقول كبار السن * * "
 "يجري."
 
-#: data/level/crevice-bridge.cfg:732
+#: data/level/crevice-bridge.cfg:794
 msgid ""
 "I wouldn't mind running this by a few people,\n"
 "since I have no idea what's true, or not."
 msgstr ""
-"وأود أن لا تمانع في تشغيل هذا من قبل عدد قليل من الناس ، لأن ليس لدي أي فكرة "
-"عما صحيح ، أم لا."
+"وأود أن لا تمانع في تشغيل هذا من قبل عدد قليل من الناس ، لأن ليس لدي أي فكرة"
+" عما صحيح ، أم لا."
 
-#: data/level/crevice-bridge.cfg:734
+#: data/level/crevice-bridge.cfg:796
 msgid "Go right ahead."
 msgstr "المضي قدما في الحق."
 
-#: data/level/crevice-bridge.cfg:737
+#: data/level/crevice-bridge.cfg:799
 msgid ""
 "So... uhm... loosely speaking, he says\n"
 "that Milgram loaned him money, and this whole\n"
 "incident was Milgram coming to shake him down."
 msgstr ""
-"هكذا... أوم... يتحدث بشكل فضفاض ، يقول ان Milgram أعاره المال ، وهذا كله كان "
-"الحادث Milgram القادمة ليهز يديه وقدميه."
+"هكذا... أوم... يتحدث بشكل فضفاض ، يقول ان Milgram أعاره المال ، وهذا كله كان"
+" الحادث Milgram القادمة ليهز يديه وقدميه."
 
-#: data/level/crevice-bridge.cfg:739
+#: data/level/crevice-bridge.cfg:801
 msgid "Trying to get his money back."
 msgstr "محاولة للحصول على المال ظهره."
 
-#: data/level/crevice-bridge.cfg:741
+#: data/level/crevice-bridge.cfg:803
 msgid ""
 "So then he tells this oddball story\n"
 "about how it's all some plot where\n"
@@ -754,26 +808,26 @@ msgstr ""
 "ثم حتى انه غريب الاطوار يروي هذه القصة حول كيفية الأمر كله مؤامرة بعض "
 "Milgram حيث ستعمل الاستيلاء على البلدة."
 
-#: data/level/crevice-bridge.cfg:743
+#: data/level/crevice-bridge.cfg:805
 #: data/level/crevice-village-house-elder.cfg:1614
 msgid "Wow."
 msgstr "نجاح باهر."
 
-#: data/level/crevice-bridge.cfg:744
+#: data/level/crevice-bridge.cfg:806
 msgid "I've never heard of any of this."
 msgstr "لم اسمع ابدا اي من هذا."
 
-#: data/level/crevice-bridge.cfg:747
+#: data/level/crevice-bridge.cfg:809
 msgid ""
 "Really?\n"
 "He's never talked about this?"
 msgstr "حقا؟ أبدا تحدث عن هذا الأمر؟"
 
-#: data/level/crevice-bridge.cfg:749
+#: data/level/crevice-bridge.cfg:811
 msgid "Never."
 msgstr "أبدا."
 
-#: data/level/crevice-bridge.cfg:752
+#: data/level/crevice-bridge.cfg:814
 msgid ""
 "Has he ever shown any signs of ... suddenly\n"
 "having way more spending money than usual?"
@@ -781,7 +835,7 @@ msgstr ""
 "وقد أظهرت انه من أي وقت مضى أي دلائل على... فجأة وجود أكثر من طريقة إنفاق "
 "المال من المعتاد؟"
 
-#: data/level/crevice-bridge.cfg:754
+#: data/level/crevice-bridge.cfg:816
 msgid ""
 "Well, he's *bragged* about being rich,\n"
 "but that's just his \"dignified family\" schtick."
@@ -789,7 +843,7 @@ msgstr ""
 "حسنا ، انه تفاخر * * عن كونها غنية ، ولكن هذا مجرد كتابه \"كرامة العائلة\" "
 "schtick."
 
-#: data/level/crevice-bridge.cfg:755
+#: data/level/crevice-bridge.cfg:817
 msgid ""
 "He's such a miser, you know -\n"
 "the man would probably burn his\n"
@@ -798,31 +852,31 @@ msgstr ""
 "انه مثل البخيل ، كما تعلمون -- أن الرجل ربما حرق أثاث منزله لمجرد انقاذ على "
 "الحطب."
 
-#: data/level/crevice-bridge.cfg:756
+#: data/level/crevice-bridge.cfg:818
 msgid ""
 "So, no, he's never seemed\n"
 "to have a dime to spare."
 msgstr "لذا ، لا ، أبدا أنه على ما يبدو عشرة سنتات لتجنيب."
 
-#: data/level/crevice-bridge.cfg:757
+#: data/level/crevice-bridge.cfg:819
 msgid ""
 "He does brag about being known by important\n"
 "people, but you know how he is."
 msgstr "انه لا يجري التباهي المعروفة من قبل الناس مهم ، ولكن كنت أعرف كيف هو."
 
-#: data/level/crevice-bridge.cfg:760
+#: data/level/crevice-bridge.cfg:822
 msgid ""
 "Yeah.  Geez.\n"
 "So, uh, here's what I think we know:"
 msgstr "نعم. الجيز. لذا ، اه ، وهنا ما أعتقد أننا نعرف :"
 
-#: data/level/crevice-bridge.cfg:762
+#: data/level/crevice-bridge.cfg:824
 msgid ""
 "We know he's clearly run afoul\n"
 "of Milgram, somehow."
 msgstr "ونحن نعلم أن ترشح نفسها بوضوح انه اصطدام Milgram ، بطريقة أو بأخرى."
 
-#: data/level/crevice-bridge.cfg:764
+#: data/level/crevice-bridge.cfg:826
 msgid ""
 "We also know Milgram's not interested\n"
 "in taking over the town, because he\n"
@@ -831,7 +885,7 @@ msgstr ""
 "ونحن نعلم أيضا Milgram لا يرغب في الاستيلاء على المدينة ، لأنه أساسا لم "
 "يفعلوا ، واعطى الامر."
 
-#: data/level/crevice-bridge.cfg:766
+#: data/level/crevice-bridge.cfg:828
 msgid ""
 "We don't know if the money thing\n"
 "is true, but we know if it is,\n"
@@ -840,33 +894,33 @@ msgstr ""
 "نحن لا نعرف إذا كان شيء من المال هو الصحيح ، ولكننا نعرف ما اذا كان هو ، "
 "بالتأكيد انه لم يطرح للاستخدام."
 
-#: data/level/crevice-bridge.cfg:768
+#: data/level/crevice-bridge.cfg:830
 msgid ""
 "Oh yeah, I forgot to mention;\n"
 "he said it was some kind of \"investment\""
 msgstr "أوه نعم ، لقد نسيت أن أذكر ، انه قال انه كان نوعا من \"الاستثمار\""
 
-#: data/level/crevice-bridge.cfg:770
+#: data/level/crevice-bridge.cfg:832
 msgid ""
 "Which I assume would be for the town.\n"
 "Building things."
 msgstr "التي أفترض سيكون للبلدة. بناء الأشياء."
 
-#: data/level/crevice-bridge.cfg:772
+#: data/level/crevice-bridge.cfg:834
 msgid "Naturally, we know that didn't happen."
 msgstr "بطبيعة الحال ، ونحن نعلم أن ذلك لم يحدث."
 
-#: data/level/crevice-bridge.cfg:774
+#: data/level/crevice-bridge.cfg:836
 msgid "So other than that, it's a mystery."
 msgstr "البعض حتى من ذلك ، انها لغزا."
 
-#: data/level/crevice-bridge.cfg:776
+#: data/level/crevice-bridge.cfg:838
 msgid ""
 "So, dare I ask:\n"
 "What do we do now?"
 msgstr "بذلك ، أجرؤ على السؤال : ماذا نفعل الآن؟"
 
-#: data/level/crevice-bridge.cfg:779
+#: data/level/crevice-bridge.cfg:841
 msgid ""
 "Ah, that.  I went and decided that\n"
 "it's probably a very good idea to\n"
@@ -875,7 +929,7 @@ msgstr ""
 "آه ، ذلك. ذهبت وقررت انه من المحتمل ان يكون فكرة جيدة للغاية لقيام "
 "الدبلوماسية قليلا."
 
-#: data/level/crevice-bridge.cfg:781
+#: data/level/crevice-bridge.cfg:843
 msgid ""
 "*Someone* needs to go talk to Milgram,\n"
 "and ask what was wrong, so nothing bad happens."
@@ -883,23 +937,23 @@ msgstr ""
 "* * شخص ما يجب أن تذهب إلى Milgram الحديث ، ونسأل ما كان خاطئا ، لذلك شيئا "
 "سيئا سيحدث."
 
-#: data/level/crevice-bridge.cfg:783
+#: data/level/crevice-bridge.cfg:845
 msgid ""
 "So for a lack of any other willing parties,\n"
 "I decided to go."
 msgstr "ذلك لعدم استعداد أي من الأحزاب الأخرى ، وقررت أن أذهب."
 
-#: data/level/crevice-bridge.cfg:785
+#: data/level/crevice-bridge.cfg:847
 msgid "That's very noble of you."
 msgstr "هذا النبيل جدا لك."
 
-#: data/level/crevice-bridge.cfg:788
+#: data/level/crevice-bridge.cfg:850
 msgid ""
 "Ha, well, we're also going to find out\n"
 "if it's very foolish, as well."
 msgstr "هكتار ، حسنا ، نحن ذاهبون أيضا لمعرفة ما اذا كان حماقة كبيرة ، كذلك."
 
-#: data/level/crevice-bridge.cfg:791
+#: data/level/crevice-bridge.cfg:853
 msgid ""
 "But nothing ventured, nothing gained, you know?\n"
 "I guess I'm just tired of bumming around."
@@ -907,30 +961,30 @@ msgstr ""
 "لكن غامر شيء ، لا شيء المكتسبة ، هل تعلم؟ أعتقد أنا متعب فقط من bumming "
 "حولها."
 
-#: data/level/crevice-bridge.cfg:793
+#: data/level/crevice-bridge.cfg:855
 msgid ""
 "Speaking of which, I'd been meaning\n"
 "to thank you for your help thus far."
 msgstr ""
 "من الذي يتكلم ، ويهمني ان كان هذا يعني أن أشكركم على مساعدتكم حتى الآن."
 
-#: data/level/crevice-bridge.cfg:795
+#: data/level/crevice-bridge.cfg:857
 msgid ""
 "I've really appreciated the \"eyes in the sky\".\n"
 "It's very helpful."
 msgstr "لقد قدرت حقا \"عيون في السماء\". انها مفيدة جدا."
 
-#: data/level/crevice-bridge.cfg:797
+#: data/level/crevice-bridge.cfg:859
 msgid ""
 "To spare your asking,\n"
 "yes, I'd be happy to continue."
 msgstr "لتجنيب يسأل الخاص ، نعم ، سأكون سعيدا للمتابعة."
 
-#: data/level/crevice-bridge.cfg:800
+#: data/level/crevice-bridge.cfg:862
 msgid "Hey, thanks, that's really nice of you!"
 msgstr "مهلا ، الشكر ، وهذا لطيف منك!"
 
-#: data/level/crevice-bridge.cfg:802
+#: data/level/crevice-bridge.cfg:864
 msgid ""
 "It's the least I can do.\n"
 "I'd offer to carry you, even,\n"
@@ -939,7 +993,7 @@ msgstr ""
 "انها أقل ما يمكن القيام به. فما استقاموا لكم فاستقيموا تقدم لنقلك ، وحتى ، "
 "ولكن أخشى أن من المستحيل فعليا."
 
-#: data/level/crevice-bridge.cfg:803
+#: data/level/crevice-bridge.cfg:865
 msgid ""
 "I'm as curious as you are, about this,\n"
 "and we're more likely to get to the\n"
@@ -948,33 +1002,33 @@ msgstr ""
 "أنا الغريب كما كنت ، وحول هذا الموضوع ، ونحن أكثر احتمالا للحصول على الجزء "
 "السفلي من الامور اذا عملنا معا."
 
-#: data/level/crevice-bridge.cfg:806
+#: data/level/crevice-bridge.cfg:868
 msgid "Awesome!"
 msgstr "رائع!"
 
-#: data/level/crevice-bridge.cfg:809
+#: data/level/crevice-bridge.cfg:871
 msgid ""
 "Anyways, I was planning to go through\n"
 "the forest, to start with."
 msgstr "على أي حال ، كنت أخطط للذهاب عبر الغابة ، لتبدأ."
 
-#: data/level/crevice-bridge.cfg:811
+#: data/level/crevice-bridge.cfg:873
 msgid "Does that sound like a good idea?"
 msgstr "لا يبدو أن فكرة جيدة؟"
 
-#: data/level/crevice-bridge.cfg:813
+#: data/level/crevice-bridge.cfg:875
 msgid ""
 "Yes... it is the only path I know of,\n"
 "but be careful in there."
 msgstr "نعم... ذلك هو المسار الوحيد الذي أعرفه من ، ولكن كن حذرا في هناك."
 
-#: data/level/crevice-bridge.cfg:816
+#: data/level/crevice-bridge.cfg:878
 msgid ""
 "Yeah, no kidding.\n"
 "Well, see you soon!  Thanks again!"
 msgstr "نعم ، لا تمزح. حسنا ، نراكم قريبا! شكرا مرة أخرى!"
 
-#: data/level/crevice-bridge.cfg:828
+#: data/level/crevice-bridge.cfg:897
 msgid "Ahh, there you are!"
 msgstr "آه ، كنت هناك!"
 
@@ -1115,7 +1169,8 @@ msgid ""
 "Your big problem will be that\n"
 "the gate connecting the two halves\n"
 "of town has been locked."
-msgstr "وسوف تكون المشكلة الكبرى التي تم تأمين البوابة التي تربط شطري المدينة."
+msgstr ""
+"وسوف تكون المشكلة الكبرى التي تم تأمين البوابة التي تربط شطري المدينة."
 
 #: data/level/crevice-village-central.cfg:1292
 msgid ""
@@ -1137,9 +1192,9 @@ msgstr "يسأل أحد السجناء هو على الارجح أفضل رها�
 
 #: data/level/crevice-village-central.cfg:1449
 #: data/level/crevice-village-house-2.cfg:3211
-#: data/level/crevice-village-house-4.cfg:3019
-#: data/level/crevice-village-house-4.cfg:3060
-#: data/level/killer-bunnies.cfg:3563
+#: data/level/crevice-village-house-4.cfg:2607
+#: data/level/crevice-village-house-4.cfg:2635
+#: data/level/killer-bunnies.cfg:3521
 msgid "Nope, it's locked."
 msgstr "كلا ، لتأمينه."
 
@@ -1219,8 +1274,8 @@ msgid ""
 "to do it, but I guess it's not so weird\n"
 "if you've got lots of manpower to spare."
 msgstr ""
-"اعتقال عادل الجميع بطريقة غريبة للقيام بذلك ، ولكن اعتقد انها ليست غريبة حتى "
-"إذا كنت قد حصلت على الكثير من القوى العاملة لتجنيب."
+"اعتقال عادل الجميع بطريقة غريبة للقيام بذلك ، ولكن اعتقد انها ليست غريبة حتى"
+" إذا كنت قد حصلت على الكثير من القوى العاملة لتجنيب."
 
 #: data/level/crevice-village-heights.cfg:1040
 msgid ""
@@ -1403,8 +1458,8 @@ msgid ""
 "but if you're going to go up there,\n"
 "you'd better go whilst the going's good."
 msgstr ""
-"لدي فكرة ، ولكن اذا كنت ستذهب الى هناك ، وكنت تسير بصورة أفضل في حين أن تسير "
-"جيد."
+"لدي فكرة ، ولكن اذا كنت ستذهب الى هناك ، وكنت تسير بصورة أفضل في حين أن تسير"
+" جيد."
 
 #: data/level/crevice-village-heights.cfg:1113
 msgid "Yeah, I'll check it out."
@@ -1518,8 +1573,8 @@ msgid ""
 "came out of the house here,\n"
 "they all hopped in his airship and left."
 msgstr ""
-"طاقم Milgram ل. عند ذلك الكابتن غي خرج من البيت هنا ، وأنهم جميعا في المنطاد "
-"قافز له واليسار."
+"طاقم Milgram ل. عند ذلك الكابتن غي خرج من البيت هنا ، وأنهم جميعا في المنطاد"
+" قافز له واليسار."
 
 #: data/level/crevice-village-heights.cfg:1189
 msgid ""
@@ -1585,8 +1640,8 @@ msgid ""
 "I think that unlocks a house that\n"
 "has the key to the town gate."
 msgstr ""
-"نعم ، هذا حق أساسي إلى جانبك -- أعتقد أن يفتح البيت الذي لديه المفتاح لبوابة "
-"المدينة."
+"نعم ، هذا حق أساسي إلى جانبك -- أعتقد أن يفتح البيت الذي لديه المفتاح لبوابة"
+" المدينة."
 
 #: data/level/crevice-village-house-1.cfg:2517
 msgid "Maybe."
@@ -1773,70 +1828,70 @@ msgid ""
 "design a house like this?"
 msgstr "اه! الذين في العالم تصميم منزل مثل هذا؟"
 
-#: data/level/crevice-village-house-4.cfg:2962
+#: data/level/crevice-village-house-4.cfg:2572
 msgid "Hmmm..."
 msgstr "هممم..."
 
-#: data/level/crevice-village-house-4.cfg:2963
+#: data/level/crevice-village-house-4.cfg:2573
 msgid ""
 "It seems I'm trapped\n"
 "inside this house."
 msgstr "يبدو أنني أصبحت داخل هذا المنزل."
 
-#: data/level/crevice-village-house-4.cfg:2964
+#: data/level/crevice-village-house-4.cfg:2574
 msgid ""
 "I guess the only way out\n"
 "is in!"
 msgstr "اعتقد ان المخرج الوحيد هو في!"
 
-#: data/level/crevice-village-house-4.cfg:3266
+#: data/level/crevice-village-house-4.cfg:2737
 msgid "This is decidedly unpleasant."
 msgstr "هذا هو بالتأكيد غير سارة."
 
-#: data/level/crevice-village-house-4.cfg:3268
-#: data/level/crevice-village-house-4.cfg:3278
+#: data/level/crevice-village-house-4.cfg:2739
+#: data/level/crevice-village-house-4.cfg:2749
 msgid "You don't say."
 msgstr "حقا"
 
-#: data/level/crevice-village-house-4.cfg:3270
+#: data/level/crevice-village-house-4.cfg:2741
 msgid ""
 "When I stepped in the door,\n"
 "it locked behind me."
 msgstr "مؤمن عندما خطوت في الباب ، ورائي."
 
-#: data/level/crevice-village-house-4.cfg:3271
+#: data/level/crevice-village-house-4.cfg:2742
 msgid ""
 "That's actually a rather clever\n"
 "way to round everyone up."
 msgstr "هذا في الواقع بطريقة ذكية ، بدلا من الجولة يصل الجميع."
 
-#: data/level/crevice-village-house-4.cfg:3273
+#: data/level/crevice-village-house-4.cfg:2744
 msgid ""
 "Know anything helpful\n"
 "about this house?"
 msgstr "أعرف أي شيء مفيد حول هذا البيت؟"
 
-#: data/level/crevice-village-house-4.cfg:3274
+#: data/level/crevice-village-house-4.cfg:2745
 msgid ""
 "Unfortunately I don't.\n"
 "I was just visiting."
 msgstr "للأسف أنا لا. كنت في زيارة للتو."
 
-#: data/level/crevice-village-house-4.cfg:3275
+#: data/level/crevice-village-house-4.cfg:2746
 msgid "The floorplan is quite loony."
 msgstr "على المخططات هو معتوه تماما."
 
-#: data/level/crevice-village-house-4.cfg:3277
+#: data/level/crevice-village-house-4.cfg:2748
 msgid "Marvelous ventilation, though."
 msgstr "رائع والتهوية ، وبالرغم من ذلك."
 
-#: data/level/crevice-village-house-4.cfg:3280
+#: data/level/crevice-village-house-4.cfg:2751
 msgid ""
 "Anyways, I'd better be off.\n"
 "I'm trying to sort out this mess."
 msgstr "على أي حال ، سأكون أفضل حالا. أحاول أن فرز هذه الفوضى."
 
-#: data/level/crevice-village-house-4.cfg:3281
+#: data/level/crevice-village-house-4.cfg:2752
 msgid "Good luck."
 msgstr "حظا سعيدا."
 
@@ -2058,7 +2113,8 @@ msgstr "حسنا ، أنا رئيس البلدية ، بعد كل شيء ، وك
 msgid ""
 "Baloney.  You're one of at least ten people\n"
 "who claim to run this town."
-msgstr "هراء. كنت واحدا من عشرة أشخاص على الأقل الذين يدعون لتشغيل هذه البلدة."
+msgstr ""
+"هراء. كنت واحدا من عشرة أشخاص على الأقل الذين يدعون لتشغيل هذه البلدة."
 
 #: data/level/crevice-village-house-elder.cfg:1658
 msgid "You're a gatekeeper, for crying out loud!"
@@ -2212,8 +2268,8 @@ msgid ""
 "If he wanted to take over the town,\n"
 "he could just ... do it."
 msgstr ""
-"أنا لا أرى لماذا عنيدا والحاجة عذر. إذا كان يريد الاستيلاء على البلدة ، وقال "
-"انه مجرد... تفعل ذلك."
+"أنا لا أرى لماذا عنيدا والحاجة عذر. إذا كان يريد الاستيلاء على البلدة ، وقال"
+" انه مجرد... تفعل ذلك."
 
 #: data/level/crevice-village-house-elder.cfg:1710
 msgid ""
@@ -2252,7 +2308,8 @@ msgstr ""
 msgid ""
 "Talk it over.  See if we can reach\n"
 "some mutually amicable agreement."
-msgstr "التحدث أكثر من ذلك. نرى اذا كنا نستطيع التوصل إلى اتفاق ودي بعض الآخر."
+msgstr ""
+"التحدث أكثر من ذلك. نرى اذا كنا نستطيع التوصل إلى اتفاق ودي بعض الآخر."
 
 #: data/level/crevice-village-house-elder.cfg:1722
 msgid "I don't think that would work."
@@ -2281,8 +2338,8 @@ msgid ""
 "Well, if you say so, I suppose I can't object.\n"
 "In fact, it might be a good stalling tactic."
 msgstr ""
-"حسنا ، إذا أنت تقول ذلك ، أنا لا أستطيع أن افترض الكائن. في الواقع ، قد يكون "
-"تكتيكا ناجحا المماطلة."
+"حسنا ، إذا أنت تقول ذلك ، أنا لا أستطيع أن افترض الكائن. في الواقع ، قد يكون"
+" تكتيكا ناجحا المماطلة."
 
 #: data/level/crevice-village-house-elder.cfg:1732
 msgid "Why, I'll even show you the way..."
@@ -2861,7 +2918,8 @@ msgid ""
 "You can collect these\n"
 "and any other golden objects,\n"
 "and then use them to buy stuff!"
-msgstr "يمكنك جمع هذه وأية كائنات أخرى ذهبية ، ومن ثم استخدامها لشراء الاشياء!"
+msgstr ""
+"يمكنك جمع هذه وأية كائنات أخرى ذهبية ، ومن ثم استخدامها لشراء الاشياء!"
 
 #: data/level/grassy-path.cfg:1326
 msgid ""
@@ -2899,7 +2957,8 @@ msgstr ""
 msgid ""
 "Up ahead, you'll notice an anthill,\n"
 "which ants constantly come out of."
-msgstr "حتى قبل ، فسوف تلاحظ وجود عش النمل ، والتي تأتي باستمرار النمل من أصل."
+msgstr ""
+"حتى قبل ، فسوف تلاحظ وجود عش النمل ، والتي تأتي باستمرار النمل من أصل."
 
 #: data/level/grassy-path.cfg:1481
 msgid ""
@@ -2951,27 +3010,27 @@ msgid ""
 "marks on this level, too."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1730
+#: data/level/grassy-path.cfg:1666
 msgid ""
-"If you haven't already noticed, the round\n"
-"rocks you sometimes find nestled in\n"
+"If you haven't already noticed, the red\n"
+"fruits you sometimes find nestled in\n"
 "the grass are spittable projectiles."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1731
+#: data/level/grassy-path.cfg:1667
 msgid ""
 "You'll find many such objects of similar size\n"
 "in different areas of the game, such as crates\n"
 "inside of houses, or nuts hanging from trees."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1732
+#: data/level/grassy-path.cfg:1668
 msgid ""
 "These are an ample source of ammunition,\n"
 "that's almost always available."
 msgstr ""
 
-#: data/level/grassy-path.cfg:1733
+#: data/level/grassy-path.cfg:1669
 msgid ""
 "Note that these have an unusual property;\n"
 "if you use them up, walk away from the screen\n"
@@ -3010,13 +3069,13 @@ msgstr "ﻻ استطيع الطيران"
 msgid "Killer Bunnies"
 msgstr "قاتل الأرانب"
 
-#: data/level/killer-bunnies.cfg:3308
+#: data/level/killer-bunnies.cfg:3266
 msgid ""
 "That guy sure doesn't look\n"
 "glad to meet me!"
 msgstr "هذا الرجل بالتأكيد لا تبدو سعيدة لمقابلتي!"
 
-#: data/level/killer-bunnies.cfg:3563
+#: data/level/killer-bunnies.cfg:3521
 msgid ""
 "It's locked. Of course...\n"
 "It couldn't be easy to get out of here!"
@@ -3328,15 +3387,16 @@ msgid ""
 "Perhaps more importantly, I am a bit of\n"
 "an astronomer and biologist, by trade."
 msgstr ""
-"وربما الأهم من ذلك ، وأنا قليلا من عالم الفلك وعلم الأحياء ، من خلال التجارة."
+"وربما الأهم من ذلك ، وأنا قليلا من عالم الفلك وعلم الأحياء ، من خلال "
+"التجارة."
 
 #: data/level/secluded-hut-interior.cfg:929
 msgid ""
 "That is why I live all the way up here.\n"
 "You can see quite a bit from this height."
 msgstr ""
-"هذا هو السبب في أنني أعيش على طول الطريق حتى هنا. يمكنك ان ترى قدرا كبيرا من "
-"هذا الارتفاع."
+"هذا هو السبب في أنني أعيش على طول الطريق حتى هنا. يمكنك ان ترى قدرا كبيرا من"
+" هذا الارتفاع."
 
 #: data/level/secluded-hut-interior.cfg:931
 msgid ""
@@ -3514,8 +3574,8 @@ msgid ""
 "Impressive how fast they can do that,\n"
 "with modular construction and all."
 msgstr ""
-"ومع ذلك ، كنت أفضل أن تكون عاملة. نأمل ، سوف نصلح هذا الجسر قريبا. إعجاب مدى "
-"السرعة التي يمكن أن نفعل ذلك ، مع وحدات البناء وجميع."
+"ومع ذلك ، كنت أفضل أن تكون عاملة. نأمل ، سوف نصلح هذا الجسر قريبا. إعجاب مدى"
+" السرعة التي يمكن أن نفعل ذلك ، مع وحدات البناء وجميع."
 
 #: data/level/secluded-hut.cfg:1114
 msgid ""
@@ -3596,14 +3656,14 @@ msgid ""
 "In fact, I came to him with the idea.\n"
 "It was meant to be philanthropy."
 msgstr ""
-"في الواقع ، لقد جئت إليه مع هذه الفكرة. وكان من المفترض أن يكون العمل الخيري."
+"في الواقع ، لقد جئت إليه مع هذه الفكرة. وكان من المفترض أن يكون العمل "
+"الخيري."
 
 #: data/level/tea-with-milgram.cfg:192
 msgid ""
 "I thought a 'mayor' would be responsible,\n"
 "but instead he's spending it all on himself!"
-msgstr ""
-"فكرت \"عمدة\" ستكون مسؤولة ، ولكن بدلا من ذلك هو انفاق كل شيء على نفسه!"
+msgstr "فكرت \"عمدة\" ستكون مسؤولة ، ولكن بدلا من ذلك هو انفاق كل شيء على نفسه!"
 
 #: data/level/tea-with-milgram.cfg:195
 msgid "And now he's refusing to repay you?"
@@ -3797,7 +3857,8 @@ msgid ""
 "Well, now that I know the whole story,\n"
 "I think I can help you out, big time."
 msgstr ""
-"حسنا ، أنا أعرف الآن أن القصة كلها ، وأعتقد أنني أستطيع مساعدتك ، وقتا كبيرا."
+"حسنا ، أنا أعرف الآن أن القصة كلها ، وأعتقد أنني أستطيع مساعدتك ، وقتا "
+"كبيرا."
 
 #: data/level/tea-with-milgram.cfg:294
 msgid ""
@@ -4175,8 +4236,8 @@ msgid ""
 "I think I left a health capsule down there.\n"
 "If you can clear it out, it's yours."
 msgstr ""
-"ولكن اذا كنت تريد الذهاب ليكون مثل ذلك أعتقد أنني تركت كبسولة الصحية بانخفاض "
-"هناك. إذا كان يمكنك مسح بها ، انها لك."
+"ولكن اذا كنت تريد الذهاب ليكون مثل ذلك أعتقد أنني تركت كبسولة الصحية بانخفاض"
+" هناك. إذا كان يمكنك مسح بها ، انها لك."
 
 #: data/level/to-nenes-house-inside.cfg:528
 msgid ""
@@ -4204,7 +4265,8 @@ msgstr "عفوا."
 msgid ""
 "Can't a guy sneak into his neighbor's\n"
 "basement uninvited these days?"
-msgstr "لا يمكن التسلل إلى الطابق السفلي الرجل جاره غير المدعوة في هذه الأيام؟"
+msgstr ""
+"لا يمكن التسلل إلى الطابق السفلي الرجل جاره غير المدعوة في هذه الأيام؟"
 
 #: data/level/to-nenes-house-inside.cfg:696
 msgid "Well, dangit, this door is locked."
@@ -4306,7 +4368,7 @@ msgstr "هل تريد شراء consts.name {}؟"
 msgid "This is a blank tile. It doesn't do anything."
 msgstr "هذا هو البلاط فارغة. لم تفعل أي شيء."
 
-#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:75
+#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:79
 msgid "'"
 msgstr "'"
 
@@ -4320,8 +4382,8 @@ msgstr "جعلتك على المستوى level.player.difficulty {} من الس�
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level {registry."
-"arcade_coin_race_high_score}."
+"The furthest that has been reached is level "
+"{registry.arcade_coin_race_high_score}."
 msgstr ""
 "أبعد الذي تم التوصل إليه هو مستوى registry.arcade_coin_race_high_score {}."
 
@@ -4355,7 +4417,8 @@ msgid ""
 "Collect another one to increase\n"
 "your maximum HP by one!"
 msgstr ""
-"كنت قد وجدت جزءا من كبسولة القلب. جمع واحد آخر لزيادة الحد الأقصى لحصان واحد!"
+"كنت قد وجدت جزءا من كبسولة القلب. جمع واحد آخر لزيادة الحد الأقصى لحصان "
+"واحد!"
 
 #: data/objects/items/partial_max_heart_object.cfg:30
 msgid ""
@@ -4539,18 +4602,18 @@ msgstr "تحميل بالرصاص الطاقة"
 
 #: iOS_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are "
-"hoping to bring back the magic in a new, original game design with "
-"unconventional gameplay mechanics - a fun break from the usual clones. We're "
-"a small group of indie developers, hoping this game becomes one of the "
+"Frogatto was made by a group of big-time fans of classic videogames, who are"
+" hoping to bring back the magic in a new, original game design with "
+"unconventional gameplay mechanics - a fun break from the usual clones. We're"
+" a small group of indie developers, hoping this game becomes one of the "
 "definitive platform games on iOS - and you can make that happen!"
 msgstr ""
 "وأدلى Frogatto من قبل مجموعة من المشجعين في الوقت كبيرة من ألعاب الفيديو "
 "الكلاسيكية ، والذين يأملون في اعادة السحر في استراتيجية جديدة ، وتصميم "
 "اللعبة الأصلية مع الميكانيكا اللعب غير تقليدية -- فاصل متعة من الحيوانات "
 "المستنسخة المعتاد. نحن مجموعة صغيرة من مطوري المستقلة ، وتأمل هذه اللعبة "
-"يصبح واحدا من منصة الألعاب نهائي بشأن دائرة الرقابة الداخلية -- ويمكنك تحقيق "
-"ذلك!"
+"يصبح واحدا من منصة الألعاب نهائي بشأن دائرة الرقابة الداخلية -- ويمكنك تحقيق"
+" ذلك!"
 
 #: iOS_APP_STORE_METADATA:5
 msgid ""
@@ -4643,3 +4706,5 @@ msgstr "عكس ألف وباء"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
+
+
