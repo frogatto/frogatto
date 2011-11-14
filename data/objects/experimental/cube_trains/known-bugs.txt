@@ -5,11 +5,11 @@
 	║ Critical:                                                                     ║
 	║  ▶                                                                            ║
 	║                                                                               ║
-	║ Cosmetic:                                                                     ║
+	║ Problematic:                                                                  ║
+	║  ▶ When deleting a support, the track doesn't fall down.                      ║
 	║  ▶                                                                            ║
 	║                                                                               ║
 	║ Minor:                                                                        ║
-	║  ▶ When deleting a support, the track doesn't fall down.                      ║
 	║  ▶                                                                            ║
 	║                                                          ▷ fixed  ▶ not fixed ║
 	╚═══════════════════════════════════════════════════════════════════════════════╝
