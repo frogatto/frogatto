@@ -10,6 +10,8 @@ Version 1.2:
  * Maps are now strewn with spittable props within easy reach.
  * Rewrote most of the dialogue.
  * Collectible items like coins can be collected by being touched by the tongue, besides just frogatto's body.
+ * Redrew the world map.
+ * Added a few new monsters, like the red hornbugs, and completely rewrote how bats behave.
 
 Version 1.1.1:
  * Fixed some crashing bugs.
