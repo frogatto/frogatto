@@ -1,0 +1,25 @@
+'window_fill' -> {
+	'paragraph' -> 	'text', #normal font, no hyper#
+	'paragraph' ->	[{	'text' -> 'text',		#optional, no default#
+						'font' -> 'normal',		#optional, def 'normal'#
+						'hyper' -> 'text',		#optional, no default#
+						'justified' -> 'mode'	#optional, def 'left'#
+						'rtl' -> bool			#optional, def false (right-to-left text).#
+						'btt' -> bool			#optional, def false (bottom-to-top text).#
+					}]
+	'obj' -> obj, #default offset and return$
+	'obj' -> ({	'obj' -> obj,		#non-optional#
+				'offset' -> [x,y],	#optional, def [0,0]#
+				'return' -> bool	#optional, def false# #On it's own line? Ignored as 'true' until we can wrap text.#
+				'justified' -> 'mode'	#optional, def 'left'#
+				})
+	}
+	
+Requirements:
+	Text Input Box
+	Display windows, vertical scrolling and fixed, containing text and objects.
+		Note: These windows will use a normal text object for now, advanced text services (detailed above) will be for later.
+	Buttons, which can go in display windows or on their own.
+	
+Data Flow:
+	The mouse object will have each button and display window registered, and will foward the mice events to those objects. Events will be 'mouse_over', 'mouse_not_over', 'mouse_left_click', 'mouse_right_click', 'mouse_left_hold', 'mouse_right_hold'. Key events will be processed by the player object, as usual, unless a text input box is active.
