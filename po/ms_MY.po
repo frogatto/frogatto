@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-11-13 16:33-0200\n"
-"PO-Revision-Date: 2011-11-13 18:33+0000\n"
+"POT-Creation-Date: 2011-11-15 16:08-0200\n"
+"PO-Revision-Date: 2011-11-15 18:10+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Malay (Malaysia) (http://www.transifex.net/projects/p/Frogatto/team/ms_MY/)\n"
 "MIME-Version: 1.0\n"
@@ -75,71 +75,81 @@ msgid ""
 "tongue, besides just frogatto's body."
 msgstr ""
 
-#: CHANGELOG:14 iOS_CHANGELOG:1
+#: CHANGELOG:13
+msgid "Redrew the world map."
+msgstr ""
+
+#: CHANGELOG:14
+msgid ""
+"Added a few new monsters, like the red hornbugs, and completely rewrote how "
+"bats behave."
+msgstr ""
+
+#: CHANGELOG:16 iOS_CHANGELOG:1
 msgid "Version 1.1.1:"
 msgstr "Versi 1.1.1:"
 
-#: CHANGELOG:15 iOS_CHANGELOG:2
+#: CHANGELOG:17 iOS_CHANGELOG:2
 msgid "Fixed some crashing bugs."
 msgstr "Beberapa pepijat penyebab krash dibetulkan."
 
-#: CHANGELOG:16
+#: CHANGELOG:18
 msgid "Fixed The Long Haul (compiled mode)"
 msgstr "Perjalanan Yang Jauh dibetulkan (mod kompail)"
 
-#: CHANGELOG:17
+#: CHANGELOG:19
 msgid "Fixed instructions on titlescreen (iOS)"
 msgstr "Arahan pada skrin pemula (iOS) dibetulkan."
 
-#: CHANGELOG:18 iOS_CHANGELOG:5
+#: CHANGELOG:20 iOS_CHANGELOG:5
 msgid "New translation: Italian"
 msgstr "Terjemahan baru: Bahasa Itali"
 
-#: CHANGELOG:19
+#: CHANGELOG:21
 msgid "Added automatic language selection for Windows"
 msgstr "Pilihan bahasa automatik untuk Windows ditambah."
 
-#: CHANGELOG:21
+#: CHANGELOG:23
 msgid "Version 1.1:"
 msgstr "Versi 1.1:"
 
-#: CHANGELOG:22
+#: CHANGELOG:24
 msgid "Added arcade mode."
 msgstr "Mod arked ditambah."
 
-#: CHANGELOG:23
+#: CHANGELOG:25
 msgid "Redid graphics for forest trees."
 msgstr "Grafik untuk pokok hutan dibuat semula."
 
-#: CHANGELOG:24
+#: CHANGELOG:26
 msgid "Redid graphics for forest background"
 msgstr "Grafik untuk latar belakang hutan dibuat semula."
 
-#: CHANGELOG:25
+#: CHANGELOG:27
 msgid "Redid graphics for dungeon wall tiles"
 msgstr "Grafik untuk jubin dinding penjara bawah tanah dibuat semula."
 
-#: CHANGELOG:26
+#: CHANGELOG:28
 msgid "Redid graphics for basement wall tiles"
 msgstr "Grafik untuk jubin dinding tingkat bawah dibuat semula."
 
-#: CHANGELOG:27
+#: CHANGELOG:29
 msgid "Added a bunch of interior props"
 msgstr "Beberapa prop dalaman ditambah."
 
-#: CHANGELOG:28
+#: CHANGELOG:30
 msgid "Reworked \"darkness\" for improved appearance"
 msgstr "Buat semula \"kegelapan\" untuk kelihatan lebih baik. "
 
-#: CHANGELOG:29
+#: CHANGELOG:31
 msgid "Added new palettes to forest and seaside areas."
 msgstr "Palet baru ditambah pada hutan dan kawasan tepi pantai."
 
-#: CHANGELOG:30
+#: CHANGELOG:32
 msgid "Added some unique enemies to the forest."
 msgstr "Beberapa musuh unik ditambah pada hutan."
 
-#: CHANGELOG:31
+#: CHANGELOG:33
 msgid ""
 "Refactored damage and monster type systems to make behavior more consistent "
 "and eliminate some rare buggy behavior."
@@ -147,7 +157,7 @@ msgstr ""
 "Sistem cedera dan jenis raksasa difaktor semula bagi buat perilaku lebih\n"
 "konsisten dan membuang beberapa perilaku pelik."
 
-#: CHANGELOG:32
+#: CHANGELOG:34
 msgid ""
 "Added translation support, with 4 complete translations: French, Brazilian "
 "Portuguese, Chinese (Simplified), and Japanese."
@@ -155,54 +165,54 @@ msgstr ""
 "Sokongan terjemahan ditambah, dengan 4 terjemahan lengkap: Perancis, "
 "Portugis Brazil, Cina (Mudah), dan Jepun. "
 
-#: CHANGELOG:34
+#: CHANGELOG:36
 msgid "Version 1.0.3:"
 msgstr "Versi 1.0.3:"
 
-#: CHANGELOG:35
+#: CHANGELOG:37
 msgid "Fixed crash when picking up max heart pieces."
 msgstr "Krash ketika ambil serpih hati maksimum dibetulkan."
 
-#: CHANGELOG:36
+#: CHANGELOG:38
 msgid "Other small bug fixes."
 msgstr "Pijat kecil yang lain dibetulkan."
 
-#: CHANGELOG:38
+#: CHANGELOG:40
 msgid "Version 1.0.2:"
 msgstr "Versi 1.0.2:"
 
-#: CHANGELOG:39
+#: CHANGELOG:41
 msgid "Added support for \"darkness\" in levels."
 msgstr "Sokongan untuk \"kegelapan\" pada level ditambah."
 
-#: CHANGELOG:40
+#: CHANGELOG:42
 msgid "Added support for WVGA."
 msgstr "Sokongan untuk WVGA ditambah."
 
-#: CHANGELOG:41
+#: CHANGELOG:43
 msgid "Made player status not show on the titlescreen or world map."
 msgstr ""
 "Buatkan status pemain tidak dipapar pada skrin pemula atau peta dunia."
 
-#: CHANGELOG:42
+#: CHANGELOG:44
 msgid "Made golden ants less ambiguous."
 msgstr "Buatkan semut emas kurang samar-samar."
 
-#: CHANGELOG:43
+#: CHANGELOG:45
 msgid "Fixed bug making certain music always play at full volume (iPhone)."
 msgstr ""
 "Pijat membuatkan sesetengah muzik selalu dimain pada volum penuh (iPhone) "
 "dibetulkan."
 
-#: CHANGELOG:44
+#: CHANGELOG:46
 msgid "Added option to reverse positions of A and B buttons (iPhone)."
 msgstr "Pilihan untuk tukar posisi butang A dan B (iPhone) ditambah."
 
-#: CHANGELOG:45
+#: CHANGELOG:47
 msgid "Added support for repeating levels (for arcade modes)."
 msgstr "Sokongan untuk mengulang level (untuk mod arked) ditambah."
 
-#: CHANGELOG:46
+#: CHANGELOG:48
 msgid ""
 "Pressing jump while in the air pressing against a wall now makes you cling "
 "to the wall."
@@ -210,85 +220,85 @@ msgstr ""
 "Tekan lompat ketika di udara sambil terkam dinding kini buatkan anda melekap"
 " pada dinding."
 
-#: CHANGELOG:47
+#: CHANGELOG:49
 msgid "Made it so you can skip dialogs sequences."
 msgstr "Membolehkan anda untuk langkau turutan dialog dibuat."
 
-#: CHANGELOG:48
+#: CHANGELOG:50
 msgid "Fixed lots of z-order issues."
 msgstr "Banyak isu z-order dibetulkan."
 
-#: CHANGELOG:49
+#: CHANGELOG:51
 msgid "Fixed bug causing ambient sounds to not work."
 msgstr "Pijat penyebab bunyi ambien tidak berfungsi dibetulkan."
 
-#: CHANGELOG:50
+#: CHANGELOG:52
 msgid "Improved forest background, and made it go upwards infinitely."
 msgstr "Latar belakang hutan dibaik, dan buatkannya menaik tanpa had."
 
-#: CHANGELOG:51
+#: CHANGELOG:53
 msgid "Made hearts heal a full heart, rather than just half."
 msgstr "Buatkan hati pulih sepenuhnya, bukan hanya separuh."
 
-#: CHANGELOG:52
+#: CHANGELOG:54
 msgid "Changed tilesets to make water look better."
 msgstr "Tukar set tail untuk buatkan air nampak lebih baik."
 
-#: CHANGELOG:53
+#: CHANGELOG:55
 msgid "Many small bug fixes."
 msgstr "Banyak pijat kecil dibetulkan."
 
-#: CHANGELOG:55
+#: CHANGELOG:57
 msgid "Version 1.0.1 (iPhone only):"
 msgstr "Versi 1.0.1 (iPhone sahaja):"
 
-#: CHANGELOG:56
+#: CHANGELOG:58
 msgid ""
 "Significantly improved controls, both functionally and graphically (iPhone)."
 msgstr ""
 "Kawalan dibaik dengan signifikan, dari segi fungsi dan juga grafik (iPhone)."
 
-#: CHANGELOG:57
+#: CHANGELOG:59
 msgid "Fixed auto-saving on iOS4 where multitasking is supported (iPhone)."
 msgstr "Auto-simpan pada iOS4 dibetulkan di mana multitask disokong (iPhone)."
 
-#: CHANGELOG:58
+#: CHANGELOG:60
 msgid "Fixed bug where a dialog could repeat forever."
 msgstr "Pijat yang membuatkan dialog berterusan diulang dibetulkan."
 
-#: CHANGELOG:59
+#: CHANGELOG:61
 msgid "Fixed crash in world map when you hold down while entering it."
 msgstr "Krash pada peta dunia ketika anda tekan untuk memasukinya dibetulkan."
 
-#: CHANGELOG:60
+#: CHANGELOG:62
 msgid "Fixed fullscreen mode (Mac/Windows)."
 msgstr "Mod skrin penuh (Mac/Windows) dibetulkan."
 
-#: CHANGELOG:61
+#: CHANGELOG:63
 msgid "Fixed controlpad issues for computers."
 msgstr "Isu pad kawalan untuk komputer dibetulkan."
 
-#: CHANGELOG:62
+#: CHANGELOG:64
 msgid "Added music and sound volume controls to pause screen."
 msgstr "Kawalan volum muzik dan bunyi pada skrin pause ditambah."
 
-#: CHANGELOG:63
+#: CHANGELOG:65
 msgid "Added customizable controls."
 msgstr "Kawalan boleh ubah ditambah."
 
-#: CHANGELOG:64
+#: CHANGELOG:66
 msgid "Added half-hearts."
 msgstr "Hati-separuh ditambah."
 
-#: CHANGELOG:65
+#: CHANGELOG:67
 msgid "Added scons script for compiling."
 msgstr "Skrip scon untuk dikompail ditambah."
 
-#: CHANGELOG:66
+#: CHANGELOG:68
 msgid "Minor level changes."
 msgstr "Perubahan kecil level."
 
-#: CHANGELOG:67
+#: CHANGELOG:69
 msgid "Updated music."
 msgstr "Muzik dikemaskini."
 
@@ -4015,27 +4025,136 @@ msgstr "Gua Cahaya Bintang"
 msgid "Stonepipe Meadow"
 msgstr "Padang Rumput Paip Batu"
 
-#: data/level/tea-with-milgram.cfg:173
+#: data/level/tea-with-milgram.cfg:320
 msgid "Webmaster"
 msgstr "Webmaster"
 
-#: data/level/tea-with-milgram.cfg:174
-msgid "Mac/Windows/iPhone Packager"
-msgstr "Juru Pakej Mac/Windows/iPhone"
+#: data/level/tea-with-milgram.cfg:321
+msgid "Programmer • Sound and iOS Code"
+msgstr ""
 
-#: data/level/tea-with-milgram.cfg:175
-msgid "Programmer (esp. helping with iPhone integration)"
-msgstr "Pengaturcara (khasnya dalam membantu integrasi iPhone)"
-
-#: data/level/tea-with-milgram.cfg:176
+#: data/level/tea-with-milgram.cfg:322
 msgid "Minor Object Scripter and Level Designer"
 msgstr "Penulis Skrip Objek Minor dan Pereka Level"
 
-#: data/level/tea-with-milgram.cfg:181
+#: data/level/tea-with-milgram.cfg:326
+msgid "Documentation Lead"
+msgstr "Panduan Dokumentasi"
+
+#: data/level/tea-with-milgram.cfg:327
+msgid "Object Scripter • Props and Achievements"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:328
+msgid "Engine Improvements"
+msgstr "Pembaikan Enjin"
+
+#: data/level/tea-with-milgram.cfg:332
+msgid "Lead Programmer"
+msgstr "Ketua Pengaturcara"
+
+#: data/level/tea-with-milgram.cfg:333
+msgid "Scripting Language Designer"
+msgstr "Pereka Skrip Bahasa"
+
+#: data/level/tea-with-milgram.cfg:334 data/level/tea-with-milgram.cfg:357
+#: data/level/tea-with-milgram.cfg:363
+msgid "Object Scripter"
+msgstr "Penulis Skrip Objek"
+
+#: data/level/tea-with-milgram.cfg:335
+msgid "Minor Level Designer"
+msgstr "Pereka Level Minor"
+
+#: data/level/tea-with-milgram.cfg:338
+msgid "Artist • Props"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:344
+msgid "Artist • Characters, Monsters, and Props"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:345
+msgid "Artist • House interiors and exteriors"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:356
+msgid "Level Designer • forest, cave, and dungeon levels"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:362
+msgid "Translation Coordinator"
+msgstr "Koordinator Terjemahan"
+
+#: data/level/tea-with-milgram.cfg:364
+msgid "Bug Fixer"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:368
+msgid "Translation Code"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:369
+msgid "Key Remapping Code"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:370
+msgid "OpenPandora Port"
+msgstr "Port OpenPandora"
+
+#: data/level/tea-with-milgram.cfg:373
+msgid "Our Players"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:374
+msgid "Bug Reports/Fixes"
+msgstr "Laporan/Pembetulan Pijat"
+
+#: data/level/tea-with-milgram.cfg:375
+msgid "Technical Advice"
+msgstr "Penasihat Teknikal"
+
+#: data/level/tea-with-milgram.cfg:376
+msgid "Level Design and Object Scripting"
+msgstr "Rekaan Level dan Skrip Objek"
+
+#: data/level/tea-with-milgram.cfg:377
+msgid "Devil's Advocacy"
+msgstr "Advokasi Devil"
+
+#: data/level/tea-with-milgram.cfg:380
+msgid "Programmer, Lead Content Wrangler and Lead Object Scripter"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:381
+msgid "Artist • Characters, Monsters, Props, Terrain"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:382
+msgid "Writer • Wrote Main Story and Most Dialogue"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:383
+msgid "Level Designer • seaside, town, and forest"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:386
+msgid "Musician"
+msgstr "Juru Muzik"
+
+#: data/level/tea-with-milgram.cfg:387
+msgid "Sound Effect Designer"
+msgstr "Pereka Kesan Bunyi"
+
+#: data/level/tea-with-milgram.cfg:391
+msgid "SPECIAL THANKS:"
+msgstr "PENGHARGAAN KHAS:"
+
+#: data/level/tea-with-milgram.cfg:400
 msgid "So let me get this straight..."
 msgstr "Jadi biar saya fahamkannya..."
 
-#: data/level/tea-with-milgram.cfg:184
+#: data/level/tea-with-milgram.cfg:403
 msgid ""
 "What you're saying, is that the elder\n"
 "borrowed all this money from you,"
@@ -4043,7 +4162,7 @@ msgstr ""
 "Awak kata tadi, yang penghulu\n"
 "pinjam semua duit ni daripada awak,"
 
-#: data/level/tea-with-milgram.cfg:186
+#: data/level/tea-with-milgram.cfg:405
 msgid ""
 "and it was meant to be used on\n"
 "civil projects for the town?"
@@ -4051,11 +4170,11 @@ msgstr ""
 "dan ia patutnya digunakan bagi\n"
 "projek awam untuk pekan ni?"
 
-#: data/level/tea-with-milgram.cfg:188
+#: data/level/tea-with-milgram.cfg:407
 msgid "Exactly!"
 msgstr "Tepat sekali!"
 
-#: data/level/tea-with-milgram.cfg:190
+#: data/level/tea-with-milgram.cfg:409
 msgid ""
 "In fact, I came to him with the idea.\n"
 "It was meant to be philanthropy."
@@ -4063,7 +4182,7 @@ msgstr ""
 "Sebetulnya, saya yang bagi idea tu.\n"
 "Ia sepatutnya suatu kerja amal."
 
-#: data/level/tea-with-milgram.cfg:192
+#: data/level/tea-with-milgram.cfg:411
 msgid ""
 "I thought a 'mayor' would be responsible,\n"
 "but instead he's spending it all on himself!"
@@ -4071,35 +4190,162 @@ msgstr ""
 "Ingatkan 'datuk bandar' beramanah,\n"
 "tapi dia belanja untuk dirinya saja!"
 
-#: data/level/tea-with-milgram.cfg:195
+#: data/level/tea-with-milgram.cfg:414
 msgid "And now he's refusing to repay you?"
 msgstr "Sekarang dia enggan bayar balik?"
 
-#: data/level/tea-with-milgram.cfg:197
+#: data/level/tea-with-milgram.cfg:416
 msgid "That's right!"
 msgstr "Betul tu!"
 
-#: data/level/tea-with-milgram.cfg:200
-msgid ""
-"I never thought him\n"
-"to be the charismatic type,"
+#: data/level/tea-with-milgram.cfg:419
+msgid "Ouch."
 msgstr ""
-"Saya tak pernah fikir yang dia\n"
-"jenis orang yang ada karisma,"
 
-#: data/level/tea-with-milgram.cfg:202
+#: data/level/tea-with-milgram.cfg:421
 msgid ""
-"In fact,\n"
-"I rather thought him to be a buffoon."
+"You know, I really think there are some big\n"
+"misunderstandings that need to get cleared up."
 msgstr ""
-"Malah, saya\n"
-"lebih suka anggap dia si tak guna."
 
-#: data/level/tea-with-milgram.cfg:205
+#: data/level/tea-with-milgram.cfg:423
+msgid "Almost all of which are his fault."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:425
+msgid ""
+"This might not be obvious from talking to him,\n"
+"but that elder guy is really just ... crazy."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:427
+msgid ""
+"He's just plain nuts.\n"
+"He's got a lot of bizarre delusions about things..."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:429
+msgid ""
+"...and mostly we just humor him,\n"
+"because he's pretty harmless."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:431
+msgid ""
+"We've trumped him up with a pointless job\n"
+"as the gatekeeper on the east side of town."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:433
+msgid ""
+"Which plays to his ego,\n"
+"and keeps him out of trouble."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:436
+msgid "Sounds like a perfect place for him!"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:439
+msgid "Yes, he's our official 'greeter'."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:441
+msgid ""
+"But I guess he really could cause\n"
+"some issues if other people, like yourself,\n"
+"aren't aware of his background."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:443
+msgid ""
+"Intriguing.\n"
+"That'd certainly explain a few things."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:445
+msgid "For starters, uh ... he's NOT our mayor."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:447
+msgid "I can see why not!"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:449
+msgid ""
+"Yep.  In fact, if you'll believe it,\n"
+"we actually don't have a mayor at all."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:452
+msgid ""
+"We've got nothing.\n"
+"We've got a bunch of stubborn idiots\n"
+"who happen to live in the same area."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:454
+msgid ""
+"We can't agree on anything,\n"
+"we can't work together to get anything done."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:457
+msgid ""
+"We don't have any government,\n"
+"we don't have any laws."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:459
+msgid ""
+"Careful, now - that sounds like\n"
+"an invitation to provide them."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:461
+msgid ""
+"Eh...heh... yes,\n"
+"that probably wouldn't be well-received!"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:463
+msgid ""
+"Anyways, our only saving grace is we really\n"
+"don't have anyone aggressive enough\n"
+"to try and settle disputes with force."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:465
+msgid ""
+"And I guess that might be one of the\n"
+"few things we'd all agree on;\n"
+"that we wouldn't tolerate that."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:467
+msgid ""
+"I mean, I'm definitely exaggerating a little;\n"
+"we couldn't raise a house without some\n"
+" cooperation, but it really is a mess."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:469
+msgid ""
+"So I don't know what the elder talked you into,\n"
+"but it's almost guaranteed to be lunacy."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:471
+msgid ""
+"Yes.\n"
+"No wonder we were confused!"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:475
 msgid "Ah, there we are..."
 msgstr "Ah, ni dia..."
 
-#: data/level/tea-with-milgram.cfg:209
+#: data/level/tea-with-milgram.cfg:480
 msgid ""
 "Fetch some for our guest,\n"
 "would you, kindly?"
@@ -4107,422 +4353,314 @@ msgstr ""
 "Bawakan sedikit untuk tetamu kita,\n"
 "boleh tak, dengan baik?"
 
-#: data/level/tea-with-milgram.cfg:212
-msgid ""
-"As I was saying,\n"
-"he doesn't seem to be the type,"
+#: data/level/tea-with-milgram.cfg:483
+msgid "So where was I?"
 msgstr ""
-"Macam saya cakap tadi,\n"
-"dia tak nampak macam jenis tu,"
 
-#: data/level/tea-with-milgram.cfg:215
-msgid ""
-"But somehow,\n"
-"he's turned the entire town against me,"
+#: data/level/tea-with-milgram.cfg:485
+msgid "What did the elder actually tell you?"
 msgstr ""
-"Akan tetapi, dia\n"
-"hasut seluruh pekan menentang saya,"
 
-#: data/level/tea-with-milgram.cfg:218
+#: data/level/tea-with-milgram.cfg:488
 msgid ""
-"He convinced them that I'm running\n"
-"some sort of protection racket."
+"Uhm...  so, I'm not even sure what that\n"
+"project was supposed to be, at this point."
 msgstr ""
-"Dia yakinkan mereka yang saya buat\n"
-"aktiviti minta duit perlindungan."
 
-#: data/level/tea-with-milgram.cfg:221
+#: data/level/tea-with-milgram.cfg:490
 msgid ""
-"Which I'll admit...\n"
-"...isn't too hard to believe."
+"Might've been something about a bridge,\n"
+"Fergus was heading that one up."
 msgstr ""
-"Yang mana saya akui...\n"
-"...tak susah untuk dipercayai."
 
-#: data/level/tea-with-milgram.cfg:224
-msgid "Uh.. yeah."
-msgstr "Uh... ya."
-
-#: data/level/tea-with-milgram.cfg:226
+#: data/level/tea-with-milgram.cfg:492
 msgid ""
-"I mean, you did send thugs in to\n"
-"shake him down."
+"He's one of my kitties.\n"
+"Heads up one of our engineering divisions."
 msgstr ""
-"Maksud saya, awak hantar penyangak\n"
-"untuk takutkan dia."
 
-#: data/level/tea-with-milgram.cfg:228
-msgid "That REALLY does look bad."
-msgstr "Tu BETUL-BETUL nampak tak bagus."
-
-#: data/level/tea-with-milgram.cfg:231
+#: data/level/tea-with-milgram.cfg:495
 msgid ""
-"Oh absolutely!\n"
-"It makes me look beastly!"
+"I honestly have no involvement in\n"
+"stuff like this; I delegate all of it out."
 msgstr ""
-"Oh memang!\n"
-"Ia buat saya nampak macam binatang!"
 
-#: data/level/tea-with-milgram.cfg:233
+#: data/level/tea-with-milgram.cfg:498
+msgid "Which sometimes doesn't work out as expected?"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:500
 msgid ""
-"But consider this...\n"
-"What other option did I have?"
+"Yeah.  I don't know a lot about Crevice Village,\n"
+"but if you'll forgive me, I had the impression\n"
+"it was a bit of a backwater, so I thought\n"
+"we'd do something to help out."
 msgstr ""
-"Tapi fikirkan ni...\n"
-"Apa pilihan lain yang saya ada?"
 
-#: data/level/tea-with-milgram.cfg:236
+#: data/level/tea-with-milgram.cfg:502
 msgid ""
-"I'd have sent the police in, but..\n"
-"..there AREN'T ANY police!"
+"We thought we'd actually hire you guys\n"
+"as labor, to do whatever you could."
 msgstr ""
-"Saya nak hantar polis, tapi...\n"
-"...TAK ADA SEORANG pun polis!"
 
-#: data/level/tea-with-milgram.cfg:238
-msgid "There's not even any government!"
-msgstr "Malah kerajaan pun tak ada!"
-
-#: data/level/tea-with-milgram.cfg:241
+#: data/level/tea-with-milgram.cfg:504
 msgid ""
-"The town elder wasn't VOTED as mayor,\n"
-"he just decided he's old enough that\n"
-"everyone should just do what he says."
+"It's always better that way;\n"
+"gets money flowing around, makes the\n"
+"new owners proud of what they built,\n"
+"feels less like charity, et cetera."
 msgstr ""
-"Penghulu pekan bukan DIUNDI sebagai\n"
-"datuk bandar, dia anggap dirinya\n"
-"cukup tua dan semua orang kena ikut."
 
-#: data/level/tea-with-milgram.cfg:244
-msgid "Not that anyone listens to him anyways."
-msgstr "Bukannya ada orang nak dengar pun."
+#: data/level/tea-with-milgram.cfg:506
+msgid "But, apparently we just got conned."
+msgstr ""
 
-#: data/level/tea-with-milgram.cfg:246
+#: data/level/tea-with-milgram.cfg:508
 msgid ""
-"They don't have a fire department,\n"
-"they don't have any schools,\n"
-"it's all just this absurd mess!"
+"And once they figured that out,\n"
+"some of our security guys were\n"
+"a little overzealous about recovering assets."
 msgstr ""
-"Mereka tak ada jabatan bomba,\n"
-"mereka tak ada satu sekolah pun,\n"
-"semua tu tak masuk akal!"
 
-#: data/level/tea-with-milgram.cfg:248
-msgid "This ... is true."
-msgstr "Ini ... betul."
-
-#: data/level/tea-with-milgram.cfg:252
-msgid "Blast it all!"
-msgstr "Jelak dengan semua ni!"
-
-#: data/level/tea-with-milgram.cfg:254
+#: data/level/tea-with-milgram.cfg:511
 msgid ""
-"Where I run things,\n"
-"there's some actual law and order.\n"
-"Decent, civilized society!"
+"Uh...\n"
+"That's a pretty spectacular euphemism, there..."
 msgstr ""
-"Di mana saya uruskan sesuatu,\n"
-"ada peraturan dan undang-undang.\n"
-"Masyarakat bersopan dan beradab! "
 
-#: data/level/tea-with-milgram.cfg:262
+#: data/level/tea-with-milgram.cfg:513
+msgid ""
+"Yes, okay ...\n"
+"they were just thugs, plain and simple."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:516
+msgid ""
+"I didn't authorize that operation,\n"
+"but I will take responsibility for it!"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:518
+msgid ""
+"Those cats are turning into bullies.\n"
+"Sooner or later, they're going to\n"
+"cause me some serious problems!"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:520
+msgid ""
+"I haven't given you a chance to apologize,\n"
+"but no need.\n"
+"Thank you for embarrassing them."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:522
+msgid "I hope they've learned a lesson from this."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:524
+msgid ""
+"Regarding THIS incident, I will need\n"
+"to have a talk with them about common sense."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:527
+msgid ""
+"Any fool could guess that the\n"
+"money had long since been spent."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:534
 msgid "Thank you Jeeves, that will do nicely."
 msgstr "Terima kasih Jeeves, ia membantu."
 
-#: data/level/tea-with-milgram.cfg:266
-msgid ""
-"So, anyhow, when I finally\n"
-"sent the lads to deal with things,\n"
-"it got rather messy."
+#: data/level/tea-with-milgram.cfg:539
+msgid "Anyhow, I'm quite unsure where to go from here."
 msgstr ""
-"Jadi, apapun, bila saya akhirnya\n"
-"hantar orang untuk urus perkara tu,\n"
-"ia jadi huru-hara."
 
-#: data/level/tea-with-milgram.cfg:269
+#: data/level/tea-with-milgram.cfg:541
 msgid ""
-"But you'll note, you'll note carefully..\n"
-"..besides being manhandled,\n"
-"no one did actually get hurt."
+"I'd like to do something\n"
+"to make amends with the town..."
 msgstr ""
-"Tapi tengok, tengok betul-betul...\n"
-"...selain daripada dikasari,\n"
-"tak ada seorang pun yang cedera."
 
-#: data/level/tea-with-milgram.cfg:271
+#: data/level/tea-with-milgram.cfg:543
 msgid ""
-"I *did* notice that.\n"
-"That kind of piqued my suspicions."
+"... what the kitties did there\n"
+"was decidedly impolite."
 msgstr ""
-"Saya *memang* nampak tu.\n"
-"Ia bangkitkan kesangsian saya."
 
-#: data/level/tea-with-milgram.cfg:274
+#: data/level/tea-with-milgram.cfg:545
 msgid ""
-"Now, you on the other hand...\n"
-"You've really clobbered a few people!"
+"Then again, I'm almost tempted to cut my\n"
+"losses and leave you guys well enough alone."
 msgstr ""
-"Sekarang, awak pula...\n"
-"Awak betul-betul belasah orang!"
 
-#: data/level/tea-with-milgram.cfg:278
-msgid "Yeah..  uhm.."
-msgstr "Ya...  uhm..."
+#: data/level/tea-with-milgram.cfg:547
+msgid "Would you have any suggestions?"
+msgstr ""
 
-#: data/level/tea-with-milgram.cfg:281
-msgid "I'm really kinda sorry about that now!"
-msgstr "Saya rasa menyesal pula sekarang!"
+#: data/level/tea-with-milgram.cfg:549
+msgid "One or two."
+msgstr ""
 
-#: data/level/tea-with-milgram.cfg:284
+#: data/level/tea-with-milgram.cfg:552
 msgid ""
-"I appreciate the apology.\n"
-"And don't worry about the kitties."
+"Probably the craziest and most helpful is...\n"
+"I actually think he still has that money."
 msgstr ""
-"Saya hargai awak minta maaf.\n"
-"Jangan risau tentang anak kucing tu."
 
-#: data/level/tea-with-milgram.cfg:287
+#: data/level/tea-with-milgram.cfg:554
 msgid ""
-"They'll bounce back just fine;\n"
-"They are mass-produced after all."
+"I know it sounds completely nuts,\n"
+"but I honestly think that when he was given it..."
 msgstr ""
-"Mereka boleh bangkit balik;\n"
-"Mereka dikeluarkan banyak lagipun. "
 
-#: data/level/tea-with-milgram.cfg:289
-msgid "I ... see."
-msgstr "Begitu."
-
-#: data/level/tea-with-milgram.cfg:292
+#: data/level/tea-with-milgram.cfg:557
 msgid ""
-"Well, now that I know the whole story,\n"
-"I think I can help you out, big time."
+"...he didn't have a clue what to do with it,\n"
+"so he just ... hid it."
 msgstr ""
-"Sekarang saya dah tahu cerita penuh,\n"
-"saya rasa boleh sangat tolong awak."
 
-#: data/level/tea-with-milgram.cfg:294
+#: data/level/tea-with-milgram.cfg:560
 msgid ""
-"See,\n"
-"I think I know where all the money is,"
+"We've all known him for years,\n"
+"and he's a hoarder, and a miser."
 msgstr ""
-"Baik,\n"
-"saya rasa saya tahu di mana duit tu,"
 
-#: data/level/tea-with-milgram.cfg:297
+#: data/level/tea-with-milgram.cfg:563
 msgid ""
-"I'm hoping we can come to some\n"
-"mutually beneficial arrangement,\n"
-"regarding it."
+"We've never seen him suddenly having more\n"
+"money to spend; so it's crazy, but it fits."
 msgstr ""
-"Saya harap kita boleh capai\n"
-"perjanjian menguntungkan,\n"
-"mengenai hal ni."
 
-#: data/level/tea-with-milgram.cfg:300
-msgid "An arrangement, hmmm? Do tell."
-msgstr "Perjanjian, hmmm? Silakan."
+#: data/level/tea-with-milgram.cfg:565
+msgid "I ... didn't see that coming."
+msgstr ""
 
-#: data/level/tea-with-milgram.cfg:303
+#: data/level/tea-with-milgram.cfg:567
 msgid ""
-"Well, I actually suspect that rather than\n"
-"spending all your money, he's hoarding it."
+"When he was getting shaken down by that kitty,\n"
+"we turned our back on him for a second."
 msgstr ""
-"Saya sebenarnya syak dia sorokkan\n"
-"semua duit tu, daripada belanjanya."
 
-#: data/level/tea-with-milgram.cfg:306
-msgid "How bizarre."
-msgstr "Pelik sungguh."
-
-#: data/level/tea-with-milgram.cfg:309
-msgid "Yeah, it's crazy.  He's... a bit crazy."
-msgstr "Yalah, gila.  Dia... sedikit gila."
-
-#: data/level/tea-with-milgram.cfg:312
+#: data/level/tea-with-milgram.cfg:569
 msgid ""
-"But it's good news, because I think\n"
-"he still has all your money\n"
-"and a bunch more besides!"
+"It turned out he'd hidden\n"
+"in some sort of secret passage."
 msgstr ""
-"Tapi ia berita baik, sebab saya rasa\n"
-"dia masih miliki semua duit awak\n"
-"dan banyak lagi yang lainnya!"
 
-#: data/level/tea-with-milgram.cfg:315
-msgid "So I propose that we go and get it!"
-msgstr "Jadi saya cadang kita pergi ambil."
-
-#: data/level/tea-with-milgram.cfg:318
+#: data/level/tea-with-milgram.cfg:571
 msgid ""
-"Plus a hefty bit of interest.\n"
-"Penalty Fees.\n"
-"Late Fees.\n"
-"Any other fees banks normally charge."
+"He may have used some of the money to build it,\n"
+"but his house has some sort of safe room."
 msgstr ""
-"Sekali dengan duit bunga tinggi.\n"
-"Yuran Penalti.\n"
-"Yuran Lewat.\n"
-"Segala yuran yang bank biasa minta."
 
-#: data/level/tea-with-milgram.cfg:321
-msgid "I like your way of thinking!"
-msgstr "Saya suka cara awak berfikir!"
-
-#: data/level/tea-with-milgram.cfg:324
+#: data/level/tea-with-milgram.cfg:574
 msgid ""
-"Yup, and I can show you where it all is\n"
-"in exchange for a small consideration."
+"It's just a guess, but I honestly think he\n"
+"might have hidden the rest right inside it."
 msgstr ""
-"Ya, dan saya boleh tunjuk semua tu,\n"
-"gantinya satu pertimbangan kecil."
 
-#: data/level/tea-with-milgram.cfg:327
-msgid "A small consideration eh?"
-msgstr "Satu pertimbangan kecil eh?"
+#: data/level/tea-with-milgram.cfg:577
+msgid "Incredible."
+msgstr ""
 
-#: data/level/tea-with-milgram.cfg:330
-msgid "Yes - a quarter of what we get from him."
-msgstr "Ya - suku daripada yang kita dapat."
-
-#: data/level/tea-with-milgram.cfg:332
+#: data/level/tea-with-milgram.cfg:579
 msgid ""
-"*sigh*\n"
-"I knew you didn't really mean small.\n"
-"Very well frog, let's do business."
+"Knowing that, you could probably\n"
+"just walk in and take it."
 msgstr ""
-"*keluh*\n"
-"Saya tahu awak tak maksudkan kecil.\n"
-"Baiklah katak, mari kita berurusan."
 
-#: data/level/tea-with-milgram.cfg:335
-msgid "All's well that ends well then, huh?"
-msgstr "Akhiran baik semua akan baik, huh?"
-
-#: data/level/tea-with-milgram.cfg:338
+#: data/level/tea-with-milgram.cfg:581
 msgid ""
-"Yeah, I do think everyone's\n"
-"made out pretty well."
+"We may.\n"
+"In fact I believe we will!"
 msgstr ""
-"Ya, saya rasa semua orang\n"
-"fahaminya dengan baik."
 
-#: data/level/tea-with-milgram.cfg:341
+#: data/level/tea-with-milgram.cfg:583
+msgid ""
+"If I may be so bold, I think it's\n"
+"safe to say on behalf of the town..."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:585
+msgid ""
+"...the rest of us would still appreciate\n"
+"some sort of public-works project."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:588
+msgid ""
+"You probably should hear what others are\n"
+"interested in, but I for one really wish there\n"
+"was a road of any kind between here and there."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:590
+msgid "I'm dreading the trip back."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:593
+msgid ""
+"Really?\n"
+"Where's your ship parked?"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:595
+msgid ""
+"I ... didn't ... use a vehicle.\n"
+"I walked."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:597
+msgid ""
+"...\n"
+"I'm amazed that's even possible."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:599
+msgid ""
+"I like you, little frog!\n"
+"You're quite bold."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:601
+msgid ""
+"Well, I can certainly at least\n"
+"guarantee transportation for you!"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:603
+msgid ""
+"And I'd be happy to consider some kind of project.\n"
+"You yourself could be my paid liaison."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:606
+msgid ""
+"We should keep in touch - hopefully,\n"
+"through you, I can meet some of the\n"
+"more 'level-headed' members of your town."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:608
+msgid "So ... all's well that ends well?"
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:610
+msgid ""
+"Yes, I do think everyone will have\n"
+"an equitable outcome to this whole mess."
+msgstr ""
+
+#: data/level/tea-with-milgram.cfg:612
 msgid "Except the elder."
 msgstr "Kecuali penghulu tu."
 
-#: data/level/tea-with-milgram.cfg:346
-msgid "Lead Programmer"
-msgstr "Ketua Pengaturcara"
-
-#: data/level/tea-with-milgram.cfg:347
-msgid "Scripting Language Designer"
-msgstr "Pereka Skrip Bahasa"
-
-#: data/level/tea-with-milgram.cfg:348 data/level/tea-with-milgram.cfg:354
-#: data/level/tea-with-milgram.cfg:375 data/level/tea-with-milgram.cfg:387
-msgid "Object Scripter"
-msgstr "Penulis Skrip Objek"
-
-#: data/level/tea-with-milgram.cfg:349
-msgid "Minor Level Designer"
-msgstr "Pereka Level Minor"
-
-#: data/level/tea-with-milgram.cfg:352
-msgid "Documentation Lead"
-msgstr "Panduan Dokumentasi"
-
-#: data/level/tea-with-milgram.cfg:353
-msgid "Achievements"
-msgstr "Pencapaian"
-
-#: data/level/tea-with-milgram.cfg:355
-msgid "Engine Improvements"
-msgstr "Pembaikan Enjin"
-
-#: data/level/tea-with-milgram.cfg:359
+#: data/level/tea-with-milgram.cfg:618
 msgid "The End"
 msgstr "Tamat"
-
-#: data/level/tea-with-milgram.cfg:362
-msgid "Creative Director - created characters/setting/story"
-msgstr "Pengarah Kreatif - rekaan watak/set/cerita"
-
-#: data/level/tea-with-milgram.cfg:363 data/level/tea-with-milgram.cfg:401
-msgid "Artist - Characters, Monsters, and Props"
-msgstr "Artis - Watak, Raksasa, dan Prop"
-
-#: data/level/tea-with-milgram.cfg:364
-msgid "Artist - Terrain (house interiors and exteriors, seaside background)"
-msgstr "Artis - Rupa Bumi (dalaman dan luaran rumah, latar tepi pantai)"
-
-#: data/level/tea-with-milgram.cfg:374
-msgid "Level Designer (esp. forest, cave, and dungeon levels)"
-msgstr "Pereka Level (khasnya hutan, gua, dan level penjara bawah tanah)"
-
-#: data/level/tea-with-milgram.cfg:379
-msgid "The IRC Crew"
-msgstr "Kru IRC"
-
-#: data/level/tea-with-milgram.cfg:380
-msgid "Bug Reports/Fixes"
-msgstr "Laporan/Pembetulan Pijat"
-
-#: data/level/tea-with-milgram.cfg:381
-msgid "Technical Advice"
-msgstr "Penasihat Teknikal"
-
-#: data/level/tea-with-milgram.cfg:382
-msgid "Level Design and Object Scripting"
-msgstr "Rekaan Level dan Skrip Objek"
-
-#: data/level/tea-with-milgram.cfg:383
-msgid "Devil's Advocacy"
-msgstr "Advokasi Devil"
-
-#: data/level/tea-with-milgram.cfg:386
-msgid "Translation Coordinator"
-msgstr "Koordinator Terjemahan"
-
-#: data/level/tea-with-milgram.cfg:388
-msgid "Minor Bug Fixer"
-msgstr "Juru Atur Pijat Minor"
-
-#: data/level/tea-with-milgram.cfg:393
-msgid "Translation Code and Coordination"
-msgstr "Kod Terjemah dan Koordinasi"
-
-#: data/level/tea-with-milgram.cfg:394
-msgid "Key Remapping Code/Interface"
-msgstr "Kod Maping Semula Kunci/Antaramuka"
-
-#: data/level/tea-with-milgram.cfg:395
-msgid "OpenPandora Port"
-msgstr "Port OpenPandora"
-
-#: data/level/tea-with-milgram.cfg:400
-msgid "Lead Content Wrangler and Object Scripter, Programmer"
-msgstr "Pengendali Kandungan Utama dan Penulis Skrip Objek, Pengaturcara "
-
-#: data/level/tea-with-milgram.cfg:402
-msgid "Artist - Terrain (seaside, forest, cave, and dungeon)"
-msgstr "Artis - Rupa Bumi (tepi pantai, hutan, gua, dan penjara bawah tanah)"
-
-#: data/level/tea-with-milgram.cfg:403
-msgid "Level Designer (esp. seaside, town, and forest stages)"
-msgstr "Pereka Level (khasnya tepi pantai, pekan, dan peringkat hutan)"
-
-#: data/level/tea-with-milgram.cfg:406
-msgid "Musician"
-msgstr "Juru Muzik"
-
-#: data/level/tea-with-milgram.cfg:407
-msgid "Sound Effect Designer"
-msgstr "Pereka Kesan Bunyi"
-
-#: data/level/tea-with-milgram.cfg:411
-msgid "SPECIAL THANKS:"
-msgstr "PENGHARGAAN KHAS:"
 
 #: data/level/template.cfg:12
 msgid "(Level Template)"
@@ -4849,7 +4987,7 @@ msgstr "Anda hendak beli {consts.name}?"
 msgid "This is a blank tile. It doesn't do anything."
 msgstr "Ini tail kosong. Ia tiada apa-apa."
 
-#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:79
+#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:88
 msgid "'"
 msgstr "'"
 
