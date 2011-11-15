@@ -22,4 +22,4 @@ Requirements:
 	Buttons, which can go in display windows or on their own.
 	
 Data Flow:
-	The mouse object will have each button and display window registered, and will foward the mice events to those objects. Events will be 'mouse_over', 'mouse_not_over', 'mouse_left_click', 'mouse_right_click', 'mouse_left_hold', 'mouse_right_hold'. Key events will be processed by the player object, as usual, unless a text input box is active.
+	The mouse object will have each button and display window registered, and will foward the mice events to those objects. Properties will be 'mouse_over', 'mouse_not_over', 'mouse_left_click', 'mouse_right_click', 'mouse_left_hold', 'mouse_right_hold', 'mouse_start_drag', 'mouse_end_drag'. Key events will be processed by the player object, as usual, unless a text input box is active.
