@@ -24,7 +24,9 @@ wml_schema_test: $(wml_schema_test_objects)
 	$(CXX) -O2 -g -framework Cocoa -I/usr/local/include/boost-1_34 -I/sw/include/SDL -Isrc/ -I/usr/include/SDL -D_GNU_SOURCE=1 -D_REENTRANT -DUNIT_TEST_WML_SCHEMA -Wnon-virtual-dtor -Wreturn-type src/wml_schema.cpp $(wml_schema_test_objects) -o test -L/usr/lib -lboost_regex
 
 update-pot:
-	utils/make-pot.sh > po/frogatto.pot
+	utils/make-pot.sh > po/frogatto.pot.bak
+	msguniq -F po/frogatto.pot.bak > po/frogatto.pot
+	rm po/frogatto.pot.bak
 
 %.po: po/frogatto.pot
 	msgmerge $@ po/frogatto.pot -o $@.part
