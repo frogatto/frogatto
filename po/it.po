@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2011-11-15 16:08-0200\n"
-"PO-Revision-Date: 2011-11-15 18:10+0000\n"
-"Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
+"PO-Revision-Date: 2011-11-17 00:57+0000\n"
+"Last-Translator: nem <simone.m@gmx.com>\n"
 "Language-Team: Italian (http://www.transifex.net/projects/p/Frogatto/team/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -95,13 +95,15 @@ msgstr ""
 
 #: CHANGELOG:13
 msgid "Redrew the world map."
-msgstr ""
+msgstr "Ridisegnata la mappa del mondo."
 
 #: CHANGELOG:14
 msgid ""
 "Added a few new monsters, like the red hornbugs, and completely rewrote how "
 "bats behave."
 msgstr ""
+"Aggiunti alcuni nuovi mostri, come lo scarabeo rosso, completamente "
+"riscritto il comportamentono dei pipistrelli."
 
 #: CHANGELOG:16 iOS_CHANGELOG:1
 msgid "Version 1.1.1:"
@@ -4083,7 +4085,7 @@ msgstr "Webmaster"
 
 #: data/level/tea-with-milgram.cfg:321
 msgid "Programmer • Sound and iOS Code"
-msgstr ""
+msgstr "Programmatore • Suono e codice iOS"
 
 #: data/level/tea-with-milgram.cfg:322
 msgid "Minor Object Scripter and Level Designer"
@@ -4095,7 +4097,7 @@ msgstr "Direttore della documentazione"
 
 #: data/level/tea-with-milgram.cfg:327
 msgid "Object Scripter • Props and Achievements"
-msgstr ""
+msgstr "Scripter oggetto • Oggetti di Scena e Realizzazioni"
 
 #: data/level/tea-with-milgram.cfg:328
 msgid "Engine Improvements"
@@ -4120,19 +4122,19 @@ msgstr "Minor Level Designer"
 
 #: data/level/tea-with-milgram.cfg:338
 msgid "Artist • Props"
-msgstr ""
+msgstr "Artista • Oggetti di Scena"
 
 #: data/level/tea-with-milgram.cfg:344
 msgid "Artist • Characters, Monsters, and Props"
-msgstr ""
+msgstr "Artista • Personaggi, Mostri e Oggetti di Scena"
 
 #: data/level/tea-with-milgram.cfg:345
 msgid "Artist • House interiors and exteriors"
-msgstr ""
+msgstr "Artista • Interni ed esterni case"
 
 #: data/level/tea-with-milgram.cfg:356
 msgid "Level Designer • forest, cave, and dungeon levels"
-msgstr ""
+msgstr "Designer • Livello foresta, caverna, e livelli dungeon"
 
 #: data/level/tea-with-milgram.cfg:362
 msgid "Translation Coordinator"
@@ -4140,15 +4142,15 @@ msgstr "Coordinatore della Traduzione"
 
 #: data/level/tea-with-milgram.cfg:364
 msgid "Bug Fixer"
-msgstr ""
+msgstr "Bug Fixer"
 
 #: data/level/tea-with-milgram.cfg:368
 msgid "Translation Code"
-msgstr ""
+msgstr "Traduzione Codice"
 
 #: data/level/tea-with-milgram.cfg:369
 msgid "Key Remapping Code"
-msgstr ""
+msgstr "Rimappatura chiave del codice"
 
 #: data/level/tea-with-milgram.cfg:370
 msgid "OpenPandora Port"
@@ -4156,7 +4158,7 @@ msgstr "Versione OpenPandora"
 
 #: data/level/tea-with-milgram.cfg:373
 msgid "Our Players"
-msgstr ""
+msgstr "I nostri giocatori"
 
 #: data/level/tea-with-milgram.cfg:374
 msgid "Bug Reports/Fixes"
@@ -4180,15 +4182,15 @@ msgstr ""
 
 #: data/level/tea-with-milgram.cfg:381
 msgid "Artist • Characters, Monsters, Props, Terrain"
-msgstr ""
+msgstr "Artista • Personaggi, Mostri, Oggetti scenici, Terreni"
 
 #: data/level/tea-with-milgram.cfg:382
 msgid "Writer • Wrote Main Story and Most Dialogue"
-msgstr ""
+msgstr "Scrittore • Ha scritto la Storia principale e gran parte del dialogo"
 
 #: data/level/tea-with-milgram.cfg:383
 msgid "Level Designer • seaside, town, and forest"
-msgstr ""
+msgstr "Designer dei Livelli • mare, città e foresta"
 
 #: data/level/tea-with-milgram.cfg:386
 msgid "Musician"
@@ -4252,55 +4254,67 @@ msgstr "Giusto!"
 
 #: data/level/tea-with-milgram.cfg:419
 msgid "Ouch."
-msgstr ""
+msgstr "Ouch."
 
 #: data/level/tea-with-milgram.cfg:421
 msgid ""
 "You know, I really think there are some big\n"
 "misunderstandings that need to get cleared up."
 msgstr ""
+"Sai, credo davvero ci siano alcune grandi incomprensioni che hanno bisogno "
+"di essere chiarite."
 
 #: data/level/tea-with-milgram.cfg:423
 msgid "Almost all of which are his fault."
-msgstr ""
+msgstr "E praticamente tutto è colpa sua."
 
 #: data/level/tea-with-milgram.cfg:425
 msgid ""
 "This might not be obvious from talking to him,\n"
 "but that elder guy is really just ... crazy."
 msgstr ""
+"Questo potrebbe non essere evidente parlardo con lui, ma quell'anziano è in "
+"realtà solo ... pazzo."
 
 #: data/level/tea-with-milgram.cfg:427
 msgid ""
 "He's just plain nuts.\n"
 "He's got a lot of bizarre delusions about things..."
 msgstr ""
+"E' solo un folle.\n"
+"Ha un sacco di strane illusioni sulle cose..."
 
 #: data/level/tea-with-milgram.cfg:429
 msgid ""
 "...and mostly we just humor him,\n"
 "because he's pretty harmless."
 msgstr ""
+"... E soprattutto facciamo gli spiritosi con lui,\n"
+"perché è abbastanza innocuo."
 
 #: data/level/tea-with-milgram.cfg:431
 msgid ""
 "We've trumped him up with a pointless job\n"
 "as the gatekeeper on the east side of town."
 msgstr ""
+"Gli abbiamo inventato un lavoro inutile come portinaio del lato est della "
+"città."
 
 #: data/level/tea-with-milgram.cfg:433
 msgid ""
 "Which plays to his ego,\n"
 "and keeps him out of trouble."
 msgstr ""
+"Che quieta il suo ego,\n"
+"e lo tiene fuori dai guai."
 
 #: data/level/tea-with-milgram.cfg:436
 msgid "Sounds like a perfect place for him!"
-msgstr ""
+msgstr "Suona come un luogo perfetto per lui!"
 
 #: data/level/tea-with-milgram.cfg:439
 msgid "Yes, he's our official 'greeter'."
-msgstr ""
+msgstr "Sì, lui è il nostro 'anfitrione' ufficiale."
 
 #: data/level/tea-with-milgram.cfg:441
 msgid ""
@@ -4308,26 +4322,32 @@ msgid ""
 "some issues if other people, like yourself,\n"
 "aren't aware of his background."
 msgstr ""
+"Ma credo che potrebbe davvero causare alcuni problemi se altre persone, come"
+" te, non sono a conoscenza della sua storia."
 
 #: data/level/tea-with-milgram.cfg:443
 msgid ""
 "Intriguing.\n"
 "That'd certainly explain a few things."
 msgstr ""
+"Intrigante.\n"
+"Quello spiegherebbe certamente alcune cose."
 
 #: data/level/tea-with-milgram.cfg:445
 msgid "For starters, uh ... he's NOT our mayor."
-msgstr ""
+msgstr "Per cominciare, uh ... Non è il nostro sindaco."
 
 #: data/level/tea-with-milgram.cfg:447
 msgid "I can see why not!"
-msgstr ""
+msgstr "Capisco perché non lo è!"
 
 #: data/level/tea-with-milgram.cfg:449
 msgid ""
 "Yep.  In fact, if you'll believe it,\n"
 "we actually don't have a mayor at all."
 msgstr ""
+"Si. Infatti, se vuoi crederci,\n"
+"non abbiamo alcun sindaco."
 
 #: data/level/tea-with-milgram.cfg:452
 msgid ""
@@ -4335,30 +4355,37 @@ msgid ""
 "We've got a bunch of stubborn idiots\n"
 "who happen to live in the same area."
 msgstr ""
+"Non abbiamo nulla.\n"
+"Solo un mucchio di idioti testardi\n"
+"che per caso vivono nella stessa area."
 
 #: data/level/tea-with-milgram.cfg:454
 msgid ""
 "We can't agree on anything,\n"
 "we can't work together to get anything done."
 msgstr ""
+"Non riusciamo ad essere d'accordo su nulla, non possiamo neppure ad ottenere"
+" alcun risultato lavorando insieme."
 
 #: data/level/tea-with-milgram.cfg:457
 msgid ""
 "We don't have any government,\n"
 "we don't have any laws."
 msgstr ""
+"Non abbiamo un governo,\n"
+"non abbiamo alcuna legge."
 
 #: data/level/tea-with-milgram.cfg:459
 msgid ""
 "Careful, now - that sounds like\n"
 "an invitation to provide them."
-msgstr ""
+msgstr "Fai Attenzione - quello suonava come un invito."
 
 #: data/level/tea-with-milgram.cfg:461
 msgid ""
 "Eh...heh... yes,\n"
 "that probably wouldn't be well-received!"
-msgstr ""
+msgstr "Eh ... eh ... sì, che probabilmente non sarebbe ben accolto!"
 
 #: data/level/tea-with-milgram.cfg:463
 msgid ""
@@ -4366,6 +4393,8 @@ msgid ""
 "don't have anyone aggressive enough\n"
 "to try and settle disputes with force."
 msgstr ""
+"Comunque, la nostra sola grazia è che non c'è effettivamente nessuno così "
+"aggressivo da cercare di risolvere le controversie con la forza."
 
 #: data/level/tea-with-milgram.cfg:465
 msgid ""
@@ -4373,6 +4402,9 @@ msgid ""
 "few things we'd all agree on;\n"
 "that we wouldn't tolerate that."
 msgstr ""
+"E penso che potrebbe essere una delle poche cose\n"
+"su cui tutti eravamo d'accordo;\n"
+"che non lo avremmo tollerato."
 
 #: data/level/tea-with-milgram.cfg:467
 msgid ""
@@ -4380,18 +4412,22 @@ msgid ""
 "we couldn't raise a house without some\n"
 " cooperation, but it really is a mess."
 msgstr ""
+"Voglio dire, sto sicuramente esagerando;\n"
+"non siamo riusciti a costruire una casa senza cooperazione, ma è veramente un casino."
 
 #: data/level/tea-with-milgram.cfg:469
 msgid ""
 "So I don't know what the elder talked you into,\n"
 "but it's almost guaranteed to be lunacy."
 msgstr ""
+"Quindi non di cosa l'anziano ti abbia parlato, ma è preticamente sicuro che "
+"sia una follia."
 
 #: data/level/tea-with-milgram.cfg:471
 msgid ""
 "Yes.\n"
 "No wonder we were confused!"
-msgstr ""
+msgstr "Sì. Non c'è da stupirsi che eravamo confusi!"
 
 #: data/level/tea-with-milgram.cfg:475
 msgid "Ah, there we are..."
@@ -4407,11 +4443,11 @@ msgstr ""
 
 #: data/level/tea-with-milgram.cfg:483
 msgid "So where was I?"
-msgstr ""
+msgstr "Allora, cosa stavo dicendo?"
 
 #: data/level/tea-with-milgram.cfg:485
 msgid "What did the elder actually tell you?"
-msgstr ""
+msgstr "Che ti disse l'anziano in realtà?"
 
 #: data/level/tea-with-milgram.cfg:488
 msgid ""
