@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2011-11-15 16:08-0200\n"
-"PO-Revision-Date: 2011-11-17 09:59+0000\n"
+"PO-Revision-Date: 2011-11-17 23:57+0000\n"
 "Last-Translator: arikel <arikel@free.fr>\n"
 "Language-Team: French (http://www.transifex.net/projects/p/Frogatto/team/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -719,7 +719,7 @@ msgid ""
 msgstr ""
 "Etes-vous vraiment certain de vouloir faire cela?\n"
 "Je crains de ne pouvoir vous suivre dans les cavernes,\n"
-"c'est donc la dernière que vous me voyez."
+"c'est donc la dernière fois que vous me voyez."
 
 #: data/level/bon-bosque.cfg:1435
 msgid ""
@@ -836,7 +836,7 @@ msgid ""
 "the better of him."
 msgstr ""
 "Naturellement, nous n'aurions pas cette conversation,\n"
-"si je n'avais pas obtenu le meilleur de lui."
+"si je ne l'avais pas emporté."
 
 #: data/level/crevice-bridge.cfg:790
 msgid ""
@@ -865,7 +865,7 @@ msgstr ""
 
 #: data/level/crevice-bridge.cfg:796
 msgid "Go right ahead."
-msgstr "Allez tout droit."
+msgstr "Allez-y?"
 
 #: data/level/crevice-bridge.cfg:799
 msgid ""
@@ -1082,7 +1082,7 @@ msgid ""
 "I've really appreciated the \"eyes in the sky\".\n"
 "It's very helpful."
 msgstr ""
-"J'ai vraiment apprécié les «yeux dans le ciel\".\n"
+"J'ai vraiment apprécié les \"yeux dans le ciel\".\n"
 "C'est très utile."
 
 #: data/level/crevice-bridge.cfg:859
@@ -1302,7 +1302,7 @@ msgid ""
 msgstr ""
 "Ils sont attachés dans les maisons,\n"
 "sous surveillance. Si vous les libérez,\n"
-"Je suis sûr qu'ils vous aideront."
+"je suis sûr qu'ils vous aideront."
 
 #: data/level/crevice-village-central.cfg:1290
 msgid "Makes sense."
@@ -1316,7 +1316,7 @@ msgid ""
 msgstr ""
 "Votre plus gros problème c'est que\n"
 "la porte qui connecte les deux moitiés\n"
-"à été fermée à clé."
+"a été fermée à clé."
 
 #: data/level/crevice-village-central.cfg:1292
 msgid ""
@@ -1497,7 +1497,7 @@ msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1053
 msgid "No, I didn't hear this."
-msgstr "No, j'ai pas entendu ça."
+msgstr "Non, j'ai pas entendu ça."
 
 #: data/level/crevice-village-heights.cfg:1055
 msgid ""
@@ -1639,8 +1639,10 @@ msgid ""
 "I just saw one of Milgram's lieutenants\n"
 "march up to the elder's house."
 msgstr ""
-"Eh bien, si ça vous intéresse, je viens de voir l'un des lieutenants de "
-"Milgram se diriger vers la maison de l'ancien."
+"Eh bien, si ça vous intéresse,\n"
+"je viens de voir l'un des lieutenants\n"
+"de Milgram se diriger vers\n"
+"la maison de l'ancien."
 
 #: data/level/crevice-village-heights.cfg:1110
 msgid ""
@@ -1696,7 +1698,7 @@ msgid ""
 "Uh, this'll take you over a bridge,\n"
 "then through an underground passage."
 msgstr ""
-"Euh, ça vous conduira au-dessus d'un pont,\n"
+"Euh, ça te conduira au-dessus d'un pont,\n"
 "puis par un passage souterrain."
 
 #: data/level/crevice-village-heights.cfg:1152
@@ -1723,7 +1725,7 @@ msgid ""
 "so you'll just have to ask people as you go."
 msgstr ""
 "Je suis pas très à jour en géographie politique,\n"
-"alors il faudra que vous demandiez aux gens\n"
+"alors il faudra que tu demandes aux gens\n"
 "au long du trajet."
 
 #: data/level/crevice-village-heights.cfg:1162
@@ -1740,7 +1742,7 @@ msgid ""
 "You're on your own.  Good luck."
 msgstr ""
 "Non.\n"
-"Vous êtes tout seul. Bonne chance."
+"Tu es tout seul. Bonne chance."
 
 #: data/level/crevice-village-heights.cfg:1167
 msgid "Gee, thanks."
@@ -2708,7 +2710,8 @@ msgid ""
 msgstr ""
 "Eh bien, si vous le dites, je suppose que\n"
 "je ne peux pas m'y opposer.\n"
-"En fait, ce pourrait être une bonne tactique de diversion."
+"En fait, ce pourrait être\n"
+"une bonne tactique de diversion."
 
 #: data/level/crevice-village-house-elder.cfg:1732
 msgid "Why, I'll even show you the way..."
@@ -3208,8 +3211,9 @@ msgid ""
 "cling on, if you tap the arrow toward the wall,\n"
 "and press jump whilst it's held down."
 msgstr ""
-"Si vous ne faites pas un bon départ, vous pouvez toujours\n"
-"vous accrocher, si vous appuyez sur la flèche vers le mur,\n"
+"Si vous ne faites pas un bon départ,\n"
+"vous pouvez toujours vous accrocher,\n"
+"si vous appuyez sur la flèche vers le mur,\n"
 "et sautez en la maintenant enfoncée."
 
 #: data/level/grassy-path.cfg:1132
@@ -3256,7 +3260,8 @@ msgid ""
 "to fight, Frogatto's best defense is his tongue."
 msgstr ""
 "Il suffit souvent de les éviter, mais si vous devez\n"
-"vous battre, la meilleure défense de Frogatto est sa langue."
+"vous battre, la meilleure défense de Frogatto\n"
+"est sa langue."
 
 #: data/level/grassy-path.cfg:1158
 msgid ""
@@ -3342,8 +3347,9 @@ msgid ""
 "You should also beware that not all enemies\n"
 "can be grabbed with the tongue."
 msgstr ""
-"Vous devez aussi faire attention au fait que\n"
-"tous les ennemis ne peuvent être saisis avec la langue."
+"Vous devez aussi faire attention\n"
+"au fait que tous les ennemis\n"
+"ne peuvent être saisis avec la langue."
 
 #: data/level/grassy-path.cfg:1214
 msgid ""
@@ -3441,8 +3447,8 @@ msgid ""
 "Sometimes, you'll run into rather dangerous-\n"
 "looking terrain, such as these brambles."
 msgstr ""
-"Parfois, vous tomberez sur un terrain plutôt dangereux,\n"
-"tels que les ronces."
+"Parfois, vous tomberez sur un terrain\n"
+"plutôt dangereux, tels que les ronces."
 
 #: data/level/grassy-path.cfg:1349
 msgid "As you'd expect, stepping on them would hurt a bit."
@@ -3467,8 +3473,9 @@ msgid ""
 "Beware also, any bottomless pits you encounter.\n"
 "Those are immediately fatal."
 msgstr ""
-"Attention aussi aux puits sans fond que vous rencontrez.\n"
-"Ceux-ci sont immédiatement fatals."
+"Attention aussi aux puits sans fond\n"
+"que vous rencontrez. Ceux-ci sont\n"
+"immédiatement fatals."
 
 #: data/level/grassy-path.cfg:1480
 msgid ""
@@ -4234,8 +4241,8 @@ msgid ""
 "visiting the fellow who lives here."
 msgstr ""
 "En attendant, ils se pourrait que\n"
-"tu trouves ton bonheur\n"
-"si tu rendais visite au type qui vit là."
+"vous trouviez votre bonheur\n"
+"en rendant visite au type qui vit là."
 
 #: data/level/secluded-hut.cfg:1115
 msgid ""
@@ -4695,7 +4702,9 @@ msgstr ""
 
 #: data/level/tea-with-milgram.cfg:498
 msgid "Which sometimes doesn't work out as expected?"
-msgstr "Ce qui ne fonctionne pas toujours comme prévu?"
+msgstr ""
+"Ce qui ne fonctionne pas toujours\n"
+"comme prévu?"
 
 #: data/level/tea-with-milgram.cfg:500
 msgid ""
@@ -4705,8 +4714,9 @@ msgid ""
 "we'd do something to help out."
 msgstr ""
 "Ouais. Je ne sais pas grand-chose sur\n"
-"le Village de la Caverne, mais si vous me permettez,\n"
-"j'ai eu l'impression que c'était un peu un trou perdu,\n"
+"le Village de la Crevasse, mais\n"
+"si vous me permettez, j'ai eu l'impression\n"
+"que c'était un peu un trou perdu,\n"
 "alors j'ai pensé faire quelque chose pour aider."
 
 #: data/level/tea-with-milgram.cfg:502
