@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2011-11-15 16:08-0200\n"
-"PO-Revision-Date: 2011-11-18 02:34+0000\n"
+"PO-Revision-Date: 2011-11-18 23:49+0000\n"
 "Last-Translator: nem <simone.m@gmx.com>\n"
 "Language-Team: Italian (http://www.transifex.net/projects/p/Frogatto/team/it/)\n"
 "MIME-Version: 1.0\n"
@@ -110,7 +110,7 @@ msgstr "Versione 1.1.1:"
 
 #: CHANGELOG:17 iOS_CHANGELOG:2
 msgid "Fixed some crashing bugs."
-msgstr "Correzione di alcuni crash."
+msgstr "Corretti alcuni crash."
 
 #: CHANGELOG:18
 msgid "Fixed The Long Haul (compiled mode)"
@@ -191,7 +191,7 @@ msgstr "Versione 1.0.3:"
 #: CHANGELOG:37
 msgid "Fixed crash when picking up max heart pieces."
 msgstr ""
-"Corretto il crash che avveniva quando si raccoglieva i pezzi di cuore max."
+"Corretto il crash che avveniva quando si raccoglieva i pezzi massimo cuore."
 
 #: CHANGELOG:38
 msgid "Other small bug fixes."
@@ -238,7 +238,7 @@ msgstr "Aggiunto il supporto per ripetere i livelli (per le modalità arcade)."
 msgid ""
 "Pressing jump while in the air pressing against a wall now makes you cling "
 "to the wall."
-msgstr "Saltando contro un muro vi farà ora aggrappate alla parete."
+msgstr "Ora saltando contro un muro resterai aggrappato allo stesso."
 
 #: CHANGELOG:49
 msgid "Made it so you can skip dialogs sequences."
@@ -255,13 +255,14 @@ msgstr "Corretto il bug che impediva ai suoni ambientali di funzionare."
 #: CHANGELOG:52
 msgid "Improved forest background, and made it go upwards infinitely."
 msgstr ""
-"Lo sfondo della foresta è stato migliorato notevolmente portandola ad una "
+"Lo sfondo della foresta è stato migliorato notevolmente portandolo ad una "
 "elevata qualità."
 
 #: CHANGELOG:53
 msgid "Made hearts heal a full heart, rather than just half."
 msgstr ""
-"Si è fatto in modo che i couri un cuore pieno, piuttosto che solo la metà."
+"Si è fatto in modo che i cuori di cura forniscano un cuore pieno, piuttosto "
+"che solo la metà."
 
 #: CHANGELOG:54
 msgid "Changed tilesets to make water look better."
@@ -295,8 +296,8 @@ msgstr "Corretto errore che poteva far ripetere all'infinito un dialogo."
 #: CHANGELOG:61
 msgid "Fixed crash in world map when you hold down while entering it."
 msgstr ""
-"Corretto il crash nella mappa del mondo quando si tiene premuto mentre si "
-"entra."
+"Corretto il crash nella mappa del mondo quando si tiene premuto il tasto giù"
+" mentre si entra."
 
 #: CHANGELOG:62
 msgid "Fixed fullscreen mode (Mac/Windows)."
@@ -1335,7 +1336,7 @@ msgid ""
 "They ... as in Milgram's kitties?"
 msgstr ""
 "Cosa?!\n"
-"Sono ... i gatti di Milgram?"
+"Sono ... i gattini di Milgram?"
 
 #: data/level/crevice-village-heights.cfg:1029
 msgid "^Yeah."
@@ -1361,7 +1362,7 @@ msgstr "Sì, l'intera giornata è stata semplicemente ... bizzarra."
 msgid ""
 "I've been thinking about that part,\n"
 "and I have a hunch."
-msgstr "Ho pensato a questa parte, e ho un presentimento."
+msgstr "Ho pensato riguardo a quello, e ho un presentimento."
 
 #: data/level/crevice-village-heights.cfg:1036
 msgid ""
@@ -1373,13 +1374,13 @@ msgstr "Penso che i ranghi non avessero ordini specifici."
 msgid ""
 "I don't think they were told\n"
 "what they were looking for."
-msgstr "Non credo che gli sia stato detto che cosa cercassero."
+msgstr "Non credo che gli sia stato detto che cosa cercare."
 
 #: data/level/crevice-village-heights.cfg:1038
 msgid ""
 "I think they were just told\n"
 "to secure the place."
-msgstr "Penso che gli fosse stato detto di rendere sicuro il posto."
+msgstr "Penso che gli fosse stato detto solamente di rendere sicuro il posto."
 
 #: data/level/crevice-village-heights.cfg:1039
 msgid ""
@@ -1387,8 +1388,8 @@ msgid ""
 "to do it, but I guess it's not so weird\n"
 "if you've got lots of manpower to spare."
 msgstr ""
-"Solo arrestare tutti, pur essendo uno strano modo di fare, non è così "
-"strampalato se si ha a disposizione parecchia manodopera."
+"Arrestare tutti, pur essendo uno strano modo di fare, non è così strampalato"
+" se si ha a disposizione parecchi scagnozi."
 
 #: data/level/crevice-village-heights.cfg:1040
 msgid ""
@@ -1446,7 +1447,7 @@ msgid ""
 "get in touch with Milgram."
 msgstr ""
 "Sì, sono un po' preoccupati per ciò che potrebbe capitare se qualcuno non "
-"venisse a contatto con Milgram."
+"contattasse Milgram."
 
 #: data/level/crevice-village-heights.cfg:1057
 msgid ""
@@ -1467,8 +1468,8 @@ msgid ""
 "Nah, this town doesn't have the fire for that.\n"
 "Which is a shame in some ways, but ..."
 msgstr ""
-"Nah, questa città non ha la forza per farlo. Che è una vergogna per certi "
-"versi, ma ..."
+"Nah, questa città non ha la forza per farlo. Per certi versi è una vergogna,"
+" ma ..."
 
 #: data/level/crevice-village-heights.cfg:1061
 msgid ""
@@ -1478,15 +1479,15 @@ msgid ""
 msgstr ""
 "E probabilmente è meglio così, davvero, non riesco ad immaginare il "
 "putiferio che nascerebbe se la gente avesse la forza di combattere per tutte"
-" le cose in disaccordo."
+" le cose in cui sono disaccordo."
 
 #: data/level/crevice-village-heights.cfg:1063
 msgid ""
 "I guess I'm also worried about the other end;\n"
 "what Milgram is doing, et cetera."
 msgstr ""
-"Inoltre sono preoccupato anche l'altra sponda, cosa stia facendo Milgram, "
-"eccetera."
+"Inoltre sono preoccupato anche per l'altra sponda, cosa stia facendo "
+"Milgram, eccetera."
 
 #: data/level/crevice-village-heights.cfg:1065
 msgid ""
@@ -1503,8 +1504,8 @@ msgid ""
 "Good excuse to get out and travel a bit.\n"
 "See the island."
 msgstr ""
-"Una buona scusa per uscire e viaggiare un po '.\n"
-"Visita l'isola."
+"Una buona scusa per uscire e viaggiare un po'.\n"
+"Visitare l'isola."
 
 #: data/level/crevice-village-heights.cfg:1068
 msgid "Risky business, though, isn't it?"
@@ -1579,7 +1580,7 @@ msgstr ""
 msgid ""
 "Weird.\n"
 "I wonder what they want with the elder?"
-msgstr "Strano. Mi chiedo che cosa vogliono dall'anziano?"
+msgstr "Strano. Mi chiedo che cosa vogliano dall'anziano?"
 
 #: data/level/crevice-village-heights.cfg:1111
 msgid ""
@@ -1588,7 +1589,7 @@ msgid ""
 "you'd better go whilst the going's good."
 msgstr ""
 "Ho un'idea, ma se hai intenzione di andare lassù, è meglio che tu vada "
-"finchè non ci sono problemi in vista."
+"finchè la strada è libera."
 
 #: data/level/crevice-village-heights.cfg:1113
 msgid "Yeah, I'll check it out."
@@ -2196,7 +2197,7 @@ msgstr ""
 
 #: data/level/crevice-village-house-elder.cfg:1610
 msgid "It is indeed, my boy!"
-msgstr "Lo è infatti, ragazzo mio!"
+msgstr "Infatti lo è, ragazzo mio!"
 
 #: data/level/crevice-village-house-elder.cfg:1612
 msgid "It's my very own safe room."
@@ -2392,7 +2393,7 @@ msgstr ""
 msgid ""
 "See, some years ago,\n"
 "Milgram approached me with a proposition."
-msgstr "Vedi, qualche anno fa, Milgram mi si avvicinò facendo proposta."
+msgstr "Vedi, qualche anno fa, Milgram mi si avvicinò e mi fece una proposta."
 
 #: data/level/crevice-village-house-elder.cfg:1680
 msgid ""
@@ -3464,7 +3465,7 @@ msgid ""
 "It couldn't be easy to get out of here!"
 msgstr ""
 "Chiuso. Ovviamente...\n"
-"Uscire da qui non potrebbe che essere più complicato!"
+"Uscire da qui non potrebbe essere più complicato!"
 
 #: data/level/liberated-crevice-village-house-1.cfg:1056
 msgid ""
@@ -5410,8 +5411,8 @@ msgid ""
 "To find out more about the game or to play the PC/Mac version for free, "
 "please visit http://www.frogatto.com/"
 msgstr ""
-"Per saperne di più sul gioco o per giocare la versione gratuita PC / Mac, si"
-" prega di visitare http://www.frogatto.com/"
+"Per saperne di più sul gioco o per giocare la versione gratuita PC / Mac, "
+"visita http://www.frogatto.com/"
 
 #: iOS_CHANGELOG:3
 msgid "Fixed The Long Haul (arcade level)"
