@@ -1155,6 +1155,22 @@ namespace {
 		}
 	};
 
+	class mod_function : public function_expression {
+		//the standard C++ mod expression does not give correct answers for negative operands - it's "implementation-defined", which means it's not really a modulo operation the way math normally describes them.  To get the right answer, we're using the following - based on the fact that x%y is always in the range [-y+1, y-1], and thus adding y to it is both always enough to make it positive, but doesn't change the modulo value.
+	public:
+		explicit mod_function(const args_list& args)
+		: function_expression("mod", args, 2, 2)
+		{}
+		
+	private:
+		variant execute(const formula_callable& variables) const {
+			int left = args()[0]->evaluate(variables).as_int();
+			int right = args()[1]->evaluate(variables).as_int();
+			
+			return variant((left%right + right)%right);
+		}
+	};
+	
 	class is_function_function : public function_expression {
 	public:
 		explicit is_function_function(const args_list& args)
@@ -1401,6 +1417,7 @@ namespace {
 			FUNCTION(is_int);
 			FUNCTION(is_decimal);
 			FUNCTION(is_map);
+			FUNCTION(mod);
 			FUNCTION(is_function);
 			FUNCTION(is_list);
 			FUNCTION(is_callable);
@@ -1479,6 +1496,13 @@ function_expression::function_expression(
 }
 
 
+}
+
+UNIT_TEST(modulo_operation) {
+	CHECK(game_logic::formula("mod(-5, 20)").execute() == game_logic::formula("15").execute(), "test failed");
+	CHECK(game_logic::formula("mod(-25, 20)").execute() == game_logic::formula("15").execute(), "test failed");
+	CHECK(game_logic::formula("mod(15, 20)").execute() == game_logic::formula("15").execute(), "test failed");
+	CHECK(game_logic::formula("mod(35, 20)").execute() == game_logic::formula("15").execute(), "test failed");
 }
 
 UNIT_TEST(flatten_function) {
