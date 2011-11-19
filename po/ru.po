@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-11-15 16:08-0200\n"
-"PO-Revision-Date: 2011-11-15 18:10+0000\n"
+"POT-Creation-Date: 2011-11-19 00:22-0200\n"
+"PO-Revision-Date: 2011-11-19 02:24+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Russian (http://www.transifex.net/projects/p/Frogatto/team/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -301,32 +301,90 @@ msgid "Updated music."
 msgstr "Обновлена музыка."
 
 #: MAC_APP_STORE_METADATA:1 iOS_APP_STORE_METADATA:1
-msgid ""
-"An old-school 2d platformer game, starring a certain quixotic frog. From the"
-" creators of Battle for Wesnoth comes this exciting jump-and-run platformer."
-" Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all "
-"the gameplay nuance of a classic console title. Run and jump over pits and "
-"enemies. Grab enemies with your tongue, swallow them, and then spit them out"
-" at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
-"puzzles. Collect coins and use them to buy upgrades and new abilities in the"
-" store. Talk to characters in game, and work to unravel Big Bad Milgram's "
-"plot against the townsfolk! At over 30 levels set in 4 different "
-"environments, Frogatto is not a flash in the pan, and has the play-time "
-"you'd expect from a real videogame."
+msgid "NOW WITH BETTER CONTROLS:"
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:3
+#: MAC_APP_STORE_METADATA:3 iOS_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are"
-" hoping to bring back the magic in a new, original game design with "
-"unconventional gameplay mechanics - a fun break from the usual clones."
+"Frogatto is a classic-style 2d adventure game, starring a certain quixotic "
+"frog.  It's made by the same team that brought you Battle for Wesnoth, and "
+"features the same handcrafted love of high-end pixel art.  Frogatto is a "
+"side-on \"platformer\" or \"jump and run\" game, where you lead our titular "
+"character on a humdrum errand that turns into a daring adventure."
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:5 iOS_APP_STORE_METADATA:7
+#: MAC_APP_STORE_METADATA:5 iOS_APP_STORE_METADATA:5
+msgid ""
+"Frogatto's key mechanic is an unusual twist; like any frog, he jumps, swims,"
+" and snags bugs with his tongue, but unlike any frog before him, can spit "
+"those bugs out with deadly force.  Not merely an action game, frogatto is a "
+"full, classic adventure game, with characters to talk to, things to buy, "
+"puzzles to solve, and a wide, complex world to explore."
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:7 iOS_APP_STORE_METADATA:7
+msgid "Features:"
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:8 iOS_APP_STORE_METADATA:8
+msgid "- grab enemies with your tongue and spit them to deal damage"
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:9 iOS_APP_STORE_METADATA:9
+msgid "- buy powerups to enhance and unlock new abilities"
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:10 iOS_APP_STORE_METADATA:10
+msgid ""
+"- arcade mode, giving instant access to action-only gameplay on randomized "
+"levels"
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:11 iOS_APP_STORE_METADATA:11
+msgid ""
+"- forgiving savegame/respawn system so you don't have to be afraid of losing"
+" progress"
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:12 iOS_APP_STORE_METADATA:12
+msgid "- playful dialogue writing that tries not to insult your intelligence"
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:13 iOS_APP_STORE_METADATA:13
+msgid "- massive soundtrack with over an hour of original music"
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:14 iOS_APP_STORE_METADATA:14
+msgid ""
+"- sprawling, complex world with over 50 levels to explore, and tons of "
+"secrets to find"
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:16 iOS_APP_STORE_METADATA:17
+msgid "To find out more about the game please visit http://www.frogatto.com/"
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:18 iOS_APP_STORE_METADATA:19
+msgid "Reviews:"
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:19 iOS_APP_STORE_METADATA:20
+msgid "- [3/4 SlideToPlay.com] \"a fun and surprisingly deep platformer\""
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:20 iOS_APP_STORE_METADATA:21
+msgid "- [4/5 AppSpy.com] \"boy-howdy is this an amazing visual feast!\""
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:21 iOS_APP_STORE_METADATA:22
+msgid "- [n/a TouchArcade.com] \"totally worth checking out.\""
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:23 iOS_APP_STORE_METADATA:24
 msgid "keywords:"
 msgstr "ключевые слова:"
 
-#: MAC_APP_STORE_METADATA:6 iOS_APP_STORE_METADATA:8
+#: MAC_APP_STORE_METADATA:24 iOS_APP_STORE_METADATA:25
 msgid ""
 "platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
 msgstr ""
@@ -489,11 +547,11 @@ msgstr "Победа!"
 msgid "Blocks Run"
 msgstr "Движущиеся блоки"
 
-#: data/level/arcade-blocks.cfg:218 data/level/arcade-blocks.cfg:220
+#: data/level/arcade-blocks.cfg:216 data/level/arcade-blocks.cfg:218
 msgid "You got {level.player.score} points in the Blocks Run!"
 msgstr "У вас {level.player.score}  очков в игре Движущиеся блоки!"
 
-#: data/level/arcade-blocks.cfg:219
+#: data/level/arcade-blocks.cfg:217
 #: data/level/arcade-down-the-rabbit-hall.cfg:864
 #: data/level/arcade-maintenance-shaft.cfg:2580
 #: data/level/arcade-nutty-factory.cfg:551
@@ -503,7 +561,7 @@ msgstr "У вас {level.player.score}  очков в игре Движущие�
 msgid "This is a new high score!"
 msgstr "Это новый рекорд!"
 
-#: data/level/arcade-blocks.cfg:221
+#: data/level/arcade-blocks.cfg:219
 msgid "The high score is {registry.arcade_blocks_high_score}."
 msgstr "Рекорд: {registry.arcade_blocks_high_score} очков."
 
@@ -721,271 +779,271 @@ msgstr ""
 msgid "Crevice Bridge"
 msgstr "Мост Кревис"
 
-#: data/level/crevice-bridge.cfg:781
+#: data/level/crevice-bridge.cfg:897
 msgid "Hi, again."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:782
+#: data/level/crevice-bridge.cfg:898
 msgid "So, how did it go?"
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:784
+#: data/level/crevice-bridge.cfg:900
 msgid "Could've been worse."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:786
+#: data/level/crevice-bridge.cfg:902
 msgid ""
 "That ... uh, \"captain\" cat, or whoever he was,\n"
 "tried to dice me up."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:788
+#: data/level/crevice-bridge.cfg:904
 msgid ""
 "Naturally, we wouldn't be having\n"
 "this conversation if I hadn't gotten\n"
 "the better of him."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:790
+#: data/level/crevice-bridge.cfg:906
 msgid ""
 "So all's well\n"
 "that ends well, I suppose."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:792
+#: data/level/crevice-bridge.cfg:908
 msgid ""
 "I did find out what was going on, at least,\n"
 "that is, what the elder *says* is going on."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:794
+#: data/level/crevice-bridge.cfg:910
 msgid ""
 "I wouldn't mind running this by a few people,\n"
 "since I have no idea what's true, or not."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:796
+#: data/level/crevice-bridge.cfg:912
 msgid "Go right ahead."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:799
+#: data/level/crevice-bridge.cfg:915
 msgid ""
 "So... uhm... loosely speaking, he says\n"
 "that Milgram loaned him money, and this whole\n"
 "incident was Milgram coming to shake him down."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:801
+#: data/level/crevice-bridge.cfg:917
 msgid "Trying to get his money back."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:803
+#: data/level/crevice-bridge.cfg:919
 msgid ""
 "So then he tells this oddball story\n"
 "about how it's all some plot where\n"
 "Milgram's gonna take over the town."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:805
+#: data/level/crevice-bridge.cfg:921
 #: data/level/crevice-village-house-elder.cfg:1614
 msgid "Wow."
 msgstr "Ого."
 
-#: data/level/crevice-bridge.cfg:806
+#: data/level/crevice-bridge.cfg:922
 msgid "I've never heard of any of this."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:809
+#: data/level/crevice-bridge.cfg:925
 msgid ""
 "Really?\n"
 "He's never talked about this?"
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:811
+#: data/level/crevice-bridge.cfg:927
 msgid "Never."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:814
+#: data/level/crevice-bridge.cfg:930
 msgid ""
 "Has he ever shown any signs of ... suddenly\n"
 "having way more spending money than usual?"
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:816
+#: data/level/crevice-bridge.cfg:932
 msgid ""
 "Well, he's *bragged* about being rich,\n"
 "but that's just his \"dignified family\" schtick."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:817
+#: data/level/crevice-bridge.cfg:933
 msgid ""
 "He's such a miser, you know -\n"
 "the man would probably burn his\n"
 "furniture just to save on firewood."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:818
+#: data/level/crevice-bridge.cfg:934
 msgid ""
 "So, no, he's never seemed\n"
 "to have a dime to spare."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:819
+#: data/level/crevice-bridge.cfg:935
 msgid ""
 "He does brag about being known by important\n"
 "people, but you know how he is."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:822
+#: data/level/crevice-bridge.cfg:938
 msgid ""
 "Yeah.  Geez.\n"
 "So, uh, here's what I think we know:"
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:824
+#: data/level/crevice-bridge.cfg:940
 msgid ""
 "We know he's clearly run afoul\n"
 "of Milgram, somehow."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:826
+#: data/level/crevice-bridge.cfg:942
 msgid ""
 "We also know Milgram's not interested\n"
 "in taking over the town, because he\n"
 "essentially just did, and gave it up."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:828
+#: data/level/crevice-bridge.cfg:944
 msgid ""
 "We don't know if the money thing\n"
 "is true, but we know if it is,\n"
 "he certainly hasn't put it to use."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:830
+#: data/level/crevice-bridge.cfg:946
 msgid ""
 "Oh yeah, I forgot to mention;\n"
 "he said it was some kind of \"investment\""
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:832
+#: data/level/crevice-bridge.cfg:948
 msgid ""
 "Which I assume would be for the town.\n"
 "Building things."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:834
+#: data/level/crevice-bridge.cfg:950
 msgid "Naturally, we know that didn't happen."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:836
+#: data/level/crevice-bridge.cfg:952
 msgid "So other than that, it's a mystery."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:838
+#: data/level/crevice-bridge.cfg:954
 msgid ""
 "So, dare I ask:\n"
 "What do we do now?"
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:841
+#: data/level/crevice-bridge.cfg:957
 msgid ""
 "Ah, that.  I went and decided that\n"
 "it's probably a very good idea to\n"
 "do a little diplomacy."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:843
+#: data/level/crevice-bridge.cfg:959
 msgid ""
 "*Someone* needs to go talk to Milgram,\n"
 "and ask what was wrong, so nothing bad happens."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:845
+#: data/level/crevice-bridge.cfg:961
 msgid ""
 "So for a lack of any other willing parties,\n"
 "I decided to go."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:847
+#: data/level/crevice-bridge.cfg:963
 msgid "That's very noble of you."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:850
+#: data/level/crevice-bridge.cfg:966
 msgid ""
 "Ha, well, we're also going to find out\n"
 "if it's very foolish, as well."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:853
+#: data/level/crevice-bridge.cfg:969
 msgid ""
 "But nothing ventured, nothing gained, you know?\n"
 "I guess I'm just tired of bumming around."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:855
+#: data/level/crevice-bridge.cfg:971
 msgid ""
 "Speaking of which, I'd been meaning\n"
 "to thank you for your help thus far."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:857
+#: data/level/crevice-bridge.cfg:973
 msgid ""
 "I've really appreciated the \"eyes in the sky\".\n"
 "It's very helpful."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:859
+#: data/level/crevice-bridge.cfg:975
 msgid ""
 "To spare your asking,\n"
 "yes, I'd be happy to continue."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:862
+#: data/level/crevice-bridge.cfg:978
 msgid "Hey, thanks, that's really nice of you!"
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:864
+#: data/level/crevice-bridge.cfg:980
 msgid ""
 "It's the least I can do.\n"
 "I'd offer to carry you, even,\n"
 "but I'm afraid that's physically impossible."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:865
+#: data/level/crevice-bridge.cfg:981
 msgid ""
 "I'm as curious as you are, about this,\n"
 "and we're more likely to get to the\n"
 "bottom of things if we work together."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:868
+#: data/level/crevice-bridge.cfg:984
 msgid "Awesome!"
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:871
+#: data/level/crevice-bridge.cfg:987
 msgid ""
 "Anyways, I was planning to go through\n"
 "the forest, to start with."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:873
+#: data/level/crevice-bridge.cfg:989
 msgid "Does that sound like a good idea?"
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:875
+#: data/level/crevice-bridge.cfg:991
 msgid ""
 "Yes... it is the only path I know of,\n"
 "but be careful in there."
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:878
+#: data/level/crevice-bridge.cfg:994
 msgid ""
 "Yeah, no kidding.\n"
 "Well, see you soon!  Thanks again!"
 msgstr ""
 
-#: data/level/crevice-bridge.cfg:897
+#: data/level/crevice-bridge.cfg:1013
 msgid "Ahh, there you are!"
 msgstr ""
 
@@ -4952,22 +5010,9 @@ msgstr "Загрузка дверей"
 msgid "Loading energy shot"
 msgstr "Загрузка выстрела энергии"
 
-#: iOS_APP_STORE_METADATA:3
-msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are"
-" hoping to bring back the magic in a new, original game design with "
-"unconventional gameplay mechanics - a fun break from the usual clones. We're"
-" a small group of indie developers, hoping this game becomes one of the "
-"definitive platform games on iOS - and you can make that happen!"
+#: iOS_APP_STORE_METADATA:15
+msgid "- OpenFeint and Achievement support"
 msgstr ""
-
-#: iOS_APP_STORE_METADATA:5
-msgid ""
-"To find out more about the game or to play the PC/Mac version for free, "
-"please visit http://www.frogatto.com/"
-msgstr ""
-"Чтобы узнать больше об игре или поиграть в бесплатную версию для PC/Mac, "
-"пожалуйста, посетите сайт http://www.frogatto.com/"
 
 #: iOS_CHANGELOG:3
 msgid "Fixed The Long Haul (arcade level)"

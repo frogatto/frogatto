@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-11-15 16:08-0200\n"
-"PO-Revision-Date: 2011-11-15 18:10+0000\n"
+"POT-Creation-Date: 2011-11-19 00:22-0200\n"
+"PO-Revision-Date: 2011-11-19 02:24+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Portuguese (Brazilian) (http://www.transifex.net/projects/p/Frogatto/team/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -295,48 +295,90 @@ msgid "Updated music."
 msgstr ""
 
 #: MAC_APP_STORE_METADATA:1 iOS_APP_STORE_METADATA:1
-msgid ""
-"An old-school 2d platformer game, starring a certain quixotic frog. From the"
-" creators of Battle for Wesnoth comes this exciting jump-and-run platformer."
-" Frogatto has gorgeous, high-end pixel art, pumping arcade tunes, and all "
-"the gameplay nuance of a classic console title. Run and jump over pits and "
-"enemies. Grab enemies with your tongue, swallow them, and then spit them out"
-" at other enemies as projectiles! Fight dangerous bosses, and solve vexing "
-"puzzles. Collect coins and use them to buy upgrades and new abilities in the"
-" store. Talk to characters in game, and work to unravel Big Bad Milgram's "
-"plot against the townsfolk! At over 30 levels set in 4 different "
-"environments, Frogatto is not a flash in the pan, and has the play-time "
-"you'd expect from a real videogame."
+msgid "NOW WITH BETTER CONTROLS:"
 msgstr ""
-"Um jogo de plataforma em duas dimensões no melhor estilo da era dos 16-bits."
-" Dos criadores de \"Battle for Wesnoth\", Frogatto tem belos gráficos "
-"pixelados, uma grande trilha sonora e a mesma jogabilidade precisa dos "
-"clássicos dos videogames. Corra e pule através de abismos e armadilhas. "
-"Pegue inimigos com a língua, engula-os, e transforme-os em projéteis, "
-"cuspindo-os em outros inimigos! Lute contra chefões perigosos, e resolva "
-"complicados quebra-cabeças. Junte moedas e use-as para melhorar o "
-"personagem, e adquirir novas habilidades. Converse com os diversos "
-"personagens do jogo, tentando desbaratar o plano do malvado Milgram contra a"
-" população da vila! Com mais de 30 fases em 4 ambientes totalmente "
-"distintos, Frogatto não é fogo de palha, e garante a diversão que você "
-"espera de um verdadeiro videogame. "
 
-#: MAC_APP_STORE_METADATA:3
+#: MAC_APP_STORE_METADATA:3 iOS_APP_STORE_METADATA:3
 msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are"
-" hoping to bring back the magic in a new, original game design with "
-"unconventional gameplay mechanics - a fun break from the usual clones."
+"Frogatto is a classic-style 2d adventure game, starring a certain quixotic "
+"frog.  It's made by the same team that brought you Battle for Wesnoth, and "
+"features the same handcrafted love of high-end pixel art.  Frogatto is a "
+"side-on \"platformer\" or \"jump and run\" game, where you lead our titular "
+"character on a humdrum errand that turns into a daring adventure."
 msgstr ""
-"Frogatto foi produzido por um grupo de fãs de longa data de videogames "
-"clássicos, que esperam trazer de volta aquela mágica com um jogo novo, "
-"original, com jogabilidade fora do convencional - uma divertida mudança em "
-"comparação com os clones de sempre."
 
-#: MAC_APP_STORE_METADATA:5 iOS_APP_STORE_METADATA:7
+#: MAC_APP_STORE_METADATA:5 iOS_APP_STORE_METADATA:5
+msgid ""
+"Frogatto's key mechanic is an unusual twist; like any frog, he jumps, swims,"
+" and snags bugs with his tongue, but unlike any frog before him, can spit "
+"those bugs out with deadly force.  Not merely an action game, frogatto is a "
+"full, classic adventure game, with characters to talk to, things to buy, "
+"puzzles to solve, and a wide, complex world to explore."
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:7 iOS_APP_STORE_METADATA:7
+msgid "Features:"
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:8 iOS_APP_STORE_METADATA:8
+msgid "- grab enemies with your tongue and spit them to deal damage"
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:9 iOS_APP_STORE_METADATA:9
+msgid "- buy powerups to enhance and unlock new abilities"
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:10 iOS_APP_STORE_METADATA:10
+msgid ""
+"- arcade mode, giving instant access to action-only gameplay on randomized "
+"levels"
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:11 iOS_APP_STORE_METADATA:11
+msgid ""
+"- forgiving savegame/respawn system so you don't have to be afraid of losing"
+" progress"
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:12 iOS_APP_STORE_METADATA:12
+msgid "- playful dialogue writing that tries not to insult your intelligence"
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:13 iOS_APP_STORE_METADATA:13
+msgid "- massive soundtrack with over an hour of original music"
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:14 iOS_APP_STORE_METADATA:14
+msgid ""
+"- sprawling, complex world with over 50 levels to explore, and tons of "
+"secrets to find"
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:16 iOS_APP_STORE_METADATA:17
+msgid "To find out more about the game please visit http://www.frogatto.com/"
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:18 iOS_APP_STORE_METADATA:19
+msgid "Reviews:"
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:19 iOS_APP_STORE_METADATA:20
+msgid "- [3/4 SlideToPlay.com] \"a fun and surprisingly deep platformer\""
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:20 iOS_APP_STORE_METADATA:21
+msgid "- [4/5 AppSpy.com] \"boy-howdy is this an amazing visual feast!\""
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:21 iOS_APP_STORE_METADATA:22
+msgid "- [n/a TouchArcade.com] \"totally worth checking out.\""
+msgstr ""
+
+#: MAC_APP_STORE_METADATA:23 iOS_APP_STORE_METADATA:24
 msgid "keywords:"
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:6 iOS_APP_STORE_METADATA:8
+#: MAC_APP_STORE_METADATA:24 iOS_APP_STORE_METADATA:25
 msgid ""
 "platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
 msgstr ""
@@ -497,11 +539,11 @@ msgstr "Vitória!"
 msgid "Blocks Run"
 msgstr "Corrida dos Blocos"
 
-#: data/level/arcade-blocks.cfg:218 data/level/arcade-blocks.cfg:220
+#: data/level/arcade-blocks.cfg:216 data/level/arcade-blocks.cfg:218
 msgid "You got {level.player.score} points in the Blocks Run!"
 msgstr "Você conseguiu {level.player.score} pontos na Corrida dos Blocos!"
 
-#: data/level/arcade-blocks.cfg:219
+#: data/level/arcade-blocks.cfg:217
 #: data/level/arcade-down-the-rabbit-hall.cfg:864
 #: data/level/arcade-maintenance-shaft.cfg:2580
 #: data/level/arcade-nutty-factory.cfg:551
@@ -511,7 +553,7 @@ msgstr "Você conseguiu {level.player.score} pontos na Corrida dos Blocos!"
 msgid "This is a new high score!"
 msgstr "É um novo recorde!"
 
-#: data/level/arcade-blocks.cfg:221
+#: data/level/arcade-blocks.cfg:219
 msgid "The high score is {registry.arcade_blocks_high_score}."
 msgstr "O recorde é de {registry.arcade_blocks_high_score} pontos."
 
@@ -764,19 +806,19 @@ msgstr ""
 msgid "Crevice Bridge"
 msgstr "Ponte da Fenda"
 
-#: data/level/crevice-bridge.cfg:781
+#: data/level/crevice-bridge.cfg:897
 msgid "Hi, again."
 msgstr "Ah, oi de novo."
 
-#: data/level/crevice-bridge.cfg:782
+#: data/level/crevice-bridge.cfg:898
 msgid "So, how did it go?"
 msgstr "Então, como foi?"
 
-#: data/level/crevice-bridge.cfg:784
+#: data/level/crevice-bridge.cfg:900
 msgid "Could've been worse."
 msgstr "Podia ter sido pior..."
 
-#: data/level/crevice-bridge.cfg:786
+#: data/level/crevice-bridge.cfg:902
 msgid ""
 "That ... uh, \"captain\" cat, or whoever he was,\n"
 "tried to dice me up."
@@ -784,7 +826,7 @@ msgstr ""
 "Aquele... hã, \"capitão\" dos gatos,\n"
 "ou seja lá quem fosse, queria me partir em dois!"
 
-#: data/level/crevice-bridge.cfg:788
+#: data/level/crevice-bridge.cfg:904
 msgid ""
 "Naturally, we wouldn't be having\n"
 "this conversation if I hadn't gotten\n"
@@ -793,7 +835,7 @@ msgstr ""
 "Bom, eu não estaria aqui falando com você\n"
 "se eu não tivesse vencido, então..."
 
-#: data/level/crevice-bridge.cfg:790
+#: data/level/crevice-bridge.cfg:906
 msgid ""
 "So all's well\n"
 "that ends well, I suppose."
@@ -801,7 +843,7 @@ msgstr ""
 "Tudo acaba bem quando termina bem,\n"
 "não é mesmo?"
 
-#: data/level/crevice-bridge.cfg:792
+#: data/level/crevice-bridge.cfg:908
 msgid ""
 "I did find out what was going on, at least,\n"
 "that is, what the elder *says* is going on."
@@ -810,7 +852,7 @@ msgstr ""
 "bom, ao menos o que o nosso bom e velho\n"
 "porteiro disse que aconteceu."
 
-#: data/level/crevice-bridge.cfg:794
+#: data/level/crevice-bridge.cfg:910
 msgid ""
 "I wouldn't mind running this by a few people,\n"
 "since I have no idea what's true, or not."
@@ -818,11 +860,11 @@ msgstr ""
 "Eu queria checar a versão dele com algumas pessoas,\n"
 "pra ver o que é verdade e o que não é."
 
-#: data/level/crevice-bridge.cfg:796
+#: data/level/crevice-bridge.cfg:912
 msgid "Go right ahead."
 msgstr "Ah, claro. Prossiga."
 
-#: data/level/crevice-bridge.cfg:799
+#: data/level/crevice-bridge.cfg:915
 msgid ""
 "So... uhm... loosely speaking, he says\n"
 "that Milgram loaned him money, and this whole\n"
@@ -833,11 +875,11 @@ msgstr ""
 "essa confusão toda foi o Milgram\n"
 "querendo pressioná-lo."
 
-#: data/level/crevice-bridge.cfg:801
+#: data/level/crevice-bridge.cfg:917
 msgid "Trying to get his money back."
 msgstr "Tentando pegar o dinheiro dele de volta."
 
-#: data/level/crevice-bridge.cfg:803
+#: data/level/crevice-bridge.cfg:919
 msgid ""
 "So then he tells this oddball story\n"
 "about how it's all some plot where\n"
@@ -847,16 +889,16 @@ msgstr ""
 "de que isso tudo é parte de um plano\n"
 "do Milgram pra conquistar a vila."
 
-#: data/level/crevice-bridge.cfg:805
+#: data/level/crevice-bridge.cfg:921
 #: data/level/crevice-village-house-elder.cfg:1614
 msgid "Wow."
 msgstr "Uau."
 
-#: data/level/crevice-bridge.cfg:806
+#: data/level/crevice-bridge.cfg:922
 msgid "I've never heard of any of this."
 msgstr "Nunca ouvi falar disso."
 
-#: data/level/crevice-bridge.cfg:809
+#: data/level/crevice-bridge.cfg:925
 msgid ""
 "Really?\n"
 "He's never talked about this?"
@@ -864,11 +906,11 @@ msgstr ""
 "Sério?\n"
 "Ele nunca falou sobre isso?"
 
-#: data/level/crevice-bridge.cfg:811
+#: data/level/crevice-bridge.cfg:927
 msgid "Never."
 msgstr "Não que eu saiba."
 
-#: data/level/crevice-bridge.cfg:814
+#: data/level/crevice-bridge.cfg:930
 msgid ""
 "Has he ever shown any signs of ... suddenly\n"
 "having way more spending money than usual?"
@@ -876,7 +918,7 @@ msgstr ""
 "Por acaso, ele já pareceu ter mais dinheiro\n"
 "para gastar do que o normal?"
 
-#: data/level/crevice-bridge.cfg:816
+#: data/level/crevice-bridge.cfg:932
 msgid ""
 "Well, he's *bragged* about being rich,\n"
 "but that's just his \"dignified family\" schtick."
@@ -885,7 +927,7 @@ msgstr ""
 "com uma história de que ele veio\n"
 "de uma \"família distinta\"."
 
-#: data/level/crevice-bridge.cfg:817
+#: data/level/crevice-bridge.cfg:933
 msgid ""
 "He's such a miser, you know -\n"
 "the man would probably burn his\n"
@@ -895,13 +937,13 @@ msgstr ""
 "acho que ele queimaria a própria cama\n"
 "pra não ter que gastar com lenha."
 
-#: data/level/crevice-bridge.cfg:818
+#: data/level/crevice-bridge.cfg:934
 msgid ""
 "So, no, he's never seemed\n"
 "to have a dime to spare."
 msgstr "Bom, então, ele nunca pareceu ter dinheiro pra gastar."
 
-#: data/level/crevice-bridge.cfg:819
+#: data/level/crevice-bridge.cfg:935
 msgid ""
 "He does brag about being known by important\n"
 "people, but you know how he is."
@@ -909,7 +951,7 @@ msgstr ""
 "Ele também diz ter uns amigos influentes\n"
 "por ai, mas você sabe como ele é."
 
-#: data/level/crevice-bridge.cfg:822
+#: data/level/crevice-bridge.cfg:938
 msgid ""
 "Yeah.  Geez.\n"
 "So, uh, here's what I think we know:"
@@ -917,7 +959,7 @@ msgstr ""
 "É... droga.\n"
 "Então, o que eu acho que a gente sabe é que..."
 
-#: data/level/crevice-bridge.cfg:824
+#: data/level/crevice-bridge.cfg:940
 msgid ""
 "We know he's clearly run afoul\n"
 "of Milgram, somehow."
@@ -925,7 +967,7 @@ msgstr ""
 "Nós sabemos que ele se encrencou\n"
 "com o Milgram, de alguma maneira."
 
-#: data/level/crevice-bridge.cfg:826
+#: data/level/crevice-bridge.cfg:942
 msgid ""
 "We also know Milgram's not interested\n"
 "in taking over the town, because he\n"
@@ -935,7 +977,7 @@ msgstr ""
 "em conquistar a vila, porque ele já fez isso,\n"
 "e depois voltou atrás."
 
-#: data/level/crevice-bridge.cfg:828
+#: data/level/crevice-bridge.cfg:944
 msgid ""
 "We don't know if the money thing\n"
 "is true, but we know if it is,\n"
@@ -944,7 +986,7 @@ msgstr ""
 "O que a gente não sabe é se essa história de dinheiro\n"
 "é verdade, mas, se for, ele não gastou nada ainda."
 
-#: data/level/crevice-bridge.cfg:830
+#: data/level/crevice-bridge.cfg:946
 msgid ""
 "Oh yeah, I forgot to mention;\n"
 "he said it was some kind of \"investment\""
@@ -952,7 +994,7 @@ msgstr ""
 "Ah, é, esqueci de falar... ele tinha dito\n"
 "que esse dinheiro era um tipo de \"investimento\"."
 
-#: data/level/crevice-bridge.cfg:832
+#: data/level/crevice-bridge.cfg:948
 msgid ""
 "Which I assume would be for the town.\n"
 "Building things."
@@ -960,15 +1002,15 @@ msgstr ""
 "Que imagino que seria pra vila.\n"
 "Pra construir coisas."
 
-#: data/level/crevice-bridge.cfg:834
+#: data/level/crevice-bridge.cfg:950
 msgid "Naturally, we know that didn't happen."
 msgstr "Só que nós sabemos que isso não aconteceu."
 
-#: data/level/crevice-bridge.cfg:836
+#: data/level/crevice-bridge.cfg:952
 msgid "So other than that, it's a mystery."
 msgstr "Então, fora isso, é tudo um mistério."
 
-#: data/level/crevice-bridge.cfg:838
+#: data/level/crevice-bridge.cfg:954
 msgid ""
 "So, dare I ask:\n"
 "What do we do now?"
@@ -976,7 +1018,7 @@ msgstr ""
 "Bom, então vou ter que perguntar:\n"
 "O que fazemos agora?"
 
-#: data/level/crevice-bridge.cfg:841
+#: data/level/crevice-bridge.cfg:957
 msgid ""
 "Ah, that.  I went and decided that\n"
 "it's probably a very good idea to\n"
@@ -985,7 +1027,7 @@ msgstr ""
 "Ah, então... eu acho que uma boa ideia\n"
 "seria tentar uma solução diplomática."
 
-#: data/level/crevice-bridge.cfg:843
+#: data/level/crevice-bridge.cfg:959
 msgid ""
 "*Someone* needs to go talk to Milgram,\n"
 "and ask what was wrong, so nothing bad happens."
@@ -993,7 +1035,7 @@ msgstr ""
 "*Alguém* tem que ir lá falar com o Milgram,\n"
 "perguntar o que houve, pra que nada de mal aconteça."
 
-#: data/level/crevice-bridge.cfg:845
+#: data/level/crevice-bridge.cfg:961
 msgid ""
 "So for a lack of any other willing parties,\n"
 "I decided to go."
@@ -1001,11 +1043,11 @@ msgstr ""
 "Então, como não achei nenhum voluntário,\n"
 "decidi ir eu mesmo!"
 
-#: data/level/crevice-bridge.cfg:847
+#: data/level/crevice-bridge.cfg:963
 msgid "That's very noble of you."
 msgstr "Muito corajoso de sua parte."
 
-#: data/level/crevice-bridge.cfg:850
+#: data/level/crevice-bridge.cfg:966
 msgid ""
 "Ha, well, we're also going to find out\n"
 "if it's very foolish, as well."
@@ -1013,7 +1055,7 @@ msgstr ""
 "Heh, bem, logo vamos descobrir\n"
 "se isso é coragem ou se é loucura!"
 
-#: data/level/crevice-bridge.cfg:853
+#: data/level/crevice-bridge.cfg:969
 msgid ""
 "But nothing ventured, nothing gained, you know?\n"
 "I guess I'm just tired of bumming around."
@@ -1021,7 +1063,7 @@ msgstr ""
 "Mas quem não arrisca não petisca, não é mesmo?\n"
 "Eu já estava cansado de ficar sem fazer nada."
 
-#: data/level/crevice-bridge.cfg:855
+#: data/level/crevice-bridge.cfg:971
 msgid ""
 "Speaking of which, I'd been meaning\n"
 "to thank you for your help thus far."
@@ -1029,7 +1071,7 @@ msgstr ""
 "Falando nisso, eu queria\n"
 "te agradecer pelo apoio até aqui."
 
-#: data/level/crevice-bridge.cfg:857
+#: data/level/crevice-bridge.cfg:973
 msgid ""
 "I've really appreciated the \"eyes in the sky\".\n"
 "It's very helpful."
@@ -1037,7 +1079,7 @@ msgstr ""
 "É muito bom ter um ponto de vista das coisas,\n"
 "lá do céu."
 
-#: data/level/crevice-bridge.cfg:859
+#: data/level/crevice-bridge.cfg:975
 msgid ""
 "To spare your asking,\n"
 "yes, I'd be happy to continue."
@@ -1046,11 +1088,11 @@ msgstr ""
 "sim, eu adoraria continuar a fazer\n"
 "esse trabalho de reconhecimento."
 
-#: data/level/crevice-bridge.cfg:862
+#: data/level/crevice-bridge.cfg:978
 msgid "Hey, thanks, that's really nice of you!"
 msgstr "Ah, isso é ótimo, obrigado!"
 
-#: data/level/crevice-bridge.cfg:864
+#: data/level/crevice-bridge.cfg:980
 msgid ""
 "It's the least I can do.\n"
 "I'd offer to carry you, even,\n"
@@ -1060,7 +1102,7 @@ msgstr ""
 "Eu me ofereceria pra te carregar, até,\n"
 "mas eu não teria como, fisicamente."
 
-#: data/level/crevice-bridge.cfg:865
+#: data/level/crevice-bridge.cfg:981
 msgid ""
 "I'm as curious as you are, about this,\n"
 "and we're more likely to get to the\n"
@@ -1070,11 +1112,11 @@ msgstr ""
 "encontrarmos uma explicação pra isso tudo\n"
 "se nós trabalharmos juntos."
 
-#: data/level/crevice-bridge.cfg:868
+#: data/level/crevice-bridge.cfg:984
 msgid "Awesome!"
 msgstr "Excelente!"
 
-#: data/level/crevice-bridge.cfg:871
+#: data/level/crevice-bridge.cfg:987
 msgid ""
 "Anyways, I was planning to go through\n"
 "the forest, to start with."
@@ -1082,11 +1124,11 @@ msgstr ""
 "Bom, de qualquer modo, minha ideia\n"
 "seria cruzar a floresta, pra começar."
 
-#: data/level/crevice-bridge.cfg:873
+#: data/level/crevice-bridge.cfg:989
 msgid "Does that sound like a good idea?"
 msgstr "Isso te parece um bom plano?"
 
-#: data/level/crevice-bridge.cfg:875
+#: data/level/crevice-bridge.cfg:991
 msgid ""
 "Yes... it is the only path I know of,\n"
 "but be careful in there."
@@ -1094,7 +1136,7 @@ msgstr ""
 "Hmm, sim, é o único caminho que eu conheço,\n"
 "mas tenha cuidado lá dentro."
 
-#: data/level/crevice-bridge.cfg:878
+#: data/level/crevice-bridge.cfg:994
 msgid ""
 "Yeah, no kidding.\n"
 "Well, see you soon!  Thanks again!"
@@ -1102,7 +1144,7 @@ msgstr ""
 "É, com certeza.\n"
 "Bom, te vejo depois, e de novo, obrigado!"
 
-#: data/level/crevice-bridge.cfg:897
+#: data/level/crevice-bridge.cfg:1013
 msgid "Ahh, there you are!"
 msgstr "Ah, aí está você!"
 
@@ -5461,28 +5503,9 @@ msgstr "Carregando objetos"
 msgid "Loading energy shot"
 msgstr "Carregando ataques especiais"
 
-#: iOS_APP_STORE_METADATA:3
-msgid ""
-"Frogatto was made by a group of big-time fans of classic videogames, who are"
-" hoping to bring back the magic in a new, original game design with "
-"unconventional gameplay mechanics - a fun break from the usual clones. We're"
-" a small group of indie developers, hoping this game becomes one of the "
-"definitive platform games on iOS - and you can make that happen!"
+#: iOS_APP_STORE_METADATA:15
+msgid "- OpenFeint and Achievement support"
 msgstr ""
-"Frogatto foi produzido por um grupo de fãs de longa data de videogames "
-"clássicos, que esperam trazer de volta a mágica em um novo, original design "
-"de jogo com mecânica de jogabilidade não convencional - uma pausa divertida "
-"dos usais genéricos. Nós somos um pequeno grupo de desenvolvedores "
-"independentes, esperando que esse jogo se torne um dos jogos de plataforma "
-"definitivos no iOS - e você pode fazer isso acontecer!"
-
-#: iOS_APP_STORE_METADATA:5
-msgid ""
-"To find out more about the game or to play the PC/Mac version for free, "
-"please visit http://www.frogatto.com/"
-msgstr ""
-"Para saber mais sobre o jogo ou para jogar a versão para PC/Mac de graça, "
-"por favor visite http://www.frogatto.com/"
 
 #: iOS_CHANGELOG:3
 msgid "Fixed The Long Haul (arcade level)"
