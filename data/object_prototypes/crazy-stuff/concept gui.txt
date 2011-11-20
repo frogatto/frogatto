@@ -10,7 +10,7 @@
 	'obj' -> obj, #default offset and return$
 	'obj' -> ({	'obj' -> obj,		#non-optional#
 				'offset' -> [x,y],	#optional, def [0,0]#
-				'return' -> bool	#optional, def false# #On it's own line? Ignored as 'true' until we can wrap text.#
+				'return' -> bool	#optional, def false# #On its own line? Ignored as 'true' until we can wrap text.#
 				'justified' -> 'mode'	#optional, def 'left'#
 				})
 	}
@@ -23,3 +23,24 @@ Requirements:
 	
 Data Flow:
 	The mouse object will have each button and display window registered, and will foward the mice events to those objects. Properties will be 'mouse_over', 'mouse_not_over', 'mouse_left_click', 'mouse_right_click', 'mouse_left_hold', 'mouse_right_hold', 'mouse_start_drag', 'mouse_end_drag'. Key events will be processed by the player object, as usual, unless a text input box is active.
+	
+	
+ = HELP =
+So, how do you use these newfangled *_input objects? To start, prototype your playable object to player_input. This defines a whole host of basic input functions for the other objects to use. (You might have to put %PROTO% in on_create and on_process, if the player object  has them defined by more than one prototype.) Next, draw up a little button and make it into an object. It should have an animation frame named 'normal'. (This is not *needed*, but it'll disallow separate animations for mouse over and mouse click.) Next, add the object to the level. It will default to staying in the upper-left corner of your screen, but is fully functional.
+To use your new button, put whatever behaviour you want in the events 'on_mouse_over', 'on_mouse_not_over', 'on_mouse_left_down',  'on_mouse_not_left_down', 'on_mouse_right_down', and 'on_mouse_not_right_down'. The opposite for each positive event is gauranteed to fire.
+To position your button with more accuracy, you may assign this.vars.reference_anchor a function which returns the value it should be at, or a list containing an x/y pair. A function will be applied to the object every cycle, so that if, say, your function references a point from a changing variable such as the camera or level.player.adjusted_mice[0][0:2] (which returns a list containing an x/y pair describing the first mouse's location in level), the object will stay at its location relative to the changing variable. However, by passing a list, you tell the object that it's not going to be moving around. In this case, the object will simply set its location to the x/y pair in the list and not set its location again in subsequent cycles. This is best to use when the button is relative to something still, or you've parented it to something. (Parenting provides implicit 'move with me' functionionality.) For example, in a series of 10 buttons, if you'd set the first button to a function which set it relative to the screen, you could set the other 9 buttons to be childern of the first button. (In addition, if you wanted to move the 10 buttons to a different place on the screen, it would be easy to do so since you're only specifying the relative location once.)
+Several common points may be accessed via this.getAnchor(int) and this.getCameraAnchor(int). Both return an x/y coordinate list. The integer passed to the function denote which point to get, according to your numpad, seen below in figure 1.
+
+╔═╦═╦═╗
+║7║8║9║
+╠═╬═╬═╣
+║4║5║6║
+╠═╬═╬═╣
+║1║2║3║
+╚═╩═╩═╝
+fig. 1
+
+For example, this.getAnchor(6) would return a point on the right side of our object, this, half-way down. this.getCameraAnchor(2) would return the point which is on the bottom of the screen, half-way across. 5 returns the middle, 7 the upper left corner (the default placement for new objects), and so on. this.vars.offset can be set for a margin around the object. (defaults to 25) This variable can be set to a single integer, or to a list containing x/y pair. Note that margin is only computed from the reference_anchor, and affects only this object.
+To make a draggable object, simply do as you would with a button - only avoiding setting it's position to a function, since if you drag it to a new position the function would say to set it right back to where from it came. Instead, if you want the draggable object to be relative to the screen, parent it to another ui element which has a function which keeps it relative to the screen. (You may want to set up an invisible object if you don't have any reliable element.) A draggable object has the events on_mouse_start_drag and on_mouse_end_drag fired for it, in addition to the events of a button. (Technically, a button's drag events are fired as well. However, they're not handled and so nothing happens. This is true across all objects.)
+
+Scrollable meta-widget to come soon. Bug DDR for further clairificaton.
