@@ -9,10 +9,10 @@ include Makefile.common
 LDADD=-lGLES_CM -lSDLmain -lSDL -lSDL_image -lSDL_mixer
 
 %.o : src/%.cpp
-	$(CXX) -DIMPLEMENT_SAVE_PNG -fno-inline-functions -g $(OPT) `sdl-config --cflags` -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -fthreadsafe-statics -c $<
+	$(CXX) -DIMPLEMENT_SAVE_PNG -fno-inline-functions -g $(OPT) `sdl-config --cflags` `pkg-config gconf-2.0 --cflags` -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -fthreadsafe-statics -c $<
 
 game: $(objects)
-	$(CXX) -g $(OPT) -L. -L/sw/lib -L. -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -L/usr/lib `sdl-config --libs` ${LDADD} -lpng -lboost_regex-mt -lboost_system-mt -lpthread -fthreadsafe-statics $(objects) -o game
+	$(CXX) -g $(OPT) `pkg-config gconf-2.0 --libs` -L. -L/sw/lib -L. -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -L/usr/lib `sdl-config --libs` ${LDADD} -lpng -lboost_regex-mt -lboost_system-mt -lpthread -fthreadsafe-statics $(objects) -o game
 
 server: $(server_objects)
 	$(CXX) -fno-inline-functions -g $(OPT) -L/sw/lib -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -L/usr/lib `sdl-config --libs` ${LDADD} -lGL -lGLU -lSDL_image -lSDL_mixer -lboost_regex-mt -lboost_system-mt -lboost_thread-mt -lboost_iostreams-mt -fthreadsafe-statics $(server_objects) -o server
