@@ -9,6 +9,10 @@
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
+#ifdef TARGET_OS_HARMATTAN
+#include <gconf/gconf-client.h>
+#endif
+
 #ifdef _WIN32
 #include <windows.h>
 #endif
@@ -81,7 +85,12 @@ const std::string& get_locale() {
 			CFRelease(localeIDs);
 		}
 #endif
-		
+
+#ifdef TARGET_OS_HARMATTAN
+	std::cerr << "Get GConf default client\n";
+	GConfClient *gconf = gconf_client_get_default();
+	locale = std::string(gconf_client_get_string(gconf, "/meegotouch/i18n/region", NULL));
+#else
 	char *cstr = getenv("LANG");
 	if (cstr != NULL)
 		locale = cstr;
@@ -94,7 +103,7 @@ const std::string& get_locale() {
 	
 	if (locale == "zh-Hans") locale = "zh_CN"; //hack to make it work on iOS
 	if (locale == "zh-Hant") locale = "zh_TW";
-	
+#endif
 	//strip the charset part of the country and language code,
 	//e.g. "pt_BR.UTF8" --> "pt_BR"
 	size_t found = locale.find(".");

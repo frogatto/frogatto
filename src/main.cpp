@@ -23,6 +23,10 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/scoped_ptr.hpp>
 
+#ifdef TARGET_OS_HARMATTAN
+#include <glib-object.h>
+#endif
+
 #include "asserts.hpp"
 #include "controls.hpp"
 #include "custom_object.hpp"
@@ -161,6 +165,9 @@ extern "C" int main(int argc, char** argv)
 		return -1;
 	}
 
+#ifdef TARGET_OS_HARMATTAN
+	g_type_init();
+#endif
 	i18n::init ();
 
 //	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 1);
