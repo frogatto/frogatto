@@ -1120,37 +1120,6 @@ wml::node_ptr level::write() const
 			opaque.insert(std::pair<int,int>(t.x,t.y));
 		}
 
-
-		int min_x = -1, max_x = -1, min_y = -1, max_y = -1;
-		for(std::set<OpaqueLoc>::const_iterator loc_itor = opaque.begin();
-		    loc_itor != opaque.end(); ++loc_itor) {
-			const int x = loc_itor->first;
-			const int y = loc_itor->second;
-			if(min_x == -1 || x < min_x) {
-				min_x = x;
-			}
-
-			if(min_y == -1 || y < min_y) {
-				min_y = y;
-			}
-
-			if(max_x == -1 || x > max_x) {
-				max_x = x;
-			}
-
-			if(max_y == -1 || y > max_y) {
-				max_y = y;
-			}
-		}
-
-		std::cerr << "OPAQUE MAP FOR " << id_ << ":\n";
-		for(int y = 0; y < max_x; y += TileSize) {
-			for(int x = 0; x < max_x; x += TileSize) {
-				std::cerr << opaque.count(OpaqueLoc(x, y));
-			}
-			std::cerr << "\n";
-		}
-
 		std::cerr << "BUILDING RECTS...\n";
 
 		std::vector<rect> opaque_rects;
@@ -1172,24 +1141,31 @@ wml::node_ptr level::write() const
 
 				std::set<OpaqueLoc>::const_iterator find_itor = opaque.end();
 
+				int prev_rows = 0;
+
 				//try to build a top row of a rectangle. After adding each
 				//cell, we will try to expand the rectangle downwards, as
 				//far as it will go.
 				while((find_itor = opaque.find(OpaqueLoc(v.back().first + TileSize, v.back().second))) != opaque.end()) {
 					v.push_back(OpaqueLoc(v.back().first + TileSize, v.back().second));
 
-					int rows = 0;
+					int rows = 1;
 
 					bool found_non_opaque = false;
 					while(found_non_opaque == false) {
-						++rows;
-						for(int n = 0; n != v.size(); ++n) {
+						for(int n = rows < prev_rows ? v.size()-1 : 0; n != v.size(); ++n) {
 							if(!opaque.count(OpaqueLoc(v[n].first, v[n].second + rows*TileSize))) {
 								found_non_opaque = true;
 								break;
 							}
 						}
+
+						if(found_non_opaque == false) {
+							++rows;
+						}
 					}
+
+					prev_rows = rows;
 
 					rect r(v.front().first, v.front().second, v.size()*TileSize, rows*TileSize);
 					if(r.w()*r.h() > largest_rect.w()*largest_rect.h()) {
