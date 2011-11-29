@@ -84,7 +84,7 @@ public:
 		}
 	}
 
-	bool is_alpha() const { return a != 255; }
+	bool is_alpha() const { return a == 0x00; }
 private:
 	variant get_value(const std::string& key) const {
 		switch(*key.c_str()) {
