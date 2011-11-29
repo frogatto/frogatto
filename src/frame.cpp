@@ -438,7 +438,7 @@ bool frame::is_alpha(int x, int y, int time, bool face_right) const
 	
 	const int index = y*img_rect_.w()*nframes_ + x;
 	ASSERT_INDEX_INTO_VECTOR(index, alpha_);
-	return alpha_[index];
+	return alpha_[index] == 255;
 }
 
 void frame::draw_into_blit_queue(graphics::blit_queue& blit, int x, int y, bool face_right, bool upside_down, int time) const
