@@ -1398,7 +1398,7 @@ void custom_object::process(level& lvl)
 	set_driver_position();
 
 	if(blur_) {
-		blur_->next_frame(start_x, start_y, x(), y(), frame_, time_in_frame_, face_right(), upside_down(), rotate_.value());
+		blur_->next_frame(start_x, start_y, x(), y(), frame_, time_in_frame_, face_right(), upside_down(), rotate_.as_float());
 		if(blur_->destroyed()) {
 			blur_.reset();
 		}
