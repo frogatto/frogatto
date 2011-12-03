@@ -923,7 +923,11 @@ void custom_object::process(level& lvl)
 		}
 
 		if(position_schedule_->rotation.empty() == false) {
-			rotate_ = decimal(position_schedule_->rotation[pos%position_schedule_->rotation.size()]);
+			rotate_ = position_schedule_->rotation[pos%position_schedule_->rotation.size()];
+			while(rotate_ >= 360) {
+				rotate_ -= 360;
+			}
+
 			if(next_fraction) {
 				rotate_ = decimal((rotate_*this_fraction + next_fraction*position_schedule_->rotation[(pos+1)%position_schedule_->rotation.size()])/position_schedule_->speed);
 			}
