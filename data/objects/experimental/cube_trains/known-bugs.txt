@@ -7,9 +7,11 @@
 	║                                                                               ║
 	║ Problematic:                                                                  ║
 	║  ▶ When deleting a support, the track doesn't fall down.                      ║
+	║  ▶ Scroll pane buttons don't deselect when mouse outside draw area.           ║
 	║  ▶                                                                            ║
 	║                                                                               ║
 	║ Minor:                                                                        ║
+	║  ▶ Tween scroll input buttons' movement.                                      ║
 	║  ▶                                                                            ║
 	║                                                          ▷ fixed  ▶ not fixed ║
 	╚═══════════════════════════════════════════════════════════════════════════════╝
