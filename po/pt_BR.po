@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Marcos Avila Isidoro <marcavis@yahoo.com.br>, 2011.
 # Philipp Zabel <pzabel@gmx.de>, 2011.
@@ -10,364 +10,388 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-11-19 01:28-0200\n"
-"PO-Revision-Date: 2011-11-19 04:02-0300\n"
-"Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
+"POT-Creation-Date: 2011-12-04 14:31-0200\n"
+"PO-Revision-Date: 2011-12-04 16:43+0000\n"
+"Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Portuguese (Brazilian) (http://www.transifex.net/projects/p/Frogatto/team/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
-"X-Poedit-Basepath: ..\n"
 
-#: CHANGELOG:1
+#: CHANGELOG:1 iOS_CHANGELOG:1
 msgid "Version 1.2:"
 msgstr ""
 
-#: CHANGELOG:2
-msgid "Complete redo of iOS controls, switching to a 2-button dpad from a 4-button.  Eliminates all problems with mispressed up or down keys interrupting other actions."
+#: CHANGELOG:2 iOS_CHANGELOG:2
+msgid ""
+"Complete redo of attack logic; frogatto now is free to walk around whilst he"
+" attacks, and in general is much more responsive."
 msgstr ""
 
-#: CHANGELOG:3
-msgid "Complete redo of attack logic; frogatto now is free to walk around whilst he attacks, and in general is much more responsive."
-msgstr ""
-
-#: CHANGELOG:4
+#: CHANGELOG:3 iOS_CHANGELOG:3
 msgid "Frogatto's tongue-grabbing is MUCH more forgiving"
 msgstr ""
 
-#: CHANGELOG:5
-msgid "Complete rewrite of damage handling; much more consistent now, and categorically eliminates some bugs where damage wouldn't get dealt."
+#: CHANGELOG:4 iOS_CHANGELOG:4
+msgid ""
+"Complete rewrite of damage handling; much more consistent now, and "
+"categorically eliminates some bugs where damage wouldn't get dealt."
 msgstr ""
 
-#: CHANGELOG:6
+#: CHANGELOG:5 iOS_CHANGELOG:5
 msgid "Reworked some tilesets to eliminate tiling errors."
 msgstr ""
 
-#: CHANGELOG:7
+#: CHANGELOG:6 iOS_CHANGELOG:6
 msgid "Further enhancements to dungeon wall graphics (added edges)."
 msgstr ""
 
-#: CHANGELOG:8
+#: CHANGELOG:7 iOS_CHANGELOG:7
 msgid "New, more readable dialogue font."
 msgstr ""
 
-#: CHANGELOG:9
+#: CHANGELOG:8 iOS_CHANGELOG:8
 msgid "Lots of small graphical tweaks."
 msgstr ""
 
-#: CHANGELOG:10
+#: CHANGELOG:9 iOS_CHANGELOG:9
 msgid "Maps are now strewn with spittable props within easy reach."
 msgstr ""
 
-#: CHANGELOG:11
+#: CHANGELOG:10 iOS_CHANGELOG:10
 msgid "Rewrote most of the dialogue."
 msgstr ""
 
-#: CHANGELOG:12
-msgid "Collectible items like coins can be collected by being touched by the tongue, besides just frogatto's body."
+#: CHANGELOG:11 iOS_CHANGELOG:11
+msgid ""
+"Collectible items like coins can be collected by being touched by the "
+"tongue, besides just frogatto's body."
 msgstr ""
 
-#: CHANGELOG:13
+#: CHANGELOG:12 iOS_CHANGELOG:12
 msgid "Redrew the world map."
 msgstr ""
 
-#: CHANGELOG:14
-msgid "Added a few new monsters, like the red hornbugs, and completely rewrote how bats behave."
+#: CHANGELOG:13 iOS_CHANGELOG:13
+msgid ""
+"Added a few new monsters, like the red hornbugs, and completely rewrote how "
+"bats behave."
 msgstr ""
 
-#: CHANGELOG:16
-#: iOS_CHANGELOG:1
+#: CHANGELOG:14 iOS_CHANGELOG:14
+msgid ""
+"Fixed a bug that caused a black line in the seaside background during "
+"dialogues."
+msgstr ""
+
+#: CHANGELOG:15 iOS_CHANGELOG:15
+msgid ""
+"Fixed a bug that caused some tiles to incorrectly be flagged as opaque."
+msgstr ""
+
+#: CHANGELOG:17 iOS_CHANGELOG:17
 msgid "Version 1.1.1:"
 msgstr "Versão 1.1.1:"
 
-#: CHANGELOG:17
-#: iOS_CHANGELOG:2
+#: CHANGELOG:18 iOS_CHANGELOG:18
 msgid "Fixed some crashing bugs."
 msgstr "Corrigidos alguns erros de conexão"
 
-#: CHANGELOG:18
+#: CHANGELOG:19
 msgid "Fixed The Long Haul (compiled mode)"
 msgstr ""
 
-#: CHANGELOG:19
+#: CHANGELOG:20
 msgid "Fixed instructions on titlescreen (iOS)"
 msgstr ""
 
-#: CHANGELOG:20
-#: iOS_CHANGELOG:5
+#: CHANGELOG:21 iOS_CHANGELOG:21
 msgid "New translation: Italian"
 msgstr ""
 
-#: CHANGELOG:21
+#: CHANGELOG:22
 msgid "Added automatic language selection for Windows"
 msgstr ""
 
-#: CHANGELOG:23
-msgid "Version 1.1:"
-msgstr ""
-
-#: CHANGELOG:24
-msgid "Added arcade mode."
+#: CHANGELOG:23 iOS_CHANGELOG:22
+msgid ""
+"Complete redo of iOS controls, switching to a 2-button dpad from a 4-button."
+"  Eliminates all problems with mispressed up or down keys interrupting other"
+" actions."
 msgstr ""
 
 #: CHANGELOG:25
-msgid "Redid graphics for forest trees."
+msgid "Version 1.1:"
 msgstr ""
 
 #: CHANGELOG:26
-msgid "Redid graphics for forest background"
+msgid "Added arcade mode."
 msgstr ""
 
 #: CHANGELOG:27
-msgid "Redid graphics for dungeon wall tiles"
+msgid "Redid graphics for forest trees."
 msgstr ""
 
 #: CHANGELOG:28
-msgid "Redid graphics for basement wall tiles"
+msgid "Redid graphics for forest background"
 msgstr ""
 
 #: CHANGELOG:29
-msgid "Added a bunch of interior props"
+msgid "Redid graphics for dungeon wall tiles"
 msgstr ""
 
 #: CHANGELOG:30
-msgid "Reworked \"darkness\" for improved appearance"
+msgid "Redid graphics for basement wall tiles"
 msgstr ""
 
 #: CHANGELOG:31
-msgid "Added new palettes to forest and seaside areas."
+msgid "Added a bunch of interior props"
 msgstr ""
 
 #: CHANGELOG:32
-msgid "Added some unique enemies to the forest."
+msgid "Reworked \"darkness\" for improved appearance"
 msgstr ""
 
 #: CHANGELOG:33
-msgid "Refactored damage and monster type systems to make behavior more consistent and eliminate some rare buggy behavior."
+msgid "Added new palettes to forest and seaside areas."
 msgstr ""
 
 #: CHANGELOG:34
-msgid "Added translation support, with 4 complete translations: French, Brazilian Portuguese, Chinese (Simplified), and Japanese."
+msgid "Added some unique enemies to the forest."
+msgstr ""
+
+#: CHANGELOG:35
+msgid ""
+"Refactored damage and monster type systems to make behavior more consistent "
+"and eliminate some rare buggy behavior."
 msgstr ""
 
 #: CHANGELOG:36
-msgid "Version 1.0.3:"
-msgstr ""
-
-#: CHANGELOG:37
-msgid "Fixed crash when picking up max heart pieces."
+msgid ""
+"Added translation support, with 4 complete translations: French, Brazilian "
+"Portuguese, Chinese (Simplified), and Japanese."
 msgstr ""
 
 #: CHANGELOG:38
-msgid "Other small bug fixes."
+msgid "Version 1.0.3:"
+msgstr ""
+
+#: CHANGELOG:39
+msgid "Fixed crash when picking up max heart pieces."
 msgstr ""
 
 #: CHANGELOG:40
-msgid "Version 1.0.2:"
-msgstr ""
-
-#: CHANGELOG:41
-msgid "Added support for \"darkness\" in levels."
+msgid "Other small bug fixes."
 msgstr ""
 
 #: CHANGELOG:42
-msgid "Added support for WVGA."
+msgid "Version 1.0.2:"
 msgstr ""
 
 #: CHANGELOG:43
-msgid "Made player status not show on the titlescreen or world map."
+msgid "Added support for \"darkness\" in levels."
 msgstr ""
 
 #: CHANGELOG:44
-msgid "Made golden ants less ambiguous."
+msgid "Added support for WVGA."
 msgstr ""
 
 #: CHANGELOG:45
-msgid "Fixed bug making certain music always play at full volume (iPhone)."
+msgid "Made player status not show on the titlescreen or world map."
 msgstr ""
 
 #: CHANGELOG:46
-msgid "Added option to reverse positions of A and B buttons (iPhone)."
+msgid "Made golden ants less ambiguous."
 msgstr ""
 
 #: CHANGELOG:47
-msgid "Added support for repeating levels (for arcade modes)."
+msgid "Fixed bug making certain music always play at full volume (iPhone)."
 msgstr ""
 
 #: CHANGELOG:48
-msgid "Pressing jump while in the air pressing against a wall now makes you cling to the wall."
+msgid "Added option to reverse positions of A and B buttons (iPhone)."
 msgstr ""
 
 #: CHANGELOG:49
-msgid "Made it so you can skip dialogs sequences."
+msgid "Added support for repeating levels (for arcade modes)."
 msgstr ""
 
 #: CHANGELOG:50
-msgid "Fixed lots of z-order issues."
+msgid ""
+"Pressing jump while in the air pressing against a wall now makes you cling "
+"to the wall."
 msgstr ""
 
 #: CHANGELOG:51
-msgid "Fixed bug causing ambient sounds to not work."
+msgid "Made it so you can skip dialogs sequences."
 msgstr ""
 
 #: CHANGELOG:52
-msgid "Improved forest background, and made it go upwards infinitely."
+msgid "Fixed lots of z-order issues."
 msgstr ""
 
 #: CHANGELOG:53
-msgid "Made hearts heal a full heart, rather than just half."
+msgid "Fixed bug causing ambient sounds to not work."
 msgstr ""
 
 #: CHANGELOG:54
-msgid "Changed tilesets to make water look better."
+msgid "Improved forest background, and made it go upwards infinitely."
 msgstr ""
 
 #: CHANGELOG:55
-msgid "Many small bug fixes."
+msgid "Made hearts heal a full heart, rather than just half."
+msgstr ""
+
+#: CHANGELOG:56
+msgid "Changed tilesets to make water look better."
 msgstr ""
 
 #: CHANGELOG:57
-msgid "Version 1.0.1 (iPhone only):"
-msgstr ""
-
-#: CHANGELOG:58
-msgid "Significantly improved controls, both functionally and graphically (iPhone)."
+msgid "Many small bug fixes."
 msgstr ""
 
 #: CHANGELOG:59
-msgid "Fixed auto-saving on iOS4 where multitasking is supported (iPhone)."
+msgid "Version 1.0.1 (iPhone only):"
 msgstr ""
 
 #: CHANGELOG:60
-msgid "Fixed bug where a dialog could repeat forever."
+msgid ""
+"Significantly improved controls, both functionally and graphically (iPhone)."
 msgstr ""
 
 #: CHANGELOG:61
-msgid "Fixed crash in world map when you hold down while entering it."
+msgid "Fixed auto-saving on iOS4 where multitasking is supported (iPhone)."
 msgstr ""
 
 #: CHANGELOG:62
-msgid "Fixed fullscreen mode (Mac/Windows)."
+msgid "Fixed bug where a dialog could repeat forever."
 msgstr ""
 
 #: CHANGELOG:63
-msgid "Fixed controlpad issues for computers."
+msgid "Fixed crash in world map when you hold down while entering it."
 msgstr ""
 
 #: CHANGELOG:64
-msgid "Added music and sound volume controls to pause screen."
+msgid "Fixed fullscreen mode (Mac/Windows)."
 msgstr ""
 
 #: CHANGELOG:65
-msgid "Added customizable controls."
+msgid "Fixed controlpad issues for computers."
 msgstr ""
 
 #: CHANGELOG:66
-msgid "Added half-hearts."
+msgid "Added music and sound volume controls to pause screen."
 msgstr ""
 
 #: CHANGELOG:67
-msgid "Added scons script for compiling."
+msgid "Added customizable controls."
 msgstr ""
 
 #: CHANGELOG:68
-msgid "Minor level changes."
+msgid "Added half-hearts."
 msgstr ""
 
 #: CHANGELOG:69
+msgid "Added scons script for compiling."
+msgstr ""
+
+#: CHANGELOG:70
+msgid "Minor level changes."
+msgstr ""
+
+#: CHANGELOG:71
 msgid "Updated music."
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:1
-#: iOS_APP_STORE_METADATA:1
+#: MAC_APP_STORE_METADATA:1 iOS_APP_STORE_METADATA:1
 msgid "NOW WITH BETTER CONTROLS:"
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:3
-#: iOS_APP_STORE_METADATA:3
-msgid "Frogatto is a classic-style 2d adventure game, starring a certain quixotic frog.  It's made by the same team that brought you Battle for Wesnoth, and features the same handcrafted love of high-end pixel art.  Frogatto is a side-on \"platformer\" or \"jump and run\" game, where you lead our titular character on a humdrum errand that turns into a daring adventure."
+#: MAC_APP_STORE_METADATA:3 iOS_APP_STORE_METADATA:3
+msgid ""
+"Frogatto is a classic-style 2d adventure game, starring a certain quixotic "
+"frog.  It's made by the same team that brought you Battle for Wesnoth, and "
+"features the same handcrafted love of high-end pixel art.  Frogatto is a "
+"side-on \"platformer\" or \"jump and run\" game, where you lead our titular "
+"character on a humdrum errand that turns into a daring adventure."
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:5
-#: iOS_APP_STORE_METADATA:5
-msgid "Frogatto's key mechanic is an unusual twist; like any frog, he jumps, swims, and snags bugs with his tongue, but unlike any frog before him, can spit those bugs out with deadly force.  Not merely an action game, frogatto is a full, classic adventure game, with characters to talk to, things to buy, puzzles to solve, and a wide, complex world to explore."
+#: MAC_APP_STORE_METADATA:5 iOS_APP_STORE_METADATA:5
+msgid ""
+"Frogatto's key mechanic is an unusual twist; like any frog, he jumps, swims,"
+" and snags bugs with his tongue, but unlike any frog before him, can spit "
+"those bugs out with deadly force.  Not merely an action game, frogatto is a "
+"full, classic adventure game, with characters to talk to, things to buy, "
+"puzzles to solve, and a wide, complex world to explore."
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:7
-#: iOS_APP_STORE_METADATA:7
+#: MAC_APP_STORE_METADATA:7 iOS_APP_STORE_METADATA:7
 msgid "Features:"
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:8
-#: iOS_APP_STORE_METADATA:8
+#: MAC_APP_STORE_METADATA:8 iOS_APP_STORE_METADATA:8
 msgid "- grab enemies with your tongue and spit them to deal damage"
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:9
-#: iOS_APP_STORE_METADATA:9
+#: MAC_APP_STORE_METADATA:9 iOS_APP_STORE_METADATA:9
 msgid "- buy powerups to enhance and unlock new abilities"
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:10
-#: iOS_APP_STORE_METADATA:10
-msgid "- arcade mode, giving instant access to action-only gameplay on randomized levels"
+#: MAC_APP_STORE_METADATA:10 iOS_APP_STORE_METADATA:10
+msgid ""
+"- arcade mode, giving instant access to action-only gameplay on randomized "
+"levels"
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:11
-#: iOS_APP_STORE_METADATA:11
-msgid "- forgiving savegame/respawn system so you don't have to be afraid of losing progress"
+#: MAC_APP_STORE_METADATA:11 iOS_APP_STORE_METADATA:11
+msgid ""
+"- forgiving savegame/respawn system so you don't have to be afraid of losing"
+" progress"
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:12
-#: iOS_APP_STORE_METADATA:12
+#: MAC_APP_STORE_METADATA:12 iOS_APP_STORE_METADATA:12
 msgid "- playful dialogue writing that tries not to insult your intelligence"
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:13
-#: iOS_APP_STORE_METADATA:13
+#: MAC_APP_STORE_METADATA:13 iOS_APP_STORE_METADATA:13
 msgid "- massive soundtrack with over an hour of original music"
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:14
-#: iOS_APP_STORE_METADATA:14
-msgid "- sprawling, complex world with over 50 levels to explore, and tons of secrets to find"
+#: MAC_APP_STORE_METADATA:14 iOS_APP_STORE_METADATA:14
+msgid ""
+"- sprawling, complex world with over 50 levels to explore, and tons of "
+"secrets to find"
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:16
-#: iOS_APP_STORE_METADATA:17
+#: MAC_APP_STORE_METADATA:16 iOS_APP_STORE_METADATA:17
 msgid "To find out more about the game please visit http://www.frogatto.com/"
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:18
-#: iOS_APP_STORE_METADATA:19
+#: MAC_APP_STORE_METADATA:18 iOS_APP_STORE_METADATA:19
 msgid "Reviews:"
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:19
-#: iOS_APP_STORE_METADATA:20
+#: MAC_APP_STORE_METADATA:19 iOS_APP_STORE_METADATA:20
 msgid "- [3/4 SlideToPlay.com] \"a fun and surprisingly deep platformer\""
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:20
-#: iOS_APP_STORE_METADATA:21
+#: MAC_APP_STORE_METADATA:20 iOS_APP_STORE_METADATA:21
 msgid "- [4/5 AppSpy.com] \"boy-howdy is this an amazing visual feast!\""
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:21
-#: iOS_APP_STORE_METADATA:22
+#: MAC_APP_STORE_METADATA:21 iOS_APP_STORE_METADATA:22
 msgid "- [n/a TouchArcade.com] \"totally worth checking out.\""
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:23
-#: iOS_APP_STORE_METADATA:24
+#: MAC_APP_STORE_METADATA:23 iOS_APP_STORE_METADATA:24
 msgid "keywords:"
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:24
-#: iOS_APP_STORE_METADATA:25
-msgid "platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
+#: MAC_APP_STORE_METADATA:24 iOS_APP_STORE_METADATA:25
+msgid ""
+"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
 msgstr ""
 
 #: data/achievements.cfg:4
@@ -490,8 +514,7 @@ msgstr "O Importante é Chegar Lá!"
 msgid "Start a level with no health left."
 msgstr "Começar uma fase sem nada de vida."
 
-#: data/level/after_summer.cfg:12
-#: data/level/platform-peril.cfg:12
+#: data/level/after_summer.cfg:12 data/level/platform-peril.cfg:12
 msgid "After Summer"
 msgstr ""
 
@@ -507,8 +530,7 @@ msgid ""
 "Now I SHALL KILL YOU!"
 msgstr ""
 
-#: data/level/after_summer.cfg:2350
-#: data/level/platform-peril.cfg:1641
+#: data/level/after_summer.cfg:2350 data/level/platform-peril.cfg:1641
 msgid "Move on!"
 msgstr ""
 
@@ -524,13 +546,11 @@ msgstr "Armadilha!"
 msgid "Victory!"
 msgstr "Vitória!"
 
-#: data/level/arcade-blocks.cfg:11
-#: data/level/titlescreen-arcade.cfg:202
+#: data/level/arcade-blocks.cfg:11 data/level/titlescreen-arcade.cfg:202
 msgid "Blocks Run"
 msgstr "Corrida dos Blocos"
 
-#: data/level/arcade-blocks.cfg:216
-#: data/level/arcade-blocks.cfg:218
+#: data/level/arcade-blocks.cfg:216 data/level/arcade-blocks.cfg:218
 msgid "You got {level.player.score} points in the Blocks Run!"
 msgstr "Você conseguiu {level.player.score} pontos na Corrida dos Blocos!"
 
@@ -556,11 +576,14 @@ msgstr "Descendo a Toca Sem Coelho"
 #: data/level/arcade-down-the-rabbit-hall.cfg:863
 #: data/level/arcade-down-the-rabbit-hall.cfg:866
 msgid "You got {level.player.vars.score} points going down the rabbit hall!"
-msgstr "Você conseguiu {level.player.vars.score} pontos Descendo A Toca Sem Coelho!"
+msgstr ""
+"Você conseguiu {level.player.vars.score} pontos Descendo A Toca Sem Coelho!"
 
 #: data/level/arcade-down-the-rabbit-hall.cfg:867
-msgid "The high score is {registry.arcade_down_the_rabbit_hall_high_score} points."
-msgstr "O recorde é de {registry.arcade_down_the_rabbit_hall_high_score} pontos."
+msgid ""
+"The high score is {registry.arcade_down_the_rabbit_hall_high_score} points."
+msgstr ""
+"O recorde é de {registry.arcade_down_the_rabbit_hall_high_score} pontos."
 
 #: data/level/arcade-maintenance-shaft.cfg:13
 #: data/level/titlescreen-arcade.cfg:181
@@ -573,13 +596,15 @@ msgid "You got {level.player.vars.score} points in the maintenance shaft!"
 msgstr "Você conseguiu {level.player.score} pontos no Poço de Manutenção!"
 
 #: data/level/arcade-maintenance-shaft.cfg:2583
-msgid "The high score is {registry.arcade_maintenance_shaft_high_score} points."
+msgid ""
+"The high score is {registry.arcade_maintenance_shaft_high_score} points."
 msgstr "O recorde é de {registry.arcade_maintenance_shaft_high_score} pontos."
 
 #: data/level/arcade-nutty-factory.cfg:550
 #: data/level/arcade-nutty-factory.cfg:553
 msgid "You got {level.player.vars.score} points in the Nutty Factory!"
-msgstr "Você conseguiu {level.player.vars.score} pontos na Corporação Casca de Noz!"
+msgstr ""
+"Você conseguiu {level.player.vars.score} pontos na Corporação Casca de Noz!"
 
 #: data/level/arcade-nutty-factory.cfg:554
 msgid "The high score is {registry.arcade_nutty_factory_high_score} points."
@@ -599,13 +624,11 @@ msgstr "Você conseguiu {level.player.score} pontos em O Longo Caminho!"
 msgid "The high score is {registry.arcade_the_long_haul_high_score} points."
 msgstr "O recorde é de {registry.arcade_the_long_haul_high_score} pontos."
 
-#: data/level/arcade-upper-deck.cfg:13
-#: data/level/titlescreen-arcade.cfg:180
+#: data/level/arcade-upper-deck.cfg:13 data/level/titlescreen-arcade.cfg:180
 msgid "Upper Deck"
 msgstr "Escadaria Infinita"
 
-#: data/level/arcade-upper-deck.cfg:2950
-#: data/level/arcade-upper-deck.cfg:2953
+#: data/level/arcade-upper-deck.cfg:2950 data/level/arcade-upper-deck.cfg:2953
 msgid "You got {level.player.vars.score} points on the Upper Deck!"
 msgstr "Você conseguiu {level.player.score} pontos na Escadaria Infinita!"
 
@@ -639,8 +662,7 @@ msgstr "Vila do Outono"
 msgid "Bombing Fools"
 msgstr "Bombas à Beça"
 
-#: data/level/bon-bosque.cfg:15
-#: data/objects/playable/map-selector.cfg:20
+#: data/level/bon-bosque.cfg:15 data/objects/playable/map-selector.cfg:20
 msgid "Bon Bosque"
 msgstr "Bom Bosque"
 
@@ -755,16 +777,15 @@ msgstr ""
 msgid "Caverns of Holes"
 msgstr "Gruta Furada"
 
-#: data/level/chopple-shop-interior.cfg:10
-#: data/level/chopple-shop.cfg:16
+#: data/level/chopple-shop-interior.cfg:10 data/level/chopple-shop.cfg:16
 msgid "Chopple's General Store"
 msgstr "Empório do Chopple"
 
-#: data/level/chopple-shop-interior.cfg:547
+#: data/level/chopple-shop-interior.cfg:575
 msgid "Oh hey, I hadn't seen you here before."
 msgstr "Oh, opa, não tinha te visto aqui antes."
 
-#: data/level/chopple-shop-interior.cfg:548
+#: data/level/chopple-shop-interior.cfg:576
 msgid ""
 "Ah, yeah, I help Chopple at taking care of the store.\n"
 "He had asked me to go to the village\n"
@@ -776,7 +797,7 @@ msgstr ""
 "o que estava acontecendo, o motivo da barulheira\n"
 "que estava vindo do outro lado da caverna."
 
-#: data/level/chopple-shop-interior.cfg:550
+#: data/level/chopple-shop-interior.cfg:578
 msgid ""
 "Then I suppose that Milgram's guards saw you\n"
 "and locked you up?"
@@ -784,7 +805,7 @@ msgstr ""
 "Então eu imagino que os guardas do Milgram\n"
 "te viram e botaram numa jaula?"
 
-#: data/level/chopple-shop-interior.cfg:551
+#: data/level/chopple-shop-interior.cfg:579
 msgid ""
 "Yeah! And to think that I thought\n"
 "that the day was going to be boring!"
@@ -880,7 +901,7 @@ msgstr ""
 "do Milgram pra conquistar a vila."
 
 #: data/level/crevice-bridge.cfg:921
-#: data/level/crevice-village-house-elder.cfg:1614
+#: data/level/crevice-village-house-elder.cfg:1577
 msgid "Wow."
 msgstr "Uau."
 
@@ -1140,8 +1161,7 @@ msgstr "Ah, aí está você!"
 
 #: data/level/crevice-village-cave.cfg:14
 #: data/level/crevice-village-central.cfg:15
-#: data/level/crevice-village-heights.cfg:16
-#: data/level/crevice-village.cfg:15
+#: data/level/crevice-village-heights.cfg:16 data/level/crevice-village.cfg:15
 #: data/objects/playable/map-selector.cfg:18
 msgid "Crevice Village"
 msgstr "Vila da Fenda"
@@ -1327,7 +1347,7 @@ msgstr ""
 "pros prisioneiros..."
 
 #: data/level/crevice-village-central.cfg:1449
-#: data/level/crevice-village-house-2.cfg:3211
+#: data/level/crevice-village-house-2.cfg:2796
 #: data/level/crevice-village-house-4.cfg:2607
 #: data/level/crevice-village-house-4.cfg:2635
 #: data/level/killer-bunnies.cfg:3521
@@ -1798,30 +1818,30 @@ msgstr ""
 msgid "The Elevator House"
 msgstr "Casa dos Elevadores"
 
-#: data/level/crevice-village-house-1.cfg:2505
+#: data/level/crevice-village-house-1.cfg:1970
 msgid "Who are you?"
 msgstr "Quem é você?"
 
-#: data/level/crevice-village-house-1.cfg:2507
+#: data/level/crevice-village-house-1.cfg:1972
 msgid "Whomever the occasion calls for."
 msgstr "Sou quem preciso ser."
 
-#: data/level/crevice-village-house-1.cfg:2508
-#: data/level/crevice-village-house-1.cfg:2518
-#: data/level/crevice-village-house-1.cfg:2526
-#: data/level/crevice-village-house-1.cfg:2562
-#: data/level/crevice-village-house-elder.cfg:1480
-#: data/level/crevice-village-house-elder.cfg:1491
-#: data/level/crevice-village-house-elder.cfg:1593
-#: data/level/crevice-village-house-elder.cfg:1618
+#: data/level/crevice-village-house-1.cfg:1973
+#: data/level/crevice-village-house-1.cfg:1983
+#: data/level/crevice-village-house-1.cfg:1991
+#: data/level/crevice-village-house-1.cfg:2020
+#: data/level/crevice-village-house-elder.cfg:1443
+#: data/level/crevice-village-house-elder.cfg:1454
+#: data/level/crevice-village-house-elder.cfg:1556
+#: data/level/crevice-village-house-elder.cfg:1581
 msgid "..."
 msgstr "..."
 
-#: data/level/crevice-village-house-1.cfg:2509
+#: data/level/crevice-village-house-1.cfg:1974
 msgid "That's nutty."
 msgstr "Isso é uma pegadinha?"
 
-#: data/level/crevice-village-house-1.cfg:2511
+#: data/level/crevice-village-house-1.cfg:1976
 msgid ""
 "Yes, well, at this particular juncture,\n"
 "who I am isn't very important."
@@ -1829,7 +1849,7 @@ msgstr ""
 "Bom, não, mas quem sou eu\n"
 "não importa muito agora."
 
-#: data/level/crevice-village-house-1.cfg:2513
+#: data/level/crevice-village-house-1.cfg:1978
 msgid ""
 "What's important is that I'm not in a cage,\n"
 "so I might be able to do something to help."
@@ -1837,11 +1857,11 @@ msgstr ""
 "O que importa é que eu não estou numa jaula,\n"
 "então eu talvez seja capaz de ajudar."
 
-#: data/level/crevice-village-house-1.cfg:2515
+#: data/level/crevice-village-house-1.cfg:1980
 msgid "Got any advice?"
 msgstr "Tem alguma dica?"
 
-#: data/level/crevice-village-house-1.cfg:2516
+#: data/level/crevice-village-house-1.cfg:1981
 msgid ""
 "Yeah, that key right next to you -\n"
 "I think that unlocks a house that\n"
@@ -1852,11 +1872,11 @@ msgstr ""
 "e AQUELA casa tem a chave\n"
 "pra abrir o portão da vila."
 
-#: data/level/crevice-village-house-1.cfg:2517
+#: data/level/crevice-village-house-1.cfg:1982
 msgid "Maybe."
 msgstr "Quem sabe."
 
-#: data/level/crevice-village-house-1.cfg:2519
+#: data/level/crevice-village-house-1.cfg:1984
 msgid ""
 "OH!  One other thing..\n"
 "the key to the town gate is a SILVER key."
@@ -1864,23 +1884,23 @@ msgstr ""
 "Ah! Mais uma coisa...\n"
 "a chave do portão da vila é PRATEADA."
 
-#: data/level/crevice-village-house-1.cfg:2520
+#: data/level/crevice-village-house-1.cfg:1985
 msgid "Keep an eye out for it!"
 msgstr "Fique de olho!"
 
-#: data/level/crevice-village-house-1.cfg:2522
+#: data/level/crevice-village-house-1.cfg:1987
 msgid "Will do.  Catch ya around."
 msgstr "Vou ficar. Te vejo por aí."
 
-#: data/level/crevice-village-house-1.cfg:2523
+#: data/level/crevice-village-house-1.cfg:1988
 msgid "HEY, WAIT!  What about me?!"
 msgstr "EI, ESPERE! E quanto a mim?!"
 
-#: data/level/crevice-village-house-1.cfg:2525
+#: data/level/crevice-village-house-1.cfg:1990
 msgid "Does it look like I have a key for your cage?"
 msgstr "Tenho cara de quem tem a chave da sua jaula?"
 
-#: data/level/crevice-village-house-1.cfg:2527
+#: data/level/crevice-village-house-1.cfg:1992
 msgid ""
 "Ah, I see..\n"
 "carry on then."
@@ -1888,23 +1908,23 @@ msgstr ""
 "Ah, é verdade...\n"
 "até mais, então."
 
-#: data/level/crevice-village-house-1.cfg:2551
+#: data/level/crevice-village-house-1.cfg:2009
 msgid "Thank God it's you!"
 msgstr "Ainda bem que é você!"
 
-#: data/level/crevice-village-house-1.cfg:2553
+#: data/level/crevice-village-house-1.cfg:2011
 msgid "Hey, Hedge, you alright?"
 msgstr "Ei, Hedge, você está bem?"
 
-#: data/level/crevice-village-house-1.cfg:2554
+#: data/level/crevice-village-house-1.cfg:2012
 msgid "Eh, I've been better, but yeah, I'm okay."
 msgstr "Já estive melhor, mas estou bem."
 
-#: data/level/crevice-village-house-1.cfg:2555
+#: data/level/crevice-village-house-1.cfg:2013
 msgid "Besides the obvious cage situation."
 msgstr "Bem preso, mas bem."
 
-#: data/level/crevice-village-house-1.cfg:2557
+#: data/level/crevice-village-house-1.cfg:2015
 msgid ""
 "Yeah.\n"
 "Sad to say, I can't pick locks.\n"
@@ -1914,19 +1934,19 @@ msgstr ""
 "mas não posso abrir o cadeado.\n"
 "Não tenho nada aqui."
 
-#: data/level/crevice-village-house-1.cfg:2558
+#: data/level/crevice-village-house-1.cfg:2016
 msgid "So I'm stuck here, huh?"
 msgstr "Então eu vou ficar preso aqui?"
 
-#: data/level/crevice-village-house-1.cfg:2560
+#: data/level/crevice-village-house-1.cfg:2018
 msgid "Yep."
 msgstr "É."
 
-#: data/level/crevice-village-house-1.cfg:2561
+#: data/level/crevice-village-house-1.cfg:2019
 msgid "Phooey."
 msgstr "Pff."
 
-#: data/level/crevice-village-house-1.cfg:2563
+#: data/level/crevice-village-house-1.cfg:2021
 msgid ""
 "Hmm, you know, I know one thing\n"
 "that might help you.."
@@ -1934,7 +1954,7 @@ msgstr ""
 "Tava pensando aqui, eu sei\n"
 "de uma coisa que pode te ajudar..."
 
-#: data/level/crevice-village-house-1.cfg:2564
+#: data/level/crevice-village-house-1.cfg:2022
 msgid ""
 "There's supposedly\n"
 "a secret room in this house."
@@ -1942,11 +1962,11 @@ msgstr ""
 "Parece que tem uma\n"
 "porta secreta nesta casa."
 
-#: data/level/crevice-village-house-1.cfg:2566
+#: data/level/crevice-village-house-1.cfg:2024
 msgid "Oh really?  Where at?"
 msgstr "Sério? Onde?"
 
-#: data/level/crevice-village-house-1.cfg:2567
+#: data/level/crevice-village-house-1.cfg:2025
 msgid ""
 "If I knew that, it wouldn't\n"
 "be much of a secret, would it?"
@@ -1954,7 +1974,7 @@ msgstr ""
 "Se eu soubesse, não seria\n"
 "realmente secreta, né?"
 
-#: data/level/crevice-village-house-1.cfg:2569
+#: data/level/crevice-village-house-1.cfg:2027
 msgid ""
 "Figures.\n"
 "Well, thanks for the help!"
@@ -1962,11 +1982,11 @@ msgstr ""
 "Verdade...\n"
 "Bom, obrigado pela ajuda!"
 
-#: data/level/crevice-village-house-1.cfg:2570
+#: data/level/crevice-village-house-1.cfg:2028
 msgid "Good luck!"
 msgstr "Boa sorte!"
 
-#: data/level/crevice-village-house-1.cfg:2594
+#: data/level/crevice-village-house-1.cfg:2045
 msgid ""
 "Jeez, I *swear* this house\n"
 "didn't look THIS big from the outside!"
@@ -1974,7 +1994,7 @@ msgstr ""
 "Que coisa, eu jurava que essa casa\n"
 "não parecia tão grande do lado de fora!"
 
-#: data/level/crevice-village-house-1.cfg:2641
+#: data/level/crevice-village-house-1.cfg:2070
 msgid "Uh, oh, I hear ... trouble."
 msgstr "Que tanto barulho de pegadas aqui dentro."
 
@@ -1984,19 +2004,19 @@ msgstr "Que tanto barulho de pegadas aqui dentro."
 msgid "Central House"
 msgstr "Casa Central"
 
-#: data/level/crevice-village-house-2.cfg:3157
+#: data/level/crevice-village-house-2.cfg:2751
 msgid "Something's odd about this fireplace."
 msgstr "Essa lareira me parece estranha..."
 
-#: data/level/crevice-village-house-2.cfg:3471
+#: data/level/crevice-village-house-2.cfg:2958
 msgid "Wow, you guys look exactly alike."
 msgstr "Uou, vocês dois são iguais."
 
-#: data/level/crevice-village-house-2.cfg:3472
+#: data/level/crevice-village-house-2.cfg:2959
 msgid "We're twins."
 msgstr "Nós somos gêmeos."
 
-#: data/level/crevice-village-house-2.cfg:3473
+#: data/level/crevice-village-house-2.cfg:2960
 msgid ""
 "Is there anything\n"
 "you can do to help us?"
@@ -2004,7 +2024,7 @@ msgstr ""
 "Não tem como\n"
 "você nos ajudar aqui?"
 
-#: data/level/crevice-village-house-2.cfg:3475
+#: data/level/crevice-village-house-2.cfg:2962
 msgid ""
 "Not yet.\n"
 "Sorry."
@@ -2012,7 +2032,7 @@ msgstr ""
 "Ainda não.\n"
 "Me desculpe."
 
-#: data/level/crevice-village-house-2.cfg:3506
+#: data/level/crevice-village-house-2.cfg:2986
 msgid ""
 "Hey,\n"
 "I'm trying to help save the town."
@@ -2020,15 +2040,15 @@ msgstr ""
 "Oi,\n"
 "eu estou tentando salvar a vila."
 
-#: data/level/crevice-village-house-2.cfg:3508
+#: data/level/crevice-village-house-2.cfg:2988
 msgid "Can you give me any advice?"
 msgstr "Pode me dar alguma dica?"
 
-#: data/level/crevice-village-house-2.cfg:3509
+#: data/level/crevice-village-house-2.cfg:2989
 msgid "Yeah."
 msgstr "Posso."
 
-#: data/level/crevice-village-house-2.cfg:3510
+#: data/level/crevice-village-house-2.cfg:2990
 msgid ""
 "The elder's house is off to the east,\n"
 "past the town gate."
@@ -2036,14 +2056,13 @@ msgstr ""
 "A casa do ancião da vila é pro leste,\n"
 "depois do portão."
 
-#: data/level/crevice-village-house-2.cfg:3511
+#: data/level/crevice-village-house-2.cfg:2991
 msgid "We saw Milgram's lieutenant go in there."
 msgstr ""
 "Nós vimos o capataz\n"
 "do Milgram entrar lá."
 
-#: data/level/crevice-village-house-2.cfg:3513
-#: data/level/rock-a-fort.cfg:3379
+#: data/level/crevice-village-house-2.cfg:2993 data/level/rock-a-fort.cfg:3379
 msgid "How interesting."
 msgstr "Que interessante."
 
@@ -2059,7 +2078,7 @@ msgstr "A Casa do Perigo"
 msgid "Fan House"
 msgstr "Túnel de Vento"
 
-#: data/level/crevice-village-house-4-backroom.cfg:1266
+#: data/level/crevice-village-house-4-backroom.cfg:1146
 msgid ""
 "Argh! Who in the world would\n"
 "design a house like this?"
@@ -2150,25 +2169,25 @@ msgstr "Boa sorte."
 msgid "The Elder's House"
 msgstr "Casa do Ancião"
 
-#: data/level/crevice-village-house-elder.cfg:1297
+#: data/level/crevice-village-house-elder.cfg:1240
 msgid "How's that business with Milgram going?"
 msgstr ""
 "Então, como anda a situação\n"
 "quanto ao Milgram?"
 
-#: data/level/crevice-village-house-elder.cfg:1299
+#: data/level/crevice-village-house-elder.cfg:1242
 msgid "I'm working on it."
 msgstr "Estou cuidando disso."
 
-#: data/level/crevice-village-house-elder.cfg:1301
+#: data/level/crevice-village-house-elder.cfg:1244
 msgid "That's good to hear!"
 msgstr "Muito bom saber!"
 
-#: data/level/crevice-village-house-elder.cfg:1460
+#: data/level/crevice-village-house-elder.cfg:1423
 msgid "Ugh."
 msgstr "Bah."
 
-#: data/level/crevice-village-house-elder.cfg:1461
+#: data/level/crevice-village-house-elder.cfg:1424
 msgid ""
 "For the last time, we *know* you've\n"
 "got the money somewhere."
@@ -2177,33 +2196,33 @@ msgstr ""
 "que você guardou o dinheiro\n"
 "em algum lugar."
 
-#: data/level/crevice-village-house-elder.cfg:1462
+#: data/level/crevice-village-house-elder.cfg:1425
 msgid "Make this easy on yourself."
 msgstr "Não dificulte a sua situação."
 
-#: data/level/crevice-village-house-elder.cfg:1464
+#: data/level/crevice-village-house-elder.cfg:1427
 msgid "I have no idea what you're talking about."
 msgstr ""
 "Eu não faço ideia do que você está\n"
 "falando..."
 
-#: data/level/crevice-village-house-elder.cfg:1466
+#: data/level/crevice-village-house-elder.cfg:1429
 msgid "*ahem*"
 msgstr "*caham*"
 
-#: data/level/crevice-village-house-elder.cfg:1468
+#: data/level/crevice-village-house-elder.cfg:1431
 msgid "Er..  Right, uh, it's over here.."
 msgstr "Hã... certo, está por aqui..."
 
-#: data/level/crevice-village-house-elder.cfg:1476
+#: data/level/crevice-village-house-elder.cfg:1439
 msgid "Oh, no you don't!"
 msgstr "Opa, nem pense nisso!"
 
-#: data/level/crevice-village-house-elder.cfg:1477
+#: data/level/crevice-village-house-elder.cfg:1440
 msgid "If you don't tell...  uh..."
 msgstr "Se você não disser... hã..."
 
-#: data/level/crevice-village-house-elder.cfg:1477
+#: data/level/crevice-village-house-elder.cfg:1440
 msgid ""
 "You're not going anywhere, buster!\n"
 "Now, listen up,\n"
@@ -2213,37 +2232,37 @@ msgstr ""
 "seu velhaco! Agora, veja bem,\n"
 "minha paciência tem limites!"
 
-#: data/level/crevice-village-house-elder.cfg:1482
+#: data/level/crevice-village-house-elder.cfg:1445
 msgid "Oh, hi, what's going on here?"
 msgstr "Opa, o que está acontecendo aqui?"
 
-#: data/level/crevice-village-house-elder.cfg:1486
+#: data/level/crevice-village-house-elder.cfg:1449
 msgid "Who the hell are you?"
 msgstr "Quem diabos é você?"
 
-#: data/level/crevice-village-house-elder.cfg:1489
+#: data/level/crevice-village-house-elder.cfg:1452
 msgid "Frogatto, at your service."
 msgstr "Frogatto, às ordens!"
 
-#: data/level/crevice-village-house-elder.cfg:1492
+#: data/level/crevice-village-house-elder.cfg:1455
 msgid "I don't have to put up with this."
 msgstr "Eu não tenho que passar por isso."
 
-#: data/level/crevice-village-house-elder.cfg:1494
+#: data/level/crevice-village-house-elder.cfg:1457
 msgid "Excuse me whilst I vent a little frustration."
 msgstr ""
 "Espere por mim enquanto\n"
 "vou resolver um probleminha aqui."
 
-#: data/level/crevice-village-house-elder.cfg:1531
+#: data/level/crevice-village-house-elder.cfg:1494
 msgid "-ouch-"
 msgstr "-ai-"
 
-#: data/level/crevice-village-house-elder.cfg:1532
+#: data/level/crevice-village-house-elder.cfg:1495
 msgid "Okay, I've had enough!  I'm going home."
 msgstr "Já chega! Eu vou pra casa."
 
-#: data/level/crevice-village-house-elder.cfg:1588
+#: data/level/crevice-village-house-elder.cfg:1551
 msgid ""
 "Well!\n"
 "That went better than expected."
@@ -2251,7 +2270,7 @@ msgstr ""
 "Bom,\n"
 "até que não fui tão mal!"
 
-#: data/level/crevice-village-house-elder.cfg:1591
+#: data/level/crevice-village-house-elder.cfg:1554
 msgid ""
 "Say ...\n"
 "What happened to the elder?"
@@ -2259,7 +2278,7 @@ msgstr ""
 "Mas...\n"
 "Cadê o ancião?"
 
-#: data/level/crevice-village-house-elder.cfg:1596
+#: data/level/crevice-village-house-elder.cfg:1559
 msgid ""
 "Whoa...\n"
 "... is that what I think it is?"
@@ -2267,21 +2286,21 @@ msgstr ""
 "Opa... isso aí é\n"
 "o que eu acho que é?"
 
-#: data/level/crevice-village-house-elder.cfg:1610
+#: data/level/crevice-village-house-elder.cfg:1573
 msgid "It is indeed, my boy!"
 msgstr "Exatamente, meu jovem!"
 
-#: data/level/crevice-village-house-elder.cfg:1612
+#: data/level/crevice-village-house-elder.cfg:1575
 msgid "It's my very own safe room."
 msgstr "É a minha própria sala secreta."
 
-#: data/level/crevice-village-house-elder.cfg:1616
+#: data/level/crevice-village-house-elder.cfg:1579
 msgid "Built it for exactly this sort of crisis."
 msgstr ""
 "Eu a construí justamente\n"
 "para esse tipo de problema."
 
-#: data/level/crevice-village-house-elder.cfg:1620
+#: data/level/crevice-village-house-elder.cfg:1583
 msgid ""
 "That's really amazing.\n"
 "Uh..."
@@ -2289,7 +2308,7 @@ msgstr ""
 "Isso é incrível!\n"
 "Bom..."
 
-#: data/level/crevice-village-house-elder.cfg:1622
+#: data/level/crevice-village-house-elder.cfg:1585
 msgid ""
 "I guess I have to ask:\n"
 "Whatever prompted you to build this?"
@@ -2297,7 +2316,7 @@ msgstr ""
 "Mas acho que eu tenho que perguntar:\n"
 "O que foi que fez você construir isso aí?"
 
-#: data/level/crevice-village-house-elder.cfg:1624
+#: data/level/crevice-village-house-elder.cfg:1587
 msgid ""
 "This HAD to be expensive.\n"
 "I mean ... really ... expensive."
@@ -2305,7 +2324,7 @@ msgstr ""
 "Deve ter sido caro.\n"
 "Quero dizer... bem caro."
 
-#: data/level/crevice-village-house-elder.cfg:1626
+#: data/level/crevice-village-house-elder.cfg:1589
 msgid ""
 "Yes.\n"
 "Yes it was."
@@ -2313,15 +2332,15 @@ msgstr ""
 "Ah, sim.\n"
 "Caro mesmo."
 
-#: data/level/crevice-village-house-elder.cfg:1628
+#: data/level/crevice-village-house-elder.cfg:1591
 msgid "...And?"
 msgstr "...E?"
 
-#: data/level/crevice-village-house-elder.cfg:1630
+#: data/level/crevice-village-house-elder.cfg:1593
 msgid "And what?"
 msgstr "E o quê?"
 
-#: data/level/crevice-village-house-elder.cfg:1632
+#: data/level/crevice-village-house-elder.cfg:1595
 msgid ""
 "And ... I don't know...\n"
 "would you care to tell me what's going on?!"
@@ -2329,11 +2348,11 @@ msgstr ""
 "E... não sei,\n"
 "pode me explicar o que está acontecendo?"
 
-#: data/level/crevice-village-house-elder.cfg:1634
+#: data/level/crevice-village-house-elder.cfg:1597
 msgid "This has been a really crazy day!"
 msgstr "Esse dia tem sido completamente maluco!"
 
-#: data/level/crevice-village-house-elder.cfg:1636
+#: data/level/crevice-village-house-elder.cfg:1599
 msgid ""
 "I set out for just a routine errand run,\n"
 "you know?"
@@ -2341,11 +2360,11 @@ msgstr ""
 "Eu saí de casa pra uma volta na vila,\n"
 "como sempre faço, certo?"
 
-#: data/level/crevice-village-house-elder.cfg:1638
+#: data/level/crevice-village-house-elder.cfg:1601
 msgid "Just gonna run by town, check the news."
 msgstr "Ver o pessoal, saber das novidades..."
 
-#: data/level/crevice-village-house-elder.cfg:1640
+#: data/level/crevice-village-house-elder.cfg:1603
 msgid ""
 "Next thing I know, people are shooting at me.\n"
 "I want to know what's happening!"
@@ -2353,7 +2372,7 @@ msgstr ""
 "Então eu chego aqui, tem gente atirando em mim.\n"
 "Eu quero saber o que está havendo!"
 
-#: data/level/crevice-village-house-elder.cfg:1642
+#: data/level/crevice-village-house-elder.cfg:1605
 msgid ""
 "Like - why is this whole army here?\n"
 "Why was their leader in YOUR house?"
@@ -2361,7 +2380,7 @@ msgstr ""
 "Assim... por que tem uma tropa inteira na vila?\n"
 "Por que que o capítão deles estava aqui?"
 
-#: data/level/crevice-village-house-elder.cfg:1644
+#: data/level/crevice-village-house-elder.cfg:1607
 msgid ""
 "What gives?\n"
 "What aren't you telling me?!"
@@ -2369,11 +2388,11 @@ msgstr ""
 "E então?\n"
 "O que que você está escondendo?"
 
-#: data/level/crevice-village-house-elder.cfg:1646
+#: data/level/crevice-village-house-elder.cfg:1609
 msgid "Storytime?"
 msgstr "Quer ouvir uma historinha?"
 
-#: data/level/crevice-village-house-elder.cfg:1648
+#: data/level/crevice-village-house-elder.cfg:1611
 msgid ""
 "Yes.\n"
 "Let's hear it."
@@ -2381,13 +2400,13 @@ msgstr ""
 "Sim.\n"
 "E já."
 
-#: data/level/crevice-village-house-elder.cfg:1650
+#: data/level/crevice-village-house-elder.cfg:1613
 msgid "Hmm... boy, where do I start?"
 msgstr ""
 "Bom, meu jovem...\n"
 "Por onde eu começo...?"
 
-#: data/level/crevice-village-house-elder.cfg:1652
+#: data/level/crevice-village-house-elder.cfg:1615
 msgid ""
 "Why don't we start with:\n"
 "Why was that guy asking about money?"
@@ -2395,7 +2414,7 @@ msgstr ""
 "Comece me explicando o motivo\n"
 "daquele sujeito estar te perguntando sobre dinheiro."
 
-#: data/level/crevice-village-house-elder.cfg:1654
+#: data/level/crevice-village-house-elder.cfg:1617
 msgid ""
 "Well, I am the mayor, after all,\n"
 "and mayors are well endowed."
@@ -2403,7 +2422,7 @@ msgstr ""
 "Ora, veja bem, eu sou o prefeito, afinal de contas,\n"
 "e prefeitos são sempre muito abonados..."
 
-#: data/level/crevice-village-house-elder.cfg:1656
+#: data/level/crevice-village-house-elder.cfg:1619
 msgid ""
 "Baloney.  You're one of at least ten people\n"
 "who claim to run this town."
@@ -2411,11 +2430,11 @@ msgstr ""
 "Bobagem. Além de você, tem mais de meia dúzia\n"
 "que diz que manda nessa vila."
 
-#: data/level/crevice-village-house-elder.cfg:1658
+#: data/level/crevice-village-house-elder.cfg:1621
 msgid "You're a gatekeeper, for crying out loud!"
 msgstr "Francamente, você é só o porteiro da vila!"
 
-#: data/level/crevice-village-house-elder.cfg:1660
+#: data/level/crevice-village-house-elder.cfg:1623
 msgid ""
 "Give it up, already -\n"
 "Crevice Village has never had a mayor."
@@ -2423,7 +2442,7 @@ msgstr ""
 "Desista -\n"
 "a Vila da Fenda nunca teve um prefeito."
 
-#: data/level/crevice-village-house-elder.cfg:1662
+#: data/level/crevice-village-house-elder.cfg:1625
 msgid ""
 "In fact, clowns like you are the reason\n"
 "we *can't* agree on a mayor,\n"
@@ -2433,13 +2452,13 @@ msgstr ""
 "que a gente não consegue escolher um prefeito,\n"
 "nem fazer qualquer coisa direito por aqui."
 
-#: data/level/crevice-village-house-elder.cfg:1664
+#: data/level/crevice-village-house-elder.cfg:1627
 msgid "Are you done insulting me, yet?"
 msgstr ""
 "Já acabou?\n"
 "Vai parar de me insultar?"
 
-#: data/level/crevice-village-house-elder.cfg:1666
+#: data/level/crevice-village-house-elder.cfg:1629
 msgid ""
 "Nope.\n"
 "Not until you answer my question!"
@@ -2447,7 +2466,7 @@ msgstr ""
 "Não.\n"
 "Não até me dizer o que eu quero saber."
 
-#: data/level/crevice-village-house-elder.cfg:1668
+#: data/level/crevice-village-house-elder.cfg:1631
 msgid ""
 "Seriously - I'm on your side, here!\n"
 "I just risked my butt fighting that guy off."
@@ -2456,7 +2475,7 @@ msgstr ""
 "Acabei de arriscar o meu couro\n"
 "pra espantar aquele capitão dos gatos daqui!"
 
-#: data/level/crevice-village-house-elder.cfg:1670
+#: data/level/crevice-village-house-elder.cfg:1633
 msgid ""
 "I know you're trying to hide something,\n"
 "but throw me a line here."
@@ -2464,7 +2483,7 @@ msgstr ""
 "Eu sei que deve ter algo que você não quer contar,\n"
 "mas me dê uma pista, pelo menos."
 
-#: data/level/crevice-village-house-elder.cfg:1672
+#: data/level/crevice-village-house-elder.cfg:1635
 msgid ""
 "Maybe ...\n"
 "I can actually help you?"
@@ -2472,7 +2491,7 @@ msgstr ""
 "Talvez...\n"
 "...Eu seja capaz de ajudar?"
 
-#: data/level/crevice-village-house-elder.cfg:1674
+#: data/level/crevice-village-house-elder.cfg:1637
 msgid ""
 "Okay.\n"
 "What have I got to lose, eh?"
@@ -2480,7 +2499,7 @@ msgstr ""
 "Certo.\n"
 "Não tenho nada a perder, não é?"
 
-#: data/level/crevice-village-house-elder.cfg:1676
+#: data/level/crevice-village-house-elder.cfg:1639
 msgid ""
 "I'm afraid if this gets out,\n"
 "the town might blame me for this incident."
@@ -2488,7 +2507,7 @@ msgstr ""
 "Temo que se isso se espalhar por aí,\n"
 "as pessoas possam me culpar."
 
-#: data/level/crevice-village-house-elder.cfg:1678
+#: data/level/crevice-village-house-elder.cfg:1641
 msgid ""
 "See, some years ago,\n"
 "Milgram approached me with a proposition."
@@ -2496,7 +2515,7 @@ msgstr ""
 "Veja só, alguns anos atrás,\n"
 "o Milgram me veio com uma proposta..."
 
-#: data/level/crevice-village-house-elder.cfg:1680
+#: data/level/crevice-village-house-elder.cfg:1643
 msgid ""
 "He was going to invest a\n"
 "sizeable amount of money, here."
@@ -2504,7 +2523,7 @@ msgstr ""
 "Ele iria investir uma grande soma em dinheiro,\n"
 "aqui na vila."
 
-#: data/level/crevice-village-house-elder.cfg:1682
+#: data/level/crevice-village-house-elder.cfg:1645
 msgid ""
 "Wait,\n"
 "did he think you were actually the mayor?"
@@ -2512,11 +2531,11 @@ msgstr ""
 "Peraí,\n"
 "ele achou mesmo que você era o prefeito daqui?"
 
-#: data/level/crevice-village-house-elder.cfg:1684
+#: data/level/crevice-village-house-elder.cfg:1647
 msgid "YES!"
 msgstr "Claro que sim!"
 
-#: data/level/crevice-village-house-elder.cfg:1686
+#: data/level/crevice-village-house-elder.cfg:1649
 msgid ""
 "Anyhow, I was all too happy to accept,\n"
 "but it wasn't long before I realized\n"
@@ -2526,7 +2545,7 @@ msgstr ""
 "mas não demorou muito pra que eu percebesse\n"
 "o que havia por trás da oferta."
 
-#: data/level/crevice-village-house-elder.cfg:1688
+#: data/level/crevice-village-house-elder.cfg:1651
 msgid ""
 "I realized this was all a scam.\n"
 "He was establishing a claim, you see."
@@ -2534,25 +2553,25 @@ msgstr ""
 "Isso era uma jogada, uma arapuca.\n"
 "Ele estava preparando o terreno, sabe."
 
-#: data/level/crevice-village-house-elder.cfg:1690
+#: data/level/crevice-village-house-elder.cfg:1653
 msgid "I'm not sure I follow you..."
 msgstr "Eu acho que não estou entendendo..."
 
-#: data/level/crevice-village-house-elder.cfg:1692
+#: data/level/crevice-village-house-elder.cfg:1655
 msgid "Okay, do you know what 'usury' is?"
 msgstr "Bom, você sabe o que quer dizer \"usura\"?"
 
-#: data/level/crevice-village-house-elder.cfg:1694
+#: data/level/crevice-village-house-elder.cfg:1657
 msgid "Not exactly."
 msgstr "Não muito bem."
 
-#: data/level/crevice-village-house-elder.cfg:1696
+#: data/level/crevice-village-house-elder.cfg:1659
 msgid ""
 "See, Milgram was being\n"
 "what's called a 'loan shark'."
 msgstr "Veja bem, o Milgram estava sendo um agiota."
 
-#: data/level/crevice-village-house-elder.cfg:1698
+#: data/level/crevice-village-house-elder.cfg:1661
 msgid ""
 "He gives me money,\n"
 "then he just 'decides' what I owe him."
@@ -2560,7 +2579,7 @@ msgstr ""
 "Ele me dá dinheiro,\n"
 "e depois decide que eu fiquei devendo pra ele."
 
-#: data/level/crevice-village-house-elder.cfg:1700
+#: data/level/crevice-village-house-elder.cfg:1663
 msgid ""
 "That I owe him more money\n"
 "than I could ever repay."
@@ -2568,7 +2587,7 @@ msgstr ""
 "Que eu devo muito mais\n"
 "do que eu seria capaz de pagar."
 
-#: data/level/crevice-village-house-elder.cfg:1702
+#: data/level/crevice-village-house-elder.cfg:1665
 msgid ""
 "See, then he can just take\n"
 "whatever he wants, as payment."
@@ -2576,7 +2595,7 @@ msgstr ""
 "Assim, ele poderia arrancar de mim\n"
 "qualquer coisa, como pagamento."
 
-#: data/level/crevice-village-house-elder.cfg:1704
+#: data/level/crevice-village-house-elder.cfg:1667
 msgid ""
 "He was going to use this as an excuse\n"
 "to take over the town."
@@ -2584,7 +2603,7 @@ msgstr ""
 "Isso seria tudo uma desculpa\n"
 "pra que ele pudesse dominar a vila."
 
-#: data/level/crevice-village-house-elder.cfg:1706
+#: data/level/crevice-village-house-elder.cfg:1669
 msgid ""
 "Okay... I guess that sorta makes sense,\n"
 "although it's a bit convoluted."
@@ -2592,7 +2611,7 @@ msgstr ""
 "Bom... acho que isso faz algum sentido,\n"
 "mas é bem estranho."
 
-#: data/level/crevice-village-house-elder.cfg:1708
+#: data/level/crevice-village-house-elder.cfg:1671
 msgid ""
 "I don't see why he'd need an excuse.\n"
 "If he wanted to take over the town,\n"
@@ -2602,7 +2621,7 @@ msgstr ""
 "Se ele quisesse conquistar a vila,\n"
 "ele poderia vir aqui... e conquistar."
 
-#: data/level/crevice-village-house-elder.cfg:1710
+#: data/level/crevice-village-house-elder.cfg:1673
 msgid ""
 "No!\n"
 "You always need an excuse.\n"
@@ -2612,7 +2631,7 @@ msgstr ""
 "Todo mundo precisa de uma desculpa.\n"
 "Não fosse assim, quem iria apoiá-lo?"
 
-#: data/level/crevice-village-house-elder.cfg:1712
+#: data/level/crevice-village-house-elder.cfg:1675
 msgid ""
 "Uhh, okay...\n"
 "Anyways, what are we gonna do here?"
@@ -2620,7 +2639,7 @@ msgstr ""
 "Certo, certo...\n"
 "Mas então, o que vamos fazer?"
 
-#: data/level/crevice-village-house-elder.cfg:1714
+#: data/level/crevice-village-house-elder.cfg:1677
 msgid ""
 "Well, I think we should form a militia,\n"
 "and bring the fight to Milgram!"
@@ -2628,7 +2647,7 @@ msgstr ""
 "Bom, acho que deveríamos formar uma milícia,\n"
 "e levar a luta até as portas do castelo dele!"
 
-#: data/level/crevice-village-house-elder.cfg:1716
+#: data/level/crevice-village-house-elder.cfg:1679
 msgid ""
 "I don't think that's a good idea!\n"
 "Let's not jump the gun, here!"
@@ -2636,7 +2655,7 @@ msgstr ""
 "Isso não é uma boa ideia!\n"
 "Não vamos nos precipitar!"
 
-#: data/level/crevice-village-house-elder.cfg:1718
+#: data/level/crevice-village-house-elder.cfg:1681
 msgid ""
 "If you ask me, I think we need to go\n"
 "hear Milgram's side of the story."
@@ -2645,7 +2664,7 @@ msgstr ""
 "seria ir lá falar com o Milgram,\n"
 "entender o lado dele da história."
 
-#: data/level/crevice-village-house-elder.cfg:1720
+#: data/level/crevice-village-house-elder.cfg:1683
 msgid ""
 "Talk it over.  See if we can reach\n"
 "some mutually amicable agreement."
@@ -2653,11 +2672,11 @@ msgstr ""
 "Conversar, mesmo.\n"
 "Ver se conseguimos chegar num acordo amistoso."
 
-#: data/level/crevice-village-house-elder.cfg:1722
+#: data/level/crevice-village-house-elder.cfg:1685
 msgid "I don't think that would work."
 msgstr "Eu não acho que isso daria certo..."
 
-#: data/level/crevice-village-house-elder.cfg:1724
+#: data/level/crevice-village-house-elder.cfg:1687
 msgid ""
 "I sure do!\n"
 "Cripes - I tell you what: I'll do it."
@@ -2665,13 +2684,13 @@ msgstr ""
 "Pois eu acho!\n"
 "Aliás, quem vai lá falar com ele sou eu."
 
-#: data/level/crevice-village-house-elder.cfg:1726
+#: data/level/crevice-village-house-elder.cfg:1689
 msgid ""
 "I'll go talk to Milgram,\n"
 "and get this all sorted out.  Okay?"
 msgstr "Vou lá, falo com ele, e resolvo o problema."
 
-#: data/level/crevice-village-house-elder.cfg:1728
+#: data/level/crevice-village-house-elder.cfg:1691
 msgid ""
 "I just think this is a big misunderstanding,\n"
 "and I'd rather not see anyone get hurt."
@@ -2680,7 +2699,7 @@ msgstr ""
 "um grande mal-entendido,\n"
 "e seria melhor se ninguém se machucasse."
 
-#: data/level/crevice-village-house-elder.cfg:1730
+#: data/level/crevice-village-house-elder.cfg:1693
 msgid ""
 "Well, if you say so, I suppose I can't object.\n"
 "In fact, it might be a good stalling tactic."
@@ -2688,12 +2707,11 @@ msgstr ""
 "Bom, se você tem tanta certeza, não vou reclamar...\n"
 "No mínimo, você vai poder atrasá-lo um pouco."
 
-#: data/level/crevice-village-house-elder.cfg:1732
+#: data/level/crevice-village-house-elder.cfg:1695
 msgid "Why, I'll even show you the way..."
 msgstr "Aliás, até vou te mostrar o caminho..."
 
-#: data/level/crevice-village.cfg:652
-#: data/level/to-nenes-house.cfg:1301
+#: data/level/crevice-village.cfg:652 data/level/to-nenes-house.cfg:1301
 msgid "I better leave this key here."
 msgstr "É melhor eu deixar esta chave aqui."
 
@@ -2960,7 +2978,7 @@ msgstr "Floresta dos Presságios"
 msgid "Frogatto's Room"
 msgstr "Quarto do Frogatto"
 
-#: data/level/frogatto-grotto-frogattos-room.cfg:952
+#: data/level/frogatto-grotto-frogattos-room.cfg:922
 msgid ""
 "Ahh, what a beautiful ..\n"
 "..Afternoon?!"
@@ -2968,7 +2986,7 @@ msgstr ""
 "Ah, mas que bela...\n"
 "...tarde?!"
 
-#: data/level/frogatto-grotto-frogattos-room.cfg:953
+#: data/level/frogatto-grotto-frogattos-room.cfg:923
 msgid "Oh geez! I overslept!"
 msgstr "Ih! Dormi demais!"
 
@@ -3026,15 +3044,15 @@ msgstr "Deixei o que sobrou na geladeira."
 msgid "Okay, uhm, thanks."
 msgstr "Hmm, valeu."
 
-#: data/level/frogatto-grotto-inside.cfg:1499
+#: data/level/frogatto-grotto-inside.cfg:1595
 msgid "Hey, Frogatto."
 msgstr "Opa, Frogatto."
 
-#: data/level/frogatto-grotto-inside.cfg:1502
+#: data/level/frogatto-grotto-inside.cfg:1598
 msgid "Uhm... yes?"
 msgstr "Hã... sim?"
 
-#: data/level/frogatto-grotto-inside.cfg:1503
+#: data/level/frogatto-grotto-inside.cfg:1599
 msgid ""
 "At least TRY to get a job today,\n"
 "alright?"
@@ -3042,23 +3060,23 @@ msgstr ""
 "Ao menos TENTE arranjar um trabalho\n"
 "hoje, tá?"
 
-#: data/level/frogatto-grotto-inside.cfg:1504
+#: data/level/frogatto-grotto-inside.cfg:1600
 msgid "We need some help around here."
 msgstr "Precisamos de uma ajuda aqui."
 
-#: data/level/frogatto-grotto-inside.cfg:1506
+#: data/level/frogatto-grotto-inside.cfg:1602
 msgid "Yeah, I know.  I'll try."
 msgstr "É, eu sei. Eu vou tentar."
 
-#: data/level/frogatto-grotto-inside.cfg:1507
+#: data/level/frogatto-grotto-inside.cfg:1603
 msgid "See to it."
 msgstr "Acho bom."
 
-#: data/level/frogatto-grotto-inside.cfg:1520
+#: data/level/frogatto-grotto-inside.cfg:1616
 msgid "Not like I need to be up,"
 msgstr "Não que eu tenha que acordar cedo,"
 
-#: data/level/frogatto-grotto-inside.cfg:1521
+#: data/level/frogatto-grotto-inside.cfg:1617
 msgid "but it's the principle of the thing."
 msgstr "mas é o princípio da coisa."
 
@@ -3066,24 +3084,23 @@ msgstr "mas é o princípio da coisa."
 msgid "Pato's Room"
 msgstr "Quarto do Pato"
 
-#: data/level/frogatto-grotto-patos-room.cfg:877
+#: data/level/frogatto-grotto-patos-room.cfg:855
 msgid "Ahh, what a beautiful .."
 msgstr "Ah, mas que bela..."
 
-#: data/level/frogatto-grotto-patos-room.cfg:878
+#: data/level/frogatto-grotto-patos-room.cfg:856
 msgid "..Afternoon?!"
 msgstr "...tarde?!"
 
-#: data/level/frogatto-grotto-patos-room.cfg:879
+#: data/level/frogatto-grotto-patos-room.cfg:857
 msgid "Yowzers, I overslept!"
 msgstr "Ih! Dormi demais!"
 
-#: data/level/frogatto-grotto-patos-room.cfg:891
+#: data/level/frogatto-grotto-patos-room.cfg:869
 msgid "it's the principle of the thing."
 msgstr "é o princípio da coisa."
 
-#: data/level/frogatto-grotto.cfg:13
-#: data/objects/playable/map-selector.cfg:16
+#: data/level/frogatto-grotto.cfg:13 data/objects/playable/map-selector.cfg:16
 msgid "Frogatto Grotto"
 msgstr "Gruta do Frogatto"
 
@@ -3607,7 +3624,7 @@ msgstr ""
 "Está trancada. É, imaginei\n"
 "que não seria fácil sair daqui!"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1056
+#: data/level/liberated-crevice-village-house-1.cfg:1082
 msgid ""
 "Well I guess I have to give it to you,\n"
 "kid, you saved us!"
@@ -3615,7 +3632,7 @@ msgstr ""
 "É, rapaz, vou ter que te agradecer,\n"
 "você nos salvou!"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1058
+#: data/level/liberated-crevice-village-house-1.cfg:1084
 msgid ""
 "Give it to me? Give what to me?\n"
 "Money?"
@@ -3625,7 +3642,7 @@ msgstr ""
 "Aceito dinheiro e até\n"
 "cheque pré-datado!"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1059
+#: data/level/liberated-crevice-village-house-1.cfg:1085
 msgid ""
 "Sheesh, so mercenary!\n"
 "It's just an expression."
@@ -3634,39 +3651,39 @@ msgstr ""
 "É só o meu agradecimento\n"
 "sincero, mesmo."
 
-#: data/level/liberated-crevice-village-house-1.cfg:1061
+#: data/level/liberated-crevice-village-house-1.cfg:1087
 msgid "I know, I'm just poking fun at you."
 msgstr ""
 "Heh, eu sei,\n"
 "só estou brincando contigo."
 
-#: data/level/liberated-crevice-village-house-1.cfg:1063
+#: data/level/liberated-crevice-village-house-1.cfg:1089
 msgid "I am glad things worked out, though."
 msgstr ""
 "Mas é bom saber que\n"
 "deu tudo certo, no final das contas."
 
-#: data/level/liberated-crevice-village-house-1.cfg:1477
+#: data/level/liberated-crevice-village-house-1.cfg:1559
 msgid "Hey, what's new?"
 msgstr "Opa, novidades?"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1478
+#: data/level/liberated-crevice-village-house-1.cfg:1560
 msgid "Oh, just cleaning up after that ruckus."
 msgstr ""
 "Ah, só arrumando as coisas,\n"
 "agora que acabou aquela confusão."
 
-#: data/level/liberated-crevice-village-house-1.cfg:1479
+#: data/level/liberated-crevice-village-house-1.cfg:1561
 msgid "So nice to have things back to normal."
 msgstr ""
 "É muito bom ter as coisas\n"
 "de volta ao normal."
 
-#: data/level/liberated-crevice-village-house-1.cfg:1481
+#: data/level/liberated-crevice-village-house-1.cfg:1563
 msgid "You bet."
 msgstr "Pode apostar!"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1483
+#: data/level/liberated-crevice-village-house-1.cfg:1565
 msgid ""
 "Speaking of which, am I imagining it\n"
 "or is this house actually smaller now?"
@@ -3674,7 +3691,7 @@ msgstr ""
 "Falando nisso, eu estou imaginando\n"
 "coisas ou esta casa ficou menor agora?"
 
-#: data/level/liberated-crevice-village-house-1.cfg:1484
+#: data/level/liberated-crevice-village-house-1.cfg:1566
 msgid ""
 "Of course not.\n"
 "That's just nutty."
@@ -3682,23 +3699,23 @@ msgstr ""
 "Claro que não.\n"
 "Está de brincadeira, né?"
 
-#: data/level/liberated-crevice-village-house-2.cfg:1544
+#: data/level/liberated-crevice-village-house-2.cfg:1487
 msgid "Hey, thanks for saving the town!"
 msgstr "Ei, obrigado por salvar a vila!"
 
-#: data/level/liberated-crevice-village-house-2.cfg:1546
+#: data/level/liberated-crevice-village-house-2.cfg:1489
 msgid "All in a day's work."
 msgstr "É, até que foi um bom trabalho!"
 
-#: data/level/liberated-crevice-village-house-2.cfg:1548
+#: data/level/liberated-crevice-village-house-2.cfg:1491
 msgid "Where's your sibling, by the way?"
 msgstr "Mas... cadê o seu irmão?"
 
-#: data/level/liberated-crevice-village-house-2.cfg:1549
+#: data/level/liberated-crevice-village-house-2.cfg:1492
 msgid "At the store."
 msgstr "Foi pra loja do Chopple."
 
-#: data/level/liberated-crevice-village-house-2.cfg:1551
+#: data/level/liberated-crevice-village-house-2.cfg:1494
 msgid "I see."
 msgstr "Ah, sim."
 
@@ -3734,7 +3751,7 @@ msgid "No!  You can't be..."
 msgstr "Não! Você não pode ser..."
 
 #: data/level/milgrams-throne-room.cfg:588
-#: data/level/secluded-hut-interior.cfg:919
+#: data/level/secluded-hut-interior.cfg:811
 msgid "Hi, I'm Frogatto."
 msgstr "Oi, eu sou o Frogatto."
 
@@ -3907,8 +3924,7 @@ msgstr ""
 msgid "Yikes!"
 msgstr "Eita!"
 
-#: data/level/rock-a-fort-cave.cfg:16
-#: data/level/rock-a-fort.cfg:16
+#: data/level/rock-a-fort-cave.cfg:16 data/level/rock-a-fort.cfg:16
 msgid "Rock-a-Fort"
 msgstr "Rocha-forte"
 
@@ -3930,17 +3946,16 @@ msgstr ""
 "Deve ter um outro caminho\n"
 "pra chegar do outro lado."
 
-#: data/level/secluded-hut-interior.cfg:12
-#: data/level/secluded-hut.cfg:16
+#: data/level/secluded-hut-interior.cfg:12 data/level/secluded-hut.cfg:16
 #: data/objects/playable/map-selector.cfg:17
 msgid "Secluded Hut"
 msgstr "Observatório"
 
-#: data/level/secluded-hut-interior.cfg:917
+#: data/level/secluded-hut-interior.cfg:809
 msgid "Hello there."
 msgstr "Oh, olá."
 
-#: data/level/secluded-hut-interior.cfg:920
+#: data/level/secluded-hut-interior.cfg:812
 msgid ""
 "A pleasure to meet you.\n"
 "I am Mortimer."
@@ -3948,11 +3963,11 @@ msgstr ""
 "É um prazer conhecê-lo.\n"
 "Eu sou o Mortimer."
 
-#: data/level/secluded-hut-interior.cfg:922
+#: data/level/secluded-hut-interior.cfg:814
 msgid "That's nice."
 msgstr "Muito bom."
 
-#: data/level/secluded-hut-interior.cfg:924
+#: data/level/secluded-hut-interior.cfg:816
 msgid ""
 "Uhm, I hope you don't mind my asking,\n"
 "but what on earth ARE you, anyway?"
@@ -3961,13 +3976,13 @@ msgstr ""
 "com a pergunta, mas... o que\n"
 "exatamente é você, afinal?"
 
-#: data/level/secluded-hut-interior.cfg:925
+#: data/level/secluded-hut-interior.cfg:817
 msgid "Ostensibly, I am a mole."
 msgstr ""
 "Fisicamente falando?\n"
 "Sou uma toupeira."
 
-#: data/level/secluded-hut-interior.cfg:927
+#: data/level/secluded-hut-interior.cfg:819
 msgid ""
 "...\n"
 "Okay."
@@ -3975,7 +3990,7 @@ msgstr ""
 "...\n"
 "Certo..."
 
-#: data/level/secluded-hut-interior.cfg:928
+#: data/level/secluded-hut-interior.cfg:820
 msgid ""
 "Perhaps more importantly, I am a bit of\n"
 "an astronomer and biologist, by trade."
@@ -3984,7 +3999,7 @@ msgstr ""
 "eu diria que sou um astrônomo\n"
 "e biólogo, por profissão."
 
-#: data/level/secluded-hut-interior.cfg:929
+#: data/level/secluded-hut-interior.cfg:821
 msgid ""
 "That is why I live all the way up here.\n"
 "You can see quite a bit from this height."
@@ -3992,7 +4007,7 @@ msgstr ""
 "É por isso que moro aqui em cima.\n"
 "Dá pra ver bem longe daqui desta altura."
 
-#: data/level/secluded-hut-interior.cfg:931
+#: data/level/secluded-hut-interior.cfg:823
 msgid ""
 "...and I guess you have these\n"
 "ants in cages to study them?"
@@ -4001,7 +4016,7 @@ msgstr ""
 "formigas nas jaulas para poder\n"
 "estudá-las?"
 
-#: data/level/secluded-hut-interior.cfg:932
+#: data/level/secluded-hut-interior.cfg:824
 msgid ""
 "That's right.  Unfortunately,\n"
 "my collection lacks the rarer golden ant."
@@ -4010,11 +4025,11 @@ msgstr ""
 "Infelizmente, minha coleção não dispõe\n"
 "de uma das raras formigas douradas."
 
-#: data/level/secluded-hut-interior.cfg:934
+#: data/level/secluded-hut-interior.cfg:826
 msgid "Oh, what a shame."
 msgstr "Ah, que pena."
 
-#: data/level/secluded-hut-interior.cfg:935
+#: data/level/secluded-hut-interior.cfg:827
 msgid ""
 "You know, you look rather well-traveled.\n"
 "If you could bring me a golden ant\n"
@@ -4027,7 +4042,7 @@ msgstr ""
 "das jaulas, eu lhe pagaria uma\n"
 "generosa recompensa."
 
-#: data/level/secluded-hut-interior.cfg:937
+#: data/level/secluded-hut-interior.cfg:829
 msgid ""
 "Handsomely you say?\n"
 "I'm on it!"
@@ -4035,7 +4050,7 @@ msgstr ""
 "Você disse generosa?\n"
 "Estou dentro!"
 
-#: data/level/secluded-hut-interior.cfg:940
+#: data/level/secluded-hut-interior.cfg:832
 msgid ""
 "Oh! You got the golden ant for me.\n"
 "It's beautiful, beautiful!"
@@ -4044,7 +4059,7 @@ msgstr ""
 "uma formiga dourada.\n"
 "Que beleza, que beleza!"
 
-#: data/level/secluded-hut-interior.cfg:942
+#: data/level/secluded-hut-interior.cfg:834
 msgid ""
 "Mmmmmhmmmm. Now you were talking\n"
 "about a reward?"
@@ -4052,7 +4067,7 @@ msgstr ""
 "Mmmmmhmmmm.\n"
 "Você falou de uma recompensa?"
 
-#: data/level/secluded-hut-interior.cfg:943
+#: data/level/secluded-hut-interior.cfg:835
 msgid ""
 "Oh yes, a reward!\n"
 "Here you go..."
@@ -4060,7 +4075,7 @@ msgstr ""
 "Ah, sim, a recompensa!\n"
 "Aqui está..."
 
-#: data/level/secluded-hut-interior.cfg:948
+#: data/level/secluded-hut-interior.cfg:840
 msgid ""
 "Oh my! If that's a golden ant in your stomach,\n"
 "then quick, spit it out into the cage!"
@@ -4068,7 +4083,7 @@ msgstr ""
 "Será uma formiga dourada o que você tem na barriga?\n"
 "Então, rápido, jogue-a na jaula!"
 
-#: data/level/secluded-hut-interior.cfg:949
+#: data/level/secluded-hut-interior.cfg:841
 msgid ""
 "I don't suppose you've had any\n"
 "luck with getting a golden ant yet?"
@@ -4077,7 +4092,7 @@ msgstr ""
 "teve muita sorte em conseguir\n"
 "uma formiga dourada, não é?"
 
-#: data/level/secluded-hut-interior.cfg:951
+#: data/level/secluded-hut-interior.cfg:843
 msgid ""
 "I'm working on it.\n"
 "Those things pack a pretty mean bite, you know."
@@ -4085,7 +4100,7 @@ msgstr ""
 "Estou trabalhando nisso...\n"
 "Esses bichinhos têm uma mordida violenta, sabia?"
 
-#: data/level/secluded-hut-interior.cfg:954
+#: data/level/secluded-hut-interior.cfg:846
 msgid ""
 "I do hope you are enjoying exploring the island.\n"
 "There are so many wonderful creatures on it."
@@ -4093,11 +4108,11 @@ msgstr ""
 "Eu espero que esteja adorando explorar a ilha.\n"
 "São tantas as criaturas magníficas que vivem nela!"
 
-#: data/level/secluded-hut-interior.cfg:956
+#: data/level/secluded-hut-interior.cfg:848
 msgid "... most of which seem inclined to kill me."
 msgstr "...o que eu sei é que elas parecem querer me matar."
 
-#: data/level/secluded-hut-interior.cfg:1229
+#: data/level/secluded-hut-interior.cfg:1168
 msgid "I say! Who's there?"
 msgstr "Ei, quem está aí?"
 
@@ -4293,8 +4308,7 @@ msgstr "Programador Principal"
 msgid "Scripting Language Designer"
 msgstr "Desenvolvedor da Linguagem de Scripts"
 
-#: data/level/tea-with-milgram.cfg:334
-#: data/level/tea-with-milgram.cfg:357
+#: data/level/tea-with-milgram.cfg:334 data/level/tea-with-milgram.cfg:357
 #: data/level/tea-with-milgram.cfg:363
 msgid "Object Scripter"
 msgstr "Programador de Objetos"
@@ -5055,8 +5069,7 @@ msgstr "Fim"
 msgid "(Level Template)"
 msgstr "(Modelo de Fase)"
 
-#: data/level/test-dungeon.cfg:12
-#: data/level/test-rpg.cfg:12
+#: data/level/test-dungeon.cfg:12 data/level/test-rpg.cfg:12
 msgid "(Test Level)"
 msgstr "(Fase de teste)"
 
@@ -5076,14 +5089,12 @@ msgstr "Mostre-nos o que pode fazer!"
 msgid "EXIT"
 msgstr "SAÍDA"
 
-#: data/level/titlescreen-arcade.cfg:178
-#: data/level/titlescreen-arcade.cfg:199
+#: data/level/titlescreen-arcade.cfg:178 data/level/titlescreen-arcade.cfg:199
 #: data/level/titlescreen-arcade.cfg:260
 msgid "Select a level:"
 msgstr "Escolha uma fase:"
 
-#: data/level/titlescreen-arcade.cfg:182
-#: data/level/titlescreen-arcade.cfg:203
+#: data/level/titlescreen-arcade.cfg:182 data/level/titlescreen-arcade.cfg:203
 #: data/level/titlescreen-arcade.cfg:262
 msgid "(cancel)"
 msgstr "(cancelar)"
@@ -5104,62 +5115,50 @@ msgstr "Corrida das Moedas"
 msgid "COIN RACE"
 msgstr "CORRIDA DAS MOEDAS"
 
-#: data/level/titlescreen-test.cfg:259
-#: data/level/titlescreen.cfg:260
+#: data/level/titlescreen-test.cfg:259 data/level/titlescreen.cfg:260
 msgid "LOAD GAME"
 msgstr "CONTINUAR"
 
-#: data/level/titlescreen-test.cfg:279
-#: data/level/titlescreen.cfg:282
+#: data/level/titlescreen-test.cfg:279 data/level/titlescreen.cfg:282
 msgid "NEW GAME"
 msgstr "NOVO JOGO"
 
-#: data/level/titlescreen-test.cfg:300
-#: data/level/titlescreen-test.cfg:312
-#: data/level/titlescreen.cfg:305
-#: data/level/titlescreen.cfg:317
+#: data/level/titlescreen-test.cfg:300 data/level/titlescreen-test.cfg:312
+#: data/level/titlescreen.cfg:305 data/level/titlescreen.cfg:317
 msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
 msgstr "Pressione {LEFT_KEY} ou {RIGHT_KEY} para andar."
 
-#: data/level/titlescreen-test.cfg:313
-#: data/level/titlescreen-test.cfg:328
-#: data/level/titlescreen.cfg:318
-#: data/level/titlescreen.cfg:335
+#: data/level/titlescreen-test.cfg:313 data/level/titlescreen-test.cfg:328
+#: data/level/titlescreen.cfg:318 data/level/titlescreen.cfg:335
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
-msgstr "Aperte {LEFT_KEY} ou {RIGHT_KEY} duas vezes, rapidamente, para correr."
+msgstr ""
+"Aperte {LEFT_KEY} ou {RIGHT_KEY} duas vezes, rapidamente, para correr."
 
-#: data/level/titlescreen-test.cfg:314
-#: data/level/titlescreen.cfg:319
+#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:319
 msgid "Press {DOWN_KEY} to crouch."
 msgstr "Aperte {DOWN_KEY} para se abaixar."
 
-#: data/level/titlescreen-test.cfg:314
-#: data/level/titlescreen.cfg:319
+#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:319
 msgid "Walk in front of a door or person, and press"
 msgstr "Você pode interagir com pessoas ou objetos como portas,"
 
-#: data/level/titlescreen-test.cfg:315
-#: data/level/titlescreen.cfg:320
+#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:320
 msgid "Press {UP_KEY} to talk, and use things like doors."
 msgstr "Aperte {UP_KEY} para conversar, abrir portas, etc."
 
-#: data/level/titlescreen-test.cfg:315
-#: data/level/titlescreen.cfg:320
+#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:320
 msgid "the button that appears to interact with them."
 msgstr "tocando no botão que aparecer na tela."
 
-#: data/level/titlescreen-test.cfg:316
-#: data/level/titlescreen.cfg:321
+#: data/level/titlescreen-test.cfg:316 data/level/titlescreen.cfg:321
 msgid "Press {JUMP_KEY} to jump."
 msgstr "Aperte {JUMP_KEY} para pular."
 
-#: data/level/titlescreen-test.cfg:317
-#: data/level/titlescreen.cfg:322
+#: data/level/titlescreen-test.cfg:317 data/level/titlescreen.cfg:322
 msgid "Press {TONGUE_KEY} to use a character's attacks."
 msgstr "Aperte {TONGUE_KEY} para usar os ataques do personagem."
 
-#: data/level/titlescreen-test.cfg:348
-#: data/level/titlescreen.cfg:357
+#: data/level/titlescreen-test.cfg:348 data/level/titlescreen.cfg:357
 msgid "ARCADE"
 msgstr "FLIPERAMA"
 
@@ -5396,20 +5395,24 @@ msgstr ""
 msgid "This is a blank tile. It doesn't do anything."
 msgstr "Essa célula é vazia. Ela não faz nada."
 
-#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:88
+#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:93
 msgid "'"
 msgstr ""
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:32
 msgid "You made it to level {level.player.difficulty} of the coin race!"
-msgstr "Você alcançou a {level.player.difficulty}ª fase da corrida das moedas!"
+msgstr ""
+"Você alcançou a {level.player.difficulty}ª fase da corrida das moedas!"
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:34
 msgid "You made it to level {level.player.difficulty} of the coin race."
-msgstr "Você alcançou a {level.player.difficulty}ª fase da corrida das moedas."
+msgstr ""
+"Você alcançou a {level.player.difficulty}ª fase da corrida das moedas."
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
-msgid "The furthest that has been reached is level {registry.arcade_coin_race_high_score}."
+msgid ""
+"The furthest that has been reached is level "
+"{registry.arcade_coin_race_high_score}."
 msgstr "O recorde atual é a {registry.arcade_coin_race_high_score}ª fase."
 
 #: data/objects/items/max_heart_object.cfg:18
@@ -5667,11 +5670,11 @@ msgstr "Carregando ataques especiais"
 msgid "- OpenFeint and Achievement support"
 msgstr ""
 
-#: iOS_CHANGELOG:3
+#: iOS_CHANGELOG:19
 msgid "Fixed The Long Haul (arcade level)"
 msgstr ""
 
-#: iOS_CHANGELOG:4
+#: iOS_CHANGELOG:20
 msgid "Fixed instructions on titlescreen"
 msgstr ""
 
@@ -5699,24 +5702,23 @@ msgstr "Voltar"
 msgid "Achievement Unlocked!"
 msgstr "Novo Troféu!"
 
-#: src/main.cpp:407
+#: src/main.cpp:414
 msgid "Initializing custom object"
 msgstr "Inicializando objetos"
 
-#: src/main.cpp:409
+#: src/main.cpp:416
 msgid "Initializing custom object functions"
 msgstr "Inicializando funções de objetos"
 
-#: src/main.cpp:411
+#: src/main.cpp:418
 msgid "Initializing tiles"
 msgstr "Inicializando tiles"
 
-#: src/main.cpp:414
-#: src/main.cpp:418
+#: src/main.cpp:421 src/main.cpp:425
 msgid "Initializing GUI"
 msgstr "Inicializando interface"
 
-#: src/main.cpp:424
+#: src/main.cpp:431
 msgid "Loading level"
 msgstr "Carregando fase"
 
@@ -5751,4 +5753,5 @@ msgstr "Inverter A e B"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
+
 
