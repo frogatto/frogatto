@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-12-04 14:31-0200\n"
-"PO-Revision-Date: 2011-12-04 16:43+0000\n"
+"POT-Creation-Date: 2011-12-05 21:28-0200\n"
+"PO-Revision-Date: 2011-12-05 23:30+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Spanish (Castilian) (http://www.transifex.net/projects/p/Frogatto/team/es/)\n"
 "MIME-Version: 1.0\n"
@@ -519,30 +519,6 @@ msgstr "¡No sin mi sombrero!"
 #: data/achievements.cfg:117
 msgid "Start a level with no health left."
 msgstr "Comenzar un nivel sin salud"
-
-#: data/level/after_summer.cfg:12 data/level/platform-peril.cfg:12
-msgid "After Summer"
-msgstr ""
-
-#: data/level/after_summer.cfg:1633
-msgid ""
-"We're cleaning the fish tanks here!\n"
-"We could use a break."
-msgstr ""
-"¡Estamos limpiando las peceras!\n"
-"Nos vendría bien un descanso."
-
-#: data/level/after_summer.cfg:1634
-msgid ""
-"You killed Benny!\n"
-"Now I SHALL KILL YOU!"
-msgstr ""
-"¡Mataste a Benny!\n"
-"¡Ahora te mataré a ti!"
-
-#: data/level/after_summer.cfg:2350 data/level/platform-peril.cfg:1641
-msgid "Move on!"
-msgstr ""
 
 #: data/level/airplane-boss.cfg:14
 msgid "Stonepipe Bridge"
@@ -4495,14 +4471,6 @@ msgstr "Fin"
 msgid "(Level Template)"
 msgstr ""
 
-#: data/level/test-dungeon.cfg:12 data/level/test-rpg.cfg:12
-msgid "(Test Level)"
-msgstr ""
-
-#: data/level/testa10.cfg:12
-msgid "Test Level 10"
-msgstr ""
-
 #: data/level/titlescreen-arcade.cfg:122
 msgid "Each machine has a different arcade-style challenge."
 msgstr ""
@@ -4555,41 +4523,41 @@ msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
 msgstr "Oprima {LEFT_KEY} o {RIGHT_KEY} para caminar."
 
 #: data/level/titlescreen-test.cfg:313 data/level/titlescreen-test.cfg:328
-#: data/level/titlescreen.cfg:318 data/level/titlescreen.cfg:335
+#: data/level/titlescreen.cfg:318 data/level/titlescreen.cfg:336
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
 msgstr ""
 "Rápidamente oprima {LEFT_KEY} o\n"
 "{RIGHT_KEY} dos veces para correr."
 
-#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:319
+#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:320
 msgid "Press {DOWN_KEY} to crouch."
 msgstr "Oprima {DOWN_KEY} para agacharse."
 
-#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:319
+#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:320
 msgid "Walk in front of a door or person, and press"
 msgstr ""
 "Detente en frente de una puerta o una persona\n"
 "y oprime"
 
-#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:320
+#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:321
 msgid "Press {UP_KEY} to talk, and use things like doors."
 msgstr ""
 "Oprima {UP_KEY} para hablar, y para\n"
 "interactuar con cosas tal como puertas."
 
-#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:320
+#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:321
 msgid "the button that appears to interact with them."
 msgstr "el botón que aparece para interactuar con ellos."
 
-#: data/level/titlescreen-test.cfg:316 data/level/titlescreen.cfg:321
+#: data/level/titlescreen-test.cfg:316 data/level/titlescreen.cfg:322
 msgid "Press {JUMP_KEY} to jump."
 msgstr "Oprima {JUMP_KEY} para saltar."
 
-#: data/level/titlescreen-test.cfg:317 data/level/titlescreen.cfg:322
+#: data/level/titlescreen-test.cfg:317 data/level/titlescreen.cfg:323
 msgid "Press {TONGUE_KEY} to use a character's attacks."
 msgstr ""
 
-#: data/level/titlescreen-test.cfg:348 data/level/titlescreen.cfg:357
+#: data/level/titlescreen-test.cfg:348 data/level/titlescreen.cfg:358
 msgid "ARCADE"
 msgstr ""
 
@@ -4800,10 +4768,6 @@ msgstr ""
 #: data/level/watery-alley.cfg:18
 msgid "Watery Alley"
 msgstr "Callejón húmedo"
-
-#: data/level/wither-wind.cfg:12
-msgid "Wither Wind"
-msgstr "Viento marchito"
 
 #: data/object_prototypes/buyable_item.cfg:19
 #: data/object_prototypes/buyable_item.cfg:22

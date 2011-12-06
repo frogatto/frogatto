@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-12-04 14:31-0200\n"
-"PO-Revision-Date: 2011-12-04 16:43+0000\n"
+"POT-Creation-Date: 2011-12-05 21:28-0200\n"
+"PO-Revision-Date: 2011-12-05 23:30+0000\n"
 "Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
 "Language-Team: Indonesian (http://www.transifex.net/projects/p/Frogatto/team/id/)\n"
 "MIME-Version: 1.0\n"
@@ -539,26 +539,6 @@ msgstr ""
 
 #: data/achievements.cfg:117
 msgid "Start a level with no health left."
-msgstr ""
-
-#: data/level/after_summer.cfg:12 data/level/platform-peril.cfg:12
-msgid "After Summer"
-msgstr ""
-
-#: data/level/after_summer.cfg:1633
-msgid ""
-"We're cleaning the fish tanks here!\n"
-"We could use a break."
-msgstr ""
-
-#: data/level/after_summer.cfg:1634
-msgid ""
-"You killed Benny!\n"
-"Now I SHALL KILL YOU!"
-msgstr ""
-
-#: data/level/after_summer.cfg:2350 data/level/platform-peril.cfg:1641
-msgid "Move on!"
 msgstr ""
 
 #: data/level/airplane-boss.cfg:14
@@ -4522,14 +4502,6 @@ msgstr "Tamat"
 msgid "(Level Template)"
 msgstr "(Templat Level)"
 
-#: data/level/test-dungeon.cfg:12 data/level/test-rpg.cfg:12
-msgid "(Test Level)"
-msgstr "(Uji Coba Level)"
-
-#: data/level/testa10.cfg:12
-msgid "Test Level 10"
-msgstr "Uji Coba Level 10"
-
 #: data/level/titlescreen-arcade.cfg:122
 msgid "Each machine has a different arcade-style challenge."
 msgstr "Setiap mesin memiliki tantangan gaya-arcade tersendiri."
@@ -4582,37 +4554,37 @@ msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
 msgstr "Tekan {LEFT_KEY} atau {RIGHT_KEY} untuk berjalan."
 
 #: data/level/titlescreen-test.cfg:313 data/level/titlescreen-test.cfg:328
-#: data/level/titlescreen.cfg:318 data/level/titlescreen.cfg:335
+#: data/level/titlescreen.cfg:318 data/level/titlescreen.cfg:336
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
 msgstr ""
 "Tekan dua kali {LEFT_KEY} atau {RIGHT_KEY} dengan cepat untuk berlari."
 
-#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:319
+#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:320
 msgid "Press {DOWN_KEY} to crouch."
 msgstr "Tekan {DOWN_KEY} untuk tiarap."
 
-#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:319
+#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:320
 msgid "Walk in front of a door or person, and press"
 msgstr "Berjalan di depan pintu atau orang, lalu tekan"
 
-#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:320
+#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:321
 msgid "Press {UP_KEY} to talk, and use things like doors."
 msgstr ""
 "Tekan {UP_KEY} untuk berbicara, dan menggunakan benda-benda seperti pintu."
 
-#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:320
+#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:321
 msgid "the button that appears to interact with them."
 msgstr "tombol yang muncul untuk berinteraksi dengan mereka."
 
-#: data/level/titlescreen-test.cfg:316 data/level/titlescreen.cfg:321
+#: data/level/titlescreen-test.cfg:316 data/level/titlescreen.cfg:322
 msgid "Press {JUMP_KEY} to jump."
 msgstr "Tekan {JUMP_KEY} untuk melompat."
 
-#: data/level/titlescreen-test.cfg:317 data/level/titlescreen.cfg:322
+#: data/level/titlescreen-test.cfg:317 data/level/titlescreen.cfg:323
 msgid "Press {TONGUE_KEY} to use a character's attacks."
 msgstr "Tekan {TONGUE_KEY} untuk menggunakan serangan."
 
-#: data/level/titlescreen-test.cfg:348 data/level/titlescreen.cfg:357
+#: data/level/titlescreen-test.cfg:348 data/level/titlescreen.cfg:358
 msgid "ARCADE"
 msgstr "ARCADE"
 
@@ -4825,10 +4797,6 @@ msgstr "Jalur Pengembara"
 #: data/level/watery-alley.cfg:18
 msgid "Watery Alley"
 msgstr "Lorong Berair"
-
-#: data/level/wither-wind.cfg:12
-msgid "Wither Wind"
-msgstr "Angin Gersang"
 
 #: data/object_prototypes/buyable_item.cfg:19
 #: data/object_prototypes/buyable_item.cfg:22
