@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Marcos Avila Isidoro <marcavis@yahoo.com.br>, 2011.
 # Philipp Zabel <pzabel@gmx.de>, 2011.
@@ -11,196 +11,198 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2011-12-05 21:28-0200\n"
-"PO-Revision-Date: 2011-12-05 23:30+0000\n"
-"Last-Translator: marcavis <marcavis@yahoo.com.br>\n"
+"PO-Revision-Date: 2011-12-06 01:27-0300\n"
+"Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Portuguese (Brazilian) (http://www.transifex.net/projects/p/Frogatto/team/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"X-Poedit-Basepath: ..\n"
 
-#: CHANGELOG:1 iOS_CHANGELOG:1
+#: CHANGELOG:1
+#: iOS_CHANGELOG:1
 msgid "Version 1.2:"
-msgstr ""
+msgstr "Versão 1.2:"
 
-#: CHANGELOG:2 iOS_CHANGELOG:2
-msgid ""
-"Complete redo of attack logic; frogatto now is free to walk around whilst he"
-" attacks, and in general is much more responsive."
-msgstr ""
+#: CHANGELOG:2
+#: iOS_CHANGELOG:2
+msgid "Complete redo of attack logic; frogatto now is free to walk around whilst he attacks, and in general is much more responsive."
+msgstr "A programação dos ataques de Frogatto foi refeita; agora ele pode andar enquanto ataca, além de responder mais rápido aos comandos, em geral."
 
-#: CHANGELOG:3 iOS_CHANGELOG:3
+#: CHANGELOG:3
+#: iOS_CHANGELOG:3
 msgid "Frogatto's tongue-grabbing is MUCH more forgiving"
-msgstr ""
+msgstr "Ajustes na área em que a língua de Frogatto pode agarrar objetos e inimigos"
 
-#: CHANGELOG:4 iOS_CHANGELOG:4
-msgid ""
-"Complete rewrite of damage handling; much more consistent now, and "
-"categorically eliminates some bugs where damage wouldn't get dealt."
-msgstr ""
+#: CHANGELOG:4
+#: iOS_CHANGELOG:4
+msgid "Complete rewrite of damage handling; much more consistent now, and categorically eliminates some bugs where damage wouldn't get dealt."
+msgstr "Ajustes no gerenciamento de dano dos personagens, corrigindo certas situações onde o dano não estava sendo infligido."
 
-#: CHANGELOG:5 iOS_CHANGELOG:5
+#: CHANGELOG:5
+#: iOS_CHANGELOG:5
 msgid "Reworked some tilesets to eliminate tiling errors."
-msgstr ""
+msgstr "Correções em alguns tilesets, para eliminar erros em combinações de tiles."
 
-#: CHANGELOG:6 iOS_CHANGELOG:6
+#: CHANGELOG:6
+#: iOS_CHANGELOG:6
 msgid "Further enhancements to dungeon wall graphics (added edges)."
-msgstr ""
+msgstr "Melhorias aos gráficos das paredes das masmorras."
 
-#: CHANGELOG:7 iOS_CHANGELOG:7
+#: CHANGELOG:7
+#: iOS_CHANGELOG:7
 msgid "New, more readable dialogue font."
-msgstr ""
+msgstr "Nova fonte, mais legível."
 
-#: CHANGELOG:8 iOS_CHANGELOG:8
+#: CHANGELOG:8
+#: iOS_CHANGELOG:8
 msgid "Lots of small graphical tweaks."
-msgstr ""
+msgstr "Vários ajustes gráficos menores."
 
-#: CHANGELOG:9 iOS_CHANGELOG:9
+#: CHANGELOG:9
+#: iOS_CHANGELOG:9
 msgid "Maps are now strewn with spittable props within easy reach."
-msgstr ""
+msgstr "Inclusão de itens que podem ser usados como munição nas fases."
 
-#: CHANGELOG:10 iOS_CHANGELOG:10
+#: CHANGELOG:10
+#: iOS_CHANGELOG:10
 msgid "Rewrote most of the dialogue."
-msgstr ""
+msgstr "Reescrita de boa parte dos diálogos."
 
-#: CHANGELOG:11 iOS_CHANGELOG:11
-msgid ""
-"Collectible items like coins can be collected by being touched by the "
-"tongue, besides just frogatto's body."
-msgstr ""
+#: CHANGELOG:11
+#: iOS_CHANGELOG:11
+msgid "Collectible items like coins can be collected by being touched by the tongue, besides just frogatto's body."
+msgstr "Incluída a possibilidade de Frogatto coletar moedas com a língua."
 
-#: CHANGELOG:12 iOS_CHANGELOG:12
+#: CHANGELOG:12
+#: iOS_CHANGELOG:12
 msgid "Redrew the world map."
-msgstr ""
+msgstr "Redesenho do mapa-múndi."
 
-#: CHANGELOG:13 iOS_CHANGELOG:13
-msgid ""
-"Added a few new monsters, like the red hornbugs, and completely rewrote how "
-"bats behave."
-msgstr ""
+#: CHANGELOG:13
+#: iOS_CHANGELOG:13
+msgid "Added a few new monsters, like the red hornbugs, and completely rewrote how bats behave."
+msgstr "Inclusão de novos inimigos, como um inseto que persegue Frogatto pelo ar, e alterações no comportamento dos morcegos."
 
-#: CHANGELOG:14 iOS_CHANGELOG:14
-msgid ""
-"Fixed a bug that caused a black line in the seaside background during "
-"dialogues."
-msgstr ""
+#: CHANGELOG:14
+#: iOS_CHANGELOG:14
+msgid "Fixed a bug that caused a black line in the seaside background during dialogues."
+msgstr "Correção de um bug em que aparecia uma linha preta no segundo plano durante os diálogos."
 
-#: CHANGELOG:15 iOS_CHANGELOG:15
-msgid ""
-"Fixed a bug that caused some tiles to incorrectly be flagged as opaque."
-msgstr ""
+#: CHANGELOG:15
+#: iOS_CHANGELOG:15
+msgid "Fixed a bug that caused some tiles to incorrectly be flagged as opaque."
+msgstr "Correção de um bug que tornava opacas algumas imagens, erroneamente."
 
-#: CHANGELOG:17 iOS_CHANGELOG:17
+#: CHANGELOG:17
+#: iOS_CHANGELOG:17
 msgid "Version 1.1.1:"
 msgstr "Versão 1.1.1:"
 
-#: CHANGELOG:18 iOS_CHANGELOG:18
+#: CHANGELOG:18
+#: iOS_CHANGELOG:18
 msgid "Fixed some crashing bugs."
 msgstr "Corrigidos alguns erros de conexão"
 
 #: CHANGELOG:19
 msgid "Fixed The Long Haul (compiled mode)"
-msgstr ""
+msgstr "Correção de bugs na fase O Longo Caminho"
 
 #: CHANGELOG:20
 msgid "Fixed instructions on titlescreen (iOS)"
-msgstr ""
+msgstr "Correção das instruções na tela inicial (iOS)"
 
-#: CHANGELOG:21 iOS_CHANGELOG:21
+#: CHANGELOG:21
+#: iOS_CHANGELOG:21
 msgid "New translation: Italian"
-msgstr ""
+msgstr "Nova tradução: italiano"
 
 #: CHANGELOG:22
 msgid "Added automatic language selection for Windows"
-msgstr ""
+msgstr "Inclusão de seleção automática de idioma no Windows"
 
-#: CHANGELOG:23 iOS_CHANGELOG:22
-msgid ""
-"Complete redo of iOS controls, switching to a 2-button dpad from a 4-button."
-"  Eliminates all problems with mispressed up or down keys interrupting other"
-" actions."
-msgstr ""
+#: CHANGELOG:23
+#: iOS_CHANGELOG:22
+msgid "Complete redo of iOS controls, switching to a 2-button dpad from a 4-button.  Eliminates all problems with mispressed up or down keys interrupting other actions."
+msgstr "Redesign dos controles iOS, usando agora um direcional de dois botões (em vez de quatro). Isso corrige problemas como botões \"para cima\" e \"para baixo\" sendo pressionados sem querer."
 
 #: CHANGELOG:25
 msgid "Version 1.1:"
-msgstr ""
+msgstr "Versão 1.1:"
 
 #: CHANGELOG:26
 msgid "Added arcade mode."
-msgstr ""
+msgstr "Adição o \"Fliperama\" (ou Modo Arcade)"
 
 #: CHANGELOG:27
 msgid "Redid graphics for forest trees."
-msgstr ""
+msgstr "Redesenho dos gráficos das árvores da floresta."
 
 #: CHANGELOG:28
 msgid "Redid graphics for forest background"
-msgstr ""
+msgstr "Redesenho dos gráficos do segundo plano da floresta."
 
 #: CHANGELOG:29
 msgid "Redid graphics for dungeon wall tiles"
-msgstr ""
+msgstr "Redesenho dos gráficos das paredes da masmorra"
 
 #: CHANGELOG:30
 msgid "Redid graphics for basement wall tiles"
-msgstr ""
+msgstr "Redesenho dos gráficos das paredes do porão"
 
 #: CHANGELOG:31
 msgid "Added a bunch of interior props"
-msgstr ""
+msgstr "Inclusão de vários objetos decorativos nos interiores"
 
 #: CHANGELOG:32
 msgid "Reworked \"darkness\" for improved appearance"
-msgstr ""
+msgstr "Melhorias gráficas nas fases com escuridão"
 
 #: CHANGELOG:33
 msgid "Added new palettes to forest and seaside areas."
-msgstr ""
+msgstr "Inclusão de paletas de cores alternativas para as fases da floresta e beira-mar."
 
 #: CHANGELOG:34
 msgid "Added some unique enemies to the forest."
-msgstr ""
+msgstr "Inclusão de alguns inimigos específicos para a floresta."
 
 #: CHANGELOG:35
-msgid ""
-"Refactored damage and monster type systems to make behavior more consistent "
-"and eliminate some rare buggy behavior."
-msgstr ""
+msgid "Refactored damage and monster type systems to make behavior more consistent and eliminate some rare buggy behavior."
+msgstr "Correção de bugs referentes a inimigos assumindo times errados (inimigos x aliados)"
 
 #: CHANGELOG:36
-msgid ""
-"Added translation support, with 4 complete translations: French, Brazilian "
-"Portuguese, Chinese (Simplified), and Japanese."
-msgstr ""
+msgid "Added translation support, with 4 complete translations: French, Brazilian Portuguese, Chinese (Simplified), and Japanese."
+msgstr "Inclusão de suporte a traduções, com 4 delas completas: Francês, Português Brasileiro, Chinês (Simplificado) e Japonês."
 
 #: CHANGELOG:38
 msgid "Version 1.0.3:"
-msgstr ""
+msgstr "Versão 1.0.3:"
 
 #: CHANGELOG:39
 msgid "Fixed crash when picking up max heart pieces."
-msgstr ""
+msgstr "Correção de um bug que causava congelamento ao se coletar cápsulas de vida."
 
 #: CHANGELOG:40
 msgid "Other small bug fixes."
-msgstr ""
+msgstr "Outras correções de bugs menos importantes."
 
 #: CHANGELOG:42
 msgid "Version 1.0.2:"
-msgstr ""
+msgstr "Versão 1.0.2:"
 
 #: CHANGELOG:43
 msgid "Added support for \"darkness\" in levels."
-msgstr ""
+msgstr "Inclusão de suporte a \"escuridão\" nas fases."
 
 #: CHANGELOG:44
 msgid "Added support for WVGA."
-msgstr ""
+msgstr "Inclusão de suporte a WVGA."
 
 #: CHANGELOG:45
 msgid "Made player status not show on the titlescreen or world map."
-msgstr ""
+msgstr "Remoção do status de Frogatto da tela, quando na tela inicial ou no mapa-múndi."
 
 #: CHANGELOG:46
 msgid "Made golden ants less ambiguous."
@@ -219,9 +221,7 @@ msgid "Added support for repeating levels (for arcade modes)."
 msgstr ""
 
 #: CHANGELOG:50
-msgid ""
-"Pressing jump while in the air pressing against a wall now makes you cling "
-"to the wall."
+msgid "Pressing jump while in the air pressing against a wall now makes you cling to the wall."
 msgstr ""
 
 #: CHANGELOG:51
@@ -257,8 +257,7 @@ msgid "Version 1.0.1 (iPhone only):"
 msgstr ""
 
 #: CHANGELOG:60
-msgid ""
-"Significantly improved controls, both functionally and graphically (iPhone)."
+msgid "Significantly improved controls, both functionally and graphically (iPhone)."
 msgstr ""
 
 #: CHANGELOG:61
@@ -305,94 +304,95 @@ msgstr ""
 msgid "Updated music."
 msgstr ""
 
-#: MAC_APP_STORE_METADATA:1 iOS_APP_STORE_METADATA:1
+#: MAC_APP_STORE_METADATA:1
+#: iOS_APP_STORE_METADATA:1
 msgid "NOW WITH BETTER CONTROLS:"
-msgstr ""
+msgstr "AGORA COM CONTROLES MELHORES:"
 
-#: MAC_APP_STORE_METADATA:3 iOS_APP_STORE_METADATA:3
-msgid ""
-"Frogatto is a classic-style 2d adventure game, starring a certain quixotic "
-"frog.  It's made by the same team that brought you Battle for Wesnoth, and "
-"features the same handcrafted love of high-end pixel art.  Frogatto is a "
-"side-on \"platformer\" or \"jump and run\" game, where you lead our titular "
-"character on a humdrum errand that turns into a daring adventure."
-msgstr ""
+#: MAC_APP_STORE_METADATA:3
+#: iOS_APP_STORE_METADATA:3
+msgid "Frogatto is a classic-style 2d adventure game, starring a certain quixotic frog.  It's made by the same team that brought you Battle for Wesnoth, and features the same handcrafted love of high-end pixel art.  Frogatto is a side-on \"platformer\" or \"jump and run\" game, where you lead our titular character on a humdrum errand that turns into a daring adventure."
+msgstr "Frogatto é um jogo de aventura no estilo dos clássicos dos 16 bits, estrelando um heroico sapinho. Foi desenvolvido pelo mesmo grupo que criou Battle for Wesnoth, e compartilha com este da atenção aos detalhes nos seus gráficos pixelados. Frogatto é um jogo de plataforma, visto de perfil, onde você leva o herói com o mesmo nome do jogo para uma tarefa do dia-a-dia, que repentinamente se torna uma grande aventura."
 
-#: MAC_APP_STORE_METADATA:5 iOS_APP_STORE_METADATA:5
-msgid ""
-"Frogatto's key mechanic is an unusual twist; like any frog, he jumps, swims,"
-" and snags bugs with his tongue, but unlike any frog before him, can spit "
-"those bugs out with deadly force.  Not merely an action game, frogatto is a "
-"full, classic adventure game, with characters to talk to, things to buy, "
-"puzzles to solve, and a wide, complex world to explore."
-msgstr ""
+#: MAC_APP_STORE_METADATA:5
+#: iOS_APP_STORE_METADATA:5
+msgid "Frogatto's key mechanic is an unusual twist; like any frog, he jumps, swims, and snags bugs with his tongue, but unlike any frog before him, can spit those bugs out with deadly force.  Not merely an action game, frogatto is a full, classic adventure game, with characters to talk to, things to buy, puzzles to solve, and a wide, complex world to explore."
+msgstr "A mecânica de jogo principal de Frogatto é uma variação incomum; como qualquer sapo, ele pula, nada, e agarra insetos com sua língua, mas diferentemente de outros antes dele, ele pode cuspir esses insetos de volta com força total. Não apenas um jogo de ação, Frogatto é um jogo clássico, completo de aventura, com personagens para conversar, coisas para comprar, quebra-cabeças para resolver, e um vasto, diverso mundo para explorar."
 
-#: MAC_APP_STORE_METADATA:7 iOS_APP_STORE_METADATA:7
+#: MAC_APP_STORE_METADATA:7
+#: iOS_APP_STORE_METADATA:7
 msgid "Features:"
-msgstr ""
+msgstr "Características:"
 
-#: MAC_APP_STORE_METADATA:8 iOS_APP_STORE_METADATA:8
+#: MAC_APP_STORE_METADATA:8
+#: iOS_APP_STORE_METADATA:8
 msgid "- grab enemies with your tongue and spit them to deal damage"
-msgstr ""
+msgstr "- agarre inimigos com a língua e cuspa-os para causar dano em outros inimigos"
 
-#: MAC_APP_STORE_METADATA:9 iOS_APP_STORE_METADATA:9
+#: MAC_APP_STORE_METADATA:9
+#: iOS_APP_STORE_METADATA:9
 msgid "- buy powerups to enhance and unlock new abilities"
-msgstr ""
+msgstr "- compre itens para melhorar o personagem e liberar novas habilidades"
 
-#: MAC_APP_STORE_METADATA:10 iOS_APP_STORE_METADATA:10
-msgid ""
-"- arcade mode, giving instant access to action-only gameplay on randomized "
-"levels"
-msgstr ""
+#: MAC_APP_STORE_METADATA:10
+#: iOS_APP_STORE_METADATA:10
+msgid "- arcade mode, giving instant access to action-only gameplay on randomized levels"
+msgstr "- modo fliperama, que dá acesso instantâneo a fases de ação geradas aleatoriamente"
 
-#: MAC_APP_STORE_METADATA:11 iOS_APP_STORE_METADATA:11
-msgid ""
-"- forgiving savegame/respawn system so you don't have to be afraid of losing"
-" progress"
-msgstr ""
+#: MAC_APP_STORE_METADATA:11
+#: iOS_APP_STORE_METADATA:11
+msgid "- forgiving savegame/respawn system so you don't have to be afraid of losing progress"
+msgstr "- um generoso sistema de salvamento de jogo para que você não tenha que ficar repetindo muitas partes do jogo"
 
-#: MAC_APP_STORE_METADATA:12 iOS_APP_STORE_METADATA:12
+#: MAC_APP_STORE_METADATA:12
+#: iOS_APP_STORE_METADATA:12
 msgid "- playful dialogue writing that tries not to insult your intelligence"
-msgstr ""
+msgstr "- diálogos divertidos, mas que não menosprezam a sua inteligência"
 
-#: MAC_APP_STORE_METADATA:13 iOS_APP_STORE_METADATA:13
+#: MAC_APP_STORE_METADATA:13
+#: iOS_APP_STORE_METADATA:13
 msgid "- massive soundtrack with over an hour of original music"
-msgstr ""
+msgstr "- trilha sonora extensa, com mais de uma hora de música original"
 
-#: MAC_APP_STORE_METADATA:14 iOS_APP_STORE_METADATA:14
-msgid ""
-"- sprawling, complex world with over 50 levels to explore, and tons of "
-"secrets to find"
-msgstr ""
+#: MAC_APP_STORE_METADATA:14
+#: iOS_APP_STORE_METADATA:14
+msgid "- sprawling, complex world with over 50 levels to explore, and tons of secrets to find"
+msgstr "- um vasto e diverso mundo com mais de 50 fases para explorar, e muitos segredos para desvendar"
 
-#: MAC_APP_STORE_METADATA:16 iOS_APP_STORE_METADATA:17
+#: MAC_APP_STORE_METADATA:16
+#: iOS_APP_STORE_METADATA:17
 msgid "To find out more about the game please visit http://www.frogatto.com/"
-msgstr ""
+msgstr "Para saber mais sobre o jogo, por favor visite http://www.frogatto.com/"
 
-#: MAC_APP_STORE_METADATA:18 iOS_APP_STORE_METADATA:19
+#: MAC_APP_STORE_METADATA:18
+#: iOS_APP_STORE_METADATA:19
 msgid "Reviews:"
-msgstr ""
+msgstr "Resenhas:"
 
-#: MAC_APP_STORE_METADATA:19 iOS_APP_STORE_METADATA:20
+#: MAC_APP_STORE_METADATA:19
+#: iOS_APP_STORE_METADATA:20
 msgid "- [3/4 SlideToPlay.com] \"a fun and surprisingly deep platformer\""
-msgstr ""
+msgstr "- [3/4 SlideToPlay.com] \"um jogo de plataforma surpreendentemente profundo e divertido\""
 
-#: MAC_APP_STORE_METADATA:20 iOS_APP_STORE_METADATA:21
+#: MAC_APP_STORE_METADATA:20
+#: iOS_APP_STORE_METADATA:21
 msgid "- [4/5 AppSpy.com] \"boy-howdy is this an amazing visual feast!\""
-msgstr ""
+msgstr "- [4/5 AppSpy.com] \"caraca, que banquete de gráficos bonitos!\""
 
-#: MAC_APP_STORE_METADATA:21 iOS_APP_STORE_METADATA:22
+#: MAC_APP_STORE_METADATA:21
+#: iOS_APP_STORE_METADATA:22
 msgid "- [n/a TouchArcade.com] \"totally worth checking out.\""
-msgstr ""
+msgstr "- [n/a TouchArcade.com] \"com toda a certeza, vale a pena conferir.\""
 
-#: MAC_APP_STORE_METADATA:23 iOS_APP_STORE_METADATA:24
+#: MAC_APP_STORE_METADATA:23
+#: iOS_APP_STORE_METADATA:24
 msgid "keywords:"
-msgstr ""
+msgstr "palavras-chave:"
 
-#: MAC_APP_STORE_METADATA:24 iOS_APP_STORE_METADATA:25
-msgid ""
-"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
-msgstr ""
+#: MAC_APP_STORE_METADATA:24
+#: iOS_APP_STORE_METADATA:25
+msgid "platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
+msgstr "plataforma,pixelart,oldschool,2d,jogo,pixel,arcade,ação,aventura,sapo"
 
 #: data/achievements.cfg:4
 msgid "Pocket Money"
@@ -526,11 +526,13 @@ msgstr "Armadilha!"
 msgid "Victory!"
 msgstr "Vitória!"
 
-#: data/level/arcade-blocks.cfg:11 data/level/titlescreen-arcade.cfg:202
+#: data/level/arcade-blocks.cfg:11
+#: data/level/titlescreen-arcade.cfg:202
 msgid "Blocks Run"
 msgstr "Corrida dos Blocos"
 
-#: data/level/arcade-blocks.cfg:216 data/level/arcade-blocks.cfg:218
+#: data/level/arcade-blocks.cfg:216
+#: data/level/arcade-blocks.cfg:218
 msgid "You got {level.player.score} points in the Blocks Run!"
 msgstr "Você conseguiu {level.player.score} pontos na Corrida dos Blocos!"
 
@@ -556,14 +558,11 @@ msgstr "Descendo a Toca Sem Coelho"
 #: data/level/arcade-down-the-rabbit-hall.cfg:863
 #: data/level/arcade-down-the-rabbit-hall.cfg:866
 msgid "You got {level.player.vars.score} points going down the rabbit hall!"
-msgstr ""
-"Você conseguiu {level.player.vars.score} pontos Descendo A Toca Sem Coelho!"
+msgstr "Você conseguiu {level.player.vars.score} pontos Descendo A Toca Sem Coelho!"
 
 #: data/level/arcade-down-the-rabbit-hall.cfg:867
-msgid ""
-"The high score is {registry.arcade_down_the_rabbit_hall_high_score} points."
-msgstr ""
-"O recorde é de {registry.arcade_down_the_rabbit_hall_high_score} pontos."
+msgid "The high score is {registry.arcade_down_the_rabbit_hall_high_score} points."
+msgstr "O recorde é de {registry.arcade_down_the_rabbit_hall_high_score} pontos."
 
 #: data/level/arcade-maintenance-shaft.cfg:13
 #: data/level/titlescreen-arcade.cfg:181
@@ -576,15 +575,13 @@ msgid "You got {level.player.vars.score} points in the maintenance shaft!"
 msgstr "Você conseguiu {level.player.score} pontos no Poço de Manutenção!"
 
 #: data/level/arcade-maintenance-shaft.cfg:2583
-msgid ""
-"The high score is {registry.arcade_maintenance_shaft_high_score} points."
+msgid "The high score is {registry.arcade_maintenance_shaft_high_score} points."
 msgstr "O recorde é de {registry.arcade_maintenance_shaft_high_score} pontos."
 
 #: data/level/arcade-nutty-factory.cfg:550
 #: data/level/arcade-nutty-factory.cfg:553
 msgid "You got {level.player.vars.score} points in the Nutty Factory!"
-msgstr ""
-"Você conseguiu {level.player.vars.score} pontos na Corporação Casca de Noz!"
+msgstr "Você conseguiu {level.player.vars.score} pontos na Corporação Casca de Noz!"
 
 #: data/level/arcade-nutty-factory.cfg:554
 msgid "The high score is {registry.arcade_nutty_factory_high_score} points."
@@ -604,11 +601,13 @@ msgstr "Você conseguiu {level.player.score} pontos em O Longo Caminho!"
 msgid "The high score is {registry.arcade_the_long_haul_high_score} points."
 msgstr "O recorde é de {registry.arcade_the_long_haul_high_score} pontos."
 
-#: data/level/arcade-upper-deck.cfg:13 data/level/titlescreen-arcade.cfg:180
+#: data/level/arcade-upper-deck.cfg:13
+#: data/level/titlescreen-arcade.cfg:180
 msgid "Upper Deck"
 msgstr "Escadaria Infinita"
 
-#: data/level/arcade-upper-deck.cfg:2950 data/level/arcade-upper-deck.cfg:2953
+#: data/level/arcade-upper-deck.cfg:2950
+#: data/level/arcade-upper-deck.cfg:2953
 msgid "You got {level.player.vars.score} points on the Upper Deck!"
 msgstr "Você conseguiu {level.player.score} pontos na Escadaria Infinita!"
 
@@ -642,7 +641,8 @@ msgstr "Vila do Outono"
 msgid "Bombing Fools"
 msgstr "Bombas à Beça"
 
-#: data/level/bon-bosque.cfg:15 data/objects/playable/map-selector.cfg:20
+#: data/level/bon-bosque.cfg:15
+#: data/objects/playable/map-selector.cfg:20
 msgid "Bon Bosque"
 msgstr "Bom Bosque"
 
@@ -757,7 +757,8 @@ msgstr ""
 msgid "Caverns of Holes"
 msgstr "Gruta Furada"
 
-#: data/level/chopple-shop-interior.cfg:10 data/level/chopple-shop.cfg:16
+#: data/level/chopple-shop-interior.cfg:10
+#: data/level/chopple-shop.cfg:16
 msgid "Chopple's General Store"
 msgstr "Empório do Chopple"
 
@@ -1141,7 +1142,8 @@ msgstr "Ah, aí está você!"
 
 #: data/level/crevice-village-cave.cfg:14
 #: data/level/crevice-village-central.cfg:15
-#: data/level/crevice-village-heights.cfg:16 data/level/crevice-village.cfg:15
+#: data/level/crevice-village-heights.cfg:16
+#: data/level/crevice-village.cfg:15
 #: data/objects/playable/map-selector.cfg:18
 msgid "Crevice Village"
 msgstr "Vila da Fenda"
@@ -2042,7 +2044,8 @@ msgstr ""
 "Nós vimos o capataz\n"
 "do Milgram entrar lá."
 
-#: data/level/crevice-village-house-2.cfg:2993 data/level/rock-a-fort.cfg:3379
+#: data/level/crevice-village-house-2.cfg:2993
+#: data/level/rock-a-fort.cfg:3379
 msgid "How interesting."
 msgstr "Que interessante."
 
@@ -2691,7 +2694,8 @@ msgstr ""
 msgid "Why, I'll even show you the way..."
 msgstr "Aliás, até vou te mostrar o caminho..."
 
-#: data/level/crevice-village.cfg:652 data/level/to-nenes-house.cfg:1301
+#: data/level/crevice-village.cfg:652
+#: data/level/to-nenes-house.cfg:1301
 msgid "I better leave this key here."
 msgstr "É melhor eu deixar esta chave aqui."
 
@@ -3080,7 +3084,8 @@ msgstr "Ih! Dormi demais!"
 msgid "it's the principle of the thing."
 msgstr "é o princípio da coisa."
 
-#: data/level/frogatto-grotto.cfg:13 data/objects/playable/map-selector.cfg:16
+#: data/level/frogatto-grotto.cfg:13
+#: data/objects/playable/map-selector.cfg:16
 msgid "Frogatto Grotto"
 msgstr "Gruta do Frogatto"
 
@@ -3904,7 +3909,8 @@ msgstr ""
 msgid "Yikes!"
 msgstr "Eita!"
 
-#: data/level/rock-a-fort-cave.cfg:16 data/level/rock-a-fort.cfg:16
+#: data/level/rock-a-fort-cave.cfg:16
+#: data/level/rock-a-fort.cfg:16
 msgid "Rock-a-Fort"
 msgstr "Rocha-forte"
 
@@ -3926,7 +3932,8 @@ msgstr ""
 "Deve ter um outro caminho\n"
 "pra chegar do outro lado."
 
-#: data/level/secluded-hut-interior.cfg:12 data/level/secluded-hut.cfg:16
+#: data/level/secluded-hut-interior.cfg:12
+#: data/level/secluded-hut.cfg:16
 #: data/objects/playable/map-selector.cfg:17
 msgid "Secluded Hut"
 msgstr "Observatório"
@@ -4288,7 +4295,8 @@ msgstr "Programador Principal"
 msgid "Scripting Language Designer"
 msgstr "Desenvolvedor da Linguagem de Scripts"
 
-#: data/level/tea-with-milgram.cfg:334 data/level/tea-with-milgram.cfg:357
+#: data/level/tea-with-milgram.cfg:334
+#: data/level/tea-with-milgram.cfg:357
 #: data/level/tea-with-milgram.cfg:363
 msgid "Object Scripter"
 msgstr "Programador de Objetos"
@@ -5061,12 +5069,14 @@ msgstr "Mostre-nos o que pode fazer!"
 msgid "EXIT"
 msgstr "SAÍDA"
 
-#: data/level/titlescreen-arcade.cfg:178 data/level/titlescreen-arcade.cfg:199
+#: data/level/titlescreen-arcade.cfg:178
+#: data/level/titlescreen-arcade.cfg:199
 #: data/level/titlescreen-arcade.cfg:260
 msgid "Select a level:"
 msgstr "Escolha uma fase:"
 
-#: data/level/titlescreen-arcade.cfg:182 data/level/titlescreen-arcade.cfg:203
+#: data/level/titlescreen-arcade.cfg:182
+#: data/level/titlescreen-arcade.cfg:203
 #: data/level/titlescreen-arcade.cfg:262
 msgid "(cancel)"
 msgstr "(cancelar)"
@@ -5087,50 +5097,62 @@ msgstr "Corrida das Moedas"
 msgid "COIN RACE"
 msgstr "CORRIDA DAS MOEDAS"
 
-#: data/level/titlescreen-test.cfg:259 data/level/titlescreen.cfg:260
+#: data/level/titlescreen-test.cfg:259
+#: data/level/titlescreen.cfg:260
 msgid "LOAD GAME"
 msgstr "CONTINUAR"
 
-#: data/level/titlescreen-test.cfg:279 data/level/titlescreen.cfg:282
+#: data/level/titlescreen-test.cfg:279
+#: data/level/titlescreen.cfg:282
 msgid "NEW GAME"
 msgstr "NOVO JOGO"
 
-#: data/level/titlescreen-test.cfg:300 data/level/titlescreen-test.cfg:312
-#: data/level/titlescreen.cfg:305 data/level/titlescreen.cfg:317
+#: data/level/titlescreen-test.cfg:300
+#: data/level/titlescreen-test.cfg:312
+#: data/level/titlescreen.cfg:305
+#: data/level/titlescreen.cfg:317
 msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
 msgstr "Pressione {LEFT_KEY} ou {RIGHT_KEY} para andar."
 
-#: data/level/titlescreen-test.cfg:313 data/level/titlescreen-test.cfg:328
-#: data/level/titlescreen.cfg:318 data/level/titlescreen.cfg:336
+#: data/level/titlescreen-test.cfg:313
+#: data/level/titlescreen-test.cfg:328
+#: data/level/titlescreen.cfg:318
+#: data/level/titlescreen.cfg:336
 msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
-msgstr ""
-"Aperte {LEFT_KEY} ou {RIGHT_KEY} duas vezes, rapidamente, para correr."
+msgstr "Aperte {LEFT_KEY} ou {RIGHT_KEY} duas vezes, rapidamente, para correr."
 
-#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:320
+#: data/level/titlescreen-test.cfg:314
+#: data/level/titlescreen.cfg:320
 msgid "Press {DOWN_KEY} to crouch."
 msgstr "Aperte {DOWN_KEY} para se abaixar."
 
-#: data/level/titlescreen-test.cfg:314 data/level/titlescreen.cfg:320
+#: data/level/titlescreen-test.cfg:314
+#: data/level/titlescreen.cfg:320
 msgid "Walk in front of a door or person, and press"
 msgstr "Você pode interagir com pessoas ou objetos como portas,"
 
-#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:321
+#: data/level/titlescreen-test.cfg:315
+#: data/level/titlescreen.cfg:321
 msgid "Press {UP_KEY} to talk, and use things like doors."
 msgstr "Aperte {UP_KEY} para conversar, abrir portas, etc."
 
-#: data/level/titlescreen-test.cfg:315 data/level/titlescreen.cfg:321
+#: data/level/titlescreen-test.cfg:315
+#: data/level/titlescreen.cfg:321
 msgid "the button that appears to interact with them."
 msgstr "tocando no botão que aparecer na tela."
 
-#: data/level/titlescreen-test.cfg:316 data/level/titlescreen.cfg:322
+#: data/level/titlescreen-test.cfg:316
+#: data/level/titlescreen.cfg:322
 msgid "Press {JUMP_KEY} to jump."
 msgstr "Aperte {JUMP_KEY} para pular."
 
-#: data/level/titlescreen-test.cfg:317 data/level/titlescreen.cfg:323
+#: data/level/titlescreen-test.cfg:317
+#: data/level/titlescreen.cfg:323
 msgid "Press {TONGUE_KEY} to use a character's attacks."
 msgstr "Aperte {TONGUE_KEY} para usar os ataques do personagem."
 
-#: data/level/titlescreen-test.cfg:348 data/level/titlescreen.cfg:358
+#: data/level/titlescreen-test.cfg:348
+#: data/level/titlescreen.cfg:358
 msgid "ARCADE"
 msgstr "FLIPERAMA"
 
@@ -5369,18 +5391,14 @@ msgstr ""
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:32
 msgid "You made it to level {level.player.difficulty} of the coin race!"
-msgstr ""
-"Você alcançou a {level.player.difficulty}ª fase da corrida das moedas!"
+msgstr "Você alcançou a {level.player.difficulty}ª fase da corrida das moedas!"
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:34
 msgid "You made it to level {level.player.difficulty} of the coin race."
-msgstr ""
-"Você alcançou a {level.player.difficulty}ª fase da corrida das moedas."
+msgstr "Você alcançou a {level.player.difficulty}ª fase da corrida das moedas."
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
-msgid ""
-"The furthest that has been reached is level "
-"{registry.arcade_coin_race_high_score}."
+msgid "The furthest that has been reached is level {registry.arcade_coin_race_high_score}."
 msgstr "O recorde atual é a {registry.arcade_coin_race_high_score}ª fase."
 
 #: data/objects/items/max_heart_object.cfg:18
@@ -5636,15 +5654,15 @@ msgstr "Carregando ataques especiais"
 
 #: iOS_APP_STORE_METADATA:15
 msgid "- OpenFeint and Achievement support"
-msgstr ""
+msgstr "- suporte a troféus e OpenFeint"
 
 #: iOS_CHANGELOG:19
 msgid "Fixed The Long Haul (arcade level)"
-msgstr ""
+msgstr "Correção de bugs na fase O Longo Caminho"
 
 #: iOS_CHANGELOG:20
 msgid "Fixed instructions on titlescreen"
-msgstr ""
+msgstr "Correção das instruções na tela inicial"
 
 #: src/controls_dialog.cpp:42
 msgid "Directions"
@@ -5682,7 +5700,8 @@ msgstr "Inicializando funções de objetos"
 msgid "Initializing tiles"
 msgstr "Inicializando tiles"
 
-#: src/main.cpp:421 src/main.cpp:425
+#: src/main.cpp:421
+#: src/main.cpp:425
 msgid "Initializing GUI"
 msgstr "Inicializando interface"
 
@@ -5721,5 +5740,4 @@ msgstr "Inverter A e B"
 #: src/pause_game_dialog.cpp:67
 msgid "OpenFeint"
 msgstr "OpenFeint"
-
 
