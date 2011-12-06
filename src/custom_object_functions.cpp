@@ -787,6 +787,19 @@ FUNCTION_DEF(solid, 3, 6, "solid(level, int x, int y, (optional)int w=1, (option
 	return variant(lvl->solid(r));
 END_FUNCTION_DEF(solid)
 
+FUNCTION_DEF(debug_rect, 2, 5, "debug_rect(level, int x, int y, (optional)int w=1, (optional) int h=1, (optional) int cycle) -> Draws, for one frame, a rectangle on the level. Cycle may be changed to make the rectangle draw again.")
+	const int x = args()[0]->evaluate(variables).as_int();
+	const int y = args()[1]->evaluate(variables).as_int();
+
+	int w = args().size() >= 3 ? args()[2]->evaluate(variables).as_int() : 100;
+	int h = args().size() >= 4 ? args()[3]->evaluate(variables).as_int() : 100;
+
+	rect r(x, y, w, h);
+	add_debug_rect(r);
+
+	return variant();
+END_FUNCTION_DEF(debug_rect)
+
 FUNCTION_DEF(standable, 3, 5, "standable(level, int x, int y, (optional)int w=1, (optional) int h=1) -> boolean: returns true iff the level contains standable space within the given (x,y,w,h) rectangle")
 	level* lvl = args()[0]->evaluate(variables).convert_to<level>();
 	const int x = args()[1]->evaluate(variables).as_int();
