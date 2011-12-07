@@ -316,7 +316,7 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus, boo
 	lvl.draw(xscroll, yscroll, graphics::screen_width(), graphics::screen_height());
 
 	foreach(const rect& r, current_debug_rects) {
-		graphics::draw_rect(r, graphics::color(0, 0, 255, 255));
+		graphics::draw_rect(r, graphics::color(0, 0, 255, 175));
 	}
 
 	current_debug_rects.clear();
