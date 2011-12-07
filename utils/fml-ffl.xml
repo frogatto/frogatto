@@ -220,6 +220,7 @@
 			</context>
 			
 			<context attribute="Comment" lineEndContext="#stay" name="ffl comment">
+				<DetectChar attribute="Error" char="&quot;"/>
 				<DetectChar attribute="Comment" context="#pop" char="#" endRegion="comment" />
 			</context>
 			
