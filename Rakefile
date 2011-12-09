@@ -12,12 +12,12 @@ EXTRA_FML = Hash.new('').merge({
 FONT_STYLES = {
   :dialog => <<-DIALOG, 
 convert -background transparent -font '%{font}' -pointsize 16 \
-        -fill '#f5f5f5' label:'%{character}' png32:%{glyph}
+        -fill '#f5f5f5' label:%{character} png32:%{glyph}
   DIALOG
 
   :outline => <<-'OUTLINE',
-convert \( -background transparent -fill '#550b0b' -font '%{font}' label:'%{character}' \) \
-        \( -background transparent -fill '#e9f9f9' -font '%{font}' label:'%{character}' \) \
+convert \( -background transparent -fill '#550b0b' -font '%{font}' label:%{character} \) \
+        \( -background transparent -fill '#e9f9f9' -font '%{font}' label:%{character} \) \
         -background transparent \
         -page -1-1 -clone 0 \
         -page -1+1 -clone 0 \
@@ -28,8 +28,8 @@ convert \( -background transparent -fill '#550b0b' -font '%{font}' label:'%{char
   OUTLINE
   
   :label => <<-'LABEL'
-convert \( -background transparent -fill '#000000' -font '%{font}' label:'%{character}' \) \
-        \( -background transparent -fill '#ffffff' -font '%{font}' label:'%{character}' \) \
+convert \( -background transparent -fill '#000000' -font '%{font}' label:%{character} \) \
+        \( -background transparent -fill '#ffffff' -font '%{font}' label:%{character} \) \
         -background transparent \
         -page -0-1 -clone 0 \
         -page +0+0 -clone 1 \
@@ -169,6 +169,12 @@ LANGUAGES.each_pair do |language, font|
     rule glyph_pattern => work_path do |t|
       glyph = t.name
       character = character_with_codepoint(Integer(glyph[/(\d+)/, 1]))
+      # escape for shell
+      if character == "'"
+        character = %q("'")
+      else
+        character = "'#{character}'"
+      end
       sh(command % {:font => font, :character => character,
                     :glyph => glyph, :work_path => work_path})
     end
