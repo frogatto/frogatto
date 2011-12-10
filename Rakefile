@@ -141,7 +141,9 @@ LANGUAGES.each_pair do |language, font|
   file character_list => [po_file, language_work_path] do
     sh <<-SCRIPT
       cat /dev/null > #{msgstr_text}
-      msgfilter --keep-header -o /dev/null tee -a #{msgstr_text} < #{po_file}
+      msggrep -v -N CHANGELOG -N MAC_APP_STORE_METADATA \
+                 -N iOS_CHANGELOG -N iOS_APP_STORE_METADATA #{po_file} | \
+      msgfilter --keep-header -o /dev/null tee -a #{msgstr_text}
       cat #{msgstr_text} | utils/strip_po_markup.sh \
                          | utils/uniq_chars.rb > #{character_list}
     SCRIPT
