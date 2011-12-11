@@ -1,0 +1,108 @@
+# Treetop grammar for simple cases of font cfg files)
+grammar FrogattoFontCfg
+  rule file
+    space* '[font]' space* attributes space* chars_list:(chars space*)* '[/font]' space* {
+      def character_widths
+        result = {}
+        chars_list.elements.each do |element|
+          chars = element.chars
+          chars.characters.each do |character|
+            result[character] = chars.width
+          end
+        end
+        result
+      end
+    }
+  end
+
+  rule chars
+    '[chars]' space* attributes '[/chars]' {
+      def characters
+        attributes.values['chars'].to_s.chars
+      end
+
+      def width
+        attributes.values['width'] || attributes.values['rect']
+      end
+    }
+  end
+
+  rule attributes
+    (attribute space*)* {
+      def values
+        result = {}
+        elements.each do |element|
+          result[element.attribute.name] = element.attribute.value
+        end
+        result
+      end
+    }
+  end
+
+  rule attribute
+    word '=' expression {
+      def name
+        word.text_value
+      end
+
+      def value
+        expression.value
+      end
+    }
+  end
+
+  rule expression
+    rect /
+    integer /
+    string
+  end
+
+  rule string
+    '"\""' {
+      def value
+        '"'
+      end
+    } /
+    '"' body:[^"]* '"' {
+      def value
+        body.text_value
+      end
+    } /
+    "'" body:[^']* "'" {
+      def value
+        body.text_value
+      end
+    } /
+    word
+  end
+
+  rule word
+    [^= \n]+ {
+      def value
+        text_value
+      end
+    }
+  end
+ 
+  rule rect
+    left:integer ',' top:integer ',' right:integer ',' bottom:integer {
+      # we only care about width
+      def value
+        right.value - left.value
+      end
+    }
+  end
+
+  rule integer
+    [0-9]+ {
+      def value
+        Integer(text_value)
+      end
+    }
+  end
+
+  rule space
+    ' ' / "\t" / "\n" / '#' [^\n]* "\n"
+  end
+end
+
