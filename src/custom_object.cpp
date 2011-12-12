@@ -402,8 +402,10 @@ wml::node_ptr custom_object::write() const
 {
 	wml::node_ptr res(new wml::node("character"));
 	if(parallax_scale_millis_.get() != NULL) {
-		res->set_attr("parallax_scale_x", formatter() << parallax_scale_millis_->first);
-		res->set_attr("parallax_scale_y", formatter() << parallax_scale_millis_->second);
+		if( (type_->parallax_scale_millis_x() !=  parallax_scale_millis_->first) || (type_->parallax_scale_millis_y() !=  parallax_scale_millis_->second)){
+			res->set_attr("parallax_scale_x", formatter() << parallax_scale_millis_->first);
+			res->set_attr("parallax_scale_y", formatter() << parallax_scale_millis_->second);
+		}
 	}
 
 	if(platform_area_.get() != NULL) {
