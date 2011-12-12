@@ -2670,11 +2670,14 @@ void level::remove_character(entity_ptr e)
 	//std::cerr << "removed char: '" << e->label() << "'\n";
 }
 
-std::vector<entity_ptr> level::get_characters_in_rect(const rect& r) const
+std::vector<entity_ptr> level::get_characters_in_rect(const rect& r, int screen_xpos, int screen_ypos) const
 {
 	std::vector<entity_ptr> res;
 	foreach(entity_ptr c, chars_) {
-		if(point_in_rect(point(c->x(), c->y()), r)) {
+		const int xP = c->x() + ((c->parallax_scale_millis_x() - 1000)*screen_xpos)/1000;
+		const int yP = c->y() + ((c->parallax_scale_millis_y() - 1000)*screen_ypos)/1000;
+		
+		if(point_in_rect(point(xP, yP), r)) {
 			res.push_back(c);
 		}
 	}

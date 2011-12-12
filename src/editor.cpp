@@ -1760,7 +1760,7 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 		//some kind of object editing
 		if(event.button == SDL_BUTTON_RIGHT) {
 			std::vector<boost::function<void()> > undo, redo;
-			std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos, ypos));
+			std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos, ypos), xpos_, ypos_);
 
 			foreach(const entity_ptr& c, chars) {
 				redo.push_back(boost::bind(&editor::remove_object_from_level, this, c));
@@ -1770,7 +1770,7 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 			  boost::bind(execute_functions, redo),
 			  boost::bind(execute_functions, undo));
 		} else if(tool() == TOOL_SELECT_OBJECT && drawing_rect_) {
-			std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos, ypos));
+			std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos, ypos), xpos_, ypos_);
 			foreach(const entity_ptr& c, chars) {
 				lvl_->editor_select_object(c);
 			}
