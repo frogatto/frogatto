@@ -1559,6 +1559,11 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 				vars[info.variable_name()] = info.formula()->execute(*c);
 			}
 		}
+		
+		//if we have parallax, offset the object so it's placed at the same position it's graphically visible at
+		c->set_x( c->x() +  + ((1000 - (c->parallax_scale_millis_x()))* xpos_ )/1000);
+		c->set_y( c->y() +  + ((1000 - (c->parallax_scale_millis_y()))* ypos_ )/1000);
+		
 
 		//we only want to actually set the vars once we've calculated all of
 		//them, to avoid any ordering issues etc. So set them all here.
