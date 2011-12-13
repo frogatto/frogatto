@@ -35,6 +35,12 @@ void screen_color_flash(const graphics::color_transform& color, const graphics::
 void set_scene_title(const std::string& msg, int duration=150);
 void set_displayed_achievement(achievement_ptr a);
 bool is_achievement_displayed();
+
+
+bool update_camera_position(const level& lvl, screen_position& pos, const entity* focus=NULL, bool do_draw=true);
+void render_scene(const level& lvl, screen_position& pos, const entity* focus=NULL, bool do_draw=true);
+
+//draw_scene calls both update_camera_position() and then render_scene()
 void draw_scene(const level& lvl, screen_position& pos, const entity* focus=NULL, bool do_draw=true);
 
 struct performance_data {

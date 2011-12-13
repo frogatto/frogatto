@@ -92,36 +92,20 @@ void set_displayed_achievement(achievement_ptr a)
 
 GLfloat hp_ratio = -1.0;
 void draw_scene(const level& lvl, screen_position& pos, const entity* focus, bool do_draw) {
+	const bool draw_ready = update_camera_position(lvl, pos, focus, do_draw);
+	if(draw_ready) {
+		render_scene(lvl, pos, focus, do_draw);
+	}
+}
+
+bool update_camera_position(const level& lvl, screen_position& pos, const entity* focus, bool do_draw) {
 	if(focus == NULL && lvl.player()) {
 		focus = &lvl.player()->get_entity();
 	}
 
-	last_position = pos;
-
 	//flag which gets set to false if we abort drawing, due to the
 	//screen position being initialized now.
 	const bool draw_level = do_draw && pos.init;
-
-	graphics::prepare_raster();
-	glPushMatrix();
-
-	const int camera_rotation = lvl.camera_rotation();
-	if(camera_rotation) {
-		GLfloat rotate = GLfloat(camera_rotation)/1000.0;
-		glRotatef(rotate, 0.0, 0.0, 1.0);
-	}
-
-	if(pos.flip_rotate) {
-		glClearColor(0.0, 0.0, 0.0, 0.0);
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		const SDL_Surface* fb = SDL_GetVideoSurface();
-		const double angle = sin(0.5*3.141592653589*GLfloat(pos.flip_rotate)/1000.0);
-		const int pixels = (preferences::actual_screen_width()/2)*angle;
-		
-		//then squish all future drawing inwards
-		glViewport(pixels, 0, preferences::actual_screen_width() - pixels*2, preferences::actual_screen_height());
-	}
 
 	if(focus) {
 		// If the camera is automatically moved along by the level (e.g. a 
@@ -296,9 +280,31 @@ void draw_scene(const level& lvl, screen_position& pos, const entity* focus, boo
 		}
 	}
 
-	if(!draw_level) {
-		glPopMatrix();
-		return;
+	last_position = pos;
+
+	return draw_level;
+}
+
+void render_scene(const level& lvl, screen_position& pos, const entity* focus, bool do_draw) {
+	graphics::prepare_raster();
+	glPushMatrix();
+
+	const int camera_rotation = lvl.camera_rotation();
+	if(camera_rotation) {
+		GLfloat rotate = GLfloat(camera_rotation)/1000.0;
+		glRotatef(rotate, 0.0, 0.0, 1.0);
+	}
+
+	if(pos.flip_rotate) {
+		glClearColor(0.0, 0.0, 0.0, 0.0);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		const SDL_Surface* fb = SDL_GetVideoSurface();
+		const double angle = sin(0.5*3.141592653589*GLfloat(pos.flip_rotate)/1000.0);
+		const int pixels = (preferences::actual_screen_width()/2)*angle;
+		
+		//then squish all future drawing inwards
+		glViewport(pixels, 0, preferences::actual_screen_width() - pixels*2, preferences::actual_screen_height());
 	}
 
 	int xscroll = (pos.x/100)&preferences::xypos_draw_mask;

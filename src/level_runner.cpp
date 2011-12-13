@@ -702,9 +702,12 @@ bool level_runner::play_cycle()
 
 	const int start_draw = SDL_GetTicks();
 	if(start_draw < desired_end_time || nskip_draw_ >= MaxSkips) {
+		const bool should_draw = update_camera_position(*lvl_, last_draw_position(), NULL, !is_skipping_game());
 		lvl_->process_draw();
 
-		draw_scene(*lvl_, last_draw_position(), NULL, !is_skipping_game());
+		if(should_draw) {
+			render_scene(*lvl_, last_draw_position(), NULL, !is_skipping_game());
+		}
 
 		performance_data perf = { current_fps_, current_cycles_, current_delay_, current_draw_, current_process_, current_flip_, cycle, current_events_, profiling_summary_ };
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_HARMATTAN || TARGET_OS_IPHONE
