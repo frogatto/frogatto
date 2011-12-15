@@ -1800,20 +1800,11 @@ void level::draw(int x, int y, int w, int h) const
 		glColor4f(1.0, 1.0, 1.0, alpha);
 
 		if(editor_highlight_) {
-			editor_highlight_->draw();
-			
-			/*const int xP = editor_highlight_->x() + ((1000 - (editor_highlight_->parallax_scale_millis_x()))* start_x )/1000;
-			const int yP = editor_highlight_->y() + ((1000 - (editor_highlight_->parallax_scale_millis_y()))* start_y )/1000;
-			
-			draw_entity(*editor_highlight_, xP, yP, true);*/
+			draw_entity(*editor_highlight_, x, y, true);
 		}
 
 		foreach(const entity_ptr& e, editor_selection_) {
-			e->draw();
-			/*const int xP = e->x() + ((1000 - (e->parallax_scale_millis_x()))* start_x )/1000;
-			const int yP = e->y() + ((1000 - (e->parallax_scale_millis_y()))* start_y )/1000;
-
-			draw_entity(*e, xP,yP, true);*/
+			draw_entity(*e, x, y, true);
 		}
 
 		glColor4f(1.0, 1.0, 1.0, 1.0);
