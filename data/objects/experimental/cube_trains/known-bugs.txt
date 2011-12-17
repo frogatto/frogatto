@@ -11,6 +11,8 @@
 	║                                                                               ║
 	║ Minor:                                                                        ║
 	║  ▶ Tween scroll input buttons' movement.                                      ║
+	║  ▶ Multiply trains' rotation calculation y by whatever we did for the mouse   ║
+	║    input.                                                                     ║
 	║  ▶                                                                            ║
 	║                                                          ▷ fixed  ▶ not fixed ║
 	╚═══════════════════════════════════════════════════════════════════════════════╝
