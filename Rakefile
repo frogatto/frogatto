@@ -199,6 +199,9 @@ LANGUAGES.each_pair do |language, font|
         montage -label '' -background transparent -gravity SouthWest \
                 -geometry '1x1+0+0<' #{glyphs.keys.join(' ')} png32:#{font_texture}
       COMMAND
+      # For iOS optimization, the textures need to have even width and height
+      (width, height) = image_size(font_texture).map {|length| length + length % 2}
+     sh "convert #{font_texture} -gravity NorthWest -background transparent -extent #{width}x#{height} png32:#{font_texture}"
     end
 
     font_cfg_snippet = font_cfg_snippet(style, language)
