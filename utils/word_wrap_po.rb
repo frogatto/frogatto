@@ -82,7 +82,7 @@ po.translations.each do |translation|
          translation.msgstr.empty? || 
          translation.comment =~ /METADATA|CHANGELOG|titlescreen/ ||
          translation.msgstr =~ /[{}]|\\n/
-    translation.msgstr = word_wrap(translation.msgstr)
+    translation.msgstr = word_wrap(translation.msgstr.gsub('\"', '"')).gsub('"', '\"')
   end
 end
 File.open(PO_FILE, 'w') {|file| file.write po.to_text}
