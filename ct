@@ -1,2 +1,2 @@
 #!/bin/sh
-./game --level-path="data/level/cube-trains" --width 1083 --height 843 $@ --native
+./game --level-path="data/level/cube-trains" --width 1050 --height 845 $@ --native
