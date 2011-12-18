@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto v1.0.3\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2011-12-05 21:28-0200\n"
+"POT-Creation-Date: 2011-12-18 19:17-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2454,14 +2454,14 @@ msgstr ""
 msgid "Descent to Town"
 msgstr ""
 
-#: data/level/descent-to-town.cfg:947
+#: data/level/descent-to-town.cfg:943
 msgid ""
 "It says,\n"
 "\"Chopple's General Store,\n"
 "just ahead."
 msgstr ""
 
-#: data/level/descent-to-town.cfg:949
+#: data/level/descent-to-town.cfg:945
 msgid "Honest trade and thrifty prices!\""
 msgstr ""
 
@@ -4432,7 +4432,7 @@ msgstr ""
 msgid "This is a blank tile. It doesn't do anything."
 msgstr ""
 
-#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:93
+#: data/object_prototypes/crazy-stuff/ct-cursor.cfg:159
 msgid "'"
 msgstr ""
 
@@ -4681,7 +4681,7 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: src/draw_scene.cpp:378
+#: src/draw_scene.cpp:384
 msgid "Achievement Unlocked!"
 msgstr ""
 
