@@ -27,6 +27,7 @@ require 'treetop'
 require 'fileutils'
 
 MAX_LINE_WIDTH = 350
+DEFAULT_KERNING = 2
 LANGUAGE = ARGV[0]
 
 CFG_FILE = "data/dialog_font.#{LANGUAGE}.cfg"
@@ -46,6 +47,7 @@ unless result
   abort "Failed to parse #{CFG_FILE}"
 end
 CHARACTER_WIDTHS = result.character_widths
+KERNING = result.attributes.values['kerning'] || DEFAULT_KERNING
 
 def word_wrap(text)
   line_breaker = ICU::BreakIterator.new(:line, LANGUAGE)
@@ -65,7 +67,11 @@ def word_wrap(text)
         end
       end.inject(&:+)
       line_width += width
-      line_width <= MAX_LINE_WIDTH && line << segment
+      line_width <= MAX_LINE_WIDTH and
+        begin
+          line << segment
+          line_width += KERNING
+        end
     end
     lines << line.strip
   end
