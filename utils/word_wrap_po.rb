@@ -80,10 +80,12 @@ po.translations.each do |translation|
   unless translation.msgid.empty? ||
          translation.msgstr.empty? || 
          translation.comment =~ /METADATA|CHANGELOG|titlescreen/ ||
-         translation.msgstr =~ /[{}]|\\n/
+         translation.msgstr =~ /[{}]/ ||
+         translation.msgstr =~ /\\n/ && translation.comment !~ /automatically word wrapped/
     wrapped = word_wrap(translation.msgstr.gsub('\"', '"')).gsub('"', '\"')
     if wrapped != translation.msgstr
       puts "Word-wrapped:\n#{translation.msgid}\n#{wrapped}"
+      translation.comment += "automatically word-wrapped"
       translation.msgstr = wrapped
     end
   end
