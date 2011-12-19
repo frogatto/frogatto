@@ -59,19 +59,15 @@ def word_wrap(text)
     line_width = 0
     segments = segments.drop_while do |from, to|
       segment = text[from...to]
-      width = segment.chars.map do |character|
-        CHARACTER_WIDTHS[character].tap do |width|
-          unless width
-            abort "No glyph defined for #{character}, used in msgstr '#{text}'. If this language uses generated glyphs, try 'rake #{LANGUAGE}'"
-          end
+      segment_width = segment.chars.inject(0) do |total, character|
+        character_width = CHARACTER_WIDTHS[character]
+        unless character_width
+          abort "No glyph defined for #{character}, used in msgstr '#{text}'. If this language uses generated glyphs, try 'rake #{LANGUAGE}'"
         end
-      end.inject(&:+)
-      line_width += width
-      line_width <= MAX_LINE_WIDTH and
-        begin
-          line << segment
-          line_width += KERNING
-        end
+        total + character_width + KERNING
+      end
+      line_width += segment_width
+      line_width <= MAX_LINE_WIDTH && line << segment
     end
     lines << line.strip
   end
