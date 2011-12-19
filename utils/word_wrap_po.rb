@@ -71,9 +71,6 @@ def word_wrap(text)
     end
     lines << line.strip
   end
-  if lines.length > 1
-    puts "Word-wrapped:\n#{lines.join "\n"}"
-  end
   lines.join "\\n"
 end
 
@@ -84,7 +81,11 @@ po.translations.each do |translation|
          translation.msgstr.empty? || 
          translation.comment =~ /METADATA|CHANGELOG|titlescreen/ ||
          translation.msgstr =~ /[{}]|\\n/
-    translation.msgstr = word_wrap(translation.msgstr.gsub('\"', '"')).gsub('"', '\"')
+    wrapped = word_wrap(translation.msgstr.gsub('\"', '"')).gsub('"', '\"')
+    if wrapped != translation.msgstr
+      puts "Word-wrapped:\n#{translation.msgid}\n#{wrapped}"
+      translation.msgstr = wrapped
+    end
   end
 end
 File.open(PO_FILE, 'w') {|file| file.write po.to_text}
