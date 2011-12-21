@@ -132,7 +132,7 @@ namespace preferences {
 		bool load_compiled_ = false;
 #endif
 
-#if defined(TARGET_PANDORA)
+#if defined(TARGET_PANDORA) || defined(TARGET_ANDROID)
         bool use_fbo_ = true;
         bool use_bequ_ = true;
 #endif
@@ -345,7 +345,7 @@ namespace preferences {
 		load_compiled_ = value;
 	}
 	
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_ANDROID)
 	bool use_fbo()
 	{
 		return use_fbo_;
@@ -613,7 +613,7 @@ namespace preferences {
 		return run_failing_unit_tests_;
 	}
 
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_ANDROID)
 	PFNGLBLENDEQUATIONOESPROC           glBlendEquationOES;
 	PFNGLGENFRAMEBUFFERSOESPROC         glGenFramebuffersOES;
 	PFNGLBINDFRAMEBUFFEROESPROC         glBindFramebufferOES;

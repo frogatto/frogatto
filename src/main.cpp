@@ -2,7 +2,7 @@
 #ifndef SDL_VIDEO_OPENGL_ES
 #include <GL/glew.h>
 #endif
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_ANDROID)
 #include <GLES/gl.h>
 #ifdef TARGET_PANDORA
 #include <GLES/glues.h>
@@ -546,7 +546,7 @@ extern "C" int main(int argc, char** argv)
 	
 	preferences::save_preferences();
 	std::cerr << SDL_GetError() << "\n";
-#if !defined(TARGET_OS_HARMATTAN) && !defined(TARGET_TEGRA)
+#if !defined(TARGET_OS_HARMATTAN) && !defined(TARGET_TEGRA) && !defined(TARGET_ANDROID)
 	std::cerr << gluErrorString(glGetError()) << "\n";
 #endif
 	return 0;

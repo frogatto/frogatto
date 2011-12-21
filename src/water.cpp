@@ -20,7 +20,7 @@
 #include "wml_utils.hpp"
 #include "color_utils.hpp"
 
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_ANDROID)
 #include <EGL/egl.h>
 #include <GLES/gl.h>
 #include <GLES/glext.h>
@@ -171,7 +171,7 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	unsigned char water_color[] = {a.color_[0], a.color_[1], a.color_[2], a.color_[3]};
 	
 	glBlendFunc(GL_ONE, GL_ONE);
-	#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
+	#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_ANDROID)
 	if (glBlendEquationOES)
 		glBlendEquationOES(GL_FUNC_REVERSE_SUBTRACT_OES);
 	#elif defined(GL_OES_blend_subtract)
