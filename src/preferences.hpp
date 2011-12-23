@@ -4,7 +4,13 @@
 #include <string>
 
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_ANDROID)
+#if defined(TARGET_ANDROID)
+// There are no EGL headers inside Android NDK, they are an internal thing that the application should not use
+#include <SDL_video.h>
+#define eglGetProcAddress SDL_GL_GetProcAddress
+#else
 #include <EGL/egl.h>
+#endif
 #include <GLES/gl.h>
 #include <GLES/glext.h>
 #endif

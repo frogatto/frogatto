@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "input.hpp"
+#include "raster.hpp"
 #include "scoped_resource.hpp"
 
 #include "userevents.h"
@@ -40,6 +41,12 @@ namespace input {
 							break;
 					}
 				}
+				break;
+#endif
+#if defined(TARGET_ANDROID)
+			case SDL_VIDEORESIZE:
+				// Reset OpenGL context and re-upload textures on Android
+				graphics::set_video_mode(graphics::screen_width(), graphics::screen_height());
 				break;
 #endif
             case SDL_USEREVENT:

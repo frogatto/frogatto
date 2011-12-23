@@ -37,6 +37,12 @@ void show_inventory(const level& lvl, entity& c)
 			switch(event.type) {
 			case SDL_QUIT:
 				return;
+#if defined(TARGET_ANDROID)
+			case SDL_VIDEORESIZE:
+				// Reset OpenGL context and re-upload textures on Android
+				graphics::set_video_mode(graphics::screen_width(), graphics::screen_height());
+				continue;
+#endif
 			case SDL_KEYDOWN:
 				if(event.key.keysym.sym == SDLK_ESCAPE || event.key.keysym.sym == SDLK_SPACE) {
 					return;
@@ -135,6 +141,7 @@ void show_inventory(const level& lvl, entity& c)
 		}
 		
 		SDL_GL_SwapBuffers();
+		graphics::reset_opengl_state();
 		SDL_Delay(20);
 	}
 }

@@ -125,6 +125,7 @@ void dialog::prepare_draw()
 void dialog::complete_draw()
 {
 	SDL_GL_SwapBuffers();
+	graphics::reset_opengl_state();
 
 	const int end_draw = last_draw_ + 20;
 	const int delay_time = std::max<int>(1, end_draw - SDL_GetTicks());

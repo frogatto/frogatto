@@ -44,6 +44,7 @@ UTILITY(render_level)
 			glPopMatrix();
 
 			SDL_GL_SwapBuffers();
+			graphics::reset_opengl_state();
 
 			graphics::surface s(SDL_CreateRGBSurface(SDL_SWSURFACE, seg_width, seg_height, 24, SURFACE_MASK_RGB));
 			glReadPixels(0, 0, seg_width, seg_height, GL_RGB, GL_UNSIGNED_BYTE, s->pixels);

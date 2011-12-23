@@ -649,7 +649,9 @@ void texture::ID::build_id()
 	if(!preferences::compiling_tiles) {
 		width = s->w;
 		height = s->h;
+#ifndef ANDROID
 		s = surface();
+#endif
 	}
 }
 

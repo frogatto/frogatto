@@ -56,8 +56,10 @@ void prepare_transition_scene(level& lvl, screen_position& screen_pos)
 {
 	draw_scene(lvl, screen_pos);
 	SDL_GL_SwapBuffers();
+	graphics::reset_opengl_state();
 	draw_scene(lvl, screen_pos);
 	SDL_GL_SwapBuffers();
+	graphics::reset_opengl_state();
 }
 
 void transition_scene(level& lvl, screen_position& screen_pos, bool transition_out, TransitionFn draw_fn) {
@@ -73,6 +75,7 @@ void transition_scene(level& lvl, screen_position& screen_pos, bool transition_o
 		draw_fn(lvl, screen_pos, transition_out ? (n/20.0) : (1 - n/20.0));
 
 		SDL_GL_SwapBuffers();
+		graphics::reset_opengl_state();
 
 		const int target_end_time = start_time + (n+1)*preferences::frame_time_millis();
 		const int current_time = SDL_GetTicks();
@@ -201,6 +204,7 @@ void show_end_game()
 		graphics::blit_texture(t, xpos, ypos, t.width()*percent, t.height(), 0.0,
 						       0.0, 0.0, percent, 1.0);
 		SDL_GL_SwapBuffers();
+		graphics::reset_opengl_state();
 		SDL_Delay(40);
 	}
 
@@ -515,6 +519,11 @@ bool level_runner::play_cycle()
 				break;
 			}
 			case SDL_VIDEORESIZE: {
+#if defined(TARGET_ANDROID)
+				// Reset OpenGL context and re-upload textures on Android
+				graphics::set_video_mode(graphics::screen_width(), graphics::screen_height());
+				break;
+#endif
 				const SDL_ResizeEvent* const resize = reinterpret_cast<SDL_ResizeEvent*>(&event);
 				int width = resize->w;
 				int height = resize->h;
@@ -658,6 +667,7 @@ bool level_runner::play_cycle()
 				iphone_controls::handle_event(event);
 				break;
 #endif
+
 			default:
 				break;
 			}
@@ -725,6 +735,7 @@ bool level_runner::play_cycle()
 		const int start_flip = SDL_GetTicks();
 		if(!is_skipping_game()) {
 			SDL_GL_SwapBuffers();
+			graphics::reset_opengl_state();
 		}
 
 		next_flip_ += (SDL_GetTicks() - start_flip);
@@ -813,6 +824,7 @@ void level_runner::show_debug_console()
 		draw_scene(*lvl_, last_draw_position());
 		entry.draw();
 		SDL_GL_SwapBuffers();
+		graphics::reset_opengl_state();
 		SDL_Delay(20);
 	}
 

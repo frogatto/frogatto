@@ -54,6 +54,7 @@ void loading_screen::draw (const std::string& message)
 	}
 	
 	SDL_GL_SwapBuffers();
+	graphics::reset_opengl_state();
 	//SDL_Delay(500); //make it possible to see on fast computers; for debugging
 }
 

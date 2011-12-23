@@ -881,6 +881,7 @@ public:
 		for(int n = 0; n != 50; ++n) {
 			draw_scene(lvl, pos, focus_.get());
 			SDL_GL_SwapBuffers();
+			graphics::reset_opengl_state();
 			SDL_Delay(20);
 		}
 	}
@@ -1163,6 +1164,12 @@ private:
 						}
 						break;
 #endif
+#if defined(TARGET_ANDROID)
+					case SDL_VIDEORESIZE:
+						// Reset OpenGL context and re-upload textures on Android
+						graphics::set_video_mode(graphics::screen_width(), graphics::screen_height());
+						break;
+#endif
 						case SDL_QUIT:
 							throw interrupt_game_exception();
 						case SDL_USEREVENT:
@@ -1210,6 +1217,7 @@ private:
 #endif
 
 		SDL_GL_SwapBuffers();
+		graphics::reset_opengl_state();
 		SDL_Delay(20);
 	}
 
@@ -1386,6 +1394,7 @@ private:
 		entry_.draw();
 
 		SDL_GL_SwapBuffers();
+		graphics::reset_opengl_state();
 	}
 
 	const formula_callable& callable_;

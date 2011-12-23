@@ -198,6 +198,12 @@ void message_dialog::process()
 				}
 
 				break;
+#if defined(TARGET_ANDROID)
+			case SDL_VIDEORESIZE:
+				// Reset OpenGL context and re-upload textures on Android
+				graphics::set_video_mode(graphics::screen_width(), graphics::screen_height());
+				break;
+#endif
 		}
 	}
 

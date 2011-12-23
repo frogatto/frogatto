@@ -135,8 +135,11 @@ namespace preferences {
 #if defined(TARGET_PANDORA) || defined(TARGET_ANDROID)
         bool use_fbo_ = true;
         bool use_bequ_ = true;
+		//bool use_16bpp_textures_ = true;
+		bool force_no_npot_textures_ = true; // GLES 1.X on Android should always use power-of-2 textrures, NPOT textures are only for GLES 2.X
+#else
+		bool force_no_npot_textures_ = false;
 #endif
-
 		bool use_16bpp_textures_ = false;
 #endif
 
@@ -147,8 +150,6 @@ namespace preferences {
 		std::string save_file_path_ = PREFERENCES_PATH SAVE_FILENAME;
 		std::string auto_save_file_path_ = PREFERENCES_PATH AUTOSAVE_FILENAME;
 		
-		bool force_no_npot_textures_ = false;
-
 		bool run_failing_unit_tests_ = false;
 	}
 

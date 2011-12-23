@@ -2569,6 +2569,7 @@ void editor::draw() const
 	debug_console::draw();
 
 	SDL_GL_SwapBuffers();
+	graphics::reset_opengl_state();
 }
 
 void editor::draw_selection(int xoffset, int yoffset) const
