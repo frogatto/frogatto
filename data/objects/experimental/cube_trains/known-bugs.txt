@@ -6,12 +6,13 @@
 	║  ▶                                                                            ║
 	║                                                                               ║
 	║ Problematic:                                                                  ║
-	║  ▶ When deleting a support, the track doesn't fall down.                      ║
+	║  ▷ When deleting a support, the track doesn't fall down.                      ║
+	║  ▶ Make keyboard input code handle one key/frame, to avoid conflicts.         ║
 	║  ▶                                                                            ║
 	║                                                                               ║
 	║ Minor:                                                                        ║
 	║  ▶ Tween scroll input buttons' movement.                                      ║
-	║  ▶ Multiply trains' rotation calculation y by whatever we did for the mouse   ║
+	║  ▷ Multiply trains' rotation calculation y by whatever we did for the mouse   ║
 	║    input.                                                                     ║
 	║  ▶                                                                            ║
 	║                                                          ▷ fixed  ▶ not fixed ║
