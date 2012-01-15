@@ -1,6 +1,7 @@
 #include "asserts.hpp"
 #include "foreach.hpp"
 #include "solid_map.hpp"
+#include "string_utils.hpp"
 #include "texture.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
@@ -284,8 +285,11 @@ const_solid_info_ptr solid_info::create_platform(wml::const_node_ptr node)
 		return const_solid_info_ptr();
 	}
 
-	rect area(node->attr("platform_area"));
-	solid_map::create_object_platform_maps(area, platform);
+	std::vector<std::string> v = util::split(node->attr("platform_area"), '|');
+	foreach(const std::string& area, v) {
+		solid_map::create_object_platform_maps(rect(area), platform);
+	}
+
 	return create_from_solid_maps(platform);
 }
 
