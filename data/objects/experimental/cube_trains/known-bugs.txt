@@ -8,6 +8,7 @@
 	║ Problematic:                                                                  ║
 	║  ▷ When deleting a support, the track doesn't fall down.                      ║
 	║  ▶ Make keyboard input code handle one key/frame, to avoid conflicts.         ║
+	║  ▶ Make raise tips rotate. Further work needed on graphics.                   ║
 	║  ▶                                                                            ║
 	║                                                                               ║
 	║ Minor:                                                                        ║
