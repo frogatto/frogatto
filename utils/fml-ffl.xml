@@ -69,6 +69,7 @@
 			<item> base </item> <!-- Used for [base:x] tags. -->
 			<item> script </item>
 			<item> modification </item>
+			<item> frame </item>
 		</list>
 		<list name="engine events">
 			<item> on_start_level </item>
