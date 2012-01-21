@@ -821,13 +821,15 @@ void custom_object::process(level& lvl)
 		const int move_x = pos.x - parent_prev_x_;
 		const int move_y = pos.y - parent_prev_y_;
 
+		move_centipixels(move_x*100, move_y*100);
 
 		const bool parent_facing = parent_->face_right();
 		if(parent_facing != parent_prev_facing_) {
-			const int relative_x = x() + current_frame().width()/2 - parent_position().x;
-			move_centipixels(-relative_x*200, 0);
-		} else {
-			move_centipixels(move_x*100, move_y*100);
+			const point pos_before_turn = parent_->pivot(parent_pivot_);
+
+			const int relative_x = pos.x - pos_before_turn.x;
+
+			move_centipixels(relative_x*100, 0);
 		}
 
 		parent_prev_x_ = pos.x;

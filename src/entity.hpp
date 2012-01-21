@@ -246,7 +246,7 @@ public:
 	virtual const std::vector<light_ptr>& lights() const = 0;
 	virtual void swap_lights(std::vector<light_ptr>& lights) = 0;
 
-	point pivot(const std::string& name) const;
+	point pivot(const std::string& name, bool reverse_facing=false) const;
 
 	virtual bool appears_at_difficulty(int difficulty) const = 0;
 

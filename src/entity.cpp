@@ -318,15 +318,20 @@ void entity::read_controls(int cycle)
 	}
 }
 
-point entity::pivot(const std::string& name) const
+point entity::pivot(const std::string& name, bool reverse_facing) const
 {
 	const frame& f = current_frame();
 	if(name == "") {
 		return midpoint();
 	}
 
+	bool facing_right = face_right();
+	if(reverse_facing) {
+		facing_right = !facing_right;
+	}
+
 	const point pos = f.pivot(name, time_in_frame());
-	if(face_right()) {
+	if(facing_right) {
 		return point(x() + pos.x, y() + pos.y);
 	} else {
 		return point(x() + f.width() - pos.x, y() + pos.y);
