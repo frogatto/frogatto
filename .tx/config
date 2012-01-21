@@ -5,3 +5,8 @@ host = https://www.transifex.net
 file_filter = po/<lang>.po
 source_file = po/frogatto.pot
 source_lang = en_US
+
+[Frogatto.frogatto_unstablepot]
+file_filter = po/unstable/<lang>.po
+source_file = po/unstable/frogatto_unstable.pot
+source_lang = en_US
