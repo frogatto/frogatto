@@ -214,6 +214,14 @@ const_custom_object_type_ptr custom_object_type::get(const std::string& id)
 	return result;
 }
 
+const_custom_object_type_ptr custom_object_type::get_or_die(const std::string& id)
+{
+	const const_custom_object_type_ptr res = get(id);
+	ASSERT_LOG(res.get() != NULL, "UNRECOGNIZED OBJECT TYPE: '" << id << "'");
+
+	return res;
+}
+
 const_custom_object_type_ptr custom_object_type::get_sub_object(const std::string& id) const
 {
 	std::map<std::string, const_custom_object_type_ptr>::const_iterator itor = sub_objects_.find(id);

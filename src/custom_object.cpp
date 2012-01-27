@@ -278,7 +278,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 custom_object::custom_object(const std::string& type, int x, int y, bool face_right)
   : entity(x, y, face_right),
     previous_y_(y),
-    type_(custom_object_type::get(type)),
+    type_(custom_object_type::get_or_die(type)),
 	base_type_(type_),
 	frame_(&type_->default_frame()),
     frame_name_("normal"),

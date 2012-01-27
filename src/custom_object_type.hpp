@@ -34,6 +34,7 @@ public:
 	static wml::node_ptr merge_prototype(wml::node_ptr node);
 	static const std::string* get_object_path(const std::string& id);
 	static const_custom_object_type_ptr get(const std::string& id);
+	static const_custom_object_type_ptr get_or_die(const std::string& id);
 	static custom_object_type_ptr create(const std::string& id);
 	static void invalidate_object(const std::string& id);
 	static void invalidate_all_objects();
