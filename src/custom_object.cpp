@@ -1683,9 +1683,15 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_H:                 return variant(solid_rect().h());
 
 	case CUSTOM_OBJECT_ACTIVATION_BORDER: return variant(activation_border_);
-	case CUSTOM_OBJECT_MIDPOINT_X:        return variant(x() + current_frame().width()/2);
-	case CUSTOM_OBJECT_MIDPOINT_Y:        return variant(y() + current_frame().height()/2);
+	case CUSTOM_OBJECT_MID_X:
+	case CUSTOM_OBJECT_MIDPOINT_X:        return variant(solid_rect().w() ? solid_rect().x() + solid_rect().w()/2 : x() + current_frame().width()/2);
+	case CUSTOM_OBJECT_MID_Y:
+	case CUSTOM_OBJECT_MIDPOINT_Y:        return variant(solid_rect().h() ? solid_rect().y() + solid_rect().h()/2 : y() + current_frame().height()/2);
 	case CUSTOM_OBJECT_SOLID_RECT:        return variant(solid_rect().callable());
+	case CUSTOM_OBJECT_SOLID_MID_X:       return variant(solid_rect().x() + solid_rect().w()/2);
+	case CUSTOM_OBJECT_SOLID_MID_Y:       return variant(solid_rect().y() + solid_rect().h()/2);
+	case CUSTOM_OBJECT_IMG_MID_X:       return variant(x() + current_frame().width()/2);
+	case CUSTOM_OBJECT_IMG_MID_Y:       return variant(y() + current_frame().height()/2);
 	case CUSTOM_OBJECT_IMG_W:             return variant(current_frame().width());
 	case CUSTOM_OBJECT_IMG_H:             return variant(current_frame().height());
 	case CUSTOM_OBJECT_FRONT:             return variant(face_right() ? body_rect().x2() : body_rect().x());
