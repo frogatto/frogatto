@@ -22,7 +22,7 @@ void blur_info::copy_settings(const blur_info& o)
 
 void blur_info::next_frame(int start_x, int start_y, int end_x, int end_y,
                 const frame* object_frame, int time_in_frame, bool facing,
-				bool upside_down, float rotate) {
+				bool upside_down, float start_rotate, float rotate) {
 	foreach(blur_frame& f, frames_) {
 		f.fade -= fade_;
 	}
@@ -39,7 +39,7 @@ void blur_info::next_frame(int start_x, int start_y, int end_x, int end_y,
 		f.time_in_frame = time_in_frame;
 		f.facing = facing;
 		f.upside_down = upside_down;
-		f.rotate = rotate;
+		f.rotate = (start_rotate*n + rotate*(granularity_ - n))/granularity_;
 		f.fade = alpha_ + (fade_*(granularity_ - n))/granularity_;
 		frames_.push_back(f);
 	}

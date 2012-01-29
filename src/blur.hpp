@@ -28,7 +28,7 @@ public:
 	//interpolated between start_x,start_y and end_x,end_y.
 	void next_frame(int start_x, int start_y, int end_x, int end_y,
 	                const frame* f, int time_in_frame, bool facing,
-					bool upside_down, float rotate);
+					bool upside_down, float start_rotate, float rotate);
 
 	void draw() const;
 

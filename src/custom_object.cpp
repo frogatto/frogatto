@@ -876,6 +876,7 @@ void custom_object::process(level& lvl)
 
 	const int start_x = x();
 	const int start_y = y();
+	const decimal start_rotate = rotate_;
 	++cycle_;
 
 	if(invincible_) {
@@ -1402,7 +1403,7 @@ void custom_object::process(level& lvl)
 	set_driver_position();
 
 	if(blur_) {
-		blur_->next_frame(start_x, start_y, x(), y(), frame_, time_in_frame_, face_right(), upside_down(), rotate_.as_float());
+		blur_->next_frame(start_x, start_y, x(), y(), frame_, time_in_frame_, face_right(), upside_down(), start_rotate.as_float(), rotate_.as_float());
 		if(blur_->destroyed()) {
 			blur_.reset();
 		}
