@@ -15,6 +15,7 @@
 	║  ▶ Tween scroll input buttons' movement.                                      ║
 	║  ▷ Multiply trains' rotation calculation y by whatever we did for the mouse   ║
 	║    input.                                                                     ║
+	║  ▶ Fix MEG interpretation. See permutate_mutually_exclusive_groups in cursor. ║
 	║  ▶                                                                            ║
 	║                                                          ▷ fixed  ▶ not fixed ║
 	╚═══════════════════════════════════════════════════════════════════════════════╝
