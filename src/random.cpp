@@ -1,12 +1,19 @@
 #include <iostream>
 
+#include <time.h>
+
 #include "random.hpp"
 
 namespace rng {
 
-static unsigned int next = 1;
+static unsigned int UninitSeed = 11483;
+static unsigned int next = UninitSeed;
 
 int generate() {
+	if(next == UninitSeed) {
+		next = time(NULL);
+	}
+
 	next = next * 1103515245 + 12345;
 	const int result = ((unsigned int)(next/65536) % 32768);
 	return result;
