@@ -20,6 +20,10 @@
 namespace graphics
 {
 
+struct load_image_error
+{
+};
+
 namespace surface_cache
 {
 

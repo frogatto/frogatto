@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 
+#include "surface_cache.hpp"
 #include "loading_screen.hpp"
 #include "wml_node.hpp"
 #include "custom_object_type.hpp"
@@ -14,12 +15,15 @@
 loading_screen::loading_screen (int items) : items_(items), status_(0),
                                              started_at_(SDL_GetTicks())
 {
-	background_ = graphics::texture::get("backgrounds/loading_screen.png");
+	try {
+		background_ = graphics::texture::get("backgrounds/loading_screen.png");
 
-	if(graphics::screen_height() > 0 && float(graphics::screen_width())/float(graphics::screen_height()) <= 1.4) {
-		splash_ = graphics::texture::get("splash.jpg");
-	} else {
-		splash_ = graphics::texture::get("splash-wide.jpg");
+		if(graphics::screen_height() > 0 && float(graphics::screen_width())/float(graphics::screen_height()) <= 1.4) {
+			splash_ = graphics::texture::get("splash.jpg");
+		} else {
+			splash_ = graphics::texture::get("splash-wide.jpg");
+		}
+	} catch(graphics::load_image_error& e) {
 	}
 }
 
