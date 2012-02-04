@@ -1529,7 +1529,7 @@ FUNCTION_DEF(add_object, 1, 1, "add_object(object): inserts the given object int
 	if(e) {
 		return variant(new add_object_command(e));
 	} else {
-		std::cerr << "OBJECT NOT VALID!\n";
+		std::cerr << "NOT AN OBJECT!\n";
 		return variant();
 	}
 END_FUNCTION_DEF(add_object)
