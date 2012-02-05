@@ -8,14 +8,17 @@
 	║ Problematic:                                                                  ║
 	║  ▷ When deleting a support, the track doesn't fall down.                      ║
 	║  ▶ Make keyboard input code handle one key/frame, to avoid conflicts.         ║
-	║  ▶ Make raise tips rotate. Further work needed on graphics.                   ║
+	║  ▷ Make raise tips rotate. Further work needed on graphics.                   ║
+	║  ▶ Ojbects spawned in the process of fulfilling the requirements of other     ║
+	║    objects when they're built don't delete other objects; bug or intended?    ║
+	║  ▶ Automatic raises don't play well with regards to deleting stuff.           ║
 	║  ▶                                                                            ║
 	║                                                                               ║
 	║ Minor:                                                                        ║
 	║  ▶ Tween scroll input buttons' movement.                                      ║
 	║  ▷ Multiply trains' rotation calculation y by whatever we did for the mouse   ║
 	║    input.                                                                     ║
-	║  ▶ Fix MEG interpretation. See permutate_mutually_exclusive_groups in cursor. ║
+	║  ▷ Fix MEG interpretation. See permutate_mutually_exclusive_groups in cursor. ║
 	║  ▶                                                                            ║
 	║                                                          ▷ fixed  ▶ not fixed ║
 	╚═══════════════════════════════════════════════════════════════════════════════╝
