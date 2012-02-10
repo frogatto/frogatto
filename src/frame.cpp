@@ -452,7 +452,13 @@ void frame::draw_into_blit_queue(graphics::blit_queue& blit, int x, int y, bool 
 	const int w = info->area.w()*scale_*(face_right ? 1 : -1);
 	const int h = info->area.h()*scale_*(upside_down ? -1 : 1);
 
+	rect[0] = texture_.translate_coord_x(rect[0]);
+	rect[1] = texture_.translate_coord_y(rect[1]);
+	rect[2] = texture_.translate_coord_x(rect[2]);
+	rect[3] = texture_.translate_coord_y(rect[3]);
+
 	blit.set_texture(texture_.get_id());
+
 
 	blit.add(x, y, rect[0], rect[1]);
 	blit.add(x + w, y, rect[2], rect[1]);
