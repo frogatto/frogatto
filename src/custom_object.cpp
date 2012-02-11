@@ -1677,9 +1677,9 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_PIVOT:             return variant(parent_pivot_);
 	case CUSTOM_OBJECT_PREVIOUS_Y:        return variant(previous_y_);
 	case CUSTOM_OBJECT_X1:                return variant(solid_rect().x());
-	case CUSTOM_OBJECT_X2:                return variant(solid_rect().x2());
+	case CUSTOM_OBJECT_X2:                return variant(solid_rect().w() ? solid_rect().x2() : x() + current_frame().width());
 	case CUSTOM_OBJECT_Y1:                return variant(solid_rect().y());
-	case CUSTOM_OBJECT_Y2:                return variant(solid_rect().y2());
+	case CUSTOM_OBJECT_Y2:                return variant(solid_rect().h() ? solid_rect().y2() : y() + current_frame().height());
 	case CUSTOM_OBJECT_W:                 return variant(solid_rect().w());
 	case CUSTOM_OBJECT_H:                 return variant(solid_rect().h());
 
