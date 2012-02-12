@@ -634,7 +634,6 @@ bool variant::operator<=(const variant& v) const
 {
 	if(type_ != v.type_) {
 		if(type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL) {
-			std::cerr << as_decimal() << " <= " << v.as_decimal() << "\n";
 			return as_decimal() <= v.as_decimal();
 		}
 

@@ -1516,8 +1516,8 @@ UNIT_TEST(flatten_function) {
 UNIT_TEST(sqrt_function) {
 	CHECK_EQ(game_logic::formula("sqrt(2147483)").execute().as_int(), 1465);	
 
-	for(int n = 0; n != 10000; ++n) {
-		CHECK_EQ(game_logic::formula(formatter() << "sqrt(" << n << "^2)").execute().as_decimal(), decimal::from_int(n));
+	for(uint64_t n = 0; n < 100000; n += 1000) {
+		CHECK_EQ(game_logic::formula(formatter() << "sqrt(" << n << ".0^2)").execute().as_decimal(), decimal::from_int(n));
 	}
 }
 
