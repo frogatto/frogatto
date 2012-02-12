@@ -52,18 +52,24 @@ inline decimal operator-(const decimal& a, const decimal& b) {
 }
 
 inline decimal operator*(const decimal& a, const decimal& b) {
-	int64_t val = a.value();
-	val *= b.value();
-	val /= DECIMAL_PRECISION;
-	return decimal(static_cast<int64_t>(val));
+	const int64_t va = a.value() > 0 ? a.value() : -a.value();
+	const int64_t vb = b.value() > 0 ? b.value() : -b.value();
+
+	const int64_t ia = va/DECIMAL_PRECISION;
+	const int64_t ib = vb/DECIMAL_PRECISION;
+
+	const int64_t fa = va%DECIMAL_PRECISION;
+	const int64_t fb = vb%DECIMAL_PRECISION;
+
+	const decimal result = decimal(ia*ib*DECIMAL_PRECISION + fa*ib + fb*ia + (fa*fb)/DECIMAL_PRECISION);
+	if(a.value() < 0 && b.value() > 0 || b.value() < 0 && a.value() > 0) {
+		return -result;
+	} else {
+		return result;
+	}
 }
 
-inline decimal operator/(const decimal& a, const decimal& b) {
-	int64_t val = a.value();
-	val *= DECIMAL_PRECISION;
-	val /= b.value();
-	return decimal(static_cast<int64_t>(val));
-}
+decimal operator/(const decimal& a, const decimal& b);
 
 inline bool operator==(const decimal& a, const decimal& b) {
 	return a.value() == b.value();
