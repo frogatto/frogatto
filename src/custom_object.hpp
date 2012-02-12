@@ -33,6 +33,10 @@ public:
 	custom_object(const std::string& type, int x, int y, bool face_right);
 	custom_object(const custom_object& o);
 	virtual ~custom_object();
+
+	//finish_loading(): called when a level finishes loading all objects,
+	//and allows us to do any final setup such as finding our parent.
+	void finish_loading();
 	virtual wml::node_ptr write() const;
 	virtual void setup_drawing() const;
 	virtual void draw() const;
@@ -314,6 +318,9 @@ private:
 	const_solid_info_ptr platform_solid_info_;
 
 	point parent_position() const;
+
+	//storage of the parent object while we're loading the object still.
+	variant parent_loading_;
 
 	entity_ptr parent_;
 	std::string parent_pivot_;

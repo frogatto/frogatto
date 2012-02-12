@@ -270,6 +270,10 @@ custom_object::custom_object(wml::const_node_ptr node)
 			lights_.push_back(new_light);
 		}
 	}
+
+	if(node->has_attr("parent")) {
+		parent_loading_.serialize_from_string(node->attr("parent"));
+	}
 	
 	//fprintf(stderr, "object address= %p, ", this);
 	//fprintf(stderr, "zsub_order=%d,", zsub_order_);
@@ -391,6 +395,17 @@ custom_object::custom_object(const custom_object& o) :
 custom_object::~custom_object()
 {
 	sound::stop_looped_sounds(this);
+}
+
+void custom_object::finish_loading()
+{
+	if(parent_loading_.is_null() == false) {
+		entity_ptr p = parent_loading_.try_convert<entity>();
+		if(p) {
+			parent_ = p;
+		}
+		parent_loading_ = variant();
+	}
 }
 
 bool custom_object::serializable() const
@@ -668,9 +683,9 @@ wml::node_ptr custom_object::write() const
 	}
 
 	if(parent_.get() != NULL) {
-		char buf[256];
-		sprintf(buf, "%p", parent_.get());
-		res->set_attr("parent", buf);
+		std::string str;
+		variant(parent_.get()).serialize_to_string(str);
+		res->set_attr("parent", str);
 	}
 
 	if(parent_pivot_.empty() == false) {

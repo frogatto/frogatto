@@ -563,6 +563,9 @@ void level::finish_loading()
 	if (editor_ || preferences::compiling_tiles)
 		game_logic::set_verbatim_string_expressions (true);
 
+	std::vector<entity_ptr> objects_not_in_level;
+
+	{
 	game_logic::wml_formula_callable_read_scope read_scope;
 	foreach(wml::const_node_ptr node, wml_chars_) {
 		if(node->name() != "serialized_objects") {
@@ -571,7 +574,9 @@ void level::finish_loading()
 
 		FOREACH_WML_CHILD(obj_node, node, "character") {
 			const intptr_t addr_id = strtoll(obj_node->attr("_addr").c_str(), NULL, 16);
-			game_logic::wml_formula_callable_read_scope::register_serialized_object(addr_id, entity::build(obj_node));
+			entity_ptr obj(entity::build(obj_node));
+			objects_not_in_level.push_back(obj);
+			game_logic::wml_formula_callable_read_scope::register_serialized_object(addr_id, obj);
 			fprintf(stderr, "DESERIALIZED: %x\n", addr_id);
 		}
 	}
@@ -639,6 +644,22 @@ void level::finish_loading()
 			}
 		}
 	}
+
+	} //end serialization read scope. Now all objects should be fully resolved.
+
+	//iterate over all our objects and let them do any final loading actions.
+	foreach(entity_ptr e, objects_not_in_level) {
+		if(e) {
+			e->finish_loading();
+		}
+	}
+
+	foreach(entity_ptr e, chars_) {
+		if(e) {
+			e->finish_loading();
+		}
+	}
+	
 }
 
 void level::set_multiplayer_slot(int slot)

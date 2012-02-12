@@ -34,6 +34,8 @@ public:
 	explicit entity(wml::const_node_ptr node);
 	entity(int x, int y, bool face_right);
 	virtual ~entity() {}
+
+	virtual void finish_loading() {}
 	virtual wml::node_ptr write() const = 0;
 	virtual void setup_drawing() const {}
 	virtual void draw() const = 0;
