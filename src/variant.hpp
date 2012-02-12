@@ -7,6 +7,8 @@
 #include <set>
 #include <vector>
 
+#include <stdint.h>
+
 #include <string.h>
 
 #include "decimal.hpp"
@@ -52,7 +54,7 @@ public:
 	variant() : type_(TYPE_NULL), int_value_(0) {}
 	explicit variant(int n) : type_(TYPE_INT), int_value_(n) {}
 	explicit variant(decimal d) : type_(TYPE_DECIMAL), decimal_value_(d.value()) {}
-	variant(int n, DECIMAL_VARIANT_TYPE) : type_(TYPE_DECIMAL), decimal_value_(n) {}
+	variant(int64_t n, DECIMAL_VARIANT_TYPE) : type_(TYPE_DECIMAL), decimal_value_(n) {}
 	explicit variant(const game_logic::formula_callable* callable);
 	explicit variant(std::vector<variant>* array);
 	explicit variant(const std::string& str);
@@ -95,7 +97,7 @@ public:
 	bool is_map() const { return type_ == TYPE_MAP; }
 	bool is_function() const { return type_ == TYPE_FUNCTION; }
 	int as_int() const { if(type_ == TYPE_NULL) { return 0; } if(type_ == TYPE_DECIMAL) { return decimal_value_/VARIANT_DECIMAL_PRECISION; } must_be(TYPE_INT); return int_value_; }
-	decimal as_decimal() const { if(type_ == TYPE_NULL) { return decimal(0); } if(type_ == TYPE_INT) { return decimal(int_value_*VARIANT_DECIMAL_PRECISION); } must_be(TYPE_DECIMAL); return decimal(decimal_value_); }
+	decimal as_decimal() const { if(type_ == TYPE_NULL) { return decimal(static_cast<int64_t>(0)); } if(type_ == TYPE_INT) { return decimal(int64_t(int_value_)*VARIANT_DECIMAL_PRECISION); } must_be(TYPE_DECIMAL); return decimal(decimal_value_); }
 	bool as_bool() const;
 
 	bool is_list() const { return type_ == TYPE_LIST; }
@@ -173,7 +175,7 @@ private:
 	TYPE type_;
 	union {
 		int int_value_;
-		int decimal_value_;
+		int64_t decimal_value_;
 		const game_logic::formula_callable* callable_;
 		game_logic::formula_callable* mutable_callable_;
 		intptr_t callable_loading_;
@@ -182,7 +184,7 @@ private:
 		variant_map* map_;
 		variant_fn* fn_;
 
-		intptr_t value_;
+		int64_t value_;
 	};
 
 	//function to initialize the variant as a list, returning the

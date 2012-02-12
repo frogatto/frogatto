@@ -4,20 +4,21 @@
 #include <iosfwd>
 #include <inttypes.h>
 
-static const int DECIMAL_PRECISION = 1000;
+static const int64_t DECIMAL_PRECISION = 1000000;
+static const int64_t DECIMAL_PLACES = 6;
 
 class decimal
 {
 public:
-	static decimal from_int(int v) { return decimal(v*DECIMAL_PRECISION); }
+	static decimal from_int(int64_t v) { return decimal(v*DECIMAL_PRECISION); }
 	decimal() : value_(0) {}
-	explicit decimal(int value) : value_(value) {}
+	explicit decimal(int64_t value) : value_(value) {}
 	explicit decimal(double value) : value_(value*DECIMAL_PRECISION) {}
 
-	int value() const { return value_; }
+	int64_t value() const { return value_; }
 	int as_int() const { return value_/DECIMAL_PRECISION; }
-	float as_float() const { return value_/float(DECIMAL_PRECISION); }
-	int fractional() const { return value_%DECIMAL_PRECISION; }
+	double as_float() const { return value_/double(DECIMAL_PRECISION); }
+	int64_t fractional() const { return value_%DECIMAL_PRECISION; }
 
 	decimal operator-() const {
 		return decimal(-value_);
@@ -39,7 +40,7 @@ public:
 	void operator/=(int a) { operator/=(decimal::from_int(a)); }
 
 private:
-	int value_;
+	int64_t value_;
 };
 
 inline decimal operator+(const decimal& a, const decimal& b) {
@@ -54,14 +55,14 @@ inline decimal operator*(const decimal& a, const decimal& b) {
 	int64_t val = a.value();
 	val *= b.value();
 	val /= DECIMAL_PRECISION;
-	return decimal(static_cast<int>(val));
+	return decimal(static_cast<int64_t>(val));
 }
 
 inline decimal operator/(const decimal& a, const decimal& b) {
 	int64_t val = a.value();
 	val *= DECIMAL_PRECISION;
 	val /= b.value();
-	return decimal(static_cast<int>(val));
+	return decimal(static_cast<int64_t>(val));
 }
 
 inline bool operator==(const decimal& a, const decimal& b) {

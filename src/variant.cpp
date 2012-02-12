@@ -548,8 +548,8 @@ variant variant::operator^(const variant& v) const
 	if( type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL ) {
 		double res = pow( as_decimal().value()/double(VARIANT_DECIMAL_PRECISION),
 		                v.as_decimal().value()/double(VARIANT_DECIMAL_PRECISION));		
-		res *= 1000;
-		return variant(static_cast<int>(res), DECIMAL_VARIANT);
+		res *= DECIMAL_PRECISION;
+		return variant(static_cast<int64_t>(res), DECIMAL_VARIANT);
 	}
 
 	return variant(static_cast<int>(pow(static_cast<double>(as_int()), v.as_int())));
@@ -634,6 +634,7 @@ bool variant::operator<=(const variant& v) const
 {
 	if(type_ != v.type_) {
 		if(type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL) {
+			std::cerr << as_decimal() << " <= " << v.as_decimal() << "\n";
 			return as_decimal() <= v.as_decimal();
 		}
 
@@ -720,7 +721,7 @@ void variant::serialize_to_string(std::string& str) const
 		int integer = (decimal_value_ - fractional) / VARIANT_DECIMAL_PRECISION;
 
 		char buf[256];
-		sprintf(buf, "%d.%03d", integer, fractional);
+		sprintf(buf, "%d.%06d", integer, fractional);
 		str += buf;
 		break;
 	}
@@ -971,12 +972,12 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 
 UNIT_TEST(variant_decimal)
 {
-	variant d(9876, variant::DECIMAL_VARIANT);
-	variant d2(4, variant::DECIMAL_VARIANT);
-	CHECK_EQ(d.as_decimal().value(), 9876);
+	variant d(9876000, variant::DECIMAL_VARIANT);
+	variant d2(4000, variant::DECIMAL_VARIANT);
+	CHECK_EQ(d.as_decimal().value(), 9876000);
 	CHECK_EQ(d.as_int(), 9);
-	CHECK_EQ(d.string_cast(), "9.876");
-	CHECK_EQ((d + d2).as_decimal().value(), 9880);
+	CHECK_EQ(d.string_cast(), "9.876000");
+	CHECK_EQ((d + d2).as_decimal().value(), 9880000);
 }
 
 BENCHMARK(variant_assign)

@@ -508,7 +508,7 @@ namespace {
 
 	private:
 		variant execute(const formula_callable& variables) const {
-			const float value = args()[0]->evaluate(variables).as_decimal().as_float();
+			const double value = args()[0]->evaluate(variables).as_decimal().as_float();
 			return variant(decimal(sqrt(value)));
 		}
 	};
@@ -1510,6 +1510,10 @@ UNIT_TEST(flatten_function) {
 	CHECK(game_logic::formula("flatten([1,2,3,[[4,5],6]])").execute() == game_logic::formula("[1,2,3,4,5,6]").execute(), "test failed");
 	CHECK(game_logic::formula("flatten([[1,2,3,4],5,6])").execute() == game_logic::formula("[1,2,3,4,5,6]").execute(), "test failed");
 	CHECK(game_logic::formula("flatten([[[0,2,4],6,8],10,[12,14]])").execute() == game_logic::formula("[0,2,4,6,8,10,12,14]").execute(), "test failed");
+}
+
+UNIT_TEST(sqrt_function) {
+	CHECK_EQ(game_logic::formula("sqrt(2147483)").execute().as_int(), 1465);	
 }
 
 // UNIT_TEST(regex_function_FAILS) {

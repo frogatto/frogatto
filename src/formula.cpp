@@ -803,7 +803,7 @@ private:
 
 class decimal_expression : public formula_expression {
 public:
-	explicit decimal_expression(int i, int f) : formula_expression("_decimal"), v_(i*VARIANT_DECIMAL_PRECISION + f, variant::DECIMAL_VARIANT)
+	explicit decimal_expression(int64_t i, int64_t f) : formula_expression("_decimal"), v_(i*VARIANT_DECIMAL_PRECISION + f, variant::DECIMAL_VARIANT)
 	{}
 private:
 	variant execute(const formula_callable& /*variables*/) const {
@@ -1386,14 +1386,14 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 			} else if(i1->type == TOKEN_DECIMAL) {
 				char* endptr = NULL;
 				char* enddec = NULL;
-				int n = strtol(std::string(i1->begin,i1->end).c_str(), &endptr, 0);
-				int m = strtol(endptr+1, &enddec, 0);
+				int64_t n = strtol(std::string(i1->begin,i1->end).c_str(), &endptr, 0);
+				int64_t m = strtol(endptr+1, &enddec, 0);
 				int dist = enddec - endptr;
-				while(dist > 4) {
+				while(dist > (DECIMAL_PLACES+1)) {
 					m /= 10;
 					--dist;
 				}
-				while(dist < 4) {
+				while(dist < (DECIMAL_PLACES+1)) {
 					m *= 10;
 					++dist;
 				}
@@ -1741,12 +1741,12 @@ UNIT_TEST(short_circuit) {
 }
 
 UNIT_TEST(formula_decimal) {
-	CHECK_EQ(formula("0.0005").execute().string_cast(), "0.000");
-	CHECK_EQ(formula("0.005").execute().string_cast(), "0.005");
-	CHECK_EQ(formula("0.05").execute().string_cast(), "0.050");
-	CHECK_EQ(formula("0.5").execute().string_cast(), "0.500");
-	CHECK_EQ(formula("8.5 + 0.5").execute().string_cast(), "9.000");
-	CHECK_EQ(formula("4 * (-1.1)").execute().string_cast(), "-4.400");
+	CHECK_EQ(formula("0.0005").execute().string_cast(), "0.000500");
+	CHECK_EQ(formula("0.005").execute().string_cast(), "0.005000");
+	CHECK_EQ(formula("0.05").execute().string_cast(), "0.050000");
+	CHECK_EQ(formula("0.5").execute().string_cast(), "0.500000");
+	CHECK_EQ(formula("8.5 + 0.5").execute().string_cast(), "9.000000");
+	CHECK_EQ(formula("4 * (-1.1)").execute().string_cast(), "-4.400000");
 }
 
 UNIT_TEST(map_to_maps_FAILS) {

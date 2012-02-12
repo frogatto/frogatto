@@ -70,7 +70,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 	accel_x_(wml::get_int(node, "accel_x")),
 	accel_y_(wml::get_int(node, "accel_y")),
 	gravity_shift_(wml::get_int(node, "gravity_shift", 0)),
-	rotate_(0), zorder_(wml::get_int(node, "zorder", type_->zorder())),
+	rotate_(static_cast<int64_t>(0)), zorder_(wml::get_int(node, "zorder", type_->zorder())),
 	zsub_order_(wml::get_int(node, "zsub_order", type_->zsub_order())),
 	hitpoints_(wml::get_int(node, "hitpoints", type_->hitpoints())),
 	max_hitpoints_(wml::get_int(node, "max_hitpoints", type_->hitpoints())),
@@ -140,7 +140,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 		position_schedule_->rotation.resize(nints);
 		rotation_ints.resize(nints);
 		for(int n = 0; n != nints; ++n) {
-			position_schedule_->rotation[n] = decimal(rotation_ints[n]);
+			position_schedule_->rotation[n] = decimal(static_cast<int64_t>(rotation_ints[n]));
 		}
 
 	}
@@ -154,7 +154,7 @@ custom_object::custom_object(wml::const_node_ptr node)
 	}
 
 	if(node->has_attr("draw_scale")) {
-		draw_scale_.reset(new decimal(wml::get_int(node, "draw_scale")));
+		draw_scale_.reset(new decimal(static_cast<int64_t>(wml::get_int(node, "draw_scale"))));
 	}
 
 	if(node->has_attr("activation_area")) {
@@ -289,7 +289,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	time_in_frame_(0), time_in_frame_delta_(1),
 	velocity_x_(0), velocity_y_(0),
 	accel_x_(0), accel_y_(0), gravity_shift_(0),
-	rotate_(0), zorder_(type_->zorder()),
+	rotate_(static_cast<int64_t>(0)), zorder_(type_->zorder()),
 	zsub_order_(type_->zsub_order()),
 	hitpoints_(type_->hitpoints()),
 	max_hitpoints_(type_->hitpoints()),
