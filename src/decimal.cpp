@@ -24,6 +24,10 @@ decimal operator/(const decimal& a, const decimal& b)
 	int64_t va = a.value() > 0 ? a.value() : -a.value();
 	int64_t vb = b.value() > 0 ? b.value() : -b.value();
 
+	if(va == 0) {
+		return a;
+	}
+
 	int64_t orders_of_magnitude_shift = 0;
 	const int64_t target_value = 10000000000000LL;
 
@@ -100,4 +104,13 @@ UNIT_TEST(decimal_mul) {
 UNIT_TEST(decimal_div) {
 	//10934.54 / 7649.44
 	CHECK_EQ(decimal(10934540000LL)/decimal(7649440000LL), decimal(1429456LL));
+}
+
+BENCHMARK(decimal_div_bench) {
+	BENCHMARK_LOOP {
+		decimal res(0LL);
+		for(int n = 1; n < 1000000; ++n) {
+			res += decimal::from_int(n)/decimal::from_int(1000100-n);
+		}
+	}
 }
