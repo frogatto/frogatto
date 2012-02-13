@@ -4,6 +4,7 @@
 #include "decimal.hpp"
 #include "unit_test.hpp"
 
+#define DECIMAL(num) static_cast<int64_t>(num##LL)
 
 std::ostream& operator<<(std::ostream& s, decimal d)
 {
@@ -14,7 +15,7 @@ std::ostream& operator<<(std::ostream& s, decimal d)
 	}
 
 	char buf[512];
-	sprintf(buf, "%s%lld.%06llu", minus, d.value()/DECIMAL_PRECISION, (d.value() > 0 ? d.value() : -d.value())%DECIMAL_PRECISION);
+	sprintf(buf, "%s%lld.%06lld", minus, static_cast<long long int>(d.value()/DECIMAL_PRECISION), static_cast<long long int>((d.value() > 0 ? d.value() : -d.value())%DECIMAL_PRECISION));
 	s << buf;
 	return s;
 }
@@ -29,34 +30,34 @@ decimal operator/(const decimal& a, const decimal& b)
 	}
 
 	int64_t orders_of_magnitude_shift = 0;
-	const int64_t target_value = 10000000000000LL;
+	const int64_t target_value = DECIMAL(10000000000000);
 
 	while(va < target_value) {
-		va *= 10LL;
+		va *= DECIMAL(10);
 		++orders_of_magnitude_shift;
 	}
 
 	while(vb&10 == 0) {
-		vb /= 10LL;
+		vb /= DECIMAL(10);
 		++orders_of_magnitude_shift;
 	}
 
-	const int64_t target_value_b = 1000000LL;
+	const int64_t target_value_b = DECIMAL(1000000);
 
 	while(vb > target_value_b) {
-		vb /= 10LL;
+		vb /= DECIMAL(10);
 		++orders_of_magnitude_shift;
 	}
 
 	int64_t value = (va/vb);
 
 	while(orders_of_magnitude_shift > 6) {
-		value /= 10LL;
+		value /= DECIMAL(10);
 		--orders_of_magnitude_shift;
 	}
 
 	while(orders_of_magnitude_shift < 6) {
-		value *= 10LL;
+		value *= DECIMAL(10);
 		++orders_of_magnitude_shift;
 	}
 
@@ -97,18 +98,18 @@ UNIT_TEST(decimal_mul) {
 
 
 	//10934.54 * 7649.44
-	CHECK_EQ(decimal(10934540000LL)*decimal(7649440000LL), decimal(83643107657600LL));
-	CHECK_EQ(decimal(-10934540000LL)*decimal(7649440000LL), -decimal(83643107657600LL));
+	CHECK_EQ(decimal(DECIMAL(10934540000))*decimal(DECIMAL(7649440000)), decimal(DECIMAL(83643107657600)));
+	CHECK_EQ(decimal(-DECIMAL(10934540000))*decimal(DECIMAL(7649440000)), -decimal(DECIMAL(83643107657600)));
 }
 
 UNIT_TEST(decimal_div) {
 	//10934.54 / 7649.44
-	CHECK_EQ(decimal(10934540000LL)/decimal(7649440000LL), decimal(1429456LL));
+	CHECK_EQ(decimal(DECIMAL(10934540000))/decimal(DECIMAL(7649440000)), decimal(DECIMAL(1429456)));
 }
 
 BENCHMARK(decimal_div_bench) {
 	BENCHMARK_LOOP {
-		decimal res(0LL);
+		decimal res(DECIMAL(0));
 		for(int n = 1; n < 1000000; ++n) {
 			res += decimal::from_int(n)/decimal::from_int(1000100-n);
 		}
