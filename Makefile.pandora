@@ -17,13 +17,13 @@ include Makefile.common
 objects += eglport.o
 
 %.o : src/%.cpp
-	$(CXX) -DIMPLEMENT_SAVE_PNG -fno-inline-functions -g $(OPT) -I$(INCLUDE) -I$(INCLUDE)/SDL -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -lpthread -fthreadsafe-statics -c $<
+	$(CXX) -DIMPLEMENT_SAVE_PNG -fno-inline-functions -g $(OPT) -I$(INCLUDE) -I$(INCLUDE)/SDL -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -fthreadsafe-statics -c $<
 
 %.o : src/%.c
 	$(CC) -DIMPLEMENT_SAVE_PNG -fno-inline-functions -g $(OPT) -I$(INCLUDE) -I$(INCLUDE)/SDL -D_GNU_SOURCE=1 -D_REENTRANT -Wreturn-type -c $<
 
 game: $(objects)
-	$(CXX) -s $(OPT) -L$(LIBRARY) -Wl,-rpath=$(LIBRARY) -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -lSDLmain -lSDL -lGLES_CM -lGLUES_CM -lIMGegl -lEGL -lsrv_um -lX11 -lXau -lXdmcp  -lSDL_image -lSDL_ttf -lSDL_mixer -lts -lpng12 -ljpeg -lz -lfreetype -lmad -ltiff -lboost_regex-mt -lboost_system-mt -fthreadsafe-statics $(objects) -o game
+	$(CXX) -s $(OPT) -L$(LIBRARY) -Wl,-rpath=$(LIBRARY) -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -lSDLmain -lSDL -lGLES_CM -lGLUES_CM -lIMGegl -lEGL -lsrv_um -lX11 -lXau -lXdmcp  -lSDL_image -lSDL_ttf -lSDL_mixer -lts -lpng12 -ljpeg -lz -lfreetype -lmad -ltiff -lboost_regex-mt -lboost_system-mt -lpthread -fthreadsafe-statics $(objects) -o game
 
 server: $(server_objects)
 	$(CXX) -fno-inline-functions -g $(OPT) -L/sw/lib -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -L/usr/lib `sdl-config --libs` -lSDLmain -lSDL -lGL -lGLU -lSDL_image -lSDL_ttf -lSDL_mixer -lboost_regex-mt -lboost_system-mt -lboost_thread-mt -lboost_iostreams-mt -fthreadsafe-statics $(server_objects) -o server
