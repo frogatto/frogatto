@@ -26,6 +26,7 @@ custom_object_callable.cpp
 custom_object_functions.cpp
 custom_object_type.cpp
 debug_console.cpp dialog.cpp
+decimal.cpp
 draw_number.cpp draw_scene.cpp
 draw_tile.cpp
 editor.cpp
