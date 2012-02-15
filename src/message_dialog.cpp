@@ -5,6 +5,7 @@
 #include "foreach.hpp"
 #include "message_dialog.hpp"
 #include "raster.hpp"
+#include "string_utils.hpp"
 
 namespace {
 const int FontSize = 22;
@@ -12,11 +13,11 @@ const int FontSize = 22;
 std::string::const_iterator get_end_of_word(std::string::const_iterator i1,
                                             std::string::const_iterator i2)
 {
-	while(i1 != i2 && isspace(*i1)) {
+	while(i1 != i2 && util::isspace(*i1)) {
 		++i1;
 	}
 
-	while(i1 != i2 && !isspace(*i1)) {
+	while(i1 != i2 && !util::isspace(*i1)) {
 		++i1;
 	}
 
@@ -88,7 +89,7 @@ message_dialog::message_dialog(const std::string& text, const rect& pos,
 			break;
 		}
 
-		while(i1 != i2 && isspace(*i1)) {
+		while(i1 != i2 && util::isspace(*i1)) {
 			++i1;
 		}
 
