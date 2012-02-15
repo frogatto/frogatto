@@ -1,10 +1,10 @@
 #include "iphone_controls.hpp"
 
-#if TARGET_OS_HARMATTAN || TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+#if TARGET_OS_HARMATTAN || TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR || TARGET_BLACKBERRY
 
 #include <SDL.h>
 
-#ifdef TARGET_OS_HARMATTAN
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY)
 #include <math.h> // sqrt
 #endif
 
@@ -103,7 +103,7 @@ void iphone_controls::read_controls()
 {
 	active_mice.clear();
 
-#ifdef TARGET_OS_HARMATTAN
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY)
 	// there is no SDL_Get_NumMice and SDL_SelectMouse support on
 	// Harmattan, so all_mice has been updated via calls to handle_event
 	const int nmice = all_mice.size();
@@ -140,7 +140,7 @@ void iphone_controls::read_controls()
 	}
 }
 
-#ifdef TARGET_OS_HARMATTAN
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY)
 void iphone_controls::handle_event (const SDL_Event& event)
 {
 	int x = event.type == SDL_MOUSEMOTION ? event.motion.x : event.button.x;
