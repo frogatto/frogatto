@@ -6,6 +6,8 @@
 
 #include "preprocessor.hpp"
 #include "filesystem.hpp"
+#include "string_utils.hpp"
+
 std::string preprocess(const std::string& input){
 	std::string output_string;
 	bool in_comment = false;
@@ -30,7 +32,7 @@ std::string preprocess(const std::string& input){
 					if(quote == input.end()) {
 						std::cerr << "We didn't find a opening quote. Syntax error." << std::endl;
 					}
-					if(std::count_if(i, quote, isspace) != quote - i) {
+					if(std::count_if(i, quote, util::isspace) != quote - i) {
 					// # of whitespaces != number of intervening chars => something else was present.  Syntax Error. 
 						std::cerr << "# of whitespaces != number of intervening chars." << std::endl;
 					}

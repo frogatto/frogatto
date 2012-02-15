@@ -15,6 +15,7 @@
 
 #include "foreach.hpp"
 #include "formula_tokenizer.hpp"
+#include "string_utils.hpp"
 #include "unit_test.hpp"
 
 namespace formula_tokenizer
@@ -99,7 +100,7 @@ token get_token(iterator& i1, iterator i2) {
 		if(i1 + 1 != i2 && *(i1+1) == 'x') {
 			t.type = TOKEN_INTEGER;
 			i1 += 2;
-			while(i1 != i2 && isxdigit(*i1)) {
+			while(i1 != i2 && util::isxdigit(*i1)) {
 				++i1;
 			}
 
@@ -110,7 +111,7 @@ token get_token(iterator& i1, iterator i2) {
 
 		break;
 	case 'd':
-		if(i1 + 1 != i2 && !isalpha(*(i1+1))) {
+		if(i1 + 1 != i2 && !util::isalpha(*(i1+1))) {
 			//die operator as in 1d6.
 			t.type = TOKEN_OPERATOR;
 			t.end = ++i1;
@@ -119,9 +120,9 @@ token get_token(iterator& i1, iterator i2) {
 		break;
 	}
 
-	if(isspace(*i1)) {
+	if(util::isspace(*i1)) {
 		t.type = TOKEN_WHITESPACE;
-		while(i1 != i2 && isspace(*i1)) {
+		while(i1 != i2 && util::isspace(*i1)) {
 			++i1;
 		}
 
@@ -129,9 +130,9 @@ token get_token(iterator& i1, iterator i2) {
 		return t;
 	}
 
-	if(isdigit(*i1)) {
+	if(util::isdigit(*i1)) {
 		t.type = TOKEN_INTEGER;
-		while(i1 != i2 && isdigit(*i1)) {
+		while(i1 != i2 && util::isdigit(*i1)) {
 			++i1;
 		}
 
@@ -139,7 +140,7 @@ token get_token(iterator& i1, iterator i2) {
 			t.type = TOKEN_DECIMAL;
 
 			++i1;
-			while(i1 != i2 && isdigit(*i1)) {
+			while(i1 != i2 && util::isdigit(*i1)) {
 				++i1;
 			}
 		}
@@ -148,9 +149,9 @@ token get_token(iterator& i1, iterator i2) {
 		return t;
 	}
 
-	if(isalpha(*i1) || *i1 == '_') {
+	if(util::isalpha(*i1) || *i1 == '_') {
 		++i1;
-		while(i1 != i2 && (isalnum(*i1) || *i1 == '_')) {
+		while(i1 != i2 && (util::isalnum(*i1) || *i1 == '_')) {
 			++i1;
 		}
 
@@ -173,7 +174,7 @@ token get_token(iterator& i1, iterator i2) {
 		}
 
 		for(std::string::const_iterator i = t.begin; i != t.end; ++i) {
-			if(islower(*i)) {
+			if(util::islower(*i)) {
 				t.type = TOKEN_IDENTIFIER;
 				return t;
 			}

@@ -8,6 +8,7 @@
 #include "key_button.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
+#include "string_utils.hpp"
 #include "wml_node.hpp"
 
 namespace game_logic
@@ -75,7 +76,7 @@ constants_loader::constants_loader(wml::const_node_ptr node) : same_as_base_(fal
 	if(node) {
 		for(wml::node::const_attr_iterator i = node->begin_attr(); i != node->end_attr(); ++i) {
 			const std::string& attr = i->first;
-			if(std::find_if(attr.begin(), attr.end(), islower) != attr.end()) {
+			if(std::find_if(attr.begin(), attr.end(), util::islower) != attr.end()) {
 				//only all upper case are loaded as consts
 				continue;
 			}
