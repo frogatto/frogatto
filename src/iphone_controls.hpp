@@ -27,7 +27,7 @@ public:
 	static void draw();
 
 	static void read_controls();
-#ifdef TARGET_OS_HARMATTAN
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY)
 	static void handle_event(const SDL_Event& event);
 #endif
 
