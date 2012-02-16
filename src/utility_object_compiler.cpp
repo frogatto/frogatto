@@ -99,7 +99,7 @@ namespace graphics {
 void set_alpha_for_transparent_colors_in_rgba_surface(SDL_Surface* s);
 }
 
-UTILITY(object_compiler)
+UTILITY(compile_objects)
 {
 	using graphics::surface;
 
