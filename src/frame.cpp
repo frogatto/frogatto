@@ -418,8 +418,18 @@ void frame::build_alpha()
 
 bool frame::is_alpha(int x, int y, int time, bool face_right) const
 {
-	if(alpha_.empty()) {
+	std::vector<bool>::const_iterator itor = get_alpha_itor(x, y, time, face_right);
+	if(itor == alpha_.end()) {
 		return true;
+	} else {
+		return *itor;
+	}
+}
+
+std::vector<bool>::const_iterator frame::get_alpha_itor(int x, int y, int time, bool face_right) const
+{
+	if(alpha_.empty()) {
+		return alpha_.end();
 	}
 
 	if(face_right == false) {
@@ -427,7 +437,7 @@ bool frame::is_alpha(int x, int y, int time, bool face_right) const
 	}
 
 	if(x < 0 || y < 0 || x >= width() || y >= height()) {
-		return true;
+		return alpha_.end();
 	}
 
 	x /= scale_;
@@ -438,7 +448,7 @@ bool frame::is_alpha(int x, int y, int time, bool face_right) const
 	
 	const int index = y*img_rect_.w()*nframes_ + x;
 	ASSERT_INDEX_INTO_VECTOR(index, alpha_);
-	return alpha_[index];
+	return alpha_.begin() + index;
 }
 
 void frame::draw_into_blit_queue(graphics::blit_queue& blit, int x, int y, bool face_right, bool upside_down, int time) const

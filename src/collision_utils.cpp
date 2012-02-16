@@ -234,13 +234,19 @@ bool non_solid_entity_collides_with_level(const level& lvl, const entity& e)
 		return false;
 	}
 
-	for(int y = 0; y < f.height(); ++y) {
-		for(int x = 0; x < f.width(); ++x) {
-			if(!f.is_alpha(e.face_right() ? x : f.width() - x - 1, y, e.time_in_frame(), true)) {
-				if(lvl.solid(e.x() + x, e.y() + y)) {
-					return true;
-				}
+	const int increment = e.face_right() ? 2 : -2;
+	for(int y = 0; y < f.height(); y += 2) {
+		std::vector<bool>::const_iterator i = f.get_alpha_itor(0, y, e.time_in_frame(), e.face_right());
+		if(i == f.get_alpha_buf().end()) {
+			continue;
+		}
+
+		for(int x = 0; x < f.width(); x += 2) {
+			if(!*i && lvl.solid(e.x() + x, e.y() + y)) {
+				return true;
 			}
+
+			i += increment;
 		}
 	}
 
