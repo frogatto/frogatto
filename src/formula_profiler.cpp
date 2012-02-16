@@ -15,6 +15,7 @@
 #include "custom_object_type.hpp"
 #include "filesystem.hpp"
 #include "foreach.hpp"
+#include "formatter.hpp"
 #include "formula_profiler.hpp"
 #include "object_events.hpp"
 
@@ -82,12 +83,36 @@ manager::~manager()
 		memset(&timer, 0, sizeof(timer));
 		setitimer(ITIMER_PROF, &timer, 0);
 
-		std::ostringstream s;
-		s << "SAMPLES EMPTY: " << empty_samples << "\n";
+		std::map<std::string, int> samples_map;
+
+
 		for(int n = 0; n != num_samples; ++n) {
 			const custom_object_event_frame& frame = event_call_stack_samples[n];
-			s << frame.type->id() << ":" << get_object_event_str(frame.event_id) << ":" << (frame.executing_commands ? "CMD" : "FFL") << "\n";
 
+			std::string str = formatter() << frame.type->id() << ":" << get_object_event_str(frame.event_id) << ":" << (frame.executing_commands ? "CMD" : "FFL");
+
+			samples_map[str]++;
+		}
+
+		std::vector<std::pair<int, std::string> > sorted_samples;
+		for(std::map<std::string, int>::const_iterator i = samples_map.begin(); i != samples_map.end(); ++i) {
+			sorted_samples.push_back(std::pair<int, std::string>(i->second, i->first));
+		}
+
+		std::sort(sorted_samples.begin(), sorted_samples.end());
+		std::reverse(sorted_samples.begin(), sorted_samples.end());
+
+		const int total_samples = empty_samples + num_samples;
+		if(!total_samples) {
+			return;
+		}
+
+		std::ostringstream s;
+		s << "TOTAL SAMPLES: " << total_samples << "\n";
+		s << (100*empty_samples)/total_samples << "% (" << empty_samples << ") CORE ENGINE (non-FFL processing)\n";
+
+		for(int n = 0; n != sorted_samples.size(); ++n) {
+			s << (100*sorted_samples[n].first)/total_samples << "% (" << sorted_samples[n].first << ") " << sorted_samples[n].second << "\n";
 		}
 
 		if(!output_fname.empty()) {
