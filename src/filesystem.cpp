@@ -11,6 +11,7 @@
    See the COPYING file for more details.
 */
 #include "filesystem.hpp"
+#include "string_utils.hpp"
 
 #include <fstream>
 #include <sstream>
@@ -539,6 +540,26 @@ std::string read_file(const std::string& name)
 
 void write_file(const std::string& fname, const std::string& data)
 {
+	//Try to ensure that the dir the file is in exists.
+	std::vector<std::string> components = util::split(fname, '/');
+	if(!components.empty()) {
+		components.pop_back();
+
+		std::vector<std::string> tmp;
+		while(components.empty() == false && get_dir(util::join(components, '/')).empty()) {
+			tmp.push_back(components.back());
+			components.pop_back();
+		}
+
+		while(!components.empty() && !tmp.empty()) {
+			components.push_back(tmp.back());
+			tmp.pop_back();
+
+			get_dir(util::join(components, '/'));
+		}
+	}
+
+	//Write the file.
 	std::ofstream file(fname.c_str(),std::ios_base::binary);
 	file << data;
 }
