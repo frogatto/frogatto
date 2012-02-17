@@ -255,6 +255,8 @@ class load_game_command : public entity_command_callable
 				if(noption == -1) {
 					return;
 				}
+
+				preferences::set_save_slot(save_options[noption]);
 			}
 
 			level::portal p;
