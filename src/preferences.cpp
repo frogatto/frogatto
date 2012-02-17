@@ -232,6 +232,12 @@ namespace preferences {
 		expand_path(save_file_path_);
 		expand_path(auto_save_file_path_);
 		expand_path(preferences_path_);
+		std::cerr << "EXPAND DATA PATHS\n";
+	}
+
+	void set_save_slot(const std::string& fname) {
+		save_file_path_ = std::string(user_data_path()) + "/" + fname;
+		std::cerr << "SET SAVE FILE PATH TO " << save_file_path_ << "\n";
 	}
 	
 	bool show_debug_hitboxes() {

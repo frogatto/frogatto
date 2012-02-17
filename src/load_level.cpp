@@ -64,9 +64,17 @@ void clear_level_wml()
 	wml_cache().clear();
 }
 
+namespace {
+bool is_save_file(const std::string& fname)
+{
+	static const std::string SaveFiles[] = {"save.cfg", "save2.cfg", "save3.cfg", "save4.cfg"};
+	return std::count(SaveFiles, SaveFiles + sizeof(SaveFiles)/sizeof(SaveFiles[0]), fname) != 0;
+}
+}
+
 void preload_level_wml(const std::string& lvl)
 {
-	if(lvl == "save.cfg" || lvl == "autosave.cfg") {
+	if(is_save_file(lvl) || lvl == "autosave.cfg") {
 		return;
 	}
 
@@ -80,10 +88,10 @@ void preload_level_wml(const std::string& lvl)
 
 wml::const_node_ptr load_level_wml(const std::string& lvl)
 {
-	if(lvl == "save.cfg" || lvl == "autosave.cfg") {
+	if(is_save_file(lvl) || lvl == "autosave.cfg") {
 		std::string filename;
-		if(lvl == "save.cfg") {
-			filename = preferences::save_file_path();
+		if(is_save_file(lvl)) {
+			filename = std::string(preferences::user_data_path()) + "/" + lvl;
 		} else {
 			filename = preferences::auto_save_file_path();
 		}

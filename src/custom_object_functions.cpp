@@ -17,6 +17,7 @@
 #include "draw_scene.hpp"
 #include "entity.hpp"
 #include "filesystem.hpp"
+#include "formatter.hpp"
 #include "formula_callable_definition.hpp"
 #include "formula_profiler.hpp"
 #include "i18n.hpp"
@@ -117,6 +118,79 @@ FUNCTION_DEF(report_, 4, 4, "report() -> boolean: Write a key and a value into [
 		return variant(true);
 END_FUNCTION_DEF(report_)
 
+namespace {
+int show_simple_option_dialog(level& lvl, const std::string& text, const std::vector<std::string>& options)
+{
+	std::vector<std::string> txt;
+	txt.push_back(text);
+	boost::shared_ptr<speech_dialog> d(new speech_dialog);
+	d->set_text(txt);
+	d->set_options(options);
+
+	lvl.add_speech_dialog(d);
+
+	bool done = false;
+	while(!done) {
+		SDL_Event event;
+		while(SDL_PollEvent(&event)) {
+			if(d->key_press(event)) {
+				done = true;
+			}
+		}
+		
+		if(d->process()) {
+			done = true;
+		}
+
+		draw_scene(lvl, last_draw_position(), &lvl.player()->get_entity());
+		SDL_GL_SwapBuffers();
+		SDL_Delay(20);
+	}
+
+	lvl.remove_speech_dialog();
+
+	return d->option_selected();
+}
+}
+
+class set_save_slot_command : public entity_command_callable
+{
+public:
+	virtual void execute(level& lvl, entity& ob) const {
+		bool has_options = false;
+		std::vector<std::string> options;
+		std::string SaveFiles[] = {"save.cfg", "save2.cfg", "save3.cfg", "save4.cfg"};
+		int nslot = 0;
+		foreach(const std::string& fname, SaveFiles) {
+			options.push_back(formatter() << "Slot " << (nslot+1) << ": (empty)");
+			const std::string path = std::string(preferences::user_data_path()) + "/" + fname;
+			if(sys::file_exists(path)) {
+				has_options = true;
+				const wml::node_ptr doc = wml::parse_wml_from_file(path);
+				if(doc) {
+					options.back() = formatter() << "Slot " << (nslot+1) << ": " << doc->attr("title");
+				}
+			}
+
+			++nslot;
+		}
+
+		if(has_options) {
+
+			const int noption = show_simple_option_dialog(lvl, "Select save slot to use.", options);
+			if(noption != -1) {
+				std::cerr << "setting save slot: " << noption << " -> " << SaveFiles[noption] << "\n";
+				preferences::set_save_slot(SaveFiles[noption]);
+			}
+		}
+	}
+
+};
+
+FUNCTION_DEF(set_save_slot, 0, 0, "set_save_slot(): Allows the user to select the save slot")
+	return variant(new set_save_slot_command());
+END_FUNCTION_DEF(set_save_slot)
+
 class save_game_command : public entity_command_callable
 {
 	bool persistent_;
@@ -149,8 +223,42 @@ class load_game_command : public entity_command_callable
 	{
 	public:
 		virtual void execute(level& lvl, entity& ob) const {
+			std::vector<std::string> save_options;
+			save_options.push_back("save.cfg");
+
+			for(int n = 2; n <= 4; ++n) {
+				std::string fname = formatter() << "save" << n << ".cfg";
+				if(sys::file_exists(std::string(preferences::user_data_path()) + "/" + fname)) {
+					save_options.push_back(fname);
+				}
+			}
+
+			int noption = 0;
+
+			if(save_options.size() > 1) {
+				int nslot = 1;
+				std::vector<std::string> option_descriptions;
+				foreach(const std::string& option, save_options) {
+					const std::string fname = std::string(preferences::user_data_path()) + "/" + option;
+					const wml::node_ptr doc = wml::parse_wml_from_file(fname);
+					if(doc) {
+						option_descriptions.push_back(formatter() << "Slot " << nslot << ": " << doc->attr("title"));
+					} else {
+						option_descriptions.push_back(formatter() << "Slot " << nslot << ": Frogatto");
+					}
+
+					++nslot;
+				}
+
+				noption = show_simple_option_dialog(lvl, "Select save slot to load.", option_descriptions);
+
+				if(noption == -1) {
+					return;
+				}
+			}
+
 			level::portal p;
-			p.level_dest = "save.cfg";
+			p.level_dest = save_options[noption];
 			p.dest_starting_pos = true;
 			p.saved_game = true;
 			lvl.force_enter_portal(p);

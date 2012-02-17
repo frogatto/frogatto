@@ -31,6 +31,7 @@ namespace preferences {
 	const char* save_file_path();
 	const char* auto_save_file_path();
 	void expand_data_paths();
+	void set_save_slot(const std::string& fname);
 	bool show_debug_hitboxes();
 	bool show_iphone_controls(); //iphone control hit rects
 	bool use_pretty_scaling();
