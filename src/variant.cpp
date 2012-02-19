@@ -785,6 +785,9 @@ void variant::serialize_to_string(std::string& str) const
 		}
 		break;
 	}
+	case TYPE_FUNCTION:
+		fprintf(stderr, "ATTEMPT TO SERIALIZE FUNCTION: %s\n", fn_->fn->str().c_str());
+		assert(false);
 	default:
 		assert(false);
 	}
