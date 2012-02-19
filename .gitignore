@@ -4,10 +4,11 @@ test
 *.o
 *.a
 *~
+*.kate-swp
 .sconsign.dblite
 .scons-option-cache
 .directory
 *.blend1
 *.blend2
 *.blend3
-*.kate-swp
+*.db
