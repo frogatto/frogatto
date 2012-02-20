@@ -1731,6 +1731,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_ROTATE:            return variant(rotate_);
 	case CUSTOM_OBJECT_ME:
 	case CUSTOM_OBJECT_SELF:              return variant(this);
+	case CUSTOM_OBJECT_BRIGHTNESS:		  return variant((draw_color().r() + draw_color().g() + draw_color().b())/3);
 	case CUSTOM_OBJECT_RED:               return variant(draw_color().r());
 	case CUSTOM_OBJECT_GREEN:             return variant(draw_color().g());
 	case CUSTOM_OBJECT_BLUE:              return variant(draw_color().b());
