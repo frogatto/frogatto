@@ -7,20 +7,23 @@
 	║                                                                               ║
 	║ Problematic:                                                                  ║
 	║  ▷ When deleting a support, the track doesn't fall down.                      ║
-	║  ▶ Make keyboard input code handle one key/frame, to avoid conflicts.         ║
 	║  ▷ Make raise tips rotate. Further work needed on graphics.                   ║
-	║  ▶ Ojbects spawned in the process of fulfilling the requirements of other     ║
+	║ ?▷ Ojbects spawned in the process of fulfilling the requirements of other     ║
 	║    objects when they're built don't delete other objects; bug or intended?    ║
-	║  ▶ Automatic raises don't play well with regards to deleting stuff.           ║
-	║  ▶ Objects, such as hedges, aren't deleted when they should be.               ║
+	║  ▷ Automatic raises don't play well with regards to deleting stuff.           ║
+	║  ▷ Objects, such as hedges, aren't deleted when they should be.               ║
+	║  ▶ Sidebar slews.                                                             ║
+	║  ▶ Level loader doesn't function correctly.                                   ║
 	║  ▶                                                                            ║
 	║                                                                               ║
 	║ Minor:                                                                        ║
 	║  ▶ Tween scroll input buttons' movement.                                      ║
+	║  ▶ Make keyboard input code handle one key/frame, to avoid conflicts.         ║
 	║  ▷ Multiply trains' rotation calculation y by whatever we did for the mouse   ║
 	║    input.                                                                     ║
 	║  ▷ Fix MEG interpretation. See permutate_mutually_exclusive_groups in cursor. ║
-	║  ▶ An ereaser button would be nice.                                           ║
+	║  ▷ An ereaser button would be nice.                                           ║
+	║  ▶ Trains are only one car long.                                              ║
 	║  ▶                                                                            ║
 	║                                                          ▷ fixed  ▶ not fixed ║
 	╚═══════════════════════════════════════════════════════════════════════════════╝
