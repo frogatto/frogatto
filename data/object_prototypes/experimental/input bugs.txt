@@ -13,6 +13,7 @@
 	║  ▶                                                                            ║
 	║                                                                               ║
 	║ Minor:                                                                        ║
+	║  ▶ Scroll box button overlays aren't added to targets to be clip_area'd.      ║
 	║  ▶                                                                            ║
 	║                                                          ▷ fixed  ▶ not fixed ║
 	╚═══════════════════════════════════════════════════════════════════════════════╝
