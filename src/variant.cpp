@@ -549,7 +549,11 @@ variant variant::operator^(const variant& v) const
 		double res = pow( as_decimal().value()/double(VARIANT_DECIMAL_PRECISION),
 		                v.as_decimal().value()/double(VARIANT_DECIMAL_PRECISION));		
 		res *= DECIMAL_PRECISION;
+#if defined(TARGET_BLACKBERRY)
+		return variant(static_cast<int64_t>(llround(res)), DECIMAL_VARIANT);
+#else
 		return variant(static_cast<int64_t>(res), DECIMAL_VARIANT);
+#endif
 	}
 
 	return variant(static_cast<int>(pow(static_cast<double>(as_int()), v.as_int())));
