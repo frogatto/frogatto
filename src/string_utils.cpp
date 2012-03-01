@@ -20,6 +20,71 @@
 namespace util
 {
 
+bool isalnum(int c)
+{
+	return ::isalnum(static_cast<unsigned char>(c));
+}
+
+bool isalpha(int c)
+{
+	return ::isalpha(static_cast<unsigned char>(c));
+}
+
+bool isascii(int c)
+{
+	return ::isascii(static_cast<unsigned char>(c));
+}
+
+bool isblank(int c)
+{
+	return ::isblank(static_cast<unsigned char>(c));
+}
+
+bool iscntrl(int c)
+{
+	return ::iscntrl(static_cast<unsigned char>(c));
+}
+
+bool isdigit(int c)
+{
+	return ::isdigit(static_cast<unsigned char>(c));
+}
+
+bool isgraph(int c)
+{
+	return ::isgraph(static_cast<unsigned char>(c));
+}
+
+bool islower(int c)
+{
+	return ::islower(static_cast<unsigned char>(c));
+}
+
+bool isprint(int c)
+{
+	return ::isprint(static_cast<unsigned char>(c));
+}
+
+bool ispunct(int c)
+{
+	return ::ispunct(static_cast<unsigned char>(c));
+}
+
+bool isspace(int c)
+{
+	return ::isspace(static_cast<unsigned char>(c));
+}
+
+bool isupper(int c)
+{
+	return ::isupper(static_cast<unsigned char>(c));
+}
+
+bool isxdigit(int c)
+{
+	return ::isxdigit(static_cast<unsigned char>(c));
+}
+
 bool isnewline(char c)
 {
 	return c == '\r' || c == '\n';

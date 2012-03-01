@@ -122,6 +122,16 @@ namespace preferences {
 		bool load_compiled_ = true;
 		bool use_fbo_ = true;
 		bool use_bequ_ = true;
+#elif defined(TARGET_BLACKBERRY)
+		int virtual_screen_width_ = 1024;
+		int virtual_screen_height_ = 600;
+
+		int actual_screen_width_ = 1024;
+		int actual_screen_height_ = 600;
+
+		bool load_compiled_ = true;
+		bool use_fbo_ = true;
+		bool use_bequ_ = true;
 #else
 		int virtual_screen_width_ = 800;
 		int virtual_screen_height_ = 600;
@@ -351,7 +361,7 @@ namespace preferences {
 		load_compiled_ = value;
 	}
 	
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 	bool use_fbo()
 	{
 		return use_fbo_;
@@ -619,7 +629,7 @@ namespace preferences {
 		return run_failing_unit_tests_;
 	}
 
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 	PFNGLBLENDEQUATIONOESPROC           glBlendEquationOES;
 	PFNGLGENFRAMEBUFFERSOESPROC         glGenFramebuffersOES;
 	PFNGLBINDFRAMEBUFFEROESPROC         glBindFramebufferOES;

@@ -452,6 +452,9 @@ std::string get_user_data_dir()
 #elif defined(TARGET_PANDORA)
 	static const char* const current_dir = ".";
 	const char* home_str = getenv("PWD");
+#elif defined(TARGET_BLACKBERRY)
+	static const char* const current_dir = ".";
+	const char* home_str = getenv("HOME");
 #else
 	static const char* const current_dir = " ";
 	const char* home_str = "PROGDIR:";
