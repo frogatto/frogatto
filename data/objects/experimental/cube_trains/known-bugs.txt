@@ -14,8 +14,8 @@
 	║  ▷ Fix MEG interpretation. See permutate_mutually_exclusive_groups in cursor. ║
 	║  ▷ Objects, such as hedges, aren't deleted when they should be.               ║
 	║  ▶ Sidebar slews.                                                             ║
-	║  ▶ Level loader doesn't function correctly.                                   ║
-	║  ▶ Display level titles.                                                      ║
+	║  ▷ Level loader doesn't function correctly.                                   ║
+	║  ▷ Display level titles.                                                      ║
 	║  ▶                                                                            ║
 	║                                                                               ║
 	║ Minor:                                                                        ║
@@ -26,6 +26,7 @@
 	║  ▷ An ereaser button would be nice.                                           ║
 	║  ▷ Trains are only one car long.                                              ║
 	║  ▶ Z-orders, especially around entrances, are broken.                         ║
+	║  ▶ Improve input scheme.                                                      ║
 	║  ▶                                                                            ║
 	║                                                          ▷ fixed  ▶ not fixed ║
 	╚═══════════════════════════════════════════════════════════════════════════════╝
