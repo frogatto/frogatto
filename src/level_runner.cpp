@@ -18,7 +18,7 @@
 #include "foreach.hpp"
 #include "formula_profiler.hpp"
 #include "inventory.hpp"
-#ifdef TARGET_OS_HARMATTAN
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY)
 #include "iphone_controls.hpp"
 #endif
 #include "joystick.hpp"
@@ -651,7 +651,7 @@ bool level_runner::play_cycle()
 				}
 				break;
 			}
-#ifdef TARGET_OS_HARMATTAN
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY)
 			case SDL_MOUSEMOTION:
 			case SDL_MOUSEBUTTONDOWN:
 			case SDL_MOUSEBUTTONUP:

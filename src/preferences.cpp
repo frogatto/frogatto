@@ -95,6 +95,23 @@ namespace preferences {
 		bool use_bequ_ = true;
 
 		bool use_16bpp_textures_ = true;
+#elif defined(TARGET_BLACKBERRY)
+
+#ifndef PREFERENCES_PATH
+#define PREFERENCES_PATH "~/.frogatto/"
+#endif
+		bool send_stats_ = false;
+		bool sim_iphone_ = false;
+		bool use_joystick_ = true;
+		bool screen_rotated_ = false;
+		int virtual_screen_width_ = 1024;
+		int virtual_screen_height_ = 600;
+		int actual_screen_width_ = 1024;
+		int actual_screen_height_ = 600;
+		bool load_compiled_ = true;
+		bool use_fbo_ = true;
+		bool use_bequ_ = true;
+		bool use_16bpp_textures_ = false;
 #else
 
 #ifndef NO_UPLOAD_STATS
@@ -351,7 +368,7 @@ namespace preferences {
 		load_compiled_ = value;
 	}
 	
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 	bool use_fbo()
 	{
 		return use_fbo_;
@@ -619,7 +636,7 @@ namespace preferences {
 		return run_failing_unit_tests_;
 	}
 
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 	PFNGLBLENDEQUATIONOESPROC           glBlendEquationOES;
 	PFNGLGENFRAMEBUFFERSOESPROC         glGenFramebuffersOES;
 	PFNGLBINDFRAMEBUFFEROESPROC         glBindFramebufferOES;

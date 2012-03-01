@@ -31,8 +31,12 @@
 #endif
 
 #include <stdlib.h>
+#if defined(TARGET_BLACKBERRY)
+#include <SDL.h>
+#else
 #include <SDL/SDL.h>
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
+#endif
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 #include <GLES/gl.h>
 #else
 #include <GL/gl.h>

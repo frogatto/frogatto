@@ -5,6 +5,7 @@
 #include "joystick.hpp"
 #include "level.hpp"
 #include "playable_custom_object.hpp"
+#include "string_utils.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
 
@@ -150,7 +151,7 @@ variant playable_custom_object::get_value(const std::string& key) const
 		Uint8* key_state = SDL_GetKeyState(NULL);
 		for (int count = SDLK_FIRST; count < SDLK_LAST; count++) {
 			if(key_state[count]) {				//Returns only keys that are down so the list that ffl has to deal with is small.
-				if(std::isprint(count)) {
+				if(util::isprint(count)) {
 					std::string str(1,count);
 					result.push_back(variant(str));
 				} else {

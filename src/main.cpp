@@ -2,7 +2,7 @@
 #ifndef SDL_VIDEO_OPENGL_ES
 #include <GL/glew.h>
 #endif
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 #include <GLES/gl.h>
 #ifdef TARGET_PANDORA
 #include <GLES/glues.h>
@@ -76,6 +76,8 @@
 
 #if defined(TARGET_PANDORA) | defined(TARGET_TEGRA)
 #include "eglport.h"
+#elif defined(TARGET_BLACKBERRY)
+#include <EGL/egl.h>
 #endif
 
 namespace {
@@ -178,6 +180,11 @@ extern "C" int main(int argc, char** argv)
 	#endif
 
 	std::cerr << "Frogatto engine version " << preferences::version() << "\n";
+
+#if defined(TARGET_BLACKBERRY)
+	chdir("app/native");
+	std::cout<< "Changed working directory to: " << getcwd(0, 0) << std::endl;
+#endif
 
 	std::string level_cfg = "titlescreen.cfg";
 	bool unit_tests_only = false, skip_tests = false;
@@ -338,8 +345,7 @@ extern "C" int main(int argc, char** argv)
 	}
     EGL_Init();
     preferences::init_oes();
-#else
-#if defined(TARGET_TEGRA)
+#elif defined(TARGET_TEGRA)
 	//if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,preferences::resizable() ? SDL_RESIZABLE : 0|preferences::fullscreen() ? SDL_FULLSCREEN : 0) == NULL) {
 	if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_FULLSCREEN) == NULL) {
 		std::cerr << "could not set video mode\n";
@@ -347,12 +353,17 @@ extern "C" int main(int argc, char** argv)
 	}
     EGL_Init();
     preferences::init_oes();
+#elif defined(TARGET_BLACKBERRY)
+	if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_OPENGL|SDL_FULLSCREEN) == NULL) {
+		std::cerr << "could not set video mode\n";
+		return -1;
+	}
+	preferences::init_oes();
 #else
 	if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) == NULL) {
 		std::cerr << "could not set video mode\n";
 		return -1;
 	}
-#endif
 #endif
 #endif
 
@@ -546,7 +557,7 @@ extern "C" int main(int argc, char** argv)
 	
 	preferences::save_preferences();
 	std::cerr << SDL_GetError() << "\n";
-#if !defined(TARGET_OS_HARMATTAN) && !defined(TARGET_TEGRA)
+#if !defined(TARGET_OS_HARMATTAN) && !defined(TARGET_TEGRA) && !defined(TARGET_BLACKBERRY)
 	std::cerr << gluErrorString(glGetError()) << "\n";
 #endif
 	return 0;

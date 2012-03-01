@@ -1,4 +1,4 @@
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 #include <GLES/gl.h>
 #ifdef TARGET_PANDORA
 #include <GLES/glues.h>

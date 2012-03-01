@@ -10,7 +10,7 @@
    See the COPYING file for more details.
 */
 
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 #include <GLES/gl.h>
 #ifdef TARGET_PANDORA
 #include <GLES/glues.h>
@@ -167,6 +167,9 @@ namespace {
 				if (!std::strstr(supported, "GL_ARB_texture_non_power_of_two")) {
 					npot = false;
 				}
+			} else if(std::strstr(vendor, "QNX Software Systems")) {
+				npot = false;	// TODO: Investigate what are the conditions under which npot textures
+								// are supported under QNX.
 			}
 		}
 		if(!npot) {
