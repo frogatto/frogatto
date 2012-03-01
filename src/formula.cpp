@@ -32,6 +32,7 @@
 #include "i18n.hpp"
 #include "map_utils.hpp"
 #include "random.hpp"
+#include "string_utils.hpp"
 #include "unit_test.hpp"
 #include "wml_node.hpp"
 
@@ -1621,7 +1622,7 @@ formula::formula(const wml::value& val, function_symbol_table* symbols, const fo
 			}
 
 			const std::string::const_iterator end_line = std::find(begin_line, tokens.back().end, '\n');
-			while(begin_line < end_line && isspace(*begin_line)) {
+			while(begin_line < end_line && util::isspace(*begin_line)) {
 				++begin_line;
 			}
 

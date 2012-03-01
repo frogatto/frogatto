@@ -3,6 +3,7 @@
 #include <ctype.h>
 
 #include "raster.hpp"
+#include "string_utils.hpp"
 #include "text_entry_widget.hpp"
 
 namespace gui {
@@ -68,7 +69,7 @@ bool text_entry_widget::handle_event(const SDL_Event& event, bool claimed)
 		}
 
 		char c = event.key.keysym.unicode;
-		if(isprint(c)) {
+		if(util::isprint(c)) {
 			text_.insert(text_.begin() + cursor_, c);
 			++cursor_;
 			claimed = true;
