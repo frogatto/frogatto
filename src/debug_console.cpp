@@ -147,6 +147,8 @@ public:
 			draw(lvl);
 			SDL_Delay(20);
 		}
+
+		lvl.editor_clear_selection();
 	}
 private:
 	void draw(const level& lvl) const {
