@@ -24,6 +24,11 @@ void text_entry_widget::set_text(const std::string& value)
 	cursor_ = text_.size();
 }
 
+void text_entry_widget::set_font(const std::string& name)
+{
+	font_ = graphical_font::get(name);
+}
+
 void text_entry_widget::handle_draw() const
 {
 	rect r = font_->draw(x(), y(), std::string(text_.begin(), text_.begin() + cursor_));

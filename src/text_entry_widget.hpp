@@ -15,6 +15,8 @@ public:
 
 	const std::string& text() const;
 	void set_text(const std::string& value);
+
+	void set_font(const std::string& font_name);
 private:
 	void handle_draw() const;
 	bool handle_event(const SDL_Event& event, bool claimed);

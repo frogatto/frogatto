@@ -72,6 +72,7 @@ class console
 public:
 	explicit console()
 	  : history_pos_(0) {
+		entry_.set_font("door_label");
 		entry_.set_loc(10, 300);
 		entry_.set_dim(300, 20);
 	}
