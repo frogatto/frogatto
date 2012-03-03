@@ -274,8 +274,8 @@ extern "C" int main(int argc, char** argv)
 
 	std::cerr << "\n";
 
-#ifdef TARGET_OS_IPHONE
-	//on the iPhone, try to restore the auto-save if it exists
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_BLACKBERRY)
+	//on the iPhone and PlayBook, try to restore the auto-save if it exists
 	if(sys::file_exists(preferences::auto_save_file_path()) && sys::read_file(std::string(preferences::auto_save_file_path()) + ".stat") == "1") {
 		level_cfg = "autosave.cfg";
 		sys::write_file(std::string(preferences::auto_save_file_path()) + ".stat", "0");

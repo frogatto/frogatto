@@ -38,6 +38,9 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	show_controls = false;
 	show_button_swap = true;
 	show_of = true;
+#elif TARGET_BLACKBERRY
+	show_exit = false;
+	show_controls = false;
 #endif
 	
 	using namespace gui;
