@@ -1,6 +1,7 @@
 game
 server
 test
+.DS_Store
 *.o
 *.a
 *~
