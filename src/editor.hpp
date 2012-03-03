@@ -115,6 +115,8 @@ public:
 	//switch the current facing.
 	void toggle_facing();
 
+	void toggle_upside_down();
+
 	void duplicate_selected_objects();
 
 	void run_script(const std::string& id);
@@ -192,6 +194,7 @@ private:
 	EDIT_TOOL tool_;
 	bool done_;
 	bool face_right_;
+	bool upside_down_;
 	int cur_tileset_;
 
 	int cur_object_;

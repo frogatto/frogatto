@@ -35,8 +35,8 @@
     <!-- <copyright></copyright> -->
 
     <!--  Name of author which is used for signing. Must match the developer name of your development certificate. -->
-    <author>Pandas in Motion</author>
-    <authorId>gYAAgM2mCYw-oMB3ErQwGys2iV4</authorId>
+    <author>Lost Pixel</author>
+    <authorId>gYAAgKcS3iwxeR4EtD7lFv8ijqs</authorId>
     <splashscreen>bbsplash.png</splashscreen>
     
     <!--  Unique author ID assigned by signing authority. Required if using debug tokens. -->

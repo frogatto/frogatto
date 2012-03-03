@@ -637,7 +637,7 @@ editor::editor(const char* level_cfg)
   : zoom_(1), xpos_(0), ypos_(0), anchorx_(0), anchory_(0),
     selected_entity_startx_(0), selected_entity_starty_(0),
     filename_(level_cfg), tool_(TOOL_ADD_RECT),
-    done_(false), face_right_(true),
+    done_(false), face_right_(true), upside_down_(false),
 	cur_tileset_(0), cur_object_(0),
     current_dialog_(NULL),
 	drawing_rect_(false), dragging_(false), level_changed_(0),
@@ -687,6 +687,14 @@ void editor::group_selection()
 void editor::toggle_facing()
 {
 	face_right_ = !face_right_;
+	if(character_dialog_) {
+		character_dialog_->init();
+	}
+}
+
+void editor::toggle_upside_down()
+{
+	upside_down_ = !upside_down_;
 	if(character_dialog_) {
 		character_dialog_->init();
 	}
@@ -1228,6 +1236,10 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 		toggle_facing();
 	}
 
+	if(key.keysym.sym == SDLK_i) {
+		toggle_upside_down();
+	}
+
 	if(key.keysym.sym == SDLK_r &&
 	   (key.keysym.mod&KMOD_CTRL)) {
 		lvl_->rebuild_tiles();
@@ -1549,6 +1561,10 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 		node->set_attr("x", formatter() << (ctrl_pressed ? anchorx_ : round_tile_size(anchorx_)));
 		node->set_attr("y", formatter() << (ctrl_pressed ? anchory_ : round_tile_size(anchory_)));
 		node->set_attr("face_right", face_right_ ? "yes" : "no");
+
+		if(upside_down_) {
+			node->set_attr("upside_down", "yes");
+		}
 
 		entity_ptr c(entity::build(node));
 
@@ -2301,7 +2317,7 @@ void editor::draw() const
 		e.set_pos(x, y);
 		if(place_entity_in_level(*lvl_, e)) {
 			glColor4f(1.0, 1.0, 1.0, 0.5);
-			all_characters()[cur_object_].preview_frame->draw(e.x(), e.y(), face_right_);
+			all_characters()[cur_object_].preview_frame->draw(e.x(), e.y(), face_right_, upside_down_);
 			glColor4f(1.0, 1.0, 1.0, 1.0);
 		}
 	}
