@@ -4,9 +4,12 @@
 
 #include <pthread.h>
 
+#include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
 
+#include "foreach.hpp"
 #include "preferences.hpp"
+#include "thread.hpp"
 #include "filesystem.hpp"
 #include "SDL.h"
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
@@ -81,7 +84,7 @@ struct sound_playing {
 	int	loops;		//not strictly boolean.  -1=true, 0=false
 };
 
-std::vector<sound_playing> channels_to_sounds_playing;
+std::vector<sound_playing> channels_to_sounds_playing, queued_sounds;
 
 void on_sound_finished(int channel)
 {
@@ -261,7 +264,35 @@ typedef std::map<std::string, sound> cache_map;
 #endif
 cache_map cache;
 
+cache_map threaded_cache;
+threading::mutex cache_mutex;
+
+
 bool sound_init = false;
+
+void thread_load(const std::string& file)
+{
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
+	Mix_Chunk* chunk = Mix_LoadWAV(("sounds/" + file).c_str());
+
+	{
+		threading::lock l(cache_mutex);
+		threaded_cache[file] = chunk;
+	}
+
+#else
+	std::string wav_file = file;
+	wav_file.replace(wav_file.length()-3, wav_file.length(), "wav");
+	sound s("sounds_wav/" + wav_file);
+
+	{
+		threading::lock l(cache_mutex);
+		threaded_cache[file] = s;
+	}
+#endif
+}
+
+std::map<std::string, boost::shared_ptr<threading::thread> > loading_threads;
 
 }
 
@@ -325,6 +356,8 @@ manager::~manager()
 		return;
 	}
 
+	loading_threads.clear();
+
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	Mix_HookMusicFinished(NULL);
 	next_music().clear();
@@ -345,6 +378,20 @@ void mute (bool flag)
 #endif
 }
 
+void preload(const std::string& file)
+{
+	if(!sound_ok) {
+		return;
+	}
+
+	if(loading_threads.count(file)) {
+		return;
+	}
+
+	boost::shared_ptr<threading::thread> t(new threading::thread(boost::bind(thread_load, file)));
+	loading_threads[file] = t;
+}
+
 namespace {
 
 int play_internal(const std::string& file, int loops, const void* object)
@@ -353,28 +400,28 @@ int play_internal(const std::string& file, int loops, const void* object)
 		return -1;
 	}
 
+	if(!cache.count(file)) {
+		preload(file);
+		queued_sounds.push_back(sound_playing());
+		queued_sounds.back().file = file;
+		queued_sounds.back().loops = loops;
+		queued_sounds.back().object = object;
+		
+		return -1;
+	}
+
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
-	Mix_Chunk*& chunk = cache[file];
+	Mix_Chunk* chunk = cache[file];
 	if(chunk == NULL) {
-		chunk = Mix_LoadWAV(("sounds/" + file).c_str());
-		if(chunk == NULL) {
-			return -1;
-		}
+		return -1;
 	}
 
 	int result = Mix_PlayChannel(-1, chunk, loops);
 
 #else
 	sound& s = cache[file];
-	if (s == NULL)
-	{
-		std::string wav_file = file;
-		wav_file.replace(wav_file.length()-3, wav_file.length(), "wav");
-		s = sound("sounds_wav/" + wav_file);
-		if (s == NULL)
-		{
-			return -1;
-		}
+	if(s == NULL) {
+		return -1;
 	}
 	
 	int result = sdl_play_sound(&s, loops);
@@ -399,6 +446,29 @@ int play_internal(const std::string& file, int loops, const void* object)
 
 }
 
+void process()
+{
+	bool has_items = false;
+	{
+		threading::lock l(cache_mutex);
+		for(cache_map::const_iterator i = threaded_cache.begin(); i != threaded_cache.end(); ++i) {
+			cache.insert(*i);
+			has_items = true;
+			loading_threads.erase(i->first);
+		}
+
+		threaded_cache.clear();
+	}
+
+	if(has_items) {
+		std::vector<sound_playing> sounds;
+		sounds.swap(queued_sounds);
+		foreach(const sound_playing& sfx, sounds) {
+			play_internal(sfx.file, sfx.loops, sfx.object);
+		}
+	}
+}
+
 void play(const std::string& file, const void* object)
 {
 	if(preferences::no_sound() || mute_) {
@@ -421,6 +491,14 @@ void stop_sound(const std::string& file, const void* object)
 #endif
 		}
 	}
+
+	for(int n = 0; n != queued_sounds.size(); ++n) {
+		if(queued_sounds[n].object == object &&
+		   queued_sounds[n].file == file) {
+			queued_sounds.erase(queued_sounds.begin() + n);
+			--n;
+		}
+	}
 }
 	
 void stop_looped_sounds(const void* object)
@@ -440,6 +518,20 @@ void stop_looped_sounds(const void* object)
 			//until it ends, since this function signals that the associated
 			//object is going away.
 			channels_to_sounds_playing[n].object = NULL;
+		}
+	}
+
+	for(int n = 0; n != queued_sounds.size(); ++n) {
+		if((object == NULL && queued_sounds[n].object != NULL
+		   || queued_sounds[n].object == object) &&
+		   (queued_sounds[n].loops != 0)) {
+			queued_sounds.erase(queued_sounds.begin() + n);
+			--n;
+		} else if(queued_sounds[n].object == object) {
+			//this sound is a looped sound, but make sure it keeps going
+			//until it ends, since this function signals that the associated
+			//object is going away.
+			queued_sounds[n].object = NULL;
 		}
 	}
 }
@@ -507,19 +599,6 @@ void set_music_volume(float volume)
 		iphone_set_music_volume(volume);
 #endif
 	}
-}
-
-void cancel_looped(int handle)
-{
-	if(handle >= 0 && handle < channels_to_sounds_playing.size()) {
-		channels_to_sounds_playing[handle].object = NULL;
-	}
-
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
-	Mix_HaltChannel(handle);
-#else
-	sdl_stop_channel(handle);
-#endif
 }
 
 void play_music(const std::string& file)

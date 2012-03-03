@@ -397,6 +397,24 @@ FUNCTION_DEF(stop_sound, 1, 1, "stop_sound(string id): stops the sound that the 
 					args()[0]->evaluate(variables).as_string()));
 END_FUNCTION_DEF(stop_sound)
 
+class preload_sound_command : public entity_command_callable
+{
+public:
+	explicit preload_sound_command(const std::string& name)
+	  : name_(name)
+	{}
+	virtual void execute(level& lvl, entity& ob) const {
+		sound::preload(name_);
+	}
+private:
+	std::string name_;
+};
+
+FUNCTION_DEF(preload_sound, 1, 1, "preload_sound(string id): preload the given sound so it'll be in the sound effects cache")
+	return variant(new preload_sound_command(
+					args()[0]->evaluate(variables).as_string()));
+END_FUNCTION_DEF(preload_sound)
+
 class screen_flash_command : public entity_command_callable
 {
 public:

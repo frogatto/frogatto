@@ -14,6 +14,11 @@ bool ok();
 bool muted();
 void mute(bool flag);
 
+void process();
+
+//preload a sound effect in the cache.
+void preload(const std::string& file);
+
 //play a sound. 'object' is the object that is playing the sound. It can be
 //used later in stop_sound to specify which object is stopping playing
 //the sound.
@@ -35,10 +40,8 @@ float get_music_volume();
 void set_music_volume(float volume);
 	
 // function to play a sound effect over and over in a loop. Will return
-// a handle to the sound effect. Will keep playing until cancel_looped()
-// is called with the handle.
+// a handle to the sound effect.
 int play_looped(const std::string& file, const void* object=0);
-void cancel_looped(int handle);
 
 void play_music(const std::string& file);
 void play_music_interrupt(const std::string& file);

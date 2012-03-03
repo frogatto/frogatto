@@ -28,6 +28,7 @@
 #include "preprocessor.hpp"
 #include "random.hpp"
 #include "raster.hpp"
+#include "sound.hpp"
 #include "stats.hpp"
 #include "string_utils.hpp"
 #include "surface_palette.hpp"
@@ -1731,6 +1732,8 @@ extern std::vector<rect> background_rects_drawn;
 
 void level::draw(int x, int y, int w, int h) const
 {
+	sound::process();
+
 	++draw_count;
 
 	const int start_x = x;

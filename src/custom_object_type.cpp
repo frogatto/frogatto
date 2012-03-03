@@ -11,6 +11,7 @@
 #include "object_events.hpp"
 #include "preferences.hpp"
 #include "solid_map.hpp"
+#include "sound.hpp"
 #include "string_utils.hpp"
 #include "surface_cache.hpp"
 #include "wml_modify.hpp"
@@ -380,6 +381,14 @@ custom_object_type::custom_object_type(wml::const_node_ptr node, const custom_ob
 {
 	if(node->get_child("editor_info")) {
 		editor_info_.reset(new editor_entity_info(node->get_child("editor_info")));
+	}
+
+	if(node->has_attr("preload_sounds")) {
+		//Pre-load any sounds that should be present when we create
+		//this object type.
+		foreach(std::string sound, util::split(node->attr("preload_sounds"))) {
+			sound::preload(sound);
+		}
 	}
 
 	const bool is_variation = base_type != NULL;
