@@ -21,6 +21,9 @@
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY)
 #include "iphone_controls.hpp"
 #endif
+#ifdef TARGET_BLACKBERRY
+#include "userevents.h"
+#endif
 #include "joystick.hpp"
 #include "level_runner.hpp"
 #include "light.hpp"
@@ -573,6 +576,27 @@ bool level_runner::play_cycle()
 						if (e.type == SDL_ACTIVEEVENT && e.active.state & SDL_APPINPUTFOCUS && e.active.gain == 1)
 							break;
 					}
+				}
+			break;
+#elif TARGET_BLACKBERRY
+			// make sure nothing happens while the app is supposed to be "inactive"
+			case SDL_ACTIVEEVENT:
+				if (event.active.state & SDL_APPINPUTFOCUS && event.active.gain == 0)
+				{
+					write_autosave();
+					preferences::save_preferences();
+
+					SDL_Event e;
+					while (SDL_WaitEvent(&e))
+					{
+						if (e.type == SDL_ACTIVEEVENT && e.active.state & SDL_APPINPUTFOCUS && e.active.gain == 1)
+							break;
+					}
+				}
+			break;
+			case SDL_USEREVENT:
+				if(event.user.code == ST_EVENT_SWIPE_DOWN) {
+					should_pause = true;
 				}
 			break;
 #endif
