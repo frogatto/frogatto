@@ -21,7 +21,7 @@ const std::string& text_entry_widget::text() const
 void text_entry_widget::set_text(const std::string& value)
 {
 	text_ = value;
-	cursor_ = 0;
+	cursor_ = text_.size();
 }
 
 void text_entry_widget::handle_draw() const
