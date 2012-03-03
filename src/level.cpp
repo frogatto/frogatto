@@ -87,7 +87,7 @@ void level::set_as_current_level()
 	current_level = this;
 	frame::set_color_palette(palettes_used_);
 
-#if !TARGET_OS_IPHONE
+#if !TARGET_OS_IPHONE && !TARGET_BLACKBERRY
 	static const int starting_x_resolution = preferences::actual_screen_width();
 	static const int starting_y_resolution = preferences::actual_screen_height();
 	static const int starting_virtual_x_resolution = preferences::virtual_screen_width();
@@ -104,6 +104,9 @@ void level::set_as_current_level()
 
 
 		if(x_resolution_ != preferences::actual_screen_width() || y_resolution_ != preferences::actual_screen_height()) {
+#if defined(TARGET_BLACKBERRY)
+#endif
+
 			const bool result = graphics::set_video_mode(x_resolution_, y_resolution_);
 			if(result) {
 				preferences::set_actual_screen_width(x_resolution_);
