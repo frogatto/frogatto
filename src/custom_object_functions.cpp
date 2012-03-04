@@ -138,7 +138,7 @@ int show_simple_option_dialog(level& lvl, const std::string& text, const std::ve
 			}
 		}
 		
-		if(d->process()) {
+		if(d->process() || d->detect_joystick_press()) {
 			done = true;
 		}
 
@@ -1310,6 +1310,8 @@ private:
 							break;
 						}
 					}
+
+					done = done || d->detect_joystick_press();
 
 					if(paused_)
 						done = done || d->process();

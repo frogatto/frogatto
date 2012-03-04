@@ -16,6 +16,7 @@ public:
 	speech_dialog();
 	~speech_dialog();
 
+	bool detect_joystick_press();
 	bool key_press(const SDL_Event& e);
 	bool process();
 	void draw() const;

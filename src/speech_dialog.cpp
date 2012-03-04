@@ -183,17 +183,20 @@ bool speech_dialog::process()
 		if(!joystick_down_pressed_ && joystick::down()) {
 			move_down();
 		}
-
-		if(!joystick_button_pressed_ && (joystick::button(0) || joystick::button(10))) {
-			return true;
-		}
 	}
 
 	joystick_up_pressed_ = joystick::up();
 	joystick_down_pressed_ = joystick::down();
-	joystick_button_pressed_ = joystick::button(0) || joystick::button(1);
 
 	return cycle_ == expiration_;
+}
+
+bool speech_dialog::detect_joystick_press()
+{
+	const bool new_press = joystick::button(0) || joystick::button(1);
+	const bool is_pressed = new_press && !joystick_button_pressed_;
+	joystick_button_pressed_ = new_press;
+	return is_pressed;
 }
 
 void speech_dialog::draw() const
