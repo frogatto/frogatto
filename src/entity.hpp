@@ -202,7 +202,7 @@ public:
 	virtual entity_ptr driver() { return entity_ptr(); }
 	virtual const_entity_ptr driver() const { return const_entity_ptr(); }
 
-	virtual void move_to_standing(level& lvl) {}
+	virtual bool move_to_standing(level& lvl, int max_displace=10000) { return false; }
 	virtual int hitpoints() const { return 1; }
 	virtual int max_hitpoints() const { return 1; }
 	virtual int num_powerups() const { return 0; }
@@ -253,6 +253,8 @@ public:
 	virtual bool appears_at_difficulty(int difficulty) const = 0;
 
 	virtual int parent_depth(int cur_depth=0) const { return 0; }
+
+	virtual bool editor_force_standing() const = 0;
 
 protected:
 

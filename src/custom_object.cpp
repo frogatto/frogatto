@@ -2823,15 +2823,27 @@ bool custom_object::is_active(const rect& screen_area) const
 	return false;
 }
 
-void custom_object::move_to_standing(level& lvl)
+bool custom_object::move_to_standing(level& lvl, int max_displace)
+{
+	int start_y = y();
+	const bool result = move_to_standing_internal(lvl, max_displace);
+	if(!result || entity_collides(level::current(), *this, MOVE_NONE)) {
+		set_pos(x(), start_y);
+		return false;
+	}
+
+	return result;
+}
+
+bool custom_object::move_to_standing_internal(level& lvl, int max_displace)
 {
 	int start_y = y();
 	//descend from the initial-position (what the player was at in the prev level) until we're standing
-	for(int n = 0; n != 10000; ++n) {
+	for(int n = 0; n != max_displace; ++n) {
 		if(is_standing(lvl)) {
 			
 			if(n == 0) {  //if we've somehow managed to be standing on the very first frame, try to avoid the possibility that this is actually some open space underground on a cave level by scanning up till we reach the surface.
-				for(int n = 0; n != 10000; ++n) {
+				for(int n = 0; n != max_displace; ++n) {
 					set_pos(x(), y() - 1);
 					if(!is_standing(lvl)) {
 						set_pos(x(), y() + 1);
@@ -2841,27 +2853,27 @@ void custom_object::move_to_standing(level& lvl)
 							//character down, under the solid, and then
 							//call this function again to move them down
 							//to standing on the solid below.
-							for(int n = 0; n != 10000; ++n) {
+							for(int n = 0; n != max_displace; ++n) {
 								set_pos(x(), y() + 1);
 								if(!is_standing(lvl)) {
-									move_to_standing(lvl);
-									return;
+									return move_to_standing_internal(lvl, max_displace);
 								}
 							}
 						}
 						
-						return;
+						return true;
 					}
 				}
-				return;
+				return true;
 			}
-			return;
+			return true;
 		}
 		
 		set_pos(x(), y() + 1);
 	}
 	
 	set_pos(x(), start_y);
+	return false;
 }
 
 
@@ -3270,6 +3282,11 @@ int custom_object::parent_depth(int cur_depth) const
 	}
 
 	return parent_->parent_depth(cur_depth+1);
+}
+
+bool custom_object::editor_force_standing() const
+{
+	return type_->editor_force_standing();
 }
 
 point custom_object::parent_position() const

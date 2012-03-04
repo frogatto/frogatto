@@ -255,6 +255,12 @@ bool non_solid_entity_collides_with_level(const level& lvl, const entity& e)
 
 bool place_entity_in_level(level& lvl, entity& e)
 {
+	if(e.editor_force_standing()) {
+		if(!e.move_to_standing(lvl, 128)) {
+			return false;
+		}
+	}
+
 	if(!entity_collides(lvl, e, MOVE_NONE)) {
 		return true;
 	}

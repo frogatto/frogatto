@@ -95,7 +95,7 @@ public:
 	virtual bool is_active(const rect& screen_area) const;
 	bool dies_on_inactive() const;
 	bool always_active() const;
-	void move_to_standing(level& lvl);
+	bool move_to_standing(level& lvl, int max_displace=10000);
 
 	bool body_harmful() const;
 	bool body_passthrough() const;
@@ -201,9 +201,13 @@ protected:
 
 	virtual int parent_depth(int cur_depth=0) const;
 
+	virtual bool editor_force_standing() const;
+
 private:
 	custom_object& operator=(const custom_object& o);
 	struct Accessor;
+
+	bool move_to_standing_internal(level& lvl, int max_displace);
 
 	void process_frame();
 

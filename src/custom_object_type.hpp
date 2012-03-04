@@ -165,6 +165,8 @@ public:
 	int activation_border() const { return activation_border_; }
 	const variant& available_frames() const { return available_frames_; }
 
+	bool editor_force_standing() const { return editor_force_standing_; }
+
 private:
 	custom_object_callable callable_definition_;
 
@@ -251,6 +253,8 @@ private:
 	const_editor_entity_info_ptr editor_info_;
 
 	std::map<std::string, const_custom_object_type_ptr> sub_objects_;
+
+	bool editor_force_standing_;
 };
 
 #endif
