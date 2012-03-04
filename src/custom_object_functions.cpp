@@ -113,7 +113,7 @@ FUNCTION_DEF(report_, 4, 4, "report() -> boolean: Write a key and a value into [
 		entity_ptr obj = args()[1]->evaluate(variables).convert_to<entity>();
 		const std::string key = args()[2]->evaluate(variables).as_string();
 		const std::string value = args()[3]->evaluate(variables).as_string();
-		//std::cerr << "Reporting '" << key << "' at '" << value << "' in " << lvl->id() << ".\n";
+		std::cerr << "Reporting '" << key << "' at '" << value << "' in " << lvl->id() << ".\n";
 		stats::record_event(lvl -> id(), stats::record_ptr(new stats::custom_record(key, value, obj->midpoint())));
 		return variant(true);
 END_FUNCTION_DEF(report_)
