@@ -1741,6 +1741,15 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_HIT_BY:            return variant(last_hit_by_.get());
 	case CUSTOM_OBJECT_DISTORTION:        return variant(distortion_.get());
 	case CUSTOM_OBJECT_IS_STANDING:       return variant(standing_on_.get() || is_standing(level::current()));
+	case CUSTOM_OBJECT_STANDING_INFO:     {
+		collision_info info;
+		is_standing(level::current(), &info);
+		if(info.surf_info && info.surf_info->info) {
+			return variant(*info.surf_info->info);
+		} else {
+			return variant();
+		}
+	}
 	case CUSTOM_OBJECT_NEAR_CLIFF_EDGE:   return variant(is_standing(level::current()) && cliff_edge_within(level::current(), feet_x(), feet_y(), face_dir()*15));
 	case CUSTOM_OBJECT_DISTANCE_TO_CLIFF: return variant(::distance_to_cliff(level::current(), feet_x(), feet_y(), face_dir()));
 	case CUSTOM_OBJECT_SLOPE_STANDING_ON: return variant(-slope_standing_on(6)*face_dir());

@@ -239,6 +239,7 @@ void level_object::set_current_palette(unsigned int palette)
 
 level_object::level_object(wml::const_node_ptr node)
   : id_(node->attr("id")), image_(node->attr("image")),
+    info_(node->attr("info")),
     t_(graphics::texture::get(image_)),
 	all_solid_(node->attr("solid").str() == "yes"),
     passthrough_(wml::get_bool(node, "passthrough")),

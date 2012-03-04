@@ -10,14 +10,20 @@ static const int TileSize = 32;
 typedef std::pair<int,int> tile_pos;
 typedef std::bitset<TileSize*TileSize> tile_bitmap;
 
+struct surface_info {
+	surface_info() : friction(0), traction(0), damage(-1), info(0)
+	{}
+	int friction, traction, damage;
+	const std::string* info;
+	static const std::string* get_info_str(const std::string& key);
+};
+
 struct tile_solid_info {
-	tile_solid_info() : all_solid(false), friction(0), traction(0), damage(-1)
+	tile_solid_info() : all_solid(false)
 	{}
 	tile_bitmap bitmap;
+	surface_info info;
 	bool all_solid;
-	int friction;
-	int traction;
-	int damage;
 };
 
 class level_solid_map {

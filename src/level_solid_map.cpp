@@ -1,7 +1,26 @@
 #include <iostream>
+#include <set>
 
 #include "foreach.hpp"
 #include "level_solid_map.hpp"
+
+namespace {
+void merge_surface_info(surface_info& a, const surface_info& b)
+{
+	a.friction = std::max<int>(a.friction, b.friction);
+	a.traction = std::max<int>(a.traction, b.traction);
+	a.damage = std::max<int>(a.damage, b.damage);
+	if(b.info) {
+		a.info = b.info;
+	}
+}
+}
+
+const std::string* surface_info::get_info_str(const std::string& key)
+{
+	static std::set<std::string> info_set;
+	return &*info_set.insert(key).first;
+}
 
 level_solid_map::level_solid_map()
 {
@@ -144,9 +163,7 @@ void level_solid_map::merge(const level_solid_map& map, int xoffset, int yoffset
 			}
 
 			dst.all_solid = dst.all_solid || src->all_solid;
-			dst.friction = std::max<int>(src->friction, dst.friction);
-			dst.traction = std::max<int>(src->traction, dst.traction);
-			dst.damage = std::max<int>(src->damage, dst.damage);
+			merge_surface_info(dst.info, src->info);
 			if(!dst.all_solid) {
 				dst.bitmap = dst.bitmap | src->bitmap;
 			}
@@ -161,9 +178,7 @@ void level_solid_map::merge(const level_solid_map& map, int xoffset, int yoffset
 			}
 
 			dst.all_solid = dst.all_solid || src->all_solid;
-			dst.friction = std::max<int>(src->friction, dst.friction);
-			dst.traction = std::max<int>(src->traction, dst.traction);
-			dst.damage = std::max<int>(src->damage, dst.damage);
+			merge_surface_info(dst.info, src->info);
 			if(!dst.all_solid) {
 				dst.bitmap = dst.bitmap | src->bitmap;
 			}
@@ -180,9 +195,7 @@ void level_solid_map::merge(const level_solid_map& map, int xoffset, int yoffset
 			}
 
 			dst.all_solid = dst.all_solid || src->all_solid;
-			dst.friction = std::max<int>(src->friction, dst.friction);
-			dst.traction = std::max<int>(src->traction, dst.traction);
-			dst.damage = std::max<int>(src->damage, dst.damage);
+			merge_surface_info(dst.info, src->info);
 			if(!dst.all_solid) {
 				dst.bitmap = dst.bitmap | src->bitmap;
 			}
@@ -198,9 +211,7 @@ void level_solid_map::merge(const level_solid_map& map, int xoffset, int yoffset
 			tile_solid_info& dst = insert_or_find(pos);
 
 			dst.all_solid = dst.all_solid || src->all_solid;
-			dst.friction = std::max<int>(src->friction, dst.friction);
-			dst.traction = std::max<int>(src->traction, dst.traction);
-			dst.damage = std::max<int>(src->damage, dst.damage);
+			merge_surface_info(dst.info, src->info);
 			if(!dst.all_solid) {
 				dst.bitmap = dst.bitmap | src->bitmap;
 			}

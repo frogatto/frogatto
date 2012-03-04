@@ -2,6 +2,7 @@
 #define COLLISION_UTILS_HPP_INCLUDED
 
 #include "entity.hpp"
+#include "level_solid_map.hpp"
 #include "solid_map.hpp"
 
 class level;
@@ -12,8 +13,12 @@ int get_solid_dimension_id(const std::string& key);
 
 //struct which provides information about a surface we collide with.
 struct collision_info {
-	collision_info() : friction(0), traction(0), damage(0), adjust_y(0), platform(false), area_id(0), collide_with_area_id(0)
+	collision_info() : surf_info(0), friction(0), traction(0), damage(0), adjust_y(0), platform(false), area_id(0), collide_with_area_id(0)
 	{}
+
+	void read_surf_info();
+
+	const surface_info* surf_info;
 	int friction;
 	int traction;
 	int damage;

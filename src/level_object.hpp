@@ -84,6 +84,7 @@ public:
 	bool has_solid() const { return !solid_.empty(); }
 	bool all_solid() const { return all_solid_; }
 	const std::string& id() const { return id_; }
+	const std::string& info() const { return info_; }
 	int friction() const { return friction_; }
 	int traction() const { return traction_; }
 	int damage() const { return damage_; }
@@ -114,6 +115,7 @@ public:
 private:
 	std::string id_;
 	std::string image_;
+	std::string info_;
 	graphics::texture t_;
 	std::vector<int> tiles_;
 	std::vector<bool> solid_;

@@ -262,6 +262,7 @@ level::level(const std::string& level_cfg)
 
 	preloads_ = util::split(node->attr("preloads"));
 
+	std::string empty_solid_info;
 	wml::node::const_child_iterator r1 = node->begin_child("solid_rect");
 	wml::node::const_child_iterator r2 = node->end_child("solid_rect");
 	for(; r1 != r2; ++r1) {
@@ -271,7 +272,7 @@ level::level(const std::string& level_cfg)
 		r.traction = wml::get_int(r1->second, "traction", 100);
 		r.damage = wml::get_int(r1->second, "damage");
 		solid_rects_.push_back(r);
-		add_solid_rect(r.r.x(), r.r.y(), r.r.x2(), r.r.y2(), r.friction, r.traction, r.damage);
+		add_solid_rect(r.r.x(), r.r.y(), r.r.x2(), r.r.y2(), r.friction, r.traction, r.damage, empty_solid_info);
 	}
 
 	std::cerr << "building..." << SDL_GetTicks() << "\n";
@@ -1910,7 +1911,7 @@ void level::draw_debug_solid(int x, int y, int w, int h) const
 			const int ypixel = (tile_y + ypos)*TileSize;
 
 			if(info->all_solid) {
-				graphics::draw_rect(rect(xpixel, ypixel, TileSize, TileSize), info->damage ? graphics::color(255, 0, 0, 196) : graphics::color(255, 255, 255, 196));
+				graphics::draw_rect(rect(xpixel, ypixel, TileSize, TileSize), info->info.damage ? graphics::color(255, 0, 0, 196) : graphics::color(255, 255, 255, 196));
 			} else {
 				std::vector<GLshort> v;
 				glDisable(GL_TEXTURE_2D);
@@ -1925,7 +1926,7 @@ void level::draw_debug_solid(int x, int y, int w, int h) const
 				}
 
 				if(!v.empty()) {
-					if(info->damage) {
+					if(info->info.damage) {
 						glColor4ub(255, 0, 0, 196);
 					} else {
 						glColor4ub(255, 255, 255, 196);
@@ -2149,7 +2150,7 @@ void level::erase_char(entity_ptr c)
 	solid_chars_.clear();
 }
 
-bool level::is_solid(const level_solid_map& map, const entity& e, const std::vector<point>& points, int* friction, int* traction, int* damage) const
+bool level::is_solid(const level_solid_map& map, const entity& e, const std::vector<point>& points, const surface_info** surf_info) const
 {
 	const tile_solid_info* info = NULL;
 	int prev_x = INT_MIN, prev_y = INT_MIN;
@@ -2194,33 +2195,19 @@ bool level::is_solid(const level_solid_map& map, const entity& e, const std::vec
 
 		if(info != NULL) {
 			if(info->all_solid) {
-				if(friction) {
-					*friction = info->friction;
+				if(surf_info) {
+					*surf_info = &info->info;
 				}
 
-				if(traction) {
-					*traction = info->traction;
-				}
-
-				if(damage) {
-					*damage = info->damage;
-				}
 				return true;
 			}
 		
 			const int index = y*TileSize + x;
 			if(info->bitmap.test(index)) {
-				if(friction) {
-					*friction = info->friction;
+				if(surf_info) {
+					*surf_info = &info->info;
 				}
 
-				if(traction) {
-					*traction = info->traction;
-				}
-
-				if(damage) {
-					*damage = info->damage;
-				}
 				return true;
 			}
 		}
@@ -2232,7 +2219,7 @@ bool level::is_solid(const level_solid_map& map, const entity& e, const std::vec
 	return false;
 }
 
-bool level::is_solid(const level_solid_map& map, int x, int y, int* friction, int* traction, int* damage) const
+bool level::is_solid(const level_solid_map& map, int x, int y, const surface_info** surf_info) const
 {
 	tile_pos pos(x/TileSize, y/TileSize);
 	x = x%TileSize;
@@ -2250,33 +2237,19 @@ bool level::is_solid(const level_solid_map& map, int x, int y, int* friction, in
 	const tile_solid_info* info = map.find(pos);
 	if(info != NULL) {
 		if(info->all_solid) {
-			if(friction) {
-				*friction = info->friction;
+			if(surf_info) {
+				*surf_info = &info->info;
 			}
 
-			if(traction) {
-				*traction = info->traction;
-			}
-
-			if(damage) {
-				*damage = info->damage;
-			}
 			return true;
 		}
 		
 		const int index = y*TileSize + x;
 		if(info->bitmap.test(index)) {
-			if(friction) {
-				*friction = info->friction;
+			if(surf_info) {
+				*surf_info = &info->info;
 			}
 
-			if(traction) {
-				*traction = info->traction;
-			}
-
-			if(damage) {
-				*damage = info->damage;
-			}
 			return true;
 		} else {
 			return false;
@@ -2286,7 +2259,7 @@ bool level::is_solid(const level_solid_map& map, int x, int y, int* friction, in
 	return false;
 }
 
-bool level::standable(const rect& r, int* friction, int* traction, int* damage) const
+bool level::standable(const rect& r, const surface_info** info) const
 {
 	const int ybegin = r.y();
 	const int yend = r.y2();
@@ -2295,7 +2268,7 @@ bool level::standable(const rect& r, int* friction, int* traction, int* damage) 
 
 	for(int y = ybegin; y != yend; ++y) {
 		for(int x = xbegin; x != xend; ++x) {
-			if(standable(x, y, friction, traction, damage)) {
+			if(standable(x, y, info)) {
 				return true;
 			}
 		}
@@ -2304,20 +2277,18 @@ bool level::standable(const rect& r, int* friction, int* traction, int* damage) 
 	return false;
 }
 
-bool level::standable(int x, int y, int* friction, int* traction, int* damage) const
+bool level::standable(int x, int y, const surface_info** info) const
 {
-	if(is_solid(solid_, x, y, friction, traction, damage) ||
-	   is_solid(standable_, x, y, friction, traction, damage)) {
+	if(is_solid(solid_, x, y, info) || is_solid(standable_, x, y, info)) {
 	   return true;
 	}
 
 	return false;
 }
 
-bool level::standable_tile(int x, int y, int* friction, int* traction, int* damage) const
+bool level::standable_tile(int x, int y, const surface_info** info) const
 {
-	if(is_solid(solid_, x, y, friction, traction, damage) ||
-	   is_solid(standable_, x, y, friction, traction, damage)) {
+	if(is_solid(solid_, x, y, info) || is_solid(standable_, x, y, info)) {
 		return true;
 	}
 	
@@ -2325,17 +2296,17 @@ bool level::standable_tile(int x, int y, int* friction, int* traction, int* dama
 }
 
 
-bool level::solid(int x, int y, int* friction, int* traction, int* damage) const
+bool level::solid(int x, int y, const surface_info** info) const
 {
-	return is_solid(solid_, x, y, friction, traction, damage);
+	return is_solid(solid_, x, y, info);
 }
 
-bool level::solid(const entity& e, const std::vector<point>& points, int* friction, int* traction, int* damage) const
+bool level::solid(const entity& e, const std::vector<point>& points, const surface_info** info) const
 {
-	return is_solid(solid_, e, points, friction, traction, damage);
+	return is_solid(solid_, e, points, info);
 }
 
-bool level::solid(const rect& r, int* friction, int* traction, int* damage) const
+bool level::solid(const rect& r, const surface_info** info) const
 {
 	//TODO: consider optimizing this function.
 	const int ybegin = r.y();
@@ -2345,7 +2316,7 @@ bool level::solid(const rect& r, int* friction, int* traction, int* damage) cons
 
 	for(int y = ybegin; y != yend; ++y) {
 		for(int x = xbegin; x != xend; ++x) {
-			if(solid(x, y, friction, traction, damage)) {
+			if(solid(x, y, info)) {
 				return true;
 			}
 		}
@@ -2387,9 +2358,10 @@ bool level::may_be_solid_in_rect(const rect& r) const
 
 void level::set_solid_area(const rect& r, bool solid)
 {
+	std::string empty_info;
 	for(int y = r.y(); y < r.y2(); ++y) {
 		for(int x = r.x(); x < r.x2(); ++x) {
-			set_solid(solid_, x, y, 0, 0, 0, solid);
+			set_solid(solid_, x, y, 0, 0, 0, empty_info, solid);
 		}
 	}
 }
@@ -2580,7 +2552,7 @@ void level::add_tile_solid(const level_tile& t)
 
 	const const_level_object_ptr& obj = t.object;
 	if(obj->all_solid()) {
-		add_solid_rect(t.x, t.y, t.x + obj->width(), t.y + obj->height(), obj->friction(), obj->traction(), obj->damage());
+		add_solid_rect(t.x, t.y, t.x + obj->width(), t.y + obj->height(), obj->friction(), obj->traction(), obj->damage(), obj->info());
 		return;
 	}
 
@@ -2593,9 +2565,9 @@ void level::add_tile_solid(const level_tile& t)
 				}
 				if(obj->is_solid(xpos, y)) {
 					if(obj->is_passthrough()) {
-						add_standable(t.x + x, t.y + y, obj->friction(), obj->traction(), obj->damage());
+						add_standable(t.x + x, t.y + y, obj->friction(), obj->traction(), obj->damage(), obj->info());
 					} else {
-						add_solid(t.x + x, t.y + y, obj->friction(), obj->traction(), obj->damage());
+						add_solid(t.x + x, t.y + y, obj->friction(), obj->traction(), obj->damage(), obj->info());
 					}
 				}
 			}
@@ -2742,13 +2714,13 @@ entity_ptr level::get_next_character_at_point(int x, int y, int screen_xpos, int
 	return *itor;
 }
 
-void level::add_solid_rect(int x1, int y1, int x2, int y2, int friction, int traction, int damage)
+void level::add_solid_rect(int x1, int y1, int x2, int y2, int friction, int traction, int damage, const std::string& info_str)
 {
 	if((x1%TileSize) != 0 || (y1%TileSize) != 0 ||
 	   (x2%TileSize) != 0 || (y2%TileSize) != 0) {
 		for(int y = y1; y < y2; ++y) {
 			for(int x = x1; x < x2; ++x) {
-				add_solid(x, y, friction, traction, damage);
+				add_solid(x, y, friction, traction, damage, info_str);
 			}
 		}
 
@@ -2760,29 +2732,33 @@ void level::add_solid_rect(int x1, int y1, int x2, int y2, int friction, int tra
 			tile_pos pos(x/TileSize, y/TileSize);
 			tile_solid_info& s = solid_.insert_or_find(pos);
 			s.all_solid = true;
-			s.friction = friction;
-			s.traction = traction;
+			s.info.friction = friction;
+			s.info.traction = traction;
 
-			if(s.damage >= 0) {
-				s.damage = std::min(s.damage, damage);
+			if(s.info.damage >= 0) {
+				s.info.damage = std::min(s.info.damage, damage);
 			} else {
-				s.damage = damage;
+				s.info.damage = damage;
+			}
+
+			if(info_str.empty() == false) {
+				s.info.info = surface_info::get_info_str(info_str);
 			}
 		}
 	}
 }
 
-void level::add_solid(int x, int y, int friction, int traction, int damage)
+void level::add_solid(int x, int y, int friction, int traction, int damage, const std::string& info)
 {
-	set_solid(solid_, x, y, friction, traction, damage);
+	set_solid(solid_, x, y, friction, traction, damage, info);
 }
 
-void level::add_standable(int x, int y, int friction, int traction, int damage)
+void level::add_standable(int x, int y, int friction, int traction, int damage, const std::string& info)
 {
-	set_solid(standable_, x, y, friction, traction, damage);
+	set_solid(standable_, x, y, friction, traction, damage, info);
 }
 
-void level::set_solid(level_solid_map& map, int x, int y, int friction, int traction, int damage, bool solid)
+void level::set_solid(level_solid_map& map, int x, int y, int friction, int traction, int damage, const std::string& info_str, bool solid)
 {
 	tile_pos pos(x/TileSize, y/TileSize);
 	x = x%TileSize;
@@ -2799,15 +2775,15 @@ void level::set_solid(level_solid_map& map, int x, int y, int friction, int trac
 	const int index = y*TileSize + x;
 	tile_solid_info& info = map.insert_or_find(pos);
 
-	if(info.damage >= 0) {
-		info.damage = std::min(info.damage, damage);
+	if(info.info.damage >= 0) {
+		info.info.damage = std::min(info.info.damage, damage);
 	} else {
-		info.damage = damage;
+		info.info.damage = damage;
 	}
 
 	if(solid) {
-		info.friction = friction;
-		info.traction = traction;
+		info.info.friction = friction;
+		info.info.traction = traction;
 		info.bitmap.set(index);
 	} else {
 		if(info.all_solid) {
@@ -2816,6 +2792,10 @@ void level::set_solid(level_solid_map& map, int x, int y, int friction, int trac
 		}
 
 		info.bitmap.reset(index);
+	}
+
+	if(info_str.empty() == false) {
+		info.info.info = surface_info::get_info_str(info_str);
 	}
 }
 

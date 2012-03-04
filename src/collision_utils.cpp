@@ -10,6 +10,15 @@ std::map<std::string, int> solid_dimensions;
 std::vector<std::string> solid_dimension_ids;
 }
 
+void collision_info::read_surf_info()
+{
+	if(surf_info) {
+		friction = surf_info->friction;
+		traction = surf_info->traction;
+		damage = surf_info->damage;
+	}
+}
+
 int get_num_solid_dimensions()
 {
 	return solid_dimensions.size();
@@ -35,8 +44,12 @@ int get_solid_dimension_id(const std::string& key)
 
 bool point_standable(const level& lvl, const entity& e, int x, int y, collision_info* info, ALLOW_PLATFORM allow_platform)
 {
-	if(allow_platform == SOLID_AND_PLATFORMS  && lvl.standable(x, y, info ? &info->friction : NULL, info ? &info->traction : NULL, info ? &info->damage : NULL) ||
-	   allow_platform != SOLID_AND_PLATFORMS  && lvl.solid(x, y, info ? &info->friction : NULL, info ? &info->traction : NULL, info ? &info->damage : NULL)) {
+	if(allow_platform == SOLID_AND_PLATFORMS  && lvl.standable(x, y, info ? &info->surf_info : NULL) ||
+	   allow_platform != SOLID_AND_PLATFORMS  && lvl.solid(x, y, info ? &info->surf_info : NULL)) {
+		if(info) {
+			info->read_surf_info();
+		}
+
 		if(info && !lvl.solid(x, y)) {
 			info->platform = true;
 		}
@@ -192,12 +205,12 @@ bool entity_collides_with_level(const level& lvl, const entity& e, MOVE_DIRECTIO
 		}
 	}
 
-	int* friction = info ? &info->friction : NULL;
-	int* traction = info ? &info->traction : NULL;
-	int* damage = info ? &info->damage : NULL;
-
 	foreach(const const_solid_map_ptr& m, s->solid()) {
-		if(lvl.solid(e, m->dir(dir), friction, traction, damage)) {
+		if(lvl.solid(e, m->dir(dir), info ? &info->surf_info : NULL)) {
+			if(info) {
+				info->read_surf_info();
+			}
+
 			return true;
 		}
 	}

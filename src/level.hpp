@@ -71,12 +71,12 @@ public:
 	void draw_background(int x, int y, int rotation) const;
 	void process();
 	void process_draw();
-	bool standable(const rect& r, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
-	bool standable(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
-	bool standable_tile(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
-	bool solid(int x, int y, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
-	bool solid(const entity& e, const std::vector<point>& points, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
-	bool solid(const rect& r, int* friction=NULL, int* traction=NULL, int* damage=NULL) const;
+	bool standable(const rect& r, const surface_info** info=NULL) const;
+	bool standable(int x, int y, const surface_info** info=NULL) const;
+	bool standable_tile(int x, int y, const surface_info** info=NULL) const;
+	bool solid(int x, int y, const surface_info** info=NULL) const;
+	bool solid(const entity& e, const std::vector<point>& points, const surface_info** info=NULL) const;
+	bool solid(const rect& r, const surface_info** info=NULL) const;
 	bool may_be_solid_in_rect(const rect& r) const;
 	void set_solid_area(const rect& r, bool solid);
 	entity_ptr board(int x, int y) const;
@@ -312,9 +312,9 @@ private:
 
 	void rebuild_tiles_rect(const rect& r);
 	void add_tile_solid(const level_tile& t);
-	void add_solid_rect(int x1, int y1, int x2, int y2, int friction, int traction, int damage);
-	void add_solid(int x, int y, int friction, int traction, int damage);
-	void add_standable(int x, int y, int friction, int traction, int damage);
+	void add_solid_rect(int x1, int y1, int x2, int y2, int friction, int traction, int damage, const std::string& info);
+	void add_solid(int x, int y, int friction, int traction, int damage, const std::string& info);
+	void add_standable(int x, int y, int friction, int traction, int damage, const std::string& info);
 	typedef std::pair<int,int> tile_pos;
 	typedef std::bitset<TileSize*TileSize> tile_bitmap;
 
@@ -338,10 +338,10 @@ private:
 	level_solid_map solid_base_;
 	level_solid_map standable_base_;
 
-	bool is_solid(const level_solid_map& map, int x, int y, int* friction, int* traction, int* damage) const;
-	bool is_solid(const level_solid_map& map, const entity& e, const std::vector<point>& points, int* friction, int* traction, int* damage) const;
+	bool is_solid(const level_solid_map& map, int x, int y, const surface_info** surf_info) const;
+	bool is_solid(const level_solid_map& map, const entity& e, const std::vector<point>& points, const surface_info** surf_info) const;
 
-	void set_solid(level_solid_map& map, int x, int y, int friction, int traction, int damage, bool solid=true);
+	void set_solid(level_solid_map& map, int x, int y, int friction, int traction, int damage, const std::string& info, bool solid=true);
 
 	variant get_value_by_slot(int slot) const;
 	variant get_value(const std::string& key) const;
