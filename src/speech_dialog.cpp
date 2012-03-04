@@ -127,6 +127,11 @@ bool speech_dialog::key_press(const SDL_Event& event)
 		return false; // only keydown and mousebuttondown should be handled by the rest of the function
 	}
 
+	return scroll_text();
+}
+
+bool speech_dialog::scroll_text()
+{
 	if(text_char_ < num_chars()) {
 		text_char_ = num_chars();
 		return false;
@@ -196,7 +201,12 @@ bool speech_dialog::detect_joystick_press()
 	const bool new_press = joystick::button(0) || joystick::button(1);
 	const bool is_pressed = new_press && !joystick_button_pressed_;
 	joystick_button_pressed_ = new_press;
-	return is_pressed;
+
+	if(is_pressed) {
+		return scroll_text();
+	} else {
+		return false;
+	}
 }
 
 void speech_dialog::draw() const

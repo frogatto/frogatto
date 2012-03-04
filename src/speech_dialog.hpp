@@ -34,6 +34,8 @@ private:
 	void move_up();
 	void move_down();
 
+	bool scroll_text();
+
 	int cycle_;
 	const_entity_ptr left_, right_;
 	bool left_side_speaking_;
