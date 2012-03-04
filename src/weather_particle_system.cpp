@@ -84,3 +84,24 @@ void weather_particle_system::draw(const rect& area, const entity& e) const
 	glEnable(GL_TEXTURE_2D);
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 }
+
+variant weather_particle_system::get_value(const std::string& key) const
+{
+	if(key == "velocity_x") {
+		return variant(decimal(direction[0]));
+	} else if(key == "velocity_y") {
+		return variant(decimal(direction[1]));
+	} else {
+		return variant();
+	}
+}
+
+void weather_particle_system::set_value(const std::string& key, const variant& value)
+{
+	if(key == "velocity_x") {
+		direction[0] = value.as_decimal().as_float();
+	} else if(key == "velocity_y") {
+		direction[1] = value.as_decimal().as_float();
+	}
+}
+
