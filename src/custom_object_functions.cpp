@@ -897,6 +897,17 @@ private:
 	mutable boost::intrusive_ptr<add_by_slot_command> cmd_;
 };
 
+class add_debug_rect_command : public entity_command_callable {
+	rect r_;
+public:
+	explicit add_debug_rect_command(const rect& r) : r_(r)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		add_debug_rect(r_);
+	}
+};
+
 FUNCTION_DEF(solid, 3, 6, "solid(level, int x, int y, (optional)int w=1, (optional) int h=1, (optional) int debug=0) -> boolean: returns true iff the level contains solid space within the given (x,y,w,h) rectangle. If 'debug' is set, then the tested area will be displayed on-screen.")
 	level* lvl = args()[0]->evaluate(variables).convert_to<level>();
 	const int x = args()[1]->evaluate(variables).as_int();
@@ -915,7 +926,7 @@ FUNCTION_DEF(solid, 3, 6, "solid(level, int x, int y, (optional)int w=1, (option
 	return variant(lvl->solid(r));
 END_FUNCTION_DEF(solid)
 
-FUNCTION_DEF(debug_rect, 2, 5, "debug_rect(level, int x, int y, (optional)int w=1, (optional) int h=1, (optional) int cycle) -> Draws, for one frame, a rectangle on the level. Cycle may be changed to make the rectangle draw again.")
+FUNCTION_DEF(debug_rect, 2, 5, "debug_rect(int x, int y, (optional)int w=1, (optional) int h=1) -> Draws, for one frame, a rectangle on the level")
 	const int x = args()[0]->evaluate(variables).as_int();
 	const int y = args()[1]->evaluate(variables).as_int();
 
@@ -923,10 +934,18 @@ FUNCTION_DEF(debug_rect, 2, 5, "debug_rect(level, int x, int y, (optional)int w=
 	int h = args().size() >= 4 ? args()[3]->evaluate(variables).as_int() : 100;
 
 	rect r(x, y, w, h);
-	add_debug_rect(r);
-
-	return variant();
+	return variant(new add_debug_rect_command(r));
 END_FUNCTION_DEF(debug_rect)
+
+FUNCTION_DEF(plot_x, 1, 1, "plot_x(int x): plots a vertical debug line at the given position")
+	const int x = args()[0]->evaluate(variables).as_int();
+	return variant(new add_debug_rect_command(rect(x, -32000, 2, 64000)));
+END_FUNCTION_DEF(plot_x)
+
+FUNCTION_DEF(plot_y, 1, 1, "plot_y(int x): plots a horizontal debug line at the given position")
+	const int y = args()[0]->evaluate(variables).as_int();
+	return variant(new add_debug_rect_command(rect(-32000, y, 64000, 2)));
+END_FUNCTION_DEF(plot_y)
 
 FUNCTION_DEF(standable, 3, 5, "standable(level, int x, int y, (optional)int w=1, (optional) int h=1) -> boolean: returns true iff the level contains standable space within the given (x,y,w,h) rectangle")
 	level* lvl = args()[0]->evaluate(variables).convert_to<level>();

@@ -38,6 +38,7 @@
 namespace {
 
 std::vector<rect> current_debug_rects;
+int current_debug_rects_valid_cycle = -1;
 
 std::string& scene_title() {
 	static std::string title;
@@ -325,7 +326,11 @@ void render_scene(const level& lvl, screen_position& pos, const entity* focus, b
 		graphics::draw_rect(r, graphics::color(0, 0, 255, 175));
 	}
 
-	current_debug_rects.clear();
+	if(current_debug_rects_valid_cycle != lvl.cycle()) {
+		current_debug_rects.clear();
+	}
+
+	current_debug_rects_valid_cycle = lvl.cycle();
 
 	graphics::clear_raster_distortion();
 	glPopMatrix();
