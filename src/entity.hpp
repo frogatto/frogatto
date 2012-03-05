@@ -134,6 +134,8 @@ public:
 	virtual bool no_move_to_standing() const { return 0; }
 	virtual bool reverse_global_vertical_zordering() const { return 0; }
 
+	virtual entity_ptr standing_on() const = 0;
+
 	virtual void die_with_no_event() = 0;
 	virtual bool is_active(const rect& screen_area) const = 0;
 	virtual bool dies_on_inactive() const { return false; } 

@@ -203,6 +203,8 @@ protected:
 
 	virtual bool editor_force_standing() const;
 
+	entity_ptr standing_on() const { return standing_on_; }
+
 private:
 	custom_object& operator=(const custom_object& o);
 	struct Accessor;

@@ -2030,7 +2030,9 @@ void level::process_draw()
 
 namespace {
 bool compare_entity_num_parents(const entity_ptr& a, const entity_ptr& b) {
-	return a->parent_depth() < b->parent_depth();
+	const int deptha = a->parent_depth();
+	const int depthb = b->parent_depth();
+	return deptha < depthb || deptha == depthb && a->standing_on().get() < b->standing_on().get();
 }
 }
 
