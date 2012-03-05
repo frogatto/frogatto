@@ -6,13 +6,14 @@
 
 #include "color_utils.hpp"
 #include "draw_tile.hpp"
+#include "formula_callable.hpp"
 #include "raster.hpp"
 #include "texture.hpp"
 #include "wml_node_fwd.hpp"
 
 class level_object;
-typedef boost::shared_ptr<level_object> level_object_ptr;
-typedef boost::shared_ptr<const level_object> const_level_object_ptr;
+typedef boost::intrusive_ptr<level_object> level_object_ptr;
+typedef boost::intrusive_ptr<const level_object> const_level_object_ptr;
 
 struct level_tile {
 	bool is_solid(int x, int y) const;
@@ -35,6 +36,20 @@ struct level_tile_zorder_comparer {
 
 	bool operator()(int a, const level_tile& b) const {
 		return a < b.zorder;
+	}
+};
+
+struct level_tile_pos_comparer {
+	bool operator()(const level_tile& a, const level_tile& b) const {
+		return a.y < b.y || a.y == b.y && a.x < b.x;
+	}
+
+	bool operator()(const level_tile& a, const std::pair<int, int>& b) const {
+		return a.y < b.second || a.y == b.second && a.x < b.first;
+	}
+
+	bool operator()(const std::pair<int, int>& a, const level_tile& b) const {
+		return a.second < b.y || a.second == b.y && a.first < b.x;
 	}
 };
 
@@ -66,7 +81,7 @@ struct palette_scope {
 	unsigned int original_value;
 };
 
-class level_object {
+class level_object : public game_logic::formula_callable {
 public:
 	static std::vector<const_level_object_ptr> all();
 	static level_tile build_tile(wml::const_node_ptr node);
@@ -113,6 +128,8 @@ public:
 	level_object_ptr record_zorder(int zorder) const;
 
 private:
+	variant get_value(const std::string& key) const;
+
 	std::string id_;
 	std::string image_;
 	std::string info_;

@@ -294,6 +294,9 @@ public:
 	int x_resolution() const { return x_resolution_; }
 	int y_resolution() const { return y_resolution_; }
 
+	typedef std::vector<level_tile>::const_iterator TileItor;
+	std::pair<TileItor, TileItor> tiles_at_loc(int x, int y) const;
+
 private:
 
 	void read_compiled_tiles(wml::const_node_ptr node, std::vector<level_tile>::iterator& out);
@@ -359,6 +362,9 @@ private:
 	};
 	std::vector<solid_rect> solid_rects_;
 	mutable std::vector<level_tile> tiles_;
+
+	//tiles sorted by position rather than zorder.
+	mutable std::vector<level_tile> tiles_by_position_;
 	std::set<int> layers_;
 	std::set<int> hidden_layers_; //layers hidden in the editor.
 	int highlight_layer_;

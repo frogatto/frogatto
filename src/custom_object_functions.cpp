@@ -1016,6 +1016,20 @@ private:
 	entity_ptr focus_;
 };
 
+FUNCTION_DEF(tiles_at, 2, 2, "tiles_at(x, y): gives a list of the tiles at the given x, y position")
+	formula::fail_if_static_context();
+
+	std::vector<variant> v;
+
+	std::pair<level::TileItor, level::TileItor> range = level::current().tiles_at_loc(args()[0]->evaluate(variables).as_int(), args()[1]->evaluate(variables).as_int());
+	while(range.first != range.second) {
+		v.push_back(variant(range.first->object.get()));
+		++range.first;
+	}
+
+	return variant(&v);
+END_FUNCTION_DEF(tiles_at)
+
 FUNCTION_DEF(scroll_to, 1, 1, "scroll_to(object target): scrolls the screen to the target object")
 	return variant(new scroll_to_command(args()[0]->evaluate(variables).try_convert<entity>()));
 END_FUNCTION_DEF(scroll_to)

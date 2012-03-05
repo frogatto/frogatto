@@ -805,3 +805,20 @@ void level_object::get_palettes_used(std::vector<int>& v) const
 		++palette;
 	}
 }
+
+variant level_object::get_value(const std::string& key) const
+{
+	if(key == "id") {
+		return variant(id_);
+	} else if(key == "info") {
+		return variant(info_);
+	} else if(key == "damage") {
+		return variant(damage_);
+	} else if(key == "friction") {
+		return variant(friction_);
+	} else if(key == "traction") {
+		return variant(traction_);
+	} else {
+		return variant();
+	}
+}

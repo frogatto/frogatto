@@ -2423,7 +2423,7 @@ int round_tile_size(int n)
 	if(n >= 0) {
 		return n - n%TileSize;
 	} else {
-		n = -n + 31;
+		n = -n + 32;
 		return -(n - n%TileSize);
 	}
 }
@@ -3645,6 +3645,21 @@ int level::current_difficulty() const
 
 	return p->difficulty();
 }
+
+std::pair<std::vector<level_tile>::const_iterator, std::vector<level_tile>::const_iterator> level::tiles_at_loc(int x, int y) const
+{
+	x = round_tile_size(x);
+	y = round_tile_size(y);
+
+	if(tiles_by_position_.size() != tiles_.size()) {
+		tiles_by_position_ = tiles_;
+		std::sort(tiles_by_position_.begin(), tiles_by_position_.end(), level_tile_pos_comparer());
+	}
+
+	std::pair<int, int> loc(x, y);
+	return std::equal_range(tiles_by_position_.begin(), tiles_by_position_.end(), loc, level_tile_pos_comparer());
+}
+
 
 UTILITY(correct_solidity)
 {
