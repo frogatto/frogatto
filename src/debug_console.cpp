@@ -89,7 +89,7 @@ public:
 			int mousex, mousey;
 			const unsigned int buttons = SDL_GetMouseState(&mousex, &mousey);
 
-			entity_ptr selected = lvl.get_next_character_at_point(last_draw_position().x + mousex, last_draw_position().y + mousey, last_draw_position().x, last_draw_position().y);
+			entity_ptr selected = lvl.get_next_character_at_point(last_draw_position().x/100 + mousex, last_draw_position().y/100 + mousey, last_draw_position().x/100, last_draw_position().y/100);
 			lvl.set_editor_highlight(selected);
 
 			SDL_Event event;
