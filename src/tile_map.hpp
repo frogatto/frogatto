@@ -24,7 +24,7 @@ class tile_map : public game_logic::formula_callable {
 public:
 	static void init(wml::const_node_ptr node);
 	static void load_all();
-	static void load(const std::string& fname);
+	static void load(const std::string& fname, const std::string& tile_id);
 	tile_map();
 	explicit tile_map(wml::const_node_ptr node);
 	wml::node_ptr write() const;

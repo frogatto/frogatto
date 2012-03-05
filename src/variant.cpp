@@ -80,7 +80,6 @@ void output_formula_error_info();
 type_error::type_error(const std::string& str) : message(str) {
 	std::cerr << "ERROR: " << message << "\n" << get_call_stack();
 	output_formula_error_info();
-	assert(false);
 }
 
 struct variant_list {

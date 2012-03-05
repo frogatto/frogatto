@@ -53,13 +53,13 @@ void multi_tile_pattern::init(wml::const_node_ptr node)
 	patterns().clear();
 }
 
-void multi_tile_pattern::load(wml::const_node_ptr node)
+void multi_tile_pattern::load(wml::const_node_ptr node, const std::string& tile_id)
 {
 	wml::node::const_child_iterator p1 = node->begin_child("multi_tile_pattern");
 	wml::node::const_child_iterator p2 = node->end_child("multi_tile_pattern");
 	for(; p1 != p2; ++p1) {
 		const wml::const_node_ptr& p = p1->second;
-		patterns().push_back(multi_tile_pattern(p));
+		patterns().push_back(multi_tile_pattern(p, tile_id));
 	}
 }
 
@@ -121,8 +121,8 @@ int parse_pattern(const std::string& pattern, std::vector<raw_cell>& out) {
 
 }
 
-multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr const_node)
-  : id_(const_node->attr("id")), width_(-1), height_(-1), chance_(wml::get_int(const_node, "chance", 100))
+multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr const_node, const std::string& tile_id)
+  : default_tile_id_(tile_id), id_(const_node->attr("id")), width_(-1), height_(-1), chance_(wml::get_int(const_node, "chance", 100))
 {
 	wml::node_ptr node = wml::deep_copy(const_node);
 
@@ -131,7 +131,7 @@ multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr const_node)
 		wml::node_ptr merged(new wml::node("multi_tile_pattern"));
 		wml::merge_attr_over(node, merged);
 		wml::merge_over(alternative_node, merged);
-		alternatives_.push_back(boost::shared_ptr<multi_tile_pattern>(new multi_tile_pattern(merged)));
+		alternatives_.push_back(boost::shared_ptr<multi_tile_pattern>(new multi_tile_pattern(merged, default_tile_id_)));
 	}
 
 	std::vector<raw_cell> cells;
@@ -248,7 +248,12 @@ multi_tile_pattern::multi_tile_pattern(wml::const_node_ptr const_node)
 
 		ASSERT_LOG(obj_node->attr("image").empty() == false, "object node has no image\n" << wml::output(obj_node) << "\n");
 
-		objects[obj_node->name()].reset(new level_object(obj_node));
+		level_object_ptr new_object(new level_object(obj_node));
+		if(new_object->id().empty()) {
+			new_object->set_id(default_tile_id_);
+		}
+
+		objects[obj_node->name()] = new_object;
 		if(obj_node->has_attr("zorder")) {
 			object_zorders[obj_node->name()] = wml::get_int(obj_node, "zorder");
 		}

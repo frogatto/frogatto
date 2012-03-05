@@ -1677,10 +1677,8 @@ variant formula::execute(const formula_callable& variables) const
 			std::cerr << *filename_ << " " << line_ << ": ";
 		}
 		std::cerr << "formula type error: " << e.message << "\n";
-		
-		//for now die a horrible death on a formula type error
-		assert(false);
-		return variant();
+
+		throw formula_error();
 	}
 }
 

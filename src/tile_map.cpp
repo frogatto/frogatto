@@ -51,11 +51,16 @@ struct is_whitespace {
 }
 
 struct tile_pattern {
-	explicit tile_pattern(wml::const_node_ptr node)
-	  : tile(new level_object(node)), reverse(node->attr("reverse").str() != "no"),
+	explicit tile_pattern(wml::const_node_ptr node, const std::string& id)
+	  : tile_id(id),
+	    tile(new level_object(node)), reverse(node->attr("reverse").str() != "no"),
 	    empty(node->attr("empty").str() == "yes"),
 		filter_formula(game_logic::formula::create_optional_formula(node->attr("filter")))
 	{
+		if(tile->id().empty()) {
+			tile->set_id(tile_id);
+		}
+
 		variations.push_back(tile);
 
 		pattern_str = node->attr("pattern");
@@ -103,6 +108,9 @@ struct tile_pattern {
 		wml::node::const_child_iterator i2 = node->end_child("variation");
 		while(i1 != i2) {
 			variations.push_back(level_object_ptr(new level_object(i1->second)));
+			if(variations.back()->id().empty()) {
+				variations.back()->set_id(tile_id);
+			}
 			++i1;
 		}
 
@@ -110,13 +118,19 @@ struct tile_pattern {
 		i2 = node->end_child("tile");
 		while(i1 != i2) {
 			added_tile t;
-			t.object = level_object_ptr(new level_object(i1->second));
+			level_object_ptr new_object(new level_object(i1->second));
+			if(new_object->id().empty()) {
+				new_object->set_id(tile_id);
+			}
+
+			t.object = new_object;
 			t.zorder = wml::get_int(i1->second, "zorder");
 			added_tiles.push_back(t);
 			++i1;
 		}
 	}
 
+	std::string tile_id;
 	const boost::regex* current_tile_pattern;
 
 	struct surrounding_tile {
@@ -210,12 +224,12 @@ void tile_map::load_all()
 {
 	for(std::map<std::string, std::vector<std::string> >::const_iterator i = files_index.begin(); i != files_index.end(); ++i) {
 		foreach(const std::string& s, i->second) {
-			load(s);
+			load(s, i->first);
 		}
 	}
 }
 
-void tile_map::load(const std::string& fname)
+void tile_map::load(const std::string& fname, const std::string& tile_id)
 {
 	if(files_loaded.count(fname)) {
 		return;
@@ -231,12 +245,10 @@ void tile_map::load(const std::string& fname)
 	wml::node::const_child_iterator p2 = node->end_child("tile_pattern");
 	for(; p1 != p2; ++p1) {
 		const wml::const_node_ptr& p = p1->second;
-		patterns.push_back(tile_pattern(p));
+		patterns.push_back(tile_pattern(p, tile_id));
 	}
 
-	const int start = multi_tile_pattern::get_all().size();
-	multi_tile_pattern::load(node);
-	//std::cerr << "TILE_MAP_LOAD: " << fname << " -> " << (multi_tile_pattern::get_all().size() - start) << ": " << multi_tile_pattern::get_all().size() << "\n";
+	multi_tile_pattern::load(node, tile_id);
 
 	++current_patterns_version;
 }
@@ -279,7 +291,7 @@ tile_map::tile_map(wml::const_node_ptr node)
 	foreach(const std::string& tile, util::split(unique_tiles)) {
 		const std::vector<std::string>& files = files_index[tile];
 		foreach(const std::string& file, files) {
-			load(file);
+			load(file, tile);
 		}
 	}
 
