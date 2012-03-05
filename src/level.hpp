@@ -70,6 +70,7 @@ public:
 	void draw_debug_solid(int x, int y, int w, int h) const;
 	void draw_background(int x, int y, int rotation) const;
 	void process();
+	void set_active_chars();
 	void process_draw();
 	bool standable(const rect& r, const surface_info** info=NULL) const;
 	bool standable(int x, int y, const surface_info** info=NULL) const;

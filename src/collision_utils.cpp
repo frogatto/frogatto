@@ -71,8 +71,7 @@ bool point_standable(const level& lvl, const entity& e, int x, int y, collision_
 
 		if(allow_platform == SOLID_AND_PLATFORMS) {
 			const rect& platform_rect = obj->platform_rect();
-			if(point_in_rect(pt, platform_rect) && obj->platform() &&
-			   obj->platform()->solid_at(pt.x - obj->x(), pt.y - obj->y())) {
+			if(point_in_rect(pt, platform_rect) && obj->platform()) {
 				if(info) {
 					info->collide_with = obj;
 					info->friction = obj->surface_friction();

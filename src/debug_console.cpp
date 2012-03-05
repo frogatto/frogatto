@@ -4,15 +4,18 @@
 #include "custom_object.hpp"
 #include "custom_object_functions.hpp"
 #include "draw_scene.hpp"
+#include "filesystem.hpp"
 #include "font.hpp"
 #include "formatter.hpp"
 #include "debug_console.hpp"
 #include "foreach.hpp"
 #include "level.hpp"
+#include "load_level.hpp"
 #include "player_info.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "text_entry_widget.hpp"
+#include "wml_writer.hpp"
 
 namespace debug_console
 {
@@ -77,20 +80,26 @@ public:
 		entry_.set_dim(300, 20);
 	}
 
-	void execute(level& lvl, entity& ob) const {
+	void execute(level& lvl_state, entity& ob) const {
 		history_.clear();
 		history_pos_ = 0;
 
+		std::vector<wml::node_ptr> level_history;
+
+		boost::intrusive_ptr<level> level_obj;
+
+		level* lvl = &lvl_state;
+
 		entity_ptr context(&ob);
-		lvl.editor_select_object(context);
+		lvl->editor_select_object(context);
 
 		bool done = false;
 		while(!done) {
 			int mousex, mousey;
 			const unsigned int buttons = SDL_GetMouseState(&mousex, &mousey);
 
-			entity_ptr selected = lvl.get_next_character_at_point(last_draw_position().x/100 + mousex, last_draw_position().y/100 + mousey, last_draw_position().x/100, last_draw_position().y/100);
-			lvl.set_editor_highlight(selected);
+			entity_ptr selected = lvl->get_next_character_at_point(last_draw_position().x/100 + mousex, last_draw_position().y/100 + mousey, last_draw_position().x/100, last_draw_position().y/100);
+			lvl->set_editor_highlight(selected);
 
 			SDL_Event event;
 			while(SDL_PollEvent(&event)) {
@@ -98,8 +107,8 @@ public:
 				case SDL_MOUSEBUTTONDOWN: {
 					if(selected) {
 						context = selected;
-						lvl.editor_clear_selection();
-						lvl.editor_select_object(context);
+						lvl->editor_clear_selection();
+						lvl->editor_select_object(context);
 						debug_console::add_message(formatter() << "Selected object: " << selected->debug_description());
 					}
 					break;
@@ -111,9 +120,34 @@ public:
 					if(event.key.keysym.sym == SDLK_RETURN) {
 						try {
 							const std::string text = entry_.text();
+
 							history_.push_back(entry_.text());
 							history_pos_ = history_.size();
 							entry_.set_text("");
+
+							if(text == "next") {
+								level_history.push_back(lvl->write());
+								lvl->process();
+								break;
+							} else if(text == "prev") {
+								if(level_history.empty() == false) {
+									sys::write_file("./tmp_state.cfg", wml::output(level_history.back()));
+									level_obj.reset(load_level("tmp_state.cfg"));
+									level_obj->set_as_current_level();
+
+									lvl = level_obj.get();
+									context.reset(&lvl->player()->get_entity());
+									level_history.pop_back();
+
+									lvl->editor_select_object(context);
+									lvl->set_active_chars();
+								}
+								break;
+							} else if(text == "step") {
+								context->process(*lvl);
+								break;
+							}
+
 							game_logic::formula f(text, &get_custom_object_functions_symbol_table());
 							variant v = f.execute(*context);
 							context->execute_command(v);
@@ -144,11 +178,12 @@ public:
 				entry_.process_event(event, false);
 			}
 
-			draw(lvl);
+			draw(*lvl);
 			SDL_Delay(20);
 		}
 
-		lvl.editor_clear_selection();
+		lvl_state.editor_clear_selection();
+		lvl_state.set_as_current_level();
 	}
 private:
 	void draw(const level& lvl) const {

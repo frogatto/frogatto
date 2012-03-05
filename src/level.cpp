@@ -2032,36 +2032,19 @@ namespace {
 bool compare_entity_num_parents(const entity_ptr& a, const entity_ptr& b) {
 	const int deptha = a->parent_depth();
 	const int depthb = b->parent_depth();
-	return deptha < depthb || deptha == depthb && a->standing_on().get() < b->standing_on().get();
+	return deptha < depthb || deptha == depthb && a->standing_on().get() < b->standing_on().get() || deptha == depthb && (a->standing_on().get() ? true : false) == (b->standing_on().get() ? true : false) && a->is_human() < b->is_human();
 }
 }
 
-void level::do_processing()
+void level::set_active_chars()
 {
-	if(cycle_ == 0) {
-		const std::vector<entity_ptr> chars = chars_;
-		foreach(const entity_ptr& e, chars) {
-			e->handle_event(OBJECT_EVENT_START_LEVEL);
-		}
-	}
-
-	++cycle_;
-
-	const int ticks = SDL_GetTicks();
-	detect_user_collisions(*this);
-	active_chars_.clear();
-
-	if(!player_) {
-		return;
-	}
-
 	const int screen_left = last_draw_position().x/100;
 	const int screen_right = last_draw_position().x/100 + graphics::screen_width();
 	const int screen_top = last_draw_position().y/100;
 	const int screen_bottom = last_draw_position().y/100 + graphics::screen_height();
 
 	const rect screen_area(screen_left, screen_top, screen_right - screen_left, screen_bottom - screen_top);
-
+	active_chars_.clear();
 	foreach(entity_ptr& c, chars_) {
 		const bool is_active = c->is_active(screen_area);
 
@@ -2090,6 +2073,27 @@ void level::do_processing()
 	std::sort(active_chars_.begin(), active_chars_.end());
 	active_chars_.erase(std::unique(active_chars_.begin(), active_chars_.end()), active_chars_.end());
 	std::sort(active_chars_.begin(), active_chars_.end(), sort_entity_drawing_pos);
+}
+
+void level::do_processing()
+{
+	if(cycle_ == 0) {
+		const std::vector<entity_ptr> chars = chars_;
+		foreach(const entity_ptr& e, chars) {
+			e->handle_event(OBJECT_EVENT_START_LEVEL);
+		}
+	}
+
+	++cycle_;
+
+	const int ticks = SDL_GetTicks();
+	detect_user_collisions(*this);
+
+	if(!player_) {
+		return;
+	}
+
+	set_active_chars();
 	
 /*
 	std::cerr << "SUMMARY " << cycle_ << ": ";

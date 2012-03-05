@@ -88,6 +88,11 @@ void preload_level_wml(const std::string& lvl)
 
 wml::const_node_ptr load_level_wml(const std::string& lvl)
 {
+	if(lvl == "tmp_state.cfg") {
+		//special state for debugging.
+		return wml::parse_wml(preprocess(sys::read_file("./tmp_state.cfg")));
+	}
+
 	if(is_save_file(lvl) || lvl == "autosave.cfg") {
 		std::string filename;
 		if(is_save_file(lvl)) {
