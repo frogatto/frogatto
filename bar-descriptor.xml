@@ -51,6 +51,7 @@
     
     <!--  The category where the application appears. Either core.games or core.media. -->
     <category>core.games</category>
+    <asset path="locale">locale</asset>
     <asset path="data">data</asset>
     <asset path="images">images</asset>
     <asset path="music">music</asset>
