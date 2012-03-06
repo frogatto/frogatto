@@ -69,7 +69,7 @@ inline decimal operator*(const decimal& a, const decimal& b) {
 	const int64_t fb = vb%DECIMAL_PRECISION;
 
 	const decimal result = decimal(ia*ib*DECIMAL_PRECISION + fa*ib + fb*ia + (fa*fb)/DECIMAL_PRECISION);
-	if(a.value() < 0 && b.value() > 0 || b.value() < 0 && a.value() > 0) {
+	if((a.value() < 0 && b.value() > 0) || (b.value() < 0 && a.value() > 0)) {
 		return -result;
 	} else {
 		return result;
