@@ -1,0 +1,3 @@
+Check version number (in preferences.cpp and Info.plist)
+Remove incomplete translations
+Make sure debug output is off
