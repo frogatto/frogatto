@@ -11,7 +11,7 @@
 
 class editor_variable_info {
 public:
-	enum VARIABLE_TYPE { TYPE_INTEGER, XPOSITION, YPOSITION, TYPE_LEVEL, TYPE_LABEL, TYPE_TEXT, TYPE_BOOLEAN };
+	enum VARIABLE_TYPE { TYPE_INTEGER, XPOSITION, YPOSITION, TYPE_LEVEL, TYPE_LABEL, TYPE_TEXT, TYPE_BOOLEAN, TYPE_ENUM };
 
 	explicit editor_variable_info(wml::const_node_ptr node);
 
@@ -19,6 +19,7 @@ public:
 
 	const std::string& variable_name() const { return name_; }
 	VARIABLE_TYPE type() const { return type_; }
+	const std::vector<std::string>& enum_values() const { return enum_values_; }
 	const std::string& info() const { return info_; }
 	const std::string& help() const { return help_; }
 
@@ -27,6 +28,7 @@ public:
 private:
 	std::string name_;
 	VARIABLE_TYPE type_;
+	std::vector<std::string> enum_values_;
 	std::string info_;
 	std::string help_;
 	game_logic::const_formula_ptr formula_;

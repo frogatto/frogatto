@@ -3,6 +3,7 @@
 #include "editor_variable_info.hpp"
 #include "foreach.hpp"
 #include "formula.hpp"
+#include "string_utils.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
 
@@ -25,6 +26,10 @@ editor_variable_info::editor_variable_info(wml::const_node_ptr node)
 		type_ = TYPE_TEXT;
 	} else if(type == "boolean") {
 		type_ = TYPE_BOOLEAN;
+	} else if(type == "enum") {
+		type_ = TYPE_ENUM;
+		enum_values_ = util::split(node->attr("enum_values"));
+		ASSERT_LOG(enum_values_.empty() == false, "IN PROPERTY: " << name_ << " ENUM WITH NO VALUES SPECIFIED");
 	}
 }
 
@@ -54,6 +59,10 @@ wml::node_ptr editor_variable_info::write() const
 		break;
 	case TYPE_BOOLEAN:
 		node->set_attr("type", "boolean");
+		break;
+	case TYPE_ENUM:
+		node->set_attr("type", "enum");
+		node->set_attr("values", util::join(enum_values_));
 		break;
 	}
 	return node;

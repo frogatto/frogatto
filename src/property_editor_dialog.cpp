@@ -124,6 +124,20 @@ void property_editor_dialog::init()
 				add_widget(widget_ptr(new button(
 				      widget_ptr(new label(current_value.empty() ? "(set text)" : current_value, graphics::color_white())),
 				      boost::bind(&property_editor_dialog::change_text_property, this, info.variable_name()))));
+			} else if(info.type() == editor_variable_info::TYPE_ENUM) {
+				std::string current_value;
+				variant current_value_var = entity_->query_value(info.variable_name());
+				if(current_value_var.is_string()) {
+					current_value = current_value_var.as_string();
+				}
+
+				if(std::count(info.enum_values().begin(), info.enum_values().end(), current_value) == 0) {
+					current_value = info.enum_values().front();
+				}
+
+				add_widget(widget_ptr(new button(
+				     widget_ptr(new label(current_value, graphics::color_white())),
+					 boost::bind(&property_editor_dialog::change_enum_property, this, info.variable_name()))));
 			} else if(info.type() == editor_variable_info::TYPE_LEVEL) {
 				std::string current_value;
 				variant current_value_var = entity_->query_value(info.variable_name());
@@ -252,6 +266,42 @@ void property_editor_dialog::change_text_property(const std::string& id)
 	}
 }
 
+void property_editor_dialog::change_enum_property(const std::string& id)
+{
+	const editor_variable_info* var_info = entity_->editor_info() ? entity_->editor_info()->get_var_info(id) : NULL;
+	if(!var_info) {
+		return;
+	}
+
+	using namespace gui;
+
+	gui::grid* grid = new gui::grid(1);
+	grid->set_show_background(true);
+	grid->allow_selection();
+
+	grid->register_selection_callback(boost::bind(&property_editor_dialog::set_enum_property, this, id, var_info->enum_values(), _1));
+	foreach(const std::string& s, var_info->enum_values()) {
+		grid->add_col(gui::widget_ptr(new gui::label(s, graphics::color_white())));
+	}
+
+	int mousex, mousey;
+	SDL_GetMouseState(&mousex, &mousey);
+	mousex -= x();
+	mousey -= y();
+
+	if(grid->height() > graphics::screen_height() - mousey) {
+		mousey = graphics::screen_height() - grid->height();
+	}
+
+	if(grid->width() > graphics::screen_width() - mousex) {
+		mousex = graphics::screen_width() - grid->width();
+	}
+
+	remove_widget(context_menu_);
+	context_menu_.reset(grid);
+	add_widget(context_menu_, mousex, mousey);
+}
+
 namespace {
 bool hidden_label(const std::string& label) {
 	return label.empty() || label[0] == '_';
@@ -284,10 +334,11 @@ void property_editor_dialog::change_label_property(const std::string& id)
 	labels.erase(std::remove_if(labels.begin(), labels.end(), hidden_label), labels.end());
 
 	if(labels.empty() == false) {
+
 		gui::grid* grid = new gui::grid(1);
 		grid->set_show_background(true);
 		grid->allow_selection();
-		grid->register_selection_callback(boost::bind(&property_editor_dialog::set_label_property, this, id, labels, _1));
+		grid->register_selection_callback(boost::bind(&property_editor_dialog::set_enum_property, this, id, labels, _1));
 		foreach(const std::string& lb, labels) {
 			grid->add_col(gui::widget_ptr(new gui::label(lb, graphics::color_white())));
 		}
@@ -308,10 +359,11 @@ void property_editor_dialog::change_label_property(const std::string& id)
 		remove_widget(context_menu_);
 		context_menu_.reset(grid);
 		add_widget(context_menu_, mousex, mousey);
+
 	}
 }
 
-void property_editor_dialog::set_label_property(const std::string& id, const std::vector<std::string>& labels, int index)
+void property_editor_dialog::set_enum_property(const std::string& id, const std::vector<std::string>& labels, int index)
 {
 	remove_widget(context_menu_);
 	context_menu_.reset();

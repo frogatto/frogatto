@@ -37,7 +37,8 @@
     <!--  Name of author which is used for signing. Must match the developer name of your development certificate. -->
     <author>Lost Pixel</author>
     <authorId>gYAAgKcS3iwxeR4EtD7lFv8ijqs</authorId>
-    <splashscreen>bbsplash.png</splashscreen>
+    <platformVersion>2.0.0.0</platformVersion>
+    <splashscreen>bbsplash.jpg</splashscreen>
     
     <!--  Unique author ID assigned by signing authority. Required if using debug tokens. -->
     <!-- <authorId>ABC1234YjsnUk235h</authorId> -->
@@ -59,7 +60,7 @@
     <asset path="DejaVuSans.ttf">DejaVuSans.ttf</asset>
     <asset path="FreeMono.ttf">FreeMono.ttf</asset>
     <asset path="images/bbicon.png">bbicon.png</asset>
-    <asset path="images/bbsplash.png">bbsplash.png</asset>
+    <asset path="images/bbsplash.jpg">bbsplash.jpg</asset>
     <configuration id="com.qnx.qcc.configuration.exe.debug.925317493" name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="Device-Debug/frogatto" entry="true" type="Qnx/Elf">frogatto</asset>
