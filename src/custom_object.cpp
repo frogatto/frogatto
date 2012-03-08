@@ -1080,36 +1080,6 @@ void custom_object::process(level& lvl)
 		}
 	}
 
-	//If the object started out standing on a platform, keep it doing so.
-	if(standing_on_ && !fall_through_platforms_ && velocity_y_ >= 0) {
-		const int left_foot = feet_x() - type_->feet_width();
-		const int right_foot = feet_x() + type_->feet_width();
-
-		int target_y = INT_MAX;
-		rect area = standing_on_->platform_rect();
-		if(left_foot >= area.x() && left_foot < area.x() + area.w()) {
-			rect area = standing_on_->platform_rect_at(left_foot);
-			target_y = area.y();
-		}
-
-		if(right_foot >= area.x() && right_foot < area.x() + area.w()) {
-			rect area = standing_on_->platform_rect_at(right_foot);
-			if(area.y() < target_y) {
-				target_y = area.y();
-			}
-		}
-
-		const int delta = target_y - feet_y();
-		const int dir = delta > 0 ? 1 : -1;
-		for(int n = 0; n != delta; n += dir) {
-			set_y(y()+dir);
-			if(entity_collides(lvl, *this, dir < 0 ? MOVE_UP : MOVE_DOWN)) {
-				set_y(y()-dir);
-				break;
-			}
-		}
-	}
-
 
 	collision_info collide_info;
 	collision_info jump_on_info;
@@ -1220,6 +1190,36 @@ void custom_object::process(level& lvl)
 			callable->add("surface_damage", variant(std::max(collide_info.damage, jump_on_info.damage)));
 			variant v(callable);
 			handle_event(OBJECT_EVENT_COLLIDE_DAMAGE, callable);
+		}
+	}
+
+	//If the object started out standing on a platform, keep it doing so.
+	if(standing_on_ && !fall_through_platforms_ && velocity_y_ >= 0) {
+		const int left_foot = feet_x() - type_->feet_width();
+		const int right_foot = feet_x() + type_->feet_width();
+
+		int target_y = INT_MAX;
+		rect area = standing_on_->platform_rect();
+		if(left_foot >= area.x() && left_foot < area.x() + area.w()) {
+			rect area = standing_on_->platform_rect_at(left_foot);
+			target_y = area.y();
+		}
+
+		if(right_foot >= area.x() && right_foot < area.x() + area.w()) {
+			rect area = standing_on_->platform_rect_at(right_foot);
+			if(area.y() < target_y) {
+				target_y = area.y();
+			}
+		}
+
+		const int delta = target_y - feet_y();
+		const int dir = delta > 0 ? 1 : -1;
+		for(int n = 0; n != delta; n += dir) {
+			set_y(y()+dir);
+			if(entity_collides(lvl, *this, dir < 0 ? MOVE_UP : MOVE_DOWN)) {
+				set_y(y()-dir);
+				break;
+			}
 		}
 	}
 
