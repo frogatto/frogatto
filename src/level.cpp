@@ -2977,14 +2977,14 @@ namespace {
 const std::string LevelProperties[] = {
   "cycle", "player", "in_dialog",
   "local_player", "num_active", "active_chars", "chars", "players",
-  "in_editor", "zoom", "focus", "gui", "id", "dimensions",
+  "in_editor", "zoom", "focus", "gui", "id", "dimensions", "music_volume",
 };
 
 enum LEVEL_PROPERTY_ID {
 	LEVEL_CYCLE, LEVEL_PLAYER, LEVEL_IN_DIALOG,
 	LEVEL_LOCAL_PLAYER, LEVEL_NUM_ACTIVE,
 	LEVEL_ACTIVE_CHARS, LEVEL_CHARS, LEVEL_PLAYERS, LEVEL_IN_EDITOR, LEVEL_ZOOM,
-	LEVEL_FOCUS, LEVEL_GUI, LEVEL_ID, LEVEL_DIMENSIONS,
+	LEVEL_FOCUS, LEVEL_GUI, LEVEL_ID, LEVEL_DIMENSIONS, LEVEL_MUSIC_VOLUME,
 };
 }
 
@@ -3061,6 +3061,9 @@ variant level::get_value_by_slot(int slot) const
 		v.push_back(variant(boundaries_.y2()));
 		return variant(&v);
 	}
+	case LEVEL_MUSIC_VOLUME: {
+		return variant(sound::get_engine_music_volume());
+	}
 	}
 
 	ASSERT_LOG(false, "BAD SLOT IN GET_VALUE FROM LEVEL " << slot);
@@ -3128,6 +3131,8 @@ variant level::get_value(const std::string& key) const
 		v.push_back(variant(boundaries_.x2()));
 		v.push_back(variant(boundaries_.y2()));
 		return variant(&v);
+	} else if(key == "music_volume") {
+		return variant(sound::get_engine_music_volume());
 	} else if(key == "segment_width") {
 		return variant(segment_width_);
 	} else if(key == "segment_height") {
@@ -3192,6 +3197,8 @@ void level::set_value(const std::string& key, const variant& value)
 	} else if(key == "dimensions") {
 		ASSERT_EQ(value.num_elements(), 4);
 		boundaries_ = rect(value[0].as_int(), value[1].as_int(), value[2].as_int() - value[0].as_int(), value[3].as_int() - value[1].as_int());
+	} else if(key == "music_volume") {
+		sound::set_engine_music_volume(value.as_decimal().as_float());
 	} else if(key == "camera_position") {
 		ASSERT_EQ(value.num_elements(), 2);
 		last_draw_position().x = value[0].as_int();

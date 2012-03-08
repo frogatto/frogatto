@@ -413,6 +413,8 @@ extern "C" int main(int argc, char** argv)
 	try {
 		wml::schema::init(wml::parse_wml_from_file("data/schema.cfg"));
 
+		sound::init_music(wml::parse_wml_from_file("data/music.cfg"));
+
 		std::string filename = "data/fonts." + i18n::get_locale() + ".cfg";
 		if (!sys::file_exists(filename))
 			filename = "data/fonts.cfg";

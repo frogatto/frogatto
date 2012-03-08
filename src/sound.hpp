@@ -1,6 +1,8 @@
 #ifndef SOUND_HPP_INCLUDED
 #define SOUND_HPP_INCLUDED
 
+#include "wml_node_fwd.hpp"
+
 #include <string>
 
 namespace sound {
@@ -9,6 +11,8 @@ struct manager {
 	manager();
 	~manager();
 };
+
+void init_music(wml::const_node_ptr node);
 
 bool ok();
 bool muted();
@@ -33,11 +37,16 @@ void stop_sound(const std::string& file, const void* object=0);
 void stop_looped_sounds(const void* object=0);
 void change_volume(const void* object=0, int volume=-1);
 
+//Ways to set the sound and music volumes from the user's perspective.
 float get_sound_volume();
 void set_sound_volume(float volume);
 
 float get_music_volume();
 void set_music_volume(float volume);
+
+//Ways to set the music volume from the game engine's perspective.
+void set_engine_music_volume(float volume);
+float get_engine_music_volume();
 	
 // function to play a sound effect over and over in a loop. Will return
 // a handle to the sound effect.

@@ -22,12 +22,23 @@
 #include "iphone_sound.h"
 #endif
 
+#include "wml_node.hpp"
+#include "wml_utils.hpp"
+
 namespace sound {
 
 namespace {
 
+struct MusicInfo {
+	MusicInfo() : volume(1.0) {}
+	float volume;
+};
+
+std::map<std::string, MusicInfo> music_index;
+
 float sfx_volume = 1.0;
-float recorded_music_volume = 1.0;
+float user_music_volume = 1.0;
+float engine_music_volume = 1.0;
 const int SampleRate = 44100;
 // number of allocated channels, 
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
@@ -347,7 +358,7 @@ manager::manager()
     }
 #endif
 
-	set_music_volume(recorded_music_volume);
+	set_music_volume(user_music_volume);
 }
 
 manager::~manager()
@@ -367,6 +378,14 @@ manager::~manager()
 #endif
 }
 
+void init_music(wml::const_node_ptr node)
+{
+	FOREACH_WML_CHILD(music_node, node, "music") {
+		const std::string name = music_node->attr("name").str();
+		music_index[name].volume = wml::get_attr<float>(music_node, "volume", 1.0);
+	}
+}
+
 bool ok() { return sound_ok; }
 bool muted() { return mute_; }
 
@@ -374,7 +393,7 @@ void mute (bool flag)
 {
 	mute_ = flag;
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
-	Mix_VolumeMusic(MIX_MAX_VOLUME*(!flag));
+	Mix_VolumeMusic(engine_music_volume*MIX_MAX_VOLUME*(!flag));
 #endif
 }
 
@@ -581,24 +600,37 @@ void set_sound_volume(float volume)
 
 float get_music_volume()
 {
+	return user_music_volume;
+}
+
+namespace {
+void update_music_volume()
+{
+	if(sound_init) {
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
-	return (float)Mix_VolumeMusic(-1)/MIX_MAX_VOLUME;
+		Mix_VolumeMusic(user_music_volume*engine_music_volume*MIX_MAX_VOLUME);
 #else
-	return iphone_get_music_volume();
+		iphone_set_music_volume(user_music_volume*engine_music_volume);
 #endif
+	}
+}
 }
 
 void set_music_volume(float volume)
 {
-	recorded_music_volume = volume;
+	user_music_volume = volume;
+	update_music_volume();
+}
 
-	if(sound_init) {
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
-		Mix_VolumeMusic(volume*MIX_MAX_VOLUME);
-#else
-		iphone_set_music_volume(volume);
-#endif
-	}
+void set_engine_music_volume(float volume)
+{
+	engine_music_volume = volume;
+	update_music_volume();
+}
+
+float get_engine_music_volume()
+{
+	return engine_music_volume;
 }
 
 void play_music(const std::string& file)
@@ -629,6 +661,8 @@ void play_music(const std::string& file)
 		return;
 	}
 
+	set_engine_music_volume(music_index[file].volume);
+
 	Mix_FadeInMusic(current_mix_music, -1, 500);
 #else
 	if (playing_music)
@@ -646,6 +680,7 @@ void play_music(const std::string& file)
 	std::string aac_file = file;
 	aac_file.replace(aac_file.length()-3, aac_file.length(), "m4a");
 	if (!sys::file_exists("music_aac/" + aac_file)) return;
+	set_engine_music_volume(music_index[file].volume);
 	iphone_play_music(("music_aac/" + aac_file).c_str(), -1);
 	iphone_fade_in_music(350);
 	playing_music = true;
