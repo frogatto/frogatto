@@ -167,6 +167,11 @@ extern "C" int main(int argc, char** argv)
 		return -1;
 	}
 
+#if defined(TARGET_BLACKBERRY)
+	chdir("app/native");
+	std::cout<< "Changed working directory to: " << getcwd(0, 0) << std::endl;
+#endif
+
 #ifdef TARGET_OS_HARMATTAN
 	g_type_init();
 #endif
@@ -180,11 +185,6 @@ extern "C" int main(int argc, char** argv)
 	#endif
 
 	std::cerr << "Frogatto engine version " << preferences::version() << "\n";
-
-#if defined(TARGET_BLACKBERRY)
-	chdir("app/native");
-	std::cout<< "Changed working directory to: " << getcwd(0, 0) << std::endl;
-#endif
 
 	std::string level_cfg = "titlescreen.cfg";
 	bool unit_tests_only = false, skip_tests = false;
