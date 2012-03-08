@@ -96,6 +96,7 @@ public:
 	const rect& solid_rect() const { return solid_rect_; }
 	const rect& frame_rect() const { return frame_rect_; }
 	rect platform_rect() const { return platform_rect_; }
+	virtual rect platform_rect_at(int xpos) const { return platform_rect(); }
 	rect body_rect() const;
 	rect hit_rect() const;
 	point midpoint() const;

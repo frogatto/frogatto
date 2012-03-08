@@ -274,6 +274,15 @@ custom_object::custom_object(wml::const_node_ptr node)
 	if(node->has_attr("parent")) {
 		parent_loading_.serialize_from_string(node->attr("parent"));
 	}
+
+	if(node->has_attr("platform_offsets")) {
+		const std::string s = node->attr("platform_offsets");
+		int num_values = std::count(s.begin(), s.end(), ',') + 1;
+		platform_offsets_.resize(num_values+1);
+
+		util::split_into_ints(s.c_str(), &platform_offsets_.front(), &num_values);
+		platform_offsets_.resize(num_values);
+	}
 	
 	//fprintf(stderr, "object address= %p, ", this);
 	//fprintf(stderr, "zsub_order=%d,", zsub_order_);
@@ -388,7 +397,9 @@ custom_object::custom_object(const custom_object& o) :
 	parent_prev_y_(o.parent_prev_y_),
 	parent_prev_facing_(o.parent_prev_facing_),
 	min_difficulty_(o.min_difficulty_),
-	max_difficulty_(o.max_difficulty_)
+	max_difficulty_(o.max_difficulty_),
+	custom_draw_(o.custom_draw_),
+	platform_offsets_(o.platform_offsets_)
 {
 }
 
@@ -699,6 +710,10 @@ wml::node_ptr custom_object::write() const
 	if(max_difficulty_ != -1) {
 		res->set_attr("max_difficulty", formatter() << max_difficulty_);
 	}
+
+	if(platform_offsets_.empty() == false) {
+		res->set_attr("platform_offsets", util::join_ints(&platform_offsets_.front(), platform_offsets_.size()));
+	}
 	
 	return res;
 }
@@ -752,7 +767,9 @@ void custom_object::draw() const
 	const int draw_x = x();
 	const int draw_y = y();
 
-	if(draw_scale_) {
+	if(custom_draw_.get() != NULL) {
+		frame_->draw_custom(draw_x-draw_x%2, draw_y-draw_y%2, *custom_draw_, face_right(), upside_down(), time_in_frame_, rotate_.as_float());
+	} else if(draw_scale_) {
 		frame_->draw(draw_x-draw_x%2, draw_y-draw_y%2, face_right(), upside_down(), time_in_frame_, rotate_.as_float(), draw_scale_->as_float());
 	} else if(!draw_area_.get()) {
 		frame_->draw(draw_x-draw_x%2, draw_y-draw_y%2, face_right(), upside_down(), time_in_frame_, rotate_.as_float());
@@ -1063,6 +1080,37 @@ void custom_object::process(level& lvl)
 		}
 	}
 
+	//If the object started out standing on a platform, keep it doing so.
+	if(standing_on_ && !fall_through_platforms_ && velocity_y_ >= 0) {
+		const int left_foot = feet_x() - type_->feet_width();
+		const int right_foot = feet_x() + type_->feet_width();
+
+		int target_y = INT_MAX;
+		rect area = standing_on_->platform_rect();
+		if(left_foot >= area.x() && left_foot < area.x() + area.w()) {
+			rect area = standing_on_->platform_rect_at(left_foot);
+			target_y = area.y();
+		}
+
+		if(right_foot >= area.x() && right_foot < area.x() + area.w()) {
+			rect area = standing_on_->platform_rect_at(right_foot);
+			if(area.y() < target_y) {
+				target_y = area.y();
+			}
+		}
+
+		const int delta = target_y - feet_y();
+		const int dir = delta > 0 ? 1 : -1;
+		for(int n = 0; n != delta; n += dir) {
+			set_y(y()+dir);
+			if(entity_collides(lvl, *this, dir < 0 ? MOVE_UP : MOVE_DOWN)) {
+				set_y(y()-dir);
+				break;
+			}
+		}
+	}
+
+
 	collision_info collide_info;
 	collision_info jump_on_info;
 
@@ -1208,12 +1256,49 @@ void custom_object::process(level& lvl)
 				break;
 			}
 
+			const int left_foot = feet_x() - type_->feet_width();
+			const int right_foot = feet_x() + type_->feet_width();
+			bool place_on_object = false;
+			if(standing_on_ && !fall_through_platforms_ && velocity_y_ >= 0) {
+				rect area = standing_on_->platform_rect();
+				if(left_foot >= area.x() && left_foot < area.x() + area.w() ||
+					right_foot >= area.x() && right_foot < area.x() + area.w()) {
+					place_on_object = true;
+				}
+			}
+
 			//if we go up or down a slope, and we began the frame standing,
 			//move the character up or down as appropriate to try to keep
 			//them standing.
 
 			const STANDING_STATUS standing = is_standing(lvl);
-			if(previous_standing && standing < previous_standing) {
+			if(place_on_object) {
+				int target_y = INT_MAX;
+				rect area = standing_on_->platform_rect();
+				if(left_foot >= area.x() && left_foot < area.x() + area.w()) {
+					const rect area = standing_on_->platform_rect_at(left_foot);
+					target_y = area.y();
+				}
+
+				if(right_foot >= area.x() && right_foot < area.x() + area.w()) {
+					const rect area = standing_on_->platform_rect_at(right_foot);
+					if(area.y() < target_y) {
+						target_y = area.y();
+					}
+				}
+
+				const int delta = target_y - feet_y();
+				const int dir = delta > 0 ? 1 : -1;
+				for(int n = 0; n != delta; n += dir) {
+					set_y(y()+dir);
+					if(detect_collisions && entity_collides(lvl, *this, dir < 0 ? MOVE_UP : MOVE_DOWN)) {
+						set_y(y()-dir);
+						break;
+					}
+				}
+
+				ASSERT_LOG(is_standing(lvl), "NOT STANDING!");
+			} else if(previous_standing && standing < previous_standing) {
 
 				//we were standing, but we're not now. We want to look for
 				//slopes that will enable us to still be standing. We see
@@ -2678,6 +2763,59 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		break;
 	}
 
+	case CUSTOM_OBJECT_PLATFORM_OFFSETS: {
+		platform_offsets_.clear();
+		for(int n = 0; n != value.num_elements(); ++n) {
+			platform_offsets_.push_back(value[n].as_int());
+		}
+		break;
+	}
+
+	case CUSTOM_OBJECT_CUSTOM_DRAW: {
+		if(value.is_null()) {
+			custom_draw_.reset();
+		}
+
+		std::vector<frame::CustomPoint>* v = new std::vector<frame::CustomPoint>;
+
+		custom_draw_.reset(v);
+
+		std::vector<GLfloat> positions;
+
+		for(int n = 0; n != value.num_elements(); ++n) {
+			if(value[n].is_decimal() || value[n].is_int()) {
+				positions.push_back(value[n].as_decimal().as_float());
+			} else if(value[n].is_list()) {
+				ASSERT_LOG(value[n].num_elements() == 2, "ILLEGAL VALUE TO custom_draw: " << value.to_debug_string());
+
+				ASSERT_LOG(v->size() < positions.size(), "ILLEGAL VALUE TO custom_draw -- not enough positions for number of offsets: " << value.to_debug_string() << " " << v->size() << " VS " << positions.size());
+				const GLfloat pos = positions[v->size()];
+
+				v->push_back(frame::CustomPoint());
+				v->back().pos = pos;
+				v->back().offset = point(value[n][0].as_int(), value[n][1].as_int());
+			}
+		}
+
+		ASSERT_LOG(v->size() >= 3, "ILLEGAL VALUE TO custom_draw: " << value.to_debug_string());
+
+		std::vector<frame::CustomPoint> draw_order;
+		int n1 = 0, n2 = v->size() - 1;
+		while(n1 <= n2) {
+			draw_order.push_back((*v)[n1]);
+			if(n2 > n1) {
+				draw_order.push_back((*v)[n2]);
+			}
+
+			++n1;
+			--n2;
+		}
+
+		v->swap(draw_order);
+
+		break;
+	}
+
 	default:
 		break;
 
@@ -3296,6 +3434,33 @@ int custom_object::parent_depth(int cur_depth) const
 bool custom_object::editor_force_standing() const
 {
 	return type_->editor_force_standing();
+}
+
+rect custom_object::platform_rect_at(int xpos) const
+{
+	if(platform_offsets_.empty()) {
+		return platform_rect();
+	}
+
+	rect area = platform_rect();
+	if(xpos < area.x() || xpos >= area.x() + area.w()) {
+		return area;
+	}
+
+	if(platform_offsets_.size() == 1) {
+		return rect(area.x(), area.y() + platform_offsets_[0], area.w(), area.h());
+	}
+
+	const int pos = (xpos - area.x())*1024;
+	const int seg_width = (area.w()*1024)/(platform_offsets_.size()-1);
+	const int segment = pos/seg_width;
+	ASSERT_GE(segment, 0);
+	ASSERT_LT(segment, platform_offsets_.size()-1);
+
+	const int partial = pos%seg_width;
+
+	const int offset = (partial*platform_offsets_[segment+1] + (seg_width-partial)*platform_offsets_[segment])/seg_width;
+	return rect(area.x(), area.y() + offset, area.w(), area.h());
 }
 
 point custom_object::parent_position() const

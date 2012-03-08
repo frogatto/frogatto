@@ -70,7 +70,7 @@ bool point_standable(const level& lvl, const entity& e, int x, int y, collision_
 		}
 
 		if(allow_platform == SOLID_AND_PLATFORMS) {
-			const rect& platform_rect = obj->platform_rect();
+			const rect& platform_rect = obj->platform_rect_at(pt.x);
 			if(point_in_rect(pt, platform_rect) && obj->platform()) {
 				if(info) {
 					info->collide_with = obj;

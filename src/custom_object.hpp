@@ -205,6 +205,8 @@ protected:
 
 	entity_ptr standing_on() const { return standing_on_; }
 
+	virtual rect platform_rect_at(int xpos) const;
+
 private:
 	custom_object& operator=(const custom_object& o);
 	struct Accessor;
@@ -335,7 +337,11 @@ private:
 
 	int min_difficulty_, max_difficulty_;
 
+	boost::shared_ptr<const std::vector<frame::CustomPoint> > custom_draw_;
+
 	void set_platform_area(const rect& area);
+
+	std::vector<int> platform_offsets_;
 };
 
 #endif

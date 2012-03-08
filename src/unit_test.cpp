@@ -56,6 +56,7 @@ int register_utility(const std::string& name, UtilityProgram utility)
 
 bool run_tests(const std::vector<std::string>* tests)
 {
+	const int start_time = SDL_GetTicks();
 	std::vector<std::string> all_tests;
 	if(!tests) {
 		for(TestMap::const_iterator i = get_test_map().begin(); i != get_test_map().end(); ++i) {
@@ -85,7 +86,7 @@ bool run_tests(const std::vector<std::string>* tests)
 		std::cerr << npass << " TESTS PASSED, " << nfail << " TESTS FAILED\n";
 		return false;
 	} else {
-		std::cerr << "ALL " << npass << " TESTS PASSED\n";
+		std::cerr << "ALL " << npass << " TESTS PASSED IN " << (SDL_GetTicks() - start_time) << "ms\n";
 		return true;
 	}
 }

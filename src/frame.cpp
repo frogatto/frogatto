@@ -550,6 +550,98 @@ void frame::draw(int x, int y, const rect& area, bool face_right, bool upside_do
 	                       rect[0], rect[1], rect[2], rect[3]);
 }
 
+void frame::draw_custom(int x, int y, const std::vector<CustomPoint>& points, bool face_right, bool upside_down, int time, GLfloat rotate) const
+{
+	texture_.set_as_current_texture();
+
+	const frame_info* info = NULL;
+	GLfloat rect[4];
+	get_rect_in_texture(time, &rect[0], info);
+	rect[0] = texture_.translate_coord_x(rect[0]);
+	rect[1] = texture_.translate_coord_y(rect[1]);
+	rect[2] = texture_.translate_coord_x(rect[2]);
+	rect[3] = texture_.translate_coord_y(rect[3]);
+
+	x += (face_right ? info->x_adjust : info->x2_adjust)*scale_;
+	y += info->y_adjust*scale_;
+	int w = info->area.w()*scale_*(face_right ? 1 : -1);
+	int h = info->area.h()*scale_*(upside_down ? -1 : 1);
+
+	if(w < 0) {
+		std::swap(rect[0], rect[2]);
+		w *= -1;
+	}
+
+	if(h < 0) {
+		std::swap(rect[1], rect[3]);
+		h *= -1;
+	}
+
+	std::vector<GLfloat> tcqueue;
+	std::vector<GLshort> vqueue;
+
+	foreach(const CustomPoint& p, points) {
+		GLfloat pos = p.pos;
+
+		if(pos > 4.0) {
+			pos = 4.0;
+		}
+
+		int side = static_cast<int>(pos);
+		GLfloat f = pos - static_cast<GLfloat>(side);
+		if(side >= 4) {
+			side = 0;
+		}
+
+		GLshort xpos, ypos;
+		GLfloat u, v;
+		switch(side) {
+		case 0:
+			u = rect[0] + (rect[2] - rect[0])*f;
+			v = rect[1];
+			xpos = GLfloat(x) + GLfloat(w)*f;
+			ypos = y;
+			break;
+		case 2:
+			u = rect[2] - (rect[2] - rect[0])*f;
+			v = rect[3];
+			xpos = GLfloat(x + w) - GLfloat(w)*f;
+			ypos = y + h;
+			break;
+		case 1:
+			u = rect[2];
+			v = rect[1] + (rect[3] - rect[1])*f;
+			xpos = x + w;
+			ypos = GLfloat(y) + GLfloat(h)*f;
+			break;
+		case 3:
+			u = rect[0];
+			v = rect[3] - (rect[3] - rect[1])*f;
+			xpos = x;
+			ypos = GLfloat(y + h) - GLfloat(h)*f;
+			break;
+		default:
+			ASSERT_LOG(false, "ILLEGAL CUSTOM FRAME POSITION: " << side);
+			break;
+		}
+
+		xpos += p.offset.x;
+		ypos += p.offset.y;
+
+		vqueue.push_back(xpos);
+		vqueue.push_back(ypos);
+
+		tcqueue.push_back(u);
+		tcqueue.push_back(v);
+	}
+
+	ASSERT_LOG(vqueue.size() > 4, "ILLEGAL CUSTOM BLIT: " << vqueue.size());
+
+	glVertexPointer(2, GL_SHORT, 0, &vqueue.front());
+	glTexCoordPointer(2, GL_FLOAT, 0, &tcqueue.front());
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, tcqueue.size()/2);
+}
+
 void frame::get_rect_in_texture(int time, GLfloat* output_rect, const frame_info*& info) const
 {
 	//picks out a single frame to draw from a whole animation, based on time
