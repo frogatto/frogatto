@@ -1296,8 +1296,6 @@ void custom_object::process(level& lvl)
 						break;
 					}
 				}
-
-				ASSERT_LOG(is_standing(lvl), "NOT STANDING!");
 			} else if(previous_standing && standing < previous_standing) {
 
 				//we were standing, but we're not now. We want to look for
