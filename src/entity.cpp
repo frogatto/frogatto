@@ -93,6 +93,23 @@ void entity::set_platform_motion_x(int value)
 	platform_motion_x_ = value;
 }
 
+int entity::map_platform_pos(int xpos) const
+{
+	if(xpos >= prev_platform_rect_.x() && xpos < prev_platform_rect_.x() + prev_platform_rect_.w()) {
+		const int proportion = xpos - prev_platform_rect_.x();
+		int maps_to = (1024*proportion*platform_rect_.w())/prev_platform_rect_.w();
+		if(maps_to%1024 >= 512) {
+			maps_to = platform_rect_.x() + maps_to/1024 + 1;
+		} else {
+			maps_to = platform_rect_.x() + maps_to/1024;
+		}
+
+		return maps_to - xpos - (feet_x() - prev_feet_x_);
+	}
+
+	return 0;
+}
+
 int entity::platform_motion_x() const
 {
 	return platform_motion_x_;
@@ -102,6 +119,7 @@ void entity::process(level& lvl)
 {
 	prev_feet_x_ = feet_x();
 	prev_feet_y_ = feet_y();
+	prev_platform_rect_ = platform_rect_;
 }
 
 void entity::set_face_right(bool facing)

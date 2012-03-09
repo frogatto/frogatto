@@ -1049,7 +1049,7 @@ void custom_object::process(level& lvl)
 	}
 
 	if(standing_on_) {
-		effective_velocity_x += (standing_on_->feet_x() - standing_on_prev_x_)*100 + standing_on_->platform_motion_x();
+		effective_velocity_x += (standing_on_->feet_x() - standing_on_prev_x_)*100 + standing_on_->platform_motion_x() + standing_on_->map_platform_pos(feet_x())*100;
 		effective_velocity_y += (standing_on_->feet_y() - standing_on_prev_y_)*100;
 	}
 
@@ -1212,13 +1212,17 @@ void custom_object::process(level& lvl)
 			}
 		}
 
-		const int delta = target_y - feet_y();
-		const int dir = delta > 0 ? 1 : -1;
-		for(int n = 0; n != delta; n += dir) {
-			set_y(y()+dir);
-			if(entity_collides(lvl, *this, dir < 0 ? MOVE_UP : MOVE_DOWN)) {
-				set_y(y()-dir);
-				break;
+		if(target_y != INT_MAX) {
+			const int delta = target_y - feet_y();
+			const int dir = delta > 0 ? 1 : -1;
+			int nmoves = 0;
+			for(int n = 0; n != delta; n += dir) {
+				set_y(y()+dir);
+				++nmoves;
+				if(entity_collides(lvl, *this, dir < 0 ? MOVE_UP : MOVE_DOWN)) {
+					set_y(y()-dir);
+					break;
+				}
 			}
 		}
 	}

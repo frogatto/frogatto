@@ -117,6 +117,7 @@ public:
 
 	void set_platform_motion_x(int value);
 	int platform_motion_x() const;
+	int map_platform_pos(int xpos) const;
 
 	bool face_right() const { return face_right_; }
 	virtual void set_face_right(bool facing);
@@ -319,7 +320,7 @@ private:
 	std::vector<entity_ptr> attached_objects_;
 
 	//caches of commonly queried rects.
-	rect solid_rect_, frame_rect_, platform_rect_;
+	rect solid_rect_, frame_rect_, platform_rect_, prev_platform_rect_;
 	const solid_info* solid_;
 	const solid_info* platform_;
 
