@@ -138,8 +138,6 @@ level::level(const std::string& level_cfg)
 	  background_palette_(-1),
 	  segment_width_(0), segment_height_(0)
 {
-	set_as_current_level();
-
 	std::cerr << "in level constructor...\n";
 	const int start_time = SDL_GetTicks();
 
@@ -425,7 +423,6 @@ level::level(const std::string& level_cfg)
 	}
 
 	const int time_taken_ms = (SDL_GetTicks() - start_time);
-	stats::entry("load").set("time", variant(time_taken_ms));
 	std::cerr << "done level constructor: " << time_taken_ms << "\n";
 }
 
