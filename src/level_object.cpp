@@ -287,7 +287,7 @@ level_object::level_object(wml::const_node_ptr node)
 			const int width = std::max<int>(t_.width(), t_.height());
 			assert(width%16 == 0);
 			const int base = std::min<int>(32, width/16);
-			tiles_.push_back(strtol(variation.c_str(), NULL, base));
+			tiles_.push_back((base == 1) ? 0 : strtol(variation.c_str(), NULL, base));
 		}
 	}
 

@@ -14,7 +14,7 @@
 #include "concurrent_cache.hpp"
 #include "filesystem.hpp"
 #include "surface_cache.hpp"
-#include "SDL_image.h"
+#include <SDL/SDL_image.h>
 
 #include <assert.h>
 #include <iostream>

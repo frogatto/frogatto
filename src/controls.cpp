@@ -5,15 +5,14 @@
 #endif
 
 #include <assert.h>
-#include <inttypes.h>
+#include <boost/cstdint.hpp>
 
 #include <stdio.h>
 
 #include <stack>
 #include <vector>
 
-#include "SDL.h"
-
+#include "graphics.hpp"
 #include "asserts.hpp"
 #include "controls.hpp"
 #include "foreach.hpp"

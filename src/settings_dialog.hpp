@@ -2,7 +2,7 @@
 #define SETTINGS_DIALOG_HPP_INCLUDED
 
 #include "gui_section.hpp"
-#include <SDL.h>
+#include "graphics.hpp"
 
 class settings_dialog
 {

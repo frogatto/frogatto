@@ -1,7 +1,7 @@
 #ifndef SPEECH_DIALOG_HPP_INCLUDED
 #define SPEECH_DIALOG_HPP_INCLUDED
 
-#include "SDL.h"
+#include "graphics.hpp"
 
 #include <string>
 #include <vector>

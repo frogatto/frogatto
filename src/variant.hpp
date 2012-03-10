@@ -96,7 +96,7 @@ public:
 	bool is_decimal() const { return type_ == TYPE_DECIMAL; }
 	bool is_map() const { return type_ == TYPE_MAP; }
 	bool is_function() const { return type_ == TYPE_FUNCTION; }
-	int as_int() const { if(type_ == TYPE_NULL) { return 0; } if(type_ == TYPE_DECIMAL) { return decimal_value_/VARIANT_DECIMAL_PRECISION; } must_be(TYPE_INT); return int_value_; }
+	int as_int() const { if(type_ == TYPE_NULL) { return 0; } if(type_ == TYPE_DECIMAL) { return int( decimal_value_/VARIANT_DECIMAL_PRECISION ); } must_be(TYPE_INT); return int_value_; }
 	decimal as_decimal() const { if(type_ == TYPE_NULL) { return decimal(static_cast<int64_t>(0)); } if(type_ == TYPE_INT) { return decimal(int64_t(int_value_)*VARIANT_DECIMAL_PRECISION); } must_be(TYPE_DECIMAL); return decimal(decimal_value_); }
 	bool as_bool() const;
 

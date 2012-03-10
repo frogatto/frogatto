@@ -1,5 +1,5 @@
 #include <boost/array.hpp>
-#include <inttypes.h>
+#include <boost/cstdint.hpp>
 #include <iostream>
 #include <cassert>
 

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include <string>
-#include <SDL.h>
+#include "graphics.hpp"
 
 #include <boost/lexical_cast.hpp>
 
@@ -18,6 +18,85 @@
 #include "wml_parser.hpp"
 #include "wml_utils.hpp"
 #include "wml_writer.hpp"
+
+#define SAVE_FILENAME					"save.cfg"
+#define AUTOSAVE_FILENAME				"autosave.cfg"
+
+#ifdef _WINDOWS
+#include <shlobj.h>
+#include <shlwapi.h>
+
+class WindowsPrefs
+{
+public:
+	std::string GetPreferencePath()   { if (State* i = Instance()) return i->GetPreferencePath(); }
+	std::string GetSaveFilePath()     { if (State* i = Instance()) return i->GetSaveFilePath(); }
+	std::string GetAutoSaveFilePath() { if (State* i = Instance()) return i->GetAutoSaveFilePath(); }
+	
+private:
+	struct State 
+	{
+	private:
+		std::string preferences_path;
+		std::string save_file_path;
+		std::string auto_save_file_path;
+	public:
+		State::State()
+		{
+			TCHAR szPath[ MAX_PATH ];
+			if( SUCCEEDED( SHGetFolderPath( NULL, CSIDL_APPDATA, NULL, 0, szPath ) ) ) 
+			{
+				::PathAppend( szPath, TEXT( "\\Frogatto\\" ) );
+			}
+			this->preferences_path = std::string( szPath );
+			this->save_file_path = this->preferences_path + TEXT( SAVE_FILENAME );
+			this->auto_save_file_path = this->preferences_path + TEXT( AUTOSAVE_FILENAME );
+		}
+		std::string GetPreferencePath()
+		{
+			return this->preferences_path;
+		};
+
+		std::string GetSaveFilePath()
+		{
+			return this->save_file_path;
+		}
+
+		std::string GetAutoSaveFilePath()
+		{
+			return this->auto_save_file_path;
+		}
+	};
+
+	static State* Instance();
+	static void CleanUp();
+
+	static bool MDestroyed;
+	static State* MInstance;
+};
+
+bool WindowsPrefs::MDestroyed = false;
+WindowsPrefs::State* WindowsPrefs::MInstance = 0;
+
+WindowsPrefs::State* WindowsPrefs::Instance()
+{
+	if( !MDestroyed && !MInstance ) {
+		MInstance = new State();
+		atexit( &CleanUp );
+	}
+	return MInstance;
+}
+
+void WindowsPrefs::CleanUp()
+{
+	delete MInstance;
+	MInstance = 0;
+	MDestroyed = true;
+}
+
+WindowsPrefs winPrefs;
+#endif // _WINDOWS
+
 
 namespace preferences {
 	const std::string& version() {
@@ -156,9 +235,6 @@ namespace preferences {
 
 		bool use_16bpp_textures_ = false;
 #endif
-
-#define SAVE_FILENAME					"save.cfg"
-#define AUTOSAVE_FILENAME				"autosave.cfg"
 
 		std::string preferences_path_ = PREFERENCES_PATH;
 		std::string save_file_path_ = PREFERENCES_PATH SAVE_FILENAME;
@@ -427,7 +503,14 @@ namespace preferences {
 
 	void load_preferences()
 	{
+#if defined( _WINDOWS )
+		preferences_path_ = winPrefs.GetPreferencePath();
+		save_file_path_ = winPrefs.GetSaveFilePath();
+		auto_save_file_path_ = winPrefs.GetAutoSaveFilePath();
+		std::string path = preferences_path_;
+#else
 		std::string path = PREFERENCES_PATH;
+#endif // defined( _WINDOWS )
 		expand_path(path);
 		if(!sys::file_exists(path + "preferences.cfg")) {
 			return;

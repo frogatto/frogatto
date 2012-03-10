@@ -1,12 +1,7 @@
 #ifndef RASTER_DISTORTION_HPP_INCLUDED
 #define RASTER_DISTORTION_HPP_INCLUDED
 
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
-#include <GLES/gl.h>
-#else
-#include <GL/gl.h>
-#endif
-
+#include "graphics.hpp"
 #include "formula_callable.hpp"
 #include "geometry.hpp"
 

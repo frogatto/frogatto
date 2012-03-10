@@ -1,7 +1,7 @@
 #ifndef GEOMETRY_HPP_INCLUDED
 #define GEOMETRY_HPP_INCLUDED
 
-#include "SDL.h"
+#include "graphics.hpp"
 
 #include <iostream>
 #include <string>

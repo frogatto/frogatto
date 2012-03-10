@@ -2,7 +2,7 @@
 #define DECIMAL_HPP_INCLUDED
 
 #include <iosfwd>
-#include <inttypes.h>
+#include <boost/cstdint.hpp>
 #if defined(TARGET_BLACKBERRY)
 #include <math.h>
 #endif
@@ -19,11 +19,11 @@ public:
 #if defined(TARGET_BLACKBERRY)
 	explicit decimal(double value) : value_(llround(value*DECIMAL_PRECISION)) {}
 #else
-	explicit decimal(double value) : value_(value*DECIMAL_PRECISION) {}
+	explicit decimal(double value) : value_(int64_t(value*DECIMAL_PRECISION)) {}
 #endif
 
 	int64_t value() const { return value_; }
-	int as_int() const { return value_/DECIMAL_PRECISION; }
+	int as_int() const { return int( value_/DECIMAL_PRECISION ); }
 	double as_float() const { return value_/double(DECIMAL_PRECISION); }
 	int64_t fractional() const { return value_%DECIMAL_PRECISION; }
 

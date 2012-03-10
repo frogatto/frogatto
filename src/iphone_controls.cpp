@@ -2,7 +2,7 @@
 
 #if TARGET_OS_HARMATTAN || TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR || TARGET_BLACKBERRY
 
-#include <SDL.h>
+#include "graphics.hpp"
 
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY)
 #include <math.h> // sqrt

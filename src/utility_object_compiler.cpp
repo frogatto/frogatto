@@ -1,4 +1,4 @@
-#include "SDL.h"
+#include "graphics.hpp"
 
 #include <boost/shared_ptr.hpp>
 

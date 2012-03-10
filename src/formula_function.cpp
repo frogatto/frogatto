@@ -24,8 +24,10 @@
 #include "string_utils.hpp"
 #include "unit_test.hpp"
 
-#include "SDL.h"
+#include "graphics.hpp"
 #include <boost/regex.hpp>
+
+#include "compat.hpp"
 
 namespace {
 	const float radians_to_degrees = 57.29577951308232087;

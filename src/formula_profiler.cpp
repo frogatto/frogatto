@@ -10,7 +10,11 @@
 #include <signal.h>
 #include <stdio.h>
 #include <string.h>
+#if !defined( _WINDOWS )
 #include <sys/time.h>
+#else
+#include <time.h>
+#endif // defined( _WINDOWS )
 
 #include "custom_object_type.hpp"
 #include "filesystem.hpp"

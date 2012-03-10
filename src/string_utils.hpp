@@ -16,6 +16,10 @@
 #include <string>
 #include <vector>
 
+#ifdef _WINDOWS
+#undef isascii
+#endif // _WINDOWS
+
 namespace util
 {
 

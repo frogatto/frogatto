@@ -3,7 +3,7 @@
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 
-#include "SDL.h"
+#include "graphics.hpp"
 
 #include "collision_utils.hpp"
 #include "controls.hpp"

@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <iostream>
 
-#include "SDL.h"
+#include "graphics.hpp"
 
 #include "controls.hpp"
 #include "draw_scene.hpp"

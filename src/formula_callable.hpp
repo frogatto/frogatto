@@ -167,7 +167,7 @@ public:
 
 	bool empty() const { return values_.empty(); }
 	void clear() { values_.clear(); }
-	bool contains(const std::string& key) const { return values_.count(key); }
+	bool contains(const std::string& key) const { return values_.count(key) != 0; }
 
 	const std::map<std::string, variant>& values() const { return values_; }
 

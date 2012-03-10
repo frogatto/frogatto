@@ -15,8 +15,7 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include <SDL.h>
-
+#include "graphics.hpp"
 #include "texture.hpp"
 #include "widget.hpp"
 

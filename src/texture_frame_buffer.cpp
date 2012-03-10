@@ -1,7 +1,4 @@
-#include <SDL.h>
-#ifndef SDL_VIDEO_OPENGL_ES
-#include <GL/glew.h>
-#endif
+#include "graphics.hpp"
 
 #include "asserts.hpp"
 #include "preferences.hpp"
@@ -10,8 +7,6 @@
 
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 #include <EGL/egl.h>
-#include <GLES/gl.h>
-#include <GLES/glext.h>
 #define glGenFramebuffersOES        preferences::glGenFramebuffersOES
 #define glBindFramebufferOES        preferences::glBindFramebufferOES
 #define glFramebufferTexture2DOES   preferences::glFramebufferTexture2DOES

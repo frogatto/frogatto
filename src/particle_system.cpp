@@ -1,6 +1,6 @@
 #include <iostream>
 #include <deque>
-#include <inttypes.h>
+#include <boost/cstdint.hpp>
 #include <math.h>
 
 #include "asserts.hpp"

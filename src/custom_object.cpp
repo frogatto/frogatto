@@ -1,7 +1,4 @@
-#include <SDL.h>
-#ifndef SDL_VIDEO_OPENGL_ES
-#include <GL/glew.h>
-#endif
+#include "graphics.hpp"
 
 #include <boost/bind.hpp>
 #include <boost/function.hpp>

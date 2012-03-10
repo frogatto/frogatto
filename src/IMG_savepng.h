@@ -24,7 +24,7 @@
 #ifndef __IMG_SAVETOPNG_H__
 #define __IMG_SAVETOPNG_H__
 
-#include <SDL.h>
+#include "graphics.hpp"
 
 #define IMG_COMPRESS_OFF 0
 #define IMG_COMPRESS_MAX 9

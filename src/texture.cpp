@@ -10,15 +10,7 @@
    See the COPYING file for more details.
 */
 
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
-#include <GLES/gl.h>
-#ifdef TARGET_PANDORA
-#include <GLES/glues.h>
-#endif
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#endif
+#include "graphics.hpp"
 #include <pthread.h>
 
 #include "asserts.hpp"

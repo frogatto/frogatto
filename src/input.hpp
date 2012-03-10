@@ -1,7 +1,7 @@
 #ifndef INPUT_HPP_INCLUDED
 #define INPUT_HPP_INCLUDED
 
-#include <SDL.h>
+#include "graphics.hpp"
 #include <boost/shared_ptr.hpp>
 #include <vector>
 #include <map>

@@ -6,7 +6,7 @@
 
 #include "boost/shared_ptr.hpp"
 
-#include "SDL.h"
+#include "graphics.hpp"
 
 #include "geometry.hpp"
 #include "texture.hpp"

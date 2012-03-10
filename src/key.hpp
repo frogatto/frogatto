@@ -15,7 +15,7 @@
 #ifndef KEY_HPP_INCLUDED
 #define KEY_HPP_INCLUDED
 
-#include "SDL.h"
+#include "graphics.hpp"
 
 #include <string>
 

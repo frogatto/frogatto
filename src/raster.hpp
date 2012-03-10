@@ -15,7 +15,7 @@
 
 #include <vector>
 
-#include "SDL.h"
+#include "graphics.hpp"
 
 #include "color_utils.hpp"
 #include "geometry.hpp"

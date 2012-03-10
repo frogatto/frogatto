@@ -4,12 +4,7 @@
 #include <vector>
 #include <cstddef>
 
-//#include <SDL.h>
-//#if SDL_VERSION_ATLEAST(1,3,0)
-//#include <SDL_keycode.h>
-//#else
-#include <SDL_keysym.h>
-//#endif
+#include "graphics.hpp"
 
 namespace controls {
 

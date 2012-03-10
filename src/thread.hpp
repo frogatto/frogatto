@@ -15,8 +15,7 @@
 #ifndef THREAD_HPP_INCLUDED
 #define THREAD_HPP_INCLUDED
 
-#include "SDL.h"
-#include "SDL_thread.h"
+#include "graphics.hpp"
 
 #include <list>
 

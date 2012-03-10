@@ -1,10 +1,9 @@
 #include <sstream>
 #include <string>
 
-#include <inttypes.h>
+#include <boost/cstdint.hpp>
 #include <numeric>
 #include <stdio.h>
-#include <unistd.h>
 
 #include <boost/asio.hpp>
 #include <boost/regex.hpp>
@@ -287,7 +286,7 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 			boost::array<char, 4096> udp_msg;
 			udp::endpoint endpoint;
 			size_t len = udp_socket->receive_from(boost::asio::buffer(udp_msg), endpoint);
-			if(len == 6 && toupper(udp_msg[0]) == 'A') {
+			if(len == 6 && ::toupper(udp_msg[0]) == 'A') {
 				confirmed_players.insert(udp_msg[5]);
 				if(udp_msg[5] >= 0 && udp_msg[5] < udp_endpoint_peers.size()) {
 					if(endpoint.port() != udp_endpoint_peers[udp_msg[5]]->port()) {

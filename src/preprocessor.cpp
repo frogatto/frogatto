@@ -17,9 +17,9 @@ std::string preprocess(const std::string& input){
 	while(i != input.end()){
 		if(*i == '#'){//enter a single-line comment
 			in_comment = true;}
-		if(*i == '\n' and in_comment){
+		if(*i == '\n' && in_comment){
 			in_comment = false;}
-		if(*i == '@' and not in_comment){
+		if(*i == '@' && !in_comment){
 			// process pre-processing directive here. See what comes after the '@' and do something appropriate
 			static const std::string IncludeString = "@include";
 			if(input.end() - i > IncludeString.size() && std::equal(IncludeString.begin(), IncludeString.end(), i)) {

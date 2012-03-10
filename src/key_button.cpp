@@ -21,7 +21,7 @@ void stoupper(std::string& s)
 	std::string::iterator end = s.end();
 
 	while (i != end) {
-		*i = std::toupper((unsigned char)*i);
+		*i = ::toupper((unsigned char)*i);
 		++i;
 	}
 }

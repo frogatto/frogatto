@@ -7,7 +7,7 @@
 #include "preferences.hpp"
 #include "unit_test.hpp"
 
-#include "SDL.h"
+#include "graphics.hpp"
 
 namespace test {
 

@@ -14,12 +14,7 @@
 
 #include <string>
 
-#include "SDL.h"
-
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE
-#include "SDL_ttf.h"
-#endif
-
+#include "graphics.hpp"
 #include "texture.hpp"
 
 namespace font {

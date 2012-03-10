@@ -10,7 +10,7 @@
 
    See the COPYING file for more details.
 */
-#include "SDL.h"
+#include "graphics.hpp"
 
 #include "font.hpp"
 #include "raster.hpp"

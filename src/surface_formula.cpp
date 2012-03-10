@@ -1,9 +1,6 @@
 #include <iostream>
 #include <map>
-#include <SDL.h>
-#ifndef SDL_VIDEO_OPENGL_ES
-#include <GL/glew.h>
-#endif
+#include "graphics.hpp"
 
 #include "asserts.hpp"
 #include "concurrent_cache.hpp"

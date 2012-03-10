@@ -1,7 +1,7 @@
 #ifndef IPHONE_CONTROLS_HPP_INCLUDED
 #define IPHONE_CONTROLS_HPP_INCLUDED
 
-#include <SDL.h>
+#include "graphics.hpp"
 
 class rect;
 

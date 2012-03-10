@@ -11,7 +11,7 @@
 #include <vector>
 
 #include <iostream>
-#include <inttypes.h>
+#include <boost/cstdint.hpp>
 
 #include "asserts.hpp"
 #include "foreach.hpp"
@@ -108,7 +108,7 @@ private:
 				game->players.push_back(socket);
 
 
-				const int nplayers = atoi(match[2].first);
+				const size_t nplayers = atoi(match[2].first);
 				game->nplayers = nplayers;
 
 			}
@@ -157,7 +157,7 @@ private:
 	struct GameInfo {
 		GameInfo() : started(false) {}
 		std::vector<socket_ptr> players;
-		int nplayers;
+		size_t nplayers;
 		bool started;
 	};
 

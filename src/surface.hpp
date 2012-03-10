@@ -15,7 +15,7 @@
 
 #include <iostream>
 
-#include "SDL.h"
+#include "graphics.hpp"
 #include "scoped_resource.hpp"
 
 #if SDL_BYTEORDER == SDL_LIL_ENDIAN

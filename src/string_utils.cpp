@@ -14,8 +14,9 @@
 #include "unit_test.hpp"
 
 #include <algorithm>
-#include <cctype>
 #include <stdio.h>
+
+#include "compat.hpp"
 
 namespace util
 {
@@ -32,12 +33,20 @@ bool isalpha(int c)
 
 bool isascii(int c)
 {
+#if defined( _WINDOWS )
+	return __isascii( static_cast<unsigned char>(c) );
+#else
 	return ::isascii(static_cast<unsigned char>(c));
+#endif // defined( _WINDOWS )
 }
 
 bool isblank(int c)
 {
+#if defined( _WINDOWS )
+	return __isblank(static_cast<unsigned char>(c));
+#else
 	return ::isblank(static_cast<unsigned char>(c));
+#endif // defined( _WINDOWS )
 }
 
 bool iscntrl(int c)
