@@ -1,7 +1,7 @@
 #ifndef GRAPHICS_HPP_INCLUDED
 #define GRAPHICS_HPP_INCLUDED
 
-#if defined(TARGET_BLACKBERRY)
+#if defined(TARGET_BLACKBERRY) || __MACOSX__
 #include <SDL.h>
 #include <SDL_keysym.h>
 #include <SDL_thread.h>
@@ -11,7 +11,7 @@
 #include <SDL/SDL_thread.h>
 #endif
 
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE && !__MACOSX__
 #include <SDL/SDL_mixer.h>
 #endif
 
@@ -19,8 +19,13 @@
 #include <GL/glew.h>
 #endif
 
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE && !__MACOSX__
 #include <SDL/SDL_ttf.h>
+#endif
+
+#if __MACOSX__
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
 #endif
 
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)

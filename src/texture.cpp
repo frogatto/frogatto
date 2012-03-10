@@ -75,7 +75,7 @@ namespace {
 	}
 
 	const size_t TextureBufSize = 128;
-	unsigned int texture_buf[TextureBufSize];
+	GLuint texture_buf[TextureBufSize];
 	size_t texture_buf_pos = TextureBufSize;
 	std::vector<unsigned int> avail_textures;
 	bool graphics_initialized = false;

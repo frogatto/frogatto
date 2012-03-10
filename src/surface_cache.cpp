@@ -14,7 +14,11 @@
 #include "concurrent_cache.hpp"
 #include "filesystem.hpp"
 #include "surface_cache.hpp"
-#include <SDL/SDL_image.h>
+#ifdef __MACOSX__
+	#include <SDL_image.h>
+#else	
+	#include <SDL/SDL_image.h>
+#endif
 
 #include <assert.h>
 #include <iostream>
