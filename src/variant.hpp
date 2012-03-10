@@ -158,6 +158,9 @@ public:
 
 	std::string to_debug_string(std::vector<const game_logic::formula_callable*>* seen=NULL) const;
 
+	std::string write_json() const;
+	void write_json(std::ostream& s) const;
+
 	std::vector<variant>& initialize_list();
 	enum TYPE { TYPE_NULL, TYPE_INT, TYPE_DECIMAL, TYPE_CALLABLE, TYPE_CALLABLE_LOADING, TYPE_LIST, TYPE_STRING, TYPE_MAP, TYPE_FUNCTION };
 

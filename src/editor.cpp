@@ -1814,28 +1814,6 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 
 void editor::load_stats()
 {
-	stats_.clear();
-
-	const std::string fname = formatter() << preferences::user_data_path() << "stats/" << lvl_->id();
-	if(!sys::file_exists(fname)) {
-		return;
-	}
-
-	std::string doc = "[stats]\n" + sys::read_file(fname) + "[/stats]\n";
-	wml::const_node_ptr node(wml::parse_wml(doc));
-	for(wml::node::const_all_child_iterator i = node->begin_children(); i != node->end_children(); ++i) {
-		stats_.push_back(stats::record::read(*i));
-		if(!stats_.back()) {
-			stats_.pop_back();
-		}
-	}
-
-	if(stats_.size() > 1000000) {
-		std::random_shuffle(stats_.begin(), stats_.end());
-		stats_.resize(1000000);
-	}
-
-	stats::prepare_draw(stats_);
 }
 
 void editor::show_stats()
@@ -2395,7 +2373,7 @@ void editor::draw() const
 	}
 
 	if(g_draw_stats) {
-		stats::draw_stats(stats_);
+//		stats::draw_stats(stats_);
 	}
 
 	glPopMatrix();

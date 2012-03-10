@@ -17,7 +17,6 @@ public:
 	explicit editor_stats_dialog(editor& e);
 	void init();
 private:
-	void add_stats(const std::vector<stats::record_ptr>& stats);
 	editor& editor_;
 };
 

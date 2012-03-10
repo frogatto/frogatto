@@ -31,7 +31,7 @@ void editor_stats_dialog::init()
 {
 	using namespace gui;
 	add_widget(widget_ptr(new label("Statistics (whole level)", graphics::color_white(), 36)));
-
+/*
 	std::vector<stats::record_ptr> stats = editor_.stats();
 	add_stats(stats);
 
@@ -55,34 +55,7 @@ void editor_stats_dialog::init()
 		add_widget(widget_ptr(new label("Statistics (selection)", graphics::color_white(), 36)));
 		add_stats(stats);
 	}
-}
-
-void editor_stats_dialog::add_stats(const std::vector<stats::record_ptr>& stats)
-{
-	using namespace gui;
-
-	std::map<std::string, int> stats_counts;
-	foreach(stats::record_ptr r, stats) {
-		if(r) {
-			stats_counts[r->id()]++;
-		}
-	}
-
-	const int seconds_play_time = stats_counts["move"]/5;
-	stats_counts["Time Played"] = seconds_play_time;
-	if(stats_counts["die"] > 0) {
-		stats_counts["Seconds per Death"] = seconds_play_time/stats_counts["die"];
-	}
-
-	grid_ptr g(new grid(2));
-	g->set_hpad(10);
-	for(std::map<std::string, int>::const_iterator i = stats_counts.begin();
-	    i != stats_counts.end(); ++i) {
-		g->add_col(widget_ptr(new label(i->first, graphics::color_white())));
-		g->add_col(widget_ptr(new label(formatter() << i->second, graphics::color_white())));
-	}
-
-	add_widget(g);
+	*/
 }
 
 }

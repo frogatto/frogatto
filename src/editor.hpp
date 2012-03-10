@@ -44,7 +44,6 @@ public:
 	void load_stats();
 	void show_stats();
 	void download_stats();
-	const std::vector<stats::record_ptr>& stats() const { return stats_; }
 
 	struct tileset {
 		static void init(wml::const_node_ptr node);
@@ -236,8 +235,6 @@ private:
 	std::stack<int> undo_commands_groups_;
 
 	std::vector<entity_ptr> ghost_objects_;
-
-	std::vector<stats::record_ptr> stats_;
 
 	int level_changed_;
 	int selected_segment_;

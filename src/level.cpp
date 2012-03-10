@@ -138,6 +138,8 @@ level::level(const std::string& level_cfg)
 	  background_palette_(-1),
 	  segment_width_(0), segment_height_(0)
 {
+	set_as_current_level();
+
 	std::cerr << "in level constructor...\n";
 	const int start_time = SDL_GetTicks();
 
@@ -405,10 +407,6 @@ level::level(const std::string& level_cfg)
 		movement_scripts_[s.id()] = s;
 	}
 
-	const int time_taken_ms = (SDL_GetTicks() - start_time);
-	stats::record_event(id(), stats::const_record_ptr(new stats::load_level_record(time_taken_ms)));
-	std::cerr << "done level constructor: " << time_taken_ms << "\n";
-
 	gui_algo_str_ = wml::get_str(node, "gui", "default");
 	gui_algorithm_ = gui_algorithm::get(gui_algo_str_);
 	gui_algorithm_->new_level();
@@ -426,6 +424,9 @@ level::level(const std::string& level_cfg)
 		data.xbase = data.ybase = 0;
 	}
 
+	const int time_taken_ms = (SDL_GetTicks() - start_time);
+	stats::entry("load").set("time", variant(time_taken_ms));
+	std::cerr << "done level constructor: " << time_taken_ms << "\n";
 }
 
 level::~level()

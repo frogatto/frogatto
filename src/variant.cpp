@@ -972,6 +972,65 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 	return s.str();
 }
 
+std::string variant::write_json() const
+{
+	std::ostringstream s;
+	write_json(s);
+	return s.str();
+}
+
+void variant::write_json(std::ostream& s) const
+{
+	switch(type_) {
+	case TYPE_NULL: {
+		s << "null";
+		return;
+	}
+	case TYPE_INT: {
+		s << as_int();
+		return;
+	}
+	case TYPE_DECIMAL: {
+		s << decimal_value_;
+		return;
+	}
+	case TYPE_MAP: {
+		s << "{";
+		for(std::map<variant,variant>::const_iterator i = map_->elements.begin(); i != map_->elements.end(); ++i) {
+			if(i != map_->elements.begin()) {
+				s << ',';
+			}
+			s << '"' << i->first.as_string() << "\":";
+			i->second.write_json(s);
+		}
+
+		s << "}";
+		return;
+	}
+	case TYPE_LIST: {
+		s << "[";
+
+		for(std::vector<variant>::const_iterator i = list_->elements.begin();
+		    i != list_->elements.end(); ++i) {
+			if(i != list_->elements.begin()) {
+				s << ',';
+			}
+
+			i->write_json(s);
+		}
+
+		s << "]";
+		return;
+	}
+	case TYPE_STRING: {
+		s << "\"" << string_->str << "\"";
+		return;
+	}
+	default:
+		throw type_error("illegal type to serialize to json");
+	}
+}
+
 UNIT_TEST(variant_decimal)
 {
 	variant d(9876000, variant::DECIMAL_VARIANT);

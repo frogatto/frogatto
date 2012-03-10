@@ -13,7 +13,9 @@
 
 #include "filesystem.hpp"
 #include "formatter.hpp"
+#include "level.hpp"
 #include "preferences.hpp"
+#include "playable_custom_object.hpp"
 #include "stats.hpp"
 #include "wml_node.hpp"
 #include "wml_utils.hpp"
@@ -40,7 +42,7 @@ void http_upload(const std::string& payload, const std::string& script) {
 
 	boost::asio::io_service io_service;
 	tcp::resolver resolver(io_service);
-	tcp::resolver::query query("www.wesnoth.org", "80");
+	tcp::resolver::query query("theargentlark.com", "5000");
 
 	tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
 	tcp::resolver::iterator end;
@@ -69,9 +71,11 @@ void http_upload(const std::string& payload, const std::string& script) {
 namespace stats {
 
 namespace {
-std::map<std::string, std::vector<const_record_ptr> > write_queue;
+std::map<std::string, std::vector<variant> > write_queue;
 
-threading::mutex& write_queue_mutex() {
+std::vector<std::pair<std::string, std::string> > upload_queue;
+
+threading::mutex& upload_queue_mutex() {
 	static threading::mutex m;
 	return m;
 }
@@ -81,60 +85,33 @@ threading::condition& send_stats_signal() {
 	return c;
 }
 
-bool send_stats_done = false;
+bool send_stats_should_exit = false;
 
-void send_stats(const std::map<std::string, std::vector<const_record_ptr> >& queue) {
+void send_stats(std::map<std::string, std::vector<variant> >& queue) {
 	if(queue.empty()) {
 		return;
 	}
 
-	wml::node_ptr msg(new wml::node("stats"));
-	msg->set_attr("version", preferences::version());
-	for(std::map<std::string, std::vector<const_record_ptr> >::const_iterator i = queue.begin(); i != queue.end(); ++i) {
+	std::map<variant, variant> attr;
+	attr[variant("type")] = variant("stats");
+	attr[variant("version")] = variant(preferences::version());
+	attr[variant("user_id")] = variant(preferences::get_unique_user_id());
 
-		wml::node_ptr summary(new wml::node("level"));
-		summary->set_attr("id", i->first);
-		summary->set_attr("type", "summary");
+	std::vector<variant> level_vec;
 
-		wml::node_ptr summary_data(new wml::node("summary"));
-		summary_data->set_attr("user_id", formatter() << preferences::get_unique_user_id());
-		std::map<std::string, int> record_counts;
-		foreach(const_record_ptr r, i->second) {
-			record_counts[r->id()]++;
-		}
+	for(std::map<std::string, std::vector<variant> >::iterator i = queue.begin(); i != queue.end(); ++i) {
 
-		for(std::map<std::string, int>::const_iterator j = record_counts.begin(); j != record_counts.end(); ++j) {
-			summary_data->set_attr(j->first, formatter() << j->second);
-		}
-		summary->add_child(summary_data);
-		msg->add_child(summary);
-
-		std::string commands;
-		wml::node_ptr cmd(new wml::node("level"));
-		cmd->set_attr("id", i->first);
-		for(std::vector<const_record_ptr>::const_iterator j = i->second.begin(); j != i->second.end(); ++j) {
-			wml::node_ptr node((*j)->write());
-			cmd->add_child(node);
-			wml::write(node, commands);
-		}
-
-		msg->add_child(cmd);
-
-		const std::string fname = get_stats_dir() + i->first;
-		if(sys::file_exists(fname)) {
-			commands = sys::read_file(fname) + commands;
-		}
-
-		sys::write_file(fname, commands);
+		std::map<variant, variant> obj;
+		obj[variant("level")] = variant(i->first);
+		obj[variant("stats")] = variant(&i->second);
+		level_vec.push_back(variant(&obj));
 	}
 
-	std::string msg_str;
-	wml::write(msg, msg_str);
-	try {
-		http_upload(msg_str, "upload-frogatto");
-	} catch(...) {
-		fprintf(stderr, "STATS ERROR: ERROR PERFORMING HTTP UPLOAD!\n");
-	}
+	attr[variant("levels")] = variant(&level_vec);
+
+	std::string msg_str = variant(&attr).write_json();
+	threading::lock lck(upload_queue_mutex());
+	upload_queue.push_back(std::pair<std::string,std::string>("upload-frogatto", msg_str));
 }
 
 void send_stats_thread() {
@@ -143,21 +120,27 @@ void send_stats_thread() {
 	}
 
 	for(;;) {
-		std::map<std::string, std::vector<const_record_ptr> > queue;
+		std::vector<std::pair<std::string, std::string> > queue;
 		{
-			threading::lock lck(write_queue_mutex());
-			if(!send_stats_done && write_queue.empty()) {
-				send_stats_signal().wait_timeout(write_queue_mutex(), 600000);
+			threading::lock lck(upload_queue_mutex());
+			if(!send_stats_should_exit && upload_queue.empty()) {
+				send_stats_signal().wait_timeout(upload_queue_mutex(), 600000);
 			}
 
-			if(send_stats_done && write_queue.empty()) {
+			if(send_stats_should_exit && upload_queue.empty()) {
 				break;
 			}
 
-			queue.swap(write_queue);
+			queue.swap(upload_queue);
 		}
 
-		send_stats(queue);
+		for(int n = 0; n != queue.size(); ++n) {
+			try {
+				http_upload(queue[n].second, queue[n].first);
+			} catch(...) {
+				std::cerr << "ERROR PERFORMING HTTP UPLOAD\n";
+			}
+		}
 	}
 }
 
@@ -247,153 +230,11 @@ manager::manager()
 {}
 
 manager::~manager() {
-	threading::lock lck(write_queue_mutex());
-	send_stats_done = true;
-	send_stats_signal().notify_one();
+	send_stats_should_exit = true;
+	flush();
 }
 
-record_ptr record::read(wml::const_node_ptr node) {
-	if(node->name() == "die") {
-		return record_ptr(new die_record(point(node->attr("pos"))));
-	} else if(node->name() == "quit") {
-		return record_ptr(new quit_record(point(node->attr("pos"))));
-	} else if(node->name() == "move") {
-		return record_ptr(new player_move_record(point(node->attr("src")), point(node->attr("dst"))));
-	} else if(node->name() == "custom") {
-		return record_ptr(new custom_record(std::string(node->attr("key")), std::string(node->attr("value")), point(node->attr("src"))));
-	} else if(node->name() == "load") {
-		return record_ptr(new load_level_record(wml::get_int(node, "ms")));
-	} else {
-		fprintf(stderr, "UNRECOGNIZED STATS NODE: '%s'\n", node->name().c_str());
-		return record_ptr();
-	}
-}
-
-record::~record() {
-}
-
-die_record::die_record(const point& p) : p_(p)
-{}
-
-wml::node_ptr die_record::write() const
-{
-	wml::node_ptr result(new wml::node("die"));
-	result->set_attr("pos", p_.to_string());
-	return result;
-}
-
-namespace {
-std::vector<GLfloat> die_record_vertex_array;
-}
-
-void die_record::prepare_draw() const
-{
-	die_record_vertex_array.push_back(p_.x);
-	die_record_vertex_array.push_back(p_.y);
-}
-
-void die_record::draw() const
-{
-
-	glPointSize(5);
-	glDisable(GL_TEXTURE_2D);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glColor4ub(255, 0, 0, 255);
-	GLfloat point[] = {p_.x, p_.y};
-	glVertexPointer(2, GL_FLOAT, 0, point);
-	glDrawArrays(GL_POINTS, 0, 1);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glEnable(GL_TEXTURE_2D);
-	glColor4ub(255, 255, 255, 255);
-
-}
-
-quit_record::quit_record(const point& p) : p_(p)
-{}
-
-wml::node_ptr quit_record::write() const
-{
-	wml::node_ptr result(new wml::node("quit"));
-	result->set_attr("pos", p_.to_string());
-	return result;
-}
-
-namespace {
-std::vector<GLfloat> quit_record_vertex_array;
-}
-
-void quit_record::prepare_draw() const
-{
-	quit_record_vertex_array.push_back(p_.x);
-	quit_record_vertex_array.push_back(p_.y);
-}
-
-void quit_record::draw() const
-{
-	glPointSize(5);
-	glDisable(GL_TEXTURE_2D);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glColor4ub(255, 255, 0, 255);
-	GLfloat point[] = {p_.x, p_.y};
-	glVertexPointer(2, GL_FLOAT, 0, point);
-	glDrawArrays(GL_POINTS, 0, 1);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glEnable(GL_TEXTURE_2D);
-	glColor4ub(255, 255, 255, 255);
-}
-
-player_move_record::player_move_record(const point& src, const point& dst) : src_(src), dst_(dst)
-{}
-
-wml::node_ptr player_move_record::write() const
-{
-	wml::node_ptr result(new wml::node("move"));
-	result->set_attr("src", src_.to_string());
-	result->set_attr("dst", dst_.to_string());
-	return result;
-}
-
-custom_record::custom_record(const std::string& key, const std::string& value, const point& src) : key_(key), value_(value), src_(src)
-{}
-
-wml::node_ptr custom_record::write() const
-{
-	wml::node_ptr result(new wml::node("custom"));
-	result->set_attr(key_, value_);
-	result->set_attr("pos", src_.to_string());
-	return result;
-}
-
-namespace {
-std::vector<GLfloat> player_move_record_vertex_array;
-}
-
-void player_move_record::prepare_draw() const
-{
-	player_move_record_vertex_array.push_back(src_.x);
-	player_move_record_vertex_array.push_back(src_.y);
-	player_move_record_vertex_array.push_back(dst_.x);
-	player_move_record_vertex_array.push_back(dst_.y);
-}
-
-void player_move_record::draw() const
-{
-	player_move_record_vertex_array.push_back(src_.x);
-	player_move_record_vertex_array.push_back(src_.y);
-	player_move_record_vertex_array.push_back(dst_.x);
-	player_move_record_vertex_array.push_back(dst_.y);
-}
-
-load_level_record::load_level_record(int ms) : ms_(ms)
-{}
-
-wml::node_ptr load_level_record::write() const
-{
-	wml::node_ptr result(new wml::node("load"));
-	result->set_attr("ms", formatter() << ms_);
-	return result;
-}
-
+/*
 void prepare_draw(const std::vector<record_ptr>& records)
 {
 	player_move_record_vertex_array.clear();
@@ -404,8 +245,9 @@ void prepare_draw(const std::vector<record_ptr>& records)
 		record->prepare_draw();
 	}
 }
+*/
 
-namespace {
+		/*
 void draw_points(int r, int g, int b, const std::vector<GLfloat>& v) {
 	if(v.empty()) {
 		return;
@@ -420,7 +262,6 @@ void draw_points(int r, int g, int b, const std::vector<GLfloat>& v) {
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);
 	glColor4ub(255, 255, 255, 255);
-}
 }
 
 void draw_stats(const std::vector<record_ptr>& records)
@@ -439,16 +280,40 @@ void draw_stats(const std::vector<record_ptr>& records)
 	draw_points(255, 0, 0, die_record_vertex_array);
 	draw_points(255, 255, 0, quit_record_vertex_array);
 }
-
-void record_event(const std::string& lvl, const_record_ptr r)
-{
-	threading::lock lck(write_queue_mutex());
-	write_queue[lvl].push_back(r);
-}
-
+*/
 void flush()
 {
+	send_stats(write_queue);
+	threading::lock lck(upload_queue_mutex());
 	send_stats_signal().notify_one();
+}
+
+entry::entry(const std::string& type)
+{
+	static const variant TypeStr("type");
+	records_[TypeStr] = variant(type);
+}
+
+entry::~entry()
+{
+	record(variant(&records_));
+}
+
+entry& entry::set(const std::string& name, const variant& value)
+{
+	records_[variant(name)] = value;
+	return *this;
+}
+
+void entry::add_player_pos()
+{
+	set("x", variant(level::current().player()->get_entity().midpoint().x));
+	set("y", variant(level::current().player()->get_entity().midpoint().y));
+}
+
+void record(const variant& value)
+{
+	write_queue[level::current().id()].push_back(value);
 }
 
 }
