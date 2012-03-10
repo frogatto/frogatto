@@ -1605,7 +1605,7 @@ public:
 	}
 };
 
-FUNCTION_DEF(resolve_solid, 3, 4, "resolve_solid(object, int xdir, int ydir, int max_cycles=100): will attempt to move the given object in the direction indicated by xdir/ydir until the object no longer has a solid overlap. Gives up after max_cycles. If called with no arguments other than the object, will try desperately to place the object in the level.")
+FUNCTION_DEF(resolve_solid, 1, 4, "resolve_solid(object, int xdir, int ydir, int max_cycles=100): will attempt to move the given object in the direction indicated by xdir/ydir until the object no longer has a solid overlap. Gives up after max_cycles. If called with no arguments other than the object, will try desperately to place the object in the level.")
 	entity_ptr e(args()[0]->evaluate(variables).try_convert<entity>());
 	if(args().size() == 1) {
 		return variant(new resolve_solid_command(e, 0, 0, 0));

@@ -22,7 +22,6 @@
 		B514C919101E8DC00038C5E7 /* random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B514C917101E8DC00038C5E7 /* random.cpp */; };
 		B514CA36102A1B4E0038C5E7 /* level_runner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B514CA34102A1B4E0038C5E7 /* level_runner.cpp */; };
 		B514CA49102A20530038C5E7 /* libboost_thread-xgcc40-mt-1_37.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = B569C4CF0F18F2DE00A031B3 /* libboost_thread-xgcc40-mt-1_37.dylib */; };
-		B51F027013AD2C02002B1524 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B51F026F13AD2C02002B1524 /* Info.plist */; };
 		B51F027513AD3CC6002B1524 /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B51F027113AD3CC6002B1524 /* SDL_image.framework */; };
 		B51F027613AD3CC6002B1524 /* SDL_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B51F027213AD3CC6002B1524 /* SDL_mixer.framework */; };
 		B51F027713AD3CC6002B1524 /* SDL_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B51F027313AD3CC6002B1524 /* SDL_ttf.framework */; };
@@ -957,7 +956,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Frogatto" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -999,7 +998,6 @@
 				B5F96B4F0E7572CA00969FDD /* data in Resources */,
 				B501A3FE1371C2B300D7EC88 /* locale in Resources */,
 				B539566813AD28BB0006183E /* InfoPlist.strings in Resources */,
-				B51F027013AD2C02002B1524 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
