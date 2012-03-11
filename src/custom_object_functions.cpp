@@ -1609,6 +1609,9 @@ FUNCTION_DEF(resolve_solid, 1, 4, "resolve_solid(object, int xdir, int ydir, int
 	entity_ptr e(args()[0]->evaluate(variables).try_convert<entity>());
 	if(args().size() == 1) {
 		return variant(new resolve_solid_command(e, 0, 0, 0));
+	} else if(args().size() == 2) {
+		std::cerr << "TWO ARGMENTS ISN'T A SUPPORTED OPTION FOR resolve_solid() CONTINUING AS IF ONE ARGUMENT SUPPLIED\n";
+		return variant(new resolve_solid_command(e, 0, 0, 0));
 	}
 
 	const int xdir = args()[1]->evaluate(variables).as_int();
