@@ -425,6 +425,7 @@ level::level(const std::string& level_cfg)
 	}
 
 	const int time_taken_ms = (SDL_GetTicks() - start_time);
+	stats::entry("load", id()).set("time", variant(time_taken_ms));
 	std::cerr << "done level constructor: " << time_taken_ms << "\n";
 }
 

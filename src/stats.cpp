@@ -284,7 +284,13 @@ void flush()
 	send_stats_signal().notify_one();
 }
 
-entry::entry(const std::string& type)
+entry::entry(const std::string& type) : level_id_(level::current().id())
+{
+	static const variant TypeStr("type");
+	records_[TypeStr] = variant(type);
+}
+
+entry::entry(const std::string& type, const std::string& level_id) : level_id_(level_id)
 {
 	static const variant TypeStr("type");
 	records_[TypeStr] = variant(type);
@@ -292,7 +298,7 @@ entry::entry(const std::string& type)
 
 entry::~entry()
 {
-	record(variant(&records_));
+	record(variant(&records_), level_id_);
 }
 
 entry& entry::set(const std::string& name, const variant& value)
@@ -310,6 +316,11 @@ void entry::add_player_pos()
 void record(const variant& value)
 {
 	write_queue[level::current().id()].push_back(value);
+}
+
+void record(const variant& value, const std::string& level_id)
+{
+	write_queue[level_id].push_back(value);
 }
 
 }

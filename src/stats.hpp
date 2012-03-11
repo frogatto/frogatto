@@ -32,6 +32,7 @@ private:
 class entry {
 public:
 	explicit entry(const std::string& type);
+	entry(const std::string& type, const std::string& level_id);
 	~entry();
 	entry& set(const std::string& name, const variant& value);
 	void add_player_pos();
@@ -39,10 +40,12 @@ private:
 	entry(const entry& o);
 	void operator=(const entry& o) const;
 
+	std::string level_id_;
 	std::map<variant, variant> records_;
 };
 
 void record(const variant& value);
+void record(const variant& value, const std::string& level_id);
 
 void flush();
 
