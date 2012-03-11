@@ -90,6 +90,7 @@ struct sound_playing {
 	std::string file;
 	const void* object;
 	int	loops;		//not strictly boolean.  -1=true, 0=false
+	float volume;
 };
 
 std::vector<sound_playing> channels_to_sounds_playing, queued_sounds;
@@ -410,7 +411,7 @@ void preload(const std::string& file)
 
 namespace {
 
-int play_internal(const std::string& file, int loops, const void* object)
+int play_internal(const std::string& file, int loops, const void* object, float volume)
 {
 	if(!sound_ok) {
 		return -1;
@@ -422,6 +423,7 @@ int play_internal(const std::string& file, int loops, const void* object)
 		queued_sounds.back().file = file;
 		queued_sounds.back().loops = loops;
 		queued_sounds.back().object = object;
+		queued_sounds.back().volume = volume;
 		
 		return -1;
 	}
@@ -449,7 +451,7 @@ int play_internal(const std::string& file, int loops, const void* object)
 			channels_to_sounds_playing.resize(result + 1);
 		}
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
-		Mix_Volume(result, sfx_volume*MIX_MAX_VOLUME); //start sound at full volume
+		Mix_Volume(result, volume*sfx_volume*MIX_MAX_VOLUME); //start sound at full volume
 #endif
 
 		channels_to_sounds_playing[result].file = file;
@@ -480,18 +482,18 @@ void process()
 		std::vector<sound_playing> sounds;
 		sounds.swap(queued_sounds);
 		foreach(const sound_playing& sfx, sounds) {
-			play_internal(sfx.file, sfx.loops, sfx.object);
+			play_internal(sfx.file, sfx.loops, sfx.object, sfx.volume);
 		}
 	}
 }
 
-void play(const std::string& file, const void* object)
+void play(const std::string& file, const void* object, float volume)
 {
 	if(preferences::no_sound() || mute_) {
 		return;
 	}
 
-	play_internal(file, 0, object);
+	play_internal(file, 0, object, volume);
 }
 
 void stop_sound(const std::string& file, const void* object)
@@ -552,14 +554,14 @@ void stop_looped_sounds(const void* object)
 	}
 }
 	
-int play_looped(const std::string& file, const void* object)
+int play_looped(const std::string& file, const void* object, float volume)
 {
 	if(preferences::no_sound() || mute_) {
 		return -1;
 	}
 
 
-	const int result = play_internal(file, -1, object);
+	const int result = play_internal(file, -1, object, volume);
 	std::cerr << "PLAY: " << object << " " << file << " -> " << result << "\n";
 	return result;
 }

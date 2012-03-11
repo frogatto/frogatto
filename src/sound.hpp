@@ -26,7 +26,7 @@ void preload(const std::string& file);
 //play a sound. 'object' is the object that is playing the sound. It can be
 //used later in stop_sound to specify which object is stopping playing
 //the sound.
-void play(const std::string& file, const void* object=0);
+void play(const std::string& file, const void* object=0, float volume=1.0);
 
 //stop a sound. object refers to the object that started the sound, and is
 //the same as the object in play().
@@ -50,7 +50,7 @@ float get_engine_music_volume();
 	
 // function to play a sound effect over and over in a loop. Will return
 // a handle to the sound effect.
-int play_looped(const std::string& file, const void* object=0);
+int play_looped(const std::string& file, const void* object=0, float volume=1.0);
 
 void play_music(const std::string& file);
 void play_music_interrupt(const std::string& file);
