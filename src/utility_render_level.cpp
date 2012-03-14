@@ -31,12 +31,12 @@ UTILITY(render_level)
 		std::cerr << "ERROR: " << files.size() << " FILES " << outputs.size() << "outputs\n";
 	}
 
+	std::cout << "[";
+
 	for(int n = 0; n != files.size(); ++n) {
 		const std::string file = files[n];
 		const std::string output = outputs[n];
 		
-		std::cout << "PROCESSING " << file << "\n";
-
 		boost::intrusive_ptr<level> lvl(new level(file));
 		lvl->set_editor();
 		lvl->finish_loading();
@@ -44,6 +44,13 @@ UTILITY(render_level)
 
 		const int lvl_width = lvl->boundaries().w();
 		const int lvl_height = lvl->boundaries().h();
+
+		if(n != 0) {
+			std::cout << ",";
+		}
+
+		std::cout << "\n  {\n  \"name\": \"" << lvl->id() << "\","
+		             << "\n  \"dimensions\": [" << lvl->boundaries().x() << "," << lvl->boundaries().y() << "," << lvl->boundaries().w() << "," << lvl->boundaries().h() << "]\n  }";
 
 		const int seg_width = graphics::screen_width();
 		const int seg_height = graphics::screen_height();
@@ -87,4 +94,6 @@ UTILITY(render_level)
 
 		IMG_SavePNG(output.c_str(), level_surface.get());
 	}
+
+	std::cout << "]";
 }

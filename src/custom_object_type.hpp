@@ -146,6 +146,8 @@ public:
 	const const_solid_info_ptr& solid() const { return solid_; }
 	const const_solid_info_ptr& platform() const { return platform_; }
 
+	const std::vector<int>& platform_offsets() const { return platform_offsets_; }
+
 	//true if the object can ever be solid or standable
 	bool has_solid() const { return has_solid_; }
 
@@ -255,6 +257,8 @@ private:
 	std::map<std::string, const_custom_object_type_ptr> sub_objects_;
 
 	bool editor_force_standing_;
+
+	std::vector<int> platform_offsets_;
 };
 
 #endif

@@ -273,12 +273,9 @@ custom_object::custom_object(wml::const_node_ptr node)
 	}
 
 	if(node->has_attr("platform_offsets")) {
-		const std::string s = node->attr("platform_offsets");
-		int num_values = std::count(s.begin(), s.end(), ',') + 1;
-		platform_offsets_.resize(num_values+1);
-
-		util::split_into_ints(s.c_str(), &platform_offsets_.front(), &num_values);
-		platform_offsets_.resize(num_values);
+		platform_offsets_ = wml::get_vector_int(node, "platform_offsets");
+	} else {
+		platform_offsets_ = type_->platform_offsets();
 	}
 	
 	//fprintf(stderr, "object address= %p, ", this);

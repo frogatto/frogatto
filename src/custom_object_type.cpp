@@ -378,7 +378,8 @@ custom_object_type::custom_object_type(wml::const_node_ptr node, const custom_ob
 	weak_solid_dimensions_(has_solid_ || platform_ ? 0xFFFFFFFF : 0),
 	weak_collide_dimensions_(0xFFFFFFFF),
 	activation_border_(wml::get_int(node, "activation_border", 100)),
-	editor_force_standing_(wml::get_bool(node, "editor_force_standing", false))
+	editor_force_standing_(wml::get_bool(node, "editor_force_standing", false)),
+	platform_offsets_(wml::get_vector_int(node, "platform_offsets"))
 {
 	if(node->get_child("editor_info")) {
 		editor_info_.reset(new editor_entity_info(node->get_child("editor_info")));
