@@ -1047,8 +1047,11 @@ void custom_object::process(level& lvl)
 		effective_velocity_y = 0;
 	}
 
+	int platform_motion_x_movement = 0;
 	if(standing_on_) {
-		effective_velocity_x += (standing_on_->feet_x() - standing_on_prev_x_)*100 + standing_on_->platform_motion_x() + standing_on_->map_platform_pos(feet_x())*100;
+
+		platform_motion_x_movement = standing_on_->platform_motion_x() + standing_on_->map_platform_pos(feet_x())*100;
+		effective_velocity_x += (standing_on_->feet_x() - standing_on_prev_x_)*100 + platform_motion_x_movement;
 		effective_velocity_y += (standing_on_->feet_y() - standing_on_prev_y_)*100;
 	}
 
@@ -1450,7 +1453,7 @@ void custom_object::process(level& lvl)
 	if(standing_on_ && standing_on_ != stand_info.collide_with) {
 		//we were previously standing on an object and we're not anymore.
 		//add the object we were standing on's velocity to ours
-		velocity_x_ += standing_on_->last_move_x()*100 + standing_on_->platform_motion_x();
+		velocity_x_ += standing_on_->last_move_x()*100 + platform_motion_x_movement;
 		velocity_y_ += standing_on_->last_move_y()*100;
 	}
 
