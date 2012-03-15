@@ -6,7 +6,7 @@
 #endif
 #include "unit_test.hpp"
 
-void rotate_rect(GLshort center_x, GLshort center_y, GLshort rotation, GLshort* rect_vertexes){
+void rotate_rect(GLshort center_x, GLshort center_y, float rotation, GLshort* rect_vertexes){
 
 	point p;
 	

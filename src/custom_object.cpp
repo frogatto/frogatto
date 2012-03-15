@@ -2782,14 +2782,16 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 			if(value[n].is_decimal() || value[n].is_int()) {
 				positions.push_back(value[n].as_decimal().as_float());
 			} else if(value[n].is_list()) {
-				ASSERT_LOG(value[n].num_elements() == 2, "ILLEGAL VALUE TO custom_draw: " << value.to_debug_string());
+				for(int index = 0; index != value[n].num_elements(); index += 2) {
+					ASSERT_LOG(value[n].num_elements() - index >= 2, "ILLEGAL VALUE TO custom_draw: " << value.to_debug_string() << ", " << n << ", " << index << "/" << value[n].num_elements());
 
-				ASSERT_LOG(v->size() < positions.size(), "ILLEGAL VALUE TO custom_draw -- not enough positions for number of offsets: " << value.to_debug_string() << " " << v->size() << " VS " << positions.size());
-				const GLfloat pos = positions[v->size()];
+					ASSERT_LOG(v->size() < positions.size(), "ILLEGAL VALUE TO custom_draw -- not enough positions for number of offsets: " << value.to_debug_string() << " " << v->size() << " VS " << positions.size());
+					const GLfloat pos = positions[v->size()];
 
-				v->push_back(frame::CustomPoint());
-				v->back().pos = pos;
-				v->back().offset = point(value[n][0].as_int(), value[n][1].as_int());
+					v->push_back(frame::CustomPoint());
+					v->back().pos = pos;
+					v->back().offset = point(value[n][index].as_int(), value[n][index + 1].as_int());
+				}
 			}
 		}
 

@@ -35,6 +35,7 @@
 #include "preferences.hpp"
 #include "random.hpp"
 #include "raster_distortion.hpp"
+#include "rectangle_rotator.hpp"
 #include "sound.hpp"
 #include "speech_dialog.hpp"
 #include "stats.hpp"
@@ -2001,6 +2002,32 @@ public:
 FUNCTION_DEF(cosmic_shift, 2, 2, "cosmic_shift(int xoffset, int yoffet): adjust position of all objects and tiles in the level by the given offset")
 	return variant(new shift_level_position_command(args()[0]->evaluate(variables).as_int(), args()[1]->evaluate(variables).as_int()));
 END_FUNCTION_DEF(cosmic_shift)
+
+FUNCTION_DEF(rotate_rect, 4, 4, "rotate_rect(int center_x, int center_y, int rotation, int[8] rect) -> int[8]: rotates rect and returns the result")
+
+	int center_x = args()[0]->evaluate(variables).as_int();
+	int center_y = args()[1]->evaluate(variables).as_int();
+	float rotate = args()[2]->evaluate(variables).as_decimal().as_float();
+
+	variant v = args()[3]->evaluate(variables);
+	
+	GLshort r[8];
+	ASSERT_LOG(v.num_elements() == 8, "BAD ARGUMENT PASSED TO rotate_rect: " << v.to_debug_string());
+	for(int n = 0; n != v.num_elements(); ++n) {
+		r[n] = v[n].as_int();
+	}
+
+	rotate_rect(center_x, center_y, rotate, r);
+
+	std::vector<variant> res;
+	res.reserve(8);
+	for(int n = 0; n != v.num_elements(); ++n) {
+		res.push_back(variant(r[n]));
+	}
+
+	return variant(&res);
+
+END_FUNCTION_DEF(rotate_rect)
 
 namespace {
 bool consecutive_periods(char a, char b) {
