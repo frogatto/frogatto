@@ -131,6 +131,7 @@ public:
 	bool serializable() const { return serializable_; }
 
 	bool use_image_for_collisions() const { return use_image_for_collisions_; }
+	bool static_object() const { return static_object_; }
 	bool has_feet() const { return has_feet_; }
 	bool adjust_feet_on_animation_change() const { return adjust_feet_on_animation_change_; }
 
@@ -221,7 +222,7 @@ private:
 	int passenger_x_, passenger_y_;
 	int feet_width_;
 
-	bool use_image_for_collisions_;
+	bool use_image_for_collisions_, static_object_;
 
 	bool has_feet_;
 

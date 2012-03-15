@@ -178,6 +178,10 @@ public:
 	void set_difficulty(int min, int max) { min_difficulty_ = min; max_difficulty_ = max; }
 
 protected:
+	//components of per-cycle process() that can be done even on
+	//static objects.
+	void static_process(level& lvl);
+
 	virtual void control(const level& lvl);
 	variant get_value(const std::string& key) const;
 	variant get_value_by_slot(int slot) const;

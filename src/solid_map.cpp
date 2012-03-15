@@ -30,7 +30,7 @@ void solid_map::create_object_solid_maps(wml::const_node_ptr node, std::vector<c
 	const int feet_width = wml::get_int(node, "feet_width", 0);
 
 	int legs_height = area.w()/2 + 1 - feet_width;
-	if(wml::get_bool(node, "has_feet", true) == false || node->attr("solid_shape").str() == "rect" || legs_height < 0) {
+	if(wml::get_bool(node, "has_feet", true) == false || node->has_attr("solid_offsets") || node->attr("solid_shape").str() == "rect" || legs_height < 0) {
 		legs_height = 0;
 	}
 
@@ -48,6 +48,10 @@ void solid_map::create_object_solid_maps(wml::const_node_ptr node, std::vector<c
 		body_map->id_ = "body";
 		body_map->area_ = body;
 		body_map->solid_.resize(body.w()*body.h(), true);
+		if(node->has_attr("solid_offsets")) {
+			body_map->apply_offsets(wml::get_vector_int(node, "solid_offsets"));
+		}
+
 		body_map->calculate_side(0, -1, body_map->top_);
 		body_map->calculate_side(-1, 0, body_map->left_);
 		body_map->calculate_side(1, 0, body_map->right_);
@@ -219,6 +223,28 @@ void solid_map::set_solid(int x, int y, bool value)
 	}
 
 	solid_[y*area_.w() + x] = value;
+}
+
+void solid_map::apply_offsets(const std::vector<int>& offsets)
+{
+	if(offsets.size() <= 1) {
+		return;
+	}
+
+	const int seg_width = (area_.w()*1024)/(offsets.size()-1);
+	for(int x = 0; x != area_.w(); ++x) {
+		const int pos = x*1024;
+		const int segment = pos/seg_width;
+		ASSERT_GE(segment, 0);
+		ASSERT_LT(segment, offsets.size()-1);
+
+		const int partial = pos%seg_width;
+		const int offset = (partial*offsets[segment+1]*2 + (seg_width-partial)*offsets[segment]*2)/seg_width;
+
+		for(int y = 0; y < offset; ++y) {
+			set_solid(x, y, false);
+		}
+	}
 }
 
 void solid_map::calculate_side(int xdir, int ydir, std::vector<point>& points) const

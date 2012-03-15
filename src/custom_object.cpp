@@ -840,7 +840,7 @@ void custom_object::process(level& lvl)
 		return;
 	}
 
-	ASSERT_LOG(!entity_collides(level::current(), *this, MOVE_NONE), "ENTITY " << type_->id() << " COLLIDES AT START OF PROCESS");
+	ASSERT_LOG(type_->static_object() || !entity_collides(level::current(), *this, MOVE_NONE), "ENTITY " << type_->id() << " COLLIDES AT START OF PROCESS");
 
 	if(parent_.get() != NULL) {
 		const point pos = parent_position();
@@ -1004,6 +1004,11 @@ void custom_object::process(level& lvl)
 		was_underwater_ = false;
 	}
 	
+	if(type_->static_object()) {
+		static_process(lvl);
+		return;
+	}
+
 	const int traction_from_surface = (stand_info.traction*type_->traction())/1000;
 	velocity_x_ += (accel_x_ * (stand_info.traction && !is_underwater ? traction_from_surface : (is_underwater?type_->traction_in_water() :type_->traction_in_air())) * (face_right() ? 1 : -1))/1000;
 	if(!standing_on_ && !started_standing || accel_y_ < 0) {
@@ -1479,6 +1484,18 @@ void custom_object::process(level& lvl)
 		--fall_through_platforms_;
 	}
 
+	if(blur_) {
+		blur_->next_frame(start_x, start_y, x(), y(), frame_, time_in_frame_, face_right(), upside_down(), start_rotate.as_float(), rotate_.as_float());
+		if(blur_->destroyed()) {
+			blur_.reset();
+		}
+	}
+
+	static_process(lvl);
+}
+
+void custom_object::static_process(level& lvl)
+{
 	handle_event(OBJECT_EVENT_PROCESS);
 	handle_event(frame_->process_event_id());
 
@@ -1497,13 +1514,6 @@ void custom_object::process(level& lvl)
 	}
 
 	set_driver_position();
-
-	if(blur_) {
-		blur_->next_frame(start_x, start_y, x(), y(), frame_, time_in_frame_, face_right(), upside_down(), start_rotate.as_float(), rotate_.as_float());
-		if(blur_->destroyed()) {
-			blur_.reset();
-		}
-	}
 
 	foreach(const light_ptr& p, lights_) {
 		p->process();
@@ -3355,7 +3365,7 @@ void custom_object::set_sound_volume(const int sound_volume)
 
 bool custom_object::allow_level_collisions() const
 {
-	return type_->use_image_for_collisions();
+	return type_->static_object();
 }
 
 void custom_object::set_platform_area(const rect& area)

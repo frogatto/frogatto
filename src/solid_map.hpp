@@ -42,6 +42,8 @@ private:
 
 	void calculate_side(int xdir, int ydir, std::vector<point>& points) const;
 
+	void apply_offsets(const std::vector<int>& offsets);
+
 	std::string id_;
 	rect area_;
 
