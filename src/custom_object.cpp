@@ -1010,7 +1010,7 @@ void custom_object::process(level& lvl)
 	}
 
 	const int traction_from_surface = (stand_info.traction*type_->traction())/1000;
-	velocity_x_ += (accel_x_ * (stand_info.traction && !is_underwater ? traction_from_surface : (is_underwater?type_->traction_in_water() :type_->traction_in_air())) * (face_right() ? 1 : -1))/1000;
+	velocity_x_ += (accel_x_ * (stand_info.traction ? traction_from_surface : (is_underwater?type_->traction_in_water() :type_->traction_in_air())) * (face_right() ? 1 : -1))/1000;
 	if(!standing_on_ && !started_standing || accel_y_ < 0) {
 		//do not accelerate downwards if standing on something.
 		velocity_y_ += accel_y_ * (gravity_shift_ + (is_underwater ? type_->traction_in_water() : 1000))/1000;
