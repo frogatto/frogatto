@@ -126,6 +126,8 @@ namespace preferences {
 		bool relay_through_server_ = false;
 		
 		std::string control_scheme_ = "iphone_2d";
+
+		bool record_history_ = false;
 		
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 		
@@ -680,6 +682,8 @@ namespace preferences {
 			send_stats_ = true;
 		} else if(s == "--no-send-stats") {
 			send_stats_ = false;
+		} else if(s == "--time-travel") {
+			record_history_ = true;
 		} else if(s == "--joystick") {
 			use_joystick_ = true;
 		} else if(s == "--no-joystick") {
@@ -705,6 +709,10 @@ namespace preferences {
 
 	bool send_stats() {
 		return send_stats_;
+	}
+
+	bool record_history() {
+		return record_history_;
 	}
 
 	bool relay_through_server() {

@@ -104,6 +104,8 @@ void set_bequ( bool value );
 
 	bool send_stats();
 
+	bool record_history();
+
 	bool relay_through_server();
 	void set_relay_through_server(bool value);
 

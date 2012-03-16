@@ -276,11 +276,31 @@ bool level_runner::play_level()
 {
 	sound::stop_looped_sounds(NULL);
 
+	CKey key;
 	lvl_->set_as_current_level();
+	bool reversing = false;
+
 	while(!done && !quit_) {
-		bool res = play_cycle();
-		if(!res) {
-			return quit_;
+		if(key[SDLK_t] && preferences::record_history()) {
+			if(!reversing) {
+				pause_time_ -= SDL_GetTicks();
+			}
+			reverse_cycle();
+			reversing = true;
+		} else {
+			if(reversing) {
+				controls::read_until(lvl_->cycle());
+				pause_time_ += SDL_GetTicks();
+			}
+			reversing = false;
+			bool res = play_cycle();
+			if(!res) {
+				return quit_;
+			}
+
+			if(preferences::record_history()) {
+				lvl_->backup();
+			}
 		}
 	}
 
@@ -807,6 +827,27 @@ bool level_runner::play_cycle()
 #endif
 	
 	return !quit_;
+}
+
+void level_runner::reverse_cycle()
+{
+	const int begin_time = SDL_GetTicks();
+	lvl_->reverse_one_cycle();
+	lvl_->set_active_chars();
+	lvl_->process_draw();
+
+	SDL_Event event;
+	while(SDL_PollEvent(&event)) {
+	}
+
+	const bool should_draw = update_camera_position(*lvl_, last_draw_position(), NULL, !is_skipping_game());
+	render_scene(*lvl_, last_draw_position(), NULL, !is_skipping_game());
+	SDL_GL_SwapBuffers();
+
+	const int wait_time = begin_time + 20 - SDL_GetTicks();
+	if(wait_time > 0) {
+		SDL_Delay(wait_time);
+	}
 }
 
 void level_runner::show_debug_console()

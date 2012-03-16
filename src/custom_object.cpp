@@ -241,7 +241,9 @@ custom_object::custom_object(wml::const_node_ptr node)
 	}
 
 	assert(type_.get());
-	set_frame_no_adjustments(frame_name_);
+	//set_frame_no_adjustments(frame_name_);
+	frame_ = &type_->get_frame(frame_name_);
+	calculate_solid_rect();
 
 	next_animation_formula_ = type_->next_animation_formula();
 
@@ -373,6 +375,10 @@ custom_object::custom_object(const custom_object& o) :
 	standing_on_prev_x_(o.standing_on_prev_x_), standing_on_prev_y_(o.standing_on_prev_y_),
 	distortion_(o.distortion_),
 	draw_color_(o.draw_color_ ? new graphics::color_transform(*o.draw_color_) : NULL),
+	draw_scale_(o.draw_scale_ ? new decimal(*o.draw_scale_) : NULL),
+	draw_area_(o.draw_area_ ? new rect(*o.draw_area_) : NULL),
+	activation_area_(o.activation_area_ ? new rect(*o.activation_area_) : NULL),
+	clip_area_(o.clip_area_ ? new rect(*o.clip_area_) : NULL),
 	can_interact_with_(o.can_interact_with_),
 	particle_systems_(o.particle_systems_),
 	text_(o.text_),
@@ -3253,13 +3259,68 @@ std::string custom_object::debug_description() const
 	return type_->id();
 }
 
+namespace {
+bool map_variant_entities(variant& v, const std::map<entity_ptr, entity_ptr>& m)
+{
+	if(v.is_list()) {
+		for(int n = 0; n != v.num_elements(); ++n) {
+			variant var = v[n];
+			if(map_variant_entities(var, m)) {
+				std::vector<variant> new_values;
+				for(int i = 0; i != n; ++i) {
+					new_values.push_back(v[i]);
+				}
+
+				new_values.push_back(var);
+				for(int i = n+1; i < v.num_elements(); ++i) {
+					var = v[i];
+					map_variant_entities(var, m);
+					new_values.push_back(var);
+				}
+
+				v = variant(&new_values);
+				return true;
+			}
+		}
+	} else if(v.try_convert<entity>()) {
+		entity* e = v.try_convert<entity>();
+		std::map<entity_ptr, entity_ptr>::const_iterator i = m.find(entity_ptr(e));
+		if(i != m.end()) {
+			v = variant(i->second.get());
+			return true;
+		} else {
+			entity_ptr back = e->backup();
+			v = variant(back.get());
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void do_map_entity(entity_ptr& e, const std::map<entity_ptr, entity_ptr>& m)
+{
+	if(e) {
+		std::map<entity_ptr, entity_ptr>::const_iterator i = m.find(e);
+		if(i != m.end()) {
+			e = i->second;
+		}
+	}
+}
+}
+
 void custom_object::map_entities(const std::map<entity_ptr, entity_ptr>& m)
 {
-	if(last_hit_by_) {
-		std::map<entity_ptr, entity_ptr>::const_iterator i = m.find(last_hit_by_);
-		if(i != m.end()) {
-			last_hit_by_ = i->second;
-		}
+	do_map_entity(last_hit_by_, m);
+	do_map_entity(standing_on_, m);
+	do_map_entity(parent_, m);
+
+	foreach(variant& v, vars_->values()) {
+		map_variant_entities(v, m);
+	}
+
+	foreach(variant& v, tmp_vars_->values()) {
+		map_variant_entities(v, m);
 	}
 }
 

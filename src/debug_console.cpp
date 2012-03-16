@@ -131,8 +131,8 @@ public:
 								break;
 							} else if(text == "prev") {
 								if(level_history.empty() == false) {
-									sys::write_file("./tmp_state.cfg", wml::output(level_history.back()));
-									level_obj.reset(load_level("tmp_state.cfg"));
+									level_obj.reset(new level(lvl->id(), level_history.back()));
+									level_obj->finish_loading();
 									level_obj->set_as_current_level();
 
 									lvl = level_obj.get();

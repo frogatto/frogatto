@@ -9,6 +9,7 @@
 #include "key.hpp"
 #include "level.hpp"
 #include "pause_game_dialog.hpp"
+#include "wml_node.hpp"
 
 //an exception which is thrown if we go through a portal which takes us
 //to a level with a different number of players, which indicates we are going
@@ -23,9 +24,11 @@ public:
 	bool play_level();
 	bool play_cycle();
 private:
+	void reverse_cycle();
 	void show_debug_console();
 	void handle_pause_game_result(PAUSE_GAME_RESULT result);
-	boost::intrusive_ptr<level>& lvl_;
+	typedef boost::intrusive_ptr<level> level_ptr;
+	level_ptr& lvl_;
 	std::string& level_cfg_;
 	std::string& original_level_cfg_;
 

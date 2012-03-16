@@ -128,7 +128,7 @@ graphics::color_transform default_dark_color() {
 }
 }
 
-level::level(const std::string& level_cfg)
+level::level(const std::string& level_cfg, wml::const_node_ptr node)
 	: id_(level_cfg),
 	  x_resolution_(0), y_resolution_(0),
 	  highlight_layer_(INT_MIN),
@@ -143,7 +143,10 @@ level::level(const std::string& level_cfg)
 	std::cerr << "in level constructor...\n";
 	const int start_time = SDL_GetTicks();
 
-	wml::const_node_ptr node = load_level_wml(level_cfg);
+	if(!node) {
+		node = load_level_wml(level_cfg);
+	}
+
 	wml::const_node_ptr player_save_node;
 	ASSERT_LOG(node.get() != NULL, "LOAD LEVEL WML FOR " << level_cfg << " FAILED");
 	if(node->has_attr("id")) {
@@ -3362,18 +3365,14 @@ void level::replay_from_cycle(int ncycle)
 
 void level::backup()
 {
-	return;
-
 	std::map<entity_ptr, entity_ptr> entity_map;
 
-	std::cerr << "BACKUP " << cycle_ << ": ";
 	backup_snapshot_ptr snapshot(new backup_snapshot);
 	snapshot->rng_seed = rng::get_seed();
 	snapshot->cycle = cycle_;
 	snapshot->chars.reserve(chars_.size());
 
 	foreach(const entity_ptr& e, chars_) {
-		std::cerr << e->debug_description() << "(" << (e->is_human() ? "HUMAN," : "") << e->centi_x() << "," << e->centi_y() << "):";
 		snapshot->chars.push_back(e->backup());
 		entity_map[e] = snapshot->chars.back();
 
@@ -3389,14 +3388,24 @@ void level::backup()
 		e->map_entities(entity_map);
 	}
 
-	std::cerr << "\n";
-
 	snapshot->last_touched_player = last_touched_player_;
 
 	backups_.push_back(snapshot);
-	if(backups_.size() > 300) {
+	if(backups_.size() > 1000) {
 		backups_.erase(backups_.begin(), backups_.begin() + 100);
 	}
+}
+
+void level::reverse_one_cycle()
+{
+	if(backups_.empty()) {
+		return;
+	}
+
+	restore_from_backup(*backups_.back());
+	backups_.pop_back();
+
+	controls::unread_local_controls();
 }
 
 void level::restore_from_backup(backup_snapshot& snapshot)

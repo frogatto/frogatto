@@ -145,6 +145,21 @@ void ignore_current_keypresses()
 	}
 }
 
+void read_until(int ncycle)
+{
+	if(local_player < 0 || local_player >= nplayers) {
+		return;
+	}
+
+	while(controls[local_player].size() <= ncycle) {
+		read_local_controls();
+	}
+
+	while(controls[local_player].size() > ncycle+1) {
+		unread_local_controls();
+	}
+}
+
 void read_local_controls()
 {
 	if(local_player < 0 || local_player >= nplayers) {
@@ -192,6 +207,16 @@ void read_local_controls()
 			}
 		}
 	}
+}
+
+void unread_local_controls()
+{
+	if(local_player < 0 || local_player >= nplayers || controls[local_player].empty()) {
+		return;
+	}
+
+	controls[local_player].pop_back();
+	highest_confirmed[local_player]--;
 }
 
 void get_control_status(int cycle, int player, bool* output)

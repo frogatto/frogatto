@@ -44,7 +44,7 @@ public:
 	static level& current();
 	void set_as_current_level();
 
-	explicit level(const std::string& level_cfg);
+	explicit level(const std::string& level_cfg, wml::const_node_ptr node=wml::const_node_ptr());
 	~level();
 
 	//function to do anything which loads the level and must be done
@@ -241,6 +241,7 @@ public:
 
 	void replay_from_cycle(int ncycle);
 	void backup();
+	void reverse_one_cycle();
 
 	bool is_multiplayer() const { return players_.size() > 1; }
 
