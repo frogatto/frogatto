@@ -30,6 +30,7 @@
 		B51F027A13AD3CE1002B1524 /* SDL_mixer.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B51F027213AD3CC6002B1524 /* SDL_mixer.framework */; };
 		B51F027B13AD3CE1002B1524 /* SDL_ttf.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B51F027313AD3CC6002B1524 /* SDL_ttf.framework */; };
 		B51F027C13AD3CE1002B1524 /* SDL.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B51F027413AD3CC6002B1524 /* SDL.framework */; };
+		B5286C351513FCFE00913F5D /* asserts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5286C341513FCFE00913F5D /* asserts.cpp */; };
 		B539566813AD28BB0006183E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B539566A13AD28BB0006183E /* InfoPlist.strings */; };
 		B53F821D0E6229250002FA8C /* draw_number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B53F821C0E6229250002FA8C /* draw_number.cpp */; };
 		B544D4ED10E80B9400EBD56F /* object_events.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B544D4EB10E80B9400EBD56F /* object_events.cpp */; };
@@ -233,6 +234,7 @@
 		B51F027213AD3CC6002B1524 /* SDL_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_mixer.framework; path = lib/SDL_mixer.framework; sourceTree = "<group>"; };
 		B51F027313AD3CC6002B1524 /* SDL_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_ttf.framework; path = lib/SDL_ttf.framework; sourceTree = "<group>"; };
 		B51F027413AD3CC6002B1524 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = lib/SDL.framework; sourceTree = "<group>"; };
+		B5286C341513FCFE00913F5D /* asserts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = asserts.cpp; sourceTree = "<group>"; };
 		B539566913AD28BB0006183E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B539566D13AD28D40006183E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B539566E13AD28DA0006183E /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -543,6 +545,7 @@
 		080E96DDFE201D6D7F000001 /* C++ */ = {
 			isa = PBXGroup;
 			children = (
+				B5286C341513FCFE00913F5D /* asserts.cpp */,
 				B50BF087136DB7A300F85B30 /* game_registry.cpp */,
 				B50BF088136DB7A300F85B30 /* game_registry.hpp */,
 				B5DA7DC712F282C800F1F494 /* decimal.cpp */,
@@ -973,6 +976,8 @@
 				"pt-BR",
 				"zh-Hans",
 				it,
+				pt,
+				"zh-hans",
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Frogatto */;
 			projectDirPath = "";
@@ -1142,6 +1147,7 @@
 				B54E452B12D3E643003E52BF /* texture_frame_buffer.cpp in Sources */,
 				B5DA7DC912F282C800F1F494 /* decimal.cpp in Sources */,
 				B50BF089136DB7A300F85B30 /* game_registry.cpp in Sources */,
+				B5286C351513FCFE00913F5D /* asserts.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1172,6 +1178,8 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/lib\"",
+					"\"$(SRCROOT)/../iPhone/iPhone/OpenFeint.2.10\"",
+					"\"$(SRCROOT)/../iPhone/OpenFeint.2.10\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1192,6 +1200,15 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/lib\"",
+					"\"$(SRCROOT)/../iPhone/archive/PlayHaven SDK v0.3.4 - Frogatto\"",
+					"\"$(SRCROOT)/../iPhone/iPhone/lib\"",
+					"\"$(SRCROOT)/../iPhone/lib\"",
+					"\"$(SRCROOT)/../iPhone/old_sdl/december\"",
+					"\"$(SRCROOT)/../iPhone/old_sdl\"",
+					"\"$(SRCROOT)/../MacAS/Archive/MacOSX pre-Xcode4/lib\"",
+					"\"$(SRCROOT)/../MacAS/Archive/stuff/archive\"",
+					"\"$(SRCROOT)/../MacAS/lib_fat\"",
+					"\"$(SRCROOT)/../Windows/Frogatto\"",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = lib/libGLEW_1.5.0.a;
@@ -1207,6 +1224,8 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/lib\"",
+					"\"$(SRCROOT)/../iPhone/iPhone/OpenFeint.2.10\"",
+					"\"$(SRCROOT)/../iPhone/OpenFeint.2.10\"",
 				);
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1226,6 +1245,15 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/lib\"",
+					"\"$(SRCROOT)/../iPhone/archive/PlayHaven SDK v0.3.4 - Frogatto\"",
+					"\"$(SRCROOT)/../iPhone/iPhone/lib\"",
+					"\"$(SRCROOT)/../iPhone/lib\"",
+					"\"$(SRCROOT)/../iPhone/old_sdl/december\"",
+					"\"$(SRCROOT)/../iPhone/old_sdl\"",
+					"\"$(SRCROOT)/../MacAS/Archive/MacOSX pre-Xcode4/lib\"",
+					"\"$(SRCROOT)/../MacAS/Archive/stuff/archive\"",
+					"\"$(SRCROOT)/../MacAS/lib_fat\"",
+					"\"$(SRCROOT)/../Windows/Frogatto\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = lib/libGLEW_1.5.0.a;
