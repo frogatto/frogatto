@@ -69,7 +69,7 @@ bool point_standable(const level& lvl, const entity& e, int x, int y, collision_
 			continue;
 		}
 
-		if(allow_platform == SOLID_AND_PLATFORMS) {
+		if(allow_platform == SOLID_AND_PLATFORMS || obj->solid_platform()) {
 			const rect& platform_rect = obj->platform_rect_at(pt.x);
 			if(point_in_rect(pt, platform_rect) && obj->platform()) {
 				if(info) {
@@ -77,7 +77,7 @@ bool point_standable(const level& lvl, const entity& e, int x, int y, collision_
 					info->friction = obj->surface_friction();
 					info->traction = obj->surface_traction();
 					info->adjust_y = y - platform_rect.y();
-					info->platform = true;
+					info->platform = !obj->solid_platform();
 				}
 
 				return true;

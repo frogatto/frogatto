@@ -149,6 +149,8 @@ public:
 
 	const std::vector<int>& platform_offsets() const { return platform_offsets_; }
 
+	bool solid_platform() const { return solid_platform_; }
+
 	//true if the object can ever be solid or standable
 	bool has_solid() const { return has_solid_; }
 
@@ -241,6 +243,8 @@ private:
 	bool serializable_;
 
 	const_solid_info_ptr solid_, platform_;
+
+	bool solid_platform_;
 
 	//variable which is true if the object is ever solid or standable
 	bool has_solid_;

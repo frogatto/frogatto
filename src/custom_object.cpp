@@ -1873,7 +1873,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_DESTROYED:         return variant(destroyed());
 
 	case CUSTOM_OBJECT_IS_STANDING_ON_PLATFORM: {
-		if(standing_on_ && standing_on_->platform()) {
+		if(standing_on_ && standing_on_->platform() && !standing_on_->solid_platform()) {
 			return variant(1);
 		}
 
@@ -3472,6 +3472,11 @@ rect custom_object::platform_rect_at(int xpos) const
 
 	const int offset = (partial*platform_offsets_[segment+1] + (seg_width-partial)*platform_offsets_[segment])/seg_width;
 	return rect(area.x(), area.y() + offset, area.w(), area.h());
+}
+
+bool custom_object::solid_platform() const
+{
+	return type_->solid_platform();
 }
 
 point custom_object::parent_position() const

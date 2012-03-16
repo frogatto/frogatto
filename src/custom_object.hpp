@@ -211,6 +211,8 @@ protected:
 
 	virtual rect platform_rect_at(int xpos) const;
 
+	virtual bool solid_platform() const;
+
 private:
 	custom_object& operator=(const custom_object& o);
 	struct Accessor;

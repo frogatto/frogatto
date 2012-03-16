@@ -373,6 +373,7 @@ custom_object_type::custom_object_type(wml::const_node_ptr node, const custom_ob
 	serializable_(wml::get_bool(node, "serializable", true)),
 	solid_(solid_info::create(node)),
 	platform_(solid_info::create_platform(node)),
+	solid_platform_(wml::get_bool(node, "solid_platform", false)),
 	has_solid_(solid_ || use_image_for_collisions_),
 	solid_dimensions_(has_solid_ || platform_ ? 0xFFFFFFFF : 0),
 	collide_dimensions_(0xFFFFFFFF),
