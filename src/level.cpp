@@ -3404,8 +3404,6 @@ void level::reverse_one_cycle()
 
 	restore_from_backup(*backups_.back());
 	backups_.pop_back();
-
-	controls::unread_local_controls();
 }
 
 void level::restore_from_backup(backup_snapshot& snapshot)

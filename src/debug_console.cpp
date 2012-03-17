@@ -84,9 +84,11 @@ public:
 		history_.clear();
 		history_pos_ = 0;
 
-		std::vector<wml::node_ptr> level_history;
-
 		boost::intrusive_ptr<level> level_obj;
+
+		//The first time we do a 'prev' command we must go back twice
+		//since we have a backup of the existing state to begin with.
+		bool needs_double_prev = true;
 
 		level* lvl = &lvl_state;
 
@@ -126,22 +128,24 @@ public:
 							entry_.set_text("");
 
 							if(text == "next") {
-								level_history.push_back(lvl->write());
+								needs_double_prev = true;
 								lvl->process();
+								lvl->process_draw();
+								lvl->backup();
 								break;
 							} else if(text == "prev") {
-								if(level_history.empty() == false) {
-									level_obj.reset(new level(lvl->id(), level_history.back()));
-									level_obj->finish_loading();
-									level_obj->set_as_current_level();
-
-									lvl = level_obj.get();
-									context.reset(&lvl->player()->get_entity());
-									level_history.pop_back();
-
-									lvl->editor_select_object(context);
-									lvl->set_active_chars();
+								lvl->editor_clear_selection();
+								if(needs_double_prev) {
+									lvl->reverse_one_cycle();
+									needs_double_prev = false;
 								}
+								lvl->reverse_one_cycle();
+								lvl->set_active_chars();
+								lvl->process_draw();
+
+								context.reset(&lvl->player()->get_entity());
+
+								lvl->editor_select_object(context);
 								break;
 							} else if(text == "step") {
 								context->process(*lvl);
@@ -184,6 +188,8 @@ public:
 
 		lvl_state.editor_clear_selection();
 		lvl_state.set_as_current_level();
+
+		controls::read_until(lvl_state.cycle());
 	}
 private:
 	void draw(const level& lvl) const {

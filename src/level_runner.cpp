@@ -836,6 +836,9 @@ void level_runner::reverse_cycle()
 	lvl_->set_active_chars();
 	lvl_->process_draw();
 
+	//remove the control history
+	controls::unread_local_controls();
+
 	SDL_Event event;
 	while(SDL_PollEvent(&event)) {
 	}
