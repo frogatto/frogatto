@@ -1,26 +1,25 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # CloudiDust <cloudidust@gmail.com>, 2011.
 #   <lililjlj@gmail.com>, 2011.
 # luojie <lililjlj@gmail.com>, 2011.
-# Marcos Avila Isidoro <marcavis@yahoo.com.br>, 2011.
+# Marcos Avila Isidoro <marcavis@yahoo.com.br>, 2011, 2012.
 # Yaohan Chen <yaohan.chen@gmail.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-03-16 21:15-0300\n"
-"PO-Revision-Date: 2012-03-16 21:56+0000\n"
+"POT-Creation-Date: 2012-03-16 21:22-0300\n"
+"PO-Revision-Date: 2012-03-17 01:00+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
-"Language-Team: Chinese (China) (http://www.transifex.net/projects/p/Frogatto/"
-"language/zh_CN/)\n"
-"Language: zh_CN\n"
+"Language-Team: Chinese (China) (http://www.transifex.net/projects/p/Frogatto/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: CHANGELOG:1 iOS_CHANGELOG:1
@@ -29,8 +28,8 @@ msgstr "1.2 版本:"
 
 #: CHANGELOG:2 iOS_CHANGELOG:2
 msgid ""
-"Complete redo of attack logic; frogatto now is free to walk around whilst he "
-"attacks, and in general is much more responsive."
+"Complete redo of attack logic; frogatto now is free to walk around whilst he"
+" attacks, and in general is much more responsive."
 msgstr "全新攻击方式：阿土现在可以畅快地自由移动，攻击时也不例外。"
 
 #: CHANGELOG:3 iOS_CHANGELOG:3
@@ -90,7 +89,8 @@ msgid ""
 msgstr "修复了一个bug：在海边背景的对话框中出现黑线的情况"
 
 #: CHANGELOG:15 iOS_CHANGELOG:15
-msgid "Fixed a bug that caused some tiles to incorrectly be flagged as opaque."
+msgid ""
+"Fixed a bug that caused some tiles to incorrectly be flagged as opaque."
 msgstr "修复了一个bug：某些图块被错误的标记为不透明"
 
 #: CHANGELOG:17 iOS_CHANGELOG:17
@@ -119,11 +119,10 @@ msgstr "Windows下添加自动语言选择"
 
 #: CHANGELOG:23 iOS_CHANGELOG:22
 msgid ""
-"Complete redo of iOS controls, switching to a 2-button dpad from a 4-"
-"button.  Eliminates all problems with mispressed up or down keys "
-"interrupting other actions."
-msgstr ""
-"iOS 控制的重新制作，改为2键操控。驱除全部误按上下键干扰其他动作的行为。"
+"Complete redo of iOS controls, switching to a 2-button dpad from a 4-button."
+"  Eliminates all problems with mispressed up or down keys interrupting other"
+" actions."
+msgstr "iOS 控制的重新制作，改为2键操控。驱除全部误按上下键干扰其他动作的行为。"
 
 #: CHANGELOG:25
 msgid "Version 1.1:"
@@ -319,21 +318,16 @@ msgid ""
 "features the same handcrafted love of high-end pixel art.  Frogatto is a "
 "side-on \"platformer\" or \"jump and run\" game, where you lead our titular "
 "character on a humdrum errand that turns into a daring adventure."
-msgstr ""
-"青蛙阿土是一个典型的二维平面动作冒险游戏，标志角色就是这只自大的青蛙阿土。游"
-"戏制作团队同时也是韦诺之战的作者，一直沉浸于高质量的像素艺术。这个游戏的主要"
-"举动就是四处奔跑和蹦蹦跳跳，拖着此青蛙完成他的历“闲”活动。"
+msgstr "青蛙阿土是一个典型的二维平面动作冒险游戏，标志角色就是这只自大的青蛙阿土。游戏制作团队同时也是韦诺之战的作者，一直沉浸于高质量的像素艺术。这个游戏的主要举动就是四处奔跑和蹦蹦跳跳，拖着此青蛙完成他的历“闲”活动。"
 
 #: MAC_APP_STORE_METADATA:5 iOS_APP_STORE_METADATA:5
 msgid ""
-"Frogatto's key mechanic is an unusual twist; like any frog, he jumps, swims, "
-"and snags bugs with his tongue, but unlike any frog before him, can spit "
+"Frogatto's key mechanic is an unusual twist; like any frog, he jumps, swims,"
+" and snags bugs with his tongue, but unlike any frog before him, can spit "
 "those bugs out with deadly force.  Not merely an action game, frogatto is a "
 "full, classic adventure game, with characters to talk to, things to buy, "
 "puzzles to solve, and a wide, complex world to explore."
-msgstr ""
-"阿土的角色鲜明：他会蹦、会游、会用舌头捉虫子，不过他还有吐虫子的强大力量。这"
-"个游戏同样有购买，解密，探索成分——也是一个繁杂的世界。"
+msgstr "阿土的角色鲜明：他会蹦、会游、会用舌头捉虫子，不过他还有吐虫子的强大力量。这个游戏同样有购买，解密，探索成分——也是一个繁杂的世界。"
 
 #: MAC_APP_STORE_METADATA:7 iOS_APP_STORE_METADATA:7
 msgid "Features:"
@@ -355,8 +349,8 @@ msgstr "- 街机模式，立即进入随机游戏关卡活动"
 
 #: MAC_APP_STORE_METADATA:11 iOS_APP_STORE_METADATA:11
 msgid ""
-"- forgiving savegame/respawn system so you don't have to be afraid of losing "
-"progress"
+"- forgiving savegame/respawn system so you don't have to be afraid of losing"
+" progress"
 msgstr "- 不用担心丢失进度"
 
 #: MAC_APP_STORE_METADATA:12 iOS_APP_STORE_METADATA:12
@@ -399,11 +393,8 @@ msgstr "keywords:"
 
 #: MAC_APP_STORE_METADATA:24 iOS_APP_STORE_METADATA:25
 msgid ""
-"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,"
-"frog"
-msgstr ""
-"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,"
-"frog"
+"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
+msgstr "platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
 
 #: data/achievements.cfg:4
 msgid "Pocket Money"
@@ -666,11 +657,7 @@ msgid ""
 "There is said to be an way into the\n"
 "basement floors of Milgram's compound,\n"
 "somewhere in the caverns."
-msgstr ""
-"现在上面有一扇门。\n"
-"若是穿过它，就到了石灰岩洞窟。\n"
-"据说那儿有一条路通往米格拉姆据点的底层。\n"
-" "
+msgstr "现在上面有一扇门。\n若是穿过它，就到了石灰岩洞窟。\n据说那儿有一条路通往米格拉姆据点的底层。\n "
 
 #: data/level/bon-bosque.cfg:1420
 msgid ""
@@ -678,17 +665,13 @@ msgid ""
 "sneaking in is probably the best bet.\n"
 "I doubt the entrance guards\n"
 "would give you the time of day."
-msgstr ""
-"加入你想要，潜入是最好的。\n"
-"我不觉得洞口守卫能麻烦你。"
+msgstr "加入你想要，潜入是最好的。\n我不觉得洞口守卫能麻烦你。"
 
 #: data/level/bon-bosque.cfg:1422
 msgid ""
 "Yeah... geez though.  Caves, now?\n"
 "Are these caves long?"
-msgstr ""
-"好...穿过...山洞，现在？\n"
-"这洞穴长不长？"
+msgstr "好...穿过...山洞，现在？\n这洞穴长不长？"
 
 #: data/level/bon-bosque.cfg:1423
 msgid "I'm afraid so."
@@ -698,27 +681,20 @@ msgstr "恐怕不短。"
 msgid ""
 "Ugh.\n"
 "No sense in turning back now, though."
-msgstr ""
-"吖。\n"
-"回头倒没意思。"
+msgstr "吖。\n回头倒没意思。"
 
 #: data/level/bon-bosque.cfg:1426
 msgid ""
 "Are you really certain you want to do this?\n"
 "I'm afraid I can't follow you into the caverns,\n"
 "so this is the last you would see of me."
-msgstr ""
-"你真的要去吗？\n"
-"我不能要跟你进洞，\n"
-"这是你最后一次见我。"
+msgstr "你真的要去吗？\n我不能要跟你进洞，\n这是你最后一次见我。"
 
 #: data/level/bon-bosque.cfg:1428
 msgid ""
 "Yes, I am; I'd be twice the fool,\n"
 "to come this far and just give up."
-msgstr ""
-"我要去；现在转回去才更像笨蛋。\n"
-" "
+msgstr "我要去；现在转回去才更像笨蛋。\n "
 
 #: data/level/bon-bosque.cfg:1430
 msgid ""
@@ -730,9 +706,7 @@ msgstr "不论如何，谢谢你的帮助！"
 msgid ""
 "You're welcome, friend.\n"
 "I wish you the best!"
-msgstr ""
-"不客气，朋友。\n"
-"祝你好运！"
+msgstr "不客气，朋友。\n祝你好运！"
 
 #: data/level/bug-mining.cfg:17
 msgid "Bug Mining"
@@ -750,9 +724,7 @@ msgstr "灼烧之岩"
 msgid ""
 "I need to go up... There must be\n"
 "a way to activate this elevator."
-msgstr ""
-"我得往上走……一定有个办法\n"
-"可以启动升降梯的。"
+msgstr "我得往上走……一定有个办法\n可以启动升降梯的。"
 
 #: data/level/caverns-of-holes.cfg:14
 msgid "Caverns of Holes"
@@ -772,26 +744,19 @@ msgid ""
 "He had asked me to go to the village\n"
 "to know what was going on, with all that noise\n"
 "that was coming from beyond the cave."
-msgstr ""
-"额，是吧，我帮助巧比经营商店。\n"
-"他要去镇子看看发生的事情，毕竟洞穴上面传来\n"
-"那么巨大的噪音。"
+msgstr "额，是吧，我帮助巧比经营商店。\n他要去镇子看看发生的事情，毕竟洞穴上面传来\n那么巨大的噪音。"
 
 #: data/level/chopple-shop-interior.cfg:534
 msgid ""
 "Then I suppose that Milgram's guards saw you\n"
 "and locked you up?"
-msgstr ""
-"我猜你被米格拉姆看到关起来了？\n"
-" "
+msgstr "我猜你被米格拉姆看到关起来了？\n "
 
 #: data/level/chopple-shop-interior.cfg:535
 msgid ""
 "Yeah! And to think that I thought\n"
 "that the day was going to be boring!"
-msgstr ""
-"是啊！想去那时我还以为又会是无聊的一天！\n"
-" "
+msgstr "是啊！想去那时我还以为又会是无聊的一天！\n "
 
 #: data/level/crevice-bridge.cfg:15
 msgid "Crevice Bridge"
@@ -813,26 +778,20 @@ msgstr "麻烦不断。"
 msgid ""
 "That ... uh, \"captain\" cat, or whoever he was,\n"
 "tried to dice me up."
-msgstr ""
-"那 ... 猫队长，不论是谁，想要把我切成肉\n"
-"块"
+msgstr "那 ... 猫队长，不论是谁，想要把我切成肉\n块"
 
 #: data/level/crevice-bridge.cfg:865
 msgid ""
 "Naturally, we wouldn't be having\n"
 "this conversation if I hadn't gotten\n"
 "the better of him."
-msgstr ""
-"平心说，如果不是他，我们不会有这次谈\n"
-"话。"
+msgstr "平心说，如果不是他，我们不会有这次谈\n话。"
 
 #: data/level/crevice-bridge.cfg:867
 msgid ""
 "So all's well\n"
 "that ends well, I suppose."
-msgstr ""
-"那么一切都好\n"
-"我猜没问题。"
+msgstr "那么一切都好\n我猜没问题。"
 
 #: data/level/crevice-bridge.cfg:869
 msgid ""
@@ -844,9 +803,7 @@ msgstr "发生了什么，我没发觉老人们说进行的事，"
 msgid ""
 "I wouldn't mind running this by a few people,\n"
 "since I have no idea what's true, or not."
-msgstr ""
-"我不介意一些人运作这个，正确错误都不\n"
-"明白。"
+msgstr "我不介意一些人运作这个，正确错误都不\n明白。"
 
 #: data/level/crevice-bridge.cfg:873
 msgid "Go right ahead."
@@ -857,10 +814,7 @@ msgid ""
 "So... uhm... loosely speaking, he says\n"
 "that Milgram loaned him money, and this whole\n"
 "incident was Milgram coming to shake him down."
-msgstr ""
-"说他从 米格拉姆借了钱，整个事件\n"
-"就是米格拉姆来从他身上抖钱下来。\n"
-" "
+msgstr "说他从 米格拉姆借了钱，整个事件\n就是米格拉姆来从他身上抖钱下来。\n "
 
 #: data/level/crevice-bridge.cfg:878
 msgid "Trying to get his money back."
@@ -871,9 +825,7 @@ msgid ""
 "So then he tells this oddball story\n"
 "about how it's all some plot where\n"
 "Milgram's gonna take over the town."
-msgstr ""
-"所以他说了一通混帐理论来证明\n"
-"米格拉姆准备占领村镇。"
+msgstr "所以他说了一通混帐理论来证明\n米格拉姆准备占领村镇。"
 
 #: data/level/crevice-bridge.cfg:882
 #: data/level/crevice-village-house-elder.cfg:1577
@@ -898,9 +850,7 @@ msgstr "没有。"
 msgid ""
 "Has he ever shown any signs of ... suddenly\n"
 "having way more spending money than usual?"
-msgstr ""
-"他显示过证据吗？\n"
-"比如突然花出很多钱？"
+msgstr "他显示过证据吗？\n比如突然花出很多钱？"
 
 #: data/level/crevice-bridge.cfg:893
 msgid ""
@@ -944,26 +894,20 @@ msgid ""
 "We also know Milgram's not interested\n"
 "in taking over the town, because he\n"
 "essentially just did, and gave it up."
-msgstr ""
-"我们还知道米格拉姆不要这个镇子，因为他占领了\n"
-"又放弃了。"
+msgstr "我们还知道米格拉姆不要这个镇子，因为他占领了\n又放弃了。"
 
 #: data/level/crevice-bridge.cfg:905
 msgid ""
 "We don't know if the money thing\n"
 "is true, but we know if it is,\n"
 "he certainly hasn't put it to use."
-msgstr ""
-"我们不知到钱的事情是否属实，\n"
-"假设为真，他也没用上。"
+msgstr "我们不知到钱的事情是否属实，\n假设为真，他也没用上。"
 
 #: data/level/crevice-bridge.cfg:907
 msgid ""
 "Oh yeah, I forgot to mention;\n"
 "he said it was some kind of \"investment\""
-msgstr ""
-"哦，还有，我没提到；\n"
-"他说是某种“投资”。"
+msgstr "哦，还有，我没提到；\n他说是某种“投资”。"
 
 #: data/level/crevice-bridge.cfg:909
 msgid ""
@@ -983,9 +927,7 @@ msgstr "这些之外的事都是谜团。"
 msgid ""
 "So, dare I ask:\n"
 "What do we do now?"
-msgstr ""
-"额，我能问下：\n"
-"现在该干什么？"
+msgstr "额，我能问下：\n现在该干什么？"
 
 #: data/level/crevice-bridge.cfg:918
 msgid ""
@@ -998,9 +940,7 @@ msgstr "这样。我去了，决定下：民主还是好主意。"
 msgid ""
 "*Someone* needs to go talk to Milgram,\n"
 "and ask what was wrong, so nothing bad happens."
-msgstr ""
-"逮个*家伙*和米格拉姆谈谈，\n"
-"问问什么情况，避免麻烦。"
+msgstr "逮个*家伙*和米格拉姆谈谈，\n问问什么情况，避免麻烦。"
 
 #: data/level/crevice-bridge.cfg:922
 msgid ""
@@ -1034,9 +974,7 @@ msgstr "他到这个，我想要感谢你们的帮助。"
 msgid ""
 "I've really appreciated the \"eyes in the sky\".\n"
 "It's very helpful."
-msgstr ""
-"非常感谢\"天眼\"。\n"
-"好东西。"
+msgstr "非常感谢\"天眼\"。\n好东西。"
 
 #: data/level/crevice-bridge.cfg:936
 msgid ""
@@ -1053,18 +991,14 @@ msgid ""
 "It's the least I can do.\n"
 "I'd offer to carry you, even,\n"
 "but I'm afraid that's physically impossible."
-msgstr ""
-"那是我能做的。\n"
-"带着你飞，恐怕不可能。"
+msgstr "那是我能做的。\n带着你飞，恐怕不可能。"
 
 #: data/level/crevice-bridge.cfg:942
 msgid ""
 "I'm as curious as you are, about this,\n"
 "and we're more likely to get to the\n"
 "bottom of things if we work together."
-msgstr ""
-"我和你一样认真，这件事情上我们合作更容\n"
-"易到达底部。"
+msgstr "我和你一样认真，这件事情上我们合作更容\n易到达底部。"
 
 #: data/level/crevice-bridge.cfg:945
 msgid "Awesome!"
@@ -1084,17 +1018,13 @@ msgstr "听起来不错吧？"
 msgid ""
 "Yes... it is the only path I know of,\n"
 "but be careful in there."
-msgstr ""
-"是... 我也只能这样了，\n"
-"不过在那儿要小心点。"
+msgstr "是... 我也只能这样了，\n不过在那儿要小心点。"
 
 #: data/level/crevice-bridge.cfg:955
 msgid ""
 "Yeah, no kidding.\n"
 "Well, see you soon!  Thanks again!"
-msgstr ""
-"好，没问题。\n"
-"那么，回见！谢啦！"
+msgstr "好，没问题。\n那么，回见！谢啦！"
 
 #: data/level/crevice-bridge.cfg:972
 msgid "Ahh, there you are!"
@@ -1145,9 +1075,7 @@ msgstr "别跟我耍花招。"
 msgid ""
 "You look like a very\n"
 "suspicious character."
-msgstr ""
-"你看起来是个\n"
-"很可疑的角色。"
+msgstr "你看起来是个\n很可疑的角色。"
 
 #: data/level/crevice-village-cave.cfg:706
 msgid "Could you just step aside?"
@@ -1157,33 +1085,25 @@ msgstr "能不能请你让一边就好？"
 msgid ""
 "I need to take care\n"
 "of something in town."
-msgstr ""
-"我得到镇上\n"
-"做些事。"
+msgstr "我得到镇上\n做些事。"
 
 #: data/level/crevice-village-cave.cfg:709
 msgid ""
 "Well, I can't let anyone\n"
 "past this gate."
-msgstr ""
-"呃，我不能让任何人\n"
-"通过这扇门。"
+msgstr "呃，我不能让任何人\n通过这扇门。"
 
 #: data/level/crevice-village-cave.cfg:710
 msgid ""
 "Without this key,\n"
 "you're not getting anywhere."
-msgstr ""
-"没这把钥匙，\n"
-"你哪儿都去不了。"
+msgstr "没这把钥匙，\n你哪儿都去不了。"
 
 #: data/level/crevice-village-cave.cfg:712
 msgid ""
 "Okay.  Will you please lend\n"
 "me that key?"
-msgstr ""
-"好吧。您能不能把钥匙\n"
-"借给我呢？"
+msgstr "好吧。您能不能把钥匙\n借给我呢？"
 
 #: data/level/crevice-village-cave.cfg:713
 msgid "No way!  Over my dead body!"
@@ -1201,17 +1121,13 @@ msgstr "隐秘洞穴"
 msgid ""
 "Ahh, good, you made it\n"
 "through there in one piece!"
-msgstr ""
-"啊，很好，你完好无损地\n"
-"通过了！"
+msgstr "啊，很好，你完好无损地\n通过了！"
 
 #: data/level/crevice-village-central.cfg:1523
 msgid ""
 "Yeah, those goons\n"
 "had a little ambush set up."
-msgstr ""
-"是啊，那些蠢蛋\n"
-"的埋伏没啥用。"
+msgstr "是啊，那些蠢蛋\n的埋伏没啥用。"
 
 #: data/level/crevice-village-central.cfg:1525
 msgid "So, now what?"
@@ -1221,29 +1137,21 @@ msgstr "那现在咋办？"
 msgid ""
 "Well, as you know, the town\n"
 "is split into two halves."
-msgstr ""
-"呃，你懂的，小镇是\n"
-"分成两半的。"
+msgstr "呃，你懂的，小镇是\n分成两半的。"
 
 #: data/level/crevice-village-central.cfg:1527
 msgid ""
 "Milgram has this half of the town\n"
 "locked down tight, and he has\n"
 "most of the residents held prisoner."
-msgstr ""
-"米格拉姆把小镇的这一半\n"
-"封锁得严严实实，他还抓了\n"
-"大多数居民做人质。"
+msgstr "米格拉姆把小镇的这一半\n封锁得严严实实，他还抓了\n大多数居民做人质。"
 
 #: data/level/crevice-village-central.cfg:1528
 msgid ""
 "They're tied up inside the houses,\n"
 "under guard. If you free them,\n"
 "I'm sure they can help you."
-msgstr ""
-"他们被捆在屋子里面，\n"
-"还附送看守。如果你能解救他们，\n"
-"我相信他们会帮助你的。"
+msgstr "他们被捆在屋子里面，\n还附送看守。如果你能解救他们，\n我相信他们会帮助你的。"
 
 #: data/level/crevice-village-central.cfg:1530
 msgid "Makes sense."
@@ -1254,33 +1162,25 @@ msgid ""
 "Your big problem will be that\n"
 "the gate connecting the two halves\n"
 "of town has been locked."
-msgstr ""
-"最大的问题是连接着小镇两半的\n"
-"大门被锁上了。"
+msgstr "最大的问题是连接着小镇两半的\n大门被锁上了。"
 
 #: data/level/crevice-village-central.cfg:1532
 msgid ""
 "And I don't think there's a guard next\n"
 "to it, whom you can steal the key from."
-msgstr ""
-"而且我不认为门边上会有个守卫\n"
-"等着你从他身上偷走钥匙。"
+msgstr "而且我不认为门边上会有个守卫\n等着你从他身上偷走钥匙。"
 
 #: data/level/crevice-village-central.cfg:1533
 msgid ""
 "They've probably hidden it in one of\n"
 "the houses, but I don't know which one."
-msgstr ""
-"他们也许把钥匙藏在某一间屋子里了，\n"
-"但我不知道是哪一间。"
+msgstr "他们也许把钥匙藏在某一间屋子里了，\n但我不知道是哪一间。"
 
 #: data/level/crevice-village-central.cfg:1534
 msgid ""
 "Asking one of the prisoners is probably\n"
 "our best bet for a clue."
-msgstr ""
-"去问问人质也许是我们获得线索的最好方\n"
-"法。"
+msgstr "去问问人质也许是我们获得线索的最好方\n法。"
 
 #: data/level/crevice-village-central.cfg:4287
 msgid "Hey! Over here!"
@@ -1290,9 +1190,7 @@ msgstr "嘿！在这里！"
 msgid ""
 "Wow, so they seriously just packed up and left?\n"
 "That's amazing!"
-msgstr ""
-"喔，它们就是简单的整装离开了？\n"
-"太好了！"
+msgstr "喔，它们就是简单的整装离开了？\n太好了！"
 
 #: data/level/crevice-village-heights.cfg:992
 msgid "Tell me about it."
@@ -1310,9 +1208,7 @@ msgstr "哈，他们让我出来了。"
 msgid ""
 "What?!\n"
 "They ... as in Milgram's kitties?"
-msgstr ""
-"什么?！\n"
-"它们 ... 米格拉姆的猫？"
+msgstr "什么?！\n它们 ... 米格拉姆的猫？"
 
 #: data/level/crevice-village-heights.cfg:998
 msgid "^Yeah."
@@ -1322,9 +1218,7 @@ msgstr ".^是"
 msgid ""
 "Weird.. that doesn't make any sense!\n"
 "Why would they just let you go?"
-msgstr ""
-"蹊跷...这不应该啊！\n"
-"为啥它们让你离开？"
+msgstr "蹊跷...这不应该啊！\n为啥它们让你离开？"
 
 #: data/level/crevice-village-heights.cfg:1002
 msgid "That seems like an enormous waste of effort."
@@ -1350,35 +1244,27 @@ msgstr "这打杂的很是闲逸的样子。"
 msgid ""
 "I don't think they were told\n"
 "what they were looking for."
-msgstr ""
-"我觉得它们不知道要找什么东西。\n"
-" "
+msgstr "我觉得它们不知道要找什么东西。\n "
 
 #: data/level/crevice-village-heights.cfg:1007
 msgid ""
 "I think they were just told\n"
 "to secure the place."
-msgstr ""
-"我想它们只是遵守“确保这里安稳”的命令。\n"
-" "
+msgstr "我想它们只是遵守“确保这里安稳”的命令。\n "
 
 #: data/level/crevice-village-heights.cfg:1008
 msgid ""
 "Just arresting everyone is a strange way\n"
 "to do it, but I guess it's not so weird\n"
 "if you've got lots of manpower to spare."
-msgstr ""
-"逮捕所有人是个奇怪的方法，不过这么多人\n"
-"手可以用上倒也不稀奇。"
+msgstr "逮捕所有人是个奇怪的方法，不过这么多人\n手可以用上倒也不稀奇。"
 
 #: data/level/crevice-village-heights.cfg:1009
 msgid ""
 "If they were just looking for the elder\n"
 "and didn't care about ticking people off,\n"
 "it's one way to make sure he couldn't slip away."
-msgstr ""
-"若是找老头，不顾其他人，有个办法让他不\n"
-"能逃。"
+msgstr "若是找老头，不顾其他人，有个办法让他不\n能逃。"
 
 #: data/level/crevice-village-heights.cfg:1011
 msgid "Well, is that really who they were after?"
@@ -1423,9 +1309,7 @@ msgid ""
 "Yeah, I'm a little worried about\n"
 "what might happen if someone doesn't\n"
 "get in touch with Milgram."
-msgstr ""
-"是，我有点担忧若是没人接触米格拉姆情况\n"
-"会怎样。"
+msgstr "是，我有点担忧若是没人接触米格拉姆情况\n会怎样。"
 
 #: data/level/crevice-village-heights.cfg:1026
 msgid ""
@@ -1450,9 +1334,7 @@ msgid ""
 "It's probably for the best, really,\n"
 "I can't imagine the mess if people actually\n"
 "got to fighting over stuff they disagreed about."
-msgstr ""
-"可能这样最好，其实。\n"
-"我可一想象人们用打架解决争端的麻烦事。"
+msgstr "可能这样最好，其实。\n我可一想象人们用打架解决争端的麻烦事。"
 
 #: data/level/crevice-village-heights.cfg:1032
 msgid ""
@@ -1471,9 +1353,7 @@ msgstr "我不知道；这样有些"
 msgid ""
 "Good excuse to get out and travel a bit.\n"
 "See the island."
-msgstr ""
-"出去旅游借口，去看看岛上风光。\n"
-" "
+msgstr "出去旅游借口，去看看岛上风光。\n "
 
 #: data/level/crevice-village-heights.cfg:1037
 msgid "Risky business, though, isn't it?"
@@ -1493,25 +1373,19 @@ msgstr "还能比镇上的是情况糟？"
 msgid ""
 "Who knows?\n"
 "Maybe something good will come of it?"
-msgstr ""
-"鬼知道？\n"
-"也许有好事发生？"
+msgstr "鬼知道？\n也许有好事发生？"
 
 #: data/level/crevice-village-heights.cfg:1044
 msgid ""
 "Well, good luck!\n"
 "I'll be around."
-msgstr ""
-"好运！\n"
-"我一直在这附近。"
+msgstr "好运！\n我一直在这附近。"
 
 #: data/level/crevice-village-heights.cfg:1069
 msgid ""
 "Hello, again!\n"
 "So ... what now?"
-msgstr ""
-"你好，又一次！\n"
-"现在如何？"
+msgstr "你好，又一次！\n现在如何？"
 
 #: data/level/crevice-village-heights.cfg:1070
 msgid ""
@@ -1523,9 +1397,7 @@ msgstr "看起来小猫们准备离开了。"
 msgid ""
 "That's news to me!\n"
 "Where did you see that?"
-msgstr ""
-"我都不知到！\n"
-"你在哪里看到的？"
+msgstr "我都不知到！\n你在哪里看到的？"
 
 #: data/level/crevice-village-heights.cfg:1074
 msgid ""
@@ -1538,26 +1410,20 @@ msgid ""
 "Well, if you're game to find out,\n"
 "I just saw one of Milgram's lieutenants\n"
 "march up to the elder's house."
-msgstr ""
-"哦，如果你想要探明，我刚看到它们的一个\n"
-"士官进入老头的屋子。"
+msgstr "哦，如果你想要探明，我刚看到它们的一个\n士官进入老头的屋子。"
 
 #: data/level/crevice-village-heights.cfg:1077
 msgid ""
 "Weird.\n"
 "I wonder what they want with the elder?"
-msgstr ""
-"奇怪呢。\n"
-"它们想要什么？"
+msgstr "奇怪呢。\n它们想要什么？"
 
 #: data/level/crevice-village-heights.cfg:1078
 msgid ""
 "I have a notion,\n"
 "but if you're going to go up there,\n"
 "you'd better go whilst the going's good."
-msgstr ""
-"我有个注意，\n"
-"如果你要去，最好在一切顺利的时候走。"
+msgstr "我有个注意，\n如果你要去，最好在一切顺利的时候走。"
 
 #: data/level/crevice-village-heights.cfg:1080
 msgid "Yeah, I'll check it out."
@@ -1579,17 +1445,13 @@ msgstr "...抱歉"
 msgid ""
 "Through there,\n"
 "is the way to where Milgram lives."
-msgstr ""
-"经过这儿，\n"
-"便是前往米格拉姆居所的路了。"
+msgstr "经过这儿，\n便是前往米格拉姆居所的路了。"
 
 #: data/level/crevice-village-heights.cfg:2093
 msgid ""
 "If I remember right,\n"
 "one way to his castle will take you... hmm."
-msgstr ""
-"假如我没记错，\n"
-"一条路通往他的城堡 ... 你额。"
+msgstr "假如我没记错，\n一条路通往他的城堡 ... 你额。"
 
 #: data/level/crevice-village-heights.cfg:2095
 msgid ""
@@ -1609,17 +1471,13 @@ msgstr "通过之后，你会到达丛林里。"
 msgid ""
 "I haven't been there in a long time,\n"
 "so I'm not sure what's become of it."
-msgstr ""
-"我有很长时间没去那儿了，\n"
-"所以不清楚那里现在成了什么样子。"
+msgstr "我有很长时间没去那儿了，\n所以不清楚那里现在成了什么样子。"
 
 #: data/level/crevice-village-heights.cfg:2104
 msgid ""
 "I'm rather out of date on my political geography,\n"
 "so you'll just have to ask people as you go."
-msgstr ""
-"我也在政治上过时了，你需要问问其他人走\n"
-"什么路。"
+msgstr "我也在政治上过时了，你需要问问其他人走\n什么路。"
 
 #: data/level/crevice-village-heights.cfg:2107
 msgid ""
@@ -1631,9 +1489,7 @@ msgstr "啊...你有地图一类的物品？能帮我找个？"
 msgid ""
 "Nope.\n"
 "You're on your own.  Good luck."
-msgstr ""
-"不行，\n"
-"你只能靠自己。好运。"
+msgstr "不行，\n你只能靠自己。好运。"
 
 #: data/level/crevice-village-heights.cfg:2112
 msgid "Gee, thanks."
@@ -1659,17 +1515,13 @@ msgstr "好啊，兄弟们！"
 msgid ""
 "Oh, hey there!\n"
 "Didn't see you coming."
-msgstr ""
-"哦，你好！\n"
-"没看到你进来。"
+msgstr "哦，你好！\n没看到你进来。"
 
 #: data/level/crevice-village-heights.cfg:2126
 msgid ""
 "Yeah, I couldn't help but overhear, and\n"
 "... good news: Your problem is solved!"
-msgstr ""
-"好，我不能帮你，不过听多了消息...好消息\n"
-"是，你的问题解决了！"
+msgstr "好，我不能帮你，不过听多了消息...好消息\n是，你的问题解决了！"
 
 #: data/level/crevice-village-heights.cfg:2129
 msgid "What do you mean?"
@@ -1680,9 +1532,7 @@ msgid ""
 "Milgram's crew.  When that captain-guy\n"
 "came out of the house here,\n"
 "they all hopped in his airship and left."
-msgstr ""
-"米格拉姆的属下。当那个头目样的家伙出来\n"
-"之后，都蹦上他的飞船离开了。"
+msgstr "米格拉姆的属下。当那个头目样的家伙出来\n之后，都蹦上他的飞船离开了。"
 
 #: data/level/crevice-village-heights.cfg:2134
 msgid ""
@@ -1694,9 +1544,7 @@ msgstr "很好...如果你不在意，我有几个问题。"
 msgid ""
 "Well, that settles things for me.\n"
 "You two have fun."
-msgstr ""
-"呵呵，这对我简单多了。\n"
-"你们两个好好耍耍。"
+msgstr "呵呵，这对我简单多了。\n你们两个好好耍耍。"
 
 #: data/level/crevice-village-house-1.cfg:10
 #: data/level/liberated-crevice-village-house-1.cfg:10
@@ -1748,10 +1596,7 @@ msgid ""
 "Yeah, that key right next to you -\n"
 "I think that unlocks a house that\n"
 "has the key to the town gate."
-msgstr ""
-"是啊，你身边那钥匙——\n"
-"我想是能打开某屋子的门的，\n"
-"那屋子里有小镇大门的钥匙。"
+msgstr "是啊，你身边那钥匙——\n我想是能打开某屋子的门的，\n那屋子里有小镇大门的钥匙。"
 
 #: data/level/crevice-village-house-1.cfg:1843
 msgid "Maybe."
@@ -1761,9 +1606,7 @@ msgstr "啊，也许吧。"
 msgid ""
 "OH!  One other thing..\n"
 "the key to the town gate is a SILVER key."
-msgstr ""
-"喔！ 还有一件事情..\n"
-"镇大门用的钥匙是银制的。"
+msgstr "喔！ 还有一件事情..\n镇大门用的钥匙是银制的。"
 
 #: data/level/crevice-village-house-1.cfg:1846
 msgid "Keep an eye out for it!"
@@ -1785,9 +1628,7 @@ msgstr "看起来我会有你的笼子的钥匙？"
 msgid ""
 "Ah, I see..\n"
 "carry on then."
-msgstr ""
-"啊，我知道了……\n"
-"那您继续吧。"
+msgstr "啊，我知道了……\n那您继续吧。"
 
 #: data/level/crevice-village-house-1.cfg:1868
 msgid "Thank God it's you!"
@@ -1799,25 +1640,18 @@ msgstr "嘿，海吉，你还好不？"
 
 #: data/level/crevice-village-house-1.cfg:1871
 msgid "Eh, I've been better, but yeah, I'm okay."
-msgstr ""
-"呃，之前可比这境况好多了，不过呢，\n"
-"是了，我挺好的。"
+msgstr "呃，之前可比这境况好多了，不过呢，\n是了，我挺好的。"
 
 #: data/level/crevice-village-house-1.cfg:1872
 msgid "Besides the obvious cage situation."
-msgstr ""
-"很明显我给关笼子里了，\n"
-"除此之外还不错。"
+msgstr "很明显我给关笼子里了，\n除此之外还不错。"
 
 #: data/level/crevice-village-house-1.cfg:1874
 msgid ""
 "Yeah.\n"
 "Sad to say, I can't pick locks.\n"
 "I got nothing."
-msgstr ""
-"不错。\n"
-"残念的是我打不开这锁。\n"
-"我啥都没有。"
+msgstr "不错。\n残念的是我打不开这锁。\n我啥都没有。"
 
 #: data/level/crevice-village-house-1.cfg:1875
 msgid "So I'm stuck here, huh?"
@@ -1835,17 +1669,13 @@ msgstr "呸。"
 msgid ""
 "Hmm, you know, I know one thing\n"
 "that might help you.."
-msgstr ""
-"恩，你懂的，我知道点东西\n"
-"也许可以帮上忙。"
+msgstr "恩，你懂的，我知道点东西\n也许可以帮上忙。"
 
 #: data/level/crevice-village-house-1.cfg:1881
 msgid ""
 "There's supposedly\n"
 "a secret room in this house."
-msgstr ""
-"这屋子里不是应该有个\n"
-"秘密房间的么。"
+msgstr "这屋子里不是应该有个\n秘密房间的么。"
 
 #: data/level/crevice-village-house-1.cfg:1883
 msgid "Oh really?  Where at?"
@@ -1855,17 +1685,13 @@ msgstr "哦？真的？哪里？"
 msgid ""
 "If I knew that, it wouldn't\n"
 "be much of a secret, would it?"
-msgstr ""
-"我要是知道了，那这就不是\n"
-"什么秘密了，是吧？"
+msgstr "我要是知道了，那这就不是\n什么秘密了，是吧？"
 
 #: data/level/crevice-village-house-1.cfg:1886
 msgid ""
 "Figures.\n"
 "Well, thanks for the help!"
-msgstr ""
-"了解了。\n"
-"恩，谢谢你帮忙！"
+msgstr "了解了。\n恩，谢谢你帮忙！"
 
 #: data/level/crevice-village-house-1.cfg:1887
 msgid "Good luck!"
@@ -1875,9 +1701,7 @@ msgstr "祝你好运！"
 msgid ""
 "Jeez, I *swear* this house\n"
 "didn't look THIS big from the outside!"
-msgstr ""
-"呀，我*发誓*这屋子从外面看\n"
-"完全没有这么大大大大大啊啊！"
+msgstr "呀，我*发誓*这屋子从外面看\n完全没有这么大大大大大啊啊！"
 
 #: data/level/crevice-village-house-1.cfg:1925
 msgid "Uh, oh, I hear ... trouble."
@@ -1905,25 +1729,19 @@ msgstr "我们是双胞胎。"
 msgid ""
 "Is there anything\n"
 "you can do to help us?"
-msgstr ""
-"你能做来帮帮我们么？\n"
-" "
+msgstr "你能做来帮帮我们么？\n "
 
 #: data/level/crevice-village-house-2.cfg:2761
 msgid ""
 "Not yet.\n"
 "Sorry."
-msgstr ""
-"不到时候。\n"
-"抱歉。"
+msgstr "不到时候。\n抱歉。"
 
 #: data/level/crevice-village-house-2.cfg:2783
 msgid ""
 "Hey,\n"
 "I'm trying to help save the town."
-msgstr ""
-"嘿，\n"
-"我正试着帮忙保卫小镇。"
+msgstr "嘿，\n我正试着帮忙保卫小镇。"
 
 #: data/level/crevice-village-house-2.cfg:2785
 msgid "Can you give me any advice?"
@@ -1937,9 +1755,7 @@ msgstr "好。"
 msgid ""
 "The elder's house is off to the east,\n"
 "past the town gate."
-msgstr ""
-"老前辈的屋子在东边，\n"
-"过镇子的门往东去。"
+msgstr "老前辈的屋子在东边，\n过镇子的门往东去。"
 
 #: data/level/crevice-village-house-2.cfg:2788
 msgid "We saw Milgram's lieutenant go in there."
@@ -1965,9 +1781,7 @@ msgstr "风扇之屋"
 msgid ""
 "Argh! Who in the world would\n"
 "design a house like this?"
-msgstr ""
-"啊！这世上有哪个家伙\n"
-"会设计出这种屋子来啊？"
+msgstr "啊！这世上有哪个家伙\n会设计出这种屋子来啊？"
 
 #: data/level/crevice-village-house-4.cfg:2405
 msgid "Hmmm..."
@@ -1975,11 +1789,11 @@ msgstr "唔……"
 
 #: data/level/crevice-village-house-4.cfg:2406
 msgid "It seems I'm trapped inside this house."
-msgstr ""
+msgstr "看起来我似乎\n被困在这屋子里了。"
 
 #: data/level/crevice-village-house-4.cfg:2407
 msgid "I guess the only way out, is in!"
-msgstr ""
+msgstr "我猜出去的唯一方法就是——\n进去！"
 
 #: data/level/crevice-village-house-4.cfg:2544
 msgid "This is decidedly unpleasant."
@@ -1994,33 +1808,25 @@ msgstr "真的吗？！"
 msgid ""
 "When I stepped in the door,\n"
 "it locked behind me."
-msgstr ""
-"我进来的时候，\n"
-"门在我背后关上了。"
+msgstr "我进来的时候，\n门在我背后关上了。"
 
 #: data/level/crevice-village-house-4.cfg:2549
 msgid ""
 "That's actually a rather clever\n"
 "way to round everyone up."
-msgstr ""
-"实话说这倒是一个把所有人\n"
-"都围起来的好办法呢。"
+msgstr "实话说这倒是一个把所有人\n都围起来的好办法呢。"
 
 #: data/level/crevice-village-house-4.cfg:2551
 msgid ""
 "Know anything helpful\n"
 "about this house?"
-msgstr ""
-"关于这屋子，\n"
-"你知道什么有用的东西不？"
+msgstr "关于这屋子，\n你知道什么有用的东西不？"
 
 #: data/level/crevice-village-house-4.cfg:2552
 msgid ""
 "Unfortunately I don't.\n"
 "I was just visiting."
-msgstr ""
-"很不幸我不知道。\n"
-"我只是来参观的。"
+msgstr "很不幸我不知道。\n我只是来参观的。"
 
 #: data/level/crevice-village-house-4.cfg:2553
 msgid "The floorplan is quite loony."
@@ -2034,9 +1840,7 @@ msgstr "不过通风设备倒是超给力的。"
 msgid ""
 "Anyways, I'd better be off.\n"
 "I'm trying to sort out this mess."
-msgstr ""
-"不管咋说，我还是得出发了。\n"
-"我得把这烂摊子搞定了。"
+msgstr "不管咋说，我还是得出发了。\n我得把这烂摊子搞定了。"
 
 #: data/level/crevice-village-house-4.cfg:2559
 msgid "Good luck."
@@ -2066,9 +1870,7 @@ msgstr "啊。"
 msgid ""
 "For the last time, we *know* you've\n"
 "got the money somewhere."
-msgstr ""
-"我最后说一遍，我们*知道*你\n"
-"把钱藏在某个地方了。"
+msgstr "我最后说一遍，我们*知道*你\n把钱藏在某个地方了。"
 
 #: data/level/crevice-village-house-elder.cfg:1425
 msgid "Make this easy on yourself."
@@ -2099,10 +1901,7 @@ msgid ""
 "You're not going anywhere, buster!\n"
 "Now, listen up,\n"
 "You're SERIOUSLY testing my patience."
-msgstr ""
-"别想溜走，大块头！\n"
-"现在给我听好了，\n"
-"你现在正在考验本大爷的耐心！"
+msgstr "别想溜走，大块头！\n现在给我听好了，\n你现在正在考验本大爷的耐心！"
 
 #: data/level/crevice-village-house-elder.cfg:1445
 msgid "Oh, hi, what's going on here?"
@@ -2136,25 +1935,19 @@ msgstr "好了，我受够了！该回家了。"
 msgid ""
 "Well!\n"
 "That went better than expected."
-msgstr ""
-"嘛，\n"
-"这展开可比我原想的要好呢。"
+msgstr "嘛，\n这展开可比我原想的要好呢。"
 
 #: data/level/crevice-village-house-elder.cfg:1554
 msgid ""
 "Say ...\n"
 "What happened to the elder?"
-msgstr ""
-"那个……\n"
-"老前辈咋了？"
+msgstr "那个……\n老前辈咋了？"
 
 #: data/level/crevice-village-house-elder.cfg:1559
 msgid ""
 "Whoa...\n"
 "... is that what I think it is?"
-msgstr ""
-"啊哈……\n"
-"……这是我所想的那个东西么？"
+msgstr "啊哈……\n……这是我所想的那个东西么？"
 
 #: data/level/crevice-village-house-elder.cfg:1573
 msgid "It is indeed, my boy!"
@@ -2172,17 +1965,13 @@ msgstr "正是为了这种危机而建的。"
 msgid ""
 "That's really amazing.\n"
 "Uh..."
-msgstr ""
-"太棒了。\n"
-"啊..."
+msgstr "太棒了。\n啊..."
 
 #: data/level/crevice-village-house-elder.cfg:1585
 msgid ""
 "I guess I have to ask:\n"
 "Whatever prompted you to build this?"
-msgstr ""
-"看来我一定要问：\n"
-"谁准你建这个的？"
+msgstr "看来我一定要问：\n谁准你建这个的？"
 
 #: data/level/crevice-village-house-elder.cfg:1587
 msgid ""
@@ -2194,9 +1983,7 @@ msgstr "绝对很贵。我说...真的...非常费钱。"
 msgid ""
 "Yes.\n"
 "Yes it was."
-msgstr ""
-"是。\n"
-"就是它。"
+msgstr "是。\n就是它。"
 
 #: data/level/crevice-village-house-elder.cfg:1593
 msgid "...And?"
@@ -2262,17 +2049,13 @@ msgstr "啊... 哪里开始呢？"
 msgid ""
 "Why don't we start with:\n"
 "Why was that guy asking about money?"
-msgstr ""
-"为什么我们不从这里入手：\n"
-"那家伙首先问道钱？"
+msgstr "为什么我们不从这里入手：\n那家伙首先问道钱？"
 
 #: data/level/crevice-village-house-elder.cfg:1619
 msgid ""
 "Well, I am the mayor, after all,\n"
 "and mayors are well endowed."
-msgstr ""
-"额，我是这里的·首领，至少，这个职位一般\n"
-"富庶。"
+msgstr "额，我是这里的·首领，至少，这个职位一般\n富庶。"
 
 #: data/level/crevice-village-house-elder.cfg:1621
 msgid ""
@@ -2291,9 +2074,7 @@ msgid ""
 "In fact, clowns like you are the reason\n"
 "we *can't* agree on a mayor,\n"
 "or get anything else done around here."
-msgstr ""
-"实际上，你这样的吝啬鬼就是我们无法选举镇长的原因。\n"
-"还有很多事拜及无法进行。"
+msgstr "实际上，你这样的吝啬鬼就是我们无法选举镇长的原因。\n还有很多事拜及无法进行。"
 
 #: data/level/crevice-village-house-elder.cfg:1627
 msgid "Are you done insulting me, yet?"
@@ -2309,9 +2090,7 @@ msgstr "不行。你要先回答我的问题！"
 msgid ""
 "Seriously - I'm on your side, here!\n"
 "I just risked my butt fighting that guy off."
-msgstr ""
-"实际上 - 我不是你这边的！\n"
-"仅仅是冒险把那个家伙打跑。"
+msgstr "实际上 - 我不是你这边的！\n仅仅是冒险把那个家伙打跑。"
 
 #: data/level/crevice-village-house-elder.cfg:1633
 msgid ""
@@ -2323,17 +2102,13 @@ msgstr "我知道你在藏着东西！但是给我点线索。"
 msgid ""
 "Maybe ...\n"
 "I can actually help you?"
-msgstr ""
-"或许...\n"
-"我能帮你？"
+msgstr "或许...\n我能帮你？"
 
 #: data/level/crevice-village-house-elder.cfg:1637
 msgid ""
 "Okay.\n"
 "What have I got to lose, eh?"
-msgstr ""
-"好吧。\n"
-"我得给你什么？"
+msgstr "好吧。\n我得给你什么？"
 
 #: data/level/crevice-village-house-elder.cfg:1639
 msgid ""
@@ -2345,9 +2120,7 @@ msgstr "我怕这事传出去，整个镇都要咒骂我。"
 msgid ""
 "See, some years ago,\n"
 "Milgram approached me with a proposition."
-msgstr ""
-"好吧，一些年前，\n"
-"米格拉姆带着一个提案到我这里来。"
+msgstr "好吧，一些年前，\n米格拉姆带着一个提案到我这里来。"
 
 #: data/level/crevice-village-house-elder.cfg:1643
 msgid ""
@@ -2359,9 +2132,7 @@ msgstr "他要投资一笔钱到这里。"
 msgid ""
 "Wait,\n"
 "did he think you were actually the mayor?"
-msgstr ""
-"等下，\n"
-"他以为你就是这里的首领？"
+msgstr "等下，\n他以为你就是这里的首领？"
 
 #: data/level/crevice-village-house-elder.cfg:1647
 msgid "YES!"
@@ -2372,17 +2143,13 @@ msgid ""
 "Anyhow, I was all too happy to accept,\n"
 "but it wasn't long before I realized\n"
 "what was really afoot."
-msgstr ""
-"不论怎么说，我很高兴的接受了，\n"
-"但是没多久我就意识到会发生的事。"
+msgstr "不论怎么说，我很高兴的接受了，\n但是没多久我就意识到会发生的事。"
 
 #: data/level/crevice-village-house-elder.cfg:1651
 msgid ""
 "I realized this was all a scam.\n"
 "He was establishing a claim, you see."
-msgstr ""
-"我意识到这全是轨迹。\n"
-"他下了个命题，你瞧。"
+msgstr "我意识到这全是轨迹。\n他下了个命题，你瞧。"
 
 #: data/level/crevice-village-house-elder.cfg:1653
 msgid "I'm not sure I follow you..."
@@ -2418,9 +2185,7 @@ msgstr "所以我欠他的钱，我永远还不清。"
 msgid ""
 "See, then he can just take\n"
 "whatever he wants, as payment."
-msgstr ""
-"那么他就可以\n"
-"随意拿走想要的东西，做为代价。"
+msgstr "那么他就可以\n随意拿走想要的东西，做为代价。"
 
 #: data/level/crevice-village-house-elder.cfg:1667
 msgid ""
@@ -2439,35 +2204,26 @@ msgid ""
 "I don't see why he'd need an excuse.\n"
 "If he wanted to take over the town,\n"
 "he could just ... do it."
-msgstr ""
-"我不认为他需要一个借口。\n"
-"如果他想要占领，直接就做到了..."
+msgstr "我不认为他需要一个借口。\n如果他想要占领，直接就做到了..."
 
 #: data/level/crevice-village-house-elder.cfg:1673
 msgid ""
 "No!\n"
 "You always need an excuse.\n"
 "Otherwise, no one would support your claim!"
-msgstr ""
-"不！\n"
-"你总需要个理由。\n"
-"否则没人支持！"
+msgstr "不！\n你总需要个理由。\n否则没人支持！"
 
 #: data/level/crevice-village-house-elder.cfg:1675
 msgid ""
 "Uhh, okay...\n"
 "Anyways, what are we gonna do here?"
-msgstr ""
-"呃，好的...\n"
-"不管怎样，我们怎么办？"
+msgstr "呃，好的...\n不管怎样，我们怎么办？"
 
 #: data/level/crevice-village-house-elder.cfg:1677
 msgid ""
 "Well, I think we should form a militia,\n"
 "and bring the fight to Milgram!"
-msgstr ""
-"我想我们应该武装联合起来，对抗米格拉\n"
-"姆！"
+msgstr "我想我们应该武装联合起来，对抗米格拉\n姆！"
 
 #: data/level/crevice-village-house-elder.cfg:1679
 msgid ""
@@ -2495,33 +2251,25 @@ msgstr "不认为可行。"
 msgid ""
 "I sure do!\n"
 "Cripes - I tell you what: I'll do it."
-msgstr ""
-"我要做！\n"
-"麻烦 - 我这样说：我干定了！"
+msgstr "我要做！\n麻烦 - 我这样说：我干定了！"
 
 #: data/level/crevice-village-house-elder.cfg:1689
 msgid ""
 "I'll go talk to Milgram,\n"
 "and get this all sorted out.  Okay?"
-msgstr ""
-"我会去和米格拉姆谈，\n"
-"解决所有的麻烦。明白？"
+msgstr "我会去和米格拉姆谈，\n解决所有的麻烦。明白？"
 
 #: data/level/crevice-village-house-elder.cfg:1691
 msgid ""
 "I just think this is a big misunderstanding,\n"
 "and I'd rather not see anyone get hurt."
-msgstr ""
-"我刚想到可以是天大的冤枉，\n"
-"还是人人身上都没补丁最好了。"
+msgstr "我刚想到可以是天大的冤枉，\n还是人人身上都没补丁最好了。"
 
 #: data/level/crevice-village-house-elder.cfg:1693
 msgid ""
 "Well, if you say so, I suppose I can't object.\n"
 "In fact, it might be a good stalling tactic."
-msgstr ""
-"好吧，这样说，我不能例外。\n"
-"确实也是个好的消耗战术。"
+msgstr "好吧，这样说，我不能例外。\n确实也是个好的消耗战术。"
 
 #: data/level/crevice-village-house-elder.cfg:1695
 msgid "Why, I'll even show you the way..."
@@ -2539,65 +2287,49 @@ msgstr "嘿！"
 msgid ""
 "Glad I caught you!\n"
 "You'd better be aware of this..."
-msgstr ""
-"谢天谢地我追上你了！\n"
-"你最好注意点……"
+msgstr "谢天谢地我追上你了！\n你最好注意点……"
 
 #: data/level/crevice-village.cfg:1646
 msgid ""
 "The cave that leads into the town,\n"
 "has a sentry posted in it."
-msgstr ""
-"通往小镇的洞穴里\n"
-"驻扎着哨兵。"
+msgstr "通往小镇的洞穴里\n驻扎着哨兵。"
 
 #: data/level/crevice-village.cfg:1647
 msgid ""
 "Milgram's trying to seal off the town,\n"
 "so no one gets in or out."
-msgstr ""
-"米格拉姆试图封锁村镇，\n"
-"那样没人可以出入。"
+msgstr "米格拉姆试图封锁村镇，\n那样没人可以出入。"
 
 #: data/level/crevice-village.cfg:1648
 msgid ""
 "That might have been why\n"
 "he tried to take out that bridge."
-msgstr ""
-"这也许就是他企图毁掉桥的\n"
-"原因吧。"
+msgstr "这也许就是他企图毁掉桥的\n原因吧。"
 
 #: data/level/crevice-village.cfg:1649
 msgid ""
 "If you're thinking to go in there,\n"
 "you might reconsider."
-msgstr ""
-"如果你正打算要进去，\n"
-"最好还是再考虑一下。"
+msgstr "如果你正打算要进去，\n最好还是再考虑一下。"
 
 #: data/level/crevice-village.cfg:1651
 msgid ""
 "Well, yeah,\n"
 "I was gonna go in there."
-msgstr ""
-"呃，对，\n"
-"我确实是要进去。"
+msgstr "呃，对，\n我确实是要进去。"
 
 #: data/level/crevice-village.cfg:1653
 msgid ""
 "I mean, what are we gonna do,\n"
 "sit on our butts here?"
-msgstr ""
-"我的意思是，要不我们该干嘛？\n"
-"在这儿傻坐着？"
+msgstr "我的意思是，要不我们该干嘛？\n在这儿傻坐着？"
 
 #: data/level/crevice-village.cfg:1654
 msgid ""
 "No, no...\n"
 "but I was hoping we'd go in in force."
-msgstr ""
-"不，不……\n"
-"只是我希望我们有一大群人一起闯进去。"
+msgstr "不，不……\n只是我希望我们有一大群人一起闯进去。"
 
 #: data/level/crevice-village.cfg:1656
 msgid "Against Milgram? Really?"
@@ -2607,49 +2339,37 @@ msgstr "对付米格拉姆？真的？"
 msgid ""
 "I mean... on paper,\n"
 "that sounds like a good enough plan,"
-msgstr ""
-"我的意思是 ... 在纸上，\n"
-"还听上去是不过的计划，"
+msgstr "我的意思是 ... 在纸上，\n还听上去是不过的计划，"
 
 #: data/level/crevice-village.cfg:1660
 msgid ""
 "but I'm gonna be a jerk here,\n"
 "and poke some holes in it."
-msgstr ""
-"但是我呆在这里像个笨蛋一样，\n"
-"在地上画圈圈。"
+msgstr "但是我呆在这里像个笨蛋一样，\n在地上画圈圈。"
 
 #: data/level/crevice-village.cfg:1661
 msgid ""
 "Fair enough.\n"
 "I'm not particularly fond of it, myself."
-msgstr ""
-"没问题。\n"
-"我本人也不是特别喜欢它。"
+msgstr "没问题。\n我本人也不是特别喜欢它。"
 
 #: data/level/crevice-village.cfg:1663
 msgid ""
 "Firstly, Milgram's got LOTS of followers.\n"
 "Tons of em.  He runs an entire city."
-msgstr ""
-"首先，米格拉姆有*很多*手下，\n"
-"成千上万。整个城市都是他管的。"
+msgstr "首先，米格拉姆有*很多*手下，\n成千上万。整个城市都是他管的。"
 
 #: data/level/crevice-village.cfg:1665
 msgid ""
 "I mean, even if we armed the whole town,\n"
 "they'd grossly outnumber us."
-msgstr ""
-"我说，即使我们武装了村镇，数量也比不\n"
-"上。"
+msgstr "我说，即使我们武装了村镇，数量也比不\n上。"
 
 #: data/level/crevice-village.cfg:1667
 msgid ""
 "Plus, they're pretty mobile, too.\n"
 "Planes and such."
-msgstr ""
-"再说，它们速度快。\n"
-"飞啊啥的。"
+msgstr "再说，它们速度快。\n飞啊啥的。"
 
 #: data/level/crevice-village.cfg:1669
 msgid ""
@@ -2665,34 +2385,26 @@ msgstr "硬碰硬攻吃亏。"
 msgid ""
 "We'd be like ... \n"
 "a bull butting heads with a freight train."
-msgstr ""
-"就像是……\n"
-"公牛和货运火车顶头。"
+msgstr "就像是……\n公牛和货运火车顶头。"
 
 #: data/level/crevice-village.cfg:1674
 msgid ""
 "Yes... oh dear.\n"
 "I see what you mean."
-msgstr ""
-"啊…\n"
-"我明白你的意思。"
+msgstr "啊…\n我明白你的意思。"
 
 #: data/level/crevice-village.cfg:1676
 msgid ""
 "There's got to be something\n"
 "we can use to our advantage,\n"
 "but \"numerical superiority\" isn't it."
-msgstr ""
-"一定有什么东西可以成为我们的优势，\n"
-"但不是“数量优势”。"
+msgstr "一定有什么东西可以成为我们的优势，\n但不是“数量优势”。"
 
 #: data/level/crevice-village.cfg:1678
 msgid ""
 "Anyways, about the cave ahead...\n"
 "it's just one guy, right?"
-msgstr ""
-"不管怎么说，关于前面的洞穴……\n"
-"只有一个人守着，对不对？"
+msgstr "不管怎么说，关于前面的洞穴……\n只有一个人守着，对不对？"
 
 #: data/level/crevice-village.cfg:1679
 msgid "To my knowledge, yes."
@@ -2706,17 +2418,13 @@ msgstr "说不定我可以说动他？"
 msgid ""
 "Worse comes to worse,\n"
 "I can just run for it.  Right?"
-msgstr ""
-"要是出现最糟糕的情况了，\n"
-"我也只要开溜就好。对吧？"
+msgstr "要是出现最糟糕的情况了，\n我也只要开溜就好。对吧？"
 
 #: data/level/crevice-village.cfg:1684
 msgid ""
 "I do hope so.\n"
 "Good luck!"
-msgstr ""
-"但愿如此。\n"
-"祝你好运！"
+msgstr "但愿如此。\n祝你好运！"
 
 #: data/level/dark-corridor.cfg:12
 msgid "Dark Corridor"
@@ -2739,10 +2447,7 @@ msgid ""
 "It says,\n"
 "\"Chopple's General Store,\n"
 "just ahead."
-msgstr ""
-"上面写着：\n"
-"“巧比的万能商店，\n"
-"就在前方，"
+msgstr "上面写着：\n“巧比的万能商店，\n就在前方，"
 
 #: data/level/descent-to-town.cfg:949
 msgid "Honest trade and thrifty prices!\""
@@ -2789,9 +2494,7 @@ msgstr "阿土的房间"
 msgid ""
 "Ahh, what a beautiful ..\n"
 "..Afternoon?!"
-msgstr ""
-"啊，多么美妙的……\n"
-"……我去！下午了？！"
+msgstr "啊，多么美妙的……\n……我去！下午了？！"
 
 #: data/level/frogatto-grotto-frogattos-room.cfg:924
 msgid "Oh geez! I overslept!"
@@ -2821,9 +2524,7 @@ msgstr "好吧，那午饭准备得咋样了？"
 msgid ""
 "Getting there.\n"
 "It's gonna be a while, though."
-msgstr ""
-"正煮着呢。\n"
-"不过还得等会儿才能好。"
+msgstr "正煮着呢。\n不过还得等会儿才能好。"
 
 #: data/level/frogatto-grotto-inside.cfg:1145
 msgid "I'll check back later, then."
@@ -2837,9 +2538,7 @@ msgstr "呃，午饭哪里去了？"
 msgid ""
 "I got tired of waiting,\n"
 "and ate by myself."
-msgstr ""
-"我等得不耐烦了，\n"
-"所以自己一个人吃了。"
+msgstr "我等得不耐烦了，\n所以自己一个人吃了。"
 
 #: data/level/frogatto-grotto-inside.cfg:1150
 msgid "Leftovers are in the fridge."
@@ -2861,9 +2560,7 @@ msgstr "啊……啥事？"
 msgid ""
 "At least TRY to get a job today,\n"
 "alright?"
-msgstr ""
-"今天至少*试着*去找个工作，\n"
-"行么？"
+msgstr "今天至少*试着*去找个工作，\n行么？"
 
 #: data/level/frogatto-grotto-inside.cfg:1547
 msgid "We need some help around here."
@@ -2917,9 +2614,7 @@ msgstr "我懂的！"
 msgid ""
 "I can stop in at Nene's house\n"
 "on the way to town!"
-msgstr ""
-"去小镇的路上我会路过\n"
-"奈奈的家的！"
+msgstr "去小镇的路上我会路过\n奈奈的家的！"
 
 #: data/level/frogatto-grotto.cfg:859
 msgid "Such a beautiful view from here."
@@ -2951,25 +2646,19 @@ msgstr "开始：上课拉。每个问好都有答案。"
 msgid ""
 "If you already know how to play,\n"
 "then just walk to the next level."
-msgstr ""
-"如果你已经知道如何操作，\n"
-"直接走到下一关就行了。"
+msgstr "如果你已经知道如何操作，\n直接走到下一关就行了。"
 
 #: data/level/grassy-path.cfg:1083
 msgid ""
 "To save your progress in the game,\n"
 "use one of these convenient restrooms."
-msgstr ""
-"进程都会在你进入某个洗手间之后残留下\n"
-"来。"
+msgstr "进程都会在你进入某个洗手间之后残留下\n来。"
 
 #: data/level/grassy-path.cfg:1084
 msgid ""
 "There is only one save file,\n"
 "so be careful not to overwrite it!"
-msgstr ""
-"游戏里你只能留一个标记占领一个洗手间，\n"
-"要当心别无意中冲走了以前的记忆！"
+msgstr "游戏里你只能留一个标记占领一个洗手间，\n要当心别无意中冲走了以前的记忆！"
 
 #: data/level/grassy-path.cfg:1103
 msgid ""
@@ -2996,17 +2685,13 @@ msgid ""
 "If you don't get a running start, you can still\n"
 "cling on, if you tap the arrow toward the wall,\n"
 "and press jump whilst it's held down."
-msgstr ""
-"假如你没有助跑，仍然可以按住指向墙壁的\n"
-"方向键，然后起跳。"
+msgstr "假如你没有助跑，仍然可以按住指向墙壁的\n方向键，然后起跳。"
 
 #: data/level/grassy-path.cfg:1108
 msgid ""
 "Whilst you are clinging to the wall,\n"
 "pressing jump will make you rebound off."
-msgstr ""
-"在贴住岩壁的时候，\n"
-"按下跳跃键就可以跳起。"
+msgstr "在贴住岩壁的时候，\n按下跳跃键就可以跳起。"
 
 #: data/level/grassy-path.cfg:1109
 msgid ""
@@ -3033,17 +2718,13 @@ msgstr "旅行中，很多想要欺压你的家伙。"
 msgid ""
 "It's often fine to just avoid them, but if you have\n"
 "to fight, Frogatto's best defense is his tongue."
-msgstr ""
-"越过不难，战斗也不难——要打就用舌\n"
-"头。"
+msgstr "越过不难，战斗也不难——要打就用舌\n头。"
 
 #: data/level/grassy-path.cfg:1132
 msgid ""
 "You can grab enemies with the tongue,\n"
 "and then spit them back out."
-msgstr ""
-"你可以用舌头卷住敌人吞下去，\n"
-"而后再将它们吐出去。"
+msgstr "你可以用舌头卷住敌人吞下去，\n而后再将它们吐出去。"
 
 #: data/level/grassy-path.cfg:1133
 msgid "Once spat out, they become a deadly projectile."
@@ -3053,17 +2734,13 @@ msgstr "发射的任何东西都是武器。"
 msgid ""
 "If they don't hit anything, they'll be stunned\n"
 "momentarily, and then will flip upright again."
-msgstr ""
-"不过要是没有击中，它们会暂时头晕，然后\n"
-"爬起来。"
+msgstr "不过要是没有击中，它们会暂时头晕，然后\n爬起来。"
 
 #: data/level/grassy-path.cfg:1135
 msgid ""
 "Whilst on their backs,\n"
 "they're vulnerable to being stomped on."
-msgstr ""
-"当它们四脚朝天时，\n"
-"很容易受到踩击的伤害。"
+msgstr "当它们四脚朝天时，\n很容易受到踩击的伤害。"
 
 #: data/level/grassy-path.cfg:1136
 msgid ""
@@ -3075,17 +2752,13 @@ msgstr "吐舌和吐敌人都是按攻击键来进行的。"
 msgid ""
 "There are a few ants just ahead.\n"
 "Feel free to try this on them."
-msgstr ""
-"前面不远处有些蚂蚁。\n"
-"请随意拿它们练练手吧。"
+msgstr "前面不远处有些蚂蚁。\n请随意拿它们练练手吧。"
 
 #: data/level/grassy-path.cfg:1138
 msgid ""
 "And don't worry - if you die,\n"
 "you'll restart right here."
-msgstr ""
-"不用担心——要是你挂了，\n"
-"会在这里重新开始。"
+msgstr "不用担心——要是你挂了，\n会在这里重新开始。"
 
 #: data/level/grassy-path.cfg:1179
 msgid ""
@@ -3103,9 +2776,7 @@ msgstr "假如按下上喷出，会有较高的角度。"
 msgid ""
 "If you hold down the down key while pressing\n"
 "the attack button, you'll spit with very little force."
-msgstr ""
-"假如你按住下和攻击键，喷射的威力会大\n"
-"减。"
+msgstr "假如你按住下和攻击键，喷射的威力会大\n减。"
 
 #: data/level/grassy-path.cfg:1183
 msgid ""
@@ -3123,9 +2794,7 @@ msgstr "不同敌人有不同的策略，自己寻门路。"
 msgid ""
 "Also, the tongue can grab useful items, like keys.\n"
 "This is how you carry them to the lock they open."
-msgstr ""
-"舌头可以粘取物件，比如钥匙。\n"
-"这样你能带着它们去开锁。"
+msgstr "舌头可以粘取物件，比如钥匙。\n这样你能带着它们去开锁。"
 
 #: data/level/grassy-path.cfg:1219
 msgid ""
@@ -3137,17 +2806,13 @@ msgstr "喷泉和其他吐水的地方是很有用的。"
 msgid ""
 "If you drink from them,\n"
 "you will restore all of your health!"
-msgstr ""
-"如果在那里饮水的话，\n"
-"你的生命值便会完全回复！"
+msgstr "如果在那里饮水的话，\n你的生命值便会完全回复！"
 
 #: data/level/grassy-path.cfg:1240
 msgid ""
 "Certain bridges and stairways, like this one,\n"
 "allow you to jump up and pass through them."
-msgstr ""
-"有些桥梁和楼道，像这个可以跳上和穿\n"
-"过。"
+msgstr "有些桥梁和楼道，像这个可以跳上和穿\n过。"
 
 #: data/level/grassy-path.cfg:1241
 msgid "You can also jump down through them."
@@ -3157,35 +2822,26 @@ msgstr "你也同样可以向下跳穿过它们。"
 msgid ""
 "A special button will appear,\n"
 "whenever this is possible."
-msgstr ""
-"当这可能的时候，\n"
-"一个专门的按钮就会出现。"
+msgstr "当这可能的时候，\n一个专门的按钮就会出现。"
 
 #: data/level/grassy-path.cfg:1243
 msgid ""
 "To do so, hold down the down key,\n"
 "and then press jump."
-msgstr ""
-"要向下跳，只需按住下方向键，\n"
-"而后按跳跃键。"
+msgstr "要向下跳，只需按住下方向键，\n而后按跳跃键。"
 
 #: data/level/grassy-path.cfg:1284
 msgid ""
 "As you've played through this level,\n"
 "you've probably noticed the gold coins."
-msgstr ""
-"通过本场景的时候，\n"
-"你也许已经注意到了那些金币。"
+msgstr "通过本场景的时候，\n你也许已经注意到了那些金币。"
 
 #: data/level/grassy-path.cfg:1285
 msgid ""
 "You can collect these\n"
 "and any other golden objects,\n"
 "and then use them to buy stuff!"
-msgstr ""
-"你可以收集金币\n"
-"以及其他金质物品，\n"
-"而后用来购买装备！"
+msgstr "你可以收集金币\n以及其他金质物品，\n而后用来购买装备！"
 
 #: data/level/grassy-path.cfg:1286
 msgid ""
@@ -3223,25 +2879,19 @@ msgstr "注意，无底洞是上不来的。不要去闯。"
 msgid ""
 "Up ahead, you'll notice an anthill,\n"
 "which ants constantly come out of."
-msgstr ""
-"在前方你会看到一座蚁丘，\n"
-"那里会源源不断地跑出蚂蚁。"
+msgstr "在前方你会看到一座蚁丘，\n那里会源源不断地跑出蚂蚁。"
 
 #: data/level/grassy-path.cfg:1425
 msgid ""
 "There is no way to stop this;\n"
 "you can't destroy the anthill."
-msgstr ""
-"这是没办法停止的：\n"
-"你不可能摧毁蚁丘。"
+msgstr "这是没办法停止的：\n你不可能摧毁蚁丘。"
 
 #: data/level/grassy-path.cfg:1426
 msgid ""
 "Some hazards are like this.\n"
 "You simply have to work around them."
-msgstr ""
-"有些危险就是如此。\n"
-"你只能绕过它们。"
+msgstr "有些危险就是如此。\n你只能绕过它们。"
 
 #: data/level/grassy-path.cfg:1446
 msgid "That's it for this tutorial."
@@ -3257,9 +2907,7 @@ msgstr "尽管还有更多，不过，还是你自己探索吧。"
 msgid ""
 "Feel free to come back here,\n"
 "if you want to read a hint again."
-msgstr ""
-"如果你想要重读任何一条提示的话，\n"
-"随时都可以回到这里。"
+msgstr "如果你想要重读任何一条提示的话，\n随时都可以回到这里。"
 
 #: data/level/grassy-path.cfg:1449
 msgid "Have fun!"
@@ -3269,17 +2917,13 @@ msgstr "祝你玩得开心！"
 msgid ""
 "If you've seen a conversation before, it might\n"
 "be annoying to have to read it again."
-msgstr ""
-"如果你看过一段对话，看第二遍可能无\n"
-"聊。"
+msgstr "如果你看过一段对话，看第二遍可能无\n聊。"
 
 #: data/level/grassy-path.cfg:1471
 msgid ""
 "You can skip a conversation, including parts\n"
 "of cutscenes, by pressing the \"escape\" key."
-msgstr ""
-"你可以略过对话，包括部分场景的流程，按\n"
-"下 \"ESC\" 即可。"
+msgstr "你可以略过对话，包括部分场景的流程，按\n下 \"ESC\" 即可。"
 
 #: data/level/grassy-path.cfg:1472
 msgid ""
@@ -3292,18 +2936,14 @@ msgid ""
 "If you haven't already noticed, the red\n"
 "fruits you sometimes find nestled in\n"
 "the grass are spittable projectiles."
-msgstr ""
-"假如你还没注意到，草丛里的红色果实可以喷出。\n"
-" "
+msgstr "假如你还没注意到，草丛里的红色果实可以喷出。\n "
 
 #: data/level/grassy-path.cfg:1591
 msgid ""
 "You'll find many such objects of similar size\n"
 "in different areas of the game, such as crates\n"
 "inside of houses, or nuts hanging from trees."
-msgstr ""
-"你会找到很多类似大小的东西遍布游戏角落，\n"
-"比如箱子，树上的坚果。"
+msgstr "你会找到很多类似大小的东西遍布游戏角落，\n比如箱子，树上的坚果。"
 
 #: data/level/grassy-path.cfg:1592
 msgid ""
@@ -3317,9 +2957,7 @@ msgid ""
 "if you use them up, walk away from the screen\n"
 "where you found them, and then return again,\n"
 "there will often be a new one waiting to use."
-msgstr ""
-"注意，这些不正常的东西；\n"
-"假如用尽了，离开场景再返回可能就又有了。"
+msgstr "注意，这些不正常的东西；\n假如用尽了，离开场景再返回可能就又有了。"
 
 #: data/level/hanging-platforms.cfg:16
 msgid "Hanging Platforms"
@@ -3329,9 +2967,7 @@ msgstr "悬挂平台"
 msgid ""
 "Well, I guess I'm entering Milgram's\n"
 "castle now. I made it through the caves!"
-msgstr ""
-"好吧，我猜我正走进米格拉姆的\n"
-"城堡。我算是通过洞穴了啊！"
+msgstr "好吧，我猜我正走进米格拉姆的\n城堡。我算是通过洞穴了啊！"
 
 #: data/level/hidden-depths.cfg:18
 msgid "Hidden Depths"
@@ -3361,25 +2997,19 @@ msgstr ""
 msgid ""
 "Well I guess I have to give it to you,\n"
 "kid, you saved us!"
-msgstr ""
-"呃，我想我必须把这个给你，\n"
-"孩子，你救了我们！"
+msgstr "呃，我想我必须把这个给你，\n孩子，你救了我们！"
 
 #: data/level/liberated-crevice-village-house-1.cfg:1084
 msgid ""
 "Give it to me? Give what to me?\n"
 "Money?"
-msgstr ""
-"把这个给我？把什么给我？\n"
-"钱么？"
+msgstr "把这个给我？把什么给我？\n钱么？"
 
 #: data/level/liberated-crevice-village-house-1.cfg:1085
 msgid ""
 "Sheesh, so mercenary!\n"
 "It's just an expression."
-msgstr ""
-"啧，真唯利是图！\n"
-"这不过是一种表达方式而已。"
+msgstr "啧，真唯利是图！\n这不过是一种表达方式而已。"
 
 #: data/level/liberated-crevice-village-house-1.cfg:1087
 msgid "I know, I'm just poking fun at you."
@@ -3409,17 +3039,13 @@ msgstr "当然。"
 msgid ""
 "Speaking of which, am I imagining it\n"
 "or is this house actually smaller now?"
-msgstr ""
-"说到“日常”，是我的错觉呢，\n"
-"还是这屋子真的变小了？"
+msgstr "说到“日常”，是我的错觉呢，\n还是这屋子真的变小了？"
 
 #: data/level/liberated-crevice-village-house-1.cfg:1566
 msgid ""
 "Of course not.\n"
 "That's just nutty."
-msgstr ""
-"当然没变小。\n"
-"你真蛋疼。"
+msgstr "当然没变小。\n你真蛋疼。"
 
 #: data/level/liberated-crevice-village-house-2.cfg:1487
 msgid "Hey, thanks for saving the town!"
@@ -3456,12 +3082,7 @@ msgid ""
 "I guess this is my last chance to\n"
 "go back if there's anything I want to\n"
 "do before I confront him."
-msgstr ""
-"这看上去不是啥好兆头。\n"
-"我打赌米格拉姆就在上面。\n"
-"我猜如果在对付他之前我还有\n"
-"别的事想做的话，现在是最后\n"
-"一次回头的机会了。"
+msgstr "这看上去不是啥好兆头。\n我打赌米格拉姆就在上面。\n我猜如果在对付他之前我还有\n别的事想做的话，现在是最后\n一次回头的机会了。"
 
 #: data/level/milgrams-throne-room.cfg:13
 msgid "Milgram's Throne Room"
@@ -3490,9 +3111,7 @@ msgstr "谁来了？"
 msgid ""
 "Frogatto!\n"
 "He's RIGHT HERE!"
-msgstr ""
-"阿土！\n"
-"他就在这里！"
+msgstr "阿土！\n他就在这里！"
 
 #: data/level/milgrams-throne-room.cfg:604
 msgid ""
@@ -3502,9 +3121,7 @@ msgstr "入侵者？怎么来到这里的？"
 
 #: data/level/milgrams-throne-room.cfg:605
 msgid "We... We tried to stop him, but he's..."
-msgstr ""
-"我们……我们没拦住他……\n"
-"但他……"
+msgstr "我们……我们没拦住他……\n但他……"
 
 #: data/level/milgrams-throne-room.cfg:607
 msgid "Why do I have to deal with everything myself?!"
@@ -3518,9 +3135,7 @@ msgstr "闪开！"
 msgid ""
 "Ugh!\n"
 "You do put up quite a fight!"
-msgstr ""
-"啊！\n"
-"你倒确实很能打嘛！"
+msgstr "啊！\n你倒确实很能打嘛！"
 
 #: data/level/milgrams-throne-room.cfg:660
 msgid "Will you hear me out now?"
@@ -3542,17 +3157,13 @@ msgstr "我想要问你村镇的事件。"
 msgid ""
 "Remarkable.\n"
 "I really thought you'd come here to attack me."
-msgstr ""
-"很好。\n"
-"我还以为你来袭击我。"
+msgstr "很好。\n我还以为你来袭击我。"
 
 #: data/level/milgrams-throne-room.cfg:671
 msgid ""
 "Well, if you really are here for an audience,\n"
 "perhaps I could be obliged.  Shall we?"
-msgstr ""
-"假如你真的是个观众，或许我该向你致\n"
-"意。"
+msgstr "假如你真的是个观众，或许我该向你致\n意。"
 
 #: data/level/milgrams-throne-room.cfg:673
 msgid "Talk it over? Like gentlemen?"
@@ -3560,9 +3171,7 @@ msgstr "谈谈？像绅士一样？"
 
 #: data/level/milgrams-throne-room.cfg:675
 msgid "Yes, like gentlemen. Over tea."
-msgstr ""
-"是啊，像绅士一样。\n"
-"一边喝茶一边谈。"
+msgstr "是啊，像绅士一样。\n一边喝茶一边谈。"
 
 #: data/level/milgrams-throne-room.cfg:682
 msgid "Wait a minute, it's you, isn't it?"
@@ -3576,9 +3185,7 @@ msgstr "对头，我就是阿土！"
 msgid ""
 "Uhh..\n"
 "I was expecting something a bit more ... robust."
-msgstr ""
-"吖...\n"
-"我还以为是什么更...难缠的东西。"
+msgstr "吖...\n我还以为是什么更...难缠的东西。"
 
 #: data/level/milgrams-throne-room.cfg:688
 msgid ""
@@ -3594,9 +3201,7 @@ msgstr "是我么？"
 msgid ""
 "Yes, I've been getting some rather\n"
 "unpleasant reports about property damage."
-msgstr ""
-"是，我收到了一些负面的报告，关于财物损\n"
-"毁。"
+msgstr "是，我收到了一些负面的报告，关于财物损\n毁。"
 
 #: data/level/milgrams-throne-room.cfg:694
 msgid ""
@@ -3612,9 +3217,11 @@ msgstr "一定..."
 msgid ""
 "...but the subject's going to be:\n"
 "\"What happens to trespassers.\""
+msgstr "... 但是主题变为:\n\"入侵者遇到什么。\""
+
+#: data/level/milgrams-throne-room.cfg:702
+msgid "Fight!"
 msgstr ""
-"... 但是主题变为:\n"
-"\"入侵者遇到什么。\""
 
 #: data/level/newstyle-forest.cfg:12
 msgid "Home-Style Forest"
@@ -3669,9 +3276,7 @@ msgstr "哈罗～"
 msgid ""
 "A pleasure to meet you.\n"
 "I am Mortimer."
-msgstr ""
-"很高兴见到你。\n"
-"我是摩塔莫。"
+msgstr "很高兴见到你。\n我是摩塔莫。"
 
 #: data/level/secluded-hut-interior.cfg:774
 msgid "That's nice."
@@ -3681,9 +3286,7 @@ msgstr "好极了。"
 msgid ""
 "Uhm, I hope you don't mind my asking,\n"
 "but what on earth ARE you, anyway?"
-msgstr ""
-"咳咳，但愿你别介意我的问题，\n"
-"不过你到底是何方神圣啊？"
+msgstr "咳咳，但愿你别介意我的问题，\n不过你到底是何方神圣啊？"
 
 #: data/level/secluded-hut-interior.cfg:777
 msgid "Ostensibly, I am a mole."
@@ -3693,41 +3296,31 @@ msgstr "很明显，我是只鼹鼠。"
 msgid ""
 "...\n"
 "Okay."
-msgstr ""
-"……\n"
-"好吧。"
+msgstr "……\n好吧。"
 
 #: data/level/secluded-hut-interior.cfg:780
 msgid ""
 "Perhaps more importantly, I am a bit of\n"
 "an astronomer and biologist, by trade."
-msgstr ""
-"也许更要紧的是，我算是个\n"
-"职业的天文学家兼生物学家。"
+msgstr "也许更要紧的是，我算是个\n职业的天文学家兼生物学家。"
 
 #: data/level/secluded-hut-interior.cfg:781
 msgid ""
 "That is why I live all the way up here.\n"
 "You can see quite a bit from this height."
-msgstr ""
-"这就是我住得这么高的原因啦。\n"
-"在这么高的地方你能看到很多东西。"
+msgstr "这就是我住得这么高的原因啦。\n在这么高的地方你能看到很多东西。"
 
 #: data/level/secluded-hut-interior.cfg:783
 msgid ""
 "...and I guess you have these\n"
 "ants in cages to study them?"
-msgstr ""
-"……我猜你把这些蚂蚁关在\n"
-"笼子里是为了搞研究？"
+msgstr "……我猜你把这些蚂蚁关在\n笼子里是为了搞研究？"
 
 #: data/level/secluded-hut-interior.cfg:784
 msgid ""
 "That's right.  Unfortunately,\n"
 "my collection lacks the rarer golden ant."
-msgstr ""
-"对了。是没运气收藏到罕见的金色蚂蚁。\n"
-" "
+msgstr "对了。是没运气收藏到罕见的金色蚂蚁。\n "
 
 #: data/level/secluded-hut-interior.cfg:786
 msgid "Oh, what a shame."
@@ -3739,26 +3332,19 @@ msgid ""
 "If you could bring me a golden ant\n"
 "and stick it in one of my cages,\n"
 "I'd reward you handsomely."
-msgstr ""
-"你知道不，你看着像个云游四方的人。\n"
-"如果你能给我搞到只金蚂蚁放笼子里，\n"
-"我会好好地答谢你的。"
+msgstr "你知道不，你看着像个云游四方的人。\n如果你能给我搞到只金蚂蚁放笼子里，\n我会好好地答谢你的。"
 
 #: data/level/secluded-hut-interior.cfg:789
 msgid ""
 "Handsomely you say?\n"
 "I'm on it!"
-msgstr ""
-"你说“好好的”？\n"
-"我这就去！"
+msgstr "你说“好好的”？\n我这就去！"
 
 #: data/level/secluded-hut-interior.cfg:792
 msgid ""
 "Oh! You got the golden ant for me.\n"
 "It's beautiful, beautiful!"
-msgstr ""
-"哦！你替我抓来了金蚂蚁！\n"
-"它真是太美了！太美了！"
+msgstr "哦！你替我抓来了金蚂蚁！\n它真是太美了！太美了！"
 
 #: data/level/secluded-hut-interior.cfg:794
 msgid ""
@@ -3770,17 +3356,13 @@ msgstr "唔。貌似你说过有啥答谢的？"
 msgid ""
 "Oh yes, a reward!\n"
 "Here you go..."
-msgstr ""
-"哦对，答谢！\n"
-"喏，给你……"
+msgstr "哦对，答谢！\n喏，给你……"
 
 #: data/level/secluded-hut-interior.cfg:800
 msgid ""
 "Oh my! If that's a golden ant in your stomach,\n"
 "then quick, spit it out into the cage!"
-msgstr ""
-"如果那是一只金蚂蚁在你胃里，\n"
-"快点吐到笼子里去！"
+msgstr "如果那是一只金蚂蚁在你胃里，\n快点吐到笼子里去！"
 
 #: data/level/secluded-hut-interior.cfg:801
 msgid ""
@@ -3792,17 +3374,13 @@ msgstr "我猜你还没能搞到金蚂蚁是吧？"
 msgid ""
 "I'm working on it.\n"
 "Those things pack a pretty mean bite, you know."
-msgstr ""
-"我在努力。\n"
-"那些家伙长着厉害的嘴巴，你也知道。"
+msgstr "我在努力。\n那些家伙长着厉害的嘴巴，你也知道。"
 
 #: data/level/secluded-hut-interior.cfg:806
 msgid ""
 "I do hope you are enjoying exploring the island.\n"
 "There are so many wonderful creatures on it."
-msgstr ""
-"祝你旅游愉快。\n"
-"岛上有很多奇妙的生物。"
+msgstr "祝你旅游愉快。\n岛上有很多奇妙的生物。"
 
 #: data/level/secluded-hut-interior.cfg:808
 msgid "... most of which seem inclined to kill me."
@@ -3820,9 +3398,7 @@ msgstr "你还好吗？"
 msgid ""
 "Yeah.\n"
 "Who WAS that guy?!"
-msgstr ""
-"恩。\n"
-"刚才那家伙是谁？"
+msgstr "恩。\n刚才那家伙是谁？"
 
 #: data/level/secluded-hut.cfg:2383
 msgid "One of Milgram's henchmen, no doubt."
@@ -3832,9 +3408,7 @@ msgstr "是米格拉姆的一个小弟，毫无疑问。"
 msgid ""
 "They may have seen me talking to you,\n"
 "I can't be sure."
-msgstr ""
-"他们也许看到我在和你说话了，\n"
-"我不确定。"
+msgstr "他们也许看到我在和你说话了，\n我不确定。"
 
 #: data/level/secluded-hut.cfg:2386
 msgid "Wait, what?  Milgram?"
@@ -3855,54 +3429,40 @@ msgid ""
 "Milgram's men showed up\n"
 "early this morning, in town.\n"
 "They've taken the whole place hostage!"
-msgstr ""
-"米格拉姆的人今晨在村镇现身了，\n"
-"它们把所有人都羁押了！"
+msgstr "米格拉姆的人今晨在村镇现身了，\n它们把所有人都羁押了！"
 
 #: data/level/secluded-hut.cfg:2392
 msgid ""
 "Unfortunately, I don't know the details.\n"
 "I just flew out of there as soon as I could,\n"
 "looking for anyone who could help."
-msgstr ""
-"不过我不清楚细节。\n"
-"我只是尽力飞出来，找人帮忙。"
+msgstr "不过我不清楚细节。\n我只是尽力飞出来，找人帮忙。"
 
 #: data/level/secluded-hut.cfg:2394
 msgid ""
 "That certainly...\n"
 "changes my plans for the day."
-msgstr ""
-"这确实……\n"
-"打乱了我今天的计划。"
+msgstr "这确实……\n打乱了我今天的计划。"
 
 #: data/level/secluded-hut.cfg:2396
 msgid ""
 "Wow, uhm... \n"
 "I'd sure like to help, but ...\n"
 "I just don't see what I could do."
-msgstr ""
-"哇，嗯...\n"
-"我确实想帮助，但是...\n"
-"我不明白自己能做什么。"
+msgstr "哇，嗯...\n我确实想帮助，但是...\n我不明白自己能做什么。"
 
 #: data/level/secluded-hut.cfg:2398
 msgid ""
 "I don't think I can promise anything,\n"
 "but if the opportunity presents itself,\n"
 "who knows?"
-msgstr ""
-"我可不能做什么保证，\n"
-"不过机会可能会出现吧，\n"
-"谁知道呢？"
+msgstr "我可不能做什么保证，\n不过机会可能会出现吧，\n谁知道呢？"
 
 #: data/level/secluded-hut.cfg:2399
 msgid ""
 "Yes, it's unreasonable to expect\n"
 "someone to just charge in there."
-msgstr ""
-"是啊，期望有什么救星驾到，\n"
-"本就是不靠谱的。"
+msgstr "是啊，期望有什么救星驾到，\n本就是不靠谱的。"
 
 #: data/level/secluded-hut.cfg:2400
 msgid "I'm at a loss for a plan, myself."
@@ -3914,27 +3474,19 @@ msgid ""
 "Hopefully, we'll fix that bridge soon.\n"
 "Impressive how fast they can do that,\n"
 "with modular construction and all."
-msgstr ""
-"不管怎么说，我最好还是走先。\n"
-"如果顺利的话，桥很快就能修好了。\n"
-"这速度真让人印象深刻，\n"
-"什么模块化建造之类的。"
+msgstr "不管怎么说，我最好还是走先。\n如果顺利的话，桥很快就能修好了。\n这速度真让人印象深刻，\n什么模块化建造之类的。"
 
 #: data/level/secluded-hut.cfg:2402
 msgid ""
 "In the meantime, you might benefit from\n"
 "visiting the fellow who lives here."
-msgstr ""
-"在这期间，去拜访一下这边的居民\n"
-"对你也许有帮助。"
+msgstr "在这期间，去拜访一下这边的居民\n对你也许有帮助。"
 
 #: data/level/secluded-hut.cfg:2403
 msgid ""
 "Bit of a recluse, but he's quite sharp.\n"
 "He lives on top of this rock column."
-msgstr ""
-"他算半个隐士，不过倒是很尖刻。\n"
-"他住在这石崖的上面。"
+msgstr "他算半个隐士，不过倒是很尖刻。\n他住在这石崖的上面。"
 
 #: data/level/secluded-hut.cfg:2405
 msgid "And I get up there... how?"
@@ -4059,9 +3611,7 @@ msgstr "魔鬼代言人"
 
 #: data/level/tea-with-milgram.cfg:380
 msgid "Programmer, Lead Content Wrangler and Lead Object Scripter"
-msgstr ""
-"程序员，首席内容争论者及首席物件脚本\n"
-"编写者"
+msgstr "程序员，首席内容争论者及首席物件脚本\n编写者"
 
 #: data/level/tea-with-milgram.cfg:381
 msgid "Artist • Characters, Monsters, Props, Terrain"
@@ -4095,9 +3645,7 @@ msgstr "就让我直说了吧……"
 msgid ""
 "What you're saying, is that the elder\n"
 "borrowed all this money from you,"
-msgstr ""
-"你的意思是，这些钱是老前辈\n"
-"问你借的，"
+msgstr "你的意思是，这些钱是老前辈\n问你借的，"
 
 #: data/level/tea-with-milgram.cfg:405
 msgid ""
@@ -4113,17 +3661,13 @@ msgstr "正是如此！"
 msgid ""
 "In fact, I came to him with the idea.\n"
 "It was meant to be philanthropy."
-msgstr ""
-"实际上是我带着这点子去找他的。\n"
-"这本该算是慈善事业的。"
+msgstr "实际上是我带着这点子去找他的。\n这本该算是慈善事业的。"
 
 #: data/level/tea-with-milgram.cfg:411
 msgid ""
 "I thought a 'mayor' would be responsible,\n"
 "but instead he's spending it all on himself!"
-msgstr ""
-"我本以为一个“镇长”会很有责任感，\n"
-"但他却把钱都花在自己身上了！"
+msgstr "我本以为一个“镇长”会很有责任感，\n但他却把钱都花在自己身上了！"
 
 #: data/level/tea-with-milgram.cfg:414
 msgid "And now he's refusing to repay you?"
@@ -4151,33 +3695,25 @@ msgstr "都是他的错。"
 msgid ""
 "This might not be obvious from talking to him,\n"
 "but that elder guy is really just ... crazy."
-msgstr ""
-"可能和他说不清不楚，但是那个老家伙实在\n"
-"是...疯了。"
+msgstr "可能和他说不清不楚，但是那个老家伙实在\n是...疯了。"
 
 #: data/level/tea-with-milgram.cfg:427
 msgid ""
 "He's just plain nuts.\n"
 "He's got a lot of bizarre delusions about things..."
-msgstr ""
-"他只是个蠢蛋。\n"
-"莫名其妙地做疯狂的事..."
+msgstr "他只是个蠢蛋。\n莫名其妙地做疯狂的事..."
 
 #: data/level/tea-with-milgram.cfg:429
 msgid ""
 "...and mostly we just humor him,\n"
 "because he's pretty harmless."
-msgstr ""
-"...多数时候我们和他玩笑，\n"
-"因为无妨大雅。"
+msgstr "...多数时候我们和他玩笑，\n因为无妨大雅。"
 
 #: data/level/tea-with-milgram.cfg:431
 msgid ""
 "We've trumped him up with a pointless job\n"
 "as the gatekeeper on the east side of town."
-msgstr ""
-"我们给他一个无聊的工作：\n"
-"在村镇东面看门。"
+msgstr "我们给他一个无聊的工作：\n在村镇东面看门。"
 
 #: data/level/tea-with-milgram.cfg:433
 msgid ""
@@ -4198,17 +3734,13 @@ msgid ""
 "But I guess he really could cause\n"
 "some issues if other people, like yourself,\n"
 "aren't aware of his background."
-msgstr ""
-"他也可能给其他人造成麻烦，比如你：\n"
-"因为你们都不知道他的背景。"
+msgstr "他也可能给其他人造成麻烦，比如你：\n因为你们都不知道他的背景。"
 
 #: data/level/tea-with-milgram.cfg:443
 msgid ""
 "Intriguing.\n"
 "That'd certainly explain a few things."
-msgstr ""
-"可以想象。\n"
-"这样也说的通。"
+msgstr "可以想象。\n这样也说的通。"
 
 #: data/level/tea-with-milgram.cfg:445
 msgid "For starters, uh ... he's NOT our mayor."
@@ -4222,18 +3754,14 @@ msgstr "我明白为何“不”了！"
 msgid ""
 "Yep.  In fact, if you'll believe it,\n"
 "we actually don't have a mayor at all."
-msgstr ""
-"是，实际上，承不承认，你不知道，我们从没\n"
-"有首领。"
+msgstr "是，实际上，承不承认，你不知道，我们从没\n有首领。"
 
 #: data/level/tea-with-milgram.cfg:452
 msgid ""
 "We've got nothing.\n"
 "We've got a bunch of stubborn idiots\n"
 "who happen to live in the same area."
-msgstr ""
-"我们什么也没有。\n"
-"只是团聚了一周要在此居住的笨蛋。"
+msgstr "我们什么也没有。\n只是团聚了一周要在此居住的笨蛋。"
 
 #: data/level/tea-with-milgram.cfg:454
 msgid ""
@@ -4257,9 +3785,7 @@ msgstr "当心，现在 - 听起来是邀请。"
 msgid ""
 "Eh...heh... yes,\n"
 "that probably wouldn't be well-received!"
-msgstr ""
-"诶...呵呵...不错\n"
-"很难接受！"
+msgstr "诶...呵呵...不错\n很难接受！"
 
 #: data/level/tea-with-milgram.cfg:463
 msgid ""
@@ -4273,34 +3799,26 @@ msgid ""
 "And I guess that might be one of the\n"
 "few things we'd all agree on;\n"
 "that we wouldn't tolerate that."
-msgstr ""
-"我猜，这也是我们少数的共同论调之一；\n"
-"我们忍受不住这老头。"
+msgstr "我猜，这也是我们少数的共同论调之一；\n我们忍受不住这老头。"
 
 #: data/level/tea-with-milgram.cfg:467
 msgid ""
 "I mean, I'm definitely exaggerating a little;\n"
 "we couldn't raise a house without some\n"
 "cooperation, but it really is a mess."
-msgstr ""
-"我说，我确实激进了些；不过我们不能单独撑起一栋房子，\n"
-"情况也太糟糕了。"
+msgstr "我说，我确实激进了些；不过我们不能单独撑起一栋房子，\n情况也太糟糕了。"
 
 #: data/level/tea-with-milgram.cfg:469
 msgid ""
 "So I don't know what the elder talked you into,\n"
 "but it's almost guaranteed to be lunacy."
-msgstr ""
-"我不知道那个家伙对你说了什么，不过肯定\n"
-"是废话。"
+msgstr "我不知道那个家伙对你说了什么，不过肯定\n是废话。"
 
 #: data/level/tea-with-milgram.cfg:471
 msgid ""
 "Yes.\n"
 "No wonder we were confused!"
-msgstr ""
-"是啊。\n"
-"难怪我们这么混乱！"
+msgstr "是啊。\n难怪我们这么混乱！"
 
 #: data/level/tea-with-milgram.cfg:475
 msgid "Ah, there we are..."
@@ -4310,9 +3828,7 @@ msgstr "啊，我们到了……"
 msgid ""
 "Fetch some for our guest,\n"
 "would you, kindly?"
-msgstr ""
-"能不能麻烦你，\n"
-"为我们的客人取一些来？"
+msgstr "能不能麻烦你，\n为我们的客人取一些来？"
 
 #: data/level/tea-with-milgram.cfg:483
 msgid "So where was I?"
@@ -4338,17 +3854,13 @@ msgstr "或许有桥，弗格斯正要竖起一个。"
 msgid ""
 "He's one of my kitties.\n"
 "Heads up one of our engineering divisions."
-msgstr ""
-"他是我的猫之一。\n"
-"从我们的一个工程师分部出来。"
+msgstr "他是我的猫之一。\n从我们的一个工程师分部出来。"
 
 #: data/level/tea-with-milgram.cfg:495
 msgid ""
 "I honestly have no involvement in\n"
 "stuff like this; I delegate all of it out."
-msgstr ""
-"我衷心不愿牵扯此事；我让别人全权负责\n"
-"这个。"
+msgstr "我衷心不愿牵扯此事；我让别人全权负责\n这个。"
 
 #: data/level/tea-with-milgram.cfg:498
 msgid "Which sometimes doesn't work out as expected?"
@@ -4360,17 +3872,13 @@ msgid ""
 "but if you'll forgive me, I had the impression\n"
 "it was a bit of a backwater, so I thought\n"
 "we'd do something to help out."
-msgstr ""
-"是。我不知道关于裂口村的事情，如果你们原谅我，我的印象\n"
-"改变，我想可以帮上些。"
+msgstr "是。我不知道关于裂口村的事情，如果你们原谅我，我的印象\n改变，我想可以帮上些。"
 
 #: data/level/tea-with-milgram.cfg:502
 msgid ""
 "We thought we'd actually hire you guys\n"
 "as labor, to do whatever you could."
-msgstr ""
-"我们觉得我们想要雇佣你们做劳力，做你们\n"
-"能干的。"
+msgstr "我们觉得我们想要雇佣你们做劳力，做你们\n能干的。"
 
 #: data/level/tea-with-milgram.cfg:504
 msgid ""
@@ -4378,9 +3886,7 @@ msgid ""
 "gets money flowing around, makes the\n"
 "new owners proud of what they built,\n"
 "feels less like charity, et cetera."
-msgstr ""
-"那样更好；到处挣些钱也能让新住户乐意自己的成果；\n"
-"又不像是施舍。"
+msgstr "那样更好；到处挣些钱也能让新住户乐意自己的成果；\n又不像是施舍。"
 
 #: data/level/tea-with-milgram.cfg:506
 msgid "But, apparently we just got conned."
@@ -4391,25 +3897,19 @@ msgid ""
 "And once they figured that out,\n"
 "some of our security guys were\n"
 "a little overzealous about recovering assets."
-msgstr ""
-"一旦他们发觉，我们的保卫人员乐于回收财\n"
-"物。"
+msgstr "一旦他们发觉，我们的保卫人员乐于回收财\n物。"
 
 #: data/level/tea-with-milgram.cfg:511
 msgid ""
 "Uh...\n"
 "That's a pretty spectacular euphemism, there..."
-msgstr ""
-"啊...\n"
-"那是个要留心的双关词..."
+msgstr "啊...\n那是个要留心的双关词..."
 
 #: data/level/tea-with-milgram.cfg:513
 msgid ""
 "Yes, okay ...\n"
 "they were just thugs, plain and simple."
-msgstr ""
-"好吧...\n"
-"他们只是强盗，简单明了。"
+msgstr "好吧...\n他们只是强盗，简单明了。"
 
 #: data/level/tea-with-milgram.cfg:516
 msgid ""
@@ -4422,18 +3922,14 @@ msgid ""
 "Those cats are turning into bullies.\n"
 "Sooner or later, they're going to\n"
 "cause me some serious problems!"
-msgstr ""
-"那些猫变成了流氓集团。迟早要给我带来\n"
-"大麻烦！"
+msgstr "那些猫变成了流氓集团。迟早要给我带来\n大麻烦！"
 
 #: data/level/tea-with-milgram.cfg:520
 msgid ""
 "I haven't given you a chance to apologize,\n"
 "but no need.\n"
 "Thank you for embarrassing them."
-msgstr ""
-"我并没给你机会道歉，不过算了，谢谢你赶\n"
-"走他们。"
+msgstr "我并没给你机会道歉，不过算了，谢谢你赶\n走他们。"
 
 #: data/level/tea-with-milgram.cfg:522
 msgid "I hope they've learned a lesson from this."
@@ -4443,9 +3939,7 @@ msgstr "希望他们脑袋记事。"
 msgid ""
 "Regarding THIS incident, I will need\n"
 "to have a talk with them about common sense."
-msgstr ""
-"因为这个缘故。我需要和他们说说基本道\n"
-"理。"
+msgstr "因为这个缘故。我需要和他们说说基本道\n理。"
 
 #: data/level/tea-with-milgram.cfg:527
 msgid ""
@@ -4491,25 +3985,19 @@ msgstr "算有吧。"
 msgid ""
 "Probably the craziest and most helpful is...\n"
 "I actually think he still has that money."
-msgstr ""
-"或许最疯狂也最好是...我认为他仍然攥着\n"
-"钱。"
+msgstr "或许最疯狂也最好是...我认为他仍然攥着\n钱。"
 
 #: data/level/tea-with-milgram.cfg:554
 msgid ""
 "I know it sounds completely nuts,\n"
 "but I honestly think that when he was given it..."
-msgstr ""
-"听起来很傻不是，\n"
-"其实他得到的时候..."
+msgstr "听起来很傻不是，\n其实他得到的时候..."
 
 #: data/level/tea-with-milgram.cfg:557
 msgid ""
 "...he didn't have a clue what to do with it,\n"
 "so he just ... hid it."
-msgstr ""
-"... 他没有主意如何去做、做什么\n"
-"所以他...简单而直接地藏起来了。"
+msgstr "... 他没有主意如何去做、做什么\n所以他...简单而直接地藏起来了。"
 
 #: data/level/tea-with-milgram.cfg:560
 msgid ""
@@ -4521,9 +4009,7 @@ msgstr "我们都认识多年了，他是个吝啬包。"
 msgid ""
 "We've never seen him suddenly having more\n"
 "money to spend; so it's crazy, but it fits."
-msgstr ""
-"我们从没见他突然有如此多钱花出去；他疯\n"
-"了还有可能。"
+msgstr "我们从没见他突然有如此多钱花出去；他疯\n了还有可能。"
 
 #: data/level/tea-with-milgram.cfg:565
 msgid "I ... didn't see that coming."
@@ -4533,9 +4019,7 @@ msgstr "我... 没看到什么进来。"
 msgid ""
 "When he was getting shaken down by that kitty,\n"
 "we turned our back on him for a second."
-msgstr ""
-"当他被那猫晃下来时，我们背对过去一会\n"
-"儿。"
+msgstr "当他被那猫晃下来时，我们背对过去一会\n儿。"
 
 #: data/level/tea-with-milgram.cfg:569
 msgid ""
@@ -4547,9 +4031,7 @@ msgstr "结果他躲在某个秘密通道。"
 msgid ""
 "He may have used some of the money to build it,\n"
 "but his house has some sort of safe room."
-msgstr ""
-"也许他用了钱建了这个，但他房子也有些安\n"
-"全的房间。"
+msgstr "也许他用了钱建了这个，但他房子也有些安\n全的房间。"
 
 #: data/level/tea-with-milgram.cfg:574
 msgid ""
@@ -4571,17 +4053,13 @@ msgstr "知道吧，你应该走进去带出来。"
 msgid ""
 "We may.\n"
 "In fact I believe we will!"
-msgstr ""
-"我们马上去。\n"
-"相信能搜出来！"
+msgstr "我们马上去。\n相信能搜出来！"
 
 #: data/level/tea-with-milgram.cfg:583
 msgid ""
 "If I may be so bold, I think it's\n"
 "safe to say on behalf of the town..."
-msgstr ""
-"假如我也这么有魄力，就能当上镇里的模范\n"
-"了..."
+msgstr "假如我也这么有魄力，就能当上镇里的模范\n了..."
 
 #: data/level/tea-with-milgram.cfg:585
 msgid ""
@@ -4594,9 +4072,7 @@ msgid ""
 "You probably should hear what others are\n"
 "interested in, but I for one really wish there\n"
 "was a road of any kind between here and there."
-msgstr ""
-"你可能知道其他人的兴趣，不过我的建议肯定最棒：\n"
-"造一条相互连通的道路。"
+msgstr "你可能知道其他人的兴趣，不过我的建议肯定最棒：\n造一条相互连通的道路。"
 
 #: data/level/tea-with-milgram.cfg:590
 msgid "I'm dreading the trip back."
@@ -4612,25 +4088,19 @@ msgstr "真的，你的船停在哪里？"
 msgid ""
 "I ... didn't ... use a vehicle.\n"
 "I walked."
-msgstr ""
-"我...没...用什么工具。\n"
-"走着来的。"
+msgstr "我...没...用什么工具。\n走着来的。"
 
 #: data/level/tea-with-milgram.cfg:597
 msgid ""
 "...\n"
 "I'm amazed that's even possible."
-msgstr ""
-"...\n"
-"不敢相信。"
+msgstr "...\n不敢相信。"
 
 #: data/level/tea-with-milgram.cfg:599
 msgid ""
 "I like you, little frog!\n"
 "You're quite bold."
-msgstr ""
-"我喜欢你，小青蛙！\n"
-"有气魄。"
+msgstr "我喜欢你，小青蛙！\n有气魄。"
 
 #: data/level/tea-with-milgram.cfg:601
 msgid ""
@@ -4642,18 +4112,14 @@ msgstr "我能你的保证传送成功！"
 msgid ""
 "And I'd be happy to consider some kind of project.\n"
 "You yourself could be my paid liaison."
-msgstr ""
-"我挺高兴这样的计划，我可以付钱给你当我\n"
-"们的通信人。"
+msgstr "我挺高兴这样的计划，我可以付钱给你当我\n们的通信人。"
 
 #: data/level/tea-with-milgram.cfg:606
 msgid ""
 "We should keep in touch - hopefully,\n"
 "through you, I can meet some of the\n"
 "more 'level-headed' members of your town."
-msgstr ""
-"常联系 - 希望，\n"
-"通过你，我也知道了镇上也有公正的成员。"
+msgstr "常联系 - 希望，\n通过你，我也知道了镇上也有公正的成员。"
 
 #: data/level/tea-with-milgram.cfg:608
 msgid "So ... all's well that ends well?"
@@ -4663,9 +4129,7 @@ msgstr "那么 ... 一切都完结了？"
 msgid ""
 "Yes, I do think everyone will have\n"
 "an equitable outcome to this whole mess."
-msgstr ""
-"嗯，我想风波之后每个人都想要同样的结\n"
-"果。"
+msgstr "嗯，我想风波之后每个人都想要同样的结\n果。"
 
 #: data/level/tea-with-milgram.cfg:612
 msgid "Except the elder."
@@ -4771,9 +4235,7 @@ msgstr "奈奈的小屋"
 msgid ""
 "AIEEEEE!\n"
 "Get that thing out of here!"
-msgstr ""
-"啊啊啊！！！\n"
-"把这个东西撵出去！"
+msgstr "啊啊啊！！！\n把这个东西撵出去！"
 
 #: data/level/to-nenes-house-inside.cfg:504
 msgid "Hey Nene, what's cooking?"
@@ -4783,9 +4245,7 @@ msgstr "嘿奈奈，你在做什么？"
 msgid ""
 "I'm making a cake.\n"
 "Would you like to have some?"
-msgstr ""
-"我在做蛋糕。\n"
-"想拿一点么？"
+msgstr "我在做蛋糕。\n想拿一点么？"
 
 #: data/level/to-nenes-house-inside.cfg:507
 msgid "Nah, I'd better get to town."
@@ -4799,9 +4259,7 @@ msgstr "我有点正经事要处理。"
 msgid ""
 "Oh, well maybe before you go\n"
 "you could look at my basement."
-msgstr ""
-"哦，好吧，在你出发之前\n"
-"也许可以去看看我的地窖。"
+msgstr "哦，好吧，在你出发之前\n也许可以去看看我的地窖。"
 
 #: data/level/to-nenes-house-inside.cfg:515
 msgid "Your basement?"
@@ -4811,9 +4269,7 @@ msgstr "你的地窖？"
 msgid ""
 "Yes, here's the key.\n"
 "There're some ants down there."
-msgstr ""
-"是啊，这是钥匙。\n"
-"下面有些蚂蚁爬来爬去的。"
+msgstr "是啊，这是钥匙。\n下面有些蚂蚁爬来爬去的。"
 
 #: data/level/to-nenes-house-inside.cfg:522
 msgid "They're freaking me out."
@@ -4833,35 +4289,26 @@ msgstr "你准备为杀虫专家出多少钱呢？"
 msgid ""
 "Well sheesh, I thought you'd\n"
 "do it for free for a friend!"
-msgstr ""
-"呃，我还以为你会免费\n"
-"帮朋友的忙呢！"
+msgstr "呃，我还以为你会免费\n帮朋友的忙呢！"
 
 #: data/level/to-nenes-house-inside.cfg:528
 msgid ""
 "But if you're going to be like that\n"
 "I think I left a health capsule down there.\n"
 "If you can clear it out, it's yours."
-msgstr ""
-"但如果你非要不可，\n"
-"我记得在那下面留了一个生命胶囊。\n"
-"要是把蚂蚁清理干净，那胶囊就是你的了。"
+msgstr "但如果你非要不可，\n我记得在那下面留了一个生命胶囊。\n要是把蚂蚁清理干净，那胶囊就是你的了。"
 
 #: data/level/to-nenes-house-inside.cfg:530
 msgid ""
 "So, did you end up taking care\n"
 "of those ants down there?"
-msgstr ""
-"呃，你把下面的蚂蚁\n"
-"解决掉了没？"
+msgstr "呃，你把下面的蚂蚁\n解决掉了没？"
 
 #: data/level/to-nenes-house-inside.cfg:532
 msgid ""
 "Of course.\n"
 "I don't disappoint!"
-msgstr ""
-"当然。\n"
-"我从不让人失望！"
+msgstr "当然。\n我从不让人失望！"
 
 #: data/level/to-nenes-house-inside.cfg:534
 msgid ""
@@ -4881,9 +4328,7 @@ msgstr "呃，我去，这门锁上了。"
 msgid ""
 "Can't a guy sneak into his neighbor's\n"
 "basement uninvited these days?"
-msgstr ""
-"现如今已经不可能不请自来\n"
-"悄悄溜进邻居家的地下室了么？"
+msgstr "现如今已经不可能不请自来\n悄悄溜进邻居家的地下室了么？"
 
 #: data/level/to-nenes-house.cfg:14
 msgid "To Nene's House"
@@ -4905,9 +4350,7 @@ msgstr "可以打扰一下么，先生？"
 msgid ""
 "Sorry, I'm off to town!\n"
 "Not interested!"
-msgstr ""
-"抱歉，我得去镇上！\n"
-"我不感兴趣！"
+msgstr "抱歉，我得去镇上！\n我不感兴趣！"
 
 #: data/level/to-nenes-house.cfg:3343
 msgid "But the town, you see ..."
@@ -4917,17 +4360,13 @@ msgstr "但是镇上……你知道……"
 msgid ""
 "Not. Interested.\n"
 "Buzz off."
-msgstr ""
-"不-感-兴-趣！\n"
-"我说完了。"
+msgstr "不-感-兴-趣！\n我说完了。"
 
 #: data/level/to-nenes-house.cfg:3347
 msgid ""
 "I don't care what you're preaching,\n"
 "go sell it to someone else."
-msgstr ""
-"我不关心你在卖啥东西。\n"
-"去卖给别人吧。"
+msgstr "我不关心你在卖啥东西。\n去卖给别人吧。"
 
 #: data/level/to-nenes-house.cfg:3348
 msgid "Very well."
@@ -4938,9 +4377,7 @@ msgid ""
 "Someday, those door-to-door people\n"
 "will realize that kind of hard-sell tactic\n"
 "just annoys people."
-msgstr ""
-"总有一天这些搞推销的家伙会知道\n"
-"这种强买强卖的策略只会讨人厌。"
+msgstr "总有一天这些搞推销的家伙会知道\n这种强买强卖的策略只会讨人厌。"
 
 #: data/level/to-nenes-house.cfg:3353
 msgid "The sooner, the better."
@@ -5001,56 +4438,43 @@ msgstr "你达到了硬币采集赛到第 {level.player.difficulty} 关。"
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level {registry."
-"arcade_coin_race_high_score}."
+"The furthest that has been reached is level "
+"{registry.arcade_coin_race_high_score}."
 msgstr "最高纪录是第 {registry.arcade_coin_race_high_score} 关。 "
 
 #: data/objects/items/max_heart_object.cfg:18
 msgid ""
 "You have acquired a heart capsule.\n"
 "Your maximum HP has increased by one!"
-msgstr ""
-"你得到了一个红心胶囊。\n"
-"你的最大生命值增加了一！"
+msgstr "你得到了一个红心胶囊。\n你的最大生命值增加了一！"
 
 #: data/objects/items/partial_max_heart_object.cfg:22
 msgid ""
 "You've found part of a heart capsule.\n"
 "Collect another three to increase\n"
 "your maximum HP by one!"
-msgstr ""
-"你找到了红心胶囊的一部分。\n"
-"再收集三块碎片就可以使\n"
-"你的最大生命值增加一！"
+msgstr "你找到了红心胶囊的一部分。\n再收集三块碎片就可以使\n你的最大生命值增加一！"
 
 #: data/objects/items/partial_max_heart_object.cfg:24
 msgid ""
 "You've found part of a heart capsule.\n"
 "Collect another two to increase\n"
 "your maximum HP by one!"
-msgstr ""
-"你找到了红心胶囊的一部分。\n"
-"再收集两块碎片就可以使\n"
-"你的最大生命值增加一！"
+msgstr "你找到了红心胶囊的一部分。\n再收集两块碎片就可以使\n你的最大生命值增加一！"
 
 #: data/objects/items/partial_max_heart_object.cfg:26
 msgid ""
 "You've found part of a heart capsule.\n"
 "Collect another one to increase\n"
 "your maximum HP by one!"
-msgstr ""
-"你找到了红心胶囊的一部分。\n"
-"再收集一块碎片就可以使\n"
-"你的最大生命值增加一！"
+msgstr "你找到了红心胶囊的一部分。\n再收集一块碎片就可以使\n你的最大生命值增加一！"
 
 #: data/objects/items/partial_max_heart_object.cfg:30
 msgid ""
 "You've collected enough parts to\n"
 "make a whole new heart capsule!\n"
 "Your maximum HP has increased by one!"
-msgstr ""
-"你收集齐了碎片，足以组成完整的红心胶囊！\n"
-"你的最大生命值增加了一！"
+msgstr "你收集齐了碎片，足以组成完整的红心胶囊！\n你的最大生命值增加了一！"
 
 #: data/objects/items/store-items/buyable_gliding_wings.cfg:11
 msgid "gliding wings"
@@ -5070,9 +4494,7 @@ msgstr "红心"
 msgid ""
 "The heart will give you\n"
 "an extra health point."
-msgstr ""
-"红心会赐予你一点额外的\n"
-"生命值。"
+msgstr "红心会赐予你一点额外的\n生命值。"
 
 #: data/objects/items/store-items/buyable_jumping_boots.cfg:13
 msgid ""
@@ -5090,10 +4512,7 @@ msgid ""
 "invincibility powerups. Invincibility\n"
 "powerups will make you\n"
 "invincible for a short time."
-msgstr ""
-"无敌水晶启动无敌加护。\n"
-"无敌加护会让你\n"
-"无敌一小会儿。"
+msgstr "无敌水晶启动无敌加护。\n无敌加护会让你\n无敌一小会儿。"
 
 #: data/objects/items/store-items/buyable_powerup_reflexes.cfg:11
 msgid "hyper crystal"
@@ -5106,11 +4525,7 @@ msgid ""
 "powerups will heighten your\n"
 "reflexes, making the world\n"
 "seem to slow down around you."
-msgstr ""
-"反应水晶启动反应加护。\n"
-"反应加护会提高你的\n"
-"反应能力，使得你周围的\n"
-"一切似乎都变慢。"
+msgstr "反应水晶启动反应加护。\n反应加护会提高你的\n反应能力，使得你周围的\n一切似乎都变慢。"
 
 #: data/objects/items/store-items/buyable_powerup_shooting.cfg:11
 msgid "energy crystal"
@@ -5122,18 +4537,13 @@ msgid ""
 "energy powerups. Energy\n"
 "powerups will allow you\n"
 "to shoot bolts of energy."
-msgstr ""
-"能量水晶启动能量加护。\n"
-"能量加护让你能够射出\n"
-"能量弹。"
+msgstr "能量水晶启动能量加护。\n能量加护让你能够射出\n能量弹。"
 
 #: data/objects/items/store-items/buyable_shield.cfg:13
 msgid ""
 "The energy shield protects you\n"
 "from damage when you crouch."
-msgstr ""
-"当你蹲下时，能量护盾\n"
-"会保护你不受伤害。"
+msgstr "当你蹲下时，能量护盾\n会保护你不受伤害。"
 
 #: data/objects/items/store-items/buyable_speed_boots.cfg:13
 msgid ""
@@ -5191,9 +4601,7 @@ msgstr "嗨，巧比。"
 msgid ""
 "Hey.\n"
 "Welcome to the store."
-msgstr ""
-"嘿。\n"
-"欢迎光临小店。"
+msgstr "嘿。\n欢迎光临小店。"
 
 #: data/objects/props-interactive/npcs/chopple_npc.cfg:9
 msgid "Take your time, look around."

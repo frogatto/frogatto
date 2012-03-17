@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 #   <diabolopaido@gmail.com>, 2011.
 # Γιάννης  <yannanth@gmail.com>, 2011.
@@ -9,15 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-03-16 21:15-0300\n"
-"PO-Revision-Date: 2012-03-16 21:56+0000\n"
+"POT-Creation-Date: 2012-03-16 21:22-0300\n"
+"PO-Revision-Date: 2012-03-17 00:23+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
-"Language-Team: Greek (http://www.transifex.net/projects/p/Frogatto/language/"
-"el/)\n"
-"Language: el\n"
+"Language-Team: Greek (http://www.transifex.net/projects/p/Frogatto/language/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: el\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: CHANGELOG:1 iOS_CHANGELOG:1
@@ -26,8 +25,8 @@ msgstr "Έκδοση 1.2:"
 
 #: CHANGELOG:2 iOS_CHANGELOG:2
 msgid ""
-"Complete redo of attack logic; frogatto now is free to walk around whilst he "
-"attacks, and in general is much more responsive."
+"Complete redo of attack logic; frogatto now is free to walk around whilst he"
+" attacks, and in general is much more responsive."
 msgstr ""
 
 #: CHANGELOG:3 iOS_CHANGELOG:3
@@ -87,7 +86,8 @@ msgid ""
 msgstr ""
 
 #: CHANGELOG:15 iOS_CHANGELOG:15
-msgid "Fixed a bug that caused some tiles to incorrectly be flagged as opaque."
+msgid ""
+"Fixed a bug that caused some tiles to incorrectly be flagged as opaque."
 msgstr ""
 
 #: CHANGELOG:17 iOS_CHANGELOG:17
@@ -116,9 +116,9 @@ msgstr ""
 
 #: CHANGELOG:23 iOS_CHANGELOG:22
 msgid ""
-"Complete redo of iOS controls, switching to a 2-button dpad from a 4-"
-"button.  Eliminates all problems with mispressed up or down keys "
-"interrupting other actions."
+"Complete redo of iOS controls, switching to a 2-button dpad from a 4-button."
+"  Eliminates all problems with mispressed up or down keys interrupting other"
+" actions."
 msgstr ""
 
 #: CHANGELOG:25
@@ -319,8 +319,8 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:5 iOS_APP_STORE_METADATA:5
 msgid ""
-"Frogatto's key mechanic is an unusual twist; like any frog, he jumps, swims, "
-"and snags bugs with his tongue, but unlike any frog before him, can spit "
+"Frogatto's key mechanic is an unusual twist; like any frog, he jumps, swims,"
+" and snags bugs with his tongue, but unlike any frog before him, can spit "
 "those bugs out with deadly force.  Not merely an action game, frogatto is a "
 "full, classic adventure game, with characters to talk to, things to buy, "
 "puzzles to solve, and a wide, complex world to explore."
@@ -346,8 +346,8 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:11 iOS_APP_STORE_METADATA:11
 msgid ""
-"- forgiving savegame/respawn system so you don't have to be afraid of losing "
-"progress"
+"- forgiving savegame/respawn system so you don't have to be afraid of losing"
+" progress"
 msgstr ""
 
 #: MAC_APP_STORE_METADATA:12 iOS_APP_STORE_METADATA:12
@@ -390,8 +390,7 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:24 iOS_APP_STORE_METADATA:25
 msgid ""
-"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,"
-"frog"
+"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
 msgstr ""
 
 #: data/achievements.cfg:4
@@ -722,9 +721,7 @@ msgstr "Φλεγόμενη Πέτρα"
 msgid ""
 "I need to go up... There must be\n"
 "a way to activate this elevator."
-msgstr ""
-"Πρέπει να πάω πάνω... πρέπει να\n"
-"υπάρχει ένας τρόπος για να ενεργοποιήσω αυτό το ασανσέρ."
+msgstr "Πρέπει να πάω πάνω... πρέπει να\nυπάρχει ένας τρόπος για να ενεργοποιήσω αυτό το ασανσέρ."
 
 #: data/level/caverns-of-holes.cfg:14
 msgid "Caverns of Holes"
@@ -1075,9 +1072,7 @@ msgstr "Δεν ξεγελιέμαι εύκολα."
 msgid ""
 "You look like a very\n"
 "suspicious character."
-msgstr ""
-"Μοιάζεις με ένα πολύ\n"
-"ύποπτο άτομο."
+msgstr "Μοιάζεις με ένα πολύ\nύποπτο άτομο."
 
 #: data/level/crevice-village-cave.cfg:706
 msgid "Could you just step aside?"
@@ -1087,33 +1082,25 @@ msgstr "Θα μπορούσες απλά να κάνεις στην άκρη;"
 msgid ""
 "I need to take care\n"
 "of something in town."
-msgstr ""
-"Πρέπει να\n"
-"τακτοποιήσω κάτι στην πόλη."
+msgstr "Πρέπει να\nτακτοποιήσω κάτι στην πόλη."
 
 #: data/level/crevice-village-cave.cfg:709
 msgid ""
 "Well, I can't let anyone\n"
 "past this gate."
-msgstr ""
-"Λοιπόν, δεν μπορώ να αφήσω κανέναν\n"
-"να περάσει αυτή την πύλη."
+msgstr "Λοιπόν, δεν μπορώ να αφήσω κανέναν\nνα περάσει αυτή την πύλη."
 
 #: data/level/crevice-village-cave.cfg:710
 msgid ""
 "Without this key,\n"
 "you're not getting anywhere."
-msgstr ""
-"Χωρίς αυτό το κλειδί,\n"
-"δεν μπορείς να πάς πουθενά."
+msgstr "Χωρίς αυτό το κλειδί,\nδεν μπορείς να πάς πουθενά."
 
 #: data/level/crevice-village-cave.cfg:712
 msgid ""
 "Okay.  Will you please lend\n"
 "me that key?"
-msgstr ""
-"Εντάξει. Μπορείς σε παρακαλώ να μου δανείσεις\n"
-"αυτό το κλειδί;"
+msgstr "Εντάξει. Μπορείς σε παρακαλώ να μου δανείσεις\nαυτό το κλειδί;"
 
 #: data/level/crevice-village-cave.cfg:713
 msgid "No way!  Over my dead body!"
@@ -1131,17 +1118,13 @@ msgstr "Κρυφή Σπυλιά"
 msgid ""
 "Ahh, good, you made it\n"
 "through there in one piece!"
-msgstr ""
-"Ααα, ωραία, τα κατάφερες\n"
-"ανάμεσα είναι ένα κομμάτι!"
+msgstr "Ααα, ωραία, τα κατάφερες\nανάμεσα είναι ένα κομμάτι!"
 
 #: data/level/crevice-village-central.cfg:1523
 msgid ""
 "Yeah, those goons\n"
 "had a little ambush set up."
-msgstr ""
-"Ναι, αυτοί οι μπράβοι\n"
-"είχαν στήσει μια μικρή ενέδρα."
+msgstr "Ναι, αυτοί οι μπράβοι\nείχαν στήσει μια μικρή ενέδρα."
 
 #: data/level/crevice-village-central.cfg:1525
 msgid "So, now what?"
@@ -1151,29 +1134,21 @@ msgstr "Και τώρα;"
 msgid ""
 "Well, as you know, the town\n"
 "is split into two halves."
-msgstr ""
-"Λοιπόν, όπως γνωρίζεις, η πόλη\n"
-"είναι χωρισμένη σε δύο μέρη."
+msgstr "Λοιπόν, όπως γνωρίζεις, η πόλη\nείναι χωρισμένη σε δύο μέρη."
 
 #: data/level/crevice-village-central.cfg:1527
 msgid ""
 "Milgram has this half of the town\n"
 "locked down tight, and he has\n"
 "most of the residents held prisoner."
-msgstr ""
-"Ο Μίλγκραμ έχει αυτό το μισό της πόλης\n"
-"ασφικτικά κλειδωμένο, και έχει τους\n"
-"περισσότερους κατοίκους κρατούμενους."
+msgstr "Ο Μίλγκραμ έχει αυτό το μισό της πόλης\nασφικτικά κλειδωμένο, και έχει τους\nπερισσότερους κατοίκους κρατούμενους."
 
 #: data/level/crevice-village-central.cfg:1528
 msgid ""
 "They're tied up inside the houses,\n"
 "under guard. If you free them,\n"
 "I'm sure they can help you."
-msgstr ""
-"Είναι δεμένοι μέσα στα σπίτια,\n"
-"περιφρουρουμενοι. Εάν τους ελευθερώσεις,\n"
-"είμαι βέβαιος ότι μπορούν να σε βοηθήσουν."
+msgstr "Είναι δεμένοι μέσα στα σπίτια,\nπεριφρουρουμενοι. Εάν τους ελευθερώσεις,\nείμαι βέβαιος ότι μπορούν να σε βοηθήσουν."
 
 #: data/level/crevice-village-central.cfg:1530
 msgid "Makes sense."
@@ -1184,34 +1159,25 @@ msgid ""
 "Your big problem will be that\n"
 "the gate connecting the two halves\n"
 "of town has been locked."
-msgstr ""
-"Το μεγάλο πρόβλημα σου θα είναι ότι\n"
-"η πύλη που συνδέει τα δύο μισά\n"
-"της πόλης έχει κλειδωθεί."
+msgstr "Το μεγάλο πρόβλημα σου θα είναι ότι\nη πύλη που συνδέει τα δύο μισά\nτης πόλης έχει κλειδωθεί."
 
 #: data/level/crevice-village-central.cfg:1532
 msgid ""
 "And I don't think there's a guard next\n"
 "to it, whom you can steal the key from."
-msgstr ""
-"Και δεν νομίζω ότι υπάρχει φύλακας δίπλα\n"
-"σε αυτό,απο τον οποίο μπορείς να κλέψεις το κλειδί."
+msgstr "Και δεν νομίζω ότι υπάρχει φύλακας δίπλα\nσε αυτό,απο τον οποίο μπορείς να κλέψεις το κλειδί."
 
 #: data/level/crevice-village-central.cfg:1533
 msgid ""
 "They've probably hidden it in one of\n"
 "the houses, but I don't know which one."
-msgstr ""
-"Πιθανότατα θα το έχουν κρύψει σε ένα από\n"
-"τα σπίτια, αλλά δεν ξέρω ποιο."
+msgstr "Πιθανότατα θα το έχουν κρύψει σε ένα από\nτα σπίτια, αλλά δεν ξέρω ποιο."
 
 #: data/level/crevice-village-central.cfg:1534
 msgid ""
 "Asking one of the prisoners is probably\n"
 "our best bet for a clue."
-msgstr ""
-"Ρωτώντας έναν από τους φυλακισμένους είναι πιθανώς\n"
-"το καλύτερο που μπορούμε να κάνουμε για ένα στοιχείο."
+msgstr "Ρωτώντας έναν από τους φυλακισμένους είναι πιθανώς\nτο καλύτερο που μπορούμε να κάνουμε για ένα στοιχείο."
 
 #: data/level/crevice-village-central.cfg:4287
 msgid "Hey! Over here!"
@@ -1476,9 +1442,7 @@ msgstr ""
 msgid ""
 "Through there,\n"
 "is the way to where Milgram lives."
-msgstr ""
-"Μέσα από εκεί,\n"
-"είναι ο δρόμος όπου ζεί ο Μίλγκραμ."
+msgstr "Μέσα από εκεί,\nείναι ο δρόμος όπου ζεί ο Μίλγκραμ."
 
 #: data/level/crevice-village-heights.cfg:2093
 msgid ""
@@ -1504,9 +1468,7 @@ msgstr "Πέρασε αυτό, και θα έρθεις στο δάσος."
 msgid ""
 "I haven't been there in a long time,\n"
 "so I'm not sure what's become of it."
-msgstr ""
-"Δεν έχω πάει εκεί για ένα μεγάλο χρονικό διάστημα,\n"
-"έτσι δεν είμαι σίγουρος τι έχει απομείνει από αυτό."
+msgstr "Δεν έχω πάει εκεί για ένα μεγάλο χρονικό διάστημα,\nέτσι δεν είμαι σίγουρος τι έχει απομείνει από αυτό."
 
 #: data/level/crevice-village-heights.cfg:2104
 msgid ""
@@ -1631,10 +1593,7 @@ msgid ""
 "Yeah, that key right next to you -\n"
 "I think that unlocks a house that\n"
 "has the key to the town gate."
-msgstr ""
-"Ναι, αυτό το κλειδί δίπλα σου - \n"
-"νομίζω ότι ξεκλειδώνει ένα σπίτι που\n"
-"έχει το κλειδί για την πύλη της πόλης."
+msgstr "Ναι, αυτό το κλειδί δίπλα σου - \nνομίζω ότι ξεκλειδώνει ένα σπίτι που\nέχει το κλειδί για την πύλη της πόλης."
 
 #: data/level/crevice-village-house-1.cfg:1843
 msgid "Maybe."
@@ -1666,9 +1625,7 @@ msgstr ""
 msgid ""
 "Ah, I see..\n"
 "carry on then."
-msgstr ""
-"Α, κατάλαβα..\n"
-"Περάστε."
+msgstr "Α, κατάλαβα..\nΠεράστε."
 
 #: data/level/crevice-village-house-1.cfg:1868
 msgid "Thank God it's you!"
@@ -1691,10 +1648,7 @@ msgid ""
 "Yeah.\n"
 "Sad to say, I can't pick locks.\n"
 "I got nothing."
-msgstr ""
-"Ναι. \n"
-"Λυπάμαι που το λέω, δεν μπορώ να παραβιάσω κλειδαριές.\n"
-"Δέν έχω τίποτα."
+msgstr "Ναι. \nΛυπάμαι που το λέω, δεν μπορώ να παραβιάσω κλειδαριές.\nΔέν έχω τίποτα."
 
 #: data/level/crevice-village-house-1.cfg:1875
 msgid "So I'm stuck here, huh?"
@@ -1712,17 +1666,13 @@ msgstr ""
 msgid ""
 "Hmm, you know, I know one thing\n"
 "that might help you.."
-msgstr ""
-"Χμμ, ξέρεις, γνωρίζω κάτι\n"
-"που μπορεί να σε βοηθήσει.."
+msgstr "Χμμ, ξέρεις, γνωρίζω κάτι\nπου μπορεί να σε βοηθήσει.."
 
 #: data/level/crevice-village-house-1.cfg:1881
 msgid ""
 "There's supposedly\n"
 "a secret room in this house."
-msgstr ""
-"Υποτίθεται οτι υπάρχει\n"
-"ένα μυστικό δωμάτιο σε αυτό το σπίτι."
+msgstr "Υποτίθεται οτι υπάρχει\nένα μυστικό δωμάτιο σε αυτό το σπίτι."
 
 #: data/level/crevice-village-house-1.cfg:1883
 msgid "Oh really?  Where at?"
@@ -1732,17 +1682,13 @@ msgstr "Αλήθεια; Που ακριβώς;"
 msgid ""
 "If I knew that, it wouldn't\n"
 "be much of a secret, would it?"
-msgstr ""
-"Αν το ήξερα δεν θα ήταν\n"
-"και πολύ μυστικό, έτσι δεν είναι;"
+msgstr "Αν το ήξερα δεν θα ήταν\nκαι πολύ μυστικό, έτσι δεν είναι;"
 
 #: data/level/crevice-village-house-1.cfg:1886
 msgid ""
 "Figures.\n"
 "Well, thanks for the help!"
-msgstr ""
-"Μαντεύω.\n"
-"Λοιπόν, ευχαριστώ για τη βοήθεια!"
+msgstr "Μαντεύω.\nΛοιπόν, ευχαριστώ για τη βοήθεια!"
 
 #: data/level/crevice-village-house-1.cfg:1887
 msgid "Good luck!"
@@ -1752,9 +1698,7 @@ msgstr "Καλή τύχη!"
 msgid ""
 "Jeez, I *swear* this house\n"
 "didn't look THIS big from the outside!"
-msgstr ""
-"Ωχ, *ορκίζομαι* οτι αυτό το σπίτι\n"
-"δεν έδειχνε ΤΟΣΟ μεγάλο εξωτερικά!"
+msgstr "Ωχ, *ορκίζομαι* οτι αυτό το σπίτι\nδεν έδειχνε ΤΟΣΟ μεγάλο εξωτερικά!"
 
 #: data/level/crevice-village-house-1.cfg:1925
 msgid "Uh, oh, I hear ... trouble."
@@ -1782,25 +1726,19 @@ msgstr "Είμαστε δίδυμα."
 msgid ""
 "Is there anything\n"
 "you can do to help us?"
-msgstr ""
-"Υπάρχει κάτι\n"
-"που μπορείς να κάνεις για να μας βοηθήσεις;"
+msgstr "Υπάρχει κάτι\nπου μπορείς να κάνεις για να μας βοηθήσεις;"
 
 #: data/level/crevice-village-house-2.cfg:2761
 msgid ""
 "Not yet.\n"
 "Sorry."
-msgstr ""
-"'Οχι ακόμα.\n"
-"Λυπάμαι."
+msgstr "'Οχι ακόμα.\nΛυπάμαι."
 
 #: data/level/crevice-village-house-2.cfg:2783
 msgid ""
 "Hey,\n"
 "I'm trying to help save the town."
-msgstr ""
-"Εϊ,\n"
-"προσπαθώ να βοηθήσω να σωθεί η πόλη."
+msgstr "Εϊ,\nπροσπαθώ να βοηθήσω να σωθεί η πόλη."
 
 #: data/level/crevice-village-house-2.cfg:2785
 msgid "Can you give me any advice?"
@@ -1814,9 +1752,7 @@ msgstr "Ναι."
 msgid ""
 "The elder's house is off to the east,\n"
 "past the town gate."
-msgstr ""
-"Το σπίτι του γέροντα είναι προς τα ανατολικά,\n"
-"περνώντας από την πύλη της πόλης."
+msgstr "Το σπίτι του γέροντα είναι προς τα ανατολικά,\nπερνώντας από την πύλη της πόλης."
 
 #: data/level/crevice-village-house-2.cfg:2788
 msgid "We saw Milgram's lieutenant go in there."
@@ -1842,9 +1778,7 @@ msgstr "Σπίτι Ανεμιστήρας"
 msgid ""
 "Argh! Who in the world would\n"
 "design a house like this?"
-msgstr ""
-"Γκρρ... Ποιος στο καλό θα \n"
-"σχεδίαζε σπίτι σαν κι αυτό;"
+msgstr "Γκρρ... Ποιος στο καλό θα \nσχεδίαζε σπίτι σαν κι αυτό;"
 
 #: data/level/crevice-village-house-4.cfg:2405
 msgid "Hmmm..."
@@ -1883,17 +1817,13 @@ msgstr ""
 msgid ""
 "Know anything helpful\n"
 "about this house?"
-msgstr ""
-"Γνωρίζεις τίποτα χρήσιμο\n"
-"για αυτό το σπίτι;"
+msgstr "Γνωρίζεις τίποτα χρήσιμο\nγια αυτό το σπίτι;"
 
 #: data/level/crevice-village-house-4.cfg:2552
 msgid ""
 "Unfortunately I don't.\n"
 "I was just visiting."
-msgstr ""
-"Δυστυχώς δεν γνωρίζω.\n"
-"Ήμουν απλά επισκέπτης."
+msgstr "Δυστυχώς δεν γνωρίζω.\nΉμουν απλά επισκέπτης."
 
 #: data/level/crevice-village-house-4.cfg:2553
 msgid "The floorplan is quite loony."
@@ -2014,9 +1944,7 @@ msgstr ""
 msgid ""
 "Whoa...\n"
 "... is that what I think it is?"
-msgstr ""
-"Πω πω...\n"
-"...είναι αυτό που νομίζω ότι είναι;"
+msgstr "Πω πω...\n...είναι αυτό που νομίζω ότι είναι;"
 
 #: data/level/crevice-village-house-elder.cfg:1573
 msgid "It is indeed, my boy!"
@@ -2052,9 +1980,7 @@ msgstr ""
 msgid ""
 "Yes.\n"
 "Yes it was."
-msgstr ""
-"Ναι.\n"
-"Ναι ήταν."
+msgstr "Ναι.\nΝαι ήταν."
 
 #: data/level/crevice-village-house-elder.cfg:1593
 msgid "...And?"
@@ -2155,9 +2081,7 @@ msgstr ""
 msgid ""
 "Nope.\n"
 "Not until you answer my question!"
-msgstr ""
-"Όχι.\n"
-"Όχι μέχρι να απαντήσεις στην ερώτησή μου!"
+msgstr "Όχι.\nΌχι μέχρι να απαντήσεις στην ερώτησή μου!"
 
 #: data/level/crevice-village-house-elder.cfg:1631
 msgid ""
@@ -2384,33 +2308,25 @@ msgstr ""
 msgid ""
 "If you're thinking to go in there,\n"
 "you might reconsider."
-msgstr ""
-"Αν σκέφτεσε να πάς εκεί μέσα,\n"
-"ίσως να το ξανασκεφτείς."
+msgstr "Αν σκέφτεσε να πάς εκεί μέσα,\nίσως να το ξανασκεφτείς."
 
 #: data/level/crevice-village.cfg:1651
 msgid ""
 "Well, yeah,\n"
 "I was gonna go in there."
-msgstr ""
-"Λοιπόν, ναι,\n"
-"ήμουν έτοιμος να πάω εκεί μέσα."
+msgstr "Λοιπόν, ναι,\nήμουν έτοιμος να πάω εκεί μέσα."
 
 #: data/level/crevice-village.cfg:1653
 msgid ""
 "I mean, what are we gonna do,\n"
 "sit on our butts here?"
-msgstr ""
-"Θέλω να πω, τι θα κάνουμε,\n"
-"θα στρογγυλοκαθόμαστε εδώ;"
+msgstr "Θέλω να πω, τι θα κάνουμε,\nθα στρογγυλοκαθόμαστε εδώ;"
 
 #: data/level/crevice-village.cfg:1654
 msgid ""
 "No, no...\n"
 "but I was hoping we'd go in in force."
-msgstr ""
-"Όχι, όχι...\n"
-"αλλά ήλπιζα ότι θα πάμε μέσα με τη βία."
+msgstr "Όχι, όχι...\nαλλά ήλπιζα ότι θα πάμε μέσα με τη βία."
 
 #: data/level/crevice-village.cfg:1656
 msgid "Against Milgram? Really?"
@@ -2472,19 +2388,14 @@ msgstr ""
 msgid ""
 "Yes... oh dear.\n"
 "I see what you mean."
-msgstr ""
-"Ναι... Ωχ αμάν.\n"
-"Καταλαβαίνω τι εννοείς."
+msgstr "Ναι... Ωχ αμάν.\nΚαταλαβαίνω τι εννοείς."
 
 #: data/level/crevice-village.cfg:1676
 msgid ""
 "There's got to be something\n"
 "we can use to our advantage,\n"
 "but \"numerical superiority\" isn't it."
-msgstr ""
-"Πρέπει να υπάρχει κάτι\n"
-"που μπορούμε να χρησιμοποιήσουμε προς όφελός μας,\n"
-"αλλά η «αριθμητική υπεροχή» δεν είναι."
+msgstr "Πρέπει να υπάρχει κάτι\nπου μπορούμε να χρησιμοποιήσουμε προς όφελός μας,\nαλλά η «αριθμητική υπεροχή» δεν είναι."
 
 #: data/level/crevice-village.cfg:1678
 msgid ""
@@ -2504,17 +2415,13 @@ msgstr "Ίσως μπορώ να μιλήσω με τον τρόπο μου γι
 msgid ""
 "Worse comes to worse,\n"
 "I can just run for it.  Right?"
-msgstr ""
-"Απο το κακό στο χειρότερο,\n"
-"δεν χάνω τίποτα να το προσπαθήσω. Σωστά;"
+msgstr "Απο το κακό στο χειρότερο,\nδεν χάνω τίποτα να το προσπαθήσω. Σωστά;"
 
 #: data/level/crevice-village.cfg:1684
 msgid ""
 "I do hope so.\n"
 "Good luck!"
-msgstr ""
-"Το ελπίζω.\n"
-"Καλή τύχη!"
+msgstr "Το ελπίζω.\nΚαλή τύχη!"
 
 #: data/level/dark-corridor.cfg:12
 msgid "Dark Corridor"
@@ -2584,9 +2491,7 @@ msgstr "Το δωμάτιο του Froggatto"
 msgid ""
 "Ahh, what a beautiful ..\n"
 "..Afternoon?!"
-msgstr ""
-"Ααα, τι όμορφο..\n"
-".. Απόγευμα;!"
+msgstr "Ααα, τι όμορφο..\n.. Απόγευμα;!"
 
 #: data/level/frogatto-grotto-frogattos-room.cfg:924
 msgid "Oh geez! I overslept!"
@@ -2630,9 +2535,7 @@ msgstr ""
 msgid ""
 "I got tired of waiting,\n"
 "and ate by myself."
-msgstr ""
-"Κουραστεί να περιμένω,\n"
-"και το έφαγα μόνος μου."
+msgstr "Κουραστεί να περιμένω,\nκαι το έφαγα μόνος μου."
 
 #: data/level/frogatto-grotto-inside.cfg:1150
 msgid "Leftovers are in the fridge."
@@ -2740,9 +2643,7 @@ msgstr ""
 msgid ""
 "If you already know how to play,\n"
 "then just walk to the next level."
-msgstr ""
-"Εάν γνωρίζεις ήδη πώς να παίξεις,\n"
-"τότε απλά προχώρησε στο επόμενο επίπεδο."
+msgstr "Εάν γνωρίζεις ήδη πώς να παίξεις,\nτότε απλά προχώρησε στο επόμενο επίπεδο."
 
 #: data/level/grassy-path.cfg:1083
 msgid ""
@@ -2754,9 +2655,7 @@ msgstr ""
 msgid ""
 "There is only one save file,\n"
 "so be careful not to overwrite it!"
-msgstr ""
-"Υπάρχει μόνο ένα αρχείο αποθήκευσης,\n"
-"για αυτό προσέχε να μην το αντικαταστήσης!"
+msgstr "Υπάρχει μόνο ένα αρχείο αποθήκευσης,\nγια αυτό προσέχε να μην το αντικαταστήσης!"
 
 #: data/level/grassy-path.cfg:1103
 msgid ""
@@ -2822,9 +2721,7 @@ msgstr ""
 msgid ""
 "You can grab enemies with the tongue,\n"
 "and then spit them back out."
-msgstr ""
-"Μπορείς να αρπάξεις τους εχθρούς με τη γλώσσα,\n"
-"και στη συνέχεια να τους αποβάλεις προς τα έξω."
+msgstr "Μπορείς να αρπάξεις τους εχθρούς με τη γλώσσα,\nκαι στη συνέχεια να τους αποβάλεις προς τα έξω."
 
 #: data/level/grassy-path.cfg:1133
 msgid "Once spat out, they become a deadly projectile."
@@ -3211,9 +3108,7 @@ msgstr ""
 msgid ""
 "Frogatto!\n"
 "He's RIGHT HERE!"
-msgstr ""
-"Frogatto!\n"
-"Είναι ΕΔΩ ΠΕΡΑ!"
+msgstr "Frogatto!\nΕίναι ΕΔΩ ΠΕΡΑ!"
 
 #: data/level/milgrams-throne-room.cfg:604
 msgid ""
@@ -3321,6 +3216,10 @@ msgid ""
 "\"What happens to trespassers.\""
 msgstr ""
 
+#: data/level/milgrams-throne-room.cfg:702
+msgid "Fight!"
+msgstr ""
+
 #: data/level/newstyle-forest.cfg:12
 msgid "Home-Style Forest"
 msgstr ""
@@ -3374,9 +3273,7 @@ msgstr "Γεια σου."
 msgid ""
 "A pleasure to meet you.\n"
 "I am Mortimer."
-msgstr ""
-"Χαίρομαι που σε γνωρίζω.\n"
-"Είμαι ο Mortimer."
+msgstr "Χαίρομαι που σε γνωρίζω.\nΕίμαι ο Mortimer."
 
 #: data/level/secluded-hut-interior.cfg:774
 msgid "That's nice."
@@ -3396,9 +3293,7 @@ msgstr ""
 msgid ""
 "...\n"
 "Okay."
-msgstr ""
-"...\n"
-"Εντάξει."
+msgstr "...\nΕντάξει."
 
 #: data/level/secluded-hut-interior.cfg:780
 msgid ""
@@ -3458,9 +3353,7 @@ msgstr ""
 msgid ""
 "Oh yes, a reward!\n"
 "Here you go..."
-msgstr ""
-"Ω ναι, μια ανταμοιβή!\n"
-"Ορίστε..."
+msgstr "Ω ναι, μια ανταμοιβή!\nΟρίστε..."
 
 #: data/level/secluded-hut-interior.cfg:800
 msgid ""
@@ -3502,9 +3395,7 @@ msgstr ""
 msgid ""
 "Yeah.\n"
 "Who WAS that guy?!"
-msgstr ""
-"Ναι.\n"
-"Ποιος ΗΤΑΝ αυτός ο τύπος;"
+msgstr "Ναι.\nΠοιος ΗΤΑΝ αυτός ο τύπος;"
 
 #: data/level/secluded-hut.cfg:2383
 msgid "One of Milgram's henchmen, no doubt."
@@ -3524,9 +3415,7 @@ msgstr "Περιμένε, τι; ο Μίλγκραμ;"
 msgid ""
 "What's he doing\n"
 "on this side of the island?"
-msgstr ""
-"Τι κάνει\n"
-"σε αυτή την πλευρά του νησιού;"
+msgstr "Τι κάνει\nσε αυτή την πλευρά του νησιού;"
 
 #: data/level/secluded-hut.cfg:2390
 msgid "You still haven't heard, then."
@@ -4546,8 +4435,8 @@ msgstr ""
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:35
 msgid ""
-"The furthest that has been reached is level {registry."
-"arcade_coin_race_high_score}."
+"The furthest that has been reached is level "
+"{registry.arcade_coin_race_high_score}."
 msgstr ""
 
 #: data/objects/items/max_heart_object.cfg:18
@@ -4709,9 +4598,7 @@ msgstr "Γεια σου, Chopple."
 msgid ""
 "Hey.\n"
 "Welcome to the store."
-msgstr ""
-"Γεια.\n"
-"Καλώς ήρθες στο κατάστημα."
+msgstr "Γεια.\nΚαλώς ήρθες στο κατάστημα."
 
 #: data/objects/props-interactive/npcs/chopple_npc.cfg:9
 msgid "Take your time, look around."
