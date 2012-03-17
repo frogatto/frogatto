@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto v1.0.3\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-03-16 21:15-0300\n"
+"POT-Creation-Date: 2012-03-16 21:22-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3212,6 +3212,10 @@ msgstr ""
 msgid ""
 "...but the subject's going to be:\n"
 "\"What happens to trespassers.\""
+msgstr ""
+
+#: data/level/milgrams-throne-room.cfg:702
+msgid "Fight!"
 msgstr ""
 
 #: data/level/newstyle-forest.cfg:12
