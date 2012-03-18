@@ -239,8 +239,14 @@ namespace {
 
 	private:
 		variant execute(const formula_callable& variables) const {
-			const int n = args()[0]->evaluate(variables).as_int();
-			return variant(n >= 0 ? n : -n);
+			variant v = args()[0]->evaluate(variables);
+			if(v.is_decimal()) {
+				const decimal d = v.as_decimal();
+				return variant(d >= 0 ? d : -d);
+			} else {
+				const int n = v.as_int();
+				return variant(n >= 0 ? n : -n);
+			}
 		}
 	};
 
