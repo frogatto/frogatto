@@ -1387,7 +1387,8 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 			} else if(i1->type == TOKEN_DECIMAL) {
 				char* endptr = NULL;
 				char* enddec = NULL;
-				int64_t n = strtol(std::string(i1->begin,i1->end).c_str(), &endptr, 0);
+				std::string decimal_string(i1->begin, i1->end);
+				int64_t n = strtol(decimal_string.c_str(), &endptr, 0);
 				int64_t m = strtol(endptr+1, &enddec, 0);
 				int dist = enddec - endptr;
 				while(dist > (DECIMAL_PLACES+1)) {

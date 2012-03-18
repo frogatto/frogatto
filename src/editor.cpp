@@ -1135,7 +1135,7 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 			std::sort(v2.begin(),v2.end(), sort_entity_zsub_orders);
 					
 			//if it was +, then move the backmost object in front of the frontmost object.
-			//if it was -, do vice versa (frontmost object goes behind backmost objet)
+			//if it was -, do vice versa (frontmost object goes behind backmost object)
 			if(key.keysym.sym == SDLK_EQUALS){
 				execute_command(boost::bind(&entity::set_zsub_order, v2.front(), v2.back()->zsub_order()+1),
 								boost::bind(&entity::set_zsub_order, v2.front(), v2.front()->zsub_order() ));
