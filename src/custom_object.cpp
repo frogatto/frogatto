@@ -1676,32 +1676,32 @@ bool custom_object::rect_collides(const rect& r) const
 	}
 }
 
-const solid_info* custom_object::calculate_solid() const
+const_solid_info_ptr custom_object::calculate_solid() const
 {
 	if(!type_->has_solid()) {
-		return NULL;
+		return const_solid_info_ptr();
 	}
 
 	const frame& f = current_frame();
 	if(f.solid()) {
-		return f.solid().get();
+		return f.solid();
 	}
 
-	return type_->solid().get();
+	return type_->solid();
 }
 
-const solid_info* custom_object::calculate_platform() const
+const_solid_info_ptr custom_object::calculate_platform() const
 {
 	if(platform_solid_info_.get()) {
-		return platform_solid_info_.get();
+		return platform_solid_info_;
 	} else if(platform_area_) {
 		//if platform_solid_info_ is NULL but we have a rect, that
 		//means there is no platform, so return NULL instead of
 		//defaulting to the type.
-		return NULL;
+		return const_solid_info_ptr();
 	}
 
-	return type_->platform().get();
+	return type_->platform();
 }
 
 void custom_object::control(const level& lvl)

@@ -4,7 +4,6 @@
 #include <map>
 #include <string>
 
-#include "boost/scoped_ptr.hpp"
 #include "boost/shared_ptr.hpp"
 
 #include "custom_object_callable.hpp"
@@ -39,6 +38,8 @@ public:
 	static void invalidate_object(const std::string& id);
 	static void invalidate_all_objects();
 	static std::vector<const_custom_object_type_ptr> get_all();
+
+	static int reload_modified_code();
 
 	typedef std::vector<game_logic::const_formula_ptr> event_handler_map;
 
@@ -173,6 +174,8 @@ public:
 	bool editor_force_standing() const { return editor_force_standing_; }
 
 private:
+	static void overwrite_frames(custom_object_type* t, custom_object_type* new_obj);
+
 	custom_object_callable callable_definition_;
 
 	std::string id_;
@@ -180,7 +183,9 @@ private:
 
 	int timer_frequency_;
 
-	typedef std::map<std::string, std::vector<boost::shared_ptr<frame> > > frame_map;
+	typedef boost::shared_ptr<frame> frame_ptr;
+
+	typedef std::map<std::string, std::vector<frame_ptr> > frame_map;
 	frame_map frames_;
 	variant available_frames_;
 
@@ -191,7 +196,7 @@ private:
 	event_handler_map event_handlers_;
 	boost::shared_ptr<game_logic::function_symbol_table> object_functions_;
 
-	boost::scoped_ptr<std::pair<int, int> > parallax_scale_millis_;
+	boost::shared_ptr<std::pair<int, int> > parallax_scale_millis_;
 	
 	int zorder_;
 	int zsub_order_;

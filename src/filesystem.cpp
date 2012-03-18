@@ -527,6 +527,25 @@ std::string find_file(const std::string& fname)
 	return fname;
 }
 
+int64_t file_mod_time(const std::string& fname)
+{
+	struct stat buf;
+	if(stat(fname.c_str(), &buf)) {
+		std::cerr << "file_mod_time FAILED for '" << fname << "': ";
+		switch(errno) {
+		case EACCES: std::cerr << "EACCES\n"; break;
+		case EBADF: std::cerr << "EBADF\n"; break;
+		case EFAULT: std::cerr << "EFAULT\n"; break;
+		case ENOENT: std::cerr << "ENOENT\n"; break;
+		case ENOTDIR: std::cerr << "ENOTDIR\n"; break;
+		default: std::cerr << "UNKNOWN ERROR " << errno << "\n"; break;
+		}
+
+		return 0;
+	}
+	return static_cast<int64_t>(buf.st_mtime);
+}
+
 bool file_exists(const std::string& name)
 {
 	return do_file_exists(find_file(name));

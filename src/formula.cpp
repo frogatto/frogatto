@@ -1538,9 +1538,8 @@ formula_ptr formula::create_optional_formula(const wml::value& val, function_sym
 			std::cerr << *val.filename() << " " << val.line() << ": ";
 		}
 		
-		std::cerr << "ERROR parsing optional formula: '" << val << "'\n";
 		//for now die a horrible death on such errors
-		assert(false);
+		ASSERT_LOG(false, "ERROR parsing optional formula '" << val << "'");
 		
 		return formula_ptr();
 	}

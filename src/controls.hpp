@@ -1,6 +1,8 @@
 #ifndef CONTROLS_HPP_INCLUDED
 #define CONTROLS_HPP_INCLUDED
 
+#include <boost/scoped_ptr.hpp>
+
 #include <vector>
 #include <cstddef>
 
@@ -32,7 +34,17 @@ public:
 	~local_controls_lock();
 };
 
+class control_backup_scope_impl;
+class control_backup_scope {
+public:
+	control_backup_scope();
+	~control_backup_scope();
+private:
+	boost::scoped_ptr<control_backup_scope_impl> impl_;
+};
+
 void read_until(int ncycle);
+int local_controls_end();
 void read_local_controls();
 void unread_local_controls();
 void ignore_current_keypresses();

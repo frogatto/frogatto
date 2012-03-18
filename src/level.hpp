@@ -110,6 +110,10 @@ public:
 	void add_player(entity_ptr p);
 	void add_character(entity_ptr p);
 
+	//add a character that will be drawn on the scene. It will be removed
+	//from the level next time set_active_chars() is called.
+	void add_draw_character(entity_ptr p);
+
 	//schedule a character for removal at the end of the current cycle.
 	void schedule_character_removal(entity_ptr p);
 
@@ -242,6 +246,11 @@ public:
 	void replay_from_cycle(int ncycle);
 	void backup();
 	void reverse_one_cycle();
+
+	//gets historical 'shadows' of a given object for the last n frames.
+	std::vector<entity_ptr> trace_past(entity_ptr e, int ncycles);
+
+	std::vector<entity_ptr> predict_future(entity_ptr e, int ncycles);
 
 	bool is_multiplayer() const { return players_.size() > 1; }
 

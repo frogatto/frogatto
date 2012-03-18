@@ -80,6 +80,27 @@ CKey& keyboard() {
 }
 }
 
+struct control_backup_scope_impl {
+	std::vector<unsigned char> controls[MAX_PLAYERS];
+	int32_t highest_confirmed[MAX_PLAYERS];
+};
+
+control_backup_scope::control_backup_scope() : impl_(new control_backup_scope_impl)
+{
+	for(int n = 0; n != MAX_PLAYERS; ++n) {
+		impl_->controls[n] = controls[n];
+		impl_->highest_confirmed[n] = highest_confirmed[n];
+	}
+}
+
+control_backup_scope::~control_backup_scope()
+{
+	for(int n = 0; n != MAX_PLAYERS; ++n) {
+		controls[n] = impl_->controls[n];
+		highest_confirmed[n] = impl_->highest_confirmed[n];
+	}
+}
+
 int their_highest_confirmed() {
 	int32_t res = -1;
 	for(int n = 0; n != nplayers; ++n) {
@@ -158,6 +179,15 @@ void read_until(int ncycle)
 	while(controls[local_player].size() > ncycle+1) {
 		unread_local_controls();
 	}
+}
+
+int local_controls_end()
+{
+	if(local_player < 0 || local_player >= nplayers) {
+		return 0;
+	}
+
+	return controls[local_player].size();
 }
 
 void read_local_controls()

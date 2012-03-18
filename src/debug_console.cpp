@@ -1,8 +1,12 @@
 #include <list>
 #include <sstream>
 
+#include <boost/bind.hpp>
+#include <boost/function.hpp>
+
 #include "custom_object.hpp"
 #include "custom_object_functions.hpp"
+#include "custom_object_type.hpp"
 #include "draw_scene.hpp"
 #include "filesystem.hpp"
 #include "font.hpp"
@@ -14,6 +18,7 @@
 #include "player_info.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
+#include "slider.hpp"
 #include "text_entry_widget.hpp"
 #include "wml_writer.hpp"
 
@@ -74,7 +79,7 @@ class console
 {
 public:
 	explicit console()
-	  : history_pos_(0) {
+	  : history_pos_(0), invalidated_(false) {
 		entry_.set_font("door_label");
 		entry_.set_loc(10, 300);
 		entry_.set_dim(300, 20);
@@ -92,8 +97,15 @@ public:
 
 		level* lvl = &lvl_state;
 
+		while(lvl->cycle() < controls::local_controls_end()) {
+			lvl->process();
+		}
+
 		entity_ptr context(&ob);
+		std::string context_label = context->label();
 		lvl->editor_select_object(context);
+
+		bool show_shadows = false;
 
 		bool done = false;
 		while(!done) {
@@ -101,7 +113,8 @@ public:
 			const unsigned int buttons = SDL_GetMouseState(&mousex, &mousey);
 
 			entity_ptr selected = lvl->get_next_character_at_point(last_draw_position().x/100 + mousex, last_draw_position().y/100 + mousey, last_draw_position().x/100, last_draw_position().y/100);
-			lvl->set_editor_highlight(selected);
+			lvl->editor_clear_selection();
+			lvl->editor_select_object(selected);
 
 			SDL_Event event;
 			while(SDL_PollEvent(&event)) {
@@ -109,6 +122,7 @@ public:
 				case SDL_MOUSEBUTTONDOWN: {
 					if(selected) {
 						context = selected;
+						context_label = context->label();
 						lvl->editor_clear_selection();
 						lvl->editor_select_object(context);
 						debug_console::add_message(formatter() << "Selected object: " << selected->debug_description());
@@ -128,13 +142,13 @@ public:
 							entry_.set_text("");
 
 							if(text == "next") {
+								const controls::control_backup_scope ctrl_scope;
 								needs_double_prev = true;
 								lvl->process();
 								lvl->process_draw();
 								lvl->backup();
 								break;
 							} else if(text == "prev") {
-								lvl->editor_clear_selection();
 								if(needs_double_prev) {
 									lvl->reverse_one_cycle();
 									needs_double_prev = false;
@@ -143,12 +157,18 @@ public:
 								lvl->set_active_chars();
 								lvl->process_draw();
 
-								context.reset(&lvl->player()->get_entity());
+								context = select_object(*lvl, context_label);
 
-								lvl->editor_select_object(context);
 								break;
 							} else if(text == "step") {
 								context->process(*lvl);
+								break;
+							} else if(text == "history") {
+								shadows_from_the_past_ = lvl->predict_future(context, 100);
+								show_shadows = true;
+								context = select_object(*lvl, context_label);
+
+								history_slider_.reset(new gui::slider(200, boost::bind(&console::history_slider_change, this, lvl, _1), 1.0));
 								break;
 							}
 
@@ -156,6 +176,12 @@ public:
 							variant v = f.execute(*context);
 							context->execute_command(v);
 							debug_console::add_message(v.to_debug_string());
+
+							if(show_shadows) {
+								shadows_from_the_past_ = lvl->predict_future(context, 100);
+							}
+
+							context = select_object(*lvl, context_label);
 						} catch(game_logic::formula_error&) {
 							debug_console::add_message("error parsing formula");
 						} catch(...) {
@@ -180,9 +206,44 @@ public:
 				}
 
 				entry_.process_event(event, false);
+
+				if(history_slider_) {
+					history_slider_->process_event(event, false);
+				}
+			}
+
+			if(invalidated_) {
+				context = select_object(*lvl, context_label);
+				shadows_from_the_past_ = lvl->predict_future(context, 100);
+				context = select_object(*lvl, context_label);
+				invalidated_ = false;
+			}
+
+			if(show_shadows) {
+				if(custom_object_type::reload_modified_code()) {
+					shadows_from_the_past_ = lvl->predict_future(context, 100);
+					context = select_object(*lvl, context_label);
+				}
+			}
+
+			lvl->editor_clear_selection();
+			lvl->editor_select_object(context);
+			lvl->set_active_chars();
+
+			std::vector<variant> alpha_values;
+			foreach(entity_ptr e, shadows_from_the_past_) {
+				alpha_values.push_back(e->query_value("alpha"));
+				e->mutate_value("alpha", variant(32));
+				lvl->add_draw_character(e);
 			}
 
 			draw(*lvl);
+
+			int index = 0;
+			foreach(entity_ptr e, shadows_from_the_past_) {
+				e->mutate_value("alpha", alpha_values[index++]);
+			}
+			lvl->set_active_chars();
 			SDL_Delay(20);
 		}
 
@@ -196,13 +257,76 @@ private:
 		draw_scene(lvl, last_draw_position(), &lvl.player()->get_entity());
 
 		entry_.draw();
+		if(history_slider_) {
+			history_slider_->draw();
+		}
 
 		SDL_GL_SwapBuffers();
+	}
+
+	entity_ptr select_object(level& lvl, std::string& label) const {
+		entity_ptr context = lvl.get_entity_by_label(label);
+		if(!context) {
+			context.reset(&lvl.player()->get_entity());
+			label = context->label();
+		}
+		lvl.editor_clear_selection();
+		lvl.editor_select_object(context);
+
+		return context;
+	}
+
+	void history_slider_change(level* lvl, float value) const {
+		if(shadows_from_the_past_.empty()) {
+			return;
+		}
+
+		int index = value*(shadows_from_the_past_.size()+1);
+		if(index < 0) {
+			index = 0;
+		}
+		if(index >= shadows_from_the_past_.size()) {
+			index = shadows_from_the_past_.size()-1;
+		}
+
+		const int endpoint = controls::local_controls_end();
+		const int target_point = (endpoint - shadows_from_the_past_.size()) + index;
+		if(endpoint == target_point) {
+			return;
+		}
+
+		invalidated_ = true;
+
+		std::cerr << "HISTORY SLIDER: " << value << " -> " << target_point << " WE ARE AT " << lvl->cycle() << "\n";
+		const controls::control_backup_scope ctrl_scope;
+		while(lvl->cycle() < target_point) {
+			std::cerr << "FORWARDING: " << lvl->cycle() << " < " << target_point << "\n";
+			lvl->process();
+			lvl->process_draw();
+			lvl->backup();
+		}
+
+		int max_iter = 5000;
+		while(lvl->cycle() > target_point) {
+			std::cerr << "REVERSING: " << lvl->cycle() << " > " << target_point << "\n";
+			lvl->reverse_one_cycle();
+			if(!--max_iter) {
+				break;
+			}
+		}
+
+		std::cerr << "DONE REVERSING\n";
+
+		lvl->set_active_chars();
 	}
 
 	mutable gui::text_entry_widget entry_;
 	mutable std::vector<std::string> history_;
 	mutable int history_pos_;
+	mutable gui::slider_ptr history_slider_;
+	mutable std::vector<entity_ptr> shadows_from_the_past_;
+
+	mutable bool invalidated_;
 };
 
 }

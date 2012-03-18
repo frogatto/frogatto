@@ -23,6 +23,11 @@
 #include "unit_test.hpp"
 
 namespace {
+std::map<std::string, int64_t>& file_mod_times() {
+	static std::map<std::string, int64_t> mod_times;
+	return mod_times;
+}
+
 std::map<std::string, std::string>& object_file_paths() {
 	static std::map<std::string, std::string> paths;
 	return paths;
@@ -40,6 +45,22 @@ const std::string& object_file_path() {
 	} else {
 		static const std::string value =  "data/objects/";
 		return value;
+	}
+}
+
+void load_file_paths() {
+
+	//find out the paths to all our files
+	sys::get_unique_filenames_under_dir(object_file_path(), &object_file_paths());
+	sys::get_unique_filenames_under_dir("data/object_prototypes", &prototype_file_paths());
+
+	for(std::map<std::string, std::string>::const_iterator i = object_file_paths().begin(); i != object_file_paths().end(); ++i) {
+		file_mod_times()[i->second] = sys::file_mod_time("./" + i->second);
+		std::cerr << "FILE MOD TIME FOR " << i->second << ": " << file_mod_times()[i->second] << "\n";
+	}
+
+	for(std::map<std::string, std::string>::const_iterator i = prototype_file_paths().begin(); i != prototype_file_paths().end(); ++i) {
+		file_mod_times()[i->second] = sys::file_mod_time(i->second);
 	}
 }
 
@@ -180,9 +201,7 @@ wml::node_ptr custom_object_type::merge_prototype(wml::node_ptr node)
 const std::string* custom_object_type::get_object_path(const std::string& id)
 {
 	if(object_file_paths().empty()) {
-		//find out the paths to all our files
-		sys::get_unique_filenames_under_dir(object_file_path(), &object_file_paths());
-		sys::get_unique_filenames_under_dir("data/object_prototypes", &prototype_file_paths());
+		load_file_paths();
 	}
 
 	std::map<std::string, std::string>::const_iterator itor = object_file_paths().find(id);
@@ -237,9 +256,7 @@ const_custom_object_type_ptr custom_object_type::get_sub_object(const std::strin
 custom_object_type_ptr custom_object_type::create(const std::string& id)
 {
 	if(object_file_paths().empty()) {
-		//find out the paths to all our files
-		sys::get_unique_filenames_under_dir(object_file_path(), &object_file_paths());
-		sys::get_unique_filenames_under_dir("data/object_prototypes", &prototype_file_paths());
+		load_file_paths();
 	}
 
 	//find the file for the object we are loading.
@@ -258,7 +275,7 @@ custom_object_type_ptr custom_object_type::create(const std::string& id)
 			schema->validate_node(node);
 		}
 
-		//create the object and add it to our cache.
+		//create the object
 		custom_object_type_ptr result(new custom_object_type(node));
 
 		//load the object's variations here to avoid pausing the game
@@ -304,6 +321,91 @@ std::vector<const_custom_object_type_ptr> custom_object_type::get_all()
 	}
 
 	return res;
+}
+
+void custom_object_type::overwrite_frames(custom_object_type* t, custom_object_type* new_obj)
+{
+	//We keep around leaked frames in case there are still
+	//references to them.
+	//TODO: make all references to frames use reference-counting
+	//pointers and fix this.
+	static std::vector<frame_ptr> leaked_frames;
+
+	*t->default_frame_ = *new_obj->default_frame_;
+	leaked_frames.push_back(t->default_frame_);
+
+	//clone the frames from the new object into the old one,
+	//so if there are any remaining references to the frames they
+	//get updated.
+	for(frame_map::iterator i = t->frames_.begin(); i != t->frames_.end(); ++i) {
+		frame_map::iterator j = new_obj->frames_.find(i->first);
+		if(j != new_obj->frames_.end() && i->second.size() == j->second.size()) {
+			for(int n = 0; n != i->second.size(); ++n) {
+				*i->second[n] = *j->second[n];
+			}
+		}
+
+		for(int n = 0; n != i->second.size(); ++n) {
+			leaked_frames.push_back(i->second[n]);
+		}
+	}
+
+	for(std::map<std::string, const_custom_object_type_ptr>::iterator i = t->sub_objects_.begin(); i != t->sub_objects_.end(); ++i) {
+		std::map<std::string, const_custom_object_type_ptr>::iterator j = new_obj->sub_objects_.find(i->first);
+		if(j != new_obj->sub_objects_.end()) {
+			overwrite_frames(const_cast<custom_object_type*>(i->second.get()),
+			                 const_cast<custom_object_type*>(j->second.get()));
+		}
+	}
+
+	for(std::map<std::vector<std::string>, const_custom_object_type_ptr>::iterator i = t->variations_cache_.begin(); i != t->variations_cache_.end(); ++i) {
+		std::map<std::vector<std::string>, const_custom_object_type_ptr>::iterator j = new_obj->variations_cache_.find(i->first);
+		if(j != new_obj->variations_cache_.end()) {
+			overwrite_frames(const_cast<custom_object_type*>(i->second.get()),
+			                 const_cast<custom_object_type*>(j->second.get()));
+		}
+	}
+}
+
+int custom_object_type::reload_modified_code()
+{
+	int result = 0;
+	for(object_map::iterator i = cache().begin(); i != cache().end(); ++i) {
+		const std::string* path = get_object_path(i->first + ".cfg");
+		if(!path) {
+			continue;
+		}
+
+		std::map<std::string, int64_t>::iterator mod_itor = file_mod_times().find(*path);
+		const int64_t mod_time = sys::file_mod_time(*path);
+		if(mod_time != 0 && mod_itor != file_mod_times().end() && mod_time != mod_itor->second) {
+			custom_object_type_ptr new_obj;
+			mod_itor->second = mod_time;
+			std::cerr << "FILE MODIFIED: " << i->first << " -> " << *path << ": " << mod_time << " VS " << mod_itor->second << "\n";
+			
+			try {
+				const assert_recover_scope scope;
+				new_obj = create(i->first);
+			} catch(validation_failure_exception& e) {
+				std::cerr << "FAILURE TO LOAD\n";
+				continue;
+			} catch(...) {
+				std::cerr << "UNKNOWN FAILURE TO LOAD\n";
+				continue;
+			}
+
+
+			custom_object_type* t = const_cast<custom_object_type*>(i->second.get());
+			if(new_obj) {
+				overwrite_frames(t, new_obj.get());
+
+				*t = *new_obj;
+				++result;
+			}
+		}
+	}
+
+	return result;
 }
 
 

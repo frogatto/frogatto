@@ -13,6 +13,8 @@
 #ifndef FILESYSTEM_HPP_INCLUDED
 #define FILESYSTEM_HPP_INCLUDED
 
+#include <boost/cstdint.hpp>
+
 #include <map>
 #include <string>
 #include <vector>
@@ -48,6 +50,8 @@ void write_file(const std::string& fname, const std::string& data);
 
 bool file_exists(const std::string& fname);
 std::string find_file(const std::string& name);
+
+int64_t file_mod_time(const std::string& fname);
 
 }
 

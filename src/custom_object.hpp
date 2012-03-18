@@ -1,6 +1,7 @@
 #ifndef CUSTOM_OBJECT_HPP_INCLUDED
 #define CUSTOM_OBJECT_HPP_INCLUDED
 
+#include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/cstdint.hpp>
 #include <stack>
@@ -221,8 +222,8 @@ private:
 
 	void process_frame();
 
-	const solid_info* calculate_solid() const;
-	const solid_info* calculate_platform() const;
+	const_solid_info_ptr calculate_solid() const;
+	const_solid_info_ptr calculate_platform() const;
 
 	void get_inputs(std::vector<game_logic::formula_input>* inputs) const;
 

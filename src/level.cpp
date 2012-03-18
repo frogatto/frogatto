@@ -1827,6 +1827,14 @@ void level::draw(int x, int y, int w, int h) const
 	}
 
 	if(editor_highlight_ || !editor_selection_.empty()) {
+		if(editor_highlight_) {
+			draw_entity(*editor_highlight_, x, y, true);
+		}
+
+		foreach(const entity_ptr& e, editor_selection_) {
+			draw_entity(*e, x, y, true);
+		}
+
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 		const GLfloat alpha = 0.5 + sin(draw_count/5.0)*0.5;
 		glColor4f(1.0, 1.0, 1.0, alpha);
@@ -2877,6 +2885,11 @@ void level::add_character(entity_ptr p)
 	layers_.insert(p->zorder());
 }
 
+void level::add_draw_character(entity_ptr p)
+{
+	active_chars_.push_back(p);
+}
+
 void level::force_enter_portal(const portal& p)
 {
 	entered_portal_active_ = true;
@@ -3423,6 +3436,63 @@ void level::restore_from_backup(backup_snapshot& snapshot)
 			chars_by_label_[e->label()] = e;
 		}
 	}
+}
+
+std::vector<entity_ptr> level::trace_past(entity_ptr e, int ncycles)
+{
+	int prev_cycle = -1;
+	std::vector<entity_ptr> result;
+	std::deque<backup_snapshot_ptr>::reverse_iterator i = backups_.rbegin();
+	while(i != backups_.rend() && ncycles) {
+		const backup_snapshot& snapshot = **i;
+		if(prev_cycle != -1 && snapshot.cycle == prev_cycle) {
+			++i;
+			continue;
+		}
+
+		prev_cycle = snapshot.cycle;
+
+		foreach(const entity_ptr& ghost, snapshot.chars) {
+			if(ghost->label() == e->label()) {
+				result.push_back(ghost);
+				break;
+			}
+		}
+		++i;
+		--ncycles;
+	}
+
+	return result;
+}
+
+std::vector<entity_ptr> level::predict_future(entity_ptr e, int ncycles)
+{
+	const controls::control_backup_scope ctrl_backup_scope;
+	backup();
+	backup_snapshot_ptr snapshot = backups_.back();
+	backups_.pop_back();
+
+	const size_t starting_backups = backups_.size();
+
+	const int controls_end = controls::local_controls_end();
+	std::cerr << "PREDICT FUTURE: " << cycle_ << "/" << controls_end << "\n";
+	while(cycle_ < controls_end) {
+		try {
+			const assert_recover_scope safe_scope;
+			process();
+			backup();
+		} catch(validation_failure_exception& e) {
+			std::cerr << "ERROR WHILE PREDICTING FUTURE...\n";
+			break;
+		}
+	}
+
+	std::vector<entity_ptr> result = trace_past(e, ncycles);
+
+	backups_.resize(starting_backups);
+	restore_from_backup(*snapshot);
+
+	return result;
 }
 
 void level::get_tile_layers(std::set<int>* all_layers, std::set<int>* hidden_layers)
