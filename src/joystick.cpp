@@ -13,6 +13,8 @@
 #include <bps/bps.h>
 #endif
 
+#include "asserts.hpp"
+
 namespace joystick {
 
 namespace {
@@ -22,7 +24,12 @@ const int threshold = 32700;
 }
 
 manager::manager() {
+#if defined(__ANDROID__)
+    // We're just going to open 1 joystick on android platform.
+	int n = 0; {
+#else
 	for(int n = 0; n != SDL_NumJoysticks(); ++n) {
+#endif
 		SDL_Joystick* j = SDL_JoystickOpen(n);
 		if(j) {
 			joysticks.push_back(j);
@@ -141,6 +148,7 @@ bool button(int n) {
 		return false;
 	}
 
+    int cnt = 0;
 	foreach(SDL_Joystick* j, joysticks) {
 		if(SDL_JoystickGetButton(j, n)) {
 			return true;

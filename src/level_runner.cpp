@@ -19,7 +19,7 @@
 #include "foreach.hpp"
 #include "formula_profiler.hpp"
 #include "inventory.hpp"
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY) || defined(__ANDROID__)
 #include "iphone_controls.hpp"
 #endif
 #ifdef TARGET_BLACKBERRY
@@ -46,6 +46,7 @@
 #include "wml_utils.hpp"
 #include "IMG_savepng.h"
 #include "globals.h"
+#include "texture.hpp"
 
 namespace {
 int skipping_game = 0;
@@ -60,8 +61,14 @@ void prepare_transition_scene(level& lvl, screen_position& screen_pos)
 {
 	draw_scene(lvl, screen_pos);
 	SDL_GL_SwapBuffers();
+#if defined(__ANDROID__)
+    graphics::reset_opengl_state();
+#endif
 	draw_scene(lvl, screen_pos);
 	SDL_GL_SwapBuffers();
+#if defined(__ANDROID__)
+    graphics::reset_opengl_state();
+#endif
 }
 
 void transition_scene(level& lvl, screen_position& screen_pos, bool transition_out, TransitionFn draw_fn) {
@@ -77,6 +84,9 @@ void transition_scene(level& lvl, screen_position& screen_pos, bool transition_o
 		draw_fn(lvl, screen_pos, transition_out ? (n/20.0) : (1 - n/20.0));
 
 		SDL_GL_SwapBuffers();
+#if defined(__ANDROID__)
+		graphics::reset_opengl_state();
+#endif
 
 		const int target_end_time = start_time + (n+1)*preferences::frame_time_millis();
 		const int current_time = SDL_GetTicks();
@@ -205,6 +215,9 @@ void show_end_game()
 		graphics::blit_texture(t, xpos, ypos, t.width()*percent, t.height(), 0.0,
 						       0.0, 0.0, percent, 1.0);
 		SDL_GL_SwapBuffers();
+#if defined(__ANDROID__)
+		graphics::reset_opengl_state();
+#endif
 		SDL_Delay(40);
 	}
 
@@ -241,6 +254,44 @@ void end_skipping_game() {
 bool is_skipping_game() {
 	return skipping_game > 0;
 }
+
+
+void video_resize( SDL_Event &event ) 
+{
+    const SDL_ResizeEvent* resize = reinterpret_cast<SDL_ResizeEvent*>(&event);
+    int width = resize->w;
+    int height = resize->h;
+
+    const int aspect = (preferences::actual_screen_width()*1000)/preferences::actual_screen_height();
+
+    if(preferences::actual_screen_width()*preferences::actual_screen_height() < width*height) {
+	    //making the window larger
+	    if((height*aspect)/1000 > width) {
+		    width = (height*aspect)/1000;
+	    } else if((height*aspect)/1000 < width) {
+		    height = (width*1000)/aspect;
+	    }
+    } else {
+	    //making the window smaller
+	    if((height*aspect)/1000 > width) {
+		    height = (width*1000)/aspect;
+	    } else if((height*aspect)/1000 < width) {
+		    width = (height*aspect)/1000;
+	    }
+    }
+
+    //make sure we don't have some ugly fractional aspect ratio
+    while((width*1000)/height != aspect) {
+	    ++width;
+	    height = (width*1000)/aspect;
+    }
+
+    preferences::set_actual_screen_width(width);
+    preferences::set_actual_screen_height(height);
+
+    graphics::set_video_mode(width, height);
+}
+
 
 level_runner::level_runner(boost::intrusive_ptr<level>& lvl, std::string& level_cfg, std::string& original_level_cfg)
   : lvl_(lvl), level_cfg_(level_cfg), original_level_cfg_(original_level_cfg)
@@ -537,41 +588,7 @@ bool level_runner::play_cycle()
 				quit_ = true;
 				break;
 			}
-			case SDL_VIDEORESIZE: {
-				const SDL_ResizeEvent* const resize = reinterpret_cast<SDL_ResizeEvent*>(&event);
-				int width = resize->w;
-				int height = resize->h;
-
-				const int aspect = (preferences::actual_screen_width()*1000)/preferences::actual_screen_height();
-
-				if(preferences::actual_screen_width()*preferences::actual_screen_height() < width*height) {
-					//making the window larger
-					if((height*aspect)/1000 > width) {
-						width = (height*aspect)/1000;
-					} else if((height*aspect)/1000 < width) {
-						height = (width*1000)/aspect;
-					}
-				} else {
-					//making the window smaller
-					if((height*aspect)/1000 > width) {
-						height = (width*1000)/aspect;
-					} else if((height*aspect)/1000 < width) {
-						width = (height*aspect)/1000;
-					}
-				}
-
-				//make sure we don't have some ugly fractional aspect ratio
-				while((width*1000)/height != aspect) {
-					++width;
-					height = (width*1000)/aspect;
-				}
-
-				preferences::set_actual_screen_width(width);
-				preferences::set_actual_screen_height(height);
-
-				graphics::set_video_mode(width, height);
-				continue;
-			}
+			case SDL_VIDEORESIZE: video_resize( event ); continue;
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 			// make sure nothing happens while the app is supposed to be "inactive"
 			case SDL_WINDOWEVENT:
@@ -617,6 +634,22 @@ bool level_runner::play_cycle()
 			case SDL_USEREVENT:
 				if(event.user.code == ST_EVENT_SWIPE_DOWN) {
 					should_pause = true;
+				}
+			break;
+#elif defined(__ANDROID__)
+			// make sure nothing happens while the app is supposed to be "inactive"
+			case SDL_ACTIVEEVENT:
+				if (event.active.state & SDL_APPACTIVE && !event.active.gain)
+				{
+					write_autosave();
+					preferences::save_preferences();
+					
+					SDL_Event e;
+					while (SDL_WaitEvent(&e))
+					{
+						if (e.type == SDL_ACTIVEEVENT && e.active.state & SDL_APPINPUTFOCUS && e.active.gain == 1)
+							break;
+					}
 				}
 			break;
 #endif
@@ -695,6 +728,14 @@ bool level_runner::play_cycle()
 				}
 				break;
 			}
+#if defined(__ANDROID__)
+            //case SDL_JOYAXISMOTION:
+            case SDL_JOYBALLMOTION:
+            case SDL_JOYBUTTONDOWN:
+            case SDL_JOYBUTTONUP:
+                iphone_controls::handle_event(event);
+                break;
+#endif
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY)
 			case SDL_MOUSEMOTION:
 			case SDL_MOUSEBUTTONDOWN:
@@ -769,6 +810,9 @@ bool level_runner::play_cycle()
 		const int start_flip = SDL_GetTicks();
 		if(!is_skipping_game()) {
 			SDL_GL_SwapBuffers();
+#if defined(__ANDROID__)
+			graphics::reset_opengl_state();
+#endif
 		}
 
 		next_flip_ += (SDL_GetTicks() - start_flip);

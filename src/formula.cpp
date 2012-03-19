@@ -1741,7 +1741,7 @@ UNIT_TEST(short_circuit) {
 
 UNIT_TEST(formula_decimal) {
 	CHECK_EQ(formula("0.0005").execute().string_cast(), "0.000500");
-	CHECK_EQ(formula("0.005").execute().string_cast(), "0.005000");
+    CHECK_EQ(formula("0.005").execute().string_cast(), "0.005000");
 	CHECK_EQ(formula("0.05").execute().string_cast(), "0.050000");
 	CHECK_EQ(formula("0.5").execute().string_cast(), "0.500000");
 	CHECK_EQ(formula("8.5 + 0.5").execute().string_cast(), "9.000000");

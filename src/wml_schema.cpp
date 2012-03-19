@@ -8,6 +8,8 @@
 #include "wml_node.hpp"
 #include "wml_schema.hpp"
 
+#include "asserts.hpp"
+
 namespace wml {
 
 namespace {
@@ -86,7 +88,7 @@ void parse_type_info(const std::string& type, schema::attribute_info& info, int 
 schema::attribute_info parse_attribute_info(const std::string& str)
 {
 	schema::attribute_info info;
-	static const boost::regex pattern("(required|optional) +(.*)");
+    static const boost::regex pattern("(required|optional) +(.*)");
 	boost::smatch match;
 	if(boost::regex_match(str, match, pattern)) {
 		info.optional = (std::string(match[1].first, match[1].second) == "optional");
@@ -96,7 +98,6 @@ schema::attribute_info parse_attribute_info(const std::string& str)
 		std::cerr << "ILLEGAL SCHEMA ATTR: '" << str << "'\n";
 		assert(false);
 	}
-
 	return info;
 }
 }

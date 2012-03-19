@@ -262,6 +262,9 @@ private:
 		}
 
 		SDL_GL_SwapBuffers();
+#if defined(__ANDROID__)
+		graphics::reset_opengl_state();
+#endif
 	}
 
 	entity_ptr select_object(level& lvl, std::string& label) const {

@@ -60,7 +60,7 @@
 #include "wml_utils.hpp"
 #include "wml_writer.hpp"
 
-#if defined(TARGET_PANDORA) | defined(TARGET_TEGRA)
+#if defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
 #include "eglport.h"
 #elif defined(TARGET_BLACKBERRY)
 #include <EGL/egl.h>
@@ -260,7 +260,7 @@ extern "C" int main(int argc, char** argv)
 
 	std::cerr << "\n";
 
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_BLACKBERRY)
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_BLACKBERRY) || defined(__ANDROID__)
 	//on the iPhone and PlayBook, try to restore the auto-save if it exists
 	if(sys::file_exists(preferences::auto_save_file_path()) && sys::read_file(std::string(preferences::auto_save_file_path()) + ".stat") == "1") {
 		level_cfg = "autosave.cfg";
@@ -345,6 +345,19 @@ extern "C" int main(int argc, char** argv)
 		return -1;
 	}
 	preferences::init_oes();
+#elif defined(__ANDROID__)
+    SDL_Rect** r = SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_OPENGL);
+    if( r != (SDL_Rect**)0 && r != (SDL_Rect**)-1 ) {
+        preferences::set_actual_screen_width(r[0]->w);
+        preferences::set_actual_screen_height(r[0]->h);
+        preferences::set_virtual_screen_width(r[0]->w);
+        preferences::set_virtual_screen_height(r[0]->h);
+    }
+
+    if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),16,SDL_FULLSCREEN|SDL_OPENGL) == NULL) {
+		std::cerr << "could not set video mode\n";
+		return -1;
+    }
 #else
 	if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) == NULL) {
 		std::cerr << "could not set video mode\n";
@@ -395,7 +408,6 @@ extern "C" int main(int argc, char** argv)
 
 	wml::const_node_ptr preloads;
 	loading_screen loader;
-	
 	try {
 		wml::schema::init(wml::parse_wml_from_file("data/schema.cfg"));
 
@@ -426,7 +438,6 @@ extern "C" int main(int argc, char** argv)
 	} catch(const wml::parse_error& e) {
 		return 0;
 	}
-	
 	loader.draw(_("Loading level"));
 
 	if(!skip_tests && !test::run_tests()) {
@@ -436,7 +447,6 @@ extern "C" int main(int argc, char** argv)
 	if(unit_tests_only) {
 		return 0;
 	}
-
 #if defined(__APPLE__) && !(TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE)
 	GLint swapInterval = 1;
 	CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &swapInterval);
@@ -448,7 +458,6 @@ extern "C" int main(int argc, char** argv)
 #endif
 
 	loader.finish_loading();
-
 	//look to see if we got any quit events while loading.
 	{
 	SDL_Event event;
@@ -535,7 +544,6 @@ extern "C" int main(int argc, char** argv)
 	}
 
 	} //end manager scope, make managers destruct before calling SDL_Quit
-
 //	controls::debug_dump_controls();
 #if defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
     EGL_Destroy();
@@ -545,7 +553,7 @@ extern "C" int main(int argc, char** argv)
 	
 	preferences::save_preferences();
 	std::cerr << SDL_GetError() << "\n";
-#if !defined(TARGET_OS_HARMATTAN) && !defined(TARGET_TEGRA) && !defined(TARGET_BLACKBERRY)
+#if !defined(TARGET_OS_HARMATTAN) && !defined(TARGET_TEGRA) && !defined(TARGET_BLACKBERRY) && !defined(__ANDROID__)
 	std::cerr << gluErrorString(glGetError()) << "\n";
 #endif
 	return 0;

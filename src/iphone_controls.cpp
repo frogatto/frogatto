@@ -1,10 +1,10 @@
 #include "iphone_controls.hpp"
 
-#if TARGET_OS_HARMATTAN || TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR || TARGET_BLACKBERRY
+#if TARGET_OS_HARMATTAN || TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR || TARGET_BLACKBERRY || defined(__ANDROID__)
 
 #include "graphics.hpp"
 
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY) || defined(__ANDROID__)
 #include <math.h> // sqrt
 #endif
 
@@ -27,7 +27,7 @@ namespace
 	bool can_interact = false;
 	bool on_platform = false;
 	bool is_standing = false;
-	
+
 	std::string loaded_control_scheme = "";
 	static void setup_rects ()
 	{
@@ -80,6 +80,9 @@ namespace
 		bool active;
 		int x, y;
 		int starting_x, starting_y;
+#if defined(__ANDROID__)
+        int pressure; 
+#endif
 	};
 
 	std::vector<Mouse> all_mice, active_mice;
@@ -103,7 +106,7 @@ void iphone_controls::read_controls()
 {
 	active_mice.clear();
 
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY) || defined(__ANDROID__)
 	// there is no SDL_Get_NumMice and SDL_SelectMouse support on
 	// Harmattan, so all_mice has been updated via calls to handle_event
 	const int nmice = all_mice.size();
@@ -140,9 +143,41 @@ void iphone_controls::read_controls()
 	}
 }
 
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY)
+
 void iphone_controls::handle_event (const SDL_Event& event)
 {
+#if defined(__ANDROID__)
+
+    if( event.type == SDL_JOYBALLMOTION ) {
+        int i = event.jball.ball;
+     	int x = event.jball.xrel;
+        int y = event.jball.yrel;
+        
+        while(all_mice.size() <= i) {
+            all_mice.push_back(Mouse());
+            all_mice[i].active = false;
+        }
+        translate_mouse_coords(&x, &y);
+
+        if(!all_mice[i].active) {
+	        all_mice[i].starting_x = x;
+	        all_mice[i].starting_y = y;
+        }
+        
+        all_mice[i].x = x;
+        all_mice[i].y = y;
+        all_mice[i].active = true;
+    } else if( event.type == SDL_JOYBUTTONUP ) {
+        int i = event.jbutton.button;
+        while(all_mice.size() <= i) {
+            all_mice.push_back(Mouse());
+            all_mice[i].active = false;
+        }
+        all_mice[i].active = false;
+    }
+     
+#elif defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY)
+
 	int x = event.type == SDL_MOUSEMOTION ? event.motion.x : event.button.x;
 	int y = event.type == SDL_MOUSEMOTION ? event.motion.y : event.button.y;
 	int i = event.type == SDL_MOUSEMOTION ? event.motion.which : event.button.which;
@@ -160,8 +195,8 @@ void iphone_controls::handle_event (const SDL_Event& event)
 	all_mice[i].x = x;
 	all_mice[i].y = y;
 	all_mice[i].active = event.type != SDL_MOUSEBUTTONUP;
-}
 #endif
+}
 
 void iphone_controls::set_underwater(bool value)
 {

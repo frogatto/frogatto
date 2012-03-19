@@ -24,6 +24,7 @@
 #include "draw_scene.hpp"
 #include "level.hpp"
 #include "framed_gui_element.hpp"
+#include "preferences.hpp"
 
 namespace gui {
 
@@ -125,6 +126,9 @@ void dialog::prepare_draw()
 void dialog::complete_draw()
 {
 	SDL_GL_SwapBuffers();
+#if defined(__ANDROID__)
+	graphics::reset_opengl_state();
+#endif
 
 	const int end_draw = last_draw_ + 20;
 	const int delay_time = std::max<int>(1, end_draw - SDL_GetTicks());

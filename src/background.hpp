@@ -68,6 +68,9 @@ private:
 		//if false we can disable blending while this is drawn
 		bool blend;
 
+		//if true prevents the image being tiled.
+		bool notile;
+
 		bool tile_upwards, tile_downwards;
 	};
 

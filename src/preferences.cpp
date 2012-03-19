@@ -176,6 +176,30 @@ namespace preferences {
 		bool use_bequ_ = true;
 
 		bool use_16bpp_textures_ = true;
+#elif defined(__ANDROID__)
+
+#ifndef PREFERENCES_PATH
+#define PREFERENCES_PATH "~/.frogatto/"
+#endif
+
+		bool send_stats_ = false;
+		bool sim_iphone_ = false;
+		int virtual_screen_width_ = 800;
+		int virtual_screen_height_ = 480;
+
+		int actual_screen_width_ = 800;
+		int actual_screen_height_ = 480;
+
+		bool screen_rotated_ = false;
+
+		bool use_joystick_ = true;
+
+		bool load_compiled_ = false;
+
+		bool use_fbo_ = true;
+		bool use_bequ_ = true;
+
+		bool use_16bpp_textures_ = true;
 #elif defined(TARGET_BLACKBERRY)
 
 #ifndef PREFERENCES_PATH

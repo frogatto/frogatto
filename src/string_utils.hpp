@@ -20,6 +20,11 @@
 #undef isascii
 #endif // _WINDOWS
 
+#ifdef __ANDROID__
+#undef isascii
+#undef isblank
+#endif // __ANDROID__
+
 namespace util
 {
 

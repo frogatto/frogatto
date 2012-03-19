@@ -2554,6 +2554,9 @@ void editor::draw() const
 	debug_console::draw();
 
 	SDL_GL_SwapBuffers();
+#if defined(__ANDROID__)
+	graphics::reset_opengl_state();
+#endif
 }
 
 void editor::draw_selection(int xoffset, int yoffset) const

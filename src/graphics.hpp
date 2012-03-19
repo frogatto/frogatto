@@ -1,7 +1,7 @@
 #ifndef GRAPHICS_HPP_INCLUDED
 #define GRAPHICS_HPP_INCLUDED
 
-#if defined(TARGET_BLACKBERRY) || __MACOSX__
+#if defined(TARGET_BLACKBERRY) || __MACOSX__ || __ANDROID__
 #include <SDL.h>
 #include <SDL_keysym.h>
 #include <SDL_thread.h>
@@ -11,7 +11,7 @@
 #include <SDL/SDL_thread.h>
 #endif
 
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE && !__MACOSX__
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE && !__MACOSX__ && !__ANDROID__
 #include <SDL/SDL_mixer.h>
 #endif
 
@@ -19,11 +19,11 @@
 #include <GL/glew.h>
 #endif
 
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE && !__MACOSX__
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE && !__MACOSX__ && !__ANDROID__
 #include <SDL/SDL_ttf.h>
 #endif
 
-#if __MACOSX__
+#if __MACOSX__ || __ANDROID__
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 #endif
@@ -35,12 +35,18 @@
 #endif
 #include <GLES/glext.h>
 #else
+#if defined(__ANDROID__)
+#include <GLES/gl.h>
+#include <GLES/glext.h>
+#include <GLES/glplatform.h>
+#else
 #if defined( _WINDOWS )
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
 #include <GL/gl.h>
 #include <GL/glu.h>
+#endif
 #endif
 
 #if defined(__APPLE__) && !(TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE)

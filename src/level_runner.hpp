@@ -68,5 +68,6 @@ void begin_skipping_game();
 void end_skipping_game();
 bool is_skipping_game();
 
+void video_resize( SDL_Event &event );
 
 #endif

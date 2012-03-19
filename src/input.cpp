@@ -5,6 +5,7 @@
 #include "scoped_resource.hpp"
 
 #include "userevents.h"
+#include "level_runner.hpp"
 
 namespace input {
     pump::~pump() {
@@ -28,6 +29,13 @@ namespace input {
                 claimed = true;
                 SDL_PushEvent(&event);
                 break;
+                
+#if defined(__ANDROID__)
+            case SDL_VIDEORESIZE: 
+                // Allow restore from app going to the background on android, while a modal dialog is up.
+                video_resize( event ); 
+                break;
+#endif
 
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 				case SDL_WINDOWEVENT:

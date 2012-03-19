@@ -325,6 +325,7 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 	}
 
 	try {
+
 	while(i != doc.end()) {
 		if(util::isnewline(*i)) {
 			++i;
@@ -332,6 +333,7 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 		} else if(util::isspace(*i)) {
 			++i;
 		} else if(*i == '[') {
+
 			const std::string::const_iterator begin_element = i;
 			std::string element = parse_element(i,doc.end());
 			if(element[0] == '/') {
@@ -570,6 +572,7 @@ node_ptr parse_wml(const std::string& doc, bool must_have_doc, const schema* sch
 
 node_ptr parse_wml_from_file(const std::string& fname, const schema* schema, bool must_have_doc)
 {
+    
 	const std::string data = preprocess(sys::read_file(fname));
 	if(data.empty()) {
 		ASSERT_LOG(false, "Could not read file: " << fname);

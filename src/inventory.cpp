@@ -135,6 +135,9 @@ void show_inventory(const level& lvl, entity& c)
 		}
 		
 		SDL_GL_SwapBuffers();
+#if defined(__ANDROID__)
+		graphics::reset_opengl_state();
+#endif
 		SDL_Delay(20);
 	}
 }

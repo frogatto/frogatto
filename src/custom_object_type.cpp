@@ -722,7 +722,7 @@ game_logic::const_formula_ptr custom_object_type::get_event_handler(int event) c
 const_particle_system_factory_ptr custom_object_type::get_particle_system_factory(const std::string& id) const
 {
 	std::map<std::string, const_particle_system_factory_ptr>::const_iterator i = particle_factories_.find(id);
-	ASSERT_LOG(i != particle_factories_.end(), "Unknown particle system type in " << id_ << ": " << id)
+	ASSERT_LOG(i != particle_factories_.end(), "Unknown particle system type in " << id_ << ": " << id);
 	return i->second;
 }
 

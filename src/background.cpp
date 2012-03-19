@@ -77,6 +77,7 @@ background::background(const wml::const_node_ptr& node, int palette) : palette_(
 		bg.yoffset = wml::get_int(layer_node, "yoffset", 0);
 		bg.scale = wml::get_int(layer_node, "scale", 1);
 		bg.blend = wml::get_bool(layer_node, "blend", true);
+		bg.notile = wml::get_bool(layer_node, "notile", false);
 		if(bg.scale < 1) {
 			bg.scale = 1;
 		}
@@ -313,7 +314,7 @@ void background::set_offset(const point& offset)
 }
 
 void background::draw_layer(int x, int y, const rect& area, int rotation, const background::layer& bg, int cycle) const
-{
+{	
 	const double ScaleImage = 2.0;
 	GLshort y1 = y + (bg.yoffset+offset_.y)*ScaleImage - (y*bg.yscale)/100;
 	GLshort y2 = y1 + (bg.y2 - bg.y1)*ScaleImage;

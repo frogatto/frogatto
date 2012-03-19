@@ -30,8 +30,8 @@ namespace graphics
 {
 
 SDL_Surface* set_video_mode(int w, int h, int bitsperpixel, int flags);
-
 bool set_video_mode(int w, int h);
+void reset_opengl_state();
 
 std::vector<GLfloat>& global_vertex_array();
 std::vector<GLfloat>& global_texcoords_array();

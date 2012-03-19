@@ -210,13 +210,23 @@ void read_local_controls()
 			}
 		}
 
-		if(joystick::up() || iphone_controls::up()) { state |= (1 << CONTROL_UP); }
-		if(joystick::down() || iphone_controls::down()) { state |= (1 << CONTROL_DOWN); }
-		if(joystick::left() || iphone_controls::left()) { state |= (1 << CONTROL_LEFT); }
-		if(joystick::right() || iphone_controls::right()) { state |= (1 << CONTROL_RIGHT); }
-		if(joystick::button(0) || iphone_controls::attack()) { state |= (1 << CONTROL_ATTACK); }
-		if(joystick::button(1) || iphone_controls::jump()) { state |= (1 << CONTROL_JUMP); }
-		if(joystick::button(2) || iphone_controls::tongue()) { state |= (1 << CONTROL_TONGUE); }
+#if defined(__ANDROID__)
+		if(iphone_controls::up()) { state |= (1 << CONTROL_UP); }
+		if(iphone_controls::down()) { state |= (1 << CONTROL_DOWN); }
+		if(iphone_controls::left()) { state |= (1 << CONTROL_LEFT); }
+		if(iphone_controls::right()) { state |= (1 << CONTROL_RIGHT); }
+		if(iphone_controls::attack()) { state |= (1 << CONTROL_ATTACK); }
+		if(iphone_controls::jump()) { state |= (1 << CONTROL_JUMP); }
+		if(iphone_controls::tongue()) { state |= (1 << CONTROL_TONGUE); }
+#else
+		if(joystick::up() || iphone_controls::up()) { state |= (1 << CONTROL_UP);}
+		if(joystick::down() || iphone_controls::down()) { state |= (1 << CONTROL_DOWN);}
+		if(joystick::left() || iphone_controls::left()) { state |= (1 << CONTROL_LEFT);}
+		if(joystick::right() || iphone_controls::right()) { state |= (1 << CONTROL_RIGHT);}
+		if(joystick::button(0) || iphone_controls::attack()) { state |= (1 << CONTROL_ATTACK);}
+		if(joystick::button(1) || iphone_controls::jump()) { state |= (1 << CONTROL_JUMP);}
+		if(joystick::button(2) || iphone_controls::tongue()) { state |= (1 << CONTROL_TONGUE);}
+#endif
 	} else {
 		//we have the controls locked into a specific state.
 		state = local_control_locks.top();

@@ -14,7 +14,7 @@
 #endif
 
 //define macros that make it easy to make the OpenGL calls in this file.
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_OS_IPHONE) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_OS_IPHONE) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY) || defined(__ANDROID__)
 #define EXT_CALL(call) call##OES
 #define EXT_MACRO(macro) macro##_OES
 #elif defined(__APPLE__)
@@ -49,7 +49,7 @@ void init(int buffer_width, int buffer_height)
 	frame_buffer_texture_width = buffer_width;
 	frame_buffer_texture_height = buffer_height;
 
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY) || defined(__ANDROID__)
 	if (glGenFramebuffersOES        != NULL &&
 		glBindFramebufferOES        != NULL &&
 		glFramebufferTexture2DOES   != NULL &&
@@ -76,7 +76,9 @@ void init(int buffer_width, int buffer_height)
 #ifndef TARGET_TEGRA
 	glGetIntegerv(EXT_MACRO(GL_FRAMEBUFFER_BINDING), &video_framebuffer_id);
 #endif
+#if !defined(__ANDROID__)
 	ASSERT_EQ(glGetError(), GL_NO_ERROR);
+#endif
 	glGenTextures(1, &texture_id);
 	glBindTexture(GL_TEXTURE_2D, texture_id);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -98,12 +100,16 @@ void init(int buffer_width, int buffer_height)
 
 	// check FBO status
 	GLenum status = EXT_CALL(glCheckFramebufferStatus)(EXT_MACRO(GL_FRAMEBUFFER));
+#if !defined(__ANDROID__)
 	ASSERT_EQ(status, EXT_MACRO(GL_FRAMEBUFFER_COMPLETE));
+#endif
 
 	// switch back to window-system-provided framebuffer
 	EXT_CALL(glBindFramebuffer)(EXT_MACRO(GL_FRAMEBUFFER), video_framebuffer_id);
 
+#if !defined(__ANDROID__)
 	ASSERT_EQ(glGetError(), GL_NO_ERROR);
+#endif
 }
 
 render_scope::render_scope()

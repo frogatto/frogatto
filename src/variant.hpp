@@ -45,7 +45,7 @@ struct type_error {
 	std::string message;
 };
 
-static const int VARIANT_DECIMAL_PRECISION = DECIMAL_PRECISION;
+static const int64_t VARIANT_DECIMAL_PRECISION = DECIMAL_PRECISION;
 
 class variant {
 public:
