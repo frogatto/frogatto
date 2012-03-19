@@ -606,7 +606,6 @@ void texture::ID::build_id()
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-
 	if(preferences::use_16bpp_textures()) {
 		std::vector<GLushort> buf(s->w*s->h);
 		const unsigned int* src = reinterpret_cast<const unsigned int*>(s->pixels);

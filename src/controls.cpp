@@ -83,10 +83,12 @@ CKey& keyboard() {
 struct control_backup_scope_impl {
 	std::vector<unsigned char> controls[MAX_PLAYERS];
 	int32_t highest_confirmed[MAX_PLAYERS];
+	int starting_cycles;
 };
 
 control_backup_scope::control_backup_scope() : impl_(new control_backup_scope_impl)
 {
+	impl_->starting_cycles = starting_cycles;
 	for(int n = 0; n != MAX_PLAYERS; ++n) {
 		impl_->controls[n] = controls[n];
 		impl_->highest_confirmed[n] = highest_confirmed[n];
@@ -95,6 +97,7 @@ control_backup_scope::control_backup_scope() : impl_(new control_backup_scope_im
 
 control_backup_scope::~control_backup_scope()
 {
+	starting_cycles = impl_->starting_cycles;
 	for(int n = 0; n != MAX_PLAYERS; ++n) {
 		controls[n] = impl_->controls[n];
 		highest_confirmed[n] = impl_->highest_confirmed[n];

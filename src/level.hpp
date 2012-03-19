@@ -14,6 +14,7 @@
 
 #include "background.hpp"
 #include "color_utils.hpp"
+#include "decimal.hpp"
 #include "entity.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
@@ -150,7 +151,7 @@ public:
 	void set_character_group(entity_ptr c, int group_num);
 	int add_group();
 
-	void set_editor() { editor_ = true; prepare_tiles_for_drawing(); }
+	void set_editor(bool value=true) { editor_ = value; if(editor_) { prepare_tiles_for_drawing(); } }
 	void set_editor_highlight(entity_ptr c) { editor_highlight_ = c; }
 	entity_ptr editor_highlight() const { return editor_highlight_; }
 
@@ -263,7 +264,7 @@ public:
 
 	void editor_freeze_tile_updates(bool value);
 
-	int zoom_level() const { return zoom_level_; }
+	decimal zoom_level() const;
 
 	void add_speech_dialog(boost::shared_ptr<speech_dialog> d);
 	void remove_speech_dialog();
@@ -273,7 +274,7 @@ public:
 
 	static const game_logic::formula_callable_definition& get_formula_definition();
 	
-	bool in_editor () {return editor_;}
+	bool in_editor() const {return editor_;}
 
 	void add_sub_level(const std::string& lvl, int xoffset, int yoffset, bool add_objects=true);
 	void remove_sub_level(const std::string& lvl);
@@ -526,7 +527,7 @@ private:
 	std::string gui_algo_str_;
 	gui_algorithm_ptr gui_algorithm_;
 
-	int zoom_level_;
+	decimal zoom_level_;
 	std::vector<entity_ptr> focus_override_;
 
 	std::stack<boost::shared_ptr<speech_dialog> > speech_dialogs_;

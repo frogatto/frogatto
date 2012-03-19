@@ -83,6 +83,14 @@ mutex::~mutex()
 	SDL_DestroyMutex(m_);
 }
 
+mutex::mutex(const mutex&) : m_(SDL_CreateMutex())
+{}
+
+const mutex& mutex::operator=(const mutex&)
+{
+	return *this;
+}
+
 lock::lock(mutex& m) : m_(m)
 {
 	SDL_mutexP(m_.m_);

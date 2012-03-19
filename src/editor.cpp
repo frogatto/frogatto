@@ -596,20 +596,28 @@ editor::tileset::tileset(wml::const_node_ptr node)
 	}
 }
 
-void editor::edit(const char* level_cfg, int xpos, int ypos)
+editor* editor::get_editor(const char* level_cfg)
 {
-	preferences::editor_screen_size_scope screen_size_scope;
-
 	editor*& e = all_editors[level_cfg];
 	if(!e) {
 		e = new editor(level_cfg);
 	}
+
+	return e;
+}
+
+void editor::edit(const char* level_cfg, int xpos, int ypos)
+{
+	editor* e = get_editor(level_cfg);
 
 	if(xpos != -1) {
 		e->xpos_ = xpos;
 		e->ypos_ = ypos;
 	}
 
+	editor_resolution_manager resolution_manager;
+
+	e->setup_for_editing();
 	e->edit_level();
 	if(g_last_edited_level() != level_cfg) {
 		//a new level was set, so start editing it now.
@@ -624,6 +632,11 @@ std::string editor::last_edited_level()
 	return g_last_edited_level();
 }
 
+int editor::sidebar_width()
+{
+	return 180;
+}
+
 editor::editor(const char* level_cfg)
   : zoom_(1), xpos_(0), ypos_(0), anchorx_(0), anchory_(0),
     selected_entity_startx_(0), selected_entity_starty_(0),
@@ -632,7 +645,7 @@ editor::editor(const char* level_cfg)
 	cur_tileset_(0), cur_object_(0),
     current_dialog_(NULL),
 	drawing_rect_(false), dragging_(false), level_changed_(0),
-	selected_segment_(-1)
+	selected_segment_(-1), prev_mousex_(-1), prev_mousey_(-1)
 {
 	static bool first_time = true;
 	if(first_time) {
@@ -648,6 +661,8 @@ editor::editor(const char* level_cfg)
 	lvl_->set_editor();
 	lvl_->finish_loading();
 	lvl_->set_as_current_level();
+
+	levels_.push_back(lvl_);
 
 	editor_menu_dialog_.reset(new editor_menu_dialog(*this));
 	editor_mode_dialog_.reset(new editor_mode_dialog(*this));
@@ -697,15 +712,15 @@ void editor::duplicate_selected_objects()
 	foreach(const entity_ptr& c, lvl_->editor_selection()) {
 		entity_ptr duplicate_obj = c->clone();
 
-		int repeats = 1000;
-		if(!place_entity_in_level_with_large_displacement(*lvl_, *duplicate_obj)) {
-			continue;
-		}
+		foreach(level_ptr lvl, levels_) {
+			entity_ptr obj = duplicate_obj->backup();
+			if(!place_entity_in_level_with_large_displacement(*lvl, *obj)) {
+				continue;
+			}
 		
-		redo.push_back(boost::bind(&editor::add_object_to_level, this, duplicate_obj));
-		undo.push_back(boost::bind(&editor::remove_object_from_level, this, duplicate_obj));
-
-
+			redo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, duplicate_obj));
+			undo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, duplicate_obj));
+		}
 	}
 
 	execute_command(
@@ -715,6 +730,10 @@ void editor::duplicate_selected_objects()
 
 void editor::process_ghost_objects()
 {
+	if(editing_level_being_played()) {
+		return;
+	}
+
 	lvl_->swap_chars(ghost_objects_);
 
 	const size_t num_chars_before = lvl_->get_chars().size();
@@ -759,46 +778,39 @@ int editor_resolution_manager_count = 0;
 
 int editor_x_resolution = 0, editor_y_resolution = 0;
 
-struct editor_resolution_manager
-{
-	editor_resolution_manager() :
-	   original_width_(preferences::actual_screen_width()),
-	   original_height_(preferences::actual_screen_height()) {
-		if(!editor_x_resolution) {
-			editor_x_resolution = preferences::actual_screen_width() + EDITOR_SIDEBAR_WIDTH + editor_dialogs::LAYERS_DIALOG_WIDTH;
-			editor_y_resolution = preferences::actual_screen_height() + EDITOR_MENUBAR_HEIGHT;
-		}
-
-		if(++editor_resolution_manager_count == 1) {
-			SDL_Surface* result = graphics::set_video_mode(editor_x_resolution,editor_y_resolution,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
-
-			if(result) {
-				preferences::set_actual_screen_width(editor_x_resolution);
-				preferences::set_actual_screen_height(editor_y_resolution);
-			} else {
-				editor_x_resolution = preferences::actual_screen_width();
-				editor_y_resolution = preferences::actual_screen_height();
-			}
-		}
-	}
-
-	~editor_resolution_manager() {
-		if(--editor_resolution_manager_count == 0) {
-			preferences::set_actual_screen_width(original_width_);
-			preferences::set_actual_screen_height(original_height_);
-			graphics::set_video_mode(original_width_,original_height_,0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
-		}
-	}
-
-	int original_width_, original_height_;
-};
-
 }
 
-void editor::edit_level()
-{
-	editor_resolution_manager resolution_manager;
+editor_resolution_manager::editor_resolution_manager() :
+	   original_width_(preferences::actual_screen_width()),
+	   original_height_(preferences::actual_screen_height()) {
+	if(!editor_x_resolution) {
+		editor_x_resolution = preferences::actual_screen_width() + EDITOR_SIDEBAR_WIDTH + editor_dialogs::LAYERS_DIALOG_WIDTH;
+		editor_y_resolution = preferences::actual_screen_height() + EDITOR_MENUBAR_HEIGHT;
+	}
 
+	if(++editor_resolution_manager_count == 1) {
+		SDL_Surface* result = graphics::set_video_mode(editor_x_resolution,editor_y_resolution,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+
+		if(result) {
+			preferences::set_actual_screen_width(editor_x_resolution);
+			preferences::set_actual_screen_height(editor_y_resolution);
+		} else {
+			editor_x_resolution = preferences::actual_screen_width();
+			editor_y_resolution = preferences::actual_screen_height();
+		}
+	}
+}
+
+editor_resolution_manager::~editor_resolution_manager() {
+	if(--editor_resolution_manager_count == 0) {
+		preferences::set_actual_screen_width(original_width_);
+		preferences::set_actual_screen_height(original_height_);
+		graphics::set_video_mode(original_width_,original_height_,0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+	}
+}
+
+void editor::setup_for_editing()
+{
 	stats::flush();
 	try {
 		load_stats();
@@ -825,6 +837,12 @@ void editor::edit_level()
 	layers_dialog_.reset(new editor_dialogs::editor_layers_dialog(*this));
 	current_dialog_ = tileset_dialog_.get();
 
+	//reset the tool status.
+	change_tool(tool_);
+}
+
+void editor::edit_level()
+{
 	glEnable(GL_BLEND);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);
@@ -832,209 +850,249 @@ void editor::edit_level()
 
 	int selected_tile = 0;
 
-	//reset the tool status.
-	change_tool(tool_);
-
 	done_ = false;
-	int prev_mousex = -1, prev_mousey = -1;
+	prev_mousex_ = prev_mousey_ = -1;
 	while(!done_) {
 		const int scheduled_frame_end_time = SDL_GetTicks() + 20;
 
-		if(editor_mode_dialog_) {
-			editor_mode_dialog_->refresh_selection();
-		}
-
-		process_ghost_objects();
-		handle_scrolling();
-
-		int mousex, mousey;
-		const unsigned int buttons = get_mouse_state(mousex, mousey);
-		const Uint8* keystate = SDL_GetKeyState(NULL); 
-
-		if(buttons == 0) {
-			drawing_rect_ = false;
-		}
-
-		//make middle-clicking drag the screen around.
-		if(prev_mousex != -1 && prev_mousey != -1 && (buttons&SDL_BUTTON_MIDDLE)) {
-			const int diff_x = mousex - prev_mousex;
-			const int diff_y = mousey - prev_mousey;
-			xpos_ -= diff_x*zoom_;
-			ypos_ -= diff_y*zoom_;
-		}
-
-		prev_mousex = mousex;
-		prev_mousey = mousey;
-
-		
-		const int selectx = round_tile_size(xpos_ + mousex*zoom_);
-		const int selecty = round_tile_size(ypos_ + mousey*zoom_);
-
-		const bool object_mode = (tool() == TOOL_ADD_OBJECT || tool() == TOOL_SELECT_OBJECT);
-		if(property_dialog_ && g_variable_editing) {
-			int diff = 0;
-			switch(g_variable_editing->type()) {
-			case editor_variable_info::XPOSITION:
-				diff = (xpos_ + mousex*zoom_) - anchorx_;
-				break;
-			case editor_variable_info::YPOSITION:
-				diff = (ypos_ + mousey*zoom_) - anchory_;
-				break;
-			default:
-				break;
-			}
-
-			if(property_dialog_ && property_dialog_->get_entity()) {
-				const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
-				int new_value = g_variable_editing_original_value + diff;
-				if(ctrl_pressed) {
-					new_value += TileSize/2;
-					new_value = new_value - new_value%TileSize;
-				}
-
-				mutate_object_value(property_dialog_->get_entity(), g_variable_editing->variable_name(), variant(new_value));
-			}
-		} else if(object_mode && !buttons) {
-			//remove ghost objects and re-add them. This guarantees ghost
-			//objects always remain at the end of the level ordering.
-			remove_ghost_objects();
-			entity_ptr c = lvl_->get_next_character_at_point(xpos_ + mousex*zoom_, ypos_ + mousey*zoom_, xpos_, ypos_);
-			foreach(const entity_ptr& ghost, ghost_objects_) {
-				lvl_->add_character(ghost);
-			}
-
-			lvl_->set_editor_highlight(c);
-			//See if we should add ghost objects. Human objects don't get
-			//ghost (it doesn't make much sense for them to do so)
-			if(ghost_objects_.empty() && c && !c->is_human()) {
-				//we have an object but no ghost for it, make the
-				//object's ghost and deploy it.
-				entity_ptr clone = c->clone();
-				if(clone && !entity_collides_with_level(*lvl_, *clone, MOVE_NONE)) {
-					ghost_objects_.push_back(clone);
-					lvl_->add_character(clone);
-
-					//fire the event to tell the ghost it's been added.
-					lvl_->swap_chars(ghost_objects_);
-					clone->handle_event(OBJECT_EVENT_START_LEVEL);
-					lvl_->swap_chars(ghost_objects_);
-				}
-			} else if(ghost_objects_.empty() == false && !c) {
-				//ghost objects are present but we are no longer moused-over
-				//an object, so remove the ghosts.
-				remove_ghost_objects();
-				ghost_objects_.clear();
-			}
-		}else if(object_mode && lvl_->editor_highlight()) {
-			//we're handling objects, and a button is down, and we have an
-			//object under the mouse. This means we are dragging something.
-
-			// check if cursor is not in the sidebar!
-			if (mousex < editor_mode_dialog_->x()) {
-				handle_object_dragging(mousex, mousey);
-			}
-		} else if(drawing_rect_) {
-			handle_drawing_rect(mousex, mousey);
-		}
-
-		if(!object_mode) {
-			//not in object mode, the picker still highlights objects,
-			//though it won't create ghosts, so remove all ghosts.
-			if(tool() == TOOL_PICKER) {
-				entity_ptr c = lvl_->get_next_character_at_point(xpos_ + mousex*zoom_, ypos_ + mousey*zoom_, xpos_, ypos_);
-				lvl_->set_editor_highlight(c);
-			} else {
-				lvl_->set_editor_highlight(entity_ptr());
-			}
-
-			remove_ghost_objects();
-			ghost_objects_.clear();
-		}
-
-		//if we're drawing with a pencil see if we add a new tile
-		if(tool() == TOOL_PENCIL && buttons && mousey > editor_menu_dialog_->height() && mousex < editor_mode_dialog_->x()) {
-			const int xpos = xpos_ + mousex*zoom_;
-			const int ypos = ypos_ + mousey*zoom_;
-			point p(xpos, ypos);
-			if(std::find(g_current_draw_tiles.begin(), g_current_draw_tiles.end(), p) == g_current_draw_tiles.end()) {
-				g_current_draw_tiles.push_back(p);
-
-				if(buttons&SDL_BUTTON_LEFT) {
-					add_tile_rect(p.x, p.y, p.x, p.y);
-				} else {
-					remove_tile_rect(p.x, p.y, p.x, p.y);
-				}
-			}
-		}
+		process();
 
 		SDL_Event event;
 		while(SDL_PollEvent(&event)) {
-
-			if(editor_menu_dialog_->process_event(event, false)) {
-				continue;
-			}
-
-			if(editor_mode_dialog_->process_event(event, false)) {
-				continue;
-			}
-
-			if(current_dialog_ && current_dialog_->process_event(event, false)) {
-				continue;
-			}
-
-			if(layers_dialog_ && layers_dialog_->process_event(event, false)) {
-				continue;
-			}
-			
-			switch(event.type) {
-			case SDL_QUIT:
-				done_ = true;
-				break;
-			case SDL_KEYDOWN:
-				if(event.key.keysym.sym == SDLK_ESCAPE) {
-					if(confirm_quit()) {
-						return;
-					}
-				}
-
-				handle_key_press(event.key);
-				break;
-
-				break;
-			case SDL_MOUSEBUTTONDOWN:
-				handle_mouse_button_down(event.button);
-				break;
-
-			case SDL_MOUSEBUTTONUP:
-				handle_mouse_button_up(event.button);
-				break;
-			case SDL_VIDEORESIZE: {
-				const SDL_ResizeEvent* const resize = reinterpret_cast<SDL_ResizeEvent*>(&event);
-
-				SDL_Surface* result = graphics::set_video_mode(resize->w,resize->h,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
-				
-				if(result) {
-					editor_x_resolution = resize->w;
-					editor_y_resolution = resize->h;
-					preferences::set_actual_screen_width(resize->w);
-					preferences::set_actual_screen_height(resize->h);
-				
-					reset_dialog_positions();
-				}
-
-				continue;
-			}
-
-			default:
-				break;
-			}
+			handle_event(event);
 		}
 
-		lvl_->complete_rebuild_tiles_in_background();
 		draw();
 
 		SDL_Delay(std::max<int>(1, scheduled_frame_end_time - SDL_GetTicks()));
 	}
+}
+
+void editor::handle_event(const SDL_Event& event)
+{
+	if(editor_menu_dialog_->process_event(event, false)) {
+		return;
+	}
+
+	if(editor_mode_dialog_->process_event(event, false)) {
+		return;
+	}
+
+	if(current_dialog_ && current_dialog_->process_event(event, false)) {
+		return;
+	}
+
+	if(layers_dialog_ && layers_dialog_->process_event(event, false)) {
+		return;
+	}
+	
+	switch(event.type) {
+	case SDL_QUIT:
+		done_ = true;
+		break;
+	case SDL_KEYDOWN:
+		if(event.key.keysym.sym == SDLK_ESCAPE) {
+			if(confirm_quit()) {
+				done_ = true;
+				return;
+			}
+		}
+
+		handle_key_press(event.key);
+		break;
+	case SDL_MOUSEBUTTONDOWN:
+		handle_mouse_button_down(event.button);
+		break;
+
+	case SDL_MOUSEBUTTONUP:
+		handle_mouse_button_up(event.button);
+		break;
+	case SDL_VIDEORESIZE: {
+		const SDL_ResizeEvent* const resize = reinterpret_cast<const SDL_ResizeEvent*>(&event);
+
+		SDL_Surface* result = graphics::set_video_mode(resize->w,resize->h,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+		
+		if(result) {
+			editor_x_resolution = resize->w;
+			editor_y_resolution = resize->h;
+			preferences::set_actual_screen_width(resize->w);
+			preferences::set_actual_screen_height(resize->h);
+		
+			reset_dialog_positions();
+		}
+
+		return;
+	}
+
+	default:
+		break;
+	}
+}
+
+void editor::process()
+{
+	if(editor_mode_dialog_) {
+		editor_mode_dialog_->refresh_selection();
+	}
+
+	process_ghost_objects();
+	handle_scrolling();
+
+	int mousex, mousey;
+	const unsigned int buttons = get_mouse_state(mousex, mousey);
+	const Uint8* keystate = SDL_GetKeyState(NULL); 
+
+	if(buttons == 0) {
+		drawing_rect_ = false;
+	}
+
+	//make middle-clicking drag the screen around.
+	if(prev_mousex_ != -1 && prev_mousey_ != -1 && (buttons&SDL_BUTTON_MIDDLE)) {
+		const int diff_x = mousex - prev_mousex_;
+		const int diff_y = mousey - prev_mousey_;
+		xpos_ -= diff_x*zoom_;
+		ypos_ -= diff_y*zoom_;
+	}
+
+	prev_mousex_ = mousex;
+	prev_mousey_ = mousey;
+
+	
+	const int selectx = round_tile_size(xpos_ + mousex*zoom_);
+	const int selecty = round_tile_size(ypos_ + mousey*zoom_);
+
+	const bool object_mode = (tool() == TOOL_ADD_OBJECT || tool() == TOOL_SELECT_OBJECT);
+	if(property_dialog_ && g_variable_editing) {
+		int diff = 0;
+		switch(g_variable_editing->type()) {
+		case editor_variable_info::XPOSITION:
+			diff = (xpos_ + mousex*zoom_) - anchorx_;
+			break;
+		case editor_variable_info::YPOSITION:
+			diff = (ypos_ + mousey*zoom_) - anchory_;
+			break;
+		default:
+			break;
+		}
+
+		if(property_dialog_ && property_dialog_->get_entity()) {
+			const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
+			int new_value = g_variable_editing_original_value + diff;
+			if(ctrl_pressed) {
+				new_value += TileSize/2;
+				new_value = new_value - new_value%TileSize;
+			}
+
+			mutate_object_value(property_dialog_->get_entity(), g_variable_editing->variable_name(), variant(new_value));
+		}
+	} else if(object_mode && !buttons) {
+		//remove ghost objects and re-add them. This guarantees ghost
+		//objects always remain at the end of the level ordering.
+		remove_ghost_objects();
+		entity_ptr c = lvl_->get_next_character_at_point(xpos_ + mousex*zoom_, ypos_ + mousey*zoom_, xpos_, ypos_);
+		foreach(const entity_ptr& ghost, ghost_objects_) {
+			lvl_->add_character(ghost);
+		}
+
+		lvl_->set_editor_highlight(c);
+		//See if we should add ghost objects. Human objects don't get
+		//ghost (it doesn't make much sense for them to do so)
+		if(ghost_objects_.empty() && c && !c->is_human() && !editing_level_being_played()) {
+			//we have an object but no ghost for it, make the
+			//object's ghost and deploy it.
+			entity_ptr clone = c->clone();
+			if(clone && !entity_collides_with_level(*lvl_, *clone, MOVE_NONE)) {
+				ghost_objects_.push_back(clone);
+				lvl_->add_character(clone);
+
+				//fire the event to tell the ghost it's been added.
+				lvl_->swap_chars(ghost_objects_);
+				clone->handle_event(OBJECT_EVENT_START_LEVEL);
+				lvl_->swap_chars(ghost_objects_);
+			}
+		} else if(ghost_objects_.empty() == false && !c) {
+			//ghost objects are present but we are no longer moused-over
+			//an object, so remove the ghosts.
+			remove_ghost_objects();
+			ghost_objects_.clear();
+		}
+	}else if(object_mode && lvl_->editor_highlight()) {
+		//we're handling objects, and a button is down, and we have an
+		//object under the mouse. This means we are dragging something.
+
+		// check if cursor is not in the sidebar!
+		if (mousex < editor_mode_dialog_->x()) {
+			handle_object_dragging(mousex, mousey);
+		}
+	} else if(drawing_rect_) {
+		handle_drawing_rect(mousex, mousey);
+	}
+
+	if(!object_mode) {
+		//not in object mode, the picker still highlights objects,
+		//though it won't create ghosts, so remove all ghosts.
+		if(tool() == TOOL_PICKER) {
+			entity_ptr c = lvl_->get_next_character_at_point(xpos_ + mousex*zoom_, ypos_ + mousey*zoom_, xpos_, ypos_);
+			lvl_->set_editor_highlight(c);
+		} else {
+			lvl_->set_editor_highlight(entity_ptr());
+		}
+
+		remove_ghost_objects();
+		ghost_objects_.clear();
+	}
+
+	//if we're drawing with a pencil see if we add a new tile
+	if(tool() == TOOL_PENCIL && buttons && mousey > editor_menu_dialog_->height() && mousex < editor_mode_dialog_->x()) {
+		const int xpos = xpos_ + mousex*zoom_;
+		const int ypos = ypos_ + mousey*zoom_;
+		point p(xpos, ypos);
+		if(std::find(g_current_draw_tiles.begin(), g_current_draw_tiles.end(), p) == g_current_draw_tiles.end()) {
+			g_current_draw_tiles.push_back(p);
+
+			if(buttons&SDL_BUTTON_LEFT) {
+				add_tile_rect(p.x, p.y, p.x, p.y);
+			} else {
+				remove_tile_rect(p.x, p.y, p.x, p.y);
+			}
+		}
+	}
+
+	foreach(level_ptr lvl, levels_) {
+		lvl->complete_rebuild_tiles_in_background();
+	}
+}
+
+void editor::set_pos(int x, int y)
+{
+	xpos_ = x;
+	ypos_ = y;
+}
+
+void editor::set_playing_level(level_ptr lvl)
+{
+	levels_.resize(1);
+	levels_.push_back(lvl);
+	lvl_ = lvl;
+}
+
+void editor::toggle_active_level()
+{
+	std::vector<level_ptr>::iterator i = std::find(levels_.begin(), levels_.end(), lvl_);
+	if(i != levels_.end()) {
+		++i;
+		if(i == levels_.end()) {
+			i = levels_.begin();
+		}
+
+		lvl_ = *i;
+	}
+	lvl_->set_as_current_level();
+}
+
+bool editor::editing_level_being_played() const
+{
+	return levels_.size() == 2 && std::find(levels_.begin(), levels_.end(), lvl_) != levels_.begin();
 }
 
 void editor::reset_dialog_positions()
@@ -1049,20 +1107,20 @@ void editor::reset_dialog_positions()
 	d->set_dim(d->width(), \
 	 std::max<int>(10, preferences::actual_screen_height() - d->y())); \
 }
-				SET_DIALOG_POS(character_dialog_);
-				SET_DIALOG_POS(group_property_dialog_);
-				SET_DIALOG_POS(property_dialog_);
-				SET_DIALOG_POS(tileset_dialog_);
+	SET_DIALOG_POS(character_dialog_);
+	SET_DIALOG_POS(group_property_dialog_);
+	SET_DIALOG_POS(property_dialog_);
+	SET_DIALOG_POS(tileset_dialog_);
 #undef SET_DIALOG_POS
 
-				if(layers_dialog_ && editor_mode_dialog_) {
-					layers_dialog_->set_loc(editor_mode_dialog_->x() - layers_dialog_->width(), EDITOR_MENUBAR_HEIGHT);
-					layers_dialog_->set_dim(layers_dialog_->width(), preferences::actual_screen_height() - EDITOR_MENUBAR_HEIGHT);
-				}
+	if(layers_dialog_ && editor_mode_dialog_) {
+		layers_dialog_->set_loc(editor_mode_dialog_->x() - layers_dialog_->width(), EDITOR_MENUBAR_HEIGHT);
+		layers_dialog_->set_dim(layers_dialog_->width(), preferences::actual_screen_height() - EDITOR_MENUBAR_HEIGHT);
+	}
 
-				if(editor_menu_dialog_ && editor_mode_dialog_) {
-					editor_menu_dialog_->set_dim(preferences::actual_screen_width() - editor_mode_dialog_->width(), editor_menu_dialog_->height());
-				}
+	if(editor_menu_dialog_ && editor_mode_dialog_) {
+		editor_menu_dialog_->set_dim(preferences::actual_screen_width() - editor_mode_dialog_->width(), editor_menu_dialog_->height());
+	}
 }
 
 namespace {
@@ -1071,9 +1129,26 @@ namespace {
 }
 }
 
+void editor::execute_shift_object(entity_ptr e, int dx, int dy)
+{
+	begin_command_group();
+	foreach(level_ptr lvl, levels_) {
+		entity_ptr obj = lvl->get_entity_by_label(e->label());
+		if(obj) {
+			execute_command(boost::bind(&editor::move_object, this, lvl, obj, obj->x()+dx,obj->y()+dy),
+							boost::bind(&editor::move_object,this, lvl, obj,obj->x(),obj->y()));
+		}
+	}
+	end_command_group();
+}
 
 void editor::handle_key_press(const SDL_KeyboardEvent& key)
 {
+	if(key.keysym.sym == SDLK_e && (key.keysym.mod&KMOD_ALT) && levels_.size() > 1) {
+		done_ = true;
+		return;
+	}
+
 	if(key.keysym.sym == SDLK_s && (key.keysym.mod&KMOD_ALT)) {
 		IMG_SaveFrameBuffer((std::string(preferences::user_data_path()) + "screenshot.png").c_str(), 5);
 	}
@@ -1096,31 +1171,35 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 	}
 	
 	if(key.keysym.sym == SDLK_KP8) {
+		begin_command_group();
 		foreach(const entity_ptr& e, lvl_->editor_selection()){
-			execute_command(boost::bind(&editor::move_object, this, e, e->x(),e->y()-2),
-							boost::bind(&editor::move_object,this,e,e->x(),e->y()));
+			execute_shift_object(e, 0, -2);
 		}
+		end_command_group();
 	}
 
 	if(key.keysym.sym == SDLK_KP5) {
+		begin_command_group();
 		foreach(const entity_ptr& e, lvl_->editor_selection()){
-			execute_command(boost::bind(&editor::move_object, this, e, e->x(),e->y()+2),
-							boost::bind(&editor::move_object,this,e,e->x(),e->y()));
+			execute_shift_object(e, 0, 2);
 		}
+		end_command_group();
 	}
 	
 	if(key.keysym.sym == SDLK_KP4) {
+		begin_command_group();
 		foreach(const entity_ptr& e, lvl_->editor_selection()){
-			execute_command(boost::bind(&editor::move_object, this, e, e->x()-2,e->y()),
-							boost::bind(&editor::move_object,this,e,e->x(),e->y()));
+			execute_shift_object(e, -2, 0);
 		}
+		end_command_group();
 	}
 	
 	if(key.keysym.sym == SDLK_KP6) {
+		begin_command_group();
 		foreach(const entity_ptr& e, lvl_->editor_selection()){
-			execute_command(boost::bind(&editor::move_object, this, e, e->x()+2,e->y()),
-							boost::bind(&editor::move_object,this,e,e->x(),e->y()));
+			execute_shift_object(e, 2, 0);
 		}
+		end_command_group();
 	}
 	
 	if(key.keysym.sym == SDLK_EQUALS || key.keysym.sym == SDLK_MINUS ) {
@@ -1137,15 +1216,26 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 			//if it was +, then move the backmost object in front of the frontmost object.
 			//if it was -, do vice versa (frontmost object goes behind backmost object)
 			if(key.keysym.sym == SDLK_EQUALS){
-				execute_command(boost::bind(&entity::set_zsub_order, v2.front(), v2.back()->zsub_order()+1),
-								boost::bind(&entity::set_zsub_order, v2.front(), v2.front()->zsub_order() ));
-				
-				//v2.front()->set_zsub_order( v2.back()->zsub_order() +1);
+				begin_command_group();
+				foreach(level_ptr lvl, levels_) {
+					entity_ptr obj = lvl->get_entity_by_label(v2.front()->label());
+					if(obj) {
+						execute_command(boost::bind(&entity::set_zsub_order, obj, v2.back()->zsub_order()+1),
+										boost::bind(&entity::set_zsub_order, obj, v2.front()->zsub_order() ));
+					}
+				}
+				end_command_group();
 			}else if(key.keysym.sym == SDLK_MINUS){
-				execute_command(boost::bind(&entity::set_zsub_order, v2.back(), v2.front()->zsub_order()-1),
-								boost::bind(&entity::set_zsub_order, v2.back(), v2.back()->zsub_order() ));
+				begin_command_group();
+				foreach(level_ptr lvl, levels_) {
+					entity_ptr obj = lvl->get_entity_by_label(v2.back()->label());
+					if(obj) {
+						execute_command(boost::bind(&entity::set_zsub_order, obj, v2.front()->zsub_order()-1),
+										boost::bind(&entity::set_zsub_order, obj, v2.back()->zsub_order() ));
 				
-				//v2.back()->set_zsub_order( v2.front()->zsub_order() -1);
+					}
+				}
+				end_command_group();
 			}
 		}
 	}
@@ -1176,8 +1266,14 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 		//we want to clear the objects in the property dialog
 		redo.push_back(boost::bind(&editor_dialogs::group_property_editor_dialog::set_group, group_property_dialog_.get(), std::vector<entity_ptr>()));
 		foreach(const entity_ptr& e, lvl_->editor_selection()) {
-			redo.push_back(boost::bind(&editor::remove_object_from_level, this, e));
-			undo.push_back(boost::bind(&editor::add_object_to_level, this, e));
+			foreach(level_ptr lvl, levels_) {
+				entity_ptr obj = lvl->get_entity_by_label(e->label());
+				if(obj) {
+					redo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, e));
+					undo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, e));
+				}
+			}
+
 			undo.push_back(boost::bind(&level::editor_select_object, lvl_.get(), e));
 		}
 		execute_command(
@@ -1188,26 +1284,29 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 	if(!tile_selection_.empty() && (key.keysym.sym == SDLK_DELETE || key.keysym.sym == SDLK_BACKSPACE)) {
 		int min_x = INT_MAX, min_y = INT_MAX, max_x = INT_MIN, max_y = INT_MIN;
 		std::vector<boost::function<void()> > redo, undo;
-		foreach(const point& p, tile_selection_.tiles) {
-			const int x = p.x*TileSize;
-			const int y = p.y*TileSize;
 
-			min_x = std::min(x, min_x);
-			max_x = std::max(x, max_x);
-			min_y = std::min(y, min_y);
-			max_y = std::max(y, max_y);
+		foreach(level_ptr lvl, levels_) {
+			foreach(const point& p, tile_selection_.tiles) {
+				const int x = p.x*TileSize;
+				const int y = p.y*TileSize;
 
-			redo.push_back(boost::bind(&level::clear_tile_rect, lvl_.get(), x, y, x, y));
-			std::map<int, std::vector<std::string> > old_tiles;
-			lvl_->get_all_tiles_rect(x, y, x, y, old_tiles);
-			for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
-				undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x, y, x, y, i->second));
+				min_x = std::min(x, min_x);
+				max_x = std::max(x, max_x);
+				min_y = std::min(y, min_y);
+				max_y = std::max(y, max_y);
+
+				redo.push_back(boost::bind(&level::clear_tile_rect, lvl.get(), x, y, x, y));
+				std::map<int, std::vector<std::string> > old_tiles;
+				lvl->get_all_tiles_rect(x, y, x, y, old_tiles);
+				for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
+					undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl.get(), i->first, x, y, x, y, i->second));
+				}
 			}
-		}
 
-		if(!tile_selection_.tiles.empty()) {
-			undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), std::vector<int>()));
-			redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), std::vector<int>()));
+			if(!tile_selection_.tiles.empty()) {
+				undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl.get(), std::vector<int>()));
+				redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl.get(), std::vector<int>()));
+			}
 		}
 
 		execute_command(
@@ -1219,7 +1318,7 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 		editor_menu_dialog_->open_level();
 	}
 
-	if(key.keysym.sym == SDLK_s) {
+	if(key.keysym.sym == SDLK_s && (!editing_level_being_played() || (key.keysym.mod&KMOD_CTRL))) {
 		save_level();
 	}
 
@@ -1307,8 +1406,13 @@ void editor::handle_object_dragging(int mousex, int mousey)
 		std::vector<boost::function<void()> > redo, undo;
 
 		foreach(const entity_ptr& e, lvl_->editor_selection()) {
-			redo.push_back(boost::bind(&editor::move_object, this, e, e->x() + delta_x, e->y() + delta_y));
-			undo.push_back(boost::bind(&editor::move_object, this, e, e->x(), e->y()));
+			foreach(level_ptr lvl, levels_) {
+				entity_ptr obj = lvl->get_entity_by_label(e->label());
+				if(obj) {
+					redo.push_back(boost::bind(&editor::move_object, this, lvl, obj, e->x() + delta_x, e->y() + delta_y));
+					undo.push_back(boost::bind(&editor::move_object, this, lvl, obj, obj->x(), obj->y()));
+				}
+			}
 
 		}
 
@@ -1586,19 +1690,35 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 
 		} else if(c->is_human() && lvl_->player()) {
 			if(!shift_pressed) {
-				execute_command(
-				  boost::bind(&editor::add_object_to_level, this, c),
-				  boost::bind(&editor::add_object_to_level, this, &lvl_->player()->get_entity()));
+				begin_command_group();
+				foreach(level_ptr lvl, levels_) {
+					entity_ptr obj(c->backup());
+					execute_command(
+					  boost::bind(&editor::add_object_to_level, this, lvl, obj),
+					  boost::bind(&editor::add_object_to_level, this, lvl, &lvl->player()->get_entity()));
+				}
+				end_command_group();
 			} else {
-				execute_command(
-				  boost::bind(&editor::add_multi_object_to_level, this, c),
-				  boost::bind(&editor::add_object_to_level, this, &lvl_->player()->get_entity()));
+				begin_command_group();
+				foreach(level_ptr lvl, levels_) {
+					entity_ptr obj(c->backup());
+					execute_command(
+					  boost::bind(&editor::add_multi_object_to_level, this, lvl, obj),
+					  boost::bind(&editor::add_object_to_level, this, lvl, &lvl->player()->get_entity()));
+				}
+				end_command_group();
 			}
 
 		} else {
-			execute_command(
-			  boost::bind(&editor::add_object_to_level, this, c),
-			  boost::bind(&editor::remove_object_from_level, this, c));
+			begin_command_group();
+			foreach(level_ptr lvl, levels_) {
+				entity_ptr obj(c->backup());
+				execute_command(
+				  boost::bind(&editor::add_object_to_level, this, lvl, obj),
+				  boost::bind(&editor::remove_object_from_level, this, lvl, obj));
+				std::cerr << "ADD OBJECT: " << obj->x() << "," << obj->y() << "\n";
+			}
+			end_command_group();
 		}
 	}
 }
@@ -1617,9 +1737,17 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 		if(property_dialog_ && property_dialog_->get_entity()) {
 			entity_ptr e = property_dialog_->get_entity();
 			const std::string& var = g_variable_editing->variable_name();
-			execute_command(
-			  boost::bind(&editor::mutate_object_value, this, e.get(), var, e->query_value(var)),
-			  boost::bind(&editor::mutate_object_value, this, e.get(), var, variant(g_variable_editing_original_value)));
+
+			begin_command_group();
+			foreach(level_ptr lvl, levels_) {
+				entity_ptr obj = lvl->get_entity_by_label(e->label());
+				if(obj) {
+					execute_command(
+					  boost::bind(&editor::mutate_object_value, this, obj.get(), var, e->query_value(var)),
+					  boost::bind(&editor::mutate_object_value, this, obj.get(), var, variant(g_variable_editing_original_value)));
+				}
+			}
+			end_command_group();
 			property_dialog_->init();
 		}
 		g_variable_editing = NULL;
@@ -1632,9 +1760,13 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 		resizing_left_level_edge = resizing_right_level_edge = resizing_top_level_edge = resizing_bottom_level_edge = false;
 
 		if(boundaries != lvl_->boundaries()) {
-			execute_command(
-			  boost::bind(&level::set_boundaries, lvl_.get(), boundaries),
-			  boost::bind(&level::set_boundaries, lvl_.get(), lvl_->boundaries()));
+			begin_command_group();
+			foreach(level_ptr lvl, levels_) {
+				execute_command(
+				  boost::bind(&level::set_boundaries, lvl.get(), boundaries),
+				  boost::bind(&level::set_boundaries, lvl.get(), lvl->boundaries()));
+			}
+			end_command_group();
 		}
 		return;
 	}
@@ -1770,8 +1902,13 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 			std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos, ypos), xpos_, ypos_);
 
 			foreach(const entity_ptr& c, chars) {
-				redo.push_back(boost::bind(&editor::remove_object_from_level, this, c));
-				undo.push_back(boost::bind(&editor::add_object_to_level, this, c));
+				foreach(level_ptr lvl, levels_) {
+					entity_ptr obj = lvl->get_entity_by_label(c->label());
+					if(obj) {
+						redo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, obj));
+						undo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, obj));
+					}
+				}
 			}
 			execute_command(
 			  boost::bind(execute_functions, redo),
@@ -1850,18 +1987,20 @@ void editor::add_tile_rect(int zorder, const std::string& tile_id, int x1, int y
 		std::swap(y1, y2);
 	}
 
-	std::vector<std::string> old_rect;
-	lvl_->get_tile_rect(zorder, x1, y1, x2, y2, old_rect);
-
 	std::vector<boost::function<void()> > undo, redo;
 
-	redo.push_back(boost::bind(&level::add_tile_rect, lvl_.get(), zorder, x1, y1, x2, y2, tile_id));
-	undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), zorder, x1, y1, x2, y2, old_rect));
+	foreach(level_ptr lvl, levels_) {
+		std::vector<std::string> old_rect;
+		lvl->get_tile_rect(zorder, x1, y1, x2, y2, old_rect);
 
-	std::vector<int> layers;
-	layers.push_back(zorder);
-	undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), layers));
-	redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), layers));
+		redo.push_back(boost::bind(&level::add_tile_rect, lvl.get(), zorder, x1, y1, x2, y2, tile_id));
+		undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl.get(), zorder, x1, y1, x2, y2, old_rect));
+
+		std::vector<int> layers;
+		layers.push_back(zorder);
+		undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl.get(), layers));
+		redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl.get(), layers));
+	}
 
 	execute_command(
 	  boost::bind(execute_functions, redo),
@@ -1900,16 +2039,19 @@ void editor::remove_tile_rect(int x1, int y1, int x2, int y2)
 		std::swap(y1, y2);
 	}
 
-	std::map<int, std::vector<std::string> > old_tiles;
-	lvl_->get_all_tiles_rect(x1, y1, x2, y2, old_tiles);
 	std::vector<boost::function<void()> > redo, undo;
-	for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
-		undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x1, y1, x2, y2, i->second));
-	}
+	foreach(level_ptr lvl, levels_) {
 
-	redo.push_back(boost::bind(&level::clear_tile_rect, lvl_.get(), x1, y1, x2, y2));
-	undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), std::vector<int>()));
-	redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), std::vector<int>()));
+		std::map<int, std::vector<std::string> > old_tiles;
+		lvl->get_all_tiles_rect(x1, y1, x2, y2, old_tiles);
+		for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
+			undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl.get(), i->first, x1, y1, x2, y2, i->second));
+		}
+
+		redo.push_back(boost::bind(&level::clear_tile_rect, lvl.get(), x1, y1, x2, y2));
+		undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl.get(), std::vector<int>()));
+		redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl.get(), std::vector<int>()));
+	}
 
 	execute_command(
 	  boost::bind(execute_functions, redo),
@@ -1993,9 +2135,9 @@ void editor::set_selection(const tile_selection& s)
 	tile_selection_ = s;
 }
 
-void editor::move_object(entity_ptr e, int new_x, int new_y)
+void editor::move_object(level_ptr lvl, entity_ptr e, int new_x, int new_y)
 {
-	lvl_->relocate_object(e, new_x, new_y);
+	lvl->relocate_object(e, new_x, new_y);
 }
 
 const std::vector<editor::tileset>& editor::all_tilesets() const
@@ -2129,7 +2271,7 @@ void quit_editor_result(gui::dialog* d, int* result_ptr, int result) {
 }
 }
 
-bool editor::confirm_quit()
+bool editor::confirm_quit(bool allow_cancel)
 {
 	if(!level_changed_) {
 		return true;
@@ -2142,7 +2284,7 @@ bool editor::confirm_quit()
 
 	d.add_widget(widget_ptr(new label("Do you want to save the level?", graphics::color_white())), dialog::MOVE_DOWN);
 
-	gui::grid* grid = new gui::grid(3);
+	gui::grid* grid = new gui::grid(allow_cancel ? 3 : 2);
 
 	int result = 0;
 	grid->add_col(widget_ptr(
@@ -2151,9 +2293,11 @@ bool editor::confirm_quit()
 	grid->add_col(widget_ptr(
 	  new button(widget_ptr(new label("No", graphics::color_white())),
 	             boost::bind(quit_editor_result, &d, &result, 1))));
-	grid->add_col(widget_ptr(
-	  new button(widget_ptr(new label("Cancel", graphics::color_white())),
-	             boost::bind(quit_editor_result, &d, &result, 2))));
+	if(allow_cancel) {
+		grid->add_col(widget_ptr(
+		  new button(widget_ptr(new label("Cancel", graphics::color_white())),
+		             boost::bind(quit_editor_result, &d, &result, 2))));
+	}
 	d.add_widget(widget_ptr(grid));
 	d.show_modal();
 
@@ -2190,13 +2334,13 @@ void editor::save_level()
 	//based on them having changed.
 	if(lvl_->previous_level().empty() == false) {
 		try {
-			level prev(lvl_->previous_level());
-			prev.finish_loading();
-			if(prev.next_level() != lvl_->id()) {
-				prev.set_next_level(lvl_->id());
+			level_ptr prev(new level(lvl_->previous_level()));
+			prev->finish_loading();
+			if(prev->next_level() != lvl_->id()) {
+				prev->set_next_level(lvl_->id());
 				std::string data;
-				wml::write(prev.write(), data);
-				sys::write_file(package::get_level_filename(prev.id()), data);
+				wml::write(prev->write(), data);
+				sys::write_file(package::get_level_filename(prev->id()), data);
 			}
 		} catch(...) {
 		}
@@ -2204,13 +2348,13 @@ void editor::save_level()
 
 	if(lvl_->next_level().empty() == false) {
 		try {
-			level next(lvl_->next_level());
-			next.finish_loading();
-			if(next.previous_level() != lvl_->id()) {
-				next.set_previous_level(lvl_->id());
+			level_ptr next(new level(lvl_->next_level()));
+			next->finish_loading();
+			if(next->previous_level() != lvl_->id()) {
+				next->set_previous_level(lvl_->id());
 				std::string data;
-				wml::write(next.write(), data);
-				sys::write_file(package::get_level_filename(next.id()), data);
+				wml::write(next->write(), data);
+				sys::write_file(package::get_level_filename(next->id()), data);
 			}
 		} catch(...) {
 		}
@@ -2538,7 +2682,16 @@ void editor::draw() const
 	sprintf(loc_buf, "%d,%d", xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 	graphics::blit_texture(font::render_text(loc_buf, graphics::color_white(), 14), 10, 60);
+	
+	draw_gui();
 
+	debug_console::draw();
+
+	SDL_GL_SwapBuffers();
+}
+
+void editor::draw_gui() const
+{
 	if(current_dialog_) {
 		current_dialog_->draw();
 	}
@@ -2550,13 +2703,6 @@ void editor::draw() const
 	editor_menu_dialog_->draw();
 	editor_mode_dialog_->draw();
 	gui::draw_tooltip();
-
-	debug_console::draw();
-
-	SDL_GL_SwapBuffers();
-#if defined(__ANDROID__)
-	graphics::reset_opengl_state();
-#endif
 }
 
 void editor::draw_selection(int xoffset, int yoffset) const
@@ -2732,22 +2878,22 @@ void editor::edit_level_properties()
 	prop_dialog.show_modal();
 }
 
-void editor::add_multi_object_to_level(entity_ptr e)
+void editor::add_multi_object_to_level(level_ptr lvl, entity_ptr e)
 {
-	lvl_->add_multi_player(e);
+	lvl->add_multi_player(e);
 	e->handle_event("editor_added");
 }
 
-void editor::add_object_to_level(entity_ptr e)
+void editor::add_object_to_level(level_ptr lvl, entity_ptr e)
 {
-	lvl_->add_character(e);
+	lvl->add_character(e);
 	e->handle_event("editor_added");
 }
 
-void editor::remove_object_from_level(entity_ptr e)
+void editor::remove_object_from_level(level_ptr lvl, entity_ptr e)
 {
 	e->handle_event("editor_removed");
-	lvl_->remove_character(e);
+	lvl->remove_character(e);
 }
 
 void editor::mutate_object_value(entity_ptr e, const std::string& value, variant new_value)

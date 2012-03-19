@@ -17,6 +17,9 @@
 struct multiplayer_exception {
 };
 
+class editor;
+class editor_resolution_manager;
+
 class level_runner {
 public:
 	level_runner(boost::intrusive_ptr<level>& lvl, std::string& level_cfg, std::string& original_level_cfg);
@@ -53,6 +56,9 @@ private:
 
 	point last_stats_point_;
 	std::string last_stats_point_level_;
+
+	editor* editor_;
+	boost::scoped_ptr<editor_resolution_manager> editor_resolution_manager_;
 };
 
 class pause_scope

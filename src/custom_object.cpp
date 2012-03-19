@@ -846,7 +846,15 @@ void custom_object::process(level& lvl)
 		return;
 	}
 
-	ASSERT_LOG(type_->static_object() || !entity_collides(level::current(), *this, MOVE_NONE), "ENTITY " << type_->id() << " COLLIDES AT START OF PROCESS");
+	if(lvl.in_editor()) {
+		if(!type_->static_object() && entity_collides(level::current(), *this, MOVE_NONE)) {
+			//The object collides illegally, but we're in the editor. Freeze
+			//the object by returning, since we can't process it.
+			return;
+		}
+	}
+
+	ASSERT_LOG(type_->static_object() || lvl.in_editor() || !entity_collides(level::current(), *this, MOVE_NONE), "ENTITY " << type_->id() << " COLLIDES AT START OF PROCESS");
 
 	if(parent_.get() != NULL) {
 		const point pos = parent_position();

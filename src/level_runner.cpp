@@ -294,7 +294,8 @@ void video_resize( SDL_Event &event )
 
 
 level_runner::level_runner(boost::intrusive_ptr<level>& lvl, std::string& level_cfg, std::string& original_level_cfg)
-  : lvl_(lvl), level_cfg_(level_cfg), original_level_cfg_(original_level_cfg)
+  : lvl_(lvl), level_cfg_(level_cfg), original_level_cfg_(original_level_cfg),
+    editor_(NULL)
 {
 	quit_ = false;
 
@@ -378,6 +379,16 @@ bool level_runner::play_cycle()
 
 	if(controls::num_players() > 1) {
 		lvl_->backup();
+	}
+
+	if(editor_) {
+		controls::control_backup_scope ctrl_backup;
+		editor_->set_pos(last_draw_position().x/100 - (editor_->zoom()-1)*(graphics::screen_width()-editor::sidebar_width())/2, last_draw_position().y/100 - (editor_->zoom()-1)*(graphics::screen_height())/2);
+		editor_->process();
+		lvl_->complete_rebuild_tiles_in_background();
+		lvl_->set_as_current_level();
+
+		lvl_->mutate_value("zoom", variant(decimal(1.0/editor_->zoom())));
 	}
 
 	const bool is_multiplayer = controls::num_players() > 1;
@@ -486,6 +497,10 @@ bool level_runner::play_cycle()
 			}
 		} else {
 			//the portal is to another level
+
+			if(editor_) {
+				editor_->confirm_quit(false);
+			}
 			
 			if (preferences::load_compiled())
 			{
@@ -565,6 +580,14 @@ bool level_runner::play_cycle()
 				transition_scene(*lvl_, last_draw_position(), false, flip_scene);
 			}
 
+			if(editor_) {
+				editor_ = editor::get_editor(lvl_->id().c_str());
+				editor_->set_playing_level(lvl_);
+				editor_->setup_for_editing();
+				lvl_->set_as_current_level();
+				lvl_->set_editor();
+			}
+
 			//we always want to exit this function so that we don't
 			//draw the new level when it hasn't had a chance to process.
 			return !done;
@@ -581,6 +604,12 @@ bool level_runner::play_cycle()
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_HARMATTAN || TARGET_OS_IPHONE
 			should_pause = settings_dialog.handle_event(event);
 #endif
+			if(editor_) {
+				controls::control_backup_scope ctrl_backup;
+				editor_->handle_event(event);
+				lvl_->set_as_current_level();
+			}
+
 			switch(event.type) {
 			case SDL_QUIT: {
 				stats::entry("quit").add_player_pos();
@@ -658,11 +687,33 @@ bool level_runner::play_cycle()
 				const SDLKey key = event.key.keysym.sym;
 				//std::cerr << "Key #" << (int) key << ".\n";
 				if(key == SDLK_ESCAPE) {
-					should_pause = true;
+					if(editor_) {
+						editor_ = NULL;
+						editor_resolution_manager_.reset();
+						lvl_->mutate_value("zoom", variant(1));
+						lvl_->set_editor(false);
+					} else {
+						should_pause = true;
+					}
 					break;
 				} else if(key == SDLK_d && (mod&KMOD_CTRL)) {
 					show_debug_console();
 
+				} else if(key == SDLK_e && (mod&KMOD_ALT)) {
+					if(!editor_) {
+						controls::control_backup_scope ctrl_backup;
+						editor_resolution_manager_.reset(new editor_resolution_manager);
+						editor_ = editor::get_editor(lvl_->id().c_str());
+						editor_->set_playing_level(lvl_);
+						editor_->setup_for_editing();
+						lvl_->set_as_current_level();
+						lvl_->set_editor();
+					} else {
+						controls::control_backup_scope ctrl_backup;
+						editor_->toggle_active_level();
+						editor_->edit_level();
+						editor_->toggle_active_level();
+					}
 				} else if(key == SDLK_e && (mod&KMOD_CTRL)) {
 					#ifndef NO_EDITOR
 					pause_time_ -= SDL_GetTicks();
@@ -693,6 +744,12 @@ bool level_runner::play_cycle()
 				} else if(key == SDLK_s && (mod&KMOD_ALT)) {
 					IMG_SaveFrameBuffer((std::string(preferences::user_data_path()) + "screenshot.png").c_str(), 5);
 				} else if(key == SDLK_w && (mod&KMOD_CTRL)) {
+					if(editor_) {
+						if(!editor_->confirm_quit()) {
+							break;
+						}
+					}
+
 					//warp to another level.
 					std::vector<std::string> levels = get_known_levels();
 					assert(!levels.empty());
@@ -792,6 +849,9 @@ bool level_runner::play_cycle()
 
 		if(should_draw) {
 			render_scene(*lvl_, last_draw_position(), NULL, !is_skipping_game());
+			if(editor_) {
+				editor_->draw_gui();
+			}
 		}
 
 		performance_data perf = { current_fps_, current_cycles_, current_delay_, current_draw_, current_process_, current_flip_, cycle, current_events_, profiling_summary_ };

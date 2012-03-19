@@ -82,7 +82,7 @@ private:
 inline Uint32 get_current_thread_id() { return SDL_ThreadID(); }
 // Binary mutexes.
 //
-// Implements an interface to binary mutexes. This class only defines the
+// Implements an interface to mutexes. This class only defines the
 // mutex itself. Locking is handled through the friend class lock,
 // and monitor interfacing through condition variables is handled through
 // the friend class condition.
@@ -92,12 +92,16 @@ public:
 	mutex();
 	~mutex();
 
+	//we define copy constructors and assignment operators that keep the mutex
+	//intact and don't do any copying. This allows classes that contain
+	//a mutex member to have sane compiler-generated copying semantics.
+	mutex(const mutex&);
+	const mutex& operator=(const mutex&);
+
 	friend class lock;
 	friend class condition;
 
 private:
-	mutex(const mutex&);
-	void operator=(const mutex&);
 
 	SDL_mutex* const m_;
 };

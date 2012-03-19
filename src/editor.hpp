@@ -10,6 +10,7 @@
 #include "key.hpp"
 #include "level.hpp"
 #include "level_object.hpp"
+#include "preferences.hpp"
 #include "stats.hpp"
 
 static const int EDITOR_MENUBAR_HEIGHT = 40;
@@ -34,12 +35,27 @@ class editor_mode_dialog;
 class editor
 {
 public:
+	static editor* get_editor(const char* level_cfg);
 	static void edit(const char* level_cfg, int xpos=-1, int ypos=-1);
 	static std::string last_edited_level();
 
+	static int sidebar_width();
+
 	editor(const char* level_cfg);
 	~editor();
+
+	void setup_for_editing();
 	void edit_level();
+
+	void process();
+	void handle_event(const SDL_Event& event);
+
+	void set_pos(int x, int y);
+
+	typedef boost::intrusive_ptr<level> level_ptr;
+	void set_playing_level(level_ptr lvl);
+	void toggle_active_level();
+
 
 	void load_stats();
 	void show_stats();
@@ -92,9 +108,10 @@ public:
 	void save_level();
 	void save_level_as(const std::string& filename);
 	void quit();
-	bool confirm_quit();
+	bool confirm_quit(bool allow_cancel=true);
 	void zoom_in();
 	void zoom_out();
+	int zoom() const { return zoom_; }
 
 	void undo_command();
 	void redo_command();
@@ -142,7 +159,13 @@ public:
 	void begin_command_group();
 	void end_command_group();
 
+	void draw_gui() const;
+
 private:
+
+	//Are we editing a level that is actually being played and in motion?
+	bool editing_level_being_played() const;
+
 	void reset_dialog_positions();
 
 	void handle_mouse_button_down(const SDL_MouseButtonEvent& event);
@@ -165,22 +188,26 @@ private:
 
 	void set_selection(const tile_selection& s);
 
-	void move_object(entity_ptr e, int delta_x, int delta_y);
+	void execute_shift_object(entity_ptr e, int dx, int dy);
+
+	void move_object(level_ptr lvl, entity_ptr e, int delta_x, int delta_y);
 
 	bool editing_objects() const { return tool_ == TOOL_ADD_OBJECT || tool_ == TOOL_SELECT_OBJECT; }
 	bool editing_tiles() const { return !editing_objects(); }
 
 	//functions which add and remove an object from a level, as well as
 	//sending the object appropriate events.
-	void add_multi_object_to_level(entity_ptr e);
-	void add_object_to_level(entity_ptr e);
-	void remove_object_from_level(entity_ptr e);
+	void add_multi_object_to_level(level_ptr lvl, entity_ptr e);
+	void add_object_to_level(level_ptr lvl, entity_ptr e);
+	void remove_object_from_level(level_ptr lvl, entity_ptr e);
 
 	void mutate_object_value(entity_ptr e, const std::string& value, variant new_value);
 
 	CKey key_;
 
-	boost::intrusive_ptr<level> lvl_;
+	level_ptr lvl_;
+
+	std::vector<level_ptr> levels_;
 	int zoom_;
 	int xpos_, ypos_;
 	int anchorx_, anchory_;
@@ -238,6 +265,16 @@ private:
 
 	int level_changed_;
 	int selected_segment_;
+
+	int prev_mousex_, prev_mousey_;
+};
+
+struct editor_resolution_manager : private preferences::editor_screen_size_scope
+{
+	editor_resolution_manager();
+	~editor_resolution_manager();
+	
+	int original_width_, original_height_;
 };
 
 #endif
