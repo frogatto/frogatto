@@ -34,7 +34,9 @@
 #include "label.hpp"
 #include "level.hpp"
 #include "level_object.hpp"
+#include "level_runner.hpp"
 #include "load_level.hpp"
+#include "multiplayer.hpp"
 #include "object_events.hpp"
 #include "package.hpp"
 #include "player_info.hpp"
@@ -118,6 +120,9 @@ class editor_menu_dialog : public gui::dialog
 			"Level Properties", "", boost::bind(&editor::edit_level_properties, &editor_),
 			"Undo", "u", boost::bind(&editor::undo_command, &editor_),
 			"Redo", "r", boost::bind(&editor::redo_command, &editor_),
+			"Restart Level", "ctrl+r", boost::bind(&editor::reset_playing_level, &editor_, true),
+			"Restart Level (including player)", "ctrl+alt+r", boost::bind(&editor::reset_playing_level, &editor_, false),
+			"Pause Game", "ctrl+p", boost::bind(&editor::toggle_pause, &editor_),
 			"Edit Object...", "", boost::bind(&editor::edit_object_type, &editor_),
 			"New Object...", "", boost::bind(&editor::new_object_type, &editor_),
 		};
@@ -855,6 +860,7 @@ void editor::edit_level()
 	while(!done_) {
 		const int scheduled_frame_end_time = SDL_GetTicks() + 20;
 
+		handle_scrolling();
 		process();
 
 		SDL_Event event;
@@ -936,7 +942,6 @@ void editor::process()
 	}
 
 	process_ghost_objects();
-	handle_scrolling();
 
 	int mousex, mousey;
 	const unsigned int buttons = get_mouse_state(mousex, mousey);
@@ -1331,8 +1336,24 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 	}
 
 	if(key.keysym.sym == SDLK_r &&
-	   (key.keysym.mod&KMOD_CTRL)) {
-		lvl_->rebuild_tiles();
+	   (key.keysym.mod&KMOD_CTRL) && levels_.size() == 2 &&
+	   lvl_ == levels_.back()) {
+
+		entity_ptr player;
+		if(lvl_->player()) {
+			player.reset(&lvl_->player()->get_entity());
+		}
+
+		levels_.front()->transfer_state_to(*levels_.back());
+
+		if(player) {
+			if(place_entity_in_level(*lvl_, *player)) {
+				lvl_->add_player(player);
+			}
+		}
+
+		controls::new_level(lvl_->cycle(), lvl_->players().empty() ? 1 : lvl_->players().size(), multiplayer::slot());
+
 	}
 
 	if(key.keysym.sym == SDLK_c) {
@@ -1343,6 +1364,34 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 				break;
 			}
 		}
+	}
+}
+
+void editor::reset_playing_level(bool keep_player)
+{
+	if(levels_.size() == 2 && lvl_ == levels_.back()) {
+		entity_ptr player;
+		if(keep_player && lvl_->player()) {
+			player.reset(&lvl_->player()->get_entity());
+		}
+
+		levels_.front()->transfer_state_to(*levels_.back());
+
+		if(player) {
+			if(place_entity_in_level(*lvl_, *player)) {
+				lvl_->add_player(player);
+			}
+		}
+
+		controls::new_level(lvl_->cycle(), lvl_->players().empty() ? 1 : lvl_->players().size(), multiplayer::slot());
+
+	}
+}
+
+void editor::toggle_pause() const
+{
+	if(level_runner::get_current()) {
+		level_runner::get_current()->toggle_pause();
 	}
 }
 
@@ -2377,17 +2426,9 @@ void editor::zoom_out()
 
 void editor::draw() const
 {
-	const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
-
-	int mousex, mousey;
-	get_mouse_state(mousex, mousey);
-
 	graphics::prepare_raster();
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
-	glPushMatrix();
-	glScalef(1.0/zoom_, 1.0/zoom_, 0);
-	glTranslatef(-xpos_,-ypos_,0);
 
 	if(zoom_ == 1) {
 		//backgrounds only draw nicely at the regular zoom level for now.
@@ -2395,7 +2436,23 @@ void editor::draw() const
 	}
 
 	lvl_->draw(xpos_, ypos_, graphics::screen_width()*zoom_, graphics::screen_height()*zoom_);
+	
+	draw_gui();
 
+	debug_console::draw();
+
+	SDL_GL_SwapBuffers();
+}
+
+void editor::draw_gui() const
+{
+	glPushMatrix();
+	glScalef(1.0/zoom_, 1.0/zoom_, 0);
+	glTranslatef(-xpos_,-ypos_,0);
+
+	const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
+	int mousex, mousey;
+	get_mouse_state(mousex, mousey);
 	const int selectx = xpos_ + mousex*zoom_;
 	const int selecty = ypos_ + mousey*zoom_;
 
@@ -2682,16 +2739,6 @@ void editor::draw() const
 	sprintf(loc_buf, "%d,%d", xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 	graphics::blit_texture(font::render_text(loc_buf, graphics::color_white(), 14), 10, 60);
-	
-	draw_gui();
-
-	debug_console::draw();
-
-	SDL_GL_SwapBuffers();
-}
-
-void editor::draw_gui() const
-{
 	if(current_dialog_) {
 		current_dialog_->draw();
 	}

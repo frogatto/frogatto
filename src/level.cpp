@@ -106,9 +106,8 @@ void level::set_as_current_level()
 
 
 		if(x_resolution_ != preferences::actual_screen_width() || y_resolution_ != preferences::actual_screen_height()) {
-#if defined(TARGET_BLACKBERRY)
-#endif
 
+			std::cerr << "RESETTING VIDEO MODE: " << x_resolution_ << ", " << y_resolution_ << "\n";
 			const bool result = graphics::set_video_mode(x_resolution_, y_resolution_);
 			if(result) {
 				preferences::set_actual_screen_width(x_resolution_);
@@ -3509,6 +3508,13 @@ std::vector<entity_ptr> level::predict_future(entity_ptr e, int ncycles)
 	restore_from_backup(*snapshot);
 
 	return result;
+}
+
+void level::transfer_state_to(level& lvl)
+{
+	backup();
+	lvl.restore_from_backup(*backups_.back());
+	backups_.pop_back();
 }
 
 void level::get_tile_layers(std::set<int>* all_layers, std::set<int>* hidden_layers)

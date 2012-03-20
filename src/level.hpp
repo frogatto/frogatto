@@ -248,6 +248,8 @@ public:
 	void backup();
 	void reverse_one_cycle();
 
+	void transfer_state_to(level& lvl);
+
 	//gets historical 'shadows' of a given object for the last n frames.
 	std::vector<entity_ptr> trace_past(entity_ptr e, int ncycles);
 

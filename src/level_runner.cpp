@@ -49,6 +49,21 @@
 #include "texture.hpp"
 
 namespace {
+level_runner* current_level_runner = NULL;
+
+class current_level_runner_scope {
+	level_runner* old_;
+public:
+	current_level_runner_scope(level_runner* value) : old_(current_level_runner)
+	{
+		current_level_runner = value;
+	}
+
+	~current_level_runner_scope() {
+		current_level_runner = old_;
+	}
+};
+
 int skipping_game = 0;
 
 int global_pause_time;
@@ -255,7 +270,6 @@ bool is_skipping_game() {
 	return skipping_game > 0;
 }
 
-
 void video_resize( SDL_Event &event ) 
 {
     const SDL_ResizeEvent* resize = reinterpret_cast<SDL_ResizeEvent*>(&event);
@@ -292,6 +306,10 @@ void video_resize( SDL_Event &event )
     graphics::set_video_mode(width, height);
 }
 
+level_runner* level_runner::get_current()
+{
+	return current_level_runner;
+}
 
 level_runner::level_runner(boost::intrusive_ptr<level>& lvl, std::string& level_cfg, std::string& original_level_cfg)
   : lvl_(lvl), level_cfg_(level_cfg), original_level_cfg_(original_level_cfg),
@@ -326,6 +344,8 @@ level_runner::level_runner(boost::intrusive_ptr<level>& lvl, std::string& level_
 
 bool level_runner::play_level()
 {
+	const current_level_runner_scope current_level_runner_setter(this);
+
 	sound::stop_looped_sounds(NULL);
 
 	CKey key;
@@ -424,7 +444,13 @@ bool level_runner::play_cycle()
 		die_at = cycle;
 	}
 
-	if(die_at > 0 && cycle >= die_at + 30) {
+	if(editor_ && die_at > 0 && cycle >= die_at + 30) {
+		//If the player dies in the editor, return this level to its
+		//initial state.
+		editor_->reset_playing_level(false);
+		last_draw_position().init = false;
+
+	} else if(die_at > 0 && cycle >= die_at + 30) {
 		die_at = -1;
 
 		foreach(entity_ptr e, lvl_->get_chars()) {
@@ -540,6 +566,10 @@ bool level_runner::play_cycle()
 				}
 			}
 
+			if(editor_) {
+				new_level->set_editor();
+			}
+
 			new_level->set_as_current_level();
 
 			set_scene_title(new_level->title());
@@ -605,7 +635,6 @@ bool level_runner::play_cycle()
 			should_pause = settings_dialog.handle_event(event);
 #endif
 			if(editor_) {
-				controls::control_backup_scope ctrl_backup;
 				editor_->handle_event(event);
 				lvl_->set_as_current_level();
 			}
@@ -699,39 +728,36 @@ bool level_runner::play_cycle()
 				} else if(key == SDLK_d && (mod&KMOD_CTRL)) {
 					show_debug_console();
 
-				} else if(key == SDLK_e && (mod&KMOD_ALT)) {
+				} else if(key == SDLK_e && (mod&KMOD_CTRL)) {
+					#ifndef NO_EDITOR
 					if(!editor_) {
 						controls::control_backup_scope ctrl_backup;
 						editor_resolution_manager_.reset(new editor_resolution_manager);
 						editor_ = editor::get_editor(lvl_->id().c_str());
 						editor_->set_playing_level(lvl_);
 						editor_->setup_for_editing();
-						lvl_->set_as_current_level();
 						lvl_->set_editor();
+						lvl_->set_as_current_level();
 					} else {
-						controls::control_backup_scope ctrl_backup;
-						editor_->toggle_active_level();
-						editor_->edit_level();
-						editor_->toggle_active_level();
+						//Pause the game and set the level to its original
+						//state if the user presses ctrl+e twice.
+						paused = !paused;
+						editor_->reset_playing_level(false);
+						last_draw_position().init = false;
 					}
-				} else if(key == SDLK_e && (mod&KMOD_CTRL)) {
-					#ifndef NO_EDITOR
-					pause_time_ -= SDL_GetTicks();
-					editor::edit(lvl_->id().c_str(), last_draw_position().x/100, last_draw_position().y/100);
-					lvl_.reset(load_level(editor::last_edited_level().c_str()));
-					lvl_->set_as_current_level();
-					if(lvl_->player()) {
-						//we want to save the game after leaving the editor
-						//so the game is restored to here if we die, rather
-						//than going to some other level. We must run
-						//the level through a process cycle just to make
-						//sure everything is set properly for the player.
-						lvl_->process();
-						lvl_->player()->get_entity().save_game();
-					}
-					pause_time_ += SDL_GetTicks();
 					#endif
-				} else if(key == SDLK_s && (mod&KMOD_CTRL)) {
+				} else if(key == SDLK_r && (mod&KMOD_CTRL) && editor_) {
+					//We're in the editor and we want to refresh the level
+					//to its original state. If alt is held, we also
+					//reset the player.
+					const bool reset_pos = mod&KMOD_ALT;
+					editor_->reset_playing_level(!reset_pos);
+
+					if(reset_pos) {
+						//make the camera jump to the player
+						last_draw_position().init = false;
+					}
+				} else if(key == SDLK_s && (mod&KMOD_CTRL) && !editor_) {
 					std::cerr << "SAVING...\n";
 					std::string data;
 					
@@ -756,6 +782,10 @@ bool level_runner::play_cycle()
 					int index = std::find(levels.begin(), levels.end(), lvl_->id()) - levels.begin();
 					index = (index+1)%levels.size();
 					level* new_level = load_level(levels[index]);
+					if(editor_) {
+						new_level->set_editor();
+					}
+
 					new_level->set_as_current_level();
 
 					if(!new_level->music().empty()) {
@@ -764,6 +794,14 @@ bool level_runner::play_cycle()
 
 					set_scene_title(new_level->title());
 					lvl_.reset(new_level);
+
+					if(editor_) {
+						editor_ = editor::get_editor(lvl_->id().c_str());
+						editor_->set_playing_level(lvl_);
+						editor_->setup_for_editing();
+						lvl_->set_as_current_level();
+						lvl_->set_editor();
+					}
 				} else if(key == SDLK_l && (mod&KMOD_CTRL)) {
 					preferences::set_use_pretty_scaling(!preferences::use_pretty_scaling());
 					graphics::surface_cache::clear();
@@ -844,7 +882,32 @@ bool level_runner::play_cycle()
 
 	const int start_draw = SDL_GetTicks();
 	if(start_draw < desired_end_time || nskip_draw_ >= MaxSkips) {
-		const bool should_draw = update_camera_position(*lvl_, last_draw_position(), NULL, !is_skipping_game());
+		bool should_draw = true;
+		
+		if(editor_ && paused) {
+			const int xpos = editor_->xpos();
+			const int ypos = editor_->ypos();
+			editor_->handle_scrolling();
+			last_draw_position().x += (editor_->xpos() - xpos)*100;
+			last_draw_position().y += (editor_->ypos() - ypos)*100;
+			std::cerr << "MOVE: " << (editor_->xpos() - xpos) << "," << (editor_->ypos() - ypos) << " -> " << last_draw_position().x << "," << last_draw_position().y << "\n";
+
+			float target_zoom = 1.0/editor_->zoom();
+			float diff = target_zoom - last_draw_position().zoom;
+			float amount = diff/10.0;
+			float dir = amount > 0.0 ? 1.0 : -1.0;
+			if(amount*dir < 0.02) {
+				amount = 0.02*dir;
+			}
+
+			if(amount*dir > diff*dir) {
+				amount = diff;
+			}
+			last_draw_position().zoom += amount;
+		} else {
+			should_draw = update_camera_position(*lvl_, last_draw_position(), NULL, !is_skipping_game());
+		}
+
 		lvl_->process_draw();
 
 		if(should_draw) {
@@ -931,6 +994,11 @@ bool level_runner::play_cycle()
 #endif
 	
 	return !quit_;
+}
+
+void level_runner::toggle_pause()
+{
+	paused = !paused;
 }
 
 void level_runner::reverse_cycle()

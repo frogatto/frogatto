@@ -49,6 +49,10 @@ public:
 
 	void process();
 	void handle_event(const SDL_Event& event);
+	void handle_scrolling();
+
+	int xpos() const { return xpos_; }
+	int ypos() const { return ypos_; }
 
 	void set_pos(int x, int y);
 
@@ -161,7 +165,15 @@ public:
 
 	void draw_gui() const;
 
+	//We are currently playing a level we are editing, and we want
+	//to reset it to its initial state.
+	void reset_playing_level(bool keep_player=true);
+
+	void toggle_pause() const;
+
 private:
+	editor(const editor&);
+	void operator=(const editor&);
 
 	//Are we editing a level that is actually being played and in motion?
 	bool editing_level_being_played() const;
@@ -171,7 +183,6 @@ private:
 	void handle_mouse_button_down(const SDL_MouseButtonEvent& event);
 	void handle_mouse_button_up(const SDL_MouseButtonEvent& event);
 	void handle_key_press(const SDL_KeyboardEvent& key);
-	void handle_scrolling();
 
 	void handle_object_dragging(int mousex, int mousey);
 	void handle_drawing_rect(int mousex, int mousey);
