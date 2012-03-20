@@ -547,6 +547,45 @@ namespace {
 			return variant(static_cast<decimal>(tanh(angle)));
 		}
 	};
+	
+	class asinh_function : public function_expression {	//Interprets two least significant digits as after decimal.
+	public:
+		explicit asinh_function(const args_list& args)
+			: function_expression("asinh", args, 1, 1)
+		{}
+
+	private:
+		variant execute(const formula_callable& variables) const {
+			const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
+			return variant(static_cast<decimal>(asinh(angle)));
+		}
+	};
+
+	class acosh_function : public function_expression {	
+	public:
+		explicit acosh_function(const args_list& args)
+			: function_expression("acosh", args, 1, 1)
+		{}
+
+	private:
+		variant execute(const formula_callable& variables) const {
+			const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
+			return variant(static_cast<decimal>(acosh(angle)));
+		}
+	};
+
+	class atanh_function : public function_expression {
+	public:
+		explicit atanh_function(const args_list& args)
+			: function_expression("atanh", args, 1, 1)
+		{}
+
+	private:
+		variant execute(const formula_callable& variables) const {
+			const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
+			return variant(static_cast<decimal>(atanh(angle)));
+		}
+	};
 		
 	class sqrt_function : public function_expression {
 	public:
@@ -1436,6 +1475,9 @@ namespace {
 			FUNCTION(sinh);
 			FUNCTION(cosh);
 			FUNCTION(tanh);
+			FUNCTION(asinh);
+			FUNCTION(acosh);
+			FUNCTION(atanh);
 			FUNCTION(sqrt);
 			FUNCTION(angle);
 			FUNCTION(orbit);
