@@ -515,6 +515,7 @@ private:
 		int cycle;
 		std::vector<entity_ptr> chars;
 		std::vector<entity_ptr> players;
+		std::vector<entity_group> groups;
 		entity_ptr player, last_touched_player;
 	};
 

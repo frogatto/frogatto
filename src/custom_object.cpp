@@ -854,7 +854,8 @@ void custom_object::process(level& lvl)
 		}
 	}
 
-	ASSERT_LOG(type_->static_object() || lvl.in_editor() || !entity_collides(level::current(), *this, MOVE_NONE), "ENTITY " << type_->id() << " COLLIDES AT START OF PROCESS");
+	collision_info debug_collide_info;
+	ASSERT_LOG(type_->static_object() || lvl.in_editor() || !entity_collides(level::current(), *this, MOVE_NONE, &debug_collide_info), "ENTITY " << debug_description() << " COLLIDES WITH " << (debug_collide_info.collide_with ? debug_collide_info.collide_with->debug_description() : "THE LEVEL") << " AT START OF PROCESS");
 
 	if(parent_.get() != NULL) {
 		const point pos = parent_position();
@@ -3264,7 +3265,9 @@ bool custom_object::can_interact_with() const
 
 std::string custom_object::debug_description() const
 {
-	return type_->id();
+	char buf[128];
+	sprintf(buf, "%p", this);
+	return type_->id() + " (" + label() + " " + std::string(buf) + ")";
 }
 
 namespace {

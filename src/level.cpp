@@ -2112,15 +2112,14 @@ void level::do_processing()
 	}
 
 	++cycle_;
-
-	const int ticks = SDL_GetTicks();
-	detect_user_collisions(*this);
-
 	if(!player_) {
 		return;
 	}
 
+	const int ticks = SDL_GetTicks();
 	set_active_chars();
+	detect_user_collisions(*this);
+
 	
 /*
 	std::cerr << "SUMMARY " << cycle_ << ": ";
@@ -2685,12 +2684,10 @@ const level_tile* level::get_tile_at(int x, int y) const
 
 void level::remove_character(entity_ptr e)
 {
-	//std::cerr << "removing char: '" << e->label() << "'\n";
 	if(e->label().empty() == false) {
 		chars_by_label_.erase(e->label());
 	}
 	chars_.erase(std::remove(chars_.begin(), chars_.end(), e), chars_.end());
-	//std::cerr << "removed char: '" << e->label() << "'\n";
 }
 
 std::vector<entity_ptr> level::get_characters_in_rect(const rect& r, int screen_xpos, int screen_ypos) const
@@ -2863,7 +2860,6 @@ void level::add_player(entity_ptr p)
 	const std::vector<int>& destroyed_objects = player_->get_player_info()->get_objects_destroyed(id());
 	for(int n = 0; n != chars_.size(); ++n) {
 		if(chars_[n]->respawn() == false && std::binary_search(destroyed_objects.begin(), destroyed_objects.end(), chars_[n]->get_id())) {
-			std::cerr << "removing character: " << n << ": " << chars_[n]->get_id() << "\n";
 			if(chars_[n]->label().empty() == false) {
 				chars_by_label_.erase(chars_[n]->label());
 			}
@@ -3400,6 +3396,7 @@ void level::backup()
 	snapshot->cycle = cycle_;
 	snapshot->chars.reserve(chars_.size());
 
+
 	foreach(const entity_ptr& e, chars_) {
 		snapshot->chars.push_back(e->backup());
 		entity_map[e] = snapshot->chars.back();
@@ -3408,6 +3405,17 @@ void level::backup()
 			snapshot->players.push_back(snapshot->chars.back());
 			if(e == player_) {
 				snapshot->player = snapshot->players.back();
+			}
+		}
+	}
+
+	foreach(entity_group& g, groups_) {
+		snapshot->groups.push_back(entity_group());
+
+		foreach(entity_ptr e, g) {
+			std::map<entity_ptr, entity_ptr>::iterator i = entity_map.find(e);
+			if(i != entity_map.end()) {
+				snapshot->groups.back().push_back(i->second);
 			}
 		}
 	}
@@ -3441,7 +3449,9 @@ void level::restore_from_backup(backup_snapshot& snapshot)
 	chars_ = snapshot.chars;
 	players_ = snapshot.players;
 	player_ = snapshot.player;
+	groups_ = snapshot.groups;
 	last_touched_player_ = snapshot.last_touched_player;
+	active_chars_.clear();
 
 	solid_chars_.clear();
 
