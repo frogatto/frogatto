@@ -79,7 +79,7 @@ class console
 {
 public:
 	explicit console()
-	  : history_pos_(0), invalidated_(false) {
+	  : history_pos_(0), invalidated_(false), history_length_(150) {
 		entry_.set_font("door_label");
 		entry_.set_loc(10, 300);
 		entry_.set_dim(300, 20);
@@ -163,8 +163,16 @@ public:
 							} else if(text == "step") {
 								context->process(*lvl);
 								break;
-							} else if(text == "history") {
-								shadows_from_the_past_ = lvl->predict_future(context, 100);
+							} else if(text.size() >= 7 && std::equal(text.begin(), text.begin()+7, "history")) {
+								history_length_ = 150;
+								if(text.size() > 7) {
+									const int len = atoi(text.c_str()+7);
+									if(len > 1) {
+										history_length_ = len;
+									}
+								}
+
+								shadows_from_the_past_ = lvl->predict_future(context, history_length_);
 								show_shadows = true;
 								context = select_object(*lvl, context_label);
 
@@ -178,7 +186,7 @@ public:
 							debug_console::add_message(v.to_debug_string());
 
 							if(show_shadows) {
-								shadows_from_the_past_ = lvl->predict_future(context, 100);
+								shadows_from_the_past_ = lvl->predict_future(context, history_length_);
 							}
 
 							context = select_object(*lvl, context_label);
@@ -214,14 +222,14 @@ public:
 
 			if(invalidated_) {
 				context = select_object(*lvl, context_label);
-				shadows_from_the_past_ = lvl->predict_future(context, 100);
+				shadows_from_the_past_ = lvl->predict_future(context, history_length_);
 				context = select_object(*lvl, context_label);
 				invalidated_ = false;
 			}
 
 			if(show_shadows) {
 				if(custom_object_type::reload_modified_code()) {
-					shadows_from_the_past_ = lvl->predict_future(context, 100);
+					shadows_from_the_past_ = lvl->predict_future(context, history_length_);
 					context = select_object(*lvl, context_label);
 				}
 			}
@@ -330,6 +338,7 @@ private:
 	mutable std::vector<entity_ptr> shadows_from_the_past_;
 
 	mutable bool invalidated_;
+	mutable int history_length_;
 };
 
 }

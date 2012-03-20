@@ -892,7 +892,6 @@ bool level_runner::play_cycle()
 			editor_->handle_scrolling();
 			last_draw_position().x += (editor_->xpos() - xpos)*100;
 			last_draw_position().y += (editor_->ypos() - ypos)*100;
-			std::cerr << "MOVE: " << (editor_->xpos() - xpos) << "," << (editor_->ypos() - ypos) << " -> " << last_draw_position().x << "," << last_draw_position().y << "\n";
 
 			float target_zoom = 1.0/editor_->zoom();
 			float diff = target_zoom - last_draw_position().zoom;
