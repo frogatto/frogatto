@@ -176,7 +176,7 @@ public:
 								show_shadows = true;
 								context = select_object(*lvl, context_label);
 
-								history_slider_.reset(new gui::slider(200, boost::bind(&console::history_slider_change, this, lvl, _1), 1.0));
+								history_slider_.reset(new gui::slider(300, boost::bind(&console::history_slider_change, this, lvl, _1), 1.0));
 								break;
 							}
 
