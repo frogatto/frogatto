@@ -445,6 +445,8 @@ bool level_runner::play_cycle()
 	}
 
 	if(editor_ && die_at > 0 && cycle >= die_at + 30) {
+		die_at = -1;
+
 		//If the player dies in the editor, return this level to its
 		//initial state.
 		editor_->reset_playing_level(false);
