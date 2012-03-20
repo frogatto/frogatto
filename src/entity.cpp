@@ -355,3 +355,13 @@ point entity::pivot(const std::string& name, bool reverse_facing) const
 		return point(x() + f.width() - pos.x, y() + pos.y);
 	}
 }
+
+void entity::set_spawned_by(const std::string& key)
+{
+	spawned_by_ = key;
+}
+
+const std::string& entity::spawned_by() const
+{
+	return spawned_by_;
+}

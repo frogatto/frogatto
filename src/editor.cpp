@@ -1277,6 +1277,15 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 					redo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, obj));
 					undo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, obj));
 				}
+
+				if(obj->label().empty() == false) {
+					foreach(entity_ptr child, lvl->get_chars()) {
+						if(child->spawned_by() == obj->label()) {
+							redo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, child));
+							undo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, child));
+						}
+					}
+				}
 			}
 
 			undo.push_back(boost::bind(&level::editor_select_object, lvl_.get(), e));

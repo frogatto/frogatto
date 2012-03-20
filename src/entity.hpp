@@ -261,6 +261,9 @@ public:
 
 	virtual bool editor_force_standing() const = 0;
 
+	void set_spawned_by(const std::string& key);
+	const std::string& spawned_by() const;
+
 protected:
 
 	virtual const_solid_info_ptr calculate_solid() const = 0;
@@ -326,6 +329,8 @@ private:
 	const_solid_info_ptr platform_;
 
 	int platform_motion_x_;
+
+	std::string spawned_by_;
 };
 
 #endif
