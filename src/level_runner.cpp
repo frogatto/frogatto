@@ -348,7 +348,6 @@ bool level_runner::play_level()
 
 	sound::stop_looped_sounds(NULL);
 
-	CKey key;
 	lvl_->set_as_current_level();
 	bool reversing = false;
 
@@ -912,7 +911,18 @@ bool level_runner::play_cycle()
 		lvl_->process_draw();
 
 		if(should_draw) {
-			render_scene(*lvl_, last_draw_position(), NULL, !is_skipping_game());
+			if(editor_ && key[SDLK_l]) {
+
+				editor_->toggle_active_level();
+
+				render_scene(editor_->get_level(), last_draw_position(), NULL, !is_skipping_game());
+
+				editor_->toggle_active_level();
+				lvl_->set_as_current_level();
+			} else {
+				render_scene(*lvl_, last_draw_position(), NULL, !is_skipping_game());
+			}
+
 			if(editor_) {
 				editor_->draw_gui();
 			}
