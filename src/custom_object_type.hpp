@@ -172,6 +172,7 @@ public:
 	const variant& available_frames() const { return available_frames_; }
 
 	bool editor_force_standing() const { return editor_force_standing_; }
+	bool hidden_in_game() const { return hidden_in_game_; }
 
 private:
 	static void overwrite_frames(custom_object_type* t, custom_object_type* new_obj);
@@ -267,6 +268,9 @@ private:
 	std::map<std::string, const_custom_object_type_ptr> sub_objects_;
 
 	bool editor_force_standing_;
+
+	//object should be hidden in the game but will show in the editor.
+	bool hidden_in_game_;
 
 	std::vector<int> platform_offsets_;
 };
