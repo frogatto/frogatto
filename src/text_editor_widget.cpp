@@ -146,19 +146,17 @@ void text_editor_widget::handle_draw() const
 
 bool text_editor_widget::handle_event(const SDL_Event& event, bool claimed)
 {
+	claimed = scrollable_widget::handle_event(event, claimed) || claimed;
+
 	switch(event.type) {
 	case SDL_KEYDOWN:
-		return handle_key_press(event.key);
+		return handle_key_press(event.key) || claimed;
 	case SDL_MOUSEBUTTONDOWN:
-		return handle_mouse_button_down(event.button);
+		return handle_mouse_button_down(event.button) || claimed;
 	case SDL_MOUSEBUTTONUP:
-		return handle_mouse_button_up(event.button);
+		return handle_mouse_button_up(event.button) || claimed;
 	case SDL_MOUSEMOTION:
-		return handle_mouse_motion(event.motion);
-	}
-
-	if(scrollable_widget::handle_event(event, claimed)) {
-		return true;
+		return handle_mouse_motion(event.motion) || claimed;
 	}
 
 	return false;
