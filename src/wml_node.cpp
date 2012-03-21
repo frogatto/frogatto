@@ -54,7 +54,10 @@ void node::erase_attr(const std::string& key)
 {
 	attr_.erase(key);
 	if(!attr_order_.empty()) {
-		attr_order_.erase(std::find(attr_order_.begin(), attr_order_.end(), key));
+		std::vector<std::string>::iterator itor = std::find(attr_order_.begin(), attr_order_.end(), key);
+		if(itor != attr_order_.end()) {
+			attr_order_.erase(itor);
+		}
 	}
 }
 

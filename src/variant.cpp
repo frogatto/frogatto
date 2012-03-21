@@ -774,17 +774,19 @@ void variant::serialize_to_string(std::string& str) const
 		break;
 	}
 	case TYPE_STRING: {
-		if(string_->str[0] == '~' && string_->str[string_->str.length()-1] == '~') {
-			str += string_->str;
-		} else {
-			const char* delim = "'";
-			if(strchr(string_->str.c_str(), '\'')) {
-				delim = "~";
-			}
+		if( !string_->str.empty() ) {
+			if(string_->str[0] == '~' && string_->str[string_->str.length()-1] == '~') {
+				str += string_->str;
+			} else {
+				const char* delim = "'";
+				if(strchr(string_->str.c_str(), '\'')) {
+					delim = "~";
+				}
 
-			str += delim;
-			str += string_->str;
-			str += delim;
+				str += delim;
+				str += string_->str;
+				str += delim;
+			}
 		}
 		break;
 	}

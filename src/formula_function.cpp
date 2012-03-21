@@ -26,6 +26,14 @@
 
 #include "graphics.hpp"
 #include <boost/regex.hpp>
+#if defined(_WINDOWS)
+#include <boost/math/special_functions/asinh.hpp>
+#include <boost/math/special_functions/acosh.hpp>
+#include <boost/math/special_functions/atanh.hpp>
+#define asinh boost::math::asinh
+#define acosh boost::math::acosh
+#define atanh boost::math::atanh
+#endif
 
 #include "compat.hpp"
 

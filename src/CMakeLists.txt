@@ -14,6 +14,7 @@ endif( WIN32 )
 add_executable( frogatto 
 	IMG_savepng.cpp
 	achievements.cpp
+    asserts.cpp
 	background.cpp
 	blur.cpp
 	border_widget.cpp
