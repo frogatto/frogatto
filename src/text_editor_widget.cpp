@@ -181,11 +181,13 @@ bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& ev
 		if(last_click_at_ != -1 && SDL_GetTicks() - last_click_at_ < 500) {
 			++consecutive_clicks_;
 
-			if(consecutive_clicks_ == 1) {
+			const int nclicks = consecutive_clicks_%3;
+
+			if(nclicks == 1) {
 				row_select_ = row_;
 				col_select_ = col_;
 				select_token(text_[row_], col_select_, col_);
-			} else if(consecutive_clicks_ == 2) {
+			} else if(nclicks == 2) {
 				row_select_ = row_;
 				col_select_ = 0;
 				col_ = text_[row_].size();
