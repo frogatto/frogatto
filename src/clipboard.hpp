@@ -19,7 +19,7 @@
 #define CLIPBOARD_HPP_INCLUDED
 
 #include <string>
-#include "SDL.h"
+#include "graphics.hpp"
 
 /**
  * Copies text to the clipboard.

@@ -3,7 +3,7 @@
 
 #include <algorithm>
 
-#include <SDL.h>
+#include "graphics.hpp"
 
 #include "clipboard.hpp"
 #include "font.hpp"
@@ -165,6 +165,35 @@ bool text_editor_widget::handle_event(const SDL_Event& event, bool claimed)
 bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 {
 	if(event.x >= x() && event.x < x() + width() && event.y >= y() && event.y < y() + height()) {
+#if defined(_WINDOWS)
+		if(event.button == SDL_BUTTON_WHEELUP) {
+			if(row_ > 2) {
+				row_ -= 3;
+				scroll_pos_ -= 3;
+				if( scroll_pos_ < 0 ){ 
+					scroll_pos_ = 0; 
+				}
+			} else {
+				row_ = 0;
+			}
+			col_ = find_equivalent_col(col_, row_+3, row_);
+			on_move_cursor();
+			return true;
+		} else if(event.button == SDL_BUTTON_WHEELDOWN) {
+			if(row_ < text_.size()-3) {
+				row_ += 3;
+				scroll_pos_ += 3;
+				if( scroll_pos_ > text_.size() ){ 
+					scroll_pos_ = text_.size(); 
+				}
+			} else {
+				row_ = text_.size();
+			}
+			col_ = find_equivalent_col(col_, row_-3, row_);
+			on_move_cursor();
+			return true;
+		}
+#endif
 
 		SDL_EnableUNICODE(1);
 		SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);

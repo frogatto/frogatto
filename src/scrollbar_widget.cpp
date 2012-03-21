@@ -100,6 +100,29 @@ bool scrollbar_widget::handle_event(const SDL_Event& event, bool claimed)
 
 		claimed = true;
 
+#if defined(_WINDOWS)
+		if( e.button == SDL_BUTTON_WHEELUP || e.button == SDL_BUTTON_WHEELDOWN ) {
+			if(e.button == SDL_BUTTON_WHEELUP) {
+				window_pos_ -= 3 * step_;
+			} else if(e.button == SDL_BUTTON_WHEELDOWN) {
+				window_pos_ += 3 * step_;
+			}
+
+			if(window_pos_ < 0) {
+				window_pos_ = 0;
+			}
+
+			if(window_pos_ > range_ - window_size_) {
+				window_pos_ = range_ - window_size_;
+			}
+
+			if(window_pos_ != start_pos) {
+				set_dim(width(), height());
+				handler_(window_pos_);
+			}
+			return claimed;
+		}
+#endif
 		if(e.y < up_arrow_->y() + up_arrow_->height()) {
 			//on up arrow
 			window_pos_ -= step_;

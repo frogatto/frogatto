@@ -28,6 +28,7 @@ add_executable( frogatto
 	editor_layers_dialog.cpp
 	editor_stats_dialog.cpp
 	editor_variable_info.cpp
+    clipboard.cpp
 	collision_utils.cpp
 	color_utils.cpp
 	controls.cpp
@@ -116,6 +117,8 @@ add_executable( frogatto
 	surface_palette.cpp
 	surface_scaling.cpp
 	surface.cpp
+    text_editor_widget.cpp
+    text_entry_widget.cpp
 	texture.cpp
 	texture_frame_buffer.cpp
 	text_entry_widget.cpp
