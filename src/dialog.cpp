@@ -164,7 +164,7 @@ void dialog::handle_draw() const
 			glColor4f(1.0, 1.0, 1.0, 1.0);
 		}
 	}
-	if (!level::current().in_editor())
+	if (level::current_ptr() && !level::current().in_editor())
 	{
 		draw_scene(level::current(), last_draw_position());
 		SDL_Rect rect = {x(),y(),width(),height()};
@@ -190,6 +190,9 @@ bool dialog::handle_event_children(const SDL_Event &event, bool claimed) {
 
 bool dialog::handle_event(const SDL_Event& event, bool claimed)
 {
+
+    claimed |= handle_event_children(event, claimed);
+
     if(!claimed && opened_) {
         if(event.type == SDL_KEYDOWN &&
            event.key.keysym.sym == SDLK_RETURN) {
@@ -202,7 +205,6 @@ bool dialog::handle_event(const SDL_Event& event, bool claimed)
 			claimed = true;
 		}
     }
-    claimed |= handle_event_children(event, claimed);
 
 	if(!claimed) {
 		switch(event.type) {

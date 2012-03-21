@@ -84,6 +84,11 @@ level& level::current()
 	return *current_level;
 }
 
+level* level::current_ptr()
+{
+	return current_level.get();
+}
+
 void level::set_as_current_level()
 {
 	current_level = this;

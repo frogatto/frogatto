@@ -21,6 +21,7 @@ objects = \
 	editor_layers_dialog.o \
 	editor_stats_dialog.o \
 	editor_variable_info.o \
+	clipboard.o \
 	collision_utils.o \
 	color_utils.o \
 	controls.o \
@@ -111,6 +112,7 @@ objects = \
 	surface.o \
 	texture.o \
 	texture_frame_buffer.o \
+	text_editor_widget.o \
 	text_entry_widget.o \
 	thread.o \
 	tile_map.o \

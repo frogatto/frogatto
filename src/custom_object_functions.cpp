@@ -559,6 +559,7 @@ public:
 		}
 
 		obj->set_level(lvl);
+		obj->set_spawned_by(ob.label());
 		entity_ptr e = obj;
 		
 		//spawn with the spawned object's midpoint (rather than its upper-left corner) at x_, y_.
@@ -1660,6 +1661,7 @@ public:
 				ob.handle_event(OBJECT_EVENT_ADD_OBJECT_FAIL, callable);
 			}
 		}
+		e_->set_spawned_by(ob.label());
 	}
 };
 

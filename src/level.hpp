@@ -43,6 +43,7 @@ public:
 	static summary get_summary(const std::string& id);
 
 	static level& current();
+	static level* current_ptr();
 	void set_as_current_level();
 
 	explicit level(const std::string& level_cfg, wml::const_node_ptr node=wml::const_node_ptr());
