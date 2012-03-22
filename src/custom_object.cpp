@@ -770,7 +770,7 @@ void custom_object::draw() const
 	if(type_->hidden_in_game() && !level::current().in_editor()) {
 		//pass
 	} else if(custom_draw_.get() != NULL) {
-		frame_->draw_custom(draw_x-draw_x%2, draw_y-draw_y%2, *custom_draw_, face_right(), upside_down(), time_in_frame_, rotate_.as_float());
+		frame_->draw_custom(draw_x-draw_x%2, draw_y-draw_y%2, *custom_draw_, draw_area_.get(), face_right(), upside_down(), time_in_frame_, rotate_.as_float());
 	} else if(draw_scale_) {
 		frame_->draw(draw_x-draw_x%2, draw_y-draw_y%2, face_right(), upside_down(), time_in_frame_, rotate_.as_float(), draw_scale_->as_float());
 	} else if(!draw_area_.get()) {

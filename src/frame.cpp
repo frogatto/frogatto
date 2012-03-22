@@ -8,6 +8,7 @@
 #include "frame.hpp"
 #include "object_events.hpp"
 #include "raster.hpp"
+#include "rectangle_rotator.hpp"
 #include "solid_map.hpp"
 #include "sound.hpp"
 #include "string_utils.hpp"
@@ -550,7 +551,7 @@ void frame::draw(int x, int y, const rect& area, bool face_right, bool upside_do
 	                       rect[0], rect[1], rect[2], rect[3]);
 }
 
-void frame::draw_custom(int x, int y, const std::vector<CustomPoint>& points, bool face_right, bool upside_down, int time, GLfloat rotate) const
+void frame::draw_custom(int x, int y, const std::vector<CustomPoint>& points, const rect* area, bool face_right, bool upside_down, int time, GLfloat rotate) const
 {
 	texture_.set_as_current_texture();
 
@@ -577,8 +578,30 @@ void frame::draw_custom(int x, int y, const std::vector<CustomPoint>& points, bo
 		h *= -1;
 	}
 
+	if(area != NULL) {
+		const int x_adjust = area->x();
+		const int y_adjust = area->y();
+		const int w_adjust = area->w() - img_rect_.w();
+		const int h_adjust = area->h() - img_rect_.h();
+
+		rect[0] += GLfloat(x_adjust)/GLfloat(texture_.width());
+		rect[1] += GLfloat(y_adjust)/GLfloat(texture_.height());
+		rect[2] += GLfloat(x_adjust + w_adjust)/GLfloat(texture_.width());
+		rect[3] += GLfloat(y_adjust + h_adjust)/GLfloat(texture_.height());
+
+		w += w_adjust*scale_;
+		h += h_adjust*scale_;
+	}
+
 	std::vector<GLfloat> tcqueue;
 	std::vector<GLshort> vqueue;
+
+	const GLfloat center_x = x + GLfloat(w)/2.0;
+	const GLfloat center_y = y + GLfloat(h)/2.0;
+
+	glPushMatrix();
+	glTranslatef(center_x, center_y, 0.0);
+	glRotatef(rotate,0.0,0.0,1.0);
 
 	foreach(const CustomPoint& p, points) {
 		GLfloat pos = p.pos;
@@ -628,8 +651,8 @@ void frame::draw_custom(int x, int y, const std::vector<CustomPoint>& points, bo
 		xpos += p.offset.x;
 		ypos += p.offset.y;
 
-		vqueue.push_back(xpos);
-		vqueue.push_back(ypos);
+		vqueue.push_back(xpos - center_x);
+		vqueue.push_back(ypos - center_y);
 
 		tcqueue.push_back(u);
 		tcqueue.push_back(v);
@@ -640,6 +663,7 @@ void frame::draw_custom(int x, int y, const std::vector<CustomPoint>& points, bo
 	glVertexPointer(2, GL_SHORT, 0, &vqueue.front());
 	glTexCoordPointer(2, GL_FLOAT, 0, &tcqueue.front());
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, tcqueue.size()/2);
+	glPopMatrix();
 }
 
 void frame::get_rect_in_texture(int time, GLfloat* output_rect, const frame_info*& info) const
