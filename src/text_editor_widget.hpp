@@ -2,6 +2,7 @@
 #define TEXT_EDITOR_WIDGET_HPP_INCLUDED
 
 #include <boost/intrusive_ptr.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include "scrollable_widget.hpp"
 
@@ -15,6 +16,9 @@ public:
 
 	std::string text() const;
 	void set_text(const std::string& value);
+
+	void undo();
+	void redo();
 
 protected:
 	const std::vector<std::string>& get_data() const { return text_; }
@@ -44,6 +48,17 @@ private:
 	void on_set_yscroll(int old_pos, int new_pos);
 
 	void refresh_scrollbar();
+
+	virtual text_editor_widget* clone() const;
+	virtual void restore(const text_editor_widget* state);
+
+	void save_undo_state();
+
+	bool record_op(const char* type=NULL);
+
+	const char* last_op_type_;
+
+	std::vector<boost::shared_ptr<text_editor_widget> > undo_, redo_;
 
 	std::vector<std::string> text_;
 

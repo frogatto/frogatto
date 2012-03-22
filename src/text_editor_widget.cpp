@@ -38,7 +38,8 @@ graphics::texture get_texture(char c) {
 }
 
 text_editor_widget::text_editor_widget(int nrows, int ncols)
-  : font_size_(12),
+  : last_op_type_(NULL),
+    font_size_(12),
     char_width_(font::char_width(font_size_)),
     char_height_(font::char_height(font_size_)),
 	row_select_(0), col_select_(0), row_(0), col_(0),
@@ -164,6 +165,7 @@ bool text_editor_widget::handle_event(const SDL_Event& event, bool claimed)
 
 bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 {
+	record_op();
 	if(event.x >= x() && event.x < x() + width() && event.y >= y() && event.y < y() + height()) {
 #if defined(_WINDOWS)
 		if(event.button == SDL_BUTTON_WHEELUP) {
@@ -237,6 +239,7 @@ bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& ev
 
 bool text_editor_widget::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 {
+	record_op();
 	is_dragging_ = false;
 	
 	return false;
@@ -263,7 +266,20 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 		return false;
 	}
 
+	if(event.keysym.sym == SDLK_z && (event.keysym.mod&KMOD_CTRL)) {
+		record_op();
+		undo();
+		return true;
+	}
+
+	if(event.keysym.sym == SDLK_y && (event.keysym.mod&KMOD_CTRL)) {
+		record_op();
+		redo();
+		return true;
+	}
+
 	if((event.keysym.sym == SDLK_c || event.keysym.sym == SDLK_x) && (event.keysym.mod&KMOD_CTRL)) {
+		record_op();
 		int begin_row = row_;
 		int begin_col = col_;
 		int end_row = row_select_;
@@ -295,12 +311,14 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 		}
 
 		copy_to_clipboard(str, false);
-		std::cerr << "COPY TO CLIPBOARD: (" << str << ")\n";
 		if(event.keysym.sym == SDLK_x) {
+			save_undo_state();
 			delete_selection();
 		}
 		return true;
 	} else if(event.keysym.sym == SDLK_v && (event.keysym.mod&KMOD_CTRL)) {
+		record_op();
+		save_undo_state();
 		delete_selection();
 		std::string txt = copy_from_clipboard(false);
 
@@ -325,11 +343,13 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 	}
 
 	if(event.keysym.mod&KMOD_CTRL) {
+		record_op();
 		return false;
 	}
 
 	switch(event.keysym.sym) {
 	case SDLK_LEFT:
+		record_op();
 		if(col_ > text_[row_].size()) {
 			col_ = text_[row_].size();
 		}
@@ -347,6 +367,7 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 		on_move_cursor();
 		break;
 	case SDLK_RIGHT:
+		record_op();
 		++col_;
 		if(col_ > text_[row_].size()) {
 			if(row_ == text_.size()-1) {
@@ -361,6 +382,7 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 		on_move_cursor();
 		break;
 	case SDLK_UP:
+		record_op();
 		if(row_ > 0) {
 			--row_;
 			col_ = find_equivalent_col(col_, row_+1, row_);
@@ -369,6 +391,7 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 
 		break;
 	case SDLK_DOWN:
+		record_op();
 		if(row_ < text_.size()-1) {
 			++row_;
 			col_ = find_equivalent_col(col_, row_-1, row_);
@@ -377,6 +400,7 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 
 		break;
 	case SDLK_PAGEUP:
+		record_op();
 		on_page_up();
 		while(row_ > scroll_pos_ && char_position_on_screen(row_, col_).first == -1) {
 			--row_;
@@ -389,6 +413,7 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 		}
 		break;
 	case SDLK_PAGEDOWN:
+		record_op();
 		on_page_down();
 		while(row_ < scroll_pos_ && char_position_on_screen(row_, col_).first == -1) {
 			++row_;
@@ -401,15 +426,20 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 		}
 		break;
 	case SDLK_HOME:
+		record_op();
 		col_ = 0;
 		on_move_cursor();
 		break;
 	case SDLK_END:
+		record_op();
 		col_ = text_[row_].size();
 		on_move_cursor();
 		break;
 	case SDLK_DELETE:
 	case SDLK_BACKSPACE:
+		if(record_op("delete")) {
+			save_undo_state();
+		}
 		if(row_ == row_select_ && col_ == col_select_) {
 
 			if(event.keysym.sym == SDLK_BACKSPACE) {
@@ -447,6 +477,9 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 		refresh_scrollbar();
 		break;
 	case SDLK_RETURN: {
+		if(record_op("enter")) {
+			save_undo_state();
+		}
 		if(nrows_ == 1) {
 			break;
 		}
@@ -468,6 +501,9 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 	default: {
 		const char c = event.keysym.unicode;
 		if(util::isprint(c)) {
+			if(record_op("chars")) {
+				save_undo_state();
+			}
 			delete_selection();
 			if(col_ > text_[row_].size()) {
 				col_ = text_[row_].size();
@@ -710,6 +746,70 @@ void text_editor_widget::select_token(const std::string& row, int& begin_col, in
 	}
 }
 
+text_editor_widget* text_editor_widget::clone() const
+{
+	text_editor_widget* result = new text_editor_widget(*this);
+	result->last_op_type_ = NULL;
+	return result;
+}
+
+void text_editor_widget::restore(const text_editor_widget* state)
+{
+	*this = *state;
+}
+
+void text_editor_widget::save_undo_state()
+{
+	redo_.clear();
+	undo_.push_back(boost::shared_ptr<text_editor_widget>(clone()));
+}
+
+bool text_editor_widget::record_op(const char* type)
+{
+	if(type == NULL || type != last_op_type_) {
+		last_op_type_ = type;
+		return true;
+	} else {
+		return false;
+	}
+}
+
+void text_editor_widget::undo()
+{
+	if(undo_.empty()) {
+		return;
+	}
+
+	std::vector<boost::shared_ptr<text_editor_widget> > redo_state = redo_;
+	save_undo_state();
+	redo_state.push_back(undo_.back());
+	undo_.pop_back();
+
+	//Save the state before restoring it so it doesn't get cleaned up
+	//while we're in the middle of the restore call.
+	boost::shared_ptr<text_editor_widget> state = undo_.back();
+	restore(state.get());
+
+	redo_ = redo_state;
+}
+
+void text_editor_widget::redo()
+{
+	if(redo_.empty()) {
+		return;
+	}
+
+	std::vector<boost::shared_ptr<text_editor_widget> > redo_state = redo_;
+	redo_state.pop_back();
+
+	//Save the state before restoring it so it doesn't get cleaned up
+	//while we're in the middle of the restore call.
+	boost::shared_ptr<text_editor_widget> state = redo_.back();
+	restore(state.get());
+
+	redo_ = redo_state;
+}
+
 }
 
 #include "dialog.hpp"
@@ -741,3 +841,4 @@ UTILITY(textedit)
 	d.show_modal();
 
 }
+
