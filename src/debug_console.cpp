@@ -259,6 +259,11 @@ public:
 		lvl_state.editor_clear_selection();
 		lvl_state.set_as_current_level();
 
+		while(lvl->cycle() < controls::local_controls_end()) {
+			controls::control_backup_scope ctrl_backup;
+			lvl->process();
+		}
+
 		controls::read_until(lvl_state.cycle());
 	}
 private:
