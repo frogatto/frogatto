@@ -85,6 +85,8 @@ private:
 	int last_click_at_, consecutive_clicks_;
 
 	graphics::color text_color_;
+
+	void truncate_col_position();
 };
 
 }

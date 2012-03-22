@@ -525,12 +525,22 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 		}
 
 		delete_selection();
-
+		truncate_col_position();
+		
 		std::string new_line(text_[row_].begin() + col_, text_[row_].end());
 		text_[row_].erase(text_[row_].begin() + col_, text_[row_].end());
+
+		std::string::iterator indent = text_[row_].begin();
+		while(indent != text_[row_].end() && strchr(" \t", *indent)) {
+			++indent;
+		}
+
+		new_line.insert(new_line.begin(), text_[row_].begin(), indent);
+
+		col_ = indent - text_[row_].begin();
+
 		text_.insert(text_.begin() + row_ + 1, new_line);
 		++row_;
-		col_ = 0;
 		row_select_ = row_;
 		col_select_ = col_;
 
@@ -859,6 +869,17 @@ void text_editor_widget::redo()
 	redo_ = redo_state;
 
 	on_change();
+}
+
+void text_editor_widget::truncate_col_position()
+{
+	if(col_ > text_[row_].size()) {
+		col_ = text_[row_].size();
+	}
+
+	if(col_select_ > text_[row_select_].size()) {
+		col_select_ = text_[row_select_].size();
+	}
 }
 
 }
