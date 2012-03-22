@@ -159,4 +159,18 @@ graphics::color code_editor_widget::get_character_color(int row, int col) const
 	return colors_[row][col];
 }
 
+void code_editor_widget::select_token(const std::string& row, int& begin_row, int& end_row, int& begin_col, int& end_col) const
+{
+	std::pair<int,int> key(begin_row, begin_col);
+	if(bracket_match_.count(key)) {
+		begin_row = bracket_match_.find(key)->second.front().first;
+		begin_col = bracket_match_.find(key)->second.front().second;
+		end_row = bracket_match_.find(key)->second.back().first;
+		end_col = bracket_match_.find(key)->second.back().second+1;
+		return;
+	}
+
+	text_editor_widget::select_token(row, begin_row, end_row, begin_col, end_col);
+}
+
 }

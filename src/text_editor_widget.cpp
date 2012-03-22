@@ -225,7 +225,7 @@ bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& ev
 			if(nclicks == 1) {
 				row_select_ = row_;
 				col_select_ = col_;
-				select_token(text_[row_], col_select_, col_);
+				select_token(text_[row_], row_select_, row_, col_select_, col_);
 			} else if(nclicks == 2) {
 				row_select_ = row_;
 				col_select_ = 0;
@@ -364,17 +364,30 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 	switch(event.keysym.sym) {
 	case SDLK_LEFT:
 		record_op();
-		if(col_ > text_[row_].size()) {
-			col_ = text_[row_].size();
-		}
 
-		--col_;
-		if(col_ < 0) {
-			if(row_ == 0) {
-				col_ = 0;
+		if((col_ != col_select_ || row_ != row_select_) && !(SDL_GetModState()&KMOD_SHIFT)) {
+			//pressing left without shift while we have a selection moves us to the beginning of the selection
+			if(row_ < row_select_ || row_ == row_select_ && col_ < col_select_) {
+				row_select_ = row_;
+				col_select_ = col_;
 			} else {
-				--row_;
+				row_ = row_select_;
+				col_ = col_select_;
+			}
+		} else {
+
+			if(col_ > text_[row_].size()) {
 				col_ = text_[row_].size();
+			}
+
+			--col_;
+			if(col_ < 0) {
+				if(row_ == 0) {
+					col_ = 0;
+				} else {
+					--row_;
+					col_ = text_[row_].size();
+				}
 			}
 		}
 
@@ -382,15 +395,27 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 		break;
 	case SDLK_RIGHT:
 		record_op();
-		++col_;
-		if(col_ > text_[row_].size()) {
-			if(row_ == text_.size()-1) {
-				--col_;
-			} else if(row_ < text_.size()-1) {
-				++row_;
-				col_ = 0;
+
+		if((col_ != col_select_ || row_ != row_select_) && !(SDL_GetModState()&KMOD_SHIFT)) {
+			//pressing right without shift while we have a selection moves us to the end of the selection
+			if(row_ < row_select_ || row_ == row_select_ && col_ < col_select_) {
+				row_ = row_select_;
+				col_ = col_select_;
 			} else {
-				--col_;
+				row_select_ = row_;
+				col_select_ = col_;
+			}
+		} else {
+			++col_;
+			if(col_ > text_[row_].size()) {
+				if(row_ == text_.size()-1) {
+					--col_;
+				} else if(row_ < text_.size()-1) {
+					++row_;
+					col_ = 0;
+				} else {
+					--col_;
+				}
 			}
 		}
 		on_move_cursor();
@@ -751,7 +776,7 @@ void text_editor_widget::refresh_scrollbar()
 	update_scrollbar();
 }
 
-void text_editor_widget::select_token(const std::string& row, int& begin_col, int& end_col) const
+void text_editor_widget::select_token(const std::string& row, int& begin_row, int& end_row, int& begin_col, int& end_col) const
 {
 	if(util::isalnum(row[begin_col]) || row[begin_col] == '_') {
 		while(begin_col >= 0 && (util::isalnum(row[begin_col]) || row[begin_col] == '_')) {
