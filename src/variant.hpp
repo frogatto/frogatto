@@ -52,11 +52,15 @@ public:
 	enum DECIMAL_VARIANT_TYPE { DECIMAL_VARIANT };
 
 	variant() : type_(TYPE_NULL), int_value_(0) {}
+	explicit variant(bool b) : type_(TYPE_BOOL), bool_value_(b) {}
 	explicit variant(int n) : type_(TYPE_INT), int_value_(n) {}
+	explicit variant(unsigned int n) : type_(TYPE_INT), int_value_(n) {}
 	explicit variant(decimal d) : type_(TYPE_DECIMAL), decimal_value_(d.value()) {}
+	explicit variant(double f) : type_(TYPE_DECIMAL), decimal_value_(decimal(f).value()) {}
 	variant(int64_t n, DECIMAL_VARIANT_TYPE) : type_(TYPE_DECIMAL), decimal_value_(n) {}
 	explicit variant(const game_logic::formula_callable* callable);
 	explicit variant(std::vector<variant>* array);
+	explicit variant(const char* str);
 	explicit variant(const std::string& str);
 	explicit variant(std::map<variant,variant>* map);
 	variant(game_logic::const_formula_ptr, const std::vector<std::string>& args, const game_logic::formula_callable& callable);
@@ -92,11 +96,12 @@ public:
 
 	bool is_string() const { return type_ == TYPE_STRING; }
 	bool is_null() const { return type_ == TYPE_NULL; }
+	bool is_bool() const { return type_ == TYPE_BOOL; }
 	bool is_int() const { return type_ == TYPE_INT; }
 	bool is_decimal() const { return type_ == TYPE_DECIMAL; }
 	bool is_map() const { return type_ == TYPE_MAP; }
 	bool is_function() const { return type_ == TYPE_FUNCTION; }
-	int as_int() const { if(type_ == TYPE_NULL) { return 0; } if(type_ == TYPE_DECIMAL) { return int( decimal_value_/VARIANT_DECIMAL_PRECISION ); } must_be(TYPE_INT); return int_value_; }
+	int as_int() const { if(type_ == TYPE_NULL) { return 0; } if(type_ == TYPE_DECIMAL) { return int( decimal_value_/VARIANT_DECIMAL_PRECISION ); } if(type_ == TYPE_BOOL) { return bool_value_ ? 1 : 0; } must_be(TYPE_INT); return int_value_; }
 	decimal as_decimal() const { if(type_ == TYPE_NULL) { return decimal(static_cast<int64_t>(0)); } if(type_ == TYPE_INT) { return decimal(int64_t(int_value_)*VARIANT_DECIMAL_PRECISION); } must_be(TYPE_DECIMAL); return decimal(decimal_value_); }
 	bool as_bool() const;
 
@@ -162,7 +167,7 @@ public:
 	void write_json(std::ostream& s) const;
 
 	std::vector<variant>& initialize_list();
-	enum TYPE { TYPE_NULL, TYPE_INT, TYPE_DECIMAL, TYPE_CALLABLE, TYPE_CALLABLE_LOADING, TYPE_LIST, TYPE_STRING, TYPE_MAP, TYPE_FUNCTION };
+	enum TYPE { TYPE_NULL, TYPE_BOOL, TYPE_INT, TYPE_DECIMAL, TYPE_CALLABLE, TYPE_CALLABLE_LOADING, TYPE_LIST, TYPE_STRING, TYPE_MAP, TYPE_FUNCTION };
 
 private:
 	void must_be(TYPE t) const {
@@ -177,6 +182,7 @@ private:
 
 	TYPE type_;
 	union {
+		bool bool_value_;
 		int int_value_;
 		int64_t decimal_value_;
 		const game_logic::formula_callable* callable_;

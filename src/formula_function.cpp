@@ -1166,6 +1166,28 @@ namespace {
 		}
 	};
 
+	class true_function : public function_expression {
+	public:
+		explicit true_function(const args_list& args)
+			: function_expression("true", args, 0, 0)
+		{}
+	private:
+		variant execute(const formula_callable& /*variables*/) const {
+			return variant(true);
+		}
+	};
+
+	class false_function : public function_expression {
+	public:
+		explicit false_function(const args_list& args)
+			: function_expression("false", args, 0, 0)
+		{}
+	private:
+		variant execute(const formula_callable& /*variables*/) const {
+			return variant(false);
+		}
+	};
+
 	class refcount_function : public function_expression {
 	public:
 		explicit refcount_function(const args_list& args)
@@ -1509,6 +1531,8 @@ namespace {
 			FUNCTION(str);
 			FUNCTION(strstr);
 			FUNCTION(null);
+			FUNCTION(true);
+			FUNCTION(false);
 			FUNCTION(refcount);
 			FUNCTION(keys);
 			FUNCTION(values);

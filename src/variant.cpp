@@ -22,6 +22,8 @@ std::string variant_type_to_string(variant::TYPE type) {
 	switch(type) {
 	case variant::TYPE_NULL: 
 		return "null";
+	case variant::TYPE_BOOL: 
+		return "bool";
 	case variant::TYPE_INT: 
 		return "int";
 	case variant::TYPE_DECIMAL: 
@@ -142,6 +144,7 @@ void variant::increment_refcount()
 	// These are not used here, add them to silence a compiler warning.
 	case TYPE_NULL:
 	case TYPE_INT :
+	case TYPE_BOOL :
 		break;
 	}
 }
@@ -196,7 +199,8 @@ void variant::release()
 
 	// These are not used here, add them to silence a compiler warning.
 	case TYPE_NULL:
-	case TYPE_INT :
+	case TYPE_INT:
+	case TYPE_BOOL:
 		break;
 	}
 }
@@ -220,6 +224,18 @@ variant::variant(std::vector<variant>* array)
 	increment_refcount();
 }
 
+variant::variant(const char* s)
+   : type_(TYPE_STRING)
+{
+	if(s == NULL) {
+		type_ = TYPE_NULL;
+		return;
+	}
+	string_ = new variant_string;
+	string_->str = std::string(s);
+	increment_refcount();
+}
+
 variant::variant(const std::string& str)
 	: type_(TYPE_STRING)
 {
@@ -231,6 +247,13 @@ variant::variant(const std::string& str)
 variant::variant(std::map<variant,variant>* map)
     : type_(TYPE_MAP)
 {
+	for(std::map<variant, variant>::const_iterator i = map->begin(); i != map->end(); ++i) {
+		if(i->first.is_bool()) {
+			std::cerr << "VALUE: " << i->second.to_debug_string() << "\n";
+			assert(false);
+		}
+	}
+
 	assert(map);
 	map_ = new variant_map;
 	map_->elements.swap(*map);
@@ -377,6 +400,8 @@ bool variant::as_bool() const
 	switch(type_) {
 	case TYPE_NULL:
 		return false;
+	case TYPE_BOOL:
+		return bool_value_;
 	case TYPE_INT:
 		return int_value_ != 0;
 	case TYPE_DECIMAL:
@@ -437,6 +462,10 @@ variant variant::operator+(const variant& v) const
 
 	if(type_ == TYPE_INT) {
 		return variant(int_value_ + v.as_int());
+	}
+
+	if(type_ == TYPE_BOOL) {
+		return variant(as_int() + v.as_int());
 	}
 
 	if(type_ == TYPE_NULL) {
@@ -586,6 +615,10 @@ bool variant::operator==(const variant& v) const
 		return string_->str == v.string_->str;
 	}
 
+	case TYPE_BOOL: {
+		return bool_value_ == v.bool_value_;
+	}
+
 	case TYPE_INT: {
 		return int_value_ == v.int_value_;
 	}
@@ -652,6 +685,10 @@ bool variant::operator<=(const variant& v) const
 		return string_->str <= v.string_->str;
 	}
 
+	case TYPE_BOOL: {
+		return bool_value_ <= v.bool_value_;
+	}
+
 	case TYPE_INT: {
 		return int_value_ <= v.int_value_;
 	}
@@ -714,6 +751,9 @@ void variant::serialize_to_string(std::string& str) const
 	switch(type_) {
 	case TYPE_NULL:
 		str += "null()";
+		break;
+	case TYPE_BOOL:
+		str += bool_value_ ? "true()" : "false()";
 		break;
 	case TYPE_INT:
 		str += boost::lexical_cast<std::string>(int_value_);
@@ -841,6 +881,8 @@ std::string variant::string_cast() const
 	switch(type_) {
 	case TYPE_NULL:
 		return "0";
+	case TYPE_BOOL:
+		return bool_value_ ? "true" : "false";
 	case TYPE_INT:
 		return boost::lexical_cast<std::string>(int_value_);
 	case TYPE_DECIMAL: {
@@ -897,6 +939,9 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 	switch(type_) {
 	case TYPE_NULL:
 		s << "(null)";
+	case TYPE_BOOL:
+		s << (bool_value_ ? "true" : "false");
+		break;
 	case TYPE_INT:
 		s << int_value_;
 		break;
@@ -988,6 +1033,9 @@ void variant::write_json(std::ostream& s) const
 		s << "null";
 		return;
 	}
+	case TYPE_BOOL:
+		s << (bool_value_ ? "true" : "false");
+		break;
 	case TYPE_INT: {
 		s << as_int();
 		return;

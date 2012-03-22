@@ -106,7 +106,7 @@ FUNCTION_DEF(time, 0, 0, "time() -> timestamp: returns the current real time")
 	rng::generate(); //this is to make the engine optimisation leave this function alone.
 	time_t t1;
 	time(&t1);
-	return variant(t1);
+	return variant(static_cast<int>(t1));
 END_FUNCTION_DEF(time)
 
 class report_command : public entity_command_callable

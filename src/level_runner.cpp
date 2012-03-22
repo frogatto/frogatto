@@ -638,6 +638,28 @@ bool level_runner::play_cycle()
 			if(editor_) {
 				editor_->handle_event(event);
 				lvl_->set_as_current_level();
+
+				if(editor::last_edited_level() != lvl_->id() && editor_->confirm_quit()) {
+					level* new_level = load_level(editor::last_edited_level());
+					if(editor_) {
+						new_level->set_editor();
+					}
+
+					new_level->set_as_current_level();
+
+					if(!new_level->music().empty()) {
+						sound::play_music(new_level->music());
+					}
+
+					set_scene_title(new_level->title());
+					lvl_.reset(new_level);
+
+					editor_ = editor::get_editor(lvl_->id().c_str());
+					editor_->set_playing_level(lvl_);
+					editor_->setup_for_editing();
+					lvl_->set_as_current_level();
+					lvl_->set_editor();
+				}
 			}
 
 			switch(event.type) {
