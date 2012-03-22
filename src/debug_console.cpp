@@ -98,6 +98,7 @@ public:
 		level* lvl = &lvl_state;
 
 		while(lvl->cycle() < controls::local_controls_end()) {
+			controls::control_backup_scope ctrl_backup;
 			lvl->process();
 		}
 
