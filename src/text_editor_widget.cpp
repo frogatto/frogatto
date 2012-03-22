@@ -48,7 +48,8 @@ text_editor_widget::text_editor_widget(int nrows, int ncols)
 	has_focus_(false),
 	is_dragging_(false),
 	last_click_at_(-1),
-	consecutive_clicks_(0)
+	consecutive_clicks_(0),
+	text_color_(255, 255, 255, 255)
 {
 	set_dim(char_width_*ncols_, char_height_*nrows_);
 	text_.push_back("");
@@ -83,11 +84,12 @@ void text_editor_widget::set_text(const std::string& value)
 	scroll_pos_ = 0;
 
 	refresh_scrollbar();
+	on_change();
 }
 
 void text_editor_widget::handle_draw() const
 {
-
+	graphics::color current_color(255, 255, 255, 255);
 	int r = 0;
 	for(int n = scroll_pos_; n < text_.size() && r < nrows_; ++n, ++r) {
 		int c = 0;
@@ -102,6 +104,7 @@ void text_editor_widget::handle_draw() const
 
 			if(has_focus_ && row_ == n && col_ == m && SDL_GetTicks()%500 < 350) {
 				graphics::draw_rect(rect(x() + c*char_width_+1, y() + r*char_height_, 1, char_height_), graphics::color(255,255,255,255));
+				current_color.set_as_current_color();
 			}
 
 			if(text_[n][m] == '\t') {
@@ -121,18 +124,23 @@ void text_editor_widget::handle_draw() const
 			if((n > begin_select_row || n == begin_select_row && m >= begin_select_col) &&
 			   (n < end_select_row || n == end_select_row && m < end_select_col)) {
 				graphics::draw_rect(rect(x() + c*char_width_, y() + r*char_height_, char_width_, char_height_), graphics::color(255, 255, 0, 128));
+				current_color.set_as_current_color();
 			}
 
+			graphics::color col = get_character_color(n, m);
+			if(col.value() != current_color.value()) {
+				current_color = col;
+				current_color.set_as_current_color();
+			}
 			graphics::texture t = get_texture(text_[n][m]);
 			graphics::blit_texture(t, x() + c*char_width_, y() + r*char_height_);
 		}
 
 		if(has_focus_ && row_ == n && col_ >= text_[n].size() && SDL_GetTicks()%500 < 350) {
 			graphics::draw_rect(rect(x() + c*char_width_+1, y() + r*char_height_, 1, char_height_), graphics::color(255,255,255,255));
+			current_color.set_as_current_color();
 		}
 	}
-
-	scrollable_widget::handle_draw();
 
 	SDL_Color border_color = graphics::color_white();
 	if(!has_focus_) {
@@ -143,6 +151,8 @@ void text_editor_widget::handle_draw() const
 
 	SDL_Rect border = {x()+1, y()+1, width()-2, height()-2};
 	graphics::draw_hollow_rect(border, border_color);
+
+	scrollable_widget::handle_draw();
 }
 
 bool text_editor_widget::handle_event(const SDL_Event& event, bool claimed)
@@ -314,7 +324,9 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 		if(event.keysym.sym == SDLK_x) {
 			save_undo_state();
 			delete_selection();
+			on_change();
 		}
+
 		return true;
 	} else if(event.keysym.sym == SDLK_v && (event.keysym.mod&KMOD_CTRL)) {
 		record_op();
@@ -338,6 +350,8 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 			row_select_ = row_ = row_ + lines.size() - 1;
 			col_select_ = col_ = lines.back().size();
 		}
+
+		on_change();
 
 		return true;
 	}
@@ -475,6 +489,7 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 		}
 
 		refresh_scrollbar();
+		on_change();
 		break;
 	case SDLK_RETURN: {
 		if(record_op("enter")) {
@@ -495,6 +510,7 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 		col_select_ = col_;
 
 		refresh_scrollbar();
+		on_change();
 		
 		break;
 	}
@@ -513,6 +529,7 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 			row_select_ = row_;
 			col_select_ = col_;
 			refresh_scrollbar();
+			on_change();
 			return true;
 		}
 		return false;
@@ -552,6 +569,11 @@ void text_editor_widget::delete_selection()
 
 	row_select_ = row_;
 	col_select_ = col_;
+}
+
+graphics::color text_editor_widget::get_character_color(int row, int col) const
+{
+	return text_color_;
 }
 
 std::pair<int, int> text_editor_widget::mouse_position_to_row_col(int xpos, int ypos) const
@@ -791,6 +813,8 @@ void text_editor_widget::undo()
 	restore(state.get());
 
 	redo_ = redo_state;
+
+	on_change();
 }
 
 void text_editor_widget::redo()
@@ -808,10 +832,13 @@ void text_editor_widget::redo()
 	restore(state.get());
 
 	redo_ = redo_state;
+
+	on_change();
 }
 
 }
 
+#include "code_editor_widget.hpp"
 #include "dialog.hpp"
 #include "filesystem.hpp"
 
@@ -832,7 +859,7 @@ UTILITY(textedit)
 
 	text_editor_widget* entry = new text_editor_widget(1, 80);
 
-	text_editor_widget* editor = new text_editor_widget(30, 80);
+	text_editor_widget* editor = new code_editor_widget(30, 80);
 	editor->set_text(contents);
 
 	dialog d(0, 0, graphics::screen_width(), graphics::screen_height());

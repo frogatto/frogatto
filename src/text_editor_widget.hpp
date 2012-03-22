@@ -4,6 +4,7 @@
 #include <boost/intrusive_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 
+#include "color_utils.hpp"
 #include "scrollable_widget.hpp"
 
 namespace gui {
@@ -25,6 +26,9 @@ protected:
 
 	virtual void select_token(const std::string& row, int& begin_col, int& end_col) const;
 
+	int cursor_row() const { return row_; }
+	int cursor_col() const { return col_; }
+
 private:
 	void handle_draw() const;
 	bool handle_event(const SDL_Event& event, bool claimed);
@@ -32,6 +36,10 @@ private:
 	bool handle_mouse_button_up(const SDL_MouseButtonEvent& event);
 	bool handle_mouse_motion(const SDL_MouseMotionEvent& event);
 	bool handle_key_press(const SDL_KeyboardEvent& key);
+
+	virtual graphics::color get_character_color(int row, int col) const;
+
+	virtual void on_change() {}
 
 	std::pair<int, int> mouse_position_to_row_col(int x, int y) const;
 
@@ -75,6 +83,8 @@ private:
 	bool is_dragging_;
 
 	int last_click_at_, consecutive_clicks_;
+
+	graphics::color text_color_;
 };
 
 }

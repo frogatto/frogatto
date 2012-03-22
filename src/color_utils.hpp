@@ -22,7 +22,7 @@ class color : public game_logic::formula_callable
 
 	uint32_t value() const { return c_.value; }
 	
-	color( int r, int g, int b, int a);
+	color( int r, int g, int b, int a=255);
 	explicit color( uint32_t rgba = 0);
 	explicit color( const std::string& str);
 	
