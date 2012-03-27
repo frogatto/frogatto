@@ -55,7 +55,6 @@ public:
 	explicit variant(bool b) : type_(TYPE_BOOL), bool_value_(b) {}
 	explicit variant(int n) : type_(TYPE_INT), int_value_(n) {}
 	explicit variant(unsigned int n) : type_(TYPE_INT), int_value_(n) {}
-	explicit variant(size_t n) : type_(TYPE_INT), int_value_(n) {}
 	explicit variant(decimal d) : type_(TYPE_DECIMAL), decimal_value_(d.value()) {}
 	explicit variant(double f) : type_(TYPE_DECIMAL), decimal_value_(decimal(f).value()) {}
 	variant(int64_t n, DECIMAL_VARIANT_TYPE) : type_(TYPE_DECIMAL), decimal_value_(n) {}
