@@ -53,11 +53,14 @@ void escape_string(std::string& s) {
 namespace {
 enum VAL_TYPE { VAL_NONE, VAL_OBJ, VAL_ARRAY };
 struct JsonObject {
-	explicit JsonObject(variant::debug_info debug_info) : type(VAL_NONE), require_comma(false), require_colon(false), info(debug_info) {}
+	explicit JsonObject(variant::debug_info debug_info) : type(VAL_NONE), is_base(false), require_comma(false), require_colon(false), info(debug_info) {}
 	std::map<variant, variant> obj;
 	std::vector<variant> array;
 	VAL_TYPE type;
 	variant name;
+
+	variant base;
+	bool is_base;
 
 	bool require_comma;
 	bool require_colon;
@@ -197,6 +200,10 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 						v = preprocess_string_value(s);
 					} catch(preprocessor_error& e) {
 						CHECK_PARSE(false, "Preprocessor error: " + s, t.begin - doc.c_str());
+					}
+
+					if(stack.back().type == VAL_OBJ && stack[stack.size()-2].type == VAL_ARRAY && s == "@base") {
+						stack.back().is_base = true;
 					}
 				} else {
 					v = variant(s);
