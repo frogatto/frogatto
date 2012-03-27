@@ -7,6 +7,7 @@
 #include "json_tokenizer.hpp"
 #include "preprocessor.hpp"
 #include "unit_test.hpp"
+#include "variant_utils.hpp"
 
 namespace json {
 parse_error::parse_error(const std::string& msg)
@@ -53,7 +54,7 @@ void escape_string(std::string& s) {
 namespace {
 enum VAL_TYPE { VAL_NONE, VAL_OBJ, VAL_ARRAY };
 struct JsonObject {
-	explicit JsonObject(variant::debug_info debug_info) : type(VAL_NONE), is_base(false), require_comma(false), require_colon(false), info(debug_info) {}
+	explicit JsonObject(variant::debug_info debug_info) : type(VAL_NONE), is_base(false), is_deriving(false), require_comma(false), require_colon(false), info(debug_info) {}
 	std::map<variant, variant> obj;
 	std::vector<variant> array;
 	VAL_TYPE type;
@@ -61,15 +62,34 @@ struct JsonObject {
 
 	variant base;
 	bool is_base;
+	bool is_deriving;
 
 	bool require_comma;
 	bool require_colon;
 
 	variant::debug_info info;
 
+	void setup_base(variant v) {
+		if(v.is_null()) {
+			return;
+		}
+		foreach(const variant_pair& value, v.as_map()) {
+			if(value.first.is_string() && !value.first.as_string().empty() && value.first.as_string()[0] == '@') {
+				continue;
+			}
+
+			obj[value.first] = value.second;
+		}
+	}
+
 	void add(variant name, variant v) {
 		if(type == VAL_OBJ) {
-			obj[name] = v;
+			if(is_deriving) {
+				setup_base(v);
+				is_deriving = false;
+			} else {
+				obj[name] = v;
+			}
 		} else {
 			array.push_back(v);
 		}
@@ -91,8 +111,14 @@ struct JsonObject {
 std::set<std::string> filename_registry;
 
 variant parse_internal(const std::string& doc, const std::string& fname,
-                       JSON_PARSE_OPTIONS options)
+                       JSON_PARSE_OPTIONS options,
+					   std::map<std::string, variant>* anchors)
 {
+	std::map<std::string, variant> anchors_buf;
+	if(!anchors) {
+		anchors = &anchors_buf;
+	}
+
 	const bool use_preprocessor = options&JSON_USE_PREPROCESSOR;
 
 	std::set<std::string>::const_iterator filename_itor = filename_registry.insert(fname).first;
@@ -148,6 +174,7 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 			case Token::TYPE_LCURLY: {
 				if(stack.back().type == VAL_ARRAY) {
 					stack.push_back(JsonObject(debug_info));
+					stack.back().setup_base(stack[stack.size()-2].base);
 				}
 
 				CHECK_PARSE(stack.back().type == VAL_NONE, "Unexpected {", t.begin - doc.c_str());
@@ -157,10 +184,16 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 			case Token::TYPE_RCURLY: {
 				CHECK_PARSE(stack.back().type == VAL_OBJ, "Unexpected }", t.begin - doc.c_str());
 
+				const bool is_base = stack.back().is_base;
 				variant name = stack.back().name;
 				variant v = stack.back().as_variant();
 				stack.pop_back();
-				stack.back().add(name, v);
+
+				if(is_base) {
+					stack.back().base = v;
+				} else {
+					stack.back().add(name, v);
+				}
 				stack.back().require_comma = true;
 				break;
 			}
@@ -204,6 +237,10 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 
 					if(stack.back().type == VAL_OBJ && stack[stack.size()-2].type == VAL_ARRAY && s == "@base") {
 						stack.back().is_base = true;
+					}
+
+					if(stack.back().type == VAL_OBJ && s == "@derive") {
+						stack.back().is_deriving = true;
 					}
 				} else {
 					v = variant(s);
@@ -276,7 +313,7 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 
 variant parse(const std::string& doc, JSON_PARSE_OPTIONS options)
 {
-	return parse_internal(doc, "", options);
+	return parse_internal(doc, "", options, NULL);
 }
 
 variant parse_from_file(const std::string& fname, JSON_PARSE_OPTIONS options)
@@ -287,12 +324,33 @@ variant parse_from_file(const std::string& fname, JSON_PARSE_OPTIONS options)
 			throw parse_error(formatter() << "File " << fname << " could not be read");
 		}
 
-		variant result = parse_internal(data, fname, options);
+		variant result = parse_internal(data, fname, options, NULL);
 		return result;
 	} catch(parse_error& e) {
 		e.fname = fname;
 		throw(e);
 	}
+}
+
+UNIT_TEST(json_base)
+{
+	std::string doc = "[{\"@base\": true, x: 5, y: 4}, {}, {a: 9, y: 2}]";
+	variant v = parse(doc);
+	CHECK_EQ(v.num_elements(), 2);
+	CHECK_EQ(v[0]["x"], variant(5));
+	CHECK_EQ(v[1]["x"], variant(5));
+	CHECK_EQ(v[0]["y"], variant(4));
+	CHECK_EQ(v[1]["y"], variant(2));
+	CHECK_EQ(v[1]["a"], variant(9));
+}
+
+UNIT_TEST(json_derive)
+{
+	std::string doc = "{\"@derive\": {x: 4, y:3}, y: 2, a: 7}";
+	variant v = parse(doc);
+	CHECK_EQ(v["x"], variant(4));
+	CHECK_EQ(v["y"], variant(2));
+	CHECK_EQ(v["a"], variant(7));
 }
 
 }

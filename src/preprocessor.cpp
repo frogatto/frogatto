@@ -73,6 +73,10 @@ variant preprocess_string_value(const std::string& input)
 		return variant(std::string(input.begin()+1, input.end()));
 	}
 
+	if(input == "@base" || input == "@derive") {
+		return variant(input);
+	}
+
 	std::string::const_iterator i = std::find(input.begin(), input.end(), ' ');
 	const std::string directive(input.begin(), i);
 	if(directive == "@include") {
