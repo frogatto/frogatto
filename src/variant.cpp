@@ -8,6 +8,7 @@
 #include "boost/lexical_cast.hpp"
 
 #include "asserts.hpp"
+#include "foreach.hpp"
 #include "formatter.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
@@ -47,6 +48,10 @@ std::string variant_type_to_string(variant::TYPE type) {
 }
 
 std::vector<const char*> call_stack;
+
+variant last_failed_query_map, last_failed_query_key;
+variant last_query_map;
+variant UnfoundInMapNullVariant;
 }
 
 void swap_variants_loading(std::set<variant*>& v)
@@ -85,6 +90,8 @@ type_error::type_error(const std::string& str) : message(str) {
 }
 
 struct variant_list {
+	variant::debug_info info;
+
 	variant_list() : refcount(0)
 	{}
 	std::vector<variant> elements;
@@ -92,6 +99,8 @@ struct variant_list {
 };
 
 struct variant_string {
+	variant::debug_info info;
+
 	variant_string() : refcount(0)
 	{}
 	std::string str;
@@ -99,6 +108,8 @@ struct variant_string {
 };
 
 struct variant_map {
+	variant::debug_info info;
+
 	variant_map() : refcount(0)
 	{}
 	std::map<variant,variant> elements;
@@ -203,6 +214,32 @@ void variant::release()
 	case TYPE_BOOL:
 		break;
 	}
+}
+
+void variant::set_debug_info(const debug_info& info)
+{
+	switch(type_) {
+	case TYPE_LIST:
+	case TYPE_STRING:
+	case TYPE_MAP:
+		*debug_info_ = info;
+		break;
+	}
+}
+
+const variant::debug_info* variant::get_debug_info() const
+{
+	switch(type_) {
+	case TYPE_LIST:
+	case TYPE_STRING:
+	case TYPE_MAP:
+		if(debug_info_->filename) {
+			return debug_info_;
+		}
+		break;
+	}
+
+	return NULL;
 }
 
 variant::variant(const game_logic::formula_callable* callable)
@@ -319,15 +356,48 @@ const variant& variant::operator[](const variant v) const
 		std::map<variant,variant>::const_iterator i = map_->elements.find(v);
 		if (i == map_->elements.end())
 		{
-			static variant null_variant;
-			return null_variant;
+			last_failed_query_map = *this;
+			last_failed_query_key = v;
+
+			return UnfoundInMapNullVariant;
 		}
+
+		last_query_map = *this;
 		return i->second;
 	} else if(type_ == TYPE_LIST) {
 		return operator[](v.as_int());
 	} else {
-		throw type_error(formatter() << "type error: " << " expected a list or a map but found " << variant_type_to_string(type_) << " (" << to_debug_string() << ")");
+		const debug_info* info = get_debug_info();
+		std::string loc;
+		if(info) {
+			loc = formatter() << " at " << *info->filename << " " << info->line << " (column " << info->column << "\n";
+		}
+		throw type_error(formatter() << "type error: " << " expected a list or a map but found " << variant_type_to_string(type_) << " " << write_json());
 	}	
+}
+
+const variant& variant::operator[](const std::string& key) const
+{
+	return (*this)[variant(key)];
+}
+
+bool variant::has_key(const variant& key) const
+{
+	if(type_ != TYPE_MAP) {
+		return false;
+	}
+
+	std::map<variant,variant>::const_iterator i = map_->elements.find(key);
+	if(i != map_->elements.end() && i->second.is_null() == false) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool variant::has_key(const std::string& key) const
+{
+	return has_key(variant(key));
 }
 
 variant variant::get_keys() const
@@ -365,7 +435,12 @@ size_t variant::num_elements() const
 		assert(map_);
 		return map_->elements.size();
 	} else {
-		throw type_error(formatter() << "type error: " << " expected a list or a map but found " << variant_type_to_string(type_) << " (" << to_debug_string() << ")");
+		const debug_info* info = get_debug_info();
+		std::string loc;
+		if(info) {
+			loc = formatter() << " at " << *info->filename << " " << info->line << " (column " << info->column << ")\n";
+		}
+		throw type_error(formatter() << "type error: " << " expected a list or a map but found " << variant_type_to_string(type_) << " (" << write_json() << ")" << loc);
 	}
 }
 
@@ -395,11 +470,11 @@ variant variant::get_member(const std::string& str) const
 	}
 }
 
-bool variant::as_bool() const
+bool variant::as_bool(bool default_value) const
 {
 	switch(type_) {
 	case TYPE_NULL:
-		return false;
+		return default_value;
 	case TYPE_BOOL:
 		return bool_value_;
 	case TYPE_INT:
@@ -422,6 +497,106 @@ bool variant::as_bool() const
 		assert(false);
 		return false;
 	}
+}
+
+std::vector<variant> variant::as_list() const
+{
+	if(is_list()) {
+		return list_->elements;
+	} else if(is_null()) {
+		return std::vector<variant>();
+	} else {
+		std::vector<variant> v;
+		v.push_back(*this);
+		return v;
+	}
+}
+
+std::vector<std::string> variant::as_list_string() const
+{
+	std::vector<std::string> result;
+	must_be(TYPE_LIST);
+	result.reserve(list_->elements.size());
+	for(int n = 0; n != list_->elements.size(); ++n) {
+		list_->elements[n].must_be(TYPE_STRING);
+		result.push_back(list_->elements[n].as_string());
+	}
+
+	return result;
+}
+
+std::vector<int> variant::as_list_int() const
+{
+	std::vector<int> result;
+	must_be(TYPE_LIST);
+	result.reserve(list_->elements.size());
+	for(int n = 0; n != list_->elements.size(); ++n) {
+		list_->elements[n].must_be(TYPE_INT);
+		result.push_back(list_->elements[n].as_int());
+	}
+
+	return result;
+}
+
+std::vector<decimal> variant::as_list_decimal() const
+{
+	std::vector<decimal> result;
+	must_be(TYPE_LIST);
+	result.reserve(list_->elements.size());
+	for(int n = 0; n != list_->elements.size(); ++n) {
+		result.push_back(list_->elements[n].as_decimal());
+	}
+
+	return result;
+}
+
+const std::map<variant,variant>& variant::as_map() const
+{
+	if(is_map()) {
+		return map_->elements;
+	} else {
+		static std::map<variant,variant> EmptyMap;
+		return EmptyMap;
+	}
+}
+
+variant variant::add_attr(variant key, variant value)
+{
+	last_query_map = variant();
+
+	if(is_map()) {
+		if(map_->refcount > 1) {
+			map_->refcount--;
+			map_ = new variant_map(*map_);
+			map_->refcount = 1;
+		}
+
+		make_unique();
+		map_->elements[key] = value;
+		return *this;
+	} else {
+		return variant();
+	}
+}
+
+void variant::add_attr_mutation(variant key, variant value)
+{
+	if(is_map()) {
+		map_->elements[key] = value;
+	}
+}
+
+std::string variant::as_string_default(const char* default_value) const
+{
+	if(is_null()) {
+		if(default_value) {
+			return std::string(default_value);
+		} else {
+			return std::string();
+		}
+	}
+
+	return as_string();
 }
 
 const std::string& variant::as_string() const
@@ -743,7 +918,33 @@ bool variant::operator>(const variant& v) const
 
 void variant::throw_type_error(variant::TYPE t) const
 {
-	throw type_error(formatter() << "type error: " << " expected " << variant_type_to_string(t) << " but found " << variant_type_to_string(type_) << " (" << to_debug_string() << ")");
+	if(this == &UnfoundInMapNullVariant) {
+		const debug_info* info = last_failed_query_map.get_debug_info();
+		if(info) {
+			throw type_error(formatter() << "In object at " << *info->filename << " " << info->line << " (column " << info->column << ") did not find attribute " << last_failed_query_key << " which was expected to be a " << variant_type_to_string(t));
+		}
+	}
+
+	if(last_query_map.is_map() && last_query_map.get_debug_info()) {
+		for(std::map<variant,variant>::const_iterator i = last_query_map.map_->elements.begin(); i != last_query_map.map_->elements.end(); ++i) {
+			if(this == &i->second) {
+				const debug_info* info = i->first.get_debug_info();
+				if(info == NULL) {
+					info = last_query_map.get_debug_info();
+				}
+				throw type_error(formatter() << "In object at " << *info->filename << " " << info->line << " (column " << info->column << ") attribute for " << i->first << " was " << *this << ", which is a " << variant_type_to_string(type_) << ", must be a " << variant_type_to_string(t));
+				
+			}
+		}
+	}
+
+	const debug_info* info = get_debug_info();
+	std::string loc;
+	if(info) {
+		loc = formatter() << " at " << *info->filename << " " << info->line << " (column " << info->column << "\n";
+	}
+
+	throw type_error(formatter() << "type error: " << " expected " << variant_type_to_string(t) << " but found " << variant_type_to_string(type_) << " " << write_json() << loc);
 }
 
 void variant::serialize_to_string(std::string& str) const
@@ -841,7 +1042,7 @@ void variant::serialize_to_string(std::string& str) const
 void variant::serialize_from_string(const std::string& str)
 {
 	try {
-		*this = game_logic::formula(str).execute();
+		*this = game_logic::formula(variant(str)).execute();
 	} catch(...) {
 		*this = variant(str);
 	}
@@ -858,6 +1059,7 @@ variant variant::create_variant_under_construction(intptr_t id)
 
 int variant::refcount() const
 {
+
 	switch(type_) {
 	case TYPE_LIST:
 		return list_->refcount;
@@ -873,6 +1075,51 @@ int variant::refcount() const
 		break;
 	default:
 		return -1;
+	}
+}
+
+void variant::make_unique()
+{
+	if(refcount() == 1) {
+		return;
+	}
+
+	switch(type_) {
+	case TYPE_LIST: {
+		list_->refcount--;
+		list_ = new variant_list(*list_);
+		list_->refcount = 1;
+		foreach(variant& v, list_->elements) {
+			v.make_unique();
+		}
+		break;
+	}
+	case TYPE_STRING:
+		string_->refcount--;
+		string_ = new variant_string(*string_);
+		string_->refcount = 1;
+		break;
+	case TYPE_MAP: {
+		std::map<variant,variant> m;
+		for(std::map<variant,variant>::const_iterator i = map_->elements.begin(); i != map_->elements.end(); ++i) {
+			variant key = i->first;
+			variant value = i->second;
+			key.make_unique();
+			value.make_unique();
+			m[key] = value;
+		}
+
+		map_->refcount--;
+
+		variant_map* vm = new variant_map;
+		vm->info = map_->info;
+		vm->refcount = 1;
+		vm->elements.swap(m);
+		map_ = vm;
+		break;
+	}
+	default:
+		break;
 	}
 }
 
@@ -1016,13 +1263,21 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 	}
 	}
 
+	if(get_debug_info()) {
+		s << " (" << get_debug_info()->message() << ")";
+	}
+
 	return s.str();
 }
 
-std::string variant::write_json() const
+std::string variant::write_json(bool pretty) const
 {
 	std::ostringstream s;
-	write_json(s);
+	if(pretty) {
+		write_json_pretty(s, "");
+	} else {
+		write_json(s);
+	}
 	return s.str();
 }
 
@@ -1041,7 +1296,7 @@ void variant::write_json(std::ostream& s) const
 		return;
 	}
 	case TYPE_DECIMAL: {
-		s << decimal_value_;
+		s << decimal(decimal_value_);
 		return;
 	}
 	case TYPE_MAP: {
@@ -1073,12 +1328,117 @@ void variant::write_json(std::ostream& s) const
 		return;
 	}
 	case TYPE_STRING: {
-		s << "\"" << string_->str << "\"";
+		const std::string& str = string_->str;
+		if(std::count(str.begin(), str.end(), '\\') || std::count(str.begin(), str.end(), '"')) {
+			//escape the string
+			s << '"';
+			for(std::string::const_iterator i = str.begin(); i != str.end(); ++i) {
+				if(*i == '\\' || *i == '"') {
+					s << '\\';
+				}
+
+				s << *i;
+			}
+			s << '"';
+		} else {
+			s << "\"" << string_->str << "\"";
+		}
 		return;
 	}
 	default:
-		throw type_error("illegal type to serialize to json");
+		throw type_error(formatter() << "illegal type to serialize to json: " << to_debug_string());
 	}
+}
+
+void variant::write_json_pretty(std::ostream& s, std::string indent) const
+{
+	switch(type_) {
+	case TYPE_NULL: {
+		s << "null";
+		return;
+	}
+	case TYPE_BOOL: {
+		s << (bool_value_ ? "true" : "false");
+		return;
+	}
+	case TYPE_INT: {
+		s << as_int();
+		return;
+	}
+	case TYPE_DECIMAL: {
+		s << decimal(decimal_value_);
+		return;
+	}
+	case TYPE_MAP: {
+		s << "{";
+		for(std::map<variant,variant>::const_iterator i = map_->elements.begin(); i != map_->elements.end(); ++i) {
+			if(i != map_->elements.begin()) {
+				s << ',';
+			}
+			s << "\n" << indent << '"' << i->first.string_cast() << "\": ";
+			i->second.write_json_pretty(s, indent + "  ");
+		}
+
+		s << "\n" << indent << "}";
+		return;
+	}
+	case TYPE_LIST: {
+		s << "[";
+
+		for(std::vector<variant>::const_iterator i = list_->elements.begin();
+		    i != list_->elements.end(); ++i) {
+			if(i != list_->elements.begin()) {
+				s << ',';
+			}
+
+			s << "\n" << indent << "  ";
+
+			i->write_json_pretty(s, indent + "  ");
+		}
+
+		if(!list_->elements.empty()) {
+			s << "\n" << indent << "]";
+		} else {
+			s << "]";
+		}
+
+		return;
+	}
+
+	case TYPE_STRING: {
+		const std::string& str = string_->str;
+		if(std::count(str.begin(), str.end(), '\\') || std::count(str.begin(), str.end(), '"')) {
+			//escape the string
+			s << '"';
+			for(std::string::const_iterator i = str.begin(); i != str.end(); ++i) {
+				if(*i == '\\' || *i == '"') {
+					s << '\\';
+				}
+
+				s << *i;
+			}
+			s << '"';
+		} else {
+			s << "\"" << string_->str << "\"";
+		}
+		return;
+	}
+	default:
+		throw type_error(formatter() << "illegal type to serialize to json: " << to_debug_string());
+	}
+}
+
+std::string variant::debug_info::message() const
+{
+	std::ostringstream s;
+	s << *filename << " " << line << " (column " << column << ")";
+	return s.str();
+}
+
+std::ostream& operator<<(std::ostream& os, const variant& v)
+{
+	os << v.write_json();
+	return os;
 }
 
 UNIT_TEST(variant_decimal)
@@ -1087,7 +1447,7 @@ UNIT_TEST(variant_decimal)
 	variant d2(4000, variant::DECIMAL_VARIANT);
 	CHECK_EQ(d.as_decimal().value(), 9876000);
 	CHECK_EQ(d.as_int(), 9);
-	CHECK_EQ(d.string_cast(), "9.876000");
+	CHECK_EQ(d.string_cast(), "9.876");
 	CHECK_EQ((d + d2).as_decimal().value(), 9880000);
 }
 

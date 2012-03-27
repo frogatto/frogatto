@@ -2,27 +2,21 @@
 
 #include "foreach.hpp"
 #include "string_utils.hpp"
-#include "wml_formula_adapter.hpp"
+#include "variant_utils.hpp"
 #include "wml_modify.hpp"
-#include "wml_node.hpp"
-#include "wml_parser.hpp"
 
 namespace wml {
-modifier::modifier(wml::const_node_ptr node)
+modifier::modifier(variant node)
 {
-	wml::node::const_child_iterator i1 = node->begin_child("children");
-	wml::node::const_child_iterator i2 = node->end_child("children");
-
-	while(i1 != i2) {
+	foreach(variant v, node["children"].as_list()) {
 		modification mod;
-		mod.target.reset(new game_logic::formula(i1->second->attr("_target")));
-		mod.add_children = util::split(i1->second->attr("add"));
-		mod.add_if_not_present_children = util::split(i1->second->attr("add_if_not_present"));
-		mod.remove_children = util::split(i1->second->attr("remove"));
+		mod.target.reset(new game_logic::formula(v["_target"]));
+		mod.add_children = util::split(v["add"].as_string());
+		mod.add_if_not_present_children = util::split(v["add_if_not_present"].as_string());
+		mod.remove_children = util::split(v["remove"].as_string());
 		mods_.push_back(mod);
-		++i1;
 	}
-
+/*
 	i1 = node->begin_child("set");
 	i2 = node->end_child("set");
 	while(i1 != i2) {
@@ -54,10 +48,11 @@ modifier::modifier(wml::const_node_ptr node)
 		mods_.push_back(mod);
 		++i1;
 	}
-
+*/
 }
 
 void modifier::modify_target(variant target, const modification& mod) {
+/*
 	const std::map<std::string, game_logic::const_formula_ptr>& mods = mod.attr;
 	if(target.is_list()) {
 		for(int n = 0; n != target.num_elements(); ++n) {
@@ -91,16 +86,18 @@ void modifier::modify_target(variant target, const modification& mod) {
 			variant value = i->second->execute(*target.as_callable());
 			target.mutable_callable()->mutate_value(i->first, value);
 		}
-	}
+	}*/
 }
 
-void modifier::modify(wml::node_ptr doc) const
+variant modifier::modify(variant doc) const
 {
+	return doc;
+		/*
 	game_logic::formula_callable_ptr callable(new wml::node_callable(doc));
 	foreach(const modification& mod, mods_) {
 		variant target = mod.target->execute(*callable);
 		modify_target(target, mod);
-	}
+	}*/
 }
 
 } //namespace wml

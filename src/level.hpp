@@ -27,8 +27,8 @@
 #include "raster.hpp"
 #include "speech_dialog.hpp"
 #include "tile_map.hpp"
+#include "variant.hpp"
 #include "water.hpp"
-#include "wml_node_fwd.hpp"
 #include "color_utils.hpp"
 
 class tile_corner;
@@ -46,7 +46,7 @@ public:
 	static level* current_ptr();
 	void set_as_current_level();
 
-	explicit level(const std::string& level_cfg, wml::const_node_ptr node=wml::const_node_ptr());
+	explicit level(const std::string& level_cfg, variant node=variant());
 	~level();
 
 	//function to do anything which loads the level and must be done
@@ -66,7 +66,7 @@ public:
 
 	std::string package() const;
 
-	wml::node_ptr write() const;
+	variant write() const;
 	void draw(int x, int y, int w, int h) const;
 	void draw_status() const;
 	void draw_debug_solid(int x, int y, int w, int h) const;
@@ -294,11 +294,9 @@ public:
 	bool is_arcade_level() const { return segment_height_ != 0 || segment_width_ != 0; }
 
 	variant get_var(const std::string& str) const {
-		std::map<std::string, variant>::const_iterator itor = vars_.find(str);
-		if(itor != vars_.end()) return itor->second;
-		return variant();
+		return vars_[str];
 	}
-	void set_var(const std::string& str, variant value) { vars_[str] = value; }
+	void set_var(const std::string& str, variant value) { vars_ = vars_.add_attr(variant(str), value); }
 
 	bool set_dark(bool value) { bool res = dark_; dark_ = value; return res; }
 
@@ -314,7 +312,7 @@ public:
 
 private:
 
-	void read_compiled_tiles(wml::const_node_ptr node, std::vector<level_tile>::iterator& out);
+	void read_compiled_tiles(variant node, std::vector<level_tile>::iterator& out);
 
 	void complete_tiles_refresh();
 	void prepare_tiles_for_drawing();
@@ -348,7 +346,7 @@ private:
 	//preferred screen dimensions to play the level on.
 	int x_resolution_, y_resolution_;
 
-	std::map<std::string, variant> vars_;
+	variant vars_;
 	
 	level_solid_map solid_;
 	level_solid_map standable_;
@@ -461,12 +459,13 @@ private:
 
 	//characters stored in wml format; they can't be loaded in a separate thread
 	//they will be loaded when complete_load_level() is called.
-	std::vector<wml::const_node_ptr> wml_chars_;
+	std::vector<variant> wml_chars_;
+	std::vector<variant> serialized_objects_;
 
-	std::vector<wml::node_ptr> wml_compiled_tiles_;
+	std::vector<variant> wml_compiled_tiles_;
 	int num_compiled_tiles_;
 
-	void load_character(wml::const_node_ptr c);
+	void load_character(variant c);
 
 	typedef std::vector<entity_ptr> entity_group;
 	std::vector<entity_group> groups_;

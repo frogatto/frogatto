@@ -9,7 +9,7 @@
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "string_utils.hpp"
-#include "wml_node.hpp"
+#include "variant_utils.hpp"
 
 namespace game_logic
 {
@@ -70,18 +70,18 @@ variant get_constant(const std::string& id)
 	return variant();
 }
 
-constants_loader::constants_loader(wml::const_node_ptr node) : same_as_base_(false)
+constants_loader::constants_loader(variant node) : same_as_base_(false)
 {
 	constants_map m;
-	if(node) {
-		for(wml::node::const_attr_iterator i = node->begin_attr(); i != node->end_attr(); ++i) {
-			const std::string& attr = i->first;
+	if(node.is_null() == false) {
+		foreach(variant key, node.get_keys().as_list()) {
+			const std::string& attr = key.as_string();
 			if(std::find_if(attr.begin(), attr.end(), util::islower) != attr.end()) {
 				//only all upper case are loaded as consts
 				continue;
 			}
 
-			m[attr].serialize_from_string(i->second);
+			m[attr] = node[key];
 		}
 	}
 

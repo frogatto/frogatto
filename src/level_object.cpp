@@ -6,6 +6,7 @@
 #include "asserts.hpp"
 #include "draw_tile.hpp"
 #include "filesystem.hpp"
+#include "json_parser.hpp"
 #include "level_object.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
@@ -13,9 +14,8 @@
 #include "surface.hpp"
 #include "surface_cache.hpp"
 #include "surface_palette.hpp"
-#include "wml_parser.hpp"
-#include "wml_utils.hpp"
-#include "wml_writer.hpp"
+#include "variant_utils.hpp"
+
 namespace {
 typedef std::map<std::string,const_level_object_ptr> tiles_map;
 tiles_map tiles_cache;
@@ -36,25 +36,29 @@ std::vector<const_level_object_ptr> level_object::all()
 	return res;
 }
 
-level_tile level_object::build_tile(wml::const_node_ptr node)
+level_tile level_object::build_tile(variant node)
 {
 	level_tile res;
-	res.x = wml::get_int(node, "x");
-	res.y = wml::get_int(node, "y");
-	res.zorder = wml::get_int(node, "zorder");
-	if(tiles_cache.count(node->attr("tile"))) {
-		res.object = tiles_cache[node->attr("tile")];
+	res.x = node["x"].as_int();
+	res.y = node["y"].as_int();
+	res.zorder = node["zorder"].as_int();
+	if(tiles_cache.count(node["tile"].as_string())) {
+		res.object = tiles_cache[node["tile"].as_string()];
 	}
-	res.face_right = wml::get_bool(node, "face_right");
+	res.face_right = node["face_right"].as_bool();
 	return res;
 }
 
 namespace {
-std::vector<wml::node_ptr> level_object_index;
-std::vector<wml::const_node_ptr> original_level_object_nodes;
-std::map<std::pair<wml::const_node_ptr, int>, level_object_ptr> secondary_zorder_objects;
 
-std::map<wml::node_ptr, int> tile_nodes_to_zorders;
+typedef boost::shared_ptr<variant> obj_variant_ptr;
+typedef boost::shared_ptr<const variant> const_obj_variant_ptr;
+
+std::vector<obj_variant_ptr> level_object_index;
+std::vector<const_obj_variant_ptr> original_level_object_nodes;
+std::map<std::pair<const_obj_variant_ptr, int>, level_object_ptr> secondary_zorder_objects;
+
+std::map<obj_variant_ptr, int> tile_nodes_to_zorders;
 
 
 typedef std::pair<std::string, int> filename_palette_pair;
@@ -76,7 +80,7 @@ void create_compiled_tiles_image()
 
 	//calculate how many tiles are in each zorder
 	std::map<int, int> zorder_to_num_tiles;
-	for(std::map<wml::node_ptr, int>::const_iterator i = tile_nodes_to_zorders.begin(); i != tile_nodes_to_zorders.end(); ++i) {
+	for(std::map<obj_variant_ptr, int>::const_iterator i = tile_nodes_to_zorders.begin(); i != tile_nodes_to_zorders.end(); ++i) {
 		zorder_to_num_tiles[i->second]++;
 	}
 
@@ -146,12 +150,12 @@ void create_compiled_tiles_image()
 
 	SDL_SetAlpha(s.get(), 0, SDL_ALPHA_OPAQUE);
 
-	for(std::map<wml::node_ptr, int>::const_iterator i = tile_nodes_to_zorders.begin(); i != tile_nodes_to_zorders.end(); ++i) {
+	for(std::map<obj_variant_ptr, int>::const_iterator i = tile_nodes_to_zorders.begin(); i != tile_nodes_to_zorders.end(); ++i) {
 		const int sheet = zorder_to_sheet_number[i->second];
-		wml::node_ptr node = i->first;
+		obj_variant_ptr node = i->first;
 		std::map<int, int> dst_index_map;
 
-		std::vector<std::string> tiles_vec = util::split(node->attr("tiles").str(), '|');
+		std::vector<std::string> tiles_vec = util::split((*node)["tiles"].as_string(), '|');
 		std::string tiles_val;
 
 		foreach(const std::string& tiles_str, tiles_vec) {
@@ -186,12 +190,12 @@ void create_compiled_tiles_image()
 			tiles_val += buf;
 		}
 
-		node->set_attr("tiles", tiles_val);
+		*node = node->add_attr(variant("tiles"), variant(tiles_val));
 
 		char buf[128];
 		sprintf(buf, "tiles-compiled-%d.png", sheet);
 
-		node->set_attr("image", buf);
+		*node = node->add_attr(variant("image"), variant(buf));
 	}
 
 	for(int n = 0; n != sheets.size(); ++n) {
@@ -237,25 +241,25 @@ void level_object::set_current_palette(unsigned int palette)
 	}
 }
 
-level_object::level_object(wml::const_node_ptr node)
-  : id_(node->attr("id")), image_(node->attr("image")),
-    info_(node->attr("info")),
+level_object::level_object(variant node)
+  : id_(node["id"].as_string_default()), image_(node["image"].as_string()),
+    info_(node["info"].as_string_default()),
     t_(graphics::texture::get(image_)),
-	all_solid_(node->attr("solid").str() == "yes"),
-    passthrough_(wml::get_bool(node, "passthrough")),
-    flip_(wml::get_bool(node, "flip", false)),
-    friction_(wml::get_int(node, "friction", 100)),
-    traction_(wml::get_int(node, "traction", 100)),
-    damage_(wml::get_int(node, "damage", 0)),
-	opaque_(wml::get_bool(node, "opaque", false)),
+	all_solid_(node["solid"].is_bool() ? node["solid"].as_bool() : node["solid"].as_string_default() == "yes"),
+    passthrough_(node["passthrough"].as_bool()),
+    flip_(node["flip"].as_bool(false)),
+    friction_(node["friction"].as_int(100)),
+    traction_(node["traction"].as_int(100)),
+    damage_(node["damage"].as_int(0)),
+	opaque_(node["opaque"].as_bool(false)),
 	draw_area_(0, 0, 16, 16),
 	tile_index_(-1),
 	palettes_recognized_(current_palette_set),
 	current_palettes_(0)
 {
-	if(node->has_attr("palettes")) {
+	if(node.has_key("palettes")) {
 		palettes_recognized_ = 0;
-		std::vector<std::string> p = util::split(node->attr("palettes"));
+		std::vector<std::string> p = util::split(node["palettes"].as_string_default());
 		foreach(const std::string& pal, p) {
 			const int id = graphics::get_palette_id(pal);
 			palettes_recognized_ |= 1 << id;
@@ -266,18 +270,27 @@ level_object::level_object(wml::const_node_ptr node)
 		palette_level_objects().insert(this);
 	}
 
-	if(node->has_attr("solid_color")) {
-		solid_color_ = boost::intrusive_ptr<graphics::color>(new graphics::color(node->attr("solid_color")));
+	if(node.has_key("solid_color")) {
+		solid_color_ = boost::intrusive_ptr<graphics::color>(new graphics::color(node["solid_color"].as_string_default()));
 		if(preferences::use_16bpp_textures()) {
 			*solid_color_ = graphics::color(graphics::map_color_to_16bpp(solid_color_->rgba()));
 		}
 	}
 
-	if(node->has_attr("draw_area")) {
-		draw_area_ = rect(node->attr("draw_area"));
+	if(node.has_key("draw_area")) {
+		draw_area_ = rect(node["draw_area"].as_string_default());
 	}
 
-	std::vector<std::string> tile_variations = util::split(node->attr("tiles"), '|');
+	//TODO: Fix up the JSON to be consistent and use a list.
+	std::string tiles_str;
+	variant tiles_variant = node["tiles"];
+	if(tiles_variant.is_int()) {
+		tiles_str = tiles_variant.string_cast();
+	} else {
+		tiles_str = tiles_variant.as_string();
+	}
+
+	std::vector<std::string> tile_variations = util::split(tiles_str);
 	foreach(const std::string& variation, tile_variations) {
 		if(!variation.empty() && variation[0] == '+') {
 			//a + symbol at the start of tiles means that it's just a base-10
@@ -295,9 +308,9 @@ level_object::level_object(wml::const_node_ptr node)
 		tiles_.resize(1);
 	}
 
-	if(node->has_attr("solid_map")) {
+	if(node.has_key("solid_map")) {
 		solid_.resize(width()*height());
-		graphics::surface surf(graphics::surface_cache::get(node->attr("solid_map")).convert_opengl_format());
+		graphics::surface surf(graphics::surface_cache::get(node["solid_map"].as_string()).convert_opengl_format());
 		if(surf.get()) {
 			const uint32_t* p = reinterpret_cast<const uint32_t*>(surf->pixels);
 			for(int n = 0; n != surf->w*surf->h && n != solid_.size(); ++n) {
@@ -310,7 +323,7 @@ level_object::level_object(wml::const_node_ptr node)
 		}
 	}
 	
-	std::vector<std::string> solid_attr = util::split(node->attr("solid").str());
+	std::vector<std::string> solid_attr = util::split(node["solid"].as_string_default());
 
 	if(all_solid_ || std::find(solid_attr.begin(), solid_attr.end(), "flat") != solid_attr.end()) {
 		if(passthrough_){
@@ -408,16 +421,15 @@ level_object::level_object(wml::const_node_ptr node)
 		}
 	}
 	
-	if(node->has_attr("solid_heights")) {
-		//this is a csv list of heights which represent the solids
-		std::vector<std::string> heights = util::split(node->attr("solid_heights"));
+	if(node.has_key("solid_heights")) {
+		//this is a list of heights which represent the solids
+		std::vector<int> heights = node["solid_heights"].as_list_int();
 		if(!heights.empty()) {
 			solid_.resize(width()*height());
 			for(int x = 0; x < width(); ++x) {
 				const int heights_index = (heights.size()*x)/width();
 				assert(heights_index >= 0 && heights_index < heights.size());
-				const std::string& height_str = heights[heights_index];
-				const int h = atoi(height_str.c_str());
+				const int h = heights[heights_index];
 				for(int y = height() - h; y < height(); ++y) {
 					const int index = y*width() + x;
 					solid_[index] = true;
@@ -426,13 +438,11 @@ level_object::level_object(wml::const_node_ptr node)
 		}
 	}
 
-	wml::node::const_child_iterator r1 = node->begin_child("rect");
-	wml::node::const_child_iterator r2 = node->end_child("rect");
-	for(; r1 != r2; ++r1) {
-		const int x = wml::get_int(r1->second, "x");
-		const int y = wml::get_int(r1->second, "y");
-		const int w = wml::get_int(r1->second, "w");
-		const int h = wml::get_int(r1->second, "h");
+	foreach(variant r, node["rect"].as_list()) {
+		const int x = r["x"].as_int();
+		const int y = r["y"].as_int();
+		const int w = r["w"].as_int();
+		const int h = r["h"].as_int();
 
 		if(solid_.empty()) {
 			solid_.resize(width()*height());
@@ -460,10 +470,9 @@ level_object::level_object(wml::const_node_ptr node)
 		get_palettes_used(palettes);
 
 		foreach(int palette, palettes) {
-			wml::node_ptr node_copy(wml::deep_copy(node));
-			node_copy->erase_attr("palettes");
+			variant node_copy = node.add_attr(variant("palettes"), variant());
 			if(calculate_opaque()) {
-				node_copy->set_attr("opaque", "yes");
+				node_copy = node_copy.add_attr(variant("opaque"), variant(true));
 				opaque_ = true;
 			}
 
@@ -472,17 +481,17 @@ level_object::level_object(wml::const_node_ptr node)
 				if(palette >= 0) {
 					col = graphics::map_palette(col, palette);
 				}
-				node_copy->set_attr("solid_color", graphics::color_transform(col).to_string());
+				node_copy = node_copy.add_attr(variant("solid_color"), variant(graphics::color_transform(col).to_string()));
 			}
 
 			if(calculate_draw_area()) {
-				node_copy->set_attr("draw_area", draw_area_.to_string());
+				node_copy = node_copy.add_attr(variant("draw_area"), variant(draw_area_.to_string()));
 			}
 
 			std::string tiles_str;
 
 			foreach(int tile, tiles_) {
-				tile_id id(filename_palette_pair(node_copy->attr("image"), palette), tile);
+				tile_id id(filename_palette_pair(node_copy["image"].as_string(), palette), tile);
 				std::map<tile_id, int>::const_iterator itor = compiled_tile_ids.find(id);
 				if(itor == compiled_tile_ids.end()) {
 					compiled_tile_ids[id] = compiled_tile_ids.size();
@@ -500,29 +509,13 @@ level_object::level_object(wml::const_node_ptr node)
 				tiles_str += tile_pos;
 			}
 
-			node_copy->set_attr("image", "tiles-compiled.png");
-			node_copy->set_attr("tiles", tiles_str);
+			node_copy = node_copy.add_attr(variant("image"), variant("tiles-compiled.png"));
+			node_copy = node_copy.add_attr(variant("tiles"), variant(tiles_str));
 	
-			level_object_index.push_back(node_copy);
-			original_level_object_nodes.push_back(node);
+			level_object_index.push_back(obj_variant_ptr(new variant(node_copy)));
+			original_level_object_nodes.push_back(const_obj_variant_ptr(new variant(node)));
 		}
 	}
-
-	//debug code to output the solidity of a tile in case we need to introspect at some point
-	/*
-	std::cerr << "LEVEL_OBJECT: " << wml::output(node) << ":::\nSOLID:::\n";
-	if(solid_.size() == height()*width()) {
-		for(int y = 0; y != height(); ++y) {
-			for(int x = 0; x != width(); ++x) {
-				std::cerr << (solid_[y*width() + x] ? "1" : "0");
-			}
-			
-			std::cerr << "\n";
-		}
-	} else {
-		std::cerr << "SOLID SIZE: " << solid_.size() << "\n";
-	}
-	*/
 }
 
 level_object::~level_object()
@@ -582,14 +575,12 @@ void level_object::write_compiled()
 		char buf[128];
 		sprintf(buf, "%d", n);
 		const std::string filename = std::string(buf) + ".cfg";
-		wml::node_ptr tiles_node(new wml::node("tiles"));
+		variant_builder tiles_node;
 		for(int m = n*64; m < level_object_index.size() && m < (n+1)*64; ++m) {
-			tiles_node->add_child(wml::deep_copy(level_object_index[m]));
+			tiles_node.add("tiles", *level_object_index[m]);
 		}
 
-		std::string data;
-		wml::write(tiles_node, data);
-		sys::write_file("data/compiled/tiles/" + filename, data);
+		sys::write_file("data/compiled/tiles/" + filename, tiles_node.build().write_json(true));
 	}
 }
 
@@ -601,13 +592,14 @@ void load_compiled_tiles(int index)
 	int starting_index = index*64;
 	char buf[128];
 	sprintf(buf, "%d", index);
-	wml::const_node_ptr node(wml::parse_wml_from_file("data/compiled/tiles/" + std::string(buf) + ".cfg"));
+	variant node(json::parse_from_file("data/compiled/tiles/" + std::string(buf) + ".cfg"));
 	int count = 0;
-	for(wml::node::const_all_child_iterator i = node->begin_children(); i != node->end_children(); ++i) {
+
+	foreach(variant tile_node, node["tiles"].as_list()) {
 		if(starting_index >= compiled_tiles.size()) {
 			compiled_tiles.resize(starting_index+64);
 		}
-		compiled_tiles[starting_index++].reset(new level_object(*i));
+		compiled_tiles[starting_index++].reset(new level_object(tile_node));
 		++count;
 	}
 }
@@ -632,9 +624,9 @@ level_object_ptr level_object::record_zorder(int zorder) const
 	if(i == zorders_.end()) {
 		zorders_.push_back(zorder);
 		if(zorders_.size() > 1) {
-			level_object_ptr result(new level_object(original_level_object_nodes[tile_index_]));
+			level_object_ptr result(new level_object(*original_level_object_nodes[tile_index_]));
 			result->zorders_.push_back(zorder);
-			std::pair<wml::const_node_ptr, int> key(original_level_object_nodes[tile_index_], zorder);
+			std::pair<const_obj_variant_ptr, int> key(original_level_object_nodes[tile_index_], zorder);
 
 			secondary_zorder_objects[key] = result;
 
@@ -657,7 +649,7 @@ level_object_ptr level_object::record_zorder(int zorder) const
 			}
 		}
 	} else if(i != zorders_.begin()) {
-		std::pair<wml::const_node_ptr, int> key(original_level_object_nodes[tile_index_], zorder);
+		std::pair<const_obj_variant_ptr, int> key(original_level_object_nodes[tile_index_], zorder);
 		return secondary_zorder_objects[key];
 	}
 

@@ -7,16 +7,16 @@
 
 #include "frame.hpp"
 #include "powerup_fwd.hpp"
+#include "variant.hpp"
 #include "wml_modify.hpp"
-#include "wml_node_fwd.hpp"
 
 class frame;
 
 class powerup
 {
 public:
-	explicit powerup(wml::const_node_ptr node);
-	static void init(wml::const_node_ptr node);
+	explicit powerup(variant node);
+	static void init(variant node);
 	static const_powerup_ptr get(const std::string& id);
 
 	const std::string& id() const { return id_; }

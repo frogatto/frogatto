@@ -1,4 +1,6 @@
+#include "foreach.hpp"
 #include "formula_variable_storage.hpp"
+#include "variant_utils.hpp"
 
 namespace game_logic
 {
@@ -34,26 +36,25 @@ bool formula_variable_storage::equal_to(const std::map<std::string, variant>& m)
 	return true;
 }
 
-void formula_variable_storage::read(wml::const_node_ptr node)
+void formula_variable_storage::read(variant node)
 {
-	if(!node) {
+	if(node.is_null()) {
 		return;
 	}
 
-	for(wml::node::const_attr_iterator i = node->begin_attr(); i != node->end_attr(); ++i) {
-		variant var;
-		var.serialize_from_string(i->second);
-		add(i->first, var);
+	foreach(const variant_pair& val, node.as_map()) {
+		add(val.first.as_string(), val.second);
 	}
 }
 
-void formula_variable_storage::write(wml::node_ptr node) const
+variant formula_variable_storage::write() const
 {
+	variant_builder node;
 	for(std::map<std::string,int>::const_iterator i = strings_to_values_.begin(); i != strings_to_values_.end(); ++i) {
-		std::string val;
-		values_[i->second].serialize_to_string(val);
-		node->set_attr(i->first, val);
+		node.add(i->first, values_[i->second]);
 	}
+
+	return node.build();
 }
 
 void formula_variable_storage::add(const std::string& key, const variant& value)

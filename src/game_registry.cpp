@@ -1,10 +1,9 @@
 #include <iostream>
 
 #include "game_registry.hpp"
-#include "wml_node.hpp"
-#include "wml_parser.hpp"
-#include "wml_utils.hpp"
+#include "json_parser.hpp"
 #include "of_bridge.h"
+#include "variant_utils.hpp"
 
 game_registry& game_registry::instance()
 {
@@ -13,34 +12,46 @@ game_registry& game_registry::instance()
 	return *obj;
 }
 
-void game_registry::set_contents(wml::const_node_ptr node)
+game_registry::game_registry()
 {
-	values_ = game_logic::map_formula_callable(node);
+	std::map<variant,variant> m;
+	values_ = variant(&m);
 }
 
-void game_registry::write_contents(wml::node_ptr node)
+void game_registry::set_contents(variant node)
 {
-	values_.write(node);
+	values_ = node;
+	if(values_.is_null()) {
+		*this = game_registry();
+	}
+}
+
+variant game_registry::write_contents()
+{
+	return values_;
 }
 
 variant game_registry::get_value(const std::string& key) const
 {
-	return values_.query_value(key);
+	return values_[variant(key)];
 }
 
 void game_registry::set_value(const std::string& key, const variant& value)
 {
 #if (TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE) && ENABLE_OPENFEINT
-	wml::const_node_ptr leaderboards = wml::parse_wml_from_file("data/leaderboards.cfg");
-	FOREACH_WML_CHILD(node, leaderboards, "leaderboard")
-	{
-		if (wml::get_str(node, "registry_key") == key)
+	try {
+		variant leaderboards = json::parse_from_file("data/leaderboards.cfg");
+		foreach(variant node, leaderboards["leaderboard"].as_list())
 		{
-			of_submit_score(wml::get_int(node, "of_id"), value.as_int());
-			break;
+			if(node["registry_key"].as_string() == key)
+			{
+				of_submit_score(node["of_id"].as_int(), value.as_int());
+				break;
+			}
 		}
+	} catch(json::parse_error&) {
 	}
 #endif
-	values_.mutate_value(key, value);
+	values_ = values_.add_attr(variant(key), value);
 }
 

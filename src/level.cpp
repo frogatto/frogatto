@@ -16,6 +16,7 @@
 #include "formatter.hpp"
 #include "gui_formula_functions.hpp"
 #include "iphone_controls.hpp"
+#include "json_parser.hpp"
 #include "level.hpp"
 #include "level_object.hpp"
 #include "light.hpp"
@@ -36,11 +37,8 @@
 #include "thread.hpp"
 #include "tile_map.hpp"
 #include "unit_test.hpp"
+#include "variant_utils.hpp"
 #include "wml_formula_callable.hpp"
-#include "wml_node.hpp"
-#include "wml_parser.hpp"
-#include "wml_utils.hpp"
-#include "wml_writer.hpp"
 #include "color_utils.hpp"
 
 #include "compat.hpp"
@@ -50,12 +48,12 @@ boost::intrusive_ptr<level> current_level;
 
 std::map<std::string, level::summary> load_level_summaries() {
 	std::map<std::string, level::summary> result;
-	const wml::const_node_ptr node = wml::parse_wml_from_file("data/compiled/level_index.cfg");
+	const variant node = json::parse_from_file("data/compiled/level_index.cfg");
 	
-	FOREACH_WML_CHILD(level_node, node, "level") {
-		level::summary& s = result[level_node->attr("level")];
-		s.music = level_node->attr("music");
-		s.title = level_node->attr("title");
+	foreach(variant level_node, node["level"].as_list()) {
+		level::summary& s = result[level_node["level"].as_string()];
+		s.music = level_node["music"].as_string();
+		s.title = level_node["title"].as_string();
 	}
 
 	return result;
@@ -132,7 +130,7 @@ graphics::color_transform default_dark_color() {
 }
 }
 
-level::level(const std::string& level_cfg, wml::const_node_ptr node)
+level::level(const std::string& level_cfg, variant node)
 	: id_(level_cfg),
 	  x_resolution_(0), y_resolution_(0),
 	  highlight_layer_(INT_MIN),
@@ -147,162 +145,120 @@ level::level(const std::string& level_cfg, wml::const_node_ptr node)
 	std::cerr << "in level constructor...\n";
 	const int start_time = SDL_GetTicks();
 
-	if(!node) {
+	if(node.is_null()) {
 		node = load_level_wml(level_cfg);
 	}
 
-	wml::const_node_ptr player_save_node;
-	ASSERT_LOG(node.get() != NULL, "LOAD LEVEL WML FOR " << level_cfg << " FAILED");
-	if(node->has_attr("id")) {
-		id_ = node->attr("id");
+	variant player_save_node;
+	ASSERT_LOG(node.is_null() == false, "LOAD LEVEL WML FOR " << level_cfg << " FAILED");
+	if(node.has_key("id")) {
+		id_ = node["id"].as_string();
 	}
 
 	if(preferences::load_compiled() && (level_cfg == "save.cfg" || level_cfg == "autosave.cfg")) {
-		if(preferences::version() != node->attr("version").str()) {
+		if(preferences::version() != node["version"].as_string()) {
 			std::cerr << "DIFFERENT VERSION LEVEL\n";
-			FOREACH_WML_CHILD(obj_node, node, "character") {
-				if(wml::get_bool(obj_node, "is_human", false)) {
+			foreach(variant obj_node, node["character"].as_list()) {
+				if(obj_node["is_human"].as_bool(false)) {
 					player_save_node = obj_node;
 					break;
 				}
 			}
 
-			wml::const_node_ptr n = node;
-			if(node->has_attr("id")) {
-				n = load_level_wml(node->attr("id"));
-			} else {
-				//this save was made before we saved level ID's. The best
-				//we can do is get a level with a matching title.
-				std::vector<std::string> files;
-				sys::get_files_in_dir("data/compiled/level/", &files);
-				foreach(const std::string& file, files) {
-					if(file == "save.cfg" || file == "autosave.cfg") {
-						continue;
-					}
-
-					wml::const_node_ptr lvl_info = load_level_wml(file);
-					if(lvl_info->attr("title").str() == node->attr("title").str()) {
-						if(lvl_info->attr("dimensions").str() == node->attr("dimensions").str()) {
-							//the dimensions match so we're sure this is
-							//the right one.
-							n = lvl_info;
-							break;
-						}
-
-						//tenatively guess this is the level, but keep
-						//searching in case one with an exact dimensional
-						//match is found.
-						n = lvl_info;
-					}
-				}
+			variant n = node;
+			if(node.has_key("id")) {
+				n = load_level_wml(node["id"].as_string());
 			}
-			//in case the player had swallowed an object, copy it
-			//over from the savegame.
-			wml::node::const_child_iterator i1 = node->begin_child("serialized_objects");
-			wml::node::const_child_iterator i2 = n->begin_child("serialized_objects");
-			if(i1 != node->end_child("serialized_objects") && i2 != n->end_child("serialized_objects")) {
-				wml::node::const_child_iterator j1 = (i1->second)->begin_child("character");
-				wml::node::const_child_iterator j2 = (i1->second)->end_child("character");
-				while(j1 != j2) {
-					(i2->second)->add_child(j1->second);
-					++j1;
-				}
-			}
+
+			n = n.add_attr(variant("serialized_objects"), n["serialized_objects"] + node["serialized_objects"]);
+
 			node = n;
 		}
 	}
 
 	dark_color_ = default_dark_color();
-	if(wml::get_bool(node, "dark", false)) {
+	if(node["dark"].as_bool(false)) {
 		dark_ = true;
 	}
 
-	if(node->has_attr("dark_color")) {
-		dark_color_ = graphics::color_transform(node->attr("dark_color"));
+	if(node.has_key("dark_color")) {
+		dark_color_ = graphics::color_transform(node["dark_color"].as_string());
 	}
 
-	if(node->get_child("vars")) {
-		wml::const_node_ptr vars = node->get_child("vars");
-		for(wml::node::const_attr_iterator i = vars->begin_attr();
-		    i != vars->end_attr(); ++i) {
-			vars_[i->first].serialize_from_string(i->second);
-		}
+	vars_ = node["vars"];
+	if(vars_.is_map() == false) {
+		std::map<variant,variant> m;
+		vars_ = variant(&m);
 	}
 
-	segment_width_ = wml::get_int(node, "segment_width");
+	segment_width_ = node["segment_width"].as_int();
 	ASSERT_LOG(segment_width_%32 == 0, "segment_width in " << id_ << " is not divisible by 32");
 
-	segment_height_ = wml::get_int(node, "segment_height");
+	segment_height_ = node["segment_height"].as_int();
 	ASSERT_LOG(segment_height_%32 == 0, "segment_height in " << id_ << " is not divisible by 32");
 
-	music_ = node->attr("music");
-	replay_data_ = node->attr("replay_data");
-	cycle_ = wml::get_int(node, "cycle");
+	music_ = node["music"].as_string();
+	replay_data_ = node["replay_data"].as_string_default();
+	cycle_ = node["cycle"].as_int();
 	time_freeze_ = 0;
-	x_resolution_ = wml::get_int(node, "x_resolution");
-	y_resolution_ = wml::get_int(node, "y_resolution");
+	x_resolution_ = node["x_resolution"].as_int();
+	y_resolution_ = node["y_resolution"].as_int();
 	in_dialog_ = false;
-	title_ = node->attr("title");
-	if(node->has_attr("dimensions")) {
-		boundaries_ = rect(node->attr("dimensions"));
+	title_ = node["title"].as_string();
+	if(node.has_key("dimensions")) {
+		boundaries_ = rect(node["dimensions"]);
 	} else {
-		boundaries_ = rect(0, 0, wml::get_int(node, "width", 800), wml::get_int(node, "height", 600));
+		boundaries_ = rect(0, 0, node["width"].as_int(800), node["height"].as_int(600));
 	}
 
-	if(node->has_attr("lock_screen")) {
-		lock_screen_.reset(new point(node->attr("lock_screen")));
+	if(node.has_key("lock_screen")) {
+		lock_screen_.reset(new point(node["lock_screen"].as_string()));
 	}
 
-	if(node->has_attr("opaque_rects")) {
-		const std::vector<std::string> opaque_rects_str = util::split(node->attr("opaque_rects"), ':');
+	if(node.has_key("opaque_rects")) {
+		const std::vector<std::string> opaque_rects_str = util::split(node["opaque_rects"].as_string(), ':');
 		foreach(const std::string& r, opaque_rects_str) {
 			opaque_rects_.push_back(rect(r));
 			std::cerr << "OPAQUE RECT: " << r << "\n";
 		}
 	}
 
-	xscale_ = wml::get_int(node, "xscale", 100);
-	yscale_ = wml::get_int(node, "yscale", 100);
-	auto_move_camera_ = point(node->attr("auto_move_camera"));
-	air_resistance_ = wml::get_int(node, "air_resistance", 20);
-	water_resistance_ = wml::get_int(node, "water_resistance", 100);
+	xscale_ = node["xscale"].as_int(100);
+	yscale_ = node["yscale"].as_int(100);
+	auto_move_camera_ = point(node["auto_move_camera"]);
+	air_resistance_ = node["air_resistance"].as_int(20);
+	water_resistance_ = node["water_resistance"].as_int(100);
 
-	camera_rotation_ = game_logic::formula::create_optional_formula(node->attr("camera_rotation"));
+	camera_rotation_ = game_logic::formula::create_optional_formula(node["camera_rotation"]);
 
-	preloads_ = util::split(node->attr("preloads"));
+	preloads_ = util::split(node["preloads"].as_string());
 
 	std::string empty_solid_info;
-	wml::node::const_child_iterator r1 = node->begin_child("solid_rect");
-	wml::node::const_child_iterator r2 = node->end_child("solid_rect");
-	for(; r1 != r2; ++r1) {
+	foreach(variant rect_node, node["solid_rect"].as_list()) {
 		solid_rect r;
-		r.r = rect(r1->second->attr("rect"));
-		r.friction = wml::get_int(r1->second, "friction", 100);
-		r.traction = wml::get_int(r1->second, "traction", 100);
-		r.damage = wml::get_int(r1->second, "damage");
+		r.r = rect(rect_node["rect"]);
+		r.friction = rect_node["friction"].as_int(100);
+		r.traction = rect_node["traction"].as_int(100);
+		r.damage = rect_node["damage"].as_int();
 		solid_rects_.push_back(r);
 		add_solid_rect(r.r.x(), r.r.y(), r.r.x2(), r.r.y2(), r.friction, r.traction, r.damage, empty_solid_info);
 	}
 
 	std::cerr << "building..." << SDL_GetTicks() << "\n";
-	wml::node::const_child_iterator t1 = node->begin_child("tile");
-	wml::node::const_child_iterator t2 = node->end_child("tile");
 	widest_tile_ = 0;
 	highest_tile_ = 0;
 	layers_.insert(0);
-	for(; t1 != t2; ++t1) {
-		const level_tile t = level_object::build_tile(t1->second);
+	foreach(variant tile_node, node["tile"].as_list()) {
+		const level_tile t = level_object::build_tile(tile_node);
 		tiles_.push_back(t);
 		layers_.insert(t.zorder);
 		add_tile_solid(t);
 	}
 	std::cerr << "done building..." << SDL_GetTicks() << "\n";
 
-	t1 = node->begin_child("tile_map");
-	t2 = node->end_child("tile_map");
 	int begin_tile_index = tiles_.size();
-	for(; t1 != t2; ++t1) {
-		tile_map m(t1->second);
+	foreach(variant tile_node, node["tile_map"].as_list()) {
+		tile_map m(tile_node);
 		tile_maps_[m.zorder()] = m;
 		const int before = tiles_.size();
 		tile_maps_[m.zorder()].build_tiles(&tiles_);
@@ -311,16 +267,14 @@ level::level(const std::string& level_cfg, wml::const_node_ptr node)
 
 	std::cerr << "done building tile_map..." << SDL_GetTicks() << "\n";
 
-	num_compiled_tiles_ = wml::get_int(node, "num_compiled_tiles");
+	num_compiled_tiles_ = node["num_compiled_tiles"].as_int();
 
 	tiles_.resize(tiles_.size() + num_compiled_tiles_);
 	std::vector<level_tile>::iterator compiled_itor = tiles_.end() - num_compiled_tiles_;
 
-	t1 = node->begin_child("compiled_tiles");
-	t2 = node->end_child("compiled_tiles");
-	for(; t1 != t2; ++t1) {
-		read_compiled_tiles(t1->second, compiled_itor);
-		wml_compiled_tiles_.push_back(t1->second);
+	foreach(variant tile_node, node["compiled_tiles"].as_list()) {
+		read_compiled_tiles(tile_node, compiled_itor);
+		wml_compiled_tiles_.push_back(tile_node);
 	}
 
 	ASSERT_LOG(compiled_itor == tiles_.end(), "INCORRECT NUMBER OF COMPILED TILES");
@@ -334,92 +288,87 @@ level::level(const std::string& level_cfg, wml::const_node_ptr node)
 		std::sort(tiles_.begin(), tiles_.end(), level_tile_zorder_pos_comparer());
 	}
 
-	if(node->has_attr("palettes")) {
-		std::vector<std::string> v = util::split(node->attr("palettes"));
+	if(node.has_key("palettes")) {
+		std::vector<std::string> v = util::split(node["palettes"].as_string());
 		foreach(const std::string& p, v) {
 			const int id = graphics::get_palette_id(p);
 			palettes_used_ |= (1 << id);
 		}
 	}
 
-	if(node->has_attr("background_palette")) {
-		background_palette_ = graphics::get_palette_id(node->attr("background_palette"));
+	if(node.has_key("background_palette")) {
+		background_palette_ = graphics::get_palette_id(node["background_palette"].as_string());
 	}
 
 	prepare_tiles_for_drawing();
 
-	wml::node::const_child_iterator c1 = node->begin_child("character");
-	wml::node::const_child_iterator c2 = node->end_child("character");
-	for(; c1 != c2; ++c1) {
-		if(player_save_node.get() != NULL && wml::get_bool(c1->second, "is_human", false)) {
+	foreach(variant char_node, node["character"].as_list()) {
+		if(player_save_node.is_null() == false && char_node["is_human"].as_bool(false)) {
 			continue;
 		}
 
-		wml_chars_.push_back(c1->second);
+		wml_chars_.push_back(char_node);
 		continue;
 	}
 
-	if(player_save_node.get() != NULL) {
+	if(player_save_node.is_null() == false) {
 		wml_chars_.push_back(player_save_node);
 	}
 
-	wml::const_node_ptr serialized_objects = node->get_child("serialized_objects");
-	if(serialized_objects.get() != NULL) {
-		wml_chars_.push_back(serialized_objects);
+	variant serialized_objects = node["serialized_objects"];
+	if(serialized_objects.is_null() == false) {
+		serialized_objects_.push_back(serialized_objects);
 	}
 
-	wml::node::const_child_iterator p1 = node->begin_child("portal");
-	wml::node::const_child_iterator p2 = node->end_child("portal");
-	for(; p1 != p2; ++p1) {
+	foreach(variant portal_node, node["portal"].as_list()) {
 		portal p;
-		p.area = rect(p1->second->attr("rect"));
-		p.level_dest = p1->second->attr("level");
-		p.dest = point(p1->second->attr("dest"));
-		p.dest_starting_pos = p1->second->attr("dest_starting_pos").str() == "yes";
-		p.automatic = wml::get_bool(p1->second, "automatic", true);
-		p.transition = p1->second->attr("transition");
+		p.area = rect(portal_node["rect"]);
+		p.level_dest = portal_node["level"].as_string();
+		p.dest = point(portal_node["dest"].as_string());
+		p.dest_starting_pos = portal_node["dest_starting_post"].as_bool(false);
+		p.automatic = portal_node["automatic"].as_bool(true);
+		p.transition = portal_node["transition"].as_string();
 		portals_.push_back(p);
 	}
 
-	if(node->has_attr("next_level")) {
-		right_portal_.level_dest = node->attr("next_level");
+	if(node.has_key("next_level")) {
+		right_portal_.level_dest = node["next_level"].as_string();
 		right_portal_.dest_str = "left";
 		right_portal_.dest_starting_pos = false;
 		right_portal_.automatic = true;
 	}
 
-	if(node->has_attr("previous_level")) {
-		left_portal_.level_dest = node->attr("previous_level");
+	if(node.has_key("previous_level")) {
+		left_portal_.level_dest = node["previous_level"].as_string();
 		left_portal_.dest_str = "right";
 		left_portal_.dest_starting_pos = false;
 		left_portal_.automatic = true;
 	}
 
-	wml::const_node_ptr bg = node->get_child("background");
-	if(bg) {
+	variant bg = node["background"];
+	if(bg.is_map()) {
 		background_.reset(new background(bg, background_palette_));
-	} else if(node->has_attr("background")) {
-		background_ = background::get(node->attr("background"), background_palette_);
-		background_offset_ = point(node->attr("background_offset"));
+	} else if(node.has_key("background")) {
+		background_ = background::get(node["background"].as_string(), background_palette_);
+		background_offset_ = point(node["background_offset"]);
 		background_->set_offset(background_offset_);
 	}
 
-	wml::const_node_ptr water_node = node->get_child("water");
-	if(water_node) {
-		water_.reset(new water(water_node));
+	if(node.has_key("water_node")) {
+		water_.reset(new water(node["water_node"]));
 	}
 
-	FOREACH_WML_CHILD(script_node, node, "script") {
+	foreach(variant script_node, node["script"].as_list()) {
 		movement_script s(script_node);
 		movement_scripts_[s.id()] = s;
 	}
 
-	gui_algo_str_ = wml::get_str(node, "gui", "default");
+	gui_algo_str_ = node.has_key("gui") ? node["gui"].as_string() : "default";
 	gui_algorithm_ = gui_algorithm::get(gui_algo_str_);
 	gui_algorithm_->new_level();
 
-	sub_level_str_ = node->attr("sub_levels");
-	foreach(const std::string& sub_lvl, util::split(node->attr("sub_levels"))) {
+	sub_level_str_ = node["sub_levels"].as_string_default();
+	foreach(const std::string& sub_lvl, util::split(sub_level_str_)) {
 		sub_level_data& data = sub_levels_[sub_lvl];
 		data.lvl = boost::intrusive_ptr<level>(new level(sub_lvl + ".cfg"));
 		foreach(int layer, data.lvl->layers_) {
@@ -440,15 +389,15 @@ level::~level()
 {
 }
 
-void level::read_compiled_tiles(wml::const_node_ptr node, std::vector<level_tile>::iterator& out)
+void level::read_compiled_tiles(variant node, std::vector<level_tile>::iterator& out)
 {
-	const int xbase = wml::get_int(node, "x");
-	const int ybase = wml::get_int(node, "y");
-	const int zorder = wml::get_int(node, "zorder");
+	const int xbase = node["x"].as_int();
+	const int ybase = node["y"].as_int();
+	const int zorder = node["zorder"].as_int();
 
 	int x = xbase;
 	int y = ybase;
-	const std::string& tiles = node->attr("tiles");
+	const std::string& tiles = node["tiles"].as_string();
 	const char* i = tiles.c_str();
 	const char* end = tiles.c_str() + tiles.size();
 	while(i != end) {
@@ -483,7 +432,7 @@ void level::read_compiled_tiles(wml::const_node_ptr node, std::vector<level_tile
 	}
 }
 
-void level::load_character(wml::const_node_ptr c)
+void level::load_character(variant c)
 {
 	chars_.push_back(entity::build(c));
 	layers_.insert(chars_.back()->zorder());
@@ -580,13 +529,9 @@ void level::finish_loading()
 
 	{
 	game_logic::wml_formula_callable_read_scope read_scope;
-	foreach(wml::const_node_ptr node, wml_chars_) {
-		if(node->name() != "serialized_objects") {
-			continue;
-		}
-
-		FOREACH_WML_CHILD(obj_node, node, "character") {
-			const intptr_t addr_id = strtoll(obj_node->attr("_addr").c_str(), NULL, 16);
+	foreach(variant node, serialized_objects_) {
+		foreach(variant obj_node, node["character"].as_list()) {
+			const intptr_t addr_id = strtoll(obj_node["_addr"].as_string().c_str(), NULL, 16);
 			entity_ptr obj(entity::build(obj_node));
 			objects_not_in_level.push_back(obj);
 			game_logic::wml_formula_callable_read_scope::register_serialized_object(addr_id, obj);
@@ -594,20 +539,16 @@ void level::finish_loading()
 		}
 	}
 
-	foreach(wml::const_node_ptr node, wml_chars_) {
-		if(node->name() == "serialized_objects") {
-			continue;
-		}
-
+	foreach(variant node, wml_chars_) {
 		load_character(node);
 
-		const intptr_t addr_id = strtoll(node->attr("_addr").c_str(), NULL, 16);
+		const intptr_t addr_id = strtoll(node["_addr"].as_string().c_str(), NULL, 16);
 		game_logic::wml_formula_callable_read_scope::register_serialized_object(addr_id, chars_.back());
 
-		if(node->has_attr("attached_objects")) {
-			std::cerr << "LOADING ATTACHED: " << node->attr("attached_objects") << "\n";
+		if(node.has_key("attached_objects")) {
+			std::cerr << "LOADING ATTACHED: " << node["attached_objects"].as_string() << "\n";
 			std::vector<entity_ptr> attached;
-			std::vector<std::string> v = util::split(node->attr("attached_objects"));
+			std::vector<std::string> v = util::split(node["attached_objects"].as_string());
 			foreach(const std::string& s, v) {
 				std::cerr << "ATTACHED: " << s << "\n";
 				const intptr_t addr_id = strtoll(s.c_str(), NULL, 16);
@@ -626,6 +567,7 @@ void level::finish_loading()
 	game_logic::set_verbatim_string_expressions (false);
 
 	wml_chars_.clear();
+	serialized_objects_.clear();
 
 	controls::new_level(cycle_, players_.empty() ? 1 : players_.size(), multiplayer::slot());
 
@@ -973,82 +915,83 @@ std::string level::package() const
 	return std::string(id_.begin(), i);
 }
 
-wml::node_ptr level::write() const
+variant level::write() const
 {
 	std::sort(tiles_.begin(), tiles_.end(), level_tile_zorder_pos_comparer());
 	game_logic::wml_formula_callable_serialization_scope serialization_scope;
 
-	wml::node_ptr res(new wml::node("level"));
-	res->set_attr("id", id_);
-	res->set_attr("version", preferences::version());
-	res->set_attr("title", title_);
-	res->set_attr("music", music_);
-	res->set_attr("segment_width", formatter() << segment_width_);
-	res->set_attr("segment_height", formatter() << segment_height_);
+	variant_builder res;
+	res.add("id", id_);
+	res.add("version", preferences::version());
+	res.add("title", title_);
+	res.add("music", music_);
+	res.add("segment_width", segment_width_);
+	res.add("segment_height", segment_height_);
 
 	if(x_resolution_ || y_resolution_) {
-		res->set_attr("x_resolution", formatter() << x_resolution_);
-		res->set_attr("y_resolution", formatter() << y_resolution_);
+		res.add("x_resolution", x_resolution_);
+		res.add("y_resolution", y_resolution_);
 	}
 
 	if(gui_algo_str_ != "default") {
-		res->set_attr("gui", gui_algo_str_);
+		res.add("gui", gui_algo_str_);
 	}
 
 	if(dark_) {
-		res->set_attr("dark", "yes");
+		res.add("dark", true);
 	}
 
 	if(dark_color_.to_string() != default_dark_color().to_string()) {
-		res->set_attr("dark_color", dark_color_.to_string());
+		res.add("dark_color", dark_color_.to_string());
 	}
 
 	if(cycle_) {
-		res->set_attr("cycle", formatter() << cycle_);
+		res.add("cycle", cycle_);
 	}
 
 	if(!sub_level_str_.empty()) {
-		res->set_attr("sub_levels", sub_level_str_);
+		res.add("sub_levels", sub_level_str_);
 	}
 
-	res->set_attr("dimensions", boundaries().to_string());
+	res.add("dimensions", boundaries().write());
 
-	res->set_attr("xscale", formatter() << xscale_);
-	res->set_attr("yscale", formatter() << yscale_);
-	res->set_attr("auto_move_camera", auto_move_camera_.to_string());
-	res->set_attr("air_resistance", formatter() << air_resistance_);
-	res->set_attr("water_resistance", formatter() << water_resistance_);
+	res.add("xscale", xscale_);
+	res.add("yscale", yscale_);
+	res.add("auto_move_camera", auto_move_camera_.write());
+	res.add("air_resistance", air_resistance_);
+	res.add("water_resistance", water_resistance_);
 
-	res->set_attr("preloads", util::join(preloads_));
+	res.add("preloads", util::join(preloads_));
 
 	if(lock_screen_) {
-		res->set_attr("lock_screen", lock_screen_->to_string());
+		res.add("lock_screen", lock_screen_->to_string());
 	}
 
 	if(water_) {
-		res->add_child(water_->write());
+		res.add("water", water_->write());
 	}
 
 	if(camera_rotation_) {
-		res->set_attr("camera_rotation", camera_rotation_->str());
+		res.add("camera_rotation", camera_rotation_->str());
 	}
 
 	foreach(const solid_rect& r, solid_rects_) {
-		wml::node_ptr node(new wml::node("solid_rect"));
-		node->set_attr("rect", r.r.to_string());
-		node->set_attr("friction", formatter() << r.friction);
-		node->set_attr("traction", formatter() << r.traction);
-		node->set_attr("damage", formatter() << r.damage);
-		res->add_child(node);
+		variant_builder node;
+		node.add("rect", r.r.write());
+		node.add("friction", r.friction);
+		node.add("traction", r.traction);
+		node.add("damage", r.damage);
+
+		res.add("solid_rect", node.build());
 	}
 
 	for(std::map<int, tile_map>::const_iterator i = tile_maps_.begin(); i != tile_maps_.end(); ++i) {
-		wml::node_ptr node(i->second.write());
+		variant node = i->second.write();
 		if(preferences::compiling_tiles) {
-			node->set_attr("tiles", "");
-			node->set_attr("unique_tiles", "");
+			node.add_attr(variant("tiles"), variant(""));
+			node.add_attr(variant("unique_tiles"), variant(""));
 		}
-		res->add_child(node);
+		res.add("tile_map", node);
 	}
 
 	if(preferences::compiling_tiles && !tiles_.empty()) {
@@ -1067,12 +1010,12 @@ wml::node_ptr level::write() const
 
 			if(n == tiles_.size() || tiles_[n].zorder != last_zorder) {
 				if(!tiles_str.empty()) {
-					wml::node_ptr node(new wml::node("compiled_tiles"));
-					node->set_attr("zorder", formatter() << last_zorder);
-					node->set_attr("x", formatter() << basex);
-					node->set_attr("y", formatter() << basey);
-					node->set_attr("tiles", tiles_str);
-					res->add_child(node);
+					variant_builder node;
+					node.add("zorder", last_zorder);
+					node.add("x", basex);
+					node.add("y", basey);
+					node.add("tiles", tiles_str);
+					res.add("compiled_tiles", node.build());
 				}
 
 				if(n == tiles_.size()) {
@@ -1139,7 +1082,7 @@ wml::node_ptr level::write() const
 			last_x += TileSize;
 		}
 
-		res->set_attr("num_compiled_tiles", formatter() << num_tiles);
+		res.add("num_compiled_tiles", num_tiles);
 
 		//calculate rectangular opaque areas of tiles that allow us
 		//to avoid drawing the background. Start by calculating the set
@@ -1245,7 +1188,7 @@ wml::node_ptr level::write() const
 				opaque_rects_str << r.to_string() << ":";
 			}
 
-			res->set_attr("opaque_rects", opaque_rects_str.str());
+			res.add("opaque_rects", opaque_rects_str.str());
 
 			std::cerr << "RECTS: " << id_ << ": " << opaque_rects.size() << "\n";
 		}
@@ -1256,50 +1199,50 @@ wml::node_ptr level::write() const
 			continue;
 		}
 
-		wml::node_ptr node(ch->write());
-		res->add_child(node);
+		variant node(ch->write());
 		game_logic::wml_formula_callable_serialization_scope::register_serialized_object(ch, node);
+		res.add("character", node);
 	}
 
 	foreach(const portal& p, portals_) {
-		wml::node_ptr node(new wml::node("portal"));
-		node->set_attr("rect", p.area.to_string());
-		node->set_attr("level", p.level_dest);
-		node->set_attr("dest_starting_pos", p.dest_starting_pos ? "yes" : "no");
-		node->set_attr("dest", p.dest.to_string());
-		node->set_attr("automatic", p.automatic ? "yes" : "no");
-		node->set_attr("transition", p.transition);
-		res->add_child(node);
+		variant_builder node;
+		node.add("rect", p.area.write());
+		node.add("level", p.level_dest);
+		node.add("dest_starting_pos", p.dest_starting_pos);
+		node.add("dest", p.dest.to_string());
+		node.add("automatic", p.automatic);
+		node.add("transition", p.transition);
+		res.add("portal", node.build());
 	}
 
 	if(right_portal_.level_dest.empty() == false) {
-		res->set_attr("next_level", right_portal_.level_dest);
+		res.add("next_level", right_portal_.level_dest);
 	}
 
 	std::cerr << "PREVIOUS LEVEL: " << left_portal_.level_dest << "\n";
 	if(left_portal_.level_dest.empty() == false) {
-		res->set_attr("previous_level", left_portal_.level_dest);
+		res.add("previous_level", left_portal_.level_dest);
 	}
 
 	if(background_) {
 		if(background_->id().empty()) {
-			res->add_child(background_->write());
+			res.add("background", background_->write());
 		} else {
-			res->set_attr("background", background_->id());
-			res->set_attr("background_offset", background_offset_.to_string());
+			res.add("background", background_->id());
+			res.add("background_offset", background_offset_.write());
 		}
 	}
 
 	for(std::map<std::string, movement_script>::const_iterator i = movement_scripts_.begin(); i != movement_scripts_.end(); ++i) {
-		res->add_child(i->second.write());
+		res.add("script", i->second.write());
 	}
 
-	res->add_child(serialization_scope.write_objects());
+	res.add("serialized_objects", serialization_scope.write_objects());
 
 	if(num_compiled_tiles_ > 0) {
-		res->set_attr("num_compiled_tiles", formatter() << num_compiled_tiles_);
-		foreach(wml::node_ptr compiled_node, wml_compiled_tiles_) {
-			res->add_child(compiled_node);
+		res.add("num_compiled_tiles", num_compiled_tiles_);
+		foreach(variant compiled_node, wml_compiled_tiles_) {
+			res.add("compiled_tiles", compiled_node);
 		}
 	}
 
@@ -1316,26 +1259,16 @@ wml::node_ptr level::write() const
 			++id;
 		}
 
-		res->set_attr("palettes", util::join(out));
+		res.add("palettes", util::join(out));
 	}
 
 	if(background_palette_ != -1) {
-		res->set_attr("background_palette", graphics::get_palette_name(background_palette_));
+		res.add("background_palette", graphics::get_palette_name(background_palette_));
 	}
 
-	if(!vars_.empty()) {
-		wml::node_ptr vars(new wml::node("vars"));
-		for(std::map<std::string, variant>::const_iterator i = vars_.begin();
-		    i != vars_.end(); ++i) {
-			std::string value;
-			i->second.serialize_to_string(value);
-			vars->set_attr(i->first, value);
-		}
+	res.add("vars", vars_);
 
-		res->add_child(vars);
-	}
-
-	return res;
+	return res.build();
 }
 
 point level::get_dest_from_str(const std::string& key) const
@@ -3186,12 +3119,7 @@ variant level::get_value(const std::string& key) const
 			return variant(e.get());
 		}
 
-		std::map<std::string, variant>::const_iterator i = vars_.find(key);
-		if(i != vars_.end()) {
-			return i->second;
-		}
-
-		return variant();
+		return vars_[key];
 	}
 }
 
@@ -3237,7 +3165,7 @@ void level::set_value(const std::string& key, const variant& value)
 		last_draw_position().x = value[0].as_int();
 		last_draw_position().y = value[1].as_int();
 	} else {
-		vars_[key] = value;
+		vars_ = vars_.add_attr(variant(key), value);
 	}
 }
 
@@ -3820,9 +3748,7 @@ UTILITY(correct_solidity)
 			c->handle_event("editor_added");
 		}
 
-		std::string data;
-		wml::write(lvl->write(), data);
-		sys::write_file(preferences::level_path() + file, data);
+		sys::write_file(preferences::level_path() + file, lvl->write().write_json(true));
 	}
 }
 
@@ -3835,27 +3761,23 @@ UTILITY(compile_levels)
 	std::vector<std::string> files;
 	sys::get_files_in_dir(preferences::level_path(), &files);
 
-	wml::node_ptr index_node(new wml::node("level_index"));
+	variant_builder index_node;
 
 	foreach(const std::string& file, files) {
 		std::cerr << "LOADING LEVEL '" << file << "'\n";
 		boost::intrusive_ptr<level> lvl(new level(file));
 		lvl->finish_loading();
 		lvl->record_zorders();
-		std::string data;
-		wml::write(lvl->write(), data);
-		sys::write_file("data/compiled/level/" + file, data);
+		sys::write_file("data/compiled/level/" + file, lvl->write().write_json(true));
 
-		wml::node_ptr node(new wml::node("level"));
-		node->set_attr("level", lvl->id());
-		node->set_attr("title", lvl->title());
-		node->set_attr("music", lvl->music());
-		index_node->add_child(node);
+		variant_builder level_summary;
+		level_summary.add("level", lvl->id());
+		level_summary.add("title", lvl->title());
+		level_summary.add("music", lvl->music());
+		index_node.add("level", level_summary.build());
 	}
 
-	std::string index_data;
-	wml::write(index_node, index_data);
-	sys::write_file("data/compiled/level_index.cfg", index_data);
+	sys::write_file("data/compiled/level_index.cfg", index_node.build().write_json(true));
 
 	level_object::write_compiled();
 }
@@ -3887,8 +3809,6 @@ BENCHMARK(load_all_levels)
 	}
 }
 
-#include "wml_writer.hpp"
-
 BENCHMARK(load_and_save_all_levels)
 {
 	BENCHMARK_LOOP {
@@ -3899,9 +3819,7 @@ BENCHMARK(load_and_save_all_levels)
 			boost::intrusive_ptr<level> lvl(new level(file));
 			lvl->finish_loading();
 
-			std::string data;
-			wml::write(lvl->write(), data);
-			sys::write_file(preferences::level_path() + file, data);
+			sys::write_file(preferences::level_path() + file, lvl->write().write_json(true));
 		}
 	}
 }

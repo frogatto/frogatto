@@ -21,7 +21,6 @@
 #include "formula_fwd.hpp"
 #include "formula_function.hpp"
 #include "variant.hpp"
-#include "wml_value.hpp"
 
 namespace game_logic
 {
@@ -52,21 +51,19 @@ public:
 	// function which will create a formula that is a single string literal, 'str'.
 	// 'str' should not be enclosed in quotes.
 	static formula_ptr create_string_formula(const std::string& str);
-	static formula_ptr create_optional_formula(const wml::value& str, function_symbol_table* symbols=NULL, const formula_callable_definition* def=NULL);
-	explicit formula(const wml::value& val, function_symbol_table* symbols=NULL, const formula_callable_definition* def=NULL);
+	static formula_ptr create_optional_formula(const variant& str, function_symbol_table* symbols=NULL, const formula_callable_definition* def=NULL);
+	explicit formula(const variant& val, function_symbol_table* symbols=NULL, const formula_callable_definition* def=NULL);
 	~formula();
 	variant execute(const formula_callable& variables) const;
 	variant execute() const;
-	const std::string& str() const { return str_; }
+	std::string str() const { return str_.as_string(); }
 
 	void output_debug_info() const;
 
 private:
 	formula() {}
 	expression_ptr expr_;
-	std::string str_;
-	const std::string* filename_;
-	int line_;
+	variant str_;
 };
 
 struct formula_error

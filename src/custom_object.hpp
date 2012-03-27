@@ -18,7 +18,6 @@
 #include "particle_system.hpp"
 #include "raster_distortion.hpp"
 #include "variant.hpp"
-#include "wml_node_fwd.hpp"
 
 class collision_info;
 class level;
@@ -30,7 +29,7 @@ class custom_object : public entity
 public:
 	static void init();
 
-	explicit custom_object(wml::const_node_ptr node);
+	explicit custom_object(variant node);
 	custom_object(const std::string& type, int x, int y, bool face_right);
 	custom_object(const custom_object& o);
 	virtual ~custom_object();
@@ -38,7 +37,7 @@ public:
 	//finish_loading(): called when a level finishes loading all objects,
 	//and allows us to do any final setup such as finding our parent.
 	void finish_loading();
-	virtual wml::node_ptr write() const;
+	virtual variant write() const;
 	virtual void setup_drawing() const;
 	virtual void draw() const;
 	virtual void draw_group() const;
@@ -111,7 +110,7 @@ public:
 	int surface_friction() const;
 	int surface_traction() const;
 
-	wml::const_node_ptr get_child(const std::string& key) const {
+	variant get_child(const std::string& key) const {
 		return type_->get_child(key);
 	}
 
@@ -231,7 +230,7 @@ private:
 
 	int previous_y_;
 
-	wml::const_node_ptr custom_type_;
+	variant custom_type_;
 	const_custom_object_type_ptr type_; //the type after variations are applied
 	const_custom_object_type_ptr base_type_; //the type without any variation
 	std::vector<std::string> current_variation_;

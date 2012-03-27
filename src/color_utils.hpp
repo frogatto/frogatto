@@ -7,6 +7,8 @@
 #include <vector>
 #include "formula_callable.hpp"
 
+#include "variant.hpp"
+
 SDL_Color string_to_color(const std::string& str);
 
 namespace graphics {
@@ -23,8 +25,11 @@ class color : public game_logic::formula_callable
 	uint32_t value() const { return c_.value; }
 	
 	color( int r, int g, int b, int a=255);
-	explicit color( uint32_t rgba = 0);
-	explicit color( const std::string& str);
+	explicit color(uint32_t rgba = 0);
+	explicit color(const std::string& str);
+	explicit color(const variant& v);
+
+	variant write() const;
 	
 	variant get_value(const std::string& key) const;
 

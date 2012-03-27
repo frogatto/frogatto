@@ -1,12 +1,10 @@
 #ifndef FRAMED_GUI_ELEMENT_HPP_INCLUDED
 #define FRAMED_GUI_ELEMENT_HPP_INCLUDED
 
-
 #include <boost/shared_ptr.hpp>
 #include "geometry.hpp"
 #include "texture.hpp"
-#include "wml_node_fwd.hpp"
-
+#include "variant.hpp"
 
 class framed_gui_element;
 typedef boost::shared_ptr<const framed_gui_element> const_framed_gui_element_ptr;
@@ -15,11 +13,11 @@ typedef boost::shared_ptr<const framed_gui_element> const_framed_gui_element_ptr
 class framed_gui_element
 {
 public:
-	static void init(wml::const_node_ptr node);
+	static void init(variant node);
 	static const_framed_gui_element_ptr get(const std::string& key);
 
 	void blit(int x, int y, int w, int h, bool upscaled = 0) const;
-	explicit framed_gui_element(wml::const_node_ptr node);
+	explicit framed_gui_element(variant node);
 
 	
 private:

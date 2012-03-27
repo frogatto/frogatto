@@ -1,23 +1,21 @@
 #include <map>
 
+#include "foreach.hpp"
 #include "gui_section.hpp"
 #include "raster.hpp"
 #include "string_utils.hpp"
-#include "wml_node.hpp"
-#include "wml_utils.hpp"
+#include "variant.hpp"
 
 namespace {
 typedef std::map<std::string, const_gui_section_ptr> cache_map;
 cache_map cache;
 }
 
-void gui_section::init(wml::const_node_ptr node)
+void gui_section::init(variant node)
 {
-	wml::node::const_child_iterator i1 = node->begin_child("section");
-	wml::node::const_child_iterator i2 = node->end_child("section");
-	for(; i1 != i2; ++i1) {
-		const std::string& id = i1->second->attr("id");
-		cache[id].reset(new gui_section(i1->second));
+	foreach(const variant& section_node, node["section"].as_list()) {
+		const std::string& id = section_node["id"].as_string();
+		cache[id].reset(new gui_section(section_node));
 	}
 }
 
@@ -32,18 +30,16 @@ const_gui_section_ptr gui_section::get(const std::string& key)
 	return itor->second;
 }
 
-gui_section::gui_section(wml::const_node_ptr node)
-  : texture_(graphics::texture::get(node->attr("image"))),
-    area_(node->attr("rect")),
+gui_section::gui_section(variant node)
+  : texture_(graphics::texture::get(node["image"].as_string())),
+    area_(node["rect"]),
 	x_adjust_(0), y_adjust_(0), x2_adjust_(0), y2_adjust_(0)
 {
 	draw_area_ = area_;
 
-	if(node->has_attr("frame_info")) {
-		int buf[8];
-		int num_values = 8;
-		util::split_into_ints(node->attr("frame_info").c_str(), buf, &num_values);
-		if(num_values == 8) {
+	if(node.has_key("frame_info")) {
+		std::vector<int> buf = node["frame_info"].as_list_int();
+		if(buf.size() == 8) {
 			x_adjust_ = buf[0];
 			y_adjust_ = buf[1];
 			x2_adjust_ = buf[2];

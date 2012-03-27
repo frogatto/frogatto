@@ -5,16 +5,15 @@
 #include "joystick.hpp"
 #include "player_info.hpp"
 #include "string_utils.hpp"
-#include "wml_node.hpp"
-#include "wml_utils.hpp"
+#include "variant_utils.hpp"
 
-player_info::player_info(entity& e, wml::const_node_ptr node)
+player_info::player_info(entity& e, variant node)
   : entity_(&e),
 	slot_(0)
 {
-	FOREACH_WML_CHILD(objects_node, node, "objects_destroyed") {
-		std::vector<int>& v = objects_destroyed_[objects_node->attr("level")];
-		v = vector_lexical_cast<int>(util::split(objects_node->attr("objects")));
+	foreach(variant objects_node, node["objects_destroyed"].as_list()) {
+		std::vector<int>& v = objects_destroyed_[objects_node["level"].as_string()];
+		v = objects_node["objects"].as_list_int();
 	}
 }
 
@@ -31,26 +30,21 @@ const std::vector<int>& player_info::get_objects_destroyed(const std::string& le
 	return v;
 }
 
-void player_info::write(wml::node_ptr result) const
+variant player_info::write() const
 {
+	variant_builder result;
 	for(std::map<std::string, std::vector<int> >::const_iterator i = objects_destroyed_.begin(); i != objects_destroyed_.end(); ++i) {
 		get_objects_destroyed(i->first); //remove duplicates.
 
-		wml::node_ptr objects(new wml::node("objects_destroyed"));
-		objects->set_attr("level", i->first);
-		std::ostringstream s;
-		foreach(int n, i->second) {
-			s << n << ",";
-		}
+		variant_builder objects;
+		objects.add("level", i->first);
 
-		std::string str = s.str();
-		if(str.empty() == false) {
-			str.resize(str.size() - 1);
-		}
+		objects.add("objects", vector_to_variant(i->second));
 
-		objects->set_attr("objects", str);
-		result->add_child(objects);
+		result.add("objects_destroyed", objects.build());
 	}
+
+	return result.build();
 }
 
 void player_info::read_controls(int cycle)

@@ -4,13 +4,13 @@
 #include <cassert>
 
 #include "asserts.hpp"
+#include "foreach.hpp"
+#include "json_parser.hpp"
 #include "string_utils.hpp"
 #include "surface_cache.hpp"
 #include "surface.hpp"
 #include "unit_test.hpp"
-#include "wml_node.hpp"
-#include "wml_parser.hpp"
-#include "wml_utils.hpp"
+#include "variant.hpp"
 
 namespace graphics {
 
@@ -612,12 +612,12 @@ namespace {
 
 UTILITY(generate_scaling_code)
 {
-	wml::const_node_ptr node(wml::parse_wml_from_file("./surface_scaling.cfg"));
+	variant node(json::parse_from_file("./surface_scaling.cfg"));
 
 	std::vector<ScalingPattern> patterns;
-	FOREACH_WML_CHILD(pattern_node, node, "pattern") {
+	foreach(variant pattern_node, node["pattern"].as_list()) {
 		ScalingPattern pattern;
-		const std::string& pattern_str = pattern_node->attr("pattern");
+		const std::string& pattern_str = pattern_node["pattern"].as_string();
 		int n = 0;
 		foreach(char c, pattern_str) {
 			if(!util::isspace(c)) {
@@ -628,9 +628,9 @@ UTILITY(generate_scaling_code)
 
 		ASSERT_LOG(n == 25, "SURFACE SCALING_PATTERN HAS TOO FEW CHARACTERS: " << pattern_str);
 
-		FOREACH_WML_CHILD(output_node, pattern_node, "output") {
+		foreach(variant output_node, pattern_node["output"].as_list()) {
 			ScalingOutput output;
-			const std::string& input_str = output_node->attr("input");
+			const std::string& input_str = output_node["input"].as_string();
 			int n = 0;
 			foreach(char c, input_str) {
 				if(!util::isspace(c)) {
@@ -641,7 +641,7 @@ UTILITY(generate_scaling_code)
 
 			ASSERT_LOG(n == 25, "SURFACE SCALING INPUT HAS TOO FEW CHARACTERS: " << input_str);
 
-			const std::string& output_str = output_node->attr("output");
+			const std::string& output_str = output_node["output"].as_string();
 			n = 0;
 			foreach(char c, output_str) {
 				if(!util::isspace(c)) {

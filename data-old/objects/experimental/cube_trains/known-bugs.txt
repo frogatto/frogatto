@@ -1,0 +1,38 @@
+	  
+	  ┌─────────────┐
+	  │ Known Bugs: │
+	╔═╧═════════════╧═══════════════════════════════════════════════════════════════╗
+	║ Critical:                                                                     ║
+	║  ▶                                                                            ║
+	║                                                                               ║
+	║ Problematic:                                                                  ║
+	║  ▷ When deleting a support, the track doesn't fall down.                      ║
+	║  ▷ Make raise tips rotate. Further work needed on graphics.                   ║
+	║  ▷ Ojbects spawned in the process of fulfilling the requirements of other     ║
+	║    objects when they're built don't delete other objects; bug or intended?    ║
+	║  ▷ Automatic raises don't play well with regards to deleting stuff.           ║
+	║  ▷ Fix MEG interpretation. See permutate_mutually_exclusive_groups in cursor. ║
+	║  ▷ Objects, such as hedges, aren't deleted when they should be.               ║
+	║  ▶ Sidebar slews.                                                             ║
+	║  ▷ Level loader doesn't function correctly.                                   ║
+	║  ▷ Display level titles.                                                      ║
+	║  ▶                                                                            ║
+	║                                                                               ║
+	║ Minor:                                                                        ║
+	║  ▶ Tween scroll input buttons' movement.                                      ║
+	║  ▶ Make keyboard input code handle one key/frame, to avoid conflicts.         ║
+	║  ▷ Multiply trains' rotation calculation y by whatever we did for the mouse   ║
+	║    input.                                                                     ║
+	║  ▷ An ereaser button would be nice.                                           ║
+	║  ▷ Trains are only one car long.                                              ║
+	║  ▶ Z-orders, especially around entrances, are broken.                         ║
+	║  ▶ Improve input scheme.                                                      ║
+	║  ▶                                                                            ║
+	║                                                          ▷ fixed  ▶ not fixed ║
+	╚═══════════════════════════════════════════════════════════════════════════════╝
+	
+	Gambit	I would recommend wasd for movement north, south, east, west
+	Gambit	And arrow keys for vertical up down
+	Gambit	left right arrow keys for changing selected track piece
+	Gambit	Space for place. Q for delete.
+	Gambit	on qwerty

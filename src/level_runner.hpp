@@ -9,7 +9,6 @@
 #include "key.hpp"
 #include "level.hpp"
 #include "pause_game_dialog.hpp"
-#include "wml_node.hpp"
 
 //an exception which is thrown if we go through a portal which takes us
 //to a level with a different number of players, which indicates we are going

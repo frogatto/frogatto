@@ -5,15 +5,15 @@
 
 #include <deque>
 
-#include "particle_system.hpp"
-#include "foreach.hpp"
-#include "entity.hpp"
-#include "wml_utils.hpp"
 #include "color_utils.hpp"
+#include "foreach.hpp"
 #include "geometry.hpp"
+#include "entity.hpp"
+#include "particle_system.hpp"
+#include "variant.hpp"
 
 struct water_particle_system_info {
-	water_particle_system_info(wml::const_node_ptr node);
+	water_particle_system_info(variant node);
 
 	int number_of_particles;
 	int repeat_period;
@@ -29,7 +29,7 @@ struct water_particle_system_info {
 
 class water_particle_system_factory : public particle_system_factory {
 public:
-	explicit water_particle_system_factory(wml::const_node_ptr node);
+	explicit water_particle_system_factory(variant node);
 	~water_particle_system_factory() {}
 	
 	particle_system_ptr create(const entity& e) const;

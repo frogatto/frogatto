@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "asserts.hpp"
 
 namespace {
@@ -17,4 +19,9 @@ assert_recover_scope::assert_recover_scope() : value(throw_validation_failure)
 assert_recover_scope::~assert_recover_scope()
 {
 	throw_validation_failure = value;
+}
+
+void output_backtrace()
+{
+	//TODO: implement output of backtraces
 }

@@ -30,6 +30,7 @@
 #include "grid_widget.hpp"
 #include "group_property_editor_dialog.hpp"
 #include "image_widget.hpp"
+#include "json_parser.hpp"
 #include "key.hpp"
 #include "label.hpp"
 #include "level.hpp"
@@ -50,10 +51,8 @@
 #include "tile_map.hpp"
 #include "tileset_editor_dialog.hpp"
 #include "tooltip.hpp"
-#include "wml_node.hpp"
-#include "wml_parser.hpp"
-#include "wml_utils.hpp"
-#include "wml_writer.hpp"
+#include "variant.hpp"
+#include "variant_utils.hpp"
 
 #include "IMG_savepng.h"
 
@@ -123,8 +122,6 @@ class editor_menu_dialog : public gui::dialog
 			"Restart Level", "ctrl+r", boost::bind(&editor::reset_playing_level, &editor_, true),
 			"Restart Level (including player)", "ctrl+alt+r", boost::bind(&editor::reset_playing_level, &editor_, false),
 			"Pause Game", "ctrl+p", boost::bind(&editor::toggle_pause, &editor_),
-			"Edit Object...", "", boost::bind(&editor::edit_object_type, &editor_),
-			"New Object...", "", boost::bind(&editor::new_object_type, &editor_),
 		};
 
 		menu_item duplicate_item = { "Duplicate Object(s)", "ctrl+d", boost::bind(&editor::duplicate_selected_objects, &editor_) };
@@ -550,7 +547,7 @@ int selected_property = 0;
 
 }
 
-void editor::enemy_type::init(wml::const_node_ptr node)
+void editor::enemy_type::init(variant node)
 {
 	enemy_types.clear();
 	const std::vector<const_custom_object_type_ptr> types = custom_object_type::get_all();
@@ -564,40 +561,38 @@ void editor::enemy_type::init(wml::const_node_ptr node)
 editor::enemy_type::enemy_type(const custom_object_type& type)
   : category(type.editor_info()->category())
 {
-	wml::node_ptr new_node(new wml::node("character"));
-	new_node->set_attr("type", type.id());
-	new_node->set_attr("custom", "yes");
-	new_node->set_attr("face_right", "false");
-	new_node->set_attr("x", "1500");
-	new_node->set_attr("y", "0");
+	variant_builder new_node;
+	new_node.add("type", type.id());
+	new_node.add("custom", true);
+	new_node.add("face_right", false);
+	new_node.add("x", 1500);
+	new_node.add("y", 0);
 
 	if(type.is_human()) {
-		new_node->set_attr("is_human", "true");
+		new_node.add("is_human", true);
 	}
 
-	node = new_node;
+	node = new_node.build();
 	preview_object = entity::build(node);
 	preview_frame = &preview_object->current_frame();
 }
 
-void editor::tileset::init(wml::const_node_ptr node)
+void editor::tileset::init(variant node)
 {
-	wml::node::const_child_iterator i1 = node->begin_child("tileset");
-	wml::node::const_child_iterator i2 = node->end_child("tileset");
-	for(; i1 != i2; ++i1) {
-		tilesets.push_back(editor::tileset(i1->second));
+	foreach(variant tileset_node, node["tileset"].as_list()) {
+		tilesets.push_back(editor::tileset(tileset_node));
 	}
 }
 
-editor::tileset::tileset(wml::const_node_ptr node)
-  : category(node->attr("category")), type(node->attr("type")),
-    zorder(wml::get_int(node, "zorder")),
-	x_speed(wml::get_int(node, "x_speed", 100)),
-	y_speed(wml::get_int(node, "y_speed", 100)),
-	sloped(wml::get_bool(node, "sloped"))
+editor::tileset::tileset(variant node)
+  : category(node["category"].as_string()), type(node["type"].as_string()),
+    zorder(node["zorder"].as_int()),
+	x_speed(node["x_speed"].as_int(100)),
+	y_speed(node["y_speed"].as_int(100)),
+	sloped(node["sloped"].as_bool())
 {
-	if(node->get_child("preview")) {
-		preview.reset(new tile_map(node->get_child("preview")));
+	if(node.has_key("preview")) {
+		preview.reset(new tile_map(node["preview"]));
 	}
 }
 
@@ -654,7 +649,7 @@ editor::editor(const char* level_cfg)
 {
 	static bool first_time = true;
 	if(first_time) {
-		wml::const_node_ptr editor_cfg = wml::parse_wml(sys::read_file("data/editor.cfg"));
+		variant editor_cfg = json::parse_from_file("data/editor.cfg");
 		tile_map::load_all();
 		tileset::init(editor_cfg);
 		enemy_type::init(editor_cfg);
@@ -1604,11 +1599,11 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 		if(lvl_->editor_highlight()) {
 			change_tool(TOOL_ADD_OBJECT);
 
-			wml::const_node_ptr node = lvl_->editor_highlight()->write();
-			const std::string type = node->attr("type");
+			variant node = lvl_->editor_highlight()->write();
+			const std::string type = node["type"].as_string();
 			for(int n = 0; n != all_characters().size(); ++n) {
 				const enemy_type& c = all_characters()[n];
-				if(c.node->attr("type").str() == type) {
+				if(c.node["type"].as_string() == type) {
 					character_dialog_->select_category(c.category);
 					character_dialog_->set_character(n);
 					return;
@@ -1710,16 +1705,15 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 	}
 
 	if(tool() == TOOL_ADD_OBJECT && event.button == SDL_BUTTON_LEFT && !lvl_->editor_highlight()) {
-		wml::node_ptr node(wml::deep_copy(enemy_types[cur_object_].node));
-		node->set_attr("x", formatter() << (ctrl_pressed ? anchorx_ : round_tile_size(anchorx_)));
-		node->set_attr("y", formatter() << (ctrl_pressed ? anchory_ : round_tile_size(anchory_)));
-		node->set_attr("face_right", face_right_ ? "yes" : "no");
+		variant_builder node;
+		node.merge_object(enemy_types[cur_object_].node);
+		node.set("x", (ctrl_pressed ? anchorx_ : round_tile_size(anchorx_)));
+		node.set("y", (ctrl_pressed ? anchory_ : round_tile_size(anchory_)));
+		node.set("face_right", face_right_);
 
-		if(upside_down_) {
-			node->set_attr("upside_down", "yes");
-		}
+		node.set("upside_down", upside_down_);
 
-		entity_ptr c(entity::build(node));
+		entity_ptr c(entity::build(node.build()));
 
 		//any vars that require formula initialization are calculated here.
 		std::map<std::string, variant> vars;
@@ -2380,13 +2374,14 @@ void editor::save_level()
 	ghost_objects_.clear();
 
 	std::string data;
-	wml::node_ptr lvl_node = lvl_->write();
-	lvl_node->erase_attr("cycle"); //levels saved in the editor should never
+	variant lvl_node = lvl_->write();
+	std::map<variant,variant> attr = lvl_node.as_map();
+	attr.erase(variant("cycle"));  //levels saved in the editor should never
 	                               //have a cycle attached to them so that
 								   //all levels start at cycle 0.
-	wml::write(lvl_node, data);
+	lvl_node = variant(&attr);
 	std::cerr << "GET LEVEL FILENAME: " << filename_ << "\n";
-	sys::write_file(package::get_level_filename(filename_), data);
+	sys::write_file(package::get_level_filename(filename_), lvl_node.write_json(true));
 
 	//see if we should write the next/previous levels also
 	//based on them having changed.
@@ -2396,9 +2391,7 @@ void editor::save_level()
 			prev->finish_loading();
 			if(prev->next_level() != lvl_->id()) {
 				prev->set_next_level(lvl_->id());
-				std::string data;
-				wml::write(prev->write(), data);
-				sys::write_file(package::get_level_filename(prev->id()), data);
+				sys::write_file(package::get_level_filename(prev->id()), prev->write().write_json(true));
 			}
 		} catch(...) {
 		}
@@ -2410,9 +2403,7 @@ void editor::save_level()
 			next->finish_loading();
 			if(next->previous_level() != lvl_->id()) {
 				next->set_previous_level(lvl_->id());
-				std::string data;
-				wml::write(next->write(), data);
-				sys::write_file(package::get_level_filename(next->id()), data);
+				sys::write_file(package::get_level_filename(next->id()), next->write().write_json(true));
 			}
 		} catch(...) {
 		}
@@ -2913,20 +2904,7 @@ void editor::redo_command()
 
 void show_object_editor_dialog(const std::string& obj_type);
 
-void editor::edit_object_type()
-{
-	std::string type = enemy_types[cur_object_].node->attr("type");
-	show_object_editor_dialog(type);
-}
-
 void launch_object_editor(const std::vector<std::string>& args);
-
-void editor::new_object_type()
-{
-	launch_object_editor(std::vector<std::string>());
-	wml::const_node_ptr editor_cfg = wml::parse_wml(sys::read_file("data/editor.cfg"));
-	enemy_type::init(editor_cfg);
-}
 
 void editor::edit_level_properties()
 {

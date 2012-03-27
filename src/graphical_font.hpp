@@ -9,7 +9,7 @@
 
 #include "geometry.hpp"
 #include "texture.hpp"
-#include "wml_node_fwd.hpp"
+#include "variant.hpp"
 
 class graphical_font;
 typedef boost::shared_ptr<graphical_font> graphical_font_ptr;
@@ -18,9 +18,9 @@ typedef boost::shared_ptr<const graphical_font> const_graphical_font_ptr;
 class graphical_font
 {
 public:
-	static void init(wml::const_node_ptr node);
+	static void init(variant node);
 	static const_graphical_font_ptr get(const std::string& id);
-	explicit graphical_font(wml::const_node_ptr node);
+	explicit graphical_font(variant node);
 	const std::string& id() const { return id_; }
 	rect draw(int x, int y, const std::string& text, int size=2) const;
 	rect dimensions(const std::string& text, int size=2) const;

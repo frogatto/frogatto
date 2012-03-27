@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "wml_node_fwd.hpp"
+#include "variant.hpp"
 
 //class which contains information about the player.
 class player_info
@@ -13,12 +13,12 @@ class player_info
 public:
 	explicit player_info(entity& e) : entity_(&e), slot_(0)
 	{}
-	player_info(entity& e, wml::const_node_ptr node);
+	player_info(entity& e, variant node);
 	
 	void object_destroyed(const std::string& level_id, int item);
 	const std::vector<int>& get_objects_destroyed(const std::string& level_id) const;
 
-	void write(wml::node_ptr node) const;
+	variant write() const;
 
 	void swap_player_state(player_info& player) {
 		items_destroyed_.swap(player.items_destroyed_);

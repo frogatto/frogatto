@@ -8,7 +8,6 @@
 #include "geometry.hpp"
 #include "raster_distortion.hpp"
 #include "variant.hpp"
-#include "wml_node_fwd.hpp"
 
 class level;
 
@@ -16,9 +15,9 @@ class water
 {
 public:
 	water();
-	explicit water(wml::const_node_ptr node);
+	explicit water(variant node);
 
-	wml::node_ptr write() const;
+	variant write() const;
 
 	//color must point to an array of 4 bytes.
 	void add_rect(const rect& r, const unsigned char* color, variant obj);

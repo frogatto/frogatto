@@ -6,6 +6,24 @@
 
 #define DECIMAL(num) static_cast<int64_t>(num##LL)
 
+decimal decimal::from_string(const std::string& s)
+{
+	char* endptr = NULL, *enddec = NULL;
+	int64_t n = strtol(s.c_str(), &endptr, 0);
+	int64_t m = strtol(endptr+1, &enddec, 0);
+	int dist = enddec - endptr;
+	while(dist > (DECIMAL_PLACES+1)) {
+		m /= 10;
+		--dist;
+	}
+	while(dist < (DECIMAL_PLACES+1)) {
+		m *= 10;
+		++dist;
+	}
+
+	return decimal(n*DECIMAL_PRECISION + m);
+}
+
 std::ostream& operator<<(std::ostream& s, decimal d)
 {
 	const char* minus = "";
@@ -16,6 +34,11 @@ std::ostream& operator<<(std::ostream& s, decimal d)
 
 	char buf[512];
 	sprintf(buf, "%s%lld.%06lld", minus, static_cast<long long int>(d.value()/DECIMAL_PRECISION), static_cast<long long int>((d.value() > 0 ? d.value() : -d.value())%DECIMAL_PRECISION));
+	char* ptr = buf + strlen(buf) - 1;
+	while(*ptr == '0' && ptr[-1] != '.') {
+		*ptr = 0;
+		--ptr;
+	}
 	s << buf;
 	return s;
 }
@@ -78,10 +101,10 @@ struct TestCase {
 
 UNIT_TEST(decimal_output) {
 	TestCase tests[] = {
-		{ 5.5, "5.500000" },
-		{ 4.0, "4.000000" },
-		{ -0.5, "-0.500000" },
-		{ -2.5, "-2.500000" },
+		{ 5.5, "5.5" },
+		{ 4.0, "4.0" },
+		{ -0.5, "-0.5" },
+		{ -2.5, "-2.5" },
 	};
 
 	for(int n = 0; n != sizeof(tests)/sizeof(tests[0]); ++n) {

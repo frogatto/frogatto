@@ -7,6 +7,11 @@
 #include "string_utils.hpp"
 #include "unit_test.hpp"
 
+point::point(const variant& v)
+{
+	*this = point(v.as_list_int());
+}
+
 point::point(const std::string& str)
 {
 	int buf_size = 2;
@@ -14,6 +19,28 @@ point::point(const std::string& str)
 	if(buf_size != 2) {
 		x = y = 0;
 	}
+}
+
+point::point(const std::vector<int>& v)
+{
+	if(v.empty()) {
+		x = y = 0;
+	} else if(v.size() == 1) {
+		x = v[0];
+		y = 0;
+	} else {
+		x = v[0];
+		y = v[1];
+	}
+}
+
+variant point::write() const
+{
+	std::vector<variant> v;
+	v.reserve(2);
+	v.push_back(variant(x));
+	v.push_back(variant(y));
+	return variant(&v);
 }
 
 std::string point::to_string() const
@@ -88,6 +115,41 @@ rect::rect(int x, int y, int w, int h)
   : top_left_(std::min(x, x+w), std::min(y, y+h)),
     bottom_right_(std::max(x, x+w), std::max(y, y+h))
 {
+}
+
+rect::rect(const std::vector<int>& v)
+{
+	switch(v.size()) {
+	case 2:
+		*this = rect::from_coordinates(v[0], v[1], 1, 1);
+		break;
+	case 3:
+		*this = rect::from_coordinates(v[0], v[1], v[2], 1);
+		break;
+	case 4:
+		*this = rect::from_coordinates(v[0], v[1], v[2], v[3]);
+		break;
+	default:
+		*this = rect();
+		break;
+	}
+}
+
+rect::rect(const variant& value)
+{
+	std::vector<int> v = value.as_list_int();
+	*this = rect(v);
+}
+
+variant rect::write() const
+{
+	std::vector<variant> v;
+	v.reserve(4);
+	v.push_back(variant(x()));
+	v.push_back(variant(y()));
+	v.push_back(variant(x2()-1));
+	v.push_back(variant(y2()-1));
+	return variant(&v);
 }
 
 int rect::x() const

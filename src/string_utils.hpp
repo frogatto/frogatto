@@ -13,8 +13,12 @@
 #ifndef STRING_UTILS_HPP_INCLUDED
 #define STRING_UTILS_HPP_INCLUDED
 
+#include "foreach.hpp"
+
 #include <string>
 #include <vector>
+
+#include <boost/lexical_cast.hpp>
 
 #ifdef _WINDOWS
 #undef isascii
@@ -59,11 +63,24 @@ std::string join(const std::vector<std::string>& v, char c=',');
 //to the size of 'output'. The number of ints found will be stored in
 //output_size.
 const char* split_into_ints(const char* s, int* output, int* output_size);
+std::vector<int> split_into_vector_int(const std::string& s);
 
 std::string join_ints(const int* buf, int size);
 
 bool string_starts_with(const std::string& target, const std::string& prefix);
 std::string strip_string_prefix(const std::string& target, const std::string& prefix);
+
+template<typename To, typename From>
+std::vector<To> vector_lexical_cast(const std::vector<From>& v) {
+	std::vector<To> result;
+	result.resize(v.size());
+	foreach(const From& from, v) {
+		result.push_back(boost::lexical_cast<To>(from));
+	}
+
+	return result;
+}
+
 }
 
 #endif

@@ -9,24 +9,23 @@
 #include "asserts.hpp"
 #include "custom_object_type.hpp"
 #include "filesystem.hpp"
+#include "foreach.hpp"
 #include "formatter.hpp"
 #include "frame.hpp"
 #include "geometry.hpp"
+#include "json_parser.hpp"
 #include "string_utils.hpp"
 #include "surface.hpp"
 #include "surface_cache.hpp"
 #include "unit_test.hpp"
-#include "wml_node.hpp"
-#include "wml_parser.hpp"
-#include "wml_utils.hpp"
-#include "wml_writer.hpp"
+#include "variant_utils.hpp"
 #include "IMG_savepng.h"
 
 namespace {
 const int TextureImageSize = 1024;
 
 struct animation_area {
-	explicit animation_area(wml::node_ptr node) : anim(new frame(node)), is_particle(false)
+	explicit animation_area(variant node) : anim(new frame(node)), is_particle(false)
 	{
 		width = 0;
 		height = 0;
@@ -37,7 +36,7 @@ struct animation_area {
 			}
 		}
 
-		src_image = node->attr("image");
+		src_image = node["image"].as_string();
 		dst_image = -1;
 	}
 	    
@@ -101,6 +100,8 @@ void set_alpha_for_transparent_colors_in_rgba_surface(SDL_Surface* s);
 
 UTILITY(compile_objects)
 {
+	assert(false);
+#if 0
 	using graphics::surface;
 
 	int num_output_images = 0;
@@ -154,7 +155,7 @@ UTILITY(compile_objects)
 
 
 		if(obj_node->has_attr("no_compile_image")) {
-			std::vector<std::string> images = util::split(obj_node->attr("no_compile_image"));
+			std::vector<std::string> images = util::split(obj_node["no_compile_image"].as_string());
 			no_compile_images.insert(no_compile_images.end(), images.begin(), images.end());
 		}
 
@@ -341,4 +342,5 @@ UTILITY(compile_objects)
 	    i != gui_nodes.end(); ++i) {
 		sys::write_file("data/compiled/gui/" + i->first, wml::output(i->second));
 	}
+#endif
 }

@@ -15,8 +15,7 @@
 #include "surface_formula.hpp"
 #include "surface_palette.hpp"
 #include "texture.hpp"
-#include "wml_node.hpp"
-#include "wml_utils.hpp"
+#include "variant_utils.hpp"
 
 namespace {
 std::set<frame*>& palette_frames() {
@@ -27,62 +26,62 @@ std::set<frame*>& palette_frames() {
 unsigned int current_palette_mask = 0;
 }
 
-frame::frame(wml::const_node_ptr node)
-   : id_(node->attr("id")),
-     image_(node->attr("image")),
+frame::frame(variant node)
+   : id_(node["id"].as_string()),
+     image_(node["image"].as_string()),
      variant_id_(id_),
      enter_event_id_(get_object_event_id("enter_" + id_ + "_anim")),
 	 end_event_id_(get_object_event_id("end_" + id_ + "_anim")),
 	 leave_event_id_(get_object_event_id("leave_" + id_ + "_anim")),
 	 process_event_id_(get_object_event_id("process_" + id_)),
-     texture_(graphics::texture::get(image_, node->attr("image_formula"))),
+     texture_(graphics::texture::get(image_, node["image_formula"].as_string_default())),
 	 solid_(solid_info::create(node)),
-     collide_rect_(node->has_attr("collide") ? rect(node->attr("collide")) :
-	               rect(wml::get_int(node, "collide_x"),
-                        wml::get_int(node, "collide_y"),
-                        wml::get_int(node, "collide_w"),
-                        wml::get_int(node, "collide_h"))),
-	 hit_rect_(node->has_attr("hit") ? rect(node->attr("hit")) :
-	               rect(wml::get_int(node, "hit_x"),
-				        wml::get_int(node, "hit_y"),
-				        wml::get_int(node, "hit_w"),
-				        wml::get_int(node, "hit_h"))),
-	 platform_rect_(node->has_attr("platform") ? rect(node->attr("platform")) :
-	                rect(wml::get_int(node, "platform_x"),
-	                     wml::get_int(node, "platform_y"),
-	                     wml::get_int(node, "platform_w"), 1)),
-	 img_rect_(node->has_attr("rect") ? rect(node->attr("rect")) :
-	           rect(wml::get_int(node, "x"),
-	                wml::get_int(node, "y"),
-	                wml::get_int(node, "w"),
-	                wml::get_int(node, "h"))),
-	 feet_x_(wml::get_int(node, "feet_x")),
-	 feet_y_(wml::get_int(node, "feet_y")),
-	 accel_x_(wml::get_int(node, "accel_x", INT_MIN)),
-	 accel_y_(wml::get_int(node, "accel_y", INT_MIN)),
-	 velocity_x_(wml::get_int(node, "velocity_x", INT_MIN)),
-	 velocity_y_(wml::get_int(node, "velocity_y", INT_MIN)),
-	 nframes_(wml::get_int(node, "frames", 1)),
-	 nframes_per_row_(wml::get_int(node, "frames_per_row", -1)),
-	 frame_time_(wml::get_int(node, "duration", -1)),
-	 reverse_frame_(wml::get_bool(node, "reverse")),
-	 play_backwards_(wml::get_bool(node, "play_backwards")),
-	 scale_(wml::get_int(node, "scale", 2)),
-	 pad_(wml::get_int(node, "pad")),
-	 rotate_(wml::get_int(node, "rotate")),
-	 blur_(wml::get_int(node, "blur")),
-	 rotate_on_slope_(wml::get_bool(node, "rotate_on_slope")),
-	 damage_(wml::get_int(node, "damage")),
-	 sounds_(util::split(node->attr("sound"))),
-	 no_remove_alpha_borders_(wml::get_bool(node, "no_remove_alpha_borders", false)),
+     collide_rect_(node.has_key("collide") ? rect(node["collide"]) :
+	               rect(node["collide_x"].as_int(),
+                        node["collide_y"].as_int(),
+                        node["collide_w"].as_int(),
+                        node["collide_h"].as_int())),
+	 hit_rect_(node.has_key("hit") ? rect(node["hit"]) :
+	               rect(node["hit_x"].as_int(),
+				        node["hit_y"].as_int(),
+				        node["hit_w"].as_int(),
+				        node["hit_h"].as_int())),
+	 platform_rect_(node.has_key("platform") ? rect(node["platform"]) :
+	                rect(node["platform_x"].as_int(),
+	                     node["platform_y"].as_int(),
+	                     node["platform_w"].as_int(), 1)),
+	 img_rect_(node.has_key("rect") ? rect(node["rect"]) :
+	           rect(node["x"].as_int(),
+	                node["y"].as_int(),
+	                node["w"].as_int(),
+	                node["h"].as_int())),
+	 feet_x_(node["feet_x"].as_int()),
+	 feet_y_(node["feet_y"].as_int()),
+	 accel_x_(node["accel_x"].as_int(INT_MIN)),
+	 accel_y_(node["accel_y"].as_int(INT_MIN)),
+	 velocity_x_(node["velocity_x"].as_int(INT_MIN)),
+	 velocity_y_(node["velocity_y"].as_int(INT_MIN)),
+	 nframes_(node["frames"].as_int(1)),
+	 nframes_per_row_(node["frames_per_row"].as_int(-1)),
+	 frame_time_(node["duration"].as_int(-1)),
+	 reverse_frame_(node["reverse"].as_bool()),
+	 play_backwards_(node["play_backwards"].as_bool()),
+	 scale_(node["scale"].as_int(2)),
+	 pad_(node["pad"].as_int()),
+	 rotate_(node["rotate"].as_int()),
+	 blur_(node["blur"].as_int()),
+	 rotate_on_slope_(node["rotate_on_slope"].as_bool()),
+	 damage_(node["damage"].as_int()),
+	 sounds_(util::split(node["sound"].as_string_default())),
+	 no_remove_alpha_borders_(node["no_remove_alpha_borders"].as_bool(false)),
 	 current_palette_(-1)
 {
-	std::vector<std::string> hit_frames = util::split((*node)["hit_frames"]);
+	std::vector<std::string> hit_frames = util::split(node["hit_frames"].as_string_default());
 	foreach(const std::string& f, hit_frames) {
 		hit_frames_.push_back(boost::lexical_cast<int>(f));
 	}
 
-	const std::string& events = node->attr("events");
+	const std::string& events = node["events"].as_string_default();
 	if(!events.empty()) {
 		//events are in the format time0:time1:...:timen:event0,time0:time1:...:timen:event1,...
 		std::vector<std::string> event_vector = util::split(events);
@@ -109,45 +108,55 @@ frame::frame(wml::const_node_ptr node)
 	}
 
 	static const std::string AreaPostfix = "_area";
-	for(wml::node::const_attr_iterator i = node->begin_attr(); i != node->end_attr(); ++i) {
-		const std::string& attr = i->first;
+	foreach(const variant_pair& val, node.as_map()) {
+		const std::string& attr = val.first.as_string();
 		if(attr.size() <= AreaPostfix.size() || std::equal(AreaPostfix.begin(), AreaPostfix.end(), attr.end() - AreaPostfix.size()) == false || attr == "solid_area" ||attr == "platform_area") {
 			continue;
 		}
 
 		const std::string area_id = std::string(attr.begin(), attr.end() - AreaPostfix.size());
 
+		variant value = val.second;
+
 		bool solid = false;
-		std::string value = i->second;
-
-		static const std::string SolidStr = "solid:";
-		if(value.size() > SolidStr.size() && std::equal(SolidStr.begin(), SolidStr.end(), value.begin())) {
-			solid = true;
-			value.erase(value.begin(), value.begin() + SolidStr.size());
-		}
-
 		rect r;
-		if(value == "none") {
+		if(value.is_null()) {
 			continue;
-		} else if(value == "all") {
+		} else if(value.is_string() && value.as_string() == "all") {
 			r = rect(0, 0, width(), height());
-		} else {
-			r = rect(value);
-			r = rect(r.x()*scale_, r.y()*scale_, r.w()*scale_, r.h()*scale_);
+		} else if(value.is_list()) {
+			std::vector<int> v;
+			foreach(const variant& var, value.as_list()) {
+				if(var.is_int()) {
+					v.push_back(var.as_int());
+				} else if(var.is_string() && var.as_string() == "solid") {
+					solid = true;
+				} else if(var.is_string() && var.as_string() == "all") {
+					r = rect(0, 0, width(), height());
+				} else {
+					ASSERT_LOG(false, "Unrecognized attribute for '" << attr << "': " << value.to_debug_string());
+				}
+			}
+
+			if(v.empty() == false) {
+				r = rect(v);
+				r = rect(r.x()*scale_, r.y()*scale_, r.w()*scale_, r.h()*scale_);
+			}
 		}
+
 		collision_area area = { area_id, r, solid };
 		collision_areas_.push_back(area);
 	}
 
-	if(node->has_attr("frame_info")) {
-		int values_buf[1024];
-		int num_values = 1024;
-		util::split_into_ints(node->attr("frame_info").c_str(), values_buf, &num_values);
+	if(node.has_key("frame_info")) {
+		std::vector<int> values = node["frame_info"].as_list_int();
+		int num_values = values.size();
 
+		ASSERT_GT(num_values, 0);
 		ASSERT_EQ(num_values%8, 0);
 		ASSERT_LE(num_values, 1024);
-		const int* i = values_buf;
-		const int* i2 = values_buf + num_values;
+		const int* i = &values[0];
+		const int* i2 = &values[0] + num_values;
 		while(i != i2) {
 			frame_info info;
 			info.x_adjust = *i++;
@@ -173,12 +182,12 @@ frame::frame(wml::const_node_ptr node)
 		build_alpha();
 	}
 
-	std::vector<std::string> palettes = util::split(node->attr("palettes"));
+	std::vector<std::string> palettes = util::split(node["palettes"].as_string_default());
 	foreach(const std::string& p, palettes) {
 		palettes_recognized_.push_back(graphics::get_palette_id(p));
 	}
 
-	//std::cerr << "PALETTES: " << node->attr("palettes").str() << " " << palettes_recognized_.size() << "\n";
+	//std::cerr << "PALETTES: " << node["palettes"].as_string().str() << " " << palettes_recognized_.size() << "\n";
 
 	if(palettes_recognized_.empty() == false) {
 		palette_frames().insert(this);
@@ -187,22 +196,21 @@ frame::frame(wml::const_node_ptr node)
 		}
 	}
 
-	for(wml::node::const_attr_iterator i = node->begin_attr(); i != node->end_attr(); ++i) {
+	foreach(const variant_pair& value, node.as_map()) {
 		static const std::string PivotPrefix = "pivot_";
-		const std::string& attr = i->first;
+		const std::string& attr = value.first.as_string();
 		if(attr.size() > PivotPrefix.size() && std::equal(PivotPrefix.begin(), PivotPrefix.end(), attr.begin())) {
 			pivot_schedule schedule;
 			schedule.name = std::string(attr.begin() + PivotPrefix.size(), attr.end());
 
-			int buf[1024];
-			int buf_size = 1024;
-			util::split_into_ints(i->second.str().c_str(), buf, &buf_size);
-			ASSERT_LOG(buf_size%2 == 0, "PIVOT POINTS IN INCORRECT FORMAT, ODD NUMBER OF INTEGERS");
-			const int num_points = buf_size/2;
+			std::vector<int> values = value.second.as_list_int();
+
+			ASSERT_LOG(values.size()%2 == 0, "PIVOT POINTS IN INCORRECT FORMAT, ODD NUMBER OF INTEGERS");
+			const int num_points = values.size()/2;
 
 			int repeat = std::max<int>(1, (nframes_*frame_time_)/std::max<int>(1, num_points));
 			for(int n = 0; n != num_points; ++n) {
-				point p(buf[n*2], buf[n*2+1]);
+				point p(values[n*2], values[n*2+1]);
 				for(int m = 0; m != repeat; ++m) {
 					schedule.points.push_back(p);
 				}

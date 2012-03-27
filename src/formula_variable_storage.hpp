@@ -4,7 +4,7 @@
 #include <boost/intrusive_ptr.hpp>
 
 #include "formula_callable.hpp"
-#include "wml_node.hpp"
+#include "variant.hpp"
 
 namespace game_logic
 {
@@ -17,8 +17,8 @@ public:
 
 	bool equal_to(const std::map<std::string, variant>& m) const;
 
-	void read(wml::const_node_ptr node);
-	void write(wml::node_ptr node) const;
+	void read(variant node);
+	variant write() const;
 	void add(const std::string& key, const variant& value);
 	void add(const formula_variable_storage& value);
 

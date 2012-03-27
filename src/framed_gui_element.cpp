@@ -1,23 +1,21 @@
 #include <iostream>
 
+#include "foreach.hpp"
 #include "framed_gui_element.hpp"
 #include "geometry.hpp"
 #include "raster.hpp"
-#include "wml_node.hpp"
-#include "wml_utils.hpp"
+#include "variant_utils.hpp"
 
 namespace {
 	typedef std::map<std::string, const_framed_gui_element_ptr> cache_map;
 	cache_map cache;
 }
 
-void framed_gui_element::init(wml::const_node_ptr node)
+void framed_gui_element::init(variant node)
 {
-	wml::node::const_child_iterator i1 = node->begin_child("framed_gui_element");
-	wml::node::const_child_iterator i2 = node->end_child("framed_gui_element");
-	for(; i1 != i2; ++i1) {
-		const std::string& id = i1->second->attr("id");
-		cache[id].reset(new framed_gui_element(i1->second));
+	foreach(variant obj, node["framed_gui_element"].as_list()) {
+		const std::string& id = obj["id"].as_string();
+		cache[id].reset(new framed_gui_element(obj));
 	}
 }
 
@@ -33,13 +31,11 @@ const_framed_gui_element_ptr framed_gui_element::get(const std::string& key)
 }
 
 
-framed_gui_element::framed_gui_element(wml::const_node_ptr node)
-: area_(node->attr("rect")),
-corner_height_(get_int(node,"corner_height")),
-texture_(graphics::texture::get(node->attr("image")))
+framed_gui_element::framed_gui_element(variant node)
+: area_(node["rect"]),
+corner_height_(node["corner_height"].as_int()),
+texture_(graphics::texture::get(node["image"].as_string()))
 {
-
-	
 	top_left_corner_ = rect(area_.x(),area_.y(),corner_height_,corner_height_);
 	top_right_corner_ = rect(area_.x2() - corner_height_,area_.y(),corner_height_,corner_height_);
 	bottom_left_corner_ = rect(area_.x(),area_.y2() - corner_height_,corner_height_,corner_height_);

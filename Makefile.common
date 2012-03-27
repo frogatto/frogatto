@@ -65,6 +65,8 @@ objects = \
 	inventory.o \
 	iphone_controls.o \
 	joystick.o \
+	json_parser.o \
+	json_tokenizer.o \
 	key.o \
 	key_button.o \
 	label.o \
@@ -122,24 +124,21 @@ objects = \
 	translate.o \
 	utils.o \
 	variant.o \
+	variant_callable.o \
+	variant_utils.o \
 	water.o \
 	water_particle_system.o \
 	weather_particle_system.o \
 	widget.o \
-	wml_formula_adapter.o \
 	wml_formula_callable.o \
 	wml_modify.o \
-	wml_node.o \
-	wml_parser.o \
-	wml_schema.o \
-	wml_utils.o \
-	wml_writer.o \
 	unit_test.o \
 	formula_test.o \
-	wml_parser_test.o \
 	loading_screen.o \
+	wml_node.o \
+	wml_parser.o \
+	wml_utils.o \
 	utility_object_compiler.o \
-	utility_object_editor.o \
 	utility_render_level.o
 
 # Server

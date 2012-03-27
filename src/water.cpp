@@ -12,10 +12,8 @@
 #include "level.hpp"
 #include "raster.hpp"
 #include "string_utils.hpp"
+#include "variant_utils.hpp"
 #include "water.hpp"
-#include "wml_node.hpp"
-#include "wml_utils.hpp"
-#include "color_utils.hpp"
 
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 #include <EGL/egl.h>
@@ -31,50 +29,47 @@ water::water()
 {
 }
 
-water::water(wml::const_node_ptr water_node) :
-  zorder_(wml::get_int(water_node, "zorder", WaterZorder)),
-  current_x_formula_(game_logic::formula::create_optional_formula(water_node->attr("current_x_formula"))),
-  current_y_formula_(game_logic::formula::create_optional_formula(water_node->attr("current_y_formula")))
+water::water(variant water_node) :
+  zorder_(water_node["zorder"].as_int(WaterZorder)),
+  current_x_formula_(game_logic::formula::create_optional_formula(water_node["current_x_formula"])),
+  current_y_formula_(game_logic::formula::create_optional_formula(water_node["current_y_formula"]))
 {
-	FOREACH_WML_CHILD(area_node, water_node, "area") {
-		const rect r(area_node->attr("rect"));
-		std::vector<std::string> str = util::split(area_node->attr("color"));
+	foreach(variant area_node, water_node["area"].as_list()) {
+		const rect r(area_node["rect"].as_string());
+		std::vector<int> color_vec = area_node["color"].as_list_int();
 		unsigned char color[4];
 		for(int n = 0; n != 4; ++n) {
-			if(n < str.size()) {
-				color[n] = atoi(str[n].c_str());
+			if(n < color_vec.size()) {
+				color[n] = static_cast<unsigned char>(color_vec[n]);
 			} else {
 				color[n] = 0;
 			}
 		}
 
-		variant obj;
-		obj.serialize_from_string(area_node->attr("object"));
+		variant obj = area_node["object"];
 		areas_.push_back(area(r, color, obj));
 	}
 }
 
-wml::node_ptr water::write() const
+variant water::write() const
 {
-	wml::node_ptr result(new wml::node("water"));
-	result->set_attr("zorder", formatter() << zorder_);
+	variant_builder result;
+	result.add("zorder", zorder_);
 	foreach(const area& a, areas_) {
-		wml::node_ptr node(new wml::node("area"));
-		node->set_attr("rect", a.rect_.to_string());
-		node->set_attr("color", formatter()
-		               << static_cast<int>(a.color_[0]) << ","
-		               << static_cast<int>(a.color_[1]) << ","
-		               << static_cast<int>(a.color_[2]) << ","
-		               << static_cast<int>(a.color_[3]));
+		variant_builder area_node;
+		area_node.add("rect", a.rect_.to_string());
+		std::vector<variant> color_vec;
+		color_vec.reserve(4);
+		for(int n = 0; n != 4; ++n) {
+			color_vec.push_back(variant(static_cast<int>(a.color_[n])));
+		}
+		area_node.add("color", variant(&color_vec));
+		area_node.add("object", a.obj_);
 
-		std::string obj;
-		a.obj_.serialize_to_string(obj);
-		node->set_attr("object", obj);
-
-		result->add_child(node);
+		result.add("area", area_node.build());
 	}
 
-	return result;
+	return result.build();
 }
 
 void water::add_rect(const rect& r, const unsigned char* color, variant obj)

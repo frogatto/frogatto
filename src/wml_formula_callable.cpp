@@ -6,8 +6,8 @@
 
 #include "asserts.hpp"
 #include "foreach.hpp"
+#include "variant_utils.hpp"
 #include "wml_formula_callable.hpp"
-#include "wml_node.hpp"
 
 namespace game_logic
 {
@@ -21,14 +21,14 @@ std::stack<scope_info, std::vector<scope_info> > scopes;
 
 }
 
-void wml_formula_callable_serialization_scope::register_serialized_object(const_wml_serializable_formula_callable_ptr ptr, wml::node_ptr node)
+void wml_formula_callable_serialization_scope::register_serialized_object(const_wml_serializable_formula_callable_ptr ptr, variant& node)
 {
 	ASSERT_LOG(scopes.empty() == false, "register_serialized_object() called when there is no wml_formula_callable_serialization_scope");
 	scopes.top().objects_written.insert(ptr);
 
 	char addr_buf[256];
 	sprintf(addr_buf, "%p", ptr.get());
-	node->set_attr("_addr", addr_buf);
+	node = node.add_attr(variant("_addr"), variant(addr_buf));
 }
 
 std::string  wml_formula_callable_serialization_scope::require_serialized_object(const_wml_serializable_formula_callable_ptr ptr)
@@ -57,9 +57,9 @@ wml_formula_callable_serialization_scope::~wml_formula_callable_serialization_sc
 	scopes.pop();
 }
 
-wml::node_ptr wml_formula_callable_serialization_scope::write_objects() const
+variant wml_formula_callable_serialization_scope::write_objects() const
 {
-	wml::node_ptr result(new wml::node("serialized_objects"));
+	variant_builder result;
 	foreach(const_wml_serializable_formula_callable_ptr ptr, scopes.top().objects_to_write) {
 		if(scopes.top().objects_written.count(ptr) != 0) {
 			continue;
@@ -68,12 +68,12 @@ wml::node_ptr wml_formula_callable_serialization_scope::write_objects() const
 		char addr_buf[256];
 		sprintf(addr_buf, "%p", ptr.get());
 
-		wml::node_ptr node(ptr->write_to_wml());
-		node->set_attr("_addr", addr_buf);
-		result->add_child(node);
+		variant node(ptr->write_to_wml());
+		node.add_attr(variant("_addr"), variant(addr_buf));
+		result.add("character", node);
 	}
 
-	return result;
+	return result.build();
 }
 
 namespace {

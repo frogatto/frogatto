@@ -1,6 +1,8 @@
 #ifndef DECIMAL_HPP_INCLUDED
 #define DECIMAL_HPP_INCLUDED
 
+#include <string>
+
 #include <iosfwd>
 #include <boost/cstdint.hpp>
 #if defined(TARGET_BLACKBERRY)
@@ -13,6 +15,7 @@ static const int64_t DECIMAL_PLACES = 6;
 class decimal
 {
 public:
+	static decimal from_string(const std::string& s);
 	static decimal from_int(int64_t v) { return decimal(v*DECIMAL_PRECISION); }
 	decimal() : value_(0) {}
 	explicit decimal(int64_t value) : value_(value) {}

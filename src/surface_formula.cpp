@@ -102,7 +102,7 @@ void run_formula(surface surf, const std::string& algo)
 
 	const int ticks = SDL_GetTicks();
 	surface_formula_symbol_table table(surf);
-	game_logic::formula f(algo, &table);
+	game_logic::formula f(variant(algo), &table);
 	bool locked = false;
 	if(SDL_MUSTLOCK(surf.get())) {
 		const int res = SDL_LockSurface(surf.get());

@@ -222,6 +222,17 @@ const char* split_into_ints(const char* s, int* output, int* output_size)
 	return endptr;
 }
 
+std::vector<int> split_into_vector_int(const std::string& s)
+{
+	std::vector<std::string> v = util::split(s);
+	std::vector<int> result(v.size());
+	for(int n = 0; n != v.size(); ++n) {
+		result[n] = atoi(v[n].c_str());
+	}
+
+	return result;
+}
+
 std::string join_ints(const int* ints, int size)
 {
 	std::string result;

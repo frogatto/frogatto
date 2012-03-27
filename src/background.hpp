@@ -10,7 +10,7 @@
 
 #include "geometry.hpp"
 #include "texture.hpp"
-#include "wml_node_fwd.hpp"
+#include "variant.hpp"
 
 class level;
 
@@ -24,9 +24,9 @@ public:
 	//all available backgrounds.
 	static std::vector<std::string> get_available_backgrounds();
 
-	background(const wml::const_node_ptr& node, int palette);
+	background(variant node, int palette);
 	const std::string& id() const { return id_; }
-	wml::node_ptr write() const;
+	variant write() const;
 	void draw(int x, int y, const rect& area, const std::vector<rect>& opaque_areas, int rotation, int cycle) const;
 	void draw_foreground(double x, double y, int rotation, int cycle) const;
 

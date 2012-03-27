@@ -2,8 +2,7 @@
 #include "foreach.hpp"
 #include "movement_script.hpp"
 #include "object_events.hpp"
-#include "wml_node.hpp"
-#include "wml_utils.hpp"
+#include "variant_utils.hpp"
 
 active_movement_script::~active_movement_script()
 {
@@ -27,15 +26,15 @@ void active_movement_script::modify(entity_ptr entity, const std::map<std::strin
 	mods_.push_back(mod);
 }
 
-movement_script::movement_script(wml::const_node_ptr node) : id_(node->attr("id")) {
-	FOREACH_WML_CHILD(modification_node, node, "modification") {
+movement_script::movement_script(variant node) : id_(node["id"].as_string()) {
+	foreach(variant modification_node, node["modification"].as_list()) {
 		modification m;
-		m.target_formula = game_logic::formula::create_optional_formula(modification_node->attr("target"), &get_custom_object_functions_symbol_table());
-		for(wml::node::const_attr_iterator i = modification_node->begin_attr(); i != modification_node->end_attr(); ++i) {
-			const std::string& key = i->first;
+		m.target_formula = game_logic::formula::create_optional_formula(modification_node["target"], &get_custom_object_functions_symbol_table());
+		foreach(const variant_pair& value, modification_node.as_map()) {
+			const std::string& key = value.first.as_string();
 			if(key.size() > 3 && std::equal(key.begin(), key.begin() + 3, "on_")) {
 				std::string event(key.begin() + 3, key.end());
-				m.handlers[event] = game_logic::formula::create_optional_formula(i->second, &get_custom_object_functions_symbol_table());
+				m.handlers[event] = game_logic::formula::create_optional_formula(value.second, &get_custom_object_functions_symbol_table());
 			}
 		}
 
@@ -68,19 +67,19 @@ active_movement_script_ptr movement_script::begin_execution(const game_logic::fo
 	return result;
 }
 
-wml::node_ptr movement_script::write() const
+variant movement_script::write() const
 {
-	wml::node_ptr result(new wml::node("script"));
-	result->set_attr("id", id_);
+	variant_builder result;
+	result.add("id", id_);
 	foreach(const modification& m, modifications_) {
-		wml::node_ptr node(new wml::node("modification"));
-		node->set_attr("target", m.target_formula ? m.target_formula->str() : "");
+		variant_builder node;
+		node.add("target", m.target_formula ? m.target_formula->str() : "");
 		for(std::map<std::string, game_logic::const_formula_ptr>::const_iterator i = m.handlers.begin(); i != m.handlers.end(); ++i) {
-			node->set_attr("on_" + i->first, i->second ? i->second->str() : "");
+			node.add("on_" + i->first, i->second ? i->second->str() : "");
 		}
 
-		result->add_child(node);
+		result.add("modification", node.build());
 	}
 
-	return result;
+	return result.build();
 }

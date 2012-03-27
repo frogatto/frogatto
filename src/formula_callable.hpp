@@ -21,7 +21,6 @@
 
 #include "reference_counted_object.hpp"
 #include "variant.hpp"
-#include "wml_node_fwd.hpp"
 
 namespace game_logic
 {
@@ -154,10 +153,10 @@ public:
 
 class map_formula_callable : public formula_callable {
 public:
-	explicit map_formula_callable(wml::const_node_ptr node);
+	explicit map_formula_callable(variant node);
 	explicit map_formula_callable(const formula_callable* fallback=NULL);
 	explicit map_formula_callable(const std::map<std::string, variant>& m);
-	void write(wml::node_ptr node) const;
+	variant write() const;
 	map_formula_callable& add(const std::string& key, const variant& value);
 	void set_fallback(const formula_callable* fallback) { fallback_ = fallback; }
 

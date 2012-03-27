@@ -9,7 +9,7 @@
 #include "formula_callable.hpp"
 #include "raster.hpp"
 #include "texture.hpp"
-#include "wml_node_fwd.hpp"
+#include "variant.hpp"
 
 class level_object;
 typedef boost::intrusive_ptr<level_object> level_object_ptr;
@@ -84,11 +84,11 @@ struct palette_scope {
 class level_object : public game_logic::formula_callable {
 public:
 	static std::vector<const_level_object_ptr> all();
-	static level_tile build_tile(wml::const_node_ptr node);
+	static level_tile build_tile(variant node);
 	static void write_compiled();
 
 	static void set_current_palette(unsigned int palette);
-	explicit level_object(wml::const_node_ptr node);
+	explicit level_object(variant node);
 	~level_object();
 
 	int width() const;

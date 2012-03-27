@@ -10,7 +10,7 @@
 
 #include "geometry.hpp"
 #include "level_object.hpp"
-#include "wml_node_fwd.hpp"
+#include "variant.hpp"
 
 const boost::regex& get_regex_from_pool(const std::string& key);
 
@@ -20,9 +20,9 @@ public:
 	//all multi tile patterns loaded. This is a deque meaning callers can
 	//save pointers to members, knowing they will never be destroyed.
 	static const std::deque<multi_tile_pattern>& get_all();
-	static void init(wml::const_node_ptr node);
-	static void load(wml::const_node_ptr node, const std::string& tile_id);
-	multi_tile_pattern(wml::const_node_ptr node, const std::string& tile_id);
+	static void init(variant node);
+	static void load(variant node, const std::string& tile_id);
+	multi_tile_pattern(variant node, const std::string& tile_id);
 
 	struct tile_entry {
 		level_object_ptr tile;

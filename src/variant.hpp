@@ -6,6 +6,7 @@
 #include <map>
 #include <set>
 #include <vector>
+#include <sstream>
 
 #include <stdint.h>
 
@@ -51,8 +52,9 @@ class variant {
 public:
 	enum DECIMAL_VARIANT_TYPE { DECIMAL_VARIANT };
 
+	static variant from_bool(bool b) { variant v; v.type_ = TYPE_BOOL; v.bool_value_ = b; return v; }
+
 	variant() : type_(TYPE_NULL), int_value_(0) {}
-	explicit variant(bool b) : type_(TYPE_BOOL), bool_value_(b) {}
 	explicit variant(int n) : type_(TYPE_INT), int_value_(n) {}
 	explicit variant(unsigned int n) : type_(TYPE_INT), int_value_(n) {}
 	explicit variant(long unsigned int n) : type_(TYPE_INT), int_value_(n) {}
@@ -84,7 +86,11 @@ public:
 
 	const variant& operator[](size_t n) const;
 	const variant& operator[](const variant v) const;
+	const variant& operator[](const std::string& key) const;
 	size_t num_elements() const;
+
+	bool has_key(const variant& key) const;
+	bool has_key(const std::string& key) const;
 
 	variant operator()(const std::vector<variant>& args) const;
 
@@ -98,16 +104,39 @@ public:
 	bool is_string() const { return type_ == TYPE_STRING; }
 	bool is_null() const { return type_ == TYPE_NULL; }
 	bool is_bool() const { return type_ == TYPE_BOOL; }
+	bool is_numeric() const { return is_int() || is_decimal(); }
 	bool is_int() const { return type_ == TYPE_INT; }
 	bool is_decimal() const { return type_ == TYPE_DECIMAL; }
 	bool is_map() const { return type_ == TYPE_MAP; }
 	bool is_function() const { return type_ == TYPE_FUNCTION; }
-	int as_int() const { if(type_ == TYPE_NULL) { return 0; } if(type_ == TYPE_DECIMAL) { return int( decimal_value_/VARIANT_DECIMAL_PRECISION ); } if(type_ == TYPE_BOOL) { return bool_value_ ? 1 : 0; } must_be(TYPE_INT); return int_value_; }
-	decimal as_decimal() const { if(type_ == TYPE_NULL) { return decimal(static_cast<int64_t>(0)); } if(type_ == TYPE_INT) { return decimal(int64_t(int_value_)*VARIANT_DECIMAL_PRECISION); } must_be(TYPE_DECIMAL); return decimal(decimal_value_); }
-	bool as_bool() const;
+	int as_int(int default_value=0) const { if(type_ == TYPE_NULL) { return default_value; } if(type_ == TYPE_DECIMAL) { return int( decimal_value_/VARIANT_DECIMAL_PRECISION ); } if(type_ == TYPE_BOOL) { return bool_value_ ? 1 : 0; } must_be(TYPE_INT); return int_value_; }
+	decimal as_decimal(decimal default_value=decimal()) const { if(type_ == TYPE_NULL) { return default_value; } if(type_ == TYPE_INT) { return decimal(int64_t(int_value_)*VARIANT_DECIMAL_PRECISION); } must_be(TYPE_DECIMAL); return decimal(decimal_value_); }
+	bool as_bool(bool default_value=false) const;
 
 	bool is_list() const { return type_ == TYPE_LIST; }
 
+	std::vector<variant> as_list() const;
+	const std::map<variant,variant>& as_map() const;
+
+	std::vector<std::string> as_list_string() const;
+	std::vector<int> as_list_int() const;
+	std::vector<decimal> as_list_decimal() const;
+
+	std::vector<int> as_list_int_optional() const { if(is_null()) return std::vector<int>(); else return as_list_int(); }
+	std::vector<decimal> as_list_decimal_optional() const { if(is_null()) return std::vector<decimal>(); else return as_list_decimal(); }
+
+	const std::string* filename() const { return 0; }
+	int line_number() const { return -1; }
+
+	//return a version of a map with the key/value added.
+	//if this is the only reference to the object it will modify in-place.
+	variant add_attr(variant key, variant value);
+
+	//A dangerous function which mutates the object. Should only do this
+	//in contexts where we're sure it's safe.
+	void add_attr_mutation(variant key, variant value);
+
+	std::string as_string_default(const char* default_value=NULL) const;
 	const std::string& as_string() const;
 
 	bool is_callable() const { return type_ == TYPE_CALLABLE; }
@@ -159,16 +188,30 @@ public:
 	void serialize_from_string(const std::string& str);
 
 	int refcount() const;
+	void make_unique();
 
 	std::string string_cast() const;
 
 	std::string to_debug_string(std::vector<const game_logic::formula_callable*>* seen=NULL) const;
 
-	std::string write_json() const;
+	std::string write_json(bool pretty=true) const;
 	void write_json(std::ostream& s) const;
+
+	void write_json_pretty(std::ostream& s, std::string indent) const;
 
 	std::vector<variant>& initialize_list();
 	enum TYPE { TYPE_NULL, TYPE_BOOL, TYPE_INT, TYPE_DECIMAL, TYPE_CALLABLE, TYPE_CALLABLE_LOADING, TYPE_LIST, TYPE_STRING, TYPE_MAP, TYPE_FUNCTION };
+
+	struct debug_info {
+		debug_info() : filename(0), line(-1), column(-1)
+		{}
+		std::string message() const;
+		const std::string* filename;
+		int line, column;
+	};
+
+	void set_debug_info(const debug_info& info);
+	const debug_info* get_debug_info() const;
 
 private:
 	void must_be(TYPE t) const {
@@ -193,6 +236,7 @@ private:
 		variant_string* string_;
 		variant_map* map_;
 		variant_fn* fn_;
+		debug_info* debug_info_;
 
 		int64_t value_;
 	};
@@ -205,6 +249,10 @@ private:
 	void increment_refcount();
 	void release();
 };
+
+std::ostream& operator<<(std::ostream& os, const variant& v);
+
+typedef std::pair<variant,variant> variant_pair;
 
 template<typename T>
 T* convert_variant(const variant& v) {

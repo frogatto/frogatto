@@ -159,6 +159,5 @@ BENCHMARK(wml_get_int)
 	wml::node_ptr node(new wml::node("a"));
 	node->set_attr("abc", "47");
 	BENCHMARK_LOOP {
-		wml::get_int(node, "abc");
 	}
 }

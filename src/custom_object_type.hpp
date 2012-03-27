@@ -15,7 +15,6 @@
 #include "particle_system.hpp"
 #include "solid_map_fwd.hpp"
 #include "variant.hpp"
-#include "wml_node.hpp"
 
 class custom_object_type;
 
@@ -30,7 +29,7 @@ typedef boost::shared_ptr<const modifier> const_modifier_ptr;
 class custom_object_type
 {
 public:
-	static wml::node_ptr merge_prototype(wml::node_ptr node);
+	static variant merge_prototype(variant node);
 	static const std::string* get_object_path(const std::string& id);
 	static const_custom_object_type_ptr get(const std::string& id);
 	static const_custom_object_type_ptr get_or_die(const std::string& id);
@@ -43,12 +42,12 @@ public:
 
 	typedef std::vector<game_logic::const_formula_ptr> event_handler_map;
 
-	static void init_event_handlers(wml::const_node_ptr node,
+	static void init_event_handlers(variant node,
 	                                event_handler_map& handlers,
 									game_logic::function_symbol_table* symbols=0,
 									const event_handler_map* base_handlers=NULL);
 
-	explicit custom_object_type(wml::const_node_ptr node, const custom_object_type* base_type=NULL);
+	explicit custom_object_type(variant node, const custom_object_type* base_type=NULL);
 	~custom_object_type();
 
 	const_custom_object_type_ptr get_sub_object(const std::string& id) const;
@@ -107,12 +106,12 @@ public:
 
 	bool affected_by_currents() const { return affected_by_currents_; }
 
-	wml::const_node_ptr get_child(const std::string& key) const {
+	variant get_child(const std::string& key) const {
 		if(children_.count(key)) {
 			return children_.find(key)->second;
 		}
 
-		return wml::const_node_ptr();
+		return variant();
 	}
 
 	const_particle_system_factory_ptr get_particle_system_factory(const std::string& id) const;
@@ -142,6 +141,7 @@ public:
 	const std::map<std::string, variant>& tags() const { return tags_; }
 
 	const std::map<std::string, game_logic::const_formula_ptr>& properties() const { return properties_; }
+	const std::map<std::string, variant>& const_properties() const { return const_properties_; }
 
 	game_logic::function_symbol_table* function_symbols() const;
 
@@ -166,7 +166,7 @@ public:
 
 	const_editor_entity_info_ptr editor_info() const { return editor_info_; }
 
-	wml::const_node_ptr node() const { return node_; }
+	variant node() const { return node_; }
 
 	int activation_border() const { return activation_border_; }
 	const variant& available_frames() const { return available_frames_; }
@@ -220,9 +220,9 @@ private:
 
 	bool affected_by_currents_;
 
-	std::map<std::string, wml::const_node_ptr> children_;
+	std::map<std::string, variant> children_;
 
-	wml::const_node_ptr node_;
+	variant node_;
 
 	std::map<std::string, const_particle_system_factory_ptr> particle_factories_;
 
@@ -240,6 +240,7 @@ private:
 	game_logic::map_formula_callable_ptr consts_;
 	std::map<std::string, variant> tags_;
 
+	std::map<std::string, variant> const_properties_;
 	std::map<std::string, game_logic::const_formula_ptr> properties_;
 
 	int teleport_offset_x_, teleport_offset_y_;
@@ -260,7 +261,7 @@ private:
 
 	int activation_border_;
 
-	std::map<std::string, wml::const_modifier_ptr> variations_;
+	std::map<std::string, game_logic::const_formula_ptr> variations_;
 	mutable std::map<std::vector<std::string>, const_custom_object_type_ptr> variations_cache_;
 
 	const_editor_entity_info_ptr editor_info_;

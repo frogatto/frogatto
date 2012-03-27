@@ -1,9 +1,9 @@
 #include <map>
 
+#include "foreach.hpp"
 #include "graphical_font.hpp"
 #include "raster.hpp"
-#include "wml_node.hpp"
-#include "wml_utils.hpp"
+#include "variant_utils.hpp"
 
 namespace {
 typedef std::map<std::string, graphical_font_ptr> cache_map;
@@ -84,12 +84,10 @@ unsigned int utf8_to_codepoint(std::string::const_iterator& i, std::string::cons
 }
 }
 
-void graphical_font::init(wml::const_node_ptr node)
+void graphical_font::init(variant node)
 {
-	wml::node::const_child_iterator i1 = node->begin_child("font");
-	wml::node::const_child_iterator i2 = node->end_child("font");
-	for(; i1 != i2; ++i1) {
-		graphical_font_ptr font(new graphical_font(i1->second));
+	foreach(const variant& font_node, node["font"].as_list()) {
+		graphical_font_ptr font(new graphical_font(font_node));
 		cache[font->id()] = font;
 	}
 }
@@ -104,30 +102,28 @@ const_graphical_font_ptr graphical_font::get(const std::string& id)
 	return itor->second;
 }
 
-graphical_font::graphical_font(wml::const_node_ptr node)
-  : id_(node->attr("id")), texture_(graphics::texture::get(node->attr("texture"))),
-    kerning_(wml::get_int(node, "kerning", 2))
+graphical_font::graphical_font(variant node)
+  : id_(node["id"].as_string()), texture_(graphics::texture::get(node["texture"].as_string())),
+    kerning_(node["kerning"].as_int(2))
 {
 	int pad = 2;
-	if (node->has_attr("pad")){
-		pad = wml::get_int(node, "pad", 2);
+	if (node.has_key("pad")){
+		pad = node["pad"].as_int(2);
 	}
 	
-	wml::node::const_child_iterator i1 = node->begin_child("chars");
-	wml::node::const_child_iterator i2 = node->end_child("chars");
 	rect current_rect;
-	for(; i1 != i2; ++i1) {
-		if(i1->second->has_attr("pad")) {
-			pad = wml::get_int(i1->second, "pad");
+	foreach(const variant& char_node, node["chars"].as_list()) {
+		if(char_node.has_key("pad")) {
+			pad = char_node["pad"].as_int();
 		}
 
-		const std::string& chars = i1->second->attr("chars");
-		if(i1->second->has_attr("width")) {
+		const std::string& chars = char_node["chars"].as_string();
+		if(char_node.has_key("width")) {
 			current_rect = rect(current_rect.x(), current_rect.y(),
-			                    wml::get_int(i1->second, "width"),
+			                    char_node["width"].as_int(),
 			                    current_rect.h());
 		} else {
-			current_rect = rect(i1->second->attr("rect"));
+			current_rect = rect(char_node["rect"].as_list_int());
 		}
 		for(std::string::const_iterator i = chars.begin(); i != chars.end(); ++i) {
 			unsigned int codepoint = utf8_to_codepoint(i, chars.end());

@@ -66,8 +66,8 @@ public:
 	void download_stats();
 
 	struct tileset {
-		static void init(wml::const_node_ptr node);
-		explicit tileset(wml::const_node_ptr node);
+		static void init(variant node);
+		explicit tileset(variant node);
 		std::string category;
 		std::string type;
 		int zorder;
@@ -78,9 +78,9 @@ public:
 	};
 
 	struct enemy_type {
-		static void init(wml::const_node_ptr node);
+		static void init(variant node);
 		explicit enemy_type(const custom_object_type& type);
-		wml::const_node_ptr node;
+		variant node;
 		std::string category;
 		entity_ptr preview_object;
 		const frame* preview_frame;
@@ -119,9 +119,6 @@ public:
 
 	void undo_command();
 	void redo_command();
-
-	void edit_object_type();
-	void new_object_type();
 
 	void close() { done_ = true; }
 

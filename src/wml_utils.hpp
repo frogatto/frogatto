@@ -162,15 +162,4 @@ private:
 #define FOREACH_WML_CHILD(item, node, element_name) \
   for(wml::child_sequence_iterator item(node, element_name); !item.at_end(); item.next())
 
-template<typename To, typename From>
-std::vector<To> vector_lexical_cast(const std::vector<From>& v) {
-	std::vector<To> result;
-	result.resize(v.size());
-	foreach(const From& from, v) {
-		result.push_back(boost::lexical_cast<To>(from));
-	}
-
-	return result;
-}
-
 #endif

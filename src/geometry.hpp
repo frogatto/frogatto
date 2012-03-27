@@ -2,16 +2,21 @@
 #define GEOMETRY_HPP_INCLUDED
 
 #include "graphics.hpp"
+#include "variant.hpp"
 
 #include <iostream>
 #include <string>
 #include <vector>
 
 struct point {
+	explicit point(const variant& v);
 	explicit point(const std::string& str);
 	explicit point(int x=0, int y=0) : x(x), y(y)
 	{}
 
+	explicit point(const std::vector<int>& v);
+
+	variant write() const;
 	std::string to_string() const;
 
 	union {
@@ -33,6 +38,8 @@ public:
 	static rect from_coordinates(int x1, int y1, int x2, int y2);
 	explicit rect(const std::string& str);
 	explicit rect(int x=0, int y=0, int w=0, int h=0);
+	explicit rect(const std::vector<int>& v);
+	explicit rect(const variant& v);
 	int x() const;
 	int y() const;
 	int x2() const;
@@ -47,6 +54,7 @@ public:
 	const point& bottom_right() const { return bottom_right_; }
 
 	std::string to_string() const;
+	variant write() const;
 
 	SDL_Rect sdl_rect() const;
 

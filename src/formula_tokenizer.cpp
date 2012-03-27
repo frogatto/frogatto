@@ -157,7 +157,7 @@ token get_token(iterator& i1, iterator i2) {
 
 		t.end = i1;
 
-		static const std::string Keywords[] = { "functions", "def" };
+		static const std::string Keywords[] = { "functions", "def", "null" };
 		foreach(const std::string& str, Keywords) {
 			if(str.size() == (t.end - t.begin) && std::equal(str.begin(), str.end(), t.begin)) {
 				t.type = TOKEN_KEYWORD;

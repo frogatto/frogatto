@@ -3,7 +3,7 @@
 
 #include "entity.hpp"
 #include "formula.hpp"
-#include "wml_node_fwd.hpp"
+#include "variant.hpp"
 
 #include <map>
 #include <string>
@@ -32,11 +32,11 @@ class movement_script
 {
 public:
 	movement_script() {}
-	explicit movement_script(wml::const_node_ptr node);
+	explicit movement_script(variant node);
 	active_movement_script_ptr begin_execution(const game_logic::formula_callable& callable) const;
 	const std::string& id() const { return id_; }
 
-	wml::node_ptr write() const;
+	variant write() const;
 private:
 	struct modification {
 		game_logic::const_formula_ptr target_formula;

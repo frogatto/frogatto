@@ -4,13 +4,13 @@
 #include "debug_console.hpp"
 #include "editor.hpp"
 #include "editor_formula_functions.hpp"
+#include "filesystem.hpp"
 #include "foreach.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
+#include "json_parser.hpp"
 #include "level.hpp"
-#include "wml_node.hpp"
-#include "wml_parser.hpp"
-#include "wml_utils.hpp"
+#include "variant_utils.hpp"
 
 namespace editor_script {
 
@@ -276,20 +276,21 @@ void load_scripts()
 		return;
 	}
 
-	wml::node_ptr node(wml::parse_wml_from_file("data/editor/scripts.cfg"));
-	if(!node) {
+	if(!sys::file_exists("data/editor/scripts.cfg")) {
 		return;
 	}
 
+	variant node = json::parse_from_file("data/editor/scripts.cfg");
+
 	//load any functions defined here.
-	FOREACH_WML_CHILD(function_node, node, "function") {
+	foreach(variant function_node, node["function"].as_list()) {
 	}
 
-	FOREACH_WML_CHILD(script_node, node, "script") {
-		const std::string& id = script_node->attr("id");
+	foreach(variant script_node, node["script"].as_list()) {
+		const std::string& id = script_node["id"].as_string();
 		info script = { id };
 		scripts_info.push_back(script);
-		scripts[id].reset(new formula(script_node->attr("script"), &editor_command_function_symbol_table::instance()));
+		scripts[id].reset(new formula(script_node["script"], &editor_command_function_symbol_table::instance()));
 	}
 }
 

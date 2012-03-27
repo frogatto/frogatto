@@ -19,8 +19,7 @@
 #include "iphone_sound.h"
 #endif
 
-#include "wml_node.hpp"
-#include "wml_utils.hpp"
+#include "variant_utils.hpp"
 
 namespace sound {
 
@@ -376,11 +375,11 @@ manager::~manager()
 #endif
 }
 
-void init_music(wml::const_node_ptr node)
+void init_music(variant node)
 {
-	FOREACH_WML_CHILD(music_node, node, "music") {
-		const std::string name = music_node->attr("name").str();
-		music_index[name].volume = wml::get_attr<float>(music_node, "volume", 1.0);
+	foreach(variant music_node, node["music"].as_list()) {
+		const std::string name = music_node["name"].as_string();
+		music_index[name].volume = music_node["volume"].as_decimal(decimal(1.0)).as_float();
 	}
 }
 

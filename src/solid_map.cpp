@@ -3,41 +3,40 @@
 #include "solid_map.hpp"
 #include "string_utils.hpp"
 #include "texture.hpp"
-#include "wml_node.hpp"
-#include "wml_utils.hpp"
+#include "variant.hpp"
 
-const_solid_map_ptr solid_map::create_object_solid_map_from_solid_node(wml::const_node_ptr node)
+const_solid_map_ptr solid_map::create_object_solid_map_from_solid_node(variant node)
 {
-	solid_map_ptr result(create_from_texture(graphics::texture::get(node->attr("image")), rect(node->attr("area"))));
-	result->id_ = node->attr("id");
+	solid_map_ptr result(create_from_texture(graphics::texture::get(node["image"].as_string()), rect(node["area"])));
+	result->id_ = node["id"].as_string();
 	return result;
 
 }
 
-void solid_map::create_object_solid_maps(wml::const_node_ptr node, std::vector<const_solid_map_ptr>& v)
+void solid_map::create_object_solid_maps(variant node, std::vector<const_solid_map_ptr>& v)
 {
-	FOREACH_WML_CHILD(solid_node, node, "solid") {
+	foreach(variant solid_node, node["solid"].as_list()) {
 		v.push_back(create_object_solid_map_from_solid_node(solid_node));
 	}
 
-	if(!node->has_attr("solid_area") || node->attr("solid_area").str() == "none") {
+	if(!node.has_key("solid_area")) {
 		return;
 	}
 
-	rect area(node->attr("solid_area"));
+	rect area(node["solid_area"]);
 	area = rect(area.x()*2, area.y()*2, area.w()*2, area.h()*2);
 
-	const int feet_width = wml::get_int(node, "feet_width", 0);
+	const int feet_width = node["feet_width"].as_int(0);
 
 	int legs_height = area.w()/2 + 1 - feet_width;
-	if(wml::get_bool(node, "has_feet", true) == false || node->has_attr("solid_offsets") || node->attr("solid_shape").str() == "rect" || legs_height < 0) {
+	if(node["has_feet"].as_bool(true) == false || node.has_key("solid_offsets") || node["solid_shape"].as_string_default() == "rect" || legs_height < 0) {
 		legs_height = 0;
 	}
 
 
 	//flat is a special case which says the solid area is to be
 	//precisely one pixel high.
-	if(node->attr("solid_shape").str() == "flat") {
+	if(node["solid_shape"].as_string_default() == "flat") {
 		legs_height = 0;
 		area = rect(area.x(), area.y()+area.h()-1, area.w(), 1);
 	}
@@ -48,8 +47,8 @@ void solid_map::create_object_solid_maps(wml::const_node_ptr node, std::vector<c
 		body_map->id_ = "body";
 		body_map->area_ = body;
 		body_map->solid_.resize(body.w()*body.h(), true);
-		if(node->has_attr("solid_offsets")) {
-			body_map->apply_offsets(wml::get_vector_int(node, "solid_offsets"));
+		if(node.has_key("solid_offsets")) {
+			body_map->apply_offsets(node["solid_offsets"].as_list_int());
 		}
 
 		body_map->calculate_side(0, -1, body_map->top_);
@@ -66,7 +65,7 @@ void solid_map::create_object_solid_maps(wml::const_node_ptr node, std::vector<c
 	}
 
 	if(legs_height) {
-		//std::cerr << "LEGS_HEIGHT: " << node->attr("id") << " " << legs_height << ", FEET_WIDTH: " << feet_width << "\n";
+		//std::cerr << "LEGS_HEIGHT: " << node["id"].as_string() << " " << legs_height << ", FEET_WIDTH: " << feet_width << "\n";
 		rect legs(area.x(), area.y2() - legs_height, area.w(), legs_height);
 		solid_map_ptr legs_map(new solid_map);
 		legs_map->id_ = "legs";
@@ -296,25 +295,22 @@ const_solid_info_ptr solid_info::create_from_solid_maps(const std::vector<const_
 	}
 }
 
-const_solid_info_ptr solid_info::create(wml::const_node_ptr node)
+const_solid_info_ptr solid_info::create(variant node)
 {
 	std::vector<const_solid_map_ptr> solid;
 	solid_map::create_object_solid_maps(node, solid);
 	return create_from_solid_maps(solid);
 }
 
-const_solid_info_ptr solid_info::create_platform(wml::const_node_ptr node)
+const_solid_info_ptr solid_info::create_platform(variant node)
 {
 	std::vector<const_solid_map_ptr> platform;
 
-	if(!node->has_attr("platform_area")) {
+	if(!node.has_key("platform_area")) {
 		return const_solid_info_ptr();
 	}
 
-	std::vector<std::string> v = util::split(node->attr("platform_area"), '|');
-	foreach(const std::string& area, v) {
-		solid_map::create_object_platform_maps(rect(area), platform);
-	}
+	solid_map::create_object_platform_maps(rect(node["platform_area"]), platform);
 
 	return create_from_solid_maps(platform);
 }

@@ -7,7 +7,7 @@
 #include "custom_object.hpp"
 #include "key.hpp"
 #include "player_info.hpp"
-#include "wml_node_fwd.hpp"
+#include "variant.hpp"
 
 class level;
 
@@ -16,9 +16,9 @@ class playable_custom_object : public custom_object
 public:
 	playable_custom_object(const custom_object& obj);
 	playable_custom_object(const playable_custom_object& obj);
-	playable_custom_object(wml::const_node_ptr node);
+	playable_custom_object(variant node);
 
-	virtual wml::node_ptr write() const;
+	virtual variant write() const;
 
 	virtual player_info* is_human() { return &player_info_; }
 	virtual const player_info* is_human() const { return &player_info_; }

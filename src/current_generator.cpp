@@ -3,12 +3,12 @@
 
 #include "current_generator.hpp"
 #include "formatter.hpp"
-#include "wml_node.hpp"
-#include "wml_utils.hpp"
+#include "variant.hpp"
+#include "variant_utils.hpp"
 
-current_generator_ptr current_generator::create(wml::const_node_ptr node)
+current_generator_ptr current_generator::create(variant node)
 {
-	const std::string& type = node->attr("type");
+	const std::string& type = node["type"].as_string();
 	if(type == "radial") {
 		return current_generator_ptr(new radial_current_generator(node));
 	} else if(type == "rect") {
@@ -30,9 +30,9 @@ radial_current_generator::radial_current_generator(int intensity, int radius)
   : intensity_(intensity), radius_(radius)
 {}
 
-radial_current_generator::radial_current_generator(wml::const_node_ptr node)
-  : intensity_(wml::get_int(node, "intensity")),
-    radius_(wml::get_int(node, "radius"))
+radial_current_generator::radial_current_generator(variant node)
+  : intensity_(node["intensity"].as_int()),
+    radius_(node["radius"].as_int())
 {}
 
 void radial_current_generator::generate(int center_x, int center_y, int target_x, int target_y, int target_mass, int* velocity_x, int* velocity_y) {
@@ -60,21 +60,21 @@ void radial_current_generator::generate(int center_x, int center_y, int target_x
 	*velocity_y += ydiff_normalized*intensity;
 }
 
-wml::node_ptr radial_current_generator::write() const
+variant radial_current_generator::write() const
 {
-	wml::node_ptr result(new wml::node("current_generator"));
-	result->set_attr("type", "radial");
-	result->set_attr("intensity", formatter() << intensity_);
-	result->set_attr("radius", formatter() << radius_);
-	return result;
+	variant_builder result;
+	result.add("type", "radial");
+	result.add("intensity", formatter() << intensity_);
+	result.add("radius", formatter() << radius_);
+	return result.build();
 }
 
 rect_current_generator::rect_current_generator(const rect& r, int xvelocity, int yvelocity, int strength)
   : rect_(r), xvelocity_(xvelocity), yvelocity_(yvelocity), strength_(strength)
 {}
 
-rect_current_generator::rect_current_generator(wml::const_node_ptr node)
-  : rect_(node->attr("rect")), xvelocity_(wml::get_int(node, "xvelocity")), yvelocity_(wml::get_int(node, "yvelocity")), strength_(wml::get_int(node, "strength"))
+rect_current_generator::rect_current_generator(variant node)
+  : rect_(node["rect"].as_string()), xvelocity_(node["xvelocity"].as_int()), yvelocity_(node["yvelocity"].as_int()), strength_(node["strength"].as_int())
 {}
 
 void rect_current_generator::generate(int center_x, int center_y, int target_x, int target_y, int target_mass, int* velocity_x, int* velocity_y)
@@ -124,13 +124,13 @@ void rect_current_generator::generate(int center_x, int center_y, int target_x, 
 	}
 }
 
-wml::node_ptr rect_current_generator::write() const
+variant rect_current_generator::write() const
 {
-	wml::node_ptr node(new wml::node("current_generator"));
-	node->set_attr("type", "rect");
-	node->set_attr("rect", rect_.to_string());
-	node->set_attr("xvelocity", formatter() << xvelocity_);
-	node->set_attr("yvelocity", formatter() << yvelocity_);
-	node->set_attr("strength", formatter() << strength_);
-	return node;
+	variant_builder node;
+	node.add("type", "rect");
+	node.add("rect", rect_.to_string());
+	node.add("xvelocity", formatter() << xvelocity_);
+	node.add("yvelocity", formatter() << yvelocity_);
+	node.add("strength", formatter() << strength_);
+	return node.build();
 }

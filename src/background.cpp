@@ -10,13 +10,13 @@
 #include "filesystem.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
+#include "json_parser.hpp"
 #include "level.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "surface_palette.hpp"
-#include "wml_node.hpp"
-#include "wml_parser.hpp"
-#include "wml_utils.hpp"
+#include "variant.hpp"
+#include "variant_utils.hpp"
 
 namespace {
 //a cache key with background name and palette ID.
@@ -30,7 +30,7 @@ boost::shared_ptr<background> background::get(const std::string& name, int palet
 
 	boost::shared_ptr<background>& obj = cache[id];
 	if(!obj) {
-		obj.reset(new background(wml::parse_wml_from_file("data/backgrounds/" + name + ".cfg"), palette_id));
+		obj.reset(new background(json::parse_from_file("data/backgrounds/" + name + ".cfg"), palette_id));
 		obj->id_ = name;
 	}
 
@@ -52,38 +52,38 @@ std::vector<std::string> background::get_available_backgrounds()
 	return result;
 }
 
-background::background(const wml::const_node_ptr& node, int palette) : palette_(palette)
+background::background(variant node, int palette) : palette_(palette)
 {
-	top_ = string_to_color(node->attr("top"));
-	bot_ = string_to_color(node->attr("bottom"));
+	top_ = string_to_color(node["top"].as_string());
+	bot_ = string_to_color(node["bottom"].as_string());
 
 	if(palette_ != -1) {
 		top_ = graphics::map_palette(top_, palette);
 		bot_ = graphics::map_palette(bot_, palette);
 	}
 
-	width_ = wml::get_int(node, "width");
-	height_ = wml::get_int(node, "height");
+	width_ = node["width"].as_int();
+	height_ = node["height"].as_int();
 
-	FOREACH_WML_CHILD(layer_node, node, "layer") {
+	foreach(variant layer_node, node["layer"].as_list()) {
 		layer bg;
-		bg.image = (*layer_node)["image"];
-		bg.image_formula = layer_node->attr("image_formula");
-		bg.xscale = wml::get_int(layer_node, "xscale", 100);
-		bg.yscale = wml::get_int(layer_node, "yscale", 100);
-		bg.xspeed = wml::get_int(layer_node, "xspeed", 0);
-		bg.xpad = wml::get_int(layer_node, "xpad", 0);
-		bg.xoffset = wml::get_int(layer_node, "xoffset", 0);
-		bg.yoffset = wml::get_int(layer_node, "yoffset", 0);
-		bg.scale = wml::get_int(layer_node, "scale", 1);
-		bg.blend = wml::get_bool(layer_node, "blend", true);
-		bg.notile = wml::get_bool(layer_node, "notile", false);
+		bg.image = layer_node["image"].as_string();
+		bg.image_formula = layer_node["image_formula"].as_string_default();
+		bg.xscale = layer_node["xscale"].as_int(100);
+		bg.yscale = layer_node["yscale"].as_int(100);
+		bg.xspeed = layer_node["xspeed"].as_int(0);
+		bg.xpad = layer_node["xpad"].as_int(0);
+		bg.xoffset = layer_node["xoffset"].as_int(0);
+		bg.yoffset = layer_node["yoffset"].as_int(0);
+		bg.scale = layer_node["scale"].as_int(1);
+		bg.blend = layer_node["blend"].as_bool(true);
+		bg.notile = layer_node["notile"].as_bool(false);
 		if(bg.scale < 1) {
 			bg.scale = 1;
 		}
 
 #ifndef SDL_VIDEO_OPENGL_ES
-		std::string blend_mode = layer_node->attr("mode");
+		std::string blend_mode = layer_node["mode"].as_string_default();
 		if(GLEW_EXT_blend_minmax) {
 			if(blend_mode == "GL_MAX") {
 				bg.mode = GL_MAX;
@@ -96,89 +96,89 @@ background::background(const wml::const_node_ptr& node, int palette) : palette_(
 #endif
 		
 		std::fill(bg.color, bg.color + 4, 0.0);
-		bg.color[0] = wml::get_attr<GLfloat>(layer_node, "red", 1.0);
-		bg.color[1] = wml::get_attr<GLfloat>(layer_node, "green", 1.0);
-		bg.color[2] = wml::get_attr<GLfloat>(layer_node, "blue", 1.0);
-		bg.color[3] = wml::get_attr<GLfloat>(layer_node, "alpha", 1.0);
+		bg.color[0] = layer_node["red"].as_decimal(decimal(1.0)).as_float();
+		bg.color[1] = layer_node["green"].as_decimal(decimal(1.0)).as_float();
+		bg.color[2] = layer_node["blue"].as_decimal(decimal(1.0)).as_float();
+		bg.color[3] = layer_node["alpha"].as_decimal(decimal(1.0)).as_float();
 
-		if(layer_node->has_attr("color_above")) {
+		if(layer_node.has_key("color_above")) {
 			bg.color_above.reset(new SDL_Color);
-			*bg.color_above = string_to_color(layer_node->attr("color_above"));
+			*bg.color_above = string_to_color(layer_node["color_above"].as_string());
 			if(palette_ != -1) {
 				*bg.color_above = graphics::map_palette(*bg.color_above, palette);
 			}
 		}
 
-		if(layer_node->has_attr("color_below")) {
+		if(layer_node.has_key("color_below")) {
 			bg.color_below.reset(new SDL_Color);
-			*bg.color_below = string_to_color(layer_node->attr("color_below"));
+			*bg.color_below = string_to_color(layer_node["color_below"].as_string());
 			if(palette_ != -1) {
 				*bg.color_below = graphics::map_palette(*bg.color_below, palette);
 			}
 		}
 
-		bg.y1 = wml::get_attr<int>(layer_node, "y1");
-		bg.y2 = wml::get_attr<int>(layer_node, "y2");
+		bg.y1 = layer_node["y1"].as_int();
+		bg.y2 = layer_node["y2"].as_int();
 
-		bg.foreground = wml::get_bool(layer_node, "foreground", false);
-		bg.tile_upwards = wml::get_bool(layer_node, "tile_upwards", false);
-		bg.tile_downwards = wml::get_bool(layer_node, "tile_downwards", false);
+		bg.foreground = layer_node["foreground"].as_bool(false);
+		bg.tile_upwards = layer_node["tile_upwards"].as_bool(false);
+		bg.tile_downwards = layer_node["tile_downwards"].as_bool(false);
 		layers_.push_back(bg);
 	}
 }
 
-wml::node_ptr background::write() const
+variant background::write() const
 {
-	wml::node_ptr res(new wml::node("background"));
+	variant_builder res;
 	char buf[128];
 	sprintf(buf, "%02x%02x%02x", top_.r, top_.g, top_.b);
-	res->set_attr("top", buf);
+	res.add("top", buf);
 	sprintf(buf, "%02x%02x%02x", bot_.r, bot_.g, bot_.b);
-	res->set_attr("bottom", buf);
-	res->set_attr("width", formatter() << width_);
-	res->set_attr("height", formatter() << height_);
+	res.add("bottom", buf);
+	res.add("width", formatter() << width_);
+	res.add("height", formatter() << height_);
 
 	foreach(const layer& bg, layers_) {
-		wml::node_ptr node(new wml::node("layer"));
-		node->set_attr("image", bg.image);
-		node->set_attr("xscale", formatter() << bg.xscale);
-		node->set_attr("yscale", formatter() << bg.yscale);
-		node->set_attr("xspeed", formatter() << bg.xspeed);
-		node->set_attr("xpad", formatter() << bg.xpad);
-		node->set_attr("xoffset", formatter() << bg.xoffset);
-		node->set_attr("yoffset", formatter() << bg.yoffset);
-		node->set_attr("y1", formatter() << bg.y1);
-		node->set_attr("y2", formatter() << bg.y2);
-		node->set_attr("scale", formatter() << bg.scale);
-		node->set_attr("red", formatter() << bg.color[0]);
-		node->set_attr("green", formatter() << bg.color[1]);
-		node->set_attr("blue", formatter() << bg.color[2]);
-		node->set_attr("alpha", formatter() << bg.color[3]);
+		variant_builder layer_node;
+		layer_node.add("image", bg.image);
+		layer_node.add("xscale", formatter() << bg.xscale);
+		layer_node.add("yscale", formatter() << bg.yscale);
+		layer_node.add("xspeed", formatter() << bg.xspeed);
+		layer_node.add("xpad", formatter() << bg.xpad);
+		layer_node.add("xoffset", formatter() << bg.xoffset);
+		layer_node.add("yoffset", formatter() << bg.yoffset);
+		layer_node.add("y1", formatter() << bg.y1);
+		layer_node.add("y2", formatter() << bg.y2);
+		layer_node.add("scale", formatter() << bg.scale);
+		layer_node.add("red", formatter() << bg.color[0]);
+		layer_node.add("green", formatter() << bg.color[1]);
+		layer_node.add("blue", formatter() << bg.color[2]);
+		layer_node.add("alpha", formatter() << bg.color[3]);
 
 		if(bg.color_above) {
 			sprintf(buf, "%02x%02x%02x", bg.color_above->r, bg.color_above->g, bg.color_above->b);
-			node->set_attr("color_above", buf);
+			layer_node.add("color_above", buf);
 		}
 
 		if(bg.color_below) {
 			sprintf(buf, "%02x%02x%02x", bg.color_below->r, bg.color_below->g, bg.color_below->b);
-			node->set_attr("color_below", buf);
+			layer_node.add("color_below", buf);
 		}
 		if(bg.foreground) {
-			node->set_attr("foreground", "true");
+			layer_node.add("foreground", "true");
 		}
 
 		if(bg.tile_upwards) {
-			node->set_attr("tile_upwards", "true");
+			layer_node.add("tile_upwards", "true");
 		}
 
 		if(bg.tile_downwards) {
-			node->set_attr("tile_downwards", "true");
+			layer_node.add("tile_downwards", "true");
 		}
 
-		res->add_child(node);
+		res.add("layer", layer_node.build());
 	}
-	return res;
+	return res.build();
 }
 
 void background::draw(int x, int y, const rect& area, const std::vector<rect>& opaque_areas, int rotation, int cycle) const

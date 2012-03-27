@@ -103,7 +103,7 @@ schema::attribute_info parse_attribute_info(const std::string& str)
 }
 
 schema::schema(wml::const_node_ptr node)
-  : id_(node->name()), default_prefix_(node->attr("default_prefix"))
+  : id_(node->name()), default_prefix_(node["default_prefix"].as_string())
 {
 	for(wml::node::const_attr_iterator i = node->begin_attr();
 	    i != node->end_attr(); ++i) {

@@ -62,6 +62,27 @@ color::color( const std::string& str)
 	}
 }
 
+color::color(const variant& v)
+{
+	std::vector<int> vec = v.as_list_int();
+	const int r = vec.size() > 0 ? vec[0] : 0;
+	const int g = vec.size() > 1 ? vec[1] : 0;
+	const int b = vec.size() > 2 ? vec[2] : 0;
+	const int a = vec.size() > 3 ? vec[3] : 255;
+	*this = color(r,g,b,a);
+}
+
+variant color::write() const
+{
+	std::vector<variant> v;
+	v.reserve(4);
+	v.push_back(variant(static_cast<int>(r())));
+	v.push_back(variant(static_cast<int>(g())));
+	v.push_back(variant(static_cast<int>(b())));
+	v.push_back(variant(static_cast<int>(a())));
+	return variant(&v);
+}
+
 
 variant color::get_value(const std::string& key) const
 {

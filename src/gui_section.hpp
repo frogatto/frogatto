@@ -7,7 +7,7 @@
 
 #include "geometry.hpp"
 #include "texture.hpp"
-#include "wml_node_fwd.hpp"
+#include "variant.hpp"
 
 class gui_section;
 typedef boost::shared_ptr<const gui_section> const_gui_section_ptr;
@@ -15,10 +15,10 @@ typedef boost::shared_ptr<const gui_section> const_gui_section_ptr;
 class gui_section
 {
 public:
-	static void init(wml::const_node_ptr node);
+	static void init(variant node);
 	static const_gui_section_ptr get(const std::string& key);
 
-	explicit gui_section(wml::const_node_ptr node);
+	explicit gui_section(variant node);
 
 	void blit(int x, int y) const { blit(x, y, width(), height()); }
 	void blit(int x, int y, int w, int h) const;

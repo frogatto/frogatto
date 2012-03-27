@@ -1,0 +1,32 @@
+	  
+	  ┌─────────────┐
+	  │ Known Bugs: │
+	╔═╧═════════════╧═══════════════════════════════════════════════════════════════╗
+	║ Critical:                                                                     ║
+	║  ▷ A tile accepts any nearby farm as feeding it, regardless of team.          ║
+	║  ▷ Going to war makes some tiles untradeable.                                 ║
+	║  ▷ End turn function does not handle multiple starves & camps right.          ║
+	║  ▷ Ghost tiles sometimes exist when a tile is deleted.                        ║
+	║  ▷ Tiles can occasionally be dragged off board.                               ║
+	║  ▷ Game slows down and freezes when the board fills up.                       ║
+	║  ▶ Replacing tiles when no tiles in hand replaces less one tile.              ║
+	║  ▷ Farm, then village, then warrior blocking food for village but connecting  ║
+	║    to farm, starves village when it should bring food to it.                  ║
+	║  ▶ Warrior continue plays do not dissallow building superstructures.          ║
+	║  ▶                                                                            ║
+	║                                                                               ║
+	║ Cosmetic:                                                                     ║
+	║  ▷ Z-levels not set correctly (or at all).                                    ║
+	║  ▷ Starvation skull sometimes fires twice. (see camp bit, above)              ║	Caused when two starves at once. The end turn function double-writes the vars.play data, re-writing one of the previous tiles into it.
+	║  ▷ Replace help should say tiles in hand less spent tiles, not just tiles in  ║
+	║    hand.                                                                      ║
+	║  ▶ War screen text sometimes is too wide and shows up in normal mode.         ║
+	║  ▶                                                                            ║
+	║                                                                               ║
+	║ Minor:                                                                        ║
+	║  ▶ More comprehensive context help.                                           ║
+	║  ▷ Turn indicator would be nice.                                              ║
+	║  ▶                                                                            ║
+	║                                                          ▷ fixed  ▶ not fixed ║
+	╚═══════════════════════════════════════════════════════════════════════════════╝
+	

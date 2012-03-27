@@ -7,7 +7,6 @@
 #include "formula_callable.hpp"
 #include "formula_function.hpp"
 #include "variant.hpp"
-#include "wml_node_fwd.hpp"
 
 class custom_object;
 class entity;
@@ -17,7 +16,7 @@ bool in_speech_dialog ();
 
 using game_logic::function_symbol_table;
 function_symbol_table& get_custom_object_functions_symbol_table();
-void init_custom_object_functions(wml::const_node_ptr node);
+void init_custom_object_functions(variant node);
 
 class entity_command_callable : public game_logic::formula_callable {
 public:

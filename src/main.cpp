@@ -34,6 +34,7 @@
 #include "iphone_device_info.h"
 #include "of_bridge.h"
 #include "joystick.hpp"
+#include "json_parser.hpp"
 #include "key.hpp"
 #include "level.hpp"
 #include "level_object.hpp"
@@ -54,11 +55,7 @@
 #include "texture_frame_buffer.hpp"
 #include "tile_map.hpp"
 #include "unit_test.hpp"
-#include "wml_node.hpp"
-#include "wml_parser.hpp"
-#include "wml_schema.hpp"
-#include "wml_utils.hpp"
-#include "wml_writer.hpp"
+#include "variant_utils.hpp"
 
 #if defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
 #include "eglport.h"
@@ -260,6 +257,11 @@ extern "C" int main(int argc, char** argv)
 
 	std::cerr << "\n";
 
+	if(utility_program.empty() == false && test::utility_needs_video(utility_program) == false) {
+		test::run_utility(utility_program, util_args);
+		return 0;
+	}
+
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_BLACKBERRY) || defined(__ANDROID__)
 	//on the iPhone and PlayBook, try to restore the auto-save if it exists
 	if(sys::file_exists(preferences::auto_save_file_path()) && sys::read_file(std::string(preferences::auto_save_file_path()) + ".stat") == "1") {
@@ -406,36 +408,35 @@ extern "C" int main(int argc, char** argv)
 
 	graphics::texture::manager texture_manager;
 
-	wml::const_node_ptr preloads;
+	variant preloads;
 	loading_screen loader;
 	try {
-		wml::schema::init(wml::parse_wml_from_file("data/schema.cfg"));
-
-		sound::init_music(wml::parse_wml_from_file("data/music.cfg"));
+		sound::init_music(json::parse_from_file("data/music.cfg"));
 
 		std::string filename = "data/fonts." + i18n::get_locale() + ".cfg";
 		if (!sys::file_exists(filename))
 			filename = "data/fonts.cfg";
-		graphical_font::init(wml::parse_wml_from_file(filename));
+		graphical_font::init(json::parse_from_file(filename));
 
-		preloads = wml::parse_wml_from_file("data/preload.cfg");
-		int preload_items = std::distance(preloads->begin_child("preload"), preloads->end_child("preload"));
+		preloads = json::parse_from_file("data/preload.cfg");
+		int preload_items = preloads["preload"].num_elements();
 		loader.set_number_of_items(preload_items+7); // 7 is the number of items that will be loaded below
 		custom_object::init();
 		loader.draw_and_increment(_("Initializing custom object functions"));
-		init_custom_object_functions(wml::parse_wml_from_file("data/functions.cfg"));
+		init_custom_object_functions(json::parse_from_file("data/functions.cfg"));
 		loader.draw_and_increment(_("Initializing textures"));
 		loader.load(preloads);
 		loader.draw_and_increment(_("Initializing tiles"));
-		tile_map::init(wml::parse_wml_from_file("data/tiles.cfg",
-		               wml::schema::get("tiles")));
+		tile_map::init(json::parse_from_file("data/tiles.cfg"));
 		loader.draw_and_increment(_("Initializing GUI"));
 
-		wml::const_node_ptr gui_node = wml::parse_wml_from_file(preferences::load_compiled() ? "data/compiled/gui.cfg" : "data/gui.cfg");
+		variant gui_node = json::parse_from_file(preferences::load_compiled() ? "data/compiled/gui.cfg" : "data/gui.cfg");
 		gui_section::init(gui_node);
 		loader.draw_and_increment(_("Initializing GUI"));
 		framed_gui_element::init(gui_node);
-	} catch(const wml::parse_error& e) {
+
+	} catch(const json::parse_error& e) {
+		std::cerr << "ERROR PARSING: " << e.error_message() << "\n";
 		return 0;
 	}
 	loader.draw(_("Loading level"));

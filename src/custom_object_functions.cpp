@@ -21,6 +21,7 @@
 #include "formula_callable_definition.hpp"
 #include "formula_profiler.hpp"
 #include "i18n.hpp"
+#include "json_parser.hpp"
 #include "level.hpp"
 #include "level_runner.hpp"
 #include "object_events.hpp"
@@ -43,12 +44,6 @@
 #include "text_entry_widget.hpp"
 #include "thread.hpp"
 #include "unit_test.hpp"
-#include "wml_formula_adapter.hpp"
-#include "wml_parser.hpp"
-#include "wml_node.hpp"
-#include "wml_schema.hpp"
-#include "wml_utils.hpp"
-#include "wml_writer.hpp"
 #include "preferences.hpp"
 #include "settings_dialog.hpp"
 
@@ -176,9 +171,12 @@ public:
 			const std::string path = std::string(preferences::user_data_path()) + "/" + fname;
 			if(sys::file_exists(path)) {
 				has_options = true;
-				const wml::node_ptr doc = wml::parse_wml_from_file(path);
-				if(doc) {
-					options.back() = formatter() << "Slot " << (nslot+1) << ": " << doc->attr("title");
+				try {
+					const variant doc = json::parse_from_file(path);
+					if(doc.is_null() == false) {
+						options.back() = formatter() << "Slot " << (nslot+1) << ": " << doc["title"].as_string();
+					}
+				} catch(json::parse_error&) {
 				}
 			}
 
@@ -211,12 +209,12 @@ public:
 	virtual void execute(level& lvl, entity& ob) const {
 		lvl.player()->get_entity().save_game();
 		if(persistent_) {
-			wml::node_ptr node = lvl.write();
+			variant node = lvl.write();
 			if(sound::current_music().empty() == false) {
-				node->set_attr("music", sound::current_music());
+				node = node.add_attr(variant("music"), variant(sound::current_music()));
 			}
 
-			sys::write_file(preferences::save_file_path(), wml::output(node));
+			sys::write_file(preferences::save_file_path(), node.write_json());
 		}
 	}
 };
@@ -250,10 +248,10 @@ class load_game_command : public entity_command_callable
 				std::vector<std::string> option_descriptions;
 				foreach(const std::string& option, save_options) {
 					const std::string fname = std::string(preferences::user_data_path()) + "/" + option;
-					const wml::node_ptr doc = wml::parse_wml_from_file(fname);
-					if(doc) {
-						option_descriptions.push_back(formatter() << "Slot " << nslot << ": " << doc->attr("title"));
-					} else {
+					try {
+						const variant doc = json::parse_from_file(fname);
+						option_descriptions.push_back(formatter() << "Slot " << nslot << ": " << doc["title"].as_string());
+					} catch(json::parse_error&) {
 						option_descriptions.push_back(formatter() << "Slot " << nslot << ": Frogatto");
 					}
 
@@ -2048,13 +2046,13 @@ bool consecutive_periods(char a, char b) {
 
 FUNCTION_DEF(eval, 1, 2, "eval(string formula, [obj context]): evaluate the given formula in the given context")
 	std::map<std::string, game_logic::formula_ptr> cache;
-	const std::string fml = args()[0]->evaluate(variables).as_string();
-	game_logic::formula_ptr& f = cache[fml];
+	const variant fml = args()[0]->evaluate(variables);
+	game_logic::formula_ptr& f = cache[fml.as_string()];
 	if(f.get() == NULL) {
 		f = game_logic::formula::create_optional_formula(fml);
 	}
 
-	ASSERT_LOG(f.get() != NULL, "INVALID FORMULA PASSED TO EVAL: " << fml);
+	ASSERT_LOG(f.get() != NULL, "INVALID FORMULA PASSED TO EVAL: " << fml.as_string());
 
 	if(args().size() > 1) {
 		return f->execute(*args()[1]->evaluate(variables).as_callable());
@@ -2063,16 +2061,11 @@ FUNCTION_DEF(eval, 1, 2, "eval(string formula, [obj context]): evaluate the give
 	}
 END_FUNCTION_DEF(eval)
 
-FUNCTION_DEF(get_document, 1, 2, "get_document(string doc, [string schema]): return reference to the given WML document, optionally using the given schema")
+FUNCTION_DEF(get_document, 1, 1, "get_document(string filename): return reference to the given JSON document")
 	const std::string docname = args()[0]->evaluate(variables).as_string();
-	std::string schema;
-	if(args().size() > 1) {
-		schema = args()[1]->evaluate(variables).as_string();
-	}
 
-	static std::map<std::pair<std::string,std::string>, variant> cache;
-	std::pair<std::string, std::string> key(docname, schema);
-	variant& v = cache[key];
+	static std::map<std::string, variant> cache;
+	variant& v = cache[docname];
 	if(v.is_null() == false) {
 		return v;
 	}
@@ -2081,16 +2074,12 @@ FUNCTION_DEF(get_document, 1, 2, "get_document(string doc, [string schema]): ret
 	ASSERT_LOG(docname[0] != '/', "DOCUMENT NAME BEGINS WITH / " << docname);
 	ASSERT_LOG(std::adjacent_find(docname.begin(), docname.end(), consecutive_periods) == docname.end(), "DOCUMENT NAME CONTAINS ADJACENT PERIODS " << docname);
 
-	const wml::schema* sch = NULL;
-	if(schema.empty() == false) {
-		sch = wml::schema::get(schema);
-		ASSERT_LOG(sch != NULL, "COULD NOT FIND SCHEMA: " << schema);
+	try {
+		const variant v = json::parse_from_file(docname);
+		return v;
+	} catch(json::parse_error&) {
+		return variant();
 	}
-
-	const wml::node_ptr doc = wml::parse_wml_from_file(docname, sch);
-
-	v = variant(new wml::node_callable(doc));
-	return v;
 END_FUNCTION_DEF(get_document)
 
 class custom_object_function_symbol_table : public function_symbol_table
@@ -2131,13 +2120,11 @@ function_symbol_table& get_custom_object_functions_symbol_table()
 	return table;
 }
 
-void init_custom_object_functions(wml::const_node_ptr node)
+void init_custom_object_functions(variant node)
 {
-	wml::node::const_child_iterator i1 = node->begin_child("function");
-	wml::node::const_child_iterator i2 = node->end_child("function");
-	for(; i1 != i2; ++i1) {
-		const std::string& name = i1->second->attr("name");
-		std::vector<std::string> args = util::split(i1->second->attr("args"));
+	foreach(variant fn, node["function"].as_list()) {
+		const std::string& name = fn["name"].as_string();
+		std::vector<std::string> args = util::split(fn["args"].as_string());
 
 		const std::string* first_arg = NULL;
 		const std::string* last_arg = NULL;
@@ -2149,12 +2136,12 @@ void init_custom_object_functions(wml::const_node_ptr node)
 		game_logic::formula_callable_definition_ptr args_definition = game_logic::create_formula_callable_definition(first_arg, last_arg);
 
 		recursive_function_symbol_table recursive_symbols(name, args, &get_custom_object_functions_symbol_table());
-		const_formula_ptr fml(new formula(i1->second->attr("formula"), &recursive_symbols, args_definition.get()));
+		const_formula_ptr fml(new formula(fn["formula"], &recursive_symbols, args_definition.get()));
 		get_custom_object_functions_symbol_table().add_formula_function(
 		    name, fml, const_formula_ptr(), args);
 		recursive_symbols.resolve_recursive_calls(fml);
 		std::vector<std::string> names = get_custom_object_functions_symbol_table().get_function_names();
-		assert(std::count(names.begin(), names.end(), i1->second->attr("name").val()));
+		assert(std::count(names.begin(), names.end(), fn["name"].as_string()));
 	}
 }
 

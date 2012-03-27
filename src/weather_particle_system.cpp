@@ -3,9 +3,9 @@
 #include <vector>
 
 #include "weather_particle_system.hpp"
-#include "wml_utils.hpp"
+#include "variant_utils.hpp"
 
-weather_particle_system_factory::weather_particle_system_factory (wml::const_node_ptr node)
+weather_particle_system_factory::weather_particle_system_factory (variant node)
  : info(node)
 {
 	

@@ -1,16 +1,16 @@
 #include <string>
 #include <iostream>
 
+#include "foreach.hpp"
 #include "surface_cache.hpp"
 #include "loading_screen.hpp"
-#include "wml_node.hpp"
 #include "custom_object_type.hpp"
-#include "wml_utils.hpp"
 #include "raster.hpp"
 #include "graphical_font.hpp"
 #include "geometry.hpp"
 #include "i18n.hpp"
 #include "texture.hpp"
+#include "variant.hpp"
 
 loading_screen::loading_screen (int items) : items_(items), status_(0),
                                              started_at_(SDL_GetTicks())
@@ -27,17 +27,17 @@ loading_screen::loading_screen (int items) : items_(items), status_(0),
 	}
 }
 
-void loading_screen::load (wml::const_node_ptr node)
+void loading_screen::load(variant node)
 {
 	//custom_object_type::get("frogatto_playable");
-	FOREACH_WML_CHILD(preload_node, node, "preload")
+	foreach(variant preload_node, node["preload"].as_list())
 	{
-		draw_and_increment(wml::get_str(preload_node, "message"));
-		if (wml::get_str(preload_node, "type") == "object")
+		draw_and_increment(preload_node["message"].as_string());
+		if(preload_node["type"].as_string() == "object")
 		{
-			custom_object_type::get(wml::get_str(preload_node, "name"));
-		} else if (wml::get_str(preload_node, "type") == "texture") {
-			graphics::texture::get(wml::get_str(preload_node, "name"));
+			custom_object_type::get(preload_node["name"].as_string());
+		} else if(preload_node["type"].as_string() == "texture") {
+			graphics::texture::get(preload_node["name"].as_string());
 		}
 	}
 }

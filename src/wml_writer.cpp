@@ -3,6 +3,7 @@
 
 #include "foreach.hpp"
 #include "string_utils.hpp"
+#include "unit_test.hpp"
 #include "wml_node.hpp"
 #include "wml_writer.hpp"
 

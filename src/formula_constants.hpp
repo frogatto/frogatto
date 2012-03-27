@@ -2,7 +2,6 @@
 #define FORMULA_CONSTANTS_HPP_INCLUDED
 
 #include "variant.hpp"
-#include "wml_node_fwd.hpp"
 
 #include <string>
 
@@ -14,7 +13,7 @@ variant get_constant(const std::string& id);
 class constants_loader
 {
 public:
-	explicit constants_loader(wml::const_node_ptr node);
+	explicit constants_loader(variant node);
 	~constants_loader();
 
 	bool same_as_base() const { return same_as_base_; }

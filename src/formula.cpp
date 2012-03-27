@@ -34,7 +34,7 @@
 #include "random.hpp"
 #include "string_utils.hpp"
 #include "unit_test.hpp"
-#include "wml_node.hpp"
+#include "variant_utils.hpp"
 
 namespace {
 	//the last formula that was executed; used for outputting debugging info.
@@ -74,27 +74,12 @@ namespace game_logic
 		ASSERT_LOG(false, "Could not get value by slot from formula callable " << slot);
 		return variant(0); //so VC++ doesn't complain
 	}
-	
-	map_formula_callable::map_formula_callable(wml::const_node_ptr node)
-	: formula_callable(false), fallback_(NULL)
+
+	map_formula_callable::map_formula_callable(variant node)
+	  : formula_callable(false), fallback_(NULL)
 	{
-		if(!node) {
-			return;
-		}
-		
-		for(wml::node::const_attr_iterator i = node->begin_attr(); i != node->end_attr(); ++i) {
-			variant var;
-			var.serialize_from_string(i->second);
-			add(i->first, var);
-		}
-	}
-	
-	void map_formula_callable::write(wml::node_ptr node) const
-	{
-		for(std::map<std::string,variant>::const_iterator i = values_.begin(); i != values_.end(); ++i) {
-			std::string val;
-			i->second.serialize_to_string(val);
-			node->set_attr(i->first, val);
+		foreach(const variant_pair& value, node.as_map()) {
+			values_[value.first.as_string()] = value.second;
 		}
 	}
 	
@@ -130,6 +115,16 @@ namespace game_logic
 		} else {
 			return itor->second;
 		}
+	}
+
+	variant map_formula_callable::write() const
+	{
+		variant_builder result;
+		for(std::map<std::string, variant>::const_iterator i = values_.begin();
+		    i != values_.end(); ++i) {
+			result.add(i->first, i->second);
+		}
+		return result.build();
 	}
 	
 	void map_formula_callable::get_inputs(std::vector<formula_input>* inputs) const
@@ -418,6 +413,12 @@ private:
 		}
 
 		if(!left.is_function()) {
+			//TODO: Nasty hack to make null() still work -- deprecated in
+			//favor of null.
+			if(left_->str() == "null" && args_.empty()) {
+				return variant();
+			}
+
 			std::cerr << "ERROR: " << left_->str() << " IS NOT A VALID FUNCTION\n";
 		}
 		
@@ -804,7 +805,7 @@ private:
 
 class decimal_expression : public formula_expression {
 public:
-	explicit decimal_expression(int64_t i, int64_t f) : formula_expression("_decimal"), v_(i*VARIANT_DECIMAL_PRECISION + f, variant::DECIMAL_VARIANT)
+	explicit decimal_expression(const decimal& d) : formula_expression("_decimal"), v_(d)
 	{}
 private:
 	variant execute(const formula_callable& /*variables*/) const {
@@ -846,7 +847,7 @@ public:
 			
 				substitution sub;
 				sub.pos = pos;
-				sub.calculation.reset(new formula(formula_str));
+				sub.calculation.reset(new formula(variant(formula_str)));
 				subs_.push_back(sub);
 			}
 		
@@ -1009,7 +1010,7 @@ void parse_set_args(const token* i1, const token* i2,
 			++parens;
 		} else if(i1->type == TOKEN_RPARENS || i1->type == TOKEN_RSQUARE) {
 			--parens;
-		} else if( i1->type == TOKEN_POINTER && !parens ) {
+		} else if((i1->type == TOKEN_POINTER || i1->type == TOKEN_COLON) && !parens ) {
 			if (!check_pointer) {
 				check_pointer = true;
 				res->push_back(parse_expression(beg,i1, symbols, NULL));
@@ -1241,7 +1242,7 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 			}
 		}
 
-		const_formula_ptr fml(new formula(formula_str, &recursive_symbols, args_definition.get()));
+		const_formula_ptr fml(new formula(variant(formula_str), &recursive_symbols, args_definition.get()));
 		recursive_symbols.resolve_recursive_calls(fml);
 		
 		if(formula_name.empty()) {
@@ -1250,7 +1251,7 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 		
 		const std::string precond = "";
 		symbols->add_formula_function(formula_name, fml,
-									  formula::create_optional_formula(precond, symbols), args);
+									  formula::create_optional_formula(variant(precond), symbols), args);
 		if((i1 == i2) || (i1 == (i2-1))) {
 			return expression_ptr(new function_list_expression(symbols));
 		}
@@ -1371,6 +1372,8 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 			if(i1->type == TOKEN_KEYWORD) {
 				if(std::string(i1->begin,i1->end) == "functions") {
 					return expression_ptr(new function_list_expression(symbols));
+				} else if(std::string(i1->begin,i1->end) == "null") {
+					return expression_ptr(new null_expression());
 				}
 			} else if(i1->type == TOKEN_CONST_IDENTIFIER) {
 				return expression_ptr(new const_identifier_expression(
@@ -1385,22 +1388,8 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 				int n = strtol(std::string(i1->begin,i1->end).c_str(), NULL, 0);
 				return expression_ptr(new integer_expression(n));
 			} else if(i1->type == TOKEN_DECIMAL) {
-				char* endptr = NULL;
-				char* enddec = NULL;
 				std::string decimal_string(i1->begin, i1->end);
-				int64_t n = strtol(decimal_string.c_str(), &endptr, 0);
-				int64_t m = strtol(endptr+1, &enddec, 0);
-				int dist = enddec - endptr;
-				while(dist > (DECIMAL_PLACES+1)) {
-					m /= 10;
-					--dist;
-				}
-				while(dist < (DECIMAL_PLACES+1)) {
-					m *= 10;
-					++dist;
-				}
-
-				return expression_ptr(new decimal_expression(n, m));
+				return expression_ptr(new decimal_expression(decimal::from_string(decimal_string)));
 			} else if(i1->type == TOKEN_STRING_LITERAL) {
 				bool translate = *(i1->begin) == '~';
 				return expression_ptr(new string_expression(std::string(i1->begin+1,i1->end-1), translate));
@@ -1526,32 +1515,38 @@ formula_ptr formula::create_string_formula(const std::string& str)
 	return res;
 }
 
-formula_ptr formula::create_optional_formula(const wml::value& val, function_symbol_table* symbols, const formula_callable_definition* callable_definition)
+formula_ptr formula::create_optional_formula(const variant& val, function_symbol_table* symbols, const formula_callable_definition* callable_definition)
 {
-	if(val.empty()) {
+	if(val.is_null() || val.is_string() && val.as_string().empty()) {
 		return formula_ptr();
 	}
 	
 	try {
 		return formula_ptr(new formula(val, symbols, callable_definition));
 	} catch(...) {
-		if(val.filename()) {
-			std::cerr << *val.filename() << " " << val.line() << ": ";
-		}
+//TODO: add detection of where the variant came from.
+//		if(val.filename()) {
+//			std::cerr << *val.filename() << " " << val.line() << ": ";
+//		}
 		
 		//for now die a horrible death on such errors
-		ASSERT_LOG(false, "ERROR parsing optional formula '" << val << "'");
+		ASSERT_LOG(false, "ERROR parsing optional formula '" << val.as_string() << "'");
 		
 		return formula_ptr();
 	}
 }
 
-formula::formula(const wml::value& val, function_symbol_table* symbols, const formula_callable_definition* callable_definition) : str_(val.str()), filename_(val.filename()), line_(val.line())
+formula::formula(const variant& val, function_symbol_table* symbols, const formula_callable_definition* callable_definition) : str_(val)
 {
 	using namespace formula_tokenizer;
-	
+
+	if(str_.is_int() || str_.is_bool() || str_.is_decimal()) {
+		//Allow ints, bools, and decimals to be interpreted as formulae.
+		str_ = variant(str_.string_cast());
+	}
+
 	std::vector<token> tokens;
-	std::string::const_iterator i1 = str_.begin(), i2 = str_.end();
+	std::string::const_iterator i1 = str_.as_string().begin(), i2 = str_.as_string().end();
 	while(i1 != i2) {
 		try {
 			tokens.push_back(get_token(i1,i2));
@@ -1631,9 +1626,10 @@ formula::formula(const wml::value& val, function_symbol_table* symbols, const fo
 
 			std::cerr << std::string(begin_line, tok.begin) << "\n";
 
+			//TODO: extract info from str_ about the location of the formula.
 			ASSERT_LOG(false, "ERROR WHILE PARSING FORMULA AT "
-			  << (filename_ ? *filename_ : "UNKNOWN") << ":"
-			  << (line_ + nline) << " " << error_msg << "\n"
+//			  << (filename_ ? *filename_ : "UNKNOWN") << ":"
+//			  << (line_ + nline) << " " << error_msg << "\n"
 			  << std::string(begin_line, end_line) << "\n"
 			  << whitespace << "^\n");
 		}
@@ -1646,7 +1642,7 @@ formula::formula(const wml::value& val, function_symbol_table* symbols, const fo
 			expr_ = expression_ptr(new null_expression());
 		}	
 	} catch(formula_error&) {
-		std::cerr << "ERROR WHILE PARSING AT " << (filename_ ? *filename_ : "UNKNOWN") << ":" << line_ << "::\n" << str_ << "\n";
+		std::cerr << "ERROR WHILE PARSING AT " << (str_.get_debug_info() ? str_.get_debug_info()->message() : "UNKNOWN") << "::\n" << str_ << "\n";
 		throw;
 	}
 }
@@ -1659,23 +1655,20 @@ formula::~formula() {
 
 void formula::output_debug_info() const
 {
-	std::cerr << "FORMULA: ";
-	if(filename_) {
-		std::cerr << *filename_ << " " << line_ << ": ";
-	}
+	std::cerr << "FORMULA: " << (str_.get_debug_info() ? str_.get_debug_info()->message() : "(UNKNOWN LOCATION): ");
+	//TODO: add debug info from str_ variant here.
 	
-	std::cerr << str_ << "\n";
+	std::cerr << str_.as_string() << "\n";
 }
 
 variant formula::execute(const formula_callable& variables) const
 {
 	last_executed_formula = this;
+		return expr_->evaluate(variables);
 	try {
 		return expr_->evaluate(variables);
 	} catch(type_error& e) {
-		if(filename_) {
-			std::cerr << *filename_ << " " << line_ << ": ";
-		}
+		//TODO: add debug info from str_ here.
 		std::cerr << "formula type error: " << e.message << "\n";
 
 		throw formula_error();
@@ -1692,25 +1685,25 @@ variant formula::execute() const
 }
 
 UNIT_TEST(formula_slice) {
-	CHECK(formula("myList[2:4] where myList = [1,2,3,4,5,6]").execute() == formula("[3,4]").execute(), "test failed");
-	CHECK(formula("myList[0:2] where myList = [1,2,3,4,5,6]").execute() == formula("[1,2]").execute(), "test failed");
-	CHECK(formula("myList[1:4] where myList = [0,2,4,6,8,10,12,14]").execute() == formula("[2,4,6]").execute(), "test failed");
+	CHECK(formula(variant("myList[2:4] where myList = [1,2,3,4,5,6]")).execute() == formula(variant("[3,4]")).execute(), "test failed");
+	CHECK(formula(variant("myList[0:2] where myList = [1,2,3,4,5,6]")).execute() == formula(variant("[1,2]")).execute(), "test failed");
+	CHECK(formula(variant("myList[1:4] where myList = [0,2,4,6,8,10,12,14]")).execute() == formula(variant("[2,4,6]")).execute(), "test failed");
 }
 	
 	
 UNIT_TEST(formula_in) {
-	CHECK(formula("1 in [4,5,6]").execute() == variant(0), "test failed");
-	CHECK(formula("5 in [4,5,6]").execute() == variant(1), "test failed");
+	CHECK(formula(variant("1 in [4,5,6]")).execute() == variant(0), "test failed");
+	CHECK(formula(variant("5 in [4,5,6]")).execute() == variant(1), "test failed");
 }
 
 UNIT_TEST(formula_fn) {
 	function_symbol_table symbols;
-	CHECK(formula("def f(g) g(5) + 1; f(def(n) n*n)", &symbols).execute() == variant(26), "test failed");
+	CHECK(formula(variant("def f(g) g(5) + 1; f(def(n) n*n)"), &symbols).execute() == variant(26), "test failed");
 }
 
 UNIT_TEST(array_index) {
-	formula f("map(range(6), 'n', elements[n]) = elements "
-			  "where elements = [5, 6, 7, 8, 9, 10]");
+	formula f(variant("map(range(6), 'n', elements[n]) = elements "
+			          "where elements = [5, 6, 7, 8, 9, 10]"));
 	CHECK(f.execute() == variant(1), "test failed");
 }
 
@@ -1726,7 +1719,7 @@ UNIT_TEST(dot_precedence) {
 	}
 	callable2->add("item", variant(&v));
 	callable->add("obj", variant(callable2));
-	formula f("obj.item[n].value where n = 2");
+	formula f(variant("obj.item[n].value where n = 2"));
 	const variant result = f.execute(*callable);
 	CHECK(result == variant(2), "test failed: " << result.to_debug_string());
 }
@@ -1735,27 +1728,27 @@ UNIT_TEST(short_circuit) {
 	map_formula_callable* callable = new map_formula_callable;
 	variant ref(callable);
 	callable->add("x", variant(0));
-	formula f("x and (5/x)");
+	formula f(variant("x and (5/x)"));
 	f.execute(*callable);
 }
 
 UNIT_TEST(formula_decimal) {
-	CHECK_EQ(formula("0.0005").execute().string_cast(), "0.000500");
-    CHECK_EQ(formula("0.005").execute().string_cast(), "0.005000");
-	CHECK_EQ(formula("0.05").execute().string_cast(), "0.050000");
-	CHECK_EQ(formula("0.5").execute().string_cast(), "0.500000");
-	CHECK_EQ(formula("8.5 + 0.5").execute().string_cast(), "9.000000");
-	CHECK_EQ(formula("4 * (-1.1)").execute().string_cast(), "-4.400000");
+	CHECK_EQ(formula(variant("0.0005")).execute().string_cast(), "0.0005");
+    CHECK_EQ(formula(variant("0.005")).execute().string_cast(), "0.005");
+	CHECK_EQ(formula(variant("0.05")).execute().string_cast(), "0.05");
+	CHECK_EQ(formula(variant("0.5")).execute().string_cast(), "0.5");
+	CHECK_EQ(formula(variant("8.5 + 0.5")).execute().string_cast(), "9.0");
+	CHECK_EQ(formula(variant("4 * (-1.1)")).execute().string_cast(), "-4.4");
 }
 
 UNIT_TEST(map_to_maps_FAILS) {
-	CHECK_EQ(formula("{'a' -> ({'b' -> 2})}").execute().string_cast(), formula("{'a' -> {'b' -> 2}}").execute().string_cast());
+	CHECK_EQ(formula(variant("{'a' -> ({'b' -> 2})}")).execute().string_cast(), formula(variant("{'a' -> {'b' -> 2}}")).execute().string_cast());
 }
 
 BENCHMARK(formula_if) {
 	static map_formula_callable* callable = new map_formula_callable;
 	callable->add("x", variant(1));
-	static formula f("if(x, 1, 0)");
+	static formula f(variant("if(x, 1, 0)"));
 	BENCHMARK_LOOP {
 		f.execute(*callable);
 	}
@@ -1764,7 +1757,7 @@ BENCHMARK(formula_if) {
 BENCHMARK(formula_add) {
 	static map_formula_callable* callable = new map_formula_callable;
 	callable->add("x", variant(1));
-	static formula f("x+1");
+	static formula f(variant("x+1"));
 	BENCHMARK_LOOP {
 		f.execute(*callable);
 	}

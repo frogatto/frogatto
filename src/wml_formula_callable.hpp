@@ -6,7 +6,7 @@
 #include <boost/intrusive_ptr.hpp>
 
 #include "formula_callable.hpp"
-#include "wml_node_fwd.hpp"
+#include "variant.hpp"
 
 namespace game_logic
 {
@@ -18,11 +18,11 @@ public:
 
 	virtual ~wml_serializable_formula_callable() {}
 
-	wml::node_ptr write_to_wml() const {
+	variant write_to_wml() const {
 		return serialize_to_wml();
 	}
 private:
-	virtual wml::node_ptr serialize_to_wml() const = 0;
+	virtual variant serialize_to_wml() const = 0;
 
 };
 
@@ -32,14 +32,14 @@ typedef boost::intrusive_ptr<const wml_serializable_formula_callable> const_wml_
 class wml_formula_callable_serialization_scope
 {
 public:
-	static void register_serialized_object(const_wml_serializable_formula_callable_ptr ptr, wml::node_ptr node);
+	static void register_serialized_object(const_wml_serializable_formula_callable_ptr ptr, variant& node);
 	static std::string require_serialized_object(const_wml_serializable_formula_callable_ptr ptr);
 	static bool is_active();
 
 	wml_formula_callable_serialization_scope();
 	~wml_formula_callable_serialization_scope();
 
-	wml::node_ptr write_objects() const;
+	variant write_objects() const;
 
 private:
 };

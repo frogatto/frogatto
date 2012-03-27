@@ -10,7 +10,6 @@
 #include "solid_map_fwd.hpp"
 #include "texture.hpp"
 #include "variant.hpp"
-#include "wml_node_fwd.hpp"
 
 namespace graphics {
 class blit_queue;
@@ -33,7 +32,7 @@ public:
 
 	static void set_color_palette(unsigned int palettes);
 
-	explicit frame(wml::const_node_ptr node);
+	explicit frame(variant node);
 	~frame();
 
 	//ID of the frame. Not unique, but is the name of the element the frame

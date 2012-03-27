@@ -2,6 +2,7 @@
 #define GUI_FORMULA_FUNCTIONS_HPP_INCLUDED
 
 #include "custom_object.hpp"
+#include "variant.hpp"
 
 #include <boost/intrusive_ptr.hpp>
 #include <boost/shared_ptr.hpp>
@@ -17,7 +18,7 @@ typedef boost::shared_ptr<frame> frame_ptr;
 
 class gui_algorithm : public game_logic::formula_callable {
 public:
-	gui_algorithm(wml::const_node_ptr node);
+	gui_algorithm(variant node);
 	~gui_algorithm();
 
 	static gui_algorithm_ptr get(const std::string& key);

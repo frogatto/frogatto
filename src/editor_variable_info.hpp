@@ -7,15 +7,15 @@
 #include <vector>
 
 #include "formula_fwd.hpp"
-#include "wml_node_fwd.hpp"
+#include "variant.hpp"
 
 class editor_variable_info {
 public:
 	enum VARIABLE_TYPE { TYPE_INTEGER, XPOSITION, YPOSITION, TYPE_LEVEL, TYPE_LABEL, TYPE_TEXT, TYPE_BOOLEAN, TYPE_ENUM };
 
-	explicit editor_variable_info(wml::const_node_ptr node);
+	explicit editor_variable_info(variant node);
 
-	wml::node_ptr write() const;
+	variant write() const;
 
 	const std::string& variable_name() const { return name_; }
 	VARIABLE_TYPE type() const { return type_; }
@@ -36,9 +36,9 @@ private:
 
 class editor_entity_info {
 public:
-	explicit editor_entity_info(wml::const_node_ptr node);
+	explicit editor_entity_info(variant node);
 
-	wml::node_ptr write() const;
+	variant write() const;
 
 	const std::string& category() const { return category_; }
 	const std::vector<editor_variable_info>& vars() const { return vars_; }

@@ -3,18 +3,19 @@
 #include <vector>
 
 #include "preferences.hpp"
+#include "variant.hpp"
 #include "water_particle_system.hpp"
 #include "wml_utils.hpp"
 
-water_particle_system_info::water_particle_system_info(wml::const_node_ptr node)
-: number_of_particles(wml::get_int(node, "number_of_particles", 1500)),
-repeat_period(wml::get_int(node, "repeat_period", 1000)),
-velocity_x(wml::get_int(node, "velocity_x")),
-velocity_y(wml::get_int(node, "velocity_y", -5)),
-velocity_rand(wml::get_int(node, "velocity_rand", 3)),
-dot_size(wml::get_int(node, "dot_size", 1)*(preferences::double_scale() ? 2 : 1))
+water_particle_system_info::water_particle_system_info(variant node)
+: number_of_particles(node["number_of_particles"].as_int(1500)),
+repeat_period(node["repeat_period"].as_int(1000)),
+velocity_x(node["velocity_x"].as_int()),
+velocity_y(node["velocity_y"].as_int(-5)),
+velocity_rand(node["velocity_rand"].as_int(3)),
+dot_size(node["dot_size"].as_int(1)*(preferences::double_scale() ? 2 : 1))
 {
-	irgba = graphics::color(node->attr("color")).value();
+	irgba = graphics::color(node["color"]).value();
 
 	if(dot_size > 1 && preferences::xypos_draw_mask) {
 		//if we are clipping our drawing granularity, then we have a small
@@ -23,7 +24,7 @@ dot_size(wml::get_int(node, "dot_size", 1)*(preferences::double_scale() ? 2 : 1)
 	}
 }
 
-water_particle_system_factory::water_particle_system_factory (wml::const_node_ptr node)
+water_particle_system_factory::water_particle_system_factory(variant node)
  : info(node)
 {
 	

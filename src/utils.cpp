@@ -15,23 +15,22 @@
 #include "utils.hpp"
 
 #include "level.hpp"
-#include "wml_node_fwd.hpp"
-#include "wml_writer.hpp"
 #include "filesystem.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "sound.hpp"
+#include "variant.hpp"
 
 int truncate_to_char(int value) { return std::min(std::max(value, 0), 255); }
 
 void write_autosave ()
 {
-	wml::node_ptr node = level::current().write();
+	variant node = level::current().write();
 	if(sound::current_music().empty() == false) {
-		node->set_attr("music", sound::current_music());
+		node.add_attr(variant("music"), variant(sound::current_music()));
 	}
 	
-	sys::write_file(preferences::auto_save_file_path(), wml::output(node));
+	sys::write_file(preferences::auto_save_file_path(), node.write_json());
 	sys::write_file(std::string(preferences::auto_save_file_path()) + ".stat", "1");
 }
 

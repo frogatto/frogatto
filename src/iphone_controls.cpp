@@ -9,13 +9,13 @@
 #endif
 
 #include "foreach.hpp"
+#include "formula.hpp"
 #include "geometry.hpp"
+#include "json_parser.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "texture.hpp"
-#include "wml_parser.hpp"
-#include "wml_utils.hpp"
-#include "formula.hpp"
+#include "variant.hpp"
 
 namespace
 {
@@ -40,18 +40,24 @@ namespace
 		
 		underwater_circle_y = preferences::virtual_screen_height()-underwater_circle_y;
 		
-		wml::node_ptr schemes = wml::parse_wml_from_file("data/control_schemes.cfg");
-		wml::node_ptr scheme = wml::find_child_by_attribute(schemes, "control_scheme", "id", scheme_name);
+		variant schemes = json::parse_from_file("data/control_schemes.cfg");
+		variant scheme;
+		foreach(const variant& candidate, schemes["control_scheme"].as_list()) {
+			if(candidate["id"].as_string() == scheme_name) {
+				scheme = candidate;
+				break;
+			}
+		}
 		
-		underwater_circle_x = game_logic::formula(wml::get_str(scheme, "underwater_circle_x")).execute().as_int();
-		underwater_circle_y = game_logic::formula(wml::get_str(scheme, "underwater_circle_y")).execute().as_int();
-		underwater_circle_rad = game_logic::formula(wml::get_str(scheme, "underwater_circle_rad")).execute().as_int();
+		underwater_circle_x = game_logic::formula(scheme["underwater_circle_x"]).execute().as_int();
+		underwater_circle_y = game_logic::formula(scheme["underwater_circle_y"]).execute().as_int();
+		underwater_circle_rad = game_logic::formula(scheme["underwater_circle_rad"]).execute().as_int();
 		
-		FOREACH_WML_CHILD(node, scheme, "button")
+		foreach(variant node, scheme["button"].as_list())
 		{
-			variant r = game_logic::formula(wml::get_str(node, "hit_rect")).execute();
+			variant r = game_logic::formula(node["hit_rect"]).execute();
 			rect hit_rect(r[0].as_int(), r[1].as_int(), r[2].as_int(), r[3].as_int());
-			std::string id = wml::get_str(node, "id");
+			std::string id = node["id"].as_string();
 			if (id == "left") {
 				left_arrow = hit_rect;
 			} else if (id == "right") {

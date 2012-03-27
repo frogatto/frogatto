@@ -41,9 +41,7 @@
 #include "surface_cache.hpp"
 #include "text_entry_widget.hpp"
 #include "utils.hpp"
-#include "wml_node.hpp"
-#include "wml_writer.hpp"
-#include "wml_utils.hpp"
+#include "variant_utils.hpp"
 #include "IMG_savepng.h"
 #include "globals.h"
 #include "texture.hpp"
@@ -784,12 +782,11 @@ bool level_runner::play_cycle()
 					std::cerr << "SAVING...\n";
 					std::string data;
 					
-					wml::node_ptr lvl_node = wml::deep_copy(lvl_->write());
+					variant lvl_node = lvl_->write();
 					if(sound::current_music().empty() == false) {
-						lvl_node->set_attr("music", sound::current_music());
+						lvl_node = lvl_node.add_attr(variant("music"), variant(sound::current_music()));
 					}
-					wml::write(lvl_node, data);
-					sys::write_file(preferences::save_file_path(), data);
+					sys::write_file(preferences::save_file_path(), lvl_node.write_json(true));
 				} else if(key == SDLK_s && (mod&KMOD_ALT)) {
 					IMG_SaveFrameBuffer((std::string(preferences::user_data_path()) + "screenshot.png").c_str(), 5);
 				} else if(key == SDLK_w && (mod&KMOD_CTRL)) {

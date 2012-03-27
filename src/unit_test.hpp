@@ -20,7 +20,8 @@ typedef boost::function<void (const std::vector<std::string>&)> UtilityProgram;
 int register_test(const std::string& name, UnitTest test);
 int register_benchmark(const std::string& name, BenchmarkTest test);
 int register_benchmark_cl(const std::string& name, CommandLineBenchmarkTest test);
-int register_utility(const std::string& name, UtilityProgram utility);
+int register_utility(const std::string& name, UtilityProgram utility, bool needs_video);
+bool utility_needs_video(const std::string& name);
 bool run_tests(const std::vector<std::string>* tests=NULL);
 void run_benchmarks(const std::vector<std::string>* benchmarks=NULL);
 void run_command_line_benchmark(const std::string& benchmark_name, const std::string& arg);
@@ -90,7 +91,12 @@ void run_utility(const std::string& utility_name, const std::vector<std::string>
 
 #define UTILITY(name) \
     void UTILITY_##name(const std::vector<std::string>& args); \
-	static int UTILITY_VAR_##name = test::register_utility(#name, UTILITY_##name); \
+	static int UTILITY_VAR_##name = test::register_utility(#name, UTILITY_##name, true); \
+	void UTILITY_##name(const std::vector<std::string>& args)
+
+#define COMMAND_LINE_UTILITY(name) \
+    void UTILITY_##name(const std::vector<std::string>& args); \
+	static int UTILITY_VAR_##name = test::register_utility(#name, UTILITY_##name, false); \
 	void UTILITY_##name(const std::vector<std::string>& args)
 
 #endif

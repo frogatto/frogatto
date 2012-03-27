@@ -1,6 +1,7 @@
 #include <boost/bind.hpp>
 #include <iostream>
 #include <map>
+#include <set>
 
 #include "asserts.hpp"
 #include "foreach.hpp"
@@ -40,6 +41,11 @@ UtilityMap& get_utility_map()
 	return map;
 }
 
+std::set<std::string>& get_command_line_utilities() {
+	static std::set<std::string> map;
+	return map;
+}
+
 }
 
 int register_test(const std::string& name, UnitTest test)
@@ -48,10 +54,18 @@ int register_test(const std::string& name, UnitTest test)
 	return 0;
 }
 
-int register_utility(const std::string& name, UtilityProgram utility)
+int register_utility(const std::string& name, UtilityProgram utility, bool needs_video)
 {
 	get_utility_map()[name] = utility;
+	if(!needs_video) {
+		get_command_line_utilities().insert(name);
+	}
 	return 0;
+}
+
+bool utility_needs_video(const std::string& name)
+{
+	return get_command_line_utilities().count(name) == 0;
 }
 
 bool run_tests(const std::vector<std::string>* tests)

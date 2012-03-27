@@ -10,14 +10,13 @@
 #include "formula.hpp"
 #include "formula_callable.hpp"
 #include "formula_function.hpp"
+#include "json_parser.hpp"
 #include "multi_tile_pattern.hpp"
 #include "point_map.hpp"
 #include "random.hpp"
 #include "string_utils.hpp"
 #include "tile_map.hpp"
-#include "wml_node.hpp"
-#include "wml_parser.hpp"
-#include "wml_utils.hpp"
+#include "variant_utils.hpp"
 
 namespace {
 
@@ -51,11 +50,11 @@ struct is_whitespace {
 }
 
 struct tile_pattern {
-	explicit tile_pattern(wml::const_node_ptr node, const std::string& id)
+	explicit tile_pattern(variant node, const std::string& id)
 	  : tile_id(id),
-	    tile(new level_object(node)), reverse(node->attr("reverse").str() != "no"),
-	    empty(node->attr("empty").str() == "yes"),
-		filter_formula(game_logic::formula::create_optional_formula(node->attr("filter")))
+	    tile(new level_object(node)), reverse(node["reverse"].as_bool(true)),
+	    empty(node["empty"].as_bool(false)),
+		filter_formula(game_logic::formula::create_optional_formula(node["filter"]))
 	{
 		if(tile->id().empty()) {
 			tile->set_id(tile_id);
@@ -63,8 +62,8 @@ struct tile_pattern {
 
 		variations.push_back(tile);
 
-		pattern_str = node->attr("pattern");
-		std::string pattern_str = node->attr("pattern");
+		pattern_str = node["pattern"].as_string();
+		std::string pattern_str = node["pattern"].as_string();
 		pattern_str.erase(std::remove_if(pattern_str.begin(), pattern_str.end(), is_whitespace()), pattern_str.end());
 
 		static std::vector<std::string> patterns;
@@ -76,7 +75,7 @@ struct tile_pattern {
 		//the main pattern is always the very middle one.
 		int main_tile = patterns.size()/2;
 
-		int width = wml::get_int(node, "pattern_width", sqrt(static_cast<float>(patterns.size())));
+		int width = node["pattern_width"].as_int(sqrt(static_cast<float>(patterns.size())));
 		assert(width != 0);
 		int height = patterns.size()/width;
 
@@ -84,7 +83,7 @@ struct tile_pattern {
 		int left = -width/2;
 
 		//pattern with size 12 is a special case
-		if(patterns.size() == 12 && !node->has_attr("pattern_width")) {
+		if(patterns.size() == 12 && !node.has_key("pattern_width")) {
 			width = 3;
 			height = 4;
 			top = -1;
@@ -104,29 +103,23 @@ struct tile_pattern {
 			surrounding_tiles.push_back(surrounding_tile(x, y, patterns[n]));
 		}
 
-		wml::node::const_child_iterator i1 = node->begin_child("variation");
-		wml::node::const_child_iterator i2 = node->end_child("variation");
-		while(i1 != i2) {
-			variations.push_back(level_object_ptr(new level_object(i1->second)));
+		foreach(variant var, node["variation"].as_list()) {
+			variations.push_back(level_object_ptr(new level_object(var)));
 			if(variations.back()->id().empty()) {
 				variations.back()->set_id(tile_id);
 			}
-			++i1;
 		}
 
-		i1 = node->begin_child("tile");
-		i2 = node->end_child("tile");
-		while(i1 != i2) {
+		foreach(variant var, node["tile"].as_list()) {
 			added_tile t;
-			level_object_ptr new_object(new level_object(i1->second));
+			level_object_ptr new_object(new level_object(var));
 			if(new_object->id().empty()) {
 				new_object->set_id(tile_id);
 			}
 
 			t.object = new_object;
-			t.zorder = wml::get_int(i1->second, "zorder");
+			t.zorder = var["zorder"].as_int();
 			added_tiles.push_back(t);
-			++i1;
 		}
 	}
 
@@ -237,15 +230,12 @@ void tile_map::load(const std::string& fname, const std::string& tile_id)
 
 	files_loaded.insert(fname);
 
-	wml::const_node_ptr node = wml::parse_wml_from_file("data/tiles/" + fname);
+	variant node = json::parse_from_file("data/tiles/" + fname);
 
-	palette_scope palette_setter(node->attr("palettes"));
+	palette_scope palette_setter(node["palettes"].as_string_default());
 
-	wml::node::const_child_iterator p1 = node->begin_child("tile_pattern");
-	wml::node::const_child_iterator p2 = node->end_child("tile_pattern");
-	for(; p1 != p2; ++p1) {
-		const wml::const_node_ptr& p = p1->second;
-		patterns.push_back(tile_pattern(p, tile_id));
+	foreach(variant pattern, node["tile_pattern"].as_list()) {
+		patterns.push_back(tile_pattern(pattern, tile_id));
 	}
 
 	multi_tile_pattern::load(node, tile_id);
@@ -253,12 +243,12 @@ void tile_map::load(const std::string& fname, const std::string& tile_id)
 	++current_patterns_version;
 }
 
-void tile_map::init(wml::const_node_ptr node)
+void tile_map::init(variant node)
 {
 	files_index.clear();
 
-	for(wml::node::const_attr_iterator i = node->begin_attr(); i != node->end_attr(); ++i) {
-		files_index[i->first] = util::split(i->second);
+	foreach(const variant_pair& value, node.as_map()) {
+		files_index[value.first.as_string()] = util::split(value.second.as_string());
 	}
 
 	patterns.clear();
@@ -279,15 +269,15 @@ tile_map::tile_map() : xpos_(0), ypos_(0), x_speed_(100), y_speed_(100), zorder_
 	pattern_index_.back().matching_patterns.push_back(&get_regex_from_pool(""));
 }
 
-tile_map::tile_map(wml::const_node_ptr node)
-  : xpos_(wml::get_int(node, "x")), ypos_(wml::get_int(node, "y")),
-	x_speed_(wml::get_int(node, "x_speed", 100)), y_speed_(wml::get_int(node, "y_speed", 100)),
-    zorder_(wml::get_int(node, "zorder"))
+tile_map::tile_map(variant node)
+  : xpos_(node["x"].as_int()), ypos_(node["y"].as_int()),
+	x_speed_(node["x_speed"].as_int(100)), y_speed_(node["y_speed"].as_int(100)),
+    zorder_(node["zorder"].as_int())
 {
 	//turn off reference counting
 	add_ref();
 
-	const std::string& unique_tiles = node->attr("unique_tiles");
+	const std::string& unique_tiles = node["unique_tiles"].as_string();
 	foreach(const std::string& tile, util::split(unique_tiles)) {
 		const std::vector<std::string>& files = files_index[tile];
 		foreach(const std::string& file, files) {
@@ -300,7 +290,7 @@ tile_map::tile_map(wml::const_node_ptr node)
 	pattern_index_.back().matching_patterns.push_back(&get_regex_from_pool(""));
 
 	{
-	const std::string& tiles_str = node->attr("tiles");
+	const std::string& tiles_str = node["tiles"].as_string();
 	std::vector<std::string> lines;
 	lines.reserve(std::count(tiles_str.begin(), tiles_str.end(), '\n')+1);
 
@@ -467,14 +457,14 @@ const std::vector<const tile_pattern*>& tile_map::get_patterns() const
 	return patterns_;
 }
 
-wml::node_ptr tile_map::write() const
+variant tile_map::write() const
 {
-	wml::node_ptr res(new wml::node("tile_map"));
-	res->set_attr("x", formatter() << xpos_);
-	res->set_attr("y", formatter() << ypos_);
-	res->set_attr("x_speed", formatter() << x_speed_);
-	res->set_attr("y_speed", formatter() << y_speed_);
-	res->set_attr("zorder", formatter() << zorder_);
+	variant_builder res;
+	res.add("x", xpos_);
+	res.add("y", ypos_);
+	res.add("x_speed", x_speed_);
+	res.add("y_speed", y_speed_);
+	res.add("zorder", zorder_);
 
 	std::vector<boost::array<char, 4> > unique_tiles;
 	std::ostringstream tiles;
@@ -512,7 +502,7 @@ wml::node_ptr tile_map::write() const
 		unique_str << unique_tiles[n].data();
 	}
 
-	res->set_attr("unique_tiles", unique_str.str());
+	res.add("unique_tiles", unique_str.str());
 
 	std::ostringstream variations;
 	foreach(const std::vector<int>& row, variations_) {
@@ -529,9 +519,9 @@ wml::node_ptr tile_map::write() const
 		}
 	}
 
-	res->set_attr("tiles", tiles.str());
-	res->set_attr("variations", variations.str());
-	return res;
+	res.add("tiles", tiles.str());
+	res.add("variations", variations.str());
+	return res.build();
 }
 
 const char* tile_map::get_tile_from_pixel_pos(int xpos, int ypos) const

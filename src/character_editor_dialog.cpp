@@ -51,7 +51,7 @@ void character_editor_dialog::init()
 			preview->set_area(c.preview_frame->area());
 			button_ptr char_button(new button(widget_ptr(preview), boost::bind(&character_editor_dialog::set_character, this, index)));
 
-			std::string tooltip_str = c.node->attr("type");
+			std::string tooltip_str = c.node["type"].as_string();
 			const_editor_entity_info_ptr editor_info = c.preview_object->editor_info();
 			if(editor_info && !editor_info->help().empty()) {
 				tooltip_str += "\n" + editor_info->help();

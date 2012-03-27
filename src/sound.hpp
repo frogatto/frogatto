@@ -1,7 +1,7 @@
 #ifndef SOUND_HPP_INCLUDED
 #define SOUND_HPP_INCLUDED
 
-#include "wml_node_fwd.hpp"
+#include "variant.hpp"
 
 #include <string>
 
@@ -12,7 +12,7 @@ struct manager {
 	~manager();
 };
 
-void init_music(wml::const_node_ptr node);
+void init_music(variant node);
 
 bool ok();
 bool muted();

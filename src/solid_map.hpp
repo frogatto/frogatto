@@ -7,7 +7,7 @@
 
 #include "geometry.hpp"
 #include "solid_map_fwd.hpp"
-#include "wml_node_fwd.hpp"
+#include "variant.hpp"
 
 enum MOVE_DIRECTION { MOVE_LEFT, MOVE_RIGHT, MOVE_UP, MOVE_DOWN, MOVE_NONE };
 
@@ -18,7 +18,7 @@ class texture;
 class solid_map
 {
 public:
-	static void create_object_solid_maps(wml::const_node_ptr node, std::vector<const_solid_map_ptr>& v);
+	static void create_object_solid_maps(variant node, std::vector<const_solid_map_ptr>& v);
 	static void create_object_platform_maps(const rect& area, std::vector<const_solid_map_ptr>& v);
 	static solid_map_ptr create_from_texture(const graphics::texture& t, const rect& area);
 
@@ -34,7 +34,7 @@ public:
 	const std::vector<point>& bottom() const { return bottom_; }
 	const std::vector<point>& all() const { return all_; }
 private:
-	static const_solid_map_ptr create_object_solid_map_from_solid_node(wml::const_node_ptr node);
+	static const_solid_map_ptr create_object_solid_map_from_solid_node(variant node);
 
 	solid_map() {}
 
@@ -56,8 +56,8 @@ private:
 class solid_info
 {
 public:
-	static const_solid_info_ptr create(wml::const_node_ptr node);
-	static const_solid_info_ptr create_platform(wml::const_node_ptr node);
+	static const_solid_info_ptr create(variant node);
+	static const_solid_info_ptr create_platform(variant node);
 	static const_solid_info_ptr create_platform(const rect& area);
 	static const_solid_info_ptr create_from_texture(const graphics::texture& t, const rect& area);
 	const std::vector<const_solid_map_ptr>& solid() const { return solid_; }

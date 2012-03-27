@@ -3,15 +3,15 @@
 
 #include <string>
 
-#include "wml_node_fwd.hpp"
-#include "texture.hpp"
 #include "graphical_font.hpp"
+#include "texture.hpp"
+#include "variant.hpp"
 
 class loading_screen
 {
 	public:
 	loading_screen (int items=0);
-	void load (wml::const_node_ptr node); // preload objects defined by preload children of node, blocking, and calling draw automatically
+	void load(variant node); // preload objects defined by preload children of node, blocking, and calling draw automatically
 	void draw (const std::string& message);
 	void increment_status ();
 	void draw_and_increment (const std::string& message) {draw(message); increment_status();}

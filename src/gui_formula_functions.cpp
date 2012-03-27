@@ -11,20 +11,20 @@
 #include "custom_object_functions.hpp"
 #include "custom_object_type.hpp"
 #include "draw_number.hpp"
+#include "foreach.hpp"
 #include "formula.hpp"
 #include "formula_callable_definition.hpp"
 #include "frame.hpp"
 #include "graphical_font.hpp"
 #include "gui_formula_functions.hpp"
 #include "iphone_controls.hpp"
+#include "json_parser.hpp"
 #include "level.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "string_utils.hpp"
 #include "unit_test.hpp"
-#include "wml_node.hpp"
-#include "wml_parser.hpp"
-#include "wml_utils.hpp"
+#include "variant_utils.hpp"
 
 using namespace game_logic;
 
@@ -320,27 +320,27 @@ private:
 
 } // namespace
 
-gui_algorithm::gui_algorithm(wml::const_node_ptr node)
+gui_algorithm::gui_algorithm(variant node)
 	  : lvl_(NULL),
-	  process_formula_(formula::create_optional_formula(node->attr("on_process"), &get_custom_object_functions_symbol_table(), &gui_algorithm_definition::instance())),
+	  process_formula_(formula::create_optional_formula(node["on_process"], &get_custom_object_functions_symbol_table(), &gui_algorithm_definition::instance())),
 	  cycle_(0), object_(new custom_object("dummy_gui_object", 0, 0, true))
 {
 	gui_command_function_symbol_table symbols(this);
 
 	object_->add_ref();
-	std::vector<std::string> includes = util::split(node->attr("includes"));
+	std::vector<std::string> includes = util::split(node["includes"].as_string_default());
 	foreach(const std::string& inc, includes) {
 		includes_.push_back(get(inc));
 	}
 
 	set_object(object_);
 
-	FOREACH_WML_CHILD(frame_node, node, "animation") {
+	foreach(variant frame_node, node["animation"].as_list()) {
 		frame_ptr f(new frame(frame_node));
-		frames_[frame_node->attr("id")] = f;
+		frames_[frame_node["id"].as_string()] = f;
 	}
 
-	draw_formula_ = formula::create_optional_formula(node->attr("on_draw"), &symbols, &gui_algorithm_definition::instance());
+	draw_formula_ = formula::create_optional_formula(node["on_draw"], &symbols, &gui_algorithm_definition::instance());
 
 }
 
@@ -424,7 +424,7 @@ void gui_algorithm::execute_command(variant v) {
 
 gui_algorithm_ptr gui_algorithm::create(const std::string& key) {
 	static const std::string path = preferences::load_compiled() ? "data/compiled/gui/" : "data/gui/";
-	return gui_algorithm_ptr(new gui_algorithm(wml::parse_wml_from_file(path + key + ".cfg")));
+	return gui_algorithm_ptr(new gui_algorithm(json::parse_from_file(path + key + ".cfg")));
 }
 
 void gui_algorithm::draw_animation(const std::string& object_name, const std::string& anim, int x, int y, int cycle) const {

@@ -3,7 +3,7 @@
 
 #include "formula_callable.hpp"
 #include "geometry.hpp"
-#include "wml_node_fwd.hpp"
+#include "variant.hpp"
 
 #include <boost/intrusive_ptr.hpp>
 
@@ -16,9 +16,9 @@ typedef boost::intrusive_ptr<const light> const_light_ptr;
 class light : public game_logic::formula_callable
 {
 public:
-	static light_ptr create_light(const custom_object& obj, wml::const_node_ptr node);
+	static light_ptr create_light(const custom_object& obj, variant node);
 
-	virtual wml::node_ptr write() const = 0;
+	virtual variant write() const = 0;
 
 	explicit light(const custom_object& obj);
 	virtual ~light();
@@ -35,9 +35,9 @@ private:
 class circle_light : public light
 {
 public:
-	circle_light(const custom_object& obj, wml::const_node_ptr node);
+	circle_light(const custom_object& obj, variant node);
 	circle_light(const custom_object& obj, int radius);
-	wml::node_ptr write() const;
+	variant write() const;
 	void process();
 	bool on_screen(const rect& screen_area) const;
 	void draw(const rect& screen_area, const unsigned char* color) const;

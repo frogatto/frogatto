@@ -345,7 +345,6 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 				}
 
 				if(schemas.top()) {
-					schemas.top()->validate_node(nodes.top().node);
 				}
 
 				schemas.pop();
@@ -360,7 +359,6 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 				} else {
 					const schema* new_schema = NULL;
 					if(schemas.top()) {
-						new_schema = schemas.top()->validate_element(element);
 					}
 
 					schemas.push(new_schema);
@@ -494,7 +492,6 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 			const std::string value = parse_value(i,doc.end(), line_number, attr_line);
 
 			if(schemas.top()) {
-				schemas.top()->validate_attribute(name, value);
 			}
 
 			if(!nodes.top().derived_frame && nodes.top().node->has_attr(name)) {
@@ -631,14 +628,243 @@ UNIT_TEST(wml_parser_test) {
 "  a=b\n"
 "  [/test]\n"
 "[/doc]\n";
+}
 
-	wml::const_node_ptr node(wml::parse_wml(doc));
-	CHECK_EQ(node->name(), "doc");
-	CHECK_EQ(node->attr("attr").str(), "blah");
+#include "formula.hpp"
+#include "json_tokenizer.hpp"
+#include "variant.hpp"
 
-	wml::const_node_ptr test_node = node->get_child("test");
-	CHECK_NE(test_node, wml::const_node_ptr());
+namespace {
 
-	CHECK_EQ(test_node->attr("x").str(), "y");
-	CHECK_EQ(test_node->attr("a").str(), "b");
+void output_comment_json(const std::string& comment, std::ostream& os, std::string indent)
+{
+	if(comment.empty()) {
+		return;
+	}
+
+	os << "\n";
+
+	std::string::const_iterator i1 = comment.begin();
+	std::string::const_iterator i2 = std::find(i1 + 1, comment.end(), '#');
+
+	while(i1 != comment.end()) {
+		os << indent << std::string(i1, i2) << "\n";
+		i1 = i2;
+		i2 = std::find(i1 + 1, comment.end(), '#');
+	}
+}
+
+void output_node_json(wml::const_node_ptr node, std::ostream& os, std::string indent)
+{
+	foreach(const std::string& key, node->attr_order()) {
+		std::string val = node->attr(key).str();
+
+		const std::string NullCall = "null()";
+		std::string::iterator null_call = std::search(val.begin(), val.end(), NullCall.begin(), NullCall.end());
+		while(null_call != val.end()) {
+			val.erase(null_call + 4, null_call + 6);
+			null_call = std::search(val.begin(), val.end(), NullCall.begin(), NullCall.end());
+		}
+
+		variant v = variant(val);
+
+		output_comment_json(node->get_attr_comment(key), os, indent);
+
+		if(key == "objects" && v.is_string() && v.as_string() == "") {
+			std::vector<variant> empty_vec;
+			v = variant(&empty_vec);
+		}
+
+		static const std::string StringAttr[] = {"chars"};
+
+		bool pretty_print = true;
+
+		if(std::count(StringAttr, StringAttr+1, key) == 0) try {
+			const char* begin = val.c_str();
+			const char* end = begin + val.size();
+			json::Token t = json::get_token(begin, end);
+			if(t.end == end) {
+				switch(t.type) {
+				case json::Token::TYPE_NUMBER:
+					if(std::count(val.begin(), val.end(), '.')) {
+						v = variant(decimal::from_string(val));
+					} else if(val[0] != '0' || val.size() == 1 || key == "xoffset" || key == "yoffset" || key == "generation_rate_millis" || key == "accel_y" || key == "accel_x") {
+						const int i = atoi(val.c_str());
+						v = variant(i);
+					}
+	
+					break;
+				case json::Token::TYPE_TRUE_VALUE:
+					v = variant::from_bool(true);
+					break;
+				case json::Token::TYPE_FALSE_VALUE:
+					v = variant::from_bool(false);
+					break;
+				default:
+					break;
+				}
+			} else {
+				bool is_solid = false;
+				if(val.size() > 6 && std::string(val.begin(), val.begin()+6) == "solid:") {
+					is_solid = true;
+					val.erase(val.begin(), val.begin()+6);
+
+					if(val == "all") {
+						std::vector<variant> vec;
+						vec.push_back(variant("solid"));
+						vec.push_back(variant("all"));
+						v = variant(&vec);
+					}
+
+					pretty_print = false;
+				}
+
+				const char* begin = val.c_str();
+				const char* end = begin + val.size();
+				std::vector<json::Token> tokens;
+				json::Token t = json::get_token(begin, end);
+				while(t.type != json::Token::NUM_TYPES) {
+					tokens.push_back(t);
+					t = json::get_token(begin, end);
+				}
+
+				if(tokens.size() > 1) {
+					std::vector<variant> result;
+					bool is_list_ints = tokens.size()%2 == 1;
+					for(size_t n = 0; n < tokens.size(); n += 2) {
+						if(tokens[n].type != json::Token::TYPE_NUMBER ||
+						   std::count(tokens[n].begin, tokens[n].end, '.')) {
+							is_list_ints = false;
+						} else {
+							std::string int_str(tokens[n].begin, tokens[n].end);
+							result.push_back(variant(atoi(int_str.c_str())));
+						}
+					}
+
+					for(size_t n = 1; n < tokens.size(); n += 2) {
+						if(tokens[n].type != json::Token::TYPE_COMMA) {
+							is_list_ints = false;
+						}
+					}
+
+					if(is_list_ints) {
+						v = variant(&result);
+						if(is_solid) {
+							std::vector<variant> vals = v.as_list();
+							vals.push_back(variant("solid"));
+							v = variant(&vals);
+						}
+					}
+					pretty_print = false;
+				}
+			}
+		} catch(json::TokenizerError&) {
+		}
+
+		if(key == "solid_dimensions" || key == "collide_dimensions") {
+			pretty_print = false;
+			if(v.as_string() == "none" || v.as_string() == "level_only") {
+				std::vector<variant> vec;
+				v = variant(&vec);
+			} else {
+			     std::vector<std::string> items = util::split(v.as_string());
+				 std::vector<variant> vec;
+				 for(int n = 0; n != items.size(); ++n) {
+					vec.push_back(variant(items[n]));
+				 }
+
+				 v = variant(&vec);
+			}
+		} else if(v.is_string() && (v.as_string() == "null()" || v.as_string() == "none")) {
+			v = variant();
+		}
+
+		if(key == "solid_heights" && !v.is_list()) {
+			std::vector<variant> list;
+			list.push_back(v);
+			v = variant(&list);
+		}
+
+		static const std::string FormulaNames[] = {"vars", "tmp", "consts"};
+		if(std::count(FormulaNames, FormulaNames + 3, node->name())) {
+			const std::string Deserialize = "deserialize(";
+			if(std::search(val.begin(), val.end(), Deserialize.begin(), Deserialize.end()) != val.end()) {
+				v = variant("@eval " + val);
+			} else {
+				v = game_logic::formula(variant(val)).execute();
+			}
+		}
+
+		os << indent << key << ": " << v.write_json(pretty_print) << ",\n";
+	}
+
+	std::vector<std::string> child_order;
+	std::map<std::string, std::vector<wml::const_node_ptr> > children;
+	for(wml::node::const_all_child_iterator i = node->begin_children(); i != node->end_children(); ++i) {
+		if(children.count((*i)->name()) == 0) {
+			child_order.push_back((*i)->name());
+		}
+		children[(*i)->name()].push_back(*i);
+	}
+
+	foreach(const std::string& name, child_order) {
+		std::vector<wml::const_node_ptr> v = children[name];
+
+		if(v.size() == 1) {
+			output_comment_json(v.front()->get_comment(), os, indent);
+			indent.push_back('\t');
+			os << indent << name << ": {\n";
+			output_node_json(v.front(), os, indent);
+			os << indent << "},\n";
+			indent.resize(indent.size()-1);
+		} else {
+			indent.push_back('\t');
+			os << indent << name << ": [\n";
+			indent.push_back('\t');
+
+			foreach(wml::const_node_ptr el, v) {
+				output_comment_json(el->get_comment(), os, indent);
+				os << indent << "{\n";
+				output_node_json(el, os, indent);
+				os << indent << "},\n";
+			}
+
+			indent.resize(indent.size()-1);
+			os << indent << "],\n";
+			indent.resize(indent.size()-1);
+		}
+	}
+}
+}
+
+COMMAND_LINE_UTILITY(convert_wml_to_json)
+{
+	std::map<std::string, std::string> output_map;
+	foreach(const std::string& fname, args) {
+		std::cerr << "CONVERTING: " << fname << "\n";
+		std::ostringstream s;
+		wml::const_node_ptr node;
+		try {
+			assert_recover_scope scope;
+			node = wml::parse_wml_from_file(fname);
+		} catch(...) {
+			std::cerr << "FAILED TO CONVERT " << fname << "\n";
+			continue;
+		}
+
+		output_comment_json(node->get_comment(), s, "");
+		std::string indent;
+		s << "{\n";
+		output_node_json(node, s, indent);
+		s << "}";
+		output_map[fname] = s.str();
+	}
+
+	foreach(const std::string& fname, args) {
+		if(output_map[fname].empty()) {
+			continue;
+		}
+
+		sys::write_file(fname, output_map[fname]);
+	}
 }

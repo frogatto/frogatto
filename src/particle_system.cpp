@@ -13,8 +13,7 @@
 #include "preferences.hpp"
 #include "string_utils.hpp"
 #include "texture.hpp"
-#include "wml_node.hpp"
-#include "wml_utils.hpp"
+#include "variant_utils.hpp"
 #include "weather_particle_system.hpp"
 #include "water_particle_system.hpp"
 #include "raster.hpp"
@@ -23,25 +22,25 @@ namespace {
 
 class particle_animation {
 public:
-	explicit particle_animation(wml::const_node_ptr node) :
-	  id_(node->attr("id")),
-	  texture_(graphics::texture::get(node->attr("image"))),
-	  duration_(wml::get_int(node, "duration"))
+	explicit particle_animation(variant node) :
+	  id_(node["id"].as_string()),
+	  texture_(graphics::texture::get(node["image"].as_string())),
+	  duration_(node["duration"].as_int())
 	{
-		rect base_area(node->has_attr("rect") ? rect(node->attr("rect")) :
-	           rect(wml::get_int(node, "x"),
-	                wml::get_int(node, "y"),
-	                wml::get_int(node, "w"),
-	                wml::get_int(node, "h")));
+		rect base_area(node.has_key("rect") ? rect(node["rect"]) :
+	           rect(node["x"].as_int(),
+	                node["y"].as_int(),
+	                node["w"].as_int(),
+	                node["h"].as_int()));
 		width_ = base_area.w()*2;
 		height_ = base_area.h()*2;
-		int nframes = wml::get_int(node, "frames", 1);
+		int nframes = node["frames"].as_int(1);
 		if(nframes < 1) {
 			nframes = 1;
 		}
 
-		const int nframes_per_row = wml::get_int(node, "frames_per_row", -1);
-		const int pad = wml::get_int(node, "pad");
+		const int nframes_per_row = node["frames_per_row"].as_int(-1);
+		const int pad = node["pad"].as_int();
 
 		frame frame_obj(node);
 
@@ -103,30 +102,30 @@ private:
 };
 
 struct simple_particle_system_info {
-	simple_particle_system_info(wml::const_node_ptr node)
-	  : spawn_rate_(wml::get_int(node, "spawn_rate", 1)),
-	    spawn_rate_random_(wml::get_int(node, "spawn_rate_random")),
-	    system_time_to_live_(wml::get_int(node, "system_time_to_live", -1)),
-	    time_to_live_(wml::get_int(node, "time_to_live", 50)),
-	    min_x_(wml::get_int(node, "min_x", 0)),
-	    max_x_(wml::get_int(node, "max_x", 0)),
-	    min_y_(wml::get_int(node, "min_y", 0)),
-	    max_y_(wml::get_int(node, "max_y", 0)),
-		velocity_x_(wml::get_int(node, "velocity_x", 0)),
-		velocity_y_(wml::get_int(node, "velocity_y", 0)),
-		velocity_x_rand_(wml::get_int(node, "velocity_x_random", 0)),
-		velocity_y_rand_(wml::get_int(node, "velocity_y_random", 0)),
-		velocity_magnitude_(wml::get_int(node, "velocity_magnitude", 0)),
-		velocity_magnitude_rand_(wml::get_int(node, "velocity_magnitude_random", 0)),
-		velocity_rotate_(wml::get_int(node, "velocity_rotate", 0)),
-		velocity_rotate_rand_(wml::get_int(node, "velocity_rotate_random", 0)),
-		accel_x_(wml::get_int(node, "accel_x", 0)),
-		accel_y_(wml::get_int(node, "accel_y", 0)),
-		pre_pump_cycles_(wml::get_int(node, "pre_pump_cycles", 0)),
-		delta_r_(wml::get_int(node, "delta_r", 0)),
-		delta_g_(wml::get_int(node, "delta_g", 0)),
-		delta_b_(wml::get_int(node, "delta_b", 0)),
-		delta_a_(wml::get_int(node, "delta_a", 0))
+	simple_particle_system_info(variant node)
+	  : spawn_rate_(node["spawn_rate"].as_int(1)),
+	    spawn_rate_random_(node["spawn_rate_random"].as_int()),
+	    system_time_to_live_(node["system_time_to_live"].as_int(-1)),
+	    time_to_live_(node["time_to_live"].as_int(50)),
+	    min_x_(node["min_x"].as_int(0)),
+	    max_x_(node["max_x"].as_int(0)),
+	    min_y_(node["min_y"].as_int(0)),
+	    max_y_(node["max_y"].as_int(0)),
+		velocity_x_(node["velocity_x"].as_int(0)),
+		velocity_y_(node["velocity_y"].as_int(0)),
+		velocity_x_rand_(node["velocity_x_random"].as_int(0)),
+		velocity_y_rand_(node["velocity_y_random"].as_int(0)),
+		velocity_magnitude_(node["velocity_magnitude"].as_int(0)),
+		velocity_magnitude_rand_(node["velocity_magnitude_random"].as_int(0)),
+		velocity_rotate_(node["velocity_rotate"].as_int(0)),
+		velocity_rotate_rand_(node["velocity_rotate_random"].as_int(0)),
+		accel_x_(node["accel_x"].as_int(0)),
+		accel_y_(node["accel_y"].as_int(0)),
+		pre_pump_cycles_(node["pre_pump_cycles"].as_int(0)),
+		delta_r_(node["delta_r"].as_int(0)),
+		delta_g_(node["delta_g"].as_int(0)),
+		delta_b_(node["delta_b"].as_int(0)),
+		delta_a_(node["delta_a"].as_int(0))
 	{
 	}
 	int spawn_rate_, spawn_rate_random_;
@@ -146,7 +145,7 @@ struct simple_particle_system_info {
 
 class simple_particle_system_factory : public particle_system_factory {
 public:
-	explicit simple_particle_system_factory(wml::const_node_ptr node);
+	explicit simple_particle_system_factory(variant node);
 	~simple_particle_system_factory() {}
 
 	particle_system_ptr create(const entity& e) const;
@@ -156,10 +155,10 @@ public:
 	simple_particle_system_info info_;
 };
 
-simple_particle_system_factory::simple_particle_system_factory(wml::const_node_ptr node)
+simple_particle_system_factory::simple_particle_system_factory(variant node)
   : info_(node)
 {
-	FOREACH_WML_CHILD(frame_node, node, "animation") {
+	foreach(variant frame_node, node["animation"].as_list()) {
 		frames_.push_back(particle_animation(frame_node));
 	}
 }
@@ -512,35 +511,37 @@ particle_system_ptr simple_particle_system_factory::create(const entity& e) cons
 
 struct point_particle_info
 {
-	explicit point_particle_info(wml::const_node_ptr node)
-	  : generation_rate_millis(wml::get_int(node, "generation_rate_millis")),
-	    pos_x(wml::get_int(node, "pos_x")*1024),
-	    pos_y(wml::get_int(node, "pos_y")*1024),
-	    pos_x_rand(wml::get_int(node, "pos_x_rand")*1024),
-	    pos_y_rand(wml::get_int(node, "pos_y_rand")*1024),
-	    velocity_x(wml::get_int(node, "velocity_x")),
-	    velocity_y(wml::get_int(node, "velocity_y")),
-		accel_x(wml::get_int(node, "accel_x")),
-		accel_y(wml::get_int(node, "accel_y")),
-	    velocity_x_rand(wml::get_int(node, "velocity_x_rand")),
-	    velocity_y_rand(wml::get_int(node, "velocity_y_rand")),
-		dot_size(wml::get_int(node, "dot_size", 1)*(preferences::double_scale() ? 2 : 1)),
-		dot_rounded(wml::get_bool(node, "dot_rounded", false)),
-	    time_to_live(wml::get_int(node, "time_to_live")),
-	    time_to_live_max(wml::get_int(node, "time_to_live_rand") + time_to_live) {
-		std::vector<std::string> colors_str;
-		util::split(node->attr("colors"), colors_str);
-		foreach(const std::string& col, colors_str) {
-			unsigned int val = strtoul(col.c_str(), NULL, 16);
-			unsigned char* c = reinterpret_cast<unsigned char*>(&val);
+	explicit point_particle_info(variant node)
+	  : generation_rate_millis(node["generation_rate_millis"].as_int()),
+	    pos_x(node["pos_x"].as_int()*1024),
+	    pos_y(node["pos_y"].as_int()*1024),
+	    pos_x_rand(node["pos_x_rand"].as_int()*1024),
+	    pos_y_rand(node["pos_y_rand"].as_int()*1024),
+	    velocity_x(node["velocity_x"].as_int()),
+	    velocity_y(node["velocity_y"].as_int()),
+		accel_x(node["accel_x"].as_int()),
+		accel_y(node["accel_y"].as_int()),
+	    velocity_x_rand(node["velocity_x_rand"].as_int()),
+	    velocity_y_rand(node["velocity_y_rand"].as_int()),
+		dot_size(node["dot_size"].as_int(1)*(preferences::double_scale() ? 2 : 1)),
+		dot_rounded(node["dot_rounded"].as_bool(false)),
+	    time_to_live(node["time_to_live"].as_int()),
+	    time_to_live_max(node["time_to_live_rand"].as_int() + time_to_live) {
+
+		if(node.has_key("colors")) {
+			const std::vector<variant> colors_vec = node["colors"].as_list();
+			foreach(const variant& col, colors_vec) {
+				unsigned int val = strtoul(col.as_string().c_str(), NULL, 16);
+				unsigned char* c = reinterpret_cast<unsigned char*>(&val);
 #if SDL_BYTEORDER == SDL_LIL_ENDIAN
-			std::reverse(c, c+4);
+				std::reverse(c, c+4);
 #endif
-			colors.push_back(val);
+				colors.push_back(val);
+			}
 		}
 
-		if(node->has_attr("colors_expression")) {
-			const variant v = game_logic::formula(node->attr("colors_expression")).execute();
+		if(node.has_key("colors_expression")) {
+			const variant v = game_logic::formula(node["colors_expression"]).execute();
 			for(int n = 0; n != v.num_elements(); ++n) {
 				const variant u = v[n];
 				ASSERT_LOG(u.num_elements() == 4, "UNEXPECTED colors_expression: " << u.to_debug_string());
@@ -562,18 +563,18 @@ struct point_particle_info
 
 		ttl_divisor = time_to_live_max/(colors.size()-1);
 
-		rgba[0] = wml::get_int(node, "red");
-		rgba[1] = wml::get_int(node, "green");
-		rgba[2] = wml::get_int(node, "blue");
-		rgba[3] = wml::get_int(node, "alpha", 255);
-		rgba_rand[0] = wml::get_int(node, "red_rand");
-		rgba_rand[1] = wml::get_int(node, "green_rand");
-		rgba_rand[2] = wml::get_int(node, "blue_rand");
-		rgba_rand[3] = wml::get_int(node, "alpha_rand");
-		rgba_delta[0] = wml::get_int(node, "red_delta");
-		rgba_delta[1] = wml::get_int(node, "green_delta");
-		rgba_delta[2] = wml::get_int(node, "blue_delta");
-		rgba_delta[3] = wml::get_int(node, "alpha_delta");
+		rgba[0] = node["red"].as_int();
+		rgba[1] = node["green"].as_int();
+		rgba[2] = node["blue"].as_int();
+		rgba[3] = node["alpha"].as_int(255);
+		rgba_rand[0] = node["red_rand"].as_int();
+		rgba_rand[1] = node["green_rand"].as_int();
+		rgba_rand[2] = node["blue_rand"].as_int();
+		rgba_rand[3] = node["alpha_rand"].as_int();
+		rgba_delta[0] = node["red_delta"].as_int();
+		rgba_delta[1] = node["green_delta"].as_int();
+		rgba_delta[2] = node["blue_delta"].as_int();
+		rgba_delta[3] = node["alpha_delta"].as_int();
 	}
 
 	int generation_rate_millis;
@@ -760,7 +761,7 @@ private:
 class point_particle_system_factory : public particle_system_factory
 {
 public:
-	explicit point_particle_system_factory(wml::const_node_ptr node)
+	explicit point_particle_system_factory(variant node)
 	  : info_(node)
 	{}
 
@@ -774,9 +775,9 @@ private:
 
 }
 
-const_particle_system_factory_ptr particle_system_factory::create_factory(wml::const_node_ptr node)
+const_particle_system_factory_ptr particle_system_factory::create_factory(variant node)
 {
-	const std::string& type = node->attr("type");
+	const std::string& type = node["type"].as_string();
 	if(type == "simple") {
 		return const_particle_system_factory_ptr(new simple_particle_system_factory(node));
 	} else if (type == "weather") {
@@ -787,7 +788,7 @@ const_particle_system_factory_ptr particle_system_factory::create_factory(wml::c
 		return const_particle_system_factory_ptr(new point_particle_system_factory(node));
 	}
 
-	ASSERT_LOG(false, "Unrecognized particle system type: " << node->attr("type"));
+	ASSERT_LOG(false, "Unrecognized particle system type: " << node["type"].as_string());
 }
 
 particle_system_factory::~particle_system_factory()

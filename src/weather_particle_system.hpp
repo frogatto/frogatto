@@ -8,20 +8,20 @@
 #include "particle_system.hpp"
 #include "foreach.hpp"
 #include "entity.hpp"
-#include "wml_utils.hpp"
 #include "color_utils.hpp"
+#include "variant.hpp"
 
 struct weather_particle_system_info {
-	weather_particle_system_info(wml::const_node_ptr node)
-	: number_of_particles(wml::get_int(node, "number_of_particles", 1500)),
-	repeat_period(wml::get_int(node, "repeat_period", 1000)),
-	velocity_x(wml::get_int(node, "velocity_x")),
-	velocity_y(wml::get_int(node, "velocity_y", 5)),
-	velocity_rand(wml::get_int(node, "velocity_rand", 3)),
-	line_width(wml::get_int(node, "line_width", 1)),
-	line_length(wml::get_int(node, "line_length", 8))
+	weather_particle_system_info(variant node)
+	: number_of_particles(node["number_of_particles"].as_int(1500)),
+	repeat_period(node["repeat_period"].as_int(1000)),
+	velocity_x(node["velocity_x"].as_int()),
+	velocity_y(node["velocity_y"].as_int(5)),
+	velocity_rand(node["velocity_rand"].as_int(3)),
+	line_width(node["line_width"].as_int(1)),
+	line_length(node["line_length"].as_int(8))
 	{
-		irgba = graphics::color(node->attr("color")).value();
+		irgba = graphics::color(node["color"].as_string()).value();
 	}
 	int number_of_particles;
 	int repeat_period;
@@ -37,7 +37,7 @@ struct weather_particle_system_info {
 
 class weather_particle_system_factory : public particle_system_factory {
 public:
-	explicit weather_particle_system_factory(wml::const_node_ptr node);
+	explicit weather_particle_system_factory(variant node);
 	~weather_particle_system_factory() {}
 	
 	particle_system_ptr create(const entity& e) const;

@@ -5,7 +5,7 @@
 
 #include <string>
 
-#include "wml_node_fwd.hpp"
+#include "variant.hpp"
 
 class achievement;
 
@@ -16,7 +16,7 @@ class achievement
 public:
 	static achievement_ptr get(const std::string& id);
 
-	explicit achievement(wml::const_node_ptr node);
+	explicit achievement(variant node);
 
 	const std::string& id() const { return id_; }
 	const std::string& name() const { return name_; }

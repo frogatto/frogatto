@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits.h>
 
 #include "custom_object.hpp"
 #include "entity.hpp"
@@ -7,20 +8,19 @@
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "solid_map.hpp"
-#include "wml_node.hpp"
-#include "wml_utils.hpp"
+#include "variant_utils.hpp"
 
-entity::entity(wml::const_node_ptr node)
-  : x_(wml::get_int(node, "x")*100),
-    y_(wml::get_int(node, "y")*100),
+entity::entity(variant node)
+  : x_(node["x"].as_int()*100),
+    y_(node["y"].as_int()*100),
 	prev_feet_x_(INT_MIN), prev_feet_y_(INT_MIN),
-	face_right_(wml::get_bool(node, "face_right")),
-	upside_down_(wml::get_bool(node, "upside_down", false)),
-	group_(wml::get_int(node, "group", -1)),
-    id_(-1), respawn_(wml::get_bool(node, "respawn", true)),
+	face_right_(node["face_right"].as_bool()),
+	upside_down_(node["upside_down"].as_bool(false)),
+	group_(node["group"].as_int(-1)),
+    id_(-1), respawn_(node["respawn"].as_bool(true)),
 	solid_dimensions_(0), collide_dimensions_(0),
 	weak_solid_dimensions_(0), weak_collide_dimensions_(0),
-	platform_motion_x_(wml::get_int(node, "platform_motion_x"))
+	platform_motion_x_(node["platform_motion_x"].as_int())
 {
 	foreach(bool& b, controls_) {
 		b = false;
@@ -39,9 +39,9 @@ entity::entity(int x, int y, bool face_right)
 	}
 }
 
-entity_ptr entity::build(wml::const_node_ptr node)
+entity_ptr entity::build(variant node)
 {
-	if(node->has_attr("is_human")) {
+	if(node["is_human"].as_bool()) {
 		return entity_ptr(new playable_custom_object(node));
 	} else {
 		return entity_ptr(new custom_object(node));

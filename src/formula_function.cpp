@@ -336,7 +336,7 @@ namespace {
 	};
 
 	UNIT_TEST(min_max_decimal) {
-		CHECK(game_logic::formula("max(1,1.4)").execute() == game_logic::formula("1.4").execute(), "test failed");
+		CHECK(game_logic::formula(variant("max(1,1.4)")).execute() == game_logic::formula(variant("1.4")).execute(), "test failed");
 	}
 
 	class keys_function : public function_expression {
@@ -646,6 +646,22 @@ namespace {
 			result.push_back(variant(decimal(v)));
 			
 			return variant(&result);
+		}
+	};
+
+	class regex_replace_function : public function_expression {
+	public:
+		explicit regex_replace_function(const args_list& args)
+		  : function_expression("regex_replace", args, 3, 3)
+		{}
+
+	private:
+		variant execute(const formula_callable& variables) const {
+			std::string str = args()[0]->evaluate(variables).as_string();
+			const boost::regex re(args()[1]->evaluate(variables).as_string());
+			const std::string value = args()[2]->evaluate(variables).as_string();
+
+			return variant(boost::regex_replace(str, re, value));
 		}
 	};
 
@@ -1351,6 +1367,7 @@ formula_function_expression::formula_function_expression(const std::string& name
 : function_expression(name, args, arg_names.size(), arg_names.size()),
 	formula_(formula), precondition_(precondition), arg_names_(arg_names), star_arg_(-1)
 {
+	assert(!precondition_ || !precondition_->str().empty());
 	for(size_t n = 0; n != arg_names_.size(); ++n) {
 		if(arg_names_.empty() == false && arg_names_[n][arg_names_[n].size()-1] == '*') {
 			arg_names_[n].resize(arg_names_[n].size()-1);
@@ -1383,7 +1400,7 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 
 	if(precondition_) {
 		if(!precondition_->execute(*tmp_callable).as_bool()) {
-			std::cerr << "FAILED function precondition for function '" << formula_->str() << "' with arguments: ";
+			std::cerr << "FAILED function precondition (" << precondition_->str() << ") for function '" << formula_->str() << "' with arguments: ";
 			for(size_t n = 0; n != arg_names_.size(); ++n) {
 				std::cerr << "  arg " << (n+1) << ": " << args()[n]->evaluate(variables).to_debug_string() << "\n";
 			}
@@ -1536,6 +1553,7 @@ namespace {
 			FUNCTION(refcount);
 			FUNCTION(keys);
 			FUNCTION(values);
+			FUNCTION(regex_replace);
 			FUNCTION(deserialize);
 			FUNCTION(is_string);
 			FUNCTION(is_null);
@@ -1624,24 +1642,24 @@ function_expression::function_expression(
 }
 
 UNIT_TEST(modulo_operation) {
-	CHECK(game_logic::formula("mod(-5, 20)").execute() == game_logic::formula("15").execute(), "test failed");
-	CHECK(game_logic::formula("mod(-25, 20)").execute() == game_logic::formula("15").execute(), "test failed");
-	CHECK(game_logic::formula("mod(15, 20)").execute() == game_logic::formula("15").execute(), "test failed");
-	CHECK(game_logic::formula("mod(35, 20)").execute() == game_logic::formula("15").execute(), "test failed");
+	CHECK(game_logic::formula(variant("mod(-5, 20)")).execute() == game_logic::formula(variant("15")).execute(), "test failed");
+	CHECK(game_logic::formula(variant("mod(-25, 20)")).execute() == game_logic::formula(variant("15")).execute(), "test failed");
+	CHECK(game_logic::formula(variant("mod(15, 20)")).execute() == game_logic::formula(variant("15")).execute(), "test failed");
+	CHECK(game_logic::formula(variant("mod(35, 20)")).execute() == game_logic::formula(variant("15")).execute(), "test failed");
 }
 
 UNIT_TEST(flatten_function) {
-	CHECK(game_logic::formula("flatten([1,[2,3]])").execute() == game_logic::formula("[1,2,3]").execute(), "test failed");
-	CHECK(game_logic::formula("flatten([1,2,3,[[4,5],6]])").execute() == game_logic::formula("[1,2,3,4,5,6]").execute(), "test failed");
-	CHECK(game_logic::formula("flatten([[1,2,3,4],5,6])").execute() == game_logic::formula("[1,2,3,4,5,6]").execute(), "test failed");
-	CHECK(game_logic::formula("flatten([[[0,2,4],6,8],10,[12,14]])").execute() == game_logic::formula("[0,2,4,6,8,10,12,14]").execute(), "test failed");
+	CHECK(game_logic::formula(variant("flatten([1,[2,3]])")).execute() == game_logic::formula(variant("[1,2,3]")).execute(), "test failed");
+	CHECK(game_logic::formula(variant("flatten([1,2,3,[[4,5],6]])")).execute() == game_logic::formula(variant("[1,2,3,4,5,6]")).execute(), "test failed");
+	CHECK(game_logic::formula(variant("flatten([[1,2,3,4],5,6])")).execute() == game_logic::formula(variant("[1,2,3,4,5,6]")).execute(), "test failed");
+	CHECK(game_logic::formula(variant("flatten([[[0,2,4],6,8],10,[12,14]])")).execute() == game_logic::formula(variant("[0,2,4,6,8,10,12,14]")).execute(), "test failed");
 }
 
 UNIT_TEST(sqrt_function) {
-	CHECK_EQ(game_logic::formula("sqrt(2147483)").execute().as_int(), 1465);	
+	CHECK_EQ(game_logic::formula(variant("sqrt(2147483)")).execute().as_int(), 1465);	
 
 	for(uint64_t n = 0; n < 100000; n += 1000) {
-		CHECK_EQ(game_logic::formula(formatter() << "sqrt(" << n << ".0^2)").execute().as_decimal(), decimal::from_int(n));
+		CHECK_EQ(game_logic::formula(variant(formatter() << "sqrt(" << n << ".0^2)")).execute().as_decimal(), decimal::from_int(n));
 	}
 }
 
@@ -1670,7 +1688,7 @@ BENCHMARK(map_function) {
 		callable->add("items", variant(&v));
 	}
 
-	static formula f("map(items, 'obj', 0)");
+	static formula f(variant("map(items, 'obj', 0)"));
 	BENCHMARK_LOOP {
 		f.execute(*callable);
 	}

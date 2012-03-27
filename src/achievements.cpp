@@ -3,14 +3,12 @@
 
 #include "achievements.hpp"
 #include "filesystem.hpp"
+#include "foreach.hpp"
 #include "formula_callable.hpp"
 #include "i18n.hpp"
+#include "json_parser.hpp"
 #include "preferences.hpp"
 #include "string_utils.hpp"
-#include "wml_node.hpp"
-#include "wml_parser.hpp"
-#include "wml_utils.hpp"
-#include "wml_writer.hpp"
 #include "of_bridge.h"
 #include "variant.hpp"
 
@@ -21,13 +19,16 @@ std::map<std::string, achievement_ptr> cache;
 achievement_ptr achievement::get(const std::string& id)
 {
 	if(cache.empty()) {
-		wml::node_ptr node(wml::parse_wml_from_file("data/achievements.cfg"));
-		if(node.get() == NULL) {
+		variant node;
+		try {
+			node = (json::parse_from_file("data/achievements.cfg"));
+		} catch(json::parse_error&) {
 			cache[""]; //mark as loaded
 			return achievement_ptr();
 		}
 
-		FOREACH_WML_CHILD(achievement_node, node, "achievement") {
+		
+		foreach(variant achievement_node, node["achievement"].as_list()) {
 			achievement_ptr a(new achievement(achievement_node));
 			cache[a->id()] = a;
 		}
@@ -36,11 +37,11 @@ achievement_ptr achievement::get(const std::string& id)
 	return cache[id];
 }
 
-achievement::achievement(wml::const_node_ptr node)
-  : id_(node->attr("id")), name_(i18n::tr(node->attr("name"))),
-    description_(i18n::tr(node->attr("description"))),
-	points_(wml::get_int(node, "points")),
-	of_id_(wml::get_int(node, "of_id"))
+achievement::achievement(variant node)
+  : id_(node["id"].as_string()), name_(i18n::tr(node["name"].as_string())),
+    description_(i18n::tr(node["description"].as_string())),
+	points_(node["points"].as_int()),
+	of_id_(node["of_id"].as_int())
 {
 }
 

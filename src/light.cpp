@@ -4,12 +4,11 @@
 #include "formatter.hpp"
 #include "light.hpp"
 #include "raster.hpp"
-#include "wml_node.hpp"
-#include "wml_utils.hpp"
+#include "variant_utils.hpp"
 
-light_ptr light::create_light(const custom_object& obj, wml::const_node_ptr node)
+light_ptr light::create_light(const custom_object& obj, variant node)
 {
-	if(node->attr("type").str() == "circle") {
+	if(node["type"].as_string() == "circle") {
 		return light_ptr(new circle_light(obj, node));
 	} else {
 		return light_ptr();
@@ -21,8 +20,8 @@ light::light(const custom_object& obj) : obj_(obj)
 
 light::~light() {}
 
-circle_light::circle_light(const custom_object& obj, wml::const_node_ptr node)
-  : light(obj), center_(obj.midpoint()), radius_(wml::get_int(node, "radius"))
+circle_light::circle_light(const custom_object& obj, variant node)
+  : light(obj), center_(obj.midpoint()), radius_(node["radius"].as_int())
 {}
 
 circle_light::circle_light(const custom_object& obj, int radius)
@@ -34,13 +33,13 @@ variant light::get_value(const std::string& key) const
 	return variant();
 }
 
-wml::node_ptr circle_light::write() const
+variant circle_light::write() const
 {
-	wml::node_ptr res(new wml::node("light"));
-	res->set_attr("type", "circle");
-	res->set_attr("radius", formatter() << radius_);
+	variant_builder res;
+	res.add("type", "circle");
+	res.add("radius", radius_);
 
-	return res;
+	return res.build();
 }
 
 void circle_light::process()
