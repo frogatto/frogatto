@@ -46,7 +46,7 @@ water::water(variant water_node) :
 			}
 		}
 
-		variant obj = game_logic::formula(area_node["object"]).execute();
+		variant obj = area_node["object"];
 		areas_.push_back(area(r, color, obj));
 	}
 }

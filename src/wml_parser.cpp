@@ -690,6 +690,10 @@ void output_node_json(wml::const_node_ptr node, std::ostream& os, std::string in
 		}
 
 		variant v = variant(val);
+		const std::string Deserialize = "deserialize(";
+		if(std::search(val.begin(), val.end(), Deserialize.begin(), Deserialize.end()) != val.end()) {
+			v = variant("@eval " + val);
+		}
 
 		output_comment_json(node->get_attr_comment(key), os, indent);
 
