@@ -370,7 +370,7 @@ const variant& variant::operator[](const variant v) const
 		const debug_info* info = get_debug_info();
 		std::string loc;
 		if(info) {
-			loc = formatter() << " at " << *info->filename << " " << info->line << " (column " << info->column << "\n";
+			loc = formatter() << " at " << *info->filename << " " << info->line << " (column " << info->column << ")\n";
 		}
 		throw type_error(formatter() << "type error: " << " expected a list or a map but found " << variant_type_to_string(type_) << " " << write_json());
 	}	

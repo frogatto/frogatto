@@ -354,8 +354,8 @@ level::level(const std::string& level_cfg, variant node)
 		background_->set_offset(background_offset_);
 	}
 
-	if(node.has_key("water_node")) {
-		water_.reset(new water(node["water_node"]));
+	if(node.has_key("water")) {
+		water_.reset(new water(node["water"]));
 	}
 
 	foreach(variant script_node, node["script"].as_list()) {

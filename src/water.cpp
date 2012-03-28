@@ -35,7 +35,7 @@ water::water(variant water_node) :
   current_y_formula_(game_logic::formula::create_optional_formula(water_node["current_y_formula"]))
 {
 	foreach(variant area_node, water_node["area"].as_list()) {
-		const rect r(area_node["rect"].as_string());
+		const rect r(area_node["rect"]);
 		std::vector<int> color_vec = area_node["color"].as_list_int();
 		unsigned char color[4];
 		for(int n = 0; n != 4; ++n) {
@@ -46,7 +46,7 @@ water::water(variant water_node) :
 			}
 		}
 
-		variant obj = area_node["object"];
+		variant obj = game_logic::formula(area_node["object"]).execute();
 		areas_.push_back(area(r, color, obj));
 	}
 }
