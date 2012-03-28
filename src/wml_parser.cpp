@@ -656,7 +656,30 @@ void output_comment_json(const std::string& comment, std::ostream& os, std::stri
 
 void output_node_json(wml::const_node_ptr node, std::ostream& os, std::string indent)
 {
+	const std::string SpecialItems[] = {"properties", "vars", "tmp", "consts"};
+	const int NumSpecialItems = sizeof(SpecialItems)/sizeof(*SpecialItems);
+	bool done_special = false;
+
+	const std::string AsStr = "as_";
+
 	foreach(const std::string& key, node->attr_order()) {
+		if(key.size() > AsStr.size() && std::equal(AsStr.begin(), AsStr.end(), key.begin()) && !done_special) {
+			done_special = true;
+
+			foreach(const std::string& item, SpecialItems) {
+				wml::const_node_ptr v = node->get_child(item);
+				if(v) {
+					output_comment_json(v->get_comment(), os, indent);
+					os << indent << item << ": {\n";
+					indent.push_back('\t');
+					output_node_json(v, os, indent);
+					indent.resize(indent.size()-1);
+					os << indent << "},\n";
+				}
+			}
+			
+		}
+
 		std::string val = node->attr(key).str();
 
 		const std::string NullCall = "null()";
@@ -777,6 +800,10 @@ void output_node_json(wml::const_node_ptr node, std::ostream& os, std::string in
 			}
 		} else if(v.is_string() && (v.as_string() == "null()" || v.as_string() == "none")) {
 			v = variant();
+		} else if(v.is_string() && v.as_string() == "yes") {
+			v = variant::from_bool(true);
+		} else if(v.is_string() && v.as_string() == "no") {
+			v = variant::from_bool(false);
 		}
 
 		if(key == "solid_heights" && !v.is_list()) {
@@ -801,7 +828,7 @@ void output_node_json(wml::const_node_ptr node, std::ostream& os, std::string in
 	std::vector<std::string> child_order;
 	std::map<std::string, std::vector<wml::const_node_ptr> > children;
 	for(wml::node::const_all_child_iterator i = node->begin_children(); i != node->end_children(); ++i) {
-		if(children.count((*i)->name()) == 0) {
+		if(children.count((*i)->name()) == 0 && (!done_special || std::count(SpecialItems, SpecialItems + NumSpecialItems, (*i)->name()) == 0)) {
 			child_order.push_back((*i)->name());
 		}
 		children[(*i)->name()].push_back(*i);
@@ -812,26 +839,26 @@ void output_node_json(wml::const_node_ptr node, std::ostream& os, std::string in
 
 		if(v.size() == 1) {
 			output_comment_json(v.front()->get_comment(), os, indent);
-			indent.push_back('\t');
 			os << indent << name << ": {\n";
-			output_node_json(v.front(), os, indent);
-			os << indent << "},\n";
-			indent.resize(indent.size()-1);
-		} else {
 			indent.push_back('\t');
+			output_node_json(v.front(), os, indent);
+			indent.resize(indent.size()-1);
+			os << indent << "},\n";
+		} else {
 			os << indent << name << ": [\n";
 			indent.push_back('\t');
 
 			foreach(wml::const_node_ptr el, v) {
 				output_comment_json(el->get_comment(), os, indent);
 				os << indent << "{\n";
+				indent.push_back('\t');
 				output_node_json(el, os, indent);
+				indent.resize(indent.size()-1);
 				os << indent << "},\n";
 			}
 
 			indent.resize(indent.size()-1);
 			os << indent << "],\n";
-			indent.resize(indent.size()-1);
 		}
 	}
 }
@@ -839,8 +866,19 @@ void output_node_json(wml::const_node_ptr node, std::ostream& os, std::string in
 
 COMMAND_LINE_UTILITY(convert_wml_to_json)
 {
+	std::vector<std::string> files = args;
+	if(files.empty()) {
+		while(!std::cin.eof()) {
+			std::string line;
+			std::getline(std::cin, line);
+			if(!line.empty()) {
+				files.push_back(line);
+			}
+		}
+	}
+
 	std::map<std::string, std::string> output_map;
-	foreach(const std::string& fname, args) {
+	foreach(const std::string& fname, files) {
 		std::cerr << "CONVERTING: " << fname << "\n";
 		std::ostringstream s;
 		wml::const_node_ptr node;
@@ -860,7 +898,7 @@ COMMAND_LINE_UTILITY(convert_wml_to_json)
 		output_map[fname] = s.str();
 	}
 
-	foreach(const std::string& fname, args) {
+	foreach(const std::string& fname, files) {
 		if(output_map[fname].empty()) {
 			continue;
 		}

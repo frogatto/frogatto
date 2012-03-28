@@ -323,7 +323,11 @@ level_object::level_object(variant node)
 		}
 	}
 	
-	std::vector<std::string> solid_attr = util::split(node["solid"].as_string_default());
+	std::vector<std::string> solid_attr;
+	
+	if(!node["solid"].as_bool()) {
+		solid_attr = util::split(node["solid"].as_string_default());
+	}
 
 	if(all_solid_ || std::find(solid_attr.begin(), solid_attr.end(), "flat") != solid_attr.end()) {
 		if(passthrough_){
