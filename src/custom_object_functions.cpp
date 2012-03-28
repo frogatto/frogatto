@@ -2122,7 +2122,7 @@ function_symbol_table& get_custom_object_functions_symbol_table()
 
 void init_custom_object_functions(variant node)
 {
-	foreach(variant fn, node["function"].as_list()) {
+	foreach(variant fn, node.as_list()) {
 		const std::string& name = fn["name"].as_string();
 		std::vector<std::string> args = util::split(fn["args"].as_string());
 
