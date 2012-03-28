@@ -65,6 +65,11 @@ bool level_tile_not_in_rect(const rect& r, const level_tile& t) {
 
 }
 
+void level::clear_current_level()
+{
+	current_level.reset();
+}
+
 level::summary level::get_summary(const std::string& id)
 {
 	static const std::map<std::string, summary> summaries = load_level_summaries();
@@ -182,7 +187,7 @@ level::level(const std::string& level_cfg, variant node)
 	}
 
 	if(node.has_key("dark_color")) {
-		dark_color_ = graphics::color_transform(node["dark_color"].as_string());
+		dark_color_ = graphics::color_transform(node["dark_color"]);
 	}
 
 	vars_ = node["vars"];
@@ -942,7 +947,7 @@ variant level::write() const
 	}
 
 	if(dark_color_.to_string() != default_dark_color().to_string()) {
-		res.add("dark_color", dark_color_.to_string());
+		res.add("dark_color", dark_color_.write());
 	}
 
 	if(cycle_) {

@@ -139,6 +139,27 @@ color_transform::color_transform(const std::string& str)
 	}
 }
 
+color_transform::color_transform(const variant& v)
+{
+	for(int n = 0; n != 4; ++n) {
+		if(n < v.num_elements()) {
+			rgba_[n] = v[n].as_int();
+		} else {
+			rgba_[n] = 255;
+		}
+	}
+}
+
+variant color_transform::write() const
+{
+	std::vector<variant> res;
+	for(int n = 0; n != 4; ++n) {
+		res.push_back(variant(n));
+	}
+
+	return variant(&res);
+}
+
 std::string color_transform::to_string() const
 {
 	std::ostringstream s;

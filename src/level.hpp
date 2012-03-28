@@ -45,6 +45,7 @@ public:
 	static level& current();
 	static level* current_ptr();
 	void set_as_current_level();
+	static void clear_current_level();
 
 	explicit level(const std::string& level_cfg, variant node=variant());
 	~level();

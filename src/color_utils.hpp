@@ -64,7 +64,9 @@ public:
 	color_transform(const color& c);
 	color_transform(int16_t r, int16_t g, int16_t b, int16_t a);
 	explicit color_transform(const std::string& str);
+	explicit color_transform(const variant& v);
 
+	variant write() const;
 	std::string to_string() const;
 
 	int16_t r() const { return rgba_[0]; }

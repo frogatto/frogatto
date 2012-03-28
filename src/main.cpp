@@ -544,6 +544,8 @@ extern "C" int main(int argc, char** argv)
 		}
 	}
 
+	level::clear_current_level();
+
 	} //end manager scope, make managers destruct before calling SDL_Quit
 //	controls::debug_dump_controls();
 #if defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
