@@ -473,6 +473,16 @@ variant variant::get_member(const std::string& str) const
 bool variant::as_bool(bool default_value) const
 {
 	switch(type_) {
+	case TYPE_INT: return int_value_ != 0;
+	case TYPE_BOOL: return bool_value_;
+	default: return default_value;
+	}
+}
+
+bool variant::as_bool() const
+{
+	bool default_value = false;
+	switch(type_) {
 	case TYPE_NULL:
 		return default_value;
 	case TYPE_BOOL:

@@ -579,10 +579,10 @@ namespace preferences {
 	{
 		variant_builder node;
 		node.add("user_id", get_unique_user_id());
-		node.add("no_sound", no_sound_ ? "true" : "false");
-		node.add("no_music", no_music_ ? "true" : "false");
-		node.add("reverse_ab", reverse_ab_ ? "true" : "false");
-		node.add("joystick", use_joystick_ ? "true" : "false");
+		node.add("no_sound", variant::from_bool(no_sound_));
+		node.add("no_music", variant::from_bool(no_music_));
+		node.add("reverse_ab", variant::from_bool(reverse_ab_));
+		node.add("joystick", variant::from_bool(use_joystick_));
 		node.add("sound_volume", static_cast<int>(sound::get_sound_volume()*1000));
 		node.add("music_volume", static_cast<int>(sound::get_music_volume()*1000));
 		node.add("key_up", controls::get_sdlkey(controls::CONTROL_UP));
