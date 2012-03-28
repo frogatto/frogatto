@@ -660,10 +660,10 @@ void output_node_json(wml::const_node_ptr node, std::ostream& os, std::string in
 	const int NumSpecialItems = sizeof(SpecialItems)/sizeof(*SpecialItems);
 	bool done_special = false;
 
-	const std::string AsStr = "as_";
+	const std::string OnStr = "on_";
 
 	foreach(const std::string& key, node->attr_order()) {
-		if(key.size() > AsStr.size() && std::equal(AsStr.begin(), AsStr.end(), key.begin()) && !done_special) {
+		if(key.size() > OnStr.size() && std::equal(OnStr.begin(), OnStr.end(), key.begin()) && !done_special) {
 			done_special = true;
 
 			foreach(const std::string& item, SpecialItems) {
