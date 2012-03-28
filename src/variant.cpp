@@ -1345,6 +1345,12 @@ void variant::write_json(std::ostream& s) const
 		}
 		return;
 	}
+	case TYPE_CALLABLE: {
+		std::string str;
+		serialize_to_string(str);
+		s << "\"@eval " << str << "\"";
+		return;
+	}
 	default:
 		throw type_error(formatter() << "illegal type to serialize to json: " << to_debug_string());
 	}
@@ -1353,22 +1359,6 @@ void variant::write_json(std::ostream& s) const
 void variant::write_json_pretty(std::ostream& s, std::string indent) const
 {
 	switch(type_) {
-	case TYPE_NULL: {
-		s << "null";
-		return;
-	}
-	case TYPE_BOOL: {
-		s << (bool_value_ ? "true" : "false");
-		return;
-	}
-	case TYPE_INT: {
-		s << as_int();
-		return;
-	}
-	case TYPE_DECIMAL: {
-		s << decimal(decimal_value_);
-		return;
-	}
 	case TYPE_MAP: {
 		s << "{";
 		for(std::map<variant,variant>::const_iterator i = map_->elements.begin(); i != map_->elements.end(); ++i) {
@@ -1405,26 +1395,9 @@ void variant::write_json_pretty(std::ostream& s, std::string indent) const
 		return;
 	}
 
-	case TYPE_STRING: {
-		const std::string& str = string_->str;
-		if(std::count(str.begin(), str.end(), '\\') || std::count(str.begin(), str.end(), '"')) {
-			//escape the string
-			s << '"';
-			for(std::string::const_iterator i = str.begin(); i != str.end(); ++i) {
-				if(*i == '\\' || *i == '"') {
-					s << '\\';
-				}
-
-				s << *i;
-			}
-			s << '"';
-		} else {
-			s << "\"" << string_->str << "\"";
-		}
-		return;
-	}
 	default:
-		throw type_error(formatter() << "illegal type to serialize to json: " << to_debug_string());
+		write_json(s);
+		break;
 	}
 }
 
