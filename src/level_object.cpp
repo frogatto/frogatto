@@ -325,7 +325,7 @@ level_object::level_object(variant node)
 	
 	std::vector<std::string> solid_attr;
 	
-	if(!node["solid"].as_bool()) {
+	if(!node["solid"].is_bool()) {
 		solid_attr = util::split(node["solid"].as_string_default());
 	}
 

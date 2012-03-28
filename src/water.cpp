@@ -74,6 +74,7 @@ variant water::write() const
 
 void water::add_rect(const rect& r, const unsigned char* color, variant obj)
 {
+	std::cerr << "ADD WATER: " << r << "\n";
 	areas_.push_back(area(r, color, obj));
 }
 
