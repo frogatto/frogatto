@@ -277,7 +277,7 @@ tile_map::tile_map(variant node)
 	//turn off reference counting
 	add_ref();
 
-	const std::string& unique_tiles = node["unique_tiles"].as_string();
+	const std::string& unique_tiles = node["unique_tiles"].as_string_default();
 	foreach(const std::string& tile, util::split(unique_tiles)) {
 		const std::vector<std::string>& files = files_index[tile];
 		foreach(const std::string& file, files) {

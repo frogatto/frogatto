@@ -227,7 +227,7 @@ multi_tile_pattern::multi_tile_pattern(variant node, const std::string& tile_id)
 	std::map<std::string, int> object_zorders;
 
 	foreach(variant_pair value, node.as_map()) {
-		if(value.first.as_string() == "alternative" || value.first.as_string() == "range" || value.first.as_string() == "chance" || value.first.as_string() == "pattern" || value.first.as_string() == "id") {
+		if(value.first.as_string() == "alternative" || value.first.as_string() == "range" || value.first.as_string() == "chance" || value.first.as_string() == "pattern" || value.first.as_string() == "id" || value.first.as_string() == "image") {
 			continue;
 		}
 

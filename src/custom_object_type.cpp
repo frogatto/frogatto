@@ -735,7 +735,7 @@ void execute_variation_command(variant cmd, level& lvl, custom_object& obj)
 
 const_custom_object_type_ptr custom_object_type::get_variation(const std::vector<std::string>& variations) const
 {
-	ASSERT_LOG(node_.is_null() == false, "tried to set variation in object which has no variations");
+	ASSERT_LOG(node_.is_null() == false, "tried to set variation in object " << id_ << " which has no variations");
 	if(!level::current_ptr()) {
 		//hack to get a current level -- load a basic empty level
 		static boost::intrusive_ptr<level> lvl(load_level("empty.cfg"));
