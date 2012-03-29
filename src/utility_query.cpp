@@ -26,6 +26,9 @@ StringRange get_list_element_range(const char* i1, const char* i2)
 
 	int nbracket = 0;
 	Token token = get_token_full(i1, i2);
+	if(token.type == Token::TYPE_COMMA) {
+		token = get_token_full(i1, i2);
+	}
 	result.first = token.begin;
 	Token prev = token;
 	while(nbracket > 0 || (token.type != Token::TYPE_RSQUARE && token.type != Token::TYPE_COMMA)) {
@@ -45,11 +48,7 @@ StringRange get_list_element_range(const char* i1, const char* i2)
 		token = get_token_full(i1, i2);
 	}
 
-	if(token.type == Token::TYPE_COMMA) {
-		result.second = token.end;
-	} else {
-		result.second = prev.end;
-	}
+	result.second = prev.end;
 
 	return result;
 }
@@ -77,7 +76,7 @@ find_pair_range(const std::string& contents, int line, int col, variant key) {
 
 	NameValuePairLocs result = { i1, i1, i1, i1, i1, false };
 
-	ASSERT_LOG(i1 != contents.end(), "COULD NOT FIND LOCATION: " << key.get_debug_info()->line << ", " << key.get_debug_info()->column);
+	ASSERT_LOG(i1 != contents.end(), "COULD NOT FIND LOCATION FOR " << key << ": " << line << ", " << col << ": " << key.get_debug_info()->line << ", " << key.get_debug_info()->column << ": " << contents);
 
 	const char* ptr = &*i1;
 	const char* end_ptr = contents.c_str() + contents.size();
@@ -239,18 +238,15 @@ std::string modify_file(const std::string& contents, variant original, variant v
 
 				int l = line, c = col;
 				advance_line_col(contents.begin(), contents.begin() + (ranges[n].first - contents.c_str()), l, c);
-				std::string str = modify_file(std::string(ranges[n].first, ranges[n].second), a[n], b[n], l, c, indent + "\t") + ",";
+				std::string str = modify_file(std::string(ranges[n].first, ranges[n].second), a[n], b[n], l, c, indent + "\t");
 				mods.push_back(Modification(ranges[n].first - contents.c_str(), ranges[n].second - contents.c_str(), str));
 			}
 
 			std::ostringstream s;
-			bool add_comma = false;
-			if(*(ranges.back().second-1) != ',') {
-				s << ",";
-			}
 
 			indent += "\t";
 			for(int n = a.size(); n < b.size(); ++n) {
+				s << ",";
 				if(b[n].is_list() || b[n].is_map()) {
 					s << "\n" << indent;
 				} else {
@@ -258,7 +254,6 @@ std::string modify_file(const std::string& contents, variant original, variant v
 				}
 
 				b[n].write_json_pretty(s, indent);
-				s << ",";
 				
 			}
 
@@ -294,7 +289,7 @@ void execute_command(variant cmd, variant obj, const std::string& fname)
 		}
 	} else if(cmd.try_convert<game_logic::command_callable>()) {
 		cmd.try_convert<game_logic::command_callable>()->execute(*obj.try_convert<formula_callable>());
-	} else {
+	} else if(cmd.as_bool()) {
 		std::cout << fname << ": " << cmd.write_json() << "\n";
 	}
 }
@@ -306,7 +301,7 @@ void process_file(const std::string& fname)
 		return;
 	}
 
-	variant original = parse_from_file(fname);
+	variant original = parse_from_file(fname, JSON_NO_PREPROCESSOR);
 	variant v = original;
 
 	variant obj = variant_callable::create(&v);
@@ -320,9 +315,9 @@ void process_file(const std::string& fname)
 		std::string contents = sys::read_file(fname);
 		std::string new_contents = modify_file(contents, original, v, 1, 1, "");
 		try {
-			json::parse(new_contents);
+			json::parse(new_contents, JSON_NO_PREPROCESSOR);
 		} catch(json::parse_error& e) {
-			ASSERT_LOG(false, "ERROR: MODIFIED DOCUMENT " << fname << " COULD NOT BE PARSED. FILE NOT WRITTEN\n");
+			ASSERT_LOG(false, "ERROR: MODIFIED DOCUMENT " << fname << " COULD NOT BE PARSED. FILE NOT WRITTEN: " << e.error_message() << "\n" << new_contents);
 		}
 
 		sys::write_file(fname, new_contents);

@@ -1099,8 +1099,6 @@ namespace {
 				const std::string& thestring = args()[0]->evaluate(variables).as_string();
 				chopped = util::split(thestring);
 			}
-			
-
 		
 			std::vector<variant> res;
 			for(size_t i=0; i<chopped.size(); ++i) {

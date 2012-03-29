@@ -175,12 +175,12 @@ variant custom_object_type::merge_prototype(variant node)
 		return node;
 	}
 
-	std::vector<std::string> protos = util::split(node["prototype"].as_string());
+	std::vector<std::string> protos = node["prototype"].as_list_string();
 
 	foreach(const std::string& proto, protos) {
 		//look up the object's prototype and merge it in
 		std::map<std::string, std::string>::const_iterator path_itor = prototype_file_paths().find(proto + ".cfg");
-		ASSERT_LOG(path_itor != prototype_file_paths().end(), "Could not find file for prototype '" << node["prototype"].as_string() << "'");
+		ASSERT_LOG(path_itor != prototype_file_paths().end(), "Could not find file for prototype '" << proto << "'");
 
 		variant prototype_node = json::parse_from_file(path_itor->second);
 		prototype_node = merge_prototype(prototype_node);
