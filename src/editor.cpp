@@ -780,6 +780,11 @@ int editor_x_resolution = 0, editor_y_resolution = 0;
 
 }
 
+bool editor_resolution_manager::is_active()
+{
+	return editor_resolution_manager_count != 0;
+}
+
 editor_resolution_manager::editor_resolution_manager() :
 	   original_width_(preferences::actual_screen_width()),
 	   original_height_(preferences::actual_screen_height()) {

@@ -279,7 +279,8 @@ private:
 
 struct editor_resolution_manager : private preferences::editor_screen_size_scope
 {
-	editor_resolution_manager();
+	static bool is_active();
+	explicit editor_resolution_manager();
 	~editor_resolution_manager();
 	
 	int original_width_, original_height_;
