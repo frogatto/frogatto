@@ -23,6 +23,7 @@
 //#include "foreach.hpp"
 #include "asserts.hpp"
 #include "foreach.hpp"
+#include "formatter.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
 #include "formula_callable_definition.hpp"
@@ -1626,14 +1627,34 @@ formula::formula(const variant& val, function_symbol_table* symbols, const formu
 
 			std::string whitespace(begin_line, tok.begin);
 			std::fill(whitespace.begin(), whitespace.end(), ' ');
+			std::string error_line(begin_line, end_line);
+
+			if(whitespace.size() > 40) {
+				const int erase_size = whitespace.size() - 60;
+				whitespace.erase(whitespace.begin(), whitespace.begin() + erase_size);
+				ASSERT_LOG(erase_size <= error_line.size(), "ERROR WHILE PARSING ERROR MESSAGE");
+				error_line.erase(error_line.begin(), error_line.begin() + erase_size);
+				std::fill(error_line.begin(), error_line.begin() + 3, '.');
+			}
+
+			if(error_line.size() > 78) {
+				error_line.resize(78);
+				std::fill(error_line.end()-3, error_line.end(), '.');
+			}
+			
 
 			std::cerr << std::string(begin_line, tok.begin) << "\n";
 
+			std::string location;
+			const variant::debug_info* dbg_info = val.get_debug_info();
+			if(dbg_info) {
+				location = formatter() << " AT " << *dbg_info->filename
+			                           << " " << dbg_info->line;
+			}
 			//TODO: extract info from str_ about the location of the formula.
-			ASSERT_LOG(false, "ERROR WHILE PARSING FORMULA AT "
-//			  << (filename_ ? *filename_ : "UNKNOWN") << ":"
-//			  << (line_ + nline) << " " << error_msg << "\n"
-			  << std::string(begin_line, end_line) << "\n"
+			ASSERT_LOG(false, "ERROR WHILE PARSING FORMULA" << location << ": "
+			  << error_msg << "\n"
+			  << error_line << "\n"
 			  << whitespace << "^\n");
 		}
 	}
