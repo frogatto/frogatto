@@ -47,6 +47,21 @@ void merge_variant_over(variant* aptr, variant b)
 	}
 }
 
+void visit_variants(variant v, boost::function<void (variant)> fn)
+{
+	fn(v);
+
+	if(v.is_list()) {
+		foreach(const variant& item, v.as_list()) {
+			visit_variants(item, fn);
+		}
+	} else if(v.is_map()) {
+		foreach(const variant_pair& item, v.as_map()) {
+			visit_variants(item.second, fn);
+		}
+	}
+}
+
 variant_builder& variant_builder::add_value(const std::string& name, const variant& val)
 {
 	attr_[variant(name)].push_back(val);

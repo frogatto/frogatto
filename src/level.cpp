@@ -1242,8 +1242,6 @@ variant level::write() const
 		res.add("script", i->second.write());
 	}
 
-	res.add("serialized_objects", serialization_scope.write_objects());
-
 	if(num_compiled_tiles_ > 0) {
 		res.add("num_compiled_tiles", num_compiled_tiles_);
 		foreach(variant compiled_node, wml_compiled_tiles_) {
@@ -1273,7 +1271,9 @@ variant level::write() const
 
 	res.add("vars", vars_);
 
-	return res.build();
+	variant result = res.build();
+	result.add_attr(variant("serialized_objects"), serialization_scope.write_objects(result));
+	return result;
 }
 
 point level::get_dest_from_str(const std::string& key) const

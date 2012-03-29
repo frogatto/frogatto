@@ -980,16 +980,16 @@ void variant::serialize_to_string(std::string& str) const
 		break;
 	}
 	case TYPE_CALLABLE: {
-		if(game_logic::wml_formula_callable_serialization_scope::is_active()) {
-			const game_logic::wml_serializable_formula_callable* obj = try_convert<game_logic::wml_serializable_formula_callable>();
-			if(obj) {
-				//we have an object that is to be serialized into WML. However,
-				//it might be present in the level or a reference to it held
-				//from multiple objects. So we record the address of it and
-				//register it to be recorded seperately.
-				str += "deserialize('" + game_logic::wml_formula_callable_serialization_scope::require_serialized_object(obj) + "')";
-				return;
-			}
+		const game_logic::wml_serializable_formula_callable* obj = try_convert<game_logic::wml_serializable_formula_callable>();
+		if(obj) {
+			//we have an object that is to be serialized into WML. However,
+			//it might be present in the level or a reference to it held
+			//from multiple objects. So we record the address of it and
+			//register it to be recorded seperately.
+			char buf[256];
+			sprintf(buf, "deserialize('%p')", obj);
+			str += buf;
+			return;
 		}
 
 		callable_->serialize(str);

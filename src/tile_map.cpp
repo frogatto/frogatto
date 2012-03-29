@@ -468,6 +468,7 @@ variant tile_map::write() const
 
 	std::vector<boost::array<char, 4> > unique_tiles;
 	std::ostringstream tiles;
+	bool first = true;
 	foreach(const std::vector<int>& row, map_) {
 		
 		//cut off any empty cells at the end.
@@ -477,7 +478,11 @@ variant tile_map::write() const
 		}
 
 
-		tiles << "\n";
+		if(!first) {
+			tiles << "\n";
+		}
+
+		first = false;
 		for(int i = 0; i != size; ++i) {
 			if(i) {
 				tiles << ",";

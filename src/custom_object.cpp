@@ -407,10 +407,15 @@ bool custom_object::serializable() const
 variant custom_object::write() const
 {
 	variant_builder res;
+
+	char addr_buf[256];
+	sprintf(addr_buf, "%p", this);
+	res.add("_addr", addr_buf);
+
 	if(parallax_scale_millis_.get() != NULL) {
 		if( (type_->parallax_scale_millis_x() !=  parallax_scale_millis_->first) || (type_->parallax_scale_millis_y() !=  parallax_scale_millis_->second)){
-			res.add("parallax_scale_x", formatter() << parallax_scale_millis_->first);
-			res.add("parallax_scale_y", formatter() << parallax_scale_millis_->second);
+			res.add("parallax_scale_x", parallax_scale_millis_->first);
+			res.add("parallax_scale_y", parallax_scale_millis_->second);
 		}
 	}
 
@@ -423,11 +428,11 @@ variant custom_object::write() const
 	}
 
 	if(activation_border_ != type_->activation_border()) {
-		res.add("activation_border", formatter() << activation_border_);
+		res.add("activation_border", activation_border_);
 	}
 	
 	if(position_schedule_.get() != NULL) {
-		res.add("schedule_speed", formatter() << position_schedule_->speed);
+		res.add("schedule_speed", position_schedule_->speed);
 		if(position_schedule_->x_pos.empty() == false) {
 			res.add("x_schedule", util::join_ints(&position_schedule_->x_pos[0], position_schedule_->x_pos.size()));
 		}
@@ -437,12 +442,7 @@ variant custom_object::write() const
 		}
 
 		if(position_schedule_->rotation.empty() == false) {
-			std::vector<int> v(position_schedule_->rotation.size());
-			for(int n = 0; n != v.size(); ++n) {
-				v[n] = position_schedule_->rotation[n].value();
-			}
-
-			res.add("rotation_schedule", util::join_ints(&v[0], v.size()));
+			res.add("rotation_schedule", vector_to_variant(position_schedule_->rotation));
 		}
 	}
 
@@ -475,7 +475,7 @@ variant custom_object::write() const
 	}
 
 	if(cycle_ > 1) {
-		res.add("cycle", formatter() << cycle_);
+		res.add("cycle", cycle_);
 	}
 
 	if(frame_name_ != "default") {
@@ -484,13 +484,13 @@ variant custom_object::write() const
 
 	res.add("custom", "yes");
 	res.add("type", type_->id());
-	res.add("x", formatter() << x());
-	res.add("y", formatter() << y());
-	res.add("velocity_x", formatter() << velocity_x_);
-	res.add("velocity_y", formatter() << velocity_y_);
+	res.add("x", x());
+	res.add("y", y());
+	res.add("velocity_x", velocity_x_);
+	res.add("velocity_y", velocity_y_);
 	
 	if(platform_motion_x()) {
-		res.add("platform_motion_x", formatter() << platform_motion_x());
+		res.add("platform_motion_x", platform_motion_x());
 	}
 
 	if(solid_dimensions() != type_->solid_dimensions() ||
@@ -688,7 +688,7 @@ variant custom_object::write() const
 	}
 
 	if(platform_offsets_.empty() == false) {
-		res.add("platform_offsets", util::join_ints(&platform_offsets_.front(), platform_offsets_.size()));
+		res.add("platform_offsets", vector_to_variant(platform_offsets_));
 	}
 	
 	return res.build();

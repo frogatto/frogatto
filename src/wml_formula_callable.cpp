@@ -2,6 +2,8 @@
 #include <stack>
 #include <string>
 
+#include <boost/bind.hpp>
+
 #include <stdio.h>
 
 #include "asserts.hpp"
@@ -25,21 +27,6 @@ void wml_formula_callable_serialization_scope::register_serialized_object(const_
 {
 	ASSERT_LOG(scopes.empty() == false, "register_serialized_object() called when there is no wml_formula_callable_serialization_scope");
 	scopes.top().objects_written.insert(ptr);
-
-	char addr_buf[256];
-	sprintf(addr_buf, "%p", ptr.get());
-	node = node.add_attr(variant("_addr"), variant(addr_buf));
-}
-
-std::string  wml_formula_callable_serialization_scope::require_serialized_object(const_wml_serializable_formula_callable_ptr ptr)
-{
-	char addr_buf[256];
-	sprintf(addr_buf, "%p", ptr.get());
-
-	ASSERT_LOG(scopes.empty() == false, "require_serialized_object() called when there is no wml_formula_callable_serialization_scope");
-	scopes.top().objects_to_write.insert(ptr);
-
-	return addr_buf;
 }
 
 bool wml_formula_callable_serialization_scope::is_active()
@@ -57,23 +44,50 @@ wml_formula_callable_serialization_scope::~wml_formula_callable_serialization_sc
 	scopes.pop();
 }
 
-variant wml_formula_callable_serialization_scope::write_objects() const
+namespace {
+void add_object_to_set(variant v, std::set<wml_serializable_formula_callable*>* set, std::set<std::string>* already_recorded) {
+	if(v.is_map()) {
+		variant addr = v["_addr"];
+		if(addr.is_string()) {
+			already_recorded->insert(addr.as_string());
+		}
+
+		return;
+	}
+
+	if(!v.is_callable()) {
+		return;
+	}
+
+	wml_serializable_formula_callable* ptr = v.try_convert<wml_serializable_formula_callable>();
+	if(ptr) {
+		set->insert(ptr);
+	}
+}
+}
+
+variant wml_formula_callable_serialization_scope::write_objects(variant obj) const
 {
-	variant_builder result;
-	foreach(const_wml_serializable_formula_callable_ptr ptr, scopes.top().objects_to_write) {
-		if(scopes.top().objects_written.count(ptr) != 0) {
+	std::map<variant, variant> res;
+	std::set<wml_serializable_formula_callable*> objects;
+	std::set<std::string> already_known;
+	visit_variants(obj, boost::bind(add_object_to_set, _1, &objects, &already_known));
+
+	std::vector<variant> results_list;
+	foreach(wml_serializable_formula_callable* item, objects) {
+		char addr_buf[256];
+		sprintf(addr_buf, "%p", item);
+		std::string key(addr_buf);
+		if(already_known.count(key)) {
 			continue;
 		}
 
-		char addr_buf[256];
-		sprintf(addr_buf, "%p", ptr.get());
-
-		variant node(ptr->write_to_wml());
-		node.add_attr(variant("_addr"), variant(addr_buf));
-		result.add("character", node);
+		results_list.push_back(item->write_to_wml());
 	}
 
-	return result.build();
+	res[variant("character")] = variant(&results_list);
+
+	return variant(&res);
 }
 
 namespace {

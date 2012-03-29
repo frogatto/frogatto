@@ -33,13 +33,12 @@ class wml_formula_callable_serialization_scope
 {
 public:
 	static void register_serialized_object(const_wml_serializable_formula_callable_ptr ptr, variant& node);
-	static std::string require_serialized_object(const_wml_serializable_formula_callable_ptr ptr);
 	static bool is_active();
 
 	wml_formula_callable_serialization_scope();
 	~wml_formula_callable_serialization_scope();
 
-	variant write_objects() const;
+	variant write_objects(variant obj) const;
 
 private:
 };

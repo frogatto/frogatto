@@ -1,6 +1,8 @@
 #ifndef VARIANT_UTILS_HPP_INCLUDED
 #define VARIANT_UTILS_HPP_INCLUDED
 
+#include <boost/function.hpp>
+
 #include <map>
 
 #include "foreach.hpp"
@@ -18,6 +20,8 @@
 variant append_variants(variant a, variant b);
 
 void merge_variant_over(variant* aptr, variant b);
+
+void visit_variants(variant v, boost::function<void (variant)> fn);
 
 template<typename Seq>
 variant vector_to_variant(const Seq& seq) {
