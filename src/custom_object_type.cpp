@@ -153,6 +153,7 @@ variant merge_into_prototype(variant prototype_node, variant node)
 	result[variant("tmp")] = prototype_node["tmp"] + node["tmp"];
 	result[variant("vars")] = prototype_node["vars"] + node["vars"];
 	result[variant("consts")] = prototype_node["consts"] + node["consts"];
+	result[variant("variations")] = prototype_node["variations"] + node["variations"];
 	result[variant("properties")] = prototype_node["properties"] + node["properties"];
 	result[variant("editor_info")] = prototype_node["editor_info"] + node["editor_info"];
 
@@ -647,7 +648,7 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 	}
 
 	variant variations = node["variations"];
-	if(variations.is_null() == false && !is_variation) {
+	if(variations.is_null() == false) {
 		foreach(const variant_pair& v, variations.as_map()) {
 			variations_[v.first.as_string()] = game_logic::formula::create_optional_formula(v.second, &get_custom_object_functions_symbol_table());
 		}
@@ -753,6 +754,7 @@ const_custom_object_type_ptr custom_object_type::get_variation(const std::vector
 
 		foreach(const std::string& v, variations) {
 			std::map<std::string, game_logic::const_formula_ptr>::const_iterator var_itor = variations_.find(v);
+			ASSERT_LOG(var_itor != variations_.end(), "COULD NOT FIND VARIATION " << v << " IN " << id_);
 
 			variant cmd = var_itor->second->execute(*callable);
 
