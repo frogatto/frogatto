@@ -15,7 +15,7 @@ class TTF_Font;
 #endif
 
 namespace {
-const char* FontFile = "FreeMono.ttf";
+const char* FontFile = "UbuntuMono-R.ttf";
 
 std::map<int, TTF_Font*> font_table;
 
