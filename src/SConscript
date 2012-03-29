@@ -132,5 +132,7 @@ unit_test.cpp
 formula_test.cpp
 loading_screen.cpp
 utility_object_compiler.cpp
+utility_query.cpp
+utility_render_level.cpp
 """)
 env.Program("#/game", sources)
