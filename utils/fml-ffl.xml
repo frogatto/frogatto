@@ -147,8 +147,8 @@
 				<Int attribute="Number" context="#stay"/>
 				<StringDetect attribute="Normal Text" context="animation" String="[animation]" beginRegion="in_tag" />
 				<StringDetect attribute="Normal Text" context="editor info" String="[editor_info]" beginRegion="in_tag" />
-				<Detect2Chars attribute="Normal Text" context="tag" char="[" char1="/" endRegion="in_tag" firstNonSpace="true" />
-				<DetectChar attribute="Normal Text" context="tag" char="[" beginRegion="in_tag" firstNonSpace="true" />
+				<DetectChar attribute="Normal Text" context="tag" char="}" endRegion="in_tag" firstNonSpace="true" />
+				<DetectChar attribute="Normal Text" context="tag" char="{" beginRegion="in_tag" firstNonSpace="true" />
 			</context>
 			
 			<!-- Each context calls contexts further down the file, not including returns. --> 
@@ -180,7 +180,7 @@
 			</context>
 			
 			<context attribute="Event" lineEndContext="#pop" name="on_">
-				<DetectChar attribute="Normal Text" context="#pop" char="=" />
+				<DetectChar attribute="Normal Text" context="#pop" char=":" />
 			</context>
 			
 			<context attribute="Engine Event" lineEndContext="#stay" name="on_engine">
