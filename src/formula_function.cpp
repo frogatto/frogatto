@@ -810,8 +810,13 @@ namespace {
 	public:
 		explicit filter_function(const args_list& args)
 			: function_expression("filter", args, 2, 3)
-		{}
+		{
+			if(args.size() == 3) {
+				args[1]->is_identifier(&identifier_);
+			}
+		}
 	private:
+		std::string identifier_;
 		variant execute(const formula_callable& variables) const {
 			std::vector<variant> vars;
 			const variant items = args()[0]->evaluate(variables);
@@ -827,7 +832,7 @@ namespace {
 				map_formula_callable* self_callable = new map_formula_callable;
 				formula_callable_ptr callable(self_callable);
 				self_callable->add("context", variant(&variables));
-				const std::string self = args()[1]->evaluate(variables).as_string();
+				const std::string self = identifier_.empty() ? args()[1]->evaluate(variables).as_string() : identifier_;
 				for(size_t n = 0; n != items.num_elements(); ++n) {
 					self_callable->add(self, items[n]);
 					formula_callable_ptr callable_with_backup(new formula_variant_callable_with_backup(items[n], variables));
@@ -865,9 +870,14 @@ namespace {
 	public:
 		explicit find_function(const args_list& args)
 			: function_expression("find", args, 2, 3)
-		{}
+		{
+			if(args.size() == 3) {
+				args[1]->is_identifier(&identifier_);
+			}
+		}
 
 	private:
+		std::string identifier_;
 		variant execute(const formula_callable& variables) const {
 			const variant items = args()[0]->evaluate(variables);
 
@@ -884,7 +894,7 @@ namespace {
 				formula_callable_ptr callable(self_callable);
 				self_callable->add("context", variant(&variables));
 
-				const std::string self = args()[1]->evaluate(variables).as_string();
+				const std::string self = identifier_.empty() ? args()[1]->evaluate(variables).as_string() : identifier_;
 				for(size_t n = 0; n != items.num_elements(); ++n) {
 					self_callable->add(self, items[n]);
 
@@ -997,8 +1007,14 @@ namespace {
 	public:
 		explicit map_function(const args_list& args)
 			: function_expression("map", args, 2, 3)
-		{}
+		{
+			if(args.size() == 3) {
+				args[1]->is_identifier(&identifier_);
+			}
+		}
 	private:
+		std::string identifier_;
+
 		variant execute(const formula_callable& variables) const {
 			std::vector<variant> vars;
 			const variant items = args()[0]->evaluate(variables);
@@ -1017,7 +1033,7 @@ namespace {
 				map_formula_callable* self_callable = new map_formula_callable;
 				formula_callable_ptr callable_ref(self_callable);
 				self_callable->add(context_str, variant(&variables));
-				const std::string self = args()[1]->evaluate(variables).as_string();
+				const std::string self = identifier_.empty() ? args()[1]->evaluate(variables).as_string() : identifier_;
 
 				variant& self_variant = self_callable->add_direct_access(self);
 
