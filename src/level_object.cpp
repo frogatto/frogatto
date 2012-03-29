@@ -290,7 +290,7 @@ level_object::level_object(variant node)
 		tiles_str = tiles_variant.as_string();
 	}
 
-	std::vector<std::string> tile_variations = util::split(tiles_str);
+	std::vector<std::string> tile_variations = util::split(tiles_str, '|');
 	foreach(const std::string& variation, tile_variations) {
 		if(!variation.empty() && variation[0] == '+') {
 			//a + symbol at the start of tiles means that it's just a base-10
