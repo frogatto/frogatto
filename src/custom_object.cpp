@@ -95,7 +95,7 @@ custom_object::custom_object(variant node)
 	max_difficulty_(node["max_difficulty"].as_int(-1))
 {
 	if(node.has_key("platform_area")) {
-		set_platform_area(rect(node["platform_area"].as_string()));
+		set_platform_area(rect(node["platform_area"]));
 	}
 
 	if(node.has_key("x_schedule")) {
@@ -135,11 +135,11 @@ custom_object::custom_object(variant node)
 	}
 
 	if(node.has_key("activation_area")) {
-		activation_area_.reset(new rect(node["activation_area"].as_string()));
+		activation_area_.reset(new rect(node["activation_area"]));
 	}
 
 	if(node.has_key("clip_area")) {
-		clip_area_.reset(new rect(node["clip_area"].as_string()));
+		clip_area_.reset(new rect(node["clip_area"]));
 	}
 
 	if(node.has_key("variations")) {
@@ -207,7 +207,7 @@ custom_object::custom_object(variant node)
 	}
 
 	if(node.has_key("draw_color")) {
-		draw_color_.reset(new graphics::color_transform(node["draw_color"].as_string()));
+		draw_color_.reset(new graphics::color_transform(node["draw_color"]));
 	}
 
 	if(node.has_key("label")) {
@@ -467,7 +467,7 @@ variant custom_object::write() const
 	}
 
 	if(draw_color_) {
-		res.add("draw_color", draw_color_->to_string());
+		res.add("draw_color", draw_color_->write());
 	}
 
 	if(label().empty() == false) {
@@ -639,11 +639,11 @@ variant custom_object::write() const
 	}
 
 	if(activation_area_) {
-		res.add("activation_area", activation_area_->to_string());
+		res.add("activation_area", activation_area_->write());
 	}
 
 	if(clip_area_) {
-		res.add("clip_area", clip_area_->to_string());
+		res.add("clip_area", clip_area_->write());
 	}
 
 	if(!particle_systems_.empty()) {

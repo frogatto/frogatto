@@ -202,14 +202,14 @@ level::level(const std::string& level_cfg, variant node)
 	segment_height_ = node["segment_height"].as_int();
 	ASSERT_LOG(segment_height_%32 == 0, "segment_height in " << id_ << " is not divisible by 32");
 
-	music_ = node["music"].as_string();
+	music_ = node["music"].as_string_default();
 	replay_data_ = node["replay_data"].as_string_default();
 	cycle_ = node["cycle"].as_int();
 	time_freeze_ = 0;
 	x_resolution_ = node["x_resolution"].as_int();
 	y_resolution_ = node["y_resolution"].as_int();
 	in_dialog_ = false;
-	title_ = node["title"].as_string();
+	title_ = node["title"].as_string_default();
 	if(node.has_key("dimensions")) {
 		boundaries_ = rect(node["dimensions"]);
 	} else {

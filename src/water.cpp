@@ -57,7 +57,7 @@ variant water::write() const
 	result.add("zorder", zorder_);
 	foreach(const area& a, areas_) {
 		variant_builder area_node;
-		area_node.add("rect", a.rect_.to_string());
+		area_node.add("rect", a.rect_.write());
 		std::vector<variant> color_vec;
 		color_vec.reserve(4);
 		for(int n = 0; n != 4; ++n) {
