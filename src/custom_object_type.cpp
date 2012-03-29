@@ -720,16 +720,14 @@ game_logic::function_symbol_table* custom_object_type::function_symbols() const
 }
 
 namespace {
-void execute_variation_command(variant cmd, level& lvl, custom_object& obj)
+void execute_variation_command(variant cmd, game_logic::formula_callable& obj)
 {
 	if(cmd.is_list()) {
 		foreach(variant c, cmd.as_list()) {
-			execute_variation_command(c, lvl, obj);
+			execute_variation_command(c, obj);
 		}
-	} else if(cmd.try_convert<entity_command_callable>()) {
-		cmd.try_convert<entity_command_callable>()->execute(lvl, obj);
-	} else if(cmd.try_convert<custom_object_command_callable>()) {
-		cmd.try_convert<custom_object_command_callable>()->execute(lvl, obj);
+	} else if(cmd.try_convert<game_logic::command_callable>()) {
+		cmd.try_convert<game_logic::command_callable>()->execute(obj);
 	}
 }
 }
@@ -737,17 +735,10 @@ void execute_variation_command(variant cmd, level& lvl, custom_object& obj)
 const_custom_object_type_ptr custom_object_type::get_variation(const std::vector<std::string>& variations) const
 {
 	ASSERT_LOG(node_.is_null() == false, "tried to set variation in object " << id_ << " which has no variations");
-	if(!level::current_ptr()) {
-		//hack to get a current level -- load a basic empty level
-		static boost::intrusive_ptr<level> lvl(load_level("empty.cfg"));
-		lvl->finish_loading();
-		lvl->set_as_current_level();
-	}
 
 	const_custom_object_type_ptr& result = variations_cache_[variations];
 	if(!result) {
 		variant node = node_;
-		boost::intrusive_ptr<custom_object> obj(new custom_object(id_, 0, 0, true));
 
 		boost::intrusive_ptr<game_logic::map_formula_callable> callable(new game_logic::map_formula_callable);
 		callable->add("doc", variant(variant_callable::create(&node)));
@@ -758,7 +749,7 @@ const_custom_object_type_ptr custom_object_type::get_variation(const std::vector
 
 			variant cmd = var_itor->second->execute(*callable);
 
-			execute_variation_command(cmd, level::current(), *obj);
+			execute_variation_command(cmd, *callable);
 		}
 
 		std::cerr << "VARIATION MODIFICATION: BEFORE\n---\n" << node_.write_json() << "---\nAFTER\n---\n" << node.write_json() << "\n---\n";

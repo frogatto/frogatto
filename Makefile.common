@@ -139,6 +139,7 @@ objects = \
 	wml_parser.o \
 	wml_utils.o \
 	utility_object_compiler.o \
+	utility_query.o \
 	utility_render_level.o
 
 # Server

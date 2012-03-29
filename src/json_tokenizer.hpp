@@ -20,6 +20,11 @@ struct Token {
 
 Token get_token(const char*& i1, const char* i2);
 
+//Gets the full token, unlike get_token which will e.g. return the
+//characters inside the string.
+Token get_token_full(const char*& i1, const char* i2);
+
+
 }
 
 #endif

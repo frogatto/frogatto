@@ -3138,16 +3138,21 @@ bool custom_object::execute_command(const variant& var)
 			result = execute_command(var[n]) && result;
 		}
 	} else {
-		custom_object_command_callable* cmd = var.try_convert<custom_object_command_callable>();
+		game_logic::command_callable* cmd = var.try_convert<game_logic::command_callable>();
 		if(cmd != NULL) {
-			cmd->execute(level::current(), *this);
+			cmd->execute(*this);
 		} else {
-			entity_command_callable* cmd = var.try_convert<entity_command_callable>();
+			custom_object_command_callable* cmd = var.try_convert<custom_object_command_callable>();
 			if(cmd != NULL) {
 				cmd->execute(level::current(), *this);
 			} else {
-				if(var.try_convert<swallow_object_command_callable>()) {
-					result = false;
+				entity_command_callable* cmd = var.try_convert<entity_command_callable>();
+				if(cmd != NULL) {
+					cmd->execute(level::current(), *this);
+				} else {
+					if(var.try_convert<swallow_object_command_callable>()) {
+						result = false;
+				}
 				}
 			}
 		}

@@ -1456,6 +1456,9 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 	}
 	
 	if(op == i1) {
+		if(op+1 == i2) {
+			std::cerr << "No expression for operator '" << std::string(op->begin,op->end) << "' to operate on\n";
+		}
 		return expression_ptr(new unary_operator_expression(
 															std::string(op->begin,op->end),
 															parse_expression(op+1,i2,symbols, callable_def, can_optimize)));
@@ -1641,7 +1644,7 @@ formula::formula(const variant& val, function_symbol_table* symbols, const formu
 		} else {
 			expr_ = expression_ptr(new null_expression());
 		}	
-	} catch(formula_error&) {
+	} catch(std::string&) {
 		std::cerr << "ERROR WHILE PARSING AT " << (str_.get_debug_info() ? str_.get_debug_info()->message() : "UNKNOWN") << "::\n" << str_ << "\n";
 		throw;
 	}
