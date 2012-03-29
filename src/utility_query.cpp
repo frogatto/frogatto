@@ -283,6 +283,10 @@ const_formula_ptr formula_;
 
 void execute_command(variant cmd, variant obj, const std::string& fname)
 {
+	if(cmd.try_convert<variant_callable>()) {
+		cmd = cmd.try_convert<variant_callable>()->get_value();
+	}
+
 	if(cmd.is_list()) {
 		foreach(variant v, cmd.as_list()) {
 			execute_command(v, obj, fname);
@@ -290,7 +294,7 @@ void execute_command(variant cmd, variant obj, const std::string& fname)
 	} else if(cmd.try_convert<game_logic::command_callable>()) {
 		cmd.try_convert<game_logic::command_callable>()->execute(*obj.try_convert<formula_callable>());
 	} else if(cmd.as_bool()) {
-		std::cout << fname << ": " << cmd.write_json() << "\n";
+		std::cout << cmd.write_json() << "\n";
 	}
 }
 
@@ -305,7 +309,12 @@ void process_file(const std::string& fname)
 	variant v = original;
 
 	variant obj = variant_callable::create(&v);
-	variant result = formula_->execute(*obj.try_convert<formula_callable>());
+
+	boost::intrusive_ptr<map_formula_callable> map_callable(new map_formula_callable(obj.try_convert<formula_callable>()));
+	map_callable->add("doc", obj);
+	map_callable->add("filename", variant(fname));
+
+	variant result = formula_->execute(*map_callable);
 	execute_command(result, obj, fname);
 	if(result.as_bool()) {
 		//std::cout << fname << ": " << result.write_json() << "\n";

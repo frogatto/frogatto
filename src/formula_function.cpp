@@ -24,6 +24,7 @@
 #include "formula_function.hpp"
 #include "string_utils.hpp"
 #include "unit_test.hpp"
+#include "variant_callable.hpp"
 
 #include "graphics.hpp"
 #include <boost/regex.hpp>
@@ -957,6 +958,41 @@ namespace {
 		}
 	};
 
+namespace {
+	void visit_objects(variant v, std::vector<variant>& res) {
+		if(v.is_map()) {
+			res.push_back(v);
+			foreach(const variant_pair& value, v.as_map()) {
+				visit_objects(value.second, res);
+			}
+		} else if(v.is_list()) {
+			foreach(const variant& value, v.as_list()) {
+				visit_objects(value, res);
+			}
+		} else if(v.try_convert<variant_callable>()) {
+			res.push_back(v);
+			variant keys = v.try_convert<variant_callable>()->get_value().get_keys();
+			foreach(variant k, keys.as_list()) {
+				visit_objects(v.try_convert<variant_callable>()->query_value(k.as_string()), res);
+			}
+		}
+	}
+}
+
+	class visit_objects_function : public function_expression {
+	public:
+		explicit visit_objects_function(const args_list& args)
+			: function_expression("visit_objects", args, 1, 1)
+		{}
+	private:
+		variant execute(const formula_callable& variables) const {
+			const variant v = args()[0]->evaluate(variables);
+			std::vector<variant> result;
+			visit_objects(v, result);
+			return variant(&result);
+		}
+	};
+
 	class map_function : public function_expression {
 	public:
 		explicit map_function(const args_list& args)
@@ -1732,6 +1768,7 @@ namespace {
 			FUNCTION(mapping);
 			FUNCTION(find);
 			FUNCTION(transform);
+			FUNCTION(visit_objects);
 			FUNCTION(map);
 			FUNCTION(sum);
 			FUNCTION(range);
