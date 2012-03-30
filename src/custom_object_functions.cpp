@@ -1058,6 +1058,12 @@ private:
 				if(obj_cmd) {
 					obj_cmd->execute(lvl, ob);
 				}
+
+				const game_logic::command_callable* callable_cmd = var.try_convert<const game_logic::command_callable>();
+				if(callable_cmd) {
+					callable_cmd->execute(ob);
+				}
+
 			}
 
 			if(var.is_list()) {
