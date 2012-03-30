@@ -178,7 +178,6 @@ public:
 	bool hidden_in_game() const { return hidden_in_game_; }
 
 private:
-	static void overwrite_frames(custom_object_type* t, custom_object_type* new_obj);
 
 	custom_object_callable callable_definition_;
 

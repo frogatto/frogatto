@@ -94,6 +94,8 @@ custom_object::custom_object(variant node)
 	min_difficulty_(node["min_difficulty"].as_int(-1)),
 	max_difficulty_(node["max_difficulty"].as_int(-1))
 {
+	get_all().insert(this);
+
 	if(node.has_key("platform_area")) {
 		set_platform_area(rect(node["platform_area"]));
 	}
@@ -295,6 +297,8 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	parent_prev_x_(0), parent_prev_y_(0), parent_prev_facing_(true),
 	min_difficulty_(-1), max_difficulty_(-1)
 {
+	get_all().insert(this);
+
 	set_solid_dimensions(type_->solid_dimensions(),
 	                     type_->weak_solid_dimensions());
 	set_collide_dimensions(type_->collide_dimensions(),
@@ -381,10 +385,13 @@ custom_object::custom_object(const custom_object& o) :
 	custom_draw_(o.custom_draw_),
 	platform_offsets_(o.platform_offsets_)
 {
+	get_all().insert(this);
 }
 
 custom_object::~custom_object()
 {
+	get_all().erase(this);
+
 	sound::stop_looped_sounds(this);
 }
 
@@ -1741,6 +1748,12 @@ variant call_stack(const custom_object& obj) {
 	return variant(&result);
 }
 
+}
+
+std::set<custom_object*>& custom_object::get_all()
+{
+	static std::set<custom_object*> all;
+	return all;
 }
 
 void custom_object::init()
@@ -3326,6 +3339,7 @@ void custom_object::map_entities(const std::map<entity_ptr, entity_ptr>& m)
 void custom_object::add_particle_system(const std::string& key, const std::string& type)
 {
 	particle_systems_[key] = type_->get_particle_system_factory(type)->create(*this);
+	particle_systems_[key]->set_type(type);
 }
 
 void custom_object::remove_particle_system(const std::string& key)
@@ -3546,6 +3560,29 @@ point custom_object::parent_position() const
 	}
 
 	return parent_->pivot(parent_pivot_);
+}
+
+void custom_object::update_type(const_custom_object_type_ptr old_type,
+                                const_custom_object_type_ptr new_type)
+{
+	if(old_type != base_type_) {
+		return;
+	}
+
+	base_type_ = new_type;
+	if(current_variation_.empty()) {
+		type_ = base_type_;
+	} else {
+		type_ = base_type_->get_variation(current_variation_);
+	}
+
+	frame_ = &type_->get_frame(frame_name_);
+
+	std::map<std::string, particle_system_ptr> systems;
+	systems.swap(particle_systems_);
+	for(std::map<std::string, particle_system_ptr>::const_iterator i = systems.begin(); i != systems.end(); ++i) {
+		add_particle_system(i->first, i->second->type());
+	}
 }
 
 BENCHMARK(custom_object_spike) {

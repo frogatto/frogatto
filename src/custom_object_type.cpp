@@ -304,53 +304,6 @@ std::vector<const_custom_object_type_ptr> custom_object_type::get_all()
 	return res;
 }
 
-void custom_object_type::overwrite_frames(custom_object_type* t, custom_object_type* new_obj)
-{
-	//for now don't override particles factories. Just keep them stable.
-	new_obj->particle_factories_ = t->particle_factories_;
-
-	//We keep around leaked frames in case there are still
-	//references to them.
-	//TODO: make all references to frames use reference-counting
-	//pointers and fix this.
-	static std::vector<frame_ptr> leaked_frames;
-
-	*t->default_frame_ = *new_obj->default_frame_;
-	leaked_frames.push_back(t->default_frame_);
-
-	//clone the frames from the new object into the old one,
-	//so if there are any remaining references to the frames they
-	//get updated.
-	for(frame_map::iterator i = t->frames_.begin(); i != t->frames_.end(); ++i) {
-		frame_map::iterator j = new_obj->frames_.find(i->first);
-		if(j != new_obj->frames_.end() && i->second.size() == j->second.size()) {
-			for(int n = 0; n != i->second.size(); ++n) {
-				*i->second[n] = *j->second[n];
-			}
-		}
-
-		for(int n = 0; n != i->second.size(); ++n) {
-			leaked_frames.push_back(i->second[n]);
-		}
-	}
-
-	for(std::map<std::string, const_custom_object_type_ptr>::iterator i = t->sub_objects_.begin(); i != t->sub_objects_.end(); ++i) {
-		std::map<std::string, const_custom_object_type_ptr>::iterator j = new_obj->sub_objects_.find(i->first);
-		if(j != new_obj->sub_objects_.end()) {
-			overwrite_frames(const_cast<custom_object_type*>(i->second.get()),
-			                 const_cast<custom_object_type*>(j->second.get()));
-		}
-	}
-
-	for(std::map<std::vector<std::string>, const_custom_object_type_ptr>::iterator i = t->variations_cache_.begin(); i != t->variations_cache_.end(); ++i) {
-		std::map<std::vector<std::string>, const_custom_object_type_ptr>::iterator j = new_obj->variations_cache_.find(i->first);
-		if(j != new_obj->variations_cache_.end()) {
-			overwrite_frames(const_cast<custom_object_type*>(i->second.get()),
-			                 const_cast<custom_object_type*>(j->second.get()));
-		}
-	}
-}
-
 int custom_object_type::reload_modified_code()
 {
 	int result = 0;
@@ -390,6 +343,8 @@ bool custom_object_type::reload_object(const std::string& type)
 {
 	object_map::iterator i = cache().find(type);
 	ASSERT_LOG(i != cache().end(), "COULD NOT RELOAD OBJECT " << type);
+	
+	const_custom_object_type_ptr old_obj = i->second;
 
 	custom_object_type_ptr new_obj;
 	
@@ -407,11 +362,26 @@ bool custom_object_type::reload_object(const std::string& type)
 	}
 
 
-	custom_object_type* t = const_cast<custom_object_type*>(i->second.get());
 	if(new_obj) {
-		overwrite_frames(t, new_obj.get());
+		const int start = SDL_GetTicks();
+		foreach(custom_object* obj, custom_object::get_all()) {
+			obj->update_type(old_obj, new_obj);
+		}
 
-		*t = *new_obj;
+		for(std::map<std::string, const_custom_object_type_ptr>::const_iterator i = old_obj->sub_objects_.begin(); i != old_obj->sub_objects_.end(); ++i) {
+			std::map<std::string, const_custom_object_type_ptr>::const_iterator j = new_obj->sub_objects_.find(i->first);
+			if(j != new_obj->sub_objects_.end()) {
+				foreach(custom_object* obj, custom_object::get_all()) {
+					obj->update_type(i->second, j->second);
+				}
+			}
+		}
+
+		const int end = SDL_GetTicks();
+		std::cerr << "UPDATED " << custom_object::get_all().size() << " OBJECTS IN " << (end - start) << "\n";
+
+		i->second = new_obj;
+
 		return true;
 	}
 

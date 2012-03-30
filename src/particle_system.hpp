@@ -33,7 +33,11 @@ public:
 	virtual bool should_save() const { return true; }
 	virtual void process(const entity& e) = 0;
 	virtual void draw(const rect& area, const entity& e) const = 0;
+
+	void set_type(const std::string& type) { type_ = type; }
+	const std::string& type() const { return type_; }
 private:
+	std::string type_;
 };
 
 #endif

@@ -3366,7 +3366,7 @@ void level::backup()
 	snapshot->last_touched_player = last_touched_player_;
 
 	backups_.push_back(snapshot);
-	if(backups_.size() > 1000) {
+	if(backups_.size() > 500) {
 		backups_.erase(backups_.begin(), backups_.begin() + 100);
 	}
 }
