@@ -376,8 +376,48 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 	}
 
 	if(event.keysym.mod&KMOD_CTRL) {
-		record_op();
-		return false;
+		if(event.keysym.sym == SDLK_BACKSPACE) {
+			if(select_ == cursor_) {
+				//We delete the current word behind us. 
+				truncate_col_position();
+
+				if(cursor_.col > 0) {
+					save_undo_state();
+				}
+
+				const std::string& line = text_[select_.row];
+				int col = select_.col;
+				while(col > 0 && !(isalnum(line[col-1]) || line[col-1] == '_')) {
+					--col;
+				}
+
+				while(col > 0 && (isalnum(line[col-1]) || line[col-1] == '_')) {
+					--col;
+				}
+
+				select_.col = col;
+				delete_selection();
+				record_op();
+				return true;
+			}
+		} else if(event.keysym.sym == SDLK_DELETE) {
+			if(select_ == cursor_) {
+				//We delete until end of line.
+				truncate_col_position();
+
+				if(cursor_.col < text_[select_.row].size()) {
+					save_undo_state();
+				}
+
+				select_ = Loc(select_.row, text_[select_.row].size());
+				delete_selection();
+				record_op();
+				return true;
+			}
+		} else { 
+			record_op();
+			return false;
+		}
 	}
 
 	switch(event.keysym.sym) {
