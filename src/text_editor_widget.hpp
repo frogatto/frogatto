@@ -21,13 +21,39 @@ public:
 	void undo();
 	void redo();
 
-protected:
+	struct Loc {
+		Loc(int r, int c) : row(r), col(c)
+		{}
+		bool operator==(const Loc& o) const { return row == o.row && col == o.col; }
+		bool operator!=(const Loc& o) const { return !(*this == o); }
+		bool operator<(const Loc& o) const { return row < o.row || row == o.row && col < o.col; }
+		bool operator>(const Loc& o) const { return o < *this; }
+		bool operator<=(const Loc& o) const { return operator==(o) || operator<(o); }
+		bool operator>=(const Loc& o) const { return o <= *this; }
+		int row, col;
+	};
+
 	const std::vector<std::string>& get_data() const { return text_; }
+
+	void set_search(const std::string& term);
+	void next_search_match();
+
+	void set_on_change_handler(boost::function<void()> fn) { on_change_ = fn; }
+	void set_on_move_cursor_handler(boost::function<void()> fn) { on_move_cursor_ = fn; }
+	void set_on_enter_handler(boost::function<void()> fn) { on_enter_ = fn; }
+	void set_on_tab_handler(boost::function<void()> fn) { on_tab_ = fn; }
+
+	bool has_focus() const { return has_focus_; }
+	void set_focus(bool value);
+
+protected:
 
 	virtual void select_token(const std::string& row, int& begin_row, int& end_row, int& begin_col, int& end_col) const;
 
-	int cursor_row() const { return row_; }
-	int cursor_col() const { return col_; }
+	int cursor_row() const { return cursor_.row; }
+	int cursor_col() const { return cursor_.col; }
+
+	virtual void on_change();
 
 private:
 	void handle_draw() const;
@@ -39,7 +65,6 @@ private:
 
 	virtual graphics::color get_character_color(int row, int col) const;
 
-	virtual void on_change() {}
 
 	std::pair<int, int> mouse_position_to_row_col(int x, int y) const;
 
@@ -73,8 +98,7 @@ private:
 	int font_size_;
 	int char_width_, char_height_;
 
-	int row_select_, col_select_;
-	int row_, col_;
+	Loc select_, cursor_;
 
 	int nrows_, ncols_;
 	int scroll_pos_;
@@ -86,7 +110,13 @@ private:
 
 	graphics::color text_color_;
 
+	std::string search_;
+	std::vector<std::pair<Loc, Loc> > search_matches_;
+	void calculate_search_matches();
+
 	void truncate_col_position();
+
+	boost::function<void()> on_change_, on_move_cursor_, on_enter_, on_tab_;
 };
 
 }

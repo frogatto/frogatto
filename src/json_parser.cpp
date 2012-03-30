@@ -10,6 +10,26 @@
 #include "variant_utils.hpp"
 
 namespace json {
+
+namespace {
+std::map<std::string, std::string> pseudo_file_contents;
+}
+
+void set_file_contents(const std::string& path, const std::string& contents)
+{
+	pseudo_file_contents[path] = contents;
+}
+
+std::string get_file_contents(const std::string& path)
+{
+	std::map<std::string, std::string>::const_iterator i = pseudo_file_contents.find(path);
+	if(i != pseudo_file_contents.end()) {
+		return i->second;
+	} else {
+		return sys::read_file(path);
+	}
+}
+
 parse_error::parse_error(const std::string& msg)
   : message(msg), line(-1), col(-1)
 {
@@ -319,7 +339,8 @@ variant parse(const std::string& doc, JSON_PARSE_OPTIONS options)
 variant parse_from_file(const std::string& fname, JSON_PARSE_OPTIONS options)
 {
 	try {
-		std::string data = sys::read_file(fname);
+		std::string data = get_file_contents(fname);
+
 		if(data.empty()) {
 			throw parse_error(formatter() << "File " << fname << " could not be read");
 		}

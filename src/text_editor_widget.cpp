@@ -1,5 +1,6 @@
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
+#include <boost/regex.hpp>
 
 #include <algorithm>
 
@@ -42,7 +43,7 @@ text_editor_widget::text_editor_widget(int nrows, int ncols)
     font_size_(12),
     char_width_(font::char_width(font_size_)),
     char_height_(font::char_height(font_size_)),
-	row_select_(0), col_select_(0), row_(0), col_(0),
+	select_(0,0), cursor_(0,0),
 	nrows_(nrows), ncols_(ncols),
 	scroll_pos_(0),
 	has_focus_(false),
@@ -80,7 +81,7 @@ void text_editor_widget::set_text(const std::string& value)
 		text_.push_back("");
 	}
 
-	row_select_ = col_select_ = row_ = col_ = 0;
+	select_ = cursor_ = Loc(0,0);
 	scroll_pos_ = 0;
 
 	refresh_scrollbar();
@@ -93,6 +94,7 @@ void text_editor_widget::handle_draw() const
 	int r = 0;
 	for(int n = scroll_pos_; n < text_.size() && r < nrows_; ++n, ++r) {
 		int c = 0;
+		std::vector<std::pair<Loc, Loc> >::const_iterator search_itor = std::lower_bound(search_matches_.begin(), search_matches_.end(), std::pair<Loc,Loc>(Loc(n,0),Loc(n,0)));
 		for(int m = 0; m < text_[n].size(); ++m, ++c) {
 			if(c >= ncols_) {
 				++r;
@@ -102,41 +104,50 @@ void text_editor_widget::handle_draw() const
 				}
 			}
 
-			if(has_focus_ && row_ == n && col_ == m && SDL_GetTicks()%500 < 350) {
+			if(text_[n][m] == '\t') {
+				c += TabAdjust;
+			} else {
+
+				Loc pos(n, m);
+
+				Loc begin_select = select_;
+				Loc end_select = cursor_;
+				if(end_select < begin_select) {
+					std::swap(begin_select, end_select);
+				}
+
+				graphics::color col = get_character_color(n, m);
+
+				if(pos >= begin_select && pos < end_select) {
+					graphics::draw_rect(rect(x() + c*char_width_, y() + r*char_height_, char_width_, char_height_), col);
+					current_color.set_as_current_color();
+					col = graphics::color(0,0,0,255);
+				} else {
+					for(std::vector<std::pair<Loc,Loc> >::const_iterator i = search_itor; i != search_matches_.end() && i->first <= pos; ++i) {
+						if(pos >= i->first && pos < i->second) {
+							graphics::draw_rect(rect(x() + c*char_width_, y() + r*char_height_, char_width_, char_height_), graphics::color(255,255,0,255));
+							current_color.set_as_current_color();
+							col = graphics::color(0,0,0,255);
+						}
+					}
+				}
+
+				if(col.value() != current_color.value()) {
+					current_color = col;
+					current_color.set_as_current_color();
+				}
+				graphics::texture t = get_texture(text_[n][m]);
+				graphics::blit_texture(t, x() + c*char_width_, y() + r*char_height_);
+			}
+
+			if(cursor_.row == n && cursor_.col == m &&
+			   (SDL_GetTicks()%500 < 350 || !has_focus_)) {
 				graphics::draw_rect(rect(x() + c*char_width_+1, y() + r*char_height_, 1, char_height_), graphics::color(255,255,255,255));
 				current_color.set_as_current_color();
 			}
-
-			if(text_[n][m] == '\t') {
-				c += TabAdjust;
-				continue;
-			}
-
-			int begin_select_row = row_select_;
-			int begin_select_col = col_select_;
-			int end_select_row = row_;
-			int end_select_col = col_;
-			if(end_select_row < begin_select_row || end_select_row == begin_select_row && end_select_col < begin_select_col) {
-				std::swap(begin_select_row, end_select_row);
-				std::swap(begin_select_col, end_select_col);
-			}
-
-			if((n > begin_select_row || n == begin_select_row && m >= begin_select_col) &&
-			   (n < end_select_row || n == end_select_row && m < end_select_col)) {
-				graphics::draw_rect(rect(x() + c*char_width_, y() + r*char_height_, char_width_, char_height_), graphics::color(255, 255, 0, 128));
-				current_color.set_as_current_color();
-			}
-
-			graphics::color col = get_character_color(n, m);
-			if(col.value() != current_color.value()) {
-				current_color = col;
-				current_color.set_as_current_color();
-			}
-			graphics::texture t = get_texture(text_[n][m]);
-			graphics::blit_texture(t, x() + c*char_width_, y() + r*char_height_);
 		}
 
-		if(has_focus_ && row_ == n && col_ >= text_[n].size() && SDL_GetTicks()%500 < 350) {
+		if(has_focus_ && cursor_.row == n && cursor_.col >= text_[n].size() && SDL_GetTicks()%500 < 350) {
 			graphics::draw_rect(rect(x() + c*char_width_+1, y() + r*char_height_, 1, char_height_), graphics::color(255,255,255,255));
 			current_color.set_as_current_color();
 		}
@@ -173,35 +184,45 @@ bool text_editor_widget::handle_event(const SDL_Event& event, bool claimed)
 	return false;
 }
 
+void text_editor_widget::set_focus(bool value)
+{
+	has_focus_ = value;
+	if(nrows_ == 1 && value) {
+		cursor_ = Loc(0, text_.front().size());
+		select_ = Loc(0, 0);
+		on_move_cursor();
+	}
+}
+
 bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 {
 	record_op();
 	if(event.x >= x() && event.x < x() + width() && event.y >= y() && event.y < y() + height()) {
 #if defined(_WINDOWS)
 		if(event.button == SDL_BUTTON_WHEELUP) {
-			if(row_ > 2) {
-				row_ -= 3;
+			if(cursor_.row > 2) {
+				cursor_.row -= 3;
 				scroll_pos_ -= 3;
 				if( scroll_pos_ < 0 ){ 
 					scroll_pos_ = 0; 
 				}
 			} else {
-				row_ = 0;
+				cursor_.row = 0;
 			}
-			col_ = find_equivalent_col(col_, row_+3, row_);
+			cursor_.col = find_equivalent_col(cursor_.col, cursor_.row+3, cursor_.row);
 			on_move_cursor();
 			return true;
 		} else if(event.button == SDL_BUTTON_WHEELDOWN) {
-			if(row_ < text_.size()-3) {
-				row_ += 3;
+			if(cursor_.row < text_.size()-3) {
+				cursor_.row += 3;
 				scroll_pos_ += 3;
 				if( scroll_pos_ > text_.size() ){ 
 					scroll_pos_ = text_.size(); 
 				}
 			} else {
-				row_ = text_.size();
+				cursor_.row = text_.size();
 			}
-			col_ = find_equivalent_col(col_, row_-3, row_);
+			cursor_.col = find_equivalent_col(cursor_.col, cursor_.row-3, cursor_.row);
 			on_move_cursor();
 			return true;
 		}
@@ -212,8 +233,8 @@ bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& ev
 		has_focus_ = true;
 		std::pair<int, int> pos = mouse_position_to_row_col(event.x, event.y);
 		if(pos.first != -1) {
-			row_ = pos.first;
-			col_ = pos.second;
+			cursor_.row = pos.first;
+			cursor_.col = pos.second;
 			on_move_cursor();
 		}
 
@@ -223,13 +244,11 @@ bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& ev
 			const int nclicks = consecutive_clicks_%3;
 
 			if(nclicks == 1) {
-				row_select_ = row_;
-				col_select_ = col_;
-				select_token(text_[row_], row_select_, row_, col_select_, col_);
+				select_ = cursor_;
+				select_token(text_[cursor_.row], select_.row, cursor_.row, select_.col, cursor_.col);
 			} else if(nclicks == 2) {
-				row_select_ = row_;
-				col_select_ = 0;
-				col_ = text_[row_].size();
+				select_ = Loc(cursor_.row, 0);
+				cursor_.col = text_[cursor_.row].size();
 			}
 		} else {
 			consecutive_clicks_ = 0;
@@ -261,8 +280,8 @@ bool text_editor_widget::handle_mouse_motion(const SDL_MouseMotionEvent& event)
 	if(is_dragging_ && has_focus_ && SDL_GetMouseState(&mousex, &mousey)) {
 		std::pair<int, int> pos = mouse_position_to_row_col(event.x, event.y);
 		if(pos.first != -1) {
-			row_ = pos.first;
-			col_ = pos.second;
+			cursor_.row = pos.first;
+			cursor_.col = pos.second;
 			on_move_cursor(true /*don't check for shift, assume it is*/);
 		}
 	}
@@ -290,34 +309,32 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 
 	if((event.keysym.sym == SDLK_c || event.keysym.sym == SDLK_x) && (event.keysym.mod&KMOD_CTRL)) {
 		record_op();
-		int begin_row = row_;
-		int begin_col = col_;
-		int end_row = row_select_;
-		int end_col = col_select_;
-		if(begin_col > text_[begin_row].size()) {
-			begin_col = text_[begin_row].size();
+		Loc begin = cursor_;
+		Loc end = select_;
+
+		if(begin.col > text_[begin.row].size()) {
+			begin.col = text_[begin.row].size();
 		}
 
-		if(end_col > text_[end_row].size()) {
-			end_col = text_[end_row].size();
+		if(end.col > text_[end.row].size()) {
+			end.col = text_[end.row].size();
 		}
 
-		if(end_row < begin_row || end_row == begin_row && end_col < begin_col) {
-			std::swap(begin_row, end_row);
-			std::swap(begin_col, end_col);
+		if(end < begin) {
+			std::swap(begin, end);
 		}
 
 
 		std::string str;
-		if(begin_row == end_row) {
-			str = std::string(text_[begin_row].begin() + begin_col, text_[begin_row].begin() + end_col);
+		if(begin.row == end.row) {
+			str = std::string(text_[begin.row].begin() + begin.col, text_[begin.row].begin() + end.col);
 		} else {
-			str = std::string(text_[begin_row].begin() + begin_col, text_[begin_row].end());
-			while(++begin_row < end_row) {
-				str += "\n" + text_[begin_row];
+			str = std::string(text_[begin.row].begin() + begin.col, text_[begin.row].end());
+			while(++begin.row < end.row) {
+				str += "\n" + text_[begin.row];
 			}
 
-			str += "\n" + std::string(text_[end_row].begin(), text_[end_row].begin() + end_col);
+			str += "\n" + std::string(text_[end.row].begin(), text_[end.row].begin() + end.col);
 		}
 
 		copy_to_clipboard(str, false);
@@ -339,16 +356,18 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 		txt.erase(std::remove(txt.begin(), txt.end(), '\r'), txt.end());
 		std::vector<std::string> lines = util::split(txt, '\n', 0 /*don't remove empties or strip spaces*/);
 
+		truncate_col_position();
+
 		if(lines.size() == 1) {
-			text_[row_].insert(text_[row_].begin() + col_, lines.front().begin(), lines.front().end());
-			col_ += lines.front().size();
+			text_[cursor_.row].insert(text_[cursor_.row].begin() + cursor_.col, lines.front().begin(), lines.front().end());
+			cursor_.col += lines.front().size();
 			refresh_scrollbar();
+			select_ = cursor_;
 		} else if(lines.size() >= 2) {
-			text_.insert(text_.begin() + row_ + 1, lines.back() + std::string(text_[row_].begin() + col_, text_[row_].end()));
-			text_[row_] = std::string(text_[row_].begin(), text_[row_].begin() + col_) + lines.front();
-			text_.insert(text_.begin() + row_ + 1, lines.begin()+1, lines.end()-1);
-			row_select_ = row_ = row_ + lines.size() - 1;
-			col_select_ = col_ = lines.back().size();
+			text_.insert(text_.begin() + cursor_.row + 1, lines.back() + std::string(text_[cursor_.row].begin() + cursor_.col, text_[cursor_.row].end()));
+			text_[cursor_.row] = std::string(text_[cursor_.row].begin(), text_[cursor_.row].begin() + cursor_.col) + lines.front();
+			text_.insert(text_.begin() + cursor_.row + 1, lines.begin()+1, lines.end()-1);
+			cursor_ = select_ = Loc(cursor_.row + lines.size() - 1, lines.back().size());
 		}
 
 		on_change();
@@ -365,28 +384,26 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 	case SDLK_LEFT:
 		record_op();
 
-		if((col_ != col_select_ || row_ != row_select_) && !(SDL_GetModState()&KMOD_SHIFT)) {
+		if(cursor_ != select_ && !(SDL_GetModState()&KMOD_SHIFT)) {
 			//pressing left without shift while we have a selection moves us to the beginning of the selection
-			if(row_ < row_select_ || row_ == row_select_ && col_ < col_select_) {
-				row_select_ = row_;
-				col_select_ = col_;
+			if(cursor_ < select_) {
+				select_ = cursor_;
 			} else {
-				row_ = row_select_;
-				col_ = col_select_;
+				cursor_ = select_;
 			}
 		} else {
 
-			if(col_ > text_[row_].size()) {
-				col_ = text_[row_].size();
+			if(cursor_.col > text_[cursor_.row].size()) {
+				cursor_.col = text_[cursor_.row].size();
 			}
 
-			--col_;
-			if(col_ < 0) {
-				if(row_ == 0) {
-					col_ = 0;
+			--cursor_.col;
+			if(cursor_.col < 0) {
+				if(cursor_.row == 0) {
+					cursor_.col = 0;
 				} else {
-					--row_;
-					col_ = text_[row_].size();
+					--cursor_.row;
+					cursor_.col = text_[cursor_.row].size();
 				}
 			}
 		}
@@ -396,25 +413,23 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 	case SDLK_RIGHT:
 		record_op();
 
-		if((col_ != col_select_ || row_ != row_select_) && !(SDL_GetModState()&KMOD_SHIFT)) {
+		if(cursor_ != select_ && !(SDL_GetModState()&KMOD_SHIFT)) {
 			//pressing right without shift while we have a selection moves us to the end of the selection
-			if(row_ < row_select_ || row_ == row_select_ && col_ < col_select_) {
-				row_ = row_select_;
-				col_ = col_select_;
+			if(cursor_ < select_) {
+				cursor_ = select_;
 			} else {
-				row_select_ = row_;
-				col_select_ = col_;
+				select_ = cursor_;
 			}
 		} else {
-			++col_;
-			if(col_ > text_[row_].size()) {
-				if(row_ == text_.size()-1) {
-					--col_;
-				} else if(row_ < text_.size()-1) {
-					++row_;
-					col_ = 0;
+			++cursor_.col;
+			if(cursor_.col > text_[cursor_.row].size()) {
+				if(cursor_.row == text_.size()-1) {
+					--cursor_.col;
+				} else if(cursor_.row < text_.size()-1) {
+					++cursor_.row;
+					cursor_.col = 0;
 				} else {
-					--col_;
+					--cursor_.col;
 				}
 			}
 		}
@@ -422,18 +437,18 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 		break;
 	case SDLK_UP:
 		record_op();
-		if(row_ > 0) {
-			--row_;
-			col_ = find_equivalent_col(col_, row_+1, row_);
+		if(cursor_.row > 0) {
+			--cursor_.row;
+			cursor_.col = find_equivalent_col(cursor_.col, cursor_.row+1, cursor_.row);
 		}
 		on_move_cursor();
 
 		break;
 	case SDLK_DOWN:
 		record_op();
-		if(row_ < text_.size()-1) {
-			++row_;
-			col_ = find_equivalent_col(col_, row_-1, row_);
+		if(cursor_.row < text_.size()-1) {
+			++cursor_.row;
+			cursor_.col = find_equivalent_col(cursor_.col, cursor_.row-1, cursor_.row);
 		}
 		on_move_cursor();
 
@@ -441,37 +456,35 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 	case SDLK_PAGEUP:
 		record_op();
 		on_page_up();
-		while(row_ > scroll_pos_ && char_position_on_screen(row_, col_).first == -1) {
-			--row_;
-			col_ = find_equivalent_col(col_, row_+1, row_);
+		while(cursor_.row > scroll_pos_ && char_position_on_screen(cursor_.row, cursor_.col).first == -1) {
+			--cursor_.row;
+			cursor_.col = find_equivalent_col(cursor_.col, cursor_.row+1, cursor_.row);
 		}
 
 		if(!(SDL_GetModState()&KMOD_SHIFT)) {
-			row_select_ = row_;
-			col_select_ = col_;
+			select_ = cursor_;
 		}
 		break;
 	case SDLK_PAGEDOWN:
 		record_op();
 		on_page_down();
-		while(row_ < scroll_pos_ && char_position_on_screen(row_, col_).first == -1) {
-			++row_;
-			col_ = find_equivalent_col(col_, row_-1, row_);
+		while(cursor_.row < scroll_pos_ && char_position_on_screen(cursor_.row, cursor_.col).first == -1) {
+			++cursor_.row;
+			cursor_.col = find_equivalent_col(cursor_.col, cursor_.row-1, cursor_.row);
 		}
 
 		if(!(SDL_GetModState()&KMOD_SHIFT)) {
-			row_select_ = row_;
-			col_select_ = col_;
+			select_ = cursor_;
 		}
 		break;
 	case SDLK_HOME:
 		record_op();
-		col_ = 0;
+		cursor_.col = 0;
 		on_move_cursor();
 		break;
 	case SDLK_END:
 		record_op();
-		col_ = text_[row_].size();
+		cursor_.col = text_[cursor_.row].size();
 		on_move_cursor();
 		break;
 	case SDLK_DELETE:
@@ -479,35 +492,35 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 		if(record_op("delete")) {
 			save_undo_state();
 		}
-		if(row_ == row_select_ && col_ == col_select_) {
+		if(cursor_ == select_) {
 
 			if(event.keysym.sym == SDLK_BACKSPACE) {
 				//backspace is like delete but we move to the left first.
-				if(col_ > text_[row_].size()) {
-					col_ = text_[row_].size();
+				if(cursor_.col > text_[cursor_.row].size()) {
+					cursor_.col = text_[cursor_.row].size();
 				}
 
-				if(row_ == 0 && col_ == 0) {
+				if(cursor_.row == 0 && cursor_.col == 0) {
 					break;
 				}
 
-				--col_;
-				if(col_ < 0) {
-					--row_;
-					col_ = text_[row_].size();
+				--cursor_.col;
+				if(cursor_.col < 0) {
+					--cursor_.row;
+					cursor_.col = text_[cursor_.row].size();
 				}
 
 				on_move_cursor();
 			}
 
-			if(col_ >= text_[row_].size()) {
-				if(text_.size() > row_+1) {
-					col_ = text_[row_].size();
-					text_[row_] += text_[row_+1];
-					text_.erase(text_.begin() + row_ + 1);
+			if(cursor_.col >= text_[cursor_.row].size()) {
+				if(text_.size() > cursor_.row+1) {
+					cursor_.col = text_[cursor_.row].size();
+					text_[cursor_.row] += text_[cursor_.row+1];
+					text_.erase(text_.begin() + cursor_.row + 1);
 				}
 			} else {
-				text_[row_].erase(text_[row_].begin() + col_);
+				text_[cursor_.row].erase(text_[cursor_.row].begin() + cursor_.col);
 			}
 		} else {
 			delete_selection();
@@ -516,36 +529,49 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 		refresh_scrollbar();
 		on_change();
 		break;
+	case SDLK_TAB: {
+		if(on_tab_) {
+			on_tab_();
+		}
+		break;
+	}
+
 	case SDLK_RETURN: {
 		if(record_op("enter")) {
 			save_undo_state();
 		}
 		if(nrows_ == 1) {
+			if(on_enter_) {
+				on_enter_();
+			}
 			break;
 		}
 
 		delete_selection();
 		truncate_col_position();
 		
-		std::string new_line(text_[row_].begin() + col_, text_[row_].end());
-		text_[row_].erase(text_[row_].begin() + col_, text_[row_].end());
+		std::string new_line(text_[cursor_.row].begin() + cursor_.col, text_[cursor_.row].end());
+		text_[cursor_.row].erase(text_[cursor_.row].begin() + cursor_.col, text_[cursor_.row].end());
 
-		std::string::iterator indent = text_[row_].begin();
-		while(indent != text_[row_].end() && strchr(" \t", *indent)) {
+		std::string::iterator indent = text_[cursor_.row].begin();
+		while(indent != text_[cursor_.row].end() && strchr(" \t", *indent)) {
 			++indent;
 		}
 
-		new_line.insert(new_line.begin(), text_[row_].begin(), indent);
+		new_line.insert(new_line.begin(), text_[cursor_.row].begin(), indent);
 
-		col_ = indent - text_[row_].begin();
+		cursor_.col = indent - text_[cursor_.row].begin();
 
-		text_.insert(text_.begin() + row_ + 1, new_line);
-		++row_;
-		row_select_ = row_;
-		col_select_ = col_;
+		text_.insert(text_.begin() + cursor_.row + 1, new_line);
+		++cursor_.row;
+		select_ = cursor_;
 
 		refresh_scrollbar();
 		on_change();
+
+		if(on_enter_) {
+			on_enter_();
+		}
 		
 		break;
 	}
@@ -556,13 +582,12 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 				save_undo_state();
 			}
 			delete_selection();
-			if(col_ > text_[row_].size()) {
-				col_ = text_[row_].size();
+			if(cursor_.col > text_[cursor_.row].size()) {
+				cursor_.col = text_[cursor_.row].size();
 			}
-			text_[row_].insert(text_[row_].begin() + col_, c);
-			++col_;
-			row_select_ = row_;
-			col_select_ = col_;
+			text_[cursor_.row].insert(text_[cursor_.row].begin() + cursor_.col, c);
+			++cursor_.col;
+			select_ = cursor_;
 			refresh_scrollbar();
 			on_change();
 			return true;
@@ -576,34 +601,33 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 
 void text_editor_widget::delete_selection()
 {
-	if(col_ == col_select_ && row_ == row_select_) {
+	if(cursor_.col == select_.col && cursor_.row == select_.row) {
 		return;
 	}
 
-	if(col_ > text_[row_].size()) {
-		col_ = text_[row_].size();
+	if(cursor_.col > text_[cursor_.row].size()) {
+		cursor_.col = text_[cursor_.row].size();
 	}
 
-	if(col_select_ > text_[row_select_].size()) {
-		col_select_ = text_[row_select_].size();
+	if(select_.col > text_[select_.row].size()) {
+		select_.col = text_[select_.row].size();
 	}
 
-	if(row_select_ < row_ || row_select_ == row_ && col_select_ < col_) {
-		//make row_/col_ come first
-		std::swap(row_select_, row_);
-		std::swap(col_select_, col_);
+	if(select_ < cursor_) {
+		std::swap(cursor_, select_);
 	}
 
-	if(row_select_ == row_) {
-		text_[row_].erase(text_[row_].begin() + col_, text_[row_].begin() + col_select_);
+	std::string& cursor_line = text_[cursor_.row];
+	std::string& select_line = text_[select_.row];
+	if(cursor_.row == select_.row) {
+		cursor_line.erase(cursor_line.begin() + cursor_.col, cursor_line.begin() + select_.col);
 	} else {
-		text_[row_] = std::string(text_[row_].begin(), text_[row_].begin() + col_) + std::string(text_[row_select_].begin() + col_select_, text_[row_select_].end());
+		cursor_line = std::string(cursor_line.begin(), cursor_line.begin() + cursor_.col) + std::string(select_line.begin() + select_.col, select_line.end());
 
-		text_.erase(text_.begin() + row_ + 1, text_.begin() + row_select_ + 1);
+		text_.erase(text_.begin() + cursor_.row + 1, text_.begin() + select_.row + 1);
 	}
 
-	row_select_ = row_;
-	col_select_ = col_;
+	select_ = cursor_;
 }
 
 graphics::color text_editor_widget::get_character_color(int row, int col) const
@@ -720,10 +744,10 @@ void text_editor_widget::on_page_down()
 void text_editor_widget::on_move_cursor(bool auto_shift)
 {
 	const int start_pos = scroll_pos_;
-	if(row_ < scroll_pos_) {
-		scroll_pos_ = row_;
+	if(cursor_.row < scroll_pos_) {
+		scroll_pos_ = cursor_.row;
 	} else {
-		while(scroll_pos_ < row_ && char_position_on_screen(row_, col_).first == -1) {
+		while(scroll_pos_ < cursor_.row && char_position_on_screen(cursor_.row, cursor_.col).first == -1) {
 			++scroll_pos_;
 		}
 	}
@@ -733,11 +757,14 @@ void text_editor_widget::on_move_cursor(bool auto_shift)
 	}
 
 	if(!auto_shift && !(SDL_GetModState()&KMOD_SHIFT)) {
-		row_select_ = row_;
-		col_select_ = col_;
+		select_ = cursor_;
 	}
 
 	scrollable_widget::set_yscroll(scroll_pos_*char_height_);
+
+	if(on_move_cursor_) {
+		on_move_cursor_();
+	}
 }
 
 int text_editor_widget::find_equivalent_col(int old_col, int old_row, int new_row) const
@@ -873,13 +900,79 @@ void text_editor_widget::redo()
 
 void text_editor_widget::truncate_col_position()
 {
-	if(col_ > text_[row_].size()) {
-		col_ = text_[row_].size();
+	if(cursor_.col > text_[cursor_.row].size()) {
+		cursor_.col = text_[cursor_.row].size();
 	}
 
-	if(col_select_ > text_[row_select_].size()) {
-		col_select_ = text_[row_select_].size();
+	if(select_.col > text_[select_.row].size()) {
+		select_.col = text_[select_.row].size();
 	}
+}
+
+void text_editor_widget::set_search(const std::string& term)
+{
+	search_ = term;
+	calculate_search_matches();
+	if(search_matches_.empty()) {
+		return;
+	}
+
+	std::vector<std::pair<Loc, Loc> >::const_iterator search_itor =
+	   std::lower_bound(search_matches_.begin(), search_matches_.end(),
+	                    std::pair<Loc,Loc>(cursor_, cursor_));
+	if(search_itor == search_matches_.end()) {
+		search_itor = search_matches_.begin();
+	}
+
+	select_ = cursor_ = search_itor->first;
+
+	on_move_cursor();
+}
+
+void text_editor_widget::next_search_match()
+{
+	if(search_matches_.empty()) {
+		return;
+	}
+
+	cursor_.col++;
+	select_ = cursor_;
+	set_search(search_);
+}
+
+void text_editor_widget::calculate_search_matches()
+{
+	search_matches_.clear();
+	if(search_.empty()) {
+		return;
+	}
+	boost::regex re(search_, boost::regex::perl|boost::regex::icase);
+	for(int n = 0; n != text_.size(); ++n) {
+		boost::cmatch match;
+		const char* ptr = text_[n].c_str();
+		while(boost::regex_search(ptr, match, re)) {
+			const int base = ptr - text_[n].c_str();
+			const Loc begin(n, base + match.position());
+			const Loc end(n, base + match.position() + match.length());
+			search_matches_.push_back(std::pair<Loc,Loc>(begin,end));
+
+			const int advance = match.position() + match.length();
+			if(advance == 0) {
+				break;
+			}
+
+			ptr += advance;
+		}
+	}
+}
+
+void text_editor_widget::on_change()
+{
+	if(on_change_) {
+		on_change_();
+	}
+
+	calculate_search_matches();
 }
 
 }
@@ -887,6 +980,13 @@ void text_editor_widget::truncate_col_position()
 #include "code_editor_widget.hpp"
 #include "dialog.hpp"
 #include "filesystem.hpp"
+
+namespace {
+void on_change_search(const gui::text_editor_widget* search_entry, gui::text_editor_widget* editor)
+{
+	editor->set_search(search_entry->text());
+}
+}
 
 UTILITY(textedit)
 {
@@ -908,10 +1008,24 @@ UTILITY(textedit)
 	text_editor_widget* editor = new code_editor_widget(30, 80);
 	editor->set_text(contents);
 
+	entry->set_on_change_handler(boost::bind(on_change_search, entry, editor));
+	entry->set_on_enter_handler(boost::bind(&text_editor_widget::next_search_match, editor));
+
 	dialog d(0, 0, graphics::screen_width(), graphics::screen_height());
 	d.add_widget(widget_ptr(entry), 10, 10);
 	d.add_widget(widget_ptr(editor), 10, 30);
 	d.show_modal();
-
 }
 
+UNIT_TEST(test_regex)
+{
+	std::string searching = "abcdefg";
+	boost::regex re("cde");
+	boost::cmatch matches;
+	const char* ptr = searching.c_str();
+	if(boost::regex_search(ptr, matches, re)) {
+		CHECK_EQ(matches.size(), 1);
+		CHECK_EQ(matches.position(), 2);
+		CHECK_EQ(matches.length(), 3);
+	}
+}

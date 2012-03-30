@@ -306,6 +306,9 @@ std::vector<const_custom_object_type_ptr> custom_object_type::get_all()
 
 void custom_object_type::overwrite_frames(custom_object_type* t, custom_object_type* new_obj)
 {
+	//for now don't override particles factories. Just keep them stable.
+	new_obj->particle_factories_ = t->particle_factories_;
+
 	//We keep around leaked frames in case there are still
 	//references to them.
 	//TODO: make all references to frames use reference-counting
@@ -360,27 +363,10 @@ int custom_object_type::reload_modified_code()
 		std::map<std::string, int64_t>::iterator mod_itor = file_mod_times().find(*path);
 		const int64_t mod_time = sys::file_mod_time(*path);
 		if(mod_time != 0 && mod_itor != file_mod_times().end() && mod_time != mod_itor->second) {
-			custom_object_type_ptr new_obj;
 			mod_itor->second = mod_time;
 			std::cerr << "FILE MODIFIED: " << i->first << " -> " << *path << ": " << mod_time << " VS " << mod_itor->second << "\n";
-			
-			try {
-				const assert_recover_scope scope;
-				new_obj = create(i->first);
-			} catch(validation_failure_exception& e) {
-				std::cerr << "FAILURE TO LOAD\n";
-				continue;
-			} catch(...) {
-				std::cerr << "UNKNOWN FAILURE TO LOAD\n";
-				continue;
-			}
 
-
-			custom_object_type* t = const_cast<custom_object_type*>(i->second.get());
-			if(new_obj) {
-				overwrite_frames(t, new_obj.get());
-
-				*t = *new_obj;
+			if(reload_object(i->first)) {
 				++result;
 			}
 		}
@@ -389,6 +375,48 @@ int custom_object_type::reload_modified_code()
 	return result;
 }
 
+void custom_object_type::set_file_contents(const std::string& file_path, const std::string& contents)
+{
+	json::set_file_contents(file_path, contents);
+	for(object_map::iterator i = cache().begin(); i != cache().end(); ++i) {
+		const std::string* path = get_object_path(i->first + ".cfg");
+		if(path && *path == file_path) {
+			reload_object(i->first);
+		}
+	}
+}
+
+bool custom_object_type::reload_object(const std::string& type)
+{
+	object_map::iterator i = cache().find(type);
+	ASSERT_LOG(i != cache().end(), "COULD NOT RELOAD OBJECT " << type);
+
+	custom_object_type_ptr new_obj;
+	
+	const int begin = SDL_GetTicks();
+	try {
+		const assert_recover_scope scope;
+		new_obj = create(type);
+		std::cerr << "RELOADED OBJECT IN " << (SDL_GetTicks() - begin) << "ms\n";
+	} catch(validation_failure_exception& e) {
+		std::cerr << "FAILURE TO LOAD IN " << (SDL_GetTicks() - begin) << "ms\n";
+		return false;
+	} catch(...) {
+		std::cerr << "UNKNOWN FAILURE TO LOAD IN " << (SDL_GetTicks() - begin) << "ms\n";
+		return false;
+	}
+
+
+	custom_object_type* t = const_cast<custom_object_type*>(i->second.get());
+	if(new_obj) {
+		overwrite_frames(t, new_obj.get());
+
+		*t = *new_obj;
+		return true;
+	}
+
+	return false;
+}
 
 void custom_object_type::init_event_handlers(variant node,
                                              event_handler_map& handlers,

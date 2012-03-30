@@ -10,6 +10,7 @@
 #include "border_widget.hpp"
 #include "button.hpp"
 #include "character_editor_dialog.hpp"
+#include "code_editor_dialog.hpp"
 #include "collision_utils.hpp"
 #include "color_utils.hpp"
 #include "draw_tile.hpp"
@@ -122,6 +123,7 @@ class editor_menu_dialog : public gui::dialog
 			"Restart Level", "ctrl+r", boost::bind(&editor::reset_playing_level, &editor_, true),
 			"Restart Level (including player)", "ctrl+alt+r", boost::bind(&editor::reset_playing_level, &editor_, false),
 			"Pause Game", "ctrl+p", boost::bind(&editor::toggle_pause, &editor_),
+			"Code", "", boost::bind(&editor::toggle_code, &editor_),
 		};
 
 		menu_item duplicate_item = { "Duplicate Object(s)", "ctrl+d", boost::bind(&editor::duplicate_selected_objects, &editor_) };
@@ -637,6 +639,15 @@ int editor::sidebar_width()
 	return 180;
 }
 
+namespace {
+int g_codebar_height = 0;
+}
+
+int editor::codebar_height()
+{
+	return g_codebar_height;
+}
+
 editor::editor(const char* level_cfg)
   : zoom_(1), xpos_(0), ypos_(0), anchorx_(0), anchory_(0),
     selected_entity_startx_(0), selected_entity_starty_(0),
@@ -647,6 +658,8 @@ editor::editor(const char* level_cfg)
 	drawing_rect_(false), dragging_(false), level_changed_(0),
 	selected_segment_(-1), prev_mousex_(-1), prev_mousey_(-1)
 {
+	preferences::set_record_history(true);
+
 	static bool first_time = true;
 	if(first_time) {
 		variant editor_cfg = json::parse_from_file("data/editor.cfg");
@@ -874,22 +887,27 @@ void editor::edit_level()
 	}
 }
 
-void editor::handle_event(const SDL_Event& event)
+bool editor::handle_event(const SDL_Event& event)
 {
+	const bool code_dialog_started_with_focus = code_dialog_ && code_dialog_->has_keyboard_focus();
+	if(code_dialog_ && code_dialog_->process_event(event, false)) {
+		return true;
+	}
+
 	if(editor_menu_dialog_->process_event(event, false)) {
-		return;
+		return true;
 	}
 
 	if(editor_mode_dialog_->process_event(event, false)) {
-		return;
+		return true;
 	}
 
 	if(current_dialog_ && current_dialog_->process_event(event, false)) {
-		return;
+		return true;
 	}
 
 	if(layers_dialog_ && layers_dialog_->process_event(event, false)) {
-		return;
+		return true;
 	}
 	
 	switch(event.type) {
@@ -900,14 +918,18 @@ void editor::handle_event(const SDL_Event& event)
 		if(event.key.keysym.sym == SDLK_ESCAPE) {
 			if(confirm_quit()) {
 				done_ = true;
-				return;
+				return false;
 			}
 		}
 
 		handle_key_press(event.key);
 		break;
 	case SDL_MOUSEBUTTONDOWN:
-		handle_mouse_button_down(event.button);
+		if(!code_dialog_started_with_focus) {
+			//if the code dialog started with focus, we ignore mouse
+			//presses so that the first click just unfocuses it.
+			handle_mouse_button_down(event.button);
+		}
 		break;
 
 	case SDL_MOUSEBUTTONUP:
@@ -927,18 +949,26 @@ void editor::handle_event(const SDL_Event& event)
 			reset_dialog_positions();
 		}
 
-		return;
+		return false;
 	}
 
 	default:
 		break;
 	}
+
+	return false;
 }
 
 void editor::process()
 {
 	if(editor_mode_dialog_) {
 		editor_mode_dialog_->refresh_selection();
+	}
+
+	g_codebar_height = code_dialog_ ? code_dialog_->height() : 0;
+
+	if(code_dialog_ && code_dialog_->has_keyboard_focus()) {
+		return;
 	}
 
 	process_ghost_objects();
@@ -1672,6 +1702,8 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 		drawing_rect_ = true;
 	} else if(property_dialog_) {
 		property_dialog_->set_entity(lvl_->editor_highlight());
+
+		set_code_file();
 	}
 
 	if(lvl_->editor_highlight()) {
@@ -1981,6 +2013,8 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 			if(lvl_->editor_selection().size() == 1) {
 				current_dialog_ = property_dialog_.get();
 				property_dialog_->set_entity(lvl_->editor_selection().front());
+
+				set_code_file();
 			} else {
 				current_dialog_ = group_property_dialog_.get();
 			}
@@ -2748,6 +2782,10 @@ void editor::draw_gui() const
 		current_dialog_->draw();
 	}
 
+	if(code_dialog_) {
+		code_dialog_->draw();
+	}
+
 	if(layers_dialog_) {
 		layers_dialog_->draw();
 	}
@@ -2942,3 +2980,40 @@ void editor::mutate_object_value(entity_ptr e, const std::string& value, variant
 	e->handle_event("editor_changed_variable");
 }
 
+bool editor::has_keyboard_focus() const
+{
+	if(code_dialog_) {
+		return code_dialog_->has_keyboard_focus();
+	}
+
+	return false;
+}
+
+void editor::toggle_code()
+{
+	if(code_dialog_) {
+		code_dialog_.reset();
+	} else {
+		code_dialog_.reset(new code_editor_dialog(rect(0, graphics::screen_height()-260, graphics::screen_width() - sidebar_width(), 260)));
+		set_code_file();
+	}
+}
+
+void editor::set_code_file()
+{
+	std::string type;
+	if(lvl_->editor_highlight()) {
+		type = lvl_->editor_highlight()->query_value("type").as_string();
+	} else if(lvl_->player()) {
+		type = lvl_->player()->get_entity().query_value("type").as_string();
+	}
+
+	if(type.empty()) {
+		return;
+	}
+
+	const std::string* path = custom_object_type::get_object_path(type + ".cfg");
+	if(path && code_dialog_) {
+		code_dialog_->load_file(*path);
+	}
+}

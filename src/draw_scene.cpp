@@ -102,6 +102,7 @@ bool update_camera_position(const level& lvl, screen_position& pos, const entity
 	const bool draw_level = do_draw && pos.init;
 
 	const int screen_width = graphics::screen_width() - (lvl.in_editor() ? editor::sidebar_width() : 0);
+	const int screen_height = graphics::screen_height() - (lvl.in_editor() ? editor::codebar_height() : 0);
 
 	if(focus) {
 		// If the camera is automatically moved along by the level (e.g. a 
@@ -114,15 +115,15 @@ bool update_camera_position(const level& lvl, screen_position& pos, const entity
 		//if the level is larger than the screen (i.e. most cases)
 		const int x_screen_pad = std::max<int>(0, screen_width - lvl.boundaries().w());
 
-		const int y_screen_pad = std::max<int>(0, graphics::screen_height() - lvl.boundaries().h());
+		const int y_screen_pad = std::max<int>(0, screen_height - lvl.boundaries().h());
 
 		//find the boundary values for the camera position based on the size
 		//of the level. These boundaries keep the camera from ever going out
 		//of the bounds of the level.
 		const int min_x = lvl.boundaries().x() + screen_width/2 - x_screen_pad/2;
 		const int max_x = lvl.boundaries().x2() - screen_width/2 + x_screen_pad/2;
-		const int min_y = lvl.boundaries().y() + graphics::screen_height()/2 - y_screen_pad/2;
-		const int max_y = lvl.boundaries().y2() - graphics::screen_height()/2 + y_screen_pad/2;
+		const int min_y = lvl.boundaries().y() + screen_height/2 - y_screen_pad/2;
+		const int max_y = lvl.boundaries().y2() - screen_height/2 + y_screen_pad/2;
 
 		//std::cerr << "BOUNDARIES: " << lvl.boundaries().x() << ", " << lvl.boundaries().x2() << " WIDTH: " << screen_width << " PAD: " << x_screen_pad << "\n";
 
@@ -151,7 +152,7 @@ bool update_camera_position(const level& lvl, screen_position& pos, const entity
 		const int vertical_look = focus->vertical_look();
 
 		//find the y point for the camera to converge toward
-		int y = std::min(std::max(focus->feet_y() - (graphics::screen_height()/(5*lvl.zoom_level())).as_int() + displacement_y*PredictiveFramesVert + vertical_look, min_y), max_y);
+		int y = std::min(std::max(focus->feet_y() - (screen_height/(5*lvl.zoom_level())).as_int() + displacement_y*PredictiveFramesVert + vertical_look, min_y), max_y);
 
 		//std::cerr << "POSITION: " << x << "," << y << " IN " << min_x << "," << min_y << "," << max_x << "," << max_y << "\n";
 
@@ -171,7 +172,7 @@ bool update_camera_position(const level& lvl, screen_position& pos, const entity
 				}
 
 				const int BorderSize = 20;
-				if(v.size() == 1 || right - left < screen_width/lvl.zoom_level() - BorderSize && bottom - top < graphics::screen_height()/lvl.zoom_level() - BorderSize) {
+				if(v.size() == 1 || right - left < screen_width/lvl.zoom_level() - BorderSize && bottom - top < screen_height/lvl.zoom_level() - BorderSize) {
 					break;
 				}
 
@@ -181,7 +182,7 @@ bool update_camera_position(const level& lvl, screen_position& pos, const entity
 			}
 
 			x = std::min(std::max((left + right)/2, min_x), max_x);
-			y = std::min(std::max(((top + bottom)/2 - graphics::screen_height()/(5*lvl.zoom_level())).as_int(), min_y), max_y);
+			y = std::min(std::max(((top + bottom)/2 - screen_height/(5*lvl.zoom_level())).as_int(), min_y), max_y);
 		}
 
 
@@ -195,7 +196,7 @@ bool update_camera_position(const level& lvl, screen_position& pos, const entity
 		//for small screens the speech dialog arrows cover the entities they are
 		//pointing to. adjust to that by looking up a little bit.
 		if (lvl.current_speech_dialog() && preferences::virtual_screen_height() < 600)
-			y = std::min((y + (600 - graphics::screen_height())/(2*lvl.zoom_level())).as_int(), max_y);
+			y = std::min((y + (600 - screen_height)/(2*lvl.zoom_level())).as_int(), max_y);
 
 		//find the target x,y position of the camera in centi-pixels. Note that
 		//(x,y) represents the position the camera should center on, while
@@ -203,7 +204,7 @@ bool update_camera_position(const level& lvl, screen_position& pos, const entity
 		//
 		//the actual camera position will converge toward this point
 		const int target_xpos = 100*(x - screen_width/2);
-		const int target_ypos = 100*(y - graphics::screen_height()/2);
+		const int target_ypos = 100*(y - screen_height/2);
 
 		if(pos.init == false) {
 			pos.x = target_xpos;
