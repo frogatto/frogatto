@@ -64,6 +64,9 @@ void escape_string(std::string& s) {
 	for(size_t n = 0; n < s.size(); ++n) {
 		if(s[n] == '\\') {
 			s.erase(s.begin() + n);
+			if(n < s.size() && s[n] == 'n') {
+				s[n] = '\n';
+			}
 		}
 	}
 }
