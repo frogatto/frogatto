@@ -427,7 +427,7 @@ variant custom_object::write() const
 	}
 
 	if(platform_area_.get() != NULL) {
-		res.add("platform_area", platform_area_->to_string());
+		res.add("platform_area", platform_area_->write());
 	}
 
 	if(always_active_) {
