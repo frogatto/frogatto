@@ -10,10 +10,12 @@
 	║    For now, reference the text_captured variable when using these and the     ║
 	║    engine events.                                                             ║
 	║  ▶ Scroll pane buttons don't deselect when mouse outside draw area.           ║
+	║  ▶ Scroll pane buttons don't respond to mouse correctly when window made      ║
+	║    smaller. (eg, run without --width/--height)                                ║
 	║  ▶                                                                            ║
 	║                                                                               ║
 	║ Minor:                                                                        ║
-	║  ▶ Scroll box button overlays aren't added to targets to be clip_area'd.      ║
+	║  ▷ Scroll box button overlays aren't added to targets to be clip_area'd.      ║
 	║  ▶                                                                            ║
 	║                                                          ▷ fixed  ▶ not fixed ║
 	╚═══════════════════════════════════════════════════════════════════════════════╝
