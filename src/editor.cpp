@@ -802,7 +802,7 @@ editor_resolution_manager::editor_resolution_manager() :
 	   original_width_(preferences::actual_screen_width()),
 	   original_height_(preferences::actual_screen_height()) {
 	if(!editor_x_resolution) {
-		editor_x_resolution = preferences::actual_screen_width() + EDITOR_SIDEBAR_WIDTH + editor_dialogs::LAYERS_DIALOG_WIDTH + 120;
+		editor_x_resolution = preferences::actual_screen_width() + EDITOR_SIDEBAR_WIDTH + editor_dialogs::LAYERS_DIALOG_WIDTH;
 		editor_y_resolution = preferences::actual_screen_height() + EDITOR_MENUBAR_HEIGHT;
 	}
 
@@ -1306,13 +1306,12 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 				if(obj) {
 					redo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, obj));
 					undo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, obj));
-				}
-
-				if(obj->label().empty() == false) {
-					foreach(entity_ptr child, lvl->get_chars()) {
-						if(child->spawned_by() == obj->label()) {
-							redo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, child));
-							undo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, child));
+					if(obj->label().empty() == false) {
+						foreach(entity_ptr child, lvl->get_chars()) {
+							if(child->spawned_by() == obj->label()) {
+								redo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, child));
+								undo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, child));
+							}
 						}
 					}
 				}
@@ -1362,7 +1361,7 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 		editor_menu_dialog_->open_level();
 	}
 
-	if(key.keysym.sym == SDLK_s && (!editing_level_being_played() || (key.keysym.mod&KMOD_CTRL))) {
+	if(key.keysym.sym == SDLK_s && (key.keysym.mod&KMOD_CTRL)) {
 		save_level();
 	}
 
@@ -2405,6 +2404,10 @@ bool editor::confirm_quit(bool allow_cancel)
 
 void editor::save_level()
 {
+	controls::control_backup_scope ctrl_backup;
+
+	toggle_active_level();
+
 	lvl_->set_id(filename_);
 
 	level_changed_ = 0;
@@ -2447,6 +2450,8 @@ void editor::save_level()
 		} catch(...) {
 		}
 	}
+
+	toggle_active_level();
 }
 
 void editor::zoom_in()
@@ -2799,8 +2804,6 @@ void editor::draw_gui() const
 	}
 
 	gui::draw_tooltip();
-
-	std::cerr << "DRAW: " << (SDL_GetTicks() - begin_draw) << "\n";
 }
 
 void editor::draw_selection(int xoffset, int yoffset) const

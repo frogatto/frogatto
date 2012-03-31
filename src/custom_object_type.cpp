@@ -341,10 +341,10 @@ void custom_object_type::set_file_contents(const std::string& file_path, const s
 
 bool custom_object_type::reload_object(const std::string& type)
 {
-	object_map::iterator i = cache().find(type);
-	ASSERT_LOG(i != cache().end(), "COULD NOT RELOAD OBJECT " << type);
+	object_map::iterator itor = cache().find(type);
+	ASSERT_LOG(itor != cache().end(), "COULD NOT RELOAD OBJECT " << type);
 	
-	const_custom_object_type_ptr old_obj = i->second;
+	const_custom_object_type_ptr old_obj = itor->second;
 
 	custom_object_type_ptr new_obj;
 	
@@ -380,7 +380,7 @@ bool custom_object_type::reload_object(const std::string& type)
 		const int end = SDL_GetTicks();
 		std::cerr << "UPDATED " << custom_object::get_all().size() << " OBJECTS IN " << (end - start) << "\n";
 
-		i->second = new_obj;
+		itor->second = new_obj;
 
 		return true;
 	}
