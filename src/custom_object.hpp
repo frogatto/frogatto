@@ -1,6 +1,8 @@
 #ifndef CUSTOM_OBJECT_HPP_INCLUDED
 #define CUSTOM_OBJECT_HPP_INCLUDED
 
+#include <set>
+
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/cstdint.hpp>
@@ -27,6 +29,7 @@ struct custom_object_text;
 class custom_object : public entity
 {
 public:
+	static std::set<custom_object*>& get_all();
 	static void init();
 
 	explicit custom_object(variant node);
@@ -177,6 +180,9 @@ public:
 
 	void set_difficulty(int min, int max) { min_difficulty_ = min; max_difficulty_ = max; }
 
+	void update_type(const_custom_object_type_ptr old_type,
+	                 const_custom_object_type_ptr new_type);
+
 protected:
 	//components of per-cycle process() that can be done even on
 	//static objects.
@@ -212,6 +218,7 @@ protected:
 	virtual rect platform_rect_at(int xpos) const;
 
 	virtual bool solid_platform() const;
+
 
 private:
 	custom_object& operator=(const custom_object& o);

@@ -193,6 +193,14 @@ typedef boost::intrusive_ptr<const formula_callable> const_formula_callable_ptr;
 typedef boost::intrusive_ptr<map_formula_callable> map_formula_callable_ptr;
 typedef boost::intrusive_ptr<const map_formula_callable> const_map_formula_callable_ptr;
 
+class command_callable : public formula_callable {
+public:
+	virtual void execute(formula_callable& context) const = 0;
+private:
+	variant get_value(const std::string& key) const { return variant(); }
+	void get_inputs(std::vector<game_logic::formula_input>* inputs) const {}
+};
+
 }
 
 #endif

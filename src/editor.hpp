@@ -29,6 +29,8 @@ class segment_editor_dialog;
 class tileset_editor_dialog;
 }
 
+class code_editor_dialog;
+
 class editor_menu_dialog;
 class editor_mode_dialog;
 
@@ -40,6 +42,7 @@ public:
 	static std::string last_edited_level();
 
 	static int sidebar_width();
+	static int codebar_height();
 
 	editor(const char* level_cfg);
 	~editor();
@@ -48,7 +51,7 @@ public:
 	void edit_level();
 
 	void process();
-	void handle_event(const SDL_Event& event);
+	bool handle_event(const SDL_Event& event);
 	void handle_scrolling();
 
 	int xpos() const { return xpos_; }
@@ -59,7 +62,6 @@ public:
 	typedef boost::intrusive_ptr<level> level_ptr;
 	void set_playing_level(level_ptr lvl);
 	void toggle_active_level();
-
 
 	void load_stats();
 	void show_stats();
@@ -167,6 +169,9 @@ public:
 	void reset_playing_level(bool keep_player=true);
 
 	void toggle_pause() const;
+	void toggle_code();
+
+	bool has_keyboard_focus() const;
 
 private:
 	editor(const editor&);
@@ -245,6 +250,10 @@ private:
 
 	boost::scoped_ptr<editor_dialogs::segment_editor_dialog> segment_dialog_;
 
+	boost::scoped_ptr<code_editor_dialog> code_dialog_;
+
+	void set_code_file();
+
 	gui::dialog* current_dialog_;
 
 	//if the mouse is currently down, drawing a rect.
@@ -279,7 +288,8 @@ private:
 
 struct editor_resolution_manager : private preferences::editor_screen_size_scope
 {
-	editor_resolution_manager();
+	static bool is_active();
+	explicit editor_resolution_manager();
 	~editor_resolution_manager();
 	
 	int original_width_, original_height_;

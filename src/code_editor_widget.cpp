@@ -137,6 +137,8 @@ static const graphics::color TokenColors[] = {
 			++i;
 		}
 	}
+
+	text_editor_widget::on_change();
 }
 
 graphics::color code_editor_widget::get_character_color(int row, int col) const

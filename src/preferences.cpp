@@ -739,6 +739,10 @@ namespace preferences {
 		return record_history_;
 	}
 
+	void set_record_history(bool value) {
+		record_history_ = value;
+	}
+
 	bool relay_through_server() {
 		return relay_through_server_;
 	}

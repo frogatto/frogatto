@@ -350,7 +350,7 @@ bool level_runner::play_level()
 	bool reversing = false;
 
 	while(!done && !quit_) {
-		if(key[SDLK_t] && preferences::record_history()) {
+		if(key[SDLK_t] && preferences::record_history() && (!editor_ || !editor_->has_keyboard_focus())) {
 			if(!reversing) {
 				pause_time_ -= SDL_GetTicks();
 			}
@@ -398,7 +398,12 @@ bool level_runner::play_cycle()
 		lvl_->backup();
 	}
 
+	boost::scoped_ptr<controls::local_controls_lock> controls_lock;
 	if(editor_) {
+		if(editor_->has_keyboard_focus()) {
+			controls_lock.reset(new controls::local_controls_lock);
+		}
+
 		controls::control_backup_scope ctrl_backup;
 		editor_->set_pos(last_draw_position().x/100 - (editor_->zoom()-1)*(graphics::screen_width()-editor::sidebar_width())/2, last_draw_position().y/100 - (editor_->zoom()-1)*(graphics::screen_height())/2);
 		editor_->process();
@@ -634,7 +639,7 @@ bool level_runner::play_cycle()
 			should_pause = settings_dialog.handle_event(event);
 #endif
 			if(editor_) {
-				editor_->handle_event(event);
+				const bool swallowed = editor_->handle_event(event);
 				lvl_->set_as_current_level();
 
 				if(editor::last_edited_level() != lvl_->id() && editor_->confirm_quit()) {
@@ -657,6 +662,10 @@ bool level_runner::play_cycle()
 					editor_->setup_for_editing();
 					lvl_->set_as_current_level();
 					lvl_->set_editor();
+				}
+
+				if(swallowed) {
+					continue;
 				}
 			}
 
@@ -930,7 +939,7 @@ bool level_runner::play_cycle()
 		lvl_->process_draw();
 
 		if(should_draw) {
-			if(editor_ && key[SDLK_l]) {
+			if(editor_ && key[SDLK_l] && !editor_->has_keyboard_focus()) {
 
 				editor_->toggle_active_level();
 

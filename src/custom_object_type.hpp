@@ -38,7 +38,10 @@ public:
 	static void invalidate_all_objects();
 	static std::vector<const_custom_object_type_ptr> get_all();
 
+	static void set_file_contents(const std::string& path, const std::string& contents);
+
 	static int reload_modified_code();
+	static bool reload_object(const std::string& type);
 
 	typedef std::vector<game_logic::const_formula_ptr> event_handler_map;
 
@@ -175,7 +178,6 @@ public:
 	bool hidden_in_game() const { return hidden_in_game_; }
 
 private:
-	static void overwrite_frames(custom_object_type* t, custom_object_type* new_obj);
 
 	custom_object_callable callable_definition_;
 

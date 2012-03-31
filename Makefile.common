@@ -14,6 +14,7 @@ objects = \
 	button.o \
 	character_editor_dialog.o \
 	checkbox.o \
+	code_editor_dialog.o \
 	code_editor_widget.o \
 	current_generator.o \
 	decimal.o \
@@ -139,6 +140,7 @@ objects = \
 	wml_parser.o \
 	wml_utils.o \
 	utility_object_compiler.o \
+	utility_query.o \
 	utility_render_level.o
 
 # Server

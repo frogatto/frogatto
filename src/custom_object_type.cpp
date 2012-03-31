@@ -175,12 +175,12 @@ variant custom_object_type::merge_prototype(variant node)
 		return node;
 	}
 
-	std::vector<std::string> protos = util::split(node["prototype"].as_string());
+	std::vector<std::string> protos = node["prototype"].as_list_string();
 
 	foreach(const std::string& proto, protos) {
 		//look up the object's prototype and merge it in
 		std::map<std::string, std::string>::const_iterator path_itor = prototype_file_paths().find(proto + ".cfg");
-		ASSERT_LOG(path_itor != prototype_file_paths().end(), "Could not find file for prototype '" << node["prototype"].as_string() << "'");
+		ASSERT_LOG(path_itor != prototype_file_paths().end(), "Could not find file for prototype '" << proto << "'");
 
 		variant prototype_node = json::parse_from_file(path_itor->second);
 		prototype_node = merge_prototype(prototype_node);
@@ -304,50 +304,6 @@ std::vector<const_custom_object_type_ptr> custom_object_type::get_all()
 	return res;
 }
 
-void custom_object_type::overwrite_frames(custom_object_type* t, custom_object_type* new_obj)
-{
-	//We keep around leaked frames in case there are still
-	//references to them.
-	//TODO: make all references to frames use reference-counting
-	//pointers and fix this.
-	static std::vector<frame_ptr> leaked_frames;
-
-	*t->default_frame_ = *new_obj->default_frame_;
-	leaked_frames.push_back(t->default_frame_);
-
-	//clone the frames from the new object into the old one,
-	//so if there are any remaining references to the frames they
-	//get updated.
-	for(frame_map::iterator i = t->frames_.begin(); i != t->frames_.end(); ++i) {
-		frame_map::iterator j = new_obj->frames_.find(i->first);
-		if(j != new_obj->frames_.end() && i->second.size() == j->second.size()) {
-			for(int n = 0; n != i->second.size(); ++n) {
-				*i->second[n] = *j->second[n];
-			}
-		}
-
-		for(int n = 0; n != i->second.size(); ++n) {
-			leaked_frames.push_back(i->second[n]);
-		}
-	}
-
-	for(std::map<std::string, const_custom_object_type_ptr>::iterator i = t->sub_objects_.begin(); i != t->sub_objects_.end(); ++i) {
-		std::map<std::string, const_custom_object_type_ptr>::iterator j = new_obj->sub_objects_.find(i->first);
-		if(j != new_obj->sub_objects_.end()) {
-			overwrite_frames(const_cast<custom_object_type*>(i->second.get()),
-			                 const_cast<custom_object_type*>(j->second.get()));
-		}
-	}
-
-	for(std::map<std::vector<std::string>, const_custom_object_type_ptr>::iterator i = t->variations_cache_.begin(); i != t->variations_cache_.end(); ++i) {
-		std::map<std::vector<std::string>, const_custom_object_type_ptr>::iterator j = new_obj->variations_cache_.find(i->first);
-		if(j != new_obj->variations_cache_.end()) {
-			overwrite_frames(const_cast<custom_object_type*>(i->second.get()),
-			                 const_cast<custom_object_type*>(j->second.get()));
-		}
-	}
-}
-
 int custom_object_type::reload_modified_code()
 {
 	int result = 0;
@@ -360,27 +316,10 @@ int custom_object_type::reload_modified_code()
 		std::map<std::string, int64_t>::iterator mod_itor = file_mod_times().find(*path);
 		const int64_t mod_time = sys::file_mod_time(*path);
 		if(mod_time != 0 && mod_itor != file_mod_times().end() && mod_time != mod_itor->second) {
-			custom_object_type_ptr new_obj;
 			mod_itor->second = mod_time;
 			std::cerr << "FILE MODIFIED: " << i->first << " -> " << *path << ": " << mod_time << " VS " << mod_itor->second << "\n";
-			
-			try {
-				const assert_recover_scope scope;
-				new_obj = create(i->first);
-			} catch(validation_failure_exception& e) {
-				std::cerr << "FAILURE TO LOAD\n";
-				continue;
-			} catch(...) {
-				std::cerr << "UNKNOWN FAILURE TO LOAD\n";
-				continue;
-			}
 
-
-			custom_object_type* t = const_cast<custom_object_type*>(i->second.get());
-			if(new_obj) {
-				overwrite_frames(t, new_obj.get());
-
-				*t = *new_obj;
+			if(reload_object(i->first)) {
 				++result;
 			}
 		}
@@ -389,6 +328,65 @@ int custom_object_type::reload_modified_code()
 	return result;
 }
 
+void custom_object_type::set_file_contents(const std::string& file_path, const std::string& contents)
+{
+	json::set_file_contents(file_path, contents);
+	for(object_map::iterator i = cache().begin(); i != cache().end(); ++i) {
+		const std::string* path = get_object_path(i->first + ".cfg");
+		if(path && *path == file_path) {
+			reload_object(i->first);
+		}
+	}
+}
+
+bool custom_object_type::reload_object(const std::string& type)
+{
+	object_map::iterator i = cache().find(type);
+	ASSERT_LOG(i != cache().end(), "COULD NOT RELOAD OBJECT " << type);
+	
+	const_custom_object_type_ptr old_obj = i->second;
+
+	custom_object_type_ptr new_obj;
+	
+	const int begin = SDL_GetTicks();
+	try {
+		const assert_recover_scope scope;
+		new_obj = create(type);
+		std::cerr << "RELOADED OBJECT IN " << (SDL_GetTicks() - begin) << "ms\n";
+	} catch(validation_failure_exception& e) {
+		std::cerr << "FAILURE TO LOAD IN " << (SDL_GetTicks() - begin) << "ms\n";
+		return false;
+	} catch(...) {
+		std::cerr << "UNKNOWN FAILURE TO LOAD IN " << (SDL_GetTicks() - begin) << "ms\n";
+		return false;
+	}
+
+
+	if(new_obj) {
+		const int start = SDL_GetTicks();
+		foreach(custom_object* obj, custom_object::get_all()) {
+			obj->update_type(old_obj, new_obj);
+		}
+
+		for(std::map<std::string, const_custom_object_type_ptr>::const_iterator i = old_obj->sub_objects_.begin(); i != old_obj->sub_objects_.end(); ++i) {
+			std::map<std::string, const_custom_object_type_ptr>::const_iterator j = new_obj->sub_objects_.find(i->first);
+			if(j != new_obj->sub_objects_.end()) {
+				foreach(custom_object* obj, custom_object::get_all()) {
+					obj->update_type(i->second, j->second);
+				}
+			}
+		}
+
+		const int end = SDL_GetTicks();
+		std::cerr << "UPDATED " << custom_object::get_all().size() << " OBJECTS IN " << (end - start) << "\n";
+
+		i->second = new_obj;
+
+		return true;
+	}
+
+	return false;
+}
 
 void custom_object_type::init_event_handlers(variant node,
                                              event_handler_map& handlers,
@@ -720,16 +718,14 @@ game_logic::function_symbol_table* custom_object_type::function_symbols() const
 }
 
 namespace {
-void execute_variation_command(variant cmd, level& lvl, custom_object& obj)
+void execute_variation_command(variant cmd, game_logic::formula_callable& obj)
 {
 	if(cmd.is_list()) {
 		foreach(variant c, cmd.as_list()) {
-			execute_variation_command(c, lvl, obj);
+			execute_variation_command(c, obj);
 		}
-	} else if(cmd.try_convert<entity_command_callable>()) {
-		cmd.try_convert<entity_command_callable>()->execute(lvl, obj);
-	} else if(cmd.try_convert<custom_object_command_callable>()) {
-		cmd.try_convert<custom_object_command_callable>()->execute(lvl, obj);
+	} else if(cmd.try_convert<game_logic::command_callable>()) {
+		cmd.try_convert<game_logic::command_callable>()->execute(obj);
 	}
 }
 }
@@ -737,17 +733,10 @@ void execute_variation_command(variant cmd, level& lvl, custom_object& obj)
 const_custom_object_type_ptr custom_object_type::get_variation(const std::vector<std::string>& variations) const
 {
 	ASSERT_LOG(node_.is_null() == false, "tried to set variation in object " << id_ << " which has no variations");
-	if(!level::current_ptr()) {
-		//hack to get a current level -- load a basic empty level
-		static boost::intrusive_ptr<level> lvl(load_level("empty.cfg"));
-		lvl->finish_loading();
-		lvl->set_as_current_level();
-	}
 
 	const_custom_object_type_ptr& result = variations_cache_[variations];
 	if(!result) {
 		variant node = node_;
-		boost::intrusive_ptr<custom_object> obj(new custom_object(id_, 0, 0, true));
 
 		boost::intrusive_ptr<game_logic::map_formula_callable> callable(new game_logic::map_formula_callable);
 		callable->add("doc", variant(variant_callable::create(&node)));
@@ -758,7 +747,7 @@ const_custom_object_type_ptr custom_object_type::get_variation(const std::vector
 
 			variant cmd = var_itor->second->execute(*callable);
 
-			execute_variation_command(cmd, level::current(), *obj);
+			execute_variation_command(cmd, *callable);
 		}
 
 		std::cerr << "VARIATION MODIFICATION: BEFORE\n---\n" << node_.write_json() << "---\nAFTER\n---\n" << node.write_json() << "\n---\n";

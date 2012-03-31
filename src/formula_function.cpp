@@ -19,10 +19,12 @@
 #include "formatter.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
+#include "formula_callable_definition.hpp"
 #include "formula_callable_utils.hpp"
 #include "formula_function.hpp"
 #include "string_utils.hpp"
 #include "unit_test.hpp"
+#include "variant_callable.hpp"
 
 #include "graphics.hpp"
 #include <boost/regex.hpp>
@@ -808,8 +810,13 @@ namespace {
 	public:
 		explicit filter_function(const args_list& args)
 			: function_expression("filter", args, 2, 3)
-		{}
+		{
+			if(args.size() == 3) {
+				args[1]->is_identifier(&identifier_);
+			}
+		}
 	private:
+		std::string identifier_;
 		variant execute(const formula_callable& variables) const {
 			std::vector<variant> vars;
 			const variant items = args()[0]->evaluate(variables);
@@ -825,7 +832,7 @@ namespace {
 				map_formula_callable* self_callable = new map_formula_callable;
 				formula_callable_ptr callable(self_callable);
 				self_callable->add("context", variant(&variables));
-				const std::string self = args()[1]->evaluate(variables).as_string();
+				const std::string self = identifier_.empty() ? args()[1]->evaluate(variables).as_string() : identifier_;
 				for(size_t n = 0; n != items.num_elements(); ++n) {
 					self_callable->add(self, items[n]);
 					formula_callable_ptr callable_with_backup(new formula_variant_callable_with_backup(items[n], variables));
@@ -863,9 +870,14 @@ namespace {
 	public:
 		explicit find_function(const args_list& args)
 			: function_expression("find", args, 2, 3)
-		{}
+		{
+			if(args.size() == 3) {
+				args[1]->is_identifier(&identifier_);
+			}
+		}
 
 	private:
+		std::string identifier_;
 		variant execute(const formula_callable& variables) const {
 			const variant items = args()[0]->evaluate(variables);
 
@@ -882,7 +894,7 @@ namespace {
 				formula_callable_ptr callable(self_callable);
 				self_callable->add("context", variant(&variables));
 
-				const std::string self = args()[1]->evaluate(variables).as_string();
+				const std::string self = identifier_.empty() ? args()[1]->evaluate(variables).as_string() : identifier_;
 				for(size_t n = 0; n != items.num_elements(); ++n) {
 					self_callable->add(self, items[n]);
 
@@ -956,12 +968,53 @@ namespace {
 		}
 	};
 
+namespace {
+	void visit_objects(variant v, std::vector<variant>& res) {
+		if(v.is_map()) {
+			res.push_back(v);
+			foreach(const variant_pair& value, v.as_map()) {
+				visit_objects(value.second, res);
+			}
+		} else if(v.is_list()) {
+			foreach(const variant& value, v.as_list()) {
+				visit_objects(value, res);
+			}
+		} else if(v.try_convert<variant_callable>()) {
+			res.push_back(v);
+			variant keys = v.try_convert<variant_callable>()->get_value().get_keys();
+			foreach(variant k, keys.as_list()) {
+				visit_objects(v.try_convert<variant_callable>()->query_value(k.as_string()), res);
+			}
+		}
+	}
+}
+
+	class visit_objects_function : public function_expression {
+	public:
+		explicit visit_objects_function(const args_list& args)
+			: function_expression("visit_objects", args, 1, 1)
+		{}
+	private:
+		variant execute(const formula_callable& variables) const {
+			const variant v = args()[0]->evaluate(variables);
+			std::vector<variant> result;
+			visit_objects(v, result);
+			return variant(&result);
+		}
+	};
+
 	class map_function : public function_expression {
 	public:
 		explicit map_function(const args_list& args)
 			: function_expression("map", args, 2, 3)
-		{}
+		{
+			if(args.size() == 3) {
+				args[1]->is_identifier(&identifier_);
+			}
+		}
 	private:
+		std::string identifier_;
+
 		variant execute(const formula_callable& variables) const {
 			std::vector<variant> vars;
 			const variant items = args()[0]->evaluate(variables);
@@ -980,7 +1033,7 @@ namespace {
 				map_formula_callable* self_callable = new map_formula_callable;
 				formula_callable_ptr callable_ref(self_callable);
 				self_callable->add(context_str, variant(&variables));
-				const std::string self = args()[1]->evaluate(variables).as_string();
+				const std::string self = identifier_.empty() ? args()[1]->evaluate(variables).as_string() : identifier_;
 
 				variant& self_variant = self_callable->add_direct_access(self);
 
@@ -1098,8 +1151,6 @@ namespace {
 				const std::string& thestring = args()[0]->evaluate(variables).as_string();
 				chopped = util::split(thestring);
 			}
-			
-
 		
 			std::vector<variant> res;
 			for(size_t i=0; i<chopped.size(); ++i) {
@@ -1361,6 +1412,204 @@ namespace {
 		}
 	};
 
+class set_command : public game_logic::command_callable
+{
+public:
+	set_command(variant target, const std::string& attr, variant val)
+	  : target_(target), attr_(attr), val_(val)
+	{}
+	virtual void execute(game_logic::formula_callable& ob) const {
+		if(target_.is_callable()) {
+			target_.mutable_callable()->mutate_value(attr_, val_);
+		} else {
+			ob.mutate_value(attr_, val_);
+		}
+	}
+private:
+	variant target_;
+	std::string attr_;
+	variant val_;
+};
+
+class add_command : public game_logic::command_callable
+{
+public:
+	add_command(variant target, const std::string& attr, variant val)
+	  : target_(target), attr_(attr), val_(val)
+	{}
+	virtual void execute(game_logic::formula_callable& ob) const {
+		if(target_.is_callable()) {
+			target_.mutable_callable()->mutate_value(attr_, target_.mutable_callable()->query_value(attr_) + val_);
+		} else {
+			ob.mutate_value(attr_, ob.query_value(attr_) + val_);
+		}
+	}
+private:
+	variant target_;
+	std::string attr_;
+	variant val_;
+};
+
+class set_by_slot_command : public game_logic::command_callable
+{
+public:
+	set_by_slot_command(int slot, const variant& value)
+	  : slot_(slot), value_(value)
+	{}
+
+	virtual void execute(game_logic::formula_callable& obj) const {
+		obj.mutate_value_by_slot(slot_, value_);
+	}
+
+	void set_value(const variant& value) { value_ = value; }
+
+private:
+	int slot_;
+	variant value_;
+};
+
+class add_by_slot_command : public game_logic::command_callable
+{
+public:
+	add_by_slot_command(int slot, const variant& value)
+	  : slot_(slot), value_(value)
+	{}
+
+	virtual void execute(game_logic::formula_callable& obj) const {
+		obj.mutate_value_by_slot(slot_, obj.query_value_by_slot(slot_) + value_);
+	}
+
+	void set_value(const variant& value) { value_ = value; }
+
+private:
+	int slot_;
+	variant value_;
+};
+
+class set_function : public function_expression {
+public:
+	set_function(const args_list& args, const formula_callable_definition* callable_def)
+	  : function_expression("set", args, 2, 3), slot_(-1) {
+		if(args.size() == 2) {
+			variant literal = args[0]->is_literal();
+			if(literal.is_string()) {
+				key_ = literal.as_string();
+			} else {
+				args[0]->is_identifier(&key_);
+			}
+
+			if(!key_.empty() && callable_def) {
+				slot_ = callable_def->get_slot(key_);
+				if(slot_ != -1) {
+					cmd_ = boost::intrusive_ptr<set_by_slot_command>(new set_by_slot_command(slot_, variant()));
+				}
+			}
+		}
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		if(slot_ != -1) {
+			if(cmd_->refcount() == 1) {
+				cmd_->set_value(args()[1]->evaluate(variables));
+				return variant(cmd_.get());
+			}
+
+			cmd_ = boost::intrusive_ptr<set_by_slot_command>(new set_by_slot_command(slot_, args()[1]->evaluate(variables)));
+			return variant(cmd_.get());
+		}
+
+		if(!key_.empty()) {
+			return variant(new set_command(variant(), key_, args()[1]->evaluate(variables)));
+		}
+
+		if(args().size() == 2) {
+			try {
+				std::string member;
+				variant target = args()[0]->evaluate_with_member(variables, member);
+				return variant(new set_command(
+				  target, member, args()[1]->evaluate(variables)));
+			} catch(game_logic::formula_error&) {
+			}
+		}
+
+		variant target;
+		if(args().size() == 3) {
+			target = args()[0]->evaluate(variables);
+		}
+		const int begin_index = args().size() == 2 ? 0 : 1;
+		return variant(new set_command(
+		    target,
+		    args()[begin_index]->evaluate(variables).as_string(),
+			args()[begin_index + 1]->evaluate(variables)));
+	}
+
+	std::string key_;
+	int slot_;
+	mutable boost::intrusive_ptr<set_by_slot_command> cmd_;
+};
+
+class add_function : public function_expression {
+public:
+	add_function(const args_list& args, const formula_callable_definition* callable_def)
+	  : function_expression("add", args, 2, 3), slot_(-1) {
+		if(args.size() == 2) {
+			variant literal = args[0]->is_literal();
+			if(literal.is_string()) {
+				key_ = literal.as_string();
+			} else {
+				args[0]->is_identifier(&key_);
+			}
+
+			if(!key_.empty() && callable_def) {
+				slot_ = callable_def->get_slot(key_);
+				if(slot_ != -1) {
+					cmd_ = boost::intrusive_ptr<add_by_slot_command>(new add_by_slot_command(slot_, variant()));
+				}
+			}
+		}
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		if(slot_ != -1) {
+			if(cmd_->refcount() == 1) {
+				cmd_->set_value(args()[1]->evaluate(variables));
+				return variant(cmd_.get());
+			}
+
+			cmd_ = boost::intrusive_ptr<add_by_slot_command>(new add_by_slot_command(slot_, args()[1]->evaluate(variables)));
+			return variant(cmd_.get());
+		}
+
+		if(!key_.empty()) {
+			return variant(new add_command(variant(), key_, args()[1]->evaluate(variables)));
+		}
+
+		if(args().size() == 2) {
+			try {
+				std::string member;
+				variant target = args()[0]->evaluate_with_member(variables, member);
+				return variant(new add_command(
+				  target, member, args()[1]->evaluate(variables)));
+			} catch(game_logic::formula_error&) {
+			}
+		}
+
+		variant target;
+		if(args().size() == 3) {
+			target = args()[0]->evaluate(variables);
+		}
+		const int begin_index = args().size() == 2 ? 0 : 1;
+		return variant(new add_command(
+		    target,
+		    args()[begin_index]->evaluate(variables).as_string(),
+			args()[begin_index + 1]->evaluate(variables)));
+	}
+
+	std::string key_;
+	int slot_;
+	mutable boost::intrusive_ptr<add_by_slot_command> cmd_;
+};
+
 }
 
 formula_function_expression::formula_function_expression(const std::string& name, const args_list& args, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& arg_names)
@@ -1535,6 +1784,7 @@ namespace {
 			FUNCTION(mapping);
 			FUNCTION(find);
 			FUNCTION(transform);
+			FUNCTION(visit_objects);
 			FUNCTION(map);
 			FUNCTION(sum);
 			FUNCTION(range);
@@ -1578,6 +1828,12 @@ expression_ptr create_function(const std::string& fn,
 							   const function_symbol_table* symbols,
 							   const formula_callable_definition* callable_def)
 {
+	if(fn == "set") {
+		return expression_ptr(new set_function(args, callable_def));
+	} else if(fn == "add") {
+		return expression_ptr(new add_function(args, callable_def));
+	}
+
 	if(symbols) {
 		expression_ptr res(symbols->create_function(fn, args, callable_def));
 		if(res) {

@@ -1018,7 +1018,7 @@ void variant::serialize_to_string(std::string& str) const
 			}
 			first_time = false;
 			i->first.serialize_to_string(str);
-			str += "->";
+			str += ": ";
 			i->second.serialize_to_string(str);
 		}
 		str += "}";
@@ -1171,7 +1171,7 @@ std::string variant::string_cast() const
 				res += ",";
 			}
 			res += i->first.string_cast();
-			res += "->";
+			res += ": ";
 			res += i->second.string_cast();
 		}
 		return res;
@@ -1244,7 +1244,7 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 					s << "(writeonly) ";
 				}
 
-				s << "-> " << callable_->query_value(input.name).to_debug_string(seen);
+				s << ": " << callable_->query_value(input.name).to_debug_string(seen);
 			}
 		} else {
 			s << "...";
@@ -1261,7 +1261,7 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 			}
 			first_time = false;
 			s << i->first.to_debug_string(seen);
-			s << "->";
+			s << ": ";
 			s << i->second.to_debug_string(seen);
 		}
 		s << "}";
@@ -1371,30 +1371,50 @@ void variant::write_json_pretty(std::ostream& s, std::string indent) const
 	switch(type_) {
 	case TYPE_MAP: {
 		s << "{";
+		indent += "\t";
 		for(std::map<variant,variant>::const_iterator i = map_->elements.begin(); i != map_->elements.end(); ++i) {
 			if(i != map_->elements.begin()) {
 				s << ',';
 			}
 			s << "\n" << indent << '"' << i->first.string_cast() << "\": ";
-			i->second.write_json_pretty(s, indent + "  ");
+			i->second.write_json_pretty(s, indent);
 		}
+		indent.resize(indent.size()-1);
 
 		s << "\n" << indent << "}";
 		return;
 	}
 	case TYPE_LIST: {
+		bool found_non_scalar = false;
+		for(std::vector<variant>::const_iterator i = list_->elements.begin();
+		    i != list_->elements.end(); ++i) {
+			if(i->is_list() || i->is_map()) {
+				found_non_scalar = true;
+				break;
+			}
+		}
+
+		if(!found_non_scalar) {
+			write_json(s);
+			return;
+		}
+
+
 		s << "[";
 
+		indent += "\t";
 		for(std::vector<variant>::const_iterator i = list_->elements.begin();
 		    i != list_->elements.end(); ++i) {
 			if(i != list_->elements.begin()) {
 				s << ',';
 			}
 
-			s << "\n" << indent << "  ";
+			s << "\n" << indent;
 
-			i->write_json_pretty(s, indent + "  ");
+			i->write_json_pretty(s, indent);
 		}
+
+		indent.resize(indent.size()-1);
 
 		if(!list_->elements.empty()) {
 			s << "\n" << indent << "]";

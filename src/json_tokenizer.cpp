@@ -122,4 +122,14 @@ Token get_token(const char*& i1, const char* i2)
 	throw error;
 }
 
+Token get_token_full(const char*& i1, const char* i2) {
+	Token res = get_token(i1, i2);
+	if(res.type == Token::TYPE_STRING) {
+		res.begin--;
+		res.end++;
+	}
+
+	return res;
+}
+
 }

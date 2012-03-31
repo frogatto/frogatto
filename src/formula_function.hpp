@@ -192,7 +192,6 @@ private:
 	variant v_;
 };
 
-
 }
 
 #endif

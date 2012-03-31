@@ -14,6 +14,10 @@ variant_callable::variant_callable(const variant& v) : value_(v)
 
 variant variant_callable::get_value(const std::string& key) const
 {
+	if(key == "self" || key == "me") {
+		return variant(this);
+	}
+
 	variant result = value_[variant(key)];
 	if(result.is_list()) {
 		return create_for_list(result);
