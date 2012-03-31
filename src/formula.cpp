@@ -482,6 +482,8 @@ private:
 		const variant key = key_->evaluate(variables);
 		if(left.is_list() || left.is_map()) {
 			return left[ key ];
+		} else if(left.is_callable()) {
+			return left.as_callable()->query_value(key.as_string());
 		} else {
 			output_formula_error_info();
 			std::cerr << "illegal usage of operator []: called on " << left.to_debug_string() << " value: " << left_->str() << "'\n";
