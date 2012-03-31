@@ -408,6 +408,8 @@ extern "C" int main(int argc, char** argv)
 
 	graphics::texture::manager texture_manager;
 
+	editor::manager editor_manager;
+
 	variant preloads;
 	loading_screen loader;
 	try {

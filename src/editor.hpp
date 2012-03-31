@@ -37,6 +37,11 @@ class editor_mode_dialog;
 class editor
 {
 public:
+	//A manager which should be scoped around creation of editors.
+	struct manager {
+		~manager();
+	};
+
 	static editor* get_editor(const char* level_cfg);
 	static void edit(const char* level_cfg, int xpos=-1, int ypos=-1);
 	static std::string last_edited_level();

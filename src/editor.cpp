@@ -549,6 +549,10 @@ int selected_property = 0;
 
 }
 
+editor::manager::~manager() {
+	enemy_types.clear();
+}
+
 void editor::enemy_type::init(variant node)
 {
 	enemy_types.clear();
