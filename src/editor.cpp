@@ -645,7 +645,7 @@ int g_codebar_height = 0;
 
 int editor::codebar_height()
 {
-	return g_codebar_height;
+	return 0; //g_codebar_height;
 }
 
 editor::editor(const char* level_cfg)
@@ -802,7 +802,7 @@ editor_resolution_manager::editor_resolution_manager() :
 	   original_width_(preferences::actual_screen_width()),
 	   original_height_(preferences::actual_screen_height()) {
 	if(!editor_x_resolution) {
-		editor_x_resolution = preferences::actual_screen_width() + EDITOR_SIDEBAR_WIDTH + editor_dialogs::LAYERS_DIALOG_WIDTH;
+		editor_x_resolution = preferences::actual_screen_width() + EDITOR_SIDEBAR_WIDTH + editor_dialogs::LAYERS_DIALOG_WIDTH + 120;
 		editor_y_resolution = preferences::actual_screen_height() + EDITOR_MENUBAR_HEIGHT;
 	}
 
@@ -2485,6 +2485,7 @@ void editor::draw() const
 
 void editor::draw_gui() const
 {
+	const int begin_draw = SDL_GetTicks();
 	glPushMatrix();
 	glScalef(1.0/zoom_, 1.0/zoom_, 0);
 	glTranslatef(-xpos_,-ypos_,0);
@@ -2778,21 +2779,28 @@ void editor::draw_gui() const
 	sprintf(loc_buf, "%d,%d", xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 	graphics::blit_texture(font::render_text(loc_buf, graphics::color_white(), 14), 10, 60);
-	if(current_dialog_) {
+	if(!code_dialog_ && current_dialog_) {
 		current_dialog_->draw();
 	}
 
-	if(code_dialog_) {
-		code_dialog_->draw();
-	}
-
-	if(layers_dialog_) {
+	if(!code_dialog_ && layers_dialog_) {
 		layers_dialog_->draw();
 	}
 
 	editor_menu_dialog_->draw();
-	editor_mode_dialog_->draw();
+
+	if(!code_dialog_) {
+		editor_mode_dialog_->draw();
+	}
+
+	if(code_dialog_) {
+		const int begin = SDL_GetTicks();
+		code_dialog_->draw();
+	}
+
 	gui::draw_tooltip();
+
+	std::cerr << "DRAW: " << (SDL_GetTicks() - begin_draw) << "\n";
 }
 
 void editor::draw_selection(int xoffset, int yoffset) const
@@ -2994,7 +3002,8 @@ void editor::toggle_code()
 	if(code_dialog_) {
 		code_dialog_.reset();
 	} else {
-		code_dialog_.reset(new code_editor_dialog(rect(0, graphics::screen_height()-260, graphics::screen_width() - sidebar_width(), 260)));
+		//code_dialog_.reset(new code_editor_dialog(rect(0, graphics::screen_height()-260, graphics::screen_width() - sidebar_width(), 260)));
+		code_dialog_.reset(new code_editor_dialog(rect(graphics::screen_width() - 540, 0, 540, graphics::screen_height())));
 		set_code_file();
 	}
 }

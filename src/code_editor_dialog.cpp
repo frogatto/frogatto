@@ -18,7 +18,7 @@ void code_editor_dialog::init()
 {
 	using namespace gui;
 
-	editor_ = new code_editor_widget((height() - 30)/13, (width() - 20)/7);
+	editor_ = new code_editor_widget(width() - 10, height() - 30);
 	search_ = new text_editor_widget(1, 20);
 	replace_ = new text_editor_widget(1, 20);
 	const SDL_Color col = {255,255,255,255};

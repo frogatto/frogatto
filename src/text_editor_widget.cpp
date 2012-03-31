@@ -1,9 +1,11 @@
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 #include <boost/regex.hpp>
+#include <boost/scoped_ptr.hpp>
 
 #include <algorithm>
 
+#include "asserts.hpp"
 #include "graphics.hpp"
 
 #include "clipboard.hpp"
@@ -21,30 +23,86 @@ namespace {
 const int TabWidth = 4;
 const int TabAdjust = TabWidth - 1;
 
-std::map<char, graphics::texture> char_to_texture;
+boost::scoped_ptr<graphics::texture> char_texture;
 
-graphics::texture get_texture(char c) {
-	std::map<char, graphics::texture>::iterator i = char_to_texture.find(c);
-	if(i != char_to_texture.end()) {
+struct CharArea {
+	GLfloat x1, y1, x2, y2;
+};
+
+std::map<char, CharArea> char_to_area;
+
+const int FontSize = 14;
+
+const CharArea& get_char_area(char c)
+{
+	std::map<char, CharArea>::const_iterator i = char_to_area.find(c);
+	if(i != char_to_area.end()) {
 		return i->second;
-	} else {
-		std::string s = "x";
-		s[0] = c;
-		graphics::texture t = font::render_text(s, graphics::color_white(), 12);
-		char_to_texture[c] = t;
-		return t;
 	}
+
+	const CharArea& result = char_to_area[c];
+
+	const int char_width = font::char_width(FontSize);
+	const int char_height = font::char_height(FontSize);
+
+	std::string str;
+	int row = 0, col = 0;
+	int nchars = 0;
+	for(std::map<char, CharArea>::iterator i = char_to_area.begin();
+	    i != char_to_area.end(); ++i) {
+		str.push_back(i->first);
+	
+		CharArea area = {col*char_width, row*char_height, (col+1)*char_width, (row+1)*char_height};
+
+		char_to_area[i->first] = area;
+
+		++col;
+		if(col == 128) {
+			str += "\n";
+			col = 0;
+			++row;
+		}
+	}
+
+	char_texture.reset(new graphics::texture(font::render_text(str, graphics::color_white(), FontSize)));
+
+	for(std::map<char, CharArea>::iterator i = char_to_area.begin();
+	    i != char_to_area.end(); ++i) {
+		CharArea& area = i->second;
+		area.x1 = char_texture->translate_coord_x(area.x1/GLfloat(char_texture->width()));
+		area.x2 = char_texture->translate_coord_x(area.x2/GLfloat(char_texture->width()));
+		area.y1 = char_texture->translate_coord_y(area.y1/GLfloat(char_texture->height()));
+		area.y2 = char_texture->translate_coord_y(area.y2/GLfloat(char_texture->height()));
+	}
+
+	return result;
+}
+
+void init_char_area()
+{
+	if(char_texture.get()) {
+		return;
+	}
+
+	for(char c = 1; c < 127; ++c) {
+		if(isprint(c) && c != 'a') {
+			char_to_area[c] = CharArea();
+		}
+	}
+
+	get_char_area('a');
+	ASSERT_LOG(char_texture.get(), "DID NOT INIT CHAR TEXTURE\n");
 }
 
 }
 
-text_editor_widget::text_editor_widget(int nrows, int ncols)
+text_editor_widget::text_editor_widget(int width, int height)
   : last_op_type_(NULL),
-    font_size_(12),
+    font_size_(FontSize),
     char_width_(font::char_width(font_size_)),
     char_height_(font::char_height(font_size_)),
 	select_(0,0), cursor_(0,0),
-	nrows_(nrows), ncols_(ncols),
+	nrows_(std::max<int>(1, height/char_height_)), ncols_((width - 20)/char_width_),
 	scroll_pos_(0),
 	has_focus_(false),
 	is_dragging_(false),
@@ -52,6 +110,9 @@ text_editor_widget::text_editor_widget(int nrows, int ncols)
 	consecutive_clicks_(0),
 	text_color_(255, 255, 255, 255)
 {
+	if(height == 0) {
+		height = char_height_;
+	}
 	set_dim(char_width_*ncols_, char_height_*nrows_);
 	text_.push_back("");
 }
@@ -88,9 +149,44 @@ void text_editor_widget::set_text(const std::string& value)
 	on_change();
 }
 
+namespace {
+struct RectDraw {
+	rect area;
+	graphics::color col;
+
+	bool merge(RectDraw& o) {
+		if(o.col.value() != col.value()) {
+			return false;
+		}
+
+		if(o.area.y() != area.y() || area.x() > o.area.x() + o.area.w()) {
+			return false;
+		}
+
+		area = rect(area.x(), area.y(), area.w() + o.area.w(), area.h());
+		return true;
+	}
+};
+
+struct CharDraw {
+	CharDraw() {
+		q.set_texture(char_texture->get_id());
+	}
+
+	graphics::blit_queue q;
+	graphics::color col;
+};
+}
+
 void text_editor_widget::handle_draw() const
 {
-	graphics::color current_color(255, 255, 255, 255);
+	init_char_area();
+
+	std::vector<RectDraw> rects;
+	std::map<uint32_t, graphics::blit_queue> chars;
+
+	int begin_build = SDL_GetTicks();
+
 	int r = 0;
 	for(int n = scroll_pos_; n < text_.size() && r < nrows_; ++n, ++r) {
 		int c = 0;
@@ -119,38 +215,68 @@ void text_editor_widget::handle_draw() const
 				graphics::color col = get_character_color(n, m);
 
 				if(pos >= begin_select && pos < end_select) {
-					graphics::draw_rect(rect(x() + c*char_width_, y() + r*char_height_, char_width_, char_height_), col);
-					current_color.set_as_current_color();
+					RectDraw rect_draw = { rect(x() + c*char_width_, y() + r*char_height_, char_width_, char_height_), col };
+
+					if(rects.empty() || !rects.back().merge(rect_draw)) {
+						rects.push_back(rect_draw);
+					}
+
 					col = graphics::color(0,0,0,255);
 				} else {
 					for(std::vector<std::pair<Loc,Loc> >::const_iterator i = search_itor; i != search_matches_.end() && i->first <= pos; ++i) {
 						if(pos >= i->first && pos < i->second) {
-							graphics::draw_rect(rect(x() + c*char_width_, y() + r*char_height_, char_width_, char_height_), graphics::color(255,255,0,255));
-							current_color.set_as_current_color();
+							RectDraw rect_draw = { rect(x() + c*char_width_, y() + r*char_height_, char_width_, char_height_), graphics::color(255,255,0,255) };
+							if(rects.empty() || !rects.back().merge(rect_draw)) {
+								rects.push_back(rect_draw);
+							}
+
 							col = graphics::color(0,0,0,255);
 						}
 					}
 				}
 
-				if(col.value() != current_color.value()) {
-					current_color = col;
-					current_color.set_as_current_color();
+				if(!isspace(text_[n][m]) && isprint(text_[n][m])) {
+					const CharArea& area = get_char_area(text_[n][m]);
+
+					const int x1 = x() + c*char_width_;
+					const int y1 = y() + r*char_height_;
+					const int x2 = x1 + char_width_;
+					const int y2 = y1 + char_height_;
+
+					graphics::blit_queue& q = chars[col.rgba()];
+
+					q.repeat_last();
+					q.add(x1, y1, area.x1, area.y1);
+					q.repeat_last();
+					q.add(x2, y1, area.x2, area.y1);
+					q.add(x1, y2, area.x1, area.y2);
+					q.add(x2, y2, area.x2, area.y2);
 				}
-				graphics::texture t = get_texture(text_[n][m]);
-				graphics::blit_texture(t, x() + c*char_width_, y() + r*char_height_);
 			}
 
 			if(cursor_.row == n && cursor_.col == m &&
 			   (SDL_GetTicks()%500 < 350 || !has_focus_)) {
-				graphics::draw_rect(rect(x() + c*char_width_+1, y() + r*char_height_, 1, char_height_), graphics::color(255,255,255,255));
-				current_color.set_as_current_color();
+				RectDraw rect_draw = { rect(x() + c*char_width_+1, y() + r*char_height_, 1, char_height_), graphics::color(255,255,255,255) };
+				rects.push_back(rect_draw);
 			}
 		}
 
 		if(has_focus_ && cursor_.row == n && cursor_.col >= text_[n].size() && SDL_GetTicks()%500 < 350) {
-			graphics::draw_rect(rect(x() + c*char_width_+1, y() + r*char_height_, 1, char_height_), graphics::color(255,255,255,255));
-			current_color.set_as_current_color();
+			RectDraw rect_draw = { rect(x() + c*char_width_+1, y() + r*char_height_, 1, char_height_), graphics::color(255,255,255,255) };
+			rects.push_back(rect_draw);
 		}
+	}
+
+	const int begin_draw = SDL_GetTicks();
+
+	foreach(const RectDraw& r, rects) {
+		graphics::draw_rect(r.area, r.col);
+	}
+
+	for(std::map<uint32_t, graphics::blit_queue>::iterator i = chars.begin(); i != chars.end(); ++i) {
+		graphics::color(i->first).set_as_current_color();
+		i->second.set_texture(char_texture->get_id());
+		i->second.do_blit();
 	}
 
 	SDL_Color border_color = graphics::color_white();
@@ -350,8 +476,6 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 		save_undo_state();
 		delete_selection();
 		std::string txt = copy_from_clipboard(false);
-
-		std::cerr << "COPY FROM CLIPBOARD: (" << txt << ")\n";
 
 		txt.erase(std::remove(txt.begin(), txt.end(), '\r'), txt.end());
 		std::vector<std::string> lines = util::split(txt, '\n', 0 /*don't remove empties or strip spaces*/);
@@ -1043,9 +1167,9 @@ UTILITY(textedit)
 		return;
 	}
 
-	text_editor_widget* entry = new text_editor_widget(1, 80);
+	text_editor_widget* entry = new text_editor_widget(120);
 
-	text_editor_widget* editor = new code_editor_widget(30, 80);
+	text_editor_widget* editor = new code_editor_widget(600, 400);
 	editor->set_text(contents);
 
 	entry->set_on_change_handler(boost::bind(on_change_search, entry, editor));

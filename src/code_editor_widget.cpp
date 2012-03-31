@@ -5,8 +5,8 @@
 namespace gui
 {
 
-code_editor_widget::code_editor_widget(int nrows, int ncols)
-  : text_editor_widget(nrows, ncols)
+code_editor_widget::code_editor_widget(int width, int height)
+  : text_editor_widget(width, height)
 {
 }
 

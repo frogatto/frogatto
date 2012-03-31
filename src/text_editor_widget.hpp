@@ -12,7 +12,7 @@ namespace gui {
 class text_editor_widget : public scrollable_widget
 {
 public:
-	text_editor_widget(int nrows, int ncols);
+	text_editor_widget(int width, int height=0);
 	~text_editor_widget();
 
 	std::string text() const;
