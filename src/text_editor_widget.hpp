@@ -46,12 +46,12 @@ public:
 	bool has_focus() const { return has_focus_; }
 	void set_focus(bool value);
 
+	int cursor_row() const { return cursor_.row; }
+	int cursor_col() const { return cursor_.col; }
+
 protected:
 
 	virtual void select_token(const std::string& row, int& begin_row, int& end_row, int& begin_col, int& end_col) const;
-
-	int cursor_row() const { return cursor_.row; }
-	int cursor_col() const { return cursor_.col; }
 
 	virtual void on_change();
 

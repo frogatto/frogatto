@@ -634,13 +634,13 @@ std::string editor::last_edited_level()
 	return g_last_edited_level();
 }
 
-int editor::sidebar_width()
-{
-	return 180;
+namespace {
+int g_codebar_width = 0;
 }
 
-namespace {
-int g_codebar_height = 0;
+int editor::sidebar_width()
+{
+	return g_codebar_width == 0 ? 180 : g_codebar_width;
 }
 
 int editor::codebar_height()
@@ -802,7 +802,7 @@ editor_resolution_manager::editor_resolution_manager() :
 	   original_width_(preferences::actual_screen_width()),
 	   original_height_(preferences::actual_screen_height()) {
 	if(!editor_x_resolution) {
-		editor_x_resolution = preferences::actual_screen_width() + EDITOR_SIDEBAR_WIDTH + editor_dialogs::LAYERS_DIALOG_WIDTH;
+		editor_x_resolution = 1200; //preferences::actual_screen_width() + EDITOR_SIDEBAR_WIDTH + editor_dialogs::LAYERS_DIALOG_WIDTH;
 		editor_y_resolution = preferences::actual_screen_height() + EDITOR_MENUBAR_HEIGHT;
 	}
 
@@ -965,7 +965,7 @@ void editor::process()
 		editor_mode_dialog_->refresh_selection();
 	}
 
-	g_codebar_height = code_dialog_ ? code_dialog_->height() : 0;
+	g_codebar_width = code_dialog_ ? code_dialog_->width() : 0;
 
 	if(code_dialog_ && code_dialog_->has_keyboard_focus()) {
 		return;
@@ -2490,7 +2490,6 @@ void editor::draw() const
 
 void editor::draw_gui() const
 {
-	const int begin_draw = SDL_GetTicks();
 	glPushMatrix();
 	glScalef(1.0/zoom_, 1.0/zoom_, 0);
 	glTranslatef(-xpos_,-ypos_,0);
@@ -3008,6 +3007,9 @@ void editor::toggle_code()
 		//code_dialog_.reset(new code_editor_dialog(rect(0, graphics::screen_height()-260, graphics::screen_width() - sidebar_width(), 260)));
 		code_dialog_.reset(new code_editor_dialog(rect(graphics::screen_width() - 540, 0, 540, graphics::screen_height())));
 		set_code_file();
+
+		//We should always be selecting objects when using the code editor.
+		change_tool(TOOL_SELECT_OBJECT);
 	}
 }
 

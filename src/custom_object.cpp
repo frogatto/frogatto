@@ -95,6 +95,7 @@ custom_object::custom_object(variant node)
 	max_difficulty_(node["max_difficulty"].as_int(-1))
 {
 	get_all().insert(this);
+	get_all(base_type_->id()).insert(this);
 
 	if(node.has_key("platform_area")) {
 		set_platform_area(rect(node["platform_area"]));
@@ -298,6 +299,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	min_difficulty_(-1), max_difficulty_(-1)
 {
 	get_all().insert(this);
+	get_all(base_type_->id()).insert(this);
 
 	set_solid_dimensions(type_->solid_dimensions(),
 	                     type_->weak_solid_dimensions());
@@ -386,11 +388,13 @@ custom_object::custom_object(const custom_object& o) :
 	platform_offsets_(o.platform_offsets_)
 {
 	get_all().insert(this);
+	get_all(base_type_->id()).insert(this);
 }
 
 custom_object::~custom_object()
 {
 	get_all().erase(this);
+	get_all(base_type_->id()).erase(this);
 
 	sound::stop_looped_sounds(this);
 }
@@ -1756,6 +1760,12 @@ std::set<custom_object*>& custom_object::get_all()
 	return all;
 }
 
+std::set<custom_object*>& custom_object::get_all(const std::string& type)
+{
+	static std::map<std::string, std::set<custom_object*> > all;
+	return all[type];
+}
+
 void custom_object::init()
 {
 }
@@ -2299,7 +2309,9 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		if(p) {
 			game_logic::formula_variable_storage_ptr old_vars = vars_, old_tmp_vars_ = tmp_vars_;
 
-			type_ = p;
+			get_all(base_type_->id()).erase(this);
+			base_type_ = type_ = p;
+			get_all(base_type_->id()).insert(this);
 			has_feet_ = type_->has_feet();
 			vars_.reset(new game_logic::formula_variable_storage(type_->variables())),
 			tmp_vars_.reset(new game_logic::formula_variable_storage(type_->tmp_variables())),
@@ -2324,7 +2336,9 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		if(p) {
 			game_logic::formula_variable_storage_ptr old_vars = vars_, old_tmp_vars_ = tmp_vars_;
 
-			type_ = p;
+			get_all(base_type_->id()).erase(this);
+			base_type_ = type_ = p;
+			get_all(base_type_->id()).insert(this);
 			has_feet_ = type_->has_feet();
 			vars_.reset(new game_logic::formula_variable_storage(type_->variables())),
 			tmp_vars_.reset(new game_logic::formula_variable_storage(type_->tmp_variables())),

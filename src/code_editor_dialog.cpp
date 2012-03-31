@@ -4,6 +4,7 @@
 #include "code_editor_widget.hpp"
 #include "custom_object_type.hpp"
 #include "filesystem.hpp"
+#include "formatter.hpp"
 #include "json_parser.hpp"
 #include "label.hpp"
 #include "text_editor_widget.hpp"
@@ -18,15 +19,17 @@ void code_editor_dialog::init()
 {
 	using namespace gui;
 
-	editor_ = new code_editor_widget(width() - 10, height() - 30);
-	search_ = new text_editor_widget(1, 20);
-	replace_ = new text_editor_widget(1, 20);
+	editor_ = new code_editor_widget(width() - 10, height() - 60);
+	search_ = new text_editor_widget(120);
+	replace_ = new text_editor_widget(120);
 	const SDL_Color col = {255,255,255,255};
 	widget_ptr find_label(label::create("Find: ", col));
+	status_label_ = label::create("", col);
 	add_widget(find_label, 12, 12, MOVE_RIGHT);
 	add_widget(widget_ptr(search_), MOVE_RIGHT);
 	add_widget(widget_ptr(replace_), MOVE_DOWN);
 	add_widget(widget_ptr(editor_), find_label->x(), find_label->y() + find_label->height() + 2);
+	add_widget(status_label_);
 
 	replace_->set_visible(false);
 
@@ -34,6 +37,7 @@ void code_editor_dialog::init()
 	search_->set_on_enter_handler(boost::bind(&code_editor_dialog::on_search_enter, this));
 
 	editor_->set_on_change_handler(boost::bind(&code_editor_dialog::on_code_changed, this));
+	editor_->set_on_move_cursor_handler(boost::bind(&code_editor_dialog::on_move_cursor, this));
 }
 
 void code_editor_dialog::load_file(const std::string& fname)
@@ -86,4 +90,9 @@ void code_editor_dialog::on_search_enter()
 void code_editor_dialog::on_code_changed()
 {
 	custom_object_type::set_file_contents(fname_, editor_->text());
+}
+
+void code_editor_dialog::on_move_cursor()
+{
+	status_label_->set_text(formatter() << "Row " << (editor_->cursor_row()+1) << " Col " << (editor_->cursor_col()+1));
 }

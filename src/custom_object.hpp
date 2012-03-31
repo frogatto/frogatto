@@ -30,6 +30,7 @@ class custom_object : public entity
 {
 public:
 	static std::set<custom_object*>& get_all();
+	static std::set<custom_object*>& get_all(const std::string& type);
 	static void init();
 
 	explicit custom_object(variant node);

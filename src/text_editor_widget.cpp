@@ -102,7 +102,7 @@ text_editor_widget::text_editor_widget(int width, int height)
     char_width_(font::char_width(font_size_)),
     char_height_(font::char_height(font_size_)),
 	select_(0,0), cursor_(0,0),
-	nrows_(std::max<int>(1, height/char_height_)), ncols_((width - 20)/char_width_),
+	nrows_(height/char_height_), ncols_((width - 20)/char_width_),
 	scroll_pos_(0),
 	has_focus_(false),
 	is_dragging_(false),
@@ -112,6 +112,8 @@ text_editor_widget::text_editor_widget(int width, int height)
 {
 	if(height == 0) {
 		height = char_height_;
+		nrows_ = 1;
+		ncols_ = width/char_width_;
 	}
 	set_dim(char_width_*ncols_, char_height_*nrows_);
 	text_.push_back("");
@@ -159,7 +161,7 @@ struct RectDraw {
 			return false;
 		}
 
-		if(o.area.y() != area.y() || area.x() > o.area.x() + o.area.w()) {
+		if(o.area.y() != area.y() || o.area.x() > area.x() + area.w()) {
 			return false;
 		}
 

@@ -5,6 +5,7 @@
 
 #include "dialog.hpp"
 #include "geometry.hpp"
+#include "label.hpp"
 
 namespace gui {
 class code_editor_widget;
@@ -30,10 +31,13 @@ private:
 	gui::text_editor_widget* search_;
 	gui::text_editor_widget* replace_;
 
+	gui::label_ptr status_label_;
+
 	void on_search_changed();
 	void on_search_enter();
 
 	void on_code_changed();
+	void on_move_cursor();
 };
 
 #endif

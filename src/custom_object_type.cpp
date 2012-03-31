@@ -364,21 +364,21 @@ bool custom_object_type::reload_object(const std::string& type)
 
 	if(new_obj) {
 		const int start = SDL_GetTicks();
-		foreach(custom_object* obj, custom_object::get_all()) {
+		foreach(custom_object* obj, custom_object::get_all(old_obj->id())) {
 			obj->update_type(old_obj, new_obj);
 		}
 
 		for(std::map<std::string, const_custom_object_type_ptr>::const_iterator i = old_obj->sub_objects_.begin(); i != old_obj->sub_objects_.end(); ++i) {
 			std::map<std::string, const_custom_object_type_ptr>::const_iterator j = new_obj->sub_objects_.find(i->first);
 			if(j != new_obj->sub_objects_.end()) {
-				foreach(custom_object* obj, custom_object::get_all()) {
+				foreach(custom_object* obj, custom_object::get_all(i->second->id())) {
 					obj->update_type(i->second, j->second);
 				}
 			}
 		}
 
 		const int end = SDL_GetTicks();
-		std::cerr << "UPDATED " << custom_object::get_all().size() << " OBJECTS IN " << (end - start) << "\n";
+		std::cerr << "UPDATED " << custom_object::get_all(old_obj->id()).size() << " OBJECTS IN " << (end - start) << "\n";
 
 		itor->second = new_obj;
 
