@@ -549,7 +549,6 @@ std::vector<int> variant::as_list_int() const
 	must_be(TYPE_LIST);
 	result.reserve(list_->elements.size());
 	for(int n = 0; n != list_->elements.size(); ++n) {
-		list_->elements[n].must_be(TYPE_INT);
 		result.push_back(list_->elements[n].as_int());
 	}
 

@@ -350,19 +350,16 @@ bool level_runner::play_level()
 	bool reversing = false;
 
 	while(!done && !quit_) {
-		if(key[SDLK_t] && preferences::record_history()) {
+		if(key[SDLK_t] && preferences::record_history()
 #ifndef NO_EDITOR
-			if (!editor_ || !editor_->has_keyboard_focus())
-			{
+			&& (!editor_ || !editor_->has_keyboard_focus())
 #endif
+		) {
 				if(!reversing) {
 					pause_time_ -= SDL_GetTicks();
 				}
 				reverse_cycle();
 				reversing = true;
-#ifndef NO_EDITOR
-			}
-#endif
 		} else {
 			if(reversing) {
 				controls::read_until(lvl_->cycle());

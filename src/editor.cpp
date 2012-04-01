@@ -3035,6 +3035,11 @@ void editor::set_code_file()
 		return;
 	}
 
+	if(std::count(type.begin(), type.end(), '.')) {
+		//it's a subtype, so find the parent.
+		type = std::string(type.begin(), std::find(type.begin(), type.end(), '.'));
+	}
+
 	const std::string* path = custom_object_type::get_object_path(type + ".cfg");
 	if(path && code_dialog_) {
 		code_dialog_->load_file(*path);

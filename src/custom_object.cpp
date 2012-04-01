@@ -814,6 +814,29 @@ void custom_object::draw() const
 		glUseProgram(0);
 	}
 #endif
+
+	if(preferences::show_debug_hitboxes() && platform_area_) {
+		std::vector<GLfloat> v;
+		const rect& r = platform_rect();
+		for(int x = 0; x < r.w(); x += 2) {
+			v.push_back(r.x() + x);
+			v.push_back(platform_rect_at(r.x() + x).y());
+		}
+
+		if(!v.empty()) {
+			glPointSize(2);
+			glDisable(GL_TEXTURE_2D);
+			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+			glColor4ub(255, 0, 0, 255);
+
+			glVertexPointer(2, GL_FLOAT, 0, &v[0]);
+			glDrawArrays(GL_POINTS, 0, v.size()/2);
+
+			glColor4ub(255, 255, 255, 255);
+			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+			glEnable(GL_TEXTURE_2D);
+		}
+	}
 }
 
 void custom_object::draw_group() const
@@ -1994,6 +2017,14 @@ variant custom_object::get_value_by_slot(int slot) const
 		return variant(&result);
 	}
 
+	case CUSTOM_OBJECT_PLATFORM_AREA: {
+		if(platform_area_) {
+			return platform_area_->write();
+		} else {
+			return variant();
+		}
+	}
+
 	case CUSTOM_OBJECT_SOLID_DIMENSIONS_IN: {
 		std::vector<variant> v;
 		v.push_back(variant(solid_dimensions()));
@@ -2794,7 +2825,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		ASSERT_GE(value.num_elements(), 3);
 		ASSERT_LE(value.num_elements(), 4);
 
-		set_platform_area(rect(value[0].as_int(), value[1].as_int(), value[2].as_int(), 1));
+		set_platform_area(rect(value));
 		calculate_solid_rect();
 		break;
 	}
