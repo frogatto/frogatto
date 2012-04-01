@@ -475,7 +475,8 @@ class square_bracket_expression : public formula_expression { //TODO
 public:
 	square_bracket_expression(expression_ptr left, expression_ptr key)
 	: formula_expression("_sqbr"), left_(left), key_(key)
-	{}
+	{
+	}
 private:
 	variant execute(const formula_callable& variables) const {
 		const variant left = left_->evaluate(variables);
@@ -1695,10 +1696,31 @@ void formula::output_debug_info() const
 
 variant formula::execute(const formula_callable& variables) const
 {
+	//We want to track the 'last executed' formula in last_executed_formula,
+	//so we can use it for debugging purposes if there's a problem.
+	//If one formula calls another, we want to restore the old value after
+	//the nested formula exits. However, when a formula returns, if it's
+	//the top-level formula we want to still keep it recorded as the
+	//last executed, so we can complain about it if any commands it returns
+	//have problems.
+	//
+	//As such we track the depth of the execution stack so we can tell if
+	//we're a top-level formula or not. If we're a nested formula we restore
+	//last_executed_formula upon return.
+	//
+	//Naturally if we throw an exception we DON'T want to restore the
+	//last_executed_formula since we want to report the error.
+	static int execution_stack = 0;
+	const formula* prev_executed = execution_stack ? last_executed_formula : NULL;
 	last_executed_formula = this;
-		return expr_->evaluate(variables);
 	try {
-		return expr_->evaluate(variables);
+		++execution_stack;
+		variant result = expr_->evaluate(variables);
+		--execution_stack;
+		if(prev_executed) {
+			last_executed_formula = prev_executed;
+		}
+		return result;
 	} catch(type_error& e) {
 		//TODO: add debug info from str_ here.
 		std::cerr << "formula type error: " << e.message << "\n";
