@@ -54,6 +54,12 @@
 		B556CC8D1524405100AAA03A /* variant_callable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B556CC831524405100AAA03A /* variant_callable.cpp */; };
 		B556CC8E1524405100AAA03A /* variant_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B556CC851524405100AAA03A /* variant_utils.cpp */; };
 		B556CC921524D14200AAA03A /* wml_formula_callable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B556CC901524D14200AAA03A /* wml_formula_callable.cpp */; };
+		B556CC9A15269AC200AAA03A /* code_editor_dialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B556CC9715269AC200AAA03A /* code_editor_dialog.cpp */; };
+		B556CC9B15269AC200AAA03A /* utility_query.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B556CC9915269AC200AAA03A /* utility_query.cpp */; };
+		B556CCA11526A56B00AAA03A /* UbuntuMono-B.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B556CC9D1526A56B00AAA03A /* UbuntuMono-B.ttf */; };
+		B556CCA21526A56B00AAA03A /* UbuntuMono-BI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B556CC9E1526A56B00AAA03A /* UbuntuMono-BI.ttf */; };
+		B556CCA31526A56B00AAA03A /* UbuntuMono-R.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B556CC9F1526A56B00AAA03A /* UbuntuMono-R.ttf */; };
+		B556CCA41526A56B00AAA03A /* UbuntuMono-RI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B556CCA01526A56B00AAA03A /* UbuntuMono-RI.ttf */; };
 		B55F18F41155E6F000F5D541 /* libpng12.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B55F18F31155E6F000F5D541 /* libpng12.0.dylib */; };
 		B55F18F91155E6FB00F5D541 /* libpng12.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = B55F18F31155E6F000F5D541 /* libpng12.0.dylib */; };
 		B561CDDE10483923001369F5 /* player_info.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B561CDDC10483922001369F5 /* player_info.cpp */; };
@@ -278,6 +284,13 @@
 		B556CC861524405100AAA03A /* variant_utils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = variant_utils.hpp; sourceTree = "<group>"; };
 		B556CC901524D14200AAA03A /* wml_formula_callable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wml_formula_callable.cpp; sourceTree = "<group>"; };
 		B556CC911524D14200AAA03A /* wml_formula_callable.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = wml_formula_callable.hpp; sourceTree = "<group>"; };
+		B556CC9715269AC200AAA03A /* code_editor_dialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = code_editor_dialog.cpp; sourceTree = "<group>"; };
+		B556CC9815269AC200AAA03A /* code_editor_dialog.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = code_editor_dialog.hpp; sourceTree = "<group>"; };
+		B556CC9915269AC200AAA03A /* utility_query.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utility_query.cpp; sourceTree = "<group>"; };
+		B556CC9D1526A56B00AAA03A /* UbuntuMono-B.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "UbuntuMono-B.ttf"; path = "../UbuntuMono-B.ttf"; sourceTree = "<group>"; };
+		B556CC9E1526A56B00AAA03A /* UbuntuMono-BI.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "UbuntuMono-BI.ttf"; path = "../UbuntuMono-BI.ttf"; sourceTree = "<group>"; };
+		B556CC9F1526A56B00AAA03A /* UbuntuMono-R.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "UbuntuMono-R.ttf"; path = "../UbuntuMono-R.ttf"; sourceTree = "<group>"; };
+		B556CCA01526A56B00AAA03A /* UbuntuMono-RI.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "UbuntuMono-RI.ttf"; path = "../UbuntuMono-RI.ttf"; sourceTree = "<group>"; };
 		B55F18F31155E6F000F5D541 /* libpng12.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpng12.0.dylib; path = lib/libpng12.0.dylib; sourceTree = "<group>"; };
 		B561CDDC10483922001369F5 /* player_info.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = player_info.cpp; sourceTree = "<group>"; };
 		B561CDDD10483923001369F5 /* player_info.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = player_info.hpp; sourceTree = "<group>"; };
@@ -537,6 +550,9 @@
 		080E96DDFE201D6D7F000001 /* C++ */ = {
 			isa = PBXGroup;
 			children = (
+				B556CC9715269AC200AAA03A /* code_editor_dialog.cpp */,
+				B556CC9815269AC200AAA03A /* code_editor_dialog.hpp */,
+				B556CC9915269AC200AAA03A /* utility_query.cpp */,
 				B556CC901524D14200AAA03A /* wml_formula_callable.cpp */,
 				B556CC911524D14200AAA03A /* wml_formula_callable.hpp */,
 				B556CC751524405100AAA03A /* clipboard.cpp */,
@@ -886,6 +902,10 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B556CC9D1526A56B00AAA03A /* UbuntuMono-B.ttf */,
+				B556CC9E1526A56B00AAA03A /* UbuntuMono-BI.ttf */,
+				B556CC9F1526A56B00AAA03A /* UbuntuMono-R.ttf */,
+				B556CCA01526A56B00AAA03A /* UbuntuMono-RI.ttf */,
 				B501A3FD1371C2B300D7EC88 /* locale */,
 				B5F96B450E7572CA00969FDD /* data */,
 				B56EA5670E242F7B00C9F45C /* music */,
@@ -991,6 +1011,10 @@
 				B5F96B4F0E7572CA00969FDD /* data in Resources */,
 				B501A3FE1371C2B300D7EC88 /* locale in Resources */,
 				B539566813AD28BB0006183E /* InfoPlist.strings in Resources */,
+				B556CCA11526A56B00AAA03A /* UbuntuMono-B.ttf in Resources */,
+				B556CCA21526A56B00AAA03A /* UbuntuMono-BI.ttf in Resources */,
+				B556CCA31526A56B00AAA03A /* UbuntuMono-R.ttf in Resources */,
+				B556CCA41526A56B00AAA03A /* UbuntuMono-RI.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1132,6 +1156,8 @@
 				B556CC8D1524405100AAA03A /* variant_callable.cpp in Sources */,
 				B556CC8E1524405100AAA03A /* variant_utils.cpp in Sources */,
 				B556CC921524D14200AAA03A /* wml_formula_callable.cpp in Sources */,
+				B556CC9A15269AC200AAA03A /* code_editor_dialog.cpp in Sources */,
+				B556CC9B15269AC200AAA03A /* utility_query.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
