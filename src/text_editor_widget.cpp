@@ -619,30 +619,45 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 		on_move_cursor();
 
 		break;
-	case SDLK_PAGEUP:
+	case SDLK_PAGEUP: {
 		record_op();
 		on_page_up();
+		bool move_cursor = false;
 		while(cursor_.row > scroll_pos_ && char_position_on_screen(cursor_.row, cursor_.col).first == -1) {
 			--cursor_.row;
 			cursor_.col = find_equivalent_col(cursor_.col, cursor_.row+1, cursor_.row);
+			move_cursor = true;
+		}
+
+		if(move_cursor) {
+			on_move_cursor();
 		}
 
 		if(!(SDL_GetModState()&KMOD_SHIFT)) {
 			select_ = cursor_;
 		}
 		break;
-	case SDLK_PAGEDOWN:
+	}
+
+	case SDLK_PAGEDOWN: {
 		record_op();
 		on_page_down();
+		bool move_cursor = false;
 		while(cursor_.row < scroll_pos_ && char_position_on_screen(cursor_.row, cursor_.col).first == -1) {
 			++cursor_.row;
 			cursor_.col = find_equivalent_col(cursor_.col, cursor_.row-1, cursor_.row);
+			move_cursor = true;
+		}
+
+		if(move_cursor) {
+			on_move_cursor();
 		}
 
 		if(!(SDL_GetModState()&KMOD_SHIFT)) {
 			select_ = cursor_;
 		}
 		break;
+	}
 	case SDLK_HOME:
 		record_op();
 		cursor_.col = 0;

@@ -855,6 +855,11 @@ public:
 			}
 		
 			std::reverse(subs_.begin(), subs_.end());
+
+			if(translate) {
+				str_ = variant::create_translated_string(str);
+				return;
+			}
 		} else if (translate) {
 			str = std::string("~") + str + std::string("~");
 		}

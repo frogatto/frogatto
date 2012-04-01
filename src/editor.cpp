@@ -252,6 +252,11 @@ public:
 		  new button(widget_ptr(new label("Scripts", graphics::color_white())),
 		             boost::bind(&editor_menu_dialog::show_scripts_menu, this))));
 		add_widget(widget_ptr(grid));
+
+		button_ptr code_button(
+		 new button(widget_ptr(new label("Code ->", graphics::color_white())),
+			          boost::bind(&editor::toggle_code, &editor_)));
+		add_widget(code_button, graphics::screen_width() - 612, 4);
 	}
 
 	void new_level() {

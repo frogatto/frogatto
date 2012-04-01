@@ -12,6 +12,7 @@
 #include "formatter.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
+#include "i18n.hpp"
 #include "unit_test.hpp"
 #include "variant.hpp"
 #include "wml_formula_callable.hpp"
@@ -103,7 +104,7 @@ struct variant_string {
 
 	variant_string() : refcount(0)
 	{}
-	std::string str;
+	std::string str, translated_from;
 	int refcount;
 };
 
@@ -279,6 +280,13 @@ variant::variant(const std::string& str)
 	string_ = new variant_string;
 	string_->str = str;
 	increment_refcount();
+}
+
+variant variant::create_translated_string(const std::string& str)
+{
+	variant v(i18n::tr(str));
+	v.string_->translated_from = str;
+	return v;
 }
 
 variant::variant(std::map<variant,variant>* map)
@@ -1338,20 +1346,21 @@ void variant::write_json(std::ostream& s) const
 		return;
 	}
 	case TYPE_STRING: {
-		const std::string& str = string_->str;
-		if(std::count(str.begin(), str.end(), '\\') || std::count(str.begin(), str.end(), '"')) {
+		const std::string& str = string_->translated_from.empty() ? string_->str : string_->translated_from;
+		const char delim = string_->translated_from.empty() ? '"' : '~';
+		if(std::count(str.begin(), str.end(), '\\') || std::count(str.begin(), str.end(), delim)) {
 			//escape the string
-			s << '"';
+			s << delim;
 			for(std::string::const_iterator i = str.begin(); i != str.end(); ++i) {
-				if(*i == '\\' || *i == '"') {
+				if(*i == '\\' || *i == delim) {
 					s << '\\';
 				}
 
 				s << *i;
 			}
-			s << '"';
+			s << delim;
 		} else {
-			s << "\"" << string_->str << "\"";
+			s << delim << string_->str << delim;
 		}
 		return;
 	}

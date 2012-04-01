@@ -1756,14 +1756,16 @@ variant call_stack(const custom_object& obj) {
 
 std::set<custom_object*>& custom_object::get_all()
 {
-	static std::set<custom_object*> all;
-	return all;
+	typedef std::set<custom_object*> Set;
+	static Set* all = new Set;
+	return *all;
 }
 
 std::set<custom_object*>& custom_object::get_all(const std::string& type)
 {
-	static std::map<std::string, std::set<custom_object*> > all;
-	return all[type];
+	typedef std::map<std::string, std::set<custom_object*> > Map;
+	static Map* all = new Map;
+	return (*all)[type];
 }
 
 void custom_object::init()

@@ -19,7 +19,9 @@ Token get_token(const char*& i1, const char* i2)
 	}
 
 	if(i1 == i2) {
-		Token result = { Token::NUM_TYPES, NULL, NULL };
+		Token result;
+		result.type = Token::NUM_TYPES;
+		result.begin = result.end = NULL;
 		return result;
 	}
 
@@ -40,9 +42,10 @@ Token get_token(const char*& i1, const char* i2)
 		return result;
 	}
 
-	if(*i1 == '"' || *i1 == '\'') {
+	if(*i1 == '"' || *i1 == '\'' || *i1 == '~') {
 		const char quote_type = *i1;
 		Token result;
+		result.translate = quote_type == '~';
 		result.type = Token::TYPE_STRING;
 		result.begin = ++i1;
 		while(i1 != i2) {
