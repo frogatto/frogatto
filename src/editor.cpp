@@ -252,6 +252,11 @@ public:
 		  new button(widget_ptr(new label("Scripts", graphics::color_white())),
 		             boost::bind(&editor_menu_dialog::show_scripts_menu, this))));
 		add_widget(widget_ptr(grid));
+
+		button_ptr code_button(
+		 new button(widget_ptr(new label("Code ->", graphics::color_white())),
+			          boost::bind(&editor::toggle_code, &editor_)));
+		add_widget(code_button, graphics::screen_width() - 612, 4);
 	}
 
 	void new_level() {
@@ -549,6 +554,10 @@ int selected_property = 0;
 
 }
 
+editor::manager::~manager() {
+	enemy_types.clear();
+}
+
 void editor::enemy_type::init(variant node)
 {
 	enemy_types.clear();
@@ -634,18 +643,18 @@ std::string editor::last_edited_level()
 	return g_last_edited_level();
 }
 
-int editor::sidebar_width()
-{
-	return 180;
+namespace {
+int g_codebar_width = 0;
 }
 
-namespace {
-int g_codebar_height = 0;
+int editor::sidebar_width()
+{
+	return g_codebar_width == 0 ? 180 : g_codebar_width;
 }
 
 int editor::codebar_height()
 {
-	return g_codebar_height;
+	return 0; //g_codebar_height;
 }
 
 editor::editor(const char* level_cfg)
@@ -802,7 +811,7 @@ editor_resolution_manager::editor_resolution_manager() :
 	   original_width_(preferences::actual_screen_width()),
 	   original_height_(preferences::actual_screen_height()) {
 	if(!editor_x_resolution) {
-		editor_x_resolution = preferences::actual_screen_width() + EDITOR_SIDEBAR_WIDTH + editor_dialogs::LAYERS_DIALOG_WIDTH;
+		editor_x_resolution = 1200; //preferences::actual_screen_width() + EDITOR_SIDEBAR_WIDTH + editor_dialogs::LAYERS_DIALOG_WIDTH;
 		editor_y_resolution = preferences::actual_screen_height() + EDITOR_MENUBAR_HEIGHT;
 	}
 
@@ -965,7 +974,7 @@ void editor::process()
 		editor_mode_dialog_->refresh_selection();
 	}
 
-	g_codebar_height = code_dialog_ ? code_dialog_->height() : 0;
+	g_codebar_width = code_dialog_ ? code_dialog_->width() : 0;
 
 	if(code_dialog_ && code_dialog_->has_keyboard_focus()) {
 		return;
@@ -1306,13 +1315,12 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 				if(obj) {
 					redo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, obj));
 					undo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, obj));
-				}
-
-				if(obj->label().empty() == false) {
-					foreach(entity_ptr child, lvl->get_chars()) {
-						if(child->spawned_by() == obj->label()) {
-							redo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, child));
-							undo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, child));
+					if(obj->label().empty() == false) {
+						foreach(entity_ptr child, lvl->get_chars()) {
+							if(child->spawned_by() == obj->label()) {
+								redo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, child));
+								undo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, child));
+							}
 						}
 					}
 				}
@@ -1362,7 +1370,7 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 		editor_menu_dialog_->open_level();
 	}
 
-	if(key.keysym.sym == SDLK_s && (!editing_level_being_played() || (key.keysym.mod&KMOD_CTRL))) {
+	if(key.keysym.sym == SDLK_s && (key.keysym.mod&KMOD_CTRL)) {
 		save_level();
 	}
 
@@ -2405,6 +2413,10 @@ bool editor::confirm_quit(bool allow_cancel)
 
 void editor::save_level()
 {
+	controls::control_backup_scope ctrl_backup;
+
+	toggle_active_level();
+
 	lvl_->set_id(filename_);
 
 	level_changed_ = 0;
@@ -2447,6 +2459,8 @@ void editor::save_level()
 		} catch(...) {
 		}
 	}
+
+	toggle_active_level();
 }
 
 void editor::zoom_in()
@@ -2778,20 +2792,25 @@ void editor::draw_gui() const
 	sprintf(loc_buf, "%d,%d", xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 	graphics::blit_texture(font::render_text(loc_buf, graphics::color_white(), 14), 10, 60);
-	if(current_dialog_) {
+	if(!code_dialog_ && current_dialog_) {
 		current_dialog_->draw();
 	}
 
-	if(code_dialog_) {
-		code_dialog_->draw();
-	}
-
-	if(layers_dialog_) {
+	if(!code_dialog_ && layers_dialog_) {
 		layers_dialog_->draw();
 	}
 
 	editor_menu_dialog_->draw();
-	editor_mode_dialog_->draw();
+
+	if(!code_dialog_) {
+		editor_mode_dialog_->draw();
+	}
+
+	if(code_dialog_) {
+		const int begin = SDL_GetTicks();
+		code_dialog_->draw();
+	}
+
 	gui::draw_tooltip();
 }
 
@@ -2994,8 +3013,12 @@ void editor::toggle_code()
 	if(code_dialog_) {
 		code_dialog_.reset();
 	} else {
-		code_dialog_.reset(new code_editor_dialog(rect(0, graphics::screen_height()-260, graphics::screen_width() - sidebar_width(), 260)));
+		//code_dialog_.reset(new code_editor_dialog(rect(0, graphics::screen_height()-260, graphics::screen_width() - sidebar_width(), 260)));
+		code_dialog_.reset(new code_editor_dialog(rect(graphics::screen_width() - 540, 0, 540, graphics::screen_height())));
 		set_code_file();
+
+		//We should always be selecting objects when using the code editor.
+		change_tool(TOOL_SELECT_OBJECT);
 	}
 }
 

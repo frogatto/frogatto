@@ -11,7 +11,7 @@ namespace gui {
 class code_editor_widget : public text_editor_widget
 {
 public:
-	code_editor_widget(int nrows, int ncols);
+	code_editor_widget(int width, int height);
 private:
 	void select_token(const std::string& row, int& begin_row, int& end_row, int& begin_col, int& end_col) const;
 	void on_change();

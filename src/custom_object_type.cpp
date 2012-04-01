@@ -341,10 +341,10 @@ void custom_object_type::set_file_contents(const std::string& file_path, const s
 
 bool custom_object_type::reload_object(const std::string& type)
 {
-	object_map::iterator i = cache().find(type);
-	ASSERT_LOG(i != cache().end(), "COULD NOT RELOAD OBJECT " << type);
+	object_map::iterator itor = cache().find(type);
+	ASSERT_LOG(itor != cache().end(), "COULD NOT RELOAD OBJECT " << type);
 	
-	const_custom_object_type_ptr old_obj = i->second;
+	const_custom_object_type_ptr old_obj = itor->second;
 
 	custom_object_type_ptr new_obj;
 	
@@ -364,23 +364,23 @@ bool custom_object_type::reload_object(const std::string& type)
 
 	if(new_obj) {
 		const int start = SDL_GetTicks();
-		foreach(custom_object* obj, custom_object::get_all()) {
+		foreach(custom_object* obj, custom_object::get_all(old_obj->id())) {
 			obj->update_type(old_obj, new_obj);
 		}
 
 		for(std::map<std::string, const_custom_object_type_ptr>::const_iterator i = old_obj->sub_objects_.begin(); i != old_obj->sub_objects_.end(); ++i) {
 			std::map<std::string, const_custom_object_type_ptr>::const_iterator j = new_obj->sub_objects_.find(i->first);
 			if(j != new_obj->sub_objects_.end()) {
-				foreach(custom_object* obj, custom_object::get_all()) {
+				foreach(custom_object* obj, custom_object::get_all(i->second->id())) {
 					obj->update_type(i->second, j->second);
 				}
 			}
 		}
 
 		const int end = SDL_GetTicks();
-		std::cerr << "UPDATED " << custom_object::get_all().size() << " OBJECTS IN " << (end - start) << "\n";
+		std::cerr << "UPDATED " << custom_object::get_all(old_obj->id()).size() << " OBJECTS IN " << (end - start) << "\n";
 
-		i->second = new_obj;
+		itor->second = new_obj;
 
 		return true;
 	}

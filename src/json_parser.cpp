@@ -269,6 +269,10 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 					v = variant(s);
 				}
 
+				if(t.translate && v.is_string()) {
+					v = variant::create_translated_string(v.as_string());
+				}
+
 				if(stack.back().type == VAL_OBJ) {
 					stack.push_back(JsonObject(debug_info));
 					v.set_debug_info(debug_info);

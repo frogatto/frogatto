@@ -1523,6 +1523,8 @@ void level::prepare_tiles_for_drawing()
 			continue;
 		}
 
+		//in the editor we want to draw the whole level, so don't exclude
+		//things outside the level bounds.
 		if(!editor_ && (tiles_[n].x <= boundaries().x() - TileSize || tiles_[n].y <= boundaries().y() - TileSize || tiles_[n].x >= boundaries().x2() || tiles_[n].y >= boundaries().y2())) {
 			continue;
 		}
@@ -1709,15 +1711,20 @@ void level::draw(int x, int y, int w, int h) const
 
 	const std::vector<entity_ptr>* chars_ptr = &active_chars_;
 	std::vector<entity_ptr> editor_chars_buf;
+	
 	if(editor_) {
-		//in the editor we draw all chars, not just active chars. We also
-		//sort the chars by drawing order to make sure they are drawn in
-		//the correct order.
-		editor_chars_buf = chars_;
+		rect screen_area(x, y, w, h);
+
+		//in the editor draw all characters that are on screen as well
+		//as active ones.
+		foreach(const entity_ptr& c, chars_) {
+			if(std::find(active_chars_.begin(), active_chars_.end(), c) != active_chars_.end() || rects_intersect(c->draw_rect(), screen_area)) {
+				editor_chars_buf.push_back(c);
+			}
+		}
 		std::sort(editor_chars_buf.begin(), editor_chars_buf.end(), sort_entity_drawing_pos);
 		chars_ptr = &editor_chars_buf;
 	}
-
 	const std::vector<entity_ptr>& chars = *chars_ptr;
 
 	std::vector<entity_ptr>::const_iterator entity_itor = chars.begin();

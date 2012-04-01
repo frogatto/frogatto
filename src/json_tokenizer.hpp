@@ -9,6 +9,7 @@ struct TokenizerError {
 };
 
 struct Token {
+	Token() : translate(false) {}
 	enum TYPE { TYPE_NUMBER, TYPE_STRING, TYPE_LCURLY, TYPE_RCURLY,
 	            TYPE_LSQUARE, TYPE_RSQUARE, TYPE_COMMA, TYPE_COLON,
 	            TYPE_TRUE_VALUE, TYPE_FALSE_VALUE, TYPE_NULL_VALUE,
@@ -16,6 +17,7 @@ struct Token {
 	            NUM_TYPES };
 	TYPE type;
 	const char* begin, *end;
+	bool translate;
 };
 
 Token get_token(const char*& i1, const char* i2);

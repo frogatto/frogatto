@@ -482,6 +482,8 @@ private:
 		const variant key = key_->evaluate(variables);
 		if(left.is_list() || left.is_map()) {
 			return left[ key ];
+		} else if(left.is_callable()) {
+			return left.as_callable()->query_value(key.as_string());
 		} else {
 			output_formula_error_info();
 			std::cerr << "illegal usage of operator []: called on " << left.to_debug_string() << " value: " << left_->str() << "'\n";
@@ -853,6 +855,11 @@ public:
 			}
 		
 			std::reverse(subs_.begin(), subs_.end());
+
+			if(translate) {
+				str_ = variant::create_translated_string(str);
+				return;
+			}
 		} else if (translate) {
 			str = std::string("~") + str + std::string("~");
 		}
@@ -1393,7 +1400,8 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 				return expression_ptr(new decimal_expression(decimal::from_string(decimal_string)));
 			} else if(i1->type == TOKEN_STRING_LITERAL) {
 				bool translate = *(i1->begin) == '~';
-				return expression_ptr(new string_expression(std::string(i1->begin+1,i1->end-1), translate));
+				int add = *(i1->begin) == 'q' ? 2 : 1;
+				return expression_ptr(new string_expression(std::string(i1->begin+add,i1->end-1), translate));
 			}
 		} else if(i1->type == TOKEN_IDENTIFIER &&
 				  (i1+1)->type == TOKEN_LPARENS &&
@@ -1763,6 +1771,10 @@ UNIT_TEST(formula_decimal) {
 	CHECK_EQ(formula(variant("0.5")).execute().string_cast(), "0.5");
 	CHECK_EQ(formula(variant("8.5 + 0.5")).execute().string_cast(), "9.0");
 	CHECK_EQ(formula(variant("4 * (-1.1)")).execute().string_cast(), "-4.4");
+}
+
+UNIT_TEST(formula_quotes) {
+	CHECK_EQ(formula(variant("q((4+2())) + q^a^")).execute().string_cast(), "(4+2())a");
 }
 
 UNIT_TEST(map_to_maps_FAILS) {
