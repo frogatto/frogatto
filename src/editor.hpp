@@ -221,6 +221,8 @@ private:
 
 	void mutate_object_value(entity_ptr e, const std::string& value, variant new_value);
 
+	void generate_remove_commands(entity_ptr e, std::vector<boost::function<void()> >& undo, std::vector<boost::function<void()> >& redo);
+
 	CKey key_;
 
 	level_ptr lvl_;

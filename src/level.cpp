@@ -2645,8 +2645,9 @@ std::vector<entity_ptr> level::get_characters_in_rect(const rect& r, int screen_
 {
 	std::vector<entity_ptr> res;
 	foreach(entity_ptr c, chars_) {
-		const int xP = c->x() + ((c->parallax_scale_millis_x() - 1000)*screen_xpos)/1000;
-		const int yP = c->y() + ((c->parallax_scale_millis_y() - 1000)*screen_ypos)/1000;
+
+		const int xP = c->midpoint().x + ((c->parallax_scale_millis_x() - 1000)*screen_xpos)/1000;
+		const int yP = c->midpoint().y + ((c->parallax_scale_millis_y() - 1000)*screen_ypos)/1000;
 		
 		if(point_in_rect(point(xP, yP), r)) {
 			res.push_back(c);

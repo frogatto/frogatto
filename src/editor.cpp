@@ -1310,22 +1310,7 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 		//we want to clear the objects in the property dialog
 		redo.push_back(boost::bind(&editor_dialogs::group_property_editor_dialog::set_group, group_property_dialog_.get(), std::vector<entity_ptr>()));
 		foreach(const entity_ptr& e, lvl_->editor_selection()) {
-			foreach(level_ptr lvl, levels_) {
-				entity_ptr obj = lvl->get_entity_by_label(e->label());
-				if(obj) {
-					redo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, obj));
-					undo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, obj));
-					if(obj->label().empty() == false) {
-						foreach(entity_ptr child, lvl->get_chars()) {
-							if(child->spawned_by() == obj->label()) {
-								redo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, child));
-								undo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, child));
-							}
-						}
-					}
-				}
-			}
-
+			generate_remove_commands(e, undo, redo);
 			undo.push_back(boost::bind(&level::editor_select_object, lvl_.get(), e));
 		}
 		execute_command(
@@ -1999,12 +1984,10 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 			std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos, ypos), xpos_, ypos_);
 
 			foreach(const entity_ptr& c, chars) {
+				std::cerr << "REMOVING RECT CHAR: " << c->debug_description() << "\n";
 				foreach(level_ptr lvl, levels_) {
 					entity_ptr obj = lvl->get_entity_by_label(c->label());
-					if(obj) {
-						redo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, obj));
-						undo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, obj));
-					}
+					generate_remove_commands(obj, undo, redo);
 				}
 			}
 			execute_command(
@@ -2997,6 +2980,32 @@ void editor::mutate_object_value(entity_ptr e, const std::string& value, variant
 	e->handle_event("editor_changing_variable");
 	e->mutate_value(value, new_value);
 	e->handle_event("editor_changed_variable");
+}
+
+void editor::generate_remove_commands(entity_ptr c, std::vector<boost::function<void()> >& undo, std::vector<boost::function<void()> >& redo)
+{
+	if(!c || c->spawned_by().empty() == false) {
+		return;
+	}
+	
+	foreach(level_ptr lvl, levels_) {
+		entity_ptr obj = lvl->get_entity_by_label(c->label());
+		if(!obj) {
+			continue;
+		}
+
+		redo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, obj));
+		undo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, obj));
+		if(obj->label().empty() == false) {
+			foreach(entity_ptr child, lvl->get_chars()) {
+				if(child->spawned_by() == obj->label()) {
+		std::cerr << "REMOVING CHILD OBJECT: " << child->debug_description() << " " << child->label() << "\n";
+					redo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, child));
+					undo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, child));
+				}
+			}
+		}
+	}
 }
 
 bool editor::has_keyboard_focus() const
