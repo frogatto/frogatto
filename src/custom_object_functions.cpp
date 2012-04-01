@@ -185,7 +185,7 @@ public:
 
 		if(has_options) {
 
-			const int noption = show_simple_option_dialog(lvl, "Select save slot to use.", options);
+			const int noption = show_simple_option_dialog(lvl, _("Select save slot to use."), options);
 			if(noption != -1) {
 				std::cerr << "setting save slot: " << noption << " -> " << SaveFiles[noption] << "\n";
 				preferences::set_save_slot(SaveFiles[noption]);
@@ -258,7 +258,7 @@ class load_game_command : public entity_command_callable
 					++nslot;
 				}
 
-				noption = show_simple_option_dialog(lvl, "Select save slot to load.", option_descriptions);
+				noption = show_simple_option_dialog(lvl, _("Select save slot to load."), option_descriptions);
 
 				if(noption == -1) {
 					return;
