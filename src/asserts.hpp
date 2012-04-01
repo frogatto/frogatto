@@ -12,7 +12,6 @@ bool throw_validation_failure_on_assert();
 void output_backtrace();
 
 class assert_recover_scope {
-	bool value;
 public:
 	assert_recover_scope();
 	~assert_recover_scope();

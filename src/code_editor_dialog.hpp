@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "asserts.hpp"
 #include "dialog.hpp"
 #include "geometry.hpp"
 #include "label.hpp"
@@ -38,6 +39,10 @@ private:
 
 	void on_code_changed();
 	void on_move_cursor();
+
+	//As long as there is a code editor active, we are going to want to
+	//recover from errors.
+	assert_recover_scope assert_recovery_;
 };
 
 #endif

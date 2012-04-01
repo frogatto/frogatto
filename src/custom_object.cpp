@@ -3170,13 +3170,26 @@ void custom_object::handle_event(int event, const formula_callable* context)
 
 		++events_handled_per_second;
 
-		variant var = handler->execute(*this);
+		variant var;
+		
+		try {
+			var = handler->execute(*this);
+		} catch(validation_failure_exception&) {
+			event_call_stack.pop_back();
+			break;
+		}
 
 #ifndef DISABLE_FORMULA_PROFILER
 		event_call_stack.back().executing_commands = true;
 #endif
 
-		const bool result = execute_command(var);
+		bool result = false;
+		
+		try {
+			result = execute_command(var);
+		} catch(validation_failure_exception&) {
+		}
+
 #ifndef DISABLE_FORMULA_PROFILER
 		event_call_stack.pop_back();
 #endif

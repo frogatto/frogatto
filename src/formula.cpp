@@ -1722,10 +1722,8 @@ variant formula::execute(const formula_callable& variables) const
 		}
 		return result;
 	} catch(type_error& e) {
-		//TODO: add debug info from str_ here.
-		std::cerr << "formula type error: " << e.message << "\n";
-
-		throw formula_error();
+		output_debug_info();
+		ASSERT_LOG(false, "formula type error: " << e.message << "\n");
 	}
 }
 
