@@ -1,6 +1,11 @@
 #ifndef GRAPHICS_HPP_INCLUDED
 #define GRAPHICS_HPP_INCLUDED
 
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#include "SDL.h"
+#include "SDL_opengles.h"
+#else
+
 #if defined(TARGET_BLACKBERRY) || __MACOSX__ || __ANDROID__
 #include <SDL.h>
 #include <SDL_keysym.h>
@@ -11,11 +16,13 @@
 #include <SDL/SDL_thread.h>
 #endif
 
+#endif
+
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE && !__MACOSX__ && !__ANDROID__
 #include <SDL/SDL_mixer.h>
 #endif
 
-#ifndef SDL_VIDEO_OPENGL_ES
+#if !defined(SDL_VIDEO_OPENGL_ES) && !(TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE)
 #include <GL/glew.h>
 #endif
 

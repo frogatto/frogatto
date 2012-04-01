@@ -149,10 +149,9 @@ void iphone_controls::read_controls()
 	}
 }
 
-
+#if defined(__ANDROID__)
 void iphone_controls::handle_event (const SDL_Event& event)
 {
-#if defined(__ANDROID__)
 
     if( event.type == SDL_JOYBALLMOTION ) {
         int i = event.jball.ball;
@@ -181,9 +180,11 @@ void iphone_controls::handle_event (const SDL_Event& event)
         }
         all_mice[i].active = false;
     }
+}
      
 #elif defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY)
 
+void iphone_controls::handle_event (const SDL_Event& event)
 	int x = event.type == SDL_MOUSEMOTION ? event.motion.x : event.button.x;
 	int y = event.type == SDL_MOUSEMOTION ? event.motion.y : event.button.y;
 	int i = event.type == SDL_MOUSEMOTION ? event.motion.which : event.button.which;
@@ -201,8 +202,9 @@ void iphone_controls::handle_event (const SDL_Event& event)
 	all_mice[i].x = x;
 	all_mice[i].y = y;
 	all_mice[i].active = event.type != SDL_MOUSEBUTTONUP;
-#endif
 }
+
+#endif
 
 void iphone_controls::set_underwater(bool value)
 {

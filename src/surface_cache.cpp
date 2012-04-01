@@ -14,7 +14,7 @@
 #include "concurrent_cache.hpp"
 #include "filesystem.hpp"
 #include "surface_cache.hpp"
-#ifdef __MACOSX__
+#if defined(__MACOSX__) || TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 	#include <SDL_image.h>
 #else	
 	#include <SDL/SDL_image.h>

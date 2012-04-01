@@ -71,9 +71,9 @@ void draw()
 		ypos += t.height() + 5;
 	}
 }
-
-namespace {
+	
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
+namespace {
 class console
 {
 public:

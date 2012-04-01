@@ -350,12 +350,19 @@ bool level_runner::play_level()
 	bool reversing = false;
 
 	while(!done && !quit_) {
-		if(key[SDLK_t] && preferences::record_history() && (!editor_ || !editor_->has_keyboard_focus())) {
-			if(!reversing) {
-				pause_time_ -= SDL_GetTicks();
+		if(key[SDLK_t] && preferences::record_history()) {
+#ifndef NO_EDITOR
+			if (!editor_ || !editor_->has_keyboard_focus())
+			{
+#endif
+				if(!reversing) {
+					pause_time_ -= SDL_GetTicks();
+				}
+				reverse_cycle();
+				reversing = true;
+#ifndef NO_EDITOR
 			}
-			reverse_cycle();
-			reversing = true;
+#endif
 		} else {
 			if(reversing) {
 				controls::read_until(lvl_->cycle());
@@ -399,6 +406,7 @@ bool level_runner::play_cycle()
 	}
 
 	boost::scoped_ptr<controls::local_controls_lock> controls_lock;
+#ifndef NO_EDITOR
 	if(editor_) {
 		if(editor_->has_keyboard_focus()) {
 			controls_lock.reset(new controls::local_controls_lock);
@@ -412,6 +420,7 @@ bool level_runner::play_cycle()
 
 		lvl_->mutate_value("zoom", variant(decimal(1.0/editor_->zoom())));
 	}
+#endif
 
 	const bool is_multiplayer = controls::num_players() > 1;
 
@@ -447,12 +456,14 @@ bool level_runner::play_cycle()
 	}
 
 	if(editor_ && die_at > 0 && cycle >= die_at + 30) {
+#ifndef NO_EDITOR
 		die_at = -1;
 
 		//If the player dies in the editor, return this level to its
 		//initial state.
 		editor_->reset_playing_level(false);
 		last_draw_position().init = false;
+#endif
 
 	} else if(die_at > 0 && cycle >= die_at + 30) {
 		die_at = -1;
@@ -527,10 +538,11 @@ bool level_runner::play_cycle()
 			}
 		} else {
 			//the portal is to another level
-
+#ifndef NO_EDITOR
 			if(editor_) {
 				editor_->confirm_quit(false);
 			}
+#endif
 			
 			if (preferences::load_compiled())
 			{
@@ -613,7 +625,7 @@ bool level_runner::play_cycle()
 			if(transition == "flip") {
 				transition_scene(*lvl_, last_draw_position(), false, flip_scene);
 			}
-
+#ifndef NO_EDITOR
 			if(editor_) {
 				editor_ = editor::get_editor(lvl_->id().c_str());
 				editor_->set_playing_level(lvl_);
@@ -621,6 +633,7 @@ bool level_runner::play_cycle()
 				lvl_->set_as_current_level();
 				lvl_->set_editor();
 			}
+#endif
 
 			//we always want to exit this function so that we don't
 			//draw the new level when it hasn't had a chance to process.
@@ -638,6 +651,7 @@ bool level_runner::play_cycle()
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_HARMATTAN || TARGET_OS_IPHONE
 			should_pause = settings_dialog.handle_event(event);
 #endif
+#ifndef NO_EDITOR
 			if(editor_) {
 				const bool swallowed = editor_->handle_event(event);
 				lvl_->set_as_current_level();
@@ -668,6 +682,7 @@ bool level_runner::play_cycle()
 					continue;
 				}
 			}
+#endif
 
 			switch(event.type) {
 			case SDL_QUIT: {
@@ -759,7 +774,7 @@ bool level_runner::play_cycle()
 					show_debug_console();
 
 				} else if(key == SDLK_e && (mod&KMOD_CTRL)) {
-					#ifndef NO_EDITOR
+#ifndef NO_EDITOR
 					if(!editor_) {
 						controls::control_backup_scope ctrl_backup;
 						editor_resolution_manager_.reset(new editor_resolution_manager);
@@ -775,8 +790,9 @@ bool level_runner::play_cycle()
 						editor_->reset_playing_level(false);
 						last_draw_position().init = false;
 					}
-					#endif
+#endif
 				} else if(key == SDLK_r && (mod&KMOD_CTRL) && editor_) {
+#ifndef NO_EDITOR
 					//We're in the editor and we want to refresh the level
 					//to its original state. If alt is held, we also
 					//reset the player.
@@ -787,6 +803,7 @@ bool level_runner::play_cycle()
 						//make the camera jump to the player
 						last_draw_position().init = false;
 					}
+#endif
 				} else if(key == SDLK_s && (mod&KMOD_CTRL) && !editor_) {
 					std::cerr << "SAVING...\n";
 					std::string data;
@@ -799,11 +816,13 @@ bool level_runner::play_cycle()
 				} else if(key == SDLK_s && (mod&KMOD_ALT)) {
 					IMG_SaveFrameBuffer((std::string(preferences::user_data_path()) + "screenshot.png").c_str(), 5);
 				} else if(key == SDLK_w && (mod&KMOD_CTRL)) {
+#ifndef NO_EDITOR
 					if(editor_) {
 						if(!editor_->confirm_quit()) {
 							break;
 						}
 					}
+#endif
 
 					//warp to another level.
 					std::vector<std::string> levels = get_known_levels();
@@ -824,6 +843,7 @@ bool level_runner::play_cycle()
 					set_scene_title(new_level->title());
 					lvl_.reset(new_level);
 
+#ifndef NO_EDITOR
 					if(editor_) {
 						editor_ = editor::get_editor(lvl_->id().c_str());
 						editor_->set_playing_level(lvl_);
@@ -831,6 +851,7 @@ bool level_runner::play_cycle()
 						lvl_->set_as_current_level();
 						lvl_->set_editor();
 					}
+#endif
 				} else if(key == SDLK_l && (mod&KMOD_CTRL)) {
 					preferences::set_use_pretty_scaling(!preferences::use_pretty_scaling());
 					graphics::surface_cache::clear();
@@ -914,6 +935,7 @@ bool level_runner::play_cycle()
 		bool should_draw = true;
 		
 		if(editor_ && paused) {
+#ifndef NO_EDITOR
 			const int xpos = editor_->xpos();
 			const int ypos = editor_->ypos();
 			editor_->handle_scrolling();
@@ -932,6 +954,7 @@ bool level_runner::play_cycle()
 				amount = diff;
 			}
 			last_draw_position().zoom += amount;
+#endif
 		} else {
 			should_draw = update_camera_position(*lvl_, last_draw_position(), NULL, !is_skipping_game());
 		}
@@ -939,6 +962,7 @@ bool level_runner::play_cycle()
 		lvl_->process_draw();
 
 		if(should_draw) {
+#ifndef NO_EDITOR
 			if(editor_ && key[SDLK_l] && !editor_->has_keyboard_focus()) {
 
 				editor_->toggle_active_level();
@@ -948,12 +972,15 @@ bool level_runner::play_cycle()
 				editor_->toggle_active_level();
 				lvl_->set_as_current_level();
 			} else {
+#endif
 				render_scene(*lvl_, last_draw_position(), NULL, !is_skipping_game());
+#ifndef NO_EDITOR
 			}
 
 			if(editor_) {
 				editor_->draw_gui();
 			}
+#endif
 		}
 
 		performance_data perf = { current_fps_, current_cycles_, current_delay_, current_draw_, current_process_, current_flip_, cycle, current_events_, profiling_summary_ };
