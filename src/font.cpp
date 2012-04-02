@@ -1,6 +1,9 @@
 #include <iostream>
 #include <map>
 
+#include <boost/tuple/tuple.hpp>
+
+#include "color_utils.hpp"
 #include "font.hpp"
 #include "foreach.hpp"
 #include "string_utils.hpp"
@@ -37,22 +40,25 @@ TTF_Font* get_font(int size)
 #endif
 }
 
-struct cache_entry
-{
+struct CacheKey {
 	std::string text;
-	SDL_Color color;
-	int size;
-	graphics::texture texture;
+	graphics::color color;
+	int font_size;
+
+	bool operator<(const CacheKey& k) const {
+		return text < k.text || text == k.text && color < k.color ||
+		       text == k.text && color == k.color && font_size < k.font_size;
+	}
 };
 
-const int CacheSize = 4;
+typedef std::map<CacheKey, graphics::texture> RenderCache;
 
-std::vector<cache_entry>& cache() {
-	static std::vector<cache_entry> instance(CacheSize);
+int g_render_cache_size = 0;
+
+RenderCache& cache() {
+	static RenderCache instance;
 	return instance;
 }
-
-int cache_index = 0;
 
 }
 
@@ -79,11 +85,12 @@ manager::~manager()
 graphics::texture render_text(const std::string& text,
                               const SDL_Color& color, int size)
 {
-	for(int n = 0; n != CacheSize; ++n) {
-		if(text == cache()[n].text && memcmp(&color, &cache()[n].color, sizeof(color)) == 0 && size == cache()[n].size) {
-			return cache()[n].texture;
-		}
+	CacheKey key = {text, graphics::color(color.r, color.g, color.b), size};
+	RenderCache::const_iterator cache_itor = cache().find(key);
+	if(cache_itor != cache().end()) {
+		return cache_itor->second;
 	}
+
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE
 	TTF_Font* font = get_font(size);
 
@@ -122,11 +129,15 @@ graphics::texture render_text(const std::string& text,
 	graphics::surface s;
 #endif
 	graphics::texture res = graphics::texture::get_no_cache(s);
-	cache_index = (cache_index+1)%CacheSize;
-	cache()[cache_index].text = text;
-	cache()[cache_index].color = color;
-	cache()[cache_index].size = size;
-	cache()[cache_index].texture = res;
+
+	if(res.width()*res.height() <= 256*256) {
+		if(cache().size() > 512) {
+			cache().clear();
+			g_render_cache_size = 0;
+		}
+		cache()[key] = res;
+		g_render_cache_size += res.width()*res.height()*4;
+	}
 	return res;
 }
 

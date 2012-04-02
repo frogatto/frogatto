@@ -2944,7 +2944,11 @@ void editor::draw_gui() const
 	char loc_buf[256];
 	sprintf(loc_buf, "%d,%d", xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
 	glColor4f(1.0, 1.0, 1.0, 1.0);
-	graphics::blit_texture(font::render_text(loc_buf, graphics::color_white(), 14), 10, 60);
+	graphics::texture xtex = font::render_text(formatter() << (xpos_ + mousex*zoom_) << ",", graphics::color_white(), 14);
+	graphics::texture ytex = font::render_text(formatter() << (ypos_ + mousey*zoom_), graphics::color_white(), 14);
+
+	graphics::blit_texture(xtex, 10, 80);
+	graphics::blit_texture(ytex, 10 + xtex.width(), 80);
 	if(!code_dialog_ && current_dialog_) {
 		current_dialog_->draw();
 	}
