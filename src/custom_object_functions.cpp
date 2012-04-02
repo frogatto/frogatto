@@ -859,7 +859,7 @@ FUNCTION_DEF(tiles_at, 2, 2, "tiles_at(x, y): gives a list of the tiles at the g
 
 	std::pair<level::TileItor, level::TileItor> range = level::current().tiles_at_loc(args()[0]->evaluate(variables).as_int(), args()[1]->evaluate(variables).as_int());
 	while(range.first != range.second) {
-		v.push_back(variant(range.first->object.get()));
+		v.push_back(variant(range.first->object));
 		++range.first;
 	}
 

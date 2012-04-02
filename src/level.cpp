@@ -431,7 +431,7 @@ void level::read_compiled_tiles(variant node, std::vector<level_tile>::iterator&
 
 			ASSERT_LOG(end - i >= 3, "ILLEGAL TILE FOUND");
 
-			out->object = level_object::get_compiled(i);
+			out->object = level_object::get_compiled(i).get();
 			++out;
 			i += 3;
 		}
@@ -684,7 +684,7 @@ struct level_tile_rebuild_info {
 
 std::map<const level*, level_tile_rebuild_info> tile_rebuild_map;
 
-void build_tiles_thread_function(level_tile_rebuild_info* info, std::map<int, tile_map> tile_maps) {
+void build_tiles_thread_function(level_tile_rebuild_info* info, std::map<int, tile_map> tile_maps, threading::mutex& sync) {
 	info->task_tiles.clear();
 
 	if(info->rebuild_tile_layers_worker_buffer.empty()) {
@@ -732,7 +732,9 @@ void level::start_rebuild_tiles_in_background(const std::vector<int>& layers)
 	info.rebuild_tile_layers_worker_buffer = info.rebuild_tile_layers_buffer;
 	info.rebuild_tile_layers_buffer.clear();
 
-	info.rebuild_tile_thread = new threading::thread(boost::bind(build_tiles_thread_function, &info, tile_maps_));
+	static threading::mutex* sync = new threading::mutex;
+
+	info.rebuild_tile_thread = new threading::thread(boost::bind(build_tiles_thread_function, &info, tile_maps_, *sync));
 }
 
 void level::freeze_rebuild_tiles_in_background()
