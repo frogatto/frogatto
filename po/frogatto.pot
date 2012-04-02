@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto v1.0.3\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-04-01 22:00-0300\n"
+"POT-Creation-Date: 2012-04-02 09:09-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4174,6 +4174,10 @@ msgstr ""
 
 #: data/level/titlescreen-arcade.cfg:268
 msgid "COIN RACE"
+msgstr ""
+
+#: data/level/titlescreen-difficulty-selector.cfg:225
+msgid "SELECT DIFFICULTY LEVEL:"
 msgstr ""
 
 #: data/level/titlescreen-test.cfg:296 data/level/titlescreen.cfg:287

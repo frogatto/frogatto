@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Circoficus  <mhaitham@gmail.com>, 2011.
 # M Al <mhaitham@gmail.com>, 2011.
@@ -9,15 +9,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-04-01 22:00-0300\n"
+"POT-Creation-Date: 2012-04-02 09:09-0300\n"
 "PO-Revision-Date: 2012-04-02 01:39+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
-"Language-Team: Arabic (http://www.transifex.net/projects/p/Frogatto/language/ar/)\n"
+"Language-Team: Arabic (http://www.transifex.net/projects/p/Frogatto/language/"
+"ar/)\n"
+"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ar\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5\n"
 
 #: CHANGELOG:1 iOS_CHANGELOG:1
 msgid "Version 1.2:"
@@ -25,8 +27,8 @@ msgstr ""
 
 #: CHANGELOG:2 iOS_CHANGELOG:2
 msgid ""
-"Complete redo of attack logic; frogatto now is free to walk around whilst he"
-" attacks, and in general is much more responsive."
+"Complete redo of attack logic; frogatto now is free to walk around whilst he "
+"attacks, and in general is much more responsive."
 msgstr ""
 
 #: CHANGELOG:3 iOS_CHANGELOG:3
@@ -86,8 +88,7 @@ msgid ""
 msgstr ""
 
 #: CHANGELOG:15 iOS_CHANGELOG:15
-msgid ""
-"Fixed a bug that caused some tiles to incorrectly be flagged as opaque."
+msgid "Fixed a bug that caused some tiles to incorrectly be flagged as opaque."
 msgstr ""
 
 #: CHANGELOG:17 iOS_CHANGELOG:17
@@ -116,9 +117,9 @@ msgstr "وأضاف اختيار اللغة التلقائي لنظام التش�
 
 #: CHANGELOG:23 iOS_CHANGELOG:22
 msgid ""
-"Complete redo of iOS controls, switching to a 2-button dpad from a 4-button."
-"  Eliminates all problems with mispressed up or down keys interrupting other"
-" actions."
+"Complete redo of iOS controls, switching to a 2-button dpad from a 4-"
+"button.  Eliminates all problems with mispressed up or down keys "
+"interrupting other actions."
 msgstr ""
 
 #: CHANGELOG:25
@@ -165,13 +166,17 @@ msgstr "واضاف فريد لبعض أعداء الغابة."
 msgid ""
 "Refactored damage and monster type systems to make behavior more consistent "
 "and eliminate some rare buggy behavior."
-msgstr "Refactored الضرر وأنظمة من نوع الوحش لجعل السلوك أكثر اتساقا والقضاء على بعض السلوكيات عربة نادرة."
+msgstr ""
+"Refactored الضرر وأنظمة من نوع الوحش لجعل السلوك أكثر اتساقا والقضاء على بعض "
+"السلوكيات عربة نادرة."
 
 #: CHANGELOG:36
 msgid ""
 "Added translation support, with 4 complete translations: French, Brazilian "
 "Portuguese, Chinese (Simplified), and Japanese."
-msgstr "إضافة دعم الترجمة ، ترجمة كاملة مع 4 : الفرنسية والبرتغالية البرازيلية والصينية (المبسطة) ، واليابانية."
+msgstr ""
+"إضافة دعم الترجمة ، ترجمة كاملة مع 4 : الفرنسية والبرتغالية البرازيلية "
+"والصينية (المبسطة) ، واليابانية."
 
 #: CHANGELOG:38
 msgid "Version 1.0.3:"
@@ -221,7 +226,8 @@ msgstr "إضافة دعم لمستويات التكرار (لأوضاع المم
 msgid ""
 "Pressing jump while in the air pressing against a wall now makes you cling "
 "to the wall."
-msgstr "الضغط على القفز في الهواء في حين تضغط على الحائط يجعل لك الآن التشبث الجدار."
+msgstr ""
+"الضغط على القفز في الهواء في حين تضغط على الحائط يجعل لك الآن التشبث الجدار."
 
 #: CHANGELOG:51
 msgid "Made it so you can skip dialogs sequences."
@@ -319,8 +325,8 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:5 iOS_APP_STORE_METADATA:5
 msgid ""
-"Frogatto's key mechanic is an unusual twist; like any frog, he jumps, swims,"
-" and snags bugs with his tongue, but unlike any frog before him, can spit "
+"Frogatto's key mechanic is an unusual twist; like any frog, he jumps, swims, "
+"and snags bugs with his tongue, but unlike any frog before him, can spit "
 "those bugs out with deadly force.  Not merely an action game, frogatto is a "
 "full, classic adventure game, with characters to talk to, things to buy, "
 "puzzles to solve, and a wide, complex world to explore."
@@ -346,8 +352,8 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:11 iOS_APP_STORE_METADATA:11
 msgid ""
-"- forgiving savegame/respawn system so you don't have to be afraid of losing"
-" progress"
+"- forgiving savegame/respawn system so you don't have to be afraid of losing "
+"progress"
 msgstr ""
 
 #: MAC_APP_STORE_METADATA:12 iOS_APP_STORE_METADATA:12
@@ -390,8 +396,11 @@ msgstr "الكلمات الرئيسية :"
 
 #: MAC_APP_STORE_METADATA:24 iOS_APP_STORE_METADATA:25
 msgid ""
-"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
-msgstr "منهاج ، pixelart ، oldschool ، ومنصة ، لعبة ، بيكسل ، والممرات ، والعمل ، والمغامرة ، ضفدع"
+"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,"
+"frog"
+msgstr ""
+"منهاج ، pixelart ، oldschool ، ومنصة ، لعبة ، بيكسل ، والممرات ، والعمل ، "
+"والمغامرة ، ضفدع"
 
 #: data/achievements.cfg:5
 msgid "Pocket Money"
@@ -560,7 +569,8 @@ msgstr "هل حصلت على نقاط} {level.player.vars.score نزول قاع�
 #: data/level/arcade-down-the-rabbit-hall.cfg:848
 msgid ""
 "The high score is {registry.arcade_down_the_rabbit_hall_high_score} points."
-msgstr "على درجة عالية هو {} registry.arcade_down_the_rabbit_hall_high_score نقطة."
+msgstr ""
+"على درجة عالية هو {} registry.arcade_down_the_rabbit_hall_high_score نقطة."
 
 #: data/level/arcade-maintenance-shaft.cfg:13
 #: data/level/titlescreen-arcade.cfg:170
@@ -575,7 +585,8 @@ msgstr "هل حصلت على level.player.vars.score {} نقاط في صيانة
 #: data/level/arcade-maintenance-shaft.cfg:2563
 msgid ""
 "The high score is {registry.arcade_maintenance_shaft_high_score} points."
-msgstr "على درجة عالية هو {} registry.arcade_maintenance_shaft_high_score نقطة."
+msgstr ""
+"على درجة عالية هو {} registry.arcade_maintenance_shaft_high_score نقطة."
 
 #: data/level/arcade-nutty-factory.cfg:521
 #: data/level/arcade-nutty-factory.cfg:524
@@ -654,7 +665,10 @@ msgid ""
 "There is said to be an way into the\n"
 "basement floors of Milgram's compound,\n"
 "somewhere in the caverns."
-msgstr "الآن فقط حتى قبل وجود البوابة. إذا كان يمكنك الحصول من خلال ذلك ، سوف تجعل من لكهوف الحجر الجيري. وقال هناك ليكون وسيلة في الطوابق السفلي من المركب وMilgram ، في مكان ما في كهوف."
+msgstr ""
+"الآن فقط حتى قبل وجود البوابة. إذا كان يمكنك الحصول من خلال ذلك ، سوف تجعل "
+"من لكهوف الحجر الجيري. وقال هناك ليكون وسيلة في الطوابق السفلي من المركب "
+"وMilgram ، في مكان ما في كهوف."
 
 #: data/level/bon-bosque.cfg:1360
 msgid ""
@@ -662,7 +676,9 @@ msgid ""
 "sneaking in is probably the best bet.\n"
 "I doubt the entrance guards\n"
 "would give you the time of day."
-msgstr "إذا أردت جمهور الشخصية ، في التسلل هو على الارجح أفضل رهان. أشك في حراس المدخل شأنه أن يوفر لك الوقت من اليوم."
+msgstr ""
+"إذا أردت جمهور الشخصية ، في التسلل هو على الارجح أفضل رهان. أشك في حراس "
+"المدخل شأنه أن يوفر لك الوقت من اليوم."
 
 #: data/level/bon-bosque.cfg:1362
 msgid ""
@@ -685,13 +701,16 @@ msgid ""
 "Are you really certain you want to do this?\n"
 "I'm afraid I can't follow you into the caverns,\n"
 "so this is the last you would see of me."
-msgstr "هل أنت متأكد حقا تريد أن تفعل هذا؟ اخشي انني لا يمكن تتبع لكم في الكهوف ، لذلك هذا هو آخر كنت انظر لي."
+msgstr ""
+"هل أنت متأكد حقا تريد أن تفعل هذا؟ اخشي انني لا يمكن تتبع لكم في الكهوف ، "
+"لذلك هذا هو آخر كنت انظر لي."
 
 #: data/level/bon-bosque.cfg:1368
 msgid ""
 "Yes, I am; I'd be twice the fool,\n"
 "to come this far and just give up."
-msgstr "نعم ، إنني ، وأنا سأكون تخدع مرتين ، وقطعنا هذا الشوط وعادل نستسلم لليأس."
+msgstr ""
+"نعم ، إنني ، وأنا سأكون تخدع مرتين ، وقطعنا هذا الشوط وعادل نستسلم لليأس."
 
 #: data/level/bon-bosque.cfg:1370
 msgid ""
@@ -741,7 +760,10 @@ msgid ""
 "He had asked me to go to the village\n"
 "to know what was going on, with all that noise\n"
 "that was coming from beyond the cave."
-msgstr "آه ، نعم ، يمكنني المساعدة في رعاية Chopple من المخزن. وأضاف أنه طلب مني أن أذهب إلى القرية لمعرفة ما كان يجري ، مع أن كل ما الضوضاء كانت قادمة من خارج الكهف."
+msgstr ""
+"آه ، نعم ، يمكنني المساعدة في رعاية Chopple من المخزن. وأضاف أنه طلب مني أن "
+"أذهب إلى القرية لمعرفة ما كان يجري ، مع أن كل ما الضوضاء كانت قادمة من خارج "
+"الكهف."
 
 #: data/level/chopple-shop-interior.cfg:501
 msgid ""
@@ -782,7 +804,8 @@ msgid ""
 "Naturally, we wouldn't be having\n"
 "this conversation if I hadn't gotten\n"
 "the better of him."
-msgstr "بطبيعة الحال ، ونحن لن يكون لها هذا الحوار إذا لم أكن قد حصلت على أفضل منه."
+msgstr ""
+"بطبيعة الحال ، ونحن لن يكون لها هذا الحوار إذا لم أكن قد حصلت على أفضل منه."
 
 #: data/level/crevice-bridge.cfg:826
 msgid ""
@@ -794,13 +817,17 @@ msgstr "كل ذلك بالاضافة الى ان تنتهي بشكل جيد ، �
 msgid ""
 "I did find out what was going on, at least,\n"
 "that is, what the elder *says* is going on."
-msgstr "فعلت معرفة ما كان يجري ، على الأقل ، وهذا هو ، على ما يقول كبار السن * * يجري."
+msgstr ""
+"فعلت معرفة ما كان يجري ، على الأقل ، وهذا هو ، على ما يقول كبار السن * * "
+"يجري."
 
 #: data/level/crevice-bridge.cfg:830
 msgid ""
 "I wouldn't mind running this by a few people,\n"
 "since I have no idea what's true, or not."
-msgstr "وأود أن لا تمانع في تشغيل هذا من قبل عدد قليل من الناس ، لأن ليس لدي أي فكرة عما صحيح ، أم لا."
+msgstr ""
+"وأود أن لا تمانع في تشغيل هذا من قبل عدد قليل من الناس ، لأن ليس لدي أي فكرة "
+"عما صحيح ، أم لا."
 
 #: data/level/crevice-bridge.cfg:832
 msgid "Go right ahead."
@@ -811,7 +838,9 @@ msgid ""
 "So... uhm... loosely speaking, he says\n"
 "that Milgram loaned him money, and this whole\n"
 "incident was Milgram coming to shake him down."
-msgstr "هكذا... أوم... يتحدث بشكل فضفاض ، يقول ان Milgram أعاره المال ، وهذا كله كان الحادث Milgram القادمة ليهز يديه وقدميه."
+msgstr ""
+"هكذا... أوم... يتحدث بشكل فضفاض ، يقول ان Milgram أعاره المال ، وهذا كله كان "
+"الحادث Milgram القادمة ليهز يديه وقدميه."
 
 #: data/level/crevice-bridge.cfg:837
 msgid "Trying to get his money back."
@@ -822,7 +851,9 @@ msgid ""
 "So then he tells this oddball story\n"
 "about how it's all some plot where\n"
 "Milgram's gonna take over the town."
-msgstr "ثم حتى انه غريب الاطوار يروي هذه القصة حول كيفية الأمر كله مؤامرة بعض Milgram حيث ستعمل الاستيلاء على البلدة."
+msgstr ""
+"ثم حتى انه غريب الاطوار يروي هذه القصة حول كيفية الأمر كله مؤامرة بعض "
+"Milgram حيث ستعمل الاستيلاء على البلدة."
 
 #: data/level/crevice-bridge.cfg:841
 #: data/level/crevice-village-house-elder.cfg:1515
@@ -847,20 +878,26 @@ msgstr "أبدا."
 msgid ""
 "Has he ever shown any signs of ... suddenly\n"
 "having way more spending money than usual?"
-msgstr "وقد أظهرت انه من أي وقت مضى أي دلائل على... فجأة وجود أكثر من طريقة إنفاق المال من المعتاد؟"
+msgstr ""
+"وقد أظهرت انه من أي وقت مضى أي دلائل على... فجأة وجود أكثر من طريقة إنفاق "
+"المال من المعتاد؟"
 
 #: data/level/crevice-bridge.cfg:852
 msgid ""
 "Well, he's *bragged* about being rich,\n"
 "but that's just his \"dignified family\" schtick."
-msgstr "حسنا ، انه تفاخر * * عن كونها غنية ، ولكن هذا مجرد كتابه \"كرامة العائلة\" schtick."
+msgstr ""
+"حسنا ، انه تفاخر * * عن كونها غنية ، ولكن هذا مجرد كتابه \"كرامة العائلة\" "
+"schtick."
 
 #: data/level/crevice-bridge.cfg:853
 msgid ""
 "He's such a miser, you know -\n"
 "the man would probably burn his\n"
 "furniture just to save on firewood."
-msgstr "انه مثل البخيل ، كما تعلمون -- أن الرجل ربما حرق أثاث منزله لمجرد انقاذ على الحطب."
+msgstr ""
+"انه مثل البخيل ، كما تعلمون -- أن الرجل ربما حرق أثاث منزله لمجرد انقاذ على "
+"الحطب."
 
 #: data/level/crevice-bridge.cfg:854
 msgid ""
@@ -891,14 +928,18 @@ msgid ""
 "We also know Milgram's not interested\n"
 "in taking over the town, because he\n"
 "essentially just did, and gave it up."
-msgstr "ونحن نعلم أيضا Milgram لا يرغب في الاستيلاء على المدينة ، لأنه أساسا لم يفعلوا ، واعطى الامر."
+msgstr ""
+"ونحن نعلم أيضا Milgram لا يرغب في الاستيلاء على المدينة ، لأنه أساسا لم "
+"يفعلوا ، واعطى الامر."
 
 #: data/level/crevice-bridge.cfg:864
 msgid ""
 "We don't know if the money thing\n"
 "is true, but we know if it is,\n"
 "he certainly hasn't put it to use."
-msgstr "نحن لا نعرف إذا كان شيء من المال هو الصحيح ، ولكننا نعرف ما اذا كان هو ، بالتأكيد انه لم يطرح للاستخدام."
+msgstr ""
+"نحن لا نعرف إذا كان شيء من المال هو الصحيح ، ولكننا نعرف ما اذا كان هو ، "
+"بالتأكيد انه لم يطرح للاستخدام."
 
 #: data/level/crevice-bridge.cfg:866
 msgid ""
@@ -931,13 +972,17 @@ msgid ""
 "Ah, that.  I went and decided that\n"
 "it's probably a very good idea to\n"
 "do a little diplomacy."
-msgstr "آه ، ذلك. ذهبت وقررت انه من المحتمل ان يكون فكرة جيدة للغاية لقيام الدبلوماسية قليلا."
+msgstr ""
+"آه ، ذلك. ذهبت وقررت انه من المحتمل ان يكون فكرة جيدة للغاية لقيام "
+"الدبلوماسية قليلا."
 
 #: data/level/crevice-bridge.cfg:879
 msgid ""
 "*Someone* needs to go talk to Milgram,\n"
 "and ask what was wrong, so nothing bad happens."
-msgstr "* * شخص ما يجب أن تذهب إلى Milgram الحديث ، ونسأل ما كان خاطئا ، لذلك شيئا سيئا سيحدث."
+msgstr ""
+"* * شخص ما يجب أن تذهب إلى Milgram الحديث ، ونسأل ما كان خاطئا ، لذلك شيئا "
+"سيئا سيحدث."
 
 #: data/level/crevice-bridge.cfg:881
 msgid ""
@@ -959,13 +1004,16 @@ msgstr "هكتار ، حسنا ، نحن ذاهبون أيضا لمعرفة ما
 msgid ""
 "But nothing ventured, nothing gained, you know?\n"
 "I guess I'm just tired of bumming around."
-msgstr "لكن غامر شيء ، لا شيء المكتسبة ، هل تعلم؟ أعتقد أنا متعب فقط من bumming حولها."
+msgstr ""
+"لكن غامر شيء ، لا شيء المكتسبة ، هل تعلم؟ أعتقد أنا متعب فقط من bumming "
+"حولها."
 
 #: data/level/crevice-bridge.cfg:891
 msgid ""
 "Speaking of which, I'd been meaning\n"
 "to thank you for your help thus far."
-msgstr "من الذي يتكلم ، ويهمني ان كان هذا يعني أن أشكركم على مساعدتكم حتى الآن."
+msgstr ""
+"من الذي يتكلم ، ويهمني ان كان هذا يعني أن أشكركم على مساعدتكم حتى الآن."
 
 #: data/level/crevice-bridge.cfg:893
 msgid ""
@@ -988,14 +1036,18 @@ msgid ""
 "It's the least I can do.\n"
 "I'd offer to carry you, even,\n"
 "but I'm afraid that's physically impossible."
-msgstr "انها أقل ما يمكن القيام به. فما استقاموا لكم فاستقيموا تقدم لنقلك ، وحتى ، ولكن أخشى أن من المستحيل فعليا."
+msgstr ""
+"انها أقل ما يمكن القيام به. فما استقاموا لكم فاستقيموا تقدم لنقلك ، وحتى ، "
+"ولكن أخشى أن من المستحيل فعليا."
 
 #: data/level/crevice-bridge.cfg:901
 msgid ""
 "I'm as curious as you are, about this,\n"
 "and we're more likely to get to the\n"
 "bottom of things if we work together."
-msgstr "أنا الغريب كما كنت ، وحول هذا الموضوع ، ونحن أكثر احتمالا للحصول على الجزء السفلي من الامور اذا عملنا معا."
+msgstr ""
+"أنا الغريب كما كنت ، وحول هذا الموضوع ، ونحن أكثر احتمالا للحصول على الجزء "
+"السفلي من الامور اذا عملنا معا."
 
 #: data/level/crevice-bridge.cfg:904
 msgid "Awesome!"
@@ -1141,14 +1193,17 @@ msgid ""
 "Milgram has this half of the town\n"
 "locked down tight, and he has\n"
 "most of the residents held prisoner."
-msgstr "ابو طبر وهذا النصف من البلدة أغلقت ضيقة ، ولديه غالبية السكان الذي عقد سجين."
+msgstr ""
+"ابو طبر وهذا النصف من البلدة أغلقت ضيقة ، ولديه غالبية السكان الذي عقد سجين."
 
 #: data/level/crevice-village-central.cfg:1459
 msgid ""
 "They're tied up inside the houses,\n"
 "under guard. If you free them,\n"
 "I'm sure they can help you."
-msgstr "كنت ربطهم داخل المنازل ، وتحت الحراسة. إذا كنت في الافراج عنهم ، وأنا متأكد من أنها يمكن أن تساعدك."
+msgstr ""
+"كنت ربطهم داخل المنازل ، وتحت الحراسة. إذا كنت في الافراج عنهم ، وأنا متأكد "
+"من أنها يمكن أن تساعدك."
 
 #: data/level/crevice-village-central.cfg:1461
 msgid "Makes sense."
@@ -1254,14 +1309,18 @@ msgid ""
 "Just arresting everyone is a strange way\n"
 "to do it, but I guess it's not so weird\n"
 "if you've got lots of manpower to spare."
-msgstr "اعتقال عادل الجميع بطريقة غريبة للقيام بذلك ، ولكن اعتقد انها ليست غريبة حتى إذا كنت قد حصلت على الكثير من القوى العاملة لتجنيب."
+msgstr ""
+"اعتقال عادل الجميع بطريقة غريبة للقيام بذلك ، ولكن اعتقد انها ليست غريبة حتى "
+"إذا كنت قد حصلت على الكثير من القوى العاملة لتجنيب."
 
 #: data/level/crevice-village-heights.cfg:956
 msgid ""
 "If they were just looking for the elder\n"
 "and didn't care about ticking people off,\n"
 "it's one way to make sure he couldn't slip away."
-msgstr "اذا كانوا يبحثون فقط لكبار السن ، ولم يهتم الناس قبالة موقوتة ، انها طريقة واحدة للتأكد من انه لا يمكن أن تفلت من أيدينا."
+msgstr ""
+"اذا كانوا يبحثون فقط لكبار السن ، ولم يهتم الناس قبالة موقوتة ، انها طريقة "
+"واحدة للتأكد من انه لا يمكن أن تفلت من أيدينا."
 
 #: data/level/crevice-village-heights.cfg:958
 msgid "Well, is that really who they were after?"
@@ -1295,7 +1354,9 @@ msgstr "غريبة.."
 msgid ""
 "Anyways, not sure if you heard this part,\n"
 "but I'm about to take a little trip."
-msgstr "على أي حال ، ولست متأكدا اذا كنت سمعت هذا الجزء ، ولكن أنا على وشك القيام برحلة صغيرة."
+msgstr ""
+"على أي حال ، ولست متأكدا اذا كنت سمعت هذا الجزء ، ولكن أنا على وشك القيام "
+"برحلة صغيرة."
 
 #: data/level/crevice-village-heights.cfg:969
 msgid "No, I didn't hear this."
@@ -1306,7 +1367,9 @@ msgid ""
 "Yeah, I'm a little worried about\n"
 "what might happen if someone doesn't\n"
 "get in touch with Milgram."
-msgstr "نعم ، أنا قلق قليلا عن ما يمكن أن يحدث إذا كان شخص ما لا يحصل في اتصال مع Milgram."
+msgstr ""
+"نعم ، أنا قلق قليلا عن ما يمكن أن يحدث إذا كان شخص ما لا يحصل في اتصال مع "
+"Milgram."
 
 #: data/level/crevice-village-heights.cfg:973
 msgid ""
@@ -1331,20 +1394,26 @@ msgid ""
 "It's probably for the best, really,\n"
 "I can't imagine the mess if people actually\n"
 "got to fighting over stuff they disagreed about."
-msgstr "انها على الارجح للحصول على أفضل ، حقا ، أنا لا أستطيع تخيل الفوضى إذا كان الناس فعلا حصلت على القتال أكثر من الاشياء التي اختلف عنه."
+msgstr ""
+"انها على الارجح للحصول على أفضل ، حقا ، أنا لا أستطيع تخيل الفوضى إذا كان "
+"الناس فعلا حصلت على القتال أكثر من الاشياء التي اختلف عنه."
 
 #: data/level/crevice-village-heights.cfg:979
 msgid ""
 "I guess I'm also worried about the other end;\n"
 "what Milgram is doing, et cetera."
-msgstr "واعتقد أيضا أنني أشعر بالقلق إزاء الطرف الآخر ؛ Milgram ما تقوم به ، وهلم جرا."
+msgstr ""
+"واعتقد أيضا أنني أشعر بالقلق إزاء الطرف الآخر ؛ Milgram ما تقوم به ، وهلم "
+"جرا."
 
 #: data/level/crevice-village-heights.cfg:981
 msgid ""
 "I don't know; it's a little crazy to do this,\n"
 "but I've kinda been itching for something\n"
 "worthwhile to do."
-msgstr "لا أعرف ، بل مجنون قليلا للقيام بذلك ، ولكني كيندا تم الحكة عن شيء يستحق القيام به."
+msgstr ""
+"لا أعرف ، بل مجنون قليلا للقيام بذلك ، ولكني كيندا تم الحكة عن شيء يستحق "
+"القيام به."
 
 #: data/level/crevice-village-heights.cfg:983
 msgid ""
@@ -1364,7 +1433,9 @@ msgstr "أوه ، لا شك."
 msgid ""
 "Can't be worse than the crap I have\n"
 "to deal with just coming into town, though."
-msgstr "لا يمكن أن يكون أسوأ من حماقة لدي للتعامل مع صلت للتو الى المدينة ، بالرغم من ذلك."
+msgstr ""
+"لا يمكن أن يكون أسوأ من حماقة لدي للتعامل مع صلت للتو الى المدينة ، بالرغم "
+"من ذلك."
 
 #: data/level/crevice-village-heights.cfg:990
 msgid ""
@@ -1407,7 +1478,9 @@ msgid ""
 "Well, if you're game to find out,\n"
 "I just saw one of Milgram's lieutenants\n"
 "march up to the elder's house."
-msgstr "حسنا ، إذا كنت لعبة لمعرفة ما رأيت واحدة فقط من مساعدي Milgram مسيرة الى منزل الاب و."
+msgstr ""
+"حسنا ، إذا كنت لعبة لمعرفة ما رأيت واحدة فقط من مساعدي Milgram مسيرة الى "
+"منزل الاب و."
 
 #: data/level/crevice-village-heights.cfg:1021
 msgid ""
@@ -1420,7 +1493,9 @@ msgid ""
 "I have a notion,\n"
 "but if you're going to go up there,\n"
 "you'd better go whilst the going's good."
-msgstr "لدي فكرة ، ولكن اذا كنت ستذهب الى هناك ، وكنت تسير بصورة أفضل في حين أن تسير جيد."
+msgstr ""
+"لدي فكرة ، ولكن اذا كنت ستذهب الى هناك ، وكنت تسير بصورة أفضل في حين أن تسير "
+"جيد."
 
 #: data/level/crevice-village-heights.cfg:1024
 msgid "Yeah, I'll check it out."
@@ -1474,13 +1549,17 @@ msgstr "لم أكن هناك منذ وقت طويل ، لذلك لست متأك�
 msgid ""
 "I'm rather out of date on my political geography,\n"
 "so you'll just have to ask people as you go."
-msgstr "ابن بدلا من تاريخ بلادي على الجغرافيا السياسية ، لذلك عليك فقط أن نطلب من الناس كما تذهب."
+msgstr ""
+"ابن بدلا من تاريخ بلادي على الجغرافيا السياسية ، لذلك عليك فقط أن نطلب من "
+"الناس كما تذهب."
 
 #: data/level/crevice-village-heights.cfg:1968
 msgid ""
 "Uhm... well, don't you have any maps or such?\n"
 "Are you going to help outfit me for this?"
-msgstr "أوم... حسنا ، لم يكن لديك أي خرائط أو من هذا القبيل؟ انت ذاهب لمساعدة لي لهذا الزي؟"
+msgstr ""
+"أوم... حسنا ، لم يكن لديك أي خرائط أو من هذا القبيل؟ انت ذاهب لمساعدة لي "
+"لهذا الزي؟"
 
 #: data/level/crevice-village-heights.cfg:1970
 msgid ""
@@ -1529,7 +1608,9 @@ msgid ""
 "Milgram's crew.  When that captain-guy\n"
 "came out of the house here,\n"
 "they all hopped in his airship and left."
-msgstr "طاقم Milgram ل. عند ذلك الكابتن غي خرج من البيت هنا ، وأنهم جميعا في المنطاد قافز له واليسار."
+msgstr ""
+"طاقم Milgram ل. عند ذلك الكابتن غي خرج من البيت هنا ، وأنهم جميعا في المنطاد "
+"قافز له واليسار."
 
 #: data/level/crevice-village-heights.cfg:1995
 msgid ""
@@ -1582,7 +1663,9 @@ msgstr "نعم ، حسنا ، في هذه المرحلة بالذات ، من أ
 msgid ""
 "What's important is that I'm not in a cage,\n"
 "so I might be able to do something to help."
-msgstr "ما هو مهم هو أنني لست في قفص ، ولذا فإنني قد تكون قادرة على القيام بشيء ما للمساعدة."
+msgstr ""
+"ما هو مهم هو أنني لست في قفص ، ولذا فإنني قد تكون قادرة على القيام بشيء ما "
+"للمساعدة."
 
 #: data/level/crevice-village-house-1.cfg:1735
 msgid "Got any advice?"
@@ -1593,7 +1676,9 @@ msgid ""
 "Yeah, that key right next to you -\n"
 "I think that unlocks a house that\n"
 "has the key to the town gate."
-msgstr "نعم ، هذا حق أساسي إلى جانبك -- أعتقد أن يفتح البيت الذي لديه المفتاح لبوابة المدينة."
+msgstr ""
+"نعم ، هذا حق أساسي إلى جانبك -- أعتقد أن يفتح البيت الذي لديه المفتاح لبوابة "
+"المدينة."
 
 #: data/level/crevice-village-house-1.cfg:1737
 msgid "Maybe."
@@ -1898,7 +1983,9 @@ msgid ""
 "You're not going anywhere, buster!\n"
 "Now, listen up,\n"
 "You're SERIOUSLY testing my patience."
-msgstr "كنت لا أذهب إلى أي مكان ، المغفل! الآن ، حتى الاستماع ، أنت اختبار بجدية صبري."
+msgstr ""
+"كنت لا أذهب إلى أي مكان ، المغفل! الآن ، حتى الاستماع ، أنت اختبار بجدية "
+"صبري."
 
 #: data/level/crevice-village-house-elder.cfg:1395
 msgid "Oh, hi, what's going on here?"
@@ -2071,7 +2158,9 @@ msgid ""
 "In fact, clowns like you are the reason\n"
 "we *can't* agree on a mayor,\n"
 "or get anything else done around here."
-msgstr "في الواقع ، مثل المهرجين كنت السبب في أننا * * لا يمكن الاتفاق على رئيس البلدية ، أو الحصول على أي شيء آخر القيام به في جميع أنحاء هنا."
+msgstr ""
+"في الواقع ، مثل المهرجين كنت السبب في أننا * * لا يمكن الاتفاق على رئيس "
+"البلدية ، أو الحصول على أي شيء آخر القيام به في جميع أنحاء هنا."
 
 #: data/level/crevice-village-house-elder.cfg:1565
 msgid "Are you done insulting me, yet?"
@@ -2087,7 +2176,9 @@ msgstr "كلا. لم يكن حتى تجيب عن سؤالي!"
 msgid ""
 "Seriously - I'm on your side, here!\n"
 "I just risked my butt fighting that guy off."
-msgstr "على محمل الجد -- أنا على الجانب الخاص بك ، هنا! لقد خاطرت فقط بلدي بعقب قبالة هذا الرجل القتال."
+msgstr ""
+"على محمل الجد -- أنا على الجانب الخاص بك ، هنا! لقد خاطرت فقط بلدي بعقب "
+"قبالة هذا الرجل القتال."
 
 #: data/level/crevice-village-house-elder.cfg:1571
 msgid ""
@@ -2140,7 +2231,9 @@ msgid ""
 "Anyhow, I was all too happy to accept,\n"
 "but it wasn't long before I realized\n"
 "what was really afoot."
-msgstr "على أية حال ، كنت سعيدة للغاية لقبول ، ولكن لم يمض وقت طويل قبل أن أدرك حقيقة ما كان على قدم وساق."
+msgstr ""
+"على أية حال ، كنت سعيدة للغاية لقبول ، ولكن لم يمض وقت طويل قبل أن أدرك "
+"حقيقة ما كان على قدم وساق."
 
 #: data/level/crevice-village-house-elder.cfg:1589
 msgid ""
@@ -2201,7 +2294,9 @@ msgid ""
 "I don't see why he'd need an excuse.\n"
 "If he wanted to take over the town,\n"
 "he could just ... do it."
-msgstr "أنا لا أرى لماذا عنيدا والحاجة عذر. إذا كان يريد الاستيلاء على البلدة ، وقال انه مجرد... تفعل ذلك."
+msgstr ""
+"أنا لا أرى لماذا عنيدا والحاجة عذر. إذا كان يريد الاستيلاء على البلدة ، وقال "
+"انه مجرد... تفعل ذلك."
 
 #: data/level/crevice-village-house-elder.cfg:1611
 msgid ""
@@ -2220,7 +2315,8 @@ msgstr "Uhh ، حسنا... على أي حال ، ماذا ستفعل نحن هن
 msgid ""
 "Well, I think we should form a militia,\n"
 "and bring the fight to Milgram!"
-msgstr "حسنا ، أعتقد أننا يجب أن تشكيل الميليشيات ، والكفاح من أجل تحقيق Milgram!"
+msgstr ""
+"حسنا ، أعتقد أننا يجب أن تشكيل الميليشيات ، والكفاح من أجل تحقيق Milgram!"
 
 #: data/level/crevice-village-house-elder.cfg:1617
 msgid ""
@@ -2232,7 +2328,8 @@ msgstr "لا أعتقد أنها فكرة جيدة! دعونا لا نتسرع �
 msgid ""
 "If you ask me, I think we need to go\n"
 "hear Milgram's side of the story."
-msgstr "اذا سألتني ، وأعتقد أننا في حاجة للذهاب استمع الى وجهة Milgram من القصة."
+msgstr ""
+"اذا سألتني ، وأعتقد أننا في حاجة للذهاب استمع الى وجهة Milgram من القصة."
 
 #: data/level/crevice-village-house-elder.cfg:1621
 msgid ""
@@ -2266,7 +2363,9 @@ msgstr "وأعتقد أن هذا هو مجرد سوء تفاهم كبير ، و�
 msgid ""
 "Well, if you say so, I suppose I can't object.\n"
 "In fact, it might be a good stalling tactic."
-msgstr "حسنا ، إذا أنت تقول ذلك ، أنا لا أستطيع أن افترض الكائن. في الواقع ، قد يكون تكتيكا ناجحا المماطلة."
+msgstr ""
+"حسنا ، إذا أنت تقول ذلك ، أنا لا أستطيع أن افترض الكائن. في الواقع ، قد يكون "
+"تكتيكا ناجحا المماطلة."
 
 #: data/level/crevice-village-house-elder.cfg:1633
 msgid "Why, I'll even show you the way..."
@@ -2354,7 +2453,8 @@ msgstr "عادلة بما فيه الكفاية. أنا لست مولعا بشك
 msgid ""
 "Firstly, Milgram's got LOTS of followers.\n"
 "Tons of em.  He runs an entire city."
-msgstr "أولا ، حصلت على Milgram LOTS من أتباعه. طن من م. انه يدير كامل المدينة."
+msgstr ""
+"أولا ، حصلت على Milgram LOTS من أتباعه. طن من م. انه يدير كامل المدينة."
 
 #: data/level/crevice-village.cfg:1552
 msgid ""
@@ -2372,7 +2472,9 @@ msgstr "بالاضافة الى ذلك ، انهم النقالة جدا ، جد
 msgid ""
 "We might get the drop on them for a bit,\n"
 "but we'd get surrounded in no time."
-msgstr "قد نحصل على قطرة عليها قليلا ، ولكن كنت محاطا الحصول نحن في أي وقت من الأوقات."
+msgstr ""
+"قد نحصل على قطرة عليها قليلا ، ولكن كنت محاطا الحصول نحن في أي وقت من "
+"الأوقات."
 
 #: data/level/crevice-village.cfg:1558
 msgid "Brute force against brute force won't work."
@@ -2395,7 +2497,9 @@ msgid ""
 "There's got to be something\n"
 "we can use to our advantage,\n"
 "but \"numerical superiority\" isn't it."
-msgstr "هناك شيء يجب أن يكون ويمكننا استخدامها لصالحنا ، ولكن \"التفوق العددي\" ليس هو."
+msgstr ""
+"هناك شيء يجب أن يكون ويمكننا استخدامها لصالحنا ، ولكن \"التفوق العددي\" ليس "
+"هو."
 
 #: data/level/crevice-village.cfg:1565
 msgid ""
@@ -2831,7 +2935,9 @@ msgstr "للقيام بذلك ، اضغط باستمرار على مفتاح ل�
 msgid ""
 "As you've played through this level,\n"
 "you've probably noticed the gold coins."
-msgstr "كما كنت قد لعبت من خلال هذا المستوى ، وكنت قد لاحظت على الأرجح العملات الذهبية."
+msgstr ""
+"كما كنت قد لعبت من خلال هذا المستوى ، وكنت قد لاحظت على الأرجح العملات "
+"الذهبية."
 
 #: data/level/grassy-path.cfg:1200
 msgid ""
@@ -2964,7 +3070,8 @@ msgstr "شنق المنصات"
 msgid ""
 "Well, I guess I'm entering Milgram's\n"
 "castle now. I made it through the caves!"
-msgstr "حسنا ، اعتقد انني ابن دخول القلعة Milgram الان. أنا جعلت من خلال الكهوف!"
+msgstr ""
+"حسنا ، اعتقد انني ابن دخول القلعة Milgram الان. أنا جعلت من خلال الكهوف!"
 
 #: data/level/hidden-depths.cfg:18
 msgid "Hidden Depths"
@@ -3079,7 +3186,9 @@ msgid ""
 "I guess this is my last chance to\n"
 "go back if there's anything I want to\n"
 "do before I confront him."
-msgstr "هذا يبدو المشؤومة كيندا. أراهن ابو طبر هو حق وهناك ما يصل! أعتقد أن هذا هو فرصتي الأخيرة لنعود إذا كان هناك أي شيء أريد القيام به قبل أن مواجهته."
+msgstr ""
+"هذا يبدو المشؤومة كيندا. أراهن ابو طبر هو حق وهناك ما يصل! أعتقد أن هذا هو "
+"فرصتي الأخيرة لنعود إذا كان هناك أي شيء أريد القيام به قبل أن مواجهته."
 
 #: data/level/milgrams-throne-room.cfg:13
 msgid "Milgram's Throne Room"
@@ -3283,7 +3392,9 @@ msgstr "هذا لطيف."
 msgid ""
 "Uhm, I hope you don't mind my asking,\n"
 "but what on earth ARE you, anyway?"
-msgstr "أوم ، وآمل أن كنت لا تمانع في طرح بلدي ، ولكن ماذا على الارض هل أنت ، على أية حال؟"
+msgstr ""
+"أوم ، وآمل أن كنت لا تمانع في طرح بلدي ، ولكن ماذا على الارض هل أنت ، على "
+"أية حال؟"
 
 #: data/level/secluded-hut-interior.cfg:727
 msgid "Ostensibly, I am a mole."
@@ -3299,13 +3410,16 @@ msgstr "... حسنا."
 msgid ""
 "Perhaps more importantly, I am a bit of\n"
 "an astronomer and biologist, by trade."
-msgstr "وربما الأهم من ذلك ، وأنا قليلا من عالم الفلك وعلم الأحياء ، من خلال التجارة."
+msgstr ""
+"وربما الأهم من ذلك ، وأنا قليلا من عالم الفلك وعلم الأحياء ، من خلال التجارة."
 
 #: data/level/secluded-hut-interior.cfg:731
 msgid ""
 "That is why I live all the way up here.\n"
 "You can see quite a bit from this height."
-msgstr "هذا هو السبب في أنني أعيش على طول الطريق حتى هنا. يمكنك ان ترى قدرا كبيرا من هذا الارتفاع."
+msgstr ""
+"هذا هو السبب في أنني أعيش على طول الطريق حتى هنا. يمكنك ان ترى قدرا كبيرا من "
+"هذا الارتفاع."
 
 #: data/level/secluded-hut-interior.cfg:733
 msgid ""
@@ -3329,7 +3443,9 @@ msgid ""
 "If you could bring me a golden ant\n"
 "and stick it in one of my cages,\n"
 "I'd reward you handsomely."
-msgstr "كما تعلمون ، بل سافر نظرتم جيدا. إذا كنت قد يجلب لي ذهبية النمل والعصا في واحد من الأقفاص بلدي ، فما استقاموا لكم فاستقيموا خيرا بسخاء."
+msgstr ""
+"كما تعلمون ، بل سافر نظرتم جيدا. إذا كنت قد يجلب لي ذهبية النمل والعصا في "
+"واحد من الأقفاص بلدي ، فما استقاموا لكم فاستقيموا خيرا بسخاء."
 
 #: data/level/secluded-hut-interior.cfg:739
 msgid ""
@@ -3359,7 +3475,8 @@ msgstr "أوه نعم ، ومكافأة! هنا تذهب..."
 msgid ""
 "Oh my! If that's a golden ant in your stomach,\n"
 "then quick, spit it out into the cage!"
-msgstr "بي أوه! اذا كان هذا نملة ذهبية في معدتك ، ثم سريعا ، يبصقون عليه في قفص!"
+msgstr ""
+"بي أوه! اذا كان هذا نملة ذهبية في معدتك ، ثم سريعا ، يبصقون عليه في قفص!"
 
 #: data/level/secluded-hut-interior.cfg:751
 msgid ""
@@ -3377,7 +3494,8 @@ msgstr "أنا أعمل على ذلك. هذه الأمور تعني حزمة ل�
 msgid ""
 "I do hope you are enjoying exploring the island.\n"
 "There are so many wonderful creatures on it."
-msgstr "وآمل انك تتمتع استكشاف الجزيرة. هناك الكثير من المخلوقات الرائعة على ذلك."
+msgstr ""
+"وآمل انك تتمتع استكشاف الجزيرة. هناك الكثير من المخلوقات الرائعة على ذلك."
 
 #: data/level/secluded-hut-interior.cfg:758
 msgid "... most of which seem inclined to kill me."
@@ -3426,14 +3544,18 @@ msgid ""
 "Milgram's men showed up\n"
 "early this morning, in town.\n"
 "They've taken the whole place hostage!"
-msgstr "وأظهر الرجال Milgram لتصل في وقت مبكر من صباح اليوم ، في البلدة. لقد أخذوا رهائن المكان كله!"
+msgstr ""
+"وأظهر الرجال Milgram لتصل في وقت مبكر من صباح اليوم ، في البلدة. لقد أخذوا "
+"رهائن المكان كله!"
 
 #: data/level/secluded-hut.cfg:2220
 msgid ""
 "Unfortunately, I don't know the details.\n"
 "I just flew out of there as soon as I could,\n"
 "looking for anyone who could help."
-msgstr "للأسف ، أنا لا أعرف التفاصيل. طرت للتو من هناك بأسرع ما يمكن ، وتبحث عن أي شخص يمكن أن يساعد."
+msgstr ""
+"للأسف ، أنا لا أعرف التفاصيل. طرت للتو من هناك بأسرع ما يمكن ، وتبحث عن أي "
+"شخص يمكن أن يساعد."
 
 #: data/level/secluded-hut.cfg:2222
 msgid ""
@@ -3446,14 +3568,17 @@ msgid ""
 "Wow, uhm... \n"
 "I'd sure like to help, but ...\n"
 "I just don't see what I could do."
-msgstr "نجاح باهر ، أوم... أريد التأكد من مساعدة ، ولكن... أنا لا أرى ما يمكن أن تفعله."
+msgstr ""
+"نجاح باهر ، أوم... أريد التأكد من مساعدة ، ولكن... أنا لا أرى ما يمكن أن "
+"تفعله."
 
 #: data/level/secluded-hut.cfg:2226
 msgid ""
 "I don't think I can promise anything,\n"
 "but if the opportunity presents itself,\n"
 "who knows?"
-msgstr "أنا لا أعتقد أنني أستطيع أن أعد أي شيء ، ولكن إذا أتيحت له الفرصة ، من يدري؟"
+msgstr ""
+"أنا لا أعتقد أنني أستطيع أن أعد أي شيء ، ولكن إذا أتيحت له الفرصة ، من يدري؟"
 
 #: data/level/secluded-hut.cfg:2227
 msgid ""
@@ -3471,7 +3596,9 @@ msgid ""
 "Hopefully, we'll fix that bridge soon.\n"
 "Impressive how fast they can do that,\n"
 "with modular construction and all."
-msgstr "ومع ذلك ، كنت أفضل أن تكون عاملة. نأمل ، سوف نصلح هذا الجسر قريبا. إعجاب مدى السرعة التي يمكن أن نفعل ذلك ، مع وحدات البناء وجميع."
+msgstr ""
+"ومع ذلك ، كنت أفضل أن تكون عاملة. نأمل ، سوف نصلح هذا الجسر قريبا. إعجاب مدى "
+"السرعة التي يمكن أن نفعل ذلك ، مع وحدات البناء وجميع."
 
 #: data/level/secluded-hut.cfg:2230
 msgid ""
@@ -3483,7 +3610,9 @@ msgstr "في غضون ذلك ، قد تستفيد من زيارة زميل ال�
 msgid ""
 "Bit of a recluse, but he's quite sharp.\n"
 "He lives on top of this rock column."
-msgstr "قليلا من الوقت منعزلا عن العالم ، لكنه حاد جدا. انه يعيش على رأس هذا العمود الصخور."
+msgstr ""
+"قليلا من الوقت منعزلا عن العالم ، لكنه حاد جدا. انه يعيش على رأس هذا العمود "
+"الصخور."
 
 #: data/level/secluded-hut.cfg:2233
 msgid "And I get up there... how?"
@@ -3658,13 +3787,15 @@ msgstr "بالضبط!"
 msgid ""
 "In fact, I came to him with the idea.\n"
 "It was meant to be philanthropy."
-msgstr "في الواقع ، لقد جئت إليه مع هذه الفكرة. وكان من المفترض أن يكون العمل الخيري."
+msgstr ""
+"في الواقع ، لقد جئت إليه مع هذه الفكرة. وكان من المفترض أن يكون العمل الخيري."
 
 #: data/level/tea-with-milgram.cfg:390
 msgid ""
 "I thought a 'mayor' would be responsible,\n"
 "but instead he's spending it all on himself!"
-msgstr "فكرت \"عمدة\" ستكون مسؤولة ، ولكن بدلا من ذلك هو انفاق كل شيء على نفسه!"
+msgstr ""
+"فكرت \"عمدة\" ستكون مسؤولة ، ولكن بدلا من ذلك هو انفاق كل شيء على نفسه!"
 
 #: data/level/tea-with-milgram.cfg:393
 msgid "And now he's refusing to repay you?"
@@ -4178,6 +4309,10 @@ msgstr "عملة سباق"
 msgid "COIN RACE"
 msgstr "COIN RACE"
 
+#: data/level/titlescreen-difficulty-selector.cfg:225
+msgid "SELECT DIFFICULTY LEVEL:"
+msgstr ""
+
 #: data/level/titlescreen-test.cfg:296 data/level/titlescreen.cfg:287
 #: data/level/titlescreen.cfg:303
 msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
@@ -4293,7 +4428,9 @@ msgid ""
 "But if you're going to be like that\n"
 "I think I left a health capsule down there.\n"
 "If you can clear it out, it's yours."
-msgstr "ولكن اذا كنت تريد الذهاب ليكون مثل ذلك أعتقد أنني تركت كبسولة الصحية بانخفاض هناك. إذا كان يمكنك مسح بها ، انها لك."
+msgstr ""
+"ولكن اذا كنت تريد الذهاب ليكون مثل ذلك أعتقد أنني تركت كبسولة الصحية بانخفاض "
+"هناك. إذا كان يمكنك مسح بها ، انها لك."
 
 #: data/level/to-nenes-house-inside.cfg:507
 msgid ""
@@ -4374,7 +4511,9 @@ msgid ""
 "Someday, those door-to-door people\n"
 "will realize that kind of hard-sell tactic\n"
 "just annoys people."
-msgstr "يوما ما ، سيكون هؤلاء الناس من الباب إلى الباب تحقيق هذا النوع من الصعب بيع تكتيك فقط يزعج الناس."
+msgstr ""
+"يوما ما ، سيكون هؤلاء الناس من الباب إلى الباب تحقيق هذا النوع من الصعب بيع "
+"تكتيك فقط يزعج الناس."
 
 #: data/level/to-nenes-house.cfg:3113
 msgid "The sooner, the better."
@@ -4431,9 +4570,10 @@ msgstr "جعلتك على المستوى level.player.difficulty {} من الس�
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:22
 msgid ""
-"The furthest that has been reached is level "
-"{registry.arcade_coin_race_high_score}."
-msgstr "أبعد الذي تم التوصل إليه هو مستوى registry.arcade_coin_race_high_score {}."
+"The furthest that has been reached is level {registry."
+"arcade_coin_race_high_score}."
+msgstr ""
+"أبعد الذي تم التوصل إليه هو مستوى registry.arcade_coin_race_high_score {}."
 
 #: data/objects/items/max_heart_object.cfg:11
 msgid ""
@@ -4446,28 +4586,35 @@ msgid ""
 "You've found part of a heart capsule.\n"
 "Collect another three to increase\n"
 "your maximum HP by one!"
-msgstr "كنت قد وجدت جزءا من كبسولة القلب. جمع ثلاثة آخرين لزيادة الحد الأقصى لحصان واحد!"
+msgstr ""
+"كنت قد وجدت جزءا من كبسولة القلب. جمع ثلاثة آخرين لزيادة الحد الأقصى لحصان "
+"واحد!"
 
 #: data/objects/items/partial_max_heart_object.cfg:17
 msgid ""
 "You've found part of a heart capsule.\n"
 "Collect another two to increase\n"
 "your maximum HP by one!"
-msgstr "كنت قد وجدت جزءا من كبسولة القلب. جمع اثنين آخرين لزيادة الحد الأقصى لحصان واحد!"
+msgstr ""
+"كنت قد وجدت جزءا من كبسولة القلب. جمع اثنين آخرين لزيادة الحد الأقصى لحصان "
+"واحد!"
 
 #: data/objects/items/partial_max_heart_object.cfg:19
 msgid ""
 "You've found part of a heart capsule.\n"
 "Collect another one to increase\n"
 "your maximum HP by one!"
-msgstr "كنت قد وجدت جزءا من كبسولة القلب. جمع واحد آخر لزيادة الحد الأقصى لحصان واحد!"
+msgstr ""
+"كنت قد وجدت جزءا من كبسولة القلب. جمع واحد آخر لزيادة الحد الأقصى لحصان واحد!"
 
 #: data/objects/items/partial_max_heart_object.cfg:23
 msgid ""
 "You've collected enough parts to\n"
 "make a whole new heart capsule!\n"
 "Your maximum HP has increased by one!"
-msgstr "لقد جمعت لكم ما يكفي لجعل أجزاء ككل كبسولة قلبا جديدا! وزاد الحد الأقصى من قبل حصان واحد!"
+msgstr ""
+"لقد جمعت لكم ما يكفي لجعل أجزاء ككل كبسولة قلبا جديدا! وزاد الحد الأقصى من "
+"قبل حصان واحد!"
 
 #: data/objects/items/store-items/buyable_gliding_wings.cfg:5
 msgid "gliding wings"
@@ -4505,7 +4652,9 @@ msgid ""
 "invincibility powerups. Invincibility\n"
 "powerups will make you\n"
 "invincible for a short time."
-msgstr "البلورة لا تقهر يفتح بووروبس لا تقهر. سوف لا تقهر بووروبس تجعلك لا يقهر لفترة قصيرة."
+msgstr ""
+"البلورة لا تقهر يفتح بووروبس لا تقهر. سوف لا تقهر بووروبس تجعلك لا يقهر "
+"لفترة قصيرة."
 
 #: data/objects/items/store-items/buyable_powerup_reflexes.cfg:5
 msgid "hyper crystal"
@@ -4518,7 +4667,9 @@ msgid ""
 "powerups will heighten your\n"
 "reflexes, making the world\n"
 "seem to slow down around you."
-msgstr "البلورة فرط يفتح بووروبس المفرط. وسوف تزيد من فرط بووروبس ردود الافعال الخاصة بك ، مما يجعل العالم يبدو أن تبطئ من حولك."
+msgstr ""
+"البلورة فرط يفتح بووروبس المفرط. وسوف تزيد من فرط بووروبس ردود الافعال "
+"الخاصة بك ، مما يجعل العالم يبدو أن تبطئ من حولك."
 
 #: data/objects/items/store-items/buyable_powerup_shooting.cfg:5
 msgid "energy crystal"
@@ -4530,7 +4681,9 @@ msgid ""
 "energy powerups. Energy\n"
 "powerups will allow you\n"
 "to shoot bolts of energy."
-msgstr "الكريستال الطاقة يفتح بووروبس الطاقة. وسوف تسمح لك بووروبس الطاقة لاطلاق النار براغي من الطاقة."
+msgstr ""
+"الكريستال الطاقة يفتح بووروبس الطاقة. وسوف تسمح لك بووروبس الطاقة لاطلاق "
+"النار براغي من الطاقة."
 
 #: data/objects/items/store-items/buyable_shield.cfg:7
 msgid ""
