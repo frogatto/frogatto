@@ -42,6 +42,8 @@ class color : public game_logic::formula_callable
 		return convert_pixel_byte_order(pu).value;
 	}
 
+	SDL_Color as_sdl_color() const;
+
 	private:
 		union PixelUnion {
 			uint32_t value;

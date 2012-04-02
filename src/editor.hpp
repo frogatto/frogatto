@@ -178,6 +178,9 @@ public:
 
 	bool has_keyboard_focus() const;
 
+	void start_adding_points(const std::string& field_name);
+	const std::string& adding_points() const { return adding_points_; }
+
 private:
 	editor(const editor&);
 	void operator=(const editor&);
@@ -220,6 +223,9 @@ private:
 	void remove_object_from_level(level_ptr lvl, entity_ptr e);
 
 	void mutate_object_value(entity_ptr e, const std::string& value, variant new_value);
+	void generate_mutate_commands(entity_ptr e, const std::string& attr, variant new_value,
+	                              std::vector<boost::function<void()> >& undo,
+	                              std::vector<boost::function<void()> >& redo);
 
 	void generate_remove_commands(entity_ptr e, std::vector<boost::function<void()> >& undo, std::vector<boost::function<void()> >& redo);
 
@@ -236,6 +242,11 @@ private:
 	//which the entity started the drag.
 	int selected_entity_startx_, selected_entity_starty_;
 	std::string filename_;
+
+	//If we are currently adding points to an object, this is non-empty
+	//and has the name of the field we're adding points to. The object
+	//being edited will always be lvl.editor_highlight()
+	std::string adding_points_;
 
 	EDIT_TOOL tool_;
 	bool done_;

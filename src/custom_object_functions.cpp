@@ -1827,11 +1827,16 @@ FUNCTION_DEF(rotate_rect, 4, 4, "rotate_rect(int center_x, int center_y, int rot
 	float rotate = args()[2]->evaluate(variables).as_decimal().as_float();
 
 	variant v = args()[3]->evaluate(variables);
+
+	ASSERT_LE(v.num_elements(), 8);
 	
 	GLshort r[8];
-	ASSERT_LOG(v.num_elements() == 8, "BAD ARGUMENT PASSED TO rotate_rect: " << v.to_debug_string());
 	for(int n = 0; n != v.num_elements(); ++n) {
 		r[n] = v[n].as_int();
+	}
+
+	for(int n = v.num_elements(); n < 8; ++n) {
+		r[n] = 0;
 	}
 
 	rotate_rect(center_x, center_y, rotate, r);

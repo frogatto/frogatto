@@ -112,6 +112,12 @@ void color::add_to_vector(std::vector<GLfloat>* v) const
 	v->push_back(a()/255.0);
 }
 
+SDL_Color color::as_sdl_color() const
+{
+	SDL_Color result = {r(), g(), b(), a()};
+	return result;
+}
+
 color_transform::color_transform(const color& c)
 {
 	rgba_[0] = c.r();

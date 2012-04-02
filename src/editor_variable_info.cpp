@@ -29,6 +29,8 @@ editor_variable_info::editor_variable_info(variant node)
 		type_ = TYPE_ENUM;
 		enum_values_ = util::split(node["enum_values"].as_string());
 		ASSERT_LOG(enum_values_.empty() == false, "IN PROPERTY: " << name_ << " ENUM WITH NO VALUES SPECIFIED");
+	} else if(type == "points") {
+		type_ = TYPE_POINTS;
 	}
 }
 
@@ -62,6 +64,9 @@ variant editor_variable_info::write() const
 	case TYPE_ENUM:
 		node.add("type", "enum");
 		node.add("values", util::join(enum_values_));
+		break;
+	case TYPE_POINTS:
+		node.add("type", "points");
 		break;
 	}
 	return node.build();

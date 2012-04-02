@@ -35,8 +35,6 @@ void property_editor_dialog::init()
 
 	set_padding(5);
 
-
-
 	const frame& frame = entity_->current_frame();
 	image_widget* preview = new image_widget(frame.img());
 	preview->set_dim(frame.width(), frame.height());
@@ -109,8 +107,20 @@ void property_editor_dialog::init()
 				continue;
 			}
 
+			variant val = vars->query_value(info.variable_name());
+			std::string current_val_str;
+			if(info.type() == editor_variable_info::TYPE_POINTS) {
+				if(!val.is_list()) {
+					current_val_str = "null";
+				} else {
+					current_val_str = formatter() << val.num_elements() << " points";
+				}
+			} else {
+				current_val_str = val.to_debug_string();
+			}
+
 			std::ostringstream s;
-			s << info.variable_name() << ": " << vars->query_value(info.variable_name()).to_debug_string();
+			s << info.variable_name() << ": " << current_val_str;
 			label_ptr lb = label::create(s.str(), graphics::color_white());
 			add_widget(widget_ptr(lb));
 
@@ -165,6 +175,14 @@ void property_editor_dialog::init()
 				add_widget(widget_ptr(new button(
 				         widget_ptr(new label("toggle", graphics::color_white())),
 				         boost::bind(&property_editor_dialog::toggle_property, this, info.variable_name()))));
+			} else if(info.type() == editor_variable_info::TYPE_POINTS) {
+				variant current_value = entity_->query_value(info.variable_name());
+				const int npoints = current_value.is_list() ? current_value.num_elements() : 0;
+
+				const bool already_adding = editor_.adding_points() == info.variable_name();
+				add_widget(widget_ptr(new button(already_adding ? "Done Adding" : "Add Points",
+						 boost::bind(&property_editor_dialog::change_points_property, this, info.variable_name()))));
+
 			} else {
 				grid_ptr buttons_grid(new grid(4));
 				buttons_grid->add_col(widget_ptr(new button(widget_ptr(new label("-10", graphics::color_white())), boost::bind(&property_editor_dialog::change_property, this, info.variable_name(), -10))));
@@ -375,6 +393,16 @@ void property_editor_dialog::set_enum_property(const std::string& id, const std:
 	entity_->mutate_value(id, variant(labels[index]));
 
 	init();
+}
+
+void property_editor_dialog::change_points_property(const std::string& id)
+{
+	//Toggle whether we're adding points or not.
+	if(editor_.adding_points() == id) {
+		editor_.start_adding_points("");
+	} else {
+		editor_.start_adding_points(id);
+	}
 }
 
 }
