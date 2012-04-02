@@ -2052,6 +2052,12 @@ variant custom_object::get_value_by_slot(int slot) const
 		return variant(control_status(static_cast<controls::CONTROL_ITEM>(slot - CUSTOM_OBJECT_CTRL_UP)));
 	}
 
+	const game_logic::formula_callable_definition::entry* entry = 
+		    custom_object_callable::instance().get_entry(slot);
+	if(entry != NULL) {
+		return variant();
+	}
+	
 	ASSERT_LOG(false, "UNKNOWN SLOT QUERIED FROM OBJECT: " << slot);
 }
 
@@ -2105,10 +2111,13 @@ variant custom_object::get_value(const std::string& key) const
 
 void custom_object::get_inputs(std::vector<game_logic::formula_input>* inputs) const
 {
-	inputs->push_back(game_logic::formula_input("time_in_animation", game_logic::FORMULA_READ_WRITE));
-	inputs->push_back(game_logic::formula_input("level", game_logic::FORMULA_READ_ONLY));
-	inputs->push_back(game_logic::formula_input("animation", game_logic::FORMULA_READ_ONLY));
-	inputs->push_back(game_logic::formula_input("hitpoints", game_logic::FORMULA_READ_WRITE));
+	for(int n = 0; n != NUM_CUSTOM_OBJECT_PROPERTIES; ++n) {
+		const game_logic::formula_callable_definition::entry* entry = 
+		    custom_object_callable::instance().get_entry(n);
+		if(!get_value_by_slot(n).is_null()) {
+			inputs->push_back(entry->id);
+		}
+	}
 }
 
 void custom_object::set_value(const std::string& key, const variant& value)

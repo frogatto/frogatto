@@ -322,6 +322,29 @@ void text_editor_widget::set_focus(bool value)
 	}
 }
 
+void text_editor_widget::set_cursor(int row, int col)
+{
+	if(row < 0) {
+		row = 0;
+	}
+
+	if(col < 0) {
+		col = 0;
+	}
+
+	if(row >= text_.size()) {
+		row = text_.size() - 1;
+	}
+
+	if(col > text_[row].size()) {
+		col = text_[row].size();
+	}
+
+	select_ = cursor_ = Loc(row, col);
+
+	on_move_cursor();
+}
+
 bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 {
 	record_op();
@@ -728,6 +751,12 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 			break;
 		}
 
+		if(on_begin_enter_) {
+			if(!on_begin_enter_()) {
+				break;
+			}
+		}
+
 		delete_selection();
 		truncate_col_position();
 		
@@ -749,6 +778,7 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 
 		refresh_scrollbar();
 		on_change();
+		on_move_cursor();
 
 		if(on_enter_) {
 			on_enter_();

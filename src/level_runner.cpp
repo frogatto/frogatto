@@ -353,6 +353,7 @@ bool level_runner::play_level()
 		if(key[SDLK_t] && preferences::record_history()
 #ifndef NO_EDITOR
 			&& (!editor_ || !editor_->has_keyboard_focus())
+			&& (!console_ || !console_->has_keyboard_focus())
 #endif
 		) {
 				if(!reversing) {
@@ -404,10 +405,12 @@ bool level_runner::play_cycle()
 
 	boost::scoped_ptr<controls::local_controls_lock> controls_lock;
 #ifndef NO_EDITOR
+	if(editor_ && editor_->has_keyboard_focus() ||
+	   console_ && console_->has_keyboard_focus()) {
+		controls_lock.reset(new controls::local_controls_lock);
+	}
+
 	if(editor_) {
-		if(editor_->has_keyboard_focus()) {
-			controls_lock.reset(new controls::local_controls_lock);
-		}
 
 		controls::control_backup_scope ctrl_backup;
 		editor_->set_pos(last_draw_position().x/100 - (editor_->zoom()-1)*(graphics::screen_width()-editor::sidebar_width())/2, last_draw_position().y/100 - (editor_->zoom()-1)*(graphics::screen_height())/2);
@@ -649,8 +652,13 @@ bool level_runner::play_cycle()
 			should_pause = settings_dialog.handle_event(event);
 #endif
 #ifndef NO_EDITOR
+			bool swallowed = false;
+			if(console_) {
+				swallowed = console_->process_event(event, swallowed);
+			}
+
 			if(editor_) {
-				const bool swallowed = editor_->handle_event(event);
+				swallowed = editor_->handle_event(event, swallowed) || swallowed;
 				lvl_->set_as_current_level();
 
 				if(editor::last_edited_level() != lvl_->id() && editor_->confirm_quit()) {
@@ -674,10 +682,10 @@ bool level_runner::play_cycle()
 					lvl_->set_as_current_level();
 					lvl_->set_editor();
 				}
+			}
 
-				if(swallowed) {
-					continue;
-				}
+			if(swallowed) {
+				continue;
 			}
 #endif
 
@@ -768,7 +776,12 @@ bool level_runner::play_cycle()
 					}
 					break;
 				} else if(key == SDLK_d && (mod&KMOD_CTRL)) {
-					show_debug_console();
+					if(!console_ && lvl_->player()) {
+						console_.reset(new debug_console::console_dialog(*lvl_, lvl_->player()->get_entity()));
+					} else {
+						console_.reset();
+					}
+					//show_debug_console();
 
 				} else if(key == SDLK_e && (mod&KMOD_CTRL)) {
 #ifndef NO_EDITOR
@@ -960,7 +973,7 @@ bool level_runner::play_cycle()
 
 		if(should_draw) {
 #ifndef NO_EDITOR
-			if(editor_ && key[SDLK_l] && !editor_->has_keyboard_focus()) {
+			if(editor_ && key[SDLK_l] && !editor_->has_keyboard_focus() && (!console_ || !console_->has_keyboard_focus())) {
 
 				editor_->toggle_active_level();
 
@@ -976,6 +989,10 @@ bool level_runner::play_cycle()
 
 			if(editor_) {
 				editor_->draw_gui();
+			}
+
+			if(console_) {
+				console_->draw();
 			}
 #endif
 		}

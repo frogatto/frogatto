@@ -1,13 +1,16 @@
+#include <algorithm>
 #include <list>
 #include <sstream>
 
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 
+#include "asserts.hpp"
 #include "custom_object.hpp"
 #include "custom_object_functions.hpp"
 #include "custom_object_type.hpp"
 #include "draw_scene.hpp"
+#include "editor.hpp"
 #include "filesystem.hpp"
 #include "font.hpp"
 #include "formatter.hpp"
@@ -29,11 +32,22 @@ std::list<graphics::texture>& messages() {
 	static std::list<graphics::texture> message_queue;
 	return message_queue;
 }
+
+std::set<console_dialog*> consoles_;
+
+const std::string Prompt = "--> ";
 }
 
 void add_message(const std::string& msg)
 {
 	if(!preferences::debug()) {
+		return;
+	}
+
+	if(!consoles_.empty()) {
+		foreach(console_dialog* d, consoles_) {
+			d->add_message(msg);
+		}
 		return;
 	}
 
@@ -46,7 +60,7 @@ void add_message(const std::string& msg)
 
 	const SDL_Color col = {255, 255, 255, 255};
 	try {
-		messages().push_back(font::render_text(msg, col, 14));
+		messages().push_back(font::render_text_uncached(msg, col, 14));
 	} catch(font::error& e) {
 
 		std::cerr << "FAILED TO ADD MESSAGE DUE TO FONT RENDERING FAILURE\n";
@@ -356,5 +370,140 @@ void show_interactive_console(level& lvl, entity& obj)
 #else
 void show_interactive_console(level& lvl, entity& obj) {}
 #endif
+
+console_dialog::console_dialog(level& lvl, entity& obj)
+   : dialog(0, graphics::screen_height() - 200, graphics::screen_width() <= 800 ? graphics::screen_width() : 800, 200), lvl_(&lvl), focus_(&obj),
+     history_pos_(0)
+{
+	init();
+
+	consoles_.insert(this);
+}
+
+console_dialog::~console_dialog()
+{
+	consoles_.erase(this);
+}
+
+void console_dialog::init()
+{
+	using namespace gui;
+	text_editor_ = new text_editor_widget(width() - 20, height() - 20);
+	add_widget(widget_ptr(text_editor_), 10, 10);
+
+	text_editor_->set_on_move_cursor_handler(boost::bind(&console_dialog::on_move_cursor, this));
+	text_editor_->set_on_begin_enter_handler(boost::bind(&console_dialog::on_begin_enter, this));
+	text_editor_->set_on_enter_handler(boost::bind(&console_dialog::on_enter, this));
+
+	text_editor_->set_text(Prompt);
+	text_editor_->set_cursor(0, Prompt.size());
+}
+
+void console_dialog::on_move_cursor()
+{
+	if(text_editor_->cursor_row() < text_editor_->get_data().size()-1) {
+		text_editor_->set_cursor(text_editor_->get_data().size()-1, text_editor_->cursor_col());
+	}
+
+	if(text_editor_->cursor_col() < Prompt.size()) {
+		text_editor_->set_cursor(text_editor_->get_data().size()-1, Prompt.size());
+	}
+}
+
+bool console_dialog::on_begin_enter()
+{
+	std::string ffl(text_editor_->get_data().back());
+	ASSERT_LOG(ffl.size() >= Prompt.size() && std::equal(Prompt.begin(), Prompt.end(), ffl.begin()), "No prompt found in debug console: " << ffl);
+	ffl.erase(ffl.begin(), ffl.begin() + Prompt.size());
+	text_editor_->set_text(text_editor_->text() + "\n" + Prompt);
+	text_editor_->set_cursor(text_editor_->get_data().size()-1, Prompt.size());
+	if(!ffl.empty()) {
+		history_.push_back(ffl);
+		history_pos_ = history_.size();
+		try {
+			std::cerr << "EVALUATING: " << ffl << "\n";
+			game_logic::formula f(variant(ffl), &get_custom_object_functions_symbol_table());
+			variant v = f.execute(*focus_);
+			focus_->execute_command(v);
+			debug_console::add_message(v.to_debug_string());
+		} catch(game_logic::formula_error& e) {
+			debug_console::add_message("error parsing formula");
+		} catch(...) {
+			debug_console::add_message("unknown error parsing formula");
+		}
+	}
+
+	return false;
+}
+
+void console_dialog::on_enter()
+{
+}
+
+bool console_dialog::has_keyboard_focus() const
+{
+	return text_editor_->has_focus();
+}
+
+void console_dialog::add_message(const std::string& msg)
+{
+	std::string m;
+	for(std::vector<std::string>::const_iterator i = text_editor_->get_data().begin(); i != text_editor_->get_data().end()-1; ++i) {
+		m += *i + "\n";
+	}
+
+	m += msg + "\n";
+	m += text_editor_->get_data().back();
+
+	int col = text_editor_->cursor_col();
+	text_editor_->set_text(m);
+	text_editor_->set_cursor(text_editor_->get_data().size()-1, col);
+}
+
+bool console_dialog::handle_event(const SDL_Event& event, bool claimed)
+{
+	if(!claimed && has_keyboard_focus()) {
+		switch(event.type) {
+		case SDL_KEYDOWN:
+			if((event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_DOWN) && !history_.empty()) {
+				if(event.key.keysym.sym == SDLK_UP) {
+					--history_pos_;
+				} else {
+					++history_pos_;
+				}
+
+				if(history_pos_ < 0) {
+					history_pos_ = history_.size();
+				} else if(history_pos_ > history_.size()) {
+					history_pos_ = history_.size();
+				}
+
+				load_history();
+				return true;
+			}
+			break;
+		}
+	}
+
+	return dialog::handle_event(event, claimed);
+}
+
+void console_dialog::load_history()
+{
+	std::string str;
+	if(history_pos_ < history_.size()) {
+		str = history_[history_pos_];
+	}
+
+	std::string m;
+	for(std::vector<std::string>::const_iterator i = text_editor_->get_data().begin(); i != text_editor_->get_data().end()-1; ++i) {
+		m += *i + "\n";
+	}
+
+	m += Prompt + str;
+	text_editor_->set_text(m);
+
+	text_editor_->set_cursor(text_editor_->get_data().size()-1, text_editor_->get_data().back().size());
+}
 
 }

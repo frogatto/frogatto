@@ -82,15 +82,9 @@ manager::~manager()
 #endif
 }
 
-graphics::texture render_text(const std::string& text,
-                              const SDL_Color& color, int size)
+graphics::texture render_text_uncached(const std::string& text,
+                                       const SDL_Color& color, int size)
 {
-	CacheKey key = {text, graphics::color(color.r, color.g, color.b), size};
-	RenderCache::const_iterator cache_itor = cache().find(key);
-	if(cache_itor != cache().end()) {
-		return cache_itor->second;
-	}
-
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE
 	TTF_Font* font = get_font(size);
 
@@ -128,7 +122,19 @@ graphics::texture render_text(const std::string& text,
 #else
 	graphics::surface s;
 #endif
-	graphics::texture res = graphics::texture::get_no_cache(s);
+	return graphics::texture::get_no_cache(s);
+}
+
+graphics::texture render_text(const std::string& text,
+                              const SDL_Color& color, int size)
+{
+	CacheKey key = {text, graphics::color(color.r, color.g, color.b), size};
+	RenderCache::const_iterator cache_itor = cache().find(key);
+	if(cache_itor != cache().end()) {
+		return cache_itor->second;
+	}
+
+	graphics::texture res = render_text_uncached(text, color, size);
 
 	if(res.width()*res.height() <= 256*256) {
 		if(cache().size() > 512) {

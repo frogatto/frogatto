@@ -3,8 +3,10 @@
 
 #include <string>
 
+#include <boost/intrusive_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 
+#include "debug_console.hpp"
 #include "geometry.hpp"
 #include "key.hpp"
 #include "level.hpp"
@@ -61,6 +63,8 @@ private:
 
 	editor* editor_;
 	boost::scoped_ptr<editor_resolution_manager> editor_resolution_manager_;
+
+	boost::scoped_ptr<debug_console::console_dialog> console_;
 };
 
 class pause_scope

@@ -910,7 +910,7 @@ void editor::edit_level()
 
 		SDL_Event event;
 		while(SDL_PollEvent(&event)) {
-			handle_event(event);
+			handle_event(event, false);
 		}
 
 		draw();
@@ -919,10 +919,14 @@ void editor::edit_level()
 	}
 }
 
-bool editor::handle_event(const SDL_Event& event)
+bool editor::handle_event(const SDL_Event& event, bool swallowed)
 {
 	const bool code_dialog_started_with_focus = code_dialog_ && code_dialog_->has_keyboard_focus();
-	if(code_dialog_ && code_dialog_->process_event(event, false)) {
+	if(code_dialog_ && code_dialog_->process_event(event, swallowed)) {
+		return true;
+	}
+
+	if(swallowed) {
 		return true;
 	}
 

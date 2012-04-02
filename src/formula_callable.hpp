@@ -29,7 +29,7 @@ enum FORMULA_ACCESS_TYPE { FORMULA_READ_ONLY, FORMULA_WRITE_ONLY, FORMULA_READ_W
 struct formula_input {
 	std::string name;
 	FORMULA_ACCESS_TYPE access;
-	explicit formula_input(const std::string& name, FORMULA_ACCESS_TYPE access=FORMULA_READ_WRITE)
+	formula_input(const std::string& name, FORMULA_ACCESS_TYPE access=FORMULA_READ_WRITE)
 			: name(name), access(access)
 	{}
 };

@@ -1241,17 +1241,10 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 			for(size_t i=0; i<v.size(); ++i) {
 				const game_logic::formula_input& input = v[i];
 				if(!first) {
-					s << ", ";
+					s << ",\n";
 				}
 				first = false;
-				s << input.name << " ";
-				if(input.access == game_logic::FORMULA_READ_WRITE) {
-					s << "(read-write) ";
-				} else if(input.access == game_logic::FORMULA_WRITE_ONLY) {
-					s << "(writeonly) ";
-				}
-
-				s << ": " << callable_->query_value(input.name).to_debug_string(seen);
+				s << input.name << ": " << callable_->query_value(input.name).to_debug_string(seen);
 			}
 		} else {
 			s << "...";

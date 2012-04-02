@@ -164,15 +164,7 @@ void dialog::handle_draw() const
 			glColor4f(1.0, 1.0, 1.0, 1.0);
 		}
 	}
-	if (level::current_ptr() && !level::current().in_editor())
-	{
-		draw_scene(level::current(), last_draw_position());
-		SDL_Rect rect = {x(),y(),width(),height()};
-		SDL_Color col = {0,0,0,0};
-		graphics::draw_rect(rect, col, 204);
-		const_framed_gui_element_ptr window(framed_gui_element::get("empty_window"));
-		window->blit(x(),y(),width(),height(), 1);
-	}
+
 	handle_draw_children();
 }
 

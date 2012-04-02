@@ -41,6 +41,7 @@ public:
 	void set_on_change_handler(boost::function<void()> fn) { on_change_ = fn; }
 	void set_on_move_cursor_handler(boost::function<void()> fn) { on_move_cursor_ = fn; }
 	void set_on_enter_handler(boost::function<void()> fn) { on_enter_ = fn; }
+	void set_on_begin_enter_handler(boost::function<bool()> fn) { on_begin_enter_ = fn; }
 	void set_on_tab_handler(boost::function<void()> fn) { on_tab_ = fn; }
 
 	bool has_focus() const { return has_focus_; }
@@ -48,6 +49,8 @@ public:
 
 	int cursor_row() const { return cursor_.row; }
 	int cursor_col() const { return cursor_.col; }
+
+	void set_cursor(int row, int col);
 
 protected:
 
@@ -117,6 +120,7 @@ private:
 	void truncate_col_position();
 
 	boost::function<void()> on_change_, on_move_cursor_, on_enter_, on_tab_;
+	boost::function<bool()> on_begin_enter_;
 };
 
 }
