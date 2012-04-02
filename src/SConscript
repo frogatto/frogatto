@@ -18,6 +18,9 @@ editor_layers_dialog.cpp
 editor_stats_dialog.cpp
 editor_variable_info.cpp
 checkbox.cpp
+clipboard.cpp
+code_editor_dialog.cpp
+code_editor_widget.cpp
 collision_utils.cpp
 color_utils.cpp
 controls.cpp
@@ -109,6 +112,7 @@ surface_scaling.cpp
 surface.cpp
 texture.cpp
 texture_frame_buffer.cpp
+text_editor_widget.cpp
 text_entry_widget.cpp
 thread.cpp
 tile_map.cpp
