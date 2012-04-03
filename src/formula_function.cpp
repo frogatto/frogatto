@@ -48,6 +48,7 @@ namespace game_logic {
 
 variant formula_expression::execute_member(const formula_callable& variables, std::string& id) const
 {
+	formula::fail_if_static_context();
 	ASSERT_LOG(false, "Unexpected execution of formula");
 }
 
