@@ -15,6 +15,7 @@
 #include <iostream>
 #include <math.h>
 
+#include "asserts.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "formula.hpp"
@@ -47,7 +48,7 @@ namespace game_logic {
 
 variant formula_expression::execute_member(const formula_callable& variables, std::string& id) const
 {
-	throw formula_error();
+	ASSERT_LOG(false, "Unexpected execution of formula");
 }
 
 namespace {
@@ -1523,13 +1524,10 @@ private:
 		}
 
 		if(args().size() == 2) {
-			try {
-				std::string member;
-				variant target = args()[0]->evaluate_with_member(variables, member);
-				return variant(new set_command(
-				  target, member, args()[1]->evaluate(variables)));
-			} catch(game_logic::formula_error&) {
-			}
+			std::string member;
+			variant target = args()[0]->evaluate_with_member(variables, member);
+			return variant(new set_command(
+			  target, member, args()[1]->evaluate(variables)));
 		}
 
 		variant target;
@@ -1585,13 +1583,10 @@ private:
 		}
 
 		if(args().size() == 2) {
-			try {
-				std::string member;
-				variant target = args()[0]->evaluate_with_member(variables, member);
-				return variant(new add_command(
+			std::string member;
+			variant target = args()[0]->evaluate_with_member(variables, member);
+			return variant(new add_command(
 				  target, member, args()[1]->evaluate(variables)));
-			} catch(game_logic::formula_error&) {
-			}
 		}
 
 		variant target;
@@ -1883,14 +1878,9 @@ function_expression::function_expression(
     : name_(name), args_(args)
 {
 	set_name(name.c_str());
-	if(min_args >= 0 && args_.size() < static_cast<size_t>(min_args)) {
-		std::cerr << "ERROR: incorrect number of arguments to function '" << name << "': expected [" << min_args << "," << max_args << "], found " << args_.size() << "\n";
-		throw formula_error();
-	}
-
-	if(max_args >= 0 && args_.size() > static_cast<size_t>(max_args)) {
-		std::cerr << "ERROR: incorrect number of arguments to function '" << name << "': expected [" << min_args << "," << max_args << "], found " << args_.size() << "\n";
-		throw formula_error();
+	if(min_args >= 0 && args_.size() < static_cast<size_t>(min_args) ||
+	   max_args >= 0 && args_.size() > static_cast<size_t>(max_args)) {
+		ASSERT_LOG(false, "ERROR: incorrect number of arguments to function '" << name << "': expected [" << min_args << "," << max_args << "], found " << args_.size());
 	}
 }
 

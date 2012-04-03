@@ -14,6 +14,7 @@
 #include <iostream>
 
 #include "foreach.hpp"
+#include "formatter.hpp"
 #include "formula_tokenizer.hpp"
 #include "string_utils.hpp"
 #include "unit_test.hpp"
@@ -66,8 +67,7 @@ token get_token(iterator& i1, iterator i2) {
 		t.type = *i1 == '#' ? TOKEN_COMMENT : TOKEN_STRING_LITERAL;
 		i1 = std::find(i1+1, i2, *i1);
 		if(i1 == i2) {
-			std::cerr << "Unterminated string or comment\n";
-			throw token_error();
+			throw token_error("Unterminated string or comment");
 		}
 		t.end = ++i1;
 		return t;
@@ -107,8 +107,7 @@ token get_token(iterator& i1, iterator i2) {
 				}
 			}
 
-			std::cerr << "Unterminated q string\n";
-			throw token_error();
+			throw token_error("Unterminated q string");
 		}
 		break;
 	case '>':
@@ -119,8 +118,7 @@ token get_token(iterator& i1, iterator i2) {
 		if(i1 != i2 && *i1 == '=') {
 			++i1;
 		} else if(*(i1-1) == '!') {
-			std::cerr << "Unexpected character in formula: '!'\n";
-			throw token_error();
+			throw token_error("Unexpected character in formula: '!'");
 		}
 
 		t.end = i1;
@@ -224,8 +222,12 @@ token get_token(iterator& i1, iterator i2) {
 		return t;
 	}
 
-	std::cerr << "Unrecognized token: '" << std::string(i1,i2) << "'\n";
-	throw token_error();
+	throw token_error(formatter() << "Unrecognized token: '" << std::string(i1,i2) << "'");
+}
+
+token_error::token_error(const std::string& m) : msg(m)
+{
+	std::cerr << "Tokenizer error: " << m << "\n";
 }
 
 }

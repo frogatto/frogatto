@@ -56,10 +56,6 @@ namespace game_logic
 		_verbatim_string_expressions = verbatim;
 	}
 	
-	formula_error::formula_error()
-	{
-	}
-	
 	void formula_callable::set_value(const std::string& key, const variant& /*value*/)
 	{
 		std::cerr << "ERROR: cannot set key '" << key << "' on object\n";
@@ -225,8 +221,7 @@ public:
 		} else if(op == "-") {
 			op_ = OP_SUB;
 		} else {
-			std::cerr << "illegal unary operator: '" << op << "'\n";
-			throw formula_error();
+			ASSERT_LOG(false, "illegal unary operator: '" << op << "'");
 		}
 	}
 private:
@@ -487,8 +482,7 @@ private:
 			return left.as_callable()->query_value(key.as_string());
 		} else {
 			output_formula_error_info();
-			std::cerr << "illegal usage of operator []: called on " << left.to_debug_string() << " value: " << left_->str() << "'\n";
-			throw formula_error();
+			ASSERT_LOG(false, "illegal usage of operator []: called on " << left.to_debug_string() << " value: " << left_->str() << "'");
 		}
 	}
 	
@@ -523,8 +517,7 @@ private:
 			}
 			
 		} else {
-			std::cerr << "illegal usage of operator [:]'\n";
-			throw formula_error();
+			ASSERT_LOG(false, "illegal usage of operator [:]'");
 		}
 	}
 	
@@ -946,8 +939,7 @@ void parse_function_args(const token* &i1, const token* i2,
 	if(i1->type == TOKEN_LPARENS) {
 		++i1;
 	} else {
-		std::cerr << "Invalid function definition" << std::endl;
-		throw formula_error();
+		ASSERT_LOG(false, "Invalid function definition");
 	}
 	
 	while((i1->type != TOKEN_RPARENS) && (i1 != i2)) {
@@ -967,15 +959,13 @@ void parse_function_args(const token* &i1, const token* i2,
 		} else if (i1->type == TOKEN_COMMA) {
 			//do nothing
 		} else {
-			std::cerr << "Invalid function definition" << std::endl;
-			throw formula_error();
+			ASSERT_LOG(false, "Invalid function definition");
 		}
 		++i1;
 	}
 	
 	if(i1->type != TOKEN_RPARENS) {
-		std::cerr << "Invalid function definition" << std::endl;
-		throw formula_error();
+		ASSERT_LOG(false, "Invalid function definition");
 	}
 	++i1;
 }
@@ -1025,8 +1015,7 @@ void parse_set_args(const token* i1, const token* i2,
 				res->push_back(parse_expression(beg,i1, symbols, NULL));
 				beg = i1+1;
 			} else {
-				std::cerr << "Too many '->' operators\n";
-				throw formula_error();
+				ASSERT_LOG(false, "Too many '->' operators");
 			}
 		} else if( i1->type == TOKEN_COMMA && !parens ) {
 			check_pointer = false;
@@ -1057,9 +1046,8 @@ void parse_where_clauses(const token* i1, const token * i2,
 		} else if(!parens) {
 			if(i1->type == TOKEN_COMMA) {
 				if(var_name.empty()) {
-					std::cerr << "There is 'where <expression>,; "
-					<< "'where name=<expression>,' was needed.\n";
-					throw formula_error();
+					ASSERT_LOG(false, "There is 'where <expression>,; "
+					<< "'where name=<expression>,' was needed.");
 				}
 				(*res)[var_name] = parse_expression(beg,i1, symbols, callable_def);
 				beg = i1+1;
@@ -1067,23 +1055,8 @@ void parse_where_clauses(const token* i1, const token * i2,
 			} else if(i1->type == TOKEN_OPERATOR) {
 				std::string op_name(i1->begin, i1->end);
 				if(op_name == "=") {
-					if(beg->type != TOKEN_IDENTIFIER) {
-						if(i1 == original_i1_cached) {
-							std::cerr<< "There is 'where =<expression'; "
-							<< "'where name=<expression>' was needed.\n";
-						} else {
-							std::cerr<< "There is 'where <expression>=<expression>'; "
-							<< "'where name=<expression>' was needed.\n";
-						}
-						throw formula_error();
-					} else if(beg+1 != i1) {
-						std::cerr<<"There is 'where name <expression>=<expression>'; "
-						<< "'where name=<expression>' was needed.\n";
-						throw formula_error();
-					} else if(!var_name.empty()) {
-						std::cerr<<"There is 'where name=name=<expression>'; "
-						<<"'where name=<expression>' was needed.\n";
-						throw formula_error();
+					if(beg->type != TOKEN_IDENTIFIER || beg+1 != i1 || !var_name.empty()) {
+						ASSERT_LOG(false, "Unexpected tokens after where");
 					}
 					var_name.insert(var_name.end(), beg->begin, beg->end);
 					beg = i1+1;
@@ -1094,9 +1067,7 @@ void parse_where_clauses(const token* i1, const token * i2,
 	}
 	if(beg != i1) {
 		if(var_name.empty()) {
-			std::cerr << "There is 'where <expression>'; "
-			<< "'where name=<expression> was needed.\n";
-			throw formula_error();
+			ASSERT_LOG(false, "Unexpected tokens after where");
 		}
 		(*res)[var_name] = parse_expression(beg,i1, symbols, callable_def);
 	}
@@ -1209,10 +1180,7 @@ expression_ptr parse_expression(const token* i1, const token* i2, function_symbo
 
 expression_ptr parse_expression_internal(const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def, bool* can_optimize)
 {
-	if(i1 == i2) {
-		std::cerr << "empty expression\n";
-		throw formula_error();
-	}
+	ASSERT_LOG(i1 != i2, "Empty expression in formula");
 	
 	if(i1->type == TOKEN_KEYWORD && std::string(i1->begin, i1->end) == "def" &&
 	   ((i1+1)->type == TOKEN_IDENTIFIER || (i1+1)->type == TOKEN_LPARENS)) {
@@ -1448,15 +1416,15 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 					++match;
 					ASSERT_LT(match, i2); 
 
-					std::cerr << "unexpected tokens after function call: '" << std::string(match->begin, (i2-1)->end) << "'\n";
+					ASSERT_LOG(false, "unexpected tokens after function call: '" << std::string(match->begin, (i2-1)->end) << "'");
 				} else {
-					std::cerr << "no closing parenthesis to function call: '" << std::string(i1->begin, (i2-1)->end) << "'\n";
+					ASSERT_LOG(false, "no closing parenthesis to function call: '" << std::string(i1->begin, (i2-1)->end) << "'");
 				}
 			} else {
-				std::cerr << "could not parse expression: '" << std::string(i1->begin, (i2-1)->end) << "'\n";
+				ASSERT_LOG(false, "could not parse expression: '" << std::string(i1->begin, (i2-1)->end) << "'");
 			}
 
-			throw formula_error();
+			assert(false); //should never reach here.
 		}
 	}
 	
@@ -1478,8 +1446,7 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 	
 	if(op_name == "(") {
 		if(i2 - op < 2) {
-			std::cerr << "MISSING PARENS IN FORMULA\n";
-			throw formula_error();
+			ASSERT_LOG(false, "MISSING PARENS IN FORMULA");
 		}
 
 		std::vector<expression_ptr> args;
@@ -1566,8 +1533,8 @@ formula::formula(const variant& val, function_symbol_table* symbols, const formu
 			if((tokens.back().type == TOKEN_WHITESPACE) || (tokens.back().type == TOKEN_COMMENT)) {
 				tokens.pop_back();
 			}
-		} catch(token_error& /*e*/) {
-			throw formula_error();
+		} catch(token_error& e) {
+			ASSERT_LOG(false, "Token error: " << e.msg);
 		}
 	}
 

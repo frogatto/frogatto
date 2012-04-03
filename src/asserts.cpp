@@ -2,6 +2,12 @@
 
 #include "asserts.hpp"
 
+validation_failure_exception::validation_failure_exception(const std::string& m)
+  : msg(m)
+{
+	std::cerr << "ASSERT FAIL: " << m << "\n";
+}
+
 namespace {
 	int throw_validation_failure = 0;
 }

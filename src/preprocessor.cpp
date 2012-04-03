@@ -106,13 +106,8 @@ variant preprocess_string_value(const std::string& input)
 			return variant(&res);
 		}
 	} else if(directive == "@eval") {
-		try {
-			game_logic::formula f(variant(std::string(i, input.end())));
-			return f.execute();
-		} catch (game_logic::formula_error& e) {
-			std::cerr << "ERROR EXECUTING FORMULA IN PREPROCESSOR\n";
-			throw preprocessor_error();
-		}
+		game_logic::formula f(variant(std::string(i, input.end())));
+		return f.execute();
 	} else {
 		throw preprocessor_error();
 	}
