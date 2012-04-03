@@ -81,9 +81,9 @@ public:
 	void set_name(const char* name) { name_ = name; }
 
 	void copy_debug_info_from(const formula_expression& o);
-	void set_debug_info(const variant& parent_formula,
-	                    std::string::const_iterator begin_str,
-	                    std::string::const_iterator end_str);
+	virtual void set_debug_info(const variant& parent_formula,
+	                            std::string::const_iterator begin_str,
+	                            std::string::const_iterator end_str);
 	bool has_debug_info() const;
 	std::string debug_pinpoint_location() const;
 
@@ -108,12 +108,17 @@ public:
 	                    const args_list& args,
 	                    int min_args=-1, int max_args=-1);
 
+	virtual void set_debug_info(const variant& parent_formula,
+	                            std::string::const_iterator begin_str,
+	                            std::string::const_iterator end_str);
+
 protected:
 	const std::string& name() const { return name_; }
 	const args_list& args() const { return args_; }
 private:
 	std::string name_;
 	args_list args_;
+	int min_args_, max_args_;
 };
 
 class formula_function_expression : public function_expression {

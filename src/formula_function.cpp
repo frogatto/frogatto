@@ -1960,12 +1960,20 @@ function_expression::function_expression(
                     const std::string& name,
                     const args_list& args,
                     int min_args, int max_args)
-    : name_(name), args_(args)
+    : name_(name), args_(args), min_args_(min_args), max_args_(max_args)
 {
 	set_name(name.c_str());
-	if(min_args >= 0 && args_.size() < static_cast<size_t>(min_args) ||
-	   max_args >= 0 && args_.size() > static_cast<size_t>(max_args)) {
-		ASSERT_LOG(false, "ERROR: incorrect number of arguments to function '" << name << "': expected [" << min_args << "," << max_args << "], found " << args_.size() << "\n" << debug_pinpoint_location());
+}
+
+void function_expression::set_debug_info(const variant& parent_formula,
+	                            std::string::const_iterator begin_str,
+	                            std::string::const_iterator end_str)
+{
+	formula_expression::set_debug_info(parent_formula, begin_str, end_str);
+
+	if(min_args_ >= 0 && args_.size() < static_cast<size_t>(min_args_) ||
+	   max_args_ >= 0 && args_.size() > static_cast<size_t>(max_args_)) {
+		ASSERT_LOG(false, "ERROR: incorrect number of arguments to function '" << name_ << "': expected between " << min_args_ << " and " << max_args_ << ", found " << args_.size() << "\n" << debug_pinpoint_location());
 	}
 }
 

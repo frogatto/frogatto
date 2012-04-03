@@ -384,7 +384,7 @@ const variant& variant::operator[](const variant v) const
 		if(info) {
 			loc = formatter() << " at " << *info->filename << " " << info->line << " (column " << info->column << ")\n";
 		}
-		throw type_error(formatter() << "type error: " << " expected a list or a map but found " << variant_type_to_string(type_) << " " << write_json());
+		throw type_error(formatter() << "type error: " << " expected a list or a map but found " << variant_type_to_string(type_) << " " << write_json() << loc);
 	}	
 }
 
