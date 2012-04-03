@@ -376,6 +376,8 @@ console_dialog::console_dialog(level& lvl, entity& obj)
 	init();
 
 	consoles_.insert(this);
+
+	text_editor_->set_focus(true);
 }
 
 console_dialog::~console_dialog()

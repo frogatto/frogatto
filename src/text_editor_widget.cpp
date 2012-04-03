@@ -315,6 +315,12 @@ bool text_editor_widget::handle_event(const SDL_Event& event, bool claimed)
 void text_editor_widget::set_focus(bool value)
 {
 	has_focus_ = value;
+
+	if(value) {
+		SDL_EnableUNICODE(1);
+		SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+	}
+
 	if(nrows_ == 1 && value) {
 		cursor_ = Loc(0, text_.front().size());
 		select_ = Loc(0, 0);
@@ -379,9 +385,7 @@ bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& ev
 		}
 #endif
 
-		SDL_EnableUNICODE(1);
-		SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
-		has_focus_ = true;
+		set_focus(true);
 		std::pair<int, int> pos = mouse_position_to_row_col(event.x, event.y);
 		if(pos.first != -1) {
 			cursor_.row = pos.first;
