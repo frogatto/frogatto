@@ -270,7 +270,9 @@ public:
 		
 		std::string name = entry->text();
 		if(name.empty() == false) {
-			sys::write_file(preferences::level_path() + name, "[level]\n[/level]\n");
+			std::string empty_contents = sys::read_file("data/level/empty.cfg");
+			ASSERT_LOG(empty_contents.empty() == false, "COULD NOT READ data/level/empty.cfg REQUIRED TEMPLATE FOR NEW LEVEL");
+			sys::write_file(preferences::level_path() + name, empty_contents);
 			editor_.close();
 			g_last_edited_level() = name;
 		}

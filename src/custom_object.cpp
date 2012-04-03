@@ -70,7 +70,7 @@ custom_object::custom_object(variant node)
 	rotate_(static_cast<int64_t>(0)), zorder_(node["zorder"].as_int(type_->zorder())),
 	zsub_order_(node["zsub_order"].as_int(type_->zsub_order())),
 	hitpoints_(node["hitpoints"].as_int(type_->hitpoints())),
-	max_hitpoints_(node["max_hitpoints"].as_int(type_->hitpoints())),
+	max_hitpoints_(node["max_hitpoints"].as_int(type_->hitpoints()) - type_->hitpoints()),
 	was_underwater_(false),
 	has_feet_(node["has_feet"].as_bool(type_->has_feet())),
 	invincible_(0),
@@ -280,7 +280,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	rotate_(static_cast<int64_t>(0)), zorder_(type_->zorder()),
 	zsub_order_(type_->zsub_order()),
 	hitpoints_(type_->hitpoints()),
-	max_hitpoints_(type_->hitpoints()),
+	max_hitpoints_(0),
 	was_underwater_(false),
 	has_feet_(type_->has_feet()),
 	invincible_(0),
@@ -560,9 +560,9 @@ variant custom_object::write() const
 		res.add("collide_dimensions", collide_dim);
 	}
 
-	if(hitpoints_ != type_->hitpoints() || max_hitpoints_ != type_->hitpoints()) {
+	if(hitpoints_ != type_->hitpoints() || max_hitpoints_ != 0) {
 		res.add("hitpoints", hitpoints_);
-		res.add("max_hitpoints", max_hitpoints_);
+		res.add("max_hitpoints", type_->hitpoints() + max_hitpoints_);
 	}
 
 	if(!vertex_shaders_.empty()) {
@@ -1807,7 +1807,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_ANIMATION:         return frame_->variant_id();
 	case CUSTOM_OBJECT_AVAILABLE_ANIMATIONS: return type_->available_frames();
 	case CUSTOM_OBJECT_HITPOINTS:         return variant(hitpoints_);
-	case CUSTOM_OBJECT_MAX_HITPOINTS:     return variant(max_hitpoints_);
+	case CUSTOM_OBJECT_MAX_HITPOINTS:     return variant(type_->hitpoints() + max_hitpoints_);
 	case CUSTOM_OBJECT_MASS:              return variant(type_->mass());
 	case CUSTOM_OBJECT_LABEL:             return variant(label());
 	case CUSTOM_OBJECT_X:                 return variant(x());
@@ -2178,8 +2178,8 @@ void custom_object::set_value(const std::string& key, const variant& value)
 			die();
 		}
 	} else if(key == "max_hitpoints") {
-		max_hitpoints_ = value.as_int();
-		if(hitpoints_ > max_hitpoints_) {
+		max_hitpoints_ = value.as_int() - type_->hitpoints();
+		if(hitpoints_ > type_->hitpoints() + max_hitpoints_) {
 			hitpoints_ = max_hitpoints_;
 		}
 	} else if(key == "velocity_x") {
@@ -2513,8 +2513,8 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		break;
 	}
 	case CUSTOM_OBJECT_MAX_HITPOINTS:
-		max_hitpoints_ = value.as_int();
-		if(hitpoints_ > max_hitpoints_) {
+		max_hitpoints_ = value.as_int() - type_->hitpoints();
+		if(hitpoints_ > type_->hitpoints() + max_hitpoints_) {
 			hitpoints_ = max_hitpoints_;
 		}
 		break;

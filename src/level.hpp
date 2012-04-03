@@ -246,9 +246,11 @@ public:
 	//pressing up will talk to someone or enter a door etc.
 	bool can_interact(const rect& body) const;
 
+	int earliest_backup_cycle() const;
 	void replay_from_cycle(int ncycle);
 	void backup();
 	void reverse_one_cycle();
+	void reverse_to_cycle(int ncycle);
 
 	void transfer_state_to(level& lvl);
 

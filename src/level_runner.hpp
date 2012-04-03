@@ -11,6 +11,7 @@
 #include "key.hpp"
 #include "level.hpp"
 #include "pause_game_dialog.hpp"
+#include "slider.hpp"
 
 //an exception which is thrown if we go through a portal which takes us
 //to a level with a different number of players, which indicates we are going
@@ -63,6 +64,9 @@ private:
 
 	editor* editor_;
 	boost::scoped_ptr<editor_resolution_manager> editor_resolution_manager_;
+	gui::slider_ptr history_slider_;
+	void init_history_slider();
+	void on_history_change(float value);
 
 	boost::scoped_ptr<debug_console::console_dialog> console_;
 };

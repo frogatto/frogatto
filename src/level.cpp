@@ -3381,6 +3381,15 @@ void level::backup()
 	}
 }
 
+int level::earliest_backup_cycle() const
+{
+	if(backups_.empty()) {
+		return cycle_;
+	} else {
+		return backups_.front()->cycle;
+	}
+}
+
 void level::reverse_one_cycle()
 {
 	if(backups_.empty()) {
@@ -3389,6 +3398,24 @@ void level::reverse_one_cycle()
 
 	restore_from_backup(*backups_.back());
 	backups_.pop_back();
+}
+
+void level::reverse_to_cycle(int ncycle)
+{
+	if(backups_.empty()) {
+		return;
+	}
+
+	std::cerr << "REVERSING FROM " << cycle_ << " TO " << ncycle << "...\n";
+
+	while(backups_.size() > 1 && backups_.back()->cycle > ncycle) {
+		std::cerr << "REVERSING PAST " << backups_.back()->cycle << "...\n";
+		backups_.pop_back();
+	}
+
+	std::cerr << "GOT TO CYCLE: " << backups_.back()->cycle << "\n";
+
+	reverse_one_cycle();
 }
 
 void level::restore_from_backup(backup_snapshot& snapshot)

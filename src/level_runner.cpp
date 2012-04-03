@@ -632,6 +632,7 @@ bool level_runner::play_cycle()
 				editor_->setup_for_editing();
 				lvl_->set_as_current_level();
 				lvl_->set_editor();
+				init_history_slider();
 			}
 #endif
 
@@ -655,6 +656,10 @@ bool level_runner::play_cycle()
 			bool swallowed = false;
 			if(console_) {
 				swallowed = console_->process_event(event, swallowed);
+			}
+
+			if(history_slider_ && paused) {
+				swallowed = history_slider_->process_event(event, swallowed);
 			}
 
 			if(editor_) {
@@ -681,6 +686,7 @@ bool level_runner::play_cycle()
 					editor_->setup_for_editing();
 					lvl_->set_as_current_level();
 					lvl_->set_editor();
+					init_history_slider();
 				}
 			}
 
@@ -768,10 +774,13 @@ bool level_runner::play_cycle()
 				if(key == SDLK_ESCAPE) {
 					if(editor_) {
 						editor_ = NULL;
+						history_slider_.reset();
 						editor_resolution_manager_.reset();
 						lvl_->mutate_value("zoom", variant(1));
 						lvl_->set_editor(false);
 						paused = false;
+						controls::read_until(lvl_->cycle());
+						init_history_slider();
 					} else {
 						should_pause = true;
 					}
@@ -794,12 +803,17 @@ bool level_runner::play_cycle()
 						editor_->setup_for_editing();
 						lvl_->set_editor();
 						lvl_->set_as_current_level();
+						init_history_slider();
 					} else {
 						//Pause the game and set the level to its original
 						//state if the user presses ctrl+e twice.
 						paused = !paused;
 						editor_->reset_playing_level(false);
 						last_draw_position().init = false;
+						init_history_slider();
+						if(!paused) {
+							controls::read_until(lvl_->cycle());
+						}
 					}
 #endif
 				} else if(key == SDLK_r && (mod&KMOD_CTRL) && editor_) {
@@ -861,6 +875,7 @@ bool level_runner::play_cycle()
 						editor_->setup_for_editing();
 						lvl_->set_as_current_level();
 						lvl_->set_editor();
+						init_history_slider();
 					}
 #endif
 				} else if(key == SDLK_l && (mod&KMOD_CTRL)) {
@@ -875,6 +890,10 @@ bool level_runner::play_cycle()
 					sound::mute(!sound::muted()); //toggle sound
 				} else if(key == SDLK_p && mod & KMOD_CTRL) {
 					paused = !paused;
+					init_history_slider();
+					if(!paused) {
+						controls::read_until(lvl_->cycle());
+					}
 				} else if(key == SDLK_p && mod & KMOD_ALT) {
 					preferences::set_use_pretty_scaling(!preferences::use_pretty_scaling());
 					graphics::texture::clear_textures();
@@ -970,6 +989,8 @@ bool level_runner::play_cycle()
 			should_draw = update_camera_position(*lvl_, last_draw_position(), NULL, !is_skipping_game());
 		}
 
+		std::cerr << "DRAW: " << (should_draw ? "yes" : "no") << "\n";
+
 		lvl_->process_draw();
 
 		if(should_draw) {
@@ -990,6 +1011,10 @@ bool level_runner::play_cycle()
 
 			if(editor_) {
 				editor_->draw_gui();
+			}
+
+			if(history_slider_ && paused) {
+				history_slider_->draw();
 			}
 
 			if(console_) {
@@ -1080,6 +1105,10 @@ bool level_runner::play_cycle()
 void level_runner::toggle_pause()
 {
 	paused = !paused;
+	init_history_slider();
+	if(!paused) {
+		controls::read_until(lvl_->cycle());
+	}
 }
 
 void level_runner::reverse_cycle()
@@ -1154,4 +1183,43 @@ void level_runner::handle_pause_game_result(PAUSE_GAME_RESULT result)
 		done = true;
 		original_level_cfg_ = "titlescreen.cfg";
 	}
+}
+
+void level_runner::init_history_slider()
+{
+	if(paused && editor_) {
+		history_slider_.reset(new gui::slider(100, boost::bind(&level_runner::on_history_change, this, _1)));
+		history_slider_->set_loc(400, 4);
+		history_slider_->set_position(1.0);
+	} else {
+		history_slider_.reset();
+	}
+}
+
+void level_runner::on_history_change(float value)
+{
+	const int first_frame = lvl_->earliest_backup_cycle();
+	const int last_frame = controls::local_controls_end();
+	int target_frame = first_frame + (last_frame + 1 - first_frame)*value;
+	if(target_frame > last_frame) {
+		target_frame = last_frame;
+	}
+
+	std::cerr << "TARGET FRAME: " << target_frame << " IN [" << first_frame << ", " << last_frame << "]\n";
+
+	if(target_frame < lvl_->cycle()) {
+		lvl_->reverse_to_cycle(target_frame);
+	} else if(target_frame > lvl_->cycle()) {
+		std::cerr << "STEPPING FORWARD FROM " << lvl_->cycle() << " TO " << target_frame << " /" << controls::local_controls_end() << "\n";
+
+		const controls::control_backup_scope ctrl_scope;
+		
+		while(lvl_->cycle() < target_frame) {
+			lvl_->process();
+			lvl_->process_draw();
+			lvl_->backup();
+		}
+	}
+
+	lvl_->set_active_chars();
 }
