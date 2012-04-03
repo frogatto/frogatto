@@ -3,6 +3,7 @@
 #include "filesystem.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
+#include "formula_callable.hpp"
 #include "json_parser.hpp"
 #include "json_tokenizer.hpp"
 #include "preprocessor.hpp"
@@ -75,9 +76,25 @@ void escape_string(std::string& s) {
 #define CHECK_PARSE(cond, msg, pos) if(!(cond)) { int ln = get_line_num(doc, (pos)); int col = get_col_number(doc, (pos)); throw parse_error((msg), ln, col); }
 
 namespace {
+
+class json_macro;
+typedef boost::shared_ptr<json_macro> json_macro_ptr;
+
+class json_macro {
+	std::string code_;
+	std::map<std::string, json_macro_ptr> macros_;
+public:
+	json_macro(const std::string& code, std::map<std::string, json_macro_ptr> macros);
+	variant call(variant arg) const;
+};
+
+json_macro::json_macro(const std::string& code, std::map<std::string, json_macro_ptr> macros) :code_(code), macros_(macros)
+{
+}
+
 enum VAL_TYPE { VAL_NONE, VAL_OBJ, VAL_ARRAY };
 struct JsonObject {
-	explicit JsonObject(variant::debug_info debug_info) : type(VAL_NONE), is_base(false), is_deriving(false), require_comma(false), require_colon(false), info(debug_info) {}
+	explicit JsonObject(variant::debug_info debug_info) : type(VAL_NONE), is_base(false), is_call(false), is_deriving(false), require_comma(false), require_colon(false), info(debug_info), begin_macro(NULL) {}
 	std::map<variant, variant> obj;
 	std::vector<variant> array;
 	VAL_TYPE type;
@@ -85,12 +102,15 @@ struct JsonObject {
 
 	variant base;
 	bool is_base;
+	bool is_call;
 	bool is_deriving;
 
 	bool require_comma;
 	bool require_colon;
 
 	variant::debug_info info;
+
+	const char* begin_macro;
 
 	void setup_base(variant v) {
 		if(v.is_null()) {
@@ -135,14 +155,15 @@ std::set<std::string> filename_registry;
 
 variant parse_internal(const std::string& doc, const std::string& fname,
                        JSON_PARSE_OPTIONS options,
-					   std::map<std::string, variant>* anchors)
+					   std::map<std::string, json_macro_ptr>* macros,
+					   const game_logic::formula_callable* callable)
 {
-	std::map<std::string, variant> anchors_buf;
-	if(!anchors) {
-		anchors = &anchors_buf;
+	std::map<std::string, json_macro_ptr> macros_buf;
+	if(!macros) {
+		macros = &macros_buf;
 	}
 
-	const bool use_preprocessor = options&JSON_USE_PREPROCESSOR;
+	bool use_preprocessor = options&JSON_USE_PREPROCESSOR;
 
 	std::set<std::string>::const_iterator filename_itor = filename_registry.insert(fname).first;
 
@@ -185,6 +206,12 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 			case Token::TYPE_COLON: {
 				CHECK_PARSE(stack.back().require_colon, "Unexpected :", t.begin - doc.c_str());
 				stack.back().require_colon = false;
+				if(stack.back().begin_macro) {
+					stack.back().begin_macro = t.end;
+
+					//we'll turn off the preprocessor while we parse the macro.
+					use_preprocessor = false;
+				}
 				break;
 			}
 
@@ -207,13 +234,25 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 			case Token::TYPE_RCURLY: {
 				CHECK_PARSE(stack.back().type == VAL_OBJ, "Unexpected }", t.begin - doc.c_str());
 
+				const char* begin_macro = stack.back().begin_macro;
 				const bool is_base = stack.back().is_base;
+				const bool is_call = stack.back().is_call;
 				variant name = stack.back().name;
 				variant v = stack.back().as_variant();
 				stack.pop_back();
 
 				if(is_base) {
 					stack.back().base = v;
+				} else if(is_call) {
+					std::string call_macro = v["@call"].as_string();
+					std::cerr << "CALLING " << call_macro << "...\n";
+					std::map<std::string, json_macro_ptr>::const_iterator itor = macros->find(call_macro);
+					CHECK_PARSE(itor != macros->end(), "Could not find macro", t.begin - doc.c_str());
+
+					stack.back().add(name, itor->second->call(v));
+				} else if(begin_macro) {
+					(*macros)[name.as_string()].reset(new json_macro(std::string(begin_macro, t.end), *macros));
+					use_preprocessor = true;
 				} else {
 					stack.back().add(name, v);
 				}
@@ -233,10 +272,17 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 
 			case Token::TYPE_RSQUARE: {
 				CHECK_PARSE(stack.back().type == VAL_ARRAY, "Unexpected ]", t.begin - doc.c_str());
+				const char* begin_macro = stack.back().begin_macro;
 				variant name = stack.back().name;
 				variant v = stack.back().as_variant();
 				stack.pop_back();
-				stack.back().add(name, v);
+
+				if(begin_macro) {
+					(*macros)[name.as_string()].reset(new json_macro(std::string(begin_macro, t.end), *macros));
+					use_preprocessor = true;
+				} else {
+					stack.back().add(name, v);
+				}
 				stack.back().require_comma = true;
 				break;
 			}
@@ -251,20 +297,31 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 
 				variant v;
 				
+				bool is_macro = false;
 				if(use_preprocessor) {
+					const std::string Macro = "@macro ";
+					if(stack.back().type == VAL_OBJ && s.size() > Macro.size() && std::equal(Macro.begin(), Macro.end(), s.begin())) {
+						s.erase(s.begin(), s.begin() + Macro.size());
+						is_macro = true;
+					}
+
 					try {
-						v = preprocess_string_value(s);
+						v = preprocess_string_value(s, callable);
 					} catch(preprocessor_error& e) {
 						CHECK_PARSE(false, "Preprocessor error: " + s, t.begin - doc.c_str());
 					}
 
-					if(stack.back().type == VAL_OBJ && stack[stack.size()-2].type == VAL_ARRAY && s == "@base") {
+					const std::string CallStr = "@call";
+					if(stack.back().type == VAL_OBJ && s == "@call") {
+						stack.back().is_call = true;
+					} else if(stack.back().type == VAL_OBJ && stack[stack.size()-2].type == VAL_ARRAY && s == "@base") {
 						stack.back().is_base = true;
 					}
 
 					if(stack.back().type == VAL_OBJ && s == "@derive") {
 						stack.back().is_deriving = true;
 					}
+
 				} else {
 					v = variant(s);
 				}
@@ -278,14 +335,25 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 					v.set_debug_info(debug_info);
 					stack.back().name = v;
 					stack.back().require_colon = true;
+
+					if(is_macro) {
+						stack.back().begin_macro = i1;
+					}
 				} else if(stack.back().type == VAL_ARRAY) {
 					stack.back().add(variant(""), v);
 					stack.back().require_comma = true;
 				} else {
+					const char* begin_macro = stack.back().begin_macro;
 					variant name = stack.back().name;
 					v.set_debug_info(debug_info);
 					stack.pop_back();
-					stack.back().add(name, v);
+
+					if(begin_macro) {
+						(*macros)[name.as_string()].reset(new json_macro(std::string(begin_macro, t.end), *macros));
+						use_preprocessor = true;
+					} else {
+						stack.back().add(name, v);
+					}
 					stack.back().require_comma = true;
 				}
 
@@ -336,11 +404,25 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 		CHECK_PARSE(false, e.msg, e.loc - doc.c_str());
 	}
 }
+
+variant json_macro::call(variant arg) const
+{
+	std::map<std::string, json_macro_ptr> m = macros_;
+	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
+	foreach(const variant_pair& p, arg.as_map()) {
+		callable->add(p.first.as_string(), p.second);
+	}
+
+	variant holder(callable);
+
+	return parse_internal(code_, "", JSON_USE_PREPROCESSOR, &m, callable);
+}
+
 }
 
 variant parse(const std::string& doc, JSON_PARSE_OPTIONS options)
 {
-	return parse_internal(doc, "", options, NULL);
+	return parse_internal(doc, "", options, NULL, NULL);
 }
 
 variant parse_from_file(const std::string& fname, JSON_PARSE_OPTIONS options)
@@ -352,7 +434,7 @@ variant parse_from_file(const std::string& fname, JSON_PARSE_OPTIONS options)
 			throw parse_error(formatter() << "File " << fname << " could not be read");
 		}
 
-		variant result = parse_internal(data, fname, options, NULL);
+		variant result = parse_internal(data, fname, options, NULL, NULL);
 		return result;
 	} catch(parse_error& e) {
 		e.fname = fname;
@@ -379,6 +461,20 @@ UNIT_TEST(json_derive)
 	CHECK_EQ(v["x"], variant(4));
 	CHECK_EQ(v["y"], variant(2));
 	CHECK_EQ(v["a"], variant(7));
+}
+
+UNIT_TEST(json_macro)
+{
+	std::string doc = "{\"@macro f\": {a: \"@eval 4 + x\", b: \"@eval y\"},"
+	                  "value: {\"@call\": \"f\", x: 2, y: {a: 4, z: 5}}}";
+	variant v = parse(doc);
+	std::cerr << v.write_json();
+	CHECK_EQ(v.get_keys().num_elements(), 1);
+
+	v = v["value"];
+	CHECK_EQ(v["a"], variant(6));
+	CHECK_EQ(v["b"]["a"], variant(4));
+	CHECK_EQ(v["b"]["z"], variant(5));
 }
 
 }

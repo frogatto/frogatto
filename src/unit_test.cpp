@@ -93,9 +93,9 @@ bool run_tests(const std::vector<std::string>* tests)
 		} catch(failure_exception&) {
 			std::cerr << "TEST " << test << " FAILED!!\n";
 			++nfail;
-		} catch(...) {
-			std::cerr << "TEST " << test << " FAILED WITH UNKNOWN EXCEPTION!!\n";
-			++nfail;
+//		} catch(...) {
+//			std::cerr << "TEST " << test << " FAILED WITH UNKNOWN EXCEPTION!!\n";
+//			++nfail;
 		}
 	}
 

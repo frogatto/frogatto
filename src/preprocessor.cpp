@@ -62,7 +62,7 @@ std::string preprocess(const std::string& input){
 	return output_string;
 }
 
-variant preprocess_string_value(const std::string& input)
+variant preprocess_string_value(const std::string& input, const game_logic::formula_callable* callable)
 {
 	if(input.empty() || input[0] != '@') {
 		return variant(input);
@@ -73,7 +73,7 @@ variant preprocess_string_value(const std::string& input)
 		return variant(std::string(input.begin()+1, input.end()));
 	}
 
-	if(input == "@base" || input == "@derive") {
+	if(input == "@base" || input == "@derive" || input == "@call") {
 		return variant(input);
 	}
 
@@ -107,7 +107,11 @@ variant preprocess_string_value(const std::string& input)
 		}
 	} else if(directive == "@eval") {
 		game_logic::formula f(variant(std::string(i, input.end())));
-		return f.execute();
+		if(callable) {
+			return f.execute(*callable);
+		} else {
+			return f.execute();
+		}
 	} else {
 		throw preprocessor_error();
 	}
