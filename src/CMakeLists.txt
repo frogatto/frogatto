@@ -21,6 +21,8 @@ add_executable( frogatto
 	button.cpp
 	character_editor_dialog.cpp
 	checkbox.cpp
+	code_editor_widget.cpp
+	code_editor_dialog.cpp
 	current_generator.cpp
 	decimal.cpp
 	editor_dialogs.cpp
@@ -71,6 +73,8 @@ add_executable( frogatto
 	inventory.cpp
 	iphone_controls.cpp
 	joystick.cpp
+	json_parser.cpp
+	json_tokenizer.cpp
 	key.cpp
 	key_button.cpp
 	label.cpp
@@ -129,24 +133,22 @@ add_executable( frogatto
 	translate.cpp
 	utils.cpp
 	variant.cpp
+	variant_callable.cpp
+	variant_utils.cpp
 	water.cpp
 	water_particle_system.cpp
 	weather_particle_system.cpp
 	widget.cpp
-	wml_formula_adapter.cpp
 	wml_formula_callable.cpp
 	wml_modify.cpp
 	wml_node.cpp
 	wml_parser.cpp
-	wml_schema.cpp
 	wml_utils.cpp
-	wml_writer.cpp
 	unit_test.cpp
 	formula_test.cpp
 	wml_parser_test.cpp
 	loading_screen.cpp
 	utility_object_compiler.cpp
-	utility_object_editor.cpp
 	utility_render_level.cpp
     ${FROGATTO_SRC_PLATFORM} )
 

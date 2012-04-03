@@ -3184,7 +3184,9 @@ void custom_object::handle_event(int event, const formula_callable* context)
 		try {
 			var = handler->execute(*this);
 		} catch(validation_failure_exception&) {
+#ifndef DISABLE_FORMULA_PROFILER
 			event_call_stack.pop_back();
+#endif
 			break;
 		}
 

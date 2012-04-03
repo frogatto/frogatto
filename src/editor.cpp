@@ -1777,7 +1777,7 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 		g_variable_editing = variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_, zoom_, &g_variable_editing_index);
 		g_variable_editing_original_value = property_dialog_->get_entity()->query_value(g_variable_editing->variable_name());
 
-		if(g_variable_editing->type() == editor_variable_info::editor_variable_info::TYPE_POINTS && event.button == SDL_BUTTON_RIGHT) {
+		if(g_variable_editing->type() == editor_variable_info::TYPE_POINTS && event.button == SDL_BUTTON_RIGHT) {
 			std::vector<variant> points = g_variable_editing_original_value.as_list();
 			ASSERT_LOG(g_variable_editing_index >= 0 && g_variable_editing_index < points.size(), "INVALID VALUE WHEN EDITING POINTS: " << g_variable_editing_index << " / " << points.size());
 
