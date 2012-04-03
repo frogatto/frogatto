@@ -31,10 +31,13 @@ namespace game_logic {
 class formula_expression;
 typedef boost::shared_ptr<formula_expression> expression_ptr;
 
+std::string pinpoint_location(variant v, std::string::const_iterator begin);
+std::string pinpoint_location(variant v, std::string::const_iterator begin,
+                                         std::string::const_iterator end);
+
 class formula_expression {
 public:
-	formula_expression() : name_(NULL) {}
-	explicit formula_expression(const char* name) : name_(name) {}
+	explicit formula_expression(const char* name=NULL);
 	virtual ~formula_expression() {}
 	virtual variant static_evaluate(const formula_callable& variables) const {
 		return evaluate(variables);
@@ -50,14 +53,14 @@ public:
 
 	variant evaluate(const formula_callable& variables) const {
 #if !TARGET_OS_IPHONE
-		call_stack_manager manager(str_.c_str());
+		call_stack_manager manager(this);
 #endif
 		return execute(variables);
 	}
 
 	variant evaluate_with_member(const formula_callable& variables, std::string& id) const {
 #if !TARGET_OS_IPHONE
-		call_stack_manager manager(str_.c_str());
+		call_stack_manager manager(this);
 #endif
 		return execute_member(variables, id);
 	}
@@ -74,7 +77,16 @@ public:
 		return NULL;
 	}
 
+	const char* name() const { return name_; }
 	void set_name(const char* name) { name_ = name; }
+
+	void copy_debug_info_from(const formula_expression& o);
+	void set_debug_info(const variant& parent_formula,
+	                    std::string::const_iterator begin_str,
+	                    std::string::const_iterator end_str);
+	bool has_debug_info() const;
+	std::string debug_pinpoint_location() const;
+
 	void set_str(const std::string& str) { str_ = str; }
 	const std::string& str() const { return str_; }
 protected:
@@ -82,6 +94,9 @@ protected:
 private:
 	virtual variant execute(const formula_callable& variables) const = 0;
 	const char* name_;
+
+	variant parent_formula_;
+	std::string::const_iterator begin_str_, end_str_;
 	std::string str_;
 };
 
@@ -183,6 +198,10 @@ public:
 	bool can_reduce_to_variant(variant& v) const {
 		v = v_;
 		return true;
+	}
+
+	variant is_literal() const {
+		return v_;
 	}
 private:
 	variant execute(const formula_callable& /*variables*/) const {

@@ -48,7 +48,7 @@ std::string variant_type_to_string(variant::TYPE type) {
 	}
 }
 
-std::vector<const char*> call_stack;
+std::vector<const game_logic::formula_expression*> call_stack;
 
 variant last_failed_query_map, last_failed_query_key;
 variant last_query_map;
@@ -60,9 +60,9 @@ void swap_variants_loading(std::set<variant*>& v)
 	callable_variants_loading.swap(v);
 }
 
-void push_call_stack(const char* str)
+void push_call_stack(const game_logic::formula_expression* frame)
 {
-	call_stack.push_back(str);
+	call_stack.push_back(frame);
 }
 
 void pop_call_stack()
@@ -73,12 +73,12 @@ void pop_call_stack()
 std::string get_call_stack()
 {
 	std::string res;
-	for(std::vector<const char*>::const_iterator i = call_stack.begin();
+	for(std::vector<const game_logic::formula_expression*>::const_iterator i = call_stack.begin();
 	    i != call_stack.end(); ++i) {
 		if(!*i) {
 			continue;
 		}
-		res += formatter() << "  FRAME " << (i - call_stack.begin()) << ": " << *i << "\n";
+		res += formatter() << "  FRAME " << (i - call_stack.begin()) << ": " << (*i)->str() << "\n";
 	}
 	return res;
 }
@@ -86,6 +86,10 @@ std::string get_call_stack()
 void output_formula_error_info();
 
 type_error::type_error(const std::string& str) : message(str) {
+	if(call_stack.empty() == false && call_stack.back()) {
+		message += "\n" + call_stack.back()->debug_pinpoint_location();
+	}
+
 	std::cerr << "ERROR: " << message << "\n" << get_call_stack();
 	output_formula_error_info();
 }

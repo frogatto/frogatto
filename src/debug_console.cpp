@@ -424,12 +424,21 @@ bool console_dialog::on_begin_enter()
 		assert_recover_scope recover_from_assert;
 		try {
 			std::cerr << "EVALUATING: " << ffl << "\n";
-			game_logic::formula f(variant(ffl), &get_custom_object_functions_symbol_table());
+			variant ffl_variant(ffl);
+			std::string filename = "(debug console)";
+			variant::debug_info info;
+			info.filename = &filename;
+			info.line = info.column = 0;
+			ffl_variant.set_debug_info(info);
+
+			game_logic::formula f(ffl_variant, &get_custom_object_functions_symbol_table());
 			variant v = f.execute(*focus_);
 			focus_->execute_command(v);
 			debug_console::add_message(v.to_debug_string());
 		} catch(validation_failure_exception& e) {
 			debug_console::add_message("error parsing formula: " + e.msg);
+		} catch(type_error& e) {
+			debug_console::add_message("error executing formula: " + e.message);
 		}
 	}
 

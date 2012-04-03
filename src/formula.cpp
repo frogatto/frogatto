@@ -221,7 +221,7 @@ public:
 		} else if(op == "-") {
 			op_ = OP_SUB;
 		} else {
-			ASSERT_LOG(false, "illegal unary operator: '" << op << "'");
+			ASSERT_LOG(false, "illegal unary operator: '" << op << "'\n" << debug_pinpoint_location());
 		}
 	}
 private:
@@ -482,7 +482,7 @@ private:
 			return left.as_callable()->query_value(key.as_string());
 		} else {
 			output_formula_error_info();
-			ASSERT_LOG(false, "illegal usage of operator []: called on " << left.to_debug_string() << " value: " << left_->str() << "'");
+			ASSERT_LOG(false, "illegal usage of operator []: called on " << left.to_debug_string() << " value: " << left_->str() << "'\n" << debug_pinpoint_location());
 		}
 	}
 	
@@ -517,7 +517,7 @@ private:
 			}
 			
 		} else {
-			ASSERT_LOG(false, "illegal usage of operator [:]'");
+			ASSERT_LOG(false, "illegal usage of operator [:]'\n" << debug_pinpoint_location());
 		}
 	}
 	
@@ -863,7 +863,7 @@ public:
 
 	variant is_literal() const {
 		if(subs_.empty()) {
-			return variant(str_);
+			return str_;
 		} else {
 			return variant();
 		}
@@ -930,16 +930,16 @@ int operator_precedence(const token& t)
 	return precedence_map[std::string(t.begin,t.end)];
 }
 
-expression_ptr parse_expression(const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def, bool* can_optimize=NULL);
+expression_ptr parse_expression(const variant& formula_str, const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def, bool* can_optimize=NULL);
 
-void parse_function_args(const token* &i1, const token* i2,
+void parse_function_args(variant formula_str, const token* &i1, const token* i2,
 						 std::vector<std::string>* res,
 						 std::vector<std::string>* types)
 {
 	if(i1->type == TOKEN_LPARENS) {
 		++i1;
 	} else {
-		ASSERT_LOG(false, "Invalid function definition");
+		ASSERT_LOG(false, "Invalid function definition\n" << pinpoint_location(formula_str, i1->begin, (i2-1)->end));
 	}
 	
 	while((i1->type != TOKEN_RPARENS) && (i1 != i2)) {
@@ -959,18 +959,18 @@ void parse_function_args(const token* &i1, const token* i2,
 		} else if (i1->type == TOKEN_COMMA) {
 			//do nothing
 		} else {
-			ASSERT_LOG(false, "Invalid function definition");
+			ASSERT_LOG(false, "Invalid function definition\n" << pinpoint_location(formula_str, i1->begin, (i2-1)->end));
 		}
 		++i1;
 	}
 	
 	if(i1->type != TOKEN_RPARENS) {
-		ASSERT_LOG(false, "Invalid function definition");
+		ASSERT_LOG(false, "Invalid function definition\n" << pinpoint_location(formula_str, i1->begin, (i2-1)->end));
 	}
 	++i1;
 }
 
-void parse_args(const token* i1, const token* i2,
+void parse_args(const variant& formula_str, const token* i1, const token* i2,
 				std::vector<expression_ptr>* res,
 				function_symbol_table* symbols,
 				const formula_callable_definition* callable_def,
@@ -985,7 +985,7 @@ void parse_args(const token* i1, const token* i2,
 		} else if(i1->type == TOKEN_RPARENS || i1->type == TOKEN_RSQUARE || i1->type == TOKEN_RBRACKET) {
 			--parens;
 		} else if(i1->type == TOKEN_COMMA && !parens) {
-			res->push_back(parse_expression(beg,i1, symbols, callable_def, can_optimize));
+			res->push_back(parse_expression(formula_str, beg,i1, symbols, callable_def, can_optimize));
 			beg = i1+1;
 		}
 		
@@ -993,11 +993,11 @@ void parse_args(const token* i1, const token* i2,
 	}
 	
 	if(beg != i1) {
-		res->push_back(parse_expression(beg,i1, symbols, callable_def, can_optimize));
+		res->push_back(parse_expression(formula_str, beg,i1, symbols, callable_def, can_optimize));
 	}
 }
 
-void parse_set_args(const token* i1, const token* i2,
+void parse_set_args(const variant& formula_str, const token* i1, const token* i2,
 					std::vector<expression_ptr>* res,
 					function_symbol_table* symbols)
 {
@@ -1012,14 +1012,14 @@ void parse_set_args(const token* i1, const token* i2,
 		} else if((i1->type == TOKEN_POINTER || i1->type == TOKEN_COLON) && !parens ) {
 			if (!check_pointer) {
 				check_pointer = true;
-				res->push_back(parse_expression(beg,i1, symbols, NULL));
+				res->push_back(parse_expression(formula_str, beg,i1, symbols, NULL));
 				beg = i1+1;
 			} else {
-				ASSERT_LOG(false, "Too many '->' operators");
+				ASSERT_LOG(false, "Too many '->' operators\n" << pinpoint_location(formula_str, i1->begin, (i2-1)->end));
 			}
 		} else if( i1->type == TOKEN_COMMA && !parens ) {
 			check_pointer = false;
-			res->push_back(parse_expression(beg,i1, symbols, NULL));
+			res->push_back(parse_expression(formula_str, beg,i1, symbols, NULL));
 			beg = i1+1;
 		}
 		
@@ -1027,11 +1027,12 @@ void parse_set_args(const token* i1, const token* i2,
 	}
 	
 	if(beg != i1) {
-		res->push_back(parse_expression(beg,i1, symbols, NULL));
+		res->push_back(parse_expression(formula_str, beg,i1, symbols, NULL));
 	}
 }
 
-void parse_where_clauses(const token* i1, const token * i2,
+void parse_where_clauses(const variant& formula_str,
+                         const token* i1, const token * i2,
 						 expr_table_ptr res, function_symbol_table* symbols,
 						 const formula_callable_definition* callable_def) {
 	int parens = 0;
@@ -1047,16 +1048,18 @@ void parse_where_clauses(const token* i1, const token * i2,
 			if(i1->type == TOKEN_COMMA) {
 				if(var_name.empty()) {
 					ASSERT_LOG(false, "There is 'where <expression>,; "
-					<< "'where name=<expression>,' was needed.");
+					<< "'where name=<expression>,' was needed.\n" <<
+					pinpoint_location(formula_str, i1->begin));
 				}
-				(*res)[var_name] = parse_expression(beg,i1, symbols, callable_def);
+				(*res)[var_name] = parse_expression(formula_str, beg,i1, symbols, callable_def);
 				beg = i1+1;
 				var_name = "";
 			} else if(i1->type == TOKEN_OPERATOR) {
 				std::string op_name(i1->begin, i1->end);
 				if(op_name == "=") {
 					if(beg->type != TOKEN_IDENTIFIER || beg+1 != i1 || !var_name.empty()) {
-						ASSERT_LOG(false, "Unexpected tokens after where");
+						ASSERT_LOG(false, "Unexpected tokens after where\n"
+						  << pinpoint_location(formula_str, i1->begin));
 					}
 					var_name.insert(var_name.end(), beg->begin, beg->end);
 					beg = i1+1;
@@ -1067,13 +1070,14 @@ void parse_where_clauses(const token* i1, const token * i2,
 	}
 	if(beg != i1) {
 		if(var_name.empty()) {
-			ASSERT_LOG(false, "Unexpected tokens after where");
+			ASSERT_LOG(false, "Unexpected tokens after where\n" <<
+			            pinpoint_location(formula_str, beg->begin));
 		}
-		(*res)[var_name] = parse_expression(beg,i1, symbols, callable_def);
+		(*res)[var_name] = parse_expression(formula_str, beg,i1, symbols, callable_def);
 	}
 }
 
-expression_ptr parse_expression_internal(const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def, bool* can_optimize=NULL);
+expression_ptr parse_expression_internal(const variant& formula_str, const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def, bool* can_optimize=NULL);
 
 namespace {
 	
@@ -1118,7 +1122,7 @@ struct static_context {
 
 expression_ptr optimize_expression(expression_ptr result, function_symbol_table* symbols, const formula_callable_definition* callable_def, bool reduce_to_static)
 {
-	const std::string str = result->str();
+	expression_ptr original = result;
 
 	if(reduce_to_static) {
 		//we want to try to evaluate this expression, and see if it is static.
@@ -1157,17 +1161,17 @@ expression_ptr optimize_expression(expression_ptr result, function_symbol_table*
 	}
 	
 	if(result) {
-		result->set_str(str);
+		result->copy_debug_info_from(*original);
 	}
 
 	return result;
 }
 
-expression_ptr parse_expression(const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def, bool* can_optimize)
+expression_ptr parse_expression(const variant& formula_str, const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def, bool* can_optimize)
 {
 	bool optimize = true;
-	expression_ptr result(parse_expression_internal(i1, i2, symbols, callable_def, &optimize));
-	result->set_str(std::string(i1->begin, (i2-1)->end));
+	expression_ptr result(parse_expression_internal(formula_str, i1, i2, symbols, callable_def, &optimize));
+	result->set_debug_info(formula_str, i1->begin, (i2-1)->end);
 
 	result = optimize_expression(result, symbols, callable_def, optimize);
 
@@ -1178,9 +1182,9 @@ expression_ptr parse_expression(const token* i1, const token* i2, function_symbo
 	return result;
 }
 
-expression_ptr parse_expression_internal(const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def, bool* can_optimize)
+expression_ptr parse_expression_internal(const variant& formula_str, const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def, bool* can_optimize)
 {
-	ASSERT_LOG(i1 != i2, "Empty expression in formula");
+	ASSERT_LOG(i1 != i2, "Empty expression in formula\n" << pinpoint_location(formula_str, (i1-1)->end));
 	
 	if(i1->type == TOKEN_KEYWORD && std::string(i1->begin, i1->end) == "def" &&
 	   ((i1+1)->type == TOKEN_IDENTIFIER || (i1+1)->type == TOKEN_LPARENS)) {
@@ -1192,12 +1196,30 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 		}
 		
 		std::vector<std::string> args, types;
-		parse_function_args(i1, i2, &args, &types);
+		parse_function_args(formula_str, i1, i2, &args, &types);
 		const token* beg = i1;
 		while((i1 != i2) && (i1->type != TOKEN_SEMICOLON)) {
 			++i1;
 		}
-		const std::string formula_str = std::string(beg->begin, (i1-1)->end);
+		const std::string function_str = std::string(beg->begin, (i1-1)->end);
+		variant function_var(function_str);
+		if(formula_str.get_debug_info()) {
+			//Set the debugging info for this new string, adjusting relative
+			//to our parent formula, so we know where in the file it lies.
+			const variant::debug_info* cur_info = formula_str.get_debug_info();
+			variant::debug_info info = *cur_info;
+			for(std::string::const_iterator i = formula_str.as_string().begin();
+			    i != beg->begin; ++i) {
+				if(*i == '\n') {
+					info.line++;
+					info.column = 0;
+				} else {
+					info.column++;
+				}
+			}
+
+			function_var.set_debug_info(info);
+		}
 		
 		recursive_function_symbol_table recursive_symbols(formula_name.empty() ? "recurse" : formula_name, args, symbols);
 
@@ -1211,15 +1233,15 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 					continue;
 				}
 
-				ASSERT_LOG(args_definition->get_entry(n) != NULL, "FORMULA FUNCTION TYPE ARGS MIS-MATCH");
+				ASSERT_LOG(args_definition->get_entry(n) != NULL, "FORMULA FUNCTION TYPE ARGS MIS-MATCH\n" << pinpoint_location(formula_str, i1->begin, i1->end));
 
 				const formula_callable_definition* def = get_formula_callable_definition(types[n]);
-				ASSERT_LOG(def != NULL, "TYPE NOT FOUND: " << types[n]);
+				ASSERT_LOG(def != NULL, "TYPE NOT FOUND: " << types[n] << "\n" << pinpoint_location(formula_str, i1->begin, i1->end));
 				args_definition->get_entry(n)->type_definition = def;
 			}
 		}
 
-		const_formula_ptr fml(new formula(variant(formula_str), &recursive_symbols, args_definition.get()));
+		const_formula_ptr fml(new formula(function_var, &recursive_symbols, args_definition.get()));
 		recursive_symbols.resolve_recursive_calls(fml);
 		
 		if(formula_name.empty()) {
@@ -1233,7 +1255,7 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 			return expression_ptr(new function_list_expression(symbols));
 		}
 		else {
-			return parse_expression((i1+1), i2, symbols, callable_def, can_optimize);
+			return parse_expression(formula_str, (i1+1), i2, symbols, callable_def, can_optimize);
 		}
 	}
 	
@@ -1277,7 +1299,7 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 	
 	if(op == NULL) {
 		if(i1->type == TOKEN_LPARENS && (i2-1)->type == TOKEN_RPARENS) {
-			return parse_expression(i1+1,i2-1,symbols, callable_def, can_optimize);
+			return parse_expression(formula_str, i1+1,i2-1,symbols, callable_def, can_optimize);
 		} else if( (i2-1)->type == TOKEN_RSQUARE) { //check if there is [ ] : either a list definition, or a operator 
 			const token* tok = i2-2;
 			int square_parens = 0;
@@ -1293,7 +1315,7 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 				if (tok == i1) {
 					//create a list
 					std::vector<expression_ptr> args;
-					parse_args(i1+1,i2-1,&args,symbols, callable_def, can_optimize);
+					parse_args(formula_str,i1+1,i2-1,&args,symbols, callable_def, can_optimize);
 					return expression_ptr(new list_expression(args));
 				} else {
 					//determine if it's an array-style access of a single list element, or a slice.
@@ -1322,28 +1344,28 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 					if(colon_tok != NULL){
 						expression_ptr start, end;
 						if(tok+1 < colon_tok) {
-							start = parse_expression(tok+1, colon_tok, symbols, callable_def, can_optimize);
+							start = parse_expression(formula_str, tok+1, colon_tok, symbols, callable_def, can_optimize);
 						}
 
 						if(colon_tok+1 < i2-1) {
-							end = parse_expression(colon_tok+1, i2-1, symbols, callable_def, can_optimize);
+							end = parse_expression(formula_str, colon_tok+1, i2-1, symbols, callable_def, can_optimize);
 						}
 
 						//it's a slice.  execute operator [ : ]
 						return expression_ptr(new slice_square_bracket_expression(
-																			parse_expression(i1,tok,symbols, callable_def, can_optimize), start, end));
+																			parse_expression(formula_str, i1,tok,symbols, callable_def, can_optimize), start, end));
 					}else{	
 						//execute operator [ ]
 						return expression_ptr(new square_bracket_expression(
-																			parse_expression(i1,tok,symbols, callable_def, can_optimize),
-																			parse_expression(tok+1,i2-1,symbols, callable_def, can_optimize)));
+																			parse_expression(formula_str, i1,tok,symbols, callable_def, can_optimize),
+																			parse_expression(formula_str, tok+1,i2-1,symbols, callable_def, can_optimize)));
 					}
 				}
 			}
 		} else if(i1->type == TOKEN_LBRACKET && (i2-1)->type == TOKEN_RBRACKET) {
 			//create a map TODO: add support for a set
 			std::vector<expression_ptr> args;
-			parse_set_args(i1+1,i2-1,&args,symbols);
+			parse_set_args(formula_str,i1+1,i2-1,&args,symbols);
 			return expression_ptr(new map_expression(args));
 		} else if(i2 - i1 == 1) {
 			if(i1->type == TOKEN_KEYWORD) {
@@ -1388,7 +1410,7 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 				const std::string function_name(i1->begin, i1->end);
 				std::vector<expression_ptr> args;
 				const bool optimize = optimize_function_arguments(function_name, symbols);
-				parse_args(i1+2,i2-1,&args,symbols, optimize ? callable_def : NULL, can_optimize);
+				parse_args(formula_str,i1+2,i2-1,&args,symbols, optimize ? callable_def : NULL, can_optimize);
 				expression_ptr result(create_function(function_name, args, symbols, callable_def));
 				if(result) {
 					return result;
@@ -1416,12 +1438,12 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 					++match;
 					ASSERT_LT(match, i2); 
 
-					ASSERT_LOG(false, "unexpected tokens after function call: '" << std::string(match->begin, (i2-1)->end) << "'");
+					ASSERT_LOG(false, "unexpected tokens after function call\n" << pinpoint_location(formula_str, match->begin, (i2-1)->end));
 				} else {
-					ASSERT_LOG(false, "no closing parenthesis to function call: '" << std::string(i1->begin, (i2-1)->end) << "'");
+					ASSERT_LOG(false, "no closing parenthesis to function call\n" << pinpoint_location(formula_str, i1->begin, (i2-1)->end));
 				}
 			} else {
-				ASSERT_LOG(false, "could not parse expression: '" << std::string(i1->begin, (i2-1)->end) << "'");
+				ASSERT_LOG(false, "could not parse expression\n" << pinpoint_location(formula_str, i1->begin, (i2-1)->end));
 			}
 
 			assert(false); //should never reach here.
@@ -1439,45 +1461,45 @@ expression_ptr parse_expression_internal(const token* i1, const token* i2, funct
 		}
 		return expression_ptr(new unary_operator_expression(
 															std::string(op->begin,op->end),
-															parse_expression(op+1,i2,symbols, callable_def, can_optimize)));
+															parse_expression(formula_str, op+1,i2,symbols, callable_def, can_optimize)));
 	}
 	
 	const std::string op_name(op->begin,op->end);
 	
 	if(op_name == "(") {
 		if(i2 - op < 2) {
-			ASSERT_LOG(false, "MISSING PARENS IN FORMULA");
+			ASSERT_LOG(false, "MISSING PARENS IN FORMULA\n" << pinpoint_location(formula_str, op->begin, op->end));
 		}
 
 		std::vector<expression_ptr> args;
-		parse_args(op+1, i2-1, &args, symbols, callable_def, can_optimize);
+		parse_args(formula_str,op+1, i2-1, &args, symbols, callable_def, can_optimize);
 		
 		return expression_ptr(new function_call_expression(
-														   parse_expression(i1, op, symbols, callable_def, can_optimize), args));
+														   parse_expression(formula_str, i1, op, symbols, callable_def, can_optimize), args));
 	}
 	
 	if(op_name == ".") {
-		expression_ptr left(parse_expression(i1,op,symbols, callable_def, can_optimize));
+		expression_ptr left(parse_expression(formula_str, i1,op,symbols, callable_def, can_optimize));
 		const formula_callable_definition* type_definition = left->get_type_definition();
 		//TODO: right now we don't give the right side of the dot
 		//a expression definition. We should work out if we can
 		//statically derive information from the left half to
 		//give the right half a definition.
 		return expression_ptr(new dot_expression(left,
-												 parse_expression(op+1,i2,symbols, type_definition, can_optimize)));
+												 parse_expression(formula_str, op+1,i2,symbols, type_definition, can_optimize)));
 	}
 	
 	if(op_name == "where") {
 		expr_table_ptr table(new expr_table());
-		parse_where_clauses(op+1, i2, table, symbols, callable_def);
-		return expression_ptr(new where_expression(parse_expression(i1, op, symbols, callable_def, can_optimize),
+		parse_where_clauses(formula_str, op+1, i2, table, symbols, callable_def);
+		return expression_ptr(new where_expression(parse_expression(formula_str, i1, op, symbols, callable_def, can_optimize),
 												   table));
 	}
 
 	const bool is_dot = op_name == ".";
 	return expression_ptr(new operator_expression(
-												  op_name, parse_expression(i1,op,symbols, callable_def, can_optimize),
-												  parse_expression(op+1,i2,symbols, callable_def, can_optimize)));
+												  op_name, parse_expression(formula_str, i1,op,symbols, callable_def, can_optimize),
+												  parse_expression(formula_str, op+1,i2,symbols, callable_def, can_optimize)));
 }
 }
 
@@ -1637,7 +1659,7 @@ formula::formula(const variant& val, function_symbol_table* symbols, const formu
 	
 	try {
 		if(tokens.size() != 0) {
-			expr_ = parse_expression(&tokens[0],&tokens[0] + tokens.size(), symbols, callable_definition);
+			expr_ = parse_expression(str_, &tokens[0],&tokens[0] + tokens.size(), symbols, callable_definition);
 		} else {
 			expr_ = expression_ptr(new null_expression());
 		}	
