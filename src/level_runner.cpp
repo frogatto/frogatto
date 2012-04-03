@@ -771,6 +771,7 @@ bool level_runner::play_cycle()
 						editor_resolution_manager_.reset();
 						lvl_->mutate_value("zoom", variant(1));
 						lvl_->set_editor(false);
+						paused = false;
 					} else {
 						should_pause = true;
 					}
