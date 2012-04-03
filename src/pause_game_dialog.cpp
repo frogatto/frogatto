@@ -5,8 +5,10 @@
 #include "slider.hpp"
 #include "checkbox.hpp"
 #include "dialog.hpp"
+#include "draw_scene.hpp"
 #include "graphical_font_label.hpp"
 #include "i18n.hpp"
+#include "level.hpp"
 #include "pause_game_dialog.hpp"
 #include "preferences.hpp"
 #include "sound.hpp"
@@ -17,6 +19,10 @@ void end_dialog(gui::dialog* d, PAUSE_GAME_RESULT* result, PAUSE_GAME_RESULT val
 {
 	*result = value;
 	d->close();
+}
+
+void do_draw_scene() {
+	draw_scene(level::current(), last_draw_position());
 }
 
 }
@@ -60,6 +66,9 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	}
 	dialog d((preferences::virtual_screen_width()/2 - window_w/2) & ~1, (preferences::virtual_screen_height()/2 - window_h/2) & ~1, window_w, window_h);
 	d.set_padding(padding);
+	d.set_background_frame("empty_window");
+
+	d.set_draw_background_fn(do_draw_scene);
 	
 	widget_ptr b1(new button(widget_ptr(new graphical_font_label(_("Resume"), "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_CONTINUE), BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
 	widget_ptr b2(new button(widget_ptr(new graphical_font_label(_("Controls..."), "door_label", 2)), show_controls_dialog, BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
