@@ -412,6 +412,10 @@ void console_dialog::on_move_cursor()
 
 bool console_dialog::on_begin_enter()
 {
+	if(lvl_->editor_selection().empty() == false) {
+		focus_ = lvl_->editor_selection().front();
+	}
+
 	std::string ffl(text_editor_->get_data().back());
 	ASSERT_LOG(ffl.size() >= Prompt.size() && std::equal(Prompt.begin(), Prompt.end(), ffl.begin()), "No prompt found in debug console: " << ffl);
 	ffl.erase(ffl.begin(), ffl.begin() + Prompt.size());
