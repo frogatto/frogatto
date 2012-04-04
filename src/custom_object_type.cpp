@@ -756,7 +756,11 @@ const_custom_object_type_ptr custom_object_type::get_variation(const std::vector
 		//to re-parse formulas or not.
 		const game_logic::constants_loader scope_consts(node_["consts"]);
 
-		result.reset(new custom_object_type(node, this));
+		//copy the id over from the parent object, to make sure it's
+		//the same. This is important for nested objects.
+		custom_object_type* obj_type = new custom_object_type(node, this);
+		obj_type->id_ = id_;
+		result.reset(obj_type);
 	}
 
 	return result;
