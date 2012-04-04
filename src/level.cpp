@@ -2099,7 +2099,7 @@ void level::do_processing()
 		active_chars = chars_immune_from_time_freeze_;
 	}
 	foreach(const entity_ptr& c, active_chars) {
-		if(!c->destroyed() || c->is_human()) {
+		if(!c->destroyed() && chars_by_label_.count(c->label()) || c->is_human()) {
 			c->process(*this);
 		}
 
@@ -2837,8 +2837,19 @@ void level::add_character(entity_ptr p)
 		solid_chars_.push_back(p);
 	}
 
+	ASSERT_LOG(p->label().empty() == false, "Entity has no label");
+
 	if(p->label().empty() == false) {
-		chars_by_label_[p->label()] = p;
+		entity_ptr& target = chars_by_label_[p->label()];
+		if(!target) {
+			target = p;
+		} else {
+			while(chars_by_label_[p->label()]) {
+				p->set_label(formatter() << p->label() << rand());
+			}
+
+			chars_by_label_[p->label()] = p;
+		}
 	}
 
 	if(p->is_human()) {
