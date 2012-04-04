@@ -160,7 +160,7 @@ variant color_transform::write() const
 {
 	std::vector<variant> res;
 	for(int n = 0; n != 4; ++n) {
-		res.push_back(variant(n));
+		res.push_back(variant(static_cast<int>(rgba_[n])));
 	}
 
 	return variant(&res);
