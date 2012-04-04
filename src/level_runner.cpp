@@ -989,8 +989,6 @@ bool level_runner::play_cycle()
 			should_draw = update_camera_position(*lvl_, last_draw_position(), NULL, !is_skipping_game());
 		}
 
-		std::cerr << "DRAW: " << (should_draw ? "yes" : "no") << "\n";
-
 		lvl_->process_draw();
 
 		if(should_draw) {
@@ -1188,8 +1186,8 @@ void level_runner::handle_pause_game_result(PAUSE_GAME_RESULT result)
 void level_runner::init_history_slider()
 {
 	if(paused && editor_) {
-		history_slider_.reset(new gui::slider(100, boost::bind(&level_runner::on_history_change, this, _1)));
-		history_slider_->set_loc(400, 4);
+		history_slider_.reset(new gui::slider(120, boost::bind(&level_runner::on_history_change, this, _1)));
+		history_slider_->set_loc(380, 4);
 		history_slider_->set_position(1.0);
 	} else {
 		history_slider_.reset();

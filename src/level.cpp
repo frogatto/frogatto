@@ -2012,7 +2012,10 @@ namespace {
 bool compare_entity_num_parents(const entity_ptr& a, const entity_ptr& b) {
 	const int deptha = a->parent_depth();
 	const int depthb = b->parent_depth();
-	return deptha < depthb || deptha == depthb && a->standing_on().get() < b->standing_on().get() || deptha == depthb && (a->standing_on().get() ? true : false) == (b->standing_on().get() ? true : false) && a->is_human() < b->is_human();
+	const bool standa = a->standing_on().get() ? true : false;
+	const bool standb = b->standing_on().get() ? true : false;
+	return deptha < depthb || deptha == depthb && standa < standb ||
+	     deptha == depthb && standa == standb && a->is_human() < b->is_human();
 }
 }
 
@@ -3328,7 +3331,7 @@ bool level::can_interact(const rect& body) const
 
 void level::replay_from_cycle(int ncycle)
 {
-	return;
+		/*
 	const int cycles_ago = cycle_ - ncycle;
 	if(cycles_ago <= 0) {
 		return;
@@ -3345,10 +3348,15 @@ void level::replay_from_cycle(int ncycle)
 		backup();
 		do_processing();
 	}
+	*/
 }
 
 void level::backup()
 {
+	if(backups_.empty() == false && backups_.back()->cycle == cycle_) {
+		return;
+	}
+
 	std::map<entity_ptr, entity_ptr> entity_map;
 
 	backup_snapshot_ptr snapshot(new backup_snapshot);
