@@ -760,6 +760,13 @@ namespace {
 bool level_tile_from_layer(const level_tile& t, int zorder) {
 	return t.layer_from == zorder;
 }
+
+int g_tile_rebuild_state_id;
+}
+
+int level::tile_rebuild_state_id()
+{
+	return g_tile_rebuild_state_id;
 }
 
 void level::complete_rebuild_tiles_in_background()
@@ -804,6 +811,8 @@ void level::complete_rebuild_tiles_in_background()
 		info.tile_rebuild_queued = false;
 		start_rebuild_tiles_in_background(info.rebuild_tile_layers_buffer);
 	}
+
+	++g_tile_rebuild_state_id;
 }
 
 void level::rebuild_tiles()
@@ -1715,15 +1724,21 @@ void level::draw(int x, int y, int w, int h) const
 	std::vector<entity_ptr> editor_chars_buf;
 	
 	if(editor_) {
+		editor_chars_buf = active_chars_;
 		rect screen_area(x, y, w, h);
 
 		//in the editor draw all characters that are on screen as well
 		//as active ones.
 		foreach(const entity_ptr& c, chars_) {
+			if(std::find(editor_chars_buf.begin(), editor_chars_buf.end(), c) != editor_chars_buf.end()) {
+				continue;
+			}
+
 			if(std::find(active_chars_.begin(), active_chars_.end(), c) != active_chars_.end() || rects_intersect(c->draw_rect(), screen_area)) {
 				editor_chars_buf.push_back(c);
 			}
 		}
+
 		std::sort(editor_chars_buf.begin(), editor_chars_buf.end(), sort_entity_drawing_pos);
 		chars_ptr = &editor_chars_buf;
 	}
@@ -3458,12 +3473,13 @@ void level::restore_from_backup(backup_snapshot& snapshot)
 	}
 }
 
-std::vector<entity_ptr> level::trace_past(entity_ptr e, int ncycles)
+std::vector<entity_ptr> level::trace_past(entity_ptr e, int ncycle)
 {
+	backup();
 	int prev_cycle = -1;
 	std::vector<entity_ptr> result;
 	std::deque<backup_snapshot_ptr>::reverse_iterator i = backups_.rbegin();
-	while(i != backups_.rend() && ncycles) {
+	while(i != backups_.rend() && (*i)->cycle >= ncycle) {
 		const backup_snapshot& snapshot = **i;
 		if(prev_cycle != -1 && snapshot.cycle == prev_cycle) {
 			++i;
@@ -3479,7 +3495,6 @@ std::vector<entity_ptr> level::trace_past(entity_ptr e, int ncycles)
 			}
 		}
 		++i;
-		--ncycles;
 	}
 
 	return result;
@@ -3507,7 +3522,7 @@ std::vector<entity_ptr> level::predict_future(entity_ptr e, int ncycles)
 		}
 	}
 
-	std::vector<entity_ptr> result = trace_past(e, ncycles);
+	std::vector<entity_ptr> result = trace_past(e, -1);
 
 	backups_.resize(starting_backups);
 	restore_from_backup(*snapshot);
@@ -3799,7 +3814,7 @@ UTILITY(correct_solidity)
 
 		foreach(entity_ptr c, lvl->get_chars()) {
 			if(entity_collides_with_level(*lvl, *c, MOVE_NONE)) {
-				if(place_entity_in_level(*lvl, *c)) {
+				if(place_entity_in_level_with_large_displacement(*lvl, *c)) {
 					std::cerr << "LEVEL: " << lvl->id() << " CORRECTED " << c->debug_description() << "\n";
 				} else {
 					std::cerr << "LEVEL: " << lvl->id() << " FAILED TO CORRECT " << c->debug_description() << "\n";

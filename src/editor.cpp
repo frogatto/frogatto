@@ -1485,6 +1485,10 @@ void editor::toggle_pause() const
 
 void editor::handle_scrolling()
 {
+	if(code_dialog_ && code_dialog_->has_keyboard_focus()) {
+		return;
+	}
+
 	const int ScrollSpeed = 24*zoom_;
 	const int FastScrollSpeed = 384*zoom_;
 

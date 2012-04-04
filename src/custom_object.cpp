@@ -3647,6 +3647,32 @@ void custom_object::update_type(const_custom_object_type_ptr old_type,
 		type_ = base_type_->get_variation(current_variation_);
 	}
 
+	game_logic::formula_variable_storage_ptr old_vars = vars_;
+
+	vars_.reset(new game_logic::formula_variable_storage(type_->variables()));
+	foreach(const std::string& key, old_vars->keys()) {
+		const variant old_value = old_vars->query_value(key);
+		std::map<std::string, variant>::const_iterator old_type_value =
+		    old_type->variables().find(key);
+		if(old_type_value == old_type->variables().end() ||
+		   old_type_value->second != old_value) {
+			vars_->mutate_value(key, old_value);
+		}
+	}
+
+	old_vars = tmp_vars_;
+
+	tmp_vars_.reset(new game_logic::formula_variable_storage(type_->tmp_variables()));
+	foreach(const std::string& key, old_vars->keys()) {
+		const variant old_value = old_vars->query_value(key);
+		std::map<std::string, variant>::const_iterator old_type_value =
+		    old_type->tmp_variables().find(key);
+		if(old_type_value == old_type->tmp_variables().end() ||
+		   old_type_value->second != old_value) {
+			tmp_vars_->mutate_value(key, old_value);
+		}
+	}
+
 	frame_ = &type_->get_frame(frame_name_);
 
 	std::map<std::string, particle_system_ptr> systems;

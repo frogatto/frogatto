@@ -43,6 +43,8 @@ public:
 	static int reload_modified_code();
 	static bool reload_object(const std::string& type);
 
+	static int num_object_reloads();
+
 	typedef std::vector<game_logic::const_formula_ptr> event_handler_map;
 
 	static void init_event_handlers(variant node,

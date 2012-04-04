@@ -311,7 +311,8 @@ level_runner* level_runner::get_current()
 
 level_runner::level_runner(boost::intrusive_ptr<level>& lvl, std::string& level_cfg, std::string& original_level_cfg)
   : lvl_(lvl), level_cfg_(level_cfg), original_level_cfg_(original_level_cfg),
-    editor_(NULL)
+    editor_(NULL), history_trails_state_id_(-1), object_reloads_state_id_(-1),
+	tile_rebuild_state_id_(-1)
 {
 	quit_ = false;
 
@@ -419,6 +420,10 @@ bool level_runner::play_cycle()
 		lvl_->set_as_current_level();
 
 		lvl_->mutate_value("zoom", variant(decimal(1.0/editor_->zoom())));
+
+		if(history_trails_.empty() == false && (tile_rebuild_state_id_ != level::tile_rebuild_state_id() || history_trails_state_id_ != editor_->level_state_id() || object_reloads_state_id_ != custom_object_type::num_object_reloads())) {
+			update_history_trails();
+		}
 	}
 #endif
 
@@ -659,7 +664,8 @@ bool level_runner::play_cycle()
 			}
 
 			if(history_slider_ && paused) {
-				swallowed = history_slider_->process_event(event, swallowed);
+				swallowed = history_slider_->process_event(event, swallowed) || swallowed;
+				swallowed = history_button_->process_event(event, false) || swallowed;
 			}
 
 			if(editor_) {
@@ -775,6 +781,8 @@ bool level_runner::play_cycle()
 					if(editor_) {
 						editor_ = NULL;
 						history_slider_.reset();
+						history_button_.reset();
+						history_trails_.clear();
 						editor_resolution_manager_.reset();
 						lvl_->mutate_value("zoom", variant(1));
 						lvl_->set_editor(false);
@@ -1002,9 +1010,25 @@ bool level_runner::play_cycle()
 				editor_->toggle_active_level();
 				lvl_->set_as_current_level();
 			} else {
+				std::vector<variant> alpha_values;
+				if(!history_trails_.empty()) {
+					foreach(entity_ptr e, history_trails_) {
+						alpha_values.push_back(e->query_value("alpha"));
+						e->mutate_value("alpha", variant(32));
+						lvl_->add_draw_character(e);
+					}
+				}
 #endif
 				render_scene(*lvl_, last_draw_position(), NULL, !is_skipping_game());
 #ifndef NO_EDITOR
+				int index = 0;
+				if(!history_trails_.empty()) {
+					foreach(entity_ptr e, history_trails_) {
+						e->mutate_value("alpha", alpha_values[index++]);
+					}
+
+					lvl_->set_active_chars();
+				}
 			}
 
 			if(editor_) {
@@ -1013,6 +1037,7 @@ bool level_runner::play_cycle()
 
 			if(history_slider_ && paused) {
 				history_slider_->draw();
+				history_button_->draw();
 			}
 
 			if(console_) {
@@ -1186,11 +1211,15 @@ void level_runner::handle_pause_game_result(PAUSE_GAME_RESULT result)
 void level_runner::init_history_slider()
 {
 	if(paused && editor_) {
-		history_slider_.reset(new gui::slider(120, boost::bind(&level_runner::on_history_change, this, _1)));
-		history_slider_->set_loc(380, 4);
+		history_slider_.reset(new gui::slider(110, boost::bind(&level_runner::on_history_change, this, _1)));
+		history_slider_->set_loc(370, 4);
 		history_slider_->set_position(1.0);
+		history_button_.reset(new gui::button("Trails", boost::bind(&level_runner::toggle_history_trails, this)));
+		history_button_->set_loc(history_slider_->x() + history_slider_->width(), history_slider_->y());
 	} else {
 		history_slider_.reset();
+		history_button_.reset();
+		history_trails_.clear();
 	}
 }
 
@@ -1220,4 +1249,27 @@ void level_runner::on_history_change(float value)
 	}
 
 	lvl_->set_active_chars();
+}
+
+void level_runner::toggle_history_trails()
+{
+	if(history_trails_.empty() && lvl_->player()) {
+		update_history_trails();
+	} else {
+		history_trails_.clear();
+	}
+}
+
+void level_runner::update_history_trails()
+{
+	if(lvl_->player()) {
+		const int first_frame = lvl_->earliest_backup_cycle();
+		const int last_frame = controls::local_controls_end();
+
+		const int ncycles = (last_frame - first_frame) + 1;
+		history_trails_ = lvl_->predict_future(entity_ptr(&lvl_->player()->get_entity()), ncycles);
+		history_trails_state_id_ = editor_->level_state_id();
+		object_reloads_state_id_ = custom_object_type::num_object_reloads();
+		tile_rebuild_state_id_ = level::tile_rebuild_state_id();
+	}
 }

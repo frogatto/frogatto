@@ -107,4 +107,14 @@ void formula_variable_storage::get_inputs(std::vector<formula_input>* inputs) co
 	}
 }
 
+std::vector<std::string> formula_variable_storage::keys() const
+{
+	std::vector<std::string> result;
+	for(std::map<std::string, int>::const_iterator i = strings_to_values_.begin(); i != strings_to_values_.end(); ++i) {
+		result.push_back(i->first);
+	}
+
+	return result;
+}
+
 }

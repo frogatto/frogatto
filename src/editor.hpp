@@ -181,6 +181,8 @@ public:
 	void start_adding_points(const std::string& field_name);
 	const std::string& adding_points() const { return adding_points_; }
 
+	int level_state_id() const { return level_changed_; }
+
 private:
 	editor(const editor&);
 	void operator=(const editor&);

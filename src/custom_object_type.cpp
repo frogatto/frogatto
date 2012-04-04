@@ -339,6 +339,10 @@ void custom_object_type::set_file_contents(const std::string& file_path, const s
 	}
 }
 
+namespace {
+int g_num_object_reloads = 0;
+}
+
 bool custom_object_type::reload_object(const std::string& type)
 {
 	object_map::iterator itor = cache().find(type);
@@ -382,10 +386,17 @@ bool custom_object_type::reload_object(const std::string& type)
 
 		itor->second = new_obj;
 
+		++g_num_object_reloads;
+
 		return true;
 	}
 
 	return false;
+}
+
+int custom_object_type::num_object_reloads()
+{
+	return g_num_object_reloads;
 }
 
 void custom_object_type::init_event_handlers(variant node,
