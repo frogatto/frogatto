@@ -431,7 +431,7 @@ void level::read_compiled_tiles(variant node, std::vector<level_tile>::iterator&
 
 			ASSERT_LOG(end - i >= 3, "ILLEGAL TILE FOUND");
 
-			out->object = level_object::get_compiled(i);
+			out->object = level_object::get_compiled(i).get();
 			++out;
 			i += 3;
 		}
@@ -684,7 +684,7 @@ struct level_tile_rebuild_info {
 
 std::map<const level*, level_tile_rebuild_info> tile_rebuild_map;
 
-void build_tiles_thread_function(level_tile_rebuild_info* info, std::map<int, tile_map> tile_maps) {
+void build_tiles_thread_function(level_tile_rebuild_info* info, std::map<int, tile_map> tile_maps, threading::mutex& sync) {
 	info->task_tiles.clear();
 
 	if(info->rebuild_tile_layers_worker_buffer.empty()) {
@@ -732,7 +732,9 @@ void level::start_rebuild_tiles_in_background(const std::vector<int>& layers)
 	info.rebuild_tile_layers_worker_buffer = info.rebuild_tile_layers_buffer;
 	info.rebuild_tile_layers_buffer.clear();
 
-	info.rebuild_tile_thread = new threading::thread(boost::bind(build_tiles_thread_function, &info, tile_maps_));
+	static threading::mutex* sync = new threading::mutex;
+
+	info.rebuild_tile_thread = new threading::thread(boost::bind(build_tiles_thread_function, &info, tile_maps_, *sync));
 }
 
 void level::freeze_rebuild_tiles_in_background()
@@ -758,6 +760,13 @@ namespace {
 bool level_tile_from_layer(const level_tile& t, int zorder) {
 	return t.layer_from == zorder;
 }
+
+int g_tile_rebuild_state_id;
+}
+
+int level::tile_rebuild_state_id()
+{
+	return g_tile_rebuild_state_id;
 }
 
 void level::complete_rebuild_tiles_in_background()
@@ -802,6 +811,8 @@ void level::complete_rebuild_tiles_in_background()
 		info.tile_rebuild_queued = false;
 		start_rebuild_tiles_in_background(info.rebuild_tile_layers_buffer);
 	}
+
+	++g_tile_rebuild_state_id;
 }
 
 void level::rebuild_tiles()
@@ -1713,15 +1724,21 @@ void level::draw(int x, int y, int w, int h) const
 	std::vector<entity_ptr> editor_chars_buf;
 	
 	if(editor_) {
+		editor_chars_buf = active_chars_;
 		rect screen_area(x, y, w, h);
 
 		//in the editor draw all characters that are on screen as well
 		//as active ones.
 		foreach(const entity_ptr& c, chars_) {
+			if(std::find(editor_chars_buf.begin(), editor_chars_buf.end(), c) != editor_chars_buf.end()) {
+				continue;
+			}
+
 			if(std::find(active_chars_.begin(), active_chars_.end(), c) != active_chars_.end() || rects_intersect(c->draw_rect(), screen_area)) {
 				editor_chars_buf.push_back(c);
 			}
 		}
+
 		std::sort(editor_chars_buf.begin(), editor_chars_buf.end(), sort_entity_drawing_pos);
 		chars_ptr = &editor_chars_buf;
 	}
@@ -1786,24 +1803,28 @@ void level::draw(int x, int y, int w, int h) const
 	}
 
 	if(editor_highlight_ || !editor_selection_.empty()) {
-		if(editor_highlight_) {
+		if(editor_highlight_ && std::count(chars_.begin(), chars_.end(), editor_highlight_)) {
 			draw_entity(*editor_highlight_, x, y, true);
 		}
 
 		foreach(const entity_ptr& e, editor_selection_) {
-			draw_entity(*e, x, y, true);
+			if(std::count(chars_.begin(), chars_.end(), e)) {
+				draw_entity(*e, x, y, true);
+			}
 		}
 
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 		const GLfloat alpha = 0.5 + sin(draw_count/5.0)*0.5;
 		glColor4f(1.0, 1.0, 1.0, alpha);
 
-		if(editor_highlight_) {
+		if(editor_highlight_ && std::count(chars_.begin(), chars_.end(), editor_highlight_)) {
 			draw_entity(*editor_highlight_, x, y, true);
 		}
 
 		foreach(const entity_ptr& e, editor_selection_) {
-			draw_entity(*e, x, y, true);
+			if(std::count(chars_.begin(), chars_.end(), e)) {
+				draw_entity(*e, x, y, true);
+			}
 		}
 
 		glColor4f(1.0, 1.0, 1.0, 1.0);
@@ -2010,7 +2031,10 @@ namespace {
 bool compare_entity_num_parents(const entity_ptr& a, const entity_ptr& b) {
 	const int deptha = a->parent_depth();
 	const int depthb = b->parent_depth();
-	return deptha < depthb || deptha == depthb && a->standing_on().get() < b->standing_on().get() || deptha == depthb && (a->standing_on().get() ? true : false) == (b->standing_on().get() ? true : false) && a->is_human() < b->is_human();
+	const bool standa = a->standing_on().get() ? true : false;
+	const bool standb = b->standing_on().get() ? true : false;
+	return deptha < depthb || deptha == depthb && standa < standb ||
+	     deptha == depthb && standa == standb && a->is_human() < b->is_human();
 }
 }
 
@@ -2097,7 +2121,7 @@ void level::do_processing()
 		active_chars = chars_immune_from_time_freeze_;
 	}
 	foreach(const entity_ptr& c, active_chars) {
-		if(!c->destroyed() || c->is_human()) {
+		if(!c->destroyed() && chars_by_label_.count(c->label()) || c->is_human()) {
 			c->process(*this);
 		}
 
@@ -2645,8 +2669,9 @@ std::vector<entity_ptr> level::get_characters_in_rect(const rect& r, int screen_
 {
 	std::vector<entity_ptr> res;
 	foreach(entity_ptr c, chars_) {
-		const int xP = c->x() + ((c->parallax_scale_millis_x() - 1000)*screen_xpos)/1000;
-		const int yP = c->y() + ((c->parallax_scale_millis_y() - 1000)*screen_ypos)/1000;
+
+		const int xP = c->midpoint().x + ((c->parallax_scale_millis_x() - 1000)*screen_xpos)/1000;
+		const int yP = c->midpoint().y + ((c->parallax_scale_millis_y() - 1000)*screen_ypos)/1000;
 		
 		if(point_in_rect(point(xP, yP), r)) {
 			res.push_back(c);
@@ -2834,8 +2859,19 @@ void level::add_character(entity_ptr p)
 		solid_chars_.push_back(p);
 	}
 
+	ASSERT_LOG(p->label().empty() == false, "Entity has no label");
+
 	if(p->label().empty() == false) {
-		chars_by_label_[p->label()] = p;
+		entity_ptr& target = chars_by_label_[p->label()];
+		if(!target) {
+			target = p;
+		} else {
+			while(chars_by_label_[p->label()]) {
+				p->set_label(formatter() << p->label() << rand());
+			}
+
+			chars_by_label_[p->label()] = p;
+		}
 	}
 
 	if(p->is_human()) {
@@ -3314,7 +3350,7 @@ bool level::can_interact(const rect& body) const
 
 void level::replay_from_cycle(int ncycle)
 {
-	return;
+		/*
 	const int cycles_ago = cycle_ - ncycle;
 	if(cycles_ago <= 0) {
 		return;
@@ -3331,10 +3367,15 @@ void level::replay_from_cycle(int ncycle)
 		backup();
 		do_processing();
 	}
+	*/
 }
 
 void level::backup()
 {
+	if(backups_.empty() == false && backups_.back()->cycle == cycle_) {
+		return;
+	}
+
 	std::map<entity_ptr, entity_ptr> entity_map;
 
 	backup_snapshot_ptr snapshot(new backup_snapshot);
@@ -3373,8 +3414,17 @@ void level::backup()
 	snapshot->last_touched_player = last_touched_player_;
 
 	backups_.push_back(snapshot);
-	if(backups_.size() > 500) {
-		backups_.erase(backups_.begin(), backups_.begin() + 100);
+	if(backups_.size() > 250) {
+		backups_.erase(backups_.begin(), backups_.begin() + 20);
+	}
+}
+
+int level::earliest_backup_cycle() const
+{
+	if(backups_.empty()) {
+		return cycle_;
+	} else {
+		return backups_.front()->cycle;
 	}
 }
 
@@ -3386,6 +3436,24 @@ void level::reverse_one_cycle()
 
 	restore_from_backup(*backups_.back());
 	backups_.pop_back();
+}
+
+void level::reverse_to_cycle(int ncycle)
+{
+	if(backups_.empty()) {
+		return;
+	}
+
+	std::cerr << "REVERSING FROM " << cycle_ << " TO " << ncycle << "...\n";
+
+	while(backups_.size() > 1 && backups_.back()->cycle > ncycle) {
+		std::cerr << "REVERSING PAST " << backups_.back()->cycle << "...\n";
+		backups_.pop_back();
+	}
+
+	std::cerr << "GOT TO CYCLE: " << backups_.back()->cycle << "\n";
+
+	reverse_one_cycle();
 }
 
 void level::restore_from_backup(backup_snapshot& snapshot)
@@ -3409,12 +3477,13 @@ void level::restore_from_backup(backup_snapshot& snapshot)
 	}
 }
 
-std::vector<entity_ptr> level::trace_past(entity_ptr e, int ncycles)
+std::vector<entity_ptr> level::trace_past(entity_ptr e, int ncycle)
 {
+	backup();
 	int prev_cycle = -1;
 	std::vector<entity_ptr> result;
 	std::deque<backup_snapshot_ptr>::reverse_iterator i = backups_.rbegin();
-	while(i != backups_.rend() && ncycles) {
+	while(i != backups_.rend() && (*i)->cycle >= ncycle) {
 		const backup_snapshot& snapshot = **i;
 		if(prev_cycle != -1 && snapshot.cycle == prev_cycle) {
 			++i;
@@ -3430,7 +3499,6 @@ std::vector<entity_ptr> level::trace_past(entity_ptr e, int ncycles)
 			}
 		}
 		++i;
-		--ncycles;
 	}
 
 	return result;
@@ -3438,12 +3506,17 @@ std::vector<entity_ptr> level::trace_past(entity_ptr e, int ncycles)
 
 std::vector<entity_ptr> level::predict_future(entity_ptr e, int ncycles)
 {
+	disable_flashes_scope flashes_disabled_scope;
 	const controls::control_backup_scope ctrl_backup_scope;
+
 	backup();
 	backup_snapshot_ptr snapshot = backups_.back();
 	backups_.pop_back();
 
 	const size_t starting_backups = backups_.size();
+
+	int begin_time = SDL_GetTicks();
+	int nframes = 0;
 
 	const int controls_end = controls::local_controls_end();
 	std::cerr << "PREDICT FUTURE: " << cycle_ << "/" << controls_end << "\n";
@@ -3452,13 +3525,20 @@ std::vector<entity_ptr> level::predict_future(entity_ptr e, int ncycles)
 			const assert_recover_scope safe_scope;
 			process();
 			backup();
+			++nframes;
 		} catch(validation_failure_exception& e) {
 			std::cerr << "ERROR WHILE PREDICTING FUTURE...\n";
 			break;
 		}
 	}
 
-	std::vector<entity_ptr> result = trace_past(e, ncycles);
+	std::cerr << "TOOK " << (SDL_GetTicks() - begin_time) << "ms TO MOVE FORWARD " << nframes << " frames\n";
+
+	begin_time = SDL_GetTicks();
+
+	std::vector<entity_ptr> result = trace_past(e, -1);
+
+	std::cerr << "TOOK " << (SDL_GetTicks() - begin_time) << "ms to TRACE PAST OF " << result.size() << " FRAMES\n";
 
 	backups_.resize(starting_backups);
 	restore_from_backup(*snapshot);
@@ -3750,7 +3830,7 @@ UTILITY(correct_solidity)
 
 		foreach(entity_ptr c, lvl->get_chars()) {
 			if(entity_collides_with_level(*lvl, *c, MOVE_NONE)) {
-				if(place_entity_in_level(*lvl, *c)) {
+				if(place_entity_in_level_with_large_displacement(*lvl, *c)) {
 					std::cerr << "LEVEL: " << lvl->id() << " CORRECTED " << c->debug_description() << "\n";
 				} else {
 					std::cerr << "LEVEL: " << lvl->id() << " FAILED TO CORRECT " << c->debug_description() << "\n";

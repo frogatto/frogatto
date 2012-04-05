@@ -2,23 +2,29 @@
 
 #include "asserts.hpp"
 
+validation_failure_exception::validation_failure_exception(const std::string& m)
+  : msg(m)
+{
+	std::cerr << "ASSERT FAIL: " << m << "\n";
+}
+
 namespace {
-	bool throw_validation_failure = false;
+	int throw_validation_failure = 0;
 }
 
 bool throw_validation_failure_on_assert()
 {
-	return throw_validation_failure;
+	return throw_validation_failure != 0;
 }
 
-assert_recover_scope::assert_recover_scope() : value(throw_validation_failure)
+assert_recover_scope::assert_recover_scope()
 {
-	throw_validation_failure = true;
+	throw_validation_failure++;
 }
 
 assert_recover_scope::~assert_recover_scope()
 {
-	throw_validation_failure = value;
+	throw_validation_failure--;
 }
 
 void output_backtrace()

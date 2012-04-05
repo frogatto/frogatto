@@ -17,14 +17,15 @@
 
 namespace game_logic {
 class formula_callable;
+class formula_expression;
 }
 
-void push_call_stack(const char* str);
+void push_call_stack(const game_logic::formula_expression* frame);
 void pop_call_stack();
 std::string get_call_stack();
 
 struct call_stack_manager {
-	explicit call_stack_manager(const char* str) {
+	explicit call_stack_manager(const game_logic::formula_expression* str) {
 		push_call_stack(str);
 	}
 

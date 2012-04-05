@@ -9,8 +9,9 @@
 #include <string>
 #include <vector>
 
-#include "boost/array.hpp"
-#include "boost/scoped_ptr.hpp"
+#include <boost/array.hpp>
+#include <boost/intrusive_ptr.hpp>
+#include <boost/scoped_ptr.hpp>
 
 #include "background.hpp"
 #include "color_utils.hpp"
@@ -46,6 +47,8 @@ public:
 	static level* current_ptr();
 	void set_as_current_level();
 	static void clear_current_level();
+
+	static int tile_rebuild_state_id();
 
 	explicit level(const std::string& level_cfg, variant node=variant());
 	~level();
@@ -246,14 +249,16 @@ public:
 	//pressing up will talk to someone or enter a door etc.
 	bool can_interact(const rect& body) const;
 
+	int earliest_backup_cycle() const;
 	void replay_from_cycle(int ncycle);
 	void backup();
 	void reverse_one_cycle();
+	void reverse_to_cycle(int ncycle);
 
 	void transfer_state_to(level& lvl);
 
-	//gets historical 'shadows' of a given object for the last n frames.
-	std::vector<entity_ptr> trace_past(entity_ptr e, int ncycles);
+	//gets historical 'shadows' of a given object back to the given cycle
+	std::vector<entity_ptr> trace_past(entity_ptr e, int ncycle);
 
 	std::vector<entity_ptr> predict_future(entity_ptr e, int ncycles);
 
@@ -558,5 +563,7 @@ private:
 };
 
 bool entity_in_current_level(const entity* e);
+
+typedef boost::intrusive_ptr<level> level_ptr;
 
 #endif

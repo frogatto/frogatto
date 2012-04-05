@@ -43,7 +43,7 @@ level_tile level_object::build_tile(variant node)
 	res.y = node["y"].as_int();
 	res.zorder = node["zorder"].as_int();
 	if(tiles_cache.count(node["tile"].as_string())) {
-		res.object = tiles_cache[node["tile"].as_string()];
+		res.object = tiles_cache[node["tile"].as_string()].get();
 	}
 	res.face_right = node["face_right"].as_bool();
 	return res;

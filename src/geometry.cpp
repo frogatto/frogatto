@@ -121,10 +121,10 @@ rect::rect(const std::vector<int>& v)
 {
 	switch(v.size()) {
 	case 2:
-		*this = rect::from_coordinates(v[0], v[1], 1, 1);
+		*this = rect::from_coordinates(v[0], v[1], v[0], v[1]);
 		break;
 	case 3:
-		*this = rect::from_coordinates(v[0], v[1], v[2], 1);
+		*this = rect::from_coordinates(v[0], v[1], v[2], v[1]);
 		break;
 	case 4:
 		*this = rect::from_coordinates(v[0], v[1], v[2], v[3]);

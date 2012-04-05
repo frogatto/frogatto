@@ -8,8 +8,14 @@
 
 decimal decimal::from_string(const std::string& s)
 {
+	bool negative = false;
+	const char* ptr = s.c_str();
+	if(*ptr == '-') {
+		negative = true;
+		++ptr;
+	}
 	char* endptr = NULL, *enddec = NULL;
-	int64_t n = strtol(s.c_str(), &endptr, 0);
+	int64_t n = strtol(ptr, &endptr, 0);
 	int64_t m = strtol(endptr+1, &enddec, 0);
 	int dist = enddec - endptr;
 	while(dist > (DECIMAL_PLACES+1)) {
@@ -19,6 +25,11 @@ decimal decimal::from_string(const std::string& s)
 	while(dist < (DECIMAL_PLACES+1)) {
 		m *= 10;
 		++dist;
+	}
+
+	if(negative) {
+		n = -n;
+		m = -m;
 	}
 
 	return decimal(n*DECIMAL_PRECISION + m);
@@ -97,6 +108,17 @@ struct TestCase {
 	double value;
 	std::string expected;
 };
+}
+
+UNIT_TEST(decimal_from_string) {
+	TestCase tests[] = {
+		{ 5.5, "5.5" },
+		{ -1.5, "-1.5" },
+	};
+
+	for(int n = 0; n != sizeof(tests)/sizeof(tests[0]); ++n) {
+		CHECK_EQ(tests[n].value, decimal::from_string(tests[n].expected).as_float());
+	}
 }
 
 UNIT_TEST(decimal_output) {

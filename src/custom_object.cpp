@@ -70,7 +70,7 @@ custom_object::custom_object(variant node)
 	rotate_(static_cast<int64_t>(0)), zorder_(node["zorder"].as_int(type_->zorder())),
 	zsub_order_(node["zsub_order"].as_int(type_->zsub_order())),
 	hitpoints_(node["hitpoints"].as_int(type_->hitpoints())),
-	max_hitpoints_(node["max_hitpoints"].as_int(type_->hitpoints())),
+	max_hitpoints_(node["max_hitpoints"].as_int(type_->hitpoints()) - type_->hitpoints()),
 	was_underwater_(false),
 	has_feet_(node["has_feet"].as_bool(type_->has_feet())),
 	invincible_(0),
@@ -280,7 +280,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	rotate_(static_cast<int64_t>(0)), zorder_(type_->zorder()),
 	zsub_order_(type_->zsub_order()),
 	hitpoints_(type_->hitpoints()),
-	max_hitpoints_(type_->hitpoints()),
+	max_hitpoints_(0),
 	was_underwater_(false),
 	has_feet_(type_->has_feet()),
 	invincible_(0),
@@ -560,9 +560,9 @@ variant custom_object::write() const
 		res.add("collide_dimensions", collide_dim);
 	}
 
-	if(hitpoints_ != type_->hitpoints() || max_hitpoints_ != type_->hitpoints()) {
+	if(hitpoints_ != type_->hitpoints() || max_hitpoints_ != 0) {
 		res.add("hitpoints", hitpoints_);
-		res.add("max_hitpoints", max_hitpoints_);
+		res.add("max_hitpoints", type_->hitpoints() + max_hitpoints_);
 	}
 
 	if(!vertex_shaders_.empty()) {
@@ -814,6 +814,29 @@ void custom_object::draw() const
 		glUseProgram(0);
 	}
 #endif
+
+	if(preferences::show_debug_hitboxes() && platform_area_) {
+		std::vector<GLfloat> v;
+		const rect& r = platform_rect();
+		for(int x = 0; x < r.w(); x += 2) {
+			v.push_back(r.x() + x);
+			v.push_back(platform_rect_at(r.x() + x).y());
+		}
+
+		if(!v.empty()) {
+			glPointSize(2);
+			glDisable(GL_TEXTURE_2D);
+			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+			glColor4ub(255, 0, 0, 255);
+
+			glVertexPointer(2, GL_FLOAT, 0, &v[0]);
+			glDrawArrays(GL_POINTS, 0, v.size()/2);
+
+			glColor4ub(255, 255, 255, 255);
+			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+			glEnable(GL_TEXTURE_2D);
+		}
+	}
 }
 
 void custom_object::draw_group() const
@@ -1784,7 +1807,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_ANIMATION:         return frame_->variant_id();
 	case CUSTOM_OBJECT_AVAILABLE_ANIMATIONS: return type_->available_frames();
 	case CUSTOM_OBJECT_HITPOINTS:         return variant(hitpoints_);
-	case CUSTOM_OBJECT_MAX_HITPOINTS:     return variant(max_hitpoints_);
+	case CUSTOM_OBJECT_MAX_HITPOINTS:     return variant(type_->hitpoints() + max_hitpoints_);
 	case CUSTOM_OBJECT_MASS:              return variant(type_->mass());
 	case CUSTOM_OBJECT_LABEL:             return variant(label());
 	case CUSTOM_OBJECT_X:                 return variant(x());
@@ -1994,6 +2017,14 @@ variant custom_object::get_value_by_slot(int slot) const
 		return variant(&result);
 	}
 
+	case CUSTOM_OBJECT_PLATFORM_AREA: {
+		if(platform_area_) {
+			return platform_area_->write();
+		} else {
+			return variant();
+		}
+	}
+
 	case CUSTOM_OBJECT_SOLID_DIMENSIONS_IN: {
 		std::vector<variant> v;
 		v.push_back(variant(solid_dimensions()));
@@ -2021,6 +2052,12 @@ variant custom_object::get_value_by_slot(int slot) const
 		return variant(control_status(static_cast<controls::CONTROL_ITEM>(slot - CUSTOM_OBJECT_CTRL_UP)));
 	}
 
+	const game_logic::formula_callable_definition::entry* entry = 
+		    custom_object_callable::instance().get_entry(slot);
+	if(entry != NULL) {
+		return variant();
+	}
+	
 	ASSERT_LOG(false, "UNKNOWN SLOT QUERIED FROM OBJECT: " << slot);
 }
 
@@ -2074,10 +2111,13 @@ variant custom_object::get_value(const std::string& key) const
 
 void custom_object::get_inputs(std::vector<game_logic::formula_input>* inputs) const
 {
-	inputs->push_back(game_logic::formula_input("time_in_animation", game_logic::FORMULA_READ_WRITE));
-	inputs->push_back(game_logic::formula_input("level", game_logic::FORMULA_READ_ONLY));
-	inputs->push_back(game_logic::formula_input("animation", game_logic::FORMULA_READ_ONLY));
-	inputs->push_back(game_logic::formula_input("hitpoints", game_logic::FORMULA_READ_WRITE));
+	for(int n = 0; n != NUM_CUSTOM_OBJECT_PROPERTIES; ++n) {
+		const game_logic::formula_callable_definition::entry* entry = 
+		    custom_object_callable::instance().get_entry(n);
+		if(!get_value_by_slot(n).is_null()) {
+			inputs->push_back(entry->id);
+		}
+	}
 }
 
 void custom_object::set_value(const std::string& key, const variant& value)
@@ -2138,8 +2178,8 @@ void custom_object::set_value(const std::string& key, const variant& value)
 			die();
 		}
 	} else if(key == "max_hitpoints") {
-		max_hitpoints_ = value.as_int();
-		if(hitpoints_ > max_hitpoints_) {
+		max_hitpoints_ = value.as_int() - type_->hitpoints();
+		if(hitpoints_ > type_->hitpoints() + max_hitpoints_) {
 			hitpoints_ = max_hitpoints_;
 		}
 	} else if(key == "velocity_x") {
@@ -2473,8 +2513,8 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		break;
 	}
 	case CUSTOM_OBJECT_MAX_HITPOINTS:
-		max_hitpoints_ = value.as_int();
-		if(hitpoints_ > max_hitpoints_) {
+		max_hitpoints_ = value.as_int() - type_->hitpoints();
+		if(hitpoints_ > type_->hitpoints() + max_hitpoints_) {
 			hitpoints_ = max_hitpoints_;
 		}
 		break;
@@ -2794,7 +2834,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		ASSERT_GE(value.num_elements(), 3);
 		ASSERT_LE(value.num_elements(), 4);
 
-		set_platform_area(rect(value[0].as_int(), value[1].as_int(), value[2].as_int(), 1));
+		set_platform_area(rect(value));
 		calculate_solid_rect();
 		break;
 	}
@@ -3139,13 +3179,28 @@ void custom_object::handle_event(int event, const formula_callable* context)
 
 		++events_handled_per_second;
 
-		variant var = handler->execute(*this);
+		variant var;
+		
+		try {
+			var = handler->execute(*this);
+		} catch(validation_failure_exception&) {
+#ifndef DISABLE_FORMULA_PROFILER
+			event_call_stack.pop_back();
+#endif
+			break;
+		}
 
 #ifndef DISABLE_FORMULA_PROFILER
 		event_call_stack.back().executing_commands = true;
 #endif
 
-		const bool result = execute_command(var);
+		bool result = false;
+		
+		try {
+			result = execute_command(var);
+		} catch(validation_failure_exception&) {
+		}
+
 #ifndef DISABLE_FORMULA_PROFILER
 		event_call_stack.pop_back();
 #endif
@@ -3590,6 +3645,32 @@ void custom_object::update_type(const_custom_object_type_ptr old_type,
 		type_ = base_type_;
 	} else {
 		type_ = base_type_->get_variation(current_variation_);
+	}
+
+	game_logic::formula_variable_storage_ptr old_vars = vars_;
+
+	vars_.reset(new game_logic::formula_variable_storage(type_->variables()));
+	foreach(const std::string& key, old_vars->keys()) {
+		const variant old_value = old_vars->query_value(key);
+		std::map<std::string, variant>::const_iterator old_type_value =
+		    old_type->variables().find(key);
+		if(old_type_value == old_type->variables().end() ||
+		   old_type_value->second != old_value) {
+			vars_->mutate_value(key, old_value);
+		}
+	}
+
+	old_vars = tmp_vars_;
+
+	tmp_vars_.reset(new game_logic::formula_variable_storage(type_->tmp_variables()));
+	foreach(const std::string& key, old_vars->keys()) {
+		const variant old_value = old_vars->query_value(key);
+		std::map<std::string, variant>::const_iterator old_type_value =
+		    old_type->tmp_variables().find(key);
+		if(old_type_value == old_type->tmp_variables().end() ||
+		   old_type_value->second != old_value) {
+			tmp_vars_->mutate_value(key, old_value);
+		}
 	}
 
 	frame_ = &type_->get_frame(frame_name_);

@@ -270,7 +270,9 @@ public:
 		
 		std::string name = entry->text();
 		if(name.empty() == false) {
-			sys::write_file(preferences::level_path() + name, "[level]\n[/level]\n");
+			variant empty_lvl = json::parse_from_file("data/level/empty.cfg");
+			empty_lvl.add_attr(variant("id"), variant(name));
+			sys::write_file(preferences::level_path() + name, empty_lvl.write_json());
 			editor_.close();
 			g_last_edited_level() = name;
 		}
@@ -420,9 +422,14 @@ rect g_rect_drawing;
 std::vector<point> g_current_draw_tiles;
 
 const editor_variable_info* g_variable_editing = NULL;
-int g_variable_editing_original_value = 0;
-const editor_variable_info* variable_info_selected(const_entity_ptr e, int xpos, int ypos, int zoom)
+int g_variable_editing_index = -1;
+variant g_variable_editing_original_value;
+const editor_variable_info* variable_info_selected(const_entity_ptr e, int xpos, int ypos, int zoom, int* index_selected=NULL)
 {
+	if(index_selected) {
+		*index_selected = -1;
+	}
+
 	if(!e || !e->editor_info()) {
 		return NULL;
 	}
@@ -449,6 +456,24 @@ const editor_variable_info* variable_info_selected(const_entity_ptr e, int xpos,
 					return &var;
 				}
 				break;
+			}
+			case editor_variable_info::TYPE_POINTS: {
+				if(!value.is_list()) {
+					break;
+				}
+
+				int index = 0;
+				foreach(variant p, value.as_list()) {
+					point pt(p);
+					if(point_in_rect(point(xpos, ypos), rect(pt.x-10, pt.y-10, 20, 20))) {
+						if(index_selected) {
+							*index_selected = index;
+						}
+						return &var;
+					}
+
+					++index;
+				}
 			}
 			default:
 				break;
@@ -585,7 +610,7 @@ editor::enemy_type::enemy_type(const custom_object_type& type)
 
 	node = new_node.build();
 	preview_object = entity::build(node);
-	preview_frame = &preview_object->current_frame();
+	preview_frame.reset(new frame(preview_object->current_frame()));
 }
 
 void editor::tileset::init(variant node)
@@ -816,6 +841,7 @@ editor_resolution_manager::editor_resolution_manager() :
 	}
 
 	if(++editor_resolution_manager_count == 1) {
+		std::cerr << "EDITOR RESOLUTION: " << editor_x_resolution << "," << editor_y_resolution << "\n";
 		SDL_Surface* result = graphics::set_video_mode(editor_x_resolution,editor_y_resolution,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
 
 		if(result) {
@@ -887,7 +913,7 @@ void editor::edit_level()
 
 		SDL_Event event;
 		while(SDL_PollEvent(&event)) {
-			handle_event(event);
+			handle_event(event, false);
 		}
 
 		draw();
@@ -896,10 +922,14 @@ void editor::edit_level()
 	}
 }
 
-bool editor::handle_event(const SDL_Event& event)
+bool editor::handle_event(const SDL_Event& event, bool swallowed)
 {
 	const bool code_dialog_started_with_focus = code_dialog_ && code_dialog_->has_keyboard_focus();
-	if(code_dialog_ && code_dialog_->process_event(event, false)) {
+	if(code_dialog_ && code_dialog_->process_event(event, swallowed)) {
+		return true;
+	}
+
+	if(swallowed) {
 		return true;
 	}
 
@@ -970,6 +1000,10 @@ bool editor::handle_event(const SDL_Event& event)
 
 void editor::process()
 {
+	if(code_dialog_) {
+		code_dialog_->process();
+	}
+
 	if(editor_mode_dialog_) {
 		editor_mode_dialog_->refresh_selection();
 	}
@@ -1007,27 +1041,54 @@ void editor::process()
 
 	const bool object_mode = (tool() == TOOL_ADD_OBJECT || tool() == TOOL_SELECT_OBJECT);
 	if(property_dialog_ && g_variable_editing) {
+		const int diffx = (xpos_ + mousex*zoom_) - anchorx_;
+		const int diffy = (ypos_ + mousey*zoom_) - anchory_;
 		int diff = 0;
 		switch(g_variable_editing->type()) {
 		case editor_variable_info::XPOSITION:
-			diff = (xpos_ + mousex*zoom_) - anchorx_;
+			diff = diffx;
 			break;
 		case editor_variable_info::YPOSITION:
-			diff = (ypos_ + mousey*zoom_) - anchory_;
+			diff = diffy;
 			break;
 		default:
 			break;
 		}
 
 		if(property_dialog_ && property_dialog_->get_entity()) {
-			const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
-			int new_value = g_variable_editing_original_value + diff;
-			if(ctrl_pressed) {
-				new_value += TileSize/2;
-				new_value = new_value - new_value%TileSize;
+			variant new_value;
+
+			if(g_variable_editing->type() == editor_variable_info::TYPE_POINTS) {
+				std::vector<variant> items = g_variable_editing_original_value.as_list();
+				ASSERT_LOG(g_variable_editing_index >= 0 && g_variable_editing_index < items.size(), "Variable editing points invalid: " << g_variable_editing_index << " / " << items.size());
+				point orig_point(items[g_variable_editing_index]);
+				point new_point(orig_point.x + diffx, orig_point.y + diffy);
+				items[g_variable_editing_index] = new_point.write();
+				new_value = variant(&items);
+
+			} else {
+				const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
+				int new_value_int = g_variable_editing_original_value.as_int() + diff;
+				if(ctrl_pressed) {
+					new_value_int += TileSize/2;
+					new_value_int = new_value_int - new_value_int%TileSize;
+				}
+
+				new_value = variant(new_value_int);
 			}
 
-			mutate_object_value(property_dialog_->get_entity(), g_variable_editing->variable_name(), variant(new_value));
+			if(!new_value.is_null()) {
+				std::vector<boost::function<void()> > undo, redo;
+				generate_mutate_commands(property_dialog_->get_entity(), g_variable_editing->variable_name(), new_value, undo, redo);
+				execute_command(
+				  boost::bind(execute_functions, redo),
+				  boost::bind(execute_functions, undo));
+
+				//We don't want this to actually be undoable, since the whole
+				//drag operation will be undoable when we're done, so remove
+				//from the undo stack.
+				undo_.pop_back();
+			}
 		}
 	} else if(object_mode && !buttons) {
 		//remove ghost objects and re-add them. This guarantees ghost
@@ -1310,22 +1371,7 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 		//we want to clear the objects in the property dialog
 		redo.push_back(boost::bind(&editor_dialogs::group_property_editor_dialog::set_group, group_property_dialog_.get(), std::vector<entity_ptr>()));
 		foreach(const entity_ptr& e, lvl_->editor_selection()) {
-			foreach(level_ptr lvl, levels_) {
-				entity_ptr obj = lvl->get_entity_by_label(e->label());
-				if(obj) {
-					redo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, obj));
-					undo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, obj));
-					if(obj->label().empty() == false) {
-						foreach(entity_ptr child, lvl->get_chars()) {
-							if(child->spawned_by() == obj->label()) {
-								redo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, child));
-								undo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, child));
-							}
-						}
-					}
-				}
-			}
-
+			generate_remove_commands(e, undo, redo);
 			undo.push_back(boost::bind(&level::editor_select_object, lvl_.get(), e));
 		}
 		execute_command(
@@ -1444,6 +1490,10 @@ void editor::toggle_pause() const
 
 void editor::handle_scrolling()
 {
+	if(code_dialog_ && code_dialog_->has_keyboard_focus()) {
+		return;
+	}
+
 	const int ScrollSpeed = 24*zoom_;
 	const int FastScrollSpeed = 384*zoom_;
 
@@ -1605,7 +1655,40 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 
 	dragging_ = drawing_rect_ = false;
 
-	if(tool() == TOOL_EDIT_SEGMENTS) {
+	if(adding_points_.empty() == false) {
+		if(event.button == SDL_BUTTON_LEFT && property_dialog_ && property_dialog_->get_entity()) {
+			const int xpos = anchorx_;
+			const int ypos = anchory_;
+			std::cerr << "ADD POINT: " << xpos << ", " << ypos << "\n";
+
+			entity_ptr c = property_dialog_->get_entity();
+
+			game_logic::formula_callable* obj_vars = c->query_value("vars").mutable_callable();
+			variant current_value = obj_vars->query_value(adding_points_);
+			std::vector<variant> new_value;
+			if(current_value.is_list()) {
+				new_value = current_value.as_list();
+			}
+
+			std::vector<variant> point;
+			point.push_back(variant(xpos));
+			point.push_back(variant(ypos));
+			new_value.push_back(variant(&point));
+
+			std::vector<boost::function<void()> > redo, undo;
+			generate_mutate_commands(c, adding_points_, variant(&new_value), undo, redo);
+
+			execute_command(
+			  boost::bind(execute_functions, redo),
+			  boost::bind(execute_functions, undo));
+
+
+			start_adding_points(adding_points_);
+
+		} else {
+			start_adding_points("");
+		}
+	} else if(tool() == TOOL_EDIT_SEGMENTS) {
 		if(point_in_rect(point(anchorx_, anchory_), lvl_->boundaries())) {
 			const int xpos = anchorx_ - lvl_->boundaries().x();
 			const int ypos = anchory_ - lvl_->boundaries().y();
@@ -1702,8 +1785,27 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 		g_current_draw_tiles.clear();
 		g_current_draw_tiles.push_back(p);
 	} else if(property_dialog_ && variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_, zoom_)) {
-		g_variable_editing = variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_, zoom_);
-		g_variable_editing_original_value = property_dialog_->get_entity()->query_value(g_variable_editing->variable_name()).as_int();
+		g_variable_editing = variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_, zoom_, &g_variable_editing_index);
+		g_variable_editing_original_value = property_dialog_->get_entity()->query_value(g_variable_editing->variable_name());
+
+		if(g_variable_editing->type() == editor_variable_info::TYPE_POINTS && event.button == SDL_BUTTON_RIGHT) {
+			std::vector<variant> points = g_variable_editing_original_value.as_list();
+			ASSERT_LOG(g_variable_editing_index >= 0 && g_variable_editing_index < points.size(), "INVALID VALUE WHEN EDITING POINTS: " << g_variable_editing_index << " / " << points.size());
+
+			points.erase(points.begin() + g_variable_editing_index);
+
+			variant new_value(&points);
+
+			std::vector<boost::function<void()> > undo, redo;
+			generate_mutate_commands(property_dialog_->get_entity(), g_variable_editing->variable_name(), new_value, undo, redo);
+			execute_command(
+			  boost::bind(execute_functions, redo),
+			  boost::bind(execute_functions, undo));
+
+			g_variable_editing = NULL;
+			g_variable_editing_original_value = variant();
+			g_variable_editing_index = -1;
+		}
 		
 	} else if(tool() == TOOL_SELECT_OBJECT && !lvl_->editor_highlight()) {
 		//dragging a rectangle to select objects
@@ -1841,7 +1943,7 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 				if(obj) {
 					execute_command(
 					  boost::bind(&editor::mutate_object_value, this, obj.get(), var, e->query_value(var)),
-					  boost::bind(&editor::mutate_object_value, this, obj.get(), var, variant(g_variable_editing_original_value)));
+					  boost::bind(&editor::mutate_object_value, this, obj.get(), var, g_variable_editing_original_value));
 				}
 			}
 			end_command_group();
@@ -1996,17 +2098,59 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 		//some kind of object editing
 		if(event.button == SDL_BUTTON_RIGHT) {
 			std::vector<boost::function<void()> > undo, redo;
-			std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos, ypos), xpos_, ypos_);
+			const rect rect_selected(rect::from_coordinates(anchorx_, anchory_, xpos, ypos));
+			std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect_selected, xpos_, ypos_);
 
+			//Delete all the objects in the rect.
 			foreach(const entity_ptr& c, chars) {
+				std::cerr << "REMOVING RECT CHAR: " << c->debug_description() << "\n";
 				foreach(level_ptr lvl, levels_) {
 					entity_ptr obj = lvl->get_entity_by_label(c->label());
-					if(obj) {
-						redo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, obj));
-						undo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, obj));
+					generate_remove_commands(obj, undo, redo);
+				}
+			}
+
+			if(property_dialog_ && property_dialog_.get() == current_dialog_ && property_dialog_->get_entity() && property_dialog_->get_entity()->editor_info()) {
+				//As well as removing objects, we will remove any vertices
+				//that we see.
+				foreach(const editor_variable_info& var, property_dialog_->get_entity()->editor_info()->vars()) {
+					const std::string& name = var.variable_name();
+					const editor_variable_info::VARIABLE_TYPE type = var.type();
+					if(type != editor_variable_info::TYPE_POINTS) {
+						continue;
+					}
+
+					variant value = property_dialog_->get_entity()->query_value(name);
+					if(!value.is_list()) {
+						continue;
+					}
+
+					std::vector<point> points;
+					foreach(const variant& v, value.as_list()) {
+						points.push_back(point(v));
+					}
+
+					bool modified = false;
+					for(std::vector<point>::iterator i = points.begin(); i != points.end(); ) {
+						if(point_in_rect(*i, rect_selected)) {
+							modified = true;
+							i = points.erase(i);
+						} else {
+							++i;
+						}
+					}
+
+					if(modified) {
+						std::vector<variant> points_var;
+						foreach(const point& p, points) {
+							points_var.push_back(p.write());
+						}
+
+						generate_mutate_commands(property_dialog_->get_entity(), name, variant(&points_var), undo, redo);
 					}
 				}
 			}
+
 			execute_command(
 			  boost::bind(execute_functions, redo),
 			  boost::bind(execute_functions, undo));
@@ -2564,7 +2708,11 @@ void editor::draw_gui() const
 	}
 	
 	std::vector<GLfloat>& varray = graphics::global_vertex_array();
-	if(property_dialog_ && property_dialog_.get() == current_dialog_ && property_dialog_->get_entity() && property_dialog_->get_entity()->editor_info()) {
+	if(property_dialog_ && property_dialog_.get() == current_dialog_ &&
+	   property_dialog_->get_entity() &&
+	   property_dialog_->get_entity()->editor_info() &&
+	   std::count(lvl_->get_chars().begin(), lvl_->get_chars().end(),
+	              property_dialog_->get_entity())) {
 		glDisable(GL_TEXTURE_2D);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
@@ -2572,22 +2720,26 @@ void editor::draw_gui() const
 		//cycle through colors for each variable type.
 		std::map<editor_variable_info::VARIABLE_TYPE, int> nseen_variables;
 
-		const editor_variable_info* selected_var = variable_info_selected(property_dialog_->get_entity(), xpos_ + mousex*zoom_, ypos_ + mousey*zoom_, zoom_);
+		int selected_index = -1;
+		const editor_variable_info* selected_var = variable_info_selected(property_dialog_->get_entity(), xpos_ + mousex*zoom_, ypos_ + mousey*zoom_, zoom_, &selected_index);
 		foreach(const editor_variable_info& var, property_dialog_->get_entity()->editor_info()->vars()) {
 			const std::string& name = var.variable_name();
 			const editor_variable_info::VARIABLE_TYPE type = var.type();
 			const int color_index = nseen_variables[type]++;
 			variant value = property_dialog_->get_entity()->query_value(name);
+			graphics::color color;
+			switch(color_index) {
+				case 0: color = graphics::color(255, 0, 0, 255); break;
+				case 1: color = graphics::color(0, 255, 0, 255); break;
+				case 2: color = graphics::color(0, 0, 255, 255); break;
+				case 3: color = graphics::color(255, 255, 0, 255); break;
+				default:color = graphics::color(255, 0, 255, 255); break;
+			}
+
 			if(&var == selected_var) {
 				glColor4ub(255, 255, 0, 255);
 			} else {
-				switch(color_index) {
-					case 0: glColor4ub(255, 0, 0, 255); break;
-					case 1: glColor4ub(0, 255, 0, 255); break;
-					case 2: glColor4ub(0, 0, 255, 255); break;
-					case 3: glColor4ub(255, 255, 0, 255); break;
-					default:glColor4ub(255, 0, 255, 255); break;
-				}
+				glColor4ub(color.r(), color.g(), color.b(), color.a());
 			}
 
 			varray.clear();
@@ -2602,6 +2754,26 @@ void editor::draw_gui() const
 					if(value.is_int()) {
 						varray.push_back(xpos_); varray.push_back(value.as_int());
 						varray.push_back(xpos_ + graphics::screen_width()*zoom_); varray.push_back(value.as_int());
+					}
+					break;
+				case editor_variable_info::TYPE_POINTS:
+					if(value.is_list()) {
+						std::vector<variant> items = value.as_list();
+
+						int index = 0;
+						foreach(const variant& item, items) {
+							point p(item);
+							graphics::color col = color;
+							if(&var == selected_var && index == selected_index) {
+								col = graphics::color(255, 255, 0, 255);
+							}
+
+							graphics::draw_rect(rect(p.x, p.y-10, 1, 20), col);
+							graphics::draw_rect(rect(p.x-10, p.y, 20, 1), col);
+
+							graphics::blit_texture(font::render_text(formatter() << (index+1), col.as_sdl_color(), 12), p.x+4, p.y-14);
+							++index;
+						}
 					}
 					break;
 				default:
@@ -2791,7 +2963,11 @@ void editor::draw_gui() const
 	char loc_buf[256];
 	sprintf(loc_buf, "%d,%d", xpos_ + mousex*zoom_, ypos_ + mousey*zoom_);
 	glColor4f(1.0, 1.0, 1.0, 1.0);
-	graphics::blit_texture(font::render_text(loc_buf, graphics::color_white(), 14), 10, 60);
+	graphics::texture xtex = font::render_text(formatter() << (xpos_ + mousex*zoom_) << ",", graphics::color_white(), 14);
+	graphics::texture ytex = font::render_text(formatter() << (ypos_ + mousey*zoom_), graphics::color_white(), 14);
+
+	graphics::blit_texture(xtex, 10, 80);
+	graphics::blit_texture(ytex, 10 + xtex.width(), 80);
 	if(!code_dialog_ && current_dialog_) {
 		current_dialog_->draw();
 	}
@@ -2807,7 +2983,6 @@ void editor::draw_gui() const
 	}
 
 	if(code_dialog_) {
-		const int begin = SDL_GetTicks();
 		code_dialog_->draw();
 	}
 
@@ -2997,6 +3172,55 @@ void editor::mutate_object_value(entity_ptr e, const std::string& value, variant
 	e->handle_event("editor_changing_variable");
 	e->mutate_value(value, new_value);
 	e->handle_event("editor_changed_variable");
+
+	if(property_dialog_) {
+		property_dialog_->init();
+	}
+}
+
+void editor::generate_mutate_commands(entity_ptr c, const std::string& attr, variant new_value, std::vector<boost::function<void()> >& undo, std::vector<boost::function<void()> >& redo)
+{
+	if(!c || c->spawned_by().empty() == false) {
+		return;
+	}
+
+	foreach(level_ptr lvl, levels_) {
+		entity_ptr obj = lvl->get_entity_by_label(c->label());
+		if(!obj) {
+			continue;
+		}
+		const game_logic::formula_callable* obj_vars = obj->query_value("vars").as_callable();
+		variant current_value = obj_vars->query_value(attr);
+
+		redo.push_back(boost::bind(&editor::mutate_object_value, this, obj, attr, new_value));
+		undo.push_back(boost::bind(&editor::mutate_object_value, this, obj, attr, current_value));
+	}
+}
+
+void editor::generate_remove_commands(entity_ptr c, std::vector<boost::function<void()> >& undo, std::vector<boost::function<void()> >& redo)
+{
+	if(!c || c->spawned_by().empty() == false) {
+		return;
+	}
+	
+	foreach(level_ptr lvl, levels_) {
+		entity_ptr obj = lvl->get_entity_by_label(c->label());
+		if(!obj) {
+			continue;
+		}
+
+		redo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, obj));
+		undo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, obj));
+		if(obj->label().empty() == false) {
+			foreach(entity_ptr child, lvl->get_chars()) {
+				if(child->spawned_by() == obj->label()) {
+		std::cerr << "REMOVING CHILD OBJECT: " << child->debug_description() << " " << child->label() << "\n";
+					redo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, child));
+					undo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, child));
+				}
+			}
+		}
+	}
 }
 
 bool editor::has_keyboard_focus() const
@@ -3025,8 +3249,8 @@ void editor::toggle_code()
 void editor::set_code_file()
 {
 	std::string type;
-	if(lvl_->editor_highlight()) {
-		type = lvl_->editor_highlight()->query_value("type").as_string();
+	if(lvl_->editor_selection().empty() == false) {
+		type = lvl_->editor_selection().back()->query_value("type").as_string();
 	} else if(lvl_->player()) {
 		type = lvl_->player()->get_entity().query_value("type").as_string();
 	}
@@ -3035,8 +3259,22 @@ void editor::set_code_file()
 		return;
 	}
 
+	if(std::count(type.begin(), type.end(), '.')) {
+		//it's a subtype, so find the parent.
+		type = std::string(type.begin(), std::find(type.begin(), type.end(), '.'));
+	}
+
 	const std::string* path = custom_object_type::get_object_path(type + ".cfg");
 	if(path && code_dialog_) {
 		code_dialog_->load_file(*path);
+	}
+}
+
+void editor::start_adding_points(const std::string& field_name)
+{
+	adding_points_ = field_name;
+
+	if(property_dialog_) {
+		property_dialog_->init();
 	}
 }

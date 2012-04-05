@@ -43,9 +43,9 @@ protected:
 	virtual ~widget();
 
 	void normalize_event(SDL_Event* event, bool translate_coords=false);
-private:
 	virtual void handle_draw() const = 0;
 	virtual bool handle_event(const SDL_Event& event, bool claimed) { return claimed; }
+private:
 	int x_, y_;
 	int w_, h_;
 	boost::shared_ptr<std::string> tooltip_;

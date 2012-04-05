@@ -56,7 +56,7 @@ public:
 	void edit_level();
 
 	void process();
-	bool handle_event(const SDL_Event& event);
+	bool handle_event(const SDL_Event& event, bool swallowed);
 	void handle_scrolling();
 
 	int xpos() const { return xpos_; }
@@ -90,7 +90,7 @@ public:
 		variant node;
 		std::string category;
 		entity_ptr preview_object;
-		const frame* preview_frame;
+		boost::shared_ptr<const frame> preview_frame;
 	};
 
 	struct tile_selection {
@@ -115,6 +115,8 @@ public:
 
 	level& get_level() { return *lvl_; }
 	const level& get_level() const { return *lvl_; }
+
+	std::vector<level_ptr> get_level_list() const { return levels_; }
 
 	void save_level();
 	void save_level_as(const std::string& filename);
@@ -178,6 +180,13 @@ public:
 
 	bool has_keyboard_focus() const;
 
+	void start_adding_points(const std::string& field_name);
+	const std::string& adding_points() const { return adding_points_; }
+
+	int level_state_id() const { return level_changed_; }
+
+	void mutate_object_value(entity_ptr e, const std::string& value, variant new_value);
+
 private:
 	editor(const editor&);
 	void operator=(const editor&);
@@ -219,7 +228,11 @@ private:
 	void add_object_to_level(level_ptr lvl, entity_ptr e);
 	void remove_object_from_level(level_ptr lvl, entity_ptr e);
 
-	void mutate_object_value(entity_ptr e, const std::string& value, variant new_value);
+	void generate_mutate_commands(entity_ptr e, const std::string& attr, variant new_value,
+	                              std::vector<boost::function<void()> >& undo,
+	                              std::vector<boost::function<void()> >& redo);
+
+	void generate_remove_commands(entity_ptr e, std::vector<boost::function<void()> >& undo, std::vector<boost::function<void()> >& redo);
 
 	CKey key_;
 
@@ -234,6 +247,11 @@ private:
 	//which the entity started the drag.
 	int selected_entity_startx_, selected_entity_starty_;
 	std::string filename_;
+
+	//If we are currently adding points to an object, this is non-empty
+	//and has the name of the field we're adding points to. The object
+	//being edited will always be lvl.editor_highlight()
+	std::string adding_points_;
 
 	EDIT_TOOL tool_;
 	bool done_;

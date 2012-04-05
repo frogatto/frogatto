@@ -232,7 +232,7 @@ private:
 	const_solid_info_ptr calculate_solid() const;
 	const_solid_info_ptr calculate_platform() const;
 
-	void get_inputs(std::vector<game_logic::formula_input>* inputs) const;
+	virtual void get_inputs(std::vector<game_logic::formula_input>* inputs) const;
 
 	int slope_standing_on(int range) const;
 

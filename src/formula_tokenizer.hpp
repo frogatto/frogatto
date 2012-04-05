@@ -39,7 +39,10 @@ struct token {
 
 token get_token(iterator& i1, iterator i2);
 
-struct token_error {};
+struct token_error {
+	token_error(const std::string& m);
+	std::string msg;
+};
 
 }
 

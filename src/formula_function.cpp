@@ -15,6 +15,7 @@
 #include <iostream>
 #include <math.h>
 
+#include "asserts.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "formula.hpp"
@@ -41,13 +42,98 @@
 
 namespace {
 	const float radians_to_degrees = 57.29577951308232087;
+	const std::string EmptyStr;
 }
 
 namespace game_logic {
 
+formula_expression::formula_expression(const char* name) : name_(name), begin_str_(EmptyStr.begin()), end_str_(EmptyStr.end())
+{}
+
+void formula_expression::copy_debug_info_from(const formula_expression& o)
+{
+	set_debug_info(o.parent_formula_, o.begin_str_, o.end_str_);
+}
+
+void formula_expression::set_debug_info(const variant& parent_formula,
+                                        std::string::const_iterator begin_str,
+                                        std::string::const_iterator end_str)
+{
+	parent_formula_ = parent_formula;
+	begin_str_ = begin_str;
+	end_str_ = end_str;
+	str_ = std::string(begin_str, end_str);
+}
+
+bool formula_expression::has_debug_info() const
+{
+	return parent_formula_.is_string() && parent_formula_.get_debug_info();
+}
+
+std::string pinpoint_location(variant v, std::string::const_iterator begin)
+{
+	return pinpoint_location(v, begin, begin);
+}
+
+std::string pinpoint_location(variant v, std::string::const_iterator begin,
+                                         std::string::const_iterator end)
+{
+	std::string str(begin, end);
+	if(!v.is_string() || !v.get_debug_info()) {
+		return "Unknown location (" + str + ")\n";
+	}
+
+	int line_num = v.get_debug_info()->line;
+
+	std::string::const_iterator begin_line = v.as_string().begin();
+	while(std::find(begin_line, begin, '\n') != begin) {
+		begin_line = std::find(begin_line, begin, '\n')+1;
+		++line_num;
+	}
+
+	while(begin_line != begin && isspace(*begin_line)) {
+		++begin_line;
+	}
+
+	std::string::const_iterator end_line = std::find(begin_line, v.as_string().end(), '\n');
+
+	std::string line(begin_line, end_line);
+	int pos = begin - begin_line;
+
+	if(pos > 40) {
+		line.erase(line.begin(), line.begin() + pos - 40);
+		pos = 40;
+		std::fill(line.begin(), line.begin() + 3, '.');
+	}
+
+	if(line.size() > 78) {
+		line.resize(78);
+		std::fill(line.end() - 3, line.end(), '.');
+	}
+
+	std::ostringstream s;
+	s << "At " << *v.get_debug_info()->filename << " " << line_num << ":\n";
+	s << line << "\n";
+	for(int n = 0; n != pos; ++n) {
+		s << " ";
+	}
+	s << "^\n";
+	return s.str();
+}
+
+std::string formula_expression::debug_pinpoint_location() const
+{
+	if(!has_debug_info()) {
+		return "Unknown Location (" + str_ + ")\n";
+	}
+
+	return pinpoint_location(parent_formula_, begin_str_, end_str_);
+}
+
 variant formula_expression::execute_member(const formula_callable& variables, std::string& id) const
 {
-	throw formula_error();
+	formula::fail_if_static_context();
+	ASSERT_LOG(false, "Trying to set illegal value: " << str_ << "\n" << debug_pinpoint_location());
 }
 
 namespace {
@@ -1523,13 +1609,10 @@ private:
 		}
 
 		if(args().size() == 2) {
-			try {
-				std::string member;
-				variant target = args()[0]->evaluate_with_member(variables, member);
-				return variant(new set_command(
-				  target, member, args()[1]->evaluate(variables)));
-			} catch(game_logic::formula_error&) {
-			}
+			std::string member;
+			variant target = args()[0]->evaluate_with_member(variables, member);
+			return variant(new set_command(
+			  target, member, args()[1]->evaluate(variables)));
 		}
 
 		variant target;
@@ -1585,13 +1668,10 @@ private:
 		}
 
 		if(args().size() == 2) {
-			try {
-				std::string member;
-				variant target = args()[0]->evaluate_with_member(variables, member);
-				return variant(new add_command(
+			std::string member;
+			variant target = args()[0]->evaluate_with_member(variables, member);
+			return variant(new add_command(
 				  target, member, args()[1]->evaluate(variables)));
-			} catch(game_logic::formula_error&) {
-			}
 		}
 
 		variant target;
@@ -1880,17 +1960,20 @@ function_expression::function_expression(
                     const std::string& name,
                     const args_list& args,
                     int min_args, int max_args)
-    : name_(name), args_(args)
+    : name_(name), args_(args), min_args_(min_args), max_args_(max_args)
 {
 	set_name(name.c_str());
-	if(min_args >= 0 && args_.size() < static_cast<size_t>(min_args)) {
-		std::cerr << "ERROR: incorrect number of arguments to function '" << name << "': expected [" << min_args << "," << max_args << "], found " << args_.size() << "\n";
-		throw formula_error();
-	}
+}
 
-	if(max_args >= 0 && args_.size() > static_cast<size_t>(max_args)) {
-		std::cerr << "ERROR: incorrect number of arguments to function '" << name << "': expected [" << min_args << "," << max_args << "], found " << args_.size() << "\n";
-		throw formula_error();
+void function_expression::set_debug_info(const variant& parent_formula,
+	                            std::string::const_iterator begin_str,
+	                            std::string::const_iterator end_str)
+{
+	formula_expression::set_debug_info(parent_formula, begin_str, end_str);
+
+	if(min_args_ >= 0 && args_.size() < static_cast<size_t>(min_args_) ||
+	   max_args_ >= 0 && args_.size() > static_cast<size_t>(max_args_)) {
+		ASSERT_LOG(false, "ERROR: incorrect number of arguments to function '" << name_ << "': expected between " << min_args_ << " and " << max_args_ << ", found " << args_.size() << "\n" << debug_pinpoint_location());
 	}
 }
 

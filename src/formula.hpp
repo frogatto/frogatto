@@ -66,11 +66,6 @@ private:
 	variant str_;
 };
 
-struct formula_error
-{
-	formula_error();
-};
-
 }
 
 #endif

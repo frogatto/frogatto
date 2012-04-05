@@ -50,60 +50,56 @@ UNIT_TEST(formula)
 #define FML(a) formula(variant(a))
 	mock_char c;
 	mock_party p;
-	try {
-		CHECK_EQ(FML("strength").execute(c).as_int(), 15);
-		CHECK_EQ(FML("17").execute(c).as_int(), 17);
-		CHECK_EQ(FML("strength/2 + agility").execute(c).as_int(), 19);
-		CHECK_EQ(FML("(strength+agility)/2").execute(c).as_int(), 13);
-		CHECK_EQ(FML("strength > 12").execute(c).as_int(), 1);
-		CHECK_EQ(FML("strength > 18").execute(c).as_int(), 0);
-		CHECK_EQ(FML("if(strength > 12, 7, 2)").execute(c).as_int(), 7);
-		CHECK_EQ(FML("if(strength > 18, 7, 2)").execute(c).as_int(), 2);
-		CHECK_EQ(FML("2 and 1").execute(c).as_int(), 1);
-		CHECK_EQ(FML("2 and 0").execute(c).as_int(), 0);
-		CHECK_EQ(FML("2 or 0").execute(c).as_int(), 2);
-		CHECK_EQ(FML("-5").execute(c).as_int(),-5);
-		CHECK_EQ(FML("not 5").execute(c).as_int(), 0);
-		CHECK_EQ(FML("not 0").execute(c).as_int(), 1);
-		CHECK_EQ(FML("abs(5)").execute(c).as_int(), 5);
-		CHECK_EQ(FML("abs(-5)").execute(c).as_int(), 5);
-		CHECK_EQ(FML("sign(5)").execute(c).as_int(), 1);
-		CHECK_EQ(FML("sign(-5)").execute(c).as_int(), -1);
-		CHECK_EQ(FML("min(3,5)").execute(c).as_int(), 3);
-		CHECK_EQ(FML("min(5,2)").execute(c).as_int(), 2);
-		CHECK_EQ(FML("max(3,5)").execute(c).as_int(), 5);
-		CHECK_EQ(FML("max(5,2)").execute(c).as_int(), 5);
-		CHECK_EQ(FML("max(4,5,[2,18,7])").execute(c).as_int(), 18);
-		CHECK_EQ(FML("char.strength").execute(p).as_int(), 15);
-		CHECK_EQ(FML("choose(members,strength).strength").execute(p).as_int(), 16);
-		CHECK_EQ(FML("4^2").execute().as_int(), 16);
-		CHECK_EQ(FML("2+3^3").execute().as_int(), 29);
-		CHECK_EQ(FML("2*3^3+2").execute().as_int(), 56);
-		CHECK_EQ(FML("9^3").execute().as_int(), 729);
-		CHECK_EQ(FML("x*5 where x=1").execute().as_int(), 5);
-		CHECK_EQ(FML("x*(a*b where a=2,b=1) where x=5").execute().as_int(), 10);
-		CHECK_EQ(FML("char.strength * ability where ability=3").execute(p).as_int(), 45);
-		CHECK_EQ(FML("'abcd' = 'abcd'").execute(p).as_bool(), true);
-		CHECK_EQ(FML("'abcd' = 'acd'").execute(p).as_bool(), false);
-		CHECK_EQ(FML("'strength, agility: {strength}, {agility}'").execute(c).as_string(),
-		               "strength, agility: 15, 12");
-		for(int n = 0; n != 128; ++n) {
-			const int dice_roll = FML("3d6").execute().as_int();
-			CHECK_GE(dice_roll, 3);
-	   		CHECK_LE(dice_roll, 18);
-		}
-
-		CHECK_EQ(formula::create_string_formula("Your strength is {strength}")->execute(c).as_string(),
-						"Your strength is 15");
-		variant myarray = FML("[1,2,3]").execute();
-		CHECK_EQ(myarray.num_elements(), 3);
-		CHECK_EQ(myarray[0].as_int(), 1);
-		CHECK_EQ(myarray[1].as_int(), 2);
-		CHECK_EQ(myarray[2].as_int(), 3);
-
-	} catch(formula_error& e) {
-		std::cerr << "parse error\n";
+	CHECK_EQ(FML("strength").execute(c).as_int(), 15);
+	CHECK_EQ(FML("17").execute(c).as_int(), 17);
+	CHECK_EQ(FML("strength/2 + agility").execute(c).as_int(), 19);
+	CHECK_EQ(FML("(strength+agility)/2").execute(c).as_int(), 13);
+	CHECK_EQ(FML("strength > 12").execute(c).as_int(), 1);
+	CHECK_EQ(FML("strength > 18").execute(c).as_int(), 0);
+	CHECK_EQ(FML("if(strength > 12, 7, 2)").execute(c).as_int(), 7);
+	CHECK_EQ(FML("if(strength > 18, 7, 2)").execute(c).as_int(), 2);
+	CHECK_EQ(FML("2 and 1").execute(c).as_int(), 1);
+	CHECK_EQ(FML("2 and 0").execute(c).as_int(), 0);
+	CHECK_EQ(FML("2 or 0").execute(c).as_int(), 2);
+	CHECK_EQ(FML("-5").execute(c).as_int(),-5);
+	CHECK_EQ(FML("not 5").execute(c).as_int(), 0);
+	CHECK_EQ(FML("not 0").execute(c).as_int(), 1);
+	CHECK_EQ(FML("abs(5)").execute(c).as_int(), 5);
+	CHECK_EQ(FML("abs(-5)").execute(c).as_int(), 5);
+	CHECK_EQ(FML("sign(5)").execute(c).as_int(), 1);
+	CHECK_EQ(FML("sign(-5)").execute(c).as_int(), -1);
+	CHECK_EQ(FML("min(3,5)").execute(c).as_int(), 3);
+	CHECK_EQ(FML("min(5,2)").execute(c).as_int(), 2);
+	CHECK_EQ(FML("max(3,5)").execute(c).as_int(), 5);
+	CHECK_EQ(FML("max(5,2)").execute(c).as_int(), 5);
+	CHECK_EQ(FML("max(4,5,[2,18,7])").execute(c).as_int(), 18);
+	CHECK_EQ(FML("char.strength").execute(p).as_int(), 15);
+	CHECK_EQ(FML("choose(members,strength).strength").execute(p).as_int(), 16);
+	CHECK_EQ(FML("4^2").execute().as_int(), 16);
+	CHECK_EQ(FML("2+3^3").execute().as_int(), 29);
+	CHECK_EQ(FML("2*3^3+2").execute().as_int(), 56);
+	CHECK_EQ(FML("9^3").execute().as_int(), 729);
+	CHECK_EQ(FML("x*5 where x=1").execute().as_int(), 5);
+	CHECK_EQ(FML("x*(a*b where a=2,b=1) where x=5").execute().as_int(), 10);
+	CHECK_EQ(FML("char.strength * ability where ability=3").execute(p).as_int(), 45);
+	CHECK_EQ(FML("'abcd' = 'abcd'").execute(p).as_bool(), true);
+	CHECK_EQ(FML("'abcd' = 'acd'").execute(p).as_bool(), false);
+	CHECK_EQ(FML("'strength, agility: {strength}, {agility}'").execute(c).as_string(),
+	               "strength, agility: 15, 12");
+	for(int n = 0; n != 128; ++n) {
+		const int dice_roll = FML("3d6").execute().as_int();
+		CHECK_GE(dice_roll, 3);
+   		CHECK_LE(dice_roll, 18);
 	}
+
+	CHECK_EQ(formula::create_string_formula("Your strength is {strength}")->execute(c).as_string(),
+					"Your strength is 15");
+	variant myarray = FML("[1,2,3]").execute();
+	CHECK_EQ(myarray.num_elements(), 3);
+	CHECK_EQ(myarray[0].as_int(), 1);
+	CHECK_EQ(myarray[1].as_int(), 2);
+	CHECK_EQ(myarray[2].as_int(), 3);
+
 }
 
 BENCHMARK(construct_int_variant)

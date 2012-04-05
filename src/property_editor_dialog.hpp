@@ -31,6 +31,10 @@ private:
 	void change_enum_property(const std::string& id);
 	void set_enum_property(const std::string& id, const std::vector<std::string>& options, int index);
 
+	void change_points_property(const std::string& id);
+
+	void mutate_value(const std::string& key, variant value);
+
 	editor& editor_;
 	entity_ptr entity_;
 	gui::widget_ptr context_menu_;

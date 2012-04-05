@@ -29,12 +29,15 @@ enum BUTTON_STYLE { BUTTON_STYLE_NORMAL, BUTTON_STYLE_DEFAULT };	//"default" mea
 class button : public widget
 {
 public:
+	button(const std::string& label, boost::function<void ()> onclick);
 	button(widget_ptr label, boost::function<void ()> onclick, BUTTON_STYLE button_style = BUTTON_STYLE_NORMAL, BUTTON_RESOLUTION button_resolution = BUTTON_SIZE_NORMAL_RESOLUTION);
 
 protected:
 	void set_label(widget_ptr label);
 
 private:
+	void setup();
+
 	bool in_button(int x, int y) const;
 	void handle_draw() const;
 	bool handle_event(const SDL_Event& event, bool claimed);

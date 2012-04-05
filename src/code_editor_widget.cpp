@@ -1,12 +1,18 @@
 #include "asserts.hpp"
 #include "code_editor_widget.hpp"
+#include "decimal.hpp"
 #include "formula_tokenizer.hpp"
+
+#include <boost/bind.hpp>
+#include <boost/regex.hpp>
 
 namespace gui
 {
 
 code_editor_widget::code_editor_widget(int width, int height)
-  : text_editor_widget(width, height)
+  : text_editor_widget(width, height),
+  row_slider_(0), begin_col_slider_(0), end_col_slider_(0),
+  slider_decimal_(false), slider_magnitude_(0)
 {
 }
 
@@ -161,7 +167,7 @@ graphics::color code_editor_widget::get_character_color(int row, int col) const
 	return colors_[row][col];
 }
 
-void code_editor_widget::select_token(const std::string& row, int& begin_row, int& end_row, int& begin_col, int& end_col) const
+void code_editor_widget::select_token(const std::string& row, int& begin_row, int& end_row, int& begin_col, int& end_col)
 {
 	std::pair<int,int> key(begin_row, begin_col);
 	if(bracket_match_.count(key)) {
@@ -173,6 +179,105 @@ void code_editor_widget::select_token(const std::string& row, int& begin_row, in
 	}
 
 	text_editor_widget::select_token(row, begin_row, end_row, begin_col, end_col);
+
+	std::string token(row.begin() + begin_col, row.begin() + end_col);
+	
+	boost::regex numeric_regex("-?\\d+(\\.\\d+)?", boost::regex::perl);
+	std::cerr << "token: (" << token << ")\n";
+	if(boost::regex_match(token.c_str(), numeric_regex)) {
+		slider_.reset(new slider(200, boost::bind(&code_editor_widget::on_slider_move, this, _1)));
+
+		const decimal current_value(decimal::from_string(token));
+		slider_decimal_ = std::count(token.begin(), token.end(), '.') ? true : false;
+		slider_magnitude_ = (abs(current_value.as_int())+1) * 5;
+
+		const decimal slider_value = (current_value - decimal::from_int(-slider_magnitude_)) / decimal::from_int(slider_magnitude_*2);
+		slider_->set_position(slider_value.as_float());
+
+		std::pair<int,int> pos = char_position_on_screen(begin_row, (begin_col+end_col)/2);
+
+		row_slider_ = begin_row;
+		begin_col_slider_ = begin_col;
+		end_col_slider_ = end_col;
+
+		int x = pos.second - slider_->width()/2;
+		int y = pos.first + 20 - slider_->height();
+		if(x < 10) {
+			x = 10;
+		}
+
+		if(x > width() - slider_->width()) {
+			x = width() - slider_->width();
+		}
+
+		if(y < 20) {
+			y += 60;
+		}
+
+		if(y > height() - slider_->height()) {
+			y = height() - slider_->height();
+		}
+
+		slider_->set_loc(x, y);
+	}
+}
+
+void code_editor_widget::on_slider_move(float value)
+{
+	if(record_op("slider")) {
+		save_undo_state();
+	}
+
+	std::ostringstream s;
+	value = (value - 0.5)*2.0; // normalize to [-1.0,1.0] range.
+
+	const decimal new_value(value*slider_magnitude_);
+	if(slider_decimal_) {
+		s << new_value;
+	} else {
+		s << new_value.as_int();
+	}
+
+	std::string new_string = s.str();
+
+	ASSERT_LOG(row_slider_ >= 0 && row_slider_ < get_data().size(), "Illegal row value for slider: " << row_slider_ << " / " << get_data().size());
+	std::string row = get_data()[row_slider_];
+
+	row.erase(row.begin() + begin_col_slider_, row.begin() + end_col_slider_);
+	row.insert(row.begin() + begin_col_slider_, new_string.begin(), new_string.end());
+
+	const int old_end = end_col_slider_;
+	end_col_slider_ = begin_col_slider_ + new_string.size();
+
+	if(cursor_row() == row_slider_ && cursor_col() == old_end) {
+		set_cursor(cursor_row(), end_col_slider_);
+	}
+
+	set_row_contents(row_slider_, row);
+}
+
+void code_editor_widget::handle_draw() const
+{
+	text_editor_widget::handle_draw();
+
+	if(slider_) {
+		slider_->draw();
+	}
+}
+
+bool code_editor_widget::handle_event(const SDL_Event& event, bool claimed)
+{
+	if(slider_) {
+		if(slider_->process_event(event, claimed)) {
+			return true;
+		}
+	}
+
+	if(event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_KEYDOWN) {
+		slider_.reset();
+	}
+
+	return text_editor_widget::handle_event(event, claimed) || claimed;
 }
 
 }

@@ -135,6 +135,14 @@ std::string text_editor_widget::text() const
 	return result;
 }
 
+void text_editor_widget::set_row_contents(int row, const std::string& value)
+{
+	ASSERT_LOG(row >= 0 && row < text_.size(), "ILLEGAL ROW SET: " << row << " / " << text_.size());
+	text_[row] = value;
+	refresh_scrollbar();
+	on_change();
+}
+
 void text_editor_widget::set_text(const std::string& value)
 {
 	std::string txt = value;
@@ -315,11 +323,40 @@ bool text_editor_widget::handle_event(const SDL_Event& event, bool claimed)
 void text_editor_widget::set_focus(bool value)
 {
 	has_focus_ = value;
+
+	if(value) {
+		SDL_EnableUNICODE(1);
+		SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+	}
+
 	if(nrows_ == 1 && value) {
 		cursor_ = Loc(0, text_.front().size());
 		select_ = Loc(0, 0);
 		on_move_cursor();
 	}
+}
+
+void text_editor_widget::set_cursor(int row, int col)
+{
+	if(row < 0) {
+		row = 0;
+	}
+
+	if(col < 0) {
+		col = 0;
+	}
+
+	if(row >= text_.size()) {
+		row = text_.size() - 1;
+	}
+
+	if(col > text_[row].size()) {
+		col = text_[row].size();
+	}
+
+	select_ = cursor_ = Loc(row, col);
+
+	on_move_cursor();
 }
 
 bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
@@ -356,9 +393,7 @@ bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& ev
 		}
 #endif
 
-		SDL_EnableUNICODE(1);
-		SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
-		has_focus_ = true;
+		set_focus(true);
 		std::pair<int, int> pos = mouse_position_to_row_col(event.x, event.y);
 		if(pos.first != -1) {
 			cursor_.row = pos.first;
@@ -728,6 +763,12 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 			break;
 		}
 
+		if(on_begin_enter_) {
+			if(!on_begin_enter_()) {
+				break;
+			}
+		}
+
 		delete_selection();
 		truncate_col_position();
 		
@@ -749,6 +790,7 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 
 		refresh_scrollbar();
 		on_change();
+		on_move_cursor();
 
 		if(on_enter_) {
 			on_enter_();
@@ -994,9 +1036,21 @@ void text_editor_widget::refresh_scrollbar()
 	update_scrollbar();
 }
 
-void text_editor_widget::select_token(const std::string& row, int& begin_row, int& end_row, int& begin_col, int& end_col) const
+void text_editor_widget::select_token(const std::string& row, int& begin_row, int& end_row, int& begin_col, int& end_col)
 {
-	if(util::isalnum(row[begin_col]) || row[begin_col] == '_') {
+	if(util::isdigit(row[begin_col]) || row[begin_col] == '.' && begin_col+1 < row.size() && util::isdigit(row[begin_col+1])) {
+		while(begin_col >= 0 && (util::isdigit(row[begin_col]) || row[begin_col] == '.')) {
+			--begin_col;
+		}
+
+		if(begin_col < 0 || row[begin_col] != '-') {
+			++begin_col;
+		}
+
+		while(end_col < row.size() && (util::isdigit(row[end_col]) || row[end_col] == '.')) {
+			++end_col;
+		}
+	} else if(util::isalnum(row[begin_col]) || row[begin_col] == '_') {
 		while(begin_col >= 0 && (util::isalnum(row[begin_col]) || row[begin_col] == '_')) {
 			--begin_col;
 		}

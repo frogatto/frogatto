@@ -12,6 +12,7 @@
 */
 #include "button.hpp"
 #include "iphone_controls.hpp"
+#include "label.hpp"
 #include "raster.hpp"
 #include "surface_cache.hpp"
 #include "framed_gui_element.hpp"
@@ -25,10 +26,24 @@ int hpadding = 10;
 
 }
 
+button::button(const std::string& str, boost::function<void()> onclick)
+  : label_(new label(str, graphics::color_white())),
+    onclick_(onclick), button_resolution_(BUTTON_SIZE_NORMAL_RESOLUTION),
+	button_style_(BUTTON_STYLE_NORMAL),
+	down_(false)
+{
+	setup();
+}
+
 button::button(widget_ptr label, boost::function<void ()> onclick, BUTTON_STYLE button_style, BUTTON_RESOLUTION button_resolution)
   : label_(label), onclick_(onclick), button_resolution_(button_resolution), button_style_(button_style),
 	down_(false)
 	
+{
+	setup();
+}
+
+void button::setup()
 {
 	if(button_style_ == BUTTON_STYLE_DEFAULT){
 		normal_button_image_set_ = framed_gui_element::get("default_button");
@@ -41,7 +56,7 @@ button::button(widget_ptr label, boost::function<void ()> onclick, BUTTON_STYLE 
 	}
 	current_button_image_set_ = normal_button_image_set_;
 	
-	set_label(label);
+	set_label(label_);
 }
 
 void button::set_label(widget_ptr label)

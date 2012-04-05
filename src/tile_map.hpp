@@ -79,8 +79,8 @@ private:
 	//to this tile_map.
 	void apply_matching_multi_pattern(int& x, int y,
 	  const multi_tile_pattern& pattern,
-	  point_map<level_object_ptr>& mapping,
-	  std::map<point_zorder, level_object_ptr>& different_zorder_mapping) const;
+	  point_map<level_object*>& mapping,
+	  std::map<point_zorder, level_object*>& different_zorder_mapping) const;
 
 	//the subset of all global patterns which might be valid for this map.
 	std::vector<const tile_pattern*> patterns_;

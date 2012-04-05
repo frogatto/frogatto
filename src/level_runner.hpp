@@ -3,12 +3,16 @@
 
 #include <string>
 
+#include <boost/intrusive_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 
+#include "button.hpp"
+#include "debug_console.hpp"
 #include "geometry.hpp"
 #include "key.hpp"
 #include "level.hpp"
 #include "pause_game_dialog.hpp"
+#include "slider.hpp"
 
 //an exception which is thrown if we go through a portal which takes us
 //to a level with a different number of players, which indicates we are going
@@ -28,6 +32,7 @@ public:
 	bool play_cycle();
 
 	void toggle_pause();
+	void toggle_history_trails();
 private:
 	void reverse_cycle();
 	void show_debug_console();
@@ -62,6 +67,18 @@ private:
 	editor* editor_;
 #ifndef NO_EDITOR
 	boost::scoped_ptr<editor_resolution_manager> editor_resolution_manager_;
+	gui::slider_ptr history_slider_;
+	gui::button_ptr history_button_;
+	std::vector<entity_ptr> history_trails_;
+	std::string history_trails_label_;
+	int history_trails_state_id_;
+	int object_reloads_state_id_;
+	int tile_rebuild_state_id_;
+	void init_history_slider();
+	void on_history_change(float value);
+	void update_history_trails();
+
+	boost::scoped_ptr<debug_console::console_dialog> console_;
 #endif
 };
 

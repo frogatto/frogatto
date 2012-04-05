@@ -48,7 +48,7 @@ std::string variant_type_to_string(variant::TYPE type) {
 	}
 }
 
-std::vector<const char*> call_stack;
+std::vector<const game_logic::formula_expression*> call_stack;
 
 variant last_failed_query_map, last_failed_query_key;
 variant last_query_map;
@@ -60,9 +60,9 @@ void swap_variants_loading(std::set<variant*>& v)
 	callable_variants_loading.swap(v);
 }
 
-void push_call_stack(const char* str)
+void push_call_stack(const game_logic::formula_expression* frame)
 {
-	call_stack.push_back(str);
+	call_stack.push_back(frame);
 }
 
 void pop_call_stack()
@@ -73,12 +73,12 @@ void pop_call_stack()
 std::string get_call_stack()
 {
 	std::string res;
-	for(std::vector<const char*>::const_iterator i = call_stack.begin();
+	for(std::vector<const game_logic::formula_expression*>::const_iterator i = call_stack.begin();
 	    i != call_stack.end(); ++i) {
 		if(!*i) {
 			continue;
 		}
-		res += formatter() << "  FRAME " << (i - call_stack.begin()) << ": " << *i << "\n";
+		res += formatter() << "  FRAME " << (i - call_stack.begin()) << ": " << (*i)->str() << "\n";
 	}
 	return res;
 }
@@ -86,6 +86,10 @@ std::string get_call_stack()
 void output_formula_error_info();
 
 type_error::type_error(const std::string& str) : message(str) {
+	if(call_stack.empty() == false && call_stack.back()) {
+		message += "\n" + call_stack.back()->debug_pinpoint_location();
+	}
+
 	std::cerr << "ERROR: " << message << "\n" << get_call_stack();
 	output_formula_error_info();
 }
@@ -346,7 +350,7 @@ const variant& variant::operator[](size_t n) const
 	must_be(TYPE_LIST);
 	assert(list_);
 	if(n >= list_->elements.size()) {
-		throw type_error("invalid index");
+		throw type_error(formatter() << "invalid index of " << n << " into " << write_json());
 	}
 
 	return list_->elements[n];
@@ -380,7 +384,7 @@ const variant& variant::operator[](const variant v) const
 		if(info) {
 			loc = formatter() << " at " << *info->filename << " " << info->line << " (column " << info->column << ")\n";
 		}
-		throw type_error(formatter() << "type error: " << " expected a list or a map but found " << variant_type_to_string(type_) << " " << write_json());
+		throw type_error(formatter() << "type error: " << " expected a list or a map but found " << variant_type_to_string(type_) << " (" << write_json() << ") " << loc);
 	}	
 }
 
@@ -549,7 +553,6 @@ std::vector<int> variant::as_list_int() const
 	must_be(TYPE_LIST);
 	result.reserve(list_->elements.size());
 	for(int n = 0; n != list_->elements.size(); ++n) {
-		list_->elements[n].must_be(TYPE_INT);
 		result.push_back(list_->elements[n].as_int());
 	}
 
@@ -1242,17 +1245,10 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 			for(size_t i=0; i<v.size(); ++i) {
 				const game_logic::formula_input& input = v[i];
 				if(!first) {
-					s << ", ";
+					s << ",\n";
 				}
 				first = false;
-				s << input.name << " ";
-				if(input.access == game_logic::FORMULA_READ_WRITE) {
-					s << "(read-write) ";
-				} else if(input.access == game_logic::FORMULA_WRITE_ONLY) {
-					s << "(writeonly) ";
-				}
-
-				s << ": " << callable_->query_value(input.name).to_debug_string(seen);
+				s << input.name << ": " << callable_->query_value(input.name).to_debug_string(seen);
 			}
 		} else {
 			s << "...";

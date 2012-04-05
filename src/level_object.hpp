@@ -16,11 +16,12 @@ typedef boost::intrusive_ptr<level_object> level_object_ptr;
 typedef boost::intrusive_ptr<const level_object> const_level_object_ptr;
 
 struct level_tile {
+	level_tile() : object(NULL) {}
 	bool is_solid(int x, int y) const;
 	int x, y;
 	int layer_from; //which zorder layer causes this tile to be built?
 	int zorder;
-	const_level_object_ptr object;
+	const level_object* object;
 	bool face_right;
 	bool draw_disabled;
 };

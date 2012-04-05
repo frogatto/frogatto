@@ -4,8 +4,10 @@
 #include "controls.hpp"
 #include "controls_dialog.hpp"
 #include "dialog.hpp"
+#include "draw_scene.hpp"
 #include "graphical_font_label.hpp"
 #include "i18n.hpp"
+#include "level.hpp"
 #include "key_button.hpp"
 #include "preferences.hpp"
 
@@ -22,6 +24,10 @@ void end_dialog(gui::dialog* d)
 	d->close();
 }
 
+void do_draw_scene() {
+	draw_scene(level::current(), last_draw_position());
+}
+
 }
 
 void show_controls_dialog()
@@ -32,6 +38,9 @@ void show_controls_dialog()
 	if (preferences::virtual_screen_height() > 480)
 		height -= 100;
 	dialog d(200, (preferences::virtual_screen_height() > 480) ? 60 : 10, preferences::virtual_screen_width()-400, height);
+	d.set_background_frame("empty_window");
+	d.set_draw_background_fn(do_draw_scene);
+
 
 	for(int n = 0; n < NUM_CONTROLS; ++n) {
 		const CONTROL_ITEM item = static_cast<CONTROL_ITEM>(n);

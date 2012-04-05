@@ -72,10 +72,13 @@ namespace gui {
 				position_ = pos;
 				onchange_(pos);
 			}
+
+			return true;
 		} else if(event.type == SDL_MOUSEBUTTONDOWN) {
 			const SDL_MouseButtonEvent& e = event.button;
 			if(in_button(e.x,e.y)) {
 				dragging_ = true;
+				return true;
 			}
 		} else if(event.type == SDL_MOUSEBUTTONUP && dragging_) {
 			dragging_ = false;

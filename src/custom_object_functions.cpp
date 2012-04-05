@@ -185,7 +185,7 @@ public:
 
 		if(has_options) {
 
-			const int noption = show_simple_option_dialog(lvl, "Select save slot to use.", options);
+			const int noption = show_simple_option_dialog(lvl, _("Select save slot to use."), options);
 			if(noption != -1) {
 				std::cerr << "setting save slot: " << noption << " -> " << SaveFiles[noption] << "\n";
 				preferences::set_save_slot(SaveFiles[noption]);
@@ -258,7 +258,7 @@ class load_game_command : public entity_command_callable
 					++nslot;
 				}
 
-				noption = show_simple_option_dialog(lvl, "Select save slot to load.", option_descriptions);
+				noption = show_simple_option_dialog(lvl, _("Select save slot to load."), option_descriptions);
 
 				if(noption == -1) {
 					return;
@@ -859,7 +859,7 @@ FUNCTION_DEF(tiles_at, 2, 2, "tiles_at(x, y): gives a list of the tiles at the g
 
 	std::pair<level::TileItor, level::TileItor> range = level::current().tiles_at_loc(args()[0]->evaluate(variables).as_int(), args()[1]->evaluate(variables).as_int());
 	while(range.first != range.second) {
-		v.push_back(variant(range.first->object.get()));
+		v.push_back(variant(range.first->object));
 		++range.first;
 	}
 
@@ -1827,11 +1827,16 @@ FUNCTION_DEF(rotate_rect, 4, 4, "rotate_rect(int center_x, int center_y, int rot
 	float rotate = args()[2]->evaluate(variables).as_decimal().as_float();
 
 	variant v = args()[3]->evaluate(variables);
+
+	ASSERT_LE(v.num_elements(), 8);
 	
 	GLshort r[8];
-	ASSERT_LOG(v.num_elements() == 8, "BAD ARGUMENT PASSED TO rotate_rect: " << v.to_debug_string());
 	for(int n = 0; n != v.num_elements(); ++n) {
 		r[n] = v[n].as_int();
+	}
+
+	for(int n = v.num_elements(); n < 8; ++n) {
+		r[n] = 0;
 	}
 
 	rotate_rect(center_x, center_y, rotate, r);

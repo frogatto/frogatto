@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "asserts.hpp"
 #include "dialog.hpp"
 #include "geometry.hpp"
 #include "label.hpp"
@@ -22,10 +23,14 @@ public:
 
 	bool has_keyboard_focus() const;
 
+	void process();
+
 private:
 	bool handle_event(const SDL_Event& event, bool claimed);
 
 	std::string fname_;
+
+	int invalidated_;
 
 	gui::code_editor_widget* editor_;
 	gui::text_editor_widget* search_;
@@ -38,6 +43,10 @@ private:
 
 	void on_code_changed();
 	void on_move_cursor();
+
+	//As long as there is a code editor active, we are going to want to
+	//recover from errors.
+	assert_recover_scope assert_recovery_;
 };
 
 #endif

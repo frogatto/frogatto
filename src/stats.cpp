@@ -309,8 +309,10 @@ entry& entry::set(const std::string& name, const variant& value)
 
 void entry::add_player_pos()
 {
-	set("x", variant(level::current().player()->get_entity().midpoint().x));
-	set("y", variant(level::current().player()->get_entity().midpoint().y));
+	if(level::current().player()) {
+		set("x", variant(level::current().player()->get_entity().midpoint().x));
+		set("y", variant(level::current().player()->get_entity().midpoint().y));
+	}
 }
 
 void record(const variant& value)

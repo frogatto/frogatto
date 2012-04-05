@@ -25,6 +25,8 @@ public:
 	std::vector<variant>& values() { return values_; }
 	const std::vector<variant>& values() const { return values_; }
 
+	std::vector<std::string> keys() const;
+
 private:
 	variant get_value(const std::string& key) const;
 	variant get_value_by_slot(int slot) const;

@@ -311,7 +311,8 @@ level_runner* level_runner::get_current()
 
 level_runner::level_runner(boost::intrusive_ptr<level>& lvl, std::string& level_cfg, std::string& original_level_cfg)
   : lvl_(lvl), level_cfg_(level_cfg), original_level_cfg_(original_level_cfg),
-    editor_(NULL)
+    editor_(NULL), history_trails_state_id_(-1), object_reloads_state_id_(-1),
+	tile_rebuild_state_id_(-1)
 {
 	quit_ = false;
 
@@ -349,20 +350,30 @@ bool level_runner::play_level()
 	lvl_->set_as_current_level();
 	bool reversing = false;
 
-	while(!done && !quit_) {
-		if(key[SDLK_t] && preferences::record_history()) {
 #ifndef NO_EDITOR
-			if (!editor_ || !editor_->has_keyboard_focus())
-			{
+	if(!lvl_->player()) {
+		controls::control_backup_scope ctrl_backup;
+		editor_resolution_manager_.reset(new editor_resolution_manager);
+		paused = true;
+		editor_ = editor::get_editor(lvl_->id().c_str());
+		editor_->set_playing_level(lvl_);
+		editor_->setup_for_editing();
+		lvl_->set_editor();
+	}
 #endif
+
+	while(!done && !quit_) {
+		if(key[SDLK_t] && preferences::record_history()
+#ifndef NO_EDITOR
+			&& (!editor_ || !editor_->has_keyboard_focus())
+			&& (!console_ || !console_->has_keyboard_focus())
+#endif
+		) {
 				if(!reversing) {
 					pause_time_ -= SDL_GetTicks();
 				}
 				reverse_cycle();
 				reversing = true;
-#ifndef NO_EDITOR
-			}
-#endif
 		} else {
 			if(reversing) {
 				controls::read_until(lvl_->cycle());
@@ -407,10 +418,12 @@ bool level_runner::play_cycle()
 
 	boost::scoped_ptr<controls::local_controls_lock> controls_lock;
 #ifndef NO_EDITOR
+	if(editor_ && editor_->has_keyboard_focus() ||
+	   console_ && console_->has_keyboard_focus()) {
+		controls_lock.reset(new controls::local_controls_lock);
+	}
+
 	if(editor_) {
-		if(editor_->has_keyboard_focus()) {
-			controls_lock.reset(new controls::local_controls_lock);
-		}
 
 		controls::control_backup_scope ctrl_backup;
 		editor_->set_pos(last_draw_position().x/100 - (editor_->zoom()-1)*(graphics::screen_width()-editor::sidebar_width())/2, last_draw_position().y/100 - (editor_->zoom()-1)*(graphics::screen_height())/2);
@@ -419,6 +432,10 @@ bool level_runner::play_cycle()
 		lvl_->set_as_current_level();
 
 		lvl_->mutate_value("zoom", variant(decimal(1.0/editor_->zoom())));
+
+		if(history_trails_.empty() == false && (tile_rebuild_state_id_ != level::tile_rebuild_state_id() || history_trails_state_id_ != editor_->level_state_id() || object_reloads_state_id_ != custom_object_type::num_object_reloads())) {
+			update_history_trails();
+		}
 	}
 #endif
 
@@ -632,6 +649,7 @@ bool level_runner::play_cycle()
 				editor_->setup_for_editing();
 				lvl_->set_as_current_level();
 				lvl_->set_editor();
+				init_history_slider();
 			}
 #endif
 
@@ -652,8 +670,18 @@ bool level_runner::play_cycle()
 			should_pause = settings_dialog.handle_event(event);
 #endif
 #ifndef NO_EDITOR
+			bool swallowed = false;
+			if(console_) {
+				swallowed = console_->process_event(event, swallowed);
+			}
+
+			if(history_slider_ && paused) {
+				swallowed = history_slider_->process_event(event, swallowed) || swallowed;
+				swallowed = history_button_->process_event(event, false) || swallowed;
+			}
+
 			if(editor_) {
-				const bool swallowed = editor_->handle_event(event);
+				swallowed = editor_->handle_event(event, swallowed) || swallowed;
 				lvl_->set_as_current_level();
 
 				if(editor::last_edited_level() != lvl_->id() && editor_->confirm_quit()) {
@@ -676,11 +704,12 @@ bool level_runner::play_cycle()
 					editor_->setup_for_editing();
 					lvl_->set_as_current_level();
 					lvl_->set_editor();
+					init_history_slider();
 				}
+			}
 
-				if(swallowed) {
-					continue;
-				}
+			if(swallowed) {
+				continue;
 			}
 #endif
 
@@ -764,16 +793,27 @@ bool level_runner::play_cycle()
 					if(editor_) {
 #ifndef NO_EDITOR
 						editor_ = NULL;
+						history_slider_.reset();
+						history_button_.reset();
+						history_trails_.clear();
 						editor_resolution_manager_.reset();
 						lvl_->mutate_value("zoom", variant(1));
 						lvl_->set_editor(false);
+						paused = false;
+						controls::read_until(lvl_->cycle());
+						init_history_slider();
 #endif
 					} else {
 						should_pause = true;
 					}
 					break;
 				} else if(key == SDLK_d && (mod&KMOD_CTRL)) {
-					show_debug_console();
+					if(!console_ && lvl_->player()) {
+						console_.reset(new debug_console::console_dialog(*lvl_, lvl_->player()->get_entity()));
+					} else {
+						console_.reset();
+					}
+					//show_debug_console();
 
 				} else if(key == SDLK_e && (mod&KMOD_CTRL)) {
 #ifndef NO_EDITOR
@@ -785,12 +825,17 @@ bool level_runner::play_cycle()
 						editor_->setup_for_editing();
 						lvl_->set_editor();
 						lvl_->set_as_current_level();
+						init_history_slider();
 					} else {
 						//Pause the game and set the level to its original
 						//state if the user presses ctrl+e twice.
 						paused = !paused;
 						editor_->reset_playing_level(false);
 						last_draw_position().init = false;
+						init_history_slider();
+						if(!paused) {
+							controls::read_until(lvl_->cycle());
+						}
 					}
 #endif
 				} else if(key == SDLK_r && (mod&KMOD_CTRL) && editor_) {
@@ -852,6 +897,7 @@ bool level_runner::play_cycle()
 						editor_->setup_for_editing();
 						lvl_->set_as_current_level();
 						lvl_->set_editor();
+						init_history_slider();
 					}
 #endif
 				} else if(key == SDLK_l && (mod&KMOD_CTRL)) {
@@ -866,6 +912,10 @@ bool level_runner::play_cycle()
 					sound::mute(!sound::muted()); //toggle sound
 				} else if(key == SDLK_p && mod & KMOD_CTRL) {
 					paused = !paused;
+					init_history_slider();
+					if(!paused) {
+						controls::read_until(lvl_->cycle());
+					}
 				} else if(key == SDLK_p && mod & KMOD_ALT) {
 					preferences::set_use_pretty_scaling(!preferences::use_pretty_scaling());
 					graphics::texture::clear_textures();
@@ -965,7 +1015,7 @@ bool level_runner::play_cycle()
 
 		if(should_draw) {
 #ifndef NO_EDITOR
-			if(editor_ && key[SDLK_l] && !editor_->has_keyboard_focus()) {
+			if(editor_ && key[SDLK_l] && !editor_->has_keyboard_focus() && (!console_ || !console_->has_keyboard_focus())) {
 
 				editor_->toggle_active_level();
 
@@ -974,13 +1024,38 @@ bool level_runner::play_cycle()
 				editor_->toggle_active_level();
 				lvl_->set_as_current_level();
 			} else {
+				std::vector<variant> alpha_values;
+				if(!history_trails_.empty()) {
+					foreach(entity_ptr e, history_trails_) {
+						alpha_values.push_back(e->query_value("alpha"));
+						e->mutate_value("alpha", variant(32));
+						lvl_->add_draw_character(e);
+					}
+				}
 #endif
 				render_scene(*lvl_, last_draw_position(), NULL, !is_skipping_game());
 #ifndef NO_EDITOR
+				int index = 0;
+				if(!history_trails_.empty()) {
+					foreach(entity_ptr e, history_trails_) {
+						e->mutate_value("alpha", alpha_values[index++]);
+					}
+
+					lvl_->set_active_chars();
+				}
 			}
 
 			if(editor_) {
 				editor_->draw_gui();
+			}
+
+			if(history_slider_ && paused) {
+				history_slider_->draw();
+				history_button_->draw();
+			}
+
+			if(console_) {
+				console_->draw();
 			}
 #endif
 		}
@@ -1067,6 +1142,10 @@ bool level_runner::play_cycle()
 void level_runner::toggle_pause()
 {
 	paused = !paused;
+	init_history_slider();
+	if(!paused) {
+		controls::read_until(lvl_->cycle());
+	}
 }
 
 void level_runner::reverse_cycle()
@@ -1140,5 +1219,83 @@ void level_runner::handle_pause_game_result(PAUSE_GAME_RESULT result)
 	} else if(result == PAUSE_GAME_GO_TO_TITLESCREEN) {
 		done = true;
 		original_level_cfg_ = "titlescreen.cfg";
+	}
+}
+
+void level_runner::init_history_slider()
+{
+	if(paused && editor_) {
+		history_slider_.reset(new gui::slider(110, boost::bind(&level_runner::on_history_change, this, _1)));
+		history_slider_->set_loc(370, 4);
+		history_slider_->set_position(1.0);
+		history_button_.reset(new gui::button("Trails", boost::bind(&level_runner::toggle_history_trails, this)));
+		history_button_->set_loc(history_slider_->x() + history_slider_->width(), history_slider_->y());
+	} else {
+		history_slider_.reset();
+		history_button_.reset();
+		history_trails_.clear();
+	}
+}
+
+void level_runner::on_history_change(float value)
+{
+	const int first_frame = lvl_->earliest_backup_cycle();
+	const int last_frame = controls::local_controls_end();
+	int target_frame = first_frame + (last_frame + 1 - first_frame)*value;
+	if(target_frame > last_frame) {
+		target_frame = last_frame;
+	}
+
+	std::cerr << "TARGET FRAME: " << target_frame << " IN [" << first_frame << ", " << last_frame << "]\n";
+
+	if(target_frame < lvl_->cycle()) {
+		lvl_->reverse_to_cycle(target_frame);
+	} else if(target_frame > lvl_->cycle()) {
+		std::cerr << "STEPPING FORWARD FROM " << lvl_->cycle() << " TO " << target_frame << " /" << controls::local_controls_end() << "\n";
+
+		const controls::control_backup_scope ctrl_scope;
+		
+		while(lvl_->cycle() < target_frame) {
+			lvl_->process();
+			lvl_->process_draw();
+			lvl_->backup();
+		}
+	}
+
+	lvl_->set_active_chars();
+}
+
+void level_runner::toggle_history_trails()
+{
+	if(history_trails_.empty() && lvl_->player()) {
+		update_history_trails();
+	} else {
+		history_trails_.clear();
+		history_trails_label_.clear();
+	}
+}
+
+void level_runner::update_history_trails()
+{
+	entity_ptr e;
+	if(history_trails_label_.empty() == false && lvl_->get_entity_by_label(history_trails_label_)) {
+		e = lvl_->get_entity_by_label(history_trails_label_);
+	} else if(lvl_->editor_selection().empty() == false) {
+		e = lvl_->editor_selection().front();
+	} else if(lvl_->player()) {
+		e = entity_ptr(&lvl_->player()->get_entity());
+	}
+
+	if(e) {
+		const int first_frame = lvl_->earliest_backup_cycle();
+		const int last_frame = controls::local_controls_end();
+
+		const int ncycles = (last_frame - first_frame) + 1;
+		history_trails_ = lvl_->predict_future(e, ncycles);
+		history_trails_state_id_ = editor_->level_state_id();
+		object_reloads_state_id_ = custom_object_type::num_object_reloads();
+		tile_rebuild_state_id_ = level::tile_rebuild_state_id();
+
+		history_trails_label_ = e->label();
 	}
 }
