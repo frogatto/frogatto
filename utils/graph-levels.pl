@@ -43,27 +43,27 @@ foreach my $level (@levels) {
 	my $music = '';
 
 	while(my $line = <LVL>) {
-		if(my ($toilet) = $line =~ /type="(save_toilet|dungeon_save_door)"/) {
+		if(my ($toilet) = $line =~ /type: "(save_toilet|dungeon_save_door)"/) {
 			++$saves;
 		}
 
-		if(my ($label) = $line =~ /label="(.*)"/) {
+		if(my ($label) = $line =~ /label: "(.*)"/) {
 			$door = $label;
 		}
 
-		if(my ($song_name) = $line =~ /music="(.*)"/) {
+		if(my ($song_name) = $line =~ /music: "(.*)"/) {
 			$music = $song_name;
 		}
 
-		if(my ($next_level) = $line =~ /next_level="(.*)"/) {
+		if(my ($next_level) = $line =~ /next_level: "(.*)"/) {
 			push @adj, [$level, $next_level, 'next_level'];
 		}
 
-		if(my ($previous_level) = $line =~ /previous_level="(.*)"/) {
+		if(my ($previous_level) = $line =~ /previous_level: "(.*)"/) {
 			push @adj, [$level, $previous_level, 'prev_level'];
 		}
 
-		if(my ($dest_level) = $line =~ /dest_level="'(.*)'"/) {
+		if(my ($dest_level) = $line =~ /dest_level: "(.*)"/) {
 			push @adj, [$level, $dest_level, $door];
 		}
 	}
