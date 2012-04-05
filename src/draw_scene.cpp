@@ -100,9 +100,17 @@ bool update_camera_position(const level& lvl, screen_position& pos, const entity
 	//flag which gets set to false if we abort drawing, due to the
 	//screen position being initialized now.
 	const bool draw_level = do_draw && pos.init;
+	
+#ifndef NO_EDITOR
+	const int sidebar_width = editor::sidebar_width();
+	const int codebar_height = editor::codebar_height();
+#else
+	const int sidebar_width = 0;
+	const int codebar_height = 0;
+#endif
 
-	const int screen_width = graphics::screen_width() - (lvl.in_editor() ? editor::sidebar_width() : 0);
-	const int screen_height = graphics::screen_height() - (lvl.in_editor() ? editor::codebar_height() : 0);
+	const int screen_width = graphics::screen_width() - (lvl.in_editor() ? sidebar_width : 0);
+	const int screen_height = graphics::screen_height() - (lvl.in_editor() ? codebar_height : 0);
 
 	if(focus) {
 		// If the camera is automatically moved along by the level (e.g. a 
@@ -283,7 +291,12 @@ bool update_camera_position(const level& lvl, screen_position& pos, const entity
 }
 
 void render_scene(const level& lvl, screen_position& pos, const entity* focus, bool do_draw) {
-	const int screen_width = graphics::screen_width() - (lvl.in_editor() ? editor::sidebar_width() : 0);
+#ifndef NO_EDITOR
+	const int sidebar_width = editor::sidebar_width();
+#else
+	const int sidebar_width = 0;
+#endif
+	const int screen_width = graphics::screen_width() - (lvl.in_editor() ? sidebar_width : 0);
 
 	graphics::prepare_raster();
 	glPushMatrix();

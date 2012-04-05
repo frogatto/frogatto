@@ -60,7 +60,9 @@ private:
 	std::string last_stats_point_level_;
 
 	editor* editor_;
+#ifndef NO_EDITOR
 	boost::scoped_ptr<editor_resolution_manager> editor_resolution_manager_;
+#endif
 };
 
 class pause_scope

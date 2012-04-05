@@ -762,10 +762,12 @@ bool level_runner::play_cycle()
 				//std::cerr << "Key #" << (int) key << ".\n";
 				if(key == SDLK_ESCAPE) {
 					if(editor_) {
+#ifndef NO_EDITOR
 						editor_ = NULL;
 						editor_resolution_manager_.reset();
 						lvl_->mutate_value("zoom", variant(1));
 						lvl_->set_editor(false);
+#endif
 					} else {
 						should_pause = true;
 					}

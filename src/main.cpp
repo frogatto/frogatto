@@ -408,7 +408,9 @@ extern "C" int main(int argc, char** argv)
 
 	graphics::texture::manager texture_manager;
 
+#ifndef NO_EDITOR
 	editor::manager editor_manager;
+#endif
 
 	variant preloads;
 	loading_screen loader;
