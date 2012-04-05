@@ -33,6 +33,8 @@ private:
 
 	void change_points_property(const std::string& id);
 
+	void mutate_value(const std::string& key, variant value);
+
 	editor& editor_;
 	entity_ptr entity_;
 	gui::widget_ptr context_menu_;

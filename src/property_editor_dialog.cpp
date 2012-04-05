@@ -223,28 +223,21 @@ void property_editor_dialog::change_max_difficulty(int amount)
 
 void property_editor_dialog::toggle_property(const std::string& id)
 {
-	game_logic::formula_callable* vars = entity_->vars();
-	if(vars) {
-		vars->mutate_value(id, variant(!vars->query_value(id).as_bool()));
-		init();
-	}
+	mutate_value(id, variant(!entity_->query_value(id).as_bool()));
+	init();
 }
 
 void property_editor_dialog::change_property(const std::string& id, int change)
 {
-	std::cerr << "CHANGE PROPERTY: " << change << "\n";
-	game_logic::formula_callable* vars = entity_->vars();
-	if(vars) {
-		vars->mutate_value(id, vars->query_value(id) + variant(change));
-		init();
-	}
+	mutate_value(id, entity_->query_value(id) + variant(change));
+	init();
 }
 
 void property_editor_dialog::change_level_property(const std::string& id)
 {
 	std::string lvl = show_choose_level_dialog("Set " + id);
 	if(lvl.empty() == false) {
-		entity_->mutate_value(id, variant(lvl));
+		mutate_value(id, variant(lvl));
 		init();
 	}
 }
@@ -276,12 +269,8 @@ void property_editor_dialog::change_text_property(const std::string& id)
 	 .add_widget(widget_ptr(entry));
 	d.show_modal();
 
-	//set the variable to the new value
-	game_logic::formula_callable* vars = entity_->vars();
-	if(vars) {
-		vars->mutate_value(id, variant(entry->text()));
-		init();
-	}
+	mutate_value(id, variant(entry->text()));
+	init();
 }
 
 void property_editor_dialog::change_enum_property(const std::string& id)
@@ -390,8 +379,7 @@ void property_editor_dialog::set_enum_property(const std::string& id, const std:
 		return;
 	}
 
-	entity_->mutate_value(id, variant(labels[index]));
-
+	mutate_value(id, variant(labels[index]));
 	init();
 }
 
@@ -402,6 +390,16 @@ void property_editor_dialog::change_points_property(const std::string& id)
 		editor_.start_adding_points("");
 	} else {
 		editor_.start_adding_points(id);
+	}
+}
+
+void property_editor_dialog::mutate_value(const std::string& key, variant value)
+{
+	foreach(level_ptr lvl, editor_.get_level_list()) {
+		entity_ptr e = lvl->get_entity_by_label(entity_->label());
+		if(e) {
+			editor_.mutate_object_value(e, key, value);
+		}
 	}
 }
 

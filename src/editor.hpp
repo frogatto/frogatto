@@ -185,6 +185,8 @@ public:
 
 	int level_state_id() const { return level_changed_; }
 
+	void mutate_object_value(entity_ptr e, const std::string& value, variant new_value);
+
 private:
 	editor(const editor&);
 	void operator=(const editor&);
@@ -226,7 +228,6 @@ private:
 	void add_object_to_level(level_ptr lvl, entity_ptr e);
 	void remove_object_from_level(level_ptr lvl, entity_ptr e);
 
-	void mutate_object_value(entity_ptr e, const std::string& value, variant new_value);
 	void generate_mutate_commands(entity_ptr e, const std::string& attr, variant new_value,
 	                              std::vector<boost::function<void()> >& undo,
 	                              std::vector<boost::function<void()> >& redo);

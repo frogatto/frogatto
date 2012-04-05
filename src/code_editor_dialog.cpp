@@ -62,16 +62,22 @@ bool code_editor_dialog::handle_event(const SDL_Event& event, bool claimed)
 		return claimed;
 	}
 
-	switch(event.type) {
-	case SDL_KEYDOWN: {
-		if(event.key.keysym.sym == SDLK_f && (event.key.keysym.mod&KMOD_CTRL)) {
-			search_->set_focus(true);
-			replace_->set_focus(false);
-			editor_->set_focus(false);
-			return true;
+	if(has_keyboard_focus()) {
+		switch(event.type) {
+		case SDL_KEYDOWN: {
+			if(event.key.keysym.sym == SDLK_f && (event.key.keysym.mod&KMOD_CTRL)) {
+				search_->set_focus(true);
+				replace_->set_focus(false);
+				editor_->set_focus(false);
+				return true;
+			} else if(event.key.keysym.sym == SDLK_s && (event.key.keysym.mod&KMOD_CTRL)) {
+				sys::write_file(fname_, editor_->text());
+				status_label_->set_text(formatter() << "Saved " << fname_);
+				return true;
+			}
+			break;
 		}
-		break;
-	}
+		}
 	}
 
 	return claimed;
