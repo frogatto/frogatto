@@ -90,7 +90,7 @@ public:
 		variant node;
 		std::string category;
 		entity_ptr preview_object;
-		const frame* preview_frame;
+		boost::shared_ptr<const frame> preview_frame;
 	};
 
 	struct tile_selection {
@@ -115,6 +115,8 @@ public:
 
 	level& get_level() { return *lvl_; }
 	const level& get_level() const { return *lvl_; }
+
+	std::vector<level_ptr> get_level_list() const { return levels_; }
 
 	void save_level();
 	void save_level_as(const std::string& filename);

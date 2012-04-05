@@ -9,8 +9,9 @@
 #include <string>
 #include <vector>
 
-#include "boost/array.hpp"
-#include "boost/scoped_ptr.hpp"
+#include <boost/array.hpp>
+#include <boost/intrusive_ptr.hpp>
+#include <boost/scoped_ptr.hpp>
 
 #include "background.hpp"
 #include "color_utils.hpp"
@@ -562,5 +563,7 @@ private:
 };
 
 bool entity_in_current_level(const entity* e);
+
+typedef boost::intrusive_ptr<level> level_ptr;
 
 #endif

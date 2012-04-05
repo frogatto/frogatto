@@ -52,7 +52,7 @@ public:
 									game_logic::function_symbol_table* symbols=0,
 									const event_handler_map* base_handlers=NULL);
 
-	explicit custom_object_type(variant node, const custom_object_type* base_type=NULL);
+	explicit custom_object_type(variant node, const custom_object_type* base_type=NULL, const custom_object_type* old_type=NULL);
 	~custom_object_type();
 
 	const_custom_object_type_ptr get_sub_object(const std::string& id) const;
@@ -180,6 +180,9 @@ public:
 	bool hidden_in_game() const { return hidden_in_game_; }
 
 private:
+	//recreate an object type, optionally given the old version to base
+	//things off where possible
+	static custom_object_type_ptr recreate(const std::string& id, const custom_object_type* old_type);
 
 	custom_object_callable callable_definition_;
 

@@ -24,37 +24,41 @@ namespace editor_dialogs
 
 namespace {
 
-void set_segmented_level_width(editor_level_properties_dialog* d, level* lvl, bool value)
+void set_segmented_level_width(editor_level_properties_dialog* d, editor* e, bool value)
 {
-	if(value) {
-		//make sure the segment width is divisible by the tile size.
-		int width = lvl->boundaries().w();
-		while(width%32) {
-			++width;
+	foreach(level_ptr lvl, e->get_level_list()) {
+		if(value) {
+			//make sure the segment width is divisible by the tile size.
+			int width = lvl->boundaries().w();
+			while(width%32) {
+				++width;
+			}
+			lvl->set_segment_width(width);
+			lvl->set_boundaries(rect(lvl->boundaries().x(), lvl->boundaries().y(),
+			                         width, lvl->boundaries().h()));
+		} else {
+			lvl->set_segment_width(0);
 		}
-		lvl->set_segment_width(width);
-		lvl->set_boundaries(rect(lvl->boundaries().x(), lvl->boundaries().y(),
-		                         width, lvl->boundaries().h()));
-	} else {
-		lvl->set_segment_width(0);
 	}
 
 	d->init();
 }
 
-void set_segmented_level_height(editor_level_properties_dialog* d, level* lvl, bool value)
+void set_segmented_level_height(editor_level_properties_dialog* d, editor* e, bool value)
 {
-	if(value) {
-		//make sure the segment height is divisible by the tile size.
-		int height = lvl->boundaries().h();
-		while(height%32) {
-			++height;
+	foreach(level_ptr lvl, e->get_level_list()) {
+		if(value) {
+			//make sure the segment height is divisible by the tile size.
+			int height = lvl->boundaries().h();
+			while(height%32) {
+				++height;
+			}
+			lvl->set_segment_height(height);
+			lvl->set_boundaries(rect(lvl->boundaries().x(), lvl->boundaries().y(),
+			                         lvl->boundaries().w(), height));
+		} else {
+			lvl->set_segment_height(0);
 		}
-		lvl->set_segment_height(height);
-		lvl->set_boundaries(rect(lvl->boundaries().x(), lvl->boundaries().y(),
-		                         lvl->boundaries().w(), height));
-	} else {
-		lvl->set_segment_height(0);
 	}
 	
 	d->init();
@@ -102,11 +106,11 @@ void editor_level_properties_dialog::init()
 	g->add_col(widget_ptr(new button(widget_ptr(new label("Set", graphics::color_white())), boost::bind(&editor_level_properties_dialog::change_previous_level, this))));
 	add_widget(g);
 
-	checkbox* hz_segmented_checkbox = new checkbox("Horizontally Segmented Level", editor_.get_level().segment_width() != 0, boost::bind(set_segmented_level_width, this, &editor_.get_level(), _1));
+	checkbox* hz_segmented_checkbox = new checkbox("Horizontally Segmented Level", editor_.get_level().segment_width() != 0, boost::bind(set_segmented_level_width, this, &editor_, _1));
 	widget_ptr hz_checkbox(hz_segmented_checkbox);
 	add_widget(hz_checkbox);
 
-	checkbox* vt_segmented_checkbox = new checkbox("Vertically Segmented Level", editor_.get_level().segment_height() != 0, boost::bind(set_segmented_level_height, this, &editor_.get_level(), _1));
+	checkbox* vt_segmented_checkbox = new checkbox("Vertically Segmented Level", editor_.get_level().segment_height() != 0, boost::bind(set_segmented_level_height, this, &editor_, _1));
 	widget_ptr vt_checkbox(vt_segmented_checkbox);
 	add_widget(vt_checkbox);
 
@@ -117,7 +121,6 @@ void editor_level_properties_dialog::init()
 	if(editor_.get_level().segment_width() != 0) {
 		remove_widget(vt_checkbox);
 	}
-
 }
 
 void editor_level_properties_dialog::change_title()
@@ -136,7 +139,9 @@ void editor_level_properties_dialog::change_title()
 
 	std::string title = entry->text();
 
-	editor_.get_level().set_title(title);
+	foreach(level_ptr lvl, editor_.get_level_list()) {
+		lvl->set_title(title);
+	}
 
 	init();
 }
@@ -183,7 +188,10 @@ void editor_level_properties_dialog::execute_change_background(const std::vector
 		return;
 	}
 
-	editor_.get_level().set_background_by_id(choices[index]);
+	foreach(level_ptr lvl, editor_.get_level_list()) {
+		lvl->set_background_by_id(choices[index]);
+	}
+
 	init();
 }
 
@@ -191,7 +199,9 @@ void editor_level_properties_dialog::change_next_level()
 {
 	std::string result = show_choose_level_dialog("Next Level");
 	if(result.empty() == false) {
-		editor_.get_level().set_next_level(result);
+		foreach(level_ptr lvl, editor_.get_level_list()) {
+			lvl->set_next_level(result);
+		}
 	}
 
 	init();
@@ -201,7 +211,9 @@ void editor_level_properties_dialog::change_previous_level()
 {
 	std::string result = show_choose_level_dialog("Previous Level");
 	if(result.empty() == false) {
-		editor_.get_level().set_previous_level(result);
+		foreach(level_ptr lvl, editor_.get_level_list()) {
+			lvl->set_previous_level(result);
+		}
 	}
 
 	init();

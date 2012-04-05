@@ -350,6 +350,18 @@ bool level_runner::play_level()
 	lvl_->set_as_current_level();
 	bool reversing = false;
 
+#ifndef NO_EDITOR
+	if(!lvl_->player()) {
+		controls::control_backup_scope ctrl_backup;
+		editor_resolution_manager_.reset(new editor_resolution_manager);
+		paused = true;
+		editor_ = editor::get_editor(lvl_->id().c_str());
+		editor_->set_playing_level(lvl_);
+		editor_->setup_for_editing();
+		lvl_->set_editor();
+	}
+#endif
+
 	while(!done && !quit_) {
 		if(key[SDLK_t] && preferences::record_history()
 #ifndef NO_EDITOR
@@ -1257,19 +1269,31 @@ void level_runner::toggle_history_trails()
 		update_history_trails();
 	} else {
 		history_trails_.clear();
+		history_trails_label_.clear();
 	}
 }
 
 void level_runner::update_history_trails()
 {
-	if(lvl_->player()) {
+	entity_ptr e;
+	if(history_trails_label_.empty() == false && lvl_->get_entity_by_label(history_trails_label_)) {
+		e = lvl_->get_entity_by_label(history_trails_label_);
+	} else if(lvl_->editor_selection().empty() == false) {
+		e = lvl_->editor_selection().front();
+	} else if(lvl_->player()) {
+		e = entity_ptr(&lvl_->player()->get_entity());
+	}
+
+	if(e) {
 		const int first_frame = lvl_->earliest_backup_cycle();
 		const int last_frame = controls::local_controls_end();
 
 		const int ncycles = (last_frame - first_frame) + 1;
-		history_trails_ = lvl_->predict_future(entity_ptr(&lvl_->player()->get_entity()), ncycles);
+		history_trails_ = lvl_->predict_future(e, ncycles);
 		history_trails_state_id_ = editor_->level_state_id();
 		object_reloads_state_id_ = custom_object_type::num_object_reloads();
 		tile_rebuild_state_id_ = level::tile_rebuild_state_id();
+
+		history_trails_label_ = e->label();
 	}
 }

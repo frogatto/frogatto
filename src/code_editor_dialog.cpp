@@ -10,7 +10,7 @@
 #include "text_editor_widget.hpp"
 
 code_editor_dialog::code_editor_dialog(const rect& r)
-  : dialog(r.x(), r.y(), r.w(), r.h())
+  : dialog(r.x(), r.y(), r.w(), r.h()), invalidated_(0)
 {
 	init();
 }
@@ -77,6 +77,14 @@ bool code_editor_dialog::handle_event(const SDL_Event& event, bool claimed)
 	return claimed;
 }
 
+void code_editor_dialog::process()
+{
+	if(invalidated_ && SDL_GetTicks() > invalidated_ + 200) {
+		custom_object_type::set_file_contents(fname_, editor_->text());
+		invalidated_ = 0;
+	}
+}
+
 void code_editor_dialog::on_search_changed()
 {
 	editor_->set_search(search_->text());
@@ -89,7 +97,9 @@ void code_editor_dialog::on_search_enter()
 
 void code_editor_dialog::on_code_changed()
 {
-	custom_object_type::set_file_contents(fname_, editor_->text());
+	if(!invalidated_) {
+		invalidated_ = SDL_GetTicks();
+	}
 }
 
 void code_editor_dialog::on_move_cursor()

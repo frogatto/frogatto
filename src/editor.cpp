@@ -270,9 +270,9 @@ public:
 		
 		std::string name = entry->text();
 		if(name.empty() == false) {
-			std::string empty_contents = sys::read_file("data/level/empty.cfg");
-			ASSERT_LOG(empty_contents.empty() == false, "COULD NOT READ data/level/empty.cfg REQUIRED TEMPLATE FOR NEW LEVEL");
-			sys::write_file(preferences::level_path() + name, empty_contents);
+			variant empty_lvl = json::parse_from_file("data/level/empty.cfg");
+			empty_lvl.add_attr(variant("id"), variant(name));
+			sys::write_file(preferences::level_path() + name, empty_lvl.write_json());
 			editor_.close();
 			g_last_edited_level() = name;
 		}
@@ -610,7 +610,7 @@ editor::enemy_type::enemy_type(const custom_object_type& type)
 
 	node = new_node.build();
 	preview_object = entity::build(node);
-	preview_frame = &preview_object->current_frame();
+	preview_frame.reset(new frame(preview_object->current_frame()));
 }
 
 void editor::tileset::init(variant node)
@@ -841,6 +841,7 @@ editor_resolution_manager::editor_resolution_manager() :
 	}
 
 	if(++editor_resolution_manager_count == 1) {
+		std::cerr << "EDITOR RESOLUTION: " << editor_x_resolution << "," << editor_y_resolution << "\n";
 		SDL_Surface* result = graphics::set_video_mode(editor_x_resolution,editor_y_resolution,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
 
 		if(result) {
@@ -999,6 +1000,10 @@ bool editor::handle_event(const SDL_Event& event, bool swallowed)
 
 void editor::process()
 {
+	if(code_dialog_) {
+		code_dialog_->process();
+	}
+
 	if(editor_mode_dialog_) {
 		editor_mode_dialog_->refresh_selection();
 	}
@@ -2703,7 +2708,11 @@ void editor::draw_gui() const
 	}
 	
 	std::vector<GLfloat>& varray = graphics::global_vertex_array();
-	if(property_dialog_ && property_dialog_.get() == current_dialog_ && property_dialog_->get_entity() && property_dialog_->get_entity()->editor_info()) {
+	if(property_dialog_ && property_dialog_.get() == current_dialog_ &&
+	   property_dialog_->get_entity() &&
+	   property_dialog_->get_entity()->editor_info() &&
+	   std::count(lvl_->get_chars().begin(), lvl_->get_chars().end(),
+	              property_dialog_->get_entity())) {
 		glDisable(GL_TEXTURE_2D);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
@@ -2974,7 +2983,6 @@ void editor::draw_gui() const
 	}
 
 	if(code_dialog_) {
-		const int begin = SDL_GetTicks();
 		code_dialog_->draw();
 	}
 
@@ -3241,8 +3249,8 @@ void editor::toggle_code()
 void editor::set_code_file()
 {
 	std::string type;
-	if(lvl_->editor_highlight()) {
-		type = lvl_->editor_highlight()->query_value("type").as_string();
+	if(lvl_->editor_selection().empty() == false) {
+		type = lvl_->editor_selection().back()->query_value("type").as_string();
 	} else if(lvl_->player()) {
 		type = lvl_->player()->get_entity().query_value("type").as_string();
 	}

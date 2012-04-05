@@ -1803,24 +1803,28 @@ void level::draw(int x, int y, int w, int h) const
 	}
 
 	if(editor_highlight_ || !editor_selection_.empty()) {
-		if(editor_highlight_) {
+		if(editor_highlight_ && std::count(chars_.begin(), chars_.end(), editor_highlight_)) {
 			draw_entity(*editor_highlight_, x, y, true);
 		}
 
 		foreach(const entity_ptr& e, editor_selection_) {
-			draw_entity(*e, x, y, true);
+			if(std::count(chars_.begin(), chars_.end(), e)) {
+				draw_entity(*e, x, y, true);
+			}
 		}
 
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 		const GLfloat alpha = 0.5 + sin(draw_count/5.0)*0.5;
 		glColor4f(1.0, 1.0, 1.0, alpha);
 
-		if(editor_highlight_) {
+		if(editor_highlight_ && std::count(chars_.begin(), chars_.end(), editor_highlight_)) {
 			draw_entity(*editor_highlight_, x, y, true);
 		}
 
 		foreach(const entity_ptr& e, editor_selection_) {
-			draw_entity(*e, x, y, true);
+			if(std::count(chars_.begin(), chars_.end(), e)) {
+				draw_entity(*e, x, y, true);
+			}
 		}
 
 		glColor4f(1.0, 1.0, 1.0, 1.0);
@@ -3410,8 +3414,8 @@ void level::backup()
 	snapshot->last_touched_player = last_touched_player_;
 
 	backups_.push_back(snapshot);
-	if(backups_.size() > 500) {
-		backups_.erase(backups_.begin(), backups_.begin() + 100);
+	if(backups_.size() > 250) {
+		backups_.erase(backups_.begin(), backups_.begin() + 20);
 	}
 }
 
@@ -3502,12 +3506,17 @@ std::vector<entity_ptr> level::trace_past(entity_ptr e, int ncycle)
 
 std::vector<entity_ptr> level::predict_future(entity_ptr e, int ncycles)
 {
+	disable_flashes_scope flashes_disabled_scope;
 	const controls::control_backup_scope ctrl_backup_scope;
+
 	backup();
 	backup_snapshot_ptr snapshot = backups_.back();
 	backups_.pop_back();
 
 	const size_t starting_backups = backups_.size();
+
+	int begin_time = SDL_GetTicks();
+	int nframes = 0;
 
 	const int controls_end = controls::local_controls_end();
 	std::cerr << "PREDICT FUTURE: " << cycle_ << "/" << controls_end << "\n";
@@ -3516,13 +3525,20 @@ std::vector<entity_ptr> level::predict_future(entity_ptr e, int ncycles)
 			const assert_recover_scope safe_scope;
 			process();
 			backup();
+			++nframes;
 		} catch(validation_failure_exception& e) {
 			std::cerr << "ERROR WHILE PREDICTING FUTURE...\n";
 			break;
 		}
 	}
 
+	std::cerr << "TOOK " << (SDL_GetTicks() - begin_time) << "ms TO MOVE FORWARD " << nframes << " frames\n";
+
+	begin_time = SDL_GetTicks();
+
 	std::vector<entity_ptr> result = trace_past(e, -1);
+
+	std::cerr << "TOOK " << (SDL_GetTicks() - begin_time) << "ms to TRACE PAST OF " << result.size() << " FRAMES\n";
 
 	backups_.resize(starting_backups);
 	restore_from_backup(*snapshot);

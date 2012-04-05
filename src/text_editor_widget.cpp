@@ -135,6 +135,14 @@ std::string text_editor_widget::text() const
 	return result;
 }
 
+void text_editor_widget::set_row_contents(int row, const std::string& value)
+{
+	ASSERT_LOG(row >= 0 && row < text_.size(), "ILLEGAL ROW SET: " << row << " / " << text_.size());
+	text_[row] = value;
+	refresh_scrollbar();
+	on_change();
+}
+
 void text_editor_widget::set_text(const std::string& value)
 {
 	std::string txt = value;
@@ -1028,9 +1036,21 @@ void text_editor_widget::refresh_scrollbar()
 	update_scrollbar();
 }
 
-void text_editor_widget::select_token(const std::string& row, int& begin_row, int& end_row, int& begin_col, int& end_col) const
+void text_editor_widget::select_token(const std::string& row, int& begin_row, int& end_row, int& begin_col, int& end_col)
 {
-	if(util::isalnum(row[begin_col]) || row[begin_col] == '_') {
+	if(util::isdigit(row[begin_col]) || row[begin_col] == '.' && begin_col+1 < row.size() && util::isdigit(row[begin_col+1])) {
+		while(begin_col >= 0 && (util::isdigit(row[begin_col]) || row[begin_col] == '.')) {
+			--begin_col;
+		}
+
+		if(begin_col < 0 || row[begin_col] != '-') {
+			++begin_col;
+		}
+
+		while(end_col < row.size() && (util::isdigit(row[end_col]) || row[end_col] == '.')) {
+			++end_col;
+		}
+	} else if(util::isalnum(row[begin_col]) || row[begin_col] == '_') {
 		while(begin_col >= 0 && (util::isalnum(row[begin_col]) || row[begin_col] == '_')) {
 			--begin_col;
 		}

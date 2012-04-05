@@ -69,6 +69,7 @@ private:
 	gui::slider_ptr history_slider_;
 	gui::button_ptr history_button_;
 	std::vector<entity_ptr> history_trails_;
+	std::string history_trails_label_;
 	int history_trails_state_id_;
 	int object_reloads_state_id_;
 	int tile_rebuild_state_id_;

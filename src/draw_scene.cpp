@@ -66,10 +66,26 @@ screen_position& last_draw_position()
 	return last_position;
 }
 
+namespace {
+int g_flash_disable = 0;
+}
+
+disable_flashes_scope::disable_flashes_scope()
+{
+	++g_flash_disable;
+}
+
+disable_flashes_scope::~disable_flashes_scope()
+{
+	--g_flash_disable;
+}
+
 void screen_color_flash(const graphics::color_transform& color, const graphics::color_transform& color_delta, int duration)
 {
-	screen_flash f = { color, color_delta, duration };
-	flashes().push_back(f);
+	if(!g_flash_disable) {
+		screen_flash f = { color, color_delta, duration };
+		flashes().push_back(f);
+	}
 }
 
 void set_scene_title(const std::string& msg, int duration) {

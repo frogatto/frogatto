@@ -54,24 +54,28 @@ public:
 
 protected:
 
-	virtual void select_token(const std::string& row, int& begin_row, int& end_row, int& begin_col, int& end_col) const;
+	void set_row_contents(int row, const std::string& value);
+
+	virtual void select_token(const std::string& row, int& begin_row, int& end_row, int& begin_col, int& end_col);
 
 	virtual void on_change();
 
-private:
 	void handle_draw() const;
 	bool handle_event(const SDL_Event& event, bool claimed);
+
+	void save_undo_state();
+	bool record_op(const char* type=NULL);
+
+	std::pair<int, int> mouse_position_to_row_col(int x, int y) const;
+	std::pair<int, int> char_position_on_screen(int row, int col) const;
+
+private:
 	bool handle_mouse_button_down(const SDL_MouseButtonEvent& event);
 	bool handle_mouse_button_up(const SDL_MouseButtonEvent& event);
 	bool handle_mouse_motion(const SDL_MouseMotionEvent& event);
 	bool handle_key_press(const SDL_KeyboardEvent& key);
 
 	virtual graphics::color get_character_color(int row, int col) const;
-
-
-	std::pair<int, int> mouse_position_to_row_col(int x, int y) const;
-
-	std::pair<int, int> char_position_on_screen(int row, int col) const;
 
 	void delete_selection();
 
@@ -87,10 +91,6 @@ private:
 
 	virtual text_editor_widget* clone() const;
 	virtual void restore(const text_editor_widget* state);
-
-	void save_undo_state();
-
-	bool record_op(const char* type=NULL);
 
 	const char* last_op_type_;
 

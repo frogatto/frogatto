@@ -250,6 +250,12 @@ const_custom_object_type_ptr custom_object_type::get_sub_object(const std::strin
 
 custom_object_type_ptr custom_object_type::create(const std::string& id)
 {
+	return recreate(id, NULL);
+}
+
+custom_object_type_ptr custom_object_type::recreate(const std::string& id,
+                                             const custom_object_type* old_type)
+{
 	if(object_file_paths().empty()) {
 		load_file_paths();
 	}
@@ -264,7 +270,7 @@ custom_object_type_ptr custom_object_type::create(const std::string& id)
 		ASSERT_LOG(node["id"].as_string() == id, "IN " << path_itor->second << " OBJECT ID DOES NOT MATCH FILENAME");
 
 		//create the object
-		custom_object_type_ptr result(new custom_object_type(node));
+		custom_object_type_ptr result(new custom_object_type(node, NULL, old_type));
 
 		return result;
 	} catch(json::parse_error& e) {
@@ -355,7 +361,7 @@ bool custom_object_type::reload_object(const std::string& type)
 	const int begin = SDL_GetTicks();
 	try {
 		const assert_recover_scope scope;
-		new_obj = create(type);
+		new_obj = recreate(type, old_obj.get());
 		std::cerr << "RELOADED OBJECT IN " << (SDL_GetTicks() - begin) << "ms\n";
 	} catch(validation_failure_exception& e) {
 		std::cerr << "FAILURE TO LOAD IN " << (SDL_GetTicks() - begin) << "ms\n";
@@ -374,7 +380,7 @@ bool custom_object_type::reload_object(const std::string& type)
 
 		for(std::map<std::string, const_custom_object_type_ptr>::const_iterator i = old_obj->sub_objects_.begin(); i != old_obj->sub_objects_.end(); ++i) {
 			std::map<std::string, const_custom_object_type_ptr>::const_iterator j = new_obj->sub_objects_.find(i->first);
-			if(j != new_obj->sub_objects_.end()) {
+			if(j != new_obj->sub_objects_.end() && i->second != j->second) {
 				foreach(custom_object* obj, custom_object::get_all(i->second->id())) {
 					obj->update_type(i->second, j->second);
 				}
@@ -382,7 +388,7 @@ bool custom_object_type::reload_object(const std::string& type)
 		}
 
 		const int end = SDL_GetTicks();
-		std::cerr << "UPDATED " << custom_object::get_all(old_obj->id()).size() << " OBJECTS IN " << (end - start) << "\n";
+		std::cerr << "UPDATED " << custom_object::get_all(old_obj->id()).size() << " OBJECTS IN " << (end - start) << "ms\n";
 
 		itor->second = new_obj;
 
@@ -428,8 +434,7 @@ void custom_object_type::init_event_handlers(variant node,
 	}
 }
 
-
-custom_object_type::custom_object_type(variant node, const custom_object_type* base_type)
+custom_object_type::custom_object_type(variant node, const custom_object_type* base_type, const custom_object_type* old_type)
   : id_(node["id"].as_string()),
 	hitpoints_(node["hitpoints"].as_int(1)),
 	timer_frequency_(node["timer_frequency"].as_int(-1)),
@@ -477,7 +482,6 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 	hidden_in_game_(node["hidden_in_game"].as_bool(false)),
 	platform_offsets_(node["platform_offsets"].as_list_int_optional())
 {
-	std::cerr << "SOLID FOR " << id_ << " " << (solid_ ? "YES" : "NO") << "\n";
 	if(node.has_key("editor_info")) {
 		editor_info_.reset(new editor_entity_info(node["editor_info"]));
 	}
@@ -584,10 +588,22 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 	if(!is_variation) {
 		foreach(variant object_node, node["object_type"].as_list()) {
 			variant merged = merge_prototype(object_node);
-			custom_object_type* type = new custom_object_type(merged);
-			type->id_ = id_ + "." + type->id_;
+			std::string sub_key = object_node["id"].as_string();
+
+			if(old_type && old_type->sub_objects_.count(sub_key) &&
+			   old_type->sub_objects_.find(sub_key)->second->node_ == merged) {
+				//We are recreating this object, and the sub object node
+				//hasn't changed at all, so just reuse the same sub object.
+				sub_objects_[sub_key] = old_type->sub_objects_.find(sub_key)->second;
+			} else {
+				custom_object_type* type = new custom_object_type(merged);
+				type->id_ = id_ + "." + type->id_;
+				if(old_type && type->node_.is_null()){
+					type->node_ = merged;
+				}
 			//std::cerr << "MERGED PROTOTYPE FOR " << type->id_ << ": " << merged.write_json() << "\n";
-			sub_objects_[object_node["id"].as_string()].reset(type);
+				sub_objects_[sub_key].reset(type);
+			}
 		}
 	}
 
@@ -760,8 +776,6 @@ const_custom_object_type_ptr custom_object_type::get_variation(const std::vector
 
 			execute_variation_command(cmd, *callable);
 		}
-
-		std::cerr << "VARIATION MODIFICATION: BEFORE\n---\n" << node_.write_json() << "---\nAFTER\n---\n" << node.write_json() << "\n---\n";
 
 		//set our constants so the variation can decide whether it needs
 		//to re-parse formulas or not.

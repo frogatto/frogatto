@@ -23,10 +23,14 @@ public:
 
 	bool has_keyboard_focus() const;
 
+	void process();
+
 private:
 	bool handle_event(const SDL_Event& event, bool claimed);
 
 	std::string fname_;
+
+	int invalidated_;
 
 	gui::code_editor_widget* editor_;
 	gui::text_editor_widget* search_;

@@ -87,33 +87,6 @@ constants_loader::constants_loader(variant node) : same_as_base_(false)
 
 	if(constants_stack.empty() == false && constants_stack.back() == m) {
 		same_as_base_ = true;
-	} else if(constants_stack.empty() == false) {
-		std::cerr << "CONSTANTS ARE DIFFERENT: ";
-		for(constants_map::const_iterator i = m.begin(); i != m.end(); ++i) {
-			if(constants_stack.back().count(i->first) == 0) {
-				std::cerr << "NOT FOUND " << i->first << " ";
-			} else if(i->second != constants_stack.back()[i->first]) {
-				std::cerr << "DIFF " << i->first << " ";
-			}
-		}
-
-		const constants_map& m2 = constants_stack.back();
-		for(constants_map::const_iterator i = m2.begin(); i != m2.end(); ++i) {
-			if(m.count(i->first) == 0) {
-				std::cerr << "INSERTED " << i->first << " ";
-			}
-		}
-
-		std::cerr << "\n";
-	}
-
-	//std::cerr << "ADD CONSTANTS_STACK ";
-	for(constants_map::const_iterator i = m.begin(); i != m.end(); ++i) {
-		std::cerr << i->first << " ";
-	}
-
-	if(m.begin() != m.end()) {
-		std::cerr << "\n";
 	}
 
 	constants_stack.push_back(m);
