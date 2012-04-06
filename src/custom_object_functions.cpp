@@ -1343,6 +1343,23 @@ public:
 	}
 };
 
+namespace {
+const_formula_callable_ptr map_into_callable(variant v) {
+	if(v.is_callable()) {
+		return const_formula_callable_ptr(v.as_callable());
+	} else if(v.is_map()) {
+		map_formula_callable* res = new map_formula_callable;
+		foreach(const variant_pair& p, v.as_map()) {
+			res->add(p.first.as_string(), p.second);
+		}
+
+		return const_formula_callable_ptr(res);
+	} else {
+		return const_formula_callable_ptr();
+	}
+}
+}
+
 FUNCTION_DEF(fire_event, 1, 3, "fire_event((optional) object target, string id, (optional)callable arg): fires the event with the given id. Targets the current object by default, or target if given. Sends arg as the event argument if given")
 	entity_ptr target;
 	std::string event;
@@ -1356,7 +1373,7 @@ FUNCTION_DEF(fire_event, 1, 3, "fire_event((optional) object target, string id, 
 
 		target = v1.convert_to<entity>();
 		event = args()[1]->evaluate(variables).as_string();
-		callable = args()[2]->evaluate(variables).as_callable();
+		callable = map_into_callable(args()[2]->evaluate(variables));
 	} else if(args().size() == 2) {
 		variant v1 = args()[0]->evaluate(variables);
 		if(v1.is_null()) {
@@ -1366,7 +1383,7 @@ FUNCTION_DEF(fire_event, 1, 3, "fire_event((optional) object target, string id, 
 		variant v2 = args()[1]->evaluate(variables);
 		if(v1.is_string()) {
 			event = v1.as_string();
-			callable = v2.as_callable();
+			callable = map_into_callable(v2);
 		} else {
 			target = v1.convert_to<entity>();
 			event = v2.as_string();
