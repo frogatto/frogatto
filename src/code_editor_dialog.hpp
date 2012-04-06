@@ -32,11 +32,15 @@ private:
 
 	int invalidated_;
 
+	bool modified_;
+
 	gui::code_editor_widget* editor_;
 	gui::text_editor_widget* search_;
 	gui::text_editor_widget* replace_;
 
 	gui::label_ptr status_label_;
+
+	gui::label_ptr error_label_;
 
 	void on_search_changed();
 	void on_search_enter();

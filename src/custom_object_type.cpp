@@ -335,15 +335,19 @@ int custom_object_type::reload_modified_code()
 	return result;
 }
 
-void custom_object_type::set_file_contents(const std::string& file_path, const std::string& contents)
+bool custom_object_type::set_file_contents(const std::string& file_path, const std::string& contents)
 {
 	json::set_file_contents(file_path, contents);
 	for(object_map::iterator i = cache().begin(); i != cache().end(); ++i) {
 		const std::string* path = get_object_path(i->first + ".cfg");
 		if(path && *path == file_path) {
-			reload_object(i->first);
+			if(!reload_object(i->first)) {
+				return false;
+			}
 		}
 	}
+
+	return true;
 }
 
 namespace {

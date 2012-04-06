@@ -370,7 +370,7 @@ void show_interactive_console(level& lvl, entity& obj) {}
 #endif
 
 console_dialog::console_dialog(level& lvl, entity& obj)
-   : dialog(0, graphics::screen_height() - 200, graphics::screen_width() <= 800 ? graphics::screen_width() : 800, 200), lvl_(&lvl), focus_(&obj),
+   : dialog(0, graphics::screen_height() - 200, 600, 200), lvl_(&lvl), focus_(&obj),
      history_pos_(0)
 {
 	init();

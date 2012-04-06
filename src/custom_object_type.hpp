@@ -38,7 +38,7 @@ public:
 	static void invalidate_all_objects();
 	static std::vector<const_custom_object_type_ptr> get_all();
 
-	static void set_file_contents(const std::string& path, const std::string& contents);
+	static bool set_file_contents(const std::string& path, const std::string& contents);
 
 	static int reload_modified_code();
 	static bool reload_object(const std::string& type);
