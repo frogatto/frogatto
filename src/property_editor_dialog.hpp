@@ -16,8 +16,10 @@ public:
 	explicit property_editor_dialog(editor& e);
 	void init();
 
-	entity_ptr get_entity() const { return entity_; }
+	entity_ptr get_entity() const { return entity_.empty() ? entity_ptr() : entity_.front(); }
+	const std::vector<entity_ptr>& get_entity_list() const { return entity_; }
 	void set_entity(entity_ptr e);
+	void set_entity_group(const std::vector<entity_ptr>& entities);
 	void set_label_dialog();
 private:
 	void change_min_difficulty(int amount);
@@ -35,8 +37,10 @@ private:
 
 	void mutate_value(const std::string& key, variant value);
 
+	void deselect_object_type(std::string type);
+
 	editor& editor_;
-	entity_ptr entity_;
+	std::vector<entity_ptr> entity_;
 	gui::widget_ptr context_menu_;
 };
 

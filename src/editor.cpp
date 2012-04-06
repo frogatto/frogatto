@@ -29,7 +29,6 @@
 #include "formula.hpp"
 #include "frame.hpp"
 #include "grid_widget.hpp"
-#include "group_property_editor_dialog.hpp"
 #include "image_widget.hpp"
 #include "json_parser.hpp"
 #include "key.hpp"
@@ -714,7 +713,6 @@ editor::editor(const char* level_cfg)
 	editor_menu_dialog_.reset(new editor_menu_dialog(*this));
 	editor_mode_dialog_.reset(new editor_mode_dialog(*this));
 
-	group_property_dialog_.reset(new editor_dialogs::group_property_editor_dialog(*this));
 	property_dialog_.reset(new editor_dialogs::property_editor_dialog(*this));
 }
 
@@ -724,12 +722,19 @@ editor::~editor()
 
 void editor::group_selection()
 {
-	const int group = lvl_->add_group();
 	std::vector<boost::function<void()> > undo, redo;
 
-	foreach(const entity_ptr& c, lvl_->editor_selection()) {
-		undo.push_back(boost::bind(&level::set_character_group, lvl_.get(), c, c->group()));
-		redo.push_back(boost::bind(&level::set_character_group, lvl_.get(), c, group));
+	foreach(level_ptr lvl, levels_) {
+		const int group = lvl->add_group();
+		foreach(const entity_ptr& e, lvl_->editor_selection()) {
+			entity_ptr c = lvl_->get_entity_by_label(e->label());
+			if(!c) {
+				continue;
+			}
+
+			undo.push_back(boost::bind(&level::set_character_group, lvl.get(), c, c->group()));
+			redo.push_back(boost::bind(&level::set_character_group, lvl.get(), c, group));
+		}
 	}
 
 	execute_command(
@@ -1213,7 +1218,6 @@ void editor::reset_dialog_positions()
 	 std::max<int>(10, preferences::actual_screen_height() - d->y())); \
 }
 	SET_DIALOG_POS(character_dialog_);
-	SET_DIALOG_POS(group_property_dialog_);
 	SET_DIALOG_POS(property_dialog_);
 	SET_DIALOG_POS(tileset_dialog_);
 #undef SET_DIALOG_POS
@@ -1366,10 +1370,10 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 		undo.push_back(boost::bind(&level::editor_clear_selection, lvl_.get()));
 
 		//if we undo, return the objects to the property dialog
-		undo.push_back(boost::bind(&editor_dialogs::group_property_editor_dialog::set_group, group_property_dialog_.get(), lvl_->editor_selection()));
+		undo.push_back(boost::bind(&editor_dialogs::property_editor_dialog::set_entity_group, property_dialog_.get(), lvl_->editor_selection()));
 		redo.push_back(boost::bind(&level::editor_clear_selection, lvl_.get()));
 		//we want to clear the objects in the property dialog
-		redo.push_back(boost::bind(&editor_dialogs::group_property_editor_dialog::set_group, group_property_dialog_.get(), std::vector<entity_ptr>()));
+		redo.push_back(boost::bind(&editor_dialogs::property_editor_dialog::set_entity_group, property_dialog_.get(), std::vector<entity_ptr>()));
 		foreach(const entity_ptr& e, lvl_->editor_selection()) {
 			generate_remove_commands(e, undo, redo);
 			undo.push_back(boost::bind(&level::editor_select_object, lvl_.get(), e));
@@ -1825,7 +1829,7 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 			}
 
 			lvl_->editor_select_object(lvl_->editor_highlight());
-			group_property_dialog_->set_group(lvl_->editor_selection());
+			property_dialog_->set_entity_group(lvl_->editor_selection());
 
 			if(!lvl_->editor_selection().empty() && tool() == TOOL_ADD_OBJECT) {
 				//we are in add objects mode and we clicked on an object,
@@ -1833,11 +1837,7 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 				change_tool(TOOL_SELECT_OBJECT);
 			}
 
-			if(lvl_->editor_selection().size() > 1) {
-				current_dialog_ = group_property_dialog_.get();
-			} else if(lvl_->editor_selection().size() == 1) {
-				current_dialog_ = property_dialog_.get();
-			}
+			current_dialog_ = property_dialog_.get();
 		}
 
 		//start dragging the object
@@ -1983,68 +1983,70 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 			std::cerr << "MAKE DIFF: " << diffx << "," << diffy << "\n";
 			std::vector<boost::function<void()> > redo, undo;
 
-			foreach(const point& p, tile_selection_.tiles) {
-				const int x = (p.x+diffx)*TileSize;
-				const int y = (p.y+diffy)*TileSize;
-				undo.push_back(boost::bind(&level::clear_tile_rect,lvl_.get(), x, y, x, y));
-			}
-
-			int min_x = INT_MAX, min_y = INT_MAX, max_x = INT_MIN, max_y = INT_MIN;
-
-			//backup both the contents of the old and new regions, so we can restore them both
-			foreach(const point& p, tile_selection_.tiles) {
-				int x = p.x*TileSize;
-				int y = p.y*TileSize;
-
-				min_x = std::min(x, min_x);
-				max_x = std::max(x, max_x);
-				min_y = std::min(y, min_y);
-				max_y = std::max(y, max_y);
-
-				std::map<int, std::vector<std::string> > old_tiles;
-				lvl_->get_all_tiles_rect(x, y, x, y, old_tiles);
-				for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
-					undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x, y, x, y, i->second));
-					redo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x, y, x, y, std::vector<std::string>(1,"")));
+			foreach(level_ptr lvl, levels_) {
+				foreach(const point& p, tile_selection_.tiles) {
+					const int x = (p.x+diffx)*TileSize;
+					const int y = (p.y+diffy)*TileSize;
+					undo.push_back(boost::bind(&level::clear_tile_rect,lvl.get(), x, y, x, y));
 				}
 
-				old_tiles.clear();
+				int min_x = INT_MAX, min_y = INT_MAX, max_x = INT_MIN, max_y = INT_MIN;
+
+				//backup both the contents of the old and new regions, so we can restore them both
+				foreach(const point& p, tile_selection_.tiles) {
+					int x = p.x*TileSize;
+					int y = p.y*TileSize;
+
+					min_x = std::min(x, min_x);
+					max_x = std::max(x, max_x);
+					min_y = std::min(y, min_y);
+					max_y = std::max(y, max_y);
+
+					std::map<int, std::vector<std::string> > old_tiles;
+					lvl->get_all_tiles_rect(x, y, x, y, old_tiles);
+					for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
+						undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl.get(), i->first, x, y, x, y, i->second));
+						redo.push_back(boost::bind(&level::add_tile_rect_vector, lvl.get(), i->first, x, y, x, y, std::vector<std::string>(1,"")));
+					}
+
+					old_tiles.clear();
 	
-				x += diffx*TileSize;
-				y += diffy*TileSize;
+					x += diffx*TileSize;
+					y += diffy*TileSize;
 
-				min_x = std::min(x, min_x);
-				max_x = std::max(x, max_x);
-				min_y = std::min(y, min_y);
-				max_y = std::max(y, max_y);
+					min_x = std::min(x, min_x);
+					max_x = std::max(x, max_x);
+					min_y = std::min(y, min_y);
+					max_y = std::max(y, max_y);
 
-				lvl_->get_all_tiles_rect(x, y, x, y, old_tiles);
-				for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
-					undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x, y, x, y, i->second));
-					redo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x, y, x, y, std::vector<std::string>(1,"")));
+					lvl->get_all_tiles_rect(x, y, x, y, old_tiles);
+					for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
+						undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl.get(), i->first, x, y, x, y, i->second));
+						redo.push_back(boost::bind(&level::add_tile_rect_vector, lvl.get(), i->first, x, y, x, y, std::vector<std::string>(1,"")));
+					}
 				}
-			}
 
 			
-			foreach(const point& p, tile_selection_.tiles) {
-				const int x = p.x*TileSize;
-				const int y = p.y*TileSize;
+				foreach(const point& p, tile_selection_.tiles) {
+					const int x = p.x*TileSize;
+					const int y = p.y*TileSize;
 
-				min_x = std::min(x + diffx*TileSize, min_x);
-				max_x = std::max(x + diffx*TileSize, max_x);
-				min_y = std::min(y + diffy*TileSize, min_y);
-				max_y = std::max(y + diffy*TileSize, max_y);
-
-				std::map<int, std::vector<std::string> > old_tiles;
-				lvl_->get_all_tiles_rect(x, y, x, y, old_tiles);
-				for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
-					redo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x + diffx*TileSize, y + diffy*TileSize, x + diffx*TileSize, y + diffy*TileSize, i->second));
+					min_x = std::min(x + diffx*TileSize, min_x);
+					max_x = std::max(x + diffx*TileSize, max_x);
+					min_y = std::min(y + diffy*TileSize, min_y);
+					max_y = std::max(y + diffy*TileSize, max_y);
+	
+					std::map<int, std::vector<std::string> > old_tiles;
+					lvl->get_all_tiles_rect(x, y, x, y, old_tiles);
+					for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
+						redo.push_back(boost::bind(&level::add_tile_rect_vector, lvl.get(), i->first, x + diffx*TileSize, y + diffy*TileSize, x + diffx*TileSize, y + diffy*TileSize, i->second));
+					}
 				}
-			}
 
-			if(!tile_selection_.tiles.empty()) {
-				undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), std::vector<int>()));
-				redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), std::vector<int>()));
+				if(!tile_selection_.tiles.empty()) {
+					undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl.get(), std::vector<int>()));
+					redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl.get(), std::vector<int>()));
+				}
 			}
 
 			tile_selection new_selection = tile_selection_;
@@ -2160,7 +2162,7 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 				lvl_->editor_select_object(c);
 			}
 
-			group_property_dialog_->set_group(lvl_->editor_selection());
+			property_dialog_->set_entity_group(lvl_->editor_selection());
 
 			if(lvl_->editor_selection().size() == 1) {
 				current_dialog_ = property_dialog_.get();
@@ -2168,7 +2170,7 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 
 				set_code_file();
 			} else {
-				current_dialog_ = group_property_dialog_.get();
+				current_dialog_ = property_dialog_.get();
 			}
 
 			if(lvl_->editor_selection().empty()) {

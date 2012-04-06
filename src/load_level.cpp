@@ -7,6 +7,7 @@
 #include "json_parser.hpp"
 #include "level.hpp"
 #include "load_level.hpp"
+#include "module.hpp"
 #include "package.hpp"
 #include "preferences.hpp"
 #include "preprocessor.hpp"
@@ -216,7 +217,7 @@ bool hidden_file(const std::string& filename) {
 std::vector<std::string> get_known_levels()
 {
 	std::vector<std::string> files;
-	sys::get_files_in_dir(preferences::level_path(), &files);
+	module::get_files_in_dir(preferences::level_path(), &files);
 	files.erase(std::remove_if(files.begin(), files.end(), hidden_file), files.end());
 
 	foreach(const std::string& pkg, package::all_packages()) {

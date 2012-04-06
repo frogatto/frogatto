@@ -8,6 +8,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "foreach.hpp"
+#include "module.hpp"
 #include "preferences.hpp"
 #include "thread.hpp"
 #include "filesystem.hpp"
@@ -132,7 +133,7 @@ class sound
 		SDL_AudioSpec spec; /* the audio format of the .wav file */
 		SDL_AudioCVT cvt; /* used to convert .wav to output format when formats differ */
 		Uint8 *tmp_buffer;
-		if (SDL_LoadWAV(file.c_str(), &spec, &tmp_buffer, &length) == NULL)
+		if (SDL_LoadWAV(module::map_file(file).c_str(), &spec, &tmp_buffer, &length) == NULL)
 		{
 			std::cerr << "Could not load sound: " << file << "\n";
 			return; //should maybe die
@@ -281,7 +282,7 @@ bool sound_init = false;
 void thread_load(const std::string& file)
 {
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
-	Mix_Chunk* chunk = Mix_LoadWAV(("sounds/" + file).c_str());
+	Mix_Chunk* chunk = Mix_LoadWAV(module::map_file("sounds/" + file).c_str());
 
 	{
 		threading::lock l(cache_mutex);
@@ -653,7 +654,7 @@ void play_music(const std::string& file)
 	}
 
 	current_music_name() = file;
-	current_mix_music = Mix_LoadMUS(("music/" + file).c_str());
+	current_mix_music = Mix_LoadMUS(module::map_file("music/" + file).c_str());
 	if(!current_mix_music) {
 		std::cerr << "Mix_LoadMUS ERROR loading " << file << ": " << Mix_GetError() << "\n";
 		return;
@@ -709,7 +710,7 @@ void play_music_interrupt(const std::string& file)
 		return;
 	}
 
-	current_mix_music = Mix_LoadMUS(("music/" + file).c_str());
+	current_mix_music = Mix_LoadMUS(module::map_file("music/" + file).c_str());
 	if(!current_mix_music) {
 		std::cerr << "Mix_LoadMUS ERROR loading " << file << ": " << Mix_GetError() << "\n";
 		return;

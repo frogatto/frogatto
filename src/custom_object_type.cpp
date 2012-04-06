@@ -12,6 +12,7 @@
 #include "json_parser.hpp"
 #include "level.hpp"
 #include "load_level.hpp"
+#include "module.hpp"
 #include "object_events.hpp"
 #include "preferences.hpp"
 #include "solid_map.hpp"
@@ -52,8 +53,8 @@ const std::string& object_file_path() {
 void load_file_paths() {
 
 	//find out the paths to all our files
-	sys::get_unique_filenames_under_dir(object_file_path(), &object_file_paths());
-	sys::get_unique_filenames_under_dir("data/object_prototypes", &prototype_file_paths());
+	module::get_unique_filenames_under_dir(object_file_path(), &object_file_paths());
+	module::get_unique_filenames_under_dir("data/object_prototypes", &prototype_file_paths());
 
 	for(std::map<std::string, std::string>::const_iterator i = object_file_paths().begin(); i != object_file_paths().end(); ++i) {
 		file_mod_times()[i->second] = sys::file_mod_time("./" + i->second);
@@ -296,7 +297,7 @@ std::vector<const_custom_object_type_ptr> custom_object_type::get_all()
 {
 	std::vector<const_custom_object_type_ptr> res;
 	std::map<std::string, std::string> file_paths;
-	sys::get_unique_filenames_under_dir(object_file_path(), &file_paths);
+	module::get_unique_filenames_under_dir(object_file_path(), &file_paths);
 	for(std::map<std::string, std::string>::const_iterator i = file_paths.begin(); i != file_paths.end(); ++i) {
 		const std::string& fname = i->first;
 		if(fname.size() < 4 || std::string(fname.end()-4, fname.end()) != ".cfg") {
@@ -810,7 +811,7 @@ BENCHMARK(custom_object_type_load)
 {
 	static std::map<std::string,std::string> file_paths;
 	if(file_paths.empty()) {
-		sys::get_unique_filenames_under_dir("data/objects", &file_paths);
+		module::get_unique_filenames_under_dir("data/objects", &file_paths);
 	}
 
 	BENCHMARK_LOOP {

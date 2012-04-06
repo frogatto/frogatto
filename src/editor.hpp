@@ -23,7 +23,6 @@ class dialog;
 namespace editor_dialogs {
 class character_editor_dialog;
 class editor_layers_dialog;
-class group_property_editor_dialog;
 class property_editor_dialog;
 class segment_editor_dialog;
 class tileset_editor_dialog;
@@ -267,7 +266,6 @@ private:
 	boost::scoped_ptr<editor_mode_dialog> editor_mode_dialog_;
 	boost::scoped_ptr<editor_dialogs::character_editor_dialog> character_dialog_;
 	boost::scoped_ptr<editor_dialogs::editor_layers_dialog> layers_dialog_;
-	boost::scoped_ptr<editor_dialogs::group_property_editor_dialog> group_property_dialog_;
 	boost::scoped_ptr<editor_dialogs::property_editor_dialog> property_dialog_;
 	boost::scoped_ptr<editor_dialogs::tileset_editor_dialog> tileset_dialog_;
 

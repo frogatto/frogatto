@@ -4,6 +4,7 @@
 #include "stdint.h"
 
 #include "filesystem.hpp"
+#include "module.hpp"
 
 #ifdef __APPLE__
 #include <CoreFoundation/CoreFoundation.h>
@@ -144,7 +145,7 @@ const std::string& get_locale() {
 	}
 	if (!sys::file_exists(filename))
 		return;
-	const std::string content = sys::read_file(filename);
+	const std::string content = sys::read_file(module::map_file(filename));
 	size_t size = content.size();
 	if (size < sizeof(mo_header))
 		return;
