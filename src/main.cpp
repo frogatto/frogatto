@@ -42,6 +42,7 @@
 #include "load_level.hpp"
 #include "loading_screen.hpp"
 #include "message_dialog.hpp"
+#include "module.hpp"
 #include "multiplayer.hpp"
 #include "player_info.hpp"
 #include "preferences.hpp"
@@ -139,7 +140,7 @@ void print_help(const std::string& argv0)
 
 }
 
-extern "C" int main(int argc, char** argv)
+extern "C" int main(int argcount, char** argvec)
 {
 #if defined(TARGET_PANDORA)
     EGL_Open();
@@ -185,7 +186,13 @@ extern "C" int main(int argc, char** argv)
 
 	preferences::load_preferences();
 
-	for(int n = 1; n < argc; ++n) {
+	std::vector<std::string> argv;
+	for(int n = 1; n < argcount; ++n) {
+		argv.push_back(argvec[n]);
+	}
+
+	for(int n = 0; n < argv.size(); ++n) {
+		const int argc = argv.size();
 		const std::string arg(argv[n]);
 		std::string arg_name, arg_value;
 		std::string::const_iterator equal = std::find(arg.begin(), arg.end(), '=');
@@ -194,7 +201,19 @@ extern "C" int main(int argc, char** argv)
 			arg_value = std::string(equal+1, arg.end());
 		}
 		
-		if(arg_name == "--profile" || arg == "--profile") {
+		if(arg_name == "--module") {
+			variant mod_info = module::get(arg_value);
+			if(mod_info.is_null()) {
+				std::cerr << "FAILED TO LOAD MODULE: " << arg_value << "\n";
+				return -1;
+			}
+
+			module::load(arg_value);
+			if(mod_info["arguments"].is_list()) {
+				const std::vector<std::string>& arguments = mod_info["arguments"].as_list_string();
+				argv.insert(argv.end(), arguments.begin(), arguments.end());
+			}
+		} else if(arg_name == "--profile" || arg == "--profile") {
 			profile_output_buf = arg_value;
 			profile_output = profile_output_buf.c_str();
 		} else if(arg_name == "--utility") {
@@ -238,7 +257,7 @@ extern "C" int main(int argc, char** argv)
 			print_help(std::string(argv[0]));
 			return 0;
 		} else {
-			const bool res = preferences::parse_arg(argv[n]);
+			const bool res = preferences::parse_arg(argv[n].c_str());
 			if(!res) {
 				std::cerr << "unrecognized arg: '" << arg << "'\n";
 				return -1;

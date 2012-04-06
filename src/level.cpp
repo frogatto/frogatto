@@ -22,6 +22,7 @@
 #include "level_object.hpp"
 #include "light.hpp"
 #include "load_level.hpp"
+#include "module.hpp"
 #include "multiplayer.hpp"
 #include "object_events.hpp"
 #include "player_info.hpp"
@@ -3894,7 +3895,7 @@ BENCHMARK(load_nene)
 BENCHMARK(load_all_levels)
 {
 	std::vector<std::string> files;
-	sys::get_files_in_dir(preferences::level_path(), &files);
+	module::get_files_in_dir(preferences::level_path(), &files);
 	BENCHMARK_LOOP {
 		foreach(const std::string& file, files) {
 			boost::intrusive_ptr<level> lvl(new level(file));

@@ -13,6 +13,7 @@
 #include "asserts.hpp"
 #include "concurrent_cache.hpp"
 #include "filesystem.hpp"
+#include "module.hpp"
 #include "surface_cache.hpp"
 #if defined(__MACOSX__) || TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 	#include <SDL_image.h>
@@ -55,7 +56,7 @@ surface get(const std::string& key)
 surface get_no_cache(const std::string& key)
 {
 	const std::string fname = path + key;
-	surface surf = surface(IMG_Load(sys::find_file(fname).c_str()));
+	surface surf = surface(IMG_Load(module::map_file(fname).c_str()));
 	//std::cerr << "loading image '" << fname << "'\n";
 	if(surf.get() == false || surf->w == 0) {
 		std::cerr << "failed to load image '" << key << "'\n";

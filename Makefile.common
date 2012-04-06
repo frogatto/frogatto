@@ -80,6 +80,7 @@ objects = \
 	load_level.o \
 	main.o \
 	message_dialog.o \
+	module.o \
 	movement_script.o \
 	multi_tile_pattern.o \
 	multiplayer.o \

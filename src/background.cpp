@@ -12,6 +12,7 @@
 #include "formatter.hpp"
 #include "json_parser.hpp"
 #include "level.hpp"
+#include "module.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "surface_palette.hpp"
@@ -40,7 +41,7 @@ boost::shared_ptr<background> background::get(const std::string& name, int palet
 std::vector<std::string> background::get_available_backgrounds()
 {
 	std::vector<std::string> files;
-	sys::get_files_in_dir("data/backgrounds/", &files);
+	module::get_files_in_dir("data/backgrounds/", &files);
 
 	std::vector<std::string> result;
 	foreach(const std::string& fname, files) {

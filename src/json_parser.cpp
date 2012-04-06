@@ -6,6 +6,7 @@
 #include "formula_callable.hpp"
 #include "json_parser.hpp"
 #include "json_tokenizer.hpp"
+#include "module.hpp"
 #include "preprocessor.hpp"
 #include "unit_test.hpp"
 #include "variant_utils.hpp"
@@ -27,7 +28,7 @@ std::string get_file_contents(const std::string& path)
 	if(i != pseudo_file_contents.end()) {
 		return i->second;
 	} else {
-		return sys::read_file(path);
+		return sys::read_file(module::map_file(path));
 	}
 }
 
