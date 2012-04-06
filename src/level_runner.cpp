@@ -311,8 +311,11 @@ level_runner* level_runner::get_current()
 
 level_runner::level_runner(boost::intrusive_ptr<level>& lvl, std::string& level_cfg, std::string& original_level_cfg)
   : lvl_(lvl), level_cfg_(level_cfg), original_level_cfg_(original_level_cfg),
-    editor_(NULL), history_trails_state_id_(-1), object_reloads_state_id_(-1),
+    editor_(NULL)
+#ifndef NO_EDITOR
+	, history_trails_state_id_(-1), object_reloads_state_id_(-1),
 	tile_rebuild_state_id_(-1)
+#endif
 {
 	quit_ = false;
 
@@ -808,11 +811,13 @@ bool level_runner::play_cycle()
 					}
 					break;
 				} else if(key == SDLK_d && (mod&KMOD_CTRL)) {
+#ifndef NO_EDITOR
 					if(!console_ && lvl_->player()) {
 						console_.reset(new debug_console::console_dialog(*lvl_, lvl_->player()->get_entity()));
 					} else {
 						console_.reset();
 					}
+#endif
 					//show_debug_console();
 
 				} else if(key == SDLK_e && (mod&KMOD_CTRL)) {
@@ -912,7 +917,9 @@ bool level_runner::play_cycle()
 					sound::mute(!sound::muted()); //toggle sound
 				} else if(key == SDLK_p && mod & KMOD_CTRL) {
 					paused = !paused;
+#ifndef NO_EDITOR
 					init_history_slider();
+#endif
 					if(!paused) {
 						controls::read_until(lvl_->cycle());
 					}
@@ -1142,7 +1149,9 @@ bool level_runner::play_cycle()
 void level_runner::toggle_pause()
 {
 	paused = !paused;
+#ifndef NO_EDITOR
 	init_history_slider();
+#endif
 	if(!paused) {
 		controls::read_until(lvl_->cycle());
 	}
@@ -1222,6 +1231,7 @@ void level_runner::handle_pause_game_result(PAUSE_GAME_RESULT result)
 	}
 }
 
+#ifndef NO_EDITOR
 void level_runner::init_history_slider()
 {
 	if(paused && editor_) {
@@ -1299,3 +1309,4 @@ void level_runner::update_history_trails()
 		history_trails_label_ = e->label();
 	}
 }
+#endif

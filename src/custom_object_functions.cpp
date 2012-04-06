@@ -1268,7 +1268,9 @@ public:
 	explicit debug_command(const std::string& str) : str_(str)
 	{}
 	virtual void execute(level& lvl, entity& ob) const {
+#ifndef NO_EDITOR
 		debug_console::add_message(str_);
+#endif
 		std::cerr << "CONSOLE: " << str_ << "\n";
 	}
 private:
@@ -1299,7 +1301,9 @@ FUNCTION_DEF(debug_fn, 2, 2, "debug(msg, expr): evaluates and returns expr. Will
 	if(preferences::debug()) {
 		variant msg = args()[0]->evaluate(variables);
 		std::string s = msg.to_debug_string();
+#ifndef NO_EDITOR
 		debug_console::add_message(s);
+#endif
 		std::cerr << "CONSOLE: " << s << "\n";
 	}
 

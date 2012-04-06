@@ -387,7 +387,9 @@ void render_scene(const level& lvl, screen_position& pos, const entity* focus, b
 		}
 	}
 
+#ifndef NO_EDITOR
 	debug_console::draw();
+#endif
 
 	if (!pause_stack) lvl.draw_status();
 
