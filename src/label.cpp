@@ -19,6 +19,14 @@
 
 namespace gui {
 
+label::label(const std::string& text, int size)
+	: text_(i18n::tr(text)), size_(size),
+	  fixed_width_(false)
+{
+	color_.r = color_.g = color_.b = 255;
+	recalculate_texture();
+}
+
 label::label(const std::string& text, const SDL_Color& color, int size)
 	: text_(i18n::tr(text)), color_(color), size_(size),
 	  fixed_width_(false)

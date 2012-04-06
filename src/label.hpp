@@ -36,6 +36,7 @@ public:
 		return label_ptr(new label(text, color, size));
 	}
 	label(const std::string& text, const SDL_Color& color, int size=14);
+	label(const std::string& text, int size=14);
 
 	void set_font_size(int font_size);
 	void set_color(const SDL_Color& color);
