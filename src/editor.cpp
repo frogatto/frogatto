@@ -1983,68 +1983,70 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 			std::cerr << "MAKE DIFF: " << diffx << "," << diffy << "\n";
 			std::vector<boost::function<void()> > redo, undo;
 
-			foreach(const point& p, tile_selection_.tiles) {
-				const int x = (p.x+diffx)*TileSize;
-				const int y = (p.y+diffy)*TileSize;
-				undo.push_back(boost::bind(&level::clear_tile_rect,lvl_.get(), x, y, x, y));
-			}
-
-			int min_x = INT_MAX, min_y = INT_MAX, max_x = INT_MIN, max_y = INT_MIN;
-
-			//backup both the contents of the old and new regions, so we can restore them both
-			foreach(const point& p, tile_selection_.tiles) {
-				int x = p.x*TileSize;
-				int y = p.y*TileSize;
-
-				min_x = std::min(x, min_x);
-				max_x = std::max(x, max_x);
-				min_y = std::min(y, min_y);
-				max_y = std::max(y, max_y);
-
-				std::map<int, std::vector<std::string> > old_tiles;
-				lvl_->get_all_tiles_rect(x, y, x, y, old_tiles);
-				for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
-					undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x, y, x, y, i->second));
-					redo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x, y, x, y, std::vector<std::string>(1,"")));
+			foreach(level_ptr lvl, levels_) {
+				foreach(const point& p, tile_selection_.tiles) {
+					const int x = (p.x+diffx)*TileSize;
+					const int y = (p.y+diffy)*TileSize;
+					undo.push_back(boost::bind(&level::clear_tile_rect,lvl.get(), x, y, x, y));
 				}
 
-				old_tiles.clear();
+				int min_x = INT_MAX, min_y = INT_MAX, max_x = INT_MIN, max_y = INT_MIN;
+
+				//backup both the contents of the old and new regions, so we can restore them both
+				foreach(const point& p, tile_selection_.tiles) {
+					int x = p.x*TileSize;
+					int y = p.y*TileSize;
+
+					min_x = std::min(x, min_x);
+					max_x = std::max(x, max_x);
+					min_y = std::min(y, min_y);
+					max_y = std::max(y, max_y);
+
+					std::map<int, std::vector<std::string> > old_tiles;
+					lvl->get_all_tiles_rect(x, y, x, y, old_tiles);
+					for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
+						undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl.get(), i->first, x, y, x, y, i->second));
+						redo.push_back(boost::bind(&level::add_tile_rect_vector, lvl.get(), i->first, x, y, x, y, std::vector<std::string>(1,"")));
+					}
+
+					old_tiles.clear();
 	
-				x += diffx*TileSize;
-				y += diffy*TileSize;
+					x += diffx*TileSize;
+					y += diffy*TileSize;
 
-				min_x = std::min(x, min_x);
-				max_x = std::max(x, max_x);
-				min_y = std::min(y, min_y);
-				max_y = std::max(y, max_y);
+					min_x = std::min(x, min_x);
+					max_x = std::max(x, max_x);
+					min_y = std::min(y, min_y);
+					max_y = std::max(y, max_y);
 
-				lvl_->get_all_tiles_rect(x, y, x, y, old_tiles);
-				for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
-					undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x, y, x, y, i->second));
-					redo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x, y, x, y, std::vector<std::string>(1,"")));
+					lvl->get_all_tiles_rect(x, y, x, y, old_tiles);
+					for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
+						undo.push_back(boost::bind(&level::add_tile_rect_vector, lvl.get(), i->first, x, y, x, y, i->second));
+						redo.push_back(boost::bind(&level::add_tile_rect_vector, lvl.get(), i->first, x, y, x, y, std::vector<std::string>(1,"")));
+					}
 				}
-			}
 
 			
-			foreach(const point& p, tile_selection_.tiles) {
-				const int x = p.x*TileSize;
-				const int y = p.y*TileSize;
+				foreach(const point& p, tile_selection_.tiles) {
+					const int x = p.x*TileSize;
+					const int y = p.y*TileSize;
 
-				min_x = std::min(x + diffx*TileSize, min_x);
-				max_x = std::max(x + diffx*TileSize, max_x);
-				min_y = std::min(y + diffy*TileSize, min_y);
-				max_y = std::max(y + diffy*TileSize, max_y);
-
-				std::map<int, std::vector<std::string> > old_tiles;
-				lvl_->get_all_tiles_rect(x, y, x, y, old_tiles);
-				for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
-					redo.push_back(boost::bind(&level::add_tile_rect_vector, lvl_.get(), i->first, x + diffx*TileSize, y + diffy*TileSize, x + diffx*TileSize, y + diffy*TileSize, i->second));
+					min_x = std::min(x + diffx*TileSize, min_x);
+					max_x = std::max(x + diffx*TileSize, max_x);
+					min_y = std::min(y + diffy*TileSize, min_y);
+					max_y = std::max(y + diffy*TileSize, max_y);
+	
+					std::map<int, std::vector<std::string> > old_tiles;
+					lvl->get_all_tiles_rect(x, y, x, y, old_tiles);
+					for(std::map<int, std::vector<std::string> >::const_iterator i = old_tiles.begin(); i != old_tiles.end(); ++i) {
+						redo.push_back(boost::bind(&level::add_tile_rect_vector, lvl.get(), i->first, x + diffx*TileSize, y + diffy*TileSize, x + diffx*TileSize, y + diffy*TileSize, i->second));
+					}
 				}
-			}
 
-			if(!tile_selection_.tiles.empty()) {
-				undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), std::vector<int>()));
-				redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl_.get(), std::vector<int>()));
+				if(!tile_selection_.tiles.empty()) {
+					undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl.get(), std::vector<int>()));
+					redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl.get(), std::vector<int>()));
+				}
 			}
 
 			tile_selection new_selection = tile_selection_;
