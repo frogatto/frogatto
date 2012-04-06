@@ -14,8 +14,8 @@ std::vector<std::string>& loaded_paths() {
 
 std::string map_file(const std::string& fname)
 {
-	for(std::vector<std::string>::const_reverse_iterator i = loaded_paths().rbegin(); i != loaded_paths().rend(); ++i) {
-		std::string path = sys::find_file(*i + fname);
+	foreach(const std::string& p, loaded_paths()) {
+		std::string path = sys::find_file(p + fname);
 		if(sys::file_exists(path)) {
 			return path;
 		}
@@ -27,8 +27,8 @@ std::string map_file(const std::string& fname)
 void get_unique_filenames_under_dir(const std::string& dir,
                                     std::map<std::string, std::string>* file_map)
 {
-	for(std::vector<std::string>::const_reverse_iterator i = loaded_paths().rbegin(); i != loaded_paths().rend(); ++i) {
-		const std::string path = *i + dir;
+	foreach(const std::string& p, loaded_paths()) {
+		const std::string path = p + dir;
 		sys::get_unique_filenames_under_dir(path, file_map);
 	}
 }
@@ -38,8 +38,8 @@ void get_files_in_dir(const std::string& dir,
                       std::vector<std::string>* dirs,
                       sys::FILE_NAME_MODE mode)
 {
-	for(std::vector<std::string>::const_reverse_iterator i = loaded_paths().rbegin(); i != loaded_paths().rend(); ++i) {
-		const std::string path = *i + dir;
+	foreach(const std::string& p, loaded_paths()) {
+		const std::string path = p + dir;
 		sys::get_files_in_dir(path, files, dirs, mode);
 	}
 }
@@ -81,7 +81,7 @@ void load(const std::string& name)
 	std::string fname = "modules/" + name + "/module.cfg";
 	variant v = json::parse_from_file(fname);
 
-	loaded_paths().push_back("./modules/" + name + "/");
+	loaded_paths().insert(loaded_paths().begin(), "./modules/" + name + "/");
 }
 
 }
