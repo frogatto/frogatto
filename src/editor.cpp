@@ -2105,6 +2105,9 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 
 			//Delete all the objects in the rect.
 			foreach(const entity_ptr& c, chars) {
+				if(c->spawned_by().empty() == false) {
+					continue;
+				}
 				std::cerr << "REMOVING RECT CHAR: " << c->debug_description() << "\n";
 				foreach(level_ptr lvl, levels_) {
 					entity_ptr obj = lvl->get_entity_by_label(c->label());
