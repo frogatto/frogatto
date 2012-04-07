@@ -1618,11 +1618,6 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 
 	expression_ptr function_symbol_table::create_function(const std::string& fn, const std::vector<expression_ptr>& args, const formula_callable_definition* callable_def) const
 	{
-		const std::map<std::string, function_creator*>& creators = get_function_creators(FunctionModule);
-		std::map<std::string, function_creator*>::const_iterator creator_itor = creators.find(fn);
-		if(creator_itor != creators.end()) {
-			return expression_ptr(creator_itor->second->create(args));
-		}
 
 		const std::map<std::string, formula_function>::const_iterator i = custom_formulas_.find(fn);
 		if(i != custom_formulas_.end()) {
@@ -1675,30 +1670,16 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 
 namespace {
 
-	class base_function_creator {
-	public:
-		virtual expression_ptr create_function(const std::vector<expression_ptr>& args) const = 0;
-		virtual ~base_function_creator() {}
-	};
-
-	template<typename T>
-	class function_creator : public base_function_creator {
-	public:
-		virtual expression_ptr create_function(const std::vector<expression_ptr>& args) const {
-			return expression_ptr(new T(args));
-		}
-		virtual ~function_creator() {}
-	};
-
-	typedef std::map<std::string, base_function_creator*> functions_map;
+	typedef std::map<std::string, function_creator*> functions_map;
 
 	functions_map& get_functions_map() {
 
 		static functions_map functions_table;
 
 		if(functions_table.empty()) {
-	#define FUNCTION(name) functions_table[#name] = new function_creator<name##_function>();
+	#define FUNCTION(name) functions_table[#name] = new specific_function_creator<name##_function>();
 			FUNCTION(if);
+			FUNCTION(abs);
 			FUNCTION(sign);
 			FUNCTION(min);
 			FUNCTION(max);
@@ -1782,12 +1763,18 @@ expression_ptr create_function(const std::string& fn,
 		}
 	}
 
+	const std::map<std::string, function_creator*>& creators = get_function_creators(FunctionModule);
+	std::map<std::string, function_creator*>::const_iterator creator_itor = creators.find(fn);
+	if(creator_itor != creators.end()) {
+		return expression_ptr(creator_itor->second->create(args));
+	}
+
 	functions_map::const_iterator i = get_functions_map().find(fn);
 	if(i == get_functions_map().end()) {
 		return expression_ptr();
 	}
 
-	return i->second->create_function(args);
+	return expression_ptr(i->second->create(args));
 }
 
 bool optimize_function_arguments(const std::string& fn,
