@@ -208,185 +208,115 @@ FUNCTION_DEF(abs, 1, 1, "abs(value) -> value: evaluates the absolute value of th
 	}
 END_FUNCTION_DEF(abs)
 
-	class sign_function : public function_expression {
-	public:
-		explicit sign_function(const args_list& args)
-			: function_expression("sign", args, 1, 1)
-		{}
+FUNCTION_DEF(sign, 1, 1, "sign(value) -> int: evaluates to 1 if value >= 0, -1 otherwise")
 
-	private:
-		variant execute(const formula_callable& variables) const {
-			const int n = args()[0]->evaluate(variables).as_int();
-			return variant(n >= 0 ? 1 : -1);
-		}
-	};
+	const int n = args()[0]->evaluate(variables).as_int();
+	return variant(n >= 0 ? 1 : -1);
+END_FUNCTION_DEF(sign)
 
-	class min_function : public function_expression {
-	public:
-		explicit min_function(const args_list& args)
-			: function_expression("min", args, 1, -1)
-		{}
+FUNCTION_DEF(min, 1, -1, "min(args...) -> value: evaluates to the minimum of the given arguments. If given a single argument list, will evaluate to the minimum of the member items.")
 
-	private:
-		variant execute(const formula_callable& variables) const {
-
-			bool found = false;
-			variant res;
-			for(size_t n = 0; n != args().size(); ++n) {
-				const variant v = args()[n]->evaluate(variables);
-				if(v.is_list()) {
-					for(size_t m = 0; m != v.num_elements(); ++m) {
-						if(!found || v[m] < res) {
-							res = v[m];
-							found = true;
-						}
-					}
-				} else if(v.is_int() || v.is_decimal()) {
-					if(!found || v < res) {
-						res = v;
-						found = true;
-					}
+	bool found = false;
+	variant res;
+	for(size_t n = 0; n != args().size(); ++n) {
+		const variant v = args()[n]->evaluate(variables);
+		if(v.is_list() && args().size() == 1) {
+			for(size_t m = 0; m != v.num_elements(); ++m) {
+				if(!found || v[m] < res) {
+					res = v[m];
+					found = true;
 				}
 			}
-
-			return res;
-
+		} else {
+			if(!found || v < res) {
+				res = v;
+				found = true;
+			}
 		}
-	};
+	}
 
-	class max_function : public function_expression {
-	public:
-		explicit max_function(const args_list& args)
-			: function_expression("max", args, 1, -1)
-		{}
+	return res;
+END_FUNCTION_DEF(min)
 
-	private:
-		variant execute(const formula_callable& variables) const {
-			bool found = false;
-			variant res;
-			for(size_t n = 0; n != args().size(); ++n) {
-				const variant v = args()[n]->evaluate(variables);
-				if(v.is_list()) {
-					for(size_t m = 0; m != v.num_elements(); ++m) {
-						if(!found || v[m] > res) {
-							res = v[m];
-							found = true;
-						}
-					}
-				} else if(v.is_int() || v.is_decimal()) {
-					if(!found || v > res) {
-						res = v;
-						found = true;
-					}
+FUNCTION_DEF(max, 1, -1, "max(args...) -> value: evaluates to the maximum of the given arguments. If given a single argument list, will evaluate to the maximum of the member items.")
+
+	bool found = false;
+	variant res;
+	for(size_t n = 0; n != args().size(); ++n) {
+		const variant v = args()[n]->evaluate(variables);
+		if(v.is_list() && args().size() == 1) {
+			for(size_t m = 0; m != v.num_elements(); ++m) {
+				if(!found || v[m] > res) {
+					res = v[m];
+					found = true;
 				}
 			}
-
-			return res;
+		} else {
+			if(!found || v > res) {
+				res = v;
+				found = true;
+			}
 		}
-	};
+	}
+
+	return res;
+END_FUNCTION_DEF(max)
 
 	UNIT_TEST(min_max_decimal) {
 		CHECK(game_logic::formula(variant("max(1,1.4)")).execute() == game_logic::formula(variant("1.4")).execute(), "test failed");
 	}
 
-	class keys_function : public function_expression {
-	public:
-		explicit keys_function(const args_list& args)
-			: function_expression("keys", args, 1, 1)
-		{}
+FUNCTION_DEF(keys, 1, 1, "keys(map) -> list: gives the keys for a map")
+	const variant map = args()[0]->evaluate(variables);
+	return map.get_keys();
+END_FUNCTION_DEF(keys)
 
-	private:
-		variant execute(const formula_callable& variables) const {
-			const variant map = args()[0]->evaluate(variables);
-			return map.get_keys();
+FUNCTION_DEF(values, 1, 1, "values(map) -> list: gives the values for a map")
+	const variant map = args()[0]->evaluate(variables);
+	return map.get_values();
+END_FUNCTION_DEF(values)
+
+FUNCTION_DEF(choose, 1, 2, "choose(list, (optional)scoring_expr) -> value: choose an item from the list according to which scores the highest according to the scoring expression, or at random by default.")
+
+	const variant items = args()[0]->evaluate(variables);
+	int max_index = -1;
+	variant max_value;
+	for(size_t n = 0; n != items.num_elements(); ++n) {
+		variant val;
+		
+		if(args().size() >= 2) {
+			formula_callable_ptr callable(new formula_variant_callable_with_backup(items[n], variables));
+			val = args()[1]->evaluate(*callable);
+		} else {
+			val = variant(rand());
 		}
-	};
 
-	class values_function : public function_expression {
-	public:
-		explicit values_function(const args_list& args)
-			: function_expression("values", args, 1, 1)
-		{}
-
-	private:
-		variant execute(const formula_callable& variables) const {
-			const variant map = args()[0]->evaluate(variables);
-			return map.get_values();
+		if(max_index == -1 || val > max_value) {
+			max_index = n;
+			max_value = val;
 		}
-	};
+	}
 
-	class choose_function : public function_expression {
-	public:
-		explicit choose_function(const args_list& args)
-			: function_expression("choose", args, 1, 2)
-		{}
+	if(max_index == -1) {
+		return variant();
+	} else {
+		return items[max_index];
+	}
+END_FUNCTION_DEF(choose)
 
-	private:
-		variant execute(const formula_callable& variables) const {
-			const variant items = args()[0]->evaluate(variables);
-			int max_index = -1;
-			variant max_value;
-			for(size_t n = 0; n != items.num_elements(); ++n) {
-				variant val;
-				
-				if(args().size() >= 2) {
-					formula_callable_ptr callable(new formula_variant_callable_with_backup(items[n], variables));
-					val = args()[1]->evaluate(*callable);
-				} else {
-					val = variant(rand());
-				}
+FUNCTION_DEF(wave, 1, 1, "wave(int) -> int: a wave with a period of 1000 and height of 1000")
+	const int value = args()[0]->evaluate(variables).as_int()%1000;
+	const double angle = 2.0*3.141592653589*(static_cast<double>(value)/1000.0);
+	return variant(static_cast<int>(sin(angle)*1000.0));
+END_FUNCTION_DEF(wave)
 
-				if(max_index == -1 || val > max_value) {
-					max_index = n;
-					max_value = val;
-				}
-			}
+FUNCTION_DEF(decimal, 1, 1, "decimal(value) -> decimal: converts the value to a decimal")
+	return variant(args()[0]->evaluate(variables).as_decimal());
+END_FUNCTION_DEF(decimal)
 
-			if(max_index == -1) {
-				return variant();
-			} else {
-				return items[max_index];
-			}
-		}
-	};
-
-	class wave_function : public function_expression {
-	public:
-		explicit wave_function(const args_list& args)
-			: function_expression("wave", args, 1, 1)
-		{}
-
-	private:
-		variant execute(const formula_callable& variables) const {
-			const int value = args()[0]->evaluate(variables).as_int()%1000;
-			const double angle = 2.0*3.141592653589*(static_cast<double>(value)/1000.0);
-			return variant(static_cast<int>(sin(angle)*1000.0));
-		}
-	};
-
-	class decimal_function : public function_expression {
-	public:
-		explicit decimal_function(const args_list& args)
-			: function_expression("decimal", args, 1, 1)
-		{}
-
-	private:
-		variant execute(const formula_callable& variables) const {
-			return variant(args()[0]->evaluate(variables).as_decimal());
-		}
-	};
-
-	class integer_function : public function_expression {
-	public:
-		explicit integer_function(const args_list& args)
-			: function_expression("integer", args, 1, 1)
-		{}
-
-	private:
-		variant execute(const formula_callable& variables) const {
-			return variant(args()[0]->evaluate(variables).as_int());
-		}
-	};
+FUNCTION_DEF(integer, 1, 1, "integer(value) -> int: converts the value to an integer")
+	return variant(args()[0]->evaluate(variables).as_int());
+END_FUNCTION_DEF(integer)
 
 	class sin_function : public function_expression {	//Interprets two least significant digits as after decimal.
 	public:
@@ -1181,28 +1111,6 @@ namespace {
 		}
 	};
 
-	class true_function : public function_expression {
-	public:
-		explicit true_function(const args_list& args)
-			: function_expression("true", args, 0, 0)
-		{}
-	private:
-		variant execute(const formula_callable& /*variables*/) const {
-			return variant(true);
-		}
-	};
-
-	class false_function : public function_expression {
-	public:
-		explicit false_function(const args_list& args)
-			: function_expression("false", args, 0, 0)
-		{}
-	private:
-		variant execute(const formula_callable& /*variables*/) const {
-			return variant(false);
-		}
-	};
-
 	class refcount_function : public function_expression {
 	public:
 		explicit refcount_function(const args_list& args)
@@ -1679,14 +1587,6 @@ namespace {
 		if(functions_table.empty()) {
 	#define FUNCTION(name) functions_table[#name] = new specific_function_creator<name##_function>();
 			FUNCTION(if);
-			FUNCTION(abs);
-			FUNCTION(sign);
-			FUNCTION(min);
-			FUNCTION(max);
-			FUNCTION(choose);
-			FUNCTION(wave);
-			FUNCTION(decimal);
-			FUNCTION(integer);
 			FUNCTION(sin);
 			FUNCTION(cos);
 			FUNCTION(tan);
@@ -1720,11 +1620,7 @@ namespace {
 			FUNCTION(str);
 			FUNCTION(strstr);
 			FUNCTION(null);
-			FUNCTION(true);
-			FUNCTION(false);
 			FUNCTION(refcount);
-			FUNCTION(keys);
-			FUNCTION(values);
 			FUNCTION(regex_replace);
 			FUNCTION(deserialize);
 			FUNCTION(is_string);

@@ -1366,6 +1366,10 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 					return expression_ptr(new function_list_expression(symbols));
 				} else if(std::string(i1->begin,i1->end) == "null") {
 					return expression_ptr(new null_expression());
+				} else if(std::string(i1->begin,i1->end) == "true") {
+					return expression_ptr(new variant_expression(variant::from_bool(true)));
+				} else if(std::string(i1->begin,i1->end) == "false") {
+					return expression_ptr(new variant_expression(variant::from_bool(false)));
 				}
 			} else if(i1->type == TOKEN_CONST_IDENTIFIER) {
 				return expression_ptr(new const_identifier_expression(
