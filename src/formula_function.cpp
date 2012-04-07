@@ -318,162 +318,65 @@ FUNCTION_DEF(integer, 1, 1, "integer(value) -> int: converts the value to an int
 	return variant(args()[0]->evaluate(variables).as_int());
 END_FUNCTION_DEF(integer)
 
-	class sin_function : public function_expression {	//Interprets two least significant digits as after decimal.
-	public:
-		explicit sin_function(const args_list& args)
-			: function_expression("sin", args, 1, 1)
-		{}
+FUNCTION_DEF(sin, 1, 1, "sin(x): Standard sine function.")
+	const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
+	return variant(static_cast<decimal>(sin(angle/radians_to_degrees)));
+END_FUNCTION_DEF(sin)
 
-	private:
-		variant execute(const formula_callable& variables) const {
-			const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
-			return variant(static_cast<decimal>(sin(angle/radians_to_degrees)));
-		}
-	};
+FUNCTION_DEF(cos, 1, 1, "cos(x): Standard cosine function.")
+	const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
+	return variant(static_cast<decimal>(cos(angle/radians_to_degrees)));
+END_FUNCTION_DEF(cos)
 
-	class cos_function : public function_expression {	
-	public:
-		explicit cos_function(const args_list& args)
-			: function_expression("cos", args, 1, 1)
-		{}
+FUNCTION_DEF(tan, 1, 1, "tan(x): Standard tangent function.")
+	const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
+	return variant(static_cast<decimal>(tan(angle/radians_to_degrees)));
+END_FUNCTION_DEF(tan)
 
-	private:
-		variant execute(const formula_callable& variables) const {
-			const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
-			return variant(static_cast<decimal>(cos(angle/radians_to_degrees)));
-		}
-	};
+FUNCTION_DEF(asin, 1, 1, "asin(x): Standard arc sine function.")
+	const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
+	return variant(static_cast<decimal>(asin(angle/radians_to_degrees)));
+END_FUNCTION_DEF(asin)
 
-	class tan_function : public function_expression {
-	public:
-		explicit tan_function(const args_list& args)
-			: function_expression("tan", args, 1, 1)
-		{}
+FUNCTION_DEF(acos, 1, 1, "acos(x): Standard arc cosine function.")
+	const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
+	return variant(static_cast<decimal>(acos(angle/radians_to_degrees)));
+END_FUNCTION_DEF(acos)
 
-	private:
-		variant execute(const formula_callable& variables) const {
-			const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
-			return variant(static_cast<decimal>(tan(angle/radians_to_degrees)));
-		}
-	};
+FUNCTION_DEF(atan, 1, 1, "atan(x): Standard arc tangent function.")
+	const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
+	return variant(static_cast<decimal>(atan(angle/radians_to_degrees)));
+END_FUNCTION_DEF(atan)
 
-	class asin_function : public function_expression {
-	public:
-		explicit asin_function(const args_list& args)
-			: function_expression("asin", args, 1, 1)
-		{}
+FUNCTION_DEF(sinh, 1, 1, "sinh(x): Standard hyperbolic sine function.")
+	const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
+	return variant(static_cast<decimal>(sinh(angle)));
+END_FUNCTION_DEF(sinh)
 
-	private:
-		variant execute(const formula_callable& variables) const {
-			const float ratio = args()[0]->evaluate(variables).as_decimal().as_float();
-			return variant(static_cast<decimal>(asin(ratio)*radians_to_degrees));
-		}
-	};
+FUNCTION_DEF(cosh, 1, 1, "cosh(x): Standard hyperbolic cosine function.")
+	const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
+	return variant(static_cast<decimal>(cosh(angle)));
+END_FUNCTION_DEF(cosh)
 
-	class acos_function : public function_expression {
-	public:
-		explicit acos_function(const args_list& args)
-			: function_expression("acos", args, 1, 1)
-		{}
+FUNCTION_DEF(tanh, 1, 1, "tanh(x): Standard hyperbolic tangent function.")
+	const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
+	return variant(static_cast<decimal>(tanh(angle)));
+END_FUNCTION_DEF(tanh)
 
-	private:
-		variant execute(const formula_callable& variables) const {
-			const float ratio = args()[0]->evaluate(variables).as_decimal().as_float();
-			return variant(static_cast<decimal>(acos(ratio)*radians_to_degrees));
-		}
-	};
-		
-	class atan2_function : public function_expression {
-	public:
-		explicit atan2_function(const args_list& args)
-		: function_expression("atan2", args, 2, 2)
-		{}
-		
-	private:
-		variant execute(const formula_callable& variables) const {
-			const float x = args()[0]->evaluate(variables).as_decimal().as_float();
-			const float y = args()[1]->evaluate(variables).as_decimal().as_float();
-			return variant(static_cast<decimal>(atan2(y,x)*radians_to_degrees));
-		}
-	};
-	
-	class sinh_function : public function_expression {	//Interprets two least significant digits as after decimal.
-	public:
-		explicit sinh_function(const args_list& args)
-			: function_expression("sinh", args, 1, 1)
-		{}
+FUNCTION_DEF(asinh, 1, 1, "asinh(x): Standard arc hyperbolic sine function.")
+	const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
+	return variant(static_cast<decimal>(asinh(angle)));
+END_FUNCTION_DEF(asinh)
 
-	private:
-		variant execute(const formula_callable& variables) const {
-			const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
-			return variant(static_cast<decimal>(sinh(angle)));
-		}
-	};
+FUNCTION_DEF(acosh, 1, 1, "acosh(x): Standard arc hyperbolic cosine function.")
+	const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
+	return variant(static_cast<decimal>(acosh(angle)));
+END_FUNCTION_DEF(acosh)
 
-	class cosh_function : public function_expression {	
-	public:
-		explicit cosh_function(const args_list& args)
-			: function_expression("cosh", args, 1, 1)
-		{}
-
-	private:
-		variant execute(const formula_callable& variables) const {
-			const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
-			return variant(static_cast<decimal>(cosh(angle)));
-		}
-	};
-
-	class tanh_function : public function_expression {
-	public:
-		explicit tanh_function(const args_list& args)
-			: function_expression("tanh", args, 1, 1)
-		{}
-
-	private:
-		variant execute(const formula_callable& variables) const {
-			const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
-			return variant(static_cast<decimal>(tanh(angle)));
-		}
-	};
-	
-	class asinh_function : public function_expression {	//Interprets two least significant digits as after decimal.
-	public:
-		explicit asinh_function(const args_list& args)
-			: function_expression("asinh", args, 1, 1)
-		{}
-
-	private:
-		variant execute(const formula_callable& variables) const {
-			const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
-			return variant(static_cast<decimal>(asinh(angle)));
-		}
-	};
-
-	class acosh_function : public function_expression {	
-	public:
-		explicit acosh_function(const args_list& args)
-			: function_expression("acosh", args, 1, 1)
-		{}
-
-	private:
-		variant execute(const formula_callable& variables) const {
-			const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
-			return variant(static_cast<decimal>(acosh(angle)));
-		}
-	};
-
-	class atanh_function : public function_expression {
-	public:
-		explicit atanh_function(const args_list& args)
-			: function_expression("atanh", args, 1, 1)
-		{}
-
-	private:
-		variant execute(const formula_callable& variables) const {
-			const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
-			return variant(static_cast<decimal>(atanh(angle)));
-		}
-	};
+FUNCTION_DEF(atanh, 1, 1, "atanh(x): Standard arc hyperbolic tangent function.")
+	const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
+	return variant(static_cast<decimal>(atanh(angle)));
+END_FUNCTION_DEF(atanh)
 		
 	class sqrt_function : public function_expression {
 	public:
@@ -1587,18 +1490,6 @@ namespace {
 		if(functions_table.empty()) {
 	#define FUNCTION(name) functions_table[#name] = new specific_function_creator<name##_function>();
 			FUNCTION(if);
-			FUNCTION(sin);
-			FUNCTION(cos);
-			FUNCTION(tan);
-			FUNCTION(asin);
-			FUNCTION(acos);
-			FUNCTION(atan2);
-			FUNCTION(sinh);
-			FUNCTION(cosh);
-			FUNCTION(tanh);
-			FUNCTION(asinh);
-			FUNCTION(acosh);
-			FUNCTION(atanh);
 			FUNCTION(sqrt);
 			FUNCTION(angle);
 			FUNCTION(orbit);
