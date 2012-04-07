@@ -23,6 +23,7 @@
 #include "formula_callable_definition.hpp"
 #include "formula_callable_utils.hpp"
 #include "formula_function.hpp"
+#include "formula_function_registry.hpp"
 #include "string_utils.hpp"
 #include "unit_test.hpp"
 #include "variant_callable.hpp"
@@ -41,6 +42,8 @@
 #include "compat.hpp"
 
 namespace {
+	const std::string FunctionModule = "core";
+
 	const float radians_to_degrees = 57.29577951308232087;
 	const std::string EmptyStr;
 }
@@ -138,27 +141,6 @@ variant formula_expression::execute_member(const formula_callable& variables, st
 
 namespace {
 
-	class dir_function : public function_expression {
-	public:
-		explicit dir_function(const args_list& args)
-			: function_expression("dir", args, 1, 1)
-		{}
-
-	private:
-		variant execute(const formula_callable& variables) const {
-			variant var = args()[0]->evaluate(variables);
-			const formula_callable* callable = var.as_callable();
-			std::vector<formula_input> inputs = callable->inputs();
-			std::vector<variant> res;
-			for(size_t i=0; i<inputs.size(); ++i) {
-				const formula_input& input = inputs[i];
-				res.push_back(variant(input.name));
-			}
-
-			return variant(&res);
-		}
-	};
-
 	class if_function : public function_expression {
 	public:
 		explicit if_function(const args_list& args)
@@ -192,159 +174,39 @@ namespace {
 		}
 	};
 
-	class switch_function : public function_expression {
-	public:
-		explicit switch_function(const args_list& args)
-			: function_expression("switch", args, 3, -1)
-		{}
-
-	private:
-		variant execute(const formula_callable& variables) const {
-			variant var = args()[0]->evaluate(variables);
-			for(size_t n = 1; n < args().size()-1; n += 2) {
-				variant val = args()[n]->evaluate(variables);
-				if(val == var) {
-					return args()[n+1]->evaluate(variables);
-				}
-			}
-
-			if((args().size()%2) == 0) {
-				return args().back()->evaluate(variables);
-			} else {
-				return variant();
-			}
+FUNCTION_DEF(switch, 3, -1, "switch(value, case1, result1, case2, result2 ... casen, resultn, default) -> value: returns resultn where value = casen, or default otherwise.")
+	variant var = args()[0]->evaluate(variables);
+	for(size_t n = 1; n < args().size()-1; n += 2) {
+		variant val = args()[n]->evaluate(variables);
+		if(val == var) {
+			return args()[n+1]->evaluate(variables);
 		}
-	};
-
-	class query_function : public function_expression {
-	public:
-		explicit query_function(const args_list& args)
-		: function_expression("query", args, 2, 2)
-		{}
-		
-	private:
-		variant execute(const formula_callable& variables) const {
-			variant callable = args()[0]->evaluate(variables);
-			variant str = args()[1]->evaluate(variables);
-			return callable.as_callable()->query_value(str.as_string());
-		}
-	};
-
-	class rgb_function : public function_expression {
-	public:
-		explicit rgb_function(const args_list& args)
-			: function_expression("rgb", args, 3, 3)
-		{}
-
-	private:
-		variant execute(const formula_callable& variables) const {
-			return variant(10000*
-			std::min<int>(99,std::max<int>(0,args()[0]->evaluate(variables).as_int())) +
-			std::min<int>(99,std::max<int>(0,args()[1]->evaluate(variables).as_int()))*100+
-			std::min<int>(99,std::max<int>(0,args()[2]->evaluate(variables).as_int())));
-		}
-	};
-
-	namespace {
-	int transition(int begin, int val1, int end, int val2, int value) {
-		if(value < begin || value > end) {
-			return 0;
-		}
-
-		if(value == begin) {
-			return val1;
-		} else if(value == end) {
-			return val2;
-		}
-
-		const int comp1 = val1*(end - value);
-		const int comp2 = val2*(value - begin);
-		return (comp1 + comp2)/(end - begin);
-	}
 	}
 
-	class transition_function : public function_expression {
-	public:
-		explicit transition_function(const args_list& args)
-				: function_expression("transition", args, 5, 5)
-		{}
-	private:
-		variant execute(const formula_callable& variables) const {
-			const int value = args()[0]->evaluate(variables).as_int();
-			const int begin = args()[1]->evaluate(variables).as_int();
-			const int end = args()[3]->evaluate(variables).as_int();
-			if(value < begin || value > end) {
-				return variant(0);
-			}
-			const int val1 = args()[2]->evaluate(variables).as_int();
-			const int val2 = args()[4]->evaluate(variables).as_int();
-			return variant(transition(begin, val1, end, val2, value));
-		}
-	};
+	if((args().size()%2) == 0) {
+		return args().back()->evaluate(variables);
+	} else {
+		return variant();
+	}
+END_FUNCTION_DEF(switch)
 
-	class color_transition_function : public function_expression {
-	public:
-		explicit color_transition_function(const args_list& args)
-				: function_expression("color_transition", args, 5)
-		{}
-	private:
-		variant execute(const formula_callable& variables) const {
-			const int value = args()[0]->evaluate(variables).as_int();
-			int begin = args()[1]->evaluate(variables).as_int();
-			int end = -1;
-			size_t n = 3;
-			while(n < args().size()) {
-				end = args()[n]->evaluate(variables).as_int();
-				if(value >= begin && value <= end) {
-					break;
-				}
-
-				begin = end;
-				n += 2;
-			}
-
-			if(value < begin || value > end) {
-				return variant(0);
-			}
-			const int val1 = args()[n-1]->evaluate(variables).as_int();
-			const int val2 = args()[n+1 < args().size() ? n+1 : n]->
-										evaluate(variables).as_int();
-			const int r1 = (val1/10000)%100;
-			const int g1 = (val1/100)%100;
-			const int b1 = (val1)%100;
-			const int r2 = (val2/10000)%100;
-			const int g2 = (val2/100)%100;
-			const int b2 = (val2)%100;
-
-			const int r = transition(begin,r1,end,r2,value);
-			const int g = transition(begin,g1,end,g2,value);
-			const int b = transition(begin,b1,end,b2,value);
-			return variant(
-				std::min<int>(99,std::max<int>(0,r))*100*100 +
-				std::min<int>(99,std::max<int>(0,g))*100+
-				std::min<int>(99,std::max<int>(0,b)));
-		}
-	};
+FUNCTION_DEF(query, 2, 2, "query(object, str): evaluates object.str")
+	variant callable = args()[0]->evaluate(variables);
+	variant str = args()[1]->evaluate(variables);
+	return callable.as_callable()->query_value(str.as_string());
+END_FUNCTION_DEF(query)
 
 
-	class abs_function : public function_expression {
-	public:
-		explicit abs_function(const args_list& args)
-			: function_expression("abs", args, 1, 1)
-		{}
-
-	private:
-		variant execute(const formula_callable& variables) const {
-			variant v = args()[0]->evaluate(variables);
-			if(v.is_decimal()) {
-				const decimal d = v.as_decimal();
-				return variant(d >= 0 ? d : -d);
-			} else {
-				const int n = v.as_int();
-				return variant(n >= 0 ? n : -n);
-			}
-		}
-	};
+FUNCTION_DEF(abs, 1, 1, "abs(value) -> value: evaluates the absolute value of the value given")
+	variant v = args()[0]->evaluate(variables);
+	if(v.is_decimal()) {
+		const decimal d = v.as_decimal();
+		return variant(d >= 0 ? d : -d);
+	} else {
+		const int n = v.as_int();
+		return variant(n >= 0 ? n : -n);
+	}
+END_FUNCTION_DEF(abs)
 
 	class sign_function : public function_expression {
 	public:
@@ -1756,6 +1618,12 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 
 	expression_ptr function_symbol_table::create_function(const std::string& fn, const std::vector<expression_ptr>& args, const formula_callable_definition* callable_def) const
 	{
+		const std::map<std::string, function_creator*>& creators = get_function_creators(FunctionModule);
+		std::map<std::string, function_creator*>::const_iterator creator_itor = creators.find(fn);
+		if(creator_itor != creators.end()) {
+			return expression_ptr(creator_itor->second->create(args));
+		}
+
 		const std::map<std::string, formula_function>::const_iterator i = custom_formulas_.find(fn);
 		if(i != custom_formulas_.end()) {
 			return i->second.generate_function_expression(args);
@@ -1830,11 +1698,7 @@ namespace {
 
 		if(functions_table.empty()) {
 	#define FUNCTION(name) functions_table[#name] = new function_creator<name##_function>();
-			FUNCTION(dir);
 			FUNCTION(if);
-			FUNCTION(switch);
-			FUNCTION(query);
-			FUNCTION(abs);
 			FUNCTION(sign);
 			FUNCTION(min);
 			FUNCTION(max);
@@ -1869,9 +1733,6 @@ namespace {
 			FUNCTION(sum);
 			FUNCTION(range);
 			FUNCTION(head);
-			FUNCTION(rgb);
-			FUNCTION(transition);
-			FUNCTION(color_transition);
 			FUNCTION(size);
 			FUNCTION(split);
 			FUNCTION(slice);

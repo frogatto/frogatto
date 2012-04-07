@@ -46,6 +46,7 @@ objects = \
 	formula_callable_definition.o \
 	formula_constants.o \
 	formula_function.o \
+	formula_function_registry.o \
 	formula_profiler.o \
 	formula_tokenizer.o \
 	formula_variable_storage.o \

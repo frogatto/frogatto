@@ -19,6 +19,7 @@
 #include "filesystem.hpp"
 #include "formatter.hpp"
 #include "formula_callable_definition.hpp"
+#include "formula_function_registry.hpp"
 #include "formula_profiler.hpp"
 #include "i18n.hpp"
 #include "json_parser.hpp"
@@ -51,51 +52,7 @@ using namespace game_logic;
 
 namespace {
 
-class function_creator {
-public:
-	virtual ~function_creator() {}
-	virtual function_expression* create(const function_expression::args_list& args) const = 0;
-};
-
-template<typename T>
-class specific_function_creator : public function_creator {
-public:
-	virtual ~specific_function_creator() {}
-	virtual function_expression* create(const function_expression::args_list& args) const {
-		return new T(args);
-	}
-};
-
-std::map<std::string, function_creator*>& function_creators() {
-	static std::map<std::string, function_creator*> creators;
-	return creators;
-}
-
-int register_function_creator(const std::string& id, function_creator* creator) {
-	function_creators()[id] = creator;
-	return function_creators().size();
-}
-
-std::vector<std::string>& function_helpstrings() {
-	static std::vector<std::string> instance;
-	return instance;
-}
-
-int register_function_helpstring(const std::string& str) {
-	function_helpstrings().push_back(str);
-	return function_helpstrings().size();
-}
-
-#define FUNCTION_DEF(name, min_args, max_args, helpstring) \
-const int name##_dummy_help_var = register_function_helpstring(helpstring); \
-class name##_function : public function_expression { \
-public: \
-	explicit name##_function(const args_list& args) \
-	  : function_expression(#name, args, min_args, max_args) {} \
-private: \
-	variant execute(const formula_callable& variables) const {
-
-#define END_FUNCTION_DEF(name) } }; const int name##_dummy_var = register_function_creator(#name, new specific_function_creator<name##_function>());
+const std::string FunctionModule = "custom_object";
 
 FUNCTION_DEF(time, 0, 0, "time() -> timestamp: returns the current real time")
 	rng::generate(); //this is to make the engine optimisation leave this function alone.
@@ -1930,8 +1887,9 @@ expression_ptr custom_object_function_symbol_table::create_function(
                            const std::vector<expression_ptr>& args,
 						   const formula_callable_definition* callable_def) const
 {
-	std::map<std::string, function_creator*>::const_iterator i = function_creators().find(fn);
-	if(i != function_creators().end()) {
+	const std::map<std::string, function_creator*>& creators = get_function_creators(FunctionModule);
+	std::map<std::string, function_creator*>::const_iterator i = creators.find(fn);
+	if(i != creators.end()) {
 		return expression_ptr(i->second->create(args));
 	}
 
@@ -1974,8 +1932,9 @@ void init_custom_object_functions(variant node)
 }
 
 UTILITY(document_object_functions) {
-	std::sort(function_helpstrings().begin(), function_helpstrings().end());
-	foreach(std::string s, function_helpstrings()) {
+	std::vector<std::string> helpstrings = function_helpstrings(FunctionModule);
+	std::sort(helpstrings.begin(), helpstrings.end());
+	foreach(std::string s, helpstrings) {
 		std::string::iterator i = std::find(s.begin(), s.end(), ':');
 		if(i != s.end()) {
 			s = "{{{ " + std::string(s.begin(), i) + " }}}" + std::string(i, s.end());
