@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 #include <sstream>
@@ -35,7 +36,7 @@ void property_editor_dialog::init()
 
 	set_padding(5);
 
-	const frame& frame = get_entity()->current_frame();
+	const frame& frame = get_static_entity()->current_frame();
 	image_widget* preview = new image_widget(frame.img());
 	preview->set_dim(frame.width(), frame.height());
 	preview->set_area(frame.area());
@@ -125,7 +126,7 @@ void property_editor_dialog::init()
 	//TODO: setting labels is disabled -- does anybody use this?
 	//add_widget(widget_ptr(new button(widget_ptr(new label("Set Label", graphics::color_white())), boost::bind(&property_editor_dialog::set_label_dialog, this))));
 
-	game_logic::formula_callable* vars = get_entity()->vars();
+	game_logic::formula_callable* vars = get_static_entity()->vars();
 	if(get_entity()->editor_info() && types_selected.size() == 1) {
 		foreach(const editor_variable_info& info, get_entity()->editor_info()->vars()) {
 
@@ -155,7 +156,7 @@ void property_editor_dialog::init()
 
 			if(info.type() == editor_variable_info::TYPE_TEXT) {
 				std::string current_value;
-				variant current_value_var = get_entity()->query_value(info.variable_name());
+				variant current_value_var = get_static_entity()->query_value(info.variable_name());
 				if(current_value_var.is_string()) {
 					current_value = current_value_var.as_string();
 				}
@@ -165,7 +166,7 @@ void property_editor_dialog::init()
 				      boost::bind(&property_editor_dialog::change_text_property, this, info.variable_name()))));
 			} else if(info.type() == editor_variable_info::TYPE_ENUM) {
 				std::string current_value;
-				variant current_value_var = get_entity()->query_value(info.variable_name());
+				variant current_value_var = get_static_entity()->query_value(info.variable_name());
 				if(current_value_var.is_string()) {
 					current_value = current_value_var.as_string();
 				}
@@ -179,7 +180,7 @@ void property_editor_dialog::init()
 					 boost::bind(&property_editor_dialog::change_enum_property, this, info.variable_name()))));
 			} else if(info.type() == editor_variable_info::TYPE_LEVEL) {
 				std::string current_value;
-				variant current_value_var = get_entity()->query_value(info.variable_name());
+				variant current_value_var = get_static_entity()->query_value(info.variable_name());
 				if(current_value_var.is_string()) {
 					current_value = current_value_var.as_string();
 				}
@@ -189,7 +190,7 @@ void property_editor_dialog::init()
 				         boost::bind(&property_editor_dialog::change_level_property, this, info.variable_name()))));
 			} else if(info.type() == editor_variable_info::TYPE_LABEL) {
 				std::string current_value;
-				variant current_value_var = get_entity()->query_value(info.variable_name());
+				variant current_value_var = get_static_entity()->query_value(info.variable_name());
 				if(current_value_var.is_string()) {
 					current_value = current_value_var.as_string();
 				}
@@ -199,13 +200,13 @@ void property_editor_dialog::init()
 				         boost::bind(&property_editor_dialog::change_label_property, this, info.variable_name()))));
 				
 			} else if(info.type() == editor_variable_info::TYPE_BOOLEAN) {
-				variant current_value = get_entity()->query_value(info.variable_name());
+				variant current_value = get_static_entity()->query_value(info.variable_name());
 				std::cerr << "CURRENT VALUE: " << current_value.as_bool() << "\n";
 				add_widget(widget_ptr(new button(
 				         widget_ptr(new label("toggle", graphics::color_white())),
 				         boost::bind(&property_editor_dialog::toggle_property, this, info.variable_name()))));
 			} else if(info.type() == editor_variable_info::TYPE_POINTS) {
-				variant current_value = get_entity()->query_value(info.variable_name());
+				variant current_value = get_static_entity()->query_value(info.variable_name());
 				const int npoints = current_value.is_list() ? current_value.num_elements() : 0;
 
 				const bool already_adding = editor_.adding_points() == info.variable_name();
@@ -267,13 +268,13 @@ void property_editor_dialog::change_max_difficulty(int amount)
 
 void property_editor_dialog::toggle_property(const std::string& id)
 {
-	mutate_value(id, variant(!get_entity()->query_value(id).as_bool()));
+	mutate_value(id, variant(!get_static_entity()->query_value(id).as_bool()));
 	init();
 }
 
 void property_editor_dialog::change_property(const std::string& id, int change)
 {
-	mutate_value(id, get_entity()->query_value(id) + variant(change));
+	mutate_value(id, get_static_entity()->query_value(id) + variant(change));
 	init();
 }
 
@@ -320,7 +321,7 @@ void property_editor_dialog::change_text_property(const std::string& id)
 
 void property_editor_dialog::change_enum_property(const std::string& id)
 {
-	const editor_variable_info* var_info = get_entity()->editor_info() ? get_entity()->editor_info()->get_var_info(id) : NULL;
+	const editor_variable_info* var_info = get_static_entity()->editor_info() ? get_static_entity()->editor_info()->get_var_info(id) : NULL;
 	if(!var_info) {
 		return;
 	}
@@ -362,7 +363,7 @@ bool hidden_label(const std::string& label) {
 
 void property_editor_dialog::change_label_property(const std::string& id)
 {
-	const editor_variable_info* var_info = get_entity()->editor_info() ? get_entity()->editor_info()->get_var_info(id) : NULL;
+	const editor_variable_info* var_info = get_static_entity()->editor_info() ? get_static_entity()->editor_info()->get_var_info(id) : NULL;
 	if(!var_info) {
 		return;
 	}
@@ -370,7 +371,7 @@ void property_editor_dialog::change_label_property(const std::string& id)
 	bool loaded_level = false;
 	std::vector<std::string> labels;
 	if(var_info->info().empty() == false && var_info->info() != editor_.get_level().id()) {
-		variant level_id = get_entity()->query_value(var_info->info());
+		variant level_id = get_static_entity()->query_value(var_info->info());
 		if(level_id.is_string() && level_id.as_string().empty() == false && level_id.as_string() != editor_.get_level().id()) {
 			level lvl(level_id.as_string());
 			lvl.finish_loading();
@@ -464,6 +465,16 @@ void property_editor_dialog::deselect_object_type(std::string type)
 	entity_ = lvl.editor_selection();
 
 	init();
+}
+
+entity_ptr property_editor_dialog::get_static_entity() const
+{
+	entity_ptr result = editor_.get_level_list().front()->get_entity_by_label(get_entity()->label());
+	if(result) {
+		return result;
+	} else {
+		return get_entity();
+	}
 }
 
 }

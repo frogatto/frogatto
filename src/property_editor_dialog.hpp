@@ -22,6 +22,7 @@ public:
 	void set_entity_group(const std::vector<entity_ptr>& entities);
 	void set_label_dialog();
 private:
+	entity_ptr get_static_entity() const;
 	void change_min_difficulty(int amount);
 	void change_max_difficulty(int amount);
 	void toggle_property(const std::string& id);
