@@ -173,14 +173,13 @@ private:
 	//reference to the list, so that we can allow static evaluation
 	//not to be fooled.
 	variant static_evaluate(const formula_callable& variables) const {
-		variant result;
-		std::vector<variant>& res = result.initialize_list();
+		std::vector<variant> res;
 		res.reserve(items_.size());
 		for(std::vector<expression_ptr>::const_iterator i = items_.begin(); i != items_.end(); ++i) {
 			res.push_back((*i)->evaluate(variables));
 		}
 
-		return result;
+		return variant(&res);
 	}
 
 	variant execute(const formula_callable& variables) const {
@@ -505,13 +504,7 @@ private:
 				return variant();
 			}
 			if(end_index >= begin_index) {
-				std::vector<variant> result;
-				result.reserve(end_index - begin_index);
-				while(begin_index != end_index) {
-					result.push_back(left[begin_index++]);
-				}
-				
-				return variant(&result);
+				return left.get_list_slice(begin_index, end_index);
 			} else {
 				return variant();
 			}

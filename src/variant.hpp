@@ -91,6 +91,8 @@ public:
 	const variant& operator[](const std::string& key) const;
 	size_t num_elements() const;
 
+	variant get_list_slice(int begin, int end) const;
+
 	bool has_key(const variant& key) const;
 	bool has_key(const std::string& key) const;
 
@@ -202,7 +204,6 @@ public:
 
 	void write_json_pretty(std::ostream& s, std::string indent) const;
 
-	std::vector<variant>& initialize_list();
 	enum TYPE { TYPE_NULL, TYPE_BOOL, TYPE_INT, TYPE_DECIMAL, TYPE_CALLABLE, TYPE_CALLABLE_LOADING, TYPE_LIST, TYPE_STRING, TYPE_MAP, TYPE_FUNCTION };
 
 	struct debug_info {

@@ -95,12 +95,38 @@ type_error::type_error(const std::string& str) : message(str) {
 }
 
 struct variant_list {
-	variant::debug_info info;
 
-	variant_list() : refcount(0)
+	variant_list() : begin(elements.begin()), end(elements.end()),
+	                 refcount(0), storage(NULL)
 	{}
+
+	variant_list(const variant_list& o) : info(o.info),
+	   elements(o.begin, o.end), begin(elements.begin()), end(elements.end()),
+	   refcount(1), storage(NULL)
+	{}
+
+	const variant_list& operator=(const variant_list& o) {
+		info = o.info;
+		elements.assign(o.begin, o.end),
+		begin = elements.begin();
+		end = elements.end();
+		storage = NULL;
+		return *this;
+	}
+
+	~variant_list() {
+		if(storage && --storage->refcount == 0) {
+			delete storage;
+		}
+	}
+
+	size_t size() const { return end - begin; }
+
+	variant::debug_info info;
 	std::vector<variant> elements;
+	std::vector<variant>::iterator begin, end;
 	int refcount;
+	variant_list* storage;
 };
 
 struct variant_string {
@@ -163,24 +189,6 @@ void variant::increment_refcount()
 	case TYPE_BOOL :
 		break;
 	}
-}
-
-std::vector<variant>& variant::initialize_list()
-{
-	if(type_ == TYPE_LIST) {
-		if(list_->refcount == 1) {
-			list_->elements.clear();
-			return list_->elements;
-		}
-		release();
-	} else {
-		release();
-		type_ = TYPE_LIST;
-	}
-
-	list_ = new variant_list;
-	increment_refcount();
-	return list_->elements;
 }
 
 void variant::release()
@@ -263,6 +271,8 @@ variant::variant(std::vector<variant>* array)
 	assert(array);
 	list_ = new variant_list;
 	list_->elements.swap(*array);
+	list_->begin = list_->elements.begin();
+	list_->end = list_->elements.end();
 	increment_refcount();
 }
 
@@ -349,11 +359,11 @@ const variant& variant::operator[](size_t n) const
 
 	must_be(TYPE_LIST);
 	assert(list_);
-	if(n >= list_->elements.size()) {
+	if(n >= list_->size()) {
 		throw type_error(formatter() << "invalid index of " << n << " into " << write_json());
 	}
 
-	return list_->elements[n];
+	return list_->begin[n];
 }
 
 const variant& variant::operator[](const variant v) const
@@ -442,7 +452,7 @@ size_t variant::num_elements() const
 		return 1;
 	} else if (type_ == TYPE_LIST) {
 		assert(list_);
-		return list_->elements.size();
+		return list_->size();
 	} else if (type_ == TYPE_MAP) {
 		assert(map_);
 		return map_->elements.size();
@@ -454,6 +464,28 @@ size_t variant::num_elements() const
 		}
 		throw type_error(formatter() << "type error: " << " expected a list or a map but found " << variant_type_to_string(type_) << " (" << write_json() << ")" << loc);
 	}
+}
+
+variant variant::get_list_slice(int begin, int end) const
+{
+	std::vector<variant> items;
+	variant result(&items);
+	if(end <= begin) {
+		return result;
+	}
+
+	must_be(TYPE_LIST);
+
+	if(begin < 0 || end > list_->size()) {
+		throw type_error(formatter() << "ILLEGAL INDEX INTO LIST WHEN SLICING: " << begin << ", " << end << " / " << list_->size());
+	}
+
+	result.list_->begin = list_->begin + begin;
+	result.list_->end = list_->begin + end;
+	result.list_->storage = list_;
+	list_->refcount++;
+
+	return result;
 }
 
 variant variant::operator()(const std::vector<variant>& args) const
@@ -508,7 +540,7 @@ bool variant::as_bool() const
 	case TYPE_CALLABLE:
 		return callable_ != NULL;
 	case TYPE_LIST:
-		return !list_->elements.empty();
+		return !list_->size() == 0;
 	case TYPE_MAP:
 		return !map_->elements.empty();
 	case TYPE_STRING:
@@ -524,7 +556,11 @@ bool variant::as_bool() const
 std::vector<variant> variant::as_list() const
 {
 	if(is_list()) {
-		return list_->elements;
+		if(list_->elements.empty() == false) {
+			return list_->elements;
+		} else {
+			return std::vector<variant>(list_->begin, list_->end);
+		}
 	} else if(is_null()) {
 		return std::vector<variant>();
 	} else {
@@ -538,10 +574,10 @@ std::vector<std::string> variant::as_list_string() const
 {
 	std::vector<std::string> result;
 	must_be(TYPE_LIST);
-	result.reserve(list_->elements.size());
-	for(int n = 0; n != list_->elements.size(); ++n) {
-		list_->elements[n].must_be(TYPE_STRING);
-		result.push_back(list_->elements[n].as_string());
+	result.reserve(list_->size());
+	for(int n = 0; n != list_->size(); ++n) {
+		list_->begin[n].must_be(TYPE_STRING);
+		result.push_back(list_->begin[n].as_string());
 	}
 
 	return result;
@@ -551,9 +587,9 @@ std::vector<int> variant::as_list_int() const
 {
 	std::vector<int> result;
 	must_be(TYPE_LIST);
-	result.reserve(list_->elements.size());
-	for(int n = 0; n != list_->elements.size(); ++n) {
-		result.push_back(list_->elements[n].as_int());
+	result.reserve(list_->size());
+	for(int n = 0; n != list_->size(); ++n) {
+		result.push_back(list_->begin[n].as_int());
 	}
 
 	return result;
@@ -563,9 +599,9 @@ std::vector<decimal> variant::as_list_decimal() const
 {
 	std::vector<decimal> result;
 	must_be(TYPE_LIST);
-	result.reserve(list_->elements.size());
-	for(int n = 0; n != list_->elements.size(); ++n) {
-		result.push_back(list_->elements[n].as_decimal());
+	result.reserve(list_->size());
+	for(int n = 0; n != list_->size(); ++n) {
+		result.push_back(list_->begin[n].as_decimal());
 	}
 
 	return result;
@@ -673,14 +709,14 @@ variant variant::operator+(const variant& v) const
 	if(type_ == TYPE_LIST) {
 		if(v.type_ == TYPE_LIST) {
 			std::vector<variant> res;
-			res.reserve(list_->elements.size() + v.list_->elements.size());
-			for(size_t i = 0; i<list_->elements.size(); ++i) {
-				const variant& var = list_->elements[i];
+			res.reserve(list_->size() + v.list_->size());
+			for(size_t i = 0; i < list_->size(); ++i) {
+				const variant& var = list_->begin[i];
 				res.push_back(var);
 			}
 
-			for(size_t j = 0; j<v.list_->elements.size(); ++j) {
-				const variant& var = v.list_->elements[j];
+			for(size_t j = 0; j < v.list_->size(); ++j) {
+				const variant& var = v.list_->begin[j];
 				res.push_back(var);
 			}
 
@@ -722,12 +758,11 @@ variant variant::operator*(const variant& v) const
 		if(ncopies < 0) {
 			ncopies *= -1;
 		}
-		const std::vector<variant>& items = list_->elements;
 		std::vector<variant> res;
-		res.reserve(items.size()*ncopies);
+		res.reserve(list_->size()*ncopies);
 		for(int n = 0; n != ncopies; ++n) {
-			for(int m = 0; m != items.size(); ++m) {
-				res.push_back(items[m]);
+			for(int m = 0; m != list_->size(); ++m) {
+				res.push_back(list_->begin[m]);
 			}
 		}
 
@@ -1009,8 +1044,8 @@ void variant::serialize_to_string(std::string& str) const
 	case TYPE_LIST: {
 		str += "[";
 		bool first_time = true;
-		for(size_t i=0; i<list_->elements.size(); ++i) {
-			const variant& var = list_->elements[i];
+		for(size_t i=0; i < list_->size(); ++i) {
+			const variant& var = list_->begin[i];
 			if(!first_time) {
 				str += ",";
 			}
@@ -1109,7 +1144,6 @@ void variant::make_unique()
 	case TYPE_LIST: {
 		list_->refcount--;
 		list_ = new variant_list(*list_);
-		list_->refcount = 1;
 		foreach(variant& v, list_->elements) {
 			v.make_unique();
 		}
@@ -1164,8 +1198,8 @@ std::string variant::string_cast() const
 		return "(object)";
 	case TYPE_LIST: {
 		std::string res = "";
-		for(size_t i=0; i<list_->elements.size(); ++i) {
-			const variant& var = list_->elements[i];
+		for(size_t i=0; i < list_->size(); ++i) {
+			const variant& var = list_->begin[i];
 			if(!res.empty()) {
 				res += ", ";
 			}
@@ -1329,9 +1363,9 @@ void variant::write_json(std::ostream& s) const
 	case TYPE_LIST: {
 		s << "[";
 
-		for(std::vector<variant>::const_iterator i = list_->elements.begin();
-		    i != list_->elements.end(); ++i) {
-			if(i != list_->elements.begin()) {
+		for(std::vector<variant>::const_iterator i = list_->begin;
+		    i != list_->end; ++i) {
+			if(i != list_->begin) {
 				s << ',';
 			}
 
@@ -1391,8 +1425,8 @@ void variant::write_json_pretty(std::ostream& s, std::string indent) const
 	}
 	case TYPE_LIST: {
 		bool found_non_scalar = false;
-		for(std::vector<variant>::const_iterator i = list_->elements.begin();
-		    i != list_->elements.end(); ++i) {
+		for(std::vector<variant>::const_iterator i = list_->begin;
+		    i != list_->end; ++i) {
 			if(i->is_list() || i->is_map()) {
 				found_non_scalar = true;
 				break;
@@ -1408,9 +1442,9 @@ void variant::write_json_pretty(std::ostream& s, std::string indent) const
 		s << "[";
 
 		indent += "\t";
-		for(std::vector<variant>::const_iterator i = list_->elements.begin();
-		    i != list_->elements.end(); ++i) {
-			if(i != list_->elements.begin()) {
+		for(std::vector<variant>::const_iterator i = list_->begin;
+		    i != list_->end; ++i) {
+			if(i != list_->begin) {
 				s << ',';
 			}
 
@@ -1421,7 +1455,7 @@ void variant::write_json_pretty(std::ostream& s, std::string indent) const
 
 		indent.resize(indent.size()-1);
 
-		if(!list_->elements.empty()) {
+		if(list_->size() > 0) {
 			s << "\n" << indent << "]";
 		} else {
 			s << "]";
