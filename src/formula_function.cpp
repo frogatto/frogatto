@@ -377,60 +377,36 @@ FUNCTION_DEF(atanh, 1, 1, "atanh(x): Standard arc hyperbolic tangent function.")
 	const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
 	return variant(static_cast<decimal>(atanh(angle)));
 END_FUNCTION_DEF(atanh)
-		
-	class sqrt_function : public function_expression {
-	public:
-		explicit sqrt_function(const args_list& args)
-			: function_expression("sqrt", args, 1, 1)
-		{}
 
-	private:
-		variant execute(const formula_callable& variables) const {
-			const double value = args()[0]->evaluate(variables).as_decimal().as_float();
-			return variant(decimal(sqrt(value)));
-		}
-	};
+FUNCTION_DEF(sqrt, 1, 1, "sqrt(x): Returns the square root of x.")
+	const double value = args()[0]->evaluate(variables).as_decimal().as_float();
+	return variant(decimal(sqrt(value)));
+END_FUNCTION_DEF(sqrt)
 
-	class angle_function : public function_expression {
-	public:
-		explicit angle_function(const args_list& args)
-			: function_expression("angle", args, 4, 4)
-		{}
+FUNCTION_DEF(angle, 4, 4, "angle(x1, y1, x2, y2) -> int: Returns the angle, from 0°, made by the line described by the two points (x1, y1) and (x2, y2).")
+	const float a = args()[0]->evaluate(variables).as_int();
+	const float b = args()[1]->evaluate(variables).as_int();
+	const float c = args()[2]->evaluate(variables).as_int();
+	const float d = args()[3]->evaluate(variables).as_int();
+	return variant(static_cast<int>(round((atan2(a-c, b-d)*radians_to_degrees+90)*VARIANT_DECIMAL_PRECISION)*-1), variant::DECIMAL_VARIANT);
+END_FUNCTION_DEF(angle)
 
-	private:
-		variant execute(const formula_callable& variables) const {
-			const float a = args()[0]->evaluate(variables).as_int();
-			const float b = args()[1]->evaluate(variables).as_int();
-			const float c = args()[2]->evaluate(variables).as_int();
-			const float d = args()[3]->evaluate(variables).as_int();
-			return variant(static_cast<int>(round((atan2(a-c, b-d)*radians_to_degrees+90)*VARIANT_DECIMAL_PRECISION)*-1), variant::DECIMAL_VARIANT);
-		}
-	};
+FUNCTION_DEF(orbit, 4, 4, "orbit(x, y, angle, dist) -> [x,y]: Returns the point as a list containing an x/y pair which is dist away from the point as defined by x and y passed in, at the angle passed in.")
+	const float x = args()[0]->evaluate(variables).as_decimal().as_float();
+	const float y = args()[1]->evaluate(variables).as_decimal().as_float();
+	const float ang = args()[2]->evaluate(variables).as_decimal().as_float();
+	const float dist = args()[3]->evaluate(variables).as_decimal().as_float();
+	
+	const float u = (dist * cos(ang/radians_to_degrees)) + x;   //TODO Find out why whole number decimals are returned.
+	const float v = (dist * sin(ang/radians_to_degrees)) + y;
 
-	class orbit_function : public function_expression {	//Takes x1, y1, distance from, angle from, returns x2, y2.
-	public:
-		explicit orbit_function(const args_list& args)
-			: function_expression("orbit", args, 4,4)
-		{}
-
-	private:
-		variant execute(const formula_callable& variables) const {
-			const float x = args()[0]->evaluate(variables).as_decimal().as_float();
-			const float y = args()[1]->evaluate(variables).as_decimal().as_float();
-			const float ang = args()[2]->evaluate(variables).as_decimal().as_float();
-			const float dist = args()[3]->evaluate(variables).as_decimal().as_float();
-			
-			const float u = (dist * cos(ang/radians_to_degrees)) + x;   //TODO Find out why whole number decimals are returned.
-			const float v = (dist * sin(ang/radians_to_degrees)) + y;
-
-			std::vector<variant> result;
-			result.reserve(2);
-			result.push_back(variant(decimal(u)));
-			result.push_back(variant(decimal(v)));
-			
-			return variant(&result);
-		}
-	};
+	std::vector<variant> result;
+	result.reserve(2);
+	result.push_back(variant(decimal(u)));
+	result.push_back(variant(decimal(v)));
+	
+	return variant(&result);
+END_FUNCTION_DEF(orbit)
 
 	class regex_replace_function : public function_expression {
 	public:
@@ -445,36 +421,6 @@ END_FUNCTION_DEF(atanh)
 			const std::string value = args()[2]->evaluate(variables).as_string();
 
 			return variant(boost::regex_replace(str, re, value));
-		}
-	};
-
-	class regex_function : public function_expression { //regular expressions
-	public:
-		explicit regex_function(const args_list& args)
-			: function_expression("regex", args, 2,2)
-		{}
-
-	private:
-		variant execute(const formula_callable& variables) const {
-			const boost::regex filter(args()[0]->evaluate(variables).as_string());
-			const std::string subject = args()[1]->evaluate(variables).as_string();
-			boost::smatch out;
-			std::string results;
-			int iter = 0;
-			boost::match_flag_type flags = boost::match_default;
-			std::string::const_iterator start = subject.begin();
-			std::string::const_iterator end = subject.end();
-			
-			regex_search(subject, out, filter, flags);
-			
-			while(iter < 5) {
-				std::cerr << out[1] << "\n";
-				regex_search(subject, out, filter);
-				iter++;
-			}
-			
-			std::cerr << "Returning: " << results << "\n";
-			return variant(results);
 		}
 	};
 
@@ -1490,9 +1436,6 @@ namespace {
 		if(functions_table.empty()) {
 	#define FUNCTION(name) functions_table[#name] = new specific_function_creator<name##_function>();
 			FUNCTION(if);
-			FUNCTION(sqrt);
-			FUNCTION(angle);
-			FUNCTION(orbit);
 			FUNCTION(sort);
 			FUNCTION(shuffle);
 			FUNCTION(flatten);
