@@ -408,21 +408,12 @@ FUNCTION_DEF(orbit, 4, 4, "orbit(x, y, angle, dist) -> [x,y]: Returns the point 
 	return variant(&result);
 END_FUNCTION_DEF(orbit)
 
-	class regex_replace_function : public function_expression {
-	public:
-		explicit regex_replace_function(const args_list& args)
-		  : function_expression("regex_replace", args, 3, 3)
-		{}
-
-	private:
-		variant execute(const formula_callable& variables) const {
-			std::string str = args()[0]->evaluate(variables).as_string();
-			const boost::regex re(args()[1]->evaluate(variables).as_string());
-			const std::string value = args()[2]->evaluate(variables).as_string();
-
-			return variant(boost::regex_replace(str, re, value));
-		}
-	};
+FUNCTION_DEF(regex_replace, 3, 3, "regex_replace(string, string, string) -> string: Unknown.")
+	std::string str = args()[0]->evaluate(variables).as_string();
+	const boost::regex re(args()[1]->evaluate(variables).as_string());
+	const std::string value = args()[2]->evaluate(variables).as_string();
+	return variant(boost::regex_replace(str, re, value));
+END_FUNCTION_DEF(regex_replace)
 
 	namespace {
 	class variant_comparator : public formula_callable {
@@ -1455,7 +1446,6 @@ namespace {
 			FUNCTION(strstr);
 			FUNCTION(null);
 			FUNCTION(refcount);
-			FUNCTION(regex_replace);
 			FUNCTION(deserialize);
 			FUNCTION(is_string);
 			FUNCTION(is_null);
