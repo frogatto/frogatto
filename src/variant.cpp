@@ -636,10 +636,36 @@ variant variant::add_attr(variant key, variant value)
 	}
 }
 
+variant variant::remove_attr(variant key)
+{
+	last_query_map = variant();
+
+	if(is_map()) {
+		if(map_->refcount > 1) {
+			map_->refcount--;
+			map_ = new variant_map(*map_);
+			map_->refcount = 1;
+		}
+
+		make_unique();
+		map_->elements.erase(key);
+		return *this;
+	} else {
+		return variant();
+	}
+}
+
 void variant::add_attr_mutation(variant key, variant value)
 {
 	if(is_map()) {
 		map_->elements[key] = value;
+	}
+}
+
+void variant::remove_attr_mutation(variant key)
+{
+	if(is_map()) {
+		map_->elements.erase(key);
 	}
 }
 

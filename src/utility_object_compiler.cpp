@@ -100,27 +100,25 @@ void set_alpha_for_transparent_colors_in_rgba_surface(SDL_Surface* s);
 
 UTILITY(compile_objects)
 {
-	assert(false);
-#if 0
 	using graphics::surface;
 
 	int num_output_images = 0;
 	std::vector<output_area> output_areas;
 	output_areas.push_back(output_area(num_output_images++));
 
-	std::map<wml::node_ptr, std::string> nodes_to_files;
+	std::map<variant, std::string> nodes_to_files;
 
-	std::vector<wml::node_ptr> objects;
+	std::vector<variant> objects;
 	std::vector<animation_area_ptr> animation_areas;
-	std::map<wml::node_ptr, animation_area_ptr> nodes_to_animation_areas;
+	std::map<variant, animation_area_ptr> nodes_to_animation_areas;
 
-	std::vector<wml::node_ptr> animation_containing_nodes;
+	std::vector<variant> animation_containing_nodes;
 	std::vector<std::string> no_compile_images;
 
-	wml::node_ptr gui_node = wml::parse_wml_from_file("data/gui.cfg");
+	variant gui_node = json::parse_from_file("data/gui.cfg");
 	animation_containing_nodes.push_back(gui_node);
 
-	std::map<std::string, wml::node_ptr> gui_nodes;
+	std::map<std::string, variant> gui_nodes;
 	std::vector<std::string> gui_files;
 	sys::get_files_in_dir("data/gui", &gui_files);
 	foreach(const std::string& gui, gui_files) {
@@ -128,10 +126,10 @@ UTILITY(compile_objects)
 			continue;
 		}
 
-		gui_nodes[gui] = wml::parse_wml_from_file("data/gui/" + gui);
+		gui_nodes[gui] = json::parse_from_file("data/gui/" + gui);
 		animation_containing_nodes.push_back(gui_nodes[gui]);
-		if(gui_nodes[gui]->has_attr("no_compile_image")) {
-			std::vector<std::string> images = util::split(gui_nodes[gui]->attr("no_compile_image"));
+		if(gui_nodes[gui].has_key("no_compile_image")) {
+			std::vector<std::string> images = util::split(gui_nodes[gui][variant("no_compile_image")].as_string());
 			no_compile_images.insert(no_compile_images.end(), images.begin(), images.end());
 		}
 	}
@@ -147,22 +145,22 @@ UTILITY(compile_objects)
 		}
 
 		std::cerr << "OBJECT: " << type->id() << " -> " << *path << "\n";
-		wml::node_ptr obj_node =  wml::parse_wml_from_file(*path);
+		variant obj_node =  json::parse_from_file(*path);
 		obj_node = custom_object_type::merge_prototype(obj_node);
-		obj_node->erase_attr("prototype");
+		obj_node.remove_attr(variant("prototype"));
 		objects.push_back(obj_node);
 		nodes_to_files[obj_node] = "data/compiled/objects/" + type->id() + ".cfg";
 
 
-		if(obj_node->has_attr("no_compile_image")) {
+		if(obj_node.has_key("no_compile_image")) {
 			std::vector<std::string> images = util::split(obj_node["no_compile_image"].as_string());
 			no_compile_images.insert(no_compile_images.end(), images.begin(), images.end());
 		}
 
 		animation_containing_nodes.push_back(obj_node);
 
-		for(wml::node::child_iterator i = obj_node->begin_child("particle_system"); i != obj_node->end_child("particle_system"); ++i) {
-			animation_containing_nodes.push_back(i->second);
+		foreach(variant v, obj_node["particle_system"].as_list()) {
+			animation_containing_nodes.push_back(v);
 		}
 
 		//add nested objects -- disabled for now until we find bugs in it.
@@ -173,36 +171,39 @@ UTILITY(compile_objects)
 		*/
 	}
 
-	foreach(wml::node_ptr& node, animation_containing_nodes) {
-		for(wml::node::all_child_iterator i = node->begin_children();
-		    i != node->end_children(); ++i) {
-			if((*i)->name() != "animation" && (*i)->name() != "framed_gui_element" && (*i)->name() != "section") {
+	foreach(variant node, animation_containing_nodes) {
+		foreach(const variant_pair& p, node.as_map()) {
+			std::string attr_name = p.first.as_string();
+			if(attr_name != "animation" && attr_name != "framed_gui_element" && attr_name != "section") {
 				continue;
 			}
 
-			animation_area_ptr anim(new animation_area(*i));
-			if(anim->src_image.empty() || (*i)->has_attr("palettes") || std::find(no_compile_images.begin(), no_compile_images.end(), anim->src_image) != no_compile_images.end()) {
-				continue;
-			}
+			foreach(const variant& v, p.second.as_list()) {
 
-			animation_areas.push_back(anim);
-
-			foreach(animation_area_ptr p, animation_areas) {
-				if(*p == *anim) {
-					anim = p;
-					break;
+				animation_area_ptr anim(new animation_area(v));
+				if(anim->src_image.empty() || v.has_key(variant("palettes")) || std::find(no_compile_images.begin(), no_compile_images.end(), anim->src_image) != no_compile_images.end()) {
+					continue;
 				}
-			}
 
-			if(node->name() == "particle_system") {
-				anim->is_particle = true;
-			}
+				animation_areas.push_back(anim);
 
-			if(anim != animation_areas.back()) {
-				animation_areas.pop_back();
+				foreach(animation_area_ptr area, animation_areas) {
+					if(*area == *anim) {
+						anim = area;
+						break;
+					}
+				}
+
+				if(attr_name == "particle_system") {
+					anim->is_particle = true;
+				}
+
+				if(anim != animation_areas.back()) {
+					animation_areas.pop_back();
+				}
+
+				nodes_to_animation_areas[v] = anim;
 			}
-	
-			nodes_to_animation_areas[*i] = anim;
 		}
 	}
 
@@ -286,23 +287,23 @@ UTILITY(compile_objects)
 		IMG_SavePNG(fname.str().c_str(), surfaces[n].get(), -1);
 	}
 
-	typedef std::pair<wml::node_ptr, animation_area_ptr> anim_pair;
+	typedef std::pair<variant, animation_area_ptr> anim_pair;
 	foreach(const anim_pair& a, nodes_to_animation_areas) {
-		wml::node_ptr node = a.first;
+		variant node = a.first;
 		animation_area_ptr anim = a.second;
 		std::ostringstream fname;
 		fname << "compiled-" << anim->dst_image << ".png";
-		node->set_attr("image", fname.str());
-		node->erase_attr("x");
-		node->erase_attr("y");
-		node->erase_attr("w");
-		node->erase_attr("h");
-		node->erase_attr("pad");
+		node.add_attr_mutation(variant("image"), variant(fname.str()));
+		node.remove_attr_mutation(variant("x"));
+		node.remove_attr_mutation(variant("y"));
+		node.remove_attr_mutation(variant("w"));
+		node.remove_attr_mutation(variant("h"));
+		node.remove_attr_mutation(variant("pad"));
 
 		const frame::frame_info& first_frame = anim->anim->frame_layout().front();
 		
 		rect r(anim->dst_area.x() - first_frame.x_adjust, anim->dst_area.y() - first_frame.y_adjust, anim->anim->area().w(), anim->anim->area().h());
-		node->set_attr("rect", r.to_string());
+		node.add_attr_mutation(variant("rect"), r.write());
 
 		int xpos = anim->dst_area.x();
 
@@ -322,25 +323,23 @@ UTILITY(compile_objects)
 			xpos += f.area.w();
 		}
 
-		std::vector<std::string> vs;
+		std::vector<variant> vs;
 		foreach(int n, v) {
-			vs.push_back(formatter() << n);
+			vs.push_back(variant(n));
 		}
 
-		node->set_attr("frame_info", util::join(vs));
+		node.add_attr_mutation(variant("frame_info"), variant(&vs));
 	}
 
-	for(std::map<wml::node_ptr, std::string>::iterator i = nodes_to_files.begin(); i != nodes_to_files.end(); ++i) {
-		wml::node_ptr node = i->first;
-		node->strip_prettiness();
-		sys::write_file(i->second, wml::output(node));
+	for(std::map<variant, std::string>::iterator i = nodes_to_files.begin(); i != nodes_to_files.end(); ++i) {
+		variant node = i->first;
+		sys::write_file(i->second, node.write_json());
 	}
 
-	sys::write_file("data/compiled/gui.cfg", wml::output(gui_node));
+	sys::write_file("data/compiled/gui.cfg", gui_node.write_json());
 
-	for(std::map<std::string, wml::node_ptr>::iterator i = gui_nodes.begin();
+	for(std::map<std::string, variant>::iterator i = gui_nodes.begin();
 	    i != gui_nodes.end(); ++i) {
-		sys::write_file("data/compiled/gui/" + i->first, wml::output(i->second));
+		sys::write_file("data/compiled/gui/" + i->first, i->second.write_json());
 	}
-#endif
 }

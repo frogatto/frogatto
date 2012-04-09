@@ -133,13 +133,15 @@ public:
 	const std::string* filename() const { return 0; }
 	int line_number() const { return -1; }
 
-	//return a version of a map with the key/value added.
-	//if this is the only reference to the object it will modify in-place.
+	//modifies the map to add an attribute. Note that if the map is referenced
+	//by other variants, it will make a copy of it first.
 	variant add_attr(variant key, variant value);
+	variant remove_attr(variant key);
 
 	//A dangerous function which mutates the object. Should only do this
 	//in contexts where we're sure it's safe.
 	void add_attr_mutation(variant key, variant value);
+	void remove_attr_mutation(variant key);
 
 	std::string as_string_default(const char* default_value=NULL) const;
 	const std::string& as_string() const;
