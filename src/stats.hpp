@@ -6,7 +6,6 @@
 #include "geometry.hpp"
 #include "thread.hpp"
 #include "variant.hpp"
-#include "wml_node_fwd.hpp"
 
 #include <string>
 

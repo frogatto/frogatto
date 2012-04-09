@@ -18,7 +18,6 @@
 #include "font.hpp"
 #include "foreach.hpp"
 #include "formula_profiler.hpp"
-#include "inventory.hpp"
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY) || defined(__ANDROID__)
 #include "iphone_controls.hpp"
 #endif

@@ -5,7 +5,6 @@
 #include "preferences.hpp"
 #include "variant.hpp"
 #include "water_particle_system.hpp"
-#include "wml_utils.hpp"
 
 water_particle_system_info::water_particle_system_info(variant node)
 : number_of_particles(node["number_of_particles"].as_int(1500)),

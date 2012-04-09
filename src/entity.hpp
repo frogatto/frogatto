@@ -14,7 +14,6 @@
 #include "geometry.hpp"
 #include "key.hpp"
 #include "light.hpp"
-#include "powerup_fwd.hpp"
 #include "solid_map_fwd.hpp"
 #include "wml_formula_callable.hpp"
 #include "variant.hpp"
@@ -210,19 +209,6 @@ public:
 	virtual bool move_to_standing(level& lvl, int max_displace=10000) { return false; }
 	virtual int hitpoints() const { return 1; }
 	virtual int max_hitpoints() const { return 1; }
-	virtual int num_powerups() const { return 0; }
-
-	virtual void get_powerup(const std::string& id) {}
-	virtual void get_powerup(const_powerup_ptr powerup) {}
-	virtual void remove_powerup() {}
-	virtual int remove_powerup(const_powerup_ptr powerup) { return 0; }
-	virtual const std::vector<const_powerup_ptr>& powerups() const;
-	virtual const std::vector<const_powerup_ptr>& abilities() const;
-
-	//function to perform preloading of a powerup so it'll be ready to apply
-	//to this type of object when needed
-	virtual void preload_powerup(const_powerup_ptr powerup) {}
-	virtual bool is_powerup_loaded(const_powerup_ptr powerup) const { return true; }
 
 	void set_control_status(const std::string& key, bool value);
 	void set_control_status(controls::CONTROL_ITEM ctrl, bool value) { controls_[ctrl] = value; }

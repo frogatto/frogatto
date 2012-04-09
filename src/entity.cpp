@@ -268,20 +268,6 @@ variant entity::get_scheduled_command(int cycle)
 	return variant();
 }
 
-namespace {
-std::vector<const_powerup_ptr> empty_powerup_vector;
-}
-
-const std::vector<const_powerup_ptr>& entity::powerups() const
-{
-	return empty_powerup_vector;
-}
-
-const std::vector<const_powerup_ptr>& entity::abilities() const
-{
-	return empty_powerup_vector;
-}
-
 void entity::set_current_generator(current_generator* generator)
 {
 	current_generator_ = current_generator_ptr(generator);

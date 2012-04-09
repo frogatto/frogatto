@@ -13,9 +13,6 @@
 #include "preferences.hpp"
 #include "playable_custom_object.hpp"
 #include "stats.hpp"
-#include "wml_node.hpp"
-#include "wml_utils.hpp"
-#include "wml_writer.hpp"
 
 namespace {
 std::string get_stats_dir() {

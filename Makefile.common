@@ -64,7 +64,6 @@ objects = \
 	i18n.o \
 	image_widget.o \
 	input.o \
-	inventory.o \
 	iphone_controls.o \
 	joystick.o \
 	json_parser.o \
@@ -92,7 +91,6 @@ objects = \
 	pause_game_dialog.o \
 	playable_custom_object.o \
 	player_info.o \
-	powerup.o \
 	preferences.o \
 	preprocessor.o \
 	preview_tileset_widget.o \
@@ -134,13 +132,9 @@ objects = \
 	weather_particle_system.o \
 	widget.o \
 	wml_formula_callable.o \
-	wml_modify.o \
 	unit_test.o \
 	formula_test.o \
 	loading_screen.o \
-	wml_node.o \
-	wml_parser.o \
-	wml_utils.o \
 	utility_object_compiler.o \
 	utility_query.o \
 	utility_render_level.o

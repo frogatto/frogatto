@@ -30,7 +30,6 @@
 #include "graphical_font.hpp"
 #include "gui_section.hpp"
 #include "i18n.hpp"
-#include "inventory.hpp"
 #include "iphone_device_info.h"
 #include "of_bridge.h"
 #include "joystick.hpp"

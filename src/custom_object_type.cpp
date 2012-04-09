@@ -19,7 +19,6 @@
 #include "sound.hpp"
 #include "string_utils.hpp"
 #include "surface_cache.hpp"
-#include "wml_modify.hpp"
 #include "unit_test.hpp"
 #include "variant_callable.hpp"
 #include "variant_utils.hpp"

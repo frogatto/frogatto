@@ -28,7 +28,6 @@
 #include "object_events.hpp"
 #include "pause_game_dialog.hpp"
 #include "player_info.hpp"
-#include "powerup.hpp"
 #include "raster.hpp"
 #include "texture.hpp"
 #include "message_dialog.hpp"

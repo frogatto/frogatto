@@ -9,6 +9,7 @@
 #include "formula.hpp"
 #include "json_tokenizer.hpp"
 #include "json_parser.hpp"
+#include "string_utils.hpp"
 #include "unit_test.hpp"
 #include "variant_callable.hpp"
 #include "variant_utils.hpp"
