@@ -85,7 +85,7 @@ void init_char_area()
 	}
 
 	for(char c = 1; c < 127; ++c) {
-		if(isprint(c) && c != 'a') {
+		if(util::c_isprint(c) && c != 'a') {
 			char_to_area[c] = CharArea();
 		}
 	}
@@ -245,7 +245,7 @@ void text_editor_widget::handle_draw() const
 					}
 				}
 
-				if(!isspace(text_[n][m]) && isprint(text_[n][m])) {
+				if(!util::c_isspace(text_[n][m]) && util::c_isprint(text_[n][m])) {
 					const CharArea& area = get_char_area(text_[n][m]);
 
 					const int x1 = x() + c*char_width_;
@@ -548,11 +548,11 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 
 				const std::string& line = text_[select_.row];
 				int col = select_.col;
-				while(col > 0 && !(isalnum(line[col-1]) || line[col-1] == '_')) {
+				while(col > 0 && !(util::c_isalnum(line[col-1]) || line[col-1] == '_')) {
 					--col;
 				}
 
-				while(col > 0 && (isalnum(line[col-1]) || line[col-1] == '_')) {
+				while(col > 0 && (util::c_isalnum(line[col-1]) || line[col-1] == '_')) {
 					--col;
 				}
 
@@ -800,7 +800,7 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 	}
 	default: {
 		const char c = event.keysym.unicode;
-		if(util::isprint(c)) {
+		if(util::c_isprint(c)) {
 			if(record_op("chars")) {
 				save_undo_state();
 			}
@@ -1038,8 +1038,8 @@ void text_editor_widget::refresh_scrollbar()
 
 void text_editor_widget::select_token(const std::string& row, int& begin_row, int& end_row, int& begin_col, int& end_col)
 {
-	if(util::isdigit(row[begin_col]) || row[begin_col] == '.' && begin_col+1 < row.size() && util::isdigit(row[begin_col+1])) {
-		while(begin_col >= 0 && (util::isdigit(row[begin_col]) || row[begin_col] == '.')) {
+	if(util::c_isdigit(row[begin_col]) || row[begin_col] == '.' && begin_col+1 < row.size() && util::c_isdigit(row[begin_col+1])) {
+		while(begin_col >= 0 && (util::c_isdigit(row[begin_col]) || row[begin_col] == '.')) {
 			--begin_col;
 		}
 
@@ -1047,17 +1047,17 @@ void text_editor_widget::select_token(const std::string& row, int& begin_row, in
 			++begin_col;
 		}
 
-		while(end_col < row.size() && (util::isdigit(row[end_col]) || row[end_col] == '.')) {
+		while(end_col < row.size() && (util::c_isdigit(row[end_col]) || row[end_col] == '.')) {
 			++end_col;
 		}
-	} else if(util::isalnum(row[begin_col]) || row[begin_col] == '_') {
-		while(begin_col >= 0 && (util::isalnum(row[begin_col]) || row[begin_col] == '_')) {
+	} else if(util::c_isalnum(row[begin_col]) || row[begin_col] == '_') {
+		while(begin_col >= 0 && (util::c_isalnum(row[begin_col]) || row[begin_col] == '_')) {
 			--begin_col;
 		}
 
 		++begin_col;
 
-		while(end_col < row.size() && (util::isalnum(row[end_col]) || row[end_col] == '_')) {
+		while(end_col < row.size() && (util::c_isalnum(row[end_col]) || row[end_col] == '_')) {
 			++end_col;
 		}
 	} else if(end_col < row.size()) {

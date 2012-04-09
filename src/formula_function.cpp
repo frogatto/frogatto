@@ -94,7 +94,7 @@ std::string pinpoint_location(variant v, std::string::const_iterator begin,
 		++line_num;
 	}
 
-	while(begin_line != begin && isspace(*begin_line)) {
+	while(begin_line != begin && util::c_isspace(*begin_line)) {
 		++begin_line;
 	}
 

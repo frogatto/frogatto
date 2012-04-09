@@ -197,7 +197,7 @@ std::string modify_file(const std::string& contents, variant original, variant v
 
 			std::string name_str = item.first.as_string();
 			foreach(char c, name_str) {
-				if(!isalpha(c) && c != '_') {
+				if(!util::c_isalpha(c) && c != '_') {
 					name_str = "\"" + name_str + "\"";
 					break;
 				}

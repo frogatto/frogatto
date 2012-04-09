@@ -1616,7 +1616,7 @@ formula::formula(const variant& val, function_symbol_table* symbols, const formu
 			}
 
 			const std::string::const_iterator end_line = std::find(begin_line, tokens.back().end, '\n');
-			while(begin_line < end_line && util::isspace(*begin_line)) {
+			while(begin_line < end_line && util::c_isspace(*begin_line)) {
 				++begin_line;
 			}
 

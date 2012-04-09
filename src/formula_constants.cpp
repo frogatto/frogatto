@@ -76,7 +76,7 @@ constants_loader::constants_loader(variant node) : same_as_base_(false)
 	if(node.is_null() == false) {
 		foreach(variant key, node.get_keys().as_list()) {
 			const std::string& attr = key.as_string();
-			if(std::find_if(attr.begin(), attr.end(), util::islower) != attr.end()) {
+			if(std::find_if(attr.begin(), attr.end(), util::c_islower) != attr.end()) {
 				//only all upper case are loaded as consts
 				continue;
 			}

@@ -44,7 +44,7 @@ bool match_regex(boost::array<char, 4> str, const boost::regex* re) {
 static const int TileSize = 32;
 
 struct is_whitespace {
-	bool operator()(char c) const { return util::isspace(c); }
+	bool operator()(char c) const { return util::c_isspace(c); }
 };
 
 }
@@ -310,11 +310,11 @@ tile_map::tile_map(variant node)
 			}
 
 			//We want to copy [ptr,end) to tile_string. First strip the spaces.
-			while(ptr != end && util::isspace(*ptr)) {
+			while(ptr != end && util::c_isspace(*ptr)) {
 				++ptr;
 			}
 
-			while(end != ptr && util::isspace(*(end-1))) {
+			while(end != ptr && util::c_isspace(*(end-1))) {
 				--end;
 			}
 

@@ -74,7 +74,7 @@ bool text_entry_widget::handle_event(const SDL_Event& event, bool claimed)
 		}
 
 		char c = event.key.keysym.unicode;
-		if(util::isprint(c)) {
+		if(util::c_isprint(c)) {
 			text_.insert(text_.begin() + cursor_, c);
 			++cursor_;
 			claimed = true;

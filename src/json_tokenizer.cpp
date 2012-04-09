@@ -4,12 +4,13 @@
 
 #include "json_tokenizer.hpp"
 #include "unit_test.hpp"
+#include "string_utils.hpp"
 
 namespace json {
 
 Token get_token(const char*& i1, const char* i2)
 {
-	while(i1 != i2 && isspace(*i1) || *i1 == '#') {
+	while(i1 != i2 && util::c_isspace(*i1) || *i1 == '#') {
 		if(*i1 == '#') {
 			//ignore comments.
 			i1 = std::find(i1, i2, '\n');
@@ -69,10 +70,10 @@ Token get_token(const char*& i1, const char* i2)
 		result.end = i1;
 		++i1;
 		return result;
-	} else if(isalpha(*i1) || *i1 == '_') {
+	} else if(util::c_isalpha(*i1) || *i1 == '_') {
 		Token result;
 		result.begin = i1;
-		while(i1 != i2 && (isalnum(*i1) || *i1 == '_')) {
+		while(i1 != i2 && (util::c_isalnum(*i1) || *i1 == '_')) {
 			++i1;
 		}
 
@@ -91,7 +92,7 @@ Token get_token(const char*& i1, const char* i2)
 		return result;
 	}
 
-	if(*i1 == '-' || *i1 == '.' || isdigit(*i1)) {
+	if(*i1 == '-' || *i1 == '.' || util::c_isdigit(*i1)) {
 		bool seen_decimal = false;
 		Token result;
 		result.type = Token::TYPE_NUMBER;
@@ -110,7 +111,7 @@ Token get_token(const char*& i1, const char* i2)
 					TokenizerError error = { "- found in illegal position in number", i1 };
 					throw error;
 				}
-			} else if(!isdigit(*i1)) {
+			} else if(!util::c_isdigit(*i1)) {
 				break;
 			}
 

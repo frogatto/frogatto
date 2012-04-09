@@ -151,7 +151,7 @@ variant playable_custom_object::get_value(const std::string& key) const
 		Uint8* key_state = SDL_GetKeyState(NULL);
 		for (int count = SDLK_FIRST; count < SDLK_LAST; count++) {
 			if(key_state[count]) {				//Returns only keys that are down so the list that ffl has to deal with is small.
-				if(util::isprint(count)) {
+				if(util::c_isprint(count)) {
 					std::string str(1,count);
 					result.push_back(variant(str));
 				} else {

@@ -34,7 +34,7 @@ std::string preprocess(const std::string& input){
 					if(quote == input.end()) {
 						std::cerr << "We didn't find a opening quote. Syntax error." << std::endl;
 					}
-					if(std::count_if(i, quote, util::isspace) != quote - i) {
+					if(std::count_if(i, quote, util::c_isspace) != quote - i) {
 					// # of whitespaces != number of intervening chars => something else was present.  Syntax Error. 
 						std::cerr << "# of whitespaces != number of intervening chars." << std::endl;
 					}

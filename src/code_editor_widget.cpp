@@ -2,6 +2,7 @@
 #include "code_editor_widget.hpp"
 #include "decimal.hpp"
 #include "formula_tokenizer.hpp"
+#include "string_utils.hpp"
 
 #include <boost/bind.hpp>
 #include <boost/regex.hpp>
@@ -73,7 +74,7 @@ void code_editor_widget::on_change()
 							break;
 						}
 
-						if(t.type == formula_tokenizer::TOKEN_OPERATOR && isalpha(*t.begin)) {
+						if(t.type == formula_tokenizer::TOKEN_OPERATOR && util::c_isalpha(*t.begin)) {
 							t.type = formula_tokenizer::TOKEN_KEYWORD;
 
 						}

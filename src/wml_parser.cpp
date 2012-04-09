@@ -198,7 +198,7 @@ std::string parse_name(std::string::const_iterator& i1,
 
 #if !TARGET_OS_IPHONE
 	for(std::string::const_iterator i = res.begin(); i != res.end(); ++i) {
-		if(!util::isalnum(*i) && *i != '_') {
+		if(!util::c_isalnum(*i) && *i != '_') {
 			throw parse_error("illegal character in wml attribute name", beg + (i - res.begin()));
 		}
 	}
@@ -214,7 +214,7 @@ std::string parse_value(std::string::const_iterator& i1,
 	line_starts_at = line_number;
 	std::string res;
 	const std::string::const_iterator beg = i1;
-	while(i1 != i2 && !util::isnewline(*i1) && *i1 != '#') {
+	while(i1 != i2 && !util::c_isnewline(*i1) && *i1 != '#') {
 		if(*i1 == '"') {
 			++i1;
 			while(i1 != i2 && *i1 != '"') {
@@ -227,7 +227,7 @@ std::string parse_value(std::string::const_iterator& i1,
 						continue;
 					}
 				}
-				if(util::isnewline(*i1)) {
+				if(util::c_isnewline(*i1)) {
 					++line_number;
 				}
 				res.push_back(*i1);
@@ -255,7 +255,7 @@ std::string parse_value(std::string::const_iterator& i1,
 	{
 		int newlines = 0;
 		std::string::iterator i = res.begin();
-		while(i != res.end() && util::isspace(*i)) {
+		while(i != res.end() && util::c_isspace(*i)) {
 			if(*i == '\n') {
 				++newlines;
 			}
@@ -264,7 +264,7 @@ std::string parse_value(std::string::const_iterator& i1,
 
 		if(i != res.end()) {
 			res.erase(res.begin(), i);
-			while(util::isspace(res[res.size()-1])) {
+			while(util::c_isspace(res[res.size()-1])) {
 				res.resize(res.size()-1);
 			}
 
@@ -278,7 +278,7 @@ std::string parse_value(std::string::const_iterator& i1,
 void skip_comment(std::string::const_iterator& i1,
                   std::string::const_iterator i2)
 {
-	while(i1 != i2 && !util::isnewline(*i1)) {
+	while(i1 != i2 && !util::c_isnewline(*i1)) {
 		++i1;
 	}
 }
@@ -327,10 +327,10 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 	try {
 
 	while(i != doc.end()) {
-		if(util::isnewline(*i)) {
+		if(util::c_isnewline(*i)) {
 			++i;
 			++line_number;
-		} else if(util::isspace(*i)) {
+		} else if(util::c_isspace(*i)) {
 			++i;
 		} else if(*i == '[') {
 
@@ -435,7 +435,7 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 
 					el.reset(new node(std::string(element.begin(),template_name)));
 
-					while(template_name != element.end() && util::isspace(*template_name)) {
+					while(template_name != element.end() && util::c_isspace(*template_name)) {
 						++template_name;
 					}
 
@@ -479,7 +479,7 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 				frame.derived_frame = derived_node;
 				nodes.push(frame);
 			}
-		} else if(util::isalnum(*i) || *i == '_') {
+		} else if(util::c_isalnum(*i) || *i == '_') {
 			if(nodes.empty()) {
 				PARSE_ERROR("attributes found at root", i);
 			}
@@ -507,7 +507,7 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 		} else if(*i == '@') {
 			++i;
 			std::string::const_iterator begin = i;
-			while(i != doc.end() && !util::isspace(*i) && !util::isnewline(*i)) {
+			while(i != doc.end() && !util::c_isspace(*i) && !util::c_isnewline(*i)) {
 				++i;
 			}
 
@@ -519,7 +519,7 @@ node_ptr parse_wml_internal(const std::string& error_context, const std::string&
 
 				++i;
 				begin = i;
-				while(i != doc.end() && !util::isspace(*i) && !util::isnewline(*i)) {
+				while(i != doc.end() && !util::c_isspace(*i) && !util::c_isnewline(*i)) {
 					++i;
 				}
 
@@ -583,7 +583,7 @@ node_ptr parse_wml_from_file(const std::string& fname, const schema* schema, boo
 				--i1;
 			}
 
-			while(i1 != e.error_loc && util::isspace(*i1)) {
+			while(i1 != e.error_loc && util::c_isspace(*i1)) {
 				++i1;
 			}
 

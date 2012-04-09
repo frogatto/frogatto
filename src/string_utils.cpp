@@ -21,87 +21,83 @@
 namespace util
 {
 
-bool isalnum(int c)
+bool c_isalnum(int c)
 {
 	return ::isalnum(static_cast<unsigned char>(c));
 }
 
-bool isalpha(int c)
+bool c_isalpha(int c)
 {
 	return ::isalpha(static_cast<unsigned char>(c));
 }
 
-bool isascii(int c)
+bool c_isascii(int c)
 {
-#if defined( _WINDOWS )
-	return __isascii( static_cast<unsigned char>(c) );
-#else
-	return ::isascii(static_cast<unsigned char>(c));
-#endif // defined( _WINDOWS )
+	return isascii(static_cast<unsigned char>(c));
 }
 
-bool isblank(int c)
+bool c_isblank(int c)
 {
-#if defined( _WINDOWS )
-	return __isblank(static_cast<unsigned char>(c));
+#if defined(_WINDOWS)
+	return __isblank(c);
 #else
 	return ::isblank(static_cast<unsigned char>(c));
-#endif // defined( _WINDOWS )
+#endif
 }
 
-bool iscntrl(int c)
+bool c_iscntrl(int c)
 {
 	return ::iscntrl(static_cast<unsigned char>(c));
 }
 
-bool isdigit(int c)
+bool c_isdigit(int c)
 {
 	return ::isdigit(static_cast<unsigned char>(c));
 }
 
-bool isgraph(int c)
+bool c_isgraph(int c)
 {
 	return ::isgraph(static_cast<unsigned char>(c));
 }
 
-bool islower(int c)
+bool c_islower(int c)
 {
 	return ::islower(static_cast<unsigned char>(c));
 }
 
-bool isprint(int c)
+bool c_isprint(int c)
 {
 	return ::isprint(static_cast<unsigned char>(c));
 }
 
-bool ispunct(int c)
+bool c_ispunct(int c)
 {
 	return ::ispunct(static_cast<unsigned char>(c));
 }
 
-bool isspace(int c)
+bool c_isspace(int c)
 {
 	return ::isspace(static_cast<unsigned char>(c));
 }
 
-bool isupper(int c)
+bool c_isupper(int c)
 {
 	return ::isupper(static_cast<unsigned char>(c));
 }
 
-bool isxdigit(int c)
+bool c_isxdigit(int c)
 {
 	return ::isxdigit(static_cast<unsigned char>(c));
 }
 
-bool isnewline(char c)
+bool c_isnewline(char c)
 {
 	return c == '\r' || c == '\n';
 }
 
 bool portable_isspace(char c)
 {
-	return isnewline(c) || isspace(c);
+	return c_isnewline(c) || c_isspace(c);
 }
 
 bool notspace(char c)

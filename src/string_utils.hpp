@@ -20,33 +20,24 @@
 
 #include <boost/lexical_cast.hpp>
 
-#ifdef _WINDOWS
-#undef isascii
-#endif // _WINDOWS
-
-#ifdef __ANDROID__
-#undef isascii
-#undef isblank
-#endif // __ANDROID__
-
 namespace util
 {
 
-bool isalnum(int c);
-bool isalpha(int c);
-bool isascii(int c); //
-bool isblank(int c); //
-bool iscntrl(int c); //
-bool isdigit(int c);
-bool isgraph(int c); //
-bool islower(int c);
-bool isprint(int c);
-bool ispunct(int c); //
-bool isspace(int c);
-bool isupper(int c); //
-bool isxdigit(int c);
+bool c_isalnum(int c);
+bool c_isalpha(int c);
+bool c_isascii(int c); //
+bool c_isblank(int c); //
+bool c_iscntrl(int c); //
+bool c_isdigit(int c);
+bool c_isgraph(int c); //
+bool c_islower(int c);
+bool c_isprint(int c);
+bool c_ispunct(int c); //
+bool c_isspace(int c);
+bool c_isupper(int c); //
+bool c_isxdigit(int c);
 
-bool isnewline(char c);
+bool c_isnewline(char c);
 bool portable_isspace(char c);
 bool notspace(char c);
 

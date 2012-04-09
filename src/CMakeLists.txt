@@ -53,6 +53,7 @@ add_executable( frogatto
 	formula_callable_definition.cpp
 	formula_constants.cpp
 	formula_function.cpp
+    formula_function_registry.cpp
 	formula_profiler.cpp
 	formula_tokenizer.cpp
 	formula_variable_storage.cpp
@@ -87,6 +88,7 @@ add_executable( frogatto
 	load_level.cpp
 	main.cpp
 	message_dialog.cpp
+    module.cpp
 	movement_script.cpp
 	multi_tile_pattern.cpp
 	multiplayer.cpp
