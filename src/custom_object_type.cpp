@@ -138,6 +138,13 @@ variant merge_into_prototype(variant prototype_node, variant node)
 		variant proto_value = result[key];
 		variant value = node[key];
 
+		if(value.is_null()) {
+			//An explicit null in the object will kill the
+			//attribute entirely.
+			result[key] = variant();
+			continue;
+		}
+
 		if(value.is_string()) {
 			const std::string& value_str = value.as_string();
 			std::string::const_iterator base_itor = std::search(value_str.begin(), value_str.end(), BaseStr.begin(), BaseStr.end());
