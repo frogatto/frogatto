@@ -14,6 +14,7 @@ test
 *.blend3
 *.db
 *.odt#
+.*.swp
 
 MacOS/include
 MacOS/lib
