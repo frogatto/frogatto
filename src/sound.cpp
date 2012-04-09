@@ -133,7 +133,11 @@ class sound
 		SDL_AudioSpec spec; /* the audio format of the .wav file */
 		SDL_AudioCVT cvt; /* used to convert .wav to output format when formats differ */
 		Uint8 *tmp_buffer;
+#if defined(__ANDROID__)
+		if(SDL_LoadWAV_RW(sys::read_sdl_rw_from_asset(module::map_file(file).c_str(), 1, &spec, &tmp_buffer, &length) == NULL)
+#else
 		if (SDL_LoadWAV(module::map_file(file).c_str(), &spec, &tmp_buffer, &length) == NULL)
+#endif
 		{
 			std::cerr << "Could not load sound: " << file << "\n";
 			return; //should maybe die
@@ -282,8 +286,11 @@ bool sound_init = false;
 void thread_load(const std::string& file)
 {
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
+#if defined(__ANDROID__)
+	Mix_Chunk* chunk = Mix_LoadWAV_RW(sys::read_sdl_rw_from_asset(module::map_file("sounds/" + file).c_str()),1);
+#else
 	Mix_Chunk* chunk = Mix_LoadWAV(module::map_file("sounds/" + file).c_str());
-
+#endif
 	{
 		threading::lock l(cache_mutex);
 		threaded_cache[file] = chunk;
@@ -654,7 +661,11 @@ void play_music(const std::string& file)
 	}
 
 	current_music_name() = file;
+#if defined(__ANDROID__)
+	current_mix_music = Mix_LoadMUS_RW(sys::read_sdl_rw_from_asset(module::map_file("music/" + file).c_str()));
+#else
 	current_mix_music = Mix_LoadMUS(module::map_file("music/" + file).c_str());
+#endif
 	if(!current_mix_music) {
 		std::cerr << "Mix_LoadMUS ERROR loading " << file << ": " << Mix_GetError() << "\n";
 		return;
@@ -710,7 +721,12 @@ void play_music_interrupt(const std::string& file)
 		return;
 	}
 
+#if defined(__ANDROID__)
+	current_mix_music = Mix_LoadMUS_RW(sys::read_sdl_rw_from_asset(module::map_file("music/" + file).c_str()));
+#else
 	current_mix_music = Mix_LoadMUS(module::map_file("music/" + file).c_str());
+#endif
+
 	if(!current_mix_music) {
 		std::cerr << "Mix_LoadMUS ERROR loading " << file << ": " << Mix_GetError() << "\n";
 		return;

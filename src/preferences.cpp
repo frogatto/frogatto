@@ -551,6 +551,10 @@ namespace preferences {
 		unique_user_id = node["user_id"].as_int(0);
 
 		use_joystick_ = node["joystick"].as_bool(use_joystick_);
+		variant show_control_rects = node["show_iphone_controls"];
+		if(show_control_rects.is_null() == false) {
+			show_iphone_controls_ = show_control_rects.as_bool(show_iphone_controls_);
+		}
 
 		no_sound_ = node["no_sound"].as_bool(no_sound_);
 		no_music_ = node["no_music"].as_bool(no_music_);
@@ -592,6 +596,7 @@ namespace preferences {
 		node.add("key_attack", controls::get_sdlkey(controls::CONTROL_ATTACK));
 		node.add("key_jump", controls::get_sdlkey(controls::CONTROL_JUMP));
 		node.add("key_tongue", controls::get_sdlkey(controls::CONTROL_TONGUE));
+		node.add("show_iphone_controls", variant::from_bool(show_iphone_controls_));
 
 		node.add("registry", game_registry::instance().write_contents());
 

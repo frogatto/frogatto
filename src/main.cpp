@@ -146,10 +146,19 @@ extern "C" int main(int argcount, char** argvec)
     EGL_Open();
 #endif
 
+#if defined(__ANDROID__)
+	std::freopen("stdout.txt","w",stdout);
+	std::freopen("stderr.txt","w",stderr);
+	std::cerr.sync_with_stdio(true);
+#endif
+
+	LOG( "Start of main" );
+	
 	if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_JOYSTICK) < 0) {
 		std::cerr << "could not init SDL\n";
 		return -1;
 	}
+	LOG( "After SDL_Init" );
 
 #if defined(TARGET_BLACKBERRY)
 	chdir("app/native");
@@ -160,6 +169,7 @@ extern "C" int main(int argcount, char** argvec)
 	g_type_init();
 #endif
 	i18n::init ();
+	LOG( "After i18n::init()" );
 
 //	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 1);
 
@@ -169,6 +179,7 @@ extern "C" int main(int argcount, char** argvec)
 	#endif
 
 	std::cerr << "Frogatto engine version " << preferences::version() << "\n";
+	LOG( "After print engine version" );
 
 	std::string level_cfg = "titlescreen.cfg";
 	bool unit_tests_only = false, skip_tests = false;
@@ -185,6 +196,7 @@ extern "C" int main(int argcount, char** argvec)
 	std::string override_level_cfg = "";
 
 	preferences::load_preferences();
+	LOG( "After load_preferences()" );
 
 	std::vector<std::string> argv;
 	for(int n = 1; n < argcount; ++n) {
@@ -266,6 +278,7 @@ extern "C" int main(int argcount, char** argvec)
 	}
 
 	preferences::expand_data_paths();
+	LOG( "After expand_data_paths()" );
 
 	std::cerr << "Preferences dir: " << preferences::user_data_path() << '\n';
 
@@ -371,8 +384,14 @@ extern "C" int main(int argcount, char** argvec)
     if( r != (SDL_Rect**)0 && r != (SDL_Rect**)-1 ) {
         preferences::set_actual_screen_width(r[0]->w);
         preferences::set_actual_screen_height(r[0]->h);
-        preferences::set_virtual_screen_width(r[0]->w);
-        preferences::set_virtual_screen_height(r[0]->h);
+		if(r[0]->w < 640) {
+        	preferences::set_virtual_screen_width(r[0]->w*2);
+        	preferences::set_virtual_screen_height(r[0]->h*2);
+		} else {
+			preferences::set_virtual_screen_width(r[0]->w);
+			preferences::set_virtual_screen_height(r[0]->h);
+		}
+		preferences::set_control_scheme(r[0]->h >= 1024 ? "ipad_2d" : "iphone_2d");
     }
 
     if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),16,SDL_FULLSCREEN|SDL_OPENGL) == NULL) {

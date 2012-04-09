@@ -18,7 +18,7 @@
 #include "clipboard.hpp"
 #include <algorithm>
 
-#if (defined(_X11) || defined(__linux__)) && !defined(__APPLE__)
+#if (defined(_X11) || defined(__linux__)) && !defined(__APPLE__) && !defined(__ANDROID__)
 #define CLIPBOARD_FUNCS_DEFINED
 
 #include "SDL_syswm.h"

@@ -6,11 +6,24 @@
 #include <stdlib.h>
 #include <string>
 
+#if defined(__ANDROID__)
+#include <android/log.h>
+#include <sstream>
+#define LOG(str_data) \
+    do{ std::stringstream oss; \
+	    oss << str_data; \
+	    __android_log_print(ANDROID_LOG_INFO, "Frogatto", oss.str().c_str()); }while(0)
+#else
+#define LOG(fmt,...) do {}while(0)
+#endif // ANDROID
+
 #if defined(_WINDOWS)
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #define abort()		do{exit(1);}while(0)
 void win_assert_msg(const std::string& m );
+#elif defined(__ANDROID__)
+#define win_assert_msg(msg) do{__android_log_print(ANDROID_LOG_INFO, "Frogatto", msg.c_str());}while(0)
 #else
 #define win_assert_msg(m) do{}while(0)
 #endif
@@ -52,5 +65,6 @@ public:
 
 
 #define VALIDATE_LOG(a,b) if( !(a) ) { std::ostringstream s; s << __FILE__ << ":" << __LINE__ << " VALIDATION FAILED: " << b << "\n"; throw validation_failure_exception(s.str()); }
+
 
 #endif
