@@ -1175,75 +1175,91 @@ expression_ptr parse_expression(const variant& formula_str, const token* i1, con
 	return result;
 }
 
+//only returns a value in the case of a lambda function, otherwise
+//returns NULL.
+expression_ptr parse_function_def(const variant& formula_str, const token*& i1, const token* i2, function_symbol_table* symbols)
+{
+	assert(i1->type == TOKEN_KEYWORD && std::string(i1->begin, i1->end) == "def");
+
+	++i1;
+
+	std::string formula_name;
+	if(i1->type == TOKEN_IDENTIFIER) {
+		formula_name = std::string(i1->begin, i1->end);
+		++i1;
+	}
+	
+	std::vector<std::string> args, types;
+	parse_function_args(formula_str, i1, i2, &args, &types);
+	const token* beg = i1;
+	while((i1 != i2) && (i1->type != TOKEN_SEMICOLON)) {
+		++i1;
+	}
+	const std::string function_str = std::string(beg->begin, (i1-1)->end);
+	variant function_var(function_str);
+	if(formula_str.get_debug_info()) {
+		//Set the debugging info for this new string, adjusting relative
+		//to our parent formula, so we know where in the file it lies.
+		const variant::debug_info* cur_info = formula_str.get_debug_info();
+		variant::debug_info info = *cur_info;
+		for(std::string::const_iterator i = formula_str.as_string().begin();
+		    i != beg->begin; ++i) {
+			if(*i == '\n') {
+				info.line++;
+				info.column = 0;
+			} else {
+				info.column++;
+			}
+		}
+
+		function_var.set_debug_info(info);
+	}
+	
+	recursive_function_symbol_table recursive_symbols(formula_name.empty() ? "recurse" : formula_name, args, symbols);
+
+	formula_callable_definition_ptr args_definition;
+	if(formula_name.empty() == false) {
+		//create a definition of the callable representing
+		//function arguments.
+		args_definition = create_formula_callable_definition(&args[0], &args[0] + args.size());
+		for(int n = 0; n != types.size(); ++n) {
+			if(types[n].empty()) {
+				continue;
+			}
+
+			ASSERT_LOG(args_definition->get_entry(n) != NULL, "FORMULA FUNCTION TYPE ARGS MIS-MATCH\n" << pinpoint_location(formula_str, i1->begin, i1->end));
+
+			const formula_callable_definition* def = get_formula_callable_definition(types[n]);
+			ASSERT_LOG(def != NULL, "TYPE NOT FOUND: " << types[n] << "\n" << pinpoint_location(formula_str, i1->begin, i1->end));
+			args_definition->get_entry(n)->type_definition = def;
+		}
+	}
+
+	const_formula_ptr fml(new formula(function_var, &recursive_symbols, args_definition.get()));
+	recursive_symbols.resolve_recursive_calls(fml);
+	
+	if(formula_name.empty()) {
+		return expression_ptr(new lambda_function_expression(args, fml));
+	}
+	
+	const std::string precond = "";
+	symbols->add_formula_function(formula_name, fml,
+								  formula::create_optional_formula(variant(precond), symbols), args);
+	return expression_ptr();
+}
+
 expression_ptr parse_expression_internal(const variant& formula_str, const token* i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def, bool* can_optimize)
 {
 	ASSERT_LOG(i1 != i2, "Empty expression in formula\n" << pinpoint_location(formula_str, (i1-1)->end));
 	
 	if(i1->type == TOKEN_KEYWORD && std::string(i1->begin, i1->end) == "def" &&
 	   ((i1+1)->type == TOKEN_IDENTIFIER || (i1+1)->type == TOKEN_LPARENS)) {
-		++i1;
-		std::string formula_name;
-		if(i1->type == TOKEN_IDENTIFIER) {
-			formula_name = std::string(i1->begin, i1->end);
-			++i1;
-		}
-		
-		std::vector<std::string> args, types;
-		parse_function_args(formula_str, i1, i2, &args, &types);
-		const token* beg = i1;
-		while((i1 != i2) && (i1->type != TOKEN_SEMICOLON)) {
-			++i1;
-		}
-		const std::string function_str = std::string(beg->begin, (i1-1)->end);
-		variant function_var(function_str);
-		if(formula_str.get_debug_info()) {
-			//Set the debugging info for this new string, adjusting relative
-			//to our parent formula, so we know where in the file it lies.
-			const variant::debug_info* cur_info = formula_str.get_debug_info();
-			variant::debug_info info = *cur_info;
-			for(std::string::const_iterator i = formula_str.as_string().begin();
-			    i != beg->begin; ++i) {
-				if(*i == '\n') {
-					info.line++;
-					info.column = 0;
-				} else {
-					info.column++;
-				}
-			}
 
-			function_var.set_debug_info(info);
-		}
-		
-		recursive_function_symbol_table recursive_symbols(formula_name.empty() ? "recurse" : formula_name, args, symbols);
-
-		formula_callable_definition_ptr args_definition;
-		if(formula_name.empty() == false) {
-			//create a definition of the callable representing
-			//function arguments.
-			args_definition = create_formula_callable_definition(&args[0], &args[0] + args.size());
-			for(int n = 0; n != types.size(); ++n) {
-				if(types[n].empty()) {
-					continue;
-				}
-
-				ASSERT_LOG(args_definition->get_entry(n) != NULL, "FORMULA FUNCTION TYPE ARGS MIS-MATCH\n" << pinpoint_location(formula_str, i1->begin, i1->end));
-
-				const formula_callable_definition* def = get_formula_callable_definition(types[n]);
-				ASSERT_LOG(def != NULL, "TYPE NOT FOUND: " << types[n] << "\n" << pinpoint_location(formula_str, i1->begin, i1->end));
-				args_definition->get_entry(n)->type_definition = def;
-			}
+		expression_ptr lambda = parse_function_def(formula_str, i1, i2, symbols);
+		if(lambda) {
+			return lambda;
 		}
 
-		const_formula_ptr fml(new formula(function_var, &recursive_symbols, args_definition.get()));
-		recursive_symbols.resolve_recursive_calls(fml);
-		
-		if(formula_name.empty()) {
-			return expression_ptr(new lambda_function_expression(args, fml));
-		}
-		
-		const std::string precond = "";
-		symbols->add_formula_function(formula_name, fml,
-									  formula::create_optional_formula(variant(precond), symbols), args);
 		if((i1 == i2) || (i1 == (i2-1))) {
 			return expression_ptr(new function_list_expression(symbols));
 		}

@@ -62,8 +62,17 @@ public:
 
 private:
 	formula() {}
-	expression_ptr expr_;
 	variant str_;
+	expression_ptr expr_;
+
+	//for recursive function formulae, we have base cases along with
+	//base expressions.
+	struct BaseCase {
+		expression_ptr guard;
+		expression_ptr expr;
+	};
+	std::vector<BaseCase> base_expr_;
+
 };
 
 }
