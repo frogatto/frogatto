@@ -55,7 +55,8 @@ namespace
 		
 		foreach(variant node, scheme["button"].as_list())
 		{
-			rect hit_rect(node["hit_rect"]);
+			variant r = game_logic::formula(node["hit_rect"]).execute();
+			rect hit_rect(r[0].as_int(), r[1].as_int(), r[2].as_int(), r[3].as_int());
 			std::string id = node["id"].as_string();
 			if (id == "left") {
 				left_arrow = hit_rect;

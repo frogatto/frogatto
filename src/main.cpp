@@ -139,6 +139,22 @@ void print_help(const std::string& argv0)
 
 }
 
+#if defined(__ANDROID__)
+#include <jni.h>
+#include <android/asset_manager_jni.h>
+AAssetManager* static_assetManager = 0;
+extern "C" void app_set_asset_manager(AAssetManager* assetMan)
+{
+	static_assetManager = assetMan;	
+}
+namespace sys {
+AAssetManager* GetJavaAssetManager()
+{
+	return static_assetManager;
+}
+}
+#endif
+
 extern "C" int main(int argcount, char** argvec)
 {
 #if defined(TARGET_PANDORA)
