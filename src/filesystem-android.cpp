@@ -53,6 +53,7 @@
 
 namespace sys
 {
+extern AAssetManager* GetJavaAssetManager();
 
 namespace {
 #ifdef HAVE_CONFIG_H
@@ -69,7 +70,7 @@ namespace {
 
 void print_assets()
 {
-    AAssetManager* assetManager = SDL_ANDROID_JavaAssetManager();
+    AAssetManager* assetManager = GetJavaAssetManager();
     AAssetDir* assetDir = AAssetManager_openDir(assetManager, "images");
     const char* filename;
 	__android_log_print(ANDROID_LOG_INFO,"Frogatto","print_assets()");
@@ -85,7 +86,7 @@ void get_files_in_dir(const std::string& sdirectory,
 					  std::vector<std::string>* dirs,
 					  FILE_NAME_MODE mode)
 {
-    AAssetManager* assetManager = SDL_ANDROID_JavaAssetManager();
+    AAssetManager* assetManager = GetJavaAssetManager();
     AAssetDir* assetDir; 
 	std::string directory(sdirectory);
 	int len = directory.length()-1;
@@ -218,7 +219,7 @@ bool do_file_exists(const std::string& fname)
         file.close();
         return true;
 	}
-	AAssetManager* assetManager = SDL_ANDROID_JavaAssetManager();
+	AAssetManager* assetManager = GetJavaAssetManager();
 	AAsset* asset;
 	if(fname[0] == '.' && fname[1] == '/') {
 		asset = AAssetManager_open(assetManager, fname.substr(2).c_str(), AASSET_MODE_UNKNOWN);
@@ -275,7 +276,7 @@ bool file_exists(const std::string& name)
 
 std::string read_file(const std::string& fname)
 {
-	AAssetManager* assetManager = SDL_ANDROID_JavaAssetManager();
+	AAssetManager* assetManager = GetJavaAssetManager();
 	AAsset* asset;
 	std::string name(fname);
 	if(name[0] == '.' && name[1] == '/') {
@@ -349,7 +350,7 @@ static SDLCALL int aa_rw_close(struct SDL_RWops* ops)
 
 SDL_RWops* read_sdl_rw_from_asset(const std::string& name)
 {
-	AAssetManager* assetManager = SDL_ANDROID_JavaAssetManager();
+	AAssetManager* assetManager = GetJavaAssetManager();
 	AAsset* asset;
 	if(name[0] == '.' && name[1] == '/') {
 		asset = AAssetManager_open(assetManager, name.substr(2).c_str(), AASSET_MODE_RANDOM);

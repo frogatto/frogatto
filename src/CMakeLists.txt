@@ -71,7 +71,6 @@ add_executable( frogatto
 	i18n.cpp
 	image_widget.cpp
 	input.cpp
-	inventory.cpp
 	iphone_controls.cpp
 	joystick.cpp
 	json_parser.cpp
@@ -99,7 +98,6 @@ add_executable( frogatto
 	pause_game_dialog.cpp
 	playable_custom_object.cpp
 	player_info.cpp
-	powerup.cpp
 	preferences.cpp
 	preprocessor.cpp
 	preview_tileset_widget.cpp
@@ -141,17 +139,12 @@ add_executable( frogatto
 	water_particle_system.cpp
 	weather_particle_system.cpp
 	widget.cpp
-	wml_formula_callable.cpp
-	wml_modify.cpp
-	wml_node.cpp
-	wml_parser.cpp
-	wml_utils.cpp
 	unit_test.cpp
 	formula_test.cpp
-	wml_parser_test.cpp
 	loading_screen.cpp
 	utility_object_compiler.cpp
 	utility_render_level.cpp
+    wml_formula_callable.cpp
     ${FROGATTO_SRC_PLATFORM} )
 
 target_link_libraries( frogatto ${OPENGL_LIBRARIES} ${SDL_LIBRARY} ${SDLIMAGE_LIBRARY} ${SDLTTF_LIBRARY} ${SDLMIXER_LIBRARY} ${FROGATTO_LIB_PLATFORM} )
