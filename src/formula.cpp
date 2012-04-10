@@ -1241,7 +1241,7 @@ expression_ptr parse_function_def(const variant& formula_str, const token*& i1, 
 	if(formula_name.empty()) {
 		return expression_ptr(new lambda_function_expression(args, fml));
 	}
-	
+
 	const std::string precond = "";
 	symbols->add_formula_function(formula_name, fml,
 								  formula::create_optional_formula(variant(precond), symbols), args);
@@ -1555,6 +1555,11 @@ formula::formula(const variant& val, function_symbol_table* symbols, const formu
 {
 	using namespace formula_tokenizer;
 
+	function_symbol_table symbol_table;
+	if(!symbols) {
+		symbols = &symbol_table;
+	}
+
 	if(str_.is_int() || str_.is_bool() || str_.is_decimal()) {
 		//Allow ints, bools, and decimals to be interpreted as formulae.
 		str_ = variant(str_.string_cast());
@@ -1654,8 +1659,6 @@ formula::formula(const variant& val, function_symbol_table* symbols, const formu
 			}
 			
 
-			std::cerr << std::string(begin_line, tok.begin) << "\n";
-
 			std::string location;
 			const variant::debug_info* dbg_info = val.get_debug_info();
 			if(dbg_info) {
@@ -1669,17 +1672,75 @@ formula::formula(const variant& val, function_symbol_table* symbols, const formu
 			  << whitespace << "^\n");
 		}
 	}
-	
-	try {
-		if(tokens.size() != 0) {
-			expr_ = parse_expression(str_, &tokens[0],&tokens[0] + tokens.size(), symbols, callable_definition);
-		} else {
-			expr_ = expression_ptr(new null_expression());
-		}	
-	} catch(std::string&) {
-		std::cerr << "ERROR WHILE PARSING AT " << (str_.get_debug_info() ? str_.get_debug_info()->message() : "UNKNOWN") << "::\n" << str_ << "\n";
-		throw;
-	}
+
+	if(tokens.size() != 0) {
+		int index = 0;
+		if(tokens[0].type == TOKEN_KEYWORD && std::string(tokens[0].begin, tokens[0].end) == "base") {
+			while(tokens[index].type == TOKEN_KEYWORD && std::string(tokens[index].begin, tokens[index].end) == "base") {
+				++index;
+
+				int nbrackets = 0;
+
+				int colon = index;
+				while(colon != tokens.size() && (tokens[colon].type != TOKEN_COLON || nbrackets > 0)) {
+					switch(tokens[colon].type) {
+					case TOKEN_LPARENS:
+					case TOKEN_LSQUARE:
+					case TOKEN_LBRACKET:
+						++nbrackets;
+						break;
+					case TOKEN_RPARENS:
+					case TOKEN_RSQUARE:
+					case TOKEN_RBRACKET:
+						--nbrackets;
+						break;
+					}
+
+					++colon;
+				}
+
+				ASSERT_LOG(colon != tokens.size() && tokens[colon].type == TOKEN_COLON, "ERROR WHILE PARSING FORMULA: ':' EXPECTED AFTER BASE");
+
+				int end = colon;
+				while(end != tokens.size() && (nbrackets > 0 || tokens[end].type != TOKEN_KEYWORD || std::string(tokens[end].begin, tokens[end].end) != "base" && std::string(tokens[end].begin, tokens[end].end) != "recursive")) {
+					switch(tokens[end].type) {
+					case TOKEN_LPARENS:
+					case TOKEN_LSQUARE:
+					case TOKEN_LBRACKET:
+						++nbrackets;
+						break;
+					case TOKEN_RPARENS:
+					case TOKEN_RSQUARE:
+					case TOKEN_RBRACKET:
+						--nbrackets;
+						break;
+					}
+
+					++end;
+				}
+
+				ASSERT_LOG(end != tokens.size(), "ERROR WHILE PARSING FORMULA: NO RECURSIVE CASE FOUND");
+
+				BaseCase base = {
+					parse_expression(str_, &tokens[index], &tokens[colon], symbols, callable_definition),
+					parse_expression(str_, &tokens[colon+1], &tokens[end], symbols, callable_definition),
+				};
+
+				base_expr_.push_back(base);
+
+				index = end;
+			}
+
+			//check that the part before the actual formula is recursive:
+			ASSERT_LOG(index + 2 < tokens.size() && tokens[index].type == TOKEN_KEYWORD && std::string(tokens[index].begin, tokens[index].end) == "recursive" && tokens[index+1].type == TOKEN_COLON, "RECURSIVE CASE NOT FOUND");
+
+			index += 2;
+		}
+
+		expr_ = parse_expression(str_, &tokens[index],&tokens[0] + tokens.size(), symbols, callable_definition);
+	} else {
+		expr_ = expression_ptr(new null_expression());
+	}	
 }
 
 formula::~formula() {
@@ -1717,7 +1778,16 @@ variant formula::execute(const formula_callable& variables) const
 	last_executed_formula = this;
 	try {
 		++execution_stack;
-		variant result = expr_->evaluate(variables);
+		expression_ptr expr = expr_;
+		if(base_expr_.empty() == false) {
+			foreach(const BaseCase& b, base_expr_) {
+				if(b.guard->evaluate(variables).as_bool()) {
+					expr = b.expr;
+				}
+			}
+		}
+
+		variant result = expr->evaluate(variables);
 		--execution_stack;
 		if(prev_executed) {
 			last_executed_formula = prev_executed;
@@ -1801,6 +1871,17 @@ UNIT_TEST(formula_quotes) {
 
 UNIT_TEST(map_to_maps_FAILS) {
 	CHECK_EQ(formula(variant("{'a' -> ({'b' -> 2})}")).execute().string_cast(), formula(variant("{'a' -> {'b' -> 2}}")).execute().string_cast());
+}
+
+UNIT_TEST(formula_guards) {
+	function_symbol_table symbols;
+	formula f(variant(
+"def silly_add(a, b)"
+"base b <= 0: a "
+"recursive: silly_add(a+1, b-1);"
+"silly_add(50, 40)"), &symbols);
+
+	CHECK_EQ(f.execute().as_int(), 90);
 }
 
 BENCHMARK(formula_if) {
