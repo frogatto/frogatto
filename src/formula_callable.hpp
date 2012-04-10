@@ -112,6 +112,10 @@ public:
 class formula_callable_with_backup : public formula_callable {
 	const formula_callable& main_;
 	const formula_callable& backup_;
+	variant get_value_by_slot(int slot) const {
+		return backup_.query_value_by_slot(slot);
+	}
+
 	variant get_value(const std::string& key) const {
 		variant var = main_.query_value(key);
 		if(var.is_null()) {
@@ -140,6 +144,10 @@ class formula_variant_callable_with_backup : public formula_callable {
 		}
 
 		return var;
+	}
+
+	variant get_value_by_slot(int slot) const {
+		return backup_.query_value_by_slot(slot);
 	}
 
 	void get_inputs(std::vector<formula_input>* inputs) const {
@@ -179,6 +187,10 @@ public:
 
 private:
 	//map_formula_callable(const map_formula_callable&);
+
+	variant get_value_by_slot(int slot) const {
+		return fallback_->query_value_by_slot(slot);
+	}
 
 	variant get_value(const std::string& key) const;
 	void get_inputs(std::vector<formula_input>* inputs) const;

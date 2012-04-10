@@ -100,3 +100,4 @@ const game_logic::formula_callable_definition::entry* custom_object_callable::ge
 
 	return &entries_[slot];
 }
+

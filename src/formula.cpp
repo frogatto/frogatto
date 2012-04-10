@@ -717,56 +717,67 @@ private:
 typedef std::map<std::string,expression_ptr> expr_table;
 typedef boost::shared_ptr<expr_table> expr_table_ptr;
 
-class where_variables: public formula_callable {
-public:
-	where_variables(const formula_callable &base,
-					expr_table_ptr table )
-	: formula_callable(false), base_(base), table_(table) { }
-private:
-	const formula_callable& base_;
-	expr_table_ptr table_;
-	
-	mutable std::map<std::string, variant> results_cache_;
-	
-	void get_inputs(std::vector<formula_input>* inputs) const {
-		for(expr_table::const_iterator i = table_->begin(); i != table_->end(); ++i) {
-			inputs->push_back(formula_input(i->first, FORMULA_READ_ONLY));
-		}
+const_formula_callable_definition_ptr create_where_definition(expr_table_ptr table, const formula_callable_definition* def)
+{
+	std::vector<std::string> items;
+	for(std::map<std::string,expression_ptr>::const_iterator i = table->begin(); i != table->end(); ++i) {
+		items.push_back(i->first);
 	}
 
+	ASSERT_LOG(items.empty() == false, "EMPTY WHERE CLAUSE");
+
+	return create_formula_callable_definition(&items[0], &items[0] + items.size(), def);
+}
+
+class where_variables: public formula_callable {
+public:
+	where_variables(const formula_callable &base, int base_slot, const std::vector<expression_ptr>& entries)
+	: formula_callable(false), base_(base), entries_(entries), base_slot_(base_slot) { }
+private:
+	const formula_callable& base_;
+	std::vector<expression_ptr> entries_;
+	int base_slot_;
+	
+	mutable std::vector<variant> results_cache_;
+
 	variant get_value_by_slot(int slot) const {
+		if(slot >= base_slot_) {
+			slot -= base_slot_;
+			if(slot < results_cache_.size() && results_cache_[slot].is_null() == false) {
+				return results_cache_[slot];
+			} else {
+				variant result = entries_[slot]->evaluate(base_);
+				if(results_cache_.size() <= slot) {
+					results_cache_.resize(slot+1);
+				}
+
+				results_cache_[slot] = result;
+				return result;
+			}
+		}
+
 		return base_.query_value_by_slot(slot);
 	}
 	
 	variant get_value(const std::string& key) const {
-		expr_table::iterator i = table_->find(key);
-		if(i != table_->end()) {
-			std::map<std::string, variant>::const_iterator itor = results_cache_.find(key);
-			if(itor != results_cache_.end()) {
-				return itor->second;
-			}
-			
-			variant result = i->second->evaluate(base_);
-			results_cache_[key] = result;
-			return result;
-		}
 		return base_.query_value(key);
 	}
 };
 
 class where_expression: public formula_expression {
 public:
-	explicit where_expression(expression_ptr body,
-							  expr_table_ptr clauses)
-	: formula_expression("_where"), body_(body), clauses_(clauses)
-	{}
+	where_expression(expression_ptr body, int base_slot, const std::vector<expression_ptr>& clauses)
+	: formula_expression("_where"), body_(body), base_slot_(base_slot), clauses_(clauses)
+	{
+	}
 	
 private:
 	expression_ptr body_;
-	expr_table_ptr clauses_;
+	int base_slot_;
+	std::vector<expression_ptr> clauses_;
 	
 	variant execute(const formula_callable& variables) const {
-		formula_callable_ptr wrapped_variables(new where_variables(variables, clauses_));
+		formula_callable_ptr wrapped_variables(new where_variables(variables, base_slot_, clauses_));
 		return body_->evaluate(*wrapped_variables);
 	}
 };
@@ -1422,8 +1433,7 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 			if(nleft == nright) {
 				const std::string function_name(i1->begin, i1->end);
 				std::vector<expression_ptr> args;
-				const bool optimize = optimize_function_arguments(function_name, symbols);
-				parse_args(formula_str,i1+2,i2-1,&args,symbols, optimize ? callable_def : NULL, can_optimize);
+				parse_args(formula_str,i1+2,i2-1,&args,symbols, callable_def, can_optimize);
 				expression_ptr result(create_function(function_name, args, symbols, callable_def));
 				if(result) {
 					return result;
@@ -1503,10 +1513,16 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 	}
 	
 	if(op_name == "where") {
+		const int base_slots = callable_def ? callable_def->num_slots() : 0;
 		expr_table_ptr table(new expr_table());
 		parse_where_clauses(formula_str, op+1, i2, table, symbols, callable_def);
-		return expression_ptr(new where_expression(parse_expression(formula_str, i1, op, symbols, callable_def, can_optimize),
-												   table));
+		std::vector<expression_ptr> entries;
+		for(expr_table::iterator i = table->begin(); i != table->end(); ++i) {
+			entries.push_back(i->second);
+		}
+
+		const_formula_callable_definition_ptr callable_where_def = create_where_definition(table, callable_def);
+		return expression_ptr(new where_expression(parse_expression(formula_str, i1, op, symbols, callable_where_def.get(), can_optimize), base_slots, entries));
 	}
 
 	const bool is_dot = op_name == ".";
@@ -1578,170 +1594,187 @@ formula::formula(const variant& val, function_symbol_table* symbols, const formu
 		}
 	}
 
-	//check that all kinds of brackets match up.
-	{
-		std::string error_msg;
-		int error_loc = -1;
-
-		std::stack<formula_tokenizer::FFL_TOKEN_TYPE> brackets;
-		std::stack<int> brackets_locs;
-		for(int n = 0; n != tokens.size(); ++n) {
-			switch(tokens[n].type) {
-			case TOKEN_LPARENS:
-			case TOKEN_LSQUARE:
-			case TOKEN_LBRACKET:
-				brackets.push(tokens[n].type);
-				brackets_locs.push(n);
-				break;
-			case TOKEN_RPARENS:
-			case TOKEN_RSQUARE:
-			case TOKEN_RBRACKET:
-				if(brackets.empty()) {
-					error_msg = "UNEXPECTED TOKEN: " + std::string(tokens[n].begin, tokens[n].end);
-					error_loc = n;
-					break;
-				} else if(brackets.top() != tokens[n].type-1) {
-					const int m = brackets_locs.top();
-					error_msg = "UNMATCHED BRACKET: " + std::string(tokens[m].begin, tokens[m].end);
-					error_loc = m;
-					break;
-				}
-
-				brackets.pop();
-				brackets_locs.pop();
-				break;
-			}
-		}
-
-		if(brackets.empty() == false) {
-			const int m = brackets_locs.top();
-			error_msg = "UNMATCHED BRACKET: " + std::string(tokens[m].begin, tokens[m].end);
-			error_loc = m;
-		}
-
-		if(error_loc != -1) {
-			const token& tok = tokens[error_loc];
-			std::string::const_iterator begin_line = tokens.front().begin;
-			std::string::const_iterator i = begin_line;
-			int nline = 0;
-			while(i < tok.begin) {
-				if(i == tok.begin) {
-					break;
-				}
-
-				if(*i == '\n') {
-					++nline;
-					begin_line = i+1;
-				}
-				++i;
-			}
-
-			const std::string::const_iterator end_line = std::find(begin_line, tokens.back().end, '\n');
-			while(begin_line < end_line && util::c_isspace(*begin_line)) {
-				++begin_line;
-			}
-
-			std::string whitespace(begin_line, tok.begin);
-			std::fill(whitespace.begin(), whitespace.end(), ' ');
-			std::string error_line(begin_line, end_line);
-
-			if(whitespace.size() > 40) {
-				const int erase_size = whitespace.size() - 60;
-				whitespace.erase(whitespace.begin(), whitespace.begin() + erase_size);
-				ASSERT_LOG(erase_size <= error_line.size(), "ERROR WHILE PARSING ERROR MESSAGE");
-				error_line.erase(error_line.begin(), error_line.begin() + erase_size);
-				std::fill(error_line.begin(), error_line.begin() + 3, '.');
-			}
-
-			if(error_line.size() > 78) {
-				error_line.resize(78);
-				std::fill(error_line.end()-3, error_line.end(), '.');
-			}
-			
-
-			std::string location;
-			const variant::debug_info* dbg_info = val.get_debug_info();
-			if(dbg_info) {
-				location = formatter() << " AT " << *dbg_info->filename
-			                           << " " << dbg_info->line;
-			}
-			//TODO: extract info from str_ about the location of the formula.
-			ASSERT_LOG(false, "ERROR WHILE PARSING FORMULA" << location << ": "
-			  << error_msg << "\n"
-			  << error_line << "\n"
-			  << whitespace << "^\n");
-		}
-	}
+	check_brackets_match(tokens);
 
 	if(tokens.size() != 0) {
-		int index = 0;
+		const_formula_callable_definition_ptr global_where_def;
+
+		const token* tok = &tokens[0];
+		const token* end_tokens = &tokens[0] + tokens.size();
+
 		if(tokens[0].type == TOKEN_KEYWORD && std::string(tokens[0].begin, tokens[0].end) == "base") {
-			while(tokens[index].type == TOKEN_KEYWORD && std::string(tokens[index].begin, tokens[index].end) == "base") {
-				++index;
 
-				int nbrackets = 0;
+			const token* recursive_case = tok;
+			if(!token_matcher(TOKEN_KEYWORD).add("recursive").find_match(recursive_case, end_tokens)) {
+				ASSERT_LOG(false, "ERROR WHILE PARSING FORMULA: NO RECURSIVE CASE FOUND");
+			}
 
-				int colon = index;
-				while(colon != tokens.size() && (tokens[colon].type != TOKEN_COLON || nbrackets > 0)) {
-					switch(tokens[colon].type) {
-					case TOKEN_LPARENS:
-					case TOKEN_LSQUARE:
-					case TOKEN_LBRACKET:
-						++nbrackets;
-						break;
-					case TOKEN_RPARENS:
-					case TOKEN_RSQUARE:
-					case TOKEN_RBRACKET:
-						--nbrackets;
-						break;
-					}
 
-					++colon;
+			const token* where_tok = recursive_case;
+
+			if(token_matcher(TOKEN_OPERATOR).add("where").find_match(where_tok, end_tokens)) {
+				global_where_.reset(new WhereInfo);
+				global_where_->base_slot = callable_definition ? callable_definition->num_slots() : 0;
+				expr_table_ptr table(new expr_table());
+				parse_where_clauses(str_, where_tok+1, end_tokens, table, symbols, callable_definition);
+				for(expr_table::iterator i = table->begin(); i != table->end(); ++i) {
+					global_where_->entries.push_back(i->second);
 				}
 
-				ASSERT_LOG(colon != tokens.size() && tokens[colon].type == TOKEN_COLON, "ERROR WHILE PARSING FORMULA: ':' EXPECTED AFTER BASE");
+				global_where_def = create_where_definition(table, callable_definition);
+				callable_definition = global_where_def.get();
+			}
 
-				int end = colon;
-				while(end != tokens.size() && (nbrackets > 0 || tokens[end].type != TOKEN_KEYWORD || std::string(tokens[end].begin, tokens[end].end) != "base" && std::string(tokens[end].begin, tokens[end].end) != "recursive")) {
-					switch(tokens[end].type) {
-					case TOKEN_LPARENS:
-					case TOKEN_LSQUARE:
-					case TOKEN_LBRACKET:
-						++nbrackets;
-						break;
-					case TOKEN_RPARENS:
-					case TOKEN_RSQUARE:
-					case TOKEN_RBRACKET:
-						--nbrackets;
-						break;
-					}
+			while(tok->type == TOKEN_KEYWORD && std::string(tok->begin, tok->end) == "base") {
+				++tok;
 
-					++end;
+				const token* colon_ptr = tok;
+
+				if(!token_matcher(TOKEN_COLON).find_match(colon_ptr, end_tokens)) {
+					ASSERT_LOG(false, "ERROR WHILE PARSING FORMULA: ':' EXPECTED AFTER BASE");
 				}
 
-				ASSERT_LOG(end != tokens.size(), "ERROR WHILE PARSING FORMULA: NO RECURSIVE CASE FOUND");
+				const token* end_ptr = colon_ptr;
 
-				BaseCase base = {
-					parse_expression(str_, &tokens[index], &tokens[colon], symbols, callable_definition),
-					parse_expression(str_, &tokens[colon+1], &tokens[end], symbols, callable_definition),
-				};
+				if(!token_matcher(TOKEN_KEYWORD).add("base").add("recursive").find_match(end_ptr, end_tokens)) {
+					ASSERT_LOG(false, "ERROR WHILE PARSING FORMULA: NO RECURSIVE CASE FOUND");
+				}
+
+				BaseCase base;
+				base.raw_guard = base.guard = parse_expression(str_, tok, colon_ptr, symbols, callable_definition);
+				base.expr = parse_expression(str_, colon_ptr+1, end_ptr, symbols, callable_definition);
 
 				base_expr_.push_back(base);
 
-				index = end;
+				tok = end_ptr;
 			}
 
 			//check that the part before the actual formula is recursive:
-			ASSERT_LOG(index + 2 < tokens.size() && tokens[index].type == TOKEN_KEYWORD && std::string(tokens[index].begin, tokens[index].end) == "recursive" && tokens[index+1].type == TOKEN_COLON, "RECURSIVE CASE NOT FOUND");
+			ASSERT_LOG(tok + 2 < end_tokens && tok->type == TOKEN_KEYWORD && std::string(tok->begin, tok->end) == "recursive" && (tok+1)->type == TOKEN_COLON, "RECURSIVE CASE NOT FOUND");
 
-			index += 2;
+			tok += 2;
+
 		}
 
-		expr_ = parse_expression(str_, &tokens[index],&tokens[0] + tokens.size(), symbols, callable_definition);
+		expr_ = parse_expression(str_, tok, end_tokens, symbols, callable_definition);
+
+		if(global_where_) {
+			expr_.reset(new where_expression(expr_, global_where_->base_slot, global_where_->entries));
+			foreach(BaseCase& base, base_expr_) {
+				base.guard.reset(new where_expression(base.guard, global_where_->base_slot, global_where_->entries));
+				base.expr.reset(new where_expression(base.expr, global_where_->base_slot, global_where_->entries));
+			}
+		}
 	} else {
 		expr_ = expression_ptr(new null_expression());
 	}	
 }
+
+const_formula_callable_ptr formula::wrap_callable_with_global_where(const formula_callable& callable) const
+{
+	if(global_where_) {
+		const_formula_callable_ptr wrapped_variables(new where_variables(callable, global_where_->base_slot, global_where_->entries));
+		return wrapped_variables;
+	} else {
+		return const_formula_callable_ptr(&callable);
+	}
+}
+
+void formula::check_brackets_match(const std::vector<token>& tokens) const
+{
+	std::string error_msg;
+	int error_loc = -1;
+
+	std::stack<formula_tokenizer::FFL_TOKEN_TYPE> brackets;
+	std::stack<int> brackets_locs;
+	for(int n = 0; n != tokens.size(); ++n) {
+		switch(tokens[n].type) {
+		case TOKEN_LPARENS:
+		case TOKEN_LSQUARE:
+		case TOKEN_LBRACKET:
+			brackets.push(tokens[n].type);
+			brackets_locs.push(n);
+			break;
+		case TOKEN_RPARENS:
+		case TOKEN_RSQUARE:
+		case TOKEN_RBRACKET:
+			if(brackets.empty()) {
+				error_msg = "UNEXPECTED TOKEN: " + std::string(tokens[n].begin, tokens[n].end);
+				error_loc = n;
+				break;
+			} else if(brackets.top() != tokens[n].type-1) {
+				const int m = brackets_locs.top();
+				error_msg = "UNMATCHED BRACKET: " + std::string(tokens[m].begin, tokens[m].end);
+				error_loc = m;
+				break;
+			}
+
+			brackets.pop();
+			brackets_locs.pop();
+			break;
+		}
+	}
+
+	if(brackets.empty() == false) {
+		const int m = brackets_locs.top();
+		error_msg = "UNMATCHED BRACKET: " + std::string(tokens[m].begin, tokens[m].end);
+		error_loc = m;
+	}
+
+	if(error_loc != -1) {
+		const token& tok = tokens[error_loc];
+		std::string::const_iterator begin_line = tokens.front().begin;
+		std::string::const_iterator i = begin_line;
+		int nline = 0;
+		while(i < tok.begin) {
+			if(i == tok.begin) {
+				break;
+			}
+
+			if(*i == '\n') {
+				++nline;
+				begin_line = i+1;
+			}
+			++i;
+		}
+
+		const std::string::const_iterator end_line = std::find(begin_line, tokens.back().end, '\n');
+		while(begin_line < end_line && util::c_isspace(*begin_line)) {
+			++begin_line;
+		}
+
+		std::string whitespace(begin_line, tok.begin);
+		std::fill(whitespace.begin(), whitespace.end(), ' ');
+		std::string error_line(begin_line, end_line);
+
+		if(whitespace.size() > 40) {
+			const int erase_size = whitespace.size() - 60;
+			whitespace.erase(whitespace.begin(), whitespace.begin() + erase_size);
+			ASSERT_LOG(erase_size <= error_line.size(), "ERROR WHILE PARSING ERROR MESSAGE");
+			error_line.erase(error_line.begin(), error_line.begin() + erase_size);
+			std::fill(error_line.begin(), error_line.begin() + 3, '.');
+		}
+
+		if(error_line.size() > 78) {
+			error_line.resize(78);
+			std::fill(error_line.end()-3, error_line.end(), '.');
+		}
+		
+
+		std::string location;
+		const variant::debug_info* dbg_info = str_.get_debug_info();
+		if(dbg_info) {
+			location = formatter() << " AT " << *dbg_info->filename
+		                           << " " << dbg_info->line;
+		}
+		//TODO: extract info from str_ about the location of the formula.
+		ASSERT_LOG(false, "ERROR WHILE PARSING FORMULA" << location << ": "
+		  << error_msg << "\n"
+		  << error_line << "\n"
+		  << whitespace << "^\n");
+	}
+}
+
 
 formula::~formula() {
 	if(last_executed_formula == this) {
@@ -1755,6 +1788,38 @@ void formula::output_debug_info() const
 	//TODO: add debug info from str_ variant here.
 	
 	std::cerr << str_.as_string() << "\n";
+}
+
+int formula::guard_matches(const formula_callable& variables) const
+{
+	if(base_expr_.empty() == false) {
+		int index = 0;
+		foreach(const BaseCase& b, base_expr_) {
+			if(b.guard->evaluate(variables).as_bool()) {
+				return index;
+			}
+
+			++index;
+		}
+	}
+
+	return -1;
+}
+
+int formula::raw_guard_matches(const formula_callable& variables) const
+{
+	if(base_expr_.empty() == false) {
+		int index = 0;
+		foreach(const BaseCase& b, base_expr_) {
+			if(b.raw_guard->evaluate(variables).as_bool()) {
+				return index;
+			}
+
+			++index;
+		}
+	}
+
+	return -1;
 }
 
 variant formula::execute(const formula_callable& variables) const
@@ -1778,16 +1843,10 @@ variant formula::execute(const formula_callable& variables) const
 	last_executed_formula = this;
 	try {
 		++execution_stack;
-		expression_ptr expr = expr_;
-		if(base_expr_.empty() == false) {
-			foreach(const BaseCase& b, base_expr_) {
-				if(b.guard->evaluate(variables).as_bool()) {
-					expr = b.expr;
-				}
-			}
-		}
 
-		variant result = expr->evaluate(variables);
+		const int nguard = guard_matches(variables);
+
+		variant result = (nguard == -1 ? expr_ : base_expr_[nguard].expr)->evaluate(variables);
 		--execution_stack;
 		if(prev_executed) {
 			last_executed_formula = prev_executed;
@@ -1873,15 +1932,36 @@ UNIT_TEST(map_to_maps_FAILS) {
 	CHECK_EQ(formula(variant("{'a' -> ({'b' -> 2})}")).execute().string_cast(), formula(variant("{'a' -> {'b' -> 2}}")).execute().string_cast());
 }
 
-UNIT_TEST(formula_guards) {
+UNIT_TEST(formula_test_recursion) {
 	function_symbol_table symbols;
 	formula f(variant(
-"def silly_add(a, b)"
+"def silly_add(a, c)"
 "base b <= 0: a "
-"recursive: silly_add(a+1, b-1);"
-"silly_add(50, 40)"), &symbols);
+"recursive: silly_add(a+1, b-1) where b = c;"
+"silly_add(50, 5000)"), &symbols);
 
-	CHECK_EQ(f.execute().as_int(), 90);
+	CHECK_EQ(f.execute().as_int(), 5050);
+}
+
+BENCHMARK(formula_recursion) {
+	formula f(variant(
+"def my_index(ls, item, n)"
+"base ls = []: -1 "
+"base ls[0] = item: n "
+"recursive: my_index(ls[1:], item, n+1);"
+"my_index(range(1000001), pos, 0)"));
+
+	formula f2(variant(
+"def silly_add(a, c)"
+"base b <= 0: a "
+"recursive: silly_add(a+1, b-1) where b = c;"
+"silly_add(0, pos)"));
+	static map_formula_callable* callable = new map_formula_callable;
+	callable->add("pos", variant(100000));
+	BENCHMARK_LOOP {
+		CHECK_EQ(f2.execute(*callable), variant(100000));
+	}
+	
 }
 
 BENCHMARK(formula_if) {

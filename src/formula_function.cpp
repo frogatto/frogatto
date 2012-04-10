@@ -13,6 +13,7 @@
 */
 
 #include <iostream>
+#include <stack>
 #include <math.h>
 
 #include "asserts.hpp"
@@ -1304,7 +1305,7 @@ private:
 
 formula_function_expression::formula_function_expression(const std::string& name, const args_list& args, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& arg_names)
 : function_expression(name, args, arg_names.size(), arg_names.size()),
-	formula_(formula), precondition_(precondition), arg_names_(arg_names), star_arg_(-1)
+	formula_(formula), precondition_(precondition), arg_names_(arg_names), star_arg_(-1), fed_result_count_(-1)
 {
 	assert(!precondition_ || !precondition_->str().empty());
 	for(size_t n = 0; n != arg_names_.size(); ++n) {
@@ -1316,7 +1317,22 @@ formula_function_expression::formula_function_expression(const std::string& name
 	}
 }
 
-variant formula_function_expression::execute(const formula_callable& variables) const
+namespace {
+std::stack<const_formula_ptr> formula_fn_stack;
+struct formula_function_scope {
+	explicit formula_function_scope(const const_formula_ptr& f) {
+		formula_fn_stack.push(f);
+	}
+
+	~formula_function_scope() {
+		formula_fn_stack.pop();
+	}
+};
+
+
+}
+
+boost::intrusive_ptr<slot_formula_callable> formula_function_expression::calculate_args_callable(const formula_callable& variables) const
 {
 	if(!callable_ || callable_->refcount() != 1) {
 		callable_ = boost::intrusive_ptr<slot_formula_callable>(new slot_formula_callable);
@@ -1329,13 +1345,26 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 	boost::intrusive_ptr<slot_formula_callable> tmp_callable(callable_);
 	callable_.reset(NULL);
 
-	for(size_t n = 0; n != arg_names_.size(); ++n) {
+	for(int n = 0; n != arg_names_.size(); ++n) {
 		variant var = args()[n]->evaluate(variables);
 		tmp_callable->add(var);
-		if(static_cast<int>(n) == star_arg_) {
+		if(n == star_arg_) {
 			tmp_callable->set_fallback(var.as_callable());
 		}
 	}
+
+	return tmp_callable;
+}
+
+variant formula_function_expression::execute(const formula_callable& variables) const
+{
+	if(fed_result_ && fed_result_count_-- == 0) {
+		variant result = *fed_result_;
+		fed_result_.reset();
+		return result;
+	}
+
+	boost::intrusive_ptr<slot_formula_callable> tmp_callable = calculate_args_callable(variables);
 
 	if(precondition_) {
 		if(!precondition_->execute(*tmp_callable).as_bool()) {
@@ -1346,6 +1375,32 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 		}
 	}
 
+	if(!fed_result_ && formula_->has_guards() && !formula_fn_stack.empty() && formula_fn_stack.top() == formula_) {
+		typedef boost::intrusive_ptr<formula_callable> call_ptr;
+		std::vector<call_ptr> invocations;
+		invocations.push_back(tmp_callable);
+		while(formula_->guard_matches(*invocations.back()) == -1) {
+			invocations.push_back(calculate_args_callable(*formula_->wrap_callable_with_global_where(*invocations.back())));
+		}
+
+		invocations.pop_back();
+
+		if(invocations.size() > 2) {
+			while(invocations.empty() == false) {
+				fed_result_.reset(new variant(execute(*formula_->wrap_callable_with_global_where(*invocations.back()))));
+				fed_result_count_ = 1;
+				invocations.pop_back();
+			}
+
+			fed_result_count_ = -1;
+			variant result = *fed_result_;
+			fed_result_.reset();
+			std::cerr << "RECURSIVE RESULT: " << result << "\n";
+			return result;
+		}
+	}
+
+	formula_function_scope scope(formula_);
 	variant res = formula_->execute(*tmp_callable);
 
 	callable_ = tmp_callable;
@@ -1495,22 +1550,6 @@ expression_ptr create_function(const std::string& fn,
 	}
 
 	return expression_ptr(i->second->create(args));
-}
-
-bool optimize_function_arguments(const std::string& fn,
-                                 const function_symbol_table* symbols)
-{
-	static const std::string disable_optimization_functions[] = {
-	    "choose", "filter", "find", "map",
-	};
-
-	for(int n = 0; n < sizeof(disable_optimization_functions)/sizeof(*disable_optimization_functions); ++n) {
-		if(disable_optimization_functions[n] == fn) {
-			return false;
-		}
-	}
-
-	return true;
 }
 
 std::vector<std::string> builtin_function_names()

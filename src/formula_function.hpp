@@ -16,6 +16,7 @@
 #define FORMULA_FUNCTION_HPP_INCLUDED
 
 #include <boost/intrusive_ptr.hpp>
+#include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include <iostream>
@@ -128,6 +129,7 @@ public:
 
 	void set_formula(const_formula_ptr f) { formula_ = f; }
 private:
+	boost::intrusive_ptr<slot_formula_callable> calculate_args_callable(const formula_callable& variables) const;
 	variant execute(const formula_callable& variables) const;
 	const_formula_ptr formula_;
 	const_formula_ptr precondition_;
@@ -138,6 +140,9 @@ private:
 	//function. We try to reuse the same object every time the function is
 	//called rather than recreating it each time.
 	mutable boost::intrusive_ptr<slot_formula_callable> callable_;
+
+	mutable boost::scoped_ptr<variant> fed_result_;
+	mutable int fed_result_count_;
 };
 
 typedef boost::shared_ptr<function_expression> function_expression_ptr;

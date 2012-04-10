@@ -230,6 +230,67 @@ token_error::token_error(const std::string& m) : msg(m)
 	std::cerr << "Tokenizer error: " << m << "\n";
 }
 
+token_matcher::token_matcher()
+{
+}
+
+token_matcher::token_matcher(FFL_TOKEN_TYPE type)
+{
+	add(type);
+}
+
+token_matcher& token_matcher::add(FFL_TOKEN_TYPE type)
+{
+	types_.push_back(type);
+	return *this;
+}
+
+token_matcher& token_matcher::add(const std::string& str)
+{
+	str_.push_back(str);
+	return *this;
+}
+
+bool token_matcher::match(const token& t) const
+{
+	if(types_.empty() == false && std::find(types_.begin(), types_.end(), t.type) == types_.end()) {
+		return false;
+	}
+
+	if(str_.empty() == false && std::find(str_.begin(), str_.end(), std::string(t.begin, t.end)) == str_.end()) {
+		return false;
+	}
+
+	return true;
+}
+
+bool token_matcher::find_match(const token*& i1, const token* i2) const
+{
+	int nbrackets = 0;
+	while(i1 != i2 && (nbrackets > 0 || !match(*i1))) {
+		switch(i1->type) {
+		case TOKEN_LPARENS:
+		case TOKEN_LSQUARE:
+		case TOKEN_LBRACKET:
+			++nbrackets;
+			break;
+
+		case TOKEN_RPARENS:
+		case TOKEN_RSQUARE:
+		case TOKEN_RBRACKET:
+			--nbrackets;
+			if(nbrackets < 0) {
+				break;
+			}
+			break;
+		}
+
+		++i1;
+	}
+
+	return i1 != i2 && nbrackets == 0 && match(*i1);
+}
+
 }
 
 UNIT_TEST(tokenizer_test)

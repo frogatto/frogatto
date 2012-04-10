@@ -23,12 +23,12 @@ public:
 	virtual ~formula_callable_definition() {}
 
 	virtual int get_slot(const std::string& key) const = 0;
-	virtual const entry* get_entry(int slot) const = 0;
 	virtual entry* get_entry(int slot) { return NULL; }
+	virtual const entry* get_entry(int slot) const = 0;
 	virtual int num_slots() const = 0;
 };
 
-formula_callable_definition_ptr create_formula_callable_definition(const std::string* beg, const std::string* end);
+formula_callable_definition_ptr create_formula_callable_definition(const std::string* beg, const std::string* end, const formula_callable_definition* base=NULL);
 
 int register_formula_callable_definition(const std::string& id, const formula_callable_definition* def);
 const formula_callable_definition* get_formula_callable_definition(const std::string& id);

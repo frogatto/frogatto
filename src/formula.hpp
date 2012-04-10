@@ -20,6 +20,7 @@
 #include "formula_callable_definition_fwd.hpp"
 #include "formula_fwd.hpp"
 #include "formula_function.hpp"
+#include "formula_tokenizer.hpp"
 #include "variant.hpp"
 
 namespace game_logic
@@ -60,6 +61,14 @@ public:
 
 	void output_debug_info() const;
 
+	bool has_guards() const { return base_expr_.empty() == false; }
+	int guard_matches(const formula_callable& variables) const;
+
+	//guard matches without wrapping 'variables' in the global callable.
+	int raw_guard_matches(const formula_callable& variables) const;
+
+	const_formula_callable_ptr wrap_callable_with_global_where(const formula_callable& callable) const;
+
 private:
 	formula() {}
 	variant str_;
@@ -68,10 +77,20 @@ private:
 	//for recursive function formulae, we have base cases along with
 	//base expressions.
 	struct BaseCase {
-		expression_ptr guard;
-		expression_ptr expr;
+		//raw_guard is the guard without wrapping in the global where.
+		expression_ptr raw_guard, guard, expr;
 	};
 	std::vector<BaseCase> base_expr_;
+
+	struct WhereInfo {
+		WhereInfo() : base_slot(0) {}
+		std::vector<expression_ptr> entries;
+		int base_slot;
+	};
+
+	boost::shared_ptr<WhereInfo> global_where_;
+
+	void check_brackets_match(const std::vector<formula_tokenizer::token>& tokens) const;
 
 };
 
