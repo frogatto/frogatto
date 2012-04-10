@@ -505,6 +505,8 @@ variant variant::get_member(const std::string& str) const
 {
 	if(is_callable()) {
 		return callable_->query_value(str);
+	} else if(is_map()) {
+		return (*this)[str];
 	}
 
 	if(str == "self") {
