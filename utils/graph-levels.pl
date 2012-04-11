@@ -7,11 +7,16 @@ use strict;
 
 # appending --show_music after utils/graph-levels.pl will write the song used in each level, under the level's name
 
+# appending --show_heart_pieces after utils/graph-levels.pl will write the number of max heart piece objects in the level, by type
+
 my $show_music = 0;
+my $show_heart_pieces = 0;
 
 while(my $arg = shift @ARGV) {
 	if($arg eq '--show_music') {
 		$show_music = 1;
+	} elsif($arg eq '--show_heart_pieces') {
+		$show_heart_pieces = 1;
 	} else {
 		die "Unrecognized argument: $arg";
 	}
@@ -41,29 +46,38 @@ foreach my $level (@levels) {
 	my $door = '';
 	my $saves = 0;
 	my $music = '';
+	my $heart_pieces = 0;
 
 	while(my $line = <LVL>) {
-		if(my ($toilet) = $line =~ /type: "(save_toilet|dungeon_save_door)"/) {
+		if(my ($toilet) = $line =~ /type"?: "(save_toilet|dungeon_save_door)"/) {
 			++$saves;
 		}
 
-		if(my ($label) = $line =~ /label: "(.*)"/) {
+		if(my ($label) = $line =~ /label"?: "(.*)"/) {
 			$door = $label;
 		}
 
-		if(my ($song_name) = $line =~ /music: "(.*)"/) {
+		if(my ($song_name) = $line =~ /music"?: "(.*)"/) {
 			$music = $song_name;
 		}
-
-		if(my ($next_level) = $line =~ /next_level: "(.*)"/) {
+		
+		if(my ($heart_object) = $line =~ /type"?: "(max_heart_object)"/) {
+			$heart_pieces += 100;
+		}
+		
+		if(my ($heart_object) = $line =~ /type"?: "(partial_max_heart_object)"/) {
+			++$heart_pieces;
+		}
+		
+		if(my ($next_level) = $line =~ /next_level"?: "(.*)"/) {
 			push @adj, [$level, $next_level, 'next_level'];
 		}
 
-		if(my ($previous_level) = $line =~ /previous_level: "(.*)"/) {
+		if(my ($previous_level) = $line =~ /previous_level"?: "(.*)"/) {
 			push @adj, [$level, $previous_level, 'prev_level'];
 		}
 
-		if(my ($dest_level) = $line =~ /dest_level: "(.*)"/) {
+		if(my ($dest_level) = $line =~ /dest_level"?: "(.*)"/) {
 			push @adj, [$level, $dest_level, $door];
 		}
 	}
@@ -77,7 +91,12 @@ foreach my $level (@levels) {
 		$label .= "\\n";
 		$label .= $music;
 	}
-
+	if($show_heart_pieces and $heart_pieces > 0){
+		use integer;
+		$label .= "\\n";
+		$label .= $heart_pieces/100 . " full " . $heart_pieces%100 . " partial hearts";
+	}
+	
 	print qq~N$index [label="$label",shape=box,fontsize=12];\n~;
 
 	++$index;
