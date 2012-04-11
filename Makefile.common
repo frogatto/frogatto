@@ -79,6 +79,7 @@ objects = \
 	light.o \
 	load_level.o \
 	main.o \
+	md5.o \
 	message_dialog.o \
 	module.o \
 	movement_script.o \

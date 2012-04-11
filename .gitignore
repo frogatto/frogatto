@@ -15,6 +15,7 @@ test
 *.db
 *.odt#
 .*.swp
+dirs.txt
 
 MacOS/include
 MacOS/lib

@@ -406,7 +406,7 @@ extern "C" int main(int argcount, char** argvec)
 			preferences::set_virtual_screen_width(r[0]->w);
 			preferences::set_virtual_screen_height(r[0]->h);
 		}
-		preferences::set_control_scheme(r[0]->h >= 1024 ? "ipad_2d" : "iphone_2d");
+		preferences::set_control_scheme(r[0]->h >= 1024 ? "ipad_2d" : "android_med");
     }
 
     if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),16,SDL_FULLSCREEN|SDL_OPENGL) == NULL) {
