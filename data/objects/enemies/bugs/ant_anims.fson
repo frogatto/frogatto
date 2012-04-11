@@ -1,3 +1,4 @@
+[
 	#Ants and beetles all share the same frame layout and timings:
 	{
 		id: "stand",
@@ -43,3 +44,4 @@
 		frames: 1,
 		duration: 18,
 	}
+]
