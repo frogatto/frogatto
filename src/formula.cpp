@@ -1190,7 +1190,7 @@ expression_ptr parse_expression(const variant& formula_str, const token* i1, con
 
 //only returns a value in the case of a lambda function, otherwise
 //returns NULL.
-expression_ptr parse_function_def(const variant& formula_str, const token*& i1, const token* i2, function_symbol_table* symbols)
+expression_ptr parse_function_def(const variant& formula_str, const token*& i1, const token* i2, function_symbol_table* symbols, const formula_callable_definition* callable_def)
 {
 	assert(i1->type == TOKEN_KEYWORD && std::string(i1->begin, i1->end) == "def");
 
@@ -1248,7 +1248,7 @@ expression_ptr parse_function_def(const variant& formula_str, const token*& i1, 
 		}
 	}
 
-	const_formula_ptr fml(new formula(function_var, &recursive_symbols, args_definition.get()));
+	const_formula_ptr fml(new formula(function_var, &recursive_symbols, args_definition ? args_definition.get() : callable_def));
 	recursive_symbols.resolve_recursive_calls(fml);
 	
 	if(formula_name.empty()) {
@@ -1268,7 +1268,7 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 	if(i1->type == TOKEN_KEYWORD && std::string(i1->begin, i1->end) == "def" &&
 	   ((i1+1)->type == TOKEN_IDENTIFIER || (i1+1)->type == TOKEN_LPARENS)) {
 
-		expression_ptr lambda = parse_function_def(formula_str, i1, i2, symbols);
+		expression_ptr lambda = parse_function_def(formula_str, i1, i2, symbols, callable_def);
 		if(lambda) {
 			return lambda;
 		}
