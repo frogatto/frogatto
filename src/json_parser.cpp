@@ -95,7 +95,7 @@ json_macro::json_macro(const std::string& code, std::map<std::string, json_macro
 
 enum VAL_TYPE { VAL_NONE, VAL_OBJ, VAL_ARRAY };
 struct JsonObject {
-	explicit JsonObject(variant::debug_info debug_info) : type(VAL_NONE), is_base(false), is_call(false), is_deriving(false), require_comma(false), require_colon(false), info(debug_info), begin_macro(NULL) {}
+	explicit JsonObject(variant::debug_info debug_info) : type(VAL_NONE), is_base(false), is_call(false), is_deriving(false), require_comma(false), require_colon(false), flatten(false), info(debug_info), begin_macro(NULL) {}
 	std::map<variant, variant> obj;
 	std::vector<variant> array;
 	VAL_TYPE type;
@@ -108,6 +108,8 @@ struct JsonObject {
 
 	bool require_comma;
 	bool require_colon;
+
+	bool flatten;
 
 	variant::debug_info info;
 
@@ -135,7 +137,29 @@ struct JsonObject {
 				obj[name] = v;
 			}
 		} else {
-			array.push_back(v);
+			if(flatten && v.is_list()) {
+				for(int n = 0; n != v.num_elements(); ++n) {
+					add(name, v[n]);
+				}
+				return;
+			}
+
+			if(base.is_null() == false && v.is_map()) {
+				std::map<variant, variant> items = base.as_map();
+				std::map<variant, variant> override = v.as_map();
+				for(std::map<variant, variant>::const_iterator i = override.begin(); i != override.end(); ++i) {
+					items[i->first] = i->second;
+				}
+
+				variant new_v(&items);
+				if(v.get_debug_info()) {
+					new_v.set_debug_info(*v.get_debug_info());
+				}
+
+				array.push_back(new_v);
+			} else {
+				array.push_back(v);
+			}
 		}
 	}
 
@@ -299,6 +323,7 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 				variant v;
 				
 				bool is_macro = false;
+				bool is_flatten = false;
 				if(use_preprocessor) {
 					const std::string Macro = "@macro ";
 					if(stack.back().type == VAL_OBJ && s.size() > Macro.size() && std::equal(Macro.begin(), Macro.end(), s.begin())) {
@@ -317,6 +342,10 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 						stack.back().is_call = true;
 					} else if(stack.back().type == VAL_OBJ && stack[stack.size()-2].type == VAL_ARRAY && s == "@base") {
 						stack.back().is_base = true;
+					}
+
+					if(s == "@flatten") {
+						is_flatten = true;
 					}
 
 					if(stack.back().type == VAL_OBJ && s == "@derive") {
@@ -341,7 +370,12 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 						stack.back().begin_macro = i1;
 					}
 				} else if(stack.back().type == VAL_ARRAY) {
-					stack.back().add(variant(""), v);
+					if(is_flatten) {
+						stack.back().flatten = true;
+					} else {
+						stack.back().add(variant(""), v);
+					}
+
 					stack.back().require_comma = true;
 				} else {
 					const char* begin_macro = stack.back().begin_macro;
@@ -445,14 +479,27 @@ variant parse_from_file(const std::string& fname, JSON_PARSE_OPTIONS options)
 
 UNIT_TEST(json_base)
 {
-	std::string doc = "[{\"@base\": true, x: 5, y: 4}, {}, {a: 9, y: 2}]";
+	std::string doc = "[{\"@base\": true, x: 5, y: 4}, {}, {a: 9, y: 2}, \"@eval {}\"]";
 	variant v = parse(doc);
-	CHECK_EQ(v.num_elements(), 2);
+	CHECK_EQ(v.num_elements(), 3);
 	CHECK_EQ(v[0]["x"], variant(5));
 	CHECK_EQ(v[1]["x"], variant(5));
 	CHECK_EQ(v[0]["y"], variant(4));
 	CHECK_EQ(v[1]["y"], variant(2));
 	CHECK_EQ(v[1]["a"], variant(9));
+
+	CHECK_EQ(v[2]["x"], variant(5));
+	CHECK_EQ(v[2]["y"], variant(4));
+}
+
+UNIT_TEST(json_flatten)
+{
+	std::string doc = "[\"@flatten\", [0,1,2], [3,4,5]]";
+	variant v = parse(doc);
+	CHECK_EQ(v.num_elements(), 6);
+	for(int n = 0; n != v.num_elements(); ++n) {
+		CHECK_EQ(v[n], variant(n));
+	}
 }
 
 UNIT_TEST(json_derive)
