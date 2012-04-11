@@ -1004,7 +1004,8 @@ void parse_args(const variant& formula_str, const token* i1, const token* i2,
 
 void parse_set_args(const variant& formula_str, const token* i1, const token* i2,
 					std::vector<expression_ptr>* res,
-					function_symbol_table* symbols)
+					function_symbol_table* symbols,
+				    const formula_callable_definition* callable_def)
 {
 	int parens = 0;
 	bool check_pointer = false;
@@ -1017,14 +1018,14 @@ void parse_set_args(const variant& formula_str, const token* i1, const token* i2
 		} else if((i1->type == TOKEN_POINTER || i1->type == TOKEN_COLON) && !parens ) {
 			if (!check_pointer) {
 				check_pointer = true;
-				res->push_back(parse_expression(formula_str, beg,i1, symbols, NULL));
+				res->push_back(parse_expression(formula_str, beg,i1, symbols, callable_def));
 				beg = i1+1;
 			} else {
 				ASSERT_LOG(false, "Too many '->' operators\n" << pinpoint_location(formula_str, i1->begin, (i2-1)->end));
 			}
 		} else if( i1->type == TOKEN_COMMA && !parens ) {
 			check_pointer = false;
-			res->push_back(parse_expression(formula_str, beg,i1, symbols, NULL));
+			res->push_back(parse_expression(formula_str, beg,i1, symbols, callable_def));
 			beg = i1+1;
 		}
 		
@@ -1032,7 +1033,7 @@ void parse_set_args(const variant& formula_str, const token* i1, const token* i2
 	}
 	
 	if(beg != i1) {
-		res->push_back(parse_expression(formula_str, beg,i1, symbols, NULL));
+		res->push_back(parse_expression(formula_str, beg,i1, symbols, callable_def));
 	}
 }
 
@@ -1386,7 +1387,7 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 		} else if(i1->type == TOKEN_LBRACKET && (i2-1)->type == TOKEN_RBRACKET) {
 			//create a map TODO: add support for a set
 			std::vector<expression_ptr> args;
-			parse_set_args(formula_str,i1+1,i2-1,&args,symbols);
+			parse_set_args(formula_str,i1+1,i2-1,&args,symbols,callable_def);
 			return expression_ptr(new map_expression(args));
 		} else if(i2 - i1 == 1) {
 			if(i1->type == TOKEN_KEYWORD) {
@@ -1953,6 +1954,10 @@ UNIT_TEST(formula_test_recurse_sort) {
 "           my_qsort(filter(items, i, i > items[0]));"
 "my_qsort([4,10,2,9,1])"));
 	CHECK_EQ(f.execute(), formula(variant("[1,2,4,9,10]")).execute());
+}
+
+UNIT_TEST(formula_where_map) {
+	CHECK_EQ(formula(variant("{'a': a} where a = 4")).execute()["a"], variant(4));
 }
 
 BENCHMARK(formula_recurse_sort) {
