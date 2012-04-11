@@ -1615,9 +1615,9 @@ UNIT_TEST(sqrt_function) {
 	}
 }
 
-// UNIT_TEST(regex_function_FAILS) {
-// 	CHECK(game_logic::formula("regex('a(bc.)', 'abcd abce bbcf bacg')").execute() == game_logic::formula("['bcd', 'bce']").execute(), "regex failed")
-//}
+UNIT_TEST(where_scope_function) {
+	CHECK(game_logic::formula(variant("{'val': num} where num = 5")).execute() == game_logic::formula(variant("{'val': 5}")).execute(), "test failed");
+}
 
 BENCHMARK(map_function) {
 	using namespace game_logic;
