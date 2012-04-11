@@ -733,9 +733,9 @@ const_formula_callable_definition_ptr create_where_definition(expr_table_ptr tab
 class where_variables: public formula_callable {
 public:
 	where_variables(const formula_callable &base, int base_slot, const std::vector<expression_ptr>& entries)
-	: formula_callable(false), base_(base), entries_(entries), base_slot_(base_slot) { }
+	: formula_callable(false), base_(&base), entries_(entries), base_slot_(base_slot) { }
 private:
-	const formula_callable& base_;
+	boost::intrusive_ptr<const formula_callable> base_;
 	std::vector<expression_ptr> entries_;
 	int base_slot_;
 	
@@ -747,7 +747,7 @@ private:
 			if(slot < results_cache_.size() && results_cache_[slot].is_null() == false) {
 				return results_cache_[slot];
 			} else {
-				variant result = entries_[slot]->evaluate(base_);
+				variant result = entries_[slot]->evaluate(*base_);
 				if(results_cache_.size() <= slot) {
 					results_cache_.resize(slot+1);
 				}
@@ -757,11 +757,11 @@ private:
 			}
 		}
 
-		return base_.query_value_by_slot(slot);
+		return base_->query_value_by_slot(slot);
 	}
 	
 	variant get_value(const std::string& key) const {
-		return base_.query_value(key);
+		return base_->query_value(key);
 	}
 };
 

@@ -26,6 +26,7 @@ public:
 	void reserve(size_t n) { values_.reserve(n); }
 
 	variant get_value(const std::string& key) const {
+		std::cerr << "GET VALUE " << key << " FROM SLOT CALLABLE\n";
 		if(value_names_) {
 			for(int n = 0; n != value_names_->size(); ++n) {
 				if((*value_names_)[n] == key) {

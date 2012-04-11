@@ -1,3 +1,5 @@
+#include <boost/intrusive_ptr.hpp>
+
 #include "formula.hpp"
 #include "formula_callable.hpp"
 #include "unit_test.hpp"
@@ -47,9 +49,11 @@ class mock_party : public formula_callable {
 
 UNIT_TEST(formula)
 {
+	boost::intrusive_ptr<mock_char> cp(new mock_char);
+	boost::intrusive_ptr<mock_party> pp(new mock_party);
 #define FML(a) formula(variant(a))
-	mock_char c;
-	mock_party p;
+	mock_char& c = *cp;
+	mock_party& p = *pp;
 	CHECK_EQ(FML("strength").execute(c).as_int(), 15);
 	CHECK_EQ(FML("17").execute(c).as_int(), 17);
 	CHECK_EQ(FML("strength/2 + agility").execute(c).as_int(), 19);
