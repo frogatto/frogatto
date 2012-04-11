@@ -480,6 +480,7 @@ private:
 		} else if(left.is_callable()) {
 			return left.as_callable()->query_value(key.as_string());
 		} else {
+			std::cerr << "STACK TRACE FOR ERROR:\n" << get_call_stack() << "\n";
 			output_formula_error_info();
 			ASSERT_LOG(false, "illegal usage of operator []: called on " << left.to_debug_string() << " value: " << left_->str() << "'\n" << debug_pinpoint_location());
 		}
@@ -1943,6 +1944,42 @@ UNIT_TEST(formula_test_recursion) {
 	CHECK_EQ(f.execute().as_int(), 5050);
 }
 
+UNIT_TEST(formula_test_recurse_sort) {
+	formula f(variant(
+"def my_qsort(items) "
+"base size(items) <= 1: items "
+"recursive: my_qsort(filter(items, i, i < items[0])) +"
+"           filter(items, i, i = items[0]) +"
+"           my_qsort(filter(items, i, i > items[0]));"
+"my_qsort([4,10,2,9,1])"));
+	CHECK_EQ(f.execute(), formula(variant("[1,2,4,9,10]")).execute());
+}
+
+BENCHMARK(formula_recurse_sort) {
+	formula f(variant(
+"def my_qsort(items) "
+"base size(items) <= 1: items "
+"recursive: my_qsort(filter(items, i, i < items[0])) +"
+"           filter(items, i, i = items[0]) +"
+"           my_qsort(filter(items, i, i > items[0]));"
+"my_qsort(input)"));
+
+	std::vector<variant> input;
+	for(int n = 0; n != 100; ++n) {
+		input.push_back(variant(n));
+	}
+
+	std::vector<variant> expected_result = input;
+	variant expected_result_v(&expected_result);
+
+	std::random_shuffle(input.begin(), input.end());
+	static map_formula_callable* callable = new map_formula_callable;
+	callable->add("input", variant(&input));
+	BENCHMARK_LOOP {
+		CHECK_EQ(f.execute(*callable), expected_result_v);
+	}
+}
+
 BENCHMARK(formula_recursion) {
 	formula f(variant(
 "def my_index(ls, item, n)"
@@ -1952,16 +1989,15 @@ BENCHMARK(formula_recursion) {
 "my_index(range(1000001), pos, 0)"));
 
 	formula f2(variant(
-"def silly_add(a, c)"
+"def silly_add(a, b)"
 "base b <= 0: a "
-"recursive: silly_add(a+1, b-1) where b = c;"
+"recursive: silly_add(a+1, b-1);"
 "silly_add(0, pos)"));
 	static map_formula_callable* callable = new map_formula_callable;
 	callable->add("pos", variant(100000));
 	BENCHMARK_LOOP {
-		CHECK_EQ(f2.execute(*callable), variant(100000));
+		CHECK_EQ(f.execute(*callable), variant(100000));
 	}
-	
 }
 
 BENCHMARK(formula_if) {

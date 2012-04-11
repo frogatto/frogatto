@@ -127,7 +127,7 @@ void run_benchmark(const std::string& name, BenchmarkTest fn)
 	fn(1);
 
 	std::cerr << "RUNNING BENCHMARK " << name << "...\n";
-	const int MinTicks = 5000;
+	const int MinTicks = 1000;
 	for(int64_t nruns = 10; ; nruns *= 10) {
 		const int start_time = SDL_GetTicks();
 		fn(nruns);

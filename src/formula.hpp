@@ -69,6 +69,8 @@ public:
 
 	const_formula_callable_ptr wrap_callable_with_global_where(const formula_callable& callable) const;
 
+	const expression_ptr& expr() const { return expr_; }
+
 private:
 	formula() {}
 	variant str_;

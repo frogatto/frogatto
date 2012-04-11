@@ -90,6 +90,8 @@ public:
 
 	void set_str(const std::string& str) { str_ = str; }
 	const std::string& str() const { return str_; }
+
+	variant parent_formula() const { return parent_formula_; }
 protected:
 	virtual variant execute_member(const formula_callable& variables, std::string& id) const;
 private:
@@ -142,7 +144,6 @@ private:
 	mutable boost::intrusive_ptr<slot_formula_callable> callable_;
 
 	mutable boost::scoped_ptr<variant> fed_result_;
-	mutable int fed_result_count_;
 };
 
 typedef boost::shared_ptr<function_expression> function_expression_ptr;

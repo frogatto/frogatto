@@ -72,6 +72,28 @@ void pop_call_stack()
 
 std::string get_call_stack()
 {
+	variant current_frame;
+	std::string res;
+	std::vector<const game_logic::formula_expression*> reversed_call_stack = call_stack;
+	std::reverse(reversed_call_stack.begin(), reversed_call_stack.end());
+	for(std::vector<const game_logic::formula_expression*>::const_iterator i = reversed_call_stack.begin(); i != reversed_call_stack.end(); ++i) {
+		const game_logic::formula_expression* p = *i;
+		if(p && p->parent_formula() != current_frame) {
+			current_frame = p->parent_formula();
+			const variant::debug_info* info = current_frame.get_debug_info();
+			if(!info) {
+				res += "(UNKNOWN LOCATION)\n";
+			} else {
+				res += p->debug_pinpoint_location() + "\n";
+			}
+		}
+	}
+
+	return res;
+}
+
+std::string get_full_call_stack()
+{
 	std::string res;
 	for(std::vector<const game_logic::formula_expression*>::const_iterator i = call_stack.begin();
 	    i != call_stack.end(); ++i) {

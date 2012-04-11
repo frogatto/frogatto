@@ -1305,7 +1305,7 @@ private:
 
 formula_function_expression::formula_function_expression(const std::string& name, const args_list& args, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& arg_names)
 : function_expression(name, args, arg_names.size(), arg_names.size()),
-	formula_(formula), precondition_(precondition), arg_names_(arg_names), star_arg_(-1), fed_result_count_(-1)
+	formula_(formula), precondition_(precondition), arg_names_(arg_names), star_arg_(-1)
 {
 	assert(!precondition_ || !precondition_->str().empty());
 	for(size_t n = 0; n != arg_names_.size(); ++n) {
@@ -1318,15 +1318,21 @@ formula_function_expression::formula_function_expression(const std::string& name
 }
 
 namespace {
-std::stack<const_formula_ptr> formula_fn_stack;
+std::stack<const formula_function_expression*> formula_fn_stack;
 struct formula_function_scope {
-	explicit formula_function_scope(const const_formula_ptr& f) {
+	explicit formula_function_scope(const formula_function_expression* f) {
 		formula_fn_stack.push(f);
 	}
 
 	~formula_function_scope() {
 		formula_fn_stack.pop();
 	}
+};
+
+bool is_calculating_recursion = false;
+struct recursion_calculation_scope {
+	recursion_calculation_scope() { is_calculating_recursion = true; }
+	~recursion_calculation_scope() { is_calculating_recursion = false; }
 };
 
 
@@ -1336,6 +1342,7 @@ boost::intrusive_ptr<slot_formula_callable> formula_function_expression::calcula
 {
 	if(!callable_ || callable_->refcount() != 1) {
 		callable_ = boost::intrusive_ptr<slot_formula_callable>(new slot_formula_callable);
+		callable_->reserve(arg_names_.size());
 	}
 
 	callable_->set_names(&arg_names_);
@@ -1358,7 +1365,7 @@ boost::intrusive_ptr<slot_formula_callable> formula_function_expression::calcula
 
 variant formula_function_expression::execute(const formula_callable& variables) const
 {
-	if(fed_result_ && fed_result_count_-- == 0) {
+	if(fed_result_) {
 		variant result = *fed_result_;
 		fed_result_.reset();
 		return result;
@@ -1375,7 +1382,9 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 		}
 	}
 
-	if(!fed_result_ && formula_->has_guards() && !formula_fn_stack.empty() && formula_fn_stack.top() == formula_) {
+	if(!is_calculating_recursion && formula_->has_guards() && !formula_fn_stack.empty() && formula_fn_stack.top() == this) {
+		const recursion_calculation_scope recursion_scope;
+
 		typedef boost::intrusive_ptr<formula_callable> call_ptr;
 		std::vector<call_ptr> invocations;
 		invocations.push_back(tmp_callable);
@@ -1387,20 +1396,17 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 
 		if(invocations.size() > 2) {
 			while(invocations.empty() == false) {
-				fed_result_.reset(new variant(execute(*formula_->wrap_callable_with_global_where(*invocations.back()))));
-				fed_result_count_ = 1;
+				fed_result_.reset(new variant(formula_->expr()->evaluate(*formula_->wrap_callable_with_global_where(*invocations.back()))));
 				invocations.pop_back();
 			}
 
-			fed_result_count_ = -1;
 			variant result = *fed_result_;
 			fed_result_.reset();
-			std::cerr << "RECURSIVE RESULT: " << result << "\n";
 			return result;
 		}
 	}
 
-	formula_function_scope scope(formula_);
+	formula_function_scope scope(this);
 	variant res = formula_->execute(*tmp_callable);
 
 	callable_ = tmp_callable;
