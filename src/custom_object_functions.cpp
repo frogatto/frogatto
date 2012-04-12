@@ -500,73 +500,81 @@ END_FUNCTION_DEF(execute)
 class spawn_command : public entity_command_callable
 {
 public:
-	spawn_command(const std::string& type, int x, int y, bool face_right, variant instantiation_commands, bool player)
-	  : type_(type), x_(x), y_(y), face_right_(face_right), instantiation_commands_(instantiation_commands), player_(player)
+	spawn_command(boost::intrusive_ptr<custom_object> obj, variant instantiation_commands)
+	  : obj_(obj), instantiation_commands_(instantiation_commands)
 	{}
 	virtual void execute(level& lvl, entity& ob) const {
-		custom_object* obj = new custom_object(type_, x_, y_, face_right_);
-		if(player_) {
-			//make a playable version of this object
-			custom_object* player = new playable_custom_object(*obj);
-			delete obj;
-			obj = player;
-		}
+		obj_->set_level(lvl);
+		obj_->set_spawned_by(ob.label());
 
-		obj->set_level(lvl);
-		obj->set_spawned_by(ob.label());
-		entity_ptr e = obj;
-		
-		//spawn with the spawned object's midpoint (rather than its upper-left corner) at x_, y_.
-		//This means objects are centered on the point they're spawned on, which is a lot more intuitive for scripting.
-		e->set_pos(e->x() - e->current_frame().width() / 2 , e->y() - e->current_frame().height() / 2);
-
-		if(!place_entity_in_level_with_large_displacement(lvl, *obj)) {
+		if(!place_entity_in_level_with_large_displacement(lvl, *obj_)) {
 			return;
 		}
 
-		lvl.add_character(e);
+		lvl.add_character(obj_);
 
-		e->execute_command(instantiation_commands_);
+		obj_->execute_command(instantiation_commands_);
 
 		//send an event to the parent to let them know they've spawned a child,
 		//and let them record the child's details.
 		game_logic::map_formula_callable* spawn_callable(new game_logic::map_formula_callable);
 		variant holder(spawn_callable);
 		spawn_callable->add("spawner", variant(&ob));
-		spawn_callable->add("child", variant(obj));
+		spawn_callable->add("child", variant(obj_.get()));
 		ob.handle_event("child_spawned", spawn_callable);
-		obj->handle_event("spawned", spawn_callable);
+		obj_->handle_event("spawned", spawn_callable);
 
-		if(entity_collides(lvl, *e, MOVE_NONE)) {
-			lvl.remove_character(e);
+		if(entity_collides(lvl, *obj_, MOVE_NONE)) {
+			lvl.remove_character(obj_);
 		}
 	}
 private:
-	std::string type_;
-	int x_, y_;
+	boost::intrusive_ptr<custom_object> obj_;
 	variant instantiation_commands_;
-	bool face_right_;
-	bool player_;
 };
 
 FUNCTION_DEF(spawn, 4, 5, "spawn(string type_id, int midpoint_x, int midpoint_y, int facing, (optional) list of commands cmd): will create a new object of type given by type_id with the given midpoint and facing. Immediately after creation the object will have any commands given by cmd executed on it. The child object will have the spawned event sent to it, and the parent object will have the child_spawned event sent to it.")
-	return variant(new spawn_command(
-	                 args()[0]->evaluate(variables).as_string(),
-	                 args()[1]->evaluate(variables).as_int(),
-	                 args()[2]->evaluate(variables).as_int(),
-	                 args()[3]->evaluate(variables).as_int() > 0,
-					 args().size() > 4 ? args()[4]->evaluate(variables) : variant(),
-					 false));
+
+	formula::fail_if_static_context();
+
+	const std::string type = EVAL_ARG(0).as_string();
+	const int x = EVAL_ARG(1).as_int();
+	const int y = EVAL_ARG(2).as_int();
+	const bool facing = EVAL_ARG(3).as_int() > 0;
+	boost::intrusive_ptr<custom_object> obj(new custom_object(type, x, y, facing));
+	obj->set_pos(obj->x() - obj->current_frame().width() / 2 , obj->y() - obj->current_frame().height() / 2);
+
+	variant commands;
+	if(args().size() > 4) {
+		map_formula_callable_ptr callable = new map_formula_callable(&variables);
+		callable->add("child", variant(obj.get()));
+		commands = args()[4]->evaluate(*callable);
+	}
+
+	return variant(new spawn_command(obj, commands));
 END_FUNCTION_DEF(spawn)
 
 FUNCTION_DEF(spawn_player, 4, 5, "spawn_player(string type_id, int midpoint_x, int midpoint_y, int facing, (optional) list of commands cmd): identical to spawn except that the new object is playable.")
-	return variant(new spawn_command(
-	                 args()[0]->evaluate(variables).as_string(),
-	                 args()[1]->evaluate(variables).as_int(),
-	                 args()[2]->evaluate(variables).as_int(),
-	                 args()[3]->evaluate(variables).as_int() > 0,
-					 args().size() > 4 ? args()[4]->evaluate(variables) : variant(),
-					 true));
+
+	formula::fail_if_static_context();
+
+	const std::string type = EVAL_ARG(0).as_string();
+	const int x = EVAL_ARG(1).as_int();
+	const int y = EVAL_ARG(2).as_int();
+	const bool facing = EVAL_ARG(3).as_int() > 0;
+	boost::intrusive_ptr<custom_object> obj(new custom_object(type, x, y, facing));
+	obj.reset(new playable_custom_object(*obj));
+	obj->set_pos(obj->x() - obj->current_frame().width() / 2 , obj->y() - obj->current_frame().height() / 2);
+
+	variant commands;
+	if(args().size() > 4) {
+		map_formula_callable_ptr callable = new map_formula_callable(&variables);
+		callable->add("child", variant(obj.get()));
+		commands = args()[4]->evaluate(*callable);
+	}
+
+	return variant(new spawn_command(obj, commands));
+
 END_FUNCTION_DEF(spawn_player)
 
 FUNCTION_DEF(object, 1, 5, "object(string type_id, int midpoint_x, int midpoint_y, int facing, (optional) map properties) -> object: constructs and returns a new object. Note that the difference between this and spawn is that spawn returns a command to actually place the object in the level. object only creates the object and returns it. It may be stored for later use.")

@@ -271,8 +271,6 @@ void playable_custom_object::set_value(const std::string& key, const variant& va
 				state |= 1 << control_key;
 			}
 
-			std::cerr << "SET CONTROL STATE: " << (int)state << "\n";
-
 			//destroy the old one before creating a new control_lock,
 			//since control_lock objects must be constructed and destroyed
 			//in FIFO order.
