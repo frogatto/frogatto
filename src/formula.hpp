@@ -33,6 +33,16 @@ class formula_expression;
 class function_symbol_table;
 typedef boost::shared_ptr<formula_expression> expression_ptr;
 
+//helper struct which contains info for a where expression.
+struct where_variables_info : public reference_counted_object {
+	explicit where_variables_info(int nslot) : base_slot(nslot) {}
+	std::vector<std::string> names;
+	std::vector<expression_ptr> entries;
+	int base_slot;
+};
+
+typedef boost::intrusive_ptr<where_variables_info> where_variables_info_ptr;
+
 class formula {
 public:
 	//a function which makes the current executing formula fail if
@@ -84,13 +94,7 @@ private:
 	};
 	std::vector<BaseCase> base_expr_;
 
-	struct WhereInfo {
-		WhereInfo() : base_slot(0) {}
-		std::vector<expression_ptr> entries;
-		int base_slot;
-	};
-
-	boost::shared_ptr<WhereInfo> global_where_;
+	where_variables_info_ptr global_where_;
 
 	void check_brackets_match(const std::vector<formula_tokenizer::token>& tokens) const;
 

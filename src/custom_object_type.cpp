@@ -585,7 +585,7 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 		}
 	}
 
-	ASSERT_LOG(default_frame_, "OBJECT " << node.write_json() << " NO ANIMATIONS FOR OBJECT '" << id_ << "'");
+	ASSERT_LOG(default_frame_, "OBJECT " << id_ << " NO ANIMATIONS FOR OBJECT: " << node.write_json() << "'");
 
 	std::vector<variant> available_frames;
 	for(frame_map::const_iterator i = frames_.begin(); i != frames_.end(); ++i) {

@@ -732,22 +732,22 @@ const_formula_callable_definition_ptr create_where_definition(expr_table_ptr tab
 
 class where_variables: public formula_callable {
 public:
-	where_variables(const formula_callable &base, int base_slot, const std::vector<expression_ptr>& entries)
-	: formula_callable(false), base_(&base), entries_(entries), base_slot_(base_slot) { }
+	where_variables(const formula_callable &base, where_variables_info_ptr info)
+	: formula_callable(false), base_(&base), info_(info)
+	{}
 private:
 	boost::intrusive_ptr<const formula_callable> base_;
-	std::vector<expression_ptr> entries_;
-	int base_slot_;
+	where_variables_info_ptr info_;
 	
 	mutable std::vector<variant> results_cache_;
 
 	variant get_value_by_slot(int slot) const {
-		if(slot >= base_slot_) {
-			slot -= base_slot_;
+		if(slot >= info_->base_slot) {
+			slot -= info_->base_slot;
 			if(slot < results_cache_.size() && results_cache_[slot].is_null() == false) {
 				return results_cache_[slot];
 			} else {
-				variant result = entries_[slot]->evaluate(*base_);
+				variant result = info_->entries[slot]->evaluate(*base_);
 				if(results_cache_.size() <= slot) {
 					results_cache_.resize(slot+1);
 				}
@@ -761,24 +761,31 @@ private:
 	}
 	
 	variant get_value(const std::string& key) const {
-		return base_->query_value(key);
+		const variant result = base_->query_value(key);
+		if(result.is_null()) {
+			std::vector<std::string>::const_iterator i = std::find(info_->names.begin(), info_->names.end(), key);
+			if(i != info_->names.end()) {
+				const int slot = i - info_->names.begin();
+				return get_value_by_slot(info_->base_slot + slot);
+			}
+		}
+		return result;
 	}
 };
 
 class where_expression: public formula_expression {
 public:
-	where_expression(expression_ptr body, int base_slot, const std::vector<expression_ptr>& clauses)
-	: formula_expression("_where"), body_(body), base_slot_(base_slot), clauses_(clauses)
+	where_expression(expression_ptr body, where_variables_info_ptr info)
+	: formula_expression("_where"), body_(body), info_(info)
 	{
 	}
 	
 private:
 	expression_ptr body_;
-	int base_slot_;
-	std::vector<expression_ptr> clauses_;
+	where_variables_info_ptr info_;
 	
 	variant execute(const formula_callable& variables) const {
-		formula_callable_ptr wrapped_variables(new where_variables(variables, base_slot_, clauses_));
+		formula_callable_ptr wrapped_variables(new where_variables(variables, info_));
 		return body_->evaluate(*wrapped_variables);
 	}
 };
@@ -1516,15 +1523,18 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 	
 	if(op_name == "where") {
 		const int base_slots = callable_def ? callable_def->num_slots() : 0;
+		where_variables_info_ptr where_info(new where_variables_info(base_slots));
+
 		expr_table_ptr table(new expr_table());
 		parse_where_clauses(formula_str, op+1, i2, table, symbols, callable_def);
 		std::vector<expression_ptr> entries;
 		for(expr_table::iterator i = table->begin(); i != table->end(); ++i) {
-			entries.push_back(i->second);
+			where_info->names.push_back(i->first);
+			where_info->entries.push_back(i->second);
 		}
 
 		const_formula_callable_definition_ptr callable_where_def = create_where_definition(table, callable_def);
-		return expression_ptr(new where_expression(parse_expression(formula_str, i1, op, symbols, callable_where_def.get(), can_optimize), base_slots, entries));
+		return expression_ptr(new where_expression(parse_expression(formula_str, i1, op, symbols, callable_where_def.get(), can_optimize), where_info));
 	}
 
 	const bool is_dot = op_name == ".";
@@ -1615,11 +1625,11 @@ formula::formula(const variant& val, function_symbol_table* symbols, const formu
 			const token* where_tok = recursive_case;
 
 			if(token_matcher(TOKEN_OPERATOR).add("where").find_match(where_tok, end_tokens)) {
-				global_where_.reset(new WhereInfo);
-				global_where_->base_slot = callable_definition ? callable_definition->num_slots() : 0;
+				global_where_.reset(new where_variables_info(callable_definition ? callable_definition->num_slots() : 0));
 				expr_table_ptr table(new expr_table());
 				parse_where_clauses(str_, where_tok+1, end_tokens, table, symbols, callable_definition);
 				for(expr_table::iterator i = table->begin(); i != table->end(); ++i) {
+					global_where_->names.push_back(i->first);
 					global_where_->entries.push_back(i->second);
 				}
 
@@ -1661,10 +1671,10 @@ formula::formula(const variant& val, function_symbol_table* symbols, const formu
 		expr_ = parse_expression(str_, tok, end_tokens, symbols, callable_definition);
 
 		if(global_where_) {
-			expr_.reset(new where_expression(expr_, global_where_->base_slot, global_where_->entries));
+			expr_.reset(new where_expression(expr_, global_where_));
 			foreach(BaseCase& base, base_expr_) {
-				base.guard.reset(new where_expression(base.guard, global_where_->base_slot, global_where_->entries));
-				base.expr.reset(new where_expression(base.expr, global_where_->base_slot, global_where_->entries));
+				base.guard.reset(new where_expression(base.guard, global_where_));
+				base.expr.reset(new where_expression(base.expr, global_where_));
 			}
 		}
 	} else {
@@ -1675,7 +1685,7 @@ formula::formula(const variant& val, function_symbol_table* symbols, const formu
 const_formula_callable_ptr formula::wrap_callable_with_global_where(const formula_callable& callable) const
 {
 	if(global_where_) {
-		const_formula_callable_ptr wrapped_variables(new where_variables(callable, global_where_->base_slot, global_where_->entries));
+		const_formula_callable_ptr wrapped_variables(new where_variables(callable, global_where_));
 		return wrapped_variables;
 	} else {
 		return const_formula_callable_ptr(&callable);
@@ -1854,10 +1864,12 @@ variant formula::execute(const formula_callable& variables) const
 			last_executed_formula = prev_executed;
 		}
 		return result;
-	} catch(type_error& e) {
-		output_debug_info();
-		ASSERT_LOG(false, "formula type error: " << e.message << "\n");
+	} catch(std::string& e) {
+//		output_debug_info();
+//		ASSERT_LOG(false, "formula type error: " << e.message << "\n");
 	}
+
+	ASSERT_LOG(false, "");
 }
 
 variant formula::execute() const
