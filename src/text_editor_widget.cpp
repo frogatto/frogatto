@@ -796,6 +796,10 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 		if(on_tab_) {
 			on_tab_();
 		}
+
+		if(nrows_ == 1) {
+			break;
+		}
 	}
 	default: {
 		const char c = event.keysym.unicode;
