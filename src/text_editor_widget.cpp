@@ -745,12 +745,6 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 		refresh_scrollbar();
 		on_change();
 		break;
-	case SDLK_TAB: {
-		if(on_tab_) {
-			on_tab_();
-		}
-		break;
-	}
 
 	case SDLK_RETURN: {
 		if(record_op("enter")) {
@@ -798,9 +792,14 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 		
 		break;
 	}
+	case SDLK_TAB: {
+		if(on_tab_) {
+			on_tab_();
+		}
+	}
 	default: {
 		const char c = event.keysym.unicode;
-		if(util::c_isprint(c)) {
+		if(util::c_isprint(c) || c == '\t') {
 			if(record_op("chars")) {
 				save_undo_state();
 			}

@@ -1976,15 +1976,14 @@ UNIT_TEST(formula_where_map) {
 
 BENCHMARK(formula_recurse_sort) {
 	formula f(variant(
-"def my_qsort(items) "
-"base size(items) <= 1: items "
-"recursive: my_qsort(filter(items, i, i < items[0])) +"
-"           filter(items, i, i = items[0]) +"
-"           my_qsort(filter(items, i, i > items[0]));"
+"def my_qsort(items) if(size(items) <= 1, items,"
+" my_qsort(filter(items, i, i < items[0])) +"
+"          filter(items, i, i = items[0]) +"
+" my_qsort(filter(items, i, i > items[0])));"
 "my_qsort(input)"));
 
 	std::vector<variant> input;
-	for(int n = 0; n != 100; ++n) {
+	for(int n = 0; n != 100000; ++n) {
 		input.push_back(variant(n));
 	}
 
