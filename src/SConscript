@@ -60,7 +60,6 @@ gui_section.cpp
 i18n.cpp
 image_widget.cpp
 input.cpp
-inventory.cpp
 iphone_controls.cpp
 joystick.cpp
 json_parser.cpp
@@ -88,7 +87,6 @@ particle_system.cpp
 pause_game_dialog.cpp
 playable_custom_object.cpp
 player_info.cpp
-powerup.cpp
 preferences.cpp
 preprocessor.cpp
 preview_tileset_widget.cpp
@@ -130,10 +128,6 @@ water_particle_system.cpp
 weather_particle_system.cpp
 widget.cpp
 wml_formula_callable.cpp
-wml_modify.cpp
-wml_node.cpp
-wml_parser.cpp
-wml_utils.cpp
 unit_test.cpp
 formula_test.cpp
 loading_screen.cpp
