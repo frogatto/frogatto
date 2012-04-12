@@ -1028,7 +1028,7 @@ void parse_set_args(const variant& formula_str, const token* i1, const token* i2
 				res->push_back(parse_expression(formula_str, beg,i1, symbols, callable_def));
 				beg = i1+1;
 			} else {
-				ASSERT_LOG(false, "Too many '->' operators\n" << pinpoint_location(formula_str, i1->begin, (i2-1)->end));
+				ASSERT_LOG(false, "Too many ':' operators. (This may be caused by a map structure inside a map structure. Try enclosing curly bracket pairs in brackets -- for example {1:{2:3}} becomes {1:({2:3})}.)\n" << pinpoint_location(formula_str, i1->begin, (i2-1)->end));
 			}
 		} else if( i1->type == TOKEN_COMMA && !parens ) {
 			check_pointer = false;
