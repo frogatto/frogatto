@@ -1,12 +1,17 @@
 #ifndef CHARACTER_EDITOR_DIALOG_HPP_INCLUDED
 #define CHARACTER_EDITOR_DIALOG_HPP_INCLUDED
 
+#include <map>
 #include <string>
 
 #include "dialog.hpp"
 #include "widget.hpp"
 
 class editor;
+
+namespace gui {
+class border_widget;
+}
 
 namespace editor_dialogs
 {
@@ -26,6 +31,13 @@ private:
 	editor& editor_;
 	std::string category_;
 	gui::widget_ptr context_menu_;
+
+	gui::widget_ptr generate_grid(const std::string& category);
+	std::map<std::string, gui::widget_ptr> grids_;
+
+	//the borders around each object, we set the currently selected one
+	//to white, and all the others to transparent.
+	std::map<std::string, std::vector<gui::border_widget*> > grid_borders_;
 
 	int first_index_;
 };

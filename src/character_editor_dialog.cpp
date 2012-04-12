@@ -36,43 +36,66 @@ void character_editor_dialog::init()
 	button* category_button = new button(widget_ptr(new label(category_, graphics::color_white())), boost::bind(&character_editor_dialog::show_category_menu, this));
 	add_widget(widget_ptr(category_button), 10, 10);
 
-	grid_ptr grid(new gui::grid(3));
-	grid->set_max_height(height() - 50);
-	int index = 0;
-	first_index_ = -1;
-	foreach(const editor::enemy_type& c, editor_.all_characters()) {
-		if(c.category == category_) {
-			if(first_index_ == -1) {
-				first_index_ = index;
-			}
-
-			image_widget* preview = new image_widget(c.preview_frame->img());
-			preview->set_dim(36, 36);
-			preview->set_area(c.preview_frame->area());
-			button_ptr char_button(new button(widget_ptr(preview), boost::bind(&character_editor_dialog::set_character, this, index)));
-
-			std::string tooltip_str = c.node["type"].as_string();
-			const_editor_entity_info_ptr editor_info = c.preview_object->editor_info();
-			if(editor_info && !editor_info->help().empty()) {
-				tooltip_str += "\n" + editor_info->help();
-			}
-			char_button->set_tooltip(tooltip_str);
-			char_button->set_dim(40, 40);
-			grid->add_col(gui::widget_ptr(new gui::border_widget(char_button, index == editor_.get_object() ? graphics::color(255,255,255,255) : graphics::color(0,0,0,0))));
-		}
-
-		++index;
-	}
-
-	grid->finish_row();
-	add_widget(grid);
-
+	add_widget(generate_grid(category_));
 
 	button* facing_button = new button(
 	  widget_ptr(new label(editor_.face_right() ? "right" : "left", graphics::color_white())),
 	  boost::bind(&editor::toggle_facing, &editor_));
 	facing_button->set_tooltip("f  Change Facing");
 	add_widget(widget_ptr(facing_button), category_button->x() + category_button->width() + 10, 10);
+}
+
+gui::widget_ptr character_editor_dialog::generate_grid(const std::string& category)
+{
+	using namespace gui;
+	widget_ptr& result = grids_[category];
+	std::vector<gui::border_widget*>& borders = grid_borders_[category];
+	if(!result) {
+
+		grid_ptr grid(new gui::grid(3));
+		grid->set_max_height(height() - 50);
+		int index = 0;
+		first_index_ = -1;
+		foreach(const editor::enemy_type& c, editor_.all_characters()) {
+			if(c.category == category_) {
+				if(first_index_ == -1) {
+					first_index_ = index;
+				}
+
+				image_widget* preview = new image_widget(c.preview_frame->img());
+				preview->set_dim(36, 36);
+				preview->set_area(c.preview_frame->area());
+				button_ptr char_button(new button(widget_ptr(preview), boost::bind(&character_editor_dialog::set_character, this, index)));
+	
+				std::string tooltip_str = c.node["type"].as_string();
+				const_editor_entity_info_ptr editor_info = c.preview_object->editor_info();
+				if(editor_info && !editor_info->help().empty()) {
+					tooltip_str += "\n" + editor_info->help();
+				}
+				char_button->set_tooltip(tooltip_str);
+				char_button->set_dim(40, 40);
+				borders.push_back(new gui::border_widget(char_button, graphics::color(0,0,0,0)));
+				grid->add_col(gui::widget_ptr(borders.back()));
+			} else {
+				borders.push_back(NULL);
+			}
+	
+			++index;
+		}
+
+		grid->finish_row();
+
+		result = grid;
+	}
+
+	for(int n = 0; n != borders.size(); ++n) {
+		if(!borders[n]) {
+			continue;
+		}
+		borders[n]->set_color(n == editor_.get_object() ? graphics::color(255,255,255,255) : graphics::color(0,0,0,0));
+	}
+
+	return result;
 }
 
 void character_editor_dialog::show_category_menu()
