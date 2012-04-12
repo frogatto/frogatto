@@ -17,13 +17,6 @@ public:
 	{}
 
 	int get_slot(const std::string& key) const {
-		if(base_) {
-			int result = base_->get_slot(key);
-			if(result != -1) {
-				return result;
-			}
-		}
-
 		int index = 0;
 		foreach(const entry& e, entries_) {
 			if(e.id == key) {
@@ -31,6 +24,13 @@ public:
 			}
 
 			++index;
+		}
+
+		if(base_) {
+			int result = base_->get_slot(key);
+			if(result != -1) {
+				return result;
+			}
 		}
 
 		return -1;

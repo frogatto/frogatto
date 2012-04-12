@@ -381,16 +381,17 @@ private:
 
 class lambda_function_expression : public formula_expression {
 public:
-	lambda_function_expression(const std::vector<std::string>& args, const_formula_ptr fml) : args_(args), fml_(fml)
+	lambda_function_expression(const std::vector<std::string>& args, const_formula_ptr fml, int base_slot) : args_(args), fml_(fml), base_slot_(base_slot)
 	{}
 	
 private:
 	variant execute(const formula_callable& variables) const {
-		return variant(fml_, args_, variables);
+		return variant(fml_, args_, variables, base_slot_);
 	}
 	
 	std::vector<std::string> args_;
 	game_logic::const_formula_ptr fml_;
+	int base_slot_;
 };
 
 class function_call_expression : public formula_expression {
@@ -1237,11 +1238,10 @@ expression_ptr parse_function_def(const variant& formula_str, const token*& i1, 
 	
 	recursive_function_symbol_table recursive_symbols(formula_name.empty() ? "recurse" : formula_name, args, symbols);
 
-	formula_callable_definition_ptr args_definition;
+	//create a definition of the callable representing
+	//function arguments.
+	formula_callable_definition_ptr args_definition = create_formula_callable_definition(&args[0], &args[0] + args.size(), formula_name.empty() ? callable_def : NULL /*only get the surrounding scope if we have a lambda function.*/);
 	if(formula_name.empty() == false) {
-		//create a definition of the callable representing
-		//function arguments.
-		args_definition = create_formula_callable_definition(&args[0], &args[0] + args.size());
 		for(int n = 0; n != types.size(); ++n) {
 			if(types[n].empty()) {
 				continue;
@@ -1255,11 +1255,11 @@ expression_ptr parse_function_def(const variant& formula_str, const token*& i1, 
 		}
 	}
 
-	const_formula_ptr fml(new formula(function_var, &recursive_symbols, args_definition ? args_definition.get() : callable_def));
+	const_formula_ptr fml(new formula(function_var, &recursive_symbols, args_definition.get()));
 	recursive_symbols.resolve_recursive_calls(fml);
 	
 	if(formula_name.empty()) {
-		return expression_ptr(new lambda_function_expression(args, fml));
+		return expression_ptr(new lambda_function_expression(args, fml, callable_def ? callable_def->num_slots() : 0));
 	}
 
 	const std::string precond = "";
@@ -1635,6 +1635,8 @@ formula::formula(const variant& val, function_symbol_table* symbols, const formu
 
 				global_where_def = create_where_definition(table, callable_definition);
 				callable_definition = global_where_def.get();
+
+				end_tokens = where_tok;
 			}
 
 			while(tok->type == TOKEN_KEYWORD && std::string(tok->begin, tok->end) == "base") {

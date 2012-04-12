@@ -12,6 +12,7 @@
 #include "formatter.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
+#include "formula_callable_utils.hpp"
 #include "i18n.hpp"
 #include "unit_test.hpp"
 #include "variant.hpp"
@@ -180,6 +181,7 @@ struct variant_fn {
 
 	game_logic::const_formula_callable_ptr callable;
 
+	int base_slot;
 	int refcount;
 };
 
@@ -341,7 +343,7 @@ variant::variant(std::map<variant,variant>* map)
 	increment_refcount();
 }
 
-variant::variant(game_logic::const_formula_ptr fml, const std::vector<std::string>& args, const game_logic::formula_callable& callable)
+variant::variant(game_logic::const_formula_ptr fml, const std::vector<std::string>& args, const game_logic::formula_callable& callable, int base_slot)
   : type_(TYPE_FUNCTION)
 {
 	fn_ = new variant_fn;
@@ -351,6 +353,7 @@ variant::variant(game_logic::const_formula_ptr fml, const std::vector<std::strin
 		fn_->begin_args = &args[0];
 		fn_->end_args = fn_->begin_args + args.size();
 	}
+	fn_->base_slot = base_slot;
 	fn_->fn = fml;
 	fn_->callable = &callable;
 	increment_refcount();
@@ -513,11 +516,15 @@ variant variant::get_list_slice(int begin, int end) const
 variant variant::operator()(const std::vector<variant>& args) const
 {
 	must_be(TYPE_FUNCTION);
-	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(fn_->callable.get());
-	variant v(callable);
+	boost::intrusive_ptr<game_logic::slot_formula_callable> callable = new game_logic::slot_formula_callable;
+	if(fn_->callable) {
+		callable->set_fallback(fn_->callable);
+	}
+
+	callable->set_base_slot(fn_->base_slot);
 
 	for(size_t n = 0; n != args.size() && n != fn_->end_args - fn_->begin_args; ++n) {
-		callable->add(fn_->begin_args[n], args[n]);
+		callable->add(args[n]);
 	}
 
 	return fn_->fn->execute(*callable);
