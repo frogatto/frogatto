@@ -95,7 +95,7 @@ json_macro::json_macro(const std::string& code, std::map<std::string, json_macro
 
 enum VAL_TYPE { VAL_NONE, VAL_OBJ, VAL_ARRAY };
 struct JsonObject {
-	explicit JsonObject(variant::debug_info debug_info) : type(VAL_NONE), is_base(false), is_call(false), is_deriving(false), require_comma(false), require_colon(false), flatten(false), info(debug_info), begin_macro(NULL) {}
+	JsonObject(variant::debug_info debug_info, bool preprocess) : type(VAL_NONE), is_base(false), is_call(false), is_deriving(false), require_comma(false), require_colon(false), flatten(false), info(debug_info), begin_macro(NULL), use_preprocessor(preprocess) {}
 	std::map<variant, variant> obj;
 	std::vector<variant> array;
 	VAL_TYPE type;
@@ -115,6 +115,8 @@ struct JsonObject {
 
 	const char* begin_macro;
 
+	bool use_preprocessor;
+
 	void setup_base(variant v) {
 		if(v.is_null()) {
 			return;
@@ -129,6 +131,10 @@ struct JsonObject {
 	}
 
 	void add(variant name, variant v) {
+		if(use_preprocessor && name.is_string() && name.as_string() == "@base") {
+			return;
+		}
+
 		if(type == VAL_OBJ) {
 			if(is_deriving) {
 				setup_base(v);
@@ -206,8 +212,8 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 	const char* i2 = i1 + doc.size();
 	try {
 		std::vector<JsonObject> stack;
-		stack.push_back(JsonObject(debug_info));
-		stack.push_back(JsonObject(debug_info));
+		stack.push_back(JsonObject(debug_info, use_preprocessor));
+		stack.push_back(JsonObject(debug_info, use_preprocessor));
 		stack[0].type = VAL_ARRAY;
 
 		for(Token t = get_token(i1, i2); t.type != Token::NUM_TYPES; t = get_token(i1, i2)) {
@@ -248,7 +254,7 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 
 			case Token::TYPE_LCURLY: {
 				if(stack.back().type == VAL_ARRAY) {
-					stack.push_back(JsonObject(debug_info));
+					stack.push_back(JsonObject(debug_info, use_preprocessor));
 					stack.back().setup_base(stack[stack.size()-2].base);
 				}
 
@@ -287,7 +293,7 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 
 			case Token::TYPE_LSQUARE: {
 				if(stack.back().type == VAL_ARRAY) {
-					stack.push_back(JsonObject(debug_info));
+					stack.push_back(JsonObject(debug_info, use_preprocessor));
 				}
 
 				CHECK_PARSE(stack.back().type == VAL_NONE, "Unexpected [", t.begin - doc.c_str());
@@ -361,7 +367,7 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 				}
 
 				if(stack.back().type == VAL_OBJ) {
-					stack.push_back(JsonObject(debug_info));
+					stack.push_back(JsonObject(debug_info, use_preprocessor));
 					v.set_debug_info(debug_info);
 					stack.back().name = v;
 					stack.back().require_colon = true;
@@ -490,6 +496,8 @@ UNIT_TEST(json_base)
 
 	CHECK_EQ(v[2]["x"], variant(5));
 	CHECK_EQ(v[2]["y"], variant(4));
+
+	CHECK_EQ(v[0]["@base"].is_null(), true);
 }
 
 UNIT_TEST(json_flatten)
