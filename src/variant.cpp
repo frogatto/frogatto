@@ -527,12 +527,16 @@ variant variant::operator()(const std::vector<variant>& args) const
 
 	callable->set_base_slot(fn_->base_slot);
 
-	if(args.size() != fn_->end_args - fn_->begin_args) {
+	if(args.size() > fn_->end_args - fn_->begin_args) {
 		throw type_error(formatter() << "Function passed " << args.size() << " arguments, " << (fn_->end_args - fn_->begin_args) << " expected");
 	}
 
 	for(size_t n = 0; n != args.size(); ++n) {
 		callable->add(args[n]);
+	}
+
+	for(size_t n = args.size(); n < fn_->end_args - fn_->begin_args; ++n) {
+		callable->add(variant());
 	}
 
 	return fn_->fn->execute(*callable);
