@@ -799,6 +799,8 @@ const_custom_object_type_ptr custom_object_type::get_variation(const std::vector
 			variant cmd = var_itor->second->execute(*callable);
 
 			execute_variation_command(cmd, *callable);
+
+			std::cerr << "VARIATION " << v << ":\n--- BEFORE ---\n" << node.write_json() << "\n--- AFTER ---\n" << node_.write_json() << "\n--- DONE ---\n";
 		}
 
 		//set our constants so the variation can decide whether it needs

@@ -3219,6 +3219,9 @@ void level::set_value(const std::string& key, const variant& value)
 	} else if(key == "debug_properties") {
 		if(value.is_null()) {
 			debug_properties_.clear();
+		} else if(value.is_string()) {
+			debug_properties_.clear();
+			debug_properties_.push_back(value.as_string());
 		} else {
 			debug_properties_ = value.as_list_string();
 		}
