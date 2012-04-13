@@ -815,6 +815,35 @@ void custom_object::draw() const
 	}
 #endif
 
+	if(level::current().debug_properties().empty() == false) {
+		std::vector<graphics::texture> left, right;
+		int max_property_width = 0;
+		foreach(const std::string& s, level::current().debug_properties()) {
+			try {
+				const assert_recover_scope scope;
+				variant result = game_logic::formula(variant(s)).execute(*this);
+				const std::string result_str = result.write_json();
+				graphics::texture key_texture = font::render_text(s, graphics::color_white(), 16);
+				graphics::texture value_texture = font::render_text(result_str, graphics::color_white(), 16);
+				left.push_back(key_texture);
+				right.push_back(value_texture);
+	
+				if(key_texture.width() > max_property_width) {
+					max_property_width = key_texture.width();
+				}
+			} catch(validation_failure_exception&) {
+			}
+		}
+
+		int pos = y();
+		for(int n = 0; n != left.size(); ++n) {
+			const int xpos = midpoint().x + 10;
+			graphics::blit_texture(left[n], xpos, pos);
+			graphics::blit_texture(right[n], xpos + max_property_width + 10, pos);
+			pos += std::max(left[n].height(), right[n].height());
+		}
+	}
+
 	if(preferences::show_debug_hitboxes() && platform_area_) {
 		std::vector<GLfloat> v;
 		const rect& r = platform_rect();

@@ -316,6 +316,8 @@ public:
 	typedef std::vector<level_tile>::const_iterator TileItor;
 	std::pair<TileItor, TileItor> tiles_at_loc(int x, int y) const;
 
+	const std::vector<std::string>& debug_properties() const { return debug_properties_; }
+
 private:
 
 	void read_compiled_tiles(variant node, std::vector<level_tile>::iterator& out);
@@ -560,6 +562,10 @@ private:
 
 	std::string sub_level_str_;
 	std::map<std::string, sub_level_data> sub_levels_;
+
+	//A list of properties that each object in the level should display
+	//for debugging purposes.
+	std::vector<std::string> debug_properties_;
 };
 
 bool entity_in_current_level(const entity* e);

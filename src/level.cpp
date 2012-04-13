@@ -3163,6 +3163,8 @@ variant level::get_value(const std::string& key) const
 		pos.push_back(variant(graphics::screen_width()));
 		pos.push_back(variant(graphics::screen_height()));
 		return variant(&pos);
+	} else if(key == "debug_properties") {
+		return vector_to_variant(debug_properties_);
 	} else {
 		const_entity_ptr e = get_entity_by_label(key);
 		if(e) {
@@ -3214,6 +3216,12 @@ void level::set_value(const std::string& key, const variant& value)
 		ASSERT_EQ(value.num_elements(), 2);
 		last_draw_position().x = value[0].as_int();
 		last_draw_position().y = value[1].as_int();
+	} else if(key == "debug_properties") {
+		if(value.is_null()) {
+			debug_properties_.clear();
+		} else {
+			debug_properties_ = value.as_list_string();
+		}
 	} else {
 		vars_ = vars_.add_attr(variant(key), value);
 	}
