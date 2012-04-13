@@ -63,6 +63,14 @@ SDLKey sdlk[NUM_CONTROLS] = {
 #endif
 };
 
+//If any of these keys are held, we ignore other keyboard input.
+SDLKey control_keys[] = {
+	SDLK_LCTRL,
+	SDLK_RCTRL,
+	SDLK_LALT,
+	SDLK_RALT,
+};
+
 int32_t our_highest_confirmed() {
 	int32_t res = -1;
 	for(int n = 0; n != nplayers; ++n) {
@@ -203,8 +211,16 @@ void read_local_controls()
 
 	unsigned char state = 0;
 	if(local_control_locks.empty()) {
+		bool ignore_keypresses = false;
+		foreach(const SDLKey& k, control_keys) {
+			if(keyboard()[k]) {
+				ignore_keypresses = true;
+				break;
+			}
+		}
+
 		for(int n = 0; n < NUM_CONTROLS; ++n) {
-			if(keyboard()[sdlk[n]]) {
+			if(keyboard()[sdlk[n]] && !ignore_keypresses) {
 				if(!key_ignore[n]) {
 					state |= (1 << n);
 				}
