@@ -68,6 +68,7 @@ public:
 	variant execute(const formula_callable& variables) const;
 	variant execute() const;
 	std::string str() const { return str_.as_string(); }
+	variant str_var() const { return str_; }
 
 	void output_debug_info() const;
 

@@ -386,7 +386,8 @@ public:
 	
 private:
 	variant execute(const formula_callable& variables) const {
-		return variant(fml_, args_, variables, base_slot_);
+		variant v(fml_, args_, variables, base_slot_);
+		return v;
 	}
 	
 	std::vector<std::string> args_;

@@ -357,6 +357,10 @@ variant::variant(game_logic::const_formula_ptr fml, const std::vector<std::strin
 	fn_->fn = fml;
 	fn_->callable = &callable;
 	increment_refcount();
+
+	if(fml->str_var().get_debug_info()) {
+		set_debug_info(*fml->str_var().get_debug_info());
+	}
 }
 
 const variant& variant::operator=(const variant& v)
@@ -523,7 +527,11 @@ variant variant::operator()(const std::vector<variant>& args) const
 
 	callable->set_base_slot(fn_->base_slot);
 
-	for(size_t n = 0; n != args.size() && n != fn_->end_args - fn_->begin_args; ++n) {
+	if(args.size() != fn_->end_args - fn_->begin_args) {
+		throw type_error(formatter() << "Function passed " << args.size() << " arguments, " << (fn_->end_args - fn_->begin_args) << " expected");
+	}
+
+	for(size_t n = 0; n != args.size(); ++n) {
 		callable->add(args[n]);
 	}
 
