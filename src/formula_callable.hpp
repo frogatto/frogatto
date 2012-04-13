@@ -37,7 +37,7 @@ struct formula_input {
 //interface for objects that can have formulae run on them
 class formula_callable : public reference_counted_object {
 public:
-	explicit formula_callable(bool has_self=true) : has_self_(has_self)
+	explicit formula_callable(bool has_self=false) : has_self_(has_self)
 	{}
 
 	variant query_value(const std::string& key) const {
