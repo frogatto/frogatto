@@ -519,4 +519,11 @@ void console_dialog::load_history()
 	text_editor_->set_cursor(text_editor_->get_data().size()-1, text_editor_->get_data().back().size());
 }
 
+void console_dialog::set_focus(entity_ptr e)
+{
+	focus_ = e;
+	text_editor_->set_focus(true);
+	add_message(formatter() << "Selected object: " << e->debug_description());
+}
+
 }

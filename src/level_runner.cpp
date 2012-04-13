@@ -947,6 +947,18 @@ bool level_runner::play_cycle()
 			case SDL_MOUSEBUTTONUP:
 				iphone_controls::handle_event(event);
 				break;
+#else
+			case SDL_MOUSEBUTTONDOWN:
+				if(console_.get()) {
+					int mousex, mousey;
+					SDL_GetMouseState(&mousex, &mousey);
+					entity_ptr selected = lvl_->get_next_character_at_point(last_draw_position().x/100 + mousex, last_draw_position().y/100 + mousey, last_draw_position().x/100, last_draw_position().y/100);
+					if(selected) {
+						lvl_->set_editor_highlight(selected);
+						console_->set_focus(selected);
+					}
+				}
+				break;
 #endif
 			default:
 				break;

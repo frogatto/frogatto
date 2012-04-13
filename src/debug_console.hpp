@@ -28,6 +28,8 @@ public:
 	bool has_keyboard_focus() const;
 
 	void add_message(const std::string& msg);
+
+	void set_focus(entity_ptr e);
 private:
 	console_dialog(const console_dialog&);
 	void init();
