@@ -446,52 +446,40 @@ END_FUNCTION_DEF(regex_replace)
 	};
 	}
 
-	class sort_function : public function_expression {
-	public:
-		explicit sort_function(const args_list& args)
-			: function_expression("sort", args, 1, 2)
-		{}
 
-	private:
-		variant execute(const formula_callable& variables) const {
-			variant list = args()[0]->evaluate(variables);
-			std::vector<variant> vars;
-			vars.reserve(list.num_elements());
-			for(size_t n = 0; n != list.num_elements(); ++n) {
-				vars.push_back(list[n]);
-			}
 
-			if(args().size() == 1) {
-				std::sort(vars.begin(), vars.end());
-			} else {
-				std::sort(vars.begin(), vars.end(), variant_comparator(args()[1], variables));
-			}
+FUNCTION_DEF(sort, 1, 2, "sort(list, criteria): Returns a nicely-ordered list. If you give it an optional formula such as 'a>b' it will sort it according to that. This example favours larger numbers first instead of the default of smaller numbers first.")
+	variant list = args()[0]->evaluate(variables);
+	std::vector<variant> vars;
+	vars.reserve(list.num_elements());
+	for(size_t n = 0; n != list.num_elements(); ++n) {
+		vars.push_back(list[n]);
+	}
 
-			return variant(&vars);
-		}
-	};
+	if(args().size() == 1) {
+		std::sort(vars.begin(), vars.end());
+	} else {
+		std::sort(vars.begin(), vars.end(), variant_comparator(args()[1], variables));
+	}
 
-	class shuffle_function : public function_expression {
-	public:
-		explicit shuffle_function(const args_list& args)
-			: function_expression("shuffle", args, 1, 1)
-		{}
+	return variant(&vars);
+END_FUNCTION_DEF(sort)
 
-	private:
-		variant execute(const formula_callable& variables) const {
-			variant list = args()[0]->evaluate(variables);
-			std::vector<variant> vars;
-			vars.reserve(list.num_elements());
-			for(size_t n = 0; n != list.num_elements(); ++n) {
-				vars.push_back(list[n]);
-			}
+FUNCTION_DEF(shuffle, 1, 1, "shuffle(list) - Returns a shuffled version of the list. Like shuffling cards.")
+	variant list = args()[0]->evaluate(variables);
+	std::vector<variant> vars;
+	vars.reserve(list.num_elements());
+	for(size_t n = 0; n != list.num_elements(); ++n) {
+		vars.push_back(list[n]);
+	}
 
-			std::random_shuffle(vars.begin(), vars.end());
+	std::random_shuffle(vars.begin(), vars.end());
 
-			return variant(&vars);
-		}
-	};
-
+	return variant(&vars);
+END_FUNCTION_DEF(shuffle)
+	
+	
+	
 	namespace {
 		void flatten_items( variant items, std::vector<variant>* output){
 			for(size_t n = 0; n != items.num_elements(); ++n) {
@@ -523,8 +511,8 @@ END_FUNCTION_DEF(regex_replace)
 			return variant(&output);
 		}
 	};
-		
-		
+	
+
 	class filter_function : public function_expression {
 	public:
 		explicit filter_function(const args_list& args)
@@ -1488,10 +1476,8 @@ namespace {
 		if(functions_table.empty()) {
 	#define FUNCTION(name) functions_table[#name] = new specific_function_creator<name##_function>();
 			FUNCTION(if);
-			FUNCTION(sort);
-			FUNCTION(shuffle);
-			FUNCTION(flatten);
 			FUNCTION(filter);
+			FUNCTION(flatten);
 			FUNCTION(mapping);
 			FUNCTION(find);
 			FUNCTION(transform);
