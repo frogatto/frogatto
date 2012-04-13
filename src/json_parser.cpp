@@ -98,6 +98,7 @@ struct JsonObject {
 	JsonObject(variant::debug_info debug_info, bool preprocess) : type(VAL_NONE), is_base(false), is_call(false), is_deriving(false), require_comma(false), require_colon(false), flatten(false), info(debug_info), begin_macro(NULL), use_preprocessor(preprocess) {}
 	std::map<variant, variant> obj;
 	std::vector<variant> array;
+	std::set<std::string> obj_already_seen;
 	VAL_TYPE type;
 	variant name;
 
@@ -367,6 +368,14 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 				}
 
 				if(stack.back().type == VAL_OBJ) {
+					if(!stack.back().obj_already_seen.insert(v.as_string()).second) {
+						try {
+						CHECK_PARSE(false, "Repeated attribute: " + v.as_string(), t.begin - doc.c_str());
+						} catch(parse_error& e) {
+							std::cerr << fname << " " << e.error_message() << "\n";
+						}
+					}
+
 					stack.push_back(JsonObject(debug_info, use_preprocessor));
 					v.set_debug_info(debug_info);
 					stack.back().name = v;
