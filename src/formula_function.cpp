@@ -512,6 +512,38 @@ END_FUNCTION_DEF(shuffle)
 		}
 	};
 	
+	class map_callable : public formula_callable {
+	public:
+		explicit map_callable(const formula_callable& backup)
+		: backup_(backup)
+		{}
+
+		void set(const variant& v, int i)
+		{
+			value_ = v;
+			index_ = i;
+		}
+	private:
+		variant get_value(const std::string& key) const {
+			if(key == "value") {
+				return value_;
+			} else if(key == "index") {
+				return variant(index_);
+			} else if(key == "context") {
+				return variant(&backup_);
+			} else {
+				return backup_.query_value(key);
+			}
+		}
+
+		variant get_value_by_slot(int slot) const {
+			return backup_.query_value_by_slot(slot);
+		}
+
+		const formula_callable& backup_;
+		variant value_;
+		int index_;
+	};
 
 	class filter_function : public function_expression {
 	public:
@@ -528,9 +560,10 @@ END_FUNCTION_DEF(shuffle)
 			std::vector<variant> vars;
 			const variant items = args()[0]->evaluate(variables);
 			if(args().size() == 2) {
+				boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
 				for(size_t n = 0; n != items.num_elements(); ++n) {
-					formula_callable_ptr callable(new formula_variant_callable_with_backup(items[n], variables));
-					const variant val = args()[1]->evaluate(*callable);
+					callable->set(items[n], n);
+					const variant val = args().back()->evaluate(*callable);
 					if(val.as_bool()) {
 						vars.push_back(items[n]);
 					}
@@ -589,9 +622,10 @@ END_FUNCTION_DEF(shuffle)
 			const variant items = args()[0]->evaluate(variables);
 
 			if(args().size() == 2) {
+				boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
 				for(size_t n = 0; n != items.num_elements(); ++n) {
-					formula_callable_ptr callable(new formula_variant_callable_with_backup(items[n], variables));
-					const variant val = args()[1]->evaluate(*callable);
+					callable->set(items[n], n);
+					const variant val = args().back()->evaluate(*callable);
 					if(val.as_bool()) {
 						return items[n];
 					}
@@ -729,10 +763,22 @@ namespace {
 			vars.reserve(items.num_elements());
 
 			if(args().size() == 2) {
-				for(size_t n = 0; n != items.num_elements(); ++n) {
-					formula_callable_ptr callable(new formula_variant_callable_with_backup(items[n], variables));
-					const variant val = args().back()->evaluate(*callable);
-					vars.push_back(val);
+				if(items.is_map()) {
+					map_formula_callable_ptr callable(new map_formula_callable(&variables));
+					callable->add("context", variant(&variables));
+					foreach(const variant_pair& p, items.as_map()) {
+						callable->add("key", p.first);
+						callable->add("value", p.second);
+						const variant val = args().back()->evaluate(*callable);
+						vars.push_back(val);
+					}
+				} else {
+					boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
+					for(size_t n = 0; n != items.num_elements(); ++n) {
+						callable->set(items[n], n);
+						const variant val = args().back()->evaluate(*callable);
+						vars.push_back(val);
+					}
 				}
 			} else {
 				static const std::string index_str = "index";
@@ -1599,6 +1645,10 @@ UNIT_TEST(sqrt_function) {
 	for(uint64_t n = 0; n < 100000; n += 1000) {
 		CHECK_EQ(game_logic::formula(variant(formatter() << "sqrt(" << n << ".0^2)")).execute().as_decimal(), decimal::from_int(n));
 	}
+}
+
+UNIT_TEST(map_function) {
+	CHECK_EQ(game_logic::formula(variant("map([2,3,4], value+index)")).execute(), game_logic::formula(variant("[2,4,6]")).execute());
 }
 
 UNIT_TEST(where_scope_function) {
