@@ -431,6 +431,10 @@ END_FUNCTION_DEF(regex_replace)
 			}
 		}
 
+		variant get_value_by_slot(int slot) const {
+			return fallback_->query_value_by_slot(slot);
+		}
+
 		void get_inputs(std::vector<formula_input>* inputs) const {
 			fallback_->get_inputs(inputs);
 		}
