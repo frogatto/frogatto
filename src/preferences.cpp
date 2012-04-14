@@ -192,7 +192,7 @@ namespace preferences {
 
 		bool use_joystick_ = true;
 
-		bool load_compiled_ = false;
+		bool load_compiled_ = true;
 
 		bool use_fbo_ = true;
 		bool use_bequ_ = true;
