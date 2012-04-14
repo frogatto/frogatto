@@ -487,6 +487,7 @@ variant parse_from_file(const std::string& fname, JSON_PARSE_OPTIONS options)
 		variant result = parse_internal(data, fname, options, NULL, NULL);
 		return result;
 	} catch(parse_error& e) {
+		std::cerr << e.error_message() << "\n";
 		e.fname = fname;
 		throw(e);
 	}
