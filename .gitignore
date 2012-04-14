@@ -16,6 +16,8 @@ test
 *.odt#
 .*.swp
 dirs.txt
+core
+core.*
 
 MacOS/include
 MacOS/lib
