@@ -109,13 +109,23 @@ void character_editor_dialog::show_category_menu()
 	grid->allow_selection();
 	grid->register_selection_callback(boost::bind(&character_editor_dialog::close_context_menu, this, _1));
 
-	std::set<std::string> categories;
+	std::map<std::string, const editor::enemy_type*> categories;
 	foreach(const editor::enemy_type& c, editor_.all_characters()) {
-		if(categories.count(c.category)) {
+		std::string category = c.category;
+		foreach(char& c, category) {
+			c = tolower(c);
+		}
+
+		if(categories.count(category)) {
 			continue;
 		}
 
-		categories.insert(c.category);
+		categories[category] = &c;
+	}
+
+	typedef std::pair<std::string, const editor::enemy_type*> cat_pair;
+	foreach(const cat_pair& cp, categories) {
+		const editor::enemy_type& c = *cp.second;
 
 		image_widget* preview = new image_widget(c.preview_frame->img());
 		preview->set_dim(28, 28);
