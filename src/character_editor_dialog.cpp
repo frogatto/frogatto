@@ -15,7 +15,7 @@ namespace editor_dialogs
 {
 
 character_editor_dialog::character_editor_dialog(editor& e)
-  : gui::dialog(graphics::screen_width() - EDITOR_SIDEBAR_WIDTH, 160, EDITOR_SIDEBAR_WIDTH, 440), editor_(e), first_index_(-1)
+  : gui::dialog(graphics::screen_width() - EDITOR_SIDEBAR_WIDTH, 160, EDITOR_SIDEBAR_WIDTH, 440), editor_(e)
 {
 	set_clear_bg_amount(255);
 	if(editor_.all_characters().empty() == false) {
@@ -47,6 +47,7 @@ void character_editor_dialog::init()
 
 gui::widget_ptr character_editor_dialog::generate_grid(const std::string& category)
 {
+	std::cerr << "generate grid: " << category << "\n";
 	using namespace gui;
 	widget_ptr& result = grids_[category];
 	std::vector<gui::border_widget*>& borders = grid_borders_[category];
@@ -55,11 +56,10 @@ gui::widget_ptr character_editor_dialog::generate_grid(const std::string& catego
 		grid_ptr grid(new gui::grid(3));
 		grid->set_max_height(height() - 50);
 		int index = 0;
-		first_index_ = -1;
 		foreach(const editor::enemy_type& c, editor_.all_characters()) {
 			if(c.category == category_) {
-				if(first_index_ == -1) {
-					first_index_ = index;
+				if(first_obj_.count(category_) == 0) {
+					first_obj_[category] = index;
 				}
 
 				image_widget* preview = new image_widget(c.preview_frame->img());
@@ -94,6 +94,7 @@ gui::widget_ptr character_editor_dialog::generate_grid(const std::string& catego
 		}
 		borders[n]->set_color(n == editor_.get_object() ? graphics::color(255,255,255,255) : graphics::color(0,0,0,0));
 	}
+	std::cerr << "done generate grid: " << category << "\n";
 
 	return result;
 }
@@ -157,11 +158,10 @@ void character_editor_dialog::close_context_menu(int index)
 
 void character_editor_dialog::select_category(const std::string& category)
 {
+	std::cerr << "SELECT CATEGORY: " << category << "\n";
 	category_ = category;
 	init();
-	if(first_index_ >= 0) {
-		set_character(first_index_);
-	}
+	set_character(first_obj_[category_]);
 }
 
 }

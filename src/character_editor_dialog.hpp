@@ -39,7 +39,8 @@ private:
 	//to white, and all the others to transparent.
 	std::map<std::string, std::vector<gui::border_widget*> > grid_borders_;
 
-	int first_index_;
+	//the first object in each category
+	std::map<std::string, int> first_obj_;
 };
 
 }
