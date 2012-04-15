@@ -5,6 +5,7 @@ env.Append(CXXFLAGS= ["-pthread", "-DIMPLEMENT_SAVE_PNG"], LINKFLAGS = ["-pthrea
 sources = Split("""
 IMG_savepng.cpp
 achievements.cpp
+animation_preview_widget.cpp
 asserts.cpp
 background.cpp
 blur.cpp
