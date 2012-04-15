@@ -46,6 +46,8 @@ bool unsupported()
 
 void init(int buffer_width, int buffer_height)
 {
+	// Clear any old errors.
+	glGetError();
 	frame_buffer_texture_width = buffer_width;
 	frame_buffer_texture_height = buffer_height;
 
@@ -76,9 +78,12 @@ void init(int buffer_width, int buffer_height)
 #ifndef TARGET_TEGRA
 	glGetIntegerv(EXT_MACRO(GL_FRAMEBUFFER_BINDING), &video_framebuffer_id);
 #endif
-#if !defined(__ANDROID__)
-	ASSERT_EQ(glGetError(), GL_NO_ERROR);
-#endif
+	// Grab the error code first, because of the side effect in glGetError() of 
+	// clearing the error code and the double call in the ASSERT_EQ() macro we lose
+	// the actual error code.
+	GLenum err = glGetError();
+	ASSERT_EQ(err, GL_NO_ERROR);
+
 	glGenTextures(1, &texture_id);
 	glBindTexture(GL_TEXTURE_2D, texture_id);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -100,16 +105,13 @@ void init(int buffer_width, int buffer_height)
 
 	// check FBO status
 	GLenum status = EXT_CALL(glCheckFramebufferStatus)(EXT_MACRO(GL_FRAMEBUFFER));
-#if !defined(__ANDROID__)
 	ASSERT_EQ(status, EXT_MACRO(GL_FRAMEBUFFER_COMPLETE));
-#endif
 
 	// switch back to window-system-provided framebuffer
 	EXT_CALL(glBindFramebuffer)(EXT_MACRO(GL_FRAMEBUFFER), video_framebuffer_id);
 
-#if !defined(__ANDROID__)
-	ASSERT_EQ(glGetError(), GL_NO_ERROR);
-#endif
+	err = glGetError();
+	ASSERT_EQ(err, GL_NO_ERROR);
 }
 
 render_scope::render_scope()
