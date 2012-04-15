@@ -367,6 +367,10 @@ void text_editor_widget::set_cursor(int row, int col)
 
 int text_editor_widget::row_col_to_text_pos(int row, int col) const
 {
+	if(col > text_[row].size()) {
+		col = text_[row].size();
+	}
+
 	int result = 0;
 	for(int n = 0; n != row; ++n) {
 		result += text_[n].size() + 1;

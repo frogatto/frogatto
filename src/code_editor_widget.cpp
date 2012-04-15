@@ -360,6 +360,7 @@ variant get_map_editing(int row, int col, variant item)
 code_editor_widget::ObjectInfo code_editor_widget::get_object_at(int row, int col) const
 {
 	const int pos = row_col_to_text_pos(row, col);
+	std::cerr << "get object at(" << row << "," << col << ") -> " << pos << "\n";
 	const char* ptr = current_text_.c_str() + pos;
 	ASSERT_LOG(pos >= 0 && pos < current_text_.size(), "Unexpected position in code editor widget");
 	const json::Token* begin_token = NULL;
