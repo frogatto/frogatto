@@ -2,6 +2,7 @@
 
 
 #include "asserts.hpp"
+#include "variant.hpp"
 
 #if defined(_WINDOWS)
 #include "SDL/SDL_syswm.h"
@@ -43,5 +44,5 @@ assert_recover_scope::~assert_recover_scope()
 
 void output_backtrace()
 {
-	//TODO: implement output of backtraces
+	std::cerr << get_call_stack() << "\n";
 }

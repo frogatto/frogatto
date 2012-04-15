@@ -140,6 +140,16 @@ void coords_to_screen(GLfloat sx, GLfloat sy, GLfloat sz,
 void push_clip(const SDL_Rect& rect);
 void pop_clip();
 
+struct clip_scope {
+	clip_scope(const SDL_Rect& rect) {
+		push_clip(rect);
+	}
+
+	~clip_scope() {
+		pop_clip();
+	}
+};
+
 const SDL_Color& color_black();
 const SDL_Color& color_white();
 const SDL_Color& color_red();

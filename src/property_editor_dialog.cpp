@@ -445,7 +445,7 @@ void property_editor_dialog::mutate_value(const std::string& key, variant value)
 		foreach(entity_ptr entity_obj, entity_) {
 			entity_ptr e = lvl->get_entity_by_label(entity_obj->label());
 			if(e) {
-				editor_.mutate_object_value(e, key, value);
+				editor_.mutate_object_value(lvl, e, key, value);
 			}
 		}
 	}

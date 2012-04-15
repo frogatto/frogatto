@@ -5,6 +5,7 @@
 #include "custom_object_type.hpp"
 #include "filesystem.hpp"
 #include "formatter.hpp"
+#include "frame.hpp"
 #include "json_parser.hpp"
 #include "label.hpp"
 #include "module.hpp"
@@ -63,6 +64,13 @@ bool code_editor_dialog::has_keyboard_focus() const
 
 bool code_editor_dialog::handle_event(const SDL_Event& event, bool claimed)
 {
+	if(animation_preview_) {
+		claimed = animation_preview_->process_event(event, claimed) || claimed;
+		if(claimed) {
+			return claimed;
+		}
+	}
+
 	claimed = claimed || dialog::handle_event(event, claimed);
 	if(claimed) {
 		return claimed;
@@ -90,12 +98,51 @@ bool code_editor_dialog::handle_event(const SDL_Event& event, bool claimed)
 	return claimed;
 }
 
+void code_editor_dialog::handle_draw_children() const
+{
+	dialog::handle_draw_children();
+	if(animation_preview_) {
+		animation_preview_->draw();
+	}
+}
+
 void code_editor_dialog::process()
 {
 	if(invalidated_ && SDL_GetTicks() > invalidated_ + 200) {
 		const bool result = custom_object_type::set_file_contents(fname_, editor_->text());
 		error_label_->set_text(result ? "Ok" : "Error");
 		invalidated_ = 0;
+	}
+
+	const gui::code_editor_widget::ObjectInfo info = editor_->get_current_object();
+	try {
+		editor_->set_highlight_current_object(false);
+		if(gui::animation_preview_widget::is_animation(info.obj)) {
+			if(!animation_preview_) {
+				animation_preview_.reset(new gui::animation_preview_widget(info.obj));
+				animation_preview_->set_loc(x() - 520, y() + 100);
+				animation_preview_->set_dim(500, 400);
+				animation_preview_->init();
+			} else {
+				animation_preview_->set_object(info.obj);
+			}
+
+			editor_->set_highlight_current_object(true);
+		} else {
+			animation_preview_.reset();
+		}
+	} catch(type_error& e) {
+		if(animation_preview_) {
+			animation_preview_.reset();
+		}
+	} catch(frame::error& e) {
+		if(animation_preview_) {
+			animation_preview_.reset();
+		}
+	}
+
+	if(animation_preview_) {
+		animation_preview_->process();
 	}
 }
 

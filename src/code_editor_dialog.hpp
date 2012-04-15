@@ -1,8 +1,11 @@
 #ifndef CODE_EDITOR_DIALOG_HPP_INCLUDED
 #define CODE_EDITOR_DIALOG_HPP_INCLUDED
 
+#include <boost/shared_ptr.hpp>
+
 #include <string>
 
+#include "animation_preview_widget.hpp"
 #include "asserts.hpp"
 #include "dialog.hpp"
 #include "geometry.hpp"
@@ -27,6 +30,7 @@ public:
 
 private:
 	bool handle_event(const SDL_Event& event, bool claimed);
+	void handle_draw_children() const;
 
 	std::string fname_;
 
@@ -51,6 +55,8 @@ private:
 	//As long as there is a code editor active, we are going to want to
 	//recover from errors.
 	assert_recover_scope assert_recovery_;
+
+	boost::shared_ptr<gui::animation_preview_widget> animation_preview_;
 };
 
 #endif

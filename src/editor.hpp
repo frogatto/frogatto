@@ -184,7 +184,7 @@ public:
 
 	int level_state_id() const { return level_changed_; }
 
-	void mutate_object_value(entity_ptr e, const std::string& value, variant new_value);
+	void mutate_object_value(level_ptr lvl, entity_ptr e, const std::string& value, variant new_value);
 
 private:
 	editor(const editor&);

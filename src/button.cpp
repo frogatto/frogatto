@@ -97,6 +97,7 @@ bool button::handle_event(const SDL_Event& event, bool claimed)
 		if(in_button(e.x,e.y)) {
 			current_button_image_set_ = depressed_button_image_set_;
 			down_ = true;
+			claimed = true;
 		}
 	} else if(event.type == SDL_MOUSEBUTTONUP) {
 		down_ = false;

@@ -210,11 +210,12 @@ public:
 	enum TYPE { TYPE_NULL, TYPE_BOOL, TYPE_INT, TYPE_DECIMAL, TYPE_CALLABLE, TYPE_CALLABLE_LOADING, TYPE_LIST, TYPE_STRING, TYPE_MAP, TYPE_FUNCTION };
 
 	struct debug_info {
-		debug_info() : filename(0), line(-1), column(-1)
+		debug_info() : filename(0), line(-1), column(-1), end_line(-1), end_column(-1)
 		{}
 		std::string message() const;
 		const std::string* filename;
 		int line, column;
+		int end_line, end_column;
 	};
 
 	void set_debug_info(const debug_info& info);

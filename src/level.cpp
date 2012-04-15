@@ -94,6 +94,17 @@ level* level::current_ptr()
 	return current_level.get();
 }
 
+current_level_scope::current_level_scope(level* lvl) : old_(current_level)
+{
+	lvl->set_as_current_level();
+}
+
+current_level_scope::~current_level_scope() {
+	if(old_) {
+		old_->set_as_current_level();
+	}
+}
+
 void level::set_as_current_level()
 {
 	current_level = this;

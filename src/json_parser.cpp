@@ -266,6 +266,9 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 			case Token::TYPE_RCURLY: {
 				CHECK_PARSE(stack.back().type == VAL_OBJ, "Unexpected }", t.begin - doc.c_str());
 
+				stack.back().info.end_line = debug_info.line;
+				stack.back().info.end_column = debug_info.column;
+
 				const char* begin_macro = stack.back().begin_macro;
 				const bool is_base = stack.back().is_base;
 				const bool is_call = stack.back().is_call;
@@ -304,6 +307,10 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 
 			case Token::TYPE_RSQUARE: {
 				CHECK_PARSE(stack.back().type == VAL_ARRAY, "Unexpected ]", t.begin - doc.c_str());
+
+				stack.back().info.end_line = debug_info.line;
+				stack.back().info.end_column = debug_info.column;
+
 				const char* begin_macro = stack.back().begin_macro;
 				variant name = stack.back().name;
 				variant v = stack.back().as_variant();

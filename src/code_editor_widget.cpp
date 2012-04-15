@@ -2,6 +2,7 @@
 #include "code_editor_widget.hpp"
 #include "decimal.hpp"
 #include "formula_tokenizer.hpp"
+#include "json_parser.hpp"
 #include "string_utils.hpp"
 
 #include <boost/bind.hpp>
@@ -17,8 +18,17 @@ code_editor_widget::code_editor_widget(int width, int height)
 {
 }
 
+void code_editor_widget::on_move_cursor(bool auto_shift)
+{
+	text_editor_widget::on_move_cursor(auto_shift);
+
+	ObjectInfo info = get_current_object();
+}
+
 void code_editor_widget::on_change()
 {
+	generate_tokens();
+
 	bracket_match_.clear();
 	colors_.clear();
 	colors_.resize(colors_.size()+1);
@@ -279,6 +289,136 @@ bool code_editor_widget::handle_event(const SDL_Event& event, bool claimed)
 	}
 
 	return text_editor_widget::handle_event(event, claimed) || claimed;
+}
+
+void code_editor_widget::generate_tokens()
+{
+	current_text_ = text();
+
+	try {
+		current_obj_ = json::parse(current_text_);
+	} catch(...) {
+	}
+
+	tokens_.clear();
+	const char* begin = current_text_.c_str();
+	const char* end = begin + current_text_.size();
+
+	try {
+		json::Token token = json::get_token(begin, end);
+		while(token.type != json::Token::NUM_TYPES) {
+			tokens_.push_back(token);
+			token = json::get_token(begin, end);
+		}
+	} catch(json::TokenizerError& e) {
+		std::cerr << "Tokenizer error: " << e.msg << "\n";
+	}
+}
+
+namespace {
+variant get_map_editing(int row, int col, variant item)
+{
+	if(!item.get_debug_info()) {
+		return variant();
+	}
+
+	const int begin_row = item.get_debug_info()->line;
+	const int begin_col = item.get_debug_info()->column;
+	const int end_row = item.get_debug_info()->end_line;
+	const int end_col = item.get_debug_info()->end_column;
+
+	typedef text_editor_widget::Loc Loc;
+
+	if(Loc(row,col) < Loc(begin_row,begin_col) ||
+	   Loc(row,col) > Loc(end_row,end_col)) {
+		return variant();
+	}
+
+	if(item.is_list()) {
+		foreach(variant v, item.as_list()) {
+			variant result = get_map_editing(row, col, v);
+			if(result.is_null() == false) {
+				return result;
+			}
+		}
+	} else if(item.is_map()) {
+		foreach(const variant_pair& p, item.as_map()) {
+			variant result = get_map_editing(row, col, p.second);
+			if(result.is_null() == false) {
+				return result;
+			}
+		}
+
+		return item;
+	}
+
+	return variant();
+}
+
+}
+
+code_editor_widget::ObjectInfo code_editor_widget::get_object_at(int row, int col) const
+{
+	const int pos = row_col_to_text_pos(row, col);
+	const char* ptr = current_text_.c_str() + pos;
+	ASSERT_LOG(pos >= 0 && pos < current_text_.size(), "Unexpected position in code editor widget");
+	const json::Token* begin_token = NULL;
+	const json::Token* end_token = NULL;
+	int nbracket = 0;
+	foreach(const json::Token& token, tokens_) {
+		if(token.type == json::Token::TYPE_LCURLY) {
+			if(token.end <= ptr) {
+				begin_token = &token;
+			} else {
+				++nbracket;
+			}
+		}
+
+		if(token.type == json::Token::TYPE_RCURLY && token.begin >= ptr) {
+			if(!nbracket--) {
+				end_token = &token;
+			}
+			break;
+		}
+	}
+
+	if(!begin_token || !end_token) {
+		return ObjectInfo();
+	}
+
+	ObjectInfo result;
+	try {
+		result.obj = get_map_editing(row, col, current_obj_);
+	} catch(json::parse_error& e) {
+		std::cerr << "json parse error: " << std::string(begin_token->begin, end_token->end) << "\n";
+		return ObjectInfo();
+	}
+
+	result.begin = begin_token->begin - current_text_.c_str();
+	result.end = end_token->end - current_text_.c_str();
+	result.tokens = std::vector<json::Token>(begin_token, end_token+1);
+	return result;
+}
+
+code_editor_widget::ObjectInfo code_editor_widget::get_current_object() const
+{
+	return get_object_at(cursor_row(), cursor_col());
+}
+
+void code_editor_widget::set_highlight_current_object(bool value)
+{
+	if(!value) {
+		clear_highlight_lines();
+		return;
+	}
+
+	ObjectInfo info = get_current_object();
+	if(info.obj.is_null() == false) {
+		set_highlight_lines(text_pos_to_row_col(info.begin).first,
+		                    text_pos_to_row_col(info.end).first);
+	} else {
+		clear_highlight_lines();
+	}
 }
 
 }

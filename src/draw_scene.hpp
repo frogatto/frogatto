@@ -29,6 +29,7 @@ struct screen_position {
 	float zoom;
 };
 
+//Measures the current draw position in centi-pixels.
 screen_position& last_draw_position();
 
 struct disable_flashes_scope {

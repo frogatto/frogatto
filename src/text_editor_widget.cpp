@@ -104,6 +104,7 @@ text_editor_widget::text_editor_widget(int width, int height)
 	select_(0,0), cursor_(0,0),
 	nrows_(height/char_height_), ncols_((width - 20)/char_width_),
 	scroll_pos_(0),
+	begin_highlight_line_(-1), end_highlight_line_(-1),
 	has_focus_(false),
 	is_dragging_(false),
 	last_click_at_(-1),
@@ -199,6 +200,11 @@ void text_editor_widget::handle_draw() const
 
 	int r = 0;
 	for(int n = scroll_pos_; n < text_.size() && r < nrows_; ++n, ++r) {
+		if(n >= begin_highlight_line_ && n <= end_highlight_line_) {
+			RectDraw rect_draw = { rect(x(), y() + r*char_height_, width(), char_height_), graphics::color(255, 255, 255, 32) };
+			rects.push_back(rect_draw);
+		}
+
 		int c = 0;
 		std::vector<std::pair<Loc, Loc> >::const_iterator search_itor = std::lower_bound(search_matches_.begin(), search_matches_.end(), std::pair<Loc,Loc>(Loc(n,0),Loc(n,0)));
 		for(int m = 0; m < text_[n].size(); ++m, ++c) {
@@ -357,6 +363,38 @@ void text_editor_widget::set_cursor(int row, int col)
 	select_ = cursor_ = Loc(row, col);
 
 	on_move_cursor();
+}
+
+int text_editor_widget::row_col_to_text_pos(int row, int col) const
+{
+	int result = 0;
+	for(int n = 0; n != row; ++n) {
+		result += text_[n].size() + 1;
+	}
+
+	return result + col;
+}
+
+std::pair<int,int> text_editor_widget::text_pos_to_row_col(int pos) const
+{
+	int nrow = 0;
+	while(pos > text_[nrow].size()+1) {
+		pos -= text_[nrow].size()+1;
+		++nrow;
+	}
+
+	return std::pair<int,int>(nrow, pos);
+}
+
+void text_editor_widget::set_highlight_lines(int begin, int end)
+{
+	begin_highlight_line_ = begin;
+	end_highlight_line_ = end;
+}
+
+void text_editor_widget::clear_highlight_lines()
+{
+	set_highlight_lines(-1, -1);
 }
 
 bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& event)

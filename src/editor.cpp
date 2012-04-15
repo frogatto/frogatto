@@ -1942,8 +1942,8 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 				entity_ptr obj = lvl->get_entity_by_label(e->label());
 				if(obj) {
 					execute_command(
-					  boost::bind(&editor::mutate_object_value, this, obj.get(), var, e->query_value(var)),
-					  boost::bind(&editor::mutate_object_value, this, obj.get(), var, g_variable_editing_original_value));
+					  boost::bind(&editor::mutate_object_value, this, lvl, obj.get(), var, e->query_value(var)),
+					  boost::bind(&editor::mutate_object_value, this, lvl, obj.get(), var, g_variable_editing_original_value));
 				}
 			}
 			end_command_group();
@@ -3156,24 +3156,28 @@ void editor::edit_level_properties()
 
 void editor::add_multi_object_to_level(level_ptr lvl, entity_ptr e)
 {
+	current_level_scope scope(lvl.get());
 	lvl->add_multi_player(e);
 	e->handle_event("editor_added");
 }
 
 void editor::add_object_to_level(level_ptr lvl, entity_ptr e)
 {
+	current_level_scope scope(lvl.get());
 	lvl->add_character(e);
 	e->handle_event("editor_added");
 }
 
 void editor::remove_object_from_level(level_ptr lvl, entity_ptr e)
 {
+	current_level_scope scope(lvl.get());
 	e->handle_event("editor_removed");
 	lvl->remove_character(e);
 }
 
-void editor::mutate_object_value(entity_ptr e, const std::string& value, variant new_value)
+void editor::mutate_object_value(level_ptr lvl, entity_ptr e, const std::string& value, variant new_value)
 {
+	current_level_scope scope(lvl.get());
 	e->handle_event("editor_changing_variable");
 	e->mutate_value(value, new_value);
 	e->handle_event("editor_changed_variable");
@@ -3197,8 +3201,8 @@ void editor::generate_mutate_commands(entity_ptr c, const std::string& attr, var
 		const game_logic::formula_callable* obj_vars = obj->query_value("vars").as_callable();
 		variant current_value = obj_vars->query_value(attr);
 
-		redo.push_back(boost::bind(&editor::mutate_object_value, this, obj, attr, new_value));
-		undo.push_back(boost::bind(&editor::mutate_object_value, this, obj, attr, current_value));
+		redo.push_back(boost::bind(&editor::mutate_object_value, this, lvl, obj, attr, new_value));
+		undo.push_back(boost::bind(&editor::mutate_object_value, this, lvl, obj, attr, current_value));
 	}
 }
 

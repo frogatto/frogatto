@@ -34,6 +34,14 @@
 
 class tile_corner;
 
+class level;
+class current_level_scope {
+	boost::intrusive_ptr<level> old_;
+public:
+	explicit current_level_scope(level* ptr);
+	~current_level_scope();
+};
+
 class level : public game_logic::formula_callable
 {
 public:

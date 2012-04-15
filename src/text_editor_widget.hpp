@@ -52,6 +52,15 @@ public:
 
 	void set_cursor(int row, int col);
 
+	//convert a row/col cursor position to a position within the text()
+	//string that is returned.
+	int row_col_to_text_pos(int row, int col) const;
+
+	std::pair<int,int> text_pos_to_row_col(int pos) const;
+
+	void set_highlight_lines(int begin, int end);
+	void clear_highlight_lines();
+
 protected:
 
 	void set_row_contents(int row, const std::string& value);
@@ -69,6 +78,8 @@ protected:
 	std::pair<int, int> mouse_position_to_row_col(int x, int y) const;
 	std::pair<int, int> char_position_on_screen(int row, int col) const;
 
+	virtual void on_move_cursor(bool auto_shift=false);
+
 private:
 	bool handle_mouse_button_down(const SDL_MouseButtonEvent& event);
 	bool handle_mouse_button_up(const SDL_MouseButtonEvent& event);
@@ -81,7 +92,6 @@ private:
 
 	void on_page_up();
 	void on_page_down();
-	void on_move_cursor(bool auto_shift=false);
 
 	int find_equivalent_col(int old_col, int old_row, int new_row) const;
 
@@ -105,6 +115,8 @@ private:
 
 	int nrows_, ncols_;
 	int scroll_pos_;
+
+	int begin_highlight_line_, end_highlight_line_;
 	
 	bool has_focus_;
 	bool is_dragging_;
