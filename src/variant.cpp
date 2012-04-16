@@ -108,6 +108,21 @@ std::string get_full_call_stack()
 
 void output_formula_error_info();
 
+namespace {
+void generate_error(std::string message)
+{
+	if(call_stack.empty() == false && call_stack.back()) {
+		message += "\n" + call_stack.back()->debug_pinpoint_location();
+	}
+
+	std::cerr << "ERROR: " << message << "\n" << get_call_stack();
+	output_formula_error_info();
+
+	ASSERT_LOG(false, "type error");
+}
+
+}
+
 type_error::type_error(const std::string& str) : message(str) {
 	if(call_stack.empty() == false && call_stack.back()) {
 		message += "\n" + call_stack.back()->debug_pinpoint_location();
@@ -389,7 +404,7 @@ const variant& variant::operator[](size_t n) const
 	must_be(TYPE_LIST);
 	assert(list_);
 	if(n >= list_->size()) {
-		throw type_error(formatter() << "invalid index of " << n << " into " << write_json());
+		generate_error(formatter() << "invalid index of " << n << " into " << write_json());
 	}
 
 	return list_->begin[n];
@@ -423,7 +438,8 @@ const variant& variant::operator[](const variant v) const
 		if(info) {
 			loc = formatter() << " at " << *info->filename << " " << info->line << " (column " << info->column << ")\n";
 		}
-		throw type_error(formatter() << "type error: " << " expected a list or a map but found " << variant_type_to_string(type_) << " (" << write_json() << ") " << loc);
+		generate_error(formatter() << "type error: " << " expected a list or a map but found " << variant_type_to_string(type_) << " (" << write_json() << ") " << loc);
+		return *this;
 	}	
 }
 
@@ -491,7 +507,8 @@ size_t variant::num_elements() const
 		if(info) {
 			loc = formatter() << " at " << *info->filename << " " << info->line << " (column " << info->column << ")\n";
 		}
-		throw type_error(formatter() << "type error: " << " expected a list or a map but found " << variant_type_to_string(type_) << " (" << write_json() << ")" << loc);
+		generate_error(formatter() << "type error: " << " expected a list or a map but found " << variant_type_to_string(type_) << " (" << write_json() << ")" << loc);
+		return 0;
 	}
 }
 
@@ -506,7 +523,7 @@ variant variant::get_list_slice(int begin, int end) const
 	must_be(TYPE_LIST);
 
 	if(begin < 0 || end > list_->size()) {
-		throw type_error(formatter() << "ILLEGAL INDEX INTO LIST WHEN SLICING: " << begin << ", " << end << " / " << list_->size());
+		generate_error(formatter() << "ILLEGAL INDEX INTO LIST WHEN SLICING: " << begin << ", " << end << " / " << list_->size());
 	}
 
 	result.list_->begin = list_->begin + begin;
@@ -528,7 +545,7 @@ variant variant::operator()(const std::vector<variant>& args) const
 	callable->set_base_slot(fn_->base_slot);
 
 	if(args.size() > fn_->end_args - fn_->begin_args) {
-		throw type_error(formatter() << "Function passed " << args.size() << " arguments, " << (fn_->end_args - fn_->begin_args) << " expected");
+		generate_error(formatter() << "Function passed " << args.size() << " arguments, " << (fn_->end_args - fn_->begin_args) << " expected");
 	}
 
 	for(size_t n = 0; n != args.size(); ++n) {
@@ -845,7 +862,7 @@ variant variant::operator/(const variant& v) const
 {
 	if(type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL) {
 		if(v.as_decimal().value() == 0) {
-			throw type_error((formatter() << "divide by zero error").str());
+			generate_error((formatter() << "divide by zero error").str());
 		}
 
 		return variant(as_decimal() / v.as_decimal());
@@ -854,7 +871,7 @@ variant variant::operator/(const variant& v) const
 	const int numerator = as_int();
 	const int denominator = v.as_int();
 	if(denominator == 0) {
-		throw type_error(formatter() << "divide by zero error");
+		generate_error(formatter() << "divide by zero error");
 	}
 
 	return variant(numerator/denominator);
@@ -865,7 +882,7 @@ variant variant::operator%(const variant& v) const
 	const int numerator = as_int();
 	const int denominator = v.as_int();
 	if(denominator == 0) {
-		throw type_error(formatter() << "divide by zero error");
+		generate_error(formatter() << "divide by zero error");
 	}
 
 	return variant(numerator%denominator);
@@ -1046,7 +1063,7 @@ void variant::throw_type_error(variant::TYPE t) const
 	if(this == &UnfoundInMapNullVariant) {
 		const debug_info* info = last_failed_query_map.get_debug_info();
 		if(info) {
-			throw type_error(formatter() << "In object at " << *info->filename << " " << info->line << " (column " << info->column << ") did not find attribute " << last_failed_query_key << " which was expected to be a " << variant_type_to_string(t));
+			generate_error(formatter() << "In object at " << *info->filename << " " << info->line << " (column " << info->column << ") did not find attribute " << last_failed_query_key << " which was expected to be a " << variant_type_to_string(t));
 		}
 	}
 
@@ -1057,7 +1074,7 @@ void variant::throw_type_error(variant::TYPE t) const
 				if(info == NULL) {
 					info = last_query_map.get_debug_info();
 				}
-				throw type_error(formatter() << "In object at " << *info->filename << " " << info->line << " (column " << info->column << ") attribute for " << i->first << " was " << *this << ", which is a " << variant_type_to_string(type_) << ", must be a " << variant_type_to_string(t));
+				generate_error(formatter() << "In object at " << *info->filename << " " << info->line << " (column " << info->column << ") attribute for " << i->first << " was " << *this << ", which is a " << variant_type_to_string(type_) << ", must be a " << variant_type_to_string(t));
 				
 			}
 		}
@@ -1069,7 +1086,7 @@ void variant::throw_type_error(variant::TYPE t) const
 		loc = formatter() << " at " << *info->filename << " " << info->line << " (column " << info->column << "\n";
 	}
 
-	throw type_error(formatter() << "type error: " << " expected " << variant_type_to_string(t) << " but found " << variant_type_to_string(type_) << " " << write_json() << loc);
+	generate_error(formatter() << "type error: " << " expected " << variant_type_to_string(t) << " but found " << variant_type_to_string(type_) << " " << write_json() << loc);
 }
 
 void variant::serialize_to_string(std::string& str) const
@@ -1470,7 +1487,7 @@ void variant::write_json(std::ostream& s) const
 		return;
 	}
 	default:
-		throw type_error(formatter() << "illegal type to serialize to json: " << to_debug_string());
+		generate_error(formatter() << "illegal type to serialize to json: " << to_debug_string());
 	}
 }
 
