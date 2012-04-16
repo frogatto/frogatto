@@ -35,9 +35,12 @@ private:
 
 	std::vector<widget_ptr> widgets_;
 	mutable gui::label* zoom_label_;
+	gui::label* pos_label_;
 
 	mutable int scale_;
 	void update_zoom_label() const;
+
+	mutable rect src_rect_, dst_rect_;
 };
 
 }

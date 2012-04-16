@@ -14,7 +14,7 @@ bool animation_preview_widget::is_animation(variant obj)
 	return !obj.is_null() && obj["image"].is_string();
 }
 
-animation_preview_widget::animation_preview_widget(variant obj) : cycle_(0), zoom_label_(NULL), scale_(0)
+animation_preview_widget::animation_preview_widget(variant obj) : cycle_(0), zoom_label_(NULL), pos_label_(NULL), scale_(0)
 {
 	set_object(obj);
 }
@@ -33,6 +33,10 @@ void animation_preview_widget::init()
 	zoom_label_ = new label("Zoom: 100%");
 	zoom_label_->set_loc(b->x() + b->width() + 10, b->y());
 	widgets_.push_back(widget_ptr(zoom_label_));
+
+	pos_label_ = new label("");
+	pos_label_->set_loc(zoom_label_->x() + zoom_label_->width() + 8, zoom_label_->y());
+	widgets_.push_back(widget_ptr(pos_label_));
 }
 
 void animation_preview_widget::set_object(variant obj)
@@ -92,6 +96,9 @@ void animation_preview_widget::handle_draw() const
 		int xpos = image_area.x();
 		int ypos = image_area.y();
 
+		src_rect_ = rect(x1, y1, x2 - x1, y2 - y1);
+		dst_rect_ = rect(xpos, ypos, (x2-x1)*scale, (y2-y1)*scale);
+
 		graphics::blit_texture(image_texture, xpos, ypos,
 		                       (x2-x1)*scale, (y2-y1)*scale, 0.0,
 							   GLfloat(x1)/image_texture.width(),
@@ -132,6 +139,19 @@ bool animation_preview_widget::handle_event(const SDL_Event& event, bool claimed
 {
 	foreach(widget_ptr w, widgets_) {
 		claimed = w->process_event(event, claimed) || claimed;
+	}
+
+	if(event.type == SDL_MOUSEMOTION) {
+		const SDL_MouseMotionEvent& e = event.motion;
+		const point p(e.x, e.y);
+		if(dst_rect_.w() > 0 && dst_rect_.h() > 0 && point_in_rect(p, dst_rect_)) {
+			const double xpos = double(p.x - dst_rect_.x())/double(dst_rect_.w());
+			const double ypos = double(p.y - dst_rect_.y())/double(dst_rect_.h());
+
+			const int x = src_rect_.x() + src_rect_.w()*xpos;
+			const int y = src_rect_.y() + src_rect_.h()*ypos;
+			pos_label_->set_text(formatter() << x << "," << y);
+		}
 	}
 
 	return claimed;

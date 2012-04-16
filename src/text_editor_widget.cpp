@@ -1226,26 +1226,30 @@ void text_editor_widget::calculate_search_matches()
 	if(search_.empty()) {
 		return;
 	}
-	boost::regex re(search_, boost::regex::perl|boost::regex::icase);
-	for(int n = 0; n != text_.size(); ++n) {
-		boost::cmatch match;
-		const char* ptr = text_[n].c_str();
-		while(boost::regex_search(ptr, match, re)) {
-			const int base = ptr - text_[n].c_str();
-			const Loc begin(n, base + match.position());
-			const Loc end(n, base + match.position() + match.length());
-			search_matches_.push_back(std::pair<Loc,Loc>(begin,end));
 
-			const int advance = match.position() + match.length();
-			if(advance == 0) {
-				break;
+	try {
+		boost::regex re(search_, boost::regex::perl|boost::regex::icase);
+		for(int n = 0; n != text_.size(); ++n) {
+			boost::cmatch match;
+			const char* ptr = text_[n].c_str();
+			while(boost::regex_search(ptr, match, re)) {
+				const int base = ptr - text_[n].c_str();
+				const Loc begin(n, base + match.position());
+				const Loc end(n, base + match.position() + match.length());
+				search_matches_.push_back(std::pair<Loc,Loc>(begin,end));
+	
+				const int advance = match.position() + match.length();
+				if(advance == 0) {
+					break;
+				}
+	
+				ptr += advance;
 			}
-
-			ptr += advance;
 		}
+	} catch(boost::regex_error&) {
 	}
 }
-
+	
 void text_editor_widget::on_change()
 {
 	if(on_change_) {
