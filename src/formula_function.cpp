@@ -867,17 +867,24 @@ namespace {
 		}
 	};
 
-	class head_function : public function_expression {
-	public:
-		explicit head_function(const args_list& args)
-			: function_expression("head", args, 1, 1)
-		{}
-	private:
-		variant execute(const formula_callable& variables) const {
-			const variant items = args()[0]->evaluate(variables);
-			return items[0];
-		}
-	};
+FUNCTION_DEF(head, 1, 1, "head(list): gives the first element of a list, or null for an empty list")
+	const variant items = args()[0]->evaluate(variables);
+	if(items.num_elements() >= 1) {
+		return items[0];
+	} else {
+		return variant();
+	}
+END_FUNCTION_DEF(head)
+
+FUNCTION_DEF(back, 1, 1, "back(list): gives the last element of a list, or null for an empty list")
+	const variant items = args()[0]->evaluate(variables);
+	if(items.num_elements() >= 1) {
+		return items[items.num_elements()-1];
+	} else {
+		return variant();
+	}
+END_FUNCTION_DEF(back)
+
 
 	class size_function : public function_expression {
 	public:

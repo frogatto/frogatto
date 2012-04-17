@@ -3798,6 +3798,21 @@ bool level::relocate_object(entity_ptr e, int new_x, int new_y)
 					e->handle_event("editor_changed_variable");
 				}
 				break;
+			case editor_variable_info::TYPE_POINTS:
+				if(value.is_list()) {
+					std::vector<variant> new_value;
+					foreach(variant point, value.as_list()) {
+						std::vector<variant> p = point.as_list();
+						if(p.size() == 2) {
+							p[0] = variant(p[0].as_int() + delta_x);
+							p[1] = variant(p[1].as_int() + delta_y);
+							new_value.push_back(variant(&p));
+						}
+					}
+					e->handle_event("editor_changing_variable");
+					e->mutate_value(var.variable_name(), variant(&new_value));
+					e->handle_event("editor_changed_variable");
+				}
 			default:
 				break;
 			}
