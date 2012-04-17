@@ -1883,15 +1883,20 @@ void level::calculate_lighting(int x, int y, int w, int h) const
 	//now blit the light buffer onto the screen
 	texture_frame_buffer::set_as_current_texture();
 
+	glPushMatrix();
+	glLoadIdentity();
+
 	const GLfloat tcarray[] = { 0, 0, 0, 1, 1, 0, 1, 1 };
 	const GLfloat tcarray_rotated[] = { 0, 1, 1, 1, 0, 0, 1, 0 };
-	GLfloat varray[] = { x, y + h, x, y, x + w, y + h, x + w, y };
+	GLfloat varray[] = { 0, h, 0, 0, w, h, w, 0 };
 	glVertexPointer(2, GL_FLOAT, 0, varray);
 	glTexCoordPointer(2, GL_FLOAT, 0,
 	               preferences::screen_rotated() ? tcarray_rotated : tcarray);
 	glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glPopMatrix();
 }
 
 void level::draw_debug_solid(int x, int y, int w, int h) const
