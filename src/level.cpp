@@ -1355,14 +1355,14 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 	for(std::map<std::string, sub_level_data>::const_iterator i = sub_levels_.begin(); i != sub_levels_.end(); ++i) {
 		if(i->second.active) {
 			glPushMatrix();
-			glTranslatef(i->second.xoffset, i->second.yoffset, 0.0);
+			glTranslatef(i->second.xoffset, GLfloat(i->second.yoffset), 0.0);
 			i->second.lvl->draw_layer(layer, x - i->second.xoffset, y - i->second.yoffset - TileSize, w, h + TileSize);
 			glPopMatrix();
 		}
 	}
 
 	if(editor_ && layer == highlight_layer_) {
-		const GLfloat alpha = 0.3 + (1.0+sin(draw_count/5.0))*0.35;
+		const GLfloat alpha = GLfloat(0.3 + (1.0+sin(draw_count/5.0))*0.35);
 		glColor4f(1.0, 1.0, 1.0, alpha);
 
 	} else if(editor_ && hidden_layers_.count(layer)) {

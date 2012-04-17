@@ -63,6 +63,7 @@ private:
 
 	point last_stats_point_;
 	std::string last_stats_point_level_;
+	bool handle_mouse_events(const SDL_Event &event);
 
 	editor* editor_;
 #ifndef NO_EDITOR

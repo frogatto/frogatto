@@ -1,4 +1,5 @@
 #include <math.h>
+#include <climits>
 
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
@@ -18,6 +19,7 @@
 #include "font.hpp"
 #include "foreach.hpp"
 #include "formula_profiler.hpp"
+#include "formula_callable.hpp"
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY) || defined(__ANDROID__)
 #include "iphone_controls.hpp"
 #endif
@@ -301,6 +303,101 @@ void video_resize( SDL_Event &event )
     preferences::set_actual_screen_height(height);
 
     graphics::set_video_mode(width, height);
+}
+
+bool level_runner::handle_mouse_events(const SDL_Event &event)
+{
+	static const int MouseDownEventID = get_object_event_id("mouse_down");
+	static const int MouseUpEventID = get_object_event_id("mouse_up");
+	static const int MouseMoveEventID = get_object_event_id("mouse_move");
+	static const int MouseDownEventAllID = get_object_event_id("mouse_down*");
+	static const int MouseUpEventAllID = get_object_event_id("mouse_up*");
+	static const int MouseMoveEventAllID = get_object_event_id("mouse_move*");
+
+	static const int MouseEnterID = get_object_event_id("mouse_enter");
+	static const int MouseLeaveID = get_object_event_id("mouse_leave");
+
+	static const int MouseClickID = get_object_event_id("click");
+	//static const int MouseDblClickID = get_object_event_id("dblclick");
+	//static const int MouseDragID = get_object_event_id("drag");
+	//static const int MouseDragID = get_object_event_id("drag_start");
+	//static const int MouseDragID = get_object_event_id("drag_end");
+
+	if(paused) {
+		// skip mouse event handling when paused.
+		// XXX: when we become unpaused we need to reset the state of drag operations
+		// and partial clicks.
+		return false;
+	}
+
+	switch(event.type)
+	{
+#if defined(__ANDROID__)
+		case SDL_JOYBUTTONDOWN:
+		case SDL_JOYBUTTONUP:
+		case SDL_JOYBALLMOTION:
+			break;
+#else
+		case SDL_MOUSEBUTTONDOWN:
+		case SDL_MOUSEBUTTONUP:
+		case SDL_MOUSEMOTION:
+		    int x = event.type == SDL_MOUSEMOTION ? event.motion.x : event.button.x;
+			int y = event.type == SDL_MOUSEMOTION ? event.motion.y : event.button.y;
+			int i = event.type == SDL_MOUSEMOTION ? event.motion.which : event.button.which;
+			const int basic_evt = event.type == SDL_MOUSEBUTTONDOWN 
+				? MouseDownEventID 
+				: event.type == SDL_MOUSEMOTION
+					? MouseMoveEventID : MouseUpEventID;
+			const int catch_all_event = event.type == SDL_MOUSEBUTTONDOWN 
+				? MouseDownEventAllID 
+				: event.type == SDL_MOUSEMOTION
+					? MouseMoveEventAllID : MouseUpEventAllID;
+			x = (x*graphics::screen_width())/preferences::virtual_screen_width() + last_draw_position().x/100;
+			y = (y*graphics::screen_height())/preferences::virtual_screen_height() + last_draw_position().y/100;
+			game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
+			callable->add("mouse_x", variant(x));
+			callable->add("mouse_y", variant(y));
+			callable->add("mouse_index", variant(i));
+			if(event.type != SDL_MOUSEMOTION) {
+				callable->add("mouse_button", variant(event.button.button));
+			}
+			variant v(callable);
+			std::vector<entity_ptr> cs = lvl_->get_characters_at_point(x, y, last_draw_position().x/100, last_draw_position().y/100);
+			std::vector<entity_ptr>::iterator it;
+			bool handled = false;
+			int top_zorder = INT_MIN;
+			entity_ptr top_zorder_entity = 0;
+			for(it = cs.begin(); it != cs.end(); ++it) {
+				(*it)->handle_event(basic_evt, callable);
+				handled = true;
+
+				// Compare z-orders, then sub-z-orders then vertical mid-points.
+				if((*it)->zorder() > top_zorder) {
+					top_zorder = (*it)->zorder();
+					top_zorder_entity = *it;
+				} else if((*it)->zorder() == top_zorder) {
+					if(top_zorder_entity->zsub_order() < (*it)->zsub_order()) {
+						top_zorder_entity = *it;
+					} else if(top_zorder_entity->zsub_order() == (*it)->zsub_order()) {
+						if(top_zorder_entity->midpoint().y > (*it)->midpoint().y) {
+							top_zorder_entity = *it;
+						}
+					}
+				}
+			}
+			// XXX: fix this for dragging(with multiple mice)
+			if(top_zorder_entity && event.type == SDL_MOUSEBUTTONUP /*&& !dragging*/) {
+				// The mouse click event only goes to the item *highest* in the z-order.
+				top_zorder_entity->handle_event(MouseClickID, callable);
+			}
+			callable->add("handled", variant(handled));
+			foreach(entity_ptr object, level::current().get_chars()) {
+				object->handle_event(catch_all_event, callable);
+			}
+			break;
+#endif
+	}
+	return false;
 }
 
 level_runner* level_runner::get_current()
@@ -934,18 +1031,18 @@ bool level_runner::play_cycle()
 				break;
 			}
 #if defined(__ANDROID__)
-            //case SDL_JOYAXISMOTION:
             case SDL_JOYBALLMOTION:
             case SDL_JOYBUTTONDOWN:
             case SDL_JOYBUTTONUP:
                 iphone_controls::handle_event(event);
+				handle_mouse_events(event);
                 break;
-#endif
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY)
+#elif defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY)
 			case SDL_MOUSEMOTION:
 			case SDL_MOUSEBUTTONDOWN:
 			case SDL_MOUSEBUTTONUP:
 				iphone_controls::handle_event(event);
+				handle_mouse_events(event);
 				break;
 #else
 			case SDL_MOUSEBUTTONDOWN:
@@ -957,7 +1054,14 @@ bool level_runner::play_cycle()
 						lvl_->set_editor_highlight(selected);
 						console_->set_focus(selected);
 					}
+				} else {
+					handle_mouse_events(event);
 				}
+				break;
+
+			case SDL_MOUSEMOTION:
+			case SDL_MOUSEBUTTONUP:
+				handle_mouse_events(event);
 				break;
 #endif
 			default:
