@@ -844,7 +844,7 @@ void custom_object::draw() const
 		}
 	}
 
-	if(preferences::show_debug_hitboxes() && platform_area_) {
+	if(platform_area_ && (preferences::show_debug_hitboxes() || !platform_offsets_.empty() && level::current().in_editor())) {
 		std::vector<GLfloat> v;
 		const rect& r = platform_rect();
 		for(int x = 0; x < r.w(); x += 2) {
@@ -2053,6 +2053,13 @@ variant custom_object::get_value_by_slot(int slot) const
 			return variant();
 		}
 	}
+	case CUSTOM_OBJECT_PLATFORM_OFFSETS: {
+		std::vector<variant> result;
+		foreach(int n, platform_offsets_) {
+			result.push_back(variant(n));
+		}
+		return variant(&result);
+	}
 
 	case CUSTOM_OBJECT_SOLID_DIMENSIONS_IN: {
 		std::vector<variant> v;
@@ -2860,6 +2867,11 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	}
 
 	case CUSTOM_OBJECT_PLATFORM_AREA: {
+		if(value.is_null()) {
+			platform_area_.reset();
+			break;
+		}
+
 		ASSERT_GE(value.num_elements(), 3);
 		ASSERT_LE(value.num_elements(), 4);
 
