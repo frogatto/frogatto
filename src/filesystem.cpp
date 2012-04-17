@@ -543,9 +543,6 @@ int64_t file_mod_time(const std::string& fname)
 
 		return 0;
 	}
-	if(fname.find("test.cfg") != std::string::npos) {
-		std::cerr << "Found time for " << fname << ": " << static_cast<int64_t>(buf.st_mtime) << std::endl;
-	}
 	return static_cast<int64_t>(buf.st_mtime);
 }
 
