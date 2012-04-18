@@ -14,7 +14,7 @@ bool animation_preview_widget::is_animation(variant obj)
 	return !obj.is_null() && obj["image"].is_string();
 }
 
-animation_preview_widget::animation_preview_widget(variant obj) : cycle_(0), zoom_label_(NULL), pos_label_(NULL), scale_(0)
+animation_preview_widget::animation_preview_widget(variant obj) : cycle_(0), zoom_label_(NULL), pos_label_(NULL), scale_(0), anchor_x_(-1), anchor_y_(-1)
 {
 	set_object(obj);
 }
@@ -114,6 +114,29 @@ void animation_preview_widget::handle_draw() const
 			const rect box(x, y, frame_->area().w()*scale, frame_->area().h()*scale);
 			graphics::draw_hollow_rect(box.sdl_rect(), n == 0 ? graphics::color_yellow() : graphics::color_white(), frame_->frame_number(cycle_) == n ? 0xFF : 0x88);
 		}
+
+		int mousex, mousey;
+		if(anchor_x_ != -1 && SDL_GetMouseState(&mousex, &mousey) &&
+		   point_in_rect(point(mousex, mousey), dst_rect_)) {
+			const point p1 = mouse_point_to_image_loc(point(mousex, mousey));
+			const point p2 = mouse_point_to_image_loc(point(anchor_x_, anchor_y_));
+
+			int xpos1 = xpos - x1*scale + p1.x*scale;
+			int xpos2 = xpos - x1*scale + p2.x*scale;
+			int ypos1 = ypos - y1*scale + p1.y*scale;
+			int ypos2 = ypos - y1*scale + p2.y*scale;
+			
+			if(xpos2 < xpos1) {
+				std::swap(xpos1, xpos2);
+			}
+
+			if(ypos2 < ypos1) {
+				std::swap(ypos1, ypos2);
+			}
+			
+			rect area(xpos1, ypos1, xpos2 - xpos1, ypos2 - ypos1);
+			graphics::draw_hollow_rect(area.sdl_rect(), graphics::color_white());
+		}
 	}
 
 	rect preview_area(x() + (width()*3)/4, y(), width()/4, height());
@@ -135,6 +158,17 @@ void animation_preview_widget::handle_draw() const
 	}
 }
 
+point animation_preview_widget::mouse_point_to_image_loc(const point& p) const
+{
+	const double xpos = double(p.x - dst_rect_.x())/double(dst_rect_.w());
+	const double ypos = double(p.y - dst_rect_.y())/double(dst_rect_.h());
+
+	const int x = src_rect_.x() + (double(src_rect_.w()) + 1.0)*xpos;
+	const int y = src_rect_.y() + (double(src_rect_.h()) + 1.0)*ypos;
+	
+	return point(x, y);
+}
+
 bool animation_preview_widget::handle_event(const SDL_Event& event, bool claimed)
 {
 	foreach(widget_ptr w, widgets_) {
@@ -143,15 +177,52 @@ bool animation_preview_widget::handle_event(const SDL_Event& event, bool claimed
 
 	if(event.type == SDL_MOUSEMOTION) {
 		const SDL_MouseMotionEvent& e = event.motion;
-		const point p(e.x, e.y);
-		if(dst_rect_.w() > 0 && dst_rect_.h() > 0 && point_in_rect(p, dst_rect_)) {
-			const double xpos = double(p.x - dst_rect_.x())/double(dst_rect_.w());
-			const double ypos = double(p.y - dst_rect_.y())/double(dst_rect_.h());
-
-			const int x = src_rect_.x() + src_rect_.w()*xpos;
-			const int y = src_rect_.y() + src_rect_.h()*ypos;
-			pos_label_->set_text(formatter() << x << "," << y);
+		point p(e.x, e.y);
+		if(point_in_rect(p, dst_rect_)) {
+			p = mouse_point_to_image_loc(p);
+			pos_label_->set_text(formatter() << p.x << "," << p.y);
 		}
+	} else if(event.type == SDL_MOUSEBUTTONDOWN) {
+		const SDL_MouseButtonEvent& e = event.button;
+		const point p(e.x, e.y);
+		if(point_in_rect(p, dst_rect_)) {
+			claimed = true;
+			anchor_x_ = e.x;
+			anchor_y_ = e.y;
+		} else {
+			anchor_x_ = anchor_y_ = -1;
+		}
+	} else if(event.type == SDL_MOUSEBUTTONUP && anchor_x_ != -1) {
+		const SDL_MouseButtonEvent& e = event.button;
+		point anchor(anchor_x_, anchor_y_);
+		point p(e.x, e.y);
+		if(point_in_rect(anchor, dst_rect_) && point_in_rect(p, dst_rect_)) {
+			claimed = true;
+
+			anchor = mouse_point_to_image_loc(anchor);
+			p = mouse_point_to_image_loc(p);
+
+			int x1 = anchor.x;
+			int y1 = anchor.y;
+			int x2 = p.x;
+			int y2 = p.y;
+
+			if(x2 < x1) {
+				std::swap(x1, x2);
+			}
+
+			if(y2 < y1) {
+				std::swap(y1, y2);
+			}
+
+			rect area(x1, y1, x2 - x1, y2 - y1);
+
+			if(rect_handler_) {
+				rect_handler_(area);
+			}
+		}
+
+		anchor_x_ = anchor_y_ = -1;
 	}
 
 	return claimed;
@@ -183,6 +254,11 @@ void animation_preview_widget::update_zoom_label() const
 
 		zoom_label_->set_text(formatter() << "Zoom: " << percent << "%");
 	}
+}
+
+void animation_preview_widget::set_rect_handler(boost::function<void(rect)> handler)
+{
+	rect_handler_ = handler;
 }
 
 }

@@ -32,6 +32,8 @@ private:
 	bool handle_event(const SDL_Event& event, bool claimed);
 	void handle_draw_children() const;
 
+	void set_animation_rect(rect r);
+
 	std::string fname_;
 
 	int invalidated_;

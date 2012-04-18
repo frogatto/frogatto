@@ -1,6 +1,7 @@
 #ifndef ANIMATION_PREVIEW_WIDGET_HPP_INCLUDED
 #define ANIMATION_PREVIEW_WIDGET_HPP_INCLUDED
 
+#include <boost/function.hpp>
 #include <boost/scoped_ptr.hpp>
 
 #include "frame.hpp"
@@ -21,12 +22,16 @@ public:
 
 	void process();
 
+	void set_rect_handler(boost::function<void(rect)>);
+
 private:
 	void handle_draw() const;
 	bool handle_event(const SDL_Event& event, bool claimed);
 
 	void zoom_in();
 	void zoom_out();
+
+	point mouse_point_to_image_loc(const point& p) const;
 
 	variant obj_;
 
@@ -41,6 +46,11 @@ private:
 	void update_zoom_label() const;
 
 	mutable rect src_rect_, dst_rect_;
+
+	//anchors for mouse dragging events.
+	int anchor_x_, anchor_y_;
+
+	boost::function<void(rect)> rect_handler_;
 };
 
 }

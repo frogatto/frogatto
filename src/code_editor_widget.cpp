@@ -4,6 +4,7 @@
 #include "formula_tokenizer.hpp"
 #include "json_parser.hpp"
 #include "string_utils.hpp"
+#include "utility_query.hpp"
 
 #include <boost/bind.hpp>
 #include <boost/regex.hpp>
@@ -420,5 +421,21 @@ void code_editor_widget::set_highlight_current_object(bool value)
 		clear_highlight_lines();
 	}
 }
+
+void code_editor_widget::modify_current_object(variant new_obj)
+{
+	ObjectInfo info = get_current_object();
+	if(info.obj.is_null() || info.tokens.empty()) {
+		return;
+	}
+
+	save_undo_state();
+
+	const std::string str(current_text_.begin() + info.begin, current_text_.begin() + info.end);
+	const std::string new_str = modify_variant_text(str, info.obj, new_obj, info.obj.get_debug_info()->line, info.obj.get_debug_info()->column);
+	current_text_ = std::string(current_text_.begin(), current_text_.begin() + info.begin) + new_str + std::string(current_text_.begin() + info.end, current_text_.end());
+	set_text(current_text_, false /*don't move cursor*/);
+}
+
 
 }
