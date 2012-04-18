@@ -184,6 +184,8 @@ public:
 	void update_type(const_custom_object_type_ptr old_type,
 	                 const_custom_object_type_ptr new_type);
 
+	const bool mouse_event_swallowed() {return swallow_mouse_event_;}
+
 protected:
 	//components of per-cycle process() that can be done even on
 	//static objects.
@@ -356,6 +358,8 @@ private:
 	void set_platform_area(const rect& area);
 
 	std::vector<int> platform_offsets_;
+
+	bool swallow_mouse_event_;
 };
 
 #endif

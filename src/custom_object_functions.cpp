@@ -1757,6 +1757,10 @@ FUNCTION_DEF(swallow_event, 0, 0, "swallow_event(): when used in an instance-spe
 	return variant(new swallow_object_command_callable);
 END_FUNCTION_DEF(swallow_event)
 
+FUNCTION_DEF(swallow_mouse_event, 0, 0, "swallow_event(): when used in an instance-specific event handler, this causes the mouse event to be swallowed and not passed to the next object in the z-order stack.")
+	return variant(new swallow_mouse_command_callable);
+END_FUNCTION_DEF(swallow_mouse_event)
+
 class add_level_module_command : public entity_command_callable {
 	std::string lvl_;
 	int x_, y_;

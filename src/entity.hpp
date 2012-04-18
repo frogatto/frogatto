@@ -250,6 +250,8 @@ public:
 	void set_spawned_by(const std::string& key);
 	const std::string& spawned_by() const;
 
+	virtual const bool mouse_event_swallowed() {return false;}
+
 protected:
 
 	virtual const_solid_info_ptr calculate_solid() const = 0;

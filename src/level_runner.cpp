@@ -305,6 +305,23 @@ void video_resize( SDL_Event &event )
     graphics::set_video_mode(width, height);
 }
 
+bool zorder_compare(entity_ptr e1, entity_ptr e2)
+{
+	// Compare z-orders, then sub-z-orders then vertical mid-points.
+	if(e1->zorder() > e2->zorder()) {
+		return true;
+	} else if(e1->zorder() == e2->zorder()) {
+		if(e1->zsub_order() > e2->zsub_order()) {
+			return true;
+		} else if(e1->zsub_order() == e2->zsub_order()) {
+			if(e1->midpoint().y > e2->midpoint().y) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 bool level_runner::handle_mouse_events(const SDL_Event &event)
 {
 	static const int MouseDownEventID = get_object_event_id("mouse_down");
@@ -313,6 +330,7 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 	static const int MouseDownEventAllID = get_object_event_id("mouse_down*");
 	static const int MouseUpEventAllID = get_object_event_id("mouse_up*");
 	static const int MouseMoveEventAllID = get_object_event_id("mouse_move*");
+
 
 	static const int MouseEnterID = get_object_event_id("mouse_enter");
 	static const int MouseLeaveID = get_object_event_id("mouse_leave");
@@ -363,37 +381,27 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 			}
 			variant v(callable);
 			std::vector<entity_ptr> cs = lvl_->get_characters_at_point(x, y, last_draw_position().x/100, last_draw_position().y/100);
+			std::sort(cs.begin(), cs.end(), zorder_compare);
 			std::vector<entity_ptr>::iterator it;
 			bool handled = false;
-			int top_zorder = INT_MIN;
-			entity_ptr top_zorder_entity = 0;
+			bool click_handled = false;
 			for(it = cs.begin(); it != cs.end(); ++it) {
 				(*it)->handle_event(basic_evt, callable);
-				handled = true;
-
-				// Compare z-orders, then sub-z-orders then vertical mid-points.
-				if((*it)->zorder() > top_zorder) {
-					top_zorder = (*it)->zorder();
-					top_zorder_entity = *it;
-				} else if((*it)->zorder() == top_zorder) {
-					if(top_zorder_entity->zsub_order() < (*it)->zsub_order()) {
-						top_zorder_entity = *it;
-					} else if(top_zorder_entity->zsub_order() == (*it)->zsub_order()) {
-						if(top_zorder_entity->midpoint().y > (*it)->midpoint().y) {
-							top_zorder_entity = *it;
-						}
+				// XXX: fix this for dragging(with multiple mice)
+				if(event.type == SDL_MOUSEBUTTONUP && !click_handled /*&& !dragging*/) {
+					(*it)->handle_event(MouseClickID, callable);
+					if((*it)->mouse_event_swallowed()) {
+						click_handled = true;
 					}
 				}
-			}
-			// XXX: fix this for dragging(with multiple mice)
-			if(top_zorder_entity && event.type == SDL_MOUSEBUTTONUP /*&& !dragging*/) {
-				// The mouse click event only goes to the item *highest* in the z-order.
-				top_zorder_entity->handle_event(MouseClickID, callable);
+				handled = true;
+
 			}
 			callable->add("handled", variant(handled));
 			foreach(entity_ptr object, level::current().get_chars()) {
 				object->handle_event(catch_all_event, callable);
 			}
+
 			break;
 #endif
 	}

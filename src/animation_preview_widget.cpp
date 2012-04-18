@@ -60,7 +60,9 @@ void animation_preview_widget::handle_draw() const
 	rect image_area(x(), y(), (width()*3)/4, height() - 30);
 	const graphics::texture image_texture(graphics::texture::get(obj_["image"].as_string()));
 	if(image_texture.valid()) {
+#ifndef SDL_VIDEO_OPENGL_ES
 		const graphics::clip_scope clipping_scope(image_area.sdl_rect());
+#endif // SDL_VIDEO_OPENGL_ES
 
 		const rect focus_area(frame_->area().x(), frame_->area().y(),
 		      (frame_->area().w() + frame_->pad())*frame_->num_frames_per_row(),

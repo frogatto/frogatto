@@ -92,7 +92,8 @@ custom_object::custom_object(variant node)
 	parent_pivot_(node["pivot"].as_string_default()),
 	parent_prev_x_(0), parent_prev_y_(0), parent_prev_facing_(true),
 	min_difficulty_(node["min_difficulty"].as_int(-1)),
-	max_difficulty_(node["max_difficulty"].as_int(-1))
+	max_difficulty_(node["max_difficulty"].as_int(-1)),
+	swallow_mouse_event_(false)
 {
 	get_all().insert(this);
 	get_all(base_type_->id()).insert(this);
@@ -3208,6 +3209,7 @@ void custom_object::handle_event(int event, const formula_callable* context)
 		return;
 	}
 
+	swallow_mouse_event_ = false;
 	backup_callable_stack_.push(context);
 
 	for(int n = 0; n != nhandlers; ++n) {
@@ -3275,9 +3277,15 @@ bool custom_object::execute_command(const variant& var)
 				if(cmd != NULL) {
 					cmd->execute(level::current(), *this);
 				} else {
-					if(var.try_convert<swallow_object_command_callable>()) {
+					swallow_object_command_callable* cmd = var.try_convert<swallow_object_command_callable>();
+					if(cmd) {
 						result = false;
-				}
+					} else {
+						swallow_mouse_command_callable* cmd = var.try_convert<swallow_mouse_command_callable>();
+						if(cmd) {
+							swallow_mouse_event_ = true;
+						}
+					}
 				}
 			}
 		}
