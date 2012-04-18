@@ -362,7 +362,7 @@ code_editor_widget::ObjectInfo code_editor_widget::get_object_at(int row, int co
 {
 	const int pos = row_col_to_text_pos(row, col);
 	const char* ptr = current_text_.c_str() + pos;
-	ASSERT_LOG(pos >= 0 && pos < current_text_.size(), "Unexpected position in code editor widget");
+	ASSERT_LOG(pos >= 0 && pos <= current_text_.size(), "Unexpected position in code editor widget: " << pos << " / " << current_text_.size());
 	const json::Token* begin_token = NULL;
 	const json::Token* end_token = NULL;
 	int nbracket = 0;
