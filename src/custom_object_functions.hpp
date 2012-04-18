@@ -42,4 +42,10 @@ private:
 	void get_inputs(std::vector<game_logic::formula_input>* inputs) const {}
 };
 
+class swallow_mouse_command_callable : public game_logic::formula_callable {
+private:
+	variant get_value(const std::string& key) const { return variant(); }
+	void get_inputs(std::vector<game_logic::formula_input>* inputs) const {}
+};
+
 #endif

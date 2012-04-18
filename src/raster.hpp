@@ -135,6 +135,7 @@ void zoom_in();
 void zoom_out();
 void zoom_default();
 
+#ifndef SDL_VIDEO_OPENGL_ES
 void coords_to_screen(GLfloat sx, GLfloat sy, GLfloat sz,
 		      GLfloat* dx, GLfloat* dy, GLfloat* dz);
 void push_clip(const SDL_Rect& rect);
@@ -149,6 +150,7 @@ struct clip_scope {
 		pop_clip();
 	}
 };
+#endif // SDL_VIDEO_OPENGL_ES
 
 const SDL_Color& color_black();
 const SDL_Color& color_white();
