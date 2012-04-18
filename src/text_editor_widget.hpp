@@ -16,7 +16,7 @@ public:
 	~text_editor_widget();
 
 	std::string text() const;
-	void set_text(const std::string& value);
+	void set_text(const std::string& value, bool reset_cursor=true);
 
 	void undo();
 	void redo();

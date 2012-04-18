@@ -157,7 +157,9 @@ struct Modification {
 	}
 };
 
-std::string modify_file(const std::string& contents, variant original, variant v, int line, int col, std::string indent) {
+}
+
+std::string modify_variant_text(const std::string& contents, variant original, variant v, int line, int col, std::string indent) {
 	if(v == original) {
 		return contents;
 	}
@@ -179,7 +181,7 @@ std::string modify_file(const std::string& contents, variant original, variant v
 				int l = line, c = col;
 				advance_line_col(contents.begin(), range.begin_value, l, c);
 
-				new_contents = modify_file(new_contents, item.second, itor->second, l, c, indent + "\t") + (range.has_comma ? "" : ",");
+				new_contents = modify_variant_text(new_contents, item.second, itor->second, l, c, indent + "\t") + (range.has_comma ? "" : ",");
 
 				mods.push_back(Modification(range.begin_value - contents.begin(), range.end_value - contents.begin(), new_contents));
 			} else {
@@ -239,7 +241,7 @@ std::string modify_file(const std::string& contents, variant original, variant v
 
 				int l = line, c = col;
 				advance_line_col(contents.begin(), contents.begin() + (ranges[n].first - contents.c_str()), l, c);
-				std::string str = modify_file(std::string(ranges[n].first, ranges[n].second), a[n], b[n], l, c, indent + "\t");
+				std::string str = modify_variant_text(std::string(ranges[n].first, ranges[n].second), a[n], b[n], l, c, indent + "\t");
 				mods.push_back(Modification(ranges[n].first - contents.c_str(), ranges[n].second - contents.c_str(), str));
 			}
 
@@ -279,6 +281,8 @@ std::string modify_file(const std::string& contents, variant original, variant v
 
 	return result;
 }
+
+namespace {
 
 const_formula_ptr formula_;
 
@@ -323,7 +327,7 @@ void process_file(const std::string& fname)
 
 	if(original != v) {
 		std::string contents = sys::read_file(fname);
-		std::string new_contents = modify_file(contents, original, v, 1, 1, "");
+		std::string new_contents = modify_variant_text(contents, original, v, 1, 1, "");
 		try {
 			json::parse(new_contents, JSON_NO_PREPROCESSOR);
 		} catch(json::parse_error& e) {

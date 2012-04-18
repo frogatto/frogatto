@@ -144,7 +144,7 @@ void text_editor_widget::set_row_contents(int row, const std::string& value)
 	on_change();
 }
 
-void text_editor_widget::set_text(const std::string& value)
+void text_editor_widget::set_text(const std::string& value, bool reset_cursor)
 {
 	std::string txt = value;
 	txt.erase(std::remove(txt.begin(), txt.end(), '\r'), txt.end());
@@ -153,8 +153,18 @@ void text_editor_widget::set_text(const std::string& value)
 		text_.push_back("");
 	}
 
-	select_ = cursor_ = Loc(0,0);
-	scroll_pos_ = 0;
+	if(reset_cursor) {
+		select_ = cursor_ = Loc(0,0);
+		scroll_pos_ = 0;
+	} else {
+		if(select_.row >= text_.size()) {
+			select_.row = text_.size() - 1;
+		}
+
+		if(cursor_.row >= text_.size()) {
+			cursor_.row = text_.size() - 1;
+		}
+	}
 
 	refresh_scrollbar();
 	on_change();

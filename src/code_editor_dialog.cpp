@@ -120,6 +120,7 @@ void code_editor_dialog::process()
 		if(gui::animation_preview_widget::is_animation(info.obj)) {
 			if(!animation_preview_) {
 				animation_preview_.reset(new gui::animation_preview_widget(info.obj));
+				animation_preview_->set_rect_handler(boost::bind(&code_editor_dialog::set_animation_rect, this, _1));
 				animation_preview_->set_loc(x() - 520, y() + 100);
 				animation_preview_->set_dim(500, 400);
 				animation_preview_->init();
@@ -173,3 +174,19 @@ void code_editor_dialog::on_move_cursor()
 {
 	status_label_->set_text(formatter() << "Row " << (editor_->cursor_row()+1) << " Col " << (editor_->cursor_col()+1) << (modified_ ? " (Modified)" : ""));
 }
+
+void code_editor_dialog::set_animation_rect(rect r)
+{
+	const gui::code_editor_widget::ObjectInfo info = editor_->get_current_object();
+	variant v = info.obj;
+	if(v.is_null() == false) {
+		v.add_attr(variant("rect"), r.write());
+		try {
+			animation_preview_->set_object(v);
+			editor_->modify_current_object(v);
+		} catch(frame::error& e) {
+			animation_preview_->set_object(info.obj);
+		}
+	}
+}
+

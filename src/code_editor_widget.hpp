@@ -25,6 +25,9 @@ public:
 	ObjectInfo get_current_object() const;
 	void set_highlight_current_object(bool value);
 
+	//modifies the currently selected object to be equal to this new value.
+	void modify_current_object(variant new_obj);
+
 private:
 	ObjectInfo get_object_at(int row, int col) const;
 
