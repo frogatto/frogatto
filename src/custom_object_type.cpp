@@ -65,7 +65,7 @@ void load_file_paths() {
 
 	for(std::map<std::string, std::string>::const_iterator i = object_file_paths().begin(); i != object_file_paths().end(); ++i) {
 		file_mod_times()[i->second] = sys::file_mod_time("./" + i->second);
-		std::cerr << "FILE MOD TIME FOR " << i->second << ": " << file_mod_times()[i->second] << "\n";
+		//std::cerr << "FILE MOD TIME FOR " << i->second << ": " << file_mod_times()[i->second] << "\n";
 	}
 
 	for(std::map<std::string, std::string>::const_iterator i = prototype_file_paths().begin(); i != prototype_file_paths().end(); ++i) {
@@ -800,7 +800,7 @@ const_custom_object_type_ptr custom_object_type::get_variation(const std::vector
 
 			execute_variation_command(cmd, *callable);
 
-			std::cerr << "VARIATION " << v << ":\n--- BEFORE ---\n" << node.write_json() << "\n--- AFTER ---\n" << node_.write_json() << "\n--- DONE ---\n";
+			//std::cerr << "VARIATION " << v << ":\n--- BEFORE ---\n" << node.write_json() << "\n--- AFTER ---\n" << node_.write_json() << "\n--- DONE ---\n";
 		}
 
 		//set our constants so the variation can decide whether it needs
