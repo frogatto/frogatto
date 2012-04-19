@@ -13,11 +13,6 @@ border_widget.cpp
 button.cpp
 character_editor_dialog.cpp
 current_generator.cpp
-editor_dialogs.cpp
-editor_formula_functions.cpp
-editor_layers_dialog.cpp
-editor_stats_dialog.cpp
-editor_variable_info.cpp
 checkbox.cpp
 clipboard.cpp
 code_editor_dialog.cpp
@@ -30,12 +25,19 @@ custom_object.cpp
 custom_object_callable.cpp
 custom_object_functions.cpp
 custom_object_type.cpp
-debug_console.cpp dialog.cpp
+debug_console.cpp
 decimal.cpp
-draw_number.cpp draw_scene.cpp
+dialog.cpp
+draw_number.cpp
+draw_scene.cpp
 draw_tile.cpp
 editor.cpp
+editor_dialogs.cpp
+editor_formula_functions.cpp
+editor_layers_dialog.cpp
 editor_level_properties_dialog.cpp
+editor_stats_dialog.cpp
+editor_variable_info.cpp
 external_text_editor.cpp
 entity.cpp
 filesystem.cpp
