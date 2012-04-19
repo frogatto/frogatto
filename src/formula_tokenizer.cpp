@@ -54,6 +54,45 @@ const FFL_TOKEN_TYPE* single_char_tokens = create_single_char_tokens();
 token get_token(iterator& i1, iterator i2) {
 	token t;
 	t.begin = i1;
+
+	if(*i1 == '/' && i1+1 != i2) {
+		if(*(i1+1) == '/') {
+			//special case for matching a // comment.
+			t.type = TOKEN_COMMENT;
+			i1 = std::find(i1, i2, '\n');
+			t.end = i1;
+			return t;
+		} else if(*(i1+1) == '*') {
+			//special case for matching a /* comment.
+			t.type = TOKEN_COMMENT;
+
+			i1 += 2;
+
+			int nesting = 1;
+			while(i1 != i2) {
+				if(i1+1 != i2) {
+					if(*i1 == '/' && *(i1+1) == '*') {
+						++nesting;
+					} else if(*i1 == '*' && *(i1+1) == '/') {
+						if(--nesting == 0) {
+							++i1;
+							break;
+						}
+					}
+				}
+
+				++i1;
+			}
+
+			if(i1 == i2) {
+				throw token_error("Unterminated comment");
+			}
+
+			t.end = ++i1;
+			return t;
+		}
+	}
+
 	t.type = single_char_tokens[*i1];
 	if(t.type != TOKEN_INVALID) {
 		t.end = ++i1;

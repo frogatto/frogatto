@@ -10,8 +10,34 @@ namespace json {
 
 Token get_token(const char*& i1, const char* i2)
 {
-	while(i1 != i2 && util::c_isspace(*i1) || *i1 == '#') {
-		if(*i1 == '#') {
+	while(i1 != i2 && util::c_isspace(*i1) || *i1 == '#' || *i1 == '/' && i1+1 != i2 && (*(i1 + 1) == '/' || *(i1 + 1) == '*')) {
+		if(*i1 == '/' && *(i1 + 1) == '*') {
+			const char* begin = i1;
+			i1 += 2;
+
+			int nesting = 1;
+			while(i1 != i2) {
+				if(i1+1 != i2) {
+					if(*i1 == '/' && *(i1+1) == '*') {
+						++nesting;
+					} else if(*i1 == '*' && *(i1+1) == '/') {
+						if(--nesting == 0) {
+							++i1;
+							break;
+						}
+					}
+				}
+
+				++i1;
+			}
+
+			if(i1 == i2) {
+				TokenizerError error = { "Unexpected end of file while parsing string", begin };
+				throw error;
+			}
+
+			++i1;
+		} else if(*i1 == '#' || *i1 == '/') {
 			//ignore comments.
 			i1 = std::find(i1, i2, '\n');
 		} else {
