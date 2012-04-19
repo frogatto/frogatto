@@ -219,6 +219,16 @@ extern "C" int main(int argcount, char** argvec)
 		argv.push_back(argvec[n]);
 	}
 
+	if(sys::file_exists("./master-config.cfg")) {
+		variant cfg = json::parse_from_file("./master-config.cfg");
+		if(cfg.is_map()) {
+			if(cfg["arguments"].is_null() == false) {
+				std::vector<std::string> additional_args = cfg["arguments"].as_list_string();
+				argv.insert(argv.begin(), additional_args.begin(), additional_args.end());
+			}
+		}
+	}
+
 	for(int n = 0; n < argv.size(); ++n) {
 		const int argc = argv.size();
 		const std::string arg(argv[n]);
