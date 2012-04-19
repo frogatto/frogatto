@@ -36,6 +36,7 @@ draw_number.cpp draw_scene.cpp
 draw_tile.cpp
 editor.cpp
 editor_level_properties_dialog.cpp
+external_text_editor.cpp
 entity.cpp
 filesystem.cpp
 font.cpp
