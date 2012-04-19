@@ -559,11 +559,7 @@ variant variant::operator()(const std::vector<variant>& args) const
 	}
 
 	for(size_t n = args.size(); n < max_args; ++n) {
-		if(n >= min_args) {
-			callable->add(fn_->default_args[n - min_args]);
-		} else {
-			callable->add(variant());
-		}
+		callable->add(fn_->default_args[n - min_args]);
 	}
 
 	return fn_->fn->execute(*callable);
