@@ -154,9 +154,10 @@ class formula_function {
 	const_formula_ptr formula_;
 	const_formula_ptr precondition_;
 	std::vector<std::string> args_;
+	std::vector<variant> default_args_;
 public:
 	formula_function() {}
-	formula_function(const std::string& name, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& args) : name_(name), formula_(formula), precondition_(precondition), args_(args)
+	formula_function(const std::string& name, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& args, const std::vector<variant>& default_args) : name_(name), formula_(formula), precondition_(precondition), args_(args), default_args_(default_args)
 	{}
 
 	formula_function_expression_ptr generate_function_expression(const std::vector<expression_ptr>& args) const;
@@ -169,7 +170,7 @@ public:
 	function_symbol_table() : backup_(0) {}
 	virtual ~function_symbol_table() {}
 	void set_backup(const function_symbol_table* backup) { backup_ = backup; }
-	virtual void add_formula_function(const std::string& name, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& args);
+	virtual void add_formula_function(const std::string& name, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& args, const std::vector<variant>& default_args);
 	virtual expression_ptr create_function(const std::string& fn,
 					                       const std::vector<expression_ptr>& args,
 										   const formula_callable_definition* callable_def) const;
@@ -186,7 +187,7 @@ class recursive_function_symbol_table : public function_symbol_table {
 	function_symbol_table* backup_;
 	mutable std::vector<formula_function_expression_ptr> expr_;
 public:
-	recursive_function_symbol_table(const std::string& fn, const std::vector<std::string>& args, function_symbol_table* backup);
+	recursive_function_symbol_table(const std::string& fn, const std::vector<std::string>& args, const std::vector<variant>& default_args, function_symbol_table* backup);
 	virtual expression_ptr create_function(const std::string& fn,
 					                       const std::vector<expression_ptr>& args,
 										   const formula_callable_definition* callable_def) const;

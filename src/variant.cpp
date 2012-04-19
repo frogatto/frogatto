@@ -196,6 +196,8 @@ struct variant_fn {
 
 	game_logic::const_formula_callable_ptr callable;
 
+	std::vector<variant> default_args;
+
 	int base_slot;
 	int refcount;
 };
@@ -358,7 +360,7 @@ variant::variant(std::map<variant,variant>* map)
 	increment_refcount();
 }
 
-variant::variant(game_logic::const_formula_ptr fml, const std::vector<std::string>& args, const game_logic::formula_callable& callable, int base_slot)
+variant::variant(game_logic::const_formula_ptr fml, const std::vector<std::string>& args, const game_logic::formula_callable& callable, int base_slot, const std::vector<variant>& default_args)
   : type_(TYPE_FUNCTION)
 {
 	fn_ = new variant_fn;
@@ -371,6 +373,7 @@ variant::variant(game_logic::const_formula_ptr fml, const std::vector<std::strin
 	fn_->base_slot = base_slot;
 	fn_->fn = fml;
 	fn_->callable = &callable;
+	fn_->default_args = default_args;
 	increment_refcount();
 
 	if(fml->str_var().get_debug_info()) {
@@ -544,16 +547,23 @@ variant variant::operator()(const std::vector<variant>& args) const
 
 	callable->set_base_slot(fn_->base_slot);
 
-	if(args.size() > fn_->end_args - fn_->begin_args) {
-		generate_error(formatter() << "Function passed " << args.size() << " arguments, " << (fn_->end_args - fn_->begin_args) << " expected");
+	const int max_args = fn_->end_args - fn_->begin_args;
+	const int min_args = max_args - fn_->default_args.size();
+
+	if(args.size() < min_args || args.size() > max_args) {
+		generate_error(formatter() << "Function passed " << args.size() << " arguments, between " <<  min_args << " and " << max_args << " expected");
 	}
 
 	for(size_t n = 0; n != args.size(); ++n) {
 		callable->add(args[n]);
 	}
 
-	for(size_t n = args.size(); n < fn_->end_args - fn_->begin_args; ++n) {
-		callable->add(variant());
+	for(size_t n = args.size(); n < max_args; ++n) {
+		if(n >= min_args) {
+			callable->add(fn_->default_args[n - min_args]);
+		} else {
+			callable->add(variant());
+		}
 	}
 
 	return fn_->fn->execute(*callable);

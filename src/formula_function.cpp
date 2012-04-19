@@ -1460,14 +1460,24 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 	return res;
 }
 
-	formula_function_expression_ptr formula_function::generate_function_expression(const std::vector<expression_ptr>& args) const
+	formula_function_expression_ptr formula_function::generate_function_expression(const std::vector<expression_ptr>& args_input) const
 	{
+		std::vector<expression_ptr> args = args_input;
+		if(args.size() + default_args_.size() >= args_.size()) {
+			const int base = args_.size() - default_args_.size();
+			while(args.size() < args_.size()) {
+				const int index = args.size() - base;
+				ASSERT_LOG(index >= 0 && index < default_args_.size(), "INVALID INDEX INTO DEFAULT ARGS: " << index << " / " << default_args_.size());
+				args.push_back(expression_ptr(new variant_expression(default_args_[index])));
+			}
+		}
+
 		return formula_function_expression_ptr(new formula_function_expression(name_, args, formula_, precondition_, args_));
 	}
 
-	void function_symbol_table::add_formula_function(const std::string& name, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& args)
+	void function_symbol_table::add_formula_function(const std::string& name, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& args, const std::vector<variant>& default_args)
 	{
-		custom_formulas_[name] = formula_function(name, formula, precondition, args);
+		custom_formulas_[name] = formula_function(name, formula, precondition, args, default_args);
 	}
 
 	expression_ptr function_symbol_table::create_function(const std::string& fn, const std::vector<expression_ptr>& args, const formula_callable_definition* callable_def) const
@@ -1494,8 +1504,8 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 		return res;
 	}
 
-	recursive_function_symbol_table::recursive_function_symbol_table(const std::string& fn, const std::vector<std::string>& args, function_symbol_table* backup)
-	: name_(fn), stub_(fn, const_formula_ptr(), const_formula_ptr(), args), backup_(backup)
+	recursive_function_symbol_table::recursive_function_symbol_table(const std::string& fn, const std::vector<std::string>& args, const std::vector<variant>& default_args, function_symbol_table* backup)
+	: name_(fn), stub_(fn, const_formula_ptr(), const_formula_ptr(), args, default_args), backup_(backup)
 	{
 	}
 

@@ -381,18 +381,19 @@ private:
 
 class lambda_function_expression : public formula_expression {
 public:
-	lambda_function_expression(const std::vector<std::string>& args, const_formula_ptr fml, int base_slot) : args_(args), fml_(fml), base_slot_(base_slot)
+	lambda_function_expression(const std::vector<std::string>& args, const_formula_ptr fml, int base_slot, const std::vector<variant>& default_args) : args_(args), fml_(fml), base_slot_(base_slot), default_args_(default_args)
 	{}
 	
 private:
 	variant execute(const formula_callable& variables) const {
-		variant v(fml_, args_, variables, base_slot_);
+		variant v(fml_, args_, variables, base_slot_, default_args_);
 		return v;
 	}
 	
 	std::vector<std::string> args_;
 	game_logic::const_formula_ptr fml_;
 	int base_slot_;
+	std::vector<variant> default_args_;
 };
 
 class function_call_expression : public formula_expression {
@@ -948,7 +949,8 @@ expression_ptr parse_expression(const variant& formula_str, const token* i1, con
 
 void parse_function_args(variant formula_str, const token* &i1, const token* i2,
 						 std::vector<std::string>* res,
-						 std::vector<std::string>* types)
+						 std::vector<std::string>* types,
+						 std::vector<variant>* default_values)
 {
 	if(i1->type == TOKEN_LPARENS) {
 		++i1;
@@ -958,7 +960,30 @@ void parse_function_args(variant formula_str, const token* &i1, const token* i2,
 	
 	while((i1->type != TOKEN_RPARENS) && (i1 != i2)) {
 		if(i1->type == TOKEN_IDENTIFIER) {
-			if(i1+1 != i2 && std::string((i1+1)->begin, (i1+1)->end) == "*") {
+			if(i1+1 != i2 && std::string((i1+1)->begin, (i1+1)->end) == "=") {
+				types->push_back("");
+				res->push_back(std::string(i1->begin, i1->end));
+
+				i1 += 2;
+				ASSERT_LOG(i1 != i2, "Invalid function definition\n" << pinpoint_location(formula_str, i1->begin, (i2-1)->end));
+
+				const token* begin = i1;
+				if(!token_matcher().add(TOKEN_COMMA).add(TOKEN_RPARENS)
+				    .find_match(i1, i2)) {
+					ASSERT_LOG(false, "Invalid function definition\n" << pinpoint_location(formula_str, i1->begin, (i2-1)->end));
+				}
+
+				const expression_ptr expr = parse_expression(
+				    formula_str, begin, i1, NULL, NULL);
+
+				boost::intrusive_ptr<map_formula_callable> callable(new map_formula_callable);
+				default_values->push_back(expr->evaluate(*callable));
+
+				continue;
+
+			} else if(default_values->empty() == false) {
+				ASSERT_LOG(i1 != i2, "Invalid function definition: some args do not have a default value after some args do\n" << pinpoint_location(formula_str, i1->begin, (i2-1)->end));
+			} else if(i1+1 != i2 && std::string((i1+1)->begin, (i1+1)->end) == "*") {
 				types->push_back("");
 				res->push_back(std::string(i1->begin, i1->end) + std::string("*"));
 				++i1;
@@ -1212,7 +1237,8 @@ expression_ptr parse_function_def(const variant& formula_str, const token*& i1, 
 	}
 	
 	std::vector<std::string> args, types;
-	parse_function_args(formula_str, i1, i2, &args, &types);
+	std::vector<variant> default_args;
+	parse_function_args(formula_str, i1, i2, &args, &types, &default_args);
 	const token* beg = i1;
 	while((i1 != i2) && (i1->type != TOKEN_SEMICOLON)) {
 		++i1;
@@ -1237,7 +1263,7 @@ expression_ptr parse_function_def(const variant& formula_str, const token*& i1, 
 		function_var.set_debug_info(info);
 	}
 	
-	recursive_function_symbol_table recursive_symbols(formula_name.empty() ? "recurse" : formula_name, args, symbols);
+	recursive_function_symbol_table recursive_symbols(formula_name.empty() ? "recurse" : formula_name, args, default_args, symbols);
 
 	//create a definition of the callable representing
 	//function arguments.
@@ -1260,12 +1286,12 @@ expression_ptr parse_function_def(const variant& formula_str, const token*& i1, 
 	recursive_symbols.resolve_recursive_calls(fml);
 	
 	if(formula_name.empty()) {
-		return expression_ptr(new lambda_function_expression(args, fml, callable_def ? callable_def->num_slots() : 0));
+		return expression_ptr(new lambda_function_expression(args, fml, callable_def ? callable_def->num_slots() : 0, default_args));
 	}
 
 	const std::string precond = "";
 	symbols->add_formula_function(formula_name, fml,
-								  formula::create_optional_formula(variant(precond), symbols), args);
+								  formula::create_optional_formula(variant(precond), symbols), args, default_args);
 	return expression_ptr();
 }
 
@@ -1973,6 +1999,11 @@ UNIT_TEST(formula_test_recurse_sort) {
 
 UNIT_TEST(formula_where_map) {
 	CHECK_EQ(formula(variant("{'a': a} where a = 4")).execute()["a"], variant(4));
+}
+
+UNIT_TEST(formula_function_default_args) {
+	CHECK_EQ(formula(variant("def f(x=5) x ; f() + f(1)")).execute(), variant(6));
+	CHECK_EQ(formula(variant("f(5) where f = def(x,y=2) x*y")).execute(), variant(10));
 }
 
 BENCHMARK(formula_recurse_sort) {

@@ -69,7 +69,7 @@ public:
 	explicit variant(const std::string& str);
 	static variant create_translated_string(const std::string& str);
 	explicit variant(std::map<variant,variant>* map);
-	variant(game_logic::const_formula_ptr, const std::vector<std::string>& args, const game_logic::formula_callable& callable, int base_slot);
+	variant(game_logic::const_formula_ptr, const std::vector<std::string>& args, const game_logic::formula_callable& callable, int base_slot, const std::vector<variant>& default_args);
 
 	static variant create_variant_under_construction(intptr_t id);
 
