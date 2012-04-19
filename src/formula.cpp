@@ -1045,17 +1045,23 @@ void parse_set_args(const variant& formula_str, const token* i1, const token* i2
 	bool check_pointer = false;
 	const token* beg = i1;
 	while(i1 != i2) {
-		if(i1->type == TOKEN_LPARENS || i1->type == TOKEN_LSQUARE) {
+		if(i1->type == TOKEN_LPARENS || i1->type == TOKEN_LSQUARE || i1->type == TOKEN_LBRACKET) {
 			++parens;
-		} else if(i1->type == TOKEN_RPARENS || i1->type == TOKEN_RSQUARE) {
+		} else if(i1->type == TOKEN_RPARENS || i1->type == TOKEN_RSQUARE || i1->type == TOKEN_RBRACKET) {
 			--parens;
 		} else if((i1->type == TOKEN_POINTER || i1->type == TOKEN_COLON) && !parens ) {
 			if (!check_pointer) {
 				check_pointer = true;
-				res->push_back(parse_expression(formula_str, beg,i1, symbols, callable_def));
+
+				if(i1 - beg == 1 && beg->type == TOKEN_IDENTIFIER) {
+					//make it so that {a: 4} is the same as {'a': 4}
+					res->push_back(expression_ptr(new string_expression(std::string(beg->begin, beg->end), false)));
+				} else {
+					res->push_back(parse_expression(formula_str, beg,i1, symbols, callable_def));
+				}
 				beg = i1+1;
 			} else {
-				ASSERT_LOG(false, "Too many ':' operators. (This may be caused by a map structure inside a map structure. Try enclosing curly bracket pairs in brackets -- for example {1:{2:3}} becomes {1:({2:3})}.)\n" << pinpoint_location(formula_str, i1->begin, (i2-1)->end));
+				ASSERT_LOG(false, "Too many ':' operators.")\n" << pinpoint_location(formula_str, i1->begin, (i2-1)->end));
 			}
 		} else if( i1->type == TOKEN_COMMA && !parens ) {
 			check_pointer = false;
