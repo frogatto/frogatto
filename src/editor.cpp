@@ -738,6 +738,10 @@ editor::editor(const char* level_cfg)
 	editor_mode_dialog_.reset(new editor_mode_dialog(*this));
 
 	property_dialog_.reset(new editor_dialogs::property_editor_dialog(*this));
+
+	if(preferences::external_code_editor().is_null() == false && !external_code_editor_) {
+		external_code_editor_ = external_text_editor::create(preferences::external_code_editor());
+	}
 }
 
 editor::~editor()
@@ -925,6 +929,7 @@ void editor::setup_for_editing()
 
 void editor::edit_level()
 {
+
 	glEnable(GL_BLEND);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);
@@ -1037,7 +1042,7 @@ void editor::process()
 		external_code_editor_->process();
 	}
 
-	if(preferences::external_code_editor().is_null() == false && editor_menu_dialog_) {
+	if(external_code_editor_ && external_code_editor_->replace_in_game_editor() && editor_menu_dialog_) {
 		std::string type;
 		if(lvl_->editor_selection().empty() == false) {
 			type = lvl_->editor_selection().back()->query_value("type").as_string();
@@ -3283,11 +3288,7 @@ bool editor::has_keyboard_focus() const
 
 void editor::toggle_code()
 {
-	if(preferences::external_code_editor().is_null() == false) {
-		if(!external_code_editor_) {
-			external_code_editor_ = external_text_editor::create(preferences::external_code_editor());
-			ASSERT_LOG(external_code_editor_.get(), "COULD NOT CREATE CODE EDITOR: " << preferences::external_code_editor().write_json());
-		}
+	if(external_code_editor_ && external_code_editor_->replace_in_game_editor()) {
 
 		std::string type;
 		if(lvl_->editor_selection().empty() == false) {
@@ -3297,6 +3298,10 @@ void editor::toggle_code()
 		if(type.empty()) {
 			std::cerr << "no object selected to open code for\n";
 		} else {
+			//if this is a nested type, convert it to their parent type.
+			std::string::iterator dot_itor = std::find(type.begin(), type.end(), '.');
+			type.erase(dot_itor, type.end());
+
 			const std::string* path = custom_object_type::get_object_path(type + ".cfg");
 			ASSERT_LOG(path, "Could not find path for object " << type);
 			std::cerr << "Loading file in external editor: " << *path << "\n";

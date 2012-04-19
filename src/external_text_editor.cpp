@@ -13,6 +13,14 @@
 #include <boost/scoped_ptr.hpp>
 
 namespace {
+std::string normalize_fname(std::string fname)
+{
+	while(strstr(fname.c_str(), "//")) {
+		fname.erase(fname.begin() + (strstr(fname.c_str(), "//") - fname.c_str()));
+	}
+
+	return fname;
+}
 
 class vi_editor : public external_text_editor
 {
@@ -23,10 +31,78 @@ class vi_editor : public external_text_editor
 	std::map<std::string, std::string> file_contents_;
 	std::string active_file_;
 
+	//vim servers that we've already inspected in the past, and don't
+	//need to do so again.
+	std::set<std::string> known_servers_;
+
 	threading::mutex mutex_;
 	boost::scoped_ptr<threading::thread> thread_;
 
 	bool shutdown_;
+
+	void refresh_editor_list()
+	{
+		const int begin = SDL_GetTicks();
+		const std::string cmd = "gvim --serverlist";
+		FILE* p = popen(cmd.c_str(), "r");
+		if(p) {
+			std::vector<std::string> servers;
+
+			char buf[1024];
+			while(fgets(buf, sizeof(buf), p)) {
+				std::string s(buf);
+				if(s[s.size()-1] == '\n') {
+					s.resize(s.size()-1);
+				}
+
+				servers.push_back(s);
+			}
+
+			fclose(p);
+
+			{
+				threading::lock l(mutex_);
+				for(std::map<std::string, std::string>::iterator i = files_.begin(); i != files_.end(); ) {
+					if(!std::count(servers.begin(), servers.end(), i->second)) {
+						files_.erase(i++);
+					} else {
+						++i;
+					}
+				}
+			}
+
+			foreach(const std::string& server, servers) {
+				{
+					threading::lock l(mutex_);
+					if(known_servers_.count(server)) {
+						continue;
+					}
+	
+					known_servers_.insert(server);
+				}
+
+				const std::string cmd = "gvim --servername " + server + " --remote-expr 'simplify(bufname(1))'";
+				FILE* p = popen(cmd.c_str(), "r");
+				if(p) {
+					char buf[1024];
+					if(fgets(buf, sizeof(buf), p)) {
+						std::string s(buf);
+						if(s[s.size()-1] == '\n') {
+							s.resize(s.size()-1);
+						}
+
+						if(s.size() > 4 && std::string(s.end()-4,s.end()) == ".cfg") {
+							threading::lock l(mutex_);
+							files_[s] = server;
+							std::cerr << "VIM LOADED FILE: " << s << " -> " << server << "\n";
+						}
+					}
+
+					fclose(p);
+				}
+			}
+		}
+	}
 
 	bool get_file_contents(const std::string& server, std::string* data)
 	{
@@ -38,7 +114,6 @@ class vi_editor : public external_text_editor
 			buf.resize(10000000);
 			size_t nbytes = fread(&buf[0], 1, buf.size(), p);
 			fclose(p);
-			std::cerr << "READ FILE: " << nbytes << "\n";
 			if(nbytes > 0 && nbytes <= buf.size()) {
 				buf.resize(nbytes);
 				buf.push_back(0);
@@ -59,6 +134,7 @@ class vi_editor : public external_text_editor
 			{
 				threading::lock l(mutex_);
 				if(tick%10 == 0) {
+					refresh_editor_list();
 					files = files_;
 				} else if(files_.count(active_file_)) {
 					files[active_file_] = files_[active_file_];
@@ -81,7 +157,6 @@ class vi_editor : public external_text_editor
 			{
 				threading::lock l(mutex_);
 				foreach(const std::string& fname, remove_files) {
-					file_contents_.erase(fname);
 					files_.erase(fname);
 				}
 
@@ -98,7 +173,9 @@ class vi_editor : public external_text_editor
 
 public:
 	explicit vi_editor(variant obj) : cmd_(obj["command"].as_string_default("gvim")), counter_(0), shutdown_(false)
-	{}
+	{
+		thread_.reset(new threading::thread(boost::bind(&vi_editor::run_thread, this)));
+	}
 
 	void shutdown()
 	{
@@ -110,8 +187,10 @@ public:
 		thread_.reset();
 	}
 
-	void load_file(const std::string& fname)
+	void load_file(const std::string& fname_input)
 	{
+		const std::string fname = normalize_fname(fname_input);
+
 		std::string existing_instance;
 		{
 			threading::lock l(mutex_);
@@ -127,21 +206,27 @@ public:
 			return;
 		}
 
-		const std::string server_name = formatter() << "S" << counter_;
+		std::string server_name = formatter() << "S" << counter_;
+		{
+			threading::lock l(mutex_);
+			while(known_servers_.count(server_name)) {
+				++counter_;
+				server_name = formatter() << "S" << counter_;
+			}
+		}
+
 		const std::string command = cmd_ + " --servername " + server_name + " " + fname;
 		const int result = system(command.c_str());
-
-		if(!thread_) {
-			thread_.reset(new threading::thread(boost::bind(&vi_editor::run_thread, this)));
-		}
 
 		threading::lock l(mutex_);
 		files_[fname] = server_name;
 		++counter_;
 	}
 
-	std::string get_file_contents(const std::string& fname)
+	std::string get_file_contents(const std::string& fname_input)
 	{
+		const std::string fname = normalize_fname(fname_input);
+
 		threading::lock l(mutex_);
 		std::map<std::string, std::string>::const_iterator itor = file_contents_.find(fname);
 		if(itor != file_contents_.end()) {
@@ -151,8 +236,9 @@ public:
 		}
 	}
 
-	int get_line(const std::string& fname) const
+	int get_line(const std::string& fname_input) const
 	{
+		const std::string fname = normalize_fname(fname_input);
 		return 0;
 	}
 
@@ -186,14 +272,21 @@ external_text_editor::manager::~manager()
 external_text_editor_ptr external_text_editor::create(variant key)
 {
 	const std::string type = key["type"].as_string();
+	external_text_editor_ptr result;
 	if(type == "vi") {
-		return external_text_editor_ptr(new vi_editor(key));
+		static external_text_editor_ptr ptr(new vi_editor(key));
+		result = ptr;
 	}
 
-	return external_text_editor_ptr();
+	if(result) {
+		result->replace_in_game_editor_ = key["replace_in_game_editor"].as_bool(true);
+	}
+
+	return result;
 }
 
 external_text_editor::external_text_editor()
+  : replace_in_game_editor_(true)
 {
 	all_editors.insert(this);
 }

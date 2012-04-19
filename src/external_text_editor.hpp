@@ -25,6 +25,8 @@ public:
 	virtual ~external_text_editor();
 
 	void process();
+
+	bool replace_in_game_editor() const { return replace_in_game_editor_; }
 	
 	virtual void load_file(const std::string& fname) = 0;
 	virtual void shutdown() = 0;
@@ -35,6 +37,8 @@ private:
 	virtual std::string get_file_contents(const std::string& fname) = 0;
 	virtual int get_line(const std::string& fname) const = 0;
 	virtual std::vector<std::string> loaded_files() const = 0;
+
+	bool replace_in_game_editor_;
 };
 
 #endif

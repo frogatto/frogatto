@@ -41,18 +41,10 @@ std::map<std::string, std::string>& prototype_file_paths() {
 
 const std::string& object_file_path() {
 	if(preferences::load_compiled()) {
-#if defined(__ANDROID__)
 		static const std::string value =  "data/compiled/objects";
-#else
-		static const std::string value =  "data/compiled/objects/";
-#endif
 		return value;
 	} else {
-#if defined(__ANDROID__)
 		static const std::string value =  "data/objects";
-#else
-		static const std::string value =  "data/objects/";
-#endif
 		return value;
 	}
 }
