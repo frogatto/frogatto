@@ -4,6 +4,7 @@
 #include <string>
 
 #include "graphics.hpp"
+#include "variant.hpp"
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 #include <EGL/egl.h>
 #endif
@@ -109,6 +110,8 @@ void set_bequ( bool value );
 
 	bool relay_through_server();
 	void set_relay_through_server(bool value);
+
+	variant external_code_editor();
 
 	bool run_failing_unit_tests();
 

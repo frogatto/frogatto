@@ -121,7 +121,7 @@ public:
 	// block until the mutex lock can be acquired.
 	//
 	// \param m the mutex on which we should try to lock.
-	explicit lock(mutex& m);
+	explicit lock(const mutex& m);
 	// Delete the lock object, thus releasing the lock aquired
 	// on the mutex which the lock object was created with.
 	~lock();
@@ -129,7 +129,7 @@ private:
 	lock(const lock&);
 	void operator=(const lock&);
 
-	mutex& m_;
+	const mutex& m_;
 };
 
 // Condition variable locking.

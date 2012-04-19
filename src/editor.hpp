@@ -6,6 +6,7 @@
 #include <stack>
 #include <vector>
 
+#include "external_text_editor.hpp"
 #include "geometry.hpp"
 #include "key.hpp"
 #include "level.hpp"
@@ -272,6 +273,8 @@ private:
 	boost::scoped_ptr<editor_dialogs::segment_editor_dialog> segment_dialog_;
 
 	boost::scoped_ptr<code_editor_dialog> code_dialog_;
+
+	external_text_editor_ptr external_code_editor_;
 
 	void set_code_file();
 

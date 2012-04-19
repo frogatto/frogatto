@@ -91,7 +91,7 @@ const mutex& mutex::operator=(const mutex&)
 	return *this;
 }
 
-lock::lock(mutex& m) : m_(m)
+lock::lock(const mutex& m) : m_(m)
 {
 	SDL_mutexP(m_.m_);
 }

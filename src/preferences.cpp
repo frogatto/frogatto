@@ -126,6 +126,8 @@ namespace preferences {
 		std::string control_scheme_ = "iphone_2d";
 
 		bool record_history_ = false;
+
+		variant external_code_editor_;
 		
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 		
@@ -568,6 +570,10 @@ namespace preferences {
 			game_registry::instance().set_contents(registry_node);
 		}
 
+		if(node["code_editor"].is_map()) {
+			external_code_editor_ = node["code_editor"];
+		}
+
 #if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
 		controls::set_sdlkey(controls::CONTROL_UP, static_cast<SDLKey>(node["key_up"].as_int(SDLK_UP)));
 		controls::set_sdlkey(controls::CONTROL_DOWN, static_cast<SDLKey>(node["key_down"].as_int(SDLK_DOWN)));
@@ -597,6 +603,10 @@ namespace preferences {
 		node.add("key_jump", controls::get_sdlkey(controls::CONTROL_JUMP));
 		node.add("key_tongue", controls::get_sdlkey(controls::CONTROL_TONGUE));
 		node.add("show_iphone_controls", variant::from_bool(show_iphone_controls_));
+
+		if(external_code_editor_.is_null() == false) {
+			node.add("code_editor", external_code_editor_);
+		}
 
 		node.add("registry", game_registry::instance().write_contents());
 
@@ -750,6 +760,10 @@ namespace preferences {
 
 	bool relay_through_server() {
 		return relay_through_server_;
+	}
+
+	variant external_code_editor() {
+		return external_code_editor_;
 	}
 
 	void set_relay_through_server(bool value) {

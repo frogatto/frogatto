@@ -22,6 +22,7 @@
 #ifndef NO_EDITOR
 #include "editor.hpp"
 #endif
+#include "external_text_editor.hpp"
 #include "filesystem.hpp"
 #include "font.hpp"
 #include "foreach.hpp"
@@ -426,6 +427,7 @@ extern "C" int main(int argcount, char** argvec)
 //	srand(time(NULL));
 
 	const stats::manager stats_manager;
+	const external_text_editor::manager editor_manager;
 
 	std::cerr
 		<< "\n"

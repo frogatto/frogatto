@@ -217,6 +217,8 @@ class editor_menu_dialog : public gui::dialog
 
 	editor& editor_;
 	gui::widget_ptr context_menu_;
+	gui::button_ptr code_button_;
+	std::string code_button_text_;
 public:
 	explicit editor_menu_dialog(editor& e)
 	  : gui::dialog(0, 0, preferences::actual_screen_width() - EDITOR_SIDEBAR_WIDTH, EDITOR_MENUBAR_HEIGHT), editor_(e)
@@ -252,11 +254,33 @@ public:
 		             boost::bind(&editor_menu_dialog::show_scripts_menu, this))));
 		add_widget(widget_ptr(grid));
 
-		button_ptr code_button(
-		 new button(widget_ptr(new label("Code ->", graphics::color_white())),
-			          boost::bind(&editor::toggle_code, &editor_)));
-		add_widget(code_button, graphics::screen_width() - 612, 4);
+		code_button_text_ = "";
+		set_code_button_text("Code ->");
 	}
+
+	void set_code_button_text(const std::string& text)
+	{
+		using namespace gui;
+
+		if(code_button_text_ == text) {
+			return;
+		}
+
+		code_button_text_ = text;
+
+		if(code_button_) {
+			remove_widget(code_button_);
+		}
+
+		if(text.empty()) {
+			return;
+		}
+
+		code_button_ = button_ptr(new button(text, boost::bind(&editor::toggle_code, &editor_)));
+
+		add_widget(code_button_, graphics::screen_width() - 612, 4);
+	}
+
 
 	void new_level() {
 		using namespace gui;
@@ -1007,6 +1031,22 @@ void editor::process()
 {
 	if(code_dialog_) {
 		code_dialog_->process();
+	}
+
+	if(external_code_editor_) {
+		external_code_editor_->process();
+	}
+
+	if(preferences::external_code_editor().is_null() == false && editor_menu_dialog_) {
+		std::string type;
+		if(lvl_->editor_selection().empty() == false) {
+			type = lvl_->editor_selection().back()->query_value("type").as_string();
+		}
+		if(type.empty() == false) {
+			editor_menu_dialog_->set_code_button_text("edit " + type);
+		} else {
+			editor_menu_dialog_->set_code_button_text("");
+		}
 	}
 
 	if(editor_mode_dialog_) {
@@ -3243,6 +3283,29 @@ bool editor::has_keyboard_focus() const
 
 void editor::toggle_code()
 {
+	if(preferences::external_code_editor().is_null() == false) {
+		if(!external_code_editor_) {
+			external_code_editor_ = external_text_editor::create(preferences::external_code_editor());
+			ASSERT_LOG(external_code_editor_.get(), "COULD NOT CREATE CODE EDITOR: " << preferences::external_code_editor().write_json());
+		}
+
+		std::string type;
+		if(lvl_->editor_selection().empty() == false) {
+			type = lvl_->editor_selection().back()->query_value("type").as_string();
+		}
+
+		if(type.empty()) {
+			std::cerr << "no object selected to open code for\n";
+		} else {
+			const std::string* path = custom_object_type::get_object_path(type + ".cfg");
+			ASSERT_LOG(path, "Could not find path for object " << type);
+			std::cerr << "Loading file in external editor: " << *path << "\n";
+			external_code_editor_->load_file(*path);
+		}
+
+		return;
+	}
+
 	if(code_dialog_) {
 		code_dialog_.reset();
 	} else {
