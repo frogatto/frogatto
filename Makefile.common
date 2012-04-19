@@ -24,6 +24,7 @@ objects = \
 	editor_layers_dialog.o \
 	editor_stats_dialog.o \
 	editor_variable_info.o \
+	external_text_editor.o \
 	clipboard.o \
 	collision_utils.o \
 	color_utils.o \
