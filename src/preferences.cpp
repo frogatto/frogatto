@@ -179,7 +179,7 @@ namespace preferences {
 #elif defined(__ANDROID__)
 
 #ifndef PREFERENCES_PATH
-#define PREFERENCES_PATH "~/.frogatto/"
+#define PREFERENCES_PATH ".frogatto/"
 #endif
 
 		bool send_stats_ = false;

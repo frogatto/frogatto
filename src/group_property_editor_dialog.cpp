@@ -1,3 +1,4 @@
+#ifndef NO_EDITOR
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 #include <sstream>
@@ -48,3 +49,4 @@ void group_property_editor_dialog::group_objects()
 }
 
 }
+#endif // !NO_EDITOR

@@ -1,3 +1,4 @@
+#ifndef NO_EDITOR
 #include "graphics.hpp"
 
 #include <boost/bind.hpp>
@@ -59,3 +60,5 @@ void editor_stats_dialog::init()
 }
 
 }
+#endif // !NO_EDITOR
+

@@ -1,3 +1,4 @@
+#ifndef NO_EDITOR
 #include "custom_object_type.hpp"
 #include "external_text_editor.hpp"
 #include "foreach.hpp"
@@ -309,3 +310,4 @@ void external_text_editor::process()
 		}
 	}
 }
+#endif // NO_EDITOR

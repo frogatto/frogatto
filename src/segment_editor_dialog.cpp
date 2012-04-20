@@ -1,3 +1,4 @@
+#ifndef NO_EDITOR
 #include <boost/bind.hpp>
 
 #include "border_widget.hpp"
@@ -57,3 +58,5 @@ void segment_editor_dialog::set_segment_start_difficulty(int value)
 }
 
 }
+#endif // !NO_EDITOR
+

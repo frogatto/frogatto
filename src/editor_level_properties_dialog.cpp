@@ -1,3 +1,4 @@
+#ifndef NO_EDITOR
 #include "graphics.hpp"
 
 #include <boost/bind.hpp>
@@ -220,3 +221,5 @@ void editor_level_properties_dialog::change_previous_level()
 }
 
 }
+#endif // !NO_EDITOR
+

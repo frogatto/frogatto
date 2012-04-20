@@ -171,7 +171,9 @@ public:
 
 	void draw_debug_rects() const;
 
+#ifndef NO_EDITOR
 	virtual const_editor_entity_info_ptr editor_info() const { return const_editor_entity_info_ptr(); }
+#endif // !NO_EDITOR
 
 	virtual entity_ptr clone() const { return entity_ptr(); }
 	virtual entity_ptr backup() const = 0;

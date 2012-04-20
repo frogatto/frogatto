@@ -1,5 +1,6 @@
 #ifndef CODE_EDITOR_DIALOG_HPP_INCLUDED
 #define CODE_EDITOR_DIALOG_HPP_INCLUDED
+#ifndef NO_EDITOR
 
 #include <boost/shared_ptr.hpp>
 
@@ -61,4 +62,5 @@ private:
 	boost::shared_ptr<gui::animation_preview_widget> animation_preview_;
 };
 
+#endif // !NO_EDITOR
 #endif

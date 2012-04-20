@@ -1,3 +1,4 @@
+#ifndef NO_EDITOR
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 
@@ -161,3 +162,4 @@ bool tileset_editor_dialog::handle_event(const SDL_Event& event, bool claimed)
 	return dialog::handle_event(event, claimed);
 }
 }
+#endif // !NO_EDITOR

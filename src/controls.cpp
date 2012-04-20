@@ -211,6 +211,7 @@ void read_local_controls()
 
 	unsigned char state = 0;
 	if(local_control_locks.empty()) {
+#if !defined(__ANDROID__)
 		bool ignore_keypresses = false;
 		foreach(const SDLKey& k, control_keys) {
 			if(keyboard()[k]) {
@@ -228,6 +229,7 @@ void read_local_controls()
 				key_ignore[n] = false;
 			}
 		}
+#endif
 
 #if defined(__ANDROID__)
 		if(iphone_controls::up()) { state |= (1 << CONTROL_UP); }

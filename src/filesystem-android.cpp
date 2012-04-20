@@ -330,12 +330,20 @@ void write_file(const std::string& fname, const std::string& data)
 	file << data;
 }
 
+#if SDL_VERSION_ATLEAST(1, 3, 0)
+static SDLCALL long aa_rw_seek(struct SDL_RWops* ops, long offset, int whence)
+#else
 static SDLCALL int aa_rw_seek(struct SDL_RWops* ops, int offset, int whence)
+#endif
 {
 	return AAsset_seek((AAsset*)ops->hidden.unknown.data1, offset, whence);
 }
 
+#if SDL_VERSION_ATLEAST(1, 3, 0)
+static SDLCALL size_t aa_rw_read(struct SDL_RWops* ops, void *ptr, size_t size, size_t maxnum)
+#else
 static SDLCALL int aa_rw_read(struct SDL_RWops* ops, void *ptr, int size, int maxnum)
+#endif
 {
 	return AAsset_read((AAsset*)ops->hidden.unknown.data1, ptr, maxnum * size) / size;
 }

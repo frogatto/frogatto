@@ -1,5 +1,6 @@
 #ifndef TILESET_EDITOR_DIALOG_HPP_INCLUDED
 #define TILESET_EDITOR_DIALOG_HPP_INCLUDED
+#ifndef NO_EDITOR
 
 #include <boost/shared_ptr.hpp>
 
@@ -35,4 +36,6 @@ private:
 
 }
 
+#endif // !NO_EDITOR
 #endif
+

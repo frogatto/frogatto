@@ -1,5 +1,6 @@
 #ifndef EXTERNAL_TEXT_EDITOR_HPP_INCLUDED
 #define EXTERNAL_TEXT_EDITOR_HPP_INCLUDED
+#ifndef NO_EDITOR
 
 #include <string>
 
@@ -41,4 +42,5 @@ private:
 	bool replace_in_game_editor_;
 };
 
+#endif // NO_EDITOR
 #endif

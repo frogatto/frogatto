@@ -169,7 +169,9 @@ public:
 	const_custom_object_type_ptr get_variation(const std::vector<std::string>& variations) const;
 	void load_variations() const;
 
+#ifndef NO_EDITOR
 	const_editor_entity_info_ptr editor_info() const { return editor_info_; }
+#endif // !NO_EDITOR
 
 	variant node() const { return node_; }
 
@@ -271,7 +273,9 @@ private:
 	std::map<std::string, game_logic::const_formula_ptr> variations_;
 	mutable std::map<std::vector<std::string>, const_custom_object_type_ptr> variations_cache_;
 
+#ifndef NO_EDITOR
 	const_editor_entity_info_ptr editor_info_;
+#endif // !NO_EDITOR
 
 	std::map<std::string, const_custom_object_type_ptr> sub_objects_;
 

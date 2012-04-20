@@ -1591,10 +1591,12 @@ void custom_object::set_driver_position()
 	}
 }
 
+#ifndef NO_EDITOR
 const_editor_entity_info_ptr custom_object::editor_info() const
 {
 	return type_->editor_info();
 }
+#endif // !NO_EDITOR
 
 int custom_object::zorder() const
 {

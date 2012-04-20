@@ -1,3 +1,4 @@
+#ifndef NO_EDITOR
 #include <boost/bind.hpp>
 
 #include "code_editor_dialog.hpp"
@@ -190,3 +191,4 @@ void code_editor_dialog::set_animation_rect(rect r)
 	}
 }
 
+#endif // NO_EDITOR

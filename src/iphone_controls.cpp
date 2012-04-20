@@ -152,34 +152,25 @@ void iphone_controls::read_controls()
 #if defined(__ANDROID__)
 void iphone_controls::handle_event (const SDL_Event& event)
 {
+	int x = event.type == SDL_JOYBALLMOTION ? event.jball.xrel : event.jbutton.x;
+	int y = event.type == SDL_JOYBALLMOTION ? event.jball.yrel : event.jbutton.y;
+	int i = event.type == SDL_JOYBALLMOTION ? event.jball.ball : event.jbutton.button;
+	std::string joy_txt = event.type == SDL_JOYBUTTONUP ? "up" : event.type == SDL_JOYBUTTONDOWN ? "down" : "move";
+	LOG( "mouse " << joy_txt << " (" << x << "," << y << ";" << i << ")");
+	translate_mouse_coords(&x, &y);
+	while(all_mice.size() <= i) {
+		all_mice.push_back(Mouse());
+		all_mice[i].active = false;
+	}
 
-    if( event.type == SDL_JOYBALLMOTION ) {
-        int i = event.jball.ball;
-     	int x = event.jball.xrel;
-        int y = event.jball.yrel;
-        
-        while(all_mice.size() <= i) {
-            all_mice.push_back(Mouse());
-            all_mice[i].active = false;
-        }
-        translate_mouse_coords(&x, &y);
+	if(!all_mice[i].active) {
+		all_mice[i].starting_x = x;
+		all_mice[i].starting_y = y;
+	}
 
-        if(!all_mice[i].active) {
-	        all_mice[i].starting_x = x;
-	        all_mice[i].starting_y = y;
-        }
-        
-        all_mice[i].x = x;
-        all_mice[i].y = y;
-        all_mice[i].active = true;
-    } else if( event.type == SDL_JOYBUTTONUP ) {
-        int i = event.jbutton.button;
-        while(all_mice.size() <= i) {
-            all_mice.push_back(Mouse());
-            all_mice[i].active = false;
-        }
-        all_mice[i].active = false;
-    }
+	all_mice[i].x = x;
+	all_mice[i].y = y;
+	all_mice[i].active = event.type != SDL_JOYBUTTONUP;
 }
      
 #elif defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY)

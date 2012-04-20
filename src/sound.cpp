@@ -412,7 +412,11 @@ void preload(const std::string& file)
 		return;
 	}
 
+#if defined(__ANDROID__) && SDL_VERSION_ATLEAST(1, 3, 0)
+	boost::shared_ptr<threading::thread> t(new threading::thread("sounds", boost::bind(thread_load, file)));
+#else
 	boost::shared_ptr<threading::thread> t(new threading::thread(boost::bind(thread_load, file)));
+#endif
 	loading_threads[file] = t;
 }
 

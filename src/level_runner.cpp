@@ -774,7 +774,7 @@ bool level_runner::play_cycle()
 	if(message_dialog::get() == NULL) {
 		SDL_Event event;
 		while(SDL_PollEvent(&event)) {
-		//std::cerr << "Got event (level_runner 502): " << (int) event.type << ".\n";
+			//std::cerr << "Got event (level_runner 672): " << (int) event.type << ".\n";
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_HARMATTAN || TARGET_OS_IPHONE
 			should_pause = settings_dialog.handle_event(event);
 #endif
@@ -1039,9 +1039,9 @@ bool level_runner::play_cycle()
 				break;
 			}
 #if defined(__ANDROID__)
-            case SDL_JOYBALLMOTION:
-            case SDL_JOYBUTTONDOWN:
             case SDL_JOYBUTTONUP:
+            case SDL_JOYBUTTONDOWN:
+            case SDL_JOYBALLMOTION:
                 iphone_controls::handle_event(event);
 				handle_mouse_events(event);
                 break;
@@ -1053,6 +1053,7 @@ bool level_runner::play_cycle()
 				handle_mouse_events(event);
 				break;
 #else
+#ifndef NO_EDITOR
 			case SDL_MOUSEBUTTONDOWN:
 				if(console_.get()) {
 					int mousex, mousey;
@@ -1071,6 +1072,7 @@ bool level_runner::play_cycle()
 			case SDL_MOUSEBUTTONUP:
 				handle_mouse_events(event);
 				break;
+#endif // NO_EDITOR
 #endif
 			default:
 				break;

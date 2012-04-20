@@ -1,5 +1,7 @@
 #ifndef EDITOR_STATS_DIALOG_HPP_INCLUDED
 #define EDITOR_STATS_DIALOG_HPP_INCLUDED
+#ifndef NO_EDITOR
+
 
 #include <string>
 #include <vector>
@@ -22,4 +24,5 @@ private:
 
 }
 
+#endif // !NO_EDITOR
 #endif

@@ -1,5 +1,6 @@
 #ifndef GROUP_PROPERTY_EDITOR_DIALOG_HPP_INCLUDED
 #define GROUP_PROPERTY_EDITOR_DIALOG_HPP_INCLUDED
+#ifndef NO_EDITOR
 
 #include <string>
 #include <vector>
@@ -28,3 +29,5 @@ private:
 }
 
 #endif
+#endif // !NO_EDITOR
+

@@ -437,7 +437,9 @@ extern "C" int main(int argcount, char** argvec)
 //	srand(time(NULL));
 
 	const stats::manager stats_manager;
+#ifndef NO_EDITOR
 	const external_text_editor::manager editor_manager;
+#endif // NO_EDITOR
 
 	std::cerr
 		<< "\n"

@@ -148,8 +148,13 @@ variant playable_custom_object::get_value(const std::string& key) const
 		std::vector<variant> result;
 		#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 		#else
+#if defined(__ANDROID__) && SDL_VERSION_ATLEAST(1, 3, 0)
+		Uint8* key_state = SDL_GetKeyboardState(NULL);
+		for(int count = 0; count < SDL_NUM_SCANCODES; count++) {
+#else
 		Uint8* key_state = SDL_GetKeyState(NULL);
-		for (int count = SDLK_FIRST; count < SDLK_LAST; count++) {
+		for(int count = SDLK_FIRST; count < SDLK_LAST; count++) {
+#endif
 			if(key_state[count]) {				//Returns only keys that are down so the list that ffl has to deal with is small.
 				if(util::c_isprint(count)) {
 					std::string str(1,count);

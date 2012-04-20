@@ -1,3 +1,4 @@
+#ifndef NO_EDITOR
 #include <iostream>
 
 #include "editor_variable_info.hpp"
@@ -102,3 +103,5 @@ const editor_variable_info* editor_entity_info::get_var_info(const std::string& 
 
 	return NULL;
 }
+#endif // !NO_EDITOR
+

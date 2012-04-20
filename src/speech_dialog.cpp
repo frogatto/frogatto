@@ -108,7 +108,9 @@ bool speech_dialog::key_press(const SDL_Event& event)
 			}
 		}
 	
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE || TARGET_BLACKBERRY || defined(__ANDROID__)
+#if defined(__ANDROID__)
+		// XXX: todo
+#elif TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE || TARGET_BLACKBERRY
 		if(event.type == SDL_MOUSEBUTTONDOWN)
 		{
 			last_mouse = event.button.which;

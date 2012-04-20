@@ -85,7 +85,11 @@ void preload_level_wml(const std::string& lvl)
 	}
 
 	wml_cache().put(lvl, variant());
+#if defined(__ANDROID__) && SDL_VERSION_ATLEAST(1, 3, 0)
+	wml_threads()[lvl] = new threading::thread("load-"+lvl, wml_loader(lvl));
+#else
 	wml_threads()[lvl] = new threading::thread(wml_loader(lvl));
+#endif
 }
 
 variant load_level_wml(const std::string& lvl)
@@ -177,7 +181,11 @@ void preload_level(const std::string& lvl)
 	assert(!lvl.empty());
 	threading::lock lck(levels_loading_mutex());
 	if(levels_loading.count(lvl) == 0) {
+#if defined(__ANDROID__) && SDL_VERSION_ATLEAST(1, 3, 0)
+		levels_loading[lvl].first = new threading::thread("load"+lvl,level_loader(lvl));
+#else
 		levels_loading[lvl].first = new threading::thread(level_loader(lvl));
+#endif
 	}
 }
 

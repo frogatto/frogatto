@@ -1,3 +1,4 @@
+#ifndef NO_EDITOR
 #include "graphics.hpp"
 #include <iostream>
 #include <cmath>
@@ -1068,7 +1069,11 @@ void editor::process()
 
 	int mousex, mousey;
 	const unsigned int buttons = get_mouse_state(mousex, mousey);
+#if defined(__ANDROID__) && SDL_VERSION_ATLEAST(1, 3, 0)
+	const Uint8* keystate = SDL_GetKeyboardState(0);
+#else
 	const Uint8* keystate = SDL_GetKeyState(NULL); 
+#endif
 
 	if(buttons == 0) {
 		drawing_rect_ = false;
@@ -3355,3 +3360,4 @@ void editor::start_adding_points(const std::string& field_name)
 		property_dialog_->init();
 	}
 }
+#endif // !NO_EDITOR

@@ -1,5 +1,6 @@
 #ifndef PROPERTY_EDITOR_DIALOG_HPP_INCLUDED
 #define PROPERTY_EDITOR_DIALOG_HPP_INCLUDED
+#ifndef NO_EDITOR
 
 #include <string>
 
@@ -48,3 +49,4 @@ private:
 }
 
 #endif
+#endif // !NO_EDITOR

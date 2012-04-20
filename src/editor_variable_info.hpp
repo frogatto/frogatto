@@ -1,5 +1,6 @@
 #ifndef EDITOR_VARIABLE_INFO_HPP_INCLUDED
 #define EDITOR_VARIABLE_INFO_HPP_INCLUDED
+#ifndef NO_EDITOR
 
 #include <boost/shared_ptr.hpp>
 
@@ -54,3 +55,5 @@ typedef boost::shared_ptr<editor_entity_info> editor_entity_info_ptr;
 typedef boost::shared_ptr<const editor_entity_info> const_editor_entity_info_ptr;
 
 #endif
+#endif // !NO_EDITOR
+

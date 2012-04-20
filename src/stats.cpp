@@ -218,7 +218,11 @@ bool download(const std::string& lvl) {
 
 manager::manager()
 #if !TARGET_OS_IPHONE
+#if defined(__ANDROID__) && SDL_VERSION_ATLEAST(1, 3, 0)
+  : background_thread_("stats-thread", send_stats_thread)
+#else
   : background_thread_(send_stats_thread)
+#endif
 #endif
 {}
 
