@@ -91,10 +91,8 @@ protected:
 		return this < callable ? -1 : (this == callable ? 0 : 1);
 	}
 
-	virtual void serialize_to_string(std::string& str) const {
-		std::cerr << "CONTENTS {{{" << str << "}}}\n";
-		throw type_error("Tried to serialize type which cannot be serialized");
-	}
+	virtual void serialize_to_string(std::string& str) const;
+
 private:
 	virtual variant get_value(const std::string& key) const = 0;
 	virtual variant get_value_by_slot(int slot) const;

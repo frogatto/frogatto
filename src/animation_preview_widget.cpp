@@ -134,18 +134,27 @@ void animation_preview_widget::handle_draw() const
 			graphics::draw_hollow_rect(box.sdl_rect(), n == 0 ? graphics::color_yellow() : graphics::color_white(), frame_->frame_number(cycle_) == n ? 0xFF : 0x88);
 
 			if(n == 0 && !mouse_buttons) {
-				if(point_in_rect(point(mousex, mousey), rect(box.x(), box.y()-4, box.w(), 9))) {
+				bool rect_chosen = false;
+				if(box.w() > 10 && box.h() > 10) {
+					rect_chosen = point_in_rect(point(mousex, mousey), rect(box.x()+5, box.y()+5, box.w()-10, box.h()-10));
+				}
+
+				if(rect_chosen || point_in_rect(point(mousex, mousey), rect(box.x(), box.y()-4, box.w(), 9))) {
 					dragging_sides_bitmap_ |= TOP_SIDE;
 					graphics::draw_rect(rect(box.x(), box.y()-1, box.w(), 2).sdl_rect(), graphics::color_red());
-				} else if(point_in_rect(point(mousex, mousey), rect(box.x(), box.y2()-4, box.w(), 9))) {
+				}
+				
+				if(rect_chosen || !(dragging_sides_bitmap_&TOP_SIDE) && point_in_rect(point(mousex, mousey), rect(box.x(), box.y2()-4, box.w(), 9))) {
 					dragging_sides_bitmap_ |= BOTTOM_SIDE;
 					graphics::draw_rect(rect(box.x(), box.y2()-1, box.w(), 2).sdl_rect(), graphics::color_red());
 				}
 
-				if(point_in_rect(point(mousex, mousey), rect(box.x()-4, box.y(), 9, box.h()))) {
+				if(rect_chosen || point_in_rect(point(mousex, mousey), rect(box.x()-4, box.y(), 9, box.h()))) {
 					dragging_sides_bitmap_ |= LEFT_SIDE;
 					graphics::draw_rect(rect(box.x()-1, box.y(), 2, box.h()).sdl_rect(), graphics::color_red());
-				} else if(point_in_rect(point(mousex, mousey), rect(box.x2()-4, box.y(), 9, box.h()))) {
+				}
+				
+				if(rect_chosen || (!dragging_sides_bitmap_&LEFT_SIDE) && point_in_rect(point(mousex, mousey), rect(box.x2()-4, box.y(), 9, box.h()))) {
 					dragging_sides_bitmap_ |= RIGHT_SIDE;
 					graphics::draw_rect(rect(box.x2()-1, box.y(), 2, box.h()).sdl_rect(), graphics::color_red());
 				}

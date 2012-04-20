@@ -118,6 +118,8 @@ void set_bequ( bool value );
 
 	bool run_failing_unit_tests();
 
+	bool serialize_bad_objects();
+
 	game_logic::formula_callable* registry();
 
 	void load_preferences();

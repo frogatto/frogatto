@@ -271,6 +271,7 @@ namespace preferences {
 		bool force_no_npot_textures_ = false;
 
 		bool run_failing_unit_tests_ = false;
+		bool serialize_bad_objects_ = false;
 	}
 
 	int get_unique_user_id() {
@@ -743,6 +744,8 @@ namespace preferences {
 			relay_through_server_ = true;
 		} else if(s == "--failing-tests") {
 			run_failing_unit_tests_ = true;
+		} else if(s == "--serialize-bad-objects") {
+			serialize_bad_objects_ = true;
 		} else {
 			return false;
 		}
@@ -784,6 +787,10 @@ namespace preferences {
 
 	bool run_failing_unit_tests() {
 		return run_failing_unit_tests_;
+	}
+
+	bool serialize_bad_objects() {
+		return serialize_bad_objects_;
 	}
 
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)

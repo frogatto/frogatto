@@ -32,6 +32,7 @@
 #include "formula_tokenizer.hpp"
 #include "i18n.hpp"
 #include "map_utils.hpp"
+#include "preferences.hpp"
 #include "random.hpp"
 #include "string_utils.hpp"
 #include "unit_test.hpp"
@@ -70,6 +71,17 @@ namespace game_logic
 	{
 		ASSERT_LOG(false, "Could not get value by slot from formula callable " << slot);
 		return variant(0); //so VC++ doesn't complain
+	}
+
+	void formula_callable::serialize_to_string(std::string& str) const
+	{
+		if(preferences::serialize_bad_objects()) {
+			//force serialization of this through so we can work out what's going on.
+			str += "(UNSERIALIZABLE_OBJECT)";
+			return;
+		}
+
+		throw type_error("Tried to serialize type which cannot be serialized");
 	}
 
 	map_formula_callable::map_formula_callable(variant node)
