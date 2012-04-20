@@ -3314,8 +3314,7 @@ void editor::toggle_code()
 	if(code_dialog_) {
 		code_dialog_.reset();
 	} else {
-		//code_dialog_.reset(new code_editor_dialog(rect(0, graphics::screen_height()-260, graphics::screen_width() - sidebar_width(), 260)));
-		code_dialog_.reset(new code_editor_dialog(rect(graphics::screen_width() - 540, 0, 540, graphics::screen_height())));
+		code_dialog_.reset(new code_editor_dialog(rect(graphics::screen_width() - 620, 30, 620, graphics::screen_height() - 30)));
 		set_code_file();
 
 		//We should always be selecting objects when using the code editor.

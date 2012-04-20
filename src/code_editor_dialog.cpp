@@ -4,11 +4,14 @@
 #include "code_editor_widget.hpp"
 #include "custom_object_type.hpp"
 #include "filesystem.hpp"
+#include "foreach.hpp"
 #include "formatter.hpp"
 #include "frame.hpp"
+#include "image_widget.hpp"
 #include "json_parser.hpp"
 #include "label.hpp"
 #include "module.hpp"
+#include "raster.hpp"
 #include "text_editor_widget.hpp"
 
 code_editor_dialog::code_editor_dialog(const rect& r)
@@ -21,17 +24,17 @@ void code_editor_dialog::init()
 {
 	using namespace gui;
 
-	editor_ = new code_editor_widget(width() - 10, height() - 60);
+	editor_.reset(new code_editor_widget(width() - 40, height() - 60));
 	search_ = new text_editor_widget(120);
 	replace_ = new text_editor_widget(120);
 	const SDL_Color col = {255,255,255,255};
 	widget_ptr find_label(label::create("Find: ", col));
 	status_label_ = label::create("Ok", col);
 	error_label_ = label::create("", col);
-	add_widget(find_label, 12, 12, MOVE_RIGHT);
+	add_widget(find_label, 42, 12, MOVE_RIGHT);
 	add_widget(widget_ptr(search_), MOVE_RIGHT);
 	add_widget(widget_ptr(replace_), MOVE_DOWN);
-	add_widget(widget_ptr(editor_), find_label->x(), find_label->y() + find_label->height() + 2);
+	add_widget(editor_, find_label->x(), find_label->y() + find_label->height() + 2);
 	add_widget(status_label_);
 	add_widget(error_label_, status_label_->x() + 480, status_label_->y());
 
@@ -40,21 +43,109 @@ void code_editor_dialog::init()
 	search_->set_on_change_handler(boost::bind(&code_editor_dialog::on_search_changed, this));
 	search_->set_on_enter_handler(boost::bind(&code_editor_dialog::on_search_enter, this));
 
-	editor_->set_on_change_handler(boost::bind(&code_editor_dialog::on_code_changed, this));
-	editor_->set_on_move_cursor_handler(boost::bind(&code_editor_dialog::on_move_cursor, this));
+
+	init_files_grid();
 }
 
-void code_editor_dialog::load_file(const std::string& fname)
+void code_editor_dialog::init_files_grid()
+{
+	if(files_grid_) {
+		remove_widget(files_grid_);
+	}
+
+	if(files_.empty()) {
+		return;
+	}
+	
+	using namespace gui;
+
+	files_grid_.reset(new grid(1));
+	files_grid_->allow_selection();
+	files_grid_->register_selection_callback(boost::bind(&code_editor_dialog::select_file, this, _1));
+	foreach(const KnownFile& f, files_) {
+		if(f.anim) {
+			image_widget* img = new image_widget(f.anim->img());
+			img->set_dim(42, 42);
+			img->set_area(f.anim->area());
+
+			files_grid_->add_col(widget_ptr(img));
+		} else {
+			std::string fname = f.fname;
+			if(fname.size() > 4) {
+				fname.resize(4);
+			}
+
+			files_grid_->add_col(label::create(fname, graphics::color_white()));
+		}
+	}
+
+	add_widget(files_grid_, 2, 2);
+}
+
+void code_editor_dialog::load_file(std::string fname)
 {
 	if(fname_ == fname) {
 		return;
 	}
 
+	using namespace gui;
+
+	int index = 0;
+	foreach(const KnownFile& f, files_) {
+		if(f.fname == fname) {
+			break;
+		}
+
+		++index;
+	}
+
+	if(index == files_.size()) {
+		KnownFile f;
+		f.fname = fname;
+		f.editor.reset(new code_editor_widget(width() - 40, height() - 60));
+		std::string text = json::get_file_contents(fname);
+		f.editor->set_text(json::get_file_contents(fname));
+		f.editor->set_on_change_handler(boost::bind(&code_editor_dialog::on_code_changed, this));
+		f.editor->set_on_move_cursor_handler(boost::bind(&code_editor_dialog::on_move_cursor, this));
+
+		foreach(const_custom_object_type_ptr obj_type, custom_object_type::get_all()) {
+			const std::string* path = custom_object_type::get_object_path(obj_type->id() + ".cfg");
+			if(path && *path == fname) {
+				f.anim.reset(new frame(obj_type->default_frame()));
+				break;
+			}
+		}
+
+		files_.push_back(f);
+	}
+
+	KnownFile f = files_[index];
+	files_.erase(files_.begin() + index);
+	files_.insert(files_.begin(), f);
+
+	add_widget(f.editor, editor_->x(), editor_->y());
+	remove_widget(editor_);
+
+	editor_ = f.editor;
+	editor_->set_focus(true);
+
+	init_files_grid();
+
 	fname_ = fname;
-	std::string text = json::get_file_contents(fname);
-	editor_->set_text(json::get_file_contents(fname));
-	modified_ = text != sys::read_file(module::map_file(fname));
+
+	modified_ = editor_->text() != sys::read_file(module::map_file(fname));
 	on_move_cursor();
+}
+
+void code_editor_dialog::select_file(int index)
+{
+	if(index < 0 || index >= files_.size()) {
+		return;
+	}
+
+	std::cerr << "select file " << index << " -> " << files_[index].fname << "\n";
+
+	load_file(files_[index].fname);
 }
 
 bool code_editor_dialog::has_keyboard_focus() const
@@ -89,6 +180,18 @@ bool code_editor_dialog::handle_event(const SDL_Event& event, bool claimed)
 				status_label_->set_text(formatter() << "Saved " << fname_);
 				modified_ = false;
 				return true;
+			} else if(event.key.keysym.sym == SDLK_TAB && (event.key.keysym.mod&KMOD_CTRL) && files_grid_) {
+				if(!files_grid_->has_must_select()) {
+					files_grid_->must_select(true, 1);
+				} else {
+					files_grid_->must_select(true, (files_grid_->selection()+1)%files_.size());
+				}
+			}
+			break;
+		}
+		case SDL_KEYUP: {
+			if(files_grid_ && files_grid_->has_must_select() && (event.key.keysym.sym == SDLK_LCTRL || event.key.keysym.sym == SDLK_RCTRL)) {
+				select_file(files_grid_->selection());
 			}
 			break;
 		}
@@ -189,4 +292,3 @@ void code_editor_dialog::set_animation_rect(rect r)
 		}
 	}
 }
-
