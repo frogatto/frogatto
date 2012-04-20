@@ -6,12 +6,17 @@
 #include "json_parser.hpp"
 #include "thread.hpp"
 
-#include "SDL.h"
+#include "graphics.hpp"
 
 #include <stdlib.h>
 
 #include <boost/bind.hpp>
 #include <boost/scoped_ptr.hpp>
+
+#ifdef _WINDOWS
+// Windows defines popen with an underscore, for reasons that seem "difficult" to fathom.
+#define popen _popen
+#endif
 
 namespace {
 std::string normalize_fname(std::string fname)
