@@ -1,6 +1,7 @@
 #ifndef VARIANT_HPP_INCLUDED
 #define VARIANT_HPP_INCLUDED
 
+#include <boost/intrusive_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 #include <string>
 #include <map>
@@ -42,6 +43,7 @@ struct variant_list;
 struct variant_string;
 struct variant_map;
 struct variant_fn;
+struct variant_delayed;
 
 struct type_error {
 	explicit type_error(const std::string& str);
@@ -55,6 +57,9 @@ public:
 	enum DECIMAL_VARIANT_TYPE { DECIMAL_VARIANT };
 
 	static variant from_bool(bool b) { variant v; v.type_ = TYPE_BOOL; v.bool_value_ = b; return v; }
+
+	static variant create_delayed(game_logic::const_formula_ptr f, boost::intrusive_ptr<const game_logic::formula_callable> callable);
+	static void resolve_delayed();
 
 	variant() : type_(TYPE_NULL), int_value_(0) {}
 	explicit variant(int n) : type_(TYPE_INT), int_value_(n) {}
@@ -144,6 +149,9 @@ public:
 	void add_attr_mutation(variant key, variant value);
 	void remove_attr_mutation(variant key);
 
+	//binds a closure to a lambda function.
+	variant bind_closure(const game_logic::formula_callable* callable);
+
 	std::string as_string_default(const char* default_value=NULL) const;
 	const std::string& as_string() const;
 
@@ -207,7 +215,7 @@ public:
 
 	void write_json_pretty(std::ostream& s, std::string indent) const;
 
-	enum TYPE { TYPE_NULL, TYPE_BOOL, TYPE_INT, TYPE_DECIMAL, TYPE_CALLABLE, TYPE_CALLABLE_LOADING, TYPE_LIST, TYPE_STRING, TYPE_MAP, TYPE_FUNCTION };
+	enum TYPE { TYPE_NULL, TYPE_BOOL, TYPE_INT, TYPE_DECIMAL, TYPE_CALLABLE, TYPE_CALLABLE_LOADING, TYPE_LIST, TYPE_STRING, TYPE_MAP, TYPE_FUNCTION, TYPE_DELAYED };
 
 	struct debug_info {
 		debug_info() : filename(0), line(-1), column(-1), end_line(-1), end_column(-1)
@@ -244,6 +252,7 @@ private:
 		variant_string* string_;
 		variant_map* map_;
 		variant_fn* fn_;
+		variant_delayed* delayed_;
 		debug_info* debug_info_;
 
 		int64_t value_;

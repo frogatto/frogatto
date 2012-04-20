@@ -50,6 +50,8 @@ public:
 	static wml_serializable_formula_callable_ptr get_serialized_object(intptr_t addr);
 	wml_formula_callable_read_scope();
 	~wml_formula_callable_read_scope();
+
+	static bool try_load_object(intptr_t id, variant& v);
 private:
 };
 

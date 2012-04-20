@@ -119,7 +119,20 @@ wml_formula_callable_read_scope::~wml_formula_callable_read_scope()
 		var = variant(registered_objects[var.as_callable_loading()].get());
 	}
 
+	variant::resolve_delayed();
+
 	registered_objects.clear();
+}
+
+bool wml_formula_callable_read_scope::try_load_object(intptr_t id, variant& v)
+{
+	std::map<intptr_t, wml_serializable_formula_callable_ptr>::const_iterator itor = registered_objects.find(id);
+	if(itor != registered_objects.end()) {
+		v = variant(itor->second.get());
+		return true;
+	} else {
+		return false;
+	}
 }
 
 }

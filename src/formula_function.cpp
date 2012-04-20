@@ -175,6 +175,25 @@ namespace {
 		}
 	};
 
+FUNCTION_DEF(bind_closure, 2, 2, "bind_closure(fn, obj): binds the given lambda fn to the given object closure")
+	variant fn = args()[0]->evaluate(variables);
+	return fn.bind_closure(args()[1]->evaluate(variables).as_callable());
+
+END_FUNCTION_DEF(bind_closure)
+
+FUNCTION_DEF(delay_until_end_of_loading, 1, 1, "delay_until_end_of_loading(string): delays evaluation of the enclosed until loading is finished")
+	formula::fail_if_static_context();
+	variant s = args()[0]->evaluate(variables);
+	const_formula_ptr f(formula::create_optional_formula(s));
+	if(!f) {
+		return variant();
+	}
+
+	const_formula_callable_ptr callable(&variables);
+
+	return variant::create_delayed(f, callable);
+END_FUNCTION_DEF(delay_until_end_of_loading)
+
 FUNCTION_DEF(switch, 3, -1, "switch(value, case1, result1, case2, result2 ... casen, resultn, default) -> value: returns resultn where value = casen, or default otherwise.")
 	variant var = args()[0]->evaluate(variables);
 	for(size_t n = 1; n < args().size()-1; n += 2) {
@@ -1016,6 +1035,7 @@ END_FUNCTION_DEF(back)
 
 	private:
 		variant execute(const formula_callable& variables) const {
+			formula::fail_if_static_context();
 			const intptr_t id = strtoll(args()[0]->evaluate(variables).as_string().c_str(), NULL, 16);
 			return variant::create_variant_under_construction(id);
 		}

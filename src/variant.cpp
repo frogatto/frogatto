@@ -19,7 +19,7 @@
 #include "wml_formula_callable.hpp"
 
 namespace {
-std::set<variant*> callable_variants_loading;
+std::set<variant*> callable_variants_loading, delayed_variants_loading;
 
 std::string variant_type_to_string(variant::TYPE type) {
 	switch(type) {
@@ -202,6 +202,31 @@ struct variant_fn {
 	int refcount;
 };
 
+struct variant_delayed {
+	variant_delayed() : has_result(false), refcount(0)
+	{}
+
+	void calculate_result() {
+		if(!has_result) {
+			if(callable) {
+				result = fn->execute(*callable);
+			} else {
+				result = fn->execute();
+			}
+
+			has_result = true;
+		}
+	}
+
+	game_logic::const_formula_ptr fn;
+	game_logic::const_formula_callable_ptr callable;
+
+	bool has_result;
+	variant result;
+
+	int refcount;
+};
+
 void variant::increment_refcount()
 {
 	switch(type_) {
@@ -222,6 +247,10 @@ void variant::increment_refcount()
 		break;
 	case TYPE_FUNCTION:
 		++fn_->refcount;
+		break;
+	case TYPE_DELAYED:
+		delayed_variants_loading.insert(this);
+		++delayed_->refcount;
 		break;
 
 	// These are not used here, add them to silence a compiler warning.
@@ -261,6 +290,12 @@ void variant::release()
 			delete fn_;
 		}
 		break;
+	case TYPE_DELAYED:
+		delayed_variants_loading.erase(this);
+		if(--delayed_->refcount == 0) {
+			delete delayed_;
+		}
+		break;
 
 	// These are not used here, add them to silence a compiler warning.
 	case TYPE_NULL:
@@ -294,6 +329,31 @@ const variant::debug_info* variant::get_debug_info() const
 	}
 
 	return NULL;
+}
+
+variant variant::create_delayed(game_logic::const_formula_ptr f, game_logic::const_formula_callable_ptr callable)
+{
+	variant v;
+	v.type_ = TYPE_DELAYED;
+	v.delayed_ = new variant_delayed;
+	v.delayed_->fn = f;
+	v.delayed_->callable = callable;
+
+	v.increment_refcount();
+
+	return v;
+}
+
+void variant::resolve_delayed()
+{
+	std::set<variant*> items = delayed_variants_loading;
+	foreach(variant* v, items) {
+		v->delayed_->calculate_result();
+		variant res = v->delayed_->result;
+		*v = res;
+	}
+
+	delayed_variants_loading.clear();
 }
 
 variant::variant(const game_logic::formula_callable* callable)
@@ -735,6 +795,20 @@ void variant::remove_attr_mutation(variant key)
 	}
 }
 
+variant variant::bind_closure(const game_logic::formula_callable* callable)
+{
+	if(!is_function()) {
+		return variant();
+	}
+
+	variant result;
+	result.type_ = TYPE_FUNCTION;
+	result.fn_ = new variant_fn(*fn_);
+	result.fn_->refcount = 1;
+	result.fn_->callable.reset(callable);
+	return result;
+}
+
 std::string variant::as_string_default(const char* default_value) const
 {
 	if(is_null()) {
@@ -1099,10 +1173,10 @@ void variant::serialize_to_string(std::string& str) const
 {
 	switch(type_) {
 	case TYPE_NULL:
-		str += "null()";
+		str += "null";
 		break;
 	case TYPE_BOOL:
-		str += bool_value_ ? "true()" : "false()";
+		str += bool_value_ ? "true" : "false";
 		break;
 	case TYPE_INT:
 		str += boost::lexical_cast<std::string>(int_value_);
@@ -1199,6 +1273,10 @@ void variant::serialize_from_string(const std::string& str)
 variant variant::create_variant_under_construction(intptr_t id)
 {
 	variant v;
+	if(game_logic::wml_formula_callable_read_scope::try_load_object(id, v)) {
+		return v;
+	}
+
 	v.type_ = TYPE_CALLABLE_LOADING;
 	v.callable_loading_ = id;
 	v.increment_refcount();
@@ -1490,6 +1568,44 @@ void variant::write_json(std::ostream& s) const
 		std::string str;
 		serialize_to_string(str);
 		s << "\"@eval " << str << "\"";
+		return;
+	}
+	case TYPE_FUNCTION: {
+		s << "\"@eval ";
+
+		//Serialize the closure along with the object, if we can.
+		const bool serialize_closure = fn_->callable && dynamic_cast<const game_logic::wml_serializable_formula_callable*>(fn_->callable.get());
+		if(serialize_closure) {
+			s << "delay_until_end_of_loading(q(bind_closure(";
+		}
+		
+		s << "def(";
+		const int default_base = (fn_->end_args - fn_->begin_args) - fn_->default_args.size();
+		for(const std::string* p = fn_->begin_args; p != fn_->end_args; ++p) {
+			if(p != fn_->begin_args) {
+				s << ",";
+			}
+
+			s << *p;
+			
+			const int index = p - fn_->begin_args;
+			if(index >= default_base) {
+				variant v = fn_->default_args[index - default_base];
+				std::string str;
+				v.serialize_to_string(str);
+				s << "=" << str;
+			}
+		}
+
+		s << ") " << fn_->fn->str();
+
+		if(serialize_closure) {
+			std::string str;
+			variant(fn_->callable.get()).serialize_to_string(str);
+			s << "," << str << ")))";
+		}
+		
+		s << "\"";
 		return;
 	}
 	default:
