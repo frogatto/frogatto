@@ -1,6 +1,7 @@
 #ifndef NO_EDITOR
 #include <boost/bind.hpp>
 
+#include "button.hpp"
 #include "code_editor_dialog.hpp"
 #include "code_editor_widget.hpp"
 #include "custom_object_type.hpp"
@@ -25,6 +26,8 @@ void code_editor_dialog::init()
 {
 	using namespace gui;
 
+	button* save_button = new button("Save", boost::bind(&code_editor_dialog::save, this));
+
 	editor_.reset(new code_editor_widget(width() - 40, height() - 60));
 	search_ = new text_editor_widget(120);
 	replace_ = new text_editor_widget(120);
@@ -34,8 +37,9 @@ void code_editor_dialog::init()
 	error_label_ = label::create("", col);
 	add_widget(find_label, 42, 12, MOVE_RIGHT);
 	add_widget(widget_ptr(search_), MOVE_RIGHT);
-	add_widget(widget_ptr(replace_), MOVE_DOWN);
-	add_widget(editor_, find_label->x(), find_label->y() + find_label->height() + 2);
+	add_widget(widget_ptr(replace_), MOVE_RIGHT);
+	add_widget(widget_ptr(save_button), MOVE_RIGHT);
+	add_widget(editor_, find_label->x(), find_label->y() + save_button->height() + 2);
 	add_widget(status_label_);
 	add_widget(error_label_, status_label_->x() + 480, status_label_->y());
 
@@ -177,9 +181,7 @@ bool code_editor_dialog::handle_event(const SDL_Event& event, bool claimed)
 				editor_->set_focus(false);
 				return true;
 			} else if(event.key.keysym.sym == SDLK_s && (event.key.keysym.mod&KMOD_CTRL)) {
-				sys::write_file(module::map_file(fname_), editor_->text());
-				status_label_->set_text(formatter() << "Saved " << fname_);
-				modified_ = false;
+				save();
 				return true;
 			} else if(event.key.keysym.sym == SDLK_TAB && (event.key.keysym.mod&KMOD_CTRL) && files_grid_) {
 				if(!files_grid_->has_must_select()) {
@@ -308,6 +310,13 @@ void code_editor_dialog::set_pad(int pad)
 			animation_preview_->set_object(info.obj);
 		}
 	}
+}
+
+void code_editor_dialog::save()
+{
+	sys::write_file(module::map_file(fname_), editor_->text());
+	status_label_->set_text(formatter() << "Saved " << fname_);
+	modified_ = false;
 }
 
 #endif // NO_EDITOR

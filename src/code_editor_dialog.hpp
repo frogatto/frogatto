@@ -39,6 +39,8 @@ private:
 	void set_animation_rect(rect r);
 	void set_pad(int pad);
 
+	void save();
+
 	std::string fname_;
 
 	int invalidated_;
