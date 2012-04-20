@@ -37,6 +37,7 @@ private:
 	void handle_draw_children() const;
 
 	void set_animation_rect(rect r);
+	void set_pad(int pad);
 
 	std::string fname_;
 

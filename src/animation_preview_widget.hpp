@@ -24,6 +24,7 @@ public:
 	void process();
 
 	void set_rect_handler(boost::function<void(rect)>);
+	void set_pad_handler(boost::function<void(int)>);
 
 private:
 	void handle_draw() const;
@@ -50,8 +51,16 @@ private:
 
 	//anchors for mouse dragging events.
 	int anchor_x_, anchor_y_;
+	rect anchor_area_;
+	int anchor_pad_;
+
+	mutable rect locked_focus_;
+
+	mutable int dragging_sides_bitmap_;
+	enum { LEFT_SIDE = 1, RIGHT_SIDE = 2, TOP_SIDE = 4, BOTTOM_SIDE = 8, PADDING = 16 };
 
 	boost::function<void(rect)> rect_handler_;
+	boost::function<void(int)> pad_handler_;
 };
 
 }
