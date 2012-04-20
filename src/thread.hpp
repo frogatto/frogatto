@@ -52,7 +52,11 @@ public:
 	// \param data passed to f
 	//
 	// \pre f != NULL
+#if defined(__ANDROID__) && SDL_VERSION_ATLEAST(1, 3, 0)
+	explicit thread(const std::string& name, boost::function<void ()> f);
+#else
 	explicit thread(boost::function<void ()> f);
+#endif
 
 	// Destroy the thread object. This is done by waiting on the
 	// thread with the join() operation, thus blocking until the

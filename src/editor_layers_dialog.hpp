@@ -1,5 +1,6 @@
 #ifndef EDITOR_LAYERS_DIALOG_HPP_INCLUDED
 #define EDITOR_LAYERS_DIALOG_HPP_INCLUDED
+#ifndef NO_EDITOR
 
 #include <vector>
 
@@ -33,4 +34,5 @@ private:
 
 }
 
+#endif // !NO_EDITOR
 #endif

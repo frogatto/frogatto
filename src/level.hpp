@@ -164,7 +164,11 @@ public:
 	void set_character_group(entity_ptr c, int group_num);
 	int add_group();
 
+#ifndef NO_EDITOR
 	void set_editor(bool value=true) { editor_ = value; if(editor_) { prepare_tiles_for_drawing(); } }
+#else
+	void set_editor(bool value=true) {}
+#endif // !NO_EDITOR
 	void set_editor_highlight(entity_ptr c) { editor_highlight_ = c; }
 	entity_ptr editor_highlight() const { return editor_highlight_; }
 
@@ -291,7 +295,11 @@ public:
 
 	static const game_logic::formula_callable_definition& get_formula_definition();
 	
+#ifndef NO_EDITOR
 	bool in_editor() const {return editor_;}
+#else
+	bool in_editor() const {return false;}
+#endif // !NO_EDITOR
 
 	void add_sub_level(const std::string& lvl, int xoffset, int yoffset, bool add_objects=true);
 	void remove_sub_level(const std::string& lvl);

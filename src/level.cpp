@@ -111,6 +111,7 @@ void level::set_as_current_level()
 	frame::set_color_palette(palettes_used_);
 
 #if !TARGET_OS_IPHONE && !TARGET_BLACKBERRY
+#ifndef NO_EDITOR
 	static const int starting_x_resolution = preferences::actual_screen_width();
 	static const int starting_y_resolution = preferences::actual_screen_height();
 	static const int starting_virtual_x_resolution = preferences::virtual_screen_width();
@@ -139,6 +140,7 @@ void level::set_as_current_level()
 		}
 	}
 	
+#endif // !NO_EDITOR
 #endif
 }
 
@@ -746,7 +748,11 @@ void level::start_rebuild_tiles_in_background(const std::vector<int>& layers)
 
 	static threading::mutex* sync = new threading::mutex;
 
+#if defined(__ANDROID__) && SDL_VERSION_ATLEAST(1, 3, 0)
+	info.rebuild_tile_thread = new threading::thread("rebuild_tiles", boost::bind(build_tiles_thread_function, &info, tile_maps_, *sync));
+#else
 	info.rebuild_tile_thread = new threading::thread(boost::bind(build_tiles_thread_function, &info, tile_maps_, *sync));
+#endif
 }
 
 void level::freeze_rebuild_tiles_in_background()
@@ -3778,6 +3784,7 @@ bool level::relocate_object(entity_ptr e, int new_x, int new_y)
 	}
 
 
+#ifndef NO_EDITOR
 	//update any x/y co-ordinates to be the same relative to the object's
 	//new position.
 	if(e->editor_info()) {
@@ -3818,6 +3825,7 @@ bool level::relocate_object(entity_ptr e, int new_x, int new_y)
 			}
 		}
 	}
+#endif // !NO_EDITOR
 
 	return true;
 }

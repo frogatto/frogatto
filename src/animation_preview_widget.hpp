@@ -1,5 +1,6 @@
 #ifndef ANIMATION_PREVIEW_WIDGET_HPP_INCLUDED
 #define ANIMATION_PREVIEW_WIDGET_HPP_INCLUDED
+#ifndef NO_EDITOR
 
 #include <boost/function.hpp>
 #include <boost/scoped_ptr.hpp>
@@ -55,4 +56,5 @@ private:
 
 }
 
+#endif // !NO_EDITOR
 #endif

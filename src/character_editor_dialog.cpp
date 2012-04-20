@@ -1,3 +1,4 @@
+#ifndef NO_EDITOR
 #include <boost/bind.hpp>
 
 #include "border_widget.hpp"
@@ -175,3 +176,4 @@ void character_editor_dialog::select_category(const std::string& category)
 }
 
 }
+#endif // NO_EDITOR

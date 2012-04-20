@@ -6,10 +6,14 @@
 #include "SDL_opengles.h"
 #else
 
-#if defined(TARGET_BLACKBERRY) || __MACOSX__ || __ANDROID__
+#if defined(TARGET_BLACKBERRY) || defined(__MACOSX__)
 #include <SDL.h>
 #include <SDL_keysym.h>
 #include <SDL_thread.h>
+#elif defined(__ANDROID__)
+#include <SDL.h>
+#include <SDL_thread.h>
+#include <SDL_screenkeyboard.h>
 #else
 #include <SDL/SDL.h>
 #include <SDL/SDL_keysym.h>
@@ -18,19 +22,19 @@
 
 #endif
 
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE && !__MACOSX__ && !__ANDROID__
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE && !__MACOSX__ && !defined(__ANDROID__)
 #include <SDL/SDL_mixer.h>
 #endif
 
-#if !defined(SDL_VIDEO_OPENGL_ES) && !(TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE)
+#if !defined(SDL_VIDEO_OPENGL_ES) && !(TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE) && !defined(__ANDROID__)
 #include <GL/glew.h>
 #endif
 
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE && !__MACOSX__ && !__ANDROID__
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE && !__MACOSX__ && !defined(__ANDROID__)
 #include <SDL/SDL_ttf.h>
 #endif
 
-#if __MACOSX__ || __ANDROID__
+#if __MACOSX__ || defined(__ANDROID__)
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 #endif

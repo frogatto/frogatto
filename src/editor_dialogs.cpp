@@ -1,3 +1,4 @@
+#ifndef NO_EDITOR
 #include <boost/bind.hpp>
 
 #include "dialog.hpp"
@@ -40,3 +41,5 @@ std::string show_choose_level_dialog(const std::string& prompt)
 	d.show_modal();
 	return result;
 }
+#endif // NO_EDITOR
+

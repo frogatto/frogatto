@@ -498,9 +498,11 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 	hidden_in_game_(node["hidden_in_game"].as_bool(false)),
 	platform_offsets_(node["platform_offsets"].as_list_int_optional())
 {
+#ifndef NO_EDITOR
 	if(node.has_key("editor_info")) {
 		editor_info_.reset(new editor_entity_info(node["editor_info"]));
 	}
+#endif // !NO_EDITOR
 
 	if(node.has_key("preload_sounds")) {
 		//Pre-load any sounds that should be present when we create

@@ -84,7 +84,7 @@ namespace input {
         int bound_key(const SDL_keysym& sym) const;
         bool process_event(const SDL_Event& event, bool claimed);
     protected:
-        bool check_keys(const SDL_keysym& sym, Uint8 event_type);
+        bool check_keys(const SDL_keysym& sym, Uint32 event_type);
         virtual void do_keydown(int key) =0;
         virtual void do_keyup(int key) =0;
     private:

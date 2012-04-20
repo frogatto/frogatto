@@ -1,3 +1,4 @@
+#ifndef NO_EDITOR
 #include <assert.h>
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
@@ -478,3 +479,5 @@ entity_ptr property_editor_dialog::get_static_entity() const
 }
 
 }
+#endif // !NO_EDITOR
+

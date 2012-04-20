@@ -104,7 +104,8 @@ int IMG_SavePNG_RW(SDL_RWops *src, SDL_Surface *surf,int compression){
 	SDL_PixelFormat *fmt=NULL;
 	SDL_Surface *tempsurf=NULL;
 	int ret,funky_format,used_alpha;
-	unsigned int i,temp_alpha;
+	unsigned int i;
+	Uint8 temp_alpha;
 	png_colorp palette;
 	Uint8 *palette_alpha=NULL;
 	png_byte **row_pointers=NULL;
@@ -170,17 +171,23 @@ int IMG_SavePNG_RW(SDL_RWops *src, SDL_Surface *surf,int compression){
 		}
 		png_set_PLTE(png_ptr,info_ptr,palette,fmt->palette->ncolors);
 		if (surf->flags&SDL_SRCCOLORKEY) {
-			palette_alpha=(Uint8 *)malloc((fmt->colorkey+1)*sizeof(Uint8));
+			Uint32 colorkey; 
+#if defined(__ANDROID__) && SDL_VERSION_ATLEAST(1, 3, 0)
+			SDL_GetColorKey(surf, &colorkey);
+#else
+			colorkey = fmt->colorkey;
+#endif
+			palette_alpha=(Uint8 *)malloc((colorkey+1)*sizeof(Uint8));
 			if (!palette_alpha) {
 				SDL_SetError("Couldn't create memory for palette transparency");
 				goto savedone;
 			}
 			/* FIXME: memset? */
-			for (i=0;i<(fmt->colorkey+1);i++) {
+			for (i=0;i<(colorkey+1);i++) {
 				palette_alpha[i]=255;
 			}
-			palette_alpha[fmt->colorkey]=0;
-			png_set_tRNS(png_ptr,info_ptr,palette_alpha,fmt->colorkey+1,NULL);
+			palette_alpha[colorkey]=0;
+			png_set_tRNS(png_ptr,info_ptr,palette_alpha,colorkey+1,NULL);
 		}
 	}else{ /* Truecolor */
 		if (fmt->Amask) {
@@ -272,7 +279,11 @@ int IMG_SavePNG_RW(SDL_RWops *src, SDL_Surface *surf,int compression){
 				goto savedone;
 			}
 			if(surf->flags&SDL_SRCALPHA){
+#if defined(__ANDROID__) && SDL_VERSION_ATLEAST(1, 3, 0)
+				SDL_GetSurfaceAlphaMod(surf, &temp_alpha);
+#else
 				temp_alpha=fmt->alpha;
+#endif
 				used_alpha=1;
 				SDL_SetAlpha(surf,0,255); /* Set for an opaque blit */
 			}else{

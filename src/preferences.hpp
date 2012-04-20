@@ -71,6 +71,9 @@ namespace preferences {
 	bool load_compiled();
 
 	void set_load_compiled(bool value);
+	
+	void set_edit_on_start(bool value);
+	bool edit_on_start();
 
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 bool use_fbo();

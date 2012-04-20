@@ -127,6 +127,8 @@ namespace preferences {
 
 		bool record_history_ = false;
 
+		bool edit_on_start_ = false;
+
 		variant external_code_editor_;
 		
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
@@ -179,7 +181,7 @@ namespace preferences {
 #elif defined(__ANDROID__)
 
 #ifndef PREFERENCES_PATH
-#define PREFERENCES_PATH "~/.frogatto/"
+#define PREFERENCES_PATH ".frogatto/"
 #endif
 
 		bool send_stats_ = false;
@@ -468,6 +470,16 @@ namespace preferences {
 	void set_load_compiled(bool value)
 	{
 		load_compiled_ = value;
+	}
+
+	bool edit_on_start()
+	{
+		return edit_on_start_;
+	}
+	
+	void set_edit_on_start(bool value)
+	{
+		edit_on_start_ = value;
 	}
 	
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)

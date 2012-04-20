@@ -1,5 +1,6 @@
 #ifndef SEGMENT_EDITOR_DIALOG_HPP_INCLUDED
 #define SEGMENT_EDITOR_DIALOG_HPP_INCLUDED
+#ifndef NO_EDITOR
 
 #include "dialog.hpp"
 
@@ -26,3 +27,5 @@ private:
 }
 
 #endif
+#endif // !NO_EDITOR
+

@@ -1,3 +1,4 @@
+#ifndef NO_EDITOR
 #include <map>
 
 #include "custom_object.hpp"
@@ -321,3 +322,4 @@ void execute(const std::string& id, editor& e)
 }
 
 }
+#endif // NO_EDITOR

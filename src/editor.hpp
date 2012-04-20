@@ -1,5 +1,6 @@
 #ifndef EDITOR_HPP_INCLUDED
 #define EDITOR_HPP_INCLUDED
+#ifndef NO_EDITOR
 
 #include <boost/function.hpp>
 #include <boost/scoped_ptr.hpp>
@@ -319,4 +320,5 @@ struct editor_resolution_manager : private preferences::editor_screen_size_scope
 	int original_width_, original_height_;
 };
 
+#endif // !NO_EDITOR
 #endif

@@ -1,3 +1,4 @@
+#ifndef NO_EDITOR
 #include <boost/bind.hpp>
 
 #include "animation_preview_widget.hpp"
@@ -63,6 +64,7 @@ void animation_preview_widget::handle_draw() const
 #ifndef SDL_VIDEO_OPENGL_ES
 		const graphics::clip_scope clipping_scope(image_area.sdl_rect());
 #endif // SDL_VIDEO_OPENGL_ES
+
 
 		const rect focus_area(frame_->area().x(), frame_->area().y(),
 		      (frame_->area().w() + frame_->pad())*frame_->num_frames_per_row(),
@@ -264,3 +266,6 @@ void animation_preview_widget::set_rect_handler(boost::function<void(rect)> hand
 }
 
 }
+
+#endif // !NO_EDITOR
+

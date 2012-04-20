@@ -1,5 +1,6 @@
 #ifndef CODE_EDITOR_DIALOG_HPP_INCLUDED
 #define CODE_EDITOR_DIALOG_HPP_INCLUDED
+#ifndef NO_EDITOR
 
 #include <boost/shared_ptr.hpp>
 
@@ -75,4 +76,5 @@ private:
 	void select_file(int index);
 };
 
+#endif // !NO_EDITOR
 #endif

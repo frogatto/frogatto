@@ -1,5 +1,6 @@
 #ifndef CHARACTER_EDITOR_DIALOG_HPP_INCLUDED
 #define CHARACTER_EDITOR_DIALOG_HPP_INCLUDED
+#ifndef NO_EDITOR
 
 #include <map>
 #include <string>
@@ -45,4 +46,5 @@ private:
 
 }
 
+#endif // NO_EDITOR
 #endif

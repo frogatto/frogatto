@@ -1,3 +1,4 @@
+#ifndef NO_EDITOR
 #include <boost/bind.hpp>
 
 #include "editor_layers_dialog.hpp"
@@ -71,3 +72,5 @@ void editor_layers_dialog::row_mouseover(int nrow)
 }
 
 }
+#endif // !NO_EDITOR
+

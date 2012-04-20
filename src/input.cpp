@@ -368,7 +368,7 @@ namespace input {
         return mod_itor->second;
     }
 
-    bool key_listener::check_keys(const SDL_keysym& sym, Uint8 type) {
+    bool key_listener::check_keys(const SDL_keysym& sym, Uint32 type) {
         binding_map::iterator binding_itor;
         binding_itor = bindings_.find(sym.sym);
         
