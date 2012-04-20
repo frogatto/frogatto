@@ -448,6 +448,32 @@ level_runner::level_runner(boost::intrusive_ptr<level>& lvl, std::string& level_
 	pause_time_ = -global_pause_time;
 }
 
+void level_runner::start_editor()
+{
+#ifndef NO_EDITOR
+	if(!editor_) {
+		controls::control_backup_scope ctrl_backup;
+		editor_resolution_manager_.reset(new editor_resolution_manager);
+		editor_ = editor::get_editor(lvl_->id().c_str());
+		editor_->set_playing_level(lvl_);
+		editor_->setup_for_editing();
+		lvl_->set_editor();
+		lvl_->set_as_current_level();
+		init_history_slider();
+	} else {
+		//Pause the game and set the level to its original
+		//state if the user presses ctrl+e twice.
+		paused = !paused;
+		editor_->reset_playing_level(false);
+		last_draw_position().init = false;
+		init_history_slider();
+		if(!paused) {
+			controls::read_until(lvl_->cycle());
+		}
+	}
+#endif
+}
+
 bool level_runner::play_level()
 {
 	const current_level_runner_scope current_level_runner_setter(this);
@@ -456,6 +482,10 @@ bool level_runner::play_level()
 
 	lvl_->set_as_current_level();
 	bool reversing = false;
+
+	if(preferences::edit_on_start()) {
+		start_editor();	
+	}
 
 #ifndef NO_EDITOR
 	if(!lvl_->player()) {
@@ -928,26 +958,7 @@ bool level_runner::play_cycle()
 
 				} else if(key == SDLK_e && (mod&KMOD_CTRL)) {
 #ifndef NO_EDITOR
-					if(!editor_) {
-						controls::control_backup_scope ctrl_backup;
-						editor_resolution_manager_.reset(new editor_resolution_manager);
-						editor_ = editor::get_editor(lvl_->id().c_str());
-						editor_->set_playing_level(lvl_);
-						editor_->setup_for_editing();
-						lvl_->set_editor();
-						lvl_->set_as_current_level();
-						init_history_slider();
-					} else {
-						//Pause the game and set the level to its original
-						//state if the user presses ctrl+e twice.
-						paused = !paused;
-						editor_->reset_playing_level(false);
-						last_draw_position().init = false;
-						init_history_slider();
-						if(!paused) {
-							controls::read_until(lvl_->cycle());
-						}
-					}
+					start_editor();
 #endif
 				} else if(key == SDLK_r && (mod&KMOD_CTRL) && editor_) {
 #ifndef NO_EDITOR

@@ -131,6 +131,7 @@ void print_help(const std::string& argv0)
 "      --simiphone              changes various options to emulate an iPhone\n" <<
 "                                 environment\n" <<
 "      --tests                  runs the game's unit tests and exits\n" <<
+"      --edit                   Starts the game in edit mode.\n" <<
 "      --no-tests               skips the execution of unit tests on startup\n"
 "      --utility=NAME           runs the specified UTILITY( NAME ) code block,\n" <<
 "                                 such as compile_levels or object_compiler,\n" <<
@@ -283,6 +284,10 @@ extern "C" int main(int argcount, char** argvec)
 			server = argv[++n];
 		} else if(arg == "--compiled") {
 			preferences::set_load_compiled(true);
+#ifndef NO_EDITOR
+		} else if(arg == "--edit") {
+			preferences::set_edit_on_start(true);
+#endif
 		} else if(arg == "--no-compiled") {
 			preferences::set_load_compiled(false);
 #if defined(TARGET_PANDORA)

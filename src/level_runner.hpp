@@ -34,6 +34,7 @@ public:
 	void toggle_pause();
 	void toggle_history_trails();
 private:
+	void start_editor();
 	void reverse_cycle();
 	void show_debug_console();
 	void handle_pause_game_result(PAUSE_GAME_RESULT result);
