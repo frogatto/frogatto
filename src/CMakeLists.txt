@@ -31,6 +31,7 @@ add_executable( frogatto
 	editor_layers_dialog.cpp
 	editor_stats_dialog.cpp
 	editor_variable_info.cpp
+	external_text_editor.cpp
     clipboard.cpp
 	collision_utils.cpp
 	color_utils.cpp
@@ -144,6 +145,7 @@ add_executable( frogatto
 	formula_test.cpp
 	loading_screen.cpp
 	utility_object_compiler.cpp
+	utility_query.cpp
 	utility_render_level.cpp
     wml_formula_callable.cpp
     ${FROGATTO_SRC_PLATFORM} )

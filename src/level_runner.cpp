@@ -380,6 +380,7 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 				callable->add("mouse_button", variant(event.button.button));
 			}
 			variant v(callable);
+			std::vector<variant> items;
 			std::vector<entity_ptr> cs = lvl_->get_characters_at_point(x, y, last_draw_position().x/100, last_draw_position().y/100);
 			std::sort(cs.begin(), cs.end(), zorder_compare);
 			std::vector<entity_ptr>::iterator it;
@@ -395,9 +396,11 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 					}
 				}
 				handled = true;
-
+				items.push_back(variant( (*it).get()));
 			}
 			callable->add("handled", variant(handled));
+			variant obj_ary(&items);
+			callable->add("objects_under_mouse", obj_ary);
 			foreach(entity_ptr object, level::current().get_chars()) {
 				object->handle_event(catch_all_event, callable);
 			}
