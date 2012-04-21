@@ -6,6 +6,7 @@
 
 #include <boost/shared_ptr.hpp>
 
+#include "asserts.hpp"
 #include "variant.hpp"
 
 class external_text_editor;
@@ -40,6 +41,10 @@ private:
 	virtual std::vector<std::string> loaded_files() const = 0;
 
 	bool replace_in_game_editor_;
+
+	//As long as there's one of these things active, we're dynamically loading
+	//in code, and so want to recover from asserts.
+	assert_recover_scope assert_recovery_;
 };
 
 #endif // NO_EDITOR

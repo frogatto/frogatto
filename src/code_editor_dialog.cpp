@@ -247,6 +247,10 @@ void code_editor_dialog::process()
 		if(animation_preview_) {
 			animation_preview_.reset();
 		}
+	} catch(validation_failure_exception& e) {
+		if(animation_preview_) {
+			animation_preview_.reset();
+		}
 	}
 
 	if(animation_preview_) {
