@@ -71,11 +71,6 @@ decimal operator/(const decimal& a, const decimal& b)
 		++orders_of_magnitude_shift;
 	}
 
-	while(vb&10 == 0) {
-		vb /= DECIMAL(10);
-		++orders_of_magnitude_shift;
-	}
-
 	const int64_t target_value_b = DECIMAL(1000000);
 
 	while(vb > target_value_b) {
