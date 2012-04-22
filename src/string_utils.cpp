@@ -116,27 +116,28 @@ std::string &strip(std::string &str)
 
 std::vector<std::string> split(std::string const &val, const std::string& delim)
 {
-	/* this might be slow but its very convenient so long as you
-	   aren't calling it too often */
-
-	std::vector< std::string > res;
-	std::string::const_iterator i1 = val.begin();
-	std::string::const_iterator i2 = val.begin();
-
-	while (i2 != val.end()) {
-		if(delim.find(*i2) != std::string::npos) {
-			std::string new_val(i1, i2);
-			res.push_back(new_val);
-			while(delim.find(*(++i2)) != std::string::npos) {}
-			i1 = i2;
+	std::vector<std::string> result;
+	if(delim.empty()) {
+		foreach(char c, val) {
+			result.push_back(std::string(1, c));
 		}
-		++i2;
+
+		return result;
 	}
-	std::string new_val(i1,i2);
-	if(!new_val.empty()) {
-		res.push_back(new_val);
+
+	const char* ptr = val.c_str();
+	for(;;) {
+		const char* end = strstr(ptr, delim.c_str());
+		if(end == NULL) {
+			result.push_back(std::string(ptr));
+			return result;
+		}
+
+		result.push_back(std::string(ptr, end));
+		ptr = end + delim.size();
 	}
-	return res;
+
+	return result;
 }
 
 std::vector<std::string> split(std::string const &val, char c, int flags)
