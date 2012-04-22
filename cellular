@@ -1,2 +1,2 @@
 #!/bin/sh
-./game --level-path=data/level/cellular --native $@
+./game --module=cellular --native $@
