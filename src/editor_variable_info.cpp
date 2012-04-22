@@ -28,7 +28,11 @@ editor_variable_info::editor_variable_info(variant node)
 		type_ = TYPE_BOOLEAN;
 	} else if(type == "enum") {
 		type_ = TYPE_ENUM;
-		enum_values_ = util::split(node["enum_values"].as_string());
+		if(node["enum_values"].is_list()) {
+			enum_values_ = node["enum_values"].as_list_string();
+		} else {
+			enum_values_ = util::split(node["enum_values"].as_string());
+		}
 		ASSERT_LOG(enum_values_.empty() == false, "IN PROPERTY: " << name_ << " ENUM WITH NO VALUES SPECIFIED");
 	} else if(type == "points") {
 		type_ = TYPE_POINTS;
