@@ -817,33 +817,6 @@ private:
 	entity_ptr focus_;
 };
 
-
-FUNCTION_DEF(get_all_files_under_dir, 1, 1, "Returns a list of all the files in and under the given directory")
-	std::vector<variant> v;
-	std::map<std::string, std::string> file_paths;
-	module::get_unique_filenames_under_dir(args()[0]->evaluate(variables).as_string(), &file_paths);
-	for(std::map<std::string, std::string>::const_iterator i = file_paths.begin(); i != file_paths.end(); ++i) {
-		//std::cerr << "FILE " << i->first << " : " << i->second << std::endl;
-		v.push_back(variant(i->second));
-	}
-	return variant(&v);
-END_FUNCTION_DEF(get_all_files_under_dir)
-
-FUNCTION_DEF(get_files_in_dir, 1, 1, "Returns a list of the files in the given directory")
-	std::vector<variant> v;
-	std::vector<std::string> files;
-	std::string dirname = args()[0]->evaluate(variables).as_string();
-	if(dirname[dirname.size()-1] != '/') {
-		dirname += '/';
-	}
-	module::get_files_in_dir(dirname, &files);
-	for(std::vector<std::string>::const_iterator i = files.begin(); i != files.end(); ++i) {
-		//std::cerr << "FILE " << *i << std::endl;
-		v.push_back(variant(dirname + *i));
-	}
-	return variant(&v);
-END_FUNCTION_DEF(get_files_in_dir)
-
 FUNCTION_DEF(tiles_at, 2, 2, "tiles_at(x, y): gives a list of the tiles at the given x, y position")
 	formula::fail_if_static_context();
 

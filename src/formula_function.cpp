@@ -30,6 +30,7 @@
 #include "variant_callable.hpp"
 
 #include "graphics.hpp"
+#include "module.hpp"
 #include <boost/regex.hpp>
 #if defined(_WINDOWS)
 #include <boost/math/special_functions/asinh.hpp>
@@ -903,6 +904,33 @@ FUNCTION_DEF(back, 1, 1, "back(list): gives the last element of a list, or null 
 		return variant();
 	}
 END_FUNCTION_DEF(back)
+
+FUNCTION_DEF(get_all_files_under_dir, 1, 1, "Returns a list of all the files in and under the given directory")
+	std::vector<variant> v;
+	std::map<std::string, std::string> file_paths;
+	module::get_unique_filenames_under_dir(args()[0]->evaluate(variables).as_string(), &file_paths);
+	for(std::map<std::string, std::string>::const_iterator i = file_paths.begin(); i != file_paths.end(); ++i) {
+		//std::cerr << "FILE " << i->first << " : " << i->second << std::endl;
+		v.push_back(variant(i->second));
+	}
+	return variant(&v);
+END_FUNCTION_DEF(get_all_files_under_dir)
+
+FUNCTION_DEF(get_files_in_dir, 1, 1, "Returns a list of the files in the given directory")
+	std::vector<variant> v;
+	std::vector<std::string> files;
+	std::string dirname = args()[0]->evaluate(variables).as_string();
+	if(dirname[dirname.size()-1] != '/') {
+		dirname += '/';
+	}
+	module::get_files_in_dir(dirname, &files);
+	for(std::vector<std::string>::const_iterator i = files.begin(); i != files.end(); ++i) {
+		//std::cerr << "FILE " << *i << std::endl;
+		v.push_back(variant(*i));
+	}
+	return variant(&v);
+END_FUNCTION_DEF(get_files_in_dir)
+
 
 
 	class size_function : public function_expression {
