@@ -1856,6 +1856,16 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_RELATIVE_X:        return variant(x() - parent_position().x);
 	case CUSTOM_OBJECT_RELATIVE_Y:        return variant(y() - parent_position().y);
 	case CUSTOM_OBJECT_SPAWNED_BY:        if(spawned_by().empty()) return variant(); else return variant(level::current().get_entity_by_label(spawned_by()).get());
+	case CUSTOM_OBJECT_SPAWNED_CHILDREN: {
+		std::vector<variant> children;
+		foreach(const entity_ptr& e, level::current().get_chars()) {
+			if(e->spawned_by() == label()) {
+				children.push_back(variant(e.get()));
+			}
+		}
+
+		return variant(&children);
+	}
 	case CUSTOM_OBJECT_PARENT:            return variant(parent_.get());
 	case CUSTOM_OBJECT_PIVOT:             return variant(parent_pivot_);
 	case CUSTOM_OBJECT_PREVIOUS_Y:        return variant(previous_y_);

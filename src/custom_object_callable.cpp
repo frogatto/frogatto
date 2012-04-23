@@ -28,7 +28,7 @@ custom_object_callable::custom_object_callable()
 	"time_in_animation", "time_in_animation_delta", "level",
 	"animation", "available_animations",
 	"hitpoints", "max_hitpoints", "mass", "label", "x", "y", "xy", "z",
-	"relative_x", "relative_y", "spawned_by",
+	"relative_x", "relative_y", "spawned_by", "spawned_children",
 	"parent", "pivot", "zorder", "zsub_order",
 	"previous_y", "x1", "x2", "y1", "y2", "w", "h", "mid_x", "mid_y", "midpoint_x", "midpoint_y",
 	"solid_rect", "solid_mid_x", "solid_mid_y", "img_mid_x", "img_mid_y","img_w", "img_h", "front", "back", "cycle", "facing",
