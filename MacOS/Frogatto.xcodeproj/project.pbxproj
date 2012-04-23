@@ -15,6 +15,8 @@
 		B507F48410E005BC0054D346 /* formula_constants.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B507F48210E005BC0054D346 /* formula_constants.cpp */; };
 		B508CCE3109396E700E12E91 /* level_solid_map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B508CCE1109396E700E12E91 /* level_solid_map.cpp */; };
 		B50BF089136DB7A300F85B30 /* game_registry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B50BF087136DB7A300F85B30 /* game_registry.cpp */; };
+		B50ED10C1546179D0037AEE7 /* animation_preview_widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B50ED1071546179D0037AEE7 /* animation_preview_widget.cpp */; };
+		B50ED10D1546179D0037AEE7 /* external_text_editor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B50ED1091546179D0037AEE7 /* external_text_editor.cpp */; };
 		B514C8E4101D16BD0038C5E7 /* multiplayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B514C8DF101D16BD0038C5E7 /* multiplayer.cpp */; };
 		B514C8FE101D18790038C5E7 /* libboost_iostreams-xgcc40-mt-1_37.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B514C8FD101D18790038C5E7 /* libboost_iostreams-xgcc40-mt-1_37.dylib */; };
 		B514C8FF101D18840038C5E7 /* libboost_iostreams-xgcc40-mt-1_37.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = B514C8FD101D18790038C5E7 /* libboost_iostreams-xgcc40-mt-1_37.dylib */; };
@@ -60,6 +62,7 @@
 		B556CCA21526A56B00AAA03A /* UbuntuMono-BI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B556CC9E1526A56B00AAA03A /* UbuntuMono-BI.ttf */; };
 		B556CCA31526A56B00AAA03A /* UbuntuMono-R.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B556CC9F1526A56B00AAA03A /* UbuntuMono-R.ttf */; };
 		B556CCA41526A56B00AAA03A /* UbuntuMono-RI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B556CCA01526A56B00AAA03A /* UbuntuMono-RI.ttf */; };
+		B55CF2B9153343B400064F17 /* formula_function_registry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B55CF2B7153343B400064F17 /* formula_function_registry.cpp */; };
 		B55F18F41155E6F000F5D541 /* libpng12.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B55F18F31155E6F000F5D541 /* libpng12.0.dylib */; };
 		B55F18F91155E6FB00F5D541 /* libpng12.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = B55F18F31155E6F000F5D541 /* libpng12.0.dylib */; };
 		B561CDDE10483923001369F5 /* player_info.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B561CDDC10483922001369F5 /* player_info.cpp */; };
@@ -164,6 +167,8 @@
 		B5DC675D118A48250004C1CC /* surface_palette.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5DC675B118A48250004C1CC /* surface_palette.cpp */; };
 		B5DFBC601159D8A000996D07 /* formula_profiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5DFBC5E1159D8A000996D07 /* formula_profiler.cpp */; };
 		B5EB34E711F2B71200A691AA /* slider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5EB34E611F2B71200A691AA /* slider.cpp */; };
+		B5F0A1EB152EDB0D00CFFAEF /* module.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5F0A1E9152EDB0D00CFFAEF /* module.cpp */; };
+		B5F0A5BC152EDC4800CFFAEF /* modules in Resources */ = {isa = PBXBuildFile; fileRef = B5F0A5BB152EDC4800CFFAEF /* modules */; };
 		B5F0C41F1146C17600DCBD08 /* IMG_savepng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5F0C41D1146C17600DCBD08 /* IMG_savepng.cpp */; settings = {COMPILER_FLAGS = "-DIMPLEMENT_SAVE_PNG"; }; };
 		B5F3F6331280D6A100619E30 /* globals.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5F3F62C1280D6A100619E30 /* globals.cpp */; };
 		B5F3F6341280D6A100619E30 /* scrollable_widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5F3F62F1280D6A100619E30 /* scrollable_widget.cpp */; };
@@ -221,6 +226,11 @@
 		B508CCE2109396E700E12E91 /* level_solid_map.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = level_solid_map.hpp; sourceTree = "<group>"; };
 		B50BF087136DB7A300F85B30 /* game_registry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = game_registry.cpp; sourceTree = "<group>"; };
 		B50BF088136DB7A300F85B30 /* game_registry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = game_registry.hpp; sourceTree = "<group>"; };
+		B50ED1071546179D0037AEE7 /* animation_preview_widget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animation_preview_widget.cpp; sourceTree = "<group>"; };
+		B50ED1081546179D0037AEE7 /* animation_preview_widget.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = animation_preview_widget.hpp; sourceTree = "<group>"; };
+		B50ED1091546179D0037AEE7 /* external_text_editor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = external_text_editor.cpp; sourceTree = "<group>"; };
+		B50ED10A1546179D0037AEE7 /* external_text_editor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = external_text_editor.hpp; sourceTree = "<group>"; };
+		B50ED10B1546179D0037AEE7 /* utility_query.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = utility_query.hpp; sourceTree = "<group>"; };
 		B514C8DF101D16BD0038C5E7 /* multiplayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = multiplayer.cpp; sourceTree = "<group>"; };
 		B514C8E0101D16BD0038C5E7 /* multiplayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = multiplayer.hpp; sourceTree = "<group>"; };
 		B514C8E1101D16BD0038C5E7 /* server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = server.cpp; sourceTree = "<group>"; };
@@ -291,6 +301,8 @@
 		B556CC9E1526A56B00AAA03A /* UbuntuMono-BI.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "UbuntuMono-BI.ttf"; path = "../UbuntuMono-BI.ttf"; sourceTree = "<group>"; };
 		B556CC9F1526A56B00AAA03A /* UbuntuMono-R.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "UbuntuMono-R.ttf"; path = "../UbuntuMono-R.ttf"; sourceTree = "<group>"; };
 		B556CCA01526A56B00AAA03A /* UbuntuMono-RI.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "UbuntuMono-RI.ttf"; path = "../UbuntuMono-RI.ttf"; sourceTree = "<group>"; };
+		B55CF2B7153343B400064F17 /* formula_function_registry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = formula_function_registry.cpp; sourceTree = "<group>"; };
+		B55CF2B8153343B400064F17 /* formula_function_registry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = formula_function_registry.hpp; sourceTree = "<group>"; };
 		B55F18F31155E6F000F5D541 /* libpng12.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpng12.0.dylib; path = lib/libpng12.0.dylib; sourceTree = "<group>"; };
 		B561CDDC10483922001369F5 /* player_info.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = player_info.cpp; sourceTree = "<group>"; };
 		B561CDDD10483923001369F5 /* player_info.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = player_info.hpp; sourceTree = "<group>"; };
@@ -503,6 +515,9 @@
 		B5DFBC5F1159D8A000996D07 /* formula_profiler.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = formula_profiler.hpp; sourceTree = "<group>"; };
 		B5EB34E511F2B71100A691AA /* slider.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = slider.hpp; sourceTree = "<group>"; };
 		B5EB34E611F2B71200A691AA /* slider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = slider.cpp; sourceTree = "<group>"; };
+		B5F0A1E9152EDB0D00CFFAEF /* module.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = module.cpp; sourceTree = "<group>"; };
+		B5F0A1EA152EDB0D00CFFAEF /* module.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = module.hpp; sourceTree = "<group>"; };
+		B5F0A5BB152EDC4800CFFAEF /* modules */ = {isa = PBXFileReference; lastKnownFileType = folder; name = modules; path = ../modules; sourceTree = "<group>"; };
 		B5F0C41D1146C17600DCBD08 /* IMG_savepng.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IMG_savepng.cpp; sourceTree = "<group>"; };
 		B5F0C41E1146C17600DCBD08 /* IMG_savepng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMG_savepng.h; sourceTree = "<group>"; };
 		B5F3F62C1280D6A100619E30 /* globals.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = globals.cpp; sourceTree = "<group>"; };
@@ -550,6 +565,15 @@
 		080E96DDFE201D6D7F000001 /* C++ */ = {
 			isa = PBXGroup;
 			children = (
+				B50ED1071546179D0037AEE7 /* animation_preview_widget.cpp */,
+				B50ED1081546179D0037AEE7 /* animation_preview_widget.hpp */,
+				B50ED1091546179D0037AEE7 /* external_text_editor.cpp */,
+				B50ED10A1546179D0037AEE7 /* external_text_editor.hpp */,
+				B50ED10B1546179D0037AEE7 /* utility_query.hpp */,
+				B55CF2B7153343B400064F17 /* formula_function_registry.cpp */,
+				B55CF2B8153343B400064F17 /* formula_function_registry.hpp */,
+				B5F0A1E9152EDB0D00CFFAEF /* module.cpp */,
+				B5F0A1EA152EDB0D00CFFAEF /* module.hpp */,
 				B556CC9715269AC200AAA03A /* code_editor_dialog.cpp */,
 				B556CC9815269AC200AAA03A /* code_editor_dialog.hpp */,
 				B556CC9915269AC200AAA03A /* utility_query.cpp */,
@@ -906,6 +930,7 @@
 				B556CC9E1526A56B00AAA03A /* UbuntuMono-BI.ttf */,
 				B556CC9F1526A56B00AAA03A /* UbuntuMono-R.ttf */,
 				B556CCA01526A56B00AAA03A /* UbuntuMono-RI.ttf */,
+				B5F0A5BB152EDC4800CFFAEF /* modules */,
 				B501A3FD1371C2B300D7EC88 /* locale */,
 				B5F96B450E7572CA00969FDD /* data */,
 				B56EA5670E242F7B00C9F45C /* music */,
@@ -1015,6 +1040,7 @@
 				B556CCA21526A56B00AAA03A /* UbuntuMono-BI.ttf in Resources */,
 				B556CCA31526A56B00AAA03A /* UbuntuMono-R.ttf in Resources */,
 				B556CCA41526A56B00AAA03A /* UbuntuMono-RI.ttf in Resources */,
+				B5F0A5BC152EDC4800CFFAEF /* modules in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1158,6 +1184,10 @@
 				B556CC921524D14200AAA03A /* wml_formula_callable.cpp in Sources */,
 				B556CC9A15269AC200AAA03A /* code_editor_dialog.cpp in Sources */,
 				B556CC9B15269AC200AAA03A /* utility_query.cpp in Sources */,
+				B5F0A1EB152EDB0D00CFFAEF /* module.cpp in Sources */,
+				B55CF2B9153343B400064F17 /* formula_function_registry.cpp in Sources */,
+				B50ED10C1546179D0037AEE7 /* animation_preview_widget.cpp in Sources */,
+				B50ED10D1546179D0037AEE7 /* external_text_editor.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1200,10 +1230,10 @@
 					include/libpng12,
 					include/glew_include,
 					"include/boost-1_37",
-					/Library/Frameworks/SDL.framework/Headers,
-					/Library/Frameworks/SDL_image.framework/Headers,
-					/Library/Frameworks/SDL_mixer.framework/Headers,
-					/Library/Frameworks/SDL_ttf.framework/Headers,
+					lib/SDL.framework/Headers,
+					lib/SDL_image.framework/Headers,
+					lib/SDL_mixer.framework/Headers,
+					lib/SDL_ttf.framework/Headers,
 				);
 				INFOPLIST_FILE = resources/Info.plist;
 				INSTALL_PATH = /Applications;
@@ -1245,10 +1275,10 @@
 					include/libpng12,
 					include/glew_include,
 					"include/boost-1_37",
-					/Library/Frameworks/SDL.framework/Headers,
-					/Library/Frameworks/SDL_image.framework/Headers,
-					/Library/Frameworks/SDL_mixer.framework/Headers,
-					/Library/Frameworks/SDL_ttf.framework/Headers,
+					lib/SDL.framework/Headers,
+					lib/SDL_image.framework/Headers,
+					lib/SDL_mixer.framework/Headers,
+					lib/SDL_ttf.framework/Headers,
 				);
 				INFOPLIST_FILE = resources/Info.plist;
 				INSTALL_PATH = /Applications;
@@ -1279,6 +1309,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = include/;
@@ -1295,7 +1326,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_VERSION = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = include/;
