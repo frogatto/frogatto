@@ -1832,7 +1832,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	switch(slot) {
 	case CUSTOM_OBJECT_CONSTS:            return variant(type_->consts().get());
 	case CUSTOM_OBJECT_TYPE:              return variant(type_->id());
-	case CUSTOM_OBJECT_ACTIVE:            return variant(last_cycle_active_ >= level::current().cycle() - 2);
+	case CUSTOM_OBJECT_ACTIVE:            return variant::from_bool(last_cycle_active_ >= level::current().cycle() - 2);
 	case CUSTOM_OBJECT_TIME_IN_ANIMATION: return variant(time_in_frame_);
 	case CUSTOM_OBJECT_TIME_IN_ANIMATION_DELTA: return variant(time_in_frame_delta_);
 	case CUSTOM_OBJECT_LEVEL:             return variant(&level::current());
@@ -1928,7 +1928,7 @@ variant custom_object::get_value_by_slot(int slot) const
 			return variant();
 		}
 	}
-	case CUSTOM_OBJECT_NEAR_CLIFF_EDGE:   return variant(is_standing(level::current()) && cliff_edge_within(level::current(), feet_x(), feet_y(), face_dir()*15));
+	case CUSTOM_OBJECT_NEAR_CLIFF_EDGE:   return variant::from_bool(is_standing(level::current()) && cliff_edge_within(level::current(), feet_x(), feet_y(), face_dir()*15));
 	case CUSTOM_OBJECT_DISTANCE_TO_CLIFF: return variant(::distance_to_cliff(level::current(), feet_x(), feet_y(), face_dir()));
 	case CUSTOM_OBJECT_SLOPE_STANDING_ON: return variant(-slope_standing_on(6)*face_dir());
 	case CUSTOM_OBJECT_UNDERWATER:        return variant(level::current().is_underwater(solid() ? solid_rect() : rect(x(), y(), current_frame().width(), current_frame().height())));
@@ -1951,14 +1951,14 @@ variant custom_object::get_value_by_slot(int slot) const
 		return v;
 	}
 	case CUSTOM_OBJECT_DRIVER:            return variant(driver_ ? driver_.get() : this);
-	case CUSTOM_OBJECT_IS_HUMAN:          return variant(is_human() ? 1 : 0);
-	case CUSTOM_OBJECT_INVINCIBLE:        return variant(invincible_);
+	case CUSTOM_OBJECT_IS_HUMAN:          return variant::from_bool(is_human());
+	case CUSTOM_OBJECT_INVINCIBLE:        return variant::from_bool(invincible_);
 	case CUSTOM_OBJECT_SOUND_VOLUME:      return variant(sound_volume_);
-	case CUSTOM_OBJECT_DESTROYED:         return variant(destroyed());
+	case CUSTOM_OBJECT_DESTROYED:         return variant::from_bool(destroyed());
 
 	case CUSTOM_OBJECT_IS_STANDING_ON_PLATFORM: {
 		if(standing_on_ && standing_on_->platform() && !standing_on_->solid_platform()) {
-			return variant(1);
+			return variant::from_bool(true);
 		}
 
 		collision_info info;
@@ -2090,7 +2090,7 @@ variant custom_object::get_value_by_slot(int slot) const
 		} else {
 			return variant(decimal::from_int(1));
 		}
-	case CUSTOM_OBJECT_HAS_FEET: return variant(has_feet_);
+	case CUSTOM_OBJECT_HAS_FEET: return variant::from_bool(has_feet_);
 
 	case CUSTOM_OBJECT_CTRL_UP:
 	case CUSTOM_OBJECT_CTRL_DOWN:
@@ -2099,7 +2099,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_CTRL_ATTACK:
 	case CUSTOM_OBJECT_CTRL_JUMP:
 	case CUSTOM_OBJECT_CTRL_TONGUE:
-		return variant(control_status(static_cast<controls::CONTROL_ITEM>(slot - CUSTOM_OBJECT_CTRL_UP)));
+		return variant::from_bool(control_status(static_cast<controls::CONTROL_ITEM>(slot - CUSTOM_OBJECT_CTRL_UP)));
 	}
 
 	const game_logic::formula_callable_definition::entry* entry = 
