@@ -15,8 +15,8 @@ decimal decimal::from_string(const std::string& s)
 		++ptr;
 	}
 	char* endptr = NULL, *enddec = NULL;
-	int64_t n = strtol(ptr, &endptr, 0);
-	int64_t m = strtol(endptr+1, &enddec, 0);
+	int64_t n = strtol(ptr, &endptr, 10);
+	int64_t m = strtol(endptr+1, &enddec, 10);
 	int dist = enddec - endptr;
 	while(dist > (DECIMAL_PLACES+1)) {
 		m /= 10;
@@ -32,6 +32,7 @@ decimal decimal::from_string(const std::string& s)
 		m = -m;
 	}
 
+	int64_t result_value = n*DECIMAL_PRECISION + m;
 	return decimal(n*DECIMAL_PRECISION + m);
 }
 
@@ -52,6 +53,25 @@ std::ostream& operator<<(std::ostream& s, decimal d)
 	}
 	s << buf;
 	return s;
+}
+
+decimal operator*(const decimal& a, const decimal& b)
+{
+	const int64_t va = a.value() > 0 ? a.value() : -a.value();
+	const int64_t vb = b.value() > 0 ? b.value() : -b.value();
+
+	const int64_t ia = va/DECIMAL_PRECISION;
+	const int64_t ib = vb/DECIMAL_PRECISION;
+
+	const int64_t fa = va%DECIMAL_PRECISION;
+	const int64_t fb = vb%DECIMAL_PRECISION;
+
+	const decimal result = decimal(ia*ib*DECIMAL_PRECISION + fa*ib + fb*ia + (fa*fb)/DECIMAL_PRECISION);
+	if((a.value() < 0 && b.value() > 0) || (b.value() < 0 && a.value() > 0)) {
+		return -result;
+	} else {
+		return result;
+	}
 }
 
 decimal operator/(const decimal& a, const decimal& b)
@@ -140,6 +160,8 @@ UNIT_TEST(decimal_mul) {
 	//10934.54 * 7649.44
 	CHECK_EQ(decimal(DECIMAL(10934540000))*decimal(DECIMAL(7649440000)), decimal(DECIMAL(83643107657600)));
 	CHECK_EQ(decimal(-DECIMAL(10934540000))*decimal(DECIMAL(7649440000)), -decimal(DECIMAL(83643107657600)));
+
+	CHECK_EQ(decimal::from_string("0.08")*decimal::from_string("0.5"), decimal::from_string("0.04"));
 }
 
 UNIT_TEST(decimal_div) {
