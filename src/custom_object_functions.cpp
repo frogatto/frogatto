@@ -1437,6 +1437,7 @@ public:
 	{}
 
 	virtual void execute(level& lvl, entity& ob) const {
+		e_->set_spawned_by(ob.label());
 		if(place_entity_in_level(lvl, *e_)) {
 			lvl.add_character(e_);
 		} else {
@@ -1453,7 +1454,6 @@ public:
 				ob.handle_event(OBJECT_EVENT_ADD_OBJECT_FAIL, callable);
 			}
 		}
-		e_->set_spawned_by(ob.label());
 	}
 };
 
