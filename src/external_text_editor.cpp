@@ -123,7 +123,7 @@ class vi_editor : public external_text_editor
 			if(nbytes > 0 && nbytes <= buf.size()) {
 				buf.resize(nbytes);
 				buf.push_back(0);
-				*data = buf.data();
+				*data = buf.empty() ? NULL : &buf.front();
 				return true;
 			}
 		}

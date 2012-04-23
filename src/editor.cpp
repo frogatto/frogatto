@@ -38,6 +38,7 @@
 #include "level_object.hpp"
 #include "level_runner.hpp"
 #include "load_level.hpp"
+#include "module.hpp"
 #include "multiplayer.hpp"
 #include "object_events.hpp"
 #include "package.hpp"
@@ -126,7 +127,7 @@ class editor_menu_dialog : public gui::dialog
 			"Code", "", boost::bind(&editor::toggle_code, &editor_),
 		};
 
-		menu_item duplicate_item = { "Duplicate Object(s)", "ctrl+d", boost::bind(&editor::duplicate_selected_objects, &editor_) };
+		menu_item duplicate_item = { "Duplicate Object(s)", "ctrl+1", boost::bind(&editor::duplicate_selected_objects, &editor_) };
 
 		std::vector<menu_item> res;
 		foreach(const menu_item& m, items) {
@@ -1312,7 +1313,7 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 		IMG_SaveFrameBuffer((std::string(preferences::user_data_path()) + "screenshot.png").c_str(), 5);
 	}
 
-	if(key.keysym.sym == SDLK_d && key.keysym.mod&KMOD_CTRL) {
+	if(key.keysym.sym == SDLK_1 && key.keysym.mod&KMOD_CTRL) {
 		duplicate_selected_objects();
 	}
 
@@ -2631,7 +2632,7 @@ void editor::save_level()
 								   //all levels start at cycle 0.
 	lvl_node = variant(&attr);
 	std::cerr << "GET LEVEL FILENAME: " << filename_ << "\n";
-	sys::write_file(package::get_level_filename(filename_), lvl_node.write_json(true));
+	sys::write_file(module::map_file(package::get_level_filename(filename_)), lvl_node.write_json(true));
 
 	//see if we should write the next/previous levels also
 	//based on them having changed.
@@ -2641,7 +2642,7 @@ void editor::save_level()
 			prev->finish_loading();
 			if(prev->next_level() != lvl_->id()) {
 				prev->set_next_level(lvl_->id());
-				sys::write_file(package::get_level_filename(prev->id()), prev->write().write_json(true));
+				sys::write_file(module::map_file(package::get_level_filename(prev->id())), prev->write().write_json(true));
 			}
 		} catch(...) {
 		}
@@ -2653,7 +2654,7 @@ void editor::save_level()
 			next->finish_loading();
 			if(next->previous_level() != lvl_->id()) {
 				next->set_previous_level(lvl_->id());
-				sys::write_file(package::get_level_filename(next->id()), next->write().write_json(true));
+				sys::write_file(module::map_file(package::get_level_filename(next->id())), next->write().write_json(true));
 			}
 		} catch(...) {
 		}
