@@ -79,7 +79,7 @@ objects = \
 	level_runner.o \
 	level_solid_map.o \
 	light.o \
-	load_level.o \
+	load_level_nothread.o \
 	main.o \
 	md5.o \
 	message_dialog.o \
