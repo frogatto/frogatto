@@ -127,7 +127,7 @@ class editor_menu_dialog : public gui::dialog
 			"Code", "", boost::bind(&editor::toggle_code, &editor_),
 		};
 
-		menu_item duplicate_item = { "Duplicate Object(s)", "ctrl+d", boost::bind(&editor::duplicate_selected_objects, &editor_) };
+		menu_item duplicate_item = { "Duplicate Object(s)", "ctrl+1", boost::bind(&editor::duplicate_selected_objects, &editor_) };
 
 		std::vector<menu_item> res;
 		foreach(const menu_item& m, items) {
@@ -1313,7 +1313,7 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 		IMG_SaveFrameBuffer((std::string(preferences::user_data_path()) + "screenshot.png").c_str(), 5);
 	}
 
-	if(key.keysym.sym == SDLK_d && key.keysym.mod&KMOD_CTRL) {
+	if(key.keysym.sym == SDLK_1 && key.keysym.mod&KMOD_CTRL) {
 		duplicate_selected_objects();
 	}
 
