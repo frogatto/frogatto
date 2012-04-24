@@ -909,12 +909,19 @@ void editor::setup_for_editing()
 
 	lvl_->set_as_current_level();
 
-	foreach(entity_ptr c, lvl_->get_chars()) {
-		if(entity_collides_with_level(*lvl_, *c, MOVE_NONE)) {
-			if(place_entity_in_level(*lvl_, *c)) {
-				debug_console::add_message(formatter() << "Adjusted position of " << c->debug_description() << " to fit in the level");
-			} else {
-				debug_console::add_message(formatter() << c->debug_description() << " is in an illegal position and can't be auto-corrected");
+	foreach(level_ptr lvl, levels_) {
+		foreach(entity_ptr c, lvl->get_chars()) {
+			if(entity_collides_with_level(*lvl, *c, MOVE_NONE)) {
+				const int x = c->x();
+				const int y = c->y();
+				if(place_entity_in_level_with_large_displacement(*lvl, *c)) {
+					assert(!entity_collides_with_level(*lvl, *c, MOVE_NONE));
+					if(lvl == lvl_) {
+						debug_console::add_message(formatter() << "Adjusted position of " << c->debug_description() << " to fit: (" << x << "," << y << ") -> (" << c->x() << "," << c->y() << ")");
+					}
+				} else {
+					debug_console::add_message(formatter() << c->debug_description() << " is in an illegal position and can't be auto-corrected");
+				}
 			}
 		}
 	}
