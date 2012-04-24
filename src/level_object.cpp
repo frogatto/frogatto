@@ -70,7 +70,7 @@ std::map<tile_id, int> compiled_tile_ids;
 
 //defined in texture.cpp
 namespace graphics {
-void set_alpha_for_transparent_colors_in_rgba_surface(SDL_Surface* s);
+void set_alpha_for_transparent_colors_in_rgba_surface(SDL_Surface* s, int options=0);
 }
 
 void create_compiled_tiles_image()

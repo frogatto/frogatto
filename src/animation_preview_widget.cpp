@@ -61,7 +61,7 @@ void animation_preview_widget::handle_draw() const
 	int mouse_buttons = SDL_GetMouseState(&mousex, &mousey);
 	graphics::draw_rect(rect(x(),y(),width(),height()), graphics::color(0,0,0,196));
 	rect image_area(x(), y(), (width()*3)/4, height() - 30);
-	const graphics::texture image_texture(graphics::texture::get(obj_["image"].as_string()));
+	const graphics::texture image_texture(graphics::texture::get(obj_["image"].as_string(), graphics::texture::NO_STRIP_SPRITESHEET_ANNOTATIONS));
 	if(image_texture.valid()) {
 #ifndef SDL_VIDEO_OPENGL_ES
 		const graphics::clip_scope clipping_scope(image_area.sdl_rect());

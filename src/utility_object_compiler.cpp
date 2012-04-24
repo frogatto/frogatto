@@ -95,7 +95,7 @@ rect use_output_area(const output_area& input, int width, int height, std::vecto
 }
 
 namespace graphics {
-void set_alpha_for_transparent_colors_in_rgba_surface(SDL_Surface* s);
+void set_alpha_for_transparent_colors_in_rgba_surface(SDL_Surface* s, int options=0);
 }
 
 UTILITY(compile_objects)

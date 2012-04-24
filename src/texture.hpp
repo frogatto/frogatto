@@ -27,6 +27,7 @@ namespace graphics
 class texture
 {
 public:
+	enum {NO_STRIP_SPRITESHEET_ANNOTATIONS = 1};
 	//error thrown if an operation is done from a worker thread that
 	//must be completed by the main graphics thread.
 	struct worker_thread_error {};
@@ -50,13 +51,14 @@ public:
 	~texture();
 
 	typedef std::vector<surface> key;
+	static surface build_surface_from_key(const key& k, unsigned int surf_width, unsigned int surf_height);
 
 	unsigned int get_id() const;
 	static void set_current_texture(unsigned int id);
 	void set_as_current_texture() const;
 	bool valid() const { return id_; }
 
-	static texture get(const std::string& str);
+	static texture get(const std::string& str, int options=0);
 	static texture get(const std::string& str, const std::string& algorithm);
 	static texture get_palette_mapped(const std::string& str, int palette);
 	static texture get_no_cache(const surface& surf);
@@ -78,8 +80,8 @@ public:
 	friend bool operator==(const texture&, const texture&);
 	friend bool operator<(const texture&, const texture&);
 
-	void initialize(const key&);
-	explicit texture(const key& surfs);
+	void initialize(const key& k, int options=0);
+	explicit texture(const key& surfs, int options=0);
 
 	static void rebuild_all();
 	static void unbuild_all();

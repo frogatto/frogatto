@@ -16,6 +16,7 @@
 #include "asserts.hpp"
 #include "concurrent_cache.hpp"
 #include "foreach.hpp"
+#include "formatter.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "surface_cache.hpp"
@@ -245,11 +246,11 @@ texture::texture() : width_(0), height_(0)
 	add_texture_to_registry(this);
 }
 
-texture::texture(const key& surfs)
+texture::texture(const key& surfs, int options)
    : width_(0), height_(0), ratio_w_(1.0), ratio_h_(1.0)
 {
 	add_texture_to_registry(this);
-	initialize(surfs);
+	initialize(surfs, options);
 }
 
 texture::texture(const texture& t)
@@ -287,8 +288,10 @@ void add_alpha_channel_to_surface(uint8_t* dst_ptr, const uint8_t* src_ptr, size
 	}
 }
 
-void set_alpha_for_transparent_colors_in_rgba_surface(SDL_Surface* s)
+void set_alpha_for_transparent_colors_in_rgba_surface(SDL_Surface* s, int options)
 {
+	const bool strip_red_rects = !(options&texture::NO_STRIP_SPRITESHEET_ANNOTATIONS);
+
 	const int npixels = s->w*s->h;
 	for(int n = 0; n != npixels; ++n) {
 		//we use a color in our sprite sheets to indicate transparency, rather than an alpha channel
@@ -297,13 +300,37 @@ void set_alpha_for_transparent_colors_in_rgba_surface(SDL_Surface* s)
 		unsigned char* pixel = reinterpret_cast<unsigned char*>(s->pixels) + n*4;
 
 		if(pixel[0] == AlphaPixel[0] && pixel[1] == AlphaPixel[1] && pixel[2] == AlphaPixel[2] ||
+		   strip_red_rects &&
 		   pixel[0] == AlphaPixel2[0] && pixel[1] == AlphaPixel2[1] && pixel[2] == AlphaPixel2[2]) {
 			pixel[3] = 0;
 		}
 	}
 }
 
-void texture::initialize(const key& k)
+surface texture::build_surface_from_key(const key& k, unsigned int surf_width, unsigned int surf_height)
+{
+	surface s(SDL_CreateRGBSurface(SDL_SWSURFACE,surf_width,surf_height,32,SURFACE_MASK));
+	if(k.size() == 1 && k.front()->format->Rmask == 0xFF && k.front()->format->Gmask == 0xFF00 && k.front()->format->Bmask == 0xFF0000 && k.front()->format->Amask == 0) {
+		add_alpha_channel_to_surface((uint8_t*)s->pixels, (uint8_t*)k.front()->pixels, s->w, k.front()->w, k.front()->h, k.front()->pitch);
+	} else if(k.size() == 1 && k.front()->format->Rmask == 0xFF00 && k.front()->format->Gmask == 0xFF0000 && k.front()->format->Bmask == 0xFF000000 && k.front()->format->Amask == 0xFF) {
+		//alpha channel already exists, so no conversion necessary.
+		s = k.front();
+	} else {
+		for(key::const_iterator i = k.begin(); i != k.end(); ++i) {
+			if(i == k.begin()) {
+				SDL_SetAlpha(i->get(), 0, SDL_ALPHA_OPAQUE);
+			} else {
+				SDL_SetAlpha(i->get(), SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
+			}
+
+			SDL_BlitSurface(i->get(),NULL,s.get(),NULL);
+		}
+	}
+
+	return s;
+}
+
+void texture::initialize(const key& k, int options)
 {
 	assert(graphics_initialized);
 	if(k.empty() ||
@@ -329,25 +356,8 @@ void texture::initialize(const key& k)
 		ratio_h_ = GLfloat(height_)/GLfloat(surf_height);
 	}
 
-	surface s(SDL_CreateRGBSurface(SDL_SWSURFACE,surf_width,surf_height,32,SURFACE_MASK));
-	if(k.size() == 1 && k.front()->format->Rmask == 0xFF && k.front()->format->Gmask == 0xFF00 && k.front()->format->Bmask == 0xFF0000 && k.front()->format->Amask == 0) {
-		add_alpha_channel_to_surface((uint8_t*)s->pixels, (uint8_t*)k.front()->pixels, s->w, k.front()->w, k.front()->h, k.front()->pitch);
-	} else if(k.size() == 1 && k.front()->format->Rmask == 0xFF00 && k.front()->format->Gmask == 0xFF0000 && k.front()->format->Bmask == 0xFF000000 && k.front()->format->Amask == 0xFF) {
-		//alpha channel already exists, so no conversion necessary.
-		s = k.front();
-	} else {
-		for(key::const_iterator i = k.begin(); i != k.end(); ++i) {
-			if(i == k.begin()) {
-				SDL_SetAlpha(i->get(), 0, SDL_ALPHA_OPAQUE);
-			} else {
-				SDL_SetAlpha(i->get(), SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
-			}
-
-			SDL_BlitSurface(i->get(),NULL,s.get(),NULL);
-		}
-	}
-
-	set_alpha_for_transparent_colors_in_rgba_surface(s.get());
+	surface s = build_surface_from_key(k, surf_width, surf_height);
+	set_alpha_for_transparent_colors_in_rgba_surface(s.get(), options);
 
 	const int npixels = s->w*s->h;
 	for(int n = 0; n != npixels; ++n) {
@@ -444,16 +454,23 @@ void texture::set_as_current_texture() const
 	//std::cerr << gluErrorString(glGetError()) << "~set_as_current_texture~\n";
 }
 
-texture texture::get(const std::string& str)
+texture texture::get(const std::string& str, int options)
 {
-	texture result = texture_cache().get(str);
+	std::string str_buf;
+	if(options) {
+		str_buf = formatter() << str << " ~~ " << options; 
+	}
+
+	const std::string& str_key = options ? str_buf : str;
+
+	texture result = texture_cache().get(str_key);
 	ASSERT_LOG(result.width() % 2 == 0, "\nIMAGE WIDTH IS NOT AN EVEN NUMBER OF PIXELS:" << str);
 	
 	if(!result.valid()) {
 		key surfs;
 		surfs.push_back(surface_cache::get_no_cache(str));
-		result = texture(surfs);
-		texture_cache().put(str, result);
+		result = texture(surfs, options);
+		texture_cache().put(str_key, result);
 		//std::cerr << (next_power_of_2(result.width())*next_power_of_2(result.height())*2)/1024 << "KB TEXTURE " << str << ": " << result.width() << "x" << result.height() << "\n";
 	}
 
