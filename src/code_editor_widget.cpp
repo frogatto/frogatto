@@ -431,8 +431,26 @@ void code_editor_widget::modify_current_object(variant new_obj)
 
 	save_undo_state();
 
+
 	const std::string str(current_text_.begin() + info.begin, current_text_.begin() + info.end);
-	const std::string new_str = modify_variant_text(str, info.obj, new_obj, info.obj.get_debug_info()->line, info.obj.get_debug_info()->column);
+
+	//calculate the indentation this object has based on the first attribute.
+	std::string indent;
+	std::string::const_iterator end_line = std::find(str.begin(), str.end(), '\n');
+	if(end_line != str.end()) {
+		++end_line;
+		std::string::const_iterator end_indent = end_line;
+		while(end_indent != str.end() && util::c_isspace(*end_indent)) {
+			if(*end_indent == '\n') {
+				end_line = end_indent+1;
+			}
+			++end_indent;
+		}
+
+		indent = std::string(end_line, end_indent);
+	}
+
+	const std::string new_str = modify_variant_text(str, info.obj, new_obj, info.obj.get_debug_info()->line, info.obj.get_debug_info()->column, indent);
 	current_text_ = std::string(current_text_.begin(), current_text_.begin() + info.begin) + new_str + std::string(current_text_.begin() + info.end, current_text_.end());
 	set_text(current_text_, false /*don't move cursor*/);
 }

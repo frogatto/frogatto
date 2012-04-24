@@ -37,7 +37,7 @@ private:
 	void handle_draw_children() const;
 
 	void set_animation_rect(rect r);
-	void set_pad(int pad);
+	void set_integer_attr(const char* attr, int value);
 
 	void save();
 

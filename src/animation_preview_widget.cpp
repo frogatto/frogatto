@@ -6,7 +6,132 @@
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "raster.hpp"
+#include "surface_cache.hpp"
 #include "texture.hpp"
+
+namespace {
+using graphics::surface;
+const unsigned char RedBorder[] = {0xf9, 0x30, 0x3d};
+
+bool is_pixel_border(const surface& s, int x, int y)
+{
+	if(x < 0 || y < 0 || x >= s->w || y >= s->h) {
+		return false;
+	}
+
+	unsigned char* pixel = reinterpret_cast<unsigned char*>(s->pixels) + y*s->pitch + x*4;
+	for(int n = 0; n != 3; ++n) {
+		if(pixel[n] != RedBorder[n]) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+rect get_border_rect(const surface& s, int x, int y)
+{
+	int w = 0, h = 0;
+	while(is_pixel_border(s, x + w + 1, y)) {
+		++w;
+	}
+
+	while(is_pixel_border(s, x, y + h + 1) &&
+	      is_pixel_border(s, x + w, y + h + 1)) {
+		++h;
+	}
+
+	if(w == 0 || h == 0) {
+		return rect();
+	}
+
+	return rect(x+1, y+1, w-1, h-1);
+}
+
+rect get_border_rect_around_loc(const surface& s, int x, int y)
+{
+	std::cerr << "SEARCHING FOR BORDER AROUND " << x << "," << y << "\n";
+	while(y >= 0 && !is_pixel_border(s, x, y)) {
+		--y;
+	}
+
+	while(x >= 0 && is_pixel_border(s, x, y)) {
+		--x;
+	}
+
+	++x;
+
+	std::cerr << "STEPPED TO " << x << "," << y << "\n";
+
+	if(y >= 0 && is_pixel_border(s, x, y)) {
+		std::cerr << "RETURNING " << get_border_rect(s, x, y) << "\n";
+		return get_border_rect(s, x, y);
+	} else {
+		return rect();
+	}
+}
+
+bool find_full_animation(const surface& s, const rect& r, int* pad, int* num_frames, int* frames_per_row)
+{
+	const int x = r.x() + r.w()/2;
+	const int y = r.y() + r.h()/2;
+
+	int next_x = x + r.w();
+	if(next_x >= s->w) {
+		std::cerr << "FAIL FIND " << next_x << " >= " << s->w << "\n";
+		return false;
+	}
+
+	rect next_rect = get_border_rect_around_loc(s, next_x, y);
+	std::cerr << "NEXT RECT: " << next_rect << " VS " << r << "\n";
+	if(next_rect.w() != r.w() || next_rect.h() != r.h()) {
+		return false;
+	}
+
+	*pad = next_rect.x() - r.x2();
+	*num_frames = 2;
+
+	std::vector<rect> rect_row;
+	rect_row.push_back(r);
+	rect_row.push_back(next_rect);
+
+	std::cerr << "SETTING... " << get_border_rect_around_loc(s, next_x + r.w() + *pad, y) << " VS " << rect(next_rect.x() + next_rect.w() + *pad, y, r.w(), r.h()) << "\n";
+
+	while(next_x + r.w() + *pad < s->w && get_border_rect_around_loc(s, next_x + r.w() + *pad, y) == rect(next_rect.x() + next_rect.w() + *pad, r.y(), r.w(), r.h())) {
+			std::cerr << "ITER\n";
+		*num_frames += 1;
+		next_x += r.w() + *pad;
+		next_rect = rect(next_rect.x() + next_rect.w() + *pad, r.y(), r.w(), r.h());
+		rect_row.push_back(next_rect);
+	}
+
+	*frames_per_row = *num_frames;
+
+	bool row_valid = true;
+	while(row_valid) {
+		int index = 0;
+		foreach(rect& r, rect_row) {
+			rect next_rect(r.x(), r.y() + r.h() + *pad, r.w(), r.h());
+			std::cerr << "MATCHING: " << get_border_rect_around_loc(s, next_rect.x() + next_rect.w()/2, next_rect.y() + next_rect.h()/2) << " VS " << next_rect << "\n";
+			if(next_rect.y2() >= s->h || get_border_rect_around_loc(s, next_rect.x() + next_rect.w()/2, next_rect.y() + next_rect.h()/2) != next_rect) {
+				std::cerr << "MISMATCH: " << index << "/" << rect_row.size() << " -- " << get_border_rect_around_loc(s, next_rect.x() + next_rect.w()/2, next_rect.y() + next_rect.h()/2) << " VS " << next_rect << "\n";
+				row_valid = false;
+				break;
+			}
+
+			r = next_rect;
+			++index;
+		}
+
+		if(row_valid) {
+			*num_frames += *frames_per_row;
+		}
+	}
+
+	return true;
+}
+
+}
 
 namespace gui {
 
@@ -15,7 +140,7 @@ bool animation_preview_widget::is_animation(variant obj)
 	return !obj.is_null() && obj["image"].is_string();
 }
 
-animation_preview_widget::animation_preview_widget(variant obj) : cycle_(0), zoom_label_(NULL), pos_label_(NULL), scale_(0), anchor_x_(-1), anchor_y_(-1), anchor_pad_(-1), dragging_sides_bitmap_(0)
+animation_preview_widget::animation_preview_widget(variant obj) : cycle_(0), zoom_label_(NULL), pos_label_(NULL), scale_(0), anchor_x_(-1), anchor_y_(-1), anchor_pad_(-1), has_motion_(false), dragging_sides_bitmap_(0)
 {
 	set_object(obj);
 }
@@ -46,8 +171,10 @@ void animation_preview_widget::set_object(variant obj)
 		return;
 	}
 
+	frame* f = new frame(obj);
+
 	obj_ = obj;
-	frame_.reset(new frame(obj));
+	frame_.reset(f);
 	cycle_ = 0;
 }
 
@@ -105,8 +232,31 @@ void animation_preview_widget::handle_draw() const
 
 		int x1 = focus_area.x() + (focus_area.w() - show_width)/2;
 		int y1 = focus_area.y() + (focus_area.h() - show_height)/2;
+		if(x1 < 0) {
+			x1 = 0;
+		}
+
+		if(y1 < 0) {
+			y1 = 0;
+		}
+
 		int x2 = x1 + show_width;
 		int y2 = y1 + show_height;
+		if(x2 > image_texture.width()) {
+			x1 -= (x2 - image_texture.width());
+			x2 = image_texture.width();
+			if(x1 < 0) {
+				x1 = 0;
+			}
+		}
+
+		if(y2 > image_texture.height()) {
+			y1 -= (y2 - image_texture.height());
+			y2 = image_texture.height();
+			if(y1 < 0) {
+				y1 = 0;
+			}
+		}
 
 		int xpos = image_area.x();
 		int ypos = image_area.y();
@@ -227,6 +377,7 @@ bool animation_preview_widget::handle_event(const SDL_Event& event, bool claimed
 	}
 
 	if(event.type == SDL_MOUSEMOTION) {
+		has_motion_ = true;
 		const SDL_MouseMotionEvent& e = event.motion;
 		point p(e.x, e.y);
 		if(point_in_rect(p, dst_rect_)) {
@@ -298,6 +449,7 @@ bool animation_preview_widget::handle_event(const SDL_Event& event, bool claimed
 		const point p(e.x, e.y);
 		anchor_area_ = frame_->area();
 		anchor_pad_ = frame_->pad();
+		has_motion_ = false;
 		if(point_in_rect(p, dst_rect_)) {
 			claimed = true;
 			anchor_x_ = e.x;
@@ -309,7 +461,37 @@ bool animation_preview_widget::handle_event(const SDL_Event& event, bool claimed
 		const SDL_MouseButtonEvent& e = event.button;
 		point anchor(anchor_x_, anchor_y_);
 		point p(e.x, e.y);
-		if(!dragging_sides_bitmap_ && point_in_rect(anchor, dst_rect_) && point_in_rect(p, dst_rect_)) {
+		if(anchor == p && !has_motion_) {
+			claimed = true;
+			p = mouse_point_to_image_loc(p);
+			const graphics::surface surf = graphics::surface_cache::get(obj_["image"].as_string());
+			if(surf) {
+				rect area = get_border_rect_around_loc(surf, p.x, p.y);
+				if(area.w() > 0) {
+					if(rect_handler_) {
+						rect_handler_(area);
+					}
+
+					int pad = frame_->pad();
+					int num_frames = 1;
+					int frames_per_row = 1;
+					if(find_full_animation(surf, area, &pad, &num_frames, &frames_per_row)) {
+						if(pad_handler_) {
+							pad_handler_(pad);
+						}
+
+						if(num_frames_handler_) {
+							std::cerr << "SETTING NUM FRAMES TO " << num_frames << "\n";
+							num_frames_handler_(num_frames);
+						}
+
+						if(frames_per_row_handler_) {
+							frames_per_row_handler_(frames_per_row);
+						}
+					}
+				}
+			}
+		} else if(!dragging_sides_bitmap_ && point_in_rect(anchor, dst_rect_) && point_in_rect(p, dst_rect_)) {
 			claimed = true;
 
 			anchor = mouse_point_to_image_loc(anchor);
@@ -377,6 +559,16 @@ void animation_preview_widget::set_rect_handler(boost::function<void(rect)> hand
 void animation_preview_widget::set_pad_handler(boost::function<void(int)> handler)
 {
 	pad_handler_ = handler;
+}
+
+void animation_preview_widget::set_num_frames_handler(boost::function<void(int)> handler)
+{
+	num_frames_handler_ = handler;
+}
+
+void animation_preview_widget::set_frames_per_row_handler(boost::function<void(int)> handler)
+{
+	frames_per_row_handler_ = handler;
 }
 
 }

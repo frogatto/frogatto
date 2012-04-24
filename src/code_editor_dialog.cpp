@@ -227,7 +227,9 @@ void code_editor_dialog::process()
 			if(!animation_preview_) {
 				animation_preview_.reset(new gui::animation_preview_widget(info.obj));
 				animation_preview_->set_rect_handler(boost::bind(&code_editor_dialog::set_animation_rect, this, _1));
-				animation_preview_->set_pad_handler(boost::bind(&code_editor_dialog::set_pad, this, _1));
+				animation_preview_->set_pad_handler(boost::bind(&code_editor_dialog::set_integer_attr, this, "pad", _1));
+				animation_preview_->set_num_frames_handler(boost::bind(&code_editor_dialog::set_integer_attr, this, "frames", _1));
+				animation_preview_->set_frames_per_row_handler(boost::bind(&code_editor_dialog::set_integer_attr, this, "frames_per_row", _1));
 				animation_preview_->set_loc(x() - 520, y() + 100);
 				animation_preview_->set_dim(500, 400);
 				animation_preview_->init();
@@ -292,26 +294,24 @@ void code_editor_dialog::set_animation_rect(rect r)
 	variant v = info.obj;
 	if(v.is_null() == false) {
 		v.add_attr(variant("rect"), r.write());
+		editor_->modify_current_object(v);
 		try {
 			animation_preview_->set_object(v);
-			editor_->modify_current_object(v);
 		} catch(frame::error& e) {
-			animation_preview_->set_object(info.obj);
 		}
 	}
 }
 
-void code_editor_dialog::set_pad(int pad)
+void code_editor_dialog::set_integer_attr(const char* attr, int value)
 {
 	const gui::code_editor_widget::ObjectInfo info = editor_->get_current_object();
 	variant v = info.obj;
 	if(v.is_null() == false) {
-		v.add_attr(variant("pad"), variant(pad));
+		v.add_attr(variant(attr), variant(value));
+		editor_->modify_current_object(v);
 		try {
 			animation_preview_->set_object(v);
-			editor_->modify_current_object(v);
 		} catch(frame::error& e) {
-			animation_preview_->set_object(info.obj);
 		}
 	}
 }

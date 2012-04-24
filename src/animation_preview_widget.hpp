@@ -25,6 +25,8 @@ public:
 
 	void set_rect_handler(boost::function<void(rect)>);
 	void set_pad_handler(boost::function<void(int)>);
+	void set_num_frames_handler(boost::function<void(int)>);
+	void set_frames_per_row_handler(boost::function<void(int)>);
 
 private:
 	void handle_draw() const;
@@ -53,6 +55,7 @@ private:
 	int anchor_x_, anchor_y_;
 	rect anchor_area_;
 	int anchor_pad_;
+	bool has_motion_;
 
 	mutable rect locked_focus_;
 
@@ -61,6 +64,8 @@ private:
 
 	boost::function<void(rect)> rect_handler_;
 	boost::function<void(int)> pad_handler_;
+	boost::function<void(int)> num_frames_handler_;
+	boost::function<void(int)> frames_per_row_handler_;
 };
 
 }
