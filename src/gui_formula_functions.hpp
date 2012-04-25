@@ -28,6 +28,7 @@ public:
 
 	void process(level& lvl);
 	void draw(const level& lvl);
+	void load(level& lvl);
 
 	void draw_animation(const std::string& object_name, const std::string& anim, int x, int y, int cycle) const;
 	void color(unsigned char r, unsigned char g, unsigned char b, unsigned char a) const;
@@ -48,8 +49,9 @@ private:
 	void execute_command(variant v);
 
 	const level* lvl_;
-	game_logic::formula_ptr draw_formula_, process_formula_;
+	game_logic::formula_ptr draw_formula_, process_formula_, load_formula_;
 	int cycle_;
+	bool loaded_;
 
 	std::map<std::string, frame_ptr> frames_;
 

@@ -322,6 +322,7 @@ private:
 
 gui_algorithm::gui_algorithm(variant node)
 	  : lvl_(NULL),
+	  loaded_(false),
 	  process_formula_(formula::create_optional_formula(node["on_process"], &get_custom_object_functions_symbol_table(), &gui_algorithm_definition::instance())),
 	  cycle_(0), object_(new custom_object("dummy_gui_object", 0, 0, true))
 {
@@ -341,7 +342,7 @@ gui_algorithm::gui_algorithm(variant node)
 	}
 
 	draw_formula_ = formula::create_optional_formula(node["on_draw"], &symbols, &gui_algorithm_definition::instance());
-
+	load_formula_ = formula::create_optional_formula(node["on_load"], &get_custom_object_functions_symbol_table(), &gui_algorithm_definition::instance());
 }
 
 gui_algorithm::~gui_algorithm()
@@ -370,8 +371,20 @@ void gui_algorithm::new_level() {
 	set_object(boost::intrusive_ptr<custom_object>(new custom_object("dummy_gui_object", 0, 0, true)));
 }
 
+void gui_algorithm::load(level& lvl) {
+	if(load_formula_) {
+		object_->set_level(lvl);
+		variant result = load_formula_->execute(*this);
+		object_->execute_command(result);
+	}
+}
+
 void gui_algorithm::process(level& lvl) {
 	lvl_ = &lvl;
+	if(!loaded_) {
+		loaded_ = true;
+		load(lvl);
+	}
 	++cycle_;
 	if((cycle_%2) == 0 && process_formula_) {
 		object_->set_level(lvl);
