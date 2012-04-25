@@ -20,7 +20,9 @@
 #if defined(_WINDOWS)
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#ifndef _DEBUG
 #define abort()		do{exit(1);}while(0)
+#endif
 void win_assert_msg(const std::string& m );
 #elif defined(__ANDROID__)
 #define win_assert_msg(msg) do{__android_log_print(ANDROID_LOG_INFO, "Frogatto", msg.c_str());}while(0)
