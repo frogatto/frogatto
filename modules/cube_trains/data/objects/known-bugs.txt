@@ -16,6 +16,7 @@
 	║  ▷ Sidebar slews.                                                             ║
 	║  ▷ Level loader doesn't function correctly.                                   ║
 	║  ▷ Display level titles.                                                      ║
+	║  ▷ Window resizing breaks side scrollpane.                                    ║
 	║  ▶                                                                            ║
 	║                                                                               ║
 	║ Minor:                                                                        ║
@@ -26,13 +27,14 @@
 	║  ▷ An ereaser button would be nice.                                           ║
 	║  ▷ Trains are only one car long.                                              ║
 	║  ▶ Z-orders, especially around entrances, are broken.                         ║
-	║  ▶ Improve input scheme.                                                      ║
+	║  ▶ Improve input scheme. Not all keys variabled yet.                          ║
 	║  ▶ Rotating view undo/redo recreates pieces, and so breaks the undo/redo of   ║
 	║    adding and removing pieces, specifically the ereasure of pieces since they ║
 	║    are referenced to in the undo stack by specific object. Solution: make     ║
 	║    undo/redo stack accept args, and pass it the /action/ that creates the     ║
 	║    change delta (and, hence, the delta generator), not the change delta       ║
 	║    itself. As it stands, rotating clears the undo/redo stack.                 ║
+	║  ▶ It might be nice to include a line of text explaining the game.            ║
 	║  ▶                                                                            ║
 	║                                                          ▷ fixed  ▶ not fixed ║
 	╚═══════════════════════════════════════════════════════════════════════════════╝

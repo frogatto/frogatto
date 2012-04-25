@@ -1647,7 +1647,7 @@ formula::formula(const variant& val, function_symbol_table* symbols, const formu
 				tokens.pop_back();
 			}
 		} catch(token_error& e) {
-			ASSERT_LOG(false, "Token error: " << e.msg);
+			ASSERT_LOG(false, "Token error: " << e.msg << ": " << pinpoint_location(str_, i1, i1));
 		}
 	}
 

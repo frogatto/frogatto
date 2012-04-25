@@ -66,29 +66,31 @@ token get_token(iterator& i1, iterator i2) {
 			//special case for matching a /* comment.
 			t.type = TOKEN_COMMENT;
 
-			i1 += 2;
+			std::string::const_iterator itor = i1;
+
+			itor += 2;
 
 			int nesting = 1;
-			while(i1 != i2) {
-				if(i1+1 != i2) {
-					if(*i1 == '/' && *(i1+1) == '*') {
+			while(itor != i2) {
+				if(itor+1 != i2) {
+					if(*itor == '/' && *(itor+1) == '*') {
 						++nesting;
-					} else if(*i1 == '*' && *(i1+1) == '/') {
+					} else if(*itor == '*' && *(itor+1) == '/') {
 						if(--nesting == 0) {
-							++i1;
+							++itor;
 							break;
 						}
 					}
 				}
 
-				++i1;
+				++itor;
 			}
 
-			if(i1 == i2) {
+			if(itor == i2) {
 				throw token_error("Unterminated comment");
 			}
 
-			t.end = ++i1;
+			i1 = t.end = itor + 1;
 			return t;
 		}
 	}
@@ -102,14 +104,15 @@ token get_token(iterator& i1, iterator i2) {
 	switch(*i1) {
 	case '\'':
 	case '~':
-	case '#':
+	case '#': {
 		t.type = *i1 == '#' ? TOKEN_COMMENT : TOKEN_STRING_LITERAL;
-		i1 = std::find(i1+1, i2, *i1);
-		if(i1 == i2) {
+		std::string::const_iterator end = std::find(i1+1, i2, *i1);
+		if(end == i2) {
 			throw token_error("Unterminated string or comment");
 		}
-		t.end = ++i1;
+		i1 = t.end = end+1;
 		return t;
+	}
 	case 'q':
 		if(i1 + 1 != i2 && strchr("~#^({[", *(i1+1))) {
 			char end = *(i1+1);
