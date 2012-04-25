@@ -2153,7 +2153,9 @@ variant custom_object::get_value(const std::string& key) const
 			return variant(backup_callable_stack_.top());
 		}
 
-		return backup_callable_stack_.top()->query_value(key);
+		if(backup_callable_stack_.top() != this) {
+			return backup_callable_stack_.top()->query_value(key);
+		}
 	}
 
 	return variant();
@@ -3200,6 +3202,21 @@ void custom_object::handle_event(const std::string& event, const formula_callabl
 	handle_event(get_object_event_id(event), context);
 }
 
+namespace {
+using game_logic::formula_callable;
+class backup_callable_stack_scope {
+	std::stack<const formula_callable*>* stack_;
+public:
+	backup_callable_stack_scope(std::stack<const formula_callable*>* s, const formula_callable* item) : stack_(s) {
+		stack_->push(item);
+	}
+
+	~backup_callable_stack_scope() {
+		stack_->pop();
+	}
+};
+}
+
 void custom_object::handle_event(int event, const formula_callable* context)
 {
 	if(hitpoints_ <= 0 && event != OBJECT_EVENT_DIE) {
@@ -3223,7 +3240,7 @@ void custom_object::handle_event(int event, const formula_callable* context)
 	}
 
 	swallow_mouse_event_ = false;
-	backup_callable_stack_.push(context);
+	backup_callable_stack_scope(&backup_callable_stack_, context);
 
 	for(int n = 0; n != nhandlers; ++n) {
 		const game_logic::formula* handler = handlers[n];
@@ -3264,8 +3281,6 @@ void custom_object::handle_event(int event, const formula_callable* context)
 			break;
 		}
 	}
-
-	backup_callable_stack_.pop();
 }
 
 bool custom_object::execute_command(const variant& var)

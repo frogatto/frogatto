@@ -1,6 +1,8 @@
 #include "asserts.hpp"
 #include "custom_object_callable.hpp"
 
+#include <pthread.h>
+
 namespace {
 std::vector<custom_object_callable::entry>& global_entries() {
 	static std::vector<custom_object_callable::entry> instance;
