@@ -137,26 +137,46 @@ variant merge_into_prototype(variant prototype_node, variant node)
 			continue;
 		}
 
+		if(key.as_string().size() > 3 && std::equal(key.as_string().begin(), key.as_string().begin() + 3, "on_")) {
+			if(proto_value.is_string()) {
+				std::string k = key.as_string();
+				const std::string proto_event_key = "on_" + prototype_node["id"].as_string() + "_PROTO_" + std::string(k.begin() + 3, k.end());
+				result[variant(proto_event_key)] = proto_value;
+			}
+		}
+
 		if(value.is_string()) {
 			const std::string& value_str = value.as_string();
 			std::string::const_iterator base_itor = std::search(value_str.begin(), value_str.end(), BaseStr.begin(), BaseStr.end());
 			if(base_itor != value_str.end()) {
-				const variant::debug_info* info = value.get_debug_info();
-				std::string base_value = "null";
-				if(proto_value.is_string()) {
-					base_value = proto_value.as_string();
-				}
-				const std::string s = std::string(value_str.begin(), base_itor) + base_value + std::string(base_itor + BaseStr.size(), value_str.end());
-				value = variant(s);
-				proto_value = variant();
-
-				if(info) {
-					value.set_debug_info(*info);
-				}
+				ASSERT_LOG(false, "%PROTO% no longer supported. Consider using proto_event() instead");
 			}
 		}
 
 		result[key] = append_variants(proto_value, value);
+	}
+
+	std::vector<variant> functions;
+	variant proto_fn = prototype_node["functions"];
+	if(proto_fn.is_string()) {
+		functions.push_back(proto_fn);
+	} else if(proto_fn.is_list()) {
+		foreach(variant v, proto_fn.as_list()) {
+			functions.push_back(v);
+		}
+	}
+
+	variant fn = node["functions"];
+	if(fn.is_string()) {
+		functions.push_back(fn);
+	} else if(fn.is_list()) {
+		foreach(variant v, fn.as_list()) {
+			functions.push_back(v);
+		}
+	}
+
+	if(!functions.empty()) {
+		result[variant("functions")] = variant(&functions);
 	}
 
 	result[variant("animation")] = variant(&animations);
@@ -195,6 +215,7 @@ variant custom_object_type::merge_prototype(variant node)
 		ASSERT_LOG(path_itor != prototype_file_paths().end(), "Could not find file for prototype '" << proto << "'");
 
 		variant prototype_node = json::parse_from_file(path_itor->second);
+		ASSERT_LOG(prototype_node["id"].as_string() == proto, "PROTOTYPE NODE FOR " << proto << " DOES NOT SPECIFY AN ACCURATE id FIELD");
 		prototype_node = merge_prototype(prototype_node);
 		node = merge_into_prototype(prototype_node, node);
 	}
@@ -708,7 +729,14 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 	} else if(node.has_key("functions")) {
 		object_functions_.reset(new game_logic::function_symbol_table);
 		object_functions_->set_backup(&get_custom_object_functions_symbol_table());
-		game_logic::formula f(node["functions"], object_functions_.get());
+		const variant fn = node["functions"];
+		if(fn.is_string()) {
+			game_logic::formula f(fn, object_functions_.get());
+		} else if(fn.is_list()) {
+			for(int n = 0; n != fn.num_elements(); ++n) {
+				game_logic::formula f(fn[n], object_functions_.get());
+			}
+		}
 	}
 	init_event_handlers(node, event_handlers_, function_symbols(), base_type ? &base_type->event_handlers_ : NULL);
 }

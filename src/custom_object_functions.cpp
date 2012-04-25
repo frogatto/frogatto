@@ -676,13 +676,13 @@ FUNCTION_DEF(set_var, 2, 2, "set_var(string varname, variant value): sets the va
 		args()[1]->evaluate(variables)));
 END_FUNCTION_DEF(set_var)
 
-class add_debug_rect_command : public entity_command_callable {
+class add_debug_rect_command : public game_logic::command_callable {
 	rect r_;
 public:
 	explicit add_debug_rect_command(const rect& r) : r_(r)
 	{}
 
-	virtual void execute(level& lvl, entity& ob) const {
+	virtual void execute(game_logic::formula_callable& ob) const {
 		add_debug_rect(r_);
 	}
 };
@@ -1363,6 +1363,14 @@ FUNCTION_DEF(fire_event, 1, 3, "fire_event((optional) object target, string id, 
 
 	return variant(new fire_event_command(target, event, callable));
 END_FUNCTION_DEF(fire_event)
+
+FUNCTION_DEF(proto_event, 2, 2, "proto_event(prototype, event_name): for the given prototype, fire the named event. e.g. proto_event('playable', 'process')")
+	const std::string proto = args()[0]->evaluate(variables).as_string();
+	const std::string event_type = args()[1]->evaluate(variables).as_string();
+	const std::string event_name = proto + "_PROTO_" + event_type;
+	return variant(new fire_event_command(entity_ptr(), event_name, const_formula_callable_ptr(&variables)));
+	
+END_FUNCTION_DEF(proto_event)
 
 FUNCTION_DEF(get_object, 2, 2, "get_object(level, string label) -> object: returns the object that is present in the given level that has the given label")
 
