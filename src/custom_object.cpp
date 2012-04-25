@@ -3240,7 +3240,7 @@ void custom_object::handle_event(int event, const formula_callable* context)
 	}
 
 	swallow_mouse_event_ = false;
-	backup_callable_stack_scope(&backup_callable_stack_, context);
+	backup_callable_stack_scope callable_scope(&backup_callable_stack_, context);
 
 	for(int n = 0; n != nhandlers; ++n) {
 		const game_logic::formula* handler = handlers[n];
