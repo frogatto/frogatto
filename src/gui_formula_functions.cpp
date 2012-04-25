@@ -341,6 +341,10 @@ gui_algorithm::gui_algorithm(variant node)
 		frames_[frame_node["id"].as_string()] = f;
 	}
 
+	if(node.has_key("buttons")) {
+		buttons_ = node["buttons"];
+	}
+
 	draw_formula_ = formula::create_optional_formula(node["on_draw"], &symbols, &gui_algorithm_definition::instance());
 	load_formula_ = formula::create_optional_formula(node["on_load"], &get_custom_object_functions_symbol_table(), &gui_algorithm_definition::instance());
 }
@@ -369,6 +373,9 @@ void gui_algorithm::set_object(boost::intrusive_ptr<custom_object> obj) {
 void gui_algorithm::new_level() {
 	cycle_ = 0;
 	set_object(boost::intrusive_ptr<custom_object>(new custom_object("dummy_gui_object", 0, 0, true)));
+	if(!buttons_.is_null()) {
+		object_->mutate_value("buttons", buttons_);
+	}
 }
 
 void gui_algorithm::load(level& lvl) {
@@ -376,7 +383,9 @@ void gui_algorithm::load(level& lvl) {
 		object_->set_level(lvl);
 		variant result = load_formula_->execute(*this);
 		object_->execute_command(result);
-	}
+
+		std::cerr << "ObjectVars: " << object_->vars()->query_value("buttons") << std::endl;
+ 	}
 }
 
 void gui_algorithm::process(level& lvl) {

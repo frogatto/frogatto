@@ -59,6 +59,8 @@ private:
 
 	variant cached_draw_commands_;
 
+	variant buttons_;
+
 	std::vector<gui_algorithm_ptr> includes_;
 };
 
