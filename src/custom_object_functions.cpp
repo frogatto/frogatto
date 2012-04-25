@@ -1261,15 +1261,30 @@ FUNCTION_DEF(debug, 1, -1, "debug(...): outputs arguments to the console")
 	return variant(new debug_command(str));
 END_FUNCTION_DEF(debug)
 
-FUNCTION_DEF(debug_fn, 2, 2, "debug(msg, expr): evaluates and returns expr. Will print 'msg' to stderr")
-	variant res = args()[1]->evaluate(variables);
-	if(preferences::debug()) {
-		variant msg = args()[0]->evaluate(variables);
-		std::string s = msg.to_debug_string();
+namespace {
+void debug_side_effect(variant v)
+{
+	if(v.is_list()) {
+		foreach(variant item, v.as_list()) {
+			debug_side_effect(item);
+		}
+	} else if(v.is_callable() && v.try_convert<game_logic::command_callable>()) {
+		map_formula_callable_ptr obj(new map_formula_callable);
+		v.try_convert<game_logic::command_callable>()->execute(*obj);
+	} else {
+		std::string s = v.to_debug_string();
 #ifndef NO_EDITOR
 		debug_console::add_message(s);
 #endif
 		std::cerr << "CONSOLE: " << s << "\n";
+	}
+}
+}
+
+FUNCTION_DEF(debug_fn, 2, 2, "debug(msg, expr): evaluates and returns expr. Will print 'msg' to stderr if it's printable, or execute it if it's an executable command.")
+	variant res = args()[1]->evaluate(variables);
+	if(preferences::debug()) {
+		debug_side_effect(args()[0]->evaluate(variables));
 	}
 
 	return res;
