@@ -383,9 +383,23 @@ level::level(const std::string& level_cfg, variant node)
 		movement_scripts_[s.id()] = s;
 	}
 
-	gui_algo_str_ = node.has_key("gui") ? node["gui"].as_string() : "default";
-	gui_algorithm_ = gui_algorithm::get(gui_algo_str_);
-	gui_algorithm_->new_level();
+	if(node.has_key("gui")) {
+		if(node["gui"].is_string()) {
+			gui_algo_str_.push_back(node["gui"].as_string());
+		} else if(node["gui"].is_list()) {
+			foreach(std::string gui_str, node["gui"].as_list_string()) {
+				gui_algo_str_.push_back(gui_str);
+				gui_algorithm_.push_back(gui_algorithm::get(gui_algo_str_.back()));
+				gui_algorithm_.back()->new_level();
+			}
+		} else {
+			ASSERT_LOG(false, "Unexpected type error for gui node " << level_cfg);
+		}
+	} else {
+		gui_algo_str_.push_back("default");
+		gui_algorithm_.push_back(gui_algorithm::get(gui_algo_str_.back()));
+		gui_algorithm_.back()->new_level();
+	}
 
 	sub_level_str_ = node["sub_levels"].as_string_default();
 	foreach(const std::string& sub_lvl, util::split(sub_level_str_)) {
@@ -968,8 +982,10 @@ variant level::write() const
 		res.add("y_resolution", y_resolution_);
 	}
 
-	if(gui_algo_str_ != "default") {
-		res.add("gui", gui_algo_str_);
+	if(!gui_algo_str_.empty() && gui_algo_str_.front() != "gui" ) {
+		foreach(std::string gui_str, gui_algo_str_) {
+			res.add("gui", gui_str);
+		}
 	}
 
 	if(dark_) {
@@ -1683,8 +1699,10 @@ bool sort_entity_drawing_pos(const entity_ptr& a, const entity_ptr& b) {
 
 void level::draw_status() const
 {
-	if(gui_algorithm_) {
-		gui_algorithm_->draw(*this);
+	if(!gui_algorithm_.empty()) {
+		foreach(gui_algorithm_ptr g, gui_algorithm_) {
+			g->draw(*this);
+		}
 		iphone_controls::draw();
 	}
 
@@ -2017,8 +2035,10 @@ void level::draw_background(int x, int y, int rotation) const
 
 void level::process()
 {
-	if(gui_algorithm_) {
-		gui_algorithm_->process(*this);
+	if(!gui_algorithm_.empty()) {
+		foreach(gui_algorithm_ptr g, gui_algorithm_) {
+			g->process(*this);
+		}
 	}
 
 	const int LevelPreloadFrequency = 500; //10 seconds
@@ -3082,8 +3102,12 @@ variant level::get_value_by_slot(int slot) const
 		return variant(&v);
 	}
 	case LEVEL_GUI: {
-		if(gui_algorithm_) {
-			return variant(gui_algorithm_->get_object());
+		if(!gui_algorithm_.empty()) {
+			std::vector<variant> v;
+			foreach(gui_algorithm_ptr g, gui_algorithm_) {
+				v.push_back(variant(g->get_object()));
+			}
+			return variant(&v);
 		} else {
 			return variant();
 		}
@@ -3146,8 +3170,12 @@ variant level::get_value(const std::string& key) const
 
 		return variant(&v);
 	} else if(key == "gui") {
-		if(gui_algorithm_) {
-			return variant(gui_algorithm_->get_object());
+		if(!gui_algorithm_.empty()) {
+			std::vector<variant> v;
+			foreach(gui_algorithm_ptr g, gui_algorithm_) {
+				v.push_back(variant(g->get_object()));
+			}
+			return variant(&v);
 		} else {
 			return variant();
 		}

@@ -551,8 +551,8 @@ private:
 
 	int editor_tile_updates_frozen_;
 
-	std::string gui_algo_str_;
-	gui_algorithm_ptr gui_algorithm_;
+	std::vector<std::string> gui_algo_str_;
+	std::vector<gui_algorithm_ptr> gui_algorithm_;
 
 	decimal zoom_level_;
 	std::vector<entity_ptr> focus_override_;
