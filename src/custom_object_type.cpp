@@ -186,8 +186,19 @@ variant merge_into_prototype(variant prototype_node, variant node)
 	result[variant("vars")] = prototype_node["vars"] + node["vars"];
 	result[variant("consts")] = prototype_node["consts"] + node["consts"];
 	result[variant("variations")] = prototype_node["variations"] + node["variations"];
-	result[variant("properties")] = prototype_node["properties"] + node["properties"];
 	result[variant("editor_info")] = prototype_node["editor_info"] + node["editor_info"];
+	variant proto_properties = prototype_node["properties"];
+	variant node_properties = node["properties"];
+	variant properties = proto_properties + node_properties;
+	if(proto_properties.is_map() && node_properties.is_map()) {
+		foreach(const variant_pair& p, proto_properties.as_map()) {
+			if(node_properties.has_key(p.first)) {
+				const std::string proto_id = prototype_node["id"].as_string() + "_" + p.first.as_string();
+				properties.add_attr(variant(proto_id), p.second);
+			}
+		}
+	}
+	result[variant("properties")] = properties;
 
 	variant res(&result);
 	if(node.get_debug_info()) {
