@@ -387,17 +387,16 @@ level::level(const std::string& level_cfg, variant node)
 		if(node["gui"].is_string()) {
 			gui_algo_str_.push_back(node["gui"].as_string());
 		} else if(node["gui"].is_list()) {
-			foreach(std::string gui_str, node["gui"].as_list_string()) {
-				gui_algo_str_.push_back(gui_str);
-				gui_algorithm_.push_back(gui_algorithm::get(gui_algo_str_.back()));
-				gui_algorithm_.back()->new_level();
-			}
+			gui_algo_str_ = node["gui"].as_list_string();
 		} else {
 			ASSERT_LOG(false, "Unexpected type error for gui node " << level_cfg);
 		}
 	} else {
 		gui_algo_str_.push_back("default");
-		gui_algorithm_.push_back(gui_algorithm::get(gui_algo_str_.back()));
+	}
+
+	foreach(const std::string& s, gui_algo_str_) {
+		gui_algorithm_.push_back(gui_algorithm::get(s));
 		gui_algorithm_.back()->new_level();
 	}
 
