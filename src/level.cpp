@@ -386,6 +386,8 @@ level::level(const std::string& level_cfg, variant node)
 	if(node.has_key("gui")) {
 		if(node["gui"].is_string()) {
 			gui_algo_str_.push_back(node["gui"].as_string());
+			gui_algorithm_.push_back(gui_algorithm::get(gui_algo_str_.back()));
+			gui_algorithm_.back()->new_level();
 		} else if(node["gui"].is_list()) {
 			gui_algo_str_ = node["gui"].as_list_string();
 		} else {
