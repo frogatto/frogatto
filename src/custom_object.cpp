@@ -799,9 +799,9 @@ void custom_object::draw() const
 
 	if(text_ && text_->font && text_->alpha) {
 		glColor4ub(255, 255, 255, text_->alpha);
-		if (text_->centered)
-			text_->font->draw(draw_x-text_->dimensions.w()/2, draw_y, text_->text, text_->size);
-		else
+		if (text_->centered) {
+			text_->font->draw(midpoint().x-text_->dimensions.w()/2, draw_y, text_->text, text_->size);
+		} else
 			text_->font->draw(draw_x, draw_y, text_->text, text_->size);
 		glColor4ub(255, 255, 255, 255);
 	}
