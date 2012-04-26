@@ -3239,10 +3239,6 @@ void editor::mutate_object_value(level_ptr lvl, entity_ptr e, const std::string&
 	e->handle_event("editor_changing_variable");
 	e->mutate_value(value, new_value);
 	e->handle_event("editor_changed_variable");
-
-	if(property_dialog_) {
-		property_dialog_->init();
-	}
 }
 
 void editor::generate_mutate_commands(entity_ptr c, const std::string& attr, variant new_value, std::vector<boost::function<void()> >& undo, std::vector<boost::function<void()> >& redo)

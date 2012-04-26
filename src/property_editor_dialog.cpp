@@ -14,6 +14,7 @@
 #include "load_level.hpp"
 #include "property_editor_dialog.hpp"
 #include "raster.hpp"
+#include "text_editor_widget.hpp"
 #include "text_entry_widget.hpp"
 
 namespace editor_dialogs
@@ -150,21 +151,38 @@ void property_editor_dialog::init()
 				current_val_str = val.to_debug_string();
 			}
 
-			std::ostringstream s;
-			s << info.variable_name() << ": " << current_val_str;
-			label_ptr lb = label::create(s.str(), graphics::color_white());
-			add_widget(widget_ptr(lb));
+			if(info.type() != editor_variable_info::TYPE_TEXT) {
+				std::ostringstream s;
+				s << info.variable_name() << ": " << current_val_str;
+				label_ptr lb = label::create(s.str(), graphics::color_white());
+				add_widget(widget_ptr(lb));
+			}
 
 			if(info.type() == editor_variable_info::TYPE_TEXT) {
+				grid_ptr text_grid(new grid(2));
+
+				label_ptr lb = label::create(info.variable_name() + ":", graphics::color_white());
+				text_grid->add_col(lb);
+
 				std::string current_value;
 				variant current_value_var = get_static_entity()->query_value(info.variable_name());
 				if(current_value_var.is_string()) {
 					current_value = current_value_var.as_string();
 				}
 
+				text_editor_widget* e = new text_editor_widget(200 - lb->width());
+				e->set_text(current_value);
+				e->set_on_change_handler(boost::bind(&property_editor_dialog::change_text_property, this, info.variable_name(), e));
+
+				text_grid->add_col(widget_ptr(e));
+
+				add_widget(widget_ptr(text_grid));
+
+/*
 				add_widget(widget_ptr(new button(
 				      widget_ptr(new label(current_value.empty() ? "(set text)" : current_value, graphics::color_white())),
 				      boost::bind(&property_editor_dialog::change_text_property, this, info.variable_name()))));
+				*/
 			} else if(info.type() == editor_variable_info::TYPE_ENUM) {
 				std::string current_value;
 				variant current_value_var = get_static_entity()->query_value(info.variable_name());
@@ -306,18 +324,9 @@ void property_editor_dialog::set_label_dialog()
 	init();*/
 }
 
-void property_editor_dialog::change_text_property(const std::string& id)
+void property_editor_dialog::change_text_property(const std::string& id, const gui::text_editor_widget* w)
 {
-	//show a text box to set the new text
-	using namespace gui;
-	text_entry_widget* entry = new text_entry_widget;
-	dialog d(200, 200, 400, 200);
-	d.add_widget(widget_ptr(new label("Label:", graphics::color_white())))
-	 .add_widget(widget_ptr(entry));
-	d.show_modal();
-
-	mutate_value(id, variant(entry->text()));
-	init();
+	mutate_value(id, variant(w->text()));
 }
 
 void property_editor_dialog::change_enum_property(const std::string& id)

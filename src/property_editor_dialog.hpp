@@ -7,6 +7,7 @@
 #include "dialog.hpp"
 #include "editor.hpp"
 #include "entity.hpp"
+#include "text_editor_widget.hpp"
 
 namespace editor_dialogs
 {
@@ -31,7 +32,7 @@ private:
 	void change_level_property(const std::string& id);
 
 	void change_label_property(const std::string& id);
-	void change_text_property(const std::string& id);
+	void change_text_property(const std::string& id, const gui::text_editor_widget* w);
 	void change_enum_property(const std::string& id);
 	void set_enum_property(const std::string& id, const std::vector<std::string>& options, int index);
 

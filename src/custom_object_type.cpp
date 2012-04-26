@@ -149,7 +149,18 @@ variant merge_into_prototype(variant prototype_node, variant node)
 			const std::string& value_str = value.as_string();
 			std::string::const_iterator base_itor = std::search(value_str.begin(), value_str.end(), BaseStr.begin(), BaseStr.end());
 			if(base_itor != value_str.end()) {
-				ASSERT_LOG(false, "%PROTO% no longer supported. Consider using proto_event() instead");
+				const variant::debug_info* info = value.get_debug_info();
+				std::string base_value = "null";
+				if(proto_value.is_string()) {
+					base_value = proto_value.as_string();
+				}
+				const std::string s = std::string(value_str.begin(), base_itor) + base_value + std::string(base_itor + BaseStr.size(), value_str.end());
+				value = variant(s);
+				proto_value = variant();
+
+				if(info) {
+					value.set_debug_info(*info);
+				}
 			}
 		}
 
