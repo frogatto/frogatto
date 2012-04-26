@@ -7,6 +7,7 @@
 #include "dialog.hpp"
 #include "editor.hpp"
 #include "entity.hpp"
+#include "slider.hpp"
 #include "text_editor_widget.hpp"
 
 namespace editor_dialogs
@@ -33,6 +34,10 @@ private:
 
 	void change_label_property(const std::string& id);
 	void change_text_property(const std::string& id, const gui::text_editor_widget* w);
+
+	typedef std::pair<gui::text_editor_widget*, gui::slider*> numeric_widgets;
+	void change_numeric_property(const std::string& id, boost::shared_ptr<numeric_widgets> w);
+	void change_numeric_property_slider(const std::string& id, boost::shared_ptr<numeric_widgets> w, float value);
 	void change_enum_property(const std::string& id);
 	void set_enum_property(const std::string& id, const std::vector<std::string>& options, int index);
 

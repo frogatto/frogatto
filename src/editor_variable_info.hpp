@@ -26,6 +26,10 @@ public:
 
 	const game_logic::const_formula_ptr& formula() const { return formula_; }
 
+	bool numeric_decimal() const { return numeric_decimal_; }
+	decimal numeric_min() const { return numeric_min_; }
+	decimal numeric_max() const { return numeric_max_; }
+
 private:
 	std::string name_;
 	VARIABLE_TYPE type_;
@@ -33,6 +37,9 @@ private:
 	std::string info_;
 	std::string help_;
 	game_logic::const_formula_ptr formula_;
+
+	bool numeric_decimal_;
+	decimal numeric_min_, numeric_max_;
 };
 
 class editor_entity_info {

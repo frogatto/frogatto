@@ -20,6 +20,7 @@ namespace gui {
 
 namespace {
 
+const int BorderSize = 3;
 const int TabWidth = 4;
 const int TabAdjust = TabWidth - 1;
 
@@ -102,7 +103,7 @@ text_editor_widget::text_editor_widget(int width, int height)
     char_width_(font::char_width(font_size_)),
     char_height_(font::char_height(font_size_)),
 	select_(0,0), cursor_(0,0),
-	nrows_(height/char_height_), ncols_((width - 20)/char_width_),
+	nrows_((height - BorderSize*2)/char_height_), ncols_((width - 20 - BorderSize*2)/char_width_),
 	scroll_pos_(0),
 	begin_highlight_line_(-1), end_highlight_line_(-1),
 	has_focus_(false),
@@ -116,7 +117,7 @@ text_editor_widget::text_editor_widget(int width, int height)
 		nrows_ = 1;
 		ncols_ = width/char_width_;
 	}
-	set_dim(char_width_*ncols_, char_height_*nrows_);
+	set_dim(BorderSize*2 + char_width_*ncols_, BorderSize*2 + char_height_*nrows_);
 	text_.push_back("");
 }
 
@@ -208,10 +209,13 @@ void text_editor_widget::handle_draw() const
 
 	int begin_build = SDL_GetTicks();
 
+	const int xpos = x() + BorderSize;
+	const int ypos = y() + BorderSize;
+
 	int r = 0;
 	for(int n = scroll_pos_; n < text_.size() && r < nrows_; ++n, ++r) {
 		if(n >= begin_highlight_line_ && n <= end_highlight_line_) {
-			RectDraw rect_draw = { rect(x(), y() + r*char_height_, width(), char_height_), graphics::color(255, 255, 255, 32) };
+			RectDraw rect_draw = { rect(xpos, ypos + r*char_height_, width(), char_height_), graphics::color(255, 255, 255, 32) };
 			rects.push_back(rect_draw);
 		}
 
@@ -241,7 +245,7 @@ void text_editor_widget::handle_draw() const
 				graphics::color col = get_character_color(n, m);
 
 				if(pos >= begin_select && pos < end_select) {
-					RectDraw rect_draw = { rect(x() + c*char_width_, y() + r*char_height_, char_width_, char_height_), col };
+					RectDraw rect_draw = { rect(xpos + c*char_width_, ypos + r*char_height_, char_width_, char_height_), col };
 
 					if(rects.empty() || !rects.back().merge(rect_draw)) {
 						rects.push_back(rect_draw);
@@ -251,7 +255,7 @@ void text_editor_widget::handle_draw() const
 				} else {
 					for(std::vector<std::pair<Loc,Loc> >::const_iterator i = search_itor; i != search_matches_.end() && i->first <= pos; ++i) {
 						if(pos >= i->first && pos < i->second) {
-							RectDraw rect_draw = { rect(x() + c*char_width_, y() + r*char_height_, char_width_, char_height_), graphics::color(255,255,0,255) };
+							RectDraw rect_draw = { rect(xpos + c*char_width_, ypos + r*char_height_, char_width_, char_height_), graphics::color(255,255,0,255) };
 							if(rects.empty() || !rects.back().merge(rect_draw)) {
 								rects.push_back(rect_draw);
 							}
@@ -264,8 +268,8 @@ void text_editor_widget::handle_draw() const
 				if(!util::c_isspace(text_[n][m]) && util::c_isprint(text_[n][m])) {
 					const CharArea& area = get_char_area(text_[n][m]);
 
-					const int x1 = x() + c*char_width_;
-					const int y1 = y() + r*char_height_;
+					const int x1 = xpos + c*char_width_;
+					const int y1 = ypos + r*char_height_;
 					const int x2 = x1 + char_width_;
 					const int y2 = y1 + char_height_;
 
@@ -282,13 +286,13 @@ void text_editor_widget::handle_draw() const
 
 			if(cursor_.row == n && cursor_.col == m &&
 			   (SDL_GetTicks()%500 < 350 || !has_focus_)) {
-				RectDraw rect_draw = { rect(x() + c*char_width_+1, y() + r*char_height_, 1, char_height_), graphics::color(255,255,255,255) };
+				RectDraw rect_draw = { rect(xpos + c*char_width_+1, ypos + r*char_height_, 1, char_height_), graphics::color(255,255,255,255) };
 				rects.push_back(rect_draw);
 			}
 		}
 
 		if(has_focus_ && cursor_.row == n && cursor_.col >= text_[n].size() && SDL_GetTicks()%500 < 350) {
-			RectDraw rect_draw = { rect(x() + c*char_width_+1, y() + r*char_height_, 1, char_height_), graphics::color(255,255,255,255) };
+			RectDraw rect_draw = { rect(xpos + c*char_width_+1, ypos + r*char_height_, 1, char_height_), graphics::color(255,255,255,255) };
 			rects.push_back(rect_draw);
 		}
 	}
@@ -915,10 +919,13 @@ graphics::color text_editor_widget::get_character_color(int row, int col) const
 
 std::pair<int, int> text_editor_widget::mouse_position_to_row_col(int xpos, int ypos) const
 {
+	const int xloc = x() + BorderSize;
+	const int yloc = y() + BorderSize;
+
 	int r = 0;
 	for(int n = scroll_pos_; n < text_.size() && r < nrows_; ++n, ++r) {
 		int c = 0;
-		bool matches_row = ypos >= y() + r*char_height_ && ypos < y() + (r+1)*char_height_;
+		bool matches_row = ypos >= yloc + r*char_height_ && ypos < yloc + (r+1)*char_height_;
 		for(int m = 0; m < text_[n].size(); ++m, ++c) {
 			if(c >= ncols_) {
 				if(matches_row) {
@@ -926,7 +933,7 @@ std::pair<int, int> text_editor_widget::mouse_position_to_row_col(int xpos, int 
 				}
 				++r;
 				c -= ncols_;
-				matches_row = ypos >= y() + r*char_height_ && ypos < y() + (r+1)*char_height_;
+				matches_row = ypos >= yloc + r*char_height_ && ypos < yloc + (r+1)*char_height_;
 				if(r == nrows_) {
 					break;
 				}
@@ -934,7 +941,7 @@ std::pair<int, int> text_editor_widget::mouse_position_to_row_col(int xpos, int 
 
 			const int char_size = text_[n][m] == '\t' ? TabWidth : 1;
 
-			if(matches_row && xpos >= x() + c*char_width_ && xpos < x() + (c+char_size)*char_width_) {
+			if(matches_row && xpos >= xloc + c*char_width_ && xpos < xloc + (c+char_size)*char_width_) {
 				return std::pair<int, int>(n, m);
 			}
 
@@ -972,7 +979,7 @@ std::pair<int, int> text_editor_widget::char_position_on_screen(int row, int col
 			}
 
 			if(row == n && col == m) {
-				return std::pair<int, int>(r*char_height_, c*char_width_);
+				return std::pair<int, int>(BorderSize + r*char_height_, BorderSize + c*char_width_);
 			}
 
 			if(text_[n][m] == '\t') {
@@ -982,7 +989,7 @@ std::pair<int, int> text_editor_widget::char_position_on_screen(int row, int col
 		}
 
 		if(row == n && m == text_[n].size()) {
-			return std::pair<int, int>(r*char_height_, c*char_width_);
+			return std::pair<int, int>(BorderSize + r*char_height_, BorderSize + c*char_width_);
 		}
 	}
 
@@ -1085,6 +1092,7 @@ void text_editor_widget::refresh_scrollbar()
 	set_scroll_step(char_height_);
 
 	set_dim(char_width_*ncols_, char_height_*nrows_);
+	set_dim(BorderSize*2 + char_width_*ncols_, BorderSize*2 + char_height_*nrows_);
 
 	set_yscroll(scroll_pos_*char_height_);
 

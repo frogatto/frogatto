@@ -14,6 +14,7 @@
 #include "load_level.hpp"
 #include "property_editor_dialog.hpp"
 #include "raster.hpp"
+#include "slider.hpp"
 #include "text_editor_widget.hpp"
 #include "text_entry_widget.hpp"
 
@@ -151,7 +152,8 @@ void property_editor_dialog::init()
 				current_val_str = val.to_debug_string();
 			}
 
-			if(info.type() != editor_variable_info::TYPE_TEXT) {
+			if(info.type() != editor_variable_info::TYPE_TEXT &&
+			   info.type() != editor_variable_info::TYPE_INTEGER) {
 				std::ostringstream s;
 				s << info.variable_name() << ": " << current_val_str;
 				label_ptr lb = label::create(s.str(), graphics::color_white());
@@ -159,6 +161,7 @@ void property_editor_dialog::init()
 			}
 
 			if(info.type() == editor_variable_info::TYPE_TEXT) {
+
 				grid_ptr text_grid(new grid(2));
 
 				label_ptr lb = label::create(info.variable_name() + ":", graphics::color_white());
@@ -178,11 +181,6 @@ void property_editor_dialog::init()
 
 				add_widget(widget_ptr(text_grid));
 
-/*
-				add_widget(widget_ptr(new button(
-				      widget_ptr(new label(current_value.empty() ? "(set text)" : current_value, graphics::color_white())),
-				      boost::bind(&property_editor_dialog::change_text_property, this, info.variable_name()))));
-				*/
 			} else if(info.type() == editor_variable_info::TYPE_ENUM) {
 				std::string current_value;
 				variant current_value_var = get_static_entity()->query_value(info.variable_name());
@@ -233,12 +231,60 @@ void property_editor_dialog::init()
 						 boost::bind(&property_editor_dialog::change_points_property, this, info.variable_name()))));
 
 			} else {
+				grid_ptr text_grid(new grid(2));
+
+				label_ptr lb = label::create(info.variable_name() + ":", graphics::color_white());
+				text_grid->add_col(lb);
+
+				decimal value;
+				std::string current_value = "0";
+				variant current_value_var = get_static_entity()->query_value(info.variable_name());
+				if(current_value_var.is_int()) {
+					current_value = formatter() << current_value_var.as_int();
+					value = current_value_var.as_decimal();
+				} else if(current_value_var.is_decimal()) {
+					current_value = formatter() << current_value_var.as_decimal();
+					value = current_value_var.as_decimal();
+				}
+
+				boost::shared_ptr<numeric_widgets> widgets(new numeric_widgets);
+
+				text_editor_widget* e = new text_editor_widget(80);
+				e->set_text(current_value);
+				e->set_on_change_handler(boost::bind(&property_editor_dialog::change_numeric_property, this, info.variable_name(), widgets));
+
+				text_grid->add_col(widget_ptr(e));
+
+				add_widget(widget_ptr(text_grid));
+
+				float pos = ((value - info.numeric_min())/(info.numeric_max() - info.numeric_min())).as_float();
+				if(pos < 0.0) {
+					pos = 0.0;
+				}
+
+				if(pos > 1.0) {
+					pos = 1.0;
+				}
+
+				lb.reset(new gui::label(formatter() << info.numeric_min().as_int(), 10));
+				add_widget(lb, text_grid->x(), text_grid->y() + text_grid->height() + 6);
+				lb.reset(new gui::label(formatter() << info.numeric_max().as_int(), 10));
+				add_widget(lb, text_grid->x() + 170, text_grid->y() + text_grid->height() + 6);
+
+				gui::slider* slider = new gui::slider(160, boost::bind(&property_editor_dialog::change_numeric_property_slider, this, info.variable_name(), widgets, _1), pos);
+
+				add_widget(widget_ptr(slider), text_grid->x(), text_grid->y() + text_grid->height() + 8);
+
+				*widgets = numeric_widgets(e, slider);
+
+				/*
 				grid_ptr buttons_grid(new grid(4));
 				buttons_grid->add_col(widget_ptr(new button(widget_ptr(new label("-10", graphics::color_white())), boost::bind(&property_editor_dialog::change_property, this, info.variable_name(), -10))));
 				buttons_grid->add_col(widget_ptr(new button(widget_ptr(new label("-1", graphics::color_white())), boost::bind(&property_editor_dialog::change_property, this, info.variable_name(), -1))));
 				buttons_grid->add_col(widget_ptr(new button(widget_ptr(new label("+1", graphics::color_white())), boost::bind(&property_editor_dialog::change_property, this, info.variable_name(), +1))));
 				buttons_grid->add_col(widget_ptr(new button(widget_ptr(new label("+10", graphics::color_white())), boost::bind(&property_editor_dialog::change_property, this, info.variable_name(), +10))));
 				add_widget(widget_ptr(buttons_grid));
+				*/
 			}
 		}
 	}
@@ -327,6 +373,54 @@ void property_editor_dialog::set_label_dialog()
 void property_editor_dialog::change_text_property(const std::string& id, const gui::text_editor_widget* w)
 {
 	mutate_value(id, variant(w->text()));
+}
+
+void property_editor_dialog::change_numeric_property(const std::string& id, boost::shared_ptr<std::pair<gui::text_editor_widget*, gui::slider*> >  w)
+{
+	const editor_variable_info* var_info = get_static_entity()->editor_info() ? get_static_entity()->editor_info()->get_var_info(id) : NULL;
+	if(!var_info) {
+		return;
+	}
+
+	variant v(0);
+	if(var_info->numeric_decimal()) {
+		v = variant(decimal::from_string(w->first->text()));
+	} else {
+		v = variant(atoi(w->first->text().c_str()));
+	}
+
+	float pos = ((v.as_decimal() - var_info->numeric_min())/(var_info->numeric_max() - var_info->numeric_min())).as_float();
+	if(pos < 0.0) {
+		pos = 0.0;
+	}
+
+	if(pos > 1.0) {
+		pos = 1.0;
+	}
+	w->second->set_position(pos);
+	
+	mutate_value(id, v);
+}
+
+void property_editor_dialog::change_numeric_property_slider(const std::string& id, boost::shared_ptr<std::pair<gui::text_editor_widget*, gui::slider*> >  w, float value)
+{
+	const editor_variable_info* var_info = get_static_entity()->editor_info() ? get_static_entity()->editor_info()->get_var_info(id) : NULL;
+	if(!var_info) {
+		return;
+	}
+
+	const float v = var_info->numeric_min().as_float() + value*(var_info->numeric_max() - var_info->numeric_min()).as_float();
+
+	variant new_value;
+	if(var_info->numeric_decimal()) {
+		new_value = variant(decimal(v));
+	} else {
+		new_value = variant(static_cast<int>(v));
+	}
+
+	w->first->set_text(new_value.write_json());
+	
+	mutate_value(id, new_value);
 }
 
 void property_editor_dialog::change_enum_property(const std::string& id)
