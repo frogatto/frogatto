@@ -2447,6 +2447,7 @@ void editor::set_selection(const tile_selection& s)
 
 void editor::move_object(level_ptr lvl, entity_ptr e, int new_x, int new_y)
 {
+	current_level_scope scope(lvl.get());
 	lvl->relocate_object(e, new_x, new_y);
 }
 
