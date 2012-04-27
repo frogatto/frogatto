@@ -161,6 +161,10 @@ public:
 	{}
 
 	formula_function_expression_ptr generate_function_expression(const std::vector<expression_ptr>& args) const;
+
+	const std::vector<std::string>& args() const { return args_; }
+	const std::vector<variant> default_args() const { return default_args_; }
+	const_formula_ptr get_formula() const { return formula_; }
 };	
 
 class function_symbol_table {
@@ -175,6 +179,7 @@ public:
 					                       const std::vector<expression_ptr>& args,
 										   const formula_callable_definition* callable_def) const;
 	std::vector<std::string> get_function_names() const;
+	const formula_function* get_formula_function(const std::string& fn) const;
 };
 
 //a special symbol table which is used to facilitate recursive functions.

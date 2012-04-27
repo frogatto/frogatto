@@ -356,6 +356,8 @@ public:
 		return true;
 	}
 
+	void set_function(expression_ptr fn) { function_ = fn; }
+
 	expression_ptr optimize() const {
 		if(callable_def_) {
 			const int index = callable_def_->get_slot(id_);
@@ -385,10 +387,18 @@ private:
 	}
 	
 	variant execute(const formula_callable& variables) const {
-		return variables.query_value(id_);
+		variant result = variables.query_value(id_);
+		if(result.is_null() && function_) {
+			return function_->evaluate(variables);
+		}
+
+		return result;
 	}
 	std::string id_;
 	const formula_callable_definition* callable_def_;
+
+	//If this symbol is a function, this is the value we can return for it.
+	expression_ptr function_;
 };
 
 class lambda_function_expression : public formula_expression {
@@ -1459,8 +1469,16 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 				if(can_optimize) {
 					*can_optimize = false;
 				}
-				return expression_ptr(new identifier_expression(
-																std::string(i1->begin,i1->end), callable_def));
+
+				std::string symbol(i1->begin, i1->end);
+				identifier_expression* expr =
+				    new identifier_expression(symbol, callable_def);
+				const formula_function* fn = symbols->get_formula_function(symbol);
+				if(fn != NULL) {
+					expression_ptr function(new lambda_function_expression(fn->args(), fn->get_formula(), 0, fn->default_args()));
+					expr->set_function(function);
+				}
+				return expression_ptr(expr);
 			} else if(i1->type == TOKEN_INTEGER) {
 				int n = strtol(std::string(i1->begin,i1->end).c_str(), NULL, 0);
 				return expression_ptr(new integer_expression(n));
@@ -1942,7 +1960,7 @@ UNIT_TEST(formula_in) {
 
 UNIT_TEST(formula_fn) {
 	function_symbol_table symbols;
-	CHECK(formula(variant("def f(g) g(5) + 1; f(def(n) n*n)"), &symbols).execute() == variant(26), "test failed");
+	CHECK(formula(variant("def f(g) g(5) + 1; def fn(n) n*n; f(fn)"), &symbols).execute() == variant(26), "test failed");
 }
 
 UNIT_TEST(array_index) {

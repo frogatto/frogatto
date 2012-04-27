@@ -1552,6 +1552,16 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 		return res;
 	}
 
+	const formula_function* function_symbol_table::get_formula_function(const std::string& fn) const
+	{
+		const std::map<std::string, formula_function>::const_iterator i = custom_formulas_.find(fn);
+		if(i == custom_formulas_.end()) {
+			return NULL;
+		} else {
+			return &i->second;
+		}
+	}
+
 	recursive_function_symbol_table::recursive_function_symbol_table(const std::string& fn, const std::vector<std::string>& args, const std::vector<variant>& default_args, function_symbol_table* backup)
 	: name_(fn), stub_(fn, const_formula_ptr(), const_formula_ptr(), args, default_args), backup_(backup)
 	{
