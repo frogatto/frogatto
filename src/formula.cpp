@@ -860,10 +860,9 @@ public:
 				str = str.replace(pos, 2, "\n");
 			}
 			pos = 0;
-			//and remove tabs
-			while((pos = str.find("\t", pos)) != std::string::npos) {
-				str = str.replace(pos, 2, "");
-			}
+
+			str.erase(std::remove(str.begin(), str.end(), '\t'), str.end());
+
 			if (translate) {
 				str = i18n::tr(str);
 			}
@@ -1327,7 +1326,7 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 {
 	ASSERT_LOG(i1 != i2, "Empty expression in formula\n" << pinpoint_location(formula_str, (i1-1)->end));
 	
-	if(i1->type == TOKEN_KEYWORD && std::string(i1->begin, i1->end) == "def" &&
+	if(symbols && i1->type == TOKEN_KEYWORD && std::string(i1->begin, i1->end) == "def" &&
 	   ((i1+1)->type == TOKEN_IDENTIFIER || (i1+1)->type == TOKEN_LPARENS)) {
 
 		expression_ptr lambda = parse_function_def(formula_str, i1, i2, symbols, callable_def);
@@ -1473,7 +1472,7 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 				std::string symbol(i1->begin, i1->end);
 				identifier_expression* expr =
 				    new identifier_expression(symbol, callable_def);
-				const formula_function* fn = symbols->get_formula_function(symbol);
+				const formula_function* fn = symbols ? symbols->get_formula_function(symbol) : NULL;
 				if(fn != NULL) {
 					expression_ptr function(new lambda_function_expression(fn->args(), fn->get_formula(), 0, fn->default_args()));
 					expr->set_function(function);
@@ -1581,7 +1580,7 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 		//statically derive information from the left half to
 		//give the right half a definition.
 		return expression_ptr(new dot_expression(left,
-												 parse_expression(formula_str, op+1,i2,symbols, type_definition, can_optimize)));
+												 parse_expression(formula_str, op+1,i2,NULL, type_definition, can_optimize)));
 	}
 	
 	if(op_name == "where") {
