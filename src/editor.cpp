@@ -3288,8 +3288,12 @@ void editor::generate_remove_commands(entity_ptr c, std::vector<boost::function<
 
 bool editor::has_keyboard_focus() const
 {
-	if(code_dialog_) {
-		return code_dialog_->has_keyboard_focus();
+	if(code_dialog_ && code_dialog_->has_keyboard_focus()) {
+		return true;
+	}
+
+	if(current_dialog_ && current_dialog_->has_focus()) {
+		return true;
 	}
 
 	return false;

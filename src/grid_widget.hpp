@@ -57,6 +57,8 @@ public:
 	void set_max_height(int amount) { max_height_ = amount; }
 
 	void on_set_yscroll(int old_value, int value);
+
+	bool has_focus() const;
 private:
 	int row_at(int x, int y) const;
 	void recalculate_dimensions();

@@ -58,6 +58,8 @@ public:
 
 	void set_background_frame(const std::string& id) { background_framed_gui_element_ = id; }
 	void set_draw_background_fn(boost::function<void()> fn) { draw_background_fn_ = fn; }
+
+	virtual bool has_focus() const;
 protected:
 	virtual bool handle_event(const SDL_Event& event, bool claimed);
 	virtual bool handle_event_children(const SDL_Event& event, bool claimed);

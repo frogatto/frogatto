@@ -37,6 +37,8 @@ public:
 	void set_tooltip(const std::string& str);
 	bool visible() { return visible_; }
 	void set_visible(bool visible) { visible_ = visible; }
+
+	virtual bool has_focus() const { return false; }
 protected:
 	widget() : x_(0), y_(0), w_(0), h_(0), tooltip_displayed_(false), visible_(true)
 	{}

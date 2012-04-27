@@ -229,5 +229,16 @@ bool dialog::handle_event(const SDL_Event& event, bool claimed)
 	return claimed;
 }
 
+bool dialog::has_focus() const
+{
+	foreach(widget_ptr w, widgets_) {
+		if(w->has_focus()) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 
 }

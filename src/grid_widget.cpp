@@ -267,4 +267,15 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 	return claimed;
 }
 
+bool grid::has_focus() const
+{
+	foreach(const widget_ptr& w, cells_) {
+		if(w && w->has_focus()) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 }
