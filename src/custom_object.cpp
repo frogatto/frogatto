@@ -1827,6 +1827,34 @@ void custom_object::init()
 {
 }
 
+namespace {
+
+using game_logic::formula_callable;
+
+//Object that provides an FFL interface to an object's event handlers.
+class event_handlers_callable : public formula_callable {
+	boost::intrusive_ptr<custom_object> obj_;
+
+	variant get_value(const std::string& key) const {
+		game_logic::const_formula_ptr f = obj_->get_event_handler(get_object_event_id(key));
+		if(!f) {
+			return variant();
+		} else {
+			return variant(f->str());
+		}
+	}
+	void set_value(const std::string& key, const variant& value) {
+		static custom_object_callable custom_object_definition;
+
+		game_logic::formula_ptr f(new game_logic::formula(value, &get_custom_object_functions_symbol_table(), &custom_object_definition));
+		obj_->set_event_handler(get_object_event_id(key), f);
+	}
+public:
+	explicit event_handlers_callable(const custom_object& obj) : obj_(const_cast<custom_object*>(&obj))
+	{}
+};
+}
+
 variant custom_object::get_value_by_slot(int slot) const
 {
 	switch(slot) {
@@ -2091,6 +2119,10 @@ variant custom_object::get_value_by_slot(int slot) const
 			return variant(decimal::from_int(1));
 		}
 	case CUSTOM_OBJECT_HAS_FEET: return variant::from_bool(has_feet_);
+
+	case CUSTOM_OBJECT_EVENT_HANDLERS: {
+		return variant(new event_handlers_callable(*this));
+	}
 
 	case CUSTOM_OBJECT_CTRL_UP:
 	case CUSTOM_OBJECT_CTRL_DOWN:
@@ -3203,7 +3235,9 @@ void custom_object::handle_event(const std::string& event, const formula_callabl
 }
 
 namespace {
+
 using game_logic::formula_callable;
+
 class backup_callable_stack_scope {
 	std::stack<const formula_callable*>* stack_;
 public:
