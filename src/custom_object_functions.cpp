@@ -1470,7 +1470,7 @@ public:
 
 	virtual void execute(level& lvl, entity& ob) const {
 		e_->set_spawned_by(ob.label());
-		if(place_entity_in_level(lvl, *e_)) {
+		if(place_entity_in_level_with_large_displacement(lvl, *e_)) {
 			lvl.add_character(e_);
 		} else {
 			collision_info collide_info;
