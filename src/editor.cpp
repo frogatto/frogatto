@@ -1868,6 +1868,10 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 			g_variable_editing_original_value = variant();
 			g_variable_editing_index = -1;
 		}
+
+		//If we select a variable to edit, return here so we don't select
+		//another object instead, swallowing the event.
+		return;
 		
 	} else if(tool() == TOOL_SELECT_OBJECT && !lvl_->editor_highlight()) {
 		//dragging a rectangle to select objects
