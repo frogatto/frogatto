@@ -365,6 +365,12 @@ namespace preferences {
 	bool show_debug_hitboxes() {
 		return show_debug_hitboxes_;
 	}
+
+	bool toogle_debug_hitboxes() {
+		bool shown = show_debug_hitboxes_;
+		show_debug_hitboxes_ = !show_debug_hitboxes_;
+		return shown;
+	}
 	
 	bool show_iphone_controls() {
 		return show_iphone_controls_;
