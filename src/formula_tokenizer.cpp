@@ -102,6 +102,7 @@ token get_token(iterator& i1, iterator i2) {
 	}
 
 	switch(*i1) {
+	case '"':
 	case '\'':
 	case '~':
 	case '#': {
