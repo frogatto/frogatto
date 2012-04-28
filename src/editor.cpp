@@ -2329,9 +2329,11 @@ void editor::add_tile_rect(int x1, int y1, int x2, int y2)
 	y2 += ((100 - tilesets[cur_tileset_].y_speed)*ypos_)/100;
 
 	add_tile_rect(tilesets[cur_tileset_].zorder, tilesets[cur_tileset_].type, x1, y1, x2, y2);
-	lvl_->set_tile_layer_speed(tilesets[cur_tileset_].zorder,
-	                           tilesets[cur_tileset_].x_speed,
-							   tilesets[cur_tileset_].y_speed);
+	foreach(level_ptr lvl, levels_) {
+		lvl->set_tile_layer_speed(tilesets[cur_tileset_].zorder,
+		                          tilesets[cur_tileset_].x_speed,
+								  tilesets[cur_tileset_].y_speed);
+	}
 }
 
 void editor::remove_tile_rect(int x1, int y1, int x2, int y2)
@@ -2470,9 +2472,11 @@ void editor::set_tileset(int index)
 		cur_tileset_ = 0;
 	}
 
-	lvl_->set_tile_layer_speed(tilesets[cur_tileset_].zorder,
-	                           tilesets[cur_tileset_].x_speed,
-							   tilesets[cur_tileset_].y_speed);
+	foreach(level_ptr lvl, levels_) {
+		lvl->set_tile_layer_speed(tilesets[cur_tileset_].zorder,
+		                          tilesets[cur_tileset_].x_speed,
+								  tilesets[cur_tileset_].y_speed);
+	}
 }
 
 void editor::set_object(int index)
