@@ -230,64 +230,64 @@ void text_editor_widget::handle_draw() const
 				}
 			}
 
-			if(text_[n][m] == '\t') {
-				c += TabAdjust;
+			const int char_size = text_[n][m] == '\t' ? 4 : 1;
+			Loc pos(n, m);
+
+			Loc begin_select = select_;
+			Loc end_select = cursor_;
+			if(end_select < begin_select) {
+				std::swap(begin_select, end_select);
+			}
+
+			graphics::color col = get_character_color(n, m);
+
+			if(pos >= begin_select && pos < end_select) {
+				RectDraw rect_draw = { rect(xpos + c*char_width_, ypos + r*char_height_, char_width_*char_size, char_height_), col };
+
+				if(rects.empty() || !rects.back().merge(rect_draw)) {
+					rects.push_back(rect_draw);
+				}
+
+				col = graphics::color(0,0,0,255);
 			} else {
-
-				Loc pos(n, m);
-
-				Loc begin_select = select_;
-				Loc end_select = cursor_;
-				if(end_select < begin_select) {
-					std::swap(begin_select, end_select);
-				}
-
-				graphics::color col = get_character_color(n, m);
-
-				if(pos >= begin_select && pos < end_select) {
-					RectDraw rect_draw = { rect(xpos + c*char_width_, ypos + r*char_height_, char_width_, char_height_), col };
-
-					if(rects.empty() || !rects.back().merge(rect_draw)) {
-						rects.push_back(rect_draw);
-					}
-
-					col = graphics::color(0,0,0,255);
-				} else {
-					for(std::vector<std::pair<Loc,Loc> >::const_iterator i = search_itor; i != search_matches_.end() && i->first <= pos; ++i) {
-						if(pos >= i->first && pos < i->second) {
-							RectDraw rect_draw = { rect(xpos + c*char_width_, ypos + r*char_height_, char_width_, char_height_), graphics::color(255,255,0,255) };
-							if(rects.empty() || !rects.back().merge(rect_draw)) {
-								rects.push_back(rect_draw);
-							}
-
-							col = graphics::color(0,0,0,255);
+				for(std::vector<std::pair<Loc,Loc> >::const_iterator i = search_itor; i != search_matches_.end() && i->first <= pos; ++i) {
+					if(pos >= i->first && pos < i->second) {
+						RectDraw rect_draw = { rect(xpos + c*char_width_, ypos + r*char_height_, char_width_*char_size, char_height_), graphics::color(255,255,0,255) };
+						if(rects.empty() || !rects.back().merge(rect_draw)) {
+							rects.push_back(rect_draw);
 						}
+
+						col = graphics::color(0,0,0,255);
 					}
 				}
+			}
 
-				if(!util::c_isspace(text_[n][m]) && util::c_isprint(text_[n][m])) {
-					const CharArea& area = get_char_area(text_[n][m]);
+			if(!util::c_isspace(text_[n][m]) && util::c_isprint(text_[n][m])) {
+				const CharArea& area = get_char_area(text_[n][m]);
 
-					const int x1 = xpos + c*char_width_;
-					const int y1 = ypos + r*char_height_;
-					const int x2 = x1 + char_width_;
-					const int y2 = y1 + char_height_;
+				const int x1 = xpos + c*char_width_;
+				const int y1 = ypos + r*char_height_;
+				const int x2 = x1 + char_width_;
+				const int y2 = y1 + char_height_;
 
-					graphics::blit_queue& q = chars[col.rgba()];
+				graphics::blit_queue& q = chars[col.rgba()];
 
-					q.repeat_last();
-					q.add(x1, y1, area.x1, area.y1);
-					q.repeat_last();
-					q.add(x2, y1, area.x2, area.y1);
-					q.add(x1, y2, area.x1, area.y2);
-					q.add(x2, y2, area.x2, area.y2);
-				}
+				q.repeat_last();
+				q.add(x1, y1, area.x1, area.y1);
+				q.repeat_last();
+				q.add(x2, y1, area.x2, area.y1);
+				q.add(x1, y2, area.x1, area.y2);
+				q.add(x2, y2, area.x2, area.y2);
 			}
 
 			if(cursor_.row == n && cursor_.col == m &&
 			   (SDL_GetTicks()%500 < 350 || !has_focus_)) {
 				RectDraw rect_draw = { rect(xpos + c*char_width_+1, ypos + r*char_height_, 1, char_height_), graphics::color(255,255,255,255) };
 				rects.push_back(rect_draw);
+			}
+
+			if(text_[n][m] == '\t') {
+				c += TabAdjust;
 			}
 		}
 
