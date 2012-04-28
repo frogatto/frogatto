@@ -436,41 +436,64 @@ FUNCTION_DEF(regex_replace, 3, 3, "regex_replace(string, string, string) -> stri
 	return variant(boost::regex_replace(str, re, value));
 END_FUNCTION_DEF(regex_replace)
 
-	namespace {
-	class variant_comparator : public formula_callable {
-		expression_ptr expr_;
-		const formula_callable* fallback_;
-		mutable variant a_, b_;
-		variant get_value(const std::string& key) const {
-			if(key == "a") {
-				return a_;
-			} else if(key == "b") {
-				return b_;
-			} else {
-				return fallback_->query_value(key);
-			}
+FUNCTION_DEF(fold, 2, 3, "fold(list, expr, [default]) -> value")
+	variant list = args()[0]->evaluate(variables);
+	const int size = list.num_elements();
+	if(size == 0) {
+		if(args().size() >= 3) {
+			return args()[2]->evaluate(variables);
+		} else {
+			return variant();
 		}
-
-		variant get_value_by_slot(int slot) const {
-			return fallback_->query_value_by_slot(slot);
-		}
-
-		void get_inputs(std::vector<formula_input>* inputs) const {
-			fallback_->get_inputs(inputs);
-		}
-	public:
-		variant_comparator(const expression_ptr& expr, const formula_callable& fallback) : formula_callable(false), expr_(expr), fallback_(&fallback)
-		{}
-
-		bool operator()(const variant& a, const variant& b) const {
-			a_ = a;
-			b_ = b;
-			return expr_->evaluate(*this).as_bool();
-		}
-	};
+	} else if(size == 1) {
+		return list[0];
 	}
 
+	boost::intrusive_ptr<map_formula_callable> callable(new map_formula_callable(&variables));
+	variant& a = callable->add_direct_access("a");
+	variant& b = callable->add_direct_access("b");
+	a = list[0];
+	for(int n = 1; n < list.num_elements(); ++n) {
+		b = list[n];
+		a = args()[1]->evaluate(*callable);
+	}
 
+	return a;
+END_FUNCTION_DEF(fold)
+
+namespace {
+class variant_comparator : public formula_callable {
+	expression_ptr expr_;
+	const formula_callable* fallback_;
+	mutable variant a_, b_;
+	variant get_value(const std::string& key) const {
+		if(key == "a") {
+			return a_;
+		} else if(key == "b") {
+			return b_;
+		} else {
+			return fallback_->query_value(key);
+		}
+	}
+
+	variant get_value_by_slot(int slot) const {
+		return fallback_->query_value_by_slot(slot);
+	}
+
+	void get_inputs(std::vector<formula_input>* inputs) const {
+		fallback_->get_inputs(inputs);
+	}
+public:
+	variant_comparator(const expression_ptr& expr, const formula_callable& fallback) : formula_callable(false), expr_(expr), fallback_(&fallback)
+	{}
+
+	bool operator()(const variant& a, const variant& b) const {
+		a_ = a;
+		b_ = b;
+		return expr_->evaluate(*this).as_bool();
+	}
+};
+}
 
 FUNCTION_DEF(sort, 1, 2, "sort(list, criteria): Returns a nicely-ordered list. If you give it an optional formula such as 'a>b' it will sort it according to that. This example favours larger numbers first instead of the default of smaller numbers first.")
 	variant list = args()[0]->evaluate(variables);
