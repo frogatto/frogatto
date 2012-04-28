@@ -33,6 +33,7 @@ namespace preferences {
 	void expand_data_paths();
 	void set_save_slot(const std::string& fname);
 	bool show_debug_hitboxes();
+	bool toogle_debug_hitboxes();
 	bool show_iphone_controls(); //iphone control hit rects
 	bool use_pretty_scaling();
 	void set_use_pretty_scaling(bool value);

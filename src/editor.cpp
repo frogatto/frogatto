@@ -148,7 +148,8 @@ class editor_menu_dialog : public gui::dialog
 			editor_.get_level().show_foreground() ? "Hide Foreground" : "Show Foreground", "f", boost::bind(&level::set_show_foreground, &editor_.get_level(), !editor_.get_level().show_foreground()),
 			editor_.get_level().show_background() ? "Hide Background" : "Show Background", "b", boost::bind(&level::set_show_background, &editor_.get_level(), !editor_.get_level().show_background()),
 			g_draw_stats ? "Hide Stats" : "Show Stats", "", toggle_draw_stats,
-			g_draw_grid ? "Hide Grid" : "Show Grid", "", toggle_draw_grid
+			g_draw_grid ? "Hide Grid" : "Show Grid", "", toggle_draw_grid,
+			preferences::show_debug_hitboxes() ? "Hide Hit Boxes" : "Show Hit Boxes", "h", preferences::toogle_debug_hitboxes,
 		};
 
 		std::vector<menu_item> res;
@@ -1335,6 +1336,10 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 
 	if(key.keysym.sym == SDLK_z) {
 		zoom_in();
+	}
+
+	if(key.keysym.sym == SDLK_h) {
+		preferences::toogle_debug_hitboxes();
 	}
 	
 	if(key.keysym.sym == SDLK_KP8) {
