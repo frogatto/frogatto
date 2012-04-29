@@ -709,6 +709,15 @@ std::vector<std::string> variant::as_list_string() const
 	return result;
 }
 
+std::vector<std::string> variant::as_list_string_optional() const
+{
+	if(is_null()) {
+		return std::vector<std::string>();
+	}
+
+	return as_list_string();
+}
+
 std::vector<int> variant::as_list_int() const
 {
 	std::vector<int> result;

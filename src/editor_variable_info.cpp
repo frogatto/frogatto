@@ -102,7 +102,9 @@ variant editor_variable_info::write() const
 }
 
 editor_entity_info::editor_entity_info(variant node)
-  : category_(node["category"].as_string()), help_(node["help"].as_string_default())
+  : category_(node["category"].as_string()),
+    editable_events_(node["events"].as_list_string_optional()),
+	help_(node["help"].as_string_default())
 {
 	foreach(variant var_node, node["var"].as_list()) {
 		//std::cerr << "CREATE VAR INFO...\n";	

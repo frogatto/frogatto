@@ -4,9 +4,11 @@
 
 #include <string>
 
+#include "asserts.hpp"
 #include "dialog.hpp"
 #include "editor.hpp"
 #include "entity.hpp"
+#include "label.hpp"
 #include "slider.hpp"
 #include "text_editor_widget.hpp"
 
@@ -47,9 +49,13 @@ private:
 
 	void deselect_object_type(std::string type);
 
+	void change_event_handler(const std::string& id, gui::label* lb, gui::text_editor_widget* text_editor);
+
 	editor& editor_;
 	std::vector<entity_ptr> entity_;
 	gui::widget_ptr context_menu_;
+
+	boost::scoped_ptr<assert_recover_scope> assert_recover_scope_;
 };
 
 }

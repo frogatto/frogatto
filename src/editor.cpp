@@ -968,7 +968,7 @@ void editor::edit_level()
 
 bool editor::handle_event(const SDL_Event& event, bool swallowed)
 {
-	const bool code_dialog_started_with_focus = code_dialog_ && code_dialog_->has_keyboard_focus();
+	const bool dialog_started_with_focus = code_dialog_ && code_dialog_->has_focus() || current_dialog_ && current_dialog_->has_focus();
 	if(code_dialog_ && code_dialog_->process_event(event, swallowed)) {
 		return true;
 	}
@@ -1008,7 +1008,7 @@ bool editor::handle_event(const SDL_Event& event, bool swallowed)
 		handle_key_press(event.key);
 		break;
 	case SDL_MOUSEBUTTONDOWN:
-		if(!code_dialog_started_with_focus) {
+		if(!dialog_started_with_focus) {
 			//if the code dialog started with focus, we ignore mouse
 			//presses so that the first click just unfocuses it.
 			handle_mouse_button_down(event.button);
@@ -1016,7 +1016,11 @@ bool editor::handle_event(const SDL_Event& event, bool swallowed)
 		break;
 
 	case SDL_MOUSEBUTTONUP:
-		handle_mouse_button_up(event.button);
+		if(!dialog_started_with_focus) {
+			//if the code dialog started with focus, we ignore mouse
+			//presses so that the first click just unfocuses it.
+			handle_mouse_button_up(event.button);
+		}
 		break;
 	case SDL_VIDEORESIZE: {
 		const SDL_ResizeEvent* const resize = reinterpret_cast<const SDL_ResizeEvent*>(&event);
@@ -2228,6 +2232,12 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 			  boost::bind(execute_functions, undo));
 		} else if(tool() == TOOL_SELECT_OBJECT && drawing_rect_) {
 			std::vector<entity_ptr> chars = lvl_->get_characters_in_rect(rect::from_coordinates(anchorx_, anchory_, xpos, ypos), xpos_, ypos_);
+			if(chars.empty()) {
+				//no chars is just a no-op.
+				drawing_rect_ = dragging_ = false;
+				return;
+			}
+
 			foreach(const entity_ptr& c, chars) {
 				lvl_->editor_select_object(c);
 			}
@@ -2241,12 +2251,6 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 				set_code_file();
 			} else {
 				current_dialog_ = property_dialog_.get();
-			}
-
-			if(lvl_->editor_selection().empty()) {
-				//if we choose an empty selection we revert to add
-				//objects mode.
-				change_tool(TOOL_ADD_OBJECT);
 			}
 		}
 	}

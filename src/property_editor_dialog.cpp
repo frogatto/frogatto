@@ -5,6 +5,8 @@
 #include <sstream>
 
 #include "button.hpp"
+#include "code_editor_widget.hpp"
+#include "custom_object_functions.hpp"
 #include "editor_dialogs.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
@@ -12,6 +14,7 @@
 #include "image_widget.hpp"
 #include "label.hpp"
 #include "load_level.hpp"
+#include "object_events.hpp"
 #include "property_editor_dialog.hpp"
 #include "raster.hpp"
 #include "slider.hpp"
@@ -131,6 +134,22 @@ void property_editor_dialog::init()
 
 	game_logic::formula_callable* vars = get_static_entity()->vars();
 	if(get_entity()->editor_info() && types_selected.size() == 1) {
+		//output an editing area for each editable event.
+		foreach(const std::string& handler, get_entity()->editor_info()->editable_events()) {
+			label_ptr lb = label::create(handler + " event handler", graphics::color_white());
+			add_widget(lb);
+
+			text_editor_widget* e = new text_editor_widget(220, 90);
+			game_logic::const_formula_ptr f = get_entity()->get_event_handler(get_object_event_id(handler));
+			if(f) {
+				e->set_text(f->str());
+			}
+			add_widget(widget_ptr(e));
+
+			e->set_on_change_handler(boost::bind(&property_editor_dialog::change_event_handler, this, handler, lb.get(), e));
+
+		}
+
 		foreach(const editor_variable_info& info, get_entity()->editor_info()->vars()) {
 
 			if(info.type() == editor_variable_info::XPOSITION ||
@@ -578,6 +597,37 @@ entity_ptr property_editor_dialog::get_static_entity() const
 		return result;
 	} else {
 		return get_entity();
+	}
+}
+
+void property_editor_dialog::change_event_handler(const std::string& id, gui::label* lb, gui::text_editor_widget* text_editor)
+{
+	assert_recover_scope_.reset(new assert_recover_scope);
+	static custom_object_callable custom_object_definition;
+
+	std::cerr << "TRYING TO CHANGE EVENT HANDLER...\n";
+	const std::string text = text_editor->text();
+	try {
+		game_logic::formula_ptr f(new game_logic::formula(variant(text), &get_custom_object_functions_symbol_table(), &custom_object_definition));
+		
+		foreach(level_ptr lvl, editor_.get_level_list()) {
+			foreach(entity_ptr entity_obj, entity_) {
+				entity_ptr e = lvl->get_entity_by_label(entity_obj->label());
+				if(e) {
+					std::cerr << "SET EVENT HANDLER\n";
+					e->set_event_handler(get_object_event_id(id), f);
+				} else {
+					std::cerr << "NO EVENT HANDLER FOUND\n";
+				}
+			}
+		}
+
+		std::cerr << "CHANGED EVENT HANDLER OKAY\n";
+
+		lb->set_text(id + " event handler");
+
+	} catch(validation_failure_exception& e) {
+		lb->set_text(id + " event handler (Error)");
 	}
 }
 

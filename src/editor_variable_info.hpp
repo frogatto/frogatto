@@ -52,9 +52,11 @@ public:
 	const std::vector<editor_variable_info>& vars() const { return vars_; }
 	const editor_variable_info* get_var_info(const std::string& var_name) const;
 	const std::string& help() const { return help_; }
+	const std::vector<std::string>& editable_events() const { return editable_events_; }
 private:
 	std::string category_;
 	std::vector<editor_variable_info> vars_;
+	std::vector<std::string> editable_events_;
 	std::string help_;
 };
 

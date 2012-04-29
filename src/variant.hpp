@@ -130,6 +130,7 @@ public:
 	const std::map<variant,variant>& as_map() const;
 
 	std::vector<std::string> as_list_string() const;
+	std::vector<std::string> as_list_string_optional() const;
 	std::vector<int> as_list_int() const;
 	std::vector<decimal> as_list_decimal() const;
 
