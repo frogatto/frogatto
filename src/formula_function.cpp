@@ -1443,7 +1443,7 @@ private:
 
 formula_function_expression::formula_function_expression(const std::string& name, const args_list& args, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& arg_names)
 : function_expression(name, args, arg_names.size(), arg_names.size()),
-	formula_(formula), precondition_(precondition), arg_names_(arg_names), star_arg_(-1)
+	formula_(formula), precondition_(precondition), arg_names_(arg_names), star_arg_(-1), has_closure_(false), base_slot_(0)
 {
 	assert(!precondition_ || !precondition_->str().empty());
 	for(size_t n = 0; n != arg_names_.size(); ++n) {
@@ -1481,6 +1481,7 @@ boost::intrusive_ptr<slot_formula_callable> formula_function_expression::calcula
 	if(!callable_ || callable_->refcount() != 1) {
 		callable_ = boost::intrusive_ptr<slot_formula_callable>(new slot_formula_callable);
 		callable_->reserve(arg_names_.size());
+		callable_->set_base_slot(base_slot_);
 	}
 
 	callable_->set_names(&arg_names_);
@@ -1607,8 +1608,8 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 		}
 	}
 
-	recursive_function_symbol_table::recursive_function_symbol_table(const std::string& fn, const std::vector<std::string>& args, const std::vector<variant>& default_args, function_symbol_table* backup)
-	: name_(fn), stub_(fn, const_formula_ptr(), const_formula_ptr(), args, default_args), backup_(backup)
+	recursive_function_symbol_table::recursive_function_symbol_table(const std::string& fn, const std::vector<std::string>& args, const std::vector<variant>& default_args, function_symbol_table* backup, const formula_callable_definition* closure_definition)
+	: name_(fn), stub_(fn, const_formula_ptr(), const_formula_ptr(), args, default_args), backup_(backup), closure_definition_(closure_definition)
 	{
 	}
 
@@ -1619,6 +1620,9 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 	{
 		if(fn == name_) {
 			formula_function_expression_ptr expr = stub_.generate_function_expression(args);
+			if(closure_definition_) {
+				expr->set_has_closure(closure_definition_->num_slots());
+			}
 			expr_.push_back(expr);
 			return expr;
 		} else if(backup_) {

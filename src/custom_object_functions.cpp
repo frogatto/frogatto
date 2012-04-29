@@ -1966,7 +1966,7 @@ void init_custom_object_functions(variant node)
 		game_logic::formula_callable_definition_ptr args_definition = game_logic::create_formula_callable_definition(first_arg, last_arg);
 
 		std::vector<variant> default_args;
-		recursive_function_symbol_table recursive_symbols(name, args, default_args, &get_custom_object_functions_symbol_table());
+		recursive_function_symbol_table recursive_symbols(name, args, default_args, &get_custom_object_functions_symbol_table(), NULL);
 		const_formula_ptr fml(new formula(fn["formula"], &recursive_symbols, args_definition.get()));
 		get_custom_object_functions_symbol_table().add_formula_function(
 		    name, fml, const_formula_ptr(), args, default_args);

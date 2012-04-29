@@ -1290,7 +1290,7 @@ expression_ptr parse_function_def(const variant& formula_str, const token*& i1, 
 		function_var.set_debug_info(info);
 	}
 	
-	recursive_function_symbol_table recursive_symbols(formula_name.empty() ? "recurse" : formula_name, args, default_args, symbols);
+	recursive_function_symbol_table recursive_symbols(formula_name.empty() ? "recurse" : formula_name, args, default_args, symbols, formula_name.empty() ? callable_def : NULL);
 
 	//create a definition of the callable representing
 	//function arguments.
@@ -1943,6 +1943,10 @@ variant formula::execute() const
 	map_formula_callable* null_callable = new map_formula_callable;
 	variant ref(null_callable);
 	return execute(*null_callable);
+}
+
+UNIT_TEST(recursive_call_lambda) {
+	CHECK(formula(variant("def fact_tail(n,a,b) factt(n,1) where factt = def(m,x) if(m > 0, x + m + recurse(m-1,x*m),x); fact_tail(5,0,0)")).execute() != variant(), "test failed");
 }
 
 UNIT_TEST(formula_slice) {

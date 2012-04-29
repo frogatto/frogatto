@@ -130,6 +130,7 @@ public:
 	virtual ~formula_function_expression() {}
 
 	void set_formula(const_formula_ptr f) { formula_ = f; }
+	void set_has_closure(int base_slot) { has_closure_ = true; base_slot_ = base_slot; }
 private:
 	boost::intrusive_ptr<slot_formula_callable> calculate_args_callable(const formula_callable& variables) const;
 	variant execute(const formula_callable& variables) const;
@@ -144,6 +145,8 @@ private:
 	mutable boost::intrusive_ptr<slot_formula_callable> callable_;
 
 	mutable boost::scoped_ptr<variant> fed_result_;
+	bool has_closure_;
+	int base_slot_;
 };
 
 typedef boost::shared_ptr<function_expression> function_expression_ptr;
@@ -191,8 +194,9 @@ class recursive_function_symbol_table : public function_symbol_table {
 	formula_function stub_;
 	function_symbol_table* backup_;
 	mutable std::vector<formula_function_expression_ptr> expr_;
+	const formula_callable_definition* closure_definition_;
 public:
-	recursive_function_symbol_table(const std::string& fn, const std::vector<std::string>& args, const std::vector<variant>& default_args, function_symbol_table* backup);
+	recursive_function_symbol_table(const std::string& fn, const std::vector<std::string>& args, const std::vector<variant>& default_args, function_symbol_table* backup, const formula_callable_definition* closure_definition);
 	virtual expression_ptr create_function(const std::string& fn,
 					                       const std::vector<expression_ptr>& args,
 										   const formula_callable_definition* callable_def) const;
