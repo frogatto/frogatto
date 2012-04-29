@@ -461,6 +461,28 @@ FUNCTION_DEF(fold, 2, 3, "fold(list, expr, [default]) -> value")
 	return a;
 END_FUNCTION_DEF(fold)
 
+FUNCTION_DEF(zipWith, 3, 3, "zipWith(list1, list2, expr) -> list")
+	variant list1 = args()[0]->evaluate(variables);
+	variant list2 = args()[1]->evaluate(variables);
+	const int size = std::min(list1.num_elements(), list2.num_elements());
+	if(size == 0) {
+		return variant();
+	}
+
+	std::vector<variant> retList;
+	boost::intrusive_ptr<map_formula_callable> callable(new map_formula_callable(&variables));
+	variant& a = callable->add_direct_access("a");
+	variant& b = callable->add_direct_access("b");
+	for(int n = 0; n < size; ++n) {
+		a = list1[n];
+		b = list2[n];
+		retList.push_back(args()[2]->evaluate(*callable));
+	}
+
+	return variant(&retList);
+END_FUNCTION_DEF(zipWith)
+
+
 namespace {
 class variant_comparator : public formula_callable {
 	expression_ptr expr_;
