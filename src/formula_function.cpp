@@ -465,11 +465,11 @@ FUNCTION_DEF(zipWith, 3, 3, "zipWith(list1, list2, expr) -> list")
 	variant list1 = args()[0]->evaluate(variables);
 	variant list2 = args()[1]->evaluate(variables);
 	const int size = std::min(list1.num_elements(), list2.num_elements());
+	std::vector<variant> retList;
 	if(size == 0) {
-		return variant();
+		return variant(&retList);
 	}
 
-	std::vector<variant> retList;
 	boost::intrusive_ptr<map_formula_callable> callable(new map_formula_callable(&variables));
 	variant& a = callable->add_direct_access("a");
 	variant& b = callable->add_direct_access("b");
