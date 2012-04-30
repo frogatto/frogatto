@@ -187,6 +187,7 @@ public:
 	                 const_custom_object_type_ptr new_type);
 
 	const bool mouse_event_swallowed() {return swallow_mouse_event_;}
+	void reset_mouse_event() {swallow_mouse_event_ = false;}
 
 protected:
 	//components of per-cycle process() that can be done even on
