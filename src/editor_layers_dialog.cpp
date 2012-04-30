@@ -54,9 +54,9 @@ void editor_layers_dialog::row_selected(int nrow)
 		return;
 	}
 
-	editor_.execute_command(
-	  boost::bind(&level::hide_tile_layer, &editor_.get_level(), rows_[nrow].layer, !rows_[nrow].hidden),
-	  boost::bind(&level::hide_tile_layer, &editor_.get_level(), rows_[nrow].layer, rows_[nrow].hidden));
+	foreach(level_ptr lvl, editor_.get_level_list()) {
+		lvl->hide_tile_layer(rows_[nrow].layer, !rows_[nrow].hidden);
+	}
 
 	init();
 }
