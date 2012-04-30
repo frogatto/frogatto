@@ -642,8 +642,12 @@ END_FUNCTION_DEF(shuffle)
 				formula_callable_ptr callable(self_callable);
 				self_callable->add("context", variant(&variables));
 				const std::string self = identifier_.empty() ? args()[1]->evaluate(variables).as_string() : identifier_;
+
+				variant& item_var = self_callable->add_direct_access(self);
+				variant& index_var = self_callable->add_direct_access("index");
 				for(size_t n = 0; n != items.num_elements(); ++n) {
-					self_callable->add(self, items[n]);
+					item_var = items[n];
+					index_var = variant(n);
 					formula_callable_ptr callable_with_backup(new formula_variant_callable_with_backup(items[n], variables));
 					formula_callable_ptr callable_ptr(new formula_callable_with_backup(*self_callable, *callable_with_backup));
 					const variant val = args()[2]->evaluate(*callable_ptr);
