@@ -18,6 +18,7 @@ class editor_layers_dialog : public gui::dialog
 public:
 	explicit editor_layers_dialog(editor& e);
 	void init();
+	void process();
 private:
 	void row_selected(int nrow);
 	void row_mouseover(int nrow);
@@ -30,6 +31,8 @@ private:
 	};
 
 	std::vector<row_data> rows_;
+
+	bool locked_;
 };
 
 }

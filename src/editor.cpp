@@ -1056,6 +1056,10 @@ void editor::process()
 		external_code_editor_->process();
 	}
 
+	if(layers_dialog_) {
+		layers_dialog_->process();
+	}
+
 	if(external_code_editor_ && external_code_editor_->replace_in_game_editor() && editor_menu_dialog_) {
 		std::string type;
 		if(lvl_->editor_selection().empty() == false) {
