@@ -28,11 +28,11 @@ void editor_layers_dialog::init()
 	using namespace gui;
 	grid_ptr g(new grid(2));
 
-	std::set<int> all_layers, visible_layers;
-	editor_.get_level().get_tile_layers(&all_layers, &visible_layers);
+	std::set<int> all_layers, hidden_layers;
+	editor_.get_level().get_tile_layers(&all_layers, &hidden_layers);
 
 	foreach(int layer, all_layers) {
-		const bool hidden = visible_layers.count(layer);
+		const bool hidden = hidden_layers.count(layer);
 		gui_section_widget* section = new gui_section_widget(hidden ? "checkbox-empty" : "checkbox-filled");
 
 		row_data row = { section, layer, hidden };
@@ -61,11 +61,11 @@ void editor_layers_dialog::process()
 
 	if(locked_) {
 		const editor::tileset& t = editor_.all_tilesets()[index];
-		std::set<int> all_layers, visible_layers;
-		editor_.get_level().get_tile_layers(&all_layers, &visible_layers);
-		std::cerr << "LOCKED.. " << visible_layers.size() << "\n";
+		std::set<int> all_layers, hidden_layers;
+		editor_.get_level().get_tile_layers(&all_layers, &hidden_layers);
+		std::cerr << "LOCKED.. " << hidden_layers.size() << "\n";
 
-		if(visible_layers.size() != 1 || *visible_layers.begin() != t.zorder) {
+		if(hidden_layers.size() != 1 || *hidden_layers.begin() != t.zorder) {
 			std::cerr << "CHANGING LOCK\n";
 			foreach(level_ptr lvl, editor_.get_level_list()) {
 				foreach(int layer, all_layers) {
@@ -84,6 +84,19 @@ void editor_layers_dialog::row_selected(int nrow)
 {
 	if(nrow == rows_.size()) {
 		locked_ = !locked_;
+		if(locked_) {
+			std::set<int> all_layers, hidden_layers;
+			editor_.get_level().get_tile_layers(&all_layers, &hidden_layers);
+			before_locked_state_ = hidden_layers;
+		} else if(!locked_) {
+			std::set<int> all_layers, hidden_layers;
+			editor_.get_level().get_tile_layers(&all_layers, &hidden_layers);
+			foreach(level_ptr lvl, editor_.get_level_list()) {
+				foreach(int layer, all_layers) {
+					lvl->hide_tile_layer(layer, before_locked_state_.count(layer));
+				}
+			}
+		}
 		init();
 		return;
 	}

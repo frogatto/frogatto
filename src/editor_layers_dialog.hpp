@@ -33,6 +33,8 @@ private:
 	std::vector<row_data> rows_;
 
 	bool locked_;
+
+	std::set<int> before_locked_state_;
 };
 
 }
