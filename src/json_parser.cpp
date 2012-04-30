@@ -376,11 +376,7 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 
 				if(stack.back().type == VAL_OBJ) {
 					if(!stack.back().obj_already_seen.insert(v.as_string()).second) {
-						try {
 						CHECK_PARSE(false, "Repeated attribute: " + v.as_string(), t.begin - doc.c_str());
-						} catch(parse_error& e) {
-							std::cerr << fname << " " << e.error_message() << "\n";
-						}
 					}
 
 					stack.push_back(JsonObject(debug_info, use_preprocessor));
