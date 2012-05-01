@@ -427,24 +427,20 @@ bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& ev
 				if( scroll_pos_ < 0 ){ 
 					scroll_pos_ = 0; 
 				}
-			} else {
-				cursor_.row = 0;
+				cursor_.col = find_equivalent_col(cursor_.col, cursor_.row+3, cursor_.row);
+				on_move_cursor();
 			}
-			cursor_.col = find_equivalent_col(cursor_.col, cursor_.row+3, cursor_.row);
-			on_move_cursor();
 			return true;
 		} else if(event.button == SDL_BUTTON_WHEELDOWN) {
-			if(cursor_.row < text_.size()-3) {
+			if(text_.size() > 2 && cursor_.row < text_.size()-3) {
 				cursor_.row += 3;
 				scroll_pos_ += 3;
 				if( scroll_pos_ > text_.size() ){ 
 					scroll_pos_ = text_.size(); 
 				}
-			} else {
-				cursor_.row = text_.size();
+				cursor_.col = find_equivalent_col(cursor_.col, cursor_.row-3, cursor_.row);
+				on_move_cursor();
 			}
-			cursor_.col = find_equivalent_col(cursor_.col, cursor_.row-3, cursor_.row);
-			on_move_cursor();
 			return true;
 		}
 #endif

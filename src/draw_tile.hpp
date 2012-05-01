@@ -9,10 +9,11 @@ namespace graphics {
 class blit_queue;
 }
 
-class level_tile;
+struct level_tile;
 
-struct tile_corner
+class tile_corner
 {
+public:
 	GLshort vertex[2];
 	GLfloat uv[2];
 };

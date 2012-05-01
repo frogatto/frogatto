@@ -370,41 +370,42 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 				? MouseDownEventAllID 
 				: event.type == SDL_MOUSEMOTION
 					? MouseMoveEventAllID : MouseUpEventAllID;
-			x = (x*graphics::screen_width())/preferences::virtual_screen_width() + last_draw_position().x/100;
-			y = (y*graphics::screen_height())/preferences::virtual_screen_height() + last_draw_position().y/100;
-			game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
-			callable->add("mouse_x", variant(x));
-			callable->add("mouse_y", variant(y));
-			callable->add("mouse_index", variant(i));
-			if(event.type != SDL_MOUSEMOTION) {
-				callable->add("mouse_button", variant(event.button.button));
-			}
-			variant v(callable);
-			std::vector<variant> items;
-			std::vector<entity_ptr> cs = lvl_->get_characters_at_point(x, y, last_draw_position().x/100, last_draw_position().y/100);
-			std::sort(cs.begin(), cs.end(), zorder_compare);
-			std::vector<entity_ptr>::iterator it;
-			bool handled = false;
-			bool click_handled = false;
-			for(it = cs.begin(); it != cs.end(); ++it) {
-				(*it)->handle_event(basic_evt, callable);
-				// XXX: fix this for dragging(with multiple mice)
-				if(event.type == SDL_MOUSEBUTTONUP && !click_handled /*&& !dragging*/) {
-					(*it)->handle_event(MouseClickID, callable);
-					if((*it)->mouse_event_swallowed()) {
-						click_handled = true;
-					}
+			if(!lvl_->gui_event(event)) {
+				x = (x*graphics::screen_width())/preferences::virtual_screen_width() + last_draw_position().x/100;
+				y = (y*graphics::screen_height())/preferences::virtual_screen_height() + last_draw_position().y/100;
+				game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
+				callable->add("mouse_x", variant(x));
+				callable->add("mouse_y", variant(y));
+				callable->add("mouse_index", variant(i));
+				if(event.type != SDL_MOUSEMOTION) {
+					callable->add("mouse_button", variant(event.button.button));
 				}
-				handled = true;
-				items.push_back(variant( (*it).get()));
+				variant v(callable);
+				std::vector<variant> items;
+				std::vector<entity_ptr> cs = lvl_->get_characters_at_point(x, y, last_draw_position().x/100, last_draw_position().y/100);
+				std::sort(cs.begin(), cs.end(), zorder_compare);
+				std::vector<entity_ptr>::iterator it;
+				bool handled = false;
+				bool click_handled = false;
+				for(it = cs.begin(); it != cs.end(); ++it) {
+					(*it)->handle_event(basic_evt, callable);
+					// XXX: fix this for dragging(with multiple mice)
+					if(event.type == SDL_MOUSEBUTTONUP && !click_handled /*&& !dragging*/) {
+						(*it)->handle_event(MouseClickID, callable);
+						if((*it)->mouse_event_swallowed()) {
+							click_handled = true;
+						}
+					}
+					handled = true;
+					items.push_back(variant((*it).get()));
+				}
+				callable->add("handled", variant(handled));
+				variant obj_ary(&items);
+				callable->add("objects_under_mouse", obj_ary);
+				foreach(entity_ptr object, level::current().get_chars()) {
+					object->handle_event(catch_all_event, callable);
+				}
 			}
-			callable->add("handled", variant(handled));
-			variant obj_ary(&items);
-			callable->add("objects_under_mouse", obj_ary);
-			foreach(entity_ptr object, level::current().get_chars()) {
-				object->handle_event(catch_all_event, callable);
-			}
-
 			break;
 #endif
 	}

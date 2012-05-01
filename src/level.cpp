@@ -386,8 +386,6 @@ level::level(const std::string& level_cfg, variant node)
 	if(node.has_key("gui")) {
 		if(node["gui"].is_string()) {
 			gui_algo_str_.push_back(node["gui"].as_string());
-			gui_algorithm_.push_back(gui_algorithm::get(gui_algo_str_.back()));
-			gui_algorithm_.back()->new_level();
 		} else if(node["gui"].is_list()) {
 			gui_algo_str_ = node["gui"].as_list_string();
 		} else {
@@ -983,7 +981,7 @@ variant level::write() const
 		res.add("y_resolution", y_resolution_);
 	}
 
-	if(!gui_algo_str_.empty() && gui_algo_str_.front() != "gui" ) {
+	if(!gui_algo_str_.empty() && !(gui_algo_str_.front() == "default" && gui_algo_str_.size() == 1)) {
 		foreach(std::string gui_str, gui_algo_str_) {
 			res.add("gui", gui_str);
 		}
@@ -3878,6 +3876,16 @@ int level::current_difficulty() const
 	}
 
 	return p->difficulty();
+}
+
+bool level::gui_event(const SDL_Event &event)
+{
+	foreach(gui_algorithm_ptr g, gui_algorithm_) {
+		if(g->gui_event(*this, event)) {
+			return true;
+		}
+	}
+	return false;
 }
 
 std::pair<std::vector<level_tile>::const_iterator, std::vector<level_tile>::const_iterator> level::tiles_at_loc(int x, int y) const

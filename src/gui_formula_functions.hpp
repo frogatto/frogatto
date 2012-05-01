@@ -29,6 +29,7 @@ public:
 	void process(level& lvl);
 	void draw(const level& lvl);
 	void load(level& lvl);
+	bool gui_event(level& lvl, const SDL_Event &event);
 
 	void draw_animation(const std::string& object_name, const std::string& anim, int x, int y, int cycle) const;
 	void color(unsigned char r, unsigned char g, unsigned char b, unsigned char a) const;
@@ -60,6 +61,8 @@ private:
 	variant cached_draw_commands_;
 
 	variant buttons_;
+	std::map<std::string, std::map<const int, game_logic::formula_ptr> > button_formulas_;
+	std::map<std::string, rect> button_hit_rects_;
 
 	std::vector<gui_algorithm_ptr> includes_;
 };

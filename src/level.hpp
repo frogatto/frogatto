@@ -329,6 +329,8 @@ public:
 	int x_resolution() const { return x_resolution_; }
 	int y_resolution() const { return y_resolution_; }
 
+	bool gui_event(const SDL_Event &event);
+
 	typedef std::vector<level_tile>::const_iterator TileItor;
 	std::pair<TileItor, TileItor> tiles_at_loc(int x, int y) const;
 
