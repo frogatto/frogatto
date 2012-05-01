@@ -443,9 +443,6 @@ void gui_algorithm::new_level() {
 	if(!buttons_.is_null()) {
 		object_->mutate_value("buttons", buttons_);
 	}
-	foreach(gui_algorithm_ptr inc, includes_) {
-		inc->new_level();
-	}
 }
 
 void gui_algorithm::load(level& lvl) {
