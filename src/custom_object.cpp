@@ -3251,7 +3251,17 @@ public:
 };
 }
 
+void custom_object::handle_event_delay(int event, const formula_callable* context)
+{
+	handle_event_internal(event, context, false);
+}
+
 void custom_object::handle_event(int event, const formula_callable* context)
+{
+	handle_event_internal(event, context);
+}
+
+void custom_object::handle_event_internal(int event, const formula_callable* context, bool execute_commands_now)
 {
 	if(hitpoints_ <= 0 && event != OBJECT_EVENT_DIE) {
 		return;
@@ -3304,7 +3314,11 @@ void custom_object::handle_event(int event, const formula_callable* context)
 		bool result = false;
 		
 		try {
-			result = execute_command(var);
+			if(execute_commands_now) {
+				result = execute_command(var);
+			} else {
+				delayed_commands_.push_back(var);
+			}
 		} catch(validation_failure_exception&) {
 		}
 
@@ -3315,6 +3329,22 @@ void custom_object::handle_event(int event, const formula_callable* context)
 			break;
 		}
 	}
+}
+
+void custom_object::resolve_delayed_events()
+{
+	if(delayed_commands_.empty()) {
+		return;
+	}
+
+	try {
+		foreach(const variant& v, delayed_commands_) {
+			execute_command(v);
+		}
+	} catch(validation_failure_exception&) {
+	}
+
+	delayed_commands_.clear();
 }
 
 bool custom_object::execute_command(const variant& var)

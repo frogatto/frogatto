@@ -552,18 +552,23 @@ void detect_user_collisions(level& lvl)
 				{
 					user_collision_callable* callable = new user_collision_callable(a, b, *collision_buf[n].first, *collision_buf[n].second);
 					game_logic::formula_callable_ptr ptr(callable);
-					a->handle_event(CollideObjectID, callable);
-					a->handle_event(get_collision_event_id(*collision_buf[n].first), callable);
+					a->handle_event_delay(CollideObjectID, callable);
+					a->handle_event_delay(get_collision_event_id(*collision_buf[n].first), callable);
 				}
 
 				{
 					user_collision_callable* callable = new user_collision_callable(b, a, *collision_buf[n].second, *collision_buf[n].first);
 					game_logic::formula_callable_ptr ptr(callable);
-					b->handle_event(CollideObjectID, callable);
-					b->handle_event(get_collision_event_id(*collision_buf[n].second), callable);
+					b->handle_event_delay(CollideObjectID, callable);
+					b->handle_event_delay(get_collision_event_id(*collision_buf[n].second), callable);
 				}
 			}
 		}
+	}
+
+	for(std::vector<entity_ptr>::const_iterator i = chars.begin(); i != chars.end(); ++i) {
+		const entity_ptr& a = *i;
+		a->resolve_delayed_events();
 	}
 }
 

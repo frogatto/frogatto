@@ -185,6 +185,8 @@ public:
 
 	virtual void handle_event(const std::string& id, const formula_callable* context=NULL) {}
 	virtual void handle_event(int id, const formula_callable* context=NULL) {}
+	virtual void handle_event_delay(int id, const formula_callable* context=NULL) {}
+	virtual void resolve_delayed_events() = 0;
 
 	//function which returns true if this object can be 'interacted' with.
 	//i.e. if the player ovelaps with the object and presses up if they will

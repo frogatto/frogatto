@@ -157,6 +157,9 @@ public:
 
 	virtual void handle_event(const std::string& event, const formula_callable* context=NULL);
 	virtual void handle_event(int event, const formula_callable* context=NULL);
+	virtual void handle_event_delay(int event, const formula_callable* context=NULL);
+
+	virtual void resolve_delayed_events();
 
 	virtual bool serializable() const;
 
@@ -363,6 +366,9 @@ private:
 	std::vector<int> platform_offsets_;
 
 	bool swallow_mouse_event_;
+
+	void handle_event_internal(int event, const formula_callable* context, bool execute_commands_now=true);
+	std::vector<variant> delayed_commands_;
 };
 
 #endif
