@@ -643,6 +643,14 @@ float get_engine_music_volume()
 	return engine_music_volume;
 }
 
+namespace {
+std::map<std::string,std::string> get_music_paths() {
+	std::map<std::string,std::string> res;
+	module::get_unique_filenames_under_dir("music/", &res);
+	return res;
+}
+}
+
 void play_music(const std::string& file)
 {
 	if(preferences::no_sound() || preferences::no_music() || !sound_ok) {
@@ -654,24 +662,28 @@ void play_music(const std::string& file)
 	}
 
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
+
+	static const std::map<std::string, std::string> music_paths = get_music_paths();
+	if(!music_paths.count(file)) {
+		return;
+	}
+
+	const std::string& path = music_paths.find(file)->second;
+
 	if(current_mix_music) {
 		next_music() = file;
 		Mix_FadeOutMusic(500);
 		return;
 	}
 
-	if(file.empty()) {
-		return;
-	}
-
 	current_music_name() = file;
 #if defined(__ANDROID__)
-	current_mix_music = Mix_LoadMUS_RW(sys::read_sdl_rw_from_asset(module::map_file("music/" + file).c_str()));
+	current_mix_music = Mix_LoadMUS_RW(sys::read_sdl_rw_from_asset(path.c_str()));
 #else
-	current_mix_music = Mix_LoadMUS(module::map_file("music/" + file).c_str());
+	current_mix_music = Mix_LoadMUS(path.c_str());
 #endif
 	if(!current_mix_music) {
-		std::cerr << "Mix_LoadMUS ERROR loading " << file << ": " << Mix_GetError() << "\n";
+		std::cerr << "Mix_LoadMUS ERROR loading " << path << ": " << Mix_GetError() << "\n";
 		return;
 	}
 
@@ -718,6 +730,13 @@ void play_music_interrupt(const std::string& file)
 
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 
+	static const std::map<std::string, std::string> music_paths = get_music_paths();
+	if(!music_paths.count(file)) {
+		return;
+	}
+
+	const std::string& path = music_paths.find(file)->second;
+
 	//note that calling HaltMusic will result in on_music_finished being
 	//called, which releases the current_music pointer.
 	Mix_HaltMusic();
@@ -726,9 +745,9 @@ void play_music_interrupt(const std::string& file)
 	}
 
 #if defined(__ANDROID__)
-	current_mix_music = Mix_LoadMUS_RW(sys::read_sdl_rw_from_asset(module::map_file("music/" + file).c_str()));
+	current_mix_music = Mix_LoadMUS_RW(sys::read_sdl_rw_from_asset(path.c_str()));
 #else
-	current_mix_music = Mix_LoadMUS(module::map_file("music/" + file).c_str());
+	current_mix_music = Mix_LoadMUS(path.c_str());
 #endif
 
 	if(!current_mix_music) {
