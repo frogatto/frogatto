@@ -77,6 +77,10 @@ private:
 
 	std::vector<KnownFile> files_;
 	void select_file(int index);
+
+	std::vector<std::string> suggestions_;
+
+	gui::grid_ptr suggestions_grid_;
 };
 
 #endif // !NO_EDITOR

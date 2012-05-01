@@ -9,6 +9,8 @@
 #include <boost/bind.hpp>
 #include <boost/regex.hpp>
 
+#include <stack>
+
 namespace gui
 {
 
@@ -365,21 +367,25 @@ code_editor_widget::ObjectInfo code_editor_widget::get_object_at(int row, int co
 	ASSERT_LOG(pos >= 0 && pos <= current_text_.size(), "Unexpected position in code editor widget: " << pos << " / " << current_text_.size());
 	const json::Token* begin_token = NULL;
 	const json::Token* end_token = NULL;
+	std::stack<const json::Token*> begin_stack;
 	int nbracket = 0;
 	foreach(const json::Token& token, tokens_) {
 		if(token.type == json::Token::TYPE_LCURLY) {
-			if(token.end <= ptr) {
-				begin_token = &token;
-			} else {
-				++nbracket;
-			}
+			begin_stack.push(&token);
 		}
 
-		if(token.type == json::Token::TYPE_RCURLY && token.begin >= ptr) {
-			if(!nbracket--) {
-				end_token = &token;
+		if(token.type == json::Token::TYPE_RCURLY) {
+			if(begin_stack.empty()) {
+				return ObjectInfo();
 			}
-			break;
+
+			if(begin_stack.top()->begin <= ptr && token.begin >= ptr) {
+				begin_token = begin_stack.top();
+				end_token = &token;
+				break;
+			} else {
+				begin_stack.pop();
+			}
 		}
 	}
 

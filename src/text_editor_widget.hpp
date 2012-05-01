@@ -61,6 +61,8 @@ public:
 	void set_highlight_lines(int begin, int end);
 	void clear_highlight_lines();
 
+	std::pair<int, int> char_position_on_screen(int row, int col) const;
+
 protected:
 
 	void set_row_contents(int row, const std::string& value);
@@ -76,7 +78,6 @@ protected:
 	bool record_op(const char* type=NULL);
 
 	std::pair<int, int> mouse_position_to_row_col(int x, int y) const;
-	std::pair<int, int> char_position_on_screen(int row, int col) const;
 
 	virtual void on_move_cursor(bool auto_shift=false);
 

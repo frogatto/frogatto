@@ -1,6 +1,8 @@
 #ifndef NO_EDITOR
 #include <boost/bind.hpp>
 
+#include <algorithm>
+
 #include "button.hpp"
 #include "code_editor_dialog.hpp"
 #include "code_editor_widget.hpp"
@@ -13,6 +15,7 @@
 #include "json_parser.hpp"
 #include "label.hpp"
 #include "module.hpp"
+#include "object_events.hpp"
 #include "raster.hpp"
 #include "text_editor_widget.hpp"
 
@@ -167,6 +170,13 @@ bool code_editor_dialog::handle_event(const SDL_Event& event, bool claimed)
 		}
 	}
 
+	if(suggestions_grid_) {
+		claimed = suggestions_grid_->process_event(event, claimed) || claimed;
+		if(claimed) {
+			return claimed;
+		}
+	}
+
 	claimed = claimed || dialog::handle_event(event, claimed);
 	if(claimed) {
 		return claimed;
@@ -210,17 +220,87 @@ void code_editor_dialog::handle_draw_children() const
 	if(animation_preview_) {
 		animation_preview_->draw();
 	}
+
+	if(suggestions_grid_) {
+		suggestions_grid_->draw();
+	}
 }
 
 void code_editor_dialog::process()
 {
+	using namespace gui;
+
 	if(invalidated_ && SDL_GetTicks() > invalidated_ + 200) {
 		const bool result = custom_object_type::set_file_contents(fname_, editor_->text());
 		error_label_->set_text(result ? "Ok" : "Error");
 		invalidated_ = 0;
 	}
 
+	const int cursor_pos = editor_->row_col_to_text_pos(editor_->cursor_row(), editor_->cursor_col());
+	const std::string& text = editor_->current_text();
+
 	const gui::code_editor_widget::ObjectInfo info = editor_->get_current_object();
+	const json::Token* selected_token = NULL;
+	int token_pos = 0;
+	foreach(const json::Token& token, info.tokens) {
+		const int begin_pos = token.begin - text.c_str();
+		const int end_pos = token.end - text.c_str();
+		if(cursor_pos >= begin_pos && cursor_pos <= end_pos) {
+			token_pos = cursor_pos - begin_pos;
+			selected_token = &token;
+			break;
+		}
+	}
+
+	std::vector<std::string> suggestions;
+	if(selected_token != NULL) {
+
+		const bool at_end = token_pos == selected_token->end - selected_token->begin;
+		std::string str(selected_token->begin, selected_token->end);
+		if(str.size() >= 3 && std::string(str.begin(), str.begin()+3) == "on_" && at_end) {
+			const std::string id(str.begin()+3, str.end());
+			for(int i = 0; i != NUM_OBJECT_BUILTIN_EVENT_IDS; ++i) {
+				const std::string& event_str = get_object_event_str(i);
+				if(event_str.size() > id.size() && std::equal(id.begin(), id.end(), event_str.begin())) {
+					suggestions.push_back("on_" + event_str);
+				}
+			}
+		}
+
+
+	}
+
+	if(suggestions != suggestions_) {
+		suggestions_ = suggestions;
+		suggestions_grid_.reset();
+
+		if(suggestions_.empty() == false) {
+			suggestions_grid_.reset(new grid(1));
+			suggestions_grid_->set_show_background(true);
+			suggestions_grid_->set_max_height(100);
+			foreach(const std::string& str, suggestions_) {
+				suggestions_grid_->add_col(widget_ptr(new label(str)));
+			}
+		}
+		std::cerr << "SUGGESTIONS: " << suggestions_.size() << ":\n";
+		foreach(const std::string& suggestion, suggestions_) {
+			std::cerr << " - " << suggestion << "\n";
+		}
+	}
+
+	if(suggestions_grid_) {
+		const std::pair<int,int> cursor_pos = editor_->char_position_on_screen(editor_->cursor_row(), editor_->cursor_col());
+		suggestions_grid_->set_loc(x() + editor_->x() + cursor_pos.second, y() + editor_->y() + cursor_pos.first - suggestions_grid_->height());
+		/*
+		if(suggestions_grid_->y() < 10) {
+			suggestions_grid_->set_loc(suggestions_grid_->x(), suggestions_grid_->y() + suggestions_grid_->height() + 14);
+		}
+
+		if(suggestions_grid_->x() + suggestions_grid_->width() + 20 > graphics::screen_width()) {
+			suggestions_grid_->set_loc(graphics::screen_width() - suggestions_grid_->width() - 20, suggestions_grid_->y());
+		}*/
+	}
+
 	try {
 		editor_->set_highlight_current_object(false);
 		if(gui::animation_preview_widget::is_animation(info.obj)) {
@@ -258,6 +338,7 @@ void code_editor_dialog::process()
 	if(animation_preview_) {
 		animation_preview_->process();
 	}
+
 }
 
 void code_editor_dialog::on_search_changed()

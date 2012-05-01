@@ -16,6 +16,7 @@ public:
 	code_editor_widget(int width, int height);
 	void on_slider_move(float value);
 
+	const std::string& current_text() const { return current_text_; }
 	struct ObjectInfo {
 		int begin, end;
 		variant obj;
