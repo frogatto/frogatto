@@ -2917,7 +2917,11 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	case CUSTOM_OBJECT_PLATFORM_AREA: {
 		if(value.is_null()) {
 			platform_area_.reset();
+			platform_solid_info_ = const_solid_info_ptr();
 			calculate_solid_rect();
+			break;
+		} else if(value.is_list() && value.num_elements() == 0) {
+			set_platform_area(rect());
 			break;
 		}
 

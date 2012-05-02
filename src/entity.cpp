@@ -95,7 +95,7 @@ void entity::set_platform_motion_x(int value)
 
 int entity::map_platform_pos(int xpos) const
 {
-	if(xpos >= prev_platform_rect_.x() && xpos < prev_platform_rect_.x() + prev_platform_rect_.w()) {
+	if(platform_rect_.w() > 0 && platform_rect_.h() > 0 && xpos >= prev_platform_rect_.x() && xpos < prev_platform_rect_.x() + prev_platform_rect_.w()) {
 		const int proportion = xpos - prev_platform_rect_.x();
 		int maps_to = (1024*proportion*platform_rect_.w())/prev_platform_rect_.w();
 		if(maps_to%1024 >= 512) {
@@ -103,6 +103,7 @@ int entity::map_platform_pos(int xpos) const
 		} else {
 			maps_to = platform_rect_.x() + maps_to/1024;
 		}
+
 
 		return maps_to - xpos - (feet_x() - prev_feet_x_);
 	}

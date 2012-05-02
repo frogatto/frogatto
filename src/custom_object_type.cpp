@@ -534,7 +534,7 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 	has_solid_(solid_ || use_image_for_collisions_),
 	solid_dimensions_(has_solid_ || platform_ ? 0xFFFFFFFF : 0),
 	collide_dimensions_(0xFFFFFFFF),
-	weak_solid_dimensions_(has_solid_ || platform_ ? 0xFFFFFFFF : 0),
+	weak_solid_dimensions_(has_solid_ || platform_ || node["has_platform"].as_bool(false) ? 0xFFFFFFFF : 0),
 	weak_collide_dimensions_(0xFFFFFFFF),
 	activation_border_(node["activation_border"].as_int(100)),
 	editor_force_standing_(node["editor_force_standing"].as_bool(false)),
