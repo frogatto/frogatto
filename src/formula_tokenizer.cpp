@@ -44,6 +44,7 @@ const FFL_TOKEN_TYPE* create_single_char_tokens() {
 	chars['='] = TOKEN_OPERATOR;
 	chars['%'] = TOKEN_OPERATOR;
 	chars['^'] = TOKEN_OPERATOR;
+	chars['|'] = TOKEN_PIPE;
 	return chars;
 }
 
@@ -153,8 +154,15 @@ token get_token(iterator& i1, iterator i2) {
 			throw token_error("Unterminated q string");
 		}
 		break;
-	case '>':
 	case '<':
+		if(i1+1 != i2 && *(i1+1) == '-') {
+			t.type = TOKEN_LEFT_POINTER;
+			i1 += 2;
+			t.end = i1;
+			return t;
+		}
+
+	case '>':
 	case '!':
 		t.type = TOKEN_OPERATOR;
 		++i1;

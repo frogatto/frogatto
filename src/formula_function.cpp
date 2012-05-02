@@ -122,7 +122,16 @@ std::string pinpoint_location(variant v, std::string::const_iterator begin,
 	for(int n = 0; n != pos; ++n) {
 		s << " ";
 	}
-	s << "^\n";
+	s << "^";
+
+	if(end > begin && pos + (end - begin) < line.size()) {
+		for(int n = 0; n < (end - begin)-1; ++n) {
+			s << "-";
+		}
+		s << "^";
+	}
+
+	s << "\n";
 	return s.str();
 }
 

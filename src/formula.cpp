@@ -201,6 +201,83 @@ private:
 	std::vector<expression_ptr> items_;
 };
 
+class list_comprehension_expression : public formula_expression {
+public:
+	list_comprehension_expression(expression_ptr expr, const std::map<std::string, expression_ptr>& generators, const std::vector<expression_ptr>& filters)
+	  : formula_expression("_list_compr"), expr_(expr), generators_(generators), filters_(filters)
+	{
+		for(std::map<std::string,expression_ptr>::const_iterator i = generators.begin(); i != generators.end(); ++i) {
+			generator_names_.push_back(i->first);
+		}
+	}
+	
+private:
+	variant execute(const formula_callable& variables) const {
+		std::vector<int> nelements;
+		std::vector<variant> lists;
+		for(std::map<std::string, expression_ptr>::const_iterator i = generators_.begin(); i != generators_.end(); ++i) {
+			lists.push_back(i->second->evaluate(variables));
+			nelements.push_back(lists.back().num_elements());
+			if(nelements.back() == 0) {
+				std::vector<variant> items;
+				return variant(&items);
+			}
+		}
+
+		std::vector<variant> result;
+
+		boost::intrusive_ptr<map_formula_callable> callable(new map_formula_callable(&variables));
+		std::vector<variant*> args;
+		foreach(const std::string& arg, generator_names_) {
+			args.push_back(&callable->add_direct_access(arg));
+		}
+
+		std::vector<int> indexes(lists.size());
+		for(;;) {
+			for(int n = 0; n != indexes.size(); ++n) {
+				*args[n] = lists[n][indexes[n]];
+			}
+
+			bool passes = true;
+			foreach(const expression_ptr& filter, filters_) {
+				if(filter->evaluate(*callable).as_bool() == false) {
+					passes = false;
+					break;
+				}
+			}
+
+			if(passes) {
+				result.push_back(expr_->evaluate(*callable));
+			}
+
+			if(!increment_vec(indexes, nelements)) {
+				break;
+			}
+		}
+		
+		return variant(&result);
+	}
+
+	static bool increment_vec(std::vector<int>& v, const std::vector<int>& max_values) {
+		int index = 0;
+		while(index != v.size()) {
+			if(++v[index] < max_values[index]) {
+				return true;
+			}
+
+			v[index] = 0;
+			++index;
+		}
+
+		return false;
+	}
+
+	expression_ptr expr_;
+	std::map<std::string, expression_ptr> generators_;
+	std::vector<std::string> generator_names_;
+	std::vector<expression_ptr> filters_;
+};
+
 class map_expression : public formula_expression {
 public:
 	explicit map_expression(const std::vector<expression_ptr>& items)
@@ -1396,10 +1473,46 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 			}	
 			if (tok->type == TOKEN_LSQUARE) {
 				if (tok == i1) {
-					//create a list
-					std::vector<expression_ptr> args;
-					parse_args(formula_str,i1+1,i2-1,&args,symbols, callable_def, can_optimize);
-					return expression_ptr(new list_expression(args));
+					const token* pipe = i1+1;
+					if(token_matcher().add(TOKEN_PIPE).find_match(pipe, i2)) {
+						//a list comprehension
+						expression_ptr expr = parse_expression(formula_str, i1+1, pipe, symbols, callable_def, can_optimize);
+
+						typedef std::pair<const token*,const token*> Arg;
+						std::vector<Arg> args;
+						const token* arg = pipe+1;
+						const token* end_arg = arg;
+						while(token_matcher().add(TOKEN_COMMA).find_match(end_arg, i2-1)) {
+							args.push_back(Arg(arg, end_arg));
+							arg = ++end_arg;
+						}
+						args.push_back(Arg(arg, i2-1));
+
+						std::map<std::string, expression_ptr> generators;
+						std::vector<expression_ptr> filter_expr;
+
+						foreach(const Arg& arg, args) {
+							std::cerr << "ARGUMENT: (((" << std::string(arg.first->begin, (arg.second-1)->end) << ")))\n";
+							const token* arrow = arg.first;
+							if(token_matcher().add(TOKEN_LEFT_POINTER).find_match(arrow, arg.second)) {
+								ASSERT_LOG(arrow - arg.first == 1 && arg.first->type == TOKEN_IDENTIFIER, "expected identifier to the left of <- in list comprehension\n" << pinpoint_location(formula_str, arg.first->begin, arrow->end));
+
+								const std::string key(arg.first->begin, arg.first->end);
+								ASSERT_LOG(generators.count(key) == 0, "repeated identifier in list generator: " << key << "\n" << pinpoint_location(formula_str, arg.first->begin, arrow->end));
+
+								generators[key] = parse_expression(formula_str, arrow+1, arg.second, symbols, callable_def, can_optimize);
+							} else {
+								filter_expr.push_back(parse_expression(formula_str, arg.first, arg.second, symbols, callable_def, can_optimize));
+							}
+						}
+
+						return expression_ptr(new list_comprehension_expression(expr, generators, filter_expr));
+					} else {
+						//create a list
+						std::vector<expression_ptr> args;
+						parse_args(formula_str,i1+1,i2-1,&args,symbols, callable_def, can_optimize);
+						return expression_ptr(new list_expression(args));
+					}
 				} else {
 					//determine if it's an array-style access of a single list element, or a slice.
 					const token* tok2 = i2-2;
@@ -2043,6 +2156,34 @@ UNIT_TEST(formula_where_map) {
 UNIT_TEST(formula_function_default_args) {
 	CHECK_EQ(formula(variant("def f(x=5) x ; f() + f(1)")).execute(), variant(6));
 	CHECK_EQ(formula(variant("f(5) where f = def(x,y=2) x*y")).execute(), variant(10));
+}
+
+UNIT_TEST(formula_list_comprehension) {
+	std::vector<variant> result;
+	for(int n = 0; n != 4; ++n) {
+		result.push_back(variant(n));
+	}
+
+	CHECK_EQ(formula(variant("[x | x <- [0,1,2,3]]")).execute(), variant(&result));
+	CHECK_EQ(formula(variant("[x | x <- [0,1,2,3], x%2 = 1]")).execute(), formula(variant("[1,3]")).execute());
+}
+
+BENCHMARK(formula_list_comprehension_bench) {
+	formula f(variant("[x*x + 5 | x <- range(input)]"));
+	static map_formula_callable* callable = new map_formula_callable;
+	callable->add("input", variant(1000));
+	BENCHMARK_LOOP {
+		f.execute(*callable);
+	}
+}
+
+BENCHMARK(formula_map_bench) {
+	formula f(variant("map(range(input), value*value + 5)"));
+	static map_formula_callable* callable = new map_formula_callable;
+	callable->add("input", variant(1000));
+	BENCHMARK_LOOP {
+		f.execute(*callable);
+	}
 }
 
 BENCHMARK(formula_recurse_sort) {
