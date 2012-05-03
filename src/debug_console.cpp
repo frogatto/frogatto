@@ -416,8 +416,15 @@ bool console_dialog::on_begin_enter()
 		focus_ = lvl_->editor_selection().front();
 	}
 
+	std::vector<std::string> data = text_editor_->get_data();
+
 	std::string ffl(text_editor_->get_data().back());
-	ASSERT_LOG(ffl.size() >= Prompt.size() && std::equal(Prompt.begin(), Prompt.end(), ffl.begin()), "No prompt found in debug console: " << ffl);
+	while(ffl.size() < Prompt.size() || std::equal(Prompt.begin(), Prompt.end(), ffl.begin()) == false) {
+		data.pop_back();
+		ASSERT_LOG(data.empty() == false, "No prompt found in debug console: " << ffl);
+		ffl = data.back() + ffl;
+	}
+
 	ffl.erase(ffl.begin(), ffl.begin() + Prompt.size());
 	text_editor_->set_text(text_editor_->text() + "\n" + Prompt);
 	text_editor_->set_cursor(text_editor_->get_data().size()-1, Prompt.size());
