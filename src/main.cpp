@@ -14,6 +14,7 @@
 #endif
 
 #include "asserts.hpp"
+#include "checksum.hpp"
 #include "controls.hpp"
 #include "custom_object.hpp"
 #include "custom_object_functions.hpp"
@@ -307,6 +308,8 @@ extern "C" int main(int argcount, char** argvec)
 			}
 		}
 	}
+
+	checksum::manager checksum_manager;
 
 	preferences::expand_data_paths();
 	LOG( "After expand_data_paths()" );

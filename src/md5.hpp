@@ -17,6 +17,8 @@ extern void MD5Init(struct MD5Context *ctx);
 extern void MD5Update(struct MD5Context *ctx, unsigned char *buf, unsigned len);
 extern void MD5Final(uint8_t digest[16], struct MD5Context *ctx);
 extern void MD5Transform(uint32_t buf[4], uint32_t in[16]);
+
+std::string sum(const std::string& data);
 }
 
 class MD5

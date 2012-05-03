@@ -19,12 +19,27 @@
    prototypes) to maintain the tradition that Netfone will compile
    with Sun's original "cc". */
 
+#include <stdio.h>
 #include <cstring>		 /* for memcpy() */
 #include "md5.hpp"
 
 #include "unit_test.hpp"
 
 namespace md5 {
+
+std::string sum(const std::string& data)
+{
+	std::string result = MD5().calc(data);
+	std::string output;
+	for(std::string::const_iterator i = result.begin(); i != result.end(); ++i) {
+		char buf[64];
+		const unsigned char c = *i;
+		sprintf(buf, "%02x", c);
+		output += buf;
+	}
+
+	return output;
+}
 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
 /*

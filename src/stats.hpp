@@ -20,12 +20,6 @@ class manager {
 public:
 	manager();
 	~manager();
-private:
-	//currently the stats thread (and thus stats) are disabled, due to
-	//causing crashes on the iPhone. Need to investigate.
-#if !TARGET_OS_IPHONE
-	threading::thread background_thread_;
-#endif
 };
 
 class entry {
@@ -47,6 +41,7 @@ void record(const variant& value);
 void record(const variant& value, const std::string& level_id);
 
 void flush();
+void flush_and_quit();
 
 }
 

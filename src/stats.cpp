@@ -7,6 +7,7 @@
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
 
+#include "checksum.hpp"
 #include "filesystem.hpp"
 #include "formatter.hpp"
 #include "level.hpp"
@@ -89,6 +90,10 @@ void send_stats(std::map<std::string, std::vector<variant> >& queue) {
 	attr[variant("type")] = variant("stats");
 	attr[variant("version")] = variant(preferences::version());
 	attr[variant("user_id")] = variant(preferences::get_unique_user_id());
+
+	if(checksum::is_verified()) {
+		attr[variant("signature")] = variant(checksum::game_signature());
+	}
 
 	std::vector<variant> level_vec;
 
@@ -216,19 +221,35 @@ bool download(const std::string& lvl) {
 	}
 }
 
+namespace {
+threading::thread* background_thread = NULL;
+}
+
 manager::manager()
+{
 #if !TARGET_OS_IPHONE
+	if(!background_thread) {
 #if defined(__ANDROID__) && SDL_VERSION_ATLEAST(1, 3, 0)
-  : background_thread_("stats-thread", send_stats_thread)
+		background_thread = new threading::thread("stats-thread", send_stats_thread);
 #else
-  : background_thread_(send_stats_thread)
+		background_thread = new threading::thread(send_stats_thread);
 #endif
+	}
 #endif
-{}
+}
 
 manager::~manager() {
-	send_stats_should_exit = true;
-	flush();
+	flush_and_quit();
+}
+
+void flush_and_quit() {
+	if(background_thread) {
+		send_stats_should_exit = true;
+		flush();
+
+		delete background_thread;
+		background_thread = NULL;
+	}
 }
 
 /*

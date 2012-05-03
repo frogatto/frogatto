@@ -1,11 +1,13 @@
 #include <algorithm>
 
+#include "checksum.hpp"
 #include "filesystem.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "formula_callable.hpp"
 #include "json_parser.hpp"
 #include "json_tokenizer.hpp"
+#include "md5.hpp"
 #include "module.hpp"
 #include "preprocessor.hpp"
 #include "unit_test.hpp"
@@ -482,6 +484,7 @@ variant parse_from_file(const std::string& fname, JSON_PARSE_OPTIONS options)
 {
 	try {
 		std::string data = get_file_contents(fname);
+		checksum::verify_file(fname, data);
 
 		if(data.empty()) {
 			throw parse_error(formatter() << "File " << fname << " could not be read");

@@ -2,20 +2,38 @@
 
 
 #include "asserts.hpp"
+#include "level.hpp"
+#include "stats.hpp"
 #include "variant.hpp"
 
 #if defined(_WINDOWS)
 #include "SDL/SDL_syswm.h"
+#endif
 
-void win_assert_msg(const std::string& m )
+void report_assert_msg(const std::string& m)
 {
+	if(level::current_ptr()) {
+		std::cerr << "ATTEMPTING TO SEND CRASH REPORT...\n";
+		std::map<variant,variant> obj;
+		obj[variant("type")] = variant("crash");
+		obj[variant("msg")] = variant(m);
+		stats::record(variant(&obj), level::current_ptr()->id());
+		stats::flush_and_quit();
+	}
+
+#if defined(__ANDROID__)
+	__android_log_print(ANDROID_LOG_INFO, "Frogatto", m.c_str());
+
+#endif
+	
+#if defined(_WINDOWS)
 	SDL_SysWMinfo SysInfo;
 	SDL_VERSION(&SysInfo.version);
 	if(SDL_GetWMInfo(&SysInfo) > 0) {
 		::MessageBox(SysInfo.window, m.c_str(), TEXT("Assertion failed"), MB_OK|MB_ICONSTOP);
 	}
-}
 #endif
+}
 
 validation_failure_exception::validation_failure_exception(const std::string& m)
   : msg(m)
