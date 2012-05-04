@@ -1,2 +1,2 @@
 #!/bin/sh
-./game --module=cube_trains $@
+./game --width 1050 --height 845 $@ --native
