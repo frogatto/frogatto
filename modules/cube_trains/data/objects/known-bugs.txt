@@ -44,3 +44,5 @@
 	Gambit	left right arrow keys for changing selected track piece
 	Gambit	Space for place. Q for delete.
 	Gambit	on qwerty
+	
+	crimson_penguin	pause_game_dialog.cpp
