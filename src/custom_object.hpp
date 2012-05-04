@@ -135,7 +135,7 @@ public:
 	void add_particle_system(const std::string& key, const std::string& type);
 	void remove_particle_system(const std::string& key);
 
-	void set_text(const std::string& text, const std::string& font, int size, bool centered);
+	void set_text(const std::string& text, const std::string& font, int size, int align);
 
 	virtual int hitpoints() const { return hitpoints_; }
 

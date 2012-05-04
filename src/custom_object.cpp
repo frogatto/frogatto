@@ -45,7 +45,7 @@ struct custom_object_text {
 	std::string text;
 	const_graphical_font_ptr font;
 	int size;
-	bool centered;
+	int align;
 	rect dimensions;
 	int alpha;
 };
@@ -237,7 +237,7 @@ custom_object::custom_object(variant node)
 
 	variant text_node = node["text"];
 	if(!text_node.is_null()) {
-		set_text(text_node["text"].as_string(), text_node["font"].as_string(), text_node["size"].as_int(2), text_node["centered"].as_bool(false));
+		set_text(text_node["text"].as_string(), text_node["font"].as_string(), text_node["size"].as_int(2), text_node["align"].as_int(-1));
 	}
 
 	if(node.has_key("particles")) {
@@ -638,6 +638,7 @@ variant custom_object::write() const
 		}
 
 		node.add("size", text_->size);
+		node.add("align", text_->align);
 
 		res.add("text", node.build());
 	}
@@ -799,10 +800,15 @@ void custom_object::draw() const
 
 	if(text_ && text_->font && text_->alpha) {
 		glColor4ub(255, 255, 255, text_->alpha);
-		if (text_->centered) {
-			text_->font->draw(midpoint().x-text_->dimensions.w()/2, draw_y, text_->text, text_->size);
-		} else
-			text_->font->draw(draw_x, draw_y, text_->text, text_->size);
+		const int half_width = midpoint().x - draw_x;
+		int xpos = draw_x;
+		if(text_->align == 0) {
+			xpos += half_width - text_->dimensions.w()/2;
+		} else if(text_->align > 0) {
+			xpos += half_width*2 - text_->dimensions.w();
+		}
+		text_->font->draw(xpos, draw_y, text_->text, text_->size);
+
 		glColor4ub(255, 255, 255, 255);
 	}
 	
@@ -3563,13 +3569,13 @@ void custom_object::remove_particle_system(const std::string& key)
 	particle_systems_.erase(key);
 }
 
-void custom_object::set_text(const std::string& text, const std::string& font, int size, bool centered)
+void custom_object::set_text(const std::string& text, const std::string& font, int size, int align)
 {
 	text_.reset(new custom_object_text);
 	text_->text = text;
 	text_->font = graphical_font::get(font);
 	text_->size = size;
-	text_->centered = centered;
+	text_->align = align;
 	text_->alpha = 255;
 	ASSERT_LOG(text_->font, "UNKNOWN FONT: " << font);
 	text_->dimensions = text_->font->dimensions(text_->text);
