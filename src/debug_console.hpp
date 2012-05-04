@@ -3,6 +3,7 @@
 
 #include <boost/intrusive_ptr.hpp>
 
+#include "decimal.hpp"
 #include "dialog.hpp"
 #include "entity.hpp"
 #include "level.hpp"
@@ -15,6 +16,10 @@ class entity;
 
 namespace debug_console
 {
+
+void add_graph_sample(const std::string& id, decimal value);
+void process_graph();
+void draw_graph();
 
 void add_message(const std::string& msg);
 void draw();

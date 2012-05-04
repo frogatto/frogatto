@@ -4,6 +4,7 @@
 #include <string>
 
 #include "achievements.hpp"
+#include "formula_callable.hpp"
 
 namespace graphics {
 class color;
@@ -49,7 +50,7 @@ void render_scene(const level& lvl, screen_position& pos, const entity* focus=NU
 //draw_scene calls both update_camera_position() and then render_scene()
 void draw_scene(const level& lvl, screen_position& pos, const entity* focus=NULL, bool do_draw=true);
 
-struct performance_data {
+struct performance_data : public game_logic::formula_callable {
 	int fps;
 	int cycles_per_second;
 	int delay;
@@ -60,6 +61,18 @@ struct performance_data {
 	int nevents;
 
 	std::string profiling_info;
+
+	performance_data(int fps_, int cycles_per_second_, int delay_, int draw_, int process_, int flip_, int cycle_, int nevents_, const std::string& profiling_info_)
+	  : fps(fps_), cycles_per_second(cycles_per_second_), delay(delay_),
+	    draw(draw_), process(process_), flip(flip_), cycle(cycle_),
+		nevents(nevents_), profiling_info(profiling_info_)
+	{}
+
+	variant get_value(const std::string& key) const;
+	void get_inputs(std::vector<game_logic::formula_input>* inputs) const;
+
+	static void set_current(const performance_data& d);
+	static performance_data* current();
 };
 
 void draw_fps(const level& lvl, const performance_data& data);

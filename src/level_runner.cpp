@@ -553,6 +553,8 @@ bool level_runner::play_cycle()
 		controls::mark_valid();
 	}
 
+	performance_data current_perf(current_fps_,50,0,0,0,0,0,custom_object::events_handled_per_second,"");
+
 	if(controls::num_players() > 1) {
 		lvl_->backup();
 	}
@@ -1111,12 +1113,15 @@ bool level_runner::play_cycle()
 			const int start_process = SDL_GetTicks();
 
 			try {
+				debug_console::process_graph();
 				lvl_->process();
 			} catch(interrupt_game_exception& e) {
 				handle_pause_game_result(e.result);
 			}
 
-			next_process_ += (SDL_GetTicks() - start_process);
+			const int process_time = SDL_GetTicks() - start_process;
+			next_process_ += process_time;
+			current_perf.process = process_time;
 		} else {
 			pause_time_ += preferences::frame_time_millis();
 		}
@@ -1209,7 +1214,8 @@ bool level_runner::play_cycle()
 #endif
 		}
 
-		performance_data perf = { current_fps_, current_cycles_, current_delay_, current_draw_, current_process_, current_flip_, cycle, current_events_, profiling_summary_ };
+		performance_data perf(current_fps_, current_cycles_, current_delay_, current_draw_, current_process_, current_flip_, cycle, current_events_, profiling_summary_);
+
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_HARMATTAN || TARGET_OS_IPHONE
 		if( ! is_achievement_displayed() ){
 			settings_dialog.draw(in_speech_dialog());
@@ -1220,7 +1226,9 @@ bool level_runner::play_cycle()
 			draw_fps(*lvl_, perf);
 		}
 
-		next_draw_ += (SDL_GetTicks() - start_draw);
+		const int draw_time = SDL_GetTicks() - start_draw;
+		next_draw_ += draw_time;
+		current_perf.draw = draw_time;
 
 		const int start_flip = SDL_GetTicks();
 		if(!is_skipping_game()) {
@@ -1230,7 +1238,9 @@ bool level_runner::play_cycle()
 #endif
 		}
 
-		next_flip_ += (SDL_GetTicks() - start_flip);
+		const int flip_time = SDL_GetTicks() - start_flip;
+		next_flip_ += flip_time;
+		current_perf.flip = flip_time;
 		++next_fps_;
 		nskip_draw_ = 0;
 	} else {
@@ -1238,6 +1248,11 @@ bool level_runner::play_cycle()
 	}
 
 	++next_cycles_;
+	current_perf.cycle = next_cycles_;
+
+	static int prev_events_per_second = 0;
+	current_perf.nevents = custom_object::events_handled_per_second - prev_events_per_second;
+	prev_events_per_second = custom_object::events_handled_per_second;
 
 	const time_t this_second = time(NULL);
 	if(this_second != current_second_) {
@@ -1255,7 +1270,7 @@ bool level_runner::play_cycle()
 		next_draw_ = 0;
 		next_process_ = 0;
 		next_flip_ = 0;
-		custom_object::events_handled_per_second = 0;
+		prev_events_per_second = custom_object::events_handled_per_second = 0;
 
 		profiling_summary_ = formula_profiler::get_profile_summary();
 	}
@@ -1263,9 +1278,12 @@ bool level_runner::play_cycle()
 	const int raw_wait_time = desired_end_time - SDL_GetTicks();
 	const int wait_time = std::max<int>(1, desired_end_time - SDL_GetTicks());
 	next_delay_ += wait_time;
+	current_perf.delay = wait_time;
 	if (wait_time != 1 && !is_skipping_game()) {
 		SDL_Delay(wait_time);
 	}
+
+	performance_data::set_current(current_perf);
 	
 	if(is_skipping_game()) {
 		const int adjust_time = desired_end_time - SDL_GetTicks();

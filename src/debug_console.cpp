@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <list>
+#include <numeric>
 #include <sstream>
 
 #include <boost/bind.hpp>
@@ -14,7 +15,9 @@
 #include "filesystem.hpp"
 #include "font.hpp"
 #include "formatter.hpp"
+#include "foreach.hpp"
 #include "debug_console.hpp"
+#include "decimal.hpp"
 #include "foreach.hpp"
 #include "level.hpp"
 #include "load_level.hpp"
@@ -26,6 +29,174 @@
 
 namespace debug_console
 {
+
+namespace {
+int graph_cycle = 0;
+
+struct SampleSet {
+	SampleSet() : last_cycle(0) {}
+	int last_cycle;
+	std::vector<decimal> samples;
+};
+
+std::map<std::string, SampleSet> graphs;
+typedef std::pair<const std::string, SampleSet> graph_pair;
+
+int round_up_value(decimal value)
+{
+	if(value == decimal()) {
+		return 0;
+	}
+
+	int result = 1;
+	while(result > 0 && result < value) {
+		result *= 10;
+	}
+
+	if(result < 0) {
+		return value.as_int();
+	}
+
+	if(result/5 >= value) {
+		return result/5;
+	} else if(result/2 >= value) {
+		return result/2;
+	} else {
+		return result;
+	}
+}
+}
+
+void add_graph_sample(const std::string& id, decimal value)
+{
+	SampleSet& s = graphs[id];
+	if(graph_cycle - s.last_cycle >= 1000) {
+		s.samples.clear();
+	} else {
+		for(; s.last_cycle < graph_cycle; ++s.last_cycle) {
+			s.samples.push_back(decimal());
+		}
+	}
+
+	if(s.samples.empty()) {
+		s.samples.push_back(decimal());
+	}
+
+	s.last_cycle = graph_cycle;
+	s.samples.back() += value;
+}
+
+void process_graph()
+{
+	++graph_cycle;
+}
+
+void draw_graph()
+{
+	decimal min_value, max_value;
+	foreach(graph_pair& p, graphs) {
+		if(p.second.last_cycle - p.second.last_cycle >= 1000) {
+			p.second.samples.clear();
+		}
+
+		foreach(const decimal& value, p.second.samples) {
+			if(value < min_value) {
+				min_value = value;
+			}
+
+			if(value > max_value) {
+				max_value = value;
+			}
+		}
+	}
+
+	if(max_value == min_value) {
+		return;
+	}
+
+	max_value = decimal::from_int(round_up_value(max_value));
+	min_value = decimal::from_int(-round_up_value(-min_value));
+
+	const rect graph_area(50, 60, 500, 200);
+	graphics::draw_rect(graph_area, graphics::color(255, 255, 255, 64));
+
+	graphics::draw_rect(rect(graph_area.x(), graph_area.y(), graph_area.w(), 2), graphics::color(255,255,255,255));
+	graphics::blit_texture(font::render_text_uncached(formatter() << max_value.as_int(), graphics::color_white(), 14), graph_area.x2() + 4, graph_area.y());
+
+	graphics::draw_rect(rect(graph_area.x(), graph_area.y2(), graph_area.w(), 2), graphics::color(255,255,255,255));
+	graphics::blit_texture(font::render_text_uncached(formatter() << min_value.as_int(), graphics::color_white(), 14), graph_area.x2() + 4, graph_area.y2() - 12);
+
+	graphics::color GraphColors[] = {
+		graphics::color(255,255,255,255),
+		graphics::color(0,0,255,255),
+		graphics::color(255,0,0,255),
+		graphics::color(0,255,0,255),
+		graphics::color(255,255,0,255),
+		graphics::color(128,128,128,255),
+	};
+
+	int colors_index = 0;
+	foreach(const graph_pair& p, graphs) {
+		if(p.second.samples.empty()) {
+			return;
+		}
+
+		const graphics::color& graph_color = GraphColors[colors_index%(sizeof(GraphColors)/sizeof(*GraphColors))];
+		graph_color.set_as_current_color();
+
+		const int gap = graph_cycle - p.second.last_cycle;
+		int index = (gap + p.second.samples.size()) - 1000;
+		int pos = 0;
+		if(index < 0) {
+			pos -= index;
+			index = 0;
+		}
+
+		//collect the last 20 y samples to average for the label's position.
+		std::vector<GLfloat> y_samples;
+
+		std::vector<GLfloat> points;
+
+		while(index < p.second.samples.size()) {
+			decimal value = p.second.samples[index];
+
+			const GLfloat xpos = graph_area.x() + (GLfloat(pos)*graph_area.w())/GLfloat(1000);
+
+			const GLfloat value_ratio = ((value - min_value)/(max_value - min_value)).as_float();
+			const GLfloat ypos = graph_area.y2() - graph_area.h()*value_ratio;
+			points.push_back(xpos);
+			points.push_back(ypos);
+			y_samples.push_back(ypos);
+			++index;
+			++pos;
+		}
+
+		if(points.empty()) {
+			continue;
+		}
+
+		if(y_samples.size() > 20) {
+			y_samples.erase(y_samples.begin(), y_samples.end() - 20);
+		}
+
+		const GLfloat mean_ypos = std::accumulate(y_samples.begin(), y_samples.end(), 0.0)/y_samples.size();
+
+		glDisable(GL_TEXTURE_2D);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+		glVertexPointer(2, GL_FLOAT, 0, &points[0]);
+		glDrawArrays(GL_LINE_STRIP, 0, points.size()/2);
+
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glEnable(GL_TEXTURE_2D);
+
+		graphics::blit_texture(font::render_text_uncached(p.first, graph_color.as_sdl_color(), 14), points[points.size()-2] + 4, mean_ypos - 6);
+
+		++colors_index;
+	}
+
+	glColor4f(1.0,1.0,1.0,1.0);
+}
 
 namespace {
 std::list<graphics::texture>& messages() {

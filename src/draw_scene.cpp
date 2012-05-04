@@ -391,6 +391,8 @@ void render_scene(const level& lvl, screen_position& pos, const entity* focus, b
 	debug_console::draw();
 #endif
 
+	debug_console::draw_graph();
+
 	if (!pause_stack) lvl.draw_status();
 
 	if(scene_title_duration_ > 0) {
@@ -476,6 +478,50 @@ void render_scene(const level& lvl, screen_position& pos, const entity* focus, b
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glColor4ub(255, 255, 255, 255);
 	}
+}
+
+namespace {
+boost::intrusive_ptr<performance_data> current_perf_data;
+}
+
+variant performance_data::get_value(const std::string& key) const
+{
+#define PERF_ATTR(m) if(key == #m) return variant(m);
+	PERF_ATTR(fps);
+	PERF_ATTR(cycles_per_second);
+	PERF_ATTR(delay);
+	PERF_ATTR(draw);
+	PERF_ATTR(process);
+	PERF_ATTR(flip);
+	PERF_ATTR(cycle);
+	PERF_ATTR(nevents);
+#undef PERF_ATTR
+
+	return variant();
+}
+
+void performance_data::get_inputs(std::vector<game_logic::formula_input>* inputs) const
+{
+#define PERF_ATTR(m) inputs->push_back(std::string(#m))
+	PERF_ATTR(fps);
+	PERF_ATTR(cycles_per_second);
+	PERF_ATTR(delay);
+	PERF_ATTR(draw);
+	PERF_ATTR(process);
+	PERF_ATTR(flip);
+	PERF_ATTR(cycle);
+	PERF_ATTR(nevents);
+#undef PERF_ATTR
+}
+
+void performance_data::set_current(const performance_data& d)
+{
+	current_perf_data.reset(new performance_data(d));
+}
+
+performance_data* performance_data::current()
+{
+	return current_perf_data.get();
 }
 
 void draw_fps(const level& lvl, const performance_data& data)

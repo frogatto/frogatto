@@ -55,11 +55,16 @@ namespace {
 const std::string FunctionModule = "custom_object";
 
 FUNCTION_DEF(time, 0, 0, "time() -> timestamp: returns the current real time")
-	rng::generate(); //this is to make the engine optimisation leave this function alone.
+	formula::fail_if_static_context();
 	time_t t1;
 	time(&t1);
 	return variant(static_cast<int>(t1));
 END_FUNCTION_DEF(time)
+
+FUNCTION_DEF(performance, 0, 0, "performance(): returns an object with current performance stats")
+	formula::fail_if_static_context();
+	return variant(performance_data::current());
+END_FUNCTION_DEF(performance)
 
 class report_command : public entity_command_callable
 {
@@ -682,6 +687,23 @@ FUNCTION_DEF(set_var, 2, 2, "set_var(string varname, variant value): sets the va
 	    args()[0]->evaluate(variables).as_string(),
 		args()[1]->evaluate(variables)));
 END_FUNCTION_DEF(set_var)
+
+class add_debug_chart_command : public game_logic::command_callable {
+	std::string id_;
+	decimal value_;
+public:
+	add_debug_chart_command(const std::string& id, decimal value)
+	  : id_(id), value_(value)
+	{}
+
+	virtual void execute(game_logic::formula_callable& ob) const {
+	debug_console::add_graph_sample(id_, value_);
+	}
+};
+
+FUNCTION_DEF(debug_chart, 2, 2, "debug_chart(string id, decimal value): plots a sample in a graph")
+	return variant(new add_debug_chart_command(args()[0]->evaluate(variables).as_string(), args()[1]->evaluate(variables).as_decimal()));
+END_FUNCTION_DEF(debug_chart)
 
 class add_debug_rect_command : public game_logic::command_callable {
 	rect r_;
