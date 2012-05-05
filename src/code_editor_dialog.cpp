@@ -18,6 +18,7 @@
 #include "module.hpp"
 #include "object_events.hpp"
 #include "raster.hpp"
+#include "surface_cache.hpp"
 #include "text_editor_widget.hpp"
 
 code_editor_dialog::code_editor_dialog(const rect& r)
@@ -338,6 +339,10 @@ void code_editor_dialog::process()
 			animation_preview_.reset();
 		}
 	} catch(validation_failure_exception& e) {
+		if(animation_preview_) {
+			animation_preview_.reset();
+		}
+	} catch(graphics::load_image_error& e) {
 		if(animation_preview_) {
 			animation_preview_.reset();
 		}
