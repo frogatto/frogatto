@@ -45,4 +45,8 @@
 	Gambit	Space for place. Q for delete.
 	Gambit	on qwerty
 	
+	for main-menu buttons:
 	crimson_penguin	pause_game_dialog.cpp
+	
+	[12:14]	Sirp	are you announcing on sites like happypenguin, wesnoth, etc? :)
+	[12:14]	Sirp	freshmeat perhaps
