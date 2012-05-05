@@ -1100,6 +1100,7 @@ private:
 				bool done = false;
 				while(!done) {
 					if(!paused_) {
+						debug_console::process_graph();
 						lvl.process();
 						lvl.process_draw();
 					}
