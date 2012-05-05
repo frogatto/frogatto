@@ -14,6 +14,7 @@ button.cpp
 character_editor_dialog.cpp
 current_generator.cpp
 checkbox.cpp
+checksum.cpp
 clipboard.cpp
 code_editor_dialog.cpp
 code_editor_widget.cpp
@@ -79,6 +80,7 @@ level_solid_map.cpp
 light.cpp
 load_level_nothread.cpp
 main.cpp
+md5.cpp
 message_dialog.cpp
 module.cpp
 movement_script.cpp
