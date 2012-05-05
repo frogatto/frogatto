@@ -3,6 +3,7 @@
 
 #include <algorithm>
 
+#include "border_widget.hpp"
 #include "button.hpp"
 #include "code_editor_dialog.hpp"
 #include "code_editor_widget.hpp"
@@ -20,7 +21,8 @@
 #include "text_editor_widget.hpp"
 
 code_editor_dialog::code_editor_dialog(const rect& r)
-  : dialog(r.x(), r.y(), r.w(), r.h()), invalidated_(0), modified_(false)
+  : dialog(r.x(), r.y(), r.w(), r.h()), invalidated_(0), modified_(false),
+    suggestions_prefix_(-1)
 {
 	init();
 }
@@ -252,7 +254,7 @@ void code_editor_dialog::process()
 		}
 	}
 
-	std::vector<std::string> suggestions;
+	std::vector<Suggestion> suggestions;
 	if(selected_token != NULL) {
 
 		const bool at_end = token_pos == selected_token->end - selected_token->begin;
@@ -262,12 +264,13 @@ void code_editor_dialog::process()
 			for(int i = 0; i != NUM_OBJECT_BUILTIN_EVENT_IDS; ++i) {
 				const std::string& event_str = get_object_event_str(i);
 				if(event_str.size() > id.size() && std::equal(id.begin(), id.end(), event_str.begin())) {
-					suggestions.push_back("on_" + event_str);
+					Suggestion s = { "on_" + event_str, ": \"\",", 3 };
+					suggestions.push_back(s);
 				}
 			}
 		}
 
-
+		suggestions_prefix_ = str.size();
 	}
 
 	if(suggestions != suggestions_) {
@@ -275,30 +278,35 @@ void code_editor_dialog::process()
 		suggestions_grid_.reset();
 
 		if(suggestions_.empty() == false) {
-			suggestions_grid_.reset(new grid(1));
-			suggestions_grid_->set_show_background(true);
-			suggestions_grid_->set_max_height(100);
-			foreach(const std::string& str, suggestions_) {
-				suggestions_grid_->add_col(widget_ptr(new label(str)));
+			grid_ptr suggestions_grid(new grid(1));
+			suggestions_grid->register_selection_callback(boost::bind(&code_editor_dialog::select_suggestion, this, _1));
+			suggestions_grid->swallow_clicks();
+			suggestions_grid->allow_selection(true);
+			suggestions_grid->set_show_background(true);
+			suggestions_grid->set_max_height(160);
+			foreach(const Suggestion& s, suggestions_) {
+				suggestions_grid->add_col(widget_ptr(new label(s.suggestion)));
 			}
+
+			suggestions_grid_.reset(new border_widget(suggestions_grid, graphics::color(255,255,255,255)));
 		}
 		std::cerr << "SUGGESTIONS: " << suggestions_.size() << ":\n";
-		foreach(const std::string& suggestion, suggestions_) {
-			std::cerr << " - " << suggestion << "\n";
+		foreach(const Suggestion& suggestion, suggestions_) {
+			std::cerr << " - " << suggestion.suggestion << "\n";
 		}
 	}
 
 	if(suggestions_grid_) {
 		const std::pair<int,int> cursor_pos = editor_->char_position_on_screen(editor_->cursor_row(), editor_->cursor_col());
 		suggestions_grid_->set_loc(x() + editor_->x() + cursor_pos.second, y() + editor_->y() + cursor_pos.first - suggestions_grid_->height());
-		/*
+		
 		if(suggestions_grid_->y() < 10) {
 			suggestions_grid_->set_loc(suggestions_grid_->x(), suggestions_grid_->y() + suggestions_grid_->height() + 14);
 		}
 
 		if(suggestions_grid_->x() + suggestions_grid_->width() + 20 > graphics::screen_width()) {
 			suggestions_grid_->set_loc(graphics::screen_width() - suggestions_grid_->width() - 20, suggestions_grid_->y());
-		}*/
+		}
 	}
 
 	try {
@@ -403,5 +411,25 @@ void code_editor_dialog::save()
 	status_label_->set_text(formatter() << "Saved " << fname_);
 	modified_ = false;
 }
+
+void code_editor_dialog::select_suggestion(int index)
+{
+	if(index >= 0 && index < suggestions_.size()) {
+		std::cerr << "SELECT " << suggestions_[index].suggestion << "\n";
+		const std::string& str = suggestions_[index].suggestion;
+		if(suggestions_prefix_ >= 0 && suggestions_prefix_ < str.size()) {
+			const int col = editor_->cursor_col();
+			const std::string insert(str.begin() + suggestions_prefix_, str.end());
+			const std::string postfix = suggestions_[index].postfix;
+			const std::string row = editor_->get_data()[editor_->cursor_row()];
+			const std::string new_row = std::string(row.begin(), row.begin() + editor_->cursor_col()) + insert + postfix + std::string(row.begin() + editor_->cursor_col(), row.end());
+			editor_->set_row_contents(editor_->cursor_row(), new_row);
+			editor_->set_cursor(editor_->cursor_row(), col + insert.size() + suggestions_[index].postfix_index);
+		}
+	} else {
+		suggestions_grid_.reset();
+	}
+}
+
 
 #endif // NO_EDITOR

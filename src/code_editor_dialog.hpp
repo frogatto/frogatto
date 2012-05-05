@@ -78,9 +78,17 @@ private:
 	std::vector<KnownFile> files_;
 	void select_file(int index);
 
-	std::vector<std::string> suggestions_;
+	void select_suggestion(int index);
 
-	gui::grid_ptr suggestions_grid_;
+	struct Suggestion {
+		std::string suggestion, postfix;
+		int postfix_index;
+		bool operator==(const Suggestion& o) const { return o.suggestion == suggestion && o.postfix == postfix && o.postfix_index == postfix_index; }
+	};
+
+	std::vector<Suggestion> suggestions_;
+	gui::widget_ptr suggestions_grid_;
+	int suggestions_prefix_;
 };
 
 #endif // !NO_EDITOR

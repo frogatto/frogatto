@@ -63,10 +63,9 @@ public:
 
 	std::pair<int, int> char_position_on_screen(int row, int col) const;
 
-protected:
-
 	void set_row_contents(int row, const std::string& value);
 
+protected:
 	virtual void select_token(const std::string& row, int& begin_row, int& end_row, int& begin_col, int& end_col);
 
 	virtual void on_change();
