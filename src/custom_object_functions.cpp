@@ -8,6 +8,7 @@
 #include "achievements.hpp"
 #include "asserts.hpp"
 #include "blur.hpp"
+#include "clipboard.hpp"
 #include "collision_utils.hpp"
 #include "controls.hpp"
 #include "current_generator.hpp"
@@ -65,6 +66,26 @@ FUNCTION_DEF(performance, 0, 0, "performance(): returns an object with current p
 	formula::fail_if_static_context();
 	return variant(performance_data::current());
 END_FUNCTION_DEF(performance)
+
+FUNCTION_DEF(get_clipboard_text, 0, 0, "get_clipboard_text(): returns the text currentl in the windowing clipboard")
+	return variant(copy_from_clipboard(false));
+END_FUNCTION_DEF(get_clipboard_text)
+
+class set_clipboard_text_command : public game_logic::command_callable
+{
+	std::string str_;
+public:
+	explicit set_clipboard_text_command(const std::string& str) : str_(str)
+	{}
+
+	virtual void execute(game_logic::formula_callable& ob) const {
+		copy_to_clipboard(str_, false);
+	}
+};
+
+FUNCTION_DEF(set_clipboard_text, 1, 1, "set_clipboard_text(str): sets the clipboard text to the given string")
+	return variant(new set_clipboard_text_command(args()[0]->evaluate(variables).as_string()));
+END_FUNCTION_DEF(set_clipboard_text)
 
 class report_command : public entity_command_callable
 {
