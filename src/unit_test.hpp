@@ -27,6 +27,8 @@ void run_benchmarks(const std::vector<std::string>* benchmarks=NULL);
 void run_command_line_benchmark(const std::string& benchmark_name, const std::string& arg);
 void run_utility(const std::string& utility_name, const std::vector<std::string>& arg);
 
+std::string run_benchmark(const std::string& name, BenchmarkTest fn);
+
 }
 
 #define CHECK(cond, msg) if(!(cond)) { std::cerr << __FILE__ << ":" << __LINE__ << ": TEST CHECK FAILED: " << #cond << ": " << msg << "\n"; throw test::failure_exception(); }

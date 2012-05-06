@@ -120,8 +120,7 @@ int register_benchmark_cl(const std::string& name, CommandLineBenchmarkTest test
 	return 0;
 }
 
-namespace {
-void run_benchmark(const std::string& name, BenchmarkTest fn)
+std::string run_benchmark(const std::string& name, BenchmarkTest fn)
 {
 	//run it once without counting it to let any initialization code be run.
 	fn(1);
@@ -148,11 +147,15 @@ void run_benchmark(const std::string& name, BenchmarkTest fn)
 			}
 
 			const char* units[] = {"ns", "us", "ms", "s"};
-			std::cerr << "BENCH " << name << ": " << nruns << " iterations, " << time_taken_per_iter << units[time_taken_per_iter_units] << "/iteration; total, " << time_taken << units[time_taken_units] << "\n";
-			return;
+			std::ostringstream s;
+			s << "BENCH " << name << ": " << nruns << " iterations, " << time_taken_per_iter << units[time_taken_per_iter_units] << "/iteration; total, " << time_taken << units[time_taken_units];
+			std::string res = s.str();
+			std::cerr << res << "\n";
+			return res;
 		}
 	}
-}
+
+	return "";
 }
 
 void run_benchmarks(const std::vector<std::string>* benchmarks)

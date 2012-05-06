@@ -12,6 +12,7 @@
    See the COPYING file for more details.
 */
 
+#include <boost/bind.hpp>
 #include <iostream>
 #include <stack>
 #include <math.h>
@@ -988,6 +989,20 @@ FUNCTION_DEF(get_files_in_dir, 1, 1, "Returns a list of the files in the given d
 	}
 	return variant(&v);
 END_FUNCTION_DEF(get_files_in_dir)
+
+namespace {
+void evaluate_expr_for_benchmark(const formula_expression* expr, const formula_callable* variables, int ntimes)
+{
+	for(int n = 0; n < ntimes; ++n) {
+		expr->evaluate(*variables);
+	}
+}
+
+}
+
+FUNCTION_DEF(benchmark, 1, 1, "benchmark(expr): Executes expr in a benchmark harness and returns a string describing its benchmark performance")
+	return variant(test::run_benchmark("benchmark", boost::bind(evaluate_expr_for_benchmark, args()[0].get(), &variables, _1)));
+END_FUNCTION_DEF(benchmark)
 
 
 
