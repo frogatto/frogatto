@@ -92,6 +92,7 @@ public:
 	bool solid(int x, int y, const surface_info** info=NULL) const;
 	bool solid(const entity& e, const std::vector<point>& points, const surface_info** info=NULL) const;
 	bool solid(const rect& r, const surface_info** info=NULL) const;
+	bool solid(int xbegin, int ybegin, int w, int h, const surface_info** info=NULL) const;
 	bool may_be_solid_in_rect(const rect& r) const;
 	void set_solid_area(const rect& r, bool solid);
 	entity_ptr board(int x, int y) const;

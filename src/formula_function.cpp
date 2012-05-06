@@ -26,9 +26,13 @@
 #include "formula_callable_utils.hpp"
 #include "formula_function.hpp"
 #include "formula_function_registry.hpp"
+#include "geometry.hpp"
 #include "string_utils.hpp"
 #include "unit_test.hpp"
 #include "variant_callable.hpp"
+#include "controls.hpp"
+#include "pathfinding.hpp"
+#include "level.hpp"
 
 #include "graphics.hpp"
 #include "module.hpp"
@@ -492,6 +496,149 @@ FUNCTION_DEF(zipWith, 3, 3, "zipWith(list1, list2, expr) -> list")
 	return variant(&retList);
 END_FUNCTION_DEF(zipWith)
 
+/* XXX Krista to be reworked
+FUNCTION_DEF(update_controls, 1, 1, "update_controls(map) : Updates the controls based on a list of id:string, pressed:bool pairs")
+	const variant map = args()[0]->evaluate(variables);
+	foreach(const variant_pair& p, map.as_map()) {
+		std::cerr << "Button: " << p.first.as_string() << " " << (p.second.as_bool() ? "Pressed" : "Released") << std::endl;
+		controls::update_control_state(p.first.as_string(), p.second.as_bool());
+	}
+	return variant();
+END_FUNCTION_DEF(update_controls)
+
+FUNCTION_DEF(map_controls, 1, 1, "map_controls(map) : Creates or updates the mapping on controls to keys")
+	const variant map = args()[0]->evaluate(variables);
+	foreach(const variant_pair& p, map.as_map()) {
+		controls::set_mapped_key(p.first.as_string(), static_cast<SDLKey>(p.second.as_int()));
+	}
+	return variant();
+END_FUNCTION_DEF(map_controls)*/
+
+FUNCTION_DEF(directed_graph, 2, 2, "directed_graph(list_of_vertexes, adjacent_expression) -> a directed graph")
+	variant vertices = args()[0]->evaluate(variables);
+	pathfinding::graph_edge_list edges;
+	
+	std::vector<variant> vertex_list;
+	boost::intrusive_ptr<map_formula_callable> callable(new map_formula_callable(&variables));
+	variant& a = callable->add_direct_access("v");
+	foreach(variant v, vertices.as_list()) {
+		a = v;
+		edges[v] = args()[1]->evaluate(*callable).as_list();
+		vertex_list.push_back(v);
+	}
+	pathfinding::directed_graph* dg = new pathfinding::directed_graph(&vertex_list, &edges);
+	return variant(dg);
+END_FUNCTION_DEF(directed_graph)
+
+FUNCTION_DEF(weighted_graph, 2, 2, "weighted_graph(directed_graph, weight_expression) -> a weighted directed graph")
+	variant graph = args()[0]->evaluate(variables);
+	pathfinding::directed_graph* dg = graph.try_convert<pathfinding::directed_graph>();
+	pathfinding::edge_weights w;
+	if(!dg) {
+		return variant();
+	}
+	boost::intrusive_ptr<map_formula_callable> callable(new map_formula_callable(&variables));
+	variant& a = callable->add_direct_access("a");
+	variant& b = callable->add_direct_access("b");
+	pathfinding::graph_edge_list::const_iterator edges = dg->get_edges()->begin();
+	pathfinding::graph_edge_list::const_iterator edges_end = dg->get_edges()->end();
+	while(edges != edges_end) {
+		foreach(const variant& e2, edges->second) {
+			a = edges->first;
+			b = e2;
+			w[pathfinding::graph_edge(edges->first, e2)] = args()[1]->evaluate(*callable).as_decimal();
+		}
+		++edges;
+	}
+	return variant(new pathfinding::weighted_directed_graph(dg, &w));
+END_FUNCTION_DEF(weighted_graph)
+
+FUNCTION_DEF(a_star_search, 4, 4, "a_star_search(weighted_directed_graph, src_node, dst_node, heuristic) -> A list of nodes which represents the 'best' path from src_node to dst_node.")
+	variant graph = args()[0]->evaluate(variables);
+	pathfinding::weighted_directed_graph* wg = graph.try_convert<pathfinding::weighted_directed_graph>();
+	variant src_node = args()[1]->evaluate(variables);
+	variant dst_node = args()[2]->evaluate(variables);
+	expression_ptr heuristic = args()[3];
+	boost::intrusive_ptr<map_formula_callable> callable(new map_formula_callable(&variables));
+	return pathfinding::a_star_search(wg, src_node, dst_node, heuristic, callable);
+END_FUNCTION_DEF(a_star_search)
+
+FUNCTION_DEF(create_graph_from_level, 0, 0, "create_graph_from_level((optional) tile_size_x, (optional) tile_size_y) -> directed graph : Creates a directed graph based on the current level.")
+	/*int tile_size_x = TileSize;
+	int tile_size_y = TileSize;
+	if(args().size() == 1) {
+		tile_size_y = tile_size_x = args()[0]->evaluate(variables).as_int();
+	} else if(args().size() == 2) {
+		tile_size_x = args()[0]->evaluate(variables).as_int();
+		tile_size_y = args()[1]->evaluate(variables).as_int();
+	}
+	ASSERT_LOG((tile_size_x%2)==0 && (tile_size_y%2)==0, "The tile_size_x and tile_size_y values *must* be even. (" << tile_size_x << "," << tile_size_y << ")");
+	level& lvl = level::current();
+	rect b = lvl.boundaries();
+
+	pathfinding::graph_edge_list edges;
+	std::vector<variant> vertex_list;
+
+	for(int y = b.y(); y < b.y2(); y += tile_size_y) {
+		for(int x = b.x(); x < b.x2(); x += tile_size_x) {
+			if(!lvl.solid(x, y, tile_size_x, tile_size_y)) {
+				std::vector<variant> label;
+				label.push_back(variant(x + tile_size_x/2));
+				label.push_back(variant(y + tile_size_y/2));
+				variant l = variant(&label);
+				vertex_list.push_back(l);
+
+				std::vector<variant> e;
+				if(x - tile_size_x >= b.x() && lvl.solid(x - tile_size_x, y, tile_size_x, tile_size_y)) {
+					std::vector<variant> label;
+					label.push_back(variant(x - tile_size_x/2));
+					label.push_back(variant(y));
+					e.push_back(variant(&label));
+				} else if(x + tile_size_x <= b.x2() && lvl.solid(x + tile_size_x, y, tile_size_x, tile_size_y)) {
+					std::vector<variant> label;
+					label.push_back(variant(x + tile_size_x*3/2));
+					label.push_back(variant(y));
+					e.push_back(variant(&label));
+				} else if(y - tile_size_y >= b.y() && lvl.solid(x, y - tile_size_y, tile_size_x, tile_size_y)) {
+					std::vector<variant> label;
+					label.push_back(variant(x));
+					label.push_back(variant(y - tile_size_y/2));
+					e.push_back(variant(&label));
+				} else if(y + tile_size_y <= b.y2() && lvl.solid(x, y + tile_size_y, tile_size_x, tile_size_y)) {
+					std::vector<variant> label;
+					label.push_back(variant(x));
+					label.push_back(variant(y + tile_size_y*3/2));
+					e.push_back(variant(&label));
+				// XXX add diagonals here.
+				}
+				edges[l] = e;
+			}
+		}
+	}
+	return variant(new pathfinding::directed_graph(&vertex_list, &edges));*/
+	return variant();
+END_FUNCTION_DEF(create_graph_from_level)
+
+FUNCTION_DEF(plot_path, 5, 8, "plot_path(from_x, from_y, to_x, to_y, heuristic, (optional) weight_expr, (optional) tile_size_x, (optional) tile_size_y) -> list : Returns a list of points to get from (from_x, from_y) to (to_x, to_y)")
+	int tile_size_x = TileSize;
+	int tile_size_y = TileSize;
+	expression_ptr weight_expr = expression_ptr();
+	if(args().size() > 5) {
+		weight_expr = args()[5];
+	}
+	if(args().size() == 7) {
+		tile_size_y = tile_size_x = args()[5]->evaluate(variables).as_int();
+	} else if(args().size() == 8) {
+		tile_size_x = args()[5]->evaluate(variables).as_int();
+		tile_size_y = args()[6]->evaluate(variables).as_int();
+	}
+	ASSERT_LOG((tile_size_x%2)==0 && (tile_size_y%2)==0, "The tile_size_x and tile_size_y values *must* be even. (" << tile_size_x << "," << tile_size_y << ")");
+	point src(args()[0]->evaluate(variables).as_int(), args()[1]->evaluate(variables).as_int());
+	point dst(args()[2]->evaluate(variables).as_int(), args()[3]->evaluate(variables).as_int());
+	expression_ptr heuristic = args()[4];
+	boost::intrusive_ptr<map_formula_callable> callable(new map_formula_callable(&variables));
+	return variant(pathfinding::a_star_find_path(src, dst, heuristic, weight_expr, callable, tile_size_x, tile_size_y));
+END_FUNCTION_DEF(plot_path)
 
 namespace {
 class variant_comparator : public formula_callable {

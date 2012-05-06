@@ -2355,6 +2355,22 @@ bool level::solid(const entity& e, const std::vector<point>& points, const surfa
 	return is_solid(solid_, e, points, info);
 }
 
+bool level::solid(int xbegin, int ybegin, int w, int h, const surface_info** info) const
+{
+	const int xend = xbegin + w;
+	const int yend = ybegin + h;
+
+	for(int y = ybegin; y != yend; ++y) {
+		for(int x = xbegin; x != xend; ++x) {
+			if(solid(x, y, info)) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
 bool level::solid(const rect& r, const surface_info** info) const
 {
 	//TODO: consider optimizing this function.

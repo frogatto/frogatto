@@ -92,6 +92,7 @@ objects = \
 	options_dialog.o \
 	package.o \
 	particle_system.o \
+	pathfinding.o \
 	pause_game_dialog.o \
 	playable_custom_object.o \
 	player_info.o \

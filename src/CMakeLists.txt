@@ -22,6 +22,7 @@ add_executable( frogatto
 	button.cpp
 	character_editor_dialog.cpp
 	checkbox.cpp
+	checksum.cpp
 	code_editor_widget.cpp
 	code_editor_dialog.cpp
 	current_generator.cpp
@@ -88,6 +89,7 @@ add_executable( frogatto
 	light.cpp
 	load_level.cpp
 	main.cpp
+	md5.cpp
 	message_dialog.cpp
     module.cpp
 	movement_script.cpp
@@ -97,6 +99,7 @@ add_executable( frogatto
 	options_dialog.cpp
 	package.cpp
 	particle_system.cpp
+	pathfinding.cpp
 	pause_game_dialog.cpp
 	playable_custom_object.cpp
 	player_info.cpp
