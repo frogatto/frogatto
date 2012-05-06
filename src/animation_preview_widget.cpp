@@ -464,7 +464,13 @@ bool animation_preview_widget::handle_event(const SDL_Event& event, bool claimed
 		if(anchor == p && !has_motion_) {
 			claimed = true;
 			p = mouse_point_to_image_loc(p);
-			const graphics::surface surf = graphics::surface_cache::get(obj_["image"].as_string());
+			graphics::surface surf = graphics::surface_cache::get(obj_["image"].as_string());
+			std::vector<graphics::surface> surf_key;
+			surf_key.push_back(surf);
+			if(surf) {
+				surf = graphics::texture::build_surface_from_key(surf_key, surf->w, surf->h);
+			}
+
 			if(surf) {
 				rect area = get_border_rect_around_loc(surf, p.x, p.y);
 				if(area.w() > 0) {
