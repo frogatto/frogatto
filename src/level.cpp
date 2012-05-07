@@ -3079,7 +3079,7 @@ variant level::get_value_by_slot(int slot) const
 	case LEVEL_LOCAL_PLAYER:
 		return variant(player_.get());
 	case LEVEL_NUM_ACTIVE:
-		return variant(active_chars_.size());
+		return variant(unsigned(active_chars_.size()));
 	case LEVEL_ACTIVE_CHARS: {
 		std::vector<variant> v;
 		foreach(const entity_ptr& e, active_chars_) {
@@ -3158,7 +3158,7 @@ variant level::get_value(const std::string& key) const
 	} else if(key == "local_player") {
 		return variant(player_.get());
 	} else if(key == "num_active") {
-		return variant(active_chars_.size());
+		return variant(unsigned(active_chars_.size()));
 	} else if(key == "active_chars") {
 		std::vector<variant> v;
 		foreach(const entity_ptr& e, active_chars_) {
@@ -3219,7 +3219,7 @@ variant level::get_value(const std::string& key) const
 	} else if(key == "segment_height") {
 		return variant(segment_height_);
 	} else if(key == "num_segments") {
-		return variant(sub_levels_.size());
+		return variant(unsigned(sub_levels_.size()));
 	} else if(key == "camera_position") {
 		std::vector<variant> pos;
 		pos.reserve(4);

@@ -15,9 +15,9 @@
 #include <SDL_thread.h>
 #include <SDL_screenkeyboard.h>
 #else
-#include <SDL/SDL.h>
-#include <SDL/SDL_keysym.h>
-#include <SDL/SDL_thread.h>
+#include "SDL.h"
+#include "SDL_keysym.h"
+#include "SDL_thread.h"
 #endif
 
 #endif

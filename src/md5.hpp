@@ -39,7 +39,9 @@ public:
 	static std::vector<uint8_t> calc(std::vector<uint8_t> v) {
 		struct md5::MD5Context ctx;
 		md5::MD5Init(&ctx);
-		md5::MD5Update(&ctx, &v[0], v.size());
+		if(v.size()) {
+			md5::MD5Update(&ctx, &v[0], v.size());
+		}
 		std::vector<uint8_t> result(16);
 		md5::MD5Final(&result[0], &ctx);
 		return result;

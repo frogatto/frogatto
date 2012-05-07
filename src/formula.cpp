@@ -345,7 +345,7 @@ public:
 	
 	variant get_value(const std::string& key) const {
 		if(key == "size") {
-			return variant(list_.num_elements());
+			return variant(unsigned(list_.num_elements()));
 		} else if(key == "empty") {
 			return variant(list_.num_elements() == 0);
 		} else if(key == "first") {
@@ -1371,7 +1371,10 @@ expression_ptr parse_function_def(const variant& formula_str, const token*& i1, 
 
 	//create a definition of the callable representing
 	//function arguments.
-	formula_callable_definition_ptr args_definition = create_formula_callable_definition(&args[0], &args[0] + args.size(), formula_name.empty() ? callable_def : NULL /*only get the surrounding scope if we have a lambda function.*/);
+	formula_callable_definition_ptr args_definition;
+	if(args.size()) {
+		args_definition = create_formula_callable_definition(&args[0], &args[0] + args.size(), formula_name.empty() ? callable_def : NULL /*only get the surrounding scope if we have a lambda function.*/);
+	}
 	if(formula_name.empty() == false) {
 		for(int n = 0; n != types.size(); ++n) {
 			if(types[n].empty()) {

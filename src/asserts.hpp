@@ -21,7 +21,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #ifndef _DEBUG
-#define abort()		do{exit(1);}while(0)
+//#define abort()		do{exit(1);}while(0)
 #endif
 #endif
 

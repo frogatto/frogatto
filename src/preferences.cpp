@@ -21,6 +21,8 @@
 #define AUTOSAVE_FILENAME				"autosave.cfg"
 
 #ifdef _WINDOWS
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 #include <shlobj.h>
 #include <shlwapi.h>
 
@@ -46,9 +48,12 @@ private:
 			{
 				::PathAppend( szPath, TEXT( "\\Frogatto\\" ) );
 			}
-			this->preferences_path = std::string( szPath );
-			this->save_file_path = this->preferences_path + TEXT( SAVE_FILENAME );
-			this->auto_save_file_path = this->preferences_path + TEXT( AUTOSAVE_FILENAME );
+			std::wstring m(szPath);
+			this->preferences_path = std::string(m.begin(), m.end());
+			std::wstring sfpath = m + TEXT( SAVE_FILENAME);
+			this->save_file_path = std::string(sfpath.begin(), sfpath.end());
+			std::wstring auto_sf_path = m + TEXT( AUTOSAVE_FILENAME );
+			this->auto_save_file_path = std::string(auto_sf_path.begin(), auto_sf_path.end());
 		}
 		std::string GetPreferencePath()
 		{
