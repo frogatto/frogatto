@@ -1,5 +1,6 @@
 #include <queue>
 
+#include "math.h"
 #include "level.hpp"
 #include "pathfinding.hpp"
 #include "tile_map.hpp"
