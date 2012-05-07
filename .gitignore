@@ -18,6 +18,7 @@ test
 dirs.txt
 core
 core.*
+*.exe
 
 MacOS/include
 MacOS/lib
