@@ -8,6 +8,18 @@
 
 namespace pathfinding {
 
+template<> double manhattan_distance(const point& p1, const point& p2) {
+	return abs(p1.x - p2.x) + abs(p1.y - p2.y);
+}
+
+template<> decimal manhattan_distance(const variant& p1, const variant& p2) {
+	std::vector<decimal>& v1 = p1.as_list_decimal();
+	std::vector<decimal>& v2 = p2.as_list_decimal();
+	decimal x1 = v1[0] - v2[0];
+	decimal x2 = v1[1] - v2[1];
+	return (x1 < 0 ? -x1 : x1) + (x2 < 0 ? -x2 : x2);
+}
+
 variant directed_graph::get_value(const std::string& key) const {
 	if(key == "vertices") {
 		std::vector<variant> v(vertices_);
@@ -117,7 +129,6 @@ variant a_star_search(weighted_directed_graph* wg,
 							if(current->G() < neighbour_node->G()) {
 								neighbour_node->G(current->G());
 								neighbour_node->set_parent(current);
-								std::sort(open_list.begin(), open_list.end());
 							}
 						} else {
 							// not on open or closed lists.
@@ -127,9 +138,9 @@ variant a_star_search(weighted_directed_graph* wg,
 								heuristic->evaluate(*callable).as_decimal());
 							neighbour_node->set_on_open_list(true);
 							open_list.push_back(neighbour_node);
-							std::sort(open_list.begin(), open_list.end());
 						}
 					}
+					std::sort(open_list.begin(), open_list.end(), graph_node_cmp<variant, decimal>);
 				}
 			}
 		}
@@ -157,7 +168,7 @@ std::vector<point> get_neighbours_from_rect(const int mid_x,
 	const int mid_y, 
 	const int tile_size_x, 
 	const int tile_size_y, 
-	bool allow_diagonals = true) {
+	const bool allow_diagonals) {
 	// Use some outside knowledge to grab the bounding rect for the level
 	const rect& b = level::current().boundaries();
 	std::vector<point> res;
@@ -211,6 +222,12 @@ void clip_pt_to_rect(point& pt, const rect& r) {
 	if(pt.y > r.y2()) {pt.y = r.y2();}
 }
 
+template<typename N, typename T>
+bool graph_node_cmp(const typename graph_node<N,T>::graph_node_ptr& lhs, 
+	const typename graph_node<N,T>::graph_node_ptr& rhs) {
+	return lhs->F() < rhs->F();
+}
+
 variant a_star_find_path(const point& src_pt1, 
 	const point& dst_pt1, 
 	game_logic::expression_ptr heuristic, 
@@ -246,11 +263,6 @@ variant a_star_find_path(const point& src_pt1,
 	bool searching = true;
 	try {
 		while(searching) {
-			//std::cerr << "OPEN_LIST:\n"; 
-			//foreach(graph_node_ptr g, open_list) {
-			//	std::cerr << *g; 
-			//}
-
 			if(open_list.empty()) {
 				// open list is empty node not found.
 				PathfindingException<point> path_error = {
@@ -262,6 +274,13 @@ variant a_star_find_path(const point& src_pt1,
 			}
 			current = open_list.front(); open_list.pop_front();
 			current->set_on_open_list(false);
+
+			//std::cerr << std::endl << "CURRENT: " << *current;
+			//std::cerr << "OPEN_LIST:\n";
+			//graph_node<point, double>::graph_node_ptr g;
+			//foreach(g, open_list) {
+			//	std::cerr << *g; 
+			//}
 
 			if(current->get_node_value() == dst) {
 				// Found the path to our node.
@@ -302,7 +321,6 @@ variant a_star_find_path(const point& src_pt1,
 						new_node->set_on_open_list(true);
 						node_list[p] = new_node;
 						open_list.push_back(new_node);
-						std::sort(open_list.begin(), open_list.end());
 					} else if(neighbour_node->second->on_closed_list() || neighbour_node->second->on_open_list()) {
 						// on closed list.
 						if(g_cost < neighbour_node->second->G()) {
@@ -318,7 +336,7 @@ variant a_star_find_path(const point& src_pt1,
 						throw path_error;
 					}
 				}
-				std::sort(open_list.begin(), open_list.end());
+				std::sort(open_list.begin(), open_list.end(), graph_node_cmp<point, double>);
 			}
 		}
 	} catch (PathfindingException<point>& e) {
@@ -443,24 +461,4 @@ UNIT_TEST(directed_graph_function) {
 	CHECK_EQ(game_logic::formula(variant("directed_graph(map(range(4), [value/2,value%2]), null).vertices")).execute(), game_logic::formula(variant("[[0,0],[0,1],[1,0],[1,1]]")).execute());
 	CHECK_EQ(game_logic::formula(variant("directed_graph(map(range(4), [value/2,value%2]), filter(links(v), inside_bounds(value))).edges where links = def(v) [[v[0]-1,v[1]], [v[0]+1,v[1]], [v[0],v[1]-1], [v[0],v[1]+1]], inside_bounds = def(v) v[0]>=0 and v[1]>=0 and v[0]<2 and v[1]<2")).execute(), 
 		game_logic::formula(variant("[[[0, 0], [1, 0]], [[0, 0], [0, 1]], [[0, 1], [1, 1]], [[0, 1], [0, 0]], [[1, 0], [0, 0]], [[1, 0], [1, 1]], [[1, 1], [0, 1]], [[1, 1], [1, 0]]]")).execute());
-}
-
-BENCHMARK(astar_function) {
-	/*using namespace game_logic;
-	static map_formula_callable* callable = NULL;
-	std::vector<variant> vertices;
-	graph_edge_list edges;
-	vertices.resize(240000);
-	// 4 corners, 19992
-	edges.resize(4*2 + 19992*3 + 220008*4);
-	for(int i = 0; i < 240000; i++) {
-		vertices.push_back(variant(i));
-	}
-	directed_graph dg(veritices, edges);
-	
-	int cnt = 1;
-	BENCHMARK_LOOP {
-		std::cerr << "Run " << cnt++ << std::endl;
-		f.execute(*callable);
-	}*/
 }

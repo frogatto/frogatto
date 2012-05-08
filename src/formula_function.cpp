@@ -540,15 +540,14 @@ FUNCTION_DEF(weighted_graph, 2, 2, "weighted_graph(directed_graph, weight_expres
 	boost::intrusive_ptr<map_formula_callable> callable(new map_formula_callable(&variables));
 	variant& a = callable->add_direct_access("a");
 	variant& b = callable->add_direct_access("b");
-	pathfinding::graph_edge_list::const_iterator edges = dg->get_edges()->begin();
-	pathfinding::graph_edge_list::const_iterator edges_end = dg->get_edges()->end();
-	while(edges != edges_end) {
-		foreach(const variant& e2, edges->second) {
+	for(pathfinding::graph_edge_list::const_iterator edges = dg->get_edges()->begin(); 
+		edges != dg->get_edges()->end(); 
+		edges++) {
+		foreach(const variant e2, edges->second) {
 			a = edges->first;
 			b = e2;
 			w[pathfinding::graph_edge(edges->first, e2)] = args()[1]->evaluate(*callable).as_decimal();
 		}
-		++edges;
 	}
 	return variant(new pathfinding::weighted_directed_graph(dg, &w));
 END_FUNCTION_DEF(weighted_graph)
@@ -563,8 +562,8 @@ FUNCTION_DEF(a_star_search, 4, 4, "a_star_search(weighted_directed_graph, src_no
 	return pathfinding::a_star_search(wg, src_node, dst_node, heuristic, callable);
 END_FUNCTION_DEF(a_star_search)
 
-FUNCTION_DEF(create_graph_from_level, 0, 0, "create_graph_from_level((optional) tile_size_x, (optional) tile_size_y) -> directed graph : Creates a directed graph based on the current level.")
-	/*int tile_size_x = TileSize;
+FUNCTION_DEF(create_graph_from_level, 0, 2, "create_graph_from_level((optional) tile_size_x, (optional) tile_size_y) -> directed graph : Creates a directed graph based on the current level.")
+	int tile_size_x = TileSize;
 	int tile_size_y = TileSize;
 	if(args().size() == 1) {
 		tile_size_y = tile_size_x = args()[0]->evaluate(variables).as_int();
@@ -581,42 +580,16 @@ FUNCTION_DEF(create_graph_from_level, 0, 0, "create_graph_from_level((optional) 
 
 	for(int y = b.y(); y < b.y2(); y += tile_size_y) {
 		for(int x = b.x(); x < b.x2(); x += tile_size_x) {
-			if(!lvl.solid(x, y, tile_size_x, tile_size_y)) {
-				std::vector<variant> label;
-				label.push_back(variant(x + tile_size_x/2));
-				label.push_back(variant(y + tile_size_y/2));
-				variant l = variant(&label);
-				vertex_list.push_back(l);
-
-				std::vector<variant> e;
-				if(x - tile_size_x >= b.x() && lvl.solid(x - tile_size_x, y, tile_size_x, tile_size_y)) {
-					std::vector<variant> label;
-					label.push_back(variant(x - tile_size_x/2));
-					label.push_back(variant(y));
-					e.push_back(variant(&label));
-				} else if(x + tile_size_x <= b.x2() && lvl.solid(x + tile_size_x, y, tile_size_x, tile_size_y)) {
-					std::vector<variant> label;
-					label.push_back(variant(x + tile_size_x*3/2));
-					label.push_back(variant(y));
-					e.push_back(variant(&label));
-				} else if(y - tile_size_y >= b.y() && lvl.solid(x, y - tile_size_y, tile_size_x, tile_size_y)) {
-					std::vector<variant> label;
-					label.push_back(variant(x));
-					label.push_back(variant(y - tile_size_y/2));
-					e.push_back(variant(&label));
-				} else if(y + tile_size_y <= b.y2() && lvl.solid(x, y + tile_size_y, tile_size_x, tile_size_y)) {
-					std::vector<variant> label;
-					label.push_back(variant(x));
-					label.push_back(variant(y + tile_size_y*3/2));
-					e.push_back(variant(&label));
-				// XXX add diagonals here.
-				}
-				edges[l] = e;
+			variant l(pathfinding::point_as_variant_list(point(x,y)));
+			vertex_list.push_back(l);
+			std::vector<variant> e;
+			foreach(const point& p, pathfinding::get_neighbours_from_rect(x, y, tile_size_x, tile_size_y)) {
+				e.push_back(pathfinding::point_as_variant_list(p));
 			}
+			edges[l] = e;
 		}
 	}
-	return variant(new pathfinding::directed_graph(&vertex_list, &edges));*/
-	return variant();
+	return variant(new pathfinding::directed_graph(&vertex_list, &edges));
 END_FUNCTION_DEF(create_graph_from_level)
 
 FUNCTION_DEF(plot_path, 5, 8, "plot_path(from_x, from_y, to_x, to_y, heuristic, (optional) weight_expr, (optional) tile_size_x, (optional) tile_size_y) -> list : Returns a list of points to get from (from_x, from_y) to (to_x, to_y)")
