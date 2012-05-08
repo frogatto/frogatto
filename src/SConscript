@@ -90,6 +90,7 @@ object_events.cpp
 options_dialog.cpp
 package.cpp
 particle_system.cpp
+pathfinding.cpp
 pause_game_dialog.cpp
 playable_custom_object.cpp
 player_info.cpp
