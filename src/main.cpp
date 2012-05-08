@@ -224,6 +224,13 @@ extern "C" int main(int argcount, char** argvec)
 	if(sys::file_exists("./master-config.cfg")) {
 		variant cfg = json::parse_from_file("./master-config.cfg");
 		if(cfg.is_map()) {
+			if(cfg["id"].is_null() == false) {
+#ifdef _WINDOWS
+				preferences::set_preferences_path(GetAppDataPath() + "/" + cfg["id"].as_string()); 
+#else
+				preferences::set_preferences_path("~/." + cfg["id"].as_string());
+#endif
+			}
 			if(cfg["arguments"].is_null() == false) {
 				std::vector<std::string> additional_args = cfg["arguments"].as_list_string();
 				argv.insert(argv.begin(), additional_args.begin(), additional_args.end());
@@ -253,6 +260,11 @@ extern "C" int main(int argcount, char** argvec)
 				const std::vector<std::string>& arguments = mod_info["arguments"].as_list_string();
 				argv.insert(argv.end(), arguments.begin(), arguments.end());
 			}
+#ifdef _WINDOWS
+			preferences::set_preferences_path(GetAppDataPath() + "/" + module::get_module_name()); 
+#else
+			preferences::set_preferences_path("~/." + module::get_module_name());
+#endif
 		} else if(arg_name == "--profile" || arg == "--profile") {
 			profile_output_buf = arg_value;
 			profile_output = profile_output_buf.c_str();

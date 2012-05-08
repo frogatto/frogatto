@@ -13,6 +13,10 @@ namespace game_logic {
 class formula_callable;
 }
 
+#ifdef _WINDOWS
+std::string GetAppDataPath();
+#endif
+
 namespace preferences {
 
 	const std::string& version();

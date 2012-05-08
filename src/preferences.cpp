@@ -11,6 +11,7 @@
 #include "formula_callable.hpp"
 #include "game_registry.hpp"
 #include "json_parser.hpp"
+#include "module.hpp"
 #include "preferences.hpp"
 #include "sound.hpp"
 #include "variant_utils.hpp"
@@ -32,7 +33,7 @@ public:
 	std::string GetPreferencePath()   { if (State* i = Instance()) return i->GetPreferencePath(); }
 	std::string GetSaveFilePath()     { if (State* i = Instance()) return i->GetSaveFilePath(); }
 	std::string GetAutoSaveFilePath() { if (State* i = Instance()) return i->GetAutoSaveFilePath(); }
-	
+
 private:
 	struct State 
 	{
@@ -43,17 +44,9 @@ private:
 	public:
 		State::State()
 		{
-			TCHAR szPath[ MAX_PATH ];
-			if( SUCCEEDED( SHGetFolderPath( NULL, CSIDL_APPDATA, NULL, 0, szPath ) ) ) 
-			{
-				::PathAppend( szPath, TEXT( "\\Frogatto\\" ) );
-			}
-			std::wstring m(szPath);
-			this->preferences_path = std::string(m.begin(), m.end());
-			std::wstring sfpath = m + TEXT( SAVE_FILENAME);
-			this->save_file_path = std::string(sfpath.begin(), sfpath.end());
-			std::wstring auto_sf_path = m + TEXT( AUTOSAVE_FILENAME );
-			this->auto_save_file_path = std::string(auto_sf_path.begin(), auto_sf_path.end());
+			this->preferences_path = GetAppDataPath();
+			this->save_file_path = this->preferences_path + SAVE_FILENAME;
+			this->auto_save_file_path = this->preferences_path + AUTOSAVE_FILENAME;
 		}
 		std::string GetPreferencePath()
 		{
@@ -77,6 +70,15 @@ private:
 	static bool MDestroyed;
 	static State* MInstance;
 };
+
+std::string GetAppDataPath() {
+	char szPath[ MAX_PATH ];
+	if(SUCCEEDED(SHGetFolderPathA(NULL, CSIDL_APPDATA, NULL, 0, szPath))) 
+	{
+		return std::string(szPath);
+	}
+	return std::string();
+}
 
 bool WindowsPrefs::MDestroyed = false;
 WindowsPrefs::State* WindowsPrefs::MInstance = 0;

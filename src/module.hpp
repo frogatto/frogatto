@@ -9,6 +9,7 @@
 
 namespace module {
 
+const std::string get_module_name();
 std::string map_file(const std::string& fname);
 void get_unique_filenames_under_dir(const std::string& dir,
                                     std::map<std::string, std::string>* file_map);

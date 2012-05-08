@@ -12,6 +12,12 @@ std::vector<std::string>& loaded_paths() {
 }
 }
 
+std::string module_loaded;
+
+const std::string get_module_name(){
+	return module_loaded.empty() ? "frogatto" : module_loaded;
+}
+
 std::string map_file(const std::string& fname)
 {
 	foreach(const std::string& p, loaded_paths()) {
@@ -78,6 +84,7 @@ variant get(const std::string& name)
 
 void load(const std::string& name)
 {
+	module_loaded = name;
 	std::string fname = "modules/" + name + "/module.cfg";
 	variant v = json::parse_from_file(fname);
 
