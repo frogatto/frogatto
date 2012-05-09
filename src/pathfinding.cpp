@@ -13,8 +13,8 @@ template<> double manhattan_distance(const point& p1, const point& p2) {
 }
 
 template<> decimal manhattan_distance(const variant& p1, const variant& p2) {
-	std::vector<decimal> v1 = p1.as_list_decimal();
-	std::vector<decimal> v2 = p2.as_list_decimal();
+	const std::vector<decimal>& v1 = p1.as_list_decimal();
+	const std::vector<decimal>& v2 = p2.as_list_decimal();
 	decimal x1 = v1[0] - v2[0];
 	decimal x2 = v1[1] - v2[1];
 	return (x1 < 0 ? -x1 : x1) + (x2 < 0 ? -x2 : x2);
