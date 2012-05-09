@@ -40,7 +40,8 @@ variant directed_graph::get_value(const std::string& key) const {
 		std::map<variant, variant> edgemap;
 		std::pair<variant, std::vector<variant> > edge;
 		foreach(edge, edges_) {
-			edgemap[edge.first] = variant(&std::vector<variant>(edge.second));
+			std::vector<variant> v(edge.second);
+			edgemap[edge.first] = variant(&v);
 		}
 		return variant(&edgemap);
 	}
@@ -82,7 +83,7 @@ variant a_star_search(weighted_directed_graph* wg,
 	b = dst_node;
 
 	if(src_node == dst_node) {
-		return variant(&std::vector<variant>());
+		return variant(&path);
 	}
 
 	bool searching = true;
@@ -154,10 +155,10 @@ variant a_star_search(weighted_directed_graph* wg,
 			}
 		}
 	} catch (PathfindingException<variant>& e) {
-		std::cerr << e.msg << " " << *e.src << ", " << (e.dest != NULL ? *e.dest) << std::endl;
+		std::cerr << e.msg << " " << e.src->to_debug_string() << ", " << (e.dest != NULL ? e.dest->to_debug_string() : "") << std::endl;
 	}
 	wg->reset_graph();
-	return path.empty() ? variant(&std::vector<variant>()) : variant(&path);
+	return variant(&path);
 }
 
 point get_midpoint(const point& src_pt, const int tile_size_x, const int tile_size_y) {
@@ -259,11 +260,11 @@ variant a_star_find_path(const point& src_pt1,
 	variant& b = callable->add_direct_access("b");
 
 	if(src == dst) {
-		return variant(&std::vector<variant>());
+		return variant(&path);
 	}
 
 	if(lvl.solid(src.x, src.y, tile_size_x, tile_size_y) || lvl.solid(dst.x, dst.y, tile_size_x, tile_size_y)) {
-		return variant(&std::vector<variant>());
+		return variant(&path);
 	}
 
 	bool searching = true;
@@ -358,7 +359,7 @@ variant a_star_find_path(const point& src_pt1,
 	} catch (PathfindingException<point>& e) {
 		std::cerr << e.msg << " (" << e.src->x << "," << e.src->y << ") : (" << e.dest->x << "," << e.dest->y << ")" << std::endl;
 	}
-	return path.empty() ? variant(&std::vector<variant>()) : variant(&path);
+	return variant(&path);
 }
 
 /*enum TileDirection {
