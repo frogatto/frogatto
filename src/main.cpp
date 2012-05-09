@@ -213,9 +213,6 @@ extern "C" int main(int argcount, char** argvec)
 	std::string orig_level_cfg = level_cfg;
 	std::string override_level_cfg = "";
 
-	preferences::load_preferences();
-	LOG( "After load_preferences()" );
-
 	std::vector<std::string> argv;
 	for(int n = 1; n < argcount; ++n) {
 		argv.push_back(argvec[n]);
@@ -224,12 +221,12 @@ extern "C" int main(int argcount, char** argvec)
 	if(sys::file_exists("./master-config.cfg")) {
 		variant cfg = json::parse_from_file("./master-config.cfg");
 		if(cfg.is_map()) {
-			if(cfg["id"].is_null() == false) {
-#ifdef _WINDOWS
-				preferences::set_preferences_path(GetAppDataPath() + "/" + cfg["id"].as_string()); 
-#else
-				preferences::set_preferences_path("~/." + cfg["id"].as_string());
-#endif
+			if(cfg["name"].is_null() == false) {
+				preferences::set_preferences_path_from_module(cfg["name"].as_string());
+				module::set_module_name(cfg["name"].as_string());
+			} else if( cfg["id"].is_null() == false) {
+				preferences::set_preferences_path_from_module(cfg["id"].as_string());
+				module::set_module_name(cfg["id"].as_string());
 			}
 			if(cfg["arguments"].is_null() == false) {
 				std::vector<std::string> additional_args = cfg["arguments"].as_list_string();
@@ -247,7 +244,6 @@ extern "C" int main(int argcount, char** argvec)
 			arg_name = std::string(arg.begin(), equal);
 			arg_value = std::string(equal+1, arg.end());
 		}
-		
 		if(arg_name == "--module") {
 			variant mod_info = module::get(arg_value);
 			if(mod_info.is_null()) {
@@ -260,11 +256,25 @@ extern "C" int main(int argcount, char** argvec)
 				const std::vector<std::string>& arguments = mod_info["arguments"].as_list_string();
 				argv.insert(argv.end(), arguments.begin(), arguments.end());
 			}
-#ifdef _WINDOWS
-			preferences::set_preferences_path(GetAppDataPath() + "/" + module::get_module_name()); 
-#else
-			preferences::set_preferences_path("~/." + module::get_module_name());
-#endif
+			preferences::set_preferences_path_from_module(module::get_module_name());
+		}
+	}
+
+	preferences::load_preferences();
+	LOG( "After load_preferences()" );
+
+	for(int n = 0; n < argv.size(); ++n) {
+		const int argc = argv.size();
+		const std::string arg(argv[n]);
+		std::string arg_name, arg_value;
+		std::string::const_iterator equal = std::find(arg.begin(), arg.end(), '=');
+		if(equal != arg.end()) {
+			arg_name = std::string(arg.begin(), equal);
+			arg_value = std::string(equal+1, arg.end());
+		}
+		
+		if(arg_name == "--module") {
+			// ignore already processed.
 		} else if(arg_name == "--profile" || arg == "--profile") {
 			profile_output_buf = arg_value;
 			profile_output = profile_output_buf.c_str();
@@ -475,7 +485,7 @@ extern "C" int main(int argcount, char** argvec)
 	
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	SDL_WM_SetCaption("Frogatto", "Frogatto");
+	SDL_WM_SetCaption(module::get_module_name().c_str(), module::get_module_name().c_str());
 
 	std::cerr << "JOYSTICKS: " << SDL_NumJoysticks() << "\n";
 

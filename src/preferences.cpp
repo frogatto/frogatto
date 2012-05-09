@@ -44,7 +44,7 @@ private:
 	public:
 		State::State()
 		{
-			this->preferences_path = GetAppDataPath();
+			this->preferences_path = GetAppDataPath() + "/" + module::get_module_name() + "/";
 			this->save_file_path = this->preferences_path + SAVE_FILENAME;
 			this->auto_save_file_path = this->preferences_path + AUTOSAVE_FILENAME;
 		}
@@ -226,7 +226,12 @@ namespace preferences {
 		bool use_fbo_ = true;
 		bool use_bequ_ = true;
 		bool use_16bpp_textures_ = false;
+
 #else
+
+#if defined(_WINDOWS)
+#define PREFERENCES_PATH ""
+#endif // _WINDOWS
 
 #ifndef NO_UPLOAD_STATS
 		bool send_stats_ = true;
@@ -315,6 +320,19 @@ namespace preferences {
 	bool setup_preferences_dir()
 	{
 		return !sys::get_dir(user_data_path()).empty();
+	}
+
+	void set_preferences_path_from_module( const std::string& name)
+	{
+#ifdef _WINDOWS
+		preferences::set_preferences_path(GetAppDataPath() + "/" + name + "/"); 
+#elif defined(__ANDROID__)
+		preferences::set_preferences_path("." + name + "/");
+#else
+		preferences::set_preferences_path("~/." + name + "/");
+#endif
+		save_file_path_ = preferences_path_ + SAVE_FILENAME;
+		auto_save_file_path_ = preferences_path_ + AUTOSAVE_FILENAME;	
 	}
 
 	void set_preferences_path(const std::string& path)
@@ -555,14 +573,19 @@ namespace preferences {
 
 	void load_preferences()
 	{
+		std::string path;
+		if(preferences_path_.empty()) {
 #if defined( _WINDOWS )
 		preferences_path_ = winPrefs.GetPreferencePath();
 		save_file_path_ = winPrefs.GetSaveFilePath();
 		auto_save_file_path_ = winPrefs.GetAutoSaveFilePath();
-		std::string path = preferences_path_;
+		path = preferences_path_;
 #else
-		std::string path = PREFERENCES_PATH;
+		path = PREFERENCES_PATH;
 #endif // defined( _WINDOWS )
+		} else {
+			path = preferences_path_;
+		}
 		expand_path(path);
 		if(!sys::file_exists(path + "preferences.cfg")) {
 			return;

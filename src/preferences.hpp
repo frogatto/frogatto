@@ -27,6 +27,7 @@ namespace preferences {
 	bool no_music();
 
 	void set_preferences_path(const std::string& path);
+	void set_preferences_path_from_module( const std::string& name);
 
 	bool setup_preferences_dir();
 
