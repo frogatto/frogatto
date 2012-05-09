@@ -33,6 +33,7 @@
 #include "controls.hpp"
 #include "pathfinding.hpp"
 #include "level.hpp"
+#include "json_parser.hpp"
 
 #include "graphics.hpp"
 #include "module.hpp"
@@ -444,7 +445,7 @@ FUNCTION_DEF(orbit, 4, 4, "orbit(x, y, angle, dist) -> [x,y]: Returns the point 
 END_FUNCTION_DEF(orbit)
 
 FUNCTION_DEF(regex_replace, 3, 3, "regex_replace(string, string, string) -> string: Unknown.")
-	std::string str = args()[0]->evaluate(variables).as_string();
+	const std::string str = args()[0]->evaluate(variables).as_string();
 	const boost::regex re(args()[1]->evaluate(variables).as_string());
 	const std::string value = args()[2]->evaluate(variables).as_string();
 	return variant(boost::regex_replace(str, re, value));
@@ -574,19 +575,27 @@ FUNCTION_DEF(create_graph_from_level, 0, 2, "create_graph_from_level((optional) 
 	ASSERT_LOG((tile_size_x%2)==0 && (tile_size_y%2)==0, "The tile_size_x and tile_size_y values *must* be even. (" << tile_size_x << "," << tile_size_y << ")");
 	level& lvl = level::current();
 	rect b = lvl.boundaries();
+	b.from_coordinates(b.x() - b.x()%tile_size_x, 
+		b.y() - b.y()%tile_size_y, 
+		b.x2()+(tile_size_x-b.x2()%tile_size_x), 
+		b.y2()+(tile_size_y-b.y2()%tile_size_y));
 
 	pathfinding::graph_edge_list edges;
 	std::vector<variant> vertex_list;
 
 	for(int y = b.y(); y < b.y2(); y += tile_size_y) {
 		for(int x = b.x(); x < b.x2(); x += tile_size_x) {
-			variant l(pathfinding::point_as_variant_list(point(x,y)));
-			vertex_list.push_back(l);
-			std::vector<variant> e;
-			foreach(const point& p, pathfinding::get_neighbours_from_rect(x, y, tile_size_x, tile_size_y)) {
-				e.push_back(pathfinding::point_as_variant_list(p));
+			if(!lvl.solid(x, y, tile_size_x, tile_size_y)) {
+				variant l(pathfinding::point_as_variant_list(point(x,y)));
+				vertex_list.push_back(l);
+				std::vector<variant> e;
+				foreach(const point& p, pathfinding::get_neighbours_from_rect(x, y, tile_size_x, tile_size_y)) {
+					if(!lvl.solid(p.x, p.y, tile_size_x, tile_size_y)) {
+						e.push_back(pathfinding::point_as_variant_list(p));
+					}
+				}
+				edges[l] = e;
 			}
-			edges[l] = e;
 		}
 	}
 	return variant(new pathfinding::directed_graph(&vertex_list, &edges));
@@ -1124,7 +1133,9 @@ FUNCTION_DEF(benchmark, 1, 1, "benchmark(expr): Executes expr in a benchmark har
 	return variant(test::run_benchmark("benchmark", boost::bind(evaluate_expr_for_benchmark, args()[0].get(), &variables, _1)));
 END_FUNCTION_DEF(benchmark)
 
-
+FUNCTION_DEF(parse, 1, 1, "parse(str_expr): Parses a string expression")
+	return json::parse(args()[0]->evaluate(variables).as_string());
+END_FUNCTION_DEF(parse)
 
 	class size_function : public function_expression {
 	public:

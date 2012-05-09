@@ -36,6 +36,13 @@ variant directed_graph::get_value(const std::string& key) const {
 			}
 		}
 		return variant(&edges);
+	} else if(key == "edge_map") {
+		std::map<variant, variant> edgemap;
+		std::pair<variant, std::vector<variant> > edge;
+		foreach(edge, edges_) {
+			edgemap[edge.first] = variant(&std::vector<variant>(edge.second));
+		}
+		return variant(&edgemap);
 	}
 	return variant();
 }
@@ -55,6 +62,8 @@ variant weighted_directed_graph::get_value(const std::string& key) const {
 		return dg_->get_value(key);
 	} else if(key == "edges") {
 		return dg_->get_value(key);
+	} else if(key == "edge_map") {
+		return dg_->get_value(key);
 	}
 	return variant();
 }
@@ -73,17 +82,17 @@ variant a_star_search(weighted_directed_graph* wg,
 	b = dst_node;
 
 	if(src_node == dst_node) {
-		return variant();
+		return variant(&std::vector<variant>());
 	}
-
-	a = src_node;
-	graph_node<variant, decimal>::graph_node_ptr current = wg->get_graph_node(src_node);
-	current->set_cost(decimal::from_int(0), heuristic->evaluate(*callable).as_decimal());
-	current->set_on_open_list(true);
-	open_list.push_back(current);
 
 	bool searching = true;
 	try {
+		a = src_node;
+		graph_node<variant, decimal>::graph_node_ptr current = wg->get_graph_node(src_node);
+		current->set_cost(decimal::from_int(0), heuristic->evaluate(*callable).as_decimal());
+		current->set_on_open_list(true);
+		open_list.push_back(current);
+
 		while(searching) {
 			//std::cerr << "OPEN_LIST:\n"; 
 			//foreach(graph_node_ptr g, open_list) {
@@ -148,7 +157,7 @@ variant a_star_search(weighted_directed_graph* wg,
 		std::cerr << e.msg << " " << *e.src << ", " << *e.dest << std::endl;
 	}
 	wg->reset_graph();
-	return path.empty() ? variant() : variant(&path);
+	return path.empty() ? variant(&std::vector<variant>()) : variant(&path);
 }
 
 point get_midpoint(const point& src_pt, const int tile_size_x, const int tile_size_y) {
@@ -240,6 +249,7 @@ variant a_star_find_path(const point& src_pt1,
 	std::deque<graph_node<point, double>::graph_node_ptr> open_list;
 	typedef std::map<point, graph_node<point, double>::graph_node_ptr> graph_node_list;
 	graph_node_list node_list;
+	level& lvl = level::current();
 	point src_pt(src_pt1), dst_pt(dst_pt1);
 	clip_pt_to_rect(src_pt, level::current().boundaries());
 	clip_pt_to_rect(dst_pt, level::current().boundaries());
@@ -249,19 +259,23 @@ variant a_star_find_path(const point& src_pt1,
 	variant& b = callable->add_direct_access("b");
 
 	if(src == dst) {
-		return variant();
+		return variant(&std::vector<variant>());
 	}
 
-	a = point_as_variant_list(src);
-	b = point_as_variant_list(dst);
-	graph_node<point, double>::graph_node_ptr current = boost::shared_ptr<graph_node<point, double> >(new graph_node<point, double>(src));
-	current->set_cost(0.0, heuristic->evaluate(*callable).as_decimal().as_float());
-	current->set_on_open_list(true);
-	open_list.push_back(current);
-	node_list[src] = current;
+	if(lvl.solid(src.x, src.y, tile_size_x, tile_size_y) || lvl.solid(dst.x, dst.y, tile_size_x, tile_size_y)) {
+		return variant(&std::vector<variant>());
+	}
 
 	bool searching = true;
 	try {
+		a = point_as_variant_list(src);
+		b = point_as_variant_list(dst);
+		graph_node<point, double>::graph_node_ptr current = boost::shared_ptr<graph_node<point, double> >(new graph_node<point, double>(src));
+		current->set_cost(0.0, heuristic->evaluate(*callable).as_decimal().as_float());
+		current->set_on_open_list(true);
+		open_list.push_back(current);
+		node_list[src] = current;
+
 		while(searching) {
 			if(open_list.empty()) {
 				// open list is empty node not found.
@@ -301,39 +315,41 @@ variant a_star_find_path(const point& src_pt1,
 				// Search through all the neighbour nodes connected to this one.
 				// XXX get_neighbours_from_rect should(?) implement a cache of the point to edges
 				foreach(const point& p, get_neighbours_from_rect(current->get_node_value().x, current->get_node_value().y, tile_size_x, tile_size_y)) {
-					graph_node_list::const_iterator neighbour_node = node_list.find(p);
-					double g_cost = current->G();
-					if(weight_expr) {
-						a = point_as_variant_list(current->get_node_value());
-						b = point_as_variant_list(p);
-						g_cost += weight_expr->evaluate(*callable).as_decimal().as_float();
-					} else {
-						g_cost += calc_weight(p, current->get_node_value());
-					}
-					if(neighbour_node == node_list.end()) {
-						// not on open or closed list (i.e. no mapping for it yet.
-						a = point_as_variant_list(p);
-						b = point_as_variant_list(dst);
-						graph_node<point, double>::graph_node_ptr new_node = boost::shared_ptr<graph_node<point, double> >(new graph_node<point, double>(p));
-						new_node->set_parent(current);
-						// XXX consider moving calc_weight to a ffl parameter (if null then use euclidean distance)
-						new_node->set_cost(g_cost, heuristic->evaluate(*callable).as_decimal().as_float());
-						new_node->set_on_open_list(true);
-						node_list[p] = new_node;
-						open_list.push_back(new_node);
-					} else if(neighbour_node->second->on_closed_list() || neighbour_node->second->on_open_list()) {
-						// on closed list.
-						if(g_cost < neighbour_node->second->G()) {
-							neighbour_node->second->G(g_cost);
-							neighbour_node->second->set_parent(current);
+					if(!lvl.solid(p.x, p.y, tile_size_x, tile_size_y)) {
+						graph_node_list::const_iterator neighbour_node = node_list.find(p);
+						double g_cost = current->G();
+						if(weight_expr) {
+							a = point_as_variant_list(current->get_node_value());
+							b = point_as_variant_list(p);
+							g_cost += weight_expr->evaluate(*callable).as_decimal().as_float();
+						} else {
+							g_cost += calc_weight(p, current->get_node_value());
 						}
-					} else {
-						PathfindingException<point> path_error = {
-							"graph node on list, but not on open or closed lists. ", 
-							&p, 
-							&dst_pt
-						};
-						throw path_error;
+						if(neighbour_node == node_list.end()) {
+							// not on open or closed list (i.e. no mapping for it yet.
+							a = point_as_variant_list(p);
+							b = point_as_variant_list(dst);
+							graph_node<point, double>::graph_node_ptr new_node = boost::shared_ptr<graph_node<point, double> >(new graph_node<point, double>(p));
+							new_node->set_parent(current);
+							// XXX consider moving calc_weight to a ffl parameter (if null then use euclidean distance)
+							new_node->set_cost(g_cost, heuristic->evaluate(*callable).as_decimal().as_float());
+							new_node->set_on_open_list(true);
+							node_list[p] = new_node;
+							open_list.push_back(new_node);
+						} else if(neighbour_node->second->on_closed_list() || neighbour_node->second->on_open_list()) {
+							// on closed list.
+							if(g_cost < neighbour_node->second->G()) {
+								neighbour_node->second->G(g_cost);
+								neighbour_node->second->set_parent(current);
+							}
+						} else {
+							PathfindingException<point> path_error = {
+								"graph node on list, but not on open or closed lists. ", 
+								&p, 
+								&dst_pt
+							};
+							throw path_error;
+						}
 					}
 				}
 				std::sort(open_list.begin(), open_list.end(), graph_node_cmp<point, double>);
@@ -342,7 +358,7 @@ variant a_star_find_path(const point& src_pt1,
 	} catch (PathfindingException<point>& e) {
 		std::cerr << e.msg << " (" << e.src->x << "," << e.src->y << ") : (" << e.dest->x << "," << e.dest->y << ")" << std::endl;
 	}
-	return path.empty() ? variant() : variant(&path);
+	return path.empty() ? variant(&std::vector<variant>()) : variant(&path);
 }
 
 /*enum TileDirection {
@@ -461,4 +477,8 @@ UNIT_TEST(directed_graph_function) {
 	CHECK_EQ(game_logic::formula(variant("directed_graph(map(range(4), [value/2,value%2]), null).vertices")).execute(), game_logic::formula(variant("[[0,0],[0,1],[1,0],[1,1]]")).execute());
 	CHECK_EQ(game_logic::formula(variant("directed_graph(map(range(4), [value/2,value%2]), filter(links(v), inside_bounds(value))).edges where links = def(v) [[v[0]-1,v[1]], [v[0]+1,v[1]], [v[0],v[1]-1], [v[0],v[1]+1]], inside_bounds = def(v) v[0]>=0 and v[1]>=0 and v[0]<2 and v[1]<2")).execute(), 
 		game_logic::formula(variant("[[[0, 0], [1, 0]], [[0, 0], [0, 1]], [[0, 1], [1, 1]], [[0, 1], [0, 0]], [[1, 0], [0, 0]], [[1, 0], [1, 1]], [[1, 1], [0, 1]], [[1, 1], [1, 0]]]")).execute());
+}
+
+UNIT_TEST(weighted_graph_function_FAILS) {
+	CHECK_EQ(game_logic::formula(variant("weighted_graph(directed_graph(map(range(4), [value/2,value%2]), null), 10).vertices")).execute(), game_logic::formula(variant("[[0,0],[0,1],[1,0],[1,1]]")).execute());
 }
