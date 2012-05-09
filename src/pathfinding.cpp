@@ -154,7 +154,7 @@ variant a_star_search(weighted_directed_graph* wg,
 			}
 		}
 	} catch (PathfindingException<variant>& e) {
-		std::cerr << e.msg << " " << *e.src << ", " << *e.dest << std::endl;
+		std::cerr << e.msg << " " << *e.src << ", " << (e.dest != NULL ? *e.dest) << std::endl;
 	}
 	wg->reset_graph();
 	return path.empty() ? variant(&std::vector<variant>()) : variant(&path);

@@ -145,8 +145,8 @@ public:
 		}
 		PathfindingException<variant> src_not_found = {
 			"weighted_directed_graph::get_graph_node() No node found having a value of ",
-			&variant(src),
-			&variant()
+			&src,
+			0
 		};
 		throw src_not_found;
 	}
