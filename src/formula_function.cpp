@@ -553,7 +553,7 @@ END_FUNCTION_DEF(weighted_graph)
 
 FUNCTION_DEF(a_star_search, 4, 4, "a_star_search(weighted_directed_graph, src_node, dst_node, heuristic) -> A list of nodes which represents the 'best' path from src_node to dst_node.")
 	variant graph = args()[0]->evaluate(variables);
-	pathfinding::weighted_directed_graph* wg = graph.try_convert<pathfinding::weighted_directed_graph>();
+	pathfinding::weighted_directed_graph_ptr wg = graph.try_convert<pathfinding::weighted_directed_graph>();
 	ASSERT_LOG(wg, "Weighted graph given is not of the correct type.");
 	variant src_node = args()[1]->evaluate(variables);
 	variant dst_node = args()[2]->evaluate(variables);
@@ -562,18 +562,20 @@ FUNCTION_DEF(a_star_search, 4, 4, "a_star_search(weighted_directed_graph, src_no
 	return pathfinding::a_star_search(wg, src_node, dst_node, heuristic, callable);
 END_FUNCTION_DEF(a_star_search)
 
-FUNCTION_DEF(create_graph_from_level, 0, 2, "create_graph_from_level((optional) tile_size_x, (optional) tile_size_y) -> directed graph : Creates a directed graph based on the current level.")
+FUNCTION_DEF(create_graph_from_level, 1, 3, "create_graph_from_level(level, (optional) tile_size_x, (optional) tile_size_y) -> directed graph : Creates a directed graph based on the current level.")
 	int tile_size_x = TileSize;
 	int tile_size_y = TileSize;
-	if(args().size() == 1) {
-		tile_size_y = tile_size_x = args()[0]->evaluate(variables).as_int();
-	} else if(args().size() == 2) {
-		tile_size_x = args()[0]->evaluate(variables).as_int();
-		tile_size_y = args()[1]->evaluate(variables).as_int();
+	if(args().size() == 2) {
+		tile_size_y = tile_size_x = args()[1]->evaluate(variables).as_int();
+	} else if(args().size() == 3) {
+		tile_size_x = args()[1]->evaluate(variables).as_int();
+		tile_size_y = args()[2]->evaluate(variables).as_int();
 	}
 	ASSERT_LOG((tile_size_x%2)==0 && (tile_size_y%2)==0, "The tile_size_x and tile_size_y values *must* be even. (" << tile_size_x << "," << tile_size_y << ")");
-	level& lvl = level::current();
-	rect b = lvl.boundaries();
+	variant curlevel = args()[0]->evaluate(variables);
+	level_ptr lvl = curlevel.try_convert<level>();
+	ASSERT_LOG(lvl, "The level parameter passed to the function was couldn't be converted.");
+	rect b = lvl->boundaries();
 	b.from_coordinates(b.x() - b.x()%tile_size_x, 
 		b.y() - b.y()%tile_size_y, 
 		b.x2()+(tile_size_x-b.x2()%tile_size_x), 
@@ -584,12 +586,12 @@ FUNCTION_DEF(create_graph_from_level, 0, 2, "create_graph_from_level((optional) 
 
 	for(int y = b.y(); y < b.y2(); y += tile_size_y) {
 		for(int x = b.x(); x < b.x2(); x += tile_size_x) {
-			if(!lvl.solid(x, y, tile_size_x, tile_size_y)) {
+			if(!lvl->solid(x, y, tile_size_x, tile_size_y)) {
 				variant l(pathfinding::point_as_variant_list(point(x,y)));
 				vertex_list.push_back(l);
 				std::vector<variant> e;
 				foreach(const point& p, pathfinding::get_neighbours_from_rect(x, y, tile_size_x, tile_size_y)) {
-					if(!lvl.solid(p.x, p.y, tile_size_x, tile_size_y)) {
+					if(!lvl->solid(p.x, p.y, tile_size_x, tile_size_y)) {
 						e.push_back(pathfinding::point_as_variant_list(p));
 					}
 				}
@@ -600,25 +602,27 @@ FUNCTION_DEF(create_graph_from_level, 0, 2, "create_graph_from_level((optional) 
 	return variant(new pathfinding::directed_graph(&vertex_list, &edges));
 END_FUNCTION_DEF(create_graph_from_level)
 
-FUNCTION_DEF(plot_path, 5, 8, "plot_path(from_x, from_y, to_x, to_y, heuristic, (optional) weight_expr, (optional) tile_size_x, (optional) tile_size_y) -> list : Returns a list of points to get from (from_x, from_y) to (to_x, to_y)")
+FUNCTION_DEF(plot_path, 6, 9, "plot_path(level, from_x, from_y, to_x, to_y, heuristic, (optional) weight_expr, (optional) tile_size_x, (optional) tile_size_y) -> list : Returns a list of points to get from (from_x, from_y) to (to_x, to_y)")
 	int tile_size_x = TileSize;
 	int tile_size_y = TileSize;
 	expression_ptr weight_expr = expression_ptr();
-	if(args().size() > 5) {
-		weight_expr = args()[5];
+	variant curlevel = args()[0]->evaluate(variables);
+	level_ptr lvl = curlevel.try_convert<level>();
+	if(args().size() > 6) {
+		weight_expr = args()[6];
 	}
-	if(args().size() == 7) {
-		tile_size_y = tile_size_x = args()[5]->evaluate(variables).as_int();
-	} else if(args().size() == 8) {
-		tile_size_x = args()[5]->evaluate(variables).as_int();
-		tile_size_y = args()[6]->evaluate(variables).as_int();
+	if(args().size() == 8) {
+		tile_size_y = tile_size_x = args()[6]->evaluate(variables).as_int();
+	} else if(args().size() == 9) {
+		tile_size_x = args()[6]->evaluate(variables).as_int();
+		tile_size_y = args()[7]->evaluate(variables).as_int();
 	}
 	ASSERT_LOG((tile_size_x%2)==0 && (tile_size_y%2)==0, "The tile_size_x and tile_size_y values *must* be even. (" << tile_size_x << "," << tile_size_y << ")");
-	point src(args()[0]->evaluate(variables).as_int(), args()[1]->evaluate(variables).as_int());
-	point dst(args()[2]->evaluate(variables).as_int(), args()[3]->evaluate(variables).as_int());
+	point src(args()[1]->evaluate(variables).as_int(), args()[2]->evaluate(variables).as_int());
+	point dst(args()[3]->evaluate(variables).as_int(), args()[4]->evaluate(variables).as_int());
 	expression_ptr heuristic = args()[4];
 	boost::intrusive_ptr<map_formula_callable> callable(new map_formula_callable(&variables));
-	return variant(pathfinding::a_star_find_path(src, dst, heuristic, weight_expr, callable, tile_size_x, tile_size_y));
+	return variant(pathfinding::a_star_find_path(lvl, src, dst, heuristic, weight_expr, callable, tile_size_x, tile_size_y));
 END_FUNCTION_DEF(plot_path)
 
 namespace {

@@ -14,6 +14,7 @@
 #include "formula_callable.hpp"
 #include "formula_function.hpp"
 #include "geometry.hpp"
+#include "level.hpp"
 #include "variant.hpp"
 
 namespace pathfinding {
@@ -167,13 +168,13 @@ std::vector<point> get_neighbours_from_rect(const int mid_x,
 	const bool allow_diagonals = true);
 variant point_as_variant_list(const point& pt);
 
-variant a_star_search(weighted_directed_graph* wg, 
+variant a_star_search(weighted_directed_graph_ptr wg, 
 	const variant src_node, 
 	const variant dst_node, 
 	game_logic::expression_ptr heuristic, 
 	game_logic::map_formula_callable_ptr callable);
 
-variant a_star_find_path(const point& src, 
+variant a_star_find_path(level_ptr lvl, const point& src, 
 	const point& dst, 
 	game_logic::expression_ptr heuristic, 
 	game_logic::expression_ptr weight_expr, 
