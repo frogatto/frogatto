@@ -113,6 +113,9 @@ objects = \
 	sound.o \
 	speech_dialog.o \
 	stats.o \
+	stats_server.o \
+	stats_server_main.o \
+	stats_web_server.o \
 	string_utils.o \
 	surface_cache.o \
 	surface_formula.o \

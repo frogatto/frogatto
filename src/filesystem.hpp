@@ -63,6 +63,10 @@ SDL_RWops* read_sdl_rw_from_asset(const std::string& name);
 void print_assets();
 #endif // ANDROID
 
+void move_file(const std::string& from, const std::string& to);
+void remove_file(const std::string& fname);
+
+
 }
 
 #endif

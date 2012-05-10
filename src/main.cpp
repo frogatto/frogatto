@@ -160,36 +160,6 @@ AAssetManager* GetJavaAssetManager()
 
 extern "C" int main(int argcount, char** argvec)
 {
-#if defined(TARGET_PANDORA)
-    EGL_Open();
-#endif
-
-#if defined(__ANDROID__)
-	std::freopen("stdout.txt","w",stdout);
-	std::freopen("stderr.txt","w",stderr);
-	std::cerr.sync_with_stdio(true);
-#endif
-
-	LOG( "Start of main" );
-	
-	if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_JOYSTICK) < 0) {
-		std::cerr << "could not init SDL\n";
-		return -1;
-	}
-	LOG( "After SDL_Init" );
-
-#if defined(TARGET_BLACKBERRY)
-	chdir("app/native");
-	std::cout<< "Changed working directory to: " << getcwd(0, 0) << std::endl;
-#endif
-
-#ifdef TARGET_OS_HARMATTAN
-	g_type_init();
-#endif
-	i18n::init ();
-	LOG( "After i18n::init()" );
-
-//	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 1);
 
 	#ifdef NO_STDERR
 	std::freopen("/dev/null", "w", stderr);
@@ -349,6 +319,37 @@ extern "C" int main(int argcount, char** argvec)
 		test::run_utility(utility_program, util_args);
 		return 0;
 	}
+
+#if defined(TARGET_PANDORA)
+    EGL_Open();
+#endif
+
+#if defined(__ANDROID__)
+	std::freopen("stdout.txt","w",stdout);
+	std::freopen("stderr.txt","w",stderr);
+	std::cerr.sync_with_stdio(true);
+#endif
+
+	LOG( "Start of main" );
+	
+	if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_JOYSTICK) < 0) {
+		std::cerr << "could not init SDL\n";
+		return -1;
+	}
+	LOG( "After SDL_Init" );
+
+#if defined(TARGET_BLACKBERRY)
+	chdir("app/native");
+	std::cout<< "Changed working directory to: " << getcwd(0, 0) << std::endl;
+#endif
+
+#ifdef TARGET_OS_HARMATTAN
+	g_type_init();
+#endif
+	i18n::init ();
+	LOG( "After i18n::init()" );
+
+//	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 1);
 
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_BLACKBERRY) || defined(__ANDROID__)
 	//on the iPhone and PlayBook, try to restore the auto-save if it exists

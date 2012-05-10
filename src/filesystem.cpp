@@ -586,4 +586,14 @@ void write_file(const std::string& fname, const std::string& data)
 	file << data;
 }
 
+void move_file(const std::string& from, const std::string& to)
+{
+	rename(from.c_str(), to.c_str());
+}
+
+void remove_file(const std::string& fname)
+{
+	unlink(fname.c_str());
+}
+
 }
