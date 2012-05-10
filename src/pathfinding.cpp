@@ -69,7 +69,7 @@ variant weighted_directed_graph::get_value(const std::string& key) const {
 	return variant();
 }
 
-variant a_star_search(weighted_directed_graph* wg, 
+variant a_star_search(weighted_directed_graph_ptr wg, 
 	const variant src_node, 
 	const variant dst_node, 
 	game_logic::expression_ptr heuristic, 
@@ -238,7 +238,8 @@ bool graph_node_cmp(const typename graph_node<N,T>::graph_node_ptr& lhs,
 	return lhs->F() < rhs->F();
 }
 
-variant a_star_find_path(const point& src_pt1, 
+variant a_star_find_path(level_ptr lvl,
+	const point& src_pt1, 
 	const point& dst_pt1, 
 	game_logic::expression_ptr heuristic, 
 	game_logic::expression_ptr weight_expr, 
@@ -250,7 +251,6 @@ variant a_star_find_path(const point& src_pt1,
 	std::deque<graph_node<point, double>::graph_node_ptr> open_list;
 	typedef std::map<point, graph_node<point, double>::graph_node_ptr> graph_node_list;
 	graph_node_list node_list;
-	level& lvl = level::current();
 	point src_pt(src_pt1), dst_pt(dst_pt1);
 	clip_pt_to_rect(src_pt, level::current().boundaries());
 	clip_pt_to_rect(dst_pt, level::current().boundaries());
@@ -263,7 +263,7 @@ variant a_star_find_path(const point& src_pt1,
 		return variant(&path);
 	}
 
-	if(lvl.solid(src.x, src.y, tile_size_x, tile_size_y) || lvl.solid(dst.x, dst.y, tile_size_x, tile_size_y)) {
+	if(lvl->solid(src.x, src.y, tile_size_x, tile_size_y) || lvl->solid(dst.x, dst.y, tile_size_x, tile_size_y)) {
 		return variant(&path);
 	}
 
@@ -316,7 +316,7 @@ variant a_star_find_path(const point& src_pt1,
 				// Search through all the neighbour nodes connected to this one.
 				// XXX get_neighbours_from_rect should(?) implement a cache of the point to edges
 				foreach(const point& p, get_neighbours_from_rect(current->get_node_value().x, current->get_node_value().y, tile_size_x, tile_size_y)) {
-					if(!lvl.solid(p.x, p.y, tile_size_x, tile_size_y)) {
+					if(!lvl->solid(p.x, p.y, tile_size_x, tile_size_y)) {
 						graph_node_list::const_iterator neighbour_node = node_list.find(p);
 						double g_cost = current->G();
 						if(weight_expr) {

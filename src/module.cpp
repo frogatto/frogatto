@@ -13,14 +13,21 @@ std::vector<std::string>& loaded_paths() {
 }
 }
 
-std::string module_loaded_;
+static bool module_loaded_ = false;
+static std::string module_name_;
+static std::string module_pretty_name_;
 
 const std::string get_module_name(){
-	return module_loaded_.empty() ? "frogatto" : module_loaded_;
+	return module_name_.empty() ? "frogatto" : module_name_;
 }
 
-void set_module_name(const std::string& name) {
-	module_loaded_ = name;
+const std::string get_module_pretty_name() {
+	return module_pretty_name_.empty() ? "Frogatto" :  module_pretty_name_;
+}
+
+void set_module_name(const std::string& name, const std::string& pretty_name) {
+	module_name_ = name;
+	module_pretty_name_ = pretty_name;
 }
 
 std::string map_file(const std::string& fname)
@@ -87,21 +94,26 @@ variant get(const std::string& name)
 	}
 }
 
+const std::string get_base_module_path() {
+	return "./modules/" + get_module_name() + "/";
+}
+
 void load(const std::string& name)
 {
-	std::string modname = name;
+	module_loaded_ = true;
+	std::string pretty_name = name;
 	std::string fname = "modules/" + name + "/module.cfg";
 	variant v = json::parse_from_file(fname);
 
 	if(v.is_map()) {
 		if(v["name"].is_null() == false) {
-			modname = v["name"].as_string();
+			pretty_name = v["name"].as_string();
 		} else if(v["id"].is_null() == false) {
-			modname = v["id"].as_string();
+			pretty_name = v["id"].as_string();
 		}
 	}
-	set_module_name(modname);
-	loaded_paths().insert(loaded_paths().begin(), "./modules/" + name + "/");
+	set_module_name(name, pretty_name);
+	loaded_paths().insert(loaded_paths().begin(), get_base_module_path());
 }
 
 }

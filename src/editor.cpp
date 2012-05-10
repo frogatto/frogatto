@@ -298,7 +298,11 @@ public:
 		if(name.empty() == false) {
 			variant empty_lvl = json::parse_from_file("data/level/empty.cfg");
 			empty_lvl.add_attr(variant("id"), variant(name));
-			sys::write_file(preferences::level_path() + name, empty_lvl.write_json());
+			if(preferences::is_level_path_set()) {
+				sys::write_file(preferences::level_path() + name, empty_lvl.write_json());
+			} else {
+				sys::write_file(module::get_base_module_path() + preferences::level_path() + name, empty_lvl.write_json());
+			}
 			editor_.close();
 			g_last_edited_level() = name;
 		}

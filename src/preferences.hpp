@@ -32,6 +32,7 @@ namespace preferences {
 	bool setup_preferences_dir();
 
 	const std::string& level_path();
+	bool is_level_path_set();
 	const char* user_data_path();
 	const char* save_file_path();
 	const char* auto_save_file_path();
