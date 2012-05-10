@@ -333,8 +333,9 @@ private:
 	int last_cycle_active_;
 
 	struct position_schedule {
-		position_schedule() : speed(1) {}
-		int speed;
+		position_schedule() : speed(1), base_cycle(0), expires(false) {}
+		int speed, base_cycle;
+		bool expires;
 		std::vector<int> x_pos;
 		std::vector<int> y_pos;
 		std::vector<decimal> rotation;

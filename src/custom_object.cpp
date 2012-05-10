@@ -130,6 +130,14 @@ custom_object::custom_object(variant node)
 		position_schedule_->speed = node["schedule_speed"].as_int();
 	}
 
+	if(position_schedule_.get() != NULL && node.has_key("schedule_base_cycle")) {
+		position_schedule_->base_cycle = node["schedule_base_cycle"].as_int();
+	}
+
+	if(position_schedule_.get() != NULL && node.has_key("schedule_expires") && node["schedule_expires"].as_bool()) {
+		position_schedule_->expires = true;
+	}
+
 	if(node.has_key("draw_area")) {
 		draw_area_.reset(new rect(node["draw_area"].as_string()));
 	}
@@ -455,6 +463,14 @@ variant custom_object::write() const
 
 		if(position_schedule_->rotation.empty() == false) {
 			res.add("rotation_schedule", vector_to_variant(position_schedule_->rotation));
+		}
+
+		if(position_schedule_->base_cycle != 0) {
+			res.add("schedule_base_cycle", position_schedule_->base_cycle);
+		}
+
+		if(position_schedule_->expires) {
+			res.add("schedule_expires", true);
 		}
 	}
 
@@ -989,41 +1005,50 @@ void custom_object::process(level& lvl)
 	}
 
 	if(position_schedule_.get() != NULL) {
-		const int pos = cycle_/position_schedule_->speed;
-		const int next_fraction = cycle_%position_schedule_->speed;
-		const int this_fraction = position_schedule_->speed - next_fraction;
+		const int pos = (cycle_ - position_schedule_->base_cycle)/position_schedule_->speed;
 
-		int xpos = INT_MIN, ypos = INT_MIN;
-		if(position_schedule_->x_pos.empty() == false) {
-			xpos = position_schedule_->x_pos[pos%position_schedule_->x_pos.size()];
-			if(next_fraction && pos+1 != position_schedule_->x_pos.size()) {
-				xpos = (xpos*this_fraction + next_fraction*position_schedule_->x_pos[(pos+1)%position_schedule_->x_pos.size()])/position_schedule_->speed;
-			}
-		}
+		if(position_schedule_->expires &&
+		   pos >= position_schedule_->x_pos.size() &&
+		   pos >= position_schedule_->y_pos.size() &&
+		   pos >= position_schedule_->rotation.size()) {
+			position_schedule_.reset();
+		} else {
 
-		if(position_schedule_->y_pos.empty() == false) {
-			ypos = position_schedule_->y_pos[pos%position_schedule_->y_pos.size()];
-			if(next_fraction && pos+1 != position_schedule_->y_pos.size()) {
-				ypos = (ypos*this_fraction + next_fraction*position_schedule_->y_pos[(pos+1)%position_schedule_->y_pos.size()])/position_schedule_->speed;
-			}
-		}
+			const int next_fraction = (cycle_ - position_schedule_->base_cycle)%position_schedule_->speed;
+			const int this_fraction = position_schedule_->speed - next_fraction;
 
-		if(xpos != INT_MIN && ypos != INT_MIN) {
-			set_pos(xpos, ypos);
-		} else if(xpos != INT_MIN) {
-			set_x(xpos);
-		} else if(ypos != INT_MIN) {
-			set_y(ypos);
-		}
-
-		if(position_schedule_->rotation.empty() == false) {
-			rotate_ = position_schedule_->rotation[pos%position_schedule_->rotation.size()];
-			while(rotate_ >= 360) {
-				rotate_ -= 360;
+			int xpos = INT_MIN, ypos = INT_MIN;
+			if(position_schedule_->x_pos.empty() == false) {
+				xpos = position_schedule_->x_pos[pos%position_schedule_->x_pos.size()];
+				if(next_fraction && pos+1 != position_schedule_->x_pos.size()) {
+					xpos = (xpos*this_fraction + next_fraction*position_schedule_->x_pos[(pos+1)%position_schedule_->x_pos.size()])/position_schedule_->speed;
+				}
 			}
 
-			if(next_fraction) {
-				rotate_ = decimal((rotate_*this_fraction + next_fraction*position_schedule_->rotation[(pos+1)%position_schedule_->rotation.size()])/position_schedule_->speed);
+			if(position_schedule_->y_pos.empty() == false) {
+				ypos = position_schedule_->y_pos[pos%position_schedule_->y_pos.size()];
+				if(next_fraction && pos+1 != position_schedule_->y_pos.size()) {
+					ypos = (ypos*this_fraction + next_fraction*position_schedule_->y_pos[(pos+1)%position_schedule_->y_pos.size()])/position_schedule_->speed;
+				}
+			}
+
+			if(xpos != INT_MIN && ypos != INT_MIN) {
+				set_pos(xpos, ypos);
+			} else if(xpos != INT_MIN) {
+				set_x(xpos);
+			} else if(ypos != INT_MIN) {
+				set_y(ypos);
+			}
+
+			if(position_schedule_->rotation.empty() == false) {
+				rotate_ = position_schedule_->rotation[pos%position_schedule_->rotation.size()];
+				while(rotate_ >= 360) {
+					rotate_ -= 360;
+				}
+
+				if(next_fraction) {
+					rotate_ = decimal((rotate_*this_fraction + next_fraction*position_schedule_->rotation[(pos+1)%position_schedule_->rotation.size()])/position_schedule_->speed);
+				}
 			}
 		}
 	}
@@ -2879,6 +2904,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	case CUSTOM_OBJECT_X_SCHEDULE: {
 		if(position_schedule_.get() == NULL) {
 			position_schedule_.reset(new position_schedule);
+			position_schedule_->base_cycle = cycle_;
 		}
 
 		position_schedule_->x_pos.clear();
@@ -2890,6 +2916,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	case CUSTOM_OBJECT_Y_SCHEDULE: {
 		if(position_schedule_.get() == NULL) {
 			position_schedule_.reset(new position_schedule);
+			position_schedule_->base_cycle = cycle_;
 		}
 
 		position_schedule_->y_pos.clear();
@@ -2901,6 +2928,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	case CUSTOM_OBJECT_ROTATION_SCHEDULE: {
 		if(position_schedule_.get() == NULL) {
 			position_schedule_.reset(new position_schedule);
+			position_schedule_->base_cycle = cycle_;
 		}
 
 		position_schedule_->rotation.clear();
@@ -2913,10 +2941,21 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	case CUSTOM_OBJECT_SCHEDULE_SPEED: {
 		if(position_schedule_.get() == NULL) {
 			position_schedule_.reset(new position_schedule);
+			position_schedule_->base_cycle = cycle_;
 		}
 
 		position_schedule_->speed = value.as_int();
 
+		break;
+	}
+
+	case CUSTOM_OBJECT_SCHEDULE_EXPIRES: {
+		if(position_schedule_.get() == NULL) {
+			position_schedule_.reset(new position_schedule);
+			position_schedule_->base_cycle = cycle_;
+		}
+
+		position_schedule_->expires = true;
 		break;
 	}
 

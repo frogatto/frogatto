@@ -52,6 +52,7 @@ custom_object_callable::custom_object_callable()
 	"activation_area", "clip_area",
 	"always_active", "activation_border", "fall_through_platforms", "has_feet",
 	"x_schedule", "y_schedule", "rotation_schedule", "schedule_speed",
+	"schedule_expires",
 	"platform_area", "platform_offsets", "custom_draw", "event_handlers",
 	"ctrl_up", "ctrl_down", "ctrl_left", "ctrl_right",
 	"ctrl_attack", "ctrl_jump", "ctrl_tongue",
