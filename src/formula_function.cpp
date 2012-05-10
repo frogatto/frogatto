@@ -533,11 +533,9 @@ END_FUNCTION_DEF(directed_graph)
 
 FUNCTION_DEF(weighted_graph, 2, 2, "weighted_graph(directed_graph, weight_expression) -> a weighted directed graph")
 	variant graph = args()[0]->evaluate(variables);
-	pathfinding::directed_graph* dg = graph.try_convert<pathfinding::directed_graph>();
+	pathfinding::directed_graph_ptr dg = boost::intrusive_ptr<pathfinding::directed_graph>(graph.try_convert<pathfinding::directed_graph>());
+	ASSERT_LOG(dg, "Directed graph given is not of the correct type.");
 	pathfinding::edge_weights w;
-	if(!dg) {
-		return variant();
-	}
 	boost::intrusive_ptr<map_formula_callable> callable(new map_formula_callable(&variables));
 	variant& a = callable->add_direct_access("a");
 	variant& b = callable->add_direct_access("b");
@@ -556,6 +554,7 @@ END_FUNCTION_DEF(weighted_graph)
 FUNCTION_DEF(a_star_search, 4, 4, "a_star_search(weighted_directed_graph, src_node, dst_node, heuristic) -> A list of nodes which represents the 'best' path from src_node to dst_node.")
 	variant graph = args()[0]->evaluate(variables);
 	pathfinding::weighted_directed_graph* wg = graph.try_convert<pathfinding::weighted_directed_graph>();
+	ASSERT_LOG(wg, "Weighted graph given is not of the correct type.");
 	variant src_node = args()[1]->evaluate(variables);
 	variant dst_node = args()[2]->evaluate(variables);
 	expression_ptr heuristic = args()[3];

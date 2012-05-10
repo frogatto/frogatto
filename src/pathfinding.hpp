@@ -21,8 +21,8 @@ namespace pathfinding {
 template<typename N>
 struct PathfindingException {
 	const char* msg;
-	const N* src;
-	const N* dest;
+	const N src;
+	const N dest;
 };
 
 typedef variant_pair graph_edge;
@@ -30,7 +30,9 @@ typedef std::map<variant, std::vector<variant> > graph_edge_list;
 typedef std::map<graph_edge, decimal> edge_weights;
 
 class directed_graph;
-typedef boost::shared_ptr<directed_graph> directed_graph_ptr;
+class weighted_directed_graph;
+typedef boost::intrusive_ptr<directed_graph> directed_graph_ptr;
+typedef boost::intrusive_ptr<weighted_directed_graph> weighted_directed_graph_ptr;
 
 template<typename N, typename T>
 class graph_node {
@@ -115,10 +117,10 @@ public:
 
 class weighted_directed_graph : public game_logic::formula_callable {
 	edge_weights weights_;
-	directed_graph* dg_;
+	directed_graph_ptr dg_;
 	vertex_list graph_node_list_;
 public:
-	weighted_directed_graph(directed_graph* dg, edge_weights* weights) 
+	weighted_directed_graph(directed_graph_ptr dg, edge_weights* weights) 
 		: dg_(dg)
 	{
 		weights_.swap(*weights);
@@ -135,7 +137,7 @@ public:
 		if(w != weights_.end()) {
 			return w->second;
 		}
-		PathfindingException<variant> weighted_graph_error = {"Couldn't find edge weight for nodes.", &src, &dest};
+		PathfindingException<variant> weighted_graph_error = {"Couldn't find edge weight for nodes.", src, dest};
 		throw weighted_graph_error;
 	}
 	graph_node<variant, decimal>::graph_node_ptr get_graph_node(const variant& src) {
@@ -145,8 +147,8 @@ public:
 		}
 		PathfindingException<variant> src_not_found = {
 			"weighted_directed_graph::get_graph_node() No node found having a value of ",
-			&src,
-			0
+			src,
+			variant()
 		};
 		throw src_not_found;
 	}

@@ -104,8 +104,8 @@ variant a_star_search(weighted_directed_graph* wg,
 				// open list is empty node not found.
 				PathfindingException<variant> path_error = {
 					"Open list was empty -- no path found. ", 
-					&src_node, 
-					&dst_node
+					src_node, 
+					dst_node
 				};
 				throw path_error;
 			}
@@ -155,7 +155,7 @@ variant a_star_search(weighted_directed_graph* wg,
 			}
 		}
 	} catch (PathfindingException<variant>& e) {
-		std::cerr << e.msg << " " << e.src->to_debug_string() << ", " << (e.dest != NULL ? e.dest->to_debug_string() : "") << std::endl;
+		std::cerr << e.msg << " " << e.src.to_debug_string() << ", " << e.dest.to_debug_string() << std::endl;
 	}
 	wg->reset_graph();
 	return variant(&path);
@@ -282,8 +282,8 @@ variant a_star_find_path(const point& src_pt1,
 				// open list is empty node not found.
 				PathfindingException<point> path_error = {
 					"Open list was empty -- no path found. ", 
-					&src, 
-					&dst
+					src, 
+					dst
 				};
 				throw path_error;
 			}
@@ -332,7 +332,6 @@ variant a_star_find_path(const point& src_pt1,
 							b = point_as_variant_list(dst);
 							graph_node<point, double>::graph_node_ptr new_node = boost::shared_ptr<graph_node<point, double> >(new graph_node<point, double>(p));
 							new_node->set_parent(current);
-							// XXX consider moving calc_weight to a ffl parameter (if null then use euclidean distance)
 							new_node->set_cost(g_cost, heuristic->evaluate(*callable).as_decimal().as_float());
 							new_node->set_on_open_list(true);
 							node_list[p] = new_node;
@@ -346,8 +345,8 @@ variant a_star_find_path(const point& src_pt1,
 						} else {
 							PathfindingException<point> path_error = {
 								"graph node on list, but not on open or closed lists. ", 
-								&p, 
-								&dst_pt
+								p, 
+								dst_pt
 							};
 							throw path_error;
 						}
@@ -357,120 +356,10 @@ variant a_star_find_path(const point& src_pt1,
 			}
 		}
 	} catch (PathfindingException<point>& e) {
-		std::cerr << e.msg << " (" << e.src->x << "," << e.src->y << ") : (" << e.dest->x << "," << e.dest->y << ")" << std::endl;
+		std::cerr << e.msg << " (" << e.src.x << "," << e.src.y << ") : (" << e.dest.x << "," << e.dest.y << ")" << std::endl;
 	}
 	return variant(&path);
 }
-
-/*enum TileDirection {
-	TILE_BEGIN,
-	TILE_NORTH = TILE_BEGIN,
-	TILE_EAST,
-	TILE_SOUTH,
-	TILE_WEST,
-	TILE_END_SIMPLE,
-	TILE_NORTHEAST = TILE_END_SIMPLE,
-	TILE_NORTHWEST,
-	TILE_SOUTHEAST,
-	TILE_SOUTHWEST,
-	TILE_MAX_DIRS,
-};*/
-
-
-/*class graph_node {
-	int F_, G_, H_;
-	point p_;
-	rect r_;
-	graph_node* parent_;
-public:
-	graph_node(point p, int G, int H, graph_node* parent) 
-		: F_(G+H), G_(G), H_(H), parent_(parent), 
-		r_(p.x,p.y,TileSize,TileSize), p_(p)
-	{}
-	bool operator()(graph_node& s1, graph_node& s2) {return s1.F_ < s2.F_;}
-	graph_node* tile_in_dir(enum TileDirection dir, astar* a, const point& to);
-	
-};
-
-graph_node* graph_node::tile_in_dir(enum TileDirection dir, astar* a, const point& to) {
-	level& lvl = level::current();
-	static point dir_map[TILE_MAX_DIRS] = {
-		point(0,-1*TileSize),
-		point( 1*TileSize, 0),
-		point(0,1*TileSize),
-		point(-1*TileSize,0),
-		point( 1*TileSize,-1*TileSize),
-		point(-1*TileSize,-1*TileSize),
-		point(1*TileSize,1*TileSize),
-		point(-1*TileSize,1*TileSize),
-	};
-	if(dir >= TILE_MAX_DIRS){
-		return 0;
-	}
-	rect r(r_.x()+dir_map[dir].x, r_.y()+dir_map[dir].y, TileSize, TileSize);
-	if(lvl.may_be_solid_in_rect(r)) {
-		return 0;
-	}
-	int new_g = this->parent_->G_ + a->calculate_cost(this->parent_->p_, p_);
-	return new graph_node(point(r.x(),r.y()), new_g, a->calculate_cost(p_, to), this);
-}*/
-
-/*int astar::calculate_cost(const point& from, const point& to) {
-	int num_tiles_x = abs(to.x - from.x) / TileSize;
-	int num_tiles_y = abs(to.y - from.y) / TileSize;
-	int diagonal_moves = 0;
-	if(allow_diagonals_) {
-		diagonal_moves = abs(num_tiles_y - num_tiles_x);
-		num_tiles_y -= diagonal_moves;
-		num_tiles_x -= diagonal_moves;
-	} 
-	return diagonal_moves * cost_d_ + num_tiles_x * cost_h_ + num_tiles_y * cost_v_;
-}
-
-std::vector<point> astar::plot_path(point& from, point& to) {
-	/*struct std::set<graph_node*> open_list;
-	struct std::set<graph_node*> closed_list;
-	level& lvl = level::current();
-	std::vector<point> path;
-	from.x = (from.x / TileSize) * TileSize;
-	from.y = (from.y / TileSize) * TileSize;
-	to.x = (to.x / TileSize) * TileSize;
-	to.y = (to.y / TileSize) * TileSize;
-	// 1. Insert start node on list.
-	open_list.insert(new graph_node(point(from.x, from.y), 0, calculate_cost(from, to), NULL));
-	bool searching = true;
-	while(searching) {
-		// 2. Pull lowest cost node off the list, which is already sorted.
-		// Add the tiles up, down, left and right of us
-		std::set<graph_node*>::iterator lowest_f = open_list.begin();
-		if(lowest_f != open_list.end()) {
-			for(int i = TILE_BEGIN; i < TILE_END_SIMPLE; i++) {
-				graph_node* t = (*lowest_f)->tile_in_dir(static_cast<TileDirection>(i), this, to);
-				if(t) {
-					open_list.insert(t);
-				}
-			}
-			if(allow_diagonals_) {
-				// Add diagonal tiles, if we are doing diagonals.
-				for(int i = TILE_END_SIMPLE; i < TILE_MAX_DIRS; i++) {
-					graph_node* t = (*lowest_f)->tile_in_dir(static_cast<TileDirection>(i), this, to);
-					if(t) {
-						open_list.insert(t);
-					}
-				}
-			}
-			// 3. Place the removed node onto the closed list.
-			closed_list.insert(*lowest_f);
-			open_list.erase(lowest_f);
-		} else {
-			// Didn't find our way to the finish location and open_list is empty.
-			searching = false;
-		}
-	}
-	return path;*/
-/*	std::vector<point> a;
-	return a;
-}*/
 
 }
 
@@ -480,6 +369,6 @@ UNIT_TEST(directed_graph_function) {
 		game_logic::formula(variant("[[[0, 0], [1, 0]], [[0, 0], [0, 1]], [[0, 1], [1, 1]], [[0, 1], [0, 0]], [[1, 0], [0, 0]], [[1, 0], [1, 1]], [[1, 1], [0, 1]], [[1, 1], [1, 0]]]")).execute());
 }
 
-UNIT_TEST(weighted_graph_function_FAILS) {
+UNIT_TEST(weighted_graph_function) {
 	CHECK_EQ(game_logic::formula(variant("weighted_graph(directed_graph(map(range(4), [value/2,value%2]), null), 10).vertices")).execute(), game_logic::formula(variant("[[0,0],[0,1],[1,0],[1,1]]")).execute());
 }
