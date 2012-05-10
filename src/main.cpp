@@ -223,10 +223,10 @@ extern "C" int main(int argcount, char** argvec)
 		if(cfg.is_map()) {
 			if(cfg["name"].is_null() == false) {
 				preferences::set_preferences_path_from_module(cfg["name"].as_string());
-				module::set_module_name(cfg["name"].as_string());
+				module::set_module_name(cfg["name"].as_string(), cfg["name"].as_string());
 			} else if( cfg["id"].is_null() == false) {
 				preferences::set_preferences_path_from_module(cfg["id"].as_string());
-				module::set_module_name(cfg["id"].as_string());
+				module::set_module_name(cfg["id"].as_string(), cfg["id"].as_string());
 			}
 			if(cfg["arguments"].is_null() == false) {
 				std::vector<std::string> additional_args = cfg["arguments"].as_list_string();
@@ -485,7 +485,7 @@ extern "C" int main(int argcount, char** argvec)
 	
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	SDL_WM_SetCaption(module::get_module_name().c_str(), module::get_module_name().c_str());
+	SDL_WM_SetCaption(module::get_module_pretty_name().c_str(), module::get_module_pretty_name().c_str());
 
 	std::cerr << "JOYSTICKS: " << SDL_NumJoysticks() << "\n";
 

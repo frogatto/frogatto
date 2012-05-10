@@ -127,6 +127,7 @@ namespace preferences {
 		int frame_time_millis_ = 20;
 
 		std::string level_path_ = "data/level/";
+		bool level_path_set_ = false;
 
 		bool relay_through_server_ = false;
 		
@@ -348,6 +349,10 @@ namespace preferences {
 
 	const std::string& level_path() {
 		return level_path_;
+	}
+
+	bool is_level_path_set() {
+		return level_path_set_;
 	}
 	
 	const char *save_file_path() {
@@ -686,6 +691,7 @@ namespace preferences {
 
 		if(arg_name == "--level-path") {
 			level_path_ = arg_value + "/";
+			level_path_set_ = true;
 		} else if(s == "--show-hitboxes") {
 			show_debug_hitboxes_ = true;
 		} else if(s == "--show-controls") {
