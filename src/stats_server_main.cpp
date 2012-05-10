@@ -12,7 +12,7 @@
 COMMAND_LINE_UTILITY(stats_server)
 {
 	std::string fname = "stats-1.json";
-	int port = 43210;
+	int port = 5000;
 
 	std::deque<std::string> arguments(args.begin(), args.end());
 
