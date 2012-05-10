@@ -182,6 +182,9 @@ variant a_star_find_path(level_ptr lvl, const point& src,
 	const int tile_size_x, 
 	const int tile_size_y);
 
+variant path_cost_search(weighted_directed_graph_ptr wg, 
+	const variant src_node, 
+	decimal max_cost );
 }
 
 
