@@ -562,6 +562,15 @@ FUNCTION_DEF(a_star_search, 4, 4, "a_star_search(weighted_directed_graph, src_no
 	return pathfinding::a_star_search(wg, src_node, dst_node, heuristic, callable);
 END_FUNCTION_DEF(a_star_search)
 
+FUNCTION_DEF(path_cost_search, 3, 3, "cost_search(weighted_directed_graph, src_node, max_cost) -> A list of all possible points reachable from src_node within max_cost.")
+	variant graph = args()[0]->evaluate(variables);
+	pathfinding::weighted_directed_graph_ptr wg = graph.try_convert<pathfinding::weighted_directed_graph>();
+	ASSERT_LOG(wg, "Weighted graph given is not of the correct type.");
+	variant src_node = args()[1]->evaluate(variables);
+	decimal max_cost(args()[2]->evaluate(variables).as_decimal());
+	return pathfinding::path_cost_search(wg, src_node, max_cost);
+END_FUNCTION_DEF(path_cost_search)
+
 FUNCTION_DEF(create_graph_from_level, 1, 3, "create_graph_from_level(level, (optional) tile_size_x, (optional) tile_size_y) -> directed graph : Creates a directed graph based on the current level.")
 	int tile_size_x = TileSize;
 	int tile_size_y = TileSize;

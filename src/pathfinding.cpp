@@ -127,28 +127,19 @@ variant a_star_search(weighted_directed_graph_ptr wg,
 				current->set_on_closed_list(true);
 				foreach(const variant& e, wg->get_edges_from_node(current->get_node_value())) {
 					graph_node<variant, decimal>::graph_node_ptr neighbour_node = wg->get_graph_node(e);
-					if(neighbour_node->on_closed_list()) {
-						if(current->G() < neighbour_node->G()) {
-							neighbour_node->G(current->G() + wg->get_weight(current->get_node_value(), e));
+					decimal g_cost(current->G() + wg->get_weight(current->get_node_value(), e));
+					if(neighbour_node->on_closed_list() || neighbour_node->on_open_list()) {
+						if(g_cost < neighbour_node->G()) {
+							neighbour_node->G(g_cost);
 							neighbour_node->set_parent(current);
 						}
 					} else {
-						// not on closed list.
-						if(neighbour_node->on_open_list()) {
-							// on open list already.
-							if(current->G() < neighbour_node->G()) {
-								neighbour_node->G(current->G());
-								neighbour_node->set_parent(current);
-							}
-						} else {
-							// not on open or closed lists.
-							a = e;
-							neighbour_node->set_parent(current);
-							neighbour_node->set_cost(wg->get_weight(current->get_node_value(), e) + current->G(), 
-								heuristic->evaluate(*callable).as_decimal());
-							neighbour_node->set_on_open_list(true);
-							open_list.push_back(neighbour_node);
-						}
+						// not on open or closed lists.
+						a = e;
+						neighbour_node->set_parent(current);
+						neighbour_node->set_cost(g_cost, heuristic->evaluate(*callable).as_decimal());
+						neighbour_node->set_on_open_list(true);
+						open_list.push_back(neighbour_node);
 					}
 					std::sort(open_list.begin(), open_list.end(), graph_node_cmp<variant, decimal>);
 				}
@@ -361,6 +352,58 @@ variant a_star_find_path(level_ptr lvl,
 	return variant(&path);
 }
 
+// Find all the nodes reachable from src_node that have less than max_cost to get there.
+variant path_cost_search(weighted_directed_graph_ptr wg, 
+	const variant src_node, 
+	decimal max_cost ) {
+	std::vector<variant> reachable;
+	std::deque<graph_node<variant, decimal>::graph_node_ptr> open_list;
+
+	bool searching = true;
+	try {
+		graph_node<variant, decimal>::graph_node_ptr current = wg->get_graph_node(src_node);
+		current->set_cost(decimal::from_int(0), decimal::from_int(0));
+		current->set_on_open_list(true);
+		open_list.push_back(current);
+
+		while(searching && !open_list.empty()) {
+			current = open_list.front(); open_list.pop_front();
+			current->set_on_open_list(false);
+			if(current->G() <= max_cost) {
+				reachable.push_back(current->get_node_value());
+			}
+
+			// Push lowest f node to the closed list so we don't consider it anymore.
+			current->set_on_closed_list(true);
+			foreach(const variant& e, wg->get_edges_from_node(current->get_node_value())) {
+				graph_node<variant, decimal>::graph_node_ptr neighbour_node = wg->get_graph_node(e);
+				decimal g_cost(wg->get_weight(current->get_node_value(), e) + current->G());
+				if(neighbour_node->on_closed_list() || neighbour_node->on_open_list()) {
+					if(g_cost < neighbour_node->G()) {
+						neighbour_node->G(g_cost);
+						neighbour_node->set_parent(current);
+					}
+				} else {
+					// not on open or closed lists.
+					neighbour_node->set_parent(current);
+					neighbour_node->set_cost(g_cost, decimal::from_int(0));
+					if(g_cost > max_cost) {
+						neighbour_node->set_on_closed_list(true);
+					} else {
+						neighbour_node->set_on_open_list(true);
+					}
+					open_list.push_back(neighbour_node);
+				}
+				std::sort(open_list.begin(), open_list.end(), graph_node_cmp<variant, decimal>);
+			}
+		}
+	} catch (PathfindingException<variant>& e) {
+		std::cerr << e.msg << " " << e.src.to_debug_string() << ", " << e.dest.to_debug_string() << std::endl;
+	}
+	wg->reset_graph();
+	return variant(&reachable);
+}
+
 }
 
 UNIT_TEST(directed_graph_function) {
@@ -371,4 +414,9 @@ UNIT_TEST(directed_graph_function) {
 
 UNIT_TEST(weighted_graph_function) {
 	CHECK_EQ(game_logic::formula(variant("weighted_graph(directed_graph(map(range(4), [value/2,value%2]), null), 10).vertices")).execute(), game_logic::formula(variant("[[0,0],[0,1],[1,0],[1,1]]")).execute());
+}
+
+UNIT_TEST(cost_path_search_function) {
+	CHECK_EQ(game_logic::formula(variant("path_cost_search(weighted_graph(directed_graph(map(range(9), [value/3,value%3]), filter(links(v), inside_bounds(value))), distance(a,b)), [1,1], 1) where links = def(v) [[v[0]-1,v[1]], [v[0]+1,v[1]], [v[0],v[1]-1], [v[0],v[1]+1],[v[0]-1,v[1]-1],[v[0]-1,v[1]+1],[v[0]+1,v[1]-1],[v[0]+1,v[1]+1]], inside_bounds = def(v) v[0]>=0 and v[1]>=0 and v[0]<3 and v[1]<3, distance=def(a,b)sqrt((a[0]-b[0])^2+(a[1]-b[1])^2)")).execute(), 
+		game_logic::formula(variant("[[1,1], [0,1], [2,1], [1,0], [1,2]]")).execute());
 }
