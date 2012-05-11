@@ -210,6 +210,20 @@ FUNCTION_DEF(delay_until_end_of_loading, 1, 1, "delay_until_end_of_loading(strin
 	return variant::create_delayed(f, callable);
 END_FUNCTION_DEF(delay_until_end_of_loading)
 
+FUNCTION_DEF(eval, 1, 1, "eval(str): evaluate the given string as FFL")
+	variant s = args()[0]->evaluate(variables);
+	try {
+		const_formula_ptr f(formula::create_optional_formula(s));
+		if(!f) {
+			return variant();
+		}
+
+		return f->execute(variables);
+	} catch(...) {
+		return variant();
+	}
+END_FUNCTION_DEF(eval)
+
 FUNCTION_DEF(switch, 3, -1, "switch(value, case1, result1, case2, result2 ... casen, resultn, default) -> value: returns resultn where value = casen, or default otherwise.")
 	variant var = args()[0]->evaluate(variables);
 	for(size_t n = 1; n < args().size()-1; n += 2) {
