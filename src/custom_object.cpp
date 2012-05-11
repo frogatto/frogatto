@@ -1011,6 +1011,7 @@ void custom_object::process(level& lvl)
 		   pos >= position_schedule_->x_pos.size() &&
 		   pos >= position_schedule_->y_pos.size() &&
 		   pos >= position_schedule_->rotation.size()) {
+			handle_event(OBJECT_EVENT_SCHEDULE_FINISHED);
 			position_schedule_.reset();
 		} else {
 

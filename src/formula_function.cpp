@@ -1159,10 +1159,6 @@ FUNCTION_DEF(benchmark, 1, 1, "benchmark(expr): Executes expr in a benchmark har
 	return variant(test::run_benchmark("benchmark", boost::bind(evaluate_expr_for_benchmark, args()[0].get(), &variables, _1)));
 END_FUNCTION_DEF(benchmark)
 
-FUNCTION_DEF(parse, 1, 1, "parse(str_expr): Parses a string expression")
-	return json::parse(args()[0]->evaluate(variables).as_string());
-END_FUNCTION_DEF(parse)
-
 	class size_function : public function_expression {
 	public:
 		explicit size_function(const args_list& args)
