@@ -1437,12 +1437,14 @@ public:
 	virtual void execute(game_logic::formula_callable& ob) const {
 		if(target_.is_callable()) {
 			target_.mutable_callable()->mutate_value(attr_, val_);
+		} else if(target_.is_map()) {
+			target_.add_attr_mutation(variant(attr_), val_);
 		} else {
 			ob.mutate_value(attr_, val_);
 		}
 	}
 private:
-	variant target_;
+	mutable variant target_;
 	std::string attr_;
 	variant val_;
 };
@@ -1456,12 +1458,15 @@ public:
 	virtual void execute(game_logic::formula_callable& ob) const {
 		if(target_.is_callable()) {
 			target_.mutable_callable()->mutate_value(attr_, target_.mutable_callable()->query_value(attr_) + val_);
+		} else if(target_.is_map()) {
+			variant key(attr_);
+			target_.add_attr_mutation(key, target_[key] + val_);
 		} else {
 			ob.mutate_value(attr_, ob.query_value(attr_) + val_);
 		}
 	}
 private:
-	variant target_;
+	mutable variant target_;
 	std::string attr_;
 	variant val_;
 };

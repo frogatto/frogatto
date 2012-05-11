@@ -286,6 +286,10 @@ public:
 	
 private:
 	variant execute(const formula_callable& variables) const {
+		//since maps can be modified we want any map construction to return
+		//a brand new map.
+		formula::fail_if_static_context();
+
 		std::map<variant,variant> res;
 		for(std::vector<expression_ptr>::const_iterator i = items_.begin(); ( i != items_.end() ) && ( i+1 != items_.end() ) ; i+=2) {
 			variant key = (*i)->evaluate(variables);
@@ -552,7 +556,7 @@ private:
 	}
 	
 	variant execute_member(const formula_callable& variables, std::string& id) const {
-		const variant left = left_->evaluate(variables);
+		variant left = left_->evaluate(variables);
 		
 		const identifier_expression* id_expr = dynamic_cast<identifier_expression*>(right_.get());
 		if(!id_expr) {
@@ -586,6 +590,14 @@ private:
 			output_formula_error_info();
 			ASSERT_LOG(false, "illegal usage of operator []: called on " << left.to_debug_string() << " value: " << left_->str() << "'\n" << debug_pinpoint_location());
 		}
+	}
+	
+	variant execute_member(const formula_callable& variables, std::string& id) const {
+		const variant left = left_->evaluate(variables);
+		const variant key = key_->evaluate(variables);
+
+		id = key.as_string();
+		return left;
 	}
 	
 	expression_ptr left_, key_;
