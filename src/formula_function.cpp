@@ -18,6 +18,7 @@
 #include <math.h>
 
 #include "asserts.hpp"
+#include "compress.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "formula.hpp"
@@ -1158,6 +1159,21 @@ void evaluate_expr_for_benchmark(const formula_expression* expr, const formula_c
 FUNCTION_DEF(benchmark, 1, 1, "benchmark(expr): Executes expr in a benchmark harness and returns a string describing its benchmark performance")
 	return variant(test::run_benchmark("benchmark", boost::bind(evaluate_expr_for_benchmark, args()[0].get(), &variables, _1)));
 END_FUNCTION_DEF(benchmark)
+
+FUNCTION_DEF(compress, 1, 2, "compress(string, (optional) compression_level): Compress the given string object")
+	int compression_level = -1;
+	if(args().size() > 1) {
+		compression_level = args()[1]->evaluate(variables).as_int();
+	}
+	const std::string& s = args()[0]->evaluate(variables).as_string();
+	return variant(new zip::compressed_data(std::vector<char>(s.begin(), s.end()), compression_level));
+END_FUNCTION_DEF(compress)
+
+FUNCTION_DEF(decompress, 1, 1, "decompress(expr): Tries to decompress the given object, returns the data if successful.")
+	variant compressed = args()[0]->evaluate(variables);
+	zip::compressed_data_ptr cd = boost::intrusive_ptr<zip::compressed_data>(compressed.try_convert<zip::compressed_data>());
+	return cd->get_value("decompress");
+END_FUNCTION_DEF(decompress)
 
 	class size_function : public function_expression {
 	public:
