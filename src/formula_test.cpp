@@ -87,7 +87,7 @@ UNIT_TEST(formula)
 	CHECK_EQ(FML("char.strength * ability where ability=3").execute(p).as_int(), 45);
 	CHECK_EQ(FML("'abcd' = 'abcd'").execute(p).as_bool(), true);
 	CHECK_EQ(FML("'abcd' = 'acd'").execute(p).as_bool(), false);
-	CHECK_EQ(FML("'strength, agility: {strength}, {agility}'").execute(c).as_string(),
+	CHECK_EQ(FML("~strength, agility: {strength}, {agility}~").execute(c).as_string(),
 	               "strength, agility: 15, 12");
 	for(int n = 0; n != 128; ++n) {
 		const int dice_roll = FML("3d6").execute().as_int();
@@ -95,8 +95,6 @@ UNIT_TEST(formula)
    		CHECK_LE(dice_roll, 18);
 	}
 
-	CHECK_EQ(formula::create_string_formula("Your strength is {strength}")->execute(c).as_string(),
-					"Your strength is 15");
 	variant myarray = FML("[1,2,3]").execute();
 	CHECK_EQ(myarray.num_elements(), 3);
 	CHECK_EQ(myarray[0].as_int(), 1);

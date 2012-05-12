@@ -957,7 +957,7 @@ public:
 			}
 
 			std::string::iterator i;
-			while((i = std::find(str.begin(), str.end(), '{')) != str.end()) {
+			while(translate && (i = std::find(str.begin(), str.end(), '{')) != str.end()) {
 				std::string::iterator j = std::find(i, str.end(), '}');
 				if(j == str.end()) {
 					break;
@@ -1739,13 +1739,6 @@ void formula::fail_if_static_context()
 	if(in_static_context) {
 		throw non_static_expression_exception();
 	}
-}
-	
-formula_ptr formula::create_string_formula(const std::string& str)
-{
-	formula_ptr res(new formula());
-	res->expr_.reset(new string_expression(str));
-	return res;
 }
 
 formula_ptr formula::create_optional_formula(const variant& val, function_symbol_table* symbols, const formula_callable_definition* callable_definition)

@@ -214,15 +214,18 @@ END_FUNCTION_DEF(delay_until_end_of_loading)
 FUNCTION_DEF(eval, 1, 1, "eval(str): evaluate the given string as FFL")
 	variant s = args()[0]->evaluate(variables);
 	try {
+		const assert_recover_scope recovery_scope;
 		const_formula_ptr f(formula::create_optional_formula(s));
 		if(!f) {
 			return variant();
 		}
 
 		return f->execute(variables);
-	} catch(...) {
-		return variant();
+	} catch(type_error&) {
+	} catch(validation_failure_exception&) {
 	}
+	std::cerr << "ERROR IN EVAL\n";
+	return variant();
 END_FUNCTION_DEF(eval)
 
 FUNCTION_DEF(switch, 3, -1, "switch(value, case1, result1, case2, result2 ... casen, resultn, default) -> value: returns resultn where value = casen, or default otherwise.")
@@ -1983,7 +1986,7 @@ UNIT_TEST(map_function) {
 
 UNIT_TEST(where_scope_function) {
 	CHECK(game_logic::formula(variant("{'val': num} where num = 5")).execute() == game_logic::formula(variant("{'val': 5}")).execute(), "map where test failed");
-	CHECK(game_logic::formula(variant("'five: {five}' where five = 5")).execute() == game_logic::formula(variant("'five: 5'")).execute(), "string where test failed");
+	CHECK(game_logic::formula(variant("~five: {five}~ where five = 5")).execute() == game_logic::formula(variant("'five: 5'")).execute(), "string where test failed");
 }
 
 BENCHMARK(map_function) {
