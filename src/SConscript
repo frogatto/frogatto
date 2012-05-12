@@ -8,6 +8,7 @@ achievements.cpp
 animation_preview_widget.cpp
 asserts.cpp
 background.cpp
+base64.cpp
 blur.cpp
 border_widget.cpp
 button.cpp
@@ -20,6 +21,7 @@ code_editor_dialog.cpp
 code_editor_widget.cpp
 collision_utils.cpp
 color_utils.cpp
+compress.cpp
 controls.cpp
 controls_dialog.cpp
 custom_object.cpp
