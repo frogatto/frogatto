@@ -27,7 +27,11 @@ std::vector<char> compress(const std::vector<char>& data, int compression_level)
 	do {
 		strm.avail_in = (in.size() - pos_in) > CHUNK ? CHUNK : in.size() - pos_in;
         flush = (strm.avail_in + pos_in) == in.size() ? Z_FINISH : Z_NO_FLUSH;
-        strm.next_in = reinterpret_cast<Bytef*>(&in[pos_in]);
+		if(in.size()) {
+			strm.next_in = reinterpret_cast<Bytef*>(&in[pos_in]);
+		} else {
+			strm.next_in = 0;
+		}
 		do {
 			out.resize(pos_out - out.size() + CHUNK);
 			strm.avail_out = CHUNK;

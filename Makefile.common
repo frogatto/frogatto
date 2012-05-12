@@ -10,6 +10,7 @@ objects = \
 	animation_preview_widget.o \
 	asserts.o \
 	background.o \
+	base64.o \
 	blur.o \
 	border_widget.o \
 	button.o \
@@ -18,6 +19,7 @@ objects = \
 	checksum.o \
 	code_editor_dialog.o \
 	code_editor_widget.o \
+	compress.o \
 	current_generator.o \
 	decimal.o \
 	editor_dialogs.o \
