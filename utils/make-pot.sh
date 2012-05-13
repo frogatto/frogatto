@@ -29,7 +29,8 @@ python utils/parse-metadata.py
 grep -Hn 'message:[ ]*"[^"][^"]*"' data/preload.cfg | \
 	sed -ne 's/^\(.*:[0-9]*\):.*message:[ ]*"/#: \1\n"/;s/"\([^"]*\)".*/msgid "\1"\nmsgstr ""\n/gp'
 # find level titles
-grep -Hn '^title:[ ]*"[^"][^"]*"' data/level/*.cfg | \
+grep -Hn '"\?title"\?: \?"[^"][^"]*"' data/level/*.cfg | \
+	sed -e 's/\s"title"/title/g' | \
 	sed -ne 's/^\(.*:[0-9]*\):title:[ ]*"/#: \1\n"/;s/"\([^"]*\)".*/msgid "\1"\nmsgstr ""\n/gp'
 # find achievements
 grep -Hn '\(name\|description\):[ ]*"[^"][^"]*"' data/achievements.cfg | \
