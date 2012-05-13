@@ -943,6 +943,8 @@ public:
 	explicit string_expression(std::string str, bool translate = false) : formula_expression("_string")
 	{
 		if (!_verbatim_string_expressions) {
+			const std::string original = str;
+
 			size_t pos = 0;
 			//replace \\n sequences with newlines
 			while((pos = str.find("\\n", pos)) != std::string::npos) {
@@ -977,7 +979,7 @@ public:
 			std::reverse(subs_.begin(), subs_.end());
 
 			if(translate) {
-				str_ = variant::create_translated_string(str);
+				str_ = variant::create_translated_string(original, str);
 				return;
 			}
 		} else if (translate) {

@@ -399,7 +399,12 @@ variant::variant(const std::string& str)
 
 variant variant::create_translated_string(const std::string& str)
 {
-	variant v(i18n::tr(str));
+	return create_translated_string(str, i18n::tr(str));
+}
+
+variant variant::create_translated_string(const std::string& str, const std::string& translation)
+{
+	variant v(translation);
 	v.string_->translated_from = str;
 	return v;
 }
