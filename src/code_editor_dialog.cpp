@@ -234,8 +234,17 @@ void code_editor_dialog::process()
 	using namespace gui;
 
 	if(invalidated_ && SDL_GetTicks() > invalidated_ + 200) {
-		const bool result = custom_object_type::set_file_contents(fname_, editor_->text());
-		error_label_->set_text(result ? "Ok" : "Error");
+		try {
+			custom_object_type::set_file_contents(fname_, editor_->text());
+			error_label_->set_text("Ok");
+			error_label_->set_tooltip("");
+		} catch(validation_failure_exception& e) {
+			error_label_->set_text("Error");
+			error_label_->set_tooltip(e.msg);
+		} catch(...) {
+			error_label_->set_text("Error");
+			error_label_->set_tooltip("Unknown error");
+		}
 		invalidated_ = 0;
 	}
 

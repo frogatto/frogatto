@@ -67,7 +67,7 @@ public:
 	std::string str() const { return str_.as_string(); }
 	variant str_var() const { return str_; }
 
-	void output_debug_info() const;
+	std::string output_debug_info() const;
 
 	bool has_guards() const { return base_expr_.empty() == false; }
 	int guard_matches(const formula_callable& variables) const;

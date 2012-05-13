@@ -106,7 +106,7 @@ std::string get_full_call_stack()
 	return res;
 }
 
-void output_formula_error_info();
+std::string output_formula_error_info();
 
 namespace {
 void generate_error(std::string message)
@@ -115,10 +115,11 @@ void generate_error(std::string message)
 		message += "\n" + call_stack.back()->debug_pinpoint_location();
 	}
 
-	std::cerr << "ERROR: " << message << "\n" << get_call_stack();
-	output_formula_error_info();
+	std::ostringstream s;
+	s << "ERROR: " << message << "\n" << get_call_stack();
+	s << output_formula_error_info();
 
-	ASSERT_LOG(false, "type error");
+	ASSERT_LOG(false, s.str() + "\ntype error");
 }
 
 }
@@ -129,7 +130,7 @@ type_error::type_error(const std::string& str) : message(str) {
 	}
 
 	std::cerr << "ERROR: " << message << "\n" << get_call_stack();
-	output_formula_error_info();
+	std::cerr << output_formula_error_info();
 }
 
 struct variant_list {
