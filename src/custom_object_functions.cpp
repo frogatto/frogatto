@@ -68,6 +68,7 @@ FUNCTION_DEF(performance, 0, 0, "performance(): returns an object with current p
 END_FUNCTION_DEF(performance)
 
 FUNCTION_DEF(get_clipboard_text, 0, 0, "get_clipboard_text(): returns the text currentl in the windowing clipboard")
+	formula::fail_if_static_context();
 	return variant(copy_from_clipboard(false));
 END_FUNCTION_DEF(get_clipboard_text)
 
