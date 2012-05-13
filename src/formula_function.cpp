@@ -1986,7 +1986,7 @@ UNIT_TEST(map_function) {
 
 UNIT_TEST(where_scope_function) {
 	CHECK(game_logic::formula(variant("{'val': num} where num = 5")).execute() == game_logic::formula(variant("{'val': 5}")).execute(), "map where test failed");
-	CHECK(game_logic::formula(variant("~five: {five}~ where five = 5")).execute() == game_logic::formula(variant("'five: 5'")).execute(), "string where test failed");
+	CHECK(game_logic::formula(variant("'five: ${five}' where five = 5")).execute() == game_logic::formula(variant("'five: 5'")).execute(), "string where test failed");
 }
 
 BENCHMARK(map_function) {

@@ -956,14 +956,15 @@ public:
 				str = i18n::tr(str);
 			}
 
+			static const std::string BeginSub = "${";
 			std::string::iterator i;
-			while(translate && (i = std::find(str.begin(), str.end(), '{')) != str.end()) {
+			while((i = std::search(str.begin(), str.end(), BeginSub.begin(), BeginSub.end())) != str.end()) {
 				std::string::iterator j = std::find(i, str.end(), '}');
 				if(j == str.end()) {
 					break;
 				}
 			
-				const std::string formula_str(i+1, j);
+				const std::string formula_str(i+BeginSub.size(), j);
 				const int pos = i - str.begin();
 				str.erase(i, j+1);
 			
