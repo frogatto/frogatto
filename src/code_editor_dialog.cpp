@@ -273,15 +273,39 @@ void code_editor_dialog::process()
 			const std::string id(str.begin()+3, str.end());
 			for(int i = 0; i != NUM_OBJECT_BUILTIN_EVENT_IDS; ++i) {
 				const std::string& event_str = get_object_event_str(i);
-				if(event_str.size() > id.size() && std::equal(id.begin(), id.end(), event_str.begin())) {
+				if(event_str.size() >= id.size() && std::equal(id.begin(), id.end(), event_str.begin())) {
 					Suggestion s = { "on_" + event_str, ": \"\",", 3 };
 					suggestions.push_back(s);
+				}
+			}
+
+			static std::vector<std::string> animations;
+
+			if(info.obj.is_map() && info.obj["animation"].is_list()) {
+				animations.clear();
+				foreach(variant anim, info.obj["animation"].as_list()) {
+					if(anim.is_map() && anim["id"].is_string()) {
+						animations.push_back(anim["id"].as_string());
+					}
+				}
+			}
+
+			foreach(const std::string& str, animations) {
+				static const std::string types[] = {"enter", "end", "leave", "process"};
+				foreach(const std::string& type, types) {
+					const std::string event_str = type + "_" + str + (type == "process" ? "" : "_anim");
+					if(event_str.size() >= id.size() && std::equal(id.begin(), id.end(), event_str.begin())) {
+						Suggestion s = { "on_" + event_str, ": \"\",", 3 };
+						suggestions.push_back(s);
+					}
 				}
 			}
 		}
 
 		suggestions_prefix_ = str.size();
 	}
+
+	std::sort(suggestions.begin(), suggestions.end());
 
 	if(suggestions != suggestions_) {
 		suggestions_ = suggestions;

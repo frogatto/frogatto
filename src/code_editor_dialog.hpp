@@ -85,6 +85,7 @@ private:
 		std::string suggestion, postfix;
 		int postfix_index;
 		bool operator==(const Suggestion& o) const { return o.suggestion == suggestion && o.postfix == postfix && o.postfix_index == postfix_index; }
+		bool operator<(const Suggestion& o) const { return suggestion < o.suggestion; }
 	};
 
 	std::vector<Suggestion> suggestions_;
