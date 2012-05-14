@@ -457,8 +457,8 @@ void level_runner::start_editor()
 #ifndef NO_EDITOR
 	if(!editor_) {
 		controls::control_backup_scope ctrl_backup;
-		editor_resolution_manager_.reset(new editor_resolution_manager);
 		editor_ = editor::get_editor(lvl_->id().c_str());
+		editor_resolution_manager_.reset(new editor_resolution_manager(editor_->xres(), editor_->yres()));
 		editor_->set_playing_level(lvl_);
 		editor_->setup_for_editing();
 		lvl_->set_editor();
@@ -494,9 +494,9 @@ bool level_runner::play_level()
 #ifndef NO_EDITOR
 	if(!lvl_->player()) {
 		controls::control_backup_scope ctrl_backup;
-		editor_resolution_manager_.reset(new editor_resolution_manager);
 		paused = true;
 		editor_ = editor::get_editor(lvl_->id().c_str());
+		editor_resolution_manager_.reset(new editor_resolution_manager(editor_->xres(), editor_->yres()));
 		editor_->set_playing_level(lvl_);
 		editor_->setup_for_editing();
 		lvl_->set_editor();

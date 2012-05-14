@@ -63,6 +63,9 @@ public:
 	int xpos() const { return xpos_; }
 	int ypos() const { return ypos_; }
 
+	int xres() const { return xres_; }
+	int yres() const { return yres_; }
+
 	void set_pos(int x, int y);
 
 	typedef boost::intrusive_ptr<level> level_ptr;
@@ -244,6 +247,9 @@ private:
 	int xpos_, ypos_;
 	int anchorx_, anchory_;
 
+	// X and Y resolution of the editor, 0 means use default.
+	int xres_, yres_;
+
 	//if we are dragging an entity around, this marks the position from
 	//which the entity started the drag.
 	int selected_entity_startx_, selected_entity_starty_;
@@ -314,7 +320,7 @@ private:
 struct editor_resolution_manager : private preferences::editor_screen_size_scope
 {
 	static bool is_active();
-	explicit editor_resolution_manager();
+	explicit editor_resolution_manager(int xres, int yres);
 	~editor_resolution_manager();
 	
 	int original_width_, original_height_;

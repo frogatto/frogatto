@@ -223,7 +223,7 @@ class editor_menu_dialog : public gui::dialog
 	std::string code_button_text_;
 public:
 	explicit editor_menu_dialog(editor& e)
-	  : gui::dialog(0, 0, preferences::actual_screen_width() - EDITOR_SIDEBAR_WIDTH, EDITOR_MENUBAR_HEIGHT), editor_(e)
+	  : gui::dialog(0, 0, e.xres() ? e.xres() : 1200, EDITOR_MENUBAR_HEIGHT), editor_(e)
 	{
 		set_clear_bg_amount(255);
 		init();
@@ -280,7 +280,7 @@ public:
 
 		code_button_ = button_ptr(new button(text, boost::bind(&editor::toggle_code, &editor_)));
 
-		add_widget(code_button_, graphics::screen_width() - 612, 4);
+		add_widget(code_button_, (editor_.xres() ? editor_.xres() : 1200) - 612, 4);
 	}
 
 
@@ -684,7 +684,7 @@ void editor::edit(const char* level_cfg, int xpos, int ypos)
 		e->ypos_ = ypos;
 	}
 
-	editor_resolution_manager resolution_manager;
+	editor_resolution_manager resolution_manager(e->xres(), e->yres());
 
 	e->setup_for_editing();
 	e->edit_level();
@@ -723,7 +723,8 @@ editor::editor(const char* level_cfg)
 	cur_tileset_(0), cur_object_(0),
     current_dialog_(NULL),
 	drawing_rect_(false), dragging_(false), level_changed_(0),
-	selected_segment_(-1), prev_mousex_(-1), prev_mousey_(-1)
+	selected_segment_(-1), prev_mousex_(-1), prev_mousey_(-1),
+	xres_(0), yres_(0)
 {
 	preferences::set_record_history(true);
 
@@ -734,6 +735,13 @@ editor::editor(const char* level_cfg)
 		tileset::init(editor_cfg);
 		enemy_type::init(editor_cfg);
 		first_time = false;
+		if(editor_cfg.is_map()) {
+			if(editor_cfg["resolution"].is_null() == false) {
+				std::vector<int> v = editor_cfg["resolution"].as_list_int();
+				xres_ = v[0];
+				yres_ = v[1];
+			}
+		}
 	}
 
 	assert(!tilesets.empty());
@@ -875,12 +883,17 @@ bool editor_resolution_manager::is_active()
 	return editor_resolution_manager_count != 0;
 }
 
-editor_resolution_manager::editor_resolution_manager() :
+editor_resolution_manager::editor_resolution_manager(int xres, int yres) :
 	   original_width_(preferences::actual_screen_width()),
 	   original_height_(preferences::actual_screen_height()) {
 	if(!editor_x_resolution) {
-		editor_x_resolution = 1200; //preferences::actual_screen_width() + EDITOR_SIDEBAR_WIDTH + editor_dialogs::LAYERS_DIALOG_WIDTH;
-		editor_y_resolution = preferences::actual_screen_height() + EDITOR_MENUBAR_HEIGHT;
+		if(xres != 0 && yres != 0) {
+			editor_x_resolution = xres;
+			editor_y_resolution = yres;
+		} else {
+			editor_x_resolution = 1200; //preferences::actual_screen_width() + EDITOR_SIDEBAR_WIDTH + editor_dialogs::LAYERS_DIALOG_WIDTH;
+			editor_y_resolution = preferences::actual_screen_height() + EDITOR_MENUBAR_HEIGHT;
+		}
 	}
 
 	if(++editor_resolution_manager_count == 1) {
