@@ -27,6 +27,7 @@ public:
 	void set_pad_handler(boost::function<void(int)>);
 	void set_num_frames_handler(boost::function<void(int)>);
 	void set_frames_per_row_handler(boost::function<void(int)>);
+	void set_solid_handler(boost::function<void(int,int)>);
 
 private:
 	void handle_draw() const;
@@ -62,10 +63,16 @@ private:
 	mutable int dragging_sides_bitmap_;
 	enum { LEFT_SIDE = 1, RIGHT_SIDE = 2, TOP_SIDE = 4, BOTTOM_SIDE = 8, PADDING = 16 };
 
+	mutable rect solid_rect_;
+	bool moving_solid_rect_;
+	int anchor_solid_x_, anchor_solid_y_;
+
 	boost::function<void(rect)> rect_handler_;
 	boost::function<void(int)> pad_handler_;
 	boost::function<void(int)> num_frames_handler_;
 	boost::function<void(int)> frames_per_row_handler_;
+
+	boost::function<void(int,int)> solid_handler_;
 };
 
 }

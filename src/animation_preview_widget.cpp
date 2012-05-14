@@ -6,6 +6,7 @@
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "raster.hpp"
+#include "solid_map.hpp"
 #include "surface_cache.hpp"
 #include "texture.hpp"
 
@@ -140,7 +141,7 @@ bool animation_preview_widget::is_animation(variant obj)
 	return !obj.is_null() && obj["image"].is_string();
 }
 
-animation_preview_widget::animation_preview_widget(variant obj) : cycle_(0), zoom_label_(NULL), pos_label_(NULL), scale_(0), anchor_x_(-1), anchor_y_(-1), anchor_pad_(-1), has_motion_(false), dragging_sides_bitmap_(0)
+animation_preview_widget::animation_preview_widget(variant obj) : cycle_(0), zoom_label_(NULL), pos_label_(NULL), scale_(0), anchor_x_(-1), anchor_y_(-1), anchor_pad_(-1), has_motion_(false), dragging_sides_bitmap_(0), moving_solid_rect_(false), anchor_solid_x_(-1), anchor_solid_y_(-1)
 {
 	set_object(obj);
 }
@@ -346,12 +347,20 @@ void animation_preview_widget::handle_draw() const
 		scale *= 0.5;
 	}
 
-	frame_->draw(
-	  preview_area.x() + (preview_area.w() - frame_->width()*scale)/2,
-	  preview_area.y() + (preview_area.h() - frame_->height()*scale)/2,
-	  true, false, cycle_, 0, scale);
+	const int framex = preview_area.x() + (preview_area.w() - frame_->width()*scale)/2;
+	const int framey = preview_area.y() + (preview_area.h() - frame_->height()*scale)/2;
+	frame_->draw(framex, framey, true, false, cycle_, 0, scale);
 	if(++cycle_ >= frame_->duration()) {
 		cycle_ = 0;
+	}
+
+	solid_rect_ = rect();
+
+	const_solid_info_ptr solid = frame_->solid();
+	if(solid && solid->area().w()*solid->area().h()) {
+		const rect area = solid->area();
+		solid_rect_ = rect(framex + area.x(), framey + area.y(), area.w(), area.h());
+		graphics::draw_rect(solid_rect_, graphics::color(255, 255, 255, 64));
 	}
 
 	foreach(const_widget_ptr w, widgets_) {
@@ -376,9 +385,27 @@ bool animation_preview_widget::handle_event(const SDL_Event& event, bool claimed
 		claimed = w->process_event(event, claimed) || claimed;
 	}
 
+	if(event.type == SDL_MOUSEBUTTONUP) {
+		moving_solid_rect_ = false;
+	}
+
 	if(event.type == SDL_MOUSEMOTION) {
 		has_motion_ = true;
 		const SDL_MouseMotionEvent& e = event.motion;
+		if(moving_solid_rect_) {
+			if(solid_handler_) {
+				const int x = e.x/2;
+				const int y = e.y/2;
+
+				solid_handler_(x - anchor_solid_x_, y - anchor_solid_y_);
+
+				anchor_solid_x_ = x;
+				anchor_solid_y_ = y;
+			}
+
+			return claimed;
+		}
+
 		point p(e.x, e.y);
 		if(point_in_rect(p, dst_rect_)) {
 			p = mouse_point_to_image_loc(p);
@@ -445,6 +472,8 @@ bool animation_preview_widget::handle_event(const SDL_Event& event, bool claimed
 			}
 		}
 	} else if(event.type == SDL_MOUSEBUTTONDOWN) {
+		moving_solid_rect_ = false;
+
 		const SDL_MouseButtonEvent& e = event.button;
 		const point p(e.x, e.y);
 		anchor_area_ = frame_->area();
@@ -456,8 +485,15 @@ bool animation_preview_widget::handle_event(const SDL_Event& event, bool claimed
 			anchor_y_ = e.y;
 		} else {
 			anchor_x_ = anchor_y_ = -1;
+
+			if(point_in_rect(p, solid_rect_)) {
+				moving_solid_rect_ = true;
+				anchor_solid_x_ = e.x/2;
+				anchor_solid_y_ = e.y/2;
+			}
 		}
 	} else if(event.type == SDL_MOUSEBUTTONUP && anchor_x_ != -1) {
+
 		const SDL_MouseButtonEvent& e = event.button;
 		point anchor(anchor_x_, anchor_y_);
 		point p(e.x, e.y);
@@ -575,6 +611,11 @@ void animation_preview_widget::set_num_frames_handler(boost::function<void(int)>
 void animation_preview_widget::set_frames_per_row_handler(boost::function<void(int)> handler)
 {
 	frames_per_row_handler_ = handler;
+}
+
+void animation_preview_widget::set_solid_handler(boost::function<void(int,int)> handler)
+{
+	solid_handler_ = handler;
 }
 
 }

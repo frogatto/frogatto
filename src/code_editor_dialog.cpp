@@ -325,6 +325,7 @@ void code_editor_dialog::process()
 			if(!animation_preview_) {
 				animation_preview_.reset(new gui::animation_preview_widget(info.obj));
 				animation_preview_->set_rect_handler(boost::bind(&code_editor_dialog::set_animation_rect, this, _1));
+				animation_preview_->set_solid_handler(boost::bind(&code_editor_dialog::move_solid_rect, this, _1, _2));
 				animation_preview_->set_pad_handler(boost::bind(&code_editor_dialog::set_integer_attr, this, "pad", _1));
 				animation_preview_->set_num_frames_handler(boost::bind(&code_editor_dialog::set_integer_attr, this, "frames", _1));
 				animation_preview_->set_frames_per_row_handler(boost::bind(&code_editor_dialog::set_integer_attr, this, "frames_per_row", _1));
@@ -397,6 +398,33 @@ void code_editor_dialog::set_animation_rect(rect r)
 	variant v = info.obj;
 	if(v.is_null() == false) {
 		v.add_attr(variant("rect"), r.write());
+		editor_->modify_current_object(v);
+		try {
+			animation_preview_->set_object(v);
+		} catch(frame::error& e) {
+		}
+	}
+}
+
+void code_editor_dialog::move_solid_rect(int dx, int dy)
+{
+	const gui::code_editor_widget::ObjectInfo info = editor_->get_current_object();
+	variant v = info.obj;
+	if(v.is_null() == false) {
+		variant solid_area = v["solid_area"];
+		if(!solid_area.is_list() || solid_area.num_elements() != 4) {
+			return;
+		}
+
+		foreach(const variant& num, solid_area.as_list()) {
+			if(!num.is_int()) {
+				return;
+			}
+		}
+
+		rect area(solid_area);
+		area = rect(area.x() + dx, area.y() + dy, area.w(), area.h());
+		v.add_attr(variant("solid_area"), area.write());
 		editor_->modify_current_object(v);
 		try {
 			animation_preview_->set_object(v);
