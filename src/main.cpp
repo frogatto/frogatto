@@ -193,10 +193,10 @@ extern "C" int main(int argcount, char** argvec)
 		if(cfg.is_map()) {
 			if(cfg["name"].is_null() == false) {
 				preferences::set_preferences_path_from_module(cfg["name"].as_string());
-				module::set_module_name(cfg["name"].as_string(), cfg["name"].as_string());
+				//XXX module::set_module_name(cfg["name"].as_string(), cfg["name"].as_string());
 			} else if( cfg["id"].is_null() == false) {
 				preferences::set_preferences_path_from_module(cfg["id"].as_string());
-				module::set_module_name(cfg["id"].as_string(), cfg["id"].as_string());
+				//XXX module::set_module_name(cfg["id"].as_string(), cfg["id"].as_string());
 			}
 			if(cfg["arguments"].is_null() == false) {
 				std::vector<std::string> additional_args = cfg["arguments"].as_list_string();

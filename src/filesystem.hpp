@@ -43,7 +43,8 @@ void get_files_in_dir(const std::string& dir,
 //and find each distinct filename. It will fill the files map such that the
 //keys are filenames and the values are the full path to the file.
 void get_unique_filenames_under_dir(const std::string& dir,
-                                    std::map<std::string, std::string>* file_map);
+                                    std::map<std::string, std::string>* file_map,
+									const std::string& prefix);
 
 //creates a dir if it doesn't exist and returns the path
 std::string get_dir(const std::string& dir);

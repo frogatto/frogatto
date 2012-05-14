@@ -41,7 +41,6 @@
 #include "module.hpp"
 #include "multiplayer.hpp"
 #include "object_events.hpp"
-#include "package.hpp"
 #include "player_info.hpp"
 #include "preferences.hpp"
 #include "property_editor_dialog.hpp"
@@ -297,14 +296,18 @@ public:
 		std::string name = entry->text();
 		if(name.empty() == false) {
 			variant empty_lvl = json::parse_from_file("data/level/empty.cfg");
-			empty_lvl.add_attr(variant("id"), variant(name));
+			std::string id = module::make_module_id(name);
+			empty_lvl.add_attr(variant("id"), variant(id));
 			if(preferences::is_level_path_set()) {
 				sys::write_file(preferences::level_path() + name, empty_lvl.write_json());
 			} else {
-				sys::write_file(module::get_base_module_path() + preferences::level_path() + name, empty_lvl.write_json());
+				std::string nn = module::get_id(name);
+				std::string modname = module::get_module_id(name);
+				sys::write_file(module::get_module_path(modname) + preferences::level_path() + nn, empty_lvl.write_json());
 			}
+			loadlevel::load_level_paths();
 			editor_.close();
-			g_last_edited_level() = name;
+			g_last_edited_level() = id;
 		}
 	}
 
@@ -2582,11 +2585,17 @@ void editor::change_tool(EDIT_TOOL tool)
 
 void editor::save_level_as(const std::string& fname)
 {
+	const std::string id = module::make_module_id(fname);
 	all_editors.erase(filename_);
-	all_editors[fname] = this;
-	filename_ = fname;
+	all_editors[id] = this;
+
+	std::string path = module::get_id(fname);
+	std::string modname = module::get_module_id(fname);
+	sys::write_file(module::get_module_path(modname) + preferences::level_path() + path, "");
+	loadlevel::load_level_paths();
+	filename_ = id;
 	save_level();
-	g_last_edited_level() = filename_;
+	g_last_edited_level() = id;
 }
 
 void editor::quit()
@@ -2665,7 +2674,11 @@ void editor::save_level()
 								   //all levels start at cycle 0.
 	lvl_node = variant(&attr);
 	std::cerr << "GET LEVEL FILENAME: " << filename_ << "\n";
-	sys::write_file(module::map_file(package::get_level_filename(filename_)), lvl_node.write_json(true));
+	if(preferences::is_level_path_set()) {
+		sys::write_file(preferences::level_path() + filename_, lvl_node.write_json(true));
+	} else {
+		sys::write_file(loadlevel::get_level_path(filename_), lvl_node.write_json(true));
+	}
 
 	//see if we should write the next/previous levels also
 	//based on them having changed.
@@ -2675,7 +2688,11 @@ void editor::save_level()
 			prev->finish_loading();
 			if(prev->next_level() != lvl_->id()) {
 				prev->set_next_level(lvl_->id());
-				sys::write_file(module::map_file(package::get_level_filename(prev->id())), prev->write().write_json(true));
+				if(preferences::is_level_path_set()) {
+					sys::write_file(preferences::level_path() + prev->id(), prev->write().write_json(true));
+				} else {
+					sys::write_file(module::map_file(prev->id()), prev->write().write_json(true));
+				}
 			}
 		} catch(...) {
 		}
@@ -2687,7 +2704,11 @@ void editor::save_level()
 			next->finish_loading();
 			if(next->previous_level() != lvl_->id()) {
 				next->set_previous_level(lvl_->id());
-				sys::write_file(module::map_file(package::get_level_filename(next->id())), next->write().write_json(true));
+				if(preferences::is_level_path_set()) {
+					sys::write_file(preferences::level_path() + next->id(), next->write().write_json(true));
+				} else {
+					sys::write_file(module::map_file(next->id()), next->write().write_json(true));
+				}
 			}
 		} catch(...) {
 		}
