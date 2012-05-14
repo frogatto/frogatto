@@ -90,7 +90,6 @@ multi_tile_pattern.cpp
 multiplayer.cpp
 object_events.cpp
 options_dialog.cpp
-package.cpp
 particle_system.cpp
 pathfinding.cpp
 pause_game_dialog.cpp
