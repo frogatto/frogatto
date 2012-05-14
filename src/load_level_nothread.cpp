@@ -5,7 +5,7 @@
 #include "json_parser.hpp"
 #include "level.hpp"
 #include "load_level.hpp"
-#include "package.hpp"
+#include "module.hpp"
 #include "preferences.hpp"
 #include "preprocessor.hpp"
 #include "string_utils.hpp"
@@ -18,14 +18,38 @@ level_wml_map& wml_cache() {
 	return instance;
 }
 
+std::map<std::string,std::string>& get_level_paths() {
+	static std::map<std::string,std::string> res;
+	return res;
+}
+}
+
+namespace loadlevel {
+void load_level_paths() {
+	module::get_unique_filenames_under_dir("data/level/", &get_level_paths());
+}
+
+const std::string& get_level_path(const std::string& name) {
+	if(get_level_paths().empty()) {
+		loadlevel::load_level_paths();
+	}
+	std::map<std::string, std::string>::const_iterator itor = module::find(get_level_paths(), name);
+	if(itor == get_level_paths().end()) {
+		std::cerr << "FILE NOT FOUND " << name << std::endl;
+		ASSERT_LOG(false, "FILE NOT FOUND" << name);
+	}
+	return itor->second;
+}
+}
+
+namespace {
 class wml_loader {
 	std::string lvl_;
 public:
 	wml_loader(const std::string& lvl) : lvl_(lvl)
 	{}
 	void operator()() {
-		const std::string filename = package::get_level_filename(lvl_);
-
+		const std::string& filename = loadlevel::get_level_path(lvl_);
 		try {
 			variant node(json::parse_from_file(filename));
 			wml_cache().put(lvl_, node);
@@ -116,14 +140,25 @@ bool not_cfg_file(const std::string& filename) {
 std::vector<std::string> get_known_levels()
 {
 	std::vector<std::string> files;
-	sys::get_files_in_dir(preferences::level_path(), &files);
-	files.erase(std::remove_if(files.begin(), files.end(), not_cfg_file), files.end());
-	foreach(const std::string& pkg, package::all_packages()) {
-		std::vector<std::string> v = package::package_levels(pkg);
-		files.insert(files.end(), v.begin(), v.end());
+	std::map<std::string, std::string> file_map;
+	std::map<std::string, std::string>::iterator it;
+	if(preferences::is_level_path_set()) {
+		sys::get_unique_filenames_under_dir(preferences::level_path(), &file_map, "");
+	} else {
+		module::get_unique_filenames_under_dir(preferences::level_path(), &file_map);
+	}
+	for(it = file_map.begin(); it != file_map.end(); ) {
+		if(not_cfg_file(it->first)) {
+			file_map.erase(it++);
+		} else { 
+			++it; 
+		}
 	}
 
+	std::pair<std::string, std::string> file;
+	foreach(file, file_map) {
+		files.push_back(file.first);
+	}
 	std::sort(files.begin(), files.end());
-
 	return files;
 }

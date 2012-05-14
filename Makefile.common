@@ -92,7 +92,6 @@ objects = \
 	multiplayer.o \
 	object_events.o \
 	options_dialog.o \
-	package.o \
 	particle_system.o \
 	pathfinding.o \
 	pause_game_dialog.o \

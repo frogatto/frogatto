@@ -233,7 +233,7 @@ variant custom_object_type::merge_prototype(variant node)
 
 	foreach(const std::string& proto, protos) {
 		//look up the object's prototype and merge it in
-		std::map<std::string, std::string>::const_iterator path_itor = prototype_file_paths().find(proto + ".cfg");
+		std::map<std::string, std::string>::const_iterator path_itor = module::find(prototype_file_paths(), proto + ".cfg");
 		ASSERT_LOG(path_itor != prototype_file_paths().end(), "Could not find file for prototype '" << proto << "'");
 
 		variant prototype_node = json::parse_from_file(path_itor->second);
@@ -250,7 +250,7 @@ const std::string* custom_object_type::get_object_path(const std::string& id)
 		load_file_paths();
 	}
 
-	std::map<std::string, std::string>::const_iterator itor = object_file_paths().find(id);
+	std::map<std::string, std::string>::const_iterator itor = module::find(object_file_paths(), id);
 	if(itor == object_file_paths().end()) {
 		return NULL;
 	}
@@ -316,13 +316,13 @@ custom_object_type_ptr custom_object_type::recreate(const std::string& id,
 	}
 
 	//find the file for the object we are loading.
-	std::map<std::string, std::string>::const_iterator path_itor = object_file_paths().find(id + ".cfg");
+	std::map<std::string, std::string>::const_iterator path_itor = module::find(object_file_paths(), id + ".cfg");
 	ASSERT_LOG(path_itor != object_file_paths().end(), "Could not find file for object '" << id << "'");
 
 	try {
 		variant node = merge_prototype(json::parse_from_file(path_itor->second));
 
-		ASSERT_LOG(node["id"].as_string() == id, "IN " << path_itor->second << " OBJECT ID DOES NOT MATCH FILENAME");
+		ASSERT_LOG(node["id"].as_string() == module::get_id(id), "IN " << path_itor->second << " OBJECT ID DOES NOT MATCH FILENAME");
 
 		//create the object
 		custom_object_type_ptr result(new custom_object_type(node, NULL, old_type));
