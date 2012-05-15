@@ -8,6 +8,7 @@
 
 #include "dialog.hpp"
 #include "module.hpp"
+#include "text_editor_widget.hpp"
 
 class editor;
 
@@ -23,8 +24,8 @@ public:
 	const std::string on_exit();
 private:
 	void change_id();
-	void change_name();
-	void change_prefix();
+	void change_name(const gui::text_editor_widget* editor);
+	void change_prefix(const gui::text_editor_widget* editor);
 	void change_module_includes();
 	void remove_module_include(const std::string& s);
 	void execute_change_module_includes(const std::vector<std::string>& choices, int index);

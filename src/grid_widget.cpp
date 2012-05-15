@@ -203,10 +203,7 @@ void grid::handle_draw() const
 bool grid::handle_event(const SDL_Event& event, bool claimed)
 {
 	claimed = scrollable_widget::handle_event(event, claimed);
-    if(claimed) {
-        return claimed; 
-    }
-	if(allow_selection_) {
+	if(!claimed && allow_selection_) {
 		if(event.type == SDL_MOUSEMOTION) {
 			const SDL_MouseMotionEvent& e = event.motion;
 			int new_row = row_at(e.x,e.y);
@@ -247,7 +244,7 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 		}
 	}
 
-	if(must_select_) {
+	if(!claimed && must_select_) {
 		if(event.type == SDL_KEYDOWN) {
 			if(event.key.keysym.sym == SDLK_UP) {
 				if(selected_row_-- == 0) {
@@ -263,17 +260,12 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 		}
 	}
 
-	if(claimed) {
-		return claimed;
-	}
-
 	SDL_Event ev = event;
 	normalize_event(&ev);
 	foreach(const widget_ptr& widget, visible_cells_) {
 		if(widget) {
 			claimed = widget->process_event(ev, claimed);
 		}
-		if(claimed) break;
 	}
 	return claimed;
 }
