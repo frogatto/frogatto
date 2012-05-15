@@ -93,7 +93,8 @@ custom_object::custom_object(variant node)
 	parent_prev_x_(0), parent_prev_y_(0), parent_prev_facing_(true),
 	min_difficulty_(node["min_difficulty"].as_int(-1)),
 	max_difficulty_(node["max_difficulty"].as_int(-1)),
-	swallow_mouse_event_(false)
+	swallow_mouse_event_(false),
+	currently_handling_die_event_(0)
 {
 	get_all().insert(this);
 	get_all(base_type_->id()).insert(this);
@@ -305,7 +306,8 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	activation_border_(type_->activation_border()),
 	last_cycle_active_(0),
 	parent_prev_x_(0), parent_prev_y_(0), parent_prev_facing_(true),
-	min_difficulty_(-1), max_difficulty_(-1)
+	min_difficulty_(-1), max_difficulty_(-1),
+	currently_handling_die_event_(0)
 {
 	get_all().insert(this);
 	get_all(base_type_->id()).insert(this);
@@ -394,7 +396,8 @@ custom_object::custom_object(const custom_object& o) :
 	min_difficulty_(o.min_difficulty_),
 	max_difficulty_(o.max_difficulty_),
 	custom_draw_(o.custom_draw_),
-	platform_offsets_(o.platform_offsets_)
+	platform_offsets_(o.platform_offsets_),
+	currently_handling_die_event_(0)
 {
 	get_all().insert(this);
 	get_all(base_type_->id()).insert(this);
@@ -3311,9 +3314,28 @@ void custom_object::handle_event(int event, const formula_callable* context)
 	handle_event_internal(event, context);
 }
 
+namespace {
+struct die_event_scope {
+	int event_;
+	int& flag_;
+	die_event_scope(int event, int& flag) : event_(event), flag_(flag) {
+		if(event_ == OBJECT_EVENT_DIE) {
+			++flag_;
+		}
+	}
+
+	~die_event_scope() {
+		if(event_ == OBJECT_EVENT_DIE) {
+			--flag_;
+		}
+	}
+};
+}
+
 void custom_object::handle_event_internal(int event, const formula_callable* context, bool execute_commands_now)
 {
-	if(hitpoints_ <= 0 && event != OBJECT_EVENT_DIE) {
+	const die_event_scope die_scope(event, currently_handling_die_event_);
+	if(hitpoints_ <= 0 && !currently_handling_die_event_) {
 		return;
 	}
 

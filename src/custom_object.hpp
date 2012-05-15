@@ -370,6 +370,8 @@ private:
 
 	void handle_event_internal(int event, const formula_callable* context, bool execute_commands_now=true);
 	std::vector<variant> delayed_commands_;
+
+	int currently_handling_die_event_;
 };
 
 #endif
