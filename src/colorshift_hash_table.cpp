@@ -1,5 +1,5 @@
 #include <algorithm>
-#include <cstdint>
+#include <stdint.h>
 
 #include "asserts.hpp"
 #include "colorshift_hash_table.hpp"
