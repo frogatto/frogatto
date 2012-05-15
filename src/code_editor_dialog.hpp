@@ -82,7 +82,7 @@ private:
 	void select_suggestion(int index);
 
 	struct Suggestion {
-		std::string suggestion, postfix;
+		std::string suggestion, suggestion_text, postfix;
 		int postfix_index;
 		bool operator==(const Suggestion& o) const { return o.suggestion == suggestion && o.postfix == postfix && o.postfix_index == postfix_index; }
 		bool operator<(const Suggestion& o) const { return suggestion < o.suggestion; }

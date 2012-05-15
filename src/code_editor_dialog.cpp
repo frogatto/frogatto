@@ -7,10 +7,12 @@
 #include "button.hpp"
 #include "code_editor_dialog.hpp"
 #include "code_editor_widget.hpp"
+#include "custom_object_callable.hpp"
 #include "custom_object_type.hpp"
 #include "filesystem.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
+#include "formula_function_registry.hpp"
 #include "frame.hpp"
 #include "image_widget.hpp"
 #include "json_parser.hpp"
@@ -269,12 +271,13 @@ void code_editor_dialog::process()
 
 		const bool at_end = token_pos == selected_token->end - selected_token->begin;
 		std::string str(selected_token->begin, selected_token->end);
+		suggestions_prefix_ = 0;
 		if(str.size() >= 3 && std::string(str.begin(), str.begin()+3) == "on_" && at_end) {
 			const std::string id(str.begin()+3, str.end());
 			for(int i = 0; i != NUM_OBJECT_BUILTIN_EVENT_IDS; ++i) {
 				const std::string& event_str = get_object_event_str(i);
 				if(event_str.size() >= id.size() && std::equal(id.begin(), id.end(), event_str.begin())) {
-					Suggestion s = { "on_" + event_str, ": \"\",", 3 };
+					Suggestion s = { "on_" + event_str, "", ": \"\",", 3 };
 					suggestions.push_back(s);
 				}
 			}
@@ -295,14 +298,79 @@ void code_editor_dialog::process()
 				foreach(const std::string& type, types) {
 					const std::string event_str = type + "_" + str + (type == "process" ? "" : "_anim");
 					if(event_str.size() >= id.size() && std::equal(id.begin(), id.end(), event_str.begin())) {
-						Suggestion s = { "on_" + event_str, ": \"\",", 3 };
+						Suggestion s = { "on_" + event_str, "", ": \"\",", 3 };
 						suggestions.push_back(s);
 					}
 				}
 			}
+
+			suggestions_prefix_ = str.size();
+		} else if(selected_token->type == json::Token::TYPE_STRING) {
+			try {
+				const std::string formula_str(selected_token->begin, selected_token->end);
+				std::vector<formula_tokenizer::token> tokens;
+				std::string::const_iterator i1 = formula_str.begin();
+				formula_tokenizer::token t = formula_tokenizer::get_token(i1, formula_str.end());
+				while(t.type != formula_tokenizer::TOKEN_INVALID) {
+					tokens.push_back(t);
+					if(i1 == formula_str.end()) {
+						break;
+					}
+
+					t = formula_tokenizer::get_token(i1, formula_str.end());
+				}
+
+				const formula_tokenizer::token* selected = NULL;
+				const std::string::const_iterator itor = formula_str.begin() + token_pos;
+
+				foreach(const formula_tokenizer::token& tok, tokens) {
+					if(tok.end == itor) {
+						selected = &tok;
+						break;
+					}
+				}
+
+				if(selected && selected->type == formula_tokenizer::TOKEN_IDENTIFIER) {
+					const std::string identifier(selected->begin, selected->end);
+
+					static const custom_object_callable obj_definition;
+					for(int n = 0; n != obj_definition.num_slots(); ++n) {
+						const std::string id = obj_definition.get_entry(n)->id;
+						if(id.size() > identifier.size() && std::equal(identifier.begin(), identifier.end(), id.begin())) {
+							Suggestion s = { id, "", "", 0 };
+							suggestions.push_back(s);
+						}
+					}
+
+					std::vector<std::string> helpstrings;
+					foreach(const std::string& s, function_helpstrings("core")) {
+						helpstrings.push_back(s);
+					}
+					foreach(const std::string& s, function_helpstrings("custom_object")) {
+						helpstrings.push_back(s);
+					}
+
+					foreach(const std::string& str, helpstrings) {
+						std::string::const_iterator paren = std::find(str.begin(), str.end(), '(');
+						std::string::const_iterator colon = std::find(paren, str.end(), ':');
+						if(colon == str.end()) {
+							continue;
+						}
+
+						const std::string id(str.begin(), paren);
+						const std::string text(str.begin(), colon);
+						if(id.size() > identifier.size() && std::equal(identifier.begin(), identifier.end(), id.begin())) {
+							Suggestion s = { id, text, "()", 1 };
+							suggestions.push_back(s);
+						}
+					}
+
+					suggestions_prefix_ = identifier.size();
+				}
+			} catch(formula_tokenizer::token_error&) {
+			}
 		}
 
-		suggestions_prefix_ = str.size();
 	}
 
 	std::sort(suggestions.begin(), suggestions.end());
@@ -319,7 +387,7 @@ void code_editor_dialog::process()
 			suggestions_grid->set_show_background(true);
 			suggestions_grid->set_max_height(160);
 			foreach(const Suggestion& s, suggestions_) {
-				suggestions_grid->add_col(widget_ptr(new label(s.suggestion)));
+				suggestions_grid->add_col(widget_ptr(new label(s.suggestion_text.empty() ? s.suggestion : s.suggestion_text)));
 			}
 
 			suggestions_grid_.reset(new border_widget(suggestions_grid, graphics::color(255,255,255,255)));
