@@ -39,6 +39,7 @@ editor_dialogs.cpp
 editor_formula_functions.cpp
 editor_layers_dialog.cpp
 editor_level_properties_dialog.cpp
+editor_module_properties_dialog.cpp
 editor_stats_dialog.cpp
 editor_variable_info.cpp
 external_text_editor.cpp
@@ -90,7 +91,6 @@ multi_tile_pattern.cpp
 multiplayer.cpp
 object_events.cpp
 options_dialog.cpp
-package.cpp
 particle_system.cpp
 pathfinding.cpp
 pause_game_dialog.cpp

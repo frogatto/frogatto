@@ -74,12 +74,19 @@ bool button::in_button(int xloc, int yloc) const
 void button::handle_draw() const
 {
 	label_->set_loc(x()+width()/2 - label_->width()/2,y()+height()/2 - label_->height()/2);
-	current_button_image_set_->blit(x(),y(),width(),height(), button_resolution_);
+	current_button_image_set_->blit(x(),y(),width(),height(), button_resolution_ != 0);
 	label_->draw();
 }
 
 bool button::handle_event(const SDL_Event& event, bool claimed)
 {
+	if((event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) 
+		&& (event.button.button == SDL_BUTTON_WHEELUP || event.button.button == SDL_BUTTON_WHEELDOWN)
+		&& in_button(event.button.x, event.button.y)) {
+		// skip processing if mousewheel event
+		return claimed;
+	}
+
     if(claimed) {
 		current_button_image_set_ = normal_button_image_set_;
 		down_ = false;

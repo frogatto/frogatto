@@ -25,6 +25,10 @@ std::map<std::string,std::string>& get_level_paths() {
 }
 
 namespace loadlevel {
+void reload_level_paths() {
+	get_level_paths().clear();
+	load_level_paths();
+}
 void load_level_paths() {
 	module::get_unique_filenames_under_dir("data/level/", &get_level_paths());
 }

@@ -15,6 +15,7 @@ struct load_level_manager {
 
 namespace loadlevel {
 void load_level_paths();
+void reload_level_paths();
 const std::string& get_level_path(const std::string& name);
 }
 

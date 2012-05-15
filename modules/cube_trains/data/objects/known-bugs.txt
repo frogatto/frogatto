@@ -3,6 +3,7 @@
 	  │ Known Bugs: │
 	╔═╧═════════════╧═══════════════════════════════════════════════════════════════╗
 	║ Critical:                                                                     ║
+	║  ▶ Copy is broken on some linux systems.                                      ║
 	║  ▶                                                                            ║
 	║                                                                               ║
 	║ Problematic:                                                                  ║
@@ -17,6 +18,7 @@
 	║  ▷ Level loader doesn't function correctly.                                   ║
 	║  ▷ Display level titles.                                                      ║
 	║  ▷ Window resizing breaks side scrollpane.                                    ║
+	║  ▶ The window needs to be resizable, and all that entails.                    ║
 	║  ▶                                                                            ║
 	║                                                                               ║
 	║ Minor:                                                                        ║
@@ -35,6 +37,7 @@
 	║    change delta (and, hence, the delta generator), not the change delta       ║
 	║    itself. As it stands, rotating clears the undo/redo stack.                 ║
 	║  ▶ It might be nice to include a line of text explaining the game.            ║
+	║  ▶ You need to export the level or return to main map to rotate in editor.    ║
 	║  ▶                                                                            ║
 	║                                                          ▷ fixed  ▶ not fixed ║
 	╚═══════════════════════════════════════════════════════════════════════════════╝

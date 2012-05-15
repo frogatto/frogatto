@@ -14,6 +14,7 @@ struct modules {
 	std::string pretty_name_;
 	std::string abbreviation_;
 	std::string base_path_;
+	std::vector<std::string> included_modules_;
 };
 
 const std::string get_module_name();
@@ -35,6 +36,9 @@ const std::string& get_module_path(const std::string& abbrev);
 std::vector<variant> get_all();
 variant get(const std::string& name);
 void load(const std::string& name, bool initial=true);
+void reload(const std::string& name);
+void get_module_list(std::vector<std::string>& dirs);
+void load_module_from_file(const std::string& modname, modules* mod_);
 
 }
 

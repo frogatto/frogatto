@@ -6,6 +6,7 @@
 
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/algorithm/string.hpp>
 
 #include "asserts.hpp"
 #include "border_widget.hpp"
@@ -21,6 +22,7 @@
 #include "editor_formula_functions.hpp"
 #include "editor_layers_dialog.hpp"
 #include "editor_level_properties_dialog.hpp"
+#include "editor_module_properties_dialog.hpp"
 #include "editor_stats_dialog.hpp"
 #include "entity.hpp"
 #include "filesystem.hpp"
@@ -105,6 +107,8 @@ class editor_menu_dialog : public gui::dialog
 			"Open...", "ctrl+o", boost::bind(&editor_menu_dialog::open_level, this),
 			"Save", "ctrl+s", boost::bind(&editor::save_level, &editor_),
 			"Save As...", "", boost::bind(&editor_menu_dialog::save_level_as, this),
+			"Create New Module...", "", boost::bind(&editor::create_new_module, &editor_),
+			"Edit Module Properties...", "", boost::bind(&editor::edit_module_properties, &editor_),
 			"Exit", "<esc>", boost::bind(&editor::quit, &editor_),
 		};
 
@@ -223,7 +227,7 @@ class editor_menu_dialog : public gui::dialog
 	std::string code_button_text_;
 public:
 	explicit editor_menu_dialog(editor& e)
-	  : gui::dialog(0, 0, preferences::actual_screen_width() - EDITOR_SIDEBAR_WIDTH, EDITOR_MENUBAR_HEIGHT), editor_(e)
+	  : gui::dialog(0, 0, e.xres() ? e.xres() : 1200, EDITOR_MENUBAR_HEIGHT), editor_(e)
 	{
 		set_clear_bg_amount(255);
 		init();
@@ -280,7 +284,7 @@ public:
 
 		code_button_ = button_ptr(new button(text, boost::bind(&editor::toggle_code, &editor_)));
 
-		add_widget(code_button_, graphics::screen_width() - 612, 4);
+		add_widget(code_button_, (editor_.xres() ? editor_.xres() : 1200) - 612, 4);
 	}
 
 
@@ -337,6 +341,7 @@ public:
 			g_last_edited_level() = lvl;
 		}
 	}
+
 };
 
 namespace {
@@ -684,7 +689,7 @@ void editor::edit(const char* level_cfg, int xpos, int ypos)
 		e->ypos_ = ypos;
 	}
 
-	editor_resolution_manager resolution_manager;
+	editor_resolution_manager resolution_manager(e->xres(), e->yres());
 
 	e->setup_for_editing();
 	e->edit_level();
@@ -723,7 +728,8 @@ editor::editor(const char* level_cfg)
 	cur_tileset_(0), cur_object_(0),
     current_dialog_(NULL),
 	drawing_rect_(false), dragging_(false), level_changed_(0),
-	selected_segment_(-1), prev_mousex_(-1), prev_mousey_(-1)
+	selected_segment_(-1), prev_mousex_(-1), prev_mousey_(-1),
+	xres_(0), yres_(0)
 {
 	preferences::set_record_history(true);
 
@@ -734,6 +740,13 @@ editor::editor(const char* level_cfg)
 		tileset::init(editor_cfg);
 		enemy_type::init(editor_cfg);
 		first_time = false;
+		if(editor_cfg.is_map()) {
+			if(editor_cfg["resolution"].is_null() == false) {
+				std::vector<int> v = editor_cfg["resolution"].as_list_int();
+				xres_ = v[0];
+				yres_ = v[1];
+			}
+		}
 	}
 
 	assert(!tilesets.empty());
@@ -875,12 +888,17 @@ bool editor_resolution_manager::is_active()
 	return editor_resolution_manager_count != 0;
 }
 
-editor_resolution_manager::editor_resolution_manager() :
+editor_resolution_manager::editor_resolution_manager(int xres, int yres) :
 	   original_width_(preferences::actual_screen_width()),
 	   original_height_(preferences::actual_screen_height()) {
 	if(!editor_x_resolution) {
-		editor_x_resolution = 1200; //preferences::actual_screen_width() + EDITOR_SIDEBAR_WIDTH + editor_dialogs::LAYERS_DIALOG_WIDTH;
-		editor_y_resolution = preferences::actual_screen_height() + EDITOR_MENUBAR_HEIGHT;
+		if(xres != 0 && yres != 0) {
+			editor_x_resolution = xres;
+			editor_y_resolution = yres;
+		} else {
+			editor_x_resolution = 1200; //preferences::actual_screen_width() + EDITOR_SIDEBAR_WIDTH + editor_dialogs::LAYERS_DIALOG_WIDTH;
+			editor_y_resolution = preferences::actual_screen_height() + EDITOR_MENUBAR_HEIGHT;
+		}
 	}
 
 	if(++editor_resolution_manager_count == 1) {
@@ -1714,6 +1732,9 @@ void editor::handle_drawing_rect(int mousex, int mousey)
 
 void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 {
+	if(event.button == SDL_BUTTON_WHEELUP || event.button == SDL_BUTTON_WHEELDOWN) {
+		return;
+	}
 	const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
 	const bool shift_pressed = (SDL_GetModState()&(KMOD_LSHIFT|KMOD_RSHIFT)) != 0;
 	const bool alt_pressed = (SDL_GetModState()&KMOD_ALT) != 0;
@@ -2013,6 +2034,16 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 			
 	const int xpos = xpos_ + mousex*zoom_;
 	const int ypos = ypos_ + mousey*zoom_;
+
+	if((event.button == SDL_BUTTON_WHEELUP || event.button == SDL_BUTTON_WHEELDOWN) 
+		&& xpos < editor_x_resolution-sidebar_width() ) {
+		if(event.button == SDL_BUTTON_WHEELUP) {
+			zoom_in();
+		} else {
+			zoom_out();
+		}
+		return;
+	}
 
 	if(g_variable_editing) {
 		if(property_dialog_ && property_dialog_->get_entity()) {
@@ -3259,6 +3290,28 @@ void editor::edit_level_properties()
 	prop_dialog.show_modal();
 }
 
+void editor::create_new_module()
+{
+	editor_dialogs::editor_module_properties_dialog prop_dialog(*this);
+	prop_dialog.show_modal();
+	if(prop_dialog.cancelled() == false) {
+		prop_dialog.on_exit();
+		close();
+		g_last_edited_level() = prop_dialog.on_exit();
+		SDL_WM_SetCaption(module::get_module_pretty_name().c_str(), module::get_module_pretty_name().c_str());
+	}
+}
+
+void editor::edit_module_properties()
+{
+	editor_dialogs::editor_module_properties_dialog prop_dialog(*this, module::get_module_name());
+	prop_dialog.show_modal();
+	if(prop_dialog.cancelled() == false) {
+		prop_dialog.on_exit();
+		SDL_WM_SetCaption(module::get_module_pretty_name().c_str(), module::get_module_pretty_name().c_str());
+	}
+}
+
 void editor::add_multi_object_to_level(level_ptr lvl, entity_ptr e)
 {
 	current_level_scope scope(lvl.get());
@@ -3415,3 +3468,4 @@ void editor::start_adding_points(const std::string& field_name)
 	}
 }
 #endif // !NO_EDITOR
+

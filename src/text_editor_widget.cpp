@@ -419,7 +419,6 @@ bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& ev
 {
 	record_op();
 	if(event.x >= x() && event.x < x() + width() && event.y >= y() && event.y < y() + height()) {
-#if defined(_WINDOWS)
 		if(event.button == SDL_BUTTON_WHEELUP) {
 			if(cursor_.row > 2) {
 				cursor_.row -= 3;
@@ -443,7 +442,6 @@ bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& ev
 			}
 			return true;
 		}
-#endif
 
 		set_focus(true);
 		std::pair<int, int> pos = mouse_position_to_row_col(event.x, event.y);
