@@ -6,6 +6,7 @@
 
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/algorithm/string.hpp>
 
 #include "asserts.hpp"
 #include "border_widget.hpp"
@@ -21,6 +22,7 @@
 #include "editor_formula_functions.hpp"
 #include "editor_layers_dialog.hpp"
 #include "editor_level_properties_dialog.hpp"
+#include "editor_module_properties_dialog.hpp"
 #include "editor_stats_dialog.hpp"
 #include "entity.hpp"
 #include "filesystem.hpp"
@@ -105,6 +107,8 @@ class editor_menu_dialog : public gui::dialog
 			"Open...", "ctrl+o", boost::bind(&editor_menu_dialog::open_level, this),
 			"Save", "ctrl+s", boost::bind(&editor::save_level, &editor_),
 			"Save As...", "", boost::bind(&editor_menu_dialog::save_level_as, this),
+			"Create New Module...", "", boost::bind(&editor::create_new_module, &editor_),
+			"Edit Module Properties...", "", boost::bind(&editor::edit_module_properties, &editor_),
 			"Exit", "<esc>", boost::bind(&editor::quit, &editor_),
 		};
 
@@ -337,6 +341,7 @@ public:
 			g_last_edited_level() = lvl;
 		}
 	}
+
 };
 
 namespace {
@@ -1727,6 +1732,9 @@ void editor::handle_drawing_rect(int mousex, int mousey)
 
 void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 {
+	if(event.button == SDL_BUTTON_WHEELUP || event.button == SDL_BUTTON_WHEELDOWN) {
+		return;
+	}
 	const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
 	const bool shift_pressed = (SDL_GetModState()&(KMOD_LSHIFT|KMOD_RSHIFT)) != 0;
 	const bool alt_pressed = (SDL_GetModState()&KMOD_ALT) != 0;
@@ -2026,6 +2034,16 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 			
 	const int xpos = xpos_ + mousex*zoom_;
 	const int ypos = ypos_ + mousey*zoom_;
+
+	if((event.button == SDL_BUTTON_WHEELUP || event.button == SDL_BUTTON_WHEELDOWN) 
+		&& xpos < editor_x_resolution-sidebar_width() ) {
+		if(event.button == SDL_BUTTON_WHEELUP) {
+			zoom_in();
+		} else {
+			zoom_out();
+		}
+		return;
+	}
 
 	if(g_variable_editing) {
 		if(property_dialog_ && property_dialog_->get_entity()) {
@@ -3272,6 +3290,28 @@ void editor::edit_level_properties()
 	prop_dialog.show_modal();
 }
 
+void editor::create_new_module()
+{
+	editor_dialogs::editor_module_properties_dialog prop_dialog(*this);
+	prop_dialog.show_modal();
+	if(prop_dialog.cancelled() == false) {
+		prop_dialog.on_exit();
+		close();
+		g_last_edited_level() = prop_dialog.on_exit();
+		SDL_WM_SetCaption(module::get_module_pretty_name().c_str(), module::get_module_pretty_name().c_str());
+	}
+}
+
+void editor::edit_module_properties()
+{
+	editor_dialogs::editor_module_properties_dialog prop_dialog(*this, module::get_module_name());
+	prop_dialog.show_modal();
+	if(prop_dialog.cancelled() == false) {
+		prop_dialog.on_exit();
+		SDL_WM_SetCaption(module::get_module_pretty_name().c_str(), module::get_module_pretty_name().c_str());
+	}
+}
+
 void editor::add_multi_object_to_level(level_ptr lvl, entity_ptr e)
 {
 	current_level_scope scope(lvl.get());
@@ -3428,3 +3468,4 @@ void editor::start_adding_points(const std::string& field_name)
 	}
 }
 #endif // !NO_EDITOR
+

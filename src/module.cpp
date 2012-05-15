@@ -1,3 +1,4 @@
+#include "asserts.hpp"
 #include "filesystem.hpp"
 #include "foreach.hpp"
 #include "json_parser.hpp"
@@ -186,6 +187,41 @@ void load(const std::string& name, bool initial)
 	}
 	modules m = {name, pretty_name, abbrev, make_base_module_path(name)};
 	loaded_paths().insert(loaded_paths().begin(), m);
+}
+
+void reload(const std::string& name) {
+	loaded_paths().clear();
+	loaded_paths().push_back(frogatto);
+	load(name, true);
+}
+
+void get_module_list(std::vector<std::string>& dirs) {
+	// Grab the files/directories under ./module/ for later use.
+	std::vector<std::string> files;
+	sys::get_files_in_dir("./modules/", &files, &dirs);
+}
+
+void load_module_from_file(const std::string& modname, modules* mod_) {
+	variant v = json::parse_from_file("./modules/" + modname + "/module.cfg");
+	ASSERT_LOG(mod_ != NULL, "Invalid module pointer passed.");
+	if(v.is_map()) {
+		if(v["id"].is_null() == false) {
+			mod_->name_= v["id"].as_string();
+		}
+		if(v["name"].is_null() == false) {
+			mod_->pretty_name_= v["name"].as_string();
+		}
+		if(v["abbreviation"].is_null() == false) {
+			mod_->abbreviation_= v["abbreviation"].as_string();
+		}
+		if(v["include-modules"].is_string()) {
+			mod_->included_modules_.push_back(v["include-modules"].as_string());
+		} else if(v["include-modules"].is_list()) {
+			foreach(const std::string& s, v["include-modules"].as_list_string()) {
+				mod_->included_modules_.push_back(s);
+			}
+		}
+	}
 }
 
 }

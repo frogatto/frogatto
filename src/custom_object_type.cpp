@@ -221,6 +221,15 @@ variant merge_into_prototype(variant prototype_node, variant node)
 
 }
 
+namespace customobjecttype {
+void reload_file_paths() {
+	custom_object_type::invalidate_all_objects();
+	file_mod_times().clear();
+	load_file_paths();
+}
+}
+
+
 //function which finds if a node has a prototype, and if so, applies the
 //prototype to the node.
 variant custom_object_type::merge_prototype(variant node)
@@ -333,6 +342,8 @@ custom_object_type_ptr custom_object_type::recreate(const std::string& id,
 	} catch(graphics::load_image_error&) {
 		ASSERT_LOG(false, "Error loading object '" << id << "': could not load needed image");
 	}
+	// We never get here, but this stops a compiler warning.
+	return custom_object_type_ptr();
 }
 
 void custom_object_type::invalidate_object(const std::string& id)

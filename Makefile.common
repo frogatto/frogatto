@@ -44,6 +44,7 @@ objects = \
 	draw_tile.o \
 	editor.o \
 	editor_level_properties_dialog.o \
+	editor_module_properties_dialog.o \
 	entity.o \
 	filesystem.o \
 	font.o \

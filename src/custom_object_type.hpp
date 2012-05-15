@@ -21,6 +21,10 @@ class custom_object_type;
 typedef boost::shared_ptr<custom_object_type> custom_object_type_ptr;
 typedef boost::shared_ptr<const custom_object_type> const_custom_object_type_ptr;
 
+namespace customobjecttype {
+	void reload_file_paths();
+}
+
 namespace wml {
 class modifier;
 typedef boost::shared_ptr<const modifier> const_modifier_ptr;

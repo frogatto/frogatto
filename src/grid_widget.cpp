@@ -217,19 +217,30 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 				}
 			}
 		} else if(event.type == SDL_MOUSEBUTTONDOWN) {
-			const SDL_MouseButtonEvent& e = event.button;
-			const int row_index = row_at(e.x, e.y);
-			std::cerr << "SELECT ROW: " << row_index << "\n";
-			if(row_index >= 0 && row_index < row_callbacks_.size() &&
-			   row_callbacks_[row_index]) {
-			std::cerr << "ROW CB: " << row_index << "\n";
-				row_callbacks_[row_index]();
-			}
+			if(event.button.button == SDL_BUTTON_WHEELUP) {
+				set_yscroll(yscroll() - 3*row_height_ < 0 ? 0 : yscroll() - 3*row_height_);
+				claimed = true;
+			} else if(event.button.button == SDL_BUTTON_WHEELDOWN) {
+				int y3 = yscroll() + 3*row_height_;
+				set_yscroll(virtual_height() - y3 < height() 
+					? virtual_height() - height()
+					: y3);
+				claimed = true;
+			} else {
+				const SDL_MouseButtonEvent& e = event.button;
+				const int row_index = row_at(e.x, e.y);
+				std::cerr << "SELECT ROW: " << row_index << "\n";
+				if(row_index >= 0 && row_index < row_callbacks_.size() &&
+				   row_callbacks_[row_index]) {
+				std::cerr << "ROW CB: " << row_index << "\n";
+					row_callbacks_[row_index]();
+				}
 
-			if(on_select_) {
-				on_select_(row_index);
-			}
+				if(on_select_) {
+					on_select_(row_index);
+				}
 
+			}
 			if(swallow_clicks_) {
 				claimed = true;
 			}
