@@ -105,7 +105,13 @@ void init(int buffer_width, int buffer_height)
 
 	// check FBO status
 	GLenum status = EXT_CALL(glCheckFramebufferStatus)(EXT_MACRO(GL_FRAMEBUFFER));
-	ASSERT_EQ(status, EXT_MACRO(GL_FRAMEBUFFER_COMPLETE));
+	if(status == GL_FRAMEBUFFER_UNSUPPORTED) {
+		std::cerr << "FRAME BUFFER OBJECT NOT SUPPORTED\n";
+		supported = false;
+		err = glGetError();
+	} else {
+		ASSERT_EQ(status, EXT_MACRO(GL_FRAMEBUFFER_COMPLETE));
+	}
 
 	// switch back to window-system-provided framebuffer
 	EXT_CALL(glBindFramebuffer)(EXT_MACRO(GL_FRAMEBUFFER), video_framebuffer_id);
