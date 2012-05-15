@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-05-14 13:48-0300\n"
-"PO-Revision-Date: 2012-05-14 17:00+0000\n"
+"POT-Creation-Date: 2012-05-15 20:00-0300\n"
+"PO-Revision-Date: 2012-05-15 23:00+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Swedish (http://www.transifex.net/projects/p/Frogatto/language/sv/)\n"
 "MIME-Version: 1.0\n"
@@ -530,7 +530,7 @@ msgid "Blocks Run"
 msgstr ""
 
 #: data/level/arcade-blocks.cfg:225 data/level/arcade-blocks.cfg:227
-msgid "You got {level.player.score} points in the Blocks Run!"
+msgid "You got ${level.player.score} points in the Blocks Run!"
 msgstr ""
 
 #: data/level/arcade-blocks.cfg:226
@@ -538,13 +538,14 @@ msgstr ""
 #: data/level/arcade-maintenance-shaft.cfg:2560
 #: data/level/arcade-nutty-factory.cfg:522
 #: data/level/arcade-the-long-haul.cfg:635
+#: data/level/arcade-upper-deck.cfg:2929
 #: data/level/arcade-wild-new-wonder.cfg:2496
 #: data/objects/effects/control/level_controller_coin_race.cfg:16
 msgid "This is a new high score!"
 msgstr ""
 
 #: data/level/arcade-blocks.cfg:228
-msgid "The high score is {registry.arcade_blocks_high_score}."
+msgid "The high score is ${registry.arcade_blocks_high_score}."
 msgstr ""
 
 #: data/level/arcade-down-the-rabbit-hall.cfg:13
@@ -554,12 +555,12 @@ msgstr ""
 
 #: data/level/arcade-down-the-rabbit-hall.cfg:844
 #: data/level/arcade-down-the-rabbit-hall.cfg:847
-msgid "You got {level.player.vars.score} points going down the rabbit hall!"
+msgid "You got ${level.player.vars.score} points going down the rabbit hall!"
 msgstr ""
 
 #: data/level/arcade-down-the-rabbit-hall.cfg:848
 msgid ""
-"The high score is {registry.arcade_down_the_rabbit_hall_high_score} points."
+"The high score is ${registry.arcade_down_the_rabbit_hall_high_score} points."
 msgstr ""
 
 #: data/level/arcade-maintenance-shaft.cfg:13
@@ -569,21 +570,21 @@ msgstr "Underhållningsschakt"
 
 #: data/level/arcade-maintenance-shaft.cfg:2559
 #: data/level/arcade-maintenance-shaft.cfg:2562
-msgid "You got {level.player.vars.score} points in the maintenance shaft!"
+msgid "You got ${level.player.vars.score} points in the maintenance shaft!"
 msgstr ""
 
 #: data/level/arcade-maintenance-shaft.cfg:2563
 msgid ""
-"The high score is {registry.arcade_maintenance_shaft_high_score} points."
+"The high score is ${registry.arcade_maintenance_shaft_high_score} points."
 msgstr ""
 
 #: data/level/arcade-nutty-factory.cfg:521
 #: data/level/arcade-nutty-factory.cfg:524
-msgid "You got {level.player.vars.score} points in the Nutty Factory!"
+msgid "You got ${level.player.vars.score} points in the Nutty Factory!"
 msgstr ""
 
 #: data/level/arcade-nutty-factory.cfg:525
-msgid "The high score is {registry.arcade_nutty_factory_high_score} points."
+msgid "The high score is ${registry.arcade_nutty_factory_high_score} points."
 msgstr ""
 
 #: data/level/arcade-the-long-haul.cfg:11
@@ -593,11 +594,11 @@ msgstr "Det långa loppet"
 
 #: data/level/arcade-the-long-haul.cfg:634
 #: data/level/arcade-the-long-haul.cfg:637
-msgid "You got {level.player.vars.score} points in the long haul!"
+msgid "You got ${level.player.vars.score} points in the long haul!"
 msgstr ""
 
 #: data/level/arcade-the-long-haul.cfg:638
-msgid "The high score is {registry.arcade_the_long_haul_high_score} points."
+msgid "The high score is ${registry.arcade_the_long_haul_high_score} points."
 msgstr ""
 
 #: data/level/arcade-upper-deck.cfg:13 data/level/titlescreen-arcade.cfg:125
@@ -605,15 +606,11 @@ msgid "Upper Deck"
 msgstr ""
 
 #: data/level/arcade-upper-deck.cfg:2928 data/level/arcade-upper-deck.cfg:2931
-msgid "You got {level.player.vars.score} points on the Upper Deck!"
-msgstr ""
-
-#: data/level/arcade-upper-deck.cfg:2929
-msgid "This is a new record!"
+msgid "You got ${level.player.vars.score} points on the Upper Deck!"
 msgstr ""
 
 #: data/level/arcade-upper-deck.cfg:2932
-msgid "The high score is {registry.arcade_upper_deck_high_score} points."
+msgid "The high score is ${registry.arcade_upper_deck_high_score} points."
 msgstr ""
 
 #: data/level/arcade-wild-new-wonder.cfg:13
@@ -623,11 +620,12 @@ msgstr "Vilda nya underverk"
 
 #: data/level/arcade-wild-new-wonder.cfg:2495
 #: data/level/arcade-wild-new-wonder.cfg:2498
-msgid "You got {level.player.vars.score} points in the Wild New Wonder!"
+msgid "You got ${level.player.vars.score} points in the Wild New Wonder!"
 msgstr ""
 
 #: data/level/arcade-wild-new-wonder.cfg:2499
-msgid "The high score is {registry.arcade_wild_new_wonder_high_score} points."
+msgid ""
+"The high score is ${registry.arcade_wild_new_wonder_high_score} points."
 msgstr ""
 
 #: data/level/bombing-fools.cfg:1184
@@ -4540,9 +4538,6 @@ msgid "Nope, it's locked."
 msgstr "Nej, den är låst."
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:15
-msgid "You made it to level ${level.player.difficulty} of the coin race!"
-msgstr ""
-
 #: data/objects/effects/control/level_controller_coin_race.cfg:17
 msgid "You made it to level ${level.player.difficulty} of the coin race."
 msgstr ""
