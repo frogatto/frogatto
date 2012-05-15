@@ -1,3 +1,7 @@
+//use non-threaded loading unless/until we can fix threaded loading.
+#include "load_level_nothread.cpp"
+
+#if 0
 #include <assert.h>
 
 #include "asserts.hpp"
@@ -237,3 +241,4 @@ std::vector<std::string> get_known_levels()
 	
 	return files;
 }
+#endif
