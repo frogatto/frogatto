@@ -3726,7 +3726,7 @@ void custom_object::set_sound_volume(const int sound_volume)
 
 bool custom_object::allow_level_collisions() const
 {
-	return type_->static_object();
+	return type_->static_object() || !type_->collides_with_level();
 }
 
 void custom_object::set_platform_area(const rect& area)
