@@ -23,7 +23,7 @@ public:
 	void init();
 	const std::string on_exit();
 private:
-	void change_id();
+	void change_id(const gui::text_editor_widget* editor);
 	void change_name(const gui::text_editor_widget* editor);
 	void change_prefix(const gui::text_editor_widget* editor);
 	void change_module_includes();

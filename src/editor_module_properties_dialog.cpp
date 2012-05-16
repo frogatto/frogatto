@@ -58,16 +58,20 @@ void editor_module_properties_dialog::init()
 
 	grid_ptr g(new grid(2));
 	if(new_mod_) {
-		g->add_col(widget_ptr(new label(mod_.name_, graphics::color_white(), 36)))
-		  .add_col(widget_ptr(new button(widget_ptr(new label("Change Identifier", graphics::color_white())), boost::bind(&editor_module_properties_dialog::change_id, this))));
+		text_editor_widget* change_id_entry(new text_editor_widget(200, 30));
+		change_id_entry->set_on_change_handler(boost::bind(&editor_module_properties_dialog::change_id, this, change_id_entry));
+		change_id_entry->set_on_enter_handler(boost::bind(&dialog::close, this));
+
+		g->add_col(widget_ptr(new label("Identifier:  ", graphics::color_white(), 36)))
+			.add_col(widget_ptr(change_id_entry));
 		add_widget(g);
 	} else {
-		g->add_col(widget_ptr(new label("Identifier:  ", graphics::color_white(), 36)))
+		g->add_col(widget_ptr(new label("Identifier: ", graphics::color_white(), 36)))
 			.add_col(widget_ptr(new label(mod_.name_, graphics::color_white(), 36)));
 		add_widget(g);
 	}
 
-	text_editor_widget* change_name_entry(new text_editor_widget(80));
+	text_editor_widget* change_name_entry(new text_editor_widget(200, 30));
 	change_name_entry->set_text(mod_.pretty_name_);
 	change_name_entry->set_on_change_handler(boost::bind(&editor_module_properties_dialog::change_name, this, change_name_entry));
 	change_name_entry->set_on_enter_handler(boost::bind(&dialog::close, this));
@@ -77,7 +81,7 @@ void editor_module_properties_dialog::init()
 	  .add_col(widget_ptr(change_name_entry));
 	add_widget(g);
 
-	text_editor_widget* change_abbrev_entry(new text_editor_widget(80));
+	text_editor_widget* change_abbrev_entry(new text_editor_widget(200, 30));
 	change_abbrev_entry->set_text(mod_.abbreviation_);
 	change_abbrev_entry->set_on_change_handler(boost::bind(&editor_module_properties_dialog::change_prefix, this, change_abbrev_entry));
 	change_abbrev_entry->set_on_enter_handler(boost::bind(&dialog::close, this));
@@ -99,26 +103,10 @@ void editor_module_properties_dialog::init()
 	}
 }
 
-void editor_module_properties_dialog::change_id()
+void editor_module_properties_dialog::change_id(const gui::text_editor_widget* editor)
 {
-	using namespace gui;
-	dialog d(0, 0, graphics::screen_width(), graphics::screen_height());
-	d.add_widget(widget_ptr(new label("Change Identifier", graphics::color_white(), 48)));
-	text_entry_widget* entry = new text_entry_widget;
-	if(!mod_.name_.empty()) {
-		entry->set_text(mod_.name_);
-	}
-	d.add_widget(widget_ptr(new label("Identifier:", graphics::color_white())))
-	 .add_widget(widget_ptr(entry));
-	d.show_modal();
-
-	if(d.cancelled()) {
-		return;
-	}
-
-	if(std::find(dirs_.begin(), dirs_.end(), entry->text()) == dirs_.end()) {
-		mod_.name_ = entry->text();
-		init();
+	if(std::find(dirs_.begin(), dirs_.end(), editor->text()) == dirs_.end()) {
+		mod_.name_ = editor->text();
 	}
 }
 
