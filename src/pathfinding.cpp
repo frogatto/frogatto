@@ -165,13 +165,13 @@ variant point_as_variant_list(const point& pt) {
 }
 
 // Calculate the neighbour set of rectangles from a point.
-std::vector<point> get_neighbours_from_rect(const int mid_x, 
-	const int mid_y, 
+std::vector<point> get_neighbours_from_rect(const point& mid_xy, 
 	const int tile_size_x, 
 	const int tile_size_y, 
+	const rect& b,
 	const bool allow_diagonals) {
-	// Use some outside knowledge to grab the bounding rect for the level
-	const rect& b = level::current().boundaries();
+	const int mid_x = mid_xy.x;
+	const int mid_y = mid_xy.y;
 	std::vector<point> res;
 	if(mid_x - tile_size_x >= b.x()) {
 		// west
@@ -243,8 +243,10 @@ variant a_star_find_path(level_ptr lvl,
 	typedef std::map<point, graph_node<point, double>::graph_node_ptr> graph_node_list;
 	graph_node_list node_list;
 	point src_pt(src_pt1), dst_pt(dst_pt1);
-	clip_pt_to_rect(src_pt, level::current().boundaries());
-	clip_pt_to_rect(dst_pt, level::current().boundaries());
+	// Use some outside knowledge to grab the bounding rect for the level
+	const rect& b_rect = level::current().boundaries();
+	clip_pt_to_rect(src_pt, b_rect);
+	clip_pt_to_rect(dst_pt, b_rect);
 	point src(get_midpoint(src_pt, tile_size_x, tile_size_y));
 	point dst(get_midpoint(dst_pt, tile_size_x, tile_size_y));
 	variant& a = callable->add_direct_access("a");
@@ -306,7 +308,7 @@ variant a_star_find_path(level_ptr lvl,
 				current->set_on_closed_list(true);
 				// Search through all the neighbour nodes connected to this one.
 				// XXX get_neighbours_from_rect should(?) implement a cache of the point to edges
-				foreach(const point& p, get_neighbours_from_rect(current->get_node_value().x, current->get_node_value().y, tile_size_x, tile_size_y)) {
+				foreach(const point& p, get_neighbours_from_rect(current->get_node_value(), tile_size_x, tile_size_y, b_rect)) {
 					if(!lvl->solid(p.x, p.y, tile_size_x, tile_size_y)) {
 						graph_node_list::const_iterator neighbour_node = node_list.find(p);
 						double g_cost = current->G();
@@ -391,8 +393,8 @@ variant path_cost_search(weighted_directed_graph_ptr wg,
 						neighbour_node->set_on_closed_list(true);
 					} else {
 						neighbour_node->set_on_open_list(true);
+						open_list.push_back(neighbour_node);
 					}
-					open_list.push_back(neighbour_node);
 				}
 				std::sort(open_list.begin(), open_list.end(), graph_node_cmp<variant, decimal>);
 			}

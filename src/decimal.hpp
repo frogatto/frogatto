@@ -23,6 +23,7 @@ public:
 	explicit decimal(double value) : value_(llround(value*DECIMAL_PRECISION)) {}
 #else
 	explicit decimal(double value) : value_(int64_t(value*DECIMAL_PRECISION)) {}
+	explicit decimal(int value) : value_(int64_t(value*DECIMAL_PRECISION)) {}
 #endif
 
 	int64_t value() const { return value_; }

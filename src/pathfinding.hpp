@@ -40,8 +40,8 @@ class graph_node {
 public:
 	typedef boost::shared_ptr<graph_node<N, T> > graph_node_ptr;
 	graph_node(const N& src) 
-		: src_(src), f_(0.0), g_(0.0), 
-		h_(0.0), on_open_list_(false), on_closed_list_(false)
+		: src_(src), f_(T(0)), g_(T(0)), 
+		h_(T(0)), on_open_list_(false), on_closed_list_(false)
 	{}
 	graph_node(const N& src, T g, T h, graph_node_ptr parent) 
 		: f_(g+h), g_(g), h_(h), src_(src), parent_(parent), 
@@ -161,10 +161,10 @@ public:
 	}
 };
 
-std::vector<point> get_neighbours_from_rect(const int mid_x, 
-	const int mid_y, 
+std::vector<point> get_neighbours_from_rect(const point &mid_xy,
 	const int tile_size_x, 
 	const int tile_size_y,
+	const rect& b,
 	const bool allow_diagonals = true);
 variant point_as_variant_list(const point& pt);
 

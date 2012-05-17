@@ -610,6 +610,7 @@ FUNCTION_DEF(create_graph_from_level, 1, 3, "create_graph_from_level(level, (opt
 
 	pathfinding::graph_edge_list edges;
 	std::vector<variant> vertex_list;
+	const rect& b_rect = level::current().boundaries();
 
 	for(int y = b.y(); y < b.y2(); y += tile_size_y) {
 		for(int x = b.x(); x < b.x2(); x += tile_size_x) {
@@ -617,7 +618,8 @@ FUNCTION_DEF(create_graph_from_level, 1, 3, "create_graph_from_level(level, (opt
 				variant l(pathfinding::point_as_variant_list(point(x,y)));
 				vertex_list.push_back(l);
 				std::vector<variant> e;
-				foreach(const point& p, pathfinding::get_neighbours_from_rect(x, y, tile_size_x, tile_size_y)) {
+				point po(x,y);
+				foreach(const point& p, pathfinding::get_neighbours_from_rect(po, tile_size_x, tile_size_y, b_rect)) {
 					if(!lvl->solid(p.x, p.y, tile_size_x, tile_size_y)) {
 						e.push_back(pathfinding::point_as_variant_list(p));
 					}

@@ -5,6 +5,7 @@
 #include "button.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
+#include "pathfinding.hpp"
 #include "raster.hpp"
 #include "solid_map.hpp"
 #include "surface_cache.hpp"
@@ -13,6 +14,7 @@
 namespace {
 using graphics::surface;
 const unsigned char RedBorder[] = {0xf9, 0x30, 0x3d};
+const unsigned char BackgroundColor[] = {0x6f, 0x6d, 0x51};
 
 bool is_pixel_border(const surface& s, int x, int y)
 {
@@ -23,6 +25,21 @@ bool is_pixel_border(const surface& s, int x, int y)
 	unsigned char* pixel = reinterpret_cast<unsigned char*>(s->pixels) + y*s->pitch + x*4;
 	for(int n = 0; n != 3; ++n) {
 		if(pixel[n] != RedBorder[n]) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool is_pixel_alpha(const surface& s, const point& p)
+{
+	unsigned char* pixel = reinterpret_cast<unsigned char*>(s->pixels) + p.y*s->pitch + p.x*4;
+	if(pixel[3] == 0) {
+		return true;
+	}
+	for(int n = 0; n != 3; ++n) {
+		if(pixel[n] != BackgroundColor[n]) {
 			return false;
 		}
 	}
@@ -49,8 +66,96 @@ rect get_border_rect(const surface& s, int x, int y)
 	return rect(x+1, y+1, w-1, h-1);
 }
 
-rect get_border_rect_around_loc(const surface& s, int x, int y)
+int path_cost_fn(const surface& s, const point& p1, const point& p2) {
+    bool a1 = is_pixel_alpha(s, p1);
+    bool a2 = is_pixel_alpha(s, p2);
+    if(a1 && a2) return 2;
+    else if(a1 ^ a2) return 1;
+	return 0;
+}
+
+rect get_border_rect_heuristic_search(const surface& s, int ox, int oy, int max_cost) 
 {
+	int x1 = INT_MAX, y1 = INT_MAX, x2 = INT_MIN, y2 = INT_MIN;
+	if(ox < 0 || oy < 0 || ox >= s->w || oy >= s->h) {
+		return rect::from_coordinates(ox,oy,ox+1,oy+1);
+	}
+	const rect r(0, 0, s->w, s->h);
+
+	if(is_pixel_alpha(s, point(ox, oy))) {
+		return rect::from_coordinates(ox,oy,ox+1,oy+1);
+	}
+
+	typedef pathfinding::graph_node<point, int> graph_node;
+	typedef graph_node::graph_node_ptr graph_node_ptr;
+	typedef std::map<point, graph_node_ptr> graph_node_list;
+	graph_node_list node_list;
+	std::deque<graph_node_ptr> open_list;
+	typedef std::pair<point, bool> reachable_node;
+	std::vector<reachable_node> reachable;
+
+	bool searching = true;
+	try {
+		graph_node_ptr current = graph_node_ptr(new graph_node(point(ox, oy)));
+		current->set_cost(0, 0);
+		current->set_on_open_list(true);
+		open_list.push_back(current);
+		node_list[point(ox, oy)] = current;
+
+		while(searching && !open_list.empty()) {
+			current = open_list.front(); open_list.pop_front();
+			current->set_on_open_list(false);
+			current->set_on_closed_list(true);
+			if(current->G() <= max_cost) {
+				reachable.push_back(reachable_node(current->get_node_value(), 
+					is_pixel_alpha(s, current->get_node_value())));
+			}
+			foreach(const point& p, pathfinding::get_neighbours_from_rect(current->get_node_value(), 1, 1, r)) {
+				graph_node_list::const_iterator neighbour_node = node_list.find(p);
+				int g_cost = path_cost_fn(s, p, current->get_node_value()) + current->G();
+				if(neighbour_node == node_list.end()) {
+					graph_node_ptr new_node = graph_node_ptr(new graph_node(point(p.x, p.y)));
+						new_node->set_parent(current);
+						new_node->set_cost(g_cost, 0);
+						new_node->set_on_open_list(true);
+						node_list[p] = new_node;
+						if(g_cost > max_cost) {
+							new_node->set_on_closed_list(true);
+						} else {
+							new_node->set_on_open_list(true);
+							open_list.push_back(new_node);
+						}
+				} else if(neighbour_node->second->on_closed_list() || neighbour_node->second->on_open_list()) {
+					if(g_cost < neighbour_node->second->G()) {
+						neighbour_node->second->G(g_cost);
+						neighbour_node->second->set_parent(current);
+					}
+				} else {
+					throw "Path error node on list, but not on open or closed lists";
+				}
+			}
+		}
+	} catch(...) {
+		std::cerr << "get_border_rect_heuristic_search(): Caught exception" << std::endl;
+	}
+
+	foreach(const reachable_node& rn, reachable) {
+		if(rn.second) {
+			if(rn.first.x < x1) x1 = rn.first.x;
+			if(rn.first.x > x2) x2 = rn.first.x;
+			if(rn.first.y < y1) y1 = rn.first.y;
+			if(rn.first.y > y2) y2 = rn.first.y;
+		}
+	}
+
+	std::cerr << "CALC RECT " << x1 << "," << y1 << "," << x2 << "," << y2 << std::endl;
+	//std::cerr << "PIXEL: 0x" << std::hex << int(pixel[0]) << ",0x" << int(pixel[1]) << ",0x" << int(pixel[2]) << ",0x" << int(pixel[3]) << std::endl;
+	return rect::from_coordinates(x1, y1, x2, y2);
+}
+
+rect get_border_rect_around_loc(const surface& s, int ox, int oy)
+{
+	int x = ox, y = oy;
 	std::cerr << "SEARCHING FOR BORDER AROUND " << x << "," << y << "\n";
 	while(y >= 0 && !is_pixel_border(s, x, y)) {
 		--y;
@@ -68,7 +173,8 @@ rect get_border_rect_around_loc(const surface& s, int x, int y)
 		std::cerr << "RETURNING " << get_border_rect(s, x, y) << "\n";
 		return get_border_rect(s, x, y);
 	} else {
-		return rect();
+		std::cerr << "TRYING HEURISTIC SEARCH AROUND " << ox << "," << oy << std::endl;
+		return get_border_rect_heuristic_search(s, ox, oy, 10);
 	}
 }
 
