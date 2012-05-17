@@ -18,6 +18,10 @@ public:
 	std::string text() const;
 	void set_text(const std::string& value, bool reset_cursor=true);
 
+	int get_font_size() const { return font_size_; }
+	void set_font_size(int font_size);
+	void change_font_size(int amount);
+
 	void undo();
 	void redo();
 

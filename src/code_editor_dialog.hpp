@@ -36,6 +36,8 @@ private:
 	bool handle_event(const SDL_Event& event, bool claimed);
 	void handle_draw_children() const;
 
+	void change_font_size(int amount);
+
 	void set_animation_rect(rect r);
 	void move_solid_rect(int dx, int dy);
 	void set_integer_attr(const char* attr, int value);

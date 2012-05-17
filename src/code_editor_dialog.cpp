@@ -34,9 +34,12 @@ void code_editor_dialog::init()
 {
 	using namespace gui;
 
-	button* save_button = new button("Save", boost::bind(&code_editor_dialog::save, this));
-
 	editor_.reset(new code_editor_widget(width() - 40, height() - 60));
+
+	button* save_button = new button("Save", boost::bind(&code_editor_dialog::save, this));
+	button* increase_font = new button("+", boost::bind(&code_editor_dialog::change_font_size, this, 1));
+	button* decrease_font = new button("-", boost::bind(&code_editor_dialog::change_font_size, this, -1));
+
 	search_ = new text_editor_widget(120);
 	replace_ = new text_editor_widget(120);
 	const SDL_Color col = {255,255,255,255};
@@ -47,6 +50,8 @@ void code_editor_dialog::init()
 	add_widget(widget_ptr(search_), MOVE_RIGHT);
 	add_widget(widget_ptr(replace_), MOVE_RIGHT);
 	add_widget(widget_ptr(save_button), MOVE_RIGHT);
+	add_widget(widget_ptr(increase_font), MOVE_RIGHT);
+	add_widget(widget_ptr(decrease_font), MOVE_RIGHT);
 	add_widget(editor_, find_label->x(), find_label->y() + save_button->height() + 2);
 	add_widget(status_label_);
 	add_widget(error_label_, status_label_->x() + 480, status_label_->y());
@@ -139,6 +144,10 @@ void code_editor_dialog::load_file(std::string fname)
 	add_widget(f.editor, editor_->x(), editor_->y());
 	remove_widget(editor_);
 
+	if(editor_) {
+		f.editor->set_font_size(editor_->get_font_size());
+	}
+
 	editor_ = f.editor;
 	editor_->set_focus(true);
 
@@ -228,6 +237,13 @@ void code_editor_dialog::handle_draw_children() const
 
 	if(suggestions_grid_) {
 		suggestions_grid_->draw();
+	}
+}
+
+void code_editor_dialog::change_font_size(int amount)
+{
+	if(editor_) {
+		editor_->change_font_size(amount);
 	}
 }
 

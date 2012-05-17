@@ -24,18 +24,18 @@ const int BorderSize = 3;
 const int TabWidth = 4;
 const int TabAdjust = TabWidth - 1;
 
-boost::scoped_ptr<graphics::texture> char_texture;
+typedef boost::shared_ptr<graphics::texture> char_texture_ptr;
+std::vector<char_texture_ptr> char_textures;
 
 struct CharArea {
 	GLfloat x1, y1, x2, y2;
 };
 
-std::map<char, CharArea> char_to_area;
+std::map<int, std::map<char, CharArea> > all_char_to_area;
 
-const int FontSize = 14;
-
-const CharArea& get_char_area(char c)
+const CharArea& get_char_area(int font_size, char c)
 {
+	std::map<char, CharArea>& char_to_area = all_char_to_area[font_size];
 	std::map<char, CharArea>::const_iterator i = char_to_area.find(c);
 	if(i != char_to_area.end()) {
 		return i->second;
@@ -43,8 +43,8 @@ const CharArea& get_char_area(char c)
 
 	const CharArea& result = char_to_area[c];
 
-	const int char_width = font::char_width(FontSize);
-	const int char_height = font::char_height(FontSize);
+	const int char_width = font::char_width(font_size);
+	const int char_height = font::char_height(font_size);
 
 	std::string str;
 	int row = 0, col = 0;
@@ -65,7 +65,8 @@ const CharArea& get_char_area(char c)
 		}
 	}
 
-	char_texture.reset(new graphics::texture(font::render_text(str, graphics::color_white(), FontSize)));
+	char_texture_ptr& char_texture = char_textures[font_size];
+	char_texture.reset(new graphics::texture(font::render_text(str, graphics::color_white(), font_size)));
 
 	for(std::map<char, CharArea>::iterator i = char_to_area.begin();
 	    i != char_to_area.end(); ++i) {
@@ -79,31 +80,37 @@ const CharArea& get_char_area(char c)
 	return result;
 }
 
-void init_char_area()
+void init_char_area(int font_size)
 {
-	if(char_texture.get()) {
+	if(char_textures.size() <= font_size) {
+		char_textures.resize(font_size+1);
+	}
+
+	if(char_textures[font_size].get()) {
 		return;
 	}
 
+	std::map<char, CharArea>& char_to_area = all_char_to_area[font_size];
 	for(char c = 1; c < 127; ++c) {
 		if(util::c_isprint(c) && c != 'a') {
 			char_to_area[c] = CharArea();
 		}
 	}
 
-	get_char_area('a');
-	ASSERT_LOG(char_texture.get(), "DID NOT INIT CHAR TEXTURE\n");
+	get_char_area(font_size, 'a');
+	ASSERT_LOG(char_textures[font_size].get(), "DID NOT INIT CHAR TEXTURE\n");
 }
 
 }
 
 text_editor_widget::text_editor_widget(int width, int height)
   : last_op_type_(NULL),
-    font_size_(FontSize),
+    font_size_(14),
     char_width_(font::char_width(font_size_)),
     char_height_(font::char_height(font_size_)),
 	select_(0,0), cursor_(0,0),
-	nrows_((height - BorderSize*2)/char_height_), ncols_((width - 20 - BorderSize*2)/char_width_),
+	nrows_((height - BorderSize*2)/char_height_),
+	ncols_((width - 20 - BorderSize*2)/char_width_),
 	scroll_pos_(0),
 	begin_highlight_line_(-1), end_highlight_line_(-1),
 	has_focus_(false),
@@ -117,7 +124,8 @@ text_editor_widget::text_editor_widget(int width, int height)
 		nrows_ = 1;
 		ncols_ = width/char_width_;
 	}
-	set_dim(BorderSize*2 + char_width_*ncols_, BorderSize*2 + char_height_*nrows_);
+
+	set_dim(width - 20, height);
 	text_.push_back("");
 }
 
@@ -171,6 +179,29 @@ void text_editor_widget::set_text(const std::string& value, bool reset_cursor)
 	on_change();
 }
 
+void text_editor_widget::set_font_size(int font_size)
+{
+	if(font_size < 6) {
+		font_size = 6;
+	} else if(font_size > 28) {
+		font_size = 28;
+	}
+
+	font_size_ = font_size;
+
+    char_width_ = font::char_width(font_size_);
+    char_height_ = font::char_height(font_size_);
+	nrows_ = (height() - BorderSize*2)/char_height_;
+	ncols_ = (width() - BorderSize*2)/char_width_;
+
+	refresh_scrollbar();
+}
+
+void text_editor_widget::change_font_size(int amount)
+{
+	set_font_size(font_size_ + amount);
+}
+
 namespace {
 struct RectDraw {
 	rect area;
@@ -189,20 +220,11 @@ struct RectDraw {
 		return true;
 	}
 };
-
-struct CharDraw {
-	CharDraw() {
-		q.set_texture(char_texture->get_id());
-	}
-
-	graphics::blit_queue q;
-	graphics::color col;
-};
 }
 
 void text_editor_widget::handle_draw() const
 {
-	init_char_area();
+	init_char_area(font_size_);
 
 	std::vector<RectDraw> rects;
 	std::map<uint32_t, graphics::blit_queue> chars;
@@ -263,7 +285,7 @@ void text_editor_widget::handle_draw() const
 			}
 
 			if(!util::c_isspace(text_[n][m]) && util::c_isprint(text_[n][m])) {
-				const CharArea& area = get_char_area(text_[n][m]);
+				const CharArea& area = get_char_area(font_size_, text_[n][m]);
 
 				const int x1 = xpos + c*char_width_;
 				const int y1 = ypos + r*char_height_;
@@ -305,7 +327,7 @@ void text_editor_widget::handle_draw() const
 
 	for(std::map<uint32_t, graphics::blit_queue>::iterator i = chars.begin(); i != chars.end(); ++i) {
 		graphics::color(i->first).set_as_current_color();
-		i->second.set_texture(char_texture->get_id());
+		i->second.set_texture(char_textures[font_size_]->get_id());
 		i->second.do_blit();
 	}
 
@@ -1084,9 +1106,6 @@ void text_editor_widget::refresh_scrollbar()
 
 	set_virtual_height(text_.size()*char_height_ + height() - char_height_);
 	set_scroll_step(char_height_);
-
-	set_dim(char_width_*ncols_, char_height_*nrows_);
-	set_dim(BorderSize*2 + char_width_*ncols_, BorderSize*2 + char_height_*nrows_);
 
 	set_yscroll(scroll_pos_*char_height_);
 

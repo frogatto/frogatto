@@ -891,6 +891,7 @@ bool editor_resolution_manager::is_active()
 editor_resolution_manager::editor_resolution_manager(int xres, int yres) :
 	   original_width_(preferences::actual_screen_width()),
 	   original_height_(preferences::actual_screen_height()) {
+	std::cerr << "EDITOR RESOLUTION MANAGER: " << xres << ", " << yres << "\n";
 	if(!editor_x_resolution) {
 		if(xres != 0 && yres != 0) {
 			editor_x_resolution = xres;
