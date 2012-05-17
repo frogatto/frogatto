@@ -22,6 +22,8 @@ public:
 	void set_font_size(int font_size);
 	void change_font_size(int amount);
 
+	virtual void set_dim(int w, int h);
+
 	void undo();
 	void redo();
 

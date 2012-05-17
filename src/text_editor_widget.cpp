@@ -125,7 +125,7 @@ text_editor_widget::text_editor_widget(int width, int height)
 		ncols_ = width/char_width_;
 	}
 
-	set_dim(width - 20, height);
+	widget::set_dim(width - 20, height);
 	text_.push_back("");
 }
 
@@ -200,6 +200,16 @@ void text_editor_widget::set_font_size(int font_size)
 void text_editor_widget::change_font_size(int amount)
 {
 	set_font_size(font_size_ + amount);
+}
+
+void text_editor_widget::set_dim(int w, int h)
+{
+	widget::set_dim(w - 20, h);
+
+	nrows_ = (height() - BorderSize*2)/char_height_;
+	ncols_ = (width() - BorderSize*2)/char_width_;
+
+	refresh_scrollbar();
 }
 
 namespace {

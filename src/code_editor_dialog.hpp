@@ -30,6 +30,8 @@ public:
 
 	void process();
 
+	void change_width(int amount);
+
 private:
 	void init_files_grid();
 

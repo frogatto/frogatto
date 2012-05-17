@@ -32,13 +32,20 @@ code_editor_dialog::code_editor_dialog(const rect& r)
 
 void code_editor_dialog::init()
 {
+	clear();
+
 	using namespace gui;
 
-	editor_.reset(new code_editor_widget(width() - 40, height() - 60));
+	if(!editor_) {
+		editor_.reset(new code_editor_widget(width() - 40, height() - 60));
+	}
 
 	button* save_button = new button("Save", boost::bind(&code_editor_dialog::save, this));
 	button* increase_font = new button("+", boost::bind(&code_editor_dialog::change_font_size, this, 1));
 	button* decrease_font = new button("-", boost::bind(&code_editor_dialog::change_font_size, this, -1));
+
+	button* decrease_width = new button("->", boost::bind(&code_editor_dialog::change_width, this, -10));
+	button* increase_width = new button("<-", boost::bind(&code_editor_dialog::change_width, this, 10));
 
 	search_ = new text_editor_widget(120);
 	replace_ = new text_editor_widget(120);
@@ -52,6 +59,8 @@ void code_editor_dialog::init()
 	add_widget(widget_ptr(save_button), MOVE_RIGHT);
 	add_widget(widget_ptr(increase_font), MOVE_RIGHT);
 	add_widget(widget_ptr(decrease_font), MOVE_RIGHT);
+	add_widget(widget_ptr(increase_width), MOVE_RIGHT);
+	add_widget(widget_ptr(decrease_width), MOVE_RIGHT);
 	add_widget(editor_, find_label->x(), find_label->y() + save_button->height() + 2);
 	add_widget(status_label_);
 	add_widget(error_label_, status_label_->x() + 480, status_label_->y());
@@ -470,6 +479,28 @@ void code_editor_dialog::process()
 		animation_preview_->process();
 	}
 
+}
+
+void code_editor_dialog::change_width(int amount)
+{
+	int new_width = width() + amount;
+	if(new_width < 200) {
+		new_width = 200;
+	}
+
+	if(new_width > 1000) {
+		new_width = 1000;
+	}
+
+	amount = new_width - width();
+	set_loc(x() - amount, y());
+	set_dim(new_width, height());
+
+
+	foreach(KnownFile& f, files_) {
+		f.editor->set_dim(width() - 40, height() - 60);
+	}
+	init();
 }
 
 void code_editor_dialog::on_search_changed()
