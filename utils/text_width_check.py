@@ -26,30 +26,17 @@ def main(catalog):
 	charwidths = {}
 	i = 0
 	while i < len(fontdata):
-		if fontdata[i] == "[font]":
-			fontid = ""
-			#found a font, must check if it's the desired one
-			while fontdata[i] != "[chars]":
-				if "id=" in fontdata[i]:
-					fontid = fontdata[i]
-				i += 1
-			if not "default" in fontid:
-				continue
-			chars=[]
-			while fontdata[i] != "[/font]":
-				if "chars=" in fontdata[i]:
-					chars = list(fontdata[i].split("=", 1)[1])
-				elif "width=" in fontdata[i]:
-					for x in chars:
-						charwidths[x]=int(fontdata[i].split("=")[1])
-				elif "rect" in fontdata[i]:
-					width = fontdata[i].split('=')[1].split(',')
-					width = int(width[2]) - int(width[0]) + 1
-					for x in chars:
-						charwidths[x]=width
-				i += 1
-		i+=1
-	
+		if "chars: \"" in fontdata[i]:
+			chars = list(fontdata[i].split(":", 1)[1].replace(" \"", "",1).replace("\",", "",1))
+		elif "width:" in fontdata[i]:
+			for x in chars:
+				charwidths[x]=int(fontdata[i].split(":")[1].replace(',',''))
+		elif "rect:" in fontdata[i]:
+			width = fontdata[i].replace('[','').replace(']','').split(':')[1].split(',')[:-1]
+			width = int(width[2]) - int(width[0]) + 1
+			for x in chars:
+				charwidths[x]=width
+		i += 1
 	
 	f = codecs.open(catalog, encoding="utf-8").readlines()
 	#start from the first message line, i. e., the first with a #:
