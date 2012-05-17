@@ -128,8 +128,12 @@ std::vector<variant> get_all()
 	return result;
 }
 
-variant get(const std::string& name)
+variant get(const std::string& mod_file_name)
 {
+	std::string name(mod_file_name);
+	if(name.size() > 4 && name.substr(name.size()-4) == ".cfg") {
+		name = name.substr(0, name.size()-4);
+	}
 	std::string fname = "modules/" + name + "/module.cfg";
 	if(sys::file_exists(fname)) {
 		variant v = json::parse_from_file(fname);
@@ -159,8 +163,12 @@ const std::string make_base_module_path(const std::string& name) {
 	return "./modules/" + name + "/";
 }
 
-void load(const std::string& name, bool initial)
+void load(const std::string& mod_file_name, bool initial)
 {
+	std::string name(mod_file_name);
+	if(name.size() > 4 && name.substr(name.size()-4) == ".cfg") {
+		name = name.substr(0, name.size()-4);
+	}
 	std::string pretty_name = name;
 	std::string abbrev = name;
 	std::string fname = make_base_module_path(name) + "module.cfg";
