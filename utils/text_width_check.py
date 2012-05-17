@@ -25,7 +25,11 @@ def main(catalog):
 	fontdata = [x.strip() for x in fontdata]
 	charwidths = {}
 	i = 0
+	#default kerning for fonts
+	kerning = 2
 	while i < len(fontdata):
+		if "kerning:" in fontdata[i]:
+			kerning = int(fontdata[i].split(":")[1].replace(',',''))
 		if "chars: \"" in fontdata[i]:
 			chars = list(fontdata[i].split(":", 1)[1].replace(" \"", "",1).replace("\",", "",1))
 		elif "width:" in fontdata[i]:
@@ -46,13 +50,13 @@ def main(catalog):
 		if "#:" in f[l] and "#:" not in f[l-1]:
 			msgline = l
 		if check in f[l]:
-			linewidth = checkwidth(getmessage(f[l]), charwidths)
+			linewidth = checkwidth(getmessage(f[l]), charwidths, kerning)
 			if linewidth > MAXWIDTH:
 				printline(f, msgline, linewidth)
 			if len(getmessage(f[l])) == 0:
 				l += 1
 				while l < len(f) and '"' in f[l] and f[l][0] != "m":
-					linewidth = checkwidth(getmessage(f[l]), charwidths)
+					linewidth = checkwidth(getmessage(f[l]), charwidths, kerning)
 					if linewidth > MAXWIDTH:
 						printline(f, msgline, linewidth)
 					l += 1
@@ -66,12 +70,12 @@ def printline(f, start, width):
 		line += 1
 	print
 	
-def checkwidth(line, widths):
+def checkwidth(line, widths, kerning):
 	result = 0
 	for x in line:
 		if x in widths.keys():
-			result += widths[x] + 2
-	return result - 2
+			result += widths[x] + kerning
+	return result - kerning
 			
 def getmessage(line):
 	if line[0] == "m":
