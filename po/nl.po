@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 #   <daniel@danielsiegmund.nl>, 2011.
 # ronald, 2011.
@@ -9,14 +9,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-05-15 20:00-0300\n"
+"POT-Creation-Date: 2012-05-17 13:58-0300\n"
 "PO-Revision-Date: 2012-05-15 23:00+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
-"Language-Team: Dutch (http://www.transifex.net/projects/p/Frogatto/language/nl/)\n"
+"Language-Team: Dutch (http://www.transifex.net/projects/p/Frogatto/language/"
+"nl/)\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: CHANGELOG:1 iOS_CHANGELOG:1
@@ -25,8 +26,8 @@ msgstr ""
 
 #: CHANGELOG:2 iOS_CHANGELOG:2
 msgid ""
-"Complete redo of attack logic; frogatto now is free to walk around whilst he"
-" attacks, and in general is much more responsive."
+"Complete redo of attack logic; frogatto now is free to walk around whilst he "
+"attacks, and in general is much more responsive."
 msgstr ""
 
 #: CHANGELOG:3 iOS_CHANGELOG:3
@@ -86,8 +87,7 @@ msgid ""
 msgstr ""
 
 #: CHANGELOG:15 iOS_CHANGELOG:15
-msgid ""
-"Fixed a bug that caused some tiles to incorrectly be flagged as opaque."
+msgid "Fixed a bug that caused some tiles to incorrectly be flagged as opaque."
 msgstr ""
 
 #: CHANGELOG:17 iOS_CHANGELOG:17
@@ -116,9 +116,9 @@ msgstr ""
 
 #: CHANGELOG:23 iOS_CHANGELOG:22
 msgid ""
-"Complete redo of iOS controls, switching to a 2-button dpad from a 4-button."
-"  Eliminates all problems with mispressed up or down keys interrupting other"
-" actions."
+"Complete redo of iOS controls, switching to a 2-button dpad from a 4-"
+"button.  Eliminates all problems with mispressed up or down keys "
+"interrupting other actions."
 msgstr ""
 
 #: CHANGELOG:25
@@ -319,8 +319,8 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:5 iOS_APP_STORE_METADATA:5
 msgid ""
-"Frogatto's key mechanic is an unusual twist; like any frog, he jumps, swims,"
-" and snags bugs with his tongue, but unlike any frog before him, can spit "
+"Frogatto's key mechanic is an unusual twist; like any frog, he jumps, swims, "
+"and snags bugs with his tongue, but unlike any frog before him, can spit "
 "those bugs out with deadly force.  Not merely an action game, frogatto is a "
 "full, classic adventure game, with characters to talk to, things to buy, "
 "puzzles to solve, and a wide, complex world to explore."
@@ -346,8 +346,8 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:11 iOS_APP_STORE_METADATA:11
 msgid ""
-"- forgiving savegame/respawn system so you don't have to be afraid of losing"
-" progress"
+"- forgiving savegame/respawn system so you don't have to be afraid of losing "
+"progress"
 msgstr ""
 
 #: MAC_APP_STORE_METADATA:12 iOS_APP_STORE_METADATA:12
@@ -390,7 +390,8 @@ msgstr ""
 
 #: MAC_APP_STORE_METADATA:24 iOS_APP_STORE_METADATA:25
 msgid ""
-"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
+"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,"
+"frog"
 msgstr ""
 
 #: data/achievements.cfg:5
@@ -525,7 +526,7 @@ msgstr "Hinderlaag!"
 msgid "Victory!"
 msgstr "Victorie!"
 
-#: data/level/arcade-blocks.cfg:11 data/level/titlescreen-arcade.cfg:146
+#: data/level/arcade-blocks.cfg:11 data/level/titlescreen-arcade.cfg:152
 msgid "Blocks Run"
 msgstr ""
 
@@ -549,7 +550,7 @@ msgid "The high score is ${registry.arcade_blocks_high_score}."
 msgstr ""
 
 #: data/level/arcade-down-the-rabbit-hall.cfg:13
-#: data/level/titlescreen-arcade.cfg:145
+#: data/level/titlescreen-arcade.cfg:151
 msgid "Down the Rabbit Hall"
 msgstr ""
 
@@ -564,7 +565,7 @@ msgid ""
 msgstr ""
 
 #: data/level/arcade-maintenance-shaft.cfg:13
-#: data/level/titlescreen-arcade.cfg:126
+#: data/level/titlescreen-arcade.cfg:132
 msgid "Maintenance Shaft"
 msgstr ""
 
@@ -588,7 +589,7 @@ msgid "The high score is ${registry.arcade_nutty_factory_high_score} points."
 msgstr ""
 
 #: data/level/arcade-the-long-haul.cfg:11
-#: data/level/titlescreen-arcade.cfg:144
+#: data/level/titlescreen-arcade.cfg:150
 msgid "The Long Haul"
 msgstr "De Lange Haal"
 
@@ -601,7 +602,7 @@ msgstr ""
 msgid "The high score is ${registry.arcade_the_long_haul_high_score} points."
 msgstr ""
 
-#: data/level/arcade-upper-deck.cfg:13 data/level/titlescreen-arcade.cfg:125
+#: data/level/arcade-upper-deck.cfg:13 data/level/titlescreen-arcade.cfg:131
 msgid "Upper Deck"
 msgstr ""
 
@@ -614,7 +615,7 @@ msgid "The high score is ${registry.arcade_upper_deck_high_score} points."
 msgstr ""
 
 #: data/level/arcade-wild-new-wonder.cfg:13
-#: data/level/titlescreen-arcade.cfg:124
+#: data/level/titlescreen-arcade.cfg:130
 msgid "Wild New Wonder"
 msgstr ""
 
@@ -624,8 +625,7 @@ msgid "You got ${level.player.vars.score} points in the Wild New Wonder!"
 msgstr ""
 
 #: data/level/arcade-wild-new-wonder.cfg:2499
-msgid ""
-"The high score is ${registry.arcade_wild_new_wonder_high_score} points."
+msgid "The high score is ${registry.arcade_wild_new_wonder_high_score} points."
 msgstr ""
 
 #: data/level/bombing-fools.cfg:1184
@@ -711,7 +711,10 @@ msgstr ""
 msgid ""
 "I need to go up... There must be\n"
 "a way to activate this elevator."
-msgstr "Ik moet naar boven. Er zou toch een\nmanier moeten zijn om die lift aan te\nzetten..."
+msgstr ""
+"Ik moet naar boven. Er zou toch een\n"
+"manier moeten zijn om die lift aan te\n"
+"zetten..."
 
 #: data/level/burning-stone.cfg:2743
 msgid "Burning Stone"
@@ -1072,25 +1075,33 @@ msgstr "Kan je even aan de kant gaan?"
 msgid ""
 "I need to take care\n"
 "of something in town."
-msgstr "Ik moet iets regelen\nin de stad."
+msgstr ""
+"Ik moet iets regelen\n"
+"in de stad."
 
 #: data/level/crevice-village-cave.cfg:663
 msgid ""
 "Well, I can't let anyone\n"
 "past this gate."
-msgstr "Nou, Ik mag niemand\ndoor de poort laten."
+msgstr ""
+"Nou, Ik mag niemand\n"
+"door de poort laten."
 
 #: data/level/crevice-village-cave.cfg:664
 msgid ""
 "Without this key,\n"
 "you're not getting anywhere."
-msgstr "Zonder deze sleutel\nkom jij helemaal nergens!"
+msgstr ""
+"Zonder deze sleutel\n"
+"kom jij helemaal nergens!"
 
 #: data/level/crevice-village-cave.cfg:666
 msgid ""
 "Okay.  Will you please lend\n"
 "me that key?"
-msgstr "Okee... Zou ik die sleutel\ndan even mogen lenen?"
+msgstr ""
+"Okee... Zou ik die sleutel\n"
+"dan even mogen lenen?"
 
 #: data/level/crevice-village-cave.cfg:667
 msgid "No way!  Over my dead body!"
@@ -1108,13 +1119,18 @@ msgstr ""
 msgid ""
 "Ahh, good, you made it\n"
 "through there in one piece!"
-msgstr "Aah, mooi! Je bent er\nheelhuids door gekomen!"
+msgstr ""
+"Aah, mooi! Je bent er\n"
+"heelhuids door gekomen!"
 
 #: data/level/crevice-village-central.cfg:132
 msgid ""
 "Yeah, those goons\n"
 "had a little ambush set up."
-msgstr "Ja, die prutsers\nprobeerde me in\nde val te laten lopen"
+msgstr ""
+"Ja, die prutsers\n"
+"probeerde me in\n"
+"de val te laten lopen"
 
 #: data/level/crevice-village-central.cfg:134
 msgid "So, now what?"
@@ -1124,21 +1140,30 @@ msgstr "En nu?"
 msgid ""
 "Well, as you know, the town\n"
 "is split into two halves."
-msgstr "Nou, zoals je weet is de stad\nopgedeeld in twee helften."
+msgstr ""
+"Nou, zoals je weet is de stad\n"
+"opgedeeld in twee helften."
 
 #: data/level/crevice-village-central.cfg:136
 msgid ""
 "Milgram has this half of the town\n"
 "locked down tight, and he has\n"
 "most of the residents held prisoner."
-msgstr "Milgram heeft deze helft van de\nstad afgesloten, en de meeste\ninwoners gevangen genomen"
+msgstr ""
+"Milgram heeft deze helft van de\n"
+"stad afgesloten, en de meeste\n"
+"inwoners gevangen genomen"
 
 #: data/level/crevice-village-central.cfg:137
 msgid ""
 "They're tied up inside the houses,\n"
 "under guard. If you free them,\n"
 "I'm sure they can help you."
-msgstr "Ze zitten opgesloten in de huizen,\nen worden bewaakt. Als je ze kan\nbevrijden willen ze je vast wel\nhelpen."
+msgstr ""
+"Ze zitten opgesloten in de huizen,\n"
+"en worden bewaakt. Als je ze kan\n"
+"bevrijden willen ze je vast wel\n"
+"helpen."
 
 #: data/level/crevice-village-central.cfg:139
 msgid "Makes sense."
@@ -1149,25 +1174,36 @@ msgid ""
 "Your big problem will be that\n"
 "the gate connecting the two halves\n"
 "of town has been locked."
-msgstr "Je grootste probleem zal zijn dat\nde poort die de twee stadsdelen\nmet elkaar verbindt is afgesloten."
+msgstr ""
+"Je grootste probleem zal zijn dat\n"
+"de poort die de twee stadsdelen\n"
+"met elkaar verbindt is afgesloten."
 
 #: data/level/crevice-village-central.cfg:141
 msgid ""
 "And I don't think there's a guard next\n"
 "to it, whom you can steal the key from."
-msgstr "En ik denk niet dat er een wachter\nnaast staat waar je de sleutel van\nkan stelen."
+msgstr ""
+"En ik denk niet dat er een wachter\n"
+"naast staat waar je de sleutel van\n"
+"kan stelen."
 
 #: data/level/crevice-village-central.cfg:142
 msgid ""
 "They've probably hidden it in one of\n"
 "the houses, but I don't know which one."
-msgstr "Waarschijnlijk hebben ze de sleutel\nergens opgeborgen in een van de\nhuizen, alleen weet ik niet welke..."
+msgstr ""
+"Waarschijnlijk hebben ze de sleutel\n"
+"ergens opgeborgen in een van de\n"
+"huizen, alleen weet ik niet welke..."
 
 #: data/level/crevice-village-central.cfg:143
 msgid ""
 "Asking one of the prisoners is probably\n"
 "our best bet for a clue."
-msgstr "Maar misschien weet een van de\n gevangenen het wel."
+msgstr ""
+"Maar misschien weet een van de\n"
+" gevangenen het wel."
 
 #: data/level/crevice-village-central.cfg:2763
 msgid "Hey! Over here!"
@@ -1418,7 +1454,9 @@ msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1325
 msgid "So!  I've unlocked this gate, here."
-msgstr "Zo! Ik heb de poort opengemaakt\nvoor je! Alsjeblieft!"
+msgstr ""
+"Zo! Ik heb de poort opengemaakt\n"
+"voor je! Alsjeblieft!"
 
 #: data/level/crevice-village-heights.cfg:1329
 msgid "Finally, a chance to use your degree..."
@@ -1432,7 +1470,9 @@ msgstr ""
 msgid ""
 "Through there,\n"
 "is the way to where Milgram lives."
-msgstr "Hierachter ligt de weg naar waar\nMilgram woont."
+msgstr ""
+"Hierachter ligt de weg naar waar\n"
+"Milgram woont."
 
 #: data/level/crevice-village-heights.cfg:1336
 msgid ""
@@ -1448,7 +1488,9 @@ msgstr ""
 
 #: data/level/crevice-village-heights.cfg:1340
 msgid "Watch your head in there."
-msgstr "Let wel op dat je niet je hoofd stoot\ndaarbinnen!"
+msgstr ""
+"Let wel op dat je niet je hoofd stoot\n"
+"daarbinnen!"
 
 #: data/level/crevice-village-heights.cfg:1342
 msgid "Past that, and you come to the forest."
@@ -1458,7 +1500,10 @@ msgstr "Als je daar voorbij bent kom je bij het bos terecht."
 msgid ""
 "I haven't been there in a long time,\n"
 "so I'm not sure what's become of it."
-msgstr "Maar daar ben ik al heel lang niet\ngeweest, dus ik weet niet wat je\ndaar te wachten staat."
+msgstr ""
+"Maar daar ben ik al heel lang niet\n"
+"geweest, dus ik weet niet wat je\n"
+"daar te wachten staat."
 
 #: data/level/crevice-village-heights.cfg:1347
 msgid ""
@@ -1578,7 +1623,9 @@ msgid ""
 "Yeah, that key right next to you -\n"
 "I think that unlocks a house that\n"
 "has the key to the town gate."
-msgstr "En ik denk dat die sleutel waar je nu naast staat de sleutel is van het huis waar de sleutel van de stadspoort verstopt is."
+msgstr ""
+"En ik denk dat die sleutel waar je nu naast staat de sleutel is van het huis "
+"waar de sleutel van de stadspoort verstopt is."
 
 #: data/level/crevice-village-house-1.cfg:967
 msgid "Maybe."
@@ -1610,7 +1657,9 @@ msgstr ""
 msgid ""
 "Ah, I see..\n"
 "carry on then."
-msgstr "Juist ja. ik snap t...\nNou tot ziens dan maar."
+msgstr ""
+"Juist ja. ik snap t...\n"
+"Nou tot ziens dan maar."
 
 #: data/level/crevice-village-house-1.cfg:991
 msgid "Thank God it's you!"
@@ -1622,18 +1671,25 @@ msgstr "Hey, Hedge! Is alles goed met je?"
 
 #: data/level/crevice-village-house-1.cfg:994
 msgid "Eh, I've been better, but yeah, I'm okay."
-msgstr "Eh, kan beter, maar t gaat wel\ngoed hoor."
+msgstr ""
+"Eh, kan beter, maar t gaat wel\n"
+"goed hoor."
 
 #: data/level/crevice-village-house-1.cfg:995
 msgid "Besides the obvious cage situation."
-msgstr "Op de overduidelijke kooi-situatie\nna dan..."
+msgstr ""
+"Op de overduidelijke kooi-situatie\n"
+"na dan..."
 
 #: data/level/crevice-village-house-1.cfg:997
 msgid ""
 "Yeah.\n"
 "Sad to say, I can't pick locks.\n"
 "I got nothing."
-msgstr "Aha.\nSorry, maar ik kan geen sloten kraken,\nheb niks bij me..."
+msgstr ""
+"Aha.\n"
+"Sorry, maar ik kan geen sloten kraken,\n"
+"heb niks bij me..."
 
 #: data/level/crevice-village-house-1.cfg:998
 msgid "So I'm stuck here, huh?"
@@ -1651,13 +1707,17 @@ msgstr "Pfjoew!"
 msgid ""
 "Hmm, you know, I know one thing\n"
 "that might help you.."
-msgstr "Hmm, ik weet misschien iets dat\njou wel kan helpen"
+msgstr ""
+"Hmm, ik weet misschien iets dat\n"
+"jou wel kan helpen"
 
 #: data/level/crevice-village-house-1.cfg:1004
 msgid ""
 "There's supposedly\n"
 "a secret room in this house."
-msgstr "Er zou in dit huis ergens een\ngeheime kamer moeten zijn."
+msgstr ""
+"Er zou in dit huis ergens een\n"
+"geheime kamer moeten zijn."
 
 #: data/level/crevice-village-house-1.cfg:1006
 msgid "Oh really?  Where at?"
@@ -1667,13 +1727,18 @@ msgstr "Ow ja!? Waar?"
 msgid ""
 "If I knew that, it wouldn't\n"
 "be much of a secret, would it?"
-msgstr "Als ik dat wist zou het geen\ngeheime kamer meer zijn, of wel?"
+msgstr ""
+"Als ik dat wist zou het geen\n"
+"geheime kamer meer zijn, of wel?"
 
 #: data/level/crevice-village-house-1.cfg:1009
 msgid ""
 "Figures.\n"
 "Well, thanks for the help!"
-msgstr "'Tuurlijk...\nNou ja, in ieder geval bedankt voor\nje hulp!"
+msgstr ""
+"'Tuurlijk...\n"
+"Nou ja, in ieder geval bedankt voor\n"
+"je hulp!"
 
 #: data/level/crevice-village-house-1.cfg:1010
 msgid "Good luck!"
@@ -1683,7 +1748,9 @@ msgstr "Succes!"
 msgid ""
 "Jeez, I *swear* this house\n"
 "didn't look THIS big from the outside!"
-msgstr "Jemig, ik zou toch *zweren* dat\ndit huis er van buiten kleiner uit zag!"
+msgstr ""
+"Jemig, ik zou toch *zweren* dat\n"
+"dit huis er van buiten kleiner uit zag!"
 
 #: data/level/crevice-village-house-1.cfg:1045
 msgid "Uh, oh, I hear ... trouble."
@@ -1703,7 +1770,9 @@ msgstr ""
 
 #: data/level/crevice-village-house-2.cfg:1199
 msgid "Something's odd about this fireplace."
-msgstr "Er is iets vreemds aan deze\nopen haard..."
+msgstr ""
+"Er is iets vreemds aan deze\n"
+"open haard..."
 
 #: data/level/crevice-village-house-2.cfg:1363
 msgid "Wow, you guys look exactly alike."
@@ -1711,25 +1780,34 @@ msgstr "Wow! Jullie lijken echt op elkaar!"
 
 #: data/level/crevice-village-house-2.cfg:1364
 msgid "We're twins."
-msgstr "Dan kan wel kloppen,\nwij zijn namelijk een tweeling."
+msgstr ""
+"Dan kan wel kloppen,\n"
+"wij zijn namelijk een tweeling."
 
 #: data/level/crevice-village-house-2.cfg:1365
 msgid ""
 "Is there anything\n"
 "you can do to help us?"
-msgstr "Is er iets wat je kan doen om ons te\nhelpen?"
+msgstr ""
+"Is er iets wat je kan doen om ons te\n"
+"helpen?"
 
 #: data/level/crevice-village-house-2.cfg:1367
 msgid ""
 "Not yet.\n"
 "Sorry."
-msgstr "Nu nog niet.\nSorry..."
+msgstr ""
+"Nu nog niet.\n"
+"Sorry..."
 
 #: data/level/crevice-village-house-2.cfg:1387
 msgid ""
 "Hey,\n"
 "I'm trying to help save the town."
-msgstr "Hee,\nIk doe een poging om de stad te\nredden."
+msgstr ""
+"Hee,\n"
+"Ik doe een poging om de stad te\n"
+"redden."
 
 #: data/level/crevice-village-house-2.cfg:1389
 msgid "Can you give me any advice?"
@@ -1747,7 +1825,9 @@ msgstr "De ouderling zijn huis is richting het oosten, voorbij de stadspoort."
 
 #: data/level/crevice-village-house-2.cfg:1392
 msgid "We saw Milgram's lieutenant go in there."
-msgstr "We zagen Milgrams luienant daar naar\nbinnen gaan."
+msgstr ""
+"We zagen Milgrams luienant daar naar\n"
+"binnen gaan."
 
 #: data/level/crevice-village-house-2.cfg:1394 data/level/rock-a-fort.cfg:1653
 msgid "How interesting."
@@ -1763,7 +1843,9 @@ msgstr "Het Huis der Gevaren"
 msgid ""
 "Argh! Who in the world would\n"
 "design a house like this?"
-msgstr "Aarg! Wie bedenkt er nou om zo een\nhuis te maken?"
+msgstr ""
+"Aarg! Wie bedenkt er nou om zo een\n"
+"huis te maken?"
 
 #: data/level/crevice-village-house-4-backroom.cfg:1529
 #: data/level/crevice-village-house-4.cfg:2639
@@ -1796,25 +1878,33 @@ msgstr "Echt?"
 msgid ""
 "When I stepped in the door,\n"
 "it locked behind me."
-msgstr "Toen ik hier naar binnen stapte viel\nde deur achter me in het slot."
+msgstr ""
+"Toen ik hier naar binnen stapte viel\n"
+"de deur achter me in het slot."
 
 #: data/level/crevice-village-house-4.cfg:1200
 msgid ""
 "That's actually a rather clever\n"
 "way to round everyone up."
-msgstr "Dat is wel een hele handige manier\nom iedereen bij elkaar te krijgen."
+msgstr ""
+"Dat is wel een hele handige manier\n"
+"om iedereen bij elkaar te krijgen."
 
 #: data/level/crevice-village-house-4.cfg:1202
 msgid ""
 "Know anything helpful\n"
 "about this house?"
-msgstr "Weet jij toevallig iets over dit huis\ndat me kan helpen?"
+msgstr ""
+"Weet jij toevallig iets over dit huis\n"
+"dat me kan helpen?"
 
 #: data/level/crevice-village-house-4.cfg:1203
 msgid ""
 "Unfortunately I don't.\n"
 "I was just visiting."
-msgstr "Jammer genoeg niet...\nIk kwam hier alleen even langs."
+msgstr ""
+"Jammer genoeg niet...\n"
+"Ik kwam hier alleen even langs."
 
 #: data/level/crevice-village-house-4.cfg:1204
 msgid "The floorplan is quite loony."
@@ -1828,7 +1918,10 @@ msgstr "Geweldige ventilatie, dat wel..."
 msgid ""
 "Anyways, I'd better be off.\n"
 "I'm trying to sort out this mess."
-msgstr "Hoe dan ook, ik ga maar weer verder.\nIk doe een poging deze narigheid op\nte lossen."
+msgstr ""
+"Hoe dan ook, ik ga maar weer verder.\n"
+"Ik doe een poging deze narigheid op\n"
+"te lossen."
 
 #: data/level/crevice-village-house-4.cfg:1210
 msgid "Good luck."
@@ -3342,7 +3435,7 @@ msgstr ""
 msgid "There must be a way around it."
 msgstr ""
 
-#: data/level/rocky-roots.cfg:1575
+#: data/level/rocky-roots.cfg:1579
 msgid "Rocky Roots"
 msgstr ""
 
@@ -4242,37 +4335,37 @@ msgstr ""
 msgid "Show us what you can do!"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:108
+#: data/level/titlescreen-arcade.cfg:114
 msgid "EXIT"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:123 data/level/titlescreen-arcade.cfg:143
-#: data/level/titlescreen-arcade.cfg:213
+#: data/level/titlescreen-arcade.cfg:129 data/level/titlescreen-arcade.cfg:149
+#: data/level/titlescreen-arcade.cfg:219
 msgid "Select a level:"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:127 data/level/titlescreen-arcade.cfg:147
-#: data/level/titlescreen-arcade.cfg:215
+#: data/level/titlescreen-arcade.cfg:133 data/level/titlescreen-arcade.cfg:153
+#: data/level/titlescreen-arcade.cfg:221
 msgid "(cancel)"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:173
+#: data/level/titlescreen-arcade.cfg:179
 msgid "CLIMB"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:198
+#: data/level/titlescreen-arcade.cfg:204
 msgid "RUN"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:214
+#: data/level/titlescreen-arcade.cfg:220
 msgid "Coin Race"
 msgstr ""
 
-#: data/level/titlescreen-arcade.cfg:241
+#: data/level/titlescreen-arcade.cfg:247
 msgid "COIN RACE"
 msgstr ""
 
-#: data/level/titlescreen-difficulty-selector.cfg:225
+#: data/level/titlescreen-difficulty-selector.cfg:39
 msgid "SELECT DIFFICULTY LEVEL:"
 msgstr ""
 
@@ -4441,7 +4534,10 @@ msgstr ""
 msgid ""
 "Can't a guy sneak into his neighbor's\n"
 "basement uninvited these days?"
-msgstr "Kan je niet eens meer in je eigen\nbuurman z'n kelder rondsluipen\ntegenwoordig?"
+msgstr ""
+"Kan je niet eens meer in je eigen\n"
+"buurman z'n kelder rondsluipen\n"
+"tegenwoordig?"
 
 #: data/level/to-nenes-house-inside.cfg:1043
 msgid "Nene's House"
@@ -4477,13 +4573,18 @@ msgstr ""
 msgid ""
 "Not. Interested.\n"
 "Buzz off."
-msgstr "Niet. Geinterreseerd.\nGa weg."
+msgstr ""
+"Niet. Geinterreseerd.\n"
+"Ga weg."
 
 #: data/level/to-nenes-house.cfg:3107
 msgid ""
 "I don't care what you're preaching,\n"
 "go sell it to someone else."
-msgstr "Het intresseert me niet wat je\nte zeggen hebt. Ga een ander\ner mee vervelen."
+msgstr ""
+"Het intresseert me niet wat je\n"
+"te zeggen hebt. Ga een ander\n"
+"er mee vervelen."
 
 #: data/level/to-nenes-house.cfg:3108
 msgid "Very well."
@@ -4522,7 +4623,7 @@ msgstr ""
 
 #: data/object_prototypes/buyable_item.cfg:16
 #: data/object_prototypes/buyable_item.cfg:19
-msgid "The price is {final_price} coins."
+msgid "The price is ${final_price} coins."
 msgstr ""
 
 #: data/object_prototypes/buyable_item.cfg:16
@@ -4530,7 +4631,7 @@ msgid "You don't have enough money."
 msgstr ""
 
 #: data/object_prototypes/buyable_item.cfg:20
-msgid "Do you want to buy the {consts.name}?"
+msgid "Do you want to buy the ${consts.name}?"
 msgstr ""
 
 #: data/object_prototypes/door.cfg:21
@@ -4544,8 +4645,8 @@ msgstr ""
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:18
 msgid ""
-"The furthest that has been reached is level "
-"${registry.arcade_coin_race_high_score}."
+"The furthest that has been reached is level ${registry."
+"arcade_coin_race_high_score}."
 msgstr ""
 
 #: data/objects/items/max_heart_object.cfg:8
@@ -4600,7 +4701,9 @@ msgstr "hart"
 msgid ""
 "The heart will give you\n"
 "an extra health point."
-msgstr "Het hart geeft je een\nextra levenspunt"
+msgstr ""
+"Het hart geeft je een\n"
+"extra levenspunt"
 
 #: data/objects/items/store-items/buyable_jumping_boots.cfg:7
 msgid ""
@@ -4649,13 +4752,17 @@ msgstr ""
 msgid ""
 "The energy shield protects you\n"
 "from damage when you crouch."
-msgstr "Het energieschild beschermdt je\nals je bukt."
+msgstr ""
+"Het energieschild beschermdt je\n"
+"als je bukt."
 
 #: data/objects/items/store-items/buyable_speed_boots.cfg:7
 msgid ""
 "The speed boots will make\n"
 "you faster."
-msgstr "De snelle schoenen maken\nje sneller."
+msgstr ""
+"De snelle schoenen maken\n"
+"je sneller."
 
 #: data/objects/items/store-items/buyable_spit_strengthener.cfg:5
 msgid "spit strengthener"
@@ -4665,7 +4772,9 @@ msgstr "spuugversterker"
 msgid ""
 "The spit strengthener will extend\n"
 "the range you can spit."
-msgstr "De spuugversterker vergroot\nde afstand die je spuugt."
+msgstr ""
+"De spuugversterker vergroot\n"
+"de afstand die je spuugt."
 
 #: data/objects/items/store-items/buyable_tongue_extension.cfg:5
 msgid "tongue extender"
@@ -4675,7 +4784,9 @@ msgstr "tongverlenger"
 msgid ""
 "The tongue extender will extend\n"
 "the length of your tongue."
-msgstr "De tongverlenger vergroot de\nlengte van je tong."
+msgstr ""
+"De tongverlenger vergroot de\n"
+"lengte van je tong."
 
 #: data/objects/items/trophy.cfg:25
 msgid ""
@@ -4717,7 +4828,9 @@ msgstr "Hoi, Chopple."
 msgid ""
 "Hey.\n"
 "Welcome to the store."
-msgstr "Hoi!\nWelkom in de winkel."
+msgstr ""
+"Hoi!\n"
+"Welkom in de winkel."
 
 #: data/objects/props-interactive/npcs/chopple_npc.cfg:8
 msgid "Take your time, look around."

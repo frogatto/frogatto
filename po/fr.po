@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # arikel <arikel@free.fr>, 2011.
 #   <arikel@free.fr>, 2011.
@@ -12,14 +12,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-05-15 20:00-0300\n"
+"POT-Creation-Date: 2012-05-17 13:58-0300\n"
 "PO-Revision-Date: 2012-05-15 23:00+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
-"Language-Team: French (http://www.transifex.net/projects/p/Frogatto/language/fr/)\n"
+"Language-Team: French (http://www.transifex.net/projects/p/Frogatto/language/"
+"fr/)\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
 #: CHANGELOG:1 iOS_CHANGELOG:1
@@ -28,9 +29,11 @@ msgstr "Version 1.2 :"
 
 #: CHANGELOG:2 iOS_CHANGELOG:2
 msgid ""
-"Complete redo of attack logic; frogatto now is free to walk around whilst he"
-" attacks, and in general is much more responsive."
-msgstr "Refonte complète de la logique d'attaque; frogatto peut maintenant avancer tandis qu'il attaque, et est généralement beaucoup plus réactif."
+"Complete redo of attack logic; frogatto now is free to walk around whilst he "
+"attacks, and in general is much more responsive."
+msgstr ""
+"Refonte complète de la logique d'attaque; frogatto peut maintenant avancer "
+"tandis qu'il attaque, et est généralement beaucoup plus réactif."
 
 #: CHANGELOG:3 iOS_CHANGELOG:3
 msgid "Frogatto's tongue-grabbing is MUCH more forgiving"
@@ -40,7 +43,9 @@ msgstr "Le coup de langue de Frogatto est beaucoup plus simple."
 msgid ""
 "Complete rewrite of damage handling; much more consistent now, and "
 "categorically eliminates some bugs where damage wouldn't get dealt."
-msgstr "Réécriture de la gestion des dégâts; beaucoup plus cohérent maintenant, et élimine quelques bugs lorsque les dommages n'étaient pas appliqués."
+msgstr ""
+"Réécriture de la gestion des dégâts; beaucoup plus cohérent maintenant, et "
+"élimine quelques bugs lorsque les dommages n'étaient pas appliqués."
 
 #: CHANGELOG:5 iOS_CHANGELOG:5
 msgid "Reworked some tilesets to eliminate tiling errors."
@@ -48,7 +53,8 @@ msgstr "Retravaillé certains tilesets pour éliminer les erreurs de tiling."
 
 #: CHANGELOG:6 iOS_CHANGELOG:6
 msgid "Further enhancements to dungeon wall graphics (added edges)."
-msgstr "D'autres améliorations graphiques sur les murs de donjon (bords ajoutés)."
+msgstr ""
+"D'autres améliorations graphiques sur les murs de donjon (bords ajoutés)."
 
 #: CHANGELOG:7 iOS_CHANGELOG:7
 msgid "New, more readable dialogue font."
@@ -70,7 +76,9 @@ msgstr "Réécriture de la plupart des dialogues."
 msgid ""
 "Collectible items like coins can be collected by being touched by the "
 "tongue, besides just frogatto's body."
-msgstr "Les pièces, cœurs, et autres objets à collectionner peuvent désormais être attrapés par la langue, et plus seulement au contact."
+msgstr ""
+"Les pièces, cœurs, et autres objets à collectionner peuvent désormais être "
+"attrapés par la langue, et plus seulement au contact."
 
 #: CHANGELOG:12 iOS_CHANGELOG:12
 msgid "Redrew the world map."
@@ -80,18 +88,22 @@ msgstr "Redessiné la carte du monde."
 msgid ""
 "Added a few new monsters, like the red hornbugs, and completely rewrote how "
 "bats behave."
-msgstr "Ajouté quelques nouveaux monstres, comme le hornbug rouge, et complètement réécrit le comportement des chauves-souris."
+msgstr ""
+"Ajouté quelques nouveaux monstres, comme le hornbug rouge, et complètement "
+"réécrit le comportement des chauves-souris."
 
 #: CHANGELOG:14 iOS_CHANGELOG:14
 msgid ""
 "Fixed a bug that caused a black line in the seaside background during "
 "dialogues."
-msgstr "Réparé le bug qui causait une ligne noire dans le fond pendant les dialogues."
+msgstr ""
+"Réparé le bug qui causait une ligne noire dans le fond pendant les dialogues."
 
 #: CHANGELOG:15 iOS_CHANGELOG:15
-msgid ""
-"Fixed a bug that caused some tiles to incorrectly be flagged as opaque."
-msgstr "Réparé un bug qui faisait que certaines tiles étaient libellées opaques à tort."
+msgid "Fixed a bug that caused some tiles to incorrectly be flagged as opaque."
+msgstr ""
+"Réparé un bug qui faisait que certaines tiles étaient libellées opaques à "
+"tort."
 
 #: CHANGELOG:17 iOS_CHANGELOG:17
 msgid "Version 1.1.1:"
@@ -119,10 +131,13 @@ msgstr "Ajouté la sélection automatique de la langue pour Windows"
 
 #: CHANGELOG:23 iOS_CHANGELOG:22
 msgid ""
-"Complete redo of iOS controls, switching to a 2-button dpad from a 4-button."
-"  Eliminates all problems with mispressed up or down keys interrupting other"
-" actions."
-msgstr "Refonte complète des contrôles iOS, passage à un dpad à 2 boutons à partir d'un 4 boutons. Élimination de tous les problèmes dus aux erreurs de pression sur les touches haut ou bas qui interrompaient toute action."
+"Complete redo of iOS controls, switching to a 2-button dpad from a 4-"
+"button.  Eliminates all problems with mispressed up or down keys "
+"interrupting other actions."
+msgstr ""
+"Refonte complète des contrôles iOS, passage à un dpad à 2 boutons à partir "
+"d'un 4 boutons. Élimination de tous les problèmes dus aux erreurs de "
+"pression sur les touches haut ou bas qui interrompaient toute action."
 
 #: CHANGELOG:25
 msgid "Version 1.1:"
@@ -168,13 +183,17 @@ msgstr "Ajouté quelques éléments uniques pour la forêt."
 msgid ""
 "Refactored damage and monster type systems to make behavior more consistent "
 "and eliminate some rare buggy behavior."
-msgstr "Refonte des systèmes de dégâts et de type de monstres pour rendre le comportement plus cohérent et éliminer quelques rares bugs de comportement."
+msgstr ""
+"Refonte des systèmes de dégâts et de type de monstres pour rendre le "
+"comportement plus cohérent et éliminer quelques rares bugs de comportement."
 
 #: CHANGELOG:36
 msgid ""
 "Added translation support, with 4 complete translations: French, Brazilian "
 "Portuguese, Chinese (Simplified), and Japanese."
-msgstr "Ajouté le support pour traduction, avec 4 traductions complètes : Français, Brésilien Portugais, Chinois (simplifié), et Japonais."
+msgstr ""
+"Ajouté le support pour traduction, avec 4 traductions complètes : Français, "
+"Brésilien Portugais, Chinois (simplifié), et Japonais."
 
 #: CHANGELOG:38
 msgid "Version 1.0.3:"
@@ -202,7 +221,9 @@ msgstr "Ajouté le support pour WVGA."
 
 #: CHANGELOG:45
 msgid "Made player status not show on the titlescreen or world map."
-msgstr "Le statut du joueur n'est plus visible sur l'écran titre ou la carte du monde."
+msgstr ""
+"Le statut du joueur n'est plus visible sur l'écran titre ou la carte du "
+"monde."
 
 #: CHANGELOG:46
 msgid "Made golden ants less ambiguous."
@@ -210,7 +231,9 @@ msgstr "Rendu les fourmis dorées moins ambigues."
 
 #: CHANGELOG:47
 msgid "Fixed bug making certain music always play at full volume (iPhone)."
-msgstr "Réparé un bug qui faisaient jouer certaines musiques à volume maximal (iPhone)."
+msgstr ""
+"Réparé un bug qui faisaient jouer certaines musiques à volume maximal "
+"(iPhone)."
 
 #: CHANGELOG:48
 msgid "Added option to reverse positions of A and B buttons (iPhone)."
@@ -224,7 +247,9 @@ msgstr "Ajouté le support pour niveaux redondants (pour les modes arcade)."
 msgid ""
 "Pressing jump while in the air pressing against a wall now makes you cling "
 "to the wall."
-msgstr "Appuyer sur saut quand on est dans les airs et qu'on frotte un mur vous fait maintenant vous accrocher au mur."
+msgstr ""
+"Appuyer sur saut quand on est dans les airs et qu'on frotte un mur vous fait "
+"maintenant vous accrocher au mur."
 
 #: CHANGELOG:51
 msgid "Made it so you can skip dialogs sequences."
@@ -240,7 +265,9 @@ msgstr "Réparé le bug qui empêchait le fonctionnement des sons d'ambiance."
 
 #: CHANGELOG:54
 msgid "Improved forest background, and made it go upwards infinitely."
-msgstr "Amélioré l'image de fond de la forêt, elle va maintenant vers le haut à l'infini."
+msgstr ""
+"Amélioré l'image de fond de la forêt, elle va maintenant vers le haut à "
+"l'infini."
 
 #: CHANGELOG:55
 msgid "Made hearts heal a full heart, rather than just half."
@@ -261,11 +288,15 @@ msgstr "Version 1.0.1 (iPhone uniquement):"
 #: CHANGELOG:60
 msgid ""
 "Significantly improved controls, both functionally and graphically (iPhone)."
-msgstr "Amélioration significative des contrôles, aussi bien dans le fonctionnement que l'apparence (iPhone)."
+msgstr ""
+"Amélioration significative des contrôles, aussi bien dans le fonctionnement "
+"que l'apparence (iPhone)."
 
 #: CHANGELOG:61
 msgid "Fixed auto-saving on iOS4 where multitasking is supported (iPhone)."
-msgstr "Réparé la sauvegarde automatique sur iOS4 quand le multi-tâches est supporté (iPhone)."
+msgstr ""
+"Réparé la sauvegarde automatique sur iOS4 quand le multi-tâches est supporté "
+"(iPhone)."
 
 #: CHANGELOG:62
 msgid "Fixed bug where a dialog could repeat forever."
@@ -273,7 +304,9 @@ msgstr "Réparé un bug où un dialogue pouvait se répéter à l'infini."
 
 #: CHANGELOG:63
 msgid "Fixed crash in world map when you hold down while entering it."
-msgstr "Réparé un crash de la carte du monde quand on maintient bas appuyée en y entrant."
+msgstr ""
+"Réparé un crash de la carte du monde quand on maintient bas appuyée en y "
+"entrant."
 
 #: CHANGELOG:64
 msgid "Fixed fullscreen mode (Mac/Windows)."
@@ -285,7 +318,8 @@ msgstr "Réparé le problème de manette pour les ordinateurs."
 
 #: CHANGELOG:66
 msgid "Added music and sound volume controls to pause screen."
-msgstr "Ajouté contrôles pour volume du son et de la musique à l'écran de pause."
+msgstr ""
+"Ajouté contrôles pour volume du son et de la musique à l'écran de pause."
 
 #: CHANGELOG:67
 msgid "Added customizable controls."
@@ -318,16 +352,29 @@ msgid ""
 "features the same handcrafted love of high-end pixel art.  Frogatto is a "
 "side-on \"platformer\" or \"jump and run\" game, where you lead our titular "
 "character on a humdrum errand that turns into a daring adventure."
-msgstr "Frogatto est un jeu d'aventure classique en 2D, qui met en scène une certaine grenouille idéaliste. Il est fait par l'équipe de Battle for Wesnoth, et démontre le même amour du pixel art de haute qualité. Frogatto est un jeu de plate-formes, ou \"run and jump\", où vous guiderez notre personnage éponyme dans une course monotone qui se changera en une aventure audacieuse."
+msgstr ""
+"Frogatto est un jeu d'aventure classique en 2D, qui met en scène une "
+"certaine grenouille idéaliste. Il est fait par l'équipe de Battle for "
+"Wesnoth, et démontre le même amour du pixel art de haute qualité. Frogatto "
+"est un jeu de plate-formes, ou \"run and jump\", où vous guiderez notre "
+"personnage éponyme dans une course monotone qui se changera en une aventure "
+"audacieuse."
 
 #: MAC_APP_STORE_METADATA:5 iOS_APP_STORE_METADATA:5
 msgid ""
-"Frogatto's key mechanic is an unusual twist; like any frog, he jumps, swims,"
-" and snags bugs with his tongue, but unlike any frog before him, can spit "
+"Frogatto's key mechanic is an unusual twist; like any frog, he jumps, swims, "
+"and snags bugs with his tongue, but unlike any frog before him, can spit "
 "those bugs out with deadly force.  Not merely an action game, frogatto is a "
 "full, classic adventure game, with characters to talk to, things to buy, "
 "puzzles to solve, and a wide, complex world to explore."
-msgstr "La mécanique clé de Frogatto est inhabituelle; comme n'importe quelle grenouille il peut sauter, nager, et attraper des insectes avec sa queue, mais contrairement à toutes les grenouilles avant lui, Frogatto peut ensuite recracher ces insectes avec une force mortelle. Non seulement un jeu d'action, Frogatto est un jeu d'aventure classique et complet, avec des personnages auxquels parler, des choses à acheter, des énigmes à résoudre, et un monde vaste et complexe à explorer."
+msgstr ""
+"La mécanique clé de Frogatto est inhabituelle; comme n'importe quelle "
+"grenouille il peut sauter, nager, et attraper des insectes avec sa queue, "
+"mais contrairement à toutes les grenouilles avant lui, Frogatto peut ensuite "
+"recracher ces insectes avec une force mortelle. Non seulement un jeu "
+"d'action, Frogatto est un jeu d'aventure classique et complet, avec des "
+"personnages auxquels parler, des choses à acheter, des énigmes à résoudre, "
+"et un monde vaste et complexe à explorer."
 
 #: MAC_APP_STORE_METADATA:7 iOS_APP_STORE_METADATA:7
 msgid "Features:"
@@ -335,27 +382,36 @@ msgstr "Éléments:"
 
 #: MAC_APP_STORE_METADATA:8 iOS_APP_STORE_METADATA:8
 msgid "- grab enemies with your tongue and spit them to deal damage"
-msgstr "- attrapez des ennemis avec votre langue et recrachez-les pour faire des dégâts"
+msgstr ""
+"- attrapez des ennemis avec votre langue et recrachez-les pour faire des "
+"dégâts"
 
 #: MAC_APP_STORE_METADATA:9 iOS_APP_STORE_METADATA:9
 msgid "- buy powerups to enhance and unlock new abilities"
-msgstr "- achetez des bonus pour augmenter ou développer de nouvelles compétences"
+msgstr ""
+"- achetez des bonus pour augmenter ou développer de nouvelles compétences"
 
 #: MAC_APP_STORE_METADATA:10 iOS_APP_STORE_METADATA:10
 msgid ""
 "- arcade mode, giving instant access to action-only gameplay on randomized "
 "levels"
-msgstr "- mode arcade, donnant accès immédiat au jeu uniquement pour l'action, sur des niveaux générés aléatoirement"
+msgstr ""
+"- mode arcade, donnant accès immédiat au jeu uniquement pour l'action, sur "
+"des niveaux générés aléatoirement"
 
 #: MAC_APP_STORE_METADATA:11 iOS_APP_STORE_METADATA:11
 msgid ""
-"- forgiving savegame/respawn system so you don't have to be afraid of losing"
-" progress"
-msgstr "- système de sauvegarde et de points d'étape conciliant, qui vous évite de craindre de perdre votre progression"
+"- forgiving savegame/respawn system so you don't have to be afraid of losing "
+"progress"
+msgstr ""
+"- système de sauvegarde et de points d'étape conciliant, qui vous évite de "
+"craindre de perdre votre progression"
 
 #: MAC_APP_STORE_METADATA:12 iOS_APP_STORE_METADATA:12
 msgid "- playful dialogue writing that tries not to insult your intelligence"
-msgstr "- écriture des dialogues amusante et qui tente de ne pas insulter votre intelligence"
+msgstr ""
+"- écriture des dialogues amusante et qui tente de ne pas insulter votre "
+"intelligence"
 
 #: MAC_APP_STORE_METADATA:13 iOS_APP_STORE_METADATA:13
 msgid "- massive soundtrack with over an hour of original music"
@@ -365,11 +421,14 @@ msgstr "- bande-son énorme avec plus d'une heure de musique originale"
 msgid ""
 "- sprawling, complex world with over 50 levels to explore, and tons of "
 "secrets to find"
-msgstr "- un monde complexe et aux nombreux recoins avec plus de 50 niveaux à explorer, et des tonnes de secrets à découvrir"
+msgstr ""
+"- un monde complexe et aux nombreux recoins avec plus de 50 niveaux à "
+"explorer, et des tonnes de secrets à découvrir"
 
 #: MAC_APP_STORE_METADATA:16 iOS_APP_STORE_METADATA:17
 msgid "To find out more about the game please visit http://www.frogatto.com/"
-msgstr "Pour en savoir plus sur le jeu, rendez-vous sur http://www.frogatto.com/"
+msgstr ""
+"Pour en savoir plus sur le jeu, rendez-vous sur http://www.frogatto.com/"
 
 #: MAC_APP_STORE_METADATA:18 iOS_APP_STORE_METADATA:19
 msgid "Reviews:"
@@ -377,7 +436,9 @@ msgstr "Revues:"
 
 #: MAC_APP_STORE_METADATA:19 iOS_APP_STORE_METADATA:20
 msgid "- [3/4 SlideToPlay.com] \"a fun and surprisingly deep platformer\""
-msgstr "- [3/4 SlideToPlay.com] \"un jeu de plate-formes drôles et étonnamment profond\""
+msgstr ""
+"- [3/4 SlideToPlay.com] \"un jeu de plate-formes drôles et étonnamment "
+"profond\""
 
 #: MAC_APP_STORE_METADATA:20 iOS_APP_STORE_METADATA:21
 msgid "- [4/5 AppSpy.com] \"boy-howdy is this an amazing visual feast!\""
@@ -393,8 +454,11 @@ msgstr "mots-clés:"
 
 #: MAC_APP_STORE_METADATA:24 iOS_APP_STORE_METADATA:25
 msgid ""
-"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
-msgstr "jeu,plate-formes,pixelart,oldschool,pixel,action,aventure,arcade,grenouille,plate,plates,formes,forme"
+"platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,"
+"frog"
+msgstr ""
+"jeu,plate-formes,pixelart,oldschool,pixel,action,aventure,arcade,grenouille,"
+"plate,plates,formes,forme"
 
 #: data/achievements.cfg:5
 msgid "Pocket Money"
@@ -528,7 +592,7 @@ msgstr "Embuscade!"
 msgid "Victory!"
 msgstr "Victoire!"
 
-#: data/level/arcade-blocks.cfg:11 data/level/titlescreen-arcade.cfg:146
+#: data/level/arcade-blocks.cfg:11 data/level/titlescreen-arcade.cfg:152
 msgid "Blocks Run"
 msgstr "Course aux Blocs"
 
@@ -552,7 +616,7 @@ msgid "The high score is ${registry.arcade_blocks_high_score}."
 msgstr ""
 
 #: data/level/arcade-down-the-rabbit-hall.cfg:13
-#: data/level/titlescreen-arcade.cfg:145
+#: data/level/titlescreen-arcade.cfg:151
 msgid "Down the Rabbit Hall"
 msgstr "Le Couloir du Lapin"
 
@@ -567,7 +631,7 @@ msgid ""
 msgstr ""
 
 #: data/level/arcade-maintenance-shaft.cfg:13
-#: data/level/titlescreen-arcade.cfg:126
+#: data/level/titlescreen-arcade.cfg:132
 msgid "Maintenance Shaft"
 msgstr "Conduit de maintenance"
 
@@ -591,7 +655,7 @@ msgid "The high score is ${registry.arcade_nutty_factory_high_score} points."
 msgstr ""
 
 #: data/level/arcade-the-long-haul.cfg:11
-#: data/level/titlescreen-arcade.cfg:144
+#: data/level/titlescreen-arcade.cfg:150
 msgid "The Long Haul"
 msgstr "La Longue Traversée"
 
@@ -604,7 +668,7 @@ msgstr ""
 msgid "The high score is ${registry.arcade_the_long_haul_high_score} points."
 msgstr ""
 
-#: data/level/arcade-upper-deck.cfg:13 data/level/titlescreen-arcade.cfg:125
+#: data/level/arcade-upper-deck.cfg:13 data/level/titlescreen-arcade.cfg:131
 msgid "Upper Deck"
 msgstr "Pont supérieur"
 
@@ -617,7 +681,7 @@ msgid "The high score is ${registry.arcade_upper_deck_high_score} points."
 msgstr ""
 
 #: data/level/arcade-wild-new-wonder.cfg:13
-#: data/level/titlescreen-arcade.cfg:124
+#: data/level/titlescreen-arcade.cfg:130
 msgid "Wild New Wonder"
 msgstr "Nouvelle Merveille Sauvage"
 
@@ -627,8 +691,7 @@ msgid "You got ${level.player.vars.score} points in the Wild New Wonder!"
 msgstr ""
 
 #: data/level/arcade-wild-new-wonder.cfg:2499
-msgid ""
-"The high score is ${registry.arcade_wild_new_wonder_high_score} points."
+msgid "The high score is ${registry.arcade_wild_new_wonder_high_score} points."
 msgstr ""
 
 #: data/level/bombing-fools.cfg:1184
@@ -647,7 +710,12 @@ msgid ""
 "There is said to be an way into the\n"
 "basement floors of Milgram's compound,\n"
 "somewhere in the caverns."
-msgstr "Maintenant, droit devant il y a une porte.\nQuand vous pourrez la passer, vous serez\nà la cavernes de calcaires.\nOn dit qu'il y a un chemin vers les sous-sols\nde la base de Milgram, quelque part dans les cavernes."
+msgstr ""
+"Maintenant, droit devant il y a une porte.\n"
+"Quand vous pourrez la passer, vous serez\n"
+"à la cavernes de calcaires.\n"
+"On dit qu'il y a un chemin vers les sous-sols\n"
+"de la base de Milgram, quelque part dans les cavernes."
 
 #: data/level/bon-bosque.cfg:212
 msgid ""
@@ -655,13 +723,19 @@ msgid ""
 "sneaking in is probably the best bet.\n"
 "I doubt the entrance guards\n"
 "would give you the time of day."
-msgstr "Si vous vouliez une audience privée,\nse faufiler par-là est probablement le meilleur moyen.\nJe doute que les gardes à l'entrée\nvous donnent l'heure."
+msgstr ""
+"Si vous vouliez une audience privée,\n"
+"se faufiler par-là est probablement le meilleur moyen.\n"
+"Je doute que les gardes à l'entrée\n"
+"vous donnent l'heure."
 
 #: data/level/bon-bosque.cfg:214
 msgid ""
 "Yeah... geez though.  Caves, now?\n"
 "Are these caves long?"
-msgstr "Ouais... Quand même. Des grottes, maintenant?\nElles sont longues ces grottes?"
+msgstr ""
+"Ouais... Quand même. Des grottes, maintenant?\n"
+"Elles sont longues ces grottes?"
 
 #: data/level/bon-bosque.cfg:215
 msgid "I'm afraid so."
@@ -671,32 +745,43 @@ msgstr "Je le crains."
 msgid ""
 "Ugh.\n"
 "No sense in turning back now, though."
-msgstr "Rhaa.\nPlus question de faire demi-tour, pourtant."
+msgstr ""
+"Rhaa.\n"
+"Plus question de faire demi-tour, pourtant."
 
 #: data/level/bon-bosque.cfg:218
 msgid ""
 "Are you really certain you want to do this?\n"
 "I'm afraid I can't follow you into the caverns,\n"
 "so this is the last you would see of me."
-msgstr "Etes-vous vraiment certain de vouloir faire cela?\nJe crains de ne pouvoir vous suivre dans les cavernes,\nc'est donc la dernière fois que vous me voyez."
+msgstr ""
+"Etes-vous vraiment certain de vouloir faire cela?\n"
+"Je crains de ne pouvoir vous suivre dans les cavernes,\n"
+"c'est donc la dernière fois que vous me voyez."
 
 #: data/level/bon-bosque.cfg:220
 msgid ""
 "Yes, I am; I'd be twice the fool,\n"
 "to come this far and just give up."
-msgstr "Oui, je le suis, je serais fou, d'être arrivé si loin\npour simplement abandonner."
+msgstr ""
+"Oui, je le suis, je serais fou, d'être arrivé si loin\n"
+"pour simplement abandonner."
 
 #: data/level/bon-bosque.cfg:222
 msgid ""
 "Nevertheless,\n"
 "thank you very much for all your help!"
-msgstr "Quoi qu'il en soit,\nje vous remercie beaucoup pour votre aide!"
+msgstr ""
+"Quoi qu'il en soit,\n"
+"je vous remercie beaucoup pour votre aide!"
 
 #: data/level/bon-bosque.cfg:223
 msgid ""
 "You're welcome, friend.\n"
 "I wish you the best!"
-msgstr "De rien, l'ami.\nJe vous souhaite bonne chance!"
+msgstr ""
+"De rien, l'ami.\n"
+"Je vous souhaite bonne chance!"
 
 #: data/level/bon-bosque.cfg:4633 data/objects/playable/map-selector.cfg:46
 msgid "Bon Bosque"
@@ -714,7 +799,9 @@ msgstr "Eau et Feu"
 msgid ""
 "I need to go up... There must be\n"
 "a way to activate this elevator."
-msgstr "Je dois monter... Il doit y avoir\nun moyen d'activer cet ascenseur."
+msgstr ""
+"Je dois monter... Il doit y avoir\n"
+"un moyen d'activer cet ascenseur."
 
 #: data/level/burning-stone.cfg:2743
 msgid "Burning Stone"
@@ -734,19 +821,27 @@ msgid ""
 "He had asked me to go to the village\n"
 "to know what was going on, with all that noise\n"
 "that was coming from beyond the cave."
-msgstr "Ah, ouais, j'aide Chopple à prendre soin de la boutique.\nIl m'avait demandé d'aller au village\npour savoir ce qui se passait, avec tout ce bruit\nqui venait d'au-delà de la grotte."
+msgstr ""
+"Ah, ouais, j'aide Chopple à prendre soin de la boutique.\n"
+"Il m'avait demandé d'aller au village\n"
+"pour savoir ce qui se passait, avec tout ce bruit\n"
+"qui venait d'au-delà de la grotte."
 
 #: data/level/chopple-shop-interior.cfg:203
 msgid ""
 "Then I suppose that Milgram's guards saw you\n"
 "and locked you up?"
-msgstr "Alors je suppose que les gardes de Milgram\nt'ont vu et t'ont enfermé?"
+msgstr ""
+"Alors je suppose que les gardes de Milgram\n"
+"t'ont vu et t'ont enfermé?"
 
 #: data/level/chopple-shop-interior.cfg:204
 msgid ""
 "Yeah! And to think that I thought\n"
 "that the day was going to be boring!"
-msgstr "Yeah! Et dire que je pensais\nque la journée allait être ennuyeuse!"
+msgstr ""
+"Yeah! Et dire que je pensais\n"
+"que la journée allait être ennuyeuse!"
 
 #: data/level/chopple-shop-interior.cfg:674 data/level/chopple-shop.cfg:16
 msgid "Chopple's General Store"
@@ -768,32 +863,43 @@ msgstr "Ça aurait pu être pire."
 msgid ""
 "That ... uh, \"captain\" cat, or whoever he was,\n"
 "tried to dice me up."
-msgstr "Ce... euh, \"capitaine\" de chat, ou quoi qu'il soit,\na essayé de me découper en rondelles."
+msgstr ""
+"Ce... euh, \"capitaine\" de chat, ou quoi qu'il soit,\n"
+"a essayé de me découper en rondelles."
 
 #: data/level/crevice-bridge.cfg:304
 msgid ""
 "Naturally, we wouldn't be having\n"
 "this conversation if I hadn't gotten\n"
 "the better of him."
-msgstr "Naturellement, nous n'aurions pas cette conversation,\nsi je ne l'avais pas emporté."
+msgstr ""
+"Naturellement, nous n'aurions pas cette conversation,\n"
+"si je ne l'avais pas emporté."
 
 #: data/level/crevice-bridge.cfg:306
 msgid ""
 "So all's well\n"
 "that ends well, I suppose."
-msgstr "Alors tout est bien\nqui finit bien, je suppose."
+msgstr ""
+"Alors tout est bien\n"
+"qui finit bien, je suppose."
 
 #: data/level/crevice-bridge.cfg:308
 msgid ""
 "I did find out what was going on, at least,\n"
 "that is, what the elder *says* is going on."
-msgstr "J'ai bien trouvé ce qui se passait, au moins,\nenfin, ce que l'ancien *dit* qu'il se passe."
+msgstr ""
+"J'ai bien trouvé ce qui se passait, au moins,\n"
+"enfin, ce que l'ancien *dit* qu'il se passe."
 
 #: data/level/crevice-bridge.cfg:310
 msgid ""
 "I wouldn't mind running this by a few people,\n"
 "since I have no idea what's true, or not."
-msgstr "Je demanderais bien à quelques personne\nce qu'elles en pensent, vu que je n'ai aucune idée\nde ce qui est vrai ou non."
+msgstr ""
+"Je demanderais bien à quelques personne\n"
+"ce qu'elles en pensent, vu que je n'ai aucune idée\n"
+"de ce qui est vrai ou non."
 
 #: data/level/crevice-bridge.cfg:312
 msgid "Go right ahead."
@@ -804,7 +910,10 @@ msgid ""
 "So... uhm... loosely speaking, he says\n"
 "that Milgram loaned him money, and this whole\n"
 "incident was Milgram coming to shake him down."
-msgstr "Alors... euh... Grosso modo, il dit que\nMilgram lui a prêté de l'argent, et tout cet incident\nc'est Milgram qui vient le secouer."
+msgstr ""
+"Alors... euh... Grosso modo, il dit que\n"
+"Milgram lui a prêté de l'argent, et tout cet incident\n"
+"c'est Milgram qui vient le secouer."
 
 #: data/level/crevice-bridge.cfg:317
 msgid "Trying to get his money back."
@@ -815,7 +924,10 @@ msgid ""
 "So then he tells this oddball story\n"
 "about how it's all some plot where\n"
 "Milgram's gonna take over the town."
-msgstr "Alors ensuite il raconte cette histoire excentrique\nselon laquelle c'est tout un complot où\nMilgram va prendre la ville."
+msgstr ""
+"Alors ensuite il raconte cette histoire excentrique\n"
+"selon laquelle c'est tout un complot où\n"
+"Milgram va prendre la ville."
 
 #: data/level/crevice-bridge.cfg:321
 #: data/level/crevice-village-house-elder.cfg:471
@@ -830,7 +942,9 @@ msgstr "Je n'ai jamais entendu parler de tout cela."
 msgid ""
 "Really?\n"
 "He's never talked about this?"
-msgstr "Vraiment?\nIl n'a jamais parlé de cela?"
+msgstr ""
+"Vraiment?\n"
+"Il n'a jamais parlé de cela?"
 
 #: data/level/crevice-bridge.cfg:327
 msgid "Never."
@@ -840,70 +954,95 @@ msgstr "Jamais."
 msgid ""
 "Has he ever shown any signs of ... suddenly\n"
 "having way more spending money than usual?"
-msgstr "A-t-il déjà montré des signes de... soudain,\nd'avoir plus d'argent à dépenser que d'habitude?"
+msgstr ""
+"A-t-il déjà montré des signes de... soudain,\n"
+"d'avoir plus d'argent à dépenser que d'habitude?"
 
 #: data/level/crevice-bridge.cfg:332
 msgid ""
 "Well, he's *bragged* about being rich,\n"
 "but that's just his \"dignified family\" schtick."
-msgstr "Eh bien, il s'est *vanté* d'être riche,\nmais c'est juste son côté \"famille respectable\"."
+msgstr ""
+"Eh bien, il s'est *vanté* d'être riche,\n"
+"mais c'est juste son côté \"famille respectable\"."
 
 #: data/level/crevice-bridge.cfg:333
 msgid ""
 "He's such a miser, you know -\n"
 "the man would probably burn his\n"
 "furniture just to save on firewood."
-msgstr "Il est tellement avare, vous savez -\ncet homme serait capable de brûler ses meubles,\npour économiser sur le bois de chauffage."
+msgstr ""
+"Il est tellement avare, vous savez -\n"
+"cet homme serait capable de brûler ses meubles,\n"
+"pour économiser sur le bois de chauffage."
 
 #: data/level/crevice-bridge.cfg:334
 msgid ""
 "So, no, he's never seemed\n"
 "to have a dime to spare."
-msgstr "Donc, non, il n'a jamais semblé\navoir un centime à lâcher."
+msgstr ""
+"Donc, non, il n'a jamais semblé\n"
+"avoir un centime à lâcher."
 
 #: data/level/crevice-bridge.cfg:335
 msgid ""
 "He does brag about being known by important\n"
 "people, but you know how he is."
-msgstr "Il se vante d'être connu par des gens importants,\nmais vous savez comment il est."
+msgstr ""
+"Il se vante d'être connu par des gens importants,\n"
+"mais vous savez comment il est."
 
 #: data/level/crevice-bridge.cfg:338
 msgid ""
 "Yeah.  Geez.\n"
 "So, uh, here's what I think we know:"
-msgstr "Ouais. Fiou.\nAlors, euh, voici ce que je pense que nous savons :"
+msgstr ""
+"Ouais. Fiou.\n"
+"Alors, euh, voici ce que je pense que nous savons :"
 
 #: data/level/crevice-bridge.cfg:340
 msgid ""
 "We know he's clearly run afoul\n"
 "of Milgram, somehow."
-msgstr "Nous savons qu'il est clairement allé à l'encontre\nde Milgram, en quelque sorte."
+msgstr ""
+"Nous savons qu'il est clairement allé à l'encontre\n"
+"de Milgram, en quelque sorte."
 
 #: data/level/crevice-bridge.cfg:342
 msgid ""
 "We also know Milgram's not interested\n"
 "in taking over the town, because he\n"
 "essentially just did, and gave it up."
-msgstr "Nous savons aussi que Milgram n'est pas intéressé\npar prendre la ville, parce qu'il vient juste de le faire,\net l'a abandonnée."
+msgstr ""
+"Nous savons aussi que Milgram n'est pas intéressé\n"
+"par prendre la ville, parce qu'il vient juste de le faire,\n"
+"et l'a abandonnée."
 
 #: data/level/crevice-bridge.cfg:344
 msgid ""
 "We don't know if the money thing\n"
 "is true, but we know if it is,\n"
 "he certainly hasn't put it to use."
-msgstr "Nous ne savons pas si cette histoire d'argent\nest vraie, mais nous savons que si elle l'est,\nil ne l'a certainement pas dépensé."
+msgstr ""
+"Nous ne savons pas si cette histoire d'argent\n"
+"est vraie, mais nous savons que si elle l'est,\n"
+"il ne l'a certainement pas dépensé."
 
 #: data/level/crevice-bridge.cfg:346
 msgid ""
 "Oh yeah, I forgot to mention;\n"
 "he said it was some kind of \"investment\""
-msgstr "Oh oui, j'ai oublié de mentionner;\nil a dit que c'était une sorte de «placement»."
+msgstr ""
+"Oh oui, j'ai oublié de mentionner;\n"
+"il a dit que c'était une sorte de «placement»."
 
 #: data/level/crevice-bridge.cfg:348
 msgid ""
 "Which I assume would be for the town.\n"
 "Building things."
-msgstr "Qui, je suppose, serait pour la ville.\nConstruire des choses."
+msgstr ""
+"Qui, je suppose, serait pour la ville.\n"
+"Construire des choses."
 
 #: data/level/crevice-bridge.cfg:350
 msgid "Naturally, we know that didn't happen."
@@ -917,26 +1056,36 @@ msgstr "Donc à part ça, c'est un mystère."
 msgid ""
 "So, dare I ask:\n"
 "What do we do now?"
-msgstr "Alors, oserais-je demander :\nQue faisons-nous maintenant?"
+msgstr ""
+"Alors, oserais-je demander :\n"
+"Que faisons-nous maintenant?"
 
 #: data/level/crevice-bridge.cfg:357
 msgid ""
 "Ah, that.  I went and decided that\n"
 "it's probably a very good idea to\n"
 "do a little diplomacy."
-msgstr "Ah, ça. J'ai décidé que c'est\nprobablement une très bonne idée\nde faire un peu de diplomatie."
+msgstr ""
+"Ah, ça. J'ai décidé que c'est\n"
+"probablement une très bonne idée\n"
+"de faire un peu de diplomatie."
 
 #: data/level/crevice-bridge.cfg:359
 msgid ""
 "*Someone* needs to go talk to Milgram,\n"
 "and ask what was wrong, so nothing bad happens."
-msgstr "*Quelqu'un* doit aller parler à Milgram,\net demander ce qui ne va pas,\npour que rien de fâcheux n'arrive."
+msgstr ""
+"*Quelqu'un* doit aller parler à Milgram,\n"
+"et demander ce qui ne va pas,\n"
+"pour que rien de fâcheux n'arrive."
 
 #: data/level/crevice-bridge.cfg:361
 msgid ""
 "So for a lack of any other willing parties,\n"
 "I decided to go."
-msgstr "Donc, à défaut d'autres volontaires,\nj'ai décidé d'y aller."
+msgstr ""
+"Donc, à défaut d'autres volontaires,\n"
+"j'ai décidé d'y aller."
 
 #: data/level/crevice-bridge.cfg:363
 msgid "That's very noble of you."
@@ -946,31 +1095,41 @@ msgstr "C'est très noble de votre part."
 msgid ""
 "Ha, well, we're also going to find out\n"
 "if it's very foolish, as well."
-msgstr "Ha, et bien, nous allons aussi savoir\nsi c'est très stupide aussi."
+msgstr ""
+"Ha, et bien, nous allons aussi savoir\n"
+"si c'est très stupide aussi."
 
 #: data/level/crevice-bridge.cfg:369
 msgid ""
 "But nothing ventured, nothing gained, you know?\n"
 "I guess I'm just tired of bumming around."
-msgstr "Mais qui ne risque rien n'a rien, pas vrai?\nJe suppose que je suis juste fatigué de glander."
+msgstr ""
+"Mais qui ne risque rien n'a rien, pas vrai?\n"
+"Je suppose que je suis juste fatigué de glander."
 
 #: data/level/crevice-bridge.cfg:371
 msgid ""
 "Speaking of which, I'd been meaning\n"
 "to thank you for your help thus far."
-msgstr "À propos, je voulais vous remercier\npour votre aide jusqu'à présent."
+msgstr ""
+"À propos, je voulais vous remercier\n"
+"pour votre aide jusqu'à présent."
 
 #: data/level/crevice-bridge.cfg:373
 msgid ""
 "I've really appreciated the \"eyes in the sky\".\n"
 "It's very helpful."
-msgstr "J'ai vraiment apprécié les \"yeux dans le ciel\".\nC'est très utile."
+msgstr ""
+"J'ai vraiment apprécié les \"yeux dans le ciel\".\n"
+"C'est très utile."
 
 #: data/level/crevice-bridge.cfg:375
 msgid ""
 "To spare your asking,\n"
 "yes, I'd be happy to continue."
-msgstr "Pour vous épargner de demander,\noui, je serais heureux de continuer."
+msgstr ""
+"Pour vous épargner de demander,\n"
+"oui, je serais heureux de continuer."
 
 #: data/level/crevice-bridge.cfg:378
 msgid "Hey, thanks, that's really nice of you!"
@@ -981,14 +1140,20 @@ msgid ""
 "It's the least I can do.\n"
 "I'd offer to carry you, even,\n"
 "but I'm afraid that's physically impossible."
-msgstr "C'est le moins que je puisse faire.\nJe proposerais bien de vous transporter, même,\nmais je crains que ce soit physiquement impossible."
+msgstr ""
+"C'est le moins que je puisse faire.\n"
+"Je proposerais bien de vous transporter, même,\n"
+"mais je crains que ce soit physiquement impossible."
 
 #: data/level/crevice-bridge.cfg:381
 msgid ""
 "I'm as curious as you are, about this,\n"
 "and we're more likely to get to the\n"
 "bottom of things if we work together."
-msgstr "Je suis aussi curieux que vous, à ce sujet,\net nous aurons plus de chances d'aller\nau fond des choses si nous travaillons ensemble."
+msgstr ""
+"Je suis aussi curieux que vous, à ce sujet,\n"
+"et nous aurons plus de chances d'aller\n"
+"au fond des choses si nous travaillons ensemble."
 
 #: data/level/crevice-bridge.cfg:384
 msgid "Awesome!"
@@ -998,7 +1163,9 @@ msgstr "Magnifique!"
 msgid ""
 "Anyways, I was planning to go through\n"
 "the forest, to start with."
-msgstr "Quoi qu'il en soit, je comptais passer\npar la forêt, pour commencer."
+msgstr ""
+"Quoi qu'il en soit, je comptais passer\n"
+"par la forêt, pour commencer."
 
 #: data/level/crevice-bridge.cfg:389
 msgid "Does that sound like a good idea?"
@@ -1008,13 +1175,17 @@ msgstr "Ça vous semble une bonne idée?"
 msgid ""
 "Yes... it is the only path I know of,\n"
 "but be careful in there."
-msgstr "Oui... c'est le seul chemin que je connaisse,\nmais attention là-bas."
+msgstr ""
+"Oui... c'est le seul chemin que je connaisse,\n"
+"mais attention là-bas."
 
 #: data/level/crevice-bridge.cfg:394
 msgid ""
 "Yeah, no kidding.\n"
 "Well, see you soon!  Thanks again!"
-msgstr "Ouais, sans blague.\nEh bien, à bientôt! Merci encore!"
+msgstr ""
+"Ouais, sans blague.\n"
+"Eh bien, à bientôt! Merci encore!"
 
 #: data/level/crevice-bridge.cfg:1276
 msgid "Ahh, there you are!"
@@ -1065,39 +1236,53 @@ msgstr "On me la fait pas."
 msgid ""
 "You look like a very\n"
 "suspicious character."
-msgstr "T'as l'air\ntrès louche"
+msgstr ""
+"T'as l'air\n"
+"très louche"
 
 #: data/level/crevice-village-cave.cfg:660
 msgid "Could you just step aside?"
-msgstr "Est-ce que tu pourrais\nbouger juste un peu?"
+msgstr ""
+"Est-ce que tu pourrais\n"
+"bouger juste un peu?"
 
 #: data/level/crevice-village-cave.cfg:662
 msgid ""
 "I need to take care\n"
 "of something in town."
-msgstr "J'ai besoin de faire quelque chose\nen ville."
+msgstr ""
+"J'ai besoin de faire quelque chose\n"
+"en ville."
 
 #: data/level/crevice-village-cave.cfg:663
 msgid ""
 "Well, I can't let anyone\n"
 "past this gate."
-msgstr "Bon, je ne dois laisser\npersonne passer ce portail."
+msgstr ""
+"Bon, je ne dois laisser\n"
+"personne passer ce portail."
 
 #: data/level/crevice-village-cave.cfg:664
 msgid ""
 "Without this key,\n"
 "you're not getting anywhere."
-msgstr "Sans cette clé,\ntu ne vas nulle part."
+msgstr ""
+"Sans cette clé,\n"
+"tu ne vas nulle part."
 
 #: data/level/crevice-village-cave.cfg:666
 msgid ""
 "Okay.  Will you please lend\n"
 "me that key?"
-msgstr "D'accord. Tu peux me prêter\ncette clé, s'il te plaît?"
+msgstr ""
+"D'accord. Tu peux me prêter\n"
+"cette clé, s'il te plaît?"
 
 #: data/level/crevice-village-cave.cfg:667
 msgid "No way!  Over my dead body!"
-msgstr "Hors de question!\nIl faudra me passer sur le corps!"
+msgstr ""
+"Hors de question!\n"
+"Il faudra me passer sur le corps!"
 
 #: data/level/crevice-village-cave.cfg:669
 msgid "We can do that."
@@ -1111,13 +1296,17 @@ msgstr "Grotte Cachée"
 msgid ""
 "Ahh, good, you made it\n"
 "through there in one piece!"
-msgstr "C'est bien que vous soyiez arrivé\njusqu'ici en un morceau!"
+msgstr ""
+"C'est bien que vous soyiez arrivé\n"
+"jusqu'ici en un morceau!"
 
 #: data/level/crevice-village-central.cfg:132
 msgid ""
 "Yeah, those goons\n"
 "had a little ambush set up."
-msgstr "Ouais, ces idiots ont monté\nune petite embuscade."
+msgstr ""
+"Ouais, ces idiots ont monté\n"
+"une petite embuscade."
 
 #: data/level/crevice-village-central.cfg:134
 msgid "So, now what?"
@@ -1127,21 +1316,29 @@ msgstr "Bon, et maintenant?"
 msgid ""
 "Well, as you know, the town\n"
 "is split into two halves."
-msgstr "Alors, comme vous le savez,\nla ville est divisée en deux."
+msgstr ""
+"Alors, comme vous le savez,\n"
+"la ville est divisée en deux."
 
 #: data/level/crevice-village-central.cfg:136
 msgid ""
 "Milgram has this half of the town\n"
 "locked down tight, and he has\n"
 "most of the residents held prisoner."
-msgstr "Cette moitié de la ville est verrouillée\npar Milgram, et il tient\nla plupart des habitants prisonniers."
+msgstr ""
+"Cette moitié de la ville est verrouillée\n"
+"par Milgram, et il tient\n"
+"la plupart des habitants prisonniers."
 
 #: data/level/crevice-village-central.cfg:137
 msgid ""
 "They're tied up inside the houses,\n"
 "under guard. If you free them,\n"
 "I'm sure they can help you."
-msgstr "Ils sont attachés dans les maisons,\nsous surveillance. Si vous les libérez,\nje suis sûr qu'ils vous aideront."
+msgstr ""
+"Ils sont attachés dans les maisons,\n"
+"sous surveillance. Si vous les libérez,\n"
+"je suis sûr qu'ils vous aideront."
 
 #: data/level/crevice-village-central.cfg:139
 msgid "Makes sense."
@@ -1152,25 +1349,35 @@ msgid ""
 "Your big problem will be that\n"
 "the gate connecting the two halves\n"
 "of town has been locked."
-msgstr "Votre plus gros problème c'est que\nla porte qui connecte les deux moitiés\na été fermée à clé."
+msgstr ""
+"Votre plus gros problème c'est que\n"
+"la porte qui connecte les deux moitiés\n"
+"a été fermée à clé."
 
 #: data/level/crevice-village-central.cfg:141
 msgid ""
 "And I don't think there's a guard next\n"
 "to it, whom you can steal the key from."
-msgstr "Et je ne crois pas que quelqu'un la garde:\npersonne à qui voler la clé donc."
+msgstr ""
+"Et je ne crois pas que quelqu'un la garde:\n"
+"personne à qui voler la clé donc."
 
 #: data/level/crevice-village-central.cfg:142
 msgid ""
 "They've probably hidden it in one of\n"
 "the houses, but I don't know which one."
-msgstr "Ils l'ont probablement cachée\ndans une des maisons,\nmais je ne sais pas laquelle."
+msgstr ""
+"Ils l'ont probablement cachée\n"
+"dans une des maisons,\n"
+"mais je ne sais pas laquelle."
 
 #: data/level/crevice-village-central.cfg:143
 msgid ""
 "Asking one of the prisoners is probably\n"
 "our best bet for a clue."
-msgstr "Votre meilleure option est probablement\nde demander à un des prisonniers."
+msgstr ""
+"Votre meilleure option est probablement\n"
+"de demander à un des prisonniers."
 
 #: data/level/crevice-village-central.cfg:2763
 msgid "Hey! Over here!"
@@ -1180,7 +1387,9 @@ msgstr "Hé! Par ici."
 msgid ""
 "Wow, so they seriously just packed up and left?\n"
 "That's amazing!"
-msgstr "Whah, alors ils tout simplement plié bagage?\nC'est incroyable!"
+msgstr ""
+"Whah, alors ils tout simplement plié bagage?\n"
+"C'est incroyable!"
 
 #: data/level/crevice-village-heights.cfg:241
 msgid "Tell me about it."
@@ -1198,7 +1407,9 @@ msgstr "Eh bien, ils m'ont juste laissé sortir."
 msgid ""
 "What?!\n"
 "They ... as in Milgram's kitties?"
-msgstr "Quoi?!\nIls... les chatons de Milgram?"
+msgstr ""
+"Quoi?!\n"
+"Ils... les chatons de Milgram?"
 
 #: data/level/crevice-village-heights.cfg:247
 msgid "^Yeah."
@@ -1208,7 +1419,9 @@ msgstr "^Ouais."
 msgid ""
 "Weird.. that doesn't make any sense!\n"
 "Why would they just let you go?"
-msgstr "Bizarre... ça n'a pas de sens!\nPourquoi t'auraient-ils simplement laissé partir?"
+msgstr ""
+"Bizarre... ça n'a pas de sens!\n"
+"Pourquoi t'auraient-ils simplement laissé partir?"
 
 #: data/level/crevice-village-heights.cfg:251
 msgid "That seems like an enormous waste of effort."
@@ -1222,39 +1435,53 @@ msgstr "Ouais, toute cette journée a été... bizarre."
 msgid ""
 "I've been thinking about that part,\n"
 "and I have a hunch."
-msgstr "J'y ai réfléchi,\net j'ai une idée."
+msgstr ""
+"J'y ai réfléchi,\n"
+"et j'ai une idée."
 
 #: data/level/crevice-village-heights.cfg:254
 msgid ""
 "I think the rank-and-file weren't\n"
 "given very specific orders."
-msgstr "Je pense que les sous-fifres n'avaient pas reçu\nd'ordres très spécifiques."
+msgstr ""
+"Je pense que les sous-fifres n'avaient pas reçu\n"
+"d'ordres très spécifiques."
 
 #: data/level/crevice-village-heights.cfg:255
 msgid ""
 "I don't think they were told\n"
 "what they were looking for."
-msgstr "Je ne pense pas qu'on leur ait dit\nce qu'ils recherchaient."
+msgstr ""
+"Je ne pense pas qu'on leur ait dit\n"
+"ce qu'ils recherchaient."
 
 #: data/level/crevice-village-heights.cfg:256
 msgid ""
 "I think they were just told\n"
 "to secure the place."
-msgstr "Je pense qu'on leur a simplement dit\nde sécuriser l'endroit."
+msgstr ""
+"Je pense qu'on leur a simplement dit\n"
+"de sécuriser l'endroit."
 
 #: data/level/crevice-village-heights.cfg:257
 msgid ""
 "Just arresting everyone is a strange way\n"
 "to do it, but I guess it's not so weird\n"
 "if you've got lots of manpower to spare."
-msgstr "Arrêter tout le monde est une drôle de méthode,\nmais j'imagine que ce n'est pas si étrange,\nquand on a beaucoup de main d'œuvre à disposition."
+msgstr ""
+"Arrêter tout le monde est une drôle de méthode,\n"
+"mais j'imagine que ce n'est pas si étrange,\n"
+"quand on a beaucoup de main d'œuvre à disposition."
 
 #: data/level/crevice-village-heights.cfg:258
 msgid ""
 "If they were just looking for the elder\n"
 "and didn't care about ticking people off,\n"
 "it's one way to make sure he couldn't slip away."
-msgstr "S'ils cherchaient l'ancien, et ne se souciaient pas\nde cocher les gens, c'est une façon d'être sûr\nqu'il ne pourrait pas s'échapper."
+msgstr ""
+"S'ils cherchaient l'ancien, et ne se souciaient pas\n"
+"de cocher les gens, c'est une façon d'être sûr\n"
+"qu'il ne pourrait pas s'échapper."
 
 #: data/level/crevice-village-heights.cfg:260
 msgid "Well, is that really who they were after?"
@@ -1264,7 +1491,9 @@ msgstr "Eh bien, est-ce vraiment après lui qu'ils étaient?"
 msgid ""
 "Yeah, one of their head guys showed me\n"
 "a drawing of him."
-msgstr "Ouais, un des chefs m'a montré\nun portrait de lui."
+msgstr ""
+"Ouais, un des chefs m'a montré\n"
+"un portrait de lui."
 
 #: data/level/crevice-village-heights.cfg:262
 msgid "He asked me if I knew who it was."
@@ -1278,7 +1507,9 @@ msgstr "C'est très intéressant..."
 msgid ""
 "Suddenly their motives don't seem\n"
 "so cut and dry."
-msgstr "Tout-à-coup leurs motivations\nne semblent plus si claires."
+msgstr ""
+"Tout-à-coup leurs motivations\n"
+"ne semblent plus si claires."
 
 #: data/level/crevice-village-heights.cfg:268
 msgid "Strange.."
@@ -1288,7 +1519,9 @@ msgstr "Etrange..."
 msgid ""
 "Anyways, not sure if you heard this part,\n"
 "but I'm about to take a little trip."
-msgstr "Quoi qu'il en soit, je ne sais pas si tu as entendu,\nmais je suis sur le point de faire un petit voyage."
+msgstr ""
+"Quoi qu'il en soit, je ne sais pas si tu as entendu,\n"
+"mais je suis sur le point de faire un petit voyage."
 
 #: data/level/crevice-village-heights.cfg:271
 msgid "No, I didn't hear this."
@@ -1299,45 +1532,63 @@ msgid ""
 "Yeah, I'm a little worried about\n"
 "what might happen if someone doesn't\n"
 "get in touch with Milgram."
-msgstr "Ouais, je m'inquiète un peu\nde ce qui pourrait arriver si personne\nn'entre en contact avec Milgram."
+msgstr ""
+"Ouais, je m'inquiète un peu\n"
+"de ce qui pourrait arriver si personne\n"
+"n'entre en contact avec Milgram."
 
 #: data/level/crevice-village-heights.cfg:275
 msgid ""
 "That old clown was just sabre-rattling\n"
 "about raising a militia."
-msgstr "Ce vieux clown se contentait de rodomontades\nsur la formation d'une milice."
+msgstr ""
+"Ce vieux clown se contentait de rodomontades\n"
+"sur la formation d'une milice."
 
 #: data/level/crevice-village-heights.cfg:277
 msgid ""
 "You don't think he could actually\n"
 "pull that off, do you?"
-msgstr "Tu ne penses pas qu'il pourrait vraiment\ny parvenir, n'est-ce pas?"
+msgstr ""
+"Tu ne penses pas qu'il pourrait vraiment\n"
+"y parvenir, n'est-ce pas?"
 
 #: data/level/crevice-village-heights.cfg:278
 msgid ""
 "Nah, this town doesn't have the fire for that.\n"
 "Which is a shame in some ways, but ..."
-msgstr "Nan, cette ville n'a pas de quoi.\nCe qui est dommage, en un sens, mais..."
+msgstr ""
+"Nan, cette ville n'a pas de quoi.\n"
+"Ce qui est dommage, en un sens, mais..."
 
 #: data/level/crevice-village-heights.cfg:279
 msgid ""
 "It's probably for the best, really,\n"
 "I can't imagine the mess if people actually\n"
 "got to fighting over stuff they disagreed about."
-msgstr "C'est probablement pour le mieux, vraiment,\nje n'ose imaginer la pagaille si les gens en arrivaient\nà se battre pour des choses sur lesquelles\nils ne sont pas d'accord."
+msgstr ""
+"C'est probablement pour le mieux, vraiment,\n"
+"je n'ose imaginer la pagaille si les gens en arrivaient\n"
+"à se battre pour des choses sur lesquelles\n"
+"ils ne sont pas d'accord."
 
 #: data/level/crevice-village-heights.cfg:281
 msgid ""
 "I guess I'm also worried about the other end;\n"
 "what Milgram is doing, et cetera."
-msgstr "Je suppose que je suis aussi inquiet pour l'autre côté;\nce que fait Milgram, etc."
+msgstr ""
+"Je suppose que je suis aussi inquiet pour l'autre côté;\n"
+"ce que fait Milgram, etc."
 
 #: data/level/crevice-village-heights.cfg:283
 msgid ""
 "I don't know; it's a little crazy to do this,\n"
 "but I've kinda been itching for something\n"
 "worthwhile to do."
-msgstr "Je ne sais pas; c'est un peu fou de faire cela,\nmais j'ai eu genre envie de\nfaire quelque chose d'utile."
+msgstr ""
+"Je ne sais pas; c'est un peu fou de faire cela,\n"
+"mais j'ai eu genre envie de\n"
+"faire quelque chose d'utile."
 
 #: data/level/crevice-village-heights.cfg:285
 msgid ""
@@ -1357,63 +1608,86 @@ msgstr "Oh, pas question."
 msgid ""
 "Can't be worse than the crap I have\n"
 "to deal with just coming into town, though."
-msgstr "Ça peut pourtant pas être pire que\nce à quoi j'ai eu droit\nsimplement pour être entré en ville."
+msgstr ""
+"Ça peut pourtant pas être pire que\n"
+"ce à quoi j'ai eu droit\n"
+"simplement pour être entré en ville."
 
 #: data/level/crevice-village-heights.cfg:292
 msgid ""
 "Who knows?\n"
 "Maybe something good will come of it?"
-msgstr "Qui sait?\nPeut-être que quelque chose de bon en sortira?"
+msgstr ""
+"Qui sait?\n"
+"Peut-être que quelque chose de bon en sortira?"
 
 #: data/level/crevice-village-heights.cfg:293
 msgid ""
 "Well, good luck!\n"
 "I'll be around."
-msgstr "Eh bien, bonne chance!\nJe serai dans le coin."
+msgstr ""
+"Eh bien, bonne chance!\n"
+"Je serai dans le coin."
 
 #: data/level/crevice-village-heights.cfg:316
 msgid ""
 "Hello, again!\n"
 "So ... what now?"
-msgstr "Rebonjour!\nAlors... Que faire maintenant?"
+msgstr ""
+"Rebonjour!\n"
+"Alors... Que faire maintenant?"
 
 #: data/level/crevice-village-heights.cfg:317
 msgid ""
 "It seems like some of the kitties are\n"
 "packing up and leaving, actually."
-msgstr "Il semble que certains des chatons soient en train\nde plier bagages et de partir, en fait."
+msgstr ""
+"Il semble que certains des chatons soient en train\n"
+"de plier bagages et de partir, en fait."
 
 #: data/level/crevice-village-heights.cfg:319
 msgid ""
 "That's news to me!\n"
 "Where did you see that?"
-msgstr "Voilà de bonnes nouvelles pour moi!\nOù avez-vous vu ça?"
+msgstr ""
+"Voilà de bonnes nouvelles pour moi!\n"
+"Où avez-vous vu ça?"
 
 #: data/level/crevice-village-heights.cfg:321
 msgid ""
 "Actually, nevermind - I'm just trying\n"
 "to figure out what their intentions are."
-msgstr "En fait, aucune importance - J'essaye juste\nde comprendre quelles sont leurs intentions."
+msgstr ""
+"En fait, aucune importance - J'essaye juste\n"
+"de comprendre quelles sont leurs intentions."
 
 #: data/level/crevice-village-heights.cfg:322
 msgid ""
 "Well, if you're game to find out,\n"
 "I just saw one of Milgram's lieutenants\n"
 "march up to the elder's house."
-msgstr "Eh bien, si ça vous intéresse,\nje viens de voir l'un des lieutenants\nde Milgram se diriger vers\nla maison de l'ancien."
+msgstr ""
+"Eh bien, si ça vous intéresse,\n"
+"je viens de voir l'un des lieutenants\n"
+"de Milgram se diriger vers\n"
+"la maison de l'ancien."
 
 #: data/level/crevice-village-heights.cfg:324
 msgid ""
 "Weird.\n"
 "I wonder what they want with the elder?"
-msgstr "Étrange.\nJe me demande ce qu'ils veulent à l'ancien."
+msgstr ""
+"Étrange.\n"
+"Je me demande ce qu'ils veulent à l'ancien."
 
 #: data/level/crevice-village-heights.cfg:325
 msgid ""
 "I have a notion,\n"
 "but if you're going to go up there,\n"
 "you'd better go whilst the going's good."
-msgstr "J'ai une idée, mais si vous allez là-haut,\nvous feriez mieux d'y aller pendant que tout va bien."
+msgstr ""
+"J'ai une idée, mais si vous allez là-haut,\n"
+"vous feriez mieux d'y aller pendant que tout va bien."
 
 #: data/level/crevice-village-heights.cfg:327
 msgid "Yeah, I'll check it out."
@@ -1435,19 +1709,25 @@ msgstr "... Désolé."
 msgid ""
 "Through there,\n"
 "is the way to where Milgram lives."
-msgstr "C'est par là qu'il faut passer\npour aller chez Milgram."
+msgstr ""
+"C'est par là qu'il faut passer\n"
+"pour aller chez Milgram."
 
 #: data/level/crevice-village-heights.cfg:1336
 msgid ""
 "If I remember right,\n"
 "one way to his castle will take you... hmm."
-msgstr "Si je me souviens bien,\nun trajet vers son château vous mènera... hmm."
+msgstr ""
+"Si je me souviens bien,\n"
+"un trajet vers son château vous mènera... hmm."
 
 #: data/level/crevice-village-heights.cfg:1338
 msgid ""
 "Uh, this'll take you over a bridge,\n"
 "then through an underground passage."
-msgstr "Euh, ça te conduira au-dessus d'un pont,\npuis par un passage souterrain."
+msgstr ""
+"Euh, ça te conduira au-dessus d'un pont,\n"
+"puis par un passage souterrain."
 
 #: data/level/crevice-village-heights.cfg:1340
 msgid "Watch your head in there."
@@ -1461,25 +1741,36 @@ msgstr "Après ça, tu arrives à la forêt."
 msgid ""
 "I haven't been there in a long time,\n"
 "so I'm not sure what's become of it."
-msgstr "Je n'y suis pas allé depuis\nbien longtemps,\nje ne sais donc pas ce\nqu'elle est devenue."
+msgstr ""
+"Je n'y suis pas allé depuis\n"
+"bien longtemps,\n"
+"je ne sais donc pas ce\n"
+"qu'elle est devenue."
 
 #: data/level/crevice-village-heights.cfg:1347
 msgid ""
 "I'm rather out of date on my political geography,\n"
 "so you'll just have to ask people as you go."
-msgstr "Je suis pas très à jour en géographie politique,\nalors il faudra que tu demandes aux gens\nau long du trajet."
+msgstr ""
+"Je suis pas très à jour en géographie politique,\n"
+"alors il faudra que tu demandes aux gens\n"
+"au long du trajet."
 
 #: data/level/crevice-village-heights.cfg:1350
 msgid ""
 "Uhm... well, don't you have any maps or such?\n"
 "Are you going to help outfit me for this?"
-msgstr "Hmm... Eh bien, vous n'avez pas des cartes ou autre?\nAllez-vous m'aider à m'équiper pour ça?"
+msgstr ""
+"Hmm... Eh bien, vous n'avez pas des cartes ou autre?\n"
+"Allez-vous m'aider à m'équiper pour ça?"
 
 #: data/level/crevice-village-heights.cfg:1352
 msgid ""
 "Nope.\n"
 "You're on your own.  Good luck."
-msgstr "Non.\nTu es tout seul. Bonne chance."
+msgstr ""
+"Non.\n"
+"Tu es tout seul. Bonne chance."
 
 #: data/level/crevice-village-heights.cfg:1355
 msgid "Gee, thanks."
@@ -1489,13 +1780,17 @@ msgstr "Pff, merci."
 msgid ""
 "Before we part ways, though,\n"
 "one question:"
-msgstr "Avant de se séparer, cependant,\nune question :"
+msgstr ""
+"Avant de se séparer, cependant,\n"
+"une question :"
 
 #: data/level/crevice-village-heights.cfg:1359
 msgid ""
 "What are we planning to do about\n"
 "the rest of Milgram's army?"
-msgstr "Que prévoyons-nous de faire au sujet\ndu reste de l'armée de Milgram?"
+msgstr ""
+"Que prévoyons-nous de faire au sujet\n"
+"du reste de l'armée de Milgram?"
 
 #: data/level/crevice-village-heights.cfg:1364
 msgid "Hey guys!"
@@ -1505,13 +1800,17 @@ msgstr "Hé les gars!"
 msgid ""
 "Oh, hey there!\n"
 "Didn't see you coming."
-msgstr "Oh, hé là!\nJe vous ai pas vu venir."
+msgstr ""
+"Oh, hé là!\n"
+"Je vous ai pas vu venir."
 
 #: data/level/crevice-village-heights.cfg:1369
 msgid ""
 "Yeah, I couldn't help but overhear, and\n"
 "... good news: Your problem is solved!"
-msgstr "Ouais, je n'ai pas pu m'empêcher d'entendre, et...\nbonne nouvelle : Votre problème est résolu!"
+msgstr ""
+"Ouais, je n'ai pas pu m'empêcher d'entendre, et...\n"
+"bonne nouvelle : Votre problème est résolu!"
 
 #: data/level/crevice-village-heights.cfg:1372
 msgid "What do you mean?"
@@ -1522,19 +1821,26 @@ msgid ""
 "Milgram's crew.  When that captain-guy\n"
 "came out of the house here,\n"
 "they all hopped in his airship and left."
-msgstr "L'équipage de Milgram. Quand ce capitaine\nest sorti de la maison, là, ils ont tous sauté\ndans son dirigeable et sont partis."
+msgstr ""
+"L'équipage de Milgram. Quand ce capitaine\n"
+"est sorti de la maison, là, ils ont tous sauté\n"
+"dans son dirigeable et sont partis."
 
 #: data/level/crevice-village-heights.cfg:1377
 msgid ""
 "Amazing...  if you don't mind,\n"
 "I have a few questions for you."
-msgstr "Incroyable... si vous voulez bien,\nj'ai quelques questions pour vous."
+msgstr ""
+"Incroyable... si vous voulez bien,\n"
+"j'ai quelques questions pour vous."
 
 #: data/level/crevice-village-heights.cfg:1380
 msgid ""
 "Well, that settles things for me.\n"
 "You two have fun."
-msgstr "Eh bien, ça règle les choses pour moi.\nAmusez-vous bien tous les deux."
+msgstr ""
+"Eh bien, ça règle les choses pour moi.\n"
+"Amusez-vous bien tous les deux."
 
 #: data/level/crevice-village-house-1.cfg:955
 msgid "Who are you?"
@@ -1564,13 +1870,18 @@ msgstr "Ça n'a pas de sens."
 msgid ""
 "Yes, well, at this particular juncture,\n"
 "who I am isn't very important."
-msgstr "Oui, eh bien, en ce moment précis,\nqui je suis n'est pas très important."
+msgstr ""
+"Oui, eh bien, en ce moment précis,\n"
+"qui je suis n'est pas très important."
 
 #: data/level/crevice-village-house-1.cfg:963
 msgid ""
 "What's important is that I'm not in a cage,\n"
 "so I might be able to do something to help."
-msgstr "Ce qui est important c'est que\nje ne suis pas en cage, donc je peux peut-être\nfaire quelque chose pour aider."
+msgstr ""
+"Ce qui est important c'est que\n"
+"je ne suis pas en cage, donc je peux peut-être\n"
+"faire quelque chose pour aider."
 
 #: data/level/crevice-village-house-1.cfg:965
 msgid "Got any advice?"
@@ -1581,7 +1892,11 @@ msgid ""
 "Yeah, that key right next to you -\n"
 "I think that unlocks a house that\n"
 "has the key to the town gate."
-msgstr "Ouais, et la clé juste à côté de toi,\nje crois qu'elle ouvre une maison\ndans laquelle il y a la clé\nde la porte de la ville."
+msgstr ""
+"Ouais, et la clé juste à côté de toi,\n"
+"je crois qu'elle ouvre une maison\n"
+"dans laquelle il y a la clé\n"
+"de la porte de la ville."
 
 #: data/level/crevice-village-house-1.cfg:967
 msgid "Maybe."
@@ -1591,7 +1906,9 @@ msgstr "Peut-être."
 msgid ""
 "OH!  One other thing..\n"
 "the key to the town gate is a SILVER key."
-msgstr "OH! Autre chose...\nla clé de la porte de la ville est une clé d'ARGENT."
+msgstr ""
+"OH! Autre chose...\n"
+"la clé de la porte de la ville est une clé d'ARGENT."
 
 #: data/level/crevice-village-house-1.cfg:970
 msgid "Keep an eye out for it!"
@@ -1613,7 +1930,9 @@ msgstr "Est-ce que j'ai l'air d'avoir une clé pour votre cage?"
 msgid ""
 "Ah, I see..\n"
 "carry on then."
-msgstr "Ah, je vois...\nBonne continuation alors."
+msgstr ""
+"Ah, je vois...\n"
+"Bonne continuation alors."
 
 #: data/level/crevice-village-house-1.cfg:991
 msgid "Thank God it's you!"
@@ -1625,7 +1944,9 @@ msgstr "Salut Hedge, tout va comme tu veux?"
 
 #: data/level/crevice-village-house-1.cfg:994
 msgid "Eh, I've been better, but yeah, I'm okay."
-msgstr "Bah j'ai connu de meilleurs jours,\nmais ouais, ça va."
+msgstr ""
+"Bah j'ai connu de meilleurs jours,\n"
+"mais ouais, ça va."
 
 #: data/level/crevice-village-house-1.cfg:995
 msgid "Besides the obvious cage situation."
@@ -1636,7 +1957,10 @@ msgid ""
 "Yeah.\n"
 "Sad to say, I can't pick locks.\n"
 "I got nothing."
-msgstr "Ouais.\nC'est bête mais je peux pas t'ouvrir.\nJ'ai rien pour crocheter."
+msgstr ""
+"Ouais.\n"
+"C'est bête mais je peux pas t'ouvrir.\n"
+"J'ai rien pour crocheter."
 
 #: data/level/crevice-village-house-1.cfg:998
 msgid "So I'm stuck here, huh?"
@@ -1654,13 +1978,17 @@ msgstr "Et mince."
 msgid ""
 "Hmm, you know, I know one thing\n"
 "that might help you.."
-msgstr "Hum, tu sais, je sais quelque chose\nqui pourrait t'aider..."
+msgstr ""
+"Hum, tu sais, je sais quelque chose\n"
+"qui pourrait t'aider..."
 
 #: data/level/crevice-village-house-1.cfg:1004
 msgid ""
 "There's supposedly\n"
 "a secret room in this house."
-msgstr "Cette maison est supposée\navoir une chambre secrète."
+msgstr ""
+"Cette maison est supposée\n"
+"avoir une chambre secrète."
 
 #: data/level/crevice-village-house-1.cfg:1006
 msgid "Oh really?  Where at?"
@@ -1670,13 +1998,17 @@ msgstr "Vraiment? Où ça?"
 msgid ""
 "If I knew that, it wouldn't\n"
 "be much of a secret, would it?"
-msgstr "Si je le savais, ça serait\nplus vraiment un secret."
+msgstr ""
+"Si je le savais, ça serait\n"
+"plus vraiment un secret."
 
 #: data/level/crevice-village-house-1.cfg:1009
 msgid ""
 "Figures.\n"
 "Well, thanks for the help!"
-msgstr "Logique.\nBon, merci pour l'aide!"
+msgstr ""
+"Logique.\n"
+"Bon, merci pour l'aide!"
 
 #: data/level/crevice-village-house-1.cfg:1010
 msgid "Good luck!"
@@ -1686,7 +2018,9 @@ msgstr "Bonne chance!"
 msgid ""
 "Jeez, I *swear* this house\n"
 "didn't look THIS big from the outside!"
-msgstr "Mon dieu, de dehors, j'aurais *juré*\nque cette maison était BIEN plus petite!"
+msgstr ""
+"Mon dieu, de dehors, j'aurais *juré*\n"
+"que cette maison était BIEN plus petite!"
 
 #: data/level/crevice-village-house-1.cfg:1045
 msgid "Uh, oh, I hear ... trouble."
@@ -1720,19 +2054,25 @@ msgstr "On est jumeaux."
 msgid ""
 "Is there anything\n"
 "you can do to help us?"
-msgstr "Tu peux faire quelque\nchose pour nous aider?"
+msgstr ""
+"Tu peux faire quelque\n"
+"chose pour nous aider?"
 
 #: data/level/crevice-village-house-2.cfg:1367
 msgid ""
 "Not yet.\n"
 "Sorry."
-msgstr "Pas encore.\nDésolé."
+msgstr ""
+"Pas encore.\n"
+"Désolé."
 
 #: data/level/crevice-village-house-2.cfg:1387
 msgid ""
 "Hey,\n"
 "I'm trying to help save the town."
-msgstr "Salut,\nj'essaye de sauver la ville."
+msgstr ""
+"Salut,\n"
+"j'essaye de sauver la ville."
 
 #: data/level/crevice-village-house-2.cfg:1389
 msgid "Can you give me any advice?"
@@ -1746,7 +2086,9 @@ msgstr "Ouais."
 msgid ""
 "The elder's house is off to the east,\n"
 "past the town gate."
-msgstr "La maison de l'ancien est à l'est,\nderrière le portail de ville."
+msgstr ""
+"La maison de l'ancien est à l'est,\n"
+"derrière le portail de ville."
 
 #: data/level/crevice-village-house-2.cfg:1392
 msgid "We saw Milgram's lieutenant go in there."
@@ -1766,7 +2108,9 @@ msgstr "La Maison des Dangers"
 msgid ""
 "Argh! Who in the world would\n"
 "design a house like this?"
-msgstr "Argh! Qui peut bien avoir construit\nune maison comme ça?"
+msgstr ""
+"Argh! Qui peut bien avoir construit\n"
+"une maison comme ça?"
 
 #: data/level/crevice-village-house-4-backroom.cfg:1529
 #: data/level/crevice-village-house-4.cfg:2639
@@ -1799,25 +2143,35 @@ msgstr "Je ne te le fais pas dire."
 msgid ""
 "When I stepped in the door,\n"
 "it locked behind me."
-msgstr "Lorsque je suis entré,\nla porte s'est refermée\nderrière moi.\""
+msgstr ""
+"Lorsque je suis entré,\n"
+"la porte s'est refermée\n"
+"derrière moi.\""
 
 #: data/level/crevice-village-house-4.cfg:1200
 msgid ""
 "That's actually a rather clever\n"
 "way to round everyone up."
-msgstr "C'est vraiment une bonne manière\nde piéger tout le monde."
+msgstr ""
+"C'est vraiment une bonne manière\n"
+"de piéger tout le monde."
 
 #: data/level/crevice-village-house-4.cfg:1202
 msgid ""
 "Know anything helpful\n"
 "about this house?"
-msgstr "Saurais-tu\nquoi que ce soit d'utile\nsur cette maison?"
+msgstr ""
+"Saurais-tu\n"
+"quoi que ce soit d'utile\n"
+"sur cette maison?"
 
 #: data/level/crevice-village-house-4.cfg:1203
 msgid ""
 "Unfortunately I don't.\n"
 "I was just visiting."
-msgstr "Malheureusement, non.\nJe suis juste de visite."
+msgstr ""
+"Malheureusement, non.\n"
+"Je suis juste de visite."
 
 #: data/level/crevice-village-house-4.cfg:1204
 msgid "The floorplan is quite loony."
@@ -1831,7 +2185,10 @@ msgstr "Par contre, la ventilation est vraiment bien."
 msgid ""
 "Anyways, I'd better be off.\n"
 "I'm trying to sort out this mess."
-msgstr "Bon, je ferais mieux\nde partir.\nJ'essaie d'arranger les choses ici."
+msgstr ""
+"Bon, je ferais mieux\n"
+"de partir.\n"
+"J'essaie d'arranger les choses ici."
 
 #: data/level/crevice-village-house-4.cfg:1210
 msgid "Good luck."
@@ -1857,7 +2214,9 @@ msgstr "Pfff."
 msgid ""
 "For the last time, we *know* you've\n"
 "got the money somewhere."
-msgstr "Pour la dernière fois, nous *savons*\nque tu as l'argent quelque part."
+msgstr ""
+"Pour la dernière fois, nous *savons*\n"
+"que tu as l'argent quelque part."
 
 #: data/level/crevice-village-house-elder.cfg:330
 msgid "Make this easy on yourself."
@@ -1884,7 +2243,11 @@ msgid ""
 "You're not going anywhere, buster!\n"
 "Now, listen up,\n"
 "You're SERIOUSLY testing my patience."
-msgstr "Tu ne vas nulle part mon pote!\nMaintenant écoute bien,\nTu commences VRAIMENT\nà dépasser les bornes."
+msgstr ""
+"Tu ne vas nulle part mon pote!\n"
+"Maintenant écoute bien,\n"
+"Tu commences VRAIMENT\n"
+"à dépasser les bornes."
 
 #: data/level/crevice-village-house-elder.cfg:346
 msgid "If you don't tell...  uh..."
@@ -1916,25 +2279,33 @@ msgstr "-aïe-"
 
 #: data/level/crevice-village-house-elder.cfg:397
 msgid "Okay, I've had enough!  I'm going home."
-msgstr "D'accord, c'en est trop!\nJe rentre chez moi."
+msgstr ""
+"D'accord, c'en est trop!\n"
+"Je rentre chez moi."
 
 #: data/level/crevice-village-house-elder.cfg:447
 msgid ""
 "Well!\n"
 "That went better than expected."
-msgstr "Bon!\nÇa s'est bien passé finalement."
+msgstr ""
+"Bon!\n"
+"Ça s'est bien passé finalement."
 
 #: data/level/crevice-village-house-elder.cfg:450
 msgid ""
 "Say ...\n"
 "What happened to the elder?"
-msgstr "Heu...\nQu'est-ce qui est arrivé à l'ancien?"
+msgstr ""
+"Heu...\n"
+"Qu'est-ce qui est arrivé à l'ancien?"
 
 #: data/level/crevice-village-house-elder.cfg:455
 msgid ""
 "Whoa...\n"
 "... is that what I think it is?"
-msgstr "Hé...\n... c'est bien ce que je crois?"
+msgstr ""
+"Hé...\n"
+"... c'est bien ce que je crois?"
 
 #: data/level/crevice-village-house-elder.cfg:467
 msgid "It is indeed, my boy!"
@@ -1946,31 +2317,41 @@ msgstr "C'est ma chambre de sûreté."
 
 #: data/level/crevice-village-house-elder.cfg:473
 msgid "Built it for exactly this sort of crisis."
-msgstr "Construite exactement pour\nce genre de situations."
+msgstr ""
+"Construite exactement pour\n"
+"ce genre de situations."
 
 #: data/level/crevice-village-house-elder.cfg:477
 msgid ""
 "That's really amazing.\n"
 "Uh..."
-msgstr "C'est vraiment incroyable.\nEuh..."
+msgstr ""
+"C'est vraiment incroyable.\n"
+"Euh..."
 
 #: data/level/crevice-village-house-elder.cfg:479
 msgid ""
 "I guess I have to ask:\n"
 "Whatever prompted you to build this?"
-msgstr "Je suppose que je dois demander :\nQu'est-ce qui vous a poussé à construire ça?"
+msgstr ""
+"Je suppose que je dois demander :\n"
+"Qu'est-ce qui vous a poussé à construire ça?"
 
 #: data/level/crevice-village-house-elder.cfg:481
 msgid ""
 "This HAD to be expensive.\n"
 "I mean ... really ... expensive."
-msgstr "Ça a DÛ coûter cher.\nJe veux dire... vraiment... cher."
+msgstr ""
+"Ça a DÛ coûter cher.\n"
+"Je veux dire... vraiment... cher."
 
 #: data/level/crevice-village-house-elder.cfg:483
 msgid ""
 "Yes.\n"
 "Yes it was."
-msgstr "Oui.\nOui ça a coûté cher."
+msgstr ""
+"Oui.\n"
+"Oui ça a coûté cher."
 
 #: data/level/crevice-village-house-elder.cfg:487
 msgid "...And?"
@@ -1996,11 +2377,15 @@ msgstr ""
 msgid ""
 "I set out for just a routine errand run,\n"
 "you know?"
-msgstr "Je pars juste pour faire une course de routine,\nvous savez?"
+msgstr ""
+"Je pars juste pour faire une course de routine,\n"
+"vous savez?"
 
 #: data/level/crevice-village-house-elder.cfg:497
 msgid "Just gonna run by town, check the news."
-msgstr "Je vais juste faire un tour en ville,\nprendre des nouvelles."
+msgstr ""
+"Je vais juste faire un tour en ville,\n"
+"prendre des nouvelles."
 
 #: data/level/crevice-village-house-elder.cfg:499
 msgid ""
@@ -2036,13 +2421,17 @@ msgstr "Hmm... voyons, par où commencer?"
 msgid ""
 "Why don't we start with:\n"
 "Why was that guy asking about money?"
-msgstr "Pourquoi ne pas commencer par :\nPourquoi ce gars vous demandait-il de l'argent?"
+msgstr ""
+"Pourquoi ne pas commencer par :\n"
+"Pourquoi ce gars vous demandait-il de l'argent?"
 
 #: data/level/crevice-village-house-elder.cfg:513
 msgid ""
 "Well, I am the mayor, after all,\n"
 "and mayors are well endowed."
-msgstr "Eh bien, je suis le maire, après tout,\net les maires sont bien dotés."
+msgstr ""
+"Eh bien, je suis le maire, après tout,\n"
+"et les maires sont bien dotés."
 
 #: data/level/crevice-village-house-elder.cfg:515
 msgid ""
@@ -2061,7 +2450,11 @@ msgid ""
 "In fact, clowns like you are the reason\n"
 "we *can't* agree on a mayor,\n"
 "or get anything else done around here."
-msgstr "En fait, les clowns comme vous sont la raison\npour laquelle nous ne *pouvons pas*\nnous entendre sur un maire,\nni faire quoi que ce soit d'autre, ici."
+msgstr ""
+"En fait, les clowns comme vous sont la raison\n"
+"pour laquelle nous ne *pouvons pas*\n"
+"nous entendre sur un maire,\n"
+"ni faire quoi que ce soit d'autre, ici."
 
 #: data/level/crevice-village-house-elder.cfg:521
 msgid "Are you done insulting me, yet?"
@@ -2071,55 +2464,74 @@ msgstr "Bon, vous avez fini de m'insulter, là?"
 msgid ""
 "Nope.\n"
 "Not until you answer my question!"
-msgstr "Non.\nPas avant que vous répondiez à ma question!"
+msgstr ""
+"Non.\n"
+"Pas avant que vous répondiez à ma question!"
 
 #: data/level/crevice-village-house-elder.cfg:525
 msgid ""
 "Seriously - I'm on your side, here!\n"
 "I just risked my butt fighting that guy off."
-msgstr "Sérieusement - Je suis de votre côté, là!\nJe viens de risquer mes fesses\nà me battre contre ce type."
+msgstr ""
+"Sérieusement - Je suis de votre côté, là!\n"
+"Je viens de risquer mes fesses\n"
+"à me battre contre ce type."
 
 #: data/level/crevice-village-house-elder.cfg:527
 msgid ""
 "I know you're trying to hide something,\n"
 "but throw me a line here."
-msgstr "Je sais que vous essayez de cacher quelque chose,\nmais donnez-moi un indice."
+msgstr ""
+"Je sais que vous essayez de cacher quelque chose,\n"
+"mais donnez-moi un indice."
 
 #: data/level/crevice-village-house-elder.cfg:529
 msgid ""
 "Maybe ...\n"
 "I can actually help you?"
-msgstr "Peut-être...\nque je peux vraiment vous aider."
+msgstr ""
+"Peut-être...\n"
+"que je peux vraiment vous aider."
 
 #: data/level/crevice-village-house-elder.cfg:531
 msgid ""
 "Okay.\n"
 "What have I got to lose, eh?"
-msgstr "Okay.\nQu'est-ce que j'ai à perdre, hein?"
+msgstr ""
+"Okay.\n"
+"Qu'est-ce que j'ai à perdre, hein?"
 
 #: data/level/crevice-village-house-elder.cfg:533
 msgid ""
 "I'm afraid if this gets out,\n"
 "the town might blame me for this incident."
-msgstr "Je crains que si cela s'apprenait,\nla ville pourrait me blâmer pour cet incident."
+msgstr ""
+"Je crains que si cela s'apprenait,\n"
+"la ville pourrait me blâmer pour cet incident."
 
 #: data/level/crevice-village-house-elder.cfg:535
 msgid ""
 "See, some years ago,\n"
 "Milgram approached me with a proposition."
-msgstr "Voyez-vous, il y a quelques années,\nMilgram m'a contacté pour une proposition."
+msgstr ""
+"Voyez-vous, il y a quelques années,\n"
+"Milgram m'a contacté pour une proposition."
 
 #: data/level/crevice-village-house-elder.cfg:537
 msgid ""
 "He was going to invest a\n"
 "sizeable amount of money, here."
-msgstr "Il allait investir\nune somme importante d'argent, ici."
+msgstr ""
+"Il allait investir\n"
+"une somme importante d'argent, ici."
 
 #: data/level/crevice-village-house-elder.cfg:539
 msgid ""
 "Wait,\n"
 "did he think you were actually the mayor?"
-msgstr "Attendez, pensait-il\nque vous étiez vraiment le maire?"
+msgstr ""
+"Attendez, pensait-il\n"
+"que vous étiez vraiment le maire?"
 
 #: data/level/crevice-village-house-elder.cfg:541
 msgid "YES!"
@@ -2130,13 +2542,18 @@ msgid ""
 "Anyhow, I was all too happy to accept,\n"
 "but it wasn't long before I realized\n"
 "what was really afoot."
-msgstr "Quoi qu'il en soit, j'ai été trop heureux d'accepter,\nmais il ne fallut pas longtemps avant que je réalise\nce qui se tramait vraiment."
+msgstr ""
+"Quoi qu'il en soit, j'ai été trop heureux d'accepter,\n"
+"mais il ne fallut pas longtemps avant que je réalise\n"
+"ce qui se tramait vraiment."
 
 #: data/level/crevice-village-house-elder.cfg:545
 msgid ""
 "I realized this was all a scam.\n"
 "He was establishing a claim, you see."
-msgstr "J'ai réalisé tout cela était une arnaque.\nIl établissait une revendication, vous voyez."
+msgstr ""
+"J'ai réalisé tout cela était une arnaque.\n"
+"Il établissait une revendication, vous voyez."
 
 #: data/level/crevice-village-house-elder.cfg:547
 msgid "I'm not sure I follow you..."
@@ -2154,81 +2571,109 @@ msgstr "Pas exactement."
 msgid ""
 "See, Milgram was being\n"
 "what's called a 'loan shark'."
-msgstr "Voyez-vous, Milgram était\nce qu'on appelle un «usurier»."
+msgstr ""
+"Voyez-vous, Milgram était\n"
+"ce qu'on appelle un «usurier»."
 
 #: data/level/crevice-village-house-elder.cfg:555
 msgid ""
 "He gives me money,\n"
 "then he just 'decides' what I owe him."
-msgstr "Il me donne de l'argent, puis\n«décide» simplement de ce que je lui dois."
+msgstr ""
+"Il me donne de l'argent, puis\n"
+"«décide» simplement de ce que je lui dois."
 
 #: data/level/crevice-village-house-elder.cfg:557
 msgid ""
 "That I owe him more money\n"
 "than I could ever repay."
-msgstr "Que je lui dois plus d'argent que\nce que je ne pourrais jamais rembourser."
+msgstr ""
+"Que je lui dois plus d'argent que\n"
+"ce que je ne pourrais jamais rembourser."
 
 #: data/level/crevice-village-house-elder.cfg:559
 msgid ""
 "See, then he can just take\n"
 "whatever he wants, as payment."
-msgstr "Tu vois, ensuite il peut simplement prendre\nce qu'il veut, comme moyen de paiement."
+msgstr ""
+"Tu vois, ensuite il peut simplement prendre\n"
+"ce qu'il veut, comme moyen de paiement."
 
 #: data/level/crevice-village-house-elder.cfg:561
 msgid ""
 "He was going to use this as an excuse\n"
 "to take over the town."
-msgstr "Il allait utiliser ça comme excuse\npour faire main-basse sur la ville."
+msgstr ""
+"Il allait utiliser ça comme excuse\n"
+"pour faire main-basse sur la ville."
 
 #: data/level/crevice-village-house-elder.cfg:563
 msgid ""
 "Okay... I guess that sorta makes sense,\n"
 "although it's a bit convoluted."
-msgstr "Okay... Je suppose que c'est logique,\nmême si c'est un peu alambiqué."
+msgstr ""
+"Okay... Je suppose que c'est logique,\n"
+"même si c'est un peu alambiqué."
 
 #: data/level/crevice-village-house-elder.cfg:565
 msgid ""
 "I don't see why he'd need an excuse.\n"
 "If he wanted to take over the town,\n"
 "he could just ... do it."
-msgstr "Je ne vois pas pourquoi il aurait besoin d'une excuse.\nS'il voulait prendre la ville,\nil pourrait tout simplement... le faire."
+msgstr ""
+"Je ne vois pas pourquoi il aurait besoin d'une excuse.\n"
+"S'il voulait prendre la ville,\n"
+"il pourrait tout simplement... le faire."
 
 #: data/level/crevice-village-house-elder.cfg:567
 msgid ""
 "No!\n"
 "You always need an excuse.\n"
 "Otherwise, no one would support your claim!"
-msgstr "Non!\nIl faut toujours une excuse.\nSinon, personne ne soutient votre demande!"
+msgstr ""
+"Non!\n"
+"Il faut toujours une excuse.\n"
+"Sinon, personne ne soutient votre demande!"
 
 #: data/level/crevice-village-house-elder.cfg:569
 msgid ""
 "Uhh, okay...\n"
 "Anyways, what are we gonna do here?"
-msgstr "Euh, ok...\nQuoi qu'il en soit, que va-t-on faire ici?"
+msgstr ""
+"Euh, ok...\n"
+"Quoi qu'il en soit, que va-t-on faire ici?"
 
 #: data/level/crevice-village-house-elder.cfg:571
 msgid ""
 "Well, I think we should form a militia,\n"
 "and bring the fight to Milgram!"
-msgstr "Eh bien, je pense que nous devrions former une milice,\net nous attaquer à Milgram!"
+msgstr ""
+"Eh bien, je pense que nous devrions former une milice,\n"
+"et nous attaquer à Milgram!"
 
 #: data/level/crevice-village-house-elder.cfg:573
 msgid ""
 "I don't think that's a good idea!\n"
 "Let's not jump the gun, here!"
-msgstr "Je ne pense pas que ce soit une bonne idée!\nNe nous emballons pas!"
+msgstr ""
+"Je ne pense pas que ce soit une bonne idée!\n"
+"Ne nous emballons pas!"
 
 #: data/level/crevice-village-house-elder.cfg:575
 msgid ""
 "If you ask me, I think we need to go\n"
 "hear Milgram's side of the story."
-msgstr "À mon avis, nous devrions aller écouter\nla version de Milgram."
+msgstr ""
+"À mon avis, nous devrions aller écouter\n"
+"la version de Milgram."
 
 #: data/level/crevice-village-house-elder.cfg:577
 msgid ""
 "Talk it over.  See if we can reach\n"
 "some mutually amicable agreement."
-msgstr "Discuter. Voir si nous pouvons parvenir\nà un accord mutuel à l'amiable."
+msgstr ""
+"Discuter. Voir si nous pouvons parvenir\n"
+"à un accord mutuel à l'amiable."
 
 #: data/level/crevice-village-house-elder.cfg:579
 msgid "I don't think that would work."
@@ -2238,25 +2683,35 @@ msgstr "Je ne pense pas que cela fonctionnerait."
 msgid ""
 "I sure do!\n"
 "Cripes - I tell you what: I'll do it."
-msgstr "Je suis sûr que si!\nMince - je vous dis même : je vais le faire."
+msgstr ""
+"Je suis sûr que si!\n"
+"Mince - je vous dis même : je vais le faire."
 
 #: data/level/crevice-village-house-elder.cfg:583
 msgid ""
 "I'll go talk to Milgram,\n"
 "and get this all sorted out.  Okay?"
-msgstr "Je vais aller parler à Milgram,\net régler tout ça. Okay?"
+msgstr ""
+"Je vais aller parler à Milgram,\n"
+"et régler tout ça. Okay?"
 
 #: data/level/crevice-village-house-elder.cfg:585
 msgid ""
 "I just think this is a big misunderstanding,\n"
 "and I'd rather not see anyone get hurt."
-msgstr "Je pense juste que c'est un gros malentendu,\net je préfère éviter que quiconque se fasse blesser."
+msgstr ""
+"Je pense juste que c'est un gros malentendu,\n"
+"et je préfère éviter que quiconque se fasse blesser."
 
 #: data/level/crevice-village-house-elder.cfg:587
 msgid ""
 "Well, if you say so, I suppose I can't object.\n"
 "In fact, it might be a good stalling tactic."
-msgstr "Eh bien, si vous le dites, je suppose que\nje ne peux pas m'y opposer.\nEn fait, ce pourrait être\nune bonne tactique de diversion."
+msgstr ""
+"Eh bien, si vous le dites, je suppose que\n"
+"je ne peux pas m'y opposer.\n"
+"En fait, ce pourrait être\n"
+"une bonne tactique de diversion."
 
 #: data/level/crevice-village-house-elder.cfg:589
 msgid "Why, I'll even show you the way..."
@@ -2278,49 +2733,65 @@ msgstr "Hé!"
 msgid ""
 "Glad I caught you!\n"
 "You'd better be aware of this..."
-msgstr "Content de vous avoir rattrapé!\nIl vaut mieux que vous sachiez... "
+msgstr ""
+"Content de vous avoir rattrapé!\n"
+"Il vaut mieux que vous sachiez... "
 
 #: data/level/crevice-village.cfg:1533
 msgid ""
 "The cave that leads into the town,\n"
 "has a sentry posted in it."
-msgstr "Qu'il y a un garde dans\nla grotte qui mène à la ville."
+msgstr ""
+"Qu'il y a un garde dans\n"
+"la grotte qui mène à la ville."
 
 #: data/level/crevice-village.cfg:1534
 msgid ""
 "Milgram's trying to seal off the town,\n"
 "so no one gets in or out."
-msgstr "Milgram essaie de boucler la ville,\nafin que personne n'entre ou ne sorte."
+msgstr ""
+"Milgram essaie de boucler la ville,\n"
+"afin que personne n'entre ou ne sorte."
 
 #: data/level/crevice-village.cfg:1535
 msgid ""
 "That might have been why\n"
 "he tried to take out that bridge."
-msgstr "C'est peut-être pour cela\nqu'il a voulu détruire ce pont."
+msgstr ""
+"C'est peut-être pour cela\n"
+"qu'il a voulu détruire ce pont."
 
 #: data/level/crevice-village.cfg:1536
 msgid ""
 "If you're thinking to go in there,\n"
 "you might reconsider."
-msgstr "Si vous vouliez aller en ville,\nil vous faut y réfléchir à deux fois."
+msgstr ""
+"Si vous vouliez aller en ville,\n"
+"il vous faut y réfléchir à deux fois."
 
 #: data/level/crevice-village.cfg:1538
 msgid ""
 "Well, yeah,\n"
 "I was gonna go in there."
-msgstr "Ben ouais,\nJe pensais y aller."
+msgstr ""
+"Ben ouais,\n"
+"Je pensais y aller."
 
 #: data/level/crevice-village.cfg:1540
 msgid ""
 "I mean, what are we gonna do,\n"
 "sit on our butts here?"
-msgstr "Qu'est-ce qu'on peut faire après tout,\nrester planté là?"
+msgstr ""
+"Qu'est-ce qu'on peut faire après tout,\n"
+"rester planté là?"
 
 #: data/level/crevice-village.cfg:1541
 msgid ""
 "No, no...\n"
 "but I was hoping we'd go in in force."
-msgstr "Non, non...\nj'espérais qu'on y rentrerait en force."
+msgstr ""
+"Non, non...\n"
+"j'espérais qu'on y rentrerait en force."
 
 #: data/level/crevice-village.cfg:1543
 msgid "Against Milgram? Really?"
@@ -2330,43 +2801,58 @@ msgstr "Contre Milgram? Vraiment?"
 msgid ""
 "I mean... on paper,\n"
 "that sounds like a good enough plan,"
-msgstr "Je veux dire... sur le papier,\ncela ressemble à un assez bon plan,"
+msgstr ""
+"Je veux dire... sur le papier,\n"
+"cela ressemble à un assez bon plan,"
 
 #: data/level/crevice-village.cfg:1547
 msgid ""
 "but I'm gonna be a jerk here,\n"
 "and poke some holes in it."
-msgstr "mais je vais être un rabat-joie ici,\net y faire quelques trous."
+msgstr ""
+"mais je vais être un rabat-joie ici,\n"
+"et y faire quelques trous."
 
 #: data/level/crevice-village.cfg:1548
 msgid ""
 "Fair enough.\n"
 "I'm not particularly fond of it, myself."
-msgstr "Très bien.\nJe n'en suis pas particulièrement\nconvaincu moi-même."
+msgstr ""
+"Très bien.\n"
+"Je n'en suis pas particulièrement\n"
+"convaincu moi-même."
 
 #: data/level/crevice-village.cfg:1550
 msgid ""
 "Firstly, Milgram's got LOTS of followers.\n"
 "Tons of em.  He runs an entire city."
-msgstr "D'abord, Milgram a PLEIN de serviteurs.\nDes tonnes. Il dirige une cité entière."
+msgstr ""
+"D'abord, Milgram a PLEIN de serviteurs.\n"
+"Des tonnes. Il dirige une cité entière."
 
 #: data/level/crevice-village.cfg:1552
 msgid ""
 "I mean, even if we armed the whole town,\n"
 "they'd grossly outnumber us."
-msgstr "Je veux dire, même si nous armions toute la ville,\nils seraient nettement plus nombreux que nous."
+msgstr ""
+"Je veux dire, même si nous armions toute la ville,\n"
+"ils seraient nettement plus nombreux que nous."
 
 #: data/level/crevice-village.cfg:1554
 msgid ""
 "Plus, they're pretty mobile, too.\n"
 "Planes and such."
-msgstr "De plus, ils sont assez mobiles, aussi.\nAvions et autres."
+msgstr ""
+"De plus, ils sont assez mobiles, aussi.\n"
+"Avions et autres."
 
 #: data/level/crevice-village.cfg:1556
 msgid ""
 "We might get the drop on them for a bit,\n"
 "but we'd get surrounded in no time."
-msgstr "Nous pourrions les tenir en respect un moment,\nmais nous serions encerclés en un rien de temps."
+msgstr ""
+"Nous pourrions les tenir en respect un moment,\n"
+"mais nous serions encerclés en un rien de temps."
 
 #: data/level/crevice-village.cfg:1558
 msgid "Brute force against brute force won't work."
@@ -2376,26 +2862,37 @@ msgstr "La force brute contre la force brute ne fonctionnera pas."
 msgid ""
 "We'd be like ... \n"
 "a bull butting heads with a freight train."
-msgstr "Nous serions comme...\nun taureau chargeant contre\nun train de marchandises."
+msgstr ""
+"Nous serions comme...\n"
+"un taureau chargeant contre\n"
+"un train de marchandises."
 
 #: data/level/crevice-village.cfg:1561
 msgid ""
 "Yes... oh dear.\n"
 "I see what you mean."
-msgstr "Oui... oh mon dieu.\nJe vois ce que vous voulez dire."
+msgstr ""
+"Oui... oh mon dieu.\n"
+"Je vois ce que vous voulez dire."
 
 #: data/level/crevice-village.cfg:1563
 msgid ""
 "There's got to be something\n"
 "we can use to our advantage,\n"
 "but \"numerical superiority\" isn't it."
-msgstr "Il y a sûrement quelque chose\nà utiliser à notre avantage,\nmais ce n'est pas\nla \"supériorité numérique\"."
+msgstr ""
+"Il y a sûrement quelque chose\n"
+"à utiliser à notre avantage,\n"
+"mais ce n'est pas\n"
+"la \"supériorité numérique\"."
 
 #: data/level/crevice-village.cfg:1565
 msgid ""
 "Anyways, about the cave ahead...\n"
 "it's just one guy, right?"
-msgstr "Sinon, à propos de la grotte plus loin ...\nc'est juste un type, c'est ça ?"
+msgstr ""
+"Sinon, à propos de la grotte plus loin ...\n"
+"c'est juste un type, c'est ça ?"
 
 #: data/level/crevice-village.cfg:1566
 msgid "To my knowledge, yes."
@@ -2403,19 +2900,26 @@ msgstr "D'après ce que je sais, oui."
 
 #: data/level/crevice-village.cfg:1568
 msgid "Maybe I can talk my way around him?"
-msgstr "Je pourrais peut-être\nessayer de négocier?"
+msgstr ""
+"Je pourrais peut-être\n"
+"essayer de négocier?"
 
 #: data/level/crevice-village.cfg:1570
 msgid ""
 "Worse comes to worse,\n"
 "I can just run for it.  Right?"
-msgstr "Et au pire, je pourrai\ntoujours prendre mes jambes\nà mon cou. Non?"
+msgstr ""
+"Et au pire, je pourrai\n"
+"toujours prendre mes jambes\n"
+"à mon cou. Non?"
 
 #: data/level/crevice-village.cfg:1571
 msgid ""
 "I do hope so.\n"
 "Good luck!"
-msgstr "J'espère.\nBonne chance!"
+msgstr ""
+"J'espère.\n"
+"Bonne chance!"
 
 #: data/level/dark-corridor.cfg:248
 msgid "Now what?"
@@ -2438,7 +2942,10 @@ msgid ""
 "It says,\n"
 "\"Chopple's General Store,\n"
 "just ahead."
-msgstr "Ça dit,\n\"Magasin de Chopple\",\njuste devant."
+msgstr ""
+"Ça dit,\n"
+"\"Magasin de Chopple\",\n"
+"juste devant."
 
 #: data/level/descent-to-town.cfg:896
 msgid "Honest trade and thrifty prices!\""
@@ -2481,7 +2988,9 @@ msgstr "Forêt des Mauvais Pressentiments "
 msgid ""
 "Ahh, what a beautiful ..\n"
 "..Afternoon?!"
-msgstr "Ah, quel magnifique...\nAprès-midi?!"
+msgstr ""
+"Ah, quel magnifique...\n"
+"Après-midi?!"
 
 #: data/level/frogatto-grotto-frogattos-room.cfg:293
 msgid "Oh geez! I overslept!"
@@ -2497,7 +3006,9 @@ msgstr "Salut, où en est le petit-déjeuner?"
 
 #: data/level/frogatto-grotto-inside.cfg:237
 msgid "Breakfast? ..bud, we're on lunch."
-msgstr "Petit-déjeuner?\n...Mec, on en est au déjeuner."
+msgstr ""
+"Petit-déjeuner?\n"
+"...Mec, on en est au déjeuner."
 
 #: data/level/frogatto-grotto-inside.cfg:238
 msgid "You need to get up earlier."
@@ -2511,7 +3022,9 @@ msgstr "D'accord, où en est le déjeuner alors?"
 msgid ""
 "Getting there.\n"
 "It's gonna be a while, though."
-msgstr "Il arrive.\nMais pas avant quelque temps."
+msgstr ""
+"Il arrive.\n"
+"Mais pas avant quelque temps."
 
 #: data/level/frogatto-grotto-inside.cfg:244
 msgid "I'll check back later, then."
@@ -2519,13 +3032,17 @@ msgstr "Je reviens plus tard alors."
 
 #: data/level/frogatto-grotto-inside.cfg:247
 msgid "So, what happened to lunch?"
-msgstr "Alors, qu'est-ce qui est\narrivé au déjeuner?"
+msgstr ""
+"Alors, qu'est-ce qui est\n"
+"arrivé au déjeuner?"
 
 #: data/level/frogatto-grotto-inside.cfg:248
 msgid ""
 "I got tired of waiting,\n"
 "and ate by myself."
-msgstr "J'en avais marre d'attendre,\net j'ai mangé tout seul."
+msgstr ""
+"J'en avais marre d'attendre,\n"
+"et j'ai mangé tout seul."
 
 #: data/level/frogatto-grotto-inside.cfg:249
 msgid "Leftovers are in the fridge."
@@ -2547,7 +3064,9 @@ msgstr "Euh... oui? "
 msgid ""
 "At least TRY to get a job today,\n"
 "alright?"
-msgstr "ESSAYE au moins de trouver\nun travail aujourd'hui, d'accord?"
+msgstr ""
+"ESSAYE au moins de trouver\n"
+"un travail aujourd'hui, d'accord?"
 
 #: data/level/frogatto-grotto-inside.cfg:616
 msgid "We need some help around here."
@@ -2589,7 +3108,9 @@ msgstr "Je sais!"
 msgid ""
 "I can stop in at Nene's house\n"
 "on the way to town!"
-msgstr "Je peux faire un tour chez Nene,\nc'est sur le chemin de la ville!"
+msgstr ""
+"Je peux faire un tour chez Nene,\n"
+"c'est sur le chemin de la ville!"
 
 #: data/level/frogatto-grotto.cfg:822
 msgid "Such a beautiful view from here."
@@ -2619,29 +3140,40 @@ msgstr "Chemin Herbeux"
 msgid ""
 "On this level, we give advice on how to play.\n"
 "Each question mark has its own hint."
-msgstr "À ce niveau, nous donnons des conseils\nsur la façon de jouer.\nChaque point d'interrogation a son propre indice."
+msgstr ""
+"À ce niveau, nous donnons des conseils\n"
+"sur la façon de jouer.\n"
+"Chaque point d'interrogation a son propre indice."
 
 #: data/level/grassy-path.cfg:998
 msgid ""
 "If you already know how to play,\n"
 "then just walk to the next level."
-msgstr "Si vous savez déjà jouer,\nmarchez jusqu'au niveau suivant."
+msgstr ""
+"Si vous savez déjà jouer,\n"
+"marchez jusqu'au niveau suivant."
 
 #: data/level/grassy-path.cfg:1015
 msgid ""
 "To save your progress in the game,\n"
 "use one of these convenient restrooms."
-msgstr "Pour sauvegarder votre progression dans le jeu,\nutilisez l'une de ces toilettes bien pratiques."
+msgstr ""
+"Pour sauvegarder votre progression dans le jeu,\n"
+"utilisez l'une de ces toilettes bien pratiques."
 
 #: data/level/grassy-path.cfg:1032
 msgid ""
 "Some changes in elevation are too high\n"
 "to clear with just a normal jump."
-msgstr "Certains changements d'altitude sont trop grands\npour un saut normal."
+msgstr ""
+"Certains changements d'altitude sont trop grands\n"
+"pour un saut normal."
 
 #: data/level/grassy-path.cfg:1033
 msgid "Fortunately, Frogatto can jump off of walls, too!"
-msgstr "Heureusement, Frogatto peut aussi sauter\ndepuis les murs!"
+msgstr ""
+"Heureusement, Frogatto peut aussi sauter\n"
+"depuis les murs!"
 
 #: data/level/grassy-path.cfg:1034
 msgid "To do this, do a walking jump into the wall."
@@ -2651,53 +3183,76 @@ msgstr "Pour ce faire, sautez contre le mur tout en marchant."
 msgid ""
 "If you bump into a wall at the crest of a jump,\n"
 "you will cling to the wall and slowly slide down."
-msgstr "Si vous touchez le mur en haut d'un saut,\nvous pourrez vous accrocher au mur\net glisser lentement vers le bas."
+msgstr ""
+"Si vous touchez le mur en haut d'un saut,\n"
+"vous pourrez vous accrocher au mur\n"
+"et glisser lentement vers le bas."
 
 #: data/level/grassy-path.cfg:1036
 msgid ""
 "If you don't get a running start, you can still\n"
 "cling on, if you tap the arrow toward the wall,\n"
 "and press jump whilst it's held down."
-msgstr "Si vous ne faites pas un bon départ,\nvous pouvez toujours vous accrocher,\nsi vous appuyez sur la flèche vers le mur,\net sautez en la maintenant enfoncée."
+msgstr ""
+"Si vous ne faites pas un bon départ,\n"
+"vous pouvez toujours vous accrocher,\n"
+"si vous appuyez sur la flèche vers le mur,\n"
+"et sautez en la maintenant enfoncée."
 
 #: data/level/grassy-path.cfg:1037
 msgid ""
 "Whilst you are clinging to the wall,\n"
 "pressing jump will make you rebound off."
-msgstr "Lorsque vous êtes agrippé au mur,\nappuyez sur saut pour rebondir."
+msgstr ""
+"Lorsque vous êtes agrippé au mur,\n"
+"appuyez sur saut pour rebondir."
 
 #: data/level/grassy-path.cfg:1038
 msgid ""
 "This is especially useful, if two walls are\n"
 "facing each other, because then you can\n"
 "rebound over and over between them."
-msgstr "Ceci est particulièrement utile si deux murs\nse font face, car alors vous pouvez rebondir\nencore et encore entre eux."
+msgstr ""
+"Ceci est particulièrement utile si deux murs\n"
+"se font face, car alors vous pouvez rebondir\n"
+"encore et encore entre eux."
 
 #: data/level/grassy-path.cfg:1039
 msgid "This lets you ascend vertical columns."
-msgstr "Ceci vous permet de grimper\ndes parois verticales."
+msgstr ""
+"Ceci vous permet de grimper\n"
+"des parois verticales."
 
 #: data/level/grassy-path.cfg:1056
 msgid "Frogatto's world is a dangerous place."
-msgstr "La monde de Frogatto est\nun endroit dangereux."
+msgstr ""
+"La monde de Frogatto est\n"
+"un endroit dangereux."
 
 #: data/level/grassy-path.cfg:1057
 msgid ""
 "In his travels, you'll encounter\n"
 "many creatures who want to hurt you."
-msgstr "Dans ses voyages, vous rencontrerez\nde nombreuses créatures qui voudront vous nuire."
+msgstr ""
+"Dans ses voyages, vous rencontrerez\n"
+"de nombreuses créatures qui voudront vous nuire."
 
 #: data/level/grassy-path.cfg:1058
 msgid ""
 "It's often fine to just avoid them, but if you have\n"
 "to fight, Frogatto's best defense is his tongue."
-msgstr "Il suffit souvent de les éviter, mais si vous devez\nvous battre, la meilleure défense de Frogatto\nest sa langue."
+msgstr ""
+"Il suffit souvent de les éviter, mais si vous devez\n"
+"vous battre, la meilleure défense de Frogatto\n"
+"est sa langue."
 
 #: data/level/grassy-path.cfg:1059
 msgid ""
 "You can grab enemies with the tongue,\n"
 "and then spit them back out."
-msgstr "Vous pouvez attraper vos ennemis\navec votre langue, puis les recracher."
+msgstr ""
+"Vous pouvez attraper vos ennemis\n"
+"avec votre langue, puis les recracher."
 
 #: data/level/grassy-path.cfg:1060
 msgid "Once spat out, they become a deadly projectile."
@@ -2707,101 +3262,141 @@ msgstr "Une fois crachés, ils deviennent des projectiles mortels."
 msgid ""
 "If they don't hit anything, they'll be stunned\n"
 "momentarily, and then will flip upright again."
-msgstr "Si elles n'ont rien touché, ils seront sonnés un moment,\npuis se remettront sur pied."
+msgstr ""
+"Si elles n'ont rien touché, ils seront sonnés un moment,\n"
+"puis se remettront sur pied."
 
 #: data/level/grassy-path.cfg:1062
 msgid ""
 "Whilst on their backs,\n"
 "they're vulnerable to being stomped on."
-msgstr "Pendant qu'ils sont sur le dos,\nvous pouvez leur sauter dessus."
+msgstr ""
+"Pendant qu'ils sont sur le dos,\n"
+"vous pouvez leur sauter dessus."
 
 #: data/level/grassy-path.cfg:1063
 msgid ""
 "Sticking out the tongue and spitting,\n"
 "are both done with the attack key."
-msgstr "Sortir la langue et recracher\nutilisent la même touche attaque."
+msgstr ""
+"Sortir la langue et recracher\n"
+"utilisent la même touche attaque."
 
 #: data/level/grassy-path.cfg:1064
 msgid ""
 "There are a few ants just ahead.\n"
 "Feel free to try this on them."
-msgstr "Il y a quelques fourmis un peu plus loin.\nVous pouvez essayer sur elles."
+msgstr ""
+"Il y a quelques fourmis un peu plus loin.\n"
+"Vous pouvez essayer sur elles."
 
 #: data/level/grassy-path.cfg:1065
 msgid ""
 "And don't worry - if you die,\n"
 "you'll restart right here."
-msgstr "Et ne vous inquiétez pas:\nsi vous mourez,\nvous recommencerez ici."
+msgstr ""
+"Et ne vous inquiétez pas:\n"
+"si vous mourez,\n"
+"vous recommencerez ici."
 
 #: data/level/grassy-path.cfg:1102
 msgid ""
 "A very useful fact is that you can control\n"
 "the direction in which enemies are spat."
-msgstr "Un fait très utile est que vous pouvez contrôler\nla direction dans laquelle les ennemis sont crachés."
+msgstr ""
+"Un fait très utile est que vous pouvez contrôler\n"
+"la direction dans laquelle les ennemis sont crachés."
 
 #: data/level/grassy-path.cfg:1103
 msgid ""
 "If you hold down the up key while pressing\n"
 "the attack button, you'll spit in a high arc."
-msgstr "Si vous maintenez enfoncée la touche du haut\nen appuyant sur le bouton d'attaque,\nvous cracherez avec un arc élevé."
+msgstr ""
+"Si vous maintenez enfoncée la touche du haut\n"
+"en appuyant sur le bouton d'attaque,\n"
+"vous cracherez avec un arc élevé."
 
 #: data/level/grassy-path.cfg:1104
 msgid ""
 "If you hold down the down key while pressing\n"
 "the attack button, you'll spit with very little force."
-msgstr "Si vous maintenez enfoncée la touche du bas\nen appuyant sur le bouton d'attaque,\nvous cracherez avec très peu de force."
+msgstr ""
+"Si vous maintenez enfoncée la touche du bas\n"
+"en appuyant sur le bouton d'attaque,\n"
+"vous cracherez avec très peu de force."
 
 #: data/level/grassy-path.cfg:1106
 msgid ""
 "You should also beware that not all enemies\n"
 "can be grabbed with the tongue."
-msgstr "Vous devez aussi faire attention\nau fait que tous les ennemis\nne peuvent être saisis avec la langue."
+msgstr ""
+"Vous devez aussi faire attention\n"
+"au fait que tous les ennemis\n"
+"ne peuvent être saisis avec la langue."
 
 #: data/level/grassy-path.cfg:1107
 msgid ""
 "Different enemies present different challenges,\n"
 "and you'll need to get creative to deal with them."
-msgstr "Différents ennemis posent des problèmes différents,\net vous devrez être créatif pour y faire face."
+msgstr ""
+"Différents ennemis posent des problèmes différents,\n"
+"et vous devrez être créatif pour y faire face."
 
 #: data/level/grassy-path.cfg:1108
 msgid ""
 "Also, the tongue can grab useful items, like keys.\n"
 "This is how you carry them to the lock they open."
-msgstr "En outre, la langue peut attraper des objets utiles,\ncomme des clés. C'est ainsi que vous les portez\njusqu'à la serrure qu'elles ouvrent."
+msgstr ""
+"En outre, la langue peut attraper des objets utiles,\n"
+"comme des clés. C'est ainsi que vous les portez\n"
+"jusqu'à la serrure qu'elles ouvrent."
 
 #: data/level/grassy-path.cfg:1139
 msgid ""
 "Fountains, and other water dispensers,\n"
 "are very helpful."
-msgstr "Les fontaines, ainsi que les autres\ndistributeurs d'eau, sont très utiles."
+msgstr ""
+"Les fontaines, ainsi que les autres\n"
+"distributeurs d'eau, sont très utiles."
 
 #: data/level/grassy-path.cfg:1140
 msgid ""
 "If you drink from them,\n"
 "you will restore all of your health!"
-msgstr "Si vous y buvez,\nvous récupérerez toute votre vie!"
+msgstr ""
+"Si vous y buvez,\n"
+"vous récupérerez toute votre vie!"
 
 #: data/level/grassy-path.cfg:1158
 msgid ""
 "Certain bridges and stairways, like this one,\n"
 "allow you to jump up and pass through them."
-msgstr "Certains ponts et escaliers, comme celui-ci,\nvous permettent de sauter et passer à travers eux."
+msgstr ""
+"Certains ponts et escaliers, comme celui-ci,\n"
+"vous permettent de sauter et passer à travers eux."
 
 #: data/level/grassy-path.cfg:1159
 msgid "You can also jump down through them."
-msgstr "Vous pouvez également passer\nà travers en sautant vers le bas."
+msgstr ""
+"Vous pouvez également passer\n"
+"à travers en sautant vers le bas."
 
 #: data/level/grassy-path.cfg:1160
 msgid ""
 "A special button will appear,\n"
 "whenever this is possible."
-msgstr "Un bouton spécial apparaîtra,\nchaque fois que ce sera possible."
+msgstr ""
+"Un bouton spécial apparaîtra,\n"
+"chaque fois que ce sera possible."
 
 #: data/level/grassy-path.cfg:1161
 msgid ""
 "To do so, hold down the down key,\n"
 "and then press jump."
-msgstr "Pour ce faire,\ngardez la touche bas appuyée,\net appuyez sur la touche saut."
+msgstr ""
+"Pour ce faire,\n"
+"gardez la touche bas appuyée,\n"
+"et appuyez sur la touche saut."
 
 #: data/level/grassy-path.cfg:1198
 msgid ""
@@ -2819,17 +3414,23 @@ msgstr ""
 msgid ""
 "There is a store conveniently located\n"
 "outside of the town."
-msgstr "Il y a une boutique\njuste en dehors de la ville."
+msgstr ""
+"Il y a une boutique\n"
+"juste en dehors de la ville."
 
 #: data/level/grassy-path.cfg:1218
 msgid ""
 "Sometimes, you'll run into rather dangerous-\n"
 "looking terrain, such as these brambles."
-msgstr "Parfois, vous tomberez sur un terrain\nplutôt dangereux, tels que les ronces."
+msgstr ""
+"Parfois, vous tomberez sur un terrain\n"
+"plutôt dangereux, tels que les ronces."
 
 #: data/level/grassy-path.cfg:1219
 msgid "As you'd expect, stepping on them would hurt a bit."
-msgstr "Comme on peut s'y attendre,\nmarcher sur elles fait un peu mal."
+msgstr ""
+"Comme on peut s'y attendre,\n"
+"marcher sur elles fait un peu mal."
 
 #: data/level/grassy-path.cfg:1220
 msgid "However, they also hurt your enemies!"
@@ -2839,31 +3440,44 @@ msgstr "Cependant, elles font également mal à vos ennemis!"
 msgid ""
 "Leading or spitting them onto harmful terrain\n"
 "is an excellent way to dispatch them."
-msgstr "Les diriger ou les cracher sur un terrain dangereux\nest un excellent moyen de s'en débarasser."
+msgstr ""
+"Les diriger ou les cracher sur un terrain dangereux\n"
+"est un excellent moyen de s'en débarasser."
 
 #: data/level/grassy-path.cfg:1222
 msgid ""
 "Beware also, any bottomless pits you encounter.\n"
 "Those are immediately fatal."
-msgstr "Attention aussi aux puits sans fond\nque vous rencontrez. Ceux-ci sont\nimmédiatement fatals."
+msgstr ""
+"Attention aussi aux puits sans fond\n"
+"que vous rencontrez. Ceux-ci sont\n"
+"immédiatement fatals."
 
 #: data/level/grassy-path.cfg:1327
 msgid ""
 "Up ahead, you'll notice an anthill,\n"
 "which ants constantly come out of."
-msgstr "Un peu plus loin, vous remarquerez\nune fourmilière en hauteur,\ndont des fourmis sortent en continu."
+msgstr ""
+"Un peu plus loin, vous remarquerez\n"
+"une fourmilière en hauteur,\n"
+"dont des fourmis sortent en continu."
 
 #: data/level/grassy-path.cfg:1328
 msgid ""
 "There is no way to stop this;\n"
 "you can't destroy the anthill."
-msgstr "Il n'y a aucune façon de l'arrêter;\nvous ne pouvez pas détruire\nla fourmilière."
+msgstr ""
+"Il n'y a aucune façon de l'arrêter;\n"
+"vous ne pouvez pas détruire\n"
+"la fourmilière."
 
 #: data/level/grassy-path.cfg:1329
 msgid ""
 "Some hazards are like this.\n"
 "You simply have to work around them."
-msgstr "Certains obstacles sont ainsi.\nVous devez faire avec."
+msgstr ""
+"Certains obstacles sont ainsi.\n"
+"Vous devez faire avec."
 
 #: data/level/grassy-path.cfg:1347
 msgid "That's it for this tutorial."
@@ -2873,13 +3487,18 @@ msgstr "C'en est fini du tutoriel."
 msgid ""
 "Although there's more to playing the game,\n"
 "the rest, we can safely let you learn on your own."
-msgstr "Bien qu'il y ait davantage à découvrir dans le jeu,\nnous pouvons maintenant vous laisser\napprendre le reste par vous-même."
+msgstr ""
+"Bien qu'il y ait davantage à découvrir dans le jeu,\n"
+"nous pouvons maintenant vous laisser\n"
+"apprendre le reste par vous-même."
 
 #: data/level/grassy-path.cfg:1349
 msgid ""
 "Feel free to come back here,\n"
 "if you want to read a hint again."
-msgstr "N'hésitez pas à revenir ici\nsi vous souhaitez relire une astuce."
+msgstr ""
+"N'hésitez pas à revenir ici\n"
+"si vous souhaitez relire une astuce."
 
 #: data/level/grassy-path.cfg:1350
 msgid "Have fun!"
@@ -2889,39 +3508,54 @@ msgstr "Amusez-vous bien!"
 msgid ""
 "If you've seen a conversation before, it might\n"
 "be annoying to have to read it again."
-msgstr "Si vous avez déjà vu une conversation avant,\nil pourrait être ennuyeux d'avoir à la relire."
+msgstr ""
+"Si vous avez déjà vu une conversation avant,\n"
+"il pourrait être ennuyeux d'avoir à la relire."
 
 #: data/level/grassy-path.cfg:1370
 msgid ""
 "You can skip a conversation, including parts\n"
 "of cutscenes, by pressing the \"escape\" key."
-msgstr "Vous pouvez sauter une conversation, y compris\nles cinématiques, en appuyant sur la touche \"Échap\"."
+msgstr ""
+"Vous pouvez sauter une conversation, y compris\n"
+"les cinématiques, en appuyant sur la touche \"Échap\"."
 
 #: data/level/grassy-path.cfg:1371
 msgid ""
 "And yes, this applies to the question\n"
 "marks on this level, too."
-msgstr "Et oui, cela s'applique aussi\naux points d'interrogation de ce niveau."
+msgstr ""
+"Et oui, cela s'applique aussi\n"
+"aux points d'interrogation de ce niveau."
 
 #: data/level/grassy-path.cfg:1480
 msgid ""
 "If you haven't already noticed, the red\n"
 "fruits you sometimes find nestled in\n"
 "the grass are spittable projectiles."
-msgstr "Si vous n'avez pas déjà remarqué, les fruits rouges\nque vous trouverez parfois nichés dans l'herbe\nsont des projectiles crachables."
+msgstr ""
+"Si vous n'avez pas déjà remarqué, les fruits rouges\n"
+"que vous trouverez parfois nichés dans l'herbe\n"
+"sont des projectiles crachables."
 
 #: data/level/grassy-path.cfg:1481
 msgid ""
 "You'll find many such objects of similar size\n"
 "in different areas of the game, such as crates\n"
 "inside of houses, or nuts hanging from trees."
-msgstr "Vous trouverez de nombreux objets de ce genre,\nde taille similaire, dans les différents coins du jeu,\ntels que les caisses à l'intérieur des maisons,\nou des noix pendant des arbres."
+msgstr ""
+"Vous trouverez de nombreux objets de ce genre,\n"
+"de taille similaire, dans les différents coins du jeu,\n"
+"tels que les caisses à l'intérieur des maisons,\n"
+"ou des noix pendant des arbres."
 
 #: data/level/grassy-path.cfg:1482
 msgid ""
 "These are an ample source of ammunition,\n"
 "that's almost always available."
-msgstr "Ils sont une source suffisante de munitions,\nqui est presque toujours disponible."
+msgstr ""
+"Ils sont une source suffisante de munitions,\n"
+"qui est presque toujours disponible."
 
 #: data/level/grassy-path.cfg:1483
 msgid ""
@@ -2929,13 +3563,20 @@ msgid ""
 "if you use them up, walk away from the screen\n"
 "where you found them, and then return again,\n"
 "there will often be a new one waiting to use."
-msgstr "Notez qu'ils ont une propriété inhabituelle;\nsi vous les utilisez, éloignez-vous de l'écran\noù vous les avez trouvés, et revenez ensuite,\nil y en aura souvent de nouveaux."
+msgstr ""
+"Notez qu'ils ont une propriété inhabituelle;\n"
+"si vous les utilisez, éloignez-vous de l'écran\n"
+"où vous les avez trouvés, et revenez ensuite,\n"
+"il y en aura souvent de nouveaux."
 
 #: data/level/hanging-platforms.cfg:509
 msgid ""
 "Well, I guess I'm entering Milgram's\n"
 "castle now. I made it through the caves!"
-msgstr "Bon, je suppose que j'entre\ndans le château de Milgram là.\nJ'y suis arrivé par les grottes!"
+msgstr ""
+"Bon, je suppose que j'entre\n"
+"dans le château de Milgram là.\n"
+"J'y suis arrivé par les grottes!"
 
 #: data/level/hanging-platforms.cfg:4349
 msgid "Hanging Platforms"
@@ -3033,7 +3674,9 @@ msgstr "Oh, je nettoie les dégâts de la commotion."
 
 #: data/level/liberated-crevice-village-house-1.cfg:606
 msgid "So nice to have things back to normal."
-msgstr "C'est si bon que les choses\nsoient redevenues comme elle étaient."
+msgstr ""
+"C'est si bon que les choses\n"
+"soient redevenues comme elle étaient."
 
 #: data/level/liberated-crevice-village-house-1.cfg:608
 msgid "You bet."
@@ -3043,13 +3686,17 @@ msgstr "C'est clair."
 msgid ""
 "Speaking of which, am I imagining it\n"
 "or is this house actually smaller now?"
-msgstr "En parlant de ça, c'est moi ou\nla maison est devenue plus petite?"
+msgstr ""
+"En parlant de ça, c'est moi ou\n"
+"la maison est devenue plus petite?"
 
 #: data/level/liberated-crevice-village-house-1.cfg:611
 msgid ""
 "Of course not.\n"
 "That's just nutty."
-msgstr "Bien sûr que non.\nQuelle drôle d'idée."
+msgstr ""
+"Bien sûr que non.\n"
+"Quelle drôle d'idée."
 
 #: data/level/liberated-crevice-village-house-2.cfg:191
 msgid "Hey there - is everything going alright?"
@@ -3144,7 +3791,12 @@ msgid ""
 "I guess this is my last chance to\n"
 "go back if there's anything I want to\n"
 "do before I confront him."
-msgstr "J'ai un mauvais pressentiment.\nJe parie que Milgram est tout près!\nJe suppose que c'est\nma dernière chance de faire\nce que j'ai à faire avant de lui faire face."
+msgstr ""
+"J'ai un mauvais pressentiment.\n"
+"Je parie que Milgram est tout près!\n"
+"Je suppose que c'est\n"
+"ma dernière chance de faire\n"
+"ce que j'ai à faire avant de lui faire face."
 
 #: data/level/milgrams-throne-room.cfg:42
 msgid "No!  You can't be..."
@@ -3159,7 +3811,9 @@ msgstr "Salut, moi c'est Frogatto."
 msgid ""
 "Oh crap, oh crap!\n"
 "Boss! He's here!"
-msgstr "Oh mince, oh mince!\nChef! Il est là!"
+msgstr ""
+"Oh mince, oh mince!\n"
+"Chef! Il est là!"
 
 #: data/level/milgrams-throne-room.cfg:57
 msgid "Who's here?"
@@ -3169,17 +3823,23 @@ msgstr "Qui est là?"
 msgid ""
 "Frogatto!\n"
 "He's RIGHT HERE!"
-msgstr "Frogatto!\nIl est JUSTE LÀ!"
+msgstr ""
+"Frogatto!\n"
+"Il est JUSTE LÀ!"
 
 #: data/level/milgrams-throne-room.cfg:60
 msgid ""
 "The intruder?\n"
 "How did he get in here?"
-msgstr "L'intrus?\nComment est-il entré ici?"
+msgstr ""
+"L'intrus?\n"
+"Comment est-il entré ici?"
 
 #: data/level/milgrams-throne-room.cfg:61
 msgid "We... We tried to stop him, but he's..."
-msgstr "Nous... nous avons essayé de l'arrêter\nmais il..."
+msgstr ""
+"Nous... nous avons essayé de l'arrêter\n"
+"mais il..."
 
 #: data/level/milgrams-throne-room.cfg:63
 msgid "Why do I have to deal with everything myself?!"
@@ -3193,7 +3853,9 @@ msgstr "Hors de mon chemin!"
 msgid ""
 "Ugh!\n"
 "You do put up quite a fight!"
-msgstr "Aïe!\nEffectivement, tu te défends!"
+msgstr ""
+"Aïe!\n"
+"Effectivement, tu te défends!"
 
 #: data/level/milgrams-throne-room.cfg:115
 msgid "Will you hear me out now?"
@@ -3215,13 +3877,17 @@ msgstr "Je voulais vous interroger sur cet incident en ville."
 msgid ""
 "Remarkable.\n"
 "I really thought you'd come here to attack me."
-msgstr "Remarquable.\nJe pensais vraiment que tu viendrais ici pour m'attaquer."
+msgstr ""
+"Remarquable.\n"
+"Je pensais vraiment que tu viendrais ici pour m'attaquer."
 
 #: data/level/milgrams-throne-room.cfg:126
 msgid ""
 "Well, if you really are here for an audience,\n"
 "perhaps I could be obliged.  Shall we?"
-msgstr "Eh bien, si vous êtes vraiment là pour un public,\nje pourrais peut-être m'y prêter. Allons-y."
+msgstr ""
+"Eh bien, si vous êtes vraiment là pour un public,\n"
+"je pourrais peut-être m'y prêter. Allons-y."
 
 #: data/level/milgrams-throne-room.cfg:128
 msgid "Talk it over? Like gentlemen?"
@@ -3229,7 +3895,9 @@ msgstr "En discuter? Tels des gentlemen?"
 
 #: data/level/milgrams-throne-room.cfg:130
 msgid "Yes, like gentlemen. Over tea."
-msgstr "Oui, tels des gentlemen.\nEn prenant le thé."
+msgstr ""
+"Oui, tels des gentlemen.\n"
+"En prenant le thé."
 
 #: data/level/milgrams-throne-room.cfg:137
 msgid "Wait a minute, it's you, isn't it?"
@@ -3243,13 +3911,17 @@ msgstr "Ouais, c'est moi Frogatto!"
 msgid ""
 "Uhh..\n"
 "I was expecting something a bit more ... robust."
-msgstr "Euh..\nJe m'attendais à quelque chose d'un peu plus... robuste."
+msgstr ""
+"Euh..\n"
+"Je m'attendais à quelque chose d'un peu plus... robuste."
 
 #: data/level/milgrams-throne-room.cfg:143
 msgid ""
 "So you're the one who's been causing\n"
 "all this trouble, eh?"
-msgstr "Alors, tu es celui à l'origine\nde tous ces ennuis, hein?"
+msgstr ""
+"Alors, tu es celui à l'origine\n"
+"de tous ces ennuis, hein?"
 
 #: data/level/milgrams-throne-room.cfg:145
 msgid "I am?"
@@ -3259,13 +3931,17 @@ msgstr "Moi?"
 msgid ""
 "Yes, I've been getting some rather\n"
 "unpleasant reports about property damage."
-msgstr "Oui, j'ai reçu quelques rapports assez désagréables\nà propos de dégâts matériels."
+msgstr ""
+"Oui, j'ai reçu quelques rapports assez désagréables\n"
+"à propos de dégâts matériels."
 
 #: data/level/milgrams-throne-room.cfg:149
 msgid ""
 "Is there any chance I...\n"
 "can discuss something with you?"
-msgstr "Y a-t-il une chance que nous...\npuissions discuter de quelque chose?"
+msgstr ""
+"Y a-t-il une chance que nous...\n"
+"puissions discuter de quelque chose?"
 
 #: data/level/milgrams-throne-room.cfg:151
 msgid "Sure..."
@@ -3275,7 +3951,9 @@ msgstr "Bien sûr..."
 msgid ""
 "...but the subject's going to be:\n"
 "\"What happens to trespassers.\""
-msgstr "... Mais le sujet va être :\n«Qu'est-ce qui arrive aux intrus.\""
+msgstr ""
+"... Mais le sujet va être :\n"
+"«Qu'est-ce qui arrive aux intrus.\""
 
 #: data/level/milgrams-throne-room.cfg:157
 msgid "Fight!"
@@ -3345,7 +4023,7 @@ msgstr "Bah. Une porte verrouillée."
 msgid "There must be a way around it."
 msgstr "Je devrais pouvoir la contourner."
 
-#: data/level/rocky-roots.cfg:1575
+#: data/level/rocky-roots.cfg:1579
 msgid "Rocky Roots"
 msgstr "Racines Rocheuses"
 
@@ -3357,7 +4035,9 @@ msgstr "Bonjour."
 msgid ""
 "A pleasure to meet you.\n"
 "I am Mortimer."
-msgstr "Enchanté.\nJe m'appelle Mortimer."
+msgstr ""
+"Enchanté.\n"
+"Je m'appelle Mortimer."
 
 #: data/level/secluded-hut-interior.cfg:317
 msgid "That's nice."
@@ -3367,41 +4047,58 @@ msgstr "Sympa comme nom."
 msgid ""
 "Uhm, I hope you don't mind my asking,\n"
 "but what on earth ARE you, anyway?"
-msgstr "Heu, j'espère que\ntu m'en voudras pas de demander,\nmais t'es QUOI exactement?"
+msgstr ""
+"Heu, j'espère que\n"
+"tu m'en voudras pas de demander,\n"
+"mais t'es QUOI exactement?"
 
 #: data/level/secluded-hut-interior.cfg:320
 msgid "Ostensibly, I am a mole."
-msgstr "De toute évidence,\nje suis une taupe."
+msgstr ""
+"De toute évidence,\n"
+"je suis une taupe."
 
 #: data/level/secluded-hut-interior.cfg:322
 msgid ""
 "...\n"
 "Okay."
-msgstr "...\nD'accord."
+msgstr ""
+"...\n"
+"D'accord."
 
 #: data/level/secluded-hut-interior.cfg:323
 msgid ""
 "Perhaps more importantly, I am a bit of\n"
 "an astronomer and biologist, by trade."
-msgstr "Mais ce qui est peut-être plus important,\nc'est que je fais un peu\nd'astronomie et de biologie,\nprofessionnellement parlant."
+msgstr ""
+"Mais ce qui est peut-être plus important,\n"
+"c'est que je fais un peu\n"
+"d'astronomie et de biologie,\n"
+"professionnellement parlant."
 
 #: data/level/secluded-hut-interior.cfg:324
 msgid ""
 "That is why I live all the way up here.\n"
 "You can see quite a bit from this height."
-msgstr "C'est pourquoi je vis en hauteur.\nLa vue est bien meilleure d'ici."
+msgstr ""
+"C'est pourquoi je vis en hauteur.\n"
+"La vue est bien meilleure d'ici."
 
 #: data/level/secluded-hut-interior.cfg:326
 msgid ""
 "...and I guess you have these\n"
 "ants in cages to study them?"
-msgstr "... et je suppose que t'as ces\nfourmis en cage pour les étudier?"
+msgstr ""
+"... et je suppose que t'as ces\n"
+"fourmis en cage pour les étudier?"
 
 #: data/level/secluded-hut-interior.cfg:327
 msgid ""
 "That's right.  Unfortunately,\n"
 "my collection lacks the rarer golden ant."
-msgstr "C'est exact. Malheureusement, il manque\nà ma collection la rare fourmi dorée."
+msgstr ""
+"C'est exact. Malheureusement, il manque\n"
+"à ma collection la rare fourmi dorée."
 
 #: data/level/secluded-hut-interior.cfg:329
 msgid "Oh, what a shame."
@@ -3413,55 +4110,79 @@ msgid ""
 "If you could bring me a golden ant\n"
 "and stick it in one of my cages,\n"
 "I'd reward you handsomely."
-msgstr "Vous savez, vous avez l'air\nd'avoir bourlingué.\nSi vous me ramenez\nune fourmi dorée\net la mettez dans une de mes cages,\nje vous récompenserai généreusement."
+msgstr ""
+"Vous savez, vous avez l'air\n"
+"d'avoir bourlingué.\n"
+"Si vous me ramenez\n"
+"une fourmi dorée\n"
+"et la mettez dans une de mes cages,\n"
+"je vous récompenserai généreusement."
 
 #: data/level/secluded-hut-interior.cfg:332
 msgid ""
 "Handsomely you say?\n"
 "I'm on it!"
-msgstr "T'as dit généreusement?\nTu peux compter sur moi!"
+msgstr ""
+"T'as dit généreusement?\n"
+"Tu peux compter sur moi!"
 
 #: data/level/secluded-hut-interior.cfg:335
 msgid ""
 "Oh! You got the golden ant for me.\n"
 "It's beautiful, beautiful!"
-msgstr "Oh! Vous m'avez attrapé\nla fourmi dorée.\nElle est magnifique, magnifique!"
+msgstr ""
+"Oh! Vous m'avez attrapé\n"
+"la fourmi dorée.\n"
+"Elle est magnifique, magnifique!"
 
 #: data/level/secluded-hut-interior.cfg:337
 msgid ""
 "Mmmmmhmmmm. Now you were talking\n"
 "about a reward?"
-msgstr "Mmmmmhmmmm. Tu n'as pas parlé\nd'une récompense à un moment?"
+msgstr ""
+"Mmmmmhmmmm. Tu n'as pas parlé\n"
+"d'une récompense à un moment?"
 
 #: data/level/secluded-hut-interior.cfg:338
 msgid ""
 "Oh yes, a reward!\n"
 "Here you go..."
-msgstr "Ah oui, une récompense!\nVoilà..."
+msgstr ""
+"Ah oui, une récompense!\n"
+"Voilà..."
 
 #: data/level/secluded-hut-interior.cfg:343
 msgid ""
 "Oh my! If that's a golden ant in your stomach,\n"
 "then quick, spit it out into the cage!"
-msgstr "Oh! Si c'est une fourmi dorée dans votre estomac,\nvite, recrachez-la dans la cage!"
+msgstr ""
+"Oh! Si c'est une fourmi dorée dans votre estomac,\n"
+"vite, recrachez-la dans la cage!"
 
 #: data/level/secluded-hut-interior.cfg:344
 msgid ""
 "I don't suppose you've had any\n"
 "luck with getting a golden ant yet?"
-msgstr "Je suppose que vous n'avez\npas encore eu de chance\npour la capture d'une fourmi dorée?"
+msgstr ""
+"Je suppose que vous n'avez\n"
+"pas encore eu de chance\n"
+"pour la capture d'une fourmi dorée?"
 
 #: data/level/secluded-hut-interior.cfg:346
 msgid ""
 "I'm working on it.\n"
 "Those things pack a pretty mean bite, you know."
-msgstr "J'y travaille. Ces choses ont la morsure\nassez méchante, vous savez."
+msgstr ""
+"J'y travaille. Ces choses ont la morsure\n"
+"assez méchante, vous savez."
 
 #: data/level/secluded-hut-interior.cfg:349
 msgid ""
 "I do hope you are enjoying exploring the island.\n"
 "There are so many wonderful creatures on it."
-msgstr "J'espère que vous appréciez d'explorer l'île.\nIl y a tellement de créatures merveilleuses."
+msgstr ""
+"J'espère que vous appréciez d'explorer l'île.\n"
+"Il y a tellement de créatures merveilleuses."
 
 #: data/level/secluded-hut-interior.cfg:351
 msgid "... most of which seem inclined to kill me."
@@ -3484,17 +4205,23 @@ msgstr "Vous allez bien?"
 msgid ""
 "Yeah.\n"
 "Who WAS that guy?!"
-msgstr "Ouais.\nC'ÉTAIT qui ce type?!"
+msgstr ""
+"Ouais.\n"
+"C'ÉTAIT qui ce type?!"
 
 #: data/level/secluded-hut.cfg:2211
 msgid "One of Milgram's henchmen, no doubt."
-msgstr "Un des hommes de main\nde Milgram, pour sûr."
+msgstr ""
+"Un des hommes de main\n"
+"de Milgram, pour sûr."
 
 #: data/level/secluded-hut.cfg:2212
 msgid ""
 "They may have seen me talking to you,\n"
 "I can't be sure."
-msgstr "Ils pourraient m'avoir vu vous parler,\nje ne peux en être sûr."
+msgstr ""
+"Ils pourraient m'avoir vu vous parler,\n"
+"je ne peux en être sûr."
 
 #: data/level/secluded-hut.cfg:2214
 msgid "Wait, what?  Milgram?"
@@ -3515,40 +4242,58 @@ msgid ""
 "Milgram's men showed up\n"
 "early this morning, in town.\n"
 "They've taken the whole place hostage!"
-msgstr "Les hommes de Milgram se sont montrés\ntôt ce matin, dans la ville.\nIls ont pris toute la place en otage!"
+msgstr ""
+"Les hommes de Milgram se sont montrés\n"
+"tôt ce matin, dans la ville.\n"
+"Ils ont pris toute la place en otage!"
 
 #: data/level/secluded-hut.cfg:2220
 msgid ""
 "Unfortunately, I don't know the details.\n"
 "I just flew out of there as soon as I could,\n"
 "looking for anyone who could help."
-msgstr "Malheureusement, je ne connais pas les détails.\nJe me suis enfui de là dès que j'ai pu,\nafin de rechercher de l'aide."
+msgstr ""
+"Malheureusement, je ne connais pas les détails.\n"
+"Je me suis enfui de là dès que j'ai pu,\n"
+"afin de rechercher de l'aide."
 
 #: data/level/secluded-hut.cfg:2222
 msgid ""
 "That certainly...\n"
 "changes my plans for the day."
-msgstr "Visiblement...\nça change mes plans pour la journée."
+msgstr ""
+"Visiblement...\n"
+"ça change mes plans pour la journée."
 
 #: data/level/secluded-hut.cfg:2224
 msgid ""
 "Wow, uhm... \n"
 "I'd sure like to help, but ...\n"
 "I just don't see what I could do."
-msgstr "Whah, hum...\nj'aimerais aider, pour sûr, mais...\nje ne vois vraiment pas\nce que je pourrais faire."
+msgstr ""
+"Whah, hum...\n"
+"j'aimerais aider, pour sûr, mais...\n"
+"je ne vois vraiment pas\n"
+"ce que je pourrais faire."
 
 #: data/level/secluded-hut.cfg:2226
 msgid ""
 "I don't think I can promise anything,\n"
 "but if the opportunity presents itself,\n"
 "who knows?"
-msgstr "Je ne pense pas pouvoir promettre\nquoi que ce soit mais si l'occasion\nse présente, qui sait ?"
+msgstr ""
+"Je ne pense pas pouvoir promettre\n"
+"quoi que ce soit mais si l'occasion\n"
+"se présente, qui sait ?"
 
 #: data/level/secluded-hut.cfg:2227
 msgid ""
 "Yes, it's unreasonable to expect\n"
 "someone to just charge in there."
-msgstr "Oui, il est déraisonnable de s'attendre à\nce quelqu'un fonce la tête la première\ndans ce pétrin."
+msgstr ""
+"Oui, il est déraisonnable de s'attendre à\n"
+"ce quelqu'un fonce la tête la première\n"
+"dans ce pétrin."
 
 #: data/level/secluded-hut.cfg:2228
 msgid "I'm at a loss for a plan, myself."
@@ -3560,19 +4305,31 @@ msgid ""
 "Hopefully, we'll fix that bridge soon.\n"
 "Impressive how fast they can do that,\n"
 "with modular construction and all."
-msgstr "Quoi qu'il en soit, je ferais mieux d'y aller.\nNous réparerons ce pont bientôt,\nsi tout va bien.\nC'est impressionnant ce qu'on peut faire\navec les constructions modulaires et tout."
+msgstr ""
+"Quoi qu'il en soit, je ferais mieux d'y aller.\n"
+"Nous réparerons ce pont bientôt,\n"
+"si tout va bien.\n"
+"C'est impressionnant ce qu'on peut faire\n"
+"avec les constructions modulaires et tout."
 
 #: data/level/secluded-hut.cfg:2230
 msgid ""
 "In the meantime, you might benefit from\n"
 "visiting the fellow who lives here."
-msgstr "En attendant, ils se pourrait que\nvous trouviez votre bonheur\nen rendant visite au type qui vit là."
+msgstr ""
+"En attendant, ils se pourrait que\n"
+"vous trouviez votre bonheur\n"
+"en rendant visite au type qui vit là."
 
 #: data/level/secluded-hut.cfg:2231
 msgid ""
 "Bit of a recluse, but he's quite sharp.\n"
 "He lives on top of this rock column."
-msgstr "C'est une sorte de reclus,\nmais loin d'être bête.\nIl vit au sommet\nde cette colonne rocheuse."
+msgstr ""
+"C'est une sorte de reclus,\n"
+"mais loin d'être bête.\n"
+"Il vit au sommet\n"
+"de cette colonne rocheuse."
 
 #: data/level/secluded-hut.cfg:2233
 msgid "And I get up there... how?"
@@ -3584,7 +4341,9 @@ msgstr "Facile, par les airs!"
 
 #: data/level/secluded-hut.cfg:2240
 msgid "You ... do realize I can't fly?"
-msgstr "Tu te rends compte que...\nje peux pas voler?"
+msgstr ""
+"Tu te rends compte que...\n"
+"je peux pas voler?"
 
 #: data/level/splash-hop.cfg:14
 msgid "Splash, Hop"
@@ -3701,7 +4460,9 @@ msgstr "Avocat du Diable"
 
 #: data/level/tea-with-milgram.cfg:359
 msgid "Programmer, Lead Content Wrangler and Lead Object Scripter"
-msgstr "Programmeur, Chef de l'Organisation du Contenu et Scripteur d'Objets Principal"
+msgstr ""
+"Programmeur, Chef de l'Organisation du Contenu et Scripteur d'Objets "
+"Principal"
 
 #: data/level/tea-with-milgram.cfg:360
 msgid "Artist • Characters, Monsters, Props, Terrain"
@@ -3709,7 +4470,8 @@ msgstr "Artiste • personnages, monstres, Accessoires, Terrain"
 
 #: data/level/tea-with-milgram.cfg:361
 msgid "Writer • Wrote Main Story and Most Dialogue"
-msgstr "Rédacteur • Rédaction de l'histoire principale et de la plupart des Dialogues"
+msgstr ""
+"Rédacteur • Rédaction de l'histoire principale et de la plupart des Dialogues"
 
 #: data/level/tea-with-milgram.cfg:362
 msgid "Level Designer • seaside, town, and forest"
@@ -3735,13 +4497,17 @@ msgstr "Alors si je comprends bien..."
 msgid ""
 "What you're saying, is that the elder\n"
 "borrowed all this money from you,"
-msgstr "Vous êtes en train de dire que l'ancien\nvous a emprunté tout cet argent,"
+msgstr ""
+"Vous êtes en train de dire que l'ancien\n"
+"vous a emprunté tout cet argent,"
 
 #: data/level/tea-with-milgram.cfg:384
 msgid ""
 "and it was meant to be used on\n"
 "civil projects for the town?"
-msgstr "et qu'il était censé être utilisé pour\ndes travaux d'intérêt général?"
+msgstr ""
+"et qu'il était censé être utilisé pour\n"
+"des travaux d'intérêt général?"
 
 #: data/level/tea-with-milgram.cfg:386
 msgid "Exactly!"
@@ -3751,17 +4517,26 @@ msgstr "Exactement!"
 msgid ""
 "In fact, I came to him with the idea.\n"
 "It was meant to be philanthropy."
-msgstr "En fait c'est moi qui l'ai approché\navec cette idée. C'était\nune approche philanthropique."
+msgstr ""
+"En fait c'est moi qui l'ai approché\n"
+"avec cette idée. C'était\n"
+"une approche philanthropique."
 
 #: data/level/tea-with-milgram.cfg:390
 msgid ""
 "I thought a 'mayor' would be responsible,\n"
 "but instead he's spending it all on himself!"
-msgstr "Je pensais qu'un 'maire'\naurait le sens des responsabilités,\nmais il a préféré\ntout dépenser pour lui-même!"
+msgstr ""
+"Je pensais qu'un 'maire'\n"
+"aurait le sens des responsabilités,\n"
+"mais il a préféré\n"
+"tout dépenser pour lui-même!"
 
 #: data/level/tea-with-milgram.cfg:393
 msgid "And now he's refusing to repay you?"
-msgstr "Et maintenant il refuse\nde vous rembourser?"
+msgstr ""
+"Et maintenant il refuse\n"
+"de vous rembourser?"
 
 #: data/level/tea-with-milgram.cfg:395
 msgid "That's right!"
@@ -3775,7 +4550,10 @@ msgstr "Ouille."
 msgid ""
 "You know, I really think there are some big\n"
 "misunderstandings that need to get cleared up."
-msgstr "Vous savez, je pense vraiment qu'il y a\nquelques gros malentendus qui ont\nbesoin d'être éclaircis."
+msgstr ""
+"Vous savez, je pense vraiment qu'il y a\n"
+"quelques gros malentendus qui ont\n"
+"besoin d'être éclaircis."
 
 #: data/level/tea-with-milgram.cfg:402
 msgid "Almost all of which are his fault."
@@ -3785,13 +4563,17 @@ msgstr "Dont presque tous sont de sa faute."
 msgid ""
 "This might not be obvious from talking to him,\n"
 "but that elder guy is really just ... crazy."
-msgstr "Cela pourrait ne pas être évident à lui parler,\nmais cet ancien est vraiment... fou."
+msgstr ""
+"Cela pourrait ne pas être évident à lui parler,\n"
+"mais cet ancien est vraiment... fou."
 
 #: data/level/tea-with-milgram.cfg:406
 msgid ""
 "He's just plain nuts.\n"
 "He's got a lot of bizarre delusions about things..."
-msgstr "Il est complètement taré.\nIl a plein d'idées délirantes sur les choses..."
+msgstr ""
+"Il est complètement taré.\n"
+"Il a plein d'idées délirantes sur les choses..."
 
 #: data/level/tea-with-milgram.cfg:408
 msgid ""
@@ -3803,13 +4585,17 @@ msgstr "... Et en gros on le ménage, car il est assez inoffensif."
 msgid ""
 "We've trumped him up with a pointless job\n"
 "as the gatekeeper on the east side of town."
-msgstr "Nous l'avons berné avec un travail inutile\nen tant que portier du côté Est de la ville."
+msgstr ""
+"Nous l'avons berné avec un travail inutile\n"
+"en tant que portier du côté Est de la ville."
 
 #: data/level/tea-with-milgram.cfg:412
 msgid ""
 "Which plays to his ego,\n"
 "and keeps him out of trouble."
-msgstr "Ce qui flatte son ego,\net l'empêche de s'attirer des ennuis."
+msgstr ""
+"Ce qui flatte son ego,\n"
+"et l'empêche de s'attirer des ennuis."
 
 #: data/level/tea-with-milgram.cfg:415
 msgid "Sounds like a perfect place for him!"
@@ -3824,13 +4610,18 @@ msgid ""
 "But I guess he really could cause\n"
 "some issues if other people, like yourself,\n"
 "aren't aware of his background."
-msgstr "Mais je suppose qu'il pourrait vraiment causer\nquelques soucis si d'autres personnes, comme vous,\nne sont pas conscients de son historique."
+msgstr ""
+"Mais je suppose qu'il pourrait vraiment causer\n"
+"quelques soucis si d'autres personnes, comme vous,\n"
+"ne sont pas conscients de son historique."
 
 #: data/level/tea-with-milgram.cfg:422
 msgid ""
 "Intriguing.\n"
 "That'd certainly explain a few things."
-msgstr "Intéressant.\nÇa expliquerait sûrement pas mal de choses."
+msgstr ""
+"Intéressant.\n"
+"Ça expliquerait sûrement pas mal de choses."
 
 #: data/level/tea-with-milgram.cfg:424
 msgid "For starters, uh ... he's NOT our mayor."
@@ -3844,71 +4635,99 @@ msgstr "Je vois pourquoi!"
 msgid ""
 "Yep.  In fact, if you'll believe it,\n"
 "we actually don't have a mayor at all."
-msgstr "Ouais. En fait, croyez-le ou pas, nous n'avons\npas de maire du tout."
+msgstr ""
+"Ouais. En fait, croyez-le ou pas, nous n'avons\n"
+"pas de maire du tout."
 
 #: data/level/tea-with-milgram.cfg:431
 msgid ""
 "We've got nothing.\n"
 "We've got a bunch of stubborn idiots\n"
 "who happen to live in the same area."
-msgstr "Nous n'avons rien.\nNous avons un tas d'idiots têtus\nqui vivent dans la même zone."
+msgstr ""
+"Nous n'avons rien.\n"
+"Nous avons un tas d'idiots têtus\n"
+"qui vivent dans la même zone."
 
 #: data/level/tea-with-milgram.cfg:433
 msgid ""
 "We can't agree on anything,\n"
 "we can't work together to get anything done."
-msgstr "Nous ne pouvons nous mettre d'accord sur rien,\nnous ne pouvons pas travailler ensemble\npour faire quoi que ce soit."
+msgstr ""
+"Nous ne pouvons nous mettre d'accord sur rien,\n"
+"nous ne pouvons pas travailler ensemble\n"
+"pour faire quoi que ce soit."
 
 #: data/level/tea-with-milgram.cfg:436
 msgid ""
 "We don't have any government,\n"
 "we don't have any laws."
-msgstr "Nous n'avons pas de gouvernement,\nnous n'avons aucune loi."
+msgstr ""
+"Nous n'avons pas de gouvernement,\n"
+"nous n'avons aucune loi."
 
 #: data/level/tea-with-milgram.cfg:438
 msgid ""
 "Careful, now - that sounds like\n"
 "an invitation to provide them."
-msgstr "Attention, là - ça sonne comme\nune invitation à les fournir."
+msgstr ""
+"Attention, là - ça sonne comme\n"
+"une invitation à les fournir."
 
 #: data/level/tea-with-milgram.cfg:440
 msgid ""
 "Eh...heh... yes,\n"
 "that probably wouldn't be well-received!"
-msgstr "Euh... euh... oui,\nce ne serait probablement pas bien pris!"
+msgstr ""
+"Euh... euh... oui,\n"
+"ce ne serait probablement pas bien pris!"
 
 #: data/level/tea-with-milgram.cfg:442
 msgid ""
 "Anyways, our only saving grace is we really\n"
 "don't have anyone aggressive enough\n"
 "to try and settle disputes with force."
-msgstr "Quoi qu'il en soit, la seule chose qui nous sauve\nest que nous n'avons personne d'assez agressif\npour essayer de régler les différends par la force."
+msgstr ""
+"Quoi qu'il en soit, la seule chose qui nous sauve\n"
+"est que nous n'avons personne d'assez agressif\n"
+"pour essayer de régler les différends par la force."
 
 #: data/level/tea-with-milgram.cfg:444
 msgid ""
 "And I guess that might be one of the\n"
 "few things we'd all agree on;\n"
 "that we wouldn't tolerate that."
-msgstr "Et je pense que c'est une des rares choses\nsur lequelles nous serions tous d'accord;\nque nous ne pouvons pas tolérer cela."
+msgstr ""
+"Et je pense que c'est une des rares choses\n"
+"sur lequelles nous serions tous d'accord;\n"
+"que nous ne pouvons pas tolérer cela."
 
 #: data/level/tea-with-milgram.cfg:446
 msgid ""
 "I mean, I'm definitely exaggerating a little;\n"
 "we couldn't raise a house without some\n"
 "cooperation, but it really is a mess."
-msgstr "Je veux dire, j'exagère un peu;\nNous ne pourrions pas construire une maison\nsans un peu de coopération, mais c'est\nvraiment le bazar."
+msgstr ""
+"Je veux dire, j'exagère un peu;\n"
+"Nous ne pourrions pas construire une maison\n"
+"sans un peu de coopération, mais c'est\n"
+"vraiment le bazar."
 
 #: data/level/tea-with-milgram.cfg:448
 msgid ""
 "So I don't know what the elder talked you into,\n"
 "but it's almost guaranteed to be lunacy."
-msgstr "Donc je ne sais pas de quoi l'ancien vous a parlé,\nmais c'était à coup sûr une folie quelconque."
+msgstr ""
+"Donc je ne sais pas de quoi l'ancien vous a parlé,\n"
+"mais c'était à coup sûr une folie quelconque."
 
 #: data/level/tea-with-milgram.cfg:450
 msgid ""
 "Yes.\n"
 "No wonder we were confused!"
-msgstr "Oui.\nPas étonnant que nous étions confus!"
+msgstr ""
+"Oui.\n"
+"Pas étonnant que nous étions confus!"
 
 #: data/level/tea-with-milgram.cfg:454
 msgid "Ah, there we are..."
@@ -3918,7 +4737,9 @@ msgstr "Ah, voilà..."
 msgid ""
 "Fetch some for our guest,\n"
 "would you, kindly?"
-msgstr "Allez en chercher pour\nnotre invité, voulez-vous?"
+msgstr ""
+"Allez en chercher pour\n"
+"notre invité, voulez-vous?"
 
 #: data/level/tea-with-milgram.cfg:462
 msgid "So where was I?"
@@ -3932,29 +4753,39 @@ msgstr "Qu'est-ce que l'ancien vous a dit?"
 msgid ""
 "Uhm...  so, I'm not even sure what that\n"
 "project was supposed to be, at this point."
-msgstr "Hmm... alors, je ne suis même pas sûr de ce que\nle projet était censé être, à ce stade."
+msgstr ""
+"Hmm... alors, je ne suis même pas sûr de ce que\n"
+"le projet était censé être, à ce stade."
 
 #: data/level/tea-with-milgram.cfg:469
 msgid ""
 "Might've been something about a bridge,\n"
 "Fergus was heading that one up."
-msgstr "Ça pouvait être quelque chose à propos d'un pont,\nFergus s'occupait de ça."
+msgstr ""
+"Ça pouvait être quelque chose à propos d'un pont,\n"
+"Fergus s'occupait de ça."
 
 #: data/level/tea-with-milgram.cfg:471
 msgid ""
 "He's one of my kitties.\n"
 "Heads up one of our engineering divisions."
-msgstr "C'est l'un de mes chatons.\nIl commande une de nos divisions d'ingénierie."
+msgstr ""
+"C'est l'un de mes chatons.\n"
+"Il commande une de nos divisions d'ingénierie."
 
 #: data/level/tea-with-milgram.cfg:474
 msgid ""
 "I honestly have no involvement in\n"
 "stuff like this; I delegate all of it out."
-msgstr "Honnêtement, je n'ai aucune implication dans\nles trucs de ce genre; je délègue tout ça."
+msgstr ""
+"Honnêtement, je n'ai aucune implication dans\n"
+"les trucs de ce genre; je délègue tout ça."
 
 #: data/level/tea-with-milgram.cfg:477
 msgid "Which sometimes doesn't work out as expected?"
-msgstr "Ce qui ne fonctionne pas toujours\ncomme prévu?"
+msgstr ""
+"Ce qui ne fonctionne pas toujours\n"
+"comme prévu?"
 
 #: data/level/tea-with-milgram.cfg:479
 msgid ""
@@ -3962,13 +4793,20 @@ msgid ""
 "but if you'll forgive me, I had the impression\n"
 "it was a bit of a backwater, so I thought\n"
 "we'd do something to help out."
-msgstr "Ouais. Je ne sais pas grand-chose sur\nle Village de la Crevasse, mais\nsi vous me permettez, j'ai eu l'impression\nque c'était un peu un trou perdu,\nalors j'ai pensé faire quelque chose pour aider."
+msgstr ""
+"Ouais. Je ne sais pas grand-chose sur\n"
+"le Village de la Crevasse, mais\n"
+"si vous me permettez, j'ai eu l'impression\n"
+"que c'était un peu un trou perdu,\n"
+"alors j'ai pensé faire quelque chose pour aider."
 
 #: data/level/tea-with-milgram.cfg:481
 msgid ""
 "We thought we'd actually hire you guys\n"
 "as labor, to do whatever you could."
-msgstr "Nous avons pensé vous engager vous les gars,\ncomme manoeuvres, pour faire ce que vous pouviez."
+msgstr ""
+"Nous avons pensé vous engager vous les gars,\n"
+"comme manoeuvres, pour faire ce que vous pouviez."
 
 #: data/level/tea-with-milgram.cfg:483
 msgid ""
@@ -3976,7 +4814,12 @@ msgid ""
 "gets money flowing around, makes the\n"
 "new owners proud of what they built,\n"
 "feels less like charity, et cetera."
-msgstr "C'est toujours mieux comme ça;\nça fait circuler l'argent, rend les nouveaux\npropriétaires fiers de ce qu'ils ont construit,\nça leur donne moins l'impression\nde demander l'aumône, etc."
+msgstr ""
+"C'est toujours mieux comme ça;\n"
+"ça fait circuler l'argent, rend les nouveaux\n"
+"propriétaires fiers de ce qu'ils ont construit,\n"
+"ça leur donne moins l'impression\n"
+"de demander l'aumône, etc."
 
 #: data/level/tea-with-milgram.cfg:485
 msgid "But, apparently we just got conned."
@@ -3987,39 +4830,54 @@ msgid ""
 "And once they figured that out,\n"
 "some of our security guys were\n"
 "a little overzealous about recovering assets."
-msgstr "Et une fois qu'ils ont compris ça,\ncertains de nos gars de la sécurité ont été\nun peu trop zélés sur la récupération des avoirs."
+msgstr ""
+"Et une fois qu'ils ont compris ça,\n"
+"certains de nos gars de la sécurité ont été\n"
+"un peu trop zélés sur la récupération des avoirs."
 
 #: data/level/tea-with-milgram.cfg:490
 msgid ""
 "Uh...\n"
 "That's a pretty spectacular euphemism, there..."
-msgstr "Euh...\nC'est un euphémisme assez spectaculaire, là..."
+msgstr ""
+"Euh...\n"
+"C'est un euphémisme assez spectaculaire, là..."
 
 #: data/level/tea-with-milgram.cfg:492
 msgid ""
 "Yes, okay ...\n"
 "they were just thugs, plain and simple."
-msgstr "Oui, d'accord...\nC'était des voyous, purement et simplement."
+msgstr ""
+"Oui, d'accord...\n"
+"C'était des voyous, purement et simplement."
 
 #: data/level/tea-with-milgram.cfg:495
 msgid ""
 "I didn't authorize that operation,\n"
 "but I will take responsibility for it!"
-msgstr "Je n'ai pas autorisé cette opération,\nmais je vais en prendre la responsabilité!"
+msgstr ""
+"Je n'ai pas autorisé cette opération,\n"
+"mais je vais en prendre la responsabilité!"
 
 #: data/level/tea-with-milgram.cfg:497
 msgid ""
 "Those cats are turning into bullies.\n"
 "Sooner or later, they're going to\n"
 "cause me some serious problems!"
-msgstr "Ces chats se transforment en tyrans.\nTôt ou tard, ils vont me causer\nde sérieux problèmes!"
+msgstr ""
+"Ces chats se transforment en tyrans.\n"
+"Tôt ou tard, ils vont me causer\n"
+"de sérieux problèmes!"
 
 #: data/level/tea-with-milgram.cfg:499
 msgid ""
 "I haven't given you a chance to apologize,\n"
 "but no need.\n"
 "Thank you for embarrassing them."
-msgstr "Je ne vous ai pas donné une chance de\nvous excuser, mais pas besoin.\nMerci de les avoir gênés."
+msgstr ""
+"Je ne vous ai pas donné une chance de\n"
+"vous excuser, mais pas besoin.\n"
+"Merci de les avoir gênés."
 
 #: data/level/tea-with-milgram.cfg:501
 msgid "I hope they've learned a lesson from this."
@@ -4029,13 +4887,17 @@ msgstr "J'espère qu'ils en auront tiré une leçon."
 msgid ""
 "Regarding THIS incident, I will need\n"
 "to have a talk with them about common sense."
-msgstr "Concernant cet incident, je vais devoir avoir\nune conversation avec eux sur le sens commun."
+msgstr ""
+"Concernant cet incident, je vais devoir avoir\n"
+"une conversation avec eux sur le sens commun."
 
 #: data/level/tea-with-milgram.cfg:506
 msgid ""
 "Any fool could guess that the\n"
 "money had long since been spent."
-msgstr "N'importe quel imbécile pouvait deviner que\nl'argent avait été dépensé depuis longtemps."
+msgstr ""
+"N'importe quel imbécile pouvait deviner que\n"
+"l'argent avait été dépensé depuis longtemps."
 
 #: data/level/tea-with-milgram.cfg:513
 msgid "Thank you Jeeves, that will do nicely."
@@ -4049,19 +4911,25 @@ msgstr "Quoi qu'il en soit, je ne sais pas trop quoi faire."
 msgid ""
 "I'd like to do something\n"
 "to make amends with the town..."
-msgstr "Je voudrais faire quelque chose pour\nfaire amende honorable vis-à-vis de la ville ..."
+msgstr ""
+"Je voudrais faire quelque chose pour\n"
+"faire amende honorable vis-à-vis de la ville ..."
 
 #: data/level/tea-with-milgram.cfg:522
 msgid ""
 "... what the kitties did there\n"
 "was decidedly impolite."
-msgstr "... ce que les chatons ont fait là\nétait décidément impoli."
+msgstr ""
+"... ce que les chatons ont fait là\n"
+"était décidément impoli."
 
 #: data/level/tea-with-milgram.cfg:524
 msgid ""
 "Then again, I'm almost tempted to cut my\n"
 "losses and leave you guys well enough alone."
-msgstr "Là encore, je suis presque tenté d'arrêter les frais\net vous laisser vous débrouiller tout seuls."
+msgstr ""
+"Là encore, je suis presque tenté d'arrêter les frais\n"
+"et vous laisser vous débrouiller tout seuls."
 
 #: data/level/tea-with-milgram.cfg:526
 msgid "Would you have any suggestions?"
@@ -4075,31 +4943,41 @@ msgstr "Un ou deux."
 msgid ""
 "Probably the craziest and most helpful is...\n"
 "I actually think he still has that money."
-msgstr "Probablement le plus fou et le plus utile est que...\nEn fait, je pense qu'il a encore l'argent."
+msgstr ""
+"Probablement le plus fou et le plus utile est que...\n"
+"En fait, je pense qu'il a encore l'argent."
 
 #: data/level/tea-with-milgram.cfg:533
 msgid ""
 "I know it sounds completely nuts,\n"
 "but I honestly think that when he was given it..."
-msgstr "Je sais que ça a l'air complètement dingue,\nmais je pense honnêtement que quand il l'a reçu..."
+msgstr ""
+"Je sais que ça a l'air complètement dingue,\n"
+"mais je pense honnêtement que quand il l'a reçu..."
 
 #: data/level/tea-with-milgram.cfg:536
 msgid ""
 "...he didn't have a clue what to do with it,\n"
 "so he just ... hid it."
-msgstr "... Il n'avait pas la moindre idée de quoi faire avec,\ndonc il l'a juste... caché."
+msgstr ""
+"... Il n'avait pas la moindre idée de quoi faire avec,\n"
+"donc il l'a juste... caché."
 
 #: data/level/tea-with-milgram.cfg:539
 msgid ""
 "We've all known him for years,\n"
 "and he's a hoarder, and a miser."
-msgstr "Nous le connaissons tous depuis des années,\net c'est un accapareur, et un avare."
+msgstr ""
+"Nous le connaissons tous depuis des années,\n"
+"et c'est un accapareur, et un avare."
 
 #: data/level/tea-with-milgram.cfg:542
 msgid ""
 "We've never seen him suddenly having more\n"
 "money to spend; so it's crazy, but it fits."
-msgstr "Nous ne l'avons pas vu avoir soudain\nplus d'argent à dépenser; donc c'est fou, mais ça colle."
+msgstr ""
+"Nous ne l'avons pas vu avoir soudain\n"
+"plus d'argent à dépenser; donc c'est fou, mais ça colle."
 
 #: data/level/tea-with-milgram.cfg:544
 msgid "I ... didn't see that coming."
@@ -4109,25 +4987,33 @@ msgstr "Je... n'aurais pas imaginé."
 msgid ""
 "When he was getting shaken down by that kitty,\n"
 "we turned our back on him for a second."
-msgstr "Quand il se faisait secouer par ce chaton,\nnous lui avons tourné le dos une seconde."
+msgstr ""
+"Quand il se faisait secouer par ce chaton,\n"
+"nous lui avons tourné le dos une seconde."
 
 #: data/level/tea-with-milgram.cfg:548
 msgid ""
 "It turned out he'd hidden\n"
 "in some sort of secret passage."
-msgstr "Il s'est avéré qu'il s'était caché\ndans une sorte de passage secret."
+msgstr ""
+"Il s'est avéré qu'il s'était caché\n"
+"dans une sorte de passage secret."
 
 #: data/level/tea-with-milgram.cfg:550
 msgid ""
 "He may have used some of the money to build it,\n"
 "but his house has some sort of safe room."
-msgstr "Il a peut-être utilisé une partie de l'argent pour\nle construire, mais sa maison a une sorte de coffre-fort."
+msgstr ""
+"Il a peut-être utilisé une partie de l'argent pour\n"
+"le construire, mais sa maison a une sorte de coffre-fort."
 
 #: data/level/tea-with-milgram.cfg:553
 msgid ""
 "It's just a guess, but I honestly think he\n"
 "might have hidden the rest right inside it."
-msgstr "C'est juste une supposition, mais honnêtement,\nje pense qu'il pourrait avoir caché le reste à l'intérieur."
+msgstr ""
+"C'est juste une supposition, mais honnêtement,\n"
+"je pense qu'il pourrait avoir caché le reste à l'intérieur."
 
 #: data/level/tea-with-milgram.cfg:556
 msgid "Incredible."
@@ -4137,32 +5023,44 @@ msgstr "Incroyable."
 msgid ""
 "Knowing that, you could probably\n"
 "just walk in and take it."
-msgstr "Sachant cela, vous pourriez probablement juste\ny aller et le prendre."
+msgstr ""
+"Sachant cela, vous pourriez probablement juste\n"
+"y aller et le prendre."
 
 #: data/level/tea-with-milgram.cfg:560
 msgid ""
 "We may.\n"
 "In fact I believe we will!"
-msgstr "Nous pouvons.\nEn fait je crois que nous allons le faire!"
+msgstr ""
+"Nous pouvons.\n"
+"En fait je crois que nous allons le faire!"
 
 #: data/level/tea-with-milgram.cfg:562
 msgid ""
 "If I may be so bold, I think it's\n"
 "safe to say on behalf of the town..."
-msgstr "Si je peux me permettre, je pense pouvoir dire\nau nom de la ville..."
+msgstr ""
+"Si je peux me permettre, je pense pouvoir dire\n"
+"au nom de la ville..."
 
 #: data/level/tea-with-milgram.cfg:564
 msgid ""
 "...the rest of us would still appreciate\n"
 "some sort of public-works project."
-msgstr "... le reste d'entre nous apprécierait toujours\nun projet de travaux publics quelconque."
+msgstr ""
+"... le reste d'entre nous apprécierait toujours\n"
+"un projet de travaux publics quelconque."
 
 #: data/level/tea-with-milgram.cfg:567
 msgid ""
 "You probably should hear what others are\n"
 "interested in, but I for one really wish there\n"
 "was a road of any kind between here and there."
-msgstr "Vous devriez probablement entendre ce qui\nintéresse les autres, mais moi en tout cas,\nj'aimerais vraiment qu'il y ait un genre de route\nentre le village et le château."
+msgstr ""
+"Vous devriez probablement entendre ce qui\n"
+"intéresse les autres, mais moi en tout cas,\n"
+"j'aimerais vraiment qu'il y ait un genre de route\n"
+"entre le village et le château."
 
 #: data/level/tea-with-milgram.cfg:569
 msgid "I'm dreading the trip back."
@@ -4178,38 +5076,51 @@ msgstr "Vraiment? Où est garé votre bateau?"
 msgid ""
 "I ... didn't ... use a vehicle.\n"
 "I walked."
-msgstr "Je... n'ai pas... utilisé de véhicule.\nJ'ai marché."
+msgstr ""
+"Je... n'ai pas... utilisé de véhicule.\n"
+"J'ai marché."
 
 #: data/level/tea-with-milgram.cfg:576
 msgid ""
 "...\n"
 "I'm amazed that's even possible."
-msgstr "...\nÇa m'étonne que ce soit même possible."
+msgstr ""
+"...\n"
+"Ça m'étonne que ce soit même possible."
 
 #: data/level/tea-with-milgram.cfg:578
 msgid ""
 "I like you, little frog!\n"
 "You're quite bold."
-msgstr "Je t'aime, petite grenouille!\nTu es gonflé."
+msgstr ""
+"Je t'aime, petite grenouille!\n"
+"Tu es gonflé."
 
 #: data/level/tea-with-milgram.cfg:580
 msgid ""
 "Well, I can certainly at least\n"
 "guarantee transportation for you!"
-msgstr "Eh bien, je peux certainement au moins\ngarantir le transport pour vous!"
+msgstr ""
+"Eh bien, je peux certainement au moins\n"
+"garantir le transport pour vous!"
 
 #: data/level/tea-with-milgram.cfg:582
 msgid ""
 "And I'd be happy to consider some kind of project.\n"
 "You yourself could be my paid liaison."
-msgstr "Et je serais heureux d'examiner certains types de projets.\nVous pourriez vous-même être payé pour être mon contact ."
+msgstr ""
+"Et je serais heureux d'examiner certains types de projets.\n"
+"Vous pourriez vous-même être payé pour être mon contact ."
 
 #: data/level/tea-with-milgram.cfg:585
 msgid ""
 "We should keep in touch - hopefully,\n"
 "through you, I can meet some of the\n"
 "more 'level-headed' members of your town."
-msgstr "Nous devrions garder le contact - espérant\nqu'à travers vous, je puisse rencontrer certains des\nmembres les plus \"raisonnables\" de votre ville."
+msgstr ""
+"Nous devrions garder le contact - espérant\n"
+"qu'à travers vous, je puisse rencontrer certains des\n"
+"membres les plus \"raisonnables\" de votre ville."
 
 #: data/level/tea-with-milgram.cfg:587
 msgid "So ... all's well that ends well?"
@@ -4219,7 +5130,9 @@ msgstr "Alors... tout est bien qui finit bien?"
 msgid ""
 "Yes, I do think everyone will have\n"
 "an equitable outcome to this whole mess."
-msgstr "Oui, je pense que tout le monde aura\nune issue équitable à tout ce gâchis."
+msgstr ""
+"Oui, je pense que tout le monde aura\n"
+"une issue équitable à tout ce gâchis."
 
 #: data/level/tea-with-milgram.cfg:591
 msgid "Except the elder."
@@ -4245,37 +5158,37 @@ msgstr "Relevez un défi de type arcade différent sur chaque machine."
 msgid "Show us what you can do!"
 msgstr "Montre-nous ce que tu sais faire!"
 
-#: data/level/titlescreen-arcade.cfg:108
+#: data/level/titlescreen-arcade.cfg:114
 msgid "EXIT"
 msgstr "SORTIR"
 
-#: data/level/titlescreen-arcade.cfg:123 data/level/titlescreen-arcade.cfg:143
-#: data/level/titlescreen-arcade.cfg:213
+#: data/level/titlescreen-arcade.cfg:129 data/level/titlescreen-arcade.cfg:149
+#: data/level/titlescreen-arcade.cfg:219
 msgid "Select a level:"
 msgstr "Choisissez un niveau:"
 
-#: data/level/titlescreen-arcade.cfg:127 data/level/titlescreen-arcade.cfg:147
-#: data/level/titlescreen-arcade.cfg:215
+#: data/level/titlescreen-arcade.cfg:133 data/level/titlescreen-arcade.cfg:153
+#: data/level/titlescreen-arcade.cfg:221
 msgid "(cancel)"
 msgstr "(annuler)"
 
-#: data/level/titlescreen-arcade.cfg:173
+#: data/level/titlescreen-arcade.cfg:179
 msgid "CLIMB"
 msgstr "GRIMPER"
 
-#: data/level/titlescreen-arcade.cfg:198
+#: data/level/titlescreen-arcade.cfg:204
 msgid "RUN"
 msgstr "COURIR"
 
-#: data/level/titlescreen-arcade.cfg:214
+#: data/level/titlescreen-arcade.cfg:220
 msgid "Coin Race"
 msgstr "Course aux pièces"
 
-#: data/level/titlescreen-arcade.cfg:241
+#: data/level/titlescreen-arcade.cfg:247
 msgid "COIN RACE"
 msgstr "COURSE AUX PIÈCES"
 
-#: data/level/titlescreen-difficulty-selector.cfg:225
+#: data/level/titlescreen-difficulty-selector.cfg:39
 msgid "SELECT DIFFICULTY LEVEL:"
 msgstr ""
 
@@ -4351,7 +5264,9 @@ msgstr "ARCADE"
 msgid ""
 "AIEEEEE!\n"
 "Get that thing out of here!"
-msgstr "AIEEEEE!\nSortez cette chose de là!"
+msgstr ""
+"AIEEEEE!\n"
+"Sortez cette chose de là!"
 
 #: data/level/to-nenes-house-inside.cfg:35
 msgid "Hey Nene, what's cooking?"
@@ -4361,7 +5276,9 @@ msgstr "Salut Nene, tu mijotes quoi?"
 msgid ""
 "I'm making a cake.\n"
 "Would you like to have some?"
-msgstr "Je fais un gâteau.\nT'en veux?"
+msgstr ""
+"Je fais un gâteau.\n"
+"T'en veux?"
 
 #: data/level/to-nenes-house-inside.cfg:38
 msgid "Nah, I'd better get to town."
@@ -4375,7 +5292,9 @@ msgstr "J'ai des trucs importants à régler."
 msgid ""
 "Oh, well maybe before you go\n"
 "you could look at my basement."
-msgstr "D'accord, tu pourrais peut-être\njeter un œil à ma cave avant d'y aller."
+msgstr ""
+"D'accord, tu pourrais peut-être\n"
+"jeter un œil à ma cave avant d'y aller."
 
 #: data/level/to-nenes-house-inside.cfg:46
 msgid "Your basement?"
@@ -4385,7 +5304,9 @@ msgstr "À ta cave?"
 msgid ""
 "Yes, here's the key.\n"
 "There're some ants down there."
-msgstr "Oui, voici la clé.\nY a des fourmis là-dessous."
+msgstr ""
+"Oui, voici la clé.\n"
+"Y a des fourmis là-dessous."
 
 #: data/level/to-nenes-house-inside.cfg:51
 msgid "They're freaking me out."
@@ -4393,44 +5314,60 @@ msgstr "Elle me donnent les chocottes."
 
 #: data/level/to-nenes-house-inside.cfg:53
 msgid "Sure thing. I need a job!"
-msgstr "Pas de problème.\nJ'ai besoin d'un travail!"
+msgstr ""
+"Pas de problème.\n"
+"J'ai besoin d'un travail!"
 
 #: data/level/to-nenes-house-inside.cfg:55
 msgid ""
 "How much were you figuring on\n"
 "paying for a pest exterminator?"
-msgstr "Tu pensais payer combien\npour un exterminateur?"
+msgstr ""
+"Tu pensais payer combien\n"
+"pour un exterminateur?"
 
 #: data/level/to-nenes-house-inside.cfg:56
 msgid ""
 "Well sheesh, I thought you'd\n"
 "do it for free for a friend!"
-msgstr "Pfff, j'ai cru que tu pouvais le faire\ngratuitement pour une amie!"
+msgstr ""
+"Pfff, j'ai cru que tu pouvais le faire\n"
+"gratuitement pour une amie!"
 
 #: data/level/to-nenes-house-inside.cfg:57
 msgid ""
 "But if you're going to be like that\n"
 "I think I left a health capsule down there.\n"
 "If you can clear it out, it's yours."
-msgstr "Mais si tu le prends comme ça\nje crois que j'ai laissé\nune capsule de santé en bas.\nSi tu me nettoies la cave elle est à toi."
+msgstr ""
+"Mais si tu le prends comme ça\n"
+"je crois que j'ai laissé\n"
+"une capsule de santé en bas.\n"
+"Si tu me nettoies la cave elle est à toi."
 
 #: data/level/to-nenes-house-inside.cfg:59
 msgid ""
 "So, did you end up taking care\n"
 "of those ants down there?"
-msgstr "Alors, as-tu fini par me débarrasser\nde ces fourmis dans la cave?"
+msgstr ""
+"Alors, as-tu fini par me débarrasser\n"
+"de ces fourmis dans la cave?"
 
 #: data/level/to-nenes-house-inside.cfg:61
 msgid ""
 "Of course.\n"
 "I don't disappoint!"
-msgstr "Bien sûr.\nC'est pas mon genre de décevoir!"
+msgstr ""
+"Bien sûr.\n"
+"C'est pas mon genre de décevoir!"
 
 #: data/level/to-nenes-house-inside.cfg:63
 msgid ""
 "And thanks for the gift,\n"
 "by the way."
-msgstr "Au fait,\nmerci pour le cadeau."
+msgstr ""
+"Au fait,\n"
+"merci pour le cadeau."
 
 #: data/level/to-nenes-house-inside.cfg:64
 msgid "You're welcome."
@@ -4444,7 +5381,9 @@ msgstr "Ha flûte, la porte est fermée à clé."
 msgid ""
 "Can't a guy sneak into his neighbor's\n"
 "basement uninvited these days?"
-msgstr "On ne peut même plus rentrer dans la cave\nde ses voisins sans prévenir, maintenant ?"
+msgstr ""
+"On ne peut même plus rentrer dans la cave\n"
+"de ses voisins sans prévenir, maintenant ?"
 
 #: data/level/to-nenes-house-inside.cfg:1043
 msgid "Nene's House"
@@ -4470,7 +5409,9 @@ msgstr "Avez-vous un instant, monsieur?"
 msgid ""
 "Sorry, I'm off to town!\n"
 "Not interested!"
-msgstr "Désolé, je dois aller en ville!\nJe ne suis pas intéressé!"
+msgstr ""
+"Désolé, je dois aller en ville!\n"
+"Je ne suis pas intéressé!"
 
 #: data/level/to-nenes-house.cfg:3103
 msgid "But the town, you see ..."
@@ -4480,13 +5421,17 @@ msgstr "Mais la ville, et bien..."
 msgid ""
 "Not. Interested.\n"
 "Buzz off."
-msgstr "Je-ne-suis-pas-intéressé.\nDégage."
+msgstr ""
+"Je-ne-suis-pas-intéressé.\n"
+"Dégage."
 
 #: data/level/to-nenes-house.cfg:3107
 msgid ""
 "I don't care what you're preaching,\n"
 "go sell it to someone else."
-msgstr "Je me moque de ce que tu racontes,\nva embobiner quelqu'un d'autre."
+msgstr ""
+"Je me moque de ce que tu racontes,\n"
+"va embobiner quelqu'un d'autre."
 
 #: data/level/to-nenes-house.cfg:3108
 msgid "Very well."
@@ -4497,7 +5442,11 @@ msgid ""
 "Someday, those door-to-door people\n"
 "will realize that kind of hard-sell tactic\n"
 "just annoys people."
-msgstr "Un jour, ces gens du porte-à-porte\ncomprendront que ce genre de\ntechnique de vente agressive\nne fait qu'énerver les gens."
+msgstr ""
+"Un jour, ces gens du porte-à-porte\n"
+"comprendront que ce genre de\n"
+"technique de vente agressive\n"
+"ne fait qu'énerver les gens."
 
 #: data/level/to-nenes-house.cfg:3113
 msgid "The sooner, the better."
@@ -4525,7 +5474,8 @@ msgstr "Allée aquatique"
 
 #: data/object_prototypes/buyable_item.cfg:16
 #: data/object_prototypes/buyable_item.cfg:19
-msgid "The price is {final_price} coins."
+#, fuzzy
+msgid "The price is ${final_price} coins."
 msgstr "Le prix est de {final_price} pièces."
 
 #: data/object_prototypes/buyable_item.cfg:16
@@ -4533,7 +5483,8 @@ msgid "You don't have enough money."
 msgstr "Vous n'avez pas suffisamment d'argent."
 
 #: data/object_prototypes/buyable_item.cfg:20
-msgid "Do you want to buy the {consts.name}?"
+#, fuzzy
+msgid "Do you want to buy the ${consts.name}?"
 msgstr "Voulez-vous acheter {consts.name}?"
 
 #: data/object_prototypes/door.cfg:21
@@ -4547,43 +5498,66 @@ msgstr ""
 
 #: data/objects/effects/control/level_controller_coin_race.cfg:18
 msgid ""
-"The furthest that has been reached is level "
-"${registry.arcade_coin_race_high_score}."
+"The furthest that has been reached is level ${registry."
+"arcade_coin_race_high_score}."
 msgstr ""
 
 #: data/objects/items/max_heart_object.cfg:8
 msgid ""
 "You have acquired a heart capsule.\n"
 "Your maximum HP has increased by one!"
-msgstr "Vous avez obtenu une capsule de santé.\nVos points de vie maximaux\nont augmenté de un!"
+msgstr ""
+"Vous avez obtenu une capsule de santé.\n"
+"Vos points de vie maximaux\n"
+"ont augmenté de un!"
 
 #: data/objects/items/partial_max_heart_object.cfg:12
 msgid ""
 "You've found part of a heart capsule.\n"
 "Collect another three to increase\n"
 "your maximum HP by one!"
-msgstr "Vous avez trouvé un morceau\nde capsule de santé.\nRamassez-en trois autres pour\naugmenter vos points de vie maximaux\nde un!"
+msgstr ""
+"Vous avez trouvé un morceau\n"
+"de capsule de santé.\n"
+"Ramassez-en trois autres pour\n"
+"augmenter vos points de vie maximaux\n"
+"de un!"
 
 #: data/objects/items/partial_max_heart_object.cfg:14
 msgid ""
 "You've found part of a heart capsule.\n"
 "Collect another two to increase\n"
 "your maximum HP by one!"
-msgstr "Vous avez trouvé un morceau\nde capsule de santé.\nRamassez-en deux autres pour\naugmenter vos points de vie maximaux\nde un!"
+msgstr ""
+"Vous avez trouvé un morceau\n"
+"de capsule de santé.\n"
+"Ramassez-en deux autres pour\n"
+"augmenter vos points de vie maximaux\n"
+"de un!"
 
 #: data/objects/items/partial_max_heart_object.cfg:16
 msgid ""
 "You've found part of a heart capsule.\n"
 "Collect another one to increase\n"
 "your maximum HP by one!"
-msgstr "Vous avez trouvé un morceau\nde capsule de santé.\nRamassez-en une autre pour\naugmenter vos points de vie maximaux\nde un!"
+msgstr ""
+"Vous avez trouvé un morceau\n"
+"de capsule de santé.\n"
+"Ramassez-en une autre pour\n"
+"augmenter vos points de vie maximaux\n"
+"de un!"
 
 #: data/objects/items/partial_max_heart_object.cfg:20
 msgid ""
 "You've collected enough parts to\n"
 "make a whole new heart capsule!\n"
 "Your maximum HP has increased by one!"
-msgstr "Vous avez ramassé suffisamment\nde parties de capsule de santé\npour en faire une entière!\nVos points de vie maximaux\nont augmenté de un!"
+msgstr ""
+"Vous avez ramassé suffisamment\n"
+"de parties de capsule de santé\n"
+"pour en faire une entière!\n"
+"Vos points de vie maximaux\n"
+"ont augmenté de un!"
 
 #: data/objects/items/store-items/buyable_gliding_wings.cfg:5
 msgid "gliding wings"
@@ -4593,7 +5567,9 @@ msgstr "les ailes planantes"
 msgid ""
 "The gliding wings will allow\n"
 "you to glide through the air."
-msgstr "Les ailes planantes vous permettent\nde planer dans les airs."
+msgstr ""
+"Les ailes planantes vous permettent\n"
+"de planer dans les airs."
 
 #: data/objects/items/store-items/buyable_heart_container.cfg:5
 msgid "heart"
@@ -4603,13 +5579,17 @@ msgstr "le cœur"
 msgid ""
 "The heart will give you\n"
 "an extra health point."
-msgstr "Le cœur vous donne\nun point de santé supplémentaire. "
+msgstr ""
+"Le cœur vous donne\n"
+"un point de santé supplémentaire. "
 
 #: data/objects/items/store-items/buyable_jumping_boots.cfg:7
 msgid ""
 "The power boots will\n"
 "make you jump higher."
-msgstr "Les super bottes vous\npermettent de sauter plus haut."
+msgstr ""
+"Les super bottes vous\n"
+"permettent de sauter plus haut."
 
 #: data/objects/items/store-items/buyable_powerup_invincible.cfg:5
 msgid "invincibility crystal"
@@ -4621,7 +5601,11 @@ msgid ""
 "invincibility powerups. Invincibility\n"
 "powerups will make you\n"
 "invincible for a short time."
-msgstr "Le cristal d'invincibilité déverrouille\nles bonus d'invincibilité.\nIls vous rendent invincible\npour une courte période."
+msgstr ""
+"Le cristal d'invincibilité déverrouille\n"
+"les bonus d'invincibilité.\n"
+"Ils vous rendent invincible\n"
+"pour une courte période."
 
 #: data/objects/items/store-items/buyable_powerup_reflexes.cfg:5
 msgid "hyper crystal"
@@ -4634,7 +5618,12 @@ msgid ""
 "powerups will heighten your\n"
 "reflexes, making the world\n"
 "seem to slow down around you."
-msgstr "Le cristal d'hyperactivité déverrouille\nles bonus d'hyperactivité.\nIls augmentent vos réflexes,\nce qui fait que le monde semble\nralentir autour de vous."
+msgstr ""
+"Le cristal d'hyperactivité déverrouille\n"
+"les bonus d'hyperactivité.\n"
+"Ils augmentent vos réflexes,\n"
+"ce qui fait que le monde semble\n"
+"ralentir autour de vous."
 
 #: data/objects/items/store-items/buyable_powerup_shooting.cfg:5
 msgid "energy crystal"
@@ -4646,19 +5635,27 @@ msgid ""
 "energy powerups. Energy\n"
 "powerups will allow you\n"
 "to shoot bolts of energy."
-msgstr "Le cristal d'énergie déverrouille\nles bonus d'énergie.\nIls vous permettent\nde tirer des éclairs d'énergie."
+msgstr ""
+"Le cristal d'énergie déverrouille\n"
+"les bonus d'énergie.\n"
+"Ils vous permettent\n"
+"de tirer des éclairs d'énergie."
 
 #: data/objects/items/store-items/buyable_shield.cfg:7
 msgid ""
 "The energy shield protects you\n"
 "from damage when you crouch."
-msgstr "Le bouclier d'énergie vous protège\nlorsque vous êtes accroupi."
+msgstr ""
+"Le bouclier d'énergie vous protège\n"
+"lorsque vous êtes accroupi."
 
 #: data/objects/items/store-items/buyable_speed_boots.cfg:7
 msgid ""
 "The speed boots will make\n"
 "you faster."
-msgstr "Les bottes de vitesse\nvous rendent plus rapide."
+msgstr ""
+"Les bottes de vitesse\n"
+"vous rendent plus rapide."
 
 #: data/objects/items/store-items/buyable_spit_strengthener.cfg:5
 msgid "spit strengthener"
@@ -4668,7 +5665,9 @@ msgstr "crachats plus puissants"
 msgid ""
 "The spit strengthener will extend\n"
 "the range you can spit."
-msgstr "Les crachats plus puissants\naugmentent la portée de vos crachats."
+msgstr ""
+"Les crachats plus puissants\n"
+"augmentent la portée de vos crachats."
 
 #: data/objects/items/store-items/buyable_tongue_extension.cfg:5
 msgid "tongue extender"
@@ -4678,7 +5677,9 @@ msgstr "l'extension de langue"
 msgid ""
 "The tongue extender will extend\n"
 "the length of your tongue."
-msgstr "L'extension de langue augmente\nla taille de votre langue."
+msgstr ""
+"L'extension de langue augmente\n"
+"la taille de votre langue."
 
 #: data/objects/items/trophy.cfg:25
 msgid ""
@@ -4720,11 +5721,15 @@ msgstr "Salut Chopple."
 msgid ""
 "Hey.\n"
 "Welcome to the store."
-msgstr "Salut.\nBienvenue dans mon magasin."
+msgstr ""
+"Salut.\n"
+"Bienvenue dans mon magasin."
 
 #: data/objects/props-interactive/npcs/chopple_npc.cfg:8
 msgid "Take your time, look around."
-msgstr "Prends ton temps pour regarder\nmes produits."
+msgstr ""
+"Prends ton temps pour regarder\n"
+"mes produits."
 
 #: data/objects/props-interactive/npcs/kinguin_npc.cfg:24
 #: data/objects/props-interactive/npcs/kinguin_npc.cfg:45
