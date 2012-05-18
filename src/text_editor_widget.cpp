@@ -120,7 +120,7 @@ text_editor_widget::text_editor_widget(int width, int height)
 	text_color_(255, 255, 255, 255)
 {
 	if(height == 0) {
-		height = char_height_;
+		height = char_height_ + BorderSize*2;
 		nrows_ = 1;
 		ncols_ = width/char_width_;
 	}
