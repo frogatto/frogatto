@@ -560,12 +560,9 @@ private:
 	variant execute_member(const formula_callable& variables, std::string& id) const {
 		variant left = left_->evaluate(variables);
 		
-		const identifier_expression* id_expr = dynamic_cast<identifier_expression*>(right_.get());
-		if(!id_expr) {
+		if(!right_->is_identifier(&id)) {
 			return right_->evaluate_with_member(*left.as_callable(), id);
 		}
-		
-		id = id_expr->id();
 		
 		return left;
 	}
