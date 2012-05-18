@@ -262,7 +262,8 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 
 	SDL_Event ev = event;
 	normalize_event(&ev);
-	foreach(const widget_ptr& widget, visible_cells_) {
+	std::vector<widget_ptr> cells = visible_cells_;
+	foreach(widget_ptr widget, cells) {
 		if(widget) {
 			claimed = widget->process_event(ev, claimed);
 		}

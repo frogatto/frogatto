@@ -2185,14 +2185,13 @@ variant custom_object::get_value(const std::string& key) const
 		return get_value_by_slot(slot);
 	}
 
-	std::map<std::string, variant>::const_iterator const_property_itor = type_->const_properties().find(key);
-	if(const_property_itor != type_->const_properties().end()) {
-		return const_property_itor->second;
-	}
-
-	std::map<std::string, game_logic::const_formula_ptr>::const_iterator property_itor = type_->properties().find(key);
-	if(property_itor != type_->properties().end() && property_itor->second) {
-		return property_itor->second->execute(*this);
+	std::map<std::string, custom_object_type::property_entry>::const_iterator property_itor = type_->properties().find(key);
+	if(property_itor != type_->properties().end()) {
+		if(property_itor->second.getter) {
+			return property_itor->second.getter->execute(*this);
+		} else if(property_itor->second.const_value) {
+			return *property_itor->second.const_value;
+		}
 	}
 
 	variant var_result = tmp_vars_->query_value(key);
@@ -2244,6 +2243,16 @@ void custom_object::set_value(const std::string& key, const variant& value)
 	const int slot = custom_object_callable::get_key_slot(key);
 	if(slot != -1) {
 		set_value_by_slot(slot, value);
+		return;
+	}
+
+	std::map<std::string, custom_object_type::property_entry>::const_iterator property_itor = type_->properties().find(key);
+	if(property_itor != type_->properties().end() && property_itor->second.setter) {
+			
+		game_logic::map_formula_callable* callable(new game_logic::map_formula_callable(this));
+		callable->add("value", value);
+		variant value = property_itor->second.setter->execute(*callable);
+		execute_command(value);
 		return;
 	}
 

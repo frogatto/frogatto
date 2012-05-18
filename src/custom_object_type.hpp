@@ -150,8 +150,12 @@ public:
 	game_logic::const_map_formula_callable_ptr consts() const { return consts_; }
 	const std::map<std::string, variant>& tags() const { return tags_; }
 
-	const std::map<std::string, game_logic::const_formula_ptr>& properties() const { return properties_; }
-	const std::map<std::string, variant>& const_properties() const { return const_properties_; }
+	struct property_entry {
+		game_logic::const_formula_ptr getter, setter;
+		boost::shared_ptr<variant> const_value;
+	};
+
+	const std::map<std::string, property_entry>& properties() const { return properties_; }
 
 	game_logic::function_symbol_table* function_symbols() const;
 
@@ -254,8 +258,7 @@ private:
 	game_logic::map_formula_callable_ptr consts_;
 	std::map<std::string, variant> tags_;
 
-	std::map<std::string, variant> const_properties_;
-	std::map<std::string, game_logic::const_formula_ptr> properties_;
+	std::map<std::string, property_entry> properties_;
 
 	int teleport_offset_x_, teleport_offset_y_;
 	bool no_move_to_standing_;

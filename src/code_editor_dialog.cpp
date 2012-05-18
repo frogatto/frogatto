@@ -194,7 +194,10 @@ bool code_editor_dialog::handle_event(const SDL_Event& event, bool claimed)
 	}
 
 	if(suggestions_grid_) {
-		claimed = suggestions_grid_->process_event(event, claimed) || claimed;
+		//since an event could cause removal of the suggestions grid,
+		//make sure the object doesn't get cleaned up until after the event.
+		gui::widget_ptr suggestions = suggestions_grid_;
+		claimed = suggestions->process_event(event, claimed) || claimed;
 		if(claimed) {
 			return claimed;
 		}

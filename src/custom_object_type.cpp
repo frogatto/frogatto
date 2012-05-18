@@ -727,10 +727,14 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 		foreach(variant key, properties_node.get_keys().as_list()) {
 			const std::string& k = key.as_string();
 			variant value = properties_node[key];
+			property_entry& entry = properties_[k];
 			if(value.is_string()) {
-				properties_[k] = game_logic::formula::create_optional_formula(value, function_symbols(), &callable_definition_);
+				entry.getter = game_logic::formula::create_optional_formula(value, function_symbols(), &callable_definition_);
+			} else if(value.is_map()) {
+				entry.getter = game_logic::formula::create_optional_formula(value["get"], function_symbols(), &callable_definition_);
+				entry.setter = game_logic::formula::create_optional_formula(value["set"], function_symbols(), &callable_definition_);
 			} else {
-				const_properties_[k] = value;
+				entry.const_value.reset(new variant(value));
 			}
 		}
 	}
