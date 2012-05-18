@@ -1495,41 +1495,56 @@ private:
 class saturated_add_command : public game_logic::command_callable
 {
 public:
-	saturated_add_command(variant target, const std::string& attr, variant val, variant cap)
-	  : target_(target), attr_(attr), val_(val), cap_(cap)
+	saturated_add_command(variant target, const std::string& attr, variant val, variant min_cap, variant max_cap)
+	  : target_(target), attr_(attr), val_(val), max_cap_(max_cap), min_cap_(min_cap)
 	{}
 	virtual void execute(game_logic::formula_callable& ob) const {
 		variant result;
 		if(target_.is_callable()) {
 			variant attr = target_.mutable_callable()->query_value(attr_);
-			if(attr > cap_ || val_ > cap_) {
-				result = cap_;
+			if(attr > max_cap_ || val_ > max_cap_) {
+				result = max_cap_;
+			} else if (min_cap_.is_null() == false && (attr < min_cap_ || val_ < min_cap_)) {
+				result = min_cap_;
 			} else {
 				result = attr + val_;
-				if(result > cap_) {
-					result = cap_;
+				if(result > max_cap_) {
+					result = max_cap_;
+				}
+				if(min_cap_.is_null() == false && result > min_cap_) {
+					result = min_cap_;
 				}
 			}
 			target_.mutable_callable()->mutate_value(attr_, result);
 		} else if(target_.is_map()) {
 			variant key(attr_);
-			if(target_[key] > cap_ || val_ > cap_) {
-				result = cap_;
+			if(target_[key] > max_cap_ || val_ > max_cap_) {
+				result = max_cap_;
+			} else if(min_cap_.is_null() == false && (target_[key] < min_cap_ || val_ < min_cap_)) {
+				result = min_cap_;
 			} else {
 				result = target_[key] + val_;
-				if(result > cap_) {
-					result = cap_;
+				if(result > max_cap_) {
+					result = max_cap_;
+				}
+				if(min_cap_.is_null() == false && result < min_cap_) {
+					result = min_cap_;
 				}
 			}
 			target_.add_attr_mutation(key, result);
 		} else {
 			variant attr = ob.query_value(attr_);
-			if(attr > cap_ || val_ > cap_) {
-				result = cap_;
+			if(attr > max_cap_ || val_ > max_cap_) {
+				result = max_cap_;
+			} else if(min_cap_.is_null() == false && (attr < min_cap_ || val_ < min_cap_)) {
+				result = min_cap_;
 			} else {
 				result = attr + val_;
-				if(result > cap_) {
-					result = cap_;
+				if(result > max_cap_) {
+					result = max_cap_;
+				}
+				if(min_cap_.is_null() == false && result > min_cap_) {
+					result = min_cap_;
 				}
 			}
 			ob.mutate_value(attr_, result);
@@ -1539,7 +1554,8 @@ private:
 	mutable variant target_;
 	std::string attr_;
 	variant val_;
-	variant cap_;
+	variant max_cap_;
+	variant min_cap_;
 };
 
 class set_by_slot_command : public game_logic::command_callable
@@ -1581,30 +1597,37 @@ private:
 class saturated_add_by_slot_command : public game_logic::command_callable
 {
 public:
-	saturated_add_by_slot_command(int slot, const variant& value, const variant& cap)
-	  : slot_(slot), value_(value), cap_(cap)
+	saturated_add_by_slot_command(int slot, const variant& value, const variant& min_cap, const variant& max_cap)
+	  : slot_(slot), value_(value), max_cap_(max_cap), min_cap_(min_cap)
 	{}
 
 	virtual void execute(game_logic::formula_callable& obj) const {
 		variant result = obj.query_value_by_slot(slot_);
-		if(result > cap_ || value_ > cap_) {
-			result = cap_;
+		if(result > max_cap_ || value_ > max_cap_) {
+			result = max_cap_;
+		} else if(min_cap_.is_null() == false && (result < min_cap_ || result < min_cap_)) {
+			result = min_cap_;
 		} else {
 			result = result + value_;
-			if(result > cap_) {
-				result = cap_;
+			if(result > max_cap_) {
+				result = max_cap_;
+			}
+			if(min_cap_.is_null() == false && result < min_cap_) {
+				result = min_cap_;
 			}
 		}
 		obj.mutate_value_by_slot(slot_, result);
 	}
 
 	void set_value(const variant& value) { value_ = value; }
-	void set_cap(const variant& cap) { cap_ = cap; }
+	void set_maxcap(const variant& cap) { max_cap_ = cap; }
+	void set_mincap(const variant& cap) { min_cap_ = cap; }
 
 private:
 	int slot_;
 	variant value_;
-	variant cap_;
+	variant max_cap_;
+	variant min_cap_;
 };
 
 class set_function : public function_expression {
@@ -1729,7 +1752,7 @@ private:
 class saturated_add_function : public function_expression {
 public:
 	saturated_add_function(const args_list& args, const formula_callable_definition* callable_def)
-	  : function_expression("saturated_add", args, 3, 3), slot_(-1) {
+	  : function_expression("saturated_add", args, 3, 4), slot_(-1) {
 		variant literal = args[0]->is_literal();
 		if(literal.is_string()) {
 			key_ = literal.as_string();
@@ -1740,7 +1763,7 @@ public:
 		if(!key_.empty() && callable_def) {
 			slot_ = callable_def->get_slot(key_);
 			if(slot_ != -1) {
-				cmd_ = boost::intrusive_ptr<saturated_add_by_slot_command>(new saturated_add_by_slot_command(slot_, variant(), variant()));
+				cmd_ = boost::intrusive_ptr<saturated_add_by_slot_command>(new saturated_add_by_slot_command(slot_, variant(), variant(), variant()));
 			}
 		}
 	}
@@ -1749,24 +1772,36 @@ private:
 		if(slot_ != -1) {
 			if(cmd_->refcount() == 1) {
 				cmd_->set_value(args()[1]->evaluate(variables));
-				cmd_->set_cap(args()[2]->evaluate(variables));
+				if(args().size() == 3) {
+					cmd_->set_maxcap(args()[2]->evaluate(variables));
+				} else {
+					cmd_->set_mincap(args()[2]->evaluate(variables));
+					cmd_->set_maxcap(args()[3]->evaluate(variables));
+				}
 				return variant(cmd_.get());
 			}
 
 			cmd_ = boost::intrusive_ptr<saturated_add_by_slot_command>(new saturated_add_by_slot_command(slot_, 
 				args()[1]->evaluate(variables), 
-				args()[2]->evaluate(variables)));
+				args().size() == 3 ? variant() : args()[2]->evaluate(variables),
+				args()[args().size() == 3 ? 2 : 3]->evaluate(variables)));
 			return variant(cmd_.get());
 		}
-
+		variant mincap;
+		variant maxcap;
+		if(args().size() > 3) {
+			mincap = args()[2]->evaluate(variables);
+			maxcap = args()[3]->evaluate(variables);
+		} else {
+			maxcap = args()[2]->evaluate(variables);
+		}
 		if(!key_.empty()) {
-			return variant(new saturated_add_command(variant(), key_, args()[1]->evaluate(variables), args()[2]->evaluate(variables)));
+			return variant(new saturated_add_command(variant(), key_, args()[1]->evaluate(variables), mincap, maxcap));
 		}
 
 		std::string member;
 		variant target = args()[0]->evaluate_with_member(variables, member);
-		return variant(new saturated_add_command(
-				target, member, args()[1]->evaluate(variables), args()[2]->evaluate(variables)));
+		return variant(new saturated_add_command(target, member, args()[1]->evaluate(variables), mincap, maxcap));
 	}
 
 	std::string key_;
