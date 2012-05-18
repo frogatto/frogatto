@@ -408,8 +408,8 @@ void custom_object_type::set_file_contents(const std::string& file_path, const s
 	for(object_map::iterator i = cache().begin(); i != cache().end(); ++i) {
 		const std::string* path = get_object_path(i->first + ".cfg");
 		if(path && *path == file_path) {
+			std::cerr << "RELOAD OBJECT: " << i->first << " -> " << *path << "\n";
 			reload_object(i->first);
-			return;
 		}
 	}
 }
