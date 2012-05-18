@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-05-17 13:58-0300\n"
+"POT-Creation-Date: 2012-05-18 01:18-0300\n"
 "PO-Revision-Date: 2012-05-15 23:00+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Polish (http://www.transifex.net/projects/p/Frogatto/language/"
@@ -4557,38 +4557,6 @@ msgstr "WYŚCIG PO MONETY"
 msgid "SELECT DIFFICULTY LEVEL:"
 msgstr ""
 
-#: data/level/titlescreen-test.cfg:296
-msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
-msgstr "Wciśnij {LEFT_KEY} lub {RIGHT_KEY} aby chodzić."
-
-#: data/level/titlescreen-test.cfg:297
-msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
-msgstr "Wciśnij dwa razy {LEFT_KEY} lub {RIGHT_KEY} aby biec."
-
-#: data/level/titlescreen-test.cfg:298
-msgid "Press {DOWN_KEY} to crouch."
-msgstr "Wciśnij {DOWN_KEY} aby się czołgać."
-
-#: data/level/titlescreen-test.cfg:298 data/level/titlescreen.cfg:124
-msgid "Walk in front of a door or person, and press"
-msgstr "Podejdź do drzwi lub postaci i naciśnij"
-
-#: data/level/titlescreen-test.cfg:299
-msgid "Press {UP_KEY} to talk, and use things like doors."
-msgstr "Wciśnij {UP_KEY} aby rozmawiać i używać drzwi."
-
-#: data/level/titlescreen-test.cfg:299 data/level/titlescreen.cfg:125
-msgid "the button that appears to interact with them."
-msgstr "przycisk odpowiedzialny za interakcję z nimi. "
-
-#: data/level/titlescreen-test.cfg:300
-msgid "Press {JUMP_KEY} to jump."
-msgstr "Wciśnij {JUMP_KEY} aby skakać."
-
-#: data/level/titlescreen-test.cfg:301
-msgid "Press {TONGUE_KEY} to use a character's attacks."
-msgstr "Wciśnij {TONGUE_KEY} aby użyć ataku."
-
 #: data/level/titlescreen.cfg:56
 msgid "LOAD GAME"
 msgstr "WCZYTAJ GRĘ"
@@ -4609,9 +4577,17 @@ msgstr ""
 msgid "Press ${DOWN_KEY} to crouch."
 msgstr ""
 
+#: data/level/titlescreen.cfg:124
+msgid "Walk in front of a door or person, and press"
+msgstr "Podejdź do drzwi lub postaci i naciśnij"
+
 #: data/level/titlescreen.cfg:125
 msgid "Press ${UP_KEY} to talk, and use things like doors."
 msgstr ""
+
+#: data/level/titlescreen.cfg:125
+msgid "the button that appears to interact with them."
+msgstr "przycisk odpowiedzialny za interakcję z nimi. "
 
 #: data/level/titlescreen.cfg:126
 msgid "Press ${JUMP_KEY} to jump."
@@ -5144,3 +5120,21 @@ msgstr "Zamień A oraz B"
 #: src/pause_game_dialog.cpp:79
 msgid "OpenFeint"
 msgstr ""
+
+#~ msgid "Press {LEFT_KEY} or {RIGHT_KEY} to walk."
+#~ msgstr "Wciśnij {LEFT_KEY} lub {RIGHT_KEY} aby chodzić."
+
+#~ msgid "Quickly press {LEFT_KEY} or {RIGHT_KEY} twice to run."
+#~ msgstr "Wciśnij dwa razy {LEFT_KEY} lub {RIGHT_KEY} aby biec."
+
+#~ msgid "Press {DOWN_KEY} to crouch."
+#~ msgstr "Wciśnij {DOWN_KEY} aby się czołgać."
+
+#~ msgid "Press {UP_KEY} to talk, and use things like doors."
+#~ msgstr "Wciśnij {UP_KEY} aby rozmawiać i używać drzwi."
+
+#~ msgid "Press {JUMP_KEY} to jump."
+#~ msgstr "Wciśnij {JUMP_KEY} aby skakać."
+
+#~ msgid "Press {TONGUE_KEY} to use a character's attacks."
+#~ msgstr "Wciśnij {TONGUE_KEY} aby użyć ataku."
