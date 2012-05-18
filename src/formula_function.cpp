@@ -1492,6 +1492,56 @@ private:
 	variant val_;
 };
 
+class saturated_add_command : public game_logic::command_callable
+{
+public:
+	saturated_add_command(variant target, const std::string& attr, variant val, variant cap)
+	  : target_(target), attr_(attr), val_(val), cap_(cap)
+	{}
+	virtual void execute(game_logic::formula_callable& ob) const {
+		variant result;
+		if(target_.is_callable()) {
+			variant attr = target_.mutable_callable()->query_value(attr_);
+			if(attr > cap_ || val_ > cap_) {
+				result = cap_;
+			} else {
+				result = attr + val_;
+				if(result > cap_) {
+					result = cap_;
+				}
+			}
+			target_.mutable_callable()->mutate_value(attr_, result);
+		} else if(target_.is_map()) {
+			variant key(attr_);
+			if(target_[key] > cap_ || val_ > cap_) {
+				result = cap_;
+			} else {
+				result = target_[key] + val_;
+				if(result > cap_) {
+					result = cap_;
+				}
+			}
+			target_.add_attr_mutation(key, result);
+		} else {
+			variant attr = ob.query_value(attr_);
+			if(attr > cap_ || val_ > cap_) {
+				result = cap_;
+			} else {
+				result = attr + val_;
+				if(result > cap_) {
+					result = cap_;
+				}
+			}
+			ob.mutate_value(attr_, result);
+		}
+	}
+private:
+	mutable variant target_;
+	std::string attr_;
+	variant val_;
+	variant cap_;
+};
+
 class set_by_slot_command : public game_logic::command_callable
 {
 public:
@@ -1526,6 +1576,35 @@ public:
 private:
 	int slot_;
 	variant value_;
+};
+
+class saturated_add_by_slot_command : public game_logic::command_callable
+{
+public:
+	saturated_add_by_slot_command(int slot, const variant& value, const variant& cap)
+	  : slot_(slot), value_(value), cap_(cap)
+	{}
+
+	virtual void execute(game_logic::formula_callable& obj) const {
+		variant result = obj.query_value_by_slot(slot_);
+		if(result > cap_ || value_ > cap_) {
+			result = cap_;
+		} else {
+			result = result + value_;
+			if(result > cap_) {
+				result = cap_;
+			}
+		}
+		obj.mutate_value_by_slot(slot_, result);
+	}
+
+	void set_value(const variant& value) { value_ = value; }
+	void set_cap(const variant& cap) { cap_ = cap; }
+
+private:
+	int slot_;
+	variant value_;
+	variant cap_;
 };
 
 class set_function : public function_expression {
@@ -1644,6 +1723,55 @@ private:
 	std::string key_;
 	int slot_;
 	mutable boost::intrusive_ptr<add_by_slot_command> cmd_;
+};
+
+
+class saturated_add_function : public function_expression {
+public:
+	saturated_add_function(const args_list& args, const formula_callable_definition* callable_def)
+	  : function_expression("saturated_add", args, 3, 3), slot_(-1) {
+		variant literal = args[0]->is_literal();
+		if(literal.is_string()) {
+			key_ = literal.as_string();
+		} else {
+			args[0]->is_identifier(&key_);
+		}
+
+		if(!key_.empty() && callable_def) {
+			slot_ = callable_def->get_slot(key_);
+			if(slot_ != -1) {
+				cmd_ = boost::intrusive_ptr<saturated_add_by_slot_command>(new saturated_add_by_slot_command(slot_, variant(), variant()));
+			}
+		}
+	}
+private:
+	variant execute(const formula_callable& variables) const {
+		if(slot_ != -1) {
+			if(cmd_->refcount() == 1) {
+				cmd_->set_value(args()[1]->evaluate(variables));
+				cmd_->set_cap(args()[2]->evaluate(variables));
+				return variant(cmd_.get());
+			}
+
+			cmd_ = boost::intrusive_ptr<saturated_add_by_slot_command>(new saturated_add_by_slot_command(slot_, 
+				args()[1]->evaluate(variables), 
+				args()[2]->evaluate(variables)));
+			return variant(cmd_.get());
+		}
+
+		if(!key_.empty()) {
+			return variant(new saturated_add_command(variant(), key_, args()[1]->evaluate(variables), args()[2]->evaluate(variables)));
+		}
+
+		std::string member;
+		variant target = args()[0]->evaluate_with_member(variables, member);
+		return variant(new saturated_add_command(
+				target, member, args()[1]->evaluate(variables), args()[2]->evaluate(variables)));
+	}
+
+	std::string key_;
+	int slot_;
+	mutable boost::intrusive_ptr<saturated_add_by_slot_command> cmd_;
 };
 
 }
@@ -1902,6 +2030,8 @@ expression_ptr create_function(const std::string& fn,
 		return expression_ptr(new set_function(args, callable_def));
 	} else if(fn == "add") {
 		return expression_ptr(new add_function(args, callable_def));
+	} else if(fn == "saturated_add") {
+		return expression_ptr(new saturated_add_function(args, callable_def));
 	}
 
 	if(symbols) {
