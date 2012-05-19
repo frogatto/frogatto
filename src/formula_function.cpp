@@ -268,6 +268,55 @@ FUNCTION_DEF(sign, 1, 1, "sign(value) -> int: evaluates to 1 if value >= 0, -1 o
 	return variant(n >= 0 ? 1 : -1);
 END_FUNCTION_DEF(sign)
 
+FUNCTION_DEF(median, 1, -1, "median(args...) -> value: evaluates to the median of the given arguments. If given a single argument list, will evaluate to the median of the member items.")
+	if(args().size() == 3) {
+		//special case for 3 arguments since it's a common case.
+		variant a = args()[0]->evaluate(variables);
+		variant b = args()[1]->evaluate(variables);
+		variant c = args()[2]->evaluate(variables);
+		if(a < b) {
+			if(b < c) {
+				return b;
+			} else if(a < c) {
+				return c;
+			} else {
+				return a;
+			}
+		} else {
+			if(a < c) {
+				return a;
+			} else if(b < c) {
+				return c;
+			} else {
+				return b;
+			}
+		}
+	}
+
+	std::vector<variant> items;
+	if(args().size() != 1) {
+		items.reserve(args().size());
+	}
+
+	for(size_t n = 0; n != args().size(); ++n) {
+		const variant v = args()[n]->evaluate(variables);
+		if(args().size() == 1 && v.is_list()) {
+			items = v.as_list();
+		} else {
+			items.push_back(v);
+		}
+	}
+
+	std::sort(items.begin(), items.end());
+	if(items.empty()) {
+		return variant();
+	} else if(items.size()&1) {
+		return items[items.size()/2];
+	} else {
+		return (items[items.size()/2-1] + items[items.size()/2])/variant(2);
+	}
+END_FUNCTION_DEF(median)
+
 FUNCTION_DEF(min, 1, -1, "min(args...) -> value: evaluates to the minimum of the given arguments. If given a single argument list, will evaluate to the minimum of the member items.")
 
 	bool found = false;
