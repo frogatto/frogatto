@@ -103,6 +103,7 @@ variant editor_variable_info::write() const
 
 editor_entity_info::editor_entity_info(variant node)
   : category_(node["category"].as_string()),
+    classification_(node["classification"].as_string_default()),
     editable_events_(node["events"].as_list_string_optional()),
 	help_(node["help"].as_string_default())
 {
@@ -116,6 +117,7 @@ variant editor_entity_info::write() const
 {
 	variant_builder node;
 	node.add("category", category_);
+	node.add("classification", classification_);
 	foreach(const editor_variable_info& v, vars_) {
 		node.add("var", v.write());
 	}

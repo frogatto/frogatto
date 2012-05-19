@@ -282,6 +282,11 @@ public:
 
 	void highlight_tile_layer(int layer) { highlight_layer_ = layer; }
 
+	void hide_object_classification(const std::string& classification, bool hidden);
+	const std::set<std::string>& hidden_object_classifications() const { return hidden_classifications_; }
+
+	bool object_classification_hidden(const entity& e) const;
+
 	const point* lock_screen() const { return lock_screen_.get(); }
 
 	void editor_freeze_tile_updates(bool value);
@@ -561,6 +566,8 @@ private:
 	std::vector<entity_ptr> focus_override_;
 
 	std::stack<boost::shared_ptr<speech_dialog> > speech_dialogs_;
+
+	std::set<std::string> hidden_classifications_;
 
 	//color palettes that the level has set.
 	unsigned int palettes_used_;

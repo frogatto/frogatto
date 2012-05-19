@@ -35,6 +35,11 @@ private:
 	bool locked_;
 
 	std::set<int> before_locked_state_;
+
+	void find_classifications();
+	std::set<std::string> all_classifications_;
+
+	void classification_selected(int index);
 };
 
 }

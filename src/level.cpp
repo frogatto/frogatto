@@ -2727,6 +2727,9 @@ std::vector<entity_ptr> level::get_characters_in_rect(const rect& r, int screen_
 {
 	std::vector<entity_ptr> res;
 	foreach(entity_ptr c, chars_) {
+		if(object_classification_hidden(*c)) {
+			continue;
+		}
 
 		const int xP = c->midpoint().x + ((c->parallax_scale_millis_x() - 1000)*screen_xpos)/1000;
 		const int yP = c->midpoint().y + ((c->parallax_scale_millis_y() - 1000)*screen_ypos)/1000;
@@ -2743,6 +2746,10 @@ std::vector<entity_ptr> level::get_characters_at_point(int x, int y, int screen_
 {
 	std::vector<entity_ptr> result;
 	foreach(entity_ptr c, chars_) {
+		if(object_classification_hidden(*c)) {
+			continue;
+		}
+
 		const int xP = x + ((1000 - (c->parallax_scale_millis_x()))* screen_xpos )/1000;
 		const int yP = y + ((1000 - (c->parallax_scale_millis_y()))* screen_ypos )/1000;
 		
@@ -3650,6 +3657,20 @@ void level::hide_tile_layer(int layer, bool is_hidden)
 	} else {
 		hidden_layers_.erase(layer);
 	}
+}
+
+void level::hide_object_classification(const std::string& classification, bool hidden)
+{
+	if(hidden) {
+		hidden_classifications_.insert(classification);
+	} else {
+		hidden_classifications_.erase(classification);
+	}
+}
+
+bool level::object_classification_hidden(const entity& e) const
+{
+	return e.editor_info() && hidden_object_classifications().count(e.editor_info()->classification());
 }
 
 void level::editor_freeze_tile_updates(bool value)
