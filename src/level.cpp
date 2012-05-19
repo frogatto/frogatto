@@ -2163,7 +2163,7 @@ void level::do_processing()
 		active_chars = chars_immune_from_time_freeze_;
 	}
 	foreach(const entity_ptr& c, active_chars) {
-		if(!c->destroyed() && chars_by_label_.count(c->label()) || c->is_human()) {
+		if(!c->destroyed() && (chars_by_label_.count(c->label()) || c->is_human())) {
 			c->process(*this);
 		}
 
