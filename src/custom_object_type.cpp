@@ -279,13 +279,13 @@ const_custom_object_type_ptr custom_object_type::get(const std::string& id)
 		return parent->get_sub_object(std::string(dot_itor+1, id.end()));
 	}
 
-	object_map::const_iterator itor = cache().find(id);
+	object_map::const_iterator itor = cache().find(module::get_id(id));
 	if(itor != cache().end()) {
 		return itor->second;
 	}
 
 	const_custom_object_type_ptr result(create(id));
-	cache()[id] = result;
+	cache()[module::get_id(id)] = result;
 
 	//load the object's variations here to avoid pausing the game
 	//when an object starts its variation.
@@ -332,7 +332,7 @@ custom_object_type_ptr custom_object_type::recreate(const std::string& id,
 		variant node = merge_prototype(json::parse_from_file(path_itor->second));
 
 		ASSERT_LOG(node["id"].as_string() == module::get_id(id), "IN " << path_itor->second << " OBJECT ID DOES NOT MATCH FILENAME");
-
+		
 		//create the object
 		custom_object_type_ptr result(new custom_object_type(node, NULL, old_type));
 
@@ -348,7 +348,7 @@ custom_object_type_ptr custom_object_type::recreate(const std::string& id,
 
 void custom_object_type::invalidate_object(const std::string& id)
 {
-	cache().erase(id);
+	cache().erase(module::get_id(id));
 }
 
 void custom_object_type::invalidate_all_objects()
@@ -420,7 +420,7 @@ int g_num_object_reloads = 0;
 
 void custom_object_type::reload_object(const std::string& type)
 {
-	object_map::iterator itor = cache().find(type);
+	object_map::iterator itor = cache().find(module::get_id(type));
 	ASSERT_LOG(itor != cache().end(), "COULD NOT RELOAD OBJECT " << type);
 	
 	const_custom_object_type_ptr old_obj = itor->second;
