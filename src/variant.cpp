@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <string.h>
+#include <sstream>
 
 #include "boost/lexical_cast.hpp"
 
@@ -1181,7 +1182,13 @@ void variant::throw_type_error(variant::TYPE t) const
 		loc = formatter() << " at " << *info->filename << " " << info->line << " (column " << info->column << "\n";
 	}
 
-	generate_error(formatter() << "type error: " << " expected " << variant_type_to_string(t) << " but found " << variant_type_to_string(type_) << " " << write_json() << loc);
+	std::ostringstream fmt;
+	try {
+		fmt << "type error: " << " expected " << variant_type_to_string(t) << " but found " << variant_type_to_string(type_) << " " << write_json() << loc;
+	} catch(...) {
+		fmt << " (COULD NOT SERIALIZE TYPE)\n";
+	}
+	generate_error(fmt.str());
 }
 
 void variant::serialize_to_string(std::string& str) const

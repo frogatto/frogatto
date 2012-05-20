@@ -1156,6 +1156,12 @@ namespace {
 		}
 	};
 
+FUNCTION_DEF(reverse, 1, 1, "reverse(list): reverses the given list")
+	std::vector<variant> items = args()[0]->evaluate(variables).as_list();
+	std::reverse(items.begin(), items.end());
+	return variant(&items);
+END_FUNCTION_DEF(reverse)
+
 FUNCTION_DEF(head, 1, 1, "head(list): gives the first element of a list, or null for an empty list")
 	const variant items = args()[0]->evaluate(variables);
 	if(items.num_elements() >= 1) {
