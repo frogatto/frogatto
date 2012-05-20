@@ -31,6 +31,7 @@ custom_object_type.cpp
 debug_console.cpp
 decimal.cpp
 dialog.cpp
+drag_widget.cpp
 draw_number.cpp
 draw_scene.cpp
 draw_tile.cpp

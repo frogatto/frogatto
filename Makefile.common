@@ -22,6 +22,7 @@ objects = \
 	compress.o \
 	current_generator.o \
 	decimal.o \
+	drag_widget.o \
 	editor_dialogs.o \
 	editor_formula_functions.o \
 	editor_layers_dialog.o \

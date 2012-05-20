@@ -9,6 +9,7 @@
 #include "code_editor_widget.hpp"
 #include "custom_object_callable.hpp"
 #include "custom_object_type.hpp"
+#include "drag_widget.hpp"
 #include "filesystem.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
@@ -47,6 +48,12 @@ void code_editor_dialog::init()
 	button* decrease_width = new button("->", boost::bind(&code_editor_dialog::change_width, this, -10));
 	button* increase_width = new button("<-", boost::bind(&code_editor_dialog::change_width, this, 10));
 
+	//std::cerr << "CED: " << x() << "," << y() << "; " << width() << "," << height() << std::endl;
+	drag_widget* dragger = new drag_widget(x(), y(), width(), height(),
+		drag_widget::DRAG_HORIZONTAL, NULL, 
+		boost::bind(&code_editor_dialog::on_drag_end, this, _1, _2), 
+		boost::bind(&code_editor_dialog::on_drag, this, _1, _2));
+
 	search_ = new text_editor_widget(120);
 	replace_ = new text_editor_widget(120);
 	const SDL_Color col = {255,255,255,255};
@@ -64,6 +71,7 @@ void code_editor_dialog::init()
 	add_widget(editor_, find_label->x(), find_label->y() + save_button->height() + 2);
 	add_widget(status_label_);
 	add_widget(error_label_, status_label_->x() + 480, status_label_->y());
+	add_widget(widget_ptr(dragger));
 
 	replace_->set_visible(false);
 
@@ -503,6 +511,36 @@ void code_editor_dialog::change_width(int amount)
 	foreach(KnownFile& f, files_) {
 		f.editor->set_dim(width() - 40, height() - 60);
 	}
+	init();
+}
+
+void code_editor_dialog::on_drag(int dx, int dy) 
+{
+	int new_width = width() + dx;
+	int min_width = int(graphics::screen_width() * 0.17);
+	int max_width = int(graphics::screen_width() * 0.83);
+	//std::cerr << "ON_DRAG: " << dx << ", " << min_width << ", " << max_width << std::endl;
+	if(new_width < min_width) { 
+		new_width = min_width;
+	}
+
+	if(new_width > max_width) {
+		new_width = max_width;
+	}
+
+	dx = new_width - width();
+	set_loc(x() - dx, y());
+	set_dim(new_width, height());
+
+
+	foreach(KnownFile& f, files_) {
+		f.editor->set_dim(width() - 40, height() - 60);
+	}
+	//init();
+}
+
+void code_editor_dialog::on_drag_end(int x, int y)
+{
 	init();
 }
 

@@ -68,6 +68,9 @@ private:
 	void on_code_changed();
 	void on_move_cursor();
 
+	void on_drag(int dx, int dy);
+	void on_drag_end(int x, int y);
+
 	//As long as there is a code editor active, we are going to want to
 	//recover from errors.
 	assert_recover_scope assert_recovery_;
