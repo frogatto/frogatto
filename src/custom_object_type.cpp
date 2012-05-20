@@ -468,13 +468,11 @@ int custom_object_type::num_object_reloads()
 void custom_object_type::init_event_handlers(variant node,
                                              event_handler_map& handlers,
 											 game_logic::function_symbol_table* symbols,
-											 const event_handler_map* base_handlers)
+											 const event_handler_map* base_handlers) const
 {
 	if(symbols == NULL) {
 		symbols = &get_custom_object_functions_symbol_table();
 	}
-
-	static custom_object_callable custom_object_definition;
 
 	foreach(const variant_pair& value, node.as_map()) {
 		const std::string& key = value.first.as_string();
@@ -488,7 +486,7 @@ void custom_object_type::init_event_handlers(variant node,
 			if(base_handlers && base_handlers->size() > event_id && (*base_handlers)[event_id] && (*base_handlers)[event_id]->str() == value.second.as_string()) {
 				handlers[event_id] = (*base_handlers)[event_id];
 			} else {
-				handlers[event_id] = game_logic::formula::create_optional_formula(value.second, symbols, &custom_object_definition);
+				handlers[event_id] = game_logic::formula::create_optional_formula(value.second, symbols, &callable_definition_);
 			}
 		}
 	}
@@ -541,7 +539,8 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 	activation_border_(node["activation_border"].as_int(100)),
 	editor_force_standing_(node["editor_force_standing"].as_bool(false)),
 	hidden_in_game_(node["hidden_in_game"].as_bool(false)),
-	platform_offsets_(node["platform_offsets"].as_list_int_optional())
+	platform_offsets_(node["platform_offsets"].as_list_int_optional()),
+	slot_properties_base_(-1)
 {
 #ifndef NO_EDITOR
 	if(node.has_key("editor_info")) {
@@ -723,9 +722,11 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 		}
 	}
 
+	slot_properties_base_ = callable_definition_.num_slots();
 	foreach(variant properties_node, node["properties"].as_list()) {
 		foreach(variant key, properties_node.get_keys().as_list()) {
 			const std::string& k = key.as_string();
+			callable_definition_.add_property(k);
 			variant value = properties_node[key];
 			property_entry& entry = properties_[k];
 			if(value.is_string()) {
@@ -736,6 +737,15 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 			} else {
 				entry.const_value.reset(new variant(value));
 			}
+
+			if(entry.getter) {
+				variant v;
+				if(entry.getter->evaluates_to_constant(v)) {
+					entry.getter.reset();
+					entry.const_value.reset(new variant(v));
+				}
+			}
+			slot_properties_.push_back(entry);
 		}
 	}
 

@@ -2058,6 +2058,11 @@ variant formula::execute() const
 	return execute(*null_callable);
 }
 
+bool formula::evaluates_to_constant(variant& result) const
+{
+	return expr_->can_reduce_to_variant(result);
+}
+
 UNIT_TEST(recursive_call_lambda) {
 	CHECK(formula(variant("def fact_tail(n,a,b) factt(n,1) where factt = def(m,x) if(m > 0, x + m + recurse(m-1,x*m),x); fact_tail(5,0,0)")).execute() != variant(), "test failed");
 }

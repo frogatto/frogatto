@@ -240,7 +240,7 @@ custom_object::custom_object(variant node)
 
 	next_animation_formula_ = type_->next_animation_formula();
 
-	custom_object_type::init_event_handlers(node, event_handlers_);
+	type_->init_event_handlers(node, event_handlers_);
 
 	can_interact_with_ = get_event_handler(OBJECT_EVENT_INTERACT).get() != NULL;
 
@@ -2167,6 +2167,17 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_CTRL_JUMP:
 	case CUSTOM_OBJECT_CTRL_TONGUE:
 		return variant::from_bool(control_status(static_cast<controls::CONTROL_ITEM>(slot - CUSTOM_OBJECT_CTRL_UP)));
+	default:
+		if(slot >= type_->slot_properties_base() && (slot - type_->slot_properties_base() < type_->slot_properties().size())) {
+			const custom_object_type::property_entry& e = type_->slot_properties()[slot - type_->slot_properties_base()];
+			if(e.getter) {
+				return e.getter->execute(*this);
+			} else if(e.const_value) {
+				return *e.const_value;
+			}
+		}
+
+		break;
 	}
 
 	const game_logic::formula_callable_definition::entry* entry = 
@@ -3046,8 +3057,16 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	}
 
 	default:
+		if(slot >= type_->slot_properties_base() && (slot - type_->slot_properties_base() < type_->slot_properties().size())) {
+			const custom_object_type::property_entry& e = type_->slot_properties()[slot - type_->slot_properties_base()];
+			if(e.setter) {
+				game_logic::map_formula_callable* callable(new game_logic::map_formula_callable(this));
+				callable->add("value", value);
+				variant value = e.setter->execute(*callable);
+				execute_command(value);
+			}
+		}
 		break;
-
 	}
 }
 
@@ -3812,6 +3831,11 @@ int custom_object::parent_depth(int cur_depth) const
 bool custom_object::editor_force_standing() const
 {
 	return type_->editor_force_standing();
+}
+
+const game_logic::formula_callable_definition* custom_object::get_definition() const
+{
+	return &type_->callable_definition();
 }
 
 rect custom_object::platform_rect_at(int xpos) const
