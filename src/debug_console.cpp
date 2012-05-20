@@ -613,9 +613,7 @@ bool console_dialog::on_begin_enter()
 			info.line = info.column = 0;
 			ffl_variant.set_debug_info(info);
 
-			static custom_object_callable custom_object_definition;
-
-			game_logic::formula f(ffl_variant, &get_custom_object_functions_symbol_table(), &custom_object_definition);
+			game_logic::formula f(ffl_variant, &get_custom_object_functions_symbol_table(), focus_->get_definition());
 			variant v = f.execute(*focus_);
 			focus_->execute_command(v);
 			debug_console::add_message(v.to_debug_string());

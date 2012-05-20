@@ -222,6 +222,8 @@ protected:
 
 	virtual bool editor_force_standing() const;
 
+	virtual const game_logic::formula_callable_definition* get_definition() const;
+
 	entity_ptr standing_on() const { return standing_on_; }
 
 	virtual rect platform_rect_at(int xpos) const;

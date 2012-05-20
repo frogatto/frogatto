@@ -64,6 +64,7 @@ public:
 	~formula();
 	variant execute(const formula_callable& variables) const;
 	variant execute() const;
+	bool evaluates_to_constant(variant& result) const;
 	std::string str() const { return str_.as_string(); }
 	variant str_var() const { return str_; }
 

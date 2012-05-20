@@ -148,8 +148,12 @@ public:
 	const entry* get_entry(int slot) const;
 	int num_slots() const { return NUM_CUSTOM_OBJECT_PROPERTIES; }
 
+	void add_property(const std::string& id);
+
 private:
 	std::vector<entry> entries_;
+
+	std::map<std::string, int> properties_;
 };
 
 #endif

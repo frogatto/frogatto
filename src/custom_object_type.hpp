@@ -51,10 +51,10 @@ public:
 
 	typedef std::vector<game_logic::const_formula_ptr> event_handler_map;
 
-	static void init_event_handlers(variant node,
-	                                event_handler_map& handlers,
-									game_logic::function_symbol_table* symbols=0,
-									const event_handler_map* base_handlers=NULL);
+	void init_event_handlers(variant node,
+	                         event_handler_map& handlers,
+							 game_logic::function_symbol_table* symbols=0,
+							 const event_handler_map* base_handlers=NULL) const;
 
 	explicit custom_object_type(variant node, const custom_object_type* base_type=NULL, const custom_object_type* old_type=NULL);
 	~custom_object_type();
@@ -156,6 +156,8 @@ public:
 	};
 
 	const std::map<std::string, property_entry>& properties() const { return properties_; }
+	const std::vector<property_entry>& slot_properties() const { return slot_properties_; }
+	int slot_properties_base() const { return slot_properties_base_; }
 
 	game_logic::function_symbol_table* function_symbols() const;
 
@@ -259,6 +261,8 @@ private:
 	std::map<std::string, variant> tags_;
 
 	std::map<std::string, property_entry> properties_;
+	std::vector<property_entry> slot_properties_;
+	int slot_properties_base_;
 
 	int teleport_offset_x_, teleport_offset_y_;
 	bool no_move_to_standing_;

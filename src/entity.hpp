@@ -18,6 +18,10 @@
 #include "wml_formula_callable.hpp"
 #include "variant.hpp"
 
+namespace game_logic {
+class formula_callable_definition;
+}
+
 class character;
 class frame;
 class level;
@@ -255,6 +259,8 @@ public:
 	const std::string& spawned_by() const;
 
 	virtual const bool mouse_event_swallowed() {return false;}
+
+	virtual const game_logic::formula_callable_definition* get_definition() const = 0;
 
 protected:
 

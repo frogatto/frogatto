@@ -84,7 +84,12 @@ int custom_object_callable::get_key_slot(const std::string& key)
 
 int custom_object_callable::get_slot(const std::string& key) const
 {
-	return get_key_slot(key);
+	std::map<std::string, int>::const_iterator itor = properties_.find(key);
+	if(itor == properties_.end()) {
+		return get_key_slot(key);
+	} else {
+		return itor->second;
+	}
 }
 
 game_logic::formula_callable_definition::entry* custom_object_callable::get_entry(int slot)
@@ -105,3 +110,8 @@ const game_logic::formula_callable_definition::entry* custom_object_callable::ge
 	return &entries_[slot];
 }
 
+void custom_object_callable::add_property(const std::string& id)
+{
+	properties_[id] = entries_.size();
+	entries_.push_back(entry(id));
+}
