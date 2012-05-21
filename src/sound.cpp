@@ -644,11 +644,14 @@ float get_engine_music_volume()
 }
 
 namespace {
-std::map<std::string,std::string> get_music_paths() {
-	std::map<std::string,std::string> res;
-	module::get_unique_filenames_under_dir("music/", &res);
+std::map<std::string,std::string>& get_music_paths() {
+	static std::map<std::string,std::string> res;
 	return res;
 }
+}
+
+void load_music_paths() {
+	module::get_unique_filenames_under_dir("music/", &get_music_paths());
 }
 
 void play_music(const std::string& file)
@@ -663,12 +666,16 @@ void play_music(const std::string& file)
 
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 
-	static const std::map<std::string, std::string> music_paths = get_music_paths();
-	if(!music_paths.count(file)) {
-		return;
+	if(get_music_paths().empty()) {
+		load_music_paths();
 	}
 
-	const std::string& path = music_paths.find(file)->second;
+	std::map<std::string, std::string>::const_iterator itor = module::find(get_music_paths(), file);
+	if(itor == get_music_paths().end()) {
+		std::cerr << "FILE NOT FOUND: " << file << std::endl;
+		return;
+	}
+	const std::string& path = itor->second;
 
 	if(current_mix_music) {
 		next_music() = file;
@@ -730,12 +737,16 @@ void play_music_interrupt(const std::string& file)
 
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 
-	static const std::map<std::string, std::string> music_paths = get_music_paths();
-	if(!music_paths.count(file)) {
-		return;
+	if(get_music_paths().empty()) {
+		load_music_paths();
 	}
 
-	const std::string& path = music_paths.find(file)->second;
+	std::map<std::string, std::string>::const_iterator itor = module::find(get_music_paths(), file);
+	if(itor == get_music_paths().end()) {
+		std::cerr << "FILE NOT FOUND: " << file << std::endl;
+		return;
+	}
+	const std::string& path = itor->second;
 
 	//note that calling HaltMusic will result in on_music_finished being
 	//called, which releases the current_music pointer.
