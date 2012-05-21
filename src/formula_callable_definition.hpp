@@ -23,7 +23,7 @@ public:
 	virtual ~formula_callable_definition() {}
 
 	virtual int get_slot(const std::string& key) const = 0;
-	virtual entry* get_entry(int slot) { return NULL; }
+	virtual entry* get_entry(int slot) = 0;
 	virtual const entry* get_entry(int slot) const = 0;
 	virtual int num_slots() const = 0;
 };

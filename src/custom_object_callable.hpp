@@ -146,7 +146,7 @@ public:
 	int get_slot(const std::string& key) const;
 	entry* get_entry(int slot);
 	const entry* get_entry(int slot) const;
-	int num_slots() const { return NUM_CUSTOM_OBJECT_PROPERTIES; }
+	int num_slots() const { return entries_.size(); }
 
 	void add_property(const std::string& id);
 

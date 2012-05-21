@@ -376,6 +376,14 @@ public:
 		return &entries_[slot];
 	}
 
+	entry* get_entry(int slot) {
+		if(slot < 0 || slot >= entries_.size()) {
+			return NULL;
+		}
+
+		return &entries_[slot];
+	}
+
 	int num_slots() const {
 		return entries_.size();
 	}

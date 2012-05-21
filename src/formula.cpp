@@ -405,7 +405,8 @@ public:
 	}
 
 	const formula_callable_definition* get_type_definition() const {
-		return callable_def_->get_entry(slot_)->type_definition;
+		const formula_callable_definition::entry* def = callable_def_->get_entry(slot_);
+		return def->type_definition;
 	}
 private:
 	variant execute_member(const formula_callable& variables, std::string& id) const {
