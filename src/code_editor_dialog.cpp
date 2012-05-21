@@ -601,7 +601,7 @@ void code_editor_dialog::on_code_changed()
 
 void code_editor_dialog::on_move_cursor()
 {
-	status_label_->set_text(formatter() << "Row " << (editor_->cursor_row()+1) << " Col " << (editor_->cursor_col()+1) << (modified_ ? " (Modified)" : ""));
+	status_label_->set_text(formatter() << "Line " << (editor_->cursor_row()+1) << " Col " << (editor_->cursor_col()+1) << (modified_ ? " (Modified)" : ""));
 }
 
 void code_editor_dialog::set_animation_rect(rect r)
