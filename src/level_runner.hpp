@@ -36,7 +36,6 @@ public:
 private:
 	void start_editor();
 	void reverse_cycle();
-	void show_debug_console();
 	void handle_pause_game_result(PAUSE_GAME_RESULT result);
 	typedef boost::intrusive_ptr<level> level_ptr;
 	level_ptr& lvl_;

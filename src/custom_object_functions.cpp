@@ -1342,28 +1342,6 @@ FUNCTION_DEF(debug_fn, 2, 2, "debug(msg, expr): evaluates and returns expr. Will
 	return res;
 END_FUNCTION_DEF(debug_fn)
 
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
-class debug_console_command : public entity_command_callable
-{
-public:
-	explicit debug_console_command(const formula_callable& callable)
-	  : callable_(callable) {
-	}
-
-	virtual void execute(level& lvl, entity& ob) const {
-		debug_console::show_interactive_console(lvl, ob);
-	}
-private:
-
-	const formula_callable& callable_;
-};
-
-FUNCTION_DEF(debug_console, 0, 0, "debug_console(): provides an interactive debugging console")
-	return variant(new debug_console_command(variables));
-END_FUNCTION_DEF(debug_console)
-
-#endif
-
 static int event_depth = 0;
 struct event_depth_scope {
 	event_depth_scope() { ++event_depth; }

@@ -959,7 +959,6 @@ bool level_runner::play_cycle()
 						console_.reset();
 					}
 #endif
-					//show_debug_console();
 
 				} else if(key == SDLK_e && (mod&KMOD_CTRL)) {
 #ifndef NO_EDITOR
@@ -1338,19 +1337,6 @@ void level_runner::reverse_cycle()
 	if(wait_time > 0) {
 		SDL_Delay(wait_time);
 	}
-}
-
-void level_runner::show_debug_console()
-{
-#ifndef NO_EDITOR
-	pause_time_ -= SDL_GetTicks();
-
-	if(lvl_->player()) {
-		debug_console::show_interactive_console(*lvl_, lvl_->player()->get_entity());
-	}
-
-	pause_time_ += SDL_GetTicks();
-#endif
 }
 
 namespace {

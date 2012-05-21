@@ -54,8 +54,6 @@ private:
 	int history_pos_;
 };
 
-void show_interactive_console(level& lvl, entity& obj);
-
 }
 
 #endif
