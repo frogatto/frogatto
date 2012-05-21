@@ -284,7 +284,7 @@ void text_editor_widget::handle_draw() const
 			} else {
 				for(std::vector<std::pair<Loc,Loc> >::const_iterator i = search_itor; i != search_matches_.end() && i->first <= pos; ++i) {
 					if(pos >= i->first && pos < i->second) {
-						RectDraw rect_draw = { rect(xpos + c*char_width_, ypos + r*char_height_, char_width_*char_size, char_height_), graphics::color(255,255,0,255) };
+						RectDraw rect_draw = { rect(xpos + c*char_width_, ypos + r*char_height_, char_width_*char_size, char_height_), graphics::color(255,255,0,128) };
 						if(rects.empty() || !rects.back().merge(rect_draw)) {
 							rects.push_back(rect_draw);
 						}
