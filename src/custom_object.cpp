@@ -13,6 +13,7 @@
 #include "custom_object.hpp"
 #include "custom_object_callable.hpp"
 #include "custom_object_functions.hpp"
+#include "debug_console.hpp"
 #include "draw_scene.hpp"
 #include "font.hpp"
 #include "formatter.hpp"
@@ -49,6 +50,24 @@ struct custom_object_text {
 	rect dimensions;
 	int alpha;
 };
+
+namespace {
+std::string current_error_msg;
+}
+
+const std::string* custom_object::current_debug_error()
+{
+	if(current_error_msg == "") {
+		return NULL;
+	}
+
+	return &current_error_msg;
+}
+
+void custom_object::reset_current_debug_error()
+{
+	current_error_msg = "";
+}
 
 custom_object::custom_object(variant node)
   : entity(node),
@@ -3414,10 +3433,11 @@ void custom_object::handle_event_internal(int event, const formula_callable* con
 		
 		try {
 			var = handler->execute(*this);
-		} catch(validation_failure_exception&) {
+		} catch(validation_failure_exception& e) {
 #ifndef DISABLE_FORMULA_PROFILER
 			event_call_stack.pop_back();
 #endif
+			current_error_msg = "Runtime error evaluating formula: " + e.msg;
 			break;
 		}
 
@@ -3433,7 +3453,8 @@ void custom_object::handle_event_internal(int event, const formula_callable* con
 			} else {
 				delayed_commands_.push_back(var);
 			}
-		} catch(validation_failure_exception&) {
+		} catch(validation_failure_exception& e) {
+			current_error_msg = "Runtime error executing event commands: " + e.msg;
 		}
 
 #ifndef DISABLE_FORMULA_PROFILER

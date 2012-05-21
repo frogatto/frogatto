@@ -68,6 +68,9 @@ void widget::normalize_event(SDL_Event* event, bool translate_coords)
 void widget::set_tooltip(const std::string& str)
 {
 	if(tooltip_displayed_) {
+		if(*tooltip_ == str) {
+			return;
+		}
 		gui::remove_tooltip(tooltip_);
 		tooltip_displayed_ = false;
 	}

@@ -7,6 +7,7 @@
 #include "button.hpp"
 #include "code_editor_dialog.hpp"
 #include "code_editor_widget.hpp"
+#include "custom_object.hpp"
 #include "custom_object_callable.hpp"
 #include "custom_object_type.hpp"
 #include "drag_widget.hpp"
@@ -268,6 +269,8 @@ void code_editor_dialog::process()
 
 	if(invalidated_ && SDL_GetTicks() > invalidated_ + 200) {
 		try {
+			custom_object::reset_current_debug_error();
+
 			custom_object_type::set_file_contents(fname_, editor_->text());
 			error_label_->set_text("Ok");
 			error_label_->set_tooltip("");
@@ -279,6 +282,9 @@ void code_editor_dialog::process()
 			error_label_->set_tooltip("Unknown error");
 		}
 		invalidated_ = 0;
+	} else if(custom_object::current_debug_error()) {
+		error_label_->set_text("Runtime Error");
+		error_label_->set_tooltip(*custom_object::current_debug_error());
 	}
 
 	const int cursor_pos = editor_->row_col_to_text_pos(editor_->cursor_row(), editor_->cursor_col());

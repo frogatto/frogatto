@@ -29,6 +29,9 @@ struct custom_object_text;
 class custom_object : public entity
 {
 public:
+	static const std::string* current_debug_error();
+	static void reset_current_debug_error();
+
 	static std::set<custom_object*>& get_all();
 	static std::set<custom_object*>& get_all(const std::string& type);
 	static void init();
