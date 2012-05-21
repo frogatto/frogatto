@@ -40,7 +40,6 @@
 #include "sound.hpp"
 #include "stats.hpp"
 #include "surface_cache.hpp"
-#include "text_entry_widget.hpp"
 #include "utils.hpp"
 #include "variant_utils.hpp"
 #include "IMG_savepng.h"

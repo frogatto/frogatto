@@ -12,7 +12,6 @@
 #include "label.hpp"
 #include "load_level.hpp"
 #include "raster.hpp"
-#include "text_entry_widget.hpp"
 
 namespace editor_dialogs
 {

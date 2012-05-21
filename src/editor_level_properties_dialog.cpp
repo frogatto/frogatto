@@ -18,7 +18,7 @@
 #include "label.hpp"
 #include "raster.hpp"
 #include "stats.hpp"
-#include "text_entry_widget.hpp"
+#include "text_editor_widget.hpp"
 
 namespace editor_dialogs
 {
@@ -81,9 +81,14 @@ void editor_level_properties_dialog::init()
 
 	add_widget(widget_ptr(new label("Level Properties", graphics::color_white(), 48)), 10, 10);
 
+	text_editor_widget* change_title_entry(new text_editor_widget(200, 30));
+	change_title_entry->set_text(editor_.get_level().title());
+	change_title_entry->set_on_change_handler(boost::bind(&editor_level_properties_dialog::change_title, this, change_title_entry));
+	change_title_entry->set_on_enter_handler(boost::bind(&dialog::close, this));
+
 	grid_ptr g(new grid(2));
-	g->add_col(widget_ptr(new label(editor_.get_level().title(), graphics::color_white(), 36)))
-	  .add_col(widget_ptr(new button(widget_ptr(new label("Change Title", graphics::color_white())), boost::bind(&editor_level_properties_dialog::change_title, this))));
+	g->add_col(widget_ptr(new label("Change Title", graphics::color_white(), 36)))
+	  .add_col(widget_ptr(change_title_entry));
 
 	add_widget(g);
 
@@ -124,27 +129,13 @@ void editor_level_properties_dialog::init()
 	}
 }
 
-void editor_level_properties_dialog::change_title()
+void editor_level_properties_dialog::change_title(const gui::text_editor_widget* editor)
 {
-	using namespace gui;
-	dialog d(0, 0, graphics::screen_width(), graphics::screen_height());
-	d.add_widget(widget_ptr(new label("Change Title", graphics::color_white(), 48)));
-	text_entry_widget* entry = new text_entry_widget;
-	d.add_widget(widget_ptr(new label("Name:", graphics::color_white())))
-	 .add_widget(widget_ptr(entry));
-	d.show_modal();
-
-	if(d.cancelled()) {
-		return;
-	}
-
-	std::string title = entry->text();
+	std::string title = editor->text();
 
 	foreach(level_ptr lvl, editor_.get_level_list()) {
 		lvl->set_title(title);
 	}
-
-	init();
 }
 
 void editor_level_properties_dialog::change_background()

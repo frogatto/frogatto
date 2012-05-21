@@ -42,7 +42,6 @@
 #include "speech_dialog.hpp"
 #include "stats.hpp"
 #include "string_utils.hpp"
-#include "text_entry_widget.hpp"
 #include "thread.hpp"
 #include "unit_test.hpp"
 #include "preferences.hpp"

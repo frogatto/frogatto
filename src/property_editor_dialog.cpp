@@ -19,7 +19,6 @@
 #include "raster.hpp"
 #include "slider.hpp"
 #include "text_editor_widget.hpp"
-#include "text_entry_widget.hpp"
 
 namespace editor_dialogs
 {

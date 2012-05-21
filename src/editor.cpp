@@ -50,7 +50,7 @@
 #include "segment_editor_dialog.hpp"
 #include "stats.hpp"
 #include "texture.hpp"
-#include "text_entry_widget.hpp"
+#include "text_editor_widget.hpp"
 #include "tile_map.hpp"
 #include "tileset_editor_dialog.hpp"
 #include "tooltip.hpp"
@@ -292,7 +292,8 @@ public:
 		using namespace gui;
 		dialog d(0, 0, graphics::screen_width(), graphics::screen_height());
 		d.add_widget(widget_ptr(new label("New Level", graphics::color_white(), 48)));
-		text_entry_widget* entry = new text_entry_widget;
+		text_editor_widget* entry = new text_editor_widget(200);
+		entry->set_on_enter_handler(boost::bind(&dialog::close, &d));
 		d.add_widget(widget_ptr(new label("Filename:", graphics::color_white())))
 		 .add_widget(widget_ptr(entry));
 		d.show_modal();
@@ -319,7 +320,8 @@ public:
 		using namespace gui;
 		dialog d(0, 0, graphics::screen_width(), graphics::screen_height());
 		d.add_widget(widget_ptr(new label("Save As", graphics::color_white(), 48)));
-		text_entry_widget* entry = new text_entry_widget;
+		text_editor_widget* entry = new text_editor_widget(200);
+		entry->set_on_enter_handler(boost::bind(&dialog::close, &d));
 		d.add_widget(widget_ptr(new label("Name:", graphics::color_white())))
 		 .add_widget(widget_ptr(entry));
 		d.show_modal();
