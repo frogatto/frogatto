@@ -45,9 +45,6 @@ void code_editor_dialog::init()
 	button* increase_font = new button("+", boost::bind(&code_editor_dialog::change_font_size, this, 1));
 	button* decrease_font = new button("-", boost::bind(&code_editor_dialog::change_font_size, this, -1));
 
-	button* decrease_width = new button("->", boost::bind(&code_editor_dialog::change_width, this, -10));
-	button* increase_width = new button("<-", boost::bind(&code_editor_dialog::change_width, this, 10));
-
 	//std::cerr << "CED: " << x() << "," << y() << "; " << width() << "," << height() << std::endl;
 	drag_widget* dragger = new drag_widget(x(), y(), width(), height(),
 		drag_widget::DRAG_HORIZONTAL, NULL, 
@@ -66,8 +63,6 @@ void code_editor_dialog::init()
 	add_widget(widget_ptr(save_button), MOVE_RIGHT);
 	add_widget(widget_ptr(increase_font), MOVE_RIGHT);
 	add_widget(widget_ptr(decrease_font), MOVE_RIGHT);
-	add_widget(widget_ptr(increase_width), MOVE_RIGHT);
-	add_widget(widget_ptr(decrease_width), MOVE_RIGHT);
 	add_widget(editor_, find_label->x(), find_label->y() + save_button->height() + 2);
 	add_widget(status_label_);
 	add_widget(error_label_, status_label_->x() + 480, status_label_->y());
