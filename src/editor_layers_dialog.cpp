@@ -94,6 +94,12 @@ void editor_layers_dialog::process()
 			init();
 		}
 	}
+
+	const std::set<std::string> classifications = all_classifications_;
+	find_classifications();
+	if(classifications != all_classifications_) {
+		init();
+	}
 }
 
 void editor_layers_dialog::row_selected(int nrow)
