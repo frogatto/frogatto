@@ -43,6 +43,9 @@ public:
 
 	void set_search(const std::string& term);
 	void next_search_match();
+	bool has_search_matches() const { return search_matches_.empty() == false; }
+
+	void replace(const std::string& replace_with);
 
 	void set_on_change_handler(boost::function<void()> fn) { on_change_ = fn; }
 	void set_on_move_cursor_handler(boost::function<void()> fn) { on_move_cursor_ = fn; }

@@ -123,9 +123,11 @@ text_editor_widget::text_editor_widget(int width, int height)
 		height = char_height_ + BorderSize*2;
 		nrows_ = 1;
 		ncols_ = width/char_width_;
+		widget::set_dim(width, height);
+	} else {
+		widget::set_dim(width - 20, height);
 	}
 
-	widget::set_dim(width - 20, height);
 	text_.push_back("");
 }
 
@@ -1289,6 +1291,24 @@ void text_editor_widget::calculate_search_matches()
 		}
 	} catch(boost::regex_error&) {
 	}
+}
+
+void text_editor_widget::replace(const std::string& replace_with)
+{
+	record_op();
+	save_undo_state();
+	for(std::vector<std::pair<Loc, Loc> >::const_reverse_iterator i = search_matches_.rbegin(); i != search_matches_.rend(); ++i) {
+		const Loc& begin = i->first;
+		const Loc& end = i->second;
+		if(begin.row != end.row) {
+			continue;
+		}
+
+		text_[begin.row].erase(text_[begin.row].begin() + begin.col, text_[begin.row].begin() + end.col);
+		text_[begin.row].insert(text_[begin.row].begin() + begin.col, replace_with.begin(), replace_with.end());
+	}
+
+	on_change();
 }
 	
 void text_editor_widget::on_change()

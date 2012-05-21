@@ -56,14 +56,15 @@ private:
 	gui::text_editor_widget* search_;
 	gui::text_editor_widget* replace_;
 
-	gui::label_ptr status_label_;
-
-	gui::label_ptr error_label_;
+	gui::label_ptr replace_label_, status_label_, error_label_;
 
 	gui::grid_ptr files_grid_;
 
+	void on_tab();
+
 	void on_search_changed();
 	void on_search_enter();
+	void on_replace_enter();
 
 	void on_code_changed();
 	void on_move_cursor();

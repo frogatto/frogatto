@@ -56,10 +56,12 @@ void code_editor_dialog::init()
 	replace_ = new text_editor_widget(120);
 	const SDL_Color col = {255,255,255,255};
 	widget_ptr find_label(label::create("Find: ", col));
+	replace_label_ = label::create("Replace: ", col);
 	status_label_ = label::create("Ok", col);
 	error_label_ = label::create("", col);
 	add_widget(find_label, 42, 12, MOVE_RIGHT);
 	add_widget(widget_ptr(search_), MOVE_RIGHT);
+	add_widget(replace_label_, MOVE_RIGHT);
 	add_widget(widget_ptr(replace_), MOVE_RIGHT);
 	add_widget(widget_ptr(save_button), MOVE_RIGHT);
 	add_widget(widget_ptr(increase_font), MOVE_RIGHT);
@@ -69,10 +71,15 @@ void code_editor_dialog::init()
 	add_widget(error_label_, status_label_->x() + 480, status_label_->y());
 	add_widget(widget_ptr(dragger));
 
+	replace_label_->set_visible(false);
 	replace_->set_visible(false);
+
+	search_->set_on_tab_handler(boost::bind(&code_editor_dialog::on_tab, this));
+	replace_->set_on_tab_handler(boost::bind(&code_editor_dialog::on_tab, this));
 
 	search_->set_on_change_handler(boost::bind(&code_editor_dialog::on_search_changed, this));
 	search_->set_on_enter_handler(boost::bind(&code_editor_dialog::on_search_enter, this));
+	replace_->set_on_enter_handler(boost::bind(&code_editor_dialog::on_replace_enter, this));
 
 
 	init_files_grid();
@@ -286,6 +293,10 @@ void code_editor_dialog::process()
 		error_label_->set_text("Runtime Error");
 		error_label_->set_tooltip(*custom_object::current_debug_error());
 	}
+
+	const bool show_replace = editor_->has_search_matches();
+	replace_label_->set_visible(show_replace);
+	replace_->set_visible(show_replace);
 
 	const int cursor_pos = editor_->row_col_to_text_pos(editor_->cursor_row(), editor_->cursor_col());
 	const std::string& text = editor_->current_text();
@@ -545,6 +556,21 @@ void code_editor_dialog::on_drag_end(int x, int y)
 	init();
 }
 
+void code_editor_dialog::on_tab()
+{
+	if(search_->has_focus()) {
+		search_->set_focus(false);
+		if(editor_->has_search_matches()) {
+			replace_->set_focus(true);
+		} else {
+			editor_->set_focus(true);
+		}
+	} else if(replace_->has_focus()) {
+		replace_->set_focus(false);
+		editor_->set_focus(true);
+	}
+}
+
 void code_editor_dialog::on_search_changed()
 {
 	editor_->set_search(search_->text());
@@ -553,6 +579,11 @@ void code_editor_dialog::on_search_changed()
 void code_editor_dialog::on_search_enter()
 {
 	editor_->next_search_match();
+}
+
+void code_editor_dialog::on_replace_enter()
+{
+	editor_->replace(replace_->text());
 }
 
 void code_editor_dialog::on_code_changed()
