@@ -46,6 +46,7 @@ public:
 	virtual void draw() const;
 	virtual void draw_group() const;
 	virtual void process(level& lvl);
+	virtual void create_object();
 	void set_level(level& lvl) { }
 
 	int parallax_scale_millis_x() const {
@@ -286,6 +287,8 @@ private:
 	int current_animation_id_;
 
 	int cycle_;
+
+	bool created_;
 
 	//variable which is always set to false on construction, and then the
 	//first time process is called will fire the on_load event and set to false

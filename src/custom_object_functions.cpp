@@ -558,6 +558,7 @@ public:
 		spawn_callable->add("child", variant(obj_.get()));
 		ob.handle_event("child_spawned", spawn_callable);
 		obj_->handle_event("spawned", spawn_callable);
+		obj_->create_object();
 
 		if(entity_collides(lvl, *obj_, MOVE_NONE)) {
 			lvl.remove_character(obj_);

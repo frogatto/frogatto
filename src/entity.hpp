@@ -262,6 +262,8 @@ public:
 
 	virtual const game_logic::formula_callable_definition* get_definition() const = 0;
 
+	virtual void create_object() = 0;
+
 protected:
 
 	virtual const_solid_info_ptr calculate_solid() const = 0;

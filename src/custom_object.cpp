@@ -80,7 +80,7 @@ custom_object::custom_object(variant node)
 	last_hit_by_anim_(0),
 	current_animation_id_(0),
 	cycle_(node["cycle"].as_int()),
-	loaded_(false),
+	created_(node["created"].as_bool(false)), loaded_(false),
 	standing_on_prev_x_(INT_MIN), standing_on_prev_y_(INT_MIN),
 	can_interact_with_(false), fall_through_platforms_(0),
 	fragment_shaders_(util::split(node["fragment_shaders"].as_string_default())),
@@ -300,7 +300,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	tags_(new game_logic::map_formula_callable(type_->tags())),
 	last_hit_by_anim_(0),
 	cycle_(0),
-	loaded_(false), fall_through_platforms_(0),
+	created_(false), loaded_(false), fall_through_platforms_(0),
 	shader_(0),
 	always_active_(false),
 	activation_border_(type_->activation_border()),
@@ -366,6 +366,7 @@ custom_object::custom_object(const custom_object& o) :
 	last_hit_by_anim_(o.last_hit_by_anim_),
 	current_animation_id_(o.current_animation_id_),
 	cycle_(o.cycle_),
+	created_(o.created_),
 	loaded_(o.loaded_),
 	event_handlers_(o.event_handlers_),
 	standing_on_(o.standing_on_),
@@ -434,6 +435,10 @@ variant custom_object::write() const
 	char addr_buf[256];
 	sprintf(addr_buf, "%p", this);
 	res.add("_addr", addr_buf);
+
+	if(created_) {
+		res.add("created", true);
+	}
 
 	if(parallax_scale_millis_.get() != NULL) {
 		if( (type_->parallax_scale_millis_x() !=  parallax_scale_millis_->first) || (type_->parallax_scale_millis_y() !=  parallax_scale_millis_->second)){
@@ -905,6 +910,14 @@ void custom_object::draw_group() const
 	}
 }
 
+void custom_object::create_object()
+{
+	if(!created_) {
+		handle_event(OBJECT_EVENT_CREATE);
+		created_ = true;
+	}
+}
+
 void custom_object::process(level& lvl)
 {
 	if(type_->use_image_for_collisions()) {
@@ -996,8 +1009,9 @@ void custom_object::process(level& lvl)
 		loaded_ = true;
 	}
 
+	create_object();
+
 	if(cycle_ == 1) {
-		handle_event(OBJECT_EVENT_CREATE);
 		handle_event(OBJECT_EVENT_DONE_CREATE);
 	}
 

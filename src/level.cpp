@@ -2125,6 +2125,7 @@ void level::do_processing()
 		const std::vector<entity_ptr> chars = chars_;
 		foreach(const entity_ptr& e, chars) {
 			e->handle_event(OBJECT_EVENT_START_LEVEL);
+			e->create_object();
 		}
 	}
 
