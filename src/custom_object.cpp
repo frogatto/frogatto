@@ -913,8 +913,8 @@ void custom_object::draw_group() const
 void custom_object::create_object()
 {
 	if(!created_) {
-		handle_event(OBJECT_EVENT_CREATE);
 		created_ = true;
+		handle_event(OBJECT_EVENT_CREATE);
 	}
 }
 
