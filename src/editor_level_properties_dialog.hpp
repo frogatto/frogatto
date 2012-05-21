@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "dialog.hpp"
+#include "text_editor_widget.hpp"
 
 class editor;
 
@@ -19,7 +20,7 @@ public:
 	explicit editor_level_properties_dialog(editor& e);
 	void init();
 private:
-	void change_title();
+	void change_title(const gui::text_editor_widget* editor);
 	void change_background();
 	void execute_change_background(const std::vector<std::string>& choices, int index);
 

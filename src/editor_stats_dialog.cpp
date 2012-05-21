@@ -16,7 +16,6 @@
 #include "label.hpp"
 #include "raster.hpp"
 #include "stats.hpp"
-#include "text_entry_widget.hpp"
 
 namespace editor_dialogs
 {
