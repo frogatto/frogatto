@@ -22,6 +22,8 @@ private:
 	editor& editor_;
 };
 
+typedef boost::intrusive_ptr<editor_stats_dialog> editor_stats_dialog_ptr;
+
 }
 
 #endif // !NO_EDITOR

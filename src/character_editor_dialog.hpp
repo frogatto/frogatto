@@ -38,11 +38,13 @@ private:
 
 	//the borders around each object, we set the currently selected one
 	//to white, and all the others to transparent.
-	std::map<std::string, std::vector<gui::border_widget*> > grid_borders_;
+	std::map<std::string, std::vector<gui::border_widget_ptr> > grid_borders_;
 
 	//the first object in each category
 	std::map<std::string, int> first_obj_;
 };
+
+typedef boost::intrusive_ptr<character_editor_dialog> character_editor_dialog_ptr;
 
 }
 

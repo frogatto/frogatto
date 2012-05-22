@@ -388,12 +388,12 @@ void property_editor_dialog::set_label_dialog()
 	init();*/
 }
 
-void property_editor_dialog::change_text_property(const std::string& id, const gui::text_editor_widget* w)
+void property_editor_dialog::change_text_property(const std::string& id, const gui::text_editor_widget_ptr w)
 {
 	mutate_value(id, variant(w->text()));
 }
 
-void property_editor_dialog::change_numeric_property(const std::string& id, boost::shared_ptr<std::pair<gui::text_editor_widget*, gui::slider*> >  w)
+void property_editor_dialog::change_numeric_property(const std::string& id, boost::shared_ptr<std::pair<gui::text_editor_widget_ptr, gui::slider_ptr> >  w)
 {
 	const editor_variable_info* var_info = get_static_entity()->editor_info() ? get_static_entity()->editor_info()->get_var_info(id) : NULL;
 	if(!var_info) {
@@ -420,7 +420,7 @@ void property_editor_dialog::change_numeric_property(const std::string& id, boos
 	mutate_value(id, v);
 }
 
-void property_editor_dialog::change_numeric_property_slider(const std::string& id, boost::shared_ptr<std::pair<gui::text_editor_widget*, gui::slider*> >  w, float value)
+void property_editor_dialog::change_numeric_property_slider(const std::string& id, boost::shared_ptr<std::pair<gui::text_editor_widget_ptr, gui::slider_ptr> >  w, float value)
 {
 	const editor_variable_info* var_info = get_static_entity()->editor_info() ? get_static_entity()->editor_info()->get_var_info(id) : NULL;
 	if(!var_info) {
@@ -599,7 +599,7 @@ entity_ptr property_editor_dialog::get_static_entity() const
 	}
 }
 
-void property_editor_dialog::change_event_handler(const std::string& id, gui::label* lb, gui::text_editor_widget* text_editor)
+void property_editor_dialog::change_event_handler(const std::string& id, gui::label_ptr lb, gui::text_editor_widget_ptr text_editor)
 {
 	assert_recover_scope_.reset(new assert_recover_scope);
 	static custom_object_callable custom_object_definition;

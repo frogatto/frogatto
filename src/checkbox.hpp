@@ -19,6 +19,8 @@ private:
 	bool checked_;
 };
 
+typedef boost::intrusive_ptr<checkbox> checkbox_ptr;
+
 }
 
 #endif

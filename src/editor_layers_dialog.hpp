@@ -25,7 +25,7 @@ private:
 	editor& editor_;
 
 	struct row_data {
-		gui::gui_section_widget* checkbox;
+		gui::gui_section_widget_ptr checkbox;
 		int layer;
 		bool hidden;
 	};
@@ -41,6 +41,8 @@ private:
 
 	void classification_selected(int index);
 };
+
+typedef boost::intrusive_ptr<editor_layers_dialog> editor_layers_dialog_ptr;
 
 }
 

@@ -20,7 +20,7 @@ public:
 	explicit editor_level_properties_dialog(editor& e);
 	void init();
 private:
-	void change_title(const gui::text_editor_widget* editor);
+	void change_title(const gui::text_editor_widget_ptr editor);
 	void change_background();
 	void execute_change_background(const std::vector<std::string>& choices, int index);
 
@@ -30,6 +30,8 @@ private:
 	editor& editor_;
 	gui::widget_ptr context_menu_;
 };
+
+typedef boost::intrusive_ptr<editor_level_properties_dialog> editor_level_properties_dialog_ptr;
 
 }
 

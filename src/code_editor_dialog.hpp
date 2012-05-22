@@ -7,6 +7,7 @@
 #include <string>
 
 #include "animation_preview_widget.hpp"
+#include "code_editor_widget.hpp"
 #include "asserts.hpp"
 #include "dialog.hpp"
 #include "geometry.hpp"
@@ -52,9 +53,9 @@ private:
 
 	bool modified_;
 
-	boost::shared_ptr<gui::code_editor_widget> editor_;
-	gui::text_editor_widget* search_;
-	gui::text_editor_widget* replace_;
+	gui::code_editor_widget_ptr editor_;
+	gui::text_editor_widget_ptr search_;
+	gui::text_editor_widget_ptr replace_;
 
 	gui::label_ptr replace_label_, status_label_, error_label_;
 
@@ -76,12 +77,12 @@ private:
 	//recover from errors.
 	assert_recover_scope assert_recovery_;
 
-	boost::shared_ptr<gui::animation_preview_widget> animation_preview_;
+	gui::animation_preview_widget_ptr animation_preview_;
 
 	struct KnownFile {
 		std::string fname;
 		boost::shared_ptr<frame> anim;
-		boost::shared_ptr<gui::code_editor_widget> editor;
+		gui::code_editor_widget_ptr editor;
 	};
 
 	std::vector<KnownFile> files_;
@@ -100,6 +101,8 @@ private:
 	gui::widget_ptr suggestions_grid_;
 	int suggestions_prefix_;
 };
+
+typedef boost::intrusive_ptr<code_editor_dialog> code_editor_dialog_ptr;
 
 #endif // !NO_EDITOR
 #endif

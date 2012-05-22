@@ -126,4 +126,23 @@ int widget::height() const
 	return h_;
 }
 
+variant widget::get_value(const std::string& key) const
+{
+	if(key == "draw_area") {
+		std::vector<variant> v;
+		v.push_back(variant(x_));
+		v.push_back(variant(y_));
+		v.push_back(variant(w_));
+		v.push_back(variant(h_));
+		return variant(&v);
+	} else if(key == "tooltip") {
+		if(tooltip_) {
+			return variant(*tooltip_);
+		}
+	} else if(key == "is_visible") {
+		return variant(visible_);
+	}
+	return variant();
+}
+
 }

@@ -28,9 +28,9 @@ public:
 	options_dialog(int x, int y, int w, int h);
 protected:
 	virtual void handle_draw() const;
-
-
 };
+
+typedef boost::intrusive_ptr<options_dialog> options_dialog_ptr;
 
 
 #endif

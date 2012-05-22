@@ -32,4 +32,6 @@ private:
 	int selected_option_;
 };
 
+typedef boost::intrusive_ptr<message_dialog> message_dialog_ptr;
+
 #endif

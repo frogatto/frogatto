@@ -129,7 +129,7 @@ void editor_level_properties_dialog::init()
 	}
 }
 
-void editor_level_properties_dialog::change_title(const gui::text_editor_widget* editor)
+void editor_level_properties_dialog::change_title(const gui::text_editor_widget_ptr editor)
 {
 	std::string title = editor->text();
 

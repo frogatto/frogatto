@@ -1,28 +1,31 @@
 #ifndef INPUT_HPP_INCLUDED
 #define INPUT_HPP_INCLUDED
 
+#include "formula_callable.hpp"
 #include "graphics.hpp"
-#include <boost/shared_ptr.hpp>
+#include <boost/intrusive_ptr.hpp>
 #include <vector>
 #include <map>
 
 namespace input {
 
-    class listener {
+    class listener : public virtual game_logic::formula_callable {
     public:
         virtual ~listener() {}
         /** returns true if the event is now claimed */
         virtual bool process_event(const SDL_Event &e, bool is_claimed) =0;
-        virtual void reset() {}
+		virtual void reset() {};
+	protected:
+		virtual variant get_value(const std::string& key) const {return variant();}
     };
 
-    typedef boost::shared_ptr<listener> listener_ptr;
+    typedef boost::intrusive_ptr<listener> listener_ptr;
 
     class listener_container: public virtual listener {
     public:
         listener_container() : process_event_stack_(0) {}
         bool process_event(const SDL_Event &e, bool is_claimed);
-        void reset();
+        virtual void reset();
         void register_listener(listener_ptr p);
         void register_listener(listener *p);
         void deregister_listener(listener_ptr p);
@@ -37,7 +40,7 @@ namespace input {
         std::vector<listener_ptr> reference_holder_;
     };
 
-    typedef boost::shared_ptr<listener_container> listener_container_ptr;
+    typedef boost::intrusive_ptr<listener_container> listener_container_ptr;
 
     class delegate_listener: public virtual listener {
     public:

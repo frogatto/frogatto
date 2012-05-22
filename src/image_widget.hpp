@@ -54,6 +54,8 @@ private:
 	int scale_;
 };
 
+typedef boost::intrusive_ptr<gui_section_widget> gui_section_widget_ptr;
+
 }
 
 #endif

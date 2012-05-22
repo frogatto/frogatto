@@ -37,8 +37,8 @@ private:
 	scrollbar_widget_ptr scrollbar_;
 };
 
-typedef boost::shared_ptr<scrollable_widget> scrollable_widget_ptr;
-typedef boost::shared_ptr<const scrollable_widget> const_scrollable_widget_ptr;
+typedef boost::intrusive_ptr<scrollable_widget> scrollable_widget_ptr;
+typedef boost::intrusive_ptr<const scrollable_widget> const_scrollable_widget_ptr;
 
 }
 

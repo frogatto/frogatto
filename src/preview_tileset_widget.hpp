@@ -18,6 +18,8 @@ private:
 	int width_, height_;
 };
 
+typedef boost::intrusive_ptr<preview_tileset_widget> preview_tileset_widget_ptr;
+
 }
 
 #endif

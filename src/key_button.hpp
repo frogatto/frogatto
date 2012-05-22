@@ -33,7 +33,7 @@ private:
 	const_framed_gui_element_ptr normal_button_image_set_,depressed_button_image_set_,focus_button_image_set_,current_button_image_set_;
 };
 
-typedef boost::shared_ptr<key_button> key_button_ptr;
+typedef boost::intrusive_ptr<key_button> key_button_ptr;
 
 }
 

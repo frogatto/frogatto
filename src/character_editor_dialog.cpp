@@ -51,7 +51,7 @@ gui::widget_ptr character_editor_dialog::generate_grid(const std::string& catego
 	std::cerr << "generate grid: " << category << "\n";
 	using namespace gui;
 	widget_ptr& result = grids_[category];
-	std::vector<gui::border_widget*>& borders = grid_borders_[category];
+	std::vector<gui::border_widget_ptr>& borders = grid_borders_[category];
 	if(!result) {
 
 		grid_ptr grid(new gui::grid(3));

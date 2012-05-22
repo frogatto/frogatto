@@ -36,7 +36,7 @@ private:
 	int drag_anchor_y_;
 };
 
-typedef boost::shared_ptr<scrollbar_widget> scrollbar_widget_ptr;
+typedef boost::intrusive_ptr<scrollbar_widget> scrollbar_widget_ptr;
 
 }
 

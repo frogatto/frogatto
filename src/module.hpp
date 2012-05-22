@@ -17,6 +17,10 @@ struct modules {
 	std::vector<std::string> included_modules_;
 };
 
+typedef std::map<std::string, std::string> module_file_map;
+typedef std::pair<std::string, std::string> module_file_pair;
+typedef std::map<std::string, std::string>::const_iterator module_file_map_iterator;
+
 const std::string get_module_name();
 const std::string get_module_pretty_name();
 std::string map_file(const std::string& fname);

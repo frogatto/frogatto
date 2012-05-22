@@ -20,6 +20,8 @@ private:
 	int size_;
 };
 
+typedef boost::intrusive_ptr<graphical_font_label> graphical_font_label_ptr;
+
 }
 
 #endif

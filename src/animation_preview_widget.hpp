@@ -75,6 +75,8 @@ private:
 	boost::function<void(int,int)> solid_handler_;
 };
 
+typedef boost::intrusive_ptr<gui::animation_preview_widget> animation_preview_widget_ptr;
+
 }
 
 #endif // !NO_EDITOR
