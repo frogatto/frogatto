@@ -9,6 +9,9 @@
 
 namespace gui {
 
+class text_editor_widget;
+typedef boost::intrusive_ptr<text_editor_widget> text_editor_widget_ptr;
+
 class text_editor_widget : public scrollable_widget
 {
 public:
@@ -108,12 +111,12 @@ private:
 
 	void refresh_scrollbar();
 
-	virtual text_editor_widget* clone() const;
-	virtual void restore(const text_editor_widget* state);
+	virtual text_editor_widget_ptr clone() const;
+	virtual void restore(const text_editor_widget_ptr state);
 
 	const char* last_op_type_;
 
-	std::vector<boost::shared_ptr<text_editor_widget> > undo_, redo_;
+	std::vector<text_editor_widget_ptr> undo_, redo_;
 
 	std::vector<std::string> text_;
 

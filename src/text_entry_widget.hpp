@@ -28,6 +28,8 @@ private:
 	const_graphical_font_ptr font_;
 };
 
+typedef boost::intrusive_ptr<text_entry_widget> text_entry_widget_ptr;
+
 }
 
 #endif

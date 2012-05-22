@@ -17,7 +17,7 @@ namespace input {
         e.user.data2 = NULL;
         SDL_PushEvent(&e);
     }
-    
+
     bool pump::process() {
         SDL_Event event;
         while(!killed_ && SDL_PollEvent(&event)) {  

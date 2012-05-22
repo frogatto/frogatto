@@ -44,7 +44,7 @@ namespace gui {
 		const_gui_section_ptr slider_left_, slider_right_, slider_middle_, slider_button_;
 	};
 	
-	typedef boost::shared_ptr<slider> slider_ptr;
+	typedef boost::intrusive_ptr<slider> slider_ptr;
 	
 }
 

@@ -24,9 +24,9 @@ namespace gui {
 class label;
 class dialog_label;
 
-typedef boost::shared_ptr<label> label_ptr;
-typedef boost::shared_ptr<const label> const_label_ptr;
-typedef boost::shared_ptr<dialog_label> dialog_label_ptr;
+typedef boost::intrusive_ptr<label> label_ptr;
+typedef boost::intrusive_ptr<const label> const_label_ptr;
+typedef boost::intrusive_ptr<dialog_label> dialog_label_ptr;
 
 class label : public widget
 {
@@ -50,6 +50,7 @@ protected:
 	std::string& current_text();
 	virtual void recalculate_texture();
 	void set_texture(graphics::texture t);
+	virtual variant get_value(const std::string& key) const;
 private:
 	void handle_draw() const;
 	void inner_set_dim(int x, int y);

@@ -57,7 +57,7 @@ void editor_module_properties_dialog::init()
 
 	grid_ptr g(new grid(2));
 	if(new_mod_) {
-		text_editor_widget* change_id_entry(new text_editor_widget(200, 30));
+		text_editor_widget_ptr change_id_entry(new text_editor_widget(200, 30));
 		change_id_entry->set_on_change_handler(boost::bind(&editor_module_properties_dialog::change_id, this, change_id_entry));
 		change_id_entry->set_on_enter_handler(boost::bind(&dialog::close, this));
 
@@ -70,7 +70,7 @@ void editor_module_properties_dialog::init()
 		add_widget(g);
 	}
 
-	text_editor_widget* change_name_entry(new text_editor_widget(200, 30));
+	text_editor_widget_ptr change_name_entry(new text_editor_widget(200, 30));
 	change_name_entry->set_text(mod_.pretty_name_);
 	change_name_entry->set_on_change_handler(boost::bind(&editor_module_properties_dialog::change_name, this, change_name_entry));
 	change_name_entry->set_on_enter_handler(boost::bind(&dialog::close, this));
@@ -80,7 +80,7 @@ void editor_module_properties_dialog::init()
 	  .add_col(widget_ptr(change_name_entry));
 	add_widget(g);
 
-	text_editor_widget* change_abbrev_entry(new text_editor_widget(200, 30));
+	text_editor_widget_ptr change_abbrev_entry(new text_editor_widget(200, 30));
 	change_abbrev_entry->set_text(mod_.abbreviation_);
 	change_abbrev_entry->set_on_change_handler(boost::bind(&editor_module_properties_dialog::change_prefix, this, change_abbrev_entry));
 	change_abbrev_entry->set_on_enter_handler(boost::bind(&dialog::close, this));
@@ -102,19 +102,19 @@ void editor_module_properties_dialog::init()
 	}
 }
 
-void editor_module_properties_dialog::change_id(const gui::text_editor_widget* editor)
+void editor_module_properties_dialog::change_id(const gui::text_editor_widget_ptr editor)
 {
 	if(std::find(dirs_.begin(), dirs_.end(), editor->text()) == dirs_.end()) {
 		mod_.name_ = editor->text();
 	}
 }
 
-void editor_module_properties_dialog::change_name(const gui::text_editor_widget* editor)
+void editor_module_properties_dialog::change_name(const gui::text_editor_widget_ptr editor)
 {
 	mod_.pretty_name_ = editor->text();
 }
 
-void editor_module_properties_dialog::change_prefix(const gui::text_editor_widget* editor)
+void editor_module_properties_dialog::change_prefix(const gui::text_editor_widget_ptr editor)
 {
 	mod_.abbreviation_ = editor->text();
 }

@@ -33,6 +33,7 @@ public:
 	button(widget_ptr label, boost::function<void ()> onclick, BUTTON_STYLE button_style = BUTTON_STYLE_NORMAL, BUTTON_RESOLUTION button_resolution = BUTTON_SIZE_NORMAL_RESOLUTION);
 
 protected:
+	virtual variant get_value(const std::string& key) const;
 	void set_label(widget_ptr label);
 
 private:
@@ -51,7 +52,7 @@ private:
 	const_framed_gui_element_ptr normal_button_image_set_,depressed_button_image_set_,focus_button_image_set_,current_button_image_set_;
 };
 
-typedef boost::shared_ptr<button> button_ptr;
+typedef boost::intrusive_ptr<button> button_ptr;
 
 }
 

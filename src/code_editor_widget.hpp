@@ -55,6 +55,8 @@ private:
 	std::vector<json::Token> tokens_;
 };
 
+typedef boost::intrusive_ptr<code_editor_widget> code_editor_widget_ptr;
+
 }
 
 #endif

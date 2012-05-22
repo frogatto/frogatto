@@ -6,8 +6,8 @@
 namespace gui {
 
 class image_widget;
-typedef boost::shared_ptr<image_widget> image_widget_ptr;
-typedef boost::shared_ptr<const image_widget> const_image_widget_ptr;
+typedef boost::intrusive_ptr<image_widget> image_widget_ptr;
+typedef boost::intrusive_ptr<const image_widget> const_image_widget_ptr;
 
 }
 

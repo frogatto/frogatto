@@ -23,7 +23,7 @@
 
 namespace gui {
 
-class dialog : public widget, public input::listener_container
+class dialog : public virtual widget, public virtual input::listener_container
 {
 public:
 	typedef std::vector<widget_ptr>::const_iterator child_iterator;
@@ -93,7 +93,7 @@ private:
 	boost::function<void()> draw_background_fn_;
 };
 
-typedef boost::shared_ptr<dialog> dialog_ptr;
+typedef boost::intrusive_ptr<dialog> dialog_ptr;
 
 }
 

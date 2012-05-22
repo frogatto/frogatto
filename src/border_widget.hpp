@@ -21,6 +21,8 @@ private:
 	int border_size_;
 };
 
+typedef boost::intrusive_ptr<border_widget> border_widget_ptr;
+
 }
 
 #endif

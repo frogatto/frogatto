@@ -101,6 +101,14 @@ void label::set_texture(graphics::texture t) {
 	texture_ = t;
 }
 
+variant label::get_value(const std::string& key) const
+{
+	if(key == "label") {
+		return variant(text_);
+	}
+	return widget::get_value(key);
+}
+
 dialog_label::dialog_label(const std::string& text, const SDL_Color& color, int size)
 	: label(text, color, size), progress_(0) {
 

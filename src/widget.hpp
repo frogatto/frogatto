@@ -13,7 +13,6 @@
 #ifndef WIDGET_HPP_INCLUDED
 #define WIDGET_HPP_INCLUDED
 
-#include <boost/shared_ptr.hpp>
 #include <string>
 
 #include "graphics.hpp"
@@ -38,6 +37,7 @@ public:
 	bool visible() { return visible_; }
 	void set_visible(bool visible) { visible_ = visible; }
 
+	virtual variant get_value(const std::string& key) const;
 	virtual bool has_focus() const { return false; }
 protected:
 	widget() : x_(0), y_(0), w_(0), h_(0), tooltip_displayed_(false), visible_(true)
@@ -55,8 +55,8 @@ private:
 	bool visible_;
 };
 
-typedef boost::shared_ptr<widget> widget_ptr;
-typedef boost::shared_ptr<const widget> const_widget_ptr;
+typedef boost::intrusive_ptr<widget> widget_ptr;
+typedef boost::intrusive_ptr<const widget> const_widget_ptr;
 
 }
 

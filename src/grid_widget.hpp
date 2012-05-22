@@ -87,8 +87,8 @@ private:
 	int max_height_;
 };
 
-typedef boost::shared_ptr<grid> grid_ptr;
-typedef boost::shared_ptr<const grid> const_grid_ptr;
+typedef boost::intrusive_ptr<grid> grid_ptr;
+typedef boost::intrusive_ptr<const grid> const_grid_ptr;
 
 }
 

@@ -1153,14 +1153,14 @@ void text_editor_widget::select_token(const std::string& row, int& begin_row, in
 	}
 }
 
-text_editor_widget* text_editor_widget::clone() const
+text_editor_widget_ptr text_editor_widget::clone() const
 {
-	text_editor_widget* result = new text_editor_widget(*this);
+	text_editor_widget_ptr result = new text_editor_widget(*this);
 	result->last_op_type_ = NULL;
 	return result;
 }
 
-void text_editor_widget::restore(const text_editor_widget* state)
+void text_editor_widget::restore(const text_editor_widget_ptr state)
 {
 	*this = *state;
 }
@@ -1168,7 +1168,7 @@ void text_editor_widget::restore(const text_editor_widget* state)
 void text_editor_widget::save_undo_state()
 {
 	redo_.clear();
-	undo_.push_back(boost::shared_ptr<text_editor_widget>(clone()));
+	undo_.push_back(text_editor_widget_ptr(clone()));
 }
 
 bool text_editor_widget::record_op(const char* type)
@@ -1187,14 +1187,14 @@ void text_editor_widget::undo()
 		return;
 	}
 
-	std::vector<boost::shared_ptr<text_editor_widget> > redo_state = redo_;
+	std::vector<text_editor_widget_ptr> redo_state = redo_;
 	save_undo_state();
 	redo_state.push_back(undo_.back());
 	undo_.pop_back();
 
 	//Save the state before restoring it so it doesn't get cleaned up
 	//while we're in the middle of the restore call.
-	boost::shared_ptr<text_editor_widget> state = undo_.back();
+	text_editor_widget_ptr state = undo_.back();
 	restore(state.get());
 
 	redo_ = redo_state;
@@ -1208,12 +1208,12 @@ void text_editor_widget::redo()
 		return;
 	}
 
-	std::vector<boost::shared_ptr<text_editor_widget> > redo_state = redo_;
+	std::vector<text_editor_widget_ptr> redo_state = redo_;
 	redo_state.pop_back();
 
 	//Save the state before restoring it so it doesn't get cleaned up
 	//while we're in the middle of the restore call.
-	boost::shared_ptr<text_editor_widget> state = redo_.back();
+	text_editor_widget_ptr state = redo_.back();
 	restore(state.get());
 
 	redo_ = redo_state;
@@ -1327,7 +1327,7 @@ void text_editor_widget::on_change()
 #include "filesystem.hpp"
 
 namespace {
-void on_change_search(const gui::text_editor_widget* search_entry, gui::text_editor_widget* editor)
+void on_change_search(const gui::text_editor_widget_ptr search_entry, gui::text_editor_widget_ptr editor)
 {
 	editor->set_search(search_entry->text());
 }
@@ -1348,9 +1348,9 @@ UTILITY(textedit)
 		return;
 	}
 
-	text_editor_widget* entry = new text_editor_widget(120);
+	text_editor_widget_ptr entry = new text_editor_widget(120);
 
-	text_editor_widget* editor = new code_editor_widget(600, 400);
+	text_editor_widget_ptr editor = new code_editor_widget(600, 400);
 	editor->set_text(contents);
 
 	entry->set_on_change_handler(boost::bind(on_change_search, entry, editor));

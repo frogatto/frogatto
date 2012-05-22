@@ -34,6 +34,8 @@ private:
 	int first_index_;
 };
 
+typedef boost::intrusive_ptr<tileset_editor_dialog> tileset_editor_dialog_ptr;
+
 }
 
 #endif // !NO_EDITOR

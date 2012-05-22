@@ -23,9 +23,9 @@ public:
 	void init();
 	const std::string on_exit();
 private:
-	void change_id(const gui::text_editor_widget* editor);
-	void change_name(const gui::text_editor_widget* editor);
-	void change_prefix(const gui::text_editor_widget* editor);
+	void change_id(const gui::text_editor_widget_ptr editor);
+	void change_name(const gui::text_editor_widget_ptr editor);
+	void change_prefix(const gui::text_editor_widget_ptr editor);
 	void change_module_includes();
 	void remove_module_include(const std::string& s);
 	void execute_change_module_includes(const std::vector<std::string>& choices, int index);
@@ -39,6 +39,8 @@ private:
 	std::vector<std::string> loaded_mod_;
 	std::vector<std::string> dirs_;
 };
+
+typedef boost::intrusive_ptr<editor_module_properties_dialog> editor_module_properties_dialog_ptr;
 
 }
 
