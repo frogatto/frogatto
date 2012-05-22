@@ -47,7 +47,7 @@ private:
 	int dragging_handle_;
 };
 
-typedef boost::shared_ptr<drag_widget> drag_widget_ptr;
+typedef boost::intrusive_ptr<drag_widget> drag_widget_ptr;
 
 }
 
