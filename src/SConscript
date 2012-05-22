@@ -123,7 +123,6 @@ surface.cpp
 texture.cpp
 texture_frame_buffer.cpp
 text_editor_widget.cpp
-text_entry_widget.cpp
 thread.cpp
 tile_map.cpp
 tileset_editor_dialog.cpp

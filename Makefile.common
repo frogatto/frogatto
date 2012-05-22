@@ -128,7 +128,6 @@ objects = \
 	texture.o \
 	texture_frame_buffer.o \
 	text_editor_widget.o \
-	text_entry_widget.o \
 	thread.o \
 	tile_map.o \
 	tileset_editor_dialog.o \
