@@ -762,14 +762,6 @@ namespace preferences {
 			actual_screen_height_ = 480;
 
 			recalculate_draw_mask();
-		} else if(s == "--ct-window-size") {
-			virtual_screen_width_ = 1050;
-			virtual_screen_height_ = 700;
-
-			actual_screen_width_ = 1050;
-			actual_screen_height_ = 700;
-
-			recalculate_draw_mask();
 		} else if(s == "--native") {
 			virtual_screen_width_ = (actual_screen_width_) * 2;
 			virtual_screen_height_ = (actual_screen_height_) * 2;
