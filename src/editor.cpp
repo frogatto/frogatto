@@ -944,7 +944,7 @@ void editor::setup_for_editing()
 				const int x = c->x();
 				const int y = c->y();
 				if(place_entity_in_level_with_large_displacement(*lvl, *c)) {
-					assert(!entity_collides_with_level(*lvl, *c, MOVE_NONE));
+					assert(c->allow_level_collisions() || !entity_collides_with_level(*lvl, *c, MOVE_NONE));
 					if(lvl == lvl_) {
 						debug_console::add_message(formatter() << "Adjusted position of " << c->debug_description() << " to fit: (" << x << "," << y << ") -> (" << c->x() << "," << c->y() << ")");
 					}

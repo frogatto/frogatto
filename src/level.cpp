@@ -1824,7 +1824,7 @@ void level::draw(int x, int y, int w, int h) const
 
 	if(editor_) {
 		foreach(const entity_ptr& obj, chars_) {
-			if(entity_collides_with_level(*this, *obj, MOVE_NONE)) {
+			if(!obj->allow_level_collisions() && entity_collides_with_level(*this, *obj, MOVE_NONE)) {
 				//if the entity is colliding with the level, then draw
 				//it in red to mark as 'bad'.
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE);
