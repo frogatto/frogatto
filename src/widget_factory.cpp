@@ -61,6 +61,7 @@ widget_ptr create(const variant& v, const game_logic::formula_callable_ptr& e)
 	//} else if(wtype == "widget") {
 	} else {
 		ASSERT_LOG(true, "Unable to create a widget of type " << wtype);
+		return widget_ptr();
 	}
 }
 
