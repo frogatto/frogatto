@@ -316,7 +316,7 @@ void process_file(const std::string& fname)
 	variant obj = variant_callable::create(&v);
 
 	boost::intrusive_ptr<map_formula_callable> map_callable(new map_formula_callable(obj.try_convert<formula_callable>()));
-	map_callable->add("doc", obj);
+	map_callable->add("doc", v);
 	map_callable->add("filename", variant(fname));
 
 	variant result = formula_->execute(*map_callable);
