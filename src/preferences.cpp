@@ -356,10 +356,12 @@ namespace preferences {
 	}
 	
 	const char *save_file_path() {
+		std::cerr << "GET SAVE FILE PATH: " << save_file_path_ << std::endl;
 		return save_file_path_.c_str();
 	}
 
 	const char *auto_save_file_path() {
+		std::cerr << "GET AUTOSAVE FILE PATH: " << auto_save_file_path_ << std::endl;
 		return auto_save_file_path_.c_str();
 	}
 
@@ -388,7 +390,7 @@ namespace preferences {
 	}
 
 	void set_save_slot(const std::string& fname) {
-		save_file_path_ = std::string(user_data_path()) + "/" + fname;
+		save_file_path_ = std::string(user_data_path()) + fname;
 		std::cerr << "SET SAVE FILE PATH TO " << save_file_path_ << "\n";
 	}
 	
@@ -664,6 +666,7 @@ namespace preferences {
 
 		node.add("registry", game_registry::instance().write_contents());
 
+		std::cerr << "WRITE PREFS: " << (preferences_path_ + "preferences.cfg") << std::endl;
 		sys::write_file(preferences_path_ + "preferences.cfg", node.build().write_json());
 	}
 
@@ -757,14 +760,6 @@ namespace preferences {
 
 			actual_screen_width_ = 800;
 			actual_screen_height_ = 480;
-
-			recalculate_draw_mask();
-		} else if(s == "--ct-window-size") {
-			virtual_screen_width_ = 1050;
-			virtual_screen_height_ = 700;
-
-			actual_screen_width_ = 1050;
-			actual_screen_height_ = 700;
 
 			recalculate_draw_mask();
 		} else if(s == "--native") {
