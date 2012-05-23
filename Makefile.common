@@ -141,6 +141,7 @@ objects = \
 	water_particle_system.o \
 	weather_particle_system.o \
 	widget.o \
+	widget_factory.o \
 	wml_formula_callable.o \
 	unit_test.o \
 	formula_test.o \

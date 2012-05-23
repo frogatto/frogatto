@@ -136,6 +136,7 @@ water.cpp
 water_particle_system.cpp
 weather_particle_system.cpp
 widget.cpp
+widget_factory.cpp
 wml_formula_callable.cpp
 unit_test.cpp
 formula_test.cpp
