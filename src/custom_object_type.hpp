@@ -33,7 +33,7 @@ typedef boost::shared_ptr<const modifier> const_modifier_ptr;
 class custom_object_type
 {
 public:
-	static variant merge_prototype(variant node);
+	static variant merge_prototype(variant node, std::vector<std::string>* proto_paths=NULL);
 	static const std::string* get_object_path(const std::string& id);
 	static const_custom_object_type_ptr get(const std::string& id);
 	static const_custom_object_type_ptr get_or_die(const std::string& id);

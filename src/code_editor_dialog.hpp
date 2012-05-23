@@ -25,7 +25,7 @@ public:
 	code_editor_dialog(const rect& r);
 	void init();
 
-	void load_file(std::string fname);
+	void load_file(std::string fname, bool focus=true);
 
 	bool has_keyboard_focus() const;
 

@@ -109,8 +109,11 @@ void code_editor_dialog::init_files_grid()
 			files_grid_->add_col(widget_ptr(img));
 		} else {
 			std::string fname = f.fname;
-			if(fname.size() > 4) {
-				fname.resize(4);
+			while(std::find(fname.begin(), fname.end(), '/') != fname.end()) {
+				fname.erase(fname.begin(), std::find(fname.begin(), fname.end(), '/')+1);
+			}
+			if(fname.size() > 6) {
+				fname.resize(6);
 			}
 
 			files_grid_->add_col(label::create(fname, graphics::color_white()));
@@ -120,7 +123,7 @@ void code_editor_dialog::init_files_grid()
 	add_widget(files_grid_, 2, 2);
 }
 
-void code_editor_dialog::load_file(std::string fname)
+void code_editor_dialog::load_file(std::string fname, bool focus)
 {
 	if(fname_ == fname) {
 		return;
@@ -142,6 +145,23 @@ void code_editor_dialog::load_file(std::string fname)
 		f.fname = fname;
 		f.editor.reset(new code_editor_widget(width() - 40, height() - 60));
 		std::string text = json::get_file_contents(fname);
+		try {
+			variant doc = json::parse(text, json::JSON_NO_PREPROCESSOR);
+			std::cerr << "CHECKING FOR PROTOTYPES: " << doc["prototype"].write_json() << "\n";
+			if(doc["prototype"].is_list()) {
+				std::map<std::string,std::string> paths;
+				module::get_unique_filenames_under_dir("data/object_prototypes", &paths);
+				foreach(variant proto, doc["prototype"].as_list()) {
+					std::string name = proto.as_string() + ".cfg";
+					std::map<std::string,std::string>::const_iterator itor = module::find(paths, name);
+					if(itor != paths.end()) {
+						load_file(itor->second, false);
+					}
+				}
+			}
+		} catch(...) {
+		}
+
 		f.editor->set_text(json::get_file_contents(fname));
 		f.editor->set_on_change_handler(boost::bind(&code_editor_dialog::on_code_changed, this));
 		f.editor->set_on_move_cursor_handler(boost::bind(&code_editor_dialog::on_move_cursor, this));
@@ -154,19 +174,26 @@ void code_editor_dialog::load_file(std::string fname)
 			}
 		}
 
+		//in case any files have been inserted, update the index.
+		index = files_.size();
 		files_.push_back(f);
 	}
 
 	KnownFile f = files_[index];
+
+	if(editor_) {
+		f.editor->set_font_size(editor_->get_font_size());
+	}
+
+	if(!focus) {
+		return;
+	}
+
 	files_.erase(files_.begin() + index);
 	files_.insert(files_.begin(), f);
 
 	add_widget(f.editor, editor_->x(), editor_->y());
 	remove_widget(editor_);
-
-	if(editor_) {
-		f.editor->set_font_size(editor_->get_font_size());
-	}
 
 	editor_ = f.editor;
 	editor_->set_focus(true);

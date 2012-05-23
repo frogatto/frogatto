@@ -232,7 +232,7 @@ void reload_file_paths() {
 
 //function which finds if a node has a prototype, and if so, applies the
 //prototype to the node.
-variant custom_object_type::merge_prototype(variant node)
+variant custom_object_type::merge_prototype(variant node, std::vector<std::string>* proto_paths)
 {
 	if(!node.has_key("prototype")) {
 		return node;
@@ -247,7 +247,10 @@ variant custom_object_type::merge_prototype(variant node)
 
 		variant prototype_node = json::parse_from_file(path_itor->second);
 		ASSERT_LOG(prototype_node["id"].as_string() == proto, "PROTOTYPE NODE FOR " << proto << " DOES NOT SPECIFY AN ACCURATE id FIELD");
-		prototype_node = merge_prototype(prototype_node);
+		if(proto_paths) {
+			proto_paths->push_back(path_itor->second);
+		}
+		prototype_node = merge_prototype(prototype_node, proto_paths);
 		node = merge_into_prototype(prototype_node, node);
 	}
 	return node;
@@ -317,6 +320,10 @@ custom_object_type_ptr custom_object_type::create(const std::string& id)
 	return recreate(id, NULL);
 }
 
+namespace {
+std::map<std::string, std::vector<std::string> > object_prototype_paths;
+}
+
 custom_object_type_ptr custom_object_type::recreate(const std::string& id,
                                              const custom_object_type* old_type)
 {
@@ -329,12 +336,14 @@ custom_object_type_ptr custom_object_type::recreate(const std::string& id,
 	ASSERT_LOG(path_itor != object_file_paths().end(), "Could not find file for object '" << id << "'");
 
 	try {
-		variant node = merge_prototype(json::parse_from_file(path_itor->second));
+		std::vector<std::string> proto_paths;
+		variant node = merge_prototype(json::parse_from_file(path_itor->second), &proto_paths);
 
 		ASSERT_LOG(node["id"].as_string() == module::get_id(id), "IN " << path_itor->second << " OBJECT ID DOES NOT MATCH FILENAME");
 		
 		//create the object
 		custom_object_type_ptr result(new custom_object_type(node, NULL, old_type));
+		object_prototype_paths[id] = proto_paths;
 
 		return result;
 	} catch(json::parse_error& e) {
@@ -406,8 +415,9 @@ void custom_object_type::set_file_contents(const std::string& file_path, const s
 {
 	json::set_file_contents(file_path, contents);
 	for(object_map::iterator i = cache().begin(); i != cache().end(); ++i) {
+		const std::vector<std::string>& proto_paths = object_prototype_paths[i->first];
 		const std::string* path = get_object_path(i->first + ".cfg");
-		if(path && *path == file_path) {
+		if(path && *path == file_path || std::count(proto_paths.begin(), proto_paths.end(), file_path)) {
 			std::cerr << "RELOAD OBJECT: " << i->first << " -> " << *path << "\n";
 			reload_object(i->first);
 		}
