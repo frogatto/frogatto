@@ -19,6 +19,7 @@
 
 #include "asserts.hpp"
 #include "compress.hpp"
+#include "debug_console.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "formula.hpp"
@@ -33,6 +34,7 @@
 #include "variant_callable.hpp"
 #include "controls.hpp"
 #include "pathfinding.hpp"
+#include "preferences.hpp"
 #include "level.hpp"
 #include "json_parser.hpp"
 
@@ -1700,6 +1702,70 @@ private:
 	int slot_;
 	mutable boost::intrusive_ptr<add_by_slot_command> cmd_;
 };
+
+
+class debug_command : public game_logic::command_callable
+{
+public:
+	explicit debug_command(const std::string& str) : str_(str)
+	{}
+	virtual void execute(formula_callable& ob) const {
+#ifndef NO_EDITOR
+		debug_console::add_message(str_);
+#endif
+		std::cerr << "CONSOLE: " << str_ << "\n";
+	}
+private:
+	std::string str_;
+};
+
+FUNCTION_DEF(debug, 1, -1, "debug(...): outputs arguments to the console")
+	if(!preferences::debug()) {
+		return variant();
+	}
+
+	std::string str;
+	for(int n = 0; n != args().size(); ++n) {
+		if(n > 0) {
+			str += " ";
+		}
+
+		str += args()[n]->evaluate(variables).to_debug_string();
+	}
+
+	//fprintf(stderr, "DEBUG FUNCTION: %s\n", str.c_str());
+
+	return variant(new debug_command(str));
+END_FUNCTION_DEF(debug)
+
+namespace {
+void debug_side_effect(variant v)
+{
+	if(v.is_list()) {
+		foreach(variant item, v.as_list()) {
+			debug_side_effect(item);
+		}
+	} else if(v.is_callable() && v.try_convert<game_logic::command_callable>()) {
+		map_formula_callable_ptr obj(new map_formula_callable);
+		v.try_convert<game_logic::command_callable>()->execute(*obj);
+	} else {
+		std::string s = v.to_debug_string();
+#ifndef NO_EDITOR
+		debug_console::add_message(s);
+#endif
+		std::cerr << "CONSOLE: " << s << "\n";
+	}
+}
+}
+
+FUNCTION_DEF(debug_fn, 2, 2, "debug_fn(msg, expr): evaluates and returns expr. Will print 'msg' to stderr if it's printable, or execute it if it's an executable command.")
+	variant res = args()[1]->evaluate(variables);
+	if(preferences::debug()) {
+		debug_side_effect(args()[0]->evaluate(variables));
+	}
+
+	return res;
+END_FUNCTION_DEF(debug_fn)
 
 }
 
