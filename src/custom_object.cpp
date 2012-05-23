@@ -1031,6 +1031,9 @@ void custom_object::process(level& lvl)
 	create_object();
 
 	if(cycle_ == 1) {
+		//these events are for backwards compatibility. It's not recommended
+		//to use them for new objects.
+		handle_event("first_cycle");
 		handle_event(OBJECT_EVENT_DONE_CREATE);
 	}
 
