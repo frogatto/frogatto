@@ -11,6 +11,7 @@ class checkbox : public button
 {
 public:
 	checkbox(const std::string& label, bool checked, boost::function<void(bool)> onclick, BUTTON_RESOLUTION button_resolution=BUTTON_SIZE_NORMAL_RESOLUTION);
+	checkbox(const variant& v, const game_logic::formula_callable_ptr& e);
 private:
 	void on_click();
 

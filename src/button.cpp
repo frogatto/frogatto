@@ -10,12 +10,17 @@
 
    See the COPYING file for more details.
 */
+#include <boost/bind.hpp>
+
+#include "asserts.hpp"
 #include "button.hpp"
 #include "iphone_controls.hpp"
+#include "formula.hpp"
 #include "label.hpp"
 #include "raster.hpp"
 #include "surface_cache.hpp"
 #include "framed_gui_element.hpp"
+#include "widget_factory.hpp"
 
 namespace gui {
 
@@ -41,6 +46,24 @@ button::button(widget_ptr label, boost::function<void ()> onclick, BUTTON_STYLE 
 	
 {
 	setup();
+}
+
+button::button(const variant& v, const game_logic::formula_callable_ptr& e) : widget(v,e), down_(false)
+{
+	label_ = v.has_key("label") ? widget_factory::create(v["label"], e) : new label("Button", graphics::color_white());
+	ASSERT_LOG(v.has_key("on_click"), "Button must be supplied with an on_click handler");
+	// create delegate for onclick
+	// XXX replace the 0 with an actual symbol table.
+	click_handler_ = game_logic::formula_ptr(new game_logic::formula(v["on_click"], 0));
+	onclick_ = boost::bind(&button::click, this);
+	button_resolution_ = v["resolution"].as_string_default("normal") == "normal" ? BUTTON_SIZE_NORMAL_RESOLUTION : BUTTON_SIZE_DOUBLE_RESOLUTION;
+	button_style_ = v["style"].as_string_default("default") == "default" ? BUTTON_STYLE_DEFAULT : BUTTON_STYLE_NORMAL;
+	setup();
+}
+
+void button::click()
+{
+	click_handler_->execute(*get_environment());
 }
 
 void button::setup()

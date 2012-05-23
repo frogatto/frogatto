@@ -14,6 +14,7 @@ class code_editor_widget : public text_editor_widget
 {
 public:
 	code_editor_widget(int width, int height);
+	code_editor_widget(const variant& v, const game_logic::formula_callable_ptr& e);
 	void on_slider_move(float value);
 
 	const std::string& current_text() const { return current_text_; }

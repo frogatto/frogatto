@@ -17,6 +17,7 @@ class gui_section
 public:
 	static void init(variant node);
 	static const_gui_section_ptr get(const std::string& key);
+	static const_gui_section_ptr get(const variant& v);
 
 	explicit gui_section(variant node);
 

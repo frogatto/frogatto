@@ -80,7 +80,7 @@ const CharArea& get_char_area(int font_size, char c)
 	return result;
 }
 
-void init_char_area(int font_size)
+void init_char_area(size_t font_size)
 {
 	if(char_textures.size() <= font_size) {
 		char_textures.resize(font_size+1);
@@ -131,6 +131,42 @@ text_editor_widget::text_editor_widget(int width, int height)
 	text_.push_back("");
 }
 
+text_editor_widget::text_editor_widget(const variant& v, const game_logic::formula_callable_ptr& e)
+	: scrollable_widget(v,e), last_op_type_(NULL), font_size_(14), 
+	select_(0,0), cursor_(0,0), scroll_pos_(0),
+	begin_highlight_line_(-1), end_highlight_line_(-1),
+	has_focus_(false),
+	is_dragging_(false),
+	last_click_at_(-1),
+	consecutive_clicks_(0),
+	text_color_(255, 255, 255, 255)
+{
+	int width = v.has_key("width") ? v["width"].as_int() : 0;
+	int height = v.has_key("height") ? v["height"].as_int() : 0;
+	if(v.has_key("font_size")) { 
+		font_size_ = v["font_size"].as_int(); 
+	}
+	if(v.has_key("color")) {
+		text_color_ = graphics::color(v["color"]);
+	}
+
+	char_width_= font::char_width(font_size_);
+    char_height_ = font::char_height(font_size_);
+	nrows_ = (height - BorderSize*2)/char_height_;
+	ncols_ = (width - 20 - BorderSize*2)/char_width_;
+
+	if(height == 0) {
+		height = char_height_ + BorderSize*2;
+		nrows_ = 1;
+		ncols_ = width/char_width_;
+		widget::set_dim(width, height);
+	} else {
+		widget::set_dim(width - 20, height);
+	}
+
+	text_.push_back("");
+}
+
 text_editor_widget::~text_editor_widget()
 {
 }
@@ -149,7 +185,7 @@ std::string text_editor_widget::text() const
 
 void text_editor_widget::set_row_contents(int row, const std::string& value)
 {
-	ASSERT_LOG(row >= 0 && row < text_.size(), "ILLEGAL ROW SET: " << row << " / " << text_.size());
+	ASSERT_LOG(row >= 0 && size_t(row) < text_.size(), "ILLEGAL ROW SET: " << row << " / " << text_.size());
 	text_[row] = value;
 	refresh_scrollbar();
 	on_change();
@@ -954,7 +990,7 @@ std::pair<int, int> text_editor_widget::mouse_position_to_row_col(int xpos, int 
 	for(int n = scroll_pos_; n < text_.size() && r < nrows_; ++n, ++r) {
 		int c = 0;
 		bool matches_row = ypos >= yloc + r*char_height_ && ypos < yloc + (r+1)*char_height_;
-		for(int m = 0; m < text_[n].size(); ++m, ++c) {
+		for(size_t m = 0; m < text_[n].size(); ++m, ++c) {
 			if(c >= ncols_) {
 				if(matches_row) {
 					break;
@@ -994,9 +1030,9 @@ std::pair<int, int> text_editor_widget::char_position_on_screen(int row, int col
 	}
 
 	int r = 0;
-	for(int n = scroll_pos_; n < text_.size() && r < nrows_; ++n, ++r) {
+	for(size_t n = scroll_pos_; n < text_.size() && r < nrows_; ++n, ++r) {
 		int c = 0;
-		int m;
+		size_t m;
 		for(m = 0; m < text_[n].size(); ++m, ++c) {
 			if(c >= ncols_) {
 				++r;
@@ -1083,7 +1119,7 @@ void text_editor_widget::on_move_cursor(bool auto_shift)
 int text_editor_widget::find_equivalent_col(int old_col, int old_row, int new_row) const
 {
 	int actual_pos = old_col + std::count(text_[old_row].begin(), text_[old_row].end(), '\t')*TabAdjust;
-	for(int n = 0; n < actual_pos; ++n) {
+	for(size_t n = 0; n < actual_pos; ++n) {
 		if(n < text_[new_row].size() && text_[new_row][n] == '\t') {
 			actual_pos -= TabAdjust;
 		}
@@ -1160,7 +1196,7 @@ text_editor_widget_ptr text_editor_widget::clone() const
 	return result;
 }
 
-void text_editor_widget::restore(const text_editor_widget_ptr state)
+void text_editor_widget::restore(const text_editor_widget* state)
 {
 	*this = *state;
 }
@@ -1318,6 +1354,16 @@ void text_editor_widget::on_change()
 	}
 
 	calculate_search_matches();
+}
+
+void text_editor_widget::set_value(const std::string& key, const variant& v)
+{
+	scrollable_widget::set_value(key, v);
+}
+
+variant text_editor_widget::get_value(const std::string& key) const
+{
+	return scrollable_widget::get_value(key);
 }
 
 }

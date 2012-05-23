@@ -28,12 +28,19 @@ class image_widget : public widget
 public:
 	explicit image_widget(const std::string& fname, int w=-1, int h=-1);
 	explicit image_widget(graphics::texture tex, int w=-1, int h=-1);
+	explicit image_widget(const variant& v, const game_logic::formula_callable_ptr& e);
+
+	void init(int w, int h);
 
 	void set_rotation(GLfloat rotate) { rotate_ = rotate; }
 	void set_area(const rect& area) { area_ = area; }
 
+	void set_value(const std::string& key, const variant& v);
+	variant get_value(const std::string& key) const;
+
 private:
 	void handle_draw() const;
+
 	graphics::texture texture_;
 	GLfloat rotate_;
 	rect area_;
@@ -43,13 +50,17 @@ class gui_section_widget : public widget
 {
 public:
 	explicit gui_section_widget(const std::string& id, int w=-1, int h=-1, int scale=1);
+	explicit gui_section_widget(const variant& v, const game_logic::formula_callable_ptr& e);
 
 	//sets the GUI section. The dimensions of the widget will not change;
 	//you should set a GUI section that is the same size.
 	void set_gui_section(const std::string& id);
 
-private:
 	void handle_draw() const;
+protected:
+	void set_value(const std::string& key, const variant& v);
+	variant get_value(const std::string& key) const;
+private:
 	const_gui_section_ptr section_;
 	int scale_;
 };

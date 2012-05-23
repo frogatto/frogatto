@@ -1,5 +1,6 @@
 #include <map>
 
+#include "asserts.hpp"
 #include "foreach.hpp"
 #include "gui_section.hpp"
 #include "raster.hpp"
@@ -19,11 +20,22 @@ void gui_section::init(variant node)
 	}
 }
 
+const_gui_section_ptr gui_section::get(const variant& v)
+{
+	if(v.has_key("name")) {
+		return get(v["name"].as_string());
+	} else {
+		const std::string& id = v["id"].as_string();
+		cache[id].reset(new gui_section(v));
+		return cache[id];
+	}
+}
+
 const_gui_section_ptr gui_section::get(const std::string& key)
 {
 	cache_map::const_iterator itor = cache.find(key);
 	if(itor == cache.end()) {
-		assert(false); //TODO: replace with an exception.
+		ASSERT_LOG(false, "GUI section " << key << " not found in cache");
 		return const_gui_section_ptr();
 	}
 

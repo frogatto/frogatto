@@ -12,6 +12,7 @@ class scrollable_widget : public widget
 {
 public:
 	scrollable_widget();
+	scrollable_widget(const variant& v, const game_logic::formula_callable_ptr& e);
 	void set_yscroll(int yscroll);
 	virtual void set_dim(int w, int h);
 
@@ -27,6 +28,9 @@ protected:
 
 	int yscroll() const { return yscroll_; }
 	int virtual_height() const { return virtual_height_; }
+
+	virtual void set_value(const std::string& key, const variant& v);
+	virtual variant get_value(const std::string& key) const;
 private:
 	virtual void on_set_yscroll(int old_yscroll, int new_yscroll);
 

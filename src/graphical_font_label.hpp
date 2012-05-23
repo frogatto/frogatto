@@ -10,8 +10,13 @@ class graphical_font_label : public widget
 {
 public:
 	graphical_font_label(const std::string& text, const std::string& font, int size=1);
+	graphical_font_label(const variant& v, const game_logic::formula_callable_ptr& e);
 
 	void set_text(const std::string& text);
+	void reset_text_dimensions();
+	
+	void set_value(const std::string& key, const variant& v);
+	variant get_value(const std::string& key) const;
 private:
 	void handle_draw() const;
 

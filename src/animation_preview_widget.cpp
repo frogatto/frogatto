@@ -247,6 +247,12 @@ bool animation_preview_widget::is_animation(variant obj)
 	return !obj.is_null() && obj["image"].is_string();
 }
 
+animation_preview_widget::animation_preview_widget(const variant& v, const game_logic::formula_callable_ptr& e) : widget(v,e)
+{
+	// Place holder only.
+	//set_object(obj);
+}
+
 animation_preview_widget::animation_preview_widget(variant obj) : cycle_(0), zoom_label_(NULL), pos_label_(NULL), scale_(0), anchor_x_(-1), anchor_y_(-1), anchor_pad_(-1), has_motion_(false), dragging_sides_bitmap_(0), moving_solid_rect_(false), anchor_solid_x_(-1), anchor_solid_y_(-1)
 {
 	set_object(obj);

@@ -21,6 +21,12 @@ code_editor_widget::code_editor_widget(int width, int height)
 {
 }
 
+code_editor_widget::code_editor_widget(const variant& v, const game_logic::formula_callable_ptr& e) 
+	: text_editor_widget(v,e), row_slider_(0), begin_col_slider_(0), 
+	end_col_slider_(0),	slider_decimal_(false), slider_magnitude_(0)
+{
+}
+
 void code_editor_widget::on_move_cursor(bool auto_shift)
 {
 	text_editor_widget::on_move_cursor(auto_shift);

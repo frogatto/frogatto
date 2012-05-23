@@ -2,6 +2,7 @@
 
 #include "image_widget.hpp"
 #include "scrollbar_widget.hpp"
+#include "widget_factory.hpp"
 
 namespace gui {
 
@@ -27,6 +28,35 @@ scrollbar_widget::scrollbar_widget(boost::function<void(int)> handler)
 	dragging_handle_(false),
 	drag_start_(0), drag_anchor_y_(0)
 {}
+
+scrollbar_widget::scrollbar_widget(const variant& v, const game_logic::formula_callable_ptr& e)
+	: widget(v,e),	window_pos_(0), window_size_(0), range_(0), step_(0),
+	dragging_handle_(false), drag_start_(0), drag_anchor_y_(0)
+{
+	handler_ = boost::bind(&scrollbar_widget::handler_delegate, this, _1);
+	// XXX replace the 0 with an actual symbol table.
+	ffl_handler_ = game_logic::formula_ptr(new game_logic::formula(v["on_scroll"], 0));
+	
+    up_arrow_ = v.has_key("up_arrow") ? widget_factory::create(v["up_arrow"], e) : new gui_section_widget(UpArrow);
+    down_arrow_ = v.has_key("down_arrow") ? widget_factory::create(v["down_arrow"], e) : new gui_section_widget(DownArrow);
+	handle_ = v.has_key("handle") ? widget_factory::create(v["handle"], e) : new gui_section_widget(VerticalHandle);
+	handle_bot_ = v.has_key("handle_bottom") ? widget_factory::create(v["handle_bottom"], e) : new gui_section_widget(VerticalHandleBot);
+	handle_top_ = v.has_key("handle_top") ? widget_factory::create(v["handle_top"], e) : new gui_section_widget(VerticalHandleTop);
+	background_ = v.has_key("background") ? widget_factory::create(v["background"], e) : new gui_section_widget(VerticalBackground);
+	if(v.has_key("range")) {
+		std::vector<int> range = v["range"].as_list_int();
+		ASSERT_EQ(range.size(), 2);
+		set_range(range[0], range[1]);
+	}
+}
+
+void scrollbar_widget::handler_delegate(int yscroll)
+{
+	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment().get());
+	callable->add("yscroll", variant(yscroll));
+	variant v(callable);
+	ffl_handler_->execute(*callable);
+}
 
 void scrollbar_widget::set_range(int total_height, int window_height)
 {
@@ -83,6 +113,17 @@ void scrollbar_widget::handle_draw() const
 	handle_top_->draw();
 }
 
+void scrollbar_widget::clip_window_position()
+{
+	if(window_pos_ < 0) {
+		window_pos_ = 0;
+	}
+
+	if(window_pos_ > range_ - window_size_) {
+		window_pos_ = range_ - window_size_;
+	}
+}
+
 bool scrollbar_widget::handle_event(const SDL_Event& event, bool claimed)
 {
 	if(claimed) {
@@ -107,13 +148,7 @@ bool scrollbar_widget::handle_event(const SDL_Event& event, bool claimed)
 				window_pos_ += 3 * step_;
 			}
 
-			if(window_pos_ < 0) {
-				window_pos_ = 0;
-			}
-
-			if(window_pos_ > range_ - window_size_) {
-				window_pos_ = range_ - window_size_;
-			}
+			clip_window_position();
 
 			if(window_pos_ != start_pos) {
 				set_dim(width(), height());
@@ -143,13 +178,7 @@ bool scrollbar_widget::handle_event(const SDL_Event& event, bool claimed)
 
 		std::cerr << "HANDLE: " << handle_->y() << ", " << handle_->height() << "\n";
 
-		if(window_pos_ < 0) {
-			window_pos_ = 0;
-		}
-
-		if(window_pos_ > range_ - window_size_) {
-			window_pos_ = range_ - window_size_;
-		}
+		clip_window_position();
 
 		if(window_pos_ != start_pos) {
 			set_dim(width(), height());
@@ -175,13 +204,7 @@ bool scrollbar_widget::handle_event(const SDL_Event& event, bool claimed)
 				window_pos_ -= window_pos_%step_;
 			}
 
-			if(window_pos_ < 0) {
-				window_pos_ = 0;
-			}
-
-			if(window_pos_ > range_ - window_size_) {
-				window_pos_ = range_ - window_size_;
-			}
+			clip_window_position();
 
 			set_dim(width(), height());
 			handler_(window_pos_);
@@ -190,6 +213,48 @@ bool scrollbar_widget::handle_event(const SDL_Event& event, bool claimed)
 
 
 	return claimed;
+}
+
+void scrollbar_widget::set_value(const std::string& key, const variant& v)
+{
+	if(key == "on_scroll") {
+		// XXX replace the 0 with an actual symbol table.
+		ffl_handler_ = game_logic::formula_ptr(new game_logic::formula(v["on_scroll"], 0));
+	} else if(key == "up_arrow") {
+		up_arrow_ = widget_factory::create(v, get_environment());
+	} else if(key == "down_arrow") {
+		down_arrow_ = widget_factory::create(v, get_environment());
+	} else if(key == "handle") {
+		handle_ = widget_factory::create(v, get_environment());
+	} else if(key == "handle_bottom") {
+		handle_bot_ = widget_factory::create(v, get_environment());
+	} else if(key == "handle_top") {
+		handle_top_ = widget_factory::create(v, get_environment());
+	} else if(key == "background") {
+		background_ = widget_factory::create(v, get_environment());
+	} else if(key == "range") {
+		std::vector<int> range = v.as_list_int();
+		ASSERT_EQ(range.size(), 2);
+		set_range(range[0], range[1]);
+	} else if(key == "position") {
+		window_pos_ = v.as_int();
+		clip_window_position();
+	}
+	
+	widget::set_value(key, v);
+}
+
+variant scrollbar_widget::get_value(const std::string& key) const
+{
+	if(key == "range") {
+		std::vector<variant> vv;
+		vv.resize(2);
+		vv.push_back(variant(range_));
+		vv.push_back(variant(window_size_));
+	} else if(key == "position") {
+		return variant(window_pos_);
+	}
+	return widget::get_value(key);
 }
 
 }

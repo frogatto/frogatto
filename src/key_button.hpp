@@ -18,8 +18,12 @@ class key_button : public widget
 {
 public:
 	key_button(SDLKey key, BUTTON_RESOLUTION button_resolution);
+	key_button(const variant& v, const game_logic::formula_callable_ptr& e);
 
 	SDLKey get_key();
+
+	void set_value(const std::string& key, const variant& v);
+	variant get_value(const std::string& key) const;
 private:
 	bool in_button(int x, int y) const;
 	void handle_draw() const;

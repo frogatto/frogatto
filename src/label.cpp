@@ -34,6 +34,17 @@ label::label(const std::string& text, const SDL_Color& color, int size)
 	recalculate_texture();
 }
 
+label::label(const variant& v, const game_logic::formula_callable_ptr& e)
+	: widget(v,e), fixed_width_(false)
+{
+	text_ = i18n::tr(v["text"].as_string());
+	color_ = v.has_key("color") 
+		? graphics::color(255,255,255,255).as_sdl_color() 
+		: graphics::color(v["color"]).as_sdl_color();
+	size_ = v.has_key("size") ? v["size"].as_int() : 14;
+	recalculate_texture();
+}
+
 void label::set_color(const SDL_Color& color)
 {
 	color_ = color;
@@ -103,15 +114,37 @@ void label::set_texture(graphics::texture t) {
 
 variant label::get_value(const std::string& key) const
 {
-	if(key == "label") {
+	if(key == "text") {
 		return variant(text_);
+	} else if(key == "color") {
+		return graphics::color(color_.r, color_.g, color_.b, color_.unused).write();
+	} else if(key == "size") {
+		return variant(size_);
 	}
 	return widget::get_value(key);
+}
+
+void label::set_value(const std::string& key, const variant& v)
+{
+	if(key == "text") {
+		set_text(v.as_string());
+	} else if(key == "color") {
+		set_color(graphics::color(v).as_sdl_color());
+	} else if(key == "size") {
+		set_font_size(v.as_int());
+	}
+	widget::set_value(key, v);
 }
 
 dialog_label::dialog_label(const std::string& text, const SDL_Color& color, int size)
 	: label(text, color, size), progress_(0) {
 
+	recalculate_texture();
+}
+
+dialog_label::dialog_label(const variant& v, const game_logic::formula_callable_ptr& e)
+	: label(v, e), progress_(0)
+{
 	recalculate_texture();
 }
 
@@ -135,6 +168,22 @@ void dialog_label::recalculate_texture()
 	} else {
 		set_texture(graphics::texture());
 	}
+}
+
+void dialog_label::set_value(const std::string& key, const variant& v)
+{
+	if(key == "progress") {
+		set_progress(v.as_int());
+	}
+	label::set_value(key, v);
+}
+
+variant dialog_label::get_value(const std::string& key) const
+{
+	if(key == "progress") {
+		return variant(progress_);
+	}
+	return label::get_value(key);
 }
 
 label_factory::label_factory(const SDL_Color& color, int size)

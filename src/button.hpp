@@ -31,6 +31,7 @@ class button : public widget
 public:
 	button(const std::string& label, boost::function<void ()> onclick);
 	button(widget_ptr label, boost::function<void ()> onclick, BUTTON_STYLE button_style = BUTTON_STYLE_NORMAL, BUTTON_RESOLUTION button_resolution = BUTTON_SIZE_NORMAL_RESOLUTION);
+	button(const variant& v, const game_logic::formula_callable_ptr& e);
 
 protected:
 	virtual variant get_value(const std::string& key) const;
@@ -42,12 +43,14 @@ private:
 	bool in_button(int x, int y) const;
 	void handle_draw() const;
 	bool handle_event(const SDL_Event& event, bool claimed);
+	void click();
 
 	BUTTON_RESOLUTION button_resolution_;
 	BUTTON_STYLE button_style_;
 	widget_ptr label_;
 	boost::function<void ()> onclick_;
 	bool down_;
+	game_logic::formula_ptr click_handler_;
 	
 	const_framed_gui_element_ptr normal_button_image_set_,depressed_button_image_set_,focus_button_image_set_,current_button_image_set_;
 };

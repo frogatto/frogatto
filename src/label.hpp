@@ -35,8 +35,9 @@ public:
 	                        const SDL_Color& color, int size=14) {
 		return label_ptr(new label(text, color, size));
 	}
-	label(const std::string& text, const SDL_Color& color, int size=14);
-	label(const std::string& text, int size=14);
+	explicit label(const std::string& text, const SDL_Color& color, int size=14);
+	explicit label(const std::string& text, int size=14);
+	explicit label(const variant& v, const game_logic::formula_callable_ptr& e);
 
 	void set_font_size(int font_size);
 	void set_color(const SDL_Color& color);
@@ -50,6 +51,8 @@ protected:
 	std::string& current_text();
 	virtual void recalculate_texture();
 	void set_texture(graphics::texture t);
+
+	virtual void set_value(const std::string& key, const variant& v);
 	virtual variant get_value(const std::string& key) const;
 private:
 	void handle_draw() const;
@@ -66,14 +69,15 @@ private:
 class dialog_label : public label
 {
 public:
-	dialog_label(const std::string& text, const SDL_Color& color, int size=18);
+	explicit dialog_label(const std::string& text, const SDL_Color& color, int size=18);
+	explicit dialog_label(const variant& v, const game_logic::formula_callable_ptr& e);
 	void set_progress(int progress);
 	int get_max_progress() { return stages_; }
-
 protected:
+	virtual void set_value(const std::string& key, const variant& v);
+	virtual variant get_value(const std::string& key) const;
 	virtual void recalculate_texture();
 private:
-
 	int progress_, stages_;
 };
 

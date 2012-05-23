@@ -1,4 +1,5 @@
 #include <boost/bind.hpp>
+#include <vector>
 
 #include "asserts.hpp"
 #include "geometry.hpp"
@@ -80,6 +81,33 @@ drag_widget::drag_widget(const int x, const int y, const int w, const int h,
 	
 	old_cursor_(NULL), dragging_handle_(0)
 {
+	init();
+}
+
+drag_widget::drag_widget(const variant& v, const game_logic::formula_callable_ptr& e) 
+	: widget(v,e), old_cursor_(NULL), dragging_handle_(0)
+{
+	dir_ = v["direction"].as_string_default("horizontal") == "horizontal" ? DRAG_HORIZONTAL : DRAG_VERTICAL;
+	if(v.has_key("on_drag_start")) {
+		boost::bind(&drag_widget::drag_start, this, _1, _2);
+	}
+	if(v.has_key("on_drag_end")) {
+		boost::bind(&drag_widget::drag_end, this, _1, _2);
+	}
+	if(v.has_key("on_drag")) {
+		boost::bind(&drag_widget::drag, this, _1, _2);
+	}
+	std::vector<int> r = v["rect"].as_list_int();
+	ASSERT_EQ(r.size(), 4);
+	x_ = r[0];
+	y_ = r[1];
+	w_ = r[2];
+	h_ = r[3];
+	init();
+}
+
+void drag_widget::init()
+{
 	SDL_Cursor* curs;
 	if(dir_ == DRAG_HORIZONTAL) {
 		curs = SDL_CreateCursor(const_cast<Uint8*>(horiz_cursor_data), const_cast<Uint8*>(horiz_cursor_mask), 
@@ -99,6 +127,33 @@ drag_widget::drag_widget(const int x, const int y, const int w, const int h,
 	dragger_->set_loc(0, h_/2 - dragger_->height()/2);
 	//std::cerr << "DRAGGER LOC: " << dragger_dims_ << std::endl;
 	//std::cerr << "LEFT EDGE BORDER: " << border_ << std::endl;
+}
+
+void drag_widget::drag(int dx, int dy)
+{
+	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment().get());
+	callable->add("drag_dx", variant(dx));
+	callable->add("drag_dy", variant(dy));
+	variant v(callable);
+	drag_handler_->execute(*callable);
+}
+
+void drag_widget::drag_start(int x, int y)
+{
+	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment().get());
+	callable->add("drag_x", variant(x));
+	callable->add("drag_y", variant(y));
+	variant v(callable);
+	drag_start_handler_->execute(*callable);
+}
+
+void drag_widget::drag_end(int x, int y)
+{
+	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment().get());
+	callable->add("drag_x", variant(x));
+	callable->add("drag_y", variant(y));
+	variant v(callable);
+	drag_end_handler_->execute(*callable);
 }
 
 void drag_widget::handle_draw() const

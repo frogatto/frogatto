@@ -11,6 +11,7 @@ class border_widget : public widget
 {
 public:
 	border_widget(widget_ptr child, graphics::color col, int border_size=2);
+	border_widget(const variant& v, const game_logic::formula_callable_ptr& e);
 	void set_color(const graphics::color& col);
 private:
 	void handle_draw() const;

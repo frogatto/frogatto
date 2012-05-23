@@ -7,6 +7,20 @@ namespace gui {
 scrollable_widget::scrollable_widget() : yscroll_(0), virtual_height_(0), step_(0)
 {}
 
+scrollable_widget::scrollable_widget(const variant& v, const game_logic::formula_callable_ptr& e)
+	: widget(v,e), yscroll_(0), virtual_height_(0), step_(0)
+{
+	if(v.has_key("yscroll")) {
+		yscroll_ = v["yscroll"].as_int();
+	}
+	if(v.has_key("virtual_height")) {
+		virtual_height_ = v["virtual_height"].as_int();
+	}
+	if(v.has_key("step")) {
+		step_ = v["step"].as_int();
+	}
+}
+
 scrollable_widget::~scrollable_widget()
 {}
 
@@ -76,6 +90,30 @@ void scrollable_widget::set_loc(int x, int y)
 	if(scrollbar_) {
 		scrollbar_->set_loc(x + width(), y);
 	}
+}
+
+void scrollable_widget::set_value(const std::string& key, const variant& v)
+{
+	if(key == "yscroll") {
+		set_yscroll(v.as_int());
+	} else if(key == "virtual_height") {
+		set_virtual_height(v.as_int());
+	} else if(key == "step") {
+		set_scroll_step(v.as_int());
+	}
+	widget::set_value(key, v);
+}
+
+variant scrollable_widget::get_value(const std::string& key) const
+{
+	if(key == "yscroll") {
+		return variant(yscroll_);
+	} else if(key == "virtual_height") {
+		return variant(virtual_height_);
+	} else if(key == "step") {
+		return variant(step_);
+	}
+	return widget::get_value(key);
 }
 
 }

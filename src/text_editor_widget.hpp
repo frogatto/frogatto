@@ -16,6 +16,7 @@ class text_editor_widget : public scrollable_widget
 {
 public:
 	text_editor_widget(int width, int height=0);
+	text_editor_widget(const variant& v, const game_logic::formula_callable_ptr& e);
 	~text_editor_widget();
 
 	std::string text() const;
@@ -92,6 +93,9 @@ protected:
 
 	virtual void on_move_cursor(bool auto_shift=false);
 
+	virtual void set_value(const std::string& key, const variant& v);
+	virtual variant get_value(const std::string& key) const;
+
 private:
 	bool handle_mouse_button_down(const SDL_MouseButtonEvent& event);
 	bool handle_mouse_button_up(const SDL_MouseButtonEvent& event);
@@ -112,7 +116,7 @@ private:
 	void refresh_scrollbar();
 
 	virtual text_editor_widget_ptr clone() const;
-	virtual void restore(const text_editor_widget_ptr state);
+	virtual void restore(const text_editor_widget* state);
 
 	const char* last_op_type_;
 
@@ -120,7 +124,7 @@ private:
 
 	std::vector<std::string> text_;
 
-	int font_size_;
+	size_t font_size_;
 	int char_width_, char_height_;
 
 	Loc select_, cursor_;

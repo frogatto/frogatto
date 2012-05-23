@@ -15,6 +15,7 @@
 
 #include <string>
 
+#include "formula.hpp"
 #include "graphics.hpp"
 #include "input.hpp"
 
@@ -37,15 +38,21 @@ public:
 	bool visible() { return visible_; }
 	void set_visible(bool visible) { visible_ = visible; }
 
+	virtual void set_value(const std::string& key, const variant& v);
 	virtual variant get_value(const std::string& key) const;
+
+	virtual void handle_draw() const = 0;
+
 	virtual bool has_focus() const { return false; }
+	game_logic::formula_callable_ptr get_environment() const { return environ_; }
 protected:
 	widget() : x_(0), y_(0), w_(0), h_(0), tooltip_displayed_(false), visible_(true)
+	{}
+	explicit widget(const variant& v, const game_logic::formula_callable_ptr& e) : environ_(e)
 	{}
 	virtual ~widget();
 
 	void normalize_event(SDL_Event* event, bool translate_coords=false);
-	virtual void handle_draw() const = 0;
 	virtual bool handle_event(const SDL_Event& event, bool claimed) { return claimed; }
 private:
 	int x_, y_;
@@ -53,6 +60,7 @@ private:
 	boost::shared_ptr<std::string> tooltip_;
 	bool tooltip_displayed_;
 	bool visible_;
+	game_logic::formula_callable_ptr environ_;
 };
 
 typedef boost::intrusive_ptr<widget> widget_ptr;

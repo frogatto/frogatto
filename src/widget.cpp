@@ -11,6 +11,7 @@
    See the COPYING file for more details.
 */
 
+#include "asserts.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "tooltip.hpp"
@@ -143,6 +144,42 @@ variant widget::get_value(const std::string& key) const
 		return variant(visible_);
 	}
 	return variant();
+}
+
+void widget::set_value(const std::string& key, const variant& v)
+{
+	if(key == "width") {
+		w_ = v.as_int();
+	} else if(key == "height") {
+		h_ = v.as_int();
+	} else if(key == "rect" || key == "draw_area") {
+		std::vector<int> r = v.as_list_int();
+		ASSERT_LOG(r.size() == 4, "Four values must be supplied to the rect attribute");
+		set_loc(r[0], r[1]);
+		set_dim(r[2], r[3]);
+	} else if(key == "xy" || key == "left_top") {
+		std::vector<int> xy = v.as_list_int();
+		ASSERT_LOG(xy.size() == 2, "Two values must be supplied to the X, Y attribute");
+		set_loc(xy[0], xy[1]);
+	} else if(key == "wh") {
+		std::vector<int> wh = v.as_list_int();
+		ASSERT_LOG(wh.size() == 2, "Two values must be supplied to the W, H attribute");
+		set_dim(wh[0], wh[1]);
+	} else if(key == "right_bottom") {
+		std::vector<int> rb = v.as_list_int();
+		ASSERT_LOG(rb.size() == 2, "Two values must be supplied to the R, B attribute");
+		set_dim(rb[0] - x(), rb[1] - y());
+	} else if(key == "left") {
+		x_ = v.as_int();
+	} else if(key == "top") {
+		y_ = v.as_int();
+	} else if(key == "right") {
+		w_ = v.as_int() - x();
+	} else if(key == "bottom") {
+		h_ = v.as_int() - y();
+	} else if(key == "visible") {
+		visible_ = v.as_bool();
+	}
 }
 
 }

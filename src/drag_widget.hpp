@@ -14,7 +14,7 @@ namespace gui
 
 typedef boost::shared_ptr<SDL_Cursor> cursor_ptr;
 
-class drag_widget : public gui::widget
+class drag_widget : public widget
 {
 public:
 	enum drag_direction {DRAG_HORIZONTAL, DRAG_VERTICAL};
@@ -23,8 +23,10 @@ public:
 		boost::function<void(int, int)> drag_start, 
 		boost::function<void(int, int)> drag_end, 
 		boost::function<void(int, int)> drag_move);
+	explicit drag_widget(const variant&, const game_logic::formula_callable_ptr& e);
 
 private:
+	void init();
 	void handle_draw() const;
 	bool handle_event(const SDL_Event& event, bool claimed);
 	bool handle_mousedown(const SDL_MouseButtonEvent& event, bool claimed);
@@ -37,6 +39,15 @@ private:
 	boost::function<void(int, int)> drag_start_;
 	boost::function<void(int, int)> drag_end_;
 	boost::function<void(int, int)> drag_move_;
+
+	// delegates
+	void drag(int dx, int dy);
+	void drag_start(int x, int y);
+	void drag_end(int x, int y);
+	// FFL formulas
+	game_logic::formula_ptr drag_handler_;
+	game_logic::formula_ptr drag_start_handler_;
+	game_logic::formula_ptr drag_end_handler_;
 
 	widget_ptr dragger_;
 	drag_direction dir_;
