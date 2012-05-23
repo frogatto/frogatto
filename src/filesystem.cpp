@@ -393,6 +393,7 @@ void get_unique_filenames_under_dir(const std::string& dir,
 
 std::string get_dir(const std::string& dir_path)
 {
+	std::cerr << "get_dir(): " << dir_path << std::endl;
 	DIR* dir = opendir(dir_path.c_str());
 	if(dir == NULL) {
 		const int res = mkdir(dir_path.c_str(),AccessMode);
@@ -563,13 +564,15 @@ std::string read_file(const std::string& name)
 
 void write_file(const std::string& fname, const std::string& data)
 {
+	bool absolute_path = fname[0] == '/' ? true : false;
 	//Try to ensure that the dir the file is in exists.
 	std::vector<std::string> components = util::split(fname, '/');
 	if(!components.empty()) {
 		components.pop_back();
 
 		std::vector<std::string> tmp;
-		while(components.empty() == false && get_dir(util::join(components, '/')).empty()) {
+		while(components.empty() == false 
+			&& get_dir((absolute_path ? "/" : "") + util::join(components, '/')).empty()) {
 			tmp.push_back(components.back());
 			components.pop_back();
 		}
@@ -578,7 +581,7 @@ void write_file(const std::string& fname, const std::string& data)
 			components.push_back(tmp.back());
 			tmp.pop_back();
 
-			get_dir(util::join(components, '/'));
+			get_dir((absolute_path ? "/" : "") + util::join(components, '/'));
 		}
 	}
 
