@@ -105,7 +105,6 @@ void print_help(const std::string& argv0)
 "                                 scaled\n" <<
 "      --windowed               starts in windowed mode\n" <<
 "      --wvga                   sets the display size to 800x480\n" <<
-"      --ct-window-size         sets the display size for Cube Trains\n" <<
 "\n" <<
 "Diagnostic options:\n" <<
 "      --[no-]debug             enables/disables debug mode\n" <<
