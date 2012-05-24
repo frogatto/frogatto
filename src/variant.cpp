@@ -1432,7 +1432,8 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 	std::ostringstream s;
 	switch(type_) {
 	case TYPE_NULL:
-		s << "(null)";
+		s << "null";
+		break;
 	case TYPE_BOOL:
 		s << (bool_value_ ? "true" : "false");
 		break;
