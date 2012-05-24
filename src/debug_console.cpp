@@ -292,7 +292,7 @@ void console_dialog::on_move_cursor()
 		text_editor_->set_cursor(text_editor_->get_data().size()-1, text_editor_->cursor_col());
 	}
 
-	if(text_editor_->cursor_col() < Prompt.size()) {
+	if(text_editor_->cursor_col() < Prompt.size() && text_editor_->get_data().back().size() >= Prompt.size()) {
 		text_editor_->set_cursor(text_editor_->get_data().size()-1, Prompt.size());
 	}
 }
