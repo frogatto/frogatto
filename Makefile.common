@@ -36,6 +36,7 @@ objects = \
 	controls_dialog.o \
 	custom_object.o \
 	custom_object_callable.o \
+	custom_object_dialog.o \
 	custom_object_functions.o \
 	custom_object_type.o \
 	debug_console.o \

@@ -26,6 +26,7 @@ controls.cpp
 controls_dialog.cpp
 custom_object.cpp
 custom_object_callable.cpp
+custom_object_dialog.cpp
 custom_object_functions.cpp
 custom_object_type.cpp
 debug_console.cpp

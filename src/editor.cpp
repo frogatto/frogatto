@@ -15,6 +15,8 @@
 #include "code_editor_dialog.hpp"
 #include "collision_utils.hpp"
 #include "color_utils.hpp"
+#include "custom_object_dialog.hpp"
+#include "draw_scene.hpp"
 #include "draw_tile.hpp"
 #include "debug_console.hpp"
 #include "editor.hpp"
@@ -109,6 +111,7 @@ class editor_menu_dialog : public gui::dialog
 			"Save As...", "", boost::bind(&editor_menu_dialog::save_level_as, this),
 			"Create New Module...", "", boost::bind(&editor::create_new_module, &editor_),
 			"Edit Module Properties...", "", boost::bind(&editor::edit_module_properties, &editor_),
+			"Create New Object...", "", boost::bind(&editor::create_new_object, &editor_),
 			"Exit", "<esc>", boost::bind(&editor::quit, &editor_),
 		};
 
@@ -3315,6 +3318,25 @@ void editor::edit_module_properties()
 		SDL_WM_SetCaption(module::get_module_pretty_name().c_str(), module::get_module_pretty_name().c_str());
 	}
 }
+
+namespace {
+void do_draw_scene() {
+	draw_scene(level::current(), last_draw_position());
+}
+}
+
+void editor::create_new_object()
+{
+	editor_dialogs::custom_object_dialog object_dialog(*this, 
+		preferences::virtual_screen_width()*0.2, 
+		preferences::virtual_screen_height()*0.2, 
+		preferences::virtual_screen_width()*0.6, 
+		preferences::virtual_screen_height()*0.6);
+	object_dialog.set_background_frame("empty_window");
+	object_dialog.set_draw_background_fn(do_draw_scene);
+	object_dialog.show_modal();
+}
+
 
 void editor::add_multi_object_to_level(level_ptr lvl, entity_ptr e)
 {
