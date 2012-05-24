@@ -890,11 +890,20 @@ variant variant::operator+(const variant& v) const
 
 	if(type_ == TYPE_LIST) {
 		if(v.type_ == TYPE_LIST) {
+			const size_t new_size = list_->size() + v.list_->size();
+
+			bool adopt_list = false;
+
 			std::vector<variant> res;
-			res.reserve(list_->size() + v.list_->size());
-			for(size_t i = 0; i < list_->size(); ++i) {
-				const variant& var = list_->begin[i];
-				res.push_back(var);
+			if(new_size <= list_->elements.capacity() && list_->storage == NULL) {
+				res.swap(list_->elements);
+				adopt_list = true;
+			} else {
+				res.reserve(new_size*2);
+				for(size_t i = 0; i < list_->size(); ++i) {
+					const variant& var = list_->begin[i];
+					res.push_back(var);
+				}
 			}
 
 			for(size_t j = 0; j < v.list_->size(); ++j) {
@@ -902,7 +911,12 @@ variant variant::operator+(const variant& v) const
 				res.push_back(var);
 			}
 
-			return variant(&res);
+			variant result(&res);
+			if(adopt_list) {
+				list_->storage = result.list_;
+				result.list_->refcount++;
+			}
+			return result;
 		}
 	}
 	if(type_ == TYPE_MAP) {
