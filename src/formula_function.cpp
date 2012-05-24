@@ -373,6 +373,16 @@ END_FUNCTION_DEF(max)
 
 FUNCTION_DEF(keys, 1, 1, "keys(map) -> list: gives the keys for a map")
 	const variant map = args()[0]->evaluate(variables);
+	if(map.is_callable()) {
+		std::vector<variant> v;
+		const std::vector<formula_input> inputs = map.as_callable()->inputs();
+		foreach(const formula_input& in, inputs) {
+			v.push_back(variant(in.name));
+		}
+
+		return variant(&v);
+	}
+
 	return map.get_keys();
 END_FUNCTION_DEF(keys)
 
