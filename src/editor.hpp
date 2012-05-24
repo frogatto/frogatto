@@ -28,6 +28,7 @@ class editor_layers_dialog;
 class property_editor_dialog;
 class segment_editor_dialog;
 class tileset_editor_dialog;
+class custom_object_dialog;
 }
 
 class code_editor_dialog;
@@ -138,6 +139,7 @@ public:
 	void edit_level_properties();
 	void create_new_module();
 	void edit_module_properties();
+	void create_new_object();
 
 	//make the selected objects part of a group
 	void group_selection();
