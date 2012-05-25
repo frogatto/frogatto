@@ -39,8 +39,8 @@ parse_error::parse_error(const std::string& msg)
 {
 }
 
-parse_error::parse_error(const std::string& msg, int line, int col)
-  : message(msg), line(line), col(col)
+parse_error::parse_error(const std::string& msg, const std::string& filename, int line, int col)
+  : message(msg), fname(filename), line(line), col(col)
 {
 }
 
@@ -76,7 +76,7 @@ void escape_string(std::string& s) {
 }
 }
 
-#define CHECK_PARSE(cond, msg, pos) if(!(cond)) { int ln = get_line_num(doc, (pos)); int col = get_col_number(doc, (pos)); throw parse_error((msg), ln, col); }
+#define CHECK_PARSE(cond, msg, pos) if(!(cond)) { int ln = get_line_num(doc, (pos)); int col = get_col_number(doc, (pos)); throw parse_error((msg), fname, ln, col); }
 
 namespace {
 

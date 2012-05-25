@@ -15,7 +15,7 @@ variant parse_from_file(const std::string& fname, JSON_PARSE_OPTIONS options=JSO
 
 struct parse_error {
 	explicit parse_error(const std::string& msg);
-	parse_error(const std::string& msg, int line, int col);
+	parse_error(const std::string& msg, const std::string& filename, int line, int col);
 
 	std::string error_message() const;
 
