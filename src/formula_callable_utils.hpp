@@ -23,6 +23,7 @@ public:
 	}
 	void set_fallback(const const_formula_callable_ptr& fallback) { fallback_ = fallback; }
 	void add(const variant& val) { values_.push_back(val); }
+	variant& back_direct_access() { return values_.back(); }
 	void reserve(size_t n) { values_.reserve(n); }
 
 	variant get_value(const std::string& key) const {

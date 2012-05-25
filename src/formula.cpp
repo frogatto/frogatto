@@ -205,8 +205,8 @@ private:
 
 class list_comprehension_expression : public formula_expression {
 public:
-	list_comprehension_expression(expression_ptr expr, const std::map<std::string, expression_ptr>& generators, const std::vector<expression_ptr>& filters)
-	  : formula_expression("_list_compr"), expr_(expr), generators_(generators), filters_(filters)
+	list_comprehension_expression(expression_ptr expr, const std::map<std::string, expression_ptr>& generators, const std::vector<expression_ptr>& filters, int base_slot)
+	  : formula_expression("_list_compr"), expr_(expr), generators_(generators), filters_(filters), base_slot_(base_slot)
 	{
 		for(std::map<std::string,expression_ptr>::const_iterator i = generators.begin(); i != generators.end(); ++i) {
 			generator_names_.push_back(i->first);
@@ -228,10 +228,14 @@ private:
 
 		std::vector<variant> result;
 
-		boost::intrusive_ptr<map_formula_callable> callable(new map_formula_callable(&variables));
+		boost::intrusive_ptr<slot_formula_callable> callable(new slot_formula_callable);
+		callable->set_fallback(&variables);
+		callable->set_base_slot(base_slot_);
+		callable->reserve(generator_names_.size());
 		std::vector<variant*> args;
 		foreach(const std::string& arg, generator_names_) {
-			args.push_back(&callable->add_direct_access(arg));
+			callable->add(variant());
+			args.push_back(&callable->back_direct_access());
 		}
 
 		std::vector<int> indexes(lists.size());
@@ -278,6 +282,7 @@ private:
 	std::map<std::string, expression_ptr> generators_;
 	std::vector<std::string> generator_names_;
 	std::vector<expression_ptr> filters_;
+	int base_slot_;
 };
 
 class map_expression : public formula_expression {
@@ -1489,12 +1494,13 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 				}
 				--tok;
 			}	
+
 			if (tok->type == TOKEN_LSQUARE) {
 				if (tok == i1) {
 					const token* pipe = i1+1;
 					if(token_matcher().add(TOKEN_PIPE).find_match(pipe, i2)) {
 						//a list comprehension
-						expression_ptr expr = parse_expression(formula_str, i1+1, pipe, symbols, callable_def, can_optimize);
+						const token* const begin_start_expr = i1+1;
 
 						typedef std::pair<const token*,const token*> Arg;
 						std::vector<Arg> args;
@@ -1509,22 +1515,42 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 						std::map<std::string, expression_ptr> generators;
 						std::vector<expression_ptr> filter_expr;
 
+						std::vector<std::string> items;
+
+						const_formula_callable_definition_ptr def;
+
+						bool seen_filter = false;
+
 						foreach(const Arg& arg, args) {
 							std::cerr << "ARGUMENT: (((" << std::string(arg.first->begin, (arg.second-1)->end) << ")))\n";
 							const token* arrow = arg.first;
 							if(token_matcher().add(TOKEN_LEFT_POINTER).find_match(arrow, arg.second)) {
 								ASSERT_LOG(arrow - arg.first == 1 && arg.first->type == TOKEN_IDENTIFIER, "expected identifier to the left of <- in list comprehension\n" << pinpoint_location(formula_str, arg.first->begin, arrow->end));
+								ASSERT_LOG(!seen_filter, "found <- after finding a filter in list comprehension\n" << pinpoint_location(formula_str, arg.first->begin, arrow->end));
 
 								const std::string key(arg.first->begin, arg.first->end);
 								ASSERT_LOG(generators.count(key) == 0, "repeated identifier in list generator: " << key << "\n" << pinpoint_location(formula_str, arg.first->begin, arrow->end));
 
 								generators[key] = parse_expression(formula_str, arrow+1, arg.second, symbols, callable_def, can_optimize);
+								items.push_back(key);
 							} else {
-								filter_expr.push_back(parse_expression(formula_str, arg.first, arg.second, symbols, callable_def, can_optimize));
+								if(!def) {
+									std::sort(items.begin(), items.end());
+									def = create_formula_callable_definition(&items[0], &items[0] + items.size(), callable_def);
+								}
+								filter_expr.push_back(parse_expression(formula_str, arg.first, arg.second, symbols, def.get(), can_optimize));
+								seen_filter = true;
 							}
 						}
 
-						return expression_ptr(new list_comprehension_expression(expr, generators, filter_expr));
+						if(!def) {
+							std::sort(items.begin(), items.end());
+							def = create_formula_callable_definition(&items[0], &items[0] + items.size(), callable_def);
+						}
+
+						expression_ptr expr = parse_expression(formula_str, begin_start_expr, pipe, symbols, def.get(), can_optimize);
+
+						return expression_ptr(new list_comprehension_expression(expr, generators, filter_expr, callable_def ? callable_def->num_slots() : 0));
 					} else {
 						//create a list
 						std::vector<expression_ptr> args;
