@@ -45,7 +45,15 @@
 
 #include "compat.hpp"
 
+#ifndef NO_EDITOR
+std::set<level*>& get_all_levels_set() {
+	static std::set<level*> all;
+	return all;
+}
+#endif
+
 namespace {
+
 boost::intrusive_ptr<level> current_level;
 
 std::map<std::string, level::summary> load_level_summaries() {
@@ -162,6 +170,10 @@ level::level(const std::string& level_cfg, variant node)
 	  background_palette_(-1),
 	  segment_width_(0), segment_height_(0)
 {
+#ifndef NO_EDITOR
+	get_all_levels_set().insert(this);
+#endif
+
 	std::cerr << "in level constructor...\n";
 	const int start_time = SDL_GetTicks();
 
@@ -420,6 +432,9 @@ level::level(const std::string& level_cfg, variant node)
 
 level::~level()
 {
+#ifndef NO_EDITOR
+	get_all_levels_set().erase(this);
+#endif
 }
 
 void level::read_compiled_tiles(variant node, std::vector<level_tile>::iterator& out)
@@ -853,7 +868,7 @@ void level::rebuild_tiles()
 	}
 
 	tiles_.clear();
-	for(std::map<int, tile_map>::const_iterator i = tile_maps_.begin(); i != tile_maps_.end(); ++i) {
+	for(std::map<int, tile_map>::iterator i = tile_maps_.begin(); i != tile_maps_.end(); ++i) {
 		i->second.build_tiles(&tiles_);
 	}
 

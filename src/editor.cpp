@@ -668,7 +668,8 @@ editor::tileset::tileset(variant node)
     zorder(node["zorder"].as_int()),
 	x_speed(node["x_speed"].as_int(100)),
 	y_speed(node["y_speed"].as_int(100)),
-	sloped(node["sloped"].as_bool())
+	sloped(node["sloped"].as_bool()),
+	node_info(node)
 {
 	if(node.has_key("preview")) {
 		preview.reset(new tile_map(node["preview"]));
@@ -3455,14 +3456,31 @@ void editor::toggle_code()
 	} else {
 		code_dialog_.reset(new code_editor_dialog(rect(graphics::screen_width() - 620, 30, 620, graphics::screen_height() - 30)));
 		set_code_file();
-
-		//We should always be selecting objects when using the code editor.
-		change_tool(TOOL_SELECT_OBJECT);
 	}
 }
 
 void editor::set_code_file()
 {
+	if(tool_ == TOOL_ADD_RECT || tool_ == TOOL_SELECT_RECT || tool_ == TOOL_MAGIC_WAND || tool_ == TOOL_PENCIL) {
+		std::cerr << "SET TILESET..\n";
+		if(cur_tileset_ >= 0 && cur_tileset_ < tilesets.size()) {
+			const std::vector<std::string>& files = tile_map::get_files(tilesets[cur_tileset_].type);
+			std::cerr << "TILESET: " << files.size() << " FOR " << tilesets[cur_tileset_].type << "\n";
+			foreach(const std::string& file, files) {
+				std::map<std::string, std::string> fnames;
+				module::get_unique_filenames_under_dir("data/tiles", &fnames);
+				const std::map<std::string, std::string>::const_iterator itor =
+				  module::find(fnames, file);
+				if(itor != fnames.end() && code_dialog_) {
+					std::cerr << "TILESET FNAME: " << itor->second << "\n";
+					code_dialog_->load_file(itor->second);
+				}
+			}
+		}
+
+		return;
+	}
+	
 	std::string type;
 	if(lvl_->editor_selection().empty() == false) {
 		type = lvl_->editor_selection().back()->query_value("type").as_string();

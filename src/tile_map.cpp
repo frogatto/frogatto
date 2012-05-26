@@ -15,6 +15,7 @@
 #include "point_map.hpp"
 #include "random.hpp"
 #include "string_utils.hpp"
+#include "thread.hpp"
 #include "tile_map.hpp"
 #include "variant_utils.hpp"
 
@@ -244,8 +245,22 @@ void tile_map::load(const std::string& fname, const std::string& tile_id)
 	++current_patterns_version;
 }
 
+const std::vector<std::string>& tile_map::get_files(const std::string& tile_id)
+{
+	if(files_index.count(tile_id)) {
+		return files_index.find(tile_id)->second;
+	} else {
+		static const std::vector<std::string> empty;
+		return empty;
+	}
+}
+
 void tile_map::init(variant node)
 {
+#ifndef NO_EDITOR
+	prepare_rebuild_all();
+#endif
+
 	files_index.clear();
 
 	foreach(const variant_pair& value, node.as_map()) {
@@ -258,10 +273,61 @@ void tile_map::init(variant node)
 	multi_tile_pattern::init(node);
 
 	++current_patterns_version;
+
+#ifndef NO_EDITOR
+	rebuild_all();
+#endif
 }
+
+#ifndef NO_EDITOR
+namespace {
+std::set<tile_map*>& all_tile_maps() {
+	static std::set<tile_map*>* all = new std::set<tile_map*>;
+	return *all;
+}
+threading::mutex& all_tile_maps_mutex() {
+	static threading::mutex* m = new threading::mutex;
+	return *m;
+}
+
+void create_tile_map(tile_map* t) {
+	threading::lock l(all_tile_maps_mutex());
+	all_tile_maps().insert(t);
+}
+void destroy_tile_map(tile_map* t) {
+	threading::lock l(all_tile_maps_mutex());
+	all_tile_maps().erase(t);
+}
+std::set<tile_map*> copy_tile_maps() {
+	threading::lock l(all_tile_maps_mutex());
+	std::set<tile_map*> result = all_tile_maps();
+	return result;
+}
+}
+
+void tile_map::prepare_rebuild_all()
+{
+	const std::set<tile_map*> maps = copy_tile_maps();
+	foreach(tile_map* m, maps) {
+		m->node_ = m->write();
+	}
+}
+
+void tile_map::rebuild_all()
+{
+	const std::set<tile_map*> maps = copy_tile_maps();
+	foreach(tile_map* m, maps) {
+		*m = tile_map(m->node_);
+	}
+}
+#endif
 
 tile_map::tile_map() : xpos_(0), ypos_(0), x_speed_(100), y_speed_(100), zorder_(0), patterns_version_(-1)
 {
+#ifndef NO_EDITOR
+	create_tile_map(this);
+#endif
+
 	//turn off reference counting
 	add_ref();
 
@@ -274,7 +340,15 @@ tile_map::tile_map(variant node)
   : xpos_(node["x"].as_int()), ypos_(node["y"].as_int()),
 	x_speed_(node["x_speed"].as_int(100)), y_speed_(node["y_speed"].as_int(100)),
     zorder_(node["zorder"].as_int())
+
+#ifndef NO_EDITOR
+	, node_(node)
+#endif
 {
+#ifndef NO_EDITOR
+	create_tile_map(this);
+#endif
+
 	//turn off reference counting
 	add_ref();
 
@@ -352,6 +426,23 @@ tile_map::tile_map(variant node)
 	build_patterns();
 
 	}
+}
+
+tile_map::tile_map(const tile_map& o)
+{
+#ifndef NO_EDITOR
+	create_tile_map(this);
+#endif
+
+	add_ref();
+	*this = o;
+}
+
+tile_map::~tile_map()
+{
+#ifndef NO_EDITOR
+	destroy_tile_map(this);
+#endif
 }
 
 void tile_map::build_patterns()

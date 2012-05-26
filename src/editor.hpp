@@ -87,6 +87,7 @@ public:
 		int y_speed;
 		boost::shared_ptr<tile_map> preview;
 		bool sloped;
+		variant node_info;
 	};
 
 	struct enemy_type {

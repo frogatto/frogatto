@@ -19,11 +19,16 @@
 #include "image_widget.hpp"
 #include "json_parser.hpp"
 #include "label.hpp"
+#include "level.hpp"
 #include "module.hpp"
 #include "object_events.hpp"
 #include "raster.hpp"
 #include "surface_cache.hpp"
 #include "text_editor_widget.hpp"
+#include "tile_map.hpp"
+#include "tileset_editor_dialog.hpp"
+
+std::set<level*>& get_all_levels_set();
 
 code_editor_dialog::code_editor_dialog(const rect& r)
   : dialog(r.x(), r.y(), r.w(), r.h()), invalidated_(0), modified_(false),
@@ -305,7 +310,19 @@ void code_editor_dialog::process()
 		try {
 			custom_object::reset_current_debug_error();
 
-			custom_object_type::set_file_contents(fname_, editor_->text());
+			if(strstr(fname_.c_str(), "/tiles/")) {
+				std::cerr << "INIT TILE MAP\n";
+				json::set_file_contents(fname_, editor_->text());
+				tile_map::init(json::parse_from_file("data/tiles.cfg"));
+				editor_dialogs::tileset_editor_dialog::global_tile_update();
+				foreach(level* lvl, get_all_levels_set()) {
+					lvl->rebuild_tiles();
+				}
+				std::cerr << "INIT TILE MAP OK\n";
+			} else { 
+				std::cerr << "SET FILE: " << fname_ << "\n";
+				custom_object_type::set_file_contents(fname_, editor_->text());
+			}
 			error_label_->set_text("Ok");
 			error_label_->set_tooltip("");
 		} catch(validation_failure_exception& e) {

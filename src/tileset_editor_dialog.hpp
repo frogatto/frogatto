@@ -16,11 +16,16 @@ namespace editor_dialogs
 class tileset_editor_dialog : public gui::dialog
 {
 public:
+	static void global_tile_update();
 	explicit tileset_editor_dialog(editor& e);
+	~tileset_editor_dialog();
+
 	void init();
 	void select_category(const std::string& category);
 	void set_tileset(int index);
 private:
+	tileset_editor_dialog(const tileset_editor_dialog&);
+
 	void close_context_menu(int index);
 	void show_category_menu();
 

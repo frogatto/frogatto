@@ -1119,7 +1119,7 @@ void text_editor_widget::on_move_cursor(bool auto_shift)
 int text_editor_widget::find_equivalent_col(int old_col, int old_row, int new_row) const
 {
 	int actual_pos = old_col + std::count(text_[old_row].begin(), text_[old_row].end(), '\t')*TabAdjust;
-	for(size_t n = 0; n < actual_pos; ++n) {
+	for(int n = 0; n < actual_pos; ++n) {
 		if(n < text_[new_row].size() && text_[new_row][n] == '\t') {
 			actual_pos -= TabAdjust;
 		}

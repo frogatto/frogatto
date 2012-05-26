@@ -25,8 +25,13 @@ public:
 	static void init(variant node);
 	static void load_all();
 	static void load(const std::string& fname, const std::string& tile_id);
+	static const std::vector<std::string>& get_files(const std::string& tile_id);
+
 	tile_map();
 	explicit tile_map(variant node);
+	tile_map(const tile_map& o);
+	~tile_map();
+
 	variant write() const;
 	void build_tiles(std::vector<level_tile>* tiles, const rect* r=NULL) const;
 	bool set_tile(int xpos, int ypos, const std::string& str);
@@ -39,6 +44,15 @@ public:
 	const char* get_tile(int y, int x) const;
 	int get_variations(int x, int y) const;
 	void flip_variation(int x, int y, int delta=0);
+
+#ifndef NO_EDITOR
+	//Functions for rebuilding all live tile maps when there is a change
+	//to tile map data. prepare_rebuild_all() should be called before
+	//the change, and rebuild_all() after.
+	static void prepare_rebuild_all();
+	static void rebuild_all();
+#endif
+
 private:
 	void build_patterns();
 	const std::vector<const tile_pattern*>& get_patterns() const;
@@ -91,6 +105,10 @@ private:
 	int patterns_version_;
 
 	std::vector<std::vector<int> > variations_;
+
+#ifndef NO_EDITOR
+	variant node_;
+#endif
 };
 
 #endif
