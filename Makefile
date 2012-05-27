@@ -1,7 +1,7 @@
 CC  = ccache gcc
 CXX = ccache g++
 
-OPT = -O2 -fno-inline-functions
+OPT = -O2 -lX11 -lz -fno-inline-functions
 
 include Makefile.common
 
