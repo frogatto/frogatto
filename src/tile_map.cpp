@@ -257,10 +257,6 @@ const std::vector<std::string>& tile_map::get_files(const std::string& tile_id)
 
 void tile_map::init(variant node)
 {
-#ifndef NO_EDITOR
-	prepare_rebuild_all();
-#endif
-
 	files_index.clear();
 
 	foreach(const variant_pair& value, node.as_map()) {
@@ -273,10 +269,6 @@ void tile_map::init(variant node)
 	multi_tile_pattern::init(node);
 
 	++current_patterns_version;
-
-#ifndef NO_EDITOR
-	rebuild_all();
-#endif
 }
 
 #ifndef NO_EDITOR

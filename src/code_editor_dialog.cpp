@@ -312,11 +312,33 @@ void code_editor_dialog::process()
 
 			if(strstr(fname_.c_str(), "/tiles/")) {
 				std::cerr << "INIT TILE MAP\n";
+
+				const std::string old_contents = json::get_file_contents(fname_);
+
+				//verify the text is parseable before we bother setting it.
+				json::parse(editor_->text());
 				json::set_file_contents(fname_, editor_->text());
-				tile_map::init(json::parse_from_file("data/tiles.cfg"));
-				editor_dialogs::tileset_editor_dialog::global_tile_update();
-				foreach(level* lvl, get_all_levels_set()) {
-					lvl->rebuild_tiles();
+				const variant tiles_data = json::parse_from_file("data/tiles.cfg");
+				tile_map::prepare_rebuild_all();
+				try {
+					std::cerr << "tile_map::init()\n";
+					tile_map::init(tiles_data);
+					tile_map::rebuild_all();
+					std::cerr << "done tile_map::init()\n";
+					editor_dialogs::tileset_editor_dialog::global_tile_update();
+					foreach(level* lvl, get_all_levels_set()) {
+						lvl->rebuild_tiles();
+					}
+				} catch(...) {
+					json::set_file_contents(fname_, old_contents);
+					const variant tiles_data = json::parse_from_file("data/tiles.cfg");
+					tile_map::init(tiles_data);
+					tile_map::rebuild_all();
+					editor_dialogs::tileset_editor_dialog::global_tile_update();
+					foreach(level* lvl, get_all_levels_set()) {
+						lvl->rebuild_tiles();
+					}
+					throw;
 				}
 				std::cerr << "INIT TILE MAP OK\n";
 			} else { 
