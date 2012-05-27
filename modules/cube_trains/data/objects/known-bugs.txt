@@ -20,6 +20,7 @@
 	║  ▷ Window resizing breaks side scrollpane.                                    ║
 	║  ▶ The window needs to be resizable, and all that entails.                    ║
 	║  ▶ Redo button doesn't deactivate correctly when placing tracks.              ║
+	║  ▶ Tutorial hint text.                                                        ║
 	║  ▶                                                                            ║
 	║                                                                               ║
 	║ Minor:                                                                        ║
@@ -40,6 +41,8 @@
 	║  ▶ It might be nice to include a line of text explaining the game.            ║
 	║  ▶ You need to export the level or return to main map to rotate in editor.    ║
 	║  ▶ Add colour change button for entrances.                                    ║
+	║  ▶ Stay in level on completion.                                               ║
+	║  ▶ Rotation icons are same for camera and track-piece.                        ║
 	║  ▶                                                                            ║
 	║                                                          ▷ fixed  ▶ not fixed ║
 	╚═══════════════════════════════════════════════════════════════════════════════╝
