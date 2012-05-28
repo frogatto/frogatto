@@ -1,0 +1,43 @@
+[
+	{
+		"name": "move",
+		"tables": [
+			{
+				"name": "tile_group",
+				"key": "[(x/32)*32 + 16, (y/32)*32 + 16]",
+				"global_scope": false
+			}
+		]
+	},
+
+	{
+		"name": "die",
+		"tables": [
+			{
+				"name": "tile_group",
+				"key": "[(x/32)*32 + 16, (y/32)*32 + 16]",
+				"global_scope": false
+			}
+		]
+	},
+
+	{
+		"name": "load",
+		"tables": [
+			{
+				"name": "average_load_time",
+				"value": "{ 'nsamples' -> (value.nsamples+1), 'sum' -> value.sum + sample.time, 'mean' -> (value.sum+sample.time)/(value.nsamples+1) }",
+				"init_value": {
+					"sum": 0,
+					"nsamples": 0,
+					"mean": 0
+				}
+			},
+
+			{
+				"name": "unique_users",
+				"key": "user_id"
+			}
+		]
+	}
+]
