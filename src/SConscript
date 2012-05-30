@@ -5,6 +5,7 @@ env.Append(CXXFLAGS= ["-pthread", "-DIMPLEMENT_SAVE_PNG"], LINKFLAGS = ["-pthrea
 sources = Split("""
 IMG_savepng.cpp
 achievements.cpp
+animation_creator.cpp
 animation_preview_widget.cpp
 asserts.cpp
 background.cpp
@@ -36,6 +37,7 @@ drag_widget.cpp
 draw_number.cpp
 draw_scene.cpp
 draw_tile.cpp
+dropdown_widget.cpp
 editor.cpp
 editor_dialogs.cpp
 editor_formula_functions.cpp
@@ -46,6 +48,7 @@ editor_stats_dialog.cpp
 editor_variable_info.cpp
 external_text_editor.cpp
 entity.cpp
+file_chooser_dialog.cpp
 filesystem.cpp
 font.cpp
 formula.cpp
