@@ -1392,7 +1392,7 @@ void level_runner::init_history_slider()
 	}
 }
 
-void level_runner::on_history_change(float value)
+void level_runner::on_history_change(double value)
 {
 	const int first_frame = lvl_->earliest_backup_cycle();
 	const int last_frame = controls::local_controls_end();

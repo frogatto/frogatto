@@ -76,7 +76,7 @@ private:
 	int object_reloads_state_id_;
 	int tile_rebuild_state_id_;
 	void init_history_slider();
-	void on_history_change(float value);
+	void on_history_change(double value);
 	void update_history_trails();
 
 	boost::scoped_ptr<debug_console::console_dialog> console_;

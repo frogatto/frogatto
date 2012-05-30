@@ -7,6 +7,7 @@
 objects = \
 	IMG_savepng.o \
 	achievements.o \
+	animation_creator.o \
 	animation_preview_widget.o \
 	asserts.o \
 	background.o \
@@ -23,6 +24,7 @@ objects = \
 	current_generator.o \
 	decimal.o \
 	drag_widget.o \
+	dropdown_widget.o \
 	editor_dialogs.o \
 	editor_formula_functions.o \
 	editor_layers_dialog.o \
@@ -48,6 +50,7 @@ objects = \
 	editor_level_properties_dialog.o \
 	editor_module_properties_dialog.o \
 	entity.o \
+	file_chooser_dialog.o \
 	filesystem.o \
 	font.o \
 	formula.o \

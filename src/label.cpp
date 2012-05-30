@@ -39,8 +39,8 @@ label::label(const variant& v, const game_logic::formula_callable_ptr& e)
 {
 	text_ = i18n::tr(v["text"].as_string());
 	color_ = v.has_key("color") 
-		? graphics::color(255,255,255,255).as_sdl_color() 
-		: graphics::color(v["color"]).as_sdl_color();
+		? graphics::color(v["color"]).as_sdl_color() 
+		: graphics::color(255,255,255,255).as_sdl_color();
 	size_ = v.has_key("size") ? v["size"].as_int() : 14;
 	recalculate_texture();
 }

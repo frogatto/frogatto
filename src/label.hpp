@@ -23,6 +23,7 @@ namespace gui {
 
 class label;
 class dialog_label;
+class dropdown_widget;
 
 typedef boost::intrusive_ptr<label> label_ptr;
 typedef boost::intrusive_ptr<const label> const_label_ptr;
@@ -64,6 +65,8 @@ private:
 	SDL_Color color_;
 	int size_;
 	bool fixed_width_;
+
+	friend class dropdown_widget;
 };
 
 class dialog_label : public label

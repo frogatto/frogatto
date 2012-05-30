@@ -39,6 +39,7 @@ public:
 	//came from. Useful to tell what kind of frame it is.
 	const std::string& id() const { return id_; }
 	const variant& variant_id() const { return variant_id_; }
+	const std::string& image_name() const { return image_; }
 
 	//play a sound. 'object' is just the address of the object playing the
 	//sound, useful if the sound is later cancelled.

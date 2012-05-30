@@ -23,6 +23,8 @@
 
 namespace gui {
 
+class dropdown_widget;
+
 class grid : public scrollable_widget
 {
 public:
@@ -35,6 +37,7 @@ public:
 		show_background_ = val;
 		return *this;
 	}
+	virtual void set_dim(int w, int h);
 	void add_row(const std::vector<widget_ptr>& widgets);
 
 	grid& add_col(const widget_ptr& widget=widget_ptr());
@@ -58,6 +61,8 @@ public:
 
 	void on_set_yscroll(int old_value, int value);
 
+	void allow_draw_highlight(bool val=true) { allow_highlight_ = val; }
+
 	bool has_focus() const;
 private:
 	int row_at(int x, int y) const;
@@ -76,6 +81,11 @@ private:
 	bool allow_selection_;
 	bool must_select_;
 	bool swallow_clicks_;
+	bool allow_highlight_;
+
+	// Explicitly set dimensions
+	int set_w_;
+	int set_h_;
 
 	std::vector<widget_ptr> new_row_;
 	std::vector<boost::function<void()> > row_callbacks_;
@@ -85,6 +95,8 @@ private:
 	bool show_background_;
 
 	int max_height_;
+
+	friend class dropdown_widget;
 };
 
 typedef boost::intrusive_ptr<grid> grid_ptr;

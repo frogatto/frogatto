@@ -242,7 +242,7 @@ void code_editor_widget::select_token(const std::string& row, int& begin_row, in
 	}
 }
 
-void code_editor_widget::on_slider_move(float value)
+void code_editor_widget::on_slider_move(double value)
 {
 	if(record_op("slider")) {
 		save_undo_state();

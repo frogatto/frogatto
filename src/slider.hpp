@@ -31,6 +31,7 @@ public:
 	explicit slider(const variant& v, const game_logic::formula_callable_ptr& e);
 	double position() const {return position_;};
 	void set_position (double position) {position_ = position;};
+	void set_drag_end(boost::function<void (double)> ondragend) { ondragend_ = ondragend; }
 		
 protected:
 	virtual void set_value(const std::string& key, const variant& v);
@@ -45,6 +46,7 @@ private:
 		
 	int width_;
 	boost::function<void (double)> onchange_;
+	boost::function<void (double)> ondragend_;
 	bool dragging_;
 	double position_;
 		

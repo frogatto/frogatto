@@ -158,6 +158,7 @@ const SDL_Color& color_red();
 const SDL_Color& color_green();
 const SDL_Color& color_blue();
 const SDL_Color& color_yellow();
+const SDL_Color& color_grey();
 
 }
 

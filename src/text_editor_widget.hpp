@@ -12,6 +12,8 @@ namespace gui {
 class text_editor_widget;
 typedef boost::intrusive_ptr<text_editor_widget> text_editor_widget_ptr;
 
+class dropdown_widget;
+
 class text_editor_widget : public scrollable_widget
 {
 public:
@@ -149,6 +151,8 @@ private:
 
 	boost::function<void()> on_change_, on_move_cursor_, on_enter_, on_tab_;
 	boost::function<bool()> on_begin_enter_;
+
+	friend class dropdown_widget;
 };
 
 }

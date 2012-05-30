@@ -13,6 +13,13 @@ border_widget::border_widget(widget_ptr child, graphics::color col, int border_s
 	child_->set_loc(border_size, border_size);
 }
 
+border_widget::border_widget(widget_ptr child, const SDL_Color& color, int border_size)
+	: child_(child), color_(color.r, color.g, color.b, color.unused), border_size_(border_size)
+{
+	set_dim(child->width() + border_size*2, child->height() + border_size*2);
+	child_->set_loc(border_size, border_size);
+}
+
 border_widget::border_widget(const variant& v, const game_logic::formula_callable_ptr& e) : widget(v,e)
 {
 	ASSERT_LOG(v.is_map(), "TYPE ERROR: parameter to border widget must be a map");
@@ -29,8 +36,8 @@ void border_widget::set_color(const graphics::color& col)
 void border_widget::handle_draw() const
 {
 	glPushMatrix();
-	graphics::draw_rect(rect(x(), y(), width(), height()), color_);
-	glTranslatef(x(), y(), 0.0);
+	graphics::draw_rect(rect(x(),y(),width(),height()), color_);
+	glTranslatef(GLfloat(x()), GLfloat(y()), 0.0);
 	child_->draw();
 	glPopMatrix();
 }

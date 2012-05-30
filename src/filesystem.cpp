@@ -89,6 +89,9 @@ struct DIR
 	struct dirent	  dirent;				   /* The handle's entry. */
 };
 
+DIR *opendir(char const *name);
+int closedir(DIR *dir);
+
 #ifndef FILE_ATTRIBUTE_ERROR
 # define FILE_ATTRIBUTE_ERROR			(0xFFFFFFFF)
 #endif /* FILE_ATTRIBUTE_ERROR */
@@ -292,6 +295,16 @@ namespace {
 #endif
 
   const mode_t AccessMode = 00770;
+}
+
+bool is_directory(const std::string& dname)
+{
+	DIR* dir = opendir(dname.c_str());
+	if(dir == NULL) {
+		return false;
+	}
+	closedir(dir);
+	return true;
 }
 
 void get_files_in_dir(const std::string& directory,

@@ -3,6 +3,8 @@ CXX = ccache g++
 
 OPT = -O2 -lX11 -lz -fno-inline-functions
 
+PREFIX = /usr/local/share/frogatto
+
 include Makefile.common
 
 %.o : src/%.cpp
@@ -44,6 +46,13 @@ update-mo:
 		mkdir -p locale/$$lang/LC_MESSAGES ; \
 		msgfmt po/$$lang.po -o locale/$$lang/LC_MESSAGES/frogatto.mo ; \
 	done)
+
+install:
+	install -m 0755 game $(PREFIX)
+	install -m 0644 UbuntuMono-R.ttf $(PREFIX)
+	install -m 0644 README
+	install -m 0644 CHANGELOG
+    # XXX still needs work
 
 clean:
 	rm -f *.o game

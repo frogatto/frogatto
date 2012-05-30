@@ -896,5 +896,11 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 		static SDL_Color res = {0xFF,0xFF,0,0};
 		return res;
 	}
-	
+
+	const SDL_Color& color_grey()
+	{
+		static SDL_Color res = {0x80,0x80,0x80,0};
+		return res;
+	}
+
 }

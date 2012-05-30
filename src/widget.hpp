@@ -48,8 +48,7 @@ public:
 protected:
 	widget() : x_(0), y_(0), w_(0), h_(0), tooltip_displayed_(false), visible_(true)
 	{}
-	explicit widget(const variant& v, const game_logic::formula_callable_ptr& e) : environ_(e)
-	{}
+	explicit widget(const variant& v, const game_logic::formula_callable_ptr& e);
 	virtual ~widget();
 
 	void normalize_event(SDL_Event* event, bool translate_coords=false);

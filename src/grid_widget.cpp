@@ -23,9 +23,16 @@ grid::grid(int ncols)
     col_aligns_(ncols, grid::ALIGN_LEFT), row_height_(0),
 	selected_row_(-1), allow_selection_(false), must_select_(false),
     swallow_clicks_(false), hpad_(0), show_background_(false),
-	max_height_(-1)
+	max_height_(-1), allow_highlight_(true), set_h_(0), set_w_(0)
 {
 	set_dim(0,0);
+}
+
+void grid::set_dim(int w, int h)
+{
+	widget::set_dim(w,h);
+	set_h_ = h;
+	set_w_ = w;
 }
 
 void grid::add_row(const std::vector<widget_ptr>& widgets)
@@ -106,7 +113,9 @@ void grid::register_row_selection_callback(boost::function<void()> ptr)
 
 int grid::row_at(int xpos, int ypos) const
 {
-	if(xpos > x() && xpos < x() + width() &&
+	if(row_height_ == 0) {
+		return -1;
+	} else if(xpos > x() && xpos < x() + width() &&
 	   ypos > y() && ypos < y() + height()) {
 		return (ypos + yscroll() - y()) / row_height_;
 	} else {
@@ -134,7 +143,11 @@ void grid::recalculate_dimensions()
 		}
 	}
 
-	set_dim(w, desired_height);
+	if(set_h_ != 0 || set_w_ != 0) {
+		widget::set_dim(set_w_ ? set_w_ : w, set_h_ ? set_h_ : desired_height);
+	} else {
+		widget::set_dim(w, desired_height);
+	}
 
 	int y = 0;
 	for(int n = 0; n != nrows(); ++n) {
@@ -185,7 +198,7 @@ void grid::handle_draw() const
 		graphics::draw_rect(rect,bg);
 	}
 
-	if(selected_row_ >= 0 && selected_row_ < nrows()) {
+	if(allow_highlight_ && selected_row_ >= 0 && selected_row_ < nrows()) {
 		SDL_Rect rect = {0,row_height_*selected_row_ - yscroll(),width(),row_height_};
 		const SDL_Color col = {0xFF,0x00,0x00,0x00};
 		graphics::draw_rect(rect,col,128);
@@ -214,14 +227,24 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 				}
 			}
 		} else if(event.type == SDL_MOUSEBUTTONDOWN) {
-			if(event.button.button == SDL_BUTTON_WHEELUP) {
+			point p(event.button.x, event.button.y);
+			rect r(x(), y(), width(), height());
+			if(event.button.button == SDL_BUTTON_WHEELUP && point_in_rect(p, r)) {
 				set_yscroll(yscroll() - 3*row_height_ < 0 ? 0 : yscroll() - 3*row_height_);
+				selected_row_ -= 3;
+				if(selected_row_ < 0) {
+					selected_row_ = 0;
+				}
 				claimed = true;
-			} else if(event.button.button == SDL_BUTTON_WHEELDOWN) {
+			} else if(event.button.button == SDL_BUTTON_WHEELDOWN  && point_in_rect(p, r)) {
 				int y3 = yscroll() + 3*row_height_;
 				set_yscroll(virtual_height() - y3 < height() 
 					? virtual_height() - height()
 					: y3);
+				selected_row_ += 3;
+				if(selected_row_ >= nrows()) {
+					selected_row_ = nrows() - 1;
+				}
 				claimed = true;
 			} else {
 				const SDL_MouseButtonEvent& e = event.button;

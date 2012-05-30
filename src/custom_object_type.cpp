@@ -23,6 +23,11 @@
 #include "variant_callable.hpp"
 #include "variant_utils.hpp"
 
+std::map<std::string, std::string>& prototype_file_paths() {
+	static std::map<std::string, std::string> paths;
+	return paths;
+}
+
 namespace {
 std::map<std::string, int64_t>& file_mod_times() {
 	static std::map<std::string, int64_t> mod_times;
@@ -30,11 +35,6 @@ std::map<std::string, int64_t>& file_mod_times() {
 }
 
 std::map<std::string, std::string>& object_file_paths() {
-	static std::map<std::string, std::string> paths;
-	return paths;
-}
-
-std::map<std::string, std::string>& prototype_file_paths() {
 	static std::map<std::string, std::string> paths;
 	return paths;
 }
@@ -53,14 +53,14 @@ void load_file_paths() {
 
 	//find out the paths to all our files
 	module::get_unique_filenames_under_dir(object_file_path(), &object_file_paths());
-	module::get_unique_filenames_under_dir("data/object_prototypes", &prototype_file_paths());
+	module::get_unique_filenames_under_dir("data/object_prototypes", &::prototype_file_paths());
 
 	for(std::map<std::string, std::string>::const_iterator i = object_file_paths().begin(); i != object_file_paths().end(); ++i) {
 		file_mod_times()[i->second] = sys::file_mod_time("./" + i->second);
 		//std::cerr << "FILE MOD TIME FOR " << i->second << ": " << file_mod_times()[i->second] << "\n";
 	}
 
-	for(std::map<std::string, std::string>::const_iterator i = prototype_file_paths().begin(); i != prototype_file_paths().end(); ++i) {
+	for(std::map<std::string, std::string>::const_iterator i = ::prototype_file_paths().begin(); i != ::prototype_file_paths().end(); ++i) {
 		file_mod_times()[i->second] = sys::file_mod_time(i->second);
 	}
 }
@@ -242,8 +242,8 @@ variant custom_object_type::merge_prototype(variant node, std::vector<std::strin
 
 	foreach(const std::string& proto, protos) {
 		//look up the object's prototype and merge it in
-		std::map<std::string, std::string>::const_iterator path_itor = module::find(prototype_file_paths(), proto + ".cfg");
-		ASSERT_LOG(path_itor != prototype_file_paths().end(), "Could not find file for prototype '" << proto << "'");
+		std::map<std::string, std::string>::const_iterator path_itor = module::find(::prototype_file_paths(), proto + ".cfg");
+		ASSERT_LOG(path_itor != ::prototype_file_paths().end(), "Could not find file for prototype '" << proto << "'");
 
 		variant prototype_node = json::parse_from_file(path_itor->second);
 		ASSERT_LOG(prototype_node["id"].as_string() == proto, "PROTOTYPE NODE FOR " << proto << " DOES NOT SPECIFY AN ACCURATE id FIELD");
@@ -364,7 +364,7 @@ void custom_object_type::invalidate_all_objects()
 {
 	cache().clear();
 	object_file_paths().clear();
-	prototype_file_paths().clear();
+	::prototype_file_paths().clear();
 }
 
 std::vector<const_custom_object_type_ptr> custom_object_type::get_all()

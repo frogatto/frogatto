@@ -135,6 +135,17 @@ bool slider::handle_event(const SDL_Event& event, bool claimed)
 	} else if(event.type == SDL_MOUSEBUTTONUP && dragging_) {
 		dragging_ = false;
 		claimed = true;
+		if(ondragend_) {
+			const SDL_MouseButtonEvent& e = event.button;
+			int mouse_x = e.x;
+			int mouse_y = e.y;
+
+			int rel_x = mouse_x - x() - slider_left_->width();
+			if (rel_x < 0) rel_x = 0;
+			if (rel_x > width_) rel_x = width_;
+			float pos = (float)rel_x/width_;
+			ondragend_(pos);
+		}
 	}
 	return claimed;
 }

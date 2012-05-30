@@ -232,4 +232,21 @@ void load_module_from_file(const std::string& modname, modules* mod_) {
 	}
 }
 
+void write_file(const std::string& mod_path, const std::string& data)
+{
+	std::string path;
+	std::string abbrev = get_module_id(mod_path);
+	std::string rel_path = get_id(mod_path);
+	// Write a file to a relative path inside a module. rel_path includes the file name.
+	// e.g. module::write_file("", "data/object/experimental/bat.cfg", data);
+	// If the current module was xxx, then the file would get written to the path
+	// ./modules/xxx/data/object/experimental/bat.cfg	
+	if(loaded_paths().empty()) {
+		path = rel_path;
+	} else {
+		path = get_module_path(abbrev) + rel_path;
+	}
+	sys::write_file(path, data);
+}
+
 }

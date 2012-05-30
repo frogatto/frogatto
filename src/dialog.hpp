@@ -23,12 +23,16 @@
 
 namespace gui {
 
+std::string get_dialog_file(const std::string& fname);
+void reset_dialog_paths();
+
 class dialog : public virtual widget, public virtual input::listener_container
 {
 public:
 	typedef std::vector<widget_ptr>::const_iterator child_iterator;
 
-	dialog(int x, int y, int w, int h);
+	explicit dialog(int x, int y, int w, int h);
+	explicit dialog(const variant& v, const game_logic::formula_callable_ptr& e);
 	virtual ~dialog();
 	virtual void show_modal();
 	void show();
@@ -70,6 +74,9 @@ protected:
 	void set_clear_bg(bool clear) { clear_bg_ = clear; };
 	void set_clear_bg_amount(int amount) { clear_bg_ = amount; }
 	int clear_bg() const { return clear_bg_; };
+
+	virtual void set_value(const std::string& key, const variant& v);
+	virtual variant get_value(const std::string& key) const;
 private:
 	std::vector<widget_ptr> widgets_;
 	bool opened_;

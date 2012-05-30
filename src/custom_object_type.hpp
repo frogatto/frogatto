@@ -21,6 +21,10 @@ class custom_object_type;
 typedef boost::shared_ptr<custom_object_type> custom_object_type_ptr;
 typedef boost::shared_ptr<const custom_object_type> const_custom_object_type_ptr;
 
+//namespace {
+std::map<std::string, std::string>& prototype_file_paths();
+//}
+
 namespace customobjecttype {
 	void reload_file_paths();
 }

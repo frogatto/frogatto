@@ -17,6 +17,7 @@
 #include "dialog.hpp"
 #include "font.hpp"
 #include "foreach.hpp"
+#include "module.hpp"
 #include "raster.hpp"
 #include "surface_cache.hpp"
 #include "texture.hpp"
@@ -25,8 +26,39 @@
 #include "level.hpp"
 #include "framed_gui_element.hpp"
 #include "preferences.hpp"
+#include "widget_factory.hpp"
 
 namespace gui {
+
+namespace {
+
+module::module_file_map& get_dialog_path()
+{
+	static module::module_file_map dialog_file_map;
+	return dialog_file_map;
+}
+
+void load_dialog_file_paths(const std::string& path)
+{
+	if(get_dialog_path().empty()) {
+		module::get_unique_filenames_under_dir(path, &get_dialog_path());
+	}
+}
+
+}
+
+void reset_dialog_paths()
+{
+	get_dialog_path().clear();
+}
+
+std::string get_dialog_file(const std::string& fname)
+{
+	load_dialog_file_paths("data/dialog/");
+	module::module_file_map::const_iterator it = module::find(get_dialog_path(), fname);
+	ASSERT_LOG(it != get_dialog_path().end(), "DIALOG FILE NOT FOUND: " << fname);
+	return it->second;
+}
 
 dialog::dialog(int x, int y, int w, int h)
   : opened_(false), cancelled_(false), clear_bg_(196), padding_(10),
@@ -34,6 +66,17 @@ dialog::dialog(int x, int y, int w, int h)
 {
 	set_loc(x,y);
 	set_dim(w,h);
+}
+
+dialog::dialog(const variant& v, const game_logic::formula_callable_ptr& e)
+	: widget(v,e),
+	opened_(false), cancelled_(false), clear_bg_(196), padding_(10),
+	add_x_(0), add_y_(0), bg_alpha_(1.0), last_draw_(-1)
+{
+	std::vector<variant> children = v["children"].as_list();
+	foreach(const variant& child, children) {
+		add_widget(widget_factory::create(child, e));
+	}
 }
 
 dialog::~dialog()
@@ -140,7 +183,7 @@ void dialog::complete_draw()
 
 void dialog::handle_draw_children() const {
 	glPushMatrix();
-	glTranslatef(x(),y(),0.0);
+	glTranslatef(GLfloat(x()),GLfloat(y()),0.0);
 	foreach(const widget_ptr& w, widgets_) {
 		w->draw();
 	}
@@ -240,5 +283,20 @@ bool dialog::has_focus() const
 	return false;
 }
 
+
+void dialog::set_value(const std::string& key, const variant& v)
+{
+	if(key == "show_modal") {
+		if(v.as_bool()) {
+			show_modal();
+		}
+	}
+	widget::set_value(key, v);
+}
+
+variant dialog::get_value(const std::string& key) const
+{
+	return widget::get_value(key);
+}
 
 }

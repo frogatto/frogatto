@@ -29,6 +29,8 @@ namespace sys
 
 enum FILE_NAME_MODE { ENTIRE_FILE_PATH, FILE_NAME_ONLY };
 
+bool is_directory(const std::string& dname);
+
 //! Populates 'files' with all the files and
 //! 'dirs' with all the directories in dir.
 //! If files or dirs are NULL they will not be used.

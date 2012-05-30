@@ -23,6 +23,30 @@
 
 namespace gui {
 
+widget::widget(const variant& v, const game_logic::formula_callable_ptr& e) 
+	: environ_(e)
+{
+	if(v.has_key("width")) {
+		w_ = v["width"].as_int();
+	} else if(v.has_key("height")) {
+		h_ = v["height"].as_int();
+	} else if(v.has_key("rect")) {
+		std::vector<int> r = v["rect"].as_list_int();
+		ASSERT_LOG(r.size() == 4, "Four values must be supplied to the rect attribute");
+		set_loc(r[0], r[1]);
+		set_dim(r[2], r[3]);
+	} else if(v.has_key("draw_area")) {
+		std::vector<int> r = v["draw_area"].as_list_int();
+		ASSERT_LOG(r.size() == 4, "Four values must be supplied to the rect attribute");
+		set_loc(r[0], r[1]);
+		set_dim(r[2], r[3]);
+	} else if(v.has_key("x")) {
+		x_ = v["x"].as_int();
+	} else if(v.has_key("y")) {
+		y_ = v["y"].as_int();
+	}
+}
+
 widget::~widget()
 {
 	if(tooltip_displayed_) {

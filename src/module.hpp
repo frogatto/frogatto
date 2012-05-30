@@ -43,6 +43,7 @@ void load(const std::string& name, bool initial=true);
 void reload(const std::string& name);
 void get_module_list(std::vector<std::string>& dirs);
 void load_module_from_file(const std::string& modname, modules* mod_);
+void write_file(const std::string& mod_path, const std::string& data);
 
 }
 

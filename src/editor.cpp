@@ -3329,10 +3329,10 @@ void do_draw_scene() {
 void editor::create_new_object()
 {
 	editor_dialogs::custom_object_dialog object_dialog(*this, 
-		preferences::virtual_screen_width()*0.2, 
-		preferences::virtual_screen_height()*0.2, 
-		preferences::virtual_screen_width()*0.6, 
-		preferences::virtual_screen_height()*0.6);
+		preferences::virtual_screen_width()*0.05, 
+		preferences::virtual_screen_height()*0.05, 
+		preferences::virtual_screen_width()*0.9, 
+		preferences::virtual_screen_height()*0.9);
 	object_dialog.set_background_frame("empty_window");
 	object_dialog.set_draw_background_fn(do_draw_scene);
 	object_dialog.show_modal();

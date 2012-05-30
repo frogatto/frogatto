@@ -19,6 +19,7 @@
 
 #include "asserts.hpp"
 #include "compress.hpp"
+#include "dialog.hpp"
 #include "debug_console.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
@@ -157,6 +158,7 @@ variant formula_expression::execute_member(const formula_callable& variables, st
 {
 	formula::fail_if_static_context();
 	ASSERT_LOG(false, "Trying to set illegal value: " << str_ << "\n" << debug_pinpoint_location());
+	return variant();
 }
 
 namespace {
@@ -1217,6 +1219,24 @@ FUNCTION_DEF(get_files_in_dir, 1, 1, "Returns a list of the files in the given d
 	}
 	return variant(&v);
 END_FUNCTION_DEF(get_files_in_dir)
+
+FUNCTION_DEF(dialog, 2, 2, "dialog(obj, template")
+	bool modal = args().size() == 3 && args()[2]->evaluate(variables).as_bool(); 
+	variant environment = args()[0]->evaluate(variables);
+	variant dlg_template = args()[1]->evaluate(variables);
+	formula_callable_ptr e = environment.try_convert<formula_callable>();
+	variant v;
+	if(dlg_template.is_string()) {
+		std::string s = dlg_template.as_string();
+		if(s.length() <= 4 || s.substr(s.length()-4) != ".cfg") {
+			s += ".cfg";
+		}
+		v = json::parse_from_file(gui::get_dialog_file(s));
+	} else {
+		v = dlg_template;
+	}
+	return variant(new gui::dialog(v, e));
+END_FUNCTION_DEF(dialog)
 
 namespace {
 void evaluate_expr_for_benchmark(const formula_expression* expr, const formula_callable* variables, int ntimes)

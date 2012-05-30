@@ -89,13 +89,16 @@ drag_widget::drag_widget(const variant& v, const game_logic::formula_callable_pt
 {
 	dir_ = v["direction"].as_string_default("horizontal") == "horizontal" ? DRAG_HORIZONTAL : DRAG_VERTICAL;
 	if(v.has_key("on_drag_start")) {
-		boost::bind(&drag_widget::drag_start, this, _1, _2);
+		drag_start_ = boost::bind(&drag_widget::drag_start, this, _1, _2);
+		drag_start_handler_ = game_logic::formula_ptr(new game_logic::formula(v["on_drag_start"], 0));
 	}
 	if(v.has_key("on_drag_end")) {
-		boost::bind(&drag_widget::drag_end, this, _1, _2);
+		drag_end_ = boost::bind(&drag_widget::drag_end, this, _1, _2);
+		drag_end_handler_ = game_logic::formula_ptr(new game_logic::formula(v["on_drag_end"], 0));
 	}
 	if(v.has_key("on_drag")) {
-		boost::bind(&drag_widget::drag, this, _1, _2);
+		drag_move_ = boost::bind(&drag_widget::drag, this, _1, _2);
+		drag_handler_ = game_logic::formula_ptr(new game_logic::formula(v["on_drag"], 0));
 	}
 	std::vector<int> r = v["rect"].as_list_int();
 	ASSERT_EQ(r.size(), 4);

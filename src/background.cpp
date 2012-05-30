@@ -96,7 +96,7 @@ background::background(variant node, int palette) : palette_(palette)
 		}
 #endif
 		
-		std::fill(bg.color, bg.color + 4, 0.0);
+		std::fill(bg.color, bg.color + 4, GLfloat(0.0));
 		bg.color[0] = layer_node["red"].as_decimal(decimal(1.0)).as_float();
 		bg.color[1] = layer_node["green"].as_decimal(decimal(1.0)).as_float();
 		bg.color[2] = layer_node["blue"].as_decimal(decimal(1.0)).as_float();
