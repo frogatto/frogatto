@@ -546,19 +546,17 @@ void code_editor_dialog::process()
 		} else {
 			animation_preview_.reset();
 		}
-	} catch(type_error& e) {
+	} catch(type_error&) {
 		if(animation_preview_) {
 			animation_preview_.reset();
 		}
-	} catch(frame::error& e) {
+	} catch(frame::error&) {
+		// skip
+	} catch(validation_failure_exception&) {
 		if(animation_preview_) {
 			animation_preview_.reset();
 		}
-	} catch(validation_failure_exception& e) {
-		if(animation_preview_) {
-			animation_preview_.reset();
-		}
-	} catch(graphics::load_image_error& e) {
+	} catch(graphics::load_image_error&) {
 		if(animation_preview_) {
 			animation_preview_.reset();
 		}

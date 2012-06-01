@@ -45,6 +45,7 @@ widget::widget(const variant& v, const game_logic::formula_callable_ptr& e)
 	} else if(v.has_key("y")) {
 		y_ = v["y"].as_int();
 	}
+	zorder_ = v["zorder"].as_int(0);
 }
 
 widget::~widget()

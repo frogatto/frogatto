@@ -31,59 +31,7 @@
 #define getcwd	_getcwd
 #endif
 
-const std::string re_absolute_path = "^(?:(?:(?:[A-Za-z]:)?(?:\\\\|/))|\\\\\\\\|/).*";
-
 namespace sys {
-
-std::string del_substring_front(const std::string& target, const std::string& common)
-{
-	if(boost::iequals(target.substr(0, common.length()), common)) {
-	//if(target.find(common) == 0) {
-		return target.substr(common.length());
-	}
-	return target;
-}
-
-// Calculates the path of target relative to source.
-std::string compute_relative_path(const std::string& source, const std::string& target)
-{
-	//std::cerr << "compute_relative_path(a): " << source << " : " << target << std::endl;
-	std::string common_part = source;
-	std::string back;
-	if(common_part.length() > 1 && common_part[common_part.length()-1] == '/') {
-		common_part.erase(common_part.length()-1);
-	}
-	while(boost::iequals(del_substring_front(target, common_part), target)) {
-		size_t offs = common_part.rfind('/');
-		if(common_part.length() > 1 && offs != std::string::npos) {
-			common_part.erase(offs);
-			back = "../" + back;
-		}
-	}
-	common_part = del_substring_front(target, common_part);
-	if(common_part.length() > 1 && common_part[0] == '/') {
-		common_part = common_part.substr(1);
-	} else {
-		if(back.empty() == false) {
-			back.erase(back.length()-1);
-		}
-	}
-	//std::cerr << "compute_relative_path(b): " << back << " : " << common_part << std::endl;
-	return back + common_part;
-}
-
-// Take a path and convert to the conforming definition, back-slashes converted to forward slashes 
-// and no trailing slash.
-std::string make_conformal_path(const std::string& path) 
-{
-	std::string new_path(path);
-	std::replace(new_path.begin(), new_path.end(),'\\','/');
-	new_path = boost::regex_replace(new_path, boost::regex("//"), "/",  boost::match_default | boost::format_all);
-	if(new_path[new_path.length()-1] == '/') {
-		new_path.erase(new_path.length()-1);
-	}
-	return new_path;
-}
 
 std::string get_absolute_path(const std::string& path, const std::string& curdir="")
 {
@@ -91,10 +39,10 @@ std::string get_absolute_path(const std::string& path, const std::string& curdir
 	// A path is absolute if it starts with / (linux)
 	// on windows a path is absolute if it starts with \\, x:\, \ 
 	//boost::regex regexp(re_absolute_path);
-	bool path_is_absolute = boost::regex_match(path, boost::regex(re_absolute_path));
+	//bool path_is_absolute = boost::regex_match(path, boost::regex(re_absolute_path));
 	//std::cerr << "set_default_path: path(" << path << ") is " << (path_is_absolute ? "absolute" : "relative") << std::endl;
 
-	if(path_is_absolute) {
+	if(sys::is_path_absolute(path)) {
 		abs_path = sys::make_conformal_path(path);
 	} else {
 		if(curdir.empty()) {
@@ -106,7 +54,7 @@ std::string get_absolute_path(const std::string& path, const std::string& curdir
 				ASSERT_LOG(false, "getcwd failed");
 			}
 		} else {
-			ASSERT_LOG(boost::regex_match(curdir, boost::regex(re_absolute_path)) == true, "get_absolute_path: curdir was specified but isn't absolute! " << curdir);
+			ASSERT_LOG(sys::is_path_absolute(curdir) == true, "get_absolute_path: curdir was specified but isn't absolute! " << curdir);
 			abs_path  = sys::make_conformal_path(curdir);
 		}
 
@@ -251,7 +199,7 @@ void file_chooser_dialog::init()
 			std::back_inserter(dl_list), 
 			boost::bind(&filter_list::value_type::first,_1));
 		filter_widget_ = new dropdown_widget(dl_list, width()/2, 20);
-		filter_widget_->set_on_change_handler(boost::bind(&file_chooser_dialog::change_filter, this, _1, _2));
+		filter_widget_->set_on_select_handler(boost::bind(&file_chooser_dialog::change_filter, this, _1, _2));
 		//std::cerr << "filter_selection: " << filter_selection_ << std::endl;
 		filter_widget_->set_selection(filter_selection_);
 		add_widget(filter_widget_, 30, current_height);
@@ -388,16 +336,6 @@ void file_chooser_dialog::execute_dir_name_enter(const text_editor_widget_ptr ed
 	init();
 }
 
-bool file_exists(const std::string& fname)
-{
-	std::ifstream file(fname.c_str(), std::ios_base::binary);
-	if(file.rdstate() != 0) {
-		return false;
-	}
-	file.close();
-	return true;
-}
-
 void file_chooser_dialog::text_enter(const text_editor_widget_ptr editor)
 {
 	if(dir_only_) {
@@ -415,7 +353,7 @@ void file_chooser_dialog::text_enter(const text_editor_widget_ptr editor)
 			}
 		}
 	} else if(file_open_dialog_) {
-		if(file_exists(editor->text())) {
+		if(sys::file_exists(editor->text())) {
 			file_name_ = editor->text();
 		} else if(sys::is_directory(editor->text())) {
 			current_path_ = editor->text();
@@ -426,7 +364,7 @@ void file_chooser_dialog::text_enter(const text_editor_widget_ptr editor)
 		}
 	} else {
 		// save as...
-		if(file_exists(editor->text())) {
+		if(sys::file_exists(editor->text())) {
 			// XXX File exists prompt with an over-write confirmation box.
 			file_name_ = editor->text();
 		} else if(sys::is_directory(editor->text())) {
@@ -472,6 +410,7 @@ void file_chooser_dialog::use_relative_paths(bool val, const std::string& rel_pa
 UNIT_TEST(compute_relative_paths_test) {
 	CHECK_EQ(sys::compute_relative_path("/home/tester/frogatto/images", "/home/tester/frogatto/data"), "../data");
 	CHECK_EQ(sys::compute_relative_path("/", "/"), "");
+	CHECK_EQ(sys::compute_relative_path("/home/tester", "/"), "../..");
 	CHECK_EQ(sys::compute_relative_path("/", "/home"), "home");
 	CHECK_EQ(sys::compute_relative_path("C:/Projects/frogatto", "C:/Projects"), "..");
 	CHECK_EQ(sys::compute_relative_path("C:/Projects/frogatto/images/experimental", "C:/Projects/xyzzy/test1/test2"), "../../../xyzzy/test1/test2");
@@ -480,19 +419,3 @@ UNIT_TEST(compute_relative_paths_test) {
 	CHECK_EQ(sys::compute_relative_path("C:/Projects/frogatto-build/Frogatto/Win32/Release", "c:/windows"), "../../../../../windows");
 }
 
-UNIT_TEST(absolute_path_test1) {
-	boost::regex re(re_absolute_path);
-	CHECK_EQ(boost::regex_match("images", re), false);
-	CHECK_EQ(boost::regex_match("images/", re), false);
-	CHECK_EQ(boost::regex_match("./images", re), false);
-	CHECK_EQ(boost::regex_match("/home", re), true);
-	CHECK_EQ(boost::regex_match("/home/worker", re), true);
-	CHECK_EQ(boost::regex_match("c:\\home", re), true);
-	CHECK_EQ(boost::regex_match("c:\\", re), true);
-	CHECK_EQ(boost::regex_match("\\", re), true);
-	CHECK_EQ(boost::regex_match("\\home", re), true);
-	CHECK_EQ(boost::regex_match("\\\\.\\", re), true);
-	CHECK_EQ(boost::regex_match("\\\\unc\\test", re), true);
-	CHECK_EQ(boost::regex_match("c:/home", re), true);
-	CHECK_EQ(boost::regex_match("c:/", re), true);
-}

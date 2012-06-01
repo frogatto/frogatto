@@ -172,6 +172,7 @@ void grid::recalculate_dimensions()
 				if(widget->y() >= 0 && widget->y() < height()) {
 					visible_cells_.push_back(widget);
 				}
+				std::sort(visible_cells_.begin(), visible_cells_.end(), widget_sort_zorder());
 			}
 
 			x += col_widths_[m];
@@ -199,9 +200,11 @@ void grid::handle_draw() const
 	}
 
 	if(allow_highlight_ && selected_row_ >= 0 && selected_row_ < nrows()) {
-		SDL_Rect rect = {0,row_height_*selected_row_ - yscroll(),width(),row_height_};
-		const SDL_Color col = {0xFF,0x00,0x00,0x00};
-		graphics::draw_rect(rect,col,128);
+		if(std::find(header_rows_.begin(), header_rows_.end(), selected_row_) == header_rows_.end()) {
+			SDL_Rect rect = {0,row_height_*selected_row_ - yscroll(),width(),row_height_};
+			const SDL_Color col = {0xFF,0x00,0x00,0x00};
+			graphics::draw_rect(rect,col,128);
+		}
 	}
 	foreach(const widget_ptr& widget, visible_cells_) {
 		if(widget) {

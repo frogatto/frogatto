@@ -276,6 +276,10 @@ void animation_preview_widget::init()
 	pos_label_ = new label("");
 	pos_label_->set_loc(zoom_label_->x() + zoom_label_->width() + 8, zoom_label_->y());
 	widgets_.push_back(widget_ptr(pos_label_));
+
+	b = new button("Reset", boost::bind(&animation_preview_widget::reset_rect, this));
+	b->set_loc(pos_label_->x() + pos_label_->width() + 8, y() + height() - b->height() - 5);
+	widgets_.push_back(widget_ptr(b));
 }
 
 void animation_preview_widget::set_object(variant obj)
@@ -309,9 +313,14 @@ void animation_preview_widget::handle_draw() const
 
 		const bool view_locked = mouse_buttons && locked_focus_.w()*locked_focus_.h();
 
-		rect focus_area(frame_->area().x(), frame_->area().y(),
-		      (frame_->area().w() + frame_->pad())*frame_->num_frames_per_row(),
-			  (frame_->area().h() + frame_->pad())*(frame_->num_frames()/frame_->num_frames_per_row() + (frame_->num_frames()%frame_->num_frames_per_row() ? 1 : 0)));
+		rect focus_area;
+		if(frame_->num_frames_per_row() == 0) {
+			focus_area = rect();
+		} else {
+			focus_area = rect(frame_->area().x(), frame_->area().y(),
+				  (frame_->area().w() + frame_->pad())*frame_->num_frames_per_row(),
+				  (frame_->area().h() + frame_->pad())*(frame_->num_frames()/frame_->num_frames_per_row() + (frame_->num_frames()%frame_->num_frames_per_row() ? 1 : 0)));
+		}
 
 		if(view_locked) {
 			focus_area = locked_focus_;
@@ -687,6 +696,13 @@ void animation_preview_widget::zoom_out()
 {
 	--scale_;
 	update_zoom_label();
+}
+
+void animation_preview_widget::reset_rect()
+{
+	if(rect_handler_) {
+		rect_handler_(rect(0,0,0,0));
+	}
 }
 
 void animation_preview_widget::update_zoom_label() const

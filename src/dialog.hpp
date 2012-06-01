@@ -64,6 +64,7 @@ public:
 	void set_draw_background_fn(boost::function<void()> fn) { draw_background_fn_ = fn; }
 
 	virtual bool has_focus() const;
+	void set_process_hook(boost::function<void()> fn) { on_process_ = fn; }
 protected:
 	virtual bool handle_event(const SDL_Event& event, bool claimed);
 	virtual bool handle_event_children(const SDL_Event& event, bool claimed);
@@ -84,6 +85,7 @@ private:
 	int clear_bg_;
 	
 	boost::function<void ()> on_quit_;
+	boost::function<void ()> on_process_;
 
 	//default padding between widgets
 	int padding_;

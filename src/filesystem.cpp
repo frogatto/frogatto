@@ -10,8 +10,13 @@
 
    See the COPYING file for more details.
 */
+#include <boost/algorithm/string.hpp>
+#include <boost/regex.hpp>
+
+#include "asserts.hpp"
 #include "filesystem.hpp"
 #include "string_utils.hpp"
+#include "unit_test.hpp"
 
 #include <fstream>
 #include <sstream>
@@ -42,8 +47,8 @@
 #include <io.h>
 #include <errno.h>
 #include <stdlib.h>
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-
 
 /* /////////////////////////////////////////////////////////////////////////
  * Compiler differences
@@ -255,6 +260,15 @@ namespace {
 #endif /* !DIRENT_PROVIDED_BY_COMPILER */
 
 #define mkdir(a,b) (_mkdir(a))
+
+bool isWinXpOrLater()
+{
+    OSVERSIONINFO osvi;
+    ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
+    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+    GetVersionEx(&osvi);
+    return ((osvi.dwMajorVersion > 5) || ((osvi.dwMajorVersion == 5) && (osvi.dwMinorVersion >= 1)));
+}
 
 #else /* !_WIN32 */
 
@@ -613,4 +627,116 @@ void remove_file(const std::string& fname)
 	unlink(fname.c_str());
 }
 
+void copy_file(const std::string& from, const std::string& to)
+{
+#ifdef _WINDOWS
+	ASSERT_LOG(CopyFileA(from.c_str(), to.c_str(), false), "copy_file: (" << from << " : " << to << ") failed.");
+#else
+	// Note that this is a pretty gross copy operation and won't preserve meta-data
+	// it will only copy the file data.  If your API has a better copy option, I'd
+	// suggest implementing it here.
+	std::fstream file1(from.c_str(), std::ios_base::in | std::ios_base::binary);
+	std::ofstream file2(to.c_str(), std::ios_base::out | std::ios_base::binary);
+	file1 << std::noskipws;
+	std::copy(std::istream_iterator<char>(file1),std::istream_iterator<char>(),std::ostream_iterator<char>(file2));
+#endif
+}
+
+// Take a path and convert to the conforming definition, back-slashes converted to forward slashes 
+// and no trailing slash.
+std::string make_conformal_path(const std::string& path) 
+{
+	std::string new_path(path);
+	std::replace(new_path.begin(), new_path.end(),'\\','/');
+	new_path = boost::regex_replace(new_path, boost::regex("//"), "/",  boost::match_default | boost::format_all);
+	if(new_path[new_path.length()-1] == '/') {
+		new_path.erase(new_path.length()-1);
+	}
+	return new_path;
+}
+
+std::string del_substring_front(const std::string& target, const std::string& common)
+{
+	if(boost::iequals(target.substr(0, common.length()), common)) {
+	//if(target.find(common) == 0) {
+		return target.substr(common.length());
+	}
+	return target;
+}
+
+std::string normalise_path(const std::string& path)
+{
+	if(is_path_absolute(path)) { 
+		return path;
+	}
+	std::vector<std::string> cur_path;
+	std::string norm_path;
+	boost::split(cur_path, path, boost::is_any_of("/"));
+	foreach(const std::string& s, cur_path) {
+		if(s != ".") {
+			norm_path += s + "/";
+		}
+	}
+	return norm_path;
+}
+
+// Calculates the path of target relative to source.
+std::string compute_relative_path(const std::string& source, const std::string& target)
+{
+	//std::cerr << "compute_relative_path(a): " << source << " : " << target << std::endl;
+	std::string common_part = normalise_path(source);
+	std::string back;
+	if(common_part.length() > 1 && common_part[common_part.length()-1] == '/') {
+		common_part.erase(common_part.length()-1);
+	}
+	while(boost::iequals(del_substring_front(target, common_part), target)) {
+		size_t offs = common_part.rfind('/');
+		//std::cerr << "compute_relative_path(b2): " << back << " : " << common_part << std::endl;
+		if(common_part.length() > 1 && offs != std::string::npos) {
+			common_part.erase(offs);
+			back = "../" + back;
+		} else {
+			break;
+		}
+	}
+	common_part = del_substring_front(target, common_part);
+	if(common_part.length() == 1) {
+		common_part = common_part.substr(1);
+		if(back.empty() == false) {
+			back.erase(back.length()-1);
+		}
+	} else if(common_part.length() > 1 && common_part[0] == '/') {
+		common_part = common_part.substr(1);
+	} else {
+		if(back.empty() == false) {
+			back.erase(back.length()-1);
+		}
+	}
+	//std::cerr << "compute_relative_path(b): " << back << " : " << common_part << std::endl;
+	return back + common_part;
+}
+
+bool is_path_absolute(const std::string& path)
+{
+	static const std::string re_absolute_path = "^(?:(?:(?:[A-Za-z]:)?(?:\\\\|/))|\\\\\\\\|/).*";
+	return boost::regex_match(path, boost::regex(re_absolute_path));
+}
+
+}
+
+
+UNIT_TEST(absolute_path_test1) {
+	CHECK_EQ(sys::is_path_absolute("images"), false);
+	CHECK_EQ(sys::is_path_absolute("images/"), false);
+	CHECK_EQ(sys::is_path_absolute("./images"), false);
+	CHECK_EQ(sys::is_path_absolute("/home"), true);
+	CHECK_EQ(sys::is_path_absolute("/home/worker"), true);
+	CHECK_EQ(sys::is_path_absolute("c:\\home"), true);
+	CHECK_EQ(sys::is_path_absolute("c:\\"), true);
+	CHECK_EQ(sys::is_path_absolute("\\"), true);
+	CHECK_EQ(sys::is_path_absolute("\\home"), true);
+	CHECK_EQ(sys::is_path_absolute("\\\\.\\"), true);
+	CHECK_EQ(sys::is_path_absolute("\\\\unc\\test"), true);
+	CHECK_EQ(sys::is_path_absolute("c:/home"), true);
+	CHECK_EQ(sys::is_path_absolute("c:/"), true);
 }

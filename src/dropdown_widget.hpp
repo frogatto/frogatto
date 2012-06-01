@@ -28,10 +28,13 @@ public:
 	dropdown_widget(const variant& v, const game_logic::formula_callable_ptr& e);
 	virtual ~dropdown_widget() {}
 
-	void set_on_change_handler(boost::function<void(int,const std::string&)> fn) { on_change_ = fn; }
+	void set_on_change_handler(boost::function<void(const std::string&)> fn) { on_change_ = fn; }
+	void set_on_select_handler(boost::function<void(int,const std::string&)> fn) { on_select_ = fn; }
 	void set_selection(int selection);
 	int get_max_height() const;
 	void set_dropdown_height(int h);
+	void set_font_size(int size) { editor_->set_font_size(size); }
+	void set_text(const std::string& s) { editor_->set_text(s); }
 protected:
 	virtual void handle_draw() const;
 	virtual bool handle_event(const SDL_Event& event, bool claimed);
@@ -40,6 +43,7 @@ protected:
 	virtual variant get_value(const std::string& key) const;
 	void init();
 	void text_enter();
+	void text_change();
 private:
 	bool handle_mousedown(const SDL_MouseButtonEvent& event, bool claimed);
 	bool handle_mouseup(const SDL_MouseButtonEvent& event, bool claimed);
@@ -54,12 +58,15 @@ private:
 	grid_ptr dropdown_menu_;
 	label_ptr label_;
 	widget_ptr dropdown_image_;
-	boost::function<void(int, const std::string&)> on_change_;
+	boost::function<void(const std::string&)> on_change_;
+	boost::function<void(int, const std::string&)> on_select_;
 
 	// delgate 
-	void change_delegate(int selection, const std::string& s);
+	void change_delegate(const std::string& s);
+	void select_delegate(int selection, const std::string& s);
 	// FFL formula
 	game_logic::formula_ptr change_handler_;
+	game_logic::formula_ptr select_handler_;
 };
 
 typedef boost::intrusive_ptr<dropdown_widget> dropdown_widget_ptr;

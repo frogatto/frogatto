@@ -47,6 +47,7 @@ public:
 	grid& set_col_width(int col, int width);
 	grid& set_align(int col, COLUMN_ALIGN align);
 	grid& set_hpad(int pad);
+	void set_header_row(int row) { header_rows_.push_back(row); }
 
 	void allow_selection(bool val=true) { allow_selection_ = val; }
 	void must_select(bool val=true, int nrow=0) { must_select_ = val; selected_row_ = nrow; }
@@ -76,6 +77,7 @@ private:
 	std::vector<widget_ptr> visible_cells_;
 	std::vector<int> col_widths_;
 	std::vector<COLUMN_ALIGN> col_aligns_;
+	std::vector<int> header_rows_;
 	int row_height_;
 	int selected_row_;
 	bool allow_selection_;

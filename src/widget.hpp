@@ -45,8 +45,11 @@ public:
 
 	virtual bool has_focus() const { return false; }
 	game_logic::formula_callable_ptr get_environment() const { return environ_; }
+
+	void set_zorder(int z) { zorder_ = z; }
+	int zorder() const { return zorder_; }
 protected:
-	widget() : x_(0), y_(0), w_(0), h_(0), tooltip_displayed_(false), visible_(true)
+	widget() : x_(0), y_(0), w_(0), h_(0), tooltip_displayed_(false), visible_(true), zorder_(0)
 	{}
 	explicit widget(const variant& v, const game_logic::formula_callable_ptr& e);
 	virtual ~widget();
@@ -60,10 +63,23 @@ private:
 	bool tooltip_displayed_;
 	bool visible_;
 	game_logic::formula_callable_ptr environ_;
+	// default zorder_ is 0.  A widget *must* have a good reason for wanting
+	// higher priority in the draw order.
+	int zorder_;
 };
 
 typedef boost::intrusive_ptr<widget> widget_ptr;
 typedef boost::intrusive_ptr<const widget> const_widget_ptr;
+
+// Functor to sort widgets by z-ordering.
+class widget_sort_zorder
+{
+public:
+    bool operator()(const widget_ptr lhs, const widget_ptr rhs) const
+    {
+        return lhs->zorder() < rhs->zorder();
+    }
+};
 
 }
 

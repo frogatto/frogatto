@@ -36,6 +36,7 @@ private:
 
 	void zoom_in();
 	void zoom_out();
+	void reset_rect();
 
 	point mouse_point_to_image_loc(const point& p) const;
 

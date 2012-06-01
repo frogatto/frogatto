@@ -68,11 +68,18 @@ surface get_no_cache(const std::string& key)
 		surf = surface(IMG_Load(module::map_file(fname).c_str()));
 	}
 #else
-	surface surf = surface(IMG_Load(module::map_file(fname).c_str()));
+	surface surf;
+	if(sys::file_exists(key)) {
+		surf = surface(IMG_Load(key.c_str()));
+	} else {
+		surf = surface(IMG_Load(module::map_file(fname).c_str()));
+	}
 #endif // ANDROID
 	//std::cerr << "loading image '" << fname << "'\n";
 	if(surf.get() == false || surf->w == 0) {
-		std::cerr << "failed to load image '" << key << "'\n";
+		if(key != "") {
+			std::cerr << "failed to load image '" << key << "'\n";
+		}
 		throw load_image_error();
 	}
 

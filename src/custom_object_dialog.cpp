@@ -480,17 +480,15 @@ void custom_object_dialog::on_choose_dest_dir(const gui::text_editor_widget_ptr 
 
 void custom_object_dialog::on_edit_animations()
 {
-	gui::animation_creator_dialog d(int(preferences::virtual_screen_width()*0.1), 
-		int(preferences::virtual_screen_height()*0.1), 
-		int(preferences::virtual_screen_width()*0.8), 
-		int(preferences::virtual_screen_height()*0.8),
+	gui::animation_creator_dialog d(0, 0, preferences::virtual_screen_width(), 
+		preferences::virtual_screen_height(),
 		object_template_.has_key("animation") ? object_template_["animation"] : variant());
 	d.set_background_frame("empty_window");
 	d.set_draw_background_fn(do_draw_scene);
 
 	d.show_modal();
 	if(d.cancelled() == false) {
-
+		object_template_.add_attr(variant("animation"), d.get_animations());
 	}
 }
 

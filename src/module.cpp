@@ -160,7 +160,7 @@ const std::string& get_module_path(const std::string& abbrev) {
 }
 
 const std::string make_base_module_path(const std::string& name) {
-	return "./modules/" + name + "/";
+	return "modules/" + name + "/";
 }
 
 void load(const std::string& mod_file_name, bool initial)
@@ -206,7 +206,7 @@ void reload(const std::string& name) {
 void get_module_list(std::vector<std::string>& dirs) {
 	// Grab the files/directories under ./module/ for later use.
 	std::vector<std::string> files;
-	sys::get_files_in_dir("./modules/", &files, &dirs);
+	sys::get_files_in_dir("modules/", &files, &dirs);
 }
 
 void load_module_from_file(const std::string& modname, modules* mod_) {
