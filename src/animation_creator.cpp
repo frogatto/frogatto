@@ -233,6 +233,8 @@ void animation_creator_dialog::init()
 			slider_ptr slide(new slider(200, boost::bind((&animation_creator_dialog::change_slide), this, p.first.as_string(), entry, _1), 0.5));
 			slide->set_drag_end(boost::bind(&animation_creator_dialog::end_slide, this, p.first.as_string(), slide, entry, _1));
 			entry->set_on_change_handler(boost::bind(&animation_creator_dialog::change_text, this, p.first.as_string(), entry, slide));
+			entry->set_on_enter_handler(boost::bind(&animation_creator_dialog::execute_change_text, this, p.first.as_string(), entry, slide));
+			entry->set_on_tab_handler(boost::bind(&animation_creator_dialog::execute_change_text, this, p.first.as_string(), entry, slide));
 			g->add_col(widget_ptr(new label(p.first.as_string(), graphics::color_white(), 12)))
 				.add_col(entry)
 				.add_col(slide);
@@ -409,6 +411,19 @@ void animation_creator_dialog::change_text(const std::string& s, text_editor_wid
 		int i;
 		std::istringstream(editor->text()) >> i;
 		slide->set_position(0.5);
+		if(current_.is_null() == false) {
+			current_.add_attr(variant(s), variant(i));
+		}
+		changed_ = true;
+	}
+}
+
+void animation_creator_dialog::execute_change_text(const std::string& s, text_editor_widget_ptr editor, slider_ptr slider)
+{
+	if(!dragging_slider_) {
+		int i;
+		std::istringstream(editor->text()) >> i;
+		slider->set_position(0.5);
 		set_integer_attr(s.c_str(), i);
 	}
 }

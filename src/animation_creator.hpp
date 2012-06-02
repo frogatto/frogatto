@@ -66,6 +66,7 @@ private:
 	void on_id_set(dropdown_widget_ptr editor, int selection, const std::string& s);
 	void set_image_file();
 	void change_text(const std::string& s, text_editor_widget_ptr editor, slider_ptr slider);
+	void execute_change_text(const std::string& s, text_editor_widget_ptr editor, slider_ptr slider);
 	void change_slide(const std::string& s, text_editor_widget_ptr editor, double d);
 	void end_slide(const std::string& s, slider_ptr slide, text_editor_widget_ptr editor, double d);
 

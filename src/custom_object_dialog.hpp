@@ -26,8 +26,9 @@ protected:
 	void change_int_attribute_text(const gui::text_editor_widget_ptr editor, const std::string& s, gui::slider_ptr slide);
 	void change_int_attribute_slider(const gui::text_editor_widget_ptr editor, const std::string& s, double d);
 	void slider_drag_end(const gui::text_editor_widget_ptr editor, const std::string& s, gui::slider_ptr slide, double d);
-	void change_template();
-	void execute_change_template(dialog* d, const std::vector<std::string>& choices, size_t index);
+	//void change_template();
+	//void execute_change_template(dialog* d, const std::vector<std::string>& choices, size_t index);
+	void change_template(int selection, const std::string& s);
 	void change_prototype();
 	void remove_prototype(const std::string& s);
 	void execute_change_prototype(const std::vector<std::string>& choices, size_t index);
@@ -37,13 +38,14 @@ protected:
 	
 	void on_edit_animations();
 	
-	gui::widget_ptr get_widget_for_attribute(const std::string& attr);
+	std::vector<gui::widget_ptr> get_widget_for_attribute(const std::string& attr);
 private:
 	int slider_transform(double d);
 
 	module::module_file_pair template_file_;
 	variant object_template_;
 	custom_object_type_ptr object_;
+	int selected_template_;
 
 	gui::widget_ptr context_menu_;
 

@@ -23,9 +23,10 @@ dropdown_widget::dropdown_widget(const dropdown_list& list, int width, int heigh
 	editor_->set_on_change_handler(boost::bind(&dropdown_widget::text_change, this));
 	editor_->set_on_enter_handler(boost::bind(&dropdown_widget::text_enter, this));
 	editor_->set_on_tab_handler(boost::bind(&dropdown_widget::text_enter, this));
-	if(type_ == DROPDOWN_COMBOBOX) {
-		editor_->set_focus(true);
-	}
+	dropdown_image_ = widget_ptr(new gui_section_widget(dropdown_button_image));
+	//if(type_ == DROPDOWN_COMBOBOX) {
+	//	editor_->set_focus(true);
+	//}
 	set_zorder(1);
 
 	init();
@@ -71,11 +72,17 @@ dropdown_widget::dropdown_widget(const variant& v, const game_logic::formula_cal
 
 void dropdown_widget::init()
 {
+	const int dropdown_image_size = std::max(height(), dropdown_image_->height());
 	label_ = new label(list_.size() > 0 ? list_[current_selection_] : "No items");
 	label_->set_loc(0, (height() - label_->height()) / 2);
-	dropdown_image_ = widget_ptr(new gui_section_widget(dropdown_button_image));
-	dropdown_image_->set_loc(width() + (height() - dropdown_image_->width()) / 2, 
+	dropdown_image_->set_loc(width() - height() + (height() - dropdown_image_->width()) / 2, 
 		(height() - dropdown_image_->height()) / 2);
+	// go on ask me why there is a +20 in the line below.
+	// because text_editor_widget uses a magic -20 when setting the width!
+	// The magic +4's are because we want the rectangles drawn around the text_editor_widget 
+	// to match the ones we draw around the dropdown image.
+	editor_->set_dim(width() - dropdown_image_size + 20 + 4, dropdown_image_size + 4);
+	editor_->set_loc(-2, -2);
 
 	if(dropdown_menu_) {
 		dropdown_menu_.reset(new grid(1));
@@ -157,7 +164,7 @@ void dropdown_widget::handle_draw() const
 			graphics::color_grey());
 	}
 	graphics::draw_hollow_rect(
-		rect(x()+width(), y()-1, height()+1, height()+2).sdl_rect(), 
+		rect(x()+width()-height(), y()-1, height()+1, height()+2).sdl_rect(), 
 		graphics::color_grey());
 
 	glPushMatrix();
@@ -247,13 +254,13 @@ bool dropdown_widget::handle_mousemotion(const SDL_MouseMotionEvent& event, bool
 
 void dropdown_widget::execute_selection(int selection)
 {
-	//std::cerr << "execute_selection: " << selection << std::endl;
 	if(dropdown_menu_) {
 		dropdown_menu_->set_visible(false);
 	}
-	if(selection < 0 || size_t(selection) > list_.size()) {
+	if(selection < 0 || size_t(selection) >= list_.size()) {
 		return;
 	}
+	//std::cerr << "execute_selection: " << selection << std::endl;
 	current_selection_ = selection;
 	if(type_ == DROPDOWN_LIST) {
 		label_->set_text(list_[current_selection_]);

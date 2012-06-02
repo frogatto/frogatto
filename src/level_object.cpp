@@ -536,7 +536,7 @@ std::vector<int> create_base64_char_to_int()
 {
 	std::vector<int> result(256);
 	int index = 0;
-	foreach(char c, base64_chars) {
+	foreach(char c, (char const *)base64_chars) {
 		result[c] = index++;
 	}
 

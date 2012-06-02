@@ -289,7 +289,7 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 	SDL_Event ev = event;
 	normalize_event(&ev);
 	std::vector<widget_ptr> cells = visible_cells_;
-	foreach(widget_ptr widget, cells) {
+	reverse_foreach(widget_ptr widget, cells) {
 		if(widget) {
 			claimed = widget->process_event(ev, claimed);
 		}

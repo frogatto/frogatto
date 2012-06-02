@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <iostream>
 #include <sstream>
+#include <climits>
 
 #include <math.h>
 
@@ -14,6 +15,7 @@
 #include "button.hpp"
 #include "custom_object_dialog.hpp"
 #include "draw_scene.hpp"
+#include "dropdown_widget.hpp"
 #include "file_chooser_dialog.hpp"
 #include "foreach.hpp"
 #include "frame.hpp"
@@ -50,16 +52,16 @@ void do_draw_scene() {
 
 void load_default_attributes(std::vector<std::string>& d)
 {
-	d.push_back("id");
-	d.push_back("animation");
+	//d.push_back("id");
+	//d.push_back("animation");
+	//d.push_back("editor_info");
+	d.push_back("prototype");
 	d.push_back("hitpoints");
 	d.push_back("mass");
 	d.push_back("vars");
 	d.push_back("friction");
 	d.push_back("traction");
 	d.push_back("traction_in_air");
-	d.push_back("editor_info");
-	d.push_back("prototype");
 }
 
 std::vector<std::string>& get_default_attribute_list()
@@ -101,7 +103,7 @@ void do_nothing()
 }
 
 custom_object_dialog::custom_object_dialog(editor& e, int x, int y, int w, int h)
-	: gui::dialog(x,y,w,h), dragging_slider_(false)
+	: gui::dialog(x,y,w,h), dragging_slider_(false), selected_template_(0)
 {
 	load_template_file_paths(TEMPLATE_DIRECTORY);
 	set_clear_bg_amount(255);
@@ -118,35 +120,68 @@ custom_object_dialog::custom_object_dialog(editor& e, int x, int y, int w, int h
 
 void custom_object_dialog::init()
 {
+	const int border_offset = 30;
 	using namespace gui;
 	clear();
 
-	add_widget(widget_ptr(new label("Object Properties", graphics::color_white(), 20)), 10, 10);
+	add_widget(widget_ptr(new label("Object Properties", graphics::color_white(), 20)), border_offset, border_offset);
 
 	grid_ptr container(new grid(1));
-	container->set_col_width(0, width() - 30);
-
-	grid_ptr g(new grid(2));
-	g->set_hpad(20);
-	g->add_col(widget_ptr(new label("Template  ", graphics::color_white(), 14)))
-		.add_col(widget_ptr(new button(widget_ptr(new label(template_file_.first.empty() ? "Blank" : template_file_.first, graphics::color_white())), 
-		boost::bind(&custom_object_dialog::change_template, this))));
-	container->add_col(g);
+	container->set_col_width(0, width() - border_offset);
 	container->set_max_height(height() - 50);
+
+	// Get choices for dropdown list.
+	std::vector<std::string> template_choices;
+	std::transform(get_template_path().begin(), get_template_path().end(), std::back_inserter(template_choices),
+		boost::bind(&module::module_file_map::value_type::first,_1));
+	std::sort(template_choices.begin(), template_choices.end());
+	template_choices.insert(template_choices.begin(), "Blank");
+
+	dropdown_widget_ptr template_dropdown(new dropdown_widget(template_choices, 200, 30, dropdown_widget::DROPDOWN_LIST));
+	template_dropdown->set_dropdown_height(100);
+	template_dropdown->set_on_select_handler(boost::bind(&custom_object_dialog::change_template, this, _1, _2));
+	template_dropdown->set_selection(selected_template_);
+
+	grid_ptr g(new grid(4));
+	g->set_hpad(20);
+	g->set_zorder(1);
+	g->add_col(widget_ptr(new label("Template  ", graphics::color_white(), 14)))
+		.add_col(template_dropdown);
+	text_editor_widget_ptr change_entry(new text_editor_widget(200, 28));
+	change_entry->set_font_size(14);
+	if(object_template_.has_key("id")) {
+		change_entry->set_text(object_template_["id"].as_string());
+	}
+	change_entry->set_on_change_handler(boost::bind(&custom_object_dialog::change_text_attribute, this, change_entry, "id"));
+	change_entry->set_on_enter_handler(do_nothing);
+	g->add_col(widget_ptr(new label("id: ", graphics::color_white(), 14)))
+		.add_col(widget_ptr(change_entry));
+	container->add_col(g);
+
+	g.reset(new grid(4));
+	g->add_col(widget_ptr(new button(new label("Animations", graphics::color_white(), 20), boost::bind(&custom_object_dialog::on_edit_animations, this))));
+	g->add_col(widget_ptr(new button(new label("Variables", graphics::color_white(), 20), boost::bind(&do_nothing))));
+	g->add_col(widget_ptr(new button(new label("Properties", graphics::color_white(), 20), boost::bind(&do_nothing))));
+	g->add_col(widget_ptr(new button(new label("Editor Info", graphics::color_white(), 20), boost::bind(&do_nothing))));
+	container->add_col(g);
 
 	if(template_file_.first.empty()) {
 		foreach(const std::string& attr, get_default_attribute_list()) {
-			widget_ptr w = get_widget_for_attribute(attr);
-			if(w) {
-				container->add_col(w);
+			std::vector<widget_ptr> widget_list = get_widget_for_attribute(attr);
+			foreach(const widget_ptr& w, widget_list) {
+				if(w) {
+					container->add_col(w);
+				}
 			}
 		}
 	} else {
 		std::vector<variant> keys = object_template_.get_keys().as_list();
 		foreach(const variant& v, keys) {
-			widget_ptr w = get_widget_for_attribute(v.as_string());
-			if(w) {
-				container->add_col(w);
+			std::vector<widget_ptr> widget_list = get_widget_for_attribute(v.as_string());
+			foreach(const widget_ptr& w, widget_list) {
+				if(w) {
+					container->add_col(w);
+				}
 			}
 		}
 	}
@@ -173,23 +208,23 @@ void custom_object_dialog::init()
 	
 	button_ptr b(new button(new label("Create", graphics::color_white(), 20), boost::bind(&custom_object_dialog::on_create, this)));
 	container->add_col(b);
-	add_widget(container, 30, 30);
+	add_widget(container, border_offset, border_offset*2);
 }
 
-gui::widget_ptr custom_object_dialog::get_widget_for_attribute(const std::string& attr)
+std::vector<gui::widget_ptr> custom_object_dialog::get_widget_for_attribute(const std::string& attr)
 {
 	using namespace gui;
 	if(attr == "id") {
-		grid_ptr g(new grid(2));
-		text_editor_widget_ptr change_entry(new text_editor_widget(200, 28));
-		change_entry->set_font_size(14);
-		if(object_template_.has_key(attr)) {
-			change_entry->set_text(object_template_[attr].as_string());
-		}
-		change_entry->set_on_change_handler(boost::bind(&custom_object_dialog::change_text_attribute, this, change_entry, attr));
-		change_entry->set_on_enter_handler(do_nothing);
-		g->add_col(widget_ptr(new label(attr + ": ", graphics::color_white(), 14))).add_col(widget_ptr(change_entry));
-		return g;
+		//grid_ptr g(new grid(2));
+		//text_editor_widget_ptr change_entry(new text_editor_widget(200, 28));
+		//change_entry->set_font_size(14);
+		//if(object_template_.has_key(attr)) {
+		//	change_entry->set_text(object_template_[attr].as_string());
+		//}
+		//change_entry->set_on_change_handler(boost::bind(&custom_object_dialog::change_text_attribute, this, change_entry, attr));
+		//change_entry->set_on_enter_handler(do_nothing);
+		//g->add_col(widget_ptr(new label(attr + ": ", graphics::color_white(), 14))).add_col(widget_ptr(change_entry));
+		//return g;
 	} else if(attr == "hitpoints" || attr == "mass" || attr == "friction" 
 		|| attr == "traction" || attr == "traction_in_air") {
 		grid_ptr g(new grid(3));
@@ -204,6 +239,8 @@ gui::widget_ptr custom_object_dialog::get_widget_for_attribute(const std::string
 		} else {
 			change_entry->set_text("0");
 		}
+		slider_offset_[attr] = object_template_.has_key(attr) ? object_template_[attr].as_int() : 0;
+
 		slider_ptr slide(new slider(200, 
 			boost::bind((&custom_object_dialog::change_int_attribute_slider), this, change_entry, attr, _1), 
 			value));
@@ -211,41 +248,84 @@ gui::widget_ptr custom_object_dialog::get_widget_for_attribute(const std::string
 		slide->set_drag_end(boost::bind(&custom_object_dialog::slider_drag_end, this, change_entry, attr, slide, _1));
 		change_entry->set_on_change_handler(boost::bind(&custom_object_dialog::change_int_attribute_text, this, change_entry, attr, slide));
 		change_entry->set_on_enter_handler(do_nothing);
-		g->add_col(widget_ptr(new label(attr + ": ", graphics::color_white(), 14))).add_col(widget_ptr(change_entry));
-		g->add_col(widget_ptr(slide));
-		slider_offset_[attr] = object_template_.has_key(attr) ? object_template_[attr].as_int() : 0;
-		return g;
+		label_ptr attr_label(new label(attr + ": ", graphics::color_white(), 14));
+		attr_label->set_dim(200, attr_label->height());
+		change_entry->set_dim(100, change_entry->height());
+		slide->set_dim(200, slide->height());
+		g->add_col(attr_label).add_col(widget_ptr(change_entry)).add_col(slide);
+
+		g->set_col_width(0, 200);
+		g->set_col_width(1, 100);
+		g->set_col_width(2, 200);
+
+		return std::vector<gui::widget_ptr>(1, g);
 	} else if(attr == "animation") {
-		button_ptr bb(new button(new label("Edit Animations", graphics::color_white(), 20), boost::bind(&custom_object_dialog::on_edit_animations, this)));
-		return bb;
+		//button_ptr bb(new button(new label("Edit Animations", graphics::color_white(), 20), boost::bind(&custom_object_dialog::on_edit_animations, this)));
+		//return bb;
 	} else if(attr == "vars") {
-		grid_ptr g(new grid(1));
-		g->add_col(widget_ptr(new label(attr + ": ", graphics::color_white(), 14)));
-		return g;
+		//grid_ptr g(new grid(1));
+		//g->add_col(widget_ptr(new label(attr + ": ", graphics::color_white(), 14)));
+		//return std::vector<gui::widget_ptr>(1, g);
 	} else if(attr == "editor_info") {
-		grid_ptr g(new grid(1));
-		g->add_col(widget_ptr(new label(attr + ": ", graphics::color_white(), 14)));
-		return g;
+		//grid_ptr g(new grid(1));
+		//g->add_col(widget_ptr(new label(attr + ": ", graphics::color_white(), 14)));
+		//return std::vector<gui::widget_ptr>(1, g);
 	} else if(attr == "prototype") {
-		int count = 0;
-		std::vector<std::string> protos;
+		//int count = 0;
+		// To make this nicer. Create the buttons before adding them to the grid.
+		// Estimate the maximum number of columns needed (take the minimum size button 
+		// divided into screen width being used.  Then we start adding buttons to the 
+		// grid, if we are about to add a button that would go over the maximum
+		// width then we do a .finish_row() (if needed) and start continue
+		// adding the column to the next row (with .add_col()).
+		std::vector<button_ptr> buttons;
+		int min_size_button = INT_MAX;
 		if(object_template_.has_key("prototype")) {
-			protos = object_template_["prototype"].as_list_string();
-			count = protos.size();
+			foreach(const std::string& s, object_template_["prototype"].as_list_string()) {
+				buttons.push_back(new button(widget_ptr(new label(s, graphics::color_white())), 
+					boost::bind(&custom_object_dialog::remove_prototype, this, s)));
+				if(min_size_button > buttons.back()->width()) {
+					min_size_button = buttons.back()->width();
+				}
+			}
 		}
-		grid_ptr g(new grid(2 + count));
-		g->add_col(widget_ptr(new label(attr + ": ", graphics::color_white(), 14)));
-		g->add_col(widget_ptr(new button(widget_ptr(new label("Add...", graphics::color_white())), 
-			boost::bind(&custom_object_dialog::change_prototype, this))));
-		foreach(const std::string& s, protos) {
-			g->add_col(widget_ptr(new button(widget_ptr(new label(s, graphics::color_white())), 
-			boost::bind(&custom_object_dialog::remove_prototype, this, s))));
+		std::vector<gui::widget_ptr> rows;
+		// conservative
+		int column_estimate = (width() - 100) / min_size_button + 2;
+		grid_ptr g(new grid(column_estimate));
+		label_ptr attr_label  = new label(attr + ": ", graphics::color_white(), 14);
+		button_ptr add_button = new button(widget_ptr(new label("Add...", graphics::color_white())), 
+			boost::bind(&custom_object_dialog::change_prototype, this));
+		g->add_col(attr_label).add_col(add_button);
+
+		int current_row_size = attr_label->width() + add_button->width();
+		int buttons_on_current_row = 2;
+		foreach(const button_ptr& b, buttons) {
+			if(b->width() + current_row_size >= width()-100 ) {
+				if(buttons_on_current_row < column_estimate) {
+					g->finish_row();
+				}
+				rows.push_back(g);
+				g.reset(new grid(column_estimate));
+				
+				current_row_size = 0;
+				buttons_on_current_row = 0;
+			}
+			g->add_col(b);
+			current_row_size += b->width();
+			buttons_on_current_row++;
 		}
-		return g;
+		if(buttons_on_current_row != 0) {
+			if(buttons_on_current_row < column_estimate) {
+				g->finish_row();
+			}
+			rows.push_back(g);
+		}
+		return rows;
 	}
 	//ASSERT_LOG(false, "Unhandled attribute " << attr);
 	std::cerr << "Unhandled attribute " << attr << std::endl;
-	return widget_ptr();
+	return std::vector<gui::widget_ptr>();
 }
 
 int custom_object_dialog::slider_transform(double d)
@@ -294,7 +374,36 @@ void custom_object_dialog::change_int_attribute_text(const gui::text_editor_widg
 	}
 }
 
-void custom_object_dialog::change_template()
+void custom_object_dialog::change_template(int selection, const std::string& s)
+{
+	selected_template_ = selection;
+	if(selection == 0) {
+		template_file_ = std::pair<std::string, std::string>();
+	} else {
+		template_file_.first = get_id_from_filemap(std::pair<std::string, std::string>(s,""));
+		template_file_.second = get_dialog_file(s);
+	}
+	if(template_file_.first.empty() == false) {
+		object_template_ = json::parse_from_file(template_file_.second);
+		ASSERT_LOG(object_template_.is_map(), 
+			"OBJECT TEMPLATE READ FROM FILE IS NOT MAP: " << template_file_.second)
+		// ignorning these exceptions till we're finished
+		//assert_recover_scope recover_from_assert;
+		//try {
+		//	object_ = custom_object_type_ptr(new custom_object_type(object_template_, NULL, NULL));
+		//} catch(validation_failure_exception& e) {
+		//	std::cerr << "error parsing formula: " << e.msg << std::endl;
+		//} catch(type_error& e) {
+		//	std::cerr << "error executing formula: " << e.message << std::endl;
+		//}
+	} else {
+		std::map<variant, variant> m;
+		object_template_ = variant(&m);
+	}
+	init();
+}
+
+/*void custom_object_dialog::change_template()
 {
 	using namespace gui;
 	dialog d(int(preferences::virtual_screen_width()*0.3), 
@@ -350,19 +459,19 @@ void custom_object_dialog::execute_change_template(dialog* d, const std::vector<
 		ASSERT_LOG(object_template_.is_map(), 
 			"OBJECT TEMPLATE READ FROM FILE IS NOT MAP: " << template_file_.second)
 		// ignorning these exceptions till we're finished
-		/*assert_recover_scope recover_from_assert;
-		try {
-			object_ = custom_object_type_ptr(new custom_object_type(object_template_, NULL, NULL));
-		} catch(validation_failure_exception& e) {
-			std::cerr << "error parsing formula: " << e.msg << std::endl;
-		} catch(type_error& e) {
-			std::cerr << "error executing formula: " << e.message << std::endl;
-		}*/
+		//assert_recover_scope recover_from_assert;
+		//try {
+		//	object_ = custom_object_type_ptr(new custom_object_type(object_template_, NULL, NULL));
+		//} catch(validation_failure_exception& e) {
+		//	std::cerr << "error parsing formula: " << e.msg << std::endl;
+		//} catch(type_error& e) {
+		//	std::cerr << "error executing formula: " << e.message << std::endl;
+		//}
 	}
 
 	d->close();
 	init();
-}
+}*/
 
 void custom_object_dialog::change_prototype()
 {
