@@ -1737,7 +1737,7 @@ public:
 	}
 
 	virtual void execute(level& lvl, custom_object& ob) const {
-		ob.set_text(text_, font_, size_*2, align_);
+		ob.set_text(text_, font_, size_, align_);
 	}
 private:
 	std::string text_, font_;
@@ -1745,10 +1745,10 @@ private:
 	int align_;
 };
 
-FUNCTION_DEF(text, 1, 4, "text(string text, (optional)string font='default', (optional)int size=1, (optional)bool centered=false): adds text for the current object")
+FUNCTION_DEF(text, 1, 4, "text(string text, (optional)string font='default', (optional)int size=2, (optional)bool centered=false): adds text for the current object")
 	const std::string text = args()[0]->evaluate(variables).as_string();
 	const std::string font = args().size() > 1 ? args()[1]->evaluate(variables).as_string() : "default";
-	const int size = args().size() > 2 ? args()[2]->evaluate(variables).as_int() : 1;
+	const int size = args().size() > 2 ? args()[2]->evaluate(variables).as_int() : 2;
 
 	int align = -1;
 	if(args().size() > 3) {
