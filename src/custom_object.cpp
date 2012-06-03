@@ -3706,7 +3706,7 @@ void custom_object::set_text(const std::string& text, const std::string& font, i
 	text_->align = align;
 	text_->alpha = 255;
 	ASSERT_LOG(text_->font, "UNKNOWN FONT: " << font);
-	text_->dimensions = text_->font->dimensions(text_->text);
+	text_->dimensions = text_->font->dimensions(text_->text, size);
 }
 
 bool custom_object::boardable_vehicle() const
