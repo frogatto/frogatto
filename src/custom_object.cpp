@@ -837,6 +837,13 @@ void custom_object::draw() const
 
 	draw_debug_rects();
 
+	glPushMatrix();
+	glTranslatef(GLfloat(x()), GLfloat(y()), 0.0);
+	foreach(const gui::widget_ptr& w, widgets_) {
+		w->draw();
+	}
+	glPopMatrix();
+
 	for(std::map<std::string, particle_system_ptr>::const_iterator i = particle_systems_.begin(); i != particle_systems_.end(); ++i) {
 		i->second->draw(rect(last_draw_position().x/100, last_draw_position().y/100, graphics::screen_width(), graphics::screen_height()), *this);
 	}

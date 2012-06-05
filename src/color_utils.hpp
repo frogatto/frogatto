@@ -28,6 +28,7 @@ class color : public game_logic::formula_callable
 	explicit color(uint32_t rgba = 0);
 	explicit color(const std::string& str);
 	explicit color(const variant& v);
+	explicit color(const SDL_Color& col);
 
 	variant write() const;
 	

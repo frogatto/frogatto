@@ -47,6 +47,7 @@
 #include "preferences.hpp"
 #include "settings_dialog.hpp"
 #include "module.hpp"
+#include "widget_factory.hpp"
 
 using namespace game_logic;
 
@@ -1777,6 +1778,38 @@ END_FUNCTION_DEF(swallow_event)
 FUNCTION_DEF(swallow_mouse_event, 0, 0, "swallow_event(): when used in an instance-specific event handler, this causes the mouse event to be swallowed and not passed to the next object in the z-order stack.")
 	return variant(new swallow_mouse_command_callable);
 END_FUNCTION_DEF(swallow_mouse_event)
+
+class add_widget_command : public entity_command_callable {
+	const entity_ptr target_;
+	const std::vector<variant> widgets_;
+	//const formula_callable_ptr callable_;
+public:
+	add_widget_command(entity_ptr target, const std::vector<variant> widgets/*, const formula_callable_ptr callable*/)
+	  : target_(target), widgets_(widgets)//, callable_(callable)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		entity* e = target_ ? target_.get() : &ob;
+		custom_object* custom_obj = dynamic_cast<custom_object*>(e);
+		std::vector<gui::widget_ptr> w;
+		map_formula_callable_ptr callable = new map_formula_callable();
+		foreach(const variant& v, widgets_) {
+			w.push_back(widget_factory::create(v, callable));
+		}
+		custom_obj->add_widgets(&w);
+	}
+};
+
+FUNCTION_DEF(add_widget, 1, -1, "add_widget((optional) obj, widget, ...): Adds a group of widgets to the current object, or the specified object")
+	entity_ptr target = args()[0]->evaluate(variables).try_convert<entity>();
+	int arg_start = (target == NULL) ? 0 : 1;
+	std::vector<variant> widgetsv;
+	for(int i = arg_start; i < args().size(); i++) {
+		widgetsv.push_back(args()[i]->evaluate(variables));
+	}
+	//const_formula_callable_ptr callable = map_into_callable(args()[2]->evaluate(variables));
+	return variant(new add_widget_command(target, widgetsv));
+END_FUNCTION_DEF(add_widget)
 
 class add_level_module_command : public entity_command_callable {
 	std::string lvl_;

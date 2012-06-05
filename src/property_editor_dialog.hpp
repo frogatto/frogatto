@@ -39,7 +39,7 @@ private:
 
 	typedef std::pair<gui::text_editor_widget_ptr, gui::slider_ptr> numeric_widgets;
 	void change_numeric_property(const std::string& id, boost::shared_ptr<numeric_widgets> w);
-	void change_numeric_property_slider(const std::string& id, boost::shared_ptr<numeric_widgets> w, float value);
+	void change_numeric_property_slider(const std::string& id, boost::shared_ptr<numeric_widgets> w, double value);
 	void change_enum_property(const std::string& id);
 	void set_enum_property(const std::string& id, const std::vector<std::string>& options, int index);
 

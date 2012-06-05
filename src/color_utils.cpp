@@ -62,6 +62,14 @@ color::color( const std::string& str)
 	}
 }
 
+color::color(const SDL_Color& col)
+{
+	c_.rgba[0] = col.r;
+	c_.rgba[1] = col.g;
+	c_.rgba[2] = col.b;
+	c_.rgba[3] = 255;
+}
+
 color::color(const variant& v)
 {
 	std::vector<int> vec = v.as_list_int();
