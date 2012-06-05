@@ -541,8 +541,18 @@ bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& ev
 				select_ = Loc(cursor_.row, 0);
 				cursor_.col = text_[cursor_.row].size();
 			}
+
+			if(select_ != cursor_) {
+				//a mouse-based copy for X-style copy/paste
+				handle_copy(true);
+			}
 		} else {
 			consecutive_clicks_ = 0;
+
+			if(event.button == SDL_BUTTON_MIDDLE && clipboard_has_mouse_area()) {
+				std::string txt = copy_from_clipboard(true);
+				handle_paste(txt);
+			}
 		}
 
 		last_click_at_ = SDL_GetTicks();
@@ -599,36 +609,10 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 	}
 
 	if((event.keysym.sym == SDLK_c || event.keysym.sym == SDLK_x) && (event.keysym.mod&KMOD_CTRL)) {
+
 		record_op();
-		Loc begin = cursor_;
-		Loc end = select_;
+		handle_copy();
 
-		if(begin.col > text_[begin.row].size()) {
-			begin.col = text_[begin.row].size();
-		}
-
-		if(end.col > text_[end.row].size()) {
-			end.col = text_[end.row].size();
-		}
-
-		if(end < begin) {
-			std::swap(begin, end);
-		}
-
-
-		std::string str;
-		if(begin.row == end.row) {
-			str = std::string(text_[begin.row].begin() + begin.col, text_[begin.row].begin() + end.col);
-		} else {
-			str = std::string(text_[begin.row].begin() + begin.col, text_[begin.row].end());
-			while(++begin.row < end.row) {
-				str += "\n" + text_[begin.row];
-			}
-
-			str += "\n" + std::string(text_[end.row].begin(), text_[end.row].begin() + end.col);
-		}
-
-		copy_to_clipboard(str, false);
 		if(event.keysym.sym == SDLK_x) {
 			save_undo_state();
 			delete_selection();
@@ -637,29 +621,7 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 
 		return true;
 	} else if(event.keysym.sym == SDLK_v && (event.keysym.mod&KMOD_CTRL)) {
-		record_op();
-		save_undo_state();
-		delete_selection();
-		std::string txt = copy_from_clipboard(false);
-
-		txt.erase(std::remove(txt.begin(), txt.end(), '\r'), txt.end());
-		std::vector<std::string> lines = util::split(txt, '\n', 0 /*don't remove empties or strip spaces*/);
-
-		truncate_col_position();
-
-		if(lines.size() == 1) {
-			text_[cursor_.row].insert(text_[cursor_.row].begin() + cursor_.col, lines.front().begin(), lines.front().end());
-			cursor_.col += lines.front().size();
-			refresh_scrollbar();
-			select_ = cursor_;
-		} else if(lines.size() >= 2) {
-			text_.insert(text_.begin() + cursor_.row + 1, lines.back() + std::string(text_[cursor_.row].begin() + cursor_.col, text_[cursor_.row].end()));
-			text_[cursor_.row] = std::string(text_[cursor_.row].begin(), text_[cursor_.row].begin() + cursor_.col) + lines.front();
-			text_.insert(text_.begin() + cursor_.row + 1, lines.begin()+1, lines.end()-1);
-			cursor_ = select_ = Loc(cursor_.row + lines.size() - 1, lines.back().size());
-		}
-
-		on_change();
+		handle_paste(copy_from_clipboard(false));
 
 		return true;
 	}
@@ -953,6 +915,69 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 	return true;
 }
 
+void text_editor_widget::handle_paste(std::string txt)
+{
+	record_op();
+	save_undo_state();
+	delete_selection();
+
+	txt.erase(std::remove(txt.begin(), txt.end(), '\r'), txt.end());
+	std::vector<std::string> lines = util::split(txt, '\n', 0 /*don't remove empties or strip spaces*/);
+
+	truncate_col_position();
+
+	if(lines.size() == 1) {
+		text_[cursor_.row].insert(text_[cursor_.row].begin() + cursor_.col, lines.front().begin(), lines.front().end());
+		cursor_.col += lines.front().size();
+		refresh_scrollbar();
+		select_ = cursor_;
+	} else if(lines.size() >= 2) {
+		text_.insert(text_.begin() + cursor_.row + 1, lines.back() + std::string(text_[cursor_.row].begin() + cursor_.col, text_[cursor_.row].end()));
+		text_[cursor_.row] = std::string(text_[cursor_.row].begin(), text_[cursor_.row].begin() + cursor_.col) + lines.front();
+		text_.insert(text_.begin() + cursor_.row + 1, lines.begin()+1, lines.end()-1);
+		cursor_ = select_ = Loc(cursor_.row + lines.size() - 1, lines.back().size());
+	}
+
+	on_change();
+}
+
+void text_editor_widget::handle_copy(bool mouse_based)
+{
+	if(mouse_based && !clipboard_has_mouse_area()) {
+		return;
+	}
+
+	Loc begin = cursor_;
+	Loc end = select_;
+
+	if(begin.col > text_[begin.row].size()) {
+		begin.col = text_[begin.row].size();
+	}
+
+	if(end.col > text_[end.row].size()) {
+		end.col = text_[end.row].size();
+	}
+
+	if(end < begin) {
+		std::swap(begin, end);
+	}
+
+
+	std::string str;
+	if(begin.row == end.row) {
+		str = std::string(text_[begin.row].begin() + begin.col, text_[begin.row].begin() + end.col);
+	} else {
+		str = std::string(text_[begin.row].begin() + begin.col, text_[begin.row].end());
+		while(++begin.row < end.row) {
+			str += "\n" + text_[begin.row];
+		}
+
+		str += "\n" + std::string(text_[end.row].begin(), text_[end.row].begin() + end.col);
+	}
+
+	copy_to_clipboard(str, mouse_based);
+}
+
 void text_editor_widget::delete_selection()
 {
 	if(cursor_.col == select_.col && cursor_.row == select_.row) {
@@ -1118,6 +1143,11 @@ void text_editor_widget::on_move_cursor(bool auto_shift)
 	}
 
 	scrollable_widget::set_yscroll(scroll_pos_*char_height_);
+
+	if(select_ != cursor_) {
+		//a mouse-based copy for X-style copy/paste
+		handle_copy(true);
+	}
 
 	if(on_move_cursor_) {
 		on_move_cursor_();

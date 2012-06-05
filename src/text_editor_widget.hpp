@@ -104,6 +104,9 @@ private:
 	bool handle_mouse_motion(const SDL_MouseMotionEvent& event);
 	bool handle_key_press(const SDL_KeyboardEvent& key);
 
+	void handle_paste(std::string txt);
+	void handle_copy(bool mouse_based=false);
+
 	virtual graphics::color get_character_color(int row, int col) const;
 
 	void delete_selection();

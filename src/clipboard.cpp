@@ -596,3 +596,13 @@ void init_clipboard()
 	SDL_EventState(SDL_SYSWMEVENT, SDL_ENABLE);
 #endif
 }
+
+bool clipboard_has_mouse_area()
+{
+#if (defined(_X11) || defined(__linux__)) && !defined(__APPLE__) && !defined(__ANDROID__)
+	return true;
+#else
+	return false;
+#endif
+}
+

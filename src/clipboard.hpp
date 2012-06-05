@@ -44,4 +44,7 @@ std::string copy_from_clipboard(const bool mouse);
 
 bool clipboard_handle_event(const SDL_Event& ev);
 
+//if the clipboard has X-style copy paste using the mouse only.
+bool clipboard_has_mouse_area();
+
 #endif
