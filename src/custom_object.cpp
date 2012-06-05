@@ -2306,6 +2306,7 @@ void custom_object::set_value(const std::string& key, const variant& value)
 	if(key == "animation") {
 		set_frame(value.as_string());
 	} else if(key == "time_in_animation") {
+		ASSERT_GE(value.as_int(), 0);
 		time_in_frame_ = value.as_int()%frame_->duration();
 	} else if(key == "time_in_animation_delta") {
 		time_in_frame_delta_ = value.as_int();
@@ -2570,6 +2571,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	}
 		break;
 	case CUSTOM_OBJECT_TIME_IN_ANIMATION:
+		ASSERT_GE(value.as_int(), 0);
 		time_in_frame_ = value.as_int()%frame_->duration();
 		break;
 	case CUSTOM_OBJECT_TIME_IN_ANIMATION_DELTA:
