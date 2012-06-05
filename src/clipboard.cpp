@@ -17,6 +17,7 @@
 
 #include "clipboard.hpp"
 #include <algorithm>
+#include <iostream>
 
 #if (defined(_X11) || defined(__linux__)) && !defined(__APPLE__) && !defined(__ANDROID__)
 #define CLIPBOARD_FUNCS_DEFINED
@@ -182,8 +183,12 @@ static std::string clipboard_string;
 */
 static std::string primary_string;
 
-void handle_system_event(const SDL_Event& event)
+bool clipboard_handle_event(const SDL_Event& event)
 {
+	if(event.type != SDL_SYSWMEVENT) {
+		return false;
+	}
+
 	XEvent& xev = event.syswm.msg->event.xevent;
 	if (xev.type == SelectionRequest) {
 		UseX x11;
@@ -242,6 +247,8 @@ void handle_system_event(const SDL_Event& event)
 			XSendEvent(x11->dpy(), xev.xselectionrequest.requestor, False, NoEventMask,
 			   &responseEvent);
 		}
+
+		return true;
 	}
 
 	if (xev.type == SelectionClear) {
@@ -253,7 +260,11 @@ void handle_system_event(const SDL_Event& event)
 		} else if(xev.xselectionclear.selection == XA_PRIMARY) {
 			primary_string.clear();
 		}
+
+		return true;
 	}
+
+	return false;
 }
 
 void copy_to_clipboard(const std::string& text, const bool mouse)
@@ -372,8 +383,10 @@ std::string copy_from_clipboard(const bool mouse)
 #include <windows.h>
 #define CLIPBOARD_FUNCS_DEFINED
 
-void handle_system_event(const SDL_Event& )
-{}
+bool clipboard_handle_event(const SDL_Event& )
+{
+	return false;
+}
 
 void copy_to_clipboard(const std::string& text, const bool)
 {
@@ -552,8 +565,9 @@ std::string copy_from_clipboard(const bool)
 	return "";
 }
 
-void handle_system_event(const SDL_Event& event)
+bool clipboard_handle_event(const SDL_Event& )
 {
+	return false;
 }
 
 #endif
@@ -569,9 +583,16 @@ std::string copy_from_clipboard(const bool)
 	return "";
 }
 
-void handle_system_event(const SDL_Event& /*event*/)
+bool clipboard_handle_event(const SDL_Event& )
 {
+	return false;
 }
 
 #endif
 
+void init_clipboard()
+{
+#if (defined(_X11) || defined(__linux__)) && !defined(__APPLE__) && !defined(__ANDROID__)
+	SDL_EventState(SDL_SYSWMEVENT, SDL_ENABLE);
+#endif
+}

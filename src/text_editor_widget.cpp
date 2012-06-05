@@ -129,6 +129,8 @@ text_editor_widget::text_editor_widget(int width, int height)
 	}
 
 	text_.push_back("");
+
+	init_clipboard();
 }
 
 text_editor_widget::text_editor_widget(const variant& v, const game_logic::formula_callable_ptr& e)
@@ -165,6 +167,8 @@ text_editor_widget::text_editor_widget(const variant& v, const game_logic::formu
 	}
 
 	text_.push_back("");
+
+	init_clipboard();
 }
 
 text_editor_widget::~text_editor_widget()
@@ -394,6 +398,10 @@ void text_editor_widget::handle_draw() const
 
 bool text_editor_widget::handle_event(const SDL_Event& event, bool claimed)
 {
+	if(!claimed) {
+		claimed = clipboard_handle_event(event);
+	}
+
 	claimed = scrollable_widget::handle_event(event, claimed) || claimed;
 
 	switch(event.type) {
