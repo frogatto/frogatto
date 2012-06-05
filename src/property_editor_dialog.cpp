@@ -420,7 +420,7 @@ void property_editor_dialog::change_numeric_property(const std::string& id, boos
 	mutate_value(id, v);
 }
 
-void property_editor_dialog::change_numeric_property_slider(const std::string& id, boost::shared_ptr<std::pair<gui::text_editor_widget_ptr, gui::slider_ptr> >  w, float value)
+void property_editor_dialog::change_numeric_property_slider(const std::string& id, boost::shared_ptr<std::pair<gui::text_editor_widget_ptr, gui::slider_ptr> >  w, double value)
 {
 	const editor_variable_info* var_info = get_static_entity()->editor_info() ? get_static_entity()->editor_info()->get_var_info(id) : NULL;
 	if(!var_info) {

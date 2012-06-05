@@ -65,11 +65,12 @@ public:
 	void allow_draw_highlight(bool val=true) { allow_highlight_ = val; }
 
 	bool has_focus() const;
+protected:
+	bool handle_event(const SDL_Event& event, bool claimed);
+	void handle_draw() const;
 private:
 	int row_at(int x, int y) const;
 	void recalculate_dimensions();
-	void handle_draw() const;
-	bool handle_event(const SDL_Event& event, bool claimed);
 
 	int nrows() const { return cells_.size()/ncols_; }
 	int ncols_;

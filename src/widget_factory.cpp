@@ -15,6 +15,7 @@
 #include "gui_section.hpp"
 #include "key_button.hpp"
 #include "label.hpp"
+#include "poly_line_widget.hpp"
 #include "preview_tileset_widget.hpp"
 #include "scrollable_widget.hpp"
 #include "scrollbar_widget.hpp"
@@ -49,6 +50,8 @@ widget_ptr create(const variant& v, const game_logic::formula_callable_ptr& e)
 		return widget_ptr(new gui::key_button(v,e));
 	} else if(wtype == "label") {
 		return widget_ptr(new gui::label(v,e));
+	} else if(wtype == "poly_line_widget") {
+		return widget_ptr(new gui::poly_line_widget(v,e));
 	} else if(wtype == "tileset_preview") {
 		return widget_ptr(new gui::preview_tileset_widget(v,e));
 	} else if(wtype == "scrollbar") {

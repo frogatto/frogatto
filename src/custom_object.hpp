@@ -20,6 +20,7 @@
 #include "particle_system.hpp"
 #include "raster_distortion.hpp"
 #include "variant.hpp"
+#include "widget.hpp"
 
 class collision_info;
 class level;
@@ -195,6 +196,8 @@ public:
 
 	const bool mouse_event_swallowed() {return swallow_mouse_event_;}
 	void reset_mouse_event() {swallow_mouse_event_ = false;}
+	void add_widget(const gui::widget_ptr& w) { widgets_.push_back(w); std::sort(widgets_.begin(), widgets_.end(), gui::widget_sort_zorder()); }
+	void add_widgets(std::vector<gui::widget_ptr>* widgets) { widgets_.swap(*widgets); std::sort(widgets_.begin(), widgets_.end(), gui::widget_sort_zorder()); }
 
 protected:
 	//components of per-cycle process() that can be done even on
@@ -380,6 +383,8 @@ private:
 	std::vector<variant> delayed_commands_;
 
 	int currently_handling_die_event_;
+
+	std::vector<gui::widget_ptr> widgets_;
 };
 
 #endif
