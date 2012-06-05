@@ -254,6 +254,29 @@ void show_end_game()
 	}
 }
 
+void translate_mouse_event(SDL_Event *ev)
+{
+	if(ev->type == SDL_MOUSEMOTION) {
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+		ev->motion.x = (ev.motion.x*graphics::screen_width())/preferences::virtual_screen_width() + last_draw_position().x/100;
+		ev->motion.y = (ev.motion.y*graphics::screen_height())/preferences::virtual_screen_height() + last_draw_position().y/100;
+#else
+		ev->motion.x = (ev->motion.x*preferences::virtual_screen_width())/preferences::actual_screen_width() + last_draw_position().x/100;
+		ev->motion.y = (ev->motion.y*preferences::virtual_screen_height())/preferences::actual_screen_height() + last_draw_position().y/100;
+#endif
+	} else if(ev->type == SDL_MOUSEBUTTONDOWN || ev->type == SDL_MOUSEBUTTONUP) {
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+		ev.button.x = (ev.button.x*graphics::screen_width())/preferences::virtual_screen_width() + last_draw_position().x/100;
+		ev.button.y = (ev.button.y*graphics::screen_height())/preferences::virtual_screen_height() + last_draw_position().y/100;
+#else
+		ev->button.x = (ev->button.x*preferences::virtual_screen_width())/preferences::actual_screen_width() + last_draw_position().x/100;
+		ev->button.y = (ev->button.y*preferences::virtual_screen_height())/preferences::actual_screen_height() + last_draw_position().y/100;
+#endif
+	}
+	//x = (x*graphics::screen_width())/preferences::virtual_screen_width() + last_draw_position().x/100;
+	//y = (y*graphics::screen_height())/preferences::virtual_screen_height() + last_draw_position().y/100;
+}
+
 }
 
 void begin_skipping_game() {
@@ -852,10 +875,20 @@ bool level_runner::play_cycle()
 				}
 			}
 
+#endif
+			{
+				// pre-translate the mouse positions.
+				SDL_Event ev(event);
+				translate_mouse_event(&ev);
+				foreach(const entity_ptr& e, lvl_->get_active_chars()) {
+					custom_object* custom_obj = dynamic_cast<custom_object*>(e.get());
+					swallowed = custom_obj->handle_sdl_event(ev, swallowed);
+				}
+			}
+
 			if(swallowed) {
 				continue;
 			}
-#endif
 
 			switch(event.type) {
 			case SDL_QUIT: {

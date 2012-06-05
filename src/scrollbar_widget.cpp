@@ -55,7 +55,8 @@ void scrollbar_widget::handler_delegate(int yscroll)
 	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment().get());
 	callable->add("yscroll", variant(yscroll));
 	variant v(callable);
-	ffl_handler_->execute(*callable);
+	variant value = ffl_handler_->execute(*callable);
+	value.try_convert<game_logic::command_callable>()->execute(*callable);
 }
 
 void scrollbar_widget::set_range(int total_height, int window_height)

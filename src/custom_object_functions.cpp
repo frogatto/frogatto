@@ -1779,12 +1779,12 @@ FUNCTION_DEF(swallow_mouse_event, 0, 0, "swallow_event(): when used in an instan
 	return variant(new swallow_mouse_command_callable);
 END_FUNCTION_DEF(swallow_mouse_event)
 
-class add_widget_command : public entity_command_callable {
+class add_widgets_command : public entity_command_callable {
 	const entity_ptr target_;
 	const std::vector<variant> widgets_;
 	//const formula_callable_ptr callable_;
 public:
-	add_widget_command(entity_ptr target, const std::vector<variant> widgets/*, const formula_callable_ptr callable*/)
+	add_widgets_command(entity_ptr target, const std::vector<variant> widgets/*, const formula_callable_ptr callable*/)
 	  : target_(target), widgets_(widgets)//, callable_(callable)
 	{}
 
@@ -1800,7 +1800,7 @@ public:
 	}
 };
 
-FUNCTION_DEF(add_widget, 1, -1, "add_widget((optional) obj, widget, ...): Adds a group of widgets to the current object, or the specified object")
+FUNCTION_DEF(add_widgets, 1, -1, "add_widgets((optional) obj, widget, ...): Adds a group of widgets to the current object, or the specified object")
 	entity_ptr target = args()[0]->evaluate(variables).try_convert<entity>();
 	int arg_start = (target == NULL) ? 0 : 1;
 	std::vector<variant> widgetsv;
@@ -1808,8 +1808,8 @@ FUNCTION_DEF(add_widget, 1, -1, "add_widget((optional) obj, widget, ...): Adds a
 		widgetsv.push_back(args()[i]->evaluate(variables));
 	}
 	//const_formula_callable_ptr callable = map_into_callable(args()[2]->evaluate(variables));
-	return variant(new add_widget_command(target, widgetsv));
-END_FUNCTION_DEF(add_widget)
+	return variant(new add_widgets_command(target, widgetsv));
+END_FUNCTION_DEF(add_widgets)
 
 class add_level_module_command : public entity_command_callable {
 	std::string lvl_;

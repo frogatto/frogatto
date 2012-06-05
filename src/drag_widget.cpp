@@ -138,7 +138,8 @@ void drag_widget::drag(int dx, int dy)
 	callable->add("drag_dx", variant(dx));
 	callable->add("drag_dy", variant(dy));
 	variant v(callable);
-	drag_handler_->execute(*callable);
+	variant value = drag_handler_->execute(*callable);
+	value.try_convert<game_logic::command_callable>()->execute(*callable);
 }
 
 void drag_widget::drag_start(int x, int y)
@@ -147,7 +148,8 @@ void drag_widget::drag_start(int x, int y)
 	callable->add("drag_x", variant(x));
 	callable->add("drag_y", variant(y));
 	variant v(callable);
-	drag_start_handler_->execute(*callable);
+	variant value = drag_start_handler_->execute(*callable);
+	value.try_convert<game_logic::command_callable>()->execute(*callable);
 }
 
 void drag_widget::drag_end(int x, int y)
@@ -156,7 +158,8 @@ void drag_widget::drag_end(int x, int y)
 	callable->add("drag_x", variant(x));
 	callable->add("drag_y", variant(y));
 	variant v(callable);
-	drag_end_handler_->execute(*callable);
+	variant value = drag_end_handler_->execute(*callable);
+	value.try_convert<game_logic::command_callable>()->execute(*callable);
 }
 
 void drag_widget::handle_draw() const

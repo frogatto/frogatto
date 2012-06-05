@@ -121,7 +121,8 @@ void dropdown_widget::change_delegate(const std::string& s)
 	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment().get());
 	callable->add("selection", variant(s));
 	variant v(callable);
-	change_handler_->execute(*callable);
+	variant value = change_handler_->execute(*callable);
+	value.try_convert<game_logic::command_callable>()->execute(*callable);
 }
 
 void dropdown_widget::select_delegate(int selection, const std::string& s)
@@ -133,7 +134,8 @@ void dropdown_widget::select_delegate(int selection, const std::string& s)
 		callable->add("selection", variant(s));
 	}
 	variant v(callable);
-	select_handler_->execute(*callable);
+	variant value = select_handler_->execute(*callable);
+	value.try_convert<game_logic::command_callable>()->execute(*callable);
 }
 
 void dropdown_widget::text_enter()

@@ -63,7 +63,8 @@ button::button(const variant& v, const game_logic::formula_callable_ptr& e) : wi
 
 void button::click()
 {
-	click_handler_->execute(*get_environment());
+	variant value = click_handler_->execute(*get_environment());
+	value.try_convert<game_logic::command_callable>()->execute(*get_environment());
 }
 
 void button::setup()
