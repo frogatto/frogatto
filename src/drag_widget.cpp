@@ -84,7 +84,7 @@ drag_widget::drag_widget(const int x, const int y, const int w, const int h,
 	init();
 }
 
-drag_widget::drag_widget(const variant& v, const game_logic::formula_callable_ptr& e) 
+drag_widget::drag_widget(const variant& v, game_logic::formula_callable* e) 
 	: widget(v,e), old_cursor_(NULL), dragging_handle_(0)
 {
 	dir_ = v["direction"].as_string_default("horizontal") == "horizontal" ? DRAG_HORIZONTAL : DRAG_VERTICAL;
@@ -134,7 +134,7 @@ void drag_widget::init()
 
 void drag_widget::drag(int dx, int dy)
 {
-	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment().get());
+	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
 	callable->add("drag_dx", variant(dx));
 	callable->add("drag_dy", variant(dy));
 	variant v(callable);
@@ -144,7 +144,7 @@ void drag_widget::drag(int dx, int dy)
 
 void drag_widget::drag_start(int x, int y)
 {
-	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment().get());
+	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
 	callable->add("drag_x", variant(x));
 	callable->add("drag_y", variant(y));
 	variant v(callable);
@@ -154,7 +154,7 @@ void drag_widget::drag_start(int x, int y)
 
 void drag_widget::drag_end(int x, int y)
 {
-	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment().get());
+	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
 	callable->add("drag_x", variant(x));
 	callable->add("drag_y", variant(y));
 	variant v(callable);

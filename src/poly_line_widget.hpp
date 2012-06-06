@@ -30,7 +30,7 @@ public:
 		points_.push_back(p2);
 		calc_coords();
 	}
-	poly_line_widget(const variant& v, const game_logic::formula_callable_ptr& e)
+	poly_line_widget(const variant& v, game_logic::formula_callable* e)
 		: widget(v,e)
 	{
 		width_ = v.has_key("width") ? v["width"].as_int() : 1.0f;

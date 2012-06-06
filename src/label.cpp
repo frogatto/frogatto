@@ -34,7 +34,7 @@ label::label(const std::string& text, const SDL_Color& color, int size)
 	recalculate_texture();
 }
 
-label::label(const variant& v, const game_logic::formula_callable_ptr& e)
+label::label(const variant& v, game_logic::formula_callable* e)
 	: widget(v,e), fixed_width_(false)
 {
 	text_ = i18n::tr(v["text"].as_string());
@@ -142,7 +142,7 @@ dialog_label::dialog_label(const std::string& text, const SDL_Color& color, int 
 	recalculate_texture();
 }
 
-dialog_label::dialog_label(const variant& v, const game_logic::formula_callable_ptr& e)
+dialog_label::dialog_label(const variant& v, game_logic::formula_callable* e)
 	: label(v, e), progress_(0)
 {
 	recalculate_texture();

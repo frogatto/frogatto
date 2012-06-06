@@ -18,7 +18,7 @@ class key_button : public widget
 {
 public:
 	key_button(SDLKey key, BUTTON_RESOLUTION button_resolution);
-	key_button(const variant& v, const game_logic::formula_callable_ptr& e);
+	key_button(const variant& v, game_logic::formula_callable* e);
 
 	SDLKey get_key();
 

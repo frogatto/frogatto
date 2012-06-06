@@ -20,7 +20,7 @@ border_widget::border_widget(widget_ptr child, const SDL_Color& color, int borde
 	child_->set_loc(border_size, border_size);
 }
 
-border_widget::border_widget(const variant& v, const game_logic::formula_callable_ptr& e) : widget(v,e)
+border_widget::border_widget(const variant& v, game_logic::formula_callable* e) : widget(v,e)
 {
 	ASSERT_LOG(v.is_map(), "TYPE ERROR: parameter to border widget must be a map");
 	color_ = v.has_key("color") ? graphics::color(0,0,0,255) : graphics::color(v["color"]);

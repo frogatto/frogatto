@@ -25,7 +25,7 @@ public:
 		DROPDOWN_COMBOBOX,
 	};
 	dropdown_widget(const dropdown_list& list, int width, int height=0, dropdown_type type=DROPDOWN_LIST);
-	dropdown_widget(const variant& v, const game_logic::formula_callable_ptr& e);
+	dropdown_widget(const variant& v, game_logic::formula_callable* e);
 	virtual ~dropdown_widget() {}
 
 	void set_on_change_handler(boost::function<void(const std::string&)> fn) { on_change_ = fn; }

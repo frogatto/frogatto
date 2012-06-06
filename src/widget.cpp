@@ -23,7 +23,7 @@
 
 namespace gui {
 
-widget::widget(const variant& v, const game_logic::formula_callable_ptr& e) 
+widget::widget(const variant& v, game_logic::formula_callable* e) 
 	: environ_(e), w_(0), h_(0), x_(0), y_(0), zorder_(0)
 {
 	if(v.has_key("width")) {

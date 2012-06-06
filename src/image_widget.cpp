@@ -29,7 +29,7 @@ image_widget::image_widget(graphics::texture tex, int w, int h)
 	init(w, h);
 }
 
-image_widget::image_widget(const variant& v, const game_logic::formula_callable_ptr& e)
+image_widget::image_widget(const variant& v, game_logic::formula_callable* e)
 {
 	texture_ = graphics::texture::get(v["image"].as_string());
 	rotate_ = v.has_key("rotation") ? v["rotation"].as_decimal().as_float() : 0.0;
@@ -96,7 +96,7 @@ gui_section_widget::gui_section_widget(const std::string& id, int w, int h, int 
 	}
 }
 
-gui_section_widget::gui_section_widget(const variant& v, const game_logic::formula_callable_ptr& e) 
+gui_section_widget::gui_section_widget(const variant& v, game_logic::formula_callable* e) 
 	: widget(v,e)
 {
 	section_ = gui_section::get(v);

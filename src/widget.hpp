@@ -44,14 +44,14 @@ public:
 	virtual void handle_draw() const = 0;
 
 	virtual bool has_focus() const { return false; }
-	game_logic::formula_callable_ptr get_environment() const { return environ_; }
+	game_logic::formula_callable* get_environment() const { return environ_; }
 
 	void set_zorder(int z) { zorder_ = z; }
 	int zorder() const { return zorder_; }
 protected:
 	widget() : x_(0), y_(0), w_(0), h_(0), tooltip_displayed_(false), visible_(true), zorder_(0)
 	{}
-	explicit widget(const variant& v, const game_logic::formula_callable_ptr& e);
+	explicit widget(const variant& v, game_logic::formula_callable* e);
 	virtual ~widget();
 
 	void normalize_event(SDL_Event* event, bool translate_coords=false);
@@ -62,7 +62,7 @@ private:
 	boost::shared_ptr<std::string> tooltip_;
 	bool tooltip_displayed_;
 	bool visible_;
-	game_logic::formula_callable_ptr environ_;
+	game_logic::formula_callable* environ_;
 	// default zorder_ is 0.  A widget *must* have a good reason for wanting
 	// higher priority in the draw order.
 	int zorder_;

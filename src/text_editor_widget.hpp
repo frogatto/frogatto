@@ -18,7 +18,7 @@ class text_editor_widget : public scrollable_widget
 {
 public:
 	text_editor_widget(int width, int height=0);
-	text_editor_widget(const variant& v, const game_logic::formula_callable_ptr& e);
+	text_editor_widget(const variant& v, game_logic::formula_callable* e);
 	~text_editor_widget();
 
 	std::string text() const;

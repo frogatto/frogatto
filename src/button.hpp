@@ -31,7 +31,7 @@ class button : public widget
 public:
 	button(const std::string& label, boost::function<void ()> onclick);
 	button(widget_ptr label, boost::function<void ()> onclick, BUTTON_STYLE button_style = BUTTON_STYLE_NORMAL, BUTTON_RESOLUTION button_resolution = BUTTON_SIZE_NORMAL_RESOLUTION);
-	button(const variant& v, const game_logic::formula_callable_ptr& e);
+	button(const variant& v, game_logic::formula_callable* e);
 
 protected:
 	virtual variant get_value(const std::string& key) const;

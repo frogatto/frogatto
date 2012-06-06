@@ -13,7 +13,7 @@ class scrollbar_widget : public widget
 {
 public:
 	explicit scrollbar_widget(boost::function<void(int)> handler);
-	explicit scrollbar_widget(const variant& v, const game_logic::formula_callable_ptr& e);
+	explicit scrollbar_widget(const variant& v, game_logic::formula_callable* e);
 
 	void set_range(int total_height, int window_height);
 	void set_loc(int x, int y);

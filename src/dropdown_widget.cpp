@@ -32,7 +32,7 @@ dropdown_widget::dropdown_widget(const dropdown_list& list, int width, int heigh
 	init();
 }
 
-dropdown_widget::dropdown_widget(const variant& v, const game_logic::formula_callable_ptr& e)
+dropdown_widget::dropdown_widget(const variant& v, game_logic::formula_callable* e)
 	: widget(v,e), current_selection_(0), dropdown_height_(100)
 {
 	if(v.has_key("type")) {
@@ -118,7 +118,7 @@ void dropdown_widget::set_selection(int selection)
 
 void dropdown_widget::change_delegate(const std::string& s)
 {
-	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment().get());
+	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
 	callable->add("selection", variant(s));
 	variant v(callable);
 	variant value = change_handler_->execute(*callable);
@@ -127,7 +127,7 @@ void dropdown_widget::change_delegate(const std::string& s)
 
 void dropdown_widget::select_delegate(int selection, const std::string& s)
 {
-	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment().get());
+	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
 	if(selection == -1) {
 		callable->add("selection", variant(selection));
 	} else {

@@ -29,7 +29,7 @@ scrollbar_widget::scrollbar_widget(boost::function<void(int)> handler)
 	drag_start_(0), drag_anchor_y_(0)
 {}
 
-scrollbar_widget::scrollbar_widget(const variant& v, const game_logic::formula_callable_ptr& e)
+scrollbar_widget::scrollbar_widget(const variant& v, game_logic::formula_callable* e)
 	: widget(v,e),	window_pos_(0), window_size_(0), range_(0), step_(0),
 	dragging_handle_(false), drag_start_(0), drag_anchor_y_(0)
 {
@@ -52,7 +52,7 @@ scrollbar_widget::scrollbar_widget(const variant& v, const game_logic::formula_c
 
 void scrollbar_widget::handler_delegate(int yscroll)
 {
-	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment().get());
+	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
 	callable->add("yscroll", variant(yscroll));
 	variant v(callable);
 	variant value = ffl_handler_->execute(*callable);

@@ -23,7 +23,7 @@ public:
 		boost::function<void(int, int)> drag_start, 
 		boost::function<void(int, int)> drag_end, 
 		boost::function<void(int, int)> drag_move);
-	explicit drag_widget(const variant&, const game_logic::formula_callable_ptr& e);
+	explicit drag_widget(const variant&, game_logic::formula_callable* e);
 
 private:
 	void init();

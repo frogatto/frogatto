@@ -33,12 +33,16 @@ slider::slider(int width, boost::function<void (double)> onchange, double positi
 	set_dim(width_+slider_left_->width()*2, slider_button_->height());
 }
 
-slider::slider(const variant& v, const game_logic::formula_callable_ptr& e)
+slider::slider(const variant& v, game_logic::formula_callable* e)
 	: widget(v,e), dragging_(false)
 {
 	onchange_ = boost::bind(&slider::change_delegate, this, _1);
 	// XXX replace the 0 with an actual symbol table.
 	ffl_handler_ = game_logic::formula_ptr(new game_logic::formula(v["on_change"], 0));
+	if(v.has_key("on_drag_end")) {
+		ondragend_ = boost::bind(&slider::dragend_delegate, this, _1);
+		ffl_end_handler_ = game_logic::formula_ptr(new game_logic::formula(v["on_drag_end"], 0));
+	}
 
 	position_ = v.has_key("position") ? v["position"].as_decimal().as_float() : 0.0;
 	
@@ -98,11 +102,20 @@ void slider::handle_draw() const
 
 void slider::change_delegate(double position)
 {
-	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment().get());
+	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
 	callable->add("position", variant(position));
 	variant v(callable);
 	ffl_handler_->execute(*callable);
 }
+
+void slider::dragend_delegate(double position)
+{
+	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
+	callable->add("position", variant(position));
+	variant v(callable);
+	ffl_end_handler_->execute(*callable);
+}
+
 
 bool slider::handle_event(const SDL_Event& event, bool claimed)
 {

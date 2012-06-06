@@ -12,7 +12,7 @@ class scrollable_widget : virtual public widget
 {
 public:
 	scrollable_widget();
-	scrollable_widget(const variant& v, const game_logic::formula_callable_ptr& e);
+	scrollable_widget(const variant& v, game_logic::formula_callable* e);
 	void set_yscroll(int yscroll);
 	virtual void set_dim(int w, int h);
 

@@ -38,7 +38,7 @@ public:
 	}
 	explicit label(const std::string& text, const SDL_Color& color, int size=14);
 	explicit label(const std::string& text, int size=14);
-	explicit label(const variant& v, const game_logic::formula_callable_ptr& e);
+	explicit label(const variant& v, game_logic::formula_callable* e);
 
 	void set_font_size(int font_size);
 	void set_color(const SDL_Color& color);
@@ -73,7 +73,7 @@ class dialog_label : public label
 {
 public:
 	explicit dialog_label(const std::string& text, const SDL_Color& color, int size=18);
-	explicit dialog_label(const variant& v, const game_logic::formula_callable_ptr& e);
+	explicit dialog_label(const variant& v, game_logic::formula_callable* e);
 	void set_progress(int progress);
 	int get_max_progress() { return stages_; }
 protected:

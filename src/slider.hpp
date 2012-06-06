@@ -28,7 +28,7 @@ class slider : public widget
 {
 public:
 	explicit slider(int width, boost::function<void (double)> onchange, double position=0.0);
-	explicit slider(const variant& v, const game_logic::formula_callable_ptr& e);
+	explicit slider(const variant& v, game_logic::formula_callable* e);
 	double position() const {return position_;};
 	void set_position (double position) {position_ = position;};
 	void set_drag_end(boost::function<void (double)> ondragend) { ondragend_ = ondragend; }
@@ -54,6 +54,8 @@ private:
 
 	game_logic::formula_ptr ffl_handler_;
 	void change_delegate(double);
+	game_logic::formula_ptr ffl_end_handler_;
+	void dragend_delegate(double);
 };
 	
 typedef boost::intrusive_ptr<slider> slider_ptr;

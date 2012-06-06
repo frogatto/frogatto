@@ -133,7 +133,7 @@ text_editor_widget::text_editor_widget(int width, int height)
 	init_clipboard();
 }
 
-text_editor_widget::text_editor_widget(const variant& v, const game_logic::formula_callable_ptr& e)
+text_editor_widget::text_editor_widget(const variant& v, game_logic::formula_callable* e)
 	: scrollable_widget(v,e), last_op_type_(NULL), font_size_(14), 
 	select_(0,0), cursor_(0,0), scroll_pos_(0),
 	begin_highlight_line_(-1), end_highlight_line_(-1),

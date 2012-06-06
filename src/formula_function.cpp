@@ -1224,7 +1224,7 @@ FUNCTION_DEF(dialog, 2, 2, "dialog(obj, template")
 	bool modal = args().size() == 3 && args()[2]->evaluate(variables).as_bool(); 
 	variant environment = args()[0]->evaluate(variables);
 	variant dlg_template = args()[1]->evaluate(variables);
-	formula_callable_ptr e = environment.try_convert<formula_callable>();
+	formula_callable* e = environment.try_convert<formula_callable>();
 	variant v;
 	if(dlg_template.is_string()) {
 		std::string s = dlg_template.as_string();

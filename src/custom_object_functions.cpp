@@ -1792,9 +1792,8 @@ public:
 		entity* e = target_ ? target_.get() : &ob;
 		custom_object* custom_obj = dynamic_cast<custom_object*>(e);
 		std::vector<gui::widget_ptr> w;
-		map_formula_callable_ptr callable = new map_formula_callable();
 		foreach(const variant& v, widgets_) {
-			w.push_back(widget_factory::create(v, callable));
+			w.push_back(widget_factory::create(v, custom_obj));
 		}
 		custom_obj->add_widgets(&w);
 	}
