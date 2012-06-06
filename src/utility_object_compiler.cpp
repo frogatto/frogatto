@@ -14,6 +14,7 @@
 #include "frame.hpp"
 #include "geometry.hpp"
 #include "json_parser.hpp"
+#include "module.hpp"
 #include "string_utils.hpp"
 #include "surface.hpp"
 #include "surface_cache.hpp"
@@ -115,18 +116,18 @@ UTILITY(compile_objects)
 	std::vector<variant> animation_containing_nodes;
 	std::vector<std::string> no_compile_images;
 
-	variant gui_node = json::parse_from_file("data/gui.cfg");
+	variant gui_node = json::parse_from_file(module::map_file("data/gui.cfg"));
 	animation_containing_nodes.push_back(gui_node);
 
 	std::map<std::string, variant> gui_nodes;
 	std::vector<std::string> gui_files;
-	sys::get_files_in_dir("data/gui", &gui_files);
+	module::get_files_in_dir("data/gui", &gui_files);
 	foreach(const std::string& gui, gui_files) {
 		if(gui[0] == '.') {
 			continue;
 		}
 
-		gui_nodes[gui] = json::parse_from_file("data/gui/" + gui);
+		gui_nodes[gui] = json::parse_from_file(module::map_file("data/gui/" + gui));
 		animation_containing_nodes.push_back(gui_nodes[gui]);
 		if(gui_nodes[gui].has_key("no_compile_image")) {
 			std::vector<std::string> images = util::split(gui_nodes[gui][variant("no_compile_image")].as_string());
@@ -284,7 +285,7 @@ UTILITY(compile_objects)
 
 		graphics::set_alpha_for_transparent_colors_in_rgba_surface(surfaces[n].get());
 
-		IMG_SavePNG(fname.str().c_str(), surfaces[n].get(), -1);
+		IMG_SavePNG((module::get_module_path() + fname.str()).c_str(), surfaces[n].get(), -1);
 	}
 
 	typedef std::pair<variant, animation_area_ptr> anim_pair;
@@ -333,13 +334,13 @@ UTILITY(compile_objects)
 
 	for(std::map<variant, std::string>::iterator i = nodes_to_files.begin(); i != nodes_to_files.end(); ++i) {
 		variant node = i->first;
-		sys::write_file(i->second, node.write_json());
+		module::write_file(i->second, node.write_json());
 	}
 
-	sys::write_file("data/compiled/gui.cfg", gui_node.write_json());
+	module::write_file("data/compiled/gui.cfg", gui_node.write_json());
 
 	for(std::map<std::string, variant>::iterator i = gui_nodes.begin();
 	    i != gui_nodes.end(); ++i) {
-		sys::write_file("data/compiled/gui/" + i->first, i->second.write_json());
+		module::write_file("data/compiled/gui/" + i->first, i->second.write_json());
 	}
 }
