@@ -51,7 +51,8 @@ button::button(widget_ptr label, boost::function<void ()> onclick, BUTTON_STYLE 
 
 button::button(const variant& v, game_logic::formula_callable* e) : widget(v,e), down_(false)
 {
-	label_ = v.has_key("label") ? widget_factory::create(v["label"], e) : new label("Button", graphics::color_white());
+	variant label_var = v["label"];
+	label_ = label_var.is_map() ? widget_factory::create(label_var, e) : new label(label_var.as_string_default("Button"), graphics::color_white());
 	ASSERT_LOG(v.has_key("on_click"), "Button must be supplied with an on_click handler");
 	// create delegate for onclick
 	// XXX replace the 0 with an actual symbol table.
