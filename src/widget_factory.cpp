@@ -26,7 +26,7 @@ namespace widget_factory {
 
 using gui::widget_ptr;
 
-widget_ptr create(const variant& v, const game_logic::formula_callable_ptr& e)
+widget_ptr create(const variant& v, game_logic::formula_callable* e)
 {
 	ASSERT_LOG(v.is_map(), "TYPE ERROR: widget must be specified by a map");	
 	std::string wtype = v["type"].as_string();

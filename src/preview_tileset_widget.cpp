@@ -13,7 +13,7 @@ preview_tileset_widget::preview_tileset_widget(const tile_map& tiles)
 	init();
 }
 
-preview_tileset_widget::preview_tileset_widget(const variant& v, const game_logic::formula_callable_ptr& e)
+preview_tileset_widget::preview_tileset_widget(const variant& v, game_logic::formula_callable* e)
 	: widget(v,e)
 {
 	tile_map(v["tile_map"]).build_tiles(&tiles_);

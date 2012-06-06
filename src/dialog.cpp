@@ -68,7 +68,7 @@ dialog::dialog(int x, int y, int w, int h)
 	set_dim(w,h);
 }
 
-dialog::dialog(const variant& v, const game_logic::formula_callable_ptr& e)
+dialog::dialog(const variant& v, game_logic::formula_callable* e)
 	: widget(v,e),
 	opened_(false), cancelled_(false), clear_bg_(196), padding_(10),
 	add_x_(0), add_y_(0), bg_alpha_(1.0), last_draw_(-1)

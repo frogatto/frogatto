@@ -84,7 +84,7 @@ drag_widget::drag_widget(const int x, const int y, const int w, const int h,
 	init();
 }
 
-drag_widget::drag_widget(const variant& v, const game_logic::formula_callable_ptr& e) 
+drag_widget::drag_widget(const variant& v, game_logic::formula_callable* e) 
 	: widget(v,e), old_cursor_(NULL), dragging_handle_(0)
 {
 	dir_ = v["direction"].as_string_default("horizontal") == "horizontal" ? DRAG_HORIZONTAL : DRAG_VERTICAL;
@@ -134,29 +134,32 @@ void drag_widget::init()
 
 void drag_widget::drag(int dx, int dy)
 {
-	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment().get());
+	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
 	callable->add("drag_dx", variant(dx));
 	callable->add("drag_dy", variant(dy));
 	variant v(callable);
-	drag_handler_->execute(*callable);
+	variant value = drag_handler_->execute(*callable);
+	value.try_convert<game_logic::command_callable>()->execute(*callable);
 }
 
 void drag_widget::drag_start(int x, int y)
 {
-	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment().get());
+	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
 	callable->add("drag_x", variant(x));
 	callable->add("drag_y", variant(y));
 	variant v(callable);
-	drag_start_handler_->execute(*callable);
+	variant value = drag_start_handler_->execute(*callable);
+	value.try_convert<game_logic::command_callable>()->execute(*callable);
 }
 
 void drag_widget::drag_end(int x, int y)
 {
-	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment().get());
+	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
 	callable->add("drag_x", variant(x));
 	callable->add("drag_y", variant(y));
 	variant v(callable);
-	drag_end_handler_->execute(*callable);
+	variant value = drag_end_handler_->execute(*callable);
+	value.try_convert<game_logic::command_callable>()->execute(*callable);
 }
 
 void drag_widget::handle_draw() const

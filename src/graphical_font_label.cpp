@@ -11,7 +11,7 @@ graphical_font_label::graphical_font_label(
 	reset_text_dimensions();
 }
 
-graphical_font_label::graphical_font_label(const variant& v, const game_logic::formula_callable_ptr& e)
+graphical_font_label::graphical_font_label(const variant& v, game_logic::formula_callable* e)
 	: widget(v,e)
 {
 	text_ = v["text"].as_string();

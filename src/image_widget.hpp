@@ -28,7 +28,7 @@ class image_widget : public widget
 public:
 	explicit image_widget(const std::string& fname, int w=-1, int h=-1);
 	explicit image_widget(graphics::texture tex, int w=-1, int h=-1);
-	explicit image_widget(const variant& v, const game_logic::formula_callable_ptr& e);
+	explicit image_widget(const variant& v, game_logic::formula_callable* e);
 
 	void init(int w, int h);
 
@@ -50,7 +50,7 @@ class gui_section_widget : public widget
 {
 public:
 	explicit gui_section_widget(const std::string& id, int w=-1, int h=-1, int scale=1);
-	explicit gui_section_widget(const variant& v, const game_logic::formula_callable_ptr& e);
+	explicit gui_section_widget(const variant& v, game_logic::formula_callable* e);
 
 	//sets the GUI section. The dimensions of the widget will not change;
 	//you should set a GUI section that is the same size.

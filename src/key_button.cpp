@@ -158,7 +158,7 @@ key_button::key_button(SDLKey key, BUTTON_RESOLUTION button_resolution)
 	set_dim(label_->width()+hpadding*2,label_->height()+vpadding*2);
 }
 
-key_button::key_button(const variant& v, const game_logic::formula_callable_ptr& e) 
+key_button::key_button(const variant& v, game_logic::formula_callable* e) 
 	: widget(v,e), 	normal_button_image_set_(framed_gui_element::get("regular_button")),
 	depressed_button_image_set_(framed_gui_element::get("regular_button_pressed")),
 	focus_button_image_set_(framed_gui_element::get("regular_button_focus")),

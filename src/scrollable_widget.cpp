@@ -7,7 +7,7 @@ namespace gui {
 scrollable_widget::scrollable_widget() : yscroll_(0), virtual_height_(0), step_(0)
 {}
 
-scrollable_widget::scrollable_widget(const variant& v, const game_logic::formula_callable_ptr& e)
+scrollable_widget::scrollable_widget(const variant& v, game_logic::formula_callable* e)
 	: widget(v,e), yscroll_(0), virtual_height_(0), step_(0)
 {
 	if(v.has_key("yscroll")) {

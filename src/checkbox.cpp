@@ -24,7 +24,7 @@ checkbox::checkbox(const std::string& label, bool checked, boost::function<void(
 {
 }
 
-checkbox::checkbox(const variant& v, const game_logic::formula_callable_ptr& e) : checked_(false), button(v,e)
+checkbox::checkbox(const variant& v, game_logic::formula_callable* e) : checked_(false), button(v,e)
 {
 }
 

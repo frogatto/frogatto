@@ -32,7 +32,7 @@ public:
 	typedef std::vector<widget_ptr>::const_iterator child_iterator;
 
 	explicit dialog(int x, int y, int w, int h);
-	explicit dialog(const variant& v, const game_logic::formula_callable_ptr& e);
+	explicit dialog(const variant& v, game_logic::formula_callable* e);
 	virtual ~dialog();
 	virtual void show_modal();
 	void show();

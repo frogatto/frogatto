@@ -18,7 +18,7 @@ public:
 	static bool is_animation(variant obj);
 
 	explicit animation_preview_widget(variant obj);
-	explicit animation_preview_widget(const variant& v, const game_logic::formula_callable_ptr& e);
+	explicit animation_preview_widget(const variant& v, game_logic::formula_callable* e);
 	void init();
 	void set_object(variant obj);
 

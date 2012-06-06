@@ -2230,6 +2230,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	}
 	
 	ASSERT_LOG(false, "UNKNOWN SLOT QUERIED FROM OBJECT: " << slot);
+	return variant();
 }
 
 variant custom_object::get_value(const std::string& key) const
@@ -3973,6 +3974,22 @@ void custom_object::update_type(const_custom_object_type_ptr old_type,
 	for(std::map<std::string, particle_system_ptr>::const_iterator i = systems.begin(); i != systems.end(); ++i) {
 		add_particle_system(i->first, i->second->type());
 	}
+}
+
+bool custom_object::handle_sdl_event(const SDL_Event& event, bool claimed)
+{
+	SDL_Event ev(event);
+	if(event.type == SDL_MOUSEMOTION) {
+		ev.motion.x -= x();
+		ev.motion.y -= y();
+	} else if(event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
+		ev.button.x -= x();
+		ev.button.y -= y();
+	}
+	foreach(const gui::widget_ptr& w, widgets_) {
+		claimed = w->process_event(ev, claimed);
+	}
+	return claimed;
 }
 
 BENCHMARK(custom_object_spike) {
