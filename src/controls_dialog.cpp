@@ -74,8 +74,8 @@ void show_controls_dialog()
 	d.add_widget(b5);
 	d.add_widget(t3, d.width()/2 - b1->width()/2, start_y);
 	d.add_widget(b6);
-//	d.add_widget(t4, d.width()/2 + b1->width()/2 + d.padding(), start_y);
-//	d.add_widget(b7);
+	d.add_widget(t4, d.width()/2 + b1->width()/2 + d.padding(), start_y);
+	d.add_widget(b7);
 	d.add_widget(b8, d.width()/2 - b8->width()/2, start_y + t2->height() + b5->height() + 3*d.padding());
 
 	d.show_modal();
