@@ -46,7 +46,11 @@ parse_error::parse_error(const std::string& msg, const std::string& filename, in
 
 std::string parse_error::error_message() const
 {
-	return formatter() << "PARSE ERROR: " << fname << ": line " << line << " col " << col << ": " << message;
+	if(line != -1) {
+		return formatter() << "PARSE ERROR: " << fname << ": line " << line << " col " << col << ": " << message;
+	} else {
+		return formatter() << "PARSE ERROR: " << fname << ": " << message;
+	}
 }
 
 namespace {
@@ -487,7 +491,7 @@ variant parse_from_file(const std::string& fname, JSON_PARSE_OPTIONS options)
 		checksum::verify_file(fname, data);
 
 		if(data.empty()) {
-			throw parse_error(formatter() << "File " << fname << " could not be read");
+			throw parse_error(formatter() << "Could not find file " << fname);
 		}
 
 		variant result = parse_internal(data, fname, options, NULL, NULL);
