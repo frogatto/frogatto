@@ -36,7 +36,7 @@ std::string get_id(const std::string& id);
 std::string get_module_id(const std::string& id);
 std::string make_module_id(const std::string& name);
 std::map<std::string, std::string>::const_iterator find(const std::map<std::string, std::string>& filemap, const std::string& name);
-const std::string& get_module_path(const std::string& abbrev);
+const std::string& get_module_path(const std::string& abbrev="");
 std::vector<variant> get_all();
 variant get(const std::string& name);
 void load(const std::string& name, bool initial=true);
