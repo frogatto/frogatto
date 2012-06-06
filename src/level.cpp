@@ -3993,7 +3993,7 @@ UTILITY(compile_levels)
 	std::cerr << "COMPILING LEVELS...\n";
 
 	std::vector<std::string> files;
-	sys::get_files_in_dir(preferences::level_path(), &files);
+	module::get_files_in_dir(preferences::level_path(), &files);
 
 	variant_builder index_node;
 
@@ -4002,7 +4002,7 @@ UTILITY(compile_levels)
 		boost::intrusive_ptr<level> lvl(new level(file));
 		lvl->finish_loading();
 		lvl->record_zorders();
-		sys::write_file("data/compiled/level/" + file, lvl->write().write_json(true));
+		module::write_file("data/compiled/level/" + file, lvl->write().write_json(true));
 
 		variant_builder level_summary;
 		level_summary.add("level", lvl->id());
@@ -4011,7 +4011,7 @@ UTILITY(compile_levels)
 		index_node.add("level", level_summary.build());
 	}
 
-	sys::write_file("data/compiled/level_index.cfg", index_node.build().write_json(true));
+	module::write_file("data/compiled/level_index.cfg", index_node.build().write_json(true));
 
 	level_object::write_compiled();
 }

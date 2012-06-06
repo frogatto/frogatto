@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <map>
 #include <string>
 
@@ -8,6 +9,7 @@
 #include "filesystem.hpp"
 #include "json_parser.hpp"
 #include "level_object.hpp"
+#include "module.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "string_utils.hpp"
@@ -576,15 +578,15 @@ void level_object::write_compiled()
 	create_compiled_tiles_image();
 
 	for(int n = 0; n <= level_object_index.size()/64; ++n) {
-		char buf[128];
-		sprintf(buf, "%d", n);
-		const std::string filename = std::string(buf) + ".cfg";
+		std::stringstream ss;
+		ss << std::dec << n;
+		const std::string filename = ss.str() + ".cfg";
 		variant_builder tiles_node;
 		for(int m = n*64; m < level_object_index.size() && m < (n+1)*64; ++m) {
 			tiles_node.add("tiles", *level_object_index[m]);
 		}
 
-		sys::write_file("data/compiled/tiles/" + filename, tiles_node.build().write_json(true));
+		module::write_file("data/compiled/tiles/" + filename, tiles_node.build().write_json(true));
 	}
 }
 
