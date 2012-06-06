@@ -990,6 +990,8 @@ END_FUNCTION_DEF(shuffle)
 		variant value_, index_;
 	};
 
+	const int transform_function_dummy_help_var = register_function_helpstring(FunctionModule, "transform(list,ffl): calls the ffl for each item on the given list, "
+		"returning a list of the results. Inside the transform v is the value of the list item and i is the index. e.g. transform([1,2,3], v+2) = [3,4,5] and transform([1,2,3], i) = [0,1,2]");
 	class transform_function : public function_expression {
 	public:
 		explicit transform_function(const args_list& args)
