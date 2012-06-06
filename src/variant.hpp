@@ -218,6 +218,7 @@ public:
 	void write_json_pretty(std::ostream& s, std::string indent) const;
 
 	enum TYPE { TYPE_NULL, TYPE_BOOL, TYPE_INT, TYPE_DECIMAL, TYPE_CALLABLE, TYPE_CALLABLE_LOADING, TYPE_LIST, TYPE_STRING, TYPE_MAP, TYPE_FUNCTION, TYPE_DELAYED };
+	TYPE type() const { return type_; }
 
 	struct debug_info {
 		debug_info() : filename(0), line(-1), column(-1), end_line(-1), end_column(-1)

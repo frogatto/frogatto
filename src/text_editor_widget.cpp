@@ -113,12 +113,14 @@ text_editor_widget::text_editor_widget(int width, int height)
 	ncols_((width - 20 - BorderSize*2)/char_width_),
 	scroll_pos_(0),
 	begin_highlight_line_(-1), end_highlight_line_(-1),
-	has_focus_(false),
+	has_focus_(false), 
 	is_dragging_(false),
+	begin_enter_return_(true),
 	last_click_at_(-1),
 	consecutive_clicks_(0),
 	text_color_(255, 255, 255, 255)
 {
+	set_environment();
 	if(height == 0) {
 		height = char_height_ + BorderSize*2;
 		nrows_ = 1;
@@ -137,12 +139,14 @@ text_editor_widget::text_editor_widget(const variant& v, game_logic::formula_cal
 	: scrollable_widget(v,e), last_op_type_(NULL), font_size_(14), 
 	select_(0,0), cursor_(0,0), scroll_pos_(0),
 	begin_highlight_line_(-1), end_highlight_line_(-1),
-	has_focus_(false),
+	has_focus_(false), 
 	is_dragging_(false),
+	begin_enter_return_(true),
 	last_click_at_(-1),
 	consecutive_clicks_(0),
 	text_color_(255, 255, 255, 255)
 {
+	ASSERT_LOG(get_environment() != 0, "You must specify a callable environment");
 	int width = v.has_key("width") ? v["width"].as_int() : 0;
 	int height = v.has_key("height") ? v["height"].as_int() : 0;
 	if(v.has_key("font_size")) { 
@@ -150,6 +154,27 @@ text_editor_widget::text_editor_widget(const variant& v, game_logic::formula_cal
 	}
 	if(v.has_key("color")) {
 		text_color_ = graphics::color(v["color"]);
+	}
+
+	if(v.has_key("on_change")) {
+		on_change_ = boost::bind(&text_editor_widget::change_delegate, this);
+		ffl_on_change_ = get_environment()->create_formula(v["on_change"]);
+	}
+	if(v.has_key("on_move_cursor")) {
+		boost::bind(&text_editor_widget::move_cursor_delegate, this);
+		ffl_on_move_cursor_ = get_environment()->create_formula(v["on_move_cursor"]);
+	}
+	if(v.has_key("on_enter")) {
+		boost::bind(&text_editor_widget::enter_delegate, this);
+		ffl_on_enter_ = get_environment()->create_formula(v["on_enter"]);
+	}
+	if(v.has_key("on_tab")) {
+		boost::bind(&text_editor_widget::tab_delegate, this);
+		ffl_on_tab_ = get_environment()->create_formula(v["on_tab"]);
+	}
+	if(v.has_key("on_begin_enter")) {
+		boost::bind(&text_editor_widget::begin_enter_delegate, this);
+		ffl_on_begin_enter_ = get_environment()->create_formula(v["on_begin_enter"]);
 	}
 
 	char_width_= font::char_width(font_size_);
@@ -1396,13 +1421,74 @@ void text_editor_widget::on_change()
 
 void text_editor_widget::set_value(const std::string& key, const variant& v)
 {
+	if(key == "text") {
+		set_text(v.as_string());
+	} else if(key == "begin_enter") {
+		begin_enter_return_ = v.as_bool();
+	}
 	scrollable_widget::set_value(key, v);
 }
 
 variant text_editor_widget::get_value(const std::string& key) const
 {
+	if(key == "text" ) {
+		return variant(text());
+	}
 	return scrollable_widget::get_value(key);
 }
+
+void text_editor_widget::change_delegate()
+{
+	if(get_environment()) {
+		variant value = ffl_on_change_->execute(*get_environment());
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "text_editor_widget::change_delegate() called without environment!" << std::endl;
+	}
+}
+
+void text_editor_widget::move_cursor_delegate()
+{
+	if(get_environment()) {
+		variant value = ffl_on_move_cursor_->execute(*get_environment());
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "text_editor_widget::move_cursor_delegate() called without environment!" << std::endl;
+	}
+}
+
+void text_editor_widget::enter_delegate()
+{
+	if(get_environment()) {
+		variant value = ffl_on_enter_->execute(*get_environment());
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "text_editor_widget::enter_delegate() called without environment!" << std::endl;
+	}
+}
+
+void text_editor_widget::tab_delegate()
+{
+	if(get_environment()) {
+		variant value = ffl_on_tab_->execute(*get_environment());
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "text_editor_widget::tab_delegate() called without environment!" << std::endl;
+	}
+}
+
+bool text_editor_widget::begin_enter_delegate()
+{
+	if(get_environment()) {
+		variant value = ffl_on_begin_enter_->execute(*get_environment());
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "text_editor_widget::begin_enter_delegate() called without environment!" << std::endl;
+	}
+	// XXX Need some way of doing the return value here.
+	return begin_enter_return_;
+}
+
 
 }
 

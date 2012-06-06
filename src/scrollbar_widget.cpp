@@ -27,15 +27,17 @@ scrollbar_widget::scrollbar_widget(boost::function<void(int)> handler)
 	window_pos_(0), window_size_(0), range_(0), step_(0),
 	dragging_handle_(false),
 	drag_start_(0), drag_anchor_y_(0)
-{}
+{
+	set_environment();
+}
 
 scrollbar_widget::scrollbar_widget(const variant& v, game_logic::formula_callable* e)
 	: widget(v,e),	window_pos_(0), window_size_(0), range_(0), step_(0),
 	dragging_handle_(false), drag_start_(0), drag_anchor_y_(0)
 {
 	handler_ = boost::bind(&scrollbar_widget::handler_delegate, this, _1);
-	// XXX replace the 0 with an actual symbol table.
-	ffl_handler_ = game_logic::formula_ptr(new game_logic::formula(v["on_scroll"], 0));
+	ASSERT_LOG(get_environment() != 0, "You must specify a callable environment");
+	ffl_handler_ = get_environment()->create_formula(v["on_scroll"]);
 	
     up_arrow_ = v.has_key("up_arrow") ? widget_factory::create(v["up_arrow"], e) : new gui_section_widget(UpArrow);
     down_arrow_ = v.has_key("down_arrow") ? widget_factory::create(v["down_arrow"], e) : new gui_section_widget(DownArrow);
@@ -52,11 +54,15 @@ scrollbar_widget::scrollbar_widget(const variant& v, game_logic::formula_callabl
 
 void scrollbar_widget::handler_delegate(int yscroll)
 {
-	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
-	callable->add("yscroll", variant(yscroll));
-	variant v(callable);
-	variant value = ffl_handler_->execute(*callable);
-	value.try_convert<game_logic::command_callable>()->execute(*callable);
+	using namespace game_logic;
+	if(get_environment()) {
+		map_formula_callable_ptr callable(new map_formula_callable(get_environment()));
+		callable->add("yscroll", variant(yscroll));
+		variant value = ffl_handler_->execute(*callable);
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "scrollbar_widget::handler_delegate() called without environment!" << std::endl;
+	}
 }
 
 void scrollbar_widget::set_range(int total_height, int window_height)
@@ -219,8 +225,7 @@ bool scrollbar_widget::handle_event(const SDL_Event& event, bool claimed)
 void scrollbar_widget::set_value(const std::string& key, const variant& v)
 {
 	if(key == "on_scroll") {
-		// XXX replace the 0 with an actual symbol table.
-		ffl_handler_ = game_logic::formula_ptr(new game_logic::formula(v["on_scroll"], 0));
+		ffl_handler_ = get_environment()->create_formula(v["on_scroll"]);
 	} else if(key == "up_arrow") {
 		up_arrow_ = widget_factory::create(v, get_environment());
 	} else if(key == "down_arrow") {

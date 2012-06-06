@@ -5,7 +5,9 @@
 namespace gui {
 
 scrollable_widget::scrollable_widget() : yscroll_(0), virtual_height_(0), step_(0)
-{}
+{
+	set_environment();
+}
 
 scrollable_widget::scrollable_widget(const variant& v, game_logic::formula_callable* e)
 	: widget(v,e), yscroll_(0), virtual_height_(0), step_(0)

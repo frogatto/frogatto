@@ -19,6 +19,7 @@ code_editor_widget::code_editor_widget(int width, int height)
   row_slider_(0), begin_col_slider_(0), end_col_slider_(0),
   slider_decimal_(false), slider_magnitude_(0)
 {
+	set_environment();
 }
 
 code_editor_widget::code_editor_widget(const variant& v, game_logic::formula_callable* e) 

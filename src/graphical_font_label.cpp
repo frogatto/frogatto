@@ -7,6 +7,7 @@ graphical_font_label::graphical_font_label(
        const std::string& text, const std::string& font, int size)
   : text_(text), font_(graphical_font::get(font)), size_(size)
 {
+	set_environment();
 	ASSERT_LOG(font_.get(), "UNKNOWN FONT: " << font);
 	reset_text_dimensions();
 }

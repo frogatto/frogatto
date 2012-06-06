@@ -64,6 +64,7 @@ dialog::dialog(int x, int y, int w, int h)
   : opened_(false), cancelled_(false), clear_bg_(196), padding_(10),
     add_x_(0), add_y_(0), bg_alpha_(1.0), last_draw_(-1)
 {
+	set_environment();
 	set_loc(x,y);
 	set_dim(w,h);
 }

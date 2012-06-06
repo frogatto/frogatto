@@ -82,6 +82,15 @@ public:
 	bool has_key(const std::string& key) const 
 		{ return !query_value(key).is_null(); }
 
+	// In order to provide support for widgets to be able to have FFL handlers for events
+	// The following two functions are provided for them to use to respectively execute
+	// a command and create a new formula from a variant (which is expected to contain FFL 
+	// commands).  If you're making some new that object that provides a custom symbol
+	// table or supports different types of command_callable you should override these 
+	// two functions to provide widget support.
+	virtual bool execute_command(const variant &v);
+	virtual formula_ptr create_formula(const variant& v);
+
 protected:
 	virtual ~formula_callable() {}
 
@@ -92,7 +101,6 @@ protected:
 	}
 
 	virtual void serialize_to_string(std::string& str) const;
-
 private:
 	virtual variant get_value(const std::string& key) const = 0;
 	virtual variant get_value_by_slot(int slot) const;

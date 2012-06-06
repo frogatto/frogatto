@@ -86,6 +86,17 @@ namespace game_logic
 		throw type_error("Tried to serialize type which cannot be serialized");
 	}
 
+	bool formula_callable::execute_command(const variant &v) 
+	{
+		v.try_convert<command_callable>()->execute(*this);
+		return true;
+	}
+
+	formula_ptr formula_callable::create_formula(const variant& v) 
+	{
+		return formula_ptr(new formula(v, 0));
+	}
+
 	map_formula_callable::map_formula_callable(variant node)
 	  : formula_callable(false), fallback_(NULL)
 	{

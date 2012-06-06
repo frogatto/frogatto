@@ -22,6 +22,7 @@ widget_ptr create_checkbox_widget(const std::string& text, bool checked) {
 checkbox::checkbox(const std::string& label, bool checked, boost::function<void(bool)> onclick, BUTTON_RESOLUTION button_resolution)
   : button(create_checkbox_widget(label, checked), boost::bind(&checkbox::on_click, this), BUTTON_STYLE_NORMAL,button_resolution), label_(label), onclick_(onclick), checked_(checked)
 {
+	set_environment();
 }
 
 checkbox::checkbox(const variant& v, game_logic::formula_callable* e) : checked_(false), button(v,e)

@@ -38,6 +38,7 @@ button::button(const std::string& str, boost::function<void()> onclick)
 	button_style_(BUTTON_STYLE_NORMAL),
 	down_(false)
 {
+	set_environment();
 	setup();
 }
 
@@ -46,6 +47,7 @@ button::button(widget_ptr label, boost::function<void ()> onclick, BUTTON_STYLE 
 	down_(false)
 	
 {
+	set_environment();
 	setup();
 }
 
@@ -54,8 +56,8 @@ button::button(const variant& v, game_logic::formula_callable* e) : widget(v,e),
 	label_ = v.has_key("label") ? widget_factory::create(v["label"], e) : new label("Button", graphics::color_white());
 	ASSERT_LOG(v.has_key("on_click"), "Button must be supplied with an on_click handler");
 	// create delegate for onclick
-	// XXX replace the 0 with an actual symbol table.
-	click_handler_ = game_logic::formula_ptr(new game_logic::formula(v["on_click"], &get_custom_object_functions_symbol_table()));
+	ASSERT_LOG(get_environment() != 0, "You must specify a callable environment");
+	click_handler_ = get_environment()->create_formula(v["on_click"]);
 	onclick_ = boost::bind(&button::click, this);
 	button_resolution_ = v["resolution"].as_string_default("normal") == "normal" ? BUTTON_SIZE_NORMAL_RESOLUTION : BUTTON_SIZE_DOUBLE_RESOLUTION;
 	button_style_ = v["style"].as_string_default("default") == "default" ? BUTTON_STYLE_DEFAULT : BUTTON_STYLE_NORMAL;
@@ -66,11 +68,9 @@ void button::click()
 {
 	if(get_environment()) {
 		variant value = click_handler_->execute(*get_environment());
-		value.try_convert<game_logic::command_callable>()->execute(*get_environment());
+		get_environment()->execute_command(value);
 	} else {
-		variant value = click_handler_->execute();
-		game_logic::map_formula_callable_ptr callable(new game_logic::map_formula_callable);
-		value.convert_to<game_logic::command_callable>()->execute(*callable);
+		std::cerr << "button::click() called without environment!" << std::endl;
 	}
 }
 

@@ -248,13 +248,45 @@ bool animation_preview_widget::is_animation(variant obj)
 }
 
 animation_preview_widget::animation_preview_widget(const variant& v, game_logic::formula_callable* e) 
-	: widget(v,e)
+	: widget(v,e), cycle_(0), zoom_label_(NULL), pos_label_(NULL), scale_(0), 
+	anchor_x_(-1), anchor_y_(-1), anchor_pad_(-1), has_motion_(false), dragging_sides_bitmap_(0), 
+	moving_solid_rect_(false), anchor_solid_x_(-1), anchor_solid_y_(-1)
 {
-	set_object(v);
+	ASSERT_LOG(get_environment() != 0, "You must specify a callable environment");
+
+	if(v.has_key("on_rect_change")) {
+		rect_handler_ = boost::bind(&animation_preview_widget::rect_handler_delegate, this, _1);
+		ffl_rect_handler_ = get_environment()->create_formula(v["on_rect_change"]);
+	}
+	if(v.has_key("on_pad_change")) {
+		pad_handler_ = boost::bind(&animation_preview_widget::pad_handler_delegate, this, _1);
+		ffl_pad_handler_ = get_environment()->create_formula(v["on_pad_change"]);
+	}
+	if(v.has_key("on_frames_change")) {
+		num_frames_handler_ = boost::bind(&animation_preview_widget::num_frames_handler_delegate, this, _1);
+		ffl_num_frames_handler_ = get_environment()->create_formula(v["on_frames_change"]);
+	}
+	if(v.has_key("on_frames_per_row_change")) {
+		frames_per_row_handler_ = boost::bind(&animation_preview_widget::frames_per_row_handler_delegate, this, _1);
+		ffl_frames_per_row_handler_ = get_environment()->create_formula(v["on_frames_per_row_change"]);
+	}
+	if(v.has_key("on_solid_change")) {
+		solid_handler_ = boost::bind(&animation_preview_widget::solid_handler_delegate, this, _1, _2);
+		ffl_solid_handler_ = get_environment()->create_formula(v["on_solid_change"]);
+	}
+	
+	try {
+		set_object(v);
+	} catch(type_error&) {
+	} catch(frame::error&) {
+	} catch(validation_failure_exception&) {
+	} catch(graphics::load_image_error&) {
+	}
 }
 
 animation_preview_widget::animation_preview_widget(variant obj) : cycle_(0), zoom_label_(NULL), pos_label_(NULL), scale_(0), anchor_x_(-1), anchor_y_(-1), anchor_pad_(-1), has_motion_(false), dragging_sides_bitmap_(0), moving_solid_rect_(false), anchor_solid_x_(-1), anchor_solid_y_(-1)
 {
+	set_environment();
 	set_object(obj);
 }
 
@@ -744,6 +776,94 @@ void animation_preview_widget::set_frames_per_row_handler(boost::function<void(i
 void animation_preview_widget::set_solid_handler(boost::function<void(int,int)> handler)
 {
 	solid_handler_ = handler;
+}
+
+void animation_preview_widget::rect_handler_delegate(rect r)
+{
+	using namespace game_logic;
+	if(get_environment()) {
+		map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(get_environment()));
+		callable->add("new_rect", r.write());
+		variant value = ffl_rect_handler_->execute(*callable);
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "animation_preview_widget::rect_handler_delegate() called without environment!" << std::endl;
+	}
+}
+
+void animation_preview_widget::pad_handler_delegate(int pad)
+{
+	using namespace game_logic;
+	if(get_environment()) {
+		map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(get_environment()));
+		callable->add("new_pad", variant(pad));
+		variant value = ffl_pad_handler_->execute(*callable);
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "animation_preview_widget::pad_handler_delegate() called without environment!" << std::endl;
+	}
+}
+
+void animation_preview_widget::num_frames_handler_delegate(int frames)
+{
+	using namespace game_logic;
+	if(get_environment()) {
+		map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(get_environment()));
+		callable->add("new_frames", variant(frames));
+		variant value = ffl_num_frames_handler_->execute(*callable);
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "animation_preview_widget::num_frames_handler_delegate() called without environment!" << std::endl;
+	}
+}
+
+void animation_preview_widget::frames_per_row_handler_delegate(int frames_per_row)
+{
+	using namespace game_logic;
+	if(get_environment()) {
+		map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(get_environment()));
+		callable->add("new_frames_per_row", variant(frames_per_row));
+		variant value = ffl_frames_per_row_handler_->execute(*callable);
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "animation_preview_widget::frames_per_row_handler_delegate() called without environment!" << std::endl;
+	}
+}
+
+void animation_preview_widget::solid_handler_delegate(int x, int y)
+{
+	using namespace game_logic;
+	if(get_environment()) {
+		map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(get_environment()));
+		callable->add("new_solidx", variant(x));
+		callable->add("new_solidy", variant(y));
+		variant value = ffl_solid_handler_->execute(*callable);
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "animation_preview_widget::solid_handler_delegate() called without environment!" << std::endl;
+	}
+}
+
+void animation_preview_widget::set_value(const std::string& key, const variant& v)
+{
+	if(key == "object") {
+		try {
+			set_object(v);
+		} catch(type_error&) {
+		} catch(frame::error&) {
+		} catch(validation_failure_exception&) {
+		} catch(graphics::load_image_error&) {
+		}
+	}
+	widget::set_value(key, v);
+}
+
+variant animation_preview_widget::get_value(const std::string& key) const
+{
+	if(key == "object") {
+		return obj_;
+	}
+	return widget::get_value(key);
 }
 
 }

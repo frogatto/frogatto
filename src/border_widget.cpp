@@ -9,6 +9,7 @@ namespace gui {
 border_widget::border_widget(widget_ptr child, graphics::color col, int border_size)
   : child_(child), color_(col), border_size_(border_size)
 {
+	set_environment();
 	set_dim(child->width() + border_size*2, child->height() + border_size*2);
 	child_->set_loc(border_size, border_size);
 }
@@ -16,6 +17,7 @@ border_widget::border_widget(widget_ptr child, graphics::color col, int border_s
 border_widget::border_widget(widget_ptr child, const SDL_Color& color, int border_size)
 	: child_(child), color_(color.r, color.g, color.b, color.unused), border_size_(border_size)
 {
+	set_environment();
 	set_dim(child->width() + border_size*2, child->height() + border_size*2);
 	child_->set_loc(border_size, border_size);
 }

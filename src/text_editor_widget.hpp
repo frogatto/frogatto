@@ -155,6 +155,20 @@ private:
 	boost::function<void()> on_change_, on_move_cursor_, on_enter_, on_tab_;
 	boost::function<bool()> on_begin_enter_;
 
+	void change_delegate();
+	void move_cursor_delegate();
+	void enter_delegate();
+	void tab_delegate();
+	bool begin_enter_delegate();
+
+	game_logic::formula_ptr ffl_on_change_;
+	game_logic::formula_ptr ffl_on_move_cursor_;
+	game_logic::formula_ptr ffl_on_enter_;
+	game_logic::formula_ptr ffl_on_tab_;
+	game_logic::formula_ptr ffl_on_begin_enter_;
+
+	bool begin_enter_return_;
+
 	friend class dropdown_widget;
 };
 

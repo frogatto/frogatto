@@ -81,24 +81,26 @@ drag_widget::drag_widget(const int x, const int y, const int w, const int h,
 	
 	old_cursor_(NULL), dragging_handle_(0)
 {
+	set_environment();
 	init();
 }
 
 drag_widget::drag_widget(const variant& v, game_logic::formula_callable* e) 
 	: widget(v,e), old_cursor_(NULL), dragging_handle_(0)
 {
+	ASSERT_LOG(get_environment() != 0, "You must specify a callable environment");
 	dir_ = v["direction"].as_string_default("horizontal") == "horizontal" ? DRAG_HORIZONTAL : DRAG_VERTICAL;
 	if(v.has_key("on_drag_start")) {
 		drag_start_ = boost::bind(&drag_widget::drag_start, this, _1, _2);
-		drag_start_handler_ = game_logic::formula_ptr(new game_logic::formula(v["on_drag_start"], 0));
+		drag_start_handler_ = get_environment()->create_formula(v["on_drag_start"]);
 	}
 	if(v.has_key("on_drag_end")) {
 		drag_end_ = boost::bind(&drag_widget::drag_end, this, _1, _2);
-		drag_end_handler_ = game_logic::formula_ptr(new game_logic::formula(v["on_drag_end"], 0));
+		drag_end_handler_ = get_environment()->create_formula(v["on_drag_end"]);
 	}
 	if(v.has_key("on_drag")) {
 		drag_move_ = boost::bind(&drag_widget::drag, this, _1, _2);
-		drag_handler_ = game_logic::formula_ptr(new game_logic::formula(v["on_drag"], 0));
+		drag_handler_ = get_environment()->create_formula(v["on_drag"]);
 	}
 	std::vector<int> r = v["rect"].as_list_int();
 	ASSERT_EQ(r.size(), 4);
@@ -134,32 +136,44 @@ void drag_widget::init()
 
 void drag_widget::drag(int dx, int dy)
 {
-	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
-	callable->add("drag_dx", variant(dx));
-	callable->add("drag_dy", variant(dy));
-	variant v(callable);
-	variant value = drag_handler_->execute(*callable);
-	value.try_convert<game_logic::command_callable>()->execute(*callable);
+	using namespace game_logic;
+	if(get_environment()) {
+		map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(get_environment()));
+		callable->add("drag_dx", variant(dx));
+		callable->add("drag_dy", variant(dy));
+		variant value = drag_handler_->execute(*callable);
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "drag_widget::drag() called without environment!" << std::endl;
+	}
 }
 
 void drag_widget::drag_start(int x, int y)
 {
-	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
-	callable->add("drag_x", variant(x));
-	callable->add("drag_y", variant(y));
-	variant v(callable);
-	variant value = drag_start_handler_->execute(*callable);
-	value.try_convert<game_logic::command_callable>()->execute(*callable);
+	using namespace game_logic;
+	if(get_environment()) {
+		map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(get_environment()));
+		callable->add("drag_x", variant(x));
+		callable->add("drag_y", variant(y));
+		variant value = drag_start_handler_->execute(*callable);
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "drag_widget::drag_start() called without environment!" << std::endl;
+	}
 }
 
 void drag_widget::drag_end(int x, int y)
 {
-	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
-	callable->add("drag_x", variant(x));
-	callable->add("drag_y", variant(y));
-	variant v(callable);
-	variant value = drag_end_handler_->execute(*callable);
-	value.try_convert<game_logic::command_callable>()->execute(*callable);
+	using namespace game_logic;
+	if(get_environment()) {
+		map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(get_environment()));
+		callable->add("drag_x", variant(x));
+		callable->add("drag_y", variant(y));
+		variant value = drag_end_handler_->execute(*callable);
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "drag_widget::drag_end() called without environment!" << std::endl;
+	}
 }
 
 void drag_widget::handle_draw() const

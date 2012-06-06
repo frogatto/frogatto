@@ -29,6 +29,7 @@ slider::slider(int width, boost::function<void (double)> onchange, double positi
 	slider_middle_(new gui_section_widget("slider_middle", -1, -1, 2)),
 	slider_button_(new gui_section_widget("slider_button", -1, -1, 2))
 {
+	set_environment();
 	init();
 	set_dim(width_+slider_left_->width()*2, slider_button_->height());
 }
@@ -36,12 +37,12 @@ slider::slider(int width, boost::function<void (double)> onchange, double positi
 slider::slider(const variant& v, game_logic::formula_callable* e)
 	: widget(v,e), dragging_(false)
 {
+	ASSERT_LOG(get_environment() != 0, "You must specify a callable environment");
 	onchange_ = boost::bind(&slider::change_delegate, this, _1);
-	// XXX replace the 0 with an actual symbol table.
-	ffl_handler_ = game_logic::formula_ptr(new game_logic::formula(v["on_change"], 0));
+	ffl_handler_ = get_environment()->create_formula(v["on_change"]);
 	if(v.has_key("on_drag_end")) {
 		ondragend_ = boost::bind(&slider::dragend_delegate, this, _1);
-		ffl_end_handler_ = game_logic::formula_ptr(new game_logic::formula(v["on_drag_end"], 0));
+		ffl_end_handler_ = get_environment()->create_formula(v["on_drag_end"]);
 	}
 
 	position_ = v.has_key("position") ? v["position"].as_decimal().as_float() : 0.0;
@@ -102,18 +103,28 @@ void slider::handle_draw() const
 
 void slider::change_delegate(double position)
 {
-	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
-	callable->add("position", variant(position));
-	variant v(callable);
-	ffl_handler_->execute(*callable);
+	using namespace game_logic;
+	if(get_environment()) {
+		map_formula_callable_ptr callable(new game_logic::map_formula_callable(get_environment()));
+		callable->add("position", variant(position));
+		variant value = ffl_handler_->execute(*get_environment());
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "slider::change_delegate() called without environment!" << std::endl;
+	}
 }
 
 void slider::dragend_delegate(double position)
 {
-	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
-	callable->add("position", variant(position));
-	variant v(callable);
-	ffl_end_handler_->execute(*callable);
+	using namespace game_logic;
+	if(get_environment()) {
+		map_formula_callable_ptr callable(new game_logic::map_formula_callable(get_environment()));
+		callable->add("position", variant(position));
+		variant value = ffl_end_handler_->execute(*get_environment());
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "slider::dragend_delegate() called without environment!" << std::endl;
+	}
 }
 
 

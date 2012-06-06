@@ -11,10 +11,12 @@
    See the COPYING file for more details.
 */
 #include <iostream>
+#include <boost/bind.hpp>
 
 #include "foreach.hpp"
 #include "grid_widget.hpp"
 #include "raster.hpp"
+#include "widget_factory.hpp"
 
 namespace gui {
 
@@ -25,7 +27,131 @@ grid::grid(int ncols)
     swallow_clicks_(false), hpad_(0), show_background_(false),
 	max_height_(-1), allow_highlight_(true), set_h_(0), set_w_(0)
 {
+	set_environment();
 	set_dim(0,0);
+}
+
+grid::grid(const variant& v, game_logic::formula_callable* e)
+	: scrollable_widget(v, e), row_height_(0), selected_row_(-1), 
+	allow_selection_(false), must_select_(false),
+    swallow_clicks_(false), hpad_(0), show_background_(false),
+	max_height_(-1), allow_highlight_(true), set_h_(0), set_w_(0)
+{
+	ASSERT_LOG(get_environment() != 0, "You must specify a callable environment");
+	if(v.has_key("on_select")) {
+		ffl_on_select_ = get_environment()->create_formula(v["on_select"]);
+		on_select_ = boost::bind(&grid::select_delegate, this, _1);
+	}
+	if(v.has_key("on_mouseover")) {
+		ffl_on_mouseover_ = get_environment()->create_formula(v["on_mouseover"]);
+		on_select_ = boost::bind(&grid::mouseover_delegate, this, _1);
+	}
+
+	ncols_ = v.as_int(1);
+	if(v.has_key("column_widths")) {
+		if(v["column_widths"].is_list()) {
+			col_widths_.assign(v["column_widths"].as_list_int().begin(), v["column_widths"].as_list_int().end());
+		} else if(v["column_widths"].is_int()) {
+			col_widths_.assign(ncols_, v["column_widths"].as_int());
+		} else {
+			ASSERT_LOG(false, "grid: column_widths must be an int or list of ints");
+		}
+	} else {
+		col_widths_.assign(ncols_, 0);
+	}
+	if(v.has_key("column_alignments")) {
+		if(v["column_alignments"].is_list()) {
+			// XXX this could be a list of strings as well.
+			int col = 0;
+			foreach(const variant& c, v["column_alignments"].as_list()) {
+				if(c.is_int()) {
+					set_align(col, static_cast<COLUMN_ALIGN>(c.as_int()));
+				} else if(c.is_string()) {
+					const std::string& s = v["column_alignments"].as_string();
+					if(s == "center" || s == "centre") {
+						set_align(col, ALIGN_CENTER);
+					} else if(s == "right") {
+						set_align(col, ALIGN_RIGHT);
+					} else if(s == "left") {
+						set_align(col, ALIGN_LEFT);
+					} else {
+						ASSERT_LOG(false, "grid: column_alignments must be \"left\", \"right\" or \"center\"");
+					}
+				} else {
+					ASSERT_LOG(false, "grid: column alignment members must be an integer or a string.");
+				}
+				col++;
+			}
+		} else if(v["column_alignments"].is_int()) {
+			col_aligns_.assign(ncols_, static_cast<COLUMN_ALIGN>(v["column_alignments"].as_int()));
+		} else if(v["column_alignments"].is_string()) {
+			const std::string& s = v["column_alignments"].as_string();
+			if(s == "center" || s == "centre") {
+				col_aligns_.assign(ncols_, ALIGN_CENTER);
+			} else if(s == "right") {
+				col_aligns_.assign(ncols_, ALIGN_RIGHT);
+			} else if(s == "left") {
+				col_aligns_.assign(ncols_, ALIGN_LEFT);
+			} else {
+				ASSERT_LOG(false, "grid: column_alignments must be \"left\", \"right\" or \"center\"");
+			}
+		} else {
+			ASSERT_LOG(false, "grid: column_alignments must be an int or list of ints");
+		}
+	} else {
+		col_aligns_.assign(ncols_, ALIGN_LEFT);
+	}
+
+	allow_selection_ = v["allow_selection"].as_bool(false);
+	if(v.has_key("must_select")) {
+		must_select_ = v["must_select_"].as_bool();
+		if(v.has_key("must_select_row")) {
+			selected_row_ = v["must_select_row"].as_int();
+		}
+	}
+	if(v.has_key("swallow_clicks")) {
+		swallow_clicks_ = v["swallow_clicks"].as_bool();
+	}
+	if(v.has_key("max_height")) {
+		max_height_ = v["max_height"].as_int();
+	}
+	if(v.has_key("allow_draw_highlight")) {
+		allow_highlight_ = v["allow_draw_highlight"].as_bool();
+	}
+	if(v.has_key("header_rows")) {
+		if(v["header_rows"].is_int()) {
+			set_header_row(v["header_rows"].as_int());
+		} else if(v["header_rows"].is_list()) {
+			header_rows_.assign(v["header_rows"].as_list_int().begin(), v["header_rows"].as_list_int().end());
+		} else {
+			ASSERT_LOG(false, "grid: header_rows must be an int or list of ints");
+		}
+	}
+	if(v.has_key("horizontal_padding")) {
+		set_hpad(v["horizontal_padding"].as_int());
+	}
+	if(v.has_key("show_background")) {
+		show_background_ = v["show_background"].as_bool();
+	}
+
+	if(v.has_key("children")) {
+		// children is a list of lists or a list of single widgets, the outmost list being rows, 
+		// the inner list being the columns. 
+		foreach(const variant& row, v["children"].as_list()) {
+			if(row.is_list()) {
+				foreach(const variant& col, row.as_list()) {
+					add_col(widget_factory::create(v,e));
+				}
+				finish_row();
+			} else {
+				add_col(widget_factory::create(v,e))
+					.finish_row();
+			}
+		}
+	}
+
+	set_h_ = height();
+	set_w_ = width();
 }
 
 void grid::set_dim(int w, int h)
@@ -306,6 +432,42 @@ bool grid::has_focus() const
 	}
 
 	return false;
+}
+
+void grid::select_delegate(int selection)
+{
+	if(get_environment()) {
+		game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
+		callable->add("selection", variant(selection));
+		variant v(callable);
+		variant value = ffl_on_select_->execute(*callable);
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "grid::select_delegate() called without environment!" << std::endl;
+	}
+}
+
+void grid::mouseover_delegate(int selection)
+{
+	if(get_environment()) {
+		game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
+		callable->add("selection", variant(selection));
+		variant v(callable);
+		variant value = ffl_on_mouseover_->execute(*callable);
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "grid::mouseover_delegate() called without environment!" << std::endl;
+	}
+}
+
+void grid::set_value(const std::string& key, const variant& v)
+{
+	widget::set_value(key, v);
+}
+
+variant grid::get_value(const std::string& key) const
+{
+	return widget::get_value(key);
 }
 
 }

@@ -3992,6 +3992,11 @@ bool custom_object::handle_sdl_event(const SDL_Event& event, bool claimed)
 	return claimed;
 }
 
+game_logic::formula_ptr custom_object::create_formula(const variant& v)
+{
+	return game_logic::formula_ptr(new game_logic::formula(v, &get_custom_object_functions_symbol_table()));
+}
+
 BENCHMARK(custom_object_spike) {
 	static level* lvl = NULL;
 	if(!lvl) {	

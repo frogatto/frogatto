@@ -144,6 +144,7 @@ SDLKey get_key_sym(const std::string& s)
 		return SDLK_SCROLLOCK;
 	}
 	ASSERT_LOG(false, "Unreconised key '" << s << "'");
+	return SDLK_UNKNOWN;
 }
 
 key_button::key_button(SDLKey key, BUTTON_RESOLUTION button_resolution)
@@ -155,6 +156,7 @@ key_button::key_button(SDLKey key, BUTTON_RESOLUTION button_resolution)
 	current_button_image_set_(normal_button_image_set_), grab_keys_(false)
 	
 {
+	set_environment();
 	set_dim(label_->width()+hpadding*2,label_->height()+vpadding*2);
 }
 
@@ -248,6 +250,9 @@ void key_button::set_value(const std::string& key, const variant& v)
 
 variant key_button::get_value(const std::string& key) const
 {
+	if(key == "key") {
+		return variant(key_);
+	}
 	return widget::get_value(key);
 }
 

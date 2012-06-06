@@ -30,6 +30,10 @@ public:
 	void set_frames_per_row_handler(boost::function<void(int)>);
 	void set_solid_handler(boost::function<void(int,int)>);
 
+protected:
+	virtual void set_value(const std::string& key, const variant& v);
+	virtual variant get_value(const std::string& key) const;
+
 private:
 	void handle_draw() const;
 	bool handle_event(const SDL_Event& event, bool claimed);
@@ -73,8 +77,19 @@ private:
 	boost::function<void(int)> pad_handler_;
 	boost::function<void(int)> num_frames_handler_;
 	boost::function<void(int)> frames_per_row_handler_;
-
 	boost::function<void(int,int)> solid_handler_;
+
+	void rect_handler_delegate(rect r);
+	void pad_handler_delegate(int pad);
+	void num_frames_handler_delegate(int frames);
+	void frames_per_row_handler_delegate(int frames_per_row);
+	void solid_handler_delegate(int x, int y);
+
+	game_logic::formula_ptr ffl_rect_handler_;
+	game_logic::formula_ptr ffl_pad_handler_;
+	game_logic::formula_ptr ffl_num_frames_handler_;
+	game_logic::formula_ptr ffl_frames_per_row_handler_;
+	game_logic::formula_ptr ffl_solid_handler_;
 };
 
 typedef boost::intrusive_ptr<gui::animation_preview_widget> animation_preview_widget_ptr;

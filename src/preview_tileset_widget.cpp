@@ -9,6 +9,7 @@ namespace gui {
 preview_tileset_widget::preview_tileset_widget(const tile_map& tiles)
   : width_(0), height_(0)
 {
+	set_environment();
 	tiles.build_tiles(&tiles_);
 	init();
 }

@@ -37,11 +37,10 @@ protected:
 	void on_choose_dest_dir(const gui::text_editor_widget_ptr editor);
 	
 	void on_edit_animations();
+	void on_edit_items(const std::string& name, const std::string& attr, bool allow_functions);
 	
 	std::vector<gui::widget_ptr> get_widget_for_attribute(const std::string& attr);
 private:
-	int slider_transform(double d);
-
 	module::module_file_pair template_file_;
 	variant object_template_;
 	custom_object_type_ptr object_;

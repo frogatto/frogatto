@@ -18,6 +18,7 @@ namespace {
 dropdown_widget::dropdown_widget(const dropdown_list& list, int width, int height, dropdown_type type)
 	: list_(list), type_(type), current_selection_(0), dropdown_height_(100)
 {
+	set_environment();
 	set_dim(width, height);
 	editor_ = new text_editor_widget(width, height);
 	editor_->set_on_change_handler(boost::bind(&dropdown_widget::text_change, this));
@@ -35,6 +36,7 @@ dropdown_widget::dropdown_widget(const dropdown_list& list, int width, int heigh
 dropdown_widget::dropdown_widget(const variant& v, game_logic::formula_callable* e)
 	: widget(v,e), current_selection_(0), dropdown_height_(100)
 {
+	ASSERT_LOG(get_environment() != 0, "You must specify a callable environment");
 	if(v.has_key("type")) {
 		std::string s = v["type"].as_string();
 		if(s == "combo" || s == "combobox") {
@@ -54,11 +56,11 @@ dropdown_widget::dropdown_widget(const variant& v, game_logic::formula_callable*
 	editor_->set_on_tab_handler(boost::bind(&dropdown_widget::text_enter, this));
 	editor_->set_on_change_handler(boost::bind(&dropdown_widget::text_change, this));
 	if(v.has_key("on_change")) {
-		change_handler_ = game_logic::formula_ptr(new game_logic::formula(v["on_change"], 0));
+		change_handler_ = get_environment()->create_formula(v["on_change"]);
 		on_change_ = boost::bind(&dropdown_widget::change_delegate, this, _1);
 	}
 	if(v.has_key("on_select")) {
-		select_handler_ = game_logic::formula_ptr(new game_logic::formula(v["on_select"], 0));
+		select_handler_ = get_environment()->create_formula(v["on_select"]);
 		on_select_ = boost::bind(&dropdown_widget::select_delegate, this, _1, _2);
 	}
 	if(v.has_key("item_list")) {
@@ -118,24 +120,32 @@ void dropdown_widget::set_selection(int selection)
 
 void dropdown_widget::change_delegate(const std::string& s)
 {
-	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
-	callable->add("selection", variant(s));
-	variant v(callable);
-	variant value = change_handler_->execute(*callable);
-	value.try_convert<game_logic::command_callable>()->execute(*callable);
+	if(get_environment()) {
+		game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
+		callable->add("selection", variant(s));
+		variant v(callable);
+		variant value = change_handler_->execute(*callable);
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "dropdown_widget::change_delegate() called without environment!" << std::endl;
+	}
 }
 
 void dropdown_widget::select_delegate(int selection, const std::string& s)
 {
-	game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
-	if(selection == -1) {
-		callable->add("selection", variant(selection));
+	if(get_environment()) {
+		game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
+		if(selection == -1) {
+			callable->add("selection", variant(selection));
+		} else {
+			callable->add("selection", variant(s));
+		}
+		variant v(callable);
+		variant value = select_handler_->execute(*callable);
+		get_environment()->execute_command(value);
 	} else {
-		callable->add("selection", variant(s));
+		std::cerr << "dropdown_widget::select_delegate() called without environment!" << std::endl;
 	}
-	variant v(callable);
-	variant value = select_handler_->execute(*callable);
-	value.try_convert<game_logic::command_callable>()->execute(*callable);
 }
 
 void dropdown_widget::text_enter()
@@ -288,10 +298,10 @@ void dropdown_widget::set_value(const std::string& key, const variant& v)
 {
 	if(key == "on_change") {
 		on_change_ = boost::bind(&dropdown_widget::change_delegate, this, _1);
-		change_handler_ = game_logic::formula_ptr(new game_logic::formula(v, 0));;
+		change_handler_ = get_environment()->create_formula(v);
 	} else if(key == "on_select") {
 		on_select_ = boost::bind(&dropdown_widget::select_delegate, this, _1, _2);
-		select_handler_ = game_logic::formula_ptr(new game_logic::formula(v, 0));;
+		select_handler_ = get_environment()->create_formula(v);
 	} else if(key == "item_list") {
 		list_ = v.as_list_string();
 		current_selection_ = 0;

@@ -137,6 +137,7 @@ objects = \
 	tileset_editor_dialog.o \
 	tooltip.o \
 	translate.o \
+	tree_view_widget.o \
 	utils.o \
 	variant.o \
 	variant_callable.o \

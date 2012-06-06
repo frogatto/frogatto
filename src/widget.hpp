@@ -49,13 +49,14 @@ public:
 	void set_zorder(int z) { zorder_ = z; }
 	int zorder() const { return zorder_; }
 protected:
-	widget() : x_(0), y_(0), w_(0), h_(0), tooltip_displayed_(false), visible_(true), zorder_(0)
+	widget() : x_(0), y_(0), w_(0), h_(0), tooltip_displayed_(false), visible_(true), zorder_(0), environ_(0)
 	{}
 	explicit widget(const variant& v, game_logic::formula_callable* e);
 	virtual ~widget();
 
 	void normalize_event(SDL_Event* event, bool translate_coords=false);
 	virtual bool handle_event(const SDL_Event& event, bool claimed) { return claimed; }
+	void set_environment(game_logic::formula_callable* e = 0) { environ_ = e; }
 private:
 	int x_, y_;
 	int w_, h_;

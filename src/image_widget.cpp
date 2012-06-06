@@ -20,17 +20,20 @@ namespace gui {
 image_widget::image_widget(const std::string& fname, int w, int h)
   : texture_(graphics::texture::get(fname)), rotate_(0.0)
 {
+	set_environment();
 	init(w, h);
 }
 
 image_widget::image_widget(graphics::texture tex, int w, int h)
   : texture_(tex), rotate_(0.0)
 {
+	set_environment();
 	init(w, h);
 }
 
 image_widget::image_widget(const variant& v, game_logic::formula_callable* e)
 {
+	set_environment();
 	texture_ = graphics::texture::get(v["image"].as_string());
 	rotate_ = v.has_key("rotation") ? v["rotation"].as_decimal().as_float() : 0.0;
 	init(v["image_width"].as_int(), v["image_height"].as_int());
@@ -89,6 +92,7 @@ variant image_widget::get_value(const std::string& key) const
 gui_section_widget::gui_section_widget(const std::string& id, int w, int h, int scale)
   : section_(gui_section::get(id)), scale_(scale)
 {
+	set_environment();
 	if(section_ && w == -1) {
 		set_dim((section_->width()/2)*scale_, (section_->height()/2)*scale_);
 	} else {

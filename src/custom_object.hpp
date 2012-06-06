@@ -175,6 +175,8 @@ public:
 	
 	bool execute_command(const variant& var);
 
+	virtual game_logic::formula_ptr create_formula(const variant& v);
+
 	bool allow_level_collisions() const;
 
 	//statistic on how many FFL events are handled every second.
