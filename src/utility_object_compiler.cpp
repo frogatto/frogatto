@@ -211,8 +211,8 @@ UTILITY(compile_objects)
 	std::sort(animation_areas.begin(), animation_areas.end(), animation_area_height_compare);
 
 	foreach(animation_area_ptr anim, animation_areas) {
-		ASSERT_LE(anim->width, 1024);
-		ASSERT_LE(anim->height, 1024);
+		ASSERT_LOG(anim->width <= 1024 && anim->height <= 1024,
+		           "Bad animation area " << anim->width << "x" << anim->height << " for " << anim->src_image << ". Must be 1024x1024 or less.");
 		int match = -1;
 		int match_diff = -1;
 		for(int n = 0; n != output_areas.size(); ++n) {

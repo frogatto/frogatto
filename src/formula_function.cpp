@@ -781,41 +781,29 @@ FUNCTION_DEF(shuffle, 1, 1, "shuffle(list) - Returns a shuffled version of the l
 	return variant(&vars);
 END_FUNCTION_DEF(shuffle)
 	
-	
-	
-	namespace {
-		void flatten_items( variant items, std::vector<variant>* output){
-			for(size_t n = 0; n != items.num_elements(); ++n) {
-				
-				if( items[n].is_list() ){
-					flatten_items(items[n], output);
-				} else {
-					output->push_back(items[n]);
-				}
-				
-			}
-		}
-		
-	}
-		
-	class flatten_function : public function_expression {
-	public:
-		explicit flatten_function(const args_list& args)
-		: function_expression("flatten", args, 1, 1)
-		{}
-		
-	private:
-		variant execute(const formula_callable& variables) const {
-			variant input = args()[0]->evaluate(variables);
-			std::vector<variant> output;
-
-			flatten_items(input, &output);
+namespace {
+	void flatten_items( variant items, std::vector<variant>* output){
+		for(size_t n = 0; n != items.num_elements(); ++n) {
 			
-			return variant(&output);
+			if( items[n].is_list() ){
+				flatten_items(items[n], output);
+			} else {
+				output->push_back(items[n]);
+			}
+			
 		}
-	};
+	}
 	
-	class map_callable : public formula_callable {
+}
+
+FUNCTION_DEF(flatten, 1, 1, "flatten(list): Returns a list with a depth of 1 containing the elements of any list passed in.")
+	variant input = args()[0]->evaluate(variables);
+	std::vector<variant> output;
+	flatten_items(input, &output);
+	return variant(&output);
+END_FUNCTION_DEF(flatten)
+	
+class map_callable : public formula_callable {
 	public:
 		explicit map_callable(const formula_callable& backup)
 		: backup_(backup)
@@ -846,119 +834,111 @@ END_FUNCTION_DEF(shuffle)
 		const formula_callable& backup_;
 		variant value_;
 		int index_;
-	};
+};
 
-	class filter_function : public function_expression {
-	public:
-		explicit filter_function(const args_list& args)
-			: function_expression("filter", args, 2, 3)
-		{
-			if(args.size() == 3) {
-				args[1]->is_identifier(&identifier_);
-			}
+class filter_function : public function_expression {
+public:
+	explicit filter_function(const args_list& args)
+		: function_expression("filter", args, 2, 3)
+	{
+		if(args.size() == 3) {
+			args[1]->is_identifier(&identifier_);
 		}
-	private:
-		std::string identifier_;
-		variant execute(const formula_callable& variables) const {
-			std::vector<variant> vars;
-			const variant items = args()[0]->evaluate(variables);
-			if(args().size() == 2) {
-				boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
-				for(size_t n = 0; n != items.num_elements(); ++n) {
-					callable->set(items[n], n);
-					const variant val = args().back()->evaluate(*callable);
-					if(val.as_bool()) {
-						vars.push_back(items[n]);
-					}
-				}
-			} else {
-				map_formula_callable* self_callable = new map_formula_callable;
-				formula_callable_ptr callable(self_callable);
-				self_callable->add("context", variant(&variables));
-				const std::string self = identifier_.empty() ? args()[1]->evaluate(variables).as_string() : identifier_;
-
-				variant& item_var = self_callable->add_direct_access(self);
-				variant& index_var = self_callable->add_direct_access("index");
-				for(size_t n = 0; n != items.num_elements(); ++n) {
-					item_var = items[n];
-					index_var = variant(unsigned(n));
-					formula_callable_ptr callable_with_backup(new formula_variant_callable_with_backup(items[n], variables));
-					formula_callable_ptr callable_ptr(new formula_callable_with_backup(*self_callable, *callable_with_backup));
-					const variant val = args()[2]->evaluate(*callable_ptr);
-					if(val.as_bool()) {
-						vars.push_back(items[n]);
-					}
+	}
+private:
+	std::string identifier_;
+	variant execute(const formula_callable& variables) const {
+		std::vector<variant> vars;
+		const variant items = args()[0]->evaluate(variables);
+		if(args().size() == 2) {
+			boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
+			for(size_t n = 0; n != items.num_elements(); ++n) {
+				callable->set(items[n], n);
+				const variant val = args().back()->evaluate(*callable);
+				if(val.as_bool()) {
+					vars.push_back(items[n]);
 				}
 			}
+		} else {
+			map_formula_callable* self_callable = new map_formula_callable;
+			formula_callable_ptr callable(self_callable);
+			self_callable->add("context", variant(&variables));
+			const std::string self = identifier_.empty() ? args()[1]->evaluate(variables).as_string() : identifier_;
 
-			return variant(&vars);
-		}
-	};
-
-	class mapping_function : public function_expression {
-	public:
-		explicit mapping_function(const args_list& args)
-		: function_expression("mapping", args, -1, -1)
-		{}
-
-	private:
-		variant execute(const formula_callable& variables) const {
-			map_formula_callable* callable = new map_formula_callable;
-			for(size_t n = 0; n < args().size()-1; n += 2) {
-				callable->add(args()[n]->evaluate(variables).as_string(),
-							args()[n+1]->evaluate(variables));
-			}
-
-			return variant(callable);
-		}
-	};
-
-	class find_function : public function_expression {
-	public:
-		explicit find_function(const args_list& args)
-			: function_expression("find", args, 2, 3)
-		{
-			if(args.size() == 3) {
-				args[1]->is_identifier(&identifier_);
-			}
-		}
-
-	private:
-		std::string identifier_;
-		variant execute(const formula_callable& variables) const {
-			const variant items = args()[0]->evaluate(variables);
-
-			if(args().size() == 2) {
-				boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
-				for(size_t n = 0; n != items.num_elements(); ++n) {
-					callable->set(items[n], n);
-					const variant val = args().back()->evaluate(*callable);
-					if(val.as_bool()) {
-						return items[n];
-					}
-				}
-			} else {
-				map_formula_callable* self_callable = new map_formula_callable;
-				formula_callable_ptr callable(self_callable);
-				self_callable->add("context", variant(&variables));
-
-				const std::string self = identifier_.empty() ? args()[1]->evaluate(variables).as_string() : identifier_;
-				for(size_t n = 0; n != items.num_elements(); ++n) {
-					self_callable->add(self, items[n]);
-
-					boost::intrusive_ptr<formula_variant_callable_with_backup> callable_backup(new formula_variant_callable_with_backup(items[n], variables));
-
-					formula_callable_ptr callable(new formula_callable_with_backup(*self_callable, *callable_backup));
-					const variant val = args().back()->evaluate(*callable);
-					if(val.as_bool()) {
-						return items[n];
-					}
+			variant& item_var = self_callable->add_direct_access(self);
+			variant& index_var = self_callable->add_direct_access("index");
+			for(size_t n = 0; n != items.num_elements(); ++n) {
+				item_var = items[n];
+				index_var = variant(unsigned(n));
+				formula_callable_ptr callable_with_backup(new formula_variant_callable_with_backup(items[n], variables));
+				formula_callable_ptr callable_ptr(new formula_callable_with_backup(*self_callable, *callable_with_backup));
+				const variant val = args()[2]->evaluate(*callable_ptr);
+				if(val.as_bool()) {
+					vars.push_back(items[n]);
 				}
 			}
-
-			return variant();
 		}
-	};
+
+		return variant(&vars);
+	}
+};
+	
+FUNCTION_DEF(mapping, -1, -1, "mapping(x): Turns the args passed in into a map. The first arg is a key, the second a value, the third a key, the fourth a value and so on and so forth.")
+	map_formula_callable* callable = new map_formula_callable;
+	for(size_t n = 0; n < args().size()-1; n += 2) {
+		callable->add(args()[n]->evaluate(variables).as_string(),
+					args()[n+1]->evaluate(variables));
+	}
+	
+	return variant(callable);
+END_FUNCTION_DEF(mapping)
+
+class find_function : public function_expression {
+public:
+	explicit find_function(const args_list& args)
+		: function_expression("find", args, 2, 3)
+	{
+		if(args.size() == 3) {
+			args[1]->is_identifier(&identifier_);
+		}
+	}
+
+private:
+	std::string identifier_;
+	variant execute(const formula_callable& variables) const {
+		const variant items = args()[0]->evaluate(variables);
+
+		if(args().size() == 2) {
+			boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
+			for(size_t n = 0; n != items.num_elements(); ++n) {
+				callable->set(items[n], n);
+				const variant val = args().back()->evaluate(*callable);
+				if(val.as_bool()) {
+					return items[n];
+				}
+			}
+		} else {
+			map_formula_callable* self_callable = new map_formula_callable;
+			formula_callable_ptr callable(self_callable);
+			self_callable->add("context", variant(&variables));
+
+			const std::string self = identifier_.empty() ? args()[1]->evaluate(variables).as_string() : identifier_;
+			for(size_t n = 0; n != items.num_elements(); ++n) {
+				self_callable->add(self, items[n]);
+
+				boost::intrusive_ptr<formula_variant_callable_with_backup> callable_backup(new formula_variant_callable_with_backup(items[n], variables));
+
+				formula_callable_ptr callable(new formula_callable_with_backup(*self_callable, *callable_backup));
+				const variant val = args().back()->evaluate(*callable);
+				if(val.as_bool()) {
+					return items[n];
+				}
+			}
+		}
+
+		return variant();
+	}
+};
 
 	class transform_callable : public formula_callable {
 	public:
@@ -990,187 +970,129 @@ END_FUNCTION_DEF(shuffle)
 		variant value_, index_;
 	};
 
-	const int transform_function_dummy_help_var = register_function_helpstring(FunctionModule, "transform(list,ffl): calls the ffl for each item on the given list, "
-		"returning a list of the results. Inside the transform v is the value of the list item and i is the index. e.g. transform([1,2,3], v+2) = [3,4,5] and transform([1,2,3], i) = [0,1,2]");
-	class transform_function : public function_expression {
-	public:
-		explicit transform_function(const args_list& args)
-			: function_expression("transform", args, 2, 2)
-		{}
-	private:
-		variant execute(const formula_callable& variables) const {
-			std::vector<variant> vars;
-			const variant items = args()[0]->evaluate(variables);
+FUNCTION_DEF(transform, 2, 2, "transform(list,ffl): calls the ffl for each item on the given list, returning a list of the results. Inside the transform v is the value of the list item and i is the index. e.g. transform([1,2,3], v+2) = [3,4,5] and transform([1,2,3], i) = [0,1,2]")
+	std::vector<variant> vars;
+	const variant items = args()[0]->evaluate(variables);
 
-			vars.reserve(items.num_elements());
+	vars.reserve(items.num_elements());
 
-			transform_callable* callable = new transform_callable(variables);
-			variant v(callable);
+	transform_callable* callable = new transform_callable(variables);
+	variant v(callable);
 
-			const int nitems = items.num_elements();
-			for(size_t n = 0; n != nitems; ++n) {
-				callable->set(items[n], variant(unsigned(n)));
-				const variant val = args().back()->evaluate(*callable);
-				vars.push_back(val);
-			}
+	const int nitems = items.num_elements();
+	for(size_t n = 0; n != nitems; ++n) {
+		callable->set(items[n], variant(unsigned(n)));
+		const variant val = args().back()->evaluate(*callable);
+		vars.push_back(val);
+	}
 
-			return variant(&vars);
-		}
-	};
+	return variant(&vars);
+END_FUNCTION_DEF(transform)
 
-namespace {
-	void visit_objects(variant v, std::vector<variant>& res) {
-		if(v.is_map()) {
-			res.push_back(v);
-			foreach(const variant_pair& value, v.as_map()) {
-				visit_objects(value.second, res);
-			}
-		} else if(v.is_list()) {
-			foreach(const variant& value, v.as_list()) {
-				visit_objects(value, res);
-			}
-		} else if(v.try_convert<variant_callable>()) {
-			res.push_back(v);
-			variant keys = v.try_convert<variant_callable>()->get_value().get_keys();
-			foreach(variant k, keys.as_list()) {
-				visit_objects(v.try_convert<variant_callable>()->query_value(k.as_string()), res);
-			}
+class map_function : public function_expression {
+public:
+	explicit map_function(const args_list& args)
+		: function_expression("map", args, 2, 3)
+	{
+		if(args.size() == 3) {
+			args[1]->is_identifier(&identifier_);
 		}
 	}
-}
+private:
+	std::string identifier_;
 
-	class visit_objects_function : public function_expression {
-	public:
-		explicit visit_objects_function(const args_list& args)
-			: function_expression("visit_objects", args, 1, 1)
-		{}
-	private:
-		variant execute(const formula_callable& variables) const {
-			const variant v = args()[0]->evaluate(variables);
-			std::vector<variant> result;
-			visit_objects(v, result);
-			return variant(&result);
-		}
-	};
+	variant execute(const formula_callable& variables) const {
+		std::vector<variant> vars;
+		const variant items = args()[0]->evaluate(variables);
 
-	class map_function : public function_expression {
-	public:
-		explicit map_function(const args_list& args)
-			: function_expression("map", args, 2, 3)
-		{
-			if(args.size() == 3) {
-				args[1]->is_identifier(&identifier_);
-			}
-		}
-	private:
-		std::string identifier_;
+		vars.reserve(items.num_elements());
 
-		variant execute(const formula_callable& variables) const {
-			std::vector<variant> vars;
-			const variant items = args()[0]->evaluate(variables);
-
-			vars.reserve(items.num_elements());
-
-			if(args().size() == 2) {
-				if(items.is_map()) {
-					map_formula_callable_ptr callable(new map_formula_callable(&variables));
-					callable->add("context", variant(&variables));
-					foreach(const variant_pair& p, items.as_map()) {
-						callable->add("key", p.first);
-						callable->add("value", p.second);
-						const variant val = args().back()->evaluate(*callable);
-						vars.push_back(val);
-					}
-				} else {
-					boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
-					for(size_t n = 0; n != items.num_elements(); ++n) {
-						callable->set(items[n], n);
-						const variant val = args().back()->evaluate(*callable);
-						vars.push_back(val);
-					}
+		if(args().size() == 2) {
+			if(items.is_map()) {
+				map_formula_callable_ptr callable(new map_formula_callable(&variables));
+				callable->add("context", variant(&variables));
+				foreach(const variant_pair& p, items.as_map()) {
+					callable->add("key", p.first);
+					callable->add("value", p.second);
+					const variant val = args().back()->evaluate(*callable);
+					vars.push_back(val);
 				}
 			} else {
-				static const std::string index_str = "index";
-				static const std::string context_str = "context";
-				map_formula_callable* self_callable = new map_formula_callable;
-				formula_callable_ptr callable_ref(self_callable);
-				self_callable->add(context_str, variant(&variables));
-				const std::string self = identifier_.empty() ? args()[1]->evaluate(variables).as_string() : identifier_;
-
-				variant& self_variant = self_callable->add_direct_access(self);
-
-				//the variant representing the index we are currently at.
-				variant& index_variant = self_callable->add_direct_access(index_str);
-				index_variant = variant(0);
-
-				formula_callable_ptr callable_backup(new formula_callable_with_backup(*self_callable, variables));
-
-				const int nelements = items.num_elements();
-				for(int& n = index_variant.int_addr(); n != nelements; ++n) {
-					self_variant = items[n];
-					vars.push_back(args().back()->evaluate(*callable_backup));
+				boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
+				for(size_t n = 0; n != items.num_elements(); ++n) {
+					callable->set(items[n], n);
+					const variant val = args().back()->evaluate(*callable);
+					vars.push_back(val);
 				}
 			}
+		} else {
+			static const std::string index_str = "index";
+			static const std::string context_str = "context";
+			map_formula_callable* self_callable = new map_formula_callable;
+			formula_callable_ptr callable_ref(self_callable);
+			self_callable->add(context_str, variant(&variables));
+			const std::string self = identifier_.empty() ? args()[1]->evaluate(variables).as_string() : identifier_;
 
-			return variant(&vars);
+			variant& self_variant = self_callable->add_direct_access(self);
+
+			//the variant representing the index we are currently at.
+			variant& index_variant = self_callable->add_direct_access(index_str);
+			index_variant = variant(0);
+
+			formula_callable_ptr callable_backup(new formula_callable_with_backup(*self_callable, variables));
+
+			const int nelements = items.num_elements();
+			for(int& n = index_variant.int_addr(); n != nelements; ++n) {
+				self_variant = items[n];
+				vars.push_back(args().back()->evaluate(*callable_backup));
+			}
 		}
-	};
 
-	class sum_function : public function_expression {
-	public:
-		explicit sum_function(const args_list& args)
-			: function_expression("sum", args, 1, 2)
-		{}
-	private:
-		variant execute(const formula_callable& variables) const {
-			variant res(0);
-			const variant items = args()[0]->evaluate(variables);
-			if(args().size() >= 2) {
-				res = args()[1]->evaluate(variables);
-			}
-			for(size_t n = 0; n != items.num_elements(); ++n) {
-				res = res + items[n];
-			}
+		return variant(&vars);
+	}
+};
 
-			return res;
+FUNCTION_DEF(sum, 1, 2, "sum(list[, counter]): Adds all elements of the list together. If counter is supplied, all elements of the list are added to the counter instead of to 0.")
+	variant res(0);
+	const variant items = args()[0]->evaluate(variables);
+	if(args().size() >= 2) {
+		res = args()[1]->evaluate(variables);
+	}
+	for(size_t n = 0; n != items.num_elements(); ++n) {
+		res = res + items[n];
+	}
+
+	return res;
+END_FUNCTION_DEF(sum)
+
+FUNCTION_DEF(range, 1, 2, "range([start, ]finish): Returns a list containing all numbers smaller than the finish value and and larger than or equal to the start value. The start value defaults to 0.")
+	int start = args().size() > 1 ? args()[0]->evaluate(variables).as_int() : 0;
+	int end = args()[args().size() > 1 ? 1 : 0]->evaluate(variables).as_int();
+	bool reverse = false;
+	if(end < start) {
+		std::swap(start, end);
+		++start;
+		++end;
+		reverse = true;
+	}
+	const int nelem = end - start;
+
+	std::vector<variant> v;
+
+	if(nelem > 0) {
+		v.reserve(nelem);
+
+		for(int n = 0; n < nelem; ++n) {
+			v.push_back(variant(start+n));
 		}
-	};
+	}
 
-	class range_function : public function_expression {
-	public:
-		explicit range_function(const args_list& args)
-		: function_expression("range", args, 1, 2)
-		{}
-	private:
-		variant execute(const formula_callable& variables) const {
-			int start = args().size() > 1 ? args()[0]->evaluate(variables).as_int() : 0;
-			int end = args()[args().size() > 1 ? 1 : 0]->evaluate(variables).as_int();
-			bool reverse = false;
-			if(end < start) {
-				std::swap(start, end);
-				++start;
-				++end;
-				reverse = true;
-			}
-			const int nelem = end - start;
+	if(reverse) {
+		std::reverse(v.begin(), v.end());
+	}
 
-			std::vector<variant> v;
-
-			if(nelem > 0) {
-				v.reserve(nelem);
-
-				for(int n = 0; n < nelem; ++n) {
-					v.push_back(variant(start+n));
-				}
-			}
-
-			if(reverse) {
-				std::reverse(v.begin(), v.end());
-			}
-
-			return variant(&v);
-		}
-	};
+	return variant(&v);
+END_FUNCTION_DEF(range)
 
 FUNCTION_DEF(reverse, 1, 1, "reverse(list): reverses the given list")
 	std::vector<variant> items = args()[0]->evaluate(variables).as_list();
@@ -2011,11 +1933,8 @@ namespace {
 	#define FUNCTION(name) functions_table[#name] = new specific_function_creator<name##_function>();
 			FUNCTION(if);
 			FUNCTION(filter);
-			FUNCTION(flatten);
 			FUNCTION(mapping);
 			FUNCTION(find);
-			FUNCTION(transform);
-			FUNCTION(visit_objects);
 			FUNCTION(map);
 			FUNCTION(sum);
 			FUNCTION(range);
