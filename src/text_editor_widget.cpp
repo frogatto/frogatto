@@ -1396,7 +1396,11 @@ void text_editor_widget::replace(const std::string& replace_with)
 {
 	record_op();
 	save_undo_state();
-	for(std::vector<std::pair<Loc, Loc> >::const_reverse_iterator i = search_matches_.rbegin(); i != search_matches_.rend(); ++i) {
+	
+	//we have to get the end itor here because some compilers don't
+	//support comparing a const and non-const reverse iterator
+	const std::vector<std::pair<Loc, Loc> >::const_reverse_iterator end_itor = search_matches_.rend();
+	for(std::vector<std::pair<Loc, Loc> >::const_reverse_iterator i = search_matches_.rbegin(); i != end_itor; ++i) {
 		const Loc& begin = i->first;
 		const Loc& end = i->second;
 		if(begin.row != end.row) {
