@@ -151,6 +151,12 @@ public:
 	void add_attr_mutation(variant key, variant value);
 	void remove_attr_mutation(variant key);
 
+	//functions which look up maps and lists and gets direct access by address
+	//to the member values. These are dangerous functions which should be
+	//used judiciously!
+	variant* get_attr_mutable(variant key);
+	variant* get_index_mutable(int index);
+
 	//binds a closure to a lambda function.
 	variant bind_closure(const game_logic::formula_callable* callable);
 

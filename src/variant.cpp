@@ -811,6 +811,29 @@ void variant::remove_attr_mutation(variant key)
 	}
 }
 
+variant* variant::get_attr_mutable(variant key)
+{
+	if(is_map()) {
+		std::map<variant,variant>::iterator i = map_->elements.find(key);
+		if(i != map_->elements.end()) {
+			return &i->second;
+		}
+	}
+
+	return NULL;
+}
+
+variant* variant::get_index_mutable(int index)
+{
+	if(is_list()) {
+		if(index >= 0 && index < list_->size()) {
+			return &list_->begin[index];
+		}
+	}
+
+	return NULL;
+}
+
 variant variant::bind_closure(const game_logic::formula_callable* callable)
 {
 	if(!is_function()) {
