@@ -77,7 +77,7 @@ UNIT_TEST(formula)
 	CHECK_EQ(FML("max(3,5)").execute(c).as_int(), 5);
 	CHECK_EQ(FML("max(5,2)").execute(c).as_int(), 5);
 	CHECK_EQ(FML("char.strength").execute(p).as_int(), 15);
-	CHECK_EQ(FML("choose(members,strength).strength").execute(p).as_int(), 16);
+	CHECK_EQ(FML("choose(members,value.strength).strength").execute(p).as_int(), 16);
 	CHECK_EQ(FML("4^2").execute().as_int(), 16);
 	CHECK_EQ(FML("2+3^3").execute().as_int(), 29);
 	CHECK_EQ(FML("2*3^3+2").execute().as_int(), 56);

@@ -393,34 +393,6 @@ FUNCTION_DEF(values, 1, 1, "values(map) -> list: gives the values for a map")
 	return map.get_values();
 END_FUNCTION_DEF(values)
 
-FUNCTION_DEF(choose, 1, 2, "choose(list, (optional)scoring_expr) -> value: choose an item from the list according to which scores the highest according to the scoring expression, or at random by default.")
-
-	const variant items = args()[0]->evaluate(variables);
-	int max_index = -1;
-	variant max_value;
-	for(size_t n = 0; n != items.num_elements(); ++n) {
-		variant val;
-		
-		if(args().size() >= 2) {
-			formula_callable_ptr callable(new formula_variant_callable_with_backup(items[n], variables));
-			val = args()[1]->evaluate(*callable);
-		} else {
-			val = variant(rand());
-		}
-
-		if(max_index == -1 || val > max_value) {
-			max_index = n;
-			max_value = val;
-		}
-	}
-
-	if(max_index == -1) {
-		return variant();
-	} else {
-		return items[max_index];
-	}
-END_FUNCTION_DEF(choose)
-
 FUNCTION_DEF(wave, 1, 1, "wave(int) -> int: a wave with a period of 1000 and height of 1000")
 	const int value = args()[0]->evaluate(variables).as_int()%1000;
 	const double angle = 2.0*3.141592653589*(static_cast<double>(value)/1000.0);
@@ -988,6 +960,35 @@ FUNCTION_DEF(transform, 2, 2, "transform(list,ffl): calls the ffl for each item 
 
 	return variant(&vars);
 END_FUNCTION_DEF(transform)
+
+FUNCTION_DEF(choose, 1, 2, "choose(list, (optional)scoring_expr) -> value: choose an item from the list according to which scores the highest according to the scoring expression, or at random by default.")
+
+	const variant items = args()[0]->evaluate(variables);
+	int max_index = -1;
+	variant max_value;
+	boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
+	for(size_t n = 0; n != items.num_elements(); ++n) {
+		variant val;
+		
+		if(args().size() >= 2) {
+			callable->set(items[n], n);
+			val = args()[1]->evaluate(*callable);
+		} else {
+			val = variant(rand());
+		}
+
+		if(max_index == -1 || val > max_value) {
+			max_index = n;
+			max_value = val;
+		}
+	}
+
+	if(max_index == -1) {
+		return variant();
+	} else {
+		return items[max_index];
+	}
+END_FUNCTION_DEF(choose)
 
 class map_function : public function_expression {
 public:
