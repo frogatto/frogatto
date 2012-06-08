@@ -35,6 +35,7 @@ custom_object_callable::custom_object_callable()
 	"previous_y", "x1", "x2", "y1", "y2", "w", "h", "mid_x", "mid_y", "midpoint_x", "midpoint_y",
 	"solid_rect", "solid_mid_x", "solid_mid_y", "img_mid_x", "img_mid_y","img_w", "img_h", "front", "back", "cycle", "facing",
 	"upside_down", "up", "down", "velocity_x", "velocity_y",
+	"velocity_magnitude", "velocity_angle",
 	"accel_x", "accel_y", "gravity_shift", "platform_motion_x",
 	"registry", "globals", "vars", "tmp", "group", "rotate",
 	"me", "self",

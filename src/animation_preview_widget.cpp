@@ -310,7 +310,7 @@ void animation_preview_widget::init()
 	widgets_.push_back(widget_ptr(pos_label_));
 
 	b = new button("Reset", boost::bind(&animation_preview_widget::reset_rect, this));
-	b->set_loc(pos_label_->x() + pos_label_->width() + 8, y() + height() - b->height() - 5);
+	b->set_loc(pos_label_->x() + pos_label_->width() + 58, y() + height() - b->height() - 5);
 	widgets_.push_back(widget_ptr(b));
 }
 

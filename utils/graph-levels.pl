@@ -11,12 +11,15 @@ use strict;
 
 my $show_music = 0;
 my $show_heart_pieces = 0;
+my $show_coins = 0;
 
 while(my $arg = shift @ARGV) {
 	if($arg eq '--show_music') {
 		$show_music = 1;
 	} elsif($arg eq '--show_heart_pieces') {
 		$show_heart_pieces = 1;
+	} elsif($arg eq '--show_coins') {
+		$show_coins = 1;
 	} else {
 		die "Unrecognized argument: $arg";
 	}
@@ -47,6 +50,7 @@ foreach my $level (@levels) {
 	my $saves = 0;
 	my $music = '';
 	my $heart_pieces = 0;
+	my $coins = 0;
 
 	while(my $line = <LVL>) {
 		if(my ($toilet) = $line =~ /type"?: "(save_toilet|dungeon_save_door)"/) {
@@ -67,6 +71,26 @@ foreach my $level (@levels) {
 		
 		if(my ($heart_object) = $line =~ /type"?: "(partial_max_heart_object)"/) {
 			++$heart_pieces;
+		}
+		
+		if(my ($heart_object) = $line =~ /type"?: "(coin_silver)"/) {
+			$coins += 1;
+		}
+		
+		if(my ($heart_object) = $line =~ /type"?: "(coin_gold)"/) {
+			$coins += 5;
+		}
+		
+		if(my ($heart_object) = $line =~ /type"?: "(coin_gold_big)"/) {
+			$coins += 20;
+		}
+		
+		if(my ($heart_object) = $line =~ /type"?: "(coin_gold_enormous)"/) {
+			$coins += 100;
+		}
+		
+		if(my ($heart_object) = $line =~ /type"?: "(gold_berry)"/) {
+			$coins += 1;
 		}
 		
 		if(my ($next_level) = $line =~ /next_level"?: "(.*)"/) {
@@ -95,6 +119,10 @@ foreach my $level (@levels) {
 		use integer;
 		$label .= "\\n";
 		$label .= $heart_pieces/100 . " full " . $heart_pieces%100 . " partial hearts";
+	}
+	if($show_coins and $coins > 0){
+		$label .= "\\n";
+		$label .= "coins worth " . $coins;
 	}
 	
 	print qq~N$index [label="$label",shape=box,fontsize=12];\n~;
