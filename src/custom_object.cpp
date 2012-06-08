@@ -1931,6 +1931,28 @@ public:
 	explicit event_handlers_callable(const custom_object& obj) : obj_(const_cast<custom_object*>(&obj))
 	{}
 };
+
+decimal calculate_velocity_magnitude(int velocity_x, int velocity_y)
+{
+	const int64_t xval = velocity_x;
+	const int64_t yval = velocity_y;
+	int64_t value = xval*xval + yval*yval;
+	value = sqrt(value);
+	decimal result(decimal::from_int(static_cast<int>(value)));
+	result /= 1000;
+	return result;
+}
+
+static const double radians_to_degrees = 57.29577951308232087;
+decimal calculate_velocity_angle(int velocity_x, int velocity_y)
+{
+	if(velocity_y == 0 && velocity_x == 0) {
+		return decimal::from_int(0);
+	}
+
+	const double theta = atan2(velocity_y, velocity_x);
+	return decimal(theta*radians_to_degrees);
+}
 }
 
 variant custom_object::get_value_by_slot(int slot) const
@@ -2003,6 +2025,10 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_DOWN:              return variant(upside_down() ? -1 : 1);
 	case CUSTOM_OBJECT_VELOCITY_X:        return variant(velocity_x_);
 	case CUSTOM_OBJECT_VELOCITY_Y:        return variant(velocity_y_);
+
+	case CUSTOM_OBJECT_VELOCITY_MAGNITUDE: return variant(calculate_velocity_magnitude(velocity_x_, velocity_y_));
+	case CUSTOM_OBJECT_VELOCITY_ANGLE:     return variant(calculate_velocity_angle(velocity_x_, velocity_y_));
+
 	case CUSTOM_OBJECT_ACCEL_X:           return variant(accel_x_);
 	case CUSTOM_OBJECT_ACCEL_Y:           return variant(accel_y_);
 	case CUSTOM_OBJECT_GRAVITY_SHIFT:     return variant(gravity_shift_);
@@ -2711,7 +2737,18 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	case CUSTOM_OBJECT_VELOCITY_Y:
 		velocity_y_ = value.as_int();
 		break;
-
+	case CUSTOM_OBJECT_VELOCITY_MAGNITUDE: {
+		break;
+	}
+	case CUSTOM_OBJECT_VELOCITY_ANGLE: {
+		const double radians = value.as_decimal().as_float()/radians_to_degrees;
+		const decimal magnitude = calculate_velocity_magnitude(velocity_x_, velocity_y_);
+		const decimal xval = magnitude*decimal(cos(radians));
+		const decimal yval = magnitude*decimal(sin(radians));
+		velocity_x_ = (xval*1000).as_int();
+		velocity_y_ = (yval*1000).as_int();
+		break;
+	}
 	case CUSTOM_OBJECT_ACCEL_X:
 		accel_x_ = value.as_int();
 		break;
