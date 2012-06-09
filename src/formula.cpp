@@ -627,8 +627,16 @@ public:
 private:
 	variant execute(const formula_callable& variables) const {
 		const variant left = left_->evaluate(variables);
-		int begin_index = start_ ? start_->evaluate(variables).as_int()%(left.num_elements()+1) : 0;
-		int end_index = end_ ? end_->evaluate(variables).as_int()%(left.num_elements()+1) : left.num_elements();
+		int begin_index = start_ ? start_->evaluate(variables).as_int() : 0;
+		int end_index = end_ ? end_->evaluate(variables).as_int() : left.num_elements();
+
+		if(begin_index > left.num_elements()) {
+			begin_index = left.num_elements();
+		}
+
+		if(end_index > left.num_elements()) {
+			end_index = left.num_elements();
+		}
 		
 		if(left.is_list()) {
 			if(left.num_elements() == 0) {
