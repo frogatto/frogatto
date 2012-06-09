@@ -961,6 +961,42 @@ FUNCTION_DEF(transform, 2, 2, "transform(list,ffl): calls the ffl for each item 
 	return variant(&vars);
 END_FUNCTION_DEF(transform)
 
+namespace {
+void visit_objects(variant v, std::vector<variant>& res) {
+	if(v.is_map()) {
+		res.push_back(v);
+		foreach(const variant_pair& value, v.as_map()) {
+			visit_objects(value.second, res);
+		}
+	} else if(v.is_list()) {
+		foreach(const variant& value, v.as_list()) {
+			visit_objects(value, res);
+		}
+	} else if(v.try_convert<variant_callable>()) {
+		res.push_back(v);
+		variant keys = v.try_convert<variant_callable>()->get_value().get_keys();
+		foreach(variant k, keys.as_list()) {
+			visit_objects(v.try_convert<variant_callable>()->query_value(k.as_string()), res);
+		}
+	}
+}
+}
+
+class visit_objects_function : public function_expression 
+{
+public:
+	explicit visit_objects_function(const args_list& args)
+		: function_expression("visit_objects", args, 1, 1)
+	{}
+private:
+	variant execute(const formula_callable& variables) const {
+		const variant v = args()[0]->evaluate(variables);
+		std::vector<variant> result;
+		visit_objects(v, result);
+		return variant(&result);
+	}
+};
+
 FUNCTION_DEF(choose, 1, 2, "choose(list, (optional)scoring_expr) -> value: choose an item from the list according to which scores the highest according to the scoring expression, or at random by default.")
 
 	const variant items = args()[0]->evaluate(variables);
@@ -1936,6 +1972,7 @@ namespace {
 			FUNCTION(filter);
 			FUNCTION(mapping);
 			FUNCTION(find);
+			FUNCTION(visit_objects);
 			FUNCTION(map);
 			FUNCTION(sum);
 			FUNCTION(range);
