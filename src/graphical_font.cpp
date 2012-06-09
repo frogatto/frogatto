@@ -166,7 +166,7 @@ rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_te
 	int xpos = x, ypos = y, highest = 0;
 	for(std::string::const_iterator i = text.begin(); i != text.end(); ++i) {
 		if(*i == '\n') {
-			ypos = ypos + highest + 10;
+			ypos = ypos + ((highest+4)*size)/2;
 			xpos = x;
 			highest = 0;
 			continue;
