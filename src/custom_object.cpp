@@ -1937,7 +1937,7 @@ decimal calculate_velocity_magnitude(int velocity_x, int velocity_y)
 	const int64_t xval = velocity_x;
 	const int64_t yval = velocity_y;
 	int64_t value = xval*xval + yval*yval;
-	value = sqrt(value);
+	value = sqrt(double(value));
 	decimal result(decimal::from_int(static_cast<int>(value)));
 	result /= 1000;
 	return result;
@@ -1950,7 +1950,7 @@ decimal calculate_velocity_angle(int velocity_x, int velocity_y)
 		return decimal::from_int(0);
 	}
 
-	const double theta = atan2(velocity_y, velocity_x);
+	const double theta = atan2(double(velocity_y), double(velocity_x));
 	return decimal(theta*radians_to_degrees);
 }
 }
