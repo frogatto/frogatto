@@ -118,8 +118,9 @@
 		</list>
 		
 		<contexts>
+			<!-- Outside FSON Section-->
 			<context name="start doc" attribute="error" >
-				<DetectChar attribute="normal" context="start fson" char="{" />
+				<DetectChar attribute="normal" context="base fson" char="{" />
 				<!-- FSON Comment Triggers -->
 				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
 				<DetectChar attribute="comment" context="single line comment" char="#" />
@@ -133,9 +134,11 @@
 				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
 			</context>
 			
-			<context name="start fson" attribute="normal" >
-				<keyword attribute="known object" context="search for known object colon" String="known objects" />
-				<DetectIdentifier attribute="uknown object" context="search for unknown object colon" />
+			
+			<!-- FSON Section -->
+			<context name="base fson" attribute="normal">
+				<keyword attribute="known object" context="known object colon-val map chain" String="known objects" /> <!-- TODO: Why isn't this firing before DetectIdentifier? -->
+				<DetectIdentifier attribute="unknown object" context="unknown object colon-val map chain" />
 				<DetectChar attribute="normal" context="finish doc" char="}" />
 				<!-- FSON Comment Triggers -->
 				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
@@ -143,30 +146,18 @@
 				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
 			</context>
 			
-			<context name="end fson" attribute="normal" fallthrough="true" fallthroughContext="long error" >
-				<DetectChar attribute="normal" context="finish doc" char="}" />
-				<DetectChar attribute="normal" context="start fson" char="," />
-				<DetectSpaces attribute="normal" context="#stay" />
+			<context name="fson" attribute="normal">
+				<DetectIdentifier attribute="normal" context="object colon-val map chain" />
+				<DetectChar attribute="normal" context="#pop#pop#pop" char="}" />
 				<!-- FSON Comment Triggers -->
 				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
 				<DetectChar attribute="comment" context="single line comment" char="#" />
 				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
 			</context>
 			
-			<context name="search for known object colon" attribute="known object" fallthrough="true" fallthroughContext="long error" >
-				<DetectChar attribute="known object" context="start fson atom" char=":"/>
-				<!-- FSON Comment Triggers -->
-				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
-				<DetectChar attribute="comment" context="single line comment" char="#" />
-				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
-				<!-- Exceptions -->
-				<DetectSpaces attribute="known object" context="#stay" />
-				<DetectChar attribute="known object" context="#stay" char="*" />
-				<DetectChar attribute="small error" context="#stay" char="/" />
-			</context>
-			
-			<context name="search for unknown object colon" attribute="unknown object" fallthrough="true" fallthroughContext="long error" >
-				<DetectChar attribute="unknown object" context="start fson atom" char=":"/>
+			<context name="unknown object colon-val map chain" attribute="unknown object">
+				<DetectChar attribute="unknown object" context="fson atom, map" char=":"/>
+				<DetectChar attribute="unknown object" context="#pop" char="}"/>
 				<!-- FSON Comment Triggers -->
 				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
 				<DetectChar attribute="comment" context="single line comment" char="#" />
@@ -177,46 +168,117 @@
 				<DetectChar attribute="small error" context="#stay" char="/" />
 			</context>
 			
-			<context name="start fson atom" attribute="formula language" fallthrough="true" fallthroughContext="long error" > <!-- An atom is a unit of FSON, like a list, map, number, or string. -->
-				<DetectChar attribute="normal" context="start fson map" char="{" />
-				<DetectChar attribute="normal" context="start ffl" char="&quot;" />
-				
+			<context name="known object colon-val map chain" attribute="known object">
+				<DetectChar attribute="known object" context="fson atom, map" char=":"/>
+				<DetectChar attribute="known object" context="#pop" char="}"/>
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="single line comment" char="#" />
+				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
+				<!-- Exceptions -->
 				<DetectSpaces attribute="known object" context="#stay" />
+				<DetectChar attribute="known object" context="#stay" char="*" />
+				<DetectChar attribute="small error" context="#stay" char="/" />
+			</context>
+			
+			<context name="object colon-val map chain" attribute="normal">
+				<DetectChar attribute="normal" context="fson atom, map" char=":"/>
+				<DetectChar attribute="normal" context="#pop" char="}"/>
 				<!-- FSON Comment Triggers -->
 				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
 				<DetectChar attribute="comment" context="single line comment" char="#" />
 				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
-			</context>
-			
-			<context name="start ffl" attribute="formula language" >
-				<DetectChar attribute="normal" context="end fson" char="&quot;" />
-				<!-- FFL Comment Triggers -->
-				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
-				<DetectChar attribute="comment" context="legacy multiple line comment" char="#" />
-				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
-			</context>
-			
-			<context name="start fson map" attribute="formula language" fallthrough="false" fallthroughContext="long error" >
-				<DetectChar attribute="normal" context="end fson" char="}" /> <!-- TODO: make internal key/values parsed -->
+				<!-- Exceptions -->
 				<DetectSpaces attribute="normal" context="#stay" />
+				<DetectChar attribute="normal" context="#stay" char="*" />
+				<DetectChar attribute="small error" context="#stay" char="/" />
+			</context>
+			
+			<context name="fson atom, map" attribute="normal">
+				<DetectChar attribute="formula language" context="ffl" char="&quot;"/>		<!-- FFL string -->
+				<Float attribute="number" context="find comma, number" />			<!-- Positive Numbers -->
+				<Int attribute="number" context="find comma, number" />				
+				<DetectChar attribute="number" context="negative" char="-" />				<!-- Negative Numbers -->
+				<DetectChar attribute="normal" context="fson" char="{" />					<!-- Maps -->
 				<!-- FSON Comment Triggers -->
 				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
 				<DetectChar attribute="comment" context="single line comment" char="#" />
 				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
+				<!-- Exceptions -->
+				<DetectSpaces attribute="known object" context="#stay" />
+				<DetectChar attribute="small error" context="#stay" char="/" />
+			</context>
+			
+			<context name="ffl" attribute="formula language">
+				<DetectChar attribute="formula language" context="find deep comma" char="&quot;"/>
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="single line comment" char="#" />
+				<Detect2Chars attribute="comment" context="legacy multiple line comment" char="/" char1="*" beginRegion="comment" />
+				<!-- Exceptions -->
+				<DetectSpaces attribute="formulaLanguage" context="#stay" />
+				<DetectChar attribute="small error" context="#stay" char="/" />
+			</context>
+			
+			<context name="negative" attribute="number">
+				<Float attribute="number" context="find comma or end, negative" />
+				<Int attribute="number" context="find comma or end, negative" />
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="single line comment" char="#" />
+				<Detect2Chars attribute="comment" context="legacy multiple line comment" char="/" char1="*" beginRegion="comment" />
+				<!-- Exceptions -->
+				<DetectSpaces attribute="known object" context="#stay" />
+				<DetectChar attribute="small error" context="#stay" char="/" />
 			</context>
 			
 			
+			<!-- Comma Return Depths -->
+			<context name="find deep comma" attribute="normal">
+				<DetectChar attribute="normal" context="#pop#pop#pop#pop" char="," />
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="single line comment" char="#" />
+				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
+				<!-- Exceptions -->
+				<DetectSpaces attribute="known object" context="#stay" />
+				<DetectChar attribute="small error" context="#stay" char="/" />
+			</context>
 			
-			<!-- TODO: Dishes. -->
+			<context name="find comma or end, negative" attribute="normal">
+				<DetectChar attribute="normal" context="#pop#pop#pop#pop" char="," />
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="single line comment" char="#" />
+				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
+				<!-- Exceptions -->
+				<DetectSpaces attribute="known object" context="#stay" />
+				<DetectChar attribute="small error" context="#stay" char="/" />
+			</context>
+			
+			<context name="find comma, number" attribute="normal">
+				<DetectChar attribute="normal" context="#pop#pop#pop" char="," />
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="single line comment" char="#" />
+				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
+				<!-- Exceptions -->
+				<DetectSpaces attribute="known object" context="#stay" />
+				<DetectChar attribute="small error" context="#stay" char="/" />
+			</context>
+			
+			
 			<!-- comments & errors-->
 			<context name="single line comment" attribute="comment" lineEndContext="#pop" />
 			<context name="c-style multiple line comment" attribute="comment" >
+				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
 				<Detect2Chars attribute="comment" context="#pop" char="*" char1="/" endRegion="comment" />
 			</context>
 			<context name="legacy multiple line comment" attribute="comment" >
 				<DetectChar attribute="comment" context="#pop" char="#" endRegion="comment" />
 			</context>
 			<context name="long error" attribute="error" />
+			<context name="short error" attribute="error" lineEndContext="#pop" />
 		</contexts>
 		
 		<itemDatas>
@@ -226,7 +288,9 @@
 			<itemData name="normal" 			defStyleNum="dsNormal"						/>
 			<itemData name="known object"		defStyleNum="dsFunction"	color="#CC3096"	/>
 			<itemData name="unknown object"		defStyleNum="dsFunction"					/>
-			<itemData name="formula language" 	defStyleNum="dsNormal" 		color="#5030FF"	/>
+			<itemData name="formula language" 	defStyleNum="dsNormal" 		color="#604020"	/>
+			<itemData name="number" 			defStyleNum="dsDecVal" 						/>
+			<itemData name="g"				 	defStyleNum="dsNormal" 		color="#11AA22"	/>
 		</itemDatas>
 	</highlighting>
 	
