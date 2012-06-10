@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE language SYSTEM "language.dtd">
+
+<!-- I am a Kate syntax highlighting file.
+	To use me, put me in with the rest of your Kate highlighting files. (eg, /usr/share/apps/katepart/syntax/)
+	I add an entry under 'markup', and cause .cfg files to default to using me.
+	In addition, I recommend using the 'python' indentation style. (tools -> indentation -> python) -->
+
+<language name="Frogatto FSON-FFL"  priority="2" section="Markup" extensions="*.cfg" version="2.0.0" kateversion="3.6.5" casesensitive="yes" author="DDR (robertsdavidddr@gmail.com)" license="Frogatto">
+	<highlighting>
+		<list name="known objects">
+			<!--Start Engine Tags-->
+			<item> prototype </item> 
+			<item> object </item> 
+			<item> object_type </item> 
+			<item> properties </item> 
+			<item> vars </item> 
+			<item> consts </item> 
+			<item> animation </item> 
+			<item> control_schemes </item> 
+			<item> button </item> 
+			<item> font </item> 
+			<item> chars </item> 
+			<item> editor </item> 
+			<item> tileset </item> 
+			<item> preview </item> 
+			<item> functions </item> 
+			<item> function </item> 
+			<item> gui </item> 
+			<item> section </item> 
+			<item> framed_gui_element </item> 
+			<item> leaderboards </item> 
+			<item> leaderboard </item> 
+			<item> level </item> 
+			<item> character </item> 
+			<item> portal </item> 
+			<item> background </item> 
+			<item> tile_map </item> 
+			<item> serialized_objects </item> 
+			<item> water </item> 
+			<item> powerups </item> 
+			<item> powerup </item> 
+			<item> icon </item> 
+			<item> set_str </item> 
+			<item> children </item> 
+			<item> preloads </item> 
+			<item> preload </item> 
+			<item> schema </item> 
+			<item> test </item> 
+			<item> characters </item> 
+			<item> frames </item> 
+			<item> current_generator </item> 
+			<item> tiles </item> 
+			<item> achievements </item> 
+			<item> achievement </item> 
+			<item> level_index </item> 
+			<item> compiled_tiles </item> 
+			<item> particle_system </item> 
+			<item> editor_info </item> 
+			<item> var </item> 
+			<item> tile_pattern </item> 
+			<item> tmp </item> 
+			<item> object_prototype </item> 
+			<item> object_variation </item> 
+			<item> set </item> 
+			<item> objects_destroyed </item> 
+			<item> area </item> 
+			<item> solid </item> 
+			<item> solid_rect </item> 
+			<item> base </item>  <!-- Used for [basex] tags. -->
+			<item> script </item> 
+			<item> modification </item> 
+			<item> frame </item> 
+			<item> light </item> 
+			
+			<!--Start Common Engine Events-->
+			<item> on_start_level </item> 
+			<item> on_player_death </item> 
+			<item> on_load </item> 
+			<item> on_load_checkpoint </item> 
+			<item> on_create </item> 
+			<item> on_done_create </item> 
+			<item> on_become_active </item> 
+			<item> on_surface_damage </item> 
+			<item> on_enter_anim </item> 
+			<item> on_end_anim </item> 
+			<item> on_collide_level </item> 
+			<item> on_collide_head </item> 
+			<item> on_collide_feet </item> 
+			<item> on_collide_damage </item> 
+			<item> on_collide_side </item> 
+			<item> on_stuck </item> 
+			<item> on_jumped_on </item> 
+			<item> on_get_hit </item> 
+			<item> on_process </item> 
+			<item> on_timer </item> 
+			<item> on_enter_water </item> 
+			<item> on_exit_water </item> 
+			<item> on_change_solid_dimensions_fail </item> 
+			<item> on_add_object_fail </item> 
+			<item> on_change_animation_failure </item> 
+			<item> on_die </item> 
+			<!--<item> on_interact </item>  Probably not engine.-->
+			<item> on_child_spawned </item> 
+			<item> on_spawned </item> 
+			<item> on_draw </item> 
+			<item> on_begin_dialog </item> 
+			<item> on_cosmic_shift </item> 
+			
+			<!--Start Player Engine Events-->
+			<item> on_ctrl_up </item> 
+			<item> on_ctrl_down </item> 
+			<item> on_ctrl_left </item> 
+			<item> on_ctrl_right </item> 
+			<item> on_ctrl_jump </item> 
+			<item> on_ctrl_tongue </item> 
+			<item> on_ctrl_debug </item> 
+		</list>
+		
+		<contexts>
+			<context name="start doc" attribute="error" >
+				<DetectChar attribute="normal" context="start fson" char="{" />
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="single line comment" char="#" />
+				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
+			</context>
+			
+			<context name="finish doc" attribute="error" >
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="single line comment" char="#" />
+				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
+			</context>
+			
+			<context name="start fson" attribute="normal" >
+				<keyword attribute="known object" context="search for known object colon" String="known objects" />
+				<DetectIdentifier attribute="uknown object" context="search for unknown object colon" />
+				<DetectChar attribute="normal" context="finish doc" char="}" />
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="single line comment" char="#" />
+				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
+			</context>
+			
+			<context name="end fson" attribute="normal" fallthrough="true" fallthroughContext="long error" >
+				<DetectChar attribute="normal" context="finish doc" char="}" />
+				<DetectChar attribute="normal" context="start fson" char="," />
+				<DetectSpaces attribute="normal" context="#stay" />
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="single line comment" char="#" />
+				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
+			</context>
+			
+			<context name="search for known object colon" attribute="known object" fallthrough="true" fallthroughContext="long error" >
+				<DetectChar attribute="known object" context="start fson atom" char=":"/>
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="single line comment" char="#" />
+				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
+				<!-- Exceptions -->
+				<DetectSpaces attribute="known object" context="#stay" />
+				<DetectChar attribute="known object" context="#stay" char="*" />
+				<DetectChar attribute="small error" context="#stay" char="/" />
+			</context>
+			
+			<context name="search for unknown object colon" attribute="unknown object" fallthrough="true" fallthroughContext="long error" >
+				<DetectChar attribute="unknown object" context="start fson atom" char=":"/>
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="single line comment" char="#" />
+				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
+				<!-- Exceptions -->
+				<DetectSpaces attribute="unknown object" context="#stay" />
+				<DetectChar attribute="unknown object" context="#stay" char="*" />
+				<DetectChar attribute="small error" context="#stay" char="/" />
+			</context>
+			
+			<context name="start fson atom" attribute="formula language" fallthrough="true" fallthroughContext="long error" > <!-- An atom is a unit of FSON, like a list, map, number, or string. -->
+				<DetectChar attribute="normal" context="start fson map" char="{" />
+				<DetectChar attribute="normal" context="start ffl" char="&quot;" />
+				
+				<DetectSpaces attribute="known object" context="#stay" />
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="single line comment" char="#" />
+				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
+			</context>
+			
+			<context name="start ffl" attribute="formula language" >
+				<DetectChar attribute="normal" context="end fson" char="&quot;" />
+				<!-- FFL Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="legacy multiple line comment" char="#" />
+				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
+			</context>
+			
+			<context name="start fson map" attribute="formula language" fallthrough="false" fallthroughContext="long error" >
+				<DetectChar attribute="normal" context="end fson" char="}" /> <!-- TODO: make internal key/values parsed -->
+				<DetectSpaces attribute="normal" context="#stay" />
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="single line comment" char="#" />
+				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
+			</context>
+			
+			
+			
+			<!-- TODO: Dishes. -->
+			<!-- comments & errors-->
+			<context name="single line comment" attribute="comment" lineEndContext="#pop" />
+			<context name="c-style multiple line comment" attribute="comment" >
+				<Detect2Chars attribute="comment" context="#pop" char="*" char1="/" endRegion="comment" />
+			</context>
+			<context name="legacy multiple line comment" attribute="comment" >
+				<DetectChar attribute="comment" context="#pop" char="#" endRegion="comment" />
+			</context>
+			<context name="long error" attribute="error" />
+		</contexts>
+		
+		<itemDatas>
+			<itemData name="comment" 			defStyleNum="dsComment"						/>
+			<itemData name="error" 				defStyleNum="dsError"						/>
+			<itemData name="small error"		defStyleNum="dsError"		bold="true"		/>
+			<itemData name="normal" 			defStyleNum="dsNormal"						/>
+			<itemData name="known object"		defStyleNum="dsFunction"	color="#CC3096"	/>
+			<itemData name="unknown object"		defStyleNum="dsFunction"					/>
+			<itemData name="formula language" 	defStyleNum="dsNormal" 		color="#5030FF"	/>
+		</itemDatas>
+	</highlighting>
+	
+	<general>
+		<keywords casesensitive="1"/>
+		<folding indentationsensitive="0"/>
+	</general>
+</language>
