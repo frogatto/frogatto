@@ -132,6 +132,7 @@ tile_map.cpp
 tileset_editor_dialog.cpp
 tooltip.cpp
 translate.cpp
+tree_view_widget.cpp
 utils.cpp
 variant.cpp
 variant_callable.cpp
