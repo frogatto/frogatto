@@ -139,7 +139,7 @@
 			<context name="base fson" attribute="normal" fallthrough="true" fallthroughContext="fson error" >
 				<keyword attribute="known object" context="known object colon-val map chain" String="known objects" />
 				<DetectIdentifier attribute="unknown object" context="unknown object colon-val map chain" />
-				<DetectChar attribute="normal" context="quoted ffl key" char="&quot;"/> <!-- This is a little hacky, because it assumes things went RIGHT and you finished up your quote. -->
+				<RegExpr attribute="normal" context="object colon-val map chain" String="&quot;[A-Z a-z 0-9 \* \_ \-]+&quot;" />
 				<DetectChar attribute="normal" context="finish doc" char="}" />
 				<!-- FSON Comment Triggers -->
 				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
@@ -149,6 +149,7 @@
 			</context>
 			
 			<context name="fson" attribute="normal" fallthrough="true" fallthroughContext="fson error" >
+				<RegExpr attribute="normal" context="object colon-val map chain" String="&quot;[A-Z a-z 0-9 \* \_ \-]+&quot;" />
 				<DetectIdentifier attribute="normal" context="object colon-val map chain" />
 				<DetectChar attribute="normal" context="#pop" char="}" lookAhead="true"/>			
 				<!-- FSON Comment Triggers -->
@@ -156,12 +157,6 @@
 				<DetectChar attribute="comment" context="single line comment" char="#" />
 				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
 				<DetectSpaces />
-			</context>
-			
-			<context name="quoted ffl key" attribute="normal" lineEndContext="#pop">
-				<DetectChar attribute="normal" context="object colon-val map chain" char="&quot;"/>
-				<DetectChar attribute="error" context="fson error" char=":"/> <!-- We can't automatically throw an error, but this should catch the most common cases. -->
-				<DetectChar attribute="error" context="fson error" char=","/> <!-- The reason is that this context, which looks for the ending quote, adds 'one' to the find comma depth. We'd have to redo our whole stack to point at the new comma return depth statements… not impossible, but *not* nice either. -->
 			</context>
 			
 			<context name="unknown object colon-val map chain" attribute="unknown object" fallthrough="true" fallthroughContext="fson error" >
@@ -204,12 +199,18 @@
 			</context>
 			
 			<context name="fson atom, map" attribute="normal" fallthrough="true" fallthroughContext="fson error" >
-				<DetectChar attribute="formula language" context="ffl" char="&quot;"/>		<!-- FFL string -->
-				<Float attribute="number" context="find comma 3" />							<!-- Positive Numbers -->
+				<DetectChar attribute="formula language" context="ffl 3" char="&quot;"/>				<!-- FFL string -->
+				<DetectChar attribute="formula language" context="fson string 3" char="'"/>				<!-- fson string -->
+				<Float attribute="number" context="find comma 3" />										<!-- Positive Numbers -->
 				<Int attribute="number" context="find comma 3" />							
-				<DetectChar attribute="number" context="negative 3" char="-" />				<!-- Negative Numbers -->
-				<DetectChar attribute="normal" context="fson" char="{" />					<!-- Maps -->
-				<DetectChar attribute="normal" context="find comma 3" char="}" />			
+				<DetectChar attribute="number" context="negative 3" char="-" />							<!-- Negative Numbers -->
+				<DetectChar attribute="normal" context="fson" char="{" beginRegion="map" />				<!-- Maps -->
+				<DetectChar attribute="normal" context="find comma 3" char="}" endRegion="map" />			
+				<DetectChar attribute="normal" context="fson atom, list" char="[" beginRegion="list" />	<!-- Lists, returns ]. -->
+				<DetectChar attribute="normal" context="find comma 3" char="]" endRegion="list" />			
+				<StringDetect attribute="normal" context="find comma 3" String="true" />
+				<StringDetect attribute="normal" context="find comma 3" String="false" />
+				<StringDetect attribute="normal" context="find comma 3" String="null" />
 				<!-- FSON Comment Triggers -->
 				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
 				<DetectChar attribute="comment" context="single line comment" char="#" />
@@ -219,20 +220,104 @@
 				<DetectChar attribute="small error" context="#stay" char="/" />
 			</context>
 			
-			<context name="ffl" attribute="formula language" >
+			<context name="fson atom, list" attribute="normal" fallthrough="true" fallthroughContext="fson error" >
+				<DetectChar attribute="formula language" context="ffl 1" char="&quot;"/>		<!-- FFL string -->
+				<DetectChar attribute="formula language" context="fson string 1" char="'"/>		<!-- fson string -->
+				<Float attribute="number" context="find comma 1" />								<!-- Positive Numbers -->
+				<Int attribute="number" context="find comma 1" />							
+				<DetectChar attribute="number" context="negative 1" char="-" />					<!-- Negative Numbers -->
+				<DetectChar attribute="normal" context="fson" char="{" beginRegion="map" />		<!-- Maps -->
+				<DetectChar attribute="normal" context="find comma 1" char="}" endRegion="map" />			
+				<DetectChar attribute="normal" context="fson atom, list, #2" char="[" beginRegion="list" />		<!-- Lists, swallows ]. -->	
+				<StringDetect attribute="normal" context="find comma 1" String="true" />
+				<StringDetect attribute="normal" context="find comma 1" String="false" />
+				<StringDetect attribute="normal" context="find comma 1" String="null" />
+				<DetectChar attribute="normal" context="#pop" char="]" lookAhead="true"/>		<!-- exit -->
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="single line comment" char="#" />
+				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
+				<DetectSpaces />
+			</context>
+			
+			<context name="fson atom, list, #2" attribute="normal" fallthrough="true" fallthroughContext="fson error" >
+				<DetectChar attribute="formula language" context="ffl 1" char="&quot;"/>		<!-- FFL string -->
+				<DetectChar attribute="formula language" context="fson string 1" char="'"/>		<!-- fson string -->
+				<Float attribute="number" context="find comma 1" />								<!-- Positive Numbers -->
+				<Int attribute="number" context="find comma 1" />							
+				<DetectChar attribute="number" context="negative 1" char="-" />					<!-- Negative Numbers -->
+				<DetectChar attribute="normal" context="fson" char="{" beginRegion="map" />		<!-- Maps -->
+				<DetectChar attribute="normal" context="find comma 1" char="}" endRegion="map" />			
+				<DetectChar attribute="normal" context="fson atom, list, #2" char="[" beginRegion="list" />		<!-- Lists, recurses (at last!), swallows ]. -->
+				<StringDetect attribute="normal" context="find comma 1" String="true" />
+				<StringDetect attribute="normal" context="find comma 1" String="false" />
+				<StringDetect attribute="normal" context="find comma 1" String="null" />
+				<DetectChar attribute="normal" context="find comma 2" char="]" endRegion="list" />				<!-- exit -->
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="single line comment" char="#" />
+				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
+				<DetectSpaces />
+			</context>
+			
+			<context name="ffl 3" attribute="formula language" >
 				<DetectChar attribute="formula language" context="find comma 4" char="&quot;"/>
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="legacy multiple line comment" char="#" />
+				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
+				<!-- Exceptions -->
+				<DetectSpaces />
+			</context>
+			
+			<context name="ffl 2" attribute="formula language" >
+				<DetectChar attribute="formula language" context="find comma 3" char="&quot;"/>
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="legacy multiple line comment" char="#" />
+				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
+				<!-- Exceptions -->
+				<DetectSpaces />
+			</context>
+			
+			<context name="ffl 1" attribute="formula language" >
+				<DetectChar attribute="formula language" context="find comma 2" char="&quot;"/>
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="legacy multiple line comment" char="#" />
+				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
+				<!-- Exceptions -->
+				<DetectSpaces />
+			</context>
+			
+			<context name="fson string 3" attribute="formula language" >
+				<DetectChar attribute="formula language" context="find comma 4" char="'"/>
 				<!-- FSON Comment Triggers -->
 				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
 				<DetectChar attribute="comment" context="single line comment" char="#" />
 				<Detect2Chars attribute="comment" context="legacy multiple line comment" char="/" char1="*" beginRegion="comment" />
 				<!-- Exceptions -->
 				<DetectSpaces />
-				<DetectChar attribute="small error" context="#stay" char="/" />
+			</context>
+			
+			<context name="fson string 1" attribute="formula language" >
+				<DetectChar attribute="formula language" context="find comma 2" char="'"/>
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="single line comment" char="#" />
+				<Detect2Chars attribute="comment" context="legacy multiple line comment" char="/" char1="*" beginRegion="comment" />
+				<!-- Exceptions -->
+				<DetectSpaces />
 			</context>
 			
 			<context name="negative 3" attribute="number" fallthrough="true" fallthroughContext="fson error" >
 				<Float attribute="number" context="find comma 4" />
 				<Int attribute="number" context="find comma 4" />
+			</context>
+			
+			<context name="negative 1" attribute="number" fallthrough="true" fallthroughContext="fson error" >
+				<Float attribute="number" context="find comma 2" />
+				<Int attribute="number" context="find comma 2" />
 			</context>
 			
 			
@@ -276,6 +361,19 @@
 				<DetectChar attribute="small error" context="#stay" char="/" />
 			</context>
 			
+			<context name="find comma 1" attribute="normal" fallthrough="true" fallthroughContext="fson error" >
+				<DetectChar attribute="normal" context="#pop" char="," />
+				<DetectChar attribute="normal" context="#pop" char="}" lookAhead="true" />
+				<DetectChar attribute="normal" context="#pop" char="]" lookAhead="true" />
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="single line comment" char="#" />
+				<Detect2Chars attribute="comment" context="c-style multiple line comment" char="/" char1="*" beginRegion="comment" />
+				<!-- Exceptions -->
+				<DetectSpaces />
+				<DetectChar attribute="small error" context="#stay" char="/" />
+			</context>
+			
 			
 			<!-- comments & errors-->
 			<context name="single line comment" attribute="comment" lineEndContext="#pop" />
@@ -292,7 +390,7 @@
 		
 		<itemDatas>
 			<itemData name="comment" 			defStyleNum="dsComment"						/>
-			<itemData name="error" 				defStyleNum="dsError"						/>
+			<itemData name="error" 				defStyleNum="dsNormal"		color="#FF0000"	/>
 			<itemData name="small error"		defStyleNum="dsError"		bold="true"		/>
 			<itemData name="normal" 			defStyleNum="dsNormal"						/>
 			<itemData name="bold" 				defStyleNum="dsBold"						/>
