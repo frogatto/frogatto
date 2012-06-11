@@ -139,7 +139,7 @@
 			<context name="base fson" attribute="normal" fallthrough="true" fallthroughContext="fson error" >
 				<keyword attribute="known object" context="known object colon-val map chain" String="known objects" />
 				<DetectIdentifier attribute="unknown object" context="unknown object colon-val map chain" />
-				<RegExpr attribute="normal" context="object colon-val map chain" String="&quot;[A-Z a-z 0-9 \* \_ \-]+&quot;" />
+				<RegExpr attribute="normal" context="object colon-val map chain" String="&quot;[A-Z a-z 0-9 \* \_ \-]+&quot;" minimal="true" />
 				<DetectChar attribute="normal" context="finish doc" char="}" />
 				<!-- FSON Comment Triggers -->
 				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
@@ -149,7 +149,7 @@
 			</context>
 			
 			<context name="fson" attribute="normal" fallthrough="true" fallthroughContext="fson error" >
-				<RegExpr attribute="normal" context="object colon-val map chain" String="&quot;[A-Z a-z 0-9 \* \_ \-]+&quot;" />
+				<RegExpr attribute="normal" context="object colon-val map chain" String="&quot;[A-Z a-z 0-9 \* \_ \-]+&quot;" minimal="true" />
 				<DetectIdentifier attribute="normal" context="object colon-val map chain" />
 				<DetectChar attribute="normal" context="#pop" char="}" lookAhead="true"/>			
 				<!-- FSON Comment Triggers -->
@@ -403,7 +403,11 @@
 	</highlighting>
 	
 	<general>
-		<keywords casesensitive="1"/>
-		<folding indentationsensitive="0"/>
+		<keywords casesensitive="1" />
+		<folding indentationsensitive="0" />
+        <comments>
+			<comment name="singleLine" start="//" />
+			<comment name="multiLine" start="/*" end="*/" region="comment" />
+        </comments>
 	</general>
 </language>
