@@ -16,7 +16,7 @@
 
 namespace editor_dialogs {
 
-class custom_object_dialog : /*virtual*/ public gui::dialog//, virtual public gui::scrollable_widget
+class custom_object_dialog : public gui::dialog
 {
 public:
 	explicit custom_object_dialog(editor& e, int x, int y, int w, int h);
@@ -26,15 +26,14 @@ protected:
 	void change_int_attribute_text(const gui::text_editor_widget_ptr editor, const std::string& s, gui::slider_ptr slide);
 	void change_int_attribute_slider(const gui::text_editor_widget_ptr editor, const std::string& s, double d);
 	void slider_drag_end(const gui::text_editor_widget_ptr editor, const std::string& s, gui::slider_ptr slide, double d);
-	//void change_template();
-	//void execute_change_template(dialog* d, const std::vector<std::string>& choices, size_t index);
 	void change_template(int selection, const std::string& s);
 	void change_prototype();
 	void remove_prototype(const std::string& s);
 	void execute_change_prototype(const std::vector<std::string>& choices, size_t index);
 	void on_create();
-	void on_choose_file(const gui::text_editor_widget_ptr editor);
-	void on_choose_dest_dir(const gui::text_editor_widget_ptr editor);
+	void id_change_focus(bool);
+
+	void on_set_path();
 	
 	void on_edit_animations();
 	void on_edit_items(const std::string& name, const std::string& attr, bool allow_functions);
@@ -45,8 +44,11 @@ private:
 	variant object_template_;
 	custom_object_type_ptr object_;
 	int selected_template_;
+	std::string current_object_save_path_;
 
 	gui::widget_ptr context_menu_;
+
+	std::string error_text_;
 
 	//std::map<std::string, double> slider_magnitude_;
 	std::map<std::string, int> slider_offset_;
