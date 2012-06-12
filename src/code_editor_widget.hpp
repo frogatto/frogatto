@@ -30,6 +30,8 @@ public:
 	//modifies the currently selected object to be equal to this new value.
 	void modify_current_object(variant new_obj);
 
+	void set_formula(bool val=true) { is_formula_ = true; }
+
 private:
 	ObjectInfo get_object_at(int row, int col) const;
 
@@ -54,6 +56,8 @@ private:
 	std::string current_text_;
 	variant current_obj_;
 	std::vector<json::Token> tokens_;
+
+	bool is_formula_;
 };
 
 typedef boost::intrusive_ptr<code_editor_widget> code_editor_widget_ptr;

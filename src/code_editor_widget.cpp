@@ -17,14 +17,14 @@ namespace gui
 code_editor_widget::code_editor_widget(int width, int height)
   : text_editor_widget(width, height),
   row_slider_(0), begin_col_slider_(0), end_col_slider_(0),
-  slider_decimal_(false), slider_magnitude_(0)
+  slider_decimal_(false), slider_magnitude_(0), is_formula_(false)
 {
 	set_environment();
 }
 
 code_editor_widget::code_editor_widget(const variant& v, game_logic::formula_callable* e) 
 	: text_editor_widget(v,e), row_slider_(0), begin_col_slider_(0), 
-	end_col_slider_(0),	slider_decimal_(false), slider_magnitude_(0)
+	end_col_slider_(0),	slider_decimal_(false), slider_magnitude_(0), is_formula_(false)
 {
 }
 
@@ -42,13 +42,15 @@ void code_editor_widget::on_change()
 	bracket_match_.clear();
 	colors_.clear();
 	colors_.resize(colors_.size()+1);
-	const std::string s = text();
+	const std::string s = (is_formula_ ? "\"" : "") + text() + (is_formula_ ? "\"" : "");
 	std::string::const_iterator i = s.begin();
 	while(i != s.end()) {
 		if(*i == '"') {
 			std::vector<std::vector<std::pair<int, int> > > opening_brackets;
 
-			colors_.back().push_back(graphics::color(196, 196, 196));
+			if(!is_formula_) {
+				colors_.back().push_back(graphics::color(196, 196, 196));
+			}
 			++i;
 			std::string::const_iterator end = i;
 			while(end != s.end() && *end != '"') {
