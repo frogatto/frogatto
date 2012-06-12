@@ -597,11 +597,12 @@ bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& ev
 		return true;
 	}
 
-	is_dragging_ = false;
-	has_focus_ = false;
 	if(has_focus_ != false && on_change_focus_) {
 		on_change_focus_(false);
 	}
+
+	is_dragging_ = false;
+	has_focus_ = false;
 
 	return false;
 }
