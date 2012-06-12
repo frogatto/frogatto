@@ -20,8 +20,9 @@
 namespace gui {
 
 label::label(const std::string& text, int size)
-	: text_(i18n::tr(text)), size_(size),
-	  fixed_width_(false)
+	: text_(i18n::tr(text)), size_(size), down_(false),
+	  fixed_width_(false), highlight_color_(graphics::color_red()),
+	  highlight_on_mouseover_(false), draw_highlight_(false)
 {
 	set_environment();
 	color_.r = color_.g = color_.b = 255;
@@ -29,22 +30,43 @@ label::label(const std::string& text, int size)
 }
 
 label::label(const std::string& text, const SDL_Color& color, int size)
-	: text_(i18n::tr(text)), color_(color), size_(size),
-	  fixed_width_(false)
+	: text_(i18n::tr(text)), color_(color), size_(size), down_(false),
+	  fixed_width_(false), highlight_color_(graphics::color_red()),
+	  highlight_on_mouseover_(false), draw_highlight_(false)
 {
 	set_environment();
 	recalculate_texture();
 }
 
 label::label(const variant& v, game_logic::formula_callable* e)
-	: widget(v,e), fixed_width_(false)
+	: widget(v,e), fixed_width_(false), down_(false), 
+	highlight_color_(graphics::color_red()), draw_highlight_(false)
 {
 	text_ = i18n::tr(v["text"].as_string());
 	color_ = v.has_key("color") 
 		? graphics::color(v["color"]).as_sdl_color() 
 		: graphics::color(255,255,255,255).as_sdl_color();
 	size_ = v.has_key("size") ? v["size"].as_int() : 14;
+	if(v.has_key("on_click")) {
+		ASSERT_LOG(get_environment() != 0, "You must specify a callable environment");
+		ffl_click_handler_ = get_environment()->create_formula(v["on_click"]);
+		on_click_ = boost::bind(&label::click_delegate, this);
+	}
+	if(v.has_key("highlight_color")) {
+		highlight_color_ = graphics::color(v["highlight_color"]).as_sdl_color();
+	}
+	highlight_on_mouseover_ = v["highlight_on_mouseover"].as_bool(false);
 	recalculate_texture();
+}
+
+void label::click_delegate()
+{
+	if(get_environment()) {
+		variant value = ffl_click_handler_->execute(*get_environment());
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "label::click() called without environment!" << std::endl;
+	}
 }
 
 void label::set_color(const SDL_Color& color)
@@ -107,12 +129,62 @@ void label::recalculate_texture()
 
 void label::handle_draw() const
 {
+	if(draw_highlight_) {
+		SDL_Rect rect = {x(), y(), width(), height()};
+		graphics::draw_rect(rect, highlight_color_, highlight_color_.unused);
+	}
 	graphics::blit_texture(texture_, x(), y());
 }
 
 void label::set_texture(graphics::texture t) {
 	texture_ = t;
 }
+
+bool label::in_label(int xloc, int yloc) const
+{
+	return xloc > x() && xloc < x() + width() &&
+	       yloc > y() && yloc < y() + height();
+}
+
+bool label::handle_event(const SDL_Event& event, bool claimed)
+{
+	if(!on_click_ && !highlight_on_mouseover_) {
+		return claimed;
+	}
+	if((event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) 
+		&& (event.button.button == SDL_BUTTON_WHEELUP || event.button.button == SDL_BUTTON_WHEELDOWN)
+		&& in_label(event.button.x, event.button.y)) {
+		// skip processing if mousewheel event
+		return claimed;
+	}
+
+	if(event.type == SDL_MOUSEMOTION) {
+		const SDL_MouseMotionEvent& e = event.motion;
+		if(highlight_on_mouseover_) {
+			if(in_label(e.x,e.y)) {
+				draw_highlight_ = true;
+			} else {
+				draw_highlight_ = false;
+			}
+			claimed = true;
+		}
+	} else if(event.type == SDL_MOUSEBUTTONDOWN) {
+		const SDL_MouseButtonEvent& e = event.button;
+		if(in_label(e.x,e.y)) {
+			down_ = true;
+			claimed = true;
+		}
+	} else if(event.type == SDL_MOUSEBUTTONUP) {
+		down_ = false;
+		const SDL_MouseButtonEvent& e = event.button;
+		if(in_label(e.x,e.y)) {
+			if(on_click_) {
+				on_click_();
+			}
+			claimed = true;
+		}
+	}
+	return claimed;}
 
 variant label::get_value(const std::string& key) const
 {

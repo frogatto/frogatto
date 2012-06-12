@@ -345,6 +345,16 @@ void grid::handle_draw() const
 bool grid::handle_event(const SDL_Event& event, bool claimed)
 {
 	claimed = scrollable_widget::handle_event(event, claimed);
+
+	SDL_Event ev = event;
+	normalize_event(&ev);
+	std::vector<widget_ptr> cells = visible_cells_;
+	reverse_foreach(widget_ptr widget, cells) {
+		if(widget) {
+			claimed = widget->process_event(ev, claimed);
+		}
+	}
+
 	if(!claimed && allow_selection_) {
 		if(event.type == SDL_MOUSEMOTION) {
 			const SDL_MouseMotionEvent& e = event.motion;
@@ -377,18 +387,19 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 				claimed = true;
 			} else {
 				const SDL_MouseButtonEvent& e = event.button;
-				const int row_index = row_at(e.x, e.y);
-				std::cerr << "SELECT ROW: " << row_index << "\n";
-				if(row_index >= 0 && row_index < row_callbacks_.size() &&
-				   row_callbacks_[row_index]) {
-				std::cerr << "ROW CB: " << row_index << "\n";
-					row_callbacks_[row_index]();
-				}
+				if(e.state == SDL_PRESSED) {
+					const int row_index = row_at(e.x, e.y);
+					std::cerr << "SELECT ROW: " << row_index << "\n";
+					if(row_index >= 0 && row_index < row_callbacks_.size() &&
+					   row_callbacks_[row_index]) {
+					std::cerr << "ROW CB: " << row_index << "\n";
+						row_callbacks_[row_index]();
+					}
 
-				if(on_select_) {
-					on_select_(row_index);
+					if(on_select_) {
+						on_select_(row_index);
+					}
 				}
-
 			}
 			if(swallow_clicks_) {
 				claimed = true;
@@ -412,14 +423,6 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 		}
 	}
 
-	SDL_Event ev = event;
-	normalize_event(&ev);
-	std::vector<widget_ptr> cells = visible_cells_;
-	reverse_foreach(widget_ptr widget, cells) {
-		if(widget) {
-			claimed = widget->process_event(ev, claimed);
-		}
-	}
 	return claimed;
 }
 
