@@ -23,6 +23,9 @@ animation_widget::animation_widget(const variant& v, game_logic::formula_callabl
 {
 	nodes_ = v["animation"].as_list();
 	max_sequence_plays_ = v["max_sequence_plays"].as_int(20);
+	// Range of other options to add display label true/false
+	// Auto-repeat single frame (id) -- more useful from set_value()
+	// Arbitrary label (as string or map)
 	init();
 }
 
@@ -38,7 +41,7 @@ void animation_widget::init()
 
 void animation_widget::handle_draw() const
 {
-	rect preview_area(x(), y(), width(), height() - label_->height());
+	rect preview_area(x(), y(), width(), height() - (label_ ? label_->height() : 0));
 	const GLfloat scale = GLfloat(std::min(preview_area.w()/frame_->width(), preview_area.h()/frame_->height()));
 	const int framex = preview_area.x() + (preview_area.w() - int(frame_->width()*scale))/2;
 	const int framey = preview_area.y() + (preview_area.h() - int(frame_->height()*scale))/2;

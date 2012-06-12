@@ -5,6 +5,7 @@
 #include "variant.hpp"
 
 #include "animation_preview_widget.hpp"
+#include "animation_widget.hpp"
 #include "border_widget.hpp"
 #include "button.hpp"
 #include "code_editor_widget.hpp"
@@ -32,6 +33,8 @@ widget_ptr create(const variant& v, game_logic::formula_callable* e)
 	std::string wtype = v["type"].as_string();
 	if(wtype == "animation_preview") {
 		return widget_ptr(new gui::animation_preview_widget(v,e));
+	} else if(wtype == "animation_widget") {
+		return widget_ptr(new gui::animation_widget(v,e));
 	} else if(wtype == "border_widget") {
 		return widget_ptr(new gui::border_widget(v,e));
 	} else if(wtype == "button") {
