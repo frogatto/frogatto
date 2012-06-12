@@ -58,6 +58,8 @@ public:
 	void set_on_enter_handler(boost::function<void()> fn) { on_enter_ = fn; }
 	void set_on_begin_enter_handler(boost::function<bool()> fn) { on_begin_enter_ = fn; }
 	void set_on_tab_handler(boost::function<void()> fn) { on_tab_ = fn; }
+	void set_on_esc_handler(boost::function<void()> fn) { on_escape_ = fn; }
+	void set_on_change_focus_handler(boost::function<void(bool)> fn) { on_change_focus_ = fn; }
 
 	bool has_focus() const { return has_focus_; }
 	void set_focus(bool value);
@@ -152,19 +154,24 @@ private:
 
 	void truncate_col_position();
 
-	boost::function<void()> on_change_, on_move_cursor_, on_enter_, on_tab_;
+	boost::function<void()> on_change_, on_move_cursor_, on_enter_, on_tab_, on_escape_;
+	boost::function<void(bool)> on_change_focus_;
 	boost::function<bool()> on_begin_enter_;
 
 	void change_delegate();
 	void move_cursor_delegate();
 	void enter_delegate();
 	void tab_delegate();
+	void escape_delegate();
+	void change_focus_delgate(bool new_focus_value);
 	bool begin_enter_delegate();
 
 	game_logic::formula_ptr ffl_on_change_;
 	game_logic::formula_ptr ffl_on_move_cursor_;
 	game_logic::formula_ptr ffl_on_enter_;
 	game_logic::formula_ptr ffl_on_tab_;
+	game_logic::formula_ptr ffl_on_escape_;
+	game_logic::formula_ptr ffl_on_change_focus_;
 	game_logic::formula_ptr ffl_on_begin_enter_;
 
 	bool begin_enter_return_;

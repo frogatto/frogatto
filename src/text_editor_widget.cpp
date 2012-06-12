@@ -161,20 +161,28 @@ text_editor_widget::text_editor_widget(const variant& v, game_logic::formula_cal
 		ffl_on_change_ = get_environment()->create_formula(v["on_change"]);
 	}
 	if(v.has_key("on_move_cursor")) {
-		boost::bind(&text_editor_widget::move_cursor_delegate, this);
+		on_move_cursor_ = boost::bind(&text_editor_widget::move_cursor_delegate, this);
 		ffl_on_move_cursor_ = get_environment()->create_formula(v["on_move_cursor"]);
 	}
 	if(v.has_key("on_enter")) {
-		boost::bind(&text_editor_widget::enter_delegate, this);
+		on_enter_ = boost::bind(&text_editor_widget::enter_delegate, this);
 		ffl_on_enter_ = get_environment()->create_formula(v["on_enter"]);
 	}
 	if(v.has_key("on_tab")) {
-		boost::bind(&text_editor_widget::tab_delegate, this);
+		on_tab_ = boost::bind(&text_editor_widget::tab_delegate, this);
 		ffl_on_tab_ = get_environment()->create_formula(v["on_tab"]);
 	}
+	if(v.has_key("on_escape")) {
+		on_escape_ = boost::bind(&text_editor_widget::escape_delegate, this);
+		ffl_on_escape_ = get_environment()->create_formula(v["on_escape"]);
+	}
 	if(v.has_key("on_begin_enter")) {
-		boost::bind(&text_editor_widget::begin_enter_delegate, this);
+		on_begin_enter_ = boost::bind(&text_editor_widget::begin_enter_delegate, this);
 		ffl_on_begin_enter_ = get_environment()->create_formula(v["on_begin_enter"]);
+	}
+	if(v.has_key("on_change_focus")) {
+		on_change_focus_ = boost::bind(&text_editor_widget::change_focus_delgate, this, _1);
+		ffl_on_change_focus_ = get_environment()->create_formula(v["on_change_focus"]);
 	}
 
 	char_width_= font::char_width(font_size_);
@@ -445,6 +453,9 @@ bool text_editor_widget::handle_event(const SDL_Event& event, bool claimed)
 
 void text_editor_widget::set_focus(bool value)
 {
+	if(has_focus_ != value && on_change_focus_) {
+		on_change_focus_(value);
+	}
 	has_focus_ = value;
 
 	if(value) {
@@ -588,6 +599,9 @@ bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& ev
 
 	is_dragging_ = false;
 	has_focus_ = false;
+	if(has_focus_ != false && on_change_focus_) {
+		on_change_focus_(false);
+	}
 
 	return false;
 }
@@ -694,6 +708,11 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 			record_op();
 			return false;
 		}
+	}
+
+	if(event.keysym.sym == SDLK_ESCAPE && on_escape_) {
+		on_escape_();
+		return true;
 	}
 
 	switch(event.keysym.sym) {
@@ -1471,6 +1490,16 @@ void text_editor_widget::enter_delegate()
 	}
 }
 
+void text_editor_widget::escape_delegate()
+{
+	if(get_environment()) {
+		variant value = ffl_on_escape_->execute(*get_environment());
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "text_editor_widget::escape_delegate() called without environment!" << std::endl;
+	}
+}
+
 void text_editor_widget::tab_delegate()
 {
 	if(get_environment()) {
@@ -1493,6 +1522,18 @@ bool text_editor_widget::begin_enter_delegate()
 	return begin_enter_return_;
 }
 
+void text_editor_widget::change_focus_delgate(bool new_focus_value)
+{
+	if(get_environment()) {
+		game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
+		callable->add("focus", variant::from_bool(new_focus_value));
+		variant v(callable);
+		variant value = ffl_on_change_focus_->execute(*callable);
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "text_editor_widget::tab_delegate() called without environment!" << std::endl;
+	}
+}
 
 }
 
