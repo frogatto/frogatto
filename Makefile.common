@@ -9,6 +9,7 @@ objects = \
 	achievements.o \
 	animation_creator.o \
 	animation_preview_widget.o \
+	animation_widget.o \
 	asserts.o \
 	background.o \
 	base64.o \

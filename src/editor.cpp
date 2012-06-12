@@ -3336,6 +3336,22 @@ void editor::create_new_object()
 	object_dialog.set_background_frame("empty_window");
 	object_dialog.set_draw_background_fn(do_draw_scene);
 	object_dialog.show_modal();
+	if(object_dialog.cancelled() == false) {
+		customobjecttype::reload_file_paths();
+		entity_ptr e = new custom_object(object_dialog.get_object()["id"].as_string(), anchorx_, anchory_, 1);
+
+		//set the object as selected in the editor.
+		lvl_->editor_clear_selection();
+
+		lvl_->editor_select_object(e);
+		property_dialog_->set_entity_group(lvl_->editor_selection());
+
+		if(!lvl_->editor_selection().empty()) {
+			change_tool(TOOL_SELECT_OBJECT);
+		}
+
+		current_dialog_ = property_dialog_.get();
+	}
 }
 
 

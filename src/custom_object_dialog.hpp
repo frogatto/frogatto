@@ -21,6 +21,7 @@ class custom_object_dialog : public gui::dialog
 public:
 	explicit custom_object_dialog(editor& e, int x, int y, int w, int h);
 	void init();
+	variant get_object() const { return object_template_; }
 protected:
 	void change_text_attribute(const gui::text_editor_widget_ptr editor, const std::string& s);
 	void change_int_attribute_text(const gui::text_editor_widget_ptr editor, const std::string& s, gui::slider_ptr slide);

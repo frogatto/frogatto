@@ -12,6 +12,7 @@
 #include <math.h>
 
 #include "animation_creator.hpp"
+#include "animation_widget.hpp"
 #include "asserts.hpp"
 #include "button.hpp"
 #include "code_editor_widget.hpp"
@@ -254,6 +255,8 @@ void custom_object_dialog::init()
 	try {
 		object_ = custom_object_type_ptr(new custom_object_type(object_template_, NULL, NULL));
 
+		animation_widget_ptr preview(new animation_widget(128, 128, object_template_));
+		add_widget(preview, width() - border_offset - 128, border_offset + 200);
 	} catch(validation_failure_exception& e) {
 		error_text_ = e.msg;
 		std::cerr << "error parsing formula: " << e.msg << std::endl;

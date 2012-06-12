@@ -7,6 +7,7 @@ IMG_savepng.cpp
 achievements.cpp
 animation_creator.cpp
 animation_preview_widget.cpp
+animation_widget.cpp
 asserts.cpp
 background.cpp
 base64.cpp
