@@ -10,6 +10,7 @@
 #include "button.hpp"
 #include "code_editor_widget.hpp"
 #include "checkbox.hpp"
+#include "dialog.hpp"
 #include "drag_widget.hpp"
 #include "graphical_font_label.hpp"
 #include "image_widget.hpp"
@@ -41,6 +42,8 @@ widget_ptr create(const variant& v, game_logic::formula_callable* e)
 		return widget_ptr(new gui::button(v,e));
 	} else if(wtype == "checkbox") {
 		return widget_ptr(new gui::checkbox(v,e));
+	} else if(wtype == "dialog") {
+		return widget_ptr(new gui::dialog(v,e));
 	} else if(wtype == "drag_widget") {
 		return widget_ptr(new gui::drag_widget(v,e));
 	} else if(wtype == "graphical_font_label") {

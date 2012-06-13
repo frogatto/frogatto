@@ -1779,12 +1779,12 @@ FUNCTION_DEF(swallow_mouse_event, 0, 0, "swallow_event(): when used in an instan
 	return variant(new swallow_mouse_command_callable);
 END_FUNCTION_DEF(swallow_mouse_event)
 
-class add_widgets_command : public entity_command_callable {
+class set_widgets_command : public entity_command_callable {
 	const entity_ptr target_;
 	const std::vector<variant> widgets_;
 	//const formula_callable_ptr callable_;
 public:
-	add_widgets_command(entity_ptr target, const std::vector<variant> widgets/*, const formula_callable_ptr callable*/)
+	set_widgets_command(entity_ptr target, const std::vector<variant> widgets/*, const formula_callable_ptr callable*/)
 	  : target_(target), widgets_(widgets)//, callable_(callable)
 	{}
 
@@ -1793,13 +1793,18 @@ public:
 		custom_object* custom_obj = dynamic_cast<custom_object*>(e);
 		std::vector<gui::widget_ptr> w;
 		foreach(const variant& v, widgets_) {
-			w.push_back(widget_factory::create(v, custom_obj));
+			gui::dialog_ptr dialog = boost::intrusive_ptr<gui::dialog>(v.try_convert<gui::dialog>());
+			if(dialog) {
+				w.push_back(dialog);
+			} else {
+				w.push_back(widget_factory::create(v, custom_obj));
+			}
 		}
 		custom_obj->add_widgets(&w);
 	}
 };
 
-FUNCTION_DEF(add_widgets, 1, -1, "add_widgets((optional) obj, widget, ...): Adds a group of widgets to the current object, or the specified object")
+FUNCTION_DEF(set_widgets, 1, -1, "set_widgets((optional) obj, widget, ...): Adds a group of widgets to the current object, or the specified object")
 	entity_ptr target = args()[0]->evaluate(variables).try_convert<entity>();
 	int arg_start = (target == NULL) ? 0 : 1;
 	std::vector<variant> widgetsv;
@@ -1807,8 +1812,26 @@ FUNCTION_DEF(add_widgets, 1, -1, "add_widgets((optional) obj, widget, ...): Adds
 		widgetsv.push_back(args()[i]->evaluate(variables));
 	}
 	//const_formula_callable_ptr callable = map_into_callable(args()[2]->evaluate(variables));
-	return variant(new add_widgets_command(target, widgetsv));
-END_FUNCTION_DEF(add_widgets)
+	return variant(new set_widgets_command(target, widgetsv));
+END_FUNCTION_DEF(set_widgets)
+
+class clear_widgets_command : public entity_command_callable {
+	const entity_ptr target_;
+public:
+	clear_widgets_command (entity_ptr target) : target_(target)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		entity* e = target_ ? target_.get() : &ob;
+		custom_object* custom_obj = dynamic_cast<custom_object*>(e);
+		custom_obj->clear_widgets();
+	}
+};
+
+FUNCTION_DEF(clear_widgets, 1, 1, "clear_widgets(obj): Clears all widgets from the object.")
+	entity_ptr target = args()[0]->evaluate(variables).try_convert<entity>();
+	return variant(new clear_widgets_command(target));
+END_FUNCTION_DEF(clear_widgets)
 
 class add_level_module_command : public entity_command_callable {
 	std::string lvl_;

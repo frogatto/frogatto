@@ -1181,7 +1181,7 @@ FUNCTION_DEF(get_files_in_dir, 1, 1, "Returns a list of the files in the given d
 	return variant(&v);
 END_FUNCTION_DEF(get_files_in_dir)
 
-FUNCTION_DEF(dialog, 2, 2, "dialog(obj, template")
+FUNCTION_DEF(dialog, 2, 2, "dialog(obj, template): Creates a dialog given an object to operate on and a template for the dialog.")
 	bool modal = args().size() == 3 && args()[2]->evaluate(variables).as_bool(); 
 	variant environment = args()[0]->evaluate(variables);
 	variant dlg_template = args()[1]->evaluate(variables);
@@ -1198,6 +1198,14 @@ FUNCTION_DEF(dialog, 2, 2, "dialog(obj, template")
 	}
 	return variant(new gui::dialog(v, e));
 END_FUNCTION_DEF(dialog)
+
+FUNCTION_DEF(show_modal, 2, 2, "show_modal(dialog): Displays a modal dialog on the screen.")
+	variant graph = args()[0]->evaluate(variables);
+	gui::dialog_ptr dialog = boost::intrusive_ptr<gui::dialog>(graph.try_convert<gui::dialog>());
+	ASSERT_LOG(dialog, "Dialog given is not of the correct type.");
+	dialog->show_modal();
+	return variant::from_bool(dialog->cancelled() == false);
+END_FUNCTION_DEF(show_modal)
 
 namespace {
 void evaluate_expr_for_benchmark(const formula_expression* expr, const formula_callable* variables, int ntimes)
