@@ -2,6 +2,8 @@
 
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
+#include <boost/math/special_functions/round.hpp>
+
 
 #include <stdio.h>
 
@@ -113,7 +115,8 @@ custom_object::custom_object(variant node)
 	min_difficulty_(node["min_difficulty"].as_int(-1)),
 	max_difficulty_(node["max_difficulty"].as_int(-1)),
 	swallow_mouse_event_(false),
-	currently_handling_die_event_(0)
+	currently_handling_die_event_(0),
+	use_absolute_screen_coordinates_(node["use_absolute_screen_coordinates"].as_bool(type_->use_absolute_screen_coordinates()))
 {
 	get_all().insert(this);
 	get_all(base_type_->id()).insert(this);
@@ -326,7 +329,8 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	last_cycle_active_(0),
 	parent_prev_x_(0), parent_prev_y_(0), parent_prev_facing_(true),
 	min_difficulty_(-1), max_difficulty_(-1),
-	currently_handling_die_event_(0)
+	currently_handling_die_event_(0),
+	use_absolute_screen_coordinates_(type_->use_absolute_screen_coordinates())
 {
 	get_all().insert(this);
 	get_all(base_type_->id()).insert(this);
@@ -417,7 +421,8 @@ custom_object::custom_object(const custom_object& o) :
 	max_difficulty_(o.max_difficulty_),
 	custom_draw_(o.custom_draw_),
 	platform_offsets_(o.platform_offsets_),
-	currently_handling_die_event_(0)
+	currently_handling_die_event_(0),
+	use_absolute_screen_coordinates_(o.use_absolute_screen_coordinates_)
 {
 	get_all().insert(this);
 	get_all(base_type_->id()).insert(this);
@@ -746,6 +751,10 @@ variant custom_object::write() const
 	if(platform_offsets_.empty() == false) {
 		res.add("platform_offsets", vector_to_variant(platform_offsets_));
 	}
+
+	if(use_absolute_screen_coordinates_) {
+		res.add("use_absolute_screen_coordinates", use_absolute_screen_coordinates_);
+	}
 	
 	return res.build();
 }
@@ -757,10 +766,16 @@ void custom_object::setup_drawing() const
 	}
 }
 
-void custom_object::draw() const
+void custom_object::draw(int xx, int yy) const
 {
 	if(frame_ == NULL) {
 		return;
+	}
+
+	if(use_absolute_screen_coordinates_) {
+		glPushMatrix();
+		glTranslatef(GLfloat(xx), GLfloat(yy), 0.0);
+		//std::cerr << last_draw_position().x << "," << last_draw_position().y << " : " << GLfloat(last_draw_position().x/200)*2.0f << "," << GLfloat(last_draw_position().y/200)*2.0f << std::endl;
 	}
 
 	if(shader_ == 0 && !fragment_shaders_.empty() && !vertex_shaders_.empty()) {
@@ -785,11 +800,11 @@ void custom_object::draw() const
 #endif
 
 	if(driver_) {
-		driver_->draw();
+		driver_->draw(xx, yy);
 	}
 
 	foreach(const entity_ptr& attached, attached_objects()) {
-		attached->draw();
+		attached->draw(xx, yy);
 	}
 
 	if(draw_color_) {
@@ -922,6 +937,9 @@ void custom_object::draw() const
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			glEnable(GL_TEXTURE_2D);
 		}
+	}
+	if(use_absolute_screen_coordinates_) {
+		glPopMatrix();
 	}
 }
 
@@ -2228,6 +2246,10 @@ variant custom_object::get_value_by_slot(int slot) const
 		return variant(new event_handlers_callable(*this));
 	}
 
+	case CUSTOM_OBJECT_USE_ABSOLUTE_SCREEN_COORDINATES: {
+		return variant::from_bool(use_absolute_screen_coordinates_);
+	}
+
 	case CUSTOM_OBJECT_CTRL_UP:
 	case CUSTOM_OBJECT_CTRL_DOWN:
 	case CUSTOM_OBJECT_CTRL_LEFT:
@@ -2575,6 +2597,8 @@ void custom_object::set_value(const std::string& key, const variant& value)
 			set_frame(type_->default_frame().id());
 			//std::cerr << "SET TYPE WHEN CHANGING TO '" << type_->id() << "'\n";
 		}
+	} else if(key == "use_absolute_screen_coordinates") {
+		use_absolute_screen_coordinates_ = value.as_bool();
 	} else {
 		vars_->add(key, value);
 	}
@@ -3089,6 +3113,11 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		for(int n = 0; n != value.num_elements(); ++n) {
 			platform_offsets_.push_back(value[n].as_int());
 		}
+		break;
+	}
+
+	case CUSTOM_OBJECT_USE_ABSOLUTE_SCREEN_COORDINATES: {
+		use_absolute_screen_coordinates_ = value.as_bool();
 		break;
 	}
 

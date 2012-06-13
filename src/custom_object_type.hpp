@@ -148,6 +148,7 @@ public:
 	bool collides_with_level() const { return collides_with_level_; }
 	bool has_feet() const { return has_feet_; }
 	bool adjust_feet_on_animation_change() const { return adjust_feet_on_animation_change_; }
+	bool use_absolute_screen_coordinates() const { return use_absolute_screen_coordinates_; }
 
 	const std::map<std::string, variant>& variables() const { return variables_; }
 	const std::map<std::string, variant>& tmp_variables() const { return tmp_variables_; }
@@ -257,6 +258,8 @@ private:
 	bool use_image_for_collisions_, static_object_, collides_with_level_;
 
 	bool has_feet_;
+
+	bool use_absolute_screen_coordinates_;
 
 	bool adjust_feet_on_animation_change_;
 

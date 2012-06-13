@@ -550,7 +550,8 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 	editor_force_standing_(node["editor_force_standing"].as_bool(false)),
 	hidden_in_game_(node["hidden_in_game"].as_bool(false)),
 	platform_offsets_(node["platform_offsets"].as_list_int_optional()),
-	slot_properties_base_(-1)
+	slot_properties_base_(-1), 
+	use_absolute_screen_coordinates_(node["use_absolute_screen_coordinates"].as_bool(false))
 {
 #ifndef NO_EDITOR
 	if(node.has_key("editor_info")) {
