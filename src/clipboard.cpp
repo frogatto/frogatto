@@ -214,7 +214,7 @@ bool clipboard_handle_event(const SDL_Event& event)
 			if (xev.xselectionrequest.target == x11->XA_TARGETS()) {
 				responseEvent.xselection.property = xev.xselectionrequest.property;
 
-				Atom supported[] = {
+				static Atom supported[] = {
 					x11->XA_TEXT(),
 					x11->XA_COMPOUND_TEXT(),
 					x11->UTF8_STRING(),
@@ -280,7 +280,8 @@ void copy_to_clipboard(const std::string& text, const bool mouse)
 		XSetSelectionOwner(x11->dpy(), XA_PRIMARY, x11->window(), CurrentTime);
 	} else {
 		clipboard_string = text;
-		XSetSelectionOwner(x11->dpy(), x11->XA_CLIPBOARD(), x11->window(), CurrentTime);
+	//currently disabled due to crash bugs in X
+	//	XSetSelectionOwner(x11->dpy(), x11->XA_CLIPBOARD(), x11->window(), CurrentTime);
 	}
 }
 
