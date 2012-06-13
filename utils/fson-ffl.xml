@@ -140,6 +140,7 @@
 				<keyword attribute="known object" context="known object colon-val map chain" String="known objects" />
 				<DetectIdentifier attribute="unknown object" context="unknown object colon-val map chain" />
 				<RegExpr attribute="normal" context="object colon-val map chain" String="&quot;[A-Z a-z 0-9 \* \_ \-]+&quot;" minimal="true" />
+				<RegExpr attribute="bold" context="object colon-val map chain" String="&quot;[A-Z a-z 0-9 \* \_ \- \@]+&quot;" minimal="true" />
 				<DetectChar attribute="normal" context="finish doc" char="}" />
 				<!-- FSON Comment Triggers -->
 				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
@@ -150,6 +151,7 @@
 			
 			<context name="fson" attribute="normal" fallthrough="true" fallthroughContext="fson error" >
 				<RegExpr attribute="normal" context="object colon-val map chain" String="&quot;[A-Z a-z 0-9 \* \_ \-]+&quot;" minimal="true" />
+				<RegExpr attribute="bold" context="object colon-val map chain" String="&quot;[A-Z a-z 0-9 \* \_ \- \@]+&quot;" minimal="true" />
 				<DetectIdentifier attribute="normal" context="object colon-val map chain" />
 				<DetectChar attribute="normal" context="#pop" char="}" lookAhead="true"/>			
 				<!-- FSON Comment Triggers -->
@@ -389,16 +391,16 @@
 		</contexts>
 		
 		<itemDatas>
-			<itemData name="comment" 			defStyleNum="dsComment"						/>
-			<itemData name="error" 				defStyleNum="dsNormal"		color="#FF0000"	/>
-			<itemData name="small error"		defStyleNum="dsError"		bold="true"		/>
-			<itemData name="normal" 			defStyleNum="dsNormal"						/>
-			<itemData name="bold" 				defStyleNum="dsBold"						/>
-			<itemData name="known object"		defStyleNum="dsFunction"	color="#CC3096"	/>
-			<itemData name="unknown object"		defStyleNum="dsFunction"					/>
-			<itemData name="formula language" 	defStyleNum="dsNormal" 		color="#604020"	/>
-			<itemData name="number" 			defStyleNum="dsDecVal" 						/>
-			<itemData name="g"				 	defStyleNum="dsNormal" 		color="#11AA22"	/>
+			<itemData name="comment" 			defStyleNum="dsComment"									/>
+			<itemData name="error" 				defStyleNum="dsNormal"		color="#FF0000"				/>
+			<itemData name="small error"		defStyleNum="dsError"						bold="true"	/>
+			<itemData name="normal" 			defStyleNum="dsNormal"									/>
+			<itemData name="bold" 				defStyleNum="dsBold"						bold="true"	/>
+			<itemData name="known object"		defStyleNum="dsFunction"	color="#CC3096"				/>
+			<itemData name="unknown object"		defStyleNum="dsFunction"								/>
+			<itemData name="formula language" 	defStyleNum="dsNormal" 		color="#604020"				/>
+			<itemData name="number" 			defStyleNum="dsDecVal" 									/>
+			<itemData name="g"				 	defStyleNum="dsNormal" 		color="#11AA22"				/>
 		</itemDatas>
 	</highlighting>
 	
