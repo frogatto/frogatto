@@ -161,6 +161,14 @@ void grid::set_dim(int w, int h)
 	set_w_ = w;
 }
 
+void grid::handle_process()
+{
+	widget::handle_process();
+    foreach(widget_ptr w, cells_) {
+		w->process();
+	}
+}
+
 void grid::add_row(const std::vector<widget_ptr>& widgets)
 {
 	assert(widgets.size() == ncols_);
@@ -470,6 +478,13 @@ void grid::set_value(const std::string& key, const variant& v)
 
 variant grid::get_value(const std::string& key) const
 {
+	if(key == "children") {
+		std::vector<variant> v;
+	    foreach(widget_ptr w, cells_) {
+			v.push_back(variant(w.get()));
+		}
+		return variant(&v);
+	}
 	return widget::get_value(key);
 }
 

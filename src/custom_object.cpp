@@ -1647,6 +1647,10 @@ void custom_object::process(level& lvl)
 		}
 	}
 
+	foreach(const gui::widget_ptr& w, widgets_) {
+		w->process();
+	}
+
 	static_process(lvl);
 }
 

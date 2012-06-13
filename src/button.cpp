@@ -110,6 +110,12 @@ void button::handle_draw() const
 	label_->draw();
 }
 
+void button::handle_process()
+{
+	widget::handle_process();
+	label_->process();
+}
+
 bool button::handle_event(const SDL_Event& event, bool claimed)
 {
 	if((event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) 

@@ -16,8 +16,6 @@
 #include "texture.hpp"
 #include "widget.hpp"
 
-#include <boost/function.hpp>
-
 #include <string>
 #include <vector>
 
@@ -65,7 +63,7 @@ public:
 
 	virtual bool has_focus() const;
 	void set_process_hook(boost::function<void()> fn) { on_process_ = fn; }
-	void draw_last_scene();
+	static void draw_last_scene();
 protected:
 	virtual bool handle_event(const SDL_Event& event, bool claimed);
 	virtual bool handle_event_children(const SDL_Event& event, bool claimed);
@@ -79,6 +77,8 @@ protected:
 
 	virtual void set_value(const std::string& key, const variant& v);
 	virtual variant get_value(const std::string& key) const;
+
+	virtual void handle_process();
 private:
 	std::vector<widget_ptr> widgets_;
 	bool opened_;
@@ -86,12 +86,9 @@ private:
 	int clear_bg_;
 	
 	boost::function<void ()> on_quit_;
-	boost::function<void ()> on_process_;
 
-	void process_delegate();
 	void quit_delegate();
 
-	game_logic::formula_ptr ffl_on_process_;
 	game_logic::formula_ptr ffl_on_quit_;
 
 	//default padding between widgets
