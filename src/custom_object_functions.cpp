@@ -207,6 +207,22 @@ FUNCTION_DEF(checkpoint_game, 0, 0, "checkpoint_game(): saves a checkpoint of th
 	return variant(new save_game_command(false));
 END_FUNCTION_DEF(checkpoint_game)
 
+FUNCTION_DEF(get_save_document, 1, 1, "get_save_document(int slot): gets the FFL document for the save in the given slot")
+	const int slot = args()[0]->evaluate(variables).as_int();
+	std::string fname = "save.cfg";
+	if(slot != 0) {
+		fname = formatter() << "save" << (slot+1) << ".cfg";
+	}
+	const std::string path = std::string(preferences::user_data_path()) + "/" + fname;
+
+	try {
+		const variant v = json::parse_from_file(path, json::JSON_NO_PREPROCESSOR);
+		return v;
+	} catch(json::parse_error&) {
+		return variant();
+	}
+END_FUNCTION_DEF(get_save_document)
+
 FUNCTION_DEF(save_game, 0, 0, "save_game(): saves the current game state")
 	return variant(new save_game_command(true));
 END_FUNCTION_DEF(save_game)
