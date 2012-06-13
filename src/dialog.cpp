@@ -12,6 +12,7 @@
 */
 #include "graphics.hpp"
 
+#include <boost/bind.hpp>
 #include <iostream>
 
 #include "dialog.hpp"
@@ -71,17 +72,69 @@ dialog::dialog(int x, int y, int w, int h)
 
 dialog::dialog(const variant& v, game_logic::formula_callable* e)
 	: widget(v,e),
-	opened_(false), cancelled_(false), clear_bg_(196), padding_(10),
-	add_x_(0), add_y_(0), bg_alpha_(1.0), last_draw_(-1)
+	opened_(false), cancelled_(false), 
+	add_x_(0), add_y_(0), last_draw_(-1)
 {
+	padding_ = v["padding"].as_int(10);
+	if(v.has_key("background_frame")) {
+		background_framed_gui_element_ = v["background_frame"].as_string();
+	}
+	if(v.has_key("background_draw")) {
+		std::string scene = v["background_draw"].as_string();
+		if(scene == "last_scene") {
+			draw_background_fn_ = boost::bind(&dialog::draw_last_scene);
+		}
+		// XXX could make this FFL callable. Or could allow any of the background scenes to be drawn. or both.
+	}
+	clear_bg_ = v["clear_background_alpha"].as_int(196);
+	bg_alpha_ = v["background_alpha"].as_int(255) / GLfloat(255.0);
+	if(v.has_key("cursor")) {
+		std::vector<int> vi = v["cursor"].as_list_int();
+		set_cursor(vi[0], vi[1]);
+	}
+	if(v.has_key("on_quit")) {
+		on_quit_ = boost::bind(&dialog::quit_delegate, this);
+		ffl_on_quit_ = get_environment()->create_formula(v["on_quit"]);
+	}
 	std::vector<variant> children = v["children"].as_list();
 	foreach(const variant& child, children) {
-		add_widget(widget_factory::create(child, e));
+		widget_ptr w = widget_factory::create(child, e);
+		if(w->x() != 0 || w->y() != 0) {
+		//if(child.has_key("add_xy")) {
+		//	std::vector<int> addxy = child["add_xy"].as_list_int();
+		//	add_widget(widget_factory::create(child, e), addxy[0], addxy[1]);
+			add_widget(w, w->x(), w->y());
+		} else {
+			add_widget(w);
+		}
 	}
 }
 
 dialog::~dialog()
 {}
+
+void dialog::draw_last_scene() 
+{
+	draw_scene(level::current(), last_draw_position());
+}
+
+void dialog::quit_delegate()
+{
+	if(get_environment()) {
+		variant value = ffl_on_quit_->execute(*get_environment());
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "dialog::quit_delegate() called without environment!" << std::endl;
+	}
+}
+
+void dialog::handle_process()
+{
+	widget::handle_process();
+    foreach(widget_ptr w, widgets_) {
+		w->process();
+	}
+}
 
 dialog& dialog::add_widget(widget_ptr w, dialog::MOVE_DIRECTION dir)
 {
@@ -302,6 +355,13 @@ void dialog::set_value(const std::string& key, const variant& v)
 
 variant dialog::get_value(const std::string& key) const
 {
+	if(key == "children") {
+		std::vector<variant> v;
+	    foreach(widget_ptr w, widgets_) {
+			v.push_back(variant(w.get()));
+		}
+		return variant(&v);
+	}
 	return widget::get_value(key);
 }
 

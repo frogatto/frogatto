@@ -3334,7 +3334,7 @@ void editor::create_new_object()
 		preferences::virtual_screen_width()*0.9, 
 		preferences::virtual_screen_height()*0.9);
 	object_dialog.set_background_frame("empty_window");
-	object_dialog.set_draw_background_fn(do_draw_scene);
+	object_dialog.set_draw_background_fn(gui::dialog::draw_last_scene);
 	object_dialog.show_modal();
 	if(object_dialog.cancelled() == false) {
 		customobjecttype::reload_file_paths();

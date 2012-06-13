@@ -47,7 +47,7 @@ public:
 	void finish_loading();
 	virtual variant write() const;
 	virtual void setup_drawing() const;
-	virtual void draw() const;
+	virtual void draw(int x, int y) const;
 	virtual void draw_group() const;
 	virtual void process(level& lvl);
 	virtual void create_object();
@@ -201,6 +201,7 @@ public:
 	void reset_mouse_event() {swallow_mouse_event_ = false;}
 	void add_widget(const gui::widget_ptr& w) { widgets_.push_back(w); std::sort(widgets_.begin(), widgets_.end(), gui::widget_sort_zorder()); }
 	void add_widgets(std::vector<gui::widget_ptr>* widgets) { widgets_.swap(*widgets); std::sort(widgets_.begin(), widgets_.end(), gui::widget_sort_zorder()); }
+	void clear_widgets() { widgets_.clear(); }
 
 protected:
 	//components of per-cycle process() that can be done even on
@@ -283,6 +284,8 @@ private:
 	bool has_feet_;
 
 	int invincible_;
+
+	bool use_absolute_screen_coordinates_;
 	
 	int sound_volume_;	//see sound.cpp; valid values are 0-128, note that this affects all sounds spawned by this object
 

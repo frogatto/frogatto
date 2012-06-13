@@ -36,7 +36,7 @@ public:
 protected:
 	virtual variant get_value(const std::string& key) const;
 	void set_label(widget_ptr label);
-
+	virtual void handle_process();
 private:
 	void setup();
 

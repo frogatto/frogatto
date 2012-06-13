@@ -55,6 +55,7 @@ custom_object_callable::custom_object_callable()
 	"x_schedule", "y_schedule", "rotation_schedule", "schedule_speed",
 	"schedule_expires",
 	"platform_area", "platform_offsets", "custom_draw", "event_handlers",
+	"use_absolute_screen_coordinates",
 	"ctrl_up", "ctrl_down", "ctrl_left", "ctrl_right",
 	"ctrl_attack", "ctrl_jump", "ctrl_tongue",
 };

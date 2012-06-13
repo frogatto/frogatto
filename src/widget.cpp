@@ -11,6 +11,8 @@
    See the COPYING file for more details.
 */
 
+#include <boost/bind.hpp>
+
 #include "asserts.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
@@ -32,6 +34,12 @@ widget::widget(const variant& v, game_logic::formula_callable* e)
 	if(v.has_key("height")) {
 		h_ = v["height"].as_int();
 	} 
+	if(v.has_key("wh")) {
+		std::vector<int> iv = v["wh"].as_list_int();
+		ASSERT_LOG(iv.size() == 2, "WH attribute must be 2 integer elements.");
+		w_ = iv[0];
+		h_ = iv[1];
+	}
 	if(v.has_key("rect")) {
 		std::vector<int> r = v["rect"].as_list_int();
 		ASSERT_LOG(r.size() == 4, "Four values must be supplied to the rect attribute");
@@ -50,7 +58,17 @@ widget::widget(const variant& v, game_logic::formula_callable* e)
 	if(v.has_key("y")) {
 		y_ = v["y"].as_int();
 	}
+	if(v.has_key("xy")) {
+		std::vector<int> iv = v["xy"].as_list_int();
+		ASSERT_LOG(iv.size() == 2, "XY attribute must be 2 integer elements.");
+		x_ = iv[0];
+		y_ = iv[1];
+	}
 	zorder_ = v["zorder"].as_int(0);
+	if(v.has_key("on_process")) {
+		on_process_ = boost::bind(&widget::process_delegate, this);
+		ffl_on_process_ = get_environment()->create_formula(v["on_process"]);
+	}
 }
 
 widget::~widget()
@@ -58,6 +76,27 @@ widget::~widget()
 	if(tooltip_displayed_) {
 		gui::remove_tooltip(tooltip_);
 	}
+}
+
+void widget::process_delegate()
+{
+	if(get_environment()) {
+		variant value = ffl_on_process_->execute(*get_environment());
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "widget::process_delegate() called without environment!" << std::endl;
+	}
+}
+
+void widget::handle_process()
+{
+	if(on_process_) {
+		on_process_();
+	}
+}
+
+void widget::process() {
+	handle_process();
 }
 
 void widget::normalize_event(SDL_Event* event, bool translate_coords)

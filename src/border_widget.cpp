@@ -35,6 +35,12 @@ void border_widget::set_color(const graphics::color& col)
 	color_ = col;
 }
 
+void border_widget::handle_process()
+{
+	widget::handle_process();
+	child_->process();
+}
+
 void border_widget::handle_draw() const
 {
 	glPushMatrix();

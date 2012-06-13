@@ -14,6 +14,7 @@
 #define WIDGET_HPP_INCLUDED
 
 #include <string>
+#include <boost/function.hpp>
 
 #include "formula.hpp"
 #include "graphics.hpp"
@@ -48,6 +49,8 @@ public:
 
 	void set_zorder(int z) { zorder_ = z; }
 	int zorder() const { return zorder_; }
+
+	void process();
 protected:
 	widget() : x_(0), y_(0), w_(0), h_(0), tooltip_displayed_(false), visible_(true), zorder_(0), environ_(0)
 	{}
@@ -57,6 +60,8 @@ protected:
 	void normalize_event(SDL_Event* event, bool translate_coords=false);
 	virtual bool handle_event(const SDL_Event& event, bool claimed) { return claimed; }
 	void set_environment(game_logic::formula_callable* e = 0) { environ_ = e; }
+	boost::function<void()> on_process_;
+	virtual void handle_process();
 private:
 	int x_, y_;
 	int w_, h_;
@@ -64,6 +69,8 @@ private:
 	bool tooltip_displayed_;
 	bool visible_;
 	game_logic::formula_callable* environ_;
+	void process_delegate();
+	game_logic::formula_ptr ffl_on_process_;
 	// default zorder_ is 0.  A widget *must* have a good reason for wanting
 	// higher priority in the draw order.
 	int zorder_;

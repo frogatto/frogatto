@@ -1740,7 +1740,7 @@ void draw_entity(const entity& obj, int x, int y, bool editor) {
 		glTranslatef(diffx, diffy, 0.0);
 	}
 
-	obj.draw();
+	obj.draw(x, y);
 	if(editor) {
 		obj.draw_group();
 	}
@@ -1845,7 +1845,7 @@ void level::draw(int x, int y, int w, int h) const
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 				const GLfloat alpha = 0.5 + sin(draw_count/5.0)*0.5;
 				glColor4f(1.0, 0.0, 0.0, alpha);
-				obj->draw();
+				obj->draw(x, y);
 				glColor4f(1.0, 1.0, 1.0, 1.0);
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			}
