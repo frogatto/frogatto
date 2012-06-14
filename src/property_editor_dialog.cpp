@@ -98,7 +98,14 @@ void property_editor_dialog::init()
 	add_widget(preview_grid, 10, 10);
 
 	if(get_entity()->label().empty() == false) {
-		add_widget(widget_ptr(new label(get_entity()->label(), graphics::color_white())));
+		grid_ptr labels_grid(new grid(2));
+		labels_grid->set_hpad(5);
+		text_editor_widget* e = new text_editor_widget(120);
+		e->set_text(get_entity()->label());
+		e->set_on_change_handler(boost::bind(&property_editor_dialog::set_label, this, e));
+		labels_grid->add_col(widget_ptr(new label("Label: ")))
+		            .add_col(widget_ptr(e));
+		add_widget(labels_grid);
 	}
 
 	std::map<std::string, int> types_selected;
@@ -126,10 +133,6 @@ void property_editor_dialog::init()
 	if(entity_.size() > 1) {
 		add_widget(widget_ptr(new button("Group Objects", boost::bind(&editor::group_selection, &editor_))));
 	}
-
-
-	//TODO: setting labels is disabled -- does anybody use this?
-	//add_widget(widget_ptr(new button(widget_ptr(new label("Set Label", graphics::color_white())), boost::bind(&property_editor_dialog::set_label_dialog, this))));
 
 	game_logic::formula_callable* vars = get_static_entity()->vars();
 	if(get_entity()->editor_info() && types_selected.size() == 1) {
@@ -370,22 +373,18 @@ void property_editor_dialog::change_level_property(const std::string& id)
 	}
 }
 
-void property_editor_dialog::set_label_dialog()
+void property_editor_dialog::set_label(gui::text_editor_widget* editor)
 {
-		/* //TODO: currently setting labels is disabled -- does anybody use this?
-	using namespace gui;
-	text_entry_widget* entry = new text_entry_widget;
-	dialog d(200, 200, 400, 200);
-	d.add_widget(widget_ptr(new label("Label:", graphics::color_white())))
-	 .add_widget(widget_ptr(entry));
-	d.show_modal();
-
-	//we have to add and remove the character from the level to
-	//modify their label properly.
-	editor_.get_level().remove_character(entity_);
-	entity_->set_label(entry->text());
-	editor_.get_level().add_character(entity_);
-	init();*/
+	foreach(level_ptr lvl, editor_.get_level_list()) {
+		foreach(entity_ptr entity_obj, entity_) {
+			entity_ptr e = lvl->get_entity_by_label(entity_obj->label());
+			if(e) {
+				lvl->remove_character(e);
+				e->set_label(editor->text());
+				lvl->add_character(e);
+			}
+		}
+	}
 }
 
 void property_editor_dialog::change_text_property(const std::string& id, const gui::text_editor_widget_ptr w)
