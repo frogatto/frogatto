@@ -327,23 +327,6 @@ void video_resize( SDL_Event &event )
     graphics::set_video_mode(width, height);
 }
 
-bool zorder_compare(entity_ptr e1, entity_ptr e2)
-{
-	// Compare z-orders, then sub-z-orders then vertical mid-points.
-	if(e1->zorder() > e2->zorder()) {
-		return true;
-	} else if(e1->zorder() == e2->zorder()) {
-		if(e1->zsub_order() > e2->zsub_order()) {
-			return true;
-		} else if(e1->zsub_order() == e2->zsub_order()) {
-			if(e1->midpoint().y > e2->midpoint().y) {
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
 bool level_runner::handle_mouse_events(const SDL_Event &event)
 {
 	static const int MouseDownEventID = get_object_event_id("mouse_down");
@@ -409,7 +392,16 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 				std::vector<entity_ptr>::iterator it;
 				bool handled = false;
 				bool click_handled = false;
+				std::set<entity_ptr> mouse_in;
 				for(it = cs.begin(); it != cs.end(); ++it) {
+					if(event.type == SDL_MOUSEMOTION) {
+						if((*it)->is_mouse_over_entity() == false) {
+							(*it)->handle_event(MouseEnterID, callable);
+							(*it)->set_mouse_over_entity();
+						}
+						mouse_in.insert(*it);
+					}
+
 					(*it)->handle_event(basic_evt, callable);
 					// XXX: fix this for dragging(with multiple mice)
 					if(event.type == SDL_MOUSEBUTTONUP && !click_handled /*&& !dragging*/) {
@@ -426,6 +418,15 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 				callable->add("objects_under_mouse", obj_ary);
 				foreach(entity_ptr object, level::current().get_chars()) {
 					object->handle_event(catch_all_event, callable);
+				}
+
+				if(event.type == SDL_MOUSEMOTION) {
+					foreach(const entity_ptr& e, level::current().get_chars()) {
+						if(mouse_in.find(e) == mouse_in.end() && e->is_mouse_over_entity()) {
+							e->handle_event(MouseLeaveID, callable);
+							e->set_mouse_over_entity(false);
+						}
+					}
 				}
 			}
 			break;

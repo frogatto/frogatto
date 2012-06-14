@@ -260,6 +260,9 @@ public:
 
 	virtual const bool mouse_event_swallowed() {return false;}
 
+	bool is_mouse_over_entity() const { return mouse_over_entity_; }
+	void set_mouse_over_entity(bool val=true) { mouse_over_entity_=val; }
+
 	virtual const game_logic::formula_callable_definition* get_definition() const = 0;
 
 	virtual void create_object() = 0;
@@ -308,6 +311,8 @@ private:
 
 	bool respawn_;
 
+	bool mouse_over_entity_;
+
 	unsigned int solid_dimensions_, collide_dimensions_;
 	unsigned int weak_solid_dimensions_, weak_collide_dimensions_;
 
@@ -331,6 +336,12 @@ private:
 	int platform_motion_x_;
 
 	std::string spawned_by_;
+};
+
+bool zorder_compare(const entity_ptr& e1, const entity_ptr& e2);	
+struct entity_zorder_compare
+{
+	bool operator()(const entity_ptr& lhs, const entity_ptr& rhs);
 };
 
 #endif

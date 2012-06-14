@@ -20,7 +20,8 @@ entity::entity(variant node)
     id_(-1), respawn_(node["respawn"].as_bool(true)),
 	solid_dimensions_(0), collide_dimensions_(0),
 	weak_solid_dimensions_(0), weak_collide_dimensions_(0),
-	platform_motion_x_(node["platform_motion_x"].as_int())
+	platform_motion_x_(node["platform_motion_x"].as_int()),
+	mouse_over_entity_(false)
 {
 	foreach(bool& b, controls_) {
 		b = false;
@@ -32,7 +33,7 @@ entity::entity(int x, int y, bool face_right)
     face_right_(face_right), upside_down_(false), group_(-1), id_(-1),
 	solid_dimensions_(0), collide_dimensions_(0),
 	weak_solid_dimensions_(0), weak_collide_dimensions_(0),
-	platform_motion_x_(0)
+	platform_motion_x_(0), mouse_over_entity_(false)
 {
 	foreach(bool& b, controls_) {
 		b = false;
@@ -351,4 +352,26 @@ void entity::set_spawned_by(const std::string& key)
 const std::string& entity::spawned_by() const
 {
 	return spawned_by_;
+}
+
+bool zorder_compare(const entity_ptr& e1, const entity_ptr& e2)
+{
+	// Compare z-orders, then sub-z-orders then vertical mid-points.
+	if(e1->zorder() > e2->zorder()) {
+		return true;
+	} else if(e1->zorder() == e2->zorder()) {
+		if(e1->zsub_order() > e2->zsub_order()) {
+			return true;
+		} else if(e1->zsub_order() == e2->zsub_order()) {
+			if(e1->midpoint().y > e2->midpoint().y) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool entity_zorder_compare::operator()(const entity_ptr& lhs, const entity_ptr& rhs) 
+{
+	return zorder_compare(lhs, rhs);
 }
