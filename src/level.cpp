@@ -2746,10 +2746,12 @@ std::vector<entity_ptr> level::get_characters_in_rect(const rect& r, int screen_
 		if(object_classification_hidden(*c)) {
 			continue;
 		}
+		custom_object* obj = dynamic_cast<custom_object*>(c.get());
 
-		const int xP = c->midpoint().x + ((c->parallax_scale_millis_x() - 1000)*screen_xpos)/1000;
-		const int yP = c->midpoint().y + ((c->parallax_scale_millis_y() - 1000)*screen_ypos)/1000;
-		
+		const int xP = c->midpoint().x + ((c->parallax_scale_millis_x() - 1000)*screen_xpos)/1000 
+			+ (obj->use_absolute_screen_coordinates() ? screen_xpos : 0);
+		const int yP = c->midpoint().y + ((c->parallax_scale_millis_y() - 1000)*screen_ypos)/1000 
+			+ (obj->use_absolute_screen_coordinates() ? screen_ypos : 0);
 		if(point_in_rect(point(xP, yP), r)) {
 			res.push_back(c);
 		}
@@ -2765,9 +2767,12 @@ std::vector<entity_ptr> level::get_characters_at_point(int x, int y, int screen_
 		if(object_classification_hidden(*c)) {
 			continue;
 		}
+		custom_object* obj = dynamic_cast<custom_object*>(c.get());
 
-		const int xP = x + ((1000 - (c->parallax_scale_millis_x()))* screen_xpos )/1000;
-		const int yP = y + ((1000 - (c->parallax_scale_millis_y()))* screen_ypos )/1000;
+		const int xP = x + ((1000 - (c->parallax_scale_millis_x()))* screen_xpos )/1000
+			- (obj->use_absolute_screen_coordinates() ? screen_xpos : 0);
+		const int yP = y + ((1000 - (c->parallax_scale_millis_y()))* screen_ypos )/1000
+			- (obj->use_absolute_screen_coordinates() ? screen_ypos : 0);
 		
 		if(!c->is_alpha(xP, yP)) {
 			result.push_back(c);

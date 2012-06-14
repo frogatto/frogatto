@@ -139,8 +139,8 @@
 			<context name="base fson" attribute="normal" fallthrough="true" fallthroughContext="fson error" >
 				<keyword attribute="known object" context="known object colon-val map chain" String="known objects" />
 				<DetectIdentifier attribute="unknown object" context="unknown object colon-val map chain" />
-				<RegExpr attribute="normal" context="object colon-val map chain" String="&quot;[A-Z a-z 0-9 \* \_ \-]+&quot;" minimal="true" />
-				<RegExpr attribute="bold" context="object colon-val map chain" String="&quot;[A-Z a-z 0-9 \* \_ \- \@]+&quot;" minimal="true" />
+				<RegExpr attribute="normal" context="object colon-val map chain" String="&quot;[A-Z a-z 0-9 \* \_ \- \~]+&quot;" minimal="true" />
+				<RegExpr attribute="bold" context="object colon-val map chain" String="&quot;[A-Z a-z 0-9 \* \_ \- \@ \~]+&quot;" minimal="true" />
 				<DetectChar attribute="normal" context="finish doc" char="}" />
 				<!-- FSON Comment Triggers -->
 				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
@@ -150,8 +150,8 @@
 			</context>
 			
 			<context name="fson" attribute="normal" fallthrough="true" fallthroughContext="fson error" >
-				<RegExpr attribute="normal" context="object colon-val map chain" String="&quot;[A-Z a-z 0-9 \* \_ \-]+&quot;" minimal="true" />
-				<RegExpr attribute="bold" context="object colon-val map chain" String="&quot;[A-Z a-z 0-9 \* \_ \- \@]+&quot;" minimal="true" />
+				<RegExpr attribute="normal" context="object colon-val map chain" String="&quot;[A-Z a-z 0-9 \* \_ \- \~]+&quot;" minimal="true" />
+				<RegExpr attribute="bold" context="object colon-val map chain" String="&quot;[A-Z a-z 0-9 \* \_ \- \@ \~]+&quot;" minimal="true" />
 				<DetectIdentifier attribute="normal" context="object colon-val map chain" />
 				<DetectChar attribute="normal" context="#pop" char="}" lookAhead="true"/>			
 				<!-- FSON Comment Triggers -->
@@ -203,6 +203,7 @@
 			<context name="fson atom, map" attribute="normal" fallthrough="true" fallthroughContext="fson error" >
 				<DetectChar attribute="formula language" context="ffl 3" char="&quot;"/>				<!-- FFL string -->
 				<DetectChar attribute="formula language" context="fson string 3" char="'"/>				<!-- fson string -->
+				<DetectChar attribute="formula language" context="fson translatable string 3" char="~"/>				<!-- fson string -->
 				<Float attribute="number" context="find comma 3" />										<!-- Positive Numbers -->
 				<Int attribute="number" context="find comma 3" />							
 				<DetectChar attribute="number" context="negative 3" char="-" />							<!-- Negative Numbers -->
@@ -225,6 +226,7 @@
 			<context name="fson atom, list" attribute="normal" fallthrough="true" fallthroughContext="fson error" >
 				<DetectChar attribute="formula language" context="ffl 1" char="&quot;"/>		<!-- FFL string -->
 				<DetectChar attribute="formula language" context="fson string 1" char="'"/>		<!-- fson string -->
+				<DetectChar attribute="formula language" context="fson translatable string 1" char="~"/>		<!-- fson ~ string -->
 				<Float attribute="number" context="find comma 1" />								<!-- Positive Numbers -->
 				<Int attribute="number" context="find comma 1" />							
 				<DetectChar attribute="number" context="negative 1" char="-" />					<!-- Negative Numbers -->
@@ -245,6 +247,7 @@
 			<context name="fson atom, list, #2" attribute="normal" fallthrough="true" fallthroughContext="fson error" >
 				<DetectChar attribute="formula language" context="ffl 1" char="&quot;"/>		<!-- FFL string -->
 				<DetectChar attribute="formula language" context="fson string 1" char="'"/>		<!-- fson string -->
+				<DetectChar attribute="formula language" context="fson translatable string 1" char="~"/>		<!-- fson ~ string -->
 				<Float attribute="number" context="find comma 1" />								<!-- Positive Numbers -->
 				<Int attribute="number" context="find comma 1" />							
 				<DetectChar attribute="number" context="negative 1" char="-" />					<!-- Negative Numbers -->
@@ -304,6 +307,26 @@
 			
 			<context name="fson string 1" attribute="formula language" >
 				<DetectChar attribute="formula language" context="find comma 2" char="'"/>
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="single line comment" char="#" />
+				<Detect2Chars attribute="comment" context="legacy multiple line comment" char="/" char1="*" beginRegion="comment" />
+				<!-- Exceptions -->
+				<DetectSpaces />
+			</context>
+			
+			<context name="fson translatable string 3" attribute="formula language" >
+				<DetectChar attribute="formula language" context="find comma 4" char="~"/>
+				<!-- FSON Comment Triggers -->
+				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
+				<DetectChar attribute="comment" context="single line comment" char="#" />
+				<Detect2Chars attribute="comment" context="legacy multiple line comment" char="/" char1="*" beginRegion="comment" />
+				<!-- Exceptions -->
+				<DetectSpaces />
+			</context>
+			
+			<context name="fson translatable string 1" attribute="formula language" >
+				<DetectChar attribute="formula language" context="find comma 2" char="~"/>
 				<!-- FSON Comment Triggers -->
 				<Detect2Chars attribute="comment" context="single line comment" char="/" char1="/" />
 				<DetectChar attribute="comment" context="single line comment" char="#" />
