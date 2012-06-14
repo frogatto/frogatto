@@ -26,7 +26,7 @@
 namespace gui {
 
 widget::widget(const variant& v, game_logic::formula_callable* e) 
-	: environ_(e), w_(0), h_(0), x_(0), y_(0), zorder_(0)
+	: environ_(e), w_(0), h_(0), x_(0), y_(0), zorder_(0), tooltip_displayed_(false)
 {
 	if(v.has_key("width")) {
 		w_ = v["width"].as_int();
@@ -69,6 +69,10 @@ widget::widget(const variant& v, game_logic::formula_callable* e)
 		on_process_ = boost::bind(&widget::process_delegate, this);
 		ffl_on_process_ = get_environment()->create_formula(v["on_process"]);
 	}
+	if(v.has_key("tooltip")) {
+		set_tooltip(v["tooltip"].as_string());
+	}
+	visible_ = v["visible"].as_bool(true);
 }
 
 widget::~widget()

@@ -196,6 +196,8 @@ public:
 
 	void mutate_object_value(level_ptr lvl, entity_ptr e, const std::string& value, variant new_value);
 
+	bool done() const { return done_; }
+
 private:
 	editor(const editor&);
 	void operator=(const editor&);

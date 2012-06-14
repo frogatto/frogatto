@@ -500,6 +500,20 @@ void level_runner::start_editor()
 #endif
 }
 
+void level_runner::close_editor()
+{
+	editor_ = NULL;
+	history_slider_.reset();
+	history_button_.reset();
+	history_trails_.clear();
+	editor_resolution_manager_.reset();
+	lvl_->mutate_value("zoom", variant(1));
+	lvl_->set_editor(false);
+	paused = false;
+	controls::read_until(lvl_->cycle());
+	init_history_slider();
+}
+
 bool level_runner::play_level()
 {
 	const current_level_runner_scope current_level_runner_setter(this);
@@ -866,12 +880,17 @@ bool level_runner::play_cycle()
 					set_scene_title(new_level->title());
 					lvl_.reset(new_level);
 
+					lvl_->editor_clear_selection();
 					editor_ = editor::get_editor(lvl_->id().c_str());
 					editor_->set_playing_level(lvl_);
 					editor_->setup_for_editing();
 					lvl_->set_as_current_level();
 					lvl_->set_editor();
 					init_history_slider();
+				}
+
+				if(editor_->done()) {
+					close_editor();
 				}
 			}
 
@@ -969,16 +988,7 @@ bool level_runner::play_cycle()
 				if(key == SDLK_ESCAPE) {
 					if(editor_) {
 #ifndef NO_EDITOR
-						editor_ = NULL;
-						history_slider_.reset();
-						history_button_.reset();
-						history_trails_.clear();
-						editor_resolution_manager_.reset();
-						lvl_->mutate_value("zoom", variant(1));
-						lvl_->set_editor(false);
-						paused = false;
-						controls::read_until(lvl_->cycle());
-						init_history_slider();
+						close_editor();
 #endif
 					} else {
 						should_pause = true;

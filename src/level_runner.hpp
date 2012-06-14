@@ -35,6 +35,7 @@ public:
 	void toggle_history_trails();
 private:
 	void start_editor();
+	void close_editor();
 	void reverse_cycle();
 	void handle_pause_game_result(PAUSE_GAME_RESULT result);
 	typedef boost::intrusive_ptr<level> level_ptr;

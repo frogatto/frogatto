@@ -682,7 +682,7 @@ editor* editor::get_editor(const char* level_cfg)
 	if(!e) {
 		e = new editor(level_cfg);
 	}
-
+	e->done_ = false;
 	return e;
 }
 
@@ -988,7 +988,7 @@ void editor::edit_level()
 		process();
 
 		SDL_Event event;
-		while(SDL_PollEvent(&event)) {
+		while(SDL_PollEvent(&event) && !done_) {
 			handle_event(event, false);
 		}
 
@@ -1008,6 +1008,10 @@ bool editor::handle_event(const SDL_Event& event, bool swallowed)
 	if(swallowed) {
 		return true;
 	}
+
+//	if(done_) {
+//		return false;
+//	}
 
 	if(editor_menu_dialog_->process_event(event, false)) {
 		return true;
@@ -1033,7 +1037,7 @@ bool editor::handle_event(const SDL_Event& event, bool swallowed)
 		if(event.key.keysym.sym == SDLK_ESCAPE) {
 			if(confirm_quit()) {
 				done_ = true;
-				return false;
+				return true;
 			}
 		}
 
@@ -3338,19 +3342,23 @@ void editor::create_new_object()
 	object_dialog.show_modal();
 	if(object_dialog.cancelled() == false) {
 		customobjecttype::reload_file_paths();
-		entity_ptr e = new custom_object(object_dialog.get_object()["id"].as_string(), anchorx_, anchory_, 1);
-
-		//set the object as selected in the editor.
 		lvl_->editor_clear_selection();
+		change_tool(TOOL_ADD_OBJECT);
+		const std::string type = object_dialog.get_object()["id"].as_string();
+		const_custom_object_type_ptr obj = custom_object_type::get(type);
 
-		lvl_->editor_select_object(e);
-		property_dialog_->set_entity_group(lvl_->editor_selection());
+		if(obj->editor_info()) {
+			enemy_types.push_back(editor::enemy_type(*obj));
+			current_dialog_ = character_dialog_.get();
 
-		if(!lvl_->editor_selection().empty()) {
-			change_tool(TOOL_SELECT_OBJECT);
+			for(int n = 0; n != all_characters().size(); ++n) {
+				const enemy_type& c = all_characters()[n];
+				if(c.node["type"].as_string() == type) {
+					character_dialog_->select_category(c.category);
+					character_dialog_->set_character(n);
+				}
+			}
 		}
-
-		current_dialog_ = property_dialog_.get();
 	}
 }
 
