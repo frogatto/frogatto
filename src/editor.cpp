@@ -784,7 +784,7 @@ void editor::group_selection()
 	foreach(level_ptr lvl, levels_) {
 		const int group = lvl->add_group();
 		foreach(const entity_ptr& e, lvl_->editor_selection()) {
-			entity_ptr c = lvl_->get_entity_by_label(e->label());
+			entity_ptr c = lvl->get_entity_by_label(e->label());
 			if(!c) {
 				continue;
 			}
