@@ -22,7 +22,7 @@
 #include "variant.hpp"
 #include "widget.hpp"
 
-class collision_info;
+struct collision_info;
 class level;
 
 struct custom_object_text;
