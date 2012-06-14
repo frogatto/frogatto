@@ -154,6 +154,8 @@ public:
 
 	void set_driver_position();
 
+	virtual bool use_absolute_screen_coordinates() const { return use_absolute_screen_coordinates_; }
+
 	virtual int current_animation_id() const { return current_animation_id_; }
 
 	virtual bool handle_sdl_event(const SDL_Event& event, bool claimed);
