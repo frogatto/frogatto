@@ -6,6 +6,7 @@
 
 #include "button.hpp"
 #include "code_editor_widget.hpp"
+#include "controls.hpp"
 #include "custom_object_functions.hpp"
 #include "editor_dialogs.hpp"
 #include "foreach.hpp"
@@ -375,6 +376,10 @@ void property_editor_dialog::change_level_property(const std::string& id)
 
 void property_editor_dialog::set_label(gui::text_editor_widget* editor)
 {
+	if(editor->text().empty()) {
+		return;
+	}
+
 	foreach(level_ptr lvl, editor_.get_level_list()) {
 		foreach(entity_ptr entity_obj, entity_) {
 			entity_ptr e = lvl->get_entity_by_label(entity_obj->label());
@@ -484,6 +489,8 @@ bool hidden_label(const std::string& label) {
 
 void property_editor_dialog::change_label_property(const std::string& id)
 {
+	const controls::control_backup_scope ctrl_scope;
+
 	const editor_variable_info* var_info = get_static_entity()->editor_info() ? get_static_entity()->editor_info()->get_var_info(id) : NULL;
 	if(!var_info) {
 		return;
