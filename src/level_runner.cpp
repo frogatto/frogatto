@@ -342,9 +342,9 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 
 	static const int MouseClickID = get_object_event_id("click");
 	//static const int MouseDblClickID = get_object_event_id("dblclick");
-	//static const int MouseDragID = get_object_event_id("drag");
-	//static const int MouseDragID = get_object_event_id("drag_start");
-	//static const int MouseDragID = get_object_event_id("drag_end");
+	static const int MouseDragID = get_object_event_id("drag");
+	static const int MouseDragStartID = get_object_event_id("drag_start");
+	static const int MouseDragEndID = get_object_event_id("drag_end");
 
 	if(paused) {
 		// skip mouse event handling when paused.
@@ -375,6 +375,7 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 				? MouseDownEventAllID 
 				: event.type == SDL_MOUSEMOTION
 					? MouseMoveEventAllID : MouseUpEventAllID;
+			Uint8 button_state = SDL_GetMouseState(0,0);
 			if(!lvl_->gui_event(event)) {
 				x = (x*graphics::screen_width())/preferences::virtual_screen_width() + last_draw_position().x/100;
 				y = (y*graphics::screen_height())/preferences::virtual_screen_height() + last_draw_position().y/100;
@@ -384,9 +385,14 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 				callable->add("mouse_index", variant(i));
 				if(event.type != SDL_MOUSEMOTION) {
 					callable->add("mouse_button", variant(event.button.button));
+				} else {
+					callable->add("mouse_button", variant(button_state));
 				}
 				variant v(callable);
 				std::vector<variant> items;
+				// Grab characters around point, z-order sort them, so that when
+				// we process them we go from highest to lowest, allowing a higher
+				// object to swallow an event before the lower ones get it.
 				std::vector<entity_ptr> cs = lvl_->get_characters_at_point(x, y, last_draw_position().x/100, last_draw_position().y/100);
 				std::sort(cs.begin(), cs.end(), zorder_compare);
 				std::vector<entity_ptr>::iterator it;
@@ -394,7 +400,10 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 				bool click_handled = false;
 				std::set<entity_ptr> mouse_in;
 				for(it = cs.begin(); it != cs.end(); ++it) {
-					if(event.type == SDL_MOUSEMOTION) {
+					if(event.type == SDL_MOUSEBUTTONDOWN) {
+						(*it)->set_mouse_buttons((*it)->get_mouse_buttons() | SDL_BUTTON(event.button.button));
+					} else if(event.type == SDL_MOUSEMOTION) {
+						// handling for mouse_enter
 						if((*it)->is_mouse_over_entity() == false) {
 							(*it)->handle_event(MouseEnterID, callable);
 							(*it)->set_mouse_over_entity();
@@ -404,7 +413,7 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 
 					(*it)->handle_event(basic_evt, callable);
 					// XXX: fix this for dragging(with multiple mice)
-					if(event.type == SDL_MOUSEBUTTONUP && !click_handled /*&& !dragging*/) {
+					if(event.type == SDL_MOUSEBUTTONUP && !click_handled && (*it)->is_being_dragged() == false) {
 						(*it)->handle_event(MouseClickID, callable);
 						if((*it)->mouse_event_swallowed()) {
 							click_handled = true;
@@ -413,14 +422,39 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 					handled = true;
 					items.push_back(variant((*it).get()));
 				}
+				// Handling for "catch all" mouse events.
 				callable->add("handled", variant(handled));
 				variant obj_ary(&items);
 				callable->add("objects_under_mouse", obj_ary);
 				foreach(entity_ptr object, level::current().get_chars()) {
 					object->handle_event(catch_all_event, callable);
+
+					// drag handling
+					if(event.type == SDL_MOUSEBUTTONUP) {
+						object->set_mouse_buttons(object->get_mouse_buttons() & ~SDL_BUTTON(event.button.button));
+						if(object->get_mouse_buttons() == 0 && object->is_being_dragged()) {
+							object->handle_event(MouseDragEndID, callable);
+							object->set_being_dragged(false);
+						}
+					} else if(event.type == SDL_MOUSEMOTION) {
+						// drag check.
+						if(object->is_being_dragged()) {
+							if(object->get_mouse_buttons() & button_state) {
+								object->handle_event(MouseDragID, callable);
+							} else {
+								object->handle_event(MouseDragEndID, callable);
+								object->set_being_dragged(false);
+							}
+						} else if(object->get_mouse_buttons() & button_state) {
+							// start drag.
+							object->handle_event(MouseDragStartID, callable);
+							object->set_being_dragged();
+						}
+					}
 				}
 
 				if(event.type == SDL_MOUSEMOTION) {
+					// handling for mouse_leave
 					foreach(const entity_ptr& e, level::current().get_chars()) {
 						if(mouse_in.find(e) == mouse_in.end() && e->is_mouse_over_entity()) {
 							e->handle_event(MouseLeaveID, callable);

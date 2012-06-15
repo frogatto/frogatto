@@ -262,6 +262,10 @@ public:
 
 	bool is_mouse_over_entity() const { return mouse_over_entity_; }
 	void set_mouse_over_entity(bool val=true) { mouse_over_entity_=val; }
+	void set_mouse_buttons(Uint8 buttons) { mouse_button_state_ = buttons; }
+	Uint8 get_mouse_buttons() const { return mouse_button_state_; }
+	bool is_being_dragged() const { return being_dragged_; }
+	void set_being_dragged(bool val=true) { being_dragged_ = val; }
 
 	virtual const game_logic::formula_callable_definition* get_definition() const = 0;
 
@@ -312,6 +316,8 @@ private:
 	bool respawn_;
 
 	bool mouse_over_entity_;
+	Uint8 mouse_button_state_;
+	bool being_dragged_;
 
 	unsigned int solid_dimensions_, collide_dimensions_;
 	unsigned int weak_solid_dimensions_, weak_collide_dimensions_;
