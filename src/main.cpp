@@ -332,7 +332,11 @@ extern "C" int main(int argcount, char** argvec)
 
 	LOG( "Start of main" );
 	
-	if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_JOYSTICK) < 0) {
+	Uint32 sdl_init_flags = SDL_INIT_VIDEO | SDL_INIT_JOYSTICK;
+#ifdef _WINDOWS
+	sdl_init_flags |= SDL_INIT_TIMER;
+#endif
+	if(SDL_Init(sdl_init_flags) < 0) {
 		std::cerr << "could not init SDL\n";
 		return -1;
 	}

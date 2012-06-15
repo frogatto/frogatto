@@ -40,14 +40,32 @@ std::vector<custom_object_event_frame> event_call_stack_samples;
 int num_samples = 0;
 const size_t max_samples = 10000;
 
+#ifdef _WINDOWS
+SDL_TimerID sdl_profile_timer;
+#endif
+
+#ifdef _WINDOWS
+Uint32 sdl_timer_callback(Uint32 interval, void *param)
+#else
 void sigprof_handler(int sig)
+#endif
 {
+#ifdef _WINDOWS
+	if(handler_disabled) {
+		return interval;
+	}
+#else
 	if(handler_disabled || !pthread_equal(main_thread, pthread_self())) {
 		return;
 	}
+#endif
 
 	if(num_samples == max_samples) {
+#ifdef _WINDOWS
+		return interval;
+#else
 		return;
+#endif
 	}
 
 	if(event_call_stack.empty()) {
@@ -55,6 +73,9 @@ void sigprof_handler(int sig)
 	} else {
 		event_call_stack_samples[num_samples++] = event_call_stack.back();
 	}
+#ifdef _WINDOWS
+	return interval;
+#endif
 }
 
 }
@@ -70,6 +91,13 @@ manager::manager(const char* output_file)
 		profiler_on = true;
 		output_fname = output_file;
 
+#ifdef _WINDOWS
+		// Crappy windows approximation.
+		sdl_profile_timer = SDL_AddTimer(10, sdl_timer_callback, 0);
+		if(sdl_profile_timer == NULL) {
+			std::cerr << "Couldn't create a profiling timer!" << std::endl;
+		}
+#else
 		signal(SIGPROF, sigprof_handler);
 
 		struct itimerval timer;
@@ -77,15 +105,20 @@ manager::manager(const char* output_file)
 		timer.it_interval.tv_usec = 10000;
 		timer.it_value = timer.it_interval;
 		setitimer(ITIMER_PROF, &timer, 0);
+#endif
 	}
 }
 
 manager::~manager()
 {
 	if(profiler_on){
+#ifdef _WINDOWS
+		SDL_RemoveTimer(sdl_profile_timer);
+#else
 		struct itimerval timer;
 		memset(&timer, 0, sizeof(timer));
 		setitimer(ITIMER_PROF, &timer, 0);
+#endif
 
 		std::map<std::string, int> samples_map;
 
