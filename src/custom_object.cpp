@@ -88,7 +88,7 @@ custom_object::custom_object(variant node)
 	accel_x_(node["accel_x"].as_int()),
 	accel_y_(node["accel_y"].as_int()),
 	gravity_shift_(node["gravity_shift"].as_int(0)),
-	rotate_(static_cast<int64_t>(0)), zorder_(node["zorder"].as_int(type_->zorder())),
+	rotate_(), zorder_(node["zorder"].as_int(type_->zorder())),
 	zsub_order_(node["zsub_order"].as_int(type_->zsub_order())),
 	hitpoints_(node["hitpoints"].as_int(type_->hitpoints())),
 	max_hitpoints_(node["max_hitpoints"].as_int(type_->hitpoints()) - type_->hitpoints()),
@@ -166,7 +166,7 @@ custom_object::custom_object(variant node)
 	}
 
 	if(node.has_key("draw_scale")) {
-		draw_scale_.reset(new decimal(static_cast<int64_t>(node["draw_scale"].as_int())));
+		draw_scale_.reset(new decimal(decimal::from_raw_value(static_cast<int64_t>(node["draw_scale"].as_int()))));
 	}
 
 	if(node.has_key("activation_area")) {
@@ -309,7 +309,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	time_in_frame_(0), time_in_frame_delta_(1),
 	velocity_x_(0), velocity_y_(0),
 	accel_x_(0), accel_y_(0), gravity_shift_(0),
-	rotate_(static_cast<int64_t>(0)), zorder_(type_->zorder()),
+	rotate_(), zorder_(type_->zorder()),
 	zsub_order_(type_->zsub_order()),
 	hitpoints_(type_->hitpoints()),
 	max_hitpoints_(0),

@@ -33,7 +33,7 @@ decimal decimal::from_string(const std::string& s)
 	}
 
 	int64_t result_value = n*DECIMAL_PRECISION + m;
-	return decimal(n*DECIMAL_PRECISION + m);
+	return decimal::from_raw_value(n*DECIMAL_PRECISION + m);
 }
 
 std::ostream& operator<<(std::ostream& s, decimal d)
@@ -66,7 +66,7 @@ decimal operator*(const decimal& a, const decimal& b)
 	const int64_t fa = va%DECIMAL_PRECISION;
 	const int64_t fb = vb%DECIMAL_PRECISION;
 
-	const decimal result = decimal(ia*ib*DECIMAL_PRECISION + fa*ib + fb*ia + (fa*fb)/DECIMAL_PRECISION);
+	const decimal result = decimal::from_raw_value(ia*ib*DECIMAL_PRECISION + fa*ib + fb*ia + (fa*fb)/DECIMAL_PRECISION);
 	if((a.value() < 0 && b.value() > 0) || (b.value() < 0 && a.value() > 0)) {
 		return -result;
 	} else {
@@ -110,7 +110,7 @@ decimal operator/(const decimal& a, const decimal& b)
 		++orders_of_magnitude_shift;
 	}
 
-	const decimal result(value);
+	const decimal result(decimal::from_raw_value(value));
 	if(a.value() < 0 && b.value() > 0 || b.value() < 0 && a.value() > 0) {
 		return -result;
 	} else {
@@ -158,20 +158,20 @@ UNIT_TEST(decimal_mul) {
 
 
 	//10934.54 * 7649.44
-	CHECK_EQ(decimal(DECIMAL(10934540000))*decimal(DECIMAL(7649440000)), decimal(DECIMAL(83643107657600)));
-	CHECK_EQ(decimal(-DECIMAL(10934540000))*decimal(DECIMAL(7649440000)), -decimal(DECIMAL(83643107657600)));
+	CHECK_EQ(decimal::from_raw_value(DECIMAL(10934540000))*decimal::from_raw_value(DECIMAL(7649440000)), decimal::from_raw_value(DECIMAL(83643107657600)));
+	CHECK_EQ(decimal::from_raw_value(-DECIMAL(10934540000))*decimal::from_raw_value(DECIMAL(7649440000)), -decimal::from_raw_value(DECIMAL(83643107657600)));
 
 	CHECK_EQ(decimal::from_string("0.08")*decimal::from_string("0.5"), decimal::from_string("0.04"));
 }
 
 UNIT_TEST(decimal_div) {
 	//10934.54 / 7649.44
-	CHECK_EQ(decimal(DECIMAL(10934540000))/decimal(DECIMAL(7649440000)), decimal(DECIMAL(1429456)));
+	CHECK_EQ(decimal::from_raw_value(DECIMAL(10934540000))/decimal::from_raw_value(DECIMAL(7649440000)), decimal::from_raw_value(DECIMAL(1429456)));
 }
 
 BENCHMARK(decimal_div_bench) {
 	BENCHMARK_LOOP {
-		decimal res(DECIMAL(0));
+		decimal res(decimal::from_raw_value(DECIMAL(0)));
 		for(int n = 1; n < 1000000; ++n) {
 			res += decimal::from_int(n)/decimal::from_int(1000100-n);
 		}

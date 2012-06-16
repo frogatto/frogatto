@@ -1242,7 +1242,7 @@ void variant::serialize_to_string(std::string& str) const
 		break;
 	case TYPE_DECIMAL: {
 		std::ostringstream s;
-		s << decimal(decimal_value_);
+		s << decimal::from_raw_value(decimal_value_);
 		str += s.str();
 		break;
 	}
@@ -1574,7 +1574,7 @@ void variant::write_json(std::ostream& s) const
 		return;
 	}
 	case TYPE_DECIMAL: {
-		s << decimal(decimal_value_);
+		s << decimal::from_raw_value(decimal_value_);
 		return;
 	}
 	case TYPE_MAP: {

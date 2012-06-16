@@ -121,7 +121,7 @@ public:
 	bool is_map() const { return type_ == TYPE_MAP; }
 	bool is_function() const { return type_ == TYPE_FUNCTION; }
 	int as_int(int default_value=0) const { if(type_ == TYPE_NULL) { return default_value; } if(type_ == TYPE_DECIMAL) { return int( decimal_value_/VARIANT_DECIMAL_PRECISION ); } if(type_ == TYPE_BOOL) { return bool_value_ ? 1 : 0; } must_be(TYPE_INT); return int_value_; }
-	decimal as_decimal(decimal default_value=decimal()) const { if(type_ == TYPE_NULL) { return default_value; } if(type_ == TYPE_INT) { return decimal(int64_t(int_value_)*VARIANT_DECIMAL_PRECISION); } must_be(TYPE_DECIMAL); return decimal(decimal_value_); }
+	decimal as_decimal(decimal default_value=decimal()) const { if(type_ == TYPE_NULL) { return default_value; } if(type_ == TYPE_INT) { return decimal::from_raw_value(int64_t(int_value_)*VARIANT_DECIMAL_PRECISION); } must_be(TYPE_DECIMAL); return decimal::from_raw_value(decimal_value_); }
 	bool as_bool(bool default_value) const;
 	bool as_bool() const;
 

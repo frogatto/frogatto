@@ -2,6 +2,7 @@
 
 #include "asserts.hpp"
 #include "controls.hpp"
+#include "decimal.hpp"
 #include "foreach.hpp"
 #include "formula_constants.hpp"
 #include "i18n.hpp"
@@ -57,6 +58,8 @@ variant get_constant(const std::string& id)
 		return variant(gui::get_key_name(controls::get_sdlkey(controls::CONTROL_ATTACK)));
 	} else if(id == "LOCALE") {
 		return variant(i18n::get_locale());
+	} else if(id == "EPSILON") {
+		return variant(decimal::epsilon());
 	}
 
 	if(constants_stack.empty() == false) {

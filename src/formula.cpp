@@ -783,7 +783,7 @@ public:
 private:
 	variant execute(const formula_callable& variables) const {
 		const variant left = left_->evaluate(variables);
-		const variant right = right_->evaluate(variables);
+		variant right = right_->evaluate(variables);
 		switch(op_) {
 			case OP_IN:
 				if(!right.is_list()) {
@@ -811,12 +811,10 @@ private:
 
 				//this is a very unorthodox hack to guard against divide-by-zero errors.  It returns positive or negative infinity instead of asserting, which (hopefully!) works out for most of the physical calculations that are using this.  We tentatively view this behavior as much more preferable to the game apparently crashing for a user.  This is of course not rigorous outside of a videogame setting.
 				if(right == variant(0)) { 
-					if(left.as_int() > 0){
-						return variant(INT_MAX); 
-					}else{
-						return variant(INT_MIN+1);
-					}
-				}else{return left / right;}
+					right = variant(decimal::epsilon());
+				}
+
+				return left / right;
 			case OP_POW: 
 				return left ^ right;
 			case OP_EQ:  

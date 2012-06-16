@@ -16,14 +16,15 @@ class decimal
 {
 public:
 	static decimal from_string(const std::string& s);
-	static decimal from_int(int64_t v) { return decimal(v*DECIMAL_PRECISION); }
+	static decimal from_int(int v) { return decimal(v); }
+	static decimal from_raw_value(int64_t v) { decimal d; d.value_ = v; return d; }
+	static decimal epsilon() { return decimal::from_raw_value(static_cast<int64_t>(1)); }
 	decimal() : value_(0) {}
-	explicit decimal(int64_t value) : value_(value) {}
+	explicit decimal(int value) : value_(int64_t(value)*DECIMAL_PRECISION) {}
 #if defined(TARGET_BLACKBERRY)
 	explicit decimal(double value) : value_(llround(value*DECIMAL_PRECISION)) {}
 #else
 	explicit decimal(double value) : value_(int64_t(value*DECIMAL_PRECISION)) {}
-	explicit decimal(int value) : value_(int64_t(value*DECIMAL_PRECISION)) {}
 #endif
 
 	int64_t value() const { return value_; }
@@ -32,7 +33,7 @@ public:
 	int64_t fractional() const { return value_%DECIMAL_PRECISION; }
 
 	decimal operator-() const {
-		return decimal(-value_);
+		return decimal(from_raw_value(-value_));
 	}
 
 	friend decimal operator+(const decimal& a, const decimal& b);
@@ -55,11 +56,11 @@ private:
 };
 
 inline decimal operator+(const decimal& a, const decimal& b) {
-	return decimal(a.value() + b.value());
+	return decimal::from_raw_value(a.value() + b.value());
 }
 
 inline decimal operator-(const decimal& a, const decimal& b) {
-	return decimal(a.value() - b.value());
+	return decimal::from_raw_value(a.value() - b.value());
 }
 
 decimal operator*(const decimal& a, const decimal& b);
