@@ -1216,15 +1216,18 @@ void variant::throw_type_error(variant::TYPE t) const
 	const debug_info* info = get_debug_info();
 	std::string loc;
 	if(info) {
-		loc = formatter() << " at " << *info->filename << " " << info->line << " (column " << info->column << "\n";
+		loc = formatter() << " at " << *info->filename << " " << info->line << " (column " << info->column << ")\n";
+	}
+
+	std::string representation;
+	try {
+		representation = write_json();
+	} catch(...) {
+		representation = "(COULD NOT SERIALIZE TYPE)";
 	}
 
 	std::ostringstream fmt;
-	try {
-		fmt << "type error: " << " expected " << variant_type_to_string(t) << " but found " << variant_type_to_string(type_) << " " << write_json() << loc;
-	} catch(...) {
-		fmt << " (COULD NOT SERIALIZE TYPE)\n";
-	}
+	fmt << "type error: " << " expected " << variant_type_to_string(t) << " but found " << variant_type_to_string(type_) << " " << representation << loc;
 	generate_error(fmt.str());
 }
 
