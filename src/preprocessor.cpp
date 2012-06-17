@@ -9,6 +9,7 @@
 #include "filesystem.hpp"
 #include "json_parser.hpp"
 #include "string_utils.hpp"
+#include "variant_callable.hpp"
 
 std::string preprocess(const std::string& input){
 	std::string output_string;
@@ -84,9 +85,22 @@ variant preprocess_string_value(const std::string& input, const game_logic::form
 			++i;
 		}
 
-		std::string fname(i, input.end());
+		const std::string fname(i, input.end());
 		std::vector<std::string> includes = util::split(fname, ' ');
 		if(includes.size() == 1) {
+			std::string::const_iterator colon = std::find(fname.begin(), fname.end(), ':');
+			if(colon != fname.end()) {
+				const std::string file(fname.begin(), colon);
+				variant doc = json::parse_from_file(file);
+				const std::string expr(colon+1, fname.end());
+				const variant expr_variant(expr);
+				const game_logic::formula f(expr_variant);
+				variant callable = variant_callable::create(&doc);
+				const game_logic::formula_callable* vars = callable.as_callable();
+				if(vars) {
+					return f.execute(*vars);
+				}
+			}
 			return json::parse_from_file(fname);
 		} else {
 			//treatment of a list of @includes is to make non-list items
