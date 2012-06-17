@@ -2740,7 +2740,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		break;
 	
 	case CUSTOM_OBJECT_UPSIDE_DOWN:
-		set_upside_down(value.as_int());
+		set_upside_down(value.as_int() > 0);
 		break;
 
 	case CUSTOM_OBJECT_HITPOINTS: {
