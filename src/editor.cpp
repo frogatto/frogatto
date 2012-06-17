@@ -305,7 +305,7 @@ public:
 		if(name.empty() == false) {
 			variant empty_lvl = json::parse_from_file("data/level/empty.cfg");
 			std::string id = module::make_module_id(name);
-			empty_lvl.add_attr(variant("id"), variant(id));
+			empty_lvl.add_attr(variant("id"), variant(module::get_id(id)));
 			if(preferences::is_level_path_set()) {
 				sys::write_file(preferences::level_path() + name, empty_lvl.write_json());
 			} else {
