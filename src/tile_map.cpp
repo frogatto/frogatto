@@ -234,7 +234,7 @@ void tile_map::load(const std::string& fname, const std::string& tile_id)
 
 	variant node = json::parse_from_file("data/tiles/" + fname);
 
-	palette_scope palette_setter(node["palettes"].as_string_default());
+	palette_scope palette_setter(parse_variant_list_or_csv_string(node["palettes"]));
 
 	foreach(variant pattern, node["tile_pattern"].as_list()) {
 		patterns.push_back(tile_pattern(pattern, tile_id));

@@ -1,4 +1,6 @@
+#include "asserts.hpp"
 #include "foreach.hpp"
+#include "string_utils.hpp"
 #include "variant_utils.hpp"
 
 variant append_variants(variant a, variant b)
@@ -31,6 +33,18 @@ variant append_variants(variant a, variant b)
 		return variant(&v);
 	} else {
 		return b;
+	}
+}
+
+std::vector<std::string> parse_variant_list_or_csv_string(variant v)
+{
+	if(v.is_string()) {
+		return util::split(v.as_string());
+	} else if(v.is_list()) {
+		return v.as_list_string();
+	} else {
+		ASSERT_LOG(v.is_null(), "Unexpected value when expecting a string list: " << v.write_json());
+		return std::vector<std::string>();
 	}
 }
 

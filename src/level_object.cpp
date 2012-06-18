@@ -218,16 +218,13 @@ std::set<level_object*>& palette_level_objects() {
 }
 }
 
-palette_scope::palette_scope(const std::string& str)
+palette_scope::palette_scope(const std::vector<std::string>& v)
   : original_value(current_palette_set)
 {
 	current_palette_set = 0;	
-	if(str.empty() == false) {
-		std::vector<std::string> p = util::split(str);
-		foreach(const std::string& pal, p) {
-			const int id = graphics::get_palette_id(pal);
-			current_palette_set |= 1 << id;
-		}
+	foreach(const std::string& pal, v) {
+		const int id = graphics::get_palette_id(pal);
+		current_palette_set |= 1 << id;
 	}
 }
 
@@ -261,7 +258,7 @@ level_object::level_object(variant node)
 {
 	if(node.has_key("palettes")) {
 		palettes_recognized_ = 0;
-		std::vector<std::string> p = util::split(node["palettes"].as_string_default());
+		std::vector<std::string> p = parse_variant_list_or_csv_string(node["palettes"]);
 		foreach(const std::string& pal, p) {
 			const int id = graphics::get_palette_id(pal);
 			palettes_recognized_ |= 1 << id;

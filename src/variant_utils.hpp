@@ -19,6 +19,10 @@
 //lista, scalarb -> lista + [scalarb]
 variant append_variants(variant a, variant b);
 
+//parse a variant that may be a list of strings or a csv string. If null
+//it will return an empty list.
+std::vector<std::string> parse_variant_list_or_csv_string(variant v);
+
 void merge_variant_over(variant* aptr, variant b);
 
 void visit_variants(variant v, boost::function<void (variant)> fn);

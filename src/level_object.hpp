@@ -76,7 +76,7 @@ struct level_tile_y_pos_comparer {
 
 //utility which sets the palette for objects loaded within a scope
 struct palette_scope {
-	explicit palette_scope(const std::string& str);
+	explicit palette_scope(const std::vector<std::string>& v);
 	~palette_scope();	
 
 	unsigned int original_value;

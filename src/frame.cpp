@@ -182,12 +182,10 @@ frame::frame(variant node)
 		build_alpha();
 	}
 
-	std::vector<std::string> palettes = util::split(node["palettes"].as_string_default());
+	std::vector<std::string> palettes = parse_variant_list_or_csv_string(node["palettes"]);
 	foreach(const std::string& p, palettes) {
 		palettes_recognized_.push_back(graphics::get_palette_id(p));
 	}
-
-	//std::cerr << "PALETTES: " << node["palettes"].as_string().str() << " " << palettes_recognized_.size() << "\n";
 
 	if(palettes_recognized_.empty() == false) {
 		palette_frames().insert(this);
