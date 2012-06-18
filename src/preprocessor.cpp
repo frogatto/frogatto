@@ -86,21 +86,24 @@ variant preprocess_string_value(const std::string& input, const game_logic::form
 		}
 
 		const std::string fname(i, input.end());
+
+		//Search for a colon, which indicates an expression after the filename.
+		std::string::const_iterator colon = std::find(fname.begin(), fname.end(), ':');
+		if(colon != fname.end() && std::count(fname.begin(), colon, ' ') == 0) {
+			const std::string file(fname.begin(), colon);
+			variant doc = json::parse_from_file(file);
+			const std::string expr(colon+1, fname.end());
+			const variant expr_variant(expr);
+			const game_logic::formula f(expr_variant);
+			variant callable = variant_callable::create(&doc);
+			const game_logic::formula_callable* vars = callable.as_callable();
+			if(vars) {
+				return f.execute(*vars);
+			}
+		}
+
 		std::vector<std::string> includes = util::split(fname, ' ');
 		if(includes.size() == 1) {
-			std::string::const_iterator colon = std::find(fname.begin(), fname.end(), ':');
-			if(colon != fname.end()) {
-				const std::string file(fname.begin(), colon);
-				variant doc = json::parse_from_file(file);
-				const std::string expr(colon+1, fname.end());
-				const variant expr_variant(expr);
-				const game_logic::formula f(expr_variant);
-				variant callable = variant_callable::create(&doc);
-				const game_logic::formula_callable* vars = callable.as_callable();
-				if(vars) {
-					return f.execute(*vars);
-				}
-			}
 			return json::parse_from_file(fname);
 		} else {
 			//treatment of a list of @includes is to make non-list items
