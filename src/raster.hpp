@@ -17,6 +17,7 @@
 
 #include "graphics.hpp"
 
+#include "color_chart.hpp"
 #include "color_utils.hpp"
 #include "geometry.hpp"
 #include "texture.hpp"
@@ -151,14 +152,6 @@ struct clip_scope {
 	}
 };
 #endif // SDL_VIDEO_OPENGL_ES
-
-const SDL_Color& color_black();
-const SDL_Color& color_white();
-const SDL_Color& color_red();
-const SDL_Color& color_green();
-const SDL_Color& color_blue();
-const SDL_Color& color_yellow();
-const SDL_Color& color_grey();
 
 }
 
