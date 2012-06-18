@@ -2,10 +2,13 @@
 #ifndef COLOR_CHART_HPP_INCLUDED
 #define COLOR_CHART_HPP_INCLUDED
 
+#include <map>
+
 #include "graphics.hpp"
-#include "raster.hpp"
 
 namespace graphics {
+
+const SDL_Color& get_color_from_name(std::string name);
 
 const SDL_Color& color_black();
 const SDL_Color& color_white();

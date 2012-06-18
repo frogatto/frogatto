@@ -1,48 +1,230 @@
+#include <boost/bind.hpp>
+#include <boost/function.hpp>
+
+#include "asserts.hpp"
 #include "color_chart.hpp"
-#include "graphics.hpp"
-#include "raster.hpp"
 
 namespace graphics {
 
+namespace {
+
+std::map<std::string,boost::function<const SDL_Color&()> > get_color_cache()
+{
+	static std::map<std::string,boost::function<const SDL_Color&()> > color_cache;
+	return color_cache;
+}
+
+void color_cache_init()
+{
+	get_color_cache()["black"] = boost::bind(graphics::color_black);
+	get_color_cache()["white"] = boost::bind(graphics::color_white);
+	get_color_cache()["red"] = boost::bind(graphics::color_red);
+	get_color_cache()["green"] = boost::bind(graphics::color_green);
+	get_color_cache()["blue"] = boost::bind(graphics::color_blue);
+	get_color_cache()["yellow"] = boost::bind(graphics::color_yellow);
+	get_color_cache()["grey"] = boost::bind(graphics::color_grey);
+	get_color_cache()["snow"] = boost::bind(graphics::color_snow);
+	get_color_cache()["snow_2"] = boost::bind(graphics::color_snow_2);
+	get_color_cache()["snow_3"] = boost::bind(graphics::color_snow_3);
+	get_color_cache()["snow_4"] = boost::bind(graphics::color_snow_4);
+	get_color_cache()["ghost_white"] = boost::bind(graphics::color_ghost_white);
+	get_color_cache()["white_smoke"] = boost::bind(graphics::color_white_smoke);
+	get_color_cache()["gainsboro"] = boost::bind(graphics::color_gainsboro);
+	get_color_cache()["floral_white"] = boost::bind(graphics::color_floral_white);
+	get_color_cache()["old_lace"] = boost::bind(graphics::color_old_lace);
+	get_color_cache()["linen"] = boost::bind(graphics::color_linen);
+	get_color_cache()["antique_white"] = boost::bind(graphics::color_antique_white);
+	get_color_cache()["antique_white_2"] = boost::bind(graphics::color_antique_white_2);
+	get_color_cache()["antique_white_3"] = boost::bind(graphics::color_antique_white_3);
+	get_color_cache()["antique_white_4"] = boost::bind(graphics::color_antique_white_4);
+	get_color_cache()["papaya_whip"] = boost::bind(graphics::color_papaya_whip);
+	get_color_cache()["blanched_almond"] = boost::bind(graphics::color_blanched_almond);
+	get_color_cache()["bisque"] = boost::bind(graphics::color_bisque);
+	get_color_cache()["bisque_2"] = boost::bind(graphics::color_bisque_2);
+	get_color_cache()["bisque_3"] = boost::bind(graphics::color_bisque_3);
+	get_color_cache()["bisque_4"] = boost::bind(graphics::color_bisque_4);
+	get_color_cache()["peach_puff"] = boost::bind(graphics::color_peach_puff);
+	get_color_cache()["peach_puff_2"] = boost::bind(graphics::color_peach_puff_2);
+	get_color_cache()["peach_puff_3"] = boost::bind(graphics::color_peach_puff_3);
+	get_color_cache()["peach_puff_4"] = boost::bind(graphics::color_peach_puff_4);
+	get_color_cache()["navajo_white"] = boost::bind(graphics::color_navajo_white);
+	get_color_cache()["moccasin"] = boost::bind(graphics::color_moccasin);
+	get_color_cache()["cornsilk"] = boost::bind(graphics::color_cornsilk);
+	get_color_cache()["cornsilk_2"] = boost::bind(graphics::color_cornsilk_2);
+	get_color_cache()["cornsilk_3"] = boost::bind(graphics::color_cornsilk_3);
+	get_color_cache()["cornsilk_4"] = boost::bind(graphics::color_cornsilk_4);
+	get_color_cache()["ivory"] = boost::bind(graphics::color_ivory);
+	get_color_cache()["ivory_2"] = boost::bind(graphics::color_ivory_2);
+	get_color_cache()["ivory_3"] = boost::bind(graphics::color_ivory_3);
+	get_color_cache()["ivory_4"] = boost::bind(graphics::color_ivory_4);
+	get_color_cache()["lemon_chiffon"] = boost::bind(graphics::color_lemon_chiffon);
+	get_color_cache()["seashell"] = boost::bind(graphics::color_seashell);
+	get_color_cache()["seashell_2"] = boost::bind(graphics::color_seashell_2);
+	get_color_cache()["seashell_3"] = boost::bind(graphics::color_seashell_3);
+	get_color_cache()["seashell_4"] = boost::bind(graphics::color_seashell_4);
+	get_color_cache()["honeydew"] = boost::bind(graphics::color_honeydew);
+	get_color_cache()["honeydew_2"] = boost::bind(graphics::color_honeydew_2);
+	get_color_cache()["honeydew_3"] = boost::bind(graphics::color_honeydew_3);
+	get_color_cache()["honeydew_4"] = boost::bind(graphics::color_honeydew_4);
+	get_color_cache()["mint_cream"] = boost::bind(graphics::color_mint_cream);
+	get_color_cache()["azure"] = boost::bind(graphics::color_azure);
+	get_color_cache()["alice_blue"] = boost::bind(graphics::color_alice_blue);
+	get_color_cache()["lavender"] = boost::bind(graphics::color_lavender);
+	get_color_cache()["lavender_blush"] = boost::bind(graphics::color_lavender_blush);
+	get_color_cache()["misty_rose"] = boost::bind(graphics::color_misty_rose);
+	get_color_cache()["dark_slate_gray"] = boost::bind(graphics::color_dark_slate_gray);
+	get_color_cache()["dim_gray"] = boost::bind(graphics::color_dim_gray);
+	get_color_cache()["slate_gray"] = boost::bind(graphics::color_slate_gray);
+	get_color_cache()["light_slate_gray"] = boost::bind(graphics::color_light_slate_gray);
+	get_color_cache()["gray"] = boost::bind(graphics::color_gray);
+	get_color_cache()["light_gray"] = boost::bind(graphics::color_light_gray);
+	get_color_cache()["midnight_blue"] = boost::bind(graphics::color_midnight_blue);
+	get_color_cache()["navy"] = boost::bind(graphics::color_navy);
+	get_color_cache()["cornflower_blue"] = boost::bind(graphics::color_cornflower_blue);
+	get_color_cache()["dark_slate_blue"] = boost::bind(graphics::color_dark_slate_blue);
+	get_color_cache()["slate_blue"] = boost::bind(graphics::color_slate_blue);
+	get_color_cache()["medium_slate_blue"] = boost::bind(graphics::color_medium_slate_blue);
+	get_color_cache()["light_slate_blue"] = boost::bind(graphics::color_light_slate_blue);
+	get_color_cache()["medium_blue"] = boost::bind(graphics::color_medium_blue);
+	get_color_cache()["royal_blue"] = boost::bind(graphics::color_royal_blue);
+	get_color_cache()["dodger_blue"] = boost::bind(graphics::color_dodger_blue);
+	get_color_cache()["deep_sky_blue"] = boost::bind(graphics::color_deep_sky_blue);
+	get_color_cache()["sky_blue"] = boost::bind(graphics::color_sky_blue);
+	get_color_cache()["light_sky_blue"] = boost::bind(graphics::color_light_sky_blue);
+	get_color_cache()["steel_blue"] = boost::bind(graphics::color_steel_blue);
+	get_color_cache()["light_steel_blue"] = boost::bind(graphics::color_light_steel_blue);
+	get_color_cache()["light_blue"] = boost::bind(graphics::color_light_blue);
+	get_color_cache()["powder_blue"] = boost::bind(graphics::color_powder_blue);
+	get_color_cache()["pale_turquoise"] = boost::bind(graphics::color_pale_turquoise);
+	get_color_cache()["dark_turquoise"] = boost::bind(graphics::color_dark_turquoise);
+	get_color_cache()["medium_turquoise"] = boost::bind(graphics::color_medium_turquoise);
+	get_color_cache()["turquoise"] = boost::bind(graphics::color_turquoise);
+	get_color_cache()["cyan"] = boost::bind(graphics::color_cyan);
+	get_color_cache()["light_cyan"] = boost::bind(graphics::color_light_cyan);
+	get_color_cache()["cadet_blue"] = boost::bind(graphics::color_cadet_blue);
+	get_color_cache()["medium_aquamarine"] = boost::bind(graphics::color_medium_aquamarine);
+	get_color_cache()["aquamarine"] = boost::bind(graphics::color_aquamarine);
+	get_color_cache()["dark_green"] = boost::bind(graphics::color_dark_green);
+	get_color_cache()["dark_olive_green"] = boost::bind(graphics::color_dark_olive_green);
+	get_color_cache()["dark_sea_green"] = boost::bind(graphics::color_dark_sea_green);
+	get_color_cache()["sea_green"] = boost::bind(graphics::color_sea_green);
+	get_color_cache()["medium_sea_green"] = boost::bind(graphics::color_medium_sea_green);
+	get_color_cache()["light_sea_green"] = boost::bind(graphics::color_light_sea_green);
+	get_color_cache()["pale_green"] = boost::bind(graphics::color_pale_green);
+	get_color_cache()["spring_green"] = boost::bind(graphics::color_spring_green);
+	get_color_cache()["lawn_green"] = boost::bind(graphics::color_lawn_green);
+	get_color_cache()["chartreuse"] = boost::bind(graphics::color_chartreuse);
+	get_color_cache()["medium_spring_green"] = boost::bind(graphics::color_medium_spring_green);
+	get_color_cache()["green_yellow"] = boost::bind(graphics::color_green_yellow);
+	get_color_cache()["lime_green"] = boost::bind(graphics::color_lime_green);
+	get_color_cache()["yellow_green"] = boost::bind(graphics::color_yellow_green);
+	get_color_cache()["forest_green"] = boost::bind(graphics::color_forest_green);
+	get_color_cache()["olive_drab"] = boost::bind(graphics::color_olive_drab);
+	get_color_cache()["dark_khaki"] = boost::bind(graphics::color_dark_khaki);
+	get_color_cache()["khaki"] = boost::bind(graphics::color_khaki);
+	get_color_cache()["pale_goldenrod"] = boost::bind(graphics::color_pale_goldenrod);
+	get_color_cache()["light_goldenrod_yellow"] = boost::bind(graphics::color_light_goldenrod_yellow);
+	get_color_cache()["light_yellow"] = boost::bind(graphics::color_light_yellow);
+	get_color_cache()["gold"] = boost::bind(graphics::color_gold);
+	get_color_cache()["light_goldenrod"] = boost::bind(graphics::color_light_goldenrod);
+	get_color_cache()["goldenrod"] = boost::bind(graphics::color_goldenrod);
+	get_color_cache()["dark_goldenrod"] = boost::bind(graphics::color_dark_goldenrod);
+	get_color_cache()["rosy_brown"] = boost::bind(graphics::color_rosy_brown);
+	get_color_cache()["indian_red"] = boost::bind(graphics::color_indian_red);
+	get_color_cache()["saddle_brown"] = boost::bind(graphics::color_saddle_brown);
+	get_color_cache()["sienna"] = boost::bind(graphics::color_sienna);
+	get_color_cache()["peru"] = boost::bind(graphics::color_peru);
+	get_color_cache()["burlywood"] = boost::bind(graphics::color_burlywood);
+	get_color_cache()["beige"] = boost::bind(graphics::color_beige);
+	get_color_cache()["wheat"] = boost::bind(graphics::color_wheat);
+	get_color_cache()["sandy_brown"] = boost::bind(graphics::color_sandy_brown);
+	get_color_cache()["tan"] = boost::bind(graphics::color_tan);
+	get_color_cache()["chocolate"] = boost::bind(graphics::color_chocolate);
+	get_color_cache()["firebrick"] = boost::bind(graphics::color_firebrick);
+	get_color_cache()["brown"] = boost::bind(graphics::color_brown);
+	get_color_cache()["dark_salmon"] = boost::bind(graphics::color_dark_salmon);
+	get_color_cache()["salmon"] = boost::bind(graphics::color_salmon);
+	get_color_cache()["light_salmon"] = boost::bind(graphics::color_light_salmon);
+	get_color_cache()["orange"] = boost::bind(graphics::color_orange);
+	get_color_cache()["dark_orange"] = boost::bind(graphics::color_dark_orange);
+	get_color_cache()["coral"] = boost::bind(graphics::color_coral);
+	get_color_cache()["light_coral"] = boost::bind(graphics::color_light_coral);
+	get_color_cache()["tomato"] = boost::bind(graphics::color_tomato);
+	get_color_cache()["orange_red"] = boost::bind(graphics::color_orange_red);
+	get_color_cache()["hot_pink"] = boost::bind(graphics::color_hot_pink);
+	get_color_cache()["deep_pink"] = boost::bind(graphics::color_deep_pink);
+	get_color_cache()["pink"] = boost::bind(graphics::color_pink);
+	get_color_cache()["light_pink"] = boost::bind(graphics::color_light_pink);
+	get_color_cache()["pale_violet_red"] = boost::bind(graphics::color_pale_violet_red);
+	get_color_cache()["maroon"] = boost::bind(graphics::color_maroon);
+	get_color_cache()["medium_violet_red"] = boost::bind(graphics::color_medium_violet_red);
+	get_color_cache()["violet_red"] = boost::bind(graphics::color_violet_red);
+	get_color_cache()["violet"] = boost::bind(graphics::color_violet);
+	get_color_cache()["plum"] = boost::bind(graphics::color_plum);
+	get_color_cache()["orchid"] = boost::bind(graphics::color_orchid);
+	get_color_cache()["medium_orchid"] = boost::bind(graphics::color_medium_orchid);
+	get_color_cache()["dark_orchid"] = boost::bind(graphics::color_dark_orchid);
+	get_color_cache()["dark_violet"] = boost::bind(graphics::color_dark_violet);
+	get_color_cache()["blue_violet"] = boost::bind(graphics::color_blue_violet);
+	get_color_cache()["purple"] = boost::bind(graphics::color_purple);
+	get_color_cache()["medium_purple"] = boost::bind(graphics::color_medium_purple);
+	get_color_cache()["thistle"] = boost::bind(graphics::color_thistle);
+}
+
+}
+
+const SDL_Color& get_color_from_name(std::string name)
+{
+	if(get_color_cache().empty()) {
+		color_cache_init();
+	}
+	std::map<std::string,boost::function<const SDL_Color&()> >::iterator it = get_color_cache().find(name);
+	if(it != get_color_cache().end()) {
+		return it->second();
+	}
+	ASSERT_LOG(false, "Color "" << name << "" not known!");
+	return color_black();
+}
+
 const SDL_Color& color_black()
 {
-	static SDL_Color res = {0,0,0,255};
+	static SDL_Color res = {0x00, 0x00, 0x00, 0xff};
 	return res;
 }
-	
+
 const SDL_Color& color_white()
 {
-	static SDL_Color res = {0xFF,0xFF,0xFF,255};
+	static SDL_Color res = {0xff, 0xff, 0xff, 0xff};
 	return res;
 }
-	
+
 const SDL_Color& color_red()
 {
-	static SDL_Color res = {0xFF,0,0,255};
+	static SDL_Color res = {0xff, 0x00, 0x00, 0xff};
 	return res;
 }
-	
+
 const SDL_Color& color_green()
 {
-	static SDL_Color res = {0,0xFF,0,255};
+	static SDL_Color res = {0x00, 0xff, 0x00, 0xff};
 	return res;
 }
-	
+
 const SDL_Color& color_blue()
 {
-	static SDL_Color res = {0,0,0xFF,255};
+	static SDL_Color res = {0x00, 0x00, 0xff, 0xff};
 	return res;
 }
-	
+
 const SDL_Color& color_yellow()
 {
-	static SDL_Color res = {0xFF,0xFF,0,255};
+	static SDL_Color res = {0xff, 0xff, 0x00, 0xff};
 	return res;
 }
 
 const SDL_Color& color_grey()
 {
-	static SDL_Color res = {0x80,0x80,0x80,255};
+	static SDL_Color res = {0x80, 0x80, 0x80, 0xff};
 	return res;
 }
 
