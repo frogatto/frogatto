@@ -15,6 +15,7 @@ blur.cpp
 border_widget.cpp
 button.cpp
 character_editor_dialog.cpp
+color_chart.cpp
 current_generator.cpp
 checkbox.cpp
 checksum.cpp

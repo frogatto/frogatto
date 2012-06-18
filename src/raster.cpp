@@ -860,47 +860,5 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 	{
 		zoom_level = 1;
 	}
-	
-	const SDL_Color& color_black()
-	{
-		static SDL_Color res = {0,0,0,255};
-		return res;
-	}
-	
-	const SDL_Color& color_white()
-	{
-		static SDL_Color res = {0xFF,0xFF,0xFF,255};
-		return res;
-	}
-	
-	const SDL_Color& color_red()
-	{
-		static SDL_Color res = {0xFF,0,0,255};
-		return res;
-	}
-	
-	const SDL_Color& color_green()
-	{
-		static SDL_Color res = {0,0xFF,0,255};
-		return res;
-	}
-	
-	const SDL_Color& color_blue()
-	{
-		static SDL_Color res = {0,0,0xFF,255};
-		return res;
-	}
-	
-	const SDL_Color& color_yellow()
-	{
-		static SDL_Color res = {0xFF,0xFF,0,255};
-		return res;
-	}
-
-	const SDL_Color& color_grey()
-	{
-		static SDL_Color res = {0x80,0x80,0x80,255};
-		return res;
-	}
 
 }

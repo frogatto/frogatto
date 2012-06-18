@@ -21,6 +21,7 @@ objects = \
 	checksum.o \
 	code_editor_dialog.o \
 	code_editor_widget.o \
+	color_chart.o \
 	compress.o \
 	current_generator.o \
 	decimal.o \
