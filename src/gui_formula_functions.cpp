@@ -250,10 +250,21 @@ public:
 		glDisable(GL_TEXTURE_2D);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glLineWidth(GLfloat(width_.as_float()));
-		glBegin(GL_LINES);
-		glVertex2f( GLfloat(x1_.as_float()), GLfloat(y1_.as_float()));
-		glVertex2f( GLfloat(x2_.as_float()), GLfloat(y2_.as_float()));
-		glEnd(); 		
+		
+		std::vector<GLfloat>& varray = graphics::global_vertex_array();
+		varray.clear();
+		varray.push_back(GLfloat(x1_.as_float()));
+		varray.push_back(GLfloat(y1_.as_float()));
+		varray.push_back(GLfloat(x2_.as_float()));
+		varray.push_back(GLfloat(y2_.as_float()));
+		glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+		glDrawArrays(GL_LINES, 0, varray.size()/2);
+
+		//glBegin(GL_LINES);
+		//glVertex2f( GLfloat(x1_.as_float()), GLfloat(y1_.as_float()));
+		//glVertex2f( GLfloat(x2_.as_float()), GLfloat(y2_.as_float()));
+		//glEnd();
+
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
 	}
