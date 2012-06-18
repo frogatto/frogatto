@@ -9,6 +9,7 @@
 #include "graphics.hpp"
 #include "geometry.hpp"
 #include "random.hpp"
+#include "raster.hpp"
 #include "widget.hpp"
 
 namespace gui {
@@ -58,18 +59,22 @@ protected:
 	}
 	virtual void handle_draw() const
 	{
-		glPushAttrib(GL_CURRENT_BIT | GL_LINE_BIT | GL_ENABLE_BIT);
-		glColor4ub(color_.r, color_.g, color_.b, 255);
 		glDisable(GL_TEXTURE_2D);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glLineWidth(width_);
-		glBegin(GL_LINE_STRIP);
+		glColor4ub(color_.r, color_.g, color_.b, 255);
+
+		std::vector<GLfloat>& varray = graphics::global_vertex_array();
+		varray.clear();
 		foreach(const point&p, points_) {
-			glVertex2i(p.x, p.y);
+			varray.push_back(GLfloat(p.x));
+			varray.push_back(GLfloat(p.y));
 		}
-		glEnd();
+		glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+		glDrawArrays(GL_LINE_STRIP, 0, varray.size()/2);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glPopAttrib();
+		glEnable(GL_TEXTURE_2D);
+		glColor4ub(255, 255, 255, 255);
 	}
 	virtual void set_value(const std::string& key, const variant& v)
 	{
