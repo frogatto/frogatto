@@ -329,12 +329,18 @@ void property_editor_dialog::set_entity_group(const std::vector<entity_ptr>& e)
 
 void property_editor_dialog::change_min_difficulty(int amount)
 {
-	foreach(entity_ptr e, entity_) {
-		custom_object* obj = dynamic_cast<custom_object*>(e.get());
-		ASSERT_LOG(obj, "ENTITY IS NOT AN OBJECT");
+	foreach(level_ptr lvl, editor_.get_level_list()) {
+		foreach(entity_ptr entity_obj, entity_) {
+			entity_ptr e = lvl->get_entity_by_label(entity_obj->label());
+			if(!e) {
+				continue;
+			}
+			custom_object* obj = dynamic_cast<custom_object*>(e.get());
+			ASSERT_LOG(obj, "ENTITY IS NOT AN OBJECT");
 
-		const int new_difficulty = std::max<int>(-1, obj->min_difficulty() + amount);
-		obj->set_difficulty(new_difficulty, obj->max_difficulty());
+			const int new_difficulty = std::max<int>(-1, obj->min_difficulty() + amount);
+			obj->set_difficulty(new_difficulty, obj->max_difficulty());
+		}
 	}
 
 	init();
@@ -342,12 +348,18 @@ void property_editor_dialog::change_min_difficulty(int amount)
 
 void property_editor_dialog::change_max_difficulty(int amount)
 {
-	foreach(entity_ptr e, entity_) {
-		custom_object* obj = dynamic_cast<custom_object*>(e.get());
-		ASSERT_LOG(obj, "ENTITY IS NOT AN OBJECT");
+	foreach(level_ptr lvl, editor_.get_level_list()) {
+		foreach(entity_ptr entity_obj, entity_) {
+			entity_ptr e = lvl->get_entity_by_label(entity_obj->label());
+			if(!e) {
+				continue;
+			}
+			custom_object* obj = dynamic_cast<custom_object*>(e.get());
+			ASSERT_LOG(obj, "ENTITY IS NOT AN OBJECT");
 
-		const int new_difficulty = std::max<int>(-1, obj->max_difficulty() + amount);
-		obj->set_difficulty(obj->min_difficulty(), new_difficulty);
+			const int new_difficulty = std::max<int>(-1, obj->max_difficulty() + amount);
+			obj->set_difficulty(obj->min_difficulty(), new_difficulty);
+		}
 	}
 
 	init();
