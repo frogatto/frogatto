@@ -2416,7 +2416,7 @@ void custom_object::set_value(const std::string& key, const variant& value)
 	} else if(key == "max_hitpoints") {
 		max_hitpoints_ = value.as_int() - type_->hitpoints();
 		if(hitpoints_ > type_->hitpoints() + max_hitpoints_) {
-			hitpoints_ = max_hitpoints_;
+			hitpoints_ = type_->hitpoints() + max_hitpoints_;
 		}
 	} else if(key == "velocity_x") {
 		velocity_x_ = value.as_int();
