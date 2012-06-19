@@ -176,6 +176,7 @@ void iphone_controls::handle_event (const SDL_Event& event)
 #elif defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY)
 
 void iphone_controls::handle_event (const SDL_Event& event)
+{
 	int x = event.type == SDL_MOUSEMOTION ? event.motion.x : event.button.x;
 	int y = event.type == SDL_MOUSEMOTION ? event.motion.y : event.button.y;
 	int i = event.type == SDL_MOUSEMOTION ? event.motion.which : event.button.which;

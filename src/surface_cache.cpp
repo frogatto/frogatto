@@ -15,7 +15,7 @@
 #include "filesystem.hpp"
 #include "module.hpp"
 #include "surface_cache.hpp"
-#if defined(__MACOSX__) || TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+#if defined(__MACOSX__) || TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR || defined(TARGET_BLACKBERRY)
 	#include <SDL_image.h>
 #else	
 	#include <SDL/SDL_image.h>
