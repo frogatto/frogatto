@@ -115,6 +115,8 @@ void set_bequ( bool value );
 
 	bool send_stats();
 
+	int force_difficulty();
+
 	bool record_history();
 	void set_record_history(bool value);
 

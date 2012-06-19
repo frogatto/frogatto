@@ -650,6 +650,17 @@ void level::finish_loading()
 
 	} //end serialization read scope. Now all objects should be fully resolved.
 
+	if(preferences::force_difficulty() >= 0) {
+		const int difficulty = current_difficulty();
+		for(int n = 0; n != chars_.size(); ++n) {
+			if(chars_[n].get() != NULL && !chars_[n]->appears_at_difficulty(difficulty)) {
+				chars_[n] = entity_ptr();
+			}
+		}
+
+		chars_.erase(std::remove(chars_.begin(), chars_.end(), entity_ptr()), chars_.end());
+	}
+
 	//iterate over all our objects and let them do any final loading actions.
 	foreach(entity_ptr e, objects_not_in_level) {
 		if(e) {
@@ -3924,6 +3935,10 @@ void level::record_zorders()
 
 int level::current_difficulty() const
 {
+	if(!editor_ && preferences::force_difficulty() >= 0) {
+		return preferences::force_difficulty();
+	}
+
 	if(!last_touched_player_) {
 		return 0;
 	}

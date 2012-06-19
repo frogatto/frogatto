@@ -138,6 +138,8 @@ namespace preferences {
 		bool edit_on_start_ = false;
 
 		variant external_code_editor_;
+
+		int force_difficulty_ = -1;
 		
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 		
@@ -791,6 +793,8 @@ namespace preferences {
 			run_failing_unit_tests_ = true;
 		} else if(s == "--serialize-bad-objects") {
 			serialize_bad_objects_ = true;
+		} else if(arg_name == "--difficulty" && !arg_value.empty()) {
+			force_difficulty_ = boost::lexical_cast<int>(arg_value);
 		} else {
 			return false;
 		}
@@ -808,6 +812,10 @@ namespace preferences {
 
 	bool send_stats() {
 		return send_stats_;
+	}
+
+	int force_difficulty() {
+		return force_difficulty_;
 	}
 
 	bool record_history() {
