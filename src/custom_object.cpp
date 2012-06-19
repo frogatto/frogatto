@@ -2754,7 +2754,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	case CUSTOM_OBJECT_MAX_HITPOINTS:
 		max_hitpoints_ = value.as_int() - type_->hitpoints();
 		if(hitpoints_ > type_->hitpoints() + max_hitpoints_) {
-			hitpoints_ = max_hitpoints_;
+			hitpoints_ = type_->hitpoints() + max_hitpoints_;
 		}
 		break;
 
