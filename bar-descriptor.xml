@@ -38,6 +38,9 @@
     <author>Lost Pixel</author>
     <authorId>gYAAgKcS3iwxeR4EtD7lFv8ijqs</authorId>
     <platformVersion>2.0.0.0</platformVersion>
+    <icon>
+       <image>bbicon.png</image>
+    </icon>
     <splashscreen>bbsplash.jpg</splashscreen>
     
     <!--  Unique author ID assigned by signing authority. Required if using debug tokens. -->
@@ -59,8 +62,8 @@
     <asset path="sounds">sounds</asset>
     <asset path="DejaVuSans.ttf">DejaVuSans.ttf</asset>
     <asset path="FreeMono.ttf">FreeMono.ttf</asset>
-    <asset path="images/bbicon.png">bbicon.png</asset>
-    <asset path="images/bbsplash.jpg">bbsplash.jpg</asset>
+    <asset path="images/os/blackberry/bbsplash.jpg">bbsplash.jpg</asset>
+    <asset path="images/os/blackberry/bbicon.png">bbicon.png</asset>
     <configuration id="com.qnx.qcc.configuration.exe.debug.925317493" name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="Device-Debug/frogatto" entry="true" type="Qnx/Elf">frogatto</asset>
@@ -123,9 +126,6 @@
     </configuration>
     
     <!--  The icon for the application, which should be 86x86. -->
-    <icon>
-        <image>bbicon.png</image>
-    </icon>
     
     <!--  The splash screen that will appear when your application is launching. Should be 1024x600. -->
     <!-- <splashscreen></splashscreen> -->
