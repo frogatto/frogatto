@@ -137,6 +137,10 @@ namespace {
 variant playable_custom_object::get_value(const std::string& key) const
 {
 	if(key == "difficulty") {
+		if(preferences::force_difficulty() != INT_MIN) {
+			return variant(preferences::force_difficulty());
+		}
+
 		return variant(difficulty_);
 	} else if(key == "can_interact") {
 		return variant(can_interact_);

@@ -650,7 +650,7 @@ void level::finish_loading()
 
 	} //end serialization read scope. Now all objects should be fully resolved.
 
-	if(preferences::force_difficulty() >= 0 && !editor_) {
+	if(preferences::force_difficulty() != INT_MIN && !editor_) {
 		const int difficulty = current_difficulty();
 		for(int n = 0; n != chars_.size(); ++n) {
 			if(chars_[n].get() != NULL && !chars_[n]->appears_at_difficulty(difficulty)) {
@@ -3937,7 +3937,7 @@ void level::record_zorders()
 
 int level::current_difficulty() const
 {
-	if(!editor_ && preferences::force_difficulty() >= 0) {
+	if(!editor_ && preferences::force_difficulty() != INT_MIN) {
 		return preferences::force_difficulty();
 	}
 

@@ -139,7 +139,7 @@ namespace preferences {
 
 		variant external_code_editor_;
 
-		int force_difficulty_ = -1;
+		int force_difficulty_ = INT_MIN;
 		
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 		
