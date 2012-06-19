@@ -1414,7 +1414,7 @@ std::string variant::string_cast() const
 {
 	switch(type_) {
 	case TYPE_NULL:
-		return "0";
+		return "null";
 	case TYPE_BOOL:
 		return bool_value_ ? "true" : "false";
 	case TYPE_INT:
@@ -1586,7 +1586,7 @@ void variant::write_json(std::ostream& s) const
 			if(i != map_->elements.begin()) {
 				s << ',';
 			}
-			s << '"' << i->first.as_string() << "\":";
+			s << '"' << (i->first.is_string() ? "" : "@eval ") << i->first.string_cast() << "\":";
 			i->second.write_json(s);
 		}
 
@@ -1686,7 +1686,7 @@ void variant::write_json_pretty(std::ostream& s, std::string indent) const
 			if(i != map_->elements.begin()) {
 				s << ',';
 			}
-			s << "\n" << indent << '"' << i->first.string_cast() << "\": ";
+			s << "\n" << indent << '"' << (i->first.is_string() ? "" : "@eval ") << i->first.string_cast() << "\": ";
 			i->second.write_json_pretty(s, indent);
 		}
 		indent.resize(indent.size()-1);
