@@ -169,6 +169,11 @@ extern "C" int main(int argcount, char** argvec)
 	std::cerr << "Frogatto engine version " << preferences::version() << "\n";
 	LOG( "After print engine version" );
 
+	#if defined(TARGET_BLACKBERRY)
+		chdir("app/native");
+		std::cout<< "Changed working directory to: " << getcwd(0, 0) << std::endl;
+	#endif
+
 	std::string level_cfg = "titlescreen.cfg";
 	bool unit_tests_only = false, skip_tests = false;
 	bool run_benchmarks = false;
@@ -341,11 +346,6 @@ extern "C" int main(int argcount, char** argvec)
 		return -1;
 	}
 	LOG( "After SDL_Init" );
-
-#if defined(TARGET_BLACKBERRY)
-	chdir("app/native");
-	std::cout<< "Changed working directory to: " << getcwd(0, 0) << std::endl;
-#endif
 
 #ifdef TARGET_OS_HARMATTAN
 	g_type_init();
