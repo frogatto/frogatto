@@ -101,8 +101,8 @@
     <asset path="images/os/blackberry/bbsplash.jpg">bbsplash.jpg</asset>
     <asset path="images/os/blackberry/bbicon.png">bbicon.png</asset>
     <asset path="master-config.cfg">master-config.cfg</asset>
-   <asset path="modules/cube_trains/data">data</asset>
-   <asset path="modules/cube_trains/images">images</asset>
+   <asset path="modules/cube_trains/data">modules/cube_trains/data</asset>
+   <asset path="modules/cube_trains/images">modules/cube_trains/images</asset>
     <configuration id="com.qnx.qcc.configuration.exe.debug.925317493" name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="Device-Debug/frogatto" entry="true" type="Qnx/Elf">frogatto</asset>
