@@ -1485,8 +1485,13 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 				fn_call = NULL;
 			}
 		} else if(parens == 0 && i->type == TOKEN_OPERATOR) {
-			if(op == NULL || operator_precedence(*op) >=
-			   operator_precedence(*i)) {
+			if(op == NULL || operator_precedence(*op) >= operator_precedence(*i)) {
+				if(i != i1 && i->end - i->begin == 3 && std::equal(i->begin, i->end, "not")) {
+					//The not operator is always unary and can only
+					//appear at the start of an expression.
+					continue;
+				}
+
 				op = i;
 			}
 		}
