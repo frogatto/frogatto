@@ -234,6 +234,7 @@ Set up frogatto. Follow this chat log:
 
 Configuration for to release Cube Trains:
 Testing:
+⓪ Checksum the .cfgs for release, so stats are reported.
 ① Move the (slightly renamed) bar-descriptor file from the modules/cube_trains directory, replacing the existing bar-descriptor.
 ② In the IDE, select Run -> Run Configurations. Set Build Configuration to Device-Debug.
 .5 Make sure device-overlay's runtime is set to gnu-c++ with exceptions. (right-click menu -> Project Properties -> C/C++ build -> Setting -> target -> runtime)
