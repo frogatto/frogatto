@@ -63,34 +63,6 @@
     
     <!--  The category where the application appears. Either core.games or core.media. -->
     <category>core.games</category>
-    <configuration id="com.qnx.qcc.configuration.exe.debug.925317493" name="Device-Debug">
-       <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="Device-Debug/frogatto" entry="true" type="Qnx/Elf">frogatto</asset>
-    </configuration>
-    <configuration id="com.qnx.qcc.configuration.exe.release.1548331336" name="Device-Release">
-       <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="Device-Release/frogatto" entry="true" type="Qnx/Elf">frogatto</asset>
-    </configuration>
-    <configuration id="com.qnx.qcc.configuration.exe.profile.471254918" name="Device-Profile">
-       <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="Device-Profile/frogatto" entry="true" type="Qnx/Elf">frogatto</asset>
-    </configuration>
-    <configuration id="com.qnx.qcc.configuration.exe.profile.coverage.2070637452" name="Device-Coverage">
-       <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="Device-Coverage/frogatto" entry="true" type="Qnx/Elf">frogatto</asset>
-    </configuration>
-    <configuration id="com.qnx.qcc.configuration.exe.debug.599230539" name="Simulator-Debug">
-       <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="Simulator-Debug/frogatto" entry="true" type="Qnx/Elf">frogatto</asset>
-    </configuration>
-    <configuration id="com.qnx.qcc.configuration.exe.profile.742294966" name="Simulator-Profile">
-       <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="Simulator-Profile/frogatto" entry="true" type="Qnx/Elf">frogatto</asset>
-    </configuration>
-    <configuration id="com.qnx.qcc.configuration.exe.profile.coverage.1249164674" name="Simulator-Coverage">
-       <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="Simulator-Coverage/frogatto" entry="true" type="Qnx/Elf">frogatto</asset>
-    </configuration>
     <asset path="locale">locale</asset>
     <asset path="data">data</asset>
     <asset path="images">images</asset>
@@ -103,6 +75,7 @@
     <asset path="master-config.cfg">master-config.cfg</asset>
    <asset path="modules/cube_trains/data">modules/cube_trains/data</asset>
    <asset path="modules/cube_trains/images">modules/cube_trains/images</asset>
+   <asset path="modules/cube_trains/module.cfg">modules/cube_trains/module.cfg</asset>
     <configuration id="com.qnx.qcc.configuration.exe.debug.925317493" name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="Device-Debug/frogatto" entry="true" type="Qnx/Elf">frogatto</asset>
