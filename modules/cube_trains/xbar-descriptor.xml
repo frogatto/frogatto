@@ -17,11 +17,11 @@
 
     <!-- A universally unique application identifier. Must be unique across all BlackBerry Tablet OS applications.
          Using a reverse DNS-style name as the id is recommended. (Eg. com.example.ExampleApplication.) Required. -->
-    <id>com.example.frogatto</id>
+    <id>com.example.cube_trains</id>
 
     <!-- The name that is displayed in the BlackBerry Tablet OS application installer. 
          May have multiple values for each language. See samples or xsd schema file. Optional. -->
-    <name>Frogatto</name>
+    <name>Cube Trains</name>
     
     <!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade. 
          Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
@@ -37,19 +37,18 @@
 
     <!-- Description, displayed in the BlackBerry Tablet OS application installer.
          May have multiple values for each language. See samples or xsd schema file. Optional. -->
-    <description>Frogatto and Friends - An old-style platformer.</description>
+    <description>3D puzzle goodness, development version.</description>
 
     <!-- Copyright information. Optional. -->
     <!-- <copyright></copyright> -->
 
     <!--  Name of author which is used for signing. Must match the developer name of your development certificate. -->
-    <author>Lost Pixel</author>
+    <author>DDR</author>
     <authorId>gYAAgKcS3iwxeR4EtD7lFv8ijqs</authorId>
     <platformVersion>2.0.0.0</platformVersion>
     <icon>
-       <image>bbicon.png</image>
+       <image>window-icon.png</image>
     </icon>
-    <splashscreen>bbsplash.jpg</splashscreen>
     
     <!--  Unique author ID assigned by signing authority. Required if using debug tokens. -->
     <!-- <authorId>ABC1234YjsnUk235h</authorId> -->
@@ -76,6 +75,7 @@
    <asset path="modules/cube_trains/data">modules/cube_trains/data</asset>
    <asset path="modules/cube_trains/images">modules/cube_trains/images</asset>
    <asset path="modules/cube_trains/module.cfg">modules/cube_trains/module.cfg</asset>
+   <asset path="modules/cube_trains/images/window-icon.png">window-icon.png</asset>
     <configuration id="com.qnx.qcc.configuration.exe.debug.925317493" name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="Device-Debug/frogatto" entry="true" type="Qnx/Elf">frogatto</asset>

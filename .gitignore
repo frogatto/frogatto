@@ -24,3 +24,6 @@ MacOS/include
 MacOS/lib
 xcuserdata
 project.xcworkspace
+
+Device-Debug
+Device-Release

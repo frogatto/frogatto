@@ -1,0 +1,246 @@
+Steps for Playbook Release:
+Set up frogatto. Follow this chat log:
+
+11:54 < Sirp> asimonov: I assume I should update the Playbook OS?
+11:54 < asimonov> what is it saying
+11:54 < asimonov> what version is it now
+11:55 < Sirp> it says it can update me to 2.0.1.166
+11:55 < Sirp> it doesn't say which version it is now
+11:56 < asimonov> yeah, do that
+11:56 < Sirp> Okay It's 530MB so it might take a little while
+11:56 -!- crimson_penguin [~ben@wesnoth/developer/crimsonpenguin] has joined #frogatto
+11:57 < asimonov> well... i'm hoping you have something better than dialup
+11:57 < asimonov> in the meantime you can set up the ndk :P
+11:57 < asimonov> I'm assuming you got the signing keys
+11:58 < Sirp> well I'm downloading the NDK
+11:58 < Sirp> two 500MB downloads competing with each other. :)
+11:59 < Sirp> fortunately each is going at like 1MBps
+12:05 < asimonov> nice
+12:06  * Sirp finds it bizarre that this NDK page auto-detects which download you should use, but then doesn't give you customized installation instructions. :p
+12:08 < asimonov> Did everything download?
+12:08 < asimonov> You will also have to grab a bunch of git repos
+12:09 < Sirp> the NDK is downloaded and installing now
+12:09 < asimonov> https://github.com/blackberry/SDL.git
+12:09 < asimonov> https://github.com/blackberry/TouchControlOverlay.git
+12:09 < asimonov> Do not put any of these in the NDK workspace directory
+12:10 < asimonov> https://github.com/asimonov-rim/SDL_ttf.git
+12:10 < asimonov> https://github.com/asimonov-rim/SDL_sound.git
+12:10 < asimonov> https://github.com/asimonov-rim/SDL_mixer.git
+12:10 < asimonov> https://github.com/asimonov-rim/SDL_image.git
+12:11 < asimonov> https://github.com/asimonov-rim/vorbis.git
+12:11 < asimonov> https://github.com/asimonov-rim/ogg.git
+12:11 < asimonov> https://github.com/asimonov-rim/boost_system.git
+12:11 < asimonov> https://github.com/asimonov-rim/boost_regex.git
+12:11 < Sirp> so simply make clones of all those?
+12:11 < asimonov> https://github.com/asimonov-rim/boost_iostreams.git
+12:12 < asimonov> https://github.com/asimonov-rim/boost_headers.git
+12:12 < asimonov> yes, just clone them
+12:13 < asimonov> But again, do NOT put them in the NDK workspace directory. It will cause bad things to happen
+12:13 < Sirp> okay I'm just cloning them in my home dir
+12:13 < asimonov> that's fine
+12:14 < asimonov> I blame the person that first checked in SDL into github... they did not name the repository properly
+12:15 < asimonov> And, of course, you'll need my changes to frogatto
+12:15 < Sirp> okay cloned them all
+12:15 < asimonov> Did you open the NDK and did it ask you about the signing keys?
+12:18 < Sirp> I haven't opened the NDK
+12:18 < Sirp> running now...
+12:19 < asimonov> Did it ask you about anything?
+12:19 < Sirp> No it launched and is on a welcome screen where I can choose from some different options
+12:19 < Sirp> Overview, First Steps, Samples, What's New, or Workbench
+12:19 < asimonov> Just close that, I think
+12:20 < Sirp> do I want to go to the Workbench?
+12:20 < Sirp> or just close it?
+12:20 < asimonov> Is the PlayBook alive?
+12:20 < asimonov> close it
+12:20 < asimonov> (the welcome screen)
+12:20 < Sirp> well closing it closes down the NDK
+12:21 < asimonov> Hmm... well... I guess you wanted to go to Workbench x.x
+12:21 < asimonov> sorry about that
+12:26 < asimonov> Ok, did your playbook upgrade yet?
+12:35 < Sirp> so I'm at an empy workbench
+12:36 < crimson_penguin> http://www.reddit.com/tb/qeg0a
+12:36 < hagebake> hmm
+12:36 < crimson_penguin> (note the text on the top)
+12:36 < asimonov> Ok, import all of the projects into your workspace
+12:37 < asimonov> File -> Import -> General -> Existing projects into workspace
+12:37 < asimonov> If you give it the directory in which all of the projects are contained... it should find them all
+12:38 < Sirp> okay my Playbook is done and ready to go
+12:38 < asimonov> click on the icon that is to the right of the battery
+12:39 < asimonov> Under Storage & Sharing, select "Connect to Windows" under USB connections
+12:39 < asimonov> I'm assuming you're currently using Linux
+12:40 < asimonov> Then under Security, go to Development Mode and enable it
+12:43 < Sirp> okay did those things
+12:44 < asimonov> remember the IP address
+12:45 < asimonov> did a "Connected to Computer" screen come up?
+12:51 < asimonov> I'm just going to assume that it did
+12:52 < asimonov> Exit out of all of the settings and click on the icon to the left of the clock (looks like a man) and see what it says
+12:53 < Sirp> sorry was getting food
+12:54 < asimonov> Ok, tell me in which state you are
+12:54 < Sirp> and I assume the Connected to Computer screen is meant to come up when I connect it to my computer?
+12:54 < asimonov> it comes up multiple times
+12:54 < Sirp> mmm so I plugged it into my computer and I don't see the screen
+12:55 < asimonov> Did you set the Storage & Sharing stuff to Windows?
+12:55 < Sirp> yes it has "USB Connections" Connect to Windows
+12:56 < Sirp> (even though I'm using Linux)
+12:57 < Sirp> and I'm plugging it into the same socket that the power cable that comes with it goes in -- that is correct, yes?
+12:57 < asimonov> yes, there's only one micro-usb port
+12:58 < asimonov> Did you enable Developer Mode?
+12:58 < Sirp> yes
+12:58 < asimonov> Did you click on the guy icon?
+12:58 < Sirp> no ... you didn't have that until after saying the Connected to Computer screen would come up. :)
+12:59 < Sirp> I can click it though
+12:59 < asimonov> it's to the right of the clock (not left)
+12:59 < asimonov> Tell me what it says
+12:59 < Sirp> it says "Development Mode: On Expires in 10 days, IP Addresses: 169.254.0.1, 192.168.1.17
+13:00 < asimonov> that sounds good... that means it thinks it's connected to your computer with 169.254.0.1
+13:00 < asimonov> can you use ifconfig to check if your computer has a network interface with IP 169.254.0.2?
+13:04 < Sirp> yes it does
+13:04 < Sirp> through usb0 of course
+13:04 < asimonov> of course
+13:04 < asimonov> Ok, go to the NDK
+13:05 < Sirp> okay in it
+13:05 < asimonov> and go to the QNX System Information perspective
+13:05 < asimonov> bluish button on the right
+13:06 < Sirp> okay got it
+13:07 < asimonov> Right click, new QNX target
+13:07 < asimonov> and enter the ip of the device (169.254.0.1)
+13:08 < Sirp> do you mean New Blackberry Tablet OS Target ?
+13:08 < Sirp> I don't see new QNX Target
+13:09 < asimonov> sure
+13:09 < asimonov> I guess they renamed it
+13:09 < asimonov> Actually, I'm just crazy
+13:09 < asimonov> x.x
+13:10 < Sirp> okay it made the target
+13:10 < Sirp> and says it's connected
+13:11 < asimonov> very good
+13:11 < asimonov> ok... so did you import all of the projects?
+13:12 < asimonov> all 13 of thenm
+13:12 < Sirp> no
+13:13 < Sirp> I haven't done any of that yet. How do I import projects?
+13:13 < asimonov> [13:37] <asimonov> File -> Import -> General -> Existing projects into workspace [13:37] <asimonov> If you give it the directory in which all of the projects are contained... it should find them all
+13:13 < Sirp> ahh that is nice
+13:14 < Sirp> okay I did that and now it is "Refreshing Workspace"
+13:15 < asimonov> Tell me when it's done that and you have 13 projects imported
+13:15 < Sirp> okay it seems done ...
+13:16 < Sirp> but I don't see any verification that the projects are imported
+13:16 < asimonov> Switch back to the C/C++ perspective
+13:16 < Sirp> like I selected the dir they are all in, and then it said "Refreshing Workspace" ...
+13:16 < Sirp> ahhh okay
+13:16 < Sirp> okay ...
+13:16 < Sirp> okay so I have 12 projects ... I'm guessing the 13th is Frogatto itself?
+13:16 < asimonov> They should appear on the left under Project Explorer
+13:17 < asimonov> yes, frogatto is quite important in this :P
+13:17 < Sirp> (well I have 13 because the device is also a 'project' apparently)
+13:17 < Sirp> okay imported Frogatto also
+13:18 < Sirp> it's still indexing the C++ but I assume that's concurrent
+13:18 < asimonov> Ok, now verify that the SDL project is called SDL12
+13:19 < Sirp> yes it's called SDL12
+13:19 < asimonov> excellent
+13:19 < Sirp> now build and run right? :)
+13:20 < asimonov> right click on SDL12, Build Configurations -> Set Active -> Device-Debug
+13:20 < asimonov> verify that it's Device-Debug for SDL, TouchControlOverlay and frogatto
+13:20 < asimonov> I think the other ones should be fine, but these 3 I'm not sure about
+13:21 < Sirp> ok yes it is
+13:21 < Sirp> well TouchControlOerlay I had to change
+13:21 < Sirp> but done now
+13:21 < asimonov> Ok, right click on TouchControlOverlay and go to Properties
+13:22 < asimonov> C/C++ Build -> Settings
+13:22 < Sirp> okay...
+13:22 < Sirp> okay...
+13:22 < asimonov> Target
+13:22 < asimonov> and set the runtime to C++ GNU with exceptions
+13:23 < asimonov> otherwise stuff dies :(
+13:24 < Sirp> okay done
+13:24 < asimonov> Remember TouchControlOverlay... if you ever want to build in Device-Release mode you'll have to set the target for that as well
+13:24 < asimonov> Otherwise Frogatto will die a horrible death when you start it
+13:24 < asimonov> So... now start building them
+13:25 < asimonov> Don't build boost_headers... since they are just headers
+13:25 < Sirp> okay
+13:25 < asimonov> right click  -> build project
+13:25 < Sirp> is there an easy way to build all of them?
+13:25 < asimonov> Currently, no... but I'm working on it for the future
+13:26 < asimonov> The dependencies you can set up don't seem to work so great
+13:26 < asimonov> the good news is that you won't have to rebuild the other projects very often
+13:27 < Sirp> I tried selecting them all and right-clicking and building them all at once
+13:28 < Sirp> SDL12 gives an error "cannot find -lTouchControlOverlay"
+13:28 < Sirp> I assume I have to build TouchControlOverlay first?
+13:28 < asimonov> yep
+13:28 < Sirp> and we are doing a debug build here yes? So it won't necessarily go fast?
+13:29 < asimonov> We didn't find much difference between Release and Debug actually
+13:32 < Sirp> well does Release use -O2 ?
+13:32 < Sirp> and does Debug ?
+13:32 < asimonov> Release uses 02
+13:33 < asimonov> *O2
+13:33 < asimonov> Debug uses O0 and has symbols
+13:33 < asimonov> Well, I'm sure there is some difference but not where it mattered to us
+13:34 < Sirp> O0 and O2 usually has quite a large difference.
+13:34 < Sirp> if it was mostly gpu bound rather than cpu bound then it wouldn't matter much
+13:36 < Sirp> okay it built
+13:36 < Sirp> there were warnings, but it built
+13:36 < asimonov> frogatto built?
+13:37 < Sirp> yes
+13:38 < asimonov> right click on frogatto -> run as -> blackberry tablet c/c++ application
+13:39 < Sirp> Create a new debug token and upload to the device?
+13:39 < asimonov> It didn't ask you for signing keys yet, did it?
+13:40 -!- hagebake [~quassel@unaffiliated/hagabaka] has quit [Ping timeout: 276 seconds]
+13:41 < Sirp> no
+13:42 < asimonov> Hmm... go to Window -> Preferences -> BlackBerry Tablet OS
+13:42 < asimonov> and run the Deployment Wizard from there
+13:44 < Sirp> doing...
+13:46 < Sirp> okay so this is where I use the CSJ files emailed to me...
+13:46 < asimonov> yes
+13:47 -!- Ivanovic [~ivanovic@dtmd-4d052c7e.pool.mediaWays.net] has quit [Changing host]
+13:47 -!- Ivanovic [~ivanovic@wesnoth/developer/ivanovic] has joined #frogatto
+13:51 < asimonov> Did it finish?
+13:52 < Sirp> asimonov: still doing it...
+13:52 < Sirp> okay finished
+13:53 < Sirp> now what? Try running Frogatto again?
+13:53 < asimonov> wait wait
+13:53 < asimonov> I forgot
+13:53 < asimonov> Go to Signing in the same menu
+13:54 < asimonov> Under Window -> Preferences -> BlackBerry Tablet OS
+13:54 < asimonov> Create a debug token and upload it
+13:54 < asimonov> Unless that's done already
+13:54 < Sirp> yes it created a debug token as part of that wizard
+13:54 < Sirp> I got it to create a new one
+13:55 < asimonov> did it say that it uploaded it?
+13:55 < Sirp> I ... think so
+13:56 < asimonov> Ok, so open bar-descriptor.xml file
+13:56 < asimonov> and switch to the general tab
+13:56 < asimonov> and click on Set from Debug Token
+13:56 < asimonov> and save the file
+13:56 < asimonov> something you recognize should appear in the Author field
+13:57 < Sirp> well how do I find bar-descriptor.xml ?
+13:57 < asimonov> Open the frogatto project
+13:58 < Sirp> okay got it
+13:58 < asimonov> it's probably the first file in there
+13:58 < Sirp> ahh okay yes
+13:58 < Sirp> done
+13:59 < asimonov> Ok, so the Author field should have been updated... good
+13:59 < asimonov> Now try running it
+14:00 < Sirp> okay it's trying to launch it...
+14:01 < asimonov> this will take.... a long ass while
+14:01 < Sirp> :)
+14:01 < asimonov> You will want to change some options when actually debugging stuff
+14:01 < asimonov> But the app has to be loaded first using the slow method
+14:02 < Sirp> ahh I see
+14:04 < asimonov> Because it's packaging up all of the libraries and assets into a file and then uploading that
+14:04 < asimonov> Afterwards you can just upload the frogatto binary, or the binary with libraries
+14:04 < Sirp> ahhh I see
+14:04 < asimonov> Or even nothing at all and just launch the executable (if you're debugging but not really changing any code)
+14:08 < Sirp> asimonov: it's alive! :)
+14:11 < Sirp> asimonov: seems to run really nicely too
+
+
+Configuration for to release Cube Trains:
+Testing:
+① Move the (slightly renamed) bar-descriptor file from the modules/cube_trains directory, replacing the existing bar-descriptor.
+② In the IDE, select Run -> Run Configurations. Set Build Configuration to Device-Debug.
+.5 Make sure device-overlay's runtime is set to gnu-c++ with exceptions. (right-click menu -> Project Properties -> C/C++ build -> Setting -> target -> runtime)
+③ Build everything but the overlay and the frogatto project. Rebuild once if errors.
+④ Build the overlay project, then the frogatto project. You may have to tweak the Frogatto project by putting "#define GL_FRAMEBUFFER_UNSUPPORTED 0x8CDD // Krista's Hack for opengl 1 -> 2." near the top of texture_frame_buffer.cpp.
+⑤ Once that's done, compile Cube Trains and then come back and refresh the IDE.
+⑥ Upload and run the build on the PlayBook. If it works, proceed to step 7.
+⑦ Repeat step two, but set the configuration to Device-Release.
+⑧ Change the build target of your projects to Device-Release from Device-Debug from the right-click menu.
+⑨ Recompile everything in order, and upload the project to the PlayBook.
