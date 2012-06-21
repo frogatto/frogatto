@@ -793,11 +793,11 @@ void custom_object::draw(int xx, int yy) const
 			}
 		}
 	}
+#endif
 
 	if(clip_area_) {
 		graphics::push_clip(clip_area_->sdl_rect());
 	}
-#endif
 
 	if(driver_) {
 		driver_->draw(xx, yy);
@@ -877,11 +877,11 @@ void custom_object::draw(int xx, int yy) const
 		glColor4ub(255, 255, 255, 255);
 	}
 	
-#ifndef SDL_VIDEO_OPENGL_ES
 	if(clip_area_) {
 		graphics::pop_clip();
 	}
 
+#ifndef SDL_VIDEO_OPENGL_ES
 	if(shader_) {
 		glUseProgram(0);
 	}

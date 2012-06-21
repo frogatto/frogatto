@@ -735,7 +735,6 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 		glEnable(GL_TEXTURE_2D);
 	}
 
-#ifndef SDL_VIDEO_OPENGL_ES
 	void coords_to_screen(GLdouble sx, GLdouble sy, GLdouble sz,
 						  GLdouble* dx, GLdouble* dy, GLdouble* dz) {
 		GLdouble model[16], proj[16];
@@ -810,7 +809,6 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 			glDisable(GL_SCISSOR_TEST);
 		}
 	}
-#endif
 	
 	namespace {
 		int zoom_level = 1;
