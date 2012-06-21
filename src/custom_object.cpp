@@ -2254,6 +2254,14 @@ variant custom_object::get_value_by_slot(int slot) const
 		return variant::from_bool(use_absolute_screen_coordinates_);
 	}
 
+	case CUSTOM_OBJECT_WIDGETS: {
+		std::vector<variant> v;
+		foreach(const gui::widget_ptr& w, widgets_) {
+			v.push_back(variant(w.get()));
+		}
+		return(variant(&v));
+	}
+
 	case CUSTOM_OBJECT_CTRL_UP:
 	case CUSTOM_OBJECT_CTRL_DOWN:
 	case CUSTOM_OBJECT_CTRL_LEFT:

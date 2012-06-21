@@ -163,7 +163,7 @@ bool button::handle_event(const SDL_Event& event, bool claimed)
 variant button::get_value(const std::string& key) const
 {
 	if(key == "label") {
-		label_->get_value(key);
+		return variant(label_.get());
 	}
 	return widget::get_value(key);
 }
