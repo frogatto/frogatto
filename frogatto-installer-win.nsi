@@ -124,8 +124,22 @@ Section "Uninstall"
 
   Delete "$INSTDIR\Uninstall.exe"
 
-  RMDir /r "$INSTDIR"
- 
+  ; Check that Frogatto is not installed in root of Program Files; if it is, just delete known folders and files
+  StrCmp $INSTDIR $PROGRAMFILES 0 +13
+    RMDir /r "$INSTDIR\data"
+    RMDir /r "$INSTDIR\images"
+    RMDir /r "$INSTDIR\locale"
+    RMDir /r "$INSTDIR\modules"
+    RMDir /r "$INSTDIR\music"
+    RMDir /r "$INSTDIR\music_aac"
+    RMDir /r "$INSTDIR\music_aac_mini"
+    RMDir /r "$INSTDIR\po"
+    RMDir /r "$INSTDIR\sounds"
+    RMDir /r "$INSTDIR\sounds_wav"
+    RMDir /r "$INSTDIR\utils"
+    Goto +2
+    RMDir /r "$INSTDIR"
+    
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
   
   Delete "$SMPROGRAMS\$StartMenuFolder\Frogatto.lnk"
