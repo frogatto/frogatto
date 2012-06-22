@@ -20,6 +20,8 @@ core
 core.*
 *.exe
 
+compiled/
+
 MacOS/include
 MacOS/lib
 xcuserdata
