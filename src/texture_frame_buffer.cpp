@@ -5,6 +5,10 @@
 #include "texture.hpp"
 #include "texture_frame_buffer.hpp"
 
+#if defined(TARGET_BLACKBERRY)				// TODO: Get rid of this.
+#define GL_FRAMEBUFFER_UNSUPPORTED 0x8CDD	// Krista's Hack for opengl 1 -> 2. This needs fixing badly.
+#endif										// Basically, instead of fixing it, we put this line here. :(
+
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 #include <EGL/egl.h>
 #define glGenFramebuffersOES        preferences::glGenFramebuffersOES
