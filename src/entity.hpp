@@ -38,6 +38,8 @@ public:
 	entity(int x, int y, bool face_right);
 	virtual ~entity() {}
 
+	void add_to_level();
+
 	virtual void finish_loading() {}
 	virtual variant write() const = 0;
 	virtual void setup_drawing() const {}
