@@ -234,14 +234,15 @@ Set up frogatto. Follow this chat log:
 
 Configuration for to release Cube Trains:
 Testing:
-⓪ Checksum the .cfgs for release, so stats are reported.
-① Move the (slightly renamed) bar-descriptor file from the modules/cube_trains directory, replacing the existing bar-descriptor.
-② In the IDE, select Run -> Run Configurations. Set Build Configuration to Device-Debug.
-.5 Make sure device-overlay's runtime is set to gnu-c++ with exceptions. (right-click menu -> Project Properties -> C/C++ build -> Setting -> target -> runtime)
-③ Build everything but the overlay and the frogatto project. Rebuild once if errors.
-④ Build the overlay project, then the frogatto project. You may have to tweak the Frogatto project by putting "#define GL_FRAMEBUFFER_UNSUPPORTED 0x8CDD // Krista's Hack for opengl 1 -> 2." near the top of texture_frame_buffer.cpp.
-⑤ Once that's done, compile Cube Trains and then come back and refresh the IDE.
-⑥ Upload and run the build on the PlayBook. If it works, proceed to step 7.
-⑦ Repeat step two, but set the configuration to Device-Release.
-⑧ Change the build target of your projects to Device-Release from Device-Debug from the right-click menu.
-⑨ Recompile everything in order, and upload the project to the PlayBook.
+① Move the (slightly renamed) bar-descriptor file, and the master-config.cfg file, from the modules/cube_trains directory. (Replace the existing bar-descriptor.)
+② Run "make assets", which will now compile Cube Trains data and images.
+③ Checksum the .cfgs for release, so stats are reported.
+④ In the IDE, select Run -> Run Configurations. Set Build Configuration to Device-Debug.
+⑤ Make sure device-overlay's runtime is set to gnu-c++ with exceptions. (right-click menu -> Project Properties -> C/C++ build -> Setting -> target -> runtime)
+⑥ Build everything but the overlay and the frogatto project. Rebuild once if errors.
+⑦ Build the overlay project, then the frogatto project. You may have to tweak the Frogatto project by putting "#define GL_FRAMEBUFFER_UNSUPPORTED 0x8CDD // Krista's Hack for opengl 1 -> 2." near the top of texture_frame_buffer.cpp.
+⑧ Once that's done, compile Cube Trains and then come back and refresh the IDE.
+⑨ Upload and run the build on the PlayBook. If it works, proceed to step 7.
+⑩ Repeat step two, but set the configuration to Device-Release.
+⑪ Change the build target of your projects to Device-Release from Device-Debug from the right-click menu.
+⑫ Recompile everything in order, and upload the project to the PlayBook.
