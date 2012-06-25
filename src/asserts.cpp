@@ -7,7 +7,7 @@
 #include "variant.hpp"
 
 #if defined(_WINDOWS)
-#include "SDL/SDL_syswm.h"
+#include "SDL_syswm.h"
 #endif
 
 void report_assert_msg(const std::string& m)
