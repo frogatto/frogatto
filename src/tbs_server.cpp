@@ -211,9 +211,18 @@ void server::send_msg(socket_ptr socket, const char* msg)
 void server::send_msg(socket_ptr socket, const std::string& msg)
 {
 	const socket_info& info = connections_[socket];
-	char buf[4096];
-	sprintf(buf, "HTTP/1.1 200 OK\nDate: Tue, 20 Sep 2011 21:00:00 GMT\nConnection: close\nServer: Wizard/1.0\nAccept-Ranges: bytes\nAccess-Control-Allow-Origin: *\nContent-Type: application/json\nContent-Length: %d\nLast-Modified: Tue, 20 Sep 2011 10:00:00 GMT\n\n", (int)msg.size());
-	std::string header = buf;
+	std::stringstream buf;
+	buf <<
+		"HTTP/1.1 200 OK\n"
+		"Date: Tue, 20 Sep 2011 21:00:00 GMT\n"
+		"Connection: close\n"
+		"Server: Wizard/1.0\n"
+		"Accept-Ranges: bytes\n"
+		"Access-Control-Allow-Origin: *\n"
+		"Content-Type: application/json\n"
+		"Content-Length: " << std::dec << (int)msg.size() << "\n"
+		"Last-Modified: Tue, 20 Sep 2011 10:00:00 GMT\n\n";
+	std::string header = buf.str();
 
 	boost::shared_ptr<std::string> str_buf(new std::string(header.empty() ? msg : (header + msg)));
 	boost::asio::async_write(*socket, boost::asio::buffer(*str_buf),
@@ -329,7 +338,7 @@ void server::flush_game_messages(game_info& info)
 					queue_msg(info.clients[player], msg.contents);
 				} else {
 					//A message for observers
-					for(int n = info.game_state->players().size(); n < info.clients.size(); ++n) {
+					for(size_t n = info.game_state->players().size(); n < info.clients.size(); ++n) {
 						queue_msg(info.clients[n], msg.contents);
 					}
 				}
