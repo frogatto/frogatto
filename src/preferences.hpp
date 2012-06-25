@@ -4,6 +4,7 @@
 #include <string>
 
 #include "graphics.hpp"
+#include "uri.hpp"
 #include "variant.hpp"
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 #include <EGL/egl.h>
@@ -133,6 +134,8 @@ void set_bequ( bool value );
 
 	void load_preferences();
 	void save_preferences();
+
+	uri::uri get_tbs_uri();
 
 	class editor_screen_size_scope {
 		int width_, height_;

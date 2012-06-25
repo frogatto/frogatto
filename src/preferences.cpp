@@ -140,6 +140,8 @@ namespace preferences {
 		variant external_code_editor_;
 
 		int force_difficulty_ = INT_MIN;
+
+		uri::uri tbs_uri_ = uri::uri::parse("http://localhost:23456");
 		
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 		
@@ -522,6 +524,11 @@ namespace preferences {
 	{
 		edit_on_start_ = value;
 	}
+
+	uri::uri get_tbs_uri()
+	{
+		return tbs_uri_;
+	}
 	
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 	bool use_fbo()
@@ -787,6 +794,8 @@ namespace preferences {
 			use_joystick_ = true;
 		} else if(s == "--no-joystick") {
 			use_joystick_ = false;
+		} else if(arg_name == "--server") {
+			tbs_uri_ = uri::uri::parse(arg_value);
 		} else if(s == "--relay") {
 			relay_through_server_ = true;
 		} else if(s == "--failing-tests") {
