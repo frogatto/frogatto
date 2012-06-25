@@ -54,8 +54,6 @@
 #if defined( _WINDOWS )
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-#pragma comment(lib, "opengl32.lib")
-#pragma comment(lib, "glu32.lib")
 #endif
 #include <GL/gl.h>
 #include <GL/glu.h>
