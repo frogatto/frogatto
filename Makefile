@@ -56,3 +56,7 @@ install:
 
 clean:
 	rm -f *.o game
+
+assets:
+	./game --utility=compile_levels
+	./game --utility=compile_objects

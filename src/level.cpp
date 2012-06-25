@@ -2926,6 +2926,8 @@ void level::add_player(entity_ptr p)
 		players_[0] = player_;
 	}
 
+	p->add_to_level();
+
 	assert(player_);
 	chars_.push_back(p);
 
@@ -2978,6 +2980,8 @@ void level::add_character(entity_ptr p)
 	} else {
 		chars_.push_back(p);
 	}
+
+	p->add_to_level();
 
 	layers_.insert(p->zorder());
 }

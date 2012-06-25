@@ -63,9 +63,7 @@ bool point_standable(const level& lvl, const entity& e, int x, int y, collision_
 	for(std::vector<entity_ptr>::const_iterator i = chars.begin();
 	    i != chars.end(); ++i) {
 		const entity_ptr& obj = *i;
-		if(&e == obj.get() ||
-		   (e.weak_solid_dimensions()&obj->solid_dimensions()) == 0 &&
-		   (e.solid_dimensions()&obj->weak_solid_dimensions()) == 0) {
+		if(&e == obj.get()) {
 			continue;
 		}
 
@@ -82,6 +80,11 @@ bool point_standable(const level& lvl, const entity& e, int x, int y, collision_
 
 				return true;
 			}
+		}
+
+		if((e.weak_solid_dimensions()&obj->solid_dimensions()) == 0 &&
+		   (e.solid_dimensions()&obj->weak_solid_dimensions()) == 0) {
+			continue;
 		}
 
 		if(!point_in_rect(pt, obj->solid_rect())) {

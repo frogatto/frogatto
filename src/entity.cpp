@@ -40,6 +40,13 @@ entity::entity(int x, int y, bool face_right)
 	}
 }
 
+void entity::add_to_level()
+{
+	prev_feet_x_ = prev_feet_y_ = INT_MIN;
+	prev_platform_rect_ = rect();
+	calculate_solid_rect();
+}
+
 entity_ptr entity::build(variant node)
 {
 	if(node["is_human"].as_bool()) {

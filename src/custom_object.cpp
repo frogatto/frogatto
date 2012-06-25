@@ -130,7 +130,12 @@ custom_object::custom_object(variant node)
 			position_schedule_.reset(new position_schedule);
 		}
 
-		position_schedule_->x_pos = node["x_schedule"].as_list_int();
+		if(node["x_schedule"].is_string()) {
+			// old-style list of ints inside a string
+			position_schedule_->x_pos = util::split_into_vector_int(node["x_schedule"].as_string());
+		} else {
+			position_schedule_->x_pos = node["x_schedule"].as_list_int();
+		}
 	}
 
 	if(node.has_key("y_schedule")) {
@@ -138,7 +143,12 @@ custom_object::custom_object(variant node)
 			position_schedule_.reset(new position_schedule);
 		}
 
-		position_schedule_->y_pos = node["y_schedule"].as_list_int();
+		if(node["y_schedule"].is_string()) {
+			// old-style list of ints inside a string
+			position_schedule_->y_pos = util::split_into_vector_int(node["y_schedule"].as_string());
+		} else {
+			position_schedule_->y_pos = node["y_schedule"].as_list_int();
+		}
 	}
 
 	if(node.has_key("rotation_schedule")) {
@@ -486,11 +496,15 @@ variant custom_object::write() const
 	if(position_schedule_.get() != NULL) {
 		res.add("schedule_speed", position_schedule_->speed);
 		if(position_schedule_->x_pos.empty() == false) {
-			res.add("x_schedule", util::join_ints(&position_schedule_->x_pos[0], position_schedule_->x_pos.size()));
+			foreach(int xpos, position_schedule_->x_pos) {
+				res.add("x_schedule", xpos);
+			}
 		}
 
 		if(position_schedule_->y_pos.empty() == false) {
-			res.add("y_schedule", util::join_ints(&position_schedule_->y_pos[0], position_schedule_->y_pos.size()));
+			foreach(int ypos, position_schedule_->y_pos) {
+				res.add("y_schedule", ypos);
+			}
 		}
 
 		if(position_schedule_->rotation.empty() == false) {
