@@ -27,6 +27,8 @@ void merge_variant_over(variant* aptr, variant b);
 
 void visit_variants(variant v, boost::function<void (variant)> fn);
 
+variant deep_copy_variant(variant v);
+
 template<typename Seq>
 variant vector_to_variant(const Seq& seq) {
 	std::vector<variant> v;

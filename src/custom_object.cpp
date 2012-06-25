@@ -871,6 +871,9 @@ void custom_object::draw(int xx, int yy) const
 	foreach(const gui::widget_ptr& w, widgets_) {
 		w->draw();
 	}
+	foreach(const gui::vector_text_ptr& txt, vector_text_) {
+		txt->draw();
+	}
 	glPopMatrix();
 
 	for(std::map<std::string, particle_system_ptr>::const_iterator i = particle_systems_.begin(); i != particle_systems_.end(); ++i) {
@@ -2272,6 +2275,14 @@ variant custom_object::get_value_by_slot(int slot) const
 		std::vector<variant> v;
 		foreach(const gui::widget_ptr& w, widgets_) {
 			v.push_back(variant(w.get()));
+		}
+		return(variant(&v));
+	}
+
+	case CUSTOM_OBJECT_TEXTV: {
+		std::vector<variant> v;
+		foreach(const gui::vector_text_ptr& vt, vector_text_) {
+			v.push_back(variant(vt.get()));
 		}
 		return(variant(&v));
 	}

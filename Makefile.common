@@ -131,6 +131,12 @@ objects = \
 	surface_palette.o \
 	surface_scaling.o \
 	surface.o \
+	tbs_ai_player.o \
+	tbs_client.o \
+	tbs_functions.o \
+	tbs_game.o \
+	tbs_server.o \
+	tbs_web_server.o \
 	texture.o \
 	texture_frame_buffer.o \
 	text_editor_widget.o \
@@ -155,7 +161,9 @@ objects = \
 	loading_screen.o \
 	utility_object_compiler.o \
 	utility_query.o \
-	utility_render_level.o
+	utility_render_level.o \
+    vector_text.o
+
 
 # Server
 server_objects = \

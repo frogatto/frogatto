@@ -30,6 +30,7 @@
 #include "pause_game_dialog.hpp"
 #include "player_info.hpp"
 #include "raster.hpp"
+#include "tbs_client.hpp"
 #include "texture.hpp"
 #include "message_dialog.hpp"
 #include "options_dialog.hpp"
@@ -87,6 +88,62 @@ public:
 FUNCTION_DEF(set_clipboard_text, 1, 1, "set_clipboard_text(str): sets the clipboard text to the given string")
 	return variant(new set_clipboard_text_command(args()[0]->evaluate(variables).as_string()));
 END_FUNCTION_DEF(set_clipboard_text)
+
+FUNCTION_DEF(tbs_client, 2, 3, "tbs_client(host, port, session=-1): creates a client object to the tbs server")
+	const std::string host = args()[0]->evaluate(variables).as_string();
+	const int port = args()[1]->evaluate(variables).as_int();
+	const int session = args().size() >= 3 ? args()[2]->evaluate(variables).as_int() : -1;
+
+	return variant(new tbs::client(host, formatter() << port, session));
+END_FUNCTION_DEF(tbs_client)
+
+//function to send an event that can be easily put through boost::bind.
+void tbs_msg_received(entity_ptr e, std::string msg)
+{
+	game_logic::map_formula_callable* callable(new game_logic::map_formula_callable);
+	variant holder(callable);
+	callable->add("message", variant(json::parse(msg)));
+	e->handle_event("message_received", callable);
+}
+
+class tbs_send_command : public entity_command_callable
+{
+	variant client_, msg_;
+public:
+	tbs_send_command(variant client, variant msg) : client_(client), msg_(msg)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		tbs::client* tbs_client = client_.try_convert<tbs::client>();
+		tbs_client->send_request(msg_.write_json(), boost::bind(tbs_msg_received, entity_ptr(&ob), _1));
+	}
+
+};
+
+FUNCTION_DEF(tbs_send, 2, 2, "tbs_send(tbs_client, msg): sends a message through the given tbs_client connection")
+	variant client = args()[0]->evaluate(variables);
+	variant msg = args()[1]->evaluate(variables);
+
+	return variant(new tbs_send_command(client, msg));
+END_FUNCTION_DEF(tbs_send)
+
+class tbs_process_command : public entity_command_callable
+{
+	variant client_;
+public:
+	explicit tbs_process_command(variant client) : client_(client)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		tbs::client* tbs_client = client_.try_convert<tbs::client>();
+		tbs_client->process();
+	}
+};
+
+FUNCTION_DEF(tbs_process, 1, 1, "tbs_process(tbs_client): processes events for the tbs client")
+	variant client = args()[0]->evaluate(variables);
+	return variant(new tbs_process_command(client));
+END_FUNCTION_DEF(tbs_process)
 
 class report_command : public entity_command_callable
 {
@@ -1787,11 +1844,68 @@ FUNCTION_DEF(text, 1, 4, "text(string text, (optional)string font='default', (op
 	return variant(new text_command(text, font, size, align));
 END_FUNCTION_DEF(text)
 
+class vector_text_command : public custom_object_command_callable 
+{
+public:
+	vector_text_command(entity_ptr target, std::vector<variant>* textv)
+		: target_(target)
+	{
+		textv_.swap(*textv);
+	}
+
+	virtual void execute(level& lvl, custom_object& ob) const 
+	{
+		custom_object* custom_obj = target_ ? dynamic_cast<custom_object*>(target_.get()) : &ob;
+		custom_obj->clear_vector_text();
+		foreach(const variant& v, textv_) {
+			gui::vector_text_ptr txtp(new gui::vector_text(v));
+			if(txtp) {
+				custom_obj->add_vector_text(txtp);
+			}
+		}
+	}
+private:
+	std::vector<variant> textv_;
+	entity_ptr target_;
+};
+
+FUNCTION_DEF(textv, 1, -1, "textv(object, text_map, ...): Adds text objects to the object.  object format: {text:<string>, align: \"left|right|center\", size:<n>, rect:[x,y,w,h]}")
+	entity_ptr target = args()[0]->evaluate(variables).try_convert<entity>();
+	int arg_start = (target == NULL) ? 0 : 1;
+	std::vector<variant> textv;
+	for(int i = arg_start; i < args().size(); i++) {
+		textv.push_back(args()[i]->evaluate(variables));
+	}
+	return variant(new vector_text_command(target, &textv));
+END_FUNCTION_DEF(textv)
+
+class clear_vector_text_command : public custom_object_command_callable 
+{
+public:
+	clear_vector_text_command(entity_ptr target)
+		: target_(target)
+	{}
+
+	virtual void execute(level& lvl, custom_object& ob) const 
+	{
+		custom_object* custom_obj = target_ ? dynamic_cast<custom_object*>(target_.get()) : &ob;
+		custom_obj->clear_vector_text();
+	}
+
+private:
+	entity_ptr target_;
+};
+
+FUNCTION_DEF(clear_textv, 0, 1, "clear_textv(object): Clears all the custom text from the object")
+	entity_ptr target = args()[0]->evaluate(variables).try_convert<entity>();
+	return variant(new clear_vector_text_command(target));
+END_FUNCTION_DEF(clear_textv)
+
 FUNCTION_DEF(swallow_event, 0, 0, "swallow_event(): when used in an instance-specific event handler, this causes the event to be swallowed and not passed to the object's main event handler.")
 	return variant(new swallow_object_command_callable);
 END_FUNCTION_DEF(swallow_event)
 
-FUNCTION_DEF(swallow_mouse_event, 0, 0, "swallow_event(): when used in an instance-specific event handler, this causes the mouse event to be swallowed and not passed to the next object in the z-order stack.")
+FUNCTION_DEF(swallow_mouse_event, 0, 0, "swallow_mouse_event(): when used in an instance-specific event handler, this causes the mouse event to be swallowed and not passed to the next object in the z-order stack.")
 	return variant(new swallow_mouse_command_callable);
 END_FUNCTION_DEF(swallow_mouse_event)
 

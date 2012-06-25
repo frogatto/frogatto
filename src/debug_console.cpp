@@ -210,7 +210,7 @@ const std::string Prompt = "--> ";
 
 void add_message(const std::string& msg)
 {
-	if(!preferences::debug()) {
+	if(!preferences::debug() || !SDL_WasInit(0)) {
 		return;
 	}
 
@@ -355,6 +355,7 @@ bool console_dialog::has_keyboard_focus() const
 
 void console_dialog::add_message(const std::string& msg)
 {
+
 	std::string m;
 	for(std::vector<std::string>::const_iterator i = text_editor_->get_data().begin(); i != text_editor_->get_data().end()-1; ++i) {
 		m += *i + "\n";
