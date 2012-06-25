@@ -30,7 +30,7 @@ void client::handle_connect(const boost::system::error_code& error, connection_p
 		if(endpoint_iterator_ == resolve_itor) {
 			++endpoint_iterator_;
 		}
-		ASSERT_LOG(endpoint_iterator_ != tcp::resolver::iterator(), "COULD NOT RESOLVE TBS SERVER: " << endpoint_iterator_->endpoint().address().to_string() << ":" << endpoint_iterator_->endpoint().port());
+		ASSERT_LOG(endpoint_iterator_ != tcp::resolver::iterator(), "COULD NOT RESOLVE TBS SERVER: " << resolve_itor->endpoint().address().to_string() << ":" << resolve_itor->endpoint().port());
 
 		conn->socket.async_connect(*endpoint_iterator_,
  	       boost::bind(&client::handle_connect, this,

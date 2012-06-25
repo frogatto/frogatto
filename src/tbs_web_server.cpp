@@ -8,6 +8,7 @@
 #include <boost/bind.hpp>
 #include <iostream>
 
+#include "asserts.hpp"
 #include "filesystem.hpp"
 #include "foreach.hpp"
 #include "json_parser.hpp"
@@ -336,7 +337,23 @@ void web_server::send_404(socket_ptr socket)
 }
 
 COMMAND_LINE_UTILITY(tbs_server) {
-	const int port = 23456;
+	int port = 23456;
+	if(args.size() > 0) {
+		std::vector<std::string>::const_iterator it = args.begin();
+		while(it != args.end()) {
+			if(*it == "--port" || *it == "--listen-port") {
+				it++;
+				if(it != args.end()) {
+					port = atoi(it->c_str());
+					ASSERT_LOG(port > 0 && port <= 65535, "tbs_server(): Port must lie in the range 1-65535.");
+					it = args.end();
+				}
+			} else {
+				it++;
+			}
+		}
+	}
+	std::cerr << "tbs_server(): Listening on port " << std::dec << port << std::endl;
 	boost::asio::io_service io_service;
 	tbs::server s(io_service);
 	tbs::web_server ws(io_service, s, port);
