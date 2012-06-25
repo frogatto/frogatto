@@ -1787,11 +1787,68 @@ FUNCTION_DEF(text, 1, 4, "text(string text, (optional)string font='default', (op
 	return variant(new text_command(text, font, size, align));
 END_FUNCTION_DEF(text)
 
+class vector_text_command : public custom_object_command_callable 
+{
+public:
+	vector_text_command(entity_ptr target, std::vector<variant>* textv)
+		: target_(target)
+	{
+		textv_.swap(*textv);
+	}
+
+	virtual void execute(level& lvl, custom_object& ob) const 
+	{
+		custom_object* custom_obj = target_ ? dynamic_cast<custom_object*>(target_.get()) : &ob;
+		custom_obj->clear_vector_text();
+		foreach(const variant& v, textv_) {
+			gui::vector_text_ptr txtp(new gui::vector_text(v));
+			if(txtp) {
+				custom_obj->add_vector_text(txtp);
+			}
+		}
+	}
+private:
+	std::vector<variant> textv_;
+	entity_ptr target_;
+};
+
+FUNCTION_DEF(textv, 1, -1, "textv(object, text_map, ...): Adds text objects to the object.  object format: {text:<string>, align: \"left|right|center\", size:<n>, rect:[x,y,w,h]}")
+	entity_ptr target = args()[0]->evaluate(variables).try_convert<entity>();
+	int arg_start = (target == NULL) ? 0 : 1;
+	std::vector<variant> textv;
+	for(int i = arg_start; i < args().size(); i++) {
+		textv.push_back(args()[i]->evaluate(variables));
+	}
+	return variant(new vector_text_command(target, &textv));
+END_FUNCTION_DEF(textv)
+
+class clear_vector_text_command : public custom_object_command_callable 
+{
+public:
+	clear_vector_text_command(entity_ptr target)
+		: target_(target)
+	{}
+
+	virtual void execute(level& lvl, custom_object& ob) const 
+	{
+		custom_object* custom_obj = target_ ? dynamic_cast<custom_object*>(target_.get()) : &ob;
+		custom_obj->clear_vector_text();
+	}
+
+private:
+	entity_ptr target_;
+};
+
+FUNCTION_DEF(clear_textv, 0, 1, "clear_textv(object): Clears all the custom text from the object")
+	entity_ptr target = args()[0]->evaluate(variables).try_convert<entity>();
+	return variant(new clear_vector_text_command(target));
+END_FUNCTION_DEF(clear_textv)
+
 FUNCTION_DEF(swallow_event, 0, 0, "swallow_event(): when used in an instance-specific event handler, this causes the event to be swallowed and not passed to the object's main event handler.")
 	return variant(new swallow_object_command_callable);
 END_FUNCTION_DEF(swallow_event)
 
-FUNCTION_DEF(swallow_mouse_event, 0, 0, "swallow_event(): when used in an instance-specific event handler, this causes the mouse event to be swallowed and not passed to the next object in the z-order stack.")
+FUNCTION_DEF(swallow_mouse_event, 0, 0, "swallow_mouse_event(): when used in an instance-specific event handler, this causes the mouse event to be swallowed and not passed to the next object in the z-order stack.")
 	return variant(new swallow_mouse_command_callable);
 END_FUNCTION_DEF(swallow_mouse_event)
 

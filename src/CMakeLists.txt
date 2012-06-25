@@ -150,6 +150,7 @@ add_executable( frogatto
 	utility_object_compiler.cpp
 	utility_query.cpp
 	utility_render_level.cpp
+    vector_text.cpp
     wml_formula_callable.cpp
     ${FROGATTO_SRC_PLATFORM} )
 

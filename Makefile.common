@@ -155,7 +155,8 @@ objects = \
 	loading_screen.o \
 	utility_object_compiler.o \
 	utility_query.o \
-	utility_render_level.o
+	utility_render_level.o \
+    vector_text.o
 
 # Server
 server_objects = \
