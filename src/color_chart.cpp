@@ -8,7 +8,7 @@ namespace graphics {
 
 namespace {
 
-std::map<std::string,boost::function<const SDL_Color&()> > get_color_cache()
+std::map<std::string,boost::function<const SDL_Color&()> >& get_color_cache()
 {
 	static std::map<std::string,boost::function<const SDL_Color&()> > color_cache;
 	return color_cache;
@@ -182,7 +182,7 @@ const SDL_Color& get_color_from_name(std::string name)
 	if(it != get_color_cache().end()) {
 		return it->second();
 	}
-	ASSERT_LOG(false, "Color "" << name << "" not known!");
+	ASSERT_LOG(false, "Color \"" << name << "\" not known!");
 	return color_black();
 }
 
