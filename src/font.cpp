@@ -3,9 +3,11 @@
 
 #include <boost/tuple/tuple.hpp>
 
+#include "asserts.hpp"
 #include "color_utils.hpp"
 #include "font.hpp"
 #include "foreach.hpp"
+#include "formatter.hpp"
 #include "string_utils.hpp"
 #include "surface.hpp"
 
@@ -29,7 +31,10 @@ TTF_Font* get_font(int size)
 	if(font == NULL) {
 		font = TTF_OpenFont(FontFile, size);
 		if(font == NULL) {
-			std::cerr << "Failed to open font: " << FontFile << "\n";
+			std::ostringstream s;
+
+			s << "Failed to open font: " << FontFile;
+			ASSERT_LOG(false, s.str());
 			exit(0);
 		}
 	}
@@ -60,6 +65,12 @@ RenderCache& cache() {
 	return instance;
 }
 
+bool fonts_initialized = false;
+
+}
+
+bool is_init() {
+	return fonts_initialized;
 }
 
 manager::manager()
@@ -70,6 +81,7 @@ manager::manager()
 		std::cerr << "Could not initialize ttf\n";
 		exit(0);
 	} else {
+		fonts_initialized = true;
 		std::cerr << "initialized ttf\n";
 	}
 #endif

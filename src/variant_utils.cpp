@@ -76,6 +76,27 @@ void visit_variants(variant v, boost::function<void (variant)> fn)
 	}
 }
 
+variant deep_copy_variant(variant v)
+{
+	if(v.is_map()) {
+		std::map<variant,variant> m;
+		foreach(variant key, v.get_keys().as_list()) {
+			m[key] = deep_copy_variant(v[key]);
+		}
+
+		return variant(&m);
+	} else if(v.is_list()) {
+		std::vector<variant> items;
+		foreach(variant item, v.as_list()) {
+			items.push_back(deep_copy_variant(item));
+		}
+
+		return variant(&items);
+	} else {
+		return v;
+	}
+}
+
 variant_builder& variant_builder::add_value(const std::string& name, const variant& val)
 {
 	attr_[variant(name)].push_back(val);

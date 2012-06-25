@@ -30,6 +30,7 @@
 #include "pause_game_dialog.hpp"
 #include "player_info.hpp"
 #include "raster.hpp"
+#include "tbs_client.hpp"
 #include "texture.hpp"
 #include "message_dialog.hpp"
 #include "options_dialog.hpp"
@@ -87,6 +88,62 @@ public:
 FUNCTION_DEF(set_clipboard_text, 1, 1, "set_clipboard_text(str): sets the clipboard text to the given string")
 	return variant(new set_clipboard_text_command(args()[0]->evaluate(variables).as_string()));
 END_FUNCTION_DEF(set_clipboard_text)
+
+FUNCTION_DEF(tbs_client, 2, 3, "tbs_client(host, port, session=-1): creates a client object to the tbs server")
+	const std::string host = args()[0]->evaluate(variables).as_string();
+	const int port = args()[1]->evaluate(variables).as_int();
+	const int session = args().size() >= 3 ? args()[2]->evaluate(variables).as_int() : -1;
+
+	return variant(new tbs::client(host, formatter() << port, session));
+END_FUNCTION_DEF(tbs_client)
+
+//function to send an event that can be easily put through boost::bind.
+void tbs_msg_received(entity_ptr e, std::string msg)
+{
+	game_logic::map_formula_callable* callable(new game_logic::map_formula_callable);
+	variant holder(callable);
+	callable->add("message", variant(json::parse(msg)));
+	e->handle_event("message_received", callable);
+}
+
+class tbs_send_command : public entity_command_callable
+{
+	variant client_, msg_;
+public:
+	tbs_send_command(variant client, variant msg) : client_(client), msg_(msg)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		tbs::client* tbs_client = client_.try_convert<tbs::client>();
+		tbs_client->send_request(msg_.write_json(), boost::bind(tbs_msg_received, entity_ptr(&ob), _1));
+	}
+
+};
+
+FUNCTION_DEF(tbs_send, 2, 2, "tbs_send(tbs_client, msg): sends a message through the given tbs_client connection")
+	variant client = args()[0]->evaluate(variables);
+	variant msg = args()[1]->evaluate(variables);
+
+	return variant(new tbs_send_command(client, msg));
+END_FUNCTION_DEF(tbs_send)
+
+class tbs_process_command : public entity_command_callable
+{
+	variant client_;
+public:
+	explicit tbs_process_command(variant client) : client_(client)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		tbs::client* tbs_client = client_.try_convert<tbs::client>();
+		tbs_client->process();
+	}
+};
+
+FUNCTION_DEF(tbs_process, 1, 1, "tbs_process(tbs_client): processes events for the tbs client")
+	variant client = args()[0]->evaluate(variables);
+	return variant(new tbs_process_command(client));
+END_FUNCTION_DEF(tbs_process)
 
 class report_command : public entity_command_callable
 {

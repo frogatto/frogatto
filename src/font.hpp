@@ -19,6 +19,8 @@
 
 namespace font {
 
+bool is_init();
+
 struct manager {
 	manager();
 	~manager();
