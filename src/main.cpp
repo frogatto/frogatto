@@ -98,6 +98,7 @@ void print_help(const std::string& argv0)
 "                                 issues with this still have to be solved)\n" <<
 "      --[no-]send-stats        enables/disables sending game statistics over the\n" <<
 "                                 network\n" <<
+"      --server=URL             Sets the server to use for the TBS client based on the given url" <<
 "      --[no-]sound             enables/disables sound and music support\n" <<
 "      --widescreen             sets widescreen mode, increasing the game view\n" <<
 "                                 area for wide screen displays\n" <<

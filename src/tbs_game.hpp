@@ -12,7 +12,7 @@
 
 namespace tbs {
 
-class game_type;
+struct game_type;
 
 class game : public game_logic::formula_callable
 {

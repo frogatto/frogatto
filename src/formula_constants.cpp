@@ -42,6 +42,10 @@ variant get_constant(const std::string& id)
 #endif
 	} else if(id == "HIGH_END_SYSTEM") {
 		return variant(!get_constant("LOW_END_SYSTEM").as_bool());
+	} else if(id == "TBS_SERVER_ADDRESS") {
+		return variant(preferences::get_tbs_uri().host());
+	} else if(id == "TBS_SERVER_PORT") {
+		return variant(atoi(preferences::get_tbs_uri().port().c_str()));
 	} else if(id == "UP_KEY") {
 		return variant(gui::get_key_name(controls::get_sdlkey(controls::CONTROL_UP)));
 	} else if(id == "DOWN_KEY") {

@@ -66,7 +66,7 @@ namespace {
 game* current_game = NULL;
 
 int generate_game_id() {
-	static int id = time(NULL);
+	static int id = int(time(NULL));
 	return id++;
 }
 
