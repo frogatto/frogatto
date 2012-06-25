@@ -20,6 +20,7 @@
 #include "particle_system.hpp"
 #include "raster_distortion.hpp"
 #include "variant.hpp"
+#include "vector_text.hpp"
 #include "widget.hpp"
 
 struct collision_info;
@@ -141,6 +142,10 @@ public:
 	void remove_particle_system(const std::string& key);
 
 	void set_text(const std::string& text, const std::string& font, int size, int align);
+	void add_vector_text(const gui::vector_text_ptr& txtp) {
+		vector_text_.push_back(txtp);
+	}
+	void clear_vector_text() { vector_text_.clear(); }
 
 	virtual int hitpoints() const { return hitpoints_; }
 
@@ -330,6 +335,8 @@ private:
 
 	typedef boost::shared_ptr<custom_object_text> custom_object_text_ptr;
 	custom_object_text_ptr text_;
+
+	std::vector<gui::vector_text_ptr> vector_text_;
 
 	entity_ptr driver_;
 
