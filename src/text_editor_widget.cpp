@@ -136,7 +136,7 @@ text_editor_widget::text_editor_widget(int width, int height)
 }
 
 text_editor_widget::text_editor_widget(const variant& v, game_logic::formula_callable* e)
-	: scrollable_widget(v,e), last_op_type_(NULL), font_size_(14), 
+	: widget(v,e), scrollable_widget(v,e), last_op_type_(NULL), font_size_(14), 
 	select_(0,0), cursor_(0,0), scroll_pos_(0),
 	begin_highlight_line_(-1), end_highlight_line_(-1),
 	has_focus_(false), 
@@ -1463,8 +1463,11 @@ variant text_editor_widget::get_value(const std::string& key) const
 
 void text_editor_widget::change_delegate()
 {
+	using namespace game_logic;
 	if(get_environment()) {
-		variant value = ffl_on_change_->execute(*get_environment());
+		map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(get_environment()));
+		callable->add("text", variant(text()));
+		variant value = ffl_on_change_->execute(*callable);
 		get_environment()->execute_command(value);
 	} else {
 		std::cerr << "text_editor_widget::change_delegate() called without environment!" << std::endl;
@@ -1483,8 +1486,11 @@ void text_editor_widget::move_cursor_delegate()
 
 void text_editor_widget::enter_delegate()
 {
+	using namespace game_logic;
 	if(get_environment()) {
-		variant value = ffl_on_enter_->execute(*get_environment());
+		map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(get_environment()));
+		callable->add("text", variant(text()));
+		variant value = ffl_on_enter_->execute(*callable);
 		get_environment()->execute_command(value);
 	} else {
 		std::cerr << "text_editor_widget::enter_delegate() called without environment!" << std::endl;
@@ -1493,8 +1499,11 @@ void text_editor_widget::enter_delegate()
 
 void text_editor_widget::escape_delegate()
 {
+	using namespace game_logic;
 	if(get_environment()) {
-		variant value = ffl_on_escape_->execute(*get_environment());
+		map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(get_environment()));
+		callable->add("text", variant(text()));
+		variant value = ffl_on_escape_->execute(*callable);
 		get_environment()->execute_command(value);
 	} else {
 		std::cerr << "text_editor_widget::escape_delegate() called without environment!" << std::endl;
@@ -1503,8 +1512,11 @@ void text_editor_widget::escape_delegate()
 
 void text_editor_widget::tab_delegate()
 {
+	using namespace game_logic;
 	if(get_environment()) {
-		variant value = ffl_on_tab_->execute(*get_environment());
+		map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(get_environment()));
+		callable->add("text", variant(text()));
+		variant value = ffl_on_tab_->execute(*callable);
 		get_environment()->execute_command(value);
 	} else {
 		std::cerr << "text_editor_widget::tab_delegate() called without environment!" << std::endl;
@@ -1525,10 +1537,11 @@ bool text_editor_widget::begin_enter_delegate()
 
 void text_editor_widget::change_focus_delgate(bool new_focus_value)
 {
+	using namespace game_logic;
 	if(get_environment()) {
-		game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
+		map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(get_environment()));
 		callable->add("focus", variant::from_bool(new_focus_value));
-		variant v(callable);
+		callable->add("text", variant(text()));
 		variant value = ffl_on_change_focus_->execute(*callable);
 		get_environment()->execute_command(value);
 	} else {

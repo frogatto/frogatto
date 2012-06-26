@@ -1199,7 +1199,7 @@ FUNCTION_DEF(dialog, 2, 2, "dialog(obj, template): Creates a dialog given an obj
 	return variant(new gui::dialog(v, e));
 END_FUNCTION_DEF(dialog)
 
-FUNCTION_DEF(show_modal, 2, 2, "show_modal(dialog): Displays a modal dialog on the screen.")
+FUNCTION_DEF(show_modal, 1, 1, "show_modal(dialog): Displays a modal dialog on the screen.")
 	variant graph = args()[0]->evaluate(variables);
 	gui::dialog_ptr dialog = boost::intrusive_ptr<gui::dialog>(graph.try_convert<gui::dialog>());
 	ASSERT_LOG(dialog, "Dialog given is not of the correct type.");
