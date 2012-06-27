@@ -126,6 +126,12 @@ surface_formula.cpp
 surface_palette.cpp
 surface_scaling.cpp
 surface.cpp
+tbs_ai_player.cpp
+tbs_client.cpp
+tbs_functions.cpp
+tbs_game.cpp
+tbs_server.cpp
+tbs_web_server.cpp
 texture.cpp
 texture_frame_buffer.cpp
 text_editor_widget.cpp
@@ -139,6 +145,7 @@ utils.cpp
 variant.cpp
 variant_callable.cpp
 variant_utils.cpp
+vector_text.cpp
 water.cpp
 water_particle_system.cpp
 weather_particle_system.cpp
