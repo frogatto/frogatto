@@ -13,6 +13,7 @@
 #include "dialog.hpp"
 #include "drag_widget.hpp"
 #include "graphical_font_label.hpp"
+#include "grid_widget.hpp"
 #include "image_widget.hpp"
 #include "gui_section.hpp"
 #include "key_button.hpp"
@@ -49,6 +50,8 @@ widget_ptr create(const variant& v, game_logic::formula_callable* e)
 		return widget_ptr(new gui::drag_widget(v,e));
 	} else if(wtype == "graphical_font_label") {
 		return widget_ptr(new gui::graphical_font_label(v,e));
+	} else if(wtype == "grid") {
+		return widget_ptr(new gui::grid(v,e));
 	} else if(wtype == "image") {
 		return widget_ptr(new gui::image_widget(v,e));
 	} else if(wtype == "section") {

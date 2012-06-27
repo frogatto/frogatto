@@ -1992,6 +1992,14 @@ decimal calculate_velocity_angle(int velocity_x, int velocity_y)
 	const double theta = atan2(double(velocity_y), double(velocity_x));
 	return decimal(theta*radians_to_degrees);
 }
+
+variant two_element_variant_list(const variant& a, const variant&b) 
+{
+	std::vector<variant> v;
+	v.push_back(a);
+	v.push_back(b);
+	return variant(&v);
+}
 }
 
 variant custom_object::get_value_by_slot(int slot) const
@@ -2048,13 +2056,35 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_MIDPOINT_X:        return variant(solid_rect().w() ? solid_rect().x() + solid_rect().w()/2 : x() + current_frame().width()/2);
 	case CUSTOM_OBJECT_MID_Y:
 	case CUSTOM_OBJECT_MIDPOINT_Y:        return variant(solid_rect().h() ? solid_rect().y() + solid_rect().h()/2 : y() + current_frame().height()/2);
+	case CUSTOM_OBJECT_MID_XY:
+	case CUSTOM_OBJECT_MIDPOINT_XY: {
+		return two_element_variant_list(
+			variant(solid_rect().w() ? solid_rect().x() + solid_rect().w()/2 : x() + current_frame().width()/2),
+			variant(solid_rect().h() ? solid_rect().y() + solid_rect().h()/2 : y() + current_frame().height()/2));
+	}
+
 	case CUSTOM_OBJECT_SOLID_RECT:        return variant(solid_rect().callable());
 	case CUSTOM_OBJECT_SOLID_MID_X:       return variant(solid_rect().x() + solid_rect().w()/2);
 	case CUSTOM_OBJECT_SOLID_MID_Y:       return variant(solid_rect().y() + solid_rect().h()/2);
+	case CUSTOM_OBJECT_SOLID_MID_XY: {
+		return two_element_variant_list(
+			variant(solid_rect().x() + solid_rect().w()/2),
+			variant(solid_rect().y() + solid_rect().h()/2));
+	}
 	case CUSTOM_OBJECT_IMG_MID_X:       return variant(x() + current_frame().width()/2);
 	case CUSTOM_OBJECT_IMG_MID_Y:       return variant(y() + current_frame().height()/2);
+	case CUSTOM_OBJECT_IMG_MID_XY: {
+		return two_element_variant_list(
+			variant(x() + current_frame().width()/2),
+			variant(y() + current_frame().height()/2));
+	}
 	case CUSTOM_OBJECT_IMG_W:             return variant(current_frame().width());
 	case CUSTOM_OBJECT_IMG_H:             return variant(current_frame().height());
+	case CUSTOM_OBJECT_IMG_WH: {
+		return two_element_variant_list(
+			variant(current_frame().width()),
+			variant(current_frame().height()));
+	}
 	case CUSTOM_OBJECT_FRONT:             return variant(face_right() ? body_rect().x2() : body_rect().x());
 	case CUSTOM_OBJECT_BACK:              return variant(face_right() ? body_rect().x() : body_rect().x2());
 	case CUSTOM_OBJECT_CYCLE:             return variant(cycle_);
@@ -2064,12 +2094,22 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_DOWN:              return variant(upside_down() ? -1 : 1);
 	case CUSTOM_OBJECT_VELOCITY_X:        return variant(velocity_x_);
 	case CUSTOM_OBJECT_VELOCITY_Y:        return variant(velocity_y_);
+	case CUSTOM_OBJECT_VELOCITY_XY: {
+		return two_element_variant_list(
+			variant(velocity_x_),
+			variant(velocity_y_));
+	}
 
 	case CUSTOM_OBJECT_VELOCITY_MAGNITUDE: return variant(calculate_velocity_magnitude(velocity_x_, velocity_y_));
 	case CUSTOM_OBJECT_VELOCITY_ANGLE:     return variant(calculate_velocity_angle(velocity_x_, velocity_y_));
 
 	case CUSTOM_OBJECT_ACCEL_X:           return variant(accel_x_);
 	case CUSTOM_OBJECT_ACCEL_Y:           return variant(accel_y_);
+	case CUSTOM_OBJECT_ACCEL_XY: {
+		return two_element_variant_list(
+			variant(accel_x_),
+			variant(accel_y_));
+	}
 	case CUSTOM_OBJECT_GRAVITY_SHIFT:     return variant(gravity_shift_);
 	case CUSTOM_OBJECT_PLATFORM_MOTION_X: return variant(platform_motion_x());
 	case CUSTOM_OBJECT_REGISTRY:          return variant(preferences::registry());
@@ -2428,11 +2468,11 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		zorder_ = value.as_int();
 	} else if(key == "zsub_order") {
 		zsub_order_ = value.as_int();
-	} else if(key == "midpoint_x") {
+	} else if(key == "midpoint_x" || key == "mid_x") {
 		const int current_x = x() + current_frame().width()/2;
 		const int xdiff = current_x - x();
 		set_pos(value.as_int() - xdiff, y());
-	} else if(key == "midpoint_y") {
+	} else if(key == "midpoint_y" || key == "mid_y") {
 		const int current_y = y() + current_frame().height()/2;
 		const int ydiff = current_y - y();
 		set_pos(x(), value.as_int() - ydiff);
@@ -2742,6 +2782,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		break;
 	}
 	
+	case CUSTOM_OBJECT_MID_X:
 	case CUSTOM_OBJECT_MIDPOINT_X: {
 		const int start_x = centi_x();
 		const int current_x = x() + current_frame().width()/2;
@@ -2753,12 +2794,30 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		break;
 	}
 
+	case CUSTOM_OBJECT_MID_Y:
 	case CUSTOM_OBJECT_MIDPOINT_Y: {
 		const int start_y = centi_y();
 		const int current_y = y() + current_frame().height()/2;
 		const int ydiff = current_y - y();
 		set_pos(x(), value.as_int() - ydiff);
 		if(entity_collides(level::current(), *this, MOVE_NONE) && entity_in_current_level(this)) {
+			set_centi_y(start_y);
+		}
+		break;
+	}
+
+	case CUSTOM_OBJECT_MID_XY:
+	case CUSTOM_OBJECT_MIDPOINT_XY: {
+		ASSERT_LOG(value.is_list() && value.num_elements() == 2, "set midpoint_xy value of object to a value in incorrect format ([x,y] expected): " << value.to_debug_string());
+		const int start_x = centi_x();
+		const int current_x = x() + current_frame().width()/2;
+		const int xdiff = current_x - x();
+		const int start_y = centi_y();
+		const int current_y = y() + current_frame().height()/2;
+		const int ydiff = current_y - y();
+		set_pos(value[0].as_int() - xdiff, value[1].as_int() - ydiff);
+		if(entity_collides(level::current(), *this, MOVE_NONE) && entity_in_current_level(this)) {
+			set_centi_x(start_x);
 			set_centi_y(start_y);
 		}
 		break;
@@ -2798,6 +2857,14 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	case CUSTOM_OBJECT_VELOCITY_Y:
 		velocity_y_ = value.as_int();
 		break;
+	
+	case CUSTOM_OBJECT_VELOCITY_XY: {
+		ASSERT_LOG(value.is_list() && value.num_elements() == 2, "set velocity_xy value of object to a value in incorrect format ([x,y] expected): " << value.to_debug_string());
+		velocity_x_ = value[0].as_int();
+		velocity_y_ = value[1].as_int();
+		break;
+	}
+
 	case CUSTOM_OBJECT_VELOCITY_MAGNITUDE: {
 		break;
 	}
@@ -2817,6 +2884,13 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	case CUSTOM_OBJECT_ACCEL_Y:
 		accel_y_ = value.as_int();
 		break;
+
+	case CUSTOM_OBJECT_ACCEL_XY: {
+		ASSERT_LOG(value.is_list() && value.num_elements() == 2, "set accel_xy value of object to a value in incorrect format ([x,y] expected): " << value.to_debug_string());
+		accel_x_ = value[0].as_int();
+		accel_y_ = value[1].as_int();
+		break;
+	}
 
 	case CUSTOM_OBJECT_GRAVITY_SHIFT:
 		gravity_shift_ = value.as_int();

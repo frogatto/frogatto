@@ -32,7 +32,7 @@ grid::grid(int ncols)
 }
 
 grid::grid(const variant& v, game_logic::formula_callable* e)
-	: scrollable_widget(v, e), row_height_(0), selected_row_(-1), 
+	: widget(v, e), scrollable_widget(v, e), row_height_(0), selected_row_(-1), 
 	allow_selection_(false), must_select_(false),
     swallow_clicks_(false), hpad_(0), show_background_(false),
 	max_height_(-1), allow_highlight_(true), set_h_(0), set_w_(0)
@@ -47,10 +47,11 @@ grid::grid(const variant& v, game_logic::formula_callable* e)
 		on_select_ = boost::bind(&grid::mouseover_delegate, this, _1);
 	}
 
-	ncols_ = v.as_int(1);
+	ncols_ = v["columns"].as_int(1);
 	if(v.has_key("column_widths")) {
 		if(v["column_widths"].is_list()) {
-			col_widths_.assign(v["column_widths"].as_list_int().begin(), v["column_widths"].as_list_int().end());
+			std::vector<int> li = v["column_widths"].as_list_int();
+			col_widths_.assign(li.begin(), li.end());
 		} else if(v["column_widths"].is_int()) {
 			col_widths_.assign(ncols_, v["column_widths"].as_int());
 		} else {
@@ -140,12 +141,12 @@ grid::grid(const variant& v, game_logic::formula_callable* e)
 		foreach(const variant& row, v["children"].as_list()) {
 			if(row.is_list()) {
 				foreach(const variant& col, row.as_list()) {
-					add_col(widget_factory::create(v,e));
+					add_col(widget_factory::create(col,e));
 				}
 				finish_row();
 			} else {
-				add_col(widget_factory::create(v,e))
-					.finish_row();
+				add_col(widget_factory::create(row,e));
+					//.finish_row();
 			}
 		}
 	}
@@ -473,6 +474,18 @@ void grid::mouseover_delegate(int selection)
 
 void grid::set_value(const std::string& key, const variant& v)
 {
+	if(key == "children") {
+		cells_.clear();
+		foreach(const variant& col, v.as_list()) {
+			add_col(widget_factory::create(v, get_environment()));
+		}
+		finish_row();
+		recalculate_dimensions();
+	} else if(key == "child") {
+		add_col(widget_factory::create(v, get_environment()))
+			.finish_row();
+		recalculate_dimensions();
+	}
 	widget::set_value(key, v);
 }
 

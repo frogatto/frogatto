@@ -963,7 +963,7 @@ private:
 
 class string_expression : public formula_expression {
 public:
-	explicit string_expression(std::string str, bool translate = false) : formula_expression("_string")
+	explicit string_expression(std::string str, bool translate = false, function_symbol_table* symbols = 0) : formula_expression("_string")
 	{
 		if (!_verbatim_string_expressions) {
 			const std::string original = str;
@@ -995,7 +995,7 @@ public:
 			
 				substitution sub;
 				sub.pos = pos;
-				sub.calculation.reset(new formula(variant(formula_str)));
+				sub.calculation.reset(new formula(variant(formula_str), symbols));
 				subs_.push_back(sub);
 			}
 		
@@ -1191,7 +1191,7 @@ void parse_set_args(const variant& formula_str, const token* i1, const token* i2
 
 				if(i1 - beg == 1 && beg->type == TOKEN_IDENTIFIER) {
 					//make it so that {a: 4} is the same as {'a': 4}
-					res->push_back(expression_ptr(new string_expression(std::string(beg->begin, beg->end), false)));
+					res->push_back(expression_ptr(new string_expression(std::string(beg->begin, beg->end), false, symbols)));
 				} else {
 					res->push_back(parse_expression(formula_str, beg,i1, symbols, callable_def));
 				}
@@ -1667,7 +1667,7 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 			} else if(i1->type == TOKEN_STRING_LITERAL) {
 				bool translate = *(i1->begin) == '~';
 				int add = *(i1->begin) == 'q' ? 2 : 1;
-				return expression_ptr(new string_expression(std::string(i1->begin+add,i1->end-1), translate));
+				return expression_ptr(new string_expression(std::string(i1->begin+add,i1->end-1), translate, symbols));
 			}
 		} else if(i1->type == TOKEN_IDENTIFIER &&
 				  (i1+1)->type == TOKEN_LPARENS &&
