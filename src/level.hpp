@@ -148,6 +148,7 @@ public:
 		bool automatic;
 		std::string transition;
 		bool saved_game;
+		entity_ptr new_playable;
 	};
 
 	//function which will make it so the next call to get_portal() will return

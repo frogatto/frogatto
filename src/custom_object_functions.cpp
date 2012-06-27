@@ -106,6 +106,14 @@ void tbs_msg_received(entity_ptr e, std::string msg)
 	e->handle_event("message_received", callable);
 }
 
+void tbs_conn_error(entity_ptr e, std::string msg)
+{
+	game_logic::map_formula_callable* callable(new game_logic::map_formula_callable);
+	variant holder(callable);
+	callable->add("error", variant(msg));
+	e->handle_event("connection_error", callable);
+}
+
 class tbs_send_command : public entity_command_callable
 {
 	variant client_, msg_;
@@ -115,7 +123,7 @@ public:
 
 	virtual void execute(level& lvl, entity& ob) const {
 		tbs::client* tbs_client = client_.try_convert<tbs::client>();
-		tbs_client->send_request(msg_.write_json(), boost::bind(tbs_msg_received, entity_ptr(&ob), _1));
+		tbs_client->send_request(msg_.write_json(), boost::bind(tbs_msg_received, entity_ptr(&ob), _1), boost::bind(tbs_conn_error, entity_ptr(&ob), _1));
 	}
 
 };
@@ -1565,7 +1573,8 @@ END_FUNCTION_DEF(remove_object)
 class teleport_command : public entity_command_callable
 {
 public:
-	teleport_command(const std::string& level, const std::string& label, const std::string& transition) : level_(level), label_(label), transition_(transition)
+	teleport_command(const std::string& level, const std::string& label, const std::string& transition, const entity_ptr& new_playable) 
+		: level_(level), label_(label), transition_(transition), new_playable_(new_playable)
 	{}
 
 	virtual void execute(level& lvl, entity& ob) const {
@@ -1575,24 +1584,30 @@ public:
 		p.dest_label = label_;
 		p.automatic = true;
 		p.transition = transition_;
+		p.new_playable = new_playable_;
 		lvl.force_enter_portal(p);
 	}
 private:
 	std::string level_, label_, transition_;
+	entity_ptr new_playable_;
 };
 
-FUNCTION_DEF(teleport, 1, 3, "teleport(string dest_level, (optional)string dest_label, (optional)string transition): teleports the player to a new level. The level is given by dest_level, with null() for the current level. If dest_label is given then the player will be teleported to the object in the destination level with that label. If transition is given, it names are type of transition (such as 'flip' or 'fade') which indicates the kind of visual effect to use for the transition.")
+FUNCTION_DEF(teleport, 1, 4, "teleport(string dest_level, (optional)string dest_label, (optional)string transition, (optional)playable): teleports the player to a new level. The level is given by dest_level, with null() for the current level. If dest_label is given then the player will be teleported to the object in the destination level with that label. If transition is given, it names are type of transition (such as 'flip' or 'fade') which indicates the kind of visual effect to use for the transition. If a playable is specified it is placed in the level instead of the current one.")
 	std::string label, transition;
+	entity_ptr new_playable;
 	if(args().size() > 1) {
 		label = args()[1]->evaluate(variables).as_string();
 		if(args().size() > 2) {
 			transition = args()[2]->evaluate(variables).as_string();
+			if(args().size() > 3) {
+				new_playable = args()[3]->evaluate(variables).try_convert<entity>();
+			}
 		}
 	}
 
 	variant dst_level = args()[0]->evaluate(variables);
 	const std::string dst_level_str = dst_level.is_null() ? "" : dst_level.as_string();
-	return variant(new teleport_command(dst_level_str, label, transition));
+	return variant(new teleport_command(dst_level_str, label, transition, new_playable));
 END_FUNCTION_DEF(teleport)
 
 class schedule_command : public entity_command_callable {

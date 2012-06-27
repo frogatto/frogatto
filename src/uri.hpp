@@ -64,6 +64,8 @@ public:
 			hostEnd++;
 			iterator_t portEnd = (pathStart != uriEnd) ? pathStart : queryStart;
 			result.port_ = std::string(hostEnd, portEnd);
+		} else {
+			result.port_ = "80";
 		}
 
 		// path
