@@ -213,15 +213,15 @@ void server::send_msg(socket_ptr socket, const std::string& msg)
 	const socket_info& info = connections_[socket];
 	std::stringstream buf;
 	buf <<
-		"HTTP/1.1 200 OK\n"
-		"Date: Tue, 20 Sep 2011 21:00:00 GMT\n"
-		"Connection: close\n"
-		"Server: Wizard/1.0\n"
-		"Accept-Ranges: bytes\n"
-		"Access-Control-Allow-Origin: *\n"
-		"Content-Type: application/json\n"
-		"Content-Length: " << std::dec << (int)msg.size() << "\n"
-		"Last-Modified: Tue, 20 Sep 2011 10:00:00 GMT\n\n";
+		"HTTP/1.1 200 OK\r\n"
+		"Date: Tue, 20 Sep 2011 21:00:00 GMT\r\n"
+		"Connection: close\r\n"
+		"Server: Wizard/1.0\r\n"
+		"Accept-Ranges: bytes\r\n"
+		"Access-Control-Allow-Origin: *\r\n"
+		"Content-Type: application/json\r\n"
+		"Content-Length: " << std::dec << (int)msg.size() << "\r\n"
+		"Last-Modified: Tue, 20 Sep 2011 10:00:00 GMT\r\n\r\n";
 	std::string header = buf.str();
 
 	boost::shared_ptr<std::string> str_buf(new std::string(header.empty() ? msg : (header + msg)));

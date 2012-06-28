@@ -301,15 +301,15 @@ void web_server::send_msg(socket_ptr socket, const std::string& type, const std:
 {
 	std::stringstream buf;
 	buf << 
-		"HTTP/1.1 200 OK\n"
-		"Date: Tue, 20 Sep 2011 21:00:00 GMT\n"
-		"Connection: close\n"
-		"Server: Wizard/1.0\n"
-		"Accept-Ranges: none\n"
-		"Access-Control-Allow-Origin: *\n"
-		"Content-Type: " << type << "\n"
-		"Last-Modified: Tue, 20 Sep 2011 10:00:00 GMT\n"
-		<< header_parms << "\n";
+		"HTTP/1.1 200 OK\r\n"
+		"Date: Tue, 20 Sep 2011 21:00:00 GMT\r\n"
+		"Connection: close\r\n"
+		"Server: Wizard/1.0\r\n"
+		"Accept-Ranges: none\r\n"
+		"Access-Control-Allow-Origin: *\r\n"
+		"Content-Type: " << type << "\r\n"
+		"Last-Modified: Tue, 20 Sep 2011 10:00:00 GMT\r\n"
+		<< header_parms << "\r\n";
 
 	boost::shared_ptr<std::string> str(new std::string(buf.str()));
 	*str += msg;
@@ -322,12 +322,12 @@ void web_server::send_404(socket_ptr socket)
 {
 	std::stringstream buf;
 	buf << 
-		"HTTP/1.1 404 NOT FOUND\n"
-		"Date: Tue, 20 Sep 2011 21:00:00 GMT\n"
-		"Connection: close\n"
-		"Server: Wizard/1.0\n"
-		"Accept-Ranges: none\n"
-		"\n";
+		"HTTP/1.1 404 NOT FOUND\r\n"
+		"Date: Tue, 20 Sep 2011 21:00:00 GMT\r\n"
+		"Connection: close\r\n"
+		"Server: Wizard/1.0\r\n"
+		"Accept-Ranges: none\r\n"
+		"\r\n";
 	boost::shared_ptr<std::string> str(new std::string(buf.str()));
 	boost::asio::async_write(*socket, boost::asio::buffer(*str),
                 boost::bind(&web_server::handle_send, this, socket, _1, _2, str->size(), str));
