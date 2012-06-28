@@ -1600,7 +1600,12 @@ FUNCTION_DEF(teleport, 1, 4, "teleport(string dest_level, (optional)string dest_
 		if(args().size() > 2) {
 			transition = args()[2]->evaluate(variables).as_string();
 			if(args().size() > 3) {
-				new_playable = args()[3]->evaluate(variables).try_convert<entity>();
+				variant play = args()[3]->evaluate(variables);
+				if(play.is_string()) {
+					new_playable = entity_ptr(new playable_custom_object(custom_object(play.as_string(), 0, 0, 0)));
+				} else {
+					new_playable = play.try_convert<entity>();
+				}
 			}
 		}
 	}

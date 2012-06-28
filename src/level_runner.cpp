@@ -759,10 +759,17 @@ bool level_runner::play_cycle()
 					mutable_portal.dest = point(dest_door->x() + dest_door->teleport_offset_x()*dest_door->face_dir(), dest_door->y() + dest_door->teleport_offset_y());
 					mutable_portal.dest_starting_pos = false;
 				}
+
+			}
+			last_draw_position() = screen_position();
+
+			player_info* player = lvl_->player();
+			if(portal->new_playable) {
+				player->get_entity().handle_event("player_change_on_teleport");
+				lvl_->player()->set_entity(*portal->new_playable);
+				player = lvl_->player();
 			}
 
-			last_draw_position() = screen_position();
-			player_info* player = lvl_->player();
 			if(player) {
 				player->get_entity().set_pos(portal->dest);
 				if(!player->get_entity().no_move_to_standing()){
@@ -826,13 +833,24 @@ bool level_runner::play_cycle()
 			if(portal->dest_str.empty() == false) {
 				dest = new_level->get_dest_from_str(portal->dest_str);
 			} else if(portal->dest_starting_pos) {
-				const player_info* new_player = new_level->player();
+				const player_info* new_player;
+				if(portal->new_playable) {
+					new_player = portal->new_playable->get_player_info();
+				} else {
+					new_player = new_level->player();
+				}
 				if(new_player) {
 					dest = point(new_player->get_entity().x(), new_player->get_entity().y());
 				}
 			}
 
 			player_info* player = lvl_->player();
+			if(portal->new_playable) {
+				player->get_entity().handle_event("player_change_on_teleport");
+				lvl_->player()->set_entity(*portal->new_playable);
+				player = lvl_->player();
+			}
+
 			if(player && portal->saved_game == false) {
 				player->get_entity().set_pos(dest);
 				new_level->add_player(&player->get_entity());
