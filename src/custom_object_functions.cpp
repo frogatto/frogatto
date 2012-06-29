@@ -97,21 +97,10 @@ FUNCTION_DEF(tbs_client, 2, 3, "tbs_client(host, port, session=-1): creates a cl
 	return variant(new tbs::client(host, formatter() << port, session));
 END_FUNCTION_DEF(tbs_client)
 
-//function to send an event that can be easily put through boost::bind.
-void tbs_msg_received(entity_ptr e, std::string msg)
-{
-	game_logic::map_formula_callable* callable(new game_logic::map_formula_callable);
-	variant holder(callable);
-	callable->add("message", variant(json::parse(msg)));
-	e->handle_event("message_received", callable);
-}
 
-void tbs_conn_error(entity_ptr e, std::string msg)
+void tbs_send_event(entity_ptr e, game_logic::map_formula_callable_ptr callable, const std::string& ev)
 {
-	game_logic::map_formula_callable* callable(new game_logic::map_formula_callable);
-	variant holder(callable);
-	callable->add("error", variant(msg));
-	e->handle_event("connection_error", callable);
+	e->handle_event(ev, callable.get());
 }
 
 class tbs_send_command : public entity_command_callable
@@ -123,7 +112,8 @@ public:
 
 	virtual void execute(level& lvl, entity& ob) const {
 		tbs::client* tbs_client = client_.try_convert<tbs::client>();
-		tbs_client->send_request(msg_.write_json(), boost::bind(tbs_msg_received, entity_ptr(&ob), _1), boost::bind(tbs_conn_error, entity_ptr(&ob), _1));
+		game_logic::map_formula_callable_ptr callable(new game_logic::map_formula_callable);
+		tbs_client->send_request(msg_.write_json(), callable, boost::bind(tbs_send_event, entity_ptr(&ob), callable, _1));
 	}
 
 };
@@ -725,6 +715,38 @@ FUNCTION_DEF(object, 1, 5, "object(string type_id, int midpoint_x, int midpoint_
 
 	return variant(obj);
 END_FUNCTION_DEF(object)
+
+FUNCTION_DEF(object_playable, 1, 5, "object_playable(string type_id, int midpoint_x, int midpoint_y, int facing, (optional) map properties) -> object: constructs and returns a new object. Note that the difference between this and spawn is that spawn returns a command to actually place the object in the level. object_playable only creates the playble object and returns it. It may be stored for later use.")
+	formula::fail_if_static_context();
+	const std::string type = args()[0]->evaluate(variables).as_string();
+	playable_custom_object* obj;
+	
+	if(args().size() > 1) {
+		const int x = args()[1]->evaluate(variables).as_int();
+		const int y = args()[2]->evaluate(variables).as_int();
+		const bool face_right = args()[3]->evaluate(variables).as_int() > 0;
+		obj = new playable_custom_object(custom_object(type, x, y, face_right));
+	} else {
+		const int x = 0;
+		const int y = 0;
+		const bool face_right = true;
+		obj = new playable_custom_object(custom_object(type, x, y, face_right));
+	}
+		
+	//adjust so the object's x/y is its midpoint.
+	obj->set_pos(obj->x() - obj->current_frame().width() / 2 , obj->y() - obj->current_frame().height() / 2);
+
+	if(args().size() > 4) {
+		variant properties = args()[4]->evaluate(variables);
+		variant keys = properties.get_keys();
+		for(int n = 0; n != keys.num_elements(); ++n) {
+			variant value = properties[keys[n]];
+			obj->mutate_value(keys[n].as_string(), value);
+		}
+	}
+
+	return variant(obj);
+END_FUNCTION_DEF(object_playable)
 
 class animation_command : public custom_object_command_callable
 {
@@ -1968,7 +1990,7 @@ END_FUNCTION_DEF(set_widgets)
 class clear_widgets_command : public entity_command_callable {
 	const entity_ptr target_;
 public:
-	clear_widgets_command (entity_ptr target) : target_(target)
+	clear_widgets_command(entity_ptr target) : target_(target)
 	{}
 
 	virtual void execute(level& lvl, entity& ob) const {
@@ -1982,6 +2004,12 @@ FUNCTION_DEF(clear_widgets, 1, 1, "clear_widgets(obj): Clears all widgets from t
 	entity_ptr target = args()[0]->evaluate(variables).try_convert<entity>();
 	return variant(new clear_widgets_command(target));
 END_FUNCTION_DEF(clear_widgets)
+
+FUNCTION_DEF(get_widget, 2, 2, "get_widget(object obj, string id): returns the widget with the matching id for given object")
+	boost::intrusive_ptr<custom_object> target = args()[0]->evaluate(variables).try_convert<custom_object>();
+	std::string id = args()[1]->evaluate(variables).as_string();
+	return variant(target->get_widget_by_id(id).get());
+END_FUNCTION_DEF(get_widget)
 
 class add_level_module_command : public entity_command_callable {
 	std::string lvl_;

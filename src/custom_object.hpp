@@ -209,6 +209,7 @@ public:
 	void add_widget(const gui::widget_ptr& w) { widgets_.push_back(w); std::sort(widgets_.begin(), widgets_.end(), gui::widget_sort_zorder()); }
 	void add_widgets(std::vector<gui::widget_ptr>* widgets) { widgets_.swap(*widgets); std::sort(widgets_.begin(), widgets_.end(), gui::widget_sort_zorder()); }
 	void clear_widgets() { widgets_.clear(); }
+	gui::widget_ptr get_widget_by_id(const std::string& id);
 
 protected:
 	//components of per-cycle process() that can be done even on

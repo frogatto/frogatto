@@ -4174,6 +4174,16 @@ game_logic::formula_ptr custom_object::create_formula(const variant& v)
 	return game_logic::formula_ptr(new game_logic::formula(v, &get_custom_object_functions_symbol_table()));
 }
 
+gui::widget_ptr custom_object::get_widget_by_id(const std::string& id)
+{
+	foreach(const gui::widget_ptr& w, widgets_) {
+		gui::widget_ptr wx = w->get_widget_by_id(id);
+		if(wx) {
+			return wx;
+		}
+	}
+}
+
 BENCHMARK(custom_object_spike) {
 	static level* lvl = NULL;
 	if(!lvl) {	

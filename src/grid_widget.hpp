@@ -66,6 +66,7 @@ public:
 	void allow_draw_highlight(bool val=true) { allow_highlight_ = val; }
 
 	bool has_focus() const;
+	virtual widget_ptr get_widget_by_id(const std::string& id);
 protected:
 	virtual bool handle_event(const SDL_Event& event, bool claimed);
 	virtual void handle_draw() const;
