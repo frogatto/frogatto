@@ -3533,9 +3533,9 @@ entity_ptr custom_object::backup() const
 	return res;
 }
 
-void custom_object::handle_event(const std::string& event, const formula_callable* context)
+bool custom_object::handle_event(const std::string& event, const formula_callable* context)
 {
-	handle_event(get_object_event_id(event), context);
+	return handle_event(get_object_event_id(event), context);
 }
 
 namespace {
@@ -3555,14 +3555,14 @@ public:
 };
 }
 
-void custom_object::handle_event_delay(int event, const formula_callable* context)
+bool custom_object::handle_event_delay(int event, const formula_callable* context)
 {
-	handle_event_internal(event, context, false);
+	return handle_event_internal(event, context, false);
 }
 
-void custom_object::handle_event(int event, const formula_callable* context)
+bool custom_object::handle_event(int event, const formula_callable* context)
 {
-	handle_event_internal(event, context);
+	return handle_event_internal(event, context);
 }
 
 namespace {
@@ -3583,11 +3583,11 @@ struct die_event_scope {
 };
 }
 
-void custom_object::handle_event_internal(int event, const formula_callable* context, bool execute_commands_now)
+bool custom_object::handle_event_internal(int event, const formula_callable* context, bool execute_commands_now)
 {
 	const die_event_scope die_scope(event, currently_handling_die_event_);
 	if(hitpoints_ <= 0 && !currently_handling_die_event_) {
-		return;
+		return false;
 	}
 
 	const game_logic::formula* handlers[2];
@@ -3603,7 +3603,7 @@ void custom_object::handle_event_internal(int event, const formula_callable* con
 	}
 
 	if(!nhandlers) {
-		return;
+		return false;
 	}
 
 	swallow_mouse_event_ = false;
@@ -3654,6 +3654,7 @@ void custom_object::handle_event_internal(int event, const formula_callable* con
 			break;
 		}
 	}
+	return true;
 }
 
 void custom_object::resolve_delayed_events()

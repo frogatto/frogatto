@@ -189,9 +189,9 @@ public:
 	virtual game_logic::const_formula_ptr get_event_handler(int key) const { return game_logic::const_formula_ptr(); }
 	virtual void set_event_handler(int, game_logic::const_formula_ptr f) { return; }
 
-	virtual void handle_event(const std::string& id, const formula_callable* context=NULL) {}
-	virtual void handle_event(int id, const formula_callable* context=NULL) {}
-	virtual void handle_event_delay(int id, const formula_callable* context=NULL) {}
+	virtual bool handle_event(const std::string& id, const formula_callable* context=NULL) { return false; }
+	virtual bool handle_event(int id, const formula_callable* context=NULL) { return false; }
+	virtual bool handle_event_delay(int id, const formula_callable* context=NULL) { return false; }
 	virtual void resolve_delayed_events() = 0;
 
 	//function which returns true if this object can be 'interacted' with.

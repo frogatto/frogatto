@@ -411,7 +411,7 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 						mouse_in.insert(*it);
 					}
 
-					(*it)->handle_event(basic_evt, callable);
+					handled |= (*it)->handle_event(basic_evt, callable);
 					// XXX: fix this for dragging(with multiple mice)
 					if(event.type == SDL_MOUSEBUTTONUP && !click_handled && (*it)->is_being_dragged() == false) {
 						(*it)->handle_event(MouseClickID, callable);
@@ -419,7 +419,6 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 							click_handled = true;
 						}
 					}
-					handled = true;
 					items.push_back(variant((*it).get()));
 				}
 				// Handling for "catch all" mouse events.
@@ -427,28 +426,30 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 				variant obj_ary(&items);
 				callable->add("objects_under_mouse", obj_ary);
 				foreach(entity_ptr object, level::current().get_chars()) {
-					object->handle_event(catch_all_event, callable);
+					if(object) {
+						object->handle_event(catch_all_event, callable);
 
-					// drag handling
-					if(event.type == SDL_MOUSEBUTTONUP) {
-						object->set_mouse_buttons(object->get_mouse_buttons() & ~SDL_BUTTON(event.button.button));
-						if(object->get_mouse_buttons() == 0 && object->is_being_dragged()) {
-							object->handle_event(MouseDragEndID, callable);
-							object->set_being_dragged(false);
-						}
-					} else if(event.type == SDL_MOUSEMOTION) {
-						// drag check.
-						if(object->is_being_dragged()) {
-							if(object->get_mouse_buttons() & button_state) {
-								object->handle_event(MouseDragID, callable);
-							} else {
+						// drag handling
+						if(event.type == SDL_MOUSEBUTTONUP) {
+							object->set_mouse_buttons(object->get_mouse_buttons() & ~SDL_BUTTON(event.button.button));
+							if(object->get_mouse_buttons() == 0 && object->is_being_dragged()) {
 								object->handle_event(MouseDragEndID, callable);
 								object->set_being_dragged(false);
 							}
-						} else if(object->get_mouse_buttons() & button_state) {
-							// start drag.
-							object->handle_event(MouseDragStartID, callable);
-							object->set_being_dragged();
+						} else if(event.type == SDL_MOUSEMOTION) {
+							// drag check.
+							if(object->is_being_dragged()) {
+								if(object->get_mouse_buttons() & button_state) {
+									object->handle_event(MouseDragID, callable);
+								} else {
+									object->handle_event(MouseDragEndID, callable);
+									object->set_being_dragged(false);
+								}
+							} else if(object->get_mouse_buttons() & button_state) {
+								// start drag.
+								object->handle_event(MouseDragStartID, callable);
+								object->set_being_dragged();
+							}
 						}
 					}
 				}
