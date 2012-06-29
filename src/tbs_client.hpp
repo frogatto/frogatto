@@ -18,7 +18,7 @@ class client : public game_logic::formula_callable
 {
 public:
 	client(const std::string& host, const std::string& port, int session=-1);
-	void send_request(const std::string& request, boost::function<void(std::string)> handler, boost::function<void(std::string)> error_handler);
+	void send_request(const std::string& request, game_logic::map_formula_callable_ptr callable, boost::function<void(std::string)> handler);
 	void process();
 private:
 	
@@ -34,7 +34,7 @@ private:
 		tcp::socket socket;
 		std::string request, response;
 		boost::function<void(std::string)> handler;
-		boost::function<void(std::string)> error_handler;
+		game_logic::map_formula_callable_ptr callable;
 
 		boost::array<char, 1024> buf;
 		
