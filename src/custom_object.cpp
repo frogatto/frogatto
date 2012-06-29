@@ -4182,6 +4182,7 @@ gui::widget_ptr custom_object::get_widget_by_id(const std::string& id)
 			return wx;
 		}
 	}
+	return gui::widget_ptr();
 }
 
 BENCHMARK(custom_object_spike) {
