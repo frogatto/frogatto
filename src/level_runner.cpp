@@ -785,7 +785,7 @@ bool level_runner::play_cycle()
 				game_logic::map_formula_callable_ptr callable(new game_logic::map_formula_callable());
 				callable->add("new_playable", variant(portal->new_playable.get()));
 				player->get_entity().handle_event("player_change_on_teleport", callable.get());
-				lvl_->player()->set_entity(*portal->new_playable);
+				lvl_->add_player(portal->new_playable);
 				player = lvl_->player();
 			}
 
@@ -868,7 +868,7 @@ bool level_runner::play_cycle()
 				game_logic::map_formula_callable_ptr callable(new game_logic::map_formula_callable());
 				callable->add("new_playable", variant(portal->new_playable.get()));
 				player->get_entity().handle_event("player_change_on_teleport", callable.get());
-				lvl_->player()->set_entity(*portal->new_playable);
+				lvl_->add_player(portal->new_playable);
 				player = lvl_->player();
 			}
 
