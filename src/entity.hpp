@@ -268,6 +268,7 @@ public:
 	Uint8 get_mouse_buttons() const { return mouse_button_state_; }
 	bool is_being_dragged() const { return being_dragged_; }
 	void set_being_dragged(bool val=true) { being_dragged_ = val; }
+	virtual bool get_clip_area(rect* clip_area) = 0;
 
 	virtual const game_logic::formula_callable_definition* get_definition() const = 0;
 

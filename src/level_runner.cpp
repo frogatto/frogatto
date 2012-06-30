@@ -400,6 +400,14 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 				bool click_handled = false;
 				std::set<entity_ptr> mouse_in;
 				for(it = cs.begin(); it != cs.end(); ++it) {
+					rect clip_area;
+					// n.b. clip_area is in level coordinates, not relative to the object.
+					if((*it)->get_clip_area(&clip_area)) {
+						if(point_in_rect(point(x, y), clip_area) == false) {
+							continue;
+						}
+					}
+
 					if(event.type == SDL_MOUSEBUTTONDOWN) {
 						(*it)->set_mouse_buttons((*it)->get_mouse_buttons() | SDL_BUTTON(event.button.button));
 					} else if(event.type == SDL_MOUSEMOTION) {
@@ -457,9 +465,17 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 				if(event.type == SDL_MOUSEMOTION) {
 					// handling for mouse_leave
 					foreach(const entity_ptr& e, level::current().get_chars()) {
-						if(mouse_in.find(e) == mouse_in.end() && e->is_mouse_over_entity()) {
-							e->handle_event(MouseLeaveID, callable);
-							e->set_mouse_over_entity(false);
+						if(e) {
+							// n.b. clip_area is in level coordinates, not relative to the object.
+							rect clip_area;
+							bool has_clip_area = e->get_clip_area(&clip_area);
+
+							if(mouse_in.find(e) == mouse_in.end() 
+								&& ((has_clip_area == false && e->is_mouse_over_entity())
+								|| (e->is_mouse_over_entity() && has_clip_area && point_in_rect(point(x, y), clip_area) == false))) {
+								e->handle_event(MouseLeaveID, callable);
+								e->set_mouse_over_entity(false);
+							}
 						}
 					}
 				}
