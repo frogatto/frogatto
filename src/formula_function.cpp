@@ -1207,6 +1207,17 @@ FUNCTION_DEF(show_modal, 1, 1, "show_modal(dialog): Displays a modal dialog on t
 	return variant::from_bool(dialog->cancelled() == false);
 END_FUNCTION_DEF(show_modal)
 
+FUNCTION_DEF(index, 2, 2, "index(list, value) -> index of value in list: Returns the index of the value in the list or -1 if value wasn't found in the list.")
+	variant value = args()[1]->evaluate(variables);
+	variant li = args()[0]->evaluate(variables);
+	for(int n = 0; n < li.num_elements(); n++) {
+		if(value == li[n]) {
+			return variant(n);
+		}
+	}
+	return variant(-1);
+END_FUNCTION_DEF(index)
+
 namespace {
 void evaluate_expr_for_benchmark(const formula_expression* expr, const formula_callable* variables, int ntimes)
 {
