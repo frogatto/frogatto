@@ -9,10 +9,10 @@ namespace module {
 namespace {
 
 // This will disappear when frogatto is moved to it's on module, then it becomes "core", "core", "core".
-module::modules frogatto = {"frogatto", "Frogatto", "core", ""};
+module::modules core = {"core", "core", "core", ""};
 
 std::vector<module::modules>& loaded_paths() {
-	static std::vector<module::modules> result(1, frogatto);
+	static std::vector<module::modules> result(1, core);
 	return result;
 }
 }
@@ -199,7 +199,7 @@ void load(const std::string& mod_file_name, bool initial)
 
 void reload(const std::string& name) {
 	loaded_paths().clear();
-	loaded_paths().push_back(frogatto);
+	loaded_paths().push_back(core);
 	load(name, true);
 }
 

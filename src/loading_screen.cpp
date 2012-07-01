@@ -84,8 +84,10 @@ void loading_screen::draw_internal (const std::string& message)
 	
 	const_graphical_font_ptr font = graphical_font::get("door_label");
 	//explicitly translate loading messages
-	rect text_size = font->dimensions(i18n::tr(message));
-	font->draw(screen_w/2 - text_size.w()/2, screen_h/2 + bar_height/2 + 5, i18n::tr(message));
+	if(font) {
+		rect text_size = font->dimensions(i18n::tr(message));
+		font->draw(screen_w/2 - text_size.w()/2, screen_h/2 + bar_height/2 + 5, i18n::tr(message));
+	}
 }
 
 void loading_screen::increment_status ()
