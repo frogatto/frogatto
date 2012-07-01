@@ -183,11 +183,11 @@ void load(const std::string& mod_file_name, bool initial)
 		if(v["abbreviation"].is_null() == false) {
 			abbrev = v["abbreviation"].as_string();
 		}
-		if(v["include-modules"].is_null() == false) {
-			if(v["include-modules"].is_string()) {
-				load(v["include-modules"].as_string(), false);
-			} else if( v["include-modules"].is_list()) {
-				foreach(const std::string& modname, v["include-modules"].as_list_string()) {
+		if(v["dependencies"].is_null() == false) {
+			if(v["dependencies"].is_string()) {
+				load(v["dependencies"].as_string(), false);
+			} else if( v["dependencies"].is_list()) {
+				foreach(const std::string& modname, v["dependencies"].as_list_string()) {
 					load(modname, false);
 				}
 			}
@@ -222,10 +222,10 @@ void load_module_from_file(const std::string& modname, modules* mod_) {
 		if(v["abbreviation"].is_null() == false) {
 			mod_->abbreviation_= v["abbreviation"].as_string();
 		}
-		if(v["include-modules"].is_string()) {
-			mod_->included_modules_.push_back(v["include-modules"].as_string());
-		} else if(v["include-modules"].is_list()) {
-			foreach(const std::string& s, v["include-modules"].as_list_string()) {
+		if(v["dependencies"].is_string()) {
+			mod_->included_modules_.push_back(v["dependencies"].as_string());
+		} else if(v["dependencies"].is_list()) {
+			foreach(const std::string& s, v["dependencies"].as_list_string()) {
 				mod_->included_modules_.push_back(s);
 			}
 		}
