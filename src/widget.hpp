@@ -22,6 +22,11 @@
 
 namespace gui {
 
+class widget;
+
+typedef boost::intrusive_ptr<widget> widget_ptr;
+typedef boost::intrusive_ptr<const widget> const_widget_ptr;
+
 class widget : public virtual input::listener
 {
 public:
@@ -38,9 +43,12 @@ public:
 	void set_tooltip(const std::string& str);
 	bool visible() { return visible_; }
 	void set_visible(bool visible) { visible_ = visible; }
+	std::string id() const { return id_; }
 
 	virtual void set_value(const std::string& key, const variant& v);
 	virtual variant get_value(const std::string& key) const;
+
+	virtual widget_ptr get_widget_by_id(const std::string& id);
 
 	virtual void handle_draw() const = 0;
 
@@ -52,7 +60,9 @@ public:
 
 	void process();
 protected:
-	widget() : x_(0), y_(0), w_(0), h_(0), tooltip_displayed_(false), visible_(true), zorder_(0), environ_(0)
+	widget() 
+		: x_(0), y_(0), w_(0), h_(0), 
+		tooltip_displayed_(false), visible_(true), zorder_(0), environ_(0)
 	{}
 	explicit widget(const variant& v, game_logic::formula_callable* e);
 	virtual ~widget();
@@ -74,10 +84,8 @@ private:
 	// default zorder_ is 0.  A widget *must* have a good reason for wanting
 	// higher priority in the draw order.
 	int zorder_;
+	std::string id_;
 };
-
-typedef boost::intrusive_ptr<widget> widget_ptr;
-typedef boost::intrusive_ptr<const widget> const_widget_ptr;
 
 // Functor to sort widgets by z-ordering.
 class widget_sort_zorder

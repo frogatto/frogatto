@@ -342,6 +342,16 @@ bool dialog::has_focus() const
 	return false;
 }
 
+widget_ptr dialog::get_widget_by_id(const std::string& id)
+{
+	foreach(widget_ptr w, widgets_) {
+		widget_ptr wx = w->get_widget_by_id(id);
+		if(wx) {
+			return wx;
+		}
+	}
+	return widget::get_widget_by_id(id);
+}
 
 void dialog::set_value(const std::string& key, const variant& v)
 {

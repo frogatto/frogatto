@@ -2922,6 +2922,7 @@ void level::add_player(entity_ptr p)
 		player_->get_player_info()->set_player_slot(players_.size());
 		players_.push_back(player_);
 	} else {
+		ASSERT_LOG(player_->is_human(), "level::add_player(): Tried to add player to the level that isn't human.");
 		player_->get_player_info()->set_player_slot(0);
 		players_[0] = player_;
 	}

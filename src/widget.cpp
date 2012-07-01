@@ -26,7 +26,9 @@
 namespace gui {
 
 widget::widget(const variant& v, game_logic::formula_callable* e) 
-	: environ_(e), w_(0), h_(0), x_(0), y_(0), zorder_(0), tooltip_displayed_(false)
+	: environ_(e), w_(0), h_(0), x_(0), y_(0), zorder_(0), 
+	tooltip_displayed_(false), id_(v["id"].as_string_default())
+	
 {
 	if(v.has_key("width")) {
 		w_ = v["width"].as_int();
@@ -200,6 +202,14 @@ int widget::height() const
 	return h_;
 }
 
+widget_ptr widget::get_widget_by_id(const std::string& id)
+{
+	if(id_ == id) {
+		return widget_ptr(this);
+	}
+	return widget_ptr();
+}
+
 variant widget::get_value(const std::string& key) const
 {
 	if(key == "draw_area") {
@@ -215,6 +225,8 @@ variant widget::get_value(const std::string& key) const
 		}
 	} else if(key == "is_visible") {
 		return variant(visible_);
+	} else if(key == "id") {
+		return variant(id_);
 	}
 	return variant();
 }
@@ -252,6 +264,8 @@ void widget::set_value(const std::string& key, const variant& v)
 		h_ = v.as_int() - y();
 	} else if(key == "visible") {
 		visible_ = v.as_bool();
+	} else if(key == "id") {
+		id_ = v.as_string();
 	}
 }
 

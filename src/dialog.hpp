@@ -64,6 +64,7 @@ public:
 	virtual bool has_focus() const;
 	void set_process_hook(boost::function<void()> fn) { on_process_ = fn; }
 	static void draw_last_scene();
+	virtual widget_ptr get_widget_by_id(const std::string& id);
 protected:
 	virtual bool handle_event(const SDL_Event& event, bool claimed);
 	virtual bool handle_event_children(const SDL_Event& event, bool claimed);

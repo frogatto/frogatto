@@ -400,6 +400,14 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 				bool click_handled = false;
 				std::set<entity_ptr> mouse_in;
 				for(it = cs.begin(); it != cs.end(); ++it) {
+					rect clip_area;
+					// n.b. clip_area is in level coordinates, not relative to the object.
+					if((*it)->get_clip_area(&clip_area)) {
+						if(point_in_rect(point(x, y), clip_area) == false) {
+							continue;
+						}
+					}
+
 					if(event.type == SDL_MOUSEBUTTONDOWN) {
 						(*it)->set_mouse_buttons((*it)->get_mouse_buttons() | SDL_BUTTON(event.button.button));
 					} else if(event.type == SDL_MOUSEMOTION) {
@@ -411,7 +419,7 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 						mouse_in.insert(*it);
 					}
 
-					(*it)->handle_event(basic_evt, callable);
+					handled |= (*it)->handle_event(basic_evt, callable);
 					// XXX: fix this for dragging(with multiple mice)
 					if(event.type == SDL_MOUSEBUTTONUP && !click_handled && (*it)->is_being_dragged() == false) {
 						(*it)->handle_event(MouseClickID, callable);
@@ -419,7 +427,6 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 							click_handled = true;
 						}
 					}
-					handled = true;
 					items.push_back(variant((*it).get()));
 				}
 				// Handling for "catch all" mouse events.
@@ -427,28 +434,30 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 				variant obj_ary(&items);
 				callable->add("objects_under_mouse", obj_ary);
 				foreach(entity_ptr object, level::current().get_chars()) {
-					object->handle_event(catch_all_event, callable);
+					if(object) {
+						object->handle_event(catch_all_event, callable);
 
-					// drag handling
-					if(event.type == SDL_MOUSEBUTTONUP) {
-						object->set_mouse_buttons(object->get_mouse_buttons() & ~SDL_BUTTON(event.button.button));
-						if(object->get_mouse_buttons() == 0 && object->is_being_dragged()) {
-							object->handle_event(MouseDragEndID, callable);
-							object->set_being_dragged(false);
-						}
-					} else if(event.type == SDL_MOUSEMOTION) {
-						// drag check.
-						if(object->is_being_dragged()) {
-							if(object->get_mouse_buttons() & button_state) {
-								object->handle_event(MouseDragID, callable);
-							} else {
+						// drag handling
+						if(event.type == SDL_MOUSEBUTTONUP) {
+							object->set_mouse_buttons(object->get_mouse_buttons() & ~SDL_BUTTON(event.button.button));
+							if(object->get_mouse_buttons() == 0 && object->is_being_dragged()) {
 								object->handle_event(MouseDragEndID, callable);
 								object->set_being_dragged(false);
 							}
-						} else if(object->get_mouse_buttons() & button_state) {
-							// start drag.
-							object->handle_event(MouseDragStartID, callable);
-							object->set_being_dragged();
+						} else if(event.type == SDL_MOUSEMOTION) {
+							// drag check.
+							if(object->is_being_dragged()) {
+								if(object->get_mouse_buttons() & button_state) {
+									object->handle_event(MouseDragID, callable);
+								} else {
+									object->handle_event(MouseDragEndID, callable);
+									object->set_being_dragged(false);
+								}
+							} else if(object->get_mouse_buttons() & button_state) {
+								// start drag.
+								object->handle_event(MouseDragStartID, callable);
+								object->set_being_dragged();
+							}
 						}
 					}
 				}
@@ -456,9 +465,17 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 				if(event.type == SDL_MOUSEMOTION) {
 					// handling for mouse_leave
 					foreach(const entity_ptr& e, level::current().get_chars()) {
-						if(mouse_in.find(e) == mouse_in.end() && e->is_mouse_over_entity()) {
-							e->handle_event(MouseLeaveID, callable);
-							e->set_mouse_over_entity(false);
+						if(e) {
+							// n.b. clip_area is in level coordinates, not relative to the object.
+							rect clip_area;
+							bool has_clip_area = e->get_clip_area(&clip_area);
+
+							if(mouse_in.find(e) == mouse_in.end() 
+								&& ((has_clip_area == false && e->is_mouse_over_entity())
+								|| (e->is_mouse_over_entity() && has_clip_area && point_in_rect(point(x, y), clip_area) == false))) {
+								e->handle_event(MouseLeaveID, callable);
+								e->set_mouse_over_entity(false);
+							}
 						}
 					}
 				}
@@ -759,10 +776,19 @@ bool level_runner::play_cycle()
 					mutable_portal.dest = point(dest_door->x() + dest_door->teleport_offset_x()*dest_door->face_dir(), dest_door->y() + dest_door->teleport_offset_y());
 					mutable_portal.dest_starting_pos = false;
 				}
+
+			}
+			last_draw_position() = screen_position();
+
+			player_info* player = lvl_->player();
+			if(portal->new_playable) {
+				game_logic::map_formula_callable_ptr callable(new game_logic::map_formula_callable());
+				callable->add("new_playable", variant(portal->new_playable.get()));
+				player->get_entity().handle_event("player_change_on_teleport", callable.get());
+				lvl_->add_player(portal->new_playable);
+				player = lvl_->player();
 			}
 
-			last_draw_position() = screen_position();
-			player_info* player = lvl_->player();
 			if(player) {
 				player->get_entity().set_pos(portal->dest);
 				if(!player->get_entity().no_move_to_standing()){
@@ -826,13 +852,26 @@ bool level_runner::play_cycle()
 			if(portal->dest_str.empty() == false) {
 				dest = new_level->get_dest_from_str(portal->dest_str);
 			} else if(portal->dest_starting_pos) {
-				const player_info* new_player = new_level->player();
+				const player_info* new_player;
+				if(portal->new_playable) {
+					new_player = portal->new_playable->get_player_info();
+				} else {
+					new_player = new_level->player();
+				}
 				if(new_player) {
 					dest = point(new_player->get_entity().x(), new_player->get_entity().y());
 				}
 			}
 
 			player_info* player = lvl_->player();
+			if(portal->new_playable) {
+				game_logic::map_formula_callable_ptr callable(new game_logic::map_formula_callable());
+				callable->add("new_playable", variant(portal->new_playable.get()));
+				player->get_entity().handle_event("player_change_on_teleport", callable.get());
+				lvl_->add_player(portal->new_playable);
+				player = lvl_->player();
+			}
+
 			if(player && portal->saved_game == false) {
 				player->get_entity().set_pos(dest);
 				new_level->add_player(&player->get_entity());

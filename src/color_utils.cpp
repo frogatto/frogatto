@@ -1,6 +1,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include "color_chart.hpp"
 #include "graphics.hpp"
 #include "color_utils.hpp"
 #include "string_utils.hpp"
@@ -72,12 +73,16 @@ color::color(const SDL_Color& col)
 
 color::color(const variant& v)
 {
-	std::vector<int> vec = v.as_list_int();
-	const int r = vec.size() > 0 ? vec[0] : 0;
-	const int g = vec.size() > 1 ? vec[1] : 0;
-	const int b = vec.size() > 2 ? vec[2] : 0;
-	const int a = vec.size() > 3 ? vec[3] : 255;
-	*this = color(r,g,b,a);
+	if(v.is_string()) {
+		*this = color(graphics::get_color_from_name(v.as_string()));
+	} else {
+		std::vector<int> vec = v.as_list_int();
+		const int r = vec.size() > 0 ? vec[0] : 0;
+		const int g = vec.size() > 1 ? vec[1] : 0;
+		const int b = vec.size() > 2 ? vec[2] : 0;
+		const int a = vec.size() > 3 ? vec[3] : 255;
+		*this = color(r,g,b,a);
+	}
 }
 
 variant color::write() const

@@ -14,12 +14,12 @@ client::client(const std::string& host, const std::string& port, int session)
 {
 }
 
-void client::send_request(const std::string& request, boost::function<void(std::string)> handler, boost::function<void(std::string)> error_handler)
+void client::send_request(const std::string& request, game_logic::map_formula_callable_ptr callable, boost::function<void(std::string)> handler)
 {
 	connection_ptr conn(new Connection(io_service_));
 	conn->request = request;
 	conn->handler = handler;
-	conn->error_handler = error_handler;
+	conn->callable = callable;
 
 	resolver_.async_resolve(resolver_query_,
 		boost::bind(&client::handle_resolve, this,
@@ -46,7 +46,8 @@ void client::handle_resolve(const boost::system::error_code& error, tcp::resolve
 				boost::asio::placeholders::error, conn, endpoint_iterator_));
 #endif
 	} else {
-		conn->error_handler(error.message());
+		conn->callable->add("error", variant(error.message()));
+		conn->handler("connection_error");
 	}
 }
 
@@ -57,7 +58,12 @@ void client::handle_connect(const boost::system::error_code& error, connection_p
 		if(endpoint_iterator_ == resolve_itor) {
 			++endpoint_iterator_;
 		}
-		ASSERT_LOG(endpoint_iterator_ != tcp::resolver::iterator(), "COULD NOT RESOLVE TBS SERVER: " << resolve_itor->endpoint().address().to_string() << ":" << resolve_itor->endpoint().port());
+		//ASSERT_LOG(endpoint_iterator_ != tcp::resolver::iterator(), "COULD NOT RESOLVE TBS SERVER: " << resolve_itor->endpoint().address().to_string() << ":" << resolve_itor->endpoint().port());
+		if(endpoint_iterator_ == tcp::resolver::iterator()) {
+			conn->callable->add("error", variant("Could not resolve TBS server."));
+			conn->handler("connection_error");
+			return;
+		}
 
 #if BOOST_VERSION >= 104700
 		boost::asio::async_connect(conn->socket, 
@@ -71,6 +77,9 @@ void client::handle_connect(const boost::system::error_code& error, connection_p
 #endif
 		return;
 	}
+
+	// Indicate a successful connection.
+	conn->handler("connection_success");
 
 	//do async write.
 	std::ostringstream msg;
@@ -149,7 +158,8 @@ void client::handle_receive(connection_ptr conn, const boost::system::error_code
 			end_headers = strstr(conn->response.c_str(), "\r\n\r\n");
 		}
 		ASSERT_LOG(end_headers, "COULD NOT FIND END OF HEADERS IN MESSAGE: " << conn->response);
-		conn->handler(std::string(end_headers+header_term_len));
+		conn->callable->add("message", variant(std::string(end_headers+header_term_len)));
+		conn->handler("message_received");
 	} else {
 		conn->socket.async_read_some(boost::asio::buffer(conn->buf), boost::bind(&client::handle_receive, this, conn, _1, _2));
 	}

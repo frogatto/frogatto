@@ -38,6 +38,7 @@ public:
 		highlight_color_ = col;
 	}
 	variant get_tree() const { return tree_; }
+	widget_ptr get_widget_by_id(const std::string& id);
 protected:
 	virtual void handle_draw() const;
 	virtual bool handle_event(const SDL_Event& event, bool claimed);
