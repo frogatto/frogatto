@@ -530,24 +530,42 @@ FUNCTION_DEF(fold, 2, 3, "fold(list, expr, [default]) -> value")
 END_FUNCTION_DEF(fold)
 
 FUNCTION_DEF(zip, 3, 3, "zip(list1, list2, expr) -> list")
-	variant list1 = args()[0]->evaluate(variables);
-	variant list2 = args()[1]->evaluate(variables);
-	const int size = std::min(list1.num_elements(), list2.num_elements());
-	std::vector<variant> retList;
-	if(size == 0) {
-		return variant(&retList);
-	}
-
-	boost::intrusive_ptr<map_formula_callable> callable(new map_formula_callable(&variables));
+	map_formula_callable_ptr callable(new map_formula_callable(&variables));
 	variant& a = callable->add_direct_access("a");
 	variant& b = callable->add_direct_access("b");
-	for(int n = 0; n < size; ++n) {
-		a = list1[n];
-		b = list2[n];
-		retList.push_back(args()[2]->evaluate(*callable));
-	}
+	variant item1 = args()[0]->evaluate(variables);
+	variant item2 = args()[1]->evaluate(variables);
 
-	return variant(&retList);
+	ASSERT_LOG(item1.type() == item2.type(), "zip function arguments must both be the same type.");
+	ASSERT_LOG(item1.is_list() || item1.is_map(), "zip function arguments must be either lists or maps");
+	const int size = std::min(item1.num_elements(), item2.num_elements());
+
+	if(item1.is_list()) {
+		std::vector<variant> retList;
+		// is list
+		if(size != 0) {
+			for(int n = 0; n < size; ++n) {
+				a = item1[n];
+				b = item2[n];
+				retList.push_back(args()[2]->evaluate(*callable));
+			}
+		}
+		return variant(&retList);
+	} else {
+		std::map<variant,variant> retMap(item1.as_map());
+		variant keys = item2.get_keys();
+		for(int n = 0; n != keys.num_elements(); n++) {
+			if(retMap[keys[n]].is_null() == false) {
+				a = retMap[keys[n]];
+				b = item2[keys[n]];
+				retMap[keys[n]] = args()[2]->evaluate(*callable);
+			} else {
+				retMap[keys[n]] = item2[keys[n]];
+			}
+		}
+		return variant(&retMap);
+	}
+	return variant();
 END_FUNCTION_DEF(zip)
 
 /* XXX Krista to be reworked
