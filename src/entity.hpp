@@ -274,6 +274,8 @@ public:
 
 	virtual void create_object() = 0;
 
+	virtual bool use_absolute_screen_coordinates() const = 0;
+
 protected:
 
 	virtual const_solid_info_ptr calculate_solid() const = 0;
@@ -295,7 +297,6 @@ protected:
 	void set_collide_dimensions(unsigned int dim, unsigned int weak) { collide_dimensions_ = dim; weak_collide_dimensions_ = dim|weak; }
 
 	const std::vector<entity_ptr>& attached_objects() const { return attached_objects_; }
-
 
 private:
 	virtual void control(const level& lvl) = 0;

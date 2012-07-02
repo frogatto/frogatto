@@ -364,8 +364,8 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
 		case SDL_MOUSEMOTION:
-		    int x = event.type == SDL_MOUSEMOTION ? event.motion.x : event.button.x;
-			int y = event.type == SDL_MOUSEMOTION ? event.motion.y : event.button.y;
+		    int x, mx = event.type == SDL_MOUSEMOTION ? event.motion.x : event.button.x;
+			int y, my = event.type == SDL_MOUSEMOTION ? event.motion.y : event.button.y;
 			int i = event.type == SDL_MOUSEMOTION ? event.motion.which : event.button.which;
 			const int basic_evt = event.type == SDL_MOUSEBUTTONDOWN 
 				? MouseDownEventID 
@@ -377,8 +377,8 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 					? MouseMoveEventAllID : MouseUpEventAllID;
 			Uint8 button_state = SDL_GetMouseState(0,0);
 			if(!lvl_->gui_event(event)) {
-				x = (x*graphics::screen_width())/preferences::virtual_screen_width() + last_draw_position().x/100;
-				y = (y*graphics::screen_height())/preferences::virtual_screen_height() + last_draw_position().y/100;
+				x = (mx*graphics::screen_width())/preferences::virtual_screen_width() + last_draw_position().x/100;
+				y = (my*graphics::screen_height())/preferences::virtual_screen_height() + last_draw_position().y/100;
 				game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
 				callable->add("mouse_x", variant(x));
 				callable->add("mouse_y", variant(y));
@@ -403,7 +403,11 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 					rect clip_area;
 					// n.b. clip_area is in level coordinates, not relative to the object.
 					if((*it)->get_clip_area(&clip_area)) {
-						if(point_in_rect(point(x, y), clip_area) == false) {
+						point p(x,y);
+						if((*it)->use_absolute_screen_coordinates()) {
+							p = point(mx,my);
+						}
+						if(point_in_rect(p, clip_area) == false) {
 							continue;
 						}
 					}
@@ -469,10 +473,14 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 							// n.b. clip_area is in level coordinates, not relative to the object.
 							rect clip_area;
 							bool has_clip_area = e->get_clip_area(&clip_area);
+							point p(x,y);
+							if(e->use_absolute_screen_coordinates()) {
+								p = point(mx,my);
+							}
 
 							if(mouse_in.find(e) == mouse_in.end() 
 								&& ((has_clip_area == false && e->is_mouse_over_entity())
-								|| (e->is_mouse_over_entity() && has_clip_area && point_in_rect(point(x, y), clip_area) == false))) {
+								|| (e->is_mouse_over_entity() && has_clip_area && point_in_rect(p, clip_area) == false))) {
 								e->handle_event(MouseLeaveID, callable);
 								e->set_mouse_over_entity(false);
 							}
@@ -868,11 +876,12 @@ bool level_runner::play_cycle()
 				game_logic::map_formula_callable_ptr callable(new game_logic::map_formula_callable());
 				callable->add("new_playable", variant(portal->new_playable.get()));
 				player->get_entity().handle_event("player_change_on_teleport", callable.get());
-				lvl_->add_player(portal->new_playable);
-				player = lvl_->player();
 			}
 
 			if(player && portal->saved_game == false) {
+				if(portal->new_playable) {
+					player = portal->new_playable->get_player_info();
+				}
 				player->get_entity().set_pos(dest);
 				new_level->add_player(&player->get_entity());
 				if(!player->get_entity().no_move_to_standing()){

@@ -2116,7 +2116,7 @@ void level::set_active_chars()
 	const rect screen_area(screen_left, screen_top, screen_right - screen_left, screen_bottom - screen_top);
 	active_chars_.clear();
 	foreach(entity_ptr& c, chars_) {
-		const bool is_active = c->is_active(screen_area);
+		const bool is_active = c->is_active(screen_area) || c->use_absolute_screen_coordinates();
 
 		if(is_active) {
 			if(c->group() >= 0) {
@@ -2778,13 +2778,12 @@ std::vector<entity_ptr> level::get_characters_at_point(int x, int y, int screen_
 		if(object_classification_hidden(*c)) {
 			continue;
 		}
-		custom_object* obj = dynamic_cast<custom_object*>(c.get());
 
 		const int xP = x + ((1000 - (c->parallax_scale_millis_x()))* screen_xpos )/1000
-			- (obj->use_absolute_screen_coordinates() ? screen_xpos : 0);
+			- (c->use_absolute_screen_coordinates() ? screen_xpos : 0);
 		const int yP = y + ((1000 - (c->parallax_scale_millis_y()))* screen_ypos )/1000
-			- (obj->use_absolute_screen_coordinates() ? screen_ypos : 0);
-		
+			- (c->use_absolute_screen_coordinates() ? screen_ypos : 0);
+
 		if(!c->is_alpha(xP, yP)) {
 			result.push_back(c);
 		}
