@@ -39,8 +39,8 @@ const std::string& get_level_path(const std::string& name) {
 	}
 	std::map<std::string, std::string>::const_iterator itor = module::find(get_level_paths(), name);
 	if(itor == get_level_paths().end()) {
-		std::cerr << "FILE NOT FOUND " << name << std::endl;
-		ASSERT_LOG(false, "FILE NOT FOUND" << name);
+		std::cerr << "FILE NOT FOUND: " << name << std::endl;
+		ASSERT_LOG(false, "FILE NOT FOUND: " << name);
 	}
 	return itor->second;
 }
@@ -72,7 +72,7 @@ void clear_level_wml()
 
 void preload_level_wml(const std::string& lvl)
 {
-	if(lvl == "save.cfg" || lvl == "autosave.cfg") {
+	if(lvl == "autosave.cfg" || (lvl.substr(0,4) == "save" && lvl.substr(lvl.length()-4) == ".cfg")) {
 		return;
 	}
 
@@ -91,12 +91,12 @@ variant load_level_wml(const std::string& lvl)
 		return json::parse_from_file("./tmp_state.cfg");
 	}
 
-	if(lvl == "save.cfg" || lvl == "autosave.cfg") {
+	if(lvl == "autosave.cfg" || (lvl.substr(0,4) == "save" && lvl.substr(lvl.length()-4) == ".cfg")) {
 		std::string filename;
-		if(lvl == "save.cfg") {
-			filename = preferences::save_file_path();
-		} else {
+		if(lvl == "autosave.cfg") {
 			filename = preferences::auto_save_file_path();
+		} else {
+			filename = preferences::save_file_path();
 		}
 
 		return json::parse_from_file(filename);
