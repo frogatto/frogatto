@@ -529,7 +529,7 @@ FUNCTION_DEF(fold, 2, 3, "fold(list, expr, [default]) -> value")
 	return a;
 END_FUNCTION_DEF(fold)
 
-FUNCTION_DEF(zipWith, 3, 3, "zipWith(list1, list2, expr) -> list")
+FUNCTION_DEF(zip, 3, 3, "zip(list1, list2, expr) -> list")
 	variant list1 = args()[0]->evaluate(variables);
 	variant list2 = args()[1]->evaluate(variables);
 	const int size = std::min(list1.num_elements(), list2.num_elements());
@@ -548,7 +548,7 @@ FUNCTION_DEF(zipWith, 3, 3, "zipWith(list1, list2, expr) -> list")
 	}
 
 	return variant(&retList);
-END_FUNCTION_DEF(zipWith)
+END_FUNCTION_DEF(zip)
 
 /* XXX Krista to be reworked
 FUNCTION_DEF(update_controls, 1, 1, "update_controls(map) : Updates the controls based on a list of id:string, pressed:bool pairs")
