@@ -231,7 +231,7 @@ void editor_module_properties_dialog::save_module_properties() {
 			foreach(const std::string& s, mod_.included_modules_) {
 				v.push_back(variant(s));
 			}
-			m[variant("include-modules")] = variant(&v);
+			m[variant("dependencies")] = variant(&v);
 		}
 		variant new_module(&m);
 		std::string mod_path = "./modules/" + mod_.name_ + "/";

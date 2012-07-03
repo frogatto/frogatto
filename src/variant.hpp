@@ -238,6 +238,8 @@ public:
 	void set_debug_info(const debug_info& info);
 	const debug_info* get_debug_info() const;
 
+	std::pair<variant*,variant*> range() const;
+
 private:
 	void must_be(TYPE t) const {
 #if !TARGET_OS_IPHONE

@@ -529,26 +529,44 @@ FUNCTION_DEF(fold, 2, 3, "fold(list, expr, [default]) -> value")
 	return a;
 END_FUNCTION_DEF(fold)
 
-FUNCTION_DEF(zipWith, 3, 3, "zipWith(list1, list2, expr) -> list")
-	variant list1 = args()[0]->evaluate(variables);
-	variant list2 = args()[1]->evaluate(variables);
-	const int size = std::min(list1.num_elements(), list2.num_elements());
-	std::vector<variant> retList;
-	if(size == 0) {
-		return variant(&retList);
-	}
-
-	boost::intrusive_ptr<map_formula_callable> callable(new map_formula_callable(&variables));
+FUNCTION_DEF(zip, 3, 3, "zip(list1, list2, expr) -> list")
+	map_formula_callable_ptr callable(new map_formula_callable(&variables));
 	variant& a = callable->add_direct_access("a");
 	variant& b = callable->add_direct_access("b");
-	for(int n = 0; n < size; ++n) {
-		a = list1[n];
-		b = list2[n];
-		retList.push_back(args()[2]->evaluate(*callable));
-	}
+	variant item1 = args()[0]->evaluate(variables);
+	variant item2 = args()[1]->evaluate(variables);
 
-	return variant(&retList);
-END_FUNCTION_DEF(zipWith)
+	ASSERT_LOG(item1.type() == item2.type(), "zip function arguments must both be the same type.");
+	ASSERT_LOG(item1.is_list() || item1.is_map(), "zip function arguments must be either lists or maps");
+	const int size = std::min(item1.num_elements(), item2.num_elements());
+
+	if(item1.is_list()) {
+		std::vector<variant> retList;
+		// is list
+		if(size != 0) {
+			for(int n = 0; n < size; ++n) {
+				a = item1[n];
+				b = item2[n];
+				retList.push_back(args()[2]->evaluate(*callable));
+			}
+		}
+		return variant(&retList);
+	} else {
+		std::map<variant,variant> retMap(item1.as_map());
+		variant keys = item2.get_keys();
+		for(int n = 0; n != keys.num_elements(); n++) {
+			if(retMap[keys[n]].is_null() == false) {
+				a = retMap[keys[n]];
+				b = item2[keys[n]];
+				retMap[keys[n]] = args()[2]->evaluate(*callable);
+			} else {
+				retMap[keys[n]] = item2[keys[n]];
+			}
+		}
+		return variant(&retMap);
+	}
+	return variant();
+END_FUNCTION_DEF(zip)
 
 /* XXX Krista to be reworked
 FUNCTION_DEF(update_controls, 1, 1, "update_controls(map) : Updates the controls based on a list of id:string, pressed:bool pairs")
@@ -1206,6 +1224,17 @@ FUNCTION_DEF(show_modal, 1, 1, "show_modal(dialog): Displays a modal dialog on t
 	dialog->show_modal();
 	return variant::from_bool(dialog->cancelled() == false);
 END_FUNCTION_DEF(show_modal)
+
+FUNCTION_DEF(index, 2, 2, "index(list, value) -> index of value in list: Returns the index of the value in the list or -1 if value wasn't found in the list.")
+	variant value = args()[1]->evaluate(variables);
+	variant li = args()[0]->evaluate(variables);
+	for(int n = 0; n < li.num_elements(); n++) {
+		if(value == li[n]) {
+			return variant(n);
+		}
+	}
+	return variant(-1);
+END_FUNCTION_DEF(index)
 
 namespace {
 void evaluate_expr_for_benchmark(const formula_expression* expr, const formula_callable* variables, int ntimes)

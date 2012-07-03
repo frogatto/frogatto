@@ -1754,6 +1754,15 @@ std::ostream& operator<<(std::ostream& os, const variant& v)
 	return os;
 }
 
+std::pair<variant*,variant*> variant::range() const
+{
+	if(type_ == TYPE_LIST) {
+		return std::pair<variant*,variant*>(&(*list_->begin), &(*list_->end));
+	}
+	variant v;
+	return std::pair<variant*,variant*>(&v,&v);
+}
+
 UNIT_TEST(variant_decimal)
 {
 	variant d(9876000, variant::DECIMAL_VARIANT);
@@ -1772,5 +1781,23 @@ BENCHMARK(variant_assign)
 		for(int n = 0; n != vec.size(); ++n) {
 			vec[n] = v;
 		}
+	}
+}
+
+UNIT_TEST(variant_foreach)
+{
+	std::vector<variant> l1;
+	l1.push_back(variant(1));
+	l1.push_back(variant(2));
+	l1.push_back(variant(3));
+	variant vl1(&l1);
+	int n = 1;
+	foreach(const variant& v, vl1.range()) {
+		CHECK_EQ(v.as_int(), n);
+		n++;
+	}
+
+	foreach(const variant& v, variant().range()) {
+		CHECK(false, "foreach null variant operator failed");
 	}
 }

@@ -65,6 +65,8 @@
 #include <EGL/egl.h>
 #endif
 
+#define DEFAULT_MODULE	"frogatto"
+
 namespace {
 
 bool show_title_screen(std::string& level_cfg)
@@ -159,6 +161,21 @@ AAssetManager* GetJavaAssetManager()
 }
 #endif
 
+int load_module(const std::string& mod, std::vector<std::string>* argv)
+{
+	variant mod_info = module::get(mod);
+	if(mod_info.is_null()) {
+		return -1;
+	}
+	module::reload(mod);
+	if(mod_info["arguments"].is_list()) {
+		const std::vector<std::string>& arguments = mod_info["arguments"].as_list_string();
+		argv->insert(argv->end(), arguments.begin(), arguments.end());
+	}
+	preferences::set_preferences_path_from_module(module::get_module_name());
+	return 0;
+}
+
 extern "C" int main(int argcount, char** argvec)
 {
 
@@ -188,6 +205,8 @@ extern "C" int main(int argcount, char** argvec)
 
 	std::string orig_level_cfg = level_cfg;
 	std::string override_level_cfg = "";
+
+	int modules_loaded = 0;
 
 	std::vector<std::string> argv;
 	for(int n = 1; n < argcount; ++n) {
@@ -221,18 +240,18 @@ extern "C" int main(int argcount, char** argvec)
 			arg_value = std::string(equal+1, arg.end());
 		}
 		if(arg_name == "--module") {
-			variant mod_info = module::get(arg_value);
-			if(mod_info.is_null()) {
+			if(load_module(arg_value, &argv) != 0) {
 				std::cerr << "FAILED TO LOAD MODULE: " << arg_value << "\n";
 				return -1;
 			}
+			++modules_loaded;
+		}
+	}
 
-			module::load(arg_value);
-			if(mod_info["arguments"].is_list()) {
-				const std::vector<std::string>& arguments = mod_info["arguments"].as_list_string();
-				argv.insert(argv.end(), arguments.begin(), arguments.end());
-			}
-			preferences::set_preferences_path_from_module(module::get_module_name());
+	if(modules_loaded == 0) {
+		if(load_module(DEFAULT_MODULE, &argv) != 0) {
+			std::cerr << "FAILED TO LOAD MODULE: " << DEFAULT_MODULE << "\n";
+			return -1;
 		}
 	}
 
@@ -518,26 +537,26 @@ extern "C" int main(int argcount, char** argvec)
 	variant preloads;
 	loading_screen loader;
 	try {
-		sound::init_music(json::parse_from_file("data/music.cfg"));
+		sound::init_music(json::parse_from_file(module::map_file("data/music.cfg")));
 
 		std::string filename = "data/fonts." + i18n::get_locale() + ".cfg";
 		if (!sys::file_exists(filename))
 			filename = "data/fonts.cfg";
-		graphical_font::init(json::parse_from_file(filename));
+		graphical_font::init(json::parse_from_file(module::map_file(filename)));
 
-		preloads = json::parse_from_file("data/preload.cfg");
+		preloads = json::parse_from_file(module::map_file("data/preload.cfg"));
 		int preload_items = preloads["preload"].num_elements();
 		loader.set_number_of_items(preload_items+7); // 7 is the number of items that will be loaded below
 		custom_object::init();
 		loader.draw_and_increment(_("Initializing custom object functions"));
-		init_custom_object_functions(json::parse_from_file("data/functions.cfg"));
+		init_custom_object_functions(json::parse_from_file(module::map_file("data/functions.cfg")));
 		loader.draw_and_increment(_("Initializing textures"));
 		loader.load(preloads);
 		loader.draw_and_increment(_("Initializing tiles"));
-		tile_map::init(json::parse_from_file("data/tiles.cfg"));
+		tile_map::init(json::parse_from_file(module::map_file("data/tiles.cfg")));
 		loader.draw_and_increment(_("Initializing GUI"));
 
-		variant gui_node = json::parse_from_file(preferences::load_compiled() ? "data/compiled/gui.cfg" : "data/gui.cfg");
+		variant gui_node = json::parse_from_file(module::map_file(preferences::load_compiled() ? "data/compiled/gui.cfg" : "data/gui.cfg"));
 		gui_section::init(gui_node);
 		loader.draw_and_increment(_("Initializing GUI"));
 		framed_gui_element::init(gui_node);
