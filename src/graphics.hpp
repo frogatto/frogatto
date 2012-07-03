@@ -22,7 +22,7 @@
 
 #endif
 
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE && !__MACOSX__ && !defined(__ANDROID__) && !defined(TARGET_BLACKBERRY)
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE && !__MACOSX__ && !defined(__ANDROID__) && !defined(TARGET_BLACKBERRY) && !defined(_WINDOWS)
 #include <SDL/SDL_mixer.h>
 #endif
 
@@ -30,11 +30,11 @@
 #include <GL/glew.h>
 #endif
 
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE && !__MACOSX__ && !defined(__ANDROID__) && !defined(TARGET_BLACKBERRY)
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE && !__MACOSX__ && !defined(__ANDROID__) && !defined(TARGET_BLACKBERRY) && !defined(_WINDOWS)
 #include <SDL/SDL_ttf.h>
 #endif
 
-#if __MACOSX__ || defined(__ANDROID__) || defined(TARGET_BLACKBERRY)
+#if __MACOSX__ || defined(__ANDROID__) || defined(TARGET_BLACKBERRY) || defined(_WINDOWS)
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 #endif
