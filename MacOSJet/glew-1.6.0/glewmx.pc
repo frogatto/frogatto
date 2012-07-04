@@ -1,0 +1,10 @@
+prefix=/usr
+exec_prefix=/usr/bin
+libdir=/usr/lib
+includedir=/usr/include/GL
+
+Name: glew
+Description: The OpenGL Extension Wrangler library
+Version: 1.6.0
+Cflags: -I${includedir} -DGLEW_MX
+Libs: -L${libdir} -lGLEWmx
