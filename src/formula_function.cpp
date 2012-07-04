@@ -266,10 +266,15 @@ FUNCTION_DEF(abs, 1, 1, "abs(value) -> value: evaluates the absolute value of th
 	}
 END_FUNCTION_DEF(abs)
 
-FUNCTION_DEF(sign, 1, 1, "sign(value) -> int: evaluates to 1 if value >= 0, -1 otherwise")
-
+FUNCTION_DEF(sign, 1, 1, "sign(value) -> value: evaluates to 1 if positive, -1 if negative, and 0 if 0")
 	const int n = args()[0]->evaluate(variables).as_int();
-	return variant(n >= 0 ? 1 : -1);
+	if(n > 0) {
+		return variant(1);
+	} else if(n < 0) {
+		return variant(-1);
+	} else {
+		return variant(0);
+	}
 END_FUNCTION_DEF(sign)
 
 FUNCTION_DEF(median, 1, -1, "median(args...) -> value: evaluates to the median of the given arguments. If given a single argument list, will evaluate to the median of the member items.")
