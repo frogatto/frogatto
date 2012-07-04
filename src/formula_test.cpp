@@ -71,6 +71,7 @@ UNIT_TEST(formula)
 	CHECK_EQ(FML("abs(5)").execute(c).as_int(), 5);
 	CHECK_EQ(FML("abs(-5)").execute(c).as_int(), 5);
 	CHECK_EQ(FML("sign(5)").execute(c).as_int(), 1);
+	CHECK_EQ(FML("sign(0)").execute(c).as_int(), 0);
 	CHECK_EQ(FML("sign(-5)").execute(c).as_int(), -1);
 	CHECK_EQ(FML("min(3,5)").execute(c).as_int(), 3);
 	CHECK_EQ(FML("min(5,2)").execute(c).as_int(), 2);
