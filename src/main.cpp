@@ -211,6 +211,11 @@ extern "C" int main(int argcount, char** argvec)
 	std::vector<std::string> argv;
 	for(int n = 1; n < argcount; ++n) {
 		argv.push_back(argvec[n]);
+        
+        if(argv.size() >= 2 && argv[argv.size()-2] == "-NSDocumentRevisionsDebugMode" && argv.back() == "YES") {
+            //XCode passes these arguments by default when debugging -- make sure they are ignored.
+            argv.resize(argv.size()-2);
+        }
 	}
 
 	if(sys::file_exists("./master-config.cfg")) {
