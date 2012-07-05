@@ -2,7 +2,6 @@
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/bind.hpp>
-#include <boost/lambda/lambda.hpp>
 
 #include <algorithm>
 #include <iostream>
