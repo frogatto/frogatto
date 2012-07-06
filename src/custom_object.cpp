@@ -16,14 +16,17 @@
 #include "custom_object_callable.hpp"
 #include "custom_object_functions.hpp"
 #include "debug_console.hpp"
+#include "difficulty.hpp"
 #include "draw_scene.hpp"
 #include "font.hpp"
 #include "formatter.hpp"
 #include "formula_callable.hpp"
 #include "formula_profiler.hpp"
 #include "graphical_font.hpp"
+#include "json_parser.hpp"
 #include "level.hpp"
 #include "level_logic.hpp"
+#include "module.hpp"
 #include "object_events.hpp"
 #include "playable_custom_object.hpp"
 #include "preferences.hpp"
@@ -112,8 +115,6 @@ custom_object::custom_object(variant node)
 	last_cycle_active_(0),
 	parent_pivot_(node["pivot"].as_string_default()),
 	parent_prev_x_(0), parent_prev_y_(0), parent_prev_facing_(true),
-	min_difficulty_(node["min_difficulty"].as_int(-1)),
-	max_difficulty_(node["max_difficulty"].as_int(-1)),
 	swallow_mouse_event_(false),
 	currently_handling_die_event_(0),
 	use_absolute_screen_coordinates_(node["use_absolute_screen_coordinates"].as_bool(type_->use_absolute_screen_coordinates()))
@@ -197,6 +198,9 @@ custom_object::custom_object(variant node)
 	} else {
 		parallax_scale_millis_.reset(new std::pair<int, int>(type_->parallax_scale_millis_x(), type_->parallax_scale_millis_y()));
 	}
+
+	min_difficulty_ = node.has_key("min_difficulty") ? difficulty::from_variant(node["min_difficulty"]) : -1;
+	max_difficulty_ = node.has_key("max_difficulty") ? difficulty::from_variant(node["max_difficulty"]) : -1;
 
 	vars_->read(node["vars"]);
 
@@ -755,11 +759,21 @@ variant custom_object::write() const
 	}
 
 	if(min_difficulty_ != -1) {
-		res.add("min_difficulty", min_difficulty_);
+		std::string s = difficulty::to_string(min_difficulty_);
+		if(s.empty()) {
+			res.add("min_difficulty", min_difficulty_);
+		} else {
+			res.add("min_difficulty", s);
+		}
 	}
 
 	if(max_difficulty_ != -1) {
-		res.add("max_difficulty", max_difficulty_);
+		std::string s = difficulty::to_string(max_difficulty_);
+		if(s.empty()) {
+			res.add("max_difficulty", max_difficulty_);
+		} else {
+			res.add("max_difficulty", s);
+		}
 	}
 
 	if(platform_offsets_.empty() == false) {

@@ -25,6 +25,7 @@ objects = \
 	compress.o \
 	current_generator.o \
 	decimal.o \
+	difficulty.o \
 	drag_widget.o \
 	dropdown_widget.o \
 	editor_dialogs.o \

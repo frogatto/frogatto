@@ -35,6 +35,7 @@ custom_object_type.cpp
 debug_console.cpp
 decimal.cpp
 dialog.cpp
+difficulty.cpp
 drag_widget.cpp
 draw_number.cpp
 draw_scene.cpp

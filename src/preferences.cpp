@@ -3,9 +3,11 @@
 #include <string>
 #include "graphics.hpp"
 
+#include <boost/regex.hpp>
 #include <boost/lexical_cast.hpp>
 
 #include "controls.hpp"
+#include "difficulty.hpp"
 #include "filesystem.hpp"
 #include "formatter.hpp"
 #include "formula_callable.hpp"
@@ -803,7 +805,11 @@ namespace preferences {
 		} else if(s == "--serialize-bad-objects") {
 			serialize_bad_objects_ = true;
 		} else if(arg_name == "--difficulty" && !arg_value.empty()) {
-			force_difficulty_ = boost::lexical_cast<int>(arg_value);
+			if(boost::regex_match(arg_value, boost::regex("-?[0-9]+"))) {
+				force_difficulty_ = boost::lexical_cast<int>(arg_value);
+			} else {
+				force_difficulty_ = difficulty::from_string(arg_value);
+			}
 		} else {
 			return false;
 		}

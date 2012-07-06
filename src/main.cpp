@@ -23,6 +23,7 @@
 #ifndef NO_EDITOR
 #include "editor.hpp"
 #endif
+#include "difficulty.hpp"
 #include "external_text_editor.hpp"
 #include "filesystem.hpp"
 #include "font.hpp"
@@ -262,6 +263,9 @@ extern "C" int main(int argcount, char** argvec)
 
 	preferences::load_preferences();
 	LOG( "After load_preferences()" );
+
+	// load difficulty settings after module, before rest of args.
+	difficulty::manager();
 
 	for(int n = 0; n < argv.size(); ++n) {
 		const int argc = argv.size();

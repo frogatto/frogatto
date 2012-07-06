@@ -8,6 +8,7 @@
 #include "code_editor_widget.hpp"
 #include "controls.hpp"
 #include "custom_object_functions.hpp"
+#include "difficulty.hpp"
 #include "editor_dialogs.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
@@ -54,24 +55,18 @@ void property_editor_dialog::init()
 	grid_ptr difficulty_grid(new grid(3));
 	const custom_object* obj = dynamic_cast<const custom_object*>(get_entity().get());
 	ASSERT_LOG(obj, "ENTITY IS NOT AN OBJECT");
-	std::string min_difficulty = "-", max_difficulty = "-";
-	if(obj->min_difficulty() != -1) {
+	std::string min_difficulty = difficulty::to_string(obj->min_difficulty());
+	std::string max_difficulty = difficulty::to_string(obj->max_difficulty());
+	
+	if(min_difficulty.empty()) {
 		min_difficulty = formatter() << obj->min_difficulty();
 	}
 
-	if(obj->max_difficulty() != -1) {
+	if(max_difficulty.empty()) {
 		max_difficulty = formatter() << obj->max_difficulty();
 	}
-
-	if(min_difficulty.size() == 1) {
-		min_difficulty = " " + min_difficulty;
-	}
-
-	if(max_difficulty.size() == 1) {
-		max_difficulty = " " + max_difficulty;
-	}
-
-	difficulty_grid->add_col(widget_ptr(new label(min_difficulty, graphics::color_white())));
+	min_difficulty = " " + min_difficulty;
+	max_difficulty = " " + max_difficulty;
 
 	button_ptr difficulty_button;
 	difficulty_button.reset(new button(widget_ptr(new label("-", graphics::color_white())), boost::bind(&property_editor_dialog::change_min_difficulty, this, -1)));
@@ -82,8 +77,8 @@ void property_editor_dialog::init()
 	difficulty_button->set_tooltip("Increase minimum difficulty");
 	difficulty_button->set_dim(difficulty_button->width()-10, difficulty_button->height()-4);
 	difficulty_grid->add_col(difficulty_button);
+	difficulty_grid->add_col(widget_ptr(new label(min_difficulty, graphics::color_white())));
 
-	difficulty_grid->add_col(widget_ptr(new label(max_difficulty, graphics::color_white())));
 	difficulty_button.reset(new button(widget_ptr(new label("-", graphics::color_white())), boost::bind(&property_editor_dialog::change_max_difficulty, this, -1)));
 	difficulty_button->set_tooltip("Decrease maximum difficulty");
 	difficulty_button->set_dim(difficulty_button->width()-10, difficulty_button->height()-4);
@@ -92,6 +87,7 @@ void property_editor_dialog::init()
 	difficulty_button->set_tooltip("Increase maximum difficulty");
 	difficulty_button->set_dim(difficulty_button->width()-10, difficulty_button->height()-4);
 	difficulty_grid->add_col(difficulty_button);
+	difficulty_grid->add_col(widget_ptr(new label(max_difficulty, graphics::color_white())));
 
 
 	preview_grid->add_col(difficulty_grid);

@@ -1,4 +1,5 @@
 #include "collision_utils.hpp"
+#include "difficulty.hpp"
 #include "formatter.hpp"
 #include "preferences.hpp"
 #include "iphone_controls.hpp"
@@ -136,7 +137,9 @@ namespace {
 
 variant playable_custom_object::get_value(const std::string& key) const
 {
-	if(key == "difficulty") {
+	if(key.substr(0, 11) == "difficulty_") {
+		return variant(difficulty::from_string(key.substr(11)));		
+	} else if(key == "difficulty") {
 		if(preferences::force_difficulty() != INT_MIN) {
 			return variant(preferences::force_difficulty());
 		}
