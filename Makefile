@@ -1,29 +1,77 @@
-CC  = ccache gcc
-CXX = ccache g++
+CC  ?= ccache gcc
+CXX ?= ccache g++
 
-OPT = -O2 -lX11 -lz -fno-inline-functions
+# set to 'yes' to optimize code using -O2
+OPTIMIZE=no
 
-PREFIX = /usr/local/share/frogatto
+ifeq ($(OPTIMIZE),yes)
+CXXFLAGS += -O2
+endif
+
+CXXFLAGS += -Wnon-virtual-dtor -Werror=return-type
+
+CPPFLAGS += $(shell pkg-config --cflags sdl) \
+	    -I/usr/include/boost \
+	    -I/sw/include/SDL \
+	    -Isrc/
+# LIBS += $(shell pkg-config --libs x11) \
+# 	-lSDLmain \
+# 	$(shell pkg-config --libs sdl) \
+# 	$(shell pkg-config --libs glu) \
+# 	$(shell pkg-config --libs glew) \
+# 	$(shell pkg-config --libs SDL_image) \
+# 	$(shell pkg-config --libs SDL_ttf) \
+# 	$(shell pkg-config --libs SDL_mixer) \
+# 	$(shell pkg-config --libs libpng) \
+# 	$(shell pkg-config --libs zlib)
+
+LIBS += -lSDLmain -lSDL -lGL -lGLU -lGLEW -lSDL_image -lSDL_ttf -lSDL_mixer -lpng -lboost_regex-mt -lboost_system-mt -lpthread
+
+LDFLAGS += -L/sw/lib \
+	   -L/usr/lib \
+	   -L.
 
 include Makefile.common
 
 %.o : src/%.cpp
-	$(CXX) $(CCFLAGS) -DIMPLEMENT_SAVE_PNG -fno-inline-functions `sdl-config --cflags` -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Werror=return-type -fthreadsafe-statics -g $(OPT) -c $<
+	$(CXX) \
+		$(CXXFLAGS) -fno-inline-functions -fthreadsafe-statics -fno-strict-aliasing $(CPPFLAGS) -DIMPLEMENT_SAVE_PNG \
+		-c $<
 
 game: $(objects)
-	$(CXX) $(CCFLAGS) -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Werror=return-type $(objects) -o game -L. -L/sw/lib -L. -L/usr/lib `sdl-config --libs` -lSDLmain -lSDL -lGL -lGLU -lGLEW -lSDL_image -lSDL_ttf -lSDL_mixer -lpng -lboost_regex-mt -lboost_system-mt -lpthread -g $(OPT) -fthreadsafe-statics
+	$(CXX) \
+		$(LDFLAGS) \
+		$(CXXFLAGS) -fno-inline-functions -fthreadsafe-statics -fno-strict-aliasing $(CPPFLAGS) \
+		$(objects) -o game \
+		$(LIBS) -lboost_regex-mt -lboost_system-mt -lpthread
 
 server: $(server_objects)
-	$(CXX) -fno-inline-functions -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Werror=return-type -fthreadsafe-statics $(server_objects) -o server -L/sw/lib -L/usr/lib `sdl-config --libs` -lSDLmain -lSDL -lGL -lGLU -lSDL_image -lSDL_ttf -lSDL_mixer -lboost_regex-mt -lboost_system-mt -lboost_thread-mt -lboost_iostreams-mt -g $(OPT)
+	$(CXX) \
+		$(LDFLAGS) \
+		$(CXXFLAGS) -fno-inline-functions -fthreadsafe-statics -fno-strict-aliasing $(CPPFLAGS) \
+		$(server_objects) -o server \
+		$(LIBS) -lboost_regex-mt -lboost_system-mt -lboost_thread-mt -lboost_iostreams-mt
 
 formula_test: $(formula_test_objects)
-	$(CXX) -O2 -g -I/usr/include/SDL -D_GNU_SOURCE=1 -D_REENTRANT -DUNIT_TEST_FORMULA -Wnon-virtual-dtor -Werror=return-type src/formula.cpp $(formula_test_objects) -o test -L/usr/lib -lSDL -lGL -lGLU -lSDL_image -lSDL_ttf -lSDL_mixer -lboost_regex
+	$(CXX) \
+		$(LDFLAGS) \
+		$(CXXFLAGS) $(CPPFLAGS) -DUNIT_TEST_FORMULA \
+		src/formula.cpp $(formula_test_objects) -o test \
+		$(LIBS) -lboost_regex
 
 wml_modify_test: $(wml_modify_test_objects)
-	$(CXX) -O2 -g -framework Cocoa -I/usr/local/include/boost-1_34 -I/sw/include/SDL -Isrc/ -I/usr/include/SDL -D_GNU_SOURCE=1 -D_REENTRANT -DUNIT_TEST_WML_MODIFY -Wnon-virtual-dtor -Werror=return-type src/wml_modify.cpp $(wml_modify_test_objects) -o test -L/usr/lib -lboost_regex
+	$(CXX) \
+		$(LDFLAGS) \
+		$(CXXFLAGS) -framework Cocoa $(CPPFLAGS) -DUNIT_TEST_WML_MODIFY \
+		src/wml_modify.cpp $(wml_modify_test_objects) -o test \
+		-lboost_regex
 
 wml_schema_test: $(wml_schema_test_objects)
-	$(CXX) -O2 -g -framework Cocoa -I/usr/local/include/boost-1_34 -I/sw/include/SDL -Isrc/ -I/usr/include/SDL -D_GNU_SOURCE=1 -D_REENTRANT -DUNIT_TEST_WML_SCHEMA -Wnon-virtual-dtor -Werror=return-type src/wml_schema.cpp $(wml_schema_test_objects) -o test -L/usr/lib -lboost_regex
+	$(CXX) \
+		$(LDFLAGS) \
+		$(CXXFLAGS) -framework Cocoa $(CPPFLAGS) -DUNIT_TEST_WML_SCHEMA \
+		src/wml_schema.cpp $(wml_schema_test_objects) -o test \
+		-lboost_regex
 
 update-pot:
 	utils/make-pot.sh > po/frogatto.pot.bak
@@ -47,16 +95,5 @@ update-mo:
 		msgfmt po/$$lang.po -o locale/$$lang/LC_MESSAGES/frogatto.mo ; \
 	done)
 
-install:
-	install -m 0755 game $(PREFIX)
-	install -m 0644 UbuntuMono-R.ttf $(PREFIX)
-	install -m 0644 README
-	install -m 0644 CHANGELOG
-    # XXX still needs work
-
 clean:
 	rm -f *.o game
-
-assets:
-	./game --utility=compile_levels
-	./game --utility=compile_objects
