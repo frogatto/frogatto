@@ -8,7 +8,7 @@ ifeq ($(OPTIMIZE),yes)
 CXXFLAGS += -O2
 endif
 
-CXXFLAGS += -Wnon-virtual-dtor -Werror=return-type
+CXXFLAGS += -Wnon-virtual-dtor -fno-inline-functions `sdl-config --cflags` -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Werror=return-type -fthreadsafe-statics -g
 
 CPPFLAGS += $(shell pkg-config --cflags sdl) \
 	    -I/usr/include/boost \
@@ -97,3 +97,7 @@ update-mo:
 
 clean:
 	rm -f *.o game
+	
+assets:
+	./game --utility=compile_levels
+	./game --utility=compile_objects
