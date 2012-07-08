@@ -14,18 +14,9 @@ CPPFLAGS += $(shell pkg-config --cflags sdl) \
 	    -I/usr/include/boost \
 	    -I/sw/include/SDL \
 	    -Isrc/
-# LIBS += $(shell pkg-config --libs x11) \
-# 	-lSDLmain \
-# 	$(shell pkg-config --libs sdl) \
-# 	$(shell pkg-config --libs glu) \
-# 	$(shell pkg-config --libs glew) \
-# 	$(shell pkg-config --libs SDL_image) \
-# 	$(shell pkg-config --libs SDL_ttf) \
-# 	$(shell pkg-config --libs SDL_mixer) \
-# 	$(shell pkg-config --libs libpng) \
-# 	$(shell pkg-config --libs zlib)
-
-LIBS += -lSDLmain -lSDL -lGL -lGLU -lGLEW -lSDL_image -lSDL_ttf -lSDL_mixer -lpng -lboost_regex-mt -lboost_system-mt -lpthread
+LIBS += $(shell pkg-config --libs x11 ) \
+	-lSDLmain -lSDL_ttf -lSDL_mixer \
+	$(shell pkg-config --libs sdl glu glew SDL_image libpng zlib) \
 
 LDFLAGS += -L/sw/lib \
 	   -L/usr/lib \
