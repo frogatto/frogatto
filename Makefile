@@ -2,7 +2,7 @@ CC  ?= ccache gcc
 CXX ?= ccache g++
 
 # set to 'yes' to optimize code using -O2
-OPTIMIZE=no
+OPTIMIZE=yes
 
 ifeq ($(OPTIMIZE),yes)
 CXXFLAGS += -O2
@@ -35,20 +35,20 @@ include Makefile.common
 
 %.o : src/%.cpp
 	$(CXX) \
-		$(CXXFLAGS) -fno-inline-functions -fthreadsafe-statics -fno-strict-aliasing $(CPPFLAGS) -DIMPLEMENT_SAVE_PNG \
+		$(CXXFLAGS) -fno-inline-functions -fthreadsafe-statics $(CPPFLAGS) -DIMPLEMENT_SAVE_PNG \
 		-c $<
 
 game: $(objects)
 	$(CXX) \
 		$(LDFLAGS) \
-		$(CXXFLAGS) -fno-inline-functions -fthreadsafe-statics -fno-strict-aliasing $(CPPFLAGS) \
+		$(CXXFLAGS) -fno-inline-functions $(CPPFLAGS) \
 		$(objects) -o game \
-		$(LIBS) -lboost_regex-mt -lboost_system-mt -lpthread
+		$(LIBS) -lboost_regex-mt -lboost_system-mt -lpthread -fthreadsafe-statics
 
 server: $(server_objects)
 	$(CXX) \
 		$(LDFLAGS) \
-		$(CXXFLAGS) -fno-inline-functions -fthreadsafe-statics -fno-strict-aliasing $(CPPFLAGS) \
+		$(CXXFLAGS) -fno-inline-functions -fthreadsafe-statics $(CPPFLAGS) \
 		$(server_objects) -o server \
 		$(LIBS) -lboost_regex-mt -lboost_system-mt -lboost_thread-mt -lboost_iostreams-mt
 
