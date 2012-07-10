@@ -15,8 +15,10 @@ CPPFLAGS += $(shell pkg-config --cflags sdl) \
 	    -I/sw/include/SDL \
 	    -Isrc/
 LIBS += $(shell pkg-config --libs x11 ) \
-	-lSDLmain -lSDL_ttf -lSDL_mixer \
+	-lSDLmain \
 	$(shell pkg-config --libs sdl glu glew SDL_image libpng zlib) \
+	$(shell pkg-config --libs SDL_image SDL_ttf 2>/dev/null || echo "-lSDL_ttf -lSDL_mixer") \
+	$(shell pkg-config --cflags) \
 
 LDFLAGS += -L/sw/lib \
 	   -L/usr/lib \
