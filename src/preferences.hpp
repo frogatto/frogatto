@@ -48,6 +48,7 @@ namespace preferences {
 	void set_fullscreen(bool value);
 
 	bool resizable();
+	bool proportional_resize();
 	
 	// Reverse A and B buttons for iPhone
 	bool reverse_ab();

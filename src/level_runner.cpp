@@ -291,40 +291,55 @@ bool is_skipping_game() {
 	return skipping_game > 0;
 }
 
-void video_resize( SDL_Event &event ) 
+void video_resize(SDL_Event &event) 
 {
     const SDL_ResizeEvent* resize = reinterpret_cast<SDL_ResizeEvent*>(&event);
     int width = resize->w;
     int height = resize->h;
 
-    const int aspect = (preferences::actual_screen_width()*1000)/preferences::actual_screen_height();
+	if(preferences::proportional_resize() == false) {
+		const int aspect = (preferences::actual_screen_width()*1000)/preferences::actual_screen_height();
 
-    if(preferences::actual_screen_width()*preferences::actual_screen_height() < width*height) {
-	    //making the window larger
-	    if((height*aspect)/1000 > width) {
-		    width = (height*aspect)/1000;
-	    } else if((height*aspect)/1000 < width) {
-		    height = (width*1000)/aspect;
-	    }
-    } else {
-	    //making the window smaller
-	    if((height*aspect)/1000 > width) {
-		    height = (width*1000)/aspect;
-	    } else if((height*aspect)/1000 < width) {
-		    width = (height*aspect)/1000;
-	    }
-    }
+		if(preferences::actual_screen_width()*preferences::actual_screen_height() < width*height) {
+			//making the window larger
+			if((height*aspect)/1000 > width) {
+				width = (height*aspect)/1000;
+			} else if((height*aspect)/1000 < width) {
+				height = (width*1000)/aspect;
+			}
+		} else {
+			//making the window smaller
+			if((height*aspect)/1000 > width) {
+				height = (width*1000)/aspect;
+			} else if((height*aspect)/1000 < width) {
+				width = (height*aspect)/1000;
+			}
+		}
 
-    //make sure we don't have some ugly fractional aspect ratio
-    while((width*1000)/height != aspect) {
-	    ++width;
-	    height = (width*1000)/aspect;
-    }
+		//make sure we don't have some ugly fractional aspect ratio
+		while((width*1000)/height != aspect) {
+			++width;
+			height = (width*1000)/aspect;
+		}
 
-    preferences::set_actual_screen_width(width);
-    preferences::set_actual_screen_height(height);
+		preferences::set_actual_screen_width(width);
+		preferences::set_actual_screen_height(height);
+	}
 
     graphics::set_video_mode(width, height);
+}
+
+void level_runner::video_resize_event(const SDL_Event &event)
+{
+    const SDL_ResizeEvent* resize = reinterpret_cast<const SDL_ResizeEvent*>(&event);
+    int width = resize->w;
+    int height = resize->h;
+
+	static const int WindowResizeEventID = get_object_event_id("window_resize");
+	game_logic::map_formula_callable_ptr callable(new game_logic::map_formula_callable);
+	callable->add("width", variant(width));
+	callable->add("height", variant(height));
+	lvl_->player()->get_entity().handle_event(WindowResizeEventID, callable.get());
 }
 
 bool level_runner::handle_mouse_events(const SDL_Event &event)
@@ -999,7 +1014,7 @@ bool level_runner::play_cycle()
 				quit_ = true;
 				break;
 			}
-			case SDL_VIDEORESIZE: video_resize( event ); continue;
+			case SDL_VIDEORESIZE: video_resize(event); video_resize_event(event); continue;
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 			// make sure nothing happens while the app is supposed to be "inactive"
 			case SDL_WINDOWEVENT:

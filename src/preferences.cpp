@@ -123,6 +123,7 @@ namespace preferences {
 		bool use_pretty_scaling_ = false;
 		bool fullscreen_ = false;
 		bool resizable_ = false;
+		bool proportional_resize_ = false;
 		bool debug_ = true;
 		bool reverse_ab_ = false;
 		bool show_fps_ = false;
@@ -433,6 +434,10 @@ namespace preferences {
 	bool resizable() {
 		return resizable_;
 	}
+
+	bool proportional_resize() {
+		return proportional_resize_;
+	}
 	
 	bool reverse_ab() {
 		return reverse_ab_;
@@ -724,6 +729,9 @@ namespace preferences {
 			fullscreen_ = true;
 		} else if(s == "--windowed") {
 			fullscreen_ = false;
+		} else if(s == "--proportional-resize") {
+			resizable_ = true;
+			proportional_resize_ = true;
 		} else if(s == "--resizable") {
 			resizable_ = true;
 		} else if(s == "--no-resizable") {
