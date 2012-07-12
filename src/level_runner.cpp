@@ -322,9 +322,12 @@ void video_resize(SDL_Event &event)
 			height = (width*1000)/aspect;
 		}
 
-		preferences::set_actual_screen_width(width);
-		preferences::set_actual_screen_height(height);
+	} else {
+		preferences::set_virtual_screen_width(width);
+		preferences::set_virtual_screen_height(height);
 	}
+	preferences::set_actual_screen_width(width);
+	preferences::set_actual_screen_height(height);
 
     graphics::set_video_mode(width, height);
 }
