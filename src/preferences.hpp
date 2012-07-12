@@ -115,6 +115,8 @@ void set_bequ( bool value );
 
 	bool sim_iphone();
 
+	bool no_iphone_controls();
+
 	bool send_stats();
 
 	int force_difficulty();

@@ -20,6 +20,7 @@
 #include "key.hpp"
 #include "level_runner.hpp"
 #include "multiplayer.hpp"
+#include "preferences.hpp"
 #include "iphone_controls.hpp"
 
 namespace controls {
@@ -207,7 +208,9 @@ void read_local_controls()
 		return;
 	}
 
-	iphone_controls::read_controls();
+	if(preferences::no_iphone_controls() == false) {
+		iphone_controls::read_controls();
+	}
 
 	unsigned char state = 0;
 	if(local_control_locks.empty()) {
@@ -231,22 +234,24 @@ void read_local_controls()
 		}
 #endif
 
-#if defined(__ANDROID__)
-		if(iphone_controls::up()) { state |= (1 << CONTROL_UP); }
-		if(iphone_controls::down()) { state |= (1 << CONTROL_DOWN); }
-		if(iphone_controls::left()) { state |= (1 << CONTROL_LEFT); }
-		if(iphone_controls::right()) { state |= (1 << CONTROL_RIGHT); }
-		if(iphone_controls::attack()) { state |= (1 << CONTROL_ATTACK); }
-		if(iphone_controls::jump()) { state |= (1 << CONTROL_JUMP); }
-		if(iphone_controls::tongue()) { state |= (1 << CONTROL_TONGUE); }
-#else
-		if(joystick::up() || iphone_controls::up()) { state |= (1 << CONTROL_UP);}
-		if(joystick::down() || iphone_controls::down()) { state |= (1 << CONTROL_DOWN);}
-		if(joystick::left() || iphone_controls::left()) { state |= (1 << CONTROL_LEFT);}
-		if(joystick::right() || iphone_controls::right()) { state |= (1 << CONTROL_RIGHT);}
-		if(joystick::button(0) || iphone_controls::attack()) { state |= (1 << CONTROL_ATTACK);}
-		if(joystick::button(1) || iphone_controls::jump()) { state |= (1 << CONTROL_JUMP);}
-		if(joystick::button(2) || iphone_controls::tongue()) { state |= (1 << CONTROL_TONGUE);}
+		if(preferences::no_iphone_controls() == false) {
+			if(iphone_controls::up()) { state |= (1 << CONTROL_UP);}
+			if(iphone_controls::down()) { state |= (1 << CONTROL_DOWN);}
+			if(iphone_controls::left()) { state |= (1 << CONTROL_LEFT);}
+			if(iphone_controls::right()) { state |= (1 << CONTROL_RIGHT);}
+			if(iphone_controls::attack()) { state |= (1 << CONTROL_ATTACK);}
+			if(iphone_controls::jump()) { state |= (1 << CONTROL_JUMP);}
+			if(iphone_controls::tongue()) { state |= (1 << CONTROL_TONGUE);}
+		}
+
+#if !defined(__ANDROID__)
+		if(joystick::up()) { state |= (1 << CONTROL_UP);}
+		if(joystick::down()) { state |= (1 << CONTROL_DOWN);}
+		if(joystick::left()) { state |= (1 << CONTROL_LEFT);}
+		if(joystick::right()) { state |= (1 << CONTROL_RIGHT);}
+		if(joystick::button(0)) { state |= (1 << CONTROL_ATTACK);}
+		if(joystick::button(1)) { state |= (1 << CONTROL_JUMP);}
+		if(joystick::button(2)) { state |= (1 << CONTROL_TONGUE);}
 #endif
 	} else {
 		//we have the controls locked into a specific state.

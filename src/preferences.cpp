@@ -128,6 +128,7 @@ namespace preferences {
 		bool reverse_ab_ = false;
 		bool show_fps_ = false;
 		int frame_time_millis_ = 20;
+		bool no_iphone_controls_ = false;
 
 		std::string level_path_ = "data/level/";
 		bool level_path_set_ = false;
@@ -433,6 +434,10 @@ namespace preferences {
 
 	bool resizable() {
 		return resizable_;
+	}
+
+	bool no_iphone_controls() {
+		return no_iphone_controls_;
 	}
 
 	bool proportional_resize() {
@@ -773,6 +778,8 @@ namespace preferences {
 			actual_screen_height_ = 768;
 
 			recalculate_draw_mask();
+		} else if(s == "--no-iphone-controls") {
+			no_iphone_controls_ = true;
 		} else if(s == "--wvga") {
 			virtual_screen_width_ = 800;
 			virtual_screen_height_ = 480;

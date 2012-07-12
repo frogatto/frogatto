@@ -1728,7 +1728,9 @@ void level::draw_status() const
 		foreach(gui_algorithm_ptr g, gui_algorithm_) {
 			g->draw(*this);
 		}
-		iphone_controls::draw();
+		if(preferences::no_iphone_controls() == false) {
+			iphone_controls::draw();
+		}
 	}
 
 	if(current_speech_dialog()) {
