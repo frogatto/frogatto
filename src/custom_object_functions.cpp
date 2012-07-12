@@ -200,6 +200,9 @@ int show_simple_option_dialog(level& lvl, const std::string& text, const std::ve
 class set_save_slot_command : public entity_command_callable
 {
 public:
+	explicit set_save_slot_command(int slot) : slot_(slot)
+	{}
+
 	virtual void execute(level& lvl, entity& ob) const {
 		bool has_options = false;
 		std::vector<std::string> options;
@@ -222,8 +225,10 @@ public:
 			++nslot;
 		}
 
-		if(has_options) {
-
+		if(slot_ >= 0) {
+			std::cerr << "setting save slot: " << slot_ << " -> " << SaveFiles[slot_] << "\n";
+			preferences::set_save_slot(SaveFiles[slot_]);
+		} else if(has_options) {
 			const int noption = show_simple_option_dialog(lvl, _("Select save slot to use."), options);
 			if(noption != -1) {
 				std::cerr << "setting save slot: " << noption << " -> " << SaveFiles[noption] << "\n";
@@ -231,11 +236,13 @@ public:
 			}
 		}
 	}
-
+	int slot_;
 };
 
-FUNCTION_DEF(set_save_slot, 0, 0, "set_save_slot(): Allows the user to select the save slot")
-	return variant(new set_save_slot_command());
+FUNCTION_DEF(set_save_slot, 0, 1, "set_save_slot((optional) int slot): Allows the user to select the save slot, if no slot is specified a dialog is displayed.")
+	const int slot = (args().size() > 0) ? args()[0]->evaluate(variables).as_int() : -1;
+	ASSERT_LOG(slot == -1 || (slot >= 1 && slot <= 4), "Invalid slot specified: " << slot);
+	return variant(new set_save_slot_command(slot-1));
 END_FUNCTION_DEF(set_save_slot)
 
 class save_game_command : public entity_command_callable
