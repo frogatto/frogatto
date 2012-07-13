@@ -1,6 +1,6 @@
 #!/bin/bash
-perl utils/graph-levels.pl | grep -v '>' | grep -o 'N[0-9]* ' > foo.bak
-perl utils/graph-levels.pl > foo2.bak
+perl utils/graph-levels.pl $@ > foo2.bak
+cat foo2.bak | grep -v '>' | grep -o 'N[0-9]* ' > foo.bak
 for name in `cat foo.bak`
 do
 grep -c $name' ' foo2.bak
