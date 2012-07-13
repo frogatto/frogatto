@@ -10,10 +10,7 @@ endif
 
 CXXFLAGS += -Wnon-virtual-dtor -fno-inline-functions `sdl-config --cflags` -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Werror=return-type -fthreadsafe-statics -g
 
-CPPFLAGS += $(shell pkg-config --cflags sdl) \
-	    -I/usr/include/boost \
-	    -I/sw/include/SDL \
-	    -Isrc/
+CPPFLAGS += $(shell pkg-config --cflags sdl)
 
 CFLAGS += (shell pkg-config --cflags x11 ) \
 	$(shell pkg-config --cflags sdl glu glew SDL_image libpng zlib) \
@@ -24,9 +21,8 @@ LIBS += $(shell pkg-config --libs x11 ) \
 	$(shell pkg-config --libs sdl glu glew SDL_image libpng zlib) \
 	$(shell pkg-config --libs SDL_mixer SDL_ttf 2>/dev/null || echo "-lSDL_ttf -lSDL_mixer")
 
-LDFLAGS += -L/sw/lib \
-	   -L/usr/lib \
-	   -L.
+# This is currently unused.
+# LDFLAGS += -L.
 
 include Makefile.common
 
