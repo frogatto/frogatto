@@ -182,19 +182,3 @@ formula_test_objects = \
 	wml_parser.o \
 	wml_utils.o \
 	wml_writer.o
-
-# Unit test
-wml_modify_test_objects = \
-	filesystem.o \
-	string_utils.o \
-	wml_node.o \
-	wml_parser.o \
-	wml_utils.o
-
-# Unit test
-wml_schema_test_objects = \
-	filesystem.o \
-	string_utils.o \
-	wml_node.o \
-	wml_parser.o \
-	wml_utils.o

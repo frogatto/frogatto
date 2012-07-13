@@ -52,20 +52,6 @@ formula_test: $(formula_test_objects)
 		src/formula.cpp $(formula_test_objects) -o test \
 		$(LIBS) -lboost_regex
 
-wml_modify_test: $(wml_modify_test_objects)
-	$(CXX) \
-		$(LDFLAGS) \
-		$(CXXFLAGS) -framework Cocoa $(CPPFLAGS) -DUNIT_TEST_WML_MODIFY \
-		src/wml_modify.cpp $(wml_modify_test_objects) -o test \
-		-lboost_regex
-
-wml_schema_test: $(wml_schema_test_objects)
-	$(CXX) \
-		$(LDFLAGS) \
-		$(CXXFLAGS) -framework Cocoa $(CPPFLAGS) -DUNIT_TEST_WML_SCHEMA \
-		src/wml_schema.cpp $(wml_schema_test_objects) -o test \
-		-lboost_regex
-
 update-pot:
 	utils/make-pot.sh > po/frogatto.pot.bak
 	msguniq -F po/frogatto.pot.bak > po/frogatto.pot
