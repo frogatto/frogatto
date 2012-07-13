@@ -5,21 +5,17 @@ CXX ?= ccache g++
 OPTIMIZE=yes
 
 ifeq ($(OPTIMIZE),yes)
-CXXFLAGS += -O2
+BASE_CXXFLAGS += -O2
 endif
 
-CXXFLAGS += -Wnon-virtual-dtor -fno-inline-functions `sdl-config --cflags` -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Werror=return-type -fthreadsafe-statics -g
+BASE_CXXFLAGS += -g -fno-inline-functions -fthreadsafe-statics -Wnon-virtual-dtor -Werror=return-type
 
-CPPFLAGS += $(shell pkg-config --cflags sdl)
+INC = $(shell pkg-config --cflags x11 sdl glu glew SDL_image libpng zlib)
 
-CFLAGS += (shell pkg-config --cflags x11 ) \
-	$(shell pkg-config --cflags sdl glu glew SDL_image libpng zlib) \
-	$(shell pkg-config --cflags SDL_mixer SDL_ttf 2>/dev/null)
+# CPPFLAGS +=
 
-LIBS += $(shell pkg-config --libs x11 ) \
-	-lSDLmain \
-	$(shell pkg-config --libs sdl glu glew SDL_image libpng zlib) \
-	$(shell pkg-config --libs SDL_mixer SDL_ttf 2>/dev/null || echo "-lSDL_ttf -lSDL_mixer")
+LIBS = $(shell pkg-config --libs x11 ) -lSDLmain \
+	$(shell pkg-config --libs sdl glu glew SDL_image libpng zlib) -lSDL_ttf -lSDL_mixer
 
 # This is currently unused.
 # LDFLAGS += -L.
@@ -28,27 +24,27 @@ include Makefile.common
 
 %.o : src/%.cpp
 	$(CXX) \
-		$(CXXFLAGS) -fno-inline-functions -fthreadsafe-statics $(CPPFLAGS) -DIMPLEMENT_SAVE_PNG \
+		$(BASE_CXXFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(INC) -DIMPLEMENT_SAVE_PNG \
 		-c $<
 
 game: $(objects)
 	$(CXX) \
 		$(LDFLAGS) \
-		$(CXXFLAGS) -fno-inline-functions $(CPPFLAGS) \
+		$(BASE_CXXFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(INC) \
 		$(objects) -o game \
 		$(LIBS) -lboost_regex-mt -lboost_system-mt -lpthread -fthreadsafe-statics
 
 server: $(server_objects)
 	$(CXX) \
 		$(LDFLAGS) \
-		$(CXXFLAGS) -fno-inline-functions -fthreadsafe-statics $(CPPFLAGS) \
+		$(BASE_CXXFLAGS) $(CXXFLAGS) $(CPPFLAGS) \
 		$(server_objects) -o server \
 		$(LIBS) -lboost_regex-mt -lboost_system-mt -lboost_thread-mt -lboost_iostreams-mt
 
 formula_test: $(formula_test_objects)
 	$(CXX) \
 		$(LDFLAGS) \
-		$(CXXFLAGS) $(CPPFLAGS) -DUNIT_TEST_FORMULA \
+		$(BASE_CXXFLAGS) $(CXXFLAGS) $(CPPFLAGS) -DUNIT_TEST_FORMULA \
 		src/formula.cpp $(formula_test_objects) -o test \
 		$(LIBS) -lboost_regex
 
