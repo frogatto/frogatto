@@ -197,7 +197,16 @@ variant merge_into_prototype(variant prototype_node, variant node)
 	result[variant("vars")] = prototype_node["vars"] + node["vars"];
 	result[variant("consts")] = prototype_node["consts"] + node["consts"];
 	result[variant("variations")] = prototype_node["variations"] + node["variations"];
-	result[variant("editor_info")] = prototype_node["editor_info"] + node["editor_info"];
+
+	const variant editor_info_a = prototype_node["editor_info"];
+	const variant editor_info_b = node["editor_info"];
+	result[variant("editor_info")] = editor_info_a + editor_info_b;
+	if(editor_info_a.is_map() && editor_info_b.is_map() &&
+	   editor_info_a.has_key("var") && editor_info_b.has_key("var")) {
+		variant vars = append_variants(editor_info_a["var"], editor_info_b["var"]);
+		result[variant("editor_info")].add_attr(variant("var"), vars);
+	}
+
 	variant proto_properties = prototype_node["properties"];
 	variant node_properties = node["properties"];
 	variant properties = proto_properties + node_properties;
