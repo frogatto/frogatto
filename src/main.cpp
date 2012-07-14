@@ -324,7 +324,7 @@ extern "C" int main(int argcount, char** argvec)
 			preferences::set_bequ(false);
 #endif
 		} else if(arg == "--help" || arg == "-h") {
-			print_help(std::string(argv[0]));
+			print_help(std::string(argvec[0]));
 			return 0;
 		} else {
 			const bool res = preferences::parse_arg(argv[n].c_str());
