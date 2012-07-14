@@ -1,4 +1,3 @@
-CC  ?= ccache gcc
 CXX ?= ccache g++
 
 # set to 'yes' to optimize code using -O2
