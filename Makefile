@@ -1,23 +1,37 @@
-CXX ?= ccache g++
+#
+# Main Makefile, intended for use on Linux/X11 and compatible platforms.
+#
+# It should guess the paths to the game dependencies on its own, except for
+# Boost which is assumed to be installed to the default locations. If you have
+# installed Boost to a non-standard location, you will need to override CXXFLAGS
+# and LDFLAGS with any applicable -I and -L arguments.
+#
+# The main options are:
+#
+#   CXX              C++ compiler comand line.
+#   CXXFLAGS         Additional C++ compiler options.
+#   OPTIMIZE         If set to 'yes' (default), builds with compiler
+#                    optimizations enabled (-O2). You may alternatively use
+#                    CXXFLAGS to set your own optimization options.
+#   LDFLAGS          Additional linker options.
+#
 
-# set to 'yes' to optimize code using -O2
+CXX ?= ccache g++
 OPTIMIZE=yes
 
 ifeq ($(OPTIMIZE),yes)
 BASE_CXXFLAGS += -O2
 endif
 
+# Initial compiler options, used before CXXFLAGS and CPPFLAGS.
 BASE_CXXFLAGS += -g -fno-inline-functions -fthreadsafe-statics -Wnon-virtual-dtor -Werror=return-type
 
+# Compiler include options, used after CXXFLAGS and CPPFLAGS.
 INC = $(shell pkg-config --cflags x11 sdl glu glew SDL_image libpng zlib)
 
-# CPPFLAGS +=
-
+# Linker library options.
 LIBS = $(shell pkg-config --libs x11 ) -lSDLmain \
 	$(shell pkg-config --libs sdl glu glew SDL_image libpng zlib) -lSDL_ttf -lSDL_mixer
-
-# This is currently unused.
-# LDFLAGS += -L.
 
 include Makefile.common
 
