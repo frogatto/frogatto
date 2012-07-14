@@ -202,8 +202,41 @@ variant merge_into_prototype(variant prototype_node, variant node)
 	const variant editor_info_b = node["editor_info"];
 	result[variant("editor_info")] = editor_info_a + editor_info_b;
 	if(editor_info_a.is_map() && editor_info_b.is_map() &&
-	   editor_info_a.has_key("var") && editor_info_b.has_key("var")) {
-		variant vars = append_variants(editor_info_a["var"], editor_info_b["var"]);
+	   editor_info_a["var"].is_list() && editor_info_b["var"].is_list()) {
+		std::map<variant, variant> vars_map;
+		std::vector<variant> items = editor_info_a["var"].as_list();
+		std::vector<variant> items2 = editor_info_b["var"].as_list();
+		items.insert(items.end(), items2.begin(), items2.end());
+		foreach(const variant& v, items) {
+			variant name = v["name"];
+			variant enum_value;
+			if(vars_map.count(name)) {
+				if(vars_map[name]["enum_values"].is_list() && v["enum_values"].is_list()) {
+					std::vector<variant> e = vars_map[name]["enum_values"].as_list();
+					foreach(variant item, v["enum_values"].as_list()) {
+						if(std::count(e.begin(), e.end(), item) == 0) {
+							e.push_back(item);
+						}
+					}
+
+					enum_value = variant(&e);
+				}
+
+				vars_map[name] = vars_map[name] + v;
+				if(enum_value.is_null() == false) {
+					vars_map[name].add_attr(variant("enum_values"), enum_value);
+				}
+			} else {
+				vars_map[name] = v;
+			}
+		}
+
+		std::vector<variant> v;
+		for(std::map<variant,variant>::const_iterator i = vars_map.begin(); i != vars_map.end(); ++i) {
+			v.push_back(i->second);
+		}
+
+		variant vars = variant(&v);
 		result[variant("editor_info")].add_attr(variant("var"), vars);
 	}
 
