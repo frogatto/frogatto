@@ -361,14 +361,12 @@ bool place_entity_in_level_with_large_displacement(level& lvl, entity& e)
 
 int entity_user_collision(const entity& a, const entity& b, collision_pair* areas_colliding, int buf_size)
 {
-	if(!rects_intersect(a.frame_rect(), b.frame_rect())) {
-		return 0;
-	}
-
 	const frame& fa = a.current_frame();
 	const frame& fb = b.current_frame();
 
-	if(fa.collision_areas().empty() || fb.collision_areas().empty()) {
+	if(fa.collision_areas().empty() || fb.collision_areas().empty() ||
+	   fa.collision_areas_inside_frame() && fb.collision_areas_inside_frame() &&
+	   !rects_intersect(a.frame_rect(), b.frame_rect())) {
 		return 0;
 	}
 

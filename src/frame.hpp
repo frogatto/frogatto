@@ -98,6 +98,7 @@ public:
 	const std::string* get_event(int time_in_frame) const;
 
 	const std::vector<collision_area>& collision_areas() const { return collision_areas_; }
+	bool collision_areas_inside_frame() const { return collision_areas_inside_frame_; }
 
 	int enter_event_id() const { return enter_event_id_; }
 	int end_event_id() const { return end_event_id_; }
@@ -158,6 +159,7 @@ private:
 	std::vector <std::string> sounds_;
 
 	std::vector<collision_area> collision_areas_;
+	bool collision_areas_inside_frame_;
 
 	void build_alpha_from_frame_info();
 	void build_alpha();

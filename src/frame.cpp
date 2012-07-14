@@ -74,6 +74,7 @@ frame::frame(variant node)
 	 damage_(node["damage"].as_int()),
 	 sounds_(util::split(node["sound"].as_string_default())),
 	 no_remove_alpha_borders_(node["no_remove_alpha_borders"].as_bool(false)),
+	 collision_areas_inside_frame_(true),
 	 current_palette_(-1)
 {
 	std::vector<std::string> hit_frames = util::split(node["hit_frames"].as_string_default());
@@ -146,6 +147,10 @@ frame::frame(variant node)
 
 		collision_area area = { area_id, r, solid };
 		collision_areas_.push_back(area);
+
+		if(solid && (r.x() < 0 || r.y() < 0 || r.x2() > width() || r.y2() > height())) {
+			collision_areas_inside_frame_ = false;
+		}
 	}
 
 	if(node.has_key("frame_info")) {
