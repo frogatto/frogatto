@@ -91,17 +91,18 @@ void print_help(const std::string& argv0)
 "      --level LEVEL_FILE       starts the game using the specified level file,\n" <<
 "                                 relative to the level path\n" <<
 "      --level-path=PATH        sets the path to the game level files\n" <<
-"      --native			        one pixel in-game equals one pixel on monitor." <<
 "      --[no-]music             enables/disables game music\n" <<
+"      --native                 one pixel in-game equals one pixel on monitor\n" <<
 "      --relay                  use the server as a relay in multiplayer rather\n" <<
 "                                 than trying to initiate direct connections\n" <<
 "      --[no-]resizable         allows/disallows to resize the game window\n" <<
 "      --scale                  enables an experimental pixel art interpolation\n" <<
 "                                 algorithm for scaling the game graphics (some\n" <<
 "                                 issues with this still have to be solved)\n" <<
-"      --[no-]send-stats        enables/disables sending game statistics over the\n" <<
-"                                 network\n" <<
-"      --server=URL             Sets the server to use for the TBS client based on the given url" <<
+"      --[no-]send-stats        enables/disables sending game statistics over\n"
+"                                 the network\n" <<
+"      --server=URL             sets the server to use for the TBS client based\n"
+"                                 on the given url\n" <<
 "      --[no-]sound             enables/disables sound and music support\n" <<
 "      --widescreen             sets widescreen mode, increasing the game view\n" <<
 "                                 area for wide screen displays\n" <<
@@ -117,7 +118,6 @@ void print_help(const std::string& argv0)
 "      --potonly                use power of two-sized textures only\n" <<
 "      --textures16             use 16 bpp textures only (default on iPhone)\n" <<
 "      --textures32             use 32 bpp textures (default on PC/Mac)\n" <<
-
 "\n" <<
 "Developer options:\n" <<
 "      --benchmarks             runs all the engine's benchmarks (intended to\n" <<
@@ -127,6 +127,7 @@ void print_help(const std::string& argv0)
 "                                 of these\n" <<
 "      --benchmarks=NAME        runs a single named benchmark code\n" <<
 "      --[no-]compiled          enable or disable precompiled game data\n" <<
+"      --edit                   starts the game in edit mode.\n" <<
 //"      --profile                FIXME\n" <<
 //"      --profile=FILE           FIXME\n" <<
 "      --show-hitboxes          turns on the display of object hitboxes\n" <<
@@ -136,7 +137,6 @@ void print_help(const std::string& argv0)
 "      --simiphone              changes various options to emulate an iPhone\n" <<
 "                                 environment\n" <<
 "      --tests                  runs the game's unit tests and exits\n" <<
-"      --edit                   Starts the game in edit mode.\n" <<
 "      --no-tests               skips the execution of unit tests on startup\n"
 "      --utility=NAME           runs the specified UTILITY( NAME ) code block,\n" <<
 "                                 such as compile_levels or object_compiler,\n" <<
