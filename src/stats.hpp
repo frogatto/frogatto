@@ -28,7 +28,7 @@ public:
 	entry(const std::string& type, const std::string& level_id);
 	~entry();
 	entry& set(const std::string& name, const variant& value);
-	void add_player_pos();
+	entry& add_player_pos();
 private:
 	entry(const entry& o);
 	void operator=(const entry& o) const;

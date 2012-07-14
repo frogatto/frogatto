@@ -1377,6 +1377,7 @@ public:
 		if(attain_achievement(str_)) {
 			achievement_ptr a = achievement::get(str_);
 			if(a) {
+				stats::entry("achievement").add_player_pos().set("achievement", variant(str_));
 				sound::play("achievement-attained.wav");
 				set_displayed_achievement(a);
 			}

@@ -329,12 +329,14 @@ entry& entry::set(const std::string& name, const variant& value)
 	return *this;
 }
 
-void entry::add_player_pos()
+entry& entry::add_player_pos()
 {
 	if(level::current().player()) {
 		set("x", variant(level::current().player()->get_entity().midpoint().x));
 		set("y", variant(level::current().player()->get_entity().midpoint().y));
 	}
+
+	return *this;
 }
 
 void record(const variant& value)
