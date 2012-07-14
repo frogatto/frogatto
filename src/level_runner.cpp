@@ -397,7 +397,7 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 			if(!lvl_->gui_event(event)) {
 				x = (mx*graphics::screen_width())/preferences::virtual_screen_width() + last_draw_position().x/100;
 				y = (my*graphics::screen_height())/preferences::virtual_screen_height() + last_draw_position().y/100;
-				game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
+				game_logic::map_formula_callable_ptr callable(new game_logic::map_formula_callable);
 				callable->add("mouse_x", variant(x));
 				callable->add("mouse_y", variant(y));
 				callable->add("mouse_index", variant(i));
@@ -406,7 +406,6 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 				} else {
 					callable->add("mouse_button", variant(button_state));
 				}
-				variant v(callable);
 				std::vector<variant> items;
 				// Grab characters around point, z-order sort them, so that when
 				// we process them we go from highest to lowest, allowing a higher
@@ -435,16 +434,16 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 					} else if(event.type == SDL_MOUSEMOTION) {
 						// handling for mouse_enter
 						if((*it)->is_mouse_over_entity() == false) {
-							(*it)->handle_event(MouseEnterID, callable);
+							(*it)->handle_event(MouseEnterID, callable.get());
 							(*it)->set_mouse_over_entity();
 						}
 						mouse_in.insert(*it);
 					}
 
-					handled |= (*it)->handle_event(basic_evt, callable);
+					handled |= (*it)->handle_event(basic_evt, callable.get());
 					// XXX: fix this for dragging(with multiple mice)
 					if(event.type == SDL_MOUSEBUTTONUP && !click_handled && (*it)->is_being_dragged() == false) {
-						(*it)->handle_event(MouseClickID, callable);
+						(*it)->handle_event(MouseClickID, callable.get());
 						if((*it)->mouse_event_swallowed()) {
 							click_handled = true;
 						}
@@ -455,29 +454,30 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 				callable->add("handled", variant(handled));
 				variant obj_ary(&items);
 				callable->add("objects_under_mouse", obj_ary);
-				foreach(entity_ptr object, level::current().get_chars()) {
+				std::vector<entity_ptr> level_chars(level::current().get_chars());
+				foreach(entity_ptr object, level_chars) {
 					if(object) {
-						object->handle_event(catch_all_event, callable);
+						object->handle_event(catch_all_event, callable.get());
 
 						// drag handling
 						if(event.type == SDL_MOUSEBUTTONUP) {
 							object->set_mouse_buttons(object->get_mouse_buttons() & ~SDL_BUTTON(event.button.button));
 							if(object->get_mouse_buttons() == 0 && object->is_being_dragged()) {
-								object->handle_event(MouseDragEndID, callable);
+								object->handle_event(MouseDragEndID, callable.get());
 								object->set_being_dragged(false);
 							}
 						} else if(event.type == SDL_MOUSEMOTION) {
 							// drag check.
 							if(object->is_being_dragged()) {
 								if(object->get_mouse_buttons() & button_state) {
-									object->handle_event(MouseDragID, callable);
+									object->handle_event(MouseDragID, callable.get());
 								} else {
-									object->handle_event(MouseDragEndID, callable);
+									object->handle_event(MouseDragEndID, callable.get());
 									object->set_being_dragged(false);
 								}
 							} else if(object->get_mouse_buttons() & button_state) {
 								// start drag.
-								object->handle_event(MouseDragStartID, callable);
+								object->handle_event(MouseDragStartID, callable.get());
 								object->set_being_dragged();
 							}
 						}
@@ -486,7 +486,8 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 
 				if(event.type == SDL_MOUSEMOTION) {
 					// handling for mouse_leave
-					foreach(const entity_ptr& e, level::current().get_chars()) {
+					level_chars = level::current().get_chars();
+					foreach(const entity_ptr& e, level_chars) {
 						if(e) {
 							// n.b. clip_area is in level coordinates, not relative to the object.
 							rect clip_area;
@@ -499,7 +500,7 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 							if(mouse_in.find(e) == mouse_in.end() 
 								&& ((has_clip_area == false && e->is_mouse_over_entity())
 								|| (e->is_mouse_over_entity() && has_clip_area && point_in_rect(p, clip_area) == false))) {
-								e->handle_event(MouseLeaveID, callable);
+								e->handle_event(MouseLeaveID, callable.get());
 								e->set_mouse_over_entity(false);
 							}
 						}
@@ -1228,6 +1229,9 @@ bool level_runner::play_cycle()
 				break;
 
 			case SDL_MOUSEMOTION:
+				handle_mouse_events(event);
+				break;
+
 			case SDL_MOUSEBUTTONUP:
 				handle_mouse_events(event);
 				break;
