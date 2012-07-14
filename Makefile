@@ -42,22 +42,19 @@ include Makefile.common
 
 game: $(objects)
 	$(CXX) \
-		$(LDFLAGS) \
-		$(BASE_CXXFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(INC) \
+		$(BASE_CXXFLAGS) $(LDFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(INC) \
 		$(objects) -o game \
 		$(LIBS) -lboost_regex-mt -lboost_system-mt -lpthread -fthreadsafe-statics
 
 server: $(server_objects)
 	$(CXX) \
-		$(LDFLAGS) \
-		$(BASE_CXXFLAGS) $(CXXFLAGS) $(CPPFLAGS) \
+		$(BASE_CXXFLAGS) $(LDFLAGS) $(CXXFLAGS) $(CPPFLAGS) \
 		$(server_objects) -o server \
 		$(LIBS) -lboost_regex-mt -lboost_system-mt -lboost_thread-mt -lboost_iostreams-mt
 
 formula_test: $(formula_test_objects)
 	$(CXX) \
-		$(LDFLAGS) \
-		$(BASE_CXXFLAGS) $(CXXFLAGS) $(CPPFLAGS) -DUNIT_TEST_FORMULA \
+		$(BASE_CXXFLAGS) $(LDFLAGS) $(CXXFLAGS) $(CPPFLAGS) -DUNIT_TEST_FORMULA \
 		src/formula.cpp $(formula_test_objects) -o test \
 		$(LIBS) -lboost_regex
 
