@@ -263,18 +263,22 @@ void entity::generate_current(const entity& target, int* velocity_x, int* veloci
 void entity::add_scheduled_command(int cycle, variant cmd)
 {
 	scheduled_commands_.push_back(ScheduledCommand(cycle, cmd));
-	std::sort(scheduled_commands_.begin(), scheduled_commands_.end());
 }
 
-variant entity::get_scheduled_command(int cycle)
+std::vector<variant> entity::pop_scheduled_commands()
 {
-	if(scheduled_commands_.empty() == false && cycle >= scheduled_commands_.front().first) {
-		variant result = scheduled_commands_.front().second;
-		scheduled_commands_.erase(scheduled_commands_.begin());
-		return result;
+	std::vector<variant> result;
+	std::vector<ScheduledCommand>::iterator i = scheduled_commands_.begin();
+	while(i != scheduled_commands_.end()) {
+		if(--(i->first) <= 0) {
+			result.push_back(i->second);
+			i = scheduled_commands_.erase(i);
+		} else {
+			++i;
+		}
 	}
 
-	return variant();
+	return result;
 }
 
 void entity::set_current_generator(current_generator* generator)

@@ -209,7 +209,7 @@ public:
 	virtual void map_entities(const std::map<entity_ptr, entity_ptr>& m) {}
 
 	void add_scheduled_command(int cycle, variant cmd);
-	variant get_scheduled_command(int cycle);
+	std::vector<variant> pop_scheduled_commands();
 
 	virtual void save_game() {}
 

@@ -1093,10 +1093,9 @@ void custom_object::process(level& lvl)
 		handle_event(OBJECT_EVENT_DONE_CREATE);
 	}
 
-	variant scheduled_command = get_scheduled_command(lvl.cycle());
-	while(!scheduled_command.is_null()) {
-		execute_command(scheduled_command);
-		scheduled_command = get_scheduled_command(lvl.cycle());
+	std::vector<variant> scheduled_commands = pop_scheduled_commands();
+	foreach(const variant& cmd, scheduled_commands) {
+		execute_command(cmd);
 	}
 
 	if(position_schedule_.get() != NULL) {
