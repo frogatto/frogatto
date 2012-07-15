@@ -207,6 +207,7 @@ public:
 	//that we hold, and map them according to the mapping given. This is useful
 	//when we back up an entire level and want to make references match.
 	virtual void map_entities(const std::map<entity_ptr, entity_ptr>& m) {}
+	virtual void cleanup_references() {}
 
 	void add_scheduled_command(int cycle, variant cmd);
 	std::vector<variant> pop_scheduled_commands();

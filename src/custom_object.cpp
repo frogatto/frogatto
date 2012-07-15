@@ -3819,7 +3819,7 @@ std::string custom_object::debug_description() const
 {
 	char buf[128];
 	sprintf(buf, "%p", this);
-	return type_->id() + " (" + label() + " " + std::string(buf) + ")";
+	return type_->id();
 }
 
 namespace {
@@ -3884,6 +3884,20 @@ void custom_object::map_entities(const std::map<entity_ptr, entity_ptr>& m)
 
 	foreach(variant& v, tmp_vars_->values()) {
 		map_variant_entities(v, m);
+	}
+}
+
+void custom_object::cleanup_references()
+{
+	last_hit_by_.reset();
+	standing_on_.reset();
+	parent_.reset();
+	foreach(variant& v, vars_->values()) {
+		v = variant();
+	}
+
+	foreach(variant& v, tmp_vars_->values()) {
+		v = variant();
 	}
 }
 

@@ -3539,6 +3539,14 @@ void level::backup()
 
 	backups_.push_back(snapshot);
 	if(backups_.size() > 250) {
+		for(std::deque<backup_snapshot_ptr>::iterator i = backups_.begin();
+		    i != backups_.begin() + 20; ++i) {
+			foreach(const entity_ptr& e, (*i)->chars) {
+				//kill off any references this entity holds, to workaround
+				//circular references causing things to stick around.
+				e->cleanup_references();
+			}
+		}
 		backups_.erase(backups_.begin(), backups_.begin() + 20);
 	}
 }

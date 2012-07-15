@@ -137,6 +137,7 @@ public:
 	std::string debug_description() const;
 
 	void map_entities(const std::map<entity_ptr, entity_ptr>& m);
+	void cleanup_references();
 
 	void add_particle_system(const std::string& key, const std::string& type);
 	void remove_particle_system(const std::string& key);
