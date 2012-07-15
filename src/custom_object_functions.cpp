@@ -1651,7 +1651,7 @@ public:
 	{}
 
 	virtual void execute(level& lvl, entity& ob) const {
-		ob.add_scheduled_command(lvl.cycle() + cycles_, cmd_);
+		ob.add_scheduled_command(cycles_, cmd_);
 	}
 private:
 	int cycles_;
