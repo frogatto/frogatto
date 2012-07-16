@@ -435,6 +435,15 @@ level::~level()
 #ifndef NO_EDITOR
 	get_all_levels_set().erase(this);
 #endif
+
+	for(std::deque<backup_snapshot_ptr>::iterator i = backups_.begin();
+	    i != backups_.end(); ++i) {
+		foreach(const entity_ptr& e, (*i)->chars) {
+			//kill off any references this entity holds, to workaround
+			//circular references causing things to stick around.
+			e->cleanup_references();
+		}
+	}
 }
 
 void level::read_compiled_tiles(variant node, std::vector<level_tile>::iterator& out)
@@ -3539,15 +3548,16 @@ void level::backup()
 
 	backups_.push_back(snapshot);
 	if(backups_.size() > 250) {
+
 		for(std::deque<backup_snapshot_ptr>::iterator i = backups_.begin();
-		    i != backups_.begin() + 20; ++i) {
+		    i != backups_.begin() + 1; ++i) {
 			foreach(const entity_ptr& e, (*i)->chars) {
 				//kill off any references this entity holds, to workaround
 				//circular references causing things to stick around.
 				e->cleanup_references();
 			}
 		}
-		backups_.erase(backups_.begin(), backups_.begin() + 20);
+		backups_.erase(backups_.begin(), backups_.begin() + 1);
 	}
 }
 
