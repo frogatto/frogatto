@@ -160,6 +160,7 @@
 		B5BD0576157D16440099EABB /* dropdown_widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD056D157D16440099EABB /* dropdown_widget.cpp */; };
 		B5BD0577157D16440099EABB /* file_chooser_dialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD056F157D16440099EABB /* file_chooser_dialog.cpp */; };
 		B5BD0578157D16440099EABB /* widget_factory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD0571157D16440099EABB /* widget_factory.cpp */; };
+		B5C0B05415B521EB00488542 /* difficulty.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B05215B521EB00488542 /* difficulty.cpp */; };
 		B5C6E82C1562DBD500039CC2 /* load_level_nothread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C6E82A1562DBD500039CC2 /* load_level_nothread.cpp */; };
 		B5C6E83A1562DC3A00039CC2 /* editor_module_properties_dialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C6E82F1562DC3A00039CC2 /* editor_module_properties_dialog.cpp */; };
 		B5C6E83B1562DC3A00039CC2 /* md5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C6E8311562DC3A00039CC2 /* md5.cpp */; };
@@ -516,6 +517,8 @@
 		B5BD0570157D16440099EABB /* file_chooser_dialog.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = file_chooser_dialog.hpp; sourceTree = "<group>"; };
 		B5BD0571157D16440099EABB /* widget_factory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = widget_factory.cpp; sourceTree = "<group>"; };
 		B5BD0572157D16440099EABB /* widget_factory.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = widget_factory.hpp; sourceTree = "<group>"; };
+		B5C0B05215B521EB00488542 /* difficulty.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = difficulty.cpp; sourceTree = "<group>"; };
+		B5C0B05315B521EB00488542 /* difficulty.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = difficulty.hpp; sourceTree = "<group>"; };
 		B5C6E82A1562DBD500039CC2 /* load_level_nothread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = load_level_nothread.cpp; sourceTree = "<group>"; };
 		B5C6E82B1562DBD500039CC2 /* load_level.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = load_level.hpp; sourceTree = "<group>"; };
 		B5C6E82D1562DC3A00039CC2 /* compress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = compress.cpp; sourceTree = "<group>"; };
@@ -615,6 +618,8 @@
 		080E96DDFE201D6D7F000001 /* C++ */ = {
 			isa = PBXGroup;
 			children = (
+				B5C0B05215B521EB00488542 /* difficulty.cpp */,
+				B5C0B05315B521EB00488542 /* difficulty.hpp */,
 				B5E98A6815A40FCB002F67B0 /* tbs_ai_player.cpp */,
 				B5E98A6915A40FCB002F67B0 /* tbs_ai_player.hpp */,
 				B5E98A6A15A40FCB002F67B0 /* tbs_client.cpp */,
@@ -1074,7 +1079,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0440;
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Frogatto" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1286,6 +1291,7 @@
 				B5E98A7115A40FCB002F67B0 /* tbs_client.cpp in Sources */,
 				B5E98A7215A40FCB002F67B0 /* tbs_functions.cpp in Sources */,
 				B5E98A7315A40FCB002F67B0 /* tbs_game.cpp in Sources */,
+				B5C0B05415B521EB00488542 /* difficulty.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1312,6 +1318,7 @@
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1359,6 +1366,7 @@
 		C01FCF4C08A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/lib\"",
