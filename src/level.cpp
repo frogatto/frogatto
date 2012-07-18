@@ -241,7 +241,7 @@ level::level(const std::string& level_cfg, variant node)
 	if(node.has_key("dimensions")) {
 		boundaries_ = rect(node["dimensions"]);
 	} else {
-		boundaries_ = rect(0, 0, node["width"].as_int(800), node["height"].as_int(600));
+		boundaries_ = rect(0, 0, node["width"].as_int(799), node["height"].as_int(599));
 	}
 
 	if(node.has_key("lock_screen")) {
