@@ -1007,6 +1007,11 @@ void custom_object::process(level& lvl)
 			//the object by returning, since we can't process it.
 			return;
 		}
+
+		if(level::current().is_editor_dragging_objects() && std::count(level::current().editor_selection().begin(), level::current().editor_selection().end(), entity_ptr(this))) {
+			//this object is being dragged and so gets frozen.
+			return;
+		}
 	}
 
 	collision_info debug_collide_info;

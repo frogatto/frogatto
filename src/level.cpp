@@ -165,7 +165,8 @@ level::level(const std::string& level_cfg, variant node)
 	  num_compiled_tiles_(0),
 	  entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
 	  editor_(false), show_foreground_(true), show_background_(true), dark_(false), dark_color_(graphics::color_transform(0, 0, 0, 255)), air_resistance_(0), water_resistance_(7), end_game_(false),
-      editor_tile_updates_frozen_(0), zoom_level_(decimal::from_int(1)),
+      editor_tile_updates_frozen_(0), editor_dragging_objects_(false),
+	  zoom_level_(decimal::from_int(1)),
 	  palettes_used_(0),
 	  background_palette_(-1),
 	  segment_width_(0), segment_height_(0)
@@ -2097,6 +2098,8 @@ void level::process()
 			speech_dialogs_.pop();
 		}
 	}
+
+	editor_dragging_objects_ = false;
 }
 
 void level::process_draw()

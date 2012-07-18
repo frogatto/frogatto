@@ -1230,6 +1230,10 @@ void editor::process()
 			ghost_objects_.clear();
 		}
 	}else if(object_mode && lvl_->editor_highlight()) {
+		foreach(level_ptr lvl, levels_) {
+			lvl->set_editor_dragging_objects();
+		}
+		
 		//we're handling objects, and a button is down, and we have an
 		//object under the mouse. This means we are dragging something.
 

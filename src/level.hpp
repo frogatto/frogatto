@@ -308,6 +308,9 @@ public:
 	bool in_editor() const {return false;}
 #endif // !NO_EDITOR
 
+	void set_editor_dragging_objects() { editor_dragging_objects_ = true; }
+	bool is_editor_dragging_objects() const { return editor_dragging_objects_; }
+
 	void add_sub_level(const std::string& lvl, int xoffset, int yoffset, bool add_objects=true);
 	void remove_sub_level(const std::string& lvl);
 	void adjust_level_offset(int xoffset, int yoffset);
@@ -342,6 +345,7 @@ public:
 	std::pair<TileItor, TileItor> tiles_at_loc(int x, int y) const;
 
 	const std::vector<std::string>& debug_properties() const { return debug_properties_; }
+
 
 private:
 
@@ -559,6 +563,7 @@ private:
 	std::deque<backup_snapshot_ptr> backups_;
 
 	int editor_tile_updates_frozen_;
+	bool editor_dragging_objects_;
 
 	std::vector<std::string> gui_algo_str_;
 	std::vector<gui_algorithm_ptr> gui_algorithm_;
