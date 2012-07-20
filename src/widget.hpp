@@ -30,11 +30,14 @@ typedef boost::intrusive_ptr<const widget> const_widget_ptr;
 class widget : public virtual input::listener
 {
 public:
+	enum HORIZONTAL_ALIGN {HALIGN_LEFT, HALIGN_CENTER, HALIGN_RIGHT};
+	enum VERTICAL_ALIGN   {VALIGN_TOP,  VALIGN_CENTER, VALIGN_BOTTOM};
+
 	bool process_event(const SDL_Event& event, bool claimed);
 	void draw() const;
 
-	virtual void set_loc(int x, int y) { x_ = x; y_ = y; }
-	virtual void set_dim(int w, int h) { w_ = w; h_ = h; }
+	virtual void set_loc(int x, int y) { true_x_ = x_ = x; true_y_ = y_ = y; recalc_loc(); }
+	virtual void set_dim(int w, int h) { w_ = w; h_ = h; recalc_loc(); }
 
 	int x() const;
 	int y() const;
@@ -61,7 +64,8 @@ public:
 	void process();
 protected:
 	widget() 
-		: x_(0), y_(0), w_(0), h_(0), 
+		: x_(0), y_(0), w_(0), h_(0), align_h_(HALIGN_LEFT), align_v_(VALIGN_TOP),
+		true_x_(0), true_y_(0),
 		tooltip_displayed_(false), visible_(true), zorder_(0), environ_(0)
 	{}
 	explicit widget(const variant& v, game_logic::formula_callable* e);
@@ -72,9 +76,12 @@ protected:
 	void set_environment(game_logic::formula_callable* e = 0) { environ_ = e; }
 	boost::function<void()> on_process_;
 	virtual void handle_process();
+	virtual void recalc_loc();
 private:
 	int x_, y_;
 	int w_, h_;
+	int true_x_;
+	int true_y_;
 	boost::shared_ptr<std::string> tooltip_;
 	bool tooltip_displayed_;
 	bool visible_;
@@ -85,6 +92,9 @@ private:
 	// higher priority in the draw order.
 	int zorder_;
 	std::string id_;
+
+	HORIZONTAL_ALIGN align_h_;
+	VERTICAL_ALIGN   align_v_;
 };
 
 // Functor to sort widgets by z-ordering.

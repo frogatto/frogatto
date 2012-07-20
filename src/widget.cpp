@@ -27,8 +27,9 @@ namespace gui {
 
 widget::widget(const variant& v, game_logic::formula_callable* e) 
 	: environ_(e), w_(0), h_(0), x_(0), y_(0), zorder_(0), 
-	tooltip_displayed_(false), id_(v["id"].as_string_default())
-	
+	true_x_(0), true_y_(0),
+	tooltip_displayed_(false), id_(v["id"].as_string_default()),
+	align_h_(HALIGN_LEFT), align_v_(VALIGN_TOP)
 {
 	if(v.has_key("width")) {
 		w_ = v["width"].as_int();
@@ -55,16 +56,16 @@ widget::widget(const variant& v, game_logic::formula_callable* e)
 		set_dim(r[2], r[3]);
 	} 
 	if(v.has_key("x")) {
-		x_ = v["x"].as_int();
+		true_x_ = x_ = v["x"].as_int();
 	} 
 	if(v.has_key("y")) {
-		y_ = v["y"].as_int();
+		true_y_ = y_ = v["y"].as_int();
 	}
 	if(v.has_key("xy")) {
 		std::vector<int> iv = v["xy"].as_list_int();
 		ASSERT_LOG(iv.size() == 2, "XY attribute must be 2 integer elements.");
-		x_ = iv[0];
-		y_ = iv[1];
+		true_x_ = x_ = iv[0];
+		true_y_ = y_ = iv[1];
 	}
 	zorder_ = v["zorder"].as_int(0);
 	if(v.has_key("on_process")) {
@@ -75,12 +76,56 @@ widget::widget(const variant& v, game_logic::formula_callable* e)
 		set_tooltip(v["tooltip"].as_string());
 	}
 	visible_ = v["visible"].as_bool(true);
+	if(v.has_key("align_h")) {
+		std::string align = v["align_h"].as_string();
+		if(align == "left") {
+			align_h_ = HALIGN_LEFT;
+		} else if(align == "middle" || align == "center" || align == "centre") {
+			align_h_ = HALIGN_CENTER;
+		} else if(align == "right") {
+			align_h_ = HALIGN_RIGHT;
+		} else {
+			ASSERT_LOG(false, "Invalid align_h attribute given: " << align);
+		}
+	}
+	if(v.has_key("align_v")) {
+		std::string align = v["align_v"].as_string();
+		if(align == "top") {
+			align_v_ = VALIGN_TOP;
+		} else if(align == "middle" || align == "center" || align == "centre") {
+			align_v_ = VALIGN_CENTER;
+		} else if(align == "bottom") {
+			align_v_ = VALIGN_BOTTOM;
+		} else {
+			ASSERT_LOG(false, "Invalid align_v attribute given: " << align);
+		}
+	}
+	recalc_loc();
 }
 
 widget::~widget()
 {
 	if(tooltip_displayed_) {
 		gui::remove_tooltip(tooltip_);
+	}
+}
+
+void widget::recalc_loc()
+{
+	if( align_h_ == HALIGN_LEFT) {
+		x_ = true_x_;
+	} else if(align_h_ == HALIGN_CENTER) {
+		x_ = true_x_ - w_/2;
+	} else {
+		x_ = true_x_ - w_;
+	}
+
+	if( align_v_ == VALIGN_TOP) {
+		y_ = true_y_;
+	} else if(align_v_ == VALIGN_CENTER) {
+		y_ = true_y_ - h_/2;
+	} else {
+		y_ = true_y_ - h_;
 	}
 }
 
