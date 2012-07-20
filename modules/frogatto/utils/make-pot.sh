@@ -44,6 +44,6 @@ grep -Hnr --exclude-dir=".svn" --exclude-dir="experimental" "~[^~][^~]*~" ../dat
 	sed -e 's/\\\\n/\\n/g' | \
 	sed -ne ":A;s/\([a-z0-9/\._-]*:[0-9]*\):[^~]*~\([^~][^~]*\)~/\n#: \1\nmsgid \"\2\"\nmsgstr \"\"\n\1:/;tA;s/\n\([a-z0-9/\._-]*:[0-9]*\):[^\n]*//;p"
 # find marked strings _("...") in source files
-grep -Hn '[^a-z]_("[^"]*")' ../src/*.cpp | \
+grep -Hn '[^a-z]_("[^"]*")' ../../../src/*.cpp | \
 	sed -ne 's/^\(.*:[0-9][0-9]*\):.*_("/#: \1\n_("/;s/_("\([^"]*\)").*\(_("\|\)/msgid "\1"\nmsgstr ""\n\2/gp'
 ) | cat
