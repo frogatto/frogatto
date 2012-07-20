@@ -29,9 +29,12 @@ std::string map_file(const std::string& fname)
 {
 	foreach(const modules& p, loaded_paths()) {
 		std::string path = sys::find_file(p.base_path_ + fname);
+			std::cout << "TOUCHED FILE " << path;
 		if(sys::file_exists(path)) {
+			std::cout << " (FOUND)\n";
 			return path;
 		}
+		std::cout << " (dne)\n";
 	}
 	return fname;
 }
