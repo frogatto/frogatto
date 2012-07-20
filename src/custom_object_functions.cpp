@@ -63,6 +63,10 @@ FUNCTION_DEF(time, 0, 0, "time() -> timestamp: returns the current real time")
 	return variant(static_cast<int>(t1));
 END_FUNCTION_DEF(time)
 
+FUNCTION_DEF(translate, 1, 1, "translate(str): returns the translated version of the given string")
+	return variant(i18n::tr(args()[0]->evaluate(variables).as_string()));
+END_FUNCTION_DEF(translate)
+
 FUNCTION_DEF(performance, 0, 0, "performance(): returns an object with current performance stats")
 	formula::fail_if_static_context();
 	return variant(performance_data::current());
