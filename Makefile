@@ -58,28 +58,6 @@ formula_test: $(formula_test_objects)
 		src/formula.cpp $(formula_test_objects) -o test \
 		$(LIBS) -lboost_regex
 
-update-pot:
-	utils/make-pot.sh > po/frogatto.pot.bak
-	msguniq -F po/frogatto.pot.bak > po/frogatto.pot
-	rm po/frogatto.pot.bak
-
-%.po: po/frogatto.pot
-	msgmerge $@ po/frogatto.pot -o $@.part
-	mv $@.part $@
-
-LINGUAS=ar de el en_GB eo es fr hu_HU id it ja ms_MY nl pl pt_BR ru sk sv tt zh_CN
-
-update-po:
-	(for lang in ${LINGUAS}; do \
-		${MAKE} po/$$lang.po ; \
-	done)
-
-update-mo:
-	(for lang in ${LINGUAS}; do \
-		mkdir -p locale/$$lang/LC_MESSAGES ; \
-		msgfmt po/$$lang.po -o locale/$$lang/LC_MESSAGES/frogatto.mo ; \
-	done)
-
 clean:
 	rm -f *.o game
 	
