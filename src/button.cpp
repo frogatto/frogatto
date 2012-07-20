@@ -106,6 +106,8 @@ void button::set_label(widget_ptr label)
 
 bool button::in_button(int xloc, int yloc) const
 {
+	if(xloc > 32767) {xloc -= 65536;}
+	if(yloc > 32767) {yloc -= 65536;}
 	return xloc > x() && xloc < x() + width() &&
 	       yloc > y() && yloc < y() + height();
 }
