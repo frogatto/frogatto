@@ -62,6 +62,13 @@ button::button(const variant& v, game_logic::formula_callable* e) : widget(v,e),
 	onclick_ = boost::bind(&button::click, this);
 	button_resolution_ = v["resolution"].as_string_default("normal") == "normal" ? BUTTON_SIZE_NORMAL_RESOLUTION : BUTTON_SIZE_DOUBLE_RESOLUTION;
 	button_style_ = v["style"].as_string_default("default") == "default" ? BUTTON_STYLE_DEFAULT : BUTTON_STYLE_NORMAL;
+	hpadding = v["hpad"].as_int(10);
+	vpadding = v["vpad"].as_int(4);
+	if(v.has_key("padding")) {
+		ASSERT_LOG(v["padding"].num_elements() == 2, "Incorrect number of padding elements specifed." << v["padding"].num_elements());
+		hpadding = v["padding"][0].as_int();
+		vpadding = v["padding"][1].as_int();
+	}
 	setup();
 }
 
