@@ -133,17 +133,17 @@ const std::string& get_locale() {
 	
 	std::string filename = "./locale/" + locale + "/LC_MESSAGES/frogatto.mo";
 	found = locale.find("@");
-	if (!sys::file_exists(filename) && found != std::string::npos) {
+	if (!sys::file_exists(module::map_file(filename)) && found != std::string::npos) {
 		locale = locale.substr(0, found);
 		filename = "./locale/" + locale + "/LC_MESSAGES/frogatto.mo";
 	}
 	//strip the country code, e.g. "de_DE" --> "de"
 	found = locale.find("_");
-	if (!sys::file_exists(filename) && found != std::string::npos) {
+	if (!sys::file_exists(module::map_file(filename)) && found != std::string::npos) {
 		locale = locale.substr(0, found);
 		filename = "./locale/" + locale + "/LC_MESSAGES/frogatto.mo";
 	}
-	if (!sys::file_exists(filename))
+	if (!sys::file_exists(module::map_file(filename)))
 		return;
 	const std::string content = sys::read_file(module::map_file(filename));
 	size_t size = content.size();

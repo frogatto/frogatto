@@ -26,6 +26,50 @@
 namespace graphics
 {
 
+namespace {
+
+static void transform_point(GLfloat out[4], const GLfloat m[16], const GLfloat in[4])
+{
+#define M(row,col)  m[col*4+row]
+	out[0] = M(0, 0) * in[0] + M(0, 1) * in[1] + M(0, 2) * in[2] + M(0, 3) * in[3];
+	out[1] = M(1, 0) * in[0] + M(1, 1) * in[1] + M(1, 2) * in[2] + M(1, 3) * in[3];
+	out[2] = M(2, 0) * in[0] + M(2, 1) * in[1] + M(2, 2) * in[2] + M(2, 3) * in[3];
+	out[3] = M(3, 0) * in[0] + M(3, 1) * in[1] + M(3, 2) * in[2] + M(3, 3) * in[3];
+#undef M
+}
+
+static GLboolean gluProjectf(GLfloat objx, GLfloat objy, GLfloat objz,
+					 const GLfloat model[16], const GLfloat proj[16],
+					 const GLint viewport[4],
+					 GLfloat * winx, GLfloat * winy, GLfloat * winz)
+{
+	// transformation matrix
+	GLfloat in[4], out[4];
+	
+	// Initialise transformation matrix with vector
+	in[0] = objx;
+	in[1] = objy;
+	in[2] = objz;
+	in[3] = 1.0f;
+	transform_point(out, model, in);
+	transform_point(in, proj, out);
+	
+	// Normalise
+	if (in[3] == 0.0f)
+		return GL_FALSE;
+	
+	in[0] /= in[3];
+	in[1] /= in[3];
+	in[2] /= in[3];
+	
+	*winx = viewport[0] + (1.0f + in[0]) * viewport[2] / 2.0f;
+	*winy = viewport[1] + (1.0f + in[1]) * viewport[3] / 2.0f;
+	*winz = (1.0f + in[2]) / 2.0f;
+	return GL_TRUE;
+}
+
+}
+
 void reset_opengl_state()
 {
 	glShadeModel(GL_SMOOTH);
@@ -735,16 +779,16 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 		glEnable(GL_TEXTURE_2D);
 	}
 
-	void coords_to_screen(GLdouble sx, GLdouble sy, GLdouble sz,
-						  GLdouble* dx, GLdouble* dy, GLdouble* dz) {
-		GLdouble model[16], proj[16];
+	void coords_to_screen(GLfloat sx, GLfloat sy, GLfloat sz,
+						  GLfloat* dx, GLfloat* dy, GLfloat* dz) {
+		GLfloat model[16], proj[16];
 		GLint view[4];
 		
-		glGetDoublev(GL_MODELVIEW_MATRIX, model);
-		glGetDoublev(GL_PROJECTION_MATRIX, proj);
+		glGetFloatv(GL_MODELVIEW_MATRIX, model);
+		glGetFloatv(GL_PROJECTION_MATRIX, proj);
 		glGetIntegerv(GL_VIEWPORT, view);
 		
-		gluProject(sx, sy, sz, model, proj, view, dx, dy, dz);
+		gluProjectf(sx, sy, sz, model, proj, view, dx, dy, dz);
 	}
 
 	void push_clip(const SDL_Rect& r)
@@ -752,7 +796,7 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 		const bool was_enabled_clip = glIsEnabled(GL_SCISSOR_TEST);
 		bool should_enable_clip = true;
 		
-		GLdouble x, y ,z;
+		GLfloat x, y ,z;
 		coords_to_screen(0, graphics::screen_height(), 0, &x, &y, &z);
 		
 		SDL_Rect s = r;
