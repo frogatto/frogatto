@@ -114,7 +114,7 @@ custom_object::custom_object(variant node)
 	activation_border_(node["activation_border"].as_int(type_->activation_border())),
 	last_cycle_active_(0),
 	parent_pivot_(node["pivot"].as_string_default()),
-	parent_prev_x_(0), parent_prev_y_(0), parent_prev_facing_(true),
+	parent_prev_x_(INT_MIN), parent_prev_y_(INT_MIN), parent_prev_facing_(true),
 	swallow_mouse_event_(false),
 	currently_handling_die_event_(0),
 	use_absolute_screen_coordinates_(node["use_absolute_screen_coordinates"].as_bool(type_->use_absolute_screen_coordinates()))
@@ -341,7 +341,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	always_active_(false),
 	activation_border_(type_->activation_border()),
 	last_cycle_active_(0),
-	parent_prev_x_(0), parent_prev_y_(0), parent_prev_facing_(true),
+	parent_prev_x_(INT_MIN), parent_prev_y_(INT_MIN), parent_prev_facing_(true),
 	min_difficulty_(-1), max_difficulty_(-1),
 	currently_handling_die_event_(0),
 	use_absolute_screen_coordinates_(type_->use_absolute_screen_coordinates())
@@ -1019,18 +1019,21 @@ void custom_object::process(level& lvl)
 
 	if(parent_.get() != NULL) {
 		const point pos = parent_position();
-		const int move_x = pos.x - parent_prev_x_;
-		const int move_y = pos.y - parent_prev_y_;
-
-		move_centipixels(move_x*100, move_y*100);
-
 		const bool parent_facing = parent_->face_right();
-		if(parent_facing != parent_prev_facing_) {
-			const point pos_before_turn = parent_->pivot(parent_pivot_);
 
-			const int relative_x = pos.x - pos_before_turn.x;
+		if(parent_prev_x_ != INT_MIN) {
+			const int move_x = pos.x - parent_prev_x_;
+			const int move_y = pos.y - parent_prev_y_;
 
-			move_centipixels(relative_x*100, 0);
+			move_centipixels(move_x*100, move_y*100);
+
+			if(parent_facing != parent_prev_facing_) {
+				const point pos_before_turn = parent_->pivot(parent_pivot_);
+	
+				const int relative_x = pos.x - pos_before_turn.x;
+	
+				move_centipixels(relative_x*100, 0);
+			}
 		}
 
 		parent_prev_x_ = pos.x;
