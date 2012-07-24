@@ -2187,17 +2187,3 @@ void init_custom_object_functions(variant node)
 		assert(std::count(names.begin(), names.end(), fn["name"].as_string()));
 	}
 }
-
-UTILITY(document_object_functions) {
-	std::vector<std::string> helpstrings = function_helpstrings(FunctionModule);
-	std::sort(helpstrings.begin(), helpstrings.end());
-	foreach(std::string s, helpstrings) {
-		std::string::iterator i = std::find(s.begin(), s.end(), ':');
-		if(i != s.end()) {
-			s = "{{{ " + std::string(s.begin(), i) + " }}}" + std::string(i, s.end());
-		}
-		s = "  * " + s;
-		std::cout << s << "\n";
-	}
-}
-

@@ -1,4 +1,6 @@
+#include "foreach.hpp"
 #include "formula_function_registry.hpp"
+#include "unit_test.hpp"
 
 namespace {
 std::map<std::string, std::map<std::string, function_creator*> >& function_creators()
@@ -36,3 +38,25 @@ int register_function_helpstring(const std::string& module, const std::string& s
 	return helpstrings()[module].size();
 }
 
+UTILITY(document_ffl_functions)
+{
+	for(std::map<std::string, std::vector<std::string> >::const_iterator i = helpstrings().begin(); i != helpstrings().end(); ++i) {
+		if(i->second.empty()) {
+			continue;
+		}
+
+		std::cout << "-- MODULE: " << i->first << " --\n";
+		std::vector<std::string> helpstrings = function_helpstrings(i->first);
+		std::sort(helpstrings.begin(), helpstrings.end());
+		foreach(std::string s, helpstrings) {
+			std::string::iterator i = std::find(s.begin(), s.end(), ':');
+			if(i != s.end()) {
+				s = "{{{ " + std::string(s.begin(), i) + " }}}" + std::string(i, s.end());
+			}
+			s = "  * " + s;
+			std::cout << s << "\n";
+		}
+
+		std::cout << "\n";
+	}
+}
