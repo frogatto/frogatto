@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-07-19 23:41-0300\n"
-"PO-Revision-Date: 2012-07-20 02:42+0000\n"
+"POT-Creation-Date: 2012-07-25 05:06-0300\n"
+"PO-Revision-Date: 2012-07-25 08:08+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Malay (Malaysia) (http://www.transifex.com/projects/p/Frogatto/language/ms_MY/)\n"
 "MIME-Version: 1.0\n"
@@ -38,11 +38,11 @@ msgstr "Serang"
 msgid "Back"
 msgstr "Kembali"
 
-#: ../../../src/custom_object_functions.cpp:232
+#: ../../../src/custom_object_functions.cpp:236
 msgid "Select save slot to use."
 msgstr ""
 
-#: ../../../src/custom_object_functions.cpp:325
+#: ../../../src/custom_object_functions.cpp:329
 msgid "Select save slot to load."
 msgstr ""
 
@@ -727,7 +727,7 @@ msgid ""
 "Now just up ahead there is a gate.\n"
 "If you can get through it,\n"
 "you'll make it to the limestone caverns.\n"
-"There is said to be an way into the\n"
+"There is said to be a way into the\n"
 "basement floors of Milgram's compound,\n"
 "somewhere in the caverns."
 msgstr ""
@@ -777,11 +777,61 @@ msgstr ""
 
 #: ../data/level/bon-bosque.cfg:223
 msgid ""
-"You're welcome, friend.\n"
-"I wish you the best!"
+"You're welcome, but it's a tad premature...\n"
+"I have something for you which I hope will help."
 msgstr ""
 
-#: ../data/level/bon-bosque.cfg:4620
+#: ../data/level/bon-bosque.cfg:225
+msgid "Oh?"
+msgstr ""
+
+#: ../data/level/bon-bosque.cfg:226
+msgid ""
+"Yes, I've pulled a few strings,\n"
+"called in a few favors and whatnot..."
+msgstr ""
+
+#: ../data/level/bon-bosque.cfg:227
+msgid ""
+"...and got my hands on a Force Talisman.\n"
+"For your use."
+msgstr ""
+
+#: ../data/level/bon-bosque.cfg:228
+msgid ""
+"I'm not exactly sure what it will do, but\n"
+"I'm told it has somewhat of a mind of its own."
+msgstr ""
+
+#: ../data/level/bon-bosque.cfg:230
+msgid "I'm not sure I understand..."
+msgstr ""
+
+#: ../data/level/bon-bosque.cfg:231
+msgid ""
+"Nor do I -\n"
+"that's simply what I was told."
+msgstr ""
+
+#: ../data/level/bon-bosque.cfg:232
+msgid ""
+"Nevertheless, you can probably\n"
+"figure that out simply by trying it."
+msgstr ""
+
+#: ../data/level/bon-bosque.cfg:233
+msgid ""
+"I wish you the best,\n"
+"and I hope that helps keep you safe!"
+msgstr ""
+
+#: ../data/level/bon-bosque.cfg:235
+msgid ""
+"Absolutely!\n"
+"Thanks again!"
+msgstr ""
+
+#: ../data/level/bon-bosque.cfg:4634
 #: ../data/objects/playable/map-selector.cfg:18
 msgid "Bon Bosque"
 msgstr "Bon Bosque"
@@ -804,7 +854,7 @@ msgstr "Saya perlu ke atas... Pasti ada cara\nnak hidupkan mesin pengangkat ni."
 msgid "Burning Stone"
 msgstr "Batu Terbakar"
 
-#: ../data/level/catfactory-catwalk.cfg:2415
+#: ../data/level/catfactory-catwalk.cfg:2525
 msgid "The Cat-Factory's Catwalks"
 msgstr ""
 
@@ -812,7 +862,7 @@ msgstr ""
 msgid "Caverns of Holes"
 msgstr "Gua Lohong"
 
-#: ../data/level/central-services.cfg:2108
+#: ../data/level/central-services.cfg:2440
 msgid "Central Services"
 msgstr ""
 
@@ -1647,7 +1697,8 @@ msgstr ""
 #: ../data/level/crevice-village-house-elder.cfg:452
 #: ../data/level/crevice-village-house-elder.cfg:475
 #: ../data/level/crevice-village-house-elder.cfg:485
-#: ../data/level/kitty-dormitory.cfg:1966
+#: ../data/level/kitty-dormitory.cfg:1969
+#: ../data/level/to-nenes-house-inside.cfg:88
 msgid "..."
 msgstr "..."
 
@@ -2556,6 +2607,176 @@ msgstr "Rangkakkan Penjara Bawah Tanah "
 msgid "The Entrance"
 msgstr "Gerbang Masuk"
 
+#: ../data/level/dungeon-gateway.cfg:126
+msgid "h... Hello?"
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:130
+msgid "Is everything alright?"
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:132
+msgid "Oh thank goodness, you can talk!"
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:135
+msgid "This is a surprise?"
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:137
+msgid ""
+"Yeah, I thought you were some creature\n"
+"that had shambled in from the caves."
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:138
+msgid "We get that from time to time."
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:139
+msgid ""
+"I hate this job.\n"
+"It's CREEPY down here!"
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:142
+msgid "What are you even doing?"
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:144
+msgid ""
+"Cleaning.\n"
+"I'm a janitor."
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:145
+msgid ""
+"What are YOU doing?\n"
+"For that matter, who are you, anyways?"
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:148
+msgid "I'm Frogatto."
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:150
+msgid "Do Frogattoes live in caves?"
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:153
+msgid ""
+"We're called 'Frogs', actually...\n"
+"I guess sometimes we do, but I don't."
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:155
+msgid ""
+"Anyways, if you must know,\n"
+"I've actually come here to see Milgram."
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:157
+msgid ""
+"I'm trying to sneak in, because I hear he's\n"
+"nigh-impossible to get a proper audience with."
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:159
+msgid ""
+"Wow.\n"
+"That's pretty bold!"
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:160
+msgid "What business do you have with him?"
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:163
+msgid ""
+"Well, some of you came to my hometown a little\n"
+" while ago, and went after someone I know."
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:165
+msgid ""
+"He's not really a friend of mine,\n"
+"but I'd like to know what's going on."
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:167
+msgid "You guys ... kinda scared a few people."
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:169
+msgid "Geez, I'm sorry to hear that."
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:170
+msgid ""
+"You know, now that you mention it,\n"
+"you look kinda familiar."
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:171
+msgid "I think they put out a security bulletin about you."
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:174
+msgid ""
+"Me?  In particular?\n"
+"This is a tad awkward..."
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:176
+msgid "No, no, don't get the wrong idea."
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:177
+msgid ""
+"Me?  No way I'm going to fight you.\n"
+"You seem like a decent guy anyways."
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:178
+msgid ""
+"But you might want to be extra careful\n"
+"if you do sneak in."
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:181
+msgid "How can I tell who's friendly or not?"
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:183
+msgid ""
+"Well, if they're armed,\n"
+"assume they're with security."
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:184
+msgid ""
+"They've probably also turned-on\n"
+"our security systems, unfortunately."
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:185
+msgid ""
+"But hey - good luck.\n"
+"I hope this works out for you."
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:186
+msgid "If anyone asks, I didn't see you, okay?"
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:189
+msgid "Roger!"
+msgstr ""
+
+#: ../data/level/dungeon-gateway.cfg:695
+msgid "Dungeon Gateway"
+msgstr ""
+
 #: ../data/level/dungeon-storerooms.cfg:1337
 msgid "Storerooms"
 msgstr ""
@@ -3032,13 +3253,7 @@ msgid ""
 "there will often be a new one waiting to use."
 msgstr ""
 
-#: ../data/level/hanging-platforms.cfg:359
-msgid ""
-"Well, I guess I'm entering Milgram's\n"
-"castle now. I made it through the caves!"
-msgstr "Saya rasa saya masuki kastil Milgram\nsekarang. Saya berjaya lepasi gua!"
-
-#: ../data/level/hanging-platforms.cfg:4355
+#: ../data/level/hanging-platforms.cfg:4333
 msgid "Hanging Platforms"
 msgstr "Pelantar Tergantung"
 
@@ -3066,539 +3281,600 @@ msgstr ""
 msgid "Killer Bunnies"
 msgstr "Arnab Pembunuh"
 
-#: ../data/level/kitty-dormitory.cfg:1888
+#: ../data/level/kitty-dormitory.cfg:1890
 msgid ""
 "Oh, I was just sitting down for a bite to eat.\n"
 "Care to join us?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1891
+#: ../data/level/kitty-dormitory.cfg:1893
 msgid ""
 "Uh, maybe...\n"
 "I certainly appreciate the hospitality!"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1893
+#: ../data/level/kitty-dormitory.cfg:1895
 msgid "So is this some kind of dining area?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1895
+#: ../data/level/kitty-dormitory.cfg:1897
 msgid ""
 "Yes, it is.  We have regular meal service\n"
 "for those who are off-duty."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1896
+#: ../data/level/kitty-dormitory.cfg:1898
 msgid ""
 "Gaston should be coming out any minute now,\n"
 "with a lovely bit of smoked salmon."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1897
+#: ../data/level/kitty-dormitory.cfg:1899
 msgid ""
 "Well, pretty soon, I hope.\n"
 "Sometimes he takes a while."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1900
+#: ../data/level/kitty-dormitory.cfg:1902
 msgid "That sounds pretty classy."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1902
+#: ../data/level/kitty-dormitory.cfg:1904
 msgid "Yeah, small perks like that make life nice."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1905
+#: ../data/level/kitty-dormitory.cfg:1907
 msgid "So what is it you do for a, uh... job?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1907
+#: ../data/level/kitty-dormitory.cfg:1909
 msgid ""
 "Basic labor, mostly.\n"
 "I haul construction materials around."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1908
+#: ../data/level/kitty-dormitory.cfg:1910
 msgid ""
 "We're still working on the north tower.\n"
 "Be careful if you venture out there."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1909
+#: ../data/level/kitty-dormitory.cfg:1911
 msgid ""
 "It's easy to accidentally fall.\n"
 "It's not really pedestrian-ready yet."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1912
+#: ../data/level/kitty-dormitory.cfg:1914
 msgid "I'll keep that in mind, thanks."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1939
+#: ../data/level/kitty-dormitory.cfg:1942
 msgid "Hi there, what's going on?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1941
+#: ../data/level/kitty-dormitory.cfg:1944
 msgid ""
 "Oh, hello.\n"
 "I'm just eating some fruit."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1942
+#: ../data/level/kitty-dormitory.cfg:1945
 msgid "Are you that green guy security is after?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1945
+#: ../data/level/kitty-dormitory.cfg:1948
 msgid ""
 "If I answer yes,\n"
 "are you going to call them in here?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1947
+#: ../data/level/kitty-dormitory.cfg:1950
 msgid "No, I'm not looking for trouble."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1948
+#: ../data/level/kitty-dormitory.cfg:1951
 msgid ""
 "Besides which, you don't seem like a bad guy,\n"
 "if you ask my opinion."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1949
+#: ../data/level/kitty-dormitory.cfg:1952
 msgid "Not that anyone's asking me."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1951
+#: ../data/level/kitty-dormitory.cfg:1954
 msgid "Well, thanks, I do appreciate that."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1953
+#: ../data/level/kitty-dormitory.cfg:1956
 msgid ""
 "Speaking of which, color me curious,\n"
 "but I thought that cats were carnivores?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1955
+#: ../data/level/kitty-dormitory.cfg:1958
 msgid "How is it that you're able to eat fruit?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1957
+#: ../data/level/kitty-dormitory.cfg:1960
 msgid ""
 "Oh! I guess you wouldn't know these things...\n"
 "I suppose we take that for granted."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1958
+#: ../data/level/kitty-dormitory.cfg:1961
 msgid ""
 "See, strictly speaking, we're not cats.\n"
 "We're simply made to look like them."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1961
+#: ../data/level/kitty-dormitory.cfg:1964
 msgid ""
 "Er... \"made to\", you say?\n"
 "That's an interesting choice of words."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1963
+#: ../data/level/kitty-dormitory.cfg:1966
 msgid ""
 "Yes, that's right - I'm implying we are \"made\".\n"
 "We're made, not born, like you ... presumably are."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1968
+#: ../data/level/kitty-dormitory.cfg:1971
 msgid ""
 "Okay ... I'm kind of at a loss for words.\n"
 "That seems pretty unbelievable."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1970
+#: ../data/level/kitty-dormitory.cfg:1973
 msgid ""
 "Then again, the world is nothing\n"
 "if not full of surprises."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1972
+#: ../data/level/kitty-dormitory.cfg:1975
 msgid ""
 "So you're made, you say...\n"
 "Who, then, is your maker?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1974
+#: ../data/level/kitty-dormitory.cfg:1977
 msgid ""
 "Oh, Milgram, of course.\n"
 "Why else would he be so important?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1975
+#: ../data/level/kitty-dormitory.cfg:1978
 msgid ""
 "I confess, I really don't know -how-\n"
 "he creates us,  but I know that he does."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1978
+#: ../data/level/kitty-dormitory.cfg:1981
 msgid "So then... are you robots or something?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1980
+#: ../data/level/kitty-dormitory.cfg:1983
 msgid ""
 "Of course not!  Robots don't eat.\n"
 "We're all living creatures."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1983
+#: ../data/level/kitty-dormitory.cfg:1986
 msgid ""
 "Oh, so he's your parent, then?\n"
 "And just has a lot of kids."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1985
+#: ../data/level/kitty-dormitory.cfg:1988
 msgid ""
 "Well, I guess we consider him a parent,\n"
 "but we're very much made."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1986
+#: ../data/level/kitty-dormitory.cfg:1989
 msgid ""
 "He chooses what we're shaped like, for one thing.\n"
 "Usually takes inspiration from the animal kingdom."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1987
+#: ../data/level/kitty-dormitory.cfg:1990
 msgid ""
 "He fancies himself an artist in this regard,\n"
 "and for ego's sake I'm not about to disagree."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1988
+#: ../data/level/kitty-dormitory.cfg:1991
 msgid ""
 "These days, moreover, we're mass-produced.\n"
 "There's a factory downstairs that churns out\n"
 "the more successful designs."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1991
+#: ../data/level/kitty-dormitory.cfg:1994
 msgid ""
 "But that's just CRAZY!\n"
 "How does that even work?!  Magic?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1993
+#: ../data/level/kitty-dormitory.cfg:1996
 msgid "Like I said, I really don't know, myself."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1994
+#: ../data/level/kitty-dormitory.cfg:1997
 msgid ""
 "But it's not any crazier than\n"
 "you transforming from a tadpole."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1995
+#: ../data/level/kitty-dormitory.cfg:1998
 msgid ""
 "I mean, that seems pretty incredible\n"
 "from my perspective."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1996
+#: ../data/level/kitty-dormitory.cfg:1999
 msgid "But that is how it works for frogs, right?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1999
+#: ../data/level/kitty-dormitory.cfg:2002
 msgid ""
 "It is.\n"
 "It's just a crazy world we live in, huh?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2001
+#: ../data/level/kitty-dormitory.cfg:2004
 msgid "Madness and wonder every step of the way."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2004
+#: ../data/level/kitty-dormitory.cfg:2007
 msgid ""
 "No kidding.  Well, hey, have a nice meal.\n"
 "Thanks for all the info."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2006
+#: ../data/level/kitty-dormitory.cfg:2009
 msgid "No problem."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2032
+#: ../data/level/kitty-dormitory.cfg:2036
 msgid "Hi, what are you doing?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2034
+#: ../data/level/kitty-dormitory.cfg:2038
 msgid ""
 "Oh, hello there.\n"
 "I haven't met you before."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2035
+#: ../data/level/kitty-dormitory.cfg:2039
 msgid "I'm reading a book."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2038
+#: ../data/level/kitty-dormitory.cfg:2042
 msgid ""
 "That's nice.\n"
 "What's it about?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2040
+#: ../data/level/kitty-dormitory.cfg:2044
 msgid "Ahh, it's a collection of old fairy tales."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2041
+#: ../data/level/kitty-dormitory.cfg:2045
 msgid ""
 "Some of them are kinda\n"
 "thinly-veiled cautionary tales..."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2042
+#: ../data/level/kitty-dormitory.cfg:2046
 msgid ""
 "...but some of the other ones\n"
 "are just plain *strange*."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2043
+#: ../data/level/kitty-dormitory.cfg:2047
 msgid "I can't decide which ones I like better."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2044
+#: ../data/level/kitty-dormitory.cfg:2048
 msgid ""
 "Do I like the ones that have an obvious point,\n"
 "or is it more intellectually satisfying to puzzle\n"
 "over the more engimatic ones?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2045
+#: ../data/level/kitty-dormitory.cfg:2049
 msgid "I can't really say."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2048
+#: ../data/level/kitty-dormitory.cfg:2052
 msgid "Hm, I've never really thought about that before."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2050
+#: ../data/level/kitty-dormitory.cfg:2054
 msgid ""
 "You're welcome to sit down and join me.\n"
 "The fire is quite nice."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2053
+#: ../data/level/kitty-dormitory.cfg:2057
 msgid ""
 "Thanks - I'm kind of in a hurry,\n"
 "but I appreciate it."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2079
-msgid "Uh... hi?"
-msgstr ""
-
-#: ../data/level/kitty-dormitory.cfg:2081
-#: ../data/level/secluded-hut-interior.cfg:312
-msgid "Hello there."
-msgstr "Helo di sana."
-
-#: ../data/level/kitty-dormitory.cfg:2084
-msgid ""
-"You know, I'm not gonna lie - it's really weird\n"
-"to fight you guys in one place and ... uh"
-msgstr ""
-
-#: ../data/level/kitty-dormitory.cfg:2086
-msgid ""
-"... and then just talk, peaceably, here?\n"
-"I still don't get it.  What gives?"
-msgstr ""
-
-#: ../data/level/kitty-dormitory.cfg:2088
-msgid ""
-"Well, the fact that I'm unarmed\n"
-"is a pretty big factor."
-msgstr ""
-
-#: ../data/level/kitty-dormitory.cfg:2089
-msgid ""
-"I wouldn't stand a chance, so I'm willing\n"
-"to hinge my hopes on your being civil."
-msgstr ""
-
-#: ../data/level/kitty-dormitory.cfg:2090
-msgid "Here we are, after all, aren't we?"
-msgstr ""
-
-#: ../data/level/kitty-dormitory.cfg:2093
-msgid "This is true."
-msgstr ""
-
-#: ../data/level/kitty-dormitory.cfg:2095
-msgid "If you don't mind my asking, where are we?"
-msgstr ""
-
-#: ../data/level/kitty-dormitory.cfg:2097
-msgid ""
-"Residential Quarters.\n"
-"It's really a dormitory-like arrangement."
-msgstr ""
-
-#: ../data/level/kitty-dormitory.cfg:2098
-msgid "And don't worry, none of us here work security."
-msgstr ""
-
-#: ../data/level/kitty-dormitory.cfg:2099
-msgid "I hear you have those guys in a royal fit."
-msgstr ""
-
-#: ../data/level/kitty-dormitory.cfg:2102
-msgid "Yeah, that doesn't surprise me."
-msgstr ""
-
-#: ../data/level/kitty-dormitory.cfg:2104
-msgid ""
-"Honestly, it's been pretty funny to hear about.\n"
-"Some of those security guys are total dicks."
-msgstr ""
-
-#: ../data/level/kitty-dormitory.cfg:2105
-msgid ""
-"It's fun to watch them get\n"
-"a taste of their own medicine."
-msgstr ""
-
-#: ../data/level/kitty-dormitory.cfg:2108
-msgid "Any chance they might follow me in here?"
-msgstr ""
-
-#: ../data/level/kitty-dormitory.cfg:2110
-msgid ""
-"Possible, but it's unlikely.\n"
-"You can probably take a breather in here."
-msgstr ""
-
-#: ../data/level/kitty-dormitory.cfg:2113
-msgid "That's nice to hear."
-msgstr ""
-
-#: ../data/level/kitty-dormitory.cfg:2857
+#: ../data/level/kitty-dormitory.cfg:2803
 msgid "WHOA!"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2860
+#: ../data/level/kitty-dormitory.cfg:2806
 msgid "What's wrong?!"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2862
+#: ../data/level/kitty-dormitory.cfg:2808
 msgid "Uh..."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2863
+#: ../data/level/kitty-dormitory.cfg:2809
 msgid "Was I asleep?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2866
+#: ../data/level/kitty-dormitory.cfg:2812
 msgid "It's possible you were."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2868
+#: ../data/level/kitty-dormitory.cfg:2814
 msgid "I see..."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2869
+#: ../data/level/kitty-dormitory.cfg:2815
 msgid "I think I'm going to go back to sleep."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2870
+#: ../data/level/kitty-dormitory.cfg:2816
 msgid "I'm pretty tired, you see..."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2900
+#: ../data/level/kitty-dormitory.cfg:2847
 msgid ""
 "God, I don't want to work today.\n"
 "I just want to sleep."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2901
+#: ../data/level/kitty-dormitory.cfg:2848
 msgid "Do you ever feel like that?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2904
+#: ../data/level/kitty-dormitory.cfg:2851
 msgid "All the time."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2906
+#: ../data/level/kitty-dormitory.cfg:2853
 msgid ""
 "I probably give into it\n"
 "too often for my own good, though..."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2908
+#: ../data/level/kitty-dormitory.cfg:2855
 msgid "Ha."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2952
+#: ../data/level/kitty-dormitory.cfg:2886
 msgid "Hey, what's up?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2954
+#: ../data/level/kitty-dormitory.cfg:2888
 msgid ""
 "Oh, hi there.\n"
 "I'm machining metal parts."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2957
+#: ../data/level/kitty-dormitory.cfg:2891
 msgid "What does that mean?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2959
+#: ../data/level/kitty-dormitory.cfg:2893
 msgid ""
 "Well, this machine here is a router.\n"
 "It drills holes or grinds out shapes in metal pieces."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2960
+#: ../data/level/kitty-dormitory.cfg:2894
 msgid "It's controlled by this computer."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2961
+#: ../data/level/kitty-dormitory.cfg:2895
 msgid ""
 "It's important because it's much more\n"
 "precise than anything we could do by hand."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2962
+#: ../data/level/kitty-dormitory.cfg:2896
 msgid ""
 "The holes and such are all standard,\n"
 "consistent sizes, which means that\n"
 "they fit standard-sized bolts."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2963
+#: ../data/level/kitty-dormitory.cfg:2897
 msgid "It makes sure everything works together."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2966
+#: ../data/level/kitty-dormitory.cfg:2900
 msgid "That sounds like a pretty good system."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2968
+#: ../data/level/kitty-dormitory.cfg:2902
 msgid "Yeah, it isn't bad."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2969
+#: ../data/level/kitty-dormitory.cfg:2903
 msgid ""
 "This thing's kind of a pain to program,\n"
 "but it's a small price to pay."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2972
+#: ../data/level/kitty-dormitory.cfg:2906
 msgid "That makes sense."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2974
+#: ../data/level/kitty-dormitory.cfg:2908
 msgid "Anyways, I'd better get back to work."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:3801
+#: ../data/level/kitty-dormitory.cfg:2957
+#: ../data/level/kitty-dormitory.cfg:2961
+#: ../data/level/secluded-hut-interior.cfg:312
+msgid "Hello there."
+msgstr "Helo di sana."
+
+#: ../data/level/kitty-dormitory.cfg:2959
+msgid "Uh... hi?"
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:2964
+msgid ""
+"You know, I'm not gonna lie - it's really weird\n"
+"to fight you guys in one place and ... uh"
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:2966
+msgid ""
+"... and then just talk, peaceably, here?\n"
+"I still don't get it.  What gives?"
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:2968
+msgid ""
+"Well, the fact that I'm unarmed\n"
+"is a pretty big factor."
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:2969
+msgid ""
+"I wouldn't stand a chance, so I'm willing\n"
+"to hinge my hopes on your being civil."
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:2970
+msgid "Here we are, after all, aren't we?"
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:2973
+msgid "This is true."
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:2975
+msgid "If you don't mind my asking, where are we?"
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:2977
+msgid ""
+"Residential Quarters.\n"
+"It's really a dormitory-like arrangement."
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:2978
+msgid "And don't worry, none of us here work security."
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:2979
+msgid "I hear you have those guys in a royal fit."
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:2982
+msgid "Yeah, that doesn't surprise me."
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:2984
+msgid ""
+"Honestly, it's been pretty funny to hear about.\n"
+"Some of those security guys are total dicks."
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:2985
+msgid ""
+"It's fun to watch them get\n"
+"a taste of their own medicine."
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:2988
+msgid "Any chance they might follow me in here?"
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:2990
+msgid ""
+"Possible, but it's unlikely.\n"
+"You can probably take a breather in here."
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:2993
+msgid "That's nice to hear."
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:3041
+msgid "Oh, hi there!"
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:3043
+msgid "Hello?"
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:3045
+msgid "Yes, hi."
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:3046
+msgid "I'm doing laundry!"
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:3049
+msgid ""
+"I ... see.\n"
+"Uh... do you live here?"
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:3051
+msgid ""
+"Yeah, this is one of our dormitory areas.\n"
+"Quite a few of us live here."
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:3052
+msgid "I'd chat at length, but I'm a bit busy."
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:3053
+msgid ""
+"By all means, though,\n"
+"you're welcome to wander around."
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:3054
+msgid ""
+"No one in here works security,\n"
+"so we won't come after you."
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:3057
+msgid ""
+"...\n"
+"That takes some getting used to."
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:3059
+msgid ""
+"But, I'm not gonna turn down a good thing.\n"
+"Thanks!"
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:3061
+msgid "No problem!"
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:3903
 msgid "Kitty Dormitory"
 msgstr ""
 
@@ -3789,7 +4065,7 @@ msgstr "Begitu."
 msgid "Lobby"
 msgstr "Lobi"
 
-#: ../data/level/long-plastic-hallway.cfg:232
+#: ../data/level/long-plastic-hallway.cfg:270
 msgid "A Long Plastic Hallway"
 msgstr ""
 
@@ -4121,49 +4397,93 @@ msgstr "Oh! Awak dapatkan semut emas\nuntuk saya. Ianya cantik, cantik!"
 
 #: ../data/level/secluded-hut-interior.cfg:337
 msgid ""
-"Mmmmmhmmmm. Now you were talking\n"
-"about a reward?"
-msgstr "Mmmmmhmmmm. Sekarang awak bercakap\ntentang hadiah tu?"
+"Mmmmmhmmmm.\n"
+"Now you were talking about a reward?"
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:338
 msgid ""
-"Oh yes, a reward!\n"
-"Here you go..."
-msgstr "Oh ya, hadiah!\nNah ni dia..."
+"Yes, yes, a reward!\n"
+"I think I have just the thing."
+msgstr ""
+
+#: ../data/level/secluded-hut-interior.cfg:339
+msgid ""
+"Some time ago, I bartered my way\n"
+"into the possession of an Energy Talisman."
+msgstr ""
+
+#: ../data/level/secluded-hut-interior.cfg:340
+msgid ""
+"A most interesting artifact, but I think\n"
+"I've exhausted what I can learn from it."
+msgstr ""
+
+#: ../data/level/secluded-hut-interior.cfg:341
+msgid ""
+"It's not useful to me, anymore,\n"
+"and I think it could be very useful to you."
+msgstr ""
+
+#: ../data/level/secluded-hut-interior.cfg:342
+msgid ""
+"If I am correct, I believe it would\n"
+"react with your anatomy by allowing you\n"
+"to externally manifest energy."
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:343
+msgid ""
+"That is, taking your inner physical energy,\n"
+"and allowing you to directly channel\n"
+"it outside your body."
+msgstr ""
+
+#: ../data/level/secluded-hut-interior.cfg:344
+msgid ""
+"You'll have to try it to see exactly\n"
+"what happens, but I'm sure something will."
+msgstr ""
+
+#: ../data/level/secluded-hut-interior.cfg:345
+msgid ""
+"Good luck,\n"
+"and I hope it serves you well!"
+msgstr ""
+
+#: ../data/level/secluded-hut-interior.cfg:351
 msgid ""
 "Oh my! If that's a golden ant in your stomach,\n"
 "then quick, spit it out into the cage!"
 msgstr "Oh! Jika tu semut emas dalam perut\nawak, cepat ludahnya masuk kurungan!"
 
-#: ../data/level/secluded-hut-interior.cfg:344
+#: ../data/level/secluded-hut-interior.cfg:352
 msgid ""
 "I don't suppose you've had any\n"
 "luck with getting a golden ant yet?"
 msgstr "Saya tak rasa awak ada nasib lagi\nuntuk dapatkan semut emas?"
 
-#: ../data/level/secluded-hut-interior.cfg:346
+#: ../data/level/secluded-hut-interior.cfg:354
 msgid ""
 "I'm working on it.\n"
 "Those things pack a pretty mean bite, you know."
 msgstr "Saya sedang usahakannya.\nBenda tu kuat menggigit, awak tahu."
 
-#: ../data/level/secluded-hut-interior.cfg:349
+#: ../data/level/secluded-hut-interior.cfg:357
 msgid ""
 "I do hope you are enjoying exploring the island.\n"
 "There are so many wonderful creatures on it."
 msgstr "Saya harap awak suka jelajah pulau\nni. Banyak makhluk comel di sini."
 
-#: ../data/level/secluded-hut-interior.cfg:351
+#: ../data/level/secluded-hut-interior.cfg:359
 msgid "... most of which seem inclined to kill me."
 msgstr "... hampir semuanya nak bunuh saya."
 
-#: ../data/level/secluded-hut-interior.cfg:635
+#: ../data/level/secluded-hut-interior.cfg:643
 msgid "I say! Who's there?"
 msgstr "Saya kata! Siapa di sana?"
 
-#: ../data/level/secluded-hut-interior.cfg:1055
+#: ../data/level/secluded-hut-interior.cfg:1063
 #: ../data/level/secluded-hut.cfg:16
 #: ../data/objects/playable/map-selector.cfg:15
 msgid "Secluded Hut"
@@ -4994,7 +5314,7 @@ msgstr "Kasual"
 msgid "Challenging"
 msgstr ""
 
-#: ../data/level/titlescreen-new-game-selector.cfg:263
+#: ../data/level/titlescreen-new-game-selector.cfg:267
 msgid "Play!"
 msgstr ""
 
@@ -5044,104 +5364,215 @@ msgstr "ARKED"
 
 #: ../data/level/to-nenes-house-inside.cfg:29
 msgid ""
-"AIEEEEE!\n"
-"Get that thing out of here!"
-msgstr "AIEEEEE!\nBawa benda tu keluar dari sini!"
+"If that gets in the batter,\n"
+"I swear..."
+msgstr ""
 
-#: ../data/level/to-nenes-house-inside.cfg:35
+#: ../data/level/to-nenes-house-inside.cfg:36
 msgid "Hey Nene, what's cooking?"
 msgstr "Hei Nene, masak apa?"
 
-#: ../data/level/to-nenes-house-inside.cfg:36
+#: ../data/level/to-nenes-house-inside.cfg:37
 msgid ""
 "I'm making a cake.\n"
 "Would you like to have some?"
 msgstr "Saya nak buat kek.\nAwak nak sikit tak?"
 
-#: ../data/level/to-nenes-house-inside.cfg:38
+#: ../data/level/to-nenes-house-inside.cfg:39
 msgid "Nah, I'd better get to town."
 msgstr "Tak, saya harus ke pekan."
 
-#: ../data/level/to-nenes-house-inside.cfg:40
+#: ../data/level/to-nenes-house-inside.cfg:41
 msgid "I have serious business to attend to."
 msgstr "Saya ada urusan penting nak buat."
 
-#: ../data/level/to-nenes-house-inside.cfg:44
+#: ../data/level/to-nenes-house-inside.cfg:45
 msgid ""
 "Oh, well maybe before you go\n"
 "you could look at my basement."
 msgstr "Oh, mungkin sebelum pergi awak\nboleh tengok tingkat bawah saya."
 
-#: ../data/level/to-nenes-house-inside.cfg:46
+#: ../data/level/to-nenes-house-inside.cfg:47
 msgid "Your basement?"
 msgstr "Tingkat bawah awak?"
 
-#: ../data/level/to-nenes-house-inside.cfg:50
+#: ../data/level/to-nenes-house-inside.cfg:51
 msgid ""
 "Yes, here's the key.\n"
 "There're some ants down there."
 msgstr "Ya, ni kuncinya.\nAda semut dekat bawah tu."
 
-#: ../data/level/to-nenes-house-inside.cfg:51
-msgid "They're freaking me out."
-msgstr "Mereka takutkan saya."
+#: ../data/level/to-nenes-house-inside.cfg:52
+msgid ""
+"I've been meaning to get rid of them,\n"
+"but I just can't find the time."
+msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:53
-msgid "Sure thing. I need a job!"
-msgstr "Boleh saja. Saya perlukan kerja!"
+msgid ""
+"And now, they've gone and\n"
+"ruined a whole bag of flour!"
+msgstr ""
 
-#: ../data/level/to-nenes-house-inside.cfg:55
+#: ../data/level/to-nenes-house-inside.cfg:56
+msgid "Ick."
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:58
+msgid "I know, right?"
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:59
+msgid ""
+"So you showed up, and I thought ...\n"
+"hey, maybe you could be a gentleman,\n"
+"and help me out here, hm?"
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:61
+msgid "Yeah, that sounds ... opportune."
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:63
 msgid ""
 "How much were you figuring on\n"
 "paying for a pest exterminator?"
 msgstr "Berapa yang awak fikirkan untuk\nbayar seorang penghapus serangga?"
 
-#: ../data/level/to-nenes-house-inside.cfg:56
+#: ../data/level/to-nenes-house-inside.cfg:64
 msgid ""
 "Well sheesh, I thought you'd\n"
 "do it for free for a friend!"
 msgstr "Amboi, saya ingatkan awak akan\nlakukannya percuma demi kawan!"
 
-#: ../data/level/to-nenes-house-inside.cfg:57
+#: ../data/level/to-nenes-house-inside.cfg:65
+msgid ""
+"Also, come back and\n"
+"talk to me when you're done."
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:65
 msgid ""
 "But if you're going to be like that\n"
 "I think I left a health capsule down there.\n"
 "If you can clear it out, it's yours."
 msgstr "Tapi awak dah fikir begitu saya rasa\nsaya ada kapsul nyawa di bawah sana.\nJika awak berjaya, ia milik awak."
 
-#: ../data/level/to-nenes-house-inside.cfg:59
-msgid ""
-"So, did you end up taking care\n"
-"of those ants down there?"
-msgstr "Jadi, awak berjaya juga uruskan\nsemut-semut di bawah sana tu?"
+#: ../data/level/to-nenes-house-inside.cfg:65
+msgid "I might have something else for you."
+msgstr ""
 
-#: ../data/level/to-nenes-house-inside.cfg:61
+#: ../data/level/to-nenes-house-inside.cfg:68
+msgid "Here, I have another little surprise for you."
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:68
+msgid ""
+"You really did do it.\n"
+"You rock!"
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:71
+msgid "Is it cake?"
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:73
+msgid ""
+"Ha.  No, it's quite a bit better.\n"
+"It's a little souvenir from the IDF."
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:74
+msgid "It's a Fire Talisman, and I'd like you to have it."
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:77
+msgid ""
+"Wow... That's... awesome, but\n"
+"why on earth are you giving this to me?"
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:79
+msgid "It's a bit much for killing a few ants!"
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:81
+msgid ""
+"Honestly?  I had originally meant to\n"
+"give it to you as a birthday present."
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:82
+msgid "I just never got around to it."
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:83
+msgid ""
+"I don't need it myself, and I know\n"
+"you'd get a LOT of use out of it."
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:84
+msgid "So...  Happy (rather belated) Birthday!"
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:87
+msgid ""
+"You know, I'm really lucky to\n"
+"have friends like you!"
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:90
+msgid ""
+"Say, that wouldn't also happen\n"
+"to be *Birthday* Cake, would it?"
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:92
+msgid ""
+"...\n"
+"What?  No!"
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:93
+msgid ""
+"Just take the present,\n"
+"you silly, silly frog."
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:99
+msgid ""
+"Hey, thanks for taking care\n"
+"of those ants down there!"
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:101
 msgid ""
 "Of course.\n"
 "I don't disappoint!"
 msgstr "Sudah tentu.\nSaya tak mengecewakan!"
 
-#: ../data/level/to-nenes-house-inside.cfg:63
+#: ../data/level/to-nenes-house-inside.cfg:103
 msgid ""
 "And thanks for the gift,\n"
 "by the way."
 msgstr "Dan terima kasih untuk hadiah tu,\napa pun."
 
-#: ../data/level/to-nenes-house-inside.cfg:64
+#: ../data/level/to-nenes-house-inside.cfg:104
 msgid "You're welcome."
 msgstr "Sama-sama."
 
-#: ../data/level/to-nenes-house-inside.cfg:559
+#: ../data/level/to-nenes-house-inside.cfg:599
 msgid "Well, dangit, this door is locked."
 msgstr "Tak guna, pintu ni berkunci."
 
-#: ../data/level/to-nenes-house-inside.cfg:561
+#: ../data/level/to-nenes-house-inside.cfg:601
 msgid ""
 "Can't a guy sneak into his neighbor's\n"
 "basement uninvited these days?"
 msgstr "Tak bolehkah kita selinap ke tingkat\nbawah jiran tanpa dijemput sekarang?"
 
-#: ../data/level/to-nenes-house-inside.cfg:1043
+#: ../data/level/to-nenes-house-inside.cfg:1083
 msgid "Nene's House"
 msgstr "Rumah Nene"
 
@@ -5240,6 +5671,46 @@ msgstr ""
 msgid ""
 "The furthest that has been reached is level "
 "${registry.arcade_coin_race_high_score}."
+msgstr ""
+
+#: ../data/objects/items/ability.cfg:8
+msgid "This has very little range, but is quite damaging."
+msgstr ""
+
+#: ../data/objects/items/ability.cfg:8
+msgid ""
+"You can now breathe out a\n"
+" short stream of intense flame."
+msgstr ""
+
+#: ../data/objects/items/ability.cfg:8 ../data/objects/items/ability.cfg:9
+#: ../data/objects/items/ability.cfg:10
+msgid "You gained a new ability!"
+msgstr ""
+
+#: ../data/objects/items/ability.cfg:9
+msgid ""
+"This has excellent range,\n"
+"and does decent damage."
+msgstr ""
+
+#: ../data/objects/items/ability.cfg:9
+msgid ""
+"You can now fire balls of harmful\n"
+"energy from your fingertips."
+msgstr ""
+
+#: ../data/objects/items/ability.cfg:10
+msgid ""
+"These have excellent range and decent damage,\n"
+"but are somewhat draining to use."
+msgstr ""
+
+#: ../data/objects/items/ability.cfg:10
+msgid ""
+"You can now fire balls of harmful\n"
+"energy from your fingertips,\n"
+"which home in on your enemies."
 msgstr ""
 
 #: ../data/objects/items/max_heart_object.cfg:8
