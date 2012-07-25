@@ -3386,6 +3386,7 @@ void editor::remove_object_from_level(level_ptr lvl, entity_ptr e)
 	current_level_scope scope(lvl.get());
 	e->handle_event("editor_removed");
 	lvl->remove_character(e);
+	lvl->set_active_chars();
 }
 
 void editor::mutate_object_value(level_ptr lvl, entity_ptr e, const std::string& value, variant new_value)
