@@ -1,5 +1,6 @@
 #
-# Main Makefile, intended for use on Linux/X11 and compatible platforms.
+# Main Makefile, intended for use on Linux/X11 and compatible platforms
+# using GNU Make.
 #
 # It should guess the paths to the game dependencies on its own, except for
 # Boost which is assumed to be installed to the default locations. If you have
