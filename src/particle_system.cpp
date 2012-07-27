@@ -184,6 +184,8 @@ public:
 	void draw(const rect& area, const entity& e) const;
 
 private:
+	void prepump(const entity& e);
+
 	variant get_value(const std::string& key) const {
 		if(key == "spawn_rate") {
 			return variant(info_.spawn_rate_);
@@ -320,13 +322,17 @@ private:
 simple_particle_system::simple_particle_system(const entity& e, const simple_particle_system_factory& factory)
   : factory_(factory), info_(factory.info_), cycle_(0), spawn_buildup_(0)
 {
+}
+
+void simple_particle_system::prepump(const entity& e)
+{
 	//cosmetic thing for very slow-moving particles:
 	//it looks weird when you walk into a scene, with, say, a column of smoke that's presumably been rising for quite some time,
 	//but it only begins rising the moment you arrive.  To overcome this, we can optionally have particle systems pre-simulate their particles
 	//for the short period of time (often as low as 4 seconds) needed to eliminate that implementation artifact
 	for( int i = 0; i < info_.pre_pump_cycles_; ++i)
 	{
-		this->process(e);
+		process(e);
 	}
 	
 }
@@ -335,6 +341,10 @@ void simple_particle_system::process(const entity& e)
 {
 	--info_.system_time_to_live_;
 	++cycle_;
+
+	if(cycle_ == 1) {
+		prepump(e);
+	}
 
 	while(!generations_.empty() && cycle_ - generations_.front().created_at == info_.time_to_live_) {
 		particles_.erase(particles_.begin(), particles_.begin() + generations_.front().members);
