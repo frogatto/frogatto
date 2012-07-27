@@ -303,7 +303,7 @@ void execute_command(variant cmd, variant obj, const std::string& fname)
 	}
 }
 
-void process_file(const std::string& fname)
+void process_file(const std::string& fname, std::map<std::string,std::string>& file_mappings)
 {
 	static const std::string Postfix = ".cfg";
 	if(fname.size() <= Postfix.size() || std::string(fname.end()-Postfix.size(),fname.end()) != Postfix) {
@@ -334,26 +334,30 @@ void process_file(const std::string& fname)
 			ASSERT_LOG(false, "ERROR: MODIFIED DOCUMENT " << fname << " COULD NOT BE PARSED. FILE NOT WRITTEN: " << e.error_message() << "\n" << new_contents);
 		}
 
-		sys::write_file(fname, new_contents);
-		std::cerr << "file " << fname << " modified\n";
+		file_mappings[fname] = new_contents;
+		std::cerr << "file " << fname << " has changes\n";
 	}
 }
 
-void process_dir(const std::string& dir)
+void process_dir(const std::string& dir, std::map<std::string, std::string>& file_mappings, std::vector<std::string>& error_files)
 {
 	std::vector<std::string> subdirs, files;
 	sys::get_files_in_dir(dir, &files, &subdirs, sys::ENTIRE_FILE_PATH);
 	foreach(const std::string& d, subdirs) {
-		process_dir(d);
+		process_dir(d, file_mappings, error_files);
 	}
 
 	foreach(const std::string& fname, files) {
 		try {
-			process_file(fname);
+			process_file(fname, file_mappings);
 		} catch(json::parse_error& e) {
 			std::cerr << "FAILED TO PARSE " << fname << "\n";
 		} catch(type_error& e) {
 			std::cerr << "TYPE ERROR PARSING " << fname << "\n";
+			error_files.push_back(fname);
+		} catch(validation_failure_exception& e) {
+			std::cerr << "ERROR PARSING " << fname << ": " << e.msg << "\n";
+			error_files.push_back(fname);
 		}
 	}
 }
@@ -367,10 +371,23 @@ COMMAND_LINE_UTILITY(query)
 		return;
 	}
 
+	std::vector<std::string> error_files;
+	std::map<std::string, std::string> file_mappings;
+
 	formula_.reset(new formula(variant(args[1])));
 	if(args[0].size() > 4 && std::string(args[0].end()-4,args[0].end()) == ".cfg") {
-		process_file(args[0]);
+		process_file(args[0], file_mappings);
 	} else {
-		process_dir(args[0]);
+		process_dir(args[0], file_mappings, error_files);
+	}
+
+	if(error_files.empty()) {
+		std::cerr << "ALL FILES PROCESSED OKAY. APPLYING MODIFICATIONS TO " << file_mappings.size() << " FILES\n";
+		for(std::map<std::string, std::string>::const_iterator i = file_mappings.begin(); i != file_mappings.end(); ++i) {
+			sys::write_file(i->first, i->second);
+			std::cerr << "WROTE " << i->first << "\n";
+		}
+	} else {
+		std::cerr << "ERRORS IN " << error_files.size() << " FILES. NO CHANGES MADE\n";
 	}
 }
