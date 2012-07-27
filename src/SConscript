@@ -1,7 +1,7 @@
-env = Environment()
-env.ParseConfig("sdl-config --libs --cflags")
-env.Append(LIBS = ["GL", "GLU", "GLEW", "SDL_mixer", "SDL_image", "SDL_ttf", "boost_regex", "boost_system", "boost_iostreams", "png"])
-env.Append(CXXFLAGS= ["-pthread", "-DIMPLEMENT_SAVE_PNG"], LINKFLAGS = ["-pthread"])
+# vi: syntax=python:et:ts=4
+
+Import("*")
+
 sources = Split("""
 IMG_savepng.cpp
 achievements.cpp
