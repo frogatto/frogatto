@@ -125,7 +125,9 @@ struct simple_particle_system_info {
 		delta_r_(node["delta_r"].as_int(0)),
 		delta_g_(node["delta_g"].as_int(0)),
 		delta_b_(node["delta_b"].as_int(0)),
-		delta_a_(node["delta_a"].as_int(0))
+		delta_a_(node["delta_a"].as_int(0)),
+		random_schedule_(false)
+
 	{
 		if(node.has_key("velocity_x_schedule")) {
 			velocity_x_schedule_ = node["velocity_x_schedule"].as_list_int();
@@ -134,6 +136,8 @@ struct simple_particle_system_info {
 		if(node.has_key("velocity_y_schedule")) {
 			velocity_y_schedule_ = node["velocity_y_schedule"].as_list_int();
 		}
+
+		random_schedule_ = node["random_schedule"].as_bool(velocity_x_schedule_.empty() == false || velocity_y_schedule_.empty() == false);
 	}
 	int spawn_rate_, spawn_rate_random_;
 	int system_time_to_live_;
@@ -150,6 +154,8 @@ struct simple_particle_system_info {
 	int delta_r_, delta_g_, delta_b_, delta_a_;
 
 	std::vector<int> velocity_x_schedule_, velocity_y_schedule_;
+
+	bool random_schedule_;
 };
 
 class simple_particle_system_factory : public particle_system_factory {
@@ -304,8 +310,9 @@ private:
 
 	struct particle {
 		GLfloat pos[2];
-		const particle_animation* anim;
 		GLfloat velocity[2];
+		const particle_animation* anim;
+		int random;
 	};
 
 	struct generation {
@@ -366,25 +373,32 @@ void simple_particle_system::process(const entity& e)
 		}
 	}
 
-	if(info_.velocity_x_schedule_.empty() == false || info_.velocity_y_schedule_.empty() == false) {
-
+	if(info_.velocity_x_schedule_.empty() == false) {
 		std::deque<particle>::iterator p = particles_.begin();
 		foreach(generation& gen, generations_) {
-			const int ncycle = cycle_ - gen.created_at - 1;
-			const int size_x = info_.velocity_x_schedule_.size();
-			const int size_y = info_.velocity_y_schedule_.size();
-			const int offset_x = size_x == 0 ? 0 :
-			      (ncycle == 0 ? info_.velocity_x_schedule_[0] :
-				   info_.velocity_x_schedule_[ncycle%size_x] -
-				   info_.velocity_x_schedule_[(ncycle-1)%size_x]);
-			const int offset_y = size_y == 0 ? 0 :
-			      (ncycle == 0 ? info_.velocity_y_schedule_[0] :
-				   info_.velocity_y_schedule_[ncycle%size_y] -
-				   info_.velocity_y_schedule_[(ncycle-1)%size_y]);
 
 			for(int n = 0; n != gen.members; ++n) {
-				p->velocity[0] += offset_x;
-				p->velocity[1] += offset_y;
+				const int ncycle = p->random + cycle_ - gen.created_at - 1;
+				p->velocity[0] += info_.velocity_x_schedule_[ncycle%info_.velocity_x_schedule_.size()];
+				if(cycle_ - gen.created_at > 1) {
+					p->velocity[0] -= info_.velocity_x_schedule_[(ncycle-1)%info_.velocity_x_schedule_.size()];
+				}
+
+				++p;
+			}
+		}
+	}
+
+	if(info_.velocity_y_schedule_.empty() == false) {
+		std::deque<particle>::iterator p = particles_.begin();
+		foreach(generation& gen, generations_) {
+			for(int n = 0; n != gen.members; ++n) {
+				const int ncycle = p->random + cycle_ - gen.created_at - 1;
+				p->velocity[1] += info_.velocity_y_schedule_[ncycle%info_.velocity_y_schedule_.size()];
+				if(cycle_ - gen.created_at > 1) {
+					p->velocity[1] -= info_.velocity_y_schedule_[(ncycle-1)%info_.velocity_y_schedule_.size()];
+				}
+
 				++p;
 			}
 		}
@@ -459,6 +473,12 @@ void simple_particle_system::process(const entity& e)
 
 		if(!e.face_right()) {
 			p.velocity[0] = -p.velocity[0];
+		}
+
+		if(info_.random_schedule_) {
+			p.random = rand();
+		} else {
+			p.random = 0;
 		}
 
 		particles_.push_back(p);
