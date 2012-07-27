@@ -9,16 +9,25 @@
 #
 # The main options are:
 #
+#   CCACHE           The ccache binary that should be used when USE_CCACHE is
+#                     enabled (see below). Defaults to 'ccache'.
 #   CXX              C++ compiler comand line.
 #   CXXFLAGS         Additional C++ compiler options.
 #   OPTIMIZE         If set to 'yes' (default), builds with compiler
-#                    optimizations enabled (-O2). You may alternatively use
-#                    CXXFLAGS to set your own optimization options.
+#                     optimizations enabled (-O2). You may alternatively use
+#                     CXXFLAGS to set your own optimization options.
 #   LDFLAGS          Additional linker options.
+#   USE_CCACHE       If set to 'yes' (default), builds using the CCACHE binary
+#                     to run the compiler. If ccache is not installed (i.e.
+#                     found in PATH), this option has no effect.
 #
 
-CXX ?= ccache g++
 OPTIMIZE=yes
+CCACHE?=ccache
+USE_CCACHE?=$(shell which $(CCACHE) 2>&1 > /dev/null && echo yes)
+ifneq ($(USE_CCACHE),yes)
+CCACHE=
+endif
 
 ifeq ($(OPTIMIZE),yes)
 BASE_CXXFLAGS += -O2
@@ -37,24 +46,24 @@ LIBS := $(shell pkg-config --libs x11 ) -lSDLmain \
 include Makefile.common
 
 %.o : src/%.cpp
-	$(CXX) \
+	$(CCACHE) $(CXX) \
 		$(BASE_CXXFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(INC) -DIMPLEMENT_SAVE_PNG \
 		-c $<
 
 game: $(objects)
-	$(CXX) \
+	$(CCACHE) $(CXX) \
 		$(BASE_CXXFLAGS) $(LDFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(INC) \
 		$(objects) -o game \
 		$(LIBS) -lboost_regex-mt -lboost_system-mt -lpthread -fthreadsafe-statics
 
 server: $(server_objects)
-	$(CXX) \
+	$(CCACHE) $(CXX) \
 		$(BASE_CXXFLAGS) $(LDFLAGS) $(CXXFLAGS) $(CPPFLAGS) \
 		$(server_objects) -o server \
 		$(LIBS) -lboost_regex-mt -lboost_system-mt -lboost_thread-mt -lboost_iostreams-mt
 
 formula_test: $(formula_test_objects)
-	$(CXX) \
+	$(CCACHE) $(CXX) \
 		$(BASE_CXXFLAGS) $(LDFLAGS) $(CXXFLAGS) $(CPPFLAGS) -DUNIT_TEST_FORMULA \
 		src/formula.cpp $(formula_test_objects) -o test \
 		$(LIBS) -lboost_regex
