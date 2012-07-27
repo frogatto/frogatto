@@ -378,6 +378,7 @@ COMMAND_LINE_UTILITY(query)
 	if(args[0].size() > 4 && std::string(args[0].end()-4,args[0].end()) == ".cfg") {
 		process_file(args[0], file_mappings);
 	} else {
+		const assert_recover_scope scope;
 		process_dir(args[0], file_mappings, error_files);
 	}
 
