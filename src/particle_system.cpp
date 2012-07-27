@@ -127,12 +127,12 @@ struct simple_particle_system_info {
 		delta_b_(node["delta_b"].as_int(0)),
 		delta_a_(node["delta_a"].as_int(0))
 	{
-		if(node.has_key("velocity_x_offsets")) {
-			velocity_x_offsets_ = node["velocity_x_offsets"].as_list_int();
+		if(node.has_key("velocity_x_schedule")) {
+			velocity_x_schedule_ = node["velocity_x_schedule"].as_list_int();
 		}
 
-		if(node.has_key("velocity_y_offsets")) {
-			velocity_y_offsets_ = node["velocity_y_offsets"].as_list_int();
+		if(node.has_key("velocity_y_schedule")) {
+			velocity_y_schedule_ = node["velocity_y_schedule"].as_list_int();
 		}
 	}
 	int spawn_rate_, spawn_rate_random_;
@@ -149,7 +149,7 @@ struct simple_particle_system_info {
 
 	int delta_r_, delta_g_, delta_b_, delta_a_;
 
-	std::vector<int> velocity_x_offsets_, velocity_y_offsets_;
+	std::vector<int> velocity_x_schedule_, velocity_y_schedule_;
 };
 
 class simple_particle_system_factory : public particle_system_factory {
@@ -356,21 +356,21 @@ void simple_particle_system::process(const entity& e)
 		}
 	}
 
-	if(info_.velocity_x_offsets_.empty() == false || info_.velocity_y_offsets_.empty() == false) {
+	if(info_.velocity_x_schedule_.empty() == false || info_.velocity_y_schedule_.empty() == false) {
 
 		std::deque<particle>::iterator p = particles_.begin();
 		foreach(generation& gen, generations_) {
 			const int ncycle = cycle_ - gen.created_at - 1;
-			const int size_x = info_.velocity_x_offsets_.size();
-			const int size_y = info_.velocity_y_offsets_.size();
+			const int size_x = info_.velocity_x_schedule_.size();
+			const int size_y = info_.velocity_y_schedule_.size();
 			const int offset_x = size_x == 0 ? 0 :
-			      (ncycle == 0 ? info_.velocity_x_offsets_[0] :
-				   info_.velocity_x_offsets_[ncycle%size_x] -
-				   info_.velocity_x_offsets_[(ncycle-1)%size_x]);
+			      (ncycle == 0 ? info_.velocity_x_schedule_[0] :
+				   info_.velocity_x_schedule_[ncycle%size_x] -
+				   info_.velocity_x_schedule_[(ncycle-1)%size_x]);
 			const int offset_y = size_y == 0 ? 0 :
-			      (ncycle == 0 ? info_.velocity_y_offsets_[0] :
-				   info_.velocity_y_offsets_[ncycle%size_y] -
-				   info_.velocity_y_offsets_[(ncycle-1)%size_y]);
+			      (ncycle == 0 ? info_.velocity_y_schedule_[0] :
+				   info_.velocity_y_schedule_[ncycle%size_y] -
+				   info_.velocity_y_schedule_[(ncycle-1)%size_y]);
 
 			for(int n = 0; n != gen.members; ++n) {
 				p->velocity[0] += offset_x;
