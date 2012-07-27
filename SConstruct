@@ -15,11 +15,6 @@ opts.AddVariables(
     )
 
 env = Environment(options = opts)
-env["MSGFMT"] = env.WhereIs("msgfmt")
-if env["MSGFMT"]:
-    for po_file in Glob("po/*.po"):
-        lingua, ext = splitext(po_file.name)
-	env.Command(Dir("locale").Dir(lingua).Dir("LC_MESSAGES").File("frogatto.mo"), po_file, "$MSGFMT --statistics -o $TARGET $SOURCE")
 
 if env['jobs'] > 1:
     SetOption("num_jobs", env['jobs'])
