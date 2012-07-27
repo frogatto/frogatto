@@ -27,10 +27,10 @@ endif
 BASE_CXXFLAGS += -g -fno-inline-functions -fthreadsafe-statics -Wnon-virtual-dtor -Werror=return-type
 
 # Compiler include options, used after CXXFLAGS and CPPFLAGS.
-INC = $(shell pkg-config --cflags x11 sdl glu glew SDL_image libpng zlib)
+INC := $(shell pkg-config --cflags x11 sdl glu glew SDL_image libpng zlib)
 
 # Linker library options.
-LIBS = $(shell pkg-config --libs x11 ) -lSDLmain \
+LIBS := $(shell pkg-config --libs x11 ) -lSDLmain \
 	$(shell pkg-config --libs sdl glu glew SDL_image libpng zlib) -lSDL_ttf -lSDL_mixer
 
 include Makefile.common
