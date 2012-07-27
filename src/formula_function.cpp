@@ -1125,9 +1125,11 @@ FUNCTION_DEF(sum, 1, 2, "sum(list[, counter]): Adds all elements of the list tog
 	return res;
 END_FUNCTION_DEF(sum)
 
-FUNCTION_DEF(range, 1, 2, "range([start, ]finish): Returns a list containing all numbers smaller than the finish value and and larger than or equal to the start value. The start value defaults to 0.")
+FUNCTION_DEF(range, 1, 3, "range([start, ]finish[, step]): Returns a list containing all numbers smaller than the finish value and and larger than or equal to the start value. The start value defaults to 0.")
 	int start = args().size() > 1 ? args()[0]->evaluate(variables).as_int() : 0;
 	int end = args()[args().size() > 1 ? 1 : 0]->evaluate(variables).as_int();
+	int step = args().size() < 3 ? 1 : args()[2]->evaluate(variables).as_int();
+	ASSERT_LOG(step > 0, "ILLEGAL STEP VALUE IN RANGE: " << step);
 	bool reverse = false;
 	if(end < start) {
 		std::swap(start, end);
@@ -1140,9 +1142,9 @@ FUNCTION_DEF(range, 1, 2, "range([start, ]finish): Returns a list containing all
 	std::vector<variant> v;
 
 	if(nelem > 0) {
-		v.reserve(nelem);
+		v.reserve(nelem/step);
 
-		for(int n = 0; n < nelem; ++n) {
+		for(int n = 0; n < nelem; n += step) {
 			v.push_back(variant(start+n));
 		}
 	}
