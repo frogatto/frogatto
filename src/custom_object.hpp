@@ -38,6 +38,8 @@ public:
 	static std::set<custom_object*>& get_all(const std::string& type);
 	static void init();
 
+	static void run_garbage_collection();
+
 	explicit custom_object(variant node);
 	custom_object(const std::string& type, int x, int y, bool face_right);
 	custom_object(const custom_object& o);
@@ -261,6 +263,18 @@ protected:
 private:
 	custom_object& operator=(const custom_object& o);
 	struct Accessor;
+
+	struct gc_object_reference {
+		entity* owner;
+		entity* target;
+		variant* from_variant;
+		entity_ptr* from_ptr;
+	};
+
+	void extract_gc_object_references(std::vector<gc_object_reference>& v);
+	void extract_gc_object_references(entity_ptr& e, std::vector<gc_object_reference>& v);
+	void extract_gc_object_references(variant& var, std::vector<gc_object_reference>& v);
+	static void restore_gc_object_reference(gc_object_reference ref);
 
 	bool move_to_standing_internal(level& lvl, int max_displace);
 

@@ -1965,6 +1965,53 @@ void custom_object::init()
 {
 }
 
+void custom_object::run_garbage_collection()
+{
+	const int starting_ticks = SDL_GetTicks();
+
+	std::cerr << "RUNNING GARBAGE COLLECTION FOR " << get_all().size() << " OBJECTS...\n";
+
+	std::vector<entity_ptr> references;
+	foreach(custom_object* obj, get_all()) {
+		references.push_back(entity_ptr(obj));
+	}
+
+	std::set<entity*> safe;
+	std::vector<gc_object_reference> refs;
+
+	foreach(custom_object* obj, get_all()) {
+		obj->extract_gc_object_references(refs);
+	}
+	
+	for(int pass = 1;; ++pass) {
+		const int starting_safe = safe.size();
+		foreach(custom_object* obj, get_all()) {
+			if(obj->refcount() > 1) {
+				safe.insert(obj);
+			}
+		}
+
+		if(starting_safe == safe.size()) {
+			break;
+		}
+
+		std::cerr << "PASS " << pass << ": " << safe.size() << " OBJECTS SAFE\n";
+
+		foreach(gc_object_reference& ref, refs) {
+			if(ref.owner == NULL) {
+				continue;
+			}
+
+			if(safe.count(ref.owner)) {
+				restore_gc_object_reference(ref);
+				ref.owner = NULL;
+			}
+		}
+	}
+
+	std::cerr << "RAN GARBAGE COLLECTION IN " << (SDL_GetTicks() - starting_ticks) << "ms. Releasing " << (get_all().size() - safe.size()) << "/" << get_all().size() << " OBJECTS\n";
+}
+
 namespace {
 
 using game_logic::formula_callable;
@@ -3906,6 +3953,69 @@ void custom_object::cleanup_references()
 
 	foreach(variant& v, tmp_vars_->values()) {
 		v = variant();
+	}
+}
+
+void custom_object::extract_gc_object_references(std::vector<gc_object_reference>& v)
+{
+	extract_gc_object_references(last_hit_by_, v);
+	extract_gc_object_references(standing_on_, v);
+	extract_gc_object_references(parent_, v);
+	foreach(variant& var, vars_->values()) {
+		extract_gc_object_references(var, v);
+	}
+
+	foreach(variant& var, tmp_vars_->values()) {
+		extract_gc_object_references(var, v);
+	}
+}
+
+void custom_object::extract_gc_object_references(entity_ptr& e, std::vector<gc_object_reference>& v)
+{
+	if(!e) {
+		return;
+	}
+
+	v.resize(v.size()+1);
+	gc_object_reference& ref = v.back();
+	ref.owner = this;
+	ref.target = e.get();
+	ref.from_variant = NULL;
+	ref.from_ptr = &e;
+
+	e.reset();
+}
+
+void custom_object::extract_gc_object_references(variant& var, std::vector<gc_object_reference>& v)
+{
+	if(var.is_callable()) {
+		if(var.try_convert<entity>()) {
+			v.resize(v.size()+1);
+			gc_object_reference& ref = v.back();
+			ref.owner = this;
+			ref.target = var.try_convert<entity>();
+			ref.from_variant = &var;
+			ref.from_ptr = NULL;
+
+			var = variant();
+		}
+	} else if(var.is_list()) {
+		for(int n = 0; n != var.num_elements(); ++n) {
+			extract_gc_object_references(*var.get_index_mutable(n), v);
+		}
+	} else if(var.is_map()) {
+		foreach(variant k, var.get_keys().as_list()) {
+			extract_gc_object_references(*var.get_attr_mutable(k), v);
+		}
+	}
+}
+
+void custom_object::restore_gc_object_reference(gc_object_reference ref)
+{
+	if(ref.from_variant) {
+		*ref.from_variant = variant(ref.target);
+	} else {
+		ref.from_ptr->reset(ref.target);
 	}
 }
 

@@ -778,6 +778,9 @@ bool level_runner::play_cycle()
 		place_entity_in_level(*new_level, *save);
 		lvl_.reset(new_level);
 		last_draw_position() = screen_position();
+
+		//trigger a garbage collection of objects now.
+		custom_object::run_garbage_collection();
 	} else if(lvl_->players().size() > 1) {
 		foreach(const entity_ptr& c, lvl_->players()) {
 			if(c->hitpoints() <= 0) {
@@ -921,6 +924,9 @@ bool level_runner::play_cycle()
 
 			lvl_ = new_level;
 			last_draw_position() = screen_position();
+
+			//garbage collect objects from the last level.
+			custom_object::run_garbage_collection();
 
 			if(transition == "flip") {
 				transition_scene(*lvl_, last_draw_position(), false, flip_scene);
@@ -1160,6 +1166,8 @@ bool level_runner::play_cycle()
 
 					set_scene_title(new_level->title());
 					lvl_.reset(new_level);
+
+					custom_object::run_garbage_collection();
 
 #ifndef NO_EDITOR
 					if(editor_) {
