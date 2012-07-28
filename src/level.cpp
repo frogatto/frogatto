@@ -2963,9 +2963,9 @@ void level::add_player(entity_ptr p)
 				chars_[n] = entity_ptr();
 			}
 		}
-
-		chars_.erase(std::remove(chars_.begin(), chars_.end(), entity_ptr()), chars_.end());
 	}
+
+	chars_.erase(std::remove(chars_.begin(), chars_.end(), entity_ptr()), chars_.end());
 }
 
 void level::add_character(entity_ptr p)
