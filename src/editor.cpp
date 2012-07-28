@@ -1165,21 +1165,24 @@ void editor::process()
 
 		if(property_dialog_ && property_dialog_->get_entity()) {
 			variant new_value;
+			const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
 
 			if(g_variable_editing->type() == editor_variable_info::TYPE_POINTS) {
 				std::vector<variant> items = g_variable_editing_original_value.as_list();
 				ASSERT_LOG(g_variable_editing_index >= 0 && g_variable_editing_index < items.size(), "Variable editing points invalid: " << g_variable_editing_index << " / " << items.size());
 				point orig_point(items[g_variable_editing_index]);
 				point new_point(orig_point.x + diffx, orig_point.y + diffy);
+				if(!ctrl_pressed) {
+					new_point.x = new_point.x - new_point.x%(TileSize/2);
+					new_point.y = new_point.y - new_point.y%(TileSize/2);
+				}
 				items[g_variable_editing_index] = new_point.write();
 				new_value = variant(&items);
 
 			} else {
-				const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
 				int new_value_int = g_variable_editing_original_value.as_int() + diff;
-				if(ctrl_pressed) {
-					new_value_int += TileSize/2;
-					new_value_int = new_value_int - new_value_int%TileSize;
+				if(!ctrl_pressed) {
+					new_value_int = new_value_int - new_value_int%(TileSize/2);
 				}
 
 				new_value = variant(new_value_int);
