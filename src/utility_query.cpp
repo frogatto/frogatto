@@ -310,7 +310,7 @@ void process_file(const std::string& fname, std::map<std::string,std::string>& f
 		return;
 	}
 
-	variant original = parse_from_file(fname, JSON_NO_PREPROCESSOR);
+	variant original = json::parse(sys::read_file(fname), JSON_NO_PREPROCESSOR);
 	variant v = original;
 
 	variant obj = variant_callable::create(&v);
