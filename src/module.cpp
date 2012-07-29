@@ -1,8 +1,12 @@
 #include "asserts.hpp"
+#include "base64.hpp"
+#include "compress.hpp"
 #include "filesystem.hpp"
 #include "foreach.hpp"
 #include "json_parser.hpp"
+#include "md5.hpp"
 #include "module.hpp"
+#include "unit_test.hpp"
 
 namespace module {
 
@@ -247,6 +251,64 @@ void write_file(const std::string& mod_path, const std::string& data)
 		path = get_module_path(abbrev) + rel_path;
 	}
 	sys::write_file(path, data);
+}
+
+namespace {
+void get_files_in_module(const std::string& dir, std::vector<std::string>& res)
+{
+	std::vector<std::string> files, dirs;
+	sys::get_files_in_dir(dir, &files, &dirs);
+	foreach(const std::string& d, dirs) {
+		get_files_in_module(dir + "/" + d, res);
+	}
+
+	foreach(const std::string& fname, files) {
+		if(fname.empty() == false && fname[0] == '.') {
+			continue;
+		}
+
+		res.push_back(dir + "/" + fname);
+	}
+}
+}
+
+variant build_package(const std::string& id)
+{
+	std::vector<char> data;
+	std::vector<std::string> files;
+	const std::string path = "modules/" + id;
+	get_files_in_module(path, files);
+	std::map<variant, variant> file_attr;
+	foreach(const std::string& file, files) {
+		std::cerr << "processing " << file << "...\n";
+		std::string fname(file.begin() + path.size() + 1, file.end());
+		std::map<variant, variant> attr;
+
+		const std::string contents = sys::read_file(file);
+
+		attr[variant("begin")] = variant(data.size());
+		attr[variant("size")] = variant(contents.size());
+		attr[variant("md5")] = variant(md5::sum(contents));
+
+		data.insert(data.end(), contents.begin(), contents.end());
+
+		file_attr[variant(fname)] = variant(&attr);
+	}
+
+	std::cerr << "compressing data: " << data.size() << "...\n";
+	data = base64::b64encode(zip::compress(data));
+
+	const std::string data_str(data.begin(), data.end());
+
+	std::map<variant, variant> data_attr;
+	data_attr[variant("files")] = variant(&file_attr);
+	data_attr[variant("data")] = variant(data_str);
+	return variant(&data_attr);
+}
+
+COMMAND_LINE_UTILITY(package)
+{
+	std::cout << build_package("frogatto").write_json();
 }
 
 }

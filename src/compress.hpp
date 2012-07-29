@@ -16,6 +16,7 @@ struct CompressionException {
 
 std::vector<char> compress(const std::vector<char>& data, int compression_level=-1);
 std::vector<char> decompress(const std::vector<char>& data);
+std::vector<char> decompress_known_size(const std::vector<char>& data, int size);
 
 class compressed_data : public game_logic::formula_callable {
 	std::vector<char> data_;

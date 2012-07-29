@@ -25,7 +25,8 @@ public:
 	explicit particle_animation(variant node) :
 	  id_(node["id"].as_string()),
 	  texture_(graphics::texture::get(node["image"].as_string())),
-	  duration_(node["duration"].as_int())
+	  duration_(node["duration"].as_int()),
+	  loops_(node["loops"].as_bool(false))
 	{
 		rect base_area(node.has_key("rect") ? rect(node["rect"]) :
 	           rect(node["x"].as_int(),
@@ -80,7 +81,11 @@ public:
 		if(index < 0) {
 			index = 0;
 		} else if(index >= frames_.size()) {
-			index = frames_.size() - 1;
+			if(loops_) {
+				index = index%frames_.size();
+			} else {
+				index = frames_.size() - 1;
+			}
 		}
 
 		return frames_[index];
@@ -99,6 +104,7 @@ private:
 	std::vector<frame_area> frames_;
 	int duration_;
 	int width_, height_;
+	bool loops_;
 };
 
 struct simple_particle_system_info {
