@@ -44,6 +44,8 @@ private:
 	void handle_draw() const;
 	bool handle_event(const SDL_Event& event, bool claimed);
 	void click();
+	int vpadding_;
+	int hpadding_;
 
 	BUTTON_RESOLUTION button_resolution_;
 	BUTTON_STYLE button_style_;

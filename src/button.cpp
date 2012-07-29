@@ -25,17 +25,10 @@
 
 namespace gui {
 
-namespace {
-
-int vpadding = 4;
-int hpadding = 10;
-
-}
-
 button::button(const std::string& str, boost::function<void()> onclick)
   : label_(new label(str, graphics::color_white())),
     onclick_(onclick), button_resolution_(BUTTON_SIZE_NORMAL_RESOLUTION),
-	button_style_(BUTTON_STYLE_NORMAL),
+	button_style_(BUTTON_STYLE_NORMAL), hpadding_(10), vpadding_(4),
 	down_(false)
 {
 	set_environment();
@@ -44,7 +37,7 @@ button::button(const std::string& str, boost::function<void()> onclick)
 
 button::button(widget_ptr label, boost::function<void ()> onclick, BUTTON_STYLE button_style, BUTTON_RESOLUTION button_resolution)
   : label_(label), onclick_(onclick), button_resolution_(button_resolution), button_style_(button_style),
-	down_(false)
+	down_(false), hpadding_(10), vpadding_(4)
 	
 {
 	set_environment();
@@ -62,12 +55,12 @@ button::button(const variant& v, game_logic::formula_callable* e) : widget(v,e),
 	onclick_ = boost::bind(&button::click, this);
 	button_resolution_ = v["resolution"].as_string_default("normal") == "normal" ? BUTTON_SIZE_NORMAL_RESOLUTION : BUTTON_SIZE_DOUBLE_RESOLUTION;
 	button_style_ = v["style"].as_string_default("default") == "default" ? BUTTON_STYLE_DEFAULT : BUTTON_STYLE_NORMAL;
-	hpadding = v["hpad"].as_int(10);
-	vpadding = v["vpad"].as_int(4);
+	hpadding_ = v["hpad"].as_int(10);
+	vpadding_ = v["vpad"].as_int(4);
 	if(v.has_key("padding")) {
 		ASSERT_LOG(v["padding"].num_elements() == 2, "Incorrect number of padding elements specifed." << v["padding"].num_elements());
-		hpadding = v["padding"][0].as_int();
-		vpadding = v["padding"][1].as_int();
+		hpadding_ = v["padding"][0].as_int();
+		vpadding_ = v["padding"][1].as_int();
 	}
 	setup();
 }
@@ -101,7 +94,7 @@ void button::setup()
 void button::set_label(widget_ptr label)
 {
 	label_ = label;
-	set_dim(label_->width()+hpadding*2,label_->height()+vpadding*2);
+	set_dim(label_->width()+hpadding_*2,label_->height()+vpadding_*2);
 }
 
 bool button::in_button(int xloc, int yloc) const
