@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-07-25 05:06-0300\n"
-"PO-Revision-Date: 2012-07-25 08:08+0000\n"
+"POT-Creation-Date: 2012-07-29 05:27-0300\n"
+"PO-Revision-Date: 2012-07-29 08:28+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Malay (Malaysia) (http://www.transifex.com/projects/p/Frogatto/language/ms_MY/)\n"
 "MIME-Version: 1.0\n"
@@ -831,7 +831,7 @@ msgid ""
 "Thanks again!"
 msgstr ""
 
-#: ../data/level/bon-bosque.cfg:4634
+#: ../data/level/bon-bosque.cfg:4635
 #: ../data/objects/playable/map-selector.cfg:18
 msgid "Bon Bosque"
 msgstr "Bon Bosque"
@@ -1240,7 +1240,7 @@ msgid "We can do that."
 msgstr "Kita boleh lakukan tu."
 
 #: ../data/level/crevice-village-cave.cfg:725
-#: ../data/level/crevice-village-central.cfg:4069
+#: ../data/level/crevice-village-central.cfg:4053
 #: ../data/level/crevice-village-heights.cfg:2078
 #: ../data/level/crevice-village.cfg:1647
 #: ../data/objects/playable/map-selector.cfg:16
@@ -1316,7 +1316,7 @@ msgid ""
 "our best bet for a clue."
 msgstr "Tanya salah seorang tawanan mungkin\ncara terbaik dapatkan petunjuk."
 
-#: ../data/level/crevice-village-central.cfg:2762
+#: ../data/level/crevice-village-central.cfg:2746
 msgid "Hey! Over here!"
 msgstr "Hei! Dekat sini!"
 
@@ -1697,7 +1697,7 @@ msgstr ""
 #: ../data/level/crevice-village-house-elder.cfg:452
 #: ../data/level/crevice-village-house-elder.cfg:475
 #: ../data/level/crevice-village-house-elder.cfg:485
-#: ../data/level/kitty-dormitory.cfg:1969
+#: ../data/level/kitty-dormitory.cfg:1974
 #: ../data/level/to-nenes-house-inside.cfg:88
 msgid "..."
 msgstr "..."
@@ -1845,7 +1845,7 @@ msgstr "Rumah Lif"
 
 #: ../data/level/crevice-village-house-2-basement-backroom.cfg:1976
 #: ../data/level/crevice-village-house-2-basement.cfg:1682
-#: ../data/level/crevice-village-house-2.cfg:2903
+#: ../data/level/crevice-village-house-2.cfg:2905
 #: ../data/level/liberated-crevice-village-house-2.cfg:1492
 msgid "Central House"
 msgstr "Rumah Utama"
@@ -1874,40 +1874,46 @@ msgid ""
 "Sorry."
 msgstr "Belum lagi.\nMaaf."
 
-#: ../data/level/crevice-village-house-2.cfg:1387
+#: ../data/level/crevice-village-house-2.cfg:1388
 msgid ""
 "Hey,\n"
 "I'm trying to help save the town."
 msgstr "Hei,\nsaya cuba nak selamatkan pekan."
 
-#: ../data/level/crevice-village-house-2.cfg:1389
+#: ../data/level/crevice-village-house-2.cfg:1390
 msgid "Can you give me any advice?"
 msgstr "Boleh beri saya sebarang nasihat?"
 
-#: ../data/level/crevice-village-house-2.cfg:1390
+#: ../data/level/crevice-village-house-2.cfg:1391
 msgid "Yeah."
 msgstr "Ya."
 
-#: ../data/level/crevice-village-house-2.cfg:1391
+#: ../data/level/crevice-village-house-2.cfg:1392
 msgid ""
 "The elder's house is off to the east,\n"
 "past the town gate."
 msgstr "Rumah penghulu di sebelah timur,\nlepas gerbang pekan."
 
-#: ../data/level/crevice-village-house-2.cfg:1392
+#: ../data/level/crevice-village-house-2.cfg:1393
 msgid "We saw Milgram's lieutenant go in there."
 msgstr "Kami nampak leftenan Milgram masuk."
 
-#: ../data/level/crevice-village-house-2.cfg:1394
+#: ../data/level/crevice-village-house-2.cfg:1395
 #: ../data/level/rock-a-fort.cfg:1654
 msgid "How interesting."
 msgstr "Menarik sungguh."
 
-#: ../data/level/crevice-village-house-3-backroom.cfg:1735
+#: ../data/level/crevice-village-house-3-backroom.cfg:1754
 #: ../data/level/crevice-village-house-3.cfg:1499
 #: ../data/level/liberated-crevice-village-house-3.cfg:1312
 msgid "The Danger House"
 msgstr "Rumah Bahaya"
+
+#: ../data/level/crevice-village-house-3-switch.cfg:108
+msgid ""
+"It says, \"Central Gate Control\"\n"
+"That's what we want!"
+msgstr ""
 
 #: ../data/level/crevice-village-house-4-backroom.cfg:270
 msgid ""
@@ -1916,7 +1922,7 @@ msgid ""
 msgstr "Argh! Siapalah kat dunia ni\nnak reka rumah macam ni?"
 
 #: ../data/level/crevice-village-house-4-backroom.cfg:1529
-#: ../data/level/crevice-village-house-4.cfg:2639
+#: ../data/level/crevice-village-house-4.cfg:2648
 #: ../data/level/liberated-crevice-village-house-4.cfg:1842
 msgid "Fan House"
 msgstr "Rumah Kipas"
@@ -3281,600 +3287,613 @@ msgstr ""
 msgid "Killer Bunnies"
 msgstr "Arnab Pembunuh"
 
-#: ../data/level/kitty-dormitory.cfg:1890
+#: ../data/level/kitty-dormitory.cfg:232
+msgid ""
+"It says, \"Today's Special:\n"
+"Caesar Salad and Avocado Wraps\""
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:736
+msgid ""
+"It says, \"Attention:\n"
+"Please clean up when you are done,\n"
+"and no standing on the filing cabinet.\""
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:1895
 msgid ""
 "Oh, I was just sitting down for a bite to eat.\n"
 "Care to join us?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1893
+#: ../data/level/kitty-dormitory.cfg:1898
 msgid ""
 "Uh, maybe...\n"
 "I certainly appreciate the hospitality!"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1895
+#: ../data/level/kitty-dormitory.cfg:1900
 msgid "So is this some kind of dining area?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1897
+#: ../data/level/kitty-dormitory.cfg:1902
 msgid ""
 "Yes, it is.  We have regular meal service\n"
 "for those who are off-duty."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1898
+#: ../data/level/kitty-dormitory.cfg:1903
 msgid ""
 "Gaston should be coming out any minute now,\n"
 "with a lovely bit of smoked salmon."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1899
+#: ../data/level/kitty-dormitory.cfg:1904
 msgid ""
 "Well, pretty soon, I hope.\n"
 "Sometimes he takes a while."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1902
+#: ../data/level/kitty-dormitory.cfg:1907
 msgid "That sounds pretty classy."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1904
+#: ../data/level/kitty-dormitory.cfg:1909
 msgid "Yeah, small perks like that make life nice."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1907
+#: ../data/level/kitty-dormitory.cfg:1912
 msgid "So what is it you do for a, uh... job?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1909
+#: ../data/level/kitty-dormitory.cfg:1914
 msgid ""
 "Basic labor, mostly.\n"
 "I haul construction materials around."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1910
+#: ../data/level/kitty-dormitory.cfg:1915
 msgid ""
 "We're still working on the north tower.\n"
 "Be careful if you venture out there."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1911
+#: ../data/level/kitty-dormitory.cfg:1916
 msgid ""
 "It's easy to accidentally fall.\n"
 "It's not really pedestrian-ready yet."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1914
+#: ../data/level/kitty-dormitory.cfg:1919
 msgid "I'll keep that in mind, thanks."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1942
+#: ../data/level/kitty-dormitory.cfg:1947
 msgid "Hi there, what's going on?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1944
+#: ../data/level/kitty-dormitory.cfg:1949
 msgid ""
 "Oh, hello.\n"
 "I'm just eating some fruit."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1945
+#: ../data/level/kitty-dormitory.cfg:1950
 msgid "Are you that green guy security is after?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1948
+#: ../data/level/kitty-dormitory.cfg:1953
 msgid ""
 "If I answer yes,\n"
 "are you going to call them in here?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1950
+#: ../data/level/kitty-dormitory.cfg:1955
 msgid "No, I'm not looking for trouble."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1951
+#: ../data/level/kitty-dormitory.cfg:1956
 msgid ""
 "Besides which, you don't seem like a bad guy,\n"
 "if you ask my opinion."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1952
+#: ../data/level/kitty-dormitory.cfg:1957
 msgid "Not that anyone's asking me."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1954
+#: ../data/level/kitty-dormitory.cfg:1959
 msgid "Well, thanks, I do appreciate that."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1956
+#: ../data/level/kitty-dormitory.cfg:1961
 msgid ""
 "Speaking of which, color me curious,\n"
 "but I thought that cats were carnivores?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1958
+#: ../data/level/kitty-dormitory.cfg:1963
 msgid "How is it that you're able to eat fruit?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1960
+#: ../data/level/kitty-dormitory.cfg:1965
 msgid ""
 "Oh! I guess you wouldn't know these things...\n"
 "I suppose we take that for granted."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1961
+#: ../data/level/kitty-dormitory.cfg:1966
 msgid ""
 "See, strictly speaking, we're not cats.\n"
 "We're simply made to look like them."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1964
+#: ../data/level/kitty-dormitory.cfg:1969
 msgid ""
 "Er... \"made to\", you say?\n"
 "That's an interesting choice of words."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1966
+#: ../data/level/kitty-dormitory.cfg:1971
 msgid ""
 "Yes, that's right - I'm implying we are \"made\".\n"
 "We're made, not born, like you ... presumably are."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1971
+#: ../data/level/kitty-dormitory.cfg:1976
 msgid ""
 "Okay ... I'm kind of at a loss for words.\n"
 "That seems pretty unbelievable."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1973
+#: ../data/level/kitty-dormitory.cfg:1978
 msgid ""
 "Then again, the world is nothing\n"
 "if not full of surprises."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1975
+#: ../data/level/kitty-dormitory.cfg:1980
 msgid ""
 "So you're made, you say...\n"
 "Who, then, is your maker?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1977
+#: ../data/level/kitty-dormitory.cfg:1982
 msgid ""
 "Oh, Milgram, of course.\n"
 "Why else would he be so important?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1978
+#: ../data/level/kitty-dormitory.cfg:1983
 msgid ""
 "I confess, I really don't know -how-\n"
 "he creates us,  but I know that he does."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1981
+#: ../data/level/kitty-dormitory.cfg:1986
 msgid "So then... are you robots or something?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1983
+#: ../data/level/kitty-dormitory.cfg:1988
 msgid ""
 "Of course not!  Robots don't eat.\n"
 "We're all living creatures."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1986
+#: ../data/level/kitty-dormitory.cfg:1991
 msgid ""
 "Oh, so he's your parent, then?\n"
 "And just has a lot of kids."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1988
+#: ../data/level/kitty-dormitory.cfg:1993
 msgid ""
 "Well, I guess we consider him a parent,\n"
 "but we're very much made."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1989
+#: ../data/level/kitty-dormitory.cfg:1994
 msgid ""
 "He chooses what we're shaped like, for one thing.\n"
 "Usually takes inspiration from the animal kingdom."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1990
+#: ../data/level/kitty-dormitory.cfg:1995
 msgid ""
 "He fancies himself an artist in this regard,\n"
 "and for ego's sake I'm not about to disagree."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1991
+#: ../data/level/kitty-dormitory.cfg:1996
 msgid ""
 "These days, moreover, we're mass-produced.\n"
 "There's a factory downstairs that churns out\n"
 "the more successful designs."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1994
+#: ../data/level/kitty-dormitory.cfg:1999
 msgid ""
 "But that's just CRAZY!\n"
 "How does that even work?!  Magic?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1996
+#: ../data/level/kitty-dormitory.cfg:2001
 msgid "Like I said, I really don't know, myself."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1997
+#: ../data/level/kitty-dormitory.cfg:2002
 msgid ""
 "But it's not any crazier than\n"
 "you transforming from a tadpole."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1998
+#: ../data/level/kitty-dormitory.cfg:2003
 msgid ""
 "I mean, that seems pretty incredible\n"
 "from my perspective."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:1999
+#: ../data/level/kitty-dormitory.cfg:2004
 msgid "But that is how it works for frogs, right?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2002
+#: ../data/level/kitty-dormitory.cfg:2007
 msgid ""
 "It is.\n"
 "It's just a crazy world we live in, huh?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2004
+#: ../data/level/kitty-dormitory.cfg:2009
 msgid "Madness and wonder every step of the way."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2007
+#: ../data/level/kitty-dormitory.cfg:2012
 msgid ""
 "No kidding.  Well, hey, have a nice meal.\n"
 "Thanks for all the info."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2009
+#: ../data/level/kitty-dormitory.cfg:2014
 msgid "No problem."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2036
+#: ../data/level/kitty-dormitory.cfg:2041
 msgid "Hi, what are you doing?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2038
+#: ../data/level/kitty-dormitory.cfg:2043
 msgid ""
 "Oh, hello there.\n"
 "I haven't met you before."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2039
+#: ../data/level/kitty-dormitory.cfg:2044
 msgid "I'm reading a book."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2042
+#: ../data/level/kitty-dormitory.cfg:2047
 msgid ""
 "That's nice.\n"
 "What's it about?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2044
+#: ../data/level/kitty-dormitory.cfg:2049
 msgid "Ahh, it's a collection of old fairy tales."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2045
+#: ../data/level/kitty-dormitory.cfg:2050
 msgid ""
 "Some of them are kinda\n"
 "thinly-veiled cautionary tales..."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2046
+#: ../data/level/kitty-dormitory.cfg:2051
 msgid ""
 "...but some of the other ones\n"
 "are just plain *strange*."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2047
+#: ../data/level/kitty-dormitory.cfg:2052
 msgid "I can't decide which ones I like better."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2048
+#: ../data/level/kitty-dormitory.cfg:2053
 msgid ""
 "Do I like the ones that have an obvious point,\n"
 "or is it more intellectually satisfying to puzzle\n"
 "over the more engimatic ones?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2049
+#: ../data/level/kitty-dormitory.cfg:2054
 msgid "I can't really say."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2052
+#: ../data/level/kitty-dormitory.cfg:2057
 msgid "Hm, I've never really thought about that before."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2054
+#: ../data/level/kitty-dormitory.cfg:2059
 msgid ""
 "You're welcome to sit down and join me.\n"
 "The fire is quite nice."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2057
+#: ../data/level/kitty-dormitory.cfg:2062
 msgid ""
 "Thanks - I'm kind of in a hurry,\n"
 "but I appreciate it."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2803
+#: ../data/level/kitty-dormitory.cfg:2808
 msgid "WHOA!"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2806
+#: ../data/level/kitty-dormitory.cfg:2811
 msgid "What's wrong?!"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2808
+#: ../data/level/kitty-dormitory.cfg:2813
 msgid "Uh..."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2809
+#: ../data/level/kitty-dormitory.cfg:2814
 msgid "Was I asleep?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2812
+#: ../data/level/kitty-dormitory.cfg:2817
 msgid "It's possible you were."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2814
+#: ../data/level/kitty-dormitory.cfg:2819
 msgid "I see..."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2815
+#: ../data/level/kitty-dormitory.cfg:2820
 msgid "I think I'm going to go back to sleep."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2816
+#: ../data/level/kitty-dormitory.cfg:2821
 msgid "I'm pretty tired, you see..."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2847
+#: ../data/level/kitty-dormitory.cfg:2852
 msgid ""
 "God, I don't want to work today.\n"
 "I just want to sleep."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2848
+#: ../data/level/kitty-dormitory.cfg:2853
 msgid "Do you ever feel like that?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2851
+#: ../data/level/kitty-dormitory.cfg:2856
 msgid "All the time."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2853
+#: ../data/level/kitty-dormitory.cfg:2858
 msgid ""
 "I probably give into it\n"
 "too often for my own good, though..."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2855
+#: ../data/level/kitty-dormitory.cfg:2860
 msgid "Ha."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2886
+#: ../data/level/kitty-dormitory.cfg:2891
 msgid "Hey, what's up?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2888
+#: ../data/level/kitty-dormitory.cfg:2893
 msgid ""
 "Oh, hi there.\n"
 "I'm machining metal parts."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2891
+#: ../data/level/kitty-dormitory.cfg:2896
 msgid "What does that mean?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2893
+#: ../data/level/kitty-dormitory.cfg:2898
 msgid ""
 "Well, this machine here is a router.\n"
 "It drills holes or grinds out shapes in metal pieces."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2894
+#: ../data/level/kitty-dormitory.cfg:2899
 msgid "It's controlled by this computer."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2895
+#: ../data/level/kitty-dormitory.cfg:2900
 msgid ""
 "It's important because it's much more\n"
 "precise than anything we could do by hand."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2896
+#: ../data/level/kitty-dormitory.cfg:2901
 msgid ""
 "The holes and such are all standard,\n"
 "consistent sizes, which means that\n"
 "they fit standard-sized bolts."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2897
+#: ../data/level/kitty-dormitory.cfg:2902
 msgid "It makes sure everything works together."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2900
+#: ../data/level/kitty-dormitory.cfg:2905
 msgid "That sounds like a pretty good system."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2902
+#: ../data/level/kitty-dormitory.cfg:2907
 msgid "Yeah, it isn't bad."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2903
+#: ../data/level/kitty-dormitory.cfg:2908
 msgid ""
 "This thing's kind of a pain to program,\n"
 "but it's a small price to pay."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2906
+#: ../data/level/kitty-dormitory.cfg:2911
 msgid "That makes sense."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2908
+#: ../data/level/kitty-dormitory.cfg:2913
 msgid "Anyways, I'd better get back to work."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2957
-#: ../data/level/kitty-dormitory.cfg:2961
+#: ../data/level/kitty-dormitory.cfg:2962
+#: ../data/level/kitty-dormitory.cfg:2966
 #: ../data/level/secluded-hut-interior.cfg:312
 msgid "Hello there."
 msgstr "Helo di sana."
 
-#: ../data/level/kitty-dormitory.cfg:2959
+#: ../data/level/kitty-dormitory.cfg:2964
 msgid "Uh... hi?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2964
+#: ../data/level/kitty-dormitory.cfg:2969
 msgid ""
 "You know, I'm not gonna lie - it's really weird\n"
 "to fight you guys in one place and ... uh"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2966
+#: ../data/level/kitty-dormitory.cfg:2971
 msgid ""
 "... and then just talk, peaceably, here?\n"
 "I still don't get it.  What gives?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2968
+#: ../data/level/kitty-dormitory.cfg:2973
 msgid ""
 "Well, the fact that I'm unarmed\n"
 "is a pretty big factor."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2969
+#: ../data/level/kitty-dormitory.cfg:2974
 msgid ""
 "I wouldn't stand a chance, so I'm willing\n"
 "to hinge my hopes on your being civil."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2970
+#: ../data/level/kitty-dormitory.cfg:2975
 msgid "Here we are, after all, aren't we?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2973
+#: ../data/level/kitty-dormitory.cfg:2978
 msgid "This is true."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2975
+#: ../data/level/kitty-dormitory.cfg:2980
 msgid "If you don't mind my asking, where are we?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2977
+#: ../data/level/kitty-dormitory.cfg:2982
 msgid ""
 "Residential Quarters.\n"
 "It's really a dormitory-like arrangement."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2978
+#: ../data/level/kitty-dormitory.cfg:2983
 msgid "And don't worry, none of us here work security."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2979
+#: ../data/level/kitty-dormitory.cfg:2984
 msgid "I hear you have those guys in a royal fit."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2982
+#: ../data/level/kitty-dormitory.cfg:2987
 msgid "Yeah, that doesn't surprise me."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2984
+#: ../data/level/kitty-dormitory.cfg:2989
 msgid ""
 "Honestly, it's been pretty funny to hear about.\n"
 "Some of those security guys are total dicks."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2985
+#: ../data/level/kitty-dormitory.cfg:2990
 msgid ""
 "It's fun to watch them get\n"
 "a taste of their own medicine."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2988
+#: ../data/level/kitty-dormitory.cfg:2993
 msgid "Any chance they might follow me in here?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2990
+#: ../data/level/kitty-dormitory.cfg:2995
 msgid ""
 "Possible, but it's unlikely.\n"
 "You can probably take a breather in here."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:2993
+#: ../data/level/kitty-dormitory.cfg:2998
 msgid "That's nice to hear."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:3041
+#: ../data/level/kitty-dormitory.cfg:3046
 msgid "Oh, hi there!"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:3043
+#: ../data/level/kitty-dormitory.cfg:3048
 msgid "Hello?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:3045
+#: ../data/level/kitty-dormitory.cfg:3050
 msgid "Yes, hi."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:3046
+#: ../data/level/kitty-dormitory.cfg:3051
 msgid "I'm doing laundry!"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:3049
+#: ../data/level/kitty-dormitory.cfg:3054
 msgid ""
 "I ... see.\n"
 "Uh... do you live here?"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:3051
+#: ../data/level/kitty-dormitory.cfg:3056
 msgid ""
 "Yeah, this is one of our dormitory areas.\n"
 "Quite a few of us live here."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:3052
+#: ../data/level/kitty-dormitory.cfg:3057
 msgid "I'd chat at length, but I'm a bit busy."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:3053
+#: ../data/level/kitty-dormitory.cfg:3058
 msgid ""
 "By all means, though,\n"
 "you're welcome to wander around."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:3054
+#: ../data/level/kitty-dormitory.cfg:3059
 msgid ""
 "No one in here works security,\n"
 "so we won't come after you."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:3057
+#: ../data/level/kitty-dormitory.cfg:3062
 msgid ""
 "...\n"
 "That takes some getting used to."
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:3059
+#: ../data/level/kitty-dormitory.cfg:3064
 msgid ""
 "But, I'm not gonna turn down a good thing.\n"
 "Thanks!"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:3061
+#: ../data/level/kitty-dormitory.cfg:3066
 msgid "No problem!"
 msgstr ""
 
-#: ../data/level/kitty-dormitory.cfg:3903
+#: ../data/level/kitty-dormitory.cfg:3908
 msgid "Kitty Dormitory"
 msgstr ""
 
@@ -5629,7 +5648,7 @@ msgstr "Lagi cepat, lagi baik."
 msgid "To Nene's House"
 msgstr "Ke Rumah Nene"
 
-#: ../data/level/twisted-trees.cfg:5054
+#: ../data/level/twisted-trees.cfg:5053
 msgid "Twisted Trees"
 msgstr "Pokok Terpintal"
 
