@@ -26,6 +26,7 @@ public:
 	  id_(node["id"].as_string()),
 	  texture_(graphics::texture::get(node["image"].as_string())),
 	  duration_(node["duration"].as_int()),
+	  reverse_frame_(node["reverse"].as_bool()),
 	  loops_(node["loops"].as_bool(false))
 	{
 		rect base_area(node.has_key("rect") ? rect(node["rect"]) :
@@ -81,8 +82,10 @@ public:
 		if(index < 0) {
 			index = 0;
 		} else if(index >= frames_.size()) {
-			if(loops_) {
+			if(loops_ && !reverse_frame_) {
 				index = index%frames_.size();
+			} else if (loops_ && reverse_frame_){
+				index = (running_in_reverse(index)? frames_.size()- 1 - index%frames_.size(): index%frames_.size());
 			} else {
 				index = frames_.size() - 1;
 			}
@@ -90,7 +93,12 @@ public:
 
 		return frames_[index];
 	}
-
+	bool running_in_reverse(int current_frame) const
+	{
+		return current_frame % (2* frames_.size()) >= frames_.size();
+	}
+	
+	
 	void set_texture() const {
 		texture_.set_as_current_texture();
 	}
@@ -103,6 +111,7 @@ private:
 
 	std::vector<frame_area> frames_;
 	int duration_;
+	int reverse_frame_;
 	int width_, height_;
 	bool loops_;
 };
