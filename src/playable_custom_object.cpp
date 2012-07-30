@@ -163,7 +163,7 @@ variant playable_custom_object::get_value(const std::string& key) const
 		for(int count = SDLK_FIRST; count < SDLK_LAST; count++) {
 #endif
 			if(key_state[count]) {				//Returns only keys that are down so the list that ffl has to deal with is small.
-				if(util::c_isprint(count)) {
+				if(count < 128 && util::c_isprint(count)) {
 					std::string str(1,count);
 					result.push_back(variant(str));
 				} else {
