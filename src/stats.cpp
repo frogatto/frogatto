@@ -22,7 +22,8 @@ std::string get_stats_dir() {
 
 }
 
-void http_upload(const std::string& payload, const std::string& script) {
+void http_upload(const std::string& payload, const std::string& script,
+                 const char* hostname, const char* port) {
 	using boost::asio::ip::tcp;
 
 	std::ostringstream s;
@@ -36,7 +37,14 @@ void http_upload(const std::string& payload, const std::string& script) {
 
 	boost::asio::io_service io_service;
 	tcp::resolver resolver(io_service);
-	tcp::resolver::query query("theargentlark.com", "5000");
+	if(hostname == NULL) {
+		hostname = "theargentlark.com";
+	}
+
+	if(port == NULL) {
+		port = "5000";
+	}
+	tcp::resolver::query query(hostname, port);
 
 	tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
 	tcp::resolver::iterator end;
@@ -53,8 +61,8 @@ void http_upload(const std::string& payload, const std::string& script) {
 		return;
 	}
 
-	socket.write_some(boost::asio::buffer(msg), error);
-	if(error) {
+	size_t nbytes_written = boost::asio::write(socket, boost::asio::buffer(msg));
+	if(nbytes_written != msg.size()) {
 		fprintf(stderr, "STATS ERROR: Couldn't upload stats buffer\n");
 		return;
 	}

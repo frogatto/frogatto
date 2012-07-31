@@ -9,7 +9,8 @@
 
 #include <string>
 
-void http_upload(const std::string& payload, const std::string& script);
+void http_upload(const std::string& payload, const std::string& script,
+                 const char* hostname=NULL, const char* port=NULL);
 
 namespace stats {
 

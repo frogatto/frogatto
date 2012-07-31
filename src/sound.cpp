@@ -36,6 +36,7 @@ std::map<std::string, MusicInfo> music_index;
 float sfx_volume = 1.0;
 float user_music_volume = 1.0;
 float engine_music_volume = 1.0;
+float track_music_volume = 1.0;
 const int SampleRate = 44100;
 // number of allocated channels, 
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
@@ -398,7 +399,7 @@ void mute (bool flag)
 {
 	mute_ = flag;
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
-	Mix_VolumeMusic(engine_music_volume*MIX_MAX_VOLUME*(!flag));
+	Mix_VolumeMusic(user_music_volume*track_music_volume*engine_music_volume*MIX_MAX_VOLUME*(!flag));
 #endif
 }
 
@@ -618,9 +619,9 @@ void update_music_volume()
 {
 	if(sound_init) {
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
-		Mix_VolumeMusic(user_music_volume*engine_music_volume*MIX_MAX_VOLUME);
+		Mix_VolumeMusic(track_music_volume*user_music_volume*engine_music_volume*MIX_MAX_VOLUME);
 #else
-		iphone_set_music_volume(user_music_volume*engine_music_volume);
+		iphone_set_music_volume(track_music_volume*user_music_volume*engine_music_volume);
 #endif
 	}
 }
@@ -694,7 +695,8 @@ void play_music(const std::string& file)
 		return;
 	}
 
-	set_engine_music_volume(music_index[file].volume);
+	track_music_volume = music_index[file].volume;
+	update_music_volume();
 
 	Mix_FadeInMusic(current_mix_music, -1, 500);
 #else
@@ -713,7 +715,8 @@ void play_music(const std::string& file)
 	std::string aac_file = file;
 	aac_file.replace(aac_file.length()-3, aac_file.length(), "m4a");
 	if (!sys::file_exists("music_aac/" + aac_file)) return;
-	set_engine_music_volume(music_index[file].volume);
+	track_music_volume = music_index[file].volume;
+	update_music_volume();
 	iphone_play_music(("music_aac/" + aac_file).c_str(), -1);
 	iphone_fade_in_music(350);
 	playing_music = true;

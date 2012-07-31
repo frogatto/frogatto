@@ -295,14 +295,23 @@ variant build_package(const std::string& id)
 		file_attr[variant(fname)] = variant(&attr);
 	}
 
+	const std::string module_cfg_file = path + "/module.cfg";
+	variant module_cfg = json::parse(sys::read_file(module_cfg_file));
+	ASSERT_LOG(module_cfg["version"].is_list(), "IN " << module_cfg_file << " THERE MUST BE A VERSION NUMBER GIVEN AS A LIST OF INTEGERS");
+
+	//this verifies that compression/decompression works but is slow.
+	//ASSERT_LOG(zip::decompress_known_size(base64::b64decode(base64::b64encode(zip::compress(data))), data.size()) == data, "COMPRESS/DECOMPRESS BROKEN");
+
 	std::cerr << "compressing data: " << data.size() << "...\n";
 	data = base64::b64encode(zip::compress(data));
 
 	const std::string data_str(data.begin(), data.end());
 
 	std::map<variant, variant> data_attr;
-	data_attr[variant("files")] = variant(&file_attr);
+	data_attr[variant("version")] = module_cfg["version"];
+	data_attr[variant("manifest")] = variant(&file_attr);
 	data_attr[variant("data")] = variant(data_str);
+	data_attr[variant("data_size")] = variant(data_str.size());
 	return variant(&data_attr);
 }
 
