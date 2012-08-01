@@ -49,12 +49,21 @@ include Makefile.common
 	$(CCACHE) $(CXX) \
 		$(BASE_CXXFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(INC) -DIMPLEMENT_SAVE_PNG \
 		-c $<
+	$(CXX) $(BASE_CXXFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(INC) -DIMPLEMENT_SAVE_PNG -MM $< > $*.d
+	@mv -f $*.d $*.d.tmp
+	@sed -e 's|.*:|$*.o:|' < $*.d.tmp > $*.d
+	@sed -e 's/.*://' -e 's/\\$$//' < $*.d.tmp | fmt -1 | \
+		sed -e 's/^ *//' -e 's/$$/:/' >> $*.d
+	@rm -f $*.d.tmp
 
 game: $(objects)
 	$(CCACHE) $(CXX) \
 		$(BASE_CXXFLAGS) $(LDFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(INC) \
 		$(objects) -o game \
 		$(LIBS) -lboost_regex-mt -lboost_system-mt -lpthread -fthreadsafe-statics
+
+# pull in dependency info for *existing* .o files
+-include $(objects:.o=.d)
 
 server: $(server_objects)
 	$(CCACHE) $(CXX) \
@@ -69,7 +78,7 @@ formula_test: $(formula_test_objects)
 		$(LIBS) -lboost_regex
 
 clean:
-	rm -f *.o game
+	rm -f *.o *.d game
 	
 assets:
 	./game --utility=compile_levels
