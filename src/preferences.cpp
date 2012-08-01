@@ -146,6 +146,9 @@ namespace preferences {
 		int force_difficulty_ = INT_MIN;
 
 		uri::uri tbs_uri_ = uri::uri::parse("http://localhost:23456");
+
+		std::string username_;
+		std::string password_;
 		
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 		
@@ -541,6 +544,16 @@ namespace preferences {
 	{
 		return tbs_uri_;
 	}
+
+	std::string get_username()
+	{
+		return username_;
+	}
+
+	std::string get_password()
+	{
+		return password_;
+	}
 	
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 	bool use_fbo()
@@ -813,6 +826,10 @@ namespace preferences {
 			use_joystick_ = false;
 		} else if(arg_name == "--server") {
 			tbs_uri_ = uri::uri::parse(arg_value);
+		} else if(arg_name == "--user") {
+			username_ = arg_value;
+		} else if(arg_name == "--pass") {
+			password_ = arg_value;
 		} else if(s == "--relay") {
 			relay_through_server_ = true;
 		} else if(s == "--failing-tests") {

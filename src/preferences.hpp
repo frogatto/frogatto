@@ -139,6 +139,8 @@ void set_bequ( bool value );
 	void save_preferences();
 
 	uri::uri get_tbs_uri();
+	std::string get_username();
+	std::string get_password();
 
 	class editor_screen_size_scope {
 		int width_, height_;

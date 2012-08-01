@@ -103,6 +103,10 @@ void print_help(const std::string& argv0)
 "                                 the network\n" <<
 "      --server=URL             sets the server to use for the TBS client based\n"
 "                                 on the given url\n" <<
+"      --user=USERNAME          sets the username to use as part of the TBS\n"
+"                                 server and module system\n" <<
+"      --pass=PASSWORD          sets the password to use as part of the TBS\n"
+"                                 server and module system\n" <<
 "      --[no-]sound             enables/disables sound and music support\n" <<
 "      --widescreen             sets widescreen mode, increasing the game view\n" <<
 "                                 area for wide screen displays\n" <<

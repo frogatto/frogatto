@@ -46,6 +46,10 @@ variant get_constant(const std::string& id)
 		return variant(preferences::get_tbs_uri().host());
 	} else if(id == "TBS_SERVER_PORT") {
 		return variant(atoi(preferences::get_tbs_uri().port().c_str()));
+	} else if(id == "USERNAME") {
+		return variant(preferences::get_username());
+	} else if(id == "PASSWORD") {
+		return variant(preferences::get_password());
 	} else if(id == "UP_KEY") {
 		return variant(gui::get_key_name(controls::get_sdlkey(controls::CONTROL_UP)));
 	} else if(id == "DOWN_KEY") {
