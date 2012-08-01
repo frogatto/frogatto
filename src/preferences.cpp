@@ -104,11 +104,15 @@ void WindowsPrefs::CleanUp()
 WindowsPrefs winPrefs;
 #endif // _WINDOWS
 
-
 namespace preferences {
 	const std::string& version() {
 		static const std::string Version = "1.2";
 		return Version;
+	}
+
+	const variant& version_decimal() {
+		static const variant versiond = variant(decimal::from_string(version()));
+		return versiond;
 	}
 
 	namespace {

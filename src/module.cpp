@@ -6,6 +6,7 @@
 #include "json_parser.hpp"
 #include "md5.hpp"
 #include "module.hpp"
+#include "preferences.hpp"
 #include "unit_test.hpp"
 
 namespace module {
@@ -179,6 +180,10 @@ void load(const std::string& mod_file_name, bool initial)
 	variant v = json::parse_from_file(fname);
 
 	if(v.is_map()) {
+		ASSERT_LOG(v["min_engine_version"].is_null() == false, "A min_engine_version field in the module.cfg file must be specified.");
+		ASSERT_LOG(v["min_engine_version"] <= preferences::version_decimal(), "The engine version being used (" << preferences::version_decimal()
+			<< ") to run the module is older than required by the module (" << v["min_engine_version"] << ").");
+
 		if(v["name"].is_null() == false) {
 			pretty_name = v["name"].as_string();
 		} else if(v["id"].is_null() == false) {
@@ -217,6 +222,10 @@ void load_module_from_file(const std::string& modname, modules* mod_) {
 	variant v = json::parse_from_file("./modules/" + modname + "/module.cfg");
 	ASSERT_LOG(mod_ != NULL, "Invalid module pointer passed.");
 	if(v.is_map()) {
+		ASSERT_LOG(v["min_engine_version"].is_null() == false, "A min_engine_version field in the module.cfg file must be specified.");
+		ASSERT_LOG(v["min_engine_version"] <= preferences::version_decimal(), "The engine version being used (" << preferences::version_decimal()
+			<< ") to run the module is older than required by the module (" << v["min_engine_version"] << ").");
+
 		if(v["id"].is_null() == false) {
 			mod_->name_= v["id"].as_string();
 		}

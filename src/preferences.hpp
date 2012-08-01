@@ -21,6 +21,7 @@ std::string GetAppDataPath();
 namespace preferences {
 
 	const std::string& version();
+	const variant& version_decimal();
 	int get_unique_user_id();
 
 	bool parse_arg(const char* arg);
