@@ -9,6 +9,7 @@
 #include "formula.hpp"
 #include "json_tokenizer.hpp"
 #include "json_parser.hpp"
+#include "module.hpp"
 #include "string_utils.hpp"
 #include "unit_test.hpp"
 #include "variant_callable.hpp"
@@ -310,7 +311,7 @@ void process_file(const std::string& fname, std::map<std::string,std::string>& f
 		return;
 	}
 
-	variant original = json::parse(sys::read_file(fname), JSON_NO_PREPROCESSOR);
+	variant original = json::parse(sys::read_file(module::map_file(fname)), JSON_NO_PREPROCESSOR);
 	variant v = original;
 
 	variant obj = variant_callable::create(&v);
@@ -326,7 +327,7 @@ void process_file(const std::string& fname, std::map<std::string,std::string>& f
 	}
 
 	if(original != v) {
-		std::string contents = sys::read_file(fname);
+		std::string contents = sys::read_file(module::map_file(fname));
 		std::string new_contents = modify_variant_text(contents, original, v, 1, 1, "");
 		try {
 			json::parse(new_contents, JSON_NO_PREPROCESSOR);
@@ -342,7 +343,7 @@ void process_file(const std::string& fname, std::map<std::string,std::string>& f
 void process_dir(const std::string& dir, std::map<std::string, std::string>& file_mappings, std::vector<std::string>& error_files)
 {
 	std::vector<std::string> subdirs, files;
-	sys::get_files_in_dir(dir, &files, &subdirs, sys::ENTIRE_FILE_PATH);
+	module::get_files_in_dir(dir, &files, &subdirs, sys::ENTIRE_FILE_PATH);
 	foreach(const std::string& d, subdirs) {
 		process_dir(d, file_mappings, error_files);
 	}
