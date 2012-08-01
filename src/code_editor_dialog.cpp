@@ -12,6 +12,7 @@
 #include "custom_object_type.hpp"
 #include "drag_widget.hpp"
 #include "filesystem.hpp"
+#include "font.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "formula_function_registry.hpp"
@@ -27,6 +28,7 @@
 #include "text_editor_widget.hpp"
 #include "tile_map.hpp"
 #include "tileset_editor_dialog.hpp"
+#include "unit_test.hpp"
 
 std::set<level*>& get_all_levels_set();
 
@@ -749,5 +751,36 @@ void code_editor_dialog::select_suggestion(int index)
 	}
 }
 
+COMMAND_LINE_UTILITY(codeedit)
+{
+	SDL_Init(SDL_INIT_VIDEO);
+	SDL_SetVideoMode(600, 600, 0, SDL_OPENGL|SDL_RESIZABLE);
+	glShadeModel(GL_SMOOTH);
+	glEnable(GL_BLEND);
+	glEnable(GL_TEXTURE_2D);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	const font::manager font_manager;
+	graphics::texture::manager texture_manager;
+
+	variant gui_node = json::parse_from_file(module::map_file("data/gui.cfg"));
+	gui_section::init(gui_node);
+
+	framed_gui_element::init(gui_node);
+
+	code_editor_dialog d(rect(0,0,600,600));
+	std::cerr << "CREATE DIALOG\n";
+	if(args.empty() == false) {
+		d.load_file(args[0]);
+	}
+
+	d.show_modal();
+
+
+	SDL_Quit();
+}
 
 #endif // NO_EDITOR

@@ -846,12 +846,29 @@ private:
 		std::vector<variant> vars;
 		const variant items = args()[0]->evaluate(variables);
 		if(args().size() == 2) {
-			boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
-			for(size_t n = 0; n != items.num_elements(); ++n) {
-				callable->set(items[n], n);
-				const variant val = args().back()->evaluate(*callable);
-				if(val.as_bool()) {
-					vars.push_back(items[n]);
+
+			if(items.is_map()) {
+				map_formula_callable_ptr callable(new map_formula_callable(&variables));
+				std::map<variant,variant> m;
+				callable->add("context", variant(&variables));
+				foreach(const variant_pair& p, items.as_map()) {
+					callable->add("key", p.first);
+					callable->add("value", p.second);
+					const variant val = args().back()->evaluate(*callable);
+					if(val.as_bool()) {
+						m[p.first] = p.second;
+					}
+				}
+
+				return variant(&m);
+			} else {
+				boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
+				for(size_t n = 0; n != items.num_elements(); ++n) {
+					callable->set(items[n], n);
+					const variant val = args().back()->evaluate(*callable);
+					if(val.as_bool()) {
+						vars.push_back(items[n]);
+					}
 				}
 			}
 		} else {
@@ -1068,6 +1085,7 @@ private:
 		vars.reserve(items.num_elements());
 
 		if(args().size() == 2) {
+
 			if(items.is_map()) {
 				map_formula_callable_ptr callable(new map_formula_callable(&variables));
 				callable->add("context", variant(&variables));
