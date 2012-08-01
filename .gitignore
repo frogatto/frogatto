@@ -19,6 +19,7 @@ dirs.txt
 core
 core.*
 *.exe
+*.d
 
 compiled/
 
