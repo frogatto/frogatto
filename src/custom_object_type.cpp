@@ -742,11 +742,11 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 		}
 	}
 
-	variant tmp_vars = node["tmp_vars"];
+	variant tmp_vars = node["tmp"];
 	if(tmp_vars.is_null() == false) {
 		std::vector<std::string> var_str;
 		foreach(variant key, tmp_vars.get_keys().as_list()) {
-			variables_[key.as_string()] = tmp_vars[key];
+			tmp_variables_[key.as_string()] = tmp_vars[key];
 			var_str.push_back(key.as_string());
 		}
 
