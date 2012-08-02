@@ -553,43 +553,6 @@ level_runner::level_runner(boost::intrusive_ptr<level>& lvl, std::string& level_
 	pause_time_ = -global_pause_time;
 }
 
-namespace {
-
-threading::thread* reloaded_objects_thread = NULL;
-
-threading::mutex& quit_reloaded_objects_thread_mutex() {
-	static threading::mutex m;
-	return m;
-}
-
-threading::condition& quit_reloaded_objects_thread_signal() 
-{
-	static threading::condition c;
-	return c;
-}
-
-}
-
-void poll_reloaded_objects_thread() 
-{
-	while(1) {
-		threading::lock lck(quit_reloaded_objects_thread_mutex());
-		threading::condition::WAIT_TIMEOUT_RESULT res 
-			= quit_reloaded_objects_thread_signal().wait_timeout(
-				quit_reloaded_objects_thread_mutex(), 500);
-		if(res == threading::condition::THREAD_WAIT_TIMEOUT) {
-			//int start = SDL_GetTicks();
-			//custom_object_type::reload_modified_code();
-			//start = SDL_GetTicks() - start;
-			//std::cerr << "reload_modified_code() run time: " << start << std::endl;
-			custom_object_type::reload_modified_code();
-		} else {
-			// quit thread.
-			return;
-		}
-	}
-}
-
 void level_runner::start_editor()
 {
 #ifndef NO_EDITOR
@@ -613,9 +576,6 @@ void level_runner::start_editor()
 			controls::read_until(lvl_->cycle());
 		}
 	}
-	if(!reloaded_objects_thread) {
-		reloaded_objects_thread = new threading::thread(poll_reloaded_objects_thread);
-	}
 #endif
 }
 
@@ -631,12 +591,6 @@ void level_runner::close_editor()
 	paused = false;
 	controls::read_until(lvl_->cycle());
 	init_history_slider();
-	if(reloaded_objects_thread) {
-		quit_reloaded_objects_thread_signal().notify_one();
-		reloaded_objects_thread->join();
-		delete reloaded_objects_thread;
-		reloaded_objects_thread = NULL;
-	}
 }
 
 bool level_runner::play_level()
@@ -736,6 +690,8 @@ bool level_runner::play_cycle()
 		lvl_->set_as_current_level();
 
 		lvl_->mutate_value("zoom", variant(decimal(1.0/editor_->zoom())));
+
+		custom_object_type::reload_modified_code();
 
 		if(history_trails_.empty() == false && (tile_rebuild_state_id_ != level::tile_rebuild_state_id() || history_trails_state_id_ != editor_->level_state_id() || object_reloads_state_id_ != custom_object_type::num_object_reloads())) {
 			update_history_trails();

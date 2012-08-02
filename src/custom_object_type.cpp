@@ -429,9 +429,20 @@ std::vector<const_custom_object_type_ptr> custom_object_type::get_all()
 
 int custom_object_type::reload_modified_code()
 {
+	//every frame we test 1/25th of the files, thus loading all files
+	//every 25 frames.
+	static int ncall = 0;
+	ncall = (ncall+1)%25;
+
+	int npos = 0;
 	int result = 0;
 	for(object_map::iterator i = cache().begin(); i != cache().end(); ++i) {
+		if(++npos%25 != ncall) {
+			continue;
+		}
+
 		const std::string* path = get_object_path(i->first + ".cfg");
+
 		if(!path) {
 			continue;
 		}
