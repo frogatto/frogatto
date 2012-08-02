@@ -593,7 +593,6 @@ void level::finish_loading()
 			entity_ptr obj(entity::build(obj_node));
 			objects_not_in_level.push_back(obj);
 			game_logic::wml_formula_callable_read_scope::register_serialized_object(addr_id, obj);
-			fprintf(stderr, "DESERIALIZED: %x\n", addr_id);
 		}
 	}
 
