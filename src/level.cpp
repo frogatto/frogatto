@@ -2111,6 +2111,12 @@ void level::process_draw()
 
 namespace {
 bool compare_entity_num_parents(const entity_ptr& a, const entity_ptr& b) {
+	const bool a_human = a->is_human();
+	const bool b_human = b->is_human();
+	if(a_human != b_human) {
+		return a_human;
+	}
+
 	const int deptha = a->parent_depth();
 	const int depthb = b->parent_depth();
 	const bool standa = a->standing_on().get() ? true : false;
@@ -2205,13 +2211,7 @@ void level::do_processing()
 	}
 
 	foreach(const entity_ptr& c, active_chars) {
-		if(!c->destroyed() && c->is_human()) {
-			c->process(*this);
-		}
-	}
-
-	foreach(const entity_ptr& c, active_chars) {
-		if(!c->is_human() && !c->destroyed() && chars_by_label_.count(c->label())) {
+		if(!c->destroyed() && (chars_by_label_.count(c->label()) || c->is_human())) {
 			c->process(*this);
 		}
 
