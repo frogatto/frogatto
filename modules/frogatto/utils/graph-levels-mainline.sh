@@ -1,4 +1,7 @@
 #!/bin/bash
+#run using "utils/graph-levels-mainline.sh | dot -Tpng > out.png" in the root frogatto folder. Outputs to out.png to cwd.
+# any options applicable to graph-levels.pl can be passed after graph-levels-mainline.sh and will be passed along to that script
+
 perl utils/graph-levels.pl $@ > foo2.bak
 cat foo2.bak | grep -v '>' | grep -o 'N[0-9]* ' > foo.bak
 for name in `cat foo.bak`
