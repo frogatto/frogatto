@@ -2113,7 +2113,7 @@ bool compare_entity_num_parents(const entity_ptr& a, const entity_ptr& b) {
 	const bool a_human = a->is_human();
 	const bool b_human = b->is_human();
 	if(a_human != b_human) {
-		return a_human;
+		return b_human;
 	}
 
 	const int deptha = a->parent_depth();
