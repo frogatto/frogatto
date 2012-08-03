@@ -247,7 +247,7 @@ protected:
 
 	void set_parent(entity_ptr e, const std::string& pivot_point);
 
-	virtual int parent_depth(int cur_depth=0) const;
+	virtual int parent_depth(bool* has_human_parent=NULL, int cur_depth=0) const;
 
 	virtual bool editor_force_standing() const;
 

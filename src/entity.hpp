@@ -254,7 +254,7 @@ public:
 
 	virtual bool appears_at_difficulty(int difficulty) const = 0;
 
-	virtual int parent_depth(int cur_depth=0) const { return 0; }
+	virtual int parent_depth(bool* has_human_parent=NULL, int cur_depth=0) const { return 0; }
 
 	virtual bool editor_force_standing() const = 0;
 
@@ -278,7 +278,6 @@ public:
 	virtual bool use_absolute_screen_coordinates() const = 0;
 
 protected:
-
 	virtual const_solid_info_ptr calculate_solid() const = 0;
 	virtual const_solid_info_ptr calculate_platform() const = 0;
 	void calculate_solid_rect();
@@ -299,16 +298,17 @@ protected:
 
 	const std::vector<entity_ptr>& attached_objects() const { return attached_objects_; }
 
-private:
 	virtual void control(const level& lvl) = 0;
 
 	variant serialize_to_wml() const { return write(); }
 
+private:
 	std::string label_;
 
 	int x_, y_;
 
 	int prev_feet_x_, prev_feet_y_;
+	int last_move_x_, last_move_y_;
 
 	bool face_right_;
 	bool upside_down_;

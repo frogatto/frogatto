@@ -14,6 +14,7 @@ entity::entity(variant node)
   : x_(node["x"].as_int()*100),
     y_(node["y"].as_int()*100),
 	prev_feet_x_(INT_MIN), prev_feet_y_(INT_MIN),
+	last_move_x_(0), last_move_y_(0),
 	face_right_(node["face_right"].as_bool()),
 	upside_down_(node["upside_down"].as_bool(false)),
 	group_(node["group"].as_int(-1)),
@@ -30,6 +31,7 @@ entity::entity(variant node)
 
 entity::entity(int x, int y, bool face_right)
   : x_(x*100), y_(y*100), prev_feet_x_(INT_MIN), prev_feet_y_(INT_MIN),
+	last_move_x_(0), last_move_y_(0),
     face_right_(face_right), upside_down_(false), group_(-1), id_(-1),
 	solid_dimensions_(0), collide_dimensions_(0),
 	weak_solid_dimensions_(0), weak_collide_dimensions_(0),	platform_motion_x_(0), 
@@ -80,20 +82,12 @@ int entity::feet_y() const
 
 int entity::last_move_x() const
 {
-	if(prev_feet_x_ == INT_MIN) {
-		return 0;
-	}
-
-	return feet_x() - prev_feet_x_;
+	return last_move_x_;
 }
 
 int entity::last_move_y() const
 {
-	if(prev_feet_y_ == INT_MIN) {
-		return 0;
-	}
-
-	return feet_y() - prev_feet_y_;
+	return last_move_y_;
 }
 
 void entity::set_platform_motion_x(int value)
@@ -126,6 +120,8 @@ int entity::platform_motion_x() const
 
 void entity::process(level& lvl)
 {
+	last_move_x_ = feet_x() - prev_feet_x_;
+	last_move_y_ = feet_y() - prev_feet_y_;
 	prev_feet_x_ = feet_x();
 	prev_feet_y_ = feet_y();
 	prev_platform_rect_ = platform_rect_;

@@ -4211,13 +4211,16 @@ void custom_object::set_parent(entity_ptr e, const std::string& pivot_point)
 	}
 }
 
-int custom_object::parent_depth(int cur_depth) const
+int custom_object::parent_depth(bool* has_human_parent, int cur_depth) const
 {
 	if(!parent_ || cur_depth > 10) {
+		if(has_human_parent) {
+			*has_human_parent = is_human();
+		}
 		return cur_depth;
 	}
 
-	return parent_->parent_depth(cur_depth+1);
+	return parent_->parent_depth(has_human_parent, cur_depth+1);
 }
 
 bool custom_object::editor_force_standing() const
