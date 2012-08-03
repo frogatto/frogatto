@@ -1067,7 +1067,7 @@ void custom_object::process(level& lvl)
 		//standing on.
 		stand_info.traction = standing_on_->surface_traction();
 		stand_info.friction = standing_on_->surface_friction();
-	} else if(started_standing && !standing_on_) {
+	} else if(!standing_on_ && started_standing && stand_info.collide_with) {
 		//We weren't standing on something last frame, but now we suddenly
 		//are. We should fire a collide_feet event as a result.
 
@@ -1272,7 +1272,7 @@ void custom_object::process(level& lvl)
 		//y position to suit its last movement and put us on top of
 		//the platform.
 
-		effective_velocity_y -= stand_info.adjust_y*100;
+		effective_velocity_y = stand_info.adjust_y*100;
 	}
 
 	if(effective_velocity_x || effective_velocity_y) {
