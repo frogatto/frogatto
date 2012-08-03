@@ -1067,27 +1067,6 @@ void custom_object::process(level& lvl)
 		//standing on.
 		stand_info.traction = standing_on_->surface_traction();
 		stand_info.friction = standing_on_->surface_friction();
-	} else if(started_standing && !standing_on_) {
-		//We weren't standing on something last frame, but now we suddenly
-		//are. We should fire a collide_feet event as a result.
-
-		game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
-		variant v(callable);
-	
-		if(stand_info.area_id != NULL) {
-			callable->add("area", variant(*stand_info.area_id));
-		}
-
-		if(stand_info.collide_with) {
-			callable->add("collide_with", variant(stand_info.collide_with.get()));
-			if(stand_info.collide_with_area_id) {
-				callable->add("collide_with_area", variant(*stand_info.collide_with_area_id));
-			}
-
-		}
-
-		handle_event(OBJECT_EVENT_COLLIDE_FEET, callable);
-		fired_collide_feet = true;
 	}
 
 	if(y() > lvl.boundaries().y2()) {
@@ -1272,7 +1251,7 @@ void custom_object::process(level& lvl)
 		//y position to suit its last movement and put us on top of
 		//the platform.
 
-		effective_velocity_y -= stand_info.adjust_y*100;
+		effective_velocity_y -= stand_info.adjust_y*50;
 	}
 
 	if(effective_velocity_x || effective_velocity_y) {
