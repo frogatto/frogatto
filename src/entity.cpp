@@ -44,6 +44,7 @@ entity::entity(int x, int y, bool face_right)
 
 void entity::add_to_level()
 {
+	last_move_x_ = last_move_y_ = 0;
 	prev_feet_x_ = prev_feet_y_ = INT_MIN;
 	prev_platform_rect_ = rect();
 	calculate_solid_rect();
@@ -120,8 +121,10 @@ int entity::platform_motion_x() const
 
 void entity::process(level& lvl)
 {
-	last_move_x_ = feet_x() - prev_feet_x_;
-	last_move_y_ = feet_y() - prev_feet_y_;
+	if(prev_feet_x_ != INT_MIN) {
+		last_move_x_ = feet_x() - prev_feet_x_;
+		last_move_y_ = feet_y() - prev_feet_y_;
+	}
 	prev_feet_x_ = feet_x();
 	prev_feet_y_ = feet_y();
 	prev_platform_rect_ = platform_rect_;
