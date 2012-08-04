@@ -96,6 +96,7 @@ objects = \
 	md5.o \
 	message_dialog.o \
 	module.o \
+	module_web_server.o \
 	movement_script.o \
 	multi_tile_pattern.o \
 	multiplayer.o \

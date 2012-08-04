@@ -1,3 +1,5 @@
+#include <deque>
+
 #include "asserts.hpp"
 #include "base64.hpp"
 #include "compress.hpp"
@@ -7,6 +9,7 @@
 #include "md5.hpp"
 #include "module.hpp"
 #include "preferences.hpp"
+#include "stats.hpp"
 #include "unit_test.hpp"
 
 namespace module {
@@ -286,6 +289,7 @@ variant build_package(const std::string& id)
 	std::vector<char> data;
 	std::vector<std::string> files;
 	const std::string path = "modules/" + id;
+	ASSERT_LOG(sys::file_exists(path), "COULD NOT FIND PATH: " << path);
 	get_files_in_module(path, files);
 	std::map<variant, variant> file_attr;
 	foreach(const std::string& file, files) {
@@ -317,6 +321,7 @@ variant build_package(const std::string& id)
 	const std::string data_str(data.begin(), data.end());
 
 	std::map<variant, variant> data_attr;
+	data_attr[variant("id")] = variant(id);
 	data_attr[variant("version")] = module_cfg["version"];
 	data_attr[variant("manifest")] = variant(&file_attr);
 	data_attr[variant("data")] = variant(data_str);
@@ -324,9 +329,41 @@ variant build_package(const std::string& id)
 	return variant(&data_attr);
 }
 
-COMMAND_LINE_UTILITY(package)
+COMMAND_LINE_UTILITY(publish_module)
 {
-	std::cout << build_package("frogatto").write_json();
+	std::string module_id;
+	std::string server = "localhost";
+	std::string port = "23456";
+
+	std::deque<std::string> arguments(args.begin(), args.end());
+	while(!arguments.empty()) {
+		const std::string arg = arguments.front();
+		arguments.pop_front();
+		if(arg == "--server") {
+			ASSERT_LOG(arguments.empty() == false, "NEED ARGUMENT AFTER " << arg);
+			server = arguments.front();
+			arguments.pop_front();
+		} else if(arg == "-p" || arg == "--port") {
+			ASSERT_LOG(arguments.empty() == false, "NEED ARGUMENT AFTER " << arg);
+			port = arguments.front();
+			arguments.pop_front();
+		} else {
+			ASSERT_LOG(module_id.empty(), "UNRECOGNIZED ARGUMENT: " << module_id);
+			module_id = arg;
+			ASSERT_LOG(std::count_if(module_id.begin(), module_id.end(), isalnum) + std::count(module_id.begin(), module_id.end(), '_') == module_id.size(), "ILLEGAL ARGUMENT: " << module_id);
+		}
+	}
+
+	ASSERT_LOG(module_id.empty() == false, "MUST SPECIFY MODULE ID");
+
+	const variant package = build_package(module_id);
+	std::map<variant,variant> attr;
+	attr[variant("type")] = variant("upload_module");
+	attr[variant("module")] = package;
+
+	const std::string msg = variant(&attr).write_json();
+
+	http_upload(msg, "/upload", server.c_str(), port.c_str());
 }
 
 }
