@@ -281,7 +281,7 @@ void copy_to_clipboard(const std::string& text, const bool mouse)
 	} else {
 		clipboard_string = text;
 	//currently disabled due to crash bugs in X
-	//	XSetSelectionOwner(x11->dpy(), x11->XA_CLIPBOARD(), x11->window(), CurrentTime);
+		XSetSelectionOwner(x11->dpy(), x11->XA_CLIPBOARD(), x11->window(), CurrentTime);
 	}
 }
 
