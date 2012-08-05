@@ -2,20 +2,24 @@ Used Utilities for Frogatto
 
 Due to the transient nature of utilities, their intrinsic one-off nature, we lack a body of examples of code. This file aims to remedy that by collecting written utilities – even if they're not useful again in themselves, they might be useful to modify later. To use these modules, collapse the code into one line, copy, and undo. (ctrl-j, -c, and -z here)
 
-Remove all ants and moths in the forest levels. Note: broken.
+Remove all ants and moths in the forest levels.
 ./game --utility=query modules/frogatto "
 	if(is_map(doc) and doc.background in ['forest', 'forest-dark', 'forest-dark-foggy'], 
 		set(doc, filter(doc, is_map(value) and (not value.type in ['ant_black', 'ant_flying_black', 'ant_flying_glow', 'ant_flying_gold', 'no ant_flying_platform_red', 'ant_flying_red', 'ant_flying_wallcling', 'ant_gold', 'no ant_platform_red', 'ant_red', 'anthill', 'no moth_big.cfg', 'moth_black.cfg', 'moth_brown.cfg', 'no moth_small.cfg']))),
 	)"
 
-Remove all ants in the cave levels. Note: broken.
+Remove all ants in the cave levels.
 ./game --utility=query modules/frogatto "
-	if(is_map(doc) and doc.background = 'cave' and not(doc.id in ['arcade-coin-race-2.cfg', 'arcade-coin-race-7.cfg', 'rock-a-fort-cave.cfg', 'crevice-village-cave.cfg', 'crevice-village-central-side-cave.cfg']), 
-		set(doc, filter(doc, is_map(value) and (not value.type in ['ant_black', 'ant_flying_black', 'ant_flying_glow', 'ant_flying_gold', 'no ant_flying_platform_red', 'ant_flying_red', 'ant_flying_wallcling', 'ant_gold', 'no ant_platform_red', 'ant_red', 'anthill']))),
+	if(is_map(doc) and doc.background in ['cave'] and not(doc.id in ['arcade-coin-race-2.cfg', 'arcade-coin-race-7.cfg', 'rock-a-fort-cave.cfg', 'crevice-village-cave.cfg', 'crevice-village-central-side-cave.cfg']), 
+		[set(doc.character, filter(doc.character, not value in ants)),
+		debug('Removed \${size(ants)} ants from \${doc.id}.')]
+		where ants = filter(doc.character, is_map(value) and value.type in ['ant_black', 'ant_flying_black', 'ant_flying_glow', 'ant_flying_gold', 'no ant_flying_platform_red', 'ant_flying_red', 'ant_flying_wallcling', 'ant_gold', 'no ant_platform_red', 'ant_red', 'anthill'])
 	)"
 
-List all docs which have the cave background.
+Remove all ants and moths in the forest levels.
 ./game --utility=query modules/frogatto "
-	if(is_map(doc) and doc.background = 'cave', 
-		debug(doc.id)
+	if(is_map(doc) and doc.background in ['forest', 'forest-dark', 'forest-dark-foggy'] and not(doc.id in []), 
+		[set(doc.character, filter(doc.character, not value in ants)),
+		debug('Removed \${size(ants)} ants/moths from \${doc.id}.')]
+		where ants = filter(doc.character, is_map(value) and value.type in ['ant_black', 'ant_flying_black', 'ant_flying_glow', 'ant_flying_gold', 'no ant_flying_platform_red', 'ant_flying_red', 'ant_flying_wallcling', 'ant_gold', 'no ant_platform_red', 'ant_red', 'anthill', 'no moth_big.cfg', 'moth_black.cfg', 'moth_brown.cfg', 'no moth_small.cfg'])
 	)"
