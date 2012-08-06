@@ -75,6 +75,7 @@ objects = \
 	group_property_editor_dialog.o \
 	gui_formula_functions.o \
 	gui_section.o \
+	http_client.o \
 	i18n.o \
 	image_widget.o \
 	input.o \

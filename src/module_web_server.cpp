@@ -176,6 +176,7 @@ void module_web_server::handle_message(socket_ptr socket, receive_buf_ptr recv_b
 
 		variant doc;
 		std::map<std::string, std::string> env = parse_env(msg);
+		std::cerr << "CONTENT LENGTH: (" << env["content-length"] << ")\n";
 		const int content_length = atoi(env["content-length"].c_str());
 
 		const char* payload = NULL;
@@ -186,7 +187,7 @@ void module_web_server::handle_message(socket_ptr socket, receive_buf_ptr recv_b
 			payload = payload1;
 		}
 
-		if(payload2 && payload2 < payload1) {
+		if(payload2 && (!payload1 || payload2 < payload1)) {
 			payload2 += 4;
 			payload = payload2;
 		}
@@ -263,8 +264,8 @@ void module_web_server::disconnect(socket_ptr socket)
 
 void module_web_server::send_msg(socket_ptr socket, const std::string& type, const std::string& msg, const std::string& header_parms)
 {
-	char buf[4096];
-	sprintf(buf, "HTTP/1.1 200 OK\nDate: Tue, 20 Sep 2011 21:00:00 GMT\nConnection: close\nServer: Wizard/1.0\nAccept-Ranges: none\nAccess-Control-Allow-Origin: *\nContent-Type: %s\nLast-Modified: Tue, 20 Sep 2011 10:00:00 GMT\n%s\n", type.c_str(), header_parms.c_str());
+	char buf[4096*4];
+	sprintf(buf, "HTTP/1.1 200 OK\nDate: Tue, 20 Sep 2011 21:00:00 GMT\nConnection: close\nServer: Wizard/1.0\nAccept-Ranges: none\nAccess-Control-Allow-Origin: *\nContent-Type: %s\nContent-Length: %d\nLast-Modified: Tue, 20 Sep 2011 10:00:00 GMT%s\n\n", type.c_str(), msg.size(), (header_parms.empty() ? "" : ("\n" + header_parms).c_str()));
 
 	boost::shared_ptr<std::string> str(new std::string(buf));
 	*str += msg;

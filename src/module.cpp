@@ -1,15 +1,17 @@
 #include <deque>
 
+#include <boost/bind.hpp>
+
 #include "asserts.hpp"
 #include "base64.hpp"
 #include "compress.hpp"
 #include "filesystem.hpp"
 #include "foreach.hpp"
+#include "http_client.hpp"
 #include "json_parser.hpp"
 #include "md5.hpp"
 #include "module.hpp"
 #include "preferences.hpp"
-#include "stats.hpp"
 #include "unit_test.hpp"
 
 namespace module {
@@ -329,6 +331,26 @@ variant build_package(const std::string& id)
 	return variant(&data_attr);
 }
 
+namespace {
+void finish_upload(std::string response, bool* flag)
+{
+	std::cerr << "UPLOAD COMPLETE: " << response << "\n";
+	*flag = true;
+}
+
+void error_upload(std::string response, bool* flag)
+{
+	std::cerr << "UPLOAD ERROR: " << response << "\n";
+	*flag = true;
+}
+
+void upload_progress(int sent, int total, bool uploaded)
+{
+	std::cerr << "SENT " << sent << "/" << total << "\n";
+}
+
+}
+
 COMMAND_LINE_UTILITY(publish_module)
 {
 	std::string module_id;
@@ -363,7 +385,17 @@ COMMAND_LINE_UTILITY(publish_module)
 
 	const std::string msg = variant(&attr).write_json();
 
-	http_upload(msg, "/upload", server.c_str(), port.c_str());
+	bool done = false;
+
+	http_client client(server, port);
+	client.send_request("POST /module_upload", msg, 
+	                    boost::bind(finish_upload, _1, &done),
+	                    boost::bind(error_upload, _1, &done),
+	                    boost::bind(upload_progress, _1, _2, _3));
+
+	while(!done) {
+		client.process();
+	}
 }
 
 }
