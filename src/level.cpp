@@ -914,6 +914,11 @@ void level::complete_tiles_refresh()
 	}
 	prepare_tiles_for_drawing();
 	std::cerr << "done..." << (SDL_GetTicks() - start) << "\n";
+
+	const std::vector<entity_ptr> chars = chars_;
+	foreach(const entity_ptr& e, chars) {
+		e->handle_event("level_tiles_refreshed");
+	}
 }
 
 int level::variations(int xtile, int ytile) const
