@@ -10,50 +10,28 @@
 #include <vector>
 
 #include "formula_callable.hpp"
+#include "http_client.hpp"
 
 namespace tbs {
 using boost::asio::ip::tcp;
 
-class client : public game_logic::formula_callable
+class client : public http_client
 {
 public:
-	client(const std::string& host, const std::string& port, int session=-1);
-	void send_request(const std::string& request, game_logic::map_formula_callable_ptr callable, boost::function<void(std::string)> handler);
-	void process();
+	client(const std::string& host, const std::string& port, int session=-1)
+		: http_client(host, port, session)
+	{}
+	void send_request(const std::string& request, 
+		game_logic::map_formula_callable_ptr callable, 
+		boost::function<void(std::string)> handler);
 private:
-	
+	boost::function<void(std::string)> handler_;
+	game_logic::map_formula_callable_ptr callable_;
+
+	void recv_handler(const std::string& msg);
+	void error_handler(const std::string& err);
 	variant get_value(const std::string& key) const;
-
-	int session_id_;
-
-	boost::asio::io_service io_service_;
-
-	struct Connection {
-		explicit Connection(boost::asio::io_service& serv) : socket(serv), expected_len(-1)
-		{}
-		tcp::socket socket;
-		std::string request, response;
-		boost::function<void(std::string)> handler;
-		game_logic::map_formula_callable_ptr callable;
-
-		boost::array<char, 1024> buf;
-		
-		int expected_len;
-	};
-
-	typedef boost::shared_ptr<Connection> connection_ptr;
-
-	void handle_resolve(const boost::system::error_code& err, tcp::resolver::iterator endpoint_iterator, connection_ptr conn);
-	void handle_connect(const boost::system::error_code& error, connection_ptr conn, tcp::resolver::iterator resolve_itor);
-	void handle_send(connection_ptr conn, const boost::system::error_code& e, size_t nbytes);
-	void handle_receive(connection_ptr conn, const boost::system::error_code& e, size_t nbytes);
-
-	tcp::resolver resolver_;
-	tcp::resolver::query resolver_query_;
-	tcp::resolver::iterator endpoint_iterator_;
-	std::string host_;
 };
-
 
 }
 
