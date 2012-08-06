@@ -13,6 +13,7 @@
 #include "module.hpp"
 #include "preferences.hpp"
 #include "unit_test.hpp"
+#include "uri.hpp"
 
 namespace module {
 
@@ -433,12 +434,10 @@ COMMAND_LINE_UTILITY(publish_module_stats)
 		arguments.pop_front();
 		if(arg == "--server") {
 			ASSERT_LOG(arguments.empty() == false, "NEED ARGUMENT AFTER " << arg);
-			server = arguments.front();
+			uri::uri url = uri::uri::parse(arguments.front());
 			arguments.pop_front();
-		} else if(arg == "-p" || arg == "--port") {
-			ASSERT_LOG(arguments.empty() == false, "NEED ARGUMENT AFTER " << arg);
-			port = arguments.front();
-			arguments.pop_front();
+			server = url.host();
+			port = url.port();
 		} else {
 			ASSERT_LOG(module_id.empty(), "UNRECOGNIZED ARGUMENT: " << module_id);
 			module_id = arg;
