@@ -5,6 +5,7 @@
 
 #include <sys/time.h>
 
+#include "asserts.hpp"
 #include "filesystem.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
@@ -181,7 +182,7 @@ void web_server::handle_message(socket_ptr socket, receive_buf_ptr recv_buf)
 			payload = payload1;
 		}
 
-		if(payload2 && payload2 < payload1) {
+		if(payload2 && (!payload1 || payload2 < payload1)) {
 			payload2 += 4;
 			payload = payload2;
 		}
@@ -207,14 +208,30 @@ void web_server::handle_message(socket_ptr socket, receive_buf_ptr recv_buf)
 		}
 
 		if(!doc.is_null()) {
-			disconnect(socket);
 
 			static const variant TypeVariant("type");
-			if(doc[TypeVariant].as_string() == "stats") {
+			const std::string& type = doc[TypeVariant].as_string();
+			if(type == "stats") {
 				process_stats(doc);
-			}
+			} else if(type == "upload_table_definitions") {
+				//TODO: add authentication to get info about the user
+				//and make sure they have permission to update this module.
+				const std::string& module = doc[variant("module")].as_string();
+				init_tables_for_module(module, doc[variant("definition")]);
 
-			return;
+				try {
+					send_msg(socket, "text/json", "{ \"status\": \"ok\" }", "");
+				} catch(validation_failure_exception& e) {
+					std::map<variant,variant> msg;
+					msg[variant("status")] = variant("error");
+					msg[variant("message")] = variant(e.msg);
+					send_msg(socket, "text/json", variant(&msg).write_json(), "");
+				}
+
+				return;
+			}
+			disconnect(socket);
+
 		}
 	} else if(std::equal(msg.begin(), msg.begin()+4, "GET ")) {
 		std::cerr << "MESSAGE: (((" << msg << ")))\n";
@@ -246,7 +263,7 @@ void web_server::handle_message(socket_ptr socket, receive_buf_ptr recv_buf)
 			}
 		}
 
-		variant value = get_stats(args["version"], args["level"]);
+		variant value = get_stats(args["version"], args["module"], args["module_version"], args["level"]);
 		send_msg(socket, "text/plain", value.write_json(true), "");
 		return;
 	}
@@ -271,8 +288,9 @@ void web_server::disconnect(socket_ptr socket)
 
 void web_server::send_msg(socket_ptr socket, const std::string& type, const std::string& msg, const std::string& header_parms)
 {
-	char buf[4096];
-	sprintf(buf, "HTTP/1.1 200 OK\nDate: Tue, 20 Sep 2011 21:00:00 GMT\nConnection: close\nServer: Wizard/1.0\nAccept-Ranges: none\nAccess-Control-Allow-Origin: *\nContent-Type: %s\nLast-Modified: Tue, 20 Sep 2011 10:00:00 GMT\n%s\n", type.c_str(), header_parms.c_str());
+	char buf[4096*4];
+	sprintf(buf, "HTTP/1.1 200 OK\nDate: Tue, 20 Sep 2011 21:00:00 GMT\nConnection: close\nServer: Wizard/1.0\nAccept-Ranges: none\nAccess-Control-Allow-Origin: *\nContent-Type: %s\nContent-Length: %d\nLast-Modified: Tue, 20 Sep 2011 10:00:00 GMT%s\n\n", type.c_str(), msg.size(), (header_parms.empty() ? "" : ("\n" + header_parms).c_str()));
+
 
 	boost::shared_ptr<std::string> str(new std::string(buf));
 	*str += msg;

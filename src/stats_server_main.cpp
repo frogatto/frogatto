@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+#include "asserts.hpp"
 #include "filesystem.hpp"
 #include "json_parser.hpp"
 #include "stats_server.hpp"
@@ -55,6 +56,10 @@ COMMAND_LINE_UTILITY(stats_server)
 		read_stats(json::parse_from_file(fname));
 		std::cerr << "FINISHED READING STATS FROM " << fname << "\n";
 	}
+
+	//Make it so asserts don't make the server die, they throw an
+	//exception instead.
+	const assert_recover_scope recovery_scope;
 
 	boost::asio::io_service io_service;
 	web_server ws(io_service, port);

@@ -11,6 +11,7 @@
 #include "filesystem.hpp"
 #include "formatter.hpp"
 #include "level.hpp"
+#include "module.hpp"
 #include "preferences.hpp"
 #include "playable_custom_object.hpp"
 #include "stats.hpp"
@@ -97,6 +98,8 @@ void send_stats(std::map<std::string, std::vector<variant> >& queue) {
 	std::map<variant, variant> attr;
 	attr[variant("type")] = variant("stats");
 	attr[variant("version")] = variant(preferences::version());
+	attr[variant("module")] = variant(module::get_module_name());
+	attr[variant("module_version")] = variant(module::get_module_version());
 	attr[variant("user_id")] = variant(preferences::get_unique_user_id());
 
 	if(checksum::is_verified()) {

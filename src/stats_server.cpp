@@ -1,6 +1,7 @@
 #include <map>
 #include <vector>
 
+#include "asserts.hpp"
 #include "foreach.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
@@ -81,12 +82,14 @@ variant table_info::calculate_value(const variant& msg, const variant& current_v
 	}
 }
 
+//the tables that are used for a single message type.
 struct msg_type_info {
 	std::string name;
 	std::vector<table_info> tables;
 };
 
-std::map<std::string, msg_type_info> message_type_index;
+// module id -> message id -> tables for that message.
+std::map<std::string, std::map<std::string, msg_type_info> > message_type_index;
 
 typedef std::map<variant, variant> table;
 
@@ -193,14 +196,18 @@ variant write_version_data(const version_data& d)
 	return variant(&result);
 }
 
-//keyed by version.
-std::map<std::string, version_data> data_table;
+//keyed by version, module, module version.
+std::map<std::vector<std::string>, version_data> data_table;
 
 variant write_data_table()
 {
 	std::map<variant, variant> result;
-	for(std::map<std::string, version_data>::const_iterator i = data_table.begin(); i != data_table.end(); ++i) {
-		result[variant(i->first)] = write_version_data(i->second);
+	for(std::map<std::vector<std::string>, version_data>::const_iterator i = data_table.begin(); i != data_table.end(); ++i) {
+		std::vector<variant> k;
+		foreach(const std::string& s, i->first) {
+			k.push_back(variant(s));
+		}
+		result[variant(&k)] = write_version_data(i->second);
 	}
 
 	return variant(&result);
@@ -211,7 +218,7 @@ void read_data_table(variant v)
 	data_table.clear();
 	variant keys = v.get_keys();
 	for(int n = 0; n != keys.num_elements(); ++n) {
-		data_table[keys[n].as_string()] = read_version_data(v[keys[n]]);
+		data_table[keys[n].as_list_string()] = read_version_data(v[keys[n]]);
 	}
 }
 
@@ -219,15 +226,47 @@ void read_data_table(variant v)
 
 void init_tables(const variant& doc)
 {
+	foreach(const variant module, doc.get_keys().as_list()) {
+		init_tables_for_module(module.as_string(), doc[module]);
+	}
+}
+
+namespace {
+std::map<variant,variant> module_definitions;
+std::map<std::string,std::string> module_errors;
+}
+
+void init_tables_for_module(const std::string& module, const variant& doc)
+{
 	for(int n = 0; n != doc.num_elements(); ++n) {
 		variant v = doc[n];
-		msg_type_info& info = message_type_index[v["name"].as_string()];
+		msg_type_info& info = message_type_index[module][v["name"].as_string()];
 		info.name = v["name"].as_string();
 		variant tables_v = v["tables"];
 		for(int m = 0; m != tables_v.num_elements(); ++m) {
 			info.tables.push_back(table_info(tables_v[m]));
 		}
 	}
+
+	module_definitions[variant(module)] = doc;
+}
+
+variant get_tables_definition()
+{
+	std::map<variant,variant> clone = module_definitions;
+	return variant(&clone);
+}
+
+std::map<std::string, std::string> get_stats_errors()
+{
+	std::map<std::string, std::string> m = module_errors;
+	for(std::map<variant,variant>::const_iterator i = module_definitions.begin(); i != module_definitions.end(); ++i) {
+		if(m.count(i->first.as_string()) == 0) {
+			m[i->first.as_string()] = "";
+		}
+	}
+
+	return m;
 }
 
 void read_stats(const variant& doc)
@@ -247,22 +286,41 @@ void process_stats(const variant& doc)
 		return;
 	}
 
+	variant module = doc["module"];
+	if(!module.is_string()) {
+		return;
+	}
+
+	variant module_version = doc["module_version"];
+	if(!module_version.is_string()) {
+		return;
+	}
+
 	const std::string& version_str = version.as_string();
+	const std::string& module_str = module.as_string();
+	const std::string& module_version_str = module_version.as_string();
 	const int user_id = doc["user_id"].as_int();
 
 	game_logic::map_formula_callable* context_callable = new game_logic::map_formula_callable;
 	context_callable->add("user_id", variant(user_id));
 	variant context_holder(context_callable);
 
+	std::vector<std::string> data_table_key(3);
+	data_table_key[0] = version_str;
+	data_table_key[1] = module_str;
+	data_table_key[2] = module_version_str;
+
 	version_data* data_store[2];
-	data_store[0] = &data_table[version_str];
-	data_store[1] = &data_table[""];
+	data_store[0] = &data_table[data_table_key];
+	data_table_key[0] = "";
+	data_store[1] = &data_table[data_table_key];
 
 	variant levels = doc["levels"];	
 	if(!levels.is_list()) {
 		return;
 	}
 
+	try {
 	for(int n = 0; n != levels.num_elements(); ++n) {
 		variant lvl = levels[n];
 		variant level_id = lvl["level"];
@@ -283,7 +341,7 @@ void process_stats(const variant& doc)
 			}
 			
 			const std::string& type_str = type.as_string();
-			const msg_type_info& msg_info = message_type_index[type_str];
+			const msg_type_info& msg_info = message_type_index[module_str][type_str];
 
 			table_set* all_ts[4];
 
@@ -309,11 +367,20 @@ void process_stats(const variant& doc)
 			}
 		}
 	}
+	} catch(validation_failure_exception& e) {
+		message_type_index.erase(module_str);
+		std::cerr << "ERROR IN MODULE PROCESSING FOR " << module_str << "\n";
+		module_errors[module_str] = e.msg;
+	}
 }
 
-variant get_stats(const std::string& version, const std::string& lvl)
+variant get_stats(const std::string& version, const std::string& module, const std::string& module_version, const std::string& lvl)
 {
-	version_data& ver_data = data_table[version];
+	std::vector<std::string> key(3);
+	key[0] = version;
+	key[1] = module;
+	key[2] = module_version;
+	version_data& ver_data = data_table[key];
 	type_data_map& data = lvl.empty() ? ver_data.global_data : ver_data.level_to_data[lvl];
 	return output_type_data_map(data);
 }

@@ -14,6 +14,7 @@ struct modules {
 	std::string pretty_name_;
 	std::string abbreviation_;
 	std::string base_path_;
+	std::vector<int> version_;
 	std::vector<std::string> included_modules_;
 };
 
@@ -23,6 +24,7 @@ typedef std::map<std::string, std::string>::const_iterator module_file_map_itera
 
 const std::string get_module_name();
 const std::string get_module_pretty_name();
+std::string get_module_version();
 std::string map_file(const std::string& fname);
 void get_unique_filenames_under_dir(const std::string& dir,
                                     std::map<std::string, std::string>* file_map);

@@ -35,6 +35,25 @@ const std::string get_module_pretty_name() {
 	return loaded_paths().empty() ? "Frogatto" :  loaded_paths()[0].pretty_name_;
 }
 
+std::string get_module_version() {
+	if(!loaded_paths().empty()) {
+		const std::vector<int>& v = loaded_paths()[0].version_;
+		if(v.empty()) {
+			return "";
+		}
+
+		std::ostringstream s;
+		s << v[0];
+		for(int n = 1; n < v.size(); ++n) {
+			s << "." << v[n];
+		}
+
+		return s.str();
+	} else {
+		return "";
+	}
+}
+
 std::string map_file(const std::string& fname)
 {
 	foreach(const modules& p, loaded_paths()) {
@@ -246,6 +265,10 @@ void load_module_from_file(const std::string& modname, modules* mod_) {
 			foreach(const std::string& s, v["dependencies"].as_list_string()) {
 				mod_->included_modules_.push_back(s);
 			}
+		}
+
+		if(v["version"].is_list()) {
+			mod_->version_ = v["version"].as_list_int();
 		}
 	}
 }
