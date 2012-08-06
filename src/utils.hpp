@@ -13,12 +13,22 @@
 #ifndef UTILS_HPP_INCLUDED
 #define UTILS_HPP_INCLUDED
 
+#ifdef _WINDOWS
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <winsock2.h>
+#endif
+
 #include <algorithm>
+#include <string>
 
-
+std::string get_http_datetime();
 int truncate_to_char(int value);
 void write_autosave();
 void toggle_fullscreen();
 
+#ifdef _WINDOWS
+int gettimeofday(struct timeval *tv, struct timezone2 *tz);
+#endif
 
 #endif
