@@ -49,7 +49,11 @@ COMMAND_LINE_UTILITY(stats_server)
 		}
 	}
 
-	init_tables(json::parse_from_file("data/stats-server.json"));
+	if(sys::file_exists("stats-definitions.json")) {
+		init_tables(json::parse_from_file("stats-definitions.json"));
+	} else { 
+		init_tables(json::parse_from_file("data/stats-server.json"));
+	}
 
 	if(sys::file_exists(fname)) {
 		std::cerr << "READING STATS FROM " << fname << "\n";

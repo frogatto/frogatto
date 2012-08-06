@@ -221,6 +221,7 @@ void web_server::handle_message(socket_ptr socket, receive_buf_ptr recv_buf)
 
 				try {
 					send_msg(socket, "text/json", "{ \"status\": \"ok\" }", "");
+					sys::write_file("stats-definitions.json", get_tables_definition().write_json());
 				} catch(validation_failure_exception& e) {
 					std::map<variant,variant> msg;
 					msg[variant("status")] = variant("error");
@@ -263,8 +264,24 @@ void web_server::handle_message(socket_ptr socket, receive_buf_ptr recv_buf)
 			}
 		}
 
+		if(args["type"] == "status") {
+			std::map<variant,variant> m;
+			const std::map<std::string,std::string> errors = get_stats_errors();
+			for(std::map<std::string,std::string>::const_iterator i = errors.begin(); i != errors.end(); ++i) {
+				std::string msg = i->second;
+				if(msg.empty()) {
+					msg = "OK";
+				}
+
+				m[variant(i->first)] = variant(msg);
+			}
+
+			send_msg(socket, "text/json", variant(&m).write_json(), "");
+			return;
+		}
+
 		variant value = get_stats(args["version"], args["module"], args["module_version"], args["level"]);
-		send_msg(socket, "text/plain", value.write_json(true), "");
+		send_msg(socket, "text/json", value.write_json(), "");
 		return;
 	}
 

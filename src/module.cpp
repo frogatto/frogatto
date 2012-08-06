@@ -421,4 +421,56 @@ COMMAND_LINE_UTILITY(publish_module)
 	}
 }
 
+COMMAND_LINE_UTILITY(publish_module_stats)
+{
+	std::string module_id;
+	std::string server = "localhost";
+	std::string port = "23456";
+
+	std::deque<std::string> arguments(args.begin(), args.end());
+	while(!arguments.empty()) {
+		const std::string arg = arguments.front();
+		arguments.pop_front();
+		if(arg == "--server") {
+			ASSERT_LOG(arguments.empty() == false, "NEED ARGUMENT AFTER " << arg);
+			server = arguments.front();
+			arguments.pop_front();
+		} else if(arg == "-p" || arg == "--port") {
+			ASSERT_LOG(arguments.empty() == false, "NEED ARGUMENT AFTER " << arg);
+			port = arguments.front();
+			arguments.pop_front();
+		} else {
+			ASSERT_LOG(module_id.empty(), "UNRECOGNIZED ARGUMENT: " << module_id);
+			module_id = arg;
+			ASSERT_LOG(std::count_if(module_id.begin(), module_id.end(), isalnum) + std::count(module_id.begin(), module_id.end(), '_') == module_id.size(), "ILLEGAL ARGUMENT: " << module_id);
+		}
+	}
+
+	ASSERT_LOG(module_id.empty() == false, "MUST SPECIFY MODULE ID");
+
+	const std::string path = "modules/" + module_id + "/stats-server.json";
+	ASSERT_LOG(sys::file_exists(path), "DID NOT FIND STATS FILE DEFINITION AT " << path);
+
+	const variant doc = json::parse(sys::read_file(path));
+
+	std::map<variant,variant> attr;
+	attr[variant("type")] = variant("upload_table_definitions");
+	attr[variant("module")] = variant(module_id);
+	attr[variant("definition")] = doc;
+
+	const std::string msg = variant(&attr).write_json();
+
+	bool done = false;
+
+	http_client client(server, port);
+	client.send_request("POST /stats", msg, 
+	                    boost::bind(finish_upload, _1, &done),
+	                    boost::bind(error_upload, _1, &done),
+	                    boost::bind(upload_progress, _1, _2, _3));
+
+	while(!done) {
+		client.process();
+	}
+}
+
 }
