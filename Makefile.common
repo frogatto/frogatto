@@ -76,6 +76,7 @@ objects = \
 	gui_formula_functions.o \
 	gui_section.o \
 	http_client.o \
+    http_server.o \
 	i18n.o \
 	image_widget.o \
 	input.o \

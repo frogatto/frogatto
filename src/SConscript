@@ -74,6 +74,7 @@ group_property_editor_dialog.cpp
 gui_formula_functions.cpp
 gui_section.cpp
 http_client.cpp
+http_server.cpp
 i18n.cpp
 image_widget.cpp
 input.cpp
