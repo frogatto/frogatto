@@ -355,8 +355,10 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 	GLfloat v2 = bg.texture.translate_coord_y(double(bg.y2)/double(bg.texture.height()));
 
 	if(y1 < area.y()) {
-		v1 += (GLfloat(area.y() - y1)/GLfloat(y2 - y1))*(v2 - v1);
-		y1 = area.y();
+		//Making y1 == y2 is problematic, so don't allow it.
+		const int target_y = area.y() == y2 ? area.y()-1 : area.y();
+		v1 += (GLfloat(target_y - y1)/GLfloat(y2 - y1))*(v2 - v1);
+		y1 = target_y;
 	}
 
 	if(bg.tile_upwards && y1 > area.y()) {
