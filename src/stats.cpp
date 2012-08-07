@@ -6,10 +6,12 @@
 
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
+#include <boost/bind.hpp>
 
 #include "checksum.hpp"
 #include "filesystem.hpp"
 #include "formatter.hpp"
+#include "http_client.hpp"
 #include "level.hpp"
 #include "module.hpp"
 #include "preferences.hpp"
@@ -21,54 +23,6 @@ std::string get_stats_dir() {
 	return sys::get_dir(std::string(preferences::user_data_path()) + "stats/") + "/";
 }
 
-}
-
-void http_upload(const std::string& payload, const std::string& script,
-                 const char* hostname, const char* port) {
-	using boost::asio::ip::tcp;
-
-	std::ostringstream s;
-	std::string header =
-	    "POST /cgi-bin/" + script + " HTTP/1.1\n"
-	    "Host: www.wesnoth.org\n"
-	    "User-Agent: Frogatto 0.1\n"
-	    "Content-Type: text/plain\n";
-	s << header << "Content-length: " << payload.size() << "\n\n" << payload;
-	std::string msg = s.str();
-
-	boost::asio::io_service io_service;
-	tcp::resolver resolver(io_service);
-	if(hostname == NULL) {
-		hostname = "theargentlark.com";
-	}
-
-	if(port == NULL) {
-		port = "5000";
-	}
-	tcp::resolver::query query(hostname, port);
-
-	tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
-	tcp::resolver::iterator end;
-
-	tcp::socket socket(io_service);
-	boost::system::error_code error = boost::asio::error::host_not_found;
-	while(error && endpoint_iterator != end) {
-		socket.close();
-		socket.connect(*endpoint_iterator++, error);
-	}
-
-	if(error) {
-		fprintf(stderr, "STATS ERROR: Can't resolve stats upload\n");
-		return;
-	}
-
-	size_t nbytes_written = boost::asio::write(socket, boost::asio::buffer(msg));
-	if(nbytes_written != msg.size()) {
-		fprintf(stderr, "STATS ERROR: Couldn't upload stats buffer\n");
-		return;
-	}
-
-	//std::cerr << "STATS UPLOADED TO " << script << ": \n" << payload << "\n";
 }
 
 namespace stats {
@@ -123,6 +77,20 @@ void send_stats(std::map<std::string, std::vector<variant> >& queue) {
 	upload_queue.push_back(std::pair<std::string,std::string>("upload-frogatto", msg_str));
 }
 
+namespace {
+void finish_upload(std::string response, bool* flag)
+{
+	std::cerr << "UPLOAD COMPLETE: " << response << "\n";
+	*flag = true;
+}
+
+void upload_progress(int sent, int total, bool uploaded)
+{
+	std::cerr << "SENT " << sent << "/" << total << "\n";
+}
+
+}
+
 void send_stats_thread() {
 	if(preferences::send_stats() == false) {
 		return;
@@ -143,11 +111,16 @@ void send_stats_thread() {
 			queue.swap(upload_queue);
 		}
 
+		bool done = false;
 		for(int n = 0; n != queue.size(); ++n) {
-			try {
-				http_upload(queue[n].second, queue[n].first);
-			} catch(...) {
-				std::cerr << "ERROR PERFORMING HTTP UPLOAD\n";
+			http_client client("theargentlark.com", "5000");
+			client.send_request("POST /cgi-bin/" + queue[n].first, 
+				queue[n].second, 
+				boost::bind(finish_upload, _1, &done),
+				boost::bind(finish_upload, _1, &done),
+				boost::bind(upload_progress, _1, _2, _3));				
+			while(!done) {
+				client.process();
 			}
 		}
 	}
@@ -155,81 +128,38 @@ void send_stats_thread() {
 
 }
 
-bool download(const std::string& lvl) {
-	try {
-	using boost::asio::ip::tcp;
-
-	boost::asio::io_service io_service;
-	tcp::resolver resolver(io_service);
-	tcp::resolver::query query("www.wesnoth.org", "80");
-
-	tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
-	tcp::resolver::iterator end;
-
-	tcp::socket socket(io_service);
-	boost::system::error_code error = boost::asio::error::host_not_found;
-	while(error && endpoint_iterator != end) {
-		socket.close();
-		socket.connect(*endpoint_iterator++, error);
-	}
-
-	if(error) {
-		fprintf(stderr, "STATS ERROR: Can't resolve stats download\n");
-		return false;
-	}
-
-	std::string query_str =
-	    "GET /files/dave/frogatto-stats/" + lvl + " HTTP/1.1\n"
-	    "Host: www.wesnoth.org\n"
-	    "Connection: close\n\n";
-	socket.write_some(boost::asio::buffer(query_str), error);
-	if(error) {
-		fprintf(stderr, "STATS ERROR: Error sending HTTP request\n");
-		return false;
-	}
-	
-	std::string payload;
-
-	size_t nbytes;
-	boost::array<char, 256> buf;
-	while(!error && (nbytes = socket.read_some(boost::asio::buffer(buf), error)) > 0) {
-		payload.insert(payload.end(), buf.begin(), buf.begin() + nbytes);
-	}
-
-	if(error != boost::asio::error::eof) {
-		fprintf(stderr, "STATS ERROR: ERROR READING HTTP\n");
-		return false;
-	}
-
-	const std::string expected_response = "HTTP/1.1 200 OK";
-	if(payload.size() < expected_response.size() || std::equal(expected_response.begin(), expected_response.end(), payload.begin()) == false) {
-		fprintf(stderr, "STATS ERROR: BAD HTTP RESPONSE\n");
-		return false;
-	}
-
-	const std::string length_str = "Content-Length: ";
-	const char* length_ptr = strstr(payload.c_str(), length_str.c_str());
-	if(!length_ptr) {
-		fprintf(stderr, "STATS ERROR: LENGTH NOT FOUND IN HTTP RESPONSE\n");
-		return false;
-	}
-
-	length_ptr += length_str.size();
-
-	const int len = atoi(length_ptr);
-	if(len <= 0 || payload.size() <= len) {
-		fprintf(stderr, "STATS ERROR: BAD LENGTH IN HTTP RESPONSE\n");
-		return false;
-	}
-
-	std::string stats_wml = std::string(payload.end() - len, payload.end());
-
+void download_finish(std::string stats_wml, bool* flag, const std::string& lvl)
+{
 	sys::write_file(get_stats_dir() + lvl, stats_wml);
-	return true;
-	} catch(...) {
-		fprintf(stderr, "STATS ERROR: ERROR PERFORMING STATS DOWNLOAD\n");
-		return false;
+	std::cerr << "DOWNLOAD COMPLETE\n";
+	*flag = true;
+}
+
+void download_error(std::string response, bool* flag, bool* err)
+{
+	std::cerr << "DOWNLOAD ERROR: " << response << "\n";
+	*flag = true;
+	*err = true;
+}
+
+void download_progress(int sent, int total, bool uploaded)
+{
+	std::cerr << "SENT " << sent << "/" << total << "\n";
+}
+
+bool download(const std::string& lvl) {
+	bool done = false;
+	bool err = false;
+	http_client client("www.wesnoth.org", "80");
+	client.send_request("GET /files/dave/frogatto-stats/" + lvl, 
+		"", 
+		boost::bind(download_finish, _1, &done, lvl),
+		boost::bind(download_error, _1, &done, &err),
+		boost::bind(download_progress, _1, _2, _3));				
+	while(!done) {
+		client.process();
 	}
+	return !err;
 }
 
 namespace {
