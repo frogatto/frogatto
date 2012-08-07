@@ -1,8 +1,3 @@
-#ifdef _WINDOWS
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#endif
-
 #include <algorithm>
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/bind.hpp>
@@ -16,52 +11,10 @@
 #include "tbs_server.hpp"
 #include "tbs_web_server.hpp"
 #include "unit_test.hpp"
+#include "utils.hpp"
 #include "variant.hpp"
 
 namespace tbs {
-
-#ifdef _WINDOWS
-namespace {
-const __int64 DELTA_EPOCH_IN_MICROSECS= 11644473600000000;
-
-struct timezone2 
-{
-  __int32  tz_minuteswest; /* minutes W of Greenwich */
-  bool  tz_dsttime;     /* type of dst correction */
-};
-
-int gettimeofday(struct timeval *tv, struct timezone2 *tz)
-{
-	if(tv) {
-		FILETIME ft;
-		__int64 tmpres = 0;
-		ZeroMemory(&ft,sizeof(ft));
-		GetSystemTimeAsFileTime(&ft);
-
-		tmpres = ft.dwHighDateTime;
-		tmpres <<= 32;
-		tmpres |= ft.dwLowDateTime;
-
-		/*converting file time to unix epoch*/
-		tmpres /= 10;  /*convert into microseconds*/
-		tmpres -= DELTA_EPOCH_IN_MICROSECS; 
-		tv->tv_sec = (__int32)(tmpres * 0.000001);
-		tv->tv_usec =(tmpres % 1000000);
-	}
-
-    //_tzset(),don't work properly, so we use GetTimeZoneInformation
-	if(tz) {
-		TIME_ZONE_INFORMATION tz_winapi;
-		ZeroMemory(&tz_winapi, sizeof(tz_winapi));
-		int rez = GetTimeZoneInformation(&tz_winapi);
-		tz->tz_dsttime = (rez == 2) ? true : false;
-		tz->tz_minuteswest = tz_winapi.Bias + ((rez == 2) ? tz_winapi.DaylightBias : 0);
-	}
-	return 0;
-}
-
-}
-#endif 
 
 std::string global_debug_str;
 
@@ -302,13 +255,13 @@ void web_server::send_msg(socket_ptr socket, const std::string& type, const std:
 	std::stringstream buf;
 	buf << 
 		"HTTP/1.1 200 OK\r\n"
-		"Date: Tue, 20 Sep 2011 21:00:00 GMT\r\n"
+		"Date: " << get_http_datetime() << "\r\n"
 		"Connection: close\r\n"
 		"Server: Wizard/1.0\r\n"
 		"Accept-Ranges: none\r\n"
 		"Access-Control-Allow-Origin: *\r\n"
 		"Content-Type: " << type << "\r\n"
-		"Last-Modified: Tue, 20 Sep 2011 10:00:00 GMT\r\n"
+		"Last-Modified: " << get_http_datetime() << "\r\n"
 		<< header_parms << "\r\n";
 
 	boost::shared_ptr<std::string> str(new std::string(buf.str()));
@@ -323,7 +276,7 @@ void web_server::send_404(socket_ptr socket)
 	std::stringstream buf;
 	buf << 
 		"HTTP/1.1 404 NOT FOUND\r\n"
-		"Date: Tue, 20 Sep 2011 21:00:00 GMT\r\n"
+		"Date: " << get_http_datetime() << "\r\n"
 		"Connection: close\r\n"
 		"Server: Wizard/1.0\r\n"
 		"Accept-Ranges: none\r\n"

@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <iostream>
 #include <string>
+#include <ctime>
 
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
@@ -11,7 +12,9 @@
 #include "formatter.hpp"
 #include "tbs_server.hpp"
 #include "string_utils.hpp"
+#include "utils.hpp"
 #include "variant_utils.hpp"
+
 
 namespace tbs {
 
@@ -214,14 +217,14 @@ void server::send_msg(socket_ptr socket, const std::string& msg)
 	std::stringstream buf;
 	buf <<
 		"HTTP/1.1 200 OK\r\n"
-		"Date: Tue, 20 Sep 2011 21:00:00 GMT\r\n"
+		"Date: " << get_http_datetime() << "\r\n"
 		"Connection: close\r\n"
 		"Server: Wizard/1.0\r\n"
 		"Accept-Ranges: bytes\r\n"
 		"Access-Control-Allow-Origin: *\r\n"
 		"Content-Type: application/json\r\n"
 		"Content-Length: " << std::dec << (int)msg.size() << "\r\n"
-		"Last-Modified: Tue, 20 Sep 2011 10:00:00 GMT\r\n\r\n";
+		"Last-Modified: " << get_http_datetime() << "\r\n\r\n";
 	std::string header = buf.str();
 
 	boost::shared_ptr<std::string> str_buf(new std::string(header.empty() ? msg : (header + msg)));

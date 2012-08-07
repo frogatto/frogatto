@@ -4,7 +4,9 @@
 #include <deque>
 #include <iostream>
 
+#if !defined(_WINDOWS)
 #include <sys/time.h>
+#endif
 
 #include "asserts.hpp"
 #include "filesystem.hpp"
@@ -13,6 +15,7 @@
 #include "json_parser.hpp"
 #include "module_web_server.hpp"
 #include "string_utils.hpp"
+#include "utils.hpp"
 #include "unit_test.hpp"
 #include "variant.hpp"
 
@@ -264,10 +267,21 @@ void module_web_server::disconnect(socket_ptr socket)
 
 void module_web_server::send_msg(socket_ptr socket, const std::string& type, const std::string& msg, const std::string& header_parms)
 {
-	char buf[4096*4];
-	sprintf(buf, "HTTP/1.1 200 OK\nDate: Tue, 20 Sep 2011 21:00:00 GMT\nConnection: close\nServer: Wizard/1.0\nAccept-Ranges: none\nAccess-Control-Allow-Origin: *\nContent-Type: %s\nContent-Length: %d\nLast-Modified: Tue, 20 Sep 2011 10:00:00 GMT%s\n\n", type.c_str(), msg.size(), (header_parms.empty() ? "" : ("\n" + header_parms).c_str()));
+    std::stringstream buf;
+	buf <<
+		"HTTP/1.1 200 OK\r\n"
+		"Date: " << get_http_datetime() << "\r\n"
+		"Connection: close\r\n"
+		"Server: Wizard/1.0\r\n"
+		"Accept-Ranges: bytes\r\n"
+		"Access-Control-Allow-Origin: *\r\n"
+		"Content-Type: " << type << "\r\n"
+		"Content-Length: " << std::dec << (int)msg.size() << "\r\n"
+		"Last-Modified: " << get_http_datetime() << "\r\n" <<
+        (header_parms.empty() ? "" : header_parms + "\r\n")
+        << "\r\n";
 
-	boost::shared_ptr<std::string> str(new std::string(buf));
+	boost::shared_ptr<std::string> str(new std::string(buf.str()));
 	*str += msg;
 
 	boost::asio::async_write(*socket, boost::asio::buffer(*str),
@@ -276,9 +290,15 @@ void module_web_server::send_msg(socket_ptr socket, const std::string& type, con
 
 void module_web_server::send_404(socket_ptr socket)
 {
-	char buf[4096];
-	sprintf(buf, "HTTP/1.1 404 NOT FOUND\nDate: Tue, 20 Sep 2011 21:00:00 GMT\nConnection: close\nServer: Wizard/1.0\nAccept-Ranges: none\n\n");
-	boost::shared_ptr<std::string> str(new std::string(buf));
+	std::stringstream buf;
+	buf << 
+		"HTTP/1.1 404 NOT FOUND\r\n"
+		"Date: " << get_http_datetime() << "\r\n"
+		"Connection: close\r\n"
+		"Server: Wizard/1.0\r\n"
+		"Accept-Ranges: none\r\n"
+		"\r\n";
+	boost::shared_ptr<std::string> str(new std::string(buf.str()));
 	boost::asio::async_write(*socket, boost::asio::buffer(*str),
                 boost::bind(&module_web_server::handle_send, this, socket, _1, _2, str->size(), str));
 
