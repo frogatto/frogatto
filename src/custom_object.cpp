@@ -1204,7 +1204,8 @@ void custom_object::process(level& lvl)
 		handle_event(*event);
 	}
 
-	const bool is_underwater = solid() && lvl.is_underwater(solid_rect());
+	rect water_bounds;
+	const bool is_underwater = solid() && lvl.is_underwater(solid_rect(), &water_bounds);
 	
 	if( is_underwater && !was_underwater_){
 		//event on_enter_water
@@ -1215,6 +1216,8 @@ void custom_object::process(level& lvl)
 		handle_event(OBJECT_EVENT_EXIT_WATER);
 		was_underwater_ = false;
 	}
+
+	previous_water_bounds_ = water_bounds;
 	
 	if(type_->static_object()) {
 		static_process(lvl);
@@ -2232,6 +2235,15 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_DISTANCE_TO_CLIFF: return variant(::distance_to_cliff(level::current(), feet_x(), feet_y(), face_dir()));
 	case CUSTOM_OBJECT_SLOPE_STANDING_ON: return variant(-slope_standing_on(6)*face_dir());
 	case CUSTOM_OBJECT_UNDERWATER:        return variant(level::current().is_underwater(solid() ? solid_rect() : rect(x(), y(), current_frame().width(), current_frame().height())));
+	case CUSTOM_OBJECT_PREVIOUS_WATER_BOUNDS: {
+		std::vector<variant> v;
+		v.push_back(variant(previous_water_bounds_.x()));
+		v.push_back(variant(previous_water_bounds_.y()));
+		v.push_back(variant(previous_water_bounds_.x2()));
+		v.push_back(variant(previous_water_bounds_.y2()));
+		return variant(&v);
+
+	}
 	case CUSTOM_OBJECT_WATER_BOUNDS: {
 		rect area;
 		if(level::current().is_underwater(solid_rect(), &area)) {

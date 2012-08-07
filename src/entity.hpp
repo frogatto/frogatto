@@ -302,6 +302,10 @@ protected:
 
 	variant serialize_to_wml() const { return write(); }
 
+	int prev_feet_x() const { return prev_feet_x_; }
+	int prev_feet_y() const { return prev_feet_y_; }
+
+
 private:
 	std::string label_;
 

@@ -423,6 +423,8 @@ private:
 	int currently_handling_die_event_;
 
 	std::vector<gui::widget_ptr> widgets_;
+
+	rect previous_water_bounds_;
 };
 
 #endif
