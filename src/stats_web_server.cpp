@@ -58,7 +58,8 @@ void web_server::handle_get(socket_ptr socket,
 	const std::string& url, 
 	const std::map<std::string, std::string>& args)
 {
-	if(args.at("type") == "status") {
+	std::map<std::string, std::string>::const_iterator it = args.find("type");
+	if(it != args.end() && it->second == "status") {
 		std::map<variant,variant> m;
 		const std::map<std::string,std::string> errors = get_stats_errors();
 		for(std::map<std::string,std::string>::const_iterator i = errors.begin(); i != errors.end(); ++i) {
@@ -74,7 +75,10 @@ void web_server::handle_get(socket_ptr socket,
 		return;
 	}
 
-	variant value = get_stats(args.at("version"), args.at("module"), args.at("module_version"), args.at("level"));
+	variant value = get_stats(args.count("version") ? args.find("version")->second : "", 
+		args.count("module") ? args.find("module")->second : "",
+		args.count("module_version") ? args.find("module_version")->second : "",
+		args.count("level") ? args.find("level")->second : "");
 	send_msg(socket, "text/json", value.write_json(), "");
 }
 
