@@ -12,6 +12,7 @@ use strict;
 my $show_music = 0;
 my $show_heart_pieces = 0;
 my $show_coins = 0;
+my $show_palettes = 0;
 
 while(my $arg = shift @ARGV) {
 	if($arg eq '--show_music') {
@@ -20,6 +21,8 @@ while(my $arg = shift @ARGV) {
 		$show_heart_pieces = 1;
 	} elsif($arg eq '--show_coins') {
 		$show_coins = 1;
+	} elsif($arg eq '--show_palettes') {
+		$show_palettes = 1;
 	} else {
 		die "Unrecognized argument: $arg";
 	}
@@ -49,6 +52,8 @@ foreach my $level (@levels) {
 	my $door = '';
 	my $saves = 0;
 	my $music = '';
+	my $fg_palettes = '';
+	my $bg_palette = '';
 	my $heart_pieces = 0;
 	my $coins = 0;
 
@@ -63,6 +68,14 @@ foreach my $level (@levels) {
 
 		if(my ($song_name) = $line =~ /music"?: "(.*)"/) {
 			$music = $song_name;
+		}
+		
+		if(my ($fg_palettes_) = $line =~ /palettes"?: [(.*)]/) {
+			$fg_palettes = $fg_palettes_;
+		}
+		
+		if(my ($bg_palette_) = $line =~ /background_palette"?: "(.*)"/) {
+			$bg_palette = $bg_palette_;
 		}
 		
 		if(my ($heart_object) = $line =~ /type"?: "(max_heart_object)"/) {
@@ -114,6 +127,12 @@ foreach my $level (@levels) {
 	if($show_music){
 		$label .= "\\n";
 		$label .= $music;
+	}
+	if($show_palettes){
+		$label .= "\\n";
+		$label .= $fg_palettes . " fg";
+		$label .= "\\n";
+		$label .= $bg_palette . " bg";
 	}
 	if($show_heart_pieces and $heart_pieces > 0){
 		use integer;
