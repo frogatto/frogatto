@@ -635,10 +635,8 @@ void copy_file(const std::string& from, const std::string& to)
 	// Note that this is a pretty gross copy operation and won't preserve meta-data
 	// it will only copy the file data.  If your API has a better copy option, I'd
 	// suggest implementing it here.
-	std::fstream file1(from.c_str(), std::ios_base::in | std::ios_base::binary);
-	std::ofstream file2(to.c_str(), std::ios_base::out | std::ios_base::binary);
-	file1 << std::noskipws;
-	std::copy(std::istream_iterator<char>(file1),std::istream_iterator<char>(),std::ostream_iterator<char>(file2));
+	const std::string contents = sys::read_file(from);
+	sys::write_file(to, contents);
 #endif
 }
 

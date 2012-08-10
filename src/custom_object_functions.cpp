@@ -1993,7 +1993,14 @@ FUNCTION_DEF(set_widgets, 1, -1, "set_widgets((optional) obj, widget, ...): Adds
 	int arg_start = (target == NULL) ? 0 : 1;
 	std::vector<variant> widgetsv;
 	for(int i = arg_start; i < args().size(); i++) {
-		widgetsv.push_back(args()[i]->evaluate(variables));
+		variant items = args()[i]->evaluate(variables);
+		if(items.is_list()) {
+			for(int n = 0; n != items.num_elements(); ++n) {
+				widgetsv.push_back(items[n]);
+			}
+		} else {
+			widgetsv.push_back(items);
+		}
 	}
 	//const_formula_callable_ptr callable = map_into_callable(args()[2]->evaluate(variables));
 	return variant(new set_widgets_command(target, widgetsv));

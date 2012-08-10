@@ -2443,6 +2443,8 @@ variant custom_object::get_value_by_slot(int slot) const
 				return e.getter->execute(*this);
 			} else if(e.const_value) {
 				return *e.const_value;
+			} else {
+				ASSERT_LOG(false, "PROPERTY HAS NO GETTER OR CONST VALUE");
 			}
 		}
 
