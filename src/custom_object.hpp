@@ -12,6 +12,7 @@
 #include "color_utils.hpp"
 #include "custom_object_type.hpp"
 #include "decimal.hpp"
+#include "draw_scene.hpp"
 #include "entity.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
@@ -425,6 +426,8 @@ private:
 	std::vector<gui::widget_ptr> widgets_;
 
 	rect previous_water_bounds_;
+
+	mutable screen_position adjusted_draw_position_;
 };
 
 #endif

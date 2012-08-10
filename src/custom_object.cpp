@@ -22,6 +22,7 @@
 #include "formatter.hpp"
 #include "formula_callable.hpp"
 #include "formula_profiler.hpp"
+#include "geometry.hpp"
 #include "graphical_font.hpp"
 #include "json_parser.hpp"
 #include "level.hpp"
@@ -803,7 +804,8 @@ void custom_object::draw(int xx, int yy) const
 	if(use_absolute_screen_coordinates_) {
 		glPushMatrix();
 		glTranslatef(GLfloat(xx), GLfloat(yy), 0.0);
-		//std::cerr << last_draw_position().x << "," << last_draw_position().y << " : " << GLfloat(last_draw_position().x/200)*2.0f << "," << GLfloat(last_draw_position().y/200)*2.0f << std::endl;
+		adjusted_draw_position_.x = xx;
+		adjusted_draw_position_.y = yy;
 	}
 
 	if(shader_ == 0 && !fragment_shaders_.empty() && !vertex_shaders_.empty()) {
@@ -4341,9 +4343,17 @@ bool custom_object::handle_sdl_event(const SDL_Event& event, bool claimed)
 	if(event.type == SDL_MOUSEMOTION) {
 		ev.motion.x -= x();
 		ev.motion.y -= y();
+		if(use_absolute_screen_coordinates_) {
+			ev.motion.x -= adjusted_draw_position_.x;
+			ev.motion.y -= adjusted_draw_position_.y;
+		}
 	} else if(event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
 		ev.button.x -= x();
 		ev.button.y -= y();
+		if(use_absolute_screen_coordinates_) {
+			ev.button.x -= adjusted_draw_position_.x;
+			ev.button.y -= adjusted_draw_position_.y;
+		}
 	}
 	foreach(const gui::widget_ptr& w, widgets_) {
 		claimed = w->process_event(ev, claimed);
