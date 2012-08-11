@@ -68,7 +68,7 @@ grid::grid(const variant& v, game_logic::formula_callable* e)
 				if(c.is_int()) {
 					set_align(col, static_cast<COLUMN_ALIGN>(c.as_int()));
 				} else if(c.is_string()) {
-					const std::string& s = v["column_alignments"].as_string();
+					const std::string& s = c.as_string();
 					if(s == "center" || s == "centre") {
 						set_align(col, ALIGN_CENTER);
 					} else if(s == "right") {
