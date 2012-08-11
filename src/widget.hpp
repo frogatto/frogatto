@@ -47,6 +47,8 @@ public:
 	bool visible() { return visible_; }
 	void set_visible(bool visible) { visible_ = visible; }
 	std::string id() const { return id_; }
+	bool disabled() const { return disabled_; }
+	bool enable(bool val=true) { disabled_ = val; }
 
 	virtual void set_value(const std::string& key, const variant& v);
 	virtual variant get_value(const std::string& key) const;
@@ -65,7 +67,7 @@ public:
 protected:
 	widget() 
 		: x_(0), y_(0), w_(0), h_(0), align_h_(HALIGN_LEFT), align_v_(VALIGN_TOP),
-		true_x_(0), true_y_(0),
+		true_x_(0), true_y_(0), disabled_(false), disabled_opacity_(127),
 		tooltip_displayed_(false), visible_(true), zorder_(0), environ_(0)
 	{}
 	explicit widget(const variant& v, game_logic::formula_callable* e);
@@ -92,6 +94,8 @@ private:
 	// higher priority in the draw order.
 	int zorder_;
 	std::string id_;
+	bool disabled_;
+	uint8_t disabled_opacity_;
 
 	HORIZONTAL_ALIGN align_h_;
 	VERTICAL_ALIGN   align_v_;
