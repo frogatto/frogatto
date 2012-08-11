@@ -70,8 +70,9 @@ foreach my $level (@levels) {
 			$music = $song_name;
 		}
 		
-		if(my ($fg_palettes_) = $line =~ /palettes"?: [(.*)]/) {
+		if(my ($fg_palettes_) = $line =~ /palettes"?: (\[(.*)\]|"(.*)")/) {
 			$fg_palettes = $fg_palettes_;
+			$fg_palettes =~ s/\"//g;
 		}
 		
 		if(my ($bg_palette_) = $line =~ /background_palette"?: "(.*)"/) {
