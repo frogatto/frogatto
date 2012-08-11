@@ -27,7 +27,7 @@ namespace gui {
 
 widget::widget(const variant& v, game_logic::formula_callable* e) 
 	: environ_(e), w_(0), h_(0), x_(0), y_(0), zorder_(0), 
-	true_x_(0), true_y_(0),
+	true_x_(0), true_y_(0), disabled_(false), disabled_opacity_(v["disabled_opacity"].as_int(127)),
 	tooltip_displayed_(false), id_(v["id"].as_string_default()),
 	align_h_(HALIGN_LEFT), align_v_(VALIGN_TOP)
 {
@@ -100,6 +100,7 @@ widget::widget(const variant& v, game_logic::formula_callable* e)
 			ASSERT_LOG(false, "Invalid align_v attribute given: " << align);
 		}
 	}
+	disabled_ = !v["enabled"].as_bool(true);
 	recalc_loc();
 }
 
@@ -200,22 +201,25 @@ void widget::set_tooltip(const std::string& str)
 
 bool widget::process_event(const SDL_Event& event, bool claimed)
 {
-    if(!claimed) {
-        if(tooltip_ && event.type == SDL_MOUSEMOTION) {
-            if(event.motion.x >= x() && event.motion.x <= x()+width() &&
-               event.motion.y >= y() && event.motion.y <= y()+height()) {
-                if(!tooltip_displayed_) {
-                    gui::set_tooltip(tooltip_);
-                    tooltip_displayed_ = true;
-                }
-            } else {
-                if(tooltip_displayed_) {
-                    gui::remove_tooltip(tooltip_);
-                    tooltip_displayed_ = false;
-                }
-            }
-        }
-    }
+	if(disabled_) {
+		return claimed;
+	}
+	if(!claimed) {
+		if(tooltip_ && event.type == SDL_MOUSEMOTION) {
+			if(event.motion.x >= x() && event.motion.x <= x()+width() &&
+				event.motion.y >= y() && event.motion.y <= y()+height()) {
+				if(!tooltip_displayed_) {
+					gui::set_tooltip(tooltip_);
+					tooltip_displayed_ = true;
+				}
+			} else {
+				if(tooltip_displayed_) {
+					gui::remove_tooltip(tooltip_);
+					tooltip_displayed_ = false;
+				}
+			}
+		}
+	}
 
 	return handle_event(event, claimed);
 }
@@ -223,7 +227,19 @@ bool widget::process_event(const SDL_Event& event, bool claimed)
 void widget::draw() const
 {
 	if(visible_) {
+		GLint src = 0;
+		GLint dst = 0;
+		if(disabled_) {
+			glGetIntegerv(GL_BLEND_SRC, &src);
+			glGetIntegerv(GL_BLEND_DST, &dst);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glColor4ub(255, 255, 255, disabled_opacity_);
+		}
 		handle_draw();
+		if(disabled_) {
+			glBlendFunc(src, dst);
+			glColor4ub(255, 255, 255, 255);
+		}
 	}
 }
 
@@ -311,6 +327,13 @@ void widget::set_value(const std::string& key, const variant& v)
 		visible_ = v.as_bool();
 	} else if(key == "id") {
 		id_ = v.as_string();
+	} else if(key == "disable") {
+		disabled_ = v.as_bool();
+	} else if(key == "enable") {
+		disabled_ = !v.as_bool();
+	} else if(key == "disabled_opacity") {
+		int opa = v.as_int();
+		disabled_opacity_ = (opa > 255) ? 255 : (opa < 0) ? 0 : opa;
 	}
 }
 
