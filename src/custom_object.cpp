@@ -39,6 +39,7 @@
 #include "unit_test.hpp"
 #include "utils.hpp"
 #include "sound.hpp"
+#include "widget_factory.hpp"
 
 namespace {
 const game_logic::formula_variable_storage_ptr& global_vars()
@@ -2068,6 +2069,20 @@ public:
 	{}
 };
 
+// FFL widget interface.
+class widgets_callable : public formula_callable {
+	boost::intrusive_ptr<custom_object> obj_;
+
+	variant get_value(const std::string& key) const {
+		return variant(obj_->get_widget_by_id(key).get());
+	}
+	void set_value(const std::string& key, const variant& value) {
+	}
+public:
+	explicit widgets_callable(const custom_object& obj) : obj_(const_cast<custom_object*>(&obj))
+	{}
+};
+
 decimal calculate_velocity_magnitude(int velocity_x, int velocity_y)
 {
 	const int64_t xval = velocity_x;
@@ -2418,11 +2433,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	}
 
 	case CUSTOM_OBJECT_WIDGETS: {
-		std::vector<variant> v;
-		foreach(const gui::widget_ptr& w, widgets_) {
-			v.push_back(variant(w.get()));
-		}
-		return(variant(&v));
+		return variant(new widgets_callable(*this));
 	}
 
 	case CUSTOM_OBJECT_TEXTV: {
