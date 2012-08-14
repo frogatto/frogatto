@@ -21,7 +21,7 @@ def main(catalog):
 			font = "dialog_font.cfg"
 	else: return
 	
-	fontdata = codecs.open("data/" + font, encoding="utf-8").readlines()
+	fontdata = codecs.open("../../data/" + font, encoding="utf-8").readlines()
 	fontdata = [x.strip() for x in fontdata]
 	charwidths = {}
 	i = 0
@@ -64,11 +64,11 @@ def main(catalog):
 		
 def printline(f, start, width):
 	line = start
-	print str(width) + " pixels:"
+	sys.stdout.write((str(width) + " pixels:\n").encode("utf-8"))
 	while len(f[line].strip()) > 0:
-		print f[line].strip()
+		sys.stdout.write((f[line].strip()+"\n").encode("utf-8"))
 		line += 1
-	print
+	sys.stdout.write("\n".encode("utf-8"))
 	
 def checkwidth(line, widths, kerning):
 	result = 0
@@ -89,4 +89,6 @@ if __name__ == "__main__":
 	elif len(sys.argv) == 3:
 		MAXWIDTH = int(sys.argv[2])
 		main(sys.argv[1])
+	else:
+		pass
 
