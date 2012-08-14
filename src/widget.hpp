@@ -48,7 +48,7 @@ public:
 	void set_visible(bool visible) { visible_ = visible; }
 	std::string id() const { return id_; }
 	bool disabled() const { return disabled_; }
-	bool enable(bool val=true) { disabled_ = val; }
+	void enable(bool val=true) { disabled_ = val; }
 
 	virtual void set_value(const std::string& key, const variant& v);
 	virtual variant get_value(const std::string& key) const;

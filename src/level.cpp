@@ -1718,24 +1718,6 @@ void level::prepare_tiles_for_drawing()
 
 }
 
-namespace {
-bool sort_entity_drawing_pos(const entity_ptr& a, const entity_ptr& b) {
-	//the reverse_global_vertical_zordering flag is set in the player object (our general repository for all major game rules et al).  It's meant to reverse vertical sorting of objects in the same zorder, depending on whether objects are being viewed from above, or below.  In frogatto proper, objects at a higher vertical position should overlap those below.  In a top-down game, the reverse is desirable.
-	if(level::current().player() && level::current().player()->reverse_global_vertical_zordering()){
-			return a->zorder() < b->zorder() ||
-			a->zorder() == b->zorder() && a->zsub_order() < b->zsub_order() ||
-			a->zorder() == b->zorder() && a->zsub_order() == b->zsub_order() && a->midpoint().y < b->midpoint().y ||
-			a->zorder() == b->zorder() && a->zsub_order() == b->zsub_order() && a->midpoint().y == b->midpoint().y && a->midpoint().x < b->midpoint().x;
-			
-		}else{
-		return a->zorder() < b->zorder() ||
-				a->zorder() == b->zorder() && a->zsub_order() < b->zsub_order() ||
-				a->zorder() == b->zorder() && a->zsub_order() == b->zsub_order() && a->midpoint().y > b->midpoint().y ||
-				a->zorder() == b->zorder() && a->zsub_order() == b->zsub_order() && a->midpoint().y == b->midpoint().y && a->midpoint().x > b->midpoint().x;
-		}
-	}
-}
-
 void level::draw_status() const
 {
 	if(!gui_algorithm_.empty()) {
@@ -1816,7 +1798,7 @@ void level::draw(int x, int y, int w, int h) const
 			}
 		}
 
-		std::sort(editor_chars_buf.begin(), editor_chars_buf.end(), sort_entity_drawing_pos);
+		std::sort(editor_chars_buf.begin(), editor_chars_buf.end(), zorder_compare);
 		chars_ptr = &editor_chars_buf;
 	}
 	const std::vector<entity_ptr>& chars = *chars_ptr;
@@ -2165,7 +2147,7 @@ void level::set_active_chars()
 
 	std::sort(active_chars_.begin(), active_chars_.end());
 	active_chars_.erase(std::unique(active_chars_.begin(), active_chars_.end()), active_chars_.end());
-	std::sort(active_chars_.begin(), active_chars_.end(), sort_entity_drawing_pos);
+	std::sort(active_chars_.begin(), active_chars_.end(), zorder_compare);
 }
 
 void level::do_processing()

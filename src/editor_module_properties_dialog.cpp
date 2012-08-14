@@ -205,7 +205,7 @@ void editor_module_properties_dialog::create_new_module() {
 		sys::get_dir(mod_path + "data/level");
 		sys::get_dir(mod_path + "data/objects");
 		sys::get_dir(mod_path + "data/object_prototypes");
-		sys::get_dir(mod_path + "gui");
+		sys::get_dir(mod_path + "data/gui");
 		sys::get_dir(mod_path + "images");
 		sys::get_dir(mod_path + "sounds");
 		sys::get_dir(mod_path + "music");
@@ -233,6 +233,7 @@ void editor_module_properties_dialog::save_module_properties() {
 			}
 			m[variant("dependencies")] = variant(&v);
 		}
+		m[variant("min_engine_version")] = preferences::version_decimal();
 		variant new_module(&m);
 		std::string mod_path = "./modules/" + mod_.name_ + "/";
 		// create the module file.

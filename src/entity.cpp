@@ -4,6 +4,7 @@
 #include "custom_object.hpp"
 #include "entity.hpp"
 #include "foreach.hpp"
+#include "level.hpp"
 #include "playable_custom_object.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
@@ -364,21 +365,19 @@ const std::string& entity::spawned_by() const
 	return spawned_by_;
 }
 
-bool zorder_compare(const entity_ptr& e1, const entity_ptr& e2)
+bool zorder_compare(const entity_ptr& a, const entity_ptr& b)
 {
-	// Compare z-orders, then sub-z-orders then vertical mid-points.
-	if(e1->zorder() > e2->zorder()) {
-		return true;
-	} else if(e1->zorder() == e2->zorder()) {
-		if(e1->zsub_order() > e2->zsub_order()) {
-			return true;
-		} else if(e1->zsub_order() == e2->zsub_order()) {
-			if(e1->midpoint().y > e2->midpoint().y) {
-				return true;
-			}
-		}
+	//the reverse_global_vertical_zordering flag is set in the player object (our general repository for all major game rules et al).  It's meant to reverse vertical sorting of objects in the same zorder, depending on whether objects are being viewed from above, or below.  In frogatto proper, objects at a higher vertical position should overlap those below.  In a top-down game, the reverse is desirable.
+	if(level::current().player() && level::current().player()->reverse_global_vertical_zordering()){
+		return a->zorder() < b->zorder() ||
+			a->zorder() == b->zorder() && a->zsub_order() < b->zsub_order() ||
+			a->zorder() == b->zorder() && a->zsub_order() == b->zsub_order() && a->midpoint().y < b->midpoint().y ||
+			a->zorder() == b->zorder() && a->zsub_order() == b->zsub_order() && a->midpoint().y == b->midpoint().y && a->midpoint().x < b->midpoint().x;		
 	}
-	return false;
+	return a->zorder() < b->zorder() ||
+		a->zorder() == b->zorder() && a->zsub_order() < b->zsub_order() ||
+		a->zorder() == b->zorder() && a->zsub_order() == b->zsub_order() && a->midpoint().y > b->midpoint().y ||
+		a->zorder() == b->zorder() && a->zsub_order() == b->zsub_order() && a->midpoint().y == b->midpoint().y && a->midpoint().x > b->midpoint().x;
 }
 
 bool entity_zorder_compare::operator()(const entity_ptr& lhs, const entity_ptr& rhs) 
