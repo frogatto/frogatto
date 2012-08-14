@@ -208,40 +208,42 @@ void code_editor_widget::select_token(const std::string& row, int& begin_row, in
 	boost::regex numeric_regex("-?\\d+(\\.\\d+)?", boost::regex::perl);
 	std::cerr << "token: (" << token << ")\n";
 	if(boost::regex_match(token.c_str(), numeric_regex)) {
-		slider_.reset(new slider(200, boost::bind(&code_editor_widget::on_slider_move, this, _1)));
 
 		const decimal current_value(decimal::from_string(token));
-		slider_decimal_ = std::count(token.begin(), token.end(), '.') ? true : false;
-		slider_magnitude_ = (abs(current_value.as_int())+1) * 5;
+		if(current_value <= 10000000 && current_value >= -10000000) {
+			slider_.reset(new slider(200, boost::bind(&code_editor_widget::on_slider_move, this, _1)));
+			slider_decimal_ = std::count(token.begin(), token.end(), '.') ? true : false;
+			slider_magnitude_ = (abs(current_value.as_int())+1) * 5;
+	
+			const decimal slider_value = (current_value - decimal::from_int(-slider_magnitude_)) / decimal::from_int(slider_magnitude_*2);
+			slider_->set_position(slider_value.as_float());
 
-		const decimal slider_value = (current_value - decimal::from_int(-slider_magnitude_)) / decimal::from_int(slider_magnitude_*2);
-		slider_->set_position(slider_value.as_float());
+			std::pair<int,int> pos = char_position_on_screen(begin_row, (begin_col+end_col)/2);
 
-		std::pair<int,int> pos = char_position_on_screen(begin_row, (begin_col+end_col)/2);
+			row_slider_ = begin_row;
+			begin_col_slider_ = begin_col;
+			end_col_slider_ = end_col;
 
-		row_slider_ = begin_row;
-		begin_col_slider_ = begin_col;
-		end_col_slider_ = end_col;
+			int x = pos.second - slider_->width()/2;
+			int y = pos.first + 20 - slider_->height();
+			if(x < 10) {
+				x = 10;
+			}
 
-		int x = pos.second - slider_->width()/2;
-		int y = pos.first + 20 - slider_->height();
-		if(x < 10) {
-			x = 10;
+			if(x > width() - slider_->width()) {
+				x = width() - slider_->width();
+			}
+
+			if(y < 20) {
+				y += 60;
+			}
+
+			if(y > height() - slider_->height()) {
+				y = height() - slider_->height();
+			}
+	
+			slider_->set_loc(x, y);
 		}
-
-		if(x > width() - slider_->width()) {
-			x = width() - slider_->width();
-		}
-
-		if(y < 20) {
-			y += 60;
-		}
-
-		if(y > height() - slider_->height()) {
-			y = height() - slider_->height();
-		}
-
-		slider_->set_loc(x, y);
 	}
 }
 

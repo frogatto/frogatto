@@ -485,6 +485,20 @@ FUNCTION_DEF(angle, 4, 4, "angle(x1, y1, x2, y2) -> int: Returns the angle, from
 	return variant(static_cast<int>(round((atan2(a-c, b-d)*radians_to_degrees+90)*VARIANT_DECIMAL_PRECISION)*-1), variant::DECIMAL_VARIANT);
 END_FUNCTION_DEF(angle)
 
+FUNCTION_DEF(angle_delta, 2, 2, "angle_delta(a, b) -> int: Given two angles, returns the smallest rotation needed to make a equal to b.")
+	int a = args()[0]->evaluate(variables).as_int();
+	int b = args()[1]->evaluate(variables).as_int();
+	while(abs(a - b) > 180) {
+		if(a < b) {
+			a += 360;
+		} else {
+			b += 360;
+		}
+	}
+
+	return variant(b - a);
+END_FUNCTION_DEF(angle_delta)
+
 FUNCTION_DEF(orbit, 4, 4, "orbit(x, y, angle, dist) -> [x,y]: Returns the point as a list containing an x/y pair which is dist away from the point as defined by x and y passed in, at the angle passed in.")
 	const float x = args()[0]->evaluate(variables).as_decimal().as_float();
 	const float y = args()[1]->evaluate(variables).as_decimal().as_float();

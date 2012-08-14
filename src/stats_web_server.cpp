@@ -8,6 +8,7 @@
 #endif
 
 #include "asserts.hpp"
+#include "base64.hpp"
 #include "filesystem.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
