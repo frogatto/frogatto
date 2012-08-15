@@ -10,6 +10,7 @@ class blit_queue;
 }
 
 struct level_tile;
+struct hex_level_tile;
 
 class tile_corner
 {

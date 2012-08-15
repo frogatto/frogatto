@@ -6,6 +6,10 @@
 #include <algorithm>
 #include <iostream>
 
+namespace {
+	const int BaseTileSize = 16;
+}
+
 void queue_draw_tile(graphics::blit_queue& q, const level_tile& t)
 {
 	level_object::queue_draw(q, t);
@@ -20,8 +24,8 @@ int get_tile_corners(tile_corner* result, const graphics::texture& t, const rect
 	const int width = std::max<int>(t.width(), t.height());
 	if (width == 0) return 0;
 	
-	const int xpos = 16*(tile_num%(width/16)) + area.x();
-	const int ypos = 16*(tile_num/(width/16)) + area.y();
+	const int xpos = BaseTileSize*(tile_num%(width/BaseTileSize)) + area.x();
+	const int ypos = BaseTileSize*(tile_num/(width/BaseTileSize)) + area.y();
 
 	//a value we subtract from the width and height of tiles when calculating
 	//UV co-ordinates. This is to prevent floating point rounding errors
@@ -36,7 +40,7 @@ int get_tile_corners(tile_corner* result, const graphics::texture& t, const rect
 	int area_x = area.x()*2;
 	if(reverse) {
 		std::swap(x1, x2);
-		area_x = 32 - area.x()*2 - area.w()*2;
+		area_x = 32 - area.x()*2 - area.w()*2; // 2*BaseTileSize ?
 	}
 
 	x += area_x;
@@ -78,8 +82,8 @@ void queue_draw_from_tilesheet(graphics::blit_queue& q, const graphics::texture&
 	q.set_texture(t.get_id());
 
 	const int width = std::max<int>(t.width(), t.height());
-	const int xpos = 16*(tile_num%(width/16)) + area.x();
-	const int ypos = 16*(tile_num/(width/16)) + area.y();
+	const int xpos = BaseTileSize*(tile_num%(width/BaseTileSize)) + area.x();
+	const int ypos = BaseTileSize*(tile_num/(width/BaseTileSize)) + area.y();
 
 	//a value we subtract from the width and height of tiles when calculating
 	//UV co-ordinates. This is to prevent floating point rounding errors
@@ -94,7 +98,7 @@ void queue_draw_from_tilesheet(graphics::blit_queue& q, const graphics::texture&
 	int area_x = area.x()*2;
 	if(reverse) {
 		std::swap(x1, x2);
-		area_x = 32 - area.x()*2 - area.w()*2;
+		area_x = 32 - area.x()*2 - area.w()*2;	// 2*BaseTileSize ?
 	}
 
 	x += area_x;
@@ -108,11 +112,11 @@ void queue_draw_from_tilesheet(graphics::blit_queue& q, const graphics::texture&
 bool is_tile_opaque(const graphics::texture& t, int tile_num)
 {
 	const int width = std::max<int>(t.width(), t.height());
-	const int xpos = 16*(tile_num%(width/16));
-	const int ypos = 16*(tile_num/(width/16));
-	for(int y = 0; y != 16; ++y) {
+	const int xpos = BaseTileSize*(tile_num%(width/BaseTileSize));
+	const int ypos = BaseTileSize*(tile_num/(width/BaseTileSize));
+	for(int y = 0; y != BaseTileSize; ++y) {
 		const int v = ypos + y;
-		for(int x = 0; x != 16; ++x) {
+		for(int x = 0; x != BaseTileSize; ++x) {
 			const int u = xpos + x;
 			if(t.is_alpha(u, v)) {
 				return false;
@@ -127,11 +131,11 @@ bool is_tile_solid_color(const graphics::texture& t, int tile_num, graphics::col
 {
 	bool first = true;
 	const int width = std::max<int>(t.width(), t.height());
-	const int xpos = 16*(tile_num%(width/16));
-	const int ypos = 16*(tile_num/(width/16));
-	for(int y = 0; y != 16; ++y) {
+	const int xpos = BaseTileSize*(tile_num%(width/BaseTileSize));
+	const int ypos = BaseTileSize*(tile_num/(width/BaseTileSize));
+	for(int y = 0; y != BaseTileSize; ++y) {
 		const int v = ypos + y;
-		for(int x = 0; x != 16; ++x) {
+		for(int x = 0; x != BaseTileSize; ++x) {
 			const int u = xpos + x;
 			const unsigned char* color = t.color_at(u, v);
 			ASSERT_LOG(color != NULL, "COULD NOT FIND COLOR IN TEXTURE");
@@ -155,13 +159,13 @@ bool is_tile_solid_color(const graphics::texture& t, int tile_num, graphics::col
 rect get_tile_non_alpha_area(const graphics::texture& t, int tile_num)
 {
 	const int width = std::max<int>(t.width(), t.height());
-	const int xpos = 16*(tile_num%(width/16));
-	const int ypos = 16*(tile_num/(width/16));
+	const int xpos = BaseTileSize*(tile_num%(width/BaseTileSize));
+	const int ypos = BaseTileSize*(tile_num/(width/BaseTileSize));
 	int top = -1, bottom = -1, left = -1, right = -1;
 
-	for(int y = 0; y != 16 && top == -1; ++y) {
+	for(int y = 0; y != BaseTileSize && top == -1; ++y) {
 		const int v = ypos + y;
-		for(int x = 0; x != 16; ++x) {
+		for(int x = 0; x != BaseTileSize; ++x) {
 			const int u = xpos + x;
 			if(!t.is_alpha(u, v)) {
 				top = y;
@@ -170,9 +174,9 @@ rect get_tile_non_alpha_area(const graphics::texture& t, int tile_num)
 		}
 	}
 
-	for(int y = 15; y != -1 && bottom == -1; --y) {
+	for(int y = BaseTileSize-1; y != -1 && bottom == -1; --y) {
 		const int v = ypos + y;
-		for(int x = 0; x != 16; ++x) {
+		for(int x = 0; x != BaseTileSize; ++x) {
 			const int u = xpos + x;
 			if(!t.is_alpha(u, v)) {
 				bottom = y + 1;
@@ -181,9 +185,9 @@ rect get_tile_non_alpha_area(const graphics::texture& t, int tile_num)
 		}
 	}
 	
-	for(int x = 0; x != 16 && left == -1; ++x) {
+	for(int x = 0; x != BaseTileSize && left == -1; ++x) {
 		const int u = xpos + x;
-		for(int y = 0; y != 16; ++y) {
+		for(int y = 0; y != BaseTileSize; ++y) {
 			const int v = ypos + y;
 			if(!t.is_alpha(u, v)) {
 				left = x;
@@ -192,9 +196,9 @@ rect get_tile_non_alpha_area(const graphics::texture& t, int tile_num)
 		}
 	}
 
-	for(int x = 15; x != -1 && right == -1; --x) {
+	for(int x = BaseTileSize-1; x != -1 && right == -1; --x) {
 		const int u = xpos + x;
-		for(int y = 0; y != 16; ++y) {
+		for(int y = 0; y != BaseTileSize; ++y) {
 			const int v = ypos + y;
 			if(!t.is_alpha(u, v)) {
 				right = x + 1;

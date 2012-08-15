@@ -75,6 +75,7 @@ objects = \
 	group_property_editor_dialog.o \
 	gui_formula_functions.o \
 	gui_section.o \
+	hex_tile_pattern.o \
 	http_client.o \
     http_server.o \
 	i18n.o \

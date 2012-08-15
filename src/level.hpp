@@ -413,6 +413,8 @@ private:
 	std::vector<solid_rect> solid_rects_;
 	mutable std::vector<level_tile> tiles_;
 
+	mutable std::vector<hex_level_tile> hex_tiles_;
+
 	//tiles sorted by position rather than zorder.
 	mutable std::vector<level_tile> tiles_by_position_;
 	std::set<int> layers_;
@@ -518,6 +520,7 @@ private:
 	int widest_tile_, highest_tile_;
 
 	std::map<int, tile_map> tile_maps_;
+	std::map<int, hex_tile_map> hex_tile_maps_;
 	int xscale_, yscale_;
 
 	int save_point_x_, save_point_y_;
