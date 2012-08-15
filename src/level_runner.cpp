@@ -581,6 +581,7 @@ void level_runner::start_editor()
 
 void level_runner::close_editor()
 {
+#ifndef NO_EDITOR
 	editor_ = NULL;
 	history_slider_.reset();
 	history_button_.reset();
@@ -591,6 +592,7 @@ void level_runner::close_editor()
 	paused = false;
 	controls::read_until(lvl_->cycle());
 	init_history_slider();
+#endif
 }
 
 bool level_runner::play_level()
@@ -958,8 +960,8 @@ bool level_runner::play_cycle()
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_HARMATTAN || TARGET_OS_IPHONE
 			should_pause = settings_dialog.handle_event(event);
 #endif
-#ifndef NO_EDITOR
 			bool swallowed = false;
+#ifndef NO_EDITOR
 			if(console_) {
 				swallowed = console_->process_event(event, swallowed);
 			}

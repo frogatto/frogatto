@@ -3723,7 +3723,11 @@ void level::hide_object_classification(const std::string& classification, bool h
 
 bool level::object_classification_hidden(const entity& e) const
 {
+#ifndef NO_EDITOR
 	return e.editor_info() && hidden_object_classifications().count(e.editor_info()->classification());
+#else
+	return false;
+#endif
 }
 
 void level::editor_freeze_tile_updates(bool value)
