@@ -1053,6 +1053,10 @@ private:
 
 FUNCTION_DEF(choose, 1, 2, "choose(list, (optional)scoring_expr) -> value: choose an item from the list according to which scores the highest according to the scoring expression, or at random by default.")
 
+	if(args().size() == 1) {
+		formula::fail_if_static_context();
+	}
+
 	const variant items = args()[0]->evaluate(variables);
 	int max_index = -1;
 	variant max_value;
