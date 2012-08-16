@@ -377,6 +377,9 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 		case SDL_JOYBUTTONDOWN:
 		case SDL_JOYBUTTONUP:
 		case SDL_JOYBALLMOTION:
+			int x, mx = event.type == SDL_JOYBALLMOTION ? event.jball.xrel : event.jbutton.x;
+			int y, my = event.type == SDL_JOYBALLMOTION ? event.jball.yrel : event.jbutton.y;
+			int i = event.type == SDL_JOYBALLMOTION ? event.jball.ball : event.jbutton.button;
 			break;
 #else
 		case SDL_MOUSEBUTTONDOWN:
@@ -385,6 +388,7 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 		    int x, mx = event.type == SDL_MOUSEMOTION ? event.motion.x : event.button.x;
 			int y, my = event.type == SDL_MOUSEMOTION ? event.motion.y : event.button.y;
 			int i = event.type == SDL_MOUSEMOTION ? event.motion.which : event.button.which;
+#endif
 			const int basic_evt = event.type == SDL_MOUSEBUTTONDOWN 
 				? MouseDownEventID 
 				: event.type == SDL_MOUSEMOTION
@@ -508,7 +512,6 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 				}
 			}
 			break;
-#endif
 	}
 	return false;
 }
