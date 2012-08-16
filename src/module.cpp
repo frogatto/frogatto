@@ -68,11 +68,11 @@ std::string map_file(const std::string& fname)
 
 std::map<std::string, std::string>::const_iterator find(const std::map<std::string, std::string>& filemap, const std::string& name) {
 	foreach(const modules& p, loaded_paths()) {
-		std::map<std::string, std::string>::const_iterator itor = filemap.find(name);
+		std::map<std::string, std::string>::const_iterator itor = filemap.find(p.abbreviation_ + ":" + name);
 		if(itor != filemap.end()) {
 			return itor;
 		}
-		itor = filemap.find(p.abbreviation_ + ":" + name);
+		itor = filemap.find(name);
 		if(itor != filemap.end()) {
 			return itor;
 		}
