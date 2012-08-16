@@ -380,7 +380,6 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 			int x, mx = event.type == SDL_JOYBALLMOTION ? event.jball.xrel : event.jbutton.x;
 			int y, my = event.type == SDL_JOYBALLMOTION ? event.jball.yrel : event.jbutton.y;
 			int i = event.type == SDL_JOYBALLMOTION ? event.jball.ball : event.jbutton.button;
-			break;
 #else
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
