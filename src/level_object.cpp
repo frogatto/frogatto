@@ -21,6 +21,8 @@
 namespace {
 typedef std::map<std::string,const_level_object_ptr> tiles_map;
 tiles_map tiles_cache;
+
+const int BaseTileSize = 16;
 }
 
 bool level_tile::is_solid(int xpos, int ypos) const
@@ -78,7 +80,7 @@ void set_alpha_for_transparent_colors_in_rgba_surface(SDL_Surface* s, int option
 void create_compiled_tiles_image()
 {
 	//the number of tiles that can fit in a tiesheet.
-	const int TilesInSheet = (1024*1024)/(16*16);
+	const int TilesInSheet = (1024*1024)/(BaseTileSize*BaseTileSize);
 
 	//calculate how many tiles are in each zorder
 	std::map<int, int> zorder_to_num_tiles;
@@ -115,7 +117,7 @@ void create_compiled_tiles_image()
 	std::cerr << "NUM_TILES: " << tile_nodes_to_zorders.size() << " / " << TilesInSheet << "\n";
 
 
-	graphics::surface s(SDL_CreateRGBSurface(SDL_SWSURFACE, 1024, (compiled_tile_ids.size()/64 + 1)*16, 32, SURFACE_MASK));
+	graphics::surface s(SDL_CreateRGBSurface(SDL_SWSURFACE, 1024, (compiled_tile_ids.size()/64 + 1)*BaseTileSize, 32, SURFACE_MASK));
 	for(std::map<tile_id, int>::const_iterator itor = compiled_tile_ids.begin();
 	    itor != compiled_tile_ids.end(); ++itor) {
 		const tile_id& tile_info = itor->first;
@@ -131,16 +133,16 @@ void create_compiled_tiles_image()
 		}
 
 		SDL_SetAlpha(src.get(), 0, SDL_ALPHA_OPAQUE);
-		const int width = std::max<int>(src->w, src->h)/16;
+		const int width = std::max<int>(src->w, src->h)/BaseTileSize;
 
-		const int src_x = (tile_pos%width) * 16;
-		const int src_y = (tile_pos/width) * 16;
+		const int src_x = (tile_pos%width) * BaseTileSize;
+		const int src_y = (tile_pos/width) * BaseTileSize;
 		
-		const int dst_x = (itor->second%64) * 16;
-		const int dst_y = (itor->second/64) * 16;
+		const int dst_x = (itor->second%64) * BaseTileSize;
+		const int dst_y = (itor->second/64) * BaseTileSize;
 
-		SDL_Rect src_rect = { src_x, src_y, 16, 16 };
-		SDL_Rect dst_rect = { dst_x, dst_y, 16, 16 };
+		SDL_Rect src_rect = { src_x, src_y, BaseTileSize, BaseTileSize };
+		SDL_Rect dst_rect = { dst_x, dst_y, BaseTileSize, BaseTileSize };
 
 		SDL_BlitSurface(src.get(), &src_rect, s.get(), &dst_rect);
 	}
@@ -164,8 +166,8 @@ void create_compiled_tiles_image()
 			ASSERT_EQ(tiles_str[0], '+');
 
 			const int tile_num = atoi(tiles_str.c_str() + 1);
-			const int src_x = (tile_num%64) * 16;
-			const int src_y = (tile_num/64) * 16;
+			const int src_x = (tile_num%64) * BaseTileSize;
+			const int src_y = (tile_num/64) * BaseTileSize;
 
 			int dst_tile;
 			if(dst_index_map.count(tile_num)) {
@@ -174,11 +176,11 @@ void create_compiled_tiles_image()
 				dst_tile = sheet_next_image_index[sheet]++;
 				dst_index_map[tile_num] = dst_tile;
 
-				const int dst_x = (dst_tile%64) * 16;
-				const int dst_y = (dst_tile/64) * 16;
+				const int dst_x = (dst_tile%64) * BaseTileSize;
+				const int dst_y = (dst_tile/64) * BaseTileSize;
 
-				SDL_Rect src_rect = { src_x, src_y, 16, 16 };
-				SDL_Rect dst_rect = { dst_x, dst_y, 16, 16 };
+				SDL_Rect src_rect = { src_x, src_y, BaseTileSize, BaseTileSize };
+				SDL_Rect dst_rect = { dst_x, dst_y, BaseTileSize, BaseTileSize };
 
 				SDL_BlitSurface(s.get(), &src_rect, sheets[sheet].get(), &dst_rect);
 			}
@@ -251,7 +253,7 @@ level_object::level_object(variant node)
     traction_(node["traction"].as_int(100)),
     damage_(node["damage"].as_int(0)),
 	opaque_(node["opaque"].as_bool(false)),
-	draw_area_(0, 0, 16, 16),
+	draw_area_(0, 0, BaseTileSize, BaseTileSize),
 	tile_index_(-1),
 	palettes_recognized_(current_palette_set),
 	current_palettes_(0)
@@ -297,8 +299,8 @@ level_object::level_object(variant node)
 			tiles_.push_back(strtol(variation.c_str()+1, NULL, 10));
 		} else {
 			const int width = std::max<int>(t_.width(), t_.height());
-			assert(width%16 == 0);
-			const int base = std::min<int>(32, width/16);
+			assert(width%BaseTileSize == 0);
+			const int base = std::min<int>(32, width/BaseTileSize);
 			tiles_.push_back((base == 1) ? 0 : strtol(variation.c_str(), NULL, base));
 		}
 	}
@@ -681,12 +683,12 @@ void level_object::write_compiled_index(char* buf) const
 
 int level_object::width() const
 {
-	return 32;
+	return BaseTileSize*2;
 }
 
 int level_object::height() const
 {
-	return 32;
+	return BaseTileSize*2;
 }
 
 bool level_object::is_solid(int x, int y) const
@@ -762,7 +764,7 @@ bool level_object::calculate_draw_area()
 		draw_area_ = rect_union(draw_area_, get_tile_non_alpha_area(t_, tile));
 	}
 
-	return draw_area_ != rect(0, 0, 16, 16);
+	return draw_area_ != rect(0, 0, BaseTileSize, BaseTileSize);
 }
 
 void level_object::set_palette(unsigned int palette)

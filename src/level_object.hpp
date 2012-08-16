@@ -26,6 +26,10 @@ struct level_tile {
 	bool draw_disabled;
 };
 
+struct hex_level_tile : public level_tile {
+	int w, h;
+};
+
 struct level_tile_zorder_comparer {
 	bool operator()(const level_tile& a, const level_tile& b) const {
 		return a.zorder < b.zorder;

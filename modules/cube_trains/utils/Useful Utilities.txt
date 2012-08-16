@@ -3,3 +3,8 @@
 ① Universal Animation Modifier:
 This adds a little base tag to every cube trains object which sets it's scale.
 ./game --utility=query modules/cube_trains 'map(filter(visit_objects(doc), value.animation != null), set(value.animation, [{"@base": true, scale: 1}] + if(is_list(value.animation), value.animation, [value.animation])))'
+
+= Git =
+
+① Search the commit logs for a word, for a given file.
+git log --grep=word -- whatever/path

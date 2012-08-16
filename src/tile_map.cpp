@@ -10,6 +10,7 @@
 #include "formula.hpp"
 #include "formula_callable.hpp"
 #include "formula_function.hpp"
+#include "hex_tile_pattern.hpp"
 #include "json_parser.hpp"
 #include "multi_tile_pattern.hpp"
 #include "point_map.hpp"
@@ -241,6 +242,8 @@ void tile_map::load(const std::string& fname, const std::string& tile_id)
 	}
 
 	multi_tile_pattern::load(node, tile_id);
+
+	hex::tile_pattern::load(node, tile_id);
 
 	++current_patterns_version;
 }
@@ -1073,4 +1076,14 @@ int tile_map::get_pattern_index_entry(const tile_string& str) {
 	pattern_index_.back().str = str;
 	build_patterns();
 	return index;
+}
+
+hex_tile_map::hex_tile_map(variant node)
+	: tile_map(node)
+{
+
+}
+
+void hex_tile_map::build_tiles(std::vector<hex_level_tile>* tiles, const rect* r) const
+{
 }
