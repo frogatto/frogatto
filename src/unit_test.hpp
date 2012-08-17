@@ -62,6 +62,9 @@ std::string run_benchmark(const std::string& name, BenchmarkTest fn);
 
 #define UTILITY(name) void UTILITY_##name(const std::vector<std::string>& args)
 
+#define COMMAND_LINE_UTILITY(name) \
+	void UTILITY_##name(const std::vector<std::string>& args)
+
 #else
 
 #define UNIT_TEST(name) \
