@@ -24,25 +24,25 @@ std::set<variant*> callable_variants_loading, delayed_variants_loading;
 
 std::string variant_type_to_string(variant::TYPE type) {
 	switch(type) {
-	case variant::TYPE_NULL: 
+	case variant::VARIANT_TYPE_NULL: 
 		return "null";
-	case variant::TYPE_BOOL: 
+	case variant::VARIANT_TYPE_BOOL: 
 		return "bool";
-	case variant::TYPE_INT: 
+	case variant::VARIANT_TYPE_INT: 
 		return "int";
-	case variant::TYPE_DECIMAL: 
+	case variant::VARIANT_TYPE_DECIMAL: 
 		return "decimal";
-	case variant::TYPE_CALLABLE: 
+	case variant::VARIANT_TYPE_CALLABLE: 
 		return "object";
-	case variant::TYPE_CALLABLE_LOADING: 
+	case variant::VARIANT_TYPE_CALLABLE_LOADING: 
 		return "object_loading";
-	case variant::TYPE_LIST: 
+	case variant::VARIANT_TYPE_LIST: 
 		return "list";
-	case variant::TYPE_STRING: 
+	case variant::VARIANT_TYPE_STRING: 
 		return "string";
-	case variant::TYPE_MAP: 
+	case variant::VARIANT_TYPE_MAP: 
 		return "map";
-	case variant::TYPE_FUNCTION: 
+	case variant::VARIANT_TYPE_FUNCTION: 
 		return "function";
 	default:
 		assert(false);
@@ -232,33 +232,33 @@ struct variant_delayed {
 void variant::increment_refcount()
 {
 	switch(type_) {
-	case TYPE_LIST:
+	case VARIANT_TYPE_LIST:
 		++list_->refcount;
 		break;
-	case TYPE_STRING:
+	case VARIANT_TYPE_STRING:
 		++string_->refcount;
 		break;
-	case TYPE_MAP:
+	case VARIANT_TYPE_MAP:
 		++map_->refcount;
 		break;
-	case TYPE_CALLABLE:
+	case VARIANT_TYPE_CALLABLE:
 		intrusive_ptr_add_ref(callable_);
 		break;
-	case TYPE_CALLABLE_LOADING:
+	case VARIANT_TYPE_CALLABLE_LOADING:
 		callable_variants_loading.insert(this);
 		break;
-	case TYPE_FUNCTION:
+	case VARIANT_TYPE_FUNCTION:
 		++fn_->refcount;
 		break;
-	case TYPE_DELAYED:
+	case VARIANT_TYPE_DELAYED:
 		delayed_variants_loading.insert(this);
 		++delayed_->refcount;
 		break;
 
 	// These are not used here, add them to silence a compiler warning.
-	case TYPE_NULL:
-	case TYPE_INT :
-	case TYPE_BOOL :
+	case VARIANT_TYPE_NULL:
+	case VARIANT_TYPE_INT :
+	case VARIANT_TYPE_BOOL :
 		break;
 	}
 }
@@ -266,33 +266,33 @@ void variant::increment_refcount()
 void variant::release()
 {
 	switch(type_) {
-	case TYPE_LIST:
+	case VARIANT_TYPE_LIST:
 		if(--list_->refcount == 0) {
 			delete list_;
 		}
 		break;
-	case TYPE_STRING:
+	case VARIANT_TYPE_STRING:
 		if(--string_->refcount == 0) {
 			delete string_;
 		}
 		break;
-	case TYPE_MAP:
+	case VARIANT_TYPE_MAP:
 		if(--map_->refcount == 0) {
 			delete map_;
 		}
 		break;
-	case TYPE_CALLABLE:
+	case VARIANT_TYPE_CALLABLE:
 		intrusive_ptr_release(callable_);
 		break;
-	case TYPE_CALLABLE_LOADING:
+	case VARIANT_TYPE_CALLABLE_LOADING:
 		callable_variants_loading.erase(this);
 		break;
-	case TYPE_FUNCTION:
+	case VARIANT_TYPE_FUNCTION:
 		if(--fn_->refcount == 0) {
 			delete fn_;
 		}
 		break;
-	case TYPE_DELAYED:
+	case VARIANT_TYPE_DELAYED:
 		delayed_variants_loading.erase(this);
 		if(--delayed_->refcount == 0) {
 			delete delayed_;
@@ -300,9 +300,9 @@ void variant::release()
 		break;
 
 	// These are not used here, add them to silence a compiler warning.
-	case TYPE_NULL:
-	case TYPE_INT:
-	case TYPE_BOOL:
+	case VARIANT_TYPE_NULL:
+	case VARIANT_TYPE_INT:
+	case VARIANT_TYPE_BOOL:
 		break;
 	}
 }
@@ -310,9 +310,9 @@ void variant::release()
 void variant::set_debug_info(const debug_info& info)
 {
 	switch(type_) {
-	case TYPE_LIST:
-	case TYPE_STRING:
-	case TYPE_MAP:
+	case VARIANT_TYPE_LIST:
+	case VARIANT_TYPE_STRING:
+	case VARIANT_TYPE_MAP:
 		*debug_info_ = info;
 		break;
 	}
@@ -321,9 +321,9 @@ void variant::set_debug_info(const debug_info& info)
 const variant::debug_info* variant::get_debug_info() const
 {
 	switch(type_) {
-	case TYPE_LIST:
-	case TYPE_STRING:
-	case TYPE_MAP:
+	case VARIANT_TYPE_LIST:
+	case VARIANT_TYPE_STRING:
+	case VARIANT_TYPE_MAP:
 		if(debug_info_->filename) {
 			return debug_info_;
 		}
@@ -336,7 +336,7 @@ const variant::debug_info* variant::get_debug_info() const
 variant variant::create_delayed(game_logic::const_formula_ptr f, game_logic::const_formula_callable_ptr callable)
 {
 	variant v;
-	v.type_ = TYPE_DELAYED;
+	v.type_ = VARIANT_TYPE_DELAYED;
 	v.delayed_ = new variant_delayed;
 	v.delayed_->fn = f;
 	v.delayed_->callable = callable;
@@ -359,17 +359,17 @@ void variant::resolve_delayed()
 }
 
 variant::variant(const game_logic::formula_callable* callable)
-	: type_(TYPE_CALLABLE), callable_(callable)
+	: type_(VARIANT_TYPE_CALLABLE), callable_(callable)
 {
 	if(callable == NULL) {
-		type_ = TYPE_NULL;
+		type_ = VARIANT_TYPE_NULL;
 		return;
 	}
 	increment_refcount();
 }
 
 variant::variant(std::vector<variant>* array)
-    : type_(TYPE_LIST)
+    : type_(VARIANT_TYPE_LIST)
 {
 	assert(array);
 	list_ = new variant_list;
@@ -380,10 +380,10 @@ variant::variant(std::vector<variant>* array)
 }
 
 variant::variant(const char* s)
-   : type_(TYPE_STRING)
+   : type_(VARIANT_TYPE_STRING)
 {
 	if(s == NULL) {
-		type_ = TYPE_NULL;
+		type_ = VARIANT_TYPE_NULL;
 		return;
 	}
 	string_ = new variant_string;
@@ -392,7 +392,7 @@ variant::variant(const char* s)
 }
 
 variant::variant(const std::string& str)
-	: type_(TYPE_STRING)
+	: type_(VARIANT_TYPE_STRING)
 {
 	string_ = new variant_string;
 	string_->str = str;
@@ -412,7 +412,7 @@ variant variant::create_translated_string(const std::string& str, const std::str
 }
 
 variant::variant(std::map<variant,variant>* map)
-    : type_(TYPE_MAP)
+    : type_(VARIANT_TYPE_MAP)
 {
 	for(std::map<variant, variant>::const_iterator i = map->begin(); i != map->end(); ++i) {
 		if(i->first.is_bool()) {
@@ -428,7 +428,7 @@ variant::variant(std::map<variant,variant>* map)
 }
 
 variant::variant(game_logic::const_formula_ptr fml, const std::vector<std::string>& args, const game_logic::formula_callable& callable, int base_slot, const std::vector<variant>& default_args)
-  : type_(TYPE_FUNCTION)
+  : type_(VARIANT_TYPE_FUNCTION)
 {
 	fn_ = new variant_fn;
 	if(args.empty()) {
@@ -451,13 +451,13 @@ variant::variant(game_logic::const_formula_ptr fml, const std::vector<std::strin
 const variant& variant::operator=(const variant& v)
 {
 	if(&v != this) {
-		if(type_ > TYPE_INT) {
+		if(type_ > VARIANT_TYPE_INT) {
 			release();
 		}
 
 		type_ = v.type_;
 		value_ = v.value_;
-		if(type_ > TYPE_INT) {
+		if(type_ > VARIANT_TYPE_INT) {
 			increment_refcount();
 		}
 	}
@@ -466,12 +466,12 @@ const variant& variant::operator=(const variant& v)
 
 const variant& variant::operator[](size_t n) const
 {
-	if(type_ == TYPE_CALLABLE) {
+	if(type_ == VARIANT_TYPE_CALLABLE) {
 		assert(n == 0);
 		return *this;
 	}
 
-	must_be(TYPE_LIST);
+	must_be(VARIANT_TYPE_LIST);
 	assert(list_);
 	if(n >= list_->size()) {
 		generate_error(formatter() << "invalid index of " << n << " into " << write_json());
@@ -482,12 +482,12 @@ const variant& variant::operator[](size_t n) const
 
 const variant& variant::operator[](const variant v) const
 {
-	if(type_ == TYPE_CALLABLE) {
+	if(type_ == VARIANT_TYPE_CALLABLE) {
 		assert(v.as_int() == 0);
 		return *this;
 	}
 
-	if(type_ == TYPE_MAP) {
+	if(type_ == VARIANT_TYPE_MAP) {
 		assert(map_);
 		std::map<variant,variant>::const_iterator i = map_->elements.find(v);
 		if (i == map_->elements.end())
@@ -500,7 +500,7 @@ const variant& variant::operator[](const variant v) const
 
 		last_query_map = *this;
 		return i->second;
-	} else if(type_ == TYPE_LIST) {
+	} else if(type_ == VARIANT_TYPE_LIST) {
 		return operator[](v.as_int());
 	} else {
 		const debug_info* info = get_debug_info();
@@ -520,7 +520,7 @@ const variant& variant::operator[](const std::string& key) const
 
 bool variant::has_key(const variant& key) const
 {
-	if(type_ != TYPE_MAP) {
+	if(type_ != VARIANT_TYPE_MAP) {
 		return false;
 	}
 
@@ -539,7 +539,7 @@ bool variant::has_key(const std::string& key) const
 
 variant variant::get_keys() const
 {
-	must_be(TYPE_MAP);
+	must_be(VARIANT_TYPE_MAP);
 	assert(map_);
 	std::vector<variant> tmp;
 	for(std::map<variant,variant>::const_iterator i=map_->elements.begin(); i != map_->elements.end(); ++i) {
@@ -550,7 +550,7 @@ variant variant::get_keys() const
 
 variant variant::get_values() const
 {
-	must_be(TYPE_MAP);
+	must_be(VARIANT_TYPE_MAP);
 	assert(map_);
 	std::vector<variant> tmp;
 	for(std::map<variant,variant>::const_iterator i=map_->elements.begin(); i != map_->elements.end(); ++i) {
@@ -561,14 +561,14 @@ variant variant::get_values() const
 
 size_t variant::num_elements() const
 {
-	if (type_ == TYPE_NULL){
+	if (type_ == VARIANT_TYPE_NULL){
 		return 0;
-	} else if(type_ == TYPE_CALLABLE) {
+	} else if(type_ == VARIANT_TYPE_CALLABLE) {
 		return 1;
-	} else if (type_ == TYPE_LIST) {
+	} else if (type_ == VARIANT_TYPE_LIST) {
 		assert(list_);
 		return list_->size();
-	} else if (type_ == TYPE_MAP) {
+	} else if (type_ == VARIANT_TYPE_MAP) {
 		assert(map_);
 		return map_->elements.size();
 	} else {
@@ -590,7 +590,7 @@ variant variant::get_list_slice(int begin, int end) const
 		return result;
 	}
 
-	must_be(TYPE_LIST);
+	must_be(VARIANT_TYPE_LIST);
 
 	if(begin < 0 || end > list_->size()) {
 		generate_error(formatter() << "ILLEGAL INDEX INTO LIST WHEN SLICING: " << begin << ", " << end << " / " << list_->size());
@@ -606,7 +606,7 @@ variant variant::get_list_slice(int begin, int end) const
 
 variant variant::operator()(const std::vector<variant>& args) const
 {
-	must_be(TYPE_FUNCTION);
+	must_be(VARIANT_TYPE_FUNCTION);
 	boost::intrusive_ptr<game_logic::slot_formula_callable> callable = new game_logic::slot_formula_callable;
 	if(fn_->callable) {
 		callable->set_fallback(fn_->callable);
@@ -650,8 +650,8 @@ variant variant::get_member(const std::string& str) const
 bool variant::as_bool(bool default_value) const
 {
 	switch(type_) {
-	case TYPE_INT: return int_value_ != 0;
-	case TYPE_BOOL: return bool_value_;
+	case VARIANT_TYPE_INT: return int_value_ != 0;
+	case VARIANT_TYPE_BOOL: return bool_value_;
 	default: return default_value;
 	}
 }
@@ -660,25 +660,25 @@ bool variant::as_bool() const
 {
 	bool default_value = false;
 	switch(type_) {
-	case TYPE_NULL:
+	case VARIANT_TYPE_NULL:
 		return default_value;
-	case TYPE_BOOL:
+	case VARIANT_TYPE_BOOL:
 		return bool_value_;
-	case TYPE_INT:
+	case VARIANT_TYPE_INT:
 		return int_value_ != 0;
-	case TYPE_DECIMAL:
+	case VARIANT_TYPE_DECIMAL:
 		return decimal_value_ != 0;
-	case TYPE_CALLABLE_LOADING:
+	case VARIANT_TYPE_CALLABLE_LOADING:
 		return true;
-	case TYPE_CALLABLE:
+	case VARIANT_TYPE_CALLABLE:
 		return callable_ != NULL;
-	case TYPE_LIST:
+	case VARIANT_TYPE_LIST:
 		return !list_->size() == 0;
-	case TYPE_MAP:
+	case VARIANT_TYPE_MAP:
 		return !map_->elements.empty();
-	case TYPE_STRING:
+	case VARIANT_TYPE_STRING:
 		return !string_->str.empty();
-	case TYPE_FUNCTION:
+	case VARIANT_TYPE_FUNCTION:
 		return true;
 	default:
 		assert(false);
@@ -706,10 +706,10 @@ std::vector<variant> variant::as_list() const
 std::vector<std::string> variant::as_list_string() const
 {
 	std::vector<std::string> result;
-	must_be(TYPE_LIST);
+	must_be(VARIANT_TYPE_LIST);
 	result.reserve(list_->size());
 	for(int n = 0; n != list_->size(); ++n) {
-		list_->begin[n].must_be(TYPE_STRING);
+		list_->begin[n].must_be(VARIANT_TYPE_STRING);
 		result.push_back(list_->begin[n].as_string());
 	}
 
@@ -728,7 +728,7 @@ std::vector<std::string> variant::as_list_string_optional() const
 std::vector<int> variant::as_list_int() const
 {
 	std::vector<int> result;
-	must_be(TYPE_LIST);
+	must_be(VARIANT_TYPE_LIST);
 	result.reserve(list_->size());
 	for(int n = 0; n != list_->size(); ++n) {
 		result.push_back(list_->begin[n].as_int());
@@ -740,7 +740,7 @@ std::vector<int> variant::as_list_int() const
 std::vector<decimal> variant::as_list_decimal() const
 {
 	std::vector<decimal> result;
-	must_be(TYPE_LIST);
+	must_be(VARIANT_TYPE_LIST);
 	result.reserve(list_->size());
 	for(int n = 0; n != list_->size(); ++n) {
 		result.push_back(list_->begin[n].as_decimal());
@@ -841,7 +841,7 @@ variant variant::bind_closure(const game_logic::formula_callable* callable)
 	}
 
 	variant result;
-	result.type_ = TYPE_FUNCTION;
+	result.type_ = VARIANT_TYPE_FUNCTION;
 	result.fn_ = new variant_fn(*fn_);
 	result.fn_->refcount = 1;
 	result.fn_->callable.reset(callable);
@@ -863,23 +863,23 @@ std::string variant::as_string_default(const char* default_value) const
 
 const std::string& variant::as_string() const
 {
-	must_be(TYPE_STRING);
+	must_be(VARIANT_TYPE_STRING);
 	assert(string_);
 	return string_->str;
 }
 
 variant variant::operator+(const variant& v) const
 {
-	if(type_ == TYPE_INT && v.type_ == TYPE_INT) {
+	if(type_ == VARIANT_TYPE_INT && v.type_ == VARIANT_TYPE_INT) {
 		//strictly an optimization -- this is handled below, but the case
 		//of adding two integers is the most common so we want it to be fast.
 		return variant(int_value_ + v.int_value_);
 	}
 
-	if(type_ == TYPE_STRING) {
-		if(v.type_ == TYPE_MAP) {
+	if(type_ == VARIANT_TYPE_STRING) {
+		if(v.type_ == VARIANT_TYPE_MAP) {
 			return variant(as_string() + v.as_string());
-		} else if(v.type_ == TYPE_STRING) {
+		} else if(v.type_ == VARIANT_TYPE_STRING) {
 			return variant(as_string() + v.as_string());
 		}
 
@@ -888,31 +888,31 @@ variant variant::operator+(const variant& v) const
 		return variant(as_string() + s);
 	}
 
-	if(v.type_ == TYPE_STRING) {
+	if(v.type_ == VARIANT_TYPE_STRING) {
 		std::string s;
 		serialize_to_string(s);
 		return variant(s + v.as_string());
 	}
-	if(type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL) {
+	if(type_ == VARIANT_TYPE_DECIMAL || v.type_ == VARIANT_TYPE_DECIMAL) {
 		return variant(as_decimal() + v.as_decimal());
 	}
 
-	if(type_ == TYPE_INT) {
+	if(type_ == VARIANT_TYPE_INT) {
 		return variant(int_value_ + v.as_int());
 	}
 
-	if(type_ == TYPE_BOOL) {
+	if(type_ == VARIANT_TYPE_BOOL) {
 		return variant(as_int() + v.as_int());
 	}
 
-	if(type_ == TYPE_NULL) {
+	if(type_ == VARIANT_TYPE_NULL) {
 		return v;
-	} else if(v.type_ == TYPE_NULL) {
+	} else if(v.type_ == VARIANT_TYPE_NULL) {
 		return *this;
 	}
 
-	if(type_ == TYPE_LIST) {
-		if(v.type_ == TYPE_LIST) {
+	if(type_ == VARIANT_TYPE_LIST) {
+		if(v.type_ == VARIANT_TYPE_LIST) {
 			const size_t new_size = list_->size() + v.list_->size();
 
 			bool adopt_list = false;
@@ -942,8 +942,8 @@ variant variant::operator+(const variant& v) const
 			return result;
 		}
 	}
-	if(type_ == TYPE_MAP) {
-		if(v.type_ == TYPE_MAP) {
+	if(type_ == VARIANT_TYPE_MAP) {
+		if(v.type_ == VARIANT_TYPE_MAP) {
 			std::map<variant,variant> res(map_->elements);
 
 			for(std::map<variant,variant>::const_iterator i = v.map_->elements.begin(); i != v.map_->elements.end(); ++i) {
@@ -959,7 +959,7 @@ variant variant::operator+(const variant& v) const
 
 variant variant::operator-(const variant& v) const
 {
-	if(type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL) {
+	if(type_ == VARIANT_TYPE_DECIMAL || v.type_ == VARIANT_TYPE_DECIMAL) {
 		return variant(as_decimal() - v.as_decimal());
 	}
 
@@ -968,11 +968,11 @@ variant variant::operator-(const variant& v) const
 
 variant variant::operator*(const variant& v) const
 {
-	if(type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL) {
+	if(type_ == VARIANT_TYPE_DECIMAL || v.type_ == VARIANT_TYPE_DECIMAL) {
 		return variant(as_decimal() * v.as_decimal());
 	}
 
-	if(type_ == TYPE_LIST) {
+	if(type_ == VARIANT_TYPE_LIST) {
 		int ncopies = v.as_int();
 		if(ncopies < 0) {
 			ncopies *= -1;
@@ -993,7 +993,7 @@ variant variant::operator*(const variant& v) const
 
 variant variant::operator/(const variant& v) const
 {
-	if(type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL) {
+	if(type_ == VARIANT_TYPE_DECIMAL || v.type_ == VARIANT_TYPE_DECIMAL) {
 		if(v.as_decimal().value() == 0) {
 			generate_error((formatter() << "divide by zero error").str());
 		}
@@ -1023,7 +1023,7 @@ variant variant::operator%(const variant& v) const
 
 variant variant::operator^(const variant& v) const
 {
-	if( type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL ) {
+	if( type_ == VARIANT_TYPE_DECIMAL || v.type_ == VARIANT_TYPE_DECIMAL ) {
 		double res = pow( as_decimal().value()/double(VARIANT_DECIMAL_PRECISION),
 		                v.as_decimal().value()/double(VARIANT_DECIMAL_PRECISION));		
 		res *= DECIMAL_PRECISION;
@@ -1039,7 +1039,7 @@ variant variant::operator^(const variant& v) const
 
 variant variant::operator-() const
 {
-	if(type_ == TYPE_DECIMAL) {
+	if(type_ == VARIANT_TYPE_DECIMAL) {
 		return variant(-decimal_value_, variant::DECIMAL_VARIANT);
 	}
 
@@ -1049,7 +1049,7 @@ variant variant::operator-() const
 bool variant::operator==(const variant& v) const
 {
 	if(type_ != v.type_) {
-		if(type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL) {
+		if(type_ == VARIANT_TYPE_DECIMAL || v.type_ == VARIANT_TYPE_DECIMAL) {
 			return as_decimal() == v.as_decimal();
 		}
 
@@ -1057,27 +1057,27 @@ bool variant::operator==(const variant& v) const
 	}
 
 	switch(type_) {
-	case TYPE_NULL: {
+	case VARIANT_TYPE_NULL: {
 		return v.is_null();
 	}
 
-	case TYPE_STRING: {
+	case VARIANT_TYPE_STRING: {
 		return string_->str == v.string_->str;
 	}
 
-	case TYPE_BOOL: {
+	case VARIANT_TYPE_BOOL: {
 		return bool_value_ == v.bool_value_;
 	}
 
-	case TYPE_INT: {
+	case VARIANT_TYPE_INT: {
 		return int_value_ == v.int_value_;
 	}
 
-	case TYPE_DECIMAL: {
+	case VARIANT_TYPE_DECIMAL: {
 		return decimal_value_ == v.decimal_value_;
 	}
 
-	case TYPE_LIST: {
+	case VARIANT_TYPE_LIST: {
 		if(num_elements() != v.num_elements()) {
 			return false;
 		}
@@ -1091,18 +1091,18 @@ bool variant::operator==(const variant& v) const
 		return true;
 	}
 
-	case TYPE_MAP: {
+	case VARIANT_TYPE_MAP: {
 		return map_->elements == v.map_->elements;
 	}
 
-	case TYPE_CALLABLE_LOADING: {
+	case VARIANT_TYPE_CALLABLE_LOADING: {
 		return false;
 	}
 
-	case TYPE_CALLABLE: {
+	case VARIANT_TYPE_CALLABLE: {
 		return callable_->equals(v.callable_);
 	}
-	case TYPE_FUNCTION: {
+	case VARIANT_TYPE_FUNCTION: {
 		return fn_ == v.fn_;
 	}
 	}
@@ -1119,7 +1119,7 @@ bool variant::operator!=(const variant& v) const
 bool variant::operator<=(const variant& v) const
 {
 	if(type_ != v.type_) {
-		if(type_ == TYPE_DECIMAL || v.type_ == TYPE_DECIMAL) {
+		if(type_ == VARIANT_TYPE_DECIMAL || v.type_ == VARIANT_TYPE_DECIMAL) {
 			return as_decimal() <= v.as_decimal();
 		}
 
@@ -1127,27 +1127,27 @@ bool variant::operator<=(const variant& v) const
 	}
 
 	switch(type_) {
-	case TYPE_NULL: {
+	case VARIANT_TYPE_NULL: {
 		return true;
 	}
 
-	case TYPE_STRING: {
+	case VARIANT_TYPE_STRING: {
 		return string_->str <= v.string_->str;
 	}
 
-	case TYPE_BOOL: {
+	case VARIANT_TYPE_BOOL: {
 		return bool_value_ <= v.bool_value_;
 	}
 
-	case TYPE_INT: {
+	case VARIANT_TYPE_INT: {
 		return int_value_ <= v.int_value_;
 	}
 
-	case TYPE_DECIMAL: {
+	case VARIANT_TYPE_DECIMAL: {
 		return decimal_value_ <= v.decimal_value_;
 	}
 
-	case TYPE_LIST: {
+	case VARIANT_TYPE_LIST: {
 		for(size_t n = 0; n != num_elements() && n != v.num_elements(); ++n) {
 			if((*this)[n] < v[n]) {
 				return true;
@@ -1159,15 +1159,15 @@ bool variant::operator<=(const variant& v) const
 		return num_elements() <= v.num_elements();
 	}
 
-	case TYPE_MAP: {
+	case VARIANT_TYPE_MAP: {
 		return map_->elements <= v.map_->elements;
 	}
 
-	case TYPE_CALLABLE_LOADING: {
+	case VARIANT_TYPE_CALLABLE_LOADING: {
 		return false;
 	}
 
-	case TYPE_CALLABLE: {
+	case VARIANT_TYPE_CALLABLE: {
 		return !v.callable_->less(callable_);
 	}
 	}
@@ -1234,26 +1234,26 @@ void variant::throw_type_error(variant::TYPE t) const
 void variant::serialize_to_string(std::string& str) const
 {
 	switch(type_) {
-	case TYPE_NULL:
+	case VARIANT_TYPE_NULL:
 		str += "null";
 		break;
-	case TYPE_BOOL:
+	case VARIANT_TYPE_BOOL:
 		str += bool_value_ ? "true" : "false";
 		break;
-	case TYPE_INT:
+	case VARIANT_TYPE_INT:
 		str += boost::lexical_cast<std::string>(int_value_);
 		break;
-	case TYPE_DECIMAL: {
+	case VARIANT_TYPE_DECIMAL: {
 		std::ostringstream s;
 		s << decimal::from_raw_value(decimal_value_);
 		str += s.str();
 		break;
 	}
-	case TYPE_CALLABLE_LOADING: {
+	case VARIANT_TYPE_CALLABLE_LOADING: {
 		ASSERT_LOG(false, "TRIED TO SERIALIZE A VARIANT LOADING");
 		break;
 	}
-	case TYPE_CALLABLE: {
+	case VARIANT_TYPE_CALLABLE: {
 		const game_logic::wml_serializable_formula_callable* obj = try_convert<game_logic::wml_serializable_formula_callable>();
 		if(obj) {
 			//we have an object that is to be serialized into WML. However,
@@ -1269,7 +1269,7 @@ void variant::serialize_to_string(std::string& str) const
 		callable_->serialize(str);
 		break;
 	}
-	case TYPE_LIST: {
+	case VARIANT_TYPE_LIST: {
 		str += "[";
 		bool first_time = true;
 		for(size_t i=0; i < list_->size(); ++i) {
@@ -1283,7 +1283,7 @@ void variant::serialize_to_string(std::string& str) const
 		str += "]";
 		break;
 	}
-	case TYPE_MAP: {
+	case VARIANT_TYPE_MAP: {
 		str += "{";
 		bool first_time = true;
 		for(std::map<variant,variant>::const_iterator i=map_->elements.begin(); i != map_->elements.end(); ++i) {
@@ -1298,7 +1298,7 @@ void variant::serialize_to_string(std::string& str) const
 		str += "}";
 		break;
 	}
-	case TYPE_STRING: {
+	case VARIANT_TYPE_STRING: {
 		if( !string_->str.empty() ) {
 			if(string_->str[0] == '~' && string_->str[string_->str.length()-1] == '~') {
 				str += string_->str;
@@ -1315,7 +1315,7 @@ void variant::serialize_to_string(std::string& str) const
 		}
 		break;
 	}
-	case TYPE_FUNCTION:
+	case VARIANT_TYPE_FUNCTION:
 		fprintf(stderr, "ATTEMPT TO SERIALIZE FUNCTION: %s\n", fn_->fn->str().c_str());
 		assert(false);
 	default:
@@ -1339,7 +1339,7 @@ variant variant::create_variant_under_construction(intptr_t id)
 		return v;
 	}
 
-	v.type_ = TYPE_CALLABLE_LOADING;
+	v.type_ = VARIANT_TYPE_CALLABLE_LOADING;
 	v.callable_loading_ = id;
 	v.increment_refcount();
 	return v;
@@ -1349,16 +1349,16 @@ int variant::refcount() const
 {
 
 	switch(type_) {
-	case TYPE_LIST:
+	case VARIANT_TYPE_LIST:
 		return list_->refcount;
 		break;
-	case TYPE_STRING:
+	case VARIANT_TYPE_STRING:
 		return string_->refcount;
 		break;
-	case TYPE_MAP:
+	case VARIANT_TYPE_MAP:
 		return map_->refcount;
 		break;
-	case TYPE_CALLABLE:
+	case VARIANT_TYPE_CALLABLE:
 		return callable_->refcount();
 		break;
 	default:
@@ -1373,7 +1373,7 @@ void variant::make_unique()
 	}
 
 	switch(type_) {
-	case TYPE_LIST: {
+	case VARIANT_TYPE_LIST: {
 		list_->refcount--;
 		list_ = new variant_list(*list_);
 		foreach(variant& v, list_->elements) {
@@ -1381,12 +1381,12 @@ void variant::make_unique()
 		}
 		break;
 	}
-	case TYPE_STRING:
+	case VARIANT_TYPE_STRING:
 		string_->refcount--;
 		string_ = new variant_string(*string_);
 		string_->refcount = 1;
 		break;
-	case TYPE_MAP: {
+	case VARIANT_TYPE_MAP: {
 		std::map<variant,variant> m;
 		for(std::map<variant,variant>::const_iterator i = map_->elements.begin(); i != map_->elements.end(); ++i) {
 			variant key = i->first;
@@ -1413,22 +1413,22 @@ void variant::make_unique()
 std::string variant::string_cast() const
 {
 	switch(type_) {
-	case TYPE_NULL:
+	case VARIANT_TYPE_NULL:
 		return "null";
-	case TYPE_BOOL:
+	case VARIANT_TYPE_BOOL:
 		return bool_value_ ? "true" : "false";
-	case TYPE_INT:
+	case VARIANT_TYPE_INT:
 		return boost::lexical_cast<std::string>(int_value_);
-	case TYPE_DECIMAL: {
+	case VARIANT_TYPE_DECIMAL: {
 		std::string res;
 		serialize_to_string(res);
 		return res;
 	}
-	case TYPE_CALLABLE_LOADING:
+	case VARIANT_TYPE_CALLABLE_LOADING:
 		return "(object loading)";
-	case TYPE_CALLABLE:
+	case VARIANT_TYPE_CALLABLE:
 		return "(object)";
-	case TYPE_LIST: {
+	case VARIANT_TYPE_LIST: {
 		std::string res = "";
 		for(size_t i=0; i < list_->size(); ++i) {
 			const variant& var = list_->begin[i];
@@ -1441,7 +1441,7 @@ std::string variant::string_cast() const
 
 		return res;
 	}
-	case TYPE_MAP: {
+	case VARIANT_TYPE_MAP: {
 		std::string res = "";
 		for(std::map<variant,variant>::const_iterator i=map_->elements.begin(); i != map_->elements.end(); ++i) {
 			if(!res.empty()) {
@@ -1454,7 +1454,7 @@ std::string variant::string_cast() const
 		return res;
 	}
 
-	case TYPE_STRING:
+	case VARIANT_TYPE_STRING:
 		return string_->str;
 	default:
 		assert(false);
@@ -1471,19 +1471,19 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 
 	std::ostringstream s;
 	switch(type_) {
-	case TYPE_NULL:
+	case VARIANT_TYPE_NULL:
 		s << "null";
 		break;
-	case TYPE_BOOL:
+	case VARIANT_TYPE_BOOL:
 		s << (bool_value_ ? "true" : "false");
 		break;
-	case TYPE_INT:
+	case VARIANT_TYPE_INT:
 		s << int_value_;
 		break;
-	case TYPE_DECIMAL:
+	case VARIANT_TYPE_DECIMAL:
 		s << string_cast();
 		break;
-	case TYPE_LIST: {
+	case VARIANT_TYPE_LIST: {
 		s << "[";
 		for(size_t n = 0; n != num_elements(); ++n) {
 			if(n != 0) {
@@ -1495,13 +1495,13 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 		s << "]";
 		break;
 	}
-	case TYPE_CALLABLE_LOADING: {
+	case VARIANT_TYPE_CALLABLE_LOADING: {
 		char buf[64];
 		sprintf(buf, "(loading %x)", callable_loading_);
 		s << buf;
 	}
 
-	case TYPE_CALLABLE: {
+	case VARIANT_TYPE_CALLABLE: {
 		char buf[64];
 		sprintf(buf, "(%p)", callable_);
 		s << buf << "{";
@@ -1523,7 +1523,7 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 		s << "}";
 		break;
 	}
-	case TYPE_MAP: {
+	case VARIANT_TYPE_MAP: {
 		s << "{";
 		bool first_time = true;
 		for(std::map<variant,variant>::const_iterator i=map_->elements.begin(); i != map_->elements.end(); ++i) {
@@ -1538,7 +1538,7 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 		s << "}";
 		break;
 	}
-	case TYPE_STRING: {
+	case VARIANT_TYPE_STRING: {
 		s << "'" << string_->str << "'";
 		break;
 	}
@@ -1565,22 +1565,22 @@ std::string variant::write_json(bool pretty) const
 void variant::write_json(std::ostream& s) const
 {
 	switch(type_) {
-	case TYPE_NULL: {
+	case VARIANT_TYPE_NULL: {
 		s << "null";
 		return;
 	}
-	case TYPE_BOOL:
+	case VARIANT_TYPE_BOOL:
 		s << (bool_value_ ? "true" : "false");
 		break;
-	case TYPE_INT: {
+	case VARIANT_TYPE_INT: {
 		s << as_int();
 		return;
 	}
-	case TYPE_DECIMAL: {
+	case VARIANT_TYPE_DECIMAL: {
 		s << decimal::from_raw_value(decimal_value_);
 		return;
 	}
-	case TYPE_MAP: {
+	case VARIANT_TYPE_MAP: {
 		s << "{";
 		for(std::map<variant,variant>::const_iterator i = map_->elements.begin(); i != map_->elements.end(); ++i) {
 			if(i != map_->elements.begin()) {
@@ -1593,7 +1593,7 @@ void variant::write_json(std::ostream& s) const
 		s << "}";
 		return;
 	}
-	case TYPE_LIST: {
+	case VARIANT_TYPE_LIST: {
 		s << "[";
 
 		for(std::vector<variant>::const_iterator i = list_->begin;
@@ -1608,7 +1608,7 @@ void variant::write_json(std::ostream& s) const
 		s << "]";
 		return;
 	}
-	case TYPE_STRING: {
+	case VARIANT_TYPE_STRING: {
 		const std::string& str = string_->translated_from.empty() ? string_->str : string_->translated_from;
 		const char delim = string_->translated_from.empty() ? '"' : '~';
 		if(std::count(str.begin(), str.end(), '\\') || std::count(str.begin(), str.end(), delim)) {
@@ -1627,13 +1627,13 @@ void variant::write_json(std::ostream& s) const
 		}
 		return;
 	}
-	case TYPE_CALLABLE: {
+	case VARIANT_TYPE_CALLABLE: {
 		std::string str;
 		serialize_to_string(str);
 		s << "\"@eval " << str << "\"";
 		return;
 	}
-	case TYPE_FUNCTION: {
+	case VARIANT_TYPE_FUNCTION: {
 		s << "\"@eval ";
 
 		//Serialize the closure along with the object, if we can.
@@ -1679,7 +1679,7 @@ void variant::write_json(std::ostream& s) const
 void variant::write_json_pretty(std::ostream& s, std::string indent) const
 {
 	switch(type_) {
-	case TYPE_MAP: {
+	case VARIANT_TYPE_MAP: {
 		s << "{";
 		indent += "\t";
 		for(std::map<variant,variant>::const_iterator i = map_->elements.begin(); i != map_->elements.end(); ++i) {
@@ -1694,7 +1694,7 @@ void variant::write_json_pretty(std::ostream& s, std::string indent) const
 		s << "\n" << indent << "}";
 		return;
 	}
-	case TYPE_LIST: {
+	case VARIANT_TYPE_LIST: {
 		bool found_non_scalar = false;
 		for(std::vector<variant>::const_iterator i = list_->begin;
 		    i != list_->end; ++i) {
@@ -1756,7 +1756,7 @@ std::ostream& operator<<(std::ostream& os, const variant& v)
 
 std::pair<variant*,variant*> variant::range() const
 {
-	if(type_ == TYPE_LIST) {
+	if(type_ == VARIANT_TYPE_LIST) {
 		return std::pair<variant*,variant*>(&(*list_->begin), &(*list_->end));
 	}
 	variant v;

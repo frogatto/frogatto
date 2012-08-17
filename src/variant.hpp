@@ -56,18 +56,18 @@ class variant {
 public:
 	enum DECIMAL_VARIANT_TYPE { DECIMAL_VARIANT };
 
-	static variant from_bool(bool b) { variant v; v.type_ = TYPE_BOOL; v.bool_value_ = b; return v; }
+	static variant from_bool(bool b) { variant v; v.type_ = VARIANT_TYPE_BOOL; v.bool_value_ = b; return v; }
 
 	static variant create_delayed(game_logic::const_formula_ptr f, boost::intrusive_ptr<const game_logic::formula_callable> callable);
 	static void resolve_delayed();
 
-	variant() : type_(TYPE_NULL), int_value_(0) {}
-	explicit variant(int n) : type_(TYPE_INT), int_value_(n) {}
-	explicit variant(unsigned int n) : type_(TYPE_INT), int_value_(n) {}
-	explicit variant(long unsigned int n) : type_(TYPE_INT), int_value_(n) {}
-	explicit variant(decimal d) : type_(TYPE_DECIMAL), decimal_value_(d.value()) {}
-	explicit variant(double f) : type_(TYPE_DECIMAL), decimal_value_(decimal(f).value()) {}
-	variant(int64_t n, DECIMAL_VARIANT_TYPE) : type_(TYPE_DECIMAL), decimal_value_(n) {}
+	variant() : type_(VARIANT_TYPE_NULL), int_value_(0) {}
+	explicit variant(int n) : type_(VARIANT_TYPE_INT), int_value_(n) {}
+	explicit variant(unsigned int n) : type_(VARIANT_TYPE_INT), int_value_(n) {}
+	explicit variant(long unsigned int n) : type_(VARIANT_TYPE_INT), int_value_(n) {}
+	explicit variant(decimal d) : type_(VARIANT_TYPE_DECIMAL), decimal_value_(d.value()) {}
+	explicit variant(double f) : type_(VARIANT_TYPE_DECIMAL), decimal_value_(decimal(f).value()) {}
+	variant(int64_t n, DECIMAL_VARIANT_TYPE) : type_(VARIANT_TYPE_DECIMAL), decimal_value_(n) {}
 	explicit variant(const game_logic::formula_callable* callable);
 	explicit variant(std::vector<variant>* array);
 	explicit variant(const char* str);
@@ -81,12 +81,12 @@ public:
 
 	//only call the non-inlined release() function if we have a type
 	//that needs releasing.
-	~variant() { if(type_ > TYPE_INT) { release(); } }
+	~variant() { if(type_ > VARIANT_TYPE_INT) { release(); } }
 
 	variant(const variant& v) {
 		type_ = v.type_;
 		value_ = v.value_;
-		if(type_ > TYPE_INT) {
+		if(type_ > VARIANT_TYPE_INT) {
 			increment_refcount();
 		}
 	}
@@ -110,22 +110,22 @@ public:
 	//unsafe function which is called on an integer variant and returns
 	//direct access to the underlying integer. Should only be used
 	//when high performance is needed.
-	int& int_addr() { must_be(TYPE_INT); return int_value_; }
+	int& int_addr() { must_be(VARIANT_TYPE_INT); return int_value_; }
 
-	bool is_string() const { return type_ == TYPE_STRING; }
-	bool is_null() const { return type_ == TYPE_NULL; }
-	bool is_bool() const { return type_ == TYPE_BOOL; }
+	bool is_string() const { return type_ == VARIANT_TYPE_STRING; }
+	bool is_null() const { return type_ == VARIANT_TYPE_NULL; }
+	bool is_bool() const { return type_ == VARIANT_TYPE_BOOL; }
 	bool is_numeric() const { return is_int() || is_decimal(); }
-	bool is_int() const { return type_ == TYPE_INT; }
-	bool is_decimal() const { return type_ == TYPE_DECIMAL; }
-	bool is_map() const { return type_ == TYPE_MAP; }
-	bool is_function() const { return type_ == TYPE_FUNCTION; }
-	int as_int(int default_value=0) const { if(type_ == TYPE_NULL) { return default_value; } if(type_ == TYPE_DECIMAL) { return int( decimal_value_/VARIANT_DECIMAL_PRECISION ); } if(type_ == TYPE_BOOL) { return bool_value_ ? 1 : 0; } must_be(TYPE_INT); return int_value_; }
-	decimal as_decimal(decimal default_value=decimal()) const { if(type_ == TYPE_NULL) { return default_value; } if(type_ == TYPE_INT) { return decimal::from_raw_value(int64_t(int_value_)*VARIANT_DECIMAL_PRECISION); } must_be(TYPE_DECIMAL); return decimal::from_raw_value(decimal_value_); }
+	bool is_int() const { return type_ == VARIANT_TYPE_INT; }
+	bool is_decimal() const { return type_ == VARIANT_TYPE_DECIMAL; }
+	bool is_map() const { return type_ == VARIANT_TYPE_MAP; }
+	bool is_function() const { return type_ == VARIANT_TYPE_FUNCTION; }
+	int as_int(int default_value=0) const { if(type_ == VARIANT_TYPE_NULL) { return default_value; } if(type_ == VARIANT_TYPE_DECIMAL) { return int( decimal_value_/VARIANT_DECIMAL_PRECISION ); } if(type_ == VARIANT_TYPE_BOOL) { return bool_value_ ? 1 : 0; } must_be(VARIANT_TYPE_INT); return int_value_; }
+	decimal as_decimal(decimal default_value=decimal()) const { if(type_ == VARIANT_TYPE_NULL) { return default_value; } if(type_ == VARIANT_TYPE_INT) { return decimal::from_raw_value(int64_t(int_value_)*VARIANT_DECIMAL_PRECISION); } must_be(VARIANT_TYPE_DECIMAL); return decimal::from_raw_value(decimal_value_); }
 	bool as_bool(bool default_value) const;
 	bool as_bool() const;
 
-	bool is_list() const { return type_ == TYPE_LIST; }
+	bool is_list() const { return type_ == VARIANT_TYPE_LIST; }
 
 	std::vector<variant> as_list() const;
 	const std::map<variant,variant>& as_map() const;
@@ -163,11 +163,11 @@ public:
 	std::string as_string_default(const char* default_value=NULL) const;
 	const std::string& as_string() const;
 
-	bool is_callable() const { return type_ == TYPE_CALLABLE; }
+	bool is_callable() const { return type_ == VARIANT_TYPE_CALLABLE; }
 	const game_logic::formula_callable* as_callable() const {
-		must_be(TYPE_CALLABLE); return callable_; }
+		must_be(VARIANT_TYPE_CALLABLE); return callable_; }
 	game_logic::formula_callable* mutable_callable() const {
-		must_be(TYPE_CALLABLE); return mutable_callable_; }
+		must_be(VARIANT_TYPE_CALLABLE); return mutable_callable_; }
 
 	intptr_t as_callable_loading() const { return callable_loading_; }
 
@@ -223,7 +223,7 @@ public:
 
 	void write_json_pretty(std::ostream& s, std::string indent) const;
 
-	enum TYPE { TYPE_NULL, TYPE_BOOL, TYPE_INT, TYPE_DECIMAL, TYPE_CALLABLE, TYPE_CALLABLE_LOADING, TYPE_LIST, TYPE_STRING, TYPE_MAP, TYPE_FUNCTION, TYPE_DELAYED };
+	enum TYPE { VARIANT_TYPE_NULL, VARIANT_TYPE_BOOL, VARIANT_TYPE_INT, VARIANT_TYPE_DECIMAL, VARIANT_TYPE_CALLABLE, VARIANT_TYPE_CALLABLE_LOADING, VARIANT_TYPE_LIST, VARIANT_TYPE_STRING, VARIANT_TYPE_MAP, VARIANT_TYPE_FUNCTION, VARIANT_TYPE_DELAYED };
 	TYPE type() const { return type_; }
 
 	struct debug_info {

@@ -645,7 +645,7 @@ void item_edit_dialog::init()
 	item_grid_.reset(new tree_editor_widget(width()/3 - border_offset, height() - current_height - border_offset, items_));
 	item_grid_->allow_selection();
 	item_grid_->allow_persistent_highlight();
-	item_grid_->set_editor_handler(variant::TYPE_STRING, string_entry_, boost::bind(&item_edit_dialog::editor_select, this, _1, _2));
+	item_grid_->set_editor_handler(variant::VARIANT_TYPE_STRING, string_entry_, boost::bind(&item_edit_dialog::editor_select, this, _1, _2));
 	add_widget(item_grid_, border_offset, current_height);
 
 	current_height += item_grid_->height() + hpad;
