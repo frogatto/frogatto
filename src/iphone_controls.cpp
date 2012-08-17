@@ -155,8 +155,8 @@ void iphone_controls::handle_event (const SDL_Event& event)
 	int x = event.type == SDL_JOYBALLMOTION ? event.jball.xrel : event.jbutton.x;
 	int y = event.type == SDL_JOYBALLMOTION ? event.jball.yrel : event.jbutton.y;
 	int i = event.type == SDL_JOYBALLMOTION ? event.jball.ball : event.jbutton.button;
-	std::string joy_txt = event.type == SDL_JOYBUTTONUP ? "up" : event.type == SDL_JOYBUTTONDOWN ? "down" : "move";
-	LOG( "mouse " << joy_txt << " (" << x << "," << y << ";" << i << ")");
+	//std::string joy_txt = event.type == SDL_JOYBUTTONUP ? "up" : event.type == SDL_JOYBUTTONDOWN ? "down" : "move";
+	//LOG( "mouse " << joy_txt << " (" << x << "," << y << ";" << i << ")");
 	translate_mouse_coords(&x, &y);
 	while(all_mice.size() <= i) {
 		all_mice.push_back(Mouse());

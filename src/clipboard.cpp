@@ -246,6 +246,7 @@ bool clipboard_handle_event(const SDL_Event& event)
 
 			XSendEvent(x11->dpy(), xev.xselectionrequest.requestor, False, NoEventMask,
 			   &responseEvent);
+			XFlush(x11->dpy());
 		}
 
 		return true;

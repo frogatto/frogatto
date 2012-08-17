@@ -321,6 +321,14 @@ level::level(const std::string& level_cfg, variant node)
 		std::sort(tiles_.begin(), tiles_.end(), level_tile_zorder_pos_comparer());
 	}
 
+	///////////////////////
+	// hex tiles starts
+	foreach(variant tile_node, node["hex_tile_map"].as_list()) {
+	}
+	std::cerr << "done building hex_tile_map..." << SDL_GetTicks() << "\n";
+	// hex tiles ends
+	///////////////////////
+
 	if(node.has_key("palettes")) {
 		std::vector<std::string> v = parse_variant_list_or_csv_string(node["palettes"]);
 		foreach(const std::string& p, v) {

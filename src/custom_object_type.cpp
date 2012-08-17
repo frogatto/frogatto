@@ -389,7 +389,7 @@ custom_object_type_ptr custom_object_type::recreate(const std::string& id,
 
 		return result;
 	} catch(json::parse_error& e) {
-		ASSERT_LOG(false, "Error parsing WML for custom object in " << path_itor->second << ": " << e.error_message());
+		ASSERT_LOG(false, "Error parsing WML for custom object '" << id << "' in '" << path_itor->second << "': '" << e.error_message() << "'");
 	} catch(graphics::load_image_error&) {
 		ASSERT_LOG(false, "Error loading object '" << id << "': could not load needed image");
 	}
