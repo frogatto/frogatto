@@ -111,15 +111,4 @@ private:
 #endif
 };
 
-class hex_tile_map : public tile_map 
-{
-public:
-	hex_tile_map()
-	{}
-	virtual ~hex_tile_map()
-	{}
-	explicit hex_tile_map(variant node);
-	void build_tiles(std::vector<hex_level_tile>* tiles, const rect* r = NULL) const;
-};
-
 #endif

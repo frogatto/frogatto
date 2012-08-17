@@ -55,6 +55,14 @@ void init(int buffer_width, int buffer_height)
 	frame_buffer_texture_width = buffer_width;
 	frame_buffer_texture_height = buffer_height;
 
+#if defined(__ANDROID__)
+	{
+		supported = false;
+		LOG("FRAME BUFFER OBJECT NOT SUPPORTED");
+		return;
+	}
+#endif
+
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY) || defined(__ANDROID__)
 	if (glGenFramebuffersOES        != NULL &&
 		glBindFramebufferOES        != NULL &&

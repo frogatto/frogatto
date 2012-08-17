@@ -215,12 +215,17 @@ std::string get_saves_dir()
 
 bool do_file_exists(const std::string& fname)
 {
+	//LOG("do_file_exists(): " << fname);
 	std::ifstream file(fname.c_str(), std::ios_base::binary);
 	if(file.rdstate() == 0) {
         file.close();
+		//LOG("do_file_exists(): exists(1)");
         return true;
 	}
+	
+	//LOG("do_file_exists(): check assets1");
 	AAssetManager* assetManager = GetJavaAssetManager();
+	//LOG("do_file_exists(): check assets2");
 	AAsset* asset;
 	if(fname[0] == '.' && fname[1] == '/') {
 		asset = AAssetManager_open(assetManager, fname.substr(2).c_str(), AASSET_MODE_UNKNOWN);
@@ -229,8 +234,10 @@ bool do_file_exists(const std::string& fname)
 	}
     if(asset) {
         AAsset_close(asset);
+		//LOG("do_file_exists(): exists(2)");
         return true;
     }
+	//LOG("do_file_exists(): fail");
     return false;
 }
 

@@ -323,22 +323,9 @@ level::level(const std::string& level_cfg, variant node)
 
 	///////////////////////
 	// hex tiles starts
-	int begin_hex_tile_index = hex_tiles_.size();
 	foreach(variant tile_node, node["hex_tile_map"].as_list()) {
-		hex_tile_map m(tile_node);
-		hex_tile_maps_[m.zorder()] = m;
-		const int before = hex_tiles_.size();
-		hex_tile_maps_[m.zorder()].build_tiles(&hex_tiles_);
-		std::cerr << "LAYER " << m.zorder() << " BUILT " << (hex_tiles_.size() - before) << " tiles\n";
 	}
 	std::cerr << "done building hex_tile_map..." << SDL_GetTicks() << "\n";
-	for(int i = begin_hex_tile_index; i != hex_tiles_.size(); ++i) {
-		add_tile_solid(hex_tiles_[i]);
-		layers_.insert(hex_tiles_[i].zorder);
-	}
-	if(std::adjacent_find(hex_tiles_.rbegin(), hex_tiles_.rend(), level_tile_zorder_pos_comparer()) != hex_tiles_.rend()) {
-		std::sort(hex_tiles_.begin(), hex_tiles_.end(), level_tile_zorder_pos_comparer());
-	}
 	// hex tiles ends
 	///////////////////////
 
