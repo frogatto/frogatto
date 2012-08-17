@@ -1,3 +1,4 @@
+#ifndef NO_EDITOR
 #include <boost/bind.hpp>
 #include <vector>
 
@@ -334,3 +335,4 @@ variant dropdown_widget::get_value(const std::string& key) const
 }
 
 }
+#endif

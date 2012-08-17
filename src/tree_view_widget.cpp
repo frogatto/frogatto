@@ -1,3 +1,5 @@
+#ifndef NO_EDITOR
+
 #include <algorithm>
 #include <sstream>
 
@@ -809,3 +811,5 @@ variant tree_editor_widget::get_value(const std::string& key) const
 }
 
 }
+
+#endif

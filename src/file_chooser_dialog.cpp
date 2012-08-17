@@ -1,3 +1,4 @@
+#ifndef NO_EDITOR
 #include <boost/bind.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/regex.hpp>
@@ -419,3 +420,4 @@ UNIT_TEST(compute_relative_paths_test) {
 	CHECK_EQ(sys::compute_relative_path("C:/Projects/frogatto-build/Frogatto/Win32/Release", "c:/windows"), "../../../../../windows");
 }
 
+#endif

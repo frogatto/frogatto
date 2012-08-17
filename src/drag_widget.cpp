@@ -1,3 +1,4 @@
+#ifndef NO_EDITOR
 #include <boost/bind.hpp>
 #include <vector>
 
@@ -281,3 +282,5 @@ bool drag_widget::handle_mousemotion(const SDL_MouseMotionEvent& event, bool cla
 }
 
 }
+
+#endif

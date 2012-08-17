@@ -1,3 +1,4 @@
+#ifndef NO_EDITOR
 #include <sstream>
 #include <fstream>
 #include <math.h>
@@ -620,3 +621,5 @@ bool animation_creator_dialog::show_attribute(variant v)
 }
 
 }
+
+#endif // NO_EDITOR
