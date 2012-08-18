@@ -133,6 +133,67 @@ bool entity_collides(level& lvl, const entity& e, MOVE_DIRECTION dir, collision_
 	return false;
 }
 
+void debug_check_entity_solidity(const level& lvl, const entity& e)
+{
+	if(!e.allow_level_collisions() && entity_collides_with_level(lvl, e, MOVE_NONE, NULL)) {
+		const solid_info* s = e.solid();
+		ASSERT_LOG(s, "ENTITY COLLIDES BUT DOES NOT HAVE SOLID");
+		const frame& f = e.current_frame();
+		const rect& area = s->area();
+
+		int min_x = INT_MIN, max_x = INT_MIN, min_y = INT_MIN, max_y = INT_MIN;
+		std::set<point> solid_points;
+
+		foreach(const const_solid_map_ptr& m, s->solid()) {
+			const std::vector<point>& points = m->dir(MOVE_NONE);
+			foreach(const point& p, points) {
+				const int x = e.x() + (e.face_right() ? p.x : (f.width() - 1 - p.x));
+				const int y = e.y() + p.y;
+
+				if(min_x == INT_MIN || x < min_x) {
+					min_x = x;
+				}
+
+				if(max_x == INT_MIN || x > max_x) {
+					max_x = x;
+				}
+
+				if(min_y == INT_MIN || y < min_y) {
+					min_y = y;
+				}
+
+				if(max_y == INT_MIN || y > max_y) {
+					max_y = y;
+				}
+
+				solid_points.insert(point(x, y));
+			}
+		}
+
+		std::cerr << "COLLIDING OBJECT MAP:\n";
+		for(int y = min_y - 5; y < max_y + 5; ++y) {
+			for(int x = min_x - 5; x < max_x + 5; ++x) {
+				const bool lvl_solid = lvl.solid(x, y, NULL);
+				const bool char_solid = solid_points.count(point(x, y));
+				if(lvl_solid && char_solid) {
+					std::cerr << "X";
+				} else if(lvl_solid) {
+					std::cerr << "L";
+				} else if(char_solid) {
+					std::cerr << "C";
+				} else {
+					std::cerr << "-";
+				}
+			}
+
+			std::cerr << "\n";
+		}
+		std::cerr << "\n";
+
+		ASSERT_LOG(false, "ENTITY " << e.debug_description() << " COLLIDES WITH LEVEL");
+	}
+}
+
 bool entity_collides_with_entity(const entity& e, const entity& other, collision_info* info)
 {
 	if((e.solid_dimensions()&other.weak_solid_dimensions()) == 0 &&

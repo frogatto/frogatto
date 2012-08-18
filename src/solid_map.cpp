@@ -78,6 +78,10 @@ void solid_map::create_object_solid_maps(variant node, std::vector<const_solid_m
 			}
 		}
 
+		if(area.h() <= legs_height) {
+			legs_map->calculate_side(0, -1, legs_map->top_);
+		}
+
 		legs_map->calculate_side(0, 1, legs_map->bottom_);
 		legs_map->calculate_side(-1, 0, legs_map->left_);
 		legs_map->calculate_side(1, 0, legs_map->right_);

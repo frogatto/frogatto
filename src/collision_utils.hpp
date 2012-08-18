@@ -58,6 +58,8 @@ bool point_standable(const level& lvl, const entity& e, int x, int y, collision_
 //'dir' is MOVE_NONE, then all pixels will be checked.
 bool entity_collides(level& lvl, const entity& e, MOVE_DIRECTION dir, collision_info* info=NULL);
 
+void debug_check_entity_solidity(const level& lvl, const entity& e);
+
 //function which finds if one entity collides with another given entity.
 bool entity_collides_with_entity(const entity& e, const entity& other, collision_info* info=NULL);
 
