@@ -200,7 +200,7 @@ token get_token(iterator& i1, iterator i2) {
 
 		break;
 	case 'd':
-		if(i1 + 1 != i2 && !util::c_isalpha(*(i1+1))) {
+		if(i1 + 1 != i2 && !util::c_isalpha(*(i1+1)) && *(i1+1) != '_') {
 			//die operator as in 1d6.
 			t.type = TOKEN_OPERATOR;
 			t.end = ++i1;
