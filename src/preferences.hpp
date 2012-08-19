@@ -29,7 +29,7 @@ namespace preferences {
 	bool no_music();
 
 	void set_preferences_path(const std::string& path);
-	void set_preferences_path_from_module( const std::string& name);
+	void set_preferences_path_from_module(const std::string& name);
 
 	bool setup_preferences_dir();
 
@@ -38,6 +38,7 @@ namespace preferences {
 	const char* user_data_path();
 	const char* save_file_path();
 	const char* auto_save_file_path();
+	std::string dlc_path();
 	void expand_data_paths();
 	void set_save_slot(const std::string& fname);
 	bool show_debug_hitboxes();

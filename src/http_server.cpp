@@ -216,6 +216,7 @@ void web_server::handle_message(socket_ptr socket, receive_buf_ptr recv_buf)
 		std::string::const_iterator end_url = std::find(begin_url, msg.end(), ' ');
 		std::string::const_iterator begin_args = std::find(begin_url, end_url, '?');
 		std::map<std::string, std::string> args;
+		std::string url_base(begin_url, begin_args);
 		if(begin_args != end_url) {
 			begin_args++;
 			while(begin_args != end_url) {
@@ -238,7 +239,7 @@ void web_server::handle_message(socket_ptr socket, receive_buf_ptr recv_buf)
 			}
 		}
 
-		handle_get(socket, std::string(begin_url, begin_args), args);
+		handle_get(socket, url_base, args);
 
 		return;
 	}

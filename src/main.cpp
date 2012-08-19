@@ -226,10 +226,7 @@ extern "C" int main(int argcount, char** argvec)
 	if(sys::file_exists("./master-config.cfg")) {
 		variant cfg = json::parse_from_file("./master-config.cfg");
 		if(cfg.is_map()) {
-			if(cfg["name"].is_null() == false) {
-				preferences::set_preferences_path_from_module(cfg["name"].as_string());
-				//XXX module::set_module_name(cfg["name"].as_string(), cfg["name"].as_string());
-			} else if( cfg["id"].is_null() == false) {
+			if( cfg["id"].is_null() == false) {
 				preferences::set_preferences_path_from_module(cfg["id"].as_string());
 				//XXX module::set_module_name(cfg["id"].as_string(), cfg["id"].as_string());
 			}

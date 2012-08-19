@@ -26,6 +26,13 @@ std::vector<module::modules>& loaded_paths() {
 	static std::vector<module::modules> result(1, core);
 	return result;
 }
+
+std::vector<std::string> module_dirs() {
+	std::vector<std::string> result;
+	result.push_back("modules/");
+	result.push_back(preferences::dlc_path());
+	return result;
+}
 }
 
 const std::string get_module_name(){
@@ -144,14 +151,16 @@ std::vector<variant> get_all()
 {
 	std::vector<variant> result;
 
-	std::vector<std::string> files, dirs;
-	sys::get_files_in_dir("modules/", &files, &dirs);
-	foreach(const std::string& dir, dirs) {
-		std::string fname = "modules/" + dir + "/module.cfg";
-		if(sys::file_exists(fname)) {
-			variant v = json::parse_from_file(fname);
-			v.add_attr(variant("id"), variant(dir));
-			result.push_back(v);
+	foreach(const std::string& path, module_dirs()) {
+		std::vector<std::string> files, dirs;
+		sys::get_files_in_dir(path, &files, &dirs);
+		foreach(const std::string& dir, dirs) {
+			std::string fname = path + "/" + dir + "/module.cfg";
+			if(sys::file_exists(fname)) {
+				variant v = json::parse_from_file(fname);
+				v.add_attr(variant("id"), variant(dir));
+				result.push_back(v);
+			}
 		}
 	}
 
@@ -164,14 +173,18 @@ variant get(const std::string& mod_file_name)
 	if(name.size() > 4 && name.substr(name.size()-4) == ".cfg") {
 		name = name.substr(0, name.size()-4);
 	}
-	std::string fname = "modules/" + name + "/module.cfg";
-	if(sys::file_exists(fname)) {
-		variant v = json::parse_from_file(fname);
-		v.add_attr(variant("id"), variant(fname));
-		return v;
-	} else {
-		return variant();
+	
+	foreach(const std::string& path, module_dirs()) {
+		std::string fname = path + "/" + name + "/module.cfg";
+		std::cerr << "LOOKING IN '" << fname << "': " << sys::file_exists(fname) << "\n";
+		if(sys::file_exists(fname)) {
+			variant v = json::parse_from_file(fname);
+			v.add_attr(variant("id"), variant(fname));
+			return v;
+		}
 	}
+
+	return variant();
 }
 
 const std::string& get_module_path(const std::string& abbrev) {
@@ -190,7 +203,14 @@ const std::string& get_module_path(const std::string& abbrev) {
 }
 
 const std::string make_base_module_path(const std::string& name) {
-	return "modules/" + name + "/";
+	foreach(const std::string& path, module_dirs()) {
+		std::string full_path = path + "/" + name + "/";
+		if(sys::file_exists(full_path + "module.cfg")) {
+			return full_path;
+		}
+	}
+
+	return "";
 }
 
 void load(const std::string& mod_file_name, bool initial)
@@ -240,7 +260,9 @@ void reload(const std::string& name) {
 void get_module_list(std::vector<std::string>& dirs) {
 	// Grab the files/directories under ./module/ for later use.
 	std::vector<std::string> files;
-	sys::get_files_in_dir("modules/", &files, &dirs);
+	foreach(const std::string& path, module_dirs()) {
+		sys::get_files_in_dir(path + "/", &files, &dirs);
+	}
 }
 
 void load_module_from_file(const std::string& modname, modules* mod_) {
@@ -339,10 +361,13 @@ variant build_package(const std::string& id)
 	ASSERT_LOG(module_cfg["version"].is_list(), "IN " << module_cfg_file << " THERE MUST BE A VERSION NUMBER GIVEN AS A LIST OF INTEGERS");
 
 	//this verifies that compression/decompression works but is slow.
-	//ASSERT_LOG(zip::decompress_known_size(base64::b64decode(base64::b64encode(zip::compress(data))), data.size()) == data, "COMPRESS/DECOMPRESS BROKEN");
+	ASSERT_LOG(zip::decompress_known_size(base64::b64decode(base64::b64encode(zip::compress(data))), data.size()) == data, "COMPRESS/DECOMPRESS BROKEN");
 
 	std::cerr << "compressing data: " << data.size() << "...\n";
-	data = base64::b64encode(zip::compress(data));
+	const int uncompressed_size = data.size();
+	data = zip::compress(data);
+	std::cerr << "COMPRESSED " << uncompressed_size << " TO " << data.size() << "\n";
+	data = base64::b64encode(data);
 
 	const std::string data_str(data.begin(), data.end());
 
@@ -351,26 +376,34 @@ variant build_package(const std::string& id)
 	data_attr[variant("version")] = module_cfg["version"];
 	data_attr[variant("manifest")] = variant(&file_attr);
 	data_attr[variant("data")] = variant(data_str);
-	data_attr[variant("data_size")] = variant(data_str.size());
+	data_attr[variant("data_size")] = variant(uncompressed_size);
 	return variant(&data_attr);
 }
 
 namespace {
-void finish_upload(std::string response, bool* flag)
+void finish_upload(std::string response, bool* flag, std::string* result)
 {
-	std::cerr << "UPLOAD COMPLETE: " << response << "\n";
+	if(result) {
+		*result = response;
+	} else {
+		std::cerr << "UPLOAD COMPLETE " << response << "\n";
+	}
 	*flag = true;
 }
 
 void error_upload(std::string response, bool* flag)
 {
-	std::cerr << "UPLOAD ERROR: " << response << "\n";
+	std::cerr << "ERROR: " << response << "\n";
 	*flag = true;
 }
 
 void upload_progress(int sent, int total, bool uploaded)
 {
-	std::cerr << "SENT " << sent << "/" << total << "\n";
+	if(!uploaded) {
+		std::cerr << "SENT " << sent << "/" << total << "\n";
+	} else {
+		std::cerr << "RECEIVED " << sent << "/" << total << "\n";
+	}
 }
 
 }
@@ -378,7 +411,7 @@ void upload_progress(int sent, int total, bool uploaded)
 COMMAND_LINE_UTILITY(publish_module)
 {
 	std::string module_id;
-	std::string server = "localhost";
+	std::string server = "theargentlark.com";
 	std::string port = "23456";
 
 	std::deque<std::string> arguments(args.begin(), args.end());
@@ -411,9 +444,11 @@ COMMAND_LINE_UTILITY(publish_module)
 
 	bool done = false;
 
+	std::string* response = NULL;
+
 	http_client client(server, port);
 	client.send_request("POST /module_upload", msg, 
-	                    boost::bind(finish_upload, _1, &done),
+	                    boost::bind(finish_upload, _1, &done, response),
 	                    boost::bind(error_upload, _1, &done),
 	                    boost::bind(upload_progress, _1, _2, _3));
 
@@ -422,10 +457,101 @@ COMMAND_LINE_UTILITY(publish_module)
 	}
 }
 
+namespace {
+bool valid_path_chars(char c)
+{
+	return isalnum(c) || c == '.' || c == '/' || c == '_' || c == '-';
+}
+
+bool is_module_path_valid(const std::string& str)
+{
+	for(int n = 1; n < str.size(); ++n) {
+		//don't allow consecutive . characters.
+		if(str[n] == '.' && str[n-1] == '.') {
+			return false;
+		}
+	}
+
+	return str.empty() == false && isalnum(str[0]) && std::count_if(str.begin(), str.end(), valid_path_chars) == str.size();
+}
+}
+
+COMMAND_LINE_UTILITY(install_module)
+{
+	std::string module_id;
+	std::string server = "theargentlark.com";
+	std::string port = "23456";
+
+	std::deque<std::string> arguments(args.begin(), args.end());
+	while(!arguments.empty()) {
+		const std::string arg = arguments.front();
+		arguments.pop_front();
+		if(arg == "--server") {
+			ASSERT_LOG(arguments.empty() == false, "NEED ARGUMENT AFTER " << arg);
+			server = arguments.front();
+			arguments.pop_front();
+		} else if(arg == "-p" || arg == "--port") {
+			ASSERT_LOG(arguments.empty() == false, "NEED ARGUMENT AFTER " << arg);
+			port = arguments.front();
+			arguments.pop_front();
+		} else if(arg.empty() == false && arg[0] != '-') {
+			module_id = arg;
+		} else {
+			ASSERT_LOG(false, "UNRECOGNIZED ARGUMENT: '" << arg << "'");
+		}
+	}
+
+	bool done = false;
+
+	std::string response;
+
+	http_client client(server, port);
+	client.send_request("GET /download_module?module_id=" + module_id, "", 
+	                    boost::bind(finish_upload, _1, &done, &response),
+	                    boost::bind(error_upload, _1, &done),
+	                    boost::bind(upload_progress, _1, _2, _3));
+
+	while(!done) {
+		client.process();
+	}
+
+	variant doc = json::parse(response, json::JSON_NO_PREPROCESSOR);
+	ASSERT_LOG(doc["status"].as_string() == "ok", "COULD NOT DOWNLOAD MODULE: " << doc["message"]);
+
+	variant module_data = doc["module"];
+
+	std::vector<char> data_buf;
+	{
+		const std::string data_str = module_data["data"].as_string();
+		data_buf.insert(data_buf.begin(), data_str.begin(), data_str.end());
+	}
+	const int data_size = module_data["data_size"].as_int();
+	std::cerr << "DATA: " << module_data["data"].as_string().size() << " " << data_size << "\n";
+
+	std::vector<char> data = zip::decompress_known_size(base64::b64decode(data_buf), data_size);
+
+	variant manifest = module_data["manifest"];
+	foreach(variant path, manifest.get_keys().as_list()) {
+		const std::string path_str = path.as_string();
+		ASSERT_LOG(is_module_path_valid(path_str), "INVALID PATH IN MODULE: " << path_str);
+	}
+
+	foreach(variant path, manifest.get_keys().as_list()) {
+		variant info = manifest[path];
+		const std::string path_str = preferences::dlc_path() + "/" + module_id + "/" + path.as_string();
+		const int begin = info["begin"].as_int();
+		const int end = begin + info["size"].as_int();
+		ASSERT_LOG(begin >= 0 && end >= 0 && begin <= data.size() && end <= data.size(), "INVALID PATH INDEXES FOR " << path_str << ": " << begin << "," << end << " / " << data.size());
+
+		std::cerr << "CREATING FILE AT " << path_str << "\n";
+		sys::write_file(path_str, std::string(data.begin() + begin, data.begin() + end));
+	}
+}
+
 COMMAND_LINE_UTILITY(publish_module_stats)
 {
 	std::string module_id;
-	std::string server = "localhost";
+	std::string server = "theargentlark.com";
 	std::string port = "23456";
 
 	std::deque<std::string> arguments(args.begin(), args.end());
@@ -461,9 +587,11 @@ COMMAND_LINE_UTILITY(publish_module_stats)
 
 	bool done = false;
 
+	std::string* response = NULL;
+
 	http_client client(server, port);
 	client.send_request("POST /stats", msg, 
-	                    boost::bind(finish_upload, _1, &done),
+	                    boost::bind(finish_upload, _1, &done, response),
 	                    boost::bind(error_upload, _1, &done),
 	                    boost::bind(upload_progress, _1, _2, _3));
 

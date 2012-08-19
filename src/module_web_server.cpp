@@ -72,6 +72,34 @@ void module_web_server::handle_post(socket_ptr socket, variant doc, const http::
 void module_web_server::handle_get(socket_ptr socket, const std::string& url, const std::map<std::string, std::string>& args)
 {
 	std::map<variant,variant> response;
+	try {
+		std::cerr << "URL: (" << url << ")\n";
+		response[variant("status")] = variant("error");
+		if(url == "/download_module" && args.count("module_id")) {
+			const std::string module_id = args.find("module_id")->second;
+			const std::string module_path = data_path_ + module_id + ".cfg";
+			if(sys::file_exists(module_path)) {
+				std::string response = "{\nstatus: \"ok\",\nmodule: ";
+				{
+					const std::string contents = sys::read_file(module_path);
+					response += contents;
+				}
+
+				response += "\n}";
+				send_msg(socket, "text/json", response, "");
+				return;
+
+			} else {
+				response[variant("message")] = variant("No such module");
+			}
+		} else {
+			response[variant("message")] = variant("Unknown path");
+		}
+	} catch(validation_failure_exception& e) {
+		response[variant("status")] = variant("error");
+		response[variant("message")] = variant(e.msg);
+	}
+
 	send_msg(socket, "text/json", variant(&response).write_json(), "");
 }
 

@@ -353,6 +353,7 @@ namespace preferences {
 
 	void set_preferences_path(const std::string& path)
 	{
+		std::cerr << "SET PREFERENCES PATH: " << path << "\n";
 		preferences_path_ = path;
 		if(preferences_path_[preferences_path_.length()-1] != '/') {
 			preferences_path_ += '/';
@@ -394,6 +395,12 @@ namespace preferences {
 #endif
 		}
 	}
+	}
+
+	std::string dlc_path() {
+		std::string result(std::string(PREFERENCES_PATH) + "/dlc");
+		expand_path(result);
+		return result;
 	}
 
 	void expand_data_paths() {

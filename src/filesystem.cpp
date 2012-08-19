@@ -448,6 +448,7 @@ std::string get_user_data_dir()
 	if(!inited_dirs) {
 		_mkdir("userdata");
 		_mkdir("userdata/saves");
+		_mkdir("dlc");
 		inited_dirs = true;
 	}
 
@@ -509,6 +510,7 @@ std::string get_user_data_dir()
 		// Also create the maps directory
 		mkdir((dir_path + "/editor").c_str(),AccessMode);
 		mkdir((dir_path + "/saves").c_str(),AccessMode);
+		mkdir((dir_path + "/dlc").c_str(),AccessMode);
 		if(res == 0) {
 			dir = opendir(dir_path.c_str());
 		} else {

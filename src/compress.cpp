@@ -66,7 +66,10 @@ std::vector<char> decompress_known_size(const std::vector<char>& data, int size)
 	const Bytef* src = reinterpret_cast<const Bytef*>(&data[0]);
 
 	const int result = uncompress(dst, &dst_len, src, data.size());
-	ASSERT_LOG(result == Z_OK && dst_len == output.size(), "FAILED TO DECOMPRESS " << data.size() << " BYTES OF DATA TO EXPECTED " << output.size() << " BYTES");
+	ASSERT_LOG(result != Z_MEM_ERROR, "Decompression out of memory");
+	ASSERT_LOG(result != Z_BUF_ERROR, "Insufficient space in output buffer");
+	ASSERT_LOG(result != Z_DATA_ERROR, "Compression data corrupt");
+	ASSERT_LOG(result == Z_OK && dst_len == output.size(), "FAILED TO DECOMPRESS " << data.size() << " BYTES OF DATA TO EXPECTED " << output.size() << " BYTES: " << " result = " << result << " (Z_OK = " << Z_OK << ") OUTPUT " << dst_len);
 	return output;
 }
 
