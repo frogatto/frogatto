@@ -374,6 +374,8 @@ variant build_package(const std::string& id)
 	std::map<variant, variant> data_attr;
 	data_attr[variant("id")] = variant(id);
 	data_attr[variant("version")] = module_cfg["version"];
+	data_attr[variant("name")] = module_cfg["name"];
+	data_attr[variant("description")] = module_cfg["description"];
 	data_attr[variant("manifest")] = variant(&file_attr);
 	data_attr[variant("data")] = variant(data_str);
 	data_attr[variant("data_size")] = variant(uncompressed_size);
@@ -551,6 +553,7 @@ COMMAND_LINE_UTILITY(install_module)
 COMMAND_LINE_UTILITY(publish_module_stats)
 {
 	std::string module_id;
+
 	std::string server = "theargentlark.com";
 	std::string port = "23456";
 
@@ -598,6 +601,43 @@ COMMAND_LINE_UTILITY(publish_module_stats)
 	while(!done) {
 		client.process();
 	}
+}
+
+COMMAND_LINE_UTILITY(list_modules)
+{
+	std::string server = "theargentlark.com";
+	std::string port = "23456";
+
+	std::deque<std::string> arguments(args.begin(), args.end());
+	while(!arguments.empty()) {
+		const std::string arg = arguments.front();
+		arguments.pop_front();
+		if(arg == "--server") {
+			ASSERT_LOG(arguments.empty() == false, "NEED ARGUMENT AFTER " << arg);
+			uri::uri url = uri::uri::parse(arguments.front());
+			arguments.pop_front();
+			server = url.host();
+			port = url.port();
+		} else {
+			ASSERT_LOG(false, "UNRECOGNIZED ARGUMENT: " << arg);
+		}
+	}
+
+	bool done = false;
+
+	std::string response;
+
+	http_client client(server, port);
+	client.send_request("GET /get_summary", "", 
+	                    boost::bind(finish_upload, _1, &done, &response),
+	                    boost::bind(error_upload, _1, &done),
+	                    boost::bind(upload_progress, _1, _2, _3));
+
+	while(!done) {
+		client.process();
+	}
+
+	std::cerr << "RESPONSE:\n\n" << response;
 }
 
 }

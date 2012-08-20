@@ -29,6 +29,13 @@ module_web_server::module_web_server(const std::string& data_path, boost::asio::
 		data_path_ += "/";
 	}
 
+	if(sys::file_exists(data_file_path())) {
+		data_ = json::parse_from_file(data_file_path());
+	} else {
+		std::map<variant, variant> m;
+		data_ = variant(&m);
+	}
+
 	heartbeat();
 }
 
@@ -48,6 +55,18 @@ void module_web_server::handle_post(socket_ptr socket, variant doc, const http::
 			const std::string module_id = module_node["id"].as_string();
 			ASSERT_LOG(std::count_if(module_id.begin(), module_id.end(), isalnum) + std::count(module_id.begin(), module_id.end(), '_') == module_id.size(), "ILLEGAL MODULE ID");
 
+			std::vector<variant> prev_versions;
+
+			variant current_data = data_[variant(module_id)];
+			if(current_data.is_null() == false) {
+				const variant new_version = module_node[variant("version")];
+				const variant old_version = current_data[variant("version")];
+				ASSERT_LOG(new_version > old_version, "VERSION " << new_version.write_json() << " IS NOT NEWER THAN EXISTING VERSION " << old_version.write_json());
+				prev_versions = current_data[variant("previous_versions")].as_list();
+				current_data.remove_attr_mutation(variant("previous_versions"));
+				prev_versions.push_back(current_data);
+			}
+
 			const std::string module_path = data_path_ + module_id + ".cfg";
 			const std::string module_path_tmp = module_path + ".tmp";
 			const std::string contents = module_node.write_json();
@@ -57,6 +76,16 @@ void module_web_server::handle_post(socket_ptr socket, variant doc, const http::
 			ASSERT_LOG(rename_result == 0, "FAILED TO RENAME FILE: " << errno);
 
 			response[variant("status")] = variant("ok");
+
+			{
+				std::map<variant, variant> summary;
+				summary[variant("previous_versions")] = variant(&prev_versions);
+				summary[variant("version")] = module_node[variant("version")];
+				summary[variant("name")] = module_node[variant("name")];
+				summary[variant("description")] = module_node[variant("description")];
+				data_.add_attr_mutation(variant(module_id), variant(&summary));
+				write_data();
+			}
 
 		} else {
 			ASSERT_LOG(false, "Unknown message type");
@@ -92,6 +121,9 @@ void module_web_server::handle_get(socket_ptr socket, const std::string& url, co
 			} else {
 				response[variant("message")] = variant("No such module");
 			}
+		} else if(url == "/get_summary") {
+			response[variant("status")] = variant("ok");
+			response[variant("summary")] = data_;
 		} else {
 			response[variant("message")] = variant("Unknown path");
 		}
@@ -101,6 +133,19 @@ void module_web_server::handle_get(socket_ptr socket, const std::string& url, co
 	}
 
 	send_msg(socket, "text/json", variant(&response).write_json(), "");
+}
+
+std::string module_web_server::data_file_path() const
+{
+	return data_path_ + "/module-data.json";
+}
+
+void module_web_server::write_data()
+{
+	const std::string tmp_path = data_file_path() + ".tmp";
+	sys::write_file(tmp_path, data_.write_json());
+	const int rename_result = rename(tmp_path.c_str(), data_file_path().c_str());
+		ASSERT_LOG(rename_result == 0, "FAILED TO RENAME FILE: " << errno);
 }
 
 COMMAND_LINE_UTILITY(module_server)

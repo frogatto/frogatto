@@ -24,6 +24,9 @@ private:
 	boost::asio::deadline_timer timer_;
 	int nheartbeat_;
 
+	std::string data_file_path() const;
+	void write_data();
+	variant data_;
 	std::string data_path_;
 };
 
