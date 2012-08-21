@@ -62,6 +62,11 @@ bool up() {
 	}
 
 	foreach(SDL_Joystick* j, joysticks) {
+		Sint16  y = SDL_JoystickGetAxis(j, 1);
+		if (y != 0 && y < 0) {
+			return true;
+		}
+
 		const int nhats = SDL_JoystickNumHats(j);
 		for(int n = 0; n != nhats; ++n) {
 			const Uint8 state = SDL_JoystickGetHat(j, n);
@@ -84,6 +89,11 @@ bool down() {
 	}
 
 	foreach(SDL_Joystick* j, joysticks) {
+		Sint16  y = SDL_JoystickGetAxis(j, 1);
+		if (y != 0 && y > 0) {
+			return true;
+		}
+
 		const int nhats = SDL_JoystickNumHats(j);
 		for(int n = 0; n != nhats; ++n) {
 			const Uint8 state = SDL_JoystickGetHat(j, n);
@@ -106,6 +116,11 @@ bool left() {
 	}
 
 	foreach(SDL_Joystick* j, joysticks) {
+		Sint16  x = SDL_JoystickGetAxis(j, 0);
+		if (x != 0 && x < 0) {
+			return true;
+		}
+
 		const int nhats = SDL_JoystickNumHats(j);
 		for(int n = 0; n != nhats; ++n) {
 			const Uint8 state = SDL_JoystickGetHat(j, n);
@@ -128,6 +143,11 @@ bool right() {
 	}
 
 	foreach(SDL_Joystick* j, joysticks) {
+		Sint16  x = SDL_JoystickGetAxis(j, 0);
+		if (x != 0 && x > 0) {
+			return true;
+		}
+
 		const int nhats = SDL_JoystickNumHats(j);
 		for(int n = 0; n != nhats; ++n) {
 			const Uint8 state = SDL_JoystickGetHat(j, n);
