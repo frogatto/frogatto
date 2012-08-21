@@ -521,6 +521,11 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 	return false;
 }
 
+void level_runner::show_pause_title()
+{
+	set_scene_title("Paused", paused ? 2147483647 : 25);
+}
+
 level_runner* level_runner::get_current()
 {
 	return current_level_runner;
@@ -577,6 +582,7 @@ void level_runner::start_editor()
 		//Pause the game and set the level to its original
 		//state if the user presses ctrl+e twice.
 		paused = !paused;
+		show_pause_title();
 		editor_->reset_playing_level(false);
 		last_draw_position().init = false;
 		init_history_slider();
@@ -598,6 +604,7 @@ void level_runner::close_editor()
 	lvl_->mutate_value("zoom", variant(1));
 	lvl_->set_editor(false);
 	paused = false;
+	show_pause_title();
 	controls::read_until(lvl_->cycle());
 	init_history_slider();
 #endif
@@ -620,6 +627,7 @@ bool level_runner::play_level()
 	if(!lvl_->player()) {
 		controls::control_backup_scope ctrl_backup;
 		paused = true;
+		show_pause_title();
 		editor_ = editor::get_editor(lvl_->id().c_str());
 		editor_resolution_manager_.reset(new editor_resolution_manager(editor_->xres(), editor_->yres()));
 		editor_->set_playing_level(lvl_);
@@ -1221,6 +1229,7 @@ bool level_runner::play_cycle()
 #ifndef NO_EDITOR
 					init_history_slider();
 #endif
+					show_pause_title();
 					if(!paused) {
 						controls::read_until(lvl_->cycle());
 					}
@@ -1493,6 +1502,7 @@ void level_runner::toggle_pause()
 #ifndef NO_EDITOR
 	init_history_slider();
 #endif
+	show_pause_title();
 	if(!paused) {
 		controls::read_until(lvl_->cycle());
 	}

@@ -80,6 +80,7 @@ private:
 	void init_history_slider();
 	void on_history_change(double value);
 	void update_history_trails();
+	void show_pause_title();
 
 	boost::scoped_ptr<debug_console::console_dialog> console_;
 #endif
