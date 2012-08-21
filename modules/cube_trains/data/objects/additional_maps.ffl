@@ -16,7 +16,7 @@
 				select_piece('ct-metatrack-13'),
 				]]),
 
-				//For this scenario, we'll have to disable rotation of the scene. Rotating the scene would interfere with rotating the piece, which is the lesson. That, and it's hard to code.
+			//For this scenario, we'll have to disable rotation of the scene. Rotating the scene would interfere with rotating the piece, which is the lesson. That, and it's hard to code.
 			set(keymap[keymode], filter(keymap[keymode], not key in ['rotate cw', 'rotate ccw'])),
 			map([buttons.navccw, buttons.navcw], 
 				set(value.vars.action, self.vars.message.add_text([
