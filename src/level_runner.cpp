@@ -1098,6 +1098,21 @@ bool level_runner::play_cycle()
 					}
 				}
 			break;
+#else
+			case SDL_ACTIVEEVENT:
+				if (event.active.state & (SDL_APPACTIVE | SDL_APPINPUTFOCUS)) {
+					if(event.active.gain == 0) {
+						if(!paused) {
+							toggle_pause();
+						}
+					} /*else {
+						if(paused) {
+							toggle_pause();
+						}
+					}*/
+					
+				}
+			break;
 #endif
 			case SDL_KEYDOWN: {
 				const SDLMod mod = SDL_GetModState();
@@ -1148,7 +1163,9 @@ bool level_runner::play_cycle()
 					}
 					sys::write_file(preferences::save_file_path(), lvl_node.write_json(true));
 				} else if(key == SDLK_s && (mod&KMOD_ALT)) {
+#if !defined(__native_client__)
 					IMG_SaveFrameBuffer((std::string(preferences::user_data_path()) + "screenshot.png").c_str(), 5);
+#endif
 				} else if(key == SDLK_w && (mod&KMOD_CTRL)) {
 #ifndef NO_EDITOR
 					if(editor_) {
