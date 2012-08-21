@@ -5,41 +5,126 @@
 	'map': [['ct-block-5',[0,-1,-1],0,'normal'],['ct-block-5',[0,3,-1],0,'normal'],['ct-block-5',[-1,3,-1],0,'normal'],['ct-block-5',[-1,2,-1],0,'normal'],['ct-block-5',[-1,1,-1],0,'normal'],['ct-block-5',[-1,0,-1],0,'normal'],['ct-block-5',[-1,-1,-1],0,'normal'],['ct-block-5',[1,-1,-1],0,'normal'],['ct-block-5',[1,0,-1],0,'normal'],['ct-block-5',[1,1,-1],0,'normal'],['ct-block-5',[1,2,-1],0,'normal'],['ct-block-5',[1,3,-1],0,'normal'],['ct-block-5',[-1,-1,0],0,'normal'],['ct-block-5',[-1,-1,1],0,'normal'],['ct-block-5',[0,-1,1],0,'normal'],['ct-windows-large-5',[0,3,1],0,'normal'],['ct-windows-large-5',[-1,3,1],0,'normal'],['ct-block-5',[-1,3,0],0,'normal'],['ct-block-5',[2,-1,-1],0,'normal'],['ct-block-5',[2,0,-1],0,'normal'],['ct-block-5',[2,1,-1],0,'normal'],['ct-block-5',[2,2,-1],0,'normal'],['ct-block-5',[2,3,-1],0,'normal'],['ct-block-5',[2,-1,0],0,'normal'],['ct-block-5',[2,3,0],0,'normal'],['ct-windows-large-5',[2,0,0],0,'normal'],['ct-windows-large-5',[2,1,0],0,'normal'],['ct-block-5',[1,3,1],0,'normal'],['ct-block-5',[2,3,1],0,'normal'],['ct-block-5',[1,-1,1],0,'normal'],['ct-block-5',[2,-1,1],0,'normal'],['ct-block-5',[0,2,-1],0,'normal'],['ct-block-5',[0,1,-1],0,'normal'],['ct-block-5',[0,0,-1],0,'normal'],['ct-glr-37',[0,0,0],0,'normal'],['ct-glr-37',[1,0,0],0,'normal'],['ct-glr-37',[1,1,0],0,'normal'],['ct-glr-37',[1,2,0],0,'normal'],['ct-edge-hedge-1',[2,2,0],0,'normal'],['ct-edge-hedge-9',[-1,2,0],0,'normal'],['ct-edge-hedge-9',[-1,1,0],0,'normal'],['ct-edge-hedge-9',[-1,0,0],0,'normal'],['ct-tree1-center-9',[-1,0,0],0,'normal'],['ct-tree1-center-9.tip',[-1,0,1],0,'normal'],['ct-tree1-center-3',[-1,2,0],0,'normal'],['ct-tree1-center-3.tip',[-1,2,1],0,'normal'],['ct-square-shadow-5',[2,0,0],0,'normal'],['ct-square-shadow-5',[2,1,0],0,'normal'],['ct-square-shadow-5',[2,-1,0],0,'normal'],['ct-square-shadow-5',[-1,-1,0],0,'normal'],['ct-square-shadow-5',[-1,3,0],0,'normal'],['ct-square-shadow-5',[2,3,0],0,'normal'],['ct-square-shadow-5',[2,3,1],0,'normal'],['ct-square-shadow-5',[-1,3,1],0,'normal'],['ct-square-shadow-5',[2,-1,1],0,'normal'],['ct-square-shadow-5',[-1,-1,1],0,'normal'],['ct-square-shadow-5',[-1,-1,-1],0,'normal'],['ct-tunnel-3',[0,-1,0],[5,0,4,[0,0]],'green'],['ct-tunnel-3.track',[0,-1,0],0,'normal'],['ct-tunnel-7',[0,3,0],[5,0,4,[0,0]],'green'],['ct-tunnel-7.track',[0,3,0],0,'normal'],['ct-tunnel-7',[1,3,0],[5,0,4,[0,0]],'red'],['ct-tunnel-7.track',[1,3,0],0,'normal'],['ct-tunnel-3',[1,-1,0],[5,0,4,[0,0]],'red'],['ct-tunnel-3.track',[1,-1,0],0,'normal']],
 	'name': 'Tutorial 1: Placement',
 	'start script': "[
-		set(event_handlers.debug2, q[debug('Aren`t you the inquisitive one! (: ')]),
-		set(event_handlers.finished_setup_buttons, q[[
-			//execute(find(level.chars, value.type='ct-button-metaraise-1.overlay'),
-			execute(self,
-				set_widgets(dialog(
-					self, {
-						type: 'dialog',
-						cursor: [15, 15],
-						rect: [0,0,300,100],
-						background_frame: 'empty_window',
-						children: [
-							{
-								xy: [18, 18],
-								type: 'label',
-								text: '<- Select the straight track\nfrom the toolbox.',
-								size:18,
-							},
-							{
-								type: 'animation_widget',
-								rect:[244,144,38,38],
-								animation:[
-									{
-										'id': 'normal',
-										'image': 'experimental/cube trains/ui/0108.png',
-										'w': 38,
-										'h': 38,
-										'x': 0,
-										'y': 0
-									},
-								],
-							},
-						],
-						}))),
-			
-			]]),
+		set(event_handlers.debug2, q[debug(q[Aren't you the inquisitive one! :) ])]),
+		set(event_handlers.finished_load_level, q[[
+			//Initial Setup
+			set(msg_dialogs, {a:target, b:db, c:dc, 'd':dd}),
+
+			//We must clear any widgets we've set up when we hit the reset button.
+			set(event_handlers.quick_load, q[[
+				map(level.chars, clear_widgets(value)),
+				select_piece('ct-metatrack-13'),
+				]]),
+
+				//For this scenario, we'll have to disable rotation of the scene. Rotating the scene would interfere with rotating the piece, which is the lesson. That, and it's hard to code.
+			set(keymap[keymode], filter(keymap[keymode], not key in ['rotate cw', 'rotate ccw'])),
+			map([buttons.navccw, buttons.navcw], 
+				set(value.vars.action, self.vars.message.add_text([
+					'Camera rotation is disabled in this scenario.',
+					q((I was hoping you wouldn't notice.)),
+				]))),
+
+			set(target.always_active, true),
+			set(target.use_absolute_screen_coordinates, true),
+			[	set(target.parent, trackbtn),
+				set(target.mid_xy, trackbtn.xy), //A little repositioning for if we reset the level.
+			]	where trackbtn = find(level.chars, value.type='ct-button-metatrack-19.overlay'),
+			execute(target, set_widgets(da)),
+			add_object(target),
+
+			set(event_handlers.selected_new_piece, q[
+				if(piece = 'ct-metatrack-19', [
+					remove_object(msg_dialogs.a),
+					add(buttons.toolccw.zsub_order, 1),
+					execute(buttons.toolccw, set_widgets(msg_dialogs.b)),
+					set(event_handlers.selected_new_piece, q[
+						if(piece = 'ct-metatrack-37', [
+							clear_widgets(buttons.toolccw),
+							set(msg_dialogs.a.use_absolute_screen_coordinates, false),
+							[	set(msg_dialogs.a.parent, msgBlock),
+								set(msg_dialogs.a.mid_xy, msgBlock.mid_xy),
+							]	where msgBlock = find(at_coord([1,0,-1]), value.type='ct-block-5'),
+							clear_widgets(msg_dialogs.a),
+							execute(msg_dialogs.a, set_widgets(msg_dialogs.c)),
+							add_object(msg_dialogs.a),
+							set(event_handlers.placed_piece, q[
+								if(fold(map([[0,1,0], [0,2,0]], find(at_coord(value), value.type='ct-glr-37')), a and b), [
+									clear_widgets(msg_dialogs.a),
+									execute(self.vars.buttons.trains, set_widgets(msg_dialogs['d'])),
+									set(event_handlers.trains, q[
+										clear_widgets(self.vars.buttons.trains)
+										]),
+									])
+								]),
+							])
+						]),
+					])
+				]),
+			]
+
+			where //Dialogs and dialog objects.
+			target = object('target'),
+			da = dialog(
+				self, {
+					type: 'dialog',
+					cursor: [15, 15],
+					rect: [100,0,300,100],
+					background_frame: 'empty_window',
+					children: [
+						{
+							xy: [18, 18],
+							type: 'label',
+							text: 'Step 1:\nSelect the straight track\nfrom the toolbox.',
+							size:18,
+						},
+					],
+				}),
+			db = dialog(
+				self, {
+					type: 'dialog',
+					cursor: [15, 15],
+					rect: [50,-100,300,150],
+					background_frame: 'empty_window',
+					children: [
+						{
+							xy: [18, 18],
+							type: 'label',
+							text: 'Step 2:\nRotate the piece to fit\nin the blank spot.\n(You can use the scroll-\nwheel on your mouse, if\nyou have one.)',
+							size:18,
+						},
+					],
+				}),
+			dc = dialog(
+				self, {
+					type: 'dialog',
+					cursor: [15, 15],
+					rect: [0,0,300,100],
+					background_frame: 'empty_window',
+					children: [
+						{
+							xy: [18, 18],
+							type: 'label',
+							text: 'Step 3:\nPlace the piece below\nto complete the track.',
+							size:18,
+						},
+					],
+				}),
+			dd = dialog(
+				self, {
+					type: 'dialog',
+					cursor: [15, 15],
+					rect: [-87.5,-125,425,100],
+					background_frame: 'empty_window',
+					children: [
+						{
+							xy: [18, 18],
+							type: 'label',
+							text: 'Step 3:\nPress the trains button (or the spacebar)\nto send out the trains, and win the level.',
+							size:18,
+						},
+					],
+				}),
+			]),
 		]",
 },
 {	'id': 'Tutorial 2',

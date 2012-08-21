@@ -6,6 +6,8 @@ test
 *.a
 *~
 *.kate-swp
+*.sublime-workspace
+*.sublime-project
 .sconsign.dblite
 .scons-option-cache
 .directory
