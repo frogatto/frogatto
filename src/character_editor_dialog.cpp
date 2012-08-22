@@ -11,6 +11,7 @@
 #include "image_widget.hpp"
 #include "label.hpp"
 #include "raster.hpp"
+#include "text_editor_widget.hpp"
 
 namespace editor_dialogs
 {
@@ -32,18 +33,34 @@ void character_editor_dialog::init()
 	using namespace gui;
 	set_padding(20);
 
+	if(!find_edit_) {
+		find_edit_.reset(new text_editor_widget(140));
+		find_edit_->set_on_change_handler(boost::bind(&character_editor_dialog::init, this));
+	}
+
+	grid_ptr find_grid(new gui::grid(2));
+	find_grid->add_col(widget_ptr(new label("Search: ", graphics::color_white())));
+	find_grid->add_col(widget_ptr(find_edit_));
+	add_widget(find_grid, 10, 10);
+
 	const frame& frame = *editor_.all_characters()[editor_.get_object()].preview_frame;
-
-	button* category_button = new button(widget_ptr(new label(category_, graphics::color_white())), boost::bind(&character_editor_dialog::show_category_menu, this));
-	add_widget(widget_ptr(category_button), 10, 10);
-
-	add_widget(generate_grid(category_));
 
 	button* facing_button = new button(
 	  widget_ptr(new label(editor_.face_right() ? "right" : "left", graphics::color_white())),
 	  boost::bind(&editor::toggle_facing, &editor_));
 	facing_button->set_tooltip("f  Change Facing");
-	add_widget(widget_ptr(facing_button), category_button->x() + category_button->width() + 10, 10);
+	if(find_edit_->text().empty() == false) {
+		add_widget(widget_ptr(facing_button));
+		add_widget(generate_grid(""));
+	} else {
+
+		button* category_button = new button(widget_ptr(new label(category_, graphics::color_white())), boost::bind(&character_editor_dialog::show_category_menu, this));
+		add_widget(widget_ptr(category_button));
+
+		add_widget(generate_grid(category_));
+	
+		add_widget(widget_ptr(facing_button), category_button->x() + category_button->width() + 10, category_button->y());
+	}
 }
 
 gui::widget_ptr character_editor_dialog::generate_grid(const std::string& category)
@@ -52,13 +69,16 @@ gui::widget_ptr character_editor_dialog::generate_grid(const std::string& catego
 	using namespace gui;
 	widget_ptr& result = grids_[category];
 	std::vector<gui::border_widget_ptr>& borders = grid_borders_[category];
-	if(!result) {
+	if(!result || category == "") {
+		const std::string search_string = find_edit_->text();
 
 		grid_ptr grid(new gui::grid(3));
 		grid->set_max_height(height() - 50);
 		int index = 0;
 		foreach(const editor::enemy_type& c, editor_.all_characters()) {
-			if(c.category == category_) {
+			const bool matches = search_string.empty() == false && strstr(c.preview_object->debug_description().c_str(), search_string.c_str()) != NULL ||
+			                      search_string.empty() && c.category == category_;
+			if(matches) {
 				if(first_obj_.count(category_) == 0) {
 					first_obj_[category] = index;
 				}

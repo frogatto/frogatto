@@ -6,6 +6,7 @@
 #include <string>
 
 #include "dialog.hpp"
+#include "text_editor_widget.hpp"
 #include "widget.hpp"
 
 class editor;
@@ -42,6 +43,8 @@ private:
 
 	//the first object in each category
 	std::map<std::string, int> first_obj_;
+
+	boost::intrusive_ptr<gui::text_editor_widget> find_edit_;
 };
 
 typedef boost::intrusive_ptr<character_editor_dialog> character_editor_dialog_ptr;
