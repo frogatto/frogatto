@@ -175,6 +175,7 @@ public:
 	entity_ptr editor_highlight() const { return editor_highlight_; }
 
 	void editor_select_object(entity_ptr c);
+	void editor_deselect_object(entity_ptr c);
 	void editor_clear_selection();
 
 	const std::vector<entity_ptr>& editor_selection() const { return editor_selection_; }

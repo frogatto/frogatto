@@ -3084,6 +3084,11 @@ void level::editor_select_object(entity_ptr c)
 	editor_selection_.push_back(c);
 }
 
+void level::editor_deselect_object(entity_ptr c)
+{
+	editor_selection_.erase(std::remove(editor_selection_.begin(), editor_selection_.end(), c), editor_selection_.end());
+}
+
 void level::editor_clear_selection()
 {
 	editor_selection_.clear();

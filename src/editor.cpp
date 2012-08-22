@@ -1951,6 +1951,7 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 			}
 
 			lvl_->editor_select_object(lvl_->editor_highlight());
+
 			property_dialog_->set_entity_group(lvl_->editor_selection());
 
 			if(!lvl_->editor_selection().empty() && tool() == TOOL_ADD_OBJECT) {
@@ -1960,6 +1961,8 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 			}
 
 			current_dialog_ = property_dialog_.get();
+		} else if(shift_pressed) {
+			lvl_->editor_deselect_object(lvl_->editor_highlight());
 		}
 
 		//start dragging the object
