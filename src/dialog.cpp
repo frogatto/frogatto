@@ -147,7 +147,7 @@ dialog& dialog::add_widget(widget_ptr w, int x, int y,
 {
 	w->set_loc(x,y);
 	widgets_.push_back(w);
-	std::sort(widgets_.begin(), widgets_.end(), widget_sort_zorder());
+	std::stable_sort(widgets_.begin(), widgets_.end(), widget_sort_zorder());
     register_listener(w);
 	switch(dir) {
 	case MOVE_DOWN:
@@ -184,7 +184,7 @@ void dialog::replace_widget(widget_ptr w_old, widget_ptr w_new)
 	int h = w_old->height();
 
 	std::replace(widgets_.begin(), widgets_.end(), w_old, w_new);
-	std::sort(widgets_.begin(), widgets_.end(), widget_sort_zorder());
+	std::stable_sort(widgets_.begin(), widgets_.end(), widget_sort_zorder());
 
 	w_new->set_loc(x,y);
 	w_new->set_dim(w,h);

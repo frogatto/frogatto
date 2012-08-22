@@ -5,6 +5,7 @@
 #include <sstream>
 
 #include "button.hpp"
+#include "checkbox.hpp"
 #include "code_editor_widget.hpp"
 #include "controls.hpp"
 #include "custom_object_functions.hpp"
@@ -94,6 +95,8 @@ void property_editor_dialog::init()
 	
 	add_widget(preview_grid, 10, 10);
 
+	add_widget(widget_ptr(new label(obj->debug_description(), graphics::color_white())));
+
 	if(get_entity()->label().empty() == false) {
 		grid_ptr labels_grid(new grid(2));
 		labels_grid->set_hpad(5);
@@ -171,7 +174,9 @@ void property_editor_dialog::init()
 			}
 
 			if(info.type() != editor_variable_info::TYPE_TEXT &&
-			   info.type() != editor_variable_info::TYPE_INTEGER) {
+			   info.type() != editor_variable_info::TYPE_INTEGER &&
+			   info.type() != editor_variable_info::TYPE_ENUM &&
+			   info.type() != editor_variable_info::TYPE_BOOLEAN) {
 				std::ostringstream s;
 				s << info.variable_name() << ": " << current_val_str;
 				label_ptr lb = label::create(s.str(), graphics::color_white());
@@ -200,6 +205,10 @@ void property_editor_dialog::init()
 				add_widget(widget_ptr(text_grid));
 
 			} else if(info.type() == editor_variable_info::TYPE_ENUM) {
+				grid_ptr enum_grid(new grid(2));
+				label_ptr lb = label::create(info.variable_name() + ":", graphics::color_white());
+				enum_grid->add_col(lb);
+
 				std::string current_value;
 				variant current_value_var = get_static_entity()->query_value(info.variable_name());
 				if(current_value_var.is_string()) {
@@ -210,9 +219,10 @@ void property_editor_dialog::init()
 					current_value = info.enum_values().front();
 				}
 
-				add_widget(widget_ptr(new button(
+				enum_grid->add_col(widget_ptr(new button(
 				     widget_ptr(new label(current_value, graphics::color_white())),
 					 boost::bind(&property_editor_dialog::change_enum_property, this, info.variable_name()))));
+				add_widget(widget_ptr(enum_grid));
 			} else if(info.type() == editor_variable_info::TYPE_LEVEL) {
 				std::string current_value;
 				variant current_value_var = get_static_entity()->query_value(info.variable_name());
@@ -236,10 +246,10 @@ void property_editor_dialog::init()
 				
 			} else if(info.type() == editor_variable_info::TYPE_BOOLEAN) {
 				variant current_value = get_static_entity()->query_value(info.variable_name());
-				std::cerr << "CURRENT VALUE: " << current_value.as_bool() << "\n";
-				add_widget(widget_ptr(new button(
-				         widget_ptr(new label("toggle", graphics::color_white())),
-				         boost::bind(&property_editor_dialog::toggle_property, this, info.variable_name()))));
+
+				add_widget(widget_ptr(new checkbox(widget_ptr(new label(info.variable_name(), graphics::color_white())),
+				               current_value.as_bool(),
+							   boost::bind(&property_editor_dialog::toggle_property, this, info.variable_name()))));
 			} else if(info.type() == editor_variable_info::TYPE_POINTS) {
 				variant current_value = get_static_entity()->query_value(info.variable_name());
 				const int npoints = current_value.is_list() ? current_value.num_elements() : 0;
@@ -294,15 +304,6 @@ void property_editor_dialog::init()
 				add_widget(widget_ptr(slider), text_grid->x(), text_grid->y() + text_grid->height() + 8);
 
 				*widgets = numeric_widgets(e, slider);
-
-				/*
-				grid_ptr buttons_grid(new grid(4));
-				buttons_grid->add_col(widget_ptr(new button(widget_ptr(new label("-10", graphics::color_white())), boost::bind(&property_editor_dialog::change_property, this, info.variable_name(), -10))));
-				buttons_grid->add_col(widget_ptr(new button(widget_ptr(new label("-1", graphics::color_white())), boost::bind(&property_editor_dialog::change_property, this, info.variable_name(), -1))));
-				buttons_grid->add_col(widget_ptr(new button(widget_ptr(new label("+1", graphics::color_white())), boost::bind(&property_editor_dialog::change_property, this, info.variable_name(), +1))));
-				buttons_grid->add_col(widget_ptr(new button(widget_ptr(new label("+10", graphics::color_white())), boost::bind(&property_editor_dialog::change_property, this, info.variable_name(), +10))));
-				add_widget(widget_ptr(buttons_grid));
-				*/
 			}
 		}
 	}
