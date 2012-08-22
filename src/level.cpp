@@ -3053,7 +3053,7 @@ int level::group_size(int group) const
 
 void level::set_character_group(entity_ptr c, int group_num)
 {
-	assert(group_num < groups_.size());
+	assert(group_num < static_cast<int>(groups_.size()));
 
 	//remove any current grouping
 	if(c->group() >= 0) {
