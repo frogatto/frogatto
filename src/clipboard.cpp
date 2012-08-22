@@ -392,8 +392,10 @@ bool clipboard_handle_event(const SDL_Event& )
 
 void copy_to_clipboard(const std::string& text, const bool)
 {
-	if(text.empty())
+	if(text.empty()) {
 		return;
+	}
+
 	if(!OpenClipboard(NULL))
 		return;
 	EmptyClipboard();
@@ -495,6 +497,10 @@ std::string copy_from_clipboard(const bool)
 
 void copy_to_clipboard(const std::string& text, const bool)
 {
+	if(text.empty()) {
+		return;
+	}
+
 	std::string new_str;
 	new_str.reserve(text.size());
 	for (unsigned int i = 0; i < text.size(); ++i)
