@@ -13,6 +13,7 @@
 #include "asserts.hpp"
 #include "concurrent_cache.hpp"
 #include "filesystem.hpp"
+#include "foreach.hpp"
 #include "module.hpp"
 #include "surface_cache.hpp"
 #if defined(__MACOSX__) || TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR || defined(TARGET_BLACKBERRY)
@@ -33,7 +34,13 @@ namespace surface_cache
 
 namespace {
 
-typedef concurrent_cache<std::string,surface> surface_map;
+struct CacheEntry {
+	surface surf;
+	std::string fname;
+	int64_t mod_time;
+};
+
+typedef concurrent_cache<std::string,CacheEntry> surface_map;
 surface_map& cache() {
 	static surface_map c;
 	return c;
@@ -42,18 +49,38 @@ surface_map& cache() {
 const std::string path = "./images/";
 }
 
+void invalidate_modified(std::vector<std::string>* keys_modified)
+{
+	std::vector<std::string> keys = cache().get_keys();
+	foreach(const std::string& k, keys) {
+		CacheEntry entry = cache().get(k);
+		const int64_t mod_time = sys::file_mod_time(entry.fname);
+		if(mod_time != entry.mod_time) {
+			cache().erase(k);
+			if(keys_modified) {
+				keys_modified->push_back(k);
+			}
+		}
+	}
+}
+
 surface get(const std::string& key)
 {
-	surface surf = cache().get(key);
+	surface surf = cache().get(key).surf;
 	if(surf.null()) {
-		surf = get_no_cache(key);
-		cache().put(key,surf);
+		CacheEntry entry;
+		entry.surf = get_no_cache(key, &entry.fname);
+		if(entry.fname.empty() == false) {
+			entry.mod_time = sys::file_mod_time(entry.fname);
+		}
+
+		cache().put(key,entry);
 	}
 
 	return surf;
 }
 
-surface get_no_cache(const std::string& key)
+surface get_no_cache(const std::string& key, std::string* full_filename)
 {
 	std::string fname = path + key;
 #if defined(__ANDROID__)
@@ -71,8 +98,14 @@ surface get_no_cache(const std::string& key)
 	surface surf;
 	if(sys::file_exists(key)) {
 		surf = surface(IMG_Load(key.c_str()));
+		if(full_filename) {
+			*full_filename = key;
+		}
 	} else {
 		surf = surface(IMG_Load(module::map_file(fname).c_str()));
+		if(full_filename) {
+			*full_filename = module::map_file(fname);
+		}
 	}
 #endif // ANDROID
 	//std::cerr << "loading image '" << fname << "'\n";
@@ -90,11 +123,11 @@ surface get_no_cache(const std::string& key)
 void clear_unused()
 {
 	surface_map::lock lck(cache());
-	std::map<std::string, surface>& map = lck.map();
-	std::map<std::string, surface>::iterator i = map.begin();
+	std::map<std::string, CacheEntry>& map = lck.map();
+	std::map<std::string, CacheEntry>::iterator i = map.begin();
 	while(i != map.end()) {
 		//std::cerr << "CACHE REF " << i->first << " -> " << i->second->refcount << "\n";
-		if(i->second->refcount == 1) {
+		if(i->second.surf->refcount == 1) {
 			//std::cerr << "CACHE FREE " << i->first << "\n";
 			map.erase(i++);
 		} else {

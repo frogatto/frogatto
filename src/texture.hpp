@@ -67,6 +67,7 @@ public:
 	GLfloat translate_coord_x(GLfloat x) const;
 	GLfloat translate_coord_y(GLfloat y) const;
 	static void clear_cache();
+	static void clear_modified_files_from_cache();
 
 	unsigned int width() const { return width_; }
 	unsigned int height() const { return height_; }

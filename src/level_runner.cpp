@@ -711,6 +711,8 @@ bool level_runner::play_cycle()
 
 		custom_object_type::reload_modified_code();
 
+		graphics::texture::clear_modified_files_from_cache();
+
 		if(history_trails_.empty() == false && (tile_rebuild_state_id_ != level::tile_rebuild_state_id() || history_trails_state_id_ != editor_->level_state_id() || object_reloads_state_id_ != custom_object_type::num_object_reloads())) {
 			update_history_trails();
 		}

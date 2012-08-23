@@ -15,6 +15,7 @@
 
 #include "asserts.hpp"
 #include "concurrent_cache.hpp"
+#include "filesystem.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "preferences.hpp"
@@ -49,27 +50,40 @@ namespace {
 
 	void add_texture_to_registry(texture* t) {
 // TODO: Currently the registry is disabled for performance reasons.
-//		threading::lock lk(texture_registry_mutex());
-//		texture_registry().insert(t);
+#ifndef NO_EDITOR
+	//	threading::lock lk(texture_registry_mutex());
+		texture_registry().insert(t);
+#endif
 	}
 
 	void remove_texture_from_registry(texture* t) {
-//		threading::lock lk(texture_registry_mutex());
-//		texture_registry().erase(t);
+#ifndef NO_EDITOR
+	//	threading::lock lk(texture_registry_mutex());
+		texture_registry().erase(t);
+#endif
 	}
 
-	typedef concurrent_cache<std::string,graphics::texture> texture_map;
+	struct CacheEntry {
+		std::string path;
+		int64_t mod_time;
+		graphics::texture t;
+		bool has_been_modified() const {
+			return path.empty() == false && sys::file_mod_time(path) != mod_time;
+		}
+	};
+
+	typedef concurrent_cache<std::string,CacheEntry> texture_map;
 	texture_map& texture_cache() {
 		static texture_map cache;
 		return cache;
 	}
-	typedef concurrent_cache<std::pair<std::string,std::string>,graphics::texture> algorithm_texture_map;
+	typedef concurrent_cache<std::pair<std::string,std::string>,CacheEntry> algorithm_texture_map;
 	algorithm_texture_map& algorithm_texture_cache() {
 		static algorithm_texture_map cache;
 		return cache;
 	}
 
-	typedef concurrent_cache<std::pair<std::string,int>,graphics::texture> palette_texture_map;
+	typedef concurrent_cache<std::pair<std::string,int>,CacheEntry> palette_texture_map;
 	palette_texture_map& palette_texture_cache() {
 		static palette_texture_map cache;
 		return cache;
@@ -211,7 +225,7 @@ void texture::clear_textures()
 	//std::cerr << "TEXTURES LOADING...\n";
 	texture_map::lock lck(texture_cache());
 	for(texture_map::map_type::const_iterator i = lck.map().begin(); i != lck.map().end(); ++i) {
-		if(!i->second.id_) {
+		if(!i->second.t.id_) {
 			continue;
 		}
 
@@ -463,14 +477,19 @@ texture texture::get(const std::string& str, int options)
 
 	const std::string& str_key = options ? str_buf : str;
 
-	texture result = texture_cache().get(str_key);
+	texture result = texture_cache().get(str_key).t;
 	ASSERT_LOG(result.width() % 2 == 0, "\nIMAGE WIDTH IS NOT AN EVEN NUMBER OF PIXELS:" << str);
 	
 	if(!result.valid()) {
 		key surfs;
-		surfs.push_back(surface_cache::get_no_cache(str));
-		result = texture(surfs, options);
-		texture_cache().put(str_key, result);
+		CacheEntry entry;
+		surfs.push_back(surface_cache::get_no_cache(str, &entry.path));
+		if(entry.path.empty() == false) {
+			entry.mod_time = sys::file_mod_time(entry.path);
+		}
+		entry.t = result = texture(surfs, options);
+
+		texture_cache().put(str_key, entry);
 		//std::cerr << (next_power_of_2(result.width())*next_power_of_2(result.height())*2)/1024 << "KB TEXTURE " << str << ": " << result.width() << "x" << result.height() << "\n";
 	}
 
@@ -484,12 +503,16 @@ texture texture::get(const std::string& str, const std::string& algorithm)
 	}
 
 	std::pair<std::string,std::string> k(str, algorithm);
-	texture result = algorithm_texture_cache().get(k);
+	texture result = algorithm_texture_cache().get(k).t;
 	if(!result.valid()) {
 		key surfs;
-		surfs.push_back(get_surface_formula(surface_cache::get_no_cache(str), algorithm));
-		result = texture(surfs);
-		algorithm_texture_cache().put(k, result);
+		CacheEntry entry;
+		surfs.push_back(get_surface_formula(surface_cache::get_no_cache(str, &entry.path), algorithm));
+		if(entry.path.empty() == false) {
+			entry.mod_time = sys::file_mod_time(entry.path);
+		}
+		entry.t = result = texture(surfs);
+		algorithm_texture_cache().put(k, entry);
 	}
 
 	return result;
@@ -499,18 +522,22 @@ texture texture::get_palette_mapped(const std::string& str, int palette)
 {
 	//std::cerr << "get palette mapped: " << str << "," << palette << "\n";
 	std::pair<std::string,int> k(str, palette);
-	texture result = palette_texture_cache().get(k);
+	texture result = palette_texture_cache().get(k).t;
 	if(!result.valid()) {
 		key surfs;
-		surface s = surface_cache::get_no_cache(str);
+		CacheEntry entry;
+		surface s = surface_cache::get_no_cache(str, &entry.path);
+		if(entry.path.empty() == false) {
+			entry.mod_time = sys::file_mod_time(entry.path);
+		}
 		if(s.get() != NULL) {
 			surfs.push_back(map_palette(s, palette));
-			result = texture(surfs);
+			entry.t = result = texture(surfs);
 		} else {
 			std::cerr << "COULD NOT FIND IMAGE FOR PALETTE MAPPING: '" << str << "'\n";
 		}
 
-		palette_texture_cache().put(k, result);
+		palette_texture_cache().put(k, entry);
 	}
 
 	return result;
@@ -549,6 +576,93 @@ GLfloat texture::translate_coord_y(GLfloat y) const
 void texture::clear_cache()
 {
 	texture_cache().clear();
+}
+
+void texture::clear_modified_files_from_cache()
+{
+	//make it so each time this is called it does one 'slice' of the files
+	//to distribute the overall load across frames.
+	static int slice = 0;
+	const int NumSlices = 5;
+	slice = (slice + 1)%NumSlices;
+
+	int index = 0;
+	foreach(const std::string& k, texture_cache().get_keys()) {
+		index = (index + 1)%NumSlices;
+		if(index != slice) {
+			continue;
+		}
+
+		if(texture_cache().get(k).has_been_modified()) {
+			const boost::shared_ptr<ID> id = texture_cache().get(k).t.id_;
+
+			CacheEntry old_entry = texture_cache().get(k);
+
+			try {
+				texture_cache().erase(k);
+				texture new_texture = get(k);
+				foreach(texture* t, texture_registry()) {
+					if(t->id_ == id) {
+						*t = new_texture;
+					}
+				}
+			} catch(graphics::load_image_error&) {
+				texture_cache().put(k, old_entry);
+			}
+		}
+	}
+
+	typedef std::pair<std::string,std::string> string_pair;
+	foreach(const string_pair& k, algorithm_texture_cache().get_keys()) {
+		index = (index + 1)%NumSlices;
+		if(index != slice) {
+			continue;
+		}
+
+		if(algorithm_texture_cache().get(k).has_been_modified()) {
+			const boost::shared_ptr<ID> id = algorithm_texture_cache().get(k).t.id_;
+
+			CacheEntry old_entry = algorithm_texture_cache().get(k);
+
+			try {
+				algorithm_texture_cache().erase(k);
+				texture new_texture = get(k.first, k.second);
+				foreach(texture* t, texture_registry()) {
+					if(t->id_ == id) {
+						*t = new_texture;
+					}
+				}
+			} catch(graphics::load_image_error&) {
+				algorithm_texture_cache().put(k, old_entry);
+			}
+		}
+	}
+
+	typedef std::pair<std::string,int> string_int_pair;
+	foreach(const string_int_pair& k, palette_texture_cache().get_keys()) {
+		index = (index + 1)%NumSlices;
+		if(index != slice) {
+			continue;
+		}
+
+		if(palette_texture_cache().get(k).has_been_modified()) {
+			const boost::shared_ptr<ID> id = palette_texture_cache().get(k).t.id_;
+
+			CacheEntry old_entry = palette_texture_cache().get(k);
+
+			try {
+				palette_texture_cache().erase(k);
+				texture new_texture = get_palette_mapped(k.first, k.second);
+				foreach(texture* t, texture_registry()) {
+					if(t->id_ == id) {
+						*t = new_texture;
+					}
+				}
+			} catch(graphics::load_image_error&) {
+				palette_texture_cache().put(k, old_entry);
+			}
+		}
+	}
 }
 
 const unsigned char* texture::color_at(int x, int y) const

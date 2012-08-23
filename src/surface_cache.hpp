@@ -13,7 +13,9 @@
 #ifndef SURFACE_CACHE_HPP_INCLUDED
 #define SURFACE_CACHE_HPP_INCLUDED
 
+#include <inttypes.h>
 #include <string>
+#include <vector>
 
 #include "surface.hpp"
 
@@ -28,7 +30,8 @@ namespace surface_cache
 {
 
 surface get(const std::string& key);
-surface get_no_cache(const std::string& key);
+surface get_no_cache(const std::string& key, std::string* fname=0);
+void invalidate_modified(std::vector<std::string>* keys);
 void clear_unused();
 void clear();
 
