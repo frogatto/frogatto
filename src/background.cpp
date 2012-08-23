@@ -22,7 +22,33 @@
 namespace {
 //a cache key with background name and palette ID.
 typedef std::pair<std::string, int> cache_key;
-std::map<cache_key, boost::shared_ptr<background> > cache;
+typedef std::map<cache_key, boost::shared_ptr<background> > bg_cache;
+bg_cache cache;
+}
+
+void background::load_modified_backgrounds()
+{
+	std::map<std::string, int64_t> files;
+	for(bg_cache::const_iterator i = cache.begin(); i != cache.end(); ++i) {
+		files[i->second->file_] = i->second->file_mod_time_;
+	}
+
+	for(std::map<std::string, int64_t>::const_iterator i = files.begin(); i != files.end(); ++i) {
+		const int64_t mod_time = sys::file_mod_time(i->first);
+		if(mod_time != i->second) {
+			for(bg_cache::iterator j = cache.begin(); j != cache.end(); ++j) {
+				background backup = *j->second;
+				try {
+					*j->second = background(json::parse_from_file("data/backgrounds/" + j->second->id_ + ".cfg"), j->first.second);
+				} catch(...) {
+					std::cerr << "ERROR REFRESHING BACKGROUND\n";
+				}
+				j->second->id_ = backup.id_;
+				j->second->file_ = backup.file_;
+				j->second->file_mod_time_ = mod_time;
+			}
+		}
+	}
 }
 
 boost::shared_ptr<background> background::get(const std::string& name, int palette_id)
@@ -31,8 +57,11 @@ boost::shared_ptr<background> background::get(const std::string& name, int palet
 
 	boost::shared_ptr<background>& obj = cache[id];
 	if(!obj) {
-		obj.reset(new background(json::parse_from_file("data/backgrounds/" + name + ".cfg"), palette_id));
+		const std::string fname = "data/backgrounds/" + name + ".cfg";
+		obj.reset(new background(json::parse_from_file(fname), palette_id));
 		obj->id_ = name;
+		obj->file_ = module::map_file(fname);
+		obj->file_mod_time_ = sys::file_mod_time(obj->file_);
 	}
 
 	return obj;
