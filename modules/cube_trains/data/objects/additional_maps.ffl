@@ -45,15 +45,17 @@
 								set(msg_dialogs.a.mid_xy, msgBlock.mid_xy),
 							]	where msgBlock = find(at_coord([1,0,-1]), value.type='ct-block-5'),
 							clear_widgets(msg_dialogs.a),
+							set(event_handlers.selected_new_piece, 'null'),
 							execute(msg_dialogs.a, set_widgets(msg_dialogs.c)),
 							add_object(msg_dialogs.a),
 							set(event_handlers.placed_piece, q[
 								if(fold(map([[0,1,0], [0,2,0]], find(at_coord(value), value.type='ct-glr-37')), a and b), [
 									clear_widgets(msg_dialogs.a),
 									execute(self.vars.buttons.trains, set_widgets(msg_dialogs['d'])),
-									set(event_handlers.trains, q[
-										clear_widgets(self.vars.buttons.trains)
-										]),
+									set(event_handlers.trains, q[[
+										clear_widgets(self.vars.buttons.trains),
+										set(event_handlers.placed_piece, 'null'),
+										]]),
 									])
 								]),
 							])
