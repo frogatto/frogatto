@@ -1119,11 +1119,11 @@ bool level_runner::play_cycle()
 						if(!paused) {
 							toggle_pause();
 						}
-					} /*else {
+					} else {
 						if(paused) {
 							toggle_pause();
 						}
-					}*/
+					}
 					
 				}
 			break;
