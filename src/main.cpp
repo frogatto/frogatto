@@ -337,6 +337,7 @@ extern "C" int main(int argcount, char** argvec)
 	}
 
 	checksum::manager checksum_manager;
+	sys::filesystem_manager fs_manager;
 
 	preferences::expand_data_paths();
 	LOG( "After expand_data_paths()" );

@@ -16,6 +16,7 @@
 #include "asserts.hpp"
 #include "filesystem.hpp"
 #include "string_utils.hpp"
+#include "thread.hpp"
 #include "unit_test.hpp"
 
 #include <fstream>
@@ -33,6 +34,11 @@
 
 #ifdef __APPLE__
 #include <CoreFoundation/CoreFoundation.h>
+#endif
+
+#ifdef __linux__
+#include <sys/inotify.h>
+#include <sys/select.h>
 #endif
 
 #ifdef _WIN32
@@ -720,6 +726,165 @@ bool is_path_absolute(const std::string& path)
 {
 	static const std::string re_absolute_path = "^(?:(?:(?:[A-Za-z]:)?(?:\\\\|/))|\\\\\\\\|/).*";
 	return boost::regex_match(path, boost::regex(re_absolute_path));
+}
+
+namespace {
+typedef std::map<std::string, std::vector<boost::function<void()> > > file_mod_handler_map;
+file_mod_handler_map& get_mod_map() {
+	static file_mod_handler_map instance;
+	return instance;
+}
+
+std::vector<std::string> new_files_listening;
+
+threading::mutex& get_mod_map_mutex() {
+	static threading::mutex instance;
+	return instance;
+}
+
+std::vector<boost::function<void()> > file_mod_notification_queue;
+
+threading::mutex& get_mod_queue_mutex() {
+	static threading::mutex instance;
+	return instance;
+}
+
+void file_mod_worker_thread_fn()
+{
+#ifdef __linux__
+	const int inotify_fd = inotify_init();
+	std::map<int, std::string> fd_to_path;
+	fd_set read_set;
+#endif
+
+	std::map<std::string, int64_t> mod_times;
+	for(;;) {
+		file_mod_handler_map m;
+		std::vector<std::string> new_files;
+
+		{
+			threading::lock lck(get_mod_map_mutex());
+			m = get_mod_map();
+			new_files = new_files_listening;
+			new_files_listening.clear();
+		}
+
+		if(m.empty()) {
+			break;
+		}
+
+#ifdef __linux__
+		for(int n = 0; n != new_files.size(); ++n) {
+			const int fd = inotify_add_watch(inotify_fd, new_files[n].c_str(), IN_CLOSE_WRITE);
+			if(fd > 0) {
+				fd_to_path[fd] = new_files[n];
+			} else {
+				std::cerr << "COULD NOT LISTEN ON FILE " << new_files[n] << "\n";
+			}
+		}
+
+		FD_ZERO(&read_set);
+		FD_SET(inotify_fd, &read_set);
+		timeval tv = {1, 0};
+		const int select_res = select(inotify_fd+1, &read_set, NULL, NULL, &tv);
+		if(select_res > 0) {
+			inotify_event ev;
+			const int nbytes = read(inotify_fd, &ev, sizeof(ev));
+			if(nbytes == sizeof(ev)) {
+
+				const std::string path = fd_to_path[ev.wd];
+				std::cerr << "LINUX FILE MOD: " << path << "\n";
+				if(ev.mask&IN_IGNORED) {
+					fd_to_path.erase(ev.wd);
+					const int fd = inotify_add_watch(inotify_fd, path.c_str(), IN_MODIFY);
+					if(fd > 0) {
+						fd_to_path[fd] = path;
+					}
+				}
+				std::vector<boost::function<void()> >& handlers = m[path];
+
+				threading::lock lck(get_mod_queue_mutex());
+				file_mod_notification_queue.insert(file_mod_notification_queue.end(), handlers.begin(), handlers.end());
+			} else {
+				std::cerr << "READ FAILURE IN FILE NOTIFY\n";
+			}
+		}
+
+#else
+
+		const int begin = SDL_GetTicks();
+
+		for(file_mod_handler_map::iterator i = m.begin(); i != m.end(); ++i) {
+			std::map<std::string, int64_t>::iterator mod_itor = mod_times.find(i->first);
+			const int64_t mod_time = file_mod_time(i->first);
+			if(mod_itor == mod_times.end()) {
+				mod_times[i->first] = mod_time;
+			} else if(mod_time != mod_itor->second) {
+				std::cerr << "MODIFY: " << mod_itor->first << "\n";
+				mod_itor->second = mod_time;
+
+				threading::lock lck(get_mod_queue_mutex());
+				file_mod_notification_queue.insert(file_mod_notification_queue.end(), i->second.begin(), i->second.end());
+			}
+		}
+
+		//std::cerr << "CHECKED " << m.size() << " FILES IN " << (SDL_GetTicks() - begin) << "\n";
+
+		SDL_Delay(100);
+#endif
+	}
+}
+
+threading::thread* file_mod_worker_thread = NULL;
+
+}
+
+void notify_on_file_modification(const std::string& path, boost::function<void()> handler)
+{
+	{
+		threading::lock lck(get_mod_map_mutex());
+		std::vector<boost::function<void()> >& handlers = get_mod_map()[path];
+		if(handlers.empty()) {
+			new_files_listening.push_back(path);
+		}
+		handlers.push_back(handler);
+	}
+
+	if(file_mod_worker_thread == NULL) {
+		file_mod_worker_thread = new threading::thread(file_mod_worker_thread_fn);
+	}
+}
+
+void pump_file_modifications()
+{
+	if(file_mod_worker_thread == NULL) {
+		return;
+	}
+
+	std::vector<boost::function<void()> > v;
+	{
+		threading::lock lck(get_mod_queue_mutex());
+		v.swap(file_mod_notification_queue);
+	}
+
+	foreach(boost::function<void()> f, v) {
+		f();
+	}
+}
+
+filesystem_manager::filesystem_manager()
+{
+}
+
+filesystem_manager::~filesystem_manager()
+{
+	{
+		threading::lock lck(get_mod_map_mutex());
+		get_mod_map().clear();
+	}
+
+	delete file_mod_worker_thread;
+	file_mod_worker_thread = NULL;
 }
 
 }

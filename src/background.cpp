@@ -1,6 +1,6 @@
-#include "graphics.hpp"
-
 #include <math.h>
+
+#include <boost/bind.hpp>
 
 #include <iostream>
 #include <map>
@@ -10,6 +10,7 @@
 #include "filesystem.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
+#include "graphics.hpp"
 #include "json_parser.hpp"
 #include "level.hpp"
 #include "module.hpp"
@@ -24,29 +25,50 @@ namespace {
 typedef std::pair<std::string, int> cache_key;
 typedef std::map<cache_key, boost::shared_ptr<background> > bg_cache;
 bg_cache cache;
+
+std::set<std::string> listening_for_files, files_updated;
+
+void on_bg_file_updated(std::string path)
+{
+	files_updated.insert(path);
+}
+
 }
 
 void background::load_modified_backgrounds()
 {
-	std::map<std::string, int64_t> files;
-	for(bg_cache::const_iterator i = cache.begin(); i != cache.end(); ++i) {
-		files[i->second->file_] = i->second->file_mod_time_;
+	static int prev_nitems = 0;
+	const int nitems = cache.size();
+	if(prev_nitems == nitems && files_updated.empty()) {
+		return;
 	}
 
-	for(std::map<std::string, int64_t>::const_iterator i = files.begin(); i != files.end(); ++i) {
-		const int64_t mod_time = sys::file_mod_time(i->first);
-		if(mod_time != i->second) {
-			for(bg_cache::iterator j = cache.begin(); j != cache.end(); ++j) {
-				background backup = *j->second;
-				try {
-					*j->second = background(json::parse_from_file("data/backgrounds/" + j->second->id_ + ".cfg"), j->first.second);
-				} catch(...) {
-					std::cerr << "ERROR REFRESHING BACKGROUND\n";
-				}
-				j->second->id_ = backup.id_;
-				j->second->file_ = backup.file_;
-				j->second->file_mod_time_ = mod_time;
+	prev_nitems = nitems;
+
+	std::set<std::string> error_paths;
+
+	for(bg_cache::iterator j = cache.begin(); j != cache.end(); ++j) {
+		if(j->second->file_.empty()) {
+			continue;
+		}
+
+		if(listening_for_files.count(j->second->file_) == 0) {
+			sys::notify_on_file_modification(j->second->file_, boost::bind(on_bg_file_updated, j->second->file_));
+			listening_for_files.insert(j->second->file_);
+		}
+
+		if(files_updated.count(j->second->file_)) {
+
+			background backup = *j->second;
+			try {
+				const std::string path = "data/backgrounds/" + j->second->id_ + ".cfg";
+				*j->second = background(json::parse_from_file(path), j->first.second);
+			} catch(...) {
+				std::cerr << "ERROR REFRESHING BACKGROUND\n";
+				error_paths.insert(j->second->file_);
 			}
+			j->second->id_ = backup.id_;
+			j->second->file_ = backup.file_;
 		}
 	}
 }
@@ -61,7 +83,6 @@ boost::shared_ptr<background> background::get(const std::string& name, int palet
 		obj.reset(new background(json::parse_from_file(fname), palette_id));
 		obj->id_ = name;
 		obj->file_ = module::map_file(fname);
-		obj->file_mod_time_ = sys::file_mod_time(obj->file_);
 	}
 
 	return obj;

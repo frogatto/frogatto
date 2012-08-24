@@ -10,6 +10,8 @@
    See the COPYING file for more details.
 */
 
+#include <boost/bind.hpp>
+
 #include "graphics.hpp"
 #include <pthread.h>
 
@@ -578,22 +580,38 @@ void texture::clear_cache()
 	texture_cache().clear();
 }
 
+namespace {
+std::set<std::string> listening_for_files, files_updated;
+
+void on_image_file_updated(std::string path)
+{
+	std::cerr << "FILE UPDATED: " << path << "\n";
+	files_updated.insert(path);
+}
+}
+
 void texture::clear_modified_files_from_cache()
 {
-	//make it so each time this is called it does one 'slice' of the files
-	//to distribute the overall load across frames.
-	static int slice = 0;
-	const int NumSlices = 5;
-	slice = (slice + 1)%NumSlices;
+	static int prev_nitems = 0;
+	const int nitems = texture_cache().size() + algorithm_texture_cache().size() + palette_texture_cache().size();
 
-	int index = 0;
+	if(prev_nitems == nitems && files_updated.empty()) {
+		return;
+	}
+
+	prev_nitems = nitems;
+
+	std::set<std::string> error_paths;
+
 	foreach(const std::string& k, texture_cache().get_keys()) {
-		index = (index + 1)%NumSlices;
-		if(index != slice) {
-			continue;
+		const std::string path = texture_cache().get(k).path;
+		if(listening_for_files.count(path) == 0) {
+			sys::notify_on_file_modification(path, boost::bind(on_image_file_updated, path));
+			listening_for_files.insert(path);
 		}
 
-		if(texture_cache().get(k).has_been_modified()) {
+		if(files_updated.count(path)) {
+			std::cerr << "IMAGE UPDATED: " << k << " " << path << "\n";
 			const boost::shared_ptr<ID> id = texture_cache().get(k).t.id_;
 
 			CacheEntry old_entry = texture_cache().get(k);
@@ -608,18 +626,21 @@ void texture::clear_modified_files_from_cache()
 				}
 			} catch(graphics::load_image_error&) {
 				texture_cache().put(k, old_entry);
+				error_paths.insert(path);
 			}
 		}
 	}
 
 	typedef std::pair<std::string,std::string> string_pair;
 	foreach(const string_pair& k, algorithm_texture_cache().get_keys()) {
-		index = (index + 1)%NumSlices;
-		if(index != slice) {
-			continue;
+		const std::string path = algorithm_texture_cache().get(k).path;
+		if(listening_for_files.count(path) == 0) {
+			sys::notify_on_file_modification(path, boost::bind(on_image_file_updated, path));
+			listening_for_files.insert(path);
 		}
 
-		if(algorithm_texture_cache().get(k).has_been_modified()) {
+		if(files_updated.count(path)) {
+			std::cerr << "IMAGE UPDATED: " << k.first << " " << path << "\n";
 			const boost::shared_ptr<ID> id = algorithm_texture_cache().get(k).t.id_;
 
 			CacheEntry old_entry = algorithm_texture_cache().get(k);
@@ -634,18 +655,21 @@ void texture::clear_modified_files_from_cache()
 				}
 			} catch(graphics::load_image_error&) {
 				algorithm_texture_cache().put(k, old_entry);
+				error_paths.insert(path);
 			}
 		}
 	}
 
 	typedef std::pair<std::string,int> string_int_pair;
 	foreach(const string_int_pair& k, palette_texture_cache().get_keys()) {
-		index = (index + 1)%NumSlices;
-		if(index != slice) {
-			continue;
+		const std::string path = palette_texture_cache().get(k).path;
+		if(listening_for_files.count(path) == 0) {
+			sys::notify_on_file_modification(path, boost::bind(on_image_file_updated, path));
+			listening_for_files.insert(path);
 		}
 
-		if(palette_texture_cache().get(k).has_been_modified()) {
+		if(files_updated.count(path)) {
+			std::cerr << "IMAGE UPDATED: " << k.first << " " << path << "\n";
 			const boost::shared_ptr<ID> id = palette_texture_cache().get(k).t.id_;
 
 			CacheEntry old_entry = palette_texture_cache().get(k);
@@ -660,9 +684,13 @@ void texture::clear_modified_files_from_cache()
 				}
 			} catch(graphics::load_image_error&) {
 				palette_texture_cache().put(k, old_entry);
+				error_paths.insert(path);
 			}
 		}
 	}
+	std::cerr << "END FILES UPDATED: " << files_updated.size() << "\n";
+
+	files_updated = error_paths;
 }
 
 const unsigned char* texture::color_at(int x, int y) const

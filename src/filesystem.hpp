@@ -14,6 +14,7 @@
 #define FILESYSTEM_HPP_INCLUDED
 
 #include <boost/cstdint.hpp>
+#include <boost/function.hpp>
 
 #include <map>
 #include <string>
@@ -73,6 +74,14 @@ void copy_file(const std::string& from, const std::string& to);
 bool is_path_absolute(const std::string& path);
 std::string make_conformal_path(const std::string& path);
 std::string compute_relative_path(const std::string& source, const std::string& target);
+
+struct filesystem_manager {
+	filesystem_manager();
+	~filesystem_manager();
+};
+
+void notify_on_file_modification(const std::string& path, boost::function<void()> handler);
+void pump_file_modifications();
 
 }
 

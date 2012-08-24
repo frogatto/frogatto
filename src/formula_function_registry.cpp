@@ -38,7 +38,7 @@ int register_function_helpstring(const std::string& module, const std::string& s
 	return helpstrings()[module].size();
 }
 
-UTILITY(document_ffl_functions)
+COMMAND_LINE_UTILITY(document_ffl_functions)
 {
 	for(std::map<std::string, std::vector<std::string> >::const_iterator i = helpstrings().begin(); i != helpstrings().end(); ++i) {
 		if(i->second.empty()) {

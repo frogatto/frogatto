@@ -1,6 +1,8 @@
 #include <cassert>
 #include <iostream>
 
+#include <boost/bind.hpp>
+
 #include "asserts.hpp"
 #include "collision_utils.hpp"
 #include "custom_object.hpp"
@@ -29,10 +31,6 @@ std::map<std::string, std::string>& prototype_file_paths() {
 }
 
 namespace {
-std::map<std::string, int64_t>& file_mod_times() {
-	static std::map<std::string, int64_t> mod_times;
-	return mod_times;
-}
 
 std::map<std::string, std::string>& object_file_paths() {
 	static std::map<std::string, std::string> paths;
@@ -54,15 +52,6 @@ void load_file_paths() {
 	//find out the paths to all our files
 	module::get_unique_filenames_under_dir(object_file_path(), &object_file_paths());
 	module::get_unique_filenames_under_dir("data/object_prototypes", &::prototype_file_paths());
-
-	for(std::map<std::string, std::string>::const_iterator i = object_file_paths().begin(); i != object_file_paths().end(); ++i) {
-		file_mod_times()[i->second] = sys::file_mod_time("./" + i->second);
-		//std::cerr << "FILE MOD TIME FOR " << i->second << ": " << file_mod_times()[i->second] << "\n";
-	}
-
-	for(std::map<std::string, std::string>::const_iterator i = ::prototype_file_paths().begin(); i != ::prototype_file_paths().end(); ++i) {
-		file_mod_times()[i->second] = sys::file_mod_time(i->second);
-	}
 }
 
 typedef std::map<std::string, const_custom_object_type_ptr> object_map;
@@ -266,7 +255,6 @@ variant merge_into_prototype(variant prototype_node, variant node)
 namespace customobjecttype {
 void reload_file_paths() {
 	custom_object_type::invalidate_all_objects();
-	file_mod_times().clear();
 	load_file_paths();
 }
 }
@@ -427,19 +415,29 @@ std::vector<const_custom_object_type_ptr> custom_object_type::get_all()
 	return res;
 }
 
+namespace {
+std::set<std::string> listening_for_files, files_updated;
+
+void on_object_file_updated(std::string path)
+{
+	files_updated.insert(path);
+}
+}
+
 int custom_object_type::reload_modified_code()
 {
-	//every frame we test 1/25th of the files, thus loading all files
-	//every 25 frames.
-	static int ncall = 0;
-	ncall = (ncall+1)%25;
+	static int prev_nitems = 0;
+	const int nitems = cache().size();
+	if(prev_nitems == nitems && files_updated.empty()) {
+		return 0;
+	}
 
-	int npos = 0;
+	prev_nitems = nitems;
+
+	std::set<std::string> error_paths;
+
 	int result = 0;
 	for(object_map::iterator i = cache().begin(); i != cache().end(); ++i) {
-		if(++npos%25 != ncall) {
-			continue;
-		}
 
 		const std::string* path = get_object_path(i->first + ".cfg");
 
@@ -447,19 +445,22 @@ int custom_object_type::reload_modified_code()
 			continue;
 		}
 
-		std::map<std::string, int64_t>::iterator mod_itor = file_mod_times().find(*path);
-		const int64_t mod_time = sys::file_mod_time(*path);
-		if(mod_time != 0 && mod_itor != file_mod_times().end() && mod_time != mod_itor->second) {
-			mod_itor->second = mod_time;
-			std::cerr << "FILE MODIFIED: " << i->first << " -> " << *path << ": " << mod_time << " VS " << mod_itor->second << "\n";
+		if(listening_for_files.count(*path) == 0) {
+			sys::notify_on_file_modification(*path, boost::bind(on_object_file_updated, *path));
+			listening_for_files.insert(*path);
+		}
 
+		if(files_updated.count(*path)) {
 			try {
 				reload_object(i->first);
 				++result;
 			} catch(...) {
+				error_paths.insert(*path);
 			}
 		}
 	}
+
+	files_updated = error_paths;
 
 	return result;
 }

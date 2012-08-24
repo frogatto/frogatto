@@ -39,7 +39,6 @@ private:
 
 	void draw_layers(int x, int y, const rect& area, const std::vector<rect>& opaque_areas, int rotation, int cycle) const;
 	std::string id_, file_;
-	int64_t file_mod_time_;
 	SDL_Color top_, bot_;
 	int width_, height_;
 	point offset_;

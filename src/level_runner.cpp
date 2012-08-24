@@ -709,8 +709,9 @@ bool level_runner::play_cycle()
 
 		lvl_->mutate_value("zoom", variant(decimal(1.0/editor_->zoom())));
 
-		custom_object_type::reload_modified_code();
+		sys::pump_file_modifications();
 
+		custom_object_type::reload_modified_code();
 		graphics::texture::clear_modified_files_from_cache();
 
 		if(lvl_->cycle()%25 == 0) {
@@ -1116,7 +1117,7 @@ bool level_runner::play_cycle()
 			case SDL_ACTIVEEVENT:
 				if (event.active.state & (SDL_APPACTIVE | SDL_APPINPUTFOCUS)) {
 					if(event.active.gain == 0) {
-						if(!paused) {
+						if(!paused && !editor_) {
 							toggle_pause();
 						}
 					} /*else {
