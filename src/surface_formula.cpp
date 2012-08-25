@@ -10,6 +10,7 @@
 #include "formula_callable.hpp"
 #include "formula_function.hpp"
 #include "hi_res_timer.hpp"
+#include "module.hpp"
 #include "surface.hpp"
 #include "surface_cache.hpp"
 #include "surface_formula.hpp"
@@ -191,7 +192,7 @@ GLuint compile_shader(const std::string& shader_file, GLuint type)
 #ifndef SDL_VIDEO_OPENGL_ES
 	id = glCreateShader(type);
 
-	const std::string file_data = sys::read_file("data/shaders/" + shader_file);
+	const std::string file_data = sys::read_file(module::map_file("data/shaders/" + shader_file));
 
 	const char* file_str = file_data.c_str();
 	glShaderSource(id, 1, &file_str, NULL);
