@@ -102,6 +102,7 @@ public:
 	const rect& frame_rect() const { return frame_rect_; }
 	rect platform_rect() const { return platform_rect_; }
 	virtual rect platform_rect_at(int xpos) const { return platform_rect(); }
+	virtual int platform_slope_at(int xpos) const { return 0; }
 	virtual bool solid_platform() const { return false; }
 	rect body_rect() const;
 	rect hit_rect() const;

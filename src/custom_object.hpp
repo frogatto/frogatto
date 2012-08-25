@@ -257,6 +257,7 @@ protected:
 	entity_ptr standing_on() const { return standing_on_; }
 
 	virtual rect platform_rect_at(int xpos) const;
+	virtual int platform_slope_at(int xpos) const;
 
 	virtual bool solid_platform() const;
 

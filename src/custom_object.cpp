@@ -2253,7 +2253,12 @@ variant custom_object::get_value_by_slot(int slot) const
 	}
 	case CUSTOM_OBJECT_NEAR_CLIFF_EDGE:   return variant::from_bool(is_standing(level::current()) && cliff_edge_within(level::current(), feet_x(), feet_y(), face_dir()*15));
 	case CUSTOM_OBJECT_DISTANCE_TO_CLIFF: return variant(::distance_to_cliff(level::current(), feet_x(), feet_y(), face_dir()));
-	case CUSTOM_OBJECT_SLOPE_STANDING_ON: return variant(-slope_standing_on(6)*face_dir());
+	case CUSTOM_OBJECT_SLOPE_STANDING_ON: {
+		if(standing_on_ && standing_on_->platform() && !standing_on_->solid_platform()) {
+			return variant(-standing_on_->platform_slope_at(feet_x())*face_dir());
+		}
+		return variant(-slope_standing_on(6)*face_dir());
+	}
 	case CUSTOM_OBJECT_UNDERWATER:        return variant(level::current().is_underwater(solid() ? solid_rect() : rect(x(), y(), current_frame().width(), current_frame().height())));
 	case CUSTOM_OBJECT_PREVIOUS_WATER_BOUNDS: {
 		std::vector<variant> v;
@@ -4288,6 +4293,28 @@ rect custom_object::platform_rect_at(int xpos) const
 
 	const int offset = (partial*platform_offsets_[segment+1] + (seg_width-partial)*platform_offsets_[segment])/seg_width;
 	return rect(area.x(), area.y() + offset, area.w(), area.h());
+}
+
+int custom_object::platform_slope_at(int xpos) const
+{
+	if(platform_offsets_.size() <= 1) {
+		return 0;
+	}
+
+	rect area = platform_rect();
+	if(xpos < area.x() || xpos >= area.x() + area.w()) {
+		return 0;
+	}
+
+	const int pos = (xpos - area.x())*1024;
+	const int dx = (area.w()*1024)/(platform_offsets_.size()-1);
+	const int segment = pos/dx;
+	ASSERT_GE(segment, 0);
+	ASSERT_LT(segment, platform_offsets_.size()-1);
+
+	const int dy = (platform_offsets_[segment+1] - platform_offsets_[segment])*1024;
+
+	return (dy*45)/dx;
 }
 
 bool custom_object::solid_platform() const
