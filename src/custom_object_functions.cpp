@@ -2109,6 +2109,46 @@ FUNCTION_DEF(rotate_rect, 4, 4, "rotate_rect(int center_x, int center_y, int rot
 
 END_FUNCTION_DEF(rotate_rect)
 
+class module_pump_command : public entity_command_callable {
+	module::client* client_;
+public:
+	explicit module_pump_command(module::client* cl) : client_(cl)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		client_->process();
+	}
+};
+
+class module_install_command : public entity_command_callable {
+	module::client* client_;
+	std::string id_;
+public:
+	module_install_command(module::client* cl, const std::string& id) : client_(cl), id_(id)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		client_->install_module(id_);
+	}
+};
+
+FUNCTION_DEF(module_client, 0, 0, "module_client(): creates a module client object. The object will immediately start retrieving basic module info from the server. module_pump() should be called on it every frame. Has the following fields:\n  is_complete: true iff the current operation is complete and a new operation can be started. When the module_client is first created it automatically starts an operation to get the summary of modules.\n  module_info: info about the modules available on the server.\n  error: contains an error string if the operation resulted in an error, null otherwise.\n  kbytes_transferred: number of kbytes transferred in the current operation\n  kbytes_total: total number of kbytes to transfer to complete the operation.")
+	return variant(new module::client);
+END_FUNCTION_DEF(module_client)
+
+FUNCTION_DEF(module_pump, 1, 1, "module_pump(module_client): pumps module client events. Should be called every cycle.")
+	module::client* cl = args()[0]->evaluate(variables).try_convert<module::client>();
+	ASSERT_LOG(cl, "BAD ARGUMENT GIVEN TO module_pump");
+	return variant(new module_pump_command(cl));
+END_FUNCTION_DEF(module_pump)
+
+FUNCTION_DEF(module_install, 2, 2, "module_install(module_client, string module_id): begins downloading the given module and installing it. This should only be called when module_client.is_complete = true (i.e. there is no operation currently underway)")
+	module::client* cl = args()[0]->evaluate(variables).try_convert<module::client>();
+	ASSERT_LOG(cl, "BAD ARGUMENT GIVEN TO module_pump");
+	const std::string module_id = args()[1]->evaluate(variables).as_string();
+	return variant(new module_install_command(cl, module_id));
+END_FUNCTION_DEF(module_install)
+
 namespace {
 bool consecutive_periods(char a, char b) {
 	return a == '.' && b == '.';

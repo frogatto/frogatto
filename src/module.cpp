@@ -376,6 +376,7 @@ variant build_package(const std::string& id)
 	data_attr[variant("version")] = module_cfg["version"];
 	data_attr[variant("name")] = module_cfg["name"];
 	data_attr[variant("description")] = module_cfg["description"];
+	data_attr[variant("dependencies")] = module_cfg["dependencies"];
 	data_attr[variant("manifest")] = variant(&file_attr);
 	data_attr[variant("data")] = variant(data_str);
 	data_attr[variant("data_size")] = variant(uncompressed_size);
@@ -414,7 +415,7 @@ COMMAND_LINE_UTILITY(publish_module)
 {
 	std::string module_id;
 	std::string server = "theargentlark.com";
-	std::string port = "23456";
+	std::string port = "23455";
 
 	std::deque<std::string> arguments(args.begin(), args.end());
 	while(!arguments.empty()) {
@@ -478,11 +479,139 @@ bool is_module_path_valid(const std::string& str)
 }
 }
 
+client::client() : operation_(client::OPERATION_NONE),
+                   client_(new http_client("theargentlark.com", "23455"))
+{
+	get_status();
+}
+
+client::client(const std::string& host, const std::string& port)
+  : operation_(client::OPERATION_NONE), client_(new http_client(host, port))
+{
+	get_status();
+}
+
+void client::install_module(const std::string& module_id)
+{
+	data_.clear();
+	operation_ = OPERATION_INSTALL;
+	module_id_ = module_id;
+	client_->send_request("GET /download_module?module_id=" + module_id, "",
+	                      boost::bind(&client::on_response, this, _1),
+	                      boost::bind(&client::on_error, this, _1),
+	                      boost::bind(&client::on_progress, this, _1, _2, _3));
+}
+
+void client::get_status()
+{
+	data_.clear();
+	operation_ = OPERATION_GET_STATUS;
+	client_->send_request("GET /get_summary", "",
+	                      boost::bind(&client::on_response, this, _1),
+	                      boost::bind(&client::on_error, this, _1),
+	                      boost::bind(&client::on_progress, this, _1, _2, _3));
+}
+
+bool client::process()
+{
+	if(operation_ == OPERATION_NONE) {
+		return false;
+	}
+
+	client_->process();
+	return true;
+}
+
+variant client::get_value(const std::string& key) const
+{
+	if(key == "is_complete") {
+		return variant(operation_ == OPERATION_NONE);
+	} else if(key == "module_info") {
+		return module_info_;
+	} else {
+		std::map<std::string, variant>::const_iterator i = data_.find(key);
+		if(i != data_.end()) {
+			return i->second;
+		} else {
+			return variant();
+		}
+	} 
+}
+
+void client::on_response(std::string response)
+{
+	try {
+		std::cerr << "GOT RESPONSE: " << response << "\n";
+		variant doc = json::parse(response, json::JSON_NO_PREPROCESSOR);
+		if(doc[variant("status")] != variant("ok")) {
+			data_["error"] = doc[variant("message")];
+			std::cerr << "SET ERROR: " << doc.write_json() << "\n";
+		} else if(operation_ == OPERATION_INSTALL) {
+			variant doc = json::parse(response, json::JSON_NO_PREPROCESSOR);
+			ASSERT_LOG(doc["status"].as_string() == "ok", "COULD NOT DOWNLOAD MODULE: " << doc["message"]);
+
+			variant module_data = doc["module"];
+
+			std::vector<char> data_buf;
+			{
+				const std::string data_str = module_data["data"].as_string();
+				data_buf.insert(data_buf.begin(), data_str.begin(), data_str.end());
+			}
+			const int data_size = module_data["data_size"].as_int();
+			std::cerr << "DATA: " << module_data["data"].as_string().size() << " " << data_size << "\n";
+
+			std::vector<char> data = zip::decompress_known_size(base64::b64decode(data_buf), data_size);
+
+			variant manifest = module_data["manifest"];
+			foreach(variant path, manifest.get_keys().as_list()) {
+				const std::string path_str = path.as_string();
+				ASSERT_LOG(is_module_path_valid(path_str), "INVALID PATH IN MODULE: " << path_str);
+			}
+
+			foreach(variant path, manifest.get_keys().as_list()) {
+				variant info = manifest[path];
+				const std::string path_str = preferences::dlc_path() + "/" + module_id_ + "/" + path.as_string();
+				const int begin = info["begin"].as_int();
+				const int end = begin + info["size"].as_int();
+				ASSERT_LOG(begin >= 0 && end >= 0 && begin <= data.size() && end <= data.size(), "INVALID PATH INDEXES FOR " << path_str << ": " << begin << "," << end << " / " << data.size());
+
+				std::cerr << "CREATING FILE AT " << path_str << "\n";
+				sys::write_file(path_str, std::string(data.begin() + begin, data.begin() + end));
+			}
+
+		} else if(operation_ == OPERATION_GET_STATUS) {
+			const variant doc = json::parse(response, json::JSON_NO_PREPROCESSOR);
+			module_info_ = doc[variant("summary")];
+			std::cerr << "FINISH GET. SET STATUS\n";
+		} else {
+			ASSERT_LOG(false, "UNKNOWN MODULE CLIENT STATE");
+		}
+	} catch(...) {
+		data_["error"] = variant("Could not parse response");
+	}
+
+	operation_ = OPERATION_NONE;
+}
+
+void client::on_error(std::string response)
+{
+	data_["error"] = variant(response);
+	operation_ = OPERATION_NONE;
+}
+
+void client::on_progress(int transferred, int total, bool uploaded)
+{
+	if(uploaded) {
+		data_["kbytes_transferred"] = variant(transferred/1024);
+		data_["kbytes_total"] = variant(total/1024);
+	}
+}
+
 COMMAND_LINE_UTILITY(install_module)
 {
 	std::string module_id;
 	std::string server = "theargentlark.com";
-	std::string port = "23456";
+	std::string port = "23455";
 
 	std::deque<std::string> arguments(args.begin(), args.end());
 	while(!arguments.empty()) {
@@ -555,7 +684,7 @@ COMMAND_LINE_UTILITY(publish_module_stats)
 	std::string module_id;
 
 	std::string server = "theargentlark.com";
-	std::string port = "23456";
+	std::string port = "23455";
 
 	std::deque<std::string> arguments(args.begin(), args.end());
 	while(!arguments.empty()) {
@@ -606,7 +735,7 @@ COMMAND_LINE_UTILITY(publish_module_stats)
 COMMAND_LINE_UTILITY(list_modules)
 {
 	std::string server = "theargentlark.com";
-	std::string port = "23456";
+	std::string port = "23455";
 
 	std::deque<std::string> arguments(args.begin(), args.end());
 	while(!arguments.empty()) {

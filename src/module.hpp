@@ -1,9 +1,13 @@
 #ifndef MODULE_HPP_INCLUDED
 #define MODULE_HPP_INCLUDED
 
+#include <boost/scoped_ptr.hpp>
+
 #include "filesystem.hpp"
+#include "formula_callable.hpp"
 #include "variant.hpp"
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -48,6 +52,29 @@ void load_module_from_file(const std::string& modname, modules* mod_);
 void write_file(const std::string& mod_path, const std::string& data);
 
 variant build_package(const std::string& id);
+
+class client : public game_logic::formula_callable
+{
+public:
+	client();
+	client(const std::string& host, const std::string& port);
+	void install_module(const std::string& module_name);
+	void get_status();
+	bool process();
+	variant get_value(const std::string& key) const;
+private:
+	enum OPERATION_TYPE { OPERATION_NONE, OPERATION_INSTALL, OPERATION_GET_STATUS };
+	OPERATION_TYPE operation_;
+	std::string module_id_;
+	boost::scoped_ptr<class http_client> client_;
+
+	std::map<std::string, variant> data_;
+	variant module_info_;
+
+	void on_response(std::string response);
+	void on_error(std::string response);
+	void on_progress(int sent, int total, bool uploaded);
+};
 
 }
 

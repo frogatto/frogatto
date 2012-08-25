@@ -83,6 +83,7 @@ void module_web_server::handle_post(socket_ptr socket, variant doc, const http::
 				summary[variant("version")] = module_node[variant("version")];
 				summary[variant("name")] = module_node[variant("name")];
 				summary[variant("description")] = module_node[variant("description")];
+				summary[variant("dependencies")] = module_node[variant("dependencies")];
 				data_.add_attr_mutation(variant(module_id), variant(&summary));
 				write_data();
 			}
