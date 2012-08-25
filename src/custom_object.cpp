@@ -809,7 +809,7 @@ void custom_object::draw(int xx, int yy) const
 		adjusted_draw_position_.y = yy;
 	}
 
-	if(shader_ == 0 && !fragment_shaders_.empty() && !vertex_shaders_.empty()) {
+	if(shader_ == 0 && (!fragment_shaders_.empty() || !vertex_shaders_.empty())) {
 		shader_ = get_gl_shader(vertex_shaders_, fragment_shaders_);
 	}
 
