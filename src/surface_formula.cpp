@@ -211,7 +211,7 @@ GLuint get_gl_shader(const std::vector<std::string>& vertex_shader_file,
                      const std::vector<std::string>& fragment_shader_file)
 {
 #ifndef SDL_VIDEO_OPENGL_ES
-	if(vertex_shader_file.empty() || fragment_shader_file.empty()) {
+	if(vertex_shader_file.empty() && fragment_shader_file.empty()) {
 		return 0;
 	}
 
