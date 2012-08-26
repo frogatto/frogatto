@@ -154,6 +154,8 @@ text_editor_widget::text_editor_widget(const variant& v, game_logic::formula_cal
 	}
 	if(v.has_key("color")) {
 		text_color_ = graphics::color(v["color"]);
+	} else if(v.has_key("colour")) {
+		text_color_ = graphics::color(v["colour"]);
 	}
 
 	if(v.has_key("on_change")) {
@@ -199,9 +201,10 @@ text_editor_widget::text_editor_widget(const variant& v, game_logic::formula_cal
 		widget::set_dim(width - 20, height);
 	}
 
-	text_.push_back("");
-	if(v.has_key("text") and v["text"].as_string().length() > 0) {
+	if(v.has_key("text") && v["text"].is_string()) {
 		set_text(v["text"].as_string());
+	} else {
+		text_.push_back("");
 	}
 
 	init_clipboard();
@@ -1452,6 +1455,8 @@ void text_editor_widget::set_value(const std::string& key, const variant& v)
 		set_text(v.as_string());
 	} else if(key == "begin_enter") {
 		begin_enter_return_ = v.as_bool();
+	} else if(key == "color" || key == "colour") {
+		text_color_ = graphics::color(v);
 	}
 	scrollable_widget::set_value(key, v);
 }
