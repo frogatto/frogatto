@@ -122,7 +122,7 @@ void get_files_in_dir(const std::string& sdirectory,
 		while(dir_list[dir_list.length()-1] == '\n') {
 			dir_list = dir_list.substr(0,dir_list.length()-1);
 		}
-		boost::split(*dirs, dir_list, boost::is_any_of("\n"));
+		boost::split(*dirs, dir_list, std::bind2nd(std::equal_to<char>(), '\n'));
 		//LOG("get_files_in_dir() : after split");
 	}
 

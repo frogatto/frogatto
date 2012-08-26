@@ -677,7 +677,7 @@ std::string normalise_path(const std::string& path)
 	}
 	std::vector<std::string> cur_path;
 	std::string norm_path;
-	boost::split(cur_path, path, boost::is_any_of("/"));
+	boost::split(cur_path, path, std::bind2nd(std::equal_to<char>(), '/'));
 	foreach(const std::string& s, cur_path) {
 		if(s != ".") {
 			norm_path += s + "/";
