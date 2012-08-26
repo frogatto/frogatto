@@ -1,3 +1,5 @@
+#include <boost/algorithm/string.hpp>
+
 #include "asserts.hpp"
 #include "font.hpp"
 #include "i18n.hpp"
@@ -49,18 +51,19 @@ void vector_text::recalculate_texture()
 {
 	textures_.clear();
 
-	int tex_y = 0;
+	size_t tex_y = 0;
 	int letter_size = font::char_width(size());
 	std::vector<std::string> lines;
 
 	if(text_.find('\n') == std::string::npos) {
-		std::vector<std::string> words = util::split(text_, ' ');
+		std::vector<std::string> words;
+		boost::split(words, text_, std::bind2nd(std::equal_to<char>(), ' '));
 		size_t current_line_length = 0;
 		std::string current_line;
 		foreach(const std::string& word, words) {
 			if(current_line_length + (word.length() + 1) * letter_size < width()) {
 				current_line_length += (word.length() + 1) * letter_size;
-				current_line += " " + word;
+				current_line += (current_line.empty() ? "" : " ") + word;
 			} else {
 				lines.push_back(current_line);
 				current_line = word;
@@ -75,7 +78,7 @@ void vector_text::recalculate_texture()
 	}
 
 	foreach(const std::string line, lines) {
-		if(height() > 0 && tex_y < height()) {
+		if(tex_y < height()) {
 			graphics::texture tex = font::render_text(line, color_, size_);
 			if(align_ == ALIGN_LEFT) {
 				textures_.push_back(offset_texture(tex, point(0,tex_y)));
