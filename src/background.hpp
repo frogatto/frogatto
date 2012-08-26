@@ -1,7 +1,7 @@
 #ifndef BACKGROUND_HPP_INCLUDED
 #define BACKGROUND_HPP_INCLUDED
 
-#include <inttypes.h>
+#include <stdint.h>
 
 #include <string>
 #include <vector>

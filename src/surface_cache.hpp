@@ -13,7 +13,7 @@
 #ifndef SURFACE_CACHE_HPP_INCLUDED
 #define SURFACE_CACHE_HPP_INCLUDED
 
-#include <inttypes.h>
+#include <stdint.h>
 #include <string>
 #include <vector>
 
