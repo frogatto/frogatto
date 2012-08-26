@@ -200,6 +200,9 @@ text_editor_widget::text_editor_widget(const variant& v, game_logic::formula_cal
 	}
 
 	text_.push_back("");
+	if(v.has_key("text") and v["text"].as_string().length() > 0) {
+		set_text(v["text"].as_string());
+	}
 
 	init_clipboard();
 }
