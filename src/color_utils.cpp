@@ -59,7 +59,12 @@ color::color( const std::string& str)
 		}
 		c_.rgba[3] = 255; //no need to read the string element, b/c there isn't one
 	} else {
-		c_.value = 0;
+		//c_.value = 0;
+		SDL_Color c = graphics::get_color_from_name(str);
+		c_.rgba[0] = c.r;
+		c_.rgba[1] = c.g;
+		c_.rgba[2] = c.b;
+		c_.rgba[3] = c.unused;
 	}
 }
 
