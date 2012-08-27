@@ -85,7 +85,7 @@ protected:
 			}
 			calc_coords();
 		} else if(key == "width") {
-			width_ = v["width"].as_decimal().as_float();
+			width_ = GLfloat(v["width"].as_decimal().as_float());
 		} else if(key == "color") {
 			color_ = graphics::color(v).as_sdl_color();
 		}

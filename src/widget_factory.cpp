@@ -20,6 +20,7 @@
 #include "label.hpp"
 #include "poly_line_widget.hpp"
 #include "preview_tileset_widget.hpp"
+#include "progress_bar.hpp"
 #include "scrollable_widget.hpp"
 #include "scrollbar_widget.hpp"
 #include "slider.hpp"
@@ -74,6 +75,8 @@ widget_ptr create(const variant& v, game_logic::formula_callable* e)
 		return widget_ptr(new gui::slider(v,e));
 	} else if(wtype == "text_editor") {
 		return widget_ptr(new gui::text_editor_widget(v,e));
+	} else if(wtype == "progress") {
+		return widget_ptr(new gui::progress_bar(v, e));
 	//} else if(wtype == "scrollable") {
 	//} else if(wtype == "widget") {
 	} else {
