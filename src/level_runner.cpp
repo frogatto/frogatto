@@ -1116,7 +1116,8 @@ bool level_runner::play_cycle()
 			break;
 #else
 			case SDL_ACTIVEEVENT:
-				if (event.active.state & (SDL_APPACTIVE | SDL_APPINPUTFOCUS)) {
+				if (event.active.state & (SDL_APPACTIVE | SDL_APPINPUTFOCUS) 
+					&& preferences::allow_autopause()) {
 					if(event.active.gain == 0) {
 						if(!paused && !editor_) {
 							toggle_pause();

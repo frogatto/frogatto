@@ -140,6 +140,8 @@ void print_help(const std::string& argv0)
 "                                 environment\n" <<
 "      --simiphone              changes various options to emulate an iPhone\n" <<
 "                                 environment\n" <<
+"      --no-autopause           Stops the game from pausing automatically\n" <<
+"                                 when it loses focus\n" <<
 "      --tests                  runs the game's unit tests and exits\n" <<
 "      --no-tests               skips the execution of unit tests on startup\n"
 "      --utility=NAME           runs the specified UTILITY( NAME ) code block,\n" <<

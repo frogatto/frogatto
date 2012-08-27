@@ -109,6 +109,8 @@ void set_bequ( bool value );
 	void set_virtual_screen_width(int width);
 	void set_virtual_screen_height(int height);
 	
+	bool allow_autopause();
+
 	bool screen_rotated();
 	
 	bool force_no_npot_textures();
