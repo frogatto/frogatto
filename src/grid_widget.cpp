@@ -138,17 +138,7 @@ grid::grid(const variant& v, game_logic::formula_callable* e)
 	if(v.has_key("children")) {
 		// children is a list of lists or a list of single widgets, the outmost list being rows, 
 		// the inner list being the columns. 
-		foreach(const variant& row, v["children"].as_list()) {
-			if(row.is_list()) {
-				foreach(const variant& col, row.as_list()) {
-					add_col(widget_factory::create(col,e));
-				}
-				finish_row();
-			} else {
-				add_col(widget_factory::create(row,e));
-					//.finish_row();
-			}
-		}
+		reset_contents(v["children"]);
 	}
 
 	set_h_ = height();
@@ -229,6 +219,21 @@ grid& grid::set_hpad(int pad)
 {
 	hpad_ = pad;
 	return *this;
+}
+
+void grid::reset_contents(const variant& v)
+{
+	foreach(const variant& row, v.as_list()) {
+		if(row.is_list()) {
+			foreach(const variant& col, row.as_list()) {
+				add_col(widget_factory::create(col,get_environment()));
+			}
+			finish_row();
+		} else {
+			add_col(widget_factory::create(row,get_environment()));
+				//.finish_row();
+		}
+	}
 }
 
 void grid::register_mouseover_callback(grid::callback_type ptr)
@@ -487,17 +492,7 @@ void grid::set_value(const std::string& key, const variant& v)
 {
 	if(key == "children") {
 		cells_.clear();
-		foreach(const variant& row, v.as_list()) {
-			if(row.is_list()) {
-				foreach(const variant& col, row.as_list()) {
-					add_col(widget_factory::create(col,get_environment()));
-				}
-				finish_row();
-			} else {
-				add_col(widget_factory::create(row,get_environment()));
-					//.finish_row();
-			}
-		}
+		reset_contents(v);
 		finish_row();
 		recalculate_dimensions();
 	} else if(key == "child") {
