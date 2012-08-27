@@ -110,6 +110,7 @@ player_info.cpp
 preferences.cpp
 preprocessor.cpp
 preview_tileset_widget.cpp
+progress_bar.cpp
 property_editor_dialog.cpp
 random.cpp
 raster.cpp
