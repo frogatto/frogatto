@@ -44,7 +44,7 @@ grid::grid(const variant& v, game_logic::formula_callable* e)
 	}
 	if(v.has_key("on_mouseover")) {
 		ffl_on_mouseover_ = get_environment()->create_formula(v["on_mouseover"]);
-		on_select_ = boost::bind(&grid::mouseover_delegate, this, _1);
+		on_mouseover_ = boost::bind(&grid::mouseover_delegate, this, _1);
 	}
 
 	ncols_ = v["columns"].as_int(1);
