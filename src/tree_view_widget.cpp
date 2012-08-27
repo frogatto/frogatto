@@ -491,12 +491,20 @@ void tree_editor_widget::init()
 	context_menu_.reset();
 	edit_menu_.reset();
 	tree_view_widget::init();
+	if(tree_.is_map() && tree_.num_elements() == 0) {
+		row_map_[0] = std::pair<variant*, variant*>((variant*)NULL, &tree_);
+	}
 }
 
 void tree_editor_widget::on_select(Uint8 button, int selection)
 {
 	if(button == SDL_BUTTON_RIGHT) {
 		if(selection != -1) {
+			std::map<int, std::pair<variant*, variant*> >::const_iterator it 
+				= row_map_.find(selection);
+			if(it == row_map_.end()) {
+				selection = row_map_.end()->first;
+			}
 			variant* v = row_map_[selection].second;
 			variant* parent_container = row_map_[selection].first;
 
@@ -507,24 +515,28 @@ void tree_editor_widget::on_select(Uint8 button, int selection)
 			g->swallow_clicks(true);
 			g->allow_draw_highlight(true);
 			std::vector<std::string> choices;
-			choices.push_back("Edit");
-			if(parent_container->is_map()) {
-				choices.push_back("Edit Key");
+			if(parent_container != NULL) {
+				choices.push_back("Edit");
+				if(parent_container && parent_container->is_map()) {
+					choices.push_back("Edit Key");
+				}
+				choices.push_back("----------------");
+				choices.push_back("Edit As: Integer");
+				choices.push_back("Edit As: Decimal");
+				choices.push_back("Edit As: Boolean");
+				choices.push_back("Edit As: String");
+				choices.push_back("----------------");
 			}
-			choices.push_back("----------------");
-			choices.push_back("Edit As: Integer");
-			choices.push_back("Edit As: Decimal");
-			choices.push_back("Edit As: Boolean");
-			choices.push_back("Edit As: String");
-			choices.push_back("----------------");
 			choices.push_back("Add Integer");
 			choices.push_back("Add Decimal");
 			choices.push_back("Add Boolean");
 			choices.push_back("Add String");
 			choices.push_back("Add List");
 			choices.push_back("Add Map");
-			choices.push_back("----------------");
-			choices.push_back("Delete");
+			if(parent_container != NULL) {
+				choices.push_back("----------------");
+				choices.push_back("Delete");
+			}
 
 			foreach(const std::string& str, choices) {
 				g->add_col(label_ptr(new label(str)));
@@ -553,6 +565,7 @@ void tree_editor_widget::context_menu_handler(int tree_selection, const std::vec
 		}
 		return;
 	}
+	std::cerr << "Tree selection: " << tree_selection << std::endl;
 	
 	// Menu seperators have a '-' character in the first position.
 	if(choices[menu_selection][0] == '-') {
