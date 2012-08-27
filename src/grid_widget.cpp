@@ -487,8 +487,16 @@ void grid::set_value(const std::string& key, const variant& v)
 {
 	if(key == "children") {
 		cells_.clear();
-		foreach(const variant& col, v.as_list()) {
-			add_col(widget_factory::create(v, get_environment()));
+		foreach(const variant& row, v.as_list()) {
+			if(row.is_list()) {
+				foreach(const variant& col, row.as_list()) {
+					add_col(widget_factory::create(col,get_environment()));
+				}
+				finish_row();
+			} else {
+				add_col(widget_factory::create(row,get_environment()));
+					//.finish_row();
+			}
 		}
 		finish_row();
 		recalculate_dimensions();
