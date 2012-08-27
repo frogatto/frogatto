@@ -329,7 +329,7 @@ void grid::handle_draw() const
 	glPushMatrix();
 	glTranslatef(x() & ~1, y() & ~1, 0.0);
 	if(show_background_) {
-		const SDL_Color bg = {0,0,0};
+		const SDL_Color bg = {50,50,50};
 		SDL_Rect rect = {0,0,width(),height()};
 		graphics::draw_rect(rect,bg);
 	}
@@ -508,6 +508,8 @@ variant grid::get_value(const std::string& key) const
 			v.push_back(variant(w.get()));
 		}
 		return variant(&v);
+	} else if(key == "selected_row") {
+		return variant(selected_row_);
 	}
 	return widget::get_value(key);
 }
