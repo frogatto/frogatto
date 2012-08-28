@@ -27,6 +27,7 @@ public:
 	size_t size() const { return width_ * height_; }
 	void build();
 	virtual void draw() const;
+	variant write() const;
 private:
 	hex_tile_map tiles_;
 	size_t width_;

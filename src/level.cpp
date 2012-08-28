@@ -1090,6 +1090,10 @@ variant level::write() const
 		res.add("solid_rect", node.build());
 	}
 
+	for(std::map<int,hex::hex_map>::const_iterator i = hex_maps_.begin(); i != hex_maps_.end(); ++i) {
+		res.add("hex_tile_map", i->second.write());
+	}
+
 	for(std::map<int, tile_map>::const_iterator i = tile_maps_.begin(); i != tile_maps_.end(); ++i) {
 		variant node = i->second.write();
 		if(preferences::compiling_tiles) {

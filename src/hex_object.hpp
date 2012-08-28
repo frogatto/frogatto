@@ -50,6 +50,8 @@ public:
 	
 	void build();
 	void apply_rules();
+
+	std::string type() const { return type_; }
 private:
 	// map coordinates.
 	int x_;

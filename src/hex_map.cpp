@@ -1,7 +1,9 @@
 #include <boost/algorithm/string/split.hpp>
+#include <sstream>
 
 #include "foreach.hpp"
 #include "hex_map.hpp"
+#include "variant_utils.hpp"
 
 namespace hex {
 
@@ -15,6 +17,11 @@ hex_map::hex_map(variant node)
 	int x = x_;
 	int y = y_;
 	foreach(const std::string& row, result) {
+		if(row.empty()) {
+			y++;
+			x = x_;
+			continue;
+		}
 		std::vector<std::string> row_res;
 		boost::algorithm::split(row_res, row, std::bind2nd(std::equal_to<char>(), ','));
 		std::vector<hex_object_ptr> new_row;
@@ -47,6 +54,23 @@ void hex_map::build()
 			col->apply_rules();
 		}
 	}
+}
+
+variant hex_map::write() const
+{
+	variant_builder res;
+	res.add("x", x_);
+	res.add("y", y_);
+	res.add("zorder", zorder_);
+
+	std::ostringstream tiles;
+	foreach(const hex_tile_row& row, tiles_) {
+		for(hex_tile_row::const_iterator i = row.begin(); i != row.end(); ++i) {
+			tiles << (*i)->type() << ((i+1) == row.end() ? "\n" : ",");
+		}
+	}
+	res.add("tiles", tiles.str());
+	return res.build();
 }
 
 }
