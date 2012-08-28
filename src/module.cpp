@@ -330,6 +330,29 @@ void get_files_in_module(const std::string& dir, std::vector<std::string>& res)
 		res.push_back(dir + "/" + fname);
 	}
 }
+
+bool is_valid_module_id(const std::string& id)
+{
+	for(int n = 0; n != id.size(); ++n) {
+		if(!isalpha(id[n]) && id[n] != '_' && id[n] != '-') {
+			return false;
+		}
+	}
+
+	return true;
+}
+}
+
+bool uninstall_downloaded_module(const std::string& id)
+{
+	if(!is_valid_module_id(id)) {
+		ASSERT_LOG(false, "ILLEGAL MODULE ID: " << id);
+		return false;
+	}
+
+	const std::string path_str = preferences::dlc_path() + "/" + id;
+	sys::rmdir_recursive(path_str);
+	return true;
 }
 
 variant build_package(const std::string& id)
@@ -461,6 +484,7 @@ COMMAND_LINE_UTILITY(publish_module)
 }
 
 namespace {
+
 bool valid_path_chars(char c)
 {
 	return isalnum(c) || c == '.' || c == '/' || c == '_' || c == '-';
@@ -528,6 +552,15 @@ variant client::get_value(const std::string& key) const
 		return variant(operation_ == OPERATION_NONE);
 	} else if(key == "module_info") {
 		return module_info_;
+	} else if(key == "downloaded_modules") {
+		std::vector<std::string> files, dirs;
+		sys::get_files_in_dir(preferences::dlc_path(), &files, &dirs);
+		std::vector<variant> result;
+		foreach(const std::string& m, dirs) {
+			result.push_back(variant(m));
+		}
+
+		return variant(&result);
 	} else {
 		std::map<std::string, variant>::const_iterator i = data_.find(key);
 		if(i != data_.end()) {

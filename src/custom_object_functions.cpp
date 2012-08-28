@@ -2132,7 +2132,18 @@ public:
 	}
 };
 
-FUNCTION_DEF(module_client, 0, 0, "module_client(): creates a module client object. The object will immediately start retrieving basic module info from the server. module_pump() should be called on it every frame. Has the following fields:\n  is_complete: true iff the current operation is complete and a new operation can be started. When the module_client is first created it automatically starts an operation to get the summary of modules.\n  module_info: info about the modules available on the server.\n  error: contains an error string if the operation resulted in an error, null otherwise.\n  kbytes_transferred: number of kbytes transferred in the current operation\n  kbytes_total: total number of kbytes to transfer to complete the operation.")
+class module_uninstall_command : public entity_command_callable {
+	std::string id_;
+public:
+	explicit module_uninstall_command(const std::string& id) : id_(id)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		module::uninstall_downloaded_module(id_);
+	}
+};
+
+FUNCTION_DEF(module_client, 0, 0, "module_client(): creates a module client object. The object will immediately start retrieving basic module info from the server. module_pump() should be called on it every frame. Has the following fields:\n  is_complete: true iff the current operation is complete and a new operation can be started. When the module_client is first created it automatically starts an operation to get the summary of modules.\n  downloaded_modules: a list of downloaded modules that are currently installed.\n  module_info: info about the modules available on the server.\n  error: contains an error string if the operation resulted in an error, null otherwise.\n  kbytes_transferred: number of kbytes transferred in the current operation\n  kbytes_total: total number of kbytes to transfer to complete the operation.")
 	return variant(new module::client);
 END_FUNCTION_DEF(module_client)
 
@@ -2148,6 +2159,12 @@ FUNCTION_DEF(module_install, 2, 2, "module_install(module_client, string module_
 	const std::string module_id = args()[1]->evaluate(variables).as_string();
 	return variant(new module_install_command(cl, module_id));
 END_FUNCTION_DEF(module_install)
+
+FUNCTION_DEF(module_uninstall, 1, 1, "module_uninstall(string module_id): uninstalls the given module")
+	const std::string module_id = args()[0]->evaluate(variables).as_string();
+	return variant(new module_uninstall_command(module_id));
+	
+END_FUNCTION_DEF(module_uninstall)
 
 namespace {
 bool consecutive_periods(char a, char b) {

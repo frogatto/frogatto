@@ -71,6 +71,8 @@ void move_file(const std::string& from, const std::string& to);
 void remove_file(const std::string& fname);
 void copy_file(const std::string& from, const std::string& to);
 
+void rmdir_recursive(const std::string& path);
+
 bool is_path_absolute(const std::string& path);
 std::string make_conformal_path(const std::string& path);
 std::string compute_relative_path(const std::string& source, const std::string& target);

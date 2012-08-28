@@ -648,6 +648,21 @@ void copy_file(const std::string& from, const std::string& to)
 #endif
 }
 
+void rmdir_recursive(const std::string& path)
+{
+	std::vector<std::string> files, dirs;
+	sys::get_files_in_dir(path, &files, &dirs, sys::ENTIRE_FILE_PATH);
+	foreach(const std::string& file, files) {
+		sys::remove_file(file);
+	}
+
+	foreach(const std::string& dir, dirs) {
+		rmdir_recursive(dir);
+	}
+
+	rmdir(path.c_str());
+}
+
 // Take a path and convert to the conforming definition, back-slashes converted to forward slashes 
 // and no trailing slash.
 std::string make_conformal_path(const std::string& path) 

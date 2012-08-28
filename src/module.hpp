@@ -53,6 +53,8 @@ void write_file(const std::string& mod_path, const std::string& data);
 
 variant build_package(const std::string& id);
 
+bool uninstall_downloaded_module(const std::string& id);
+
 class client : public game_logic::formula_callable
 {
 public:
