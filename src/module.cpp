@@ -403,6 +403,13 @@ variant build_package(const std::string& id)
 	data_attr[variant("manifest")] = variant(&file_attr);
 	data_attr[variant("data")] = variant(data_str);
 	data_attr[variant("data_size")] = variant(uncompressed_size);
+
+	if(module_cfg.has_key("icon")) {
+		const std::string icon_path = path + "/images/" + module_cfg["icon"].as_string();
+		ASSERT_LOG(sys::file_exists(icon_path), "COULD NOT FIND ICON: " << icon_path);
+		data_attr[variant("icon")] = variant(base64::b64encode(sys::read_file(icon_path)));
+	}
+
 	return variant(&data_attr);
 }
 
@@ -580,7 +587,6 @@ void client::on_response(std::string response)
 			data_["error"] = doc[variant("message")];
 			std::cerr << "SET ERROR: " << doc.write_json() << "\n";
 		} else if(operation_ == OPERATION_INSTALL) {
-			variant doc = json::parse(response, json::JSON_NO_PREPROCESSOR);
 			ASSERT_LOG(doc["status"].as_string() == "ok", "COULD NOT DOWNLOAD MODULE: " << doc["message"]);
 
 			variant module_data = doc["module"];
@@ -613,9 +619,44 @@ void client::on_response(std::string response)
 			}
 
 		} else if(operation_ == OPERATION_GET_STATUS) {
-			const variant doc = json::parse(response, json::JSON_NO_PREPROCESSOR);
 			module_info_ = doc[variant("summary")];
+
+			std::vector<variant> needed_icons;
+			foreach(variant m, module_info_.get_keys().as_list()) {
+				variant icon = module_info_[m][variant("icon")];
+				if(icon.is_string()) {
+					const std::string icon_path = std::string(preferences::user_data_path()) + "/tmp_images/" + icon.as_string() + ".png";
+					if(!sys::file_exists(icon_path)) {
+						needed_icons.push_back(icon);
+					}
+
+					variant item = module_info_[m];
+					item.add_attr_mutation(variant("icon"), variant("#" + icon.as_string() + ".png"));
+				}
+			}
+
+			if(needed_icons.empty() == false) {
+				std::map<variant, variant> request;
+				request[variant("type")] = variant("query_globs");
+				request[variant("keys")] = variant(&needed_icons);
+				operation_ = OPERATION_GET_ICONS;
+				client_->send_request("POST /query_globs", variant(&request).write_json(),
+	                      boost::bind(&client::on_response, this, _1),
+	                      boost::bind(&client::on_error, this, _1),
+	                      boost::bind(&client::on_progress, this, _1, _2, _3));
+				return;
+			}
 			std::cerr << "FINISH GET. SET STATUS\n";
+		} else if(operation_ == OPERATION_GET_ICONS) {
+			foreach(variant k, doc.get_keys().as_list()) {
+				const std::string key = k.as_string();
+				if(key.size() != 32) {
+					continue;
+				}
+
+				const std::string icon_path = std::string(preferences::user_data_path()) + "/tmp_images/" + key + ".png";
+				sys::write_file(icon_path, base64::b64decode(doc[k].as_string()));
+			}
 		} else {
 			ASSERT_LOG(false, "UNKNOWN MODULE CLIENT STATE");
 		}

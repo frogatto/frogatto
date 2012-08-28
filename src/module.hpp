@@ -65,7 +65,7 @@ public:
 	bool process();
 	variant get_value(const std::string& key) const;
 private:
-	enum OPERATION_TYPE { OPERATION_NONE, OPERATION_INSTALL, OPERATION_GET_STATUS };
+	enum OPERATION_TYPE { OPERATION_NONE, OPERATION_INSTALL, OPERATION_GET_STATUS, OPERATION_GET_ICONS };
 	OPERATION_TYPE operation_;
 	std::string module_id_;
 	boost::scoped_ptr<class http_client> client_;

@@ -15,6 +15,7 @@
 #include "filesystem.hpp"
 #include "foreach.hpp"
 #include "module.hpp"
+#include "preferences.hpp"
 #include "surface_cache.hpp"
 #if defined(__MACOSX__) || TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR || defined(TARGET_BLACKBERRY)
 	#include <SDL_image.h>
@@ -96,7 +97,13 @@ surface get_no_cache(const std::string& key, std::string* full_filename)
 	}
 #else
 	surface surf;
-	if(sys::file_exists(key)) {
+	if(key.empty() == false && key[0] == '#') {
+		const std::string fname = std::string(preferences::user_data_path()) + "/tmp_images/" + std::string(key.begin()+1, key.end());
+		surf = surface(IMG_Load(fname.c_str()));
+		if(full_filename) {
+			*full_filename = fname;
+		}
+	} else if(sys::file_exists(key)) {
 		surf = surface(IMG_Load(key.c_str()));
 		if(full_filename) {
 			*full_filename = key;

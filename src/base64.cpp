@@ -43,6 +43,16 @@ static void encode_block(std::vector<char>::const_iterator& in_it, std::vector<c
     *out++ = ( len > 2 ? _base64chars[ in[ 2 ] & 0x3f ] : '=' );
 }
 
+std::string b64encode(const std::string& data, int output_line_length) {
+	const std::vector<char> result = b64encode(std::vector<char>(data.begin(), data.end()), output_line_length);
+	return std::string(result.begin(), result.end());
+}
+
+std::string b64decode(const std::string& data) {
+	const std::vector<char> result = b64decode(std::vector<char>(data.begin(), data.end()));
+	return std::string(result.begin(), result.end());
+}
+
 std::vector<char> b64encode(const std::vector<char>& data, int output_line_length) {
 	std::vector<char> dest;
 	dest.resize(encode_buffer_req(data.size(), output_line_length));

@@ -9,10 +9,12 @@
 #endif
 
 #include "asserts.hpp"
+#include "base64.hpp"
 #include "filesystem.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "json_parser.hpp"
+#include "md5.hpp"
 #include "module_web_server.hpp"
 #include "string_utils.hpp"
 #include "utils.hpp"
@@ -84,10 +86,26 @@ void module_web_server::handle_post(socket_ptr socket, variant doc, const http::
 				summary[variant("name")] = module_node[variant("name")];
 				summary[variant("description")] = module_node[variant("description")];
 				summary[variant("dependencies")] = module_node[variant("dependencies")];
+
+				if(module_node.has_key("icon")) {
+					std::string icon_str = base64::b64decode(module_node["icon"].as_string());
+
+					const std::string hash = md5::sum(icon_str);
+					sys::write_file(data_path_ + "/.glob/" + hash, icon_str);
+
+					summary[variant("icon")] = variant(hash);
+				}
+
 				data_.add_attr_mutation(variant(module_id), variant(&summary));
 				write_data();
 			}
 
+		} else if(msg_type == "query_globs") {
+			response[variant("status")] = variant("ok");
+			foreach(const std::string& k, doc["keys"].as_list_string()) {
+				const std::string data = sys::read_file(data_path_ + "/.glob/" + k);
+				response[variant(k)] = variant(base64::b64encode(data));
+			}
 		} else {
 			ASSERT_LOG(false, "Unknown message type");
 		}
