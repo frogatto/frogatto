@@ -22,6 +22,7 @@
 #include "formula_callable_definition_fwd.hpp"
 #include "geometry.hpp"
 #include "gui_formula_functions.hpp"
+#include "hex_map.hpp"
 #include "level_object.hpp"
 #include "level_solid_map.hpp"
 #include "movement_script.hpp"
@@ -520,6 +521,8 @@ private:
 
 	std::map<int, tile_map> tile_maps_;
 	int xscale_, yscale_;
+
+	std::map<int, hex::hex_map> hex_maps_;
 
 	int save_point_x_, save_point_y_;
 	bool editor_;

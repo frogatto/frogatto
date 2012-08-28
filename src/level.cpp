@@ -16,6 +16,8 @@
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "gui_formula_functions.hpp"
+#include "hex_map.hpp"
+#include "hex_object.hpp"
 #include "iphone_controls.hpp"
 #include "json_parser.hpp"
 #include "level.hpp"
@@ -324,6 +326,11 @@ level::level(const std::string& level_cfg, variant node)
 	///////////////////////
 	// hex tiles starts
 	foreach(variant tile_node, node["hex_tile_map"].as_list()) {
+		hex::hex_map m(tile_node);
+		hex_maps_[m.zorder()] = m;
+		//tile_maps_[m.zorder()].build_tiles();
+		std::cerr << "LAYER " << m.zorder() << " BUILT " << hex_maps_[m.zorder()].size() << " tiles\n";
+		hex_maps_[m.zorder()].build();
 	}
 	std::cerr << "done building hex_tile_map..." << SDL_GetTicks() << "\n";
 	// hex tiles ends
@@ -1789,7 +1796,13 @@ void level::draw(int x, int y, int w, int h) const
 
 	const std::vector<entity_ptr>* chars_ptr = &active_chars_;
 	std::vector<entity_ptr> editor_chars_buf;
-	
+
+	std::map<int, hex::hex_map>::const_iterator hit = hex_maps_.begin();
+	while(hit != hex_maps_.end()) {
+		hit->second.draw();
+		++hit;
+	}
+
 	if(editor_) {
 		editor_chars_buf = active_chars_;
 		rect screen_area(x, y, w, h);

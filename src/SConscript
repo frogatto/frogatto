@@ -73,7 +73,8 @@ grid_widget.cpp
 group_property_editor_dialog.cpp
 gui_formula_functions.cpp
 gui_section.cpp
-hex_tile_pattern.cpp
+hex_map.cpp
+hex_object.cpp
 http_client.cpp
 http_server.cpp
 i18n.cpp
