@@ -85,7 +85,14 @@ void module_web_server::handle_post(socket_ptr socket, variant doc, const http::
 				summary[variant("version")] = module_node[variant("version")];
 				summary[variant("name")] = module_node[variant("name")];
 				summary[variant("description")] = module_node[variant("description")];
+				summary[variant("author")] = module_node[variant("author")];
 				summary[variant("dependencies")] = module_node[variant("dependencies")];
+				summary[variant("num_downloads")] = variant(0);
+				summary[variant("num_ratings")] = variant(0);
+				summary[variant("sum_ratings")] = variant(0);
+
+				std::vector<variant> reviews_list;
+				summary[variant("reviews")] = variant(&reviews_list);
 
 				if(module_node.has_key("icon")) {
 					std::string icon_str = base64::b64decode(module_node["icon"].as_string());
@@ -106,6 +113,23 @@ void module_web_server::handle_post(socket_ptr socket, variant doc, const http::
 				const std::string data = sys::read_file(data_path_ + "/.glob/" + k);
 				response[variant(k)] = variant(base64::b64encode(data));
 			}
+		} else if(msg_type == "rate") {
+			const std::string module_id = doc["module_id"].as_string();
+			variant summary = data_[module_id];
+			ASSERT_LOG(summary.is_map(), "UNKNOWN MODULE ID: " << module_id);
+
+			const int rating = doc["rating"].as_int();
+			ASSERT_LOG(rating >= 1 && rating <= 5, "ILLEGAL RATING");
+			summary.add_attr_mutation(variant("num_ratings"), variant(summary["num_ratings"].as_int() + 1));
+			summary.add_attr_mutation(variant("sum_ratings"), variant(summary["sum_ratings"].as_int() + rating));
+
+			if(doc["review"].is_null() == false) {
+				std::vector<variant> v = summary["reviews"].as_list();
+				v.push_back(doc);
+				summary.add_attr_mutation(variant("reviews"), variant(&v));
+			}
+
+			response[variant("status")] = variant("ok");
 		} else {
 			ASSERT_LOG(false, "Unknown message type");
 		}
@@ -135,6 +159,11 @@ void module_web_server::handle_get(socket_ptr socket, const std::string& url, co
 
 				response += "\n}";
 				send_msg(socket, "text/json", response, "");
+
+				variant summary = data_[module_id];
+				if(summary.is_map()) {
+					summary.add_attr_mutation(variant("num_downloads"), variant(summary["num_downloads"].as_int() + 1));
+				}
 				return;
 
 			} else {

@@ -398,6 +398,7 @@ variant build_package(const std::string& id)
 	data_attr[variant("id")] = variant(id);
 	data_attr[variant("version")] = module_cfg["version"];
 	data_attr[variant("name")] = module_cfg["name"];
+	data_attr[variant("author")] = module_cfg["author"];
 	data_attr[variant("description")] = module_cfg["description"];
 	data_attr[variant("dependencies")] = module_cfg["dependencies"];
 	data_attr[variant("manifest")] = variant(&file_attr);
@@ -444,7 +445,7 @@ void upload_progress(int sent, int total, bool uploaded)
 COMMAND_LINE_UTILITY(publish_module)
 {
 	std::string module_id;
-	std::string server = "theargentlark.com";
+	std::string server = "localhost";
 	std::string port = "23455";
 
 	std::deque<std::string> arguments(args.begin(), args.end());
@@ -511,7 +512,7 @@ bool is_module_path_valid(const std::string& str)
 }
 
 client::client() : operation_(client::OPERATION_NONE),
-                   client_(new http_client("theargentlark.com", "23455"))
+                   client_(new http_client("localhost", "23455"))
 {
 	get_status();
 }
@@ -528,6 +529,22 @@ void client::install_module(const std::string& module_id)
 	operation_ = OPERATION_INSTALL;
 	module_id_ = module_id;
 	client_->send_request("GET /download_module?module_id=" + module_id, "",
+	                      boost::bind(&client::on_response, this, _1),
+	                      boost::bind(&client::on_error, this, _1),
+	                      boost::bind(&client::on_progress, this, _1, _2, _3));
+}
+
+void client::rate_module(const std::string& module_id, int rating, const std::string& review)
+{
+	std::map<variant,variant> m;
+	m[variant("type")] = variant("rate");
+	m[variant("module_id")] = variant(module_id);
+	m[variant("rating")] = variant(rating);
+	if(review.empty() == false) {
+		m[variant("review")] = variant(review);
+	}
+	operation_ = OPERATION_RATE;
+	client_->send_request("POST /rate_module", variant(&m).write_json(),
 	                      boost::bind(&client::on_response, this, _1),
 	                      boost::bind(&client::on_error, this, _1),
 	                      boost::bind(&client::on_progress, this, _1, _2, _3));
@@ -657,6 +674,8 @@ void client::on_response(std::string response)
 				const std::string icon_path = std::string(preferences::user_data_path()) + "/tmp_images/" + key + ".png";
 				sys::write_file(icon_path, base64::b64decode(doc[k].as_string()));
 			}
+		} else if(operation_ == OPERATION_RATE) {
+			//pass
 		} else {
 			ASSERT_LOG(false, "UNKNOWN MODULE CLIENT STATE");
 		}
@@ -684,7 +703,7 @@ void client::on_progress(int transferred, int total, bool uploaded)
 COMMAND_LINE_UTILITY(install_module)
 {
 	std::string module_id;
-	std::string server = "theargentlark.com";
+	std::string server = "localhost";
 	std::string port = "23455";
 
 	std::deque<std::string> arguments(args.begin(), args.end());
@@ -757,7 +776,7 @@ COMMAND_LINE_UTILITY(publish_module_stats)
 {
 	std::string module_id;
 
-	std::string server = "theargentlark.com";
+	std::string server = "localhost";
 	std::string port = "23455";
 
 	std::deque<std::string> arguments(args.begin(), args.end());
@@ -808,7 +827,7 @@ COMMAND_LINE_UTILITY(publish_module_stats)
 
 COMMAND_LINE_UTILITY(list_modules)
 {
-	std::string server = "theargentlark.com";
+	std::string server = "localhost";
 	std::string port = "23455";
 
 	std::deque<std::string> arguments(args.begin(), args.end());

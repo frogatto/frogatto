@@ -61,11 +61,12 @@ public:
 	client();
 	client(const std::string& host, const std::string& port);
 	void install_module(const std::string& module_name);
+	void rate_module(const std::string& module_id, int rating, const std::string& review);
 	void get_status();
 	bool process();
 	variant get_value(const std::string& key) const;
 private:
-	enum OPERATION_TYPE { OPERATION_NONE, OPERATION_INSTALL, OPERATION_GET_STATUS, OPERATION_GET_ICONS };
+	enum OPERATION_TYPE { OPERATION_NONE, OPERATION_INSTALL, OPERATION_GET_STATUS, OPERATION_GET_ICONS, OPERATION_RATE };
 	OPERATION_TYPE operation_;
 	std::string module_id_;
 	boost::scoped_ptr<class http_client> client_;

@@ -2166,6 +2166,35 @@ FUNCTION_DEF(module_uninstall, 1, 1, "module_uninstall(string module_id): uninst
 	
 END_FUNCTION_DEF(module_uninstall)
 
+class module_rate_command : public entity_command_callable {
+	module::client* client_;
+	std::string id_;
+	int rating_;
+	std::string review_;
+public:
+	module_rate_command(module::client* cl, const std::string& id, int rating, const std::string& review) : client_(cl), id_(id), rating_(rating), review_(review)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		client_->rate_module(id_, rating_, review_);
+	}
+};
+
+FUNCTION_DEF(module_rate, 3, 4, "module_rate(module_client, string module_id, int num_stars (1-5), (optional) string review): begins a request to rate the given module with the given number of stars, optionally with a review.")
+	module::client* cl = args()[0]->evaluate(variables).try_convert<module::client>();
+	ASSERT_LOG(cl, "BAD ARGUMENT GIVEN TO module_pump");
+	const std::string module_id = args()[1]->evaluate(variables).as_string();
+
+	const int num_stars = args()[2]->evaluate(variables).as_int();
+	ASSERT_LOG(num_stars >= 1 && num_stars <= 5, "INVALID RATING: " << num_stars);
+	std::string review;
+	if(args().size() > 3) {
+		review = args()[3]->evaluate(variables).as_string();
+	}
+	
+	return variant(new module_rate_command(cl, module_id, num_stars, review));
+END_FUNCTION_DEF(module_rate)
+
 namespace {
 bool consecutive_periods(char a, char b) {
 	return a == '.' && b == '.';
