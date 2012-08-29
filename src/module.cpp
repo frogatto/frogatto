@@ -445,7 +445,7 @@ void upload_progress(int sent, int total, bool uploaded)
 COMMAND_LINE_UTILITY(publish_module)
 {
 	std::string module_id;
-	std::string server = "localhost";
+	std::string server = "theargentlark.com";
 	std::string port = "23455";
 
 	std::deque<std::string> arguments(args.begin(), args.end());
@@ -512,7 +512,7 @@ bool is_module_path_valid(const std::string& str)
 }
 
 client::client() : operation_(client::OPERATION_NONE),
-                   client_(new http_client("localhost", "23455"))
+                   client_(new http_client("theargentlark.com", "23455"))
 {
 	get_status();
 }
@@ -703,7 +703,7 @@ void client::on_progress(int transferred, int total, bool uploaded)
 COMMAND_LINE_UTILITY(install_module)
 {
 	std::string module_id;
-	std::string server = "localhost";
+	std::string server = "theargentlark.com";
 	std::string port = "23455";
 
 	std::deque<std::string> arguments(args.begin(), args.end());
@@ -776,7 +776,7 @@ COMMAND_LINE_UTILITY(publish_module_stats)
 {
 	std::string module_id;
 
-	std::string server = "localhost";
+	std::string server = "theargentlark.com";
 	std::string port = "23455";
 
 	std::deque<std::string> arguments(args.begin(), args.end());
@@ -827,7 +827,7 @@ COMMAND_LINE_UTILITY(publish_module_stats)
 
 COMMAND_LINE_UTILITY(list_modules)
 {
-	std::string server = "localhost";
+	std::string server = "theargentlark.com";
 	std::string port = "23455";
 
 	std::deque<std::string> arguments(args.begin(), args.end());
