@@ -19,6 +19,8 @@ class hex_map
 public:
 	hex_map() : zorder_(-1000), width_(0), height_(0), x_(0), y_(0)
 	{}
+	virtual ~hex_map()
+	{}
 	explicit hex_map(variant node);
 	int zorder() const { return zorder_; }
 
