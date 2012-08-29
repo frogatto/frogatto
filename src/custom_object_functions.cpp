@@ -26,6 +26,7 @@
 #include "json_parser.hpp"
 #include "level.hpp"
 #include "level_runner.hpp"
+#include "load_level.hpp"
 #include "object_events.hpp"
 #include "pause_game_dialog.hpp"
 #include "player_info.hpp"
@@ -2194,6 +2195,37 @@ FUNCTION_DEF(module_rate, 3, 4, "module_rate(module_client, string module_id, in
 	
 	return variant(new module_rate_command(cl, module_id, num_stars, review));
 END_FUNCTION_DEF(module_rate)
+
+class module_launch_command : public entity_command_callable {
+	std::string id_;
+public:
+	explicit module_launch_command(const std::string& id) : id_(id)
+	{}
+
+	virtual void execute(level& lvl, entity& ob) const {
+		module::reload(id_);
+		loadlevel::reload_level_paths();
+		customobjecttype::reload_file_paths();
+
+		const std::vector<entity_ptr> players = lvl.players();
+		foreach(entity_ptr e, players) {
+			lvl.remove_character(e);
+		}
+
+		level::portal p;
+		p.level_dest = "titlescreen.cfg";
+		p.dest_starting_pos = true;
+		p.automatic = true;
+		p.transition = "instant";
+		p.saved_game = true; //makes it use the player in there.
+		lvl.force_enter_portal(p);
+	}
+};
+
+FUNCTION_DEF(module_launch, 1, 1, "module_launch(string module_id): launch the game using the given module.")
+	const std::string module_id = args()[0]->evaluate(variables).as_string();
+	return variant(new module_launch_command(module_id));
+END_FUNCTION_DEF(module_launch)
 
 namespace {
 bool consecutive_periods(char a, char b) {

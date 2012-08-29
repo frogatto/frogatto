@@ -332,8 +332,14 @@ bool console_dialog::on_begin_enter()
 			game_logic::formula f(ffl_variant, &get_custom_object_functions_symbol_table(), focus_->get_definition());
 			variant v = f.execute(*focus_);
 			focus_->execute_command(v);
-			debug_console::add_message(v.to_debug_string());
-			std::cerr << "OUTPUT: " << v.to_debug_string() << std::endl;
+			std::string output;
+			try {
+				output = v.write_json();
+			} catch(...) {
+				output = v.to_debug_string();
+			}
+			debug_console::add_message(output);
+			std::cerr << "OUTPUT: " << output << std::endl;
 		} catch(validation_failure_exception& e) {
 			debug_console::add_message("error parsing formula: " + e.msg);
 		} catch(type_error& e) {

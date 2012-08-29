@@ -26,6 +26,7 @@ std::map<std::string,std::string>& get_level_paths() {
 
 namespace loadlevel {
 void reload_level_paths() {
+	wml_cache().clear();
 	get_level_paths().clear();
 	load_level_paths();
 }
