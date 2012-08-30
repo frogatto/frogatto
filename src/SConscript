@@ -66,6 +66,7 @@ frame.cpp
 framed_gui_element.cpp
 geometry.cpp
 game_registry.cpp
+gles2.cpp
 globals.cpp
 graphical_font.cpp
 graphical_font_label.cpp
@@ -121,6 +122,7 @@ scrollable_widget.cpp
 scrollbar_widget.cpp
 segment_editor_dialog.cpp
 settings_dialog.cpp
+shaders.cpp
 slider.cpp
 solid_map.cpp
 sound.cpp
@@ -157,6 +159,7 @@ water_particle_system.cpp
 weather_particle_system.cpp
 widget.cpp
 widget_factory.cpp
+wm.cpp
 wml_formula_callable.cpp
 unit_test.cpp
 formula_test.cpp

@@ -12,6 +12,7 @@ opts = Variables('.scons-option-cache')
 
 opts.AddVariables(
     BoolVariable('ccache', "Use ccache", False),
+    BoolVariable('gles2', "Use GLES2", False),
     ('cxxtool', 'Set c++ compiler command if not using standard compiler.'),
     ('jobs', 'Set the number of parallel compilations', "1", lambda key, value, env: int(value), int),
     )
@@ -24,6 +25,8 @@ env.Append(CXXFLAGS= ["-pthread", "-DIMPLEMENT_SAVE_PNG"], LINKFLAGS = ["-pthrea
 
 opts.Save('.scons-option-cache', env)
 
+if env['gles2']:
+    env.Append(CXXFLAGS= ["-DUSEGLES2"])
 if env.get('cxxtool',""):
     env['CXX'] = env['cxxtool']
     if 'HOME' in os.environ:
