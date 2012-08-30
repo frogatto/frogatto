@@ -4,39 +4,50 @@
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 #include "SDL.h"
 #include "SDL_opengles.h"
-#else
+#endif
 
-#if defined(TARGET_BLACKBERRY) || defined(__MACOSX__)
-#include <SDL.h>
-#include <SDL_keysym.h>
-#include <SDL_thread.h>
-#elif defined(__ANDROID__)
-#include <SDL.h>
-#include <SDL_thread.h>
-#include <SDL_screenkeyboard.h>
-#else
 #include "SDL.h"
 #include "SDL_keysym.h"
 #include "SDL_thread.h"
+
+#if defined(__ANDROID__)
+#include "SDL_screenkeyboard.h"
 #endif
 
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE
+#include "SDL_ttf.h"
+#include "SDL_mixer.h"
 #endif
 
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE && !__MACOSX__ && !defined(__ANDROID__) && !defined(TARGET_BLACKBERRY)
-#include <SDL/SDL_mixer.h>
+#ifdef USE_GLES2
+
+#if defined(WIN32) || defined(__linux__)
+#include "glew.h"
+#else
+#include <EGL/egl.h>
+#include <GLES2/gl2.h>
 #endif
 
-#if !defined(SDL_VIDEO_OPENGL_ES) && !(TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE) && !defined(__ANDROID__)
+#include "gles2.hpp"
+#include "shaders.hpp"
+#include "wm.hpp"
+
+#if defined(GL_ES_VERSION_2_0)
+extern window_manager wm;
+#undef SDL_GL_SwapBuffers
+#define SDL_GL_SwapBuffers()	do{wm.swap();}while(0)
+#endif
+
+#else
+
+#if !defined(SDL_VIDEO_OPENGL_ES) && !(TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE) && !defined(__ANDROID__) && !defined(__native_client__)
 #include <GL/glew.h>
 #endif
 
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE && !__MACOSX__ && !defined(__ANDROID__) && !defined(TARGET_BLACKBERRY)
-#include <SDL/SDL_ttf.h>
-#endif
-
-#if __MACOSX__ || defined(__ANDROID__) || defined(TARGET_BLACKBERRY)
-#include <SDL_mixer.h>
-#include <SDL_ttf.h>
+#if defined(__native_client__)
+#define GL_GLEXT_PROTOTYPES
+#include <GL/gl.h>
+#include <GL/glext.h>
 #endif
 
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
@@ -62,6 +73,8 @@
 
 #if defined(__APPLE__) && !(TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE)
 #include <OpenGL/OpenGL.h>
+#endif
+
 #endif
 
 #endif // GRAPHICS_HPP_INCLUDED

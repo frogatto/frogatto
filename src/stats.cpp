@@ -5,13 +5,17 @@
 #include <vector>
 
 #include <boost/array.hpp>
+#if !defined(__native_client__)
 #include <boost/asio.hpp>
+#endif
 #include <boost/bind.hpp>
 
 #include "checksum.hpp"
 #include "filesystem.hpp"
 #include "formatter.hpp"
+#if !defined(__native_client__)
 #include "http_client.hpp"
+#endif
 #include "level.hpp"
 #include "module.hpp"
 #include "preferences.hpp"
@@ -96,6 +100,7 @@ void send_stats_thread() {
 		return;
 	}
 
+#if !defined(__native_client__)
 	for(;;) {
 		std::vector<std::pair<std::string, std::string> > queue;
 		{
@@ -124,6 +129,7 @@ void send_stats_thread() {
 			}
 		}
 	}
+#endif
 }
 
 }
@@ -148,6 +154,7 @@ void download_progress(int sent, int total, bool uploaded)
 }
 
 bool download(const std::string& lvl) {
+#if !defined(__native_client__)
 	bool done = false;
 	bool err = false;
 	http_client client("www.wesnoth.org", "80");
@@ -160,6 +167,9 @@ bool download(const std::string& lvl) {
 		client.process();
 	}
 	return !err;
+#else
+	return false;
+#endif
 }
 
 namespace {

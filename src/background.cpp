@@ -133,8 +133,8 @@ background::background(variant node, int palette) : palette_(palette)
 			bg.scale = 1;
 		}
 
-#ifndef SDL_VIDEO_OPENGL_ES
 		std::string blend_mode = layer_node["mode"].as_string_default();
+#if defined(__GLEW_H__)
 		if(GLEW_EXT_blend_minmax) {
 			if(blend_mode == "GL_MAX") {
 				bg.mode = GL_MAX;
@@ -496,10 +496,10 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 	if(bg.xpad > 0) {
 		xpos *= GLfloat(bg.texture.width() + bg.xpad)/GLfloat(bg.texture.width());
 	}
-	
+
 	glColor4f(bg.color[0], bg.color[1], bg.color[2], bg.color[3]);
 
-#ifndef SDL_VIDEO_OPENGL_ES
+#if defined(__GLEW_H__)
 	if (GLEW_EXT_blend_minmax && (GLEW_ARB_imaging || GLEW_VERSION_1_4)) {
 		glBlendEquation(bg.mode);
 	}
@@ -537,7 +537,7 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 	}
 
 	glColor4f(1.0,1.0,1.0,1.0);
-#ifndef SDL_VIDEO_OPENGL_ES
+#if defined(__GLEW_H__)
 	if (GLEW_EXT_blend_minmax && (GLEW_ARB_imaging || GLEW_VERSION_1_4)) {
 		glBlendEquation(GL_FUNC_ADD);
 	}

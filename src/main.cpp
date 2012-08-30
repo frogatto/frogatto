@@ -59,6 +59,7 @@
 #include "tile_map.hpp"
 #include "unit_test.hpp"
 #include "variant_utils.hpp"
+#include "wm.hpp"
 
 #if defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
 #include "eglport.h"
@@ -67,6 +68,10 @@
 #endif
 
 #define DEFAULT_MODULE	"frogatto"
+
+#if defined(USE_GLES2)
+window_manager wm;
+#endif
 
 namespace {
 
@@ -168,6 +173,12 @@ AAssetManager* GetJavaAssetManager()
 }
 #endif
 
+#if defined(__native_client__)
+void register_file_and_data(const char* filename, const char* mode, char* buffer, int size)
+{
+}
+#endif
+
 int load_module(const std::string& mod, std::vector<std::string>* argv)
 {
 	variant mod_info = module::get(mod);
@@ -183,8 +194,22 @@ int load_module(const std::string& mod, std::vector<std::string>* argv)
 	return 0;
 }
 
+#if defined(__native_client__)
+extern "C" int game_main(int argcount, char* argvec[])
+#else
 extern "C" int main(int argcount, char** argvec)
+#endif
 {
+#if defined(__native_client__)
+	std::cerr << "Running game_main" << std::endl;
+
+	chdir("/frogatto");
+	{
+		char buf[256];
+		const char* const res = getcwd(buf,sizeof(buf));
+		std::cerr << "Current working directory: " << res << std::endl;
+	}
+#endif 
 
 	#ifdef NO_STDERR
 	std::freopen("/dev/null", "w", stderr);
@@ -239,7 +264,7 @@ extern "C" int main(int argcount, char** argvec)
 		}
 	}
 
-	for(int n = 0; n < argv.size(); ++n) {
+	for(size_t n = 0; n < argv.size(); ++n) {
 		const int argc = argv.size();
 		const std::string arg(argv[n]);
 		std::string arg_name, arg_value;
@@ -270,8 +295,8 @@ extern "C" int main(int argcount, char** argvec)
 	// load difficulty settings after module, before rest of args.
 	difficulty::manager();
 
-	for(int n = 0; n < argv.size(); ++n) {
-		const int argc = argv.size();
+	for(size_t n = 0; n < argv.size(); ++n) {
+		const size_t argc = argv.size();
 		const std::string arg(argv[n]);
 		std::string arg_name, arg_value;
 		std::string::const_iterator equal = std::find(arg.begin(), arg.end(), '=');
@@ -370,6 +395,7 @@ extern "C" int main(int argcount, char** argvec)
 
 	LOG( "Start of main" );
 	
+#if !defined(__native_client__)
 	Uint32 sdl_init_flags = SDL_INIT_VIDEO | SDL_INIT_JOYSTICK;
 #ifdef _WINDOWS
 	sdl_init_flags |= SDL_INIT_TIMER;
@@ -379,6 +405,7 @@ extern "C" int main(int argcount, char** argvec)
 		return -1;
 	}
 	LOG( "After SDL_Init" );
+#endif
 
 #ifdef TARGET_OS_HARMATTAN
 	g_type_init();
@@ -401,6 +428,13 @@ extern "C" int main(int argcount, char** argvec)
 		level_cfg = override_level_cfg;
 		orig_level_cfg = level_cfg;
 	}
+
+#if defined(USE_GLES2)
+	wm.create_window(preferences::actual_screen_width(),
+		preferences::actual_screen_height(),
+		0,
+		(preferences::resizable() ? SDL_RESIZABLE : 0) | (preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+#else
 
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 	int width, height;
@@ -492,6 +526,25 @@ extern "C" int main(int argcount, char** argvec)
 		std::cerr << "could not set video mode\n";
 		return -1;
     }
+#elif defined(__native_client__)
+    SDL_Rect** r = SDL_ListModes(NULL, SDL_OPENGL);
+	std::cerr << "Video modes";
+	if(r == (SDL_Rect**)0) {
+		std::cerr << "No modes available";
+		return -1;
+	}
+	if(r == (SDL_Rect**)-1) {
+		std::cerr << "All modes available";
+	} else {
+		for(int i = 0; r[i]; ++i) {
+			std::cerr << r[i]->w << r[i]->h << std::endl;
+		}
+	}
+
+    if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,0) == NULL) {
+		std::cerr << "could not set video mode\n";
+		return -1;
+    }
 #else
 	if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) == NULL) {
 		std::cerr << "could not set video mode\n";
@@ -502,6 +555,18 @@ extern "C" int main(int argcount, char** argvec)
 
 #endif
 
+#endif // USE_GLES2
+
+#if defined(__GLEW_H__)
+	GLenum glew_status = glewInit();
+	ASSERT_EQ(glew_status, GLEW_OK);
+#endif
+
+#if defined(USE_GLES2)
+	// Has to happen after the call to glewInit().
+	gles2::init_default_shader();
+#endif
+
 //	srand(time(NULL));
 
 	const stats::manager stats_manager;
@@ -509,18 +574,35 @@ extern "C" int main(int argcount, char** argvec)
 	const external_text_editor::manager editor_manager;
 #endif // NO_EDITOR
 
-	std::cerr
-		<< "\n"
-		<< "OpenGL vendor: " << reinterpret_cast<const char *>(glGetString(GL_VENDOR)) << "\n"
-		<< "OpenGL version: " << reinterpret_cast<const char *>(glGetString(GL_VERSION)) << "\n"
-		<< "OpenGL extensions: " << reinterpret_cast<const char *>(glGetString(GL_EXTENSIONS)) << "\n"
-		<< "\n";
+	std::cerr << std::endl;
+	const GLubyte* glstrings;
+	if((glstrings = glGetString(GL_VENDOR)) != NULL) {
+		std::cerr << "OpenGL vendor: " << reinterpret_cast<const char *>(glstrings) << std::endl;
+	} else {
+		GLenum err = glGetError();
+		std::cerr << "Error in vendor string: " << std::hex << err << std::endl;
+	}
+	if((glstrings = glGetString(GL_VERSION)) != NULL) {
+		std::cerr << "OpenGL version: " << reinterpret_cast<const char *>(glstrings) << std::endl;
+	} else {
+		GLenum err = glGetError();
+		std::cerr << "Error in version string: " << std::hex << err << std::endl;
+	}
+	if((glstrings = glGetString(GL_EXTENSIONS)) != NULL) {
+		std::cerr << "OpenGL extensions: " << reinterpret_cast<const char *>(glstrings) << std::endl;
+	} else {
+		GLenum err = glGetError();
+		std::cerr << "Error in extensions string: " << std::hex << err << std::endl;
+	}
+	std::cerr << std::endl;
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_BLEND);
+#if !defined(USE_GLES2)
 	glEnable(GL_TEXTURE_2D);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	
+#endif
+
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	SDL_WM_SetCaption(module::get_module_pretty_name().c_str(), module::get_module_pretty_name().c_str());
@@ -532,9 +614,12 @@ extern "C" int main(int argcount, char** argvec)
 	{ //manager scope
 	const font::manager font_manager;
 	const sound::manager sound_manager;
+#if !defined(__native_client__)
 	const joystick::manager joystick_manager;
-		
-	#if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
+#endif 
+	
+	#if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR && !defined(__native_client__)
+	std::cerr << "SDL_GetVideoSurface()" << std::endl;
 	const SDL_Surface* fb = SDL_GetVideoSurface();
 	if(fb == NULL) {
 		return 0;
@@ -580,6 +665,11 @@ extern "C" int main(int argcount, char** argvec)
 	}
 	loader.draw(_("Loading level"));
 
+#if defined(__native_client__)
+	while(1) {
+	}
+#endif
+
 	if(!skip_tests && !test::run_tests()) {
 		return -1;
 	}
@@ -590,11 +680,6 @@ extern "C" int main(int argcount, char** argvec)
 #if defined(__APPLE__) && !(TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE)
 	GLint swapInterval = 1;
 	CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &swapInterval);
-#endif
-
-#ifndef SDL_VIDEO_OPENGL_ES
-	GLenum glew_status = glewInit();
-	ASSERT_EQ(glew_status, GLEW_OK);
 #endif
 
 	loader.finish_loading();
@@ -637,6 +722,7 @@ extern "C" int main(int argcount, char** argvec)
 		}
 #endif
 
+#if !defined(__native_client__)
 		//see if we're loading a multiplayer level, in which case we
 		//connect to the server.
 		multiplayer::manager mp_manager(lvl->is_multiplayer());
@@ -661,6 +747,7 @@ extern "C" int main(int argcount, char** argvec)
 
 			lvl->set_multiplayer_slot(multiplayer::slot());
 		}
+#endif
 
 		last_draw_position() = screen_position();
 
@@ -691,11 +778,15 @@ extern "C" int main(int argcount, char** argvec)
     EGL_Destroy();
 #endif
 
+#if defined(USE_GLES2)
+	wm.destroy_window();
+#endif
+
 	SDL_Quit();
 	
 	preferences::save_preferences();
 	std::cerr << SDL_GetError() << "\n";
-#if !defined(TARGET_OS_HARMATTAN) && !defined(TARGET_TEGRA) && !defined(TARGET_BLACKBERRY) && !defined(__ANDROID__)
+#if !defined(TARGET_OS_HARMATTAN) && !defined(TARGET_TEGRA) && !defined(TARGET_BLACKBERRY) && !defined(__ANDROID__) && !defined(USE_GLES2)
 	std::cerr << gluErrorString(glGetError()) << "\n";
 #endif
 	return 0;

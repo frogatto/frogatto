@@ -5,10 +5,6 @@
 #include "texture.hpp"
 #include "texture_frame_buffer.hpp"
 
-#if defined(TARGET_BLACKBERRY)				// TODO: Get rid of this.
-#define GL_FRAMEBUFFER_UNSUPPORTED 0x8CDD	// Krista's Hack for opengl 1 -> 2. This needs fixing badly.
-#endif										// Basically, instead of fixing it, we put this line here. :(
-
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 #include <EGL/egl.h>
 #define glGenFramebuffersOES        preferences::glGenFramebuffersOES
@@ -18,7 +14,10 @@
 #endif
 
 //define macros that make it easy to make the OpenGL calls in this file.
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_OS_IPHONE) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY) || defined(__ANDROID__)
+#if defined(USE_GLES2)
+#define EXT_CALL(call) call
+#define EXT_MACRO(macro) macro
+#elif defined(TARGET_OS_HARMATTAN) || defined(TARGET_OS_IPHONE) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY) || defined(__ANDROID__)
 #define EXT_CALL(call) call##OES
 #define EXT_MACRO(macro) macro##_OES
 #elif defined(__APPLE__)
@@ -55,7 +54,7 @@ void init(int buffer_width, int buffer_height)
 	frame_buffer_texture_width = buffer_width;
 	frame_buffer_texture_height = buffer_height;
 
-#if defined(__ANDROID__)
+#if defined(__ANDROID__) || defined(__native_client__)
 	{
 		supported = false;
 		LOG("FRAME BUFFER OBJECT NOT SUPPORTED");
@@ -77,7 +76,8 @@ void init(int buffer_width, int buffer_height)
 		supported = false;
 		return;
 	}
-#elif !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
+#endif
+#if defined(__GLEW_H__)
 	if(!GLEW_EXT_framebuffer_object)
     {
 		fprintf(stderr, "FRAME BUFFER OBJECT NOT SUPPORTED\n");

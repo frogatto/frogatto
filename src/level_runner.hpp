@@ -21,7 +21,7 @@ struct multiplayer_exception {
 };
 
 class editor;
-class editor_resolution_manager;
+struct editor_resolution_manager;
 
 class level_runner {
 public:
@@ -66,6 +66,7 @@ private:
 	std::string last_stats_point_level_;
 	bool handle_mouse_events(const SDL_Event &event);
 	void video_resize_event(const SDL_Event &event);
+	void show_pause_title();
 
 	editor* editor_;
 #ifndef NO_EDITOR
@@ -80,7 +81,6 @@ private:
 	void init_history_slider();
 	void on_history_change(double value);
 	void update_history_trails();
-	void show_pause_title();
 
 	boost::scoped_ptr<debug_console::console_dialog> console_;
 #endif

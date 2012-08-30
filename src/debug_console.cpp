@@ -180,6 +180,14 @@ void draw_graph()
 
 		const GLfloat mean_ypos = std::accumulate(y_samples.begin(), y_samples.end(), 0.0)/y_samples.size();
 
+#if defined(USE_GLES2)
+		{
+			gles2::manager gles2_manager;
+			glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, &points[0]);
+			glEnableVertexAttribArray(gles2_manager.vtx_coord);
+			glDrawArrays(GL_LINE_STRIP, 0, points.size()/2);
+		}
+#else
 		glDisable(GL_TEXTURE_2D);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
@@ -188,6 +196,7 @@ void draw_graph()
 
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
+#endif
 
 		graphics::blit_texture(font::render_text_uncached(p.first, graph_color.as_sdl_color(), 14), points[points.size()-2] + 4, mean_ypos - 6);
 

@@ -973,8 +973,10 @@ void editor::edit_level()
 {
 
 	glEnable(GL_BLEND);
+#if !defined(USE_GLES2)
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);
+#endif
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	int selected_tile = 0;
@@ -2876,8 +2878,10 @@ void editor::draw_gui() const
 	   property_dialog_->get_entity()->editor_info() &&
 	   std::count(lvl_->get_chars().begin(), lvl_->get_chars().end(),
 	              property_dialog_->get_entity())) {
+#if !defined(USE_GLES2)
 		glDisable(GL_TEXTURE_2D);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+#endif
 
 		//number of variables seen of each type, used to
 		//cycle through colors for each variable type.
@@ -2944,12 +2948,20 @@ void editor::draw_gui() const
 			}
 
 			if(!varray.empty()) {
+#if defined(USE_GLES2)
+				gles2::manager gles2_manager;
+				glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, &varray.front());
+				glEnableVertexAttribArray(gles2_manager.vtx_coord);
+#else
 				glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+#endif
 				glDrawArrays(GL_LINES, 0, varray.size()/2);
 			}
 		}
+#if !defined(USE_GLES2)
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
+#endif
 	}
 
 	if(g_draw_stats) {
@@ -2979,8 +2991,10 @@ void editor::draw_gui() const
 
 	//draw grid
 	if(g_draw_grid){
+#if !defined(USE_GLES2)
 	   glDisable(GL_TEXTURE_2D);
 	   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+#endif
 	   varray.clear();
 	   glColor4ub(255, 255, 255, 64);
 	   for(int x = -TileSize - (xpos_/zoom_)%TileSize; x < graphics::screen_width(); x += 32/zoom_) {
@@ -2993,7 +3007,13 @@ void editor::draw_gui() const
 		varray.push_back(0); varray.push_back(y);
 		varray.push_back(graphics::screen_width()); varray.push_back(y);
 	}
+#if defined(USE_GLES2)
+	gles2::manager gles2_manager;
+	glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, &varray.front());
+	glEnableVertexAttribArray(gles2_manager.vtx_coord);
+#else
 	glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+#endif
 	glDrawArrays(GL_LINES, 0, varray.size()/2);
 	
 	// draw level boundaries in clear white
@@ -3076,11 +3096,19 @@ void editor::draw_gui() const
 			}
 		}
 		
+#if defined(USE_GLES2)
+		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, &varray.front());
+		glEnableVertexAttribArray(gles2_manager.vtx_coord);
+		glVertexAttribPointer(gles2_manager.color, 4, GL_FLOAT, 0, 0, &carray.front());
+		glEnableVertexAttribArray(gles2_manager.color);
+		glDrawArrays(GL_LINES, 0, varray.size()/2);
+#else
 		glEnableClientState(GL_COLOR_ARRAY);
 		glVertexPointer(2, GL_FLOAT, 0, &varray.front());
 		glColorPointer(4, GL_FLOAT, 0, &carray.front());
 		glDrawArrays(GL_LINES, 0, varray.size()/2);
 		glDisableClientState(GL_COLOR_ARRAY);
+#endif
 	}
 
 	draw_selection(0, 0);
@@ -3117,8 +3145,10 @@ void editor::draw_gui() const
 		}
 	}
 	
+#if !defined(USE_GLES2)
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);
+#endif
 
 	ASSERT_INDEX_INTO_VECTOR(cur_object_, enemy_types);
 
@@ -3164,7 +3194,7 @@ void editor::draw_selection(int xoffset, int yoffset) const
 	const uint16_t stipple_mask = (stipple_bits&0xFFFF) | ((stipple_bits&0xFFFF0000) >> 16);
 	
 	glColor4ub(255, 255, 255, 255);
-#ifndef SDL_VIDEO_OPENGL_ES
+#if !defined(SDL_VIDEO_OPENGL_ES) && (!defined(USE_GLES2) || !defined(GL_ES_VERSION_2_0))
 	glEnable(GL_LINE_STIPPLE);
 	glLineStipple(1, stipple_mask);
 #endif
@@ -3195,9 +3225,15 @@ void editor::draw_selection(int xoffset, int yoffset) const
 			varray.push_back(xpos + size); varray.push_back(ypos + size);
 		}
 	}
+#if defined(USE_GLES2)
+	gles2::manager gles2_manager;
+	glEnableVertexAttribArray(gles2_manager.vtx_coord);
+	glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, &varray.front());
+#else
 	glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+#endif
 	glDrawArrays(GL_LINES, 0, varray.size()/2);
-#ifndef SDL_VIDEO_OPENGL_ES
+#if !defined(SDL_VIDEO_OPENGL_ES) && (!defined(USE_GLES2) || !defined(GL_ES_VERSION_2_0))
 	glDisable(GL_LINE_STIPPLE);
 	glLineStipple(1, 0xFFFF);
 #endif

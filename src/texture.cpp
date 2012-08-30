@@ -353,7 +353,6 @@ void texture::initialize(const key& k, int options)
 	   std::find(k.begin(),k.end(),surface()) != k.end()) {
 		return;
 	}
-
 	npot_allowed = is_npot_allowed();
 
 	width_ = k.front()->w;
@@ -822,7 +821,17 @@ void texture::ID::unbuild_id()
 	s = surface(SDL_CreateRGBSurface(SDL_SWSURFACE,width,height,32,SURFACE_MASK));
 
 	glBindTexture(GL_TEXTURE_2D, id);
+#if defined(USE_GLES2)
+#if defined(GL_ES_VERSION_2_0)
+	// XXX: this doesn't work quite as expected.  But since most pure GLES2 devices don't need editor mode
+	// it isn't a high priority.
+	glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, s->pixels);
+#else
 	glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, s->pixels);
+#endif
+#else
+	glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, s->pixels);
+#endif
 #endif
 }
 

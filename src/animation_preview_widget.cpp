@@ -362,20 +362,20 @@ void animation_preview_widget::handle_draw() const
 
 		GLfloat scale = 2.0;
 		for(int n = 0; n != abs(scale_); ++n) {
-			scale *= (scale_ < 0 ? 0.5 : 2.0);
+			scale *= (scale_ < 0 ? 0.5f : 2.0f);
 		}
 
 		if(!view_locked) {
-			while(image_area.w()*scale*2.0 < image_area.w() &&
-			      image_area.h()*scale*2.0 < image_area.h()) {
-				scale *= 2.0;
+			while(image_area.w()*scale*2.0f < image_area.w() &&
+			      image_area.h()*scale*2.0f < image_area.h()) {
+				scale *= 2.0f;
 				scale_++;
 				update_zoom_label();
 			}
 		
 			while(focus_area.w()*scale > image_area.w() ||
 			      focus_area.h()*scale > image_area.h()) {
-				scale *= 0.5;
+				scale *= 0.5f;
 				scale_--;
 				update_zoom_label();
 			}

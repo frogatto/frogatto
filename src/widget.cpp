@@ -230,14 +230,18 @@ void widget::draw() const
 		GLint src = 0;
 		GLint dst = 0;
 		if(disabled_) {
+#if !defined(USE_GLES2)
 			glGetIntegerv(GL_BLEND_SRC, &src);
 			glGetIntegerv(GL_BLEND_DST, &dst);
+#endif
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glColor4ub(255, 255, 255, disabled_opacity_);
 		}
 		handle_draw();
 		if(disabled_) {
+#if !defined(USE_GLES2)
 			glBlendFunc(src, dst);
+#endif
 			glColor4ub(255, 255, 255, 255);
 		}
 	}

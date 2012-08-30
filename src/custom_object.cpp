@@ -959,6 +959,16 @@ void custom_object::draw(int xx, int yy) const
 		}
 
 		if(!v.empty()) {
+#if defined(USE_GLES2)
+			glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+
+			gles2::manager gles2_manager;
+			glUniform1f(gles2_manager.pt_size, 2);
+			glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, &v[0]);
+			glEnableVertexAttribArray(gles2_manager.vtx_coord);
+			glDrawArrays(GL_POINTS, 0, v.size()/2);
+			glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+#else
 			glPointSize(2);
 			glDisable(GL_TEXTURE_2D);
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -970,6 +980,7 @@ void custom_object::draw(int xx, int yy) const
 			glColor4ub(255, 255, 255, 255);
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			glEnable(GL_TEXTURE_2D);
+#endif
 		}
 	}
 	if(use_absolute_screen_coordinates_) {

@@ -20,10 +20,10 @@ void queue_blit_digit(graphics::blit_queue& q, const graphics::texture& t, char 
 	const int x2 = x + NumberWidth;
 	const int y2 = y + 14 + ysub - yadd;
 
-	const GLfloat u1 = t.translate_coord_x((234.0 + offset)/400.0);
-	const GLfloat v1 = t.translate_coord_y((63.0 - ysub/2.0)/104.0);
-	const GLfloat u2 = t.translate_coord_x((242.0 + offset)/400.0);
-	const GLfloat v2 = t.translate_coord_y((70.0 - yadd/2.0)/104.0);
+	const GLfloat u1 = t.translate_coord_x((234.0f + offset)/400.0f);
+	const GLfloat v1 = t.translate_coord_y((63.0f - ysub/2.0f)/104.0f);
+	const GLfloat u2 = t.translate_coord_x((242.0f + offset)/400.0f);
+	const GLfloat v2 = t.translate_coord_y((70.0f - yadd/2.0f)/104.0f);
 
 	q.add(x, y, u1, v1);
 	q.add(x, y2, u1, v2);
@@ -37,10 +37,10 @@ void blit_digit(const graphics::texture& t, char digit, int xpos, int ypos,
 	const int ysub = yoffset < 0.0 ? int(yoffset*14) : 0;
 	const int offset = (digit - '0') * 9;
 	graphics::queue_blit_texture(t, xpos, ypos + yadd, 16, 14 + ysub - yadd,
-					       (234.0 + offset)/400.0,
-						   (63.0 - ysub/2.0)/104.0,
-						   (242.0 + offset)/400.0,
-						   (70.0 - yadd/2.0)/104.0);
+					       (234.0f + offset)/400.0f,
+						   (63.0f - ysub/2.0f)/104.0f,
+						   (242.0f + offset)/400.0f,
+						   (70.0f - yadd/2.0f)/104.0f);
 	graphics::flush_blit_texture();
 }
 

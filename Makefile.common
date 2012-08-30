@@ -68,6 +68,7 @@ objects = \
 	framed_gui_element.o \
 	game_registry.o \
 	geometry.o \
+	gles2.o \
 	globals.o \
 	graphical_font.o \
 	graphical_font_label.o \
@@ -124,6 +125,7 @@ objects = \
 	scrollable_widget.o \
 	segment_editor_dialog.o \
 	settings_dialog.o \
+	shaders.o \
 	slider.o \
 	solid_map.o \
 	sound.o \
@@ -169,7 +171,8 @@ objects = \
 	utility_object_compiler.o \
 	utility_query.o \
 	utility_render_level.o \
-    vector_text.o
+    vector_text.o \
+	wm.o
 
 
 # Server

@@ -513,9 +513,11 @@ void level::load_character(variant c)
 		chars_.back()->set_id(chars_.size());
 	}
 	if(chars_.back()->is_human()) {
+#if !defined(__native_client__)
 		if(players_.size() == multiplayer::slot()) {
 			last_touched_player_ = player_ = chars_.back();
 		}
+#endif
 
 		players_.push_back(chars_.back());
 		players_.back()->get_player_info()->set_player_slot(players_.size() - 1);
@@ -641,7 +643,14 @@ void level::finish_loading()
 	wml_chars_.clear();
 	serialized_objects_.clear();
 
-	controls::new_level(cycle_, players_.empty() ? 1 : players_.size(), multiplayer::slot());
+	controls::new_level(cycle_, 
+		players_.empty() ? 1 : players_.size(), 
+#if !defined(__native_client__)
+		multiplayer::slot()	
+#else
+		0
+#endif
+		);
 
 	//start loading FML for previous and next level
 	if(!previous_level().empty()) {
@@ -702,9 +711,11 @@ void level::finish_loading()
 
 void level::set_multiplayer_slot(int slot)
 {
+#if !defined(__native_client__)
 	ASSERT_INDEX_INTO_VECTOR(slot, players_);
 	last_touched_player_ = player_ = players_[slot];
 	controls::new_level(cycle_, players_.empty() ? 1 : players_.size(), slot);
+#endif
 }
 
 void level::load_save_point(const level& lvl)
@@ -1546,17 +1557,32 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 		graphics::texture::set_current_texture(blit_info.texture_id);
 	}
 
+#if defined(USE_GLES2)
+	gles2::manager gles2_manager(true);
+	glEnableVertexAttribArray(gles2_manager.vtx_coord);
+	glEnableVertexAttribArray(gles2_manager.tex_coord);
+#endif
+
 	if(!opaque_indexes.empty()) {
+#if defined(USE_GLES2)
+		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_SHORT, GL_FALSE, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
+		glVertexAttribPointer(gles2_manager.tex_coord, 2, GL_FLOAT, GL_FALSE, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
+#else
 		glVertexPointer(2, GL_SHORT, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
 		glTexCoordPointer(2, GL_FLOAT, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
+#endif
 		glDrawElements(GL_TRIANGLES, opaque_indexes.size(), TILE_INDEX_TYPE, &opaque_indexes[0]);
 	}
 	glEnable(GL_BLEND);
 
 	if(!translucent_indexes.empty()) {
+#if defined(USE_GLES2)
+		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_SHORT, GL_FALSE, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
+		glVertexAttribPointer(gles2_manager.tex_coord, 2, GL_FLOAT, GL_FALSE, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
+#else
 		glVertexPointer(2, GL_SHORT, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
 		glTexCoordPointer(2, GL_FLOAT, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
-
+#endif
 		if(blit_info.texture_id == GLuint(-1)) {
 			//we have multiple different texture ID's in this layer. This means
 			//we will draw each tile seperately.
@@ -1584,8 +1610,10 @@ void level::draw_layer_solid(int layer, int x, int y, int w, int h) const
 	if(solid.first != solid.second) {
 		const rect viewport(x, y, w, h);
 
+#if !defined(USE_GLES2)
 		glDisable(GL_TEXTURE_2D);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+#endif
 		while(solid.first != solid.second) {
 			rect area = solid.first->area;
 			if(!rects_intersect(area, viewport)) {
@@ -1602,14 +1630,21 @@ void level::draw_layer_solid(int layer, int x, int y, int w, int h) const
 			  area.x(), area.y() + area.h(),
 			  area.x() + area.w(), area.y() + area.h(),
 			};
-
+#if defined(USE_GLES2)
+			gles2::manager gles2_manager;
+			glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, varray);
+			glEnableVertexAttribArray(gles2_manager.vtx_coord);
+#else
 			glVertexPointer(2, GL_SHORT, 0, varray);
+#endif
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 			++solid.first;
 		}
+#if !defined(USE_GLES2)
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
+#endif
 		glColor4ub(255, 255, 255, 255);
 	}
 }
@@ -1961,9 +1996,18 @@ void level::calculate_lighting(int x, int y, int w, int h) const
 	const GLfloat tcarray[] = { 0, 0, 0, 1, 1, 0, 1, 1 };
 	const GLfloat tcarray_rotated[] = { 0, 1, 1, 1, 0, 0, 1, 0 };
 	GLfloat varray[] = { 0, h, 0, 0, w, h, w, 0 };
+#if defined(USE_GLES2)
+	gles2::manager gles2_manager(true);
+	glEnableVertexAttribArray(gles2_manager.vtx_coord);
+	glEnableVertexAttribArray(gles2_manager.tex_coord);
+	glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_SHORT, 0, sizeof(tile_corner), varray);
+	glVertexAttribPointer(gles2_manager.tex_coord, 2, GL_FLOAT, GL_FALSE, 0, 
+		preferences::screen_rotated() ? tcarray_rotated : tcarray);
+#else
 	glVertexPointer(2, GL_FLOAT, 0, varray);
 	glTexCoordPointer(2, GL_FLOAT, 0,
 	               preferences::screen_rotated() ? tcarray_rotated : tcarray);
+#endif
 	glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1995,8 +2039,10 @@ void level::draw_debug_solid(int x, int y, int w, int h) const
 				graphics::draw_rect(rect(xpixel, ypixel, TileSize, TileSize), info->info.damage ? graphics::color(255, 0, 0, 196) : graphics::color(255, 255, 255, 196));
 			} else {
 				std::vector<GLshort> v;
+#if !defined(USE_GLES2)
 				glDisable(GL_TEXTURE_2D);
 				glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+#endif
 				for(int suby = 0; suby != TileSize; ++suby) {
 					for(int subx = 0; subx != TileSize; ++subx) {
 						if(info->bitmap.test(suby*TileSize + subx)) {
@@ -2013,12 +2059,19 @@ void level::draw_debug_solid(int x, int y, int w, int h) const
 						glColor4ub(255, 255, 255, 196);
 					}
 
+#if defined(USE_GLES2)
+					gles2::manager gles2_manager;
+					glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_SHORT, 0, 0, &v[0]);
+#else
 					glPointSize(1);
 					glVertexPointer(2, GL_SHORT, 0, &v[0]);
+#endif
 					glDrawArrays(GL_POINTS, 0, v.size()/2);
 				}
+#if !defined(USE_GLES2)
 				glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 				glEnable(GL_TEXTURE_2D);
+#endif
 			}
 		}
 	}
@@ -2100,7 +2153,9 @@ void level::process()
 
 	controls::read_local_controls();
 
+#if !defined(__native_client__)
 	multiplayer::send_and_receive();
+#endif
 
 	do_processing();
 

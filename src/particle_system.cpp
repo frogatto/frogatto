@@ -570,6 +570,18 @@ void simple_particle_system::draw(const rect& area, const entity& e) const
 		}
 	}
 	
+#if defined(USE_GLES2)
+	gles2::manager gles2_manager(true);
+	if(info_.delta_a_) {
+		glVertexAttribPointer(gles2_manager.color, 4, GL_UNSIGNED_BYTE, GL_TRUE, 0, &carray.front());
+		glEnableVertexAttribArray(gles2_manager.color);
+	}
+	glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, GL_FALSE, 0, &varray.front());
+	glEnableVertexAttribArray(gles2_manager.vtx_coord);
+	glVertexAttribPointer(gles2_manager.tex_coord, 2, GL_FLOAT, GL_FALSE, 0, &tcarray.front());
+	glEnableVertexAttribArray(gles2_manager.tex_coord);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
+#else
 	if(info_.delta_a_){
 		glEnableClientState(GL_COLOR_ARRAY);
 		glColorPointer(4, GL_UNSIGNED_BYTE, 0, &carray.front());
@@ -582,7 +594,7 @@ void simple_particle_system::draw(const rect& area, const entity& e) const
 	if(info_.delta_a_){
 		glDisableClientState(GL_COLOR_ARRAY);
 	}
-
+#endif
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 }
 
@@ -783,6 +795,16 @@ public:
 
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 
+#if defined(USE_GLES2)
+		// Not dealing with GL_POINT_SMOOTH right now -- this would probably be better as a frgament shader.
+		gles2::manager gles2_manager;
+		glUniform1f(gles2_manager.pt_size, info_.dot_size);
+		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_SHORT, GL_FALSE, 0, &vertex[0]);
+		glEnableVertexAttribArray(gles2_manager.vtx_coord);
+		glVertexAttribPointer(gles2_manager.color, 4, GL_UNSIGNED_BYTE, GL_TRUE, 0, &colors[0]);
+		glEnableVertexAttribArray(gles2_manager.color);
+		glDrawArrays(GL_POINTS, 0, particles_.size());
+#else
 		glDisable(GL_TEXTURE_2D);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnableClientState(GL_COLOR_ARRAY);
@@ -801,6 +823,7 @@ public:
 		if(info_.dot_rounded){
 			glDisable( GL_POINT_SMOOTH );
 		}
+#endif
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 	}
 private:

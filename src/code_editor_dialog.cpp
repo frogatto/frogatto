@@ -755,13 +755,19 @@ COMMAND_LINE_UTILITY(codeedit)
 {
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_SetVideoMode(600, 600, 0, SDL_OPENGL|SDL_RESIZABLE);
+#ifdef USE_GLES2
+	glViewport(0, 0, 600, 600);
+	glEnable(GL_BLEND);
+	glEnable(GL_TEXTURE_2D);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+#else
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_BLEND);
 	glEnable(GL_TEXTURE_2D);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+#endif
 
 	const font::manager font_manager;
 	graphics::texture::manager texture_manager;

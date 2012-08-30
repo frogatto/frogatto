@@ -112,16 +112,25 @@ void water_particle_system::draw(const rect& screen_area, const entity& e) const
 	if(vertices.empty()) {
 		return;
 	}
+
+	glColor4f(info_.rgba[0]/255.0, info_.rgba[1]/255.0, info_.rgba[2]/255.0, info_.rgba[3]/255.0);
+#if defined(USE_GLES2)
+	gles2::manager gles2_manager;
+	glUniform1f(gles2_manager.pt_size, info_.dot_size);
+	glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_SHORT, GL_FALSE, 0, &vertices.front());
+	glEnableVertexAttribArray(gles2_manager.vtx_coord);
+	glDrawArrays(GL_POINTS, 0, vertices.size()/2);
+#else
 	glDisable(GL_TEXTURE_2D);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glPointSize(info_.dot_size);
-	glColor4f(info_.rgba[0]/255.0, info_.rgba[1]/255.0, info_.rgba[2]/255.0, info_.rgba[3]/255.0);
 
 	glVertexPointer(2, GL_SHORT, 0, &vertices.front());
 	glDrawArrays(GL_POINTS, 0, vertices.size()/2);
 
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);
+#endif
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 }
 

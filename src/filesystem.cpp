@@ -22,6 +22,12 @@
 #include <fstream>
 #include <sstream>
 
+#if defined(__native_client__)
+#include "foreach.hpp"
+#include "json_parser.hpp"
+#include "variant.hpp"
+#endif
+
 // Include files for opendir(3), readdir(3), etc.
 // These files may vary from platform to platform,
 // since these functions are NOT ANSI-conforming functions.
@@ -317,14 +323,40 @@ namespace {
   const mode_t AccessMode = 00770;
 }
 
+#if defined(__native_client__)
+namespace {
+variant& get_file_system() 
+{
+	static variant fs;
+	return fs;
+}
+
+void load_file_system()
+{
+	get_file_system() = json::parse_from_file("/frogatto/filelist.json");
+}
+}
+#endif
+
+
 bool is_directory(const std::string& dname)
 {
+#if defined(__native_client__)
+	if(get_file_system().is_null()) {
+		load_file_system();
+	}
+	if(get_file_system()["paths"][dname].is_null()) {
+		return false;
+	}
+	return true;
+#else
 	DIR* dir = opendir(dname.c_str());
 	if(dir == NULL) {
 		return false;
 	}
 	closedir(dir);
 	return true;
+#endif
 }
 
 void get_files_in_dir(const std::string& directory,
@@ -332,6 +364,46 @@ void get_files_in_dir(const std::string& directory,
 					  std::vector<std::string>* dirs,
 					  FILE_NAME_MODE mode)
 {
+	//std::cerr << "get_files_in_dir() : " << directory;
+#if defined(__native_client__)
+	if(get_file_system().is_null()) {
+		load_file_system();
+	}
+	variant path;
+	std::string dir_path = directory;
+	if(directory.empty()) {
+		// root folder.
+		path = get_file_system();
+	} else {
+		if(directory[directory.length()-1] == '/') {
+			dir_path = directory.substr(0, directory.length()-1);
+		} else {
+			dir_path = directory;
+		}
+		path = get_file_system()["paths"][dir_path];
+	}
+	if(path.is_null()) {
+		return;
+	}
+	if(files != NULL) {
+		for(int i = 0; i < path["files"].num_elements(); i++) {
+			if(mode == ENTIRE_FILE_PATH && dir_path.empty() == false) {
+				files->push_back(dir_path + "/" + path["files"][i].as_string());
+			} else {
+				files->push_back(path["files"][i].as_string());
+			}
+		}
+	}
+	if(dirs != NULL) {
+		for(int i = 0; i < path["dirs"].num_elements(); i++) {
+			if(mode == ENTIRE_FILE_PATH && dir_path.empty() == false) {
+				dirs->push_back(dir_path + "/" + path["dirs"][i].as_string());
+			} else {
+				dirs->push_back(path["dirs"][i].as_string());
+			}
+		}
+	}
+#else
 	struct stat st;
 
 	DIR* dir = opendir(directory.c_str());
@@ -377,23 +449,26 @@ void get_files_in_dir(const std::string& directory,
 		if (::stat(fullname.c_str(), &st) != -1) {
 			if (S_ISREG(st.st_mode)) {
 				if (files != NULL) {
-					if (mode == ENTIRE_FILE_PATH)
+					if (mode == ENTIRE_FILE_PATH) {
 						files->push_back(fullname);
-					else
+					} else {
 						files->push_back(basename);
+					}
 				}
 			} else if (S_ISDIR(st.st_mode)) {
 				if (dirs != NULL) {
-					if (mode == ENTIRE_FILE_PATH)
+					if (mode == ENTIRE_FILE_PATH) {
 						dirs->push_back(fullname);
-					else
+					} else {
 						dirs->push_back(basename);
+					}
 				}
 			}
 		}
 	}
 
 	closedir(dir);
+#endif
 
 	if(files != NULL)
 		std::sort(files->begin(),files->end());
@@ -415,12 +490,20 @@ void get_unique_filenames_under_dir(const std::string& dir,
 	get_files_in_dir(dir, &files, &dirs);
 	for(std::vector<std::string>::const_iterator i = files.begin();
 	    i != files.end(); ++i) {
-		(*file_map)[prefix + *i] = dir + "/" + *i;
+		std::string sep = "/";
+		if(dir[dir.length()-1] == '/') {
+			sep = "";
+		}
+		(*file_map)[prefix + *i] = dir + sep + *i;
 	}
 
 	for(std::vector<std::string>::const_iterator i = dirs.begin();
 	    i != dirs.end(); ++i) {
-		get_unique_filenames_under_dir(dir + "/" + *i, file_map, prefix);
+		std::string sep = "/";
+		if(dir[dir.length()-1] == '/') {
+			sep = "";
+		}
+		get_unique_filenames_under_dir(dir + sep + *i, file_map, prefix);
 	}
 }
 

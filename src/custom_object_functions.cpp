@@ -31,7 +31,9 @@
 #include "pause_game_dialog.hpp"
 #include "player_info.hpp"
 #include "raster.hpp"
+#if !defined(__native_client__)
 #include "tbs_client.hpp"
+#endif
 #include "texture.hpp"
 #include "message_dialog.hpp"
 #include "options_dialog.hpp"
@@ -94,6 +96,7 @@ FUNCTION_DEF(set_clipboard_text, 1, 1, "set_clipboard_text(str): sets the clipbo
 	return variant(new set_clipboard_text_command(args()[0]->evaluate(variables).as_string()));
 END_FUNCTION_DEF(set_clipboard_text)
 
+#if !defined(__native_client__)
 FUNCTION_DEF(tbs_client, 2, 3, "tbs_client(host, port, session=-1): creates a client object to the tbs server")
 	const std::string host = args()[0]->evaluate(variables).as_string();
 	const int port = args()[1]->evaluate(variables).as_int();
@@ -147,6 +150,7 @@ FUNCTION_DEF(tbs_process, 1, 1, "tbs_process(tbs_client): processes events for t
 	variant client = args()[0]->evaluate(variables);
 	return variant(new tbs_process_command(client));
 END_FUNCTION_DEF(tbs_process)
+#endif // __native_client__
 
 class report_command : public entity_command_callable
 {

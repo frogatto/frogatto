@@ -7,7 +7,9 @@
 #include "compress.hpp"
 #include "filesystem.hpp"
 #include "foreach.hpp"
+#if !defined(NO_TCP)
 #include "http_client.hpp"
+#endif
 #include "json_parser.hpp"
 #include "md5.hpp"
 #include "module.hpp"
@@ -29,7 +31,7 @@ std::vector<module::modules>& loaded_paths() {
 
 std::vector<std::string> module_dirs() {
 	std::vector<std::string> result;
-	result.push_back("modules/");
+	result.push_back("modules");
 	result.push_back(preferences::dlc_path());
 	return result;
 }
@@ -414,6 +416,7 @@ variant build_package(const std::string& id)
 	return variant(&data_attr);
 }
 
+#if !defined(NO_TCP)
 namespace {
 void finish_upload(std::string response, bool* flag, std::string* result)
 {
@@ -861,5 +864,7 @@ COMMAND_LINE_UTILITY(list_modules)
 
 	std::cerr << "RESPONSE:\n\n" << response;
 }
+#endif // NO_TCP
 
 }
+

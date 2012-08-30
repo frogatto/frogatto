@@ -75,13 +75,19 @@ void reset_opengl_state()
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_BLEND);
 	glEnable(GL_TEXTURE_2D);
+#if !defined(USE_GLES2)
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+#endif
+
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+#if defined(USE_GLES2)
+	glClearColor(0.0,0.0,0.0,0.0);
+	gles2::init_default_shader();
+#endif
 }
 
 bool set_video_mode(int w, int h)
@@ -98,9 +104,9 @@ SDL_Surface* set_video_mode(int w, int h, int bitsperpixel, int flags)
 {
 	graphics::texture::unbuild_all();
 	SDL_Surface* result = SDL_SetVideoMode(w,h,bitsperpixel,flags);
+	reset_opengl_state();
 	graphics::texture::rebuild_all();
 	
-	reset_opengl_state();
 	return result;
 }
 	
@@ -126,7 +132,7 @@ SDL_Surface* set_video_mode(int w, int h, int bitsperpixel, int flags)
 		return v;
 	}
 	
-#ifdef SDL_VIDEO_OPENGL_ES
+#if defined(SDL_VIDEO_OPENGL_ES) && !defined(__native_client__)
 #define glOrtho glOrthof
 #endif
 	
@@ -139,6 +145,8 @@ SDL_Surface* set_video_mode(int w, int h, int bitsperpixel, int flags)
 		//	real_w = 320;
 		//	real_h = 480;
 		//	rotated = true;
+#elif defined(__native_client__)
+		// do nothing.
 #else
 		const SDL_Surface* fb = SDL_GetVideoSurface();
 		if(fb == NULL) {
@@ -159,9 +167,17 @@ SDL_Surface* set_video_mode(int w, int h, int bitsperpixel, int flags)
 		
 		if(preferences::screen_rotated()) {
 			//		glOrtho(0, 640, 960, 0, -1.0, 1.0);
+#if defined(USE_GLES2) && defined(GL_ES_VERSION_2_0)
+			glOrthof(0, screen_height(), screen_width(), 0, -1.0, 1.0);
+#else
 			glOrtho(0, screen_height(), screen_width(), 0, -1.0, 1.0);
+#endif
 		} else {
+#if defined(USE_GLES2) && defined(GL_ES_VERSION_2_0)
+			glOrthof(0, screen_width(), screen_height(), 0, -1.0, 1.0);
+#else
 			glOrtho(0, screen_width(), screen_height(), 0, -1.0, 1.0);
+#endif
 		}
 		
 		//glOrtho(0, real_w, real_h, 0, -1.0, 1.0);
@@ -178,8 +194,10 @@ SDL_Surface* set_video_mode(int w, int h, int bitsperpixel, int flags)
 		glLoadIdentity();
 		
 		glDisable(GL_DEPTH_TEST);
+#if !defined(USE_GLES2)
 		glDisable(GL_LIGHTING);
 		glDisable(GL_LIGHT0);
+#endif
 		
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 	}
@@ -271,8 +289,16 @@ SDL_Surface* set_video_mode(int w, int h, int bitsperpixel, int flags)
 			texture::get_coord_x(1.0), texture::get_coord_y(0.0),
 			texture::get_coord_x(1.0), texture::get_coord_y(1.0)
 		};
+#if defined(USE_GLES2)
+		gles2::manager gles2_manager(true);
+		glEnableVertexAttribArray(gles2_manager.vtx_coord);
+		glEnableVertexAttribArray(gles2_manager.tex_coord);
+		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, varray);
+		glVertexAttribPointer(gles2_manager.tex_coord, 2, GL_FLOAT, 0, 0, tcarray);
+#else
 		glVertexPointer(2, GL_FLOAT, 0, varray);
 		glTexCoordPointer(2, GL_FLOAT, 0, tcarray);
+#endif
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		
 		glPopMatrix();
@@ -346,8 +372,16 @@ SDL_Surface* set_video_mode(int w, int h, int bitsperpixel, int flags)
 				texture::get_coord_x(x2), texture::get_coord_y(y1),
 				texture::get_coord_x(x2), texture::get_coord_y(y2)
 			};
+#if defined(USE_GLES2)
+			gles2::manager gles2_manager(true);
+			glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, varray);
+			glVertexAttribPointer(gles2_manager.tex_coord, 2, GL_FLOAT, 0, 0, tcarray);
+			glEnableVertexAttribArray(gles2_manager.vtx_coord);
+			glEnableVertexAttribArray(gles2_manager.tex_coord);
+#else
 			glVertexPointer(2, GL_FLOAT, 0, varray);
 			glTexCoordPointer(2, GL_FLOAT, 0, tcarray);
+#endif
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 			glPopMatrix();
 		}
@@ -423,8 +457,16 @@ SDL_Surface* set_video_mode(int w, int h, int bitsperpixel, int flags)
 						distort.distort_point(&points[n*2], &points[n*2 + 1]);
 					}
 					
+#if defined(USE_GLES2)
+					gles2::manager gles2_manager(true);
+					glEnableVertexAttribArray(gles2_manager.vtx_coord);
+					glEnableVertexAttribArray(gles2_manager.tex_coord);
+					glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, points);
+					glVertexAttribPointer(gles2_manager.tex_coord, 2, GL_FLOAT, 0, 0, uv);
+#else
 					glVertexPointer(2, GL_FLOAT, 0, points);
 					glTexCoordPointer(2, GL_FLOAT, 0, uv);
+#endif
 					glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 				}
 			}
@@ -600,8 +642,16 @@ void flush_blit_texture()
 	}
 
 	blit_current_texture->set_as_current_texture();
+#if defined(USE_GLES2)
+	gles2::manager gles2_manager(true);
+	glEnableVertexAttribArray(gles2_manager.vtx_coord);
+	glEnableVertexAttribArray(gles2_manager.tex_coord);
+	glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_SHORT, 0, 0, &blit_vqueue.front());
+	glVertexAttribPointer(gles2_manager.tex_coord, 2, GL_FLOAT, 0, 0,  &blit_tcqueue.front());
+#else
 	glVertexPointer(2, GL_SHORT, 0, &blit_vqueue.front());
 	glTexCoordPointer(2, GL_FLOAT, 0, &blit_tcqueue.front());
+#endif
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, blit_tcqueue.size()/2);
 
 	blit_current_texture = NULL;
@@ -624,8 +674,16 @@ void blit_queue::do_blit() const
 
 	texture::set_current_texture(texture_);
 
+#if defined(USE_GLES2)
+	gles2::manager gles2_manager(true);
+	glEnableVertexAttribArray(gles2_manager.vtx_coord);
+	glEnableVertexAttribArray(gles2_manager.tex_coord);
+	glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_SHORT, 0, 0, &vertex_.front());
+	glVertexAttribPointer(gles2_manager.tex_coord, 2, GL_FLOAT, 0, 0,  &uv_.front());
+#else
 	glVertexPointer(2, GL_SHORT, 0, &vertex_.front());
 	glTexCoordPointer(2, GL_FLOAT, 0, &uv_.front());
+#endif
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, uv_.size()/2);
 }
 
@@ -637,8 +695,16 @@ void blit_queue::do_blit_range(short begin, short end) const
 
 	texture::set_current_texture(texture_);
 
+#if defined(USE_GLES2)
+	gles2::manager gles2_manager(true);
+	glEnableVertexAttribArray(gles2_manager.vtx_coord);
+	glEnableVertexAttribArray(gles2_manager.tex_coord);
+	glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_SHORT, 0, 0, &vertex_[begin]);
+	glVertexAttribPointer(gles2_manager.tex_coord, 2, GL_FLOAT, 0, 0,  &uv_[begin]);
+#else
 	glVertexPointer(2, GL_SHORT, 0, &vertex_[begin]);
 	glTexCoordPointer(2, GL_FLOAT, 0, &uv_[begin]);
+#endif
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, (end - begin)/2);
 }
 
@@ -698,66 +764,91 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 	void draw_rect(const SDL_Rect& r, const SDL_Color& color,
 				   unsigned char alpha)
 	{
-		glDisable(GL_TEXTURE_2D);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glColor4ub(color.r,color.g,color.b,alpha);
 		GLfloat varray[] = {
 			r.x, r.y,
 			r.x+r.w, r.y,
 			r.x, r.y+r.h,
 			r.x+r.w, r.y+r.h
 		};
+#if defined(USE_GLES2)
+		glColor4ub(color.r,color.g,color.b,alpha);
+		gles2::manager gles2_manager;
+		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, varray);
+		glEnableVertexAttribArray(gles2_manager.vtx_coord);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		glColor4f(1.0, 1.0, 1.0, 1.0);
+#else
+		glDisable(GL_TEXTURE_2D);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glColor4ub(color.r,color.g,color.b,alpha);
 		glVertexPointer(2, GL_FLOAT, 0, varray);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		//glRecti(r.x,r.y,r.x+r.w,r.y+r.h);
 		glColor4ub(255, 255, 255, 255);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
+#endif
 	}
 	
 	void draw_rect(const rect& r, const graphics::color& color)
 	{
-		glDisable(GL_TEXTURE_2D);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glColor4ub(color.r(),color.g(),color.b(),color.a());
 		GLfloat varray[] = {
 			r.x(), r.y(),
 			r.x()+r.w(), r.y(),
 			r.x(), r.y()+r.h(),
 			r.x()+r.w(), r.y()+r.h()
 		};
+#if defined(USE_GLES2)
+		glColor4ub(color.r(),color.g(),color.b(),color.a());
+		gles2::manager gles2_manager;
+		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, varray);
+		glEnableVertexAttribArray(gles2_manager.vtx_coord);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		glColor4f(1.0, 1.0, 1.0, 1.0);
+#else
+		glDisable(GL_TEXTURE_2D);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glColor4ub(color.r(),color.g(),color.b(),color.a());
 		glVertexPointer(2, GL_FLOAT, 0, varray);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		//glRecti(r.x(),r.y(),r.x()+r.w(),r.y()+r.h());
 		glColor4ub(255, 255, 255, 255);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
+#endif
 	}
 	
 	
 	void draw_hollow_rect(const SDL_Rect& r, const SDL_Color& color,
-						  unsigned char alpha) {
-		
-		glDisable(GL_TEXTURE_2D);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glColor4ub(color.r, color.g, color.b, alpha);
+						  unsigned char alpha)
+	{
 		GLfloat varray[] = {
 			r.x, r.y,
 			r.x + r.w, r.y,
 			r.x + r.w, r.y + r.h,
 			r.x, r.y + r.h
 		};
+#if defined(USE_GLES2)
+		glColor4ub(color.r, color.g, color.b, alpha);
+		gles2::manager gles2_manager;
+		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, varray);
+		glEnableVertexAttribArray(gles2_manager.vtx_coord);
+		glDrawArrays(GL_LINE_LOOP, 0, sizeof(varray)/sizeof(GLfloat)/2);
+		glColor4f(1.0, 1.0, 1.0, 1.0);
+#else
+		glDisable(GL_TEXTURE_2D);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glColor4ub(color.r, color.g, color.b, alpha);
 		glVertexPointer(2, GL_FLOAT, 0, varray);
 		glDrawArrays(GL_LINE_LOOP, 0, sizeof(varray)/sizeof(GLfloat)/2);
 		glColor4ub(255, 255, 255, 255);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
+#endif
 	}
 
 	void draw_circle(int x, int y, int radius)
 	{
-		glDisable(GL_TEXTURE_2D);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		static std::vector<GLfloat> varray;
 		varray.clear();
 		varray.push_back(x);
@@ -773,19 +864,34 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 		varray.push_back(varray[2]);
 		varray.push_back(varray[3]);
 
+#if defined(USE_GLES2)
+		gles2::manager gles2_manager;
+		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, &varray.front());
+		glEnableVertexAttribArray(gles2_manager.vtx_coord);
+		glDrawArrays(GL_TRIANGLE_FAN, 0, varray.size()/2);
+#else
+		glDisable(GL_TEXTURE_2D);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glVertexPointer(2, GL_FLOAT, 0, &varray.front());
 		glDrawArrays(GL_TRIANGLE_FAN, 0, varray.size()/2);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
+#endif
 	}
 
 	void coords_to_screen(GLfloat sx, GLfloat sy, GLfloat sz,
-						  GLfloat* dx, GLfloat* dy, GLfloat* dz) {
+						  GLfloat* dx, GLfloat* dy, GLfloat* dz) 
+	{
 		GLfloat model[16], proj[16];
 		GLint view[4];
 		
+#if defined(USE_GLES2) && defined(GL_ES_VERSION_2_0)
+		glGetFloatv_1(GL_MODELVIEW_MATRIX, model);
+		glGetFloatv_1(GL_PROJECTION_MATRIX, proj);
+#else
 		glGetFloatv(GL_MODELVIEW_MATRIX, model);
 		glGetFloatv(GL_PROJECTION_MATRIX, proj);
+#endif
 		glGetIntegerv(GL_VIEWPORT, view);
 		
 		gluProjectf(sx, sy, sz, model, proj, view, dx, dy, dz);

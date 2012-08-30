@@ -1,5 +1,17 @@
 #ifdef _WIN32
 #include <winsock2.h>
+#elif defined(__native_client__)
+#include <stdint.h>
+uint32_t ntohl(uint32_t hl)
+{
+   return (((hl&0x000000FF)<<24)+((hl&0x0000FF00)<<8)+
+   ((hl&0x00FF0000)>>8)+((hl&0xFF000000)>>24));
+}
+uint32_t htonl(uint32_t nl)
+{
+   return (((nl&0x000000FF)<<24)+((nl&0x0000FF00)<<8)+
+   ((nl&0x00FF0000)>>8)+((nl&0xFF000000)>>24));
+}
 #else
 #include <netinet/in.h>
 #endif
@@ -304,9 +316,11 @@ void get_control_status(int cycle, int player, bool* output)
 			const int end_time = SDL_GetTicks() + max_delay;
 
 			const pause_scope pause;
+#if !defined(__native_client__)
 			while(cycle > highest_confirmed[player] && SDL_GetTicks() < end_time) {
 				multiplayer::receive();
 			}
+#endif
 		}
 
 		if(cycle > highest_confirmed[player]) {

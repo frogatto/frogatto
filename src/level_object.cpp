@@ -206,7 +206,9 @@ void create_compiled_tiles_image()
 		char buf[64];
 		sprintf(buf, "images/tiles-compiled-%d.png", n);
 
+#if !defined(__native_client__)
 		IMG_SavePNG(buf, sheets[n], 5);
+#endif
 	}
 }
 

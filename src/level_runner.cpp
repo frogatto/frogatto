@@ -201,7 +201,12 @@ void iris_scene(const level& lvl, screen_position& screen_pos, float amount) {
 		}
 
 		glColor4ub(0, 0, 0, 255);
-
+#if defined(USE_GLES2)
+		gles2::manager gles2_manager;
+		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, &varray.front());
+		glEnableVertexAttribArray(gles2_manager.vtx_coord);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
+#else
 		glDisable(GL_TEXTURE_2D);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
@@ -210,6 +215,7 @@ void iris_scene(const level& lvl, screen_position& screen_pos, float amount) {
 
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
+#endif
 
 		glColor4ub(255, 255, 255, 255);
 	}

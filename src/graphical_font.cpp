@@ -183,7 +183,7 @@ rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_te
 		const rect& r = it->second;
 
 		if(draw_text) {
-			const GLfloat TextureEpsilon = 0.1;
+			const GLfloat TextureEpsilon = 0.1f;
 			const GLfloat u1 = graphics::texture::get_coord_x(GLfloat(r.x() + TextureEpsilon)/GLfloat(texture_.width()));
 			const GLfloat v1 = graphics::texture::get_coord_y(GLfloat(r.y() + TextureEpsilon)/GLfloat(texture_.height()));
 			const GLfloat u2 = graphics::texture::get_coord_x(GLfloat(r.x2() - TextureEpsilon)/GLfloat(texture_.width()));
@@ -192,12 +192,12 @@ rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_te
 			const int x = xpos&preferences::xypos_draw_mask;
 			const int y = ypos&preferences::xypos_draw_mask;
 
-			font_varray.push_back(x);
-			font_varray.push_back(y);
-			font_varray.push_back(x);
-			font_varray.push_back(y);
-			font_varray.push_back(x);
-			font_varray.push_back(y + (r.h())*size);
+			font_varray.push_back(GLfloat(x));
+			font_varray.push_back(GLfloat(y));
+			font_varray.push_back(GLfloat(x));
+			font_varray.push_back(GLfloat(y));
+			font_varray.push_back(GLfloat(x));
+			font_varray.push_back(GLfloat(y + (r.h())*size));
 			font_tcarray.push_back(u1);
 			font_tcarray.push_back(v1);
 			font_tcarray.push_back(u1);
@@ -205,12 +205,12 @@ rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_te
 			font_tcarray.push_back(u1);
 			font_tcarray.push_back(v2);
 
-			font_varray.push_back(x + (r.w())*size);
-			font_varray.push_back(y);
-			font_varray.push_back(x + (r.w())*size);
-			font_varray.push_back(y + (r.h())*size);
-			font_varray.push_back(x + (r.w())*size);
-			font_varray.push_back(y + (r.h())*size);
+			font_varray.push_back(GLfloat(x + (r.w())*size));
+			font_varray.push_back(GLfloat(y));
+			font_varray.push_back(GLfloat(x + (r.w())*size));
+			font_varray.push_back(GLfloat(y + (r.h())*size));
+			font_varray.push_back(GLfloat(x + (r.w())*size));
+			font_varray.push_back(GLfloat(y + (r.h())*size));
 			font_tcarray.push_back(u2);
 			font_tcarray.push_back(v1);
 			font_tcarray.push_back(u2);
@@ -235,8 +235,17 @@ rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_te
 
 	if(draw_text && !font_varray.empty()) {
 		texture_.set_as_current_texture();
+#if defined(USE_GLES2)
+		gles2::manager gles2_manager(true);
+		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, &font_varray.front());
+		glEnableVertexAttribArray(gles2_manager.vtx_coord);
+		glVertexAttribPointer(gles2_manager.tex_coord, 2, GL_FLOAT, 0, 0, &font_tcarray.front());
+		glEnableVertexAttribArray(gles2_manager.tex_coord);
+		
+#else
 		glVertexPointer(2, GL_FLOAT, 0, &font_varray.front());
 		glTexCoordPointer(2, GL_FLOAT, 0, &font_tcarray.front());
+#endif
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, font_varray.size()/2);
 	}
 

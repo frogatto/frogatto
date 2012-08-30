@@ -162,12 +162,15 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	unsigned char water_color[] = {a.color_[0], a.color_[1], a.color_[2], a.color_[3]};
 	
 	glBlendFunc(GL_ONE, GL_ONE);
-	#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
-	if (glBlendEquationOES)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
+	if (glBlendEquationOES) {
 		glBlendEquationOES(GL_FUNC_REVERSE_SUBTRACT_OES);
-	#elif defined(GL_OES_blend_subtract)
+	}
+#elif defined(GL_OES_blend_subtract)
 	glBlendEquationOES(GL_FUNC_REVERSE_SUBTRACT_OES);
-	#else
+#elif defined(USE_GLES2)
+	glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
+#else
 	if(GLEW_EXT_blend_equation_separate && (GLEW_ARB_imaging || GLEW_VERSION_1_4)) {
 		glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
 	} else {
@@ -176,9 +179,12 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 		water_color[1] = (max_color - water_color[1])/8;
 		water_color[2] = (max_color - water_color[2])/8;
 	}
-	#endif
+#endif
+
+#if !defined(USE_GLES2)
 	glDisable(GL_TEXTURE_2D);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+#endif
 	
 	GLfloat vertices[] = {
 		waterline_rect.x, waterline_rect.y, //shallow water colored
@@ -195,24 +201,36 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 #else
 	glColor4ub(water_color[0], water_color[1], water_color[2], water_color[3]);
 #endif	
+#if defined(USE_GLES2)
+	gles2::manager gles2_manager;
+	glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, vertices);
+	glEnableVertexAttribArray(gles2_manager.vtx_coord);
+#else
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
+#endif
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, sizeof(vertices)/sizeof(GLfloat)/2);
-	#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
-	if (glBlendEquationOES)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
+	if (glBlendEquationOES) {
 		glBlendEquationOES(GL_FUNC_ADD_OES);
-	#elif defined(GL_OES_blend_subtract)
+	}
+#elif defined(GL_OES_blend_subtract)
 	glBlendEquationOES(GL_FUNC_ADD_OES);
-	#else
-	if (GLEW_EXT_blend_equation_separate && (GLEW_ARB_imaging || GLEW_VERSION_1_4))
+#elif defined(USE_GLES2)
+	glBlendEquation(GL_FUNC_ADD);
+#else
+	if (GLEW_EXT_blend_equation_separate && (GLEW_ARB_imaging || GLEW_VERSION_1_4)) {
 		glBlendEquation(GL_FUNC_ADD);
-	#endif
+	}
+#endif
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glLineWidth(2.0);
 
 	typedef std::pair<int, int> Segment;
 
+#if !defined(USE_GLES2)
 	glEnableClientState(GL_COLOR_ARRAY);
+#endif
 
 	const int EndSegmentSize = 20;
 
@@ -230,8 +248,15 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 			255, 255, 255, 255,
 			255, 255, 255, 0,
 		};
+#if defined(USE_GLES2)
+		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, GL_FALSE, 0, varray);
+		glEnableVertexAttribArray(gles2_manager.vtx_coord);
+		glVertexAttribPointer(gles2_manager.color, 4, GL_UNSIGNED_BYTE, GL_TRUE, 0, vcolors);
+		glEnableVertexAttribArray(gles2_manager.color);
+#else
 		glVertexPointer(2, GL_FLOAT, 0, varray);
 		glColorPointer(4, GL_UNSIGNED_BYTE, 0, vcolors);
+#endif
 		glDrawArrays(GL_LINE_STRIP, 0, 4);
 	
 		//draw a second line, in a different color, just below the first
@@ -248,16 +273,24 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 			0, 230, 200, 128,
 			0, 230, 200, 0,
 		};
+#if defined(USE_GLES2)
+		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, varray2);
+		glEnableVertexAttribArray(gles2_manager.vtx_coord);
+		glVertexAttribPointer(gles2_manager.color, 4, GL_UNSIGNED_BYTE, GL_TRUE, 0, vcolors2);
+		glEnableVertexAttribArray(gles2_manager.color);
+#else
 		glVertexPointer(2, GL_FLOAT, 0, varray2);
 		glColorPointer(4, GL_UNSIGNED_BYTE, 0, vcolors2);
+#endif
 		glDrawArrays(GL_LINE_STRIP, 0, 4);
 	}
 
+#if !defined(USE_GLES2)
 	glDisableClientState(GL_COLOR_ARRAY);
-
-	glColor4f(1.0, 1.0, 1.0, 1.0);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);
+#endif
+	glColor4f(1.0, 1.0, 1.0, 1.0);
 
 	return true;
 }

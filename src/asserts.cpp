@@ -21,6 +21,10 @@ void report_assert_msg(const std::string& m)
 		stats::flush_and_quit();
 	}
 
+#if defined(__native_client__)
+	std::cerr << m;
+#endif
+
 #if defined(__ANDROID__)
 	__android_log_print(ANDROID_LOG_INFO, "Frogatto", m.c_str());
 

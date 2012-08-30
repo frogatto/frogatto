@@ -89,9 +89,15 @@ void circle_light::draw(const rect& screen_area, const unsigned char* color) con
 
 	glColor4ub(color[0], color[1], color[2], 255);
 
+#if defined(USE_GLES2)
+	gles2::manager gles2_manager;
+	glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, &varray.front());
+	glEnableVertexAttribArray(gles2_manager.vtx_coord);
+#else
 	glDisable(GL_TEXTURE_2D);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+#endif
 	glDrawArrays(GL_TRIANGLE_FAN, 0, varray.size()/2);
 
 	varray.clear();
@@ -125,7 +131,14 @@ void circle_light::draw(const rect& screen_area, const unsigned char* color) con
 		carray.push_back(color[2]);
 		carray.push_back(0);
 	}
-
+#if defined(USE_GLES2)
+	// May need to use a frgament shader implementing phong shading here.
+	glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, &varray.front());
+	glEnableVertexAttribArray(gles2_manager.vtx_coord);
+	glVertexAttribPointer(gles2_manager.color, 4, GL_UNSIGNED_BYTE, GL_TRUE, 0, &carray.front());
+	glEnableVertexAttribArray(gles2_manager.color);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
+#else
 	glEnableClientState(GL_COLOR_ARRAY);
 	glShadeModel(GL_SMOOTH);
 
@@ -137,6 +150,7 @@ void circle_light::draw(const rect& screen_area, const unsigned char* color) con
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);
 	glShadeModel(GL_FLAT);
+#endif
 
 	glColor4ub(255, 255, 255, 255);
 }
