@@ -170,6 +170,9 @@ bool button(int n) {
 
     int cnt = 0;
 	foreach(SDL_Joystick* j, joysticks) {
+		if(n >= SDL_JoystickNumButtons(j)) {
+			continue;
+		}
 		if(SDL_JoystickGetButton(j, n)) {
 			return true;
 		}
