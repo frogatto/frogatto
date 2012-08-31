@@ -136,6 +136,15 @@ void property_editor_dialog::init()
 
 	game_logic::formula_callable* vars = get_static_entity()->vars();
 	if(get_entity()->editor_info() && types_selected.size() == 1) {
+		if(get_entity()->group() >= 0) {
+			grid_ptr group_grid(new grid(1));
+
+			group_grid->add_col(widget_ptr(new button("Remove from Group", boost::bind(&property_editor_dialog::remove_object_from_group, this, get_entity()))));
+			group_grid->add_col(widget_ptr(new button("Breakup Group", boost::bind(&property_editor_dialog::remove_group, this, get_entity()->group()))));
+
+			add_widget(group_grid);
+		}
+
 		//output an editing area for each editable event.
 		foreach(const std::string& handler, get_entity()->editor_info()->editable_events()) {
 			label_ptr lb = label::create(handler + " event handler", graphics::color_white());
@@ -321,6 +330,30 @@ void property_editor_dialog::set_entity(entity_ptr e)
 void property_editor_dialog::set_entity_group(const std::vector<entity_ptr>& e)
 {
 	entity_ = e;
+	init();
+}
+
+void property_editor_dialog::remove_object_from_group(entity_ptr entity_obj)
+{
+	foreach(level_ptr lvl, editor_.get_level_list()) {
+		entity_ptr e = lvl->get_entity_by_label(entity_obj->label());
+		if(!e) {
+			continue;
+		}
+		lvl->set_character_group(e, -1);
+	}
+	init();
+}
+
+void property_editor_dialog::remove_group(int ngroup)
+{
+	foreach(level_ptr lvl, editor_.get_level_list()) {
+		foreach(entity_ptr e, lvl->get_chars()) {
+			if(e->group() == ngroup) {
+				lvl->set_character_group(e, -1);
+			}
+		}
+	}
 	init();
 }
 

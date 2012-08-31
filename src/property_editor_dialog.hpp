@@ -25,6 +25,8 @@ public:
 	const std::vector<entity_ptr>& get_entity_list() const { return entity_; }
 	void set_entity(entity_ptr e);
 	void set_entity_group(const std::vector<entity_ptr>& entities);
+	void remove_object_from_group(entity_ptr e);
+	void remove_group(int ngroup);
 private:
 	void set_label(gui::text_editor_widget* e);
 	entity_ptr get_static_entity() const;
