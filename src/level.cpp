@@ -1937,7 +1937,12 @@ void level::draw(int x, int y, int w, int h) const
 		glColor4f(1.0, 1.0, 1.0, alpha);
 
 		if(editor_highlight_ && std::count(chars_.begin(), chars_.end(), editor_highlight_)) {
+			if(editor_highlight_->spawned_by().empty() == false) {
+				glColor4f(1.0, 1.0, 0.0, alpha);
+			}
+
 			draw_entity(*editor_highlight_, x, y, true);
+			glColor4f(1.0, 1.0, 1.0, alpha);
 		}
 
 		foreach(const entity_ptr& e, editor_selection_) {
@@ -2878,12 +2883,21 @@ std::vector<entity_ptr> level::get_characters_at_point(int x, int y, int screen_
 	return result;
 }
 
+namespace {
+bool compare_entities_by_spawned(entity_ptr a, entity_ptr b)
+{
+	return a->spawned_by().size() < b->spawned_by().size();
+}
+}
+
 entity_ptr level::get_next_character_at_point(int x, int y, int screen_xpos, int screen_ypos) const
 {
 	std::vector<entity_ptr> v = get_characters_at_point(x, y, screen_xpos, screen_ypos);
 	if(v.empty()) {
 		return entity_ptr();
 	}
+
+	std::sort(v.begin(), v.end(), compare_entities_by_spawned);
 
 	if(editor_selection_.empty()) {
 		return v.front();

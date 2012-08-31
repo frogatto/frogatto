@@ -22,7 +22,7 @@
 #ifdef USE_GLES2
 
 #if defined(WIN32) || defined(__linux__)
-#include "glew.h"
+#include <GL/glew.h>
 #else
 #include <EGL/egl.h>
 #include <GLES2/gl2.h>

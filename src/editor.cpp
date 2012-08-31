@@ -1234,7 +1234,7 @@ void editor::process()
 			remove_ghost_objects();
 			ghost_objects_.clear();
 		}
-	}else if(object_mode && lvl_->editor_highlight()) {
+	} else if(object_mode && lvl_->editor_highlight()) {
 		foreach(level_ptr lvl, levels_) {
 			lvl->set_editor_dragging_objects();
 		}
@@ -1648,6 +1648,10 @@ void editor::handle_scrolling()
 
 void editor::handle_object_dragging(int mousex, int mousey)
 {
+	if(std::count(lvl_->editor_selection().begin(), lvl_->editor_selection().end(), lvl_->editor_highlight()) == 0) {
+		return;
+	}
+
 	const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
 	const int dx = xpos_ + mousex*zoom_ - anchorx_;
 	const int dy = ypos_ + mousey*zoom_ - anchory_;
@@ -1945,6 +1949,7 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 	}
 
 	if(lvl_->editor_highlight()) {
+		entity_ptr obj_selecting = lvl_->editor_highlight();
 		if(std::count(lvl_->editor_selection().begin(),
 		              lvl_->editor_selection().end(), lvl_->editor_highlight()) == 0) {
 			//set the object as selected in the editor.
@@ -1952,7 +1957,13 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 				lvl_->editor_clear_selection();
 			}
 
-			lvl_->editor_select_object(lvl_->editor_highlight());
+			obj_selecting = lvl_->editor_highlight();
+			const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
+			while(!ctrl_pressed && obj_selecting->spawned_by().empty() == false && lvl_->get_entity_by_label(obj_selecting->spawned_by())) {
+				obj_selecting = lvl_->get_entity_by_label(obj_selecting->spawned_by());
+			}
+
+			lvl_->editor_select_object(obj_selecting);
 
 			property_dialog_->set_entity_group(lvl_->editor_selection());
 
@@ -1968,8 +1979,8 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 		}
 
 		//start dragging the object
-		selected_entity_startx_ = lvl_->editor_highlight()->x();
-		selected_entity_starty_ = lvl_->editor_highlight()->y();
+		selected_entity_startx_ = obj_selecting->x();
+		selected_entity_starty_ = obj_selecting->y();
 
 		g_started_dragging_object = false;
 
@@ -2304,8 +2315,11 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 				return;
 			}
 
+			const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
 			foreach(const entity_ptr& c, chars) {
-				lvl_->editor_select_object(c);
+				if(c->spawned_by().empty() || ctrl_pressed) {
+					lvl_->editor_select_object(c);
+				}
 			}
 
 			property_dialog_->set_entity_group(lvl_->editor_selection());

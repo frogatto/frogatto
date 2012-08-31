@@ -2,6 +2,7 @@
 #include <boost/algorithm/string/replace.hpp>
 
 #include "asserts.hpp"
+#include "json_parser.hpp"
 #include "tbs_client.hpp"
 
 namespace tbs {
@@ -21,7 +22,7 @@ void client::send_request(const std::string& request, game_logic::map_formula_ca
 void client::recv_handler(const std::string& msg)
 {
 	if(handler_) {
-		callable_->add("message", variant(msg));
+		callable_->add("message", json::parse(msg, json::JSON_NO_PREPROCESSOR));
 		handler_("message_received");
 	}
 }
@@ -29,7 +30,7 @@ void client::recv_handler(const std::string& msg)
 void client::error_handler(const std::string& err)
 {
 	if(handler_) {
-		callable_->add("error", variant(err));
+		callable_->add("error", json::parse(err, json::JSON_NO_PREPROCESSOR));
 		handler_("connection_error");
 	}
 }
