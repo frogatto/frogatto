@@ -32,7 +32,14 @@ manager::manager() {
 #endif
 		SDL_Joystick* j = SDL_JoystickOpen(n);
 		if(j) {
-			joysticks.push_back(j);
+			if (SDL_JoystickNumButtons(j) == 0) {
+				// We're probably dealing with an accellerometer here.
+				SDL_JoystickClose(j);
+
+				std::cerr << "discarding joystick " << n << " for being an accellerometer\n";
+			} else {
+				joysticks.push_back(j);
+			}
 		}
 	}
 
