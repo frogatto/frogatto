@@ -27,7 +27,7 @@ custom_object_callable::custom_object_callable()
 
 	static const std::string CustomObjectProperties[] = {
 	"consts", "type", "active",
-	"time_in_animation", "time_in_animation_delta", "level",
+	"time_in_animation", "time_in_animation_delta", "frame_in_animation", "level",
 	"animation", "available_animations",
 	"hitpoints", "max_hitpoints", "mass", "label", "x", "y", "xy", "z",
 	"relative_x", "relative_y", "spawned_by", "spawned_children",
