@@ -179,15 +179,3 @@ objects = \
 server_objects = \
 	server.o \
 	simple_wml.o
-
-# Unit test
-formula_test_objects = \
-	filesystem.o \
-	formula_function.o \
-	formula_tokenizer.o \
-	string_utils.o \
-	variant.o \
-	wml_node.o \
-	wml_parser.o \
-	wml_utils.o \
-	wml_writer.o

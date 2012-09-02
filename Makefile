@@ -71,12 +71,6 @@ server: $(server_objects)
 		$(server_objects) -o server \
 		$(LIBS) -lboost_regex-mt -lboost_system-mt -lboost_thread-mt -lboost_iostreams-mt
 
-formula_test: $(formula_test_objects)
-	$(CCACHE) $(CXX) \
-		$(BASE_CXXFLAGS) $(LDFLAGS) $(CXXFLAGS) $(CPPFLAGS) -DUNIT_TEST_FORMULA \
-		src/formula.cpp $(formula_test_objects) -o test \
-		$(LIBS) -lboost_regex
-
 clean:
 	rm -f *.o *.d game
 	
