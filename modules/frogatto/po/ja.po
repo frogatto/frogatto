@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-08-25 22:47-0300\n"
-"PO-Revision-Date: 2012-08-26 01:51+0000\n"
+"POT-Creation-Date: 2012-09-01 20:29-0300\n"
+"PO-Revision-Date: 2012-09-01 23:32+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Japanese (http://www.transifex.com/projects/p/Frogatto/language/ja/)\n"
 "MIME-Version: 1.0\n"
@@ -40,11 +40,11 @@ msgstr "アタック"
 msgid "Back"
 msgstr "戻る"
 
-#: ../../../src/custom_object_functions.cpp:236
+#: ../../../src/custom_object_functions.cpp:241
 msgid "Select save slot to use."
 msgstr ""
 
-#: ../../../src/custom_object_functions.cpp:329
+#: ../../../src/custom_object_functions.cpp:334
 msgid "Select save slot to load."
 msgstr ""
 
@@ -52,23 +52,23 @@ msgstr ""
 msgid "Achievement Unlocked!"
 msgstr "実績が解除されていない！"
 
-#: ../../../src/main.cpp:562
+#: ../../../src/main.cpp:649
 msgid "Initializing custom object functions"
 msgstr "カスタムオブジェクト機能の初期化"
 
-#: ../../../src/main.cpp:564
+#: ../../../src/main.cpp:651
 msgid "Initializing textures"
 msgstr ""
 
-#: ../../../src/main.cpp:566
+#: ../../../src/main.cpp:653
 msgid "Initializing tiles"
 msgstr "タイトルの初期化"
 
-#: ../../../src/main.cpp:568 ../../../src/main.cpp:572
+#: ../../../src/main.cpp:655 ../../../src/main.cpp:659
 msgid "Initializing GUI"
 msgstr "GUIの初期化"
 
-#: ../../../src/main.cpp:579
+#: ../../../src/main.cpp:666
 msgid "Loading level"
 msgstr "レベル読み込み中"
 
@@ -1780,8 +1780,8 @@ msgid ""
 msgstr "はぁ、解かったわよ…\nずっとここで待っているわ"
 
 #: ../data/level/crevice-village-house-1.cfg:991
-msgid "Thank God it's you!"
-msgstr "見張りをやっつけてくれてありがとよ！"
+msgid "Thank god it's you!"
+msgstr ""
 
 #: ../data/level/crevice-village-house-1.cfg:993
 msgid "Hey, Hedge, you alright?"
@@ -4282,7 +4282,10 @@ msgstr ""
 msgid "Kitty Dormitory"
 msgstr ""
 
-#: ../data/level/kitty-factory.cfg:4290
+#: ../data/level/kitty-factory-maze.cfg:1955
+#: ../data/level/kitty-factory-old.cfg:4354
+#: ../data/level/kitty-factory-upper.cfg:2081
+#: ../data/level/kitty-factory.cfg:2759
 msgid "The Kitty Factory"
 msgstr ""
 
@@ -4785,7 +4788,7 @@ msgstr ""
 msgid "Fight!"
 msgstr ""
 
-#: ../data/level/milgrams-throne-room.cfg:974
+#: ../data/level/milgrams-throne-room.cfg:991
 #: ../data/objects/playable/map-selector.cfg:21
 msgid "Milgram's Throne Room"
 msgstr "ミルグラムの王室"
@@ -5371,126 +5374,128 @@ msgid "For starters, uh ... he's NOT our mayor."
 msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:181
-msgid "I can see why not!"
+msgid ""
+"Now, as for who IS our mayor...\n"
+"well..."
 msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:183
 msgid ""
-"Yep.  In fact, if you'll believe it,\n"
-"we actually don't have a mayor at all."
+"Let's just say the political situation in\n"
+"Crevice Village is a little confusing."
 msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:186
 msgid ""
-"We've got nothing.\n"
-"We've got a bunch of stubborn idiots\n"
-"who happen to live in the same area."
+"I wouldn't call it anarchy, but we're a\n"
+"little weak when it comes to \"social institutions\"."
 msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:188
 msgid ""
-"We can't agree on anything,\n"
-"we can't work together to get anything done."
+"Which as you can guess, has good sides,\n"
+"but also has bad sides."
 msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:191
 msgid ""
-"We don't have any government,\n"
-"we don't have any laws."
+"I'll presume this contributes\n"
+"to the poor infrastructure?"
 msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:193
-msgid ""
-"Careful, now - that sounds like\n"
-"an invitation to provide them."
+msgid "Yup!"
 msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:195
 msgid ""
-"Eh...heh... yes,\n"
-"that probably wouldn't be well-received!"
+"It's very, very hard to get people\n"
+"to work on anything big or long-term."
 msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:197
 msgid ""
-"Anyways, our only saving grace is we really\n"
-"don't have anyone aggressive enough\n"
-"to try and settle disputes with force."
+"We can raise a house,\n"
+"but we couldn't build a highway."
 msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:199
 msgid ""
-"And I guess that might be one of the\n"
-"few things we'd all agree on;\n"
-"that we wouldn't tolerate that."
+"Nevertheless this sounds\n"
+"*idyllically* free of bureaucracy."
 msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:201
 msgid ""
-"I mean, I'm definitely exaggerating a little;\n"
-"we couldn't raise a house without some\n"
-"cooperation, but it really is a mess."
+"Hah, right ... unless you count\n"
+"\"dumb arguments with stubborn people\"."
 msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:203
+msgid ""
+"Anyways, we do manage to get by,\n"
+" but it really is a mess."
+msgstr ""
+
+#: ../data/level/tea-with-milgram.cfg:205
 msgid ""
 "So I don't know what the elder talked you into,\n"
 "but it's almost guaranteed to be lunacy."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:205
+#: ../data/level/tea-with-milgram.cfg:207
 msgid ""
 "Yes.\n"
 "No wonder we were confused!"
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:209
+#: ../data/level/tea-with-milgram.cfg:211
 msgid "Ah, there we are..."
 msgstr "ああ、これが真実だ…"
 
-#: ../data/level/tea-with-milgram.cfg:215
+#: ../data/level/tea-with-milgram.cfg:217
 msgid ""
 "Fetch some for our guest,\n"
 "would you, kindly?"
 msgstr "フロガットは我々の客だ、丁重にもてなせ"
 
-#: ../data/level/tea-with-milgram.cfg:218
+#: ../data/level/tea-with-milgram.cfg:220
 msgid "So where was I?"
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:220
+#: ../data/level/tea-with-milgram.cfg:222
 msgid "What did the elder actually tell you?"
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:225
+#: ../data/level/tea-with-milgram.cfg:227
 msgid ""
 "Uhm...  so, I'm not even sure what that\n"
 "project was supposed to be, at this point."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:227
+#: ../data/level/tea-with-milgram.cfg:229
 msgid ""
 "Might've been something about a bridge,\n"
 "Fergus was heading that one up."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:229
+#: ../data/level/tea-with-milgram.cfg:231
 msgid ""
 "He's one of my kitties.\n"
 "Heads up one of our engineering divisions."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:232
+#: ../data/level/tea-with-milgram.cfg:234
 msgid ""
 "I honestly have no involvement in\n"
 "stuff like this; I delegate all of it out."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:235
+#: ../data/level/tea-with-milgram.cfg:237
 msgid "Which sometimes doesn't work out as expected?"
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:237
+#: ../data/level/tea-with-milgram.cfg:239
 msgid ""
 "Yeah.  I don't know a lot about Crevice Village,\n"
 "but if you'll forgive me, I had the impression\n"
@@ -5498,13 +5503,13 @@ msgid ""
 "we'd do something to help out."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:239
+#: ../data/level/tea-with-milgram.cfg:241
 msgid ""
 "We thought we'd actually hire you guys\n"
 "as labor, to do whatever you could."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:241
+#: ../data/level/tea-with-milgram.cfg:243
 msgid ""
 "It's always better that way;\n"
 "gets money flowing around, makes the\n"
@@ -5512,254 +5517,254 @@ msgid ""
 "feels less like charity, et cetera."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:243
+#: ../data/level/tea-with-milgram.cfg:245
 msgid "But, apparently we just got conned."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:245
+#: ../data/level/tea-with-milgram.cfg:247
 msgid ""
 "And once they figured that out,\n"
 "some of our security guys were\n"
 "a little overzealous about recovering assets."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:248
+#: ../data/level/tea-with-milgram.cfg:250
 msgid ""
 "Uh...\n"
 "That's a pretty spectacular euphemism, there..."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:250
+#: ../data/level/tea-with-milgram.cfg:252
 msgid ""
 "Yes, okay ...\n"
 "they were just thugs, plain and simple."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:253
+#: ../data/level/tea-with-milgram.cfg:255
 msgid ""
 "I didn't authorize that operation,\n"
 "but I will take responsibility for it!"
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:255
+#: ../data/level/tea-with-milgram.cfg:257
 msgid ""
 "Those cats are turning into bullies.\n"
 "Sooner or later, they're going to\n"
 "cause me some serious problems!"
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:257
+#: ../data/level/tea-with-milgram.cfg:259
 msgid ""
 "I haven't given you a chance to apologize,\n"
 "but no need.\n"
 "Thank you for embarrassing them."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:259
+#: ../data/level/tea-with-milgram.cfg:261
 msgid "I hope they've learned a lesson from this."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:261
+#: ../data/level/tea-with-milgram.cfg:263
 msgid ""
 "Regarding THIS incident, I will need\n"
 "to have a talk with them about common sense."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:264
+#: ../data/level/tea-with-milgram.cfg:266
 msgid ""
 "Any fool could guess that the\n"
 "money had long since been spent."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:271
+#: ../data/level/tea-with-milgram.cfg:273
 msgid "Thank you Jeeves, that will do nicely."
 msgstr "ありがとうジーヴス。いいお茶だろう"
 
-#: ../data/level/tea-with-milgram.cfg:276
+#: ../data/level/tea-with-milgram.cfg:278
 msgid "Anyhow, I'm quite unsure where to go from here."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:278
+#: ../data/level/tea-with-milgram.cfg:280
 msgid ""
 "I'd like to do something\n"
 "to make amends with the town..."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:280
+#: ../data/level/tea-with-milgram.cfg:282
 msgid ""
 "... what the kitties did there\n"
 "was decidedly impolite."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:282
+#: ../data/level/tea-with-milgram.cfg:284
 msgid ""
 "Then again, I'm almost tempted to cut my\n"
 "losses and leave you guys well enough alone."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:284
+#: ../data/level/tea-with-milgram.cfg:286
 msgid "Would you have any suggestions?"
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:286
+#: ../data/level/tea-with-milgram.cfg:288
 msgid "One or two."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:289
+#: ../data/level/tea-with-milgram.cfg:291
 msgid ""
 "Probably the craziest and most helpful is...\n"
 "I actually think he still has that money."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:291
+#: ../data/level/tea-with-milgram.cfg:293
 msgid ""
 "I know it sounds completely nuts,\n"
 "but I honestly think that when he was given it..."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:294
+#: ../data/level/tea-with-milgram.cfg:296
 msgid ""
 "...he didn't have a clue what to do with it,\n"
 "so he just ... hid it."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:297
+#: ../data/level/tea-with-milgram.cfg:299
 msgid ""
 "We've all known him for years,\n"
 "and he's a hoarder, and a miser."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:300
+#: ../data/level/tea-with-milgram.cfg:302
 msgid ""
 "We've never seen him suddenly having more\n"
 "money to spend; so it's crazy, but it fits."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:302
+#: ../data/level/tea-with-milgram.cfg:304
 msgid "I ... didn't see that coming."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:304
+#: ../data/level/tea-with-milgram.cfg:306
 msgid ""
 "When he was getting shaken down by that kitty,\n"
 "we turned our back on him for a second."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:306
+#: ../data/level/tea-with-milgram.cfg:308
 msgid ""
 "It turned out he'd hidden\n"
 "in some sort of secret passage."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:308
+#: ../data/level/tea-with-milgram.cfg:310
 msgid ""
 "He may have used some of the money to build it,\n"
 "but his house has some sort of safe room."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:311
+#: ../data/level/tea-with-milgram.cfg:313
 msgid ""
 "It's just a guess, but I honestly think he\n"
 "might have hidden the rest right inside it."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:314
+#: ../data/level/tea-with-milgram.cfg:316
 msgid "Incredible."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:316
+#: ../data/level/tea-with-milgram.cfg:318
 msgid ""
 "Knowing that, you could probably\n"
 "just walk in and take it."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:318
+#: ../data/level/tea-with-milgram.cfg:320
 msgid ""
 "We may.\n"
 "In fact I believe we will!"
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:320
+#: ../data/level/tea-with-milgram.cfg:322
 msgid ""
 "If I may be so bold, I think it's\n"
 "safe to say on behalf of the town..."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:322
+#: ../data/level/tea-with-milgram.cfg:324
 msgid ""
 "...the rest of us would still appreciate\n"
 "some sort of public-works project."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:325
+#: ../data/level/tea-with-milgram.cfg:327
 msgid ""
 "You probably should hear what others are\n"
 "interested in, but I for one really wish there\n"
 "was a road of any kind between here and there."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:327
+#: ../data/level/tea-with-milgram.cfg:329
 msgid "I'm dreading the trip back."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:330
+#: ../data/level/tea-with-milgram.cfg:332
 msgid ""
 "Really?\n"
 "Where's your ship parked?"
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:332
+#: ../data/level/tea-with-milgram.cfg:334
 msgid ""
 "I ... didn't ... use a vehicle.\n"
 "I walked."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:334
+#: ../data/level/tea-with-milgram.cfg:336
 msgid ""
 "...\n"
 "I'm amazed that's even possible."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:336
+#: ../data/level/tea-with-milgram.cfg:338
 msgid ""
 "I like you, little frog!\n"
 "You're quite bold."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:338
+#: ../data/level/tea-with-milgram.cfg:340
 msgid ""
 "Well, I can certainly at least\n"
 "guarantee transportation for you!"
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:340
+#: ../data/level/tea-with-milgram.cfg:342
 msgid ""
 "And I'd be happy to consider some kind of project.\n"
 "You yourself could be my paid liaison."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:343
+#: ../data/level/tea-with-milgram.cfg:345
 msgid ""
 "We should keep in touch - hopefully,\n"
 "through you, I can meet some of the\n"
 "more 'level-headed' members of your town."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:345
+#: ../data/level/tea-with-milgram.cfg:347
 msgid "So ... all's well that ends well?"
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:347
+#: ../data/level/tea-with-milgram.cfg:349
 msgid ""
 "Yes, I do think everyone will have\n"
 "an equitable outcome to this whole mess."
 msgstr ""
 
-#: ../data/level/tea-with-milgram.cfg:349
+#: ../data/level/tea-with-milgram.cfg:351
 msgid "Except the elder."
 msgstr "町長を除いて、な"
 
-#: ../data/level/tea-with-milgram.cfg:355
+#: ../data/level/tea-with-milgram.cfg:357
 msgid "The End"
 msgstr "The End"
 
