@@ -239,7 +239,7 @@ namespace preferences {
 		int virtual_screen_height_ = 600;
 		int actual_screen_width_ = 1024;
 		int actual_screen_height_ = 600;
-		bool load_compiled_ = true;
+		bool load_compiled_ = false;
 		bool use_fbo_ = true;
 		bool use_bequ_ = true;
 		bool use_16bpp_textures_ = false;
