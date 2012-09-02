@@ -70,7 +70,7 @@ surface get(const std::string& key)
 	surface surf = cache().get(key).surf;
 	if(surf.null()) {
 		CacheEntry entry;
-		entry.surf = get_no_cache(key, &entry.fname);
+		surf = entry.surf = get_no_cache(key, &entry.fname);
 		if(entry.fname.empty() == false) {
 			entry.mod_time = sys::file_mod_time(entry.fname);
 		}

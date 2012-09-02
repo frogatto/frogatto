@@ -234,6 +234,7 @@ Set up frogatto. Follow this chat log:
 
 Configuration for to release Cube Trains:
 Testing:
+ -- Make sure the compiled mode flag in prefrences.cpp is toggled appropriately. -- 
 ① Move the (slightly renamed) bar-descriptor file, and the master-config.cfg file, from the modules/cube_trains directory. (Replace the existing bar-descriptor.)
 ② Run "make assets", which will now compile Cube Trains data and images.
 ③ Checksum the .cfgs for release, so stats are reported.
@@ -246,3 +247,4 @@ Testing:
 ⑩ Repeat step two, but set the configuration to Device-Release.
 ⑪ Change the build target of your projects to Device-Release from Device-Debug from the right-click menu.
 ⑫ Recompile everything in order, and upload the project to the PlayBook.
+ -- Make sure you've put back the bar-descriptor AND the master-config files. -- 

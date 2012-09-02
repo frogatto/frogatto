@@ -150,7 +150,7 @@ void print_help(const std::string& argv0)
 "      --tests                  runs the game's unit tests and exits\n" <<
 "      --no-tests               skips the execution of unit tests on startup\n"
 "      --utility=NAME           runs the specified UTILITY( NAME ) code block,\n" <<
-"                                 such as compile_levels or object_compiler,\n" <<
+"                                 such as compile_levels or compile_objects,\n" <<
 "                                 with the specified arguments\n"
 	;
 }
