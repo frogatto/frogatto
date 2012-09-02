@@ -2133,6 +2133,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_ACTIVE:            return variant::from_bool(last_cycle_active_ >= level::current().cycle() - 2);
 	case CUSTOM_OBJECT_TIME_IN_ANIMATION: return variant(time_in_frame_);
 	case CUSTOM_OBJECT_TIME_IN_ANIMATION_DELTA: return variant(time_in_frame_delta_);
+	case CUSTOM_OBJECT_FRAME_IN_ANIMATION: return variant(current_frame().frame_number(time_in_frame_));
 	case CUSTOM_OBJECT_LEVEL:             return variant(&level::current());
 	case CUSTOM_OBJECT_ANIMATION:         return frame_->variant_id();
 	case CUSTOM_OBJECT_AVAILABLE_ANIMATIONS: return type_->available_frames();

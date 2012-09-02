@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-08-25 22:47-0300\n"
-"PO-Revision-Date: 2012-08-26 01:51+0000\n"
+"POT-Creation-Date: 2012-09-01 20:29-0300\n"
+"PO-Revision-Date: 2012-09-01 23:32+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/Frogatto/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -42,11 +42,11 @@ msgstr "攻击"
 msgid "Back"
 msgstr "返回"
 
-#: ../../../src/custom_object_functions.cpp:236
+#: ../../../src/custom_object_functions.cpp:241
 msgid "Select save slot to use."
 msgstr ""
 
-#: ../../../src/custom_object_functions.cpp:329
+#: ../../../src/custom_object_functions.cpp:334
 msgid "Select save slot to load."
 msgstr ""
 
@@ -54,23 +54,23 @@ msgstr ""
 msgid "Achievement Unlocked!"
 msgstr "成就达成！"
 
-#: ../../../src/main.cpp:562
+#: ../../../src/main.cpp:649
 msgid "Initializing custom object functions"
 msgstr "初始化自定义对象函数"
 
-#: ../../../src/main.cpp:564
+#: ../../../src/main.cpp:651
 msgid "Initializing textures"
 msgstr ""
 
-#: ../../../src/main.cpp:566
+#: ../../../src/main.cpp:653
 msgid "Initializing tiles"
 msgstr "初始化图块"
 
-#: ../../../src/main.cpp:568 ../../../src/main.cpp:572
+#: ../../../src/main.cpp:655 ../../../src/main.cpp:659
 msgid "Initializing GUI"
 msgstr "初始化界面"
 
-#: ../../../src/main.cpp:579
+#: ../../../src/main.cpp:666
 msgid "Loading level"
 msgstr "正在读取关卡"
 
@@ -1782,8 +1782,8 @@ msgid ""
 msgstr "啊，我知道了……\n那您继续吧。"
 
 #: ../data/level/crevice-village-house-1.cfg:991
-msgid "Thank God it's you!"
-msgstr "谢天谢地！是你！"
+msgid "Thank god it's you!"
+msgstr ""
 
 #: ../data/level/crevice-village-house-1.cfg:993
 msgid "Hey, Hedge, you alright?"
@@ -4284,7 +4284,10 @@ msgstr ""
 msgid "Kitty Dormitory"
 msgstr ""
 
-#: ../data/level/kitty-factory.cfg:4290
+#: ../data/level/kitty-factory-maze.cfg:1955
+#: ../data/level/kitty-factory-old.cfg:4354
+#: ../data/level/kitty-factory-upper.cfg:2081
+#: ../data/level/kitty-factory.cfg:2759
 msgid "The Kitty Factory"
 msgstr ""
 
@@ -4787,7 +4790,7 @@ msgstr "... 但是主题变为:\n\"入侵者遇到什么。\""
 msgid "Fight!"
 msgstr ""
 
-#: ../data/level/milgrams-throne-room.cfg:974
+#: ../data/level/milgrams-throne-room.cfg:991
 #: ../data/objects/playable/map-selector.cfg:21
 msgid "Milgram's Throne Room"
 msgstr "米格拉姆的王座之间"
@@ -5373,126 +5376,128 @@ msgid "For starters, uh ... he's NOT our mayor."
 msgstr "开始吧，啊...他 从来不是 我们的首领。"
 
 #: ../data/level/tea-with-milgram.cfg:181
-msgid "I can see why not!"
-msgstr "我明白为何“不”了！"
+msgid ""
+"Now, as for who IS our mayor...\n"
+"well..."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:183
 msgid ""
-"Yep.  In fact, if you'll believe it,\n"
-"we actually don't have a mayor at all."
-msgstr "是，实际上，承不承认，你不知道，我们从没\n有首领。"
+"Let's just say the political situation in\n"
+"Crevice Village is a little confusing."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:186
 msgid ""
-"We've got nothing.\n"
-"We've got a bunch of stubborn idiots\n"
-"who happen to live in the same area."
-msgstr "我们什么也没有。\n只是团聚了一周要在此居住的笨蛋。"
+"I wouldn't call it anarchy, but we're a\n"
+"little weak when it comes to \"social institutions\"."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:188
 msgid ""
-"We can't agree on anything,\n"
-"we can't work together to get anything done."
-msgstr "我们没有共同利益，连合作都没门。"
+"Which as you can guess, has good sides,\n"
+"but also has bad sides."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:191
 msgid ""
-"We don't have any government,\n"
-"we don't have any laws."
-msgstr "我们没有政府，没有法律。"
+"I'll presume this contributes\n"
+"to the poor infrastructure?"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:193
-msgid ""
-"Careful, now - that sounds like\n"
-"an invitation to provide them."
-msgstr "当心，现在 - 听起来是邀请。"
+msgid "Yup!"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:195
 msgid ""
-"Eh...heh... yes,\n"
-"that probably wouldn't be well-received!"
-msgstr "诶...呵呵...不错\n很难接受！"
+"It's very, very hard to get people\n"
+"to work on anything big or long-term."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:197
 msgid ""
-"Anyways, our only saving grace is we really\n"
-"don't have anyone aggressive enough\n"
-"to try and settle disputes with force."
-msgstr "是吧，我们都期望解决，不想诉诸武力。"
+"We can raise a house,\n"
+"but we couldn't build a highway."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:199
 msgid ""
-"And I guess that might be one of the\n"
-"few things we'd all agree on;\n"
-"that we wouldn't tolerate that."
-msgstr "我猜，这也是我们少数的共同论调之一；\n我们忍受不住这老头。"
+"Nevertheless this sounds\n"
+"*idyllically* free of bureaucracy."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:201
 msgid ""
-"I mean, I'm definitely exaggerating a little;\n"
-"we couldn't raise a house without some\n"
-"cooperation, but it really is a mess."
-msgstr "我说，我确实激进了些；不过我们不能单独撑起一栋房子，\n情况也太糟糕了。"
+"Hah, right ... unless you count\n"
+"\"dumb arguments with stubborn people\"."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:203
+msgid ""
+"Anyways, we do manage to get by,\n"
+" but it really is a mess."
+msgstr ""
+
+#: ../data/level/tea-with-milgram.cfg:205
 msgid ""
 "So I don't know what the elder talked you into,\n"
 "but it's almost guaranteed to be lunacy."
 msgstr "我不知道那个家伙对你说了什么，不过肯定\n是废话。"
 
-#: ../data/level/tea-with-milgram.cfg:205
+#: ../data/level/tea-with-milgram.cfg:207
 msgid ""
 "Yes.\n"
 "No wonder we were confused!"
 msgstr "是啊。\n难怪我们这么混乱！"
 
-#: ../data/level/tea-with-milgram.cfg:209
+#: ../data/level/tea-with-milgram.cfg:211
 msgid "Ah, there we are..."
 msgstr "啊，我们到了……"
 
-#: ../data/level/tea-with-milgram.cfg:215
+#: ../data/level/tea-with-milgram.cfg:217
 msgid ""
 "Fetch some for our guest,\n"
 "would you, kindly?"
 msgstr "能不能麻烦你，\n为我们的客人取一些来？"
 
-#: ../data/level/tea-with-milgram.cfg:218
+#: ../data/level/tea-with-milgram.cfg:220
 msgid "So where was I?"
 msgstr "我在哪儿？"
 
-#: ../data/level/tea-with-milgram.cfg:220
+#: ../data/level/tea-with-milgram.cfg:222
 msgid "What did the elder actually tell you?"
 msgstr "老头告诉你什么？"
 
-#: ../data/level/tea-with-milgram.cfg:225
+#: ../data/level/tea-with-milgram.cfg:227
 msgid ""
 "Uhm...  so, I'm not even sure what that\n"
 "project was supposed to be, at this point."
 msgstr "啊... 这样，我不明白这个计划的用处。"
 
-#: ../data/level/tea-with-milgram.cfg:227
+#: ../data/level/tea-with-milgram.cfg:229
 msgid ""
 "Might've been something about a bridge,\n"
 "Fergus was heading that one up."
 msgstr "或许有桥，弗格斯正要竖起一个。"
 
-#: ../data/level/tea-with-milgram.cfg:229
+#: ../data/level/tea-with-milgram.cfg:231
 msgid ""
 "He's one of my kitties.\n"
 "Heads up one of our engineering divisions."
 msgstr "他是我的猫之一。\n从我们的一个工程师分部出来。"
 
-#: ../data/level/tea-with-milgram.cfg:232
+#: ../data/level/tea-with-milgram.cfg:234
 msgid ""
 "I honestly have no involvement in\n"
 "stuff like this; I delegate all of it out."
 msgstr "我衷心不愿牵扯此事；我让别人全权负责\n这个。"
 
-#: ../data/level/tea-with-milgram.cfg:235
+#: ../data/level/tea-with-milgram.cfg:237
 msgid "Which sometimes doesn't work out as expected?"
 msgstr "有时候就是不照着预想的发生呢？"
 
-#: ../data/level/tea-with-milgram.cfg:237
+#: ../data/level/tea-with-milgram.cfg:239
 msgid ""
 "Yeah.  I don't know a lot about Crevice Village,\n"
 "but if you'll forgive me, I had the impression\n"
@@ -5500,13 +5505,13 @@ msgid ""
 "we'd do something to help out."
 msgstr "是。我不知道关于裂口村的事情，如果你们原谅我，我的印象\n改变，我想可以帮上些。"
 
-#: ../data/level/tea-with-milgram.cfg:239
+#: ../data/level/tea-with-milgram.cfg:241
 msgid ""
 "We thought we'd actually hire you guys\n"
 "as labor, to do whatever you could."
 msgstr "我们觉得我们想要雇佣你们做劳力，做你们\n能干的。"
 
-#: ../data/level/tea-with-milgram.cfg:241
+#: ../data/level/tea-with-milgram.cfg:243
 msgid ""
 "It's always better that way;\n"
 "gets money flowing around, makes the\n"
@@ -5514,254 +5519,254 @@ msgid ""
 "feels less like charity, et cetera."
 msgstr "那样更好；到处挣些钱也能让新住户乐意自己的成果；\n又不像是施舍。"
 
-#: ../data/level/tea-with-milgram.cfg:243
+#: ../data/level/tea-with-milgram.cfg:245
 msgid "But, apparently we just got conned."
 msgstr "但是，显然我们无法了解。"
 
-#: ../data/level/tea-with-milgram.cfg:245
+#: ../data/level/tea-with-milgram.cfg:247
 msgid ""
 "And once they figured that out,\n"
 "some of our security guys were\n"
 "a little overzealous about recovering assets."
 msgstr "一旦他们发觉，我们的保卫人员乐于回收财\n物。"
 
-#: ../data/level/tea-with-milgram.cfg:248
+#: ../data/level/tea-with-milgram.cfg:250
 msgid ""
 "Uh...\n"
 "That's a pretty spectacular euphemism, there..."
 msgstr "啊...\n那是个要留心的双关词..."
 
-#: ../data/level/tea-with-milgram.cfg:250
+#: ../data/level/tea-with-milgram.cfg:252
 msgid ""
 "Yes, okay ...\n"
 "they were just thugs, plain and simple."
 msgstr "好吧...\n他们只是强盗，简单明了。"
 
-#: ../data/level/tea-with-milgram.cfg:253
+#: ../data/level/tea-with-milgram.cfg:255
 msgid ""
 "I didn't authorize that operation,\n"
 "but I will take responsibility for it!"
 msgstr "我没有批准这个行动，不过我要负起责任！"
 
-#: ../data/level/tea-with-milgram.cfg:255
+#: ../data/level/tea-with-milgram.cfg:257
 msgid ""
 "Those cats are turning into bullies.\n"
 "Sooner or later, they're going to\n"
 "cause me some serious problems!"
 msgstr "那些猫变成了流氓集团。迟早要给我带来\n大麻烦！"
 
-#: ../data/level/tea-with-milgram.cfg:257
+#: ../data/level/tea-with-milgram.cfg:259
 msgid ""
 "I haven't given you a chance to apologize,\n"
 "but no need.\n"
 "Thank you for embarrassing them."
 msgstr "我并没给你机会道歉，不过算了，谢谢你赶\n走他们。"
 
-#: ../data/level/tea-with-milgram.cfg:259
+#: ../data/level/tea-with-milgram.cfg:261
 msgid "I hope they've learned a lesson from this."
 msgstr "希望他们脑袋记事。"
 
-#: ../data/level/tea-with-milgram.cfg:261
+#: ../data/level/tea-with-milgram.cfg:263
 msgid ""
 "Regarding THIS incident, I will need\n"
 "to have a talk with them about common sense."
 msgstr "因为这个缘故。我需要和他们说说基本道\n理。"
 
-#: ../data/level/tea-with-milgram.cfg:264
+#: ../data/level/tea-with-milgram.cfg:266
 msgid ""
 "Any fool could guess that the\n"
 "money had long since been spent."
 msgstr "笨蛋也会猜到这些钱早就花上了。"
 
-#: ../data/level/tea-with-milgram.cfg:271
+#: ../data/level/tea-with-milgram.cfg:273
 msgid "Thank you Jeeves, that will do nicely."
 msgstr "谢谢你吉福斯，这个很不错。"
 
-#: ../data/level/tea-with-milgram.cfg:276
+#: ../data/level/tea-with-milgram.cfg:278
 msgid "Anyhow, I'm quite unsure where to go from here."
 msgstr "如何，我完全不知道从这里去往哪儿。"
 
-#: ../data/level/tea-with-milgram.cfg:278
+#: ../data/level/tea-with-milgram.cfg:280
 msgid ""
 "I'd like to do something\n"
 "to make amends with the town..."
 msgstr "我想要做些事情，振兴村镇..."
 
-#: ../data/level/tea-with-milgram.cfg:280
+#: ../data/level/tea-with-milgram.cfg:282
 msgid ""
 "... what the kitties did there\n"
 "was decidedly impolite."
 msgstr "... 那些猫没点儿礼貌。"
 
-#: ../data/level/tea-with-milgram.cfg:282
+#: ../data/level/tea-with-milgram.cfg:284
 msgid ""
 "Then again, I'm almost tempted to cut my\n"
 "losses and leave you guys well enough alone."
 msgstr "又一次，差点分隔开"
 
-#: ../data/level/tea-with-milgram.cfg:284
+#: ../data/level/tea-with-milgram.cfg:286
 msgid "Would you have any suggestions?"
 msgstr "有建议吗？"
 
-#: ../data/level/tea-with-milgram.cfg:286
+#: ../data/level/tea-with-milgram.cfg:288
 msgid "One or two."
 msgstr "算有吧。"
 
-#: ../data/level/tea-with-milgram.cfg:289
+#: ../data/level/tea-with-milgram.cfg:291
 msgid ""
 "Probably the craziest and most helpful is...\n"
 "I actually think he still has that money."
 msgstr "或许最疯狂也最好是...我认为他仍然攥着\n钱。"
 
-#: ../data/level/tea-with-milgram.cfg:291
+#: ../data/level/tea-with-milgram.cfg:293
 msgid ""
 "I know it sounds completely nuts,\n"
 "but I honestly think that when he was given it..."
 msgstr "听起来很傻不是，\n其实他得到的时候..."
 
-#: ../data/level/tea-with-milgram.cfg:294
+#: ../data/level/tea-with-milgram.cfg:296
 msgid ""
 "...he didn't have a clue what to do with it,\n"
 "so he just ... hid it."
 msgstr "... 他没有主意如何去做、做什么\n所以他...简单而直接地藏起来了。"
 
-#: ../data/level/tea-with-milgram.cfg:297
+#: ../data/level/tea-with-milgram.cfg:299
 msgid ""
 "We've all known him for years,\n"
 "and he's a hoarder, and a miser."
 msgstr "我们都认识多年了，他是个吝啬包。"
 
-#: ../data/level/tea-with-milgram.cfg:300
+#: ../data/level/tea-with-milgram.cfg:302
 msgid ""
 "We've never seen him suddenly having more\n"
 "money to spend; so it's crazy, but it fits."
 msgstr "我们从没见他突然有如此多钱花出去；他疯\n了还有可能。"
 
-#: ../data/level/tea-with-milgram.cfg:302
+#: ../data/level/tea-with-milgram.cfg:304
 msgid "I ... didn't see that coming."
 msgstr "我... 没看到什么进来。"
 
-#: ../data/level/tea-with-milgram.cfg:304
+#: ../data/level/tea-with-milgram.cfg:306
 msgid ""
 "When he was getting shaken down by that kitty,\n"
 "we turned our back on him for a second."
 msgstr "当他被那猫晃下来时，我们背对过去一会\n儿。"
 
-#: ../data/level/tea-with-milgram.cfg:306
+#: ../data/level/tea-with-milgram.cfg:308
 msgid ""
 "It turned out he'd hidden\n"
 "in some sort of secret passage."
 msgstr "结果他躲在某个秘密通道。"
 
-#: ../data/level/tea-with-milgram.cfg:308
+#: ../data/level/tea-with-milgram.cfg:310
 msgid ""
 "He may have used some of the money to build it,\n"
 "but his house has some sort of safe room."
 msgstr "也许他用了钱建了这个，但他房子也有些安\n全的房间。"
 
-#: ../data/level/tea-with-milgram.cfg:311
+#: ../data/level/tea-with-milgram.cfg:313
 msgid ""
 "It's just a guess, but I honestly think he\n"
 "might have hidden the rest right inside it."
 msgstr "猜想：他可能把其他的藏在里面。"
 
-#: ../data/level/tea-with-milgram.cfg:314
+#: ../data/level/tea-with-milgram.cfg:316
 msgid "Incredible."
 msgstr "不可思议。"
 
-#: ../data/level/tea-with-milgram.cfg:316
+#: ../data/level/tea-with-milgram.cfg:318
 msgid ""
 "Knowing that, you could probably\n"
 "just walk in and take it."
 msgstr "知道吧，你应该走进去带出来。"
 
-#: ../data/level/tea-with-milgram.cfg:318
+#: ../data/level/tea-with-milgram.cfg:320
 msgid ""
 "We may.\n"
 "In fact I believe we will!"
 msgstr "我们马上去。\n相信能搜出来！"
 
-#: ../data/level/tea-with-milgram.cfg:320
+#: ../data/level/tea-with-milgram.cfg:322
 msgid ""
 "If I may be so bold, I think it's\n"
 "safe to say on behalf of the town..."
 msgstr "假如我也这么有魄力，就能当上镇里的模范\n了..."
 
-#: ../data/level/tea-with-milgram.cfg:322
+#: ../data/level/tea-with-milgram.cfg:324
 msgid ""
 "...the rest of us would still appreciate\n"
 "some sort of public-works project."
 msgstr "...其他人肯定很兴奋这种团体协作项目。"
 
-#: ../data/level/tea-with-milgram.cfg:325
+#: ../data/level/tea-with-milgram.cfg:327
 msgid ""
 "You probably should hear what others are\n"
 "interested in, but I for one really wish there\n"
 "was a road of any kind between here and there."
 msgstr "你可能知道其他人的兴趣，不过我的建议肯定最棒：\n造一条相互连通的道路。"
 
-#: ../data/level/tea-with-milgram.cfg:327
+#: ../data/level/tea-with-milgram.cfg:329
 msgid "I'm dreading the trip back."
 msgstr "我害怕回程了。"
 
-#: ../data/level/tea-with-milgram.cfg:330
+#: ../data/level/tea-with-milgram.cfg:332
 msgid ""
 "Really?\n"
 "Where's your ship parked?"
 msgstr "真的，你的船停在哪里？"
 
-#: ../data/level/tea-with-milgram.cfg:332
+#: ../data/level/tea-with-milgram.cfg:334
 msgid ""
 "I ... didn't ... use a vehicle.\n"
 "I walked."
 msgstr "我...没...用什么工具。\n走着来的。"
 
-#: ../data/level/tea-with-milgram.cfg:334
+#: ../data/level/tea-with-milgram.cfg:336
 msgid ""
 "...\n"
 "I'm amazed that's even possible."
 msgstr "...\n不敢相信。"
 
-#: ../data/level/tea-with-milgram.cfg:336
+#: ../data/level/tea-with-milgram.cfg:338
 msgid ""
 "I like you, little frog!\n"
 "You're quite bold."
 msgstr "我喜欢你，小青蛙！\n有气魄。"
 
-#: ../data/level/tea-with-milgram.cfg:338
+#: ../data/level/tea-with-milgram.cfg:340
 msgid ""
 "Well, I can certainly at least\n"
 "guarantee transportation for you!"
 msgstr "我能你的保证传送成功！"
 
-#: ../data/level/tea-with-milgram.cfg:340
+#: ../data/level/tea-with-milgram.cfg:342
 msgid ""
 "And I'd be happy to consider some kind of project.\n"
 "You yourself could be my paid liaison."
 msgstr "我挺高兴这样的计划，我可以付钱给你当我\n们的通信人。"
 
-#: ../data/level/tea-with-milgram.cfg:343
+#: ../data/level/tea-with-milgram.cfg:345
 msgid ""
 "We should keep in touch - hopefully,\n"
 "through you, I can meet some of the\n"
 "more 'level-headed' members of your town."
 msgstr "常联系 - 希望，\n通过你，我也知道了镇上也有公正的成员。"
 
-#: ../data/level/tea-with-milgram.cfg:345
+#: ../data/level/tea-with-milgram.cfg:347
 msgid "So ... all's well that ends well?"
 msgstr "那么 ... 一切都完结了？"
 
-#: ../data/level/tea-with-milgram.cfg:347
+#: ../data/level/tea-with-milgram.cfg:349
 msgid ""
 "Yes, I do think everyone will have\n"
 "an equitable outcome to this whole mess."
 msgstr "嗯，我想风波之后每个人都想要同样的结\n果。"
 
-#: ../data/level/tea-with-milgram.cfg:349
+#: ../data/level/tea-with-milgram.cfg:351
 msgid "Except the elder."
 msgstr "除了那老家伙。"
 
-#: ../data/level/tea-with-milgram.cfg:355
+#: ../data/level/tea-with-milgram.cfg:357
 msgid "The End"
 msgstr "剧终"
 

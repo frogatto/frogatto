@@ -90,7 +90,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="load_level_nothread.cpp|server.cpp|eglport-tegra.c|eglport.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="gles2.cpp|shaders.cpp|load_level_nothread.cpp|server.cpp|eglport-tegra.c|eglport.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -179,7 +179,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="load_level_nothread.cpp|server.cpp|eglport-tegra.c|eglport.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="gles2.cpp|shaders.cpp|load_level_nothread.cpp|server.cpp|eglport-tegra.c|eglport.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -271,7 +271,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="load_level_nothread.cpp|server.cpp|eglport-tegra.c|eglport.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="gles2.cpp|shaders.cpp|load_level_nothread.cpp|server.cpp|eglport-tegra.c|eglport.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -360,7 +360,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="load_level_nothread.cpp|server.cpp|eglport-tegra.c|eglport.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="gles2.cpp|shaders.cpp|load_level_nothread.cpp|server.cpp|eglport-tegra.c|eglport.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -447,7 +447,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="load_level_nothread.cpp|server.cpp|eglport-tegra.c|eglport.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="gles2.cpp|shaders.cpp|load_level_nothread.cpp|server.cpp|eglport-tegra.c|eglport.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -536,7 +536,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="load_level_nothread.cpp|server.cpp|eglport-tegra.c|eglport.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="gles2.cpp|shaders.cpp|load_level_nothread.cpp|server.cpp|eglport-tegra.c|eglport.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -625,7 +625,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="load_level_nothread.cpp|server.cpp|eglport-tegra.c|eglport.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="gles2.cpp|shaders.cpp|load_level_nothread.cpp|server.cpp|eglport-tegra.c|eglport.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

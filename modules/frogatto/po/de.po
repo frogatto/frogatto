@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-08-25 22:47-0300\n"
-"PO-Revision-Date: 2012-08-26 01:50+0000\n"
+"POT-Creation-Date: 2012-09-01 20:29-0300\n"
+"PO-Revision-Date: 2012-09-01 23:32+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/Frogatto/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -45,11 +45,11 @@ msgstr "Angriff"
 msgid "Back"
 msgstr "Zurück"
 
-#: ../../../src/custom_object_functions.cpp:236
+#: ../../../src/custom_object_functions.cpp:241
 msgid "Select save slot to use."
 msgstr "Wähle einen Spielstand zum Speichern."
 
-#: ../../../src/custom_object_functions.cpp:329
+#: ../../../src/custom_object_functions.cpp:334
 msgid "Select save slot to load."
 msgstr "Wähle einen Spielstand zum Laden."
 
@@ -57,23 +57,23 @@ msgstr "Wähle einen Spielstand zum Laden."
 msgid "Achievement Unlocked!"
 msgstr "Erfolg freigeschaltet!"
 
-#: ../../../src/main.cpp:562
+#: ../../../src/main.cpp:649
 msgid "Initializing custom object functions"
 msgstr "Initialisiere benutzerdefinierte Objektfunktionen"
 
-#: ../../../src/main.cpp:564
+#: ../../../src/main.cpp:651
 msgid "Initializing textures"
 msgstr "Initialisiere Texturen"
 
-#: ../../../src/main.cpp:566
+#: ../../../src/main.cpp:653
 msgid "Initializing tiles"
 msgstr "Initialisiere Kacheln"
 
-#: ../../../src/main.cpp:568 ../../../src/main.cpp:572
+#: ../../../src/main.cpp:655 ../../../src/main.cpp:659
 msgid "Initializing GUI"
 msgstr "Initialisiere grafische Benutzeroberfläche"
 
-#: ../../../src/main.cpp:579
+#: ../../../src/main.cpp:666
 msgid "Loading level"
 msgstr "Lade Level"
 
@@ -1785,8 +1785,8 @@ msgid ""
 msgstr "Ah, sehe schon…\nna dann mach mal weiter."
 
 #: ../data/level/crevice-village-house-1.cfg:991
-msgid "Thank God it's you!"
-msgstr "Gottseidank, du bist es!"
+msgid "Thank god it's you!"
+msgstr ""
 
 #: ../data/level/crevice-village-house-1.cfg:993
 msgid "Hey, Hedge, you alright?"
@@ -4287,7 +4287,10 @@ msgstr "Genau, danke.\nDas… könnte schwierig werden."
 msgid "Kitty Dormitory"
 msgstr "Katzen-Wohnheim"
 
-#: ../data/level/kitty-factory.cfg:4290
+#: ../data/level/kitty-factory-maze.cfg:1955
+#: ../data/level/kitty-factory-old.cfg:4354
+#: ../data/level/kitty-factory-upper.cfg:2081
+#: ../data/level/kitty-factory.cfg:2759
 msgid "The Kitty Factory"
 msgstr "Die Katzenfabrik"
 
@@ -4790,7 +4793,7 @@ msgstr "… doch das Thema muss sein:\n\"Was passiert mit Eindringlingen.\""
 msgid "Fight!"
 msgstr "Kämpf!"
 
-#: ../data/level/milgrams-throne-room.cfg:974
+#: ../data/level/milgrams-throne-room.cfg:991
 #: ../data/objects/playable/map-selector.cfg:21
 msgid "Milgram's Throne Room"
 msgstr "Milgrams Thronzimmer"
@@ -5376,126 +5379,128 @@ msgid "For starters, uh ... he's NOT our mayor."
 msgstr "Zum Mitschreiben, …\ner ist NICHT unser Bürgermeister."
 
 #: ../data/level/tea-with-milgram.cfg:181
-msgid "I can see why not!"
-msgstr "Das konnte ich mir denken!"
+msgid ""
+"Now, as for who IS our mayor...\n"
+"well..."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:183
 msgid ""
-"Yep.  In fact, if you'll believe it,\n"
-"we actually don't have a mayor at all."
-msgstr "Jep. Fakt ist, wir haben zur Zeit\nkeinen Bürgermeister, glaub mir."
+"Let's just say the political situation in\n"
+"Crevice Village is a little confusing."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:186
 msgid ""
-"We've got nothing.\n"
-"We've got a bunch of stubborn idiots\n"
-"who happen to live in the same area."
-msgstr "Wir haben nichts.\nWir haben einen Haufen dickköpfiger Idioten,\nwelche zufällig in der gleichen Gegend wohnen."
+"I wouldn't call it anarchy, but we're a\n"
+"little weak when it comes to \"social institutions\"."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:188
 msgid ""
-"We can't agree on anything,\n"
-"we can't work together to get anything done."
-msgstr "Wir können uns nicht einigen und wir können\nnicht zusammenarbeiten, um irgendwas zu machen."
+"Which as you can guess, has good sides,\n"
+"but also has bad sides."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:191
 msgid ""
-"We don't have any government,\n"
-"we don't have any laws."
-msgstr "Wir haben keine Regierung und\nnoch nicht mal Gesetze."
+"I'll presume this contributes\n"
+"to the poor infrastructure?"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:193
-msgid ""
-"Careful, now - that sounds like\n"
-"an invitation to provide them."
-msgstr "Hör genau zu - das klingt jetzt wie\neine Einladung, die sich ihnen anbietet."
+msgid "Yup!"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:195
 msgid ""
-"Eh...heh... yes,\n"
-"that probably wouldn't be well-received!"
-msgstr "Äh…Häh… ja,\nkönnt schon schiefgehen."
+"It's very, very hard to get people\n"
+"to work on anything big or long-term."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:197
 msgid ""
-"Anyways, our only saving grace is we really\n"
-"don't have anyone aggressive enough\n"
-"to try and settle disputes with force."
-msgstr "Jedenfalls, unser aller Glück ist, dass wir\nniemanden haben, der aggressiv genug ist und\nmit aller Macht einen Streit vom Zaun bricht."
+"We can raise a house,\n"
+"but we couldn't build a highway."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:199
 msgid ""
-"And I guess that might be one of the\n"
-"few things we'd all agree on;\n"
-"that we wouldn't tolerate that."
-msgstr "Und ich glaube das ist eines der wenigen\nDinge, die wir nicht tolerieren könnten."
+"Nevertheless this sounds\n"
+"*idyllically* free of bureaucracy."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:201
 msgid ""
-"I mean, I'm definitely exaggerating a little;\n"
-"we couldn't raise a house without some\n"
-"cooperation, but it really is a mess."
-msgstr "Ich meine, vielleicht übertreibe ich ein wenig;\nwir könnten ohne Zusammenarbeit nicht mal\nein Haus bauen, das ist doch Schade."
+"Hah, right ... unless you count\n"
+"\"dumb arguments with stubborn people\"."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:203
+msgid ""
+"Anyways, we do manage to get by,\n"
+" but it really is a mess."
+msgstr ""
+
+#: ../data/level/tea-with-milgram.cfg:205
 msgid ""
 "So I don't know what the elder talked you into,\n"
 "but it's almost guaranteed to be lunacy."
 msgstr "Also ich weiß nicht, was der Älteste dir\neinreden wollte, aber das meiste war\nbestimmt Unsinn."
 
-#: ../data/level/tea-with-milgram.cfg:205
+#: ../data/level/tea-with-milgram.cfg:207
 msgid ""
 "Yes.\n"
 "No wonder we were confused!"
 msgstr "Ja.\nKein Wunder, warum es uns verwirrt."
 
-#: ../data/level/tea-with-milgram.cfg:209
+#: ../data/level/tea-with-milgram.cfg:211
 msgid "Ah, there we are..."
 msgstr "So da wären wir…"
 
-#: ../data/level/tea-with-milgram.cfg:215
+#: ../data/level/tea-with-milgram.cfg:217
 msgid ""
 "Fetch some for our guest,\n"
 "would you, kindly?"
 msgstr "Hol ein bisschen was für unseren Gast,\nwärest du so freundlich?"
 
-#: ../data/level/tea-with-milgram.cfg:218
+#: ../data/level/tea-with-milgram.cfg:220
 msgid "So where was I?"
 msgstr "Wo war ich noch gleich?"
 
-#: ../data/level/tea-with-milgram.cfg:220
+#: ../data/level/tea-with-milgram.cfg:222
 msgid "What did the elder actually tell you?"
 msgstr "Was hat der Älteste dazu gesagt?"
 
-#: ../data/level/tea-with-milgram.cfg:225
+#: ../data/level/tea-with-milgram.cfg:227
 msgid ""
 "Uhm...  so, I'm not even sure what that\n"
 "project was supposed to be, at this point."
 msgstr "Ähm… Ich bin nicht sicher, was das\nfür ein Projekt sein sollte, genau gesagt."
 
-#: ../data/level/tea-with-milgram.cfg:227
+#: ../data/level/tea-with-milgram.cfg:229
 msgid ""
 "Might've been something about a bridge,\n"
 "Fergus was heading that one up."
 msgstr "Es könnte vielleicht mit der Brücke zu\ntun haben, zu der Fergus gehen wollte."
 
-#: ../data/level/tea-with-milgram.cfg:229
+#: ../data/level/tea-with-milgram.cfg:231
 msgid ""
 "He's one of my kitties.\n"
 "Heads up one of our engineering divisions."
 msgstr "Er gehört zu meinen Kätzchen.\nEr ist einer der Köpfe der Mechanikerabteilung."
 
-#: ../data/level/tea-with-milgram.cfg:232
+#: ../data/level/tea-with-milgram.cfg:234
 msgid ""
 "I honestly have no involvement in\n"
 "stuff like this; I delegate all of it out."
 msgstr "Ehrlich gesagt, bin ich an Sachen wie diesen\nnicht beteiligt; Ich gebe nur die Anweisungen."
 
-#: ../data/level/tea-with-milgram.cfg:235
+#: ../data/level/tea-with-milgram.cfg:237
 msgid "Which sometimes doesn't work out as expected?"
 msgstr "Was manchmal nicht so klappt wie erwartet?"
 
-#: ../data/level/tea-with-milgram.cfg:237
+#: ../data/level/tea-with-milgram.cfg:239
 msgid ""
 "Yeah.  I don't know a lot about Crevice Village,\n"
 "but if you'll forgive me, I had the impression\n"
@@ -5503,13 +5508,13 @@ msgid ""
 "we'd do something to help out."
 msgstr "Ja. Ich weiß nicht viel über das Erdspalt-Dorf,\naber wenn du mir verzeihst, ich hatte den\nEindruck, es wäre ein verschlafenes Nest,\ndaher dachte ich wir könnten irgendwie aushelfen."
 
-#: ../data/level/tea-with-milgram.cfg:239
+#: ../data/level/tea-with-milgram.cfg:241
 msgid ""
 "We thought we'd actually hire you guys\n"
 "as labor, to do whatever you could."
 msgstr "Wir dachten, wir könnten Typen wie euch\nzum Arbeiten anheuern, für alles mögliche eben."
 
-#: ../data/level/tea-with-milgram.cfg:241
+#: ../data/level/tea-with-milgram.cfg:243
 msgid ""
 "It's always better that way;\n"
 "gets money flowing around, makes the\n"
@@ -5517,254 +5522,254 @@ msgid ""
 "feels less like charity, et cetera."
 msgstr "Es ist jedenfalls besser, als wenn wir unser Geld\nzum Fenster rauswerfen, damit jeder damit\nmachen kann, was er will."
 
-#: ../data/level/tea-with-milgram.cfg:243
+#: ../data/level/tea-with-milgram.cfg:245
 msgid "But, apparently we just got conned."
 msgstr "Aber offenbar wurden wir betrogen."
 
-#: ../data/level/tea-with-milgram.cfg:245
+#: ../data/level/tea-with-milgram.cfg:247
 msgid ""
 "And once they figured that out,\n"
 "some of our security guys were\n"
 "a little overzealous about recovering assets."
 msgstr "Und wenn es jemand herausgefunden hätte,\ndann hätten einige unserer Sicherheitsleute etwas\nübereifrig reagiert."
 
-#: ../data/level/tea-with-milgram.cfg:248
+#: ../data/level/tea-with-milgram.cfg:250
 msgid ""
 "Uh...\n"
 "That's a pretty spectacular euphemism, there..."
 msgstr "Äh…\nWelch wunderbares Gefühl,…"
 
-#: ../data/level/tea-with-milgram.cfg:250
+#: ../data/level/tea-with-milgram.cfg:252
 msgid ""
 "Yes, okay ...\n"
 "they were just thugs, plain and simple."
 msgstr "Ja, gut …\nsie waren bloß einfache Schlägertypen."
 
-#: ../data/level/tea-with-milgram.cfg:253
+#: ../data/level/tea-with-milgram.cfg:255
 msgid ""
 "I didn't authorize that operation,\n"
 "but I will take responsibility for it!"
 msgstr "Ich ließ diesen Einsatz nicht zu, aber\nich übernehme die Verantwortung dafür."
 
-#: ../data/level/tea-with-milgram.cfg:255
+#: ../data/level/tea-with-milgram.cfg:257
 msgid ""
 "Those cats are turning into bullies.\n"
 "Sooner or later, they're going to\n"
 "cause me some serious problems!"
 msgstr "Diese Katzen werden langsam übermütig.\nFrüher oder später werden sie mir\neinige ernste Probleme bereiten."
 
-#: ../data/level/tea-with-milgram.cfg:257
+#: ../data/level/tea-with-milgram.cfg:259
 msgid ""
 "I haven't given you a chance to apologize,\n"
 "but no need.\n"
 "Thank you for embarrassing them."
 msgstr "Ich habe dir keine Chanche gegeben,\ndich zu entschuldigen, aber das\nbrauchst du nicht. Danke, dass du\nsie daran gehindert hast."
 
-#: ../data/level/tea-with-milgram.cfg:259
+#: ../data/level/tea-with-milgram.cfg:261
 msgid "I hope they've learned a lesson from this."
 msgstr "Ich hoffe sie haben ihre Lektion gelernt."
 
-#: ../data/level/tea-with-milgram.cfg:261
+#: ../data/level/tea-with-milgram.cfg:263
 msgid ""
 "Regarding THIS incident, I will need\n"
 "to have a talk with them about common sense."
 msgstr "Hinsichtlicht dieses Vorfalls, muss ich mit\nihnen über gesunden Menschenverstand reden."
 
-#: ../data/level/tea-with-milgram.cfg:264
+#: ../data/level/tea-with-milgram.cfg:266
 msgid ""
 "Any fool could guess that the\n"
 "money had long since been spent."
 msgstr "Jeder Trottel könnte meinen, dass das Geld\nschon seit langem ausgegeben wurde."
 
-#: ../data/level/tea-with-milgram.cfg:271
+#: ../data/level/tea-with-milgram.cfg:273
 msgid "Thank you Jeeves, that will do nicely."
 msgstr "Danke Jeeves, das wird funktionieren."
 
-#: ../data/level/tea-with-milgram.cfg:276
+#: ../data/level/tea-with-milgram.cfg:278
 msgid "Anyhow, I'm quite unsure where to go from here."
 msgstr "Jedenfalls, weiß ich nicht, wo ich lang soll."
 
-#: ../data/level/tea-with-milgram.cfg:278
+#: ../data/level/tea-with-milgram.cfg:280
 msgid ""
 "I'd like to do something\n"
 "to make amends with the town..."
 msgstr "Ich möchte einige Veränderungen\nin der Stadt durchführen…"
 
-#: ../data/level/tea-with-milgram.cfg:280
+#: ../data/level/tea-with-milgram.cfg:282
 msgid ""
 "... what the kitties did there\n"
 "was decidedly impolite."
 msgstr "… was die Kätzchen dort taten\nwar eindeutig unhöflich."
 
-#: ../data/level/tea-with-milgram.cfg:282
+#: ../data/level/tea-with-milgram.cfg:284
 msgid ""
 "Then again, I'm almost tempted to cut my\n"
 "losses and leave you guys well enough alone."
 msgstr "Nochmal, ich sollte meine Niederlage\neingestehen und euch zurücklassen."
 
-#: ../data/level/tea-with-milgram.cfg:284
+#: ../data/level/tea-with-milgram.cfg:286
 msgid "Would you have any suggestions?"
 msgstr "Irgendwelche Vorschläge?"
 
-#: ../data/level/tea-with-milgram.cfg:286
+#: ../data/level/tea-with-milgram.cfg:288
 msgid "One or two."
 msgstr "Ein oder zwei."
 
-#: ../data/level/tea-with-milgram.cfg:289
+#: ../data/level/tea-with-milgram.cfg:291
 msgid ""
 "Probably the craziest and most helpful is...\n"
 "I actually think he still has that money."
 msgstr "Das verrückteste und hilfsreichste ist, …\ndass ich denke, dass er das Geld noch hat."
 
-#: ../data/level/tea-with-milgram.cfg:291
+#: ../data/level/tea-with-milgram.cfg:293
 msgid ""
 "I know it sounds completely nuts,\n"
 "but I honestly think that when he was given it..."
 msgstr "Es klingt total verrückt,\naber ich denke, er hat es ausgegeben…"
 
-#: ../data/level/tea-with-milgram.cfg:294
+#: ../data/level/tea-with-milgram.cfg:296
 msgid ""
 "...he didn't have a clue what to do with it,\n"
 "so he just ... hid it."
 msgstr "… er wusste nicht, was er damit anfangen sollte,\ndeshalb … versteckte er es."
 
-#: ../data/level/tea-with-milgram.cfg:297
+#: ../data/level/tea-with-milgram.cfg:299
 msgid ""
 "We've all known him for years,\n"
 "and he's a hoarder, and a miser."
 msgstr "Wir kennen ihn seit Jahren und er ist\nein Hamsterer und ein Geizhals."
 
-#: ../data/level/tea-with-milgram.cfg:300
+#: ../data/level/tea-with-milgram.cfg:302
 msgid ""
 "We've never seen him suddenly having more\n"
 "money to spend; so it's crazy, but it fits."
 msgstr "Wir haben nie gesehen, dass er mehr Geld zum\nausgeben dabei hatte.\nSo verrückt das auch ist, es ergibt Sinn."
 
-#: ../data/level/tea-with-milgram.cfg:302
+#: ../data/level/tea-with-milgram.cfg:304
 msgid "I ... didn't see that coming."
 msgstr "Das … hab ich nicht kommen sehen."
 
-#: ../data/level/tea-with-milgram.cfg:304
+#: ../data/level/tea-with-milgram.cfg:306
 msgid ""
 "When he was getting shaken down by that kitty,\n"
 "we turned our back on him for a second."
 msgstr "Als er von diesem Kätzchen ausgequetscht wurde,\nhatten wir ihm kurz den Rücken zugekehrt."
 
-#: ../data/level/tea-with-milgram.cfg:306
+#: ../data/level/tea-with-milgram.cfg:308
 msgid ""
 "It turned out he'd hidden\n"
 "in some sort of secret passage."
 msgstr "Es stellte sich heraus, dass er sich\nan irgendeinem geheimen Ort versteckte."
 
-#: ../data/level/tea-with-milgram.cfg:308
+#: ../data/level/tea-with-milgram.cfg:310
 msgid ""
 "He may have used some of the money to build it,\n"
 "but his house has some sort of safe room."
 msgstr "Er könnte einen Teil für den Bau ausgegeben\nhaben, aber sein Haus hat\nirgendeine Art von Tresorraum."
 
-#: ../data/level/tea-with-milgram.cfg:311
+#: ../data/level/tea-with-milgram.cfg:313
 msgid ""
 "It's just a guess, but I honestly think he\n"
 "might have hidden the rest right inside it."
 msgstr "Es ist nur eine Vermutung, aber ehrlich gesagt\ndenke ich, er könnte den Rest\ngenau da drin versteckt haben."
 
-#: ../data/level/tea-with-milgram.cfg:314
+#: ../data/level/tea-with-milgram.cfg:316
 msgid "Incredible."
 msgstr "Unglaublich."
 
-#: ../data/level/tea-with-milgram.cfg:316
+#: ../data/level/tea-with-milgram.cfg:318
 msgid ""
 "Knowing that, you could probably\n"
 "just walk in and take it."
 msgstr "Wenn du davon Bescheid weißt, dann\nkönntest du einfach reingehen und es mitnehmen."
 
-#: ../data/level/tea-with-milgram.cfg:318
+#: ../data/level/tea-with-milgram.cfg:320
 msgid ""
 "We may.\n"
 "In fact I believe we will!"
 msgstr "Das könnten wir.\nUnd das werden wir auch!"
 
-#: ../data/level/tea-with-milgram.cfg:320
+#: ../data/level/tea-with-milgram.cfg:322
 msgid ""
 "If I may be so bold, I think it's\n"
 "safe to say on behalf of the town..."
 msgstr "Wenn ich wirklich so mutig gewesen wäre,\nkönnte ich sicher sagen,\ndass es im Interesse der Stadt geschehen ist."
 
-#: ../data/level/tea-with-milgram.cfg:322
+#: ../data/level/tea-with-milgram.cfg:324
 msgid ""
 "...the rest of us would still appreciate\n"
 "some sort of public-works project."
 msgstr "…der Rest von uns könnte sich\nan gemeinnützigen Projekten beteiligen."
 
-#: ../data/level/tea-with-milgram.cfg:325
+#: ../data/level/tea-with-milgram.cfg:327
 msgid ""
 "You probably should hear what others are\n"
 "interested in, but I for one really wish there\n"
 "was a road of any kind between here and there."
 msgstr "Du solltest dir erst anhören, woran andere\ninteressiert sind, aber ich zum Beispiel würde\nmir irgendeine Straße von hier nach dort wünschen."
 
-#: ../data/level/tea-with-milgram.cfg:327
+#: ../data/level/tea-with-milgram.cfg:329
 msgid "I'm dreading the trip back."
 msgstr "Ich fürchte, ich muss wohl umkehren."
 
-#: ../data/level/tea-with-milgram.cfg:330
+#: ../data/level/tea-with-milgram.cfg:332
 msgid ""
 "Really?\n"
 "Where's your ship parked?"
 msgstr "Wirklich?\nWo hast du dein Schiff geankert?"
 
-#: ../data/level/tea-with-milgram.cfg:332
+#: ../data/level/tea-with-milgram.cfg:334
 msgid ""
 "I ... didn't ... use a vehicle.\n"
 "I walked."
 msgstr "Ich … habe … kein Fahrzeug benutzt.\nIch bin gelaufen."
 
-#: ../data/level/tea-with-milgram.cfg:334
+#: ../data/level/tea-with-milgram.cfg:336
 msgid ""
 "...\n"
 "I'm amazed that's even possible."
 msgstr "…\nIch staune immer noch, dass das möglich ist."
 
-#: ../data/level/tea-with-milgram.cfg:336
+#: ../data/level/tea-with-milgram.cfg:338
 msgid ""
 "I like you, little frog!\n"
 "You're quite bold."
 msgstr "Ich mag dich, kleiner Frosch!\nDu bist ziemlich verwegen."
 
-#: ../data/level/tea-with-milgram.cfg:338
+#: ../data/level/tea-with-milgram.cfg:340
 msgid ""
 "Well, I can certainly at least\n"
 "guarantee transportation for you!"
 msgstr "Nun, ich kann dir natürlich wenigstens\neinen Transport garantieren."
 
-#: ../data/level/tea-with-milgram.cfg:340
+#: ../data/level/tea-with-milgram.cfg:342
 msgid ""
 "And I'd be happy to consider some kind of project.\n"
 "You yourself could be my paid liaison."
 msgstr "Und ich wäre glücklich, ein Projekt in Erwägung\nziehen zu können. Du selbst könntest\nfür mich bürgen."
 
-#: ../data/level/tea-with-milgram.cfg:343
+#: ../data/level/tea-with-milgram.cfg:345
 msgid ""
 "We should keep in touch - hopefully,\n"
 "through you, I can meet some of the\n"
 "more 'level-headed' members of your town."
 msgstr "Wir sollten in Kontakt bleiben - durch dich\nkann ich mich mit einigen gleichgesinnten\nBürgern der Stadt treffen."
 
-#: ../data/level/tea-with-milgram.cfg:345
+#: ../data/level/tea-with-milgram.cfg:347
 msgid "So ... all's well that ends well?"
 msgstr "So … alle Unklarheiten beseitigt?"
 
-#: ../data/level/tea-with-milgram.cfg:347
+#: ../data/level/tea-with-milgram.cfg:349
 msgid ""
 "Yes, I do think everyone will have\n"
 "an equitable outcome to this whole mess."
 msgstr "Ja, ich denke, jeder wird das\nbekommen, was er wirklich verdient."
 
-#: ../data/level/tea-with-milgram.cfg:349
+#: ../data/level/tea-with-milgram.cfg:351
 msgid "Except the elder."
 msgstr "Bis auf den Ältesten."
 
-#: ../data/level/tea-with-milgram.cfg:355
+#: ../data/level/tea-with-milgram.cfg:357
 msgid "The End"
 msgstr "Das Ende."
 
