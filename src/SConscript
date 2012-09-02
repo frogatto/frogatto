@@ -168,4 +168,4 @@ utility_object_compiler.cpp
 utility_query.cpp
 utility_render_level.cpp
 """)
-env.Program("#/game", sources)
+env.Program("#/game" + build_suffix, sources)

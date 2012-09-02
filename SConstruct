@@ -11,8 +11,13 @@ if os.path.exists('.scons-option-cache'):
 opts = Variables('.scons-option-cache')
 
 opts.AddVariables(
+    EnumVariable('build', 'Build variant: debug, release profile', "release", ["release", "debug", "profile"]),
+    PathVariable('build_dir', 'Build all intermediate files(objects, test programs, etc) under this dir', "build", PathVariable.PathAccept),
     BoolVariable('ccache', "Use ccache", False),
+    BoolVariable('cxx0x', 'Use C++0x features.', False),
+    BoolVariable('extrawarn', "Use wesnoth-level warnings", False),
     BoolVariable('gles2', "Use GLES2", False),
+    BoolVariable('strict', 'Set to strict compilation', False),
     ('cxxtool', 'Set c++ compiler command if not using standard compiler.'),
     ('jobs', 'Set the number of parallel compilations', "1", lambda key, value, env: int(value), int),
     )
@@ -24,6 +29,37 @@ env.Append(LIBS = ["GL", "GLU", "GLEW", "SDL_mixer", "SDL_image", "SDL_ttf", "bo
 env.Append(CXXFLAGS= ["-pthread", "-DIMPLEMENT_SAVE_PNG"], LINKFLAGS = ["-pthread"])
 
 opts.Save('.scons-option-cache', env)
+
+builds = {
+    "debug"         : dict(CCFLAGS   = Split("$DEBUG_FLAGS")),
+    "release"       : dict(CCFLAGS   = "$OPT_FLAGS"),
+    "profile"       : dict(CCFLAGS   = "-pg", LINKFLAGS = "-pg")
+    }
+build = env["build"]
+
+env.AppendUnique(**builds[build])
+
+build_dir = os.path.join("$build_dir", build)
+
+if build == "release" : build_suffix = ""
+else                  : build_suffix = "-" + build
+Export("build_suffix")
+
+if "gcc" in env["TOOLS"]:
+    if env['extrawarn']:
+        env.AppendUnique(CCFLAGS = Split("-W -Wall -Wno-sign-compare -Wno-parentheses"))
+
+    if env['cxx0x']:
+        env.AppendUnique(CXXFLAGS = "-std=c++0x")
+        env.Append(CPPDEFINES = "HAVE_CXX0X")
+    else:
+        env.AppendUnique(CXXFLAGS = "-std=c++98")
+
+    if env['strict']:
+        env.AppendUnique(CCFLAGS = Split("-Werror"))
+
+    env["OPT_FLAGS"] = "-O2"
+    env["DEBUG_FLAGS"] = Split("-O0 -DDEBUG -ggdb3")
 
 if env['gles2']:
     env.Append(CXXFLAGS= ["-DUSEGLES2"])
@@ -59,4 +95,4 @@ if env['jobs'] > 1:
     SetOption("num_jobs", env['jobs'])
 
 Export(["env"])
-env.SConscript(dirs=["src"], variant_dir = "build", duplicate = False)
+env.SConscript(dirs=["src"], variant_dir = build_dir, duplicate = False)
