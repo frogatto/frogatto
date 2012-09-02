@@ -2,6 +2,7 @@
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "formula.hpp"
+#include "hex_map.hpp"
 #include "hex_object.hpp"
 #include "json_parser.hpp"
 #include "module.hpp"
@@ -78,7 +79,9 @@ hex_object::hex_object(const std::string& type, int x, int y, const hex_map* own
 
 variant hex_object::get_value(const std::string& key) const
 {
-	if(key == "tile") {
+	if(key == "self") {
+		return variant(this);
+	} else if(key == "tile") {
 		return variant(tile_.get());
 	} else if(key == "base_type") {
 		return variant(type_);
@@ -86,7 +89,44 @@ variant hex_object::get_value(const std::string& key) const
 		if(tile_) {
 			return variant(tile_->key());
 		}
+	} else if(key == "transitions") {
+		// n.b. this might be better returned as a command callable?
+		std::map<variant, variant> txs;
+		std::map<int, hex_tile_ptr>::const_iterator it = transitions_.begin();
+		while(it != transitions_.end()) {
+			txs[variant(it->first)] = variant(it->second->key());
+			++it;
+		}
+		return variant(&txs);
+	} else if(key == "north" || key == "n") {
+		ASSERT_LOG(owner_map_ != NULL, "Hex object not associated with a map! owner_ == NULL");
+		return variant(owner_map_->get_hex_tile(NORTH, x_, y_).get());
+	} else if(key == "south" || key == "s") {
+		ASSERT_LOG(owner_map_ != NULL, "Hex object not associated with a map! owner_ == NULL");
+		return variant(owner_map_->get_hex_tile(SOUTH, x_, y_).get());
+	} else if(key == "north_west" || key == "nw" || key == "northwest") {
+		ASSERT_LOG(owner_map_ != NULL, "Hex object not associated with a map! owner_ == NULL");
+		return variant(owner_map_->get_hex_tile(NORTH_WEST, x_, y_).get());
+	} else if(key == "north_east" || key == "ne" || key == "northeast") {
+		ASSERT_LOG(owner_map_ != NULL, "Hex object not associated with a map! owner_ == NULL");
+		return variant(owner_map_->get_hex_tile(NORTH_EAST, x_, y_).get());
+	} else if(key == "south_west" || key == "sw" || key == "southwest") {
+		ASSERT_LOG(owner_map_ != NULL, "Hex object not associated with a map! owner_ == NULL");
+		return variant(owner_map_->get_hex_tile(SOUTH_WEST, x_, y_).get());
+	} else if(key == "south_east" || key == "se" || key == "southeast") {
+		ASSERT_LOG(owner_map_ != NULL, "Hex object not associated with a map! owner_ == NULL");
+		return variant(owner_map_->get_hex_tile(SOUTH_EAST, x_, y_).get());
+	} else if(key == "x") {
+		return variant(x_);
+	} else if(key == "y") {
+		return variant(y_);
+	} else if(key == "xy") {
+		std::vector<variant> v;
+		v.push_back(variant(x_));
+		v.push_back(variant(y_));
+		return variant(&v);
 	}
+	 
 	return variant();
 }
 
@@ -97,6 +137,15 @@ void hex_object::set_value(const std::string& key, const variant& value)
 			get_hex_tile_map().find(value.as_string());
 		ASSERT_LOG(it != get_hex_tile_map().end(), "No tile found matching type: " << value.as_string());
 		tile_ = it->second;
+	} else if(key == "transitions") {
+		ASSERT_LOG(value.is_map(), "transitions must be specified as a map of zorder to tile.");
+		foreach(const variant_pair& v, value.as_map()) {
+			std::map<std::string, hex_tile_ptr>::const_iterator it 
+				= get_hex_tile_map().find(v.second.as_string());
+			ASSERT_LOG(it != get_hex_tile_map().end(), "No tile found matching type: " << value.as_string());
+			transitions_[v.first.as_int()] = it->second;
+			//transitions_[v.first.as_int()] = boost::intrusive_ptr<hex_tile_ptr>(v.second.try_convert<hex_tile_ptr>());
+		}
 	}
 }
 
@@ -107,34 +156,55 @@ void hex_object::build()
 	tile_ = it->second;
 }
 
+bool hex_object::execute_command(const variant& value)
+{
+	bool result = true;
+	if(value.is_null()) {
+		return result;
+	}
+
+	if(value.is_list()) {
+		const int num_elements = value.num_elements();
+		for(int n = 0; n != num_elements; ++n) {
+			if(value[n].is_null() == false) {
+				result = execute_command(value[n]) && result;
+			}
+		}
+	} else {
+		game_logic::command_callable* cmd = value.try_convert<game_logic::command_callable>();
+		if(cmd != NULL) {
+			cmd->execute(*this);
+		}
+	}
+	return result;
+}
+
 void hex_object::apply_rules()
 {
 	using namespace game_logic;
 	foreach(const std::string& rule, generate_hex_engine().rules) {
 		//std::cerr << "Processing rule: " << rule << std::endl;
+
 		const_formula_ptr f = generate_hex_engine().handlers[rule];
-		map_formula_callable_ptr callable(new map_formula_callable());
+		map_formula_callable_ptr callable(new map_formula_callable(this));
 		variant& a = callable->add_direct_access("hex");
 		a = variant(this);
 		variant value = f->execute(*callable.get());
-		if(value.is_null() == false) {
-			if(value.is_list()) {
-				const int num_elements = value.num_elements();
-				for(int n = 0; n != num_elements; ++n) {
-					if(value[n].is_null() == false) {
-						callable->execute_command(value[n]);
-					}
-				}
-			} else {
-				callable->execute_command(value);
-			}
-		}
+		execute_command(value);
 	}
 }
 
 void hex_object::draw() const
 {
+	// Draw base tile.
+	ASSERT_LOG(tile_ != NULL, "tile is NULL");
 	tile_->draw(x_, y_);
+	// Draw transitions
+	std::map<int, hex_tile_ptr>::const_iterator it = transitions_.begin();
+	while(it != transitions_.end()) {
+		it->second->draw(x_, y_);
+		++it;
+	}
 }
 
 hex_tile::hex_tile(const std::string& key, variant node)
@@ -168,8 +238,11 @@ void hex_tile::draw(int x, int y) const
 		GLfloat(rects_[0].y2())/GLfloat(texture_.height()));
 }
 
-variant hex_tile::get_value(const std::string&) const
+variant hex_tile::get_value(const std::string& key) const
 {
+	if(key == "self") {
+		return variant(this);
+	}
 	return variant();
 }
 

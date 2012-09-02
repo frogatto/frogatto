@@ -44,20 +44,27 @@ class hex_object : public game_logic::formula_callable
 {
 public:
 	hex_object(const std::string& type, int x, int y, const hex_map* owner);
+	virtual ~hex_object() {}
+
 	virtual variant get_value(const std::string&) const;
 	virtual void set_value(const std::string& key, const variant& value);
+
 	virtual void draw() const;
 	
 	void build();
 	void apply_rules();
 
 	std::string type() const { return type_; }
+	virtual bool execute_command(const variant& var);
 private:
+
 	// map coordinates.
 	int x_;
 	int y_;
 	// Pointer to the tile in this square.
 	hex_tile_ptr tile_;
+	// Transitions. mapping z-order to transition.
+	std::map<int, hex_tile_ptr> transitions_;
 	// String representing the base type of this tile.
 	std::string type_;
 	// raw pointer to the map that owns this.

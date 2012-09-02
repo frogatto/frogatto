@@ -14,6 +14,8 @@ namespace hex {
 typedef std::vector<hex_object_ptr> hex_tile_row;
 typedef std::vector<hex_tile_row> hex_tile_map;
 
+enum direction {NORTH, SOUTH, NORTH_WEST, NORTH_EAST, SOUTH_WEST, SOUTH_EAST};
+
 class hex_map
 {
 public:
@@ -30,6 +32,8 @@ public:
 	void build();
 	virtual void draw() const;
 	variant write() const;
+
+	hex_object_ptr get_hex_tile(direction d, int x, int y) const;
 private:
 	hex_tile_map tiles_;
 	size_t width_;

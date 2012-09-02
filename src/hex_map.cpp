@@ -1,6 +1,8 @@
 #include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string.hpp>
 #include <sstream>
 
+#include "asserts.hpp"
 #include "foreach.hpp"
 #include "hex_map.hpp"
 #include "variant_utils.hpp"
@@ -13,7 +15,12 @@ hex_map::hex_map(variant node)
 	y_(node["y"].as_int(0))
 {
 	std::vector<std::string> result;
-	boost::algorithm::split(result, node["tiles"].as_string(), std::bind2nd(std::equal_to<char>(), '\n'));
+	std::string tile_str = node["tiles"].as_string();
+	boost::algorithm::erase_all(tile_str, "\t");
+	boost::algorithm::erase_all(tile_str, "\v");
+	boost::algorithm::erase_all(tile_str, " ");
+	boost::algorithm::erase_all(tile_str, "\r");
+	boost::algorithm::split(result, tile_str, std::bind2nd(std::equal_to<char>(), '\n'));
 	int x = x_;
 	int y = y_;
 	foreach(const std::string& row, result) {
@@ -71,6 +78,38 @@ variant hex_map::write() const
 	}
 	res.add("tiles", tiles.str());
 	return res.build();
+}
+
+hex_object_ptr hex_map::get_hex_tile(direction d, int x, int y) const
+{
+	x -= x_;
+	y -= y_;
+	if(d == NORTH) {
+		y -= 1;
+	} else if(d == SOUTH) {
+		y += 1;
+	} else if(d == NORTH_WEST) {
+		y -= (x%2==0) ? 1 : 0;
+		x -= 1;
+	} else if(d == NORTH_EAST) {
+		y -= (x%2==0) ? 1 : 0;
+		x += 1;
+	} else if(d == SOUTH_WEST) {
+		y += (x%2) ? 1 : 0;
+		x -= 1;
+	} else if(d == SOUTH_EAST) {
+		y += (x%2) ? 1 : 0;
+		x += 1;
+	} else {
+		ASSERT_LOG(false, "Unrecognised direction: " << d);
+	}
+	if(x < 0 || y < 0 || y >= tiles_.size()) {
+		return hex_object_ptr();
+	}
+	if(x >= tiles_[y].size()) {
+		return hex_object_ptr();
+	}
+	return tiles_[y][x];
 }
 
 }

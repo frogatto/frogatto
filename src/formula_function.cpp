@@ -1216,7 +1216,7 @@ FUNCTION_DEF(back, 1, 1, "back(list): gives the last element of a list, or null 
 	}
 END_FUNCTION_DEF(back)
 
-FUNCTION_DEF(get_all_files_under_dir, 1, 1, "Returns a list of all the files in and under the given directory")
+FUNCTION_DEF(get_all_files_under_dir, 1, 1, "get_all_files_under_dir(path): Returns a list of all the files in and under the given directory")
 	std::vector<variant> v;
 	std::map<std::string, std::string> file_paths;
 	module::get_unique_filenames_under_dir(args()[0]->evaluate(variables).as_string(), &file_paths);
@@ -1227,7 +1227,7 @@ FUNCTION_DEF(get_all_files_under_dir, 1, 1, "Returns a list of all the files in 
 	return variant(&v);
 END_FUNCTION_DEF(get_all_files_under_dir)
 
-FUNCTION_DEF(get_files_in_dir, 1, 1, "Returns a list of the files in the given directory")
+FUNCTION_DEF(get_files_in_dir, 1, 1, "get_files_in_dir(path): Returns a list of the files in the given directory")
 	std::vector<variant> v;
 	std::vector<std::string> files;
 	std::string dirname = args()[0]->evaluate(variables).as_string();
