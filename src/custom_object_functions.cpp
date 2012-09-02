@@ -1933,7 +1933,10 @@ FUNCTION_DEF(textv, 1, -1, "textv(object, text_map, ...): Adds text objects to t
 	int arg_start = (target == NULL) ? 0 : 1;
 	std::vector<variant> textv;
 	for(int i = arg_start; i < args().size(); i++) {
-		textv.push_back(args()[i]->evaluate(variables));
+		variant item = args()[i]->evaluate(variables);
+		if(!item.is_null()) {
+			textv.push_back(item);
+		}
 	}
 	return variant(new vector_text_command(target, &textv));
 END_FUNCTION_DEF(textv)
@@ -2230,33 +2233,6 @@ FUNCTION_DEF(module_launch, 1, 1, "module_launch(string module_id): launch the g
 	const std::string module_id = args()[0]->evaluate(variables).as_string();
 	return variant(new module_launch_command(module_id));
 END_FUNCTION_DEF(module_launch)
-
-namespace {
-bool consecutive_periods(char a, char b) {
-	return a == '.' && b == '.';
-}
-}
-
-FUNCTION_DEF(get_document, 1, 1, "get_document(string filename): return reference to the given JSON document")
-	const std::string docname = args()[0]->evaluate(variables).as_string();
-
-	static std::map<std::string, variant> cache;
-	variant& v = cache[docname];
-	if(v.is_null() == false) {
-		return v;
-	}
-
-	ASSERT_LOG(docname.empty() == false, "DOCUMENT NAME GIVEN TO get_document() IS EMPTY");
-	ASSERT_LOG(docname[0] != '/', "DOCUMENT NAME BEGINS WITH / " << docname);
-	ASSERT_LOG(std::adjacent_find(docname.begin(), docname.end(), consecutive_periods) == docname.end(), "DOCUMENT NAME CONTAINS ADJACENT PERIODS " << docname);
-
-	try {
-		const variant v = json::parse_from_file(docname);
-		return v;
-	} catch(json::parse_error&) {
-		return variant();
-	}
-END_FUNCTION_DEF(get_document)
 
 class custom_object_function_symbol_table : public function_symbol_table
 {

@@ -1838,6 +1838,33 @@ FUNCTION_DEF(debug_fn, 2, 2, "debug_fn(msg, expr): evaluates and returns expr. W
 	return res;
 END_FUNCTION_DEF(debug_fn)
 
+namespace {
+bool consecutive_periods(char a, char b) {
+	return a == '.' && b == '.';
+}
+}
+
+FUNCTION_DEF(get_document, 1, 1, "get_document(string filename): return reference to the given JSON document")
+	const std::string docname = args()[0]->evaluate(variables).as_string();
+
+	static std::map<std::string, variant> cache;
+	variant& v = cache[docname];
+	if(v.is_null() == false) {
+		return v;
+	}
+
+	ASSERT_LOG(docname.empty() == false, "DOCUMENT NAME GIVEN TO get_document() IS EMPTY");
+	ASSERT_LOG(docname[0] != '/', "DOCUMENT NAME BEGINS WITH / " << docname);
+	ASSERT_LOG(std::adjacent_find(docname.begin(), docname.end(), consecutive_periods) == docname.end(), "DOCUMENT NAME CONTAINS ADJACENT PERIODS " << docname);
+
+	try {
+		const variant v = json::parse_from_file(docname);
+		return v;
+	} catch(json::parse_error&) {
+		return variant();
+	}
+END_FUNCTION_DEF(get_document)
+
 }
 
 formula_function_expression::formula_function_expression(const std::string& name, const args_list& args, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& arg_names)

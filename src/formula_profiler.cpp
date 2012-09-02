@@ -22,6 +22,7 @@
 #include "formatter.hpp"
 #include "formula_profiler.hpp"
 #include "object_events.hpp"
+#include "variant.hpp"
 
 namespace formula_profiler
 {
@@ -35,6 +36,8 @@ std::string output_fname;
 pthread_t main_thread;
 
 int empty_samples = 0;
+
+std::map<std::vector<const game_logic::formula_expression*>, int> expression_call_stack_samples;
 
 std::vector<custom_object_event_frame> event_call_stack_samples;
 int num_samples = 0;
@@ -59,6 +62,8 @@ void sigprof_handler(int sig)
 		return;
 	}
 #endif
+
+	expression_call_stack_samples[get_expression_call_stack()]++;
 
 	if(num_samples == max_samples) {
 #ifdef _WINDOWS

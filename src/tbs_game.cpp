@@ -155,6 +155,7 @@ variant game::write(int nplayer) const
 		variant msg = deep_copy_variant(doc_);
 		game_logic::map_formula_callable_ptr vars(new game_logic::map_formula_callable);
 		vars->add("message", msg);
+		vars->add("nplayer", variant(nplayer));
 		const_cast<game*>(this)->handle_event("transform", vars.get());
 
 		result.add("state", msg);

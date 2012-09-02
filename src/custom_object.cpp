@@ -3725,6 +3725,17 @@ bool custom_object::handle_event_internal(int event, const formula_callable* con
 		return false;
 	}
 
+#ifndef NO_EDITOR
+	if(event != OBJECT_EVENT_ANY && (event < event_handlers_.size() && event_handlers_[OBJECT_EVENT_ANY] || type_->get_event_handler(OBJECT_EVENT_ANY))) {
+		game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
+		variant v(callable);
+
+		callable->add("event", variant(get_object_event_str(event)));
+
+		handle_event_internal(OBJECT_EVENT_ANY, callable, true);
+	}
+#endif
+
 	const game_logic::formula* handlers[2];
 	int nhandlers = 0;
 

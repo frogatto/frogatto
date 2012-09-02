@@ -23,7 +23,7 @@ public:
 
 	int x() const { return draw_area_.x(); }
 	int y() const { return draw_area_.y(); }
-	size_t width() const { return draw_area_.h(); }
+	size_t width() const { return draw_area_.w(); }
 	size_t height() const { return draw_area_.h(); }
 	rect draw_area() const { return draw_area_; }
 

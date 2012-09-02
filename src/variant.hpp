@@ -26,6 +26,8 @@ void pop_call_stack();
 std::string get_call_stack();
 std::string get_full_call_stack();
 
+const std::vector<const game_logic::formula_expression*>& get_expression_call_stack();
+
 struct call_stack_manager {
 	explicit call_stack_manager(const game_logic::formula_expression* str) {
 		push_call_stack(str);

@@ -94,6 +94,11 @@ std::string get_call_stack()
 	return res;
 }
 
+const std::vector<const game_logic::formula_expression*>& get_expression_call_stack()
+{
+	return call_stack;
+}
+
 std::string get_full_call_stack()
 {
 	std::string res;
