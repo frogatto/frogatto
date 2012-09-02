@@ -2,170 +2,30 @@
 
 Import("*")
 
-sources = Split("""
-IMG_savepng.cpp
-achievements.cpp
-animation_creator.cpp
-animation_preview_widget.cpp
-animation_widget.cpp
-asserts.cpp
-background.cpp
-base64.cpp
-blur.cpp
-border_widget.cpp
-button.cpp
-character_editor_dialog.cpp
-color_chart.cpp
-current_generator.cpp
-checkbox.cpp
-checksum.cpp
-clipboard.cpp
-code_editor_dialog.cpp
-code_editor_widget.cpp
-collision_utils.cpp
-color_utils.cpp
-compress.cpp
-controls.cpp
-controls_dialog.cpp
-custom_object.cpp
-custom_object_callable.cpp
-custom_object_dialog.cpp
-custom_object_functions.cpp
-custom_object_type.cpp
-debug_console.cpp
-decimal.cpp
-dialog.cpp
-difficulty.cpp
-drag_widget.cpp
-draw_number.cpp
-draw_scene.cpp
-draw_tile.cpp
-dropdown_widget.cpp
-editor.cpp
-editor_dialogs.cpp
-editor_formula_functions.cpp
-editor_layers_dialog.cpp
-editor_level_properties_dialog.cpp
-editor_module_properties_dialog.cpp
-editor_stats_dialog.cpp
-editor_variable_info.cpp
-external_text_editor.cpp
-entity.cpp
-file_chooser_dialog.cpp
-filesystem.cpp
-font.cpp
-formula.cpp
-formula_callable_definition.cpp
-formula_constants.cpp
-formula_function.cpp
-formula_function_registry.cpp
-formula_profiler.cpp
-formula_tokenizer.cpp
-formula_variable_storage.cpp
-frame.cpp
-framed_gui_element.cpp
-geometry.cpp
-game_registry.cpp
-gles2.cpp
-globals.cpp
-graphical_font.cpp
-graphical_font_label.cpp
-grid_widget.cpp
-group_property_editor_dialog.cpp
-gui_formula_functions.cpp
-gui_section.cpp
-hex_map.cpp
-hex_object.cpp
-http_client.cpp
-http_server.cpp
-i18n.cpp
-image_widget.cpp
-input.cpp
-iphone_controls.cpp
-joystick.cpp
-json_parser.cpp
-json_tokenizer.cpp
-key.cpp
-key_button.cpp
-label.cpp
-level.cpp
-level_logic.cpp
-level_object.cpp
-level_runner.cpp
-level_solid_map.cpp
-light.cpp
-load_level_nothread.cpp
-main.cpp
-md5.cpp
-message_dialog.cpp
-module.cpp
-movement_script.cpp
-multi_tile_pattern.cpp
-multiplayer.cpp
-object_events.cpp
-options_dialog.cpp
-particle_system.cpp
-pathfinding.cpp
-pause_game_dialog.cpp
-playable_custom_object.cpp
-player_info.cpp
-preferences.cpp
-preprocessor.cpp
-preview_tileset_widget.cpp
-progress_bar.cpp
-property_editor_dialog.cpp
-random.cpp
-raster.cpp
-raster_distortion.cpp
-rectangle_rotator.cpp
-scrollable_widget.cpp
-scrollbar_widget.cpp
-segment_editor_dialog.cpp
-settings_dialog.cpp
-shaders.cpp
-slider.cpp
-solid_map.cpp
-sound.cpp
-speech_dialog.cpp
-stats.cpp
-string_utils.cpp
-surface_cache.cpp
-surface_formula.cpp
-surface_palette.cpp
-surface_scaling.cpp
-surface.cpp
-tbs_ai_player.cpp
-tbs_client.cpp
-tbs_functions.cpp
-tbs_game.cpp
-tbs_server.cpp
-tbs_web_server.cpp
-texture.cpp
-texture_frame_buffer.cpp
-text_editor_widget.cpp
-thread.cpp
-tile_map.cpp
-tileset_editor_dialog.cpp
-tooltip.cpp
-translate.cpp
-tree_view_widget.cpp
-utils.cpp
-variant.cpp
-variant_callable.cpp
-variant_utils.cpp
-vector_text.cpp
-water.cpp
-water_particle_system.cpp
-weather_particle_system.cpp
-widget.cpp
-widget_factory.cpp
-wm.cpp
-wml_formula_callable.cpp
-unit_test.cpp
-formula_test.cpp
-loading_screen.cpp
-utility_object_compiler.cpp
-utility_query.cpp
-utility_render_level.cpp
-""")
-env.Program("#/game" + build_suffix, sources)
+# Upwards from build/{release,debug}/
+# There should be a better solution
+makefile = file('../../Makefile.common')
+target = None
+sources_map = {}
+
+for line in makefile.readlines():
+    if "objects =" in line:
+        target = line.split("objects")[0]
+        if len(target) == 0:
+            target = "game"
+        else:
+            target = target.rstrip("_")
+        sources_map[target] = []
+    elif target:
+        line = line.rstrip("\\ \n")
+        if line.endswith(".o"):
+            sources_map[target].append(line.lstrip().replace(".o", ".cpp"))
+
+binaries = []
+
+for key in sources_map:
+    prog = env.Program("#/" + key + build_suffix, sources_map[key])
+    binaries.append(env.Alias(key, prog))
+
+all = env.Alias("all", binaries)
+env.Default(all)
