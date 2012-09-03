@@ -471,6 +471,8 @@ void texture::set_as_current_texture() const
 
 texture texture::get(const std::string& str, int options)
 {
+	ASSERT_LOG(str.empty() == false, "Empty string passed to texture::get()");
+
 	std::string str_buf;
 	if(options) {
 		str_buf = formatter() << str << " ~~ " << options; 
