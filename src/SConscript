@@ -6,18 +6,15 @@ makefile = file(File('#/Makefile.common').abspath)
 target = None
 sources_map = {}
 
-for line in makefile.readlines():
-    if "objects =" in line:
-        target = line.split("objects")[0]
-        if len(target) == 0:
-            target = "game"
-        else:
-            target = target.rstrip("_")
-        sources_map[target] = []
-    elif target:
-        line = line.rstrip("\\ \n")
-        if line.endswith(".o"):
-            sources_map[target].append(line.lstrip().replace(".o", ".cpp"))
+contents = makefile.read()
+objectlines = [line for line in contents.replace("\\\n","").split("\n") if "objects =" in line]
+for line in objectlines:
+    (target, rest) = line.split("objects =")
+    if len(target) == 0:
+        target = "game"
+    else:
+        target = target.rstrip("_")
+    sources_map[target] = [object.strip().replace(".o", ".cpp") for object in rest.strip().split()]
 
 binaries = []
 
