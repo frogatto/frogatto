@@ -23,6 +23,7 @@ core.*
 *.exe
 *.d
 compiled-*
+tiles-compiled-*
 
 compiled/
 

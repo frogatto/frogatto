@@ -247,4 +247,4 @@ Testing:
 ⑩ Repeat step two, but set the configuration to Device-Release.
 ⑪ Change the build target of your projects to Device-Release from Device-Debug from the right-click menu.
 ⑫ Recompile everything in order, and upload the project to the PlayBook.
- -- Make sure you've put back the bar-descriptor AND the master-config files. -- 
+ -- Put back the bar-descriptor when you've finished. -- 

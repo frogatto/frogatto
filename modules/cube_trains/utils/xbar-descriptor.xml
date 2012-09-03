@@ -70,7 +70,11 @@
    <asset path="modules/cube_trains/images">modules/cube_trains/images</asset>
    <asset path="modules/cube_trains/module.cfg">modules/cube_trains/module.cfg</asset>
    <asset path="modules/cube_trains/images/window-icon.png">window-icon.png</asset>
-   <asset path="modules/cube_trains/master-config.cfg">master-config.cfg</asset>
+   <asset path="modules/cube_trains/utils/master-config.cfg">master-config.cfg</asset>
+   <asset path="UbuntuMono-B.ttf">UbuntuMono-B.ttf</asset>
+   <asset path="UbuntuMono-BI.ttf">UbuntuMono-BI.ttf</asset>
+   <asset path="UbuntuMono-R.ttf">UbuntuMono-R.ttf</asset>
+   <asset path="UbuntuMono-RI.ttf">UbuntuMono-RI.ttf</asset>
     <configuration id="com.qnx.qcc.configuration.exe.debug.925317493" name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="Device-Debug/frogatto" entry="true" type="Qnx/Elf">frogatto</asset>
