@@ -2,9 +2,7 @@
 
 Import("*")
 
-# Upwards from build/{release,debug}/
-# There should be a better solution
-makefile = file('../../Makefile.common')
+makefile = file(File('#/Makefile.common').abspath)
 target = None
 sources_map = {}
 
