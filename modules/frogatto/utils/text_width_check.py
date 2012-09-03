@@ -6,7 +6,7 @@ import os, sys, codecs
 #e.g.:
 #utils/text_width_check.py po/frogatto.pot 360
 global MAXWIDTH
-MAXWIDTH = 350
+MAXWIDTH = 360
 
 def main(catalog):
 	if catalog.split('.')[-1] == "pot":
