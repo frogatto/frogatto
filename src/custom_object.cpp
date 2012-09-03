@@ -1100,7 +1100,6 @@ void custom_object::process(level& lvl)
 
 		}
 
-		if(is_human()) std::cerr << "COLLIDE FEET 1\n";
 		handle_event(OBJECT_EVENT_COLLIDE_FEET, callable);
 		fired_collide_feet = true;
 	}
@@ -1413,7 +1412,6 @@ void custom_object::process(level& lvl)
 
 			}
 
-			if(is_human()) std::cerr << "COLLIDE FEET 2\n";
 			handle_event(effective_velocity_y < 0 ? OBJECT_EVENT_COLLIDE_HEAD : OBJECT_EVENT_COLLIDE_FEET, callable);
 			fired_collide_feet = true;
 		}
@@ -1661,7 +1659,6 @@ void custom_object::process(level& lvl)
 			}
 		}
 
-			if(is_human()) std::cerr << "COLLIDE FEET 3\n";
 		handle_event(collide ? OBJECT_EVENT_COLLIDE_SIDE : OBJECT_EVENT_COLLIDE_FEET, callable);
 		fired_collide_feet = true;
 		if(collide_info.damage) {
