@@ -763,8 +763,8 @@ unsigned int map_color_to_16bpp(unsigned int color)
 void texture::ID::build_id()
 {
 	glBindTexture(GL_TEXTURE_2D,id);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	if(preferences::use_16bpp_textures()) {
 		std::vector<GLushort> buf(s->w*s->h);
