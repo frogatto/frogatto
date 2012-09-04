@@ -22,6 +22,7 @@ void client::send_request(const std::string& request, game_logic::map_formula_ca
 void client::recv_handler(const std::string& msg)
 {
 	if(handler_) {
+		std::cerr << "GOT MESSAGE ((" << msg << "))\n";
 		callable_->add("message", json::parse(msg, json::JSON_NO_PREPROCESSOR));
 		handler_("message_received");
 	}
@@ -37,7 +38,7 @@ void client::error_handler(const std::string& err)
 
 variant client::get_value(const std::string& key) const
 {
-	return variant();
+	return http_client::get_value(key);
 }
 
 }

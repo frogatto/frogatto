@@ -53,6 +53,7 @@ variant playable_custom_object::write() const
 void playable_custom_object::save_game()
 {
 	save_condition_ = clone();
+	save_condition_->add_to_level();
 }
 
 entity_ptr playable_custom_object::backup() const

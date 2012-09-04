@@ -255,6 +255,7 @@ protected:
 	virtual const game_logic::formula_callable_definition* get_definition() const;
 
 	entity_ptr standing_on() const { return standing_on_; }
+	virtual void add_to_level();
 
 	virtual rect platform_rect_at(int xpos) const;
 	virtual int platform_slope_at(int xpos) const;

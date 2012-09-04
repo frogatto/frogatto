@@ -4440,6 +4440,12 @@ gui::widget_ptr custom_object::get_widget_by_id(const std::string& id)
 	return gui::widget_ptr();
 }
 
+void custom_object::add_to_level()
+{
+	entity::add_to_level();
+	standing_on_.reset();
+}
+
 BENCHMARK(custom_object_spike) {
 	static level* lvl = NULL;
 	if(!lvl) {	

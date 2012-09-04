@@ -34,6 +34,10 @@ image_widget::image_widget(graphics::texture tex, int w, int h)
 image_widget::image_widget(const variant& v, game_logic::formula_callable* e)
 {
 	set_environment();
+	if(v.has_key("area")) {
+		area_ = rect(v["area"]);
+	}
+
 	texture_ = graphics::texture::get(v["image"].as_string());
 	rotate_ = v.has_key("rotation") ? v["rotation"].as_decimal().as_float() : 0.0;
 	init(v["image_width"].as_int(), v["image_height"].as_int());

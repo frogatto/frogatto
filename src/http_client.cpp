@@ -8,12 +8,14 @@ http_client::http_client(const std::string& host, const std::string& port, int s
   : session_id_(session),
     resolver_(io_service_),
 	host_(host),
-	resolver_query_(host.c_str(), port.c_str())
+	resolver_query_(host.c_str(), port.c_str()),
+	in_flight_(0)
 {
 }
 
 void http_client::send_request(const std::string& method_path, const std::string& request, boost::function<void(std::string)> handler, boost::function<void(std::string)> error_handler, boost::function<void(int,int,bool)> progress_handler)
 {
+	++in_flight_;
 	connection_ptr conn(new Connection(io_service_));
 	conn->method_path = method_path;
 	conn->request = request;
@@ -46,6 +48,7 @@ void http_client::handle_resolve(const boost::system::error_code& error, tcp::re
 				boost::asio::placeholders::error, conn, endpoint_iterator_));
 #endif
 	} else {
+		--in_flight_;
 		conn->error_handler("Error resolving connection");
 	}
 }
@@ -59,6 +62,7 @@ void http_client::handle_connect(const boost::system::error_code& error, connect
 		}
 		//ASSERT_LOG(endpoint_iterator_ != tcp::resolver::iterator(), "COULD NOT RESOLVE TBS SERVER: " << resolve_itor->endpoint().address().to_string() << ":" << resolve_itor->endpoint().port());
 		if(endpoint_iterator_ == tcp::resolver::iterator()) {
+			--in_flight_;
 			conn->error_handler("Error establishing connection");
 			return;
 		}
@@ -113,6 +117,7 @@ void http_client::handle_send(connection_ptr conn, const boost::system::error_co
 {
 
 	if(e) {
+		--in_flight_;
 		if(conn->error_handler) {
 			conn->error_handler("ERROR SENDING DATA");
 		}
@@ -136,6 +141,7 @@ void http_client::handle_send(connection_ptr conn, const boost::system::error_co
 void http_client::handle_receive(connection_ptr conn, const boost::system::error_code& e, size_t nbytes)
 {
 	if(e) {
+		--in_flight_;
 		if(conn->error_handler) {
 			conn->error_handler(e.value() == 2 ? "EOF ENCOUNTERED RECEIVING DATA" : "ERROR RECEIVING DATA");
 		}
@@ -182,6 +188,7 @@ void http_client::handle_receive(connection_ptr conn, const boost::system::error
 			end_headers = strstr(conn->response.c_str(), "\r\n\r\n");
 		}
 		ASSERT_LOG(end_headers, "COULD NOT FIND END OF HEADERS IN MESSAGE: " << conn->response);
+		--in_flight_;
 		conn->handler(std::string(end_headers+header_term_len));
 	} else {
 		if(conn->expected_len != -1 && conn->progress_handler) {
@@ -199,5 +206,8 @@ void http_client::process()
 
 variant http_client::get_value(const std::string& key) const
 {
+	if(key == "in_flight") {
+		return variant(in_flight_);
+	}
 	return variant();
 }

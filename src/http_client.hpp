@@ -23,10 +23,12 @@ public:
 					  boost::function<void(std::string)> error_handler,
 					  boost::function<void(int,int,bool)> progress_handler);
 	void process();
-private:
-	
+
+protected:
 	variant get_value(const std::string& key) const;
 
+private:
+	
 	int session_id_;
 
 	boost::asio::io_service io_service_;
@@ -59,6 +61,8 @@ private:
 	tcp::resolver::query resolver_query_;
 	tcp::resolver::iterator endpoint_iterator_;
 	std::string host_;
+
+	int in_flight_;
 };
 
 
