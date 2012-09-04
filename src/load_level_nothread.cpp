@@ -12,11 +12,6 @@
 #include "variant.hpp"
 
 namespace {
-typedef concurrent_cache<std::string, variant> level_wml_map;
-level_wml_map& wml_cache() {
-	static level_wml_map instance;
-	return instance;
-}
 
 std::map<std::string,std::string>& get_level_paths() {
 	static std::map<std::string,std::string> res;
@@ -26,7 +21,6 @@ std::map<std::string,std::string>& get_level_paths() {
 
 namespace loadlevel {
 void reload_level_paths() {
-	wml_cache().clear();
 	get_level_paths().clear();
 	load_level_paths();
 }
@@ -47,74 +41,23 @@ const std::string& get_level_path(const std::string& name) {
 }
 }
 
-namespace {
-class wml_loader {
-	std::string lvl_;
-public:
-	wml_loader(const std::string& lvl) : lvl_(lvl)
-	{}
-	void operator()() {
-		const std::string& filename = loadlevel::get_level_path(lvl_);
-		try {
-			variant node(json::parse_from_file(filename));
-			wml_cache().put(lvl_, node);
-		} catch(...) {
-			std::cerr << "FAILED TO LOAD " << lvl_ << " -> " << filename << "\n";
-			ASSERT_LOG(false, "FAILED TO LOAD");
-		}
-	}
-};
-}
-
 void clear_level_wml()
 {
-	wml_cache().clear();
 }
 
 void preload_level_wml(const std::string& lvl)
 {
-	if(lvl == "autosave.cfg" || (lvl.substr(0,4) == "save" && lvl.substr(lvl.length()-4) == ".cfg")) {
-		return;
-	}
-
-	if(wml_cache().count(lvl)) {
-		return;
-	}
-
-	wml_loader loader(lvl);
-	loader();
 }
 
 variant load_level_wml(const std::string& lvl)
 {
-	if(lvl == "tmp_state.cfg") {
-		//special state for debugging.
-		return json::parse_from_file("./tmp_state.cfg");
-	}
-
-	if(lvl == "autosave.cfg" || (lvl.substr(0,4) == "save" && lvl.substr(lvl.length()-4) == ".cfg")) {
-		std::string filename;
-		if(lvl == "autosave.cfg") {
-			filename = preferences::auto_save_file_path();
-		} else {
-			filename = preferences::save_file_path();
-		}
-
-		return json::parse_from_file(filename);
-	}
-
-	if(wml_cache().count(lvl)) {
-		return wml_cache().get(lvl);
-	}
-
-	wml_loader loader(lvl);
-	loader();
 	return load_level_wml_nowait(lvl);
 }
 
 variant load_level_wml_nowait(const std::string& lvl)
 {
-	return wml_cache().get(lvl);
+	const std::string& filename = loadlevel::get_level_path(lvl);
+	return json::parse_from_file(filename);
 }
 
 load_level_manager::load_level_manager()
