@@ -2264,7 +2264,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_DISTANCE_TO_CLIFF: return variant(::distance_to_cliff(level::current(), feet_x(), feet_y(), face_dir()));
 	case CUSTOM_OBJECT_SLOPE_STANDING_ON: {
 		if(standing_on_ && standing_on_->platform() && !standing_on_->solid_platform()) {
-			return variant(-standing_on_->platform_slope_at(feet_x())*face_dir());
+			return variant(standing_on_->platform_slope_at(feet_x()));
 		}
 		return variant(-slope_standing_on(6)*face_dir());
 	}
