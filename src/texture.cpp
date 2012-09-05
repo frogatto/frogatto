@@ -581,6 +581,7 @@ void texture::clear_cache()
 	texture_cache().clear();
 }
 
+#ifndef NO_EDITOR
 namespace {
 std::set<std::string> listening_for_files, files_updated;
 
@@ -693,6 +694,7 @@ void texture::clear_modified_files_from_cache()
 
 	files_updated = error_paths;
 }
+#endif // NO_EDITOR
 
 const unsigned char* texture::color_at(int x, int y) const
 {

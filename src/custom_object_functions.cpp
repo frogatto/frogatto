@@ -2117,6 +2117,8 @@ FUNCTION_DEF(rotate_rect, 4, 4, "rotate_rect(int center_x, int center_y, int rot
 
 END_FUNCTION_DEF(rotate_rect)
 
+#if !defined(NO_MODULES)
+
 class module_pump_command : public entity_command_callable {
 	module::client* client_;
 public:
@@ -2233,6 +2235,8 @@ FUNCTION_DEF(module_launch, 1, 1, "module_launch(string module_id): launch the g
 	const std::string module_id = args()[0]->evaluate(variables).as_string();
 	return variant(new module_launch_command(module_id));
 END_FUNCTION_DEF(module_launch)
+
+#endif // NO_MODULES
 
 class custom_object_function_symbol_table : public function_symbol_table
 {

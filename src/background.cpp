@@ -26,15 +26,17 @@ typedef std::pair<std::string, int> cache_key;
 typedef std::map<cache_key, boost::shared_ptr<background> > bg_cache;
 bg_cache cache;
 
+#ifndef NO_EDITOR
 std::set<std::string> listening_for_files, files_updated;
 
 void on_bg_file_updated(std::string path)
 {
 	files_updated.insert(path);
 }
-
+#endif // NO_EDITOR
 }
 
+#ifndef NO_EDITOR
 void background::load_modified_backgrounds()
 {
 	static int prev_nitems = 0;
@@ -72,6 +74,7 @@ void background::load_modified_backgrounds()
 		}
 	}
 }
+#endif // NO_EDITOR
 
 boost::shared_ptr<background> background::get(const std::string& name, int palette_id)
 {

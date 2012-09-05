@@ -345,18 +345,7 @@ bool is_valid_module_id(const std::string& id)
 }
 }
 
-bool uninstall_downloaded_module(const std::string& id)
-{
-	if(!is_valid_module_id(id)) {
-		ASSERT_LOG(false, "ILLEGAL MODULE ID: " << id);
-		return false;
-	}
-
-	const std::string path_str = preferences::dlc_path() + "/" + id;
-	sys::rmdir_recursive(path_str);
-	return true;
-}
-
+#if !defined(NO_TCP) || !defined(NO_MODULES)
 variant build_package(const std::string& id)
 {
 	std::vector<char> data;
@@ -416,7 +405,18 @@ variant build_package(const std::string& id)
 	return variant(&data_attr);
 }
 
-#if !defined(NO_TCP)
+bool uninstall_downloaded_module(const std::string& id)
+{
+	if(!is_valid_module_id(id)) {
+		ASSERT_LOG(false, "ILLEGAL MODULE ID: " << id);
+		return false;
+	}
+
+	const std::string path_str = preferences::dlc_path() + "/" + id;
+	sys::rmdir_recursive(path_str);
+	return true;
+}
+
 namespace {
 void finish_upload(std::string response, bool* flag, std::string* result)
 {
