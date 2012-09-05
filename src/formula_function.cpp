@@ -1330,11 +1330,11 @@ END_FUNCTION_DEF(decompress)
 		variant execute(const formula_callable& variables) const {
 			std::vector<std::string> chopped;
 			if(args().size() >= 2) {
-				const std::string& thestring = args()[0]->evaluate(variables).as_string();
-				const std::string& delimiter = args()[1]->evaluate(variables).as_string();
+				const std::string thestring = args()[0]->evaluate(variables).as_string();
+				const std::string delimiter = args()[1]->evaluate(variables).as_string();
 				chopped = util::split(thestring, delimiter);
 			} else {
-				const std::string& thestring = args()[0]->evaluate(variables).as_string();
+				const std::string thestring = args()[0]->evaluate(variables).as_string();
 				chopped = util::split(thestring);
 			}
 		
