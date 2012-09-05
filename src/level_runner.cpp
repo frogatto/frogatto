@@ -529,7 +529,7 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 
 void level_runner::show_pause_title()
 {
-	set_scene_title("Paused\n\n\n    (ctrl-p)", paused ? 2147483647 : 25);
+	set_scene_title("Paused\n\n\n(ctrl-p)", paused ? INT_MAX : 25);
 }
 
 level_runner* level_runner::get_current()
@@ -1128,10 +1128,10 @@ bool level_runner::play_cycle()
 						if(!paused && !editor_) {
 							toggle_pause();
 						}
-					} else {
-						if(paused) {
-							toggle_pause();
-						}
+					//} else {
+					//	if(paused) {
+					//		toggle_pause();
+					//	}
 					}
 					
 				}
