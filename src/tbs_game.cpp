@@ -350,6 +350,12 @@ void game::set_value(const std::string& key, const variant& value)
 {
 	if(key == "doc") {
 		doc_ = value;
+	} else if(key == "event") {
+		if(value.is_string()) {
+			handle_event(value.as_string());
+		} else if(value.is_map()) {
+			handle_event(value["event"].as_string(), map_into_callable(value["arg"]).get());
+		}
 	} else if(backup_callable_) {
 		backup_callable_->mutate_value(key, value);
 	}

@@ -6,7 +6,10 @@
 #include <map>
 
 #include "foreach.hpp"
+#include "formula_callable.hpp"
 #include "variant.hpp"
+
+game_logic::formula_callable_ptr map_into_callable(variant v);
 
 //Function which will try to append list of variations. Behaviors:
 //anya, nullb -> anya
