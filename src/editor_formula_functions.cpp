@@ -82,7 +82,7 @@ public:
 	{}
 private:
 	variant execute(const formula_callable& variables) const {
-		const std::string& tile_id = args()[0]->evaluate(variables).as_string();
+		const std::string tile_id = args()[0]->evaluate(variables).as_string();
 		const int x1 = args()[1]->evaluate(variables).as_int();
 		const int y1 = args()[2]->evaluate(variables).as_int();
 		const int x2 = args().size() > 3 ? args()[3]->evaluate(variables).as_int() : x1;
@@ -111,7 +111,7 @@ public:
 	{}
 private:
 	variant execute(const formula_callable& variables) const {
-		const std::string& tile_id = args()[0]->evaluate(variables).as_string();
+		const std::string tile_id = args()[0]->evaluate(variables).as_string();
 		const int x1 = args()[1]->evaluate(variables).as_int();
 		const int y1 = args()[2]->evaluate(variables).as_int();
 		const int x2 = args().size() > 3 ? args()[3]->evaluate(variables).as_int() : x1;

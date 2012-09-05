@@ -1107,11 +1107,14 @@ private:
 			if(items.is_map()) {
 				map_formula_callable_ptr callable(new map_formula_callable(&variables));
 				callable->add("context", variant(&variables));
+				int index = 0;
 				foreach(const variant_pair& p, items.as_map()) {
 					callable->add("key", p.first);
 					callable->add("value", p.second);
+					callable->add("index", variant(index));
 					const variant val = args().back()->evaluate(*callable);
 					vars.push_back(val);
+					++index;
 				}
 			} else {
 				boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
@@ -1298,7 +1301,7 @@ FUNCTION_DEF(compress, 1, 2, "compress(string, (optional) compression_level): Co
 	if(args().size() > 1) {
 		compression_level = args()[1]->evaluate(variables).as_int();
 	}
-	const std::string& s = args()[0]->evaluate(variables).as_string();
+	const std::string s = args()[0]->evaluate(variables).as_string();
 	return variant(new zip::compressed_data(std::vector<char>(s.begin(), s.end()), compression_level));
 END_FUNCTION_DEF(compress)
 
@@ -1567,7 +1570,7 @@ END_FUNCTION_DEF(decompress)
 
 	private:
 		variant execute(const formula_callable& variables) const {
-			const std::string& str = args()[0]->evaluate(variables).as_string();
+			const std::string str = args()[0]->evaluate(variables).as_string();
 			std::vector<variant> result;
 			
 			int count = 0;

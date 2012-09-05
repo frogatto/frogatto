@@ -51,6 +51,7 @@
 #include "preferences.hpp"
 #include "settings_dialog.hpp"
 #include "module.hpp"
+#include "variant_utils.hpp"
 #include "widget_factory.hpp"
 
 using namespace game_logic;
@@ -1422,23 +1423,6 @@ public:
 		e->handle_event(event_, callable_.get());
 	}
 };
-
-namespace {
-const_formula_callable_ptr map_into_callable(variant v) {
-	if(v.is_callable()) {
-		return const_formula_callable_ptr(v.as_callable());
-	} else if(v.is_map()) {
-		map_formula_callable* res = new map_formula_callable;
-		foreach(const variant_pair& p, v.as_map()) {
-			res->add(p.first.as_string(), p.second);
-		}
-
-		return const_formula_callable_ptr(res);
-	} else {
-		return const_formula_callable_ptr();
-	}
-}
-}
 
 FUNCTION_DEF(fire_event, 1, 3, "fire_event((optional) object target, string id, (optional)callable arg): fires the event with the given id. Targets the current object by default, or target if given. Sends arg as the event argument if given")
 	entity_ptr target;

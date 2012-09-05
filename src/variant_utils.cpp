@@ -3,6 +3,22 @@
 #include "string_utils.hpp"
 #include "variant_utils.hpp"
 
+game_logic::formula_callable_ptr map_into_callable(variant v)
+{
+	if(v.is_callable()) {
+		return game_logic::formula_callable_ptr(v.mutable_callable());
+	} else if(v.is_map()) {
+		game_logic::map_formula_callable* res = new game_logic::map_formula_callable;
+		foreach(const variant_pair& p, v.as_map()) {
+			res->add(p.first.as_string(), p.second);
+		}
+
+		return game_logic::formula_callable_ptr(res);
+	} else {
+		return game_logic::formula_callable_ptr();
+	}
+}
+
 variant append_variants(variant a, variant b)
 {
 	if(a.is_null()) {
