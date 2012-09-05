@@ -1316,6 +1316,9 @@ END_FUNCTION_DEF(decompress)
 	private:
 		variant execute(const formula_callable& variables) const {
 			const variant items = args()[0]->evaluate(variables);
+			if(items.is_string()) {
+				return variant(items.as_string().size());
+			}
 			return variant(static_cast<int>(items.num_elements()));
 		}
 	};
