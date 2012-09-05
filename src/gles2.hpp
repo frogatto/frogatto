@@ -21,6 +21,8 @@
 #define GL_MODELVIEW_MATRIX               0x0BA6
 #define GL_PROJECTION_MATRIX              0x0BA7
 
+extern "C" {
+
 void glPushMatrix();
 void glPopMatrix();
 void glMatrixMode(GLenum mode);
@@ -38,6 +40,8 @@ void glGetFloatv_1(GLenum pname, GLfloat* params);
 void glShadeModel(GLenum mode);
 
 void glOrthof(GLfloat left, GLfloat right, GLfloat bottom, GLfloat top, GLfloat zNear, GLfloat zFar);
+
+}
 
 #else
 

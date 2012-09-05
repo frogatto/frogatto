@@ -21,6 +21,8 @@ namespace {
 
 #if defined(GL_ES_VERSION_2_0)
 
+extern "C" {
+
 void glMatrixMode(GLenum mode)
 {
 	ASSERT_LOG(mode == GL_MODELVIEW || mode == GL_PROJECTION, "Unrecognised matrix mode: " << mode)
@@ -142,6 +144,8 @@ void glOrthof(GLfloat left, GLfloat right, GLfloat bottom, GLfloat top, GLfloat 
 	} else if(matrix_mode == GL_PROJECTION) {
 		proj_matrix = ortho * proj_matrix;
 	}
+}
+
 }
 #else
 
