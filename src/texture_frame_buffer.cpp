@@ -54,7 +54,7 @@ void init(int buffer_width, int buffer_height)
 	frame_buffer_texture_width = buffer_width;
 	frame_buffer_texture_height = buffer_height;
 
-#if defined(__ANDROID__) || defined(__native_client__)
+#if /*defined(__ANDROID__) ||*/ defined(__native_client__)
 	{
 		supported = false;
 		LOG("FRAME BUFFER OBJECT NOT SUPPORTED");
@@ -62,7 +62,7 @@ void init(int buffer_width, int buffer_height)
 	}
 #endif
 
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY) || defined(__ANDROID__)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 	if (glGenFramebuffersOES        != NULL &&
 		glBindFramebufferOES        != NULL &&
 		glFramebufferTexture2DOES   != NULL &&
@@ -90,11 +90,9 @@ void init(int buffer_width, int buffer_height)
 #ifndef TARGET_TEGRA
 	glGetIntegerv(EXT_MACRO(GL_FRAMEBUFFER_BINDING), &video_framebuffer_id);
 #endif
-	// Grab the error code first, because of the side effect in glGetError() of 
-	// clearing the error code and the double call in the ASSERT_EQ() macro we lose
-	// the actual error code.
+
+	// Clear any current errors.
 	GLenum err = glGetError();
-	ASSERT_EQ(err, GL_NO_ERROR);
 
 	glGenTextures(1, &texture_id);
 	glBindTexture(GL_TEXTURE_2D, texture_id);

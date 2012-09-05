@@ -415,6 +415,7 @@ std::vector<const_custom_object_type_ptr> custom_object_type::get_all()
 	return res;
 }
 
+#ifndef NO_EDITOR
 namespace {
 std::set<std::string> listening_for_files, files_updated;
 
@@ -464,6 +465,7 @@ int custom_object_type::reload_modified_code()
 
 	return result;
 }
+#endif // NO_EDITOR
 
 void custom_object_type::set_file_contents(const std::string& file_path, const std::string& contents)
 {
