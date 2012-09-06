@@ -5,6 +5,7 @@
 #include <boost/intrusive_ptr.hpp>
 #include <vector>
 
+#include "hex_object_fwd.hpp"
 #include "hex_object.hpp"
 #include "formula_callable.hpp"
 #include "variant.hpp"
