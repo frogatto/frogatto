@@ -31,7 +31,7 @@
 #include "text_editor_widget.hpp"
 #include "tree_view_widget.hpp"
 
-#define TEMPLATE_DIRECTORY	"data/object_templates/"
+const std::string template_directory = "data/object_templates/";
 
 namespace gui {
 
@@ -141,7 +141,7 @@ void reset_dialog_paths()
 
 std::string get_dialog_file(const std::string& fname)
 {
-	load_template_file_paths(TEMPLATE_DIRECTORY);
+	load_template_file_paths(template_directory);
 	module::module_file_map::const_iterator it = module::find(get_template_path(), fname);
 	ASSERT_LOG(it != get_template_path().end(), "OBJECT TEMPLATE FILE NOT FOUND: " << fname);
 	return it->second;
@@ -168,7 +168,7 @@ namespace editor_dialogs {
 custom_object_dialog::custom_object_dialog(editor& e, int x, int y, int w, int h)
 	: gui::dialog(x,y,w,h), dragging_slider_(false), selected_template_(0)
 {
-	load_template_file_paths(TEMPLATE_DIRECTORY);
+	load_template_file_paths(template_directory);
 	set_clear_bg_amount(255);
 	std::map<variant, variant> m;
 	object_template_ = variant(&m);

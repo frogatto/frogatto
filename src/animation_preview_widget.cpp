@@ -244,7 +244,7 @@ namespace gui {
 
 bool animation_preview_widget::is_animation(variant obj)
 {
-	return !obj.is_null() && obj["image"].is_string();
+	return !obj.is_null() && obj["image"].is_string() && !obj["image"].as_string().empty();
 }
 
 animation_preview_widget::animation_preview_widget(const variant& v, game_logic::formula_callable* e) 

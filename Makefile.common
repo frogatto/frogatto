@@ -78,6 +78,7 @@ objects = \
 	gui_section.o \
 	hex_map.o \
 	hex_object.o \
+	hex_tile.o \
 	http_client.o \
     http_server.o \
 	i18n.o \

@@ -523,6 +523,23 @@ FUNCTION_DEF(regex_replace, 3, 3, "regex_replace(string, string, string) -> stri
 	return variant(boost::regex_replace(str, re, value));
 END_FUNCTION_DEF(regex_replace)
 
+FUNCTION_DEF(regex_match, 2, 2, "regex_match(string, re_string) -> string: returns null if not found, else returns the whole string or a list of sub-strings depending on whether blocks were demarcated.")
+	const std::string str = args()[0]->evaluate(variables).as_string();
+	const boost::regex re(args()[1]->evaluate(variables).as_string());
+	 boost::match_results<std::string::const_iterator> m;
+	if(boost::regex_match(str, m, re) == false) {
+		return variant();
+	}
+	if(m.size() == 1) {
+		return variant(std::string(m[0].first, m[0].second));
+	} 
+	std::vector<variant> v;
+	for(size_t i = 1; i < m.size(); i++) {
+		v.push_back(variant(std::string(m[i].first, m[i].second)));
+	}
+	return variant(&v);
+END_FUNCTION_DEF(regex_match)
+
 FUNCTION_DEF(fold, 2, 3, "fold(list, expr, [default]) -> value")
 	variant list = args()[0]->evaluate(variables);
 	const int size = list.num_elements();
@@ -1319,6 +1336,9 @@ END_FUNCTION_DEF(decompress)
 	private:
 		variant execute(const formula_callable& variables) const {
 			const variant items = args()[0]->evaluate(variables);
+			if(items.is_string()) {
+				return variant(items.as_string().size());
+			}
 			return variant(static_cast<int>(items.num_elements()));
 		}
 	};

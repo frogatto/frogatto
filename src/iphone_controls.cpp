@@ -268,7 +268,13 @@ void iphone_controls::draw()
 		  underwater_circle_x, underwater_circle_y,
 		  underwater_circle_x + x*underwater_circle_rad, underwater_circle_y + y*underwater_circle_rad
 		};
-
+#if defined(USE_GLES2)
+		glColor4ub(255, 0, 0, 255);
+		gles2::manager gles2_manager;
+		glEnableVertexAttribArray(gles2_manager.vtx_coord);
+		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, GL_FALSE, 0, varray);
+		glDrawArrays(GL_LINES, 0, (sizeof(varray)/sizeof(*varray))/2);
+#else
 		glDisable(GL_TEXTURE_2D);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glColor4ub(255, 0, 0, 255);
@@ -276,6 +282,7 @@ void iphone_controls::draw()
 		glDrawArrays(GL_LINES, 0, (sizeof(varray)/sizeof(*varray))/2);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
+#endif
 	}
 
 	glColor4ub(255, 255, 255, 255);

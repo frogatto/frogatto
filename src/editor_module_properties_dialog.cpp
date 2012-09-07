@@ -172,7 +172,7 @@ void editor_module_properties_dialog::execute_change_module_includes(const std::
 		context_menu_.reset();
 	}
 
-	if(index < 0 || index >= choices.size()) {
+	if(index < 0 || size_t(index) >= choices.size()) {
 		return;
 	}
 
@@ -213,6 +213,33 @@ void editor_module_properties_dialog::create_new_module() {
 		variant empty_lvl = json::parse_from_file("data/level/empty.cfg");
 		empty_lvl.add_attr(variant("id"), variant("titlescreen.cfg"));
 		sys::write_file(mod_path + preferences::level_path() + "titlescreen.cfg", empty_lvl.write_json());
+
+		// Module specifed as standalone, write out a few extra useful files.
+		if(mod_.included_modules_.empty()) {
+			// data/fonts.cfg			-- {font:["@flatten","@include data/dialog_font.cfg","@include data/label_font.cfg"]}
+			// data/functions.cfg		-- {}
+			// data/gui.cfg				-- {section:["@flatten","@include data/editor-tools.cfg","@include data/gui-elements.cfg"],framed_gui_element: ["@flatten","@include data/framed-gui-elements.cfg"]}
+			// data/music.cfg			-- {}
+			// data/preload.cfg			-- { preload: [], }
+			// data/tiles.cfg			-- {}
+			// data/gui/null.cfg		-- {}
+			sys::write_file(mod_path + "data/fonts.cfg", "{font:[\"@flatten\",\"@include data/dialog_font.cfg\",\"@include data/label_font.cfg\"]}");
+			sys::write_file(mod_path + "data/functions.cfg", "{\n}");
+			sys::write_file(mod_path + "data/music.cfg", "{\n}");
+			sys::write_file(mod_path + "data/tiles.cfg", "{\n}");
+			sys::write_file(mod_path + "data/gui/null.cfg", "{\n}");
+			sys::write_file(mod_path + "data/preload.cfg", "{\npreload: [\n],\n}");
+			sys::write_file(mod_path + "data/gui.cfg", 
+				"{\nsection:["
+				"\n\t\"@flatten\","
+				"\n\t\"@include data/editor-tools.cfg\","
+				"\n\t\"@include data/gui-elements.cfg\""
+				"\n],"
+				"framed_gui_element: ["
+				"\n\t\"@flatten\","
+				"\n\t\"@include data/framed-gui-elements.cfg\""
+				"\n]\n}");
+		}
 	}
 }
 

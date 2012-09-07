@@ -4,7 +4,12 @@
 
 #include "asserts.hpp"
 #include "foreach.hpp"
+#include "formula.hpp"
 #include "hex_map.hpp"
+#include "hex_object.hpp"
+#include "hex_tile.hpp"
+#include "json_parser.hpp"
+#include "module.hpp"
 #include "variant_utils.hpp"
 
 namespace hex {
@@ -55,10 +60,11 @@ void hex_map::draw() const
 
 void hex_map::build()
 {
-	// Then apply the rules generated from FFL.
-	foreach(hex_tile_row& row, tiles_) {
-		foreach(hex_object_ptr& col, row) {
-			col->apply_rules();
+	foreach(const std::string& rule, hex_object::get_rules()) {
+		foreach(hex_tile_row& row, tiles_) {
+			foreach(hex_object_ptr& col, row) {
+				col->apply_rules(rule);
+			}
 		}
 	}
 }
@@ -82,6 +88,8 @@ variant hex_map::write() const
 
 hex_object_ptr hex_map::get_hex_tile(direction d, int x, int y) const
 {
+	int ox = x;
+	int oy = y;
 	x -= x_;
 	y -= y_;
 	if(d == NORTH) {
@@ -89,24 +97,24 @@ hex_object_ptr hex_map::get_hex_tile(direction d, int x, int y) const
 	} else if(d == SOUTH) {
 		y += 1;
 	} else if(d == NORTH_WEST) {
-		y -= (x%2==0) ? 1 : 0;
+		y -= (abs(ox)%2==0) ? 1 : 0;
 		x -= 1;
 	} else if(d == NORTH_EAST) {
-		y -= (x%2==0) ? 1 : 0;
+		y -= (abs(ox)%2==0) ? 1 : 0;
 		x += 1;
 	} else if(d == SOUTH_WEST) {
-		y += (x%2) ? 1 : 0;
+		y += (abs(ox)%2) ? 1 : 0;
 		x -= 1;
 	} else if(d == SOUTH_EAST) {
-		y += (x%2) ? 1 : 0;
+		y += (abs(ox)%2) ? 1 : 0;
 		x += 1;
 	} else {
 		ASSERT_LOG(false, "Unrecognised direction: " << d);
 	}
-	if(x < 0 || y < 0 || y >= tiles_.size()) {
+	if(x < 0 || y < 0 || size_t(y) >= tiles_.size()) {
 		return hex_object_ptr();
 	}
-	if(x >= tiles_[y].size()) {
+	if(size_t(x) >= tiles_[y].size()) {
 		return hex_object_ptr();
 	}
 	return tiles_[y][x];

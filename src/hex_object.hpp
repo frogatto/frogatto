@@ -6,39 +6,18 @@
 #include <vector>
 
 #include "graphics.hpp"
+#include "formula.hpp"
 #include "formula_callable.hpp"
 #include "raster.hpp"
 #include "texture.hpp"
 #include "variant.hpp"
+#include "hex_object_fwd.hpp"
+#include "hex_map.hpp"
+#include "hex_tile.hpp"
 
 namespace hex {
 
 class hex_map;
-
-class hex_tile : public game_logic::formula_callable
-{
-public:
-	explicit hex_tile(const std::string& key, variant node);
-	virtual ~hex_tile();
-	virtual void draw(int x, int y) const;
-	std::string key() const { return key_; }
-protected:
-	virtual variant get_value(const std::string&) const;
-	virtual void set_value(const std::string& key, const variant& value);
-private:
-	std::string key_;
-	std::string name_;
-	graphics::texture texture_;
-	std::vector<rect> rects_;
-
-	// Private default constructor and copy constructor to stop them
-	// from being used.
-	hex_tile() {}
-	hex_tile(hex_tile&) {}
-};
-
-typedef boost::intrusive_ptr<hex_tile> hex_tile_ptr;
-typedef boost::intrusive_ptr<const hex_tile> const_hex_tile_ptr;
 
 class hex_object : public game_logic::formula_callable
 {
@@ -52,19 +31,29 @@ public:
 	virtual void draw() const;
 	
 	void build();
-	void apply_rules();
+	void apply_rules(const std::string& rule);
 
 	std::string type() const { return type_; }
 	virtual bool execute_command(const variant& var);
+
+	hex_object_ptr get_tile_in_dir(enum direction d) const;
+	hex_object_ptr get_tile_in_dir(const std::string& s) const;
+
+	int x() const { return x_; }
+	int y() const { return y_; }
+
+	hex_tile_ptr tile() const { return tile_->owner(); }
+
+	static std::vector<std::string> get_rules();
 private:
 
 	// map coordinates.
 	int x_;
 	int y_;
 	// Pointer to the tile in this square.
-	hex_tile_ptr tile_;
+	const_basic_hex_tile_ptr tile_;
 	// Transitions. mapping z-order to transition.
-	std::map<int, hex_tile_ptr> transitions_;
+	std::vector<const_basic_hex_tile_ptr> transitions_;
 	// String representing the base type of this tile.
 	std::string type_;
 	// raw pointer to the map that owns this.
@@ -75,9 +64,6 @@ private:
 	hex_object() {}
 	hex_object(hex_object&) {}
 };
-
-typedef boost::intrusive_ptr<hex_object> hex_object_ptr;
-typedef boost::intrusive_ptr<const hex_object> const_hex_object_ptr;
 
 }
 

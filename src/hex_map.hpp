@@ -5,6 +5,11 @@
 #include <boost/intrusive_ptr.hpp>
 #include <vector>
 
+namespace hex {
+	enum direction {NORTH, SOUTH, NORTH_WEST, NORTH_EAST, SOUTH_WEST, SOUTH_EAST};
+}
+
+#include "hex_object_fwd.hpp"
 #include "hex_object.hpp"
 #include "formula_callable.hpp"
 #include "variant.hpp"
@@ -13,8 +18,6 @@ namespace hex {
 
 typedef std::vector<hex_object_ptr> hex_tile_row;
 typedef std::vector<hex_tile_row> hex_tile_map;
-
-enum direction {NORTH, SOUTH, NORTH_WEST, NORTH_EAST, SOUTH_WEST, SOUTH_EAST};
 
 class hex_map
 {
@@ -33,7 +36,7 @@ public:
 	virtual void draw() const;
 	variant write() const;
 
-	hex_object_ptr get_hex_tile(direction d, int x, int y) const;
+	hex_object_ptr get_hex_tile(enum hex::direction d, int x, int y) const;
 private:
 	hex_tile_map tiles_;
 	size_t width_;
