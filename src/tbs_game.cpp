@@ -163,6 +163,16 @@ variant game::write(int nplayer) const
 		result.add("state", doc_);
 	}
 
+	std::string log_str;
+	foreach(const std::string& s, log_) {
+		if(!log_str.empty()) {
+			log_str += "\n";
+		}
+		log_str += s;
+	}
+
+	result.add("log", variant(log_str));
+
 	return result.build();
 }
 
@@ -355,6 +365,10 @@ void game::set_value(const std::string& key, const variant& value)
 			handle_event(value.as_string());
 		} else if(value.is_map()) {
 			handle_event(value["event"].as_string(), map_into_callable(value["arg"]).get());
+		}
+	} else if(key == "log_message") {
+		if(!value.is_null()) {
+			log_.push_back(value.as_string());
 		}
 	} else if(backup_callable_) {
 		backup_callable_->mutate_value(key, value);

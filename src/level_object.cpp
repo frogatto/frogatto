@@ -64,6 +64,8 @@ std::map<std::pair<const_obj_variant_ptr, int>, level_object_ptr> secondary_zord
 
 std::map<obj_variant_ptr, int> tile_nodes_to_zorders;
 
+std::map<std::string, int> tile_str_to_palette;
+
 
 typedef std::pair<std::string, int> filename_palette_pair;
 
@@ -105,12 +107,20 @@ void create_compiled_tiles_image()
 		}
 
 		if(sheet == tiles_in_sheet.size()) {
-			tiles_in_sheet.push_back(0);
-			sheet_next_image_index.push_back(0);
-			sheets.push_back(graphics::surface(SDL_CreateRGBSurface(SDL_SWSURFACE, 1024, 1024, 32, SURFACE_MASK)));
+			const int num_sheets = 1 + i->second/TilesInSheet;
+			for(int n = 0; n != num_sheets; ++n) {
+				tiles_in_sheet.push_back(0);
+				sheet_next_image_index.push_back(0);
+				sheets.push_back(graphics::surface(SDL_CreateRGBSurface(SDL_SWSURFACE, 1024, 1024, 32, SURFACE_MASK)));
+				tiles_in_sheet[sheet] += i->second;
+			}
+		} else {
+			tiles_in_sheet[sheet] += i->second;
 		}
 
-		tiles_in_sheet[sheet] += i->second;
+		if(!(tiles_in_sheet[sheet] <= TilesInSheet)) {
+			std::cerr << "TOO MANY TILES IN SHEET " << sheet << "/" << tiles_in_sheet.size() << ": " << tiles_in_sheet[sheet] << "/" << TilesInSheet << " (zorder = " << i->first << ")\n";
+		}
 		zorder_to_sheet_number[i->first] = sheet;
 	}
 
@@ -155,8 +165,24 @@ void create_compiled_tiles_image()
 	SDL_SetAlpha(s.get(), 0, SDL_ALPHA_OPAQUE);
 
 	for(std::map<obj_variant_ptr, int>::const_iterator i = tile_nodes_to_zorders.begin(); i != tile_nodes_to_zorders.end(); ++i) {
-		const int sheet = zorder_to_sheet_number[i->second];
+		const int num_tiles = zorder_to_num_tiles[i->second];
+		const int num_sheets = 1 + num_tiles/TilesInSheet;
+		int sheet = zorder_to_sheet_number[i->second];
+
 		obj_variant_ptr node = i->first;
+		if(num_sheets > 1) {
+			int offset = tile_str_to_palette[(*node)["tiles"].as_string()]%num_sheets;
+			
+			int count = 0;
+			while(sheet_next_image_index[sheet + offset] >= TilesInSheet) {
+				offset = (offset+1)%num_sheets;
+				++count;
+				ASSERT_LOG(count <= num_sheets, "COULD NOT PLACE TILES IN SHEET\n");
+			}
+
+			sheet += offset;
+		}
+		std::cerr << "NODE: " << node->write_json() << " -> " << i->second << "\n";
 		std::map<int, int> dst_index_map;
 
 		std::vector<std::string> tiles_vec = util::split((*node)["tiles"].as_string(), '|');
@@ -516,8 +542,9 @@ level_object::level_object(variant node)
 				tiles_str += tile_pos;
 			}
 
-			node_copy = node_copy.add_attr(variant("image"), variant("tiles-compiled.png"));
+//			node_copy = node_copy.add_attr(variant("image"), variant("tiles-compiled.png"));
 			node_copy = node_copy.add_attr(variant("tiles"), variant(tiles_str));
+			tile_str_to_palette[tiles_str] = palette;
 	
 			level_object_index.push_back(obj_variant_ptr(new variant(node_copy)));
 			original_level_object_nodes.push_back(const_obj_variant_ptr(new variant(node)));

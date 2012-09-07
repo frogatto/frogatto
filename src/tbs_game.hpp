@@ -107,6 +107,8 @@ private:
 
 	std::vector<message> outgoing_messages_;
 
+	std::vector<std::string> log_;
+
 	enum GAME_STATE { STATE_SETUP, STATE_PLAYING };
 	GAME_STATE state_;
 

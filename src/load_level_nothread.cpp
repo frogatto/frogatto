@@ -25,7 +25,7 @@ void reload_level_paths() {
 	load_level_paths();
 }
 void load_level_paths() {
-	module::get_unique_filenames_under_dir("data/level/", &get_level_paths());
+	module::get_unique_filenames_under_dir(preferences::load_compiled() ? "data/compiled/level/" : "data/level/", &get_level_paths());
 }
 
 const std::string& get_level_path(const std::string& name) {

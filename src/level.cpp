@@ -173,7 +173,6 @@ level::level(const std::string& level_cfg, variant node)
 	  background_palette_(-1),
 	  segment_width_(0), segment_height_(0)
 {
-	fprintf(stderr, "level::level(%s, %s)\n", level_cfg.c_str(), node.is_null() ? "null" : "obj");
 #ifndef NO_EDITOR
 	get_all_levels_set().insert(this);
 #endif
