@@ -44,6 +44,8 @@ namespace hex {
 		std::string image_;
 		rect rect_;
 		std::vector<variant> nodes_;
+		int offset_x_;
+		int offset_y_;
 
 		boost::scoped_ptr<frame> frame_;
 		mutable int cycle_;
@@ -62,7 +64,15 @@ namespace hex {
 	typedef boost::intrusive_ptr<basic_hex_tile> basic_hex_tile_ptr;
 	typedef boost::intrusive_ptr<const basic_hex_tile> const_basic_hex_tile_ptr;
 
-	typedef std::map<std::string, std::vector<basic_hex_tile_ptr> > transition_map;
+	struct strlen_compare
+	{
+		bool operator()(const std::string& lhs, const std::string& rhs) const
+		{
+			return lhs.length() < rhs.length();
+		}
+	};
+
+	typedef std::map<std::string, std::vector<basic_hex_tile_ptr>, strlen_compare> transition_map;
 
 	class hex_tile : public game_logic::formula_callable
 	{

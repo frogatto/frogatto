@@ -10,7 +10,8 @@
 namespace hex {
 
 basic_hex_tile::basic_hex_tile(const variant node, hex_tile* owner)
-	: cycle_(0), chance_(node["chance"].as_int(100)), owner_(owner), zorder_(node["zorder"].as_int(-500))
+	: cycle_(0), chance_(node["chance"].as_int(100)), owner_(owner), zorder_(node["zorder"].as_int(-500)),
+	offset_x_(0), offset_y_(0)
 {
 	ASSERT_LOG(chance_ >= 1 && chance_ <= 100, "Chance must be between 1 and 100, inclusive.");
 	image_ = node["image"].as_string_default();
@@ -26,6 +27,11 @@ basic_hex_tile::basic_hex_tile(const variant node, hex_tile* owner)
 		}
 		frame_.reset(new frame(nodes_.front()));
 	}
+	if(node.has_key("offset")) {
+		ASSERT_LOG(node["offset"].num_elements() == 2 && node["offset"].is_list(), "Offset field is specified as a list of two(2) elements");
+		offset_x_ = node["offset"][0].as_int();
+		offset_y_ = node["offset"][1].as_int();
+	}
 }
 
 basic_hex_tile::~basic_hex_tile()
@@ -34,6 +40,7 @@ basic_hex_tile::~basic_hex_tile()
 void basic_hex_tile::draw(int x, int y) const
 {
 	//XXX FIXME for non 72x72 tiles.
+	//XXX Draw using offset_x_ and offset_y_
 	const int TileSize = 72;
 	const int TileSizeHalf = TileSize/2;
 	const int TileSizeThreeQuarters = (TileSize*3)/4;
