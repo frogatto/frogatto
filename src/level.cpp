@@ -326,11 +326,11 @@ level::level(const std::string& level_cfg, variant node)
 	///////////////////////
 	// hex tiles starts
 	foreach(variant tile_node, node["hex_tile_map"].as_list()) {
-		hex::hex_map m(tile_node);
-		hex_maps_[m.zorder()] = m;
+		hex::hex_map_ptr m(new hex::hex_map(tile_node));
+		hex_maps_[m->zorder()] = m;
 		//tile_maps_[m.zorder()].build_tiles();
-		std::cerr << "LAYER " << m.zorder() << " BUILT " << hex_maps_[m.zorder()].size() << " tiles\n";
-		hex_maps_[m.zorder()].build();
+		std::cerr << "LAYER " << m->zorder() << " BUILT " << hex_maps_[m->zorder()]->size() << " tiles\n";
+		hex_maps_[m->zorder()]->build();
 	}
 	std::cerr << "done building hex_tile_map..." << SDL_GetTicks() << "\n";
 	// hex tiles ends
@@ -1101,8 +1101,8 @@ variant level::write() const
 		res.add("solid_rect", node.build());
 	}
 
-	for(std::map<int,hex::hex_map>::const_iterator i = hex_maps_.begin(); i != hex_maps_.end(); ++i) {
-		res.add("hex_tile_map", i->second.write());
+	for(std::map<int,hex::hex_map_ptr>::const_iterator i = hex_maps_.begin(); i != hex_maps_.end(); ++i) {
+		res.add("hex_tile_map", i->second->write());
 	}
 
 	for(std::map<int, tile_map>::const_iterator i = tile_maps_.begin(); i != tile_maps_.end(); ++i) {
@@ -1836,9 +1836,9 @@ void level::draw(int x, int y, int w, int h) const
 	const std::vector<entity_ptr>* chars_ptr = &active_chars_;
 	std::vector<entity_ptr> editor_chars_buf;
 
-	std::map<int, hex::hex_map>::const_iterator hit = hex_maps_.begin();
+	std::map<int, hex::hex_map_ptr>::const_iterator hit = hex_maps_.begin();
 	while(hit != hex_maps_.end()) {
-		hit->second.draw();
+		hit->second->draw();
 		++hit;
 	}
 
@@ -3380,6 +3380,14 @@ variant level::get_value(const std::string& key) const
 		return variant(&pos);
 	} else if(key == "debug_properties") {
 		return vector_to_variant(debug_properties_);
+	} else if(key == "hexmap") {
+		std::map<variant, variant> m;
+		std::map<int, hex::hex_map_ptr>::const_iterator it = hex_maps_.begin();
+		while(it != hex_maps_.end()) {
+			m[variant(it->first)] = variant(it->second.get());
+			++it;
+		}
+		return variant(&m);
 	} else {
 		const_entity_ptr e = get_entity_by_label(key);
 		if(e) {

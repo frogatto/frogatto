@@ -19,7 +19,7 @@ namespace hex {
 typedef std::vector<hex_object_ptr> hex_tile_row;
 typedef std::vector<hex_tile_row> hex_tile_map;
 
-class hex_map
+class hex_map : public game_logic::formula_callable
 {
 public:
 	hex_map() : zorder_(-1000), width_(0), height_(0), x_(0), y_(0)
@@ -37,6 +37,12 @@ public:
 	variant write() const;
 
 	hex_object_ptr get_hex_tile(enum hex::direction d, int x, int y) const;
+
+protected:
+	virtual variant get_value(const std::string&) const;
+	virtual void set_value(const std::string& key, const variant& value);
+
+	std::string make_tile_string() const;
 private:
 	hex_tile_map tiles_;
 	size_t width_;
@@ -45,6 +51,9 @@ private:
 	int y_;
 	int zorder_;
 };
+
+typedef boost::intrusive_ptr<hex_map> hex_map_ptr;
+typedef boost::intrusive_ptr<const hex_map> const_hex_map_ptr;
 
 }
 

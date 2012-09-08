@@ -69,6 +69,17 @@ void hex_map::build()
 	}
 }
 
+std::string hex_map::make_tile_string() const
+{
+	std::ostringstream tiles;
+	foreach(const hex_tile_row& row, tiles_) {
+		for(hex_tile_row::const_iterator i = row.begin(); i != row.end(); ++i) {
+			tiles << (*i)->type() << ((i+1) == row.end() ? "\n" : ",");
+		}
+	}
+	return tiles.str();
+}
+
 variant hex_map::write() const
 {
 	variant_builder res;
@@ -76,13 +87,7 @@ variant hex_map::write() const
 	res.add("y", y_);
 	res.add("zorder", zorder_);
 
-	std::ostringstream tiles;
-	foreach(const hex_tile_row& row, tiles_) {
-		for(hex_tile_row::const_iterator i = row.begin(); i != row.end(); ++i) {
-			tiles << (*i)->type() << ((i+1) == row.end() ? "\n" : ",");
-		}
-	}
-	res.add("tiles", tiles.str());
+	res.add("tiles", make_tile_string());
 	return res.build();
 }
 
@@ -118,6 +123,47 @@ hex_object_ptr hex_map::get_hex_tile(direction d, int x, int y) const
 		return hex_object_ptr();
 	}
 	return tiles_[y][x];
+}
+
+variant hex_map::get_value(const std::string& key) const
+{
+	if(key == "x_size") {
+		return variant(width());
+	} else if(key == "y_size") {
+		return variant(height());
+	} else if(key == "size") {
+		std::vector<variant> v;
+		v.push_back(variant(width()));
+		v.push_back(variant(height()));
+		return variant(&v);
+	} else if(key == "map") {
+		std::vector<variant> list;
+		foreach(const hex_tile_row& row, tiles_) {
+			std::vector<variant> rrow;
+			for(hex_tile_row::const_iterator i = row.begin(); i != row.end(); ++i) {
+				rrow.push_back(variant((*i).get()));
+			}
+			list.push_back(variant(&rrow));
+		}
+		return variant(&list);
+	} else if(key == "mapstring") {
+		return variant(make_tile_string());
+	} else if(key == "maplist") {
+		std::vector<variant> list;
+		foreach(const hex_tile_row& row, tiles_) {
+			std::vector<variant> rrow;
+			for(hex_tile_row::const_iterator i = row.begin(); i != row.end(); ++i) {
+				rrow.push_back(variant((*i)->type()));
+			}
+			list.push_back(variant(&rrow));
+		}
+		return variant(&list);
+	}
+	return variant();
+}
+
+void hex_map::set_value(const std::string& key, const variant& value)
+{
 }
 
 }

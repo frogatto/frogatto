@@ -45,6 +45,7 @@ public:
 	hex_tile_ptr tile() const { return tile_->owner(); }
 
 	static std::vector<std::string> get_rules();
+	static std::vector<hex_tile_ptr> get_hex_tiles();
 private:
 
 	// map coordinates.
