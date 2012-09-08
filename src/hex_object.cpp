@@ -1,3 +1,5 @@
+#include <boost/bind.hpp>
+
 #include "asserts.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
@@ -49,6 +51,22 @@ private:
 	}
 };
 
+class create_tile_function : public game_logic::function_expression {
+public:
+	explicit create_tile_function(const args_list& args)
+	 : function_expression("create_tile", args, 1, 1)
+	{}
+private:
+	variant execute(const game_logic::formula_callable& variables) const {
+		std::map<std::string, hex_tile_ptr>::const_iterator it 
+			= get_hex_tile_map().find(args()[0]->evaluate(variables).as_string());
+		if(it == get_hex_tile_map().end()) {
+			return variant();
+		}
+		return variant(it->second->get_single_tile().get());
+	}
+};
+
 class get_tile_function : public game_logic::function_expression {
 public:
 	explicit get_tile_function(const args_list& args)
@@ -61,7 +79,7 @@ private:
 		if(it == get_hex_tile_map().end()) {
 			return variant();
 		}
-		return variant(it->second->get_single_tile().get());
+		return variant(it->second.get());
 	}
 };
 
@@ -76,7 +94,9 @@ public:
 		const std::vector<game_logic::expression_ptr>& args,
 		const game_logic::formula_callable_definition* callable_def) const
 	{
-		if(fn == "get_tile") {
+		if(fn == "create_tile") {
+			return game_logic::expression_ptr(new create_tile_function(args));
+		} else if(fn == "get_tile") {
 			return game_logic::expression_ptr(new get_tile_function(args));
 		} else if(fn == "find_transition") {
 			return game_logic::expression_ptr(new find_transition_function(args));
@@ -98,6 +118,12 @@ struct hex_engine
 
 	explicit hex_engine(const variant& value)
 	{
+		rules = value["rules"].as_list_string();
+
+		variant tiles_var = value["tiles"];
+		ASSERT_LOG(tiles_var.is_map(), "\"tiles\" must be a map type.");
+		load_hex_tiles(tiles_var);
+
 		functions_var = value["functions"];
 		if(functions_var.is_null() == false) {
 			ASSERT_LOG(functions_var.is_string() == true || functions_var.is_list() == true, "\"functions must\" be specified as a string or list.");
@@ -111,12 +137,6 @@ struct hex_engine
 				}
 			}
 		}
-
-		rules = value["rules"].as_list_string();
-
-		variant tiles_var = value["tiles"];
-		ASSERT_LOG(tiles_var.is_map(), "\"tiles\" must be a map type.");
-		load_hex_tiles(tiles_var);
 
 		variant handlers_var = value["handlers"];
 		if(handlers_var.is_null() == false) {
@@ -318,6 +338,15 @@ void hex_object::draw() const
 		}
 		htp->draw(x_, y_);
 	}
+}
+
+std::vector<hex_tile_ptr> hex_object::get_hex_tiles()
+{
+	std::vector<hex_tile_ptr> v;
+	std::transform(get_hex_tile_map().begin(), get_hex_tile_map().end(), 
+		std::back_inserter(v), 
+		boost::bind(&std::map<std::string, hex_tile_ptr>::value_type::second,_1));
+	return v;
 }
 
 }

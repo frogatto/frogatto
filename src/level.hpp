@@ -524,7 +524,7 @@ private:
 	std::map<int, tile_map> tile_maps_;
 	int xscale_, yscale_;
 
-	std::map<int, hex::hex_map> hex_maps_;
+	std::map<int, hex::hex_map_ptr> hex_maps_;
 
 	int save_point_x_, save_point_y_;
 	bool editor_;

@@ -44,8 +44,8 @@ void basic_hex_tile::draw(int x, int y) const
 	const int TileSize = 72;
 	const int TileSizeHalf = TileSize/2;
 	const int TileSizeThreeQuarters = (TileSize*3)/4;
-	const int tx = x*(abs(x)%2)*TileSizeThreeQuarters + x*(abs(x)%2==0)*TileSizeThreeQuarters;
-	const int ty = TileSize*y + (abs(x)%2)*TileSizeHalf;
+	const int tx = x*(abs(x)%2)*TileSizeThreeQuarters + x*(abs(x)%2==0)*TileSizeThreeQuarters - offset_x_;
+	const int ty = TileSize*y + (abs(x)%2)*TileSizeHalf - offset_y_;
 	if(frame_) {
 		frame_->draw(tx, ty, true, false, cycle_);
 		if(++cycle_ >= frame_->duration()) {
