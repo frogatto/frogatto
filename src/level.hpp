@@ -439,17 +439,16 @@ private:
 //GL_UNSIGNED_SHORT in the glDrawElements call. So use shorts on ES 1.1
 //platforms. Since we compile tiles on them and solid colored tiles are
 //not counted, this is probably fine.
-//#ifdef SDL_VIDEO_OPENGL_ES
+#ifdef SDL_VIDEO_OPENGL_ES
 		typedef GLshort IndexType;
 #define TILE_INDEX_TYPE GL_UNSIGNED_SHORT
 #define TILE_INDEX_TYPE_MAX SHRT_MAX
-		/*
+		
 #else
 		typedef GLint IndexType;
 #define TILE_INDEX_TYPE GL_UNSIGNED_INT
 #define TILE_INDEX_TYPE_MAX INT_MAX
 #endif
-		*/
 
 		//a two dimensional array of indexes into vertex_texture_ids,
 		//representing the tiles in a layer.
