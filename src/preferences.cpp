@@ -668,6 +668,7 @@ namespace preferences {
 		no_sound_ = node["no_sound"].as_bool(no_sound_);
 		no_music_ = node["no_music"].as_bool(no_music_);
 		reverse_ab_ = node["reverse_ab"].as_bool(reverse_ab_);
+		allow_autopause_ = node["allow_autopause"].as_bool(allow_autopause_);
 
 		sound::set_music_volume(node["music_volume"].as_int(1000)/1000.0);
 		sound::set_sound_volume(node["sound_volume"].as_int(1000)/1000.0);
@@ -698,6 +699,7 @@ namespace preferences {
 		node.add("user_id", get_unique_user_id());
 		node.add("no_sound", variant::from_bool(no_sound_));
 		node.add("no_music", variant::from_bool(no_music_));
+		node.add("allow_autopause", variant::from_bool(allow_autopause_));
 		node.add("reverse_ab", variant::from_bool(reverse_ab_));
 		node.add("joystick", variant::from_bool(use_joystick_));
 		node.add("sound_volume", static_cast<int>(sound::get_sound_volume()*1000));
@@ -855,6 +857,8 @@ namespace preferences {
 			serialize_bad_objects_ = true;
 		} else if(s == "--no-autopause") {
 			allow_autopause_ = false;
+		} else if(s == "--autopause") {
+			allow_autopause_ = true;
 		} else if(arg_name == "--difficulty" && !arg_value.empty()) {
 			if(boost::regex_match(arg_value, boost::regex("-?[0-9]+"))) {
 				force_difficulty_ = boost::lexical_cast<int>(arg_value);
