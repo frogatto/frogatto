@@ -3,7 +3,7 @@ Releasing Cube Trains on the PlayBook:
 ① Move the (slightly renamed) bar-descriptor file, and the master-config.cfg file, from the modules/cube_trains directory. (Replace the existing bar-descriptor.)
 ② Run "make assets", which will now compile Cube Trains data and images.
 ③ Checksum the .cfgs for release, so stats are reported.
-④ In the IDE, select Run -> Run Configurations. Set Build Configuration to Device-Debug.
+④ In the IDE, select Run -> Run Configurations. Set Build Configuration to Device-Debug. (Make sure that the run-configuration is set to upload the right files.)
 ⑤ Make sure device-overlay's runtime is set to gnu-c++ with exceptions. (right-click menu -> Project Properties -> C/C++ build -> Setting -> target -> runtime)
 ⑥ Build everything but the overlay and the frogatto project. Rebuild once if errors.
 ⑦ Build the overlay project, then the frogatto project. You may have to tweak the Frogatto project by putting "#define GL_FRAMEBUFFER_UNSUPPORTED 0x8CDD // Krista's Hack for opengl 1 -> 2." near the top of texture_frame_buffer.cpp.
