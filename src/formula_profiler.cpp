@@ -63,7 +63,8 @@ void sigprof_handler(int sig)
 	}
 #endif
 
-	expression_call_stack_samples[get_expression_call_stack()]++;
+	//TODO: FIX THIS SO IT DOESN'T ALLOCATE MEMORY
+	//expression_call_stack_samples[get_expression_call_stack()]++;
 
 	if(num_samples == max_samples) {
 #ifdef _WINDOWS
