@@ -56,12 +56,11 @@ variant load_level_wml(const std::string& lvl)
 
 variant load_level_wml_nowait(const std::string& lvl)
 {
-	if(lvl == "autosave.cfg" || (lvl.substr(0,4) == "save" && lvl.substr(lvl.length()-4) == ".cfg")) {
-		if(lvl == "autosave.cfg") {
-			return json::parse_from_file(preferences::auto_save_file_path());
-		} else {
-			return json::parse_from_file(preferences::save_file_path());
-		}
+	if(lvl == "autosave.cfg") {
+		return json::parse_from_file(preferences::auto_save_file_path());
+	} else if(lvl.size() >= 7 && lvl.substr(0,4) == "save" && lvl.substr(lvl.size()-4) == ".cfg") {
+		preferences::set_save_slot(lvl);
+		return json::parse_from_file(preferences::save_file_path());
 	}
 	return json::parse_from_file(loadlevel::get_level_path(lvl));
 }
