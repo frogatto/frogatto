@@ -262,7 +262,7 @@ public:
 	void set_spawned_by(const std::string& key);
 	const std::string& spawned_by() const;
 
-	virtual const bool mouse_event_swallowed() {return false;}
+	virtual bool mouse_event_swallowed() const {return false;}
 
 	bool is_mouse_over_entity() const { return mouse_over_entity_; }
 	void set_mouse_over_entity(bool val=true) { mouse_over_entity_=val; }

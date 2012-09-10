@@ -47,7 +47,7 @@ public:
 		: f_(g+h), g_(g), h_(h), src_(src), parent_(parent), 
 		on_open_list_(false), on_closed_list_(false)
 	{}
-	const bool operator< (const graph_node& rhs) const { return f_ < rhs.f_;}
+	bool operator< (const graph_node& rhs) const { return f_ < rhs.f_;}
 	N get_node_value() const {return src_;}
 	T F() const {return f_;}
 	T G() const {return g_;}
