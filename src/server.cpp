@@ -174,7 +174,7 @@ private:
 
 	void handle_udp_receive(udp_endpoint_ptr endpoint, const boost::system::error_code& error, size_t len)
 	{
-		fprintf(stderr, "RECEIVED UDP PACKET: %d\n", len);
+		fprintf(stderr, "RECEIVED UDP PACKET: %lu\n", len);
 		if(len >= 5) {
 			uint32_t id;
 			memcpy(&id, &udp_buf_[1], 4);

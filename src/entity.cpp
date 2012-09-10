@@ -372,12 +372,12 @@ bool zorder_compare(const entity_ptr& a, const entity_ptr& b)
 		return a->zorder() < b->zorder() ||
 			a->zorder() == b->zorder() && a->zsub_order() < b->zsub_order() ||
 			a->zorder() == b->zorder() && a->zsub_order() == b->zsub_order() && a->midpoint().y < b->midpoint().y ||
-			a->zorder() == b->zorder() && a->zsub_order() == b->zsub_order() && a->midpoint().y == b->midpoint().y && a->midpoint().x < b->midpoint().x;		
+			a->zorder() == b->zorder() && a->zsub_order() == b->zsub_order() && a->midpoint().y == b->midpoint().y && a.get() < b.get();		
 	}
 	return a->zorder() < b->zorder() ||
 		a->zorder() == b->zorder() && a->zsub_order() < b->zsub_order() ||
 		a->zorder() == b->zorder() && a->zsub_order() == b->zsub_order() && a->midpoint().y > b->midpoint().y ||
-		a->zorder() == b->zorder() && a->zsub_order() == b->zsub_order() && a->midpoint().y == b->midpoint().y && a->midpoint().x > b->midpoint().x;
+		a->zorder() == b->zorder() && a->zsub_order() == b->zsub_order() && a->midpoint().y == b->midpoint().y && a.get() > b.get();
 }
 
 bool entity_zorder_compare::operator()(const entity_ptr& lhs, const entity_ptr& rhs) 

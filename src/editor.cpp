@@ -2754,6 +2754,10 @@ void editor::change_tool(EDIT_TOOL tool)
 		}
 		current_dialog_ = hex_tileset_dialog_.get();
 		lvl_->editor_clear_selection();
+		break;
+	}
+	default: {
+		break;
 	}
 	}
 

@@ -334,6 +334,8 @@ bool token_matcher::find_match(const token*& i1, const token* i2) const
 				break;
 			}
 			break;
+		default:
+			break;
 		}
 
 		++i1;

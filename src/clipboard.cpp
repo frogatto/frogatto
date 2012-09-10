@@ -491,93 +491,98 @@ std::string copy_from_clipboard(const bool)
 #endif
 
 #ifdef __APPLE__
-#define CLIPBOARD_FUNCS_DEFINED
+    #include "TargetConditionals.h"
 
-#include <Carbon/Carbon.h>
+    #if TARGET_OS_IPHONE
+        //for now, do nothing
 
-void copy_to_clipboard(const std::string& text, const bool)
-{
-	if(text.empty()) {
-		return;
-	}
+    #elif TARGET_OS_MAC
+    #define CLIPBOARD_FUNCS_DEFINED
+    #include <Carbon/Carbon.h>
 
-	std::string new_str;
-	new_str.reserve(text.size());
-	for (unsigned int i = 0; i < text.size(); ++i)
-	{
-		if (text[i] == '\n')
-		{
-			new_str.push_back('\r');
-		} else {
-			new_str.push_back(text[i]);
-		}
-	}
-	OSStatus err = noErr;
-	PasteboardRef clipboard;
-	PasteboardSyncFlags syncFlags;
-	CFDataRef textData = NULL;
-	err = PasteboardCreate(kPasteboardClipboard, &clipboard);
-	if (err != noErr) return;
-	err = PasteboardClear(clipboard);
-	if (err != noErr) return;
-	syncFlags = PasteboardSynchronize(clipboard);
-	if ((syncFlags&kPasteboardModified) && !(syncFlags&kPasteboardClientIsOwner)) return;
-	textData = CFDataCreate(kCFAllocatorDefault, (const UInt8 *)new_str.c_str(), text.size());
-	PasteboardPutItemFlavor(clipboard, (PasteboardItemID)1, CFSTR("public.utf8-plain-text"), textData, 0);
-}
+    void copy_to_clipboard(const std::string& text, const bool)
+    {
+        if(text.empty()) {
+            return;
+        }
 
-std::string copy_from_clipboard(const bool)
-{
-	OSStatus err = noErr;
-	PasteboardRef clipboard;
-	PasteboardSyncFlags syncFlags;
-	ItemCount count;
-	err = PasteboardCreate(kPasteboardClipboard, &clipboard);
-	if (err != noErr) return "";
-	syncFlags = PasteboardSynchronize(clipboard);
-	if (syncFlags&kPasteboardModified) return "";
-	err = PasteboardGetItemCount(clipboard, &count);
-	if (err != noErr) return "";
-	for (UInt32 k = 1; k <= count; k++) {
-		PasteboardItemID itemID;
-		CFArrayRef flavorTypeArray;
-		CFIndex flavorCount;
-		err = PasteboardGetItemIdentifier(clipboard, k, &itemID);
-		if (err != noErr) return "";
-		err = PasteboardCopyItemFlavors(clipboard, itemID, &flavorTypeArray);
-		if (err != noErr) return "";
-		flavorCount = CFArrayGetCount(flavorTypeArray);
-		for (CFIndex j = 0; j < flavorCount; j++) {
-			CFStringRef flavorType;
-			CFDataRef flavorData;
-			CFIndex flavorDataSize;
-			flavorType = (CFStringRef)CFArrayGetValueAtIndex(flavorTypeArray, j);
-			if (UTTypeConformsTo(flavorType, CFSTR("public.utf8-plain-text"))) {
-				err = PasteboardCopyItemFlavorData(clipboard, itemID, flavorType, &flavorData);
-				if (err != noErr) {
-					CFRelease(flavorTypeArray);
-					return "";
-				}
-				flavorDataSize = CFDataGetLength(flavorData);
-				std::string str;
-				str.reserve(flavorDataSize);
-				str.resize(flavorDataSize);
-				CFDataGetBytes(flavorData, CFRangeMake(0, flavorDataSize), (UInt8 *)str.data());
-				for (unsigned int i = 0; i < str.size(); ++i) {
-					if (str[i] == '\r') str[i] = '\n';
-				}
-				return str;
-			}
-		}
-	}
-	return "";
-}
+        std::string new_str;
+        new_str.reserve(text.size());
+        for (unsigned int i = 0; i < text.size(); ++i)
+        {
+            if (text[i] == '\n')
+            {
+                new_str.push_back('\r');
+            } else {
+                new_str.push_back(text[i]);
+            }
+        }
+        OSStatus err = noErr;
+        PasteboardRef clipboard;
+        PasteboardSyncFlags syncFlags;
+        CFDataRef textData = NULL;
+        err = PasteboardCreate(kPasteboardClipboard, &clipboard);
+        if (err != noErr) return;
+        err = PasteboardClear(clipboard);
+        if (err != noErr) return;
+        syncFlags = PasteboardSynchronize(clipboard);
+        if ((syncFlags&kPasteboardModified) && !(syncFlags&kPasteboardClientIsOwner)) return;
+        textData = CFDataCreate(kCFAllocatorDefault, (const UInt8 *)new_str.c_str(), text.size());
+        PasteboardPutItemFlavor(clipboard, (PasteboardItemID)1, CFSTR("public.utf8-plain-text"), textData, 0);
+    }
 
-bool clipboard_handle_event(const SDL_Event& )
-{
-	return false;
-}
+    std::string copy_from_clipboard(const bool)
+    {
+        OSStatus err = noErr;
+        PasteboardRef clipboard;
+        PasteboardSyncFlags syncFlags;
+        ItemCount count;
+        err = PasteboardCreate(kPasteboardClipboard, &clipboard);
+        if (err != noErr) return "";
+        syncFlags = PasteboardSynchronize(clipboard);
+        if (syncFlags&kPasteboardModified) return "";
+        err = PasteboardGetItemCount(clipboard, &count);
+        if (err != noErr) return "";
+        for (UInt32 k = 1; k <= count; k++) {
+            PasteboardItemID itemID;
+            CFArrayRef flavorTypeArray;
+            CFIndex flavorCount;
+            err = PasteboardGetItemIdentifier(clipboard, k, &itemID);
+            if (err != noErr) return "";
+            err = PasteboardCopyItemFlavors(clipboard, itemID, &flavorTypeArray);
+            if (err != noErr) return "";
+            flavorCount = CFArrayGetCount(flavorTypeArray);
+            for (CFIndex j = 0; j < flavorCount; j++) {
+                CFStringRef flavorType;
+                CFDataRef flavorData;
+                CFIndex flavorDataSize;
+                flavorType = (CFStringRef)CFArrayGetValueAtIndex(flavorTypeArray, j);
+                if (UTTypeConformsTo(flavorType, CFSTR("public.utf8-plain-text"))) {
+                    err = PasteboardCopyItemFlavorData(clipboard, itemID, flavorType, &flavorData);
+                    if (err != noErr) {
+                        CFRelease(flavorTypeArray);
+                        return "";
+                    }
+                    flavorDataSize = CFDataGetLength(flavorData);
+                    std::string str;
+                    str.reserve(flavorDataSize);
+                    str.resize(flavorDataSize);
+                    CFDataGetBytes(flavorData, CFRangeMake(0, flavorDataSize), (UInt8 *)str.data());
+                    for (unsigned int i = 0; i < str.size(); ++i) {
+                        if (str[i] == '\r') str[i] = '\n';
+                    }
+                    return str;
+                }
+            }
+        }
+        return "";
+    }
 
+    bool clipboard_handle_event(const SDL_Event& )
+    {
+        return false;
+    }
+    #endif
 #endif
 
 #ifndef CLIPBOARD_FUNCS_DEFINED

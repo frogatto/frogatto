@@ -262,8 +262,9 @@ void variant::increment_refcount()
 
 	// These are not used here, add them to silence a compiler warning.
 	case VARIANT_TYPE_NULL:
-	case VARIANT_TYPE_INT :
-	case VARIANT_TYPE_BOOL :
+	case VARIANT_TYPE_INT:
+	case VARIANT_TYPE_BOOL:
+	case VARIANT_TYPE_DECIMAL:
 		break;
 	}
 }
@@ -308,6 +309,7 @@ void variant::release()
 	case VARIANT_TYPE_NULL:
 	case VARIANT_TYPE_INT:
 	case VARIANT_TYPE_BOOL:
+	case VARIANT_TYPE_DECIMAL:
 		break;
 	}
 }
@@ -319,6 +321,8 @@ void variant::set_debug_info(const debug_info& info)
 	case VARIANT_TYPE_STRING:
 	case VARIANT_TYPE_MAP:
 		*debug_info_ = info;
+		break;
+	default:
 		break;
 	}
 }
@@ -332,6 +336,8 @@ const variant::debug_info* variant::get_debug_info() const
 		if(debug_info_->filename) {
 			return debug_info_;
 		}
+		break;
+	default:
 		break;
 	}
 
@@ -1502,7 +1508,7 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 	}
 	case VARIANT_TYPE_CALLABLE_LOADING: {
 		char buf[64];
-		sprintf(buf, "(loading %x)", callable_loading_);
+		sprintf(buf, "(loading %lx)", callable_loading_);
 		s << buf;
 	}
 
