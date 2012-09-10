@@ -1621,27 +1621,39 @@ FUNCTION_DEF(teleport, 1, 5, "teleport(string dest_level, (optional)string dest_
 	std::string label, transition;
 	entity_ptr new_playable;
 	bool no_move_to_standing = false;
+	std::string dst_level_str;
 	
-	if(args().size() > 1) {
-		label = args()[1]->evaluate(variables).as_string();
-		if(args().size() > 2) {
-			transition = args()[2]->evaluate(variables).as_string();
-			if(args().size() > 3) {
-				variant play = args()[3]->evaluate(variables);
-				if(play.is_string()) {
-					new_playable = entity_ptr(new playable_custom_object(custom_object(play.as_string(), 0, 0, 0)));
-				} else {
-					new_playable = play.try_convert<entity>();
-				}
-				if(args().size() > 4) {
-					no_move_to_standing = args()[4]->evaluate(variables).as_bool();
+	if(!(args().size() == 1 && args()[0]->evaluate(variables).is_map())) {
+		variant dst_level = args()[0]->evaluate(variables);
+		dst_level_str = dst_level.is_null() ? "" : dst_level.as_string();
+		if(args().size() > 1) {
+			label = args()[1]->evaluate(variables).as_string();
+			if(args().size() > 2) {
+				transition = args()[2]->evaluate(variables).as_string();
+				if(args().size() > 3) {
+					variant play = args()[3]->evaluate(variables);
+					if(play.is_string()) {
+						new_playable = entity_ptr(new playable_custom_object(custom_object(play.as_string(), 0, 0, 0)));
+					} else {
+						new_playable = play.try_convert<entity>();
+					}
+					if(args().size() > 4) {
+						no_move_to_standing = args()[4]->evaluate(variables).as_bool();
+					}
 				}
 			}
 		}
+	} else {
+		variant argMap = args()[0]->evaluate(variables);
+		dst_level_str = argMap["level"].is_null() ? "" : argMap["level"].as_string();
+		label = argMap["label"].is_null() ? "" : argMap["label"].as_string();
+		if(!argMap["player"].is_null()) {
+			new_playable = argMap["player"].try_convert<entity>();
+		}
+		transition = argMap["transition"].is_null() ? "iris" : argMap["transition"].as_string();
+		no_move_to_standing = argMap["stand"].is_null() ? false : !argMap["stand"].as_bool();
 	}
 
-	variant dst_level = args()[0]->evaluate(variables);
-	const std::string dst_level_str = dst_level.is_null() ? "" : dst_level.as_string();
 	return variant(new teleport_command(dst_level_str, label, transition, new_playable, no_move_to_standing));
 END_FUNCTION_DEF(teleport)
 
