@@ -1502,7 +1502,7 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 	}
 	case VARIANT_TYPE_CALLABLE_LOADING: {
 		char buf[64];
-		sprintf(buf, "(loading %x)", callable_loading_);
+		sprintf(buf, "(loading %lx)", callable_loading_);
 		s << buf;
 	}
 

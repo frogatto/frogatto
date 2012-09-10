@@ -405,7 +405,7 @@ void read_control_packet(const char* buf, size_t len)
 	buf += 4;
 
 	if(end_buf - buf != ncycles) {
-		fprintf(stderr, "ERROR: BAD NUMBER OF CYCLES: %d vs %d\n", ncycles, (end_buf - buf));
+		fprintf(stderr, "ERROR: BAD NUMBER OF CYCLES: %d vs %ld\n", ncycles, (end_buf - buf));
 		return;
 	}
 
