@@ -1643,7 +1643,7 @@ FUNCTION_DEF(teleport, 1, 5, "teleport(string dest_level, (optional)string dest_
 		variant argMap = args()[0]->evaluate(variables);
 		dst_level_str = argMap["level"].as_string_default("");
 		label = argMap["label"].as_string_default("");
-		if(argMap._has_key("player")) {
+		if(argMap.has_key("player")) {
 			play = argMap["player"];
 		}
 		transition = argMap["transition"].as_string_default("iris");
