@@ -138,7 +138,7 @@ public:
 	void set_touched_player(entity_ptr p) { last_touched_player_ = p; }
 
 	struct portal {
-		portal() : dest_starting_pos(false), automatic(false), saved_game(false)
+		portal() : dest_starting_pos(false), automatic(false), saved_game(false), no_move_to_standing(false)
 		{}
 		rect area;
 		std::string level_dest;
@@ -150,6 +150,7 @@ public:
 		std::string transition;
 		bool saved_game;
 		entity_ptr new_playable;
+		bool no_move_to_standing;
 	};
 
 	//function which will make it so the next call to get_portal() will return

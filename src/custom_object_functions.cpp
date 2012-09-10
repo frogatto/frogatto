@@ -1596,8 +1596,8 @@ END_FUNCTION_DEF(remove_object)
 class teleport_command : public entity_command_callable
 {
 public:
-	teleport_command(const std::string& level, const std::string& label, const std::string& transition, const entity_ptr& new_playable) 
-		: level_(level), label_(label), transition_(transition), new_playable_(new_playable)
+	teleport_command(const std::string& level, const std::string& label, const std::string& transition, const entity_ptr& new_playable, const bool no_move_to_standing) 
+		: level_(level), label_(label), transition_(transition), new_playable_(new_playable), no_move_to_standing_(no_move_to_standing)
 	{}
 
 	virtual void execute(level& lvl, entity& ob) const {
@@ -1608,16 +1608,20 @@ public:
 		p.automatic = true;
 		p.transition = transition_;
 		p.new_playable = new_playable_;
+		p.no_move_to_standing = no_move_to_standing_;
 		lvl.force_enter_portal(p);
 	}
 private:
+	bool no_move_to_standing_;
 	std::string level_, label_, transition_;
 	entity_ptr new_playable_;
 };
 
-FUNCTION_DEF(teleport, 1, 4, "teleport(string dest_level, (optional)string dest_label, (optional)string transition, (optional)playable): teleports the player to a new level. The level is given by dest_level, with null() for the current level. If dest_label is given then the player will be teleported to the object in the destination level with that label. If transition is given, it names are type of transition (such as 'flip' or 'fade') which indicates the kind of visual effect to use for the transition. If a playable is specified it is placed in the level instead of the current one.")
+FUNCTION_DEF(teleport, 1, 5, "teleport(string dest_level, (optional)string dest_label, (optional)string transition, (optional)playable): teleports the player to a new level. The level is given by dest_level, with null() for the current level. If dest_label is given then the player will be teleported to the object in the destination level with that label. If transition is given, it names a type of transition (such as 'flip' or 'fade') which indicates the kind of visual effect to use for the transition. If a playable is specified it is placed in the level instead of the current one.  If no_move_to_standing is set to true, rather than auto-positioning the player on the ground under/above the target, the player will appear at precisely the position of the destination object - e.g. this is useful if they need to fall out of a pipe or hole coming out of the ceiling.")
 	std::string label, transition;
 	entity_ptr new_playable;
+	bool no_move_to_standing = false;
+	
 	if(args().size() > 1) {
 		label = args()[1]->evaluate(variables).as_string();
 		if(args().size() > 2) {
@@ -1629,13 +1633,16 @@ FUNCTION_DEF(teleport, 1, 4, "teleport(string dest_level, (optional)string dest_
 				} else {
 					new_playable = play.try_convert<entity>();
 				}
+				if(args().size() > 4) {
+					no_move_to_standing = args()[4]->evaluate(variables).as_bool();
+				}
 			}
 		}
 	}
 
 	variant dst_level = args()[0]->evaluate(variables);
 	const std::string dst_level_str = dst_level.is_null() ? "" : dst_level.as_string();
-	return variant(new teleport_command(dst_level_str, label, transition, new_playable));
+	return variant(new teleport_command(dst_level_str, label, transition, new_playable, no_move_to_standing));
 END_FUNCTION_DEF(teleport)
 
 class schedule_command : public entity_command_callable {

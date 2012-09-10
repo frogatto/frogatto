@@ -853,7 +853,7 @@ bool level_runner::play_cycle()
 
 			if(player) {
 				player->get_entity().set_pos(portal->dest);
-				if(!player->get_entity().no_move_to_standing()){
+				if(!player->get_entity().no_move_to_standing() || portal->no_move_to_standing){
 					player->get_entity().move_to_standing(*lvl_);
 				}
 			}
